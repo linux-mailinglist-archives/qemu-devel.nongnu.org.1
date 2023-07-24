@@ -2,86 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BF9775EE7E
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 10:56:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CBED75EE90
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 10:58:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qNrMR-0005cZ-15; Mon, 24 Jul 2023 04:56:11 -0400
+	id 1qNrOI-00008j-28; Mon, 24 Jul 2023 04:58:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qNrLP-0004yz-HG
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 04:55:10 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qNrLN-0000wx-H4
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 04:55:07 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-3143b88faebso3743252f8f.3
- for <qemu-devel@nongnu.org>; Mon, 24 Jul 2023 01:55:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690188901; x=1690793701;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=2bBG+xPb+o3DQOL6IZ10MUUt+FeXDEGimdn9UVYEtuQ=;
- b=B5dR4y2jmLrFLHh5kzPFw6QhbVvyAhVKCDRrBTCtC6t6RtjSSCycaDlCZk5zOzzcS1
- A7+08ZlqPDOiP5gijM8zCvIFjMsejr9/sKbP1Doi/W/+nh7P+y9t8iDfgplD2aPV+r7V
- hVkIUP2c7FfqGDu8QLD+WF7gK6oXOlY/TNH2O0Dlo/5lpDzu51Ga8PjAu/N6WN5dDK8l
- wX4ATiVDNm6VuX8fQTNcyjtM3Us+n1Yqm45+dtgxRa/rrCRhwdeLmaIQvFSExxfdckSe
- LJ90rybhm6M60yok7qI1i2ffSQiC4mzsB4JN8CHfgzbWI0YzPD1T0IUUgPUQf/K/wkPx
- Ufxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690188901; x=1690793701;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=2bBG+xPb+o3DQOL6IZ10MUUt+FeXDEGimdn9UVYEtuQ=;
- b=ftKOsSOE0laMSo0PXEykqIlpzBQNLOQknaoOeTn6t0ON/gLOsiw72jXfln08fITinh
- zfXSqOermOtXBoYF/KEBmFH+1GjJ67xMabkPCNYvcmqeK73Ty2Qv6i3NNj3zqgxoCkZ8
- fcCZ/THNEgc9XhBqyU8edz+4h0kK3Em+TsBf4sf+fU/5zVmmH8HStsdF2VwCbs4Jg5e1
- DDBLNOcd4s4WxtJYFJvf1ymqoI/N7s7wbRfH2thkJVCIQvvPUFgGF3Wo2fnp3ppz/TxS
- 5br8dKJH73KHSIvdIqo/xqufCsOxlyFDQOX4Dbav5RQmac8odSCbYWR1Ux7j5h5Pi3WD
- y9cw==
-X-Gm-Message-State: ABy/qLaX/GLR8jrJ6S4bPiMAdBXYPUP1uMkCq6UJHeEM7oLkYP8eNsl6
- zGmMiZc4SjTBFEUZbiPQBN5pzg==
-X-Google-Smtp-Source: APBJJlGdOwE68idDquz/Shwgnbfg5L38o3cn6OolVING+0SPrc7aRJm2/3DZtppqfe+V+XqH8g5Sqg==
-X-Received: by 2002:adf:e608:0:b0:317:6175:95fd with SMTP id
- p8-20020adfe608000000b00317617595fdmr1044692wrm.43.1690188900977; 
- Mon, 24 Jul 2023 01:55:00 -0700 (PDT)
-Received: from [192.168.224.227] ([62.252.144.58])
- by smtp.gmail.com with ESMTPSA id
- o20-20020a5d58d4000000b0031433443265sm12244914wrf.53.2023.07.24.01.55.00
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 24 Jul 2023 01:55:00 -0700 (PDT)
-Message-ID: <f40545af-4c99-d1ac-834b-f05ed315e5d2@linaro.org>
-Date: Mon, 24 Jul 2023 09:54:58 +0100
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qNrOF-00008b-VJ
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 04:58:03 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qNrOD-0001mN-B3
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 04:58:03 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.226])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4R8Yr01xHPz688p7;
+ Mon, 24 Jul 2023 16:54:24 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Mon, 24 Jul
+ 2023 09:57:48 +0100
+Date: Mon, 24 Jul 2023 09:57:48 +0100
+To: Ira Weiny <ira.weiny@intel.com>
+CC: <nifan@outlook.com>, <qemu-devel@nongnu.org>, <linux-cxl@vger.kernel.org>, 
+ <gregory.price@memverge.com>, <hchkuo@avery-design.com.tw>,
+ <cbrowy@avery-design.com>, <dan.j.williams@intel.com>,
+ <a.manzanares@samsung.com>, <dave@stgolabs.net>, <nmtadam.samsung@gmail.com>
+Subject: Re: [Qemu PATCH 0/9] Enabling DCD emulation support in Qemu
+Message-ID: <20230724095748.00007e46@Huawei.com>
+In-Reply-To: <64bcb1f6ee016_760de2943b@iweiny-mobl.notmuch>
+References: <SG2PR06MB33976BB3F9C47CBE08F02D09B23EA@SG2PR06MB3397.apcprd06.prod.outlook.com>
+ <64bcb1f6ee016_760de2943b@iweiny-mobl.notmuch>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v4 01/14] target/s390x: Make CKSM raise an exception if R2
- is odd
-To: Ilya Leoshkevich <iii@linux.ibm.com>, David Hildenbrand
- <david@redhat.com>, Thomas Huth <thuth@redhat.com>
-Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org, qemu-stable@nongnu.org
-References: <20230724082032.66864-1-iii@linux.ibm.com>
- <20230724082032.66864-2-iii@linux.ibm.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230724082032.66864-2-iii@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x434.google.com
-X-Spam_score_int: 11
-X-Spam_score: 1.1
-X-Spam_bar: +
-X-Spam_report: (1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.093,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,23 +65,107 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/24/23 09:15, Ilya Leoshkevich wrote:
-> R2 designates an even-odd register pair; the instruction should raise
-> a specification exception when R2 is not even.
+On Sat, 22 Jul 2023 21:52:06 -0700
+Ira Weiny <ira.weiny@intel.com> wrote:
+
+> nifan@ wrote:
+> > From: Fan Ni <nifan@outlook.com>
+> > 
+> > The patch series provides dynamic capacity device (DCD) emulation in Qemu.  
 > 
-> Cc:qemu-stable@nongnu.org
-> Fixes: e023e832d0ac ("s390x: translate engine for s390x CPU")
-> Signed-off-by: Ilya Leoshkevich<iii@linux.ibm.com>
-> ---
->   target/s390x/tcg/insn-data.h.inc | 2 +-
->   target/s390x/tcg/translate.c     | 6 ++++++
->   2 files changed, 7 insertions(+), 1 deletion(-)
+> I don't the patches on the list.
+> 
+> https://lore.kernel.org/all/SG2PR06MB33976BB3F9C47CBE08F02D09B23EA@SG2PR06MB3397.apcprd06.prod.outlook.com/
+> 
+> Did they get sent?
+Something odd going on...
+They are in https://lists.nongnu.org/archive/html/qemu-devel/2023-07/msg04105.html
+though threading is broken.
+Also seems to have made it to qemu-devel on lore
+https://lore.kernel.org/all/SG2PR06MB3397F3E74A083607F7492FA4B23EA@SG2PR06MB3397.apcprd06.prod.outlook.com/
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Might be a backlog somewhere that will take a while to drain...
+
+Fan, perhaps just resend the lot and make sure the threading works so we can find them more easily.
+
+Jonathan
 
 
-r~
+> 
+> Ira
+> 
+> > More specifically, it provides the following functionalities:
+> > 1. Extended type3 memory device to support DC regions and extents.
+> > 2. Implemented DCD related mailbox command support in CXL r3.0: 8.2.9.8.9.
+> > 3. ADD QMP interfaces for adding and releasing DC extents to simulate FM
+> > functions for DCD described in cxl r3.0: 7.6.7.6.5 and 7.6.7.6.6.
+> > 4. Add new ct3d properties for DCD devices (host backend, number of dc
+> > regions, etc.)
+> > 5. Add read/write support from/to DC regions of the device.
+> > 6. Add mechanism to validate accessed to DC region address space.
+> > 
+> > A more detailed description can be found from the previously posted RFC[1].
+> > 
+> > Compared to the previously posted RFC[1], following changes have been made:
+> > 1. Rebased the code on top of Jonathan's branch
+> > https://gitlab.com/jic23/qemu/-/tree/cxl-2023-05-25.
+> > 2. Extracted the rename of mem_size to a separated patch.(Jonathan)
+> > 3. Reordered the patch series to improve its readability.(Jonathan)
+> > 4. Split the validation of accesses to DC region address space as a separate
+> > patch.
+> > 5. Redesigned the QMP interfaces for adding and releasing DC extents to make
+> > them easier to understand and act like existing QMP interfaces (like the
+> > interface for cxl-inject-uncorrectable-errors). (Jonathan)
+> > 6. Updated dvsec range register setting to support DCD devices without static
+> > capacity.
+> > 7. Fixed other issues mentioned in the comments (Jonathan&Nathan Fontenot).
+> > 8. Fixed the format issues and checked with checkpatch.pl under qemu code dir.
+> > 
+> > 
+> > The code is tested with the DCD patch series at the kernel side[2]. The test
+> > is similar to those mentioned in the cover letter of [1].
+> > 
+> > 
+> > [1]: https://lore.kernel.org/all/20230511175609.2091136-1-fan.ni@samsung.com/
+> > [2]: https://lore.kernel.org/linux-cxl/649da378c28a3_968bb29420@iweiny-mobl.notmuch/T/#t
+> > 
+> > Fan Ni (9):
+> >   hw/cxl/cxl-mailbox-utils: Add dc_event_log_size field to output
+> >     payload of identify memory device command
+> >   hw/cxl/cxl-mailbox-utils: Add dynamic capacity region representative
+> >     and mailbox command support
+> >   include/hw/cxl/cxl_device: Rename mem_size as static_mem_size for
+> >     type3 memory devices
+> >   hw/mem/cxl_type3: Add support to create DC regions to type3 memory
+> >     devices
+> >   hw/mem/cxl_type3: Add host backend and address space handling for DC
+> >     regions
+> >   hw/mem/cxl_type3: Add DC extent list representative and get DC extent
+> >     list mailbox support
+> >   hw/cxl/cxl-mailbox-utils: Add mailbox commands to support add/release
+> >     dynamic capacity response
+> >   hw/cxl/events: Add qmp interfaces to add/release dynamic capacity
+> >     extents
+> >   hw/mem/cxl_type3: Add dpa range validation for accesses to dc regions
+> > 
+> >  hw/cxl/cxl-mailbox-utils.c  | 421 +++++++++++++++++++++++++++-
+> >  hw/mem/cxl_type3.c          | 539 +++++++++++++++++++++++++++++++++---
+> >  hw/mem/cxl_type3_stubs.c    |   6 +
+> >  include/hw/cxl/cxl_device.h |  49 +++-
+> >  include/hw/cxl/cxl_events.h |  16 ++
+> >  qapi/cxl.json               |  49 ++++
+> >  6 files changed, 1034 insertions(+), 46 deletions(-)
+> > 
+> > -- 
+> > 2.39.2
+> >   
+> 
+> 
+> 
+
 
