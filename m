@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8946175FB91
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 18:12:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25E0075FBBA
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 18:19:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qNy9F-0005xA-BF; Mon, 24 Jul 2023 12:11:01 -0400
+	id 1qNyFU-0008Cp-FU; Mon, 24 Jul 2023 12:17:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qNy90-0005vd-3L
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 12:10:47 -0400
-Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
+ id 1qNyFS-0008CT-Fr
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 12:17:26 -0400
+Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qNy8y-0005cz-5p
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 12:10:45 -0400
-Received: by mail-lf1-x12a.google.com with SMTP id
- 2adb3069b0e04-4f95bf5c493so6739419e87.3
- for <qemu-devel@nongnu.org>; Mon, 24 Jul 2023 09:10:43 -0700 (PDT)
+ id 1qNyFQ-00073e-Vl
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 12:17:26 -0400
+Received: by mail-ed1-x535.google.com with SMTP id
+ 4fb4d7f45d1cf-522294c0d5bso1927878a12.2
+ for <qemu-devel@nongnu.org>; Mon, 24 Jul 2023 09:17:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690215042; x=1690819842;
+ d=linaro.org; s=google; t=1690215443; x=1690820243;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=p4A7HnlNR4y+LiYMI6gxgLeOOWyF7e54galRz7wGSfw=;
- b=xm9w+aKML9zzBDSeIXkf1KIrAjdJ2b99uCuaMcU7/UK7Yxtt/JkLw+f/8x49F8ZR6Q
- pzBgQI2bEQzEg8C8sRrf0Eas6xXm9frm43FQM8TLiVZ4qaf3+mT3ABLObGkxV3s1YBdR
- aWlAFYlxd3dQ8obyVpm8WHGQiSMnL4IRy2+Zl6rYwasTagjiLkZlzaXgAmz/F8eI4y2I
- 49/6qaDPUBYWGT/nTxT+Nh3CBMhnPmiDkotkg/2sTDxV7jOJsxd8QcjMBtSczRDSVNrv
- WyvFF9vm8oUFpzs4xTtMZFlZnW1vmb84LOjxO/5DMAONQTG4VxSmnak633EKAHS04/3r
- P1LQ==
+ bh=JN3MDCdPNG2g6560ElPxOu7MMO4UMoPxvRTcDXdyEfA=;
+ b=tEyjYvgkCWZyfb32AuAg5H0jBR+lS+hSUKKHIhArEoaplVCgjKC4uQ382Hzrdgut1S
+ Q86UtDm5HD+q/oaMhdhzR0tYwjrqEqzTzYqTrLoy/oquXrTcc1l9lImyNwCc3KxytZRu
+ jVKVgrw6Z9aEbZ3RAhL7vCTizAjFn8WE1imw1ScJnRXpvOsixUp66fJglwcgJHaF48H/
+ fl3xBbakqe7HIC5rbbegRpMfYEmxnb+Iep7W2sex2Ft5PWuPdz1hvs3ApGHx2RUfifN+
+ +5QgiJd7vbFbYsPnV0g+ptNt4Q5kTFj2k4NsDgjF+ZzzPsHlmLMxJ8490/ogrtVKP+x/
+ /KCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690215042; x=1690819842;
+ d=1e100.net; s=20221208; t=1690215443; x=1690820243;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=p4A7HnlNR4y+LiYMI6gxgLeOOWyF7e54galRz7wGSfw=;
- b=OYVvaAG/QwI4Q4QgKS4k8+Ogal4nKGtgCCBX6fhVec+WB5z31lJLkOYaKO9a6Cg9cR
- OM7YdLnJmAwqhYFNZnhzb0UxZlRbn+9b3NelhbXnAvSQQAKMU8TFkSoBlpk1s0KgwKDK
- m+K1HA8ErfyIfQy+jlzCfayru+RROk4XMJ7jlzzPTimBWBYy08R3PJZE73dL0/GgzRSz
- hlDJqe/zmkC0xWeHoh1KjlWnSvvl4gtYluX41dNQgtYld03Ex1na85tsPakanx/wcg6/
- prNkNoHLXRyN88LFiXF+cL9wANTtKVHZU5/m/658eo5y6DK1NgiexojAVGxD8F0bKL+G
- u9hw==
-X-Gm-Message-State: ABy/qLaMd62NDzr3otGp3xuLEJboMgUk5eEcPe2S/aXLS0mqBVo8Uhc5
- NPGjo1/ZSfE/8khpyiZ6vIKTDvI0JeN8vfj6qI/VIQ==
-X-Google-Smtp-Source: APBJJlGAYoz5dBmMEZqopavMHOnoNmcC5Ds7+lB8C6U4YhR3tc4LjfU7khkDTtKNqR6g2S7eEnu71UfPhYvCTfnQsTQ=
-X-Received: by 2002:a19:6450:0:b0:4f9:607a:6508 with SMTP id
- b16-20020a196450000000b004f9607a6508mr4434019lfj.50.1690215041844; Mon, 24
- Jul 2023 09:10:41 -0700 (PDT)
+ bh=JN3MDCdPNG2g6560ElPxOu7MMO4UMoPxvRTcDXdyEfA=;
+ b=GPGqKKMB4u6V7yj88wqCmk5qa8HUkS86zDFxRKYWkACusGwzV5+wbQVo7Wk1zAsqc1
+ gL1qJ35tDRdq+42Cd1pIo8g1S5lUaWFvhtaHaPTOEaES8lsuyhf2UUGCcr5f8o3siqwx
+ Xx7GCnJT95KPPIn9WRs/YWpOhJ2moRQiio/2prZWFot5xImTLqI53WTE00C9LQ0O75EO
+ 229wanEMUk4klYVPnrP/YdezogCpmH7qIgke8Xd/eTYW6eJ48xkoISGaZWTY7ZqnKmMN
+ +nWcXDqN7yiHNT3vGLUFmMspMmPRTjCgvhkoYrJFP3NpSB10qcJXL33hUSpAtEcfZMh3
+ 6i2w==
+X-Gm-Message-State: ABy/qLbgZdYOot7FZiV7tJ+Yc+oaO5Gf1L6Y/Q6iLBsG/7FMgm0MmCEQ
+ /xO/IQYG6W+KTebYCHfLbbwuMeLY3UnkHjcf668Cz8jbk0TZWyj6
+X-Google-Smtp-Source: APBJJlE/WyeDhHQiHo8hH3yeHxR7mC1I9LbV4em7YEvWuUIbXsTwO7v+cwuwTUiGnAT3+1LipWm0Xygqd+FGw0EqMh8=
+X-Received: by 2002:a05:6402:3453:b0:51d:e498:201 with SMTP id
+ l19-20020a056402345300b0051de4980201mr8750672edc.27.1690215443123; Mon, 24
+ Jul 2023 09:17:23 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230714232659.76434-1-chris@laplante.io>
- <20230714232659.76434-2-chris@laplante.io>
-In-Reply-To: <20230714232659.76434-2-chris@laplante.io>
+ <20230714232659.76434-4-chris@laplante.io>
+In-Reply-To: <20230714232659.76434-4-chris@laplante.io>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 24 Jul 2023 17:10:30 +0100
-Message-ID: <CAFEAcA9hqBqGWgVXVsxwxSAOUbW1_hsyEC2MqdF=rmPumtbaGw@mail.gmail.com>
-Subject: Re: [PATCH 1/6] hw/gpio/nrf51: implement DETECT signal
+Date: Mon, 24 Jul 2023 17:17:12 +0100
+Message-ID: <CAFEAcA8NPQP23Gnf8fURudWt_3O0OhR2eUuwqzG9A3mm2Stuhw@mail.gmail.com>
+Subject: Re: [PATCH 3/6] qtest: bail from irq_intercept_in if name is specified
 To: Chris Laplante <chris@laplante.io>
 Cc: qemu-devel@nongnu.org, Joel Stanley <joel@jms.id.au>, qemu-arm@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::12a;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::535;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x535.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -87,43 +87,11 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On Sat, 15 Jul 2023 at 00:27, Chris Laplante <chris@laplante.io> wrote:
 >
-> Implement nRF51 DETECT signal in the GPIO peripheral.
+> Named interception of in-GPIOs is not supported yet.
 >
-> The reference manual makes mention of a per-pin DETECT signal, but these
-> are not exposed to the user. See https://devzone.nordicsemi.com/f/nordic-q-a/39858/gpio-per-pin-detect-signal-available
-> for more information. Currently, I don't see a reason to model these.
-
-I agree -- they seem to be internal to the GPIO module,
-so we don't need to model them as qemu_irq lines.
-
 > Signed-off-by: Chris Laplante <chris@laplante.io>
-> ---
->  hw/arm/nrf51_soc.c           |  1 +
->  hw/gpio/nrf51_gpio.c         | 14 +++++++++++++-
->  include/hw/gpio/nrf51_gpio.h |  1 +
->  3 files changed, 15 insertions(+), 1 deletion(-)
->
-> diff --git a/hw/arm/nrf51_soc.c b/hw/arm/nrf51_soc.c
-> index 34da0d62f0..7ae54e18be 100644
-> --- a/hw/arm/nrf51_soc.c
-> +++ b/hw/arm/nrf51_soc.c
-> @@ -150,6 +150,7 @@ static void nrf51_soc_realize(DeviceState *dev_soc, Error **errp)
->
->      /* Pass all GPIOs to the SOC layer so they are available to the board */
->      qdev_pass_gpios(DEVICE(&s->gpio), dev_soc, NULL);
-> +    qdev_pass_gpios(DEVICE(&s->gpio), dev_soc, "detect");
 
-Is the DETECT line really exposed external to the SoC?
-I had a look at the nRF51822 datasheet and it suggests not.
-For purposes of supporting the wake-up-on-gpio functionality
-we don't need to expose it to the board -- the SoC layer
-can just wire it up to the POWER device. (In fact, exposing
-it to the board makes it harder, because you can't connect
-one qemu_irq to two places, so if we let the board connect
-it somewhere then the SoC can't conveniently connect it
-to the POWER device without doing extra work to split it.)
-
-The logic for calculating DETECT looks good to me.
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
 thanks
 -- PMM
