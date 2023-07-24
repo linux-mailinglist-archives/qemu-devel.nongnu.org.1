@@ -2,105 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A99B75F2A7
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 12:17:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B9FA75F36B
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 12:35:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qNsc1-0007EG-Tw; Mon, 24 Jul 2023 06:16:21 -0400
+	id 1qNssx-0002Qg-7r; Mon, 24 Jul 2023 06:33:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qNsby-0007CC-2K
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 06:16:18 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qNsbw-0001w8-Dv
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 06:16:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690193775;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=UoFCc3Ynvml8yhPIc5IYDX+TKQVQRfGTwKLJIqqHKA0=;
- b=cd8dqqSRjhKE4Qcp2lBgLFSndhyNEDaqvs5y9OyK1G/2ianlwekvd5H6NNpAtiUsLcpBxl
- nzBADurn63ZKLFywKl+vhu4dV5NPfPPe02aHbgWg2opBuBc5Wk791coFuvVI8mQEXnVJ6t
- JFZx86mBY/bcIXBKXgROTSMdntHkmao=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-696-UfUdY5AHMTKkJSwmELxO2w-1; Mon, 24 Jul 2023 06:16:14 -0400
-X-MC-Unique: UfUdY5AHMTKkJSwmELxO2w-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-3fd2e59bc53so7410045e9.1
- for <qemu-devel@nongnu.org>; Mon, 24 Jul 2023 03:16:14 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qNssu-0002Q9-B8
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 06:33:48 -0400
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qNsss-0005Ob-GZ
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 06:33:48 -0400
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-51d95aed33aso5970324a12.3
+ for <qemu-devel@nongnu.org>; Mon, 24 Jul 2023 03:33:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1690194824; x=1690799624;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=AGwqb9B+J25M780CzEB+Hzhg7XfYrwU/NcI6FIP/Z1Q=;
+ b=bt+IZjmFCgYKQyS66d7DtfwFMp5y62G1ZsOAWW3X3itVzRE9Ly4Rp8z03VDB4QCcIq
+ pLFqzJ3k7TUcihVPgsd2Or7tRrkm/Uzku6+KGPyDe6y3qQ87br0jlIu1Rk2BCFYzTFIv
+ 7WDgrtbrogg6MiQVoWTBeSwWj3IowraxLr4V2ljj/EBBfGsckDPwvkcWiTjtsEzrgn59
+ V5u8wOL5efDS9I6/KM/QkmkK4o6Xh5+eZM+KNXZHuSI3/Ndk5Z+Pe20+6A+YIKqWKfRC
+ jmlIXsXXKWmutCf93iCrKlt7X4nyMGeHCXLlnjm9yLTt6r6+gG5z1vgdr8gopp5oNLh2
+ +ZAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690193773; x=1690798573;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=UoFCc3Ynvml8yhPIc5IYDX+TKQVQRfGTwKLJIqqHKA0=;
- b=kYg7LXhBKfiWCFy70XDB+YsoR0buuGQRoCdJqy3G7kmq84L5BiFMPlCpf+33F4YzEQ
- 47XcX0tC2YBdkXPRaTBLAGN5e7QinYvJ1SuVO0mCdhvYyCNWz0ckA2pchxK5N+Yrzj7E
- flM6bCUqz6pzc3C7lKrnxIqpzYssdjyNYtCBSmAvdQuqYttX1ry5mxry5MFuwOKGAzKT
- ZxbhoxBEFpg3X0gcIu/iZC2ZRVUO7fGwx1wduCWdLOT54nl7Vky8bj2ZcE/qSbxWaSaj
- eVVHfzPLF7YDsBIn7pVBmAxJeO1EDqacxzUi7smS9mMYzZ3CsFdewKxJBIk1MkIS0YaE
- Kgfg==
-X-Gm-Message-State: ABy/qLYQ3oHmnQHFnP42w/aAT2yNLHKfj42xHRh8P2/v3J7WeVuYp3gv
- 6qYXqThU77Yxc6si6oKgvl6M/tuiq/3URLxDcRQQ2spiDJkH2p3z3GSXUiWZzAaQGm1ODgCEv6g
- G2/4+ZOs9f92Aoj8=
-X-Received: by 2002:a05:600c:228d:b0:3f5:878:c0c2 with SMTP id
- 13-20020a05600c228d00b003f50878c0c2mr5774189wmf.3.1690193773145; 
- Mon, 24 Jul 2023 03:16:13 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlFmLwQr1v4x5ncMd/moQSP2H5QPt7WjbsS8U9sfTWt7IvFpBMq2q4dmUsAx08VSpEcqIqL0RA==
-X-Received: by 2002:a05:600c:228d:b0:3f5:878:c0c2 with SMTP id
- 13-20020a05600c228d00b003f50878c0c2mr5774166wmf.3.1690193772871; 
- Mon, 24 Jul 2023 03:16:12 -0700 (PDT)
-Received: from [192.168.0.3] (ip-109-43-177-165.web.vodafone.de.
- [109.43.177.165]) by smtp.gmail.com with ESMTPSA id
- e22-20020a5d5956000000b003063db8f45bsm12431554wri.23.2023.07.24.03.16.11
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 24 Jul 2023 03:16:12 -0700 (PDT)
-Message-ID: <5a8e9611-2384-f4b3-193a-f579aa4b5409@redhat.com>
-Date: Mon, 24 Jul 2023 12:16:10 +0200
+ d=1e100.net; s=20221208; t=1690194824; x=1690799624;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=AGwqb9B+J25M780CzEB+Hzhg7XfYrwU/NcI6FIP/Z1Q=;
+ b=Hk8WxBCnWzmSU2NTr5am1B3z2RTWUtDeI/Bv2M9FIkcXFgDE98/OEV0/4SMypjTnEX
+ RsefOHzJI6Hn2Mj37GWfrnD7Wym7wZIr8d2myWffe1pskIVvfRQRq8RZUgS6vfTkE0Ti
+ g94tkK6N3USjy4Y0mHjwpOYGUmLQYyg/s2+OGA71kxdjaEzW4F6GtF+4yw+ye6pA1n3k
+ ACUqKMP/KawHfBM+mrkQgsY3kVXNftUNhdPqs1SxkJqkz2SnPC5MSmiaSL/pZMrtrxJx
+ f7IudMaIn7LNopRxhkdR42LUyZQSBfashdIbBE78H26ryX8DG77mbjwvPyrrD2QjNJZr
+ LxnA==
+X-Gm-Message-State: ABy/qLawTfVh/zw5RXHs0IAFpiGEZN1Ravh4Wm1b/ylpboFVo7rvTHHK
+ QUs26cVoXdH9bqHT8h3e4+Z6aBL9lHvhLMEmfRg8fA==
+X-Google-Smtp-Source: APBJJlF3NogZ0cU1KSQodv1VuBOcV0TVEebVrDh0hN1F/MpgPKTKZ5BN2t/m0rrxV2yoSg3HchSC8Gfn3dAhzFtJ0nQ=
+X-Received: by 2002:a05:6402:31f6:b0:522:3849:48db with SMTP id
+ dy22-20020a05640231f600b00522384948dbmr870774edb.3.1690194824651; Mon, 24 Jul
+ 2023 03:33:44 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH] hw: Add compat machines for 8.2
-Content-Language: en-US
-To: Cornelia Huck <cohuck@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Halil Pasic <pasic@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Eric Farman <farman@linux.ibm.com>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
- qemu-s390x@nongnu.org
-References: <20230718142235.135319-1-cohuck@redhat.com>
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <20230718142235.135319-1-cohuck@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <alpine.DEB.2.22.394.2307211804380.3118466@ubuntu-linux-20-04-desktop>
+In-Reply-To: <alpine.DEB.2.22.394.2307211804380.3118466@ubuntu-linux-20-04-desktop>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 24 Jul 2023 11:33:33 +0100
+Message-ID: <CAFEAcA-FREYpYiX4qbvzkUjnkyCuD_oTkBJ5Yw7heNB7tf4ZsA@mail.gmail.com>
+Subject: Re: [PULL 0/2] xen-virtio-1-tag
+To: Stefano Stabellini <sstabellini@kernel.org>
+Cc: richard.henderson@linaro.org, qemu-devel@nongnu.org, 
+ vikram.garhwal@amd.com
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x531.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.093, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01,
- RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -117,57 +85,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 18/07/2023 16.22, Cornelia Huck wrote:
-> Add 8.2 machine types for arm/i440fx/m68k/q35/s390x/spapr.
-> 
-> Signed-off-by: Cornelia Huck <cohuck@redhat.com>
-> ---
->   hw/arm/virt.c              |  9 ++++++++-
->   hw/core/machine.c          |  3 +++
->   hw/i386/pc.c               |  3 +++
->   hw/i386/pc_piix.c          | 16 +++++++++++++---
->   hw/i386/pc_q35.c           | 14 ++++++++++++--
->   hw/m68k/virt.c             |  9 ++++++++-
->   hw/ppc/spapr.c             | 15 +++++++++++++--
->   hw/s390x/s390-virtio-ccw.c | 14 +++++++++++++-
->   include/hw/boards.h        |  3 +++
->   include/hw/i386/pc.h       |  3 +++
->   10 files changed, 79 insertions(+), 10 deletions(-)
-...
-> diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
-> index 4516d73ff5fc..c52a1fcf6700 100644
-> --- a/hw/s390x/s390-virtio-ccw.c
-> +++ b/hw/s390x/s390-virtio-ccw.c
-> @@ -828,14 +828,26 @@ bool css_migration_enabled(void)
->       }                                                                         \
->       type_init(ccw_machine_register_##suffix)
->   
-> +static void ccw_machine_8_2_instance_options(MachineState *machine)
-> +{
-> +}
-> +
-> +static void ccw_machine_8_2_class_options(MachineClass *mc)
-> +{
-> +}
-> +DEFINE_CCW_MACHINE(8_2, "8.2", true);
-> +
->   static void ccw_machine_8_1_instance_options(MachineState *machine)
->   {
-> +    ccw_machine_8_2_instance_options(machine);
->   }
->   
->   static void ccw_machine_8_1_class_options(MachineClass *mc)
->   {
-> +    ccw_machine_8_2_class_options(mc);
-> +    compat_props_add(mc->compat_props, hw_compat_8_1, hw_compat_8_1_len);
->   }
-> -DEFINE_CCW_MACHINE(8_1, "8.1", true);
-> +DEFINE_CCW_MACHINE(8_1, "8.1", false);
->   
->   static void ccw_machine_8_0_instance_options(MachineState *machine)
->   {
+On Sat, 22 Jul 2023 at 02:10, Stefano Stabellini <sstabellini@kernel.org> wrote:
+>
+> The following changes since commit d1181d29370a4318a9f11ea92065bea6bb159f83:
+>
+>   Merge tag 'pull-nbd-2023-07-19' of https://repo.or.cz/qemu/ericb into staging (2023-07-20 09:54:07 +0100)
+>
+> are available in the Git repository at:
+>
+>   https://gitlab.com/sstabellini/qemu.git xen-virtio-1-tag
+>
+> for you to fetch changes up to 6bb48c66946dfbd653f06ad5f3fc957972333b56:
+>
+>   xen_arm: Initialize RAM and add hi/low memory regions (2023-07-21 18:00:29 -0700)
+>
+> ----------------------------------------------------------------
+> Oleksandr Tyshchenko (2):
+>       xen_arm: Create virtio-mmio devices during initialization
+>       xen_arm: Initialize RAM and add hi/low memory regions
+>
+>  hw/arm/xen_arm.c | 80 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 80 insertions(+)
 
-s390 part:
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+Fails to build, multiple targets:
 
+https://gitlab.com/qemu-project/qemu/-/jobs/4726472678
+https://gitlab.com/qemu-project/qemu/-/jobs/4726472642
+etc
+
+../hw/arm/xen_arm.c: In function 'xen_set_irq':
+../hw/arm/xen_arm.c:78:5: error: implicit declaration of function
+'xendevicemodel_set_irq_level'; did you mean
+'xendevicemodel_set_isa_irq_level'?
+[-Werror=implicit-function-declaration]
+
+../hw/arm/xen_arm.c:78:5: error: nested extern declaration of
+'xendevicemodel_set_irq_level' [-Werror=nested-externs]
+../hw/arm/xen_arm.c: In function 'xen_create_virtio_mmio_devices':
+../hw/arm/xen_arm.c:74:5: error: 'GUEST_VIRTIO_MMIO_SPI_LAST'
+undeclared (first use in this function)
+74 | (GUEST_VIRTIO_MMIO_SPI_LAST - GUEST_VIRTIO_MMIO_SPI_FIRST)
+| ^~~~~~~~~~~~~~~~~~~~~~~~~~
+
+and others.
+
+thanks
+-- PMM
 
