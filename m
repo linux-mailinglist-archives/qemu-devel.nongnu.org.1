@@ -2,77 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 379A775EEB0
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 11:07:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CAADA75EF15
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 11:26:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qNrWV-0002g4-Ng; Mon, 24 Jul 2023 05:06:35 -0400
+	id 1qNroU-0005QC-GQ; Mon, 24 Jul 2023 05:25:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qNrWS-0002ef-G5
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 05:06:32 -0400
-Received: from mail-lj1-x229.google.com ([2a00:1450:4864:20::229])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qNrWQ-0004CK-Io
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 05:06:32 -0400
-Received: by mail-lj1-x229.google.com with SMTP id
- 38308e7fff4ca-2b734aea34aso57286821fa.0
- for <qemu-devel@nongnu.org>; Mon, 24 Jul 2023 02:06:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690189588; x=1690794388;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=CoHa9O3AzLhhFke7seUSrKurMd4rowVqL/5WTUhNoP0=;
- b=qDc5dQcjoQl2dgW1WeGxHaHf0D3RqQ44TtkiP2pitCQzKWuRWSq9eQI737QKsS47pu
- xaAP1uPZlpln6VqUC6QNujX3IJL4wiEa16wUqJ0FXro9/GSChWusUDa38aX8yjCheQ/f
- SAQKZitmoBYtnw3sTsHNgmdxXH2+D8FykZEzQ1AOEipgLvqOwfc/fCGWoFmW6Sco7qgR
- GGouZJKS6ChhfMf/pZ6HBB7rZaV00MRxDxtLv4mfgR2uumk2SNLxNBppANjNGIXUZ7I+
- 4SPNvHB/qSTtFaKDTr4X8Y4ohjrWmV45J7a8A6Vj8u4s8cUO7ShF1qHTIAvsyNDAvf3S
- r7Ww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690189588; x=1690794388;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=CoHa9O3AzLhhFke7seUSrKurMd4rowVqL/5WTUhNoP0=;
- b=Xm0nhgQHZZ7LqYmOei1jR3f5lyg6mS9NwY8H+eL0HtmiQdsSlessUeCvpBFPnr+URt
- rC2PwoJTGwpYthohzCjchaDIF9wsgounj3wikTemTBQ/5lMRLY4C5JDC4Nt1cuqmU6b+
- ojg0H/Z/JD2ZewXC875Hkr/NFwOJztjlx/q/YYlp3gUKA9QuqBFKeyrE++DmzyX9RnS1
- w3cssOuTk48UZpB9CE/WxGom7eEI71FnO4z7W8ELdC5oBf1rvRIlNxRK2PwN892+odc2
- bVXnIyQ3Po/S1p476dlUk1qH/DuLwfYG5lgtHqWGO4eLloJrSpWPEsWb34rmZhJJYJ8m
- LxUg==
-X-Gm-Message-State: ABy/qLZVPDcWCLNB+OZxMD7UGO83E15yHmmwKyMowTqWTPfenQVbfvBr
- 0nY5tqcqdeyNXC83cvaDHWV5nmOakQb+d8O+veplzQ==
-X-Google-Smtp-Source: APBJJlFsZELD5SgrYgzP7aimqzXRZwgy4+0AS6PJYU+/N3ja46BG1LsCPzHvIYscyquGSIToq1eBvwpm1MjgHTqj96Q=
-X-Received: by 2002:a05:6512:3f3:b0:4fb:7c40:9f97 with SMTP id
- n19-20020a05651203f300b004fb7c409f97mr3701168lfq.27.1690189588623; Mon, 24
- Jul 2023 02:06:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qNroP-0005Pu-8K
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 05:25:05 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qNroN-00008f-PC
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 05:25:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1690190703;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=vp7nYK+x5B8iFLwVsHO8+0byOR9o/IQ2qeOrnJYXbyA=;
+ b=BG92YKTeaBx7+jqX182u8VFQJVKP2t/m546MyN38AlzhY4+l89y9mYvSVQAYZ5Kg1d3d2k
+ yxKHGk4utAblUPOkPJ7w1a7TtsP4NKg565aw6CnxnGVcw3QVe9OB3D7oYH7nXbkEbwkOuA
+ az8lRfpX+PovC0ZJaT/j9iS+5Q/LwAE=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-575-FUV2QE-9MJqm4QKsOPCHig-1; Mon, 24 Jul 2023 05:24:59 -0400
+X-MC-Unique: FUV2QE-9MJqm4QKsOPCHig-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8D7B7280AA22;
+ Mon, 24 Jul 2023 09:24:59 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.193.50])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 590631121315;
+ Mon, 24 Jul 2023 09:24:59 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 37FE021E64D0; Mon, 24 Jul 2023 11:24:58 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: ~hyman <hyman@git.sr.ht>
+Cc: qemu-devel@nongnu.org,  ~hyman <yong.huang@smartx.com>,  Juan Quintela
+ <quintela@redhat.com>,  Peter Xu <peterx@redhat.com>,  Leonardo Bras
+ <leobras@redhat.com>,  Eric Blake <eblake@redhat.com>,  Thomas Huth
+ <thuth@redhat.com>,  Laurent Vivier <lvivier@redhat.com>,  Paolo Bonzini
+ <pbonzini@redhat.com>
+Subject: Re: [PATCH QEMU v9 4/9] migration: Introduce dirty-limit capability
+References: <168987012554.14797.8679831725383645706-4@git.sr.ht>
+Date: Mon, 24 Jul 2023 11:24:58 +0200
+In-Reply-To: <168987012554.14797.8679831725383645706-4@git.sr.ht>
+ (hyman@git.sr.ht's message of "Wed, 07 Jun 2023 23:30:50 +0800")
+Message-ID: <874jltr79x.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-References: <20230716115801.1505288-1-mjt@tls.msk.ru>
- <69ff1b09-a795-fcbe-ad0d-52f76f25eba7@linaro.org>
- <c4f93386-688e-3e81-4da5-641b053aad35@tls.msk.ru>
-In-Reply-To: <c4f93386-688e-3e81-4da5-641b053aad35@tls.msk.ru>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 24 Jul 2023 10:06:17 +0100
-Message-ID: <CAFEAcA_f5uD2gKAjnvrKvfy54MNYS_Z_j8Sc6GYenK5AAHz-=A@mail.gmail.com>
-Subject: Re: [PATCH 0/6] trivial-patches for 2023-07-16
-To: Michael Tokarev <mjt@tls.msk.ru>
-Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- qemu-devel@nongnu.org, qemu-trivial@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::229;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x229.google.com
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -89,37 +85,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 17 Jul 2023 at 10:50, Michael Tokarev <mjt@tls.msk.ru> wrote:
->
-> 16.07.2023 18:58, Philippe Mathieu-Daud=C3=A9 wrote:
-> ...
-> >> Michael Tokarev (5):
-> >>    tree-wide spelling fixes in comments and some messages: migration/
-> >>    tree-wide spelling fixes in comments and some messages: s390x
-> >>    tree-wide spelling fixes in comments and some messages: arm
-> >>    tree-wide spelling fixes in comments and some messages: other
-> >>      architectures
-> >>    tree-wide spelling fixes in comments and some messages: hw/9pfs
-> >
-> > FYI patch subject is usually "subsystem: Topic", see
-> > https://www.qemu.org/docs/master/devel/submitting-a-patch.html#write-a-=
-meaningful-commit-message:
-> >
-> >    QEMU follows the usual standard for git commit messages: the first
-> >    line (which becomes the email subject line) is =E2=80=9Csubsystem: s=
-ingle
-> >    line summary of change=E2=80=9D.
->
-> Yes Philippe, I know. In this case though, it really is "tree-wide". I tr=
-ied
-> to group them by subsystem but it doesn't work that well.  Especially hav=
-ing
-> in mind how many changes there are (about 400 in total).
+~hyman <hyman@git.sr.ht> writes:
 
-But you have the subsystem name, you just put it on the wrong end
-of the subject line. You could fix this up if you're going
-to send these as a pull request...
+> From: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
+>
+> Introduce migration dirty-limit capability, which can
+> be turned on before live migration and limit dirty
+> page rate durty live migration.
+>
+> Introduce migrate_dirty_limit function to help check
+> if dirty-limit capability enabled during live migration.
+>
+> Meanwhile, refactor vcpu_dirty_rate_stat_collect
+> so that period can be configured instead of hardcoded.
+>
+> dirty-limit capability is kind of like auto-converge
+> but using dirty limit instead of traditional cpu-throttle
+> to throttle guest down. To enable this feature, turn on
+> the dirty-limit capability before live migration using
+> migrate-set-capabilities, and set the parameters
+> "x-vcpu-dirty-limit-period", "vcpu-dirty-limit" suitably
+> to speed up convergence.
+>
+> Signed-off-by: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
+> Acked-by: Peter Xu <peterx@redhat.com>
+> Reviewed-by: Markus Armbruster <armbru@redhat.com>
+> Reviewed-by: Juan Quintela <quintela@redhat.com>
 
-thanks
--- PMM
+Looks good now, thanks!
+
 
