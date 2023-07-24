@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F62C75F81D
+	by mail.lfdr.de (Postfix) with ESMTPS id 5579775F81B
 	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 15:22:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qNvV8-0008Ry-Cs; Mon, 24 Jul 2023 09:21:26 -0400
+	id 1qNvVY-0008WI-Cu; Mon, 24 Jul 2023 09:21:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qNvV6-0008RX-6w
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 09:21:24 -0400
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ id 1qNvVW-0008W4-UK
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 09:21:50 -0400
+Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qNvV4-0006XS-Lo
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 09:21:23 -0400
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-51cff235226so9169294a12.0
- for <qemu-devel@nongnu.org>; Mon, 24 Jul 2023 06:21:22 -0700 (PDT)
+ id 1qNvVV-0006c3-8A
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 09:21:50 -0400
+Received: by mail-lf1-x136.google.com with SMTP id
+ 2adb3069b0e04-4fdddf92b05so6156443e87.3
+ for <qemu-devel@nongnu.org>; Mon, 24 Jul 2023 06:21:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690204881; x=1690809681;
+ d=linaro.org; s=google; t=1690204907; x=1690809707;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=5jPevRM0ebCLCD4K8IoIbONvOICW50+k6KptnuTajBw=;
- b=LLu9r1bwrLZnFIHM0wBCdP12IM7t+WTcAWPv/SRwUzUBxcNsnGiz/ox2+KhcyO+b+0
- vGz4ol2wHC24qM90NmC6BwibC6aYo4edcGkA1RdjQV5/wOqQIoyGedMIdBFddgOpbHIW
- RxnAeUD9vqYgT3CUyzGIWnhPpG0cYllqOXRqG7iONJ5D7V+AOZoF17Sh+hOssBg1bXz/
- 55Pq66iVVyS6/acOJqyIpBOA5sX5vsKnbAHDUujKHplwoK6wpwd8qhjJ6LpTNeuop2zb
- tq7R/iI0hSLM2xu5G3A13vO8uTVi0IYliLZA46vn3I5v3iUnJvpr9Ls37NgpvlM0BD5r
- 3ceA==
+ bh=4q1LlgadzsNkuoYqfXr5kY7/NbopM7zJxUmRzYUpCy4=;
+ b=eroBgMoJ5dM6jS+b8vgrzgW7VJ5cKBO++4dwmgK/jDhUgozII6TnL2Gkzj6dhgV7ff
+ bVDEDHfAxYCfn5RieoMQhwc+huI/I6Thm27S4xISMKKq6xVjbCPifYkSkPvDEg336HTO
+ nQ4SCrucxGmtwIJAKovu0cmrazZ/5wZIuOkUM8SZOXntO3clflAaxkeCm2uU6xZuY6EV
+ ZVmpe8A+M5Auf9IHPblDq5TkI20fz/xH7FRW4Z2VdNxIQhj2x3VJYIf48GZAaywOoq7z
+ 1UzaHfKvktFDcOuzEnJCr/+mhFiDYu9+W0VGdN/Te6brpf9r/LjHs51GNLTR1yCPfuvo
+ Q3cg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690204881; x=1690809681;
+ d=1e100.net; s=20221208; t=1690204907; x=1690809707;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=5jPevRM0ebCLCD4K8IoIbONvOICW50+k6KptnuTajBw=;
- b=Y83TVRng80Fa96e64W3KNDxWCUA3Nrm3m750aESSP5d3zCeRgN6IwQMTEmmmkPhspu
- /FNpKlwZYvypreu0myKe5Ud9huCYE1av7Ki+d7UX5ZvcHkHeBkp8b7RZSb4RTRjfqHDq
- ipQMXMKBIawXS0TXUragFmZa5yG91tOYQuWY3WeVyxdYg28qEdW0INz6SAZdMucjLpPt
- SDJ/k27BYaB+ZlDU25My5s/JkRywIq8b0AVly8E1bGMcLSe5y7e0PDX2iqtUSsicn+JS
- Y3eG32POI1Ht4UQyqm2u+0uK2oe6EZEWHT+EcNcu3L55hIRcGFi5c8GyISmLh1lJpWDK
- SFxw==
-X-Gm-Message-State: ABy/qLYb1EwUGMV3H+X0mhsYfxnrx/DSZx9WmN3so/JGOOuYd6Pqk39G
- XPBwR4qsAjTNWUnY3kCFM5nuWUR2G2kgBgLfWmMih1B1quCMrW6h
-X-Google-Smtp-Source: APBJJlF+5Y9VHqjHIc6osCQGH1FHQb6GGj1bWlzfDiC/Q5NLwGX1mUlQtFgByEKke+/S3qCY+ZfYKDjSuKUpUUrfkGQ=
-X-Received: by 2002:a05:6402:11d2:b0:51f:ef58:da87 with SMTP id
- j18-20020a05640211d200b0051fef58da87mr18826349edw.2.1690204880644; Mon, 24
- Jul 2023 06:21:20 -0700 (PDT)
+ bh=4q1LlgadzsNkuoYqfXr5kY7/NbopM7zJxUmRzYUpCy4=;
+ b=Rj3fXFJ9+ASd6dxAIBgu7FEjWjd9uR0IU+WIxhyf1Rz6buPJjiZg3zc4bSLjXxGQlQ
+ OShSIsYaSm/usIpHbziL5lELty1bGflCPaPD5NeTbSw7RQ2AcpWGdozlYJQBwAIeibA0
+ aAORzGtNao1c5gzMdvWb1wMNAhAbLxRLXx7nxOY1XCnTbGLyDYVfEgMxKrT6DjMuX7nW
+ 8E5ZRGsoV8REyNpFulRHGg67BxRNJSdCoNK87WGOiypYlQ4+njhNqf2AJ1A0IH8DTqdA
+ dArStijvHvtkBxrUxo36SmKY97Qz6L7x0n1XJla/8h9xe47wDuIwmpRpTdNW0gxgJbPe
+ 44Dw==
+X-Gm-Message-State: ABy/qLZZ5yprggdWZqOLds4/mpxgkWpD8/5wkBpZ/sB24hv9fapicqbp
+ 0y8sXT/fyeJfb1tHTkzB2Y9k04v7HV3o3dzTEcrJOA==
+X-Google-Smtp-Source: APBJJlFPwArfmWKC5sfGKAu24SD+rBhjJnO2MqPKQuf4PxMLguzBfzugWYLqyp/2YLJiyiF2U/GH6n1KacXGn4c9F5s=
+X-Received: by 2002:a05:6512:3ac:b0:4fd:c84f:30d4 with SMTP id
+ v12-20020a05651203ac00b004fdc84f30d4mr5255320lfp.36.1690204907500; Mon, 24
+ Jul 2023 06:21:47 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230723093414.859532-1-alistair.francis@wdc.com>
-In-Reply-To: <20230723093414.859532-1-alistair.francis@wdc.com>
+References: <20230724085328.4936-1-richard.henderson@linaro.org>
+In-Reply-To: <20230724085328.4936-1-richard.henderson@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 24 Jul 2023 14:21:09 +0100
-Message-ID: <CAFEAcA9fXPN1OT_irRafsKJsuEJC_AXouwV6ifE7QB-iJiYsnw@mail.gmail.com>
-Subject: Re: [PULL 0/1] riscv-to-apply queue
-To: Alistair Francis <alistair23@gmail.com>
-Cc: qemu-devel@nongnu.org, Alistair Francis <alistair.francis@wdc.com>
+Date: Mon, 24 Jul 2023 14:21:36 +0100
+Message-ID: <CAFEAcA_+ESKNMH-bWbBUCke=42=7N=Dso6vGAp9cEiYHFc1KrQ@mail.gmail.com>
+Subject: Re: [PULL for-8.1-rc1 0/7] tcg patch queue
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::530;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x530.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::136;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x136.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -84,7 +84,8 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, 23 Jul 2023 at 10:35, Alistair Francis <alistair23@gmail.com> wrote:
+On Mon, 24 Jul 2023 at 09:53, Richard Henderson
+<richard.henderson@linaro.org> wrote:
 >
 > The following changes since commit d1181d29370a4318a9f11ea92065bea6bb159f83:
 >
@@ -92,19 +93,20 @@ On Sun, 23 Jul 2023 at 10:35, Alistair Francis <alistair23@gmail.com> wrote:
 >
 > are available in the Git repository at:
 >
->   https://github.com/alistair23/qemu.git tags/pull-riscv-to-apply-20230723-3
+>   https://gitlab.com/rth7680/qemu.git tags/pull-tcg-20230724
 >
-> for you to fetch changes up to dcaaf2bf9bfd2c664dbeff0069fcab3d75c924d3:
+> for you to fetch changes up to 32b120394c578bc824f1db4835b3bffbeca88fae:
 >
->   roms/opensbi: Upgrade from v1.3 to v1.3.1 (2023-07-23 19:32:02 +1000)
->
-> ----------------------------------------------------------------
-> Fifth RISC-V PR for 8.1
->
-> * roms/opensbi: Upgrade from v1.3 to v1.3.1
+>   accel/tcg: Fix type of 'last' for pageflags_{find,next} (2023-07-24 09:48:49 +0100)
 >
 > ----------------------------------------------------------------
-
+> accel/tcg: Zero-pad vaddr in tlb debug output
+> accel/tcg: Fix type of 'last' for pageflags_{find,next}
+> accel/tcg: Fix sense of read-only probes in ldst_atomicity
+> accel/tcg: Take mmap_lock in load_atomic*_or_exit
+> tcg: Add earlyclobber to op_add2 for x86 and s390x
+> tcg/ppc: Fix race in goto_tb implementation
+>
 
 Applied, thanks.
 
