@@ -2,86 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A47B75F930
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 16:02:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 464AC75F978
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 16:13:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qNw8M-0002kJ-0m; Mon, 24 Jul 2023 10:01:58 -0400
+	id 1qNwHY-0007Iu-K2; Mon, 24 Jul 2023 10:11:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qNw7r-0002U8-Eb
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 10:01:27 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qNwHQ-0007HA-Qe
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 10:11:20 -0400
+Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qNw7o-0007Ld-Th
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 10:01:27 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-3fc0aecf15bso42942225e9.1
- for <qemu-devel@nongnu.org>; Mon, 24 Jul 2023 07:01:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690207283; x=1690812083;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=k3f2l2EECZF/B35B8+oFcJpo4co8Uripn4gNl8KZQKI=;
- b=XhKwPEOmArXYZGSjURFwlWC/3eyCFqXUTVD6JExD0mYrQ3/4hCG6rCw7riS5oCJ7VU
- rodEjpcTkdfP4UTEXS7jDyLXeAGAJqtJUollpK4xK7Q++r8e3vj0dJ9+oY7NM7tCe3CK
- SjEzVxmzDFF4Tj7V/q2Hlzvir8Q/VCFeu9CKkp7k6fvNrVTThvdhMaHTkr1p9+hTt+Bn
- VRAS3GldEqjWdfCxRF5BgFwOvBIrh/hC1tS1ksCftwFdcdG8Ss50NJQqHh3tUabpzj28
- fmBqvE6TwYKZwVvuuwpk2PrM6sL8hxXJQwVWjPfC1GRXfFv99BiFaoYJQifUPy2Cea1d
- 89JA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690207283; x=1690812083;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=k3f2l2EECZF/B35B8+oFcJpo4co8Uripn4gNl8KZQKI=;
- b=J1JBOWseboRDYyHAb0i8gdVdNqwA9xy8ecZaOXv2Y5hu5t8K5gJ47Wg1EcRQ/DDmp5
- 10e/F5lCOIn4/DC7qi5jCJ8JMv8+N+zsHrafuQp5s3DZnMiLYxGidEZPM58M7TDjEbCt
- UxZ3QofMWZ+w9CsHa7a0dHcmJWtBGhLyAl2H7xmbT8vMZqkdmQ8WKRiXwSLbT+7aJL8v
- GxXLlTX0uTdGEd1cQ1IgRzQ9c07pg3F1LDIyM6WDJGqXLKzRDzwMzPM9L0MdBWY27axh
- LCUGMjhmohaUOZqKI3UcBa5nNpwJYNJr9DrfJTjFSINTDVVjW283pyqgfAEsSxwhM/0x
- 3gmg==
-X-Gm-Message-State: ABy/qLZQbLZXjbg0XPjLHCSQT0M7hYL/TNVHAvzii3LhY9wsgy/T7gno
- lCVEQBvT/P0Ib5gvzfnigKZQyr6efIhbFnYOKiM=
-X-Google-Smtp-Source: APBJJlFCRaM6nl133gCcBBBo19d1SJelU9AYBMhAG0nO4PwMXHHP/HItbIOqUzvtzjNSoZ1NuNOXHQ==
-X-Received: by 2002:a5d:4210:0:b0:317:618a:206 with SMTP id
- n16-20020a5d4210000000b00317618a0206mr1392911wrq.71.1690207283335; 
- Mon, 24 Jul 2023 07:01:23 -0700 (PDT)
-Received: from [192.168.69.115] ([176.187.210.255])
- by smtp.gmail.com with ESMTPSA id
- r9-20020adff709000000b002fb60c7995esm13278112wrp.8.2023.07.24.07.01.21
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 24 Jul 2023 07:01:22 -0700 (PDT)
-Message-ID: <a143d824-689d-16cb-c6a6-8369ddc33c8f@linaro.org>
-Date: Mon, 24 Jul 2023 16:01:20 +0200
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qNwHO-000290-95
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 10:11:20 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id C4DF722A4F;
+ Mon, 24 Jul 2023 14:11:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1690207876; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=b9Qzi3Nq+h5XwfiJZlizXFSZneVRHGj11QoDXTH3UJY=;
+ b=VqgVkMcfAM2LyuDsIgwmcq2wbAd+TKePOIimcp5IQmNFK1TgLMzw5EgQUAF7dgxc6ujhsz
+ 1epXbM+ZiO8OIzimEjCbEzHUwi41Oug7W/vp2L8oTGNcq3zft98bfVi7jkoJPcG7Ke3Zqf
+ w9wmaQGRE60KpTA1g+X/tpxVNscICX0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1690207876;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=b9Qzi3Nq+h5XwfiJZlizXFSZneVRHGj11QoDXTH3UJY=;
+ b=WmgxXEKEJCSz+9zOSo4VzljnSHWV16GpY9fNg6w/eAfJNhww8qxFDYKYtvfVpxSI9nlsVA
+ lTpda7vmAUr24DBA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 56E3013476;
+ Mon, 24 Jul 2023 14:11:16 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id NXvJCISGvmRTVAAAMHmgww
+ (envelope-from <farosas@suse.de>); Mon, 24 Jul 2023 14:11:16 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org
+Cc: Leonardo Bras Soares Passos <lsoaresp@redhat.com>, Juan Quintela
+ <quintela@redhat.com>, Lukas Straub <lukasstraub2@web.de>, Laszlo Ersek
+ <lersek@redhat.com>, peterx@redhat.com
+Subject: Re: [PATCH v2 0/7] migration: Better error handling in return path
+ thread
+In-Reply-To: <20230705163502.331007-1-peterx@redhat.com>
+References: <20230705163502.331007-1-peterx@redhat.com>
+Date: Mon, 24 Jul 2023 11:11:13 -0300
+Message-ID: <87351dz9fi.fsf@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.13.0
-Subject: Re: [PATCH for-8.2 0/4] rtc devices: Avoid putting time_t in 32-bit
- variables
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- Andrew Jeffery <andrew@aj.id.au>, Joel Stanley <joel@jms.id.au>,
- Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Herv=c3=a9_Poussineau?=
- <hpoussin@reactos.org>
-References: <20230720155902.1590362-1-peter.maydell@linaro.org>
- <1d7fc618-fb10-4990-dbda-5fd610655a66@linaro.org>
- <CAFEAcA8MuzfV2cREitZ4uJGQVAQut-8r_M_xd4cpmUdv+HZjVw@mail.gmail.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <CAFEAcA8MuzfV2cREitZ4uJGQVAQut-8r_M_xd4cpmUdv+HZjVw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain
+Received-SPF: pass client-ip=2001:67c:2178:6::1c; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,39 +84,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 21/7/23 11:46, Peter Maydell wrote:
-> On Fri, 21 Jul 2023 at 10:16, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
->>
->> Hi Peter,
->>
->> On 20/7/23 17:58, Peter Maydell wrote:
->>> This patchset was prompted by a couple of Coverity warnings
->>> (CID 1507157, 1517772) which note that in the m48t59 RTC device model
->>> we keep an offset in a time_t variable but then truncate it by
->>> passing it to qemu_get_timedate(), which currently uses an 'int'
->>> argument for its offset parameter.
->>>
->>> We can fix the Coverity complaint by making qemu_get_timedate()
->>> take a time_t; we should also correspondingly make the
->>> qemu_timedate_diff() function return a time_t. However this
->>> will only push the issue out to callers of qemu_timedate_diff()
->>> if they are putting the result in a 32-bit variable or doing
->>> 32-bit arithmetic on it.
->>>
->>> Luckily there aren't that many callers of qemu_timedate_diff()
->>> and most of them already use either time_t or int64_t for the
->>> calculations they do on its return value. The first three
->>> patches fix devices which weren't doing that; patch four then
->>> fixes the rtc.c functions. If I missed any callsites in devices
->>> then hopefully Coverity will point them out.
->>
->> PL031State::tick_offset is uint32_t, and pl031_get_count() also
->> returns that type. Is that expected?
-> 
-> I think those fall into the category of "the device we are
-> modelling does not support 64-bit timestamps" -- the PL031
-> RTC_DR register is only 32 bits.
+Peter Xu <peterx@redhat.com> writes:
 
-Good, thanks for confirming.
+> v2:
+> - Patch "migration: Provide explicit error message for file shutdowns"
+>   - Touched up qapi doc [Fabiano]
+>   - Added Bugzilla link to commit which I didn't even notice that I was
+>     fixing a bug.. but rightfully pointed out by Laszlo.
+>   - Moved it to the 1st patch because it fixes a bug, please consider
+>     review and merge it earlier.
+>
+> This is a small series that reworks error handling of postcopy return path
+> threads.
+>
+> We used to contain a bunch of error_report(), converting them into
+> error_setg() properly and deliver any of those errors to migration generic
+> error reports (via migrate_set_error()).  Then these errors can also be
+> observed in query-migrate after postcopy is paused.
+>
+> Dropped the return-path specific error reporting: mark_source_rp_bad(),
+> because it's a duplication if we can always use migrate_set_error().
+>
+> Please have a look, thanks.
+>
+> Peter Xu (7):
+>   migration: Display error in query-migrate irrelevant of status
+>   migration: Let migrate_set_error() take ownership
+>   migration: Introduce migrate_has_error()
+>   migration: Refactor error handling in source return path
+>   migration: Deliver return path file error to migrate state too
+>   qemufile: Always return a verbose error
+>   migration: Provide explicit error message for file shutdowns
+>
+>  qapi/migration.json      |   5 +-
+>  migration/migration.h    |   8 +-
+>  migration/ram.h          |   5 +-
+>  migration/channel.c      |   1 -
+>  migration/migration.c    | 168 +++++++++++++++++++++++----------------
+>  migration/multifd.c      |  10 +--
+>  migration/postcopy-ram.c |   1 -
+>  migration/qemu-file.c    |  20 ++++-
+>  migration/ram.c          |  42 +++++-----
+>  migration/trace-events   |   2 +-
+>  10 files changed, 149 insertions(+), 113 deletions(-)
 
+Hi Peter,
+
+Were you aiming at solving any specific bug with this series? I'm seeing
+a bug on master (361d5397355) with the
+/x86_64/migration/postcopy/preempt/recovery/plain test around the areas
+that this series touches.
+
+It happens very rarely and I'm still investigating, but in case you have
+any thoughts:
+
+====
+It seems there's a race condition between postcopy resume and the return
+path cleanup.
+
+It is possible for open_return_path_on_source() to setup the new
+QEMUFile *before* the cleanup path at source_return_path_thread() has
+had a chance to run, so we end up calling migration_release_dst_files()
+on the new file and ms->rp_state.from_dst_file gets set to NULL again,
+leading to a SIGSEGV at qemu_file_get_error(rp) due to rp being NULL.
+
+Here's a trace from when it works (both src and dst):
+
+open_return_path_on_source
+open_return_path_on_source_continue
+postcopy_pause_incoming
+postcopy_pause_fast_load
+qemu-system-x86_64: Detected IO failure for postcopy. Migration paused.
+postcopy_pause_fault_thread
+postcopy_pause_return_path   <---
+qemu-system-x86_64: Detected IO failure for postcopy. Migration paused.
+open_return_path_on_source   <--- OK
+postcopy_pause_continued     <---
+postcopy_pause_return_path_continued
+postcopy_pause_incoming_continued
+postcopy_pause_fault_thread_continued
+postcopy_pause_fast_load_continued
+
+versus when it fails:
+
+open_return_path_on_source
+open_return_path_on_source_continue
+postcopy_pause_incoming
+postcopy_pause_fast_load
+qemu-system-x86_64: Detected IO failure for postcopy. Migration paused.
+postcopy_pause_fault_thread
+qemu-system-x86_64: Detected IO failure for postcopy. Migration paused.
+postcopy_pause_incoming_continued
+open_return_path_on_source   <--- NOK
+postcopy_pause_continued
+postcopy_pause_return_path   <---
+postcopy_pause_return_path_continued <---
+postcopy_pause_incoming
+qemu-system-x86_64: Detected IO failure for postcopy. Migration paused.
+postcopy_pause_incoming_continued
 
