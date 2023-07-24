@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B9FA75F36B
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 12:35:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE66775F3B2
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 12:45:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qNssx-0002Qg-7r; Mon, 24 Jul 2023 06:33:51 -0400
+	id 1qNt2j-0004dC-WB; Mon, 24 Jul 2023 06:43:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qNssu-0002Q9-B8
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 06:33:48 -0400
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qNsss-0005Ob-GZ
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 06:33:48 -0400
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-51d95aed33aso5970324a12.3
- for <qemu-devel@nongnu.org>; Mon, 24 Jul 2023 03:33:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690194824; x=1690799624;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=AGwqb9B+J25M780CzEB+Hzhg7XfYrwU/NcI6FIP/Z1Q=;
- b=bt+IZjmFCgYKQyS66d7DtfwFMp5y62G1ZsOAWW3X3itVzRE9Ly4Rp8z03VDB4QCcIq
- pLFqzJ3k7TUcihVPgsd2Or7tRrkm/Uzku6+KGPyDe6y3qQ87br0jlIu1Rk2BCFYzTFIv
- 7WDgrtbrogg6MiQVoWTBeSwWj3IowraxLr4V2ljj/EBBfGsckDPwvkcWiTjtsEzrgn59
- V5u8wOL5efDS9I6/KM/QkmkK4o6Xh5+eZM+KNXZHuSI3/Ndk5Z+Pe20+6A+YIKqWKfRC
- jmlIXsXXKWmutCf93iCrKlt7X4nyMGeHCXLlnjm9yLTt6r6+gG5z1vgdr8gopp5oNLh2
- +ZAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690194824; x=1690799624;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=AGwqb9B+J25M780CzEB+Hzhg7XfYrwU/NcI6FIP/Z1Q=;
- b=Hk8WxBCnWzmSU2NTr5am1B3z2RTWUtDeI/Bv2M9FIkcXFgDE98/OEV0/4SMypjTnEX
- RsefOHzJI6Hn2Mj37GWfrnD7Wym7wZIr8d2myWffe1pskIVvfRQRq8RZUgS6vfTkE0Ti
- g94tkK6N3USjy4Y0mHjwpOYGUmLQYyg/s2+OGA71kxdjaEzW4F6GtF+4yw+ye6pA1n3k
- ACUqKMP/KawHfBM+mrkQgsY3kVXNftUNhdPqs1SxkJqkz2SnPC5MSmiaSL/pZMrtrxJx
- f7IudMaIn7LNopRxhkdR42LUyZQSBfashdIbBE78H26ryX8DG77mbjwvPyrrD2QjNJZr
- LxnA==
-X-Gm-Message-State: ABy/qLawTfVh/zw5RXHs0IAFpiGEZN1Ravh4Wm1b/ylpboFVo7rvTHHK
- QUs26cVoXdH9bqHT8h3e4+Z6aBL9lHvhLMEmfRg8fA==
-X-Google-Smtp-Source: APBJJlF3NogZ0cU1KSQodv1VuBOcV0TVEebVrDh0hN1F/MpgPKTKZ5BN2t/m0rrxV2yoSg3HchSC8Gfn3dAhzFtJ0nQ=
-X-Received: by 2002:a05:6402:31f6:b0:522:3849:48db with SMTP id
- dy22-20020a05640231f600b00522384948dbmr870774edb.3.1690194824651; Mon, 24 Jul
- 2023 03:33:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qNt2g-0004cq-Ha
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 06:43:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qNt2e-000875-Dn
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 06:43:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1690195430;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=/R/okeuwd7l+Yak8QvYcl4NLz6C4dtJUR8j+C3WADGw=;
+ b=EodP7w5LZ42ouKDZkqCZlabPOeTXniwc1Sp0FZaRBKJhZp8PigB1QERfjVmiv9nGiT5Ztq
+ Fj4VR7XdGHrkxfT/ETuZC5HJxAlfC8HffLYpWPBcowPQ9WTBpru6sA+MIrO0pdstQ5rE0+
+ 95zrnH5YOSshe4H5Fh89k8F0lcttc0U=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-130-dYPIlKuNNnOoLvDwuxduJA-1; Mon, 24 Jul 2023 06:43:47 -0400
+X-MC-Unique: dYPIlKuNNnOoLvDwuxduJA-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A7FE2895687;
+ Mon, 24 Jul 2023 10:43:46 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.193.50])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 52DE04087C68;
+ Mon, 24 Jul 2023 10:43:46 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 4A38821E668C; Mon, 24 Jul 2023 12:43:45 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: ~hyman <hyman@git.sr.ht>
+Cc: qemu-devel@nongnu.org,  ~hyman <yong.huang@smartx.com>,  Juan Quintela
+ <quintela@redhat.com>,  Peter Xu <peterx@redhat.com>,  Leonardo Bras
+ <leobras@redhat.com>,  Eric Blake <eblake@redhat.com>,  Thomas Huth
+ <thuth@redhat.com>,  Laurent Vivier <lvivier@redhat.com>,  Paolo Bonzini
+ <pbonzini@redhat.com>
+Subject: Re: [PATCH QEMU v9 2/9] qapi/migration: Introduce
+ x-vcpu-dirty-limit-period parameter
+References: <168987012554.14797.8679831725383645706-2@git.sr.ht>
+Date: Mon, 24 Jul 2023 12:43:45 +0200
+In-Reply-To: <168987012554.14797.8679831725383645706-2@git.sr.ht>
+ (hyman@git.sr.ht's message of "Wed, 07 Jun 2023 21:32:59 +0800")
+Message-ID: <878rb5pp26.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-References: <alpine.DEB.2.22.394.2307211804380.3118466@ubuntu-linux-20-04-desktop>
-In-Reply-To: <alpine.DEB.2.22.394.2307211804380.3118466@ubuntu-linux-20-04-desktop>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 24 Jul 2023 11:33:33 +0100
-Message-ID: <CAFEAcA-FREYpYiX4qbvzkUjnkyCuD_oTkBJ5Yw7heNB7tf4ZsA@mail.gmail.com>
-Subject: Re: [PULL 0/2] xen-virtio-1-tag
-To: Stefano Stabellini <sstabellini@kernel.org>
-Cc: richard.henderson@linaro.org, qemu-devel@nongnu.org, 
- vikram.garhwal@amd.com
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x531.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,50 +86,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, 22 Jul 2023 at 02:10, Stefano Stabellini <sstabellini@kernel.org> wrote:
->
-> The following changes since commit d1181d29370a4318a9f11ea92065bea6bb159f83:
->
->   Merge tag 'pull-nbd-2023-07-19' of https://repo.or.cz/qemu/ericb into staging (2023-07-20 09:54:07 +0100)
->
-> are available in the Git repository at:
->
->   https://gitlab.com/sstabellini/qemu.git xen-virtio-1-tag
->
-> for you to fetch changes up to 6bb48c66946dfbd653f06ad5f3fc957972333b56:
->
->   xen_arm: Initialize RAM and add hi/low memory regions (2023-07-21 18:00:29 -0700)
->
-> ----------------------------------------------------------------
-> Oleksandr Tyshchenko (2):
->       xen_arm: Create virtio-mmio devices during initialization
->       xen_arm: Initialize RAM and add hi/low memory regions
->
->  hw/arm/xen_arm.c | 80 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 80 insertions(+)
+I missed something...
 
-Fails to build, multiple targets:
+~hyman <hyman@git.sr.ht> writes:
 
-https://gitlab.com/qemu-project/qemu/-/jobs/4726472678
-https://gitlab.com/qemu-project/qemu/-/jobs/4726472642
-etc
+> From: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
+>
+> Introduce "x-vcpu-dirty-limit-period" migration experimental
+> parameter, which is in the range of 1 to 1000ms and used to
+> make dirty page rate calculation period configurable.
+>
+> Currently with the "x-vcpu-dirty-limit-period" varies, the
+> total time of live migration changes, test results show the
+> optimal value of "x-vcpu-dirty-limit-period" ranges from
+> 500ms to 1000 ms. "x-vcpu-dirty-limit-period" should be made
+> stable once it proves best value can not be determined with
+> developer's experiments.
+>
+> Signed-off-by: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
+> Reviewed-by: Markus Armbruster <armbru@redhat.com>
+> Reviewed-by: Juan Quintela <quintela@redhat.com>
 
-../hw/arm/xen_arm.c: In function 'xen_set_irq':
-../hw/arm/xen_arm.c:78:5: error: implicit declaration of function
-'xendevicemodel_set_irq_level'; did you mean
-'xendevicemodel_set_isa_irq_level'?
-[-Werror=implicit-function-declaration]
+[...]
 
-../hw/arm/xen_arm.c:78:5: error: nested extern declaration of
-'xendevicemodel_set_irq_level' [-Werror=nested-externs]
-../hw/arm/xen_arm.c: In function 'xen_create_virtio_mmio_devices':
-../hw/arm/xen_arm.c:74:5: error: 'GUEST_VIRTIO_MMIO_SPI_LAST'
-undeclared (first use in this function)
-74 | (GUEST_VIRTIO_MMIO_SPI_LAST - GUEST_VIRTIO_MMIO_SPI_FIRST)
-| ^~~~~~~~~~~~~~~~~~~~~~~~~~
+> diff --git a/qapi/migration.json b/qapi/migration.json
+> index 47dfef0278..363055d252 100644
+> --- a/qapi/migration.json
+> +++ b/qapi/migration.json
+> @@ -789,9 +789,14 @@
+>  #     Nodes are mapped to their block device name if there is one, and
+>  #     to their node name otherwise.  (Since 5.2)
+>  #
+> +# @x-vcpu-dirty-limit-period: Periodic time (in milliseconds) of dirty
+> +#     limit during live migration. Should be in the range 1 to 1000ms,
+> +#     defaults to 1000ms.  (Since 8.1)
 
-and others.
+You need to adjust all the "Since" tags to 8.2.=20=20
 
-thanks
--- PMM
+[...]
+
 
