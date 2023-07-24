@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73E7A75FCB7
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 18:56:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44B2675FCB5
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 18:56:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qNypA-0001Lc-0l; Mon, 24 Jul 2023 12:54:20 -0400
+	id 1qNyp6-0001J0-Vk; Mon, 24 Jul 2023 12:54:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qNyp2-0001HG-6G
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qNyp2-0001HH-6G
  for qemu-devel@nongnu.org; Mon, 24 Jul 2023 12:54:14 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qNyoy-0006vw-TU
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 12:54:10 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qNyoz-0006w3-U5
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 12:54:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690217648;
+ s=mimecast20190719; t=1690217649;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=V1FPmqMhfqcrnIQOop+duFFFielJgMHsobOJxQfZPCY=;
- b=C4uHGok9dfTdNXIwUzCDHvblPYRrigWtsat6245o2b1twUV5n/Hm0uIhj6Nl5GRX8HVgkU
- 2x4OVd2QR9Fjnb6//5RivnwohDKWBZetvvvilYTF2iTAKdjKBbVFCbh/YT8ATK4QK1gSO3
- SWyMWknuAFTzxa4nwEDApE187Lb2Mmw=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-688-l-D2fkk8N4G7TYTQOdIc_A-1; Mon, 24 Jul 2023 12:54:05 -0400
-X-MC-Unique: l-D2fkk8N4G7TYTQOdIc_A-1
+ bh=zvEkjxFawxSMsxHLnuRRdzlHwbPPlU/4PabyCVxDysY=;
+ b=WoFjejIR8ov9fp1/iqlTL54VUlgrf3GrzGjyxYXwIzhaSTOxXKcFDdv2mV3vuOv8jbAXw+
+ Ver1M/l6lCzoENDFwga75z1sRMihKRWyKAyz70sE59VVkWNeoS8T8XGQVoi3XAIQCBSfFz
+ dcGwCwwaASKzKzezT5rW4o6yIQiogHE=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-503-c-wL0NRTOLW1uggDTJto_Q-1; Mon, 24 Jul 2023 12:54:07 -0400
+X-MC-Unique: c-wL0NRTOLW1uggDTJto_Q-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 851161C0E0C4;
- Mon, 24 Jul 2023 16:54:05 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9881985A58A;
+ Mon, 24 Jul 2023 16:54:06 +0000 (UTC)
 Received: from thuth.com (unknown [10.39.192.60])
- by smtp.corp.redhat.com (Postfix) with ESMTP id C32F2492CAC;
- Mon, 24 Jul 2023 16:54:04 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id CD3AC492CAC;
+ Mon, 24 Jul 2023 16:54:05 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PULL 10/16] tests/tcg/s390x: Test ICM
-Date: Mon, 24 Jul 2023 18:53:43 +0200
-Message-Id: <20230724165349.55714-11-thuth@redhat.com>
+Subject: [PULL 11/16] tests/tcg/s390x: Test MC
+Date: Mon, 24 Jul 2023 18:53:44 +0200
+Message-Id: <20230724165349.55714-12-thuth@redhat.com>
 In-Reply-To: <20230724165349.55714-1-thuth@redhat.com>
 References: <20230724165349.55714-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -83,64 +83,88 @@ Add a small test to prevent regressions.
 
 Tested-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Message-Id: <20230724082032.66864-12-iii@linux.ibm.com>
+Message-Id: <20230724082032.66864-13-iii@linux.ibm.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
  tests/tcg/s390x/Makefile.softmmu-target |  1 +
- tests/tcg/s390x/icm.S                   | 32 +++++++++++++++++++++++++
- 2 files changed, 33 insertions(+)
- create mode 100644 tests/tcg/s390x/icm.S
+ tests/tcg/s390x/mc.S                    | 56 +++++++++++++++++++++++++
+ 2 files changed, 57 insertions(+)
+ create mode 100644 tests/tcg/s390x/mc.S
 
 diff --git a/tests/tcg/s390x/Makefile.softmmu-target b/tests/tcg/s390x/Makefile.softmmu-target
-index 062d8e368a..58684d7da7 100644
+index 58684d7da7..145e0bfde1 100644
 --- a/tests/tcg/s390x/Makefile.softmmu-target
 +++ b/tests/tcg/s390x/Makefile.softmmu-target
-@@ -19,6 +19,7 @@ ASM_TESTS =                                                                    \
-     cksm                                                                       \
-     clm                                                                        \
-     exrl-ssm-early                                                             \
-+    icm                                                                        \
-     sam                                                                        \
+@@ -24,6 +24,7 @@ ASM_TESTS =                                                                    \
      lpsw                                                                       \
      lpswe-early                                                                \
-diff --git a/tests/tcg/s390x/icm.S b/tests/tcg/s390x/icm.S
+     lra                                                                        \
++    mc                                                                         \
+     ssm-early                                                                  \
+     stosm-early                                                                \
+     unaligned-lowcore
+diff --git a/tests/tcg/s390x/mc.S b/tests/tcg/s390x/mc.S
 new file mode 100644
-index 0000000000..d24d1f52fb
+index 0000000000..e7466bb4b5
 --- /dev/null
-+++ b/tests/tcg/s390x/icm.S
-@@ -0,0 +1,32 @@
++++ b/tests/tcg/s390x/mc.S
+@@ -0,0 +1,56 @@
++    .org 0x8d
++ilc:
 +    .org 0x8e
 +program_interruption_code:
-+    .org 0x1d0                         /* program new PSW */
-+    .quad 0,pgm
-+    .org 0x200                         /* lowcore padding */
++    .org 0x94
++monitor_class:
++    .org 0xb0
++monitor_code:
++    .org 0x150
++program_old_psw:
++    .org 0x1d0                              /* program new PSW */
++    .quad 0x180000000,pgm                   /* 64-bit mode */
++    .org 0x200                              /* lowcore padding */
 +    .globl _start
 +_start:
-+    lgrl %r0,op1
-+    icm %r0,10,op2
-+    cg %r0,exp
-+    jne failure
-+    lgrl %r1,bad_addr
-+    icm %r0,0,0(%r1)
-+failure:
-+    lpswe failure_psw
++    stctg %c8,%c8,c8                        /* enable only monitor class 1 */
++    mvhhi c8+6,0x4000
++    lctlg %c8,%c8,c8
++mc_nop:
++    mc 123,0
++mc_monitor_event:
++    mc 321,1
++    j failure
++mc_specification:
++    mc 333,16
++    j failure
 +pgm:
-+    chhsi program_interruption_code,5  /* addressing exception? */
++    lgrl %r0,program_old_psw+8              /* ilc adjustment */
++    llgc %r1,ilc
++    sgr %r0,%r1
++    larl %r1,mc_monitor_event               /* dispatch based on old PSW */
++    cgrje %r0,%r1,pgm_monitor_event
++    larl %r1,mc_specification
++    cgrje %r0,%r1,pgm_specification
++    j failure
++pgm_monitor_event:
++    chhsi program_interruption_code,0x40    /* monitor event? */
++    jne failure
++    chhsi monitor_class,1                   /* class from mc_monitor_event? */
++    jne failure
++    cghsi monitor_code,321                  /* code from mc_monitor_event? */
++    jne failure
++    j mc_specification                      /* next test */
++pgm_specification:
++    chhsi program_interruption_code,6       /* specification exception? */
 +    jne failure
 +    lpswe success_psw
++failure:
++    lpswe failure_psw
 +    .align 8
-+op1:
-+    .quad 0x1234567887654321
-+op2:
-+    .quad 0x0011223344556677
-+exp:
-+    .quad 0x1234567800651121
-+bad_addr:
-+    .quad 0xffffffff00000000
++c8:
++    .quad 0
 +success_psw:
-+    .quad 0x2000000000000,0xfff        /* see is_special_wait_psw() */
++    .quad 0x2000000000000,0xfff             /* see is_special_wait_psw() */
 +failure_psw:
-+    .quad 0x2000000000000,0            /* disabled wait */
++    .quad 0x2000000000000,0                 /* disabled wait */
 -- 
 2.39.3
 
