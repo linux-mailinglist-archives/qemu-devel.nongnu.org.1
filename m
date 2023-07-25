@@ -2,37 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E67B761C58
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 16:57:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 191A8761C50
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 16:56:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOJRu-00026J-Rq; Tue, 25 Jul 2023 10:55:43 -0400
+	id 1qOJRu-00026t-Sb; Tue, 25 Jul 2023 10:55:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qOJRr-00023t-4B; Tue, 25 Jul 2023 10:55:39 -0400
+ id 1qOJRr-00023u-4P; Tue, 25 Jul 2023 10:55:39 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qOJRp-00008J-5j; Tue, 25 Jul 2023 10:55:38 -0400
+ id 1qOJRp-00008K-5j; Tue, 25 Jul 2023 10:55:38 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 82EB5161BE;
+ by isrv.corpit.ru (Postfix) with ESMTP id C8B49161BF;
  Tue, 25 Jul 2023 17:55:36 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 2537619539;
+ by tsrv.corpit.ru (Postfix) with SMTP id 483611953A;
  Tue, 25 Jul 2023 17:55:34 +0300 (MSK)
-Received: (nullmailer pid 3375796 invoked by uid 1000);
+Received: (nullmailer pid 3375800 invoked by uid 1000);
  Tue, 25 Jul 2023 14:55:34 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-trivial@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 0/8] trivial-patches 25-07-2023
-Date: Tue, 25 Jul 2023 17:55:24 +0300
-Message-Id: <cover.1690294956.git.mjt@tls.msk.ru>
+Cc: qemu-trivial@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>,
+ Fabiano Rosas <farosas@suse.de>
+Subject: [PULL 1/8] migration: spelling fixes
+Date: Tue, 25 Jul 2023 17:55:25 +0300
+Message-Id: <d8b71d96b336054ac3cd0c9351b0cb75c47281ad.1690294956.git.mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <cover.1690294956.git.mjt@tls.msk.ru>
+References: <cover.1690294956.git.mjt@tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -57,119 +59,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 3ee44ec72753ec0ff05ad1569dfa609203d722b2:
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
+---
+ migration/migration-stats.c | 2 +-
+ migration/migration.h       | 4 ++--
+ migration/multifd-zlib.c    | 2 +-
+ migration/multifd-zstd.c    | 2 +-
+ migration/multifd.c         | 2 +-
+ migration/savevm.c          | 2 +-
+ migration/trace-events      | 2 +-
+ 7 files changed, 8 insertions(+), 8 deletions(-)
 
-  Merge tag 'pull-request-2023-07-24' of https://gitlab.com/thuth/qemu into staging (2023-07-24 18:06:36 +0100)
-
-are available in the Git repository at:
-
-  https://gitlab.com/mjt0k/qemu.git/ tags/pull-trivial-patches
-
-for you to fetch changes up to ff62c210165cf61b15f18c8a9835a5a5ce6c5a53:
-
-  qapi: Correct "eg." to "e.g." in documentation (2023-07-25 17:20:32 +0300)
-
-----------------------------------------------------------------
-trivial-patches 25-07-2023
-----------------------------------------------------------------
-
-Ani Sinha (1):
-      hw/pci: add comment to explain checking for available function 0 in pci hotplug
-
-Bastian Koppelmann (1):
-      target/tricore: Rename tricore_feature
-
-Markus Armbruster (1):
-      qapi: Correct "eg." to "e.g." in documentation
-
-Michael Tokarev (5):
-      migration: spelling fixes
-      s390x: spelling fixes
-      arm: spelling fixes
-      other architectures: spelling fixes
-      hw/9pfs: spelling fixes
-
- host/include/aarch64/host/cpuinfo.h                |  2 +-
- host/include/generic/host/cpuinfo.h                |  2 +-
- hw/9pfs/9p-local.c                                 |  8 ++++----
- hw/9pfs/9p-proxy.c                                 |  2 +-
- hw/9pfs/9p-synth.c                                 |  2 +-
- hw/9pfs/9p-util.h                                  |  2 +-
- hw/9pfs/9p.c                                       |  4 ++--
- hw/9pfs/9p.h                                       |  2 +-
- hw/arm/aspeed.c                                    |  2 +-
- hw/arm/mps2-tz.c                                   |  2 +-
- hw/intc/arm_gic.c                                  |  4 ++--
- hw/intc/arm_gicv3_redist.c                         |  2 +-
- hw/intc/armv7m_nvic.c                              |  2 +-
- hw/intc/s390_flic_kvm.c                            |  2 +-
- hw/m68k/next-cube.c                                |  2 +-
- hw/m68k/next-kbd.c                                 |  2 +-
- hw/m68k/virt.c                                     |  2 +-
- hw/microblaze/petalogix_ml605_mmu.c                |  2 +-
- hw/misc/allwinner-r40-dramc.c                      |  2 +-
- hw/misc/exynos4210_rng.c                           |  2 +-
- hw/pci/pci.c                                       | 11 ++++++++---
- hw/sparc/sun4m_iommu.c                             |  8 ++++----
- include/hw/arm/fsl-imx7.h                          |  2 +-
- include/hw/intc/armv7m_nvic.h                      |  2 +-
- include/hw/s390x/s390-pci-bus.h                    |  2 +-
- include/hw/s390x/sclp.h                            |  2 +-
- migration/migration-stats.c                        |  2 +-
- migration/migration.h                              |  4 ++--
- migration/multifd-zlib.c                           |  2 +-
- migration/multifd-zstd.c                           |  2 +-
- migration/multifd.c                                |  2 +-
- migration/savevm.c                                 |  2 +-
- migration/trace-events                             |  2 +-
- qapi/char.json                                     |  2 +-
- qapi/misc.json                                     |  2 +-
- target/alpha/cpu.h                                 |  4 ++--
- target/alpha/translate.c                           |  2 +-
- target/arm/cpu.c                                   |  2 +-
- target/arm/cpu.h                                   |  2 +-
- target/arm/cpu64.c                                 |  2 +-
- target/arm/helper.c                                |  4 ++--
- target/arm/tcg/m_helper.c                          |  2 +-
- target/arm/tcg/translate-a64.c                     |  4 ++--
- target/arm/tcg/translate-mve.c                     |  4 ++--
- target/arm/tcg/translate-sve.c                     |  2 +-
- target/arm/tcg/translate-vfp.c                     |  2 +-
- target/arm/tcg/vec_helper.c                        |  2 +-
- target/cris/helper.c                               |  6 +++---
- target/cris/op_helper.c                            |  2 +-
- target/cris/translate.c                            | 16 ++++++++--------
- target/hppa/cpu.h                                  |  4 ++--
- target/hppa/int_helper.c                           |  2 +-
- target/hppa/translate.c                            |  2 +-
- target/loongarch/cpu-csr.h                         |  2 +-
- target/m68k/helper.c                               |  4 ++--
- target/microblaze/cpu.h                            |  2 +-
- target/openrisc/cpu.h                              |  2 +-
- target/openrisc/translate.c                        |  4 ++--
- target/rx/translate.c                              |  4 ++--
- target/s390x/cpu_features.c                        |  2 +-
- target/s390x/cpu_models.c                          |  2 +-
- target/s390x/tcg/fpu_helper.c                      |  2 +-
- target/s390x/tcg/insn-data.h.inc                   |  2 +-
- target/s390x/tcg/translate.c                       |  2 +-
- target/sparc/asi.h                                 | 14 +++++++-------
- target/tricore/cpu.c                               |  8 ++++----
- target/tricore/cpu.h                               |  2 +-
- target/tricore/csfr.h.inc                          |  2 +-
- target/tricore/helper.c                            |  6 +++---
- target/tricore/op_helper.c                         |  4 ++--
- target/tricore/translate.c                         |  8 ++++----
- tests/tcg/Makefile.target                          |  4 ++--
- tests/tcg/aarch64/gdbstub/test-sve.py              |  2 +-
- tests/tcg/aarch64/sme-outprod1.c                   |  2 +-
- tests/tcg/aarch64/system/boot.S                    |  6 +++---
- tests/tcg/aarch64/system/semiheap.c                |  2 +-
- tests/tcg/multiarch/sha512.c                       |  2 +-
- tests/tcg/multiarch/system/Makefile.softmmu-target |  2 +-
- tests/tcg/s390x/mvc.c                              |  2 +-
- tests/tcg/tricore/c/crt0-tc2x.S                    |  4 ++--
- tests/tcg/x86_64/system/boot.S                     |  4 ++--
- 81 files changed, 134 insertions(+), 129 deletions(-)
+diff --git a/migration/migration-stats.c b/migration/migration-stats.c
+index f98c8260be..095d6d75bb 100644
+--- a/migration/migration-stats.c
++++ b/migration/migration-stats.c
+@@ -48,7 +48,7 @@ uint64_t migration_rate_get(void)
+ void migration_rate_set(uint64_t limit)
+ {
+     /*
+-     * 'limit' is per second.  But we check it each BUFER_DELAY miliseconds.
++     * 'limit' is per second.  But we check it each BUFFER_DELAY milliseconds.
+      */
+     stat64_set(&mig_stats.rate_limit_max, limit / XFER_LIMIT_RATIO);
+ }
+diff --git a/migration/migration.h b/migration/migration.h
+index b7c8b67542..6eea18db36 100644
+--- a/migration/migration.h
++++ b/migration/migration.h
+@@ -134,7 +134,7 @@ struct MigrationIncomingState {
+     /*
+      * Always set by the main vm load thread only, but can be read by the
+      * postcopy preempt thread.  "volatile" makes sure all reads will be
+-     * uptodate across cores.
++     * up-to-date across cores.
+      */
+     volatile PreemptThreadStatus preempt_thread_status;
+     /*
+@@ -409,7 +409,7 @@ struct MigrationState {
+      *   channel itself.
+      *
+      * - postcopy preempt channel will be created at the switching phase
+-     *   from precopy -> postcopy (to avoid race condtion of misordered
++     *   from precopy -> postcopy (to avoid race condition of misordered
+      *   creation of channels).
+      *
+      * NOTE: See message-id <ZBoShWArKDPpX/D7@work-vm> on qemu-devel
+diff --git a/migration/multifd-zlib.c b/migration/multifd-zlib.c
+index 81701250ad..37ce48621e 100644
+--- a/migration/multifd-zlib.c
++++ b/migration/multifd-zlib.c
+@@ -57,7 +57,7 @@ static int zlib_send_setup(MultiFDSendParams *p, Error **errp)
+         err_msg = "deflate init failed";
+         goto err_free_z;
+     }
+-    /* This is the maxium size of the compressed buffer */
++    /* This is the maximum size of the compressed buffer */
+     z->zbuff_len = compressBound(MULTIFD_PACKET_SIZE);
+     z->zbuff = g_try_malloc(z->zbuff_len);
+     if (!z->zbuff) {
+diff --git a/migration/multifd-zstd.c b/migration/multifd-zstd.c
+index d1d29e76cc..b471daadcd 100644
+--- a/migration/multifd-zstd.c
++++ b/migration/multifd-zstd.c
+@@ -68,7 +68,7 @@ static int zstd_send_setup(MultiFDSendParams *p, Error **errp)
+                    p->id, ZSTD_getErrorName(res));
+         return -1;
+     }
+-    /* This is the maxium size of the compressed buffer */
++    /* This is the maximum size of the compressed buffer */
+     z->zbuff_len = ZSTD_compressBound(MULTIFD_PACKET_SIZE);
+     z->zbuff = g_try_malloc(z->zbuff_len);
+     if (!z->zbuff) {
+diff --git a/migration/multifd.c b/migration/multifd.c
+index 3387d8277f..0e3ae87449 100644
+--- a/migration/multifd.c
++++ b/migration/multifd.c
+@@ -878,7 +878,7 @@ static void multifd_new_send_channel_cleanup(MultiFDSendParams *p,
+      qemu_sem_post(&p->sem_sync);
+      /*
+       * Although multifd_send_thread is not created, but main migration
+-      * thread neet to judge whether it is running, so we need to mark
++      * thread need to judge whether it is running, so we need to mark
+       * its status.
+       */
+      p->quit = true;
+diff --git a/migration/savevm.c b/migration/savevm.c
+index 95c2abf47c..51e40e3a0b 100644
+--- a/migration/savevm.c
++++ b/migration/savevm.c
+@@ -117,7 +117,7 @@ static struct mig_cmd_args {
+  * The format of arguments is depending on postcopy mode:
+  * - postcopy RAM only
+  *   uint64_t host page size
+- *   uint64_t taget page size
++ *   uint64_t target page size
+  *
+  * - postcopy RAM and postcopy dirty bitmaps
+  *   format is the same as for postcopy RAM only
+diff --git a/migration/trace-events b/migration/trace-events
+index 5259c1044b..4e43fe20fc 100644
+--- a/migration/trace-events
++++ b/migration/trace-events
+@@ -184,7 +184,7 @@ source_return_path_thread_shut(uint32_t val) "0x%x"
+ source_return_path_thread_resume_ack(uint32_t v) "%"PRIu32
+ source_return_path_thread_switchover_acked(void) ""
+ migration_thread_low_pending(uint64_t pending) "%" PRIu64
+-migrate_transferred(uint64_t tranferred, uint64_t time_spent, uint64_t bandwidth, uint64_t size) "transferred %" PRIu64 " time_spent %" PRIu64 " bandwidth %" PRIu64 " max_size %" PRId64
++migrate_transferred(uint64_t transferred, uint64_t time_spent, uint64_t bandwidth, uint64_t size) "transferred %" PRIu64 " time_spent %" PRIu64 " bandwidth %" PRIu64 " max_size %" PRId64
+ process_incoming_migration_co_end(int ret, int ps) "ret=%d postcopy-state=%d"
+ process_incoming_migration_co_postcopy_end_main(void) ""
+ postcopy_preempt_enabled(bool value) "%d"
+-- 
+2.39.2
 
 
