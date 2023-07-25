@@ -2,27 +2,27 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31958761B0F
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 16:11:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FB79761B10
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 16:11:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOIki-00043g-SO; Tue, 25 Jul 2023 10:11:05 -0400
+	id 1qOIkj-00046h-DU; Tue, 25 Jul 2023 10:11:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qOIkB-0003eP-QU; Tue, 25 Jul 2023 10:10:32 -0400
+ id 1qOIkD-0003gm-Rs; Tue, 25 Jul 2023 10:10:36 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qOIk8-0007aB-EX; Tue, 25 Jul 2023 10:10:31 -0400
+ id 1qOIkC-0007c1-0f; Tue, 25 Jul 2023 10:10:33 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C019E1616B;
+ by isrv.corpit.ru (Postfix) with ESMTP id EB3E71616C;
  Tue, 25 Jul 2023 17:10:14 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 7A00419503;
+ by tsrv.corpit.ru (Postfix) with SMTP id 99B1C19504;
  Tue, 25 Jul 2023 17:10:12 +0300 (MSK)
-Received: (nullmailer pid 3372596 invoked by uid 1000);
+Received: (nullmailer pid 3372599 invoked by uid 1000);
  Tue, 25 Jul 2023 14:10:11 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
@@ -30,9 +30,10 @@ Cc: qemu-stable@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>,
  David Hildenbrand <david@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.5 09/14] target/s390x: Fix ICM with M3=0
-Date: Tue, 25 Jul 2023 17:10:03 +0300
-Message-Id: <20230725141009.3372529-9-mjt@tls.msk.ru>
+Subject: [Stable-7.2.5 10/14] target/s390x: Make MC raise specification
+ exception when class >= 16
+Date: Tue, 25 Jul 2023 17:10:04 +0300
+Message-Id: <20230725141009.3372529-10-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.5-20230725170615@cover.tls.msk.ru>
 References: <qemu-stable-7.2.5-20230725170615@cover.tls.msk.ru>
@@ -63,36 +64,49 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-When the mask is zero, access exceptions should still be recognized for
-1 byte at the second-operand address. CC should be set to 0.
+MC requires bit positions 8-11 (upper 4 bits of class) to be zeros,
+otherwise it must raise a specification exception.
 
 Cc: qemu-stable@nongnu.org
-Fixes: e023e832d0ac ("s390x: translate engine for s390x CPU")
+Fixes: 20d143e2cab8 ("s390x/tcg: Implement MONITOR CALL")
 Reviewed-by: David Hildenbrand <david@redhat.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Message-Id: <20230724082032.66864-5-iii@linux.ibm.com>
+Message-Id: <20230724082032.66864-6-iii@linux.ibm.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-(cherry picked from commit a2025557ed4d8d5e6a4d0dd681717c390f51f5be)
+(cherry picked from commit 9c028c057adce49304c6e4a51f6b426bd4f8f6b8)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+(Mjt: context edit in target/s390x/tcg/translate.c)
 
+diff --git a/target/s390x/tcg/excp_helper.c b/target/s390x/tcg/excp_helper.c
+index fe02d82201..7094020dcd 100644
+--- a/target/s390x/tcg/excp_helper.c
++++ b/target/s390x/tcg/excp_helper.c
+@@ -638,7 +638,7 @@ void monitor_event(CPUS390XState *env,
+ void HELPER(monitor_call)(CPUS390XState *env, uint64_t monitor_code,
+                           uint32_t monitor_class)
+ {
+-    g_assert(monitor_class <= 0xff);
++    g_assert(monitor_class <= 0xf);
+ 
+     if (env->cregs[8] & (0x8000 >> monitor_class)) {
+         monitor_event(env, monitor_code, monitor_class, GETPC());
 diff --git a/target/s390x/tcg/translate.c b/target/s390x/tcg/translate.c
-index ba8b90f538..0c6e0a1bd0 100644
+index 0c6e0a1bd0..ff64d6c28f 100644
 --- a/target/s390x/tcg/translate.c
 +++ b/target/s390x/tcg/translate.c
-@@ -2641,6 +2641,12 @@ static DisasJumpType op_icm(DisasContext *s, DisasOps *o)
-         ccm = ((1ull << len) - 1) << pos;
-         break;
+@@ -3350,9 +3350,9 @@ static DisasJumpType op_mc(DisasContext *s, DisasOps *o)
+ #if !defined(CONFIG_USER_ONLY)
+     TCGv_i32 i2;
+ #endif
+-    const uint16_t monitor_class = get_field(s, i2);
++    const uint8_t monitor_class = get_field(s, i2);
  
-+    case 0:
-+        /* Recognize access exceptions for the first byte.  */
-+        tcg_gen_qemu_ld_i64(tmp, o->in2, get_mem_index(s), MO_UB);
-+        gen_op_movi_cc(s, 0);
-+        return DISAS_NEXT;
-+
-     default:
-         /* This is going to be a sequence of loads and inserts.  */
-         pos = base + 32 - 8;
+-    if (monitor_class & 0xff00) {
++    if (monitor_class & 0xf0) {
+         gen_program_exception(s, PGM_SPECIFICATION);
+         return DISAS_NORETURN;
+     }
 -- 
 2.39.2
 
