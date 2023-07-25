@@ -2,72 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FA92761E6E
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 18:25:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80859761EAC
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 18:37:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOKqg-0005Mj-In; Tue, 25 Jul 2023 12:25:22 -0400
+	id 1qOL0v-0001Pj-SG; Tue, 25 Jul 2023 12:35:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qOKqc-0005KX-NH
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 12:25:19 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qOKqS-0004Cg-Uu
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 12:25:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690302305;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=xHhWBlakPAYmAyyjRvvdaQeVpdt73QVTG1xnr9gXccw=;
- b=GzeVERzivU9oZ7o6ZsV9VFjc6YbmpUMlsNEMU01qJ7JtxOh6wyyIb6g90zARESi6UY06UW
- nmal3E+Pl6GQaloxLjs0qWdLgcFYy6TUARg0EpDoUPx3xefFH1Ir3uk0R3jjJXoTwwAZrO
- K4PIvX/tg7j9vLN9GXUp5y2ByIg61Vc=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-145-G--NsH9sOeqXjrGradYSBg-1; Tue, 25 Jul 2023 12:25:02 -0400
-X-MC-Unique: G--NsH9sOeqXjrGradYSBg-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 835661C09A49;
- Tue, 25 Jul 2023 16:25:01 +0000 (UTC)
-Received: from localhost.localdomain.com (unknown [10.42.28.133])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 807922166B28;
- Tue, 25 Jul 2023 16:25:00 +0000 (UTC)
-From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: "Canokeys.org" <contact@canokeys.org>, Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- "Hongren (Zenithal) Zheng" <i@zenithal.me>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- YuanYang Meng <mkfssion@mkfssion.com>
-Subject: [PULL 2/2] hw/usb/canokey: change license to GPLv2+
-Date: Tue, 25 Jul 2023 17:24:57 +0100
-Message-ID: <20230725162457.156429-3-berrange@redhat.com>
-In-Reply-To: <20230725162457.156429-1-berrange@redhat.com>
-References: <20230725162457.156429-1-berrange@redhat.com>
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qOL0o-0001Ou-Rh
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 12:35:51 -0400
+Received: from mail-ot1-x32e.google.com ([2607:f8b0:4864:20::32e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qOL0j-00066a-Rj
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 12:35:50 -0400
+Received: by mail-ot1-x32e.google.com with SMTP id
+ 46e09a7af769-6bc481fe23eso625001a34.0
+ for <qemu-devel@nongnu.org>; Tue, 25 Jul 2023 09:35:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1690302928; x=1690907728;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=j1zn/9mZBEEPMZ3SvwwpvL0Ph7iRqIpCjYP1QEBphQc=;
+ b=e1twazjp0/qMRNnTvnB9YM13KEt7bqPJlbvxQjiAFAWo8WtYTAP3qF+BRKh7TD7iDk
+ WKi802bE4cymQYCrxRB/j2qBqgHPbTna7eAIV8rfdx5Jpc6EBx9zl+zW/Ff1jqGmCSlX
+ N/Pyfu8eIqER6jQqHklAvXCGtLY8gdC9ChUv5XGswA9jeLZWDAze4K0NE6u+4aaKEUA+
+ vlMoVKirBJ6SU1x6mpvkN6olqUmVCLK8p8Z5ql3BEsLz03Iwe4wg9rlIVBtNMfzgB7Cz
+ em3f/GRv5gosLnV3I8IBjQFqudfVQSqeRSkhb9Z1bhRYXEGmt3jaWmwRDq1YXYGWFUrl
+ HcTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1690302928; x=1690907728;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=j1zn/9mZBEEPMZ3SvwwpvL0Ph7iRqIpCjYP1QEBphQc=;
+ b=gzDhYikPG/tOwO2+Zx2c8DreCMnqk6QKlF2k2rOJRszGZj8CRoB2q48WDg+fJe8NOy
+ xQUsO2A/yDYBbILncaV2MJ/MCyKhS/EW4p4nBvaWaY7AXVtS+x+yjaft7Si3bnGDOoOO
+ EpT9bb0nHRKjC6qAp3k1Dw2v46ZM6Ce4ysXjJsCF1zsW/wWwJyjkvcSIAWzqFeFeOLCq
+ sFBTlwXAYT1FzxAzrgPwHyS3pfSW4stCgc+B0SJcKsYj3y1s45LYxwFXnKg9WyGhZFeT
+ vbce52+A1CWWncv4yUqit63ww3vt4Z3v6lfwVaXh8Ct6F5YCu/qTeSvfBSYGqgVyM/sL
+ WwVA==
+X-Gm-Message-State: ABy/qLYWU7ldHempwnlsvEnEZTove4TSwIZCQxuJpHtH/5C/531PGqCC
+ a3HUPeLtUYucM+KEh3kJ6KnfeQ==
+X-Google-Smtp-Source: APBJJlF0yUUj57hWH9KFX50Gqin4qAY62eeDl7pzUszz6j9MJzFDJP5kc4Jnj86STldIIshcesvCzg==
+X-Received: by 2002:a9d:66c1:0:b0:6b9:8feb:7f1e with SMTP id
+ t1-20020a9d66c1000000b006b98feb7f1emr11464058otm.35.1690302927790; 
+ Tue, 25 Jul 2023 09:35:27 -0700 (PDT)
+Received: from [192.168.68.108] (201-69-66-36.dial-up.telesp.net.br.
+ [201.69.66.36]) by smtp.gmail.com with ESMTPSA id
+ k25-20020a0568301bf900b006b8a0c7e14asm5029381otb.55.2023.07.25.09.35.24
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 25 Jul 2023 09:35:27 -0700 (PDT)
+Message-ID: <d06e1004-adac-8c24-167c-c87978340baa@ventanamicro.com>
+Date: Tue, 25 Jul 2023 13:35:22 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v2] kvm: Remove KVM_CREATE_IRQCHIP support assumption
+Content-Language: en-US
+To: Andrew Jones <ajones@ventanamicro.com>, qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com, mtosatti@redhat.com, peter.maydell@linaro.org,
+ pasic@linux.ibm.com, borntraeger@linux.ibm.com, thuth@redhat.com,
+ kvm@vger.kernel.org, qemu-arm@nongnu.org, qemu-s390x@nongnu.org
+References: <20230725122601.424738-2-ajones@ventanamicro.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20230725122601.424738-2-ajones@ventanamicro.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32e;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-ot1-x32e.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,51 +96,155 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "Hongren (Zenithal) Zheng" <i@zenithal.me>
 
-Apache license is considered by some to be not compatible
-with GPLv2+. Since QEMU as combined work is GPLv2-only,
-these two files should be made compatible.
 
-Reported-by: "Daniel P. Berrangé" <berrange@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/ZEpKXncC%2Fe6FKRe9@redhat.com/
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Acked-By: canokeys.org (http://canokeys.org) <contact@canokeys.org>
-Acked-by: YuanYang Meng <mkfssion@mkfssion.com>
-Signed-off-by: Hongren (Zenithal) Zheng <i@zenithal.me>
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
----
- hw/usb/canokey.c | 2 +-
- hw/usb/canokey.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+On 7/25/23 09:26, Andrew Jones wrote:
+> Since Linux commit 00f918f61c56 ("RISC-V: KVM: Skeletal in-kernel AIA
+> irqchip support") checking KVM_CAP_IRQCHIP returns non-zero when the
+> RISC-V platform has AIA. The cap indicates KVM supports at least one
+> of the following ioctls:
+> 
+>    KVM_CREATE_IRQCHIP
+>    KVM_IRQ_LINE
+>    KVM_GET_IRQCHIP
+>    KVM_SET_IRQCHIP
+>    KVM_GET_LAPIC
+>    KVM_SET_LAPIC
+> 
+> but the cap doesn't imply that KVM must support any of those ioctls
+> in particular. However, QEMU was assuming the KVM_CREATE_IRQCHIP
+> ioctl was supported. Stop making that assumption by introducing a
+> KVM parameter that each architecture which supports KVM_CREATE_IRQCHIP
+> sets. Adding parameters isn't awesome, but given how the
+> KVM_CAP_IRQCHIP isn't very helpful on its own, we don't have a lot of
+> options.
+> 
+> Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
+> ---
 
-diff --git a/hw/usb/canokey.c b/hw/usb/canokey.c
-index bbc5da07b5..b306eeb20e 100644
---- a/hw/usb/canokey.c
-+++ b/hw/usb/canokey.c
-@@ -4,7 +4,7 @@
-  * Copyright (c) 2021-2022 Canokeys.org <contact@canokeys.org>
-  * Written by Hongren (Zenithal) Zheng <i@zenithal.me>
-  *
-- * This code is licensed under the Apache-2.0.
-+ * This code is licensed under the GPL v2 or later.
-  */
- 
- #include "qemu/osdep.h"
-diff --git a/hw/usb/canokey.h b/hw/usb/canokey.h
-index 24cf304203..e528889d33 100644
---- a/hw/usb/canokey.h
-+++ b/hw/usb/canokey.h
-@@ -4,7 +4,7 @@
-  * Copyright (c) 2021-2022 Canokeys.org <contact@canokeys.org>
-  * Written by Hongren (Zenithal) Zheng <i@zenithal.me>
-  *
-- * This code is licensed under the Apache-2.0.
-+ * This code is licensed under the GPL v2 or later.
-  */
- 
- #ifndef CANOKEY_H
--- 
-2.41.0
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
+> 
+> While this fixes booting guests on riscv KVM with AIA it's unlikely
+> to get merged before the QEMU support for KVM AIA[1] lands, which
+> would also fix the issue. I think this patch is still worth considering
+> though since QEMU's assumption is wrong.
+> 
+> [1] https://lore.kernel.org/all/20230714084429.22349-1-yongxuan.wang@sifive.com/
+> 
+> v2:
+>    - Move the s390x code to an s390x file. [Thomas]
+>    - Drop the KVM_CAP_IRQCHIP check from the top of kvm_irqchip_create(),
+>      as it's no longer necessary.
+> 
+>   accel/kvm/kvm-all.c    | 16 ++++------------
+>   include/sysemu/kvm.h   |  1 +
+>   target/arm/kvm.c       |  3 +++
+>   target/i386/kvm/kvm.c  |  2 ++
+>   target/s390x/kvm/kvm.c | 11 +++++++++++
+>   5 files changed, 21 insertions(+), 12 deletions(-)
+> 
+> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+> index 373d876c0580..cddcb6eca641 100644
+> --- a/accel/kvm/kvm-all.c
+> +++ b/accel/kvm/kvm-all.c
+> @@ -86,6 +86,7 @@ struct KVMParkedVcpu {
+>   };
+>   
+>   KVMState *kvm_state;
+> +bool kvm_has_create_irqchip;
+>   bool kvm_kernel_irqchip;
+>   bool kvm_split_irqchip;
+>   bool kvm_async_interrupts_allowed;
+> @@ -2358,17 +2359,6 @@ static void kvm_irqchip_create(KVMState *s)
+>       int ret;
+>   
+>       assert(s->kernel_irqchip_split != ON_OFF_AUTO_AUTO);
+> -    if (kvm_check_extension(s, KVM_CAP_IRQCHIP)) {
+> -        ;
+> -    } else if (kvm_check_extension(s, KVM_CAP_S390_IRQCHIP)) {
+> -        ret = kvm_vm_enable_cap(s, KVM_CAP_S390_IRQCHIP, 0);
+> -        if (ret < 0) {
+> -            fprintf(stderr, "Enable kernel irqchip failed: %s\n", strerror(-ret));
+> -            exit(1);
+> -        }
+> -    } else {
+> -        return;
+> -    }
+>   
+>       /* First probe and see if there's a arch-specific hook to create the
+>        * in-kernel irqchip for us */
+> @@ -2377,8 +2367,10 @@ static void kvm_irqchip_create(KVMState *s)
+>           if (s->kernel_irqchip_split == ON_OFF_AUTO_ON) {
+>               error_report("Split IRQ chip mode not supported.");
+>               exit(1);
+> -        } else {
+> +        } else if (kvm_has_create_irqchip) {
+>               ret = kvm_vm_ioctl(s, KVM_CREATE_IRQCHIP);
+> +        } else {
+> +            return;
+>           }
+>       }
+>       if (ret < 0) {
+> diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
+> index 115f0cca79d1..84b1bb3dc91e 100644
+> --- a/include/sysemu/kvm.h
+> +++ b/include/sysemu/kvm.h
+> @@ -32,6 +32,7 @@
+>   #ifdef CONFIG_KVM_IS_POSSIBLE
+>   
+>   extern bool kvm_allowed;
+> +extern bool kvm_has_create_irqchip;
+>   extern bool kvm_kernel_irqchip;
+>   extern bool kvm_split_irqchip;
+>   extern bool kvm_async_interrupts_allowed;
+> diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+> index b4c7654f4980..2fa87b495d68 100644
+> --- a/target/arm/kvm.c
+> +++ b/target/arm/kvm.c
+> @@ -250,6 +250,9 @@ int kvm_arm_get_max_vm_ipa_size(MachineState *ms, bool *fixed_ipa)
+>   int kvm_arch_init(MachineState *ms, KVMState *s)
+>   {
+>       int ret = 0;
+> +
+> +    kvm_has_create_irqchip = kvm_check_extension(s, KVM_CAP_IRQCHIP);
+> +
+>       /* For ARM interrupt delivery is always asynchronous,
+>        * whether we are using an in-kernel VGIC or not.
+>        */
+> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+> index ebfaf3d24c79..6363e67f092d 100644
+> --- a/target/i386/kvm/kvm.c
+> +++ b/target/i386/kvm/kvm.c
+> @@ -2771,6 +2771,8 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
+>           }
+>       }
+>   
+> +    kvm_has_create_irqchip = kvm_check_extension(s, KVM_CAP_IRQCHIP);
+> +
+>       return 0;
+>   }
+>   
+> diff --git a/target/s390x/kvm/kvm.c b/target/s390x/kvm/kvm.c
+> index a9e5880349d9..bcc735227f7d 100644
+> --- a/target/s390x/kvm/kvm.c
+> +++ b/target/s390x/kvm/kvm.c
+> @@ -391,6 +391,17 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
+>       }
+>   
+>       kvm_set_max_memslot_size(KVM_SLOT_MAX_BYTES);
+> +
+> +    kvm_has_create_irqchip = kvm_check_extension(s, KVM_CAP_S390_IRQCHIP);
+> +    if (kvm_has_create_irqchip) {
+> +        int ret = kvm_vm_enable_cap(s, KVM_CAP_S390_IRQCHIP, 0);
+> +
+> +        if (ret < 0) {
+> +            fprintf(stderr, "Enable kernel irqchip failed: %s\n", strerror(-ret));
+> +            exit(1);
+> +        }
+> +    }
+> +
+>       return 0;
+>   }
+>   
 
