@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE9E9760D72
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 10:44:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0828A760D73
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 10:45:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qODeX-0001Pu-Eo; Tue, 25 Jul 2023 04:44:21 -0400
+	id 1qODep-0001cX-Ok; Tue, 25 Jul 2023 04:44:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pmorel@linux.ibm.com>)
- id 1qODeQ-0001N2-N6; Tue, 25 Jul 2023 04:44:18 -0400
+ id 1qODel-0001ab-Q9; Tue, 25 Jul 2023 04:44:36 -0400
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pmorel@linux.ibm.com>)
- id 1qODeN-0004eo-Qk; Tue, 25 Jul 2023 04:44:14 -0400
-Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
+ id 1qODek-0004vF-75; Tue, 25 Jul 2023 04:44:35 -0400
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36P8dSU0030332; Tue, 25 Jul 2023 08:43:59 GMT
+ 36P89UX9001172; Tue, 25 Jul 2023 08:44:31 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=message-id : date :
  mime-version : subject : to : cc : references : from : in-reply-to :
  content-type : content-transfer-encoding; s=pp1;
- bh=PGbURPgMuvCVhdPbMoPPe7B4Gb9eYScTDdx4mdDndco=;
- b=Df7PJAdfb+0QCpz39P6Pdf5SrgRQ3yejuGFUS/TQmMyd8F/Q0znx6Pmsf7F5okuotluj
- W/wul/jSKJ/gbbELC5nAQ/f2FDNjuEblV/xOIprRU0TLkipdI2VFdoGaoa7Nau+1+Fn3
- EuzQ2loGfbOpQM0N+1S9UiinsqtGd0UWsKz7wQdTINe29nBlmWeVZXZ2ZPmX5fwf5YKI
- 2OXq/bi31iizPu2Nbn6xJ72CrtdTbcdyNvj12XORfxSoSh1eT5SzDX0nIu/XzN7pGOte
- 0boDG8w0vbSuSH2Ft+2fXARMz9ily7o6xYzaAx+/jCbilPTr3HG6DJi4iO98K06F3AJW 7w== 
+ bh=/tUaBBZ3+TiGbnVEyeuh5DSVPWs3Npkig74UNe50P6M=;
+ b=CaB0jraQJFzWC+STP8crZBspFtS+dhR+eQvH4dGyhsRAxtdo+tL9vGaN//nIaR6jGDfP
+ cU2bxA/E7+kHQm8yivbPFgtN8ENcpYiDn1NTS9GD3ScQ86v5KBGBFYBY1KAB71p+eU65
+ rGbsTncZrey7y3eOCQAG62pi/t0TYzaQdeidsLP9f7mBo8+JYZGB6sjRK+CHuADxhpef
+ XLagGz1S4nj5o2k2mRAEiFeSIXrJrJPJIroMuDOYbT81prvo3KFUX+ub8+M39NLw6MQ7
+ HNRSiOdsBQcOklhzkpiVacf3Z4fwXM8pqTl0RRKwdR6V6DitycDh6Sy9w19zHg2ao46X sQ== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s252kf2sr-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s261detjx-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 25 Jul 2023 08:43:59 +0000
-Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36P8eHDg000643;
- Tue, 25 Jul 2023 08:43:58 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s252kf2sk-1
+ Tue, 25 Jul 2023 08:44:30 +0000
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36P8Xiuo024365;
+ Tue, 25 Jul 2023 08:44:30 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s261detj5-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 25 Jul 2023 08:43:58 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36P7ev3W014384; Tue, 25 Jul 2023 08:43:58 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3s0stxtss4-1
+ Tue, 25 Jul 2023 08:44:30 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 36P7EJ4G002379; Tue, 25 Jul 2023 08:44:29 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3s0unja503-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 25 Jul 2023 08:43:57 +0000
+ Tue, 25 Jul 2023 08:44:29 +0000
 Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
  [10.20.54.100])
- by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 36P8hrTM18678406
+ by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 36P8iPDC59310554
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 25 Jul 2023 08:43:53 GMT
+ Tue, 25 Jul 2023 08:44:25 GMT
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B555420043;
- Tue, 25 Jul 2023 08:43:53 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 4E87820043;
+ Tue, 25 Jul 2023 08:44:25 +0000 (GMT)
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 33C2520040;
- Tue, 25 Jul 2023 08:43:52 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id B6A2120040;
+ Tue, 25 Jul 2023 08:44:23 +0000 (GMT)
 Received: from [9.179.30.40] (unknown [9.179.30.40])
  by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
- Tue, 25 Jul 2023 08:43:52 +0000 (GMT)
-Message-ID: <5c768763-82c9-5d31-696f-ce6c3bbc608f@linux.ibm.com>
-Date: Tue, 25 Jul 2023 10:43:51 +0200
+ Tue, 25 Jul 2023 08:44:23 +0000 (GMT)
+Message-ID: <5d189aee-2d75-db31-89a3-11d60f001564@linux.ibm.com>
+Date: Tue, 25 Jul 2023 10:44:23 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.8.0
-Subject: Re: [PATCH v21 01/20] s390x/cpu topology: add s390 specifics to CPU
- topology
+Subject: Re: [PATCH v21 02/20] s390x/cpu topology: add topology entries on CPU
+ hotplug
 Content-Language: en-US
 To: Nina Schoetterl-Glausch <nsg@linux.ibm.com>, qemu-s390x@nongnu.org
 Cc: qemu-devel@nongnu.org, borntraeger@de.ibm.com, pasic@linux.ibm.com,
@@ -79,25 +79,23 @@ Cc: qemu-devel@nongnu.org, borntraeger@de.ibm.com, pasic@linux.ibm.com,
  eblake@redhat.com, armbru@redhat.com, seiden@linux.ibm.com,
  nrb@linux.ibm.com, frankja@linux.ibm.com, berrange@redhat.com, clg@kaod.org
 References: <20230630091752.67190-1-pmorel@linux.ibm.com>
- <20230630091752.67190-2-pmorel@linux.ibm.com>
- <9c8847ad9d8e07c2e41f9c20716ba3ed6dd6b3dc.camel@linux.ibm.com>
- <29268e39-49ba-588a-022d-30b0882fea37@linux.ibm.com>
- <29c6965c8f2c9ec03074656c60966387d213234f.camel@linux.ibm.com>
+ <20230630091752.67190-3-pmorel@linux.ibm.com>
+ <0743d96760a7b3d8d79ed1443c26896eac6a1a13.camel@linux.ibm.com>
 From: Pierre Morel <pmorel@linux.ibm.com>
-In-Reply-To: <29c6965c8f2c9ec03074656c60966387d213234f.camel@linux.ibm.com>
+In-Reply-To: <0743d96760a7b3d8d79ed1443c26896eac6a1a13.camel@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: Zk4MhkYdbmKgnb3gpEfKc0jVrtSMgbQ2
-X-Proofpoint-GUID: qxhtscYprEyVUp8dM4dzttAWfsmL0yoV
+X-Proofpoint-GUID: o6nOilthFBY8OEhwi5r3RgBxf3VUMDbm
+X-Proofpoint-ORIG-GUID: aAAouNWCx2lJMztGZlf9ILQlnh9U7K1c
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
  definitions=2023-07-25_04,2023-07-24_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=954
- lowpriorityscore=0 adultscore=0 spamscore=0 bulkscore=0 priorityscore=1501
- clxscore=1015 phishscore=0 mlxscore=0 impostorscore=0 malwarescore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ mlxscore=0 impostorscore=0
+ phishscore=0 malwarescore=0 clxscore=1015 spamscore=0 adultscore=0
+ lowpriorityscore=0 bulkscore=0 mlxlogscore=999 suspectscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2306200000 definitions=main-2307250075
 Received-SPF: pass client-ip=148.163.158.5; envelope-from=pmorel@linux.ibm.com;
  helo=mx0b-001b2d01.pphosted.com
@@ -124,40 +122,37 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
-On 7/24/23 12:15, Nina Schoetterl-Glausch wrote:
-> On Fri, 2023-07-21 at 13:24 +0200, Pierre Morel wrote:
->> On 7/18/23 18:31, Nina Schoetterl-Glausch wrote:
->>> Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
->>>
->>> Some notes below.
->>>
->>> The s390x/ prefix in the title might suggest that this patch
->>> is s390 specific, but it touches common files.
+On 7/24/23 22:19, Nina Schoetterl-Glausch wrote:
+> On Fri, 2023-06-30 at 11:17 +0200, Pierre Morel wrote:
+>> The topology information are attributes of the CPU and are
+>> specified during the CPU device creation.
 >>
->> Right.
+>> On hot plug we:
+>> - calculate the default values for the topology for drawers,
+>>    books and sockets in the case they are not specified.
+>> - verify the CPU attributes
+>> - check that we have still room on the desired socket
 >>
->> What do you suggest?
+>> The possibility to insert a CPU in a mask is dependent on the
+>> number of cores allowed in a socket, a book or a drawer, the
+>> checking is done during the hot plug of the CPU to have an
+>> immediate answer.
 >>
->> I can cut it in two or squash it with patch number 2.
+>> If the complete topology is not specified, the core is added
+>> in the physical topology based on its core ID and it gets
+>> defaults values for the modifier attributes.
 >>
->> The first idea was to separate the patch to ease the review but the
->> functionality introduced in patch 1 do only make sense with patch 2.
+>> This way, starting QEMU without specifying the topology can
+>> still get some advantage of the CPU topology.
 >>
->> So I would be for squashing the first two patches.
->>
->> ?
-> Oh, I'd just change the title.
+>> Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
+> Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com> if you address
+> Thomas' comments.
 >
-> CPU topology: extend with s390 specifics
->
-> or similar, it was just a nit not to create the impression that the
-> patch only touches s390 stuff.
+Thanks,
 
-
-OK thanks
+regards
 
 Pierre
-
-
 
 
