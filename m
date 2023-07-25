@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28BE6761A93
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 15:52:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7F8D761A73
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 15:48:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOINq-0008Rv-AJ; Tue, 25 Jul 2023 09:47:26 -0400
+	id 1qOINp-0008Qu-1i; Tue, 25 Jul 2023 09:47:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qOINn-0008OP-1V; Tue, 25 Jul 2023 09:47:23 -0400
+ id 1qOINl-0008KJ-DA; Tue, 25 Jul 2023 09:47:21 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qOINj-0001d9-Jq; Tue, 25 Jul 2023 09:47:22 -0400
+ id 1qOINj-0001gv-HE; Tue, 25 Jul 2023 09:47:21 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 25D7E16100;
+ by isrv.corpit.ru (Postfix) with ESMTP id 61B0416101;
  Tue, 25 Jul 2023 16:45:37 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id B758A194C2;
- Tue, 25 Jul 2023 16:45:34 +0300 (MSK)
-Received: (nullmailer pid 3370852 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 07637194C3;
+ Tue, 25 Jul 2023 16:45:35 +0300 (MSK)
+Received: (nullmailer pid 3370855 invoked by uid 1000);
  Tue, 25 Jul 2023 13:45:29 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, "Denis V. Lunev" <den@openvz.org>,
- Eric Blake <eblake@redhat.com>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Hanna Reitz <hreitz@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.4 23/31] qemu-nbd: fix regression with qemu-nbd --fork
- run over ssh
-Date: Tue, 25 Jul 2023 16:45:08 +0300
-Message-Id: <20230725134517.3370706-23-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Jordan Niethe <jniethe5@gmail.com>,
+ Anushree Mathur <anushree.mathur@linux.vnet.ibm.com>,
+ Michael Tokarev <mjt@tls.msk.ru>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Benjamin Gray <bgray@linux.ibm.com>
+Subject: [Stable-8.0.4 24/31] tcg/ppc: Fix race in goto_tb implementation
+Date: Tue, 25 Jul 2023 16:45:09 +0300
+Message-Id: <20230725134517.3370706-24-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.4-20230725164041@cover.tls.msk.ru>
 References: <qemu-stable-8.0.4-20230725164041@cover.tls.msk.ru>
@@ -62,103 +62,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "Denis V. Lunev" <den@openvz.org>
+From: Jordan Niethe <jniethe5@gmail.com>
 
-Commit e6df58a5578fee7a50bbf36f4a50a2781cff855d
-    Author: Hanna Reitz <hreitz@redhat.com>
-    Date:   Wed May 8 23:18:18 2019 +0200
-    qemu-nbd: Do not close stderr
+Commit 20b6643324 ("tcg/ppc: Reorg goto_tb implementation") modified
+goto_tb to ensure only a single instruction was patched to prevent
+incorrect behavior if a thread was in the middle of multiple
+instructions when they were replaced. However this introduced a race
+between loading the jmp target into TCG_REG_TB and patching and
+executing the direct branch.
 
-has introduced an interesting regression. Original behavior of
-    ssh somehost qemu-nbd /home/den/tmp/file -f raw --fork
-was the following:
- * qemu-nbd was started as a daemon
- * the command execution is done and ssh exited with success
+The relevant part of the goto_tb implementation:
 
-The patch has changed this behavior and 'ssh' command now hangs forever.
+    ld TCG_REG_TB, TARGET_ADDR_LOCATION(TCG_REG_TB)
+  patch_location:
+    mtctr TCG_REG_TB
+    bctr
 
-According to the normal specification of the daemon() call, we should
-endup with STDERR pointing to /dev/null. That should be done at the
-very end of the successful startup sequence when the pipe to the
-bootstrap process (used for diagnostics) is no longer needed.
+tb_target_set_jmp_target() will replace 'patch_location' with a direct
+branch if the target is in range. The direct branch now relies on
+TCG_REG_TB being set up correctly by the ld. Prior to this commit
+multiple instructions were patched in for the direct branch case; these
+instructions would initialize TCG_REG_TB to the same value as the branch
+target.
 
-This could be achived in the same way as done for 'qemu-nbd -c' case.
-That was commit 0eaf453e, also fixing up e6df58a5. STDOUT copying to
-STDERR does the trick.
+Imagine the following sequence:
 
-This also leads to proper 'ssh' connection closing which fixes my
-original problem.
+1) Thread A is executing the goto_tb sequence and loads the jmp
+   target into TCG_REG_TB.
 
-Signed-off-by: Denis V. Lunev <den@openvz.org>
-CC: Eric Blake <eblake@redhat.com>
-CC: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-CC: Hanna Reitz <hreitz@redhat.com>
-CC: <qemu-stable@nongnu.org>
-Message-ID: <20230717145544.194786-3-den@openvz.org>
-Reviewed-by: Eric Blake <eblake@redhat.com>
-Signed-off-by: Eric Blake <eblake@redhat.com>
-(cherry picked from commit 5c56dd27a2c905c9cf2472d2fd057621ce5fd00d)
+2) Thread B updates the jmp target address and calls
+   tb_target_set_jmp_target(). This patches a new direct branch into the
+   goto_tb sequence.
+
+3) Thread A executes the newly patched direct branch. The value in
+   TCG_REG_TB still contains the old jmp target.
+
+TCG_REG_TB MUST contain the translation block's tc.ptr. Execution will
+eventually crash after performing memory accesses generated from a
+faulty value in TCG_REG_TB.
+
+This presents as segfaults or illegal instruction exceptions.
+
+Do not revert commit 20b6643324 as it did fix a different race
+condition. Instead remove the direct branch optimization and always use
+indirect branches.
+
+The direct branch optimization can be re-added later with a race free
+sequence.
+
+Fixes: 20b6643324 ("tcg/ppc: Reorg goto_tb implementation")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1726
+Reported-by: Anushree Mathur <anushree.mathur@linux.vnet.ibm.com>
+Tested-by: Anushree Mathur <anushree.mathur@linux.vnet.ibm.com>
+Tested-by: Michael Tokarev <mjt@tls.msk.ru>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Co-developed-by: Benjamin Gray <bgray@linux.ibm.com>
+Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
+Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
+Message-Id: <20230717093001.13167-1-jniethe5@gmail.com>
+(cherry picked from commit 736a1588c104e9995c1831df33554df1f1def8b8)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/qemu-nbd.c b/qemu-nbd.c
-index 87c46bb0e5..e64f45f767 100644
---- a/qemu-nbd.c
-+++ b/qemu-nbd.c
-@@ -274,6 +274,7 @@ static void *show_parts(void *arg)
+diff --git a/tcg/ppc/tcg-target.c.inc b/tcg/ppc/tcg-target.c.inc
+index 066b49224a..c68bf08e38 100644
+--- a/tcg/ppc/tcg-target.c.inc
++++ b/tcg/ppc/tcg-target.c.inc
+@@ -2546,11 +2546,10 @@ static void tcg_out_goto_tb(TCGContext *s, int which)
+         ptrdiff_t offset = tcg_tbrel_diff(s, (void *)ptr);
+         tcg_out_mem_long(s, LD, LDX, TCG_REG_TB, TCG_REG_TB, offset);
+     
+-        /* Direct branch will be patched by tb_target_set_jmp_target. */
++        /* TODO: Use direct branches when possible. */
+         set_jmp_insn_offset(s, which);
+         tcg_out32(s, MTSPR | RS(TCG_REG_TB) | CTR);
  
- struct NbdClientOpts {
-     char *device;
-+    bool fork_process;
- };
+-        /* When branch is out of range, fall through to indirect. */
+         tcg_out32(s, BCCTR | BO_ALWAYS);
  
- static void *nbd_client_thread(void *arg)
-@@ -317,7 +318,7 @@ static void *nbd_client_thread(void *arg)
-     /* update partition table */
-     pthread_create(&show_parts_thread, NULL, show_parts, opts->device);
+         /* For the unlinked case, need to reset TCG_REG_TB.  */
+@@ -2578,10 +2577,12 @@ void tb_target_set_jmp_target(const TranslationBlock *tb, int n,
+     intptr_t diff = addr - jmp_rx;
+     tcg_insn_unit insn;
  
--    if (verbose) {
-+    if (verbose && !opts->fork_process) {
-         fprintf(stderr, "NBD device %s is now connected to %s\n",
-                 opts->device, srcpath);
++    if (USE_REG_TB) {
++        return;
++    }
++
+     if (in_range_b(diff)) {
+         insn = B | (diff & 0x3fffffc);
+-    } else if (USE_REG_TB) {
+-        insn = MTSPR | RS(TCG_REG_TB) | CTR;
      } else {
-@@ -579,7 +580,6 @@ int main(int argc, char **argv)
-     bool writethrough = false; /* Client will flush as needed. */
-     bool fork_process = false;
-     bool list = false;
--    int old_stderr = -1;
-     unsigned socket_activation;
-     const char *pid_file_name = NULL;
-     const char *selinux_label = NULL;
-@@ -934,11 +934,6 @@ int main(int argc, char **argv)
-         } else if (pid == 0) {
-             close(stderr_fd[0]);
- 
--            /* Remember parent's stderr if we will be restoring it. */
--            if (fork_process) {
--                old_stderr = dup(STDERR_FILENO);
--            }
--
-             ret = qemu_daemon(1, 0);
- 
-             /* Temporarily redirect stderr to the parent's pipe...  */
-@@ -1127,6 +1122,7 @@ int main(int argc, char **argv)
-         int ret;
-         struct NbdClientOpts opts = {
-             .device = device,
-+            .fork_process = fork_process,
-         };
- 
-         ret = pthread_create(&client_thread, NULL, nbd_client_thread, &opts);
-@@ -1155,8 +1151,7 @@ int main(int argc, char **argv)
+         insn = NOP;
      }
- 
-     if (fork_process) {
--        dup2(old_stderr, STDERR_FILENO);
--        close(old_stderr);
-+        dup2(STDOUT_FILENO, STDERR_FILENO);
-     }
- 
-     state = RUNNING;
 -- 
 2.39.2
 
