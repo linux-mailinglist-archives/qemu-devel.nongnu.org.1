@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BEB2761126
+	by mail.lfdr.de (Postfix) with ESMTPS id 91726761127
 	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 12:46:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOFXk-0008Bg-9i; Tue, 25 Jul 2023 06:45:28 -0400
+	id 1qOFXk-0008By-Ge; Tue, 25 Jul 2023 06:45:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qOFXg-00087S-Ew
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 06:45:24 -0400
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+ (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qOFXi-00089f-5i
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 06:45:26 -0400
+Received: from mail-il1-x131.google.com ([2607:f8b0:4864:20::131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qOFXd-00035C-4Z
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 06:45:24 -0400
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-686b643df5dso53399b3a.1
- for <qemu-devel@nongnu.org>; Tue, 25 Jul 2023 03:43:20 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qOFXg-00035U-KB
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 06:45:25 -0400
+Received: by mail-il1-x131.google.com with SMTP id
+ e9e14a558f8ab-34896a1574dso30334435ab.0
+ for <qemu-devel@nongnu.org>; Tue, 25 Jul 2023 03:43:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20221208.gappssmtp.com; s=20221208; t=1690281800; x=1690886600;
+ d=smartx-com.20221208.gappssmtp.com; s=20221208; t=1690281803; x=1690886603;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=qlztDq/CKb91JnaGmc1JrV/AEfrFJEe1DDcUZ8Ogc1M=;
- b=4SUZaYatOJt3CpRee7EdKVQiuJic1nfITdBVb2XmYuFgiz0+di+Mg0xcSg8WjJoFGy
- g1JUGVwi3jPCJDWV3YOjW87vCVqqpVgqI2lJJ2a868/Zu/sOrNZDldcJH9qrnPzomL70
- mtMw78KxWRq1igsVdsXjjnvO/FDg6YUnPfsnCxSf4wuVceDWXZkp661ziVGaGA0dERoK
- irYRfvt0Vm12tmTBAjiruO3goul2F3qwWKO+Hc8Dg1GbrHbFU9uFPH8gGWxFMS8SMoQu
- p5wx0wBuRi4AEn3EGhOFlRWdnLHDutCo+8mULyYBy/TxD0shZpTl2LY3wcvYMUQvvVNy
- Ps7Q==
+ bh=M1cA9e5yzf2hNCWgBUmfES7GtFkzi9v/WbQPtniu6Bs=;
+ b=Jt8PLWhMFaU9PfcHIz3m78nzNlS0NVISaRN6slY/kAfDySBnZRb+Xq3HjM+JEKVIa7
+ wut81s25vRaTtib9z7Be3rw/3KuSoSzA2PH3T4eJZmGMftYnpJap2Znv9FdSlf+3yWZQ
+ tJWKxQJVT6JxgCHaopdjz5JC0TnQTqT17Zd2m7D1Poot95+0BbnKOMHeaDRAE6017vG4
+ Tr3LsBg2L65gg19YLPcuKxLiUI1PRFROqRQBTBZmmqKbijjqKGCNzntAKc1N3ZnUCdKb
+ PTkeQsqEZNT6vwciMrOiLfsHoVXcm+3QPxRNFsFaeg95/0IrEewbA7D9gwa0FSQRylmA
+ 8o3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690281800; x=1690886600;
+ d=1e100.net; s=20221208; t=1690281803; x=1690886603;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=qlztDq/CKb91JnaGmc1JrV/AEfrFJEe1DDcUZ8Ogc1M=;
- b=iA+UJRW1F7CY4yd6hLRy8Qyco/T80gizONoi6pqZ/7QoECo4OPaxM/qqDTi2TyTez8
- EYaBfGJSiZqpWitS8EUU5y/pSt5b7r69w4h5qIVzAPJTjSPLsdm5fG2s45MyEpd8AMXL
- uFbR9pNkANMA2me2QkRHoimGpZlnjldGidAUG4Mx48ZzVOlyAKoh+R6ZaSYMXK02LgMi
- ZEVR96oYiU9wN4MgUrBIP5J8t9NyIYr3BgkRuxeEOvG6rV5T73tiXhyocPPbIbj+pB9S
- C7mN+f1781o1AmaSN0JrRy7USNgxwYfC0T7pXTi+sCwm6jNRKoPoESErJrkx1Wh4qqUO
- QtvQ==
-X-Gm-Message-State: ABy/qLZQYAlLYSorRhfAJb77Q0uT+tQJqLT1qdpjX35aPpg/2Aasjyg8
- UZP8Al9bZtqf2w+QA62IgKC/4t/grbtqz2KuCqHLdaAqTi4=
-X-Google-Smtp-Source: APBJJlGS+e19bhiDhSICt2X4ntmLuPrtSZcCk8Tc+HPY+hGXJqYL53dGkyhorwmnL8lek4YqdxyzRg==
-X-Received: by 2002:a05:6a21:66c4:b0:13b:79dc:4538 with SMTP id
- ze4-20020a056a2166c400b0013b79dc4538mr10284pzb.62.1690281799665; 
- Tue, 25 Jul 2023 03:43:19 -0700 (PDT)
+ bh=M1cA9e5yzf2hNCWgBUmfES7GtFkzi9v/WbQPtniu6Bs=;
+ b=DBW20toXYtFMnrOgT4UF84T70AtkBC76OWQ0AGXwlQNTc5AgdSjpW5tOYCcR73EE6z
+ 8VJvAoSMgbF9xGiURqv6ljGjnFGXQveWcfXQzsdD3CGOhBDpXRzsaCe8OO2s2sj+IVZn
+ YY2Vt7PCJZetNZZPnQwgnLAfi1Q14DO6jjmxKMRql8YpbuVA2TGCsSRdRxR+31dsxTLi
+ /tg/YeoQMffTrVMx/F5I5kxYJDeY6C7boxZjhoxwqzUGxBqKvrZ25HsAkHrWQveh6jjs
+ opEaxFnPJfdfGRRoIrGHJo0nBXc8FwyK5zoC8IBjQ2EeJXUn6HKvtp23HN0I05a2Hgw2
+ NuxA==
+X-Gm-Message-State: ABy/qLZmUt2b2SgZFqs/5Snvo2SAbXBoB9WUD47gO2Yt0fjjVNN46Vuw
+ of9/UiiN1s0EJ6rOUgfJRRMV2A==
+X-Google-Smtp-Source: APBJJlECERw41/DD91Jx5irI1BIUW7VDWwh/Uenlyc5Duq422MI9bs/sZwPJoLPbUrkUaCkpXMd/kA==
+X-Received: by 2002:a92:c711:0:b0:343:c8b1:b7f0 with SMTP id
+ a17-20020a92c711000000b00343c8b1b7f0mr2420127ilp.23.1690281803196; 
+ Tue, 25 Jul 2023 03:43:23 -0700 (PDT)
 Received: from localhost.localdomain.gitgo.cc ([47.75.78.161])
  by smtp.gmail.com with ESMTPSA id
- c20-20020aa78c14000000b0062cf75a9e6bsm9343165pfd.131.2023.07.25.03.43.16
+ c20-20020aa78c14000000b0062cf75a9e6bsm9343165pfd.131.2023.07.25.03.43.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 25 Jul 2023 03:43:19 -0700 (PDT)
+ Tue, 25 Jul 2023 03:43:22 -0700 (PDT)
 From: Li Feng <fengli@smartx.com>
 To: "Michael S. Tsirkin" <mst@redhat.com>,
  Raphael Norwitz <raphael.norwitz@nutanix.com>,
@@ -64,24 +64,23 @@ To: "Michael S. Tsirkin" <mst@redhat.com>,
  qemu-block@nongnu.org (open list:Block layer core),
  qemu-devel@nongnu.org (open list:All patches CC here)
 Cc: Li Feng <fengli@smartx.com>
-Subject: [PATCH v2 1/4] vhost: fix the fd leak
-Date: Tue, 25 Jul 2023 18:42:44 +0800
-Message-ID: <20230725104256.4861-2-fengli@smartx.com>
+Subject: [PATCH v2 2/4] vhost-user-common: send get_inflight_fd once
+Date: Tue, 25 Jul 2023 18:42:45 +0800
+Message-ID: <20230725104256.4861-3-fengli@smartx.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230725104256.4861-1-fengli@smartx.com>
 References: <20230721105205.1714449-1-fengli@smartx.com>
  <20230725104256.4861-1-fengli@smartx.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::432;
- envelope-from=fengli@smartx.com; helo=mail-pf1-x432.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::131;
+ envelope-from=fengli@smartx.com; helo=mail-il1-x131.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,28 +96,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When the vhost-user reconnect to the backend, the notifer should be
-cleanup. Otherwise, the fd resource will be exhausted.
-
-Fixes: f9a09ca3ea ("vhost: add support for configure interrupt")
+Get_inflight_fd is sent only once. When reconnecting to the backend,
+qemu sent set_inflight_fd to the backend.
 
 Signed-off-by: Li Feng <fengli@smartx.com>
 ---
- hw/virtio/vhost.c | 2 ++
- 1 file changed, 2 insertions(+)
+ hw/scsi/vhost-scsi-common.c | 37 ++++++++++++++++++-------------------
+ 1 file changed, 18 insertions(+), 19 deletions(-)
 
-diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-index abf0d03c8d..e2f6ffb446 100644
---- a/hw/virtio/vhost.c
-+++ b/hw/virtio/vhost.c
-@@ -2044,6 +2044,8 @@ void vhost_dev_stop(struct vhost_dev *hdev, VirtIODevice *vdev, bool vrings)
-     event_notifier_test_and_clear(
-         &hdev->vqs[VHOST_QUEUE_NUM_CONFIG_INR].masked_config_notifier);
-     event_notifier_test_and_clear(&vdev->config_notifier);
-+    event_notifier_cleanup(
-+        &hdev->vqs[VHOST_QUEUE_NUM_CONFIG_INR].masked_config_notifier);
+diff --git a/hw/scsi/vhost-scsi-common.c b/hw/scsi/vhost-scsi-common.c
+index a06f01af26..664adb15b4 100644
+--- a/hw/scsi/vhost-scsi-common.c
++++ b/hw/scsi/vhost-scsi-common.c
+@@ -52,20 +52,28 @@ int vhost_scsi_common_start(VHostSCSICommon *vsc)
  
-     trace_vhost_dev_stop(hdev, vdev->name, vrings);
+     vsc->dev.acked_features = vdev->guest_features;
+ 
+-    assert(vsc->inflight == NULL);
+-    vsc->inflight = g_new0(struct vhost_inflight, 1);
+-    ret = vhost_dev_get_inflight(&vsc->dev,
+-                                 vs->conf.virtqueue_size,
+-                                 vsc->inflight);
++    ret = vhost_dev_prepare_inflight(&vsc->dev, vdev);
+     if (ret < 0) {
+-        error_report("Error get inflight: %d", -ret);
++        error_report("Error setting inflight format: %d", -ret);
+         goto err_guest_notifiers;
+     }
+ 
+-    ret = vhost_dev_set_inflight(&vsc->dev, vsc->inflight);
+-    if (ret < 0) {
+-        error_report("Error set inflight: %d", -ret);
+-        goto err_guest_notifiers;
++    if (vsc->inflight) {
++        if (!vsc->inflight->addr) {
++            ret = vhost_dev_get_inflight(&vsc->dev,
++                                        vs->conf.virtqueue_size,
++                                        vsc->inflight);
++            if (ret < 0) {
++                error_report("Error get inflight: %d", -ret);
++                goto err_guest_notifiers;
++            }
++        }
++
++        ret = vhost_dev_set_inflight(&vsc->dev, vsc->inflight);
++        if (ret < 0) {
++            error_report("Error set inflight: %d", -ret);
++            goto err_guest_notifiers;
++        }
+     }
+ 
+     ret = vhost_dev_start(&vsc->dev, vdev, true);
+@@ -85,9 +93,6 @@ int vhost_scsi_common_start(VHostSCSICommon *vsc)
+     return ret;
+ 
+ err_guest_notifiers:
+-    g_free(vsc->inflight);
+-    vsc->inflight = NULL;
+-
+     k->set_guest_notifiers(qbus->parent, vsc->dev.nvqs, false);
+ err_host_notifiers:
+     vhost_dev_disable_notifiers(&vsc->dev, vdev);
+@@ -111,12 +116,6 @@ void vhost_scsi_common_stop(VHostSCSICommon *vsc)
+     }
+     assert(ret >= 0);
+ 
+-    if (vsc->inflight) {
+-        vhost_dev_free_inflight(vsc->inflight);
+-        g_free(vsc->inflight);
+-        vsc->inflight = NULL;
+-    }
+-
+     vhost_dev_disable_notifiers(&vsc->dev, vdev);
+ }
  
 -- 
 2.41.0
