@@ -2,108 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43A69761D90
+	by mail.lfdr.de (Postfix) with ESMTPS id 4494C761D91
 	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 17:43:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOKAh-0002Fw-9M; Tue, 25 Jul 2023 11:41:59 -0400
+	id 1qOKBc-0002WR-RU; Tue, 25 Jul 2023 11:42:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
- id 1qOKAd-0002F5-10; Tue, 25 Jul 2023 11:41:55 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
- id 1qOKAa-0002Pz-En; Tue, 25 Jul 2023 11:41:54 -0400
-Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36PFcaRg001229; Tue, 25 Jul 2023 15:41:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=SYugxa24YS5tqnly6R8YrBLh6YTv4chjpuUIICdlNEw=;
- b=SiS1v10ILx5E9kZxUHbnUfhXLpdTT59kqbcT3lTTV1AOGI3gcuDt7d1Dk5I5iMt61hge
- OHq4xXdEp05t556LTMPh34bciBv5wYZ5G9yXNtkUFkptEiq+3EABHCtiVnd92oyNNmhT
- +nVawawnLKUFut6gYmZjLuBOcXat1lksw68bctUWMQm6FMLiGQNwVDQyEC6RFm3q2AxW
- MRI8z44Ht7eppxo9QoVbxTxmmmsJ7D3Rz+KY/dxafCfZVI28b6A/uOUm02ButjqGl7bZ
- sMqfJK05oRdl4BBVKYgqGWAaCT6ByxE5kNBH6mUcjm7XXyXJlN+WDRybxmhEgsyErBoK jw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s2batk4an-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 25 Jul 2023 15:41:47 +0000
-Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36PFceAp001401;
- Tue, 25 Jul 2023 15:41:46 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s2batk48s-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 25 Jul 2023 15:41:46 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36PEmAxp014403; Tue, 25 Jul 2023 15:41:45 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3s0stxwd08-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 25 Jul 2023 15:41:44 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
- [10.20.54.105])
- by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 36PFfeFG23855698
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 25 Jul 2023 15:41:40 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C1CBB20040;
- Tue, 25 Jul 2023 15:41:40 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6FC722004B;
- Tue, 25 Jul 2023 15:41:40 +0000 (GMT)
-Received: from li-978a334c-2cba-11b2-a85c-a0743a31b510.ibm.com (unknown
- [9.152.224.238])
- by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 25 Jul 2023 15:41:40 +0000 (GMT)
-Message-ID: <667c700b3739f1dada06bcf70b91952d9dd5352b.camel@linux.ibm.com>
-Subject: Re: [PATCH v21 03/20] target/s390x/cpu topology: handle STSI(15)
- and build the SYSIB
-From: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-To: Pierre Morel <pmorel@linux.ibm.com>, qemu-s390x@nongnu.org
-Cc: qemu-devel@nongnu.org, borntraeger@de.ibm.com, pasic@linux.ibm.com,
- richard.henderson@linaro.org, david@redhat.com, thuth@redhat.com,
- cohuck@redhat.com, mst@redhat.com, pbonzini@redhat.com,
- kvm@vger.kernel.org, ehabkost@redhat.com, marcel.apfelbaum@gmail.com,
- eblake@redhat.com, armbru@redhat.com, seiden@linux.ibm.com,
- nrb@linux.ibm.com, frankja@linux.ibm.com, berrange@redhat.com, clg@kaod.org
-Date: Tue, 25 Jul 2023 17:41:40 +0200
-In-Reply-To: <20230630091752.67190-4-pmorel@linux.ibm.com>
-References: <20230630091752.67190-1-pmorel@linux.ibm.com>
- <20230630091752.67190-4-pmorel@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qOKBH-0002TB-IW
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 11:42:35 -0400
+Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qOKBF-0002U4-71
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 11:42:35 -0400
+Received: by mail-lf1-x12f.google.com with SMTP id
+ 2adb3069b0e04-4fb96e2b573so8788015e87.3
+ for <qemu-devel@nongnu.org>; Tue, 25 Jul 2023 08:42:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1690299751; x=1690904551;
+ h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=JrsDSH3aa9zj39XkrfZJulmZDM/g584Ea/mbl7e6McQ=;
+ b=l/1EBNUalcmC3NBzEj0oYWAmU2/ExxAow91Yoob0u6o9PfmV9j+j0r/w+ZD1TEd25J
+ c38vJxMnMJGF/0I5gvlnmVNFkI0RAWZAcF/Hrq9LQjXyD/8IvKVkFNRXL15tO2+zOnnx
+ hCXag8fwZrwPd7Ltxg+voh/xSdnXj7erzrkLfHQZWzogRaGS02zXjXT+72Ml0s2fwTYB
+ 08e0jFOMsH2vqOs6YMu+gTpVpyVEW4uNJiFvYWJDdPxSi82ixAg7HZ9LrHP7RZsFZTS/
+ bSQeX2yBtGe0CIQkgxaXA4CqSzTRXIFVCJC8dmi1Nz9zPj7aQB6r48Q7/QuWxSV8MqJS
+ FEPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1690299751; x=1690904551;
+ h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=JrsDSH3aa9zj39XkrfZJulmZDM/g584Ea/mbl7e6McQ=;
+ b=PnpkhRw3N8beBYsdqBcUnsGZghxSc2KcD/eatWuFSYtQ7qOJQGcZ6nZUGiB5+3ApKP
+ QukBI9ie8LbcAIsiHOCML5PPDZhJQ6LIRHuQ4a3vOwSKcVk2xYCOtobXE99n2i2UviKR
+ ovB2oGkh6gCzNcn0LlwsHHmd5V4QnQg7nHNV1rDzx3NtK7F2ZddPijXjuOQmXMizCoUu
+ 0efMBeVlMenC0gXhpMf2MgokI7XXwwpk6b7jgsjCtKkIex+HEyMeWfz9ukdhMt+QZaO5
+ qtenkTyTVlvcOb3xGXW06Dg80mLA/TnbMYvenzfcftCimMmvisxZakkUl2pZrESOGD0Y
+ ua+w==
+X-Gm-Message-State: ABy/qLb6cGmAvdisyErjwbwbEErzCWvZT81SwXU0jp7nuhDrEzY02XRO
+ +gijMpIm5s/rNIAYu4t27kkrTcGSFmpwj8jH4ELZcYOnsb9NMaiE
+X-Google-Smtp-Source: APBJJlEpHgWmuGI6UzHz/4/OaYi2jJ6nS3W88ICJVL4WNZNAbyJtnFckErlX2tMaFXfbI4e+EBxM/h3XRym/S4zxWX8=
+X-Received: by 2002:a05:6512:10ca:b0:4f1:3d7d:409e with SMTP id
+ k10-20020a05651210ca00b004f13d7d409emr8727427lfg.0.1690299751201; Tue, 25 Jul
+ 2023 08:42:31 -0700 (PDT)
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: QQoGxnNC6aZuwdhBJ18nskTfbyps5L0p
-X-Proofpoint-GUID: _nK0M2r7qv_V7a3gim-lcRoa7RJPQKdL
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-25_08,2023-07-25_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0
- mlxlogscore=999 impostorscore=0 clxscore=1015 suspectscore=0
- priorityscore=1501 spamscore=0 adultscore=0 bulkscore=0 mlxscore=0
- lowpriorityscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2306200000 definitions=main-2307250137
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=nsg@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+References: <20230724174335.2150499-1-peter.maydell@linaro.org>
+In-Reply-To: <20230724174335.2150499-1-peter.maydell@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 25 Jul 2023 16:42:20 +0100
+Message-ID: <CAFEAcA86jv21exu_XSBmpF5VpbTPJAfO+zuc+eVio=EYTC6fvA@mail.gmail.com>
+Subject: Re: [PATCH for-8.2 0/3] arm: Use correct number of MPU regions on
+ mps2-tz boards
+To: qemu-arm@nongnu.org, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::12f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -119,64 +83,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 2023-06-30 at 11:17 +0200, Pierre Morel wrote:
-> On interception of STSI(15.1.x) the System Information Block
-> (SYSIB) is built from the list of pre-ordered topology entries.
->=20
-> Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
-> ---
->  MAINTAINERS                      |   1 +
->  qapi/machine-target.json         |  14 ++
->  include/hw/s390x/cpu-topology.h  |  25 +++
->  include/hw/s390x/sclp.h          |   1 +
->  target/s390x/cpu.h               |  76 ++++++++
->  hw/s390x/cpu-topology.c          |   4 +-
->  target/s390x/kvm/kvm.c           |   5 +-
->  target/s390x/kvm/stsi-topology.c | 310 +++++++++++++++++++++++++++++++
->  target/s390x/kvm/meson.build     |   3 +-
->  9 files changed, 436 insertions(+), 3 deletions(-)
->  create mode 100644 target/s390x/kvm/stsi-topology.c
+On Mon, 24 Jul 2023 at 18:43, Peter Maydell <peter.maydell@linaro.org> wrote:
+>
+> This patchseries resolves issue
+> https://gitlab.com/qemu-project/qemu/-/issues/1772
+> which is a report that we don't implement the correct number of MPU
+> regions on our MPS2/MPS3 boards.  Ideally guest software ought not to
+> care since (a) it can find out the number of regions by looking at
+> the MPU_TYPE register and (b) if it wanted 8 MPU regions it can just
+> ignore the 8 extra ones.  However, Zephyr at least seems both to
+> hardcode this and to care.
+>
+> Patch 1 cleans up a bug in target/arm code that meant that we
+> were accidentally not exposing the pmsav7-dregion on v8M CPUs.
+>
+> Patches 2 and 3 then define properties on the armv7m object
+> and the ARMSSE SoC object, and have the mps2-tz.c board code
+> set the properties appropriately to match the config as
+> described for those FPGA images.
+>
+> I have not looked at whether we also get this wrong for the
+> older (M3, M4, M7) boards in hw/arm/mps2.c.
 
-[...]
+I checked up on this, and for these cores the hardware
+is not configurable -- they always have 8 MPU regions,
+which is the way our models of them are set up. So these
+boards (mps2-an385, -an386, -an500, -an511) are fine.
 
->  typedef struct S390Topology {
->      uint8_t *cores_per_socket;
-> +    bool polarization;
-
-You don't use this as a bool and since it's no longer called
-vertical_polarization, it's not longer entirely clear what the value
-means so I think this should be a CpuS390Polarization.
-That also makes the assignment in patch 12 clearer since it assigns the
-same type.
-
-[...]
-
->  S390Topology s390_topology =3D {
->      /* will be initialized after the cpu model is realized */
->      .cores_per_socket =3D NULL,
-> +    .polarization =3D S390_CPU_POLARIZATION_HORIZONTAL,
->  };
-
-[...]
-
-> +static s390_topology_id s390_topology_from_cpu(S390CPU *cpu)
-> +{
-> +    s390_topology_id topology_id =3D {0};
-> +
-> +    topology_id.drawer =3D cpu->env.drawer_id;
-> +    topology_id.book =3D cpu->env.book_id;
-> +    topology_id.socket =3D cpu->env.socket_id;
-> +    topology_id.origin =3D cpu->env.core_id / 64;
-> +    topology_id.type =3D S390_TOPOLOGY_CPU_IFL;
-> +    topology_id.dedicated =3D cpu->env.dedicated;
-> +
-> +    if (s390_topology.polarization =3D=3D S390_CPU_POLARIZATION_VERTICAL=
-) {
-> +        topology_id.entitlement =3D cpu->env.entitlement;
-> +    }
-> +
-> +    return topology_id;
-> +}
-
-[...]
+thanks
+-- PMM
 
