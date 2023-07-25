@@ -2,43 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88434761A88
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 15:50:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2FE6761A8F
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 15:52:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOINV-0006tw-T0; Tue, 25 Jul 2023 09:47:05 -0400
+	id 1qOINb-0007KV-Vw; Tue, 25 Jul 2023 09:47:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qOIMR-0005Pg-V9; Tue, 25 Jul 2023 09:46:00 -0400
+ id 1qOIMo-0005l7-6f; Tue, 25 Jul 2023 09:46:32 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qOIMQ-0001Tn-Bv; Tue, 25 Jul 2023 09:45:59 -0400
+ id 1qOIMm-0001U7-AI; Tue, 25 Jul 2023 09:46:21 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 96493160F4;
+ by isrv.corpit.ru (Postfix) with ESMTP id D72EF160F5;
  Tue, 25 Jul 2023 16:45:34 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 52D9B194B7;
+ by tsrv.corpit.ru (Postfix) with SMTP id 77C7B194B8;
  Tue, 25 Jul 2023 16:45:32 +0300 (MSK)
-Received: (nullmailer pid 3370819 invoked by uid 1000);
+Received: (nullmailer pid 3370822 invoked by uid 1000);
  Tue, 25 Jul 2023 13:45:29 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Olaf Hering <olaf@aepfle.de>,
- Bernhard Beschow <shentey@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.4 12/31] hw/ide/piix: properly initialize the BMIBA
- register
-Date: Tue, 25 Jul 2023 16:44:57 +0300
-Message-Id: <20230725134517.3370706-12-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.0.4 13/31] linux-user/syscall: Implement execve without
+ execveat
+Date: Tue, 25 Jul 2023 16:44:58 +0300
+Message-Id: <20230725134517.3370706-13-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.4-20230725164041@cover.tls.msk.ru>
 References: <qemu-stable-8.0.4-20230725164041@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -63,39 +61,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Olaf Hering <olaf@aepfle.de>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-According to the 82371FB documentation (82371FB.pdf, 2.3.9. BMIBA-BUS
-MASTER INTERFACE BASE ADDRESS REGISTER, April 1997), the register is
-32bit wide. To properly reset it to default values, all 32bit need to be
-cleared. Bit #0 "Resource Type Indicator (RTE)" needs to be enabled.
+Support for execveat syscall was implemented in 55bbe4 and is available
+since QEMU 8.0.0. It relies on host execveat, which is widely available
+on most of Linux kernels today.
 
-The initial change wrote just the lower 8 bit, leaving parts of the "Bus
-Master Interface Base Address" address at bit 15:4 unchanged.
+However, this change breaks qemu-user self emulation, if "host" qemu
+version is less than 8.0.0. Indeed, it does not implement yet execveat.
+This strange use case happens with most of distribution today having
+binfmt support.
 
-Fixes: e6a71ae327 ("Add support for 82371FB (Step A1) and Improved support for 82371SB (Function 1)")
+With a concrete failing example:
+$ qemu-x86_64-7.2 qemu-x86_64-8.0 /bin/bash -c /bin/ls
+/bin/bash: line 1: /bin/ls: Function not implemented
+-> not implemented means execve returned ENOSYS
 
-Signed-off-by: Olaf Hering <olaf@aepfle.de>
-Reviewed-by: Bernhard Beschow <shentey@gmail.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20230712074721.14728-1-olaf@aepfle.de>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit 230dfd9257e92259876c113e58b5f0d22b056d2e)
+qemu-user-static 7.2 and 8.0 can be conveniently grabbed from debian
+packages qemu-user-static* [1].
+
+One usage of this is running wine-arm64 from linux-x64 (details [2]).
+This is by updating qemu embedded in docker image that we ran into this
+issue.
+
+The solution to update host qemu is not always possible. Either it's
+complicated or ask you to recompile it, or simply is not accessible
+(GitLab CI, GitHub Actions). Thus, it could be worth to implement execve
+without relying on execveat, which is the goal of this patch.
+
+This patch was tested with example presented in this commit message.
+
+[1] http://ftp.us.debian.org/debian/pool/main/q/qemu/
+[1] https://www.linaro.org/blog/emulate-windows-on-arm/
+
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+Message-Id: <20230705121023.973284-1-pierrick.bouvier@linaro.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+(cherry picked from commit 7a8d9f3a0e882df50681e40f09c29cfb4966ea2d)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/ide/piix.c b/hw/ide/piix.c
-index 41d60921e3..17ec304064 100644
---- a/hw/ide/piix.c
-+++ b/hw/ide/piix.c
-@@ -118,7 +118,7 @@ static void piix_ide_reset(DeviceState *dev)
-     pci_set_word(pci_conf + PCI_COMMAND, 0x0000);
-     pci_set_word(pci_conf + PCI_STATUS,
-                  PCI_STATUS_DEVSEL_MEDIUM | PCI_STATUS_FAST_BACK);
--    pci_set_byte(pci_conf + 0x20, 0x01);  /* BMIBA: 20-23h */
-+    pci_set_long(pci_conf + 0x20, 0x1);  /* BMIBA: 20-23h */
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index 0901884495..150d70633e 100644
+--- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -659,6 +659,7 @@ safe_syscall4(pid_t, wait4, pid_t, pid, int *, status, int, options, \
+ #endif
+ safe_syscall5(int, waitid, idtype_t, idtype, id_t, id, siginfo_t *, infop, \
+               int, options, struct rusage *, rusage)
++safe_syscall3(int, execve, const char *, filename, char **, argv, char **, envp)
+ safe_syscall5(int, execveat, int, dirfd, const char *, filename,
+               char **, argv, char **, envp, int, flags)
+ #if defined(TARGET_NR_select) || defined(TARGET_NR__newselect) || \
+@@ -8398,9 +8399,9 @@ static int do_openat(CPUArchState *cpu_env, int dirfd, const char *pathname, int
+     return safe_openat(dirfd, path(pathname), flags, mode);
  }
  
- static bool pci_piix_init_bus(PCIIDEState *d, unsigned i, Error **errp)
+-static int do_execveat(CPUArchState *cpu_env, int dirfd,
+-                       abi_long pathname, abi_long guest_argp,
+-                       abi_long guest_envp, int flags)
++static int do_execv(CPUArchState *cpu_env, int dirfd,
++                    abi_long pathname, abi_long guest_argp,
++                    abi_long guest_envp, int flags, bool is_execveat)
+ {
+     int ret;
+     char **argp, **envp;
+@@ -8479,11 +8480,14 @@ static int do_execveat(CPUArchState *cpu_env, int dirfd,
+         goto execve_efault;
+     }
+ 
++    const char *exe = p;
+     if (is_proc_myself(p, "exe")) {
+-        ret = get_errno(safe_execveat(dirfd, exec_path, argp, envp, flags));
+-    } else {
+-        ret = get_errno(safe_execveat(dirfd, p, argp, envp, flags));
++        exe = exec_path;
+     }
++    ret = is_execveat
++        ? safe_execveat(dirfd, exe, argp, envp, flags)
++        : safe_execve(exe, argp, envp);
++    ret = get_errno(ret);
+ 
+     unlock_user(p, pathname, 0);
+ 
+@@ -9022,9 +9026,9 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
+         return ret;
+ #endif
+     case TARGET_NR_execveat:
+-        return do_execveat(cpu_env, arg1, arg2, arg3, arg4, arg5);
++        return do_execv(cpu_env, arg1, arg2, arg3, arg4, arg5, true);
+     case TARGET_NR_execve:
+-        return do_execveat(cpu_env, AT_FDCWD, arg1, arg2, arg3, 0);
++        return do_execv(cpu_env, AT_FDCWD, arg1, arg2, arg3, 0, false);
+     case TARGET_NR_chdir:
+         if (!(p = lock_user_string(arg1)))
+             return -TARGET_EFAULT;
 -- 
 2.39.2
 
