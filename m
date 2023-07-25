@@ -2,68 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 371DC760E97
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 11:25:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A8C4760F77
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 11:38:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOEGg-0003V2-EC; Tue, 25 Jul 2023 05:23:46 -0400
+	id 1qOESt-0005s5-Lw; Tue, 25 Jul 2023 05:36:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qOEGd-0003UT-FS
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 05:23:43 -0400
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ id 1qOESg-0005rS-7s
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 05:36:11 -0400
+Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qOEGb-00044E-U2
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 05:23:43 -0400
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-5221c6a2d3dso4472363a12.3
- for <qemu-devel@nongnu.org>; Tue, 25 Jul 2023 02:23:41 -0700 (PDT)
+ id 1qOESd-0006ZN-Bm
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 05:36:09 -0400
+Received: by mail-lf1-x133.google.com with SMTP id
+ 2adb3069b0e04-4f4b2bc1565so8097776e87.2
+ for <qemu-devel@nongnu.org>; Tue, 25 Jul 2023 02:36:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690277020; x=1690881820;
+ d=linaro.org; s=google; t=1690277763; x=1690882563;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=gOBnavCrna6JWt2dtfiq1zNbqJHIn7EWAHHgfrt55Es=;
- b=g8yIqMXjkOl1QcpGTWaXMJj7rHs3odpxOVlnazSQaKzFItMd8SDMNLJGsCIXza6UAf
- y3RbVqMFiobEVWlGx2WKlOiXwjXiy3DLfxMsrMI40KKnL6GC2iKEjosfPo+5UtWF6MTP
- I7sliRjiGl65nDC4QPSp4EsNFPEfxPQH+KDrwBRHf6j2tI/k66OXyRRJvGTHdAfYKK5M
- N5c22ota0jmMV9ClfHvaubhd/E7zUT3mhZk900d7l97XPrOd9jIxl/L0pUMbERUnX3cb
- GnUIPX+Jdg/zU74eSq8NHnKKBK+ol8oq4BeHhutmk8QtyAeaB7lc7dhK2HNEKOhtQeY/
- u9jw==
+ bh=OAbwSATIkqUeAcjuLuwJuiCVeDFy28mcRLEHFXvnLQM=;
+ b=BZA+8FPjs9LkgW/6RwaUVDno0VlM3JUa+Oa4gXA+s2q9kL92GhBwq3nIFRt4ZYORgy
+ d7VNPjjc2a/fPHoUKVO5sILTH5yv9hB+vTUJUvQUcy9t9req3Ik8lfATiz0I0ugnV7M8
+ nmWzS1LGz+ODRAJwuFrhGXQ8gp63VuNOsmfDpIV7eZ/4Bg7bxegf5ARJFMUV0sG8aUYt
+ 2Fiq3ChKg1QX7crpnQB1667e70MAeVRBsJB1Wj1+eE2g/78Bbxh5GRQIqy14b9kDsoE1
+ hVTyS6AzNF6E0IdzGRzejIIJUAFFlUvT7MH1kuh6OOFQHO3Rw51xbeRtH4OmcDbp2EyH
+ Tz0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690277020; x=1690881820;
+ d=1e100.net; s=20221208; t=1690277763; x=1690882563;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=gOBnavCrna6JWt2dtfiq1zNbqJHIn7EWAHHgfrt55Es=;
- b=DpRjSUSwJwiX4EccaNW9/2UpXtQNG7VBhquj4RPN4cHxSbwVKnfxdg7A5GWQhyDrg9
- nlASG2ufNCtyBgsTnT+k/fKCvlgInzY276sZyHqr+FgAjMsWYbF4EZlI+nv8ahI/+eBI
- I7jN3sW6OGuOwGjnxdogSM/KD7tY+C8PifGD08rpt+Y2rY9koSXTPAjfWBllZ5ofvXSk
- zbi4KWuCOf26g4K9LIpALGNdI2vPIhc6iE3oRqZCpgw4/aoWkK3r7348WVZjEpVqwMIT
- 7vpAEEMzCKb+yAymLVBizuGR5bZouZFsDPPy7ovq9GyksQaD1nubXWyZh+SB64ZhB0+Q
- ks1Q==
-X-Gm-Message-State: ABy/qLZcIdi27vLI8vt0hozTxVPUWO9HaKDnoIcu5pz1dNE/MlVuCFJy
- 1FmgW/gARL5i00izBn2uYIU1RwQXFaCWDffaSi8mMQ==
-X-Google-Smtp-Source: APBJJlHXmAdkpjc3afbt66Gm9ytykvb4NuGIkSSqILbBVQ4zeQSq0r1V2Nb0bggempCdpp+fQyE2WZtDTgWKcD8CqdI=
-X-Received: by 2002:a05:6402:744:b0:522:37da:7920 with SMTP id
- p4-20020a056402074400b0052237da7920mr3515847edy.12.1690277019516; Tue, 25 Jul
- 2023 02:23:39 -0700 (PDT)
+ bh=OAbwSATIkqUeAcjuLuwJuiCVeDFy28mcRLEHFXvnLQM=;
+ b=J0psljz0I9XGODJ2BEIS49PM45+717iRNv7UhpnvPcx+vZJ8LYh5j18r+z+itTXNy3
+ 3nelSV+E8I+GZEr5WHlrBuXbAh62h/zuGL0MUJJPdFT6PFEpj8ck7jFtqzzJTBVcBiZ0
+ 0lcI/icsvfASc7sjsd+erJPV8hQPi20ERawCMtEjISid429/7SBwMgrQcxkJFJI0roeT
+ 5JO6Ez9tBqHYkBDYiver5N0taZ08BKkmNhwl4cF2x276xkf5ghK91hqhgFhDgeOqYoaO
+ risJin/zoiAh+rBKUHm4XHeEcgWcXM2xyr7HnhYLLUJrPgZIHb32G7R3BgedkmE0v48m
+ MeiQ==
+X-Gm-Message-State: ABy/qLa6+aMtLm7ULCRNI3ejZ95xVFl2QSS0tMOoAjwPpnzo/Cwp2Z3c
+ 0eH6D1yMeqk59WlJhvJT8pkuC7+tpY2qn4W7UD/xSdrPh5EUXCss
+X-Google-Smtp-Source: APBJJlFexq7SbqyKojxz2Yp+rQaeBrFlYMn/Gkj/G7iTVTWwb8qts1v/xBnVhPmBoe7WCXZ+TYJ1xL+aN2e0LHZehOI=
+X-Received: by 2002:a05:6512:39d0:b0:4fb:9631:4bb with SMTP id
+ k16-20020a05651239d000b004fb963104bbmr8027779lfu.11.1690277762801; Tue, 25
+ Jul 2023 02:36:02 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230714232659.76434-1-chris@laplante.io>
- <CAFEAcA_gGia=ckyv4=XHNX4=VHJJ=rmVGXQbdnOAGv5h1rzLzw@mail.gmail.com>
- <uJ83qRpjm3C76JRjI4OOm2NAz3uF-RDUa2WL8sp3ftAzoH16KDfxZhwxsqxqxrHTfXHKkZZXy0JY6UUpq7nD0jfYEUtYM_K340O6E6BFwJY=@laplante.io>
-In-Reply-To: <uJ83qRpjm3C76JRjI4OOm2NAz3uF-RDUa2WL8sp3ftAzoH16KDfxZhwxsqxqxrHTfXHKkZZXy0JY6UUpq7nD0jfYEUtYM_K340O6E6BFwJY=@laplante.io>
+References: <20230725080630.1083-1-dinglimin@cmss.chinamobile.com>
+ <20230725090039.1271-1-dinglimin@cmss.chinamobile.com>
+ <106cf02f-f746-e216-22be-8f7594028695@tls.msk.ru>
+In-Reply-To: <106cf02f-f746-e216-22be-8f7594028695@tls.msk.ru>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 25 Jul 2023 10:23:28 +0100
-Message-ID: <CAFEAcA_HWapg170-7yu2cZ-ePTe4PaX-tWyL7FJzENgig=dq5g@mail.gmail.com>
-Subject: Re: [PATCH 0/6] Add nRF51 DETECT signal with test
-To: Chris Laplante <chris@laplante.io>
-Cc: qemu-devel@nongnu.org, Joel Stanley <joel@jms.id.au>, qemu-arm@nongnu.org
+Date: Tue, 25 Jul 2023 10:35:51 +0100
+Message-ID: <CAFEAcA-ErMrk60uZMu8M-0G15aTvhOZsYsvJD1F-YbLGOFDBYA@mail.gmail.com>
+Subject: Re: [PATCH] semihosting/uaccess.c: Replaced a malloc call with
+ g_malloc.
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: dinglimin <dinglimin@cmss.chinamobile.com>, richard.henderson@linaro.org, 
+ qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x529.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::133;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x133.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -86,43 +88,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 25 Jul 2023 at 04:25, Chris Laplante <chris@laplante.io> wrote:
+On Tue, 25 Jul 2023 at 10:13, Michael Tokarev <mjt@tls.msk.ru> wrote:
 >
-> Hi Peter,
+> 25.07.2023 12:00, dinglimin wrote:
+> > Replaced a call to malloc() and its respective call to free() with g_malloc() and g_free().
+> >
+> > Signed-off-by: dinglimin <dinglimin@cmss.chinamobile.com>
+> >
+> > V1 -> V2:if cpu_memory_rw_debug failed, still need to set p=NULL
+> > ---
+> >   semihosting/uaccess.c | 4 ++--
+> >   1 file changed, 2 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/semihosting/uaccess.c b/semihosting/uaccess.c
+> > index 8018828069..2ac754cdb6 100644
+> > --- a/semihosting/uaccess.c
+> > +++ b/semihosting/uaccess.c
+> > @@ -14,10 +14,10 @@
+> >   void *softmmu_lock_user(CPUArchState *env, target_ulong addr,
+> >                           target_ulong len, bool copy)
+> >   {
+> > -    void *p = malloc(len);
+> > +    void *p = g_malloc(len);
+> >       if (p && copy) {
+> >           if (cpu_memory_rw_debug(env_cpu(env), addr, p, len, 0)) {
+> > -            free(p);
+> > +            g_free(p);
+> >               p = NULL;
+> >           }
+> >       }
 >
-> > Thanks for this patchset and especially for the work
-> > improving the qtest infrastructure. I've given my
-> > comments on the different patches, and in some cases
-> > reviewed-by tags. (Where I've given one of those, you should
-> > add it to your commit message for the relevant patch under
-> > your Signed-off-by: line, so that when you send the version
-> > 2 of the patchset we know that those parts are already
-> > reviewed and don't need re-examining. If I said "make
-> > some change; otherwise Reviewed-by" that means "make
-> > that minor change, and then you can add the tag, etc".)
+> Ok, that was the obvious part.  Now a next one, also obvious.
 >
-> Thanks very much for the feedback and help!
->
-> > Do you have the parts of this feature that use the DETECT
-> > signal in the POWER device, or have you not written those
-> > yet ? If you have them, you could send those too in v2.
->
-> That part is halfway done, so I will work on finishing it before submitting v2. Two questions regarding that (to potentially save us a v3):
->
-> 1. The nRF51 POWER device overlaps with the memory maps of the CLOCK and MPU devices. So I have created a CPM (CLOCK, POWER, MPU) device in hw/misc. Does that sound reasonable naming-wise?
+> You changed lock_user to use g_malloc(), but unlock_user
+> still uses free() instead of g_free().  At the very least
+> the other one needs to be changed too.  And I'd say the callers
+> should be analyzed to ensure they don't free() the result
+> (they should not, think it is a bug if they do).
 
-Yes, I think from QEMU's point of view the massive register
-overlap makes them a single device. The name sounds OK
-(give it the same kind of nrf51 prefix the rng device has).
+We can be pretty sure the callers don't free() the returned
+value, because the calling code is also used in user-mode,
+where the lock/unlock implementation is entirely different
+and calling free() on the pointer will not work.
 
-> 2. I also have some implementations for pieces of CLOCK, namely the HFCLKSTART/HFCLKSTOP events and HFCLKSTARTED event. Should I include that in this patch series, or would you prefer it in a separate series? It is unrelated to DETECT and POWER.
+> lock_user/unlock_user (which #defines to softmmu_lock_user/
+> softmmu_unlock_user in softmmu mode) is used a *lot*.
 
-If you think they're ready to go in, and it doesn't
-make the series more than about 12-15 patches long,
-you can put them on the end of the series. If the
-patchset is starting to get a bit big then it might
-be easier to get the POWER/DETECT parts reviewed
-first.
+The third part here, is that g_malloc() does not ever
+fail -- it will abort() on out of memory. However
+the code here is still handling g_malloc() returning NULL.
+The equivalent for "we expect this might fail" (which we want
+here, because the guest is passing us the length of memory
+to try to allocate) is g_try_malloc().
 
 thanks
 -- PMM
