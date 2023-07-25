@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B3BF7620ED
+	by mail.lfdr.de (Postfix) with ESMTPS id B05257620EE
 	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 20:05:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOMO4-0002uq-Ey; Tue, 25 Jul 2023 14:03:56 -0400
+	id 1qOMO1-0002pR-CJ; Tue, 25 Jul 2023 14:03:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qOMO2-0002s4-1J
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 14:03:54 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qOMNz-0002lG-E9
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 14:03:51 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qOMNw-00014f-1A
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 14:03:53 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qOMNu-00013p-5S
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 14:03:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690308226;
+ s=mimecast20190719; t=1690308225;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=3dCGafAZC4fFvm0cUoPwpMW44ojyHkgV3OMH9yftIuw=;
- b=PXdjebhqXgIWy4uEyGkx8cBIF5upthUZ97X859QVV6DVgte1LNAW0BnEc8mLXbuoZT0COk
- WZqvCzvnX7b2i/W3I6xTt6RLAN0eaM1FIZoZh8lSeoyquq6tYGTKChh23gWlRh2yha/cwI
- +/zZ1lEu9au7Tq+NwBhe2lntKZ8PSrE=
+ bh=wJbYzUAiuY1J+AToZ2VcL3RWzbIvIazqmZJCElkyCBk=;
+ b=Y12JhAQH0iECzr5SnBTXf448MeCNn08Oc3XbZXK0HrCop+mqOo9W3bi1qJtETGk2ZUCiEp
+ /WisDP+Dm/pnVBBmhdp9NX1hzTAsBkbxJUiT3D7yO61Ri7xsWtyu9CNCMPMatVa/GQ/GSg
+ 2Hz0HdGU5c4A0qEVVVuXeP66nSGj9rM=
 Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-48-qYXX55CzP6eu68CgZPrMyA-1; Tue, 25 Jul 2023 14:03:42 -0400
-X-MC-Unique: qYXX55CzP6eu68CgZPrMyA-1
+ us-mta-493-wfSkgp-lNLSEv-k1FSlbjg-1; Tue, 25 Jul 2023 14:03:43 -0400
+X-MC-Unique: wfSkgp-lNLSEv-k1FSlbjg-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
  [10.11.54.7])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2912E280016C;
- Tue, 25 Jul 2023 18:03:42 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3102B3C11A03;
+ Tue, 25 Jul 2023 18:03:43 +0000 (UTC)
 Received: from scv.redhat.com (unknown [10.22.8.145])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 8739A1454150;
- Tue, 25 Jul 2023 18:03:41 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 373411454150;
+ Tue, 25 Jul 2023 18:03:42 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
@@ -52,15 +52,15 @@ Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Beraldo Leal <bleal@redhat.com>, Daniel Berrange <berrange@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  "Michael S. Tsirkin" <mst@redhat.com>, John Snow <jsnow@redhat.com>
-Subject: [PATCH v2 5/6] python/machine: use socketpair() for qtest connection
-Date: Tue, 25 Jul 2023 14:03:36 -0400
-Message-ID: <20230725180337.2937292-6-jsnow@redhat.com>
+Subject: [PATCH v2 6/6] python/machine: remove unused sock_dir argument
+Date: Tue, 25 Jul 2023 14:03:37 -0400
+Message-ID: <20230725180337.2937292-7-jsnow@redhat.com>
 In-Reply-To: <20230725180337.2937292-1-jsnow@redhat.com>
 References: <20230725180337.2937292-1-jsnow@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -85,128 +85,193 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Like the QMP and console sockets, begin using socketpairs for the qtest
-connection, too. After this patch, we'll be able to remove the vestigial
-sock_dir argument, but that cleanup is best done in its own patch.
+By using a socketpair for all of the sockets managed by the VM class and
+its extensions, we don't need the sock_dir argument anymore, so remove
+it.
+
+We only added this argument so that we could specify a second, shorter
+temporary directory for cases where the temp/log dirs were "too long" as
+a socket name on macOS. We don't need it for this class now. In one
+case, avocado testing takes over responsibility for creating an
+appropriate sockdir.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- python/qemu/machine/qtest.py | 49 +++++++++++++++++++++++++++++-------
- 1 file changed, 40 insertions(+), 9 deletions(-)
+ python/qemu/machine/machine.py             | 18 ------------------
+ python/qemu/machine/qtest.py               |  5 +----
+ tests/avocado/acpi-bits.py                 |  5 +----
+ tests/avocado/avocado_qemu/__init__.py     |  2 +-
+ tests/avocado/machine_aspeed.py            |  5 ++++-
+ tests/qemu-iotests/iotests.py              |  2 +-
+ tests/qemu-iotests/tests/copy-before-write |  3 +--
+ 7 files changed, 9 insertions(+), 31 deletions(-)
 
-diff --git a/python/qemu/machine/qtest.py b/python/qemu/machine/qtest.py
-index 1c46138bd0..8180d3ab01 100644
---- a/python/qemu/machine/qtest.py
-+++ b/python/qemu/machine/qtest.py
-@@ -24,6 +24,7 @@
-     Optional,
-     Sequence,
-     TextIO,
-+    Tuple,
- )
+diff --git a/python/qemu/machine/machine.py b/python/qemu/machine/machine.py
+index 09f214c95c..1dd2de6da8 100644
+--- a/python/qemu/machine/machine.py
++++ b/python/qemu/machine/machine.py
+@@ -127,7 +127,6 @@ def __init__(self,
+                  name: Optional[str] = None,
+                  base_temp_dir: str = "/var/tmp",
+                  monitor_address: Optional[SocketAddrT] = None,
+-                 sock_dir: Optional[str] = None,
+                  drain_console: bool = False,
+                  console_log: Optional[str] = None,
+                  log_dir: Optional[str] = None,
+@@ -141,7 +140,6 @@ def __init__(self,
+         @param name: prefix for socket and log file names (default: qemu-PID)
+         @param base_temp_dir: default location where temp files are created
+         @param monitor_address: address for QMP monitor
+-        @param sock_dir: where to create socket (defaults to base_temp_dir)
+         @param drain_console: (optional) True to drain console socket to buffer
+         @param console_log: (optional) path to console log file
+         @param log_dir: where to create and keep log files
+@@ -163,7 +161,6 @@ def __init__(self,
+             Tuple[socket.socket, socket.socket]] = None
+         self._temp_dir: Optional[str] = None
+         self._base_temp_dir = base_temp_dir
+-        self._sock_dir = sock_dir
+         self._log_dir = log_dir
  
- from qemu.qmp import SocketAddrT
-@@ -38,23 +39,41 @@ class QEMUQtestProtocol:
-     :param address: QEMU address, can be either a unix socket path (string)
-                     or a tuple in the form ( address, port ) for a TCP
-                     connection
--    :param server: server mode, listens on the socket (bool)
-+    :param sock: An existing socket can be provided as an alternative to
-+                 an address. One of address or sock must be provided.
-+    :param server: server mode, listens on the socket. Only meaningful
-+                   in conjunction with an address and not an existing
-+                   socket.
-+
-     :raise socket.error: on socket connection errors
- 
-     .. note::
-        No connection is established by __init__(), this is done
-        by the connect() or accept() methods.
-     """
--    def __init__(self, address: SocketAddrT,
-+    def __init__(self,
-+                 address: Optional[SocketAddrT] = None,
-+                 sock: Optional[socket.socket] = None,
-                  server: bool = False):
-+        if address is None and sock is None:
-+            raise ValueError("Either 'address' or 'sock' must be specified")
-+        if address is not None and sock is not None:
-+            raise ValueError(
-+                "Either 'address' or 'sock' must be specified, but not both")
-+        if sock is not None and server:
-+            raise ValueError("server=True is meaningless when passing socket")
-+
-         self._address = address
--        self._sock = self._get_sock()
-+        self._sock = sock or self._get_sock()
-         self._sockfile: Optional[TextIO] = None
-+
-         if server:
-+            assert self._address is not None
-             self._sock.bind(self._address)
-             self._sock.listen(1)
- 
-     def _get_sock(self) -> socket.socket:
-+        assert self._address is not None
-         if isinstance(self._address, tuple):
-             family = socket.AF_INET
-         else:
-@@ -67,7 +86,8 @@ def connect(self) -> None:
- 
-         @raise socket.error on socket connection errors
-         """
--        self._sock.connect(self._address)
-+        if self._address is not None:
-+            self._sock.connect(self._address)
-         self._sockfile = self._sock.makefile(mode='r')
- 
-     def accept(self) -> None:
-@@ -127,29 +147,40 @@ def __init__(self,
-                          base_temp_dir=base_temp_dir,
-                          sock_dir=sock_dir, qmp_timer=qmp_timer)
-         self._qtest: Optional[QEMUQtestProtocol] = None
--        self._qtest_path = os.path.join(sock_dir, name + "-qtest.sock")
-+        self._qtest_sock_pair: Optional[
-+            Tuple[socket.socket, socket.socket]] = None
- 
-     @property
-     def _base_args(self) -> List[str]:
-         args = super()._base_args
-+        assert self._qtest_sock_pair is not None
-+        fd = self._qtest_sock_pair[0].fileno()
-         args.extend([
--            '-qtest', f"unix:path={self._qtest_path}",
-+            '-chardev', f"socket,id=qtest,fd={fd}",
-+            '-qtest', 'chardev:qtest',
-             '-accel', 'qtest'
-         ])
-         return args
+         self._monitor_address = monitor_address
+@@ -189,9 +186,6 @@ def __init__(self,
+         self._console_index = 0
+         self._console_set = False
+         self._console_device_type: Optional[str] = None
+-        self._console_address = os.path.join(
+-            self.sock_dir, f"{self._name}.con"
+-        )
+         self._console_socket: Optional[socket.socket] = None
+         self._remove_files: List[str] = []
+         self._user_killed = False
+@@ -334,9 +328,6 @@ def args(self) -> List[str]:
+         return self._args
  
      def _pre_launch(self) -> None:
-+        self._qtest_sock_pair = socket.socketpair()
-+        os.set_inheritable(self._qtest_sock_pair[0].fileno(), True)
-         super()._pre_launch()
--        self._qtest = QEMUQtestProtocol(self._qtest_path, server=True)
-+        self._qtest = QEMUQtestProtocol(sock=self._qtest_sock_pair[1])
+-        if self._console_set:
+-            self._remove_files.append(self._console_address)
+-
+         if self._qmp_set:
+             if self._monitor_address is None:
+                 self._sock_pair = socket.socketpair()
+@@ -918,15 +909,6 @@ def temp_dir(self) -> str:
+                                               dir=self._base_temp_dir)
+         return self._temp_dir
  
-     def _post_launch(self) -> None:
-         assert self._qtest is not None
-         super()._post_launch()
--        self._qtest.accept()
-+        if self._qtest_sock_pair:
-+            self._qtest_sock_pair[0].close()
-+        self._qtest.connect()
+-    @property
+-    def sock_dir(self) -> str:
+-        """
+-        Returns the directory used for sockfiles by this machine.
+-        """
+-        if self._sock_dir:
+-            return self._sock_dir
+-        return self.temp_dir
+-
+     @property
+     def log_dir(self) -> str:
+         """
+diff --git a/python/qemu/machine/qtest.py b/python/qemu/machine/qtest.py
+index 8180d3ab01..4f5ede85b2 100644
+--- a/python/qemu/machine/qtest.py
++++ b/python/qemu/machine/qtest.py
+@@ -135,17 +135,14 @@ def __init__(self,
+                  wrapper: Sequence[str] = (),
+                  name: Optional[str] = None,
+                  base_temp_dir: str = "/var/tmp",
+-                 sock_dir: Optional[str] = None,
+                  qmp_timer: Optional[float] = None):
+         # pylint: disable=too-many-arguments
+ 
+         if name is None:
+             name = "qemu-%d" % os.getpid()
+-        if sock_dir is None:
+-            sock_dir = base_temp_dir
+         super().__init__(binary, args, wrapper=wrapper, name=name,
+                          base_temp_dir=base_temp_dir,
+-                         sock_dir=sock_dir, qmp_timer=qmp_timer)
++                         qmp_timer=qmp_timer)
+         self._qtest: Optional[QEMUQtestProtocol] = None
+         self._qtest_sock_pair: Optional[
+             Tuple[socket.socket, socket.socket]] = None
+diff --git a/tests/avocado/acpi-bits.py b/tests/avocado/acpi-bits.py
+index 3ed286dcbd..bc2b29671e 100644
+--- a/tests/avocado/acpi-bits.py
++++ b/tests/avocado/acpi-bits.py
+@@ -92,17 +92,14 @@ def __init__(self,
+                  base_temp_dir: str = "/var/tmp",
+                  debugcon_log: str = "debugcon-log.txt",
+                  debugcon_addr: str = "0x403",
+-                 sock_dir: Optional[str] = None,
+                  qmp_timer: Optional[float] = None):
+         # pylint: disable=too-many-arguments
+ 
+         if name is None:
+             name = "qemu-bits-%d" % os.getpid()
+-        if sock_dir is None:
+-            sock_dir = base_temp_dir
+         super().__init__(binary, args, wrapper=wrapper, name=name,
+                          base_temp_dir=base_temp_dir,
+-                         sock_dir=sock_dir, qmp_timer=qmp_timer)
++                         qmp_timer=qmp_timer)
+         self.debugcon_log = debugcon_log
+         self.debugcon_addr = debugcon_addr
+         self.base_temp_dir = base_temp_dir
+diff --git a/tests/avocado/avocado_qemu/__init__.py b/tests/avocado/avocado_qemu/__init__.py
+index 33090903f1..cfdaf9dab7 100644
+--- a/tests/avocado/avocado_qemu/__init__.py
++++ b/tests/avocado/avocado_qemu/__init__.py
+@@ -322,7 +322,7 @@ def require_multiprocess(self):
+     def _new_vm(self, name, *args):
+         self._sd = tempfile.TemporaryDirectory(prefix="qemu_")
+         vm = QEMUMachine(self.qemu_bin, base_temp_dir=self.workdir,
+-                         sock_dir=self._sd.name, log_dir=self.logdir)
++                         log_dir=self.logdir)
+         self.log.debug('QEMUMachine "%s" created', name)
+         self.log.debug('QEMUMachine "%s" temp_dir: %s', name, vm.temp_dir)
+         self.log.debug('QEMUMachine "%s" log_dir: %s', name, vm.log_dir)
+diff --git a/tests/avocado/machine_aspeed.py b/tests/avocado/machine_aspeed.py
+index 724ee72c02..3e8a3b0da7 100644
+--- a/tests/avocado/machine_aspeed.py
++++ b/tests/avocado/machine_aspeed.py
+@@ -247,7 +247,10 @@ def test_arm_ast2600_evb_buildroot_tpm(self):
+         image_path = self.fetch_asset(image_url, asset_hash=image_hash,
+                                       algorithm='sha256')
+ 
+-        socket = os.path.join(self.vm.sock_dir, 'swtpm-socket')
++        # force creation of VM object, which also defines self._sd
++        vm = self.vm
++
++        socket = os.path.join(self._sd.name, 'swtpm-socket')
+ 
+         subprocess.run(['swtpm', 'socket', '-d', '--tpm2',
+                         '--tpmstate', f'dir={self.vm.temp_dir}',
+diff --git a/tests/qemu-iotests/iotests.py b/tests/qemu-iotests/iotests.py
+index ef66fbd62b..145c682713 100644
+--- a/tests/qemu-iotests/iotests.py
++++ b/tests/qemu-iotests/iotests.py
+@@ -823,7 +823,7 @@ def __init__(self, path_suffix=''):
+         super().__init__(qemu_prog, qemu_opts, wrapper=wrapper,
+                          name=name,
+                          base_temp_dir=test_dir,
+-                         sock_dir=sock_dir, qmp_timer=timer)
++                         qmp_timer=timer)
+         self._num_drives = 0
  
      def _post_shutdown(self) -> None:
-+        if self._qtest_sock_pair:
-+            self._qtest_sock_pair[0].close()
-+            self._qtest_sock_pair[1].close()
-+            self._qtest_sock_pair = None
-         super()._post_shutdown()
--        self._remove_if_exists(self._qtest_path)
+diff --git a/tests/qemu-iotests/tests/copy-before-write b/tests/qemu-iotests/tests/copy-before-write
+index 2ffe092b31..d3987db942 100755
+--- a/tests/qemu-iotests/tests/copy-before-write
++++ b/tests/qemu-iotests/tests/copy-before-write
+@@ -44,8 +44,7 @@ class TestCbwError(iotests.QMPTestCase):
  
-     def qtest(self, cmd: str) -> str:
-         """
+         opts = ['-nodefaults', '-display', 'none', '-machine', 'none']
+         self.vm = QEMUMachine(iotests.qemu_prog, opts,
+-                              base_temp_dir=iotests.test_dir,
+-                              sock_dir=iotests.sock_dir)
++                              base_temp_dir=iotests.test_dir)
+         self.vm.launch()
+ 
+     def do_cbw_error(self, on_cbw_error):
 -- 
 2.41.0
 
