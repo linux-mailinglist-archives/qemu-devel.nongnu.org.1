@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC2A87621A1
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 20:40:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22C8E7621B8
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 20:43:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOMx9-0000UC-Fx; Tue, 25 Jul 2023 14:40:11 -0400
+	id 1qOMxD-0000VQ-9d; Tue, 25 Jul 2023 14:40:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <fan.ni@samsung.com>)
- id 1qOMwz-0000SW-2F
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 14:40:01 -0400
-Received: from mailout1.w2.samsung.com ([211.189.100.11])
+ id 1qOMx1-0000Ta-Ln
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 14:40:05 -0400
+Received: from mailout2.w2.samsung.com ([211.189.100.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <fan.ni@samsung.com>)
- id 1qOMwx-0000hX-6Z
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 14:40:00 -0400
-Received: from uscas1p1.samsung.com (unknown [182.198.245.206])
- by mailout1.w2.samsung.com (KnoxPortal) with ESMTP id
- 20230725183957usoutp01386a59245c416eb4887c2a2ab995ff0d~1MFnKlaFM1107111071usoutp01t;
+ id 1qOMwx-0000hU-Nt
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 14:40:03 -0400
+Received: from uscas1p2.samsung.com (unknown [182.198.245.207])
+ by mailout2.w2.samsung.com (KnoxPortal) with ESMTP id
+ 20230725183957usoutp026402224fe014bd2558dcb703be77d9f2~1MFnGVPaO1493014930usoutp025;
  Tue, 25 Jul 2023 18:39:57 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w2.samsung.com
- 20230725183957usoutp01386a59245c416eb4887c2a2ab995ff0d~1MFnKlaFM1107111071usoutp01t
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w2.samsung.com
+ 20230725183957usoutp026402224fe014bd2558dcb703be77d9f2~1MFnGVPaO1493014930usoutp025
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
  s=mail20170921; t=1690310397;
- bh=378aU1/0ie9wyBAWxyGSYcYy2mOtEBM2RX8oNqSnjj4=;
+ bh=4zHhiX+VKvsm4sZJl9tl93+G8ban/i2aXGty2+poNFg=;
  h=From:To:CC:Subject:Date:In-Reply-To:References:From;
- b=BpOYCvsYNGSfflipjLoaWrzqRrbHpIfIj/sw4BNgJ4nYioGESaJNyj3ipzAgqhnp0
- VCMfgiYdgnKYlxfr3ZoIJSypbyoyLJmnwVlUsQmNLdrxp/B8WycmkJYTLNJQot2EAQ
- BR0YUHmXctqRD8aXKk9+y78FKb9Tpjv8bzD5L1iI=
-Received: from ussmges3new.samsung.com (u112.gpu85.samsung.co.kr
- [203.254.195.112]) by uscas1p2.samsung.com (KnoxPortal) with ESMTP id
- 20230725183957uscas1p29cab1dc7eab27d69683f931aa08285e5~1MFnAQJZs1580215802uscas1p24;
+ b=iVAx0/9RcpLhBXX+yfLPsDR5hbgcwVTBfCeDQw8InbD5RD0Qelkdgr+AvVe72F7TA
+ NCXPOdABavQBm8U0OHYnLar+DUShPyei528+GXqQq/FOvS7K+XfOUHhFzmIAiISbwL
+ gsow8v63EAXEII83HHtBoJXin/LSgjXVt9FMbJhM=
+Received: from ussmges2new.samsung.com (u111.gpu85.samsung.co.kr
+ [203.254.195.111]) by uscas1p1.samsung.com (KnoxPortal) with ESMTP id
+ 20230725183957uscas1p16fd7936ec77be6b2ccc8b60bc1f08eef~1MFm4GIwg0903709037uscas1p1X;
  Tue, 25 Jul 2023 18:39:57 +0000 (GMT)
-Received: from uscas1p1.samsung.com ( [182.198.245.206]) by
- ussmges3new.samsung.com (USCPEMTA) with SMTP id 39.4E.62237.DF610C46; Tue,
- 25 Jul 2023 14:39:57 -0400 (EDT)
-Received: from ussmgxs1new.samsung.com (u89.gpu85.samsung.co.kr
- [203.254.195.89]) by uscas1p2.samsung.com (KnoxPortal) with ESMTP id
- 20230725183956uscas1p2008fba59779b70405c74d28a30e4fbaa~1MFmrSVuy1580215802uscas1p23;
+Received: from uscas1p2.samsung.com ( [182.198.245.207]) by
+ ussmges2new.samsung.com (USCPEMTA) with SMTP id A1.11.42611.CF610C46; Tue,
+ 25 Jul 2023 14:39:56 -0400 (EDT)
+Received: from ussmgxs2new.samsung.com (u91.gpu85.samsung.co.kr
+ [203.254.195.91]) by uscas1p1.samsung.com (KnoxPortal) with ESMTP id
+ 20230725183956uscas1p153242eb4b12cb9cb6529476b4e9058c4~1MFmiu1U-1453314533uscas1p14;
  Tue, 25 Jul 2023 18:39:56 +0000 (GMT)
-X-AuditID: cbfec370-b17ff7000001f31d-91-64c016fd67ca
-Received: from SSI-EX2.ssi.samsung.com ( [105.128.2.145]) by
- ussmgxs1new.samsung.com (USCPEXMTA) with SMTP id E2.54.38326.CF610C46; Tue,
+X-AuditID: cbfec36f-fb1ff7000000a673-41-64c016fcb123
+Received: from SSI-EX4.ssi.samsung.com ( [105.128.2.146]) by
+ ussmgxs2new.samsung.com (USCPEXMTA) with SMTP id B3.83.44215.CF610C46; Tue,
  25 Jul 2023 14:39:56 -0400 (EDT)
 Received: from SSI-EX2.ssi.samsung.com (105.128.2.227) by
- SSI-EX2.ssi.samsung.com (105.128.2.227) with Microsoft SMTP Server
+ SSI-EX4.ssi.samsung.com (105.128.2.229) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- 15.1.2375.24; Tue, 25 Jul 2023 11:39:56 -0700
+ 15.1.2375.24; Tue, 25 Jul 2023 11:39:55 -0700
 Received: from SSI-EX2.ssi.samsung.com ([105.128.2.227]) by
  SSI-EX2.ssi.samsung.com ([105.128.2.227]) with mapi id 15.01.2375.024; Tue,
- 25 Jul 2023 11:39:56 -0700
+ 25 Jul 2023 11:39:55 -0700
 From: Fan Ni <fan.ni@samsung.com>
 To: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
 CC: "jonathan.cameron@huawei.com" <jonathan.cameron@huawei.com>,
@@ -65,13 +65,13 @@ CC: "jonathan.cameron@huawei.com" <jonathan.cameron@huawei.com>,
  "dave@stgolabs.net" <dave@stgolabs.net>, "nmtadam.samsung@gmail.com"
  <nmtadam.samsung@gmail.com>, "nifan@outlook.com" <nifan@outlook.com>, Fan Ni
  <fan.ni@samsung.com>
-Subject: [Qemu PATCH v2 4/9] hw/mem/cxl_type3: Add support to create DC
- regions to type3 memory devices
-Thread-Topic: [Qemu PATCH v2 4/9] hw/mem/cxl_type3: Add support to create DC
- regions to type3 memory devices
-Thread-Index: AQHZvydoCwFjnM0gJE6KDcVANjM/Og==
+Subject: [Qemu PATCH v2 3/9] include/hw/cxl/cxl_device: Rename mem_size as
+ static_mem_size for type3 memory devices
+Thread-Topic: [Qemu PATCH v2 3/9] include/hw/cxl/cxl_device: Rename mem_size
+ as static_mem_size for type3 memory devices
+Thread-Index: AQHZvydogN6RnRodckK9r+0ZvWb2uQ==
 Date: Tue, 25 Jul 2023 18:39:55 +0000
-Message-ID: <20230725183939.2741025-5-fan.ni@samsung.com>
+Message-ID: <20230725183939.2741025-4-fan.ni@samsung.com>
 In-Reply-To: <20230725183939.2741025-1-fan.ni@samsung.com>
 Accept-Language: en-US
 Content-Language: en-US
@@ -83,52 +83,52 @@ Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-CFilter-Loop: Reflected
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrJKsWRmVeSWpSXmKPExsWy7djXc7p/xQ6kGCzayWLRfX4Do8X0qRcY
- LVbfXMNo0dD0iMWiZfd7Jov9T5+zWKxaeI3N4vysUywWzyc+Z7JYuuQRs8Xx3h0sDtweFyZP
- YPVY3ODqsXPWXXaPliNvgbw9L5k8Nn78z+7x5NpmJo/Nr18we0ydXe/xeZNcAFcUl01Kak5m
- WWqRvl0CV8ad5v9MBSskKhY1XGNsYNwt3MXIySEhYCLxa/N+dhBbSGAlo8SKpbxdjFxAdiuT
- xPIpv9lhik5f+8QOkVjLKLHxxwYWCOcTo0TD6wdMEM4yRok37b+YQVrYBBQl9nVtZwOxRQSM
- JY4dXsIMUsQs8JZF4uOaNywgCWGBTIl9246zQBTlSdz5uRzK1pO43r0HzGYRUJXoWLmDCcTm
- FbCUmPVkE9hQTgEriWdfZrOC2IwCYhLfT60Bq2EWEJe49WQ+E8TdghKLZu9hhrDFJP7tesgG
- YctLTP4xA8pWlLj//SU7RK+exI2pU9ggbG2JZQtfM0PsFZQ4OfMJC0S9pMTBFTeg7MmcEs/P
- 23QxcgDZLhL7/qpAhKUlrl6fygwRTpZY9ZELIpwjMX/JFqhOa4mFf9YzTWBUmYXk6FlIjpiF
- 5IhZSI5YwMiyilG8tLg4Nz212DgvtVyvODG3uDQvXS85P3cTIzC1nf53uGAH461bH/UOMTJx
- MB5ilOBgVhLhNYzZlyLEm5JYWZValB9fVJqTWnyIUZqDRUmc19D2ZLKQQHpiSWp2ampBahFM
- lomDU6qBacL8qHIrz7oZ3FcFWQLXenA+/LXnwJ7psjsndhp+uuckHLbx79aPtUFvXkjtcNFY
- v25u6sXfF9wPKS6dGNO3PWGXl0U529YrDOJRsyet+6e3Zff5Y2tF7Nl4J9VzXV4wYcv2VUl6
- 19aesV3rb6R2g2lK3rNQ0Vj/s1qGK5ckGUQwPVAzLjLc1jrjKnORhMC/7AMru2P3uF/p3d8k
- 2ni6/Yna6ZwkdtN7Sz5srfZvY9fcXflgnebPE61PNvPPyb7yqFLuRu7rO+cCnncbtP10rPp1
- SqdmXu/mYrWHYTHyGj61iT9X5AS+P8CQPq2KL/rk439Lf+SVHFdYmPJVeP+UnxvqJ/tkPJ5c
- nMH202fag5tKLMUZiYZazEXFiQDh7ToF3AMAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrOIsWRmVeSWpSXmKPExsWS2cA0UfeP2IEUg+ZbWhbd5zcwWkyfeoHR
- YvXNNYwWDU2PWCxadr9nstj/9DmLxaqF19gszs86xWLxfOJzJoulSx4xWxzv3cHiwO1xYfIE
- Vo/FDa4eO2fdZfdoOfIWyNvzkslj48f/7B5Prm1m8tj8+gWzx9TZ9R6fN8kFcEVx2aSk5mSW
- pRbp2yVwZdxp/s9UsEKiYlHDNcYGxt3CXYycHBICJhKnr31i72Lk4hASWM0ocXF3BxOE84lR
- om3RaWYIZxmjxPzFqxlBWtgEFCX2dW1nA7FFBIwljh1ewgxiMwu8ZpH4dpEbxBYWyJTYt+04
- SxcjB1BNnsT36/IQ5XoS17v3sIDYLAKqEh0rdzCB2LwClhKznmxiAykXArK3TowDCXMKWEk8
- +zKbFcRmFBCT+H5qDRPEJnGJW0/mM0E8ICCxZM95ZghbVOLl43+sELa8xOQfM9ggbEWJ+99f
- skP06kncmDqFDcLWlli28DUzxAmCEidnPmGBqJeUOLjiBssERolZSNbNQtI+C0n7LCTtCxhZ
- VjGKlxYX56ZXFBvmpZbrFSfmFpfmpesl5+duYgSmhdP/DkfuYDx666PeIUYmDsZDjBIczEoi
- vIYx+1KEeFMSK6tSi/Lji0pzUosPMUpzsCiJ8wq5TowXEkhPLEnNTk0tSC2CyTJxcEo1MImu
- a/q+c11zlr5K8+Poitnr9s2Uyr5sJf9iSXTPNsVSz8qF09SP8Uc9ei4ufXOjYvJlibxOXpGi
- l7u3+hTZKLot/bZZ+QnH5XNmqrNDvnQ7GHzLTm6wen5rj/f88h4zw8fzVq7fXjG3XvdrVPNs
- vpIaeU431onCr4TZq6auCYsO+fPEyF3U3MOap2fzPo/y5A/d872uyn14eucIZ5exFe9tCaZr
- OoWnzq1Z8f1UzAEfntWXlcLKu+VPhsdxH246W3CQq/65Sk1cpvt0prrUpL+VaTyhB/zXLo0P
- 37bwTbiI86yGL90fBV5m7d7Eey9OsTJHKvjfLu/jm2zjeh+9Kde7WsnmcfW9pkl1kfNMJZbi
- jERDLeai4kQAM1kx7HoDAAA=
-X-CMS-MailID: 20230725183956uscas1p2008fba59779b70405c74d28a30e4fbaa
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrJKsWRmVeSWpSXmKPExsWy7djX87p/xA6kGExqt7ToPr+B0WL61AuM
+ FqtvrmG0aGh6xGLRsvs9k8X+p89ZLFYtvMZmcX7WKRaL5xOfM1ksXfKI2eJ47w4WB26PC5Mn
+ sHosbnD12DnrLrtHy5G3QN6el0weGz/+Z/d4cm0zk8fm1y+YPabOrvf4vEkugCuKyyYlNSez
+ LLVI3y6BK2NjXztzQbNMxbsHp1kaGDeJdTFycEgImEjMe6XXxcjFISSwklFi+/QNrF2MnEBO
+ K5PE+WnKIDZIzfWXP9kgitYySvSu3cUEUfSJUWLRdDOIxDJGidbW02DdbAKKEvu6trOB2CIC
+ xhLHDi9hBiliFnjLIvFxzRsWkISwQKnE/Bm7WSCKqiQurFsP1aAn8XfXBbA4i4CqRMfKHWDb
+ eAUsJRYeWs0IYnMKWEk8+zIbbBmjgJjE91NrwGqYBcQlbj2ZzwRxtqDEotl7mCFsMYl/ux6y
+ QdjyEpN/zICyFSXuf3/JDtGrJ3Fj6hQ2CFtbYtnC18wQewUlTs58wgJRLylxcMUNFpBnJAQm
+ c0q0XzgNlXCRmLJ8MSOELS3x9+4yJkj4Jkus+sgFEc6RmL9kC1S5tcTCP+uZJjCqzEJy9iwk
+ Z8xCcsYsJGcsYGRZxSheWlycm55abJSXWq5XnJhbXJqXrpecn7uJEZjaTv87nL+D8fqtj3qH
+ GJk4GA8xSnAwK4nwGsbsSxHiTUmsrEotyo8vKs1JLT7EKM3BoiTOa2h7MllIID2xJDU7NbUg
+ tQgmy8TBKdXAtOLTFusnLayvHBzceEwvKv/nnROs/C32gKteZPGbPaxT+l6n7Tleuyvp6yTW
+ A9evs688eHH6jXDvLrkTWVqR1+U0mXx1D/l8mNvLnGZkqvLgYGa+BHvzgjdvBVy8HK41NO8R
+ 3bM0h1P4/78HbhatgdZm3K4uT0JX9TJ/mLwxgY119obYgx0Nk9jW3VphoFMU564b2tihEFit
+ Hmpvu/6tf5bN3AfHLlz0LNxt07ho5e+Lfkl8McLpL27fcfK7ckL+tpqMyTqxQmUjsRX6TL5q
+ 516vM/9/86V/lMv/T45xB56ZMXjOWyt3h7nQr7Xzo+/8iYtXOGS67WD8PIste9aX2dOWVziH
+ TgjMvqnDdlRaiaU4I9FQi7moOBEApGarQdwDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrOIsWRmVeSWpSXmKPExsWS2cA0SfeP2IEUgy0TlSy6z29gtJg+9QKj
+ xeqbaxgtGpoesVi07H7PZLH/6XMWi1ULr7FZnJ91isXi+cTnTBZLlzxitjjeu4PFgdvjwuQJ
+ rB6LG1w9ds66y+7RcuQtkLfnJZPHxo//2T2eXNvM5LH59Qtmj6mz6z0+b5IL4IrisklJzcks
+ Sy3St0vgytjY185c0CxT8e7BaZYGxk1iXYycHBICJhLXX/5k62Lk4hASWM0osezORjaQhJDA
+ J0aJ7W0uEIlljBKLDy9gB0mwCShK7OvaDlYkImAscezwEmYQm1ngNYvEt4vcILawQKnE/Bm7
+ WSBqqiRWdZ1jhrD1JP7uugAWZxFQlehYuYMJxOYVsJRYeGg1YxcjB9AyS4mtE+NAwpwCVhLP
+ vsxmBbEZBcQkvp9awwSxSlzi1pP5TBAPCEgs2XOeGcIWlXj5+B8rhC0vMfnHDDYIW1Hi/veX
+ 7BC9ehI3pk5hg7C1JZYtfM0McYKgxMmZT1gg6iUlDq64wTKBUWIWknWzkLTPQtI+C0n7AkaW
+ VYzipcXFuekVxUZ5qeV6xYm5xaV56XrJ+bmbGIFp4fS/w9E7GG/f+qh3iJGJg/EQowQHs5II
+ r2HMvhQh3pTEyqrUovz4otKc1OJDjNIcLErivC+jJsYLCaQnlqRmp6YWpBbBZJk4OKUamKZ9
+ Y3e5fdm9uTK/PHaeoOhLppwDU/2c74fMEf1h1XvdpHeFRIDT5RmT8rdrh21fukg399QP7flf
+ 7N7yScYtVL+5OvDSLc/X952UQxn7nlT52l4O7bdIlzumJymzcvmdwqLdpUF3A84uC11+s1W8
+ 3mJtY+1W52thdz/4GwVu33GkmHluY1n1DEUfmRPxacdSeebNUvRpu8qwy7Vgx6FinSkrFoXG
+ BbCvfZWTsJtFTvWcnIpS03PO6HXrnPa/vrDX8Po95g27dr4UqRS6e49ZmPPRstqk1e3HbuUF
+ +R3WaVv3q8OMbw2Xw1758vzySk41620Wi6PjTv4uUXlwtFgn38BRs3b+ss98Wb6eETFRSizF
+ GYmGWsxFxYkA1BosnnoDAAA=
+X-CMS-MailID: 20230725183956uscas1p153242eb4b12cb9cb6529476b4e9058c4
 CMS-TYPE: 301P
-X-CMS-RootMailID: 20230725183956uscas1p2008fba59779b70405c74d28a30e4fbaa
+X-CMS-RootMailID: 20230725183956uscas1p153242eb4b12cb9cb6529476b4e9058c4
 References: <20230725183939.2741025-1-fan.ni@samsung.com>
- <CGME20230725183956uscas1p2008fba59779b70405c74d28a30e4fbaa@uscas1p2.samsung.com>
-Received-SPF: pass client-ip=211.189.100.11; envelope-from=fan.ni@samsung.com;
- helo=mailout1.w2.samsung.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ <CGME20230725183956uscas1p153242eb4b12cb9cb6529476b4e9058c4@uscas1p1.samsung.com>
+Received-SPF: pass client-ip=211.189.100.12; envelope-from=fan.ni@samsung.com;
+ helo=mailout2.w2.samsung.com
+X-Spam_score_int: -70
+X-Spam_score: -7.1
+X-Spam_bar: -------
+X-Spam_report: (-7.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_HI=-5, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -148,96 +148,104 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Fan Ni <nifan@outlook.com>
 
-With the change, when setting up memory for type3 memory device, we can
-create DC regions
-A property 'num-dc-regions' is added to ct3_props to allow users to pass th=
-e
-number of DC regions to create. To make it easier, other region parameters
-like region base, length, and block size are hard coded. If needed,
-these parameters can be added easily.
-
-With the change, we can create DC regions with proper kernel side
-support as below:
-
-region=3D$(cat /sys/bus/cxl/devices/decoder0.0/create_dc_region)
-echo $region> /sys/bus/cxl/devices/decoder0.0/create_dc_region
-echo 256 > /sys/bus/cxl/devices/$region/interleave_granularity
-echo 1 > /sys/bus/cxl/devices/$region/interleave_ways
-
-echo "dc0" >/sys/bus/cxl/devices/decoder2.0/mode
-echo 0x40000000 >/sys/bus/cxl/devices/decoder2.0/dpa_size
-
-echo 0x40000000 > /sys/bus/cxl/devices/$region/size
-echo  "decoder2.0" > /sys/bus/cxl/devices/$region/target0
-echo 1 > /sys/bus/cxl/devices/$region/commit
-echo $region > /sys/bus/cxl/drivers/cxl_region/bind
+Rename mem_size as static_mem_size for type3 memdev to cover static RAM and
+pmem capacity, preparing for the introduction of dynamic capacity to suppor=
+t
+dynamic capacity devices.
 
 Signed-off-by: Fan Ni <fan.ni@samsung.com>
 ---
- hw/mem/cxl_type3.c | 33 +++++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
+ hw/cxl/cxl-mailbox-utils.c  | 5 +++--
+ hw/mem/cxl_type3.c          | 8 ++++----
+ include/hw/cxl/cxl_device.h | 2 +-
+ 3 files changed, 8 insertions(+), 7 deletions(-)
 
+diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
+index 0fe9f3eb5d..dd5ea95af8 100644
+--- a/hw/cxl/cxl-mailbox-utils.c
++++ b/hw/cxl/cxl-mailbox-utils.c
+@@ -540,7 +540,8 @@ static CXLRetCode cmd_identify_memory_device(struct cxl=
+_cmd *cmd,
+=20
+     snprintf(id->fw_revision, 0x10, "BWFW VERSION %02d", 0);
+=20
+-    stq_le_p(&id->total_capacity, cxl_dstate->mem_size / CXL_CAPACITY_MULT=
+IPLIER);
++    stq_le_p(&id->total_capacity,
++            cxl_dstate->static_mem_size / CXL_CAPACITY_MULTIPLIER);
+     stq_le_p(&id->persistent_capacity, cxl_dstate->pmem_size / CXL_CAPACIT=
+Y_MULTIPLIER);
+     stq_le_p(&id->volatile_capacity, cxl_dstate->vmem_size / CXL_CAPACITY_=
+MULTIPLIER);
+     stl_le_p(&id->lsa_size, cvc->get_lsa_size(ct3d));
+@@ -879,7 +880,7 @@ static CXLRetCode cmd_media_clear_poison(struct cxl_cmd=
+ *cmd,
+     struct clear_poison_pl *in =3D (void *)cmd->payload;
+=20
+     dpa =3D ldq_le_p(&in->dpa);
+-    if (dpa + CXL_CACHE_LINE_SIZE > cxl_dstate->mem_size) {
++    if (dpa + CXL_CACHE_LINE_SIZE > cxl_dstate->static_mem_size) {
+         return CXL_MBOX_INVALID_PA;
+     }
+=20
 diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-index 3d7acffcb7..b29bb2309a 100644
+index 4d68824dfe..3d7acffcb7 100644
 --- a/hw/mem/cxl_type3.c
 +++ b/hw/mem/cxl_type3.c
-@@ -707,6 +707,34 @@ static void ct3d_reg_write(void *opaque, hwaddr offset=
-, uint64_t value,
+@@ -748,7 +748,7 @@ static bool cxl_setup_memory(CXLType3Dev *ct3d, Error *=
+*errp)
+         }
+         address_space_init(&ct3d->hostvmem_as, vmr, v_name);
+         ct3d->cxl_dstate.vmem_size =3D memory_region_size(vmr);
+-        ct3d->cxl_dstate.mem_size +=3D memory_region_size(vmr);
++        ct3d->cxl_dstate.static_mem_size +=3D memory_region_size(vmr);
+         g_free(v_name);
      }
- }
 =20
-+/*
-+ * Create a dc region to test "Get Dynamic Capacity Configuration" command=
-.
-+ */
-+static int cxl_create_dc_regions(CXLType3Dev *ct3d)
-+{
-+    int i;
-+    uint64_t region_base =3D (ct3d->hostvmem ? ct3d->hostvmem->size : 0)
-+        + (ct3d->hostpmem ? ct3d->hostpmem->size : 0);
-+    uint64_t region_len =3D (uint64_t)2 * 1024 * 1024 * 1024;
-+    uint64_t decode_len =3D 4; /* 4*256MB */
-+    uint64_t blk_size =3D 2 * 1024 * 1024;
-+    struct CXLDCD_Region *region;
-+
-+    for (i =3D 0; i < ct3d->dc.num_regions; i++) {
-+        region =3D &ct3d->dc.regions[i];
-+        region->base =3D region_base;
-+        region->decode_len =3D decode_len;
-+        region->len =3D region_len;
-+        region->block_size =3D blk_size;
-+        /* dsmad_handle is set when creating cdat table entries */
-+        region->flags =3D 0;
-+
-+        region_base +=3D region->len;
-+    }
-+
-+    return 0;
-+}
-+
- static bool cxl_setup_memory(CXLType3Dev *ct3d, Error **errp)
- {
-     DeviceState *ds =3D DEVICE(ct3d);
-@@ -775,6 +803,10 @@ static bool cxl_setup_memory(CXLType3Dev *ct3d, Error =
-**errp)
+@@ -771,7 +771,7 @@ static bool cxl_setup_memory(CXLType3Dev *ct3d, Error *=
+*errp)
+         }
+         address_space_init(&ct3d->hostpmem_as, pmr, p_name);
+         ct3d->cxl_dstate.pmem_size =3D memory_region_size(pmr);
+-        ct3d->cxl_dstate.mem_size +=3D memory_region_size(pmr);
++        ct3d->cxl_dstate.static_mem_size +=3D memory_region_size(pmr);
          g_free(p_name);
      }
 =20
-+    if (cxl_create_dc_regions(ct3d)) {
-+        return false;
-+    }
-+
-     return true;
- }
+@@ -984,7 +984,7 @@ static int cxl_type3_hpa_to_as_and_dpa(CXLType3Dev *ct3=
+d,
+         return -EINVAL;
+     }
 =20
-@@ -1068,6 +1100,7 @@ static Property ct3_props[] =3D {
-     DEFINE_PROP_UINT64("sn", CXLType3Dev, sn, UI64_NULL),
-     DEFINE_PROP_STRING("cdat", CXLType3Dev, cxl_cstate.cdat.filename),
-     DEFINE_PROP_UINT16("spdm", CXLType3Dev, spdm_port, 0),
-+    DEFINE_PROP_UINT8("num-dc-regions", CXLType3Dev, dc.num_regions, 0),
-     DEFINE_PROP_END_OF_LIST(),
- };
+-    if (*dpa_offset > ct3d->cxl_dstate.mem_size) {
++    if (*dpa_offset > ct3d->cxl_dstate.static_mem_size) {
+         return -EINVAL;
+     }
 =20
+@@ -1148,7 +1148,7 @@ static bool set_cacheline(CXLType3Dev *ct3d, uint64_t=
+ dpa_offset, uint8_t *data)
+         return false;
+     }
+=20
+-    if (dpa_offset + CXL_CACHE_LINE_SIZE > ct3d->cxl_dstate.mem_size) {
++    if (dpa_offset + CXL_CACHE_LINE_SIZE > ct3d->cxl_dstate.static_mem_siz=
+e) {
+         return false;
+     }
+=20
+diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
+index dae39da438..503c344326 100644
+--- a/include/hw/cxl/cxl_device.h
++++ b/include/hw/cxl/cxl_device.h
+@@ -209,7 +209,7 @@ typedef struct cxl_device_state {
+     } timestamp;
+=20
+     /* memory region size, HDM */
+-    uint64_t mem_size;
++    uint64_t static_mem_size;
+     uint64_t pmem_size;
+     uint64_t vmem_size;
+     bool is_dcd;
 --=20
 2.25.1
 
