@@ -2,76 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94B2E761C8A
+	by mail.lfdr.de (Postfix) with ESMTPS id CEABE761C8B
 	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 16:59:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOJV1-0002Ot-MG; Tue, 25 Jul 2023 10:58:55 -0400
+	id 1qOJV6-0002Xb-3v; Tue, 25 Jul 2023 10:59:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qOJUz-0002Ns-3U
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 10:58:53 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qOJV4-0002Sx-Jd
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 10:58:58 -0400
+Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qOJUw-00018A-Ni
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 10:58:51 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-3fbc63c2e84so56767785e9.3
- for <qemu-devel@nongnu.org>; Tue, 25 Jul 2023 07:58:50 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qOJV3-0001AA-2Q
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 10:58:58 -0400
+Received: by mail-lj1-x22d.google.com with SMTP id
+ 38308e7fff4ca-2b93fba1f62so81524491fa.1
+ for <qemu-devel@nongnu.org>; Tue, 25 Jul 2023 07:58:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690297129; x=1690901929;
+ d=linaro.org; s=google; t=1690297135; x=1690901935;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=s4i7zxWBFbwawN5hoH2WbNEPh79dMjPmIuyC9TUA1JY=;
- b=WiQqv8hJyi5mTdrFxdItBf6EP6yakFcGpCeLGwfToTsBSqIgfXkN9CUv172FDVUpD5
- WIbcnuX6x4kuC3kRzBU/US8d6zPVwprnsopR6xJBSxV/B4Z0f/vZGC+iIfuc2N8En/ME
- vvy2srS1dmLwM7jrEqUc8aOxk5pfLlro+owIvwq9bAvQSn5JlTE+5JMSB9Je5aZwregr
- O0s3z2lCp/Rru+niPG1dI/LMxp1o0tMFVyGHd0qfE4ARjEi3Aa+OCo8n6Fk/8NdW3hTe
- x4K2DWHKbEfOAZcUwZo8YWtd9VDL66ZQ5tgl0AGp9ywqBQPwd+dsuZ4zC0qVwng3JlEN
- eYng==
+ bh=3kaAuYnsnnMWtTSiYZvwlvHyAf+VE1JNjcN8fmFo6ns=;
+ b=AFM4mtYd7EGukXFTJv1Uis88MT/Ui7yMn7/8Pmpm7xJ149rk7fKyiQJOyWEOcBzcqe
+ xDOvgmjMr/YvRNnTQc7PWLzDV+ZCrscitBflofwfafIAHWI4fcZXMfmLHaOqwe+ZJZVA
+ HxH0JD0Neo3TBohPC7IEgIkjTxZa5kMyfLA9FDG6xDfdvbTFvRjgnn4C1I3mNFdLAjo7
+ Z3YjWdGqo78QplyFf4ViWhrbCkyTEEydv90y1PFFwvawO4+OmQprTsgmECc02HaCXzGS
+ 6N5Aw9VNeYQeV/8x27ldo4IKGEPdvQ9N/iU+0XAspsOhXfQg5xikZjWxzfOuynZzj3cT
+ Jesg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690297129; x=1690901929;
+ d=1e100.net; s=20221208; t=1690297135; x=1690901935;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=s4i7zxWBFbwawN5hoH2WbNEPh79dMjPmIuyC9TUA1JY=;
- b=RPqkfQm1Q726tMPSll7brhNhlRbpkaMwdhp6O21JqmzwXk186GAOWuPa0BO18uBTJ6
- 2sg7/pFjxuukTGvIoYZRfTLBJprdR61wMc61XLXyXNQLhevFuXN1BSMdLXvR063i+3rb
- +zFqQXveKL1sPeeJiNGuHggWQ0JqROpnpRWUIuOH2XNH+QywU5zSuJ6P9C6ZYptn133a
- dsETte1AtRzCXUS88usl7a03++RH4u/tFH7iifsPl2vPiIx2LndLMru0TnDqFwbiyNGe
- 19W9k6RKAJIQ9DZOR8Z+A6eQQVWmDI137JtxFkAexWx197zMgdTHiZg2BMSLc3bHOAVs
- fQEw==
-X-Gm-Message-State: ABy/qLYMV7dzsLL4Gdiu97hiuRlbDtZxg9XiusMwcPsWKDcIAPTbTHy6
- WQ7x2fOJ2bnv2B9MHy8t/+2I4Vimn9Z7J1VXMPM=
-X-Google-Smtp-Source: APBJJlGId4Y97vQf+fb9vUzUshwygU7TZCIu6eFOv8p7JJuzP75qyKrgEWPdT5eiCgv85Gc4QH4URw==
-X-Received: by 2002:adf:f092:0:b0:317:5ece:e16a with SMTP id
- n18-20020adff092000000b003175ecee16amr4969070wro.50.1690297129252; 
- Tue, 25 Jul 2023 07:58:49 -0700 (PDT)
+ bh=3kaAuYnsnnMWtTSiYZvwlvHyAf+VE1JNjcN8fmFo6ns=;
+ b=XPpEQPie/PdcsT7hD416ctbItILEcNC8O4+RwDlgpok0tz71/qM6K7n2MPg4yFTUT7
+ BF4WbK8A3v8Rc1vNGlSNIVj/onvlI2HR8CUZcO7wWBplMCCgICtnYFgo/tL/WHOo3ERS
+ aQKKvGTRLPPfziq6q+maJieOCF8zonZLIx0gOqlJzpq17ZgcDZckz44tFJu+2o+OsvPZ
+ 7lZYCdfHIc70tJhx3vCmdm9lBzpXyQROPjg3RQwicg4Dg4k39FfZcQducorDNH3XsuF7
+ zn1PKP5yw9UDCyShxl+D1W/O5TMqEoutnekZLPSQKngUNUjz3Ymjvh4Sia6kbC11PalD
+ 5XWA==
+X-Gm-Message-State: ABy/qLY/7Fn+qlMbiUB0FQMLcwqHg/Js8FpQu6Chd+cux2xdvN2f0n/g
+ SWnAJfVp6ngWJm83LacrmonH9BZ5lFa4TD0Wk6k=
+X-Google-Smtp-Source: APBJJlFhUC5rpO+uNquta1fDnlhQHWjoMlSQHLqKcZiuWdrPbO06BAMaYMobGmVIMP4iEzmbNay7rw==
+X-Received: by 2002:a2e:7312:0:b0:2b8:377a:22f1 with SMTP id
+ o18-20020a2e7312000000b002b8377a22f1mr9005520ljc.32.1690297134970; 
+ Tue, 25 Jul 2023 07:58:54 -0700 (PDT)
 Received: from localhost.localdomain ([176.187.203.142])
  by smtp.gmail.com with ESMTPSA id
- d1-20020a5d6441000000b00317643a93f4sm5219042wrw.96.2023.07.25.07.58.48
+ z5-20020a7bc7c5000000b003fbe4cecc3bsm16245610wmk.16.2023.07.25.07.58.53
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 25 Jul 2023 07:58:48 -0700 (PDT)
+ Tue, 25 Jul 2023 07:58:54 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Artyom Tarasenko <atar4qemu@gmail.com>,
  Bastian Koppelmann <kbastian@mail.uni-paderborn.de>, qemu-block@nongnu.org,
- Thomas Huth <huth@tuxfamily.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 03/10] hw/char/escc: Implement loopback mode
-Date: Tue, 25 Jul 2023 16:58:22 +0200
-Message-Id: <20230725145829.37782-4-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 04/10] target/mips/mxu: Replace magic array size by its
+ definition
+Date: Tue, 25 Jul 2023 16:58:23 +0200
+Message-Id: <20230725145829.37782-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230725145829.37782-1-philmd@linaro.org>
 References: <20230725145829.37782-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x22d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,36 +95,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <huth@tuxfamily.org>
-
-The firmware of the m68k next-cube machine uses the loopback mode
-for self-testing the hardware and currently fails during this step.
-By implementing the loopback mode, we can make the firmware pass
-to the next step.
-
-Signed-off-by: Thomas Huth <huth@tuxfamily.org>
-Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20230716153519.31722-1-huth@tuxfamily.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20230712060806.82323-2-philmd@linaro.org>
 ---
- hw/char/escc.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ target/mips/tcg/mxu_translate.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/char/escc.c b/hw/char/escc.c
-index 4f3872bfe9..4be66053c1 100644
---- a/hw/char/escc.c
-+++ b/hw/char/escc.c
-@@ -653,7 +653,9 @@ static void escc_mem_write(void *opaque, hwaddr addr,
-         escc_update_irq(s);
-         s->tx = val;
-         if (s->wregs[W_TXCTRL2] & TXCTRL2_TXEN) { /* tx enabled */
--            if (qemu_chr_fe_backend_connected(&s->chr)) {
-+            if (s->wregs[W_MISC2] & MISC2_LCL_LOOP) {
-+                serial_receive_byte(s, s->tx);
-+            } else if (qemu_chr_fe_backend_connected(&s->chr)) {
-                 /*
-                  * XXX this blocks entire thread. Rewrite to use
-                  * qemu_chr_fe_write and background I/O callbacks
+diff --git a/target/mips/tcg/mxu_translate.c b/target/mips/tcg/mxu_translate.c
+index deb8060a17..b007948a73 100644
+--- a/target/mips/tcg/mxu_translate.c
++++ b/target/mips/tcg/mxu_translate.c
+@@ -609,7 +609,7 @@ enum {
+ static TCGv mxu_gpr[NUMBER_OF_MXU_REGISTERS - 1];
+ static TCGv mxu_CR;
+ 
+-static const char mxuregnames[][4] = {
++static const char mxuregnames[NUMBER_OF_MXU_REGISTERS][4] = {
+     "XR1",  "XR2",  "XR3",  "XR4",  "XR5",  "XR6",  "XR7",  "XR8",
+     "XR9",  "XR10", "XR11", "XR12", "XR13", "XR14", "XR15", "XCR",
+ };
 -- 
 2.38.1
 
