@@ -2,77 +2,134 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 394D7762191
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 20:38:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7755E7621B7
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 20:42:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOMvg-0008Ds-Tx; Tue, 25 Jul 2023 14:38:40 -0400
+	id 1qOMxE-0000Vk-2I; Tue, 25 Jul 2023 14:40:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qOMvf-0008Di-8A
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 14:38:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <fan.ni@samsung.com>)
+ id 1qOMx2-0000Tc-4H
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 14:40:05 -0400
+Received: from mailout2.w2.samsung.com ([211.189.100.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qOMvb-0000ZB-W6
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 14:38:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690310315;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=wdMy2cDEqeZevX/cl1y1E+plxFLPXVdCsqexrFdtUqY=;
- b=a+tqIQRye8iK0vd0Ybjb9XWrD6ZInrMnSwTNUPTYWS/Gx+a7MmA3xDJH2e4DW1lb1LK6gO
- fU4tHX5ZF0w7j6rUdeoBOyc/s9kn5WjPKVS0OKzmWPO21ozwd1ZjLboIYpdhf4fBdQlf0Q
- hbtOsgBy03EVOn8JIbbsrxVyXSlsK7c=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-446-AB5ykMvBNGKTqaVmUAXl4Q-1; Tue, 25 Jul 2023 14:38:33 -0400
-X-MC-Unique: AB5ykMvBNGKTqaVmUAXl4Q-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9E64A3C01B90;
- Tue, 25 Jul 2023 18:38:32 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.133])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 4A6C0492C13;
- Tue, 25 Jul 2023 18:38:31 +0000 (UTC)
-Date: Tue, 25 Jul 2023 19:38:29 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Het Gala <het.gala@nutanix.com>
-Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- Prerna Saxena <prerna.saxena@nutanix.com>,
- "quintela@redhat.com" <quintela@redhat.com>,
- "dgilbert@redhat.com" <dgilbert@redhat.com>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "armbru@redhat.com" <armbru@redhat.com>,
- "eblake@redhat.com" <eblake@redhat.com>,
- Manish Mishra <manish.mishra@nutanix.com>,
- Aravind Retnakaran <aravind.retnakaran@nutanix.com>
-Subject: Re: [PATCH v9 08/10] migration: Implement MigrateChannelList to qmp
- migration flow.
-Message-ID: <ZMAWpS7GsQUiDc7p@redhat.com>
-References: <20230721144914.170991-1-het.gala@nutanix.com>
- <20230721144914.170991-9-het.gala@nutanix.com>
+ (Exim 4.90_1) (envelope-from <fan.ni@samsung.com>)
+ id 1qOMwx-0000hR-Nu
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 14:40:03 -0400
+Received: from uscas1p2.samsung.com (unknown [182.198.245.207])
+ by mailout2.w2.samsung.com (KnoxPortal) with ESMTP id
+ 20230725183957usoutp02b24c4a556f889ae031c04ff97bc50505~1MFm8ztg41412514125usoutp02g;
+ Tue, 25 Jul 2023 18:39:57 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w2.samsung.com
+ 20230725183957usoutp02b24c4a556f889ae031c04ff97bc50505~1MFm8ztg41412514125usoutp02g
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+ s=mail20170921; t=1690310397;
+ bh=ZRlzd8c3g2KsOYA3+M84nuNHo77atunwbmjFOddYgGk=;
+ h=From:To:CC:Subject:Date:In-Reply-To:References:From;
+ b=KKcOQYCq6PZhL5kUA+eItmSciDQmMebDT5+KSUYYQX/DvD0dyWNq8rFbL3s5hsf9I
+ 4N981wONc2a+zsjuwqad0oP0cRgUfZH+nzBogXx7+jnEz24ZJ5iUoWLf2hNuYYlMpi
+ FC49pYlQsXO5hXc9Xe9xYYSor+IQs72IFhknvS9I=
+Received: from ussmges3new.samsung.com (u112.gpu85.samsung.co.kr
+ [203.254.195.112]) by uscas1p2.samsung.com (KnoxPortal) with ESMTP id
+ 20230725183956uscas1p2b3d33248e5971edd48e1fcad422a4b6c~1MFmz5tqs0167001670uscas1p2i;
+ Tue, 25 Jul 2023 18:39:56 +0000 (GMT)
+Received: from uscas1p1.samsung.com ( [182.198.245.206]) by
+ ussmges3new.samsung.com (USCPEMTA) with SMTP id B7.4E.62237.CF610C46; Tue,
+ 25 Jul 2023 14:39:56 -0400 (EDT)
+Received: from ussmgxs3new.samsung.com (u92.gpu85.samsung.co.kr
+ [203.254.195.92]) by uscas1p2.samsung.com (KnoxPortal) with ESMTP id
+ 20230725183956uscas1p296403063c710f4b546d4fec7650915c4~1MFmgQ-Q62755227552uscas1p2B;
+ Tue, 25 Jul 2023 18:39:56 +0000 (GMT)
+X-AuditID: cbfec370-b17ff7000001f31d-8f-64c016fc55dc
+Received: from SSI-EX3.ssi.samsung.com ( [105.128.2.146]) by
+ ussmgxs3new.samsung.com (USCPEXMTA) with SMTP id 08.DA.64580.CF610C46; Tue,
+ 25 Jul 2023 14:39:56 -0400 (EDT)
+Received: from SSI-EX2.ssi.samsung.com (105.128.2.227) by
+ SSI-EX3.ssi.samsung.com (105.128.2.228) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ 15.1.2375.24; Tue, 25 Jul 2023 11:39:55 -0700
+Received: from SSI-EX2.ssi.samsung.com ([105.128.2.227]) by
+ SSI-EX2.ssi.samsung.com ([105.128.2.227]) with mapi id 15.01.2375.024; Tue,
+ 25 Jul 2023 11:39:55 -0700
+From: Fan Ni <fan.ni@samsung.com>
+To: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+CC: "jonathan.cameron@huawei.com" <jonathan.cameron@huawei.com>,
+ "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
+ "gregory.price@memverge.com" <gregory.price@memverge.com>,
+ "hchkuo@avery-design.com.tw" <hchkuo@avery-design.com.tw>,
+ "cbrowy@avery-design.com" <cbrowy@avery-design.com>, "ira.weiny@intel.com"
+ <ira.weiny@intel.com>, "dan.j.williams@intel.com"
+ <dan.j.williams@intel.com>, Adam Manzanares <a.manzanares@samsung.com>,
+ "dave@stgolabs.net" <dave@stgolabs.net>, "nmtadam.samsung@gmail.com"
+ <nmtadam.samsung@gmail.com>, "nifan@outlook.com" <nifan@outlook.com>, Fan Ni
+ <fan.ni@samsung.com>
+Subject: [Qemu PATCH v2 2/9] hw/cxl/cxl-mailbox-utils: Add dynamic capacity
+ region representative and mailbox command support
+Thread-Topic: [Qemu PATCH v2 2/9] hw/cxl/cxl-mailbox-utils: Add dynamic
+ capacity region representative and mailbox command support
+Thread-Index: AQHZvydoz7fRgsZIjkm5D4vXR5iWWg==
+Date: Tue, 25 Jul 2023 18:39:55 +0000
+Message-ID: <20230725183939.2741025-3-fan.ni@samsung.com>
+In-Reply-To: <20230725183939.2741025-1-fan.ni@samsung.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-mailer: git-send-email 2.25.1
+x-originating-ip: [105.128.2.176]
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230721144914.170991-9-het.gala@nutanix.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-CFilter-Loop: Reflected
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrLKsWRmVeSWpSXmKPExsWy7djXc7p/xA6kGEz8ZmbRfX4Do8X0qRcY
+ LVbfXMNo0dD0iMWiZfd7Jov9T5+zWKxaeI3N4vysUywWzyc+Z7JYuuQRs8Xx3h0sDtweFyZP
+ YPVY3ODqsXPWXXaPliNvgbw9L5k8Nn78z+7x5NpmJo/Nr18we0ydXe/xeZNcAFcUl01Kak5m
+ WWqRvl0CV8ar1XPYCnYbVSyYtZ+pgXGuWhcjJ4eEgIlE17ONrF2MXBxCAisZJfbdWM4I4bQy
+ SZy5tZAJpmrC+RksEIm1jBJ/H/5ngnA+MUrM+7cTylnGKNHaepoVpIVNQFFiX9d2NhBbRMBY
+ 4tjhJcwgRcwCb1kkPq55wwKSEBaol2h89hWsW0SghVGi4/0fRogOPYmV8/eDFbEIqEp0rNwB
+ dgivgKXE1I7LYDWcAlYSz77MBtvGKCAm8f3UGrAaZgFxiVtP5kMdLiixaPYeZghbTOLfrods
+ ELa8xOQfM6BsRYn731+yQ/TqSdyYOoUNwtaWWLbwNTPEXkGJkzOfsEDUS0ocXHEDHBgSAtM5
+ Jaas2cwIkXCR+N7dBLVYWmL6mstARRxAdrLEqo9cEOEciflLtkDNsZZY+Gc90wRGlVlIzp6F
+ 5IxZSM6YheSMBYwsqxjFS4uLc9NTi43zUsv1ihNzi0vz0vWS83M3MQJT3Ol/hwt2MN669VHv
+ ECMTB+MhRgkOZiURXsOYfSlCvCmJlVWpRfnxRaU5qcWHGKU5WJTEeQ1tTyYLCaQnlqRmp6YW
+ pBbBZJk4OKUamEx+nDv1gnvBR+W/PQK1zwzLbFnmplmGKH3o/ad/Vueu2KPYfX9XaywXL9yk
+ EfP8xQIGhqAqRYGmgiyvnZO81gtsiwo558i8gK9Co3ez9sk3vFVKRzz6tt5LLfsdzHTpQPIU
+ hWeVm2dYKOxXO6Fpz9N+VXlB+Hqv+M0Tn1nWrNpkkvHMOOjkkmzrb5r2k1++/H+Gc26NKO/v
+ 38bi//s14o5/4KqfuOx85C/+9QxvFshM3JFnsez1xXOCcxp+FGptN635LWl19tPfpS7iGWb3
+ Q3Ii85PuSHRN0awTeigd4+spEJa4/cD0LfpWO5+uP7xr9US3DxqC/NYvPWe1frwz2Tj497PL
+ V5i0v5w5u9Pl+jElluKMREMt5qLiRABR4GZy4AMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrJIsWRmVeSWpSXmKPExsWS2cA0SfeP2IEUg+a98hbd5zcwWkyfeoHR
+ YvXNNYwWDU2PWCxadr9nstj/9DmLxaqF19gszs86xWLxfOJzJoulSx4xWxzv3cHiwO1xYfIE
+ Vo/FDa4eO2fdZfdoOfIWyNvzkslj48f/7B5Prm1m8tj8+gWzx9TZ9R6fN8kFcEVx2aSk5mSW
+ pRbp2yVwZbxaPYetYLdRxYJZ+5kaGOeqdTFyckgImEhMOD+DpYuRi0NIYDWjROOmS0wQzidG
+ iUv9DYwQzjJGicWHF7CDtLAJKErs69rOBmKLCBhLHDu8hBnEZhZ4zSLx7SI3iC0sUC/R+Owr
+ 2CQRgRZGiVfHJzBCNOhJrJy/nwXEZhFQlehYuYMJxOYVsJSY2nEZqIYDaJulxNaJcSBhTgEr
+ iWdfZrOC2IwCYhLfT61hgtglLnHryXwmiBcEJJbsOc8MYYtKvHz8jxXClpeY/GMGG4StKHH/
+ +0t2iF49iRtTp7BB2NoSyxa+ZoY4QVDi5MwnLBD1khIHV9xgmcAoMQvJullI2mchaZ+FpH0B
+ I8sqRvHS4uLc9Ipi47zUcr3ixNzi0rx0veT83E2MwNRw+t/hmB2M92591DvEyMTBeIhRgoNZ
+ SYTXMGZfihBvSmJlVWpRfnxRaU5q8SFGaQ4WJXFej9iJ8UIC6YklqdmpqQWpRTBZJg5OqQam
+ CbcK4i8f8I/23rvTbZHKVg25yWziuX3aVevOf+6U5l4SOPGQpsHir5qnErJChUR8TQzLb8le
+ SkpwPaQmNm2/V3KjwfPM2Bihcs2snL9e99otH897e/P05muHkg5Um625eKT0ghCT47R1LLXH
+ fn1zeDH/3a7nK3PdzFbr959OC10dfnyP+6sIvaaAxZOVjSw3hj348b2vyDCl8dyfXUV5+oln
+ 9jbOmpP0MrX2S4xCy43DrSrp/Q/+d3r6Rc3+kS4p8KZeXvCgnKdKpqjpNaeKoxtSXXbY32w5
+ ki11d+WHM5+eHmR6dmUnkyXHy8bg+F8uLxKCtijJOVmYfxcu5rRqFeouM/72fte1o4dfS55R
+ YinOSDTUYi4qTgQAuFnZTHwDAAA=
+X-CMS-MailID: 20230725183956uscas1p296403063c710f4b546d4fec7650915c4
+CMS-TYPE: 301P
+X-CMS-RootMailID: 20230725183956uscas1p296403063c710f4b546d4fec7650915c4
+References: <20230725183939.2741025-1-fan.ni@samsung.com>
+ <CGME20230725183956uscas1p296403063c710f4b546d4fec7650915c4@uscas1p2.samsung.com>
+Received-SPF: pass client-ip=211.189.100.12; envelope-from=fan.ni@samsung.com;
+ helo=mailout2.w2.samsung.com
+X-Spam_score_int: -70
+X-Spam_score: -7.1
+X-Spam_bar: -------
+X-Spam_report: (-7.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_HI=-5, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -86,197 +143,192 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jul 21, 2023 at 02:49:34PM +0000, Het Gala wrote:
-> Integrate MigrateChannelList with all transport backends
-> (socket, exec and rdma) for both src and dest migration
-> endpoints for qmp migration.
-> 
-> For current series, limit the size of MigrateChannelList
-> to single element (single interface) as runtime check.
-> 
-> Suggested-by: Aravind Retnakaran <aravind.retnakaran@nutanix.com>
-> Signed-off-by: Het Gala <het.gala@nutanix.com>
-> ---
->  migration/migration.c | 77 ++++++++++++++++++++++++++++---------------
->  1 file changed, 50 insertions(+), 27 deletions(-)
-> 
-> diff --git a/migration/migration.c b/migration/migration.c
-> index 6e0a8beaf2..acf80b3590 100644
-> --- a/migration/migration.c
-> +++ b/migration/migration.c
-> @@ -426,9 +426,10 @@ void migrate_add_address(SocketAddress *address)
->  }
->  
->  static bool migrate_uri_parse(const char *uri,
-> -                              MigrationAddress **channel,
-> +                              MigrationChannel **channel,
->                                Error **errp)
->  {
-> +    g_autoptr(MigrationChannel) val = g_new0(MigrationChannel, 1);
->      g_autoptr(MigrationAddress) addr = g_new0(MigrationAddress, 1);
->      SocketAddress *saddr = &addr->u.socket;
->      InetSocketAddress *isock = &addr->u.rdma;
-> @@ -465,7 +466,9 @@ static bool migrate_uri_parse(const char *uri,
->          return false;
->      }
->  
-> -    *channel = addr;
-> +    val->channel_type = MIGRATION_CHANNEL_TYPE_MAIN;
-> +    val->addr = addr;
-> +    *channel = val;
->      return true;
->  }
->  
-> @@ -473,7 +476,8 @@ static void qemu_start_incoming_migration(const char *uri, bool has_channels,
->                                            MigrationChannelList *channels,
->                                            Error **errp)
->  {
-> -    g_autoptr(MigrationAddress) channel = g_new0(MigrationAddress, 1);
-> +    g_autoptr(MigrationChannel) channel = g_new0(MigrationChannel, 1);
-> +    g_autoptr(MigrationAddress) addr = g_new0(MigrationAddress, 1);
->  
->      /*
->       * Having preliminary checks for uri and channel
-> @@ -483,20 +487,29 @@ static void qemu_start_incoming_migration(const char *uri, bool has_channels,
->                     "exclusive; exactly one of the two should be present in "
->                     "'migrate-incoming' qmp command ");
->          return;
-> +    } else if (channels) {
-> +        /* To verify that Migrate channel list has only item */
-> +        if (channels->next) {
-> +            error_setg(errp, "Channel list has more than one entries");
-> +            return;
-> +        }
-> +        channel = channels->value;
-> +    } else {
-> +        /* caller uses the old URI syntax */
-> +        if (uri && !migrate_uri_parse(uri, &channel, errp)) {
-> +            return;
-> +        }
->      }
-> -
-> -    if (uri && !migrate_uri_parse(uri, &channel, errp)) {
-> -        return;
-> -    }
-> +    addr = channel->addr;
->  
->      /* transport mechanism not suitable for migration? */
-> -    if (!migration_channels_and_transport_compatible(channel, errp)) {
-> +    if (!migration_channels_and_transport_compatible(addr, errp)) {
->          return;
->      }
->  
->      qapi_event_send_migration(MIGRATION_STATUS_SETUP);
-> -    if (channel->transport == MIGRATION_ADDRESS_TYPE_SOCKET) {
-> -        SocketAddress *saddr = &channel->u.socket;
-> +    if (addr->transport == MIGRATION_ADDRESS_TYPE_SOCKET) {
-> +        SocketAddress *saddr = &addr->u.socket;
->          if (saddr->type == SOCKET_ADDRESS_TYPE_INET ||
->              saddr->type == SOCKET_ADDRESS_TYPE_UNIX ||
->              saddr->type == SOCKET_ADDRESS_TYPE_VSOCK) {
-> @@ -505,11 +518,11 @@ static void qemu_start_incoming_migration(const char *uri, bool has_channels,
->              fd_start_incoming_migration(saddr->u.fd.str, errp);
->          }
->  #ifdef CONFIG_RDMA
-> -    } else if (channel->transport == MIGRATION_ADDRESS_TYPE_RDMA) {
-> -        rdma_start_incoming_migration(&channel->u.rdma, errp);
-> -#endif
-> -    } else if (channel->transport == MIGRATION_ADDRESS_TYPE_EXEC) {
-> -        exec_start_incoming_migration(channel->u.exec.args, errp);
-> +    } else if (addr->transport == MIGRATION_ADDRESS_TYPE_RDMA) {
-> +        rdma_start_incoming_migration(&addr->u.rdma, errp);
-> + #endif
-> +    } else if (addr->transport == MIGRATION_ADDRESS_TYPE_EXEC) {
-> +        exec_start_incoming_migration(addr->u.exec.args, errp);
->      } else {
->          error_setg(errp, "unknown migration protocol: %s", uri);
->      }
-> @@ -1709,7 +1722,8 @@ void qmp_migrate(const char *uri, bool has_channels,
->      bool resume_requested;
->      Error *local_err = NULL;
->      MigrationState *s = migrate_get_current();
-> -    g_autoptr(MigrationAddress) channel = g_new0(MigrationAddress, 1);
-> +    g_autoptr(MigrationChannel) channel = g_new0(MigrationChannel, 1);
-> +    g_autoptr(MigrationAddress) addr = g_new0(MigrationAddress, 1);
->  
->      /*
->       * Having preliminary checks for uri and channel
-> @@ -1719,14 +1733,23 @@ void qmp_migrate(const char *uri, bool has_channels,
->                     "exclusive; exactly one of the two should be present in "
->                     "'migrate' qmp command ");
->          return;
-> +    } else if (channels) {
-> +        /* To verify that Migrate channel list has only item */
-> +        if (channels->next) {
-> +            error_setg(errp, "Channel list has more than one entries");
-> +            return;
-> +        }
-> +        channel = channels->value;
-> +    } else {
+From: Fan Ni <nifan@outlook.com>
 
-} else if (uri) {
-     if (!migrate_uri_parse(....))
-} else {
-    ...error - neither uri or has_channels ...
+Per cxl spec 3.0, add dynamic capacity region representative based on
+Table 8-126 and extend the cxl type3 device definition to include dc region
+information. Also, based on info in 8.2.9.8.9.1, add 'Get Dynamic Capacity
+Configuration' mailbox support.
 
-}
-> +        /* caller uses the old URI syntax */
-> +        if (uri && !migrate_uri_parse(uri, &channel, errp)) {
-> +            return;
-> +        }
->      }
-> -
-> -    if (!migrate_uri_parse(uri, &channel, errp)) {
-> -        return;
-> -    }
-> +    addr = channel->addr;
->  
->      /* transport mechanism not suitable for migration? */
-> -    if (!migration_channels_and_transport_compatible(channel, errp)) {
-> +    if (!migration_channels_and_transport_compatible(addr, errp)) {
->          return;
->      }
->  
-> @@ -1743,8 +1766,8 @@ void qmp_migrate(const char *uri, bool has_channels,
->          }
->      }
->  
-> -    if (channel->transport == MIGRATION_ADDRESS_TYPE_SOCKET) {
-> -        SocketAddress *saddr = &channel->u.socket;
-> +    if (addr->transport == MIGRATION_ADDRESS_TYPE_SOCKET) {
-> +        SocketAddress *saddr = &addr->u.socket;
->          if (saddr->type == SOCKET_ADDRESS_TYPE_INET ||
->              saddr->type == SOCKET_ADDRESS_TYPE_UNIX ||
->              saddr->type == SOCKET_ADDRESS_TYPE_VSOCK) {
-> @@ -1753,11 +1776,11 @@ void qmp_migrate(const char *uri, bool has_channels,
->              fd_start_outgoing_migration(s, saddr->u.fd.str, &local_err);
->          }
->  #ifdef CONFIG_RDMA
-> -    } else if (channel->transport == MIGRATION_ADDRESS_TYPE_RDMA) {
-> -        rdma_start_outgoing_migration(s, &channel->u.rdma, &local_err);
-> +    } else if (addr->transport == MIGRATION_ADDRESS_TYPE_RDMA) {
-> +        rdma_start_outgoing_migration(s, &addr->u.rdma, &local_err);
->  #endif
-> -    } else if (channel->transport == MIGRATION_ADDRESS_TYPE_EXEC) {
-> -        exec_start_outgoing_migration(s, channel->u.exec.args, &local_err);
-> +    } else if (addr->transport == MIGRATION_ADDRESS_TYPE_EXEC) {
-> +        exec_start_outgoing_migration(s, addr->u.exec.args, &local_err);
->      } else {
->          if (!resume_requested) {
->              yank_unregister_instance(MIGRATION_YANK_INSTANCE);
-> -- 
-> 2.22.3
-> 
+Signed-off-by: Fan Ni <fan.ni@samsung.com>
+---
+ hw/cxl/cxl-mailbox-utils.c  | 72 +++++++++++++++++++++++++++++++++++++
+ hw/mem/cxl_type3.c          |  6 ++++
+ include/hw/cxl/cxl_device.h | 17 +++++++++
+ 3 files changed, 95 insertions(+)
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
+index b013e30314..0fe9f3eb5d 100644
+--- a/hw/cxl/cxl-mailbox-utils.c
++++ b/hw/cxl/cxl-mailbox-utils.c
+@@ -81,6 +81,8 @@ enum {
+         #define GET_POISON_LIST        0x0
+         #define INJECT_POISON          0x1
+         #define CLEAR_POISON           0x2
++    DCD_CONFIG  =3D 0x48, /*r3.0: 8.2.9.8.9*/
++        #define GET_DC_CONFIG          0x0
+     PHYSICAL_SWITCH =3D 0x51
+         #define IDENTIFY_SWITCH_DEVICE      0x0
+ };
+@@ -939,6 +941,71 @@ static CXLRetCode cmd_media_clear_poison(struct cxl_cm=
+d *cmd,
+     return CXL_MBOX_SUCCESS;
+ }
+=20
++/*
++ * cxl spec 3.0: 8.2.9.8.9.1
++ * Get Dynamic Capacity Configuration
++ **/
++static CXLRetCode cmd_dcd_get_dyn_cap_config(struct cxl_cmd *cmd,
++        CXLDeviceState *cxl_dstate,
++        uint16_t *len)
++{
++    struct get_dyn_cap_config_in_pl {
++        uint8_t region_cnt;
++        uint8_t start_region_id;
++    } QEMU_PACKED;
++
++    struct get_dyn_cap_config_out_pl {
++        uint8_t num_regions;
++        uint8_t rsvd1[7];
++        struct {
++            uint64_t base;
++            uint64_t decode_len;
++            uint64_t region_len;
++            uint64_t block_size;
++            uint32_t dsmadhandle;
++            uint8_t flags;
++            uint8_t rsvd2[3];
++        } QEMU_PACKED records[];
++    } QEMU_PACKED;
++
++    struct get_dyn_cap_config_in_pl *in =3D (void *)cmd->payload;
++    struct get_dyn_cap_config_out_pl *out =3D (void *)cmd->payload;
++    struct CXLType3Dev *ct3d =3D container_of(cxl_dstate, CXLType3Dev,
++            cxl_dstate);
++    uint16_t record_count =3D 0, i;
++    uint16_t out_pl_len;
++    uint8_t start_region_id =3D in->start_region_id;
++
++    if (start_region_id >=3D ct3d->dc.num_regions) {
++        return CXL_MBOX_INVALID_INPUT;
++    }
++
++    record_count =3D MIN(ct3d->dc.num_regions - in->start_region_id,
++            in->region_cnt);
++
++    out_pl_len =3D sizeof(*out) + record_count * sizeof(out->records[0]);
++    assert(out_pl_len <=3D CXL_MAILBOX_MAX_PAYLOAD_SIZE);
++
++    memset(out, 0, out_pl_len);
++    out->num_regions =3D record_count;
++    for (i =3D 0; i < record_count; i++) {
++        stq_le_p(&out->records[i].base,
++                ct3d->dc.regions[start_region_id + i].base);
++        stq_le_p(&out->records[i].decode_len,
++                ct3d->dc.regions[start_region_id + i].decode_len);
++        stq_le_p(&out->records[i].region_len,
++                ct3d->dc.regions[start_region_id + i].len);
++        stq_le_p(&out->records[i].block_size,
++                ct3d->dc.regions[start_region_id + i].block_size);
++        stl_le_p(&out->records[i].dsmadhandle,
++                ct3d->dc.regions[start_region_id + i].dsmadhandle);
++        out->records[i].flags =3D ct3d->dc.regions[start_region_id + i].fl=
+ags;
++    }
++
++    *len =3D out_pl_len;
++    return CXL_MBOX_SUCCESS;
++}
++
+ #define IMMEDIATE_CONFIG_CHANGE (1 << 1)
+ #define IMMEDIATE_DATA_CHANGE (1 << 2)
+ #define IMMEDIATE_POLICY_CHANGE (1 << 3)
+@@ -977,6 +1044,8 @@ static struct cxl_cmd cxl_cmd_set[256][256] =3D {
+         cmd_media_inject_poison, 8, 0 },
+     [MEDIA_AND_POISON][CLEAR_POISON] =3D { "MEDIA_AND_POISON_CLEAR_POISON"=
+,
+         cmd_media_clear_poison, 72, 0 },
++    [DCD_CONFIG][GET_DC_CONFIG] =3D { "DCD_GET_DC_CONFIG",
++        cmd_dcd_get_dyn_cap_config, 2, 0 },
+ };
+=20
+ static struct cxl_cmd cxl_cmd_set_sw[256][256] =3D {
+@@ -1164,6 +1233,9 @@ void cxl_initialize_mailbox(CXLDeviceState *cxl_dstat=
+e, bool switch_cci)
+     }
+     for (int set =3D 0; set < 256; set++) {
+         for (int cmd =3D 0; cmd < 256; cmd++) {
++            if (!cxl_dstate->is_dcd && set =3D=3D DCD_CONFIG) {
++                continue;
++            }
+             if (cxl_dstate->cxl_cmd_set[set][cmd].handler) {
+                 struct cxl_cmd *c =3D &cxl_dstate->cxl_cmd_set[set][cmd];
+                 struct cel_log *log =3D
+diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
+index 862107c5ef..4d68824dfe 100644
+--- a/hw/mem/cxl_type3.c
++++ b/hw/mem/cxl_type3.c
+@@ -1046,6 +1046,12 @@ static void ct3d_reset(DeviceState *dev)
+     uint32_t *reg_state =3D ct3d->cxl_cstate.crb.cache_mem_registers;
+     uint32_t *write_msk =3D ct3d->cxl_cstate.crb.cache_mem_regs_write_mask=
+;
+=20
++    if (ct3d->dc.num_regions) {
++        ct3d->cxl_dstate.is_dcd =3D true;
++    } else {
++        ct3d->cxl_dstate.is_dcd =3D false;
++    }
++
+     cxl_component_register_init_common(reg_state, write_msk, CXL2_TYPE3_DE=
+VICE);
+     cxl_device_register_init_common(&ct3d->cxl_dstate);
+ }
+diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
+index cd7f28dba8..dae39da438 100644
+--- a/include/hw/cxl/cxl_device.h
++++ b/include/hw/cxl/cxl_device.h
+@@ -212,6 +212,7 @@ typedef struct cxl_device_state {
+     uint64_t mem_size;
+     uint64_t pmem_size;
+     uint64_t vmem_size;
++    bool is_dcd;
+=20
+     struct cxl_cmd (*cxl_cmd_set)[256];
+     CPMUState cpmu[CXL_NUM_CPMU_INSTANCES];
+@@ -382,6 +383,17 @@ typedef struct CXLPoison {
+ typedef QLIST_HEAD(, CXLPoison) CXLPoisonList;
+ #define CXL_POISON_LIST_LIMIT 256
+=20
++#define DCD_MAX_REGION_NUM 8
++
++typedef struct CXLDCD_Region {
++    uint64_t base;
++    uint64_t decode_len; /* in multiples of 256MB */
++    uint64_t len;
++    uint64_t block_size;
++    uint32_t dsmadhandle;
++    uint8_t flags;
++} CXLDCD_Region;
++
+ struct CXLType3Dev {
+     /* Private */
+     PCIDevice parent_obj;
+@@ -413,6 +425,11 @@ struct CXLType3Dev {
+     unsigned int poison_list_cnt;
+     bool poison_list_overflowed;
+     uint64_t poison_list_overflow_ts;
++
++    struct dynamic_capacity {
++        uint8_t num_regions; /* 0-8 regions */
++        struct CXLDCD_Region regions[DCD_MAX_REGION_NUM];
++    } dc;
+ };
+=20
+ #define TYPE_CXL_TYPE3 "cxl-type3"
+--=20
+2.25.1
 
