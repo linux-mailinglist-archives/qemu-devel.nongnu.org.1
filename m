@@ -2,43 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57BEB761A82
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 15:50:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AB8F761A69
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 15:47:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOINT-0006e6-Sq; Tue, 25 Jul 2023 09:47:04 -0400
+	id 1qOINV-0006rc-HB; Tue, 25 Jul 2023 09:47:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qOIMF-0005Gs-9z; Tue, 25 Jul 2023 09:45:48 -0400
+ id 1qOIMG-0005HK-JV; Tue, 25 Jul 2023 09:45:54 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qOIMD-0001HS-Os; Tue, 25 Jul 2023 09:45:47 -0400
+ id 1qOIMF-0001Hj-1q; Tue, 25 Jul 2023 09:45:48 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 630BC160ED;
+ by isrv.corpit.ru (Postfix) with ESMTP id AC994160EE;
  Tue, 25 Jul 2023 16:45:33 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 81D95194B0;
- Tue, 25 Jul 2023 16:45:30 +0300 (MSK)
-Received: (nullmailer pid 3370798 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 44583194B1;
+ Tue, 25 Jul 2023 16:45:31 +0300 (MSK)
+Received: (nullmailer pid 3370801 invoked by uid 1000);
  Tue, 25 Jul 2023 13:45:29 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Avihai Horon <avihaih@nvidia.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Alex Williamson <alex.williamson@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.4 05/31] vfio: Fix null pointer dereference bug in
- vfio_bars_finalize()
-Date: Tue, 25 Jul 2023 16:44:50 +0300
-Message-Id: <20230725134517.3370706-5-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>,
+ David Hildenbrand <david@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.0.4 06/31] target/s390x: Fix EPSW CC reporting
+Date: Tue, 25 Jul 2023 16:44:51 +0300
+Message-Id: <20230725134517.3370706-6-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.4-20230725164041@cover.tls.msk.ru>
 References: <qemu-stable-8.0.4-20230725164041@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -63,50 +60,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Avihai Horon <avihaih@nvidia.com>
+From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-vfio_realize() has the following flow:
-1. vfio_bars_prepare() -- sets VFIOBAR->size.
-2. msix_early_setup().
-3. vfio_bars_register() -- allocates VFIOBAR->mr.
+EPSW should explicitly calculate and insert CC, like IPM does.
 
-After vfio_bars_prepare() is called msix_early_setup() can fail. If it
-does fail, vfio_bars_register() is never called and VFIOBAR->mr is not
-allocated.
-
-In this case, vfio_bars_finalize() is called as part of the error flow
-to free the bars' resources. However, vfio_bars_finalize() calls
-object_unparent() for VFIOBAR->mr after checking only VFIOBAR->size, and
-thus we get a null pointer dereference.
-
-Fix it by checking VFIOBAR->mr in vfio_bars_finalize().
-
-Fixes: 89d5202edc50 ("vfio/pci: Allow relocating MSI-X MMIO")
-Signed-off-by: Avihai Horon <avihaih@nvidia.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Reviewed-by: Alex Williamson <alex.williamson@redhat.com>
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
-(cherry picked from commit 8af87a3ec7e42ff1b9cf75ceee0451c31e34d153)
+Fixes: e30a9d3fea58 ("target-s390: Implement EPSW")
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Cc: qemu-stable@nongnu.org
+Message-Id: <20230704081506.276055-3-iii@linux.ibm.com>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+(cherry picked from commit 110b1bac2ecd94a78a1d38003e24e37367bf074e)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index 4773cc1f2b..53dcb3efaa 100644
---- a/hw/vfio/pci.c
-+++ b/hw/vfio/pci.c
-@@ -1752,9 +1752,11 @@ static void vfio_bars_finalize(VFIOPCIDevice *vdev)
+diff --git a/target/s390x/tcg/translate.c b/target/s390x/tcg/translate.c
+index 82900f53f4..0c22d2f17f 100644
+--- a/target/s390x/tcg/translate.c
++++ b/target/s390x/tcg/translate.c
+@@ -2393,10 +2393,14 @@ static DisasJumpType op_epsw(DisasContext *s, DisasOps *o)
+     int r1 = get_field(s, r1);
+     int r2 = get_field(s, r2);
+     TCGv_i64 t = tcg_temp_new_i64();
++    TCGv_i64 t_cc = tcg_temp_new_i64();
  
-         vfio_bar_quirk_finalize(vdev, i);
-         vfio_region_finalize(&bar->region);
--        if (bar->size) {
-+        if (bar->mr) {
-+            assert(bar->size);
-             object_unparent(OBJECT(bar->mr));
-             g_free(bar->mr);
-+            bar->mr = NULL;
-         }
-     }
- 
+     /* Note the "subsequently" in the PoO, which implies a defined result
+        if r1 == r2.  Thus we cannot defer these writes to an output hook.  */
++    gen_op_calc_cc(s);
++    tcg_gen_extu_i32_i64(t_cc, cc_op);
+     tcg_gen_shri_i64(t, psw_mask, 32);
++    tcg_gen_deposit_i64(t, t, t_cc, 12, 2);
+     store_reg32_i64(r1, t);
+     if (r2 != 0) {
+         store_reg32_i64(r2, psw_mask);
 -- 
 2.39.2
 
