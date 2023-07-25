@@ -2,51 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B570761BCA
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A450761BC9
 	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 16:31:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOJ33-00043v-Lb; Tue, 25 Jul 2023 10:30:01 -0400
+	id 1qOJ3Z-0004BA-95; Tue, 25 Jul 2023 10:30:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qOJ2r-00042I-3t; Tue, 25 Jul 2023 10:29:56 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qOJ2n-0003Of-Sh; Tue, 25 Jul 2023 10:29:47 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 8273E161AA;
- Tue, 25 Jul 2023 17:29:43 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 3BA3719528;
- Tue, 25 Jul 2023 17:29:41 +0300 (MSK)
-Message-ID: <a10bfeac-3112-1667-6de4-5bfbf6f2573d@tls.msk.ru>
-Date: Tue, 25 Jul 2023 17:29:41 +0300
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qOJ3E-00049i-Rz
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 10:30:14 -0400
+Received: from mail-qt1-x831.google.com ([2607:f8b0:4864:20::831])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qOJ3C-0003Rg-QN
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 10:30:12 -0400
+Received: by mail-qt1-x831.google.com with SMTP id
+ d75a77b69052e-403e7472b28so40782221cf.2
+ for <qemu-devel@nongnu.org>; Tue, 25 Jul 2023 07:30:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1690295409; x=1690900209;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=TAwSTipBVQk70A5kNtnXk7lnopzEp6RiEh378r2mVMg=;
+ b=XnWjEzEdL30VwiJxYQcQyEsIZUWHWuTki1ewcErmC9MxGPsQ07j3mQLoRq7q0EBvw7
+ 7bJrv5lcakaW7ulBvZoep4X0cpVinzC2h7Njkclf3z1z/NPu7U1zSi3VuMDIPNXlWP0J
+ VwA1y/KbJk/1foLcUK5XY94RJJUr90rkrTbDY6sBfYyKp7KtGZGUxHtaQXMeTx7AiVOp
+ 4jG56+qclJA/hX2YpFDNQBge3hl7GcceMr4Ntl2EUmvGJIJJUSfCC7JUqHZRdcKC561Z
+ shYbFCquuIVlOeQXvmd/zlBSSwSF1IBsuFGiL1mvnJ3gq76An5nWHToSWxGctA9yIPeB
+ tptA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1690295409; x=1690900209;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=TAwSTipBVQk70A5kNtnXk7lnopzEp6RiEh378r2mVMg=;
+ b=aVQcUApX0GPWcg8bU1gNf28Ni/vjbR2xivirZ8OGWFQcxMI7w6DLNhtApjXZ2yx9WN
+ uMpiD3VLS7w+mW93xP8TJDor7xT5E67GfWSR2KUER771qdUXtu0fpRRrUggL9zhW6eac
+ hKdtFEO/whgo5imm8Ktrz5GjJt5xnhuU/jskq6Ku0vqoRiv8uOSUectlJUyr4/OS9vCI
+ 8RtIAQf2y4xpooDBJZCHreGCrGY54L/yXjfeqsuIFQjj9xqZdqNPbpnVzG2ZLI0KaC30
+ xqjlvyXr92tuElC957gI9T8yTVbajTvQoTvSPSeHmPUV7J9fqIuERnZX4t2qeza2P4/u
+ 1RSQ==
+X-Gm-Message-State: ABy/qLbWvUR4mZZ2ryWoJQUfVk9hEcWK6DqPifZigj05Lvb39YYUqTXl
+ PKO2aWFi1k8qPEb7svwsls4a5KiylNuMjTP6DxI=
+X-Google-Smtp-Source: APBJJlEjelD8SVqqhE19Wt+BUGch+4XLSY6RLeSposKKzRyEmqqezPwwUr771NfpHpB+Fwd147k6E7B/ItQPymPXGtI=
+X-Received: by 2002:a05:622a:1013:b0:403:a262:7751 with SMTP id
+ d19-20020a05622a101300b00403a2627751mr4159355qte.12.1690295409653; Tue, 25
+ Jul 2023 07:30:09 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [Stable-7.2.5 03/14] linux-user: Fix qemu-arm to run static armhf
- binaries
-Content-Language: en-US
-To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Helge Deller <deller@gmx.de>,
- Andreas Schwab <schwab@suse.de>
-References: <qemu-stable-7.2.5-20230725170615@cover.tls.msk.ru>
- <20230725141009.3372529-3-mjt@tls.msk.ru>
-From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <20230725141009.3372529-3-mjt@tls.msk.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -69
-X-Spam_score: -7.0
-X-Spam_bar: -------
-X-Spam_report: (-7.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.091,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <cover.1689857559.git.manos.pitsidianakis@linaro.org>
+ <f267d41957025b3849324f459a8ed476aa89f828.1689857559.git.manos.pitsidianakis@linaro.org>
+In-Reply-To: <f267d41957025b3849324f459a8ed476aa89f828.1689857559.git.manos.pitsidianakis@linaro.org>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Tue, 25 Jul 2023 18:29:58 +0400
+Message-ID: <CAJ+F1C+H+82cA=mhpju-2nxRSA3BWnWJmp4-pi+G=Lsri0oGTw@mail.gmail.com>
+Subject: Re: [PATCH v4 06/12] virtio-sound: handle VIRTIO_SND_R_PCM_INFO
+ request
+To: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
+Cc: qemu-devel@nongnu.org, Igor Skalkin <Igor.Skalkin@opensynergy.com>, 
+ Anton Yakovlev <Anton.Yakovlev@opensynergy.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, 
+ Gerd Hoffmann <kraxel@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Eduardo Habkost <eduardo@habkost.net>,
+ =?UTF-8?Q?Volker_R=C3=BCmelin?= <vr_qemu@t-online.de>, 
+ =?UTF-8?B?S8WRdsOhZ8OzLCBab2x0w6Fu?= <DirtY.iCE.hu@gmail.com>, 
+ Alex Bennee <alex.bennee@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Content-Type: multipart/alternative; boundary="000000000000753a7f06015091fd"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::831;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x831.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -62,46 +96,355 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-25.07.2023 17:09, Michael Tokarev пишет:
-> From: Helge Deller <deller@gmx.de>
-> 
-> qemu-user crashes immediately when running static binaries on the armhf
-> architecture. The problem is the memory layout where the executable is
-> loaded before the interpreter library, in which case the reserved brk
-> region clashes with the interpreter code and is released before qemu
-> tries to start the program.
-> 
-> At load time qemu calculates a brk value for interpreter and executable
-> each.  The fix is to choose the higher one of both.
-> 
-> Signed-off-by: Helge Deller <deller@gmx.de>
-> Cc: Andreas Schwab <schwab@suse.de>
-> Cc: qemu-stable@nongnu.org
-> Reported-by:  Venkata.Pyla@toshiba-tsip.com
-> Closes: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1040981
-> (cherry picked from commit 518f32221af759a29500ac172c4c857bef142067)
-> Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-> 
-> diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-> index 20894b633f..fdc95f8cf6 100644
-> --- a/linux-user/elfload.c
-> +++ b/linux-user/elfload.c
-> @@ -3553,6 +3553,13 @@ int load_elf_binary(struct linux_binprm *bprm, struct image_info *info)
->   
->       if (elf_interpreter) {
->           load_elf_interp(elf_interpreter, &interp_info, bprm->buf);
-> +        /*
-> +         * adjust brk address if the interpreter was loaded above the main
-> +         * executable, e.g. happens with static binaries on armhf
-> +         */
-> +        if (interp_info.brk > info->brk) {
-> +            info->brk = interp_info.brk;
+--000000000000753a7f06015091fd
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Thu, Jul 20, 2023 at 4:59=E2=80=AFPM Emmanouil Pitsidianakis <
+manos.pitsidianakis@linaro.org> wrote:
+
+> Respond to the VIRTIO_SND_R_PCM_INFO control request with the parameters
+> of each requested PCM stream.
+>
+> Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
+> ---
+>  hw/virtio/trace-events |  1 +
+>  hw/virtio/virtio-snd.c | 78 ++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 79 insertions(+)
+>
+> diff --git a/hw/virtio/trace-events b/hw/virtio/trace-events
+> index 8a223e36e9..3e619f778b 100644
+> --- a/hw/virtio/trace-events
+> +++ b/hw/virtio/trace-events
+> @@ -164,6 +164,7 @@ virtio_snd_vm_state_stopped(void) "vm state stopped"
+>  virtio_snd_realize(void *snd) "snd %p: realize"
+>  virtio_snd_unrealize(void *snd) "snd %p: unrealize"
+>  virtio_snd_handle_ctrl(void *vdev, void *vq) "snd %p: handle ctrl event
+> for queue %p"
+> +virtio_snd_handle_pcm_info(uint32_t stream) "VIRTIO_SND_R_PCM_INFO calle=
+d
+> for stream %"PRIu32
+>  virtio_snd_handle_code(uint32_t val, const char *code) "ctrl code msg va=
+l
+> =3D %"PRIu32" =3D=3D %s"
+>  virtio_snd_handle_chmap_info(void) "VIRTIO_SND_CHMAP_INFO called"
+>  virtio_snd_handle_event(void) "event queue callback called"
+> diff --git a/hw/virtio/virtio-snd.c b/hw/virtio/virtio-snd.c
+> index ca09c937c7..3f8b46f372 100644
+> --- a/hw/virtio/virtio-snd.c
+> +++ b/hw/virtio/virtio-snd.c
+> @@ -134,6 +134,19 @@ virtio_snd_set_config(VirtIODevice *vdev, const
+> uint8_t *config)
+>      memcpy(&s->snd_conf, sndconfig, sizeof(s->snd_conf));
+>  }
+>
+> +/*
+> + * Get a specific stream from the virtio sound card device.
+> + * Returns NULL if @stream_id is invalid or not allocated.
+> + *
+> + * @s: VirtIOSound device
+> + * @stream_id: stream id
+> + */
+> +static VirtIOSoundPCMStream *virtio_snd_pcm_get_stream(VirtIOSound *s,
+> +                                                       uint32_t stream_i=
+d)
+> +{
+> +    return stream_id >=3D s->snd_conf.streams ? NULL :
+> s->pcm->streams[stream_id];
+> +}
+> +
+>  /*
+>   * Get params for a specific stream.
+>   *
+> @@ -147,6 +160,69 @@ static VirtIOSoundPCMParams
+> *virtio_snd_pcm_get_params(VirtIOSound *s,
+>          : s->pcm->pcm_params[stream_id];
+>  }
+>
+> +/*
+> + * Handle the VIRTIO_SND_R_PCM_INFO request.
+> + * The function writes the info structs to the request element.
+> + *
+> + * @s: VirtIOSound device
+> + * @cmd: The request command queue element from VirtIOSound cmdq field
+> + */
+> +static void virtio_snd_handle_pcm_info(VirtIOSound *s,
+> +                                       virtio_snd_ctrl_command *cmd)
+> +{
+> +    virtio_snd_query_info req;
+> +    VirtIOSoundPCMStream *stream =3D NULL;
+> +    g_autofree virtio_snd_pcm_info *pcm_info =3D NULL;
+> +    size_t sz =3D iov_to_buf(cmd->elem->out_sg,
+> +                           cmd->elem->out_num,
+> +                           0,
+> +                           &req,
+> +                           sizeof(req));
+> +    if (sz !=3D sizeof(virtio_snd_query_info)) {
+> +        cmd->resp.code =3D VIRTIO_SND_S_BAD_MSG;
+> +        return;
+> +    }
+> +
+> +    if (iov_size(cmd->elem->in_sg, cmd->elem->in_num) <
+> +        sizeof(virtio_snd_hdr) + req.size * req.count) {
+> +        error_report("pcm info: buffer too small, got: %lu, needed: %lu"=
+,
+> +                iov_size(cmd->elem->in_sg, cmd->elem->in_num),
+>
+
+
+> +                sizeof(virtio_snd_pcm_info));
+> +        cmd->resp.code =3D VIRTIO_SND_S_BAD_MSG;
+> +        return;
+> +    }
+> +
+> +    pcm_info =3D g_new0(virtio_snd_pcm_info, req.count);
+> +    for (uint32_t i =3D req.start_id; i < req.start_id + req.count; i++)=
+ {
+> +        trace_virtio_snd_handle_pcm_info(i);
+> +        stream =3D virtio_snd_pcm_get_stream(s, i);
+> +
+> +        if (!stream) {
+> +            error_report("Invalid stream id: %"PRIu32, i);
+> +            cmd->resp.code =3D VIRTIO_SND_S_BAD_MSG;
+> +            return;
 > +        }
->   
->           /* If the program interpreter is one of these two, then assume
->              an iBCS2 image.  Otherwise assume a native linux image.  */
+> +
+> +        pcm_info[i - req.start_id].hdr.hda_fn_nid =3D
+> stream->info.hdr.hda_fn_nid;
+> +        pcm_info[i - req.start_id].features =3D stream->features;
+> +        pcm_info[i - req.start_id].formats =3D stream->formats;
+> +        pcm_info[i - req.start_id].rates =3D stream->rates;
+> +        pcm_info[i - req.start_id].direction =3D stream->direction;
+> +        pcm_info[i - req.start_id].channels_min =3D stream->channels_min=
+;
+> +        pcm_info[i - req.start_id].channels_max =3D stream->channels_max=
+;
+> +
+> +        memset(&pcm_info[i].padding, 0, sizeof(pcm_info[i].padding));
+> +    }
+> +
+> +    cmd->resp.code =3D VIRTIO_SND_S_OK;
+> +
+> +    iov_from_buf(cmd->elem->in_sg,
+> +                 cmd->elem->in_num,
+> +                 sizeof(virtio_snd_hdr),
+> +                 pcm_info,
+> +                 sizeof(virtio_snd_pcm_info) * req.count);
+> +}
+> +
+>  /*
+>   * Set the given stream params.
+>   * Called by both virtio_snd_handle_pcm_set_params and during device
+> @@ -358,6 +434,8 @@ process_cmd(VirtIOSound *s, virtio_snd_ctrl_command
+> *cmd)
+>          cmd->resp.code =3D VIRTIO_SND_S_NOT_SUPP;
+>          break;
+>      case VIRTIO_SND_R_PCM_INFO:
+> +        virtio_snd_handle_pcm_info(s, cmd);
+> +        break;
+>      case VIRTIO_SND_R_PCM_SET_PARAMS:
+>      case VIRTIO_SND_R_PCM_PREPARE:
+>      case VIRTIO_SND_R_PCM_START:
+> --
+> 2.39.2
+>
+>
+>
 
-This obviously should not be there, dropped now.
+--=20
+Marc-Andr=C3=A9 Lureau
 
-/mjt
+--000000000000753a7f06015091fd
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Thu, Jul 20, 2023 at 4:59=E2=80=AF=
+PM Emmanouil Pitsidianakis &lt;<a href=3D"mailto:manos.pitsidianakis@linaro=
+.org">manos.pitsidianakis@linaro.org</a>&gt; wrote:<br></div><blockquote cl=
+ass=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid=
+ rgb(204,204,204);padding-left:1ex">Respond to the VIRTIO_SND_R_PCM_INFO co=
+ntrol request with the parameters<br>
+of each requested PCM stream.<br>
+<br>
+Signed-off-by: Emmanouil Pitsidianakis &lt;<a href=3D"mailto:manos.pitsidia=
+nakis@linaro.org" target=3D"_blank">manos.pitsidianakis@linaro.org</a>&gt;<=
+br>
+---<br>
+=C2=A0hw/virtio/trace-events |=C2=A0 1 +<br>
+=C2=A0hw/virtio/virtio-snd.c | 78 +++++++++++++++++++++++++++++++++++++++++=
++<br>
+=C2=A02 files changed, 79 insertions(+)<br>
+<br>
+diff --git a/hw/virtio/trace-events b/hw/virtio/trace-events<br>
+index 8a223e36e9..3e619f778b 100644<br>
+--- a/hw/virtio/trace-events<br>
++++ b/hw/virtio/trace-events<br>
+@@ -164,6 +164,7 @@ virtio_snd_vm_state_stopped(void) &quot;vm state stoppe=
+d&quot;<br>
+=C2=A0virtio_snd_realize(void *snd) &quot;snd %p: realize&quot;<br>
+=C2=A0virtio_snd_unrealize(void *snd) &quot;snd %p: unrealize&quot;<br>
+=C2=A0virtio_snd_handle_ctrl(void *vdev, void *vq) &quot;snd %p: handle ctr=
+l event for queue %p&quot;<br>
++virtio_snd_handle_pcm_info(uint32_t stream) &quot;VIRTIO_SND_R_PCM_INFO ca=
+lled for stream %&quot;PRIu32<br>
+=C2=A0virtio_snd_handle_code(uint32_t val, const char *code) &quot;ctrl cod=
+e msg val =3D %&quot;PRIu32&quot; =3D=3D %s&quot;<br>
+=C2=A0virtio_snd_handle_chmap_info(void) &quot;VIRTIO_SND_CHMAP_INFO called=
+&quot;<br>
+=C2=A0virtio_snd_handle_event(void) &quot;event queue callback called&quot;=
+<br>
+diff --git a/hw/virtio/virtio-snd.c b/hw/virtio/virtio-snd.c<br>
+index ca09c937c7..3f8b46f372 100644<br>
+--- a/hw/virtio/virtio-snd.c<br>
++++ b/hw/virtio/virtio-snd.c<br>
+@@ -134,6 +134,19 @@ virtio_snd_set_config(VirtIODevice *vdev, const uint8_=
+t *config)<br>
+=C2=A0 =C2=A0 =C2=A0memcpy(&amp;s-&gt;snd_conf, sndconfig, sizeof(s-&gt;snd=
+_conf));<br>
+=C2=A0}<br>
+<br>
++/*<br>
++ * Get a specific stream from the virtio sound card device.<br>
++ * Returns NULL if @stream_id is invalid or not allocated.<br>
++ *<br>
++ * @s: VirtIOSound device<br>
++ * @stream_id: stream id<br>
++ */<br>
++static VirtIOSoundPCMStream *virtio_snd_pcm_get_stream(VirtIOSound *s,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0uint32_t stream_id)<br>
++{<br>
++=C2=A0 =C2=A0 return stream_id &gt;=3D s-&gt;snd_conf.streams ? NULL : s-&=
+gt;pcm-&gt;streams[stream_id];<br>
++}<br>
++<br>
+=C2=A0/*<br>
+=C2=A0 * Get params for a specific stream.<br>
+=C2=A0 *<br>
+@@ -147,6 +160,69 @@ static VirtIOSoundPCMParams *virtio_snd_pcm_get_params=
+(VirtIOSound *s,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0: s-&gt;pcm-&gt;pcm_params[stream_id];<br=
+>
+=C2=A0}<br>
+<br>
++/*<br>
++ * Handle the VIRTIO_SND_R_PCM_INFO request.<br>
++ * The function writes the info structs to the request element.<br>
++ *<br>
++ * @s: VirtIOSound device<br>
++ * @cmd: The request command queue element from VirtIOSound cmdq field<br>
++ */<br>
++static void virtio_snd_handle_pcm_info(VirtIOSound *s,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0virtio_sn=
+d_ctrl_command *cmd)<br>
++{<br>
++=C2=A0 =C2=A0 virtio_snd_query_info req;<br>
++=C2=A0 =C2=A0 VirtIOSoundPCMStream *stream =3D NULL;<br>
++=C2=A0 =C2=A0 g_autofree virtio_snd_pcm_info *pcm_info =3D NULL;<br>
++=C2=A0 =C2=A0 size_t sz =3D iov_to_buf(cmd-&gt;elem-&gt;out_sg,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0cmd-&gt;elem-&gt;out_num,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A00,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0&amp;req,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0sizeof(req));<br>
++=C2=A0 =C2=A0 if (sz !=3D sizeof(virtio_snd_query_info)) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 cmd-&gt;resp.code =3D VIRTIO_SND_S_BAD_MSG;<br=
+>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 return;<br>
++=C2=A0 =C2=A0 }<br>
++<br>
++=C2=A0 =C2=A0 if (iov_size(cmd-&gt;elem-&gt;in_sg, cmd-&gt;elem-&gt;in_num=
+) &lt;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 sizeof(virtio_snd_hdr) + req.size * req.count)=
+ {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 error_report(&quot;pcm info: buffer too small,=
+ got: %lu, needed: %lu&quot;,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 iov_size(cmd-&gt;e=
+lem-&gt;in_sg, cmd-&gt;elem-&gt;in_num),<br></blockquote><div>=C2=A0</div><=
+blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-l=
+eft:1px solid rgb(204,204,204);padding-left:1ex">
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 sizeof(virtio_snd_=
+pcm_info));<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 cmd-&gt;resp.code =3D VIRTIO_SND_S_BAD_MSG;<br=
+>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 return;<br>
++=C2=A0 =C2=A0 }<br>
++<br>
++=C2=A0 =C2=A0 pcm_info =3D g_new0(virtio_snd_pcm_info, req.count);<br>
++=C2=A0 =C2=A0 for (uint32_t i =3D req.start_id; i &lt; req.start_id + req.=
+count; i++) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 trace_virtio_snd_handle_pcm_info(i);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 stream =3D virtio_snd_pcm_get_stream(s, i);<br=
+>
++<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (!stream) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 error_report(&quot;Invalid strea=
+m id: %&quot;PRIu32, i);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 cmd-&gt;resp.code =3D VIRTIO_SND=
+_S_BAD_MSG;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
++<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 pcm_info[i - req.start_id].hdr.hda_fn_nid =3D =
+stream-&gt;info.hdr.hda_fn_nid;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 pcm_info[i - req.start_id].features =3D stream=
+-&gt;features;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 pcm_info[i - req.start_id].formats =3D stream-=
+&gt;formats;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 pcm_info[i - req.start_id].rates =3D stream-&g=
+t;rates;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 pcm_info[i - req.start_id].direction =3D strea=
+m-&gt;direction;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 pcm_info[i - req.start_id].channels_min =3D st=
+ream-&gt;channels_min;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 pcm_info[i - req.start_id].channels_max =3D st=
+ream-&gt;channels_max;<br>
++<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 memset(&amp;pcm_info[i].padding, 0, sizeof(pcm=
+_info[i].padding));<br>
++=C2=A0 =C2=A0 }<br>
++<br>
++=C2=A0 =C2=A0 cmd-&gt;resp.code =3D VIRTIO_SND_S_OK;<br>
++<br>
++=C2=A0 =C2=A0 iov_from_buf(cmd-&gt;elem-&gt;in_sg,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0cmd-&gt;elem=
+-&gt;in_num,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0sizeof(virti=
+o_snd_hdr),<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0pcm_info,<br=
+>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0sizeof(virti=
+o_snd_pcm_info) * req.count);<br>
++}<br>
++<br>
+=C2=A0/*<br>
+=C2=A0 * Set the given stream params.<br>
+=C2=A0 * Called by both virtio_snd_handle_pcm_set_params and during device<=
+br>
+@@ -358,6 +434,8 @@ process_cmd(VirtIOSound *s, virtio_snd_ctrl_command *cm=
+d)<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0cmd-&gt;resp.code =3D VIRTIO_SND_S_NOT_SU=
+PP;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0break;<br>
+=C2=A0 =C2=A0 =C2=A0case VIRTIO_SND_R_PCM_INFO:<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 virtio_snd_handle_pcm_info(s, cmd);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
+=C2=A0 =C2=A0 =C2=A0case VIRTIO_SND_R_PCM_SET_PARAMS:<br>
+=C2=A0 =C2=A0 =C2=A0case VIRTIO_SND_R_PCM_PREPARE:<br>
+=C2=A0 =C2=A0 =C2=A0case VIRTIO_SND_R_PCM_START:<br>
+-- <br>
+2.39.2<br>
+<br>
+<br>
+</blockquote></div><br clear=3D"all"><br><span class=3D"gmail_signature_pre=
+fix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature">Marc-Andr=C3=
+=A9 Lureau<br></div></div>
+
+--000000000000753a7f06015091fd--
 
