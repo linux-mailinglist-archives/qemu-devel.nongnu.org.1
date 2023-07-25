@@ -2,74 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 304E4760E03
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 11:10:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F24CE760E1B
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 11:14:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOE27-0007tD-Q3; Tue, 25 Jul 2023 05:08:43 -0400
+	id 1qOE6m-0000sP-8E; Tue, 25 Jul 2023 05:13:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qOE25-0007t0-OP
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 05:08:41 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qOE6i-0000qt-LP
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 05:13:28 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qOE23-0001VL-OP
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 05:08:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690276118;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=OYyG8i+iV9hO1Ycjxhr2LrC5AdsV/ixbsSl3gvBGnvY=;
- b=c/flg5iXe0Hf1Wbmetj+xWtywLcaTFfH/tXadVB92+wS1/R+ooMT6XpMAh/ZwA1oNtxCX/
- MzxgEDRIoJrVBSYrfsFFIf4KCpM1uocjXl1M7sRyP1GjAev7YeA9fXbNj3Z6RcQqnb9xPy
- x7CRwYF2o5ikTnz14z4nHIsY1KtLx18=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-636-hNei7To2P1awnR2VLVjzXQ-1; Tue, 25 Jul 2023 05:08:35 -0400
-X-MC-Unique: hNei7To2P1awnR2VLVjzXQ-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 46C6A8910EA;
- Tue, 25 Jul 2023 09:08:35 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.193.50])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id E0E472166B27;
- Tue, 25 Jul 2023 09:08:34 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id CDBCA21E6690; Tue, 25 Jul 2023 11:08:33 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: ~hyman <hyman@git.sr.ht>
-Cc: qemu-devel@nongnu.org,  ~hyman <yong.huang@smartx.com>,  Juan Quintela
- <quintela@redhat.com>,  Peter Xu <peterx@redhat.com>,  Leonardo Bras
- <leobras@redhat.com>,  Eric Blake <eblake@redhat.com>,  Thomas Huth
- <thuth@redhat.com>,  Laurent Vivier <lvivier@redhat.com>,  Paolo Bonzini
- <pbonzini@redhat.com>
-Subject: Re: [PATCH QEMU v10 3/9] qapi/migration: Introduce vcpu-dirty-limit
- parameters
-References: <169024923116.19090.10825599068950039132-3@git.sr.ht>
-Date: Tue, 25 Jul 2023 11:08:33 +0200
-In-Reply-To: <169024923116.19090.10825599068950039132-3@git.sr.ht>
- (hyman@git.sr.ht's message of "Wed, 07 Jun 2023 22:58:32 +0800")
-Message-ID: <87cz0ggxym.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qOE6g-0002GV-RG
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 05:13:28 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id BA5DE16037;
+ Tue, 25 Jul 2023 12:13:24 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id CB8C119376;
+ Tue, 25 Jul 2023 12:13:22 +0300 (MSK)
+Message-ID: <106cf02f-f746-e216-22be-8f7594028695@tls.msk.ru>
+Date: Tue, 25 Jul 2023 12:13:22 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] semihosting/uaccess.c: Replaced a malloc call with
+ g_malloc.
+Content-Language: en-US
+To: dinglimin <dinglimin@cmss.chinamobile.com>, richard.henderson@linaro.org
+Cc: qemu-devel@nongnu.org
+References: <20230725080630.1083-1-dinglimin@cmss.chinamobile.com>
+ <20230725090039.1271-1-dinglimin@cmss.chinamobile.com>
+From: Michael Tokarev <mjt@tls.msk.ru>
+In-Reply-To: <20230725090039.1271-1-dinglimin@cmss.chinamobile.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -69
+X-Spam_score: -7.0
+X-Spam_bar: -------
+X-Spam_report: (-7.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.091,
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -86,25 +61,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-~hyman <hyman@git.sr.ht> writes:
+25.07.2023 12:00, dinglimin wrote:
+> Replaced a call to malloc() and its respective call to free() with g_malloc() and g_free().
+> 
+> Signed-off-by: dinglimin <dinglimin@cmss.chinamobile.com>
+> 
+> V1 -> V2:if cpu_memory_rw_debug failed, still need to set p=NULL
+> ---
+>   semihosting/uaccess.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/semihosting/uaccess.c b/semihosting/uaccess.c
+> index 8018828069..2ac754cdb6 100644
+> --- a/semihosting/uaccess.c
+> +++ b/semihosting/uaccess.c
+> @@ -14,10 +14,10 @@
+>   void *softmmu_lock_user(CPUArchState *env, target_ulong addr,
+>                           target_ulong len, bool copy)
+>   {
+> -    void *p = malloc(len);
+> +    void *p = g_malloc(len);
+>       if (p && copy) {
+>           if (cpu_memory_rw_debug(env_cpu(env), addr, p, len, 0)) {
+> -            free(p);
+> +            g_free(p);
+>               p = NULL;
+>           }
+>       }
 
-> From: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
->
-> Introduce "vcpu-dirty-limit" migration parameter used
-> to limit dirty page rate during live migration.
->
-> "vcpu-dirty-limit" and "x-vcpu-dirty-limit-period" are
-> two dirty-limit-related migration parameters, which can
-> be set before and during live migration by qmp
-> migrate-set-parameters.
->
-> This two parameters are used to help implement the dirty
-> page rate limit algo of migration.
->
-> Signed-off-by: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
-> Acked-by: Peter Xu <peterx@redhat.com>
-> Reviewed-by: Juan Quintela <quintela@redhat.com>
+Ok, that was the obvious part.  Now a next one, also obvious.
 
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
+You changed lock_user to use g_malloc(), but unlock_user
+still uses free() instead of g_free().  At the very least
+the other one needs to be changed too.  And I'd say the callers
+should be analyzed to ensure they don't free() the result
+(they should not, think it is a bug if they do).
 
+lock_user/unlock_user (which #defines to softmmu_lock_user/
+softmmu_unlock_user in softmmu mode) is used a *lot*.
+
+/mjt
 
