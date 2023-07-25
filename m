@@ -2,80 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF8CC7610CD
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 12:26:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46FA3761113
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 12:39:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOFFF-0001Xp-TA; Tue, 25 Jul 2023 06:26:21 -0400
+	id 1qOFQV-0006Kh-Me; Tue, 25 Jul 2023 06:38:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qOFE8-0000Ix-CC
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 06:25:13 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qOFE5-0007WG-Q2
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 06:25:12 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-3fbc63c2e84so53543925e9.3
- for <qemu-devel@nongnu.org>; Tue, 25 Jul 2023 03:25:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690280707; x=1690885507;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=9C6PfLlU2O818ZwPOAqAi3d27sGlX9QQgbc+eDlrhGY=;
- b=DtiJDRKzQ6LC69Z7UhI7WOfXygH36DCkqUZqSr6AB/A8gX96oYoxuxboOlegc3Npbh
- dVu98nazkFFEbvkvmAv3oIWTT3v92+tRWnJsvdM3PtHRzy0JftggZ7Byca49ORk4hJy6
- rInsc809qsj05DODNJ83TBjrVImyJ+qQ024xgqdg0TW45JBjumofd0GC4FAJwE2HfC+Q
- q8+QCVY/Ve7PPwbbPvSnzHFUMS7bQhF/H+YlYUbv0CHR+LLkDQ+IW+T4IykP4tFuLrJR
- WEumbDzp8z/0spIjITYrdg5ZO6FMweF7cI1WYvtL5HT2Q5/f72eIhg6e9xIcNB+W6tJj
- Gr1A==
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1qOFQS-0006K6-MG
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 06:37:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1qOFQQ-00027l-It
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 06:37:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1690281473;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=QzN5pQYPJw9+RkdXVX9FDXzeHuzLmamrY0hcJPFrH8A=;
+ b=LGv0Dr3Z6BR+X0MFDlY1RHlKiTlujHZsm4mSIPpo2fwgg8WidTMVkm7mWpr3JWKzycJGHQ
+ picjwAtorpi28sILfwpciyR5vV/D6ezGY8O+AnlukgMFW41FATjD6itqVvc24LRaL73mbG
+ apBBxbS53rF5OY/cveDEnR591D7xu1E=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-610-XBkPQZrNMD2HpkvanO5wLA-1; Tue, 25 Jul 2023 06:37:49 -0400
+X-MC-Unique: XBkPQZrNMD2HpkvanO5wLA-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-3fbe356b8deso28503755e9.0
+ for <qemu-devel@nongnu.org>; Tue, 25 Jul 2023 03:37:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690280707; x=1690885507;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=9C6PfLlU2O818ZwPOAqAi3d27sGlX9QQgbc+eDlrhGY=;
- b=Vl5IVPUrGbYT2NH8xku2yuTPBU4UlvnZ6fJYbaaHLoBMKhBswRVGH/DZiy7lNyRJyb
- 4W4G8g6+SXfCt+FsXUZiR/llCB8jv79tpJzoiGvTZlSTXhabO7ZI/ufob7LTmKm+VLuC
- tSoH2+RypdYnJkB1JRLtu7w/N0YjPoQmwfUF+dor0xEUuFxEHDx2MNCd6FAhqX2IajZe
- JAczkh8wJqUvJ/9IZqUxX2WNoF+JKQHq+O5O5GHhoogUO4qKKchMG2OzkKc5K+BnoSzQ
- 09RMfE2jtNfSMkTzM4KGlbTuGYQnBgpw6RIMIAnzOSF6i7VRxrvAsRca5JPKYq02wupt
- yrTA==
-X-Gm-Message-State: ABy/qLbUXCWb6svoBNpVkmvCJS7EatPH+ENJPk8YDL7++buMuoJk6tWf
- BODGKxQO58QAxf7w8F0JXJSbR8qOJrfOdGNK4AY=
-X-Google-Smtp-Source: APBJJlG87V9qTXpiUgCWGQUkMym1NMqm9BEwWvWpC4PQMeFmqJtF/X73wkebg3z4WkyqhtT+X0C5UQ==
-X-Received: by 2002:a05:600c:40c:b0:3fb:dd9c:72d2 with SMTP id
- q12-20020a05600c040c00b003fbdd9c72d2mr10012662wmb.31.1690280707298; 
- Tue, 25 Jul 2023 03:25:07 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ d=1e100.net; s=20221208; t=1690281467; x=1690886267;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=QzN5pQYPJw9+RkdXVX9FDXzeHuzLmamrY0hcJPFrH8A=;
+ b=OM6twgWQc7//hcU2XlzI42hK8VUJZW349B9DGlbeEj8j6/sQBUSf9SreDnfGYTv8Xi
+ lrYBr+m2/sXrY5fybilaGlgL+plvdHaxO76rI6y3WkdzYYltD7X8fiaOvCo3eF8Z8pEq
+ XY+IzGBfd6zj8M/9sjO4YMCcjeKD5rkw3x9KfDRTJ2Qsla3oD/L/MUInBiEP6Kb+iZEK
+ FOBrDEKRDgUQcyDX99TqI0J787OoeX60Dc2phavAfDHl0c4VOWQYD6YPFxHdXoPGsXNZ
+ 09rMXQbqNuqVNaQQjIKZjW4HmU1nepCs3N84pya5Sc4/706tCPBSsxpa5TEgGlfQqUo1
+ Np6w==
+X-Gm-Message-State: ABy/qLYu3A09viiu+po/M2bwev679MpsmDjdndAU+qPDKrD4mO9CXEK4
+ lkk8n4zjbe3vqN9FJ+HxWTv3xMB5/UkdsobgMoEyuzbl61y9AJEVODks3mbfawghtI2q8i3mE8y
+ lh2GUjOXYIqDkY7vt9qxKgzL06IOmuGLAz5OMqhnFRjA/B3BPhCPGeG1MDBwpJ5HSioRsBdHG0+
+ w=
+X-Received: by 2002:adf:f848:0:b0:317:18a8:5fa1 with SMTP id
+ d8-20020adff848000000b0031718a85fa1mr7460448wrq.69.1690281467805; 
+ Tue, 25 Jul 2023 03:37:47 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlGq/5A5T4lrZTDg2SKb4ozN2FM4cklLcx09xpVgrIRfk87T1DAiLsgGPMM4c4rTsKMU61u1xA==
+X-Received: by 2002:adf:f848:0:b0:317:18a8:5fa1 with SMTP id
+ d8-20020adff848000000b0031718a85fa1mr7460429wrq.69.1690281467445; 
+ Tue, 25 Jul 2023 03:37:47 -0700 (PDT)
+Received: from step1.redhat.com ([193.207.217.123])
  by smtp.gmail.com with ESMTPSA id
- u19-20020a05600c211300b003fbc30825fbsm12567185wml.39.2023.07.25.03.25.06
- for <qemu-devel@nongnu.org>
+ z8-20020adff748000000b00314374145e0sm15834957wrp.67.2023.07.25.03.37.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 25 Jul 2023 03:25:07 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
+ Tue, 25 Jul 2023 03:37:46 -0700 (PDT)
+From: Stefano Garzarella <sgarzare@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 5/5] tests/decode: Suppress "error: " string for
- expected-failure tests
-Date: Tue, 25 Jul 2023 11:25:03 +0100
-Message-Id: <20230725102503.2283907-6-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230725102503.2283907-1-peter.maydell@linaro.org>
-References: <20230725102503.2283907-1-peter.maydell@linaro.org>
+Cc: qemu-block@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>
+Subject: [PATCH] block/blkio: enable the completion eventfd
+Date: Tue, 25 Jul 2023 12:37:44 +0200
+Message-ID: <20230725103744.77343-1-sgarzare@redhat.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=sgarzare@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,55 +100,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The "expected failure" tests for decodetree result in the
-error messages from decodetree ending up in logs and in
-V=1 output:
+Until libblkio 1.3.0, virtio-blk drivers had completion eventfd
+notifications enabled from the start, but from the next releases
+this is no longer the case, so we have to explicitly enable them.
 
->>> MALLOC_PERTURB_=226 /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86/pyvenv/bin/python3 /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/scripts/decodetree.py --output-null --test-for-error /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86/../../tests/decode/err_argset1.decode
-――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― ✀  ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
-/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86/../../tests/decode/err_argset1.decode:5: error: duplicate argument "a"
-―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
- 1/44 qemu:decodetree / err_argset1                OK              0.05s
+In fact, the libblkio documentation says they could be disabled,
+so we should always enable them at the start if we want to be
+sure to get completion eventfd notifications:
 
-This then produces false positives when scanning the
-logfiles for strings like "error: ".
+    By default, the driver might not generate completion events for
+    requests so it is necessary to explicitly enable the completion
+    file descriptor before use:
 
-For the expected-failure tests, make decodetree print
-"detected:" instead of "error:".
+    void blkioq_set_completion_fd_enabled(struct blkioq *q, bool enable);
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20230720131521.1325905-1-peter.maydell@linaro.org
+I discovered this while trying a development version of libblkio:
+the guest kernel hangs during boot, while probing the device.
+
+Fixes: fd66dbd424f5 ("blkio: add libblkio block driver")
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
 ---
- scripts/decodetree.py | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ block/blkio.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/scripts/decodetree.py b/scripts/decodetree.py
-index a8a6cb69cda..e8b72da3a97 100644
---- a/scripts/decodetree.py
-+++ b/scripts/decodetree.py
-@@ -134,6 +134,10 @@ def error_with_file(file, lineno, *args):
-     global output_file
-     global output_fd
+diff --git a/block/blkio.c b/block/blkio.c
+index 1798648134..bc1fac48b7 100644
+--- a/block/blkio.c
++++ b/block/blkio.c
+@@ -845,6 +845,7 @@ static int blkio_file_open(BlockDriverState *bs, QDict *options, int flags,
+     QLIST_INIT(&s->bounce_bufs);
+     s->blkioq = blkio_get_queue(s->blkio, 0);
+     s->completion_fd = blkioq_get_completion_fd(s->blkioq);
++    blkioq_set_completion_fd_enabled(s->blkioq, true);
  
-+    # For the test suite expected-errors case, don't print the
-+    # string "error: ", so they don't turn up as false positives
-+    # if you grep the meson logs for strings like that.
-+    end = 'error: ' if not testforerror else 'detected: '
-     prefix = ''
-     if file:
-         prefix += f'{file}:'
-@@ -141,7 +145,7 @@ def error_with_file(file, lineno, *args):
-         prefix += f'{lineno}:'
-     if prefix:
-         prefix += ' '
--    print(prefix, end='error: ', file=sys.stderr)
-+    print(prefix, end=end, file=sys.stderr)
-     print(*args, file=sys.stderr)
- 
-     if output_file and output_fd:
+     blkio_attach_aio_context(bs, bdrv_get_aio_context(bs));
+     return 0;
 -- 
-2.34.1
+2.41.0
 
 
