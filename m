@@ -2,89 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB55F762184
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 20:37:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CA03762187
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 20:37:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOMtq-0006AE-2D; Tue, 25 Jul 2023 14:36:46 -0400
+	id 1qOMts-0006B6-AN; Tue, 25 Jul 2023 14:36:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qOMtl-00069I-NJ
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 14:36:41 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qOMtj-0000Kl-Oz
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 14:36:41 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-666edfc50deso115991b3a.0
- for <qemu-devel@nongnu.org>; Tue, 25 Jul 2023 11:36:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690310198; x=1690914998;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=gZAPlvPWYUTp4z9QljCKilDGvRoinPZYI6o4B5qGstU=;
- b=McfCmZQjB/PFhXCjYPS1gskKIZbowdc0exaQLDidVzuvSizYuRUstUsSqxTL7/q/td
- X1Nhyojmr+pBF+FtbLPg+wk4fbvTAA7ggqcBRwulUJ7j7YFyk5q7146CqjRDZbCBE6O6
- FrL7N4cQengBMQo73KYYB09etHwtOQ2+PC42fcygE9ltjVCBBTNLIgKSnq0BmMepTZSU
- aFfnHQL90daWnAcV41ySdmFUstCi3H+9ZYIasPCx5xyBOZ+yBUZbtojpdFyI1TUTMpt4
- TTBcTjkDTh1ACuUNCRfIn+uzCgpMr0ROby3ZhU21XB/geFCms46DXVgHTUKCIJsddPfv
- Gd0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690310198; x=1690914998;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=gZAPlvPWYUTp4z9QljCKilDGvRoinPZYI6o4B5qGstU=;
- b=jZYLxUKOZebUs45MH75NETqRY5AhAcXCQAdtJ/6k2yAtOQvhVQK6BKoVEiepSPZoxW
- hGX39lKsXP3g1LKNwk2e19FhWe/kwh61M0YHT6sxJzamL+2oPFszMnBQTLtxG4JnzVYR
- Z11GNbwawEo+fjsHdzf8gmolFmJk/yi5YMG1sPwF5y57L42VtaPTk/VBfGUsm3COOqt0
- m3MpuARijxs1nQsVHSNbZB8TxE/2CEUWEqkdwgwIB5dInrjFi1s8B5M6OMRwg9G0lmXF
- zIiFYZwca/GC8mk9RZab2T1z/w8mbAGlHcWfdsTodufEvj2vyqby0abLyPnkAin1s0KN
- X6kw==
-X-Gm-Message-State: ABy/qLZerehCZE2KjRO2+SWQwG+ViRccGpzBV6urMTMwTNPt16w08L7Z
- +78/LshL2go9hy+Bbm+o+96sCA==
-X-Google-Smtp-Source: APBJJlFxkQCojDOAfcSSxALE3UweTfpCz6k1MXxqmZMYBQs+u2avu5qdhRkdpqvbY8uDNld7IPEtxw==
-X-Received: by 2002:a05:6a00:1c83:b0:686:626d:71e with SMTP id
- y3-20020a056a001c8300b00686626d071emr23650pfw.2.1690310197754; 
- Tue, 25 Jul 2023 11:36:37 -0700 (PDT)
-Received: from ?IPV6:2602:ae:1598:4c01:a083:fa5e:b91b:bcc6?
- ([2602:ae:1598:4c01:a083:fa5e:b91b:bcc6])
- by smtp.gmail.com with ESMTPSA id
- b7-20020aa78107000000b0066884d4efdbsm10324514pfi.12.2023.07.25.11.36.36
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 25 Jul 2023 11:36:37 -0700 (PDT)
-Message-ID: <36445f06-644d-c20d-beff-2dd7a8ac5d79@linaro.org>
-Date: Tue, 25 Jul 2023 11:36:35 -0700
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qOMtp-0006AR-JU
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 14:36:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qOMtn-0000Ld-Ta
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 14:36:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1690310203;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=SzycErlJrf/u1fYB3xTO9GVxHed6fEJoe+Em7YJNPyo=;
+ b=RDsYMQaqVtjhTnb3yrtkdBhA1qB7exezkA9EGIMkqO93pWK5gR5r/EUY4W4BQktNNs7O45
+ is4waWlH+E9Rk4knssQaIVEeeGvJrzMb9rkD0XS+1Sxv6Knf00gZUHbXyJKR2k1s1+ETrl
+ r2ztjo1Oj6zh42srIb2+pxtezuXXtTw=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-631-x2FbUYyeOtiTz8UNJm8R1g-1; Tue, 25 Jul 2023 14:36:40 -0400
+X-MC-Unique: x2FbUYyeOtiTz8UNJm8R1g-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 82B79857FF8;
+ Tue, 25 Jul 2023 18:36:39 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.133])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 98CFA2166B25;
+ Tue, 25 Jul 2023 18:36:37 +0000 (UTC)
+Date: Tue, 25 Jul 2023 19:36:35 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: John Snow <jsnow@redhat.com>
+Cc: qemu-devel@nongnu.org, =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
+ Hanna Reitz <hreitz@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Cleber Rosa <crosa@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ qemu-arm@nongnu.org, qemu-block@nongnu.org,
+ Andrew Jeffery <andrew@aj.id.au>, Joel Stanley <joel@jms.id.au>,
+ Kevin Wolf <kwolf@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Beraldo Leal <bleal@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>
+Subject: Re: [PATCH v2 6/6] python/machine: remove unused sock_dir argument
+Message-ID: <ZMAWM7BVs5gLwiUl@redhat.com>
+References: <20230725180337.2937292-1-jsnow@redhat.com>
+ <20230725180337.2937292-7-jsnow@redhat.com>
+ <ZMAT60PpKSIAemZ7@redhat.com>
+ <CAFn=p-YTohvmxET2kk1NWU1X=psVcD1M0oS7BDEZUH521DEQ_w@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 06/14] target/arm/ptw: Pass an ARMSecuritySpace to
- arm_hcr_el2_eff_secstate()
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org
-References: <20230714154648.327466-1-peter.maydell@linaro.org>
- <20230714154648.327466-7-peter.maydell@linaro.org>
- <230dd650-846f-7105-7add-43fa2d03dad7@linaro.org>
- <CAFEAcA---QdS2vo3iAivTdBVAtFz5qOaC9Mdy2AhvXWGyaO7BQ@mail.gmail.com>
- <CAFEAcA-za6cJvahgzNMXOZrMhW4REOfZ6HKJh5GwwutJDPmbzA@mail.gmail.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <CAFEAcA-za6cJvahgzNMXOZrMhW4REOfZ6HKJh5GwwutJDPmbzA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAFn=p-YTohvmxET2kk1NWU1X=psVcD1M0oS7BDEZUH521DEQ_w@mail.gmail.com>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,22 +91,62 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/24/23 07:38, Peter Maydell wrote:
->> Does it? HCR_EL2 says "behaves as 0 if EL2 is not enabled in the
->> current Security state". If the current Security state is Root then
->> EL2 isn't enabled (because there's no such thing as EL2 Root), so the
->> function should return 0, shouldn't it?
+On Tue, Jul 25, 2023 at 02:33:36PM -0400, John Snow wrote:
+> On Tue, Jul 25, 2023 at 2:26 PM Daniel P. Berrangé <berrange@redhat.com> wrote:
+> >
+> > On Tue, Jul 25, 2023 at 02:03:37PM -0400, John Snow wrote:
+> > > By using a socketpair for all of the sockets managed by the VM class and
+> > > its extensions, we don't need the sock_dir argument anymore, so remove
+> > > it.
+> > >
+> > > We only added this argument so that we could specify a second, shorter
+> > > temporary directory for cases where the temp/log dirs were "too long" as
+> > > a socket name on macOS. We don't need it for this class now. In one
+> > > case, avocado testing takes over responsibility for creating an
+> > > appropriate sockdir.
+> > >
+> > > Signed-off-by: John Snow <jsnow@redhat.com>
+> > > ---
+> > >  python/qemu/machine/machine.py             | 18 ------------------
+> > >  python/qemu/machine/qtest.py               |  5 +----
+> > >  tests/avocado/acpi-bits.py                 |  5 +----
+> > >  tests/avocado/avocado_qemu/__init__.py     |  2 +-
+> > >  tests/avocado/machine_aspeed.py            |  5 ++++-
+> > >  tests/qemu-iotests/iotests.py              |  2 +-
+> > >  tests/qemu-iotests/tests/copy-before-write |  3 +--
+> > >  7 files changed, 9 insertions(+), 31 deletions(-)
+> >
+> > Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+> >
 > 
-> I guess there's an argument that what the spec really means is
-> "the security state described by the current effective value
-> of SCR_EL3.{NSE,NS}" (to steal language from the docs of the
-> AT operations), though.
+> Thanks!
+> 
+> I don't know if we want this for *this* cycle or not, it's "only
+> testing code" and it should hopefully be harmless. If it makes the
+> tests more reliable, it might be worth it. I don't have strong
+> feelings one way or the other, we've lived without it for so long
+> as-is.
+> 
+> I'll see what Peter says.
 
-Yes, that's how I read it.
+Although it does affect end users, the biggest impact is our own
+CI. Once the release is out it would help CI on stable trees,
+but the big win is CI on master.
+
+I'd verge towards skipping this during freeze and applying to
+master after release. Then propose cherry-pick to stable once
+it has had some soak time in our real CI.
 
 
-r~
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+
 
