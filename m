@@ -2,67 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8C4A760411
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 02:36:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2944B760402
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 02:30:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qO61M-0007GJ-Km; Mon, 24 Jul 2023 20:35:24 -0400
+	id 1qO5vI-0005wU-8t; Mon, 24 Jul 2023 20:29:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
- id 1qO61J-0007GA-QD
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 20:35:21 -0400
-Received: from mga14.intel.com ([192.55.52.115])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
- id 1qO61H-0001Ju-AA
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 20:35:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1690245319; x=1721781319;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=4PeKoXFrDtbxtxtxMkNdxUhJCHdVDVjQdTH2vvZOsKc=;
- b=GaR8pALexOWGmSoej0RHNW1IUGCcxDvyMl9Lmvgc/Xh9wdoNBL2kAd9M
- ieZnx3+EEBTD+LRuJvcS6yQSCHV4gcHrA7EXQjo4OnSJOjmOjGapaNq4W
- WK5tlre4kz6IK0OHHPfx7UYbJkAm21muhxqU2pjLBmyKXQNdnJcwX/CW8
- nGGUng7/b/NSX7ZzdYt/caXag0amWHjir+H5y4BPPs6p0xvG9tIsGSe+L
- 5OeitC3SUDyD0idbRTdmBzf5u7xfVIt/XHpKDUxxAk5ABQm3FJGczK4gT
- MZ5zGE08xm9FOkCCJInqamAWnW/ODvqk+PzN1WHma8udtZFtdKoYl7FeL Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10781"; a="367610403"
-X-IronPort-AV: E=Sophos;i="6.01,229,1684825200"; d="scan'208";a="367610403"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
- by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jul 2023 17:35:16 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10781"; a="725892029"
-X-IronPort-AV: E=Sophos;i="6.01,229,1684825200"; d="scan'208";a="725892029"
-Received: from dongwonk-z390-aorus-ultra-intel-gfx.fm.intel.com
- ([10.105.129.122])
- by orsmga002.jf.intel.com with ESMTP; 24 Jul 2023 17:34:55 -0700
-From: Dongwon Kim <dongwon.kim@intel.com>
-To: qemu-devel@nongnu.org
-Cc: Dongwon Kim <dongwon.kim@intel.com>,
- =?UTF-8?q?Volker=20R=C3=BCmelin?= <vr_qemu@t-online.de>,
- Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Vivek Kasireddy <vivek.kasireddy@intel.com>
-Subject: [PATCH] ui/gtk: set scanout mode in gd_egl/gd_gl_area_scanout_texture
-Date: Mon, 24 Jul 2023 17:11:31 -0700
-Message-Id: <20230725001131.24017-1-dongwon.kim@intel.com>
-X-Mailer: git-send-email 2.20.1
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1qO5vF-0005wI-K8
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 20:29:05 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1qO5vC-0007xF-Lq
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 20:29:05 -0400
+Received: from loongson.cn (unknown [10.20.42.170])
+ by gateway (Coremail) with SMTP id _____8AxV_FEF79kx3oJAA--.24146S3;
+ Tue, 25 Jul 2023 08:28:52 +0800 (CST)
+Received: from [10.20.42.170] (unknown [10.20.42.170])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8AxjiM_F79kAfE5AA--.50597S3; 
+ Tue, 25 Jul 2023 08:28:48 +0800 (CST)
+Message-ID: <2fa14ef5-b2f7-459d-8b84-114d36ba3cf7@loongson.cn>
+Date: Tue, 25 Jul 2023 08:28:47 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [Question - ARM CCA] vCPU Hotplug Support in ARM Realm world
+ might require ARM spec change?
+To: Salil Mehta <salil.mehta@huawei.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>, Marc Zyngier
+ <maz@kernel.org>, Will Deacon <will@kernel.org>,
+ "christoffer.dall@arm.com" <christoffer.dall@arm.com>,
+ "oliver.upton@linux.dev" <oliver.upton@linux.dev>,
+ "mark.rutland@arm.com" <mark.rutland@arm.com>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ Salil Mehta <salil.mehta@opnsrc.net>,
+ "andrew.jones@linux.dev" <andrew.jones@linux.dev>,
+ yuzenghui <yuzenghui@huawei.com>,
+ "kvmarm@lists.cs.columbia.edu" <kvmarm@lists.cs.columbia.edu>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>, qemu-devel@nongnu.org,
+ "james.morse@arm.com" <james.morse@arm.com>,
+ "steven.price@arm.com" <steven.price@arm.com>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
+References: <9cb24131a09a48e9a622e92bf8346c9d@huawei.com>
+Content-Language: en-US
+From: bibo mao <maobibo@loongson.cn>
+In-Reply-To: <9cb24131a09a48e9a622e92bf8346c9d@huawei.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.55.52.115; envelope-from=dongwon.kim@intel.com;
- helo=mga14.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-CM-TRANSID: AQAAf8AxjiM_F79kAfE5AA--.50597S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxGrWDCF1DWw4rur18tF1UArc_yoW5Grykpr
+ W5GFyF9rZ8KrW0vws2vF15ury3ZrW8Cayaqwn7t34xZan8XF9F9r4aya1YyFyfXF1fW3W2
+ qF4avryfCFs8XFXCm3ZEXasCq-sJn29KB7ZKAUJUUUUD529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUPFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+ Gr0_Gr1UM2kKe7AKxVWUAVWUtwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
+ kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUtVWr
+ XwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMx
+ k0xIA0c2IEe2xFo4CEbIxvr21lc7CjxVAaw2AFwI0_GFv_Wryl42xK82IYc2Ij64vIr41l
+ 4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_JF0_Jw1lx2IqxVAqx4xG67AKxV
+ WUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI
+ 7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_JFI_Gr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r
+ 4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI
+ 42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU3sjjDUUUU
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.091,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -79,52 +101,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fixing a regression (black screen) caused by a commit 92b58156e7
-("ui/gtk: set scanout-mode right before scheduling draw").
+Is vcpu hotplug supported in arm virt-machine now?
 
-The commit 92b58156e7 was made with an assumption that the scanout
-mode needs to be set only if the guest scanout is a dmabuf but there
-are cases (e.g. virtio-gpu-virgl) where the scanout is still processed
-in a form of a texture but is not backed by dmabuf. So it is needed
-to put back the line that sets scanout mode in gd_egl_scanout_texture
-and gd_gl_area_scanout_texture.
+There is arm64 vcpu hotplug patch in qemu mailing list, however it is not merged.
+I do not know why it is not merged. I ask this question because we propose
+similar patch about LoongArch system in qemu mailing list, and kernel need not be
+modified for vcpu hotplug.
 
-Fixes: 92b58156e7 ("ui/gtk: set scanout-mode right before scheduling draw)
-Reported-by: Volker Rümelin <vr_qemu@t-online.de>
-Cc: Gerd Hoffmann <kraxel@redhat.com>
-Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
-Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
-Signed-off-by: Dongwon Kim <dongwon.kim@intel.com>
----
- ui/gtk-egl.c     | 1 +
- ui/gtk-gl-area.c | 1 +
- 2 files changed, 2 insertions(+)
+Regards
+Bibo, mao
 
-diff --git a/ui/gtk-egl.c b/ui/gtk-egl.c
-index 4c29ac10d0..a1060fd80f 100644
---- a/ui/gtk-egl.c
-+++ b/ui/gtk-egl.c
-@@ -246,6 +246,7 @@ void gd_egl_scanout_texture(DisplayChangeListener *dcl,
-     eglMakeCurrent(qemu_egl_display, vc->gfx.esurface,
-                    vc->gfx.esurface, vc->gfx.ectx);
- 
-+    gtk_egl_set_scanout_mode(vc, true);
-     egl_fb_setup_for_tex(&vc->gfx.guest_fb, backing_width, backing_height,
-                          backing_id, false);
- }
-diff --git a/ui/gtk-gl-area.c b/ui/gtk-gl-area.c
-index 1ce34a249e..52dcac161e 100644
---- a/ui/gtk-gl-area.c
-+++ b/ui/gtk-gl-area.c
-@@ -268,6 +268,7 @@ void gd_gl_area_scanout_texture(DisplayChangeListener *dcl,
-         return;
-     }
- 
-+    gtk_gl_area_set_scanout_mode(vc, true);
-     egl_fb_setup_for_tex(&vc->gfx.guest_fb, backing_width, backing_height,
-                          backing_id, false);
- }
--- 
-2.34.1
+在 2023/7/19 10:35, Salil Mehta 写道:
+> [Reposting it here from Linaro Open Discussion List for more eyes to look at]
+> 
+> Hello,
+> I have recently started to dabble with ARM CCA stuff and check if our
+> recent changes to support vCPU Hotplug in ARM64 can work in the realm
+> world. I have realized that in the RMM specification[1] PSCI_CPU_ON
+> command(B5.3.3) does not handles the PSCI_DENIED return code(B5.4.2),
+> from the host. This might be required to support vCPU Hotplug feature
+> in the realm world in future. vCPU Hotplug is an important feature to
+> support kata-containers in realm world as it reduces the VM boot time
+> and facilitates dynamic adjustment of vCPUs (which I think should be
+> true even with Realm world as current implementation only makes use
+> of the PSCI_ON/OFF to realize the Hotplug look-like effect?)
+> 
+> 
+> As per our recent changes [2], [3] related to support vCPU Hotplug on
+> ARM64, we handle the guest exits due to SMC/HVC Hypercall in the
+> user-space i.e. VMM/Qemu. In realm world, REC Exits to host due to
+> PSCI_CPU_ON should undergo similar policy checks and I think,
+> 
+> 1. Host should *deny* to online the target vCPUs which are NOT plugged
+> 2. This means target REC should be denied by host. Can host call
+>    RMI_PSCI_COMPETE in such s case? 
+> 3. The *return* value (B5.3.3.1.3 Output values) should be PSCI_DENIED
+> 4. Failure condition (B5.3.3.2) should be amended with
+>    runnable pre: target_rec.flags.runnable == NOT_RUNNABLE (?)
+>             post: result == PSCI_DENIED (?)
+> 5. Change would also be required in the flow (D1.4 PSCI flows) depicting 
+>    PSCI_CPU_ON flow (D1.4.1)
+>   
+> 
+> I do understand that ARM CCA support is in its infancy stage and
+> discussing about vCPU Hotplug in realm world seem to be a far-fetched
+> idea right now. But specification changes require lot of time and if
+> this change is really required then it should be further discussed
+> within ARM. 
+> 
+> Many thanks!
+> 
+> 
+> Bes regards
+> Salil
+> 
+> 
+> References:
+> 
+> [1] https://developer.arm.com/documentation/den0137/latest/
+> [2] https://github.com/salil-mehta/qemu.git virt-cpuhp-armv8/rfc-v1-port11052023.dev-1
+> [3] https://git.gitlab.arm.com/linux-arm/linux-jm.git virtual_cpu_hotplug/rfc/v2
 
 
