@@ -2,94 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35815760A4D
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 08:26:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AA92760AB7
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 08:45:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOBTd-0001Po-5p; Tue, 25 Jul 2023 02:24:57 -0400
+	id 1qOBlx-00045D-30; Tue, 25 Jul 2023 02:43:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1qOBT7-0001PF-WF
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 02:24:26 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1qOBT3-0002IH-HX
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 02:24:25 -0400
-Received: from loongson.cn (unknown [10.20.42.170])
- by gateway (Coremail) with SMTP id _____8AxEvCLar9klpkJAA--.22916S3;
- Tue, 25 Jul 2023 14:24:11 +0800 (CST)
-Received: from [10.20.42.170] (unknown [10.20.42.170])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8AxTSOBar9kMUA6AA--.7512S3; 
- Tue, 25 Jul 2023 14:24:02 +0800 (CST)
-Message-ID: <935e68ed-2ada-03ac-c6e0-40b7972515c1@loongson.cn>
-Date: Tue, 25 Jul 2023 14:24:01 +0800
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1qOBle-00044V-00
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 02:43:35 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1qOBlc-0005z0-9w
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 02:43:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1690267411;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=f41a2EIE277jevUdj1TGX09GS4/0K7LqHcmSKThs/kg=;
+ b=PFwyIkEw6jopVjqBo17d93dpQ7dRJ+NIpfryt1+kHpBwd/sx1h2cTe+KdzAojyidCD2Fmd
+ GZZjRuy6S6sPdoGlOXd8a0tDHEUAWKyDHV6hvSNju32/uot5+t7VonvYrEqimBBPyTlECr
+ C9ddYOhEDo7rcVQHs9iytoF+TNXMxUs=
+Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
+ [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-78-zyFbPV5iMCWR2LBz9OxWzw-1; Tue, 25 Jul 2023 02:43:29 -0400
+X-MC-Unique: zyFbPV5iMCWR2LBz9OxWzw-1
+Received: by mail-lj1-f200.google.com with SMTP id
+ 38308e7fff4ca-2b708e49042so42541451fa.2
+ for <qemu-devel@nongnu.org>; Mon, 24 Jul 2023 23:43:27 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1690267406; x=1690872206;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=f41a2EIE277jevUdj1TGX09GS4/0K7LqHcmSKThs/kg=;
+ b=OuWrE4AG/qJO46T3pi+wdQj0WxjxxLF6ROttFbY1EI0gERuZhjgBAeIf3AbF3Qf5gB
+ dr9SDN4ioU4LyC3ScP8OAuLXo7wemlVNETyUdSQbqOY8VQxbh2DRownp3Whxl77pshaP
+ fx+T2ybYHvmavbpG+kJ3GjcsWVQtI3WBsTV+04SPlwLrG2plaEaATISjfSTtyfeBLhQZ
+ cHWz/wwxTmulZPgYlk0mctDa8S2Jet48PeZwklGhMlBmV4FscQT4pA0VRDdQdcIBvb9+
+ ZGXcG9Ph7DFRrshv5o2GXRHLGkpIyUnJVBDr0YD+ejCypQ3+vTTZjl1gmpZxcJxJlK6I
+ YgDA==
+X-Gm-Message-State: ABy/qLb2vS0SIJ+GHcVLdmWFUr+qCYYnIymNyB0S0n0G7WN4Ueocn/p1
+ lLWudBnZgcKyjxfm8xu+ZrigdyFDpW9/c/tyIj0lIUi78bg7V/UKo4yjwh+M6oZmmIxqzKPd1KN
+ hBGvEkAxkUPIcOK8Sv3AgtsyzhKAHV6Mab5XA5tB66A==
+X-Received: by 2002:a2e:9d15:0:b0:2b6:cca1:9760 with SMTP id
+ t21-20020a2e9d15000000b002b6cca19760mr7088185lji.27.1690267406327; 
+ Mon, 24 Jul 2023 23:43:26 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlGk/SW5DJcRzO9OURtbGa27hLEqUBmbnL/J714jZAAx+ZsCJlK/sTj+kvjT1NyaycIB/3brJT2ncKkgT42T2Gw=
+X-Received: by 2002:a2e:9d15:0:b0:2b6:cca1:9760 with SMTP id
+ t21-20020a2e9d15000000b002b6cca19760mr7088172lji.27.1690267406014; Mon, 24
+ Jul 2023 23:43:26 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [Question - ARM CCA] vCPU Hotplug Support in ARM Realm world
- might require ARM spec change?
-Content-Language: en-US
-To: Salil Mehta <salil.mehta@huawei.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
- Jonathan Cameron <jonathan.cameron@huawei.com>, Marc Zyngier
- <maz@kernel.org>, Will Deacon <will@kernel.org>,
- "christoffer.dall@arm.com" <christoffer.dall@arm.com>,
- "oliver.upton@linux.dev" <oliver.upton@linux.dev>,
- "mark.rutland@arm.com" <mark.rutland@arm.com>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- Salil Mehta <salil.mehta@opnsrc.net>,
- "andrew.jones@linux.dev" <andrew.jones@linux.dev>,
- yuzenghui <yuzenghui@huawei.com>,
- "kvmarm@lists.cs.columbia.edu" <kvmarm@lists.cs.columbia.edu>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "james.morse@arm.com" <james.morse@arm.com>,
- "steven.price@arm.com" <steven.price@arm.com>,
- Suzuki K Poulose <suzuki.poulose@arm.com>,
- Jean-Philippe Brucker <jean-philippe@linaro.org>,
- "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
-References: <9cb24131a09a48e9a622e92bf8346c9d@huawei.com>
- <2fa14ef5-b2f7-459d-8b84-114d36ba3cf7@loongson.cn>
- <d13c4cb44a2b4b42a8b534c38c402a1d@huawei.com>
- <5cb437f8-2e33-55b2-d5e4-2c5757af8b44@loongson.cn>
- <12959471e1424974979eef4e32812d60@huawei.com>
-From: bibo mao <maobibo@loongson.cn>
-In-Reply-To: <12959471e1424974979eef4e32812d60@huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8AxTSOBar9kMUA6AA--.7512S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW3Jw45Cw1DCFWfXr1xWryrXwc_yoW3ZF48pr
- WrGFs0grWDJry0kw4Iqa45Zr10v3y8JFW7Xrn5Jry8Zryqqrn7Kr4Iyr45uF93Xr17GF12
- vF1ayr97ua45ZFXCm3ZEXasCq-sJn29KB7ZKAUJUUUUD529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUPab4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
- xVW8Jr0_Cr1UM2kKe7AKxVWUAVWUtwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
- AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
- tVWrXwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI4
- 8JMxk0xIA0c2IEe2xFo4CEbIxvr21lc7CjxVAaw2AFwI0_GFv_Wryl42xK82IYc2Ij64vI
- r41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_Jw0_GFylx2IqxVAqx4xG67
- AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIY
- rxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_JFI_Gr1lIxAIcVC0I7IYx2IY6xkF7I0E14
- v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWx
- JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUaJ3kDU
- UUU
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+References: <cover.1690100802.git.yin31149@gmail.com>
+ <95af0d013281282f48ad3f47f6ad1ac4ca9e52eb.1690100802.git.yin31149@gmail.com>
+In-Reply-To: <95af0d013281282f48ad3f47f6ad1ac4ca9e52eb.1690100802.git.yin31149@gmail.com>
+From: Jason Wang <jasowang@redhat.com>
+Date: Tue, 25 Jul 2023 14:43:14 +0800
+Message-ID: <CACGkMEu8E-a3Go=N-BHwqht03ZW2pAh2mNntVh7X6n7TQUwzpg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/4] virtio-net: do not reset vlan filtering at
+ set_features
+To: Hawkins Jiawei <yin31149@gmail.com>
+Cc: mst@redhat.com, eperezma@redhat.com, qemu-devel@nongnu.org, 
+ 18801353760@163.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.091,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -107,199 +97,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Sun, Jul 23, 2023 at 5:27=E2=80=AFPM Hawkins Jiawei <yin31149@gmail.com>=
+ wrote:
+>
+> From: Eugenio P=C3=A9rez <eperezma@redhat.com>
+>
+> This function is called after virtio_load, so all vlan configuration is
+> lost in migration case.
+>
+> Just allow all the vlan-tagged packets if vlan is not configured, and
+> trust device reset to clear all filtered vlans.
+>
+> Fixes: 0b1eaa8803 ("virtio-net: Do not filter VLANs without F_CTRL_VLAN")
+> Signed-off-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
+> Reviewed-by: Hawkins Jiawei <yin31149@gmail.com>
+> Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
 
+Acked-by: Jason Wang <jasowang@redhat.com>
 
-在 2023/7/25 13:45, Salil Mehta 写道:
-> Hello,
-> 
->> From: bibo mao <maobibo@loongson.cn>
->> Sent: Tuesday, July 25, 2023 2:14 AM
->> To: Salil Mehta <salil.mehta@huawei.com>
-> 
-> 
-> [...]
-> 
-> 
->> 在 2023/7/25 08:56, Salil Mehta 写道:
->>> Hi Bibo,
->>>
->>>> From: bibo mao <maobibo@loongson.cn>
->>>> Sent: Tuesday, July 25, 2023 1:29 AM
->>>> To: Salil Mehta <salil.mehta@huawei.com>
->>>> Cc: Catalin Marinas <catalin.marinas@arm.com>; Jonathan Cameron
->>>> <jonathan.cameron@huawei.com>; Marc Zyngier <maz@kernel.org>; Will Deacon
->>>> <will@kernel.org>; christoffer.dall@arm.com; oliver.upton@linux.dev;
->>>> mark.rutland@arm.com; pbonzini@redhat.com; Salil Mehta
->>>> <salil.mehta@opnsrc.net>; andrew.jones@linux.dev; yuzenghui
->>>> <yuzenghui@huawei.com>; kvmarm@lists.cs.columbia.edu; linux-arm-
->>>> kernel@lists.infradead.org; linux-kernel@vger.kernel.org;
->>>> kvm@vger.kernel.org; qemu-devel@nongnu.org; james.morse@arm.com;
->>>> steven.price@arm.com; Suzuki K Poulose <suzuki.poulose@arm.com>; Jean-
->>>> Philippe Brucker <jean-philippe@linaro.org>; kvmarm@lists.linux.dev; linux-coco@lists.linux.dev
->>>> Subject: Re: [Question - ARM CCA] vCPU Hotplug Support in ARM Realm world might require ARM spec change?
->>>>
->>>> Is vcpu hotplug supported in arm virt-machine now?
->>>
->>> Not yet. We are working on it. Please check the RFCs being tested.
->>>
->>>
->>> [1] Pre-RFC V2 Changes: Support of Virtual CPU Hotplug for ARMv8 Arch (WIP)
->>>     https://github.com/salil-mehta/qemu.git virt-cpuhp-armv8/rfc-v1-port11052023.dev-1
->>> [2] [RFC PATCH 00/32] ACPI/arm64: add support for virtual cpuhotplug
->>>     https://git.gitlab.arm.com/linux-arm/linux-jm.git virtual_cpu_hotplug/rfc/v2
->>>
->>>
->>>> There is arm64 vcpu hotplug patch in qemu mailing list, however it is not merged.
->>>> I do not know why it is not merged.
->>>
->>>
->>> I think you are referring to patches [3], [4]? Please follow the discussion
->>> for details.
->>
->> yeap, we reference the patch [3], [4] and benefit from them greatly -:)
-> 
-> 
-> I am glad that our current work is useful to more than one architecture and it
-> was one of the aim of our work as well but...
-> 
->> The patch for LoongArch vcpu hotplug link is:
->> https://lore.kernel.org/qemu-devel/cover.1689837093.git.lixianglai@loongson.cn/T/#t
-> 
-> 
-> I quickly went through above patches and it looks like this patch-set is mostly
-> based on our latest patches which are at [1], [2] and not just at [3], [4]. As I
-> could see most of the functions which you have ported to your architecture are
-> part of our Qemu repositories [2] which we have yet to push to community. As I
-> am working towards RFC V2 patches and which shall be floated soon. It does not
-> makes sense for you to duplicate the GED/ACPI changes which are common across
-> architectures and which have been derived from the ARM64 vCPU Hotplug support
-> original patches. 
-> 
-> This will create merge conflicts, will break large part of our original patch-set.
-> 
-> Hence, I would request you to drop patches 1-4 from your patch-set or rebase
-> it over ARM64 original patches in a week or 2 week of time. This is to avoid
-> spoiling our previous years of hard work for the topic we have been persistently
-> making efforts as you can see through the code and our detailed presentations.
-Do you have a plan to post new vcpu hotplug patch soon ? If there is, we can
-postpone  our patch for reviewing and wait for your arm64 vcpu hotplug patch,
-and hope that your patch can merge into qemu asap. 
+Thanks
 
-We always rebase on the mainline qemu version, rather than personal private tree -:)
-
-Regards
-Bibo Mao
-> 
-> Hope you will agree we all need to respect others efforts and time in this
-> mode of open-source collaboration. 
-> 
-> Rest assured I will help you in review of your architecture specific patch-set
-> as it is a work of mutual interest.
-> 
-> Thanks for understanding!
-> 
-> 
-> Best Wishes,
-> Salil.
-> 
-> 
-> 
->> Regards
->> Bibo Mao
->>
->>>
->>>
->>> [3] [PATCH RFC 00/22] Support of Virtual CPU Hotplug for ARMv8 Arch
->>>     https://lore.kernel.org/all/20200613213629.21984-1-salil.mehta@huawei.com/
->>> [4] [PATCH RFC 0/4] Changes to Support *Virtual* CPU Hotplug for ARM64
->>>     https://lore.kernel.org/all/20200625133757.22332-1-salil.mehta@huawei.com/#r
->>>
->>>
->>> In summary, there were some ARM64 Architecture constraints which were being
->>> violated in the earlier patches of the kernel [4] so we had to re-think of the
->>> kernel changes. The Qemu part mostly remains same with some new introductions
->>> of Guest HVC/SMC hyper call exit handling in user space etc. for policy checks
->>> in VMM/Qemu.
->>>
->>>
->>> You can follow the KVMForum conference presentations [5], [6] delivered in the
->>> year 2020 and 2023 to get hold of more details related to this.
->>>
->>>
->>> [5] KVMForum 2023: Challenges Revisited in Supporting Virt CPU Hotplug on architectures that don't Support CPU Hotplug (like ARM64)
->>>     https://kvm-forum.qemu.org/2023/talk/9SMPDQ/
->>> [6] KVMForum 2020: Challenges in Supporting Virtual CPU Hotplug on SoC Based Systems (like ARM64)
->>>     https://kvmforum2020.sched.com/event/eE4m
->>>
->>>
->>>
->>>> I ask this question because we propose
->>>> similar patch about LoongArch system in qemu mailing list, and kernel need not be
->>>> modified for vcpu hotplug.
->>>
->>>
->>> Could you please share the link of your patches so that we can have a look and
->>> draw a comparison?
->>>
->>>
->>> Thanks
->>> Salil.
->>>
->>>>
->>>> Regards
->>>> Bibo, mao
->>>>
->>>> 在 2023/7/19 10:35, Salil Mehta 写道:
->>>>> [Reposting it here from Linaro Open Discussion List for more eyes to look at]
->>>>>
->>>>> Hello,
->>>>> I have recently started to dabble with ARM CCA stuff and check if our
->>>>> recent changes to support vCPU Hotplug in ARM64 can work in the realm
->>>>> world. I have realized that in the RMM specification[1] PSCI_CPU_ON
->>>>> command(B5.3.3) does not handles the PSCI_DENIED return code(B5.4.2),
->>>>> from the host. This might be required to support vCPU Hotplug feature
->>>>> in the realm world in future. vCPU Hotplug is an important feature to
->>>>> support kata-containers in realm world as it reduces the VM boot time
->>>>> and facilitates dynamic adjustment of vCPUs (which I think should be
->>>>> true even with Realm world as current implementation only makes use
->>>>> of the PSCI_ON/OFF to realize the Hotplug look-like effect?)
->>>>>
->>>>>
->>>>> As per our recent changes [2], [3] related to support vCPU Hotplug on
->>>>> ARM64, we handle the guest exits due to SMC/HVC Hypercall in the
->>>>> user-space i.e. VMM/Qemu. In realm world, REC Exits to host due to
->>>>> PSCI_CPU_ON should undergo similar policy checks and I think,
->>>>>
->>>>> 1. Host should *deny* to online the target vCPUs which are NOT plugged
->>>>> 2. This means target REC should be denied by host. Can host call
->>>>>    RMI_PSCI_COMPETE in such s case?
->>>>> 3. The *return* value (B5.3.3.1.3 Output values) should be PSCI_DENIED
->>>>> 4. Failure condition (B5.3.3.2) should be amended with
->>>>>    runnable pre: target_rec.flags.runnable == NOT_RUNNABLE (?)
->>>>>             post: result == PSCI_DENIED (?)
->>>>> 5. Change would also be required in the flow (D1.4 PSCI flows) depicting
->>>>>    PSCI_CPU_ON flow (D1.4.1)
->>>>>
->>>>>
->>>>> I do understand that ARM CCA support is in its infancy stage and
->>>>> discussing about vCPU Hotplug in realm world seem to be a far-fetched
->>>>> idea right now. But specification changes require lot of time and if
->>>>> this change is really required then it should be further discussed
->>>>> within ARM.
->>>>>
->>>>> Many thanks!
->>>>>
->>>>>
->>>>> Bes regards
->>>>> Salil
->>>>>
->>>>>
->>>>> References:
->>>>>
->>>>> [1] https://developer.arm.com/documentation/den0137/latest/
->>>>> [2] https://github.com/salil-mehta/qemu.git virt-cpuhp-armv8/rfc-v1-port11052023.dev-1
->>>>> [3] https://git.gitlab.arm.com/linux-arm/linux-jm.git virtual_cpu_hotplug/rfc/v2
-> 
-> 
+> ---
+>  hw/net/virtio-net.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
+>
+> diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+> index 7102ec4817..d20d5a63cd 100644
+> --- a/hw/net/virtio-net.c
+> +++ b/hw/net/virtio-net.c
+> @@ -1006,9 +1006,7 @@ static void virtio_net_set_features(VirtIODevice *v=
+dev, uint64_t features)
+>          vhost_net_save_acked_features(nc->peer);
+>      }
+>
+> -    if (virtio_has_feature(features, VIRTIO_NET_F_CTRL_VLAN)) {
+> -        memset(n->vlans, 0, MAX_VLAN >> 3);
+> -    } else {
+> +    if (!virtio_has_feature(features, VIRTIO_NET_F_CTRL_VLAN)) {
+>          memset(n->vlans, 0xff, MAX_VLAN >> 3);
+>      }
+>
+> --
+> 2.25.1
+>
 
 
