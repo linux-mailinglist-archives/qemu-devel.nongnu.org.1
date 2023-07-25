@@ -2,83 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0597C7618B8
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 14:48:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED0117618B7
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 14:48:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOHRI-0007Tx-Nk; Tue, 25 Jul 2023 08:46:56 -0400
+	id 1qOHRe-0007el-Fv; Tue, 25 Jul 2023 08:47:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qOHRD-0007Rt-CJ
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 08:46:52 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qOHRB-00055X-2o
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 08:46:51 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-3fbc5d5742bso55038965e9.2
- for <qemu-devel@nongnu.org>; Tue, 25 Jul 2023 05:46:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690289204; x=1690894004;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=vGZfR87BHs9oeqzgBVuatJQdA+4mkMBaJLIsLtfbPMk=;
- b=IdvQAPz4rzNdx7OL8RFglwYMiu6cp6MbguEYYalyfgi7NSkgrAQkZpthCM0XwLInGr
- j+/HMKAampiViKRO0eA54kSBi6rADyaLSAcZ6PIL+dZxJ1OpkBjHUXWCNlcC9x+nmf7k
- Qe6LCbezvt4NmXC7dnEKILuHWIvd7gnimZnCPnZGJD6POnyJq3u/FOgi1lfhqFhA6M3b
- ReDzcZ5jHHVzu6ySPu41T497968lBBU2YeIdArFulHFOzROh91lwlVqxbhVxtsw9rX9o
- F66+lw5Q8qkCKf3OR25EyClr9Eo8QEalfqR3kYtZGGTLjwWIFXlSE5r9OPNoDGLuP2L1
- NWug==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qOHRb-0007c1-JI
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 08:47:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qOHRY-00059c-JP
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 08:47:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1690289230;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=sBEuv0tCJc8eX/yOWjLEnalpSx9cpWx5eKvD+ap8VqU=;
+ b=B7PqaKPE05+7MjJkpjXUczoKSAQXHBa4bLE6AqzyvxxBJkep2xdVu1MySk5RpEbf6nQsXC
+ iWc5D/46G2mOmdJWWFdnzkJt6g8u41yCix3sOl/7+6aFL4ECLYB6W+u/0PVgKiyYMqJRSU
+ PpJXLwYON58x6VtOHMuRCk/H/VEpAv0=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-507-Sn7_AXDzN9O9YbZ0dWiAxA-1; Tue, 25 Jul 2023 08:47:09 -0400
+X-MC-Unique: Sn7_AXDzN9O9YbZ0dWiAxA-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-315a03cae87so3076750f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 25 Jul 2023 05:47:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690289204; x=1690894004;
+ d=1e100.net; s=20221208; t=1690289228; x=1690894028;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=vGZfR87BHs9oeqzgBVuatJQdA+4mkMBaJLIsLtfbPMk=;
- b=jrTEP3SVUAY33kCOCudmUxiAJt/OxP4yAHaT8AOwjHiAYHDXLTBgJqNgy6w+V9e98e
- AZA5fd5rnPgLE9fLbTtXk4O37/b4VcVtAXNEDzf9vNf/6ioU04Sq71iNMkT+dFLoE09p
- +C/MERsO/Qaf8+YQKvqQexCqQ1l2YW/kXF4uo3j0qvyUrgSr09D5G1mbEiSdTfnXgDls
- O+0SxKi9kvSzLuxiAaQMSPitZuNOZRnFclxy5QEkVOqPJvSKuL6LjcHpVqt1J0/uoq2i
- QlcmdAmoECvoUwwC54bi3ngfbLqclgiEGu+7SZ9xGwmnzhC9wh5ijkVroNMeF7T2UYj9
- ntlg==
-X-Gm-Message-State: ABy/qLYQmRsPsluDq1K+hn3q82WR9W+aPmELCzDKS6WG5MIDbOBVrTdL
- QB8CRY2OL52m+BmKRkiqFWPbfw==
-X-Google-Smtp-Source: APBJJlH7WkK29a1HlMg6KsiP2yOw/oo3i/E0wfXrqpWMfC///b2qFLXwgOEIQBSoqt5Hwa+hxrpOXg==
-X-Received: by 2002:a7b:c4d8:0:b0:3fb:d1db:545b with SMTP id
- g24-20020a7bc4d8000000b003fbd1db545bmr10280852wmk.20.1690289204286; 
- Tue, 25 Jul 2023 05:46:44 -0700 (PDT)
-Received: from [192.168.69.115] ([176.187.203.142])
- by smtp.gmail.com with ESMTPSA id
- x3-20020a05600c21c300b003fa95890484sm13210500wmj.20.2023.07.25.05.46.42
+ bh=sBEuv0tCJc8eX/yOWjLEnalpSx9cpWx5eKvD+ap8VqU=;
+ b=Zx64qFHsCKK4AZ8rSPOi1Aa1VmSH74nS7zy54ZdFIftAYAQu/IXSWdu/BJT2Rr89pL
+ APScW+ol4h1ErLtE4v6s/j2GrTpXJQHOCKLJIeTw/qCBiqM5c4p2ub0qJzJnknhEUfZS
+ IfspE6VebL2e/Jaqg491KaP5Safhm3TlwvJffia97Vw762kvtzrsI/2aUYpN8AcvLIEx
+ CRrkxrWehTMQXnhNT+iNCv4lyRnPk46iIK0KE+VxHKCD/ED5BUgovRVeAigVm8beX3Mn
+ p0ORu80eB7+pPvg/UrA4F18pTjyDCRQUv8oV8d+iY1cQ7UaTCA6CNTL6JxIyabb/0zwX
+ Lc4g==
+X-Gm-Message-State: ABy/qLbhcq0C4n+cVrshHRzMaH7jMBrysG9ApSCdDFY6EQ4iI/cGSQsZ
+ eVs5AyMBP18+1rXx43gOAxwKcIE1hkwilOjNHKpt8FZ6nsgU36d1D+2siAOO3rGlPQwkxWPe5Zo
+ 7pwzhsKDuVdntQ8g=
+X-Received: by 2002:a05:6000:180d:b0:317:5cfb:44c7 with SMTP id
+ m13-20020a056000180d00b003175cfb44c7mr2171613wrh.30.1690289228485; 
+ Tue, 25 Jul 2023 05:47:08 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlGws8+iJA5HUpqpH8sJjGYyiFtDyrmgt+CEXjGtjovyt3xTI1TY9JR2KSaiv+5w65EYPrya9A==
+X-Received: by 2002:a05:6000:180d:b0:317:5cfb:44c7 with SMTP id
+ m13-20020a056000180d00b003175cfb44c7mr2171593wrh.30.1690289228225; 
+ Tue, 25 Jul 2023 05:47:08 -0700 (PDT)
+Received: from [192.168.0.3] (ip-109-43-177-31.web.vodafone.de.
+ [109.43.177.31]) by smtp.gmail.com with ESMTPSA id
+ f12-20020a7bcc0c000000b003fc0062f0f8sm13346012wmh.9.2023.07.25.05.47.07
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 25 Jul 2023 05:46:43 -0700 (PDT)
-Message-ID: <c090e018-9761-4cc0-61ce-780ff70e318a@linaro.org>
-Date: Tue, 25 Jul 2023 14:46:41 +0200
+ Tue, 25 Jul 2023 05:47:07 -0700 (PDT)
+Message-ID: <c6c1e1da-f5f1-1535-9b9d-88278c050cb9@redhat.com>
+Date: Tue, 25 Jul 2023 14:47:06 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.13.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
 Subject: Re: [PATCH v2] kvm: Remove KVM_CREATE_IRQCHIP support assumption
 Content-Language: en-US
 To: Andrew Jones <ajones@ventanamicro.com>, qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com, mtosatti@redhat.com, peter.maydell@linaro.org,
- pasic@linux.ibm.com, borntraeger@linux.ibm.com, thuth@redhat.com,
- dbarboza@ventanamicro.com, kvm@vger.kernel.org, qemu-arm@nongnu.org,
- qemu-s390x@nongnu.org
+ pasic@linux.ibm.com, borntraeger@linux.ibm.com, dbarboza@ventanamicro.com,
+ kvm@vger.kernel.org, qemu-arm@nongnu.org, qemu-s390x@nongnu.org
 References: <20230725122601.424738-2-ajones@ventanamicro.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
 In-Reply-To: <20230725122601.424738-2-ajones@ventanamicro.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.091, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,7 +102,7 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 25/7/23 14:26, Andrew Jones wrote:
+On 25/07/2023 14.26, Andrew Jones wrote:
 > Since Linux commit 00f918f61c56 ("RISC-V: KVM: Skeletal in-kernel AIA
 > irqchip support") checking KVM_CAP_IRQCHIP returns non-zero when the
 > RISC-V platform has AIA. The cap indicates KVM supports at least one
@@ -130,14 +137,10 @@ On 25/7/23 14:26, Andrew Jones wrote:
 >    - Move the s390x code to an s390x file. [Thomas]
 >    - Drop the KVM_CAP_IRQCHIP check from the top of kvm_irqchip_create(),
 >      as it's no longer necessary.
-> 
->   accel/kvm/kvm-all.c    | 16 ++++------------
->   include/sysemu/kvm.h   |  1 +
->   target/arm/kvm.c       |  3 +++
->   target/i386/kvm/kvm.c  |  2 ++
->   target/s390x/kvm/kvm.c | 11 +++++++++++
->   5 files changed, 21 insertions(+), 12 deletions(-)
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Looks good now!
+
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+
 
 
