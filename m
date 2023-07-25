@@ -2,36 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01298761B24
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 16:13:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F039B761B14
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 16:12:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOIk2-0003Rl-Hx; Tue, 25 Jul 2023 10:10:22 -0400
+	id 1qOIk5-0003TW-52; Tue, 25 Jul 2023 10:10:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qOIk0-0003Ql-M2; Tue, 25 Jul 2023 10:10:20 -0400
+ id 1qOIk3-0003Sz-19; Tue, 25 Jul 2023 10:10:23 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qOIjy-0007SS-TD; Tue, 25 Jul 2023 10:10:20 -0400
+ id 1qOIk1-0007T3-BK; Tue, 25 Jul 2023 10:10:22 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id A5D2316165;
+ by isrv.corpit.ru (Postfix) with ESMTP id D6B3116166;
  Tue, 25 Jul 2023 17:10:13 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 578B8194FD;
+ by tsrv.corpit.ru (Postfix) with SMTP id 7FD26194FE;
  Tue, 25 Jul 2023 17:10:11 +0300 (MSK)
-Received: (nullmailer pid 3372578 invoked by uid 1000);
+Received: (nullmailer pid 3372581 invoked by uid 1000);
  Tue, 25 Jul 2023 14:10:11 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Helge Deller <deller@gmx.de>,
- Andreas Schwab <schwab@suse.de>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.5 03/14] linux-user: Fix qemu-arm to run static armhf
- binaries
-Date: Tue, 25 Jul 2023 17:09:57 +0300
-Message-Id: <20230725141009.3372529-3-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, "Denis V. Lunev" <den@openvz.org>,
+ Eric Blake <eblake@redhat.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.5 04/14] qemu-nbd: pass structure into nbd_client_thread
+ instead of plain char*
+Date: Tue, 25 Jul 2023 17:09:58 +0300
+Message-Id: <20230725141009.3372529-4-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.5-20230725170615@cover.tls.msk.ru>
 References: <qemu-stable-7.2.5-20230725170615@cover.tls.msk.ru>
@@ -60,43 +62,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Helge Deller <deller@gmx.de>
+From: "Denis V. Lunev" <den@openvz.org>
 
-qemu-user crashes immediately when running static binaries on the armhf
-architecture. The problem is the memory layout where the executable is
-loaded before the interpreter library, in which case the reserved brk
-region clashes with the interpreter code and is released before qemu
-tries to start the program.
+We are going to pass additional flag inside next patch.
 
-At load time qemu calculates a brk value for interpreter and executable
-each.  The fix is to choose the higher one of both.
-
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: Andreas Schwab <schwab@suse.de>
-Cc: qemu-stable@nongnu.org
-Reported-by:  Venkata.Pyla@toshiba-tsip.com
-Closes: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1040981
-(cherry picked from commit 518f32221af759a29500ac172c4c857bef142067)
+Signed-off-by: Denis V. Lunev <den@openvz.org>
+CC: Eric Blake <eblake@redhat.com>
+CC: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+CC: <qemu-stable@nongnu.org>
+Message-ID: <20230717145544.194786-2-den@openvz.org>
+Reviewed-by: Eric Blake <eblake@redhat.com>
+Signed-off-by: Eric Blake <eblake@redhat.com>
+(cherry picked from commit 03b67621445d601c9cdc7dfe25812e9f19b81488)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 20894b633f..fdc95f8cf6 100644
---- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -3553,6 +3553,13 @@ int load_elf_binary(struct linux_binprm *bprm, struct image_info *info)
+diff --git a/qemu-nbd.c b/qemu-nbd.c
+index 0cd5aa6f02..89afd2e749 100644
+--- a/qemu-nbd.c
++++ b/qemu-nbd.c
+@@ -272,9 +272,13 @@ static void *show_parts(void *arg)
+     return NULL;
+ }
  
-     if (elf_interpreter) {
-         load_elf_interp(elf_interpreter, &interp_info, bprm->buf);
-+        /*
-+         * adjust brk address if the interpreter was loaded above the main
-+         * executable, e.g. happens with static binaries on armhf
-+         */
-+        if (interp_info.brk > info->brk) {
-+            info->brk = interp_info.brk;
-+        }
++struct NbdClientOpts {
++    char *device;
++};
++
+ static void *nbd_client_thread(void *arg)
+ {
+-    char *device = arg;
++    struct NbdClientOpts *opts = arg;
+     NBDExportInfo info = { .request_sizes = false, .name = g_strdup("") };
+     QIOChannelSocket *sioc;
+     int fd = -1;
+@@ -298,10 +302,10 @@ static void *nbd_client_thread(void *arg)
+         goto out;
+     }
  
-         /* If the program interpreter is one of these two, then assume
-            an iBCS2 image.  Otherwise assume a native linux image.  */
+-    fd = open(device, O_RDWR);
++    fd = open(opts->device, O_RDWR);
+     if (fd < 0) {
+         /* Linux-only, we can use %m in printf.  */
+-        error_report("Failed to open %s: %m", device);
++        error_report("Failed to open %s: %m", opts->device);
+         goto out;
+     }
+ 
+@@ -311,11 +315,11 @@ static void *nbd_client_thread(void *arg)
+     }
+ 
+     /* update partition table */
+-    pthread_create(&show_parts_thread, NULL, show_parts, device);
++    pthread_create(&show_parts_thread, NULL, show_parts, opts->device);
+ 
+     if (verbose) {
+         fprintf(stderr, "NBD device %s is now connected to %s\n",
+-                device, srcpath);
++                opts->device, srcpath);
+     } else {
+         /* Close stderr so that the qemu-nbd process exits.  */
+         dup2(STDOUT_FILENO, STDERR_FILENO);
+@@ -1123,8 +1127,11 @@ int main(int argc, char **argv)
+     if (device) {
+ #if HAVE_NBD_DEVICE
+         int ret;
++        struct NbdClientOpts opts = {
++            .device = device,
++        };
+ 
+-        ret = pthread_create(&client_thread, NULL, nbd_client_thread, device);
++        ret = pthread_create(&client_thread, NULL, nbd_client_thread, &opts);
+         if (ret != 0) {
+             error_report("Failed to create client thread: %s", strerror(ret));
+             exit(EXIT_FAILURE);
 -- 
 2.39.2
 
