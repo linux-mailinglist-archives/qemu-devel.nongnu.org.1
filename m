@@ -2,40 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A14D761A56
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 15:46:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35F20761A79
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 15:49:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOIMf-0005Pw-F1; Tue, 25 Jul 2023 09:46:17 -0400
+	id 1qOINO-000659-0p; Tue, 25 Jul 2023 09:46:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qOIM6-0005Cq-EU; Tue, 25 Jul 2023 09:45:40 -0400
+ id 1qOIMB-0005F6-4f; Tue, 25 Jul 2023 09:45:43 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qOIM2-0001FY-27; Tue, 25 Jul 2023 09:45:37 -0400
+ id 1qOIM7-0001Gi-MB; Tue, 25 Jul 2023 09:45:42 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 3CAFF160EA;
+ by isrv.corpit.ru (Postfix) with ESMTP id 634AB160EB;
  Tue, 25 Jul 2023 16:45:32 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id D5B4A194AD;
- Tue, 25 Jul 2023 16:45:29 +0300 (MSK)
-Received: (nullmailer pid 3370789 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 1E07E194AE;
+ Tue, 25 Jul 2023 16:45:30 +0300 (MSK)
+Received: (nullmailer pid 3370792 invoked by uid 1000);
  Tue, 25 Jul 2023 13:45:29 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Fiona Ebner <f.ebner@proxmox.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.4 02/31] qemu_cleanup: begin drained section after
- vm_shutdown()
-Date: Tue, 25 Jul 2023 16:44:47 +0300
-Message-Id: <20230725134517.3370706-2-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Nicholas Piggin <npiggin@gmail.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Frederic Barrat <fbarrat@linux.ibm.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.0.4 03/31] hw/ppc: Fix clock update drift
+Date: Tue, 25 Jul 2023 16:44:48 +0300
+Message-Id: <20230725134517.3370706-3-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.4-20230725164041@cover.tls.msk.ru>
 References: <qemu-stable-8.0.4-20230725164041@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -43,8 +46,8 @@ X-Spam_score_int: -68
 X-Spam_score: -6.9
 X-Spam_bar: ------
 X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- WEIRD_PORT=0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -60,140 +63,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fiona Ebner <f.ebner@proxmox.com>
+From: Nicholas Piggin <npiggin@gmail.com>
 
-in order to avoid requests being stuck in a BlockBackend's request
-queue during cleanup. Having such requests can lead to a deadlock [0]
-with a virtio-scsi-pci device using iothread that's busy with IO when
-initiating a shutdown with QMP 'quit'.
+The clock update logic reads the clock twice to compute the new clock
+value, with a value derived from the later time subtracted from a value
+derived from the earlier time. The delta causes time to be lost.
 
-There is a race where such a queued request can continue sometime
-(maybe after bdrv_child_free()?) during bdrv_root_unref_child() [1].
-The completion will hold the AioContext lock and wait for the BQL
-during SCSI completion, but the main thread will hold the BQL and
-wait for the AioContext as part of bdrv_root_unref_child(), leading to
-the deadlock [0].
+This can ultimately result in time becoming unsynchronized between CPUs
+and that can cause OS lockups, timeouts, watchdogs, etc. This can be
+seen running a KVM guest (that causes lots of TB updates) on a powernv
+SMP machine.
 
-[0]:
+Fix this by reading the clock once.
 
-> Thread 3 (Thread 0x7f3bbd87b700 (LWP 135952) "qemu-system-x86"):
-> #0  __lll_lock_wait (futex=futex@entry=0x564183365f00 <qemu_global_mutex>, private=0) at lowlevellock.c:52
-> #1  0x00007f3bc1c0d843 in __GI___pthread_mutex_lock (mutex=0x564183365f00 <qemu_global_mutex>) at ../nptl/pthread_mutex_lock.c:80
-> #2  0x0000564182939f2e in qemu_mutex_lock_impl (mutex=0x564183365f00 <qemu_global_mutex>, file=0x564182b7f774 "../softmmu/physmem.c", line=2593) at ../util/qemu-thread-posix.c:94
-> #3  0x000056418247cc2a in qemu_mutex_lock_iothread_impl (file=0x564182b7f774 "../softmmu/physmem.c", line=2593) at ../softmmu/cpus.c:504
-> #4  0x00005641826d5325 in prepare_mmio_access (mr=0x5641856148a0) at ../softmmu/physmem.c:2593
-> #5  0x00005641826d6fe7 in address_space_stl_internal (as=0x56418679b310, addr=4276113408, val=16418, attrs=..., result=0x0, endian=DEVICE_LITTLE_ENDIAN) at /home/febner/repos/qemu/memory_ldst.c.inc:318
-> #6  0x00005641826d7154 in address_space_stl_le (as=0x56418679b310, addr=4276113408, val=16418, attrs=..., result=0x0) at /home/febner/repos/qemu/memory_ldst.c.inc:357
-> #7  0x0000564182374b07 in pci_msi_trigger (dev=0x56418679b0d0, msg=...) at ../hw/pci/pci.c:359
-> #8  0x000056418237118b in msi_send_message (dev=0x56418679b0d0, msg=...) at ../hw/pci/msi.c:379
-> #9  0x0000564182372c10 in msix_notify (dev=0x56418679b0d0, vector=8) at ../hw/pci/msix.c:542
-> #10 0x000056418243719c in virtio_pci_notify (d=0x56418679b0d0, vector=8) at ../hw/virtio/virtio-pci.c:77
-> #11 0x00005641826933b0 in virtio_notify_vector (vdev=0x5641867a34a0, vector=8) at ../hw/virtio/virtio.c:1985
-> #12 0x00005641826948d6 in virtio_irq (vq=0x5641867ac078) at ../hw/virtio/virtio.c:2461
-> #13 0x0000564182694978 in virtio_notify (vdev=0x5641867a34a0, vq=0x5641867ac078) at ../hw/virtio/virtio.c:2473
-> #14 0x0000564182665b83 in virtio_scsi_complete_req (req=0x7f3bb000e5d0) at ../hw/scsi/virtio-scsi.c:115
-> #15 0x00005641826670ce in virtio_scsi_complete_cmd_req (req=0x7f3bb000e5d0) at ../hw/scsi/virtio-scsi.c:641
-> #16 0x000056418266736b in virtio_scsi_command_complete (r=0x7f3bb0010560, resid=0) at ../hw/scsi/virtio-scsi.c:712
-> #17 0x000056418239aac6 in scsi_req_complete (req=0x7f3bb0010560, status=2) at ../hw/scsi/scsi-bus.c:1526
-> #18 0x000056418239e090 in scsi_handle_rw_error (r=0x7f3bb0010560, ret=-123, acct_failed=false) at ../hw/scsi/scsi-disk.c:242
-> #19 0x000056418239e13f in scsi_disk_req_check_error (r=0x7f3bb0010560, ret=-123, acct_failed=false) at ../hw/scsi/scsi-disk.c:265
-> #20 0x000056418239e482 in scsi_dma_complete_noio (r=0x7f3bb0010560, ret=-123) at ../hw/scsi/scsi-disk.c:340
-> #21 0x000056418239e5d9 in scsi_dma_complete (opaque=0x7f3bb0010560, ret=-123) at ../hw/scsi/scsi-disk.c:371
-> #22 0x00005641824809ad in dma_complete (dbs=0x7f3bb000d9d0, ret=-123) at ../softmmu/dma-helpers.c:107
-> #23 0x0000564182480a72 in dma_blk_cb (opaque=0x7f3bb000d9d0, ret=-123) at ../softmmu/dma-helpers.c:127
-> #24 0x00005641827bf78a in blk_aio_complete (acb=0x7f3bb00021a0) at ../block/block-backend.c:1563
-> #25 0x00005641827bfa5e in blk_aio_write_entry (opaque=0x7f3bb00021a0) at ../block/block-backend.c:1630
-> #26 0x000056418295638a in coroutine_trampoline (i0=-1342102448, i1=32571) at ../util/coroutine-ucontext.c:177
-> #27 0x00007f3bc0caed40 in ?? () from /lib/x86_64-linux-gnu/libc.so.6
-> #28 0x00007f3bbd8757f0 in ?? ()
-> #29 0x0000000000000000 in ?? ()
->
-> Thread 1 (Thread 0x7f3bbe3e9280 (LWP 135944) "qemu-system-x86"):
-> #0  __lll_lock_wait (futex=futex@entry=0x5641856f2a00, private=0) at lowlevellock.c:52
-> #1  0x00007f3bc1c0d8d1 in __GI___pthread_mutex_lock (mutex=0x5641856f2a00) at ../nptl/pthread_mutex_lock.c:115
-> #2  0x0000564182939f2e in qemu_mutex_lock_impl (mutex=0x5641856f2a00, file=0x564182c0e319 "../util/async.c", line=728) at ../util/qemu-thread-posix.c:94
-> #3  0x000056418293a140 in qemu_rec_mutex_lock_impl (mutex=0x5641856f2a00, file=0x564182c0e319 "../util/async.c", line=728) at ../util/qemu-thread-posix.c:149
-> #4  0x00005641829532d5 in aio_context_acquire (ctx=0x5641856f29a0) at ../util/async.c:728
-> #5  0x000056418279d5df in bdrv_set_aio_context_commit (opaque=0x5641856e6e50) at ../block.c:7493
-> #6  0x000056418294e288 in tran_commit (tran=0x56418630bfe0) at ../util/transactions.c:87
-> #7  0x000056418279d880 in bdrv_try_change_aio_context (bs=0x5641856f7130, ctx=0x56418548f810, ignore_child=0x0, errp=0x0) at ../block.c:7626
-> #8  0x0000564182793f39 in bdrv_root_unref_child (child=0x5641856f47d0) at ../block.c:3242
-> #9  0x00005641827be137 in blk_remove_bs (blk=0x564185709880) at ../block/block-backend.c:914
-> #10 0x00005641827bd689 in blk_remove_all_bs () at ../block/block-backend.c:583
-> #11 0x0000564182798699 in bdrv_close_all () at ../block.c:5117
-> #12 0x000056418248a5b2 in qemu_cleanup () at ../softmmu/runstate.c:821
-> #13 0x0000564182738603 in qemu_default_main () at ../softmmu/main.c:38
-> #14 0x0000564182738631 in main (argc=30, argv=0x7ffd675a8a48) at ../softmmu/main.c:48
->
-> (gdb) p *((QemuMutex*)0x5641856f2a00)
-> $1 = {lock = {__data = {__lock = 2, __count = 2, __owner = 135952, ...
-> (gdb) p *((QemuMutex*)0x564183365f00)
-> $2 = {lock = {__data = {__lock = 2, __count = 0, __owner = 135944, ...
-
-[1]:
-
-> Thread 1 "qemu-system-x86" hit Breakpoint 5, bdrv_drain_all_end () at ../block/io.c:551
-> #0  bdrv_drain_all_end () at ../block/io.c:551
-> #1  0x00005569810f0376 in bdrv_graph_wrlock (bs=0x0) at ../block/graph-lock.c:156
-> #2  0x00005569810bd3e0 in bdrv_replace_child_noperm (child=0x556982e2d7d0, new_bs=0x0) at ../block.c:2897
-> #3  0x00005569810bdef2 in bdrv_root_unref_child (child=0x556982e2d7d0) at ../block.c:3227
-> #4  0x00005569810e8137 in blk_remove_bs (blk=0x556982e42880) at ../block/block-backend.c:914
-> #5  0x00005569810e7689 in blk_remove_all_bs () at ../block/block-backend.c:583
-> #6  0x00005569810c2699 in bdrv_close_all () at ../block.c:5117
-> #7  0x0000556980db45b2 in qemu_cleanup () at ../softmmu/runstate.c:821
-> #8  0x0000556981062603 in qemu_default_main () at ../softmmu/main.c:38
-> #9  0x0000556981062631 in main (argc=30, argv=0x7ffd7a82a418) at ../softmmu/main.c:48
-> [Switching to Thread 0x7fe76dab2700 (LWP 103649)]
->
-> Thread 3 "qemu-system-x86" hit Breakpoint 4, blk_inc_in_flight (blk=0x556982e42880) at ../block/block-backend.c:1505
-> #0  blk_inc_in_flight (blk=0x556982e42880) at ../block/block-backend.c:1505
-> #1  0x00005569810e8f36 in blk_wait_while_drained (blk=0x556982e42880) at ../block/block-backend.c:1312
-> #2  0x00005569810e9231 in blk_co_do_pwritev_part (blk=0x556982e42880, offset=3422961664, bytes=4096, qiov=0x556983028060, qiov_offset=0, flags=0) at ../block/block-backend.c:1402
-> #3  0x00005569810e9a4b in blk_aio_write_entry (opaque=0x556982e2cfa0) at ../block/block-backend.c:1628
-> #4  0x000055698128038a in coroutine_trampoline (i0=-2090057872, i1=21865) at ../util/coroutine-ucontext.c:177
-> #5  0x00007fe770f50d40 in ?? () from /lib/x86_64-linux-gnu/libc.so.6
-> #6  0x00007ffd7a829570 in ?? ()
-> #7  0x0000000000000000 in ?? ()
-
-Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
-Message-ID: <20230706131418.423713-1-f.ebner@proxmox.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit ca2a5e630dc1f569266fb663bf0b65e4eb433fb2)
+Cc: qemu-stable@nongnu.org
+Fixes: dbdd25065e90 ("Implement time-base start/stop helpers.")
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
+Reviewed-by: Frederic Barrat <fbarrat@linux.ibm.com>
+Message-ID: <20230629020713.327745-1-npiggin@gmail.com>
+Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
+(cherry picked from commit 2ad2e113deb5663e69a05dd6922cbfc6d7ea34d3)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/softmmu/runstate.c b/softmmu/runstate.c
-index d1e04586db..3359aafa08 100644
---- a/softmmu/runstate.c
-+++ b/softmmu/runstate.c
-@@ -804,21 +804,21 @@ void qemu_cleanup(void)
-      */
-     blk_exp_close_all();
+diff --git a/hw/ppc/ppc.c b/hw/ppc/ppc.c
+index d80b0adc6c..85d442fbce 100644
+--- a/hw/ppc/ppc.c
++++ b/hw/ppc/ppc.c
+@@ -535,23 +535,24 @@ static inline void cpu_ppc_store_tb(ppc_tb_t *tb_env, uint64_t vmclk,
+ void cpu_ppc_store_tbl (CPUPPCState *env, uint32_t value)
+ {
+     ppc_tb_t *tb_env = env->tb_env;
++    int64_t clock = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
+     uint64_t tb;
  
-+
-+    /* No more vcpu or device emulation activity beyond this point */
-+    vm_shutdown();
-+    replay_finish();
-+
-     /*
-      * We must cancel all block jobs while the block layer is drained,
-      * or cancelling will be affected by throttling and thus may block
-      * for an extended period of time.
--     * vm_shutdown() will bdrv_drain_all(), so we may as well include
--     * it in the drained section.
-+     * Begin the drained section after vm_shutdown() to avoid requests being
-+     * stuck in the BlockBackend's request queue.
-      * We do not need to end this section, because we do not want any
-      * requests happening from here on anyway.
-      */
-     bdrv_drain_all_begin();
--
--    /* No more vcpu or device emulation activity beyond this point */
--    vm_shutdown();
--    replay_finish();
--
-     job_cancel_sync_all();
-     bdrv_close_all();
+-    tb = cpu_ppc_get_tb(tb_env, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL), tb_env->tb_offset);
++    tb = cpu_ppc_get_tb(tb_env, clock, tb_env->tb_offset);
+     tb &= 0xFFFFFFFF00000000ULL;
+-    cpu_ppc_store_tb(tb_env, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL),
+-                     &tb_env->tb_offset, tb | (uint64_t)value);
++    cpu_ppc_store_tb(tb_env, clock, &tb_env->tb_offset, tb | (uint64_t)value);
+ }
  
+ static inline void _cpu_ppc_store_tbu(CPUPPCState *env, uint32_t value)
+ {
+     ppc_tb_t *tb_env = env->tb_env;
++    int64_t clock = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
+     uint64_t tb;
+ 
+-    tb = cpu_ppc_get_tb(tb_env, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL), tb_env->tb_offset);
++    tb = cpu_ppc_get_tb(tb_env, clock, tb_env->tb_offset);
+     tb &= 0x00000000FFFFFFFFULL;
+-    cpu_ppc_store_tb(tb_env, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL),
+-                     &tb_env->tb_offset, ((uint64_t)value << 32) | tb);
++    cpu_ppc_store_tb(tb_env, clock, &tb_env->tb_offset,
++                     ((uint64_t)value << 32) | tb);
+ }
+ 
+ void cpu_ppc_store_tbu (CPUPPCState *env, uint32_t value)
+@@ -584,23 +585,24 @@ uint32_t cpu_ppc_load_atbu (CPUPPCState *env)
+ void cpu_ppc_store_atbl (CPUPPCState *env, uint32_t value)
+ {
+     ppc_tb_t *tb_env = env->tb_env;
++    int64_t clock = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
+     uint64_t tb;
+ 
+-    tb = cpu_ppc_get_tb(tb_env, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL), tb_env->atb_offset);
++    tb = cpu_ppc_get_tb(tb_env, clock, tb_env->atb_offset);
+     tb &= 0xFFFFFFFF00000000ULL;
+-    cpu_ppc_store_tb(tb_env, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL),
+-                     &tb_env->atb_offset, tb | (uint64_t)value);
++    cpu_ppc_store_tb(tb_env, clock, &tb_env->atb_offset, tb | (uint64_t)value);
+ }
+ 
+ void cpu_ppc_store_atbu (CPUPPCState *env, uint32_t value)
+ {
+     ppc_tb_t *tb_env = env->tb_env;
++    int64_t clock = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
+     uint64_t tb;
+ 
+-    tb = cpu_ppc_get_tb(tb_env, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL), tb_env->atb_offset);
++    tb = cpu_ppc_get_tb(tb_env, clock, tb_env->atb_offset);
+     tb &= 0x00000000FFFFFFFFULL;
+-    cpu_ppc_store_tb(tb_env, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL),
+-                     &tb_env->atb_offset, ((uint64_t)value << 32) | tb);
++    cpu_ppc_store_tb(tb_env, clock, &tb_env->atb_offset,
++                     ((uint64_t)value << 32) | tb);
+ }
+ 
+ uint64_t cpu_ppc_load_vtb(CPUPPCState *env)
+@@ -622,14 +624,13 @@ void cpu_ppc_store_vtb(CPUPPCState *env, uint64_t value)
+ void cpu_ppc_store_tbu40(CPUPPCState *env, uint64_t value)
+ {
+     ppc_tb_t *tb_env = env->tb_env;
++    int64_t clock = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
+     uint64_t tb;
+ 
+-    tb = cpu_ppc_get_tb(tb_env, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL),
+-                        tb_env->tb_offset);
++    tb = cpu_ppc_get_tb(tb_env, clock, tb_env->tb_offset);
+     tb &= 0xFFFFFFUL;
+     tb |= (value & ~0xFFFFFFUL);
+-    cpu_ppc_store_tb(tb_env, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL),
+-                     &tb_env->tb_offset, tb);
++    cpu_ppc_store_tb(tb_env, clock, &tb_env->tb_offset, tb);
+ }
+ 
+ static void cpu_ppc_tb_stop (CPUPPCState *env)
 -- 
 2.39.2
 
