@@ -2,44 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5933D7604DF
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 03:42:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8848976068D
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 05:26:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qO72V-000849-Ce; Mon, 24 Jul 2023 21:40:39 -0400
+	id 1qO8ff-0000oC-Gn; Mon, 24 Jul 2023 23:25:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1qO72S-00081a-RT
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 21:40:36 -0400
-Received: from mail-b.sr.ht ([173.195.146.151])
+ (Exim 4.90_1) (envelope-from <chris@laplante.io>) id 1qO8fd-0000nw-P9
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 23:25:10 -0400
+Received: from mail-4018.proton.ch ([185.70.40.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1qO72P-0008KS-JV
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 21:40:36 -0400
-Authentication-Results: mail-b.sr.ht; dkim=none 
-Received: from git.sr.ht (unknown [173.195.146.142])
- by mail-b.sr.ht (Postfix) with ESMTPSA id 480A611EEC5;
- Tue, 25 Jul 2023 01:40:31 +0000 (UTC)
-From: ~hyman <hyman@git.sr.ht>
-Date: Tue, 25 Jul 2023 01:40:31 +0000
+ (Exim 4.90_1) (envelope-from <chris@laplante.io>) id 1qO8fb-0001ap-IB
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 23:25:09 -0400
+Date: Tue, 25 Jul 2023 03:24:51 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=laplante.io;
+ s=protonmail3; t=1690255501; x=1690514701;
+ bh=wObaOjtz0t4P7hmP4mV+hxoFOlQUOJU987JChTQuDd8=;
+ h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+ Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+ Message-ID:BIMI-Selector;
+ b=kcbc2JwCfpWSGPXDCSodjel5T3lhYhjYUIqKOiCgOcbMoTB1f4Pkj6oSILu2xN9Cn
+ PTFafuF0g7XytVnkBypPt9M1Wq1Zdps62kPCBtNEfLrsoe2QnXkEfUymP0OCdR72WG
+ 9z8W8Vxgs5IjYoFtUynPqHQ1Ek5nlQc1d1sVzpxCBjOMq+iiskHbO7OmLttRrGrZpU
+ LhzFW3al9HolY8gYhnpvTPk1d0TFd/J1wU+uvBQNVuX1OakbP5TKvbSUDYuJeWQLz/
+ NdlyGwAgyD+5JGkTeW1lbDN6xd+rM49KbBTMzZlSX17bOKeXWSabRBcu5b8viTwd9m
+ 7OPlx0yZVJN0g==
+To: Peter Maydell <peter.maydell@linaro.org>
+From: Chris Laplante <chris@laplante.io>
+Cc: qemu-devel@nongnu.org, Joel Stanley <joel@jms.id.au>, qemu-arm@nongnu.org
+Subject: Re: [PATCH 0/6] Add nRF51 DETECT signal with test
+Message-ID: <uJ83qRpjm3C76JRjI4OOm2NAz3uF-RDUa2WL8sp3ftAzoH16KDfxZhwxsqxqxrHTfXHKkZZXy0JY6UUpq7nD0jfYEUtYM_K340O6E6BFwJY=@laplante.io>
+In-Reply-To: <CAFEAcA_gGia=ckyv4=XHNX4=VHJJ=rmVGXQbdnOAGv5h1rzLzw@mail.gmail.com>
+References: <20230714232659.76434-1-chris@laplante.io>
+ <CAFEAcA_gGia=ckyv4=XHNX4=VHJJ=rmVGXQbdnOAGv5h1rzLzw@mail.gmail.com>
+Feedback-ID: 43500449:user:proton
 MIME-Version: 1.0
-Subject: [PATCH QEMU v10 0/9] migration: introduce dirtylimit capability
-Message-ID: <169024923116.19090.10825599068950039132-0@git.sr.ht>
-X-Mailer: git.sr.ht
-To: qemu-devel@nongnu.org
-Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
- Leonardo Bras <leobras@redhat.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=173.195.146.151; envelope-from=outgoing@sr.ht;
- helo=mail-b.sr.ht
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=185.70.40.18; envelope-from=chris@laplante.io;
+ helo=mail-4018.proton.ch
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -52,123 +63,39 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: ~hyman <yong.huang@smartx.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi, Juan,
-Markus and i has crafted docs for the series,
-please use the latest version to make a pull
-request if it is convenient to you.
+Hi Peter,
 
-No functional changes since v6. Thanks.
+> Thanks for this patchset and especially for the work
+> improving the qtest infrastructure. I've given my
+> comments on the different patches, and in some cases
+> reviewed-by tags. (Where I've given one of those, you should
+> add it to your commit message for the relevant patch under
+> your Signed-off-by: line, so that when you send the version
+> 2 of the patchset we know that those parts are already
+> reviewed and don't need re-examining. If I said "make
+> some change; otherwise Reviewed-by" that means "make
+> that minor change, and then you can add the tag, etc".)
 
-Yong
+Thanks very much for the feedback and help!
 
-v7~v10:
-Rebase on master, update "Since" tags to 8.2,
-fix conflicts and craft the docs suggested by Markus
+> Do you have the parts of this feature that use the DETECT
+> signal in the POWER device, or have you not written those
+> yet ? If you have them, you could send those too in v2.
 
-v6:
-1. Rebase on master
-2. Split the commit "Implement dirty-limit convergence algo" into two as
-    Juan suggested as the following:
-    a. Put the detection logic before auto-converge checking
-    b. Implement dirty-limit convergence algo
-3. Put the detection logic before auto-converge checking
-4. Sort the migrate_dirty_limit function in commit
-    "Introduce dirty-limit capability" suggested by Juan
-5. Substitute the the int64_t to uint64_t in the last 2 commits
-6. Fix the comments spell mistake
-7. Add helper function in the commit
-    "Implement dirty-limit convergence algo" suggested by Juan
+That part is halfway done, so I will work on finishing it before submitting=
+ v2. Two questions regarding that (to potentially save us a v3):=20
 
-v5:
-1. Rebase on master and enrich the comment for "dirty-limit" capability,
-    suggesting by Markus.
-2. Drop commits that have already been merged.
+1. The nRF51 POWER device overlaps with the memory maps of the CLOCK and MP=
+U devices. So I have created a CPM (CLOCK, POWER, MPU) device in hw/misc. D=
+oes that sound reasonable naming-wise?
+2. I also have some implementations for pieces of CLOCK, namely the HFCLKST=
+ART/HFCLKSTOP events and HFCLKSTARTED event. Should I include that in this =
+patch series, or would you prefer it in a separate series? It is unrelated =
+to DETECT and POWER.
 
-v4:
-1. Polish the docs and update the release version suggested by Markus
-2. Rename the migrate exported info "dirty-limit-throttle-time-per-
-round"
-   to "dirty-limit-throttle-time-per-full".
-
-v3(resend):
-- fix the syntax error of the topic.
-
-v3:
-This version make some modifications inspired by Peter and Markus
-as following:
-1. Do the code clean up in [PATCH v2 02/11] suggested by Markus
-2. Replace the [PATCH v2 03/11] with a much simpler patch posted by
-   Peter to fix the following bug:
-   https://bugzilla.redhat.com/show_bug.cgi?id=3D2124756
-3. Fix the error path of migrate_params_check in [PATCH v2 04/11]
-   pointed out by Markus. Enrich the commit message to explain why
-   x-vcpu-dirty-limit-period an unstable parameter.
-4. Refactor the dirty-limit convergence algo in [PATCH v2 07/11]
-   suggested by Peter:
-   a. apply blk_mig_bulk_active check before enable dirty-limit
-   b. drop the unhelpful check function before enable dirty-limit
-   c. change the migration_cancel logic, just cancel dirty-limit
-      only if dirty-limit capability turned on.
-   d. abstract a code clean commit [PATCH v3 07/10] to adjust
-      the check order before enable auto-converge
-5. Change the name of observing indexes during dirty-limit live
-   migration to make them more easy-understanding. Use the
-   maximum throttle time of vpus as "dirty-limit-throttle-time-per-full"
-6. Fix some grammatical and spelling errors pointed out by Markus
-   and enrich the document about the dirty-limit live migration
-   observing indexes "dirty-limit-ring-full-time"
-   and "dirty-limit-throttle-time-per-full"
-7. Change the default value of x-vcpu-dirty-limit-period to 1000ms,
-   which is optimal value pointed out in cover letter in that
-   testing environment.
-8. Drop the 2 guestperf test commits [PATCH v2 10/11],
-   [PATCH v2 11/11] and post them with a standalone series in the
-   future.
-
-v2:
-This version make a little bit modifications comparing with
-version 1 as following:
-1. fix the overflow issue reported by Peter Maydell
-2. add parameter check for hmp "set_vcpu_dirty_limit" command
-3. fix the racing issue between dirty ring reaper thread and
-   Qemu main thread.
-4. add migrate parameter check for x-vcpu-dirty-limit-period
-   and vcpu-dirty-limit.
-5. add the logic to forbid hmp/qmp commands set_vcpu_dirty_limit,
-   cancel_vcpu_dirty_limit during dirty-limit live migration when
-   implement dirty-limit convergence algo.
-6. add capability check to ensure auto-converge and dirty-limit
-   are mutually exclusive.
-7. pre-check if kvm dirty ring size is configured before setting
-   dirty-limit migrate parameter
-
-Hyman Huang(=E9=BB=84=E5=8B=87) (9):
-  softmmu/dirtylimit: Add parameter check for hmp "set_vcpu_dirty_limit"
-  qapi/migration: Introduce x-vcpu-dirty-limit-period parameter
-  qapi/migration: Introduce vcpu-dirty-limit parameters
-  migration: Introduce dirty-limit capability
-  migration: Refactor auto-converge capability logic
-  migration: Put the detection logic before auto-converge checking
-  migration: Implement dirty-limit convergence algorithm
-  migration: Extend query-migrate to provide dirty-limit info
-  tests: Add migration dirty-limit capability test
-
- include/sysemu/dirtylimit.h    |   2 +
- migration/migration-hmp-cmds.c |  26 ++++++
- migration/migration.c          |  13 +++
- migration/options.c            |  73 ++++++++++++++++
- migration/options.h            |   1 +
- migration/ram.c                |  61 ++++++++++---
- migration/trace-events         |   1 +
- qapi/migration.json            |  72 +++++++++++++--
- softmmu/dirtylimit.c           |  91 +++++++++++++++++--
- tests/qtest/migration-test.c   | 155 +++++++++++++++++++++++++++++++++
- 10 files changed, 470 insertions(+), 25 deletions(-)
-
---=20
-2.38.5
+Thanks,
+Chris 
 
