@@ -2,82 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CDE6761C5C
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 16:57:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABC96761C82
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 16:59:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOJTp-0001NP-Dc; Tue, 25 Jul 2023 10:57:41 -0400
+	id 1qOJUk-0002Gu-GY; Tue, 25 Jul 2023 10:58:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qOJTl-0001Hw-Ew
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 10:57:37 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qOJUh-0002GX-G0
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 10:58:36 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qOJTj-0000qX-Ka
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 10:57:37 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-31771a876b5so202151f8f.3
- for <qemu-devel@nongnu.org>; Tue, 25 Jul 2023 07:57:34 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qOJUf-00011Q-UF
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 10:58:35 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-3fbea14700bso45474805e9.3
+ for <qemu-devel@nongnu.org>; Tue, 25 Jul 2023 07:58:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690297053; x=1690901853;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=rohruD2ujv/VkBtKXN6/T8koRSybSLmT3S7+wgJpmV0=;
- b=qGBfhf+/i/9wmI3g5+0HQ2++AwvrX4FilH0gykCGaz9tBNzo4bVcvkaY2QxIW9uqxu
- HJzaU45d3jrb4qPIUP6QMbnMMi+b5V5C448aKTagZXkKU5rt97vbSMQuNm2FU1YEvC3v
- mEfzVZ7JK02IfZ93lN2Zd7yTHAPRK1qRTRe6xJiMORxdTF3lZuVPyYIEKxDSMrrnKi/P
- X4fyiq+qA91XO0wB93C54gKOoMtLeqWM+QDC9zP7NR8xpbcxk+Z7LqrHtUQvWsyLIRTl
- TJ1OMdrQzyWNo9pnJxeCpLno9n1L1SfFk3E53q9c1wRNti13A4DynVSQ10YnIDHpVd35
- hlEw==
+ d=linaro.org; s=google; t=1690297112; x=1690901912;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=l+BR/jbkTKe2pDMg9nSjsVEdOB9Wch7yZWm0GM5IB44=;
+ b=rgjr04S4+2vx+ZHko+tfrpdxzFrF511UJ6uQotUixCcWnwm+gvPetqM7410MRrXBw2
+ RL0DIsDMluvsFAuVWcdW0CncaoBACUzGcA5QxB/ZPsmi7VhW2PJ0H2w7B/tS3zn/JH3E
+ qwxeh0auLpNzF0nNZzu7kDjsNTm9aFaSpekvH5nMwA0cz/GDoctnlBMxpuJZ/GsfVmKh
+ EFRaU1wSb9LH/rClSbU4HiENVZnr1NAAlaXVvtv+/dthM1tceUrHIufZMLip+Or5ZuR8
+ yxPB16Y/LEUTE8Kw/SzmMoBPyVC3r+2MAL6pNXNt0VTBYFuGV9o7gPnNPxNl/SD6vfoS
+ sMFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690297053; x=1690901853;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=rohruD2ujv/VkBtKXN6/T8koRSybSLmT3S7+wgJpmV0=;
- b=KkPHdNQwZsMULvB4StFvJ88wRzBrnE9bhy9RO+v9UGlTh7z2JkPP7c9aLbUV8OGl1W
- Ln213eyKGAaGR0nyDRt41TD8Z9x/krD2WC3u7t6UA5iBjDda+AhlGUIDowYvzAiKXUTN
- PIXs/WzRgsD5Xx1/8DvwOBU2o+/mviKc5d8sf6Gk0umiA9FARMKL797HdS/Aln9x6tJV
- 7olhQg1WBpwfgca5V2FSVcFmzUeFULyLnaVPxWWYVPj6I92JIz0wT6/rMkF71/VNAZPn
- 4otj2TX/AQQ6/OPPycwOgiMLknebya8o6W1lTCh9U2bncmAszu7DYVqYwOd2t7DYN4PW
- vytA==
-X-Gm-Message-State: ABy/qLZHEw/Rt5+9UQDVxgx6VVJUM+UoKW+rT9SxjEjenBVyf5+G7EVj
- DEG+3ZL/3TOnSZg/j33CRaeFlA==
-X-Google-Smtp-Source: APBJJlHqayxxDv7HnylvbLD7g+nmEP9XcEL9Lj8C3FHD4VvHh2qAD8YNm8EGfa3ea8gQyE6H0mXAXw==
-X-Received: by 2002:a5d:5511:0:b0:317:5a71:9231 with SMTP id
- b17-20020a5d5511000000b003175a719231mr5937509wrv.51.1690297053360; 
- Tue, 25 Jul 2023 07:57:33 -0700 (PDT)
-Received: from [192.168.69.115] ([176.187.203.142])
+ d=1e100.net; s=20221208; t=1690297112; x=1690901912;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=l+BR/jbkTKe2pDMg9nSjsVEdOB9Wch7yZWm0GM5IB44=;
+ b=cHzLP595t9EVeI/DEhIBTQSVOVz08/501dvi2oUjGzCB70uPQLyp1dYL9OGetfRvmH
+ TxGWOLRucnXtR91HzJLW+AhnAnkEFolCMdyAbIBg0Ba0IFtsN64VzdZpU8sZOIMVjtWO
+ SwokDsmoOAxf2oCVzVd7JJtez+7IKO63SpkQ5TNh8bHiZpvoI/GK6xWDhEht5kWmcXet
+ HKowlgXGq8VWfKVwFConoh5xuVSMbP2Zx/Gmm6Rx2zn0Mw2+Za2F6fojVQKpItr6Wo/R
+ Cc/CpJxpBHBtQTIEZLKI0dkDelWs8rvtl0GJyWqAfFFxR1V3ayoLekHcMFRbus+ezvCg
+ K05g==
+X-Gm-Message-State: ABy/qLakaOOLSAzHc+krtY++szFnMNT0QKOGKbRZhy8hmNaVuiNwVWZZ
+ /BYIg+aPswqT3cMq7rh0WjKcF/5NRHptBmQpdE4=
+X-Google-Smtp-Source: APBJJlGqlDxwk9Fsfu+a6orObioBheeZ788owzJF1ysX/MKWty9WMJeYV5pWF36AAqcIE2fJTsQ/fw==
+X-Received: by 2002:a7b:c7c5:0:b0:3fc:500:db7c with SMTP id
+ z5-20020a7bc7c5000000b003fc0500db7cmr8474854wmk.21.1690297112225; 
+ Tue, 25 Jul 2023 07:58:32 -0700 (PDT)
+Received: from localhost.localdomain ([176.187.203.142])
  by smtp.gmail.com with ESMTPSA id
- j16-20020adfea50000000b0031424f4ef1dsm16788331wrn.19.2023.07.25.07.57.32
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 25 Jul 2023 07:57:33 -0700 (PDT)
-Message-ID: <3f544852-15b0-512d-136c-d92712d31682@linaro.org>
-Date: Tue, 25 Jul 2023 16:57:31 +0200
+ y19-20020a05600c20d300b003fd2d33f972sm9189085wmm.38.2023.07.25.07.58.30
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 25 Jul 2023 07:58:31 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Artyom Tarasenko <atar4qemu@gmail.com>,
+ Bastian Koppelmann <kbastian@mail.uni-paderborn.de>, qemu-block@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 00/10] Misc fixes for 2023-07-25
+Date: Tue, 25 Jul 2023 16:58:19 +0200
+Message-Id: <20230725145829.37782-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.13.0
-Subject: Re: [PATCH] hw/char/escc: Implement loopback mode
-Content-Language: en-US
-To: Thomas Huth <huth@tuxfamily.org>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Laurent Vivier <laurent@vivier.eu>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-References: <20230716153519.31722-1-huth@tuxfamily.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230716153519.31722-1-huth@tuxfamily.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -95,17 +90,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 16/7/23 17:35, Thomas Huth wrote:
-> The firmware of the m68k next-cube machine uses the loopback mode
-> for self-testing the hardware and currently fails during this step.
-> By implementing the loopback mode, we can make the firmware pass
-> to the next step.
-> 
-> Signed-off-by: Thomas Huth <huth@tuxfamily.org>
-> ---
->   hw/char/escc.c | 4 +++-
->   1 file changed, 3 insertions(+), 1 deletion(-)
+The following changes since commit 3ee44ec72753ec0ff05ad1569dfa609203d722b2:
 
-Thanks, queued to my misc-fixes tree.
+  Merge tag 'pull-request-2023-07-24' of https://gitlab.com/thuth/qemu into staging (2023-07-24 18:06:36 +0100)
+
+are available in the Git repository at:
+
+  https://github.com/philmd/qemu.git tags/misc-fixes-20230725
+
+for you to fetch changes up to f8cfdd2038c1823301e6df753242e465b1dc8539:
+
+  target/tricore: Rename tricore_feature (2023-07-25 14:42:00 +0200)
+
+----------------------------------------------------------------
+Misc patches queue
+
+hw/sd/sdhci: Default I/O ops to little endian
+hw/mips/loongson3-virt: Only use default USB if available
+hw/char/escc: Implement loopback mode to allow self-testing
+target/mips: Avoid overruns and shifts by negative number
+target/sparc: Handle FPRS correctly on big-endian hosts
+target/tricore: Rename tricore_feature to avoid clash with libcapstone
+
+----------------------------------------------------------------
+
+Bastian Koppelmann (1):
+  target/tricore: Rename tricore_feature
+
+Bernhard Beschow (1):
+  hw/sd/sdhci: Do not force sdhci_mmio_*_ops onto all SD controllers
+
+Peter Maydell (2):
+  target/mips: Avoid shift by negative number in
+    page_table_walk_refill()
+  target/sparc: Handle FPRS correctly on big-endian hosts
+
+Philippe Mathieu-Daudé (4):
+  target/mips/mxu: Replace magic array size by its definition
+  target/mips/mxu: Avoid overrun in gen_mxu_S32SLT()
+  target/mips/mxu: Avoid overrun in gen_mxu_q8adde()
+  target/mips: Pass directory/leaf shift values to walk_directory()
+
+Thomas Huth (2):
+  hw/mips: Improve the default USB settings in the loongson3-virt
+    machine
+  hw/char/escc: Implement loopback mode
+
+ target/sparc/cpu.h                  |  2 +-
+ target/tricore/cpu.h                |  2 +-
+ hw/char/escc.c                      |  4 ++-
+ hw/mips/loongson3_virt.c            |  2 +-
+ hw/sd/sdhci.c                       |  8 ++++-
+ target/mips/tcg/mxu_translate.c     | 36 +++++++++++++++-------
+ target/mips/tcg/sysemu/tlb_helper.c | 48 ++++++++++++++---------------
+ target/sparc/cpu.c                  |  4 +--
+ target/sparc/machine.c              |  3 +-
+ target/sparc/monitor.c              |  2 +-
+ target/tricore/cpu.c                |  8 ++---
+ target/tricore/helper.c             |  4 +--
+ target/tricore/op_helper.c          |  4 +--
+ 13 files changed, 75 insertions(+), 52 deletions(-)
+
+-- 
+2.38.1
 
 
