@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1CD77616F1
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 13:44:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1126B76171B
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 13:45:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOGSj-00047k-2t; Tue, 25 Jul 2023 07:44:21 -0400
+	id 1qOGTA-0004Dr-DE; Tue, 25 Jul 2023 07:44:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qOGSh-00047a-Ci
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 07:44:19 -0400
-Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
+ id 1qOGT2-0004Ay-Q8
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 07:44:41 -0400
+Received: from mail-lf1-x135.google.com ([2a00:1450:4864:20::135])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qOGSe-0000lj-IV
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 07:44:19 -0400
-Received: by mail-lf1-x12e.google.com with SMTP id
- 2adb3069b0e04-4f95bf5c493so8247720e87.3
- for <qemu-devel@nongnu.org>; Tue, 25 Jul 2023 04:44:16 -0700 (PDT)
+ id 1qOGSy-0000tB-Uz
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 07:44:38 -0400
+Received: by mail-lf1-x135.google.com with SMTP id
+ 2adb3069b0e04-4fb73ba3b5dso8521351e87.1
+ for <qemu-devel@nongnu.org>; Tue, 25 Jul 2023 04:44:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690285454; x=1690890254;
+ d=linaro.org; s=google; t=1690285475; x=1690890275;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=nHd3VnQsU/rbe6XhcZtRIxMIlyb7sRVEaHAFXfvrBEo=;
- b=cJeAoVHSF3Yw2wmoJYxM4s30ENeTb1IPki/wUv40LNd+seGIFSEeYcjn4CR3nmL1P8
- ejOjv+KQIFZneVTet3m3dsbqCfjCruUWB8IU4TqXnykU+D9MtIBp4Qkg1b0x3DF9ndL7
- 3q6cW8lUnlmHUEVckg83hib0J4SKA53OKUkqZiQHMT8Lb6YfEsGQfiwjodc8CtRKa/Nv
- FPXh9qOMogBc5ud0Ru1YJUz2ZeR0twB5BWeGgMYDnkmP9WXrHNsBJ5967UCyzryvSvHO
- cQ5cEgSr5e6Rv5OndF8Lm1JMbMalO+a2L+Yydtowus/tYMXc7NW2AP3crE7ZwTpv5hQz
- pG2A==
+ bh=dy6gUUpyY1tsrF+wYaTCl+emf+qhMnXdq96FnmbipUw=;
+ b=mBABnQLzJMJSOzgeRCOJ+uLsVj0qidWA1BW8PiYLnPT7qTdIr8EKXssYqeYkqq1si3
+ GNM1lReAB6Iu+1YKpxOXXuOk53GB0UmcEjcbEK9MXqQk6hrfFZWT8BNpTdIHrpWdWRA+
+ IJ4NA6UZ2lsuu8KDlj6nM0QhUiq8eeIj3Ezp7QvmeOWsAoEQ8GsOrz+FrM6qW/518It7
+ us6ykIJj7UMBXYJy9oRZtSAFuHWh6ZbBbn3iehYwuj4Z9K+SqSGsuQVxBzscExbMgL/m
+ cJHkRbOBM2RCGCafzZYPJK2kJ+zlASsag+YIopZfudnXu0fDACN9Ylsd6Gfz3ZeKKmsp
+ zQBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690285454; x=1690890254;
+ d=1e100.net; s=20221208; t=1690285475; x=1690890275;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=nHd3VnQsU/rbe6XhcZtRIxMIlyb7sRVEaHAFXfvrBEo=;
- b=h6QUULv2JsajgE0JmlioiGyH8OCZzRsVnbRG48gJb/jhvl5HIhZky6A7wznhOW+sbu
- 6Xv7o30JiPcv6vgwT4DticZQOop0wP3fJQgiq8TRzU95pVwUR+1CObWFx31XzIl0ycxx
- eGCtQM6XetckKB2LyMkmrvlElU3WFcGtzZ47lCUoIF9zNPdpmUuw7MAot+tLNkQYOkg+
- 1EtXtPtVlGA+PWwd8LA9kFreRf8p1LaCvzT1YxK5IAvf0pt5t/P7AAvN6CeeDnnAwz8p
- LEj5ZI+CkDX+8P1LRVW0CF4ibhciFT0Hs1iIVJsCJDOKL2mYhMgZ3D31dEUg4dLYwpZ6
- fzpA==
-X-Gm-Message-State: ABy/qLbNrnSBlgtoHQ+5PqTzRLG2PR5ma+fiLVQ44aBxF+u475D+mgNj
- Kdd8TBih25D2kbj4UhpnGUduzX4CgkZBs03cqdYY6Q==
-X-Google-Smtp-Source: APBJJlEVuegH7yaMRfSBokft6bTV/d0UboXi3LJIUI/6RJ4h3NAoeb5eOeptvipoFs0BT+qxIs6kWHjLqw/dGFAFUCo=
-X-Received: by 2002:a05:6512:128a:b0:4fb:74da:989a with SMTP id
- u10-20020a056512128a00b004fb74da989amr9047392lfs.3.1690285454584; Tue, 25 Jul
- 2023 04:44:14 -0700 (PDT)
+ bh=dy6gUUpyY1tsrF+wYaTCl+emf+qhMnXdq96FnmbipUw=;
+ b=ZFelqZLY3ZC7MXhe4tLSZBgtmcUfh3X8dRGgmUJ4JusuNaIJQ0PiHcehM4nVQiupj0
+ xA1AIAj8SvTnQjZMTC0CTH6Vt1xmvl3/sS/9nDcjNy+LgbY4UFpWaCUJe+enf9eIYKwL
+ RkcTnvM0dD8gacKzBmqgVbIa9hzC8dzuLljPt4VW3vRFbh1eVQq0Wmd1Z/pK+/KiiiTF
+ moMJdwWXTD1PSgOmtt0whTQkYdcVUO8X3i0klPm6cbGuG+g2JbXyhPLBL4I/0gXY7Bm2
+ HYxXRJ//rEO2ivSWCqJi0VnxRGEi132xkYtu2PPR5m195aMzfgKv6vJlGE29tpKaIlHV
+ eaEw==
+X-Gm-Message-State: ABy/qLaQAhEb1zTi0gUTqSN/Nv5ZpFaQJjJvrFltCyg9pwATG8GyYFRR
+ QZMfJz1GAOclV9W0Va3hu2egX2h7kHx6Zm7OQl1OFg==
+X-Google-Smtp-Source: APBJJlG6ouAyNDUqNNATO2eaofQOsDQyLvEdBFDCDIBPGt1J/rKVAp8S2THc7guSRQ1CF5WtL8jrwSmfAQspTj2QmuE=
+X-Received: by 2002:a05:6512:3a95:b0:4fd:d9e0:4d79 with SMTP id
+ q21-20020a0565123a9500b004fdd9e04d79mr8122555lfu.6.1690285474964; Tue, 25 Jul
+ 2023 04:44:34 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230710111959.637011-1-armbru@redhat.com>
-In-Reply-To: <20230710111959.637011-1-armbru@redhat.com>
+References: <20230724165349.55714-1-thuth@redhat.com>
+In-Reply-To: <20230724165349.55714-1-thuth@redhat.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 25 Jul 2023 12:44:03 +0100
-Message-ID: <CAFEAcA98h67hDGeD-2yR2tALH9p0_YcieOcjFN8rRZxnqnp_9A@mail.gmail.com>
-Subject: Re: [PULL 0/2] QAPI patches patches for 2023-07-10
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, richard.henderson@linaro.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12e.google.com
+Date: Tue, 25 Jul 2023 12:44:24 +0100
+Message-ID: <CAFEAcA_kHEmP16N22CZqquc9JO9Xg+duv6ebWKwPAtkaMjcTOA@mail.gmail.com>
+Subject: Re: [PULL 00/16] s390x fixes
+To: Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel@nongnu.org
+Content-Type: multipart/alternative; boundary="0000000000004e005006014e413e"
+Received-SPF: pass client-ip=2a00:1450:4864:20::135;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x135.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -84,25 +84,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 10 Jul 2023 at 12:21, Markus Armbruster <armbru@redhat.com> wrote:
+--0000000000004e005006014e413e
+Content-Type: text/plain; charset="UTF-8"
+
+On Mon, 24 Jul 2023 at 17:53, Thomas Huth <thuth@redhat.com> wrote:
 >
+> The following changes since commit
+885fc169f09f5915ce037263d20a59eb226d473d:
 >
-> The following changes since commit 2ff49e96accc8fd9a38e9abd16f0cfa0adab1605:
->
->   Merge tag 'pull-tcg-20230709' of https://gitlab.com/rth7680/qemu into staging (2023-07-09 15:01:43 +0100)
+>   Merge tag 'pull-riscv-to-apply-20230723-3' of
+https://github.com/alistair23/qemu into staging (2023-07-24 11:34:35 +0100)
 >
 > are available in the Git repository at:
 >
->   https://repo.or.cz/qemu/armbru.git tags/pull-qapi-2023-07-10
+>   https://gitlab.com/thuth/qemu.git tags/pull-request-2023-07-24
 >
-> for you to fetch changes up to fd658a7b8cf1091ae2914655add4511865d7edc0:
+> for you to fetch changes up to bd39b7b5f34c2f6b9272bf281ee0324cb07fc3ee:
 >
->   migration.json: Don't use space before colon (2023-07-10 07:47:36 +0200)
->
-> ----------------------------------------------------------------
-> QAPI patches patches for 2023-07-10
+>   tests/avocado/machine_s390_ccw_virtio: Skip the flaky virtio-gpu test
+by default (2023-07-24 18:44:48 +0200)
 >
 > ----------------------------------------------------------------
+> * Fix emulation of s390x instructions: CKSM, CLM, ICM, MC, CLGEBR(A)
+> * Remove useless and non-working s390x migration avocado tests
+> * Fix loongarch CSRRD CPUID instruction when running on s390x hosts
+> * Disable flaky s390x virtio-gpu test by default
+>
 
 
 Applied, thanks.
@@ -111,4 +118,37 @@ Please update the changelog at https://wiki.qemu.org/ChangeLog/8.1
 for any user-visible changes.
 
 -- PMM
+
+--0000000000004e005006014e413e
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><br><br>On Mon, 24 Jul 2023 at 17:53, Thomas Huth &lt;<a h=
+ref=3D"mailto:thuth@redhat.com">thuth@redhat.com</a>&gt; wrote:<br>&gt;<br>=
+&gt; The following changes since commit 885fc169f09f5915ce037263d20a59eb226=
+d473d:<br>&gt;<br>&gt; =C2=A0 Merge tag &#39;pull-riscv-to-apply-20230723-3=
+&#39; of <a href=3D"https://github.com/alistair23/qemu">https://github.com/=
+alistair23/qemu</a> into staging (2023-07-24 11:34:35 +0100)<br>&gt;<br>&gt=
+; are available in the Git repository at:<br>&gt;<br>&gt; =C2=A0 <a href=3D=
+"https://gitlab.com/thuth/qemu.git">https://gitlab.com/thuth/qemu.git</a> t=
+ags/pull-request-2023-07-24<br>&gt;<br>&gt; for you to fetch changes up to =
+bd39b7b5f34c2f6b9272bf281ee0324cb07fc3ee:<br>&gt;<br>&gt; =C2=A0 tests/avoc=
+ado/machine_s390_ccw_virtio: Skip the flaky virtio-gpu test by default (202=
+3-07-24 18:44:48 +0200)<br>&gt;<br>&gt; -----------------------------------=
+-----------------------------<br>&gt; * Fix emulation of s390x instructions=
+: CKSM, CLM, ICM, MC, CLGEBR(A)<br>&gt; * Remove useless and non-working s3=
+90x migration avocado tests<br>&gt; * Fix loongarch CSRRD CPUID instruction=
+ when running on s390x hosts<br>&gt; * Disable flaky s390x virtio-gpu test =
+by default<br><div>&gt;</div><div><br></div><br>
+Applied, thanks.<br>
+<br>
+Please update the changelog at <a href=3D"https://wiki.qemu.org/ChangeLog/8=
+.1" rel=3D"noreferrer" target=3D"_blank">https://wiki.qemu.org/ChangeLog/8.=
+1</a><br>
+for any user-visible changes.<br>
+<br>
+-- PMM<br>
+</div>
+
+--0000000000004e005006014e413e--
 
