@@ -2,91 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED0117618B7
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 14:48:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C63AE7618E5
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 14:53:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOHRe-0007el-Fv; Tue, 25 Jul 2023 08:47:18 -0400
+	id 1qOHWN-0002sZ-2N; Tue, 25 Jul 2023 08:52:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qOHRb-0007c1-JI
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 08:47:16 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qOHRY-00059c-JP
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 08:47:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690289230;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=sBEuv0tCJc8eX/yOWjLEnalpSx9cpWx5eKvD+ap8VqU=;
- b=B7PqaKPE05+7MjJkpjXUczoKSAQXHBa4bLE6AqzyvxxBJkep2xdVu1MySk5RpEbf6nQsXC
- iWc5D/46G2mOmdJWWFdnzkJt6g8u41yCix3sOl/7+6aFL4ECLYB6W+u/0PVgKiyYMqJRSU
- PpJXLwYON58x6VtOHMuRCk/H/VEpAv0=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-507-Sn7_AXDzN9O9YbZ0dWiAxA-1; Tue, 25 Jul 2023 08:47:09 -0400
-X-MC-Unique: Sn7_AXDzN9O9YbZ0dWiAxA-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-315a03cae87so3076750f8f.0
- for <qemu-devel@nongnu.org>; Tue, 25 Jul 2023 05:47:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qOHWI-0002sN-9P
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 08:52:06 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qOHWG-0006br-ND
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 08:52:06 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-3fd18b1d924so44007425e9.1
+ for <qemu-devel@nongnu.org>; Tue, 25 Jul 2023 05:52:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1690289523; x=1690894323;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=i7zHu7SSh0MD8kRumj0AWzzP6eSPN+HtUFdM1kHS/Vk=;
+ b=ER3NEnUGjbk3GvFhxRdEnCCd6cbyMS3hMBgjxQtERqCNf93pOnNAmawoMRxhVmoE1Y
+ T+bXkMJ+t2ALA0vJoQGAk7XS87X7PTrHbJAJXCTzsJMQOgPzGaUjwgQ+8UYQpDNKCnFZ
+ SXNHHdozTqH33NHOITs4zs3GTaUyZTPiyOuCZI7+TW8vP2ODWvXqIAmqK4aWhD6OHfO/
+ wb8q5nJUvsc7wcN10WHtryzPPxyJQT2ZGE6arYlpBjLav1B54w67R6ImtPtKeXK8g8Ad
+ 7uchdANFAbNGDegAwlW9cwxdLqQwWphKdZ4qMs1AAzGRwdCA2iv8h5gJnpNcne83QKvY
+ ui6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690289228; x=1690894028;
+ d=1e100.net; s=20221208; t=1690289523; x=1690894323;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=sBEuv0tCJc8eX/yOWjLEnalpSx9cpWx5eKvD+ap8VqU=;
- b=Zx64qFHsCKK4AZ8rSPOi1Aa1VmSH74nS7zy54ZdFIftAYAQu/IXSWdu/BJT2Rr89pL
- APScW+ol4h1ErLtE4v6s/j2GrTpXJQHOCKLJIeTw/qCBiqM5c4p2ub0qJzJnknhEUfZS
- IfspE6VebL2e/Jaqg491KaP5Safhm3TlwvJffia97Vw762kvtzrsI/2aUYpN8AcvLIEx
- CRrkxrWehTMQXnhNT+iNCv4lyRnPk46iIK0KE+VxHKCD/ED5BUgovRVeAigVm8beX3Mn
- p0ORu80eB7+pPvg/UrA4F18pTjyDCRQUv8oV8d+iY1cQ7UaTCA6CNTL6JxIyabb/0zwX
- Lc4g==
-X-Gm-Message-State: ABy/qLbhcq0C4n+cVrshHRzMaH7jMBrysG9ApSCdDFY6EQ4iI/cGSQsZ
- eVs5AyMBP18+1rXx43gOAxwKcIE1hkwilOjNHKpt8FZ6nsgU36d1D+2siAOO3rGlPQwkxWPe5Zo
- 7pwzhsKDuVdntQ8g=
-X-Received: by 2002:a05:6000:180d:b0:317:5cfb:44c7 with SMTP id
- m13-20020a056000180d00b003175cfb44c7mr2171613wrh.30.1690289228485; 
- Tue, 25 Jul 2023 05:47:08 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlGws8+iJA5HUpqpH8sJjGYyiFtDyrmgt+CEXjGtjovyt3xTI1TY9JR2KSaiv+5w65EYPrya9A==
-X-Received: by 2002:a05:6000:180d:b0:317:5cfb:44c7 with SMTP id
- m13-20020a056000180d00b003175cfb44c7mr2171593wrh.30.1690289228225; 
- Tue, 25 Jul 2023 05:47:08 -0700 (PDT)
-Received: from [192.168.0.3] (ip-109-43-177-31.web.vodafone.de.
- [109.43.177.31]) by smtp.gmail.com with ESMTPSA id
- f12-20020a7bcc0c000000b003fc0062f0f8sm13346012wmh.9.2023.07.25.05.47.07
+ bh=i7zHu7SSh0MD8kRumj0AWzzP6eSPN+HtUFdM1kHS/Vk=;
+ b=VYPa6UWfehzO6QbHlefm7GDViCzCHUAexu8aSBVf3A+qCIzdO0wMeLu9h7c1xFhjMc
+ xBax634y7nIq6n4lVLV38lIjEnshTP+pkDXju0XOsMgMMkS590D8esI+ztxtKs3vn1Pw
+ tSeczuCZgc7V09dAkz4EYE3duPrkABWY7pxfVq9A2R1+suW6errmBniO4TvSNNKXUoBB
+ cfLHU286nsbMAbg3pPJUt3fidX1tmf0ZQFtGtz0EIDEInHa7qnbpI7e5jPHZJjYdagiI
+ /vnCrzBFONiqwFmV0WXP2Nh05/B/HNemNDGyyPd+YZQVQl0ILExufJN64y0/dpGolx5e
+ zhGg==
+X-Gm-Message-State: ABy/qLYgxSl8orf6zbfgDefaLsS/XaZoSCg5FhXdpacTefqvce7B+nwN
+ pQArpampEIKF/8aAONxTLAyu4g==
+X-Google-Smtp-Source: APBJJlHvrZJzPfP16v1Xw4OydWJJqnyFctzS8d5B7YXh1DVKJW4RiWGrUmkfG9TM9jQJZstuobUr1g==
+X-Received: by 2002:a05:600c:22d7:b0:3f8:c9a4:4998 with SMTP id
+ 23-20020a05600c22d700b003f8c9a44998mr8215531wmg.28.1690289522991; 
+ Tue, 25 Jul 2023 05:52:02 -0700 (PDT)
+Received: from [192.168.69.115] ([176.187.203.142])
+ by smtp.gmail.com with ESMTPSA id
+ v11-20020a1cf70b000000b003fbacc853ccsm13221552wmh.18.2023.07.25.05.52.01
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 25 Jul 2023 05:47:07 -0700 (PDT)
-Message-ID: <c6c1e1da-f5f1-1535-9b9d-88278c050cb9@redhat.com>
-Date: Tue, 25 Jul 2023 14:47:06 +0200
+ Tue, 25 Jul 2023 05:52:02 -0700 (PDT)
+Message-ID: <76919f7d-62df-6320-84fb-80b00d2890a6@linaro.org>
+Date: Tue, 25 Jul 2023 14:52:00 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v2] kvm: Remove KVM_CREATE_IRQCHIP support assumption
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.13.0
+Subject: Re: [PATCH] ui/dbus: fix win32 compilation when !opengl
 Content-Language: en-US
-To: Andrew Jones <ajones@ventanamicro.com>, qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com, mtosatti@redhat.com, peter.maydell@linaro.org,
- pasic@linux.ibm.com, borntraeger@linux.ibm.com, dbarboza@ventanamicro.com,
- kvm@vger.kernel.org, qemu-arm@nongnu.org, qemu-s390x@nongnu.org
-References: <20230725122601.424738-2-ajones@ventanamicro.com>
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <20230725122601.424738-2-ajones@ventanamicro.com>
+To: marcandre.lureau@redhat.com, qemu-devel@nongnu.org
+Cc: thuth@redhat.com, Gerd Hoffmann <kraxel@redhat.com>
+References: <20230725112540.53284-1-marcandre.lureau@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230725112540.53284-1-marcandre.lureau@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.091, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,45 +92,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 25/07/2023 14.26, Andrew Jones wrote:
-> Since Linux commit 00f918f61c56 ("RISC-V: KVM: Skeletal in-kernel AIA
-> irqchip support") checking KVM_CAP_IRQCHIP returns non-zero when the
-> RISC-V platform has AIA. The cap indicates KVM supports at least one
-> of the following ioctls:
+On 25/7/23 13:25, marcandre.lureau@redhat.com wrote:
+> From: Marc-Andre Lureau <marcandre.lureau@redhat.com>
 > 
->    KVM_CREATE_IRQCHIP
->    KVM_IRQ_LINE
->    KVM_GET_IRQCHIP
->    KVM_SET_IRQCHIP
->    KVM_GET_LAPIC
->    KVM_SET_LAPIC
+> Fixes: https://gitlab.com/qemu-project/qemu/-/issues/1782
 > 
-> but the cap doesn't imply that KVM must support any of those ioctls
-> in particular. However, QEMU was assuming the KVM_CREATE_IRQCHIP
-> ioctl was supported. Stop making that assumption by introducing a
-> KVM parameter that each architecture which supports KVM_CREATE_IRQCHIP
-> sets. Adding parameters isn't awesome, but given how the
-> KVM_CAP_IRQCHIP isn't very helpful on its own, we don't have a lot of
-> options.
-> 
-> Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
+> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 > ---
-> 
-> While this fixes booting guests on riscv KVM with AIA it's unlikely
-> to get merged before the QEMU support for KVM AIA[1] lands, which
-> would also fix the issue. I think this patch is still worth considering
-> though since QEMU's assumption is wrong.
-> 
-> [1] https://lore.kernel.org/all/20230714084429.22349-1-yongxuan.wang@sifive.com/
-> 
-> v2:
->    - Move the s390x code to an s390x file. [Thomas]
->    - Drop the KVM_CAP_IRQCHIP check from the top of kvm_irqchip_create(),
->      as it's no longer necessary.
+>   ui/dbus-listener.c | 4 +++-
+>   1 file changed, 3 insertions(+), 1 deletion(-)
 
-Looks good now!
-
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
 
