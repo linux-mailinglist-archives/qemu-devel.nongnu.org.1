@@ -2,72 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BC037610C5
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 12:26:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF8CC7610CD
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 12:26:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOFFF-0001Ut-Ki; Tue, 25 Jul 2023 06:26:21 -0400
+	id 1qOFFF-0001Xp-TA; Tue, 25 Jul 2023 06:26:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qOFE8-0000IK-8k
+ id 1qOFE8-0000Ix-CC
  for qemu-devel@nongnu.org; Tue, 25 Jul 2023 06:25:13 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qOFE5-0007Vp-Mh
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 06:25:11 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-3fc04692e20so52686205e9.0
- for <qemu-devel@nongnu.org>; Tue, 25 Jul 2023 03:25:07 -0700 (PDT)
+ id 1qOFE5-0007WG-Q2
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 06:25:12 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-3fbc63c2e84so53543925e9.3
+ for <qemu-devel@nongnu.org>; Tue, 25 Jul 2023 03:25:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1690280707; x=1690885507;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=LicjyZN3b/YUo5rE9Rcv6mrB/LPasqs2dSTgyc7oBvU=;
- b=JgA3qk/RdInWcQKiQ0PPOOOrSkEaeSLJBucMWy7/HIn+Y001VkNGy9sk3qnojVFypD
- 7QE/SqE6zlGUBgvCumB6ozGVAseucr4Dat82QHPjGInn7A+Do4exeOHn67x1B9Xwo2qs
- DuTIk+Vd4tqQz+FjLBNgIPO9i4uTNIQ1wfcO/woVQR/vWmkoYJaoTdNL9wc862wYcSoU
- cbEkUlpPZmnH7HCYJE9G3xbx9RTOsXRE51oGvPmmw7fZkzZboq6wd7xut3eO9YtQFUoD
- Zc5Q7wapBM8Z56y/dXMu2LpXlvnONc9tU9Vp7FVTYR5DWZICyFWIE0hNK8fW+3zhKiPU
- 5ajg==
+ :reply-to; bh=9C6PfLlU2O818ZwPOAqAi3d27sGlX9QQgbc+eDlrhGY=;
+ b=DtiJDRKzQ6LC69Z7UhI7WOfXygH36DCkqUZqSr6AB/A8gX96oYoxuxboOlegc3Npbh
+ dVu98nazkFFEbvkvmAv3oIWTT3v92+tRWnJsvdM3PtHRzy0JftggZ7Byca49ORk4hJy6
+ rInsc809qsj05DODNJ83TBjrVImyJ+qQ024xgqdg0TW45JBjumofd0GC4FAJwE2HfC+Q
+ q8+QCVY/Ve7PPwbbPvSnzHFUMS7bQhF/H+YlYUbv0CHR+LLkDQ+IW+T4IykP4tFuLrJR
+ WEumbDzp8z/0spIjITYrdg5ZO6FMweF7cI1WYvtL5HT2Q5/f72eIhg6e9xIcNB+W6tJj
+ Gr1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1690280707; x=1690885507;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LicjyZN3b/YUo5rE9Rcv6mrB/LPasqs2dSTgyc7oBvU=;
- b=MVyDlEK89ktJ5x9o26htlsRkNfz7gh0K+2D9aZNHbZ7XqW2UMEhvver8KqTbvb1oC7
- 6vPjZxwrDMEcV8QwwzJBHWXyE4uOCquR7Z/iRmssdkHwc6M9++yQ2+NaWr5vuUWJtRmC
- MB6dLtowuuHfiqAWuDGKOZ41Q74P/uRoLiVLbkStTwizx5C+0MYBKuiyuQfgxGtEIxXa
- UBac25QvchTpgXZd/YJydSlNCOUwFArFAqKX6hCQUFPk0CjGUPNrsZSGEwQaAOV7nL5K
- u0XApK3wTKo7dzbAJdlp6wB27aM3FkQTTCPPDHs/4KhYyQW/SFc0FcXOUrliiSFriHq4
- APrQ==
-X-Gm-Message-State: ABy/qLYPWzNKasjJ9qixQPIX3rwjEGJuatnU+W4NJLrReVbdPIUofZIp
- YeDL4UQaIABUY4675D9vCeVksn/Wn0+5/BsUTc8=
-X-Google-Smtp-Source: APBJJlFlcM0awL6uLv7XbsPrWdV4ht5R8RwSXx5sF7xvVC0A5kbian6Ur/yoKcKImqnvp8MwyL8CTw==
-X-Received: by 2002:a1c:6a13:0:b0:3fb:b3aa:1c8a with SMTP id
- f19-20020a1c6a13000000b003fbb3aa1c8amr9888741wmc.16.1690280706906; 
- Tue, 25 Jul 2023 03:25:06 -0700 (PDT)
+ bh=9C6PfLlU2O818ZwPOAqAi3d27sGlX9QQgbc+eDlrhGY=;
+ b=Vl5IVPUrGbYT2NH8xku2yuTPBU4UlvnZ6fJYbaaHLoBMKhBswRVGH/DZiy7lNyRJyb
+ 4W4G8g6+SXfCt+FsXUZiR/llCB8jv79tpJzoiGvTZlSTXhabO7ZI/ufob7LTmKm+VLuC
+ tSoH2+RypdYnJkB1JRLtu7w/N0YjPoQmwfUF+dor0xEUuFxEHDx2MNCd6FAhqX2IajZe
+ JAczkh8wJqUvJ/9IZqUxX2WNoF+JKQHq+O5O5GHhoogUO4qKKchMG2OzkKc5K+BnoSzQ
+ 09RMfE2jtNfSMkTzM4KGlbTuGYQnBgpw6RIMIAnzOSF6i7VRxrvAsRca5JPKYq02wupt
+ yrTA==
+X-Gm-Message-State: ABy/qLbUXCWb6svoBNpVkmvCJS7EatPH+ENJPk8YDL7++buMuoJk6tWf
+ BODGKxQO58QAxf7w8F0JXJSbR8qOJrfOdGNK4AY=
+X-Google-Smtp-Source: APBJJlG87V9qTXpiUgCWGQUkMym1NMqm9BEwWvWpC4PQMeFmqJtF/X73wkebg3z4WkyqhtT+X0C5UQ==
+X-Received: by 2002:a05:600c:40c:b0:3fb:dd9c:72d2 with SMTP id
+ q12-20020a05600c040c00b003fbdd9c72d2mr10012662wmb.31.1690280707298; 
+ Tue, 25 Jul 2023 03:25:07 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  u19-20020a05600c211300b003fbc30825fbsm12567185wml.39.2023.07.25.03.25.06
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 25 Jul 2023 03:25:06 -0700 (PDT)
+ Tue, 25 Jul 2023 03:25:07 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 4/5] For curses display, recognize a few more control keys
-Date: Tue, 25 Jul 2023 11:25:02 +0100
-Message-Id: <20230725102503.2283907-5-peter.maydell@linaro.org>
+Subject: [PULL 5/5] tests/decode: Suppress "error: " string for
+ expected-failure tests
+Date: Tue, 25 Jul 2023 11:25:03 +0100
+Message-Id: <20230725102503.2283907-6-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230725102503.2283907-1-peter.maydell@linaro.org>
 References: <20230725102503.2283907-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,38 +92,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Sean Estabrooks <sean.estabrooks@gmail.com>
+The "expected failure" tests for decodetree result in the
+error messages from decodetree ending up in logs and in
+V=1 output:
 
-The curses display handles most control-X keys, and translates
-them into their corresponding keycode.  Here we recognize
-a few that are missing, Ctrl-@ (null), Ctrl-\ (backslash),
-Ctrl-] (right bracket), Ctrl-^ (caret), Ctrl-_ (underscore).
+>>> MALLOC_PERTURB_=226 /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86/pyvenv/bin/python3 /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/scripts/decodetree.py --output-null --test-for-error /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86/../../tests/decode/err_argset1.decode
+――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― ✀  ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86/../../tests/decode/err_argset1.decode:5: error: duplicate argument "a"
+―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+ 1/44 qemu:decodetree / err_argset1                OK              0.05s
 
-Signed-off-by: Sean Estabrooks <sean.estabrooks@gmail.com>
-Message-id: CAHyVn3Bh9CRgDuOmf7G7Ngwamu8d4cVozAcB2i4ymnnggBXNmg@mail.gmail.com
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+This then produces false positives when scanning the
+logfiles for strings like "error: ".
+
+For the expected-failure tests, make decodetree print
+"detected:" instead of "error:".
+
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20230720131521.1325905-1-peter.maydell@linaro.org
 ---
- ui/curses_keys.h | 6 ++++++
- 1 file changed, 6 insertions(+)
+ scripts/decodetree.py | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/ui/curses_keys.h b/ui/curses_keys.h
-index 71e04acdc75..88a2208ed18 100644
---- a/ui/curses_keys.h
-+++ b/ui/curses_keys.h
-@@ -210,6 +210,12 @@ static const int _curses2keycode[CURSES_CHARS] = {
-     ['N' - '@'] = 49 | CNTRL, /* Control + n */
-     /* Control + m collides with the keycode for Enter */
+diff --git a/scripts/decodetree.py b/scripts/decodetree.py
+index a8a6cb69cda..e8b72da3a97 100644
+--- a/scripts/decodetree.py
++++ b/scripts/decodetree.py
+@@ -134,6 +134,10 @@ def error_with_file(file, lineno, *args):
+     global output_file
+     global output_fd
  
-+    ['@' - '@']  =  3 | CNTRL, /* Control + @ */
-+    /* Control + [ collides with the keycode for Escape */
-+    ['\\' - '@'] = 43 | CNTRL, /* Control + Backslash */
-+    [']' - '@']  = 27 | CNTRL, /* Control + ] */
-+    ['^' - '@']  =  7 | CNTRL, /* Control + ^ */
-+    ['_' - '@']  = 12 | CNTRL, /* Control + Underscore */
- };
++    # For the test suite expected-errors case, don't print the
++    # string "error: ", so they don't turn up as false positives
++    # if you grep the meson logs for strings like that.
++    end = 'error: ' if not testforerror else 'detected: '
+     prefix = ''
+     if file:
+         prefix += f'{file}:'
+@@ -141,7 +145,7 @@ def error_with_file(file, lineno, *args):
+         prefix += f'{lineno}:'
+     if prefix:
+         prefix += ' '
+-    print(prefix, end='error: ', file=sys.stderr)
++    print(prefix, end=end, file=sys.stderr)
+     print(*args, file=sys.stderr)
  
- static const int _curseskey2keycode[CURSES_KEYS] = {
+     if output_file and output_fd:
 -- 
 2.34.1
 
