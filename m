@@ -2,74 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1A617619AD
+	by mail.lfdr.de (Postfix) with ESMTPS id 063377619AB
 	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 15:19:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOHvl-0002Pg-9t; Tue, 25 Jul 2023 09:18:25 -0400
+	id 1qOHvn-0002QD-1G; Tue, 25 Jul 2023 09:18:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hongmianquan@bytedance.com>)
- id 1qOG60-0005PX-SU
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 07:20:53 -0400
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <hongmianquan@bytedance.com>)
- id 1qOG5x-0004A5-Gj
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 07:20:52 -0400
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-1bbc2e1c6b2so1477305ad.3
- for <qemu-devel@nongnu.org>; Tue, 25 Jul 2023 04:20:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1690284043; x=1690888843;
- h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=broNGonemM+rDaH5unXMoBs7zFx3WjEl12fq4zi9yeU=;
- b=OYzi5MHmVRWnoAdnfkmG0ZeQKqqm6yyergRQLyl9nWyI0oCNqBbCDBWTWI6qP5BkXD
- KHykyJB1GrKazaDNruA7uNVeV4d7DcpXvjdGbt/HsibXZC7fnJdFPkkUxFC2c5+HydNO
- iKMN2gfaqpSDp5embA3yrEz8d3FUM0MUaav53qmKWpmhEs+gXH4lsOhy9gBqUBaRM/kp
- nCkygLkvwIBwFp+J5X+J1mDycOQMzQgRd6xx5ceHBdzEGuLQFvK4PYf1s8UJZjdjL70t
- /4N1wnFGE8SqxwEbuVEjlANn76gaAw646r4vbMG6oZ22WYbViPIF6ohm8rdWqhQcwmuy
- f3mQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690284043; x=1690888843;
- h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=broNGonemM+rDaH5unXMoBs7zFx3WjEl12fq4zi9yeU=;
- b=NHBqe9x0D9uXB6lClKx1vXpmEe2clHApVyNS12ITr/OUb5DmQHQ/SP1LsKEi30EOfD
- EgeXcAEAjyyTbpQZ0pchBBc25mtkyWpYrMV+FOOnConjxaFsd09GzpgQ/w+Ok4syGQyd
- dKvwS3Vm47/YQGE3dCDD06fMQe/hb1P7/xJqPAeSmNEIWshgA7b3Zs4Frrroeb+I7INZ
- cHM7CY28/bj+Hs5kVwAnXPox9mfTsoyZHDXdgYb1ZPhO812BBNSf+lk6mutC9XAkuJOD
- flEhj3etWuJtpQeFOxFZX734wMfbbRi7G2sdgsZIeSDp+2By0PugFaQcUf8x2uFFqrD6
- emsg==
-X-Gm-Message-State: ABy/qLYyZPy9oBZ0ZCZyDof6xCCEJGvfyQfW7IpU3RpKOL/t3D2oE+Cx
- n+QdEeRKb2kkvE8fhf2XieSh3gUd2hKHa5GeS9g=
-X-Google-Smtp-Source: APBJJlFFxVM6kAYKd1/AGWW5GE/DdZFwi2t12NWEs+Iw4MZuMwYWBxbe3n+2NGbcdi32VaJ8krO6Lw==
-X-Received: by 2002:a17:902:b20e:b0:1b6:8a99:4979 with SMTP id
- t14-20020a170902b20e00b001b68a994979mr8629782plr.22.1690284042889; 
- Tue, 25 Jul 2023 04:20:42 -0700 (PDT)
-Received: from n149-064-218.byted.org ([106.38.226.215])
- by smtp.gmail.com with ESMTPSA id
- p23-20020a1709028a9700b001b7f9963febsm10688550plo.175.2023.07.25.04.20.40
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Tue, 25 Jul 2023 04:20:41 -0700 (PDT)
-From: hongmianquan <hongmianquan@bytedance.com>
-To: qemu-devel@nongnu.org
-Cc: peterx@redhat.com, philmd@linaro.org, david@redhat.com,
- hongmianquan <hongmianquan@bytedance.com>
-Subject: [PATCH] memory: avoid updating ioeventfds for some address_space
-Date: Tue, 25 Jul 2023 19:20:37 +0800
-Message-Id: <20230725112037.1762608-1-hongmianquan@bytedance.com>
-X-Mailer: git-send-email 2.11.0
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=hongmianquan@bytedance.com; helo=mail-pl1-x62a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+ (Exim 4.90_1) (envelope-from <Gautam.Menghani@linux.ibm.com>)
+ id 1qOGPc-0003AV-O7; Tue, 25 Jul 2023 07:41:09 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <Gautam.Menghani@linux.ibm.com>)
+ id 1qOGPX-0008S8-Q5; Tue, 25 Jul 2023 07:41:07 -0400
+Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 36PBdGWA004270; Tue, 25 Jul 2023 11:40:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pp1; bh=RzoOkCAviU5sADUQwg/ZalFA9GQ7TH32hEjwN9XXz6Q=;
+ b=OmfTkDk24/6WWgp8QiqkxZPPLGSgFnhhuk7bhOQHlWwP6dBTP0TpVKdVjH3ThEU6kCXV
+ YE+sm02L6BaPXzrzB5EHVgSYNwrJ8akyfXd5tJzugr6f/qTo23cdeeC0fEIn1tLD1KNg
+ hACZ6FtNSUpqCRxL1qzqjA0+IRFy+AHlgtlHsbzyN10QmLeVOESCN3dLUSXlwLc/zpuM
+ 5RArfaqODhmN8IyO3eN21XBr7ahQqGbEQfO8/4BvioNdN+IuTgbaOLbNwWfNRwTUQE9v
+ fZwyQGfxPeSrI1VUmxCtZEhy0RfXwF8Jw5d6aKaJQYC+TdGyatk9VgsexE/XbAM1b10/ oQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s2batbsad-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 25 Jul 2023 11:40:52 +0000
+Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36PBdrpA005719;
+ Tue, 25 Jul 2023 11:40:51 GMT
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s2batbsa4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 25 Jul 2023 11:40:51 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 36PAxHoP002059; Tue, 25 Jul 2023 11:40:50 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3s0temujwm-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 25 Jul 2023 11:40:50 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
+ [10.20.54.102])
+ by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 36PBelCE35127638
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 25 Jul 2023 11:40:47 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3FACF20043;
+ Tue, 25 Jul 2023 11:40:47 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 25D4420040;
+ Tue, 25 Jul 2023 11:40:45 +0000 (GMT)
+Received: from li-c6426e4c-27cf-11b2-a85c-95d65bc0de0e.ibm.com (unknown
+ [9.204.206.66])
+ by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+ Tue, 25 Jul 2023 11:40:44 +0000 (GMT)
+Date: Tue, 25 Jul 2023 17:10:37 +0530
+From: Gautam Menghani <Gautam.Menghani@linux.ibm.com>
+To: Greg Kurz <groug@kaod.org>
+Cc: Gautam Menghani <gautam@linux.ibm.com>, danielhb413@gmail.com,
+ harshpb@linux.ibm.com, clg@kaod.org, david@gibson.dropbear.id.au,
+ qemu-ppc@nongnu.org, qemu-devel@nongnu.org, fbarrat@linux.ibm.com
+Subject: Re: [PATCH] ppc: spapr: Fix device tree entries in absence of XIVE
+ native mode
+Message-ID: <5qjfrlq4n7unowongoda3evmhmo5ivj6blmubwluwj5cfng4ju@z5ihjx5aheh4>
+References: <20230630053056.14933-1-gautam@linux.ibm.com>
+ <20230630085112.16d77032@bahia>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230630085112.16d77032@bahia>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 9pVd8Ng_WUUu141QTpsaAvgrOMPbx_1j
+X-Proofpoint-GUID: 8g3xHVjxfee5JVg0jSW3XGs1wtqO1ZHM
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-25_06,2023-07-25_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0
+ mlxlogscore=782 impostorscore=0 clxscore=1011 suspectscore=0
+ priorityscore=1501 spamscore=0 adultscore=0 bulkscore=0 mlxscore=0
+ lowpriorityscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2306200000 definitions=main-2307250101
+Received-SPF: pass client-ip=148.163.156.1;
+ envelope-from=Gautam.Menghani@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-Mailman-Approved-At: Tue, 25 Jul 2023 09:18:23 -0400
@@ -87,71 +115,8 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When updating ioeventfds, we need to iterate all address spaces,
-but some address spaces do not register eventfd_add|del call when
-memory_listener_register() and they do nothing when updating ioeventfds.
-So we can skip these AS in address_space_update_ioeventfds().
+Ok noted, thanks for the feedback Greg and Cedric.
 
-The overhead of memory_region_transaction_commit() can be significantly
-reduced. For example, a VM with 8 vhost net devices and each one has
-64 vectors, can reduce the time spent on memory_region_transaction_commit by 20%.
-
-Signed-off-by: hongmianquan <hongmianquan@bytedance.com>
----
- include/exec/memory.h |  1 +
- softmmu/memory.c      | 12 ++++++++++++
- 2 files changed, 13 insertions(+)
-
-diff --git a/include/exec/memory.h b/include/exec/memory.h
-index 7f5c11a0cc..556f4f1871 100644
---- a/include/exec/memory.h
-+++ b/include/exec/memory.h
-@@ -1089,6 +1089,7 @@ struct AddressSpace {
-     struct FlatView *current_map;
- 
-     int ioeventfd_nb;
-+    int ioeventfd_notifiers;
-     struct MemoryRegionIoeventfd *ioeventfds;
-     QTAILQ_HEAD(, MemoryListener) listeners;
-     QTAILQ_ENTRY(AddressSpace) address_spaces_link;
-diff --git a/softmmu/memory.c b/softmmu/memory.c
-index 7d9494ce70..178816c845 100644
---- a/softmmu/memory.c
-+++ b/softmmu/memory.c
-@@ -842,6 +842,10 @@ static void address_space_update_ioeventfds(AddressSpace *as)
-     AddrRange tmp;
-     unsigned i;
- 
-+    if (!as->ioeventfd_notifiers) {
-+        return;
-+    }
-+
-     /*
-      * It is likely that the number of ioeventfds hasn't changed much, so use
-      * the previous size as the starting value, with some headroom to avoid
-@@ -3075,6 +3079,10 @@ void memory_listener_register(MemoryListener *listener, AddressSpace *as)
-     }
- 
-     listener_add_address_space(listener, as);
-+
-+    if (listener->eventfd_add || listener->eventfd_del) {
-+        as->ioeventfd_notifiers++;
-+    }
- }
- 
- void memory_listener_unregister(MemoryListener *listener)
-@@ -3083,6 +3091,10 @@ void memory_listener_unregister(MemoryListener *listener)
-         return;
-     }
- 
-+    if (listener->eventfd_add || listener->eventfd_del) {
-+        listener->address_space->ioeventfd_notifiers--;
-+    }
-+
-     listener_del_address_space(listener, listener->address_space);
-     QTAILQ_REMOVE(&memory_listeners, listener, link);
-     QTAILQ_REMOVE(&listener->address_space->listeners, listener, link_as);
--- 
-2.11.0
-
+Thanks,
+Gautam
 
