@@ -2,86 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE9C67621CE
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 20:55:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF78F7621F8
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 21:02:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qONAS-0000gE-Pt; Tue, 25 Jul 2023 14:53:57 -0400
+	id 1qONHX-0003oj-Va; Tue, 25 Jul 2023 15:01:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qONAO-0000fx-91
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 14:53:52 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qONAM-0003No-EF
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 14:53:52 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1b8b4749013so46132665ad.2
- for <qemu-devel@nongnu.org>; Tue, 25 Jul 2023 11:53:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690311229; x=1690916029;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=sM8eErB49cPlDrp47Ve0ECL7DJit+f901dESu73Cu1c=;
- b=vCCREaeqlBCA6NonYmW4TxSKYskAC8Sx0ekE5sTv92w3OxZELg3w+JZOd/O2zx9p8o
- e7lWWOFFWAV3D+fnXGnOtZREPsF8Eq1oLc8nntexeHguuTvuqYOJUBITrOu8iNiA1/M7
- ZUptvFT6RZs3+Ntegtl1/YJGiRJ7Rc0fEmdgIV2WF/mYjuaiOy6XdeOuZOH1pMb0SSZL
- UNMjb4VcGq89vl0cEamMSDyDq4uySPFh40Gn0zWcls58vsjOW1RBCf9ZN/by0w7tlVij
- TaN/CCAOsxLHNKtUpPUtXibrcwDsACZOZB2qVa5s+EDNG0x9LgxpBUX1wPMZOQAoGHI5
- 1A7Q==
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qONHW-0003ic-5A
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 15:01:14 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qONHU-0005ar-L3
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 15:01:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1690311671;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=FrdzgtWgbiw64lZLdsOue6c32PJ3KvDczaqjN7K60WM=;
+ b=cgqxErdZZl7wDS5+LbNF3mbQG0LQvlsXBt/4txwY2vjHZkdjj01hrYYNHWnFaQQTSZw+e7
+ kqmA8Os6IufUYwvei5aaWFSnfVbnpV1a+eKLL88zT3VUB4neWFlXfvZckHCW22dQ370IWN
+ hvTnERW5xGsCrflgcX34wBMlQqBpJOY=
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
+ [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-101-jOh_49W0Pyyp4P-0rdx_PA-1; Tue, 25 Jul 2023 15:01:08 -0400
+X-MC-Unique: jOh_49W0Pyyp4P-0rdx_PA-1
+Received: by mail-pj1-f70.google.com with SMTP id
+ 98e67ed59e1d1-2683548c37cso725883a91.2
+ for <qemu-devel@nongnu.org>; Tue, 25 Jul 2023 12:01:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690311229; x=1690916029;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=sM8eErB49cPlDrp47Ve0ECL7DJit+f901dESu73Cu1c=;
- b=hjqDQ8K/h69zq2rsOUzd1gEEYdV3urZnr5vQTiJP9VaSY0ROR05QOme0KgWL+ZGEUR
- +fRn/vFAg8fypX5pPOBzxTrTODQyrspqlbyA3HRNEBgNSFLVlEUcI8C3Xblg0U5tZ+k3
- wOorU7aZ9JXf3ltybEBF/Q4+xB9Vt4pDb0oUHaFeyRvfgokvrtcOLYEQFnf8MKnPDQsA
- PSvLh70A/SGsKWddRRVBTHydZj+xRJ0+KTZ7CSoe2V56/H2kM40AR3c8zFn5TihsXBvE
- ZoRh8a/9uGFtFhI8CK8481Ihb1mpOUUiOSH0vdswWxcpABlH2SY+8hJtzeXBtKS91zBy
- QCFA==
-X-Gm-Message-State: ABy/qLbyLtEjlnWGvNvCiVG26YGcKYEsA+gmNj+zGmT0Jtx/7gR9u8BT
- n3/+Gwnhd73Frh1NMBzdw2Lrdw==
-X-Google-Smtp-Source: APBJJlH37UF2Wrva0JX5y3VY9zX8XvmWv+1zDMTwRKosbfVgUgMOeYeBHlW1/sYz36zhph/sJfM0lA==
-X-Received: by 2002:a17:902:d487:b0:1b6:68bb:6ad0 with SMTP id
- c7-20020a170902d48700b001b668bb6ad0mr18372plg.55.1690311228703; 
- Tue, 25 Jul 2023 11:53:48 -0700 (PDT)
-Received: from ?IPV6:2602:ae:1598:4c01:a083:fa5e:b91b:bcc6?
- ([2602:ae:1598:4c01:a083:fa5e:b91b:bcc6])
- by smtp.gmail.com with ESMTPSA id
- o10-20020a170902bcca00b001b850c9af71sm11346276pls.285.2023.07.25.11.53.47
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 25 Jul 2023 11:53:48 -0700 (PDT)
-Message-ID: <9fc36ebe-6ec4-23dd-bbb6-5333905f7d2f@linaro.org>
-Date: Tue, 25 Jul 2023 11:53:46 -0700
+ d=1e100.net; s=20221208; t=1690311668; x=1690916468;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=FrdzgtWgbiw64lZLdsOue6c32PJ3KvDczaqjN7K60WM=;
+ b=mIPkRU4fngYV767XIACcCVQKRH6EDAKyH09FYfYORcI3FUSlWdYAPELAq0VV4KrGyK
+ HOCQJd8KPCIEcz0baPgBAt9F2JStB8sz8ePTKhYw/otAq8VybPXBijC4D2sMV2Xpbo+W
+ o3DtXbUOsYiKGP7Wi/YHZrDyfILX7/VoNkHQAOkXQ+Z7NaPe/zY6TAnxl6myi6gTuxvr
+ Yj/73AvO11N60lvaJetSm/vqrB7iuPCHLWE7M+4y1WbGh5UNXFnr300caJFasbq4p1kd
+ VDESwkJ4YxDgFng9dSGzkKa1XLQKWNut/ic3gT5J/7Aggm9wiQqnCmjtmcTjagZfLVZ9
+ OGHg==
+X-Gm-Message-State: ABy/qLazcbOkchnNcO7y2kFpYCOq2LRqKHT3D+CmWx/nKFcfT7jRPh8h
+ +FCqC/BeR1s1xScn0NDrpODnp1Mz+gugqyapoEZ097t0lTsiaDwdtR/0RhXFpwu8R0IBrwtS95Y
+ o8pcOyfrxVFnigAprnNFqSOX/Aw11nps=
+X-Received: by 2002:a17:90a:d983:b0:262:ebfd:ce44 with SMTP id
+ d3-20020a17090ad98300b00262ebfdce44mr37435pjv.34.1690311667905; 
+ Tue, 25 Jul 2023 12:01:07 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlGKVOgtvV1jZlxKZOMTQG65umMLJS4LaVpFYO4S8BN77odx+AsiV8dCYNpp2TuzEG0zhk26v3ti5o9bdaPkoKo=
+X-Received: by 2002:a17:90a:d983:b0:262:ebfd:ce44 with SMTP id
+ d3-20020a17090ad98300b00262ebfdce44mr37419pjv.34.1690311667625; Tue, 25 Jul
+ 2023 12:01:07 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [RFC] risc-v vector (RVV) emulation performance issues
-Content-Language: en-US
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+References: <20230609140844.202795-1-nks@flawful.org>
+ <ZLe/VG5d6TEdp/MT@x1-carbon>
+ <b58779ed-cecb-824b-019e-bc34e6b2258a@linaro.org>
+In-Reply-To: <b58779ed-cecb-824b-019e-bc34e6b2258a@linaro.org>
+From: John Snow <jsnow@redhat.com>
+Date: Tue, 25 Jul 2023 15:00:56 -0400
+Message-ID: <CAFn=p-Y4Tw0eY=8yXxnzSA3kzwb36H0oysag=HD_8eMsPNwuDg@mail.gmail.com>
+Subject: Re: [PATCH v3 0/8] misc AHCI cleanups
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: Niklas Cassel <Niklas.Cassel@wdc.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>, "qemu-block@nongnu.org" <qemu-block@nongnu.org>,
  "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "open list:RISC-V" <qemu-riscv@nongnu.org>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>, Jeff Law <jlaw@ventanamicro.com>,
- Alistair Francis <alistair.francis@wdc.com>
-References: <0e54c6c1-2903-7942-eff2-2b8c5e21187e@ventanamicro.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <0e54c6c1-2903-7942-eff2-2b8c5e21187e@ventanamicro.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+ Damien Le Moal <dlemoal@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,98 +97,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/24/23 06:40, Daniel Henrique Barboza wrote:
-> Hi,
-> 
-> As some of you are already aware the current RVV emulation could be faster.
-> We have at least one commit (bc0ec52eb2, "target/riscv/vector_helper.c:
-> skip set tail when vta is zero") that tried to address at least part of the
-> problem.
-> 
-> Running a simple program like this:
-> 
-> -------
-> 
-> #define SZ 10000000
-> 
-> int main ()
-> {
->    int *a = malloc (SZ * sizeof (int));
->    int *b = malloc (SZ * sizeof (int));
->    int *c = malloc (SZ * sizeof (int));
-> 
->    for (int i = 0; i < SZ; i++)
->      c[i] = a[i] + b[i];
->    return c[SZ - 1];
-> }
-> 
-> -------
-> 
-> And then compiling it without RVV support will run in 50 milis or so:
-> 
-> $ time ~/work/qemu/build/qemu-riscv64 -cpu rv64,debug=false,vext_spec=v1.0,v=true,vlen=128 
-> ./foo-novect.out
-> 
-> real    0m0.043s
-> user    0m0.025s
-> sys    0m0.018s
-> 
-> Building the same program with RVV support slows it 4-5 times:
-> 
-> $ time ~/work/qemu/build/qemu-riscv64 -cpu 
-> rv64,debug=false,vext_spec=v1.0,v=true,vlen=1024 ./foo.out
-> 
-> real    0m0.196s
-> user    0m0.177s
-> sys    0m0.018s
-> 
-> Using the lowest 'vlen' val allowed (128) will slow down things even further, taking it to
-> ~0.260s.
-> 
-> 
-> 'perf record' shows the following profile on the aforementioned binary:
-> 
->    23.27%  qemu-riscv64  qemu-riscv64             [.] do_ld4_mmu
->    21.11%  qemu-riscv64  qemu-riscv64             [.] vext_ldst_us
->    14.05%  qemu-riscv64  qemu-riscv64             [.] cpu_ldl_le_data_ra
->    11.51%  qemu-riscv64  qemu-riscv64             [.] cpu_stl_le_data_ra
->     8.18%  qemu-riscv64  qemu-riscv64             [.] cpu_mmu_lookup
->     8.04%  qemu-riscv64  qemu-riscv64             [.] do_st4_mmu
->     2.04%  qemu-riscv64  qemu-riscv64             [.] ste_w
->     1.15%  qemu-riscv64  qemu-riscv64             [.] lde_w
->     1.02%  qemu-riscv64  [unknown]                [k] 0xffffffffb3001260
->     0.90%  qemu-riscv64  qemu-riscv64             [.] cpu_get_tb_cpu_state
->     0.64%  qemu-riscv64  qemu-riscv64             [.] tb_lookup
->     0.64%  qemu-riscv64  qemu-riscv64             [.] riscv_cpu_mmu_index
->     0.39%  qemu-riscv64  qemu-riscv64             [.] object_dynamic_cast_assert
-> 
-> 
-> First thing that caught my attention is vext_ldst_us from target/riscv/vector_helper.c:
-> 
->      /* load bytes from guest memory */
->      for (i = env->vstart; i < evl; i++, env->vstart++) {
->          k = 0;
->          while (k < nf) {
->              target_ulong addr = base + ((i * nf + k) << log2_esz);
->              ldst_elem(env, adjust_addr(env, addr), i + k * max_elems, vd, ra);
->              k++;
->          }
->      }
->      env->vstart = 0;
-> 
-> Given that this is a unit-stride load that access contiguous elements in memory it
-> seems that this loop could be optimized/removed since it's loading/storing bytes
-> one by one. I didn't find any TCG op to do that though. I assume that ARM SVE might
-> have something of the sorts. Richard, care to comment?
+On Tue, Jul 25, 2023 at 9:04=E2=80=AFAM Philippe Mathieu-Daud=C3=A9
+<philmd@linaro.org> wrote:
+>
+> Hi Niklas, John, Paolo, Kevin,
+>
+> On 19/7/23 12:47, Niklas Cassel wrote:
+>
+> >> Niklas Cassel (8):
+> >>    hw/ide/ahci: remove stray backslash
+> >>    hw/ide/core: set ERR_STAT in unsupported command completion
+> >>    hw/ide/ahci: write D2H FIS when processing NCQ command
+> >>    hw/ide/ahci: simplify and document PxCI handling
+> >>    hw/ide/ahci: PxSACT and PxCI is cleared when PxCMD.ST is cleared
+> >>    hw/ide/ahci: PxCI should not get cleared when ERR_STAT is set
+> >>    hw/ide/ahci: fix ahci_write_fis_sdb()
+> >>    hw/ide/ahci: fix broken SError handling
+> >>
+> >>   hw/ide/ahci.c             | 112 +++++++++++++++++++++++++++---------=
+--
+> >>   hw/ide/core.c             |   2 +-
+> >>   tests/qtest/libqos/ahci.c | 106 +++++++++++++++++++++++++++---------
+> >>   tests/qtest/libqos/ahci.h |   8 +--
+> >>   4 files changed, 164 insertions(+), 64 deletions(-)
+> >>
+> >> --
+> >> 2.40.1
+> >>
+> >>
+> >
+> > Hello Philippe,
+> >
+> > Considering that you picked up my patch,
+> > "hw/ide/ahci: remove stray backslash" (patch 1/8 in this series),
+> > and since John seems to have gone silent for 40+ days,
+> > could you please consider taking this series through your misc tree?
+>
 
-Yes, SVE optimizes this case -- see
+40 days, ouch. I kept thinking it had been a week. Don't trust me with time=
+.
 
-https://gitlab.com/qemu-project/qemu/-/blob/master/target/arm/tcg/sve_helper.c?ref_type=heads#L5651
+> (First patch was a cleanup)
+>
+> Niklas, I don't feel confident enough :/
+>
+> John, Paolo, Kevin, do you Ack?
+>
+> Regards,
+>
+> Phil.
 
-It's not possible to do this generically, due to the predication. There's quite a lot of 
-machinery that goes into expanding this such that each helper uses the correct host 
-load/store insn in the fast case.
+I'm staging it, but it's for next release. We'll get it in early and
+it gives us a chance to fix anything that's amiss before the next RC
+window.
 
-
-r~
 
