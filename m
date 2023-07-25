@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60AC47620EB
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 20:05:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B9647620EF
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 20:05:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOMNy-0002hU-87; Tue, 25 Jul 2023 14:03:50 -0400
+	id 1qOMO3-0002st-AV; Tue, 25 Jul 2023 14:03:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qOMNv-0002fl-Ou
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 14:03:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qOMO0-0002pr-V0
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 14:03:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qOMNt-000137-12
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 14:03:47 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qOMNv-00014M-19
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 14:03:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690308223;
+ s=mimecast20190719; t=1690308226;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ZQEjaImajQCAJb63at6vX9mIrvur84gIvRAOOVxPJco=;
- b=fFpxv2v4UZ8Z1jhwGouGczo02G1KKb+oQ6TDkw30jVmHjNtyT8yyLjoeijmz7kM4/z0wd/
- VaxPoW4zdDEw537RwJNHnPlV3dSN0/Ip1dzIo/gYezF2aUSztuHHaeIyRzqEVpGoyNG+L9
- gWIeVgLSBB8RPWz+quA93NMXE9fkN0Y=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-198-_dPqLpDvMYSj9nqYIl4GGQ-1; Tue, 25 Jul 2023 14:03:40 -0400
-X-MC-Unique: _dPqLpDvMYSj9nqYIl4GGQ-1
+ bh=73xGUTo0c+CFrR+eQPfzhiurmcItqlpOVDJXDCWMDfY=;
+ b=EUxtJEAVGz73EFOlRqN6lCxsOssfhI59lFCrry24A0sVn1/DQN93DwP87CTSAa0/1T3p2r
+ crCpDMtwgp4XmT63mSvskm1CtabKfjfMfWovhbcSHkSMiGfmpwgu0F3YaUg6lqW9aiVtMw
+ 7cT69pbW+RwOK+VL1ZVz1cGAAD+XTYo=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-249-26lMDEY0MN2ChhVuVYL3LQ-1; Tue, 25 Jul 2023 14:03:40 -0400
+X-MC-Unique: 26lMDEY0MN2ChhVuVYL3LQ-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
  [10.11.54.7])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 74B753C11A06;
- Tue, 25 Jul 2023 18:03:39 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 24290856F66;
+ Tue, 25 Jul 2023 18:03:40 +0000 (UTC)
 Received: from scv.redhat.com (unknown [10.22.8.145])
- by smtp.corp.redhat.com (Postfix) with ESMTP id D17C41454150;
- Tue, 25 Jul 2023 18:03:38 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 825BC1454153;
+ Tue, 25 Jul 2023 18:03:39 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
@@ -52,16 +52,15 @@ Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Beraldo Leal <bleal@redhat.com>, Daniel Berrange <berrange@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  "Michael S. Tsirkin" <mst@redhat.com>, John Snow <jsnow@redhat.com>
-Subject: [PATCH v2 1/6] python/machine: move socket setup out of _base_args
- property
-Date: Tue, 25 Jul 2023 14:03:32 -0400
-Message-ID: <20230725180337.2937292-2-jsnow@redhat.com>
+Subject: [PATCH v2 2/6] python/machine: close sock_pair in cleanup path
+Date: Tue, 25 Jul 2023 14:03:33 -0400
+Message-ID: <20230725180337.2937292-3-jsnow@redhat.com>
 In-Reply-To: <20230725180337.2937292-1-jsnow@redhat.com>
 References: <20230725180337.2937292-1-jsnow@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -86,37 +85,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This property isn't meant to do much else besides return a list of
-strings, so move this setup back out into _pre_launch().
+If everything has gone smoothly, we'll already have closed the socket we
+gave to the child during post_launch. The other half of the pair that we
+gave to the QMP connection should, likewise, be definitively closed by
+now.
+
+However, in the cleanup path, it's possible we've created the socketpair
+but flubbed the launch and need to clean up resources. These resources
+*would* be handled by the garbage collector, but that can happen at
+unpredictable times. Nicer to just clean them up synchronously on the
+exit path, here.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- python/qemu/machine/machine.py | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ python/qemu/machine/machine.py | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/python/qemu/machine/machine.py b/python/qemu/machine/machine.py
-index c16a0b6fed..8be0f684fe 100644
+index 8be0f684fe..26f0fb8a81 100644
 --- a/python/qemu/machine/machine.py
 +++ b/python/qemu/machine/machine.py
-@@ -300,9 +300,7 @@ def _base_args(self) -> List[str]:
+@@ -395,6 +395,11 @@ def _post_shutdown(self) -> None:
+         finally:
+             assert self._qmp_connection is None
  
-         if self._qmp_set:
-             if self._sock_pair:
--                fd = self._sock_pair[0].fileno()
--                os.set_inheritable(fd, True)
--                moncdev = f"socket,id=mon,fd={fd}"
-+                moncdev = f"socket,id=mon,fd={self._sock_pair[0].fileno()}"
-             elif isinstance(self._monitor_address, tuple):
-                 moncdev = "socket,id=mon,host={},port={}".format(
-                     *self._monitor_address
-@@ -339,6 +337,7 @@ def _pre_launch(self) -> None:
-         if self._qmp_set:
-             if self._monitor_address is None:
-                 self._sock_pair = socket.socketpair()
-+                os.set_inheritable(self._sock_pair[0].fileno(), True)
-                 sock = self._sock_pair[1]
-             if isinstance(self._monitor_address, str):
-                 self._remove_files.append(self._monitor_address)
++        if self._sock_pair:
++            self._sock_pair[0].close()
++            self._sock_pair[1].close()
++            self._sock_pair = None
++
+         self._close_qemu_log_file()
+ 
+         self._load_io_log()
 -- 
 2.41.0
 
