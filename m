@@ -2,85 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80859761EAC
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 18:37:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 656B2761EB9
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 18:39:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOL0v-0001Pj-SG; Tue, 25 Jul 2023 12:35:57 -0400
+	id 1qOL3W-0002cC-K5; Tue, 25 Jul 2023 12:38:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qOL0o-0001Ou-Rh
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 12:35:51 -0400
-Received: from mail-ot1-x32e.google.com ([2607:f8b0:4864:20::32e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qOL0j-00066a-Rj
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 12:35:50 -0400
-Received: by mail-ot1-x32e.google.com with SMTP id
- 46e09a7af769-6bc481fe23eso625001a34.0
- for <qemu-devel@nongnu.org>; Tue, 25 Jul 2023 09:35:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1690302928; x=1690907728;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=j1zn/9mZBEEPMZ3SvwwpvL0Ph7iRqIpCjYP1QEBphQc=;
- b=e1twazjp0/qMRNnTvnB9YM13KEt7bqPJlbvxQjiAFAWo8WtYTAP3qF+BRKh7TD7iDk
- WKi802bE4cymQYCrxRB/j2qBqgHPbTna7eAIV8rfdx5Jpc6EBx9zl+zW/Ff1jqGmCSlX
- N/Pyfu8eIqER6jQqHklAvXCGtLY8gdC9ChUv5XGswA9jeLZWDAze4K0NE6u+4aaKEUA+
- vlMoVKirBJ6SU1x6mpvkN6olqUmVCLK8p8Z5ql3BEsLz03Iwe4wg9rlIVBtNMfzgB7Cz
- em3f/GRv5gosLnV3I8IBjQFqudfVQSqeRSkhb9Z1bhRYXEGmt3jaWmwRDq1YXYGWFUrl
- HcTw==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qOL3R-0002ZS-HI
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 12:38:33 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qOL3N-0006ST-73
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 12:38:32 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1690303108;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=IzTnFezmduXy5PxftTjyKolAi1O3STVU3EgCWv/uKnA=;
+ b=eaGZ4sKRaUXtGgPerbcZVQcepS9Wrfojk8vtehLuKHeBboXu4c/eZuCpiBlXEDEIQ0AffV
+ uvXEGUut1c8fp2MUPinmX7gH7WiJSH8Q5pj8wwcdyClBpxqHxldUJ6es+BSoPjGE/ymwRo
+ yfSEm52tjBBN3618z9T6ccQCmOIDMPI=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-614-4bjqmrIcMFyqeH6sqw87VQ-1; Tue, 25 Jul 2023 12:38:26 -0400
+X-MC-Unique: 4bjqmrIcMFyqeH6sqw87VQ-1
+Received: by mail-qk1-f197.google.com with SMTP id
+ af79cd13be357-767c4cc8d84so113530885a.0
+ for <qemu-devel@nongnu.org>; Tue, 25 Jul 2023 09:38:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690302928; x=1690907728;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20221208; t=1690303106; x=1690907906;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=j1zn/9mZBEEPMZ3SvwwpvL0Ph7iRqIpCjYP1QEBphQc=;
- b=gzDhYikPG/tOwO2+Zx2c8DreCMnqk6QKlF2k2rOJRszGZj8CRoB2q48WDg+fJe8NOy
- xQUsO2A/yDYBbILncaV2MJ/MCyKhS/EW4p4nBvaWaY7AXVtS+x+yjaft7Si3bnGDOoOO
- EpT9bb0nHRKjC6qAp3k1Dw2v46ZM6Ce4ysXjJsCF1zsW/wWwJyjkvcSIAWzqFeFeOLCq
- sFBTlwXAYT1FzxAzrgPwHyS3pfSW4stCgc+B0SJcKsYj3y1s45LYxwFXnKg9WyGhZFeT
- vbce52+A1CWWncv4yUqit63ww3vt4Z3v6lfwVaXh8Ct6F5YCu/qTeSvfBSYGqgVyM/sL
- WwVA==
-X-Gm-Message-State: ABy/qLYWU7ldHempwnlsvEnEZTove4TSwIZCQxuJpHtH/5C/531PGqCC
- a3HUPeLtUYucM+KEh3kJ6KnfeQ==
-X-Google-Smtp-Source: APBJJlF0yUUj57hWH9KFX50Gqin4qAY62eeDl7pzUszz6j9MJzFDJP5kc4Jnj86STldIIshcesvCzg==
-X-Received: by 2002:a9d:66c1:0:b0:6b9:8feb:7f1e with SMTP id
- t1-20020a9d66c1000000b006b98feb7f1emr11464058otm.35.1690302927790; 
- Tue, 25 Jul 2023 09:35:27 -0700 (PDT)
-Received: from [192.168.68.108] (201-69-66-36.dial-up.telesp.net.br.
- [201.69.66.36]) by smtp.gmail.com with ESMTPSA id
- k25-20020a0568301bf900b006b8a0c7e14asm5029381otb.55.2023.07.25.09.35.24
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 25 Jul 2023 09:35:27 -0700 (PDT)
-Message-ID: <d06e1004-adac-8c24-167c-c87978340baa@ventanamicro.com>
-Date: Tue, 25 Jul 2023 13:35:22 -0300
+ bh=IzTnFezmduXy5PxftTjyKolAi1O3STVU3EgCWv/uKnA=;
+ b=dFXwCsYe0b921vywPvGzYvLHarNFTdaEebnC2hKFbUJAOTuQss81X7FgiRqsWNt1iG
+ QCW8cTGnTsYCR5egeulsJeYUW9VYSDEO0mVFaluFpgO8X81dBhMfFTvZlENZLAw0korh
+ TY2UqrkqIzE0lF5yY3nj+u1427hY8Q8g//owh8TNsHuYFqhL7rAQyWEErjkRRP1+rbvm
+ f8yRH2oDCWQ/GutoU3PN9RN6rRx+0IA0I3qlhmi1acrqSSx2qeW3pQmQcXLNOFqgz/xz
+ Fg/06lkNPJ1tg1aZUrEd2JqOlQm/Zv6tt+Aufu+e87z+G9SCq4mhMcJnr4q/lubqjpQI
+ kvHA==
+X-Gm-Message-State: ABy/qLZz1To8nI84PAUWkBNxCZQ+vUCx8yJOixj3yhEBa24Z6dF1V2Tm
+ TYreW9ibv1cGLe0aibuWy3OdhrYtUIhcpFbyeMZZCYNIglxXy8VbInAUCB4lnB4oLGi4um52juo
+ WfStM1EJcaWOiAKw=
+X-Received: by 2002:a05:620a:2545:b0:767:e5ae:85cf with SMTP id
+ s5-20020a05620a254500b00767e5ae85cfmr13834666qko.5.1690303106047; 
+ Tue, 25 Jul 2023 09:38:26 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlE2eXsMQ4IAKelzZHWDLgSxEd6x2W9LLAEp8asCeCzFXxGRrEVEpPsyfte0/zm+HXk3QiH4iw==
+X-Received: by 2002:a05:620a:2545:b0:767:e5ae:85cf with SMTP id
+ s5-20020a05620a254500b00767e5ae85cfmr13834649qko.5.1690303105721; 
+ Tue, 25 Jul 2023 09:38:25 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ w11-20020ae9e50b000000b00767721aebc0sm3799658qkf.32.2023.07.25.09.38.24
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 25 Jul 2023 09:38:25 -0700 (PDT)
+Date: Tue, 25 Jul 2023 12:38:23 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, Leonardo Bras Soares Passos <lsoaresp@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Juan Quintela <quintela@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Chensheng Dong <chdong@redhat.com>, Zhiyi Guo <zhguo@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Peter Maydell <peter.maydell@linaro.org>
+Subject: Re: [PATCH] migration: Allow user to specify migration available
+ bandwidth
+Message-ID: <ZL/6f7nNLw+iVHYL@x1n>
+References: <20230724170755.1114519-1-peterx@redhat.com>
+ <ZL69LTVHhNzEjqGM@redhat.com> <ZL7VZsaFxkIq4+cP@x1n>
+ <ZL+TBBtL+RiMrOXJ@redhat.com> <ZL/wTBP/7ZdM9Xd4@x1n>
+ <ZL/z1e/VATzZN10E@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2] kvm: Remove KVM_CREATE_IRQCHIP support assumption
-Content-Language: en-US
-To: Andrew Jones <ajones@ventanamicro.com>, qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com, mtosatti@redhat.com, peter.maydell@linaro.org,
- pasic@linux.ibm.com, borntraeger@linux.ibm.com, thuth@redhat.com,
- kvm@vger.kernel.org, qemu-arm@nongnu.org, qemu-s390x@nongnu.org
-References: <20230725122601.424738-2-ajones@ventanamicro.com>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20230725122601.424738-2-ajones@ventanamicro.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32e;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-ot1-x32e.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZL/z1e/VATzZN10E@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,155 +106,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Tue, Jul 25, 2023 at 05:09:57PM +0100, Daniel P. Berrangé wrote:
+> On Tue, Jul 25, 2023 at 11:54:52AM -0400, Peter Xu wrote:
+> > We can make the semantics specific, no strong opinion here.  I wished it
+> > can be as generic / easy as possible but maybe I went too far.
+> > 
+> > Though, is there anything else we can choose from besides
+> > "max-convergence-bandwidth"? Or am I the only one that thinks it's hard to
+> > understand when put "max" and "convergence" together?
+> > 
+> > When I take one step back to look at the whole "bandwidth" parameters, I am
+> > not sure why we'd even need both "convergence" and "postcopy" bandwidth
+> > being separate.  With my current understanding of migration, we may
+> > actually need:
+> > 
+> >   - One bandwidth that we may want to run the background migration, aka,
+> >     precopy migration, where we don't rush on pushing data.
+> > 
+> >   - One bandwidth that is whatever we can have maximum; for dedicated NIC
+> >     that's the line speed.  We should always use this full speed for
+> >     important things.  I'd say postcopy falls into this, and this
+> >     "convergence" calculation should also rely on this.
+> 
+> I don't think postcopy should be assumed to run at line speed.
+> 
+> At the point where you flip to post-copy mode, there could
+> conceivably still be GB's worth of data still dirty and
+> pending transfer.
+> 
+> The migration convergance step is reasonable to put at line
+> speed, because the max downtime parameter caps how long this
+> burst will be, genrally to some fraction of a second.
+> 
+> Once in post-copy mode, while the remaining data to transfer
+> is finite, the wall clock time to complete that transfer may
+> still be huge. It is unreasonable to assume users want to
+> run at max linespeed for many minutes to finish post-copy
+> at least in terms of the background transfer. You could make
+> a  case for the page fault handling to run at a higher bandwidth
+> cap than the background transfer, but I think it is still probably
+> not reasonable to run page fault fetches at line speed by default.
+> 
+> IOW, I don't think we can put the same bandwidth limit on the
+> short convergance operation, as on the longer post-copy operation.
 
+Postcopy still heavily affects the performance of the VM for the whole
+duration, and afaiu that's so far the major issue (after we fix postcopy
+interruptions with recovery capability) that postcopy may not be wanted in
+many cases.
 
-On 7/25/23 09:26, Andrew Jones wrote:
-> Since Linux commit 00f918f61c56 ("RISC-V: KVM: Skeletal in-kernel AIA
-> irqchip support") checking KVM_CAP_IRQCHIP returns non-zero when the
-> RISC-V platform has AIA. The cap indicates KVM supports at least one
-> of the following ioctls:
-> 
->    KVM_CREATE_IRQCHIP
->    KVM_IRQ_LINE
->    KVM_GET_IRQCHIP
->    KVM_SET_IRQCHIP
->    KVM_GET_LAPIC
->    KVM_SET_LAPIC
-> 
-> but the cap doesn't imply that KVM must support any of those ioctls
-> in particular. However, QEMU was assuming the KVM_CREATE_IRQCHIP
-> ioctl was supported. Stop making that assumption by introducing a
-> KVM parameter that each architecture which supports KVM_CREATE_IRQCHIP
-> sets. Adding parameters isn't awesome, but given how the
-> KVM_CAP_IRQCHIP isn't very helpful on its own, we don't have a lot of
-> options.
-> 
-> Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
-> ---
+If I am the admin I'd want it to run at full speed even if the pages were
+not directly requested just to shrink the duration of postcopy; I'd just
+want to make sure requested pages are queued sooner.
 
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+But that's okay if any of us still thinks that three values would be
+helpful here, because we can simply have the latter two having the same
+value when we want.  Three is the superset of two anyway.
 
-> 
-> While this fixes booting guests on riscv KVM with AIA it's unlikely
-> to get merged before the QEMU support for KVM AIA[1] lands, which
-> would also fix the issue. I think this patch is still worth considering
-> though since QEMU's assumption is wrong.
-> 
-> [1] https://lore.kernel.org/all/20230714084429.22349-1-yongxuan.wang@sifive.com/
-> 
-> v2:
->    - Move the s390x code to an s390x file. [Thomas]
->    - Drop the KVM_CAP_IRQCHIP check from the top of kvm_irqchip_create(),
->      as it's no longer necessary.
-> 
->   accel/kvm/kvm-all.c    | 16 ++++------------
->   include/sysemu/kvm.h   |  1 +
->   target/arm/kvm.c       |  3 +++
->   target/i386/kvm/kvm.c  |  2 ++
->   target/s390x/kvm/kvm.c | 11 +++++++++++
->   5 files changed, 21 insertions(+), 12 deletions(-)
-> 
-> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-> index 373d876c0580..cddcb6eca641 100644
-> --- a/accel/kvm/kvm-all.c
-> +++ b/accel/kvm/kvm-all.c
-> @@ -86,6 +86,7 @@ struct KVMParkedVcpu {
->   };
->   
->   KVMState *kvm_state;
-> +bool kvm_has_create_irqchip;
->   bool kvm_kernel_irqchip;
->   bool kvm_split_irqchip;
->   bool kvm_async_interrupts_allowed;
-> @@ -2358,17 +2359,6 @@ static void kvm_irqchip_create(KVMState *s)
->       int ret;
->   
->       assert(s->kernel_irqchip_split != ON_OFF_AUTO_AUTO);
-> -    if (kvm_check_extension(s, KVM_CAP_IRQCHIP)) {
-> -        ;
-> -    } else if (kvm_check_extension(s, KVM_CAP_S390_IRQCHIP)) {
-> -        ret = kvm_vm_enable_cap(s, KVM_CAP_S390_IRQCHIP, 0);
-> -        if (ret < 0) {
-> -            fprintf(stderr, "Enable kernel irqchip failed: %s\n", strerror(-ret));
-> -            exit(1);
-> -        }
-> -    } else {
-> -        return;
-> -    }
->   
->       /* First probe and see if there's a arch-specific hook to create the
->        * in-kernel irqchip for us */
-> @@ -2377,8 +2367,10 @@ static void kvm_irqchip_create(KVMState *s)
->           if (s->kernel_irqchip_split == ON_OFF_AUTO_ON) {
->               error_report("Split IRQ chip mode not supported.");
->               exit(1);
-> -        } else {
-> +        } else if (kvm_has_create_irqchip) {
->               ret = kvm_vm_ioctl(s, KVM_CREATE_IRQCHIP);
-> +        } else {
-> +            return;
->           }
->       }
->       if (ret < 0) {
-> diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
-> index 115f0cca79d1..84b1bb3dc91e 100644
-> --- a/include/sysemu/kvm.h
-> +++ b/include/sysemu/kvm.h
-> @@ -32,6 +32,7 @@
->   #ifdef CONFIG_KVM_IS_POSSIBLE
->   
->   extern bool kvm_allowed;
-> +extern bool kvm_has_create_irqchip;
->   extern bool kvm_kernel_irqchip;
->   extern bool kvm_split_irqchip;
->   extern bool kvm_async_interrupts_allowed;
-> diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-> index b4c7654f4980..2fa87b495d68 100644
-> --- a/target/arm/kvm.c
-> +++ b/target/arm/kvm.c
-> @@ -250,6 +250,9 @@ int kvm_arm_get_max_vm_ipa_size(MachineState *ms, bool *fixed_ipa)
->   int kvm_arch_init(MachineState *ms, KVMState *s)
->   {
->       int ret = 0;
-> +
-> +    kvm_has_create_irqchip = kvm_check_extension(s, KVM_CAP_IRQCHIP);
-> +
->       /* For ARM interrupt delivery is always asynchronous,
->        * whether we are using an in-kernel VGIC or not.
->        */
-> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-> index ebfaf3d24c79..6363e67f092d 100644
-> --- a/target/i386/kvm/kvm.c
-> +++ b/target/i386/kvm/kvm.c
-> @@ -2771,6 +2771,8 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
->           }
->       }
->   
-> +    kvm_has_create_irqchip = kvm_check_extension(s, KVM_CAP_IRQCHIP);
-> +
->       return 0;
->   }
->   
-> diff --git a/target/s390x/kvm/kvm.c b/target/s390x/kvm/kvm.c
-> index a9e5880349d9..bcc735227f7d 100644
-> --- a/target/s390x/kvm/kvm.c
-> +++ b/target/s390x/kvm/kvm.c
-> @@ -391,6 +391,17 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
->       }
->   
->       kvm_set_max_memslot_size(KVM_SLOT_MAX_BYTES);
-> +
-> +    kvm_has_create_irqchip = kvm_check_extension(s, KVM_CAP_S390_IRQCHIP);
-> +    if (kvm_has_create_irqchip) {
-> +        int ret = kvm_vm_enable_cap(s, KVM_CAP_S390_IRQCHIP, 0);
-> +
-> +        if (ret < 0) {
-> +            fprintf(stderr, "Enable kernel irqchip failed: %s\n", strerror(-ret));
-> +            exit(1);
-> +        }
-> +    }
-> +
->       return 0;
->   }
->   
+I see you used "convergance" explicitly even after PeterM's reply, is that
+what you prefer over "convergence"?  I do see more occurances of
+"convergence" as a word in migration context, though.  Any better name you
+can come up with, before I just go with "max-convergence-bandwidth" (I
+really cannot come up with anything better than this or available-bandwidth
+for now)?
+
+Thanks,
+
+-- 
+Peter Xu
+
 
