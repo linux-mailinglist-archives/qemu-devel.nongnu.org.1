@@ -2,63 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D912761BCC
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 16:31:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49E00761BCE
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 16:32:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOJ44-0004Xv-6x; Tue, 25 Jul 2023 10:31:05 -0400
+	id 1qOJ57-0005Qh-Rk; Tue, 25 Jul 2023 10:32:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qOJ3g-0004Rt-Q1
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 10:30:41 -0400
-Received: from mail-yw1-x1134.google.com ([2607:f8b0:4864:20::1134])
+ id 1qOJ4b-0005IT-G2
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 10:31:41 -0400
+Received: from mail-qt1-x831.google.com ([2607:f8b0:4864:20::831])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qOJ3e-0003aD-LN
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 10:30:40 -0400
-Received: by mail-yw1-x1134.google.com with SMTP id
- 00721157ae682-57a6df91b1eso68926497b3.1
- for <qemu-devel@nongnu.org>; Tue, 25 Jul 2023 07:30:38 -0700 (PDT)
+ id 1qOJ4Y-0003r0-Id
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 10:31:36 -0400
+Received: by mail-qt1-x831.google.com with SMTP id
+ d75a77b69052e-403a72df0a6so31588891cf.2
+ for <qemu-devel@nongnu.org>; Tue, 25 Jul 2023 07:31:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1690295437; x=1690900237;
+ d=gmail.com; s=20221208; t=1690295493; x=1690900293;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=Vf94sm5OpJT9ACw+7t6pjWQG4NiDef3h0vyZnQLtonA=;
- b=SU4f+RIYAp2FSb7RrjDWl5NDmZj7fs412XLFMfi6OBzaBboD9z7LLLXjU5w7tBhx4g
- UHxC67yF5qySZvsg0yTCO1PSqF7tP7BYDOdlvklcc1uWUkINK9Aj69B3fzhL/l8vQPn6
- Lq9u/h9f6iDnsWJSKAzoKjX2dfFtxd5VLk1NrSF4uuvuzib89210fEzCRCB4Fv0fmUik
- FG9rZRuOw+dxsKKAWKiH5PBTGdeqyV97qs3Li+qH+mvyhr6JY0jNFPlBBOLIHB2he8+2
- Ktt2nAFytrdv4eVhucCnv1yfr1rEkI/Kz/0UUruY3J+ofSTREMOpzpbq9YGgbUbDwNfK
- RjQg==
+ bh=3BT2ndsT2lYwhhJvMMngLjE93k/WIsxAW+/wdto8eiA=;
+ b=aWyfioGAE35BrCVlLtAnS+KgtyQRgllbIMw2ASWJ4GSLIZOyQl7vAOKsYtLvn6a9ma
+ sOE+r6JM8/wNecfRXzOWBMRmRArNYvdtq3omDcRzX+O2Tger7MNrwxhPMcQik5w5Jdix
+ Pf57i73p/m8YRzL/wp3ktv8ilPr7HVIgH+clbczo7l3WHnx3s9JTRgaQru/s51yk9OpS
+ UADqbCmF0k+6AGWnfiZeFB3wsXUTBaSXFxi7OzV1KSTto8c+Z6vtLp5Kg8ghRODphXuy
+ tub7Sms5MYdxTH+wilj9h73OijOfBILquXxS023Gz5RSqJPT4MdUH9AAJPLO2w2qBcBW
+ Jizg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690295437; x=1690900237;
+ d=1e100.net; s=20221208; t=1690295493; x=1690900293;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=Vf94sm5OpJT9ACw+7t6pjWQG4NiDef3h0vyZnQLtonA=;
- b=kwAB8+W/sFPFBYBq3LAiSb9ucroVPwfh6eh3qa4MRDd49BQBQkVMqt89n/O859k1ro
- 3NA4GAf+aS6t6wEiKY5W5iAmcNGdqyTKoFPsl/qfVLJO7FvV4Zgpk4Al4JkWmHih1Oye
- RYuQsXvZJQozPpxGxa6EbpbHEKopRBUMBfFHN2/BHoCVNP2q60q+17hUyNiIp8H0DCdp
- KjsimoYy/0/HnUIfoM/0yHtGYzwdYbGEBMsG4Ue+5wJ8SpS6Q3e7OMqSy++6VcBopwDC
- QR1vw6uBofhd5QmfFFUDw+FfMhb52KI5i/iUUHqlgR5d9p8NmE+73CtyQ6LDJIqT0UPd
- 7BrQ==
-X-Gm-Message-State: ABy/qLamEnywNgxaMaxiyBt4KBJVgmewybQvX/0vyXGeEp0NavF0Bdk0
- //qWjO9ZP7wybesjcFIAt57q658VYse1AXmT9TQ=
-X-Google-Smtp-Source: APBJJlEUYuFusdfltxR8ATlF5a6tsU+XnK1sRm0teYlnxhVqAXn+IPrgV4DoG/2h2lbeahTXgYkuskLmiYBAW4zIXeY=
-X-Received: by 2002:a81:a087:0:b0:576:f0d6:3d68 with SMTP id
- x129-20020a81a087000000b00576f0d63d68mr11764867ywg.32.1690295437421; Tue, 25
- Jul 2023 07:30:37 -0700 (PDT)
+ bh=3BT2ndsT2lYwhhJvMMngLjE93k/WIsxAW+/wdto8eiA=;
+ b=gRR5pJ53FaEWOSo8roSFLaaOGMgmhP/B/9HkNbNcmLE9hJ4+Be+chE2uxDVI89IEpn
+ RZSjM1cfQdYokac4U+Bj/PZAjGTXND5iucoYneC+4MJkFLkyCFN/tOPhHkoKzFnBjC3J
+ yRURK2AR1pO6e5J4ss7vP1RfVMyyA2kguxqEirPTObfR4AQuqDlrIdn2yjJrbGXCvKhU
+ aGyXWQlNdeCXTGJCqx5U0Mg59rJcAj1shnDHtegQspc1akNY71h6o5xON4bLnHB/VjVD
+ qeF9nPAnxXvWJwCQAI7c5y+mZvuFIYLJdZwI9lxHgARVSPi5lw7pW4kGC5MUJ86uvjXS
+ uieQ==
+X-Gm-Message-State: ABy/qLbgmxaIJO78zWdeNZkwFDwEiHCb8Wxl9eLDAHCqdVKTDamD8SPp
+ gilcKpKAqRPz7+KI6HU0TBdggdFvjyBlI64ji9A=
+X-Google-Smtp-Source: APBJJlEFWkG0MNIukdvrE8hbnPBj75VaMtaTxdGX63B//mJ+0MaORabw6idj71Jp3RdfPdqk58eWGWH3dtayajC5cy4=
+X-Received: by 2002:ac8:5ac7:0:b0:403:8d17:aa31 with SMTP id
+ d7-20020ac85ac7000000b004038d17aa31mr3697219qtd.58.1690295493524; Tue, 25 Jul
+ 2023 07:31:33 -0700 (PDT)
 MIME-Version: 1.0
 References: <cover.1689857559.git.manos.pitsidianakis@linaro.org>
- <f267d41957025b3849324f459a8ed476aa89f828.1689857559.git.manos.pitsidianakis@linaro.org>
-In-Reply-To: <f267d41957025b3849324f459a8ed476aa89f828.1689857559.git.manos.pitsidianakis@linaro.org>
+ <ae372de5659503e08b7c55ee2a76e9ca3038748d.1689857559.git.manos.pitsidianakis@linaro.org>
+In-Reply-To: <ae372de5659503e08b7c55ee2a76e9ca3038748d.1689857559.git.manos.pitsidianakis@linaro.org>
 From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Tue, 25 Jul 2023 18:30:26 +0400
-Message-ID: <CAJ+F1C++BFEThXQfu9jETdPZmkx7B4J1scmmSZHy26=-AZYaFA@mail.gmail.com>
-Subject: Re: [PATCH v4 06/12] virtio-sound: handle VIRTIO_SND_R_PCM_INFO
- request
+Date: Tue, 25 Jul 2023 18:31:22 +0400
+Message-ID: <CAJ+F1CJdbcsdHu8WmiDDS_q7ddcJ6RPOLe2XH_EBQkqJTtMw-Q@mail.gmail.com>
+Subject: Re: [PATCH v4 01/12] Add virtio-sound device stub
 To: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 Cc: qemu-devel@nongnu.org, Igor Skalkin <Igor.Skalkin@opensynergy.com>, 
  Anton Yakovlev <Anton.Yakovlev@opensynergy.com>,
@@ -71,9 +70,9 @@ Cc: qemu-devel@nongnu.org, Igor Skalkin <Igor.Skalkin@opensynergy.com>,
  =?UTF-8?B?S8WRdsOhZ8OzLCBab2x0w6Fu?= <DirtY.iCE.hu@gmail.com>, 
  Alex Bennee <alex.bennee@linaro.org>,
  =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Content-Type: multipart/alternative; boundary="0000000000001cf23e0601509375"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1134;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-yw1-x1134.google.com
+Content-Type: multipart/alternative; boundary="0000000000007504b60601509662"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::831;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x831.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,408 +95,513 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000001cf23e0601509375
+--0000000000007504b60601509662
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jul 20, 2023 at 4:59=E2=80=AFPM Emmanouil Pitsidianakis <
+Hi
+
+On Thu, Jul 20, 2023 at 4:58=E2=80=AFPM Emmanouil Pitsidianakis <
 manos.pitsidianakis@linaro.org> wrote:
 
-> Respond to the VIRTIO_SND_R_PCM_INFO control request with the parameters
-> of each requested PCM stream.
+> Add a new VIRTIO device for the virtio sound device id. Functionality
+> will be added in the following commits.
 >
 > Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 > ---
->  hw/virtio/trace-events |  1 +
->  hw/virtio/virtio-snd.c | 78 ++++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 79 insertions(+)
+>  MAINTAINERS                    |   6 +
+>  hw/virtio/Kconfig              |   5 +
+>  hw/virtio/meson.build          |   1 +
+>  hw/virtio/trace-events         |   9 ++
+>  hw/virtio/virtio-snd.c         | 230 +++++++++++++++++++++++++++++++++
+>  include/hw/virtio/virtio-snd.h |  79 +++++++++++
+>  6 files changed, 330 insertions(+)
+>  create mode 100644 hw/virtio/virtio-snd.c
+>  create mode 100644 include/hw/virtio/virtio-snd.h
 >
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 12e59b6b27..2bed60f9c1 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -2245,6 +2245,12 @@ F: hw/virtio/virtio-mem-pci.h
+>  F: hw/virtio/virtio-mem-pci.c
+>  F: include/hw/virtio/virtio-mem.h
+>
+> +virtio-snd
+> +M: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+> +S: Supported
+> +F: hw/virtio/virtio-snd*.c
+> +F: include/hw/virtio/virtio-snd.h
+> +
+>  nvme
+>  M: Keith Busch <kbusch@kernel.org>
+>  M: Klaus Jensen <its@irrelevant.dk>
+> diff --git a/hw/virtio/Kconfig b/hw/virtio/Kconfig
+> index 92c9cf6c96..d6f20657b3 100644
+> --- a/hw/virtio/Kconfig
+> +++ b/hw/virtio/Kconfig
+> @@ -17,6 +17,11 @@ config VIRTIO_PCI
+>      depends on PCI
+>      select VIRTIO
+>
+> +config VIRTIO_SND
+> +    bool
+> +    default y
+> +    depends on VIRTIO
+> +
+>  config VIRTIO_MMIO
+>      bool
+>      select VIRTIO
+> diff --git a/hw/virtio/meson.build b/hw/virtio/meson.build
+> index 13e7c6c272..120d4bfa0a 100644
+> --- a/hw/virtio/meson.build
+> +++ b/hw/virtio/meson.build
+> @@ -31,6 +31,7 @@ specific_virtio_ss.add(when: 'CONFIG_VHOST_VSOCK',
+> if_true: files('vhost-vsock.c
+>  specific_virtio_ss.add(when: 'CONFIG_VHOST_USER_VSOCK', if_true:
+> files('vhost-user-vsock.c'))
+>  specific_virtio_ss.add(when: 'CONFIG_VIRTIO_RNG', if_true:
+> files('virtio-rng.c'))
+>  specific_virtio_ss.add(when: 'CONFIG_VIRTIO_MEM', if_true:
+> files('virtio-mem.c'))
+> +specific_virtio_ss.add(when: 'CONFIG_VIRTIO_SND', if_true:
+> files('virtio-snd.c'))
+>  specific_virtio_ss.add(when: 'CONFIG_VHOST_USER_I2C', if_true:
+> files('vhost-user-i2c.c'))
+>  specific_virtio_ss.add(when: 'CONFIG_VHOST_USER_RNG', if_true:
+> files('vhost-user-rng.c'))
+>  specific_virtio_ss.add(when: 'CONFIG_VHOST_USER_GPIO', if_true:
+> files('vhost-user-gpio.c'))
 > diff --git a/hw/virtio/trace-events b/hw/virtio/trace-events
-> index 8a223e36e9..3e619f778b 100644
+> index 7109cf1a3b..3ed7da35f2 100644
 > --- a/hw/virtio/trace-events
 > +++ b/hw/virtio/trace-events
-> @@ -164,6 +164,7 @@ virtio_snd_vm_state_stopped(void) "vm state stopped"
->  virtio_snd_realize(void *snd) "snd %p: realize"
->  virtio_snd_unrealize(void *snd) "snd %p: unrealize"
->  virtio_snd_handle_ctrl(void *vdev, void *vq) "snd %p: handle ctrl event
-> for queue %p"
-> +virtio_snd_handle_pcm_info(uint32_t stream) "VIRTIO_SND_R_PCM_INFO calle=
-d
-> for stream %"PRIu32
->  virtio_snd_handle_code(uint32_t val, const char *code) "ctrl code msg va=
-l
-> =3D %"PRIu32" =3D=3D %s"
->  virtio_snd_handle_chmap_info(void) "VIRTIO_SND_CHMAP_INFO called"
->  virtio_snd_handle_event(void) "event queue callback called"
+> @@ -154,3 +154,12 @@ virtio_pmem_flush_done(int type) "fsync return=3D%d"
+>  virtio_gpio_start(void) "start"
+>  virtio_gpio_stop(void) "stop"
+>  virtio_gpio_set_status(uint8_t status) "0x%x"
+> +
+> +#virtio-snd.c
+> +virtio_snd_get_config(void *vdev, uint32_t jacks, uint32_t streams,
+> uint32_t chmaps) "snd %p: get_config jacks=3D%"PRIu32" streams=3D%"PRIu32=
+"
+> chmaps=3D%"PRIu32""
+> +virtio_snd_set_config(void *vdev, uint32_t jacks, uint32_t new_jacks,
+> uint32_t streams, uint32_t new_streams, uint32_t chmaps, uint32_t
+> new_chmaps) "snd %p: set_config jacks from %"PRIu32"->%"PRIu32", streams
+> from %"PRIu32"->%"PRIu32", chmaps from %"PRIu32"->%"PRIu32
+> +virtio_snd_get_features(void *vdev, uint64_t features) "snd %p:
+> get_features 0x%"PRIx64
+> +virtio_snd_vm_state_running(void) "vm state running"
+> +virtio_snd_vm_state_stopped(void) "vm state stopped"
+> +virtio_snd_realize(void *snd) "snd %p: realize"
+> +virtio_snd_unrealize(void *snd) "snd %p: unrealize"
 > diff --git a/hw/virtio/virtio-snd.c b/hw/virtio/virtio-snd.c
-> index ca09c937c7..3f8b46f372 100644
-> --- a/hw/virtio/virtio-snd.c
+> new file mode 100644
+> index 0000000000..e3f2156e5e
+> --- /dev/null
 > +++ b/hw/virtio/virtio-snd.c
-> @@ -134,6 +134,19 @@ virtio_snd_set_config(VirtIODevice *vdev, const
-> uint8_t *config)
->      memcpy(&s->snd_conf, sndconfig, sizeof(s->snd_conf));
->  }
->
+> @@ -0,0 +1,230 @@
 > +/*
-> + * Get a specific stream from the virtio sound card device.
-> + * Returns NULL if @stream_id is invalid or not allocated.
+> + * VIRTIO Sound Device conforming to
 > + *
-> + * @s: VirtIOSound device
-> + * @stream_id: stream id
+> + * "Virtual I/O Device (VIRTIO) Version 1.2
+> + * Committee Specification Draft 01
+> + * 09 May 2022"
+> + *
+> + * <
+> https://docs.oasis-open.org/virtio/virtio/v1.2/csd01/virtio-v1.2-csd01.ht=
+ml#x1-52900014
+> >
+> + *
+> + * Copyright (c) 2023 Emmanouil Pitsidianakis <
+> manos.pitsidianakis@linaro.org>
+> + * Copyright (C) 2019 OpenSynergy GmbH
+> + *
+> + * This work is licensed under the terms of the GNU GPL, version 2 or
+> + * (at your option) any later version.  See the COPYING file in the
+> + * top-level directory.
 > + */
-> +static VirtIOSoundPCMStream *virtio_snd_pcm_get_stream(VirtIOSound *s,
-> +                                                       uint32_t stream_i=
-d)
+> +
+> +#include "qemu/osdep.h"
+> +#include "qemu/iov.h"
+> +#include "qemu/log.h"
+> +#include "include/qemu/lockable.h"
+> +#include "sysemu/runstate.h"
+> +#include "trace.h"
+> +#include "qapi/error.h"
+> +#include "hw/virtio/virtio-snd.h"
+> +
+> +#define VIRTIO_SOUND_VM_VERSION 1
+> +#define VIRTIO_SOUND_JACK_DEFAULT 0
+> +#define VIRTIO_SOUND_STREAM_DEFAULT 1
+> +#define VIRTIO_SOUND_CHMAP_DEFAULT 0
+> +#define VIRTIO_SOUND_HDA_FN_NID 0
+> +
+> +static const VMStateDescription vmstate_virtio_snd_device =3D {
+> +    .name =3D TYPE_VIRTIO_SND,
+> +    .version_id =3D VIRTIO_SOUND_VM_VERSION,
+> +    .minimum_version_id =3D VIRTIO_SOUND_VM_VERSION,
+> +};
+> +
+> +static const VMStateDescription vmstate_virtio_snd =3D {
+> +    .name =3D "virtio-sound",
+> +    .minimum_version_id =3D VIRTIO_SOUND_VM_VERSION,
+> +    .version_id =3D VIRTIO_SOUND_VM_VERSION,
+> +    .fields =3D (VMStateField[]) {
+> +        VMSTATE_VIRTIO_DEVICE,
+> +        VMSTATE_END_OF_LIST()
+> +    },
+> +};
+> +
+> +static Property virtio_snd_properties[] =3D {
+> +    DEFINE_AUDIO_PROPERTIES(VirtIOSound, card),
+> +    DEFINE_PROP_UINT32("jacks", VirtIOSound, snd_conf.jacks,
+> +                       VIRTIO_SOUND_JACK_DEFAULT),
+> +    DEFINE_PROP_UINT32("streams", VirtIOSound, snd_conf.streams,
+> +                       VIRTIO_SOUND_STREAM_DEFAULT),
+> +    DEFINE_PROP_UINT32("chmaps", VirtIOSound, snd_conf.chmaps,
+> +                       VIRTIO_SOUND_CHMAP_DEFAULT),
+> +    DEFINE_PROP_END_OF_LIST(),
+> +};
+> +
+> +static void
+> +virtio_snd_get_config(VirtIODevice *vdev, uint8_t *config)
 > +{
-> +    return stream_id >=3D s->snd_conf.streams ? NULL :
-> s->pcm->streams[stream_id];
+> +    VirtIOSound *s =3D VIRTIO_SND(vdev);
+> +    trace_virtio_snd_get_config(vdev,
+> +                                s->snd_conf.jacks,
+> +                                s->snd_conf.streams,
+> +                                s->snd_conf.chmaps);
+> +
+> +    memcpy(config, &s->snd_conf, sizeof(s->snd_conf));
 > +}
 > +
->  /*
->   * Get params for a specific stream.
->   *
-> @@ -147,6 +160,69 @@ static VirtIOSoundPCMParams
-> *virtio_snd_pcm_get_params(VirtIOSound *s,
->          : s->pcm->pcm_params[stream_id];
->  }
->
-> +/*
-> + * Handle the VIRTIO_SND_R_PCM_INFO request.
-> + * The function writes the info structs to the request element.
-> + *
-> + * @s: VirtIOSound device
-> + * @cmd: The request command queue element from VirtIOSound cmdq field
-> + */
-> +static void virtio_snd_handle_pcm_info(VirtIOSound *s,
-> +                                       virtio_snd_ctrl_command *cmd)
+> +static void
+> +virtio_snd_set_config(VirtIODevice *vdev, const uint8_t *config)
 > +{
-> +    virtio_snd_query_info req;
-> +    VirtIOSoundPCMStream *stream =3D NULL;
-> +    g_autofree virtio_snd_pcm_info *pcm_info =3D NULL;
-> +    size_t sz =3D iov_to_buf(cmd->elem->out_sg,
-> +                           cmd->elem->out_num,
-> +                           0,
-> +                           &req,
-> +                           sizeof(req));
-> +    if (sz !=3D sizeof(virtio_snd_query_info)) {
-> +        cmd->resp.code =3D VIRTIO_SND_S_BAD_MSG;
-> +        return;
-> +    }
+> +    VirtIOSound *s =3D VIRTIO_SND(vdev);
+> +    const virtio_snd_config *sndconfig =3D
+> +        (const virtio_snd_config *)config;
 > +
-> +    if (iov_size(cmd->elem->in_sg, cmd->elem->in_num) <
-> +        sizeof(virtio_snd_hdr) + req.size * req.count) {
-> +        error_report("pcm info: buffer too small, got: %lu, needed: %lu"=
-,
-> +                iov_size(cmd->elem->in_sg, cmd->elem->in_num),
-> +                sizeof(virtio_snd_pcm_info));
->
-
-../hw/virtio/virtio-snd.c: In function 'virtio_snd_handle_pcm_info':
-../hw/virtio/virtio-snd.c:200:22: error: format '%lu' expects argument of
-type 'long unsigned int', but argument 2 has type 'size_t' {aka 'long long
-unsigned int'} [-Werror=3Dformat=3D]
-  200 |         error_report("pcm info: buffer too small, got: %lu, needed:
-%lu",
-      |
- ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  201 |                 iov_size(cmd->elem->in_sg, cmd->elem->in_num),
-      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      |                 |
-      |                 size_t {aka long long unsigned int}
-../hw/virtio/virtio-snd.c:200:22: error: format '%lu' expects argument of
-type 'long unsigned int', but argument 3 has type 'long long unsigned int'
-[-Werror=3Dformat=3D]
-  200 |         error_report("pcm info: buffer too small, got: %lu, needed:
-%lu",
-      |
- ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  201 |                 iov_size(cmd->elem->in_sg, cmd->elem->in_num),
-  202 |                 sizeof(virtio_snd_pcm_info));
-      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      |                 |
-      |                 long long unsigned int
-
-
-> +        cmd->resp.code =3D VIRTIO_SND_S_BAD_MSG;
-> +        return;
-> +    }
 > +
-> +    pcm_info =3D g_new0(virtio_snd_pcm_info, req.count);
-> +    for (uint32_t i =3D req.start_id; i < req.start_id + req.count; i++)=
- {
-> +        trace_virtio_snd_handle_pcm_info(i);
-> +        stream =3D virtio_snd_pcm_get_stream(s, i);
+> +   trace_virtio_snd_set_config(vdev,
+> +                               s->snd_conf.jacks,
+> +                               sndconfig->jacks,
+> +                               s->snd_conf.streams,
+> +                               sndconfig->streams,
+> +                               s->snd_conf.chmaps,
+> +                               sndconfig->chmaps);
 > +
-> +        if (!stream) {
-> +            error_report("Invalid stream id: %"PRIu32, i);
-> +            cmd->resp.code =3D VIRTIO_SND_S_BAD_MSG;
-> +            return;
-> +        }
-> +
-> +        pcm_info[i - req.start_id].hdr.hda_fn_nid =3D
-> stream->info.hdr.hda_fn_nid;
-> +        pcm_info[i - req.start_id].features =3D stream->features;
-> +        pcm_info[i - req.start_id].formats =3D stream->formats;
-> +        pcm_info[i - req.start_id].rates =3D stream->rates;
-> +        pcm_info[i - req.start_id].direction =3D stream->direction;
-> +        pcm_info[i - req.start_id].channels_min =3D stream->channels_min=
-;
-> +        pcm_info[i - req.start_id].channels_max =3D stream->channels_max=
-;
-> +
-> +        memset(&pcm_info[i].padding, 0, sizeof(pcm_info[i].padding));
-> +    }
-> +
-> +    cmd->resp.code =3D VIRTIO_SND_S_OK;
-> +
-> +    iov_from_buf(cmd->elem->in_sg,
-> +                 cmd->elem->in_num,
-> +                 sizeof(virtio_snd_hdr),
-> +                 pcm_info,
-> +                 sizeof(virtio_snd_pcm_info) * req.count);
+> +    memcpy(&s->snd_conf, sndconfig, sizeof(s->snd_conf));
 > +}
 > +
->  /*
->   * Set the given stream params.
->   * Called by both virtio_snd_handle_pcm_set_params and during device
-> @@ -358,6 +434,8 @@ process_cmd(VirtIOSound *s, virtio_snd_ctrl_command
-> *cmd)
->          cmd->resp.code =3D VIRTIO_SND_S_NOT_SUPP;
->          break;
->      case VIRTIO_SND_R_PCM_INFO:
-> +        virtio_snd_handle_pcm_info(s, cmd);
-> +        break;
->      case VIRTIO_SND_R_PCM_SET_PARAMS:
->      case VIRTIO_SND_R_PCM_PREPARE:
->      case VIRTIO_SND_R_PCM_START:
-> --
-> 2.39.2
+> +/*
+> + * Queue handler stub.
+> + *
+> + * @vdev: VirtIOSound device
+> + * @vq: virtqueue
+> + */
+> +static void virtio_snd_handle_queue(VirtIODevice *vdev, VirtQueue *vq) {=
+}
+> +
+> +static uint64_t get_features(VirtIODevice *vdev, uint64_t features,
+> +                             Error **errp)
+> +{
+> +    /*
+> +     * virtio-v1.2-csd01, 5.14.3,
+> +     * Feature Bits
+> +     * None currently defined.
+> +     */
+> +    trace_virtio_snd_get_features(vdev, features);
+> +    return features | 1UL << VIRTIO_F_VERSION_1 | 1UL <<
+> VIRTIO_F_IN_ORDER;
 >
->
->
+
+../hw/virtio/virtio-snd.c: In function 'get_features':
+../hw/virtio/virtio-snd.c:883:27: error: left shift count >=3D width of typ=
+e
+[-Werror=3Dshift-count-overflow]
+  883 |     return features | 1UL << VIRTIO_F_VERSION_1 | 1UL <<
+VIRTIO_F_IN_ORDER;
+      |                           ^~
+../hw/virtio/virtio-snd.c:883:55: error: left shift count >=3D width of typ=
+e
+[-Werror=3Dshift-count-overflow]
+  883 |     return features | 1UL << VIRTIO_F_VERSION_1 | 1UL <<
+VIRTIO_F_IN_ORDER;
+      |                                                       ^~
 
 --=20
 Marc-Andr=C3=A9 Lureau
 
---0000000000001cf23e0601509375
+--0000000000007504b60601509662
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Thu, Jul 20, 2023 at 4:59=E2=80=AF=
-PM Emmanouil Pitsidianakis &lt;<a href=3D"mailto:manos.pitsidianakis@linaro=
-.org">manos.pitsidianakis@linaro.org</a>&gt; wrote:<br></div><blockquote cl=
-ass=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid=
- rgb(204,204,204);padding-left:1ex">Respond to the VIRTIO_SND_R_PCM_INFO co=
-ntrol request with the parameters<br>
-of each requested PCM stream.<br>
+<div dir=3D"ltr"><div>Hi<br></div><br><div class=3D"gmail_quote"><div dir=
+=3D"ltr" class=3D"gmail_attr">On Thu, Jul 20, 2023 at 4:58=E2=80=AFPM Emman=
+ouil Pitsidianakis &lt;<a href=3D"mailto:manos.pitsidianakis@linaro.org">ma=
+nos.pitsidianakis@linaro.org</a>&gt; wrote:<br></div><blockquote class=3D"g=
+mail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204=
+,204,204);padding-left:1ex">Add a new VIRTIO device for the virtio sound de=
+vice id. Functionality<br>
+will be added in the following commits.<br>
 <br>
 Signed-off-by: Emmanouil Pitsidianakis &lt;<a href=3D"mailto:manos.pitsidia=
 nakis@linaro.org" target=3D"_blank">manos.pitsidianakis@linaro.org</a>&gt;<=
 br>
 ---<br>
-=C2=A0hw/virtio/trace-events |=C2=A0 1 +<br>
-=C2=A0hw/virtio/virtio-snd.c | 78 +++++++++++++++++++++++++++++++++++++++++=
-+<br>
-=C2=A02 files changed, 79 insertions(+)<br>
+=C2=A0MAINTAINERS=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 |=C2=A0 =C2=A06 +<br>
+=C2=A0hw/virtio/Kconfig=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 |=
+=C2=A0 =C2=A05 +<br>
+=C2=A0hw/virtio/meson.build=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=A0 =C2=
+=A01 +<br>
+=C2=A0hw/virtio/trace-events=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 =C2=
+=A09 ++<br>
+=C2=A0hw/virtio/virtio-snd.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0| 230 +++++++=
+++++++++++++++++++++++++++<br>
+=C2=A0include/hw/virtio/virtio-snd.h |=C2=A0 79 +++++++++++<br>
+=C2=A06 files changed, 330 insertions(+)<br>
+=C2=A0create mode 100644 hw/virtio/virtio-snd.c<br>
+=C2=A0create mode 100644 include/hw/virtio/virtio-snd.h<br>
 <br>
+diff --git a/MAINTAINERS b/MAINTAINERS<br>
+index 12e59b6b27..2bed60f9c1 100644<br>
+--- a/MAINTAINERS<br>
++++ b/MAINTAINERS<br>
+@@ -2245,6 +2245,12 @@ F: hw/virtio/virtio-mem-pci.h<br>
+=C2=A0F: hw/virtio/virtio-mem-pci.c<br>
+=C2=A0F: include/hw/virtio/virtio-mem.h<br>
+<br>
++virtio-snd<br>
++M: Manos Pitsidianakis &lt;<a href=3D"mailto:manos.pitsidianakis@linaro.or=
+g" target=3D"_blank">manos.pitsidianakis@linaro.org</a>&gt;<br>
++S: Supported<br>
++F: hw/virtio/virtio-snd*.c<br>
++F: include/hw/virtio/virtio-snd.h<br>
++<br>
+=C2=A0nvme<br>
+=C2=A0M: Keith Busch &lt;<a href=3D"mailto:kbusch@kernel.org" target=3D"_bl=
+ank">kbusch@kernel.org</a>&gt;<br>
+=C2=A0M: Klaus Jensen &lt;<a href=3D"mailto:its@irrelevant.dk" target=3D"_b=
+lank">its@irrelevant.dk</a>&gt;<br>
+diff --git a/hw/virtio/Kconfig b/hw/virtio/Kconfig<br>
+index 92c9cf6c96..d6f20657b3 100644<br>
+--- a/hw/virtio/Kconfig<br>
++++ b/hw/virtio/Kconfig<br>
+@@ -17,6 +17,11 @@ config VIRTIO_PCI<br>
+=C2=A0 =C2=A0 =C2=A0depends on PCI<br>
+=C2=A0 =C2=A0 =C2=A0select VIRTIO<br>
+<br>
++config VIRTIO_SND<br>
++=C2=A0 =C2=A0 bool<br>
++=C2=A0 =C2=A0 default y<br>
++=C2=A0 =C2=A0 depends on VIRTIO<br>
++<br>
+=C2=A0config VIRTIO_MMIO<br>
+=C2=A0 =C2=A0 =C2=A0bool<br>
+=C2=A0 =C2=A0 =C2=A0select VIRTIO<br>
+diff --git a/hw/virtio/meson.build b/hw/virtio/meson.build<br>
+index 13e7c6c272..120d4bfa0a 100644<br>
+--- a/hw/virtio/meson.build<br>
++++ b/hw/virtio/meson.build<br>
+@@ -31,6 +31,7 @@ specific_virtio_ss.add(when: &#39;CONFIG_VHOST_VSOCK&#39;=
+, if_true: files(&#39;vhost-vsock.c<br>
+=C2=A0specific_virtio_ss.add(when: &#39;CONFIG_VHOST_USER_VSOCK&#39;, if_tr=
+ue: files(&#39;vhost-user-vsock.c&#39;))<br>
+=C2=A0specific_virtio_ss.add(when: &#39;CONFIG_VIRTIO_RNG&#39;, if_true: fi=
+les(&#39;virtio-rng.c&#39;))<br>
+=C2=A0specific_virtio_ss.add(when: &#39;CONFIG_VIRTIO_MEM&#39;, if_true: fi=
+les(&#39;virtio-mem.c&#39;))<br>
++specific_virtio_ss.add(when: &#39;CONFIG_VIRTIO_SND&#39;, if_true: files(&=
+#39;virtio-snd.c&#39;))<br>
+=C2=A0specific_virtio_ss.add(when: &#39;CONFIG_VHOST_USER_I2C&#39;, if_true=
+: files(&#39;vhost-user-i2c.c&#39;))<br>
+=C2=A0specific_virtio_ss.add(when: &#39;CONFIG_VHOST_USER_RNG&#39;, if_true=
+: files(&#39;vhost-user-rng.c&#39;))<br>
+=C2=A0specific_virtio_ss.add(when: &#39;CONFIG_VHOST_USER_GPIO&#39;, if_tru=
+e: files(&#39;vhost-user-gpio.c&#39;))<br>
 diff --git a/hw/virtio/trace-events b/hw/virtio/trace-events<br>
-index 8a223e36e9..3e619f778b 100644<br>
+index 7109cf1a3b..3ed7da35f2 100644<br>
 --- a/hw/virtio/trace-events<br>
 +++ b/hw/virtio/trace-events<br>
-@@ -164,6 +164,7 @@ virtio_snd_vm_state_stopped(void) &quot;vm state stoppe=
-d&quot;<br>
-=C2=A0virtio_snd_realize(void *snd) &quot;snd %p: realize&quot;<br>
-=C2=A0virtio_snd_unrealize(void *snd) &quot;snd %p: unrealize&quot;<br>
-=C2=A0virtio_snd_handle_ctrl(void *vdev, void *vq) &quot;snd %p: handle ctr=
-l event for queue %p&quot;<br>
-+virtio_snd_handle_pcm_info(uint32_t stream) &quot;VIRTIO_SND_R_PCM_INFO ca=
-lled for stream %&quot;PRIu32<br>
-=C2=A0virtio_snd_handle_code(uint32_t val, const char *code) &quot;ctrl cod=
-e msg val =3D %&quot;PRIu32&quot; =3D=3D %s&quot;<br>
-=C2=A0virtio_snd_handle_chmap_info(void) &quot;VIRTIO_SND_CHMAP_INFO called=
-&quot;<br>
-=C2=A0virtio_snd_handle_event(void) &quot;event queue callback called&quot;=
-<br>
+@@ -154,3 +154,12 @@ virtio_pmem_flush_done(int type) &quot;fsync return=3D=
+%d&quot;<br>
+=C2=A0virtio_gpio_start(void) &quot;start&quot;<br>
+=C2=A0virtio_gpio_stop(void) &quot;stop&quot;<br>
+=C2=A0virtio_gpio_set_status(uint8_t status) &quot;0x%x&quot;<br>
++<br>
++#virtio-snd.c<br>
++virtio_snd_get_config(void *vdev, uint32_t jacks, uint32_t streams, uint32=
+_t chmaps) &quot;snd %p: get_config jacks=3D%&quot;PRIu32&quot; streams=3D%=
+&quot;PRIu32&quot; chmaps=3D%&quot;PRIu32&quot;&quot;<br>
++virtio_snd_set_config(void *vdev, uint32_t jacks, uint32_t new_jacks, uint=
+32_t streams, uint32_t new_streams, uint32_t chmaps, uint32_t new_chmaps) &=
+quot;snd %p: set_config jacks from %&quot;PRIu32&quot;-&gt;%&quot;PRIu32&qu=
+ot;, streams from %&quot;PRIu32&quot;-&gt;%&quot;PRIu32&quot;, chmaps from =
+%&quot;PRIu32&quot;-&gt;%&quot;PRIu32<br>
++virtio_snd_get_features(void *vdev, uint64_t features) &quot;snd %p: get_f=
+eatures 0x%&quot;PRIx64<br>
++virtio_snd_vm_state_running(void) &quot;vm state running&quot;<br>
++virtio_snd_vm_state_stopped(void) &quot;vm state stopped&quot;<br>
++virtio_snd_realize(void *snd) &quot;snd %p: realize&quot;<br>
++virtio_snd_unrealize(void *snd) &quot;snd %p: unrealize&quot;<br>
 diff --git a/hw/virtio/virtio-snd.c b/hw/virtio/virtio-snd.c<br>
-index ca09c937c7..3f8b46f372 100644<br>
---- a/hw/virtio/virtio-snd.c<br>
+new file mode 100644<br>
+index 0000000000..e3f2156e5e<br>
+--- /dev/null<br>
 +++ b/hw/virtio/virtio-snd.c<br>
-@@ -134,6 +134,19 @@ virtio_snd_set_config(VirtIODevice *vdev, const uint8_=
-t *config)<br>
-=C2=A0 =C2=A0 =C2=A0memcpy(&amp;s-&gt;snd_conf, sndconfig, sizeof(s-&gt;snd=
-_conf));<br>
-=C2=A0}<br>
-<br>
+@@ -0,0 +1,230 @@<br>
 +/*<br>
-+ * Get a specific stream from the virtio sound card device.<br>
-+ * Returns NULL if @stream_id is invalid or not allocated.<br>
++ * VIRTIO Sound Device conforming to<br>
 + *<br>
-+ * @s: VirtIOSound device<br>
-+ * @stream_id: stream id<br>
++ * &quot;Virtual I/O Device (VIRTIO) Version 1.2<br>
++ * Committee Specification Draft 01<br>
++ * 09 May 2022&quot;<br>
++ *<br>
++ * &lt;<a href=3D"https://docs.oasis-open.org/virtio/virtio/v1.2/csd01/vir=
+tio-v1.2-csd01.html#x1-52900014" rel=3D"noreferrer" target=3D"_blank">https=
+://docs.oasis-open.org/virtio/virtio/v1.2/csd01/virtio-v1.2-csd01.html#x1-5=
+2900014</a>&gt;<br>
++ *<br>
++ * Copyright (c) 2023 Emmanouil Pitsidianakis &lt;<a href=3D"mailto:manos.=
+pitsidianakis@linaro.org" target=3D"_blank">manos.pitsidianakis@linaro.org<=
+/a>&gt;<br>
++ * Copyright (C) 2019 OpenSynergy GmbH<br>
++ *<br>
++ * This work is licensed under the terms of the GNU GPL, version 2 or<br>
++ * (at your option) any later version.=C2=A0 See the COPYING file in the<b=
+r>
++ * top-level directory.<br>
 + */<br>
-+static VirtIOSoundPCMStream *virtio_snd_pcm_get_stream(VirtIOSound *s,<br>
++<br>
++#include &quot;qemu/osdep.h&quot;<br>
++#include &quot;qemu/iov.h&quot;<br>
++#include &quot;qemu/log.h&quot;<br>
++#include &quot;include/qemu/lockable.h&quot;<br>
++#include &quot;sysemu/runstate.h&quot;<br>
++#include &quot;trace.h&quot;<br>
++#include &quot;qapi/error.h&quot;<br>
++#include &quot;hw/virtio/virtio-snd.h&quot;<br>
++<br>
++#define VIRTIO_SOUND_VM_VERSION 1<br>
++#define VIRTIO_SOUND_JACK_DEFAULT 0<br>
++#define VIRTIO_SOUND_STREAM_DEFAULT 1<br>
++#define VIRTIO_SOUND_CHMAP_DEFAULT 0<br>
++#define VIRTIO_SOUND_HDA_FN_NID 0<br>
++<br>
++static const VMStateDescription vmstate_virtio_snd_device =3D {<br>
++=C2=A0 =C2=A0 .name =3D TYPE_VIRTIO_SND,<br>
++=C2=A0 =C2=A0 .version_id =3D VIRTIO_SOUND_VM_VERSION,<br>
++=C2=A0 =C2=A0 .minimum_version_id =3D VIRTIO_SOUND_VM_VERSION,<br>
++};<br>
++<br>
++static const VMStateDescription vmstate_virtio_snd =3D {<br>
++=C2=A0 =C2=A0 .name =3D &quot;virtio-sound&quot;,<br>
++=C2=A0 =C2=A0 .minimum_version_id =3D VIRTIO_SOUND_VM_VERSION,<br>
++=C2=A0 =C2=A0 .version_id =3D VIRTIO_SOUND_VM_VERSION,<br>
++=C2=A0 =C2=A0 .fields =3D (VMStateField[]) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 VMSTATE_VIRTIO_DEVICE,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 VMSTATE_END_OF_LIST()<br>
++=C2=A0 =C2=A0 },<br>
++};<br>
++<br>
++static Property virtio_snd_properties[] =3D {<br>
++=C2=A0 =C2=A0 DEFINE_AUDIO_PROPERTIES(VirtIOSound, card),<br>
++=C2=A0 =C2=A0 DEFINE_PROP_UINT32(&quot;jacks&quot;, VirtIOSound, snd_conf.=
+jacks,<br>
 +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0uint32_t stream_id)<br>
+=A0 =C2=A0VIRTIO_SOUND_JACK_DEFAULT),<br>
++=C2=A0 =C2=A0 DEFINE_PROP_UINT32(&quot;streams&quot;, VirtIOSound, snd_con=
+f.streams,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0VIRTIO_SOUND_STREAM_DEFAULT),<br>
++=C2=A0 =C2=A0 DEFINE_PROP_UINT32(&quot;chmaps&quot;, VirtIOSound, snd_conf=
+.chmaps,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0VIRTIO_SOUND_CHMAP_DEFAULT),<br>
++=C2=A0 =C2=A0 DEFINE_PROP_END_OF_LIST(),<br>
++};<br>
++<br>
++static void<br>
++virtio_snd_get_config(VirtIODevice *vdev, uint8_t *config)<br>
 +{<br>
-+=C2=A0 =C2=A0 return stream_id &gt;=3D s-&gt;snd_conf.streams ? NULL : s-&=
-gt;pcm-&gt;streams[stream_id];<br>
++=C2=A0 =C2=A0 VirtIOSound *s =3D VIRTIO_SND(vdev);<br>
++=C2=A0 =C2=A0 trace_virtio_snd_get_config(vdev,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 s-&gt;snd_conf.jacks,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 s-&gt;snd_conf.streams,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 s-&gt;snd_conf.chmaps);<br>
++<br>
++=C2=A0 =C2=A0 memcpy(config, &amp;s-&gt;snd_conf, sizeof(s-&gt;snd_conf));=
+<br>
 +}<br>
 +<br>
-=C2=A0/*<br>
-=C2=A0 * Get params for a specific stream.<br>
-=C2=A0 *<br>
-@@ -147,6 +160,69 @@ static VirtIOSoundPCMParams *virtio_snd_pcm_get_params=
-(VirtIOSound *s,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0: s-&gt;pcm-&gt;pcm_params[stream_id];<br=
->
-=C2=A0}<br>
-<br>
-+/*<br>
-+ * Handle the VIRTIO_SND_R_PCM_INFO request.<br>
-+ * The function writes the info structs to the request element.<br>
-+ *<br>
-+ * @s: VirtIOSound device<br>
-+ * @cmd: The request command queue element from VirtIOSound cmdq field<br>
-+ */<br>
-+static void virtio_snd_handle_pcm_info(VirtIOSound *s,<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0virtio_sn=
-d_ctrl_command *cmd)<br>
++static void<br>
++virtio_snd_set_config(VirtIODevice *vdev, const uint8_t *config)<br>
 +{<br>
-+=C2=A0 =C2=A0 virtio_snd_query_info req;<br>
-+=C2=A0 =C2=A0 VirtIOSoundPCMStream *stream =3D NULL;<br>
-+=C2=A0 =C2=A0 g_autofree virtio_snd_pcm_info *pcm_info =3D NULL;<br>
-+=C2=A0 =C2=A0 size_t sz =3D iov_to_buf(cmd-&gt;elem-&gt;out_sg,<br>
++=C2=A0 =C2=A0 VirtIOSound *s =3D VIRTIO_SND(vdev);<br>
++=C2=A0 =C2=A0 const virtio_snd_config *sndconfig =3D<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 (const virtio_snd_config *)config;<br>
++<br>
++<br>
++=C2=A0 =C2=A0trace_virtio_snd_set_config(vdev,<br>
 +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0cmd-&gt;elem-&gt;out_num,<br>
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0s-&gt;snd_conf.jacks,<br>
 +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A00,<br>
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0sndconfig-&gt;jacks,<br>
 +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0&amp;req,<br>
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0s-&gt;snd_conf.streams,<br>
 +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0sizeof(req));<br>
-+=C2=A0 =C2=A0 if (sz !=3D sizeof(virtio_snd_query_info)) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 cmd-&gt;resp.code =3D VIRTIO_SND_S_BAD_MSG;<br=
->
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 return;<br>
-+=C2=A0 =C2=A0 }<br>
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0sndconfig-&gt;streams,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0s-&gt;snd_conf.chmaps,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0sndconfig-&gt;chmaps);<br>
 +<br>
-+=C2=A0 =C2=A0 if (iov_size(cmd-&gt;elem-&gt;in_sg, cmd-&gt;elem-&gt;in_num=
-) &lt;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 sizeof(virtio_snd_hdr) + req.size * req.count)=
- {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 error_report(&quot;pcm info: buffer too small,=
- got: %lu, needed: %lu&quot;,<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 iov_size(cmd-&gt;e=
-lem-&gt;in_sg, cmd-&gt;elem-&gt;in_num),<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 sizeof(virtio_snd_=
-pcm_info));<br></blockquote><div><br></div><div>../hw/virtio/virtio-snd.c: =
-In function &#39;virtio_snd_handle_pcm_info&#39;:<br>../hw/virtio/virtio-sn=
-d.c:200:22: error: format &#39;%lu&#39; expects argument of type &#39;long =
-unsigned int&#39;, but argument 2 has type &#39;size_t&#39; {aka &#39;long =
-long unsigned int&#39;} [-Werror=3Dformat=3D]<br>=C2=A0 200 | =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 error_report(&quot;pcm info: buffer too small, got: %lu, nee=
-ded: %lu&quot;,<br>=C2=A0 =C2=A0 =C2=A0 | =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
-~~~~~~~~~~~~~~~~~~~~~<br>=C2=A0 201 | =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 iov_size(cmd-&gt;elem-&gt;in_sg, cmd-&gt;elem-&gt;in_n=
-um),<br>=C2=A0 =C2=A0 =C2=A0 | =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~<br>=C2=A0 =C2=
-=A0 =C2=A0 | =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 |<br>=
-=C2=A0 =C2=A0 =C2=A0 | =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 size_t {aka long long unsigned int}<br>../hw/virtio/virtio-snd.c:200:22=
-: error: format &#39;%lu&#39; expects argument of type &#39;long unsigned i=
-nt&#39;, but argument 3 has type &#39;long long unsigned int&#39; [-Werror=
-=3Dformat=3D]<br>=C2=A0 200 | =C2=A0 =C2=A0 =C2=A0 =C2=A0 error_report(&quo=
-t;pcm info: buffer too small, got: %lu, needed: %lu&quot;,<br>=C2=A0 =C2=A0=
- =C2=A0 | =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~<br>=C2=A0 =
-201 | =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 iov_size(cmd-=
-&gt;elem-&gt;in_sg, cmd-&gt;elem-&gt;in_num),<br>=C2=A0 202 | =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 sizeof(virtio_snd_pcm_info));<br=
->=C2=A0 =C2=A0 =C2=A0 | =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 ~~~~~~~~~~~~~~~~~~~~~~~~~~~<br>=C2=A0 =C2=A0 =C2=A0 | =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 |<br>=C2=A0 =C2=A0 =C2=A0 | =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 long long unsigned int=
-<br></div><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margi=
-n:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex=
-">
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 cmd-&gt;resp.code =3D VIRTIO_SND_S_BAD_MSG;<br=
->
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 return;<br>
-+=C2=A0 =C2=A0 }<br>
-+<br>
-+=C2=A0 =C2=A0 pcm_info =3D g_new0(virtio_snd_pcm_info, req.count);<br>
-+=C2=A0 =C2=A0 for (uint32_t i =3D req.start_id; i &lt; req.start_id + req.=
-count; i++) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 trace_virtio_snd_handle_pcm_info(i);<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 stream =3D virtio_snd_pcm_get_stream(s, i);<br=
->
-+<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (!stream) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 error_report(&quot;Invalid strea=
-m id: %&quot;PRIu32, i);<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 cmd-&gt;resp.code =3D VIRTIO_SND=
-_S_BAD_MSG;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
-+<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 pcm_info[i - req.start_id].hdr.hda_fn_nid =3D =
-stream-&gt;info.hdr.hda_fn_nid;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 pcm_info[i - req.start_id].features =3D stream=
--&gt;features;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 pcm_info[i - req.start_id].formats =3D stream-=
-&gt;formats;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 pcm_info[i - req.start_id].rates =3D stream-&g=
-t;rates;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 pcm_info[i - req.start_id].direction =3D strea=
-m-&gt;direction;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 pcm_info[i - req.start_id].channels_min =3D st=
-ream-&gt;channels_min;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 pcm_info[i - req.start_id].channels_max =3D st=
-ream-&gt;channels_max;<br>
-+<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 memset(&amp;pcm_info[i].padding, 0, sizeof(pcm=
-_info[i].padding));<br>
-+=C2=A0 =C2=A0 }<br>
-+<br>
-+=C2=A0 =C2=A0 cmd-&gt;resp.code =3D VIRTIO_SND_S_OK;<br>
-+<br>
-+=C2=A0 =C2=A0 iov_from_buf(cmd-&gt;elem-&gt;in_sg,<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0cmd-&gt;elem=
--&gt;in_num,<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0sizeof(virti=
-o_snd_hdr),<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0pcm_info,<br=
->
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0sizeof(virti=
-o_snd_pcm_info) * req.count);<br>
++=C2=A0 =C2=A0 memcpy(&amp;s-&gt;snd_conf, sndconfig, sizeof(s-&gt;snd_conf=
+));<br>
 +}<br>
 +<br>
-=C2=A0/*<br>
-=C2=A0 * Set the given stream params.<br>
-=C2=A0 * Called by both virtio_snd_handle_pcm_set_params and during device<=
++/*<br>
++ * Queue handler stub.<br>
++ *<br>
++ * @vdev: VirtIOSound device<br>
++ * @vq: virtqueue<br>
++ */<br>
++static void virtio_snd_handle_queue(VirtIODevice *vdev, VirtQueue *vq) {}<=
 br>
-@@ -358,6 +434,8 @@ process_cmd(VirtIOSound *s, virtio_snd_ctrl_command *cm=
-d)<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0cmd-&gt;resp.code =3D VIRTIO_SND_S_NOT_SU=
-PP;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0break;<br>
-=C2=A0 =C2=A0 =C2=A0case VIRTIO_SND_R_PCM_INFO:<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 virtio_snd_handle_pcm_info(s, cmd);<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
-=C2=A0 =C2=A0 =C2=A0case VIRTIO_SND_R_PCM_SET_PARAMS:<br>
-=C2=A0 =C2=A0 =C2=A0case VIRTIO_SND_R_PCM_PREPARE:<br>
-=C2=A0 =C2=A0 =C2=A0case VIRTIO_SND_R_PCM_START:<br>
--- <br>
-2.39.2<br>
-<br>
-<br>
-</blockquote></div><br clear=3D"all"><br><span class=3D"gmail_signature_pre=
-fix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature">Marc-Andr=C3=
-=A9 Lureau<br></div></div>
++<br>
++static uint64_t get_features(VirtIODevice *vdev, uint64_t features,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0Error **errp)<br>
++{<br>
++=C2=A0 =C2=A0 /*<br>
++=C2=A0 =C2=A0 =C2=A0* virtio-v1.2-csd01, 5.14.3,<br>
++=C2=A0 =C2=A0 =C2=A0* Feature Bits<br>
++=C2=A0 =C2=A0 =C2=A0* None currently defined.<br>
++=C2=A0 =C2=A0 =C2=A0*/<br>
++=C2=A0 =C2=A0 trace_virtio_snd_get_features(vdev, features);<br>
++=C2=A0 =C2=A0 return features | 1UL &lt;&lt; VIRTIO_F_VERSION_1 | 1UL &lt;=
+&lt; VIRTIO_F_IN_ORDER;<br></blockquote><div><br></div><div>../hw/virtio/vi=
+rtio-snd.c: In function &#39;get_features&#39;:<br>../hw/virtio/virtio-snd.=
+c:883:27: error: left shift count &gt;=3D width of type [-Werror=3Dshift-co=
+unt-overflow]<br>=C2=A0 883 | =C2=A0 =C2=A0 return features | 1UL &lt;&lt; =
+VIRTIO_F_VERSION_1 | 1UL &lt;&lt; VIRTIO_F_IN_ORDER;<br>=C2=A0 =C2=A0 =C2=
+=A0 | =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 =C2=A0 ^~<br>../hw/virtio/virtio-snd.c:883:55: error: left s=
+hift count &gt;=3D width of type [-Werror=3Dshift-count-overflow]<br>=C2=A0=
+ 883 | =C2=A0 =C2=A0 return features | 1UL &lt;&lt; VIRTIO_F_VERSION_1 | 1U=
+L &lt;&lt; VIRTIO_F_IN_ORDER;<br>=C2=A0 =C2=A0 =C2=A0 | =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 ^~ <br></div><div><br></div></div><span class=3D"g=
+mail_signature_prefix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signat=
+ure">Marc-Andr=C3=A9 Lureau<br></div></div>
 
---0000000000001cf23e0601509375--
+--0000000000007504b60601509662--
 
