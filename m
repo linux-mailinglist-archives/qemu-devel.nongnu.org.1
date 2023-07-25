@@ -2,74 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C765B7614F0
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 13:24:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59653761530
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 13:26:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOG8a-00070z-Ig; Tue, 25 Jul 2023 07:23:32 -0400
+	id 1qOGAp-0008PF-Qp; Tue, 25 Jul 2023 07:25:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ashutosh.dandora4@gmail.com>)
- id 1qOG8R-0006xM-BV
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 07:23:23 -0400
-Received: from mail-oi1-x230.google.com ([2607:f8b0:4864:20::230])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ashutosh.dandora4@gmail.com>)
- id 1qOG8P-0004Xt-S5
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 07:23:23 -0400
-Received: by mail-oi1-x230.google.com with SMTP id
- 5614622812f47-3a5ad21a1f9so1430614b6e.2
- for <qemu-devel@nongnu.org>; Tue, 25 Jul 2023 04:23:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1690284200; x=1690889000;
- h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
- :date:message-id:reply-to;
- bh=aoryWTbp1RwQbuqaq/2y7j5Mq/riE7DEfUYcDoVaMAo=;
- b=FOYRNeqcBewc1b9xwrcN2Fbie0kSwkExH9avBuCAOI7xTLGwf1cqpl/8tNo3kTBHCQ
- O5G2oi6/8XHIjkzU6/iY2nVlgbYNGVMRurDy/6KXnB/u6abQco4/Uujk6OVjRRw6hMw2
- ONgSEMrYU3Te5mihSOQxYw/u4GlHPeJFt3UNW8Aw7PF/O3od21wYBekNPaPfX0GAHHia
- qH2KgVVT8q8v6bklJAePBBhMba3fvjmFue1ZQz7pPtEtpzDSO+A9eZwL1ZMs/JTV3mQ1
- JzRxiZ1rviQ6atWWad0CIRumOs5fqyaXRexhO3bOc7idcupzk8cRWafI1IJHpOulkl3y
- kywA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690284200; x=1690889000;
- h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=aoryWTbp1RwQbuqaq/2y7j5Mq/riE7DEfUYcDoVaMAo=;
- b=h2BnAPsZPXpdma7WeZenC/HQl5KUzPsSWCmDvrjFQBLHzFX6oPCjyFaTeGOSQIdIgd
- m6z0e8tHVxxmTywI2TlB/kiadC1O0Uc0Eibj/4oOIZ80dWSzN8zNVvTE59S2Mwz3jmoo
- b2HasR+a8DhevL8hJrQGYAAjedEW1oTdFko8nkuRbxEiNVmEKPDGxtDLGL//vFSaDtod
- AE8B7x3oPjmY1FOtwq6n1bHpf5Br4SRiYg34SVeosnc8A7jOVxBMmb0Eza/dHDfUy4/9
- wESqHWVMxevXzfTqkfNgACLIX5AvkI0XUgIABV48i0FntUd/1GB4PR/vjtgELPyzjx83
- FEuw==
-X-Gm-Message-State: ABy/qLZEiOA0N3qzaPDUITLyFzRPNnYidhArqm6vV3WbbftPI4wh3Jv8
- pg7lYKy+zUocKQ88/fQLGL+ppltyiSZXIkDF+vlrTuIi
-X-Google-Smtp-Source: APBJJlG0aPUVHxJepyrythEMoI8T92TsWne9i4dL2wx6wdA3QNX1wEDNbMd7QIgBTJzXHK6JuBh6XA9MCtkgIKFkGnk=
-X-Received: by 2002:a05:6808:ecc:b0:3a4:24c5:ff14 with SMTP id
- q12-20020a0568080ecc00b003a424c5ff14mr15769742oiv.4.1690284200020; Tue, 25
- Jul 2023 04:23:20 -0700 (PDT)
-MIME-Version: 1.0
-From: Ashutosh Sharma <ashutosh.dandora4@gmail.com>
-Date: Tue, 25 Jul 2023 16:53:09 +0530
-Message-ID: <CADOvtemuUgp322fE6xYrzVp_RNU_jpqOfzd-12ES-jpPoDvBaA@mail.gmail.com>
-Subject: Format type of qemu NVMe virtual drive reverted back to its default
- (512 bytes block size) after performing hot plugout/plugin operation on that
- drive.
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1qOGAn-0008Nl-7p
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 07:25:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1qOGAl-0005BS-QY
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 07:25:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1690284345;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=fNC19noJdq623w1yRvS7RGW9t8107t5R8MmbiCxwkRw=;
+ b=gI7VhwkYp6XyDHNZINxaS0d6Zk98gSkrAdzzrZO5ucGXnOcDEnCo8gDRd64UDuVXh5EOja
+ 3q6GuTDtDfVNzrc21ebzRtLnDg/eyPbNdgPJc19mZ4WnNx9X0GvyEWZ0jvAGXYQXj7s3Gh
+ q9MwGqoEKysxE+dw+k8I1KDQCTTBues=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-73-4qeVL-TINMu3t4HBaH3sPA-1; Tue, 25 Jul 2023 07:25:44 -0400
+X-MC-Unique: 4qeVL-TINMu3t4HBaH3sPA-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CFF8F1C02142
+ for <qemu-devel@nongnu.org>; Tue, 25 Jul 2023 11:25:43 +0000 (UTC)
+Received: from localhost (unknown [10.39.208.19])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 211C0492C13;
+ Tue, 25 Jul 2023 11:25:42 +0000 (UTC)
+From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
-Cc: peterx@redhat.com, k.jensen@samsung.com, philmd@linaro.org, 
- armbru@redhat.com, mst@redhat.com, lukasz.gieryk@linux.intel.com, 
- alex.williamson@redhat.com, helgaas@kernel.org, afaria@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::230;
- envelope-from=ashutosh.dandora4@gmail.com; helo=mail-oi1-x230.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Cc: thuth@redhat.com, Marc-Andre Lureau <marcandre.lureau@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>
+Subject: [PATCH] ui/dbus: fix win32 compilation when !opengl
+Date: Tue, 25 Jul 2023 15:25:40 +0400
+Message-ID: <20230725112540.53284-1-marcandre.lureau@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=marcandre.lureau@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -86,62 +78,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+From: Marc-Andre Lureau <marcandre.lureau@redhat.com>
 
-I have a virtual system created using qemu 7.2. In that system, I
-attached/hot plugged a virtual NVMe drive. This drive had a default
-block size of 512 bytes.
+Fixes: https://gitlab.com/qemu-project/qemu/-/issues/1782
 
-admin@node-3:~$ sudo nvme list
-Node                  SN                   Model
-             Namespace Usage                      Format           FW
-Rev
---------------------- --------------------
----------------------------------------- ---------
--------------------------- ---------------- --------
-/dev/nvme0n1          ashudev-6f34a1cf_13  QEMU NVMe Ctrl
-             1          34.36  GB /  34.36  GB    512   B +  0 B
-7.1.92
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+---
+ ui/dbus-listener.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-After that, I formatted this drive with 4k block size and it formatted
-successfully.
+diff --git a/ui/dbus-listener.c b/ui/dbus-listener.c
+index 68ff343799..02fc6ae239 100644
+--- a/ui/dbus-listener.c
++++ b/ui/dbus-listener.c
+@@ -338,6 +338,7 @@ static bool dbus_scanout_map(DBusDisplayListener *ddl)
+     return true;
+ }
+ 
++#ifdef CONFIG_OPENGL
+ static bool
+ dbus_scanout_share_d3d_texture(
+     DBusDisplayListener *ddl,
+@@ -399,7 +400,8 @@ dbus_scanout_share_d3d_texture(
+ 
+     return true;
+ }
+-#endif
++#endif /* CONFIG_OPENGL */
++#endif /* WIN32 */
+ 
+ #ifdef CONFIG_OPENGL
+ static void dbus_scanout_texture(DisplayChangeListener *dcl,
+-- 
+2.41.0
 
-admin@node-3:~$ sudo nvme format /dev/nvme0n1 -f --lbaf 4
-Success formatting namespace:1
-admin@node-3:~$
-admin@node-3:~$ sudo nvme list
-Node                  SN                   Model
-             Namespace Usage                      Format           FW
-Rev
---------------------- --------------------
----------------------------------------- ---------
--------------------------- ---------------- --------
-/dev/nvme0n1          ashudev-6f34a1cf_13  QEMU NVMe Ctrl
-             1          34.36  GB /  34.36  GB      4 KiB +  0 B
-7.1.92
-
-Then, I just performed the hot plugout and then plugin operation on
-that drive using qmp.execute's device_del and device_add cmd
-respectively.
-
-But, after that, the default block size of that drive reverted to 512 bytes.
-
-admin@node-3:~$ sudo nvme list
-Node                  SN                   Model
-             Namespace Usage                      Format           FW
-Rev
---------------------- --------------------
----------------------------------------- ---------
--------------------------- ---------------- --------
-/dev/nvme0n1          ashudev-6f34a1cf_13  QEMU NVMe Ctrl
-             1          34.36  GB /  34.36  GB    512   B +  0 B
-7.1.92
-
-So, I just wanted to know why the NVMe format type reverted back to
-512 bytes, as I just performed the hot plugout/plugin operations only.
-Drive's block size (format type) should not be changed upon
-removal/insertion, right ? or am I missing something ?
-
-Regards,
-Ashutosh
 
