@@ -2,85 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF78F7621F8
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 21:02:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66574762204
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 21:09:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qONHX-0003oj-Va; Tue, 25 Jul 2023 15:01:15 -0400
+	id 1qONOQ-0007Mn-05; Tue, 25 Jul 2023 15:08:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qONHW-0003ic-5A
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 15:01:14 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qONHU-0005ar-L3
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 15:01:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690311671;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=FrdzgtWgbiw64lZLdsOue6c32PJ3KvDczaqjN7K60WM=;
- b=cgqxErdZZl7wDS5+LbNF3mbQG0LQvlsXBt/4txwY2vjHZkdjj01hrYYNHWnFaQQTSZw+e7
- kqmA8Os6IufUYwvei5aaWFSnfVbnpV1a+eKLL88zT3VUB4neWFlXfvZckHCW22dQ370IWN
- hvTnERW5xGsCrflgcX34wBMlQqBpJOY=
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
- [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-101-jOh_49W0Pyyp4P-0rdx_PA-1; Tue, 25 Jul 2023 15:01:08 -0400
-X-MC-Unique: jOh_49W0Pyyp4P-0rdx_PA-1
-Received: by mail-pj1-f70.google.com with SMTP id
- 98e67ed59e1d1-2683548c37cso725883a91.2
- for <qemu-devel@nongnu.org>; Tue, 25 Jul 2023 12:01:08 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qONOO-0007KF-Ah
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 15:08:20 -0400
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qONOM-0007Vx-OK
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 15:08:20 -0400
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-317744867a6so66051f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 25 Jul 2023 12:08:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1690312097; x=1690916897;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=WU0d74iNPA+1F6v5LuUUyes2rcfsaNFUn8ADDAwNbqQ=;
+ b=daR7B53fE9cAPTyk/h9CfSaj1betCIMfFgZiWt/Y1K+fAfNtBeGiqYYUf8J66Ym+PL
+ 1StomptMDSi2gAMYBi7W/LdrHianYRiqm/V2cFHyRpP8uvHhMghXiJ3Vxa0w/NVJ/chu
+ IllzdWufTBaFdpDUnuH4YeJEPaFSnbr15TOEsgDwex71p6NjEUho/kfh35sLNMmiiT9L
+ rurrRnwWMVsbRNMs9E8oX0pUlrqpCFtcg8a3HbiYdSOWkAoRMu7CGEwc6Ms2qk5vGG29
+ Z7IccNdU8U97rmvsPt38NkH9WXdUf+sBG1v6MchyHRsJ5YexHxO3dBe+wRIY97vq3D4b
+ hMEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690311668; x=1690916468;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=FrdzgtWgbiw64lZLdsOue6c32PJ3KvDczaqjN7K60WM=;
- b=mIPkRU4fngYV767XIACcCVQKRH6EDAKyH09FYfYORcI3FUSlWdYAPELAq0VV4KrGyK
- HOCQJd8KPCIEcz0baPgBAt9F2JStB8sz8ePTKhYw/otAq8VybPXBijC4D2sMV2Xpbo+W
- o3DtXbUOsYiKGP7Wi/YHZrDyfILX7/VoNkHQAOkXQ+Z7NaPe/zY6TAnxl6myi6gTuxvr
- Yj/73AvO11N60lvaJetSm/vqrB7iuPCHLWE7M+4y1WbGh5UNXFnr300caJFasbq4p1kd
- VDESwkJ4YxDgFng9dSGzkKa1XLQKWNut/ic3gT5J/7Aggm9wiQqnCmjtmcTjagZfLVZ9
- OGHg==
-X-Gm-Message-State: ABy/qLazcbOkchnNcO7y2kFpYCOq2LRqKHT3D+CmWx/nKFcfT7jRPh8h
- +FCqC/BeR1s1xScn0NDrpODnp1Mz+gugqyapoEZ097t0lTsiaDwdtR/0RhXFpwu8R0IBrwtS95Y
- o8pcOyfrxVFnigAprnNFqSOX/Aw11nps=
-X-Received: by 2002:a17:90a:d983:b0:262:ebfd:ce44 with SMTP id
- d3-20020a17090ad98300b00262ebfdce44mr37435pjv.34.1690311667905; 
- Tue, 25 Jul 2023 12:01:07 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlGKVOgtvV1jZlxKZOMTQG65umMLJS4LaVpFYO4S8BN77odx+AsiV8dCYNpp2TuzEG0zhk26v3ti5o9bdaPkoKo=
-X-Received: by 2002:a17:90a:d983:b0:262:ebfd:ce44 with SMTP id
- d3-20020a17090ad98300b00262ebfdce44mr37419pjv.34.1690311667625; Tue, 25 Jul
- 2023 12:01:07 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1690312097; x=1690916897;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=WU0d74iNPA+1F6v5LuUUyes2rcfsaNFUn8ADDAwNbqQ=;
+ b=lbgrYIzEQIbpTpVY7D6occ9sUUcoP2o7FYZG62sqMlVVpSkIs3c2hRU8NwelZ0C9XJ
+ 0jevy7S2qbJZej1Pnpcl1qHMu7vdEuJFSEkmvE1tVjJHyEfNLg6MMnQ3TABtlcpsBEU7
+ P1D1ET8bkjJl7IklcVgz4wk/DgzfCoWfQgpOg3SV+Fgqy6hWti0X/8EkUJEpeU+HndsK
+ 0BKdcM/jqyZMusHf1hteVZTat/JePW+6YuJFlLArd1Jed5sd0zOafDgPpeHe1+OOnuvt
+ fXyOorwXASKezYbSJrz22gMa5DWKrzl0Vx1qZ9CcsMDBnXAFcrfXqGwI2q0QGBqKfgH2
+ LETQ==
+X-Gm-Message-State: ABy/qLYL0mFjsjDeuMLXhPMZyAgi5zwuYBSpMfm1Sh1siZsQn8WvoGmS
+ v6O8UwCuv5FYiyKlJN3wcABH9ie2wevi/f7/ZSUWaw==
+X-Google-Smtp-Source: APBJJlHI1G7j5wDKTKYXdhis7zKtMRI3YBoeAvuF4bWk92TIzMuR6M0ffslSqySfVhsCh/LNT9sVe6zWmhuC+JHU6eQ=
+X-Received: by 2002:a05:6000:11d2:b0:317:6189:fe7a with SMTP id
+ i18-20020a05600011d200b003176189fe7amr3954586wrx.58.1690312096424; Tue, 25
+ Jul 2023 12:08:16 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230609140844.202795-1-nks@flawful.org>
- <ZLe/VG5d6TEdp/MT@x1-carbon>
- <b58779ed-cecb-824b-019e-bc34e6b2258a@linaro.org>
-In-Reply-To: <b58779ed-cecb-824b-019e-bc34e6b2258a@linaro.org>
-From: John Snow <jsnow@redhat.com>
-Date: Tue, 25 Jul 2023 15:00:56 -0400
-Message-ID: <CAFn=p-Y4Tw0eY=8yXxnzSA3kzwb36H0oysag=HD_8eMsPNwuDg@mail.gmail.com>
-Subject: Re: [PATCH v3 0/8] misc AHCI cleanups
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: Niklas Cassel <Niklas.Cassel@wdc.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>, "qemu-block@nongnu.org" <qemu-block@nongnu.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- Damien Le Moal <dlemoal@kernel.org>
+References: <cover.1690294956.git.mjt@tls.msk.ru>
+In-Reply-To: <cover.1690294956.git.mjt@tls.msk.ru>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 25 Jul 2023 20:08:05 +0100
+Message-ID: <CAFEAcA8x3UjJ6MV3Gf3bk+LA9ZCLB+MWm1JNANoFUbORUBahJg@mail.gmail.com>
+Subject: Re: [PULL 0/8] trivial-patches 25-07-2023
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: qemu-devel@nongnu.org, qemu-trivial@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,58 +84,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jul 25, 2023 at 9:04=E2=80=AFAM Philippe Mathieu-Daud=C3=A9
-<philmd@linaro.org> wrote:
+On Tue, 25 Jul 2023 at 15:57, Michael Tokarev <mjt@tls.msk.ru> wrote:
 >
-> Hi Niklas, John, Paolo, Kevin,
+> The following changes since commit 3ee44ec72753ec0ff05ad1569dfa609203d722b2:
 >
-> On 19/7/23 12:47, Niklas Cassel wrote:
+>   Merge tag 'pull-request-2023-07-24' of https://gitlab.com/thuth/qemu into staging (2023-07-24 18:06:36 +0100)
 >
-> >> Niklas Cassel (8):
-> >>    hw/ide/ahci: remove stray backslash
-> >>    hw/ide/core: set ERR_STAT in unsupported command completion
-> >>    hw/ide/ahci: write D2H FIS when processing NCQ command
-> >>    hw/ide/ahci: simplify and document PxCI handling
-> >>    hw/ide/ahci: PxSACT and PxCI is cleared when PxCMD.ST is cleared
-> >>    hw/ide/ahci: PxCI should not get cleared when ERR_STAT is set
-> >>    hw/ide/ahci: fix ahci_write_fis_sdb()
-> >>    hw/ide/ahci: fix broken SError handling
-> >>
-> >>   hw/ide/ahci.c             | 112 +++++++++++++++++++++++++++---------=
---
-> >>   hw/ide/core.c             |   2 +-
-> >>   tests/qtest/libqos/ahci.c | 106 +++++++++++++++++++++++++++---------
-> >>   tests/qtest/libqos/ahci.h |   8 +--
-> >>   4 files changed, 164 insertions(+), 64 deletions(-)
-> >>
-> >> --
-> >> 2.40.1
-> >>
-> >>
-> >
-> > Hello Philippe,
-> >
-> > Considering that you picked up my patch,
-> > "hw/ide/ahci: remove stray backslash" (patch 1/8 in this series),
-> > and since John seems to have gone silent for 40+ days,
-> > could you please consider taking this series through your misc tree?
+> are available in the Git repository at:
 >
+>   https://gitlab.com/mjt0k/qemu.git/ tags/pull-trivial-patches
+>
+> for you to fetch changes up to ff62c210165cf61b15f18c8a9835a5a5ce6c5a53:
+>
+>   qapi: Correct "eg." to "e.g." in documentation (2023-07-25 17:20:32 +0300)
+>
+> ----------------------------------------------------------------
+> trivial-patches 25-07-2023
+> ----------------------------------------------------------------
+>
+> Ani Sinha (1):
+>       hw/pci: add comment to explain checking for available function 0 in pci hotplug
+>
+> Bastian Koppelmann (1):
+>       target/tricore: Rename tricore_feature
+>
+> Markus Armbruster (1):
+>       qapi: Correct "eg." to "e.g." in documentation
+>
+> Michael Tokarev (5):
+>       migration: spelling fixes
+>       s390x: spelling fixes
+>       arm: spelling fixes
+>       other architectures: spelling fixes
+>       hw/9pfs: spelling fixes
 
-40 days, ouch. I kept thinking it had been a week. Don't trust me with time=
-.
 
-> (First patch was a cleanup)
->
-> Niklas, I don't feel confident enough :/
->
-> John, Paolo, Kevin, do you Ack?
->
-> Regards,
->
-> Phil.
+Applied, thanks.
 
-I'm staging it, but it's for next release. We'll get it in early and
-it gives us a chance to fix anything that's amiss before the next RC
-window.
+Please update the changelog at https://wiki.qemu.org/ChangeLog/8.1
+for any user-visible changes.
 
+-- PMM
 
