@@ -2,38 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1744B761B0E
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 16:11:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B093761B17
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 16:12:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOIkN-0003cM-Oa; Tue, 25 Jul 2023 10:10:48 -0400
+	id 1qOIke-0003dl-FM; Tue, 25 Jul 2023 10:11:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qOIk5-0003XJ-Vq; Tue, 25 Jul 2023 10:10:25 -0400
+ id 1qOIk6-0003Yn-PB; Tue, 25 Jul 2023 10:10:26 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qOIk4-0007WW-Cg; Tue, 25 Jul 2023 10:10:25 -0400
+ id 1qOIk5-0007Xd-6A; Tue, 25 Jul 2023 10:10:26 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 4F1C616168;
+ by isrv.corpit.ru (Postfix) with ESMTP id 791B016169;
  Tue, 25 Jul 2023 17:10:14 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id EA06519500;
- Tue, 25 Jul 2023 17:10:11 +0300 (MSK)
-Received: (nullmailer pid 3372587 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 28F0A19501;
+ Tue, 25 Jul 2023 17:10:12 +0300 (MSK)
+Received: (nullmailer pid 3372590 invoked by uid 1000);
  Tue, 25 Jul 2023 14:10:11 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>,
+ David Hildenbrand <david@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- David Hildenbrand <david@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.5 06/14] target/s390x: Make CKSM raise an exception if R2
- is odd
-Date: Tue, 25 Jul 2023 17:10:00 +0300
-Message-Id: <20230725141009.3372529-6-mjt@tls.msk.ru>
+ Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.5 07/14] target/s390x: Fix CLM with M3=0
+Date: Tue, 25 Jul 2023 17:10:01 +0300
+Message-Id: <20230725141009.3372529-7-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.5-20230725170615@cover.tls.msk.ru>
 References: <qemu-stable-7.2.5-20230725170615@cover.tls.msk.ru>
@@ -64,49 +63,35 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-R2 designates an even-odd register pair; the instruction should raise
-a specification exception when R2 is not even.
+When the mask is zero, access exceptions should still be recognized for
+1 byte at the second-operand address. CC should be set to 0.
 
 Cc: qemu-stable@nongnu.org
-Fixes: e023e832d0ac ("s390x: translate engine for s390x CPU")
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Message-Id: <20230724082032.66864-2-iii@linux.ibm.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Fixes: defb0e3157af ("s390x: Implement opcode helpers")
 Reviewed-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Message-Id: <20230724082032.66864-3-iii@linux.ibm.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-(cherry picked from commit 761b0aa9381e2f755b9b594f7f3033d564561751)
+(cherry picked from commit 4b6e4c0b8223681ae85462794848db4386de1a8d)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/s390x/tcg/insn-data.h.inc b/target/s390x/tcg/insn-data.h.inc
-index 4249632af3..0e328ea0fd 100644
---- a/target/s390x/tcg/insn-data.h.inc
-+++ b/target/s390x/tcg/insn-data.h.inc
-@@ -157,7 +157,7 @@
-     C(0xb2fa, NIAI,    E,     EH,  0, 0, 0, 0, 0, 0)
+diff --git a/target/s390x/tcg/mem_helper.c b/target/s390x/tcg/mem_helper.c
+index 7e7de5e2f1..791a412d95 100644
+--- a/target/s390x/tcg/mem_helper.c
++++ b/target/s390x/tcg/mem_helper.c
+@@ -704,6 +704,11 @@ uint32_t HELPER(clm)(CPUS390XState *env, uint32_t r1, uint32_t mask,
+     HELPER_LOG("%s: r1 0x%x mask 0x%x addr 0x%" PRIx64 "\n", __func__, r1,
+                mask, addr);
  
- /* CHECKSUM */
--    C(0xb241, CKSM,    RRE,   Z,   r1_o, ra2, new, r1_32, cksm, 0)
-+    C(0xb241, CKSM,    RRE,   Z,   r1_o, ra2_E, new, r1_32, cksm, 0)
- 
- /* COPY SIGN */
-     F(0xb372, CPSDR,   RRF_b, FPSSH, f3, f2, new, f1, cps, 0, IF_AFP1 | IF_AFP2 | IF_AFP3)
-diff --git a/target/s390x/tcg/translate.c b/target/s390x/tcg/translate.c
-index 0885bf2641..ba8b90f538 100644
---- a/target/s390x/tcg/translate.c
-+++ b/target/s390x/tcg/translate.c
-@@ -5992,6 +5992,12 @@ static void in2_ra2(DisasContext *s, DisasOps *o)
- }
- #define SPEC_in2_ra2 0
- 
-+static void in2_ra2_E(DisasContext *s, DisasOps *o)
-+{
-+    return in2_ra2(s, o);
-+}
-+#define SPEC_in2_ra2_E SPEC_r2_even
++    if (!mask) {
++        /* Recognize access exceptions for the first byte */
++        probe_read(env, addr, 1, cpu_mmu_index(env, false), ra);
++    }
 +
- static void in2_a2(DisasContext *s, DisasOps *o)
- {
-     int x2 = have_field(s, x2) ? get_field(s, x2) : 0;
+     while (mask) {
+         if (mask & 8) {
+             uint8_t d = cpu_ldub_data_ra(env, addr, ra);
 -- 
 2.39.2
 
