@@ -2,74 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B05257620EE
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 20:05:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13C3F76210D
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 20:11:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOMO1-0002pR-CJ; Tue, 25 Jul 2023 14:03:53 -0400
+	id 1qOMUN-0000tA-1E; Tue, 25 Jul 2023 14:10:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qOMNz-0002lG-E9
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 14:03:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
+ id 1qOMUK-0000sn-Jv
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 14:10:24 -0400
+Received: from vps-vb.mhejs.net ([37.28.154.113])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qOMNu-00013p-5S
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 14:03:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690308225;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=wJbYzUAiuY1J+AToZ2VcL3RWzbIvIazqmZJCElkyCBk=;
- b=Y12JhAQH0iECzr5SnBTXf448MeCNn08Oc3XbZXK0HrCop+mqOo9W3bi1qJtETGk2ZUCiEp
- /WisDP+Dm/pnVBBmhdp9NX1hzTAsBkbxJUiT3D7yO61Ri7xsWtyu9CNCMPMatVa/GQ/GSg
- 2Hz0HdGU5c4A0qEVVVuXeP66nSGj9rM=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-493-wfSkgp-lNLSEv-k1FSlbjg-1; Tue, 25 Jul 2023 14:03:43 -0400
-X-MC-Unique: wfSkgp-lNLSEv-k1FSlbjg-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3102B3C11A03;
- Tue, 25 Jul 2023 18:03:43 +0000 (UTC)
-Received: from scv.redhat.com (unknown [10.22.8.145])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 373411454150;
- Tue, 25 Jul 2023 18:03:42 +0000 (UTC)
-From: John Snow <jsnow@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Hanna Reitz <hreitz@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Cleber Rosa <crosa@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>, qemu-arm@nongnu.org,
- qemu-block@nongnu.org, Andrew Jeffery <andrew@aj.id.au>,
- Joel Stanley <joel@jms.id.au>, Kevin Wolf <kwolf@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Beraldo Leal <bleal@redhat.com>, Daniel Berrange <berrange@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>, John Snow <jsnow@redhat.com>
-Subject: [PATCH v2 6/6] python/machine: remove unused sock_dir argument
-Date: Tue, 25 Jul 2023 14:03:37 -0400
-Message-ID: <20230725180337.2937292-7-jsnow@redhat.com>
-In-Reply-To: <20230725180337.2937292-1-jsnow@redhat.com>
-References: <20230725180337.2937292-1-jsnow@redhat.com>
+ (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
+ id 1qOMUI-0002nK-LL
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 14:10:24 -0400
+Received: from MUA by vps-vb.mhejs.net with esmtps (TLS1.2) tls
+ TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (Exim 4.94.2)
+ (envelope-from <mail@maciej.szmigiero.name>)
+ id 1qOMTz-0004Yl-Pb; Tue, 25 Jul 2023 20:10:03 +0200
+Message-ID: <2212c3f5-954a-84a6-7011-b40bbc54ad23@maciej.szmigiero.name>
+Date: Tue, 25 Jul 2023 20:09:57 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Content-Language: en-US, pl-PL
+To: David Hildenbrand <david@redhat.com>
+Cc: "Michael S . Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>
+References: <cover.1689786474.git.maciej.szmigiero@oracle.com>
+ <7b39c541-6aeb-3dc4-2451-67a6b2ff34c6@redhat.com>
+From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
+Subject: =?UTF-8?Q?Re=3a_=5bPATCH_v6_0/6=5d_Hyper-V_Dynamic_Memory_Protocol_?=
+ =?UTF-8?B?ZHJpdmVyIChodi1iYWxsb29uIPCfjojvuI8p?=
+In-Reply-To: <7b39c541-6aeb-3dc4-2451-67a6b2ff34c6@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=37.28.154.113;
+ envelope-from=mail@maciej.szmigiero.name; helo=vps-vb.mhejs.net
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.091,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,194 +71,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-By using a socketpair for all of the sockets managed by the VM class and
-its extensions, we don't need the sock_dir argument anymore, so remove
-it.
+On 24.07.2023 16:42, David Hildenbrand wrote:
+> On 20.07.23 12:12, Maciej S. Szmigiero wrote:
+>> From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
+>>
+>> This is a continuation of the v5 of the patch series located here:
+>> https://lore.kernel.org/qemu-devel/cover.1686577753.git.maciej.szmigiero@oracle.com/
+>>
+> 
+> We're now in QEMU soft-freeze, which means the memslot series might take a bit to land. I'm going to follow-up on that soonish.
 
-We only added this argument so that we could specify a second, shorter
-temporary directory for cases where the temp/log dirs were "too long" as
-a socket name on macOS. We don't need it for this class now. In one
-case, avocado testing takes over responsibility for creating an
-appropriate sockdir.
+Ack, [1] even says that we're in a hard-freeze already.
 
-Signed-off-by: John Snow <jsnow@redhat.com>
----
- python/qemu/machine/machine.py             | 18 ------------------
- python/qemu/machine/qtest.py               |  5 +----
- tests/avocado/acpi-bits.py                 |  5 +----
- tests/avocado/avocado_qemu/__init__.py     |  2 +-
- tests/avocado/machine_aspeed.py            |  5 ++++-
- tests/qemu-iotests/iotests.py              |  2 +-
- tests/qemu-iotests/tests/copy-before-write |  3 +--
- 7 files changed, 9 insertions(+), 31 deletions(-)
+>>
+>> Changes from v5:
+>> * Incorporate David's rework of the driver on top of his virtio-mem-memslots
+>> patches (specifically, commit 6769107d1a4f), making use of a memory region
+>> container created upfront to avoid calling memory_device{,_pre}_plug()
+>> functions from the driver and introducing a driver-specific MemoryDeviceInfo
+>> sub-type.
+>>
+>> * Include two additional David's memory-device patches necessary for the
+>> aforementioned conversion in this patch set.
+>>
+>> * Use multiple memslots to cover the hot-add memory backend in order to
+>> reduce metadata size for the not-yet-hot-added part of the memory backend.
+>>
+>> * Add David's "Co-developed-by:" to patches where he contributed some changes.
+>>
+>> * Use OBJECT_DEFINE_TYPE_WITH_INTERFACES() and OBJECT_DECLARE_SIMPLE_TYPE()
+>> macros instead of open-coding the equivalent functionality.
+>>
+>> * Drop no longer necessary patch adding g_autoptr() cleanup function for the
+>> Error type.
+>>
+>>
+>> David Hildenbrand (2):
+>>    memory-device: Support empty memory devices
+>>    memory-device: Drop size alignment check
+>>
+>> Maciej S. Szmigiero (4):
+>>    Add Hyper-V Dynamic Memory Protocol definitions
+>>    qapi: Add HvBalloonDeviceInfo sub-type to MemoryDeviceInfo
+>>    qapi: Add HV_BALLOON_STATUS_REPORT event
+>>    Add a Hyper-V Dynamic Memory Protocol driver (hv-balloon)
+> 
+> That is still a gigantic patch. Is there any way to split that into reasonable chunks? For example, move the whole hotplug/memslot part into
+> a dedicated patch?
 
-diff --git a/python/qemu/machine/machine.py b/python/qemu/machine/machine.py
-index 09f214c95c..1dd2de6da8 100644
---- a/python/qemu/machine/machine.py
-+++ b/python/qemu/machine/machine.py
-@@ -127,7 +127,6 @@ def __init__(self,
-                  name: Optional[str] = None,
-                  base_temp_dir: str = "/var/tmp",
-                  monitor_address: Optional[SocketAddrT] = None,
--                 sock_dir: Optional[str] = None,
-                  drain_console: bool = False,
-                  console_log: Optional[str] = None,
-                  log_dir: Optional[str] = None,
-@@ -141,7 +140,6 @@ def __init__(self,
-         @param name: prefix for socket and log file names (default: qemu-PID)
-         @param base_temp_dir: default location where temp files are created
-         @param monitor_address: address for QMP monitor
--        @param sock_dir: where to create socket (defaults to base_temp_dir)
-         @param drain_console: (optional) True to drain console socket to buffer
-         @param console_log: (optional) path to console log file
-         @param log_dir: where to create and keep log files
-@@ -163,7 +161,6 @@ def __init__(self,
-             Tuple[socket.socket, socket.socket]] = None
-         self._temp_dir: Optional[str] = None
-         self._base_temp_dir = base_temp_dir
--        self._sock_dir = sock_dir
-         self._log_dir = log_dir
- 
-         self._monitor_address = monitor_address
-@@ -189,9 +186,6 @@ def __init__(self,
-         self._console_index = 0
-         self._console_set = False
-         self._console_device_type: Optional[str] = None
--        self._console_address = os.path.join(
--            self.sock_dir, f"{self._name}.con"
--        )
-         self._console_socket: Optional[socket.socket] = None
-         self._remove_files: List[str] = []
-         self._user_killed = False
-@@ -334,9 +328,6 @@ def args(self) -> List[str]:
-         return self._args
- 
-     def _pre_launch(self) -> None:
--        if self._console_set:
--            self._remove_files.append(self._console_address)
--
-         if self._qmp_set:
-             if self._monitor_address is None:
-                 self._sock_pair = socket.socketpair()
-@@ -918,15 +909,6 @@ def temp_dir(self) -> str:
-                                               dir=self._base_temp_dir)
-         return self._temp_dir
- 
--    @property
--    def sock_dir(self) -> str:
--        """
--        Returns the directory used for sockfiles by this machine.
--        """
--        if self._sock_dir:
--            return self._sock_dir
--        return self.temp_dir
--
-     @property
-     def log_dir(self) -> str:
-         """
-diff --git a/python/qemu/machine/qtest.py b/python/qemu/machine/qtest.py
-index 8180d3ab01..4f5ede85b2 100644
---- a/python/qemu/machine/qtest.py
-+++ b/python/qemu/machine/qtest.py
-@@ -135,17 +135,14 @@ def __init__(self,
-                  wrapper: Sequence[str] = (),
-                  name: Optional[str] = None,
-                  base_temp_dir: str = "/var/tmp",
--                 sock_dir: Optional[str] = None,
-                  qmp_timer: Optional[float] = None):
-         # pylint: disable=too-many-arguments
- 
-         if name is None:
-             name = "qemu-%d" % os.getpid()
--        if sock_dir is None:
--            sock_dir = base_temp_dir
-         super().__init__(binary, args, wrapper=wrapper, name=name,
-                          base_temp_dir=base_temp_dir,
--                         sock_dir=sock_dir, qmp_timer=qmp_timer)
-+                         qmp_timer=qmp_timer)
-         self._qtest: Optional[QEMUQtestProtocol] = None
-         self._qtest_sock_pair: Optional[
-             Tuple[socket.socket, socket.socket]] = None
-diff --git a/tests/avocado/acpi-bits.py b/tests/avocado/acpi-bits.py
-index 3ed286dcbd..bc2b29671e 100644
---- a/tests/avocado/acpi-bits.py
-+++ b/tests/avocado/acpi-bits.py
-@@ -92,17 +92,14 @@ def __init__(self,
-                  base_temp_dir: str = "/var/tmp",
-                  debugcon_log: str = "debugcon-log.txt",
-                  debugcon_addr: str = "0x403",
--                 sock_dir: Optional[str] = None,
-                  qmp_timer: Optional[float] = None):
-         # pylint: disable=too-many-arguments
- 
-         if name is None:
-             name = "qemu-bits-%d" % os.getpid()
--        if sock_dir is None:
--            sock_dir = base_temp_dir
-         super().__init__(binary, args, wrapper=wrapper, name=name,
-                          base_temp_dir=base_temp_dir,
--                         sock_dir=sock_dir, qmp_timer=qmp_timer)
-+                         qmp_timer=qmp_timer)
-         self.debugcon_log = debugcon_log
-         self.debugcon_addr = debugcon_addr
-         self.base_temp_dir = base_temp_dir
-diff --git a/tests/avocado/avocado_qemu/__init__.py b/tests/avocado/avocado_qemu/__init__.py
-index 33090903f1..cfdaf9dab7 100644
---- a/tests/avocado/avocado_qemu/__init__.py
-+++ b/tests/avocado/avocado_qemu/__init__.py
-@@ -322,7 +322,7 @@ def require_multiprocess(self):
-     def _new_vm(self, name, *args):
-         self._sd = tempfile.TemporaryDirectory(prefix="qemu_")
-         vm = QEMUMachine(self.qemu_bin, base_temp_dir=self.workdir,
--                         sock_dir=self._sd.name, log_dir=self.logdir)
-+                         log_dir=self.logdir)
-         self.log.debug('QEMUMachine "%s" created', name)
-         self.log.debug('QEMUMachine "%s" temp_dir: %s', name, vm.temp_dir)
-         self.log.debug('QEMUMachine "%s" log_dir: %s', name, vm.log_dir)
-diff --git a/tests/avocado/machine_aspeed.py b/tests/avocado/machine_aspeed.py
-index 724ee72c02..3e8a3b0da7 100644
---- a/tests/avocado/machine_aspeed.py
-+++ b/tests/avocado/machine_aspeed.py
-@@ -247,7 +247,10 @@ def test_arm_ast2600_evb_buildroot_tpm(self):
-         image_path = self.fetch_asset(image_url, asset_hash=image_hash,
-                                       algorithm='sha256')
- 
--        socket = os.path.join(self.vm.sock_dir, 'swtpm-socket')
-+        # force creation of VM object, which also defines self._sd
-+        vm = self.vm
-+
-+        socket = os.path.join(self._sd.name, 'swtpm-socket')
- 
-         subprocess.run(['swtpm', 'socket', '-d', '--tpm2',
-                         '--tpmstate', f'dir={self.vm.temp_dir}',
-diff --git a/tests/qemu-iotests/iotests.py b/tests/qemu-iotests/iotests.py
-index ef66fbd62b..145c682713 100644
---- a/tests/qemu-iotests/iotests.py
-+++ b/tests/qemu-iotests/iotests.py
-@@ -823,7 +823,7 @@ def __init__(self, path_suffix=''):
-         super().__init__(qemu_prog, qemu_opts, wrapper=wrapper,
-                          name=name,
-                          base_temp_dir=test_dir,
--                         sock_dir=sock_dir, qmp_timer=timer)
-+                         qmp_timer=timer)
-         self._num_drives = 0
- 
-     def _post_shutdown(self) -> None:
-diff --git a/tests/qemu-iotests/tests/copy-before-write b/tests/qemu-iotests/tests/copy-before-write
-index 2ffe092b31..d3987db942 100755
---- a/tests/qemu-iotests/tests/copy-before-write
-+++ b/tests/qemu-iotests/tests/copy-before-write
-@@ -44,8 +44,7 @@ class TestCbwError(iotests.QMPTestCase):
- 
-         opts = ['-nodefaults', '-display', 'none', '-machine', 'none']
-         self.vm = QEMUMachine(iotests.qemu_prog, opts,
--                              base_temp_dir=iotests.test_dir,
--                              sock_dir=iotests.sock_dir)
-+                              base_temp_dir=iotests.test_dir)
-         self.vm.launch()
- 
-     def do_cbw_error(self, on_cbw_error):
--- 
-2.41.0
+Will move hot-add support from the initial driver patch to a separate one.
+
+> See below on splitting off the PC changes.
+> 
+>>
+>>   Kconfig.host                     |    3 +
+>>   hw/core/machine-hmp-cmds.c       |   15 +
+>>   hw/hyperv/Kconfig                |    5 +
+>>   hw/hyperv/hv-balloon.c           | 2246 ++++++++++++++++++++++++++++++
+>>   hw/hyperv/meson.build            |    1 +
+>>   hw/hyperv/trace-events           |   18 +
+>>   hw/i386/pc.c                     |   22 +
+>>   hw/mem/memory-device.c           |   45 +-
+>>   include/hw/hyperv/dynmem-proto.h |  423 ++++++
+>>   include/hw/hyperv/hv-balloon.h   |   18 +
+>>   include/hw/mem/memory-device.h   |    7 +-
+>>   meson.build                      |   28 +-
+>>   meson_options.txt                |    2 +
+>>   qapi/machine.json                |   64 +-
+>>   scripts/meson-buildoptions.sh    |    3 +
+> 
+> It's probably best to separate the actual device implementation from wiring up the machine. That is, have a HV_BALLOON_SUPPORTED kconfig
+> (like VIRTIO_MEM_SUPPORTED), and activate that in a single commit for
+> PC, where you also modify hw/i386/pc.c.
+> 
+> That commit would be called something like "pc: Support hv-balloon".
+
+If I remove the driver from Kconfig in the initial patch then AFAIK
+this initial patch will add a dead driver file that it is not possible
+to build yet, right?
+
+Or is there some configure-time override for lack of specific Kconfig option?
+
+Thanks,
+Maciej
+
+[1]: https://wiki.qemu.org/Planning/8.1
 
 
