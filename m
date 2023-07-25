@@ -2,56 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A5557619AC
+	by mail.lfdr.de (Postfix) with ESMTPS id C1A617619AD
 	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 15:19:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOHvm-0002Pf-CW; Tue, 25 Jul 2023 09:18:26 -0400
+	id 1qOHvl-0002Pg-9t; Tue, 25 Jul 2023 09:18:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <logoerthiner1@163.com>)
- id 1qOFfE-0003ez-41
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 06:53:12 -0400
-Received: from m12.mail.163.com ([220.181.12.196])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <logoerthiner1@163.com>) id 1qOFfB-00051O-Go
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 06:53:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
- s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=Vz5FK
- ixIE6aCmdk5wAjaQcgYA4OVhMfXpHBQt53Sfg0=; b=MiMf8Ig7W9nIOhXY1ETPX
- LePhqNlOp/RPUatKyOZqXwhsWuoj80JdEPi/8YW4RLnszlydH4SSrY5SMq2uMVz6
- OKT4oD0E9mq7wcPFEcpZHTKEVvPPLdeV9gu/NsIHiJBuOXroM/M/S4ry471AWkST
- gC1dHPf91T9cWhh4oILBkQ=
-Received: from localhost.localdomain (unknown [183.242.254.172])
- by zwqz-smtp-mta-g5-2 (Coremail) with SMTP id _____wBXSwWEqb9k3ec2BQ--.34558S2;
- Tue, 25 Jul 2023 18:52:53 +0800 (CST)
-From: Thiner Logoer <logoerthiner1@163.com>
+ (Exim 4.90_1) (envelope-from <hongmianquan@bytedance.com>)
+ id 1qOG60-0005PX-SU
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 07:20:53 -0400
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <hongmianquan@bytedance.com>)
+ id 1qOG5x-0004A5-Gj
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 07:20:52 -0400
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-1bbc2e1c6b2so1477305ad.3
+ for <qemu-devel@nongnu.org>; Tue, 25 Jul 2023 04:20:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=bytedance.com; s=google; t=1690284043; x=1690888843;
+ h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=broNGonemM+rDaH5unXMoBs7zFx3WjEl12fq4zi9yeU=;
+ b=OYzi5MHmVRWnoAdnfkmG0ZeQKqqm6yyergRQLyl9nWyI0oCNqBbCDBWTWI6qP5BkXD
+ KHykyJB1GrKazaDNruA7uNVeV4d7DcpXvjdGbt/HsibXZC7fnJdFPkkUxFC2c5+HydNO
+ iKMN2gfaqpSDp5embA3yrEz8d3FUM0MUaav53qmKWpmhEs+gXH4lsOhy9gBqUBaRM/kp
+ nCkygLkvwIBwFp+J5X+J1mDycOQMzQgRd6xx5ceHBdzEGuLQFvK4PYf1s8UJZjdjL70t
+ /4N1wnFGE8SqxwEbuVEjlANn76gaAw646r4vbMG6oZ22WYbViPIF6ohm8rdWqhQcwmuy
+ f3mQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1690284043; x=1690888843;
+ h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=broNGonemM+rDaH5unXMoBs7zFx3WjEl12fq4zi9yeU=;
+ b=NHBqe9x0D9uXB6lClKx1vXpmEe2clHApVyNS12ITr/OUb5DmQHQ/SP1LsKEi30EOfD
+ EgeXcAEAjyyTbpQZ0pchBBc25mtkyWpYrMV+FOOnConjxaFsd09GzpgQ/w+Ok4syGQyd
+ dKvwS3Vm47/YQGE3dCDD06fMQe/hb1P7/xJqPAeSmNEIWshgA7b3Zs4Frrroeb+I7INZ
+ cHM7CY28/bj+Hs5kVwAnXPox9mfTsoyZHDXdgYb1ZPhO812BBNSf+lk6mutC9XAkuJOD
+ flEhj3etWuJtpQeFOxFZX734wMfbbRi7G2sdgsZIeSDp+2By0PugFaQcUf8x2uFFqrD6
+ emsg==
+X-Gm-Message-State: ABy/qLYyZPy9oBZ0ZCZyDof6xCCEJGvfyQfW7IpU3RpKOL/t3D2oE+Cx
+ n+QdEeRKb2kkvE8fhf2XieSh3gUd2hKHa5GeS9g=
+X-Google-Smtp-Source: APBJJlFFxVM6kAYKd1/AGWW5GE/DdZFwi2t12NWEs+Iw4MZuMwYWBxbe3n+2NGbcdi32VaJ8krO6Lw==
+X-Received: by 2002:a17:902:b20e:b0:1b6:8a99:4979 with SMTP id
+ t14-20020a170902b20e00b001b68a994979mr8629782plr.22.1690284042889; 
+ Tue, 25 Jul 2023 04:20:42 -0700 (PDT)
+Received: from n149-064-218.byted.org ([106.38.226.215])
+ by smtp.gmail.com with ESMTPSA id
+ p23-20020a1709028a9700b001b7f9963febsm10688550plo.175.2023.07.25.04.20.40
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Tue, 25 Jul 2023 04:20:41 -0700 (PDT)
+From: hongmianquan <hongmianquan@bytedance.com>
 To: qemu-devel@nongnu.org
-Cc: david@redhat.com, imammedo@redhat.com,
- Thiner Logoer <logoerthiner1@163.com>
-Subject: [PATCH] Open file as read only on private mapping in
- qemu_ram_alloc_from_file
-Date: Tue, 25 Jul 2023 10:52:39 +0000
-Message-Id: <20230725105239.2022-1-logoerthiner1@163.com>
-X-Mailer: git-send-email 2.40.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: _____wBXSwWEqb9k3ec2BQ--.34558S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7JryUuryrGry8KF4xZr17Awb_yoW8Jry8pr
- Z3Grn0krnY9a92va1kt3WYqFyrGa48GFy8XFZ3uryDXFsxWw1v9F40k34FgFnFqFyxJrsx
- Za17Ka4DWF47C3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
- 9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zE_OzQUUUUU=
-X-Originating-IP: [183.242.254.172]
-X-CM-SenderInfo: 5orj0vpuwkx0thurqiywtou0bp/xtbBZgS3nlaEEW9aMAAAsN
-Received-SPF: pass client-ip=220.181.12.196;
- envelope-from=logoerthiner1@163.com; helo=m12.mail.163.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Cc: peterx@redhat.com, philmd@linaro.org, david@redhat.com,
+ hongmianquan <hongmianquan@bytedance.com>
+Subject: [PATCH] memory: avoid updating ioeventfds for some address_space
+Date: Tue, 25 Jul 2023 19:20:37 +0800
+Message-Id: <20230725112037.1762608-1-hongmianquan@bytedance.com>
+X-Mailer: git-send-email 2.11.0
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=hongmianquan@bytedance.com; helo=mail-pl1-x62a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -70,44 +87,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-An read only file can be mapped with read write as long as the
-mapping is private, which is very common case. Make
-qemu_ram_alloc_from_file open file as read only when the
-mapping is private, otherwise open will fail when file
-does not allow write.
+When updating ioeventfds, we need to iterate all address spaces,
+but some address spaces do not register eventfd_add|del call when
+memory_listener_register() and they do nothing when updating ioeventfds.
+So we can skip these AS in address_space_update_ioeventfds().
 
-If this file does not exist or is a directory, the flag is not used,
-so it should be OK.
+The overhead of memory_region_transaction_commit() can be significantly
+reduced. For example, a VM with 8 vhost net devices and each one has
+64 vectors, can reduce the time spent on memory_region_transaction_commit by 20%.
 
-from https://gitlab.com/qemu-project/qemu/-/issues/1689
-
-Signed-off-by: Thiner Logoer <logoerthiner1@163.com>
+Signed-off-by: hongmianquan <hongmianquan@bytedance.com>
 ---
- softmmu/physmem.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ include/exec/memory.h |  1 +
+ softmmu/memory.c      | 12 ++++++++++++
+ 2 files changed, 13 insertions(+)
 
-diff --git a/softmmu/physmem.c b/softmmu/physmem.c
-index 3df73542e1..e8036ee335 100644
---- a/softmmu/physmem.c
-+++ b/softmmu/physmem.c
-@@ -1945,8 +1945,15 @@ RAMBlock *qemu_ram_alloc_from_file(ram_addr_t size, MemoryRegion *mr,
-     int fd;
-     bool created;
-     RAMBlock *block;
-+    
-+    /*
-+     * If map is private, the fd does not need to be writable.
-+     * This only get effective when the file is existent.
-+     */
-+    bool open_as_readonly = readonly || !(ram_flags & RAM_SHARED);
+diff --git a/include/exec/memory.h b/include/exec/memory.h
+index 7f5c11a0cc..556f4f1871 100644
+--- a/include/exec/memory.h
++++ b/include/exec/memory.h
+@@ -1089,6 +1089,7 @@ struct AddressSpace {
+     struct FlatView *current_map;
  
--    fd = file_ram_open(mem_path, memory_region_name(mr), readonly, &created,
-+    fd = file_ram_open(mem_path, memory_region_name(mr),
-+                       open_as_readonly, &created,
-                        errp);
-     if (fd < 0) {
-         return NULL;
+     int ioeventfd_nb;
++    int ioeventfd_notifiers;
+     struct MemoryRegionIoeventfd *ioeventfds;
+     QTAILQ_HEAD(, MemoryListener) listeners;
+     QTAILQ_ENTRY(AddressSpace) address_spaces_link;
+diff --git a/softmmu/memory.c b/softmmu/memory.c
+index 7d9494ce70..178816c845 100644
+--- a/softmmu/memory.c
++++ b/softmmu/memory.c
+@@ -842,6 +842,10 @@ static void address_space_update_ioeventfds(AddressSpace *as)
+     AddrRange tmp;
+     unsigned i;
+ 
++    if (!as->ioeventfd_notifiers) {
++        return;
++    }
++
+     /*
+      * It is likely that the number of ioeventfds hasn't changed much, so use
+      * the previous size as the starting value, with some headroom to avoid
+@@ -3075,6 +3079,10 @@ void memory_listener_register(MemoryListener *listener, AddressSpace *as)
+     }
+ 
+     listener_add_address_space(listener, as);
++
++    if (listener->eventfd_add || listener->eventfd_del) {
++        as->ioeventfd_notifiers++;
++    }
+ }
+ 
+ void memory_listener_unregister(MemoryListener *listener)
+@@ -3083,6 +3091,10 @@ void memory_listener_unregister(MemoryListener *listener)
+         return;
+     }
+ 
++    if (listener->eventfd_add || listener->eventfd_del) {
++        listener->address_space->ioeventfd_notifiers--;
++    }
++
+     listener_del_address_space(listener, listener->address_space);
+     QTAILQ_REMOVE(&memory_listeners, listener, link);
+     QTAILQ_REMOVE(&listener->address_space->listeners, listener, link_as);
 -- 
-2.40.1
+2.11.0
 
 
