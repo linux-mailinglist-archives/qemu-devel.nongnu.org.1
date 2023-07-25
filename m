@@ -2,73 +2,134 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8F8D761F42
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 18:46:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AA09761F70
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 18:47:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOLAE-0006KO-Kz; Tue, 25 Jul 2023 12:45:34 -0400
+	id 1qOLBe-00077h-Hy; Tue, 25 Jul 2023 12:47:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qOLA8-0006JU-R7
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 12:45:29 -0400
-Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qOLA5-0008E9-0c
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 12:45:27 -0400
-Received: by mail-lf1-x12d.google.com with SMTP id
- 2adb3069b0e04-4f9fdb0ef35so9139980e87.0
- for <qemu-devel@nongnu.org>; Tue, 25 Jul 2023 09:45:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690303520; x=1690908320;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=NM8mF9oVskAAzkCe0J9PRS7cdK4jSxpGU9j5XHKnEYM=;
- b=VZCYnBi3/EfFNS2QnJaZpjbBNWW49RpPgE4W/Ee1LGIYArrLBvwujNRP7cDs0IyjM6
- SJopYyvLiFGraPEJ2lXqKmVrTOzIY4/zDbLazgFe+qKnsnjzvytlK2ilJsn+0dt6ennh
- aBjDQnbfZD3YlKPjMiXOTP4l1cX/iR10c7E1nyw+UioHw0Mw9wnSoQXfopJrI9W0BljF
- TMJBALB0WUOrF4wJnc2LXIDxgseclmYI3PapZ10k22CBYmiMkT6aXkY/p3nvYAMX1DSE
- v2v6yCzIplwDn2No2TBXi29hyoFWAK/KxSgUL8pGKq1TjLGaF1R1MV2waAbQWF4yLTY7
- wfTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690303520; x=1690908320;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=NM8mF9oVskAAzkCe0J9PRS7cdK4jSxpGU9j5XHKnEYM=;
- b=NNBpYULB4F2jglUSFnBGeuCDRpCgojOy8wKMlR1bs9o0ls5d0w9GnBzmuffS37PJxd
- R81wqEriF1SmXiTuuE/ttfXvaFVdzmE4jvvsCR4hkpdGdAdk1RBQJefgFCJjL42dHLEo
- q2COpzg0yAEUfsTpdJ51qi0KG2YlFZ+d38NDCEBuZBBSl2iglRfJfMzXrcrb2PV30x6d
- SlQDUqKYZzm34naZu9uOmoaqZltkRxggEIAjtz4uS1pESVrzxXQM/dZ69u1dRKFo8K4k
- QCcsX3CyOpaOWSeGTDszQlilKIisrhp5vn/Z7jK2A0wl0SCAZ59iGsER34ykmH8nO3fE
- 6J6g==
-X-Gm-Message-State: ABy/qLZwj7MAJefKthefHuLgTSG3USEAKVwQ2Fxo1TbOgh1TQ8ko+dRA
- EYkBO+1LWdTrs2E0bU+gWdXbRJYzhOX51gQPWrdmmD/5Y1v2qhKN
-X-Google-Smtp-Source: APBJJlHidNIVLiuEBH8xMSX5/mPlwdZzZGc92D0blZPL+WEZqQgzYFOOOXohQBUn+qEL2uWpA4HKCHDn9jReqB7kMqE=
-X-Received: by 2002:a05:6512:3a95:b0:4fd:d9e0:4d79 with SMTP id
- q21-20020a0565123a9500b004fdd9e04d79mr8808422lfu.6.1690303520496; Tue, 25 Jul
- 2023 09:45:20 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <fan.ni@samsung.com>)
+ id 1qOLBY-00077U-TN
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 12:46:58 -0400
+Received: from mailout1.w2.samsung.com ([211.189.100.11])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <fan.ni@samsung.com>)
+ id 1qOLBW-00009x-0L
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 12:46:56 -0400
+Received: from uscas1p2.samsung.com (unknown [182.198.245.207])
+ by mailout1.w2.samsung.com (KnoxPortal) with ESMTP id
+ 20230725164643usoutp0190464a548ca591680819b8fade554011~1KivowJm51673316733usoutp01g;
+ Tue, 25 Jul 2023 16:46:43 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w2.samsung.com
+ 20230725164643usoutp0190464a548ca591680819b8fade554011~1KivowJm51673316733usoutp01g
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+ s=mail20170921; t=1690303603;
+ bh=NtC7E3IsPPbWZ4bZyL31hB+sue0UH1FsmMZSovhBk8k=;
+ h=From:To:CC:Subject:Date:In-Reply-To:References:From;
+ b=oiCrKwacxdXTuBRCnSXvpgBYXWTSezB39FOnijDOMka+vDOxnn8VQoiKJSZ8W6Ov8
+ tR9PmCtiyWqtUVK6d61Fm/i9qjkJQSE97btlKINQ6DMymBV9HTkp5tMDXnhWTn6mDi
+ MzeSxJNllwf6ZvFRXtQ9GpJSCZzmS84cIpcuaUNA=
+Received: from ussmges2new.samsung.com (u111.gpu85.samsung.co.kr
+ [203.254.195.111]) by uscas1p1.samsung.com (KnoxPortal) with ESMTP id
+ 20230725164643uscas1p163da737305def4399ef8338fc3e8f1e8~1Kivg4Urd0668006680uscas1p1H;
+ Tue, 25 Jul 2023 16:46:43 +0000 (GMT)
+Received: from uscas1p1.samsung.com ( [182.198.245.206]) by
+ ussmges2new.samsung.com (USCPEMTA) with SMTP id D8.0F.42611.27CFFB46; Tue,
+ 25 Jul 2023 12:46:42 -0400 (EDT)
+Received: from ussmgxs1new.samsung.com (u89.gpu85.samsung.co.kr
+ [203.254.195.89]) by uscas1p2.samsung.com (KnoxPortal) with ESMTP id
+ 20230725164642uscas1p28f95804a99db81ad000c5264f4d5d64d~1KivMCDbE2394423944uscas1p2k;
+ Tue, 25 Jul 2023 16:46:42 +0000 (GMT)
+X-AuditID: cbfec36f-249ff7000000a673-e6-64bffc72ebc1
+Received: from SSI-EX4.ssi.samsung.com ( [105.128.2.145]) by
+ ussmgxs1new.samsung.com (USCPEXMTA) with SMTP id 27.12.38326.27CFFB46; Tue,
+ 25 Jul 2023 12:46:42 -0400 (EDT)
+Received: from SSI-EX2.ssi.samsung.com (105.128.2.227) by
+ SSI-EX4.ssi.samsung.com (105.128.2.229) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ 15.1.2375.24; Tue, 25 Jul 2023 09:46:41 -0700
+Received: from SSI-EX2.ssi.samsung.com ([105.128.2.227]) by
+ SSI-EX2.ssi.samsung.com ([105.128.2.227]) with mapi id 15.01.2375.024; Tue,
+ 25 Jul 2023 09:46:41 -0700
+From: Fan Ni <fan.ni@samsung.com>
+To: Ira Weiny <ira.weiny@intel.com>
+CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "jonathan.cameron@huawei.com" <jonathan.cameron@huawei.com>,
+ "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
+ "gregory.price@memverge.com" <gregory.price@memverge.com>,
+ "hchkuo@avery-design.com.tw" <hchkuo@avery-design.com.tw>,
+ "cbrowy@avery-design.com" <cbrowy@avery-design.com>,
+ "dan.j.williams@intel.com" <dan.j.williams@intel.com>, Adam Manzanares
+ <a.manzanares@samsung.com>, "dave@stgolabs.net" <dave@stgolabs.net>,
+ "nmtadam.samsung@gmail.com" <nmtadam.samsung@gmail.com>, "nifan@outlook.com"
+ <nifan@outlook.com>
+Subject: Re: [Qemu RFC 0/7] Early enabling of DCD emulation in Qemu
+Thread-Topic: [Qemu RFC 0/7] Early enabling of DCD emulation in Qemu
+Thread-Index: AQHZhDHwBF2t8l6CHEO7jqFQqFgBOK/KEtMAgAFwkACAABi5gA==
+Date: Tue, 25 Jul 2023 16:46:41 +0000
+Message-ID: <20230725164633.GA2317647@bgt-140510-bm03>
+In-Reply-To: <64bfe7b090843_12757b2945b@iweiny-mobl.notmuch>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [105.128.2.176]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <47A323B06A1BED4EBF5A991C166C9338@ssi.samsung.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 25 Jul 2023 17:45:09 +0100
-Message-ID: <CAFEAcA--B6=JxOuy-55bvBmHDAkvHv5T-7K_kW_9JK0OQ4MPiA@mail.gmail.com>
-Subject: s390 intermittent test failure in qemu:block /
- io-qcow2-copy-before-write
-To: QEMU Developers <qemu-devel@nongnu.org>
-Cc: Qemu-block <qemu-block@nongnu.org>, Thomas Huth <thuth@redhat.com>, 
- Christian Borntraeger <borntraeger@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-CFilter-Loop: Reflected
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrEKsWRmVeSWpSXmKPExsWy7djXc7pFf/anGDyYZWPRfX4Do8X0qRcY
+ LVbfXMNo0dD0iMWiZfd7Jov9T5+zWKxaeI3N4vysUywWzyc+Z7JYuuQRs8Xx3h0sDtweFyZP
+ YPVY3ODqsXPWXXaPliNvgbw9L5k8Nn78z+7x5NpmJo/Nr18we0ydXe/xeZNcAFcUl01Kak5m
+ WWqRvl0CV8a2z7MYC86pVyx6s5+1gfGMWhcjJ4eEgInEle+rWbsYuTiEBFYySsydsYMFwmll
+ kmi6cJoVpmrr7OfsEIm1jBJ9TzeyQTifGCXaVm9hhnCWMUpcP/WCDaSFTUBRYl/XdjBbREBZ
+ 4vS/q2AdzAJXWCSuT13HBJIQFnCWmLz8BGMXIwdQkYvEpWd+EPVOEif2n2QEsVkEVCXuXXvE
+ BFLCK2Am0b+0BCTMKWAjsfXEMbDxjAJiEt9PrQGbyCwgLnHryXwmiKsFJRbN3sMMYYtJ/Nv1
+ kA3CVpS4//0lO8hIZgFNifW79CFa7STaLj1lh7AVJaZ0PwSzeYHGnJz5hAWiVVLi4IobUPZs
+ TomXH81AxkgAHb9prwFEWFri6vWpzBDhZIlVH7kgwjkS85dsgeq0llj4Zz3TBEaVWUhunoVw
+ zywk98xCcs8sJPcsYGRdxSheWlycm55abJSXWq5XnJhbXJqXrpecn7uJEZjsTv87nL+D8fqt
+ j3qHGJk4GA8xSnAwK4nwGsbsSxHiTUmsrEotyo8vKs1JLT7EKM3BoiTOa2h7MllIID2xJDU7
+ NbUgtQgmy8TBKdXAxLjS4uE31SRu6a2OjYYP3YLXdiWdE3l8Tpq3QvL9hN6Uf00u8Q7pmya+
+ 9ZxkZ3tkw0R9V73g3rtW8/sbHIoKWs7pZf3c6rzoqemMV5xHt4gtNV+351Wj2OOwRXts2c+m
+ Hbk6y2zbHotvP71XMDi3BcjxdKjIPX1eyjbfJq+4zsVJ4s7UqX8MxJT1D15cuy2G1byguWNz
+ XJrKXmGbFeuqYo8+PczUFljcMaP63rv+Sj37qHmlR71CArQc/tr673l/9Huj55mEBaonD8ro
+ rBSZf+XMwa0XdvMl5pRLvbrgHhG8ZcUyPsWNPzetXOfj07L58Lk9N3jE/cSWa5ktTldYtSM9
+ 0PPW1c4C/5xe3UkvlFiKMxINtZiLihMBk+pu7+UDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrMIsWRmVeSWpSXmKPExsWS2cA0Ubfoz/4Ugy2nVC26z29gtJg+9QKj
+ xeqbaxgtGpoesVi07H7PZLH/6XMWi1ULr7FZnJ91isXi+cTnTBZLlzxitjjeu4PFgdvjwuQJ
+ rB6LG1w9ds66y+7RcuQtkLfnJZPHxo//2T2eXNvM5LH59Qtmj6mz6z0+b5IL4IrisklJzcks
+ Sy3St0vgytj2eRZjwTn1ikVv9rM2MJ5R62Lk5JAQMJHYOvs5excjF4eQwGpGiabTC1kgnE+M
+ EufOT4ByljFK3NzaygrSwiagKLGvazsbiC0ioCxx+t9VNpAiZoErLBLXp65jAkkICzhLTF5+
+ grGLkQOoyEXi0jM/iHoniRP7TzKC2CwCqhL3rj1iAinhFTCT6F9aArHrNaPErasHwHZxCthI
+ bD1xDGwXo4CYxPdTa8DGMwuIS9x6Mp8J4gUBiSV7zjND2KISLx//Y4WwFSXuf3/JDjKfWUBT
+ Yv0ufYhWO4m2S0/ZIWxFiSndD8FsXgFBiZMzn7BAtEpKHFxxg2UCo8QsJNtmIUyahWTSLCST
+ ZiGZtICRdRWjeGlxcW56RbFhXmq5XnFibnFpXrpecn7uJkZgujj973DkDsajtz7qHWJk4mA8
+ xCjBwawkwmsYsy9FiDclsbIqtSg/vqg0J7X4EKM0B4uSOK+Q68R4IYH0xJLU7NTUgtQimCwT
+ B6dUA9Ok6D3+21LU+1msz7N8m/PdfJ4h+459U74nLU+eJGg28VZIM+fCCcbxKcqMl2uKj7qY
+ hfyxvHMjKr5+q+KDWu1jlnYl0/ZetDvwdNL99xy7beYff7U/T0Kk8eqNCS7tzkVqy9XO8qy3
+ MqwSb+gQ01exEjPuWP9LeMlU3evzrn/LEVnFvuqaUIGih9pFs+KDDA+8e/0XHvHoDcx7+2iq
+ Qzs/20PlWTPCnB2LVuTzcv9yCb05PcHosQBba6LA4qm5zf/v/3L8uGKDXpzKoekVnME+9XEP
+ jh4rzvwk+SmzoqfgcfGrxrMX0jn7060fKGTPlrUTetq++86TZ4aZ5pM9QmOFl5cZf1s1Q6/r
+ K/+5XUosxRmJhlrMRcWJAHgqyD+GAwAA
+X-CMS-MailID: 20230725164642uscas1p28f95804a99db81ad000c5264f4d5d64d
+CMS-TYPE: 301P
+X-CMS-RootMailID: 20230511175641uscas1p2b1877f9179709b69e293acdd7e57104c
+References: <CGME20230511175641uscas1p2b1877f9179709b69e293acdd7e57104c@uscas1p2.samsung.com>
+ <20230511175609.2091136-1-fan.ni@samsung.com>
+ <20230724171857.GA329893@bgt-140510-bm03>
+ <64bfe7b090843_12757b2945b@iweiny-mobl.notmuch>
+Received-SPF: pass client-ip=211.189.100.11; envelope-from=fan.ni@samsung.com;
+ helo=mailout1.w2.samsung.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,92 +146,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There seems to be an intermittent failure on the s390 host in
-the qemu:block / io-qcow2-copy-before-write test:
-https://gitlab.com/qemu-project/qemu/-/jobs/4737819873
-
-The log says the test was expecting to do some reading
-and writing but got an unexpected 'permission denied'
-error on the read. Any idea why this might happen ?
-
-768/835 qemu:block / io-qcow2-copy-before-write ERROR 12.05s exit status 1
->>> PYTHON=3D/home/gitlab-runner/builds/-LCfcJ2T/0/qemu-project/qemu/build/=
-pyvenv/bin/python3 MALLOC_PERTURB_=3D101 /home/gitlab-runner/builds/-LCfcJ2=
-T/0/qemu-project/qemu/build/pyvenv/bin/python3 /home/gitlab-runner/builds/-=
-LCfcJ2T/0/qemu-project/qemu/build/../tests/qemu-iotests/check -tap -qcow2 c=
-opy-before-write --source-dir /home/gitlab-runner/builds/-LCfcJ2T/0/qemu-pr=
-oject/qemu/tests/qemu-iotests --build-dir /home/gitlab-runner/builds/-LCfcJ=
-2T/0/qemu-project/qemu/build/tests/qemu-iotests
-=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
-=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
-=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=
-=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
-=80=95=E2=80=95=E2=80=95=E2=80=95 =E2=9C=80 =E2=80=95=E2=80=95=E2=80=95=E2=
-=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
-=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=
-=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
-=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
-=95
-stderr:
---- /home/gitlab-runner/builds/-LCfcJ2T/0/qemu-project/qemu/tests/qemu-iote=
-sts/tests/copy-before-write.out
-+++ /home/gitlab-runner/builds/-LCfcJ2T/0/qemu-project/qemu/build/scratch/q=
-cow2-file-copy-before-write/copy-before-write.out.bad
-@@ -1,5 +1,21 @@
--....
-+...F
-+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-+FAIL: test_timeout_break_snapshot (__main__.TestCbwError)
-+----------------------------------------------------------------------
-+Traceback (most recent call last):
-+ File "/home/gitlab-runner/builds/-LCfcJ2T/0/qemu-project/qemu/tests/qemu-=
-iotests/tests/copy-before-write",
-line 210, in test_timeout_break_snapshot
-+ self.assertEqual(log, """\
-+AssertionError: 'wrot[195 chars]read 1048576/1048576 bytes at offset
-0\n1 MiB,[46 chars]c)\n' !=3D 'wrot[195 chars]read failed: Permission
-denied\n'
-+ wrote 524288/524288 bytes at offset 0
-+ 512 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+ wrote 524288/524288 bytes at offset 524288
-+ 512 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-++ read failed: Permission denied
-+- read 1048576/1048576 bytes at offset 0
-+- 1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+
-+
-----------------------------------------------------------------------
-Ran 4 tests
--OK
-+FAILED (failures=3D1)
-(test program exited with status code 1)
-=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
-=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
-=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=
-=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
-=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
-=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=
-=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
-=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
-=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=
-=E2=80=95=E2=80=95=E2=80=95
-
-Same failure, previous job:
-
-https://gitlab.com/qemu-project/qemu/-/jobs/4736463062
-
-This one's a "Failed to get write lock" in io-qcow2-161:
-
-https://gitlab.com/qemu-project/qemu/-/jobs/4734846533
-
-(I'm not sure whether there's something up with the s390
-at the moment -- it seems to be producing these odd
-failures, not always in the iotests. I'm wondering if
-it's just running too slowly and we're hitting race
-conditions in test cases.)
-
-thanks
--- PMM
+T24gVHVlLCBKdWwgMjUsIDIwMjMgYXQgMDg6MTg6MDhBTSAtMDcwMCwgSXJhIFdlaW55IHdyb3Rl
+Og0KDQo+IEZhbiBOaSB3cm90ZToNCj4gPiBPbiBUaHUsIE1heSAxMSwgMjAyMyBhdCAwNTo1Njo0
+MFBNICswMDAwLCBGYW4gTmkgd3JvdGU6DQo+ID4gDQo+ID4gRllJLg0KPiA+IA0KPiA+IEkgaGF2
+ZSB1cGRhdGVkIHRoZSBwYXRjaCBzZXJpZXMgYW5kIHNlbnQgb3V0IGFnYWluLg0KPiA+IA0KPiA+
+IEkgc3VnZ2VzdGVkIGFueW9uZSB3aG8gYXJlIGludGVyZXN0ZWQgaW4gRENEIGFuZCB1c2luZyB0
+aGlzIHBhdGNoIHNlcmllcyB0bw0KPiA+IHVzZSB0aGUgbmV3IHNlcmllcy4gUXVpdGUgYSBmZXcg
+dGhpbmdzIGhhcyBiZWVuIGZpeGVkLg0KPiA+IA0KPiA+IGh0dHBzOi8vdXJsZGVmZW5zZS5jb20v
+djMvX19odHRwczovL2xvcmUua2VybmVsLm9yZy9saW51eC1jeGwvMjAyMzA3MjQxNjIzMTMuMzQx
+OTYtMS1mYW4ubmlAc2Ftc3VuZy5jb20vVC8qdF9fO0l3ISFFd1Z6cUdvVEtCcXYtMERXQUpCbSFW
+OGtEVHBUNXlMVUF5V20zc0ZtN1hJZ04wUWROVXlRWVpkOXZZTEhqVVZrTWtoRFQxNEY4YXZnTkJo
+MjNLUEF0c1NfZEdtMkxadUhKMTAybWdJZyQgDQo+ID4gDQo+ID4gQWxzbywgaWYgeW91IHdhbnQg
+dG8gdXNlIHRoZSBjb2RlIHJlcG8gZGlyZWN0bHksIHlvdSBjYW4gdHJ5DQo+ID4gDQo+ID4gaHR0
+cHM6Ly91cmxkZWZlbnNlLmNvbS92My9fX2h0dHBzOi8vcHJvdGVjdDIuZmlyZWV5ZS5jb20vdjEv
+dXJsP2s9MDYwMGZkNmItNjc4YmU4MjAtMDYwMTc2MjQtNzRmZTQ4NWZiMzA1LWY1MjkyNzkwNjJi
+MDJiNzMmcT0xJmU9NWRmNjUwMTAtZTYyZi00MGExLTlhMjEtNjA5ZWIxNDAwOTIxJnU9aHR0cHMq
+M0EqMkYqMkZnaXRodWIuY29tKjJGbW9raW5nKjJGcWVtdS1kY2QtcHJldmlldy1sYXRlc3QqMkZ0
+cmVlKjJGZGNkLWRldl9fO0pTVWxKU1VsSlEhIUV3VnpxR29US0Jxdi0wRFdBSkJtIVY4a0RUcFQ1
+eUxVQXlXbTNzRm03WElnTjBRZE5VeVFZWmQ5dllMSGpVVmtNa2hEVDE0RjhhdmdOQmgyM0tQQXRz
+U19kR20yTFp1SEpwQjBTbU5zJCANCj4gDQo+IFRoYW5rcyBmb3IgdGhlIGJyYW5jaCENCj4gDQo+
+IEkgdG9vayBhIHF1aWNrIGxvb2sgYW5kIEkgZG9uJ3Qgc2VlIGEgcmVzb2x1dGlvbiB0byB0aGUg
+cHJvYmxlbSBJDQo+IG1lbnRpb25lZCB3aXRoIG5vbiBEQ0QgZGV2aWNlcyBiZWluZyBzdXBwb3J0
+ZWQuWzFdDQo+IA0KPiBbMV0gaHR0cHM6Ly91cmxkZWZlbnNlLmNvbS92My9fX2h0dHBzOi8vbG9y
+ZS5rZXJuZWwub3JnL2FsbC82NDgzOTQ2ZTgxNTJmX2YxMTMyMjk0YTJAaXdlaW55LW1vYmwubm90
+bXVjaC9fXzshIUV3VnpxR29US0Jxdi0wRFdBSkJtIVY4a0RUcFQ1eUxVQXlXbTNzRm03WElnTjBR
+ZE5VeVFZWmQ5dllMSGpVVmtNa2hEVDE0RjhhdmdOQmgyM0tQQXRzU19kR20yTFp1SEo0Z2VTRUFn
+JCANCj4gDQo+IERpZCB5b3UgZml4IHRoaXMgaW4gYSBkaWZmZXJlbnQgd2F5PyAgSWYgSSBkb24n
+dCBhZGQgREMgdG8gbXkgbWVtIGRldmljZXMgdGhleQ0KPiBkb24ndCBnZXQgcHJvYmVkIHByb3Bl
+cmx5LiAgSSdtIHN0aWxsIGxvb2tpbmcgaW50byB0aGlzIHdpdGggeW91ciBuZXcgYnJhbmNoLA0K
+PiBidXQgSSBkb24ndCB0aGluayBEQyBjb21tYW5kcyBzaG91bGQgYmUgaW4gdGhlIENFTCBpZiB0
+aGUgZGV2aWNlIGRvZXMgbm90DQo+IHN1cHBvcnQgaXQuDQo+IA0KPiBBbHNvIEkgZ2V0IGEgYnVp
+bGQgd2FybmluZyBvbiB0aGlzIGJyYW5jaCBJIGhhZCB0byBmaXhbM10gYXMgbXkgYnVpbGQgaXMN
+Cj4gdHJlYXRpbmcgd2FybmluZ3MgYXMgZXJyb3JzLlsyXQ0KPiANCj4gSSBkb24ndCB0aGluayB0
+aGlzIGZpeCBpcyB0ZWNobmljYWxseSBuZWNlc3NhcnkgYXMgJ2xpc3QnIHNob3VsZCBuZXZlciBi
+ZSBOVUxMDQo+IHRoYXQgSSBjYW4gc2VlLiAgQnV0IG1pZ2h0IGJlIG5pY2UgdG8gY2hlY2sgb3Ig
+anVzdCB1c2UgbXkgZml4Lg0KPiANCj4gSSdsbCB0cnkgYW5kIGdldCB0byBhIHJldmlldyBvbmNl
+IEkgZ2V0IHRoZSBEQ0Qgc3R1ZmYgb3V0IG9uIHRoZSBsaXN0IGFnYWluLg0KPiANCj4gSXJhDQo+
+IA0KDQpPaCwgSSBtaXNzZWQgeW91ciBwcmV2aW91cyBjb21tZW50cywgbGV0IG1lIGxvb2sgaW50
+byBpdCBhbmQgZml4DQphY2NvcmRpbmdseSBhbmQgc2VuZCBvdXQgYSBuZXcgdmVyc2lvbi4NCg0K
+QnR3LCB3aGVuIEkgZGlkIHRoZSBEQ0QgdGVzdCB3aXRoIHRoZSBsYXN0IERDRCBrZXJuZWwgY29k
+ZSwgSSBmb3VuZA0Kc29tZSBpc3N1ZSB0aGVyZS4NCg0KV2hlbiBJIGFkZCBhIERDRCBleHRlbnQg
+Zm9yIHRoZSBmaXJzdCB0aW1lLCBpdCB3aWxsIGJlIHJlY29nbml6ZWQgYXMNCnN5c3RlbSBSQU0g
+YXV0b21hdGljYWxseSBhbmQgc2hvdyB1cCB3aXRoIGNvbW1hbmQgbHNtZW0uDQoNCkhvd2V2ZXIs
+IHdoZW4gSSByZWxlYXNlIGl0IGFuZCB0cnkgdG8gcmUtYWRkIHRoZSBzYW1lIGV4dGVudCBhZ2Fp
+bi4NClRoZSBhZGRpbmcgc2VlbXMgbm9ybWFsIGFuZCB0aGUgZGV2aWNlIHdpbGwgc2hvdyB1cCB1
+bmRlciAvZGV2LyBhcw0KZGF4MC5YLiBCdXQgaXQgd2lsbCBub3Qgc2hvdyB1cCB3aXRoIGxzbWVt
+IGNvbW1hbmQgYW5kIEkgaGF2ZSB0byB1c2UNCmRheGN0bCByZWNvbmZpZ3VyZSBjb21tYW5kIHRv
+IHR1cm4gaXQgdG8gc3lzdGVtIHJhbSBhbmQgdGhlbiBpdCBjYW4NCnNob3cgdXAgd2l0aCBsc21l
+bSBjb21tYW5kLiBJIHdvdWxkIGV4cGVjdCB0aGUgYmVoYXZpb3IgZm9yIHRoZQ0KZmlyc3QgYWRk
+IGFuZCBzZWNvbmQgYWRkIGJlIHRoZSBzYW1lLg0KDQpGYW4uDQoNCg0KPiANCj4gWzJdDQo+IC4u
+L2h3L21lbS9jeGxfdHlwZTMuYzogSW4gZnVuY3Rpb24g4oCYcW1wX2N4bF9wcm9jZXNzX2R5bmFt
+aWNfY2FwYWNpdHlfZXZlbnQuY29uc3Rwcm9w4oCZOg0KPiAuLi9ody9tZW0vY3hsX3R5cGUzLmM6
+MjA2MzoyODogZXJyb3I6IOKAmHJpZOKAmSBtYXkgYmUgdXNlZCB1bmluaXRpYWxpemVkIFstV2Vy
+cm9yPW1heWJlLXVuaW5pdGlhbGl6ZWRdDQo+ICAyMDYzIHwgICAgIGRDYXAudXBkYXRlZF9yZWdp
+b25faWQgPSByaWQ7DQo+ICAgICAgIHwgICAgIH5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+Xn5+fn4N
+Cj4gLi4vaHcvbWVtL2N4bF90eXBlMy5jOjE5ODc6MTM6IG5vdGU6IOKAmHJpZOKAmSB3YXMgZGVj
+bGFyZWQgaGVyZQ0KPiAgMTk4NyB8ICAgICB1aW50OF90IHJpZDsNCj4gICAgICAgfCAgICAgICAg
+ICAgICBefn4NCj4gY2MxOiBhbGwgd2FybmluZ3MgYmVpbmcgdHJlYXRlZCBhcyBlcnJvcnMNCj4g
+DQo+IFszXQ0KPiANCj4gZGlmZiAtLWdpdCBhL2h3L21lbS9jeGxfdHlwZTMuYyBiL2h3L21lbS9j
+eGxfdHlwZTMuYw0KPiBpbmRleCBlNjczMjg3ODA0MDcuLmQyNWU2MDY0ZjZjOSAxMDA2NDQNCj4g
+LS0tIGEvaHcvbWVtL2N4bF90eXBlMy5jDQo+ICsrKyBiL2h3L21lbS9jeGxfdHlwZTMuYw0KPiBA
+QCAtMTk4NCw3ICsxOTg0LDcgQEAgc3RhdGljIHZvaWQgcW1wX2N4bF9wcm9jZXNzX2R5bmFtaWNf
+Y2FwYWNpdHlfZXZlbnQoY29uc3QgY2hhciAqcGF0aCwNCj4gICAgICBDWExEQ0V4dGVudFJlY29y
+ZExpc3QgKmxpc3QgPSByZWNvcmRzOw0KPiAgICAgIENYTERDRXh0ZW50X3JhdyAqZXh0ZW50czsN
+Cj4gICAgICB1aW50NjRfdCBkcGEsIGxlbjsNCj4gLSAgICB1aW50OF90IHJpZDsNCj4gKyAgICB1
+aW50OF90IHJpZCA9IDA7DQo+ICAgICAgaW50IGk7DQo+ICANCj4gICAgICBpZiAoIW9iaikgew==
 
