@@ -2,94 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A71F760B47
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 09:16:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8CEB760C5B
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 09:50:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOCGc-00050t-Hr; Tue, 25 Jul 2023 03:15:35 -0400
+	id 1qOCme-0002sI-DU; Tue, 25 Jul 2023 03:48:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qOCGW-00050h-R7
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 03:15:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qOCGS-0004G7-GM
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 03:15:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690269322;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=vc0i3l3GIHUJKCmYvMQWYvV9YmLD0AMmdF3h+StBX9A=;
- b=bDZRpf0yAfzuYzy1G2rIF2ppR2S6p/XtaeHT9FXZFQHwYhTs0D5PlwQTiM+p3EfbqhQeSO
- 0dFToF+TrU9K/iRQKbETa3vh2JymqYmOzzpYUgV/6YXDZS/MUCSDIrZWlffEheCVM3Cwij
- wqYM34Z3MATRyBG+k1ciD6u3bESCzTU=
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
- [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-510-6HhUfmPbPkypokoSvVEd7w-1; Tue, 25 Jul 2023 03:15:21 -0400
-X-MC-Unique: 6HhUfmPbPkypokoSvVEd7w-1
-Received: by mail-pl1-f200.google.com with SMTP id
- d9443c01a7336-1bbb7ae553aso4586145ad.3
- for <qemu-devel@nongnu.org>; Tue, 25 Jul 2023 00:15:21 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
+ id 1qOCmO-0002s0-FH
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 03:48:25 -0400
+Received: from mail-lj1-x22c.google.com ([2a00:1450:4864:20::22c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
+ id 1qOCmL-0002fO-Sl
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 03:48:23 -0400
+Received: by mail-lj1-x22c.google.com with SMTP id
+ 38308e7fff4ca-2b96789d574so71218031fa.2
+ for <qemu-devel@nongnu.org>; Tue, 25 Jul 2023 00:48:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1690271299; x=1690876099;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=5E3rgMwuG7hjhsKDt4LoTwaRxESOsfXW0SJ2BWKdkus=;
+ b=gMORCkP/OP8QFGaf6FF+7MjasfNqpDcUIXR4waVIK07YMe7WyRRSXiWhLYs8C7Ic4S
+ 4bimsGnkl8dF6HBA48KHnah9TnfmhdU76+cQUrXlC0I+XzUoKGHTzFcbcuJxw36WUH73
+ 9q62wxd7LIgokqJUgbMVA0xeBplNtb1dPx8WSiIZaJWByTZ+tODWwe2oSSUxFxXydKUU
+ 8EoYa57QdBIosn09B9RrsLABXXv+TQ9VY0pG2UYMJah7gQ6x82E98DfF4zZuw3LkJkPF
+ xi1IYzcdXgtHL6SbeGZJpKXYwq0imj9cwOVcQLfcRsUUQSzhwXrkNeYwF8WSLT71kOyk
+ NQ/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690269320; x=1690874120;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=vc0i3l3GIHUJKCmYvMQWYvV9YmLD0AMmdF3h+StBX9A=;
- b=UQoLdNdXc0/unNafQxesP5C8lYL1CieTwkTBGESbjlTyLSUfHfojZ4WacEC0oA2L9H
- xDxOSfHJ/Ft7DOrbFVTlUgClJPOY+b6wo3NarEmJnn4nxFKpWPa413y1JpvLSPxwONuO
- w9J+kNyjj6Irj5x6ObDo1iW+xeeGq1m3VxUB5NvMn0LtzxbvwIowNfgouC57ssPI4Vm9
- G0OfAHb2WSOwA0sgpJeB5E62EzyB3YbcH7acJ4t+4t/0yqNI0QOM4Bv6Zlbp5HnqmaRb
- YSrFZHxSf8h5mJyFdaGyk9ZZX9Xsh9sUEoTrlUsBHBONnUnU6UWRs7QIDGDmoYsxUgwW
- 3SVA==
-X-Gm-Message-State: ABy/qLbXAkvjEHmPEfHZ4BUC9tcMd/ktzG9Qm51lE3Vjn0rRuk7Sp4iV
- 2CVP0QIjwoxvpME4FUnSVSojiGeAkPdpMfQE+wAbKk3Wbb7l9d2wRhr/8jPKoYEKTO714all2mR
- SwluyxmJunHNlvTU=
-X-Received: by 2002:a17:902:7fcd:b0:1b7:f64b:378a with SMTP id
- t13-20020a1709027fcd00b001b7f64b378amr9360028plb.16.1690269320395; 
- Tue, 25 Jul 2023 00:15:20 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlFdrwDodXDGp5pgQrqHi6Y0s7P9ZDtcYs8kkdf5H+//anl9SxJr1REiH0YGgSj4htRCfxxE5A==
-X-Received: by 2002:a17:902:7fcd:b0:1b7:f64b:378a with SMTP id
- t13-20020a1709027fcd00b001b7f64b378amr9360018plb.16.1690269320068; 
- Tue, 25 Jul 2023 00:15:20 -0700 (PDT)
-Received: from [10.72.12.72] ([43.228.180.230])
- by smtp.gmail.com with ESMTPSA id
- h11-20020a170902b94b00b001ac7f583f72sm10243862pls.209.2023.07.25.00.15.17
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 25 Jul 2023 00:15:19 -0700 (PDT)
-Message-ID: <18f8d9c7-fa1d-7e45-82cc-7bd742ec18fd@redhat.com>
-Date: Tue, 25 Jul 2023 15:15:16 +0800
+ d=1e100.net; s=20221208; t=1690271299; x=1690876099;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=5E3rgMwuG7hjhsKDt4LoTwaRxESOsfXW0SJ2BWKdkus=;
+ b=FFzRRyF1NCUicUX6X1Qwuav26h2YCjEG06Py0u+U9qLQxANuN3JZXZmhZDdSz3viFF
+ b/0W1He59BfRr7rrOp8GsysxOiK1Fqx7J23SyM/2dnwmJYBXhs3Z6czp8USQ8ZXjJDnB
+ bHrelWt9J7OvaxMXYA13Ei7BB8QgBTTke/8l6zXvW0B/iHherLt118jCZv9iHd8yKLIV
+ g9sCYC+kUEykSkbqTIIEc7BL5b7w9oc5/VwPzFbtb2YGI8YaKWr26snEyBnvH6YtmAml
+ 78adg3/pCzPuC3R1uSOK/pExtheVNktIQaizP3uvTituFL2Jnc3zfo+2KdMCpo5X6F/f
+ xHxQ==
+X-Gm-Message-State: ABy/qLZQqD4ppCLhHrrUuFrx075/3FagQhnteu/upe+s0PH6oZ+dBPbl
+ nwa8odUr6Sbpj5z2Oc4rW/MxIVBcNEcKMpuL6xA=
+X-Google-Smtp-Source: APBJJlESyeiWRuN61ZQBxvnwLDdvbAM3fgcvMuBitWZ1rd0rS6V71T3AdE5P4IU0gV/KxG+KMDpBzW8hqeFgHcnkZrY=
+X-Received: by 2002:a2e:9e95:0:b0:2b6:eb5a:d377 with SMTP id
+ f21-20020a2e9e95000000b002b6eb5ad377mr7310028ljk.5.1690271298922; Tue, 25 Jul
+ 2023 00:48:18 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.13.0
-Subject: Re: [RFC PATCH 00/12] Prefer to use SVQ to stall dataplane at NIC
- state restore through CVQ
-Content-Language: en-US
-To: Eugenio Perez Martin <eperezma@redhat.com>, qemu-devel@nongnu.org
-Cc: yvugenfi@redhat.com, si-wei.liu@oracle.com,
- "Michael S. Tsirkin" <mst@redhat.com>, Dragos Tatulea <dtatulea@nvidia.com>,
- Shannon Nelson <snelson@pensando.io>
-References: <20230720181459.607008-1-eperezma@redhat.com>
- <CAJaqyWdkyX9Ha-kd+haqEpfXfpVhSLmRa5hkZZGkvZjrD4Ketg@mail.gmail.com>
-From: Jason Wang <jasowang@redhat.com>
-In-Reply-To: <CAJaqyWdkyX9Ha-kd+haqEpfXfpVhSLmRa5hkZZGkvZjrD4Ketg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.091, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+References: <cover.1690100802.git.yin31149@gmail.com>
+ <e76a29f77bb3f386e4a643c8af94b77b775d1752.1690100802.git.yin31149@gmail.com>
+ <CACGkMEuM8JdPhch4uV+3zBSq=8ss99xDwX-KAr9_8_Q8TJ9m+g@mail.gmail.com>
+In-Reply-To: <CACGkMEuM8JdPhch4uV+3zBSq=8ss99xDwX-KAr9_8_Q8TJ9m+g@mail.gmail.com>
+From: Hawkins Jiawei <yin31149@gmail.com>
+Date: Tue, 25 Jul 2023 15:48:07 +0800
+Message-ID: <CAKrof1MxeP2r8uunF_GX2qZuq7KpQ-vz-MQcf5D9rXFto3tTrA@mail.gmail.com>
+Subject: Re: [PATCH v2 3/4] vdpa: Restore vlan filtering state
+To: Jason Wang <jasowang@redhat.com>
+Cc: mst@redhat.com, eperezma@redhat.com, qemu-devel@nongnu.org, 
+ 18801353760@163.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::22c;
+ envelope-from=yin31149@gmail.com; helo=mail-lj1-x22c.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -106,95 +90,136 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-在 2023/7/21 14:48, Eugenio Perez Martin 写道:
-> On Thu, Jul 20, 2023 at 8:15 PM Eugenio Pérez <eperezma@redhat.com> wrote:
->> At this moment the migration of net features that depends on CVQ is not
->> possible, as there is no reliable way to restore the device state like mac
->> address, number of enabled queues, etc to the destination.  This is mainly
->> caused because the device must only read CVQ, and process all the commands
->> before resuming the dataplane.
+On 2023/7/25 14:47, Jason Wang wrote:
+> On Sun, Jul 23, 2023 at 5:28=E2=80=AFPM Hawkins Jiawei <yin31149@gmail.co=
+m> wrote:
 >>
->> This series uses the VirtIO feature _F_RING_RESET to achieve it, adding an
->> alternative method to late vq enabling proposed in [1][2].  It expose SVQ to
->> the device until it process all the CVQ messages, and then replaces the vring
->> for the guest's one.
+>> This patch introduces vhost_vdpa_net_load_single_vlan()
+>> and vhost_vdpa_net_load_vlan() to restore the vlan
+>> filtering state at device's startup.
 >>
-> A couple of things I forgot to add:
-> * Assuming the implementation of _F_RING_RESET in vdpa is calling
-> kernel vdpa ops .set_vq_ready(vq, false). I'm not sure if this is the
-> best implementation, but it is currently unused in the kernel. At the
-> same time, .set_vq_ready(vq, true) also enables the vq again.
+>> Co-developed-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
+>> Signed-off-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
+>> Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
+>
+> Acked-by: Jason Wang <jasowang@redhat.com>
+>
+> But this seems to be a source of latency killer as it may at most send
+> 1024 commands.
+>
+> As discussed in the past, we need a better cvq command to do this: for
+> example, a single command to carray a bitmap.
 
+Hi Jason,
 
-I think we need another ops, as set_vq_ready() tends to be functional 
-equivalent to queue_enable.
+Thanks for your review.
 
-If we reuse set_vq_ready(vq, false), we would get conflict in the future 
-when driver is allowed to stop/resume a specific virtqueue via setting 0 
-to queue_enable. And that's also the reason why queue_enable is not 
-resued to reset a virtqueue.
+You are right, we need some improvement here.
+
+Therefore, I have submitted another patch series titled "vdpa: Send all
+CVQ state load commands in parallel" at [1], which allows QEMU to delay
+polling and checking the device used buffer until either the SVQ is full
+or control commands shadow buffers are full, so that QEMU can send all
+the SVQ control commands in parallel, which has better performance
+improvement.
+
+To test that patch series, I created 4094 VLANS in guest to build an
+environment for sending multiple CVQ state load commands. According to
+the result on the real vdpa device at [2], this patch series can improve
+latency from 23296 us to 6539 us.
+
+Thanks!
+
+[1]. https://lists.gnu.org/archive/html/qemu-devel/2023-07/msg03726.html
+[2]. https://lists.gnu.org/archive/html/qemu-devel/2023-07/msg03947.html
 
 
 >
->> As an advantage, it uses a feature well deviced in the VirtIO standard.  As a
->> disadvantage, current HW already support the late enabling and it does not
->> support RING_RESET.
->>
->> This patch must be applied on top of the series ("Enable vdpa net migration
->> with features depending on CVQ") [1][2].
->>
->> The patch has been tested with vp_vdpa, but using high IOVA instead of a
->> sepparated ID for shadow CVQ and shadow temporal vrings.
->>
-> And with _F_STATE implementation I sent long ago.
+> Thanks
 >
-> Based on this, my suggestion is:
-> * Leave the late enable for vDPA devices.
-> * Make them fail if the vDPA parent device does not support it. This
-> can be considered as a fix.
-> * Leave _F_RING_RESET to be added on top, as the semantics are not
-> implemented in vDPA at the moment.
->
-> Would that work?
-
-
-I think it can work, let's start from late enabling which seems 
-lightweight than reset and see. We can leave the vp_vdpa to be done on 
-top with another series.
-
-Thanks
-
-
->
->> [1] Message-id: <20230706191227.835526-1-eperezma@redhat.com>
->> [2] https://lists.nongnu.org/archive/html/qemu-devel/2023-07/msg01325.html
+>> ---
+>> v2:
+>>   - remove the extra line pointed out by Eugenio
 >>
->> Eugenio Pérez (12):
->>    vhost: add vhost_reset_queue_op
->>    vhost: add vhost_restart_queue_op
->>    vhost_net: Use ops->vhost_restart_queue in vhost_net_virtqueue_restart
->>    vhost_net: Use ops->vhost_reset_queue in vhost_net_virtqueue_reset
->>    vdpa: add vhost_vdpa_set_vring_ready_internal
->>    vdpa: add vhost_vdpa_svq_stop
->>    vdpa: add vhost_vdpa_reset_queue
->>    vdpa: add vhost_vdpa_svq_start
->>    vdpa: add vhost_vdpa_restart_queue
->>    vdpa: enable all vqs if the device support RING_RESET feature
->>    vdpa: use SVQ to stall dataplane while NIC state is being restored
->>    vhost: Allow _F_RING_RESET with shadow virtqueue
+>> v1: https://lore.kernel.org/all/0a568cc8a8d2b750c2e09b2237e9f05cece07c3f=
+.1689690854.git.yin31149@gmail.com/
 >>
->>   include/hw/virtio/vhost-backend.h  |   6 ++
->>   hw/net/vhost_net.c                 |  16 ++--
->>   hw/virtio/vhost-shadow-virtqueue.c |   1 +
->>   hw/virtio/vhost-vdpa.c             | 139 +++++++++++++++++++++--------
->>   net/vhost-vdpa.c                   |  55 ++++++++++--
->>   hw/virtio/trace-events             |   2 +-
->>   6 files changed, 171 insertions(+), 48 deletions(-)
+>>   net/vhost-vdpa.c | 48 ++++++++++++++++++++++++++++++++++++++++++++++++
+>>   1 file changed, 48 insertions(+)
 >>
+>> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+>> index 9795306742..347241796d 100644
+>> --- a/net/vhost-vdpa.c
+>> +++ b/net/vhost-vdpa.c
+>> @@ -965,6 +965,50 @@ static int vhost_vdpa_net_load_rx(VhostVDPAState *s=
+,
+>>       return 0;
+>>   }
+>>
+>> +static int vhost_vdpa_net_load_single_vlan(VhostVDPAState *s,
+>> +                                           const VirtIONet *n,
+>> +                                           uint16_t vid)
+>> +{
+>> +    const struct iovec data =3D {
+>> +        .iov_base =3D &vid,
+>> +        .iov_len =3D sizeof(vid),
+>> +    };
+>> +    ssize_t dev_written =3D vhost_vdpa_net_load_cmd(s, VIRTIO_NET_CTRL_=
+VLAN,
+>> +                                                  VIRTIO_NET_CTRL_VLAN_=
+ADD,
+>> +                                                  &data, 1);
+>> +    if (unlikely(dev_written < 0)) {
+>> +        return dev_written;
+>> +    }
+>> +    if (unlikely(*s->status !=3D VIRTIO_NET_OK)) {
+>> +        return -EIO;
+>> +    }
+>> +
+>> +    return 0;
+>> +}
+>> +
+>> +static int vhost_vdpa_net_load_vlan(VhostVDPAState *s,
+>> +                                    const VirtIONet *n)
+>> +{
+>> +    int r;
+>> +
+>> +    if (!virtio_vdev_has_feature(&n->parent_obj, VIRTIO_NET_F_CTRL_VLAN=
+)) {
+>> +        return 0;
+>> +    }
+>> +
+>> +    for (int i =3D 0; i < MAX_VLAN >> 5; i++) {
+>> +        for (int j =3D 0; n->vlans[i] && j <=3D 0x1f; j++) {
+>> +            if (n->vlans[i] & (1U << j)) {
+>> +                r =3D vhost_vdpa_net_load_single_vlan(s, n, (i << 5) + =
+j);
+>> +                if (unlikely(r !=3D 0)) {
+>> +                    return r;
+>> +                }
+>> +            }
+>> +        }
+>> +    }
+>> +
+>> +    return 0;
+>> +}
+>> +
+>>   static int vhost_vdpa_net_load(NetClientState *nc)
+>>   {
+>>       VhostVDPAState *s =3D DO_UPCAST(VhostVDPAState, nc, nc);
+>> @@ -995,6 +1039,10 @@ static int vhost_vdpa_net_load(NetClientState *nc)
+>>       if (unlikely(r)) {
+>>           return r;
+>>       }
+>> +    r =3D vhost_vdpa_net_load_vlan(s, n);
+>> +    if (unlikely(r)) {
+>> +        return r;
+>> +    }
+>>
+>>       return 0;
+>>   }
 >> --
->> 2.39.3
+>> 2.25.1
 >>
->>
-
+>
 
