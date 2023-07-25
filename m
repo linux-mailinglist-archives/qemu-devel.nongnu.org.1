@@ -2,55 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1CC3761E6A
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 18:24:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09E61761E6B
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 18:24:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOKp1-0003PH-6k; Tue, 25 Jul 2023 12:23:39 -0400
+	id 1qOKp7-0003Pk-7O; Tue, 25 Jul 2023 12:23:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qOKov-0003On-6X
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 12:23:33 -0400
+ id 1qOKp4-0003PT-P1
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 12:23:42 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qOKot-0003nf-Ma
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 12:23:32 -0400
+ id 1qOKp2-0003oK-Go
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 12:23:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690302210;
+ s=mimecast20190719; t=1690302220;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=U3BYkvu3CmlSAsiJPiY7vF77Ls3eEu0PFo6xuXl4dhE=;
- b=K95flJRlAHMflPkHOBTUEka0lAlF97cGIj1jJ0bI4xdfSzvYXb8IJ1NIxNiePiwdKDR3qZ
- L3igKh83X5sNqeb45TH04JZZ1AS50Nsu7NhlAvZy7klfO906HKIpWE6fyMpracrQ7q3OrZ
- QLopmtCFGUn1A/p16gFq+r9E1CHZKG8=
+ bh=LMXfBf1yGEGrg1GRgnwijit3howRq6lfN/+tpMD6+80=;
+ b=CJK5saXqK6kFgtj67N4MxQJ+fgTcUINn90tnhAmL5Uhg4HXIdBbO6phblvMUPdYDP44bax
+ o2WvrrsTlRO0MBt+ayHslZvqXn+d6W3B1wHRKknrIP8UEypM8Amo/u9LUQT2acXjwdJwf9
+ EC7C6SYTkINN7N45u8aiXaiQdHiAnvo=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-540-TOa_g036O9GWVKNKhAoTBw-1; Tue, 25 Jul 2023 12:23:27 -0400
-X-MC-Unique: TOa_g036O9GWVKNKhAoTBw-1
+ us-mta-452-DYrD0aNSObe53nYw9lNBpQ-1; Tue, 25 Jul 2023 12:23:36 -0400
+X-MC-Unique: DYrD0aNSObe53nYw9lNBpQ-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
  [10.11.54.7])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D5DF0800CAC;
- Tue, 25 Jul 2023 16:23:26 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0CFEF185A7A4;
+ Tue, 25 Jul 2023 16:23:36 +0000 (UTC)
 Received: from localhost.localdomain.com (unknown [10.42.28.133])
- by smtp.corp.redhat.com (Postfix) with ESMTP id F36DF145414A;
- Tue, 25 Jul 2023 16:23:25 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 10581145414A;
+ Tue, 25 Jul 2023 16:23:34 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: "Canokeys.org" <contact@canokeys.org>, Gerd Hoffmann <kraxel@redhat.com>,
  "Hongren (Zenithal) Zheng" <i@zenithal.me>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PULL 1/2] crypto: Always initialize splitkeylen
-Date: Tue, 25 Jul 2023 17:23:01 +0100
-Message-ID: <20230725162304.156157-2-berrange@redhat.com>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ YuanYang Meng <mkfssion@mkfssion.com>
+Subject: [PULL 2/2] hw/usb/canokey: change license to GPLv2+
+Date: Tue, 25 Jul 2023 17:23:02 +0100
+Message-ID: <20230725162304.156157-3-berrange@redhat.com>
 In-Reply-To: <20230725162304.156157-1-berrange@redhat.com>
 References: <20230725162304.156157-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -82,57 +83,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
+From: "Hongren (Zenithal) Zheng" <i@zenithal.me>
 
-When _FORTIFY_SOURCE=2, glibc version is 2.35, and GCC version is
-12.1.0, the compiler complains as follows:
+Apache license is considered by some to be not compatible
+with GPLv2+. Since QEMU as combined work is GPLv2-only,
+these two files should be made compatible.
 
-In file included from /usr/include/string.h:535,
-                 from /home/alarm/q/var/qemu/include/qemu/osdep.h:99,
-                 from ../crypto/block-luks.c:21:
-In function 'memset',
-    inlined from 'qcrypto_block_luks_store_key' at ../crypto/block-luks.c:843:9:
-/usr/include/bits/string_fortified.h:59:10: error: 'splitkeylen' may be used uninitialized [-Werror=maybe-uninitialized]
-   59 |   return __builtin___memset_chk (__dest, __ch, __len,
-      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   60 |                                  __glibc_objsize0 (__dest));
-      |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~
-../crypto/block-luks.c: In function 'qcrypto_block_luks_store_key':
-../crypto/block-luks.c:699:12: note: 'splitkeylen' was declared here
-  699 |     size_t splitkeylen;
-      |            ^~~~~~~~~~~
-
-It seems the compiler cannot see that splitkeylen will not be used
-when splitkey is NULL. Suppress the warning by initializing splitkeylen
-even when splitkey stays NULL.
-
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Reported-by: "Daniel P. Berrangé" <berrange@redhat.com>
+Link: https://lore.kernel.org/qemu-devel/ZEpKXncC%2Fe6FKRe9@redhat.com/
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Acked-By: canokeys.org<http://canokeys.org><contact@canokeys.org>
+Acked-by: YuanYang Meng <mkfssion@mkfssion.com>
+Signed-off-by: Hongren (Zenithal) Zheng <i@zenithal.me>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- crypto/block-luks.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ hw/usb/canokey.c | 2 +-
+ hw/usb/canokey.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/crypto/block-luks.c b/crypto/block-luks.c
-index 5688783ab1..2f59c3a625 100644
---- a/crypto/block-luks.c
-+++ b/crypto/block-luks.c
-@@ -706,14 +706,14 @@ qcrypto_block_luks_store_key(QCryptoBlock *block,
+diff --git a/hw/usb/canokey.c b/hw/usb/canokey.c
+index bbc5da07b5..b306eeb20e 100644
+--- a/hw/usb/canokey.c
++++ b/hw/usb/canokey.c
+@@ -4,7 +4,7 @@
+  * Copyright (c) 2021-2022 Canokeys.org <contact@canokeys.org>
+  * Written by Hongren (Zenithal) Zheng <i@zenithal.me>
+  *
+- * This code is licensed under the Apache-2.0.
++ * This code is licensed under the GPL v2 or later.
+  */
  
-     assert(slot_idx < QCRYPTO_BLOCK_LUKS_NUM_KEY_SLOTS);
-     slot = &luks->header.key_slots[slot_idx];
-+    splitkeylen = luks->header.master_key_len * slot->stripes;
-+
-     if (qcrypto_random_bytes(slot->salt,
-                              QCRYPTO_BLOCK_LUKS_SALT_LEN,
-                              errp) < 0) {
-         goto cleanup;
-     }
+ #include "qemu/osdep.h"
+diff --git a/hw/usb/canokey.h b/hw/usb/canokey.h
+index 24cf304203..e528889d33 100644
+--- a/hw/usb/canokey.h
++++ b/hw/usb/canokey.h
+@@ -4,7 +4,7 @@
+  * Copyright (c) 2021-2022 Canokeys.org <contact@canokeys.org>
+  * Written by Hongren (Zenithal) Zheng <i@zenithal.me>
+  *
+- * This code is licensed under the Apache-2.0.
++ * This code is licensed under the GPL v2 or later.
+  */
  
--    splitkeylen = luks->header.master_key_len * slot->stripes;
--
-     /*
-      * Determine how many iterations are required to
-      * hash the user password while consuming 1 second of compute
+ #ifndef CANOKEY_H
 -- 
 2.41.0
 
