@@ -2,65 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45D49761399
-	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 13:11:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D35C7613B1
+	for <lists+qemu-devel@lfdr.de>; Tue, 25 Jul 2023 13:13:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOFvg-00005Q-9v; Tue, 25 Jul 2023 07:10:12 -0400
+	id 1qOFxd-000288-Is; Tue, 25 Jul 2023 07:12:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qOFvc-00005I-G5
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 07:10:09 -0400
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1qOFxc-00027v-5t
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 07:12:12 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qOFva-0001fC-07
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 07:10:07 -0400
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1qOFxa-00027M-P7
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 07:12:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690283404;
+ s=mimecast20190719; t=1690283529;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=z77whvrv2oseI15PJDazIoJZV26ULNoNV14OozRL1zc=;
- b=ZuF3htdslT2OH7WI494ja7bue9DsD6YKNE06A8psSF/qcjJK4LfyKp3zO+Zic2rrZ8kYzR
- I6O5MolLe1kbqCbIgpqK0+584ILHgT1MyL4j1amy9gv9MruHiQLGotnm7KtHv02lM8oeyY
- Jn/xcpwty9fMj4IRgru1qjmXHQeE7MU=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-543-NMGaknLtNea_mZonIAyv5A-1; Tue, 25 Jul 2023 07:10:03 -0400
-X-MC-Unique: NMGaknLtNea_mZonIAyv5A-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DFFB485A58A;
- Tue, 25 Jul 2023 11:10:02 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.193.50])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id A42434A9004;
- Tue, 25 Jul 2023 11:10:02 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 9EA2721E6690; Tue, 25 Jul 2023 13:10:01 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org,  Leonardo Bras Soares Passos
- <lsoaresp@redhat.com>,  Eric Blake <eblake@redhat.com>,  Juan Quintela
- <quintela@redhat.com>,  Markus Armbruster <armbru@redhat.com>,  Chensheng
- Dong <chdong@redhat.com>,  Zhiyi Guo <zhguo@redhat.com>,  Daniel P .
- =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Fabiano Rosas
- <farosas@suse.de>
-Subject: Re: [PATCH] migration: Allow user to specify migration available
- bandwidth
-References: <20230724170755.1114519-1-peterx@redhat.com>
-Date: Tue, 25 Jul 2023 13:10:01 +0200
-In-Reply-To: <20230724170755.1114519-1-peterx@redhat.com> (Peter Xu's message
- of "Mon, 24 Jul 2023 13:07:55 -0400")
-Message-ID: <87351cfdrq.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ content-transfer-encoding:content-transfer-encoding;
+ bh=D5d1Cxm+tUNr+QauuYeTFn4CDkMVFXljOOvWjY/jAqE=;
+ b=KR4xOtgZmVmGVSnc7ClpDLHC+VRexxgGYcK93MPf6aG0aoOPX+ORjaZNTn5/49fS6q3Nef
+ LbODSciJTglMqq7WRyFPeabeVZwRzfv1U01g4TPZ2ysucBrMYXnj0IQTpZ6+tyCeHPtkMY
+ hISBGexUKuPezY/2GiemeQCLbSszVC8=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-237-rnxQfzDWO6-9MH2nMEr42g-1; Tue, 25 Jul 2023 07:12:05 -0400
+X-MC-Unique: rnxQfzDWO6-9MH2nMEr42g-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-3fd2e898badso15594765e9.0
+ for <qemu-devel@nongnu.org>; Tue, 25 Jul 2023 04:12:05 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1690283524; x=1690888324;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=D5d1Cxm+tUNr+QauuYeTFn4CDkMVFXljOOvWjY/jAqE=;
+ b=fxdjT3qxQgJl5Iap6oxlgdTtUdgAfbQErKmtRomixVI6DoJjSZj5h2++rJ/MBUGMos
+ 71d471u1yX1sL0H8YQ05VitfcmIbpgoI+QwSXeXYKBcZx8pG/n1LDAUyHUW9N0M2Zyib
+ vpog6TeMVxqnmbQvBYxaeRGV3csuhDtvzIPv2jolw0MeDQ5/Rkjc4QVYCd1FZ2NAeM6N
+ YRxLO3yPhVhXRBMxPBxe6eHngsdPChnnFPk91g68TAo3PIC7l/eGXas41eu221KX1zhD
+ +B+JOBfdw6/f4By+361vh1yN7yX61L/PKadSHTeKF6NfkR1Bd458B5cc9Ud7hqUefOLK
+ M43w==
+X-Gm-Message-State: ABy/qLaVWsrCZ2EaFsn+/lXyeLLZcuUNJtlKD6DtQxYn9H4V9Ij4DdZw
+ NxgCjuPF5hPcaNvt9FmY9rRsqNkMwERpiNkvX3dVoQaRnKnhqfAQW7oFG/E+dujVltgHgMoWcIz
+ 9yKD63JkQwn3uZB+hw2chWAeHaUIbENIdN1BnzQEQWFS7s+3h02AritZZTmBSMLARKG+3ioR6Xb
+ E=
+X-Received: by 2002:a7b:c3d9:0:b0:3fa:9996:8e03 with SMTP id
+ t25-20020a7bc3d9000000b003fa99968e03mr1789116wmj.10.1690283518949; 
+ Tue, 25 Jul 2023 04:11:58 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlH1vVuaFmIkbKFGjZkw8D0DJLoYghovudqg+kFZ/8i8AYXQrUYBuZIYBWah08SjRAK7eqbhwg==
+X-Received: by 2002:a7b:c3d9:0:b0:3fa:9996:8e03 with SMTP id
+ t25-20020a7bc3d9000000b003fa99968e03mr1789094wmj.10.1690283518542; 
+ Tue, 25 Jul 2023 04:11:58 -0700 (PDT)
+Received: from step1.redhat.com ([193.207.217.123])
+ by smtp.gmail.com with ESMTPSA id
+ 9-20020a05600c024900b003fd32074e74sm7458116wmj.31.2023.07.25.04.11.56
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 25 Jul 2023 04:11:57 -0700 (PDT)
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Hanna Reitz <hreitz@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org,
+ Stefano Garzarella <sgarzare@redhat.com>, Qing Wang <qinwang@redhat.com>
+Subject: [PATCH] block/blkio: do not use open flags in qemu_open()
+Date: Tue, 25 Jul 2023 13:11:55 +0200
+Message-ID: <20230725111155.85426-1-sgarzare@redhat.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+Content-type: text/plain
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=sgarzare@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -69,7 +84,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,173 +100,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
+qemu_open() in blkio_virtio_blk_common_open() is used to open the
+character device (e.g. /dev/vhost-vdpa-0 or /dev/vfio/vfio) or in
+the future eventually the unix socket.
 
-> Migration bandwidth is a very important value to live migration.  It's
-> because it's one of the major factors that we'll make decision on when to
-> switchover to destination in a precopy process.
->
-> This value is currently estimated by QEMU during the whole live migration
-> process by monitoring how fast we were sending the data.  This can be the
-> most accurate bandwidth if in the ideal world, where we're always feeding
-> unlimited data to the migration channel, and then it'll be limited to the
-> bandwidth that is available.
->
-> However in reality it may be very different, e.g., over a 10Gbps network we
-> can see query-migrate showing migration bandwidth of only a few tens of
-> MB/s just because there are plenty of other things the migration thread
-> might be doing.  For example, the migration thread can be busy scanning
-> zero pages, or it can be fetching dirty bitmap from other external dirty
-> sources (like vhost or KVM).  It means we may not be pushing data as much
-> as possible to migration channel, so the bandwidth estimated from "how many
-> data we sent in the channel" can be dramatically inaccurate sometimes,
-> e.g., that a few tens of MB/s even if 10Gbps available, and then the
-> decision to switchover will be further affected by this.
->
-> The migration may not even converge at all with the downtime specified,
-> with that wrong estimation of bandwidth.
->
-> The issue is QEMU itself may not be able to avoid those uncertainties on
-> measuing the real "available migration bandwidth".  At least not something
-> I can think of so far.
->
-> One way to fix this is when the user is fully aware of the available
-> bandwidth, then we can allow the user to help providing an accurate value.
->
-> For example, if the user has a dedicated channel of 10Gbps for migration
-> for this specific VM, the user can specify this bandwidth so QEMU can
-> always do the calculation based on this fact, trusting the user as long as
-> specified.
->
-> When the user wants to have migration only use 5Gbps out of that 10Gbps,
-> one can set max-bandwidth to 5Gbps, along with available-bandwidth to 5Gbps
-> so it'll never use over 5Gbps too (so the user can have the rest 5Gbps for
-> other things).  So it can be useful even if the network is not dedicated,
-> but as long as the user can know a solid value.
->
-> A new parameter "available-bandwidth" is introduced just for this. So when
-> the user specified this parameter, instead of trusting the estimated value
-> from QEMU itself (based on the QEMUFile send speed), let's trust the user
-> more.
->
-> This can resolve issues like "unconvergence migration" which is caused by
-> hilarious low "migration bandwidth" detected for whatever reason.
->
-> Reported-by: Zhiyi Guo <zhguo@redhat.com>
-> Signed-off-by: Peter Xu <peterx@redhat.com>
-> ---
->  qapi/migration.json            | 20 +++++++++++++++++++-
->  migration/migration.h          |  2 +-
->  migration/options.h            |  1 +
->  migration/migration-hmp-cmds.c | 14 ++++++++++++++
->  migration/migration.c          | 19 +++++++++++++++----
->  migration/options.c            | 28 ++++++++++++++++++++++++++++
->  migration/trace-events         |  2 +-
->  7 files changed, 79 insertions(+), 7 deletions(-)
->
-> diff --git a/qapi/migration.json b/qapi/migration.json
-> index 47dfef0278..fdc269e0a1 100644
-> --- a/qapi/migration.json
-> +++ b/qapi/migration.json
-> @@ -730,6 +730,16 @@
->  # @max-bandwidth: to set maximum speed for migration.  maximum speed
->  #     in bytes per second.  (Since 2.8)
->  #
-> +# @available-bandwidth: to set available bandwidth for migration.  By
-> +#     default, this value is zero, means the user is not aware of the
-> +#     available bandwidth that can be used by QEMU migration, so QEMU will
-> +#     estimate the bandwidth automatically.  This can be set when the
-> +#     estimated value is not accurate, while the user is able to guarantee
-> +#     such bandwidth is available for migration purpose during the
-> +#     migration procedure.  When specified correctly, this can make the
-> +#     switchover decision much more accurate, which will also be based on
-> +#     the max downtime specified.  (Since 8.2)
+In all these cases we cannot open the path in read-only mode,
+when the `read-only` option of blockdev is on, because the exchange
+of IOCTL commands for example will fail.
 
-Humor me: break lines slightly earlier, like
+In order to open the device read-only, we have to use the `read-only`
+property of the libblkio driver as we already do in blkio_file_open().
 
-   # @available-bandwidth: to set available bandwidth for migration.  By
-   #     default, this value is zero, means the user is not aware of the
-   #     available bandwidth that can be used by QEMU migration, so QEMU
-   #     will estimate the bandwidth automatically.  This can be set when
-   #     the estimated value is not accurate, while the user is able to
-   #     guarantee such bandwidth is available for migration purpose
-   #     during the migration procedure.  When specified correctly, this
-   #     can make the switchover decision much more accurate, which will
-   #     also be based on the max downtime specified.  (Since 8.2)
+Fixes: cad2ccc395 ("block/blkio: use qemu_open() to support fd passing for virtio-blk")
+Reported-by: Qing Wang <qinwang@redhat.com>
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+---
+ block/blkio.c | 10 +---------
+ 1 file changed, 1 insertion(+), 9 deletions(-)
 
-> +#
->  # @downtime-limit: set maximum tolerated downtime for migration.
->  #     maximum downtime in milliseconds (Since 2.8)
->  #
-> @@ -803,7 +813,7 @@
->             'cpu-throttle-initial', 'cpu-throttle-increment',
->             'cpu-throttle-tailslow',
->             'tls-creds', 'tls-hostname', 'tls-authz', 'max-bandwidth',
-> -           'downtime-limit',
-> +           'available-bandwidth', 'downtime-limit',
->             { 'name': 'x-checkpoint-delay', 'features': [ 'unstable' ] },
->             'block-incremental',
->             'multifd-channels',
-> @@ -886,6 +896,9 @@
->  # @max-bandwidth: to set maximum speed for migration.  maximum speed
->  #     in bytes per second.  (Since 2.8)
->  #
-> +# @available-bandwidth: to set available migration bandwidth.  Please refer
-> +#     to comments in MigrationParameter for more information. (Since 8.2)
-
-For better or worse, we duplicate full documentation between
-MigrationParameter, MigrateSetParameters, and MigrationParameters.  This
-would be the first instance where we reference instead.  I'm not opposed
-to use references, but if we do, I want them used consistently.
-
-
-> +#
->  # @downtime-limit: set maximum tolerated downtime for migration.
->  #     maximum downtime in milliseconds (Since 2.8)
->  #
-> @@ -971,6 +984,7 @@
->              '*tls-hostname': 'StrOrNull',
->              '*tls-authz': 'StrOrNull',
->              '*max-bandwidth': 'size',
-> +            '*available-bandwidth': 'size',
->              '*downtime-limit': 'uint64',
->              '*x-checkpoint-delay': { 'type': 'uint32',
->                                       'features': [ 'unstable' ] },
-> @@ -1078,6 +1092,9 @@
->  # @max-bandwidth: to set maximum speed for migration.  maximum speed
->  #     in bytes per second.  (Since 2.8)
->  #
-> +# @available-bandwidth: to set available migration bandwidth.  Please refer
-> +#     to comments in MigrationParameter for more information. (Since 8.2)
-> +#
->  # @downtime-limit: set maximum tolerated downtime for migration.
->  #     maximum downtime in milliseconds (Since 2.8)
->  #
-> @@ -1160,6 +1177,7 @@
->              '*tls-hostname': 'str',
->              '*tls-authz': 'str',
->              '*max-bandwidth': 'size',
-> +            '*available-bandwidth': 'size',
->              '*downtime-limit': 'uint64',
->              '*x-checkpoint-delay': { 'type': 'uint32',
->                                       'features': [ 'unstable' ] },
-> diff --git a/migration/migration.h b/migration/migration.h
-> index b7c8b67542..fadbf64d9d 100644
-> --- a/migration/migration.h
-> +++ b/migration/migration.h
-> @@ -283,7 +283,7 @@ struct MigrationState {
->      /*
->       * The final stage happens when the remaining data is smaller than
->       * this threshold; it's calculated from the requested downtime and
-> -     * measured bandwidth
-> +     * measured bandwidth, or available-bandwidth if user specified.
-
-Suggest to scratch "user".
-
->       */
->      int64_t threshold_size;
->  
-
-[...]
+diff --git a/block/blkio.c b/block/blkio.c
+index 1798648134..fe9bf8ea5f 100644
+--- a/block/blkio.c
++++ b/block/blkio.c
+@@ -686,15 +686,7 @@ static int blkio_virtio_blk_common_open(BlockDriverState *bs,
+      * layer through the "/dev/fdset/N" special path.
+      */
+     if (fd_supported) {
+-        int open_flags;
+-
+-        if (flags & BDRV_O_RDWR) {
+-            open_flags = O_RDWR;
+-        } else {
+-            open_flags = O_RDONLY;
+-        }
+-
+-        fd = qemu_open(path, open_flags, errp);
++        fd = qemu_open(path, O_RDWR, errp);
+         if (fd < 0) {
+             return -EINVAL;
+         }
+-- 
+2.41.0
 
 
