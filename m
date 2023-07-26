@@ -2,79 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCA0E763B25
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jul 2023 17:34:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB01D763B40
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jul 2023 17:39:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOeWy-0003Az-KS; Wed, 26 Jul 2023 09:26:20 -0400
+	id 1qOecg-0005it-MH; Wed, 26 Jul 2023 09:32:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <serg.oker@gmail.com>)
- id 1qOeWu-00037X-6D; Wed, 26 Jul 2023 09:26:16 -0400
-Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <serg.oker@gmail.com>)
- id 1qOeWs-0003ZE-C6; Wed, 26 Jul 2023 09:26:15 -0400
-Received: by mail-lf1-x129.google.com with SMTP id
- 2adb3069b0e04-4fb73ba3b5dso10769931e87.1; 
- Wed, 26 Jul 2023 06:26:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1690377972; x=1690982772;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=SRrMRV+CFBigMwjTTTsXu/HTvU2Dt2LGhRrw9yVZ8yI=;
- b=hPxBGb99+soQ6itx5+K5jQv7rhbUnIvyhor5naoy53gKCa3220bXrNqdzNj2tCfxng
- WnoR0nq/jNJGLq4+88wNRAjyNhJXz0zy3vzEDXTfumWpbYqrJMFrZ4fvflmtT73ppZhU
- sueCp4C6QmCF5sICFoxlT/m0bY6uwa6E9hbTOxR5GaFkG8sx2hiQdc8NqBi9iHmF0ze9
- SMFcTVDgiv7Z4tXfDWiPRrR0A6a7MQIKruEhmnxijxq0zaVMOdMZsbOEJxpZGhcqKAwZ
- dewPkCaPxJlEsCvbevhe2+aMFw29APvqtQ/qukOF3lB5L8ge0Vc/7Kdc0zztICiVyLLk
- 9l0A==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qOecf-0005iP-1d
+ for qemu-devel@nongnu.org; Wed, 26 Jul 2023 09:32:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qOecd-000529-Dr
+ for qemu-devel@nongnu.org; Wed, 26 Jul 2023 09:32:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1690378329;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=FLVtAEqRzGBV+IaqZEZ9f82jqorG7TangF4D2bjtulw=;
+ b=KRPA9GZ0PcpG8fuHaCtvel+PM6jn5HZDu0sCBMQQJILMtZ1z+D01aq17ayW5aJoS+Lw/xP
+ nEBYgVH9bVd6bYGQ26E/tkERTluBH+x+tQZizEy1O3NrA3JF/nwKcAOinsOj+NpBHSHBMZ
+ jxA07GylJu+pHYvUnWt1B0i5I+boynQ=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-28-FSIHeRMQMlOR4_byvIXfUQ-1; Wed, 26 Jul 2023 09:32:08 -0400
+X-MC-Unique: FSIHeRMQMlOR4_byvIXfUQ-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-314134f403fso3221762f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 26 Jul 2023 06:32:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690377972; x=1690982772;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=SRrMRV+CFBigMwjTTTsXu/HTvU2Dt2LGhRrw9yVZ8yI=;
- b=Rt+afPxK7iqihf09I6xSdIQThQsTA6vjlmxJxykV8fDntG7YdTAJVbAVm1iL30R1rJ
- gdUnY5AEk6KuiauYVy2TFdBS9B1kcAKsCXTK0FdSeKnvcW+Yj3+MTf3SPhCKiZG6oePt
- wlqcYO5TH0R1/u50Gk7joyFblcxKnM1MXip7yeYSa7VdaJgXPKu5GEfMZlB1y3aX/SI3
- 1lEwU841ZlZB05yt2H/ytclReZx4HZsmqPf9lBZuzf34yNBh77UklcpJ7SA5+vlIKq+8
- lFO4+E3BvFjafT7PlhmuezvJEJMjYSwf/xKuGlShsTlk3nS/IVSTOpl8fW70vTLC1UdB
- oVYg==
-X-Gm-Message-State: ABy/qLbMl1vrUH6NaPYjh8YrDnuRCl2/NesAOyymwvA0IRz5hyADQXob
- D4vUCWXX+OAiijzTsO7IdDtYUc0FTVM=
-X-Google-Smtp-Source: APBJJlHy2FgWW6RefU0YT/0cH68epV8O1t7TXRdTlUJ0qVBtdpu3i4JXdwLhBOFvSOB8L5qrQyQIrQ==
-X-Received: by 2002:a05:6512:114b:b0:4f8:65ef:afcd with SMTP id
- m11-20020a056512114b00b004f865efafcdmr1540559lfg.17.1690377971928; 
- Wed, 26 Jul 2023 06:26:11 -0700 (PDT)
-Received: from sergevik-thinkpad.localdomain ([213.197.136.186])
+ d=1e100.net; s=20221208; t=1690378327; x=1690983127;
+ h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+ :content-language:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=FLVtAEqRzGBV+IaqZEZ9f82jqorG7TangF4D2bjtulw=;
+ b=blnFPw3B0KRO/aB/BoyvQOqP4mJ/UngFEal0mgQWlZBub75w/KGSnUFU/t3EfPPM8N
+ 507fUkwmnyuEBcWrKnslAeuYVVaTLcYZgrT1VBOKZvyyPiu5CcUkyNDALm0rc4Vc7aBU
+ lXnRfmYS2M2/+eFJTfFApzq6HT83wsZERMlxSSoMfEpAwjmlxBMSKLpiD2vQIH/ADRez
+ FijtkQ+iJkBKfRAOdVPWAC4ccBvlOl8snDrd+OHoZYnnH8wj4AV2rNJ3/hqC5O4zjHFy
+ 9LRuUHEZYoRYNfhkuSGFN9fN3N3es3P93DaHKF+e0bCU8dY+AaW4k7gxiz5YlFp2mtLs
+ 5uHA==
+X-Gm-Message-State: ABy/qLZ2s9j29pxnCA3sKRa5ZbsRgSceiCKwsOdtRF7mS/LC4QQbC5Cp
+ 3e7MA3A3v9IEYLhyymOoWJ1CCzp3rC3n+TwfLfmtfSZgU6oGIer7kqlKUZcnL03y7Xs3l0QtopD
+ Dg51RkBCsUEih67g=
+X-Received: by 2002:a5d:6143:0:b0:317:759a:8ca8 with SMTP id
+ y3-20020a5d6143000000b00317759a8ca8mr1723702wrt.67.1690378326823; 
+ Wed, 26 Jul 2023 06:32:06 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlFXJHifqfUVXF31jD3rdgXFVgzWNVwTzfH28Ap1C6igyu5/C0F6X/inDvaYMTAxYhfL2dXKVQ==
+X-Received: by 2002:a5d:6143:0:b0:317:759a:8ca8 with SMTP id
+ y3-20020a5d6143000000b00317759a8ca8mr1723679wrt.67.1690378326474; 
+ Wed, 26 Jul 2023 06:32:06 -0700 (PDT)
+Received: from [192.168.0.3] (ip-109-43-176-0.web.vodafone.de. [109.43.176.0])
  by smtp.gmail.com with ESMTPSA id
- j22-20020a19f516000000b004fe0c3d8bb4sm565079lfb.84.2023.07.26.06.26.11
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 26 Jul 2023 06:26:11 -0700 (PDT)
-From: Sergey Kambalin <serg.oker@gmail.com>
-X-Google-Original-From: Sergey Kambalin <sergey.kambalin@auriga.com>
-To: qemu-arm@nongnu.org
-Cc: qemu-devel@nongnu.org,
-	Sergey Kambalin <sergey.kambalin@auriga.com>
-Subject: [PATCH 44/44] Append added properties to mailbox test
-Date: Wed, 26 Jul 2023 16:25:12 +0300
-Message-Id: <20230726132512.149618-45-sergey.kambalin@auriga.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230726132512.149618-1-sergey.kambalin@auriga.com>
-References: <20230726132512.149618-1-sergey.kambalin@auriga.com>
+ c1-20020adfe701000000b00311299df211sm19861338wrm.77.2023.07.26.06.32.05
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 26 Jul 2023 06:32:06 -0700 (PDT)
+Message-ID: <e68d2e2f-6afe-820b-fa45-44db5b6edf09@redhat.com>
+Date: Wed, 26 Jul 2023 15:32:04 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>, quintela@redhat.com,
+ Kevin Wolf <kwolf@redhat.com>, hreitz@redhat.com,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Cc: qemu-devel@nongnu.org, Daniel Berrange <berrange@redhat.com>,
+ richard.henderson@linaro.org, Qemu-block <qemu-block@nongnu.org>
+References: <87fs5aho6e.fsf@secure.mitica>
+ <CAFEAcA89zgd+ZFBcMasTZErH6eTknXJhnDaXyW_LWj_vAYKrnw@mail.gmail.com>
+From: Thomas Huth <thuth@redhat.com>
+Subject: Re: How to tame CI?
+In-Reply-To: <CAFEAcA89zgd+ZFBcMasTZErH6eTknXJhnDaXyW_LWj_vAYKrnw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::129;
- envelope-from=serg.oker@gmail.com; helo=mail-lf1-x129.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -91,140 +104,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
----
- tests/qtest/bcm2838-mbox-property-test.c | 82 ++++++++++++++++++++++++
- 1 file changed, 82 insertions(+)
+On 26/07/2023 15.00, Peter Maydell wrote:
+> On Wed, 26 Jul 2023 at 13:06, Juan Quintela <quintela@redhat.com> wrote:
+>> To make things easier, this is the part that show how it breaks (this is
+>> the gcov test):
+>>
+>> 357/423 qemu:block / io-qcow2-copy-before-write                            ERROR           6.38s   exit status 1
+>>>>> PYTHON=/builds/juan.quintela/qemu/build/pyvenv/bin/python3 MALLOC_PERTURB_=44 /builds/juan.quintela/qemu/build/pyvenv/bin/python3 /builds/juan.quintela/qemu/build/../tests/qemu-iotests/check -tap -qcow2 copy-before-write --source-dir /builds/juan.quintela/qemu/tests/qemu-iotests --build-dir /builds/juan.quintela/qemu/build/tests/qemu-iotests
+>> ――――――――――――――――――――――――――――――――――――― ✀  ―――――――――――――――――――――――――――――――――――――
+>> stderr:
+>> --- /builds/juan.quintela/qemu/tests/qemu-iotests/tests/copy-before-write.out
+>> +++ /builds/juan.quintela/qemu/build/scratch/qcow2-file-copy-before-write/copy-before-write.out.bad
+>> @@ -1,5 +1,21 @@
+>> -....
+>> +...F
+>> +======================================================================
+>> +FAIL: test_timeout_break_snapshot (__main__.TestCbwError)
+>> +----------------------------------------------------------------------
+>> +Traceback (most recent call last):
+>> +  File "/builds/juan.quintela/qemu/tests/qemu-iotests/tests/copy-before-write", line 210, in test_timeout_break_snapshot
+>> +    self.assertEqual(log, """\
+>> +AssertionError: 'wrot[195 chars]read 1048576/1048576 bytes at offset 0\n1 MiB,[46 chars]c)\n' != 'wrot[195 chars]read failed: Permission denied\n'
+>> +  wrote 524288/524288 bytes at offset 0
+>> +  512 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
+>> +  wrote 524288/524288 bytes at offset 524288
+>> +  512 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
+>> ++ read failed: Permission denied
+>> +- read 1048576/1048576 bytes at offset 0
+>> +- 1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
+>> +
+> 
+> This iotest failing is an intermittent that I've seen running
+> pullreqs on master. I tend to see it on the s390 host. I
+> suspect a race condition somewhere where it fails if the host
+> is heavily loaded.
 
-diff --git a/tests/qtest/bcm2838-mbox-property-test.c b/tests/qtest/bcm2838-mbox-property-test.c
-index e833529a00..68e2b11db6 100644
---- a/tests/qtest/bcm2838-mbox-property-test.c
-+++ b/tests/qtest/bcm2838-mbox-property-test.c
-@@ -242,6 +242,12 @@ DECLARE_TEST_CASE_SETUP(GET_MIN_CLOCK_RATE, ANY) {
-     tag->request.value.clock_id = CLOCK_ID_UNDEFINED;
- }
- 
-+/*----------------------------------------------------------------------------*/
-+DECLARE_TEST_CASE(GET_CLOCKS) {
-+    g_assert_cmphex(tag->response.value.root_clock, ==, CLOCK_ID_ROOT);
-+    g_assert_cmphex(tag->response.value.arm_clock, ==, CLOCK_ID_ARM);
-+}
-+
- /*----------------------------------------------------------------------------*/
- DECLARE_TEST_CASE(GET_TEMPERATURE) {
-     g_assert_cmphex(tag->response.value.temperature_id, ==, TEMPERATURE_ID_SOC);
-@@ -508,11 +514,31 @@ DECLARE_TEST_CASE(GET_COMMANDLINE) {
-     /* No special checks are needed for this test case */
- }
- 
-+/*----------------------------------------------------------------------------*/
-+DECLARE_TEST_CASE(GET_THROTTLED) {
-+    g_assert_cmpint(tag->response.value.throttled, ==, 0);
-+}
-+
- /*----------------------------------------------------------------------------*/
- DECLARE_TEST_CASE(GET_NUM_DISPLAYS) {
-     g_assert_cmpint(tag->response.value.num_displays, ==, 1);
- }
- 
-+/*----------------------------------------------------------------------------*/
-+DECLARE_TEST_CASE(GET_DISPLAY_SETTINGS) {
-+    g_assert_cmpint(tag->response.value.display_num, ==, 0);
-+    g_assert_cmpint(tag->response.value.phys_width, ==, 800);
-+    g_assert_cmpint(tag->response.value.phys_height, ==, 600);
-+    g_assert_cmpint(tag->response.value.bpp, ==, 32);
-+    g_assert_cmpint(tag->response.value.pitch, ==, 32);
-+    g_assert_cmpint(tag->response.value.virt_width, ==, 0);
-+    g_assert_cmpint(tag->response.value.virt_height, ==, 0);
-+    g_assert_cmpint(tag->response.value.virt_width_offset, ==, 0);
-+    g_assert_cmpint(tag->response.value.virt_height_offset, ==, 0);
-+    g_assert_cmphex(tag->response.value.fb_bus_address_lo, ==, 0x00000000);
-+    g_assert_cmphex(tag->response.value.fb_bus_address_hi, ==, 0x00000000);
-+}
-+
- /*----------------------------------------------------------------------------*/
- DECLARE_TEST_CASE(SET_PITCH) {
-     /* No special checks are needed for this test case */
-@@ -521,6 +547,54 @@ DECLARE_TEST_CASE_SETUP(SET_PITCH) {
-     tag->request.value.pitch = DUMMY_VALUE;
- }
- 
-+/*----------------------------------------------------------------------------*/
-+DECLARE_TEST_CASE(GET_GPIO_CONFIG) {
-+    g_assert_cmpint(tag->response.value.zero, ==, 0);
-+    g_assert_cmphex(tag->response.value.direction, ==, GPIO_DIRECTION_IN);
-+    g_assert_cmphex(tag->response.value.polarity, ==, GPIO_POLARITY_LOW);
-+    g_assert_cmphex(tag->response.value.term_en, ==, GPIO_TERMINATION_DISABLED);
-+    g_assert_cmphex(tag->response.value.term_pull_up, ==, GPIO_TERMINATION_PULLUP_DISABLED);
-+}
-+DECLARE_TEST_CASE_SETUP(GET_GPIO_CONFIG) {
-+    tag->request.value.gpio_num = GPIO_0;
-+}
-+
-+/*----------------------------------------------------------------------------*/
-+DECLARE_TEST_CASE(SET_GPIO_CONFIG) {
-+    g_assert_cmpint(tag->response.value.zero, ==, 0);
-+}
-+DECLARE_TEST_CASE_SETUP(SET_GPIO_CONFIG) {
-+    tag->request.value.gpio_num = GPIO_0;
-+    tag->request.value.direction = DUMMY_VALUE;
-+    tag->request.value.polarity = DUMMY_VALUE;
-+    tag->request.value.term_en = DUMMY_VALUE;
-+    tag->request.value.term_pull_up = DUMMY_VALUE;
-+    tag->request.value.state = DUMMY_VALUE;
-+}
-+
-+/*----------------------------------------------------------------------------*/
-+DECLARE_TEST_CASE(GET_GPIO_STATE) {
-+    g_assert_cmpint(tag->response.value.zero, ==, 0);
-+    g_assert_cmphex(tag->response.value.state, ==, GPIO_STATE_DOWN);
-+}
-+DECLARE_TEST_CASE_SETUP(GET_GPIO_STATE) {
-+    tag->request.value.gpio_num = GPIO_0;
-+}
-+
-+/*----------------------------------------------------------------------------*/
-+DECLARE_TEST_CASE(SET_GPIO_STATE) {
-+    g_assert_cmpint(tag->response.value.zero, ==, 0);
-+}
-+DECLARE_TEST_CASE_SETUP(SET_GPIO_STATE) {
-+    tag->request.value.gpio_num = GPIO_0;
-+    tag->request.value.state = GPIO_STATE_DOWN;
-+}
-+
-+/*----------------------------------------------------------------------------*/
-+DECLARE_TEST_CASE(INITIALIZE_VCHIQ) {
-+    g_assert_cmpint(tag->response.value.zero, ==, 0);
-+}
-+
- /*----------------------------------------------------------------------------*/
- int main(int argc, char **argv)
- {
-@@ -544,6 +618,7 @@ int main(int argc, char **argv)
-     QTEST_ADD_TEST_CASE(GET_CLOCK_RATE, ANY);
-     QTEST_ADD_TEST_CASE(GET_MAX_CLOCK_RATE, ANY);
-     QTEST_ADD_TEST_CASE(GET_MIN_CLOCK_RATE, ANY);
-+    QTEST_ADD_TEST_CASE(GET_CLOCKS);
-     QTEST_ADD_TEST_CASE(GET_TEMPERATURE);
-     QTEST_ADD_TEST_CASE(GET_MAX_TEMPERATURE);
-     QTEST_ADD_TEST_CASE(ALLOCATE_BUFFER);
-@@ -577,8 +652,15 @@ int main(int argc, char **argv)
-     QTEST_ADD_TEST_CASE(SET_OVERSCAN);
-     QTEST_ADD_TEST_CASE(GET_DMA_CHANNELS);
-     QTEST_ADD_TEST_CASE(GET_COMMANDLINE);
-+    QTEST_ADD_TEST_CASE(GET_THROTTLED);
-     QTEST_ADD_TEST_CASE(GET_NUM_DISPLAYS);
-+    QTEST_ADD_TEST_CASE(GET_DISPLAY_SETTINGS);
-     QTEST_ADD_TEST_CASE(SET_PITCH);
-+    QTEST_ADD_TEST_CASE(GET_GPIO_CONFIG);
-+    QTEST_ADD_TEST_CASE(SET_GPIO_CONFIG);
-+    QTEST_ADD_TEST_CASE(GET_GPIO_STATE);
-+    QTEST_ADD_TEST_CASE(SET_GPIO_STATE);
-+    QTEST_ADD_TEST_CASE(INITIALIZE_VCHIQ);
- 
-     return g_test_run();
- }
--- 
-2.34.1
+It's obviously a failure in an iotest, so let's CC: the corresponding people 
+(done now).
+
+  Thomas
 
 
