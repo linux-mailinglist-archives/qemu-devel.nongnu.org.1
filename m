@@ -2,112 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21907764104
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jul 2023 23:19:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A764F76426E
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 01:11:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOlLE-0007Ff-AS; Wed, 26 Jul 2023 16:42:40 -0400
+	id 1qOnXD-0000X9-HX; Wed, 26 Jul 2023 19:03:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <John.Allen@amd.com>)
- id 1qOlL0-0007Ek-Ab
- for qemu-devel@nongnu.org; Wed, 26 Jul 2023 16:42:28 -0400
-Received: from mail-bn8nam11on20600.outbound.protection.outlook.com
- ([2a01:111:f400:7eae::600]
- helo=NAM11-BN8-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <John.Allen@amd.com>)
- id 1qOlKy-00045t-A0
- for qemu-devel@nongnu.org; Wed, 26 Jul 2023 16:42:26 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=EPzwux4kLI6drhOvKLVD2ZF0LobiVAw3BJo2aojVa4DcVnpN32rjNEljZ7wfRxoSoBj4MkQ6y0L+d5v+TrwAPp66QuPEVHxrFPNpbKm7GBkHp6dkYxpRur2iox0bDPajob6UBPlSPAs0ONwJQGcaFawv6VzrknFzA6L+VKnxmfjzpUGcYi5rRFFzm1cYEd85zZfjAX4xN9X5n5EgFtJflIRrBZRi2KWN7eqKkUa72CmW6Uu8H0dHdI1ixgWtBz5QfKaeBjy5nFSB9spZqAq0l58/AlD2mLk0TBizNhsc0AgY5LRtQsVEKhHVJQN1UXTEuYVw197isoln9xgRQZAk+Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=S/1pW9s2jyqBSByp+0dEh7zqNH053jtVLphU3EZK1rI=;
- b=NqZszbIGdj2ghsHMZRRowc3BO52BoDs9H2HKwNaoaad49UMlSeW/QlqJO7NPghQwO2KoP92w3DYwDYKmCY7AeFmbwpuqminIgSgLs85vuQP/E3ZGalpbXDs+Rmfdd2xKUdynPFfv6MctjJzrLHrzlpyX+oyviCjfn6EUSbBpHtJrNDsnBav/yw6i1lHF5jl3wEWbhHnsKP+M90MbKX3noF1HycNc5FVJS9TauUigwyDMSaBnJ5+0JBAEI0dg5qOP2+IrWTx6lTgLEPfg8H+DiGo4EnDKSmY3LqCwItDFmo6Z3qkjfsnvJEJ+hIl/Vpkd5OvcMLO+8bbXT0b4cmWj3A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=S/1pW9s2jyqBSByp+0dEh7zqNH053jtVLphU3EZK1rI=;
- b=cwxm9aglIcDJCkrTQNhwi9kig1gFTLlI9HBNTzn4JOiw71oiozMtV7uosrNRd5BwkSYG//cEuWZxtMEWG3pnntrHH417DjdUiNSjL7Xs3F2pIIorzb5PMuXRYLVT+GLxtMQQRVGO+Y/g/u7+utTlFKBPJ87Z+KM+Msj9YvLyM+8=
-Received: from BN9PR03CA0579.namprd03.prod.outlook.com (2603:10b6:408:10d::14)
- by SA0PR12MB4383.namprd12.prod.outlook.com (2603:10b6:806:94::12)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6609.33; Wed, 26 Jul
- 2023 20:42:20 +0000
-Received: from BN8NAM11FT089.eop-nam11.prod.protection.outlook.com
- (2603:10b6:408:10d:cafe::5e) by BN9PR03CA0579.outlook.office365.com
- (2603:10b6:408:10d::14) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6631.29 via Frontend
- Transport; Wed, 26 Jul 2023 20:42:19 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BN8NAM11FT089.mail.protection.outlook.com (10.13.176.105) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6631.29 via Frontend Transport; Wed, 26 Jul 2023 20:42:19 +0000
-Received: from jallen-jump-host.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Wed, 26 Jul
- 2023 15:42:18 -0500
-From: John Allen <john.allen@amd.com>
-To: <qemu-devel@nongnu.org>
-CC: <yazen.ghannam@amd.com>, <michael.roth@amd.com>, <babu.moger@amd.com>,
- <william.roche@oracle.com>, <joao.m.martins@oracle.com>,
- <pbonzini@redhat.com>, <richard.henderson@linaro.org>, <eduardo@habkost.net>, 
- John Allen <john.allen@amd.com>
-Subject: [PATCH v2 2/2] i386: Fix MCE support for AMD hosts
-Date: Wed, 26 Jul 2023 20:41:57 +0000
-Message-ID: <20230726204157.3604531-3-john.allen@amd.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230726204157.3604531-1-john.allen@amd.com>
-References: <20230726204157.3604531-1-john.allen@amd.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qOnXB-0000X0-Rg
+ for qemu-devel@nongnu.org; Wed, 26 Jul 2023 19:03:09 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qOnX9-00030P-Vq
+ for qemu-devel@nongnu.org; Wed, 26 Jul 2023 19:03:09 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-1bbc87ded50so2210405ad.1
+ for <qemu-devel@nongnu.org>; Wed, 26 Jul 2023 16:03:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1690412586; x=1691017386;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=DQrCKj0hVQYLl19lkRXTTtpwyKJiJxd8auR2Sc5hs1Q=;
+ b=oBhQS1ZtpPSevNje0Jgco0Z25Wfa+no1hZrgm8d2GFXuBJRx8Yf5c+TvCyfF1F0wnE
+ FvHjdcBFot+fjIQeCJ0KtqxGwm46ef5Pe0sZoRskIhsYlwRQLhhsPC9iG1m2FRKCIFGh
+ dc+pnv4FQSAPObAZ22Y4z123vgsy4MBUiW6bRZfaqXFREvH/Zc4zE3clQpb0fw5Qo110
+ r5PFfsryvRKcRFsUYqB14TyDGN0k98eswQG0o06qyVHjnyMFuPFJ2voSJUXCx/0BPK34
+ slcgVJOlFRK3c3iyepg+VWZrYEextffsRlUI/f3g0PZ/oS9xjqDu3GP3TC+6pLkkI5S2
+ sfeg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1690412586; x=1691017386;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=DQrCKj0hVQYLl19lkRXTTtpwyKJiJxd8auR2Sc5hs1Q=;
+ b=Y8DkZkyoXXkIEVSCHgpft4uyhJwLLrKI00CLpT6rLWN+kxRcxNKR4uUmICZjft0cSn
+ ZcgAxJmyYJE3SD1sEvgvUi7moD6E2txzxNu0sUItvTsbpeMPTkOaigw+f9kjMMWvTZLC
+ 56rt29Ug/9Klv3fHLCtn3o0r4mZCfa1NbTU9UXpIisgsANPAf/M89G+t1mlhc+F/Y2iN
+ lDUtGRI6xptRkJOdUMvitUHgulnUUC6A9+JmLjdacMHoAoyRRq1cpV4Ai7RJWiHgG6Qm
+ OjqBImzcpl/gQu9e2h/p/8/eM5OH94wpi9Dbqw4qtot/ekxAMI7K2lgPJ50MffHhP8mg
+ dSkQ==
+X-Gm-Message-State: ABy/qLavKl49fJpDdRroXOggTzbmXTvTB9/Esa8V1bLlv/2ATm3rDZBO
+ W+OUPRU+8X3RB5MXpyep032nSA==
+X-Google-Smtp-Source: APBJJlFtwx/PCPAuTBMt0K22OHG7C5YRxeNaSFUNY2ukBQMUorZtzELy4VBpMSkkordH1Zb7qGG+MQ==
+X-Received: by 2002:a17:903:41cd:b0:1bb:b74c:88f6 with SMTP id
+ u13-20020a17090341cd00b001bbb74c88f6mr3389763ple.16.1690412586216; 
+ Wed, 26 Jul 2023 16:03:06 -0700 (PDT)
+Received: from ?IPV6:2602:ae:1598:4c01:9456:37ab:20dc:17e1?
+ ([2602:ae:1598:4c01:9456:37ab:20dc:17e1])
+ by smtp.gmail.com with ESMTPSA id
+ jb15-20020a170903258f00b001bbb22652a4sm65644plb.226.2023.07.26.16.03.05
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 26 Jul 2023 16:03:05 -0700 (PDT)
+Message-ID: <bc9193e2-6582-c776-e491-12d344eb3d8a@linaro.org>
+Date: Wed, 26 Jul 2023 16:03:03 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN8NAM11FT089:EE_|SA0PR12MB4383:EE_
-X-MS-Office365-Filtering-Correlation-Id: 02a1f368-c4d1-4d80-7cd7-08db8e18ce5c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: P43DqPoZ0RgG+q4J8kObXuFR5dj0GwE0kKdx6OQzERF3RRoYY6AsO3L6BjFJFaDoJyqT9Jrh2H5SN+GONLOcBwFgAewPNyNi+cYpbNuIbLjBTmr4pvrOFYfbttcXk6bOacp3t2qan38VpHEhwgKCJnY7UaZEQ/RzI1WmdPL6/E+Yc68wGoI1e02R4icp20sPrlwWC9nBNlP/6oHOGML+9gb/Uirr+qEfhFZlMBZ16ziVkicre5xkWzoX4RYyCEqPm+AMGhNZioMvAOxVH01ZVn6/iHbdEtKMZdbppWwz5pcgTRZfv5vDSijvmRlgxlbdYr5H4HdJNWYx6VKMQgcNFSMP6U4e2oVv0kFcHFGHOWbLeU3DR0UtNsAq9/NPjCP9fF0TqWLavHPOGFwLqviUm0NLu7nMbEXo5kPdthxdvaybKKorVxrL6UqF2cTm4sy7GLFJGzZ//AZH3naG3ZH2SFaANDWWw8tZGwNtX9cgWJuL1aaVq6fXEM4DTTXlCJPL2/rjyU/+d93/WtYFthacs0O3qVpirJGzoZPOcbSvxuMbT+Q5n1heMxuGnnsawu9vxcpsFc4mo/MXjucfnEhP1y+75MxZmj2R/JuRdgjocPoc1RF4ehs+/wZS4q2nCtb/1+Xu/9Qn8GL3wQPqGHwaxck4/XJ3hYTXKZruFCgOjVTUicv+33R8YOd4UVk4AyXvi4OvQKDcuOCO9qdQnXdHx9qKUfvA1IZvOJRxtyHEDQPiWp8Rk82z5tzmsrR/o9yd56Hl6uwisEutxOKJYOE7mA==
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230028)(4636009)(376002)(346002)(136003)(39860400002)(396003)(82310400008)(451199021)(46966006)(40470700004)(36840700001)(54906003)(70206006)(70586007)(426003)(2616005)(36756003)(36860700001)(83380400001)(47076005)(40480700001)(86362001)(82740400003)(356005)(81166007)(478600001)(16526019)(26005)(336012)(186003)(7696005)(1076003)(6666004)(40460700003)(41300700001)(5660300002)(6916009)(316002)(2906002)(4326008)(8936002)(8676002)(44832011)(36900700001);
- DIR:OUT; SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jul 2023 20:42:19.5115 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 02a1f368-c4d1-4d80-7cd7-08db8e18ce5c
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BN8NAM11FT089.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4383
-Received-SPF: softfail client-ip=2a01:111:f400:7eae::600;
- envelope-from=John.Allen@amd.com;
- helo=NAM11-BN8-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v2 2/8] machine: Introduce helper is_cpu_type_supported()
+To: Gavin Shan <gshan@redhat.com>
+Cc: qemu-devel@nongnu.org
+References: <20230726003205.1599788-1-gshan@redhat.com>
+ <20230726003205.1599788-3-gshan@redhat.com>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230726003205.1599788-3-gshan@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -123,67 +96,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For the most part, AMD hosts can use the same MCE injection code as Intel but,
-there are instances where the qemu implementation is Intel specific. First, MCE
-deliviery works differently on AMD and does not support broadcast. Second,
-kvm_mce_inject generates MCEs that include a number of Intel specific status
-bits. Modify kvm_mce_inject to properly generate MCEs on AMD platforms.
+On 7/25/23 17:31, Gavin Shan wrote:
+> The logic of checking if the specified CPU type is supported in
+> machine_run_board_init() is independent enough. Factor it out into
+> helper is_cpu_type_supported(). With this, machine_run_board_init()
+> looks a bit clean. Since we're here, @machine_class is renamed to
+> @mc to avoid multiple line spanning of code. The comments are tweaked
+> a bit either.
+> 
+> No functional change intended.
+> 
+> Signed-off-by: Gavin Shan <gshan@redhat.com>
+> ---
+>   hw/core/machine.c | 82 +++++++++++++++++++++++++----------------------
+>   1 file changed, 44 insertions(+), 38 deletions(-)
+> 
+> diff --git a/hw/core/machine.c b/hw/core/machine.c
+> index d7e7f8f120..fe110e9b0a 100644
+> --- a/hw/core/machine.c
+> +++ b/hw/core/machine.c
+> @@ -1349,12 +1349,50 @@ out:
+>       return r;
+>   }
+>   
+> +static void is_cpu_type_supported(MachineState *machine, Error **errp)
 
-Reported-by: William Roche <william.roche@oracle.com>
-Signed-off-by: John Allen <john.allen@amd.com>
----
- target/i386/helper.c  |  4 ++++
- target/i386/kvm/kvm.c | 17 +++++++++++------
- 2 files changed, 15 insertions(+), 6 deletions(-)
+Return type bool, false on failure.
 
-diff --git a/target/i386/helper.c b/target/i386/helper.c
-index 533b29cb91..a6523858e0 100644
---- a/target/i386/helper.c
-+++ b/target/i386/helper.c
-@@ -76,6 +76,10 @@ int cpu_x86_support_mca_broadcast(CPUX86State *env)
-     int family = 0;
-     int model = 0;
- 
-+    if (IS_AMD_CPU(env)) {
-+        return 0;
-+    }
-+
-     cpu_x86_version(env, &family, &model);
-     if ((family == 6 && model >= 14) || family > 6) {
-         return 1;
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 4b62138459..87a50c8aaf 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -532,16 +532,21 @@ static void kvm_mce_inject(X86CPU *cpu, hwaddr paddr, int code)
-     CPUState *cs = CPU(cpu);
-     CPUX86State *env = &cpu->env;
-     uint64_t status = MCI_STATUS_VAL | MCI_STATUS_UC | MCI_STATUS_EN |
--                      MCI_STATUS_MISCV | MCI_STATUS_ADDRV | MCI_STATUS_S;
-+                      MCI_STATUS_MISCV | MCI_STATUS_ADDRV;
-     uint64_t mcg_status = MCG_STATUS_MCIP;
-     int flags = 0;
- 
--    if (code == BUS_MCEERR_AR) {
--        status |= MCI_STATUS_AR | 0x134;
--        mcg_status |= MCG_STATUS_EIPV;
-+    if (!IS_AMD_CPU(env)) {
-+        status |= MCI_STATUS_S;
-+        if (code == BUS_MCEERR_AR) {
-+            status |= MCI_STATUS_AR | 0x134;
-+            mcg_status |= MCG_STATUS_EIPV;
-+        } else {
-+            status |= 0xc0;
-+            mcg_status |= MCG_STATUS_RIPV;
-+        }
-     } else {
--        status |= 0xc0;
--        mcg_status |= MCG_STATUS_RIPV;
-+        mcg_status |= MCG_STATUS_EIPV | MCG_STATUS_RIPV;
-     }
- 
-     flags = cpu_x86_support_mca_broadcast(env) ? MCE_INJECT_BROADCAST : 0;
--- 
-2.39.3
+> +    /* Check if the CPU type is supported */
+> +    is_cpu_type_supported(machine, &local_err);
+> +    if (local_err) {
+> +        error_propagate(errp, local_err);
 
+Fold call into if, and no need for local_error.
+
+
+r~
 
