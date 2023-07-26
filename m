@@ -2,100 +2,135 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C229F762C30
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jul 2023 08:59:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6188A762D23
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jul 2023 09:22:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOYSf-00032W-St; Wed, 26 Jul 2023 02:57:29 -0400
+	id 1qOYpT-00013f-HS; Wed, 26 Jul 2023 03:21:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qOYSc-000323-Tr
- for qemu-devel@nongnu.org; Wed, 26 Jul 2023 02:57:26 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <Evanzhang@archeros.com>)
+ id 1qOYpE-0000zd-6j; Wed, 26 Jul 2023 03:20:51 -0400
+Received: from mail-bjbon0115.outbound.protection.partner.outlook.cn
+ ([42.159.36.115] helo=CN01-BJB-obe.outbound.protection.partner.outlook.cn)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qOYSa-0006g8-He
- for qemu-devel@nongnu.org; Wed, 26 Jul 2023 02:57:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690354643;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=RiV3yTwPGPn0FZcPRxSANqsr9abyKeGZa3jiq1e2BW4=;
- b=Vr94cDE2yMYLSOrEpUBp3BmM+Qn43U0J53IieUZPJZw/zNIZap/oIAwUZsV+RpIpzEpCbG
- VfeRDfVUk3eCclfbVCuluR34fUoSKPT/aj6CU0hufh1SnQf+Nb1+WTV4fP8Mb1PGJst1xG
- G5QJP49/ifruzX7Lubr+jleAmFd/48g=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-607-mF9TH70OPS6zZXwXdXXUYA-1; Wed, 26 Jul 2023 02:57:21 -0400
-X-MC-Unique: mF9TH70OPS6zZXwXdXXUYA-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-3fd2209bde4so24494365e9.1
- for <qemu-devel@nongnu.org>; Tue, 25 Jul 2023 23:57:21 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690354640; x=1690959440;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=RiV3yTwPGPn0FZcPRxSANqsr9abyKeGZa3jiq1e2BW4=;
- b=NsRbpJbKAKNEkqvGEP8b166mnslTgd9bWOXXHvjiaLs0PLHE3y75cMWeARvdjAHw2Q
- OIMLqIKwkVnPltZXl/SMp9xTOsaQN3pcpub+uiCqqEV9c9atIkp6/TUAStxNM5q4kHNs
- 6iS11lGmZy9LntdKZiRB+o9gNaPujPOSUM8AxLUN6qGicmRsO9v/W95fDsd778vXdJ42
- eeTBMKVwlNlZP4rMTi2Wv4X02O500AW5FS1x077M2USRWrU189gVTMeU9Xc5knIyV6Gs
- 3m5FNUSeAto58Jr0xHPB1Aewi1+YG/kI5dW2wcViJ9MYgEnsLipIMMYDahkcVNz1QtUL
- 0G+w==
-X-Gm-Message-State: ABy/qLYXmjqvuXsgMQ3++1oTzc5JLCsMB/NFQjUFGkdKwg5K/26WYcyZ
- YCjBhhWG3zkPMkJJzhhvYRBXTCocaFrjHklp3dIE2SztDlOqlIXuiILX2u7kMN87zyWvJZmI+wh
- jZnhzH9eGi6uzpZc=
-X-Received: by 2002:a5d:558e:0:b0:313:e9f6:3378 with SMTP id
- i14-20020a5d558e000000b00313e9f63378mr617970wrv.4.1690354640182; 
- Tue, 25 Jul 2023 23:57:20 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlFIKAxx2XcZgE7sPJ6+7ilXvL9j1Rcj1+3v4lYlPoYdpK2lOoz5a0n41amWZIx44Ru2IavXPg==
-X-Received: by 2002:a5d:558e:0:b0:313:e9f6:3378 with SMTP id
- i14-20020a5d558e000000b00313e9f63378mr617954wrv.4.1690354639727; 
- Tue, 25 Jul 2023 23:57:19 -0700 (PDT)
-Received: from ?IPV6:2003:cf:d71a:f311:3075:1f38:7e25:e17a?
- (p200300cfd71af31130751f387e25e17a.dip0.t-ipconnect.de.
- [2003:cf:d71a:f311:3075:1f38:7e25:e17a])
- by smtp.gmail.com with ESMTPSA id
- n12-20020a5d6b8c000000b003143c6e09ccsm18539254wrx.16.2023.07.25.23.57.18
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 25 Jul 2023 23:57:19 -0700 (PDT)
-Message-ID: <bc1f4b18-8bf9-f8ac-fa47-babde355e340@redhat.com>
-Date: Wed, 26 Jul 2023 08:57:17 +0200
+ (Exim 4.90_1) (envelope-from <Evanzhang@archeros.com>)
+ id 1qOYpA-00089C-RN; Wed, 26 Jul 2023 03:20:47 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=d8VoT31RPf1068ooyPhOJeVGYmsKy4+anrBTYzCBw2n73kxiPY1AVB438S5qadFgW/VFt7LdTBZTWYHREdTw4nyL37Hw2ni0O7/o7VRTGJivc3Lpm3+5YDpSoRsH4I23OD+M8jV/RLTQ0Dy4hwMxCMuwPM3o3a7JFEqNS4LYxzhcNR/VKPqKL0A/l3sPi3Se3DiRbPK0Hl5TYtPe1Dd3172AYUJ8K3dzrK/oHgb4LKVTXFtaSfMrx2mGPqmfNB27+dil65esMTDb5WDk9dq+UddfRCqL71ov+bzV7Ebknvm6Y7DtJMqyzzpFXk1UAcaHBBoePIORwwMx8qsbovIxTg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=hVuIt5Wz5KUWoSKJFJiX+UIM6TQ5l1HoNogp2zJIrrU=;
+ b=mIxXBLnoAR/iGdQTIV/oIcziiYFwlysoHpbjtn1SeXeqvAAU1a1TrfEvG6uam3YGrW7r2E9zx9PWoBjX/KqVQggcVriplbOc7EKB/6n+DorNSOszhI8LosDvdaLSV8CKoukV8EfWUMBkCDjIT20gJCcc1y2ufhlkVOiu6EARZfCOBs+HwezhelqNjWeqmKgQ73hhp+rj6G8bmhYr9+8qD5Czuz45LOW/Gl7nuXL+q3ACNsdSx9dr68OYu109Ziqxqf58J73sIDFMfjaGRTWEg5llIOtU6XTCdlAzE7yjySBEEL0ZTP4pXCRhPm2mRMiqMUv7DMubc6gqLkZx5HPdSA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=archeros.com; dmarc=pass action=none header.from=archeros.com;
+ dkim=pass header.d=archeros.com; arc=none
+Received: from ZQ0PR01MB1015.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c550:e::13) by ZQ0PR01MB1061.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c550:d::6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6609.35; Wed, 26 Jul
+ 2023 07:04:56 +0000
+Received: from ZQ0PR01MB1015.CHNPR01.prod.partner.outlook.cn
+ ([fe80::e286:ede3:7acd:f06a]) by
+ ZQ0PR01MB1015.CHNPR01.prod.partner.outlook.cn ([fe80::e286:ede3:7acd:f06a%4])
+ with mapi id 15.20.6609.032; Wed, 26 Jul 2023 07:04:56 +0000
+From: =?utf-8?B?5byg5om/?= <Evanzhang@archeros.com>
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>, "Denis V. Lunev"
+ <den@virtuozzo.com>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "qemu-block@nongnu.org" <qemu-block@nongnu.org>
+CC: "jsnow@redhat.com" <jsnow@redhat.com>, "kwolf@redhat.com"
+ <kwolf@redhat.com>, "hreitz@redhat.com" <hreitz@redhat.com>
+Subject: =?utf-8?B?5Zue5aSNOiBbUEFUQ0ggdjFdIGJsb2NrL3N0cmVhbTphZGQgZmx1c2ggbDJf?=
+ =?utf-8?Q?table=5Fcache,ensure_data_integrity?=
+Thread-Topic: [PATCH v1] block/stream:add flush l2_table_cache,ensure data
+ integrity
+Thread-Index: AQHZvfti2IplM4FRh0awlS2+MY1+v6/Ki+OAgAANQgCAABfcAIAA7/rg
+Date: Wed, 26 Jul 2023 07:04:56 +0000
+Message-ID: <ZQ0PR01MB101547C31818BC9FA9CD2090C000A@ZQ0PR01MB1015.CHNPR01.prod.partner.outlook.cn>
+References: <cover.1690166344.git.Evanzhang@archeros.com>
+ <bce1328c87f7e5d877dead476e9e66036cc4f7d8.1690166344.git.Evanzhang@archeros.com>
+ <9e3f6e08-92d5-7292-e94c-5f626f65d6c2@yandex-team.ru>
+ <056da915-b243-bf5a-dea6-43a7a8c9ec9e@virtuozzo.com>
+ <19134146-e90c-32d0-58e1-d4a67f6b797d@yandex-team.ru>
+In-Reply-To: <19134146-e90c-32d0-58e1-d4a67f6b797d@yandex-team.ru>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=archeros.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: ZQ0PR01MB1015:EE_|ZQ0PR01MB1061:EE_
+x-ms-office365-filtering-correlation-id: 8bcaaf72-614e-46b1-d582-08db8da69e82
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: GNwnOClw+tvwFk0e16bLA9ArY7Vv1HjMOkgsNG0obYd62YuJ3Dn9GXWNnlwZb+NzgYAxSpCK0GwhHmRfe6i+b2bbXw0RPF8m0xz2T9+djMlRWOin2dCcKnEQM7oP0/SbI+JRI9uW0IQPB69cCs9s7gPxoNycybMkruyqBYjhU00vVcga2oPA7vRysS6AEM7TESABbE5HJEIItLvOMFECMieGjHSCG85NvSyv2qrK3bFFvjs/JUjb4231ZP2i6bnnBkrlbLE7gXEFdtzOBsSV6ZtMA4ja1tVriAmyTeuXpd/k6e/4+LMFD45/Bioh2Rww/yOJjxkKWvSkZzz1eiRDhK7AealTdXm/D54SfGG2bE/4Nr0GyjKFAIXVBz3EDexkJpgN2nbFujYXX4oZp7lYSTQBdTzen1wIjKkj7xlUGOWoObqZi1xpDZpgx7taYG9gpjLbezU8iAuXOUR79vqClBrLI56CSrXaiTgAGIpCk0us5sjbYdAmu5m81GUC28rg9dG3z9jSDW44eqJ42ISsSMxbQ9boi2no6DT5Uf7dp0KBQlc7ZkY3iSoUsw3hwJxwoXuFy+G5f9G/cOoqbBJY87GajFnXQPY48lzZcWbrniKrQ8g2viQxQRBuahyBEf+D
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:ZQ0PR01MB1015.CHNPR01.prod.partner.outlook.cn; PTR:;
+ CAT:NONE;
+ SFS:(13230028)(39830400003)(366004)(136003)(396003)(346002)(451199021)(55016003)(83380400001)(86362001)(38100700002)(9686003)(40180700001)(186003)(508600001)(33656002)(966005)(26005)(53546011)(41300700001)(76116006)(66446008)(66476007)(66556008)(66946007)(8936002)(4326008)(64756008)(7696005)(2906002)(5660300002)(38070700005)(40160700002)(71200400001)(41320700001)(224303003)(85182001)(54906003)(110136005)(122000001)(84970400001);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?ZERjWm9rOFdMdi8zSG0rc3d3OW1FU0dmcVZhTTBPeEV1U2t0UkM0RHVldWhS?=
+ =?utf-8?B?dHc1ajNRMHNDMkt6QnB6cmdvQ0tkRGFLMklvbDd4SWNZTEcxVVNZUkkzYm0v?=
+ =?utf-8?B?ckVmb3c3bFFUTzVCUXkzWmJud3dvZkhWWWtoNzhtUVQydGFCMDMvNVVPbXBQ?=
+ =?utf-8?B?VFl0d0ZhSmIrZmc1TkNRZ21SN01lcy9qMVJaLzE4RWNhQTZHM1Arb25MNjBN?=
+ =?utf-8?B?Z1RPcUROVzh4bUtkY0NlK245UTZSS0JjbVVnVXlhdHhueDBkV0pRL2dSQ1Jl?=
+ =?utf-8?B?bmk4SEx2RFRFZUwxRjdzY0Nudkh3LzJvTlN4RERBeldPZzFGSnRnMUtHeCtl?=
+ =?utf-8?B?dVNRV1JhR0pjczJuQWNpa2lNcU5KdHhGalQyUndibWRwbWxyYmJVbktKejcr?=
+ =?utf-8?B?TTAvWGpTQmNubnFTdWVBTFZuMlI2eDU5dmNKWlIxYmxBRmZaaXNwTjlqblZL?=
+ =?utf-8?B?eStIeTNVM0tXQSt5dnd1RysrWUxDRnZ6TGdjNHFSbGFBOFJpMTB1dGhNRlEy?=
+ =?utf-8?B?NkV2L014N0V2TGJrZXJhYTlnK1h1ck1ZcEp6K1J6V1pRUnFoVzhMZjEwZkZO?=
+ =?utf-8?B?ZGlmOGxEOVNlREQxcVNrOTd5WGtsNmdxbUYzZzFFL25QRUFFS29Mdm85aTJ3?=
+ =?utf-8?B?RkY4V09mRXh6VVZTV2taTmxQNmhTaHZmalE3ZUduQWZjVy9qYVYwUVUzZDZj?=
+ =?utf-8?B?M1dKTkZPOVF4R29ZQmRVN2thb0IxMFE3U25ZS2ZROXBlRWc3K0pPTk5tNzBI?=
+ =?utf-8?B?a284NE9COTFobVVNUW5SSi9pQVlia0FIZHRJNnAwbTlHQUlsajd5YlBDZUww?=
+ =?utf-8?B?TGpFOHdSdzlYY1RmMGZUS3c1YWREVUM5YzNoVE5pM1RkY0FFYzZjVDIyY0pr?=
+ =?utf-8?B?WE9SNmdLNXhjTUhqTVNNOHh3RDFCVUk1K1JjZm5IOUJRRUhRSmhQNlUwZjZO?=
+ =?utf-8?B?YVVqYjhZNnl4WFVKZFlJZTh6dngvOUVBaU1oWWZNVEJncEIvUmJPMmVqbmpj?=
+ =?utf-8?B?WGZEaVNuWUN4S3RMeTZrVmtuN093NE1UTWFRZWRyTG5jZVNxVFNraDEzS216?=
+ =?utf-8?B?c0RXUUtpVWR4K29YaHRBYmN6UUYzZC8xM2taUTZrTXorN2lnWlRwOEZHTy83?=
+ =?utf-8?B?UWQ1b0NnOThucTFTaTB6YmRLVHZLdzlMZ3psQjZpSkpGUHlsVzNkaEtJa0dT?=
+ =?utf-8?B?WVlITUtUaUZyWjBhYUVUWHkwai9MSHFuNnVZTTNRaDM0UDZ5WWI3bDBmTVU0?=
+ =?utf-8?B?RkFJTjFpczRYMFNGNkR1MVhPWWw0OWpnUm8vTGhoNkNYbkxpckY3QVFzRXdX?=
+ =?utf-8?B?MU1iWXBwbkpLbE5FWGpZQjBwTVVNWkIwV1h0V2xXc3JpdWI1Q0lIc2VIbmdv?=
+ =?utf-8?B?d3Fua0p0eW9qd043NTd1cjR6cnZheEJwckpNeXBWcU5aOW1NMjE3WjZmWlIr?=
+ =?utf-8?B?YVI4dlQ2c3ZYMkRKOVhHN1JrK0hCbW1SdkJtRkUzdWNkWUoyM3puNnczdHda?=
+ =?utf-8?B?c3MzZ01oZitTeUVrdGJmUVJaYUJZTmt3aHRuZ09oTWYwZ2pLYkNMZHhaTU9l?=
+ =?utf-8?B?WHBOdW4vUEVPRXk2MUdFL2F6TWN0NjAwbXhIbGg1VFdGZHQrYkFObjJabjFn?=
+ =?utf-8?B?QTM1TjlWNXM5eDFCQWNUK2VUYjJxbnc5K1ZJQVpkb2w3aVo3MGNGMHZLV0Ez?=
+ =?utf-8?B?REV4VlVBMmt3SEd3UWZIeU9COHIzQ1Bqa2hJaDZwSGIvR2M5K0dIMmx5Mkdm?=
+ =?utf-8?B?a1BEdzExTGtqRTFQRjIwOHo2UUFVdklpM3FuZjdZUjYyS21wZzh3K01CQ1pV?=
+ =?utf-8?B?N2Z0dFBoU3hRczJENTMzRmIzRjJaWkFuaVo5Wk1mbUxLNnlENVR2WHlkZWg1?=
+ =?utf-8?B?dTIwYWpDclNZRnhsSzFPUmFlUktzVWtTMC9HTjIwUldnMFEzd05sclh3ZEEz?=
+ =?utf-8?B?RTU4VkdxNDlMbzBsa1VlSlpQUWlvS1cySHdNNnVhci9hSXFTTG9JVjRzVmxF?=
+ =?utf-8?B?WTZzZGRZVm5jcVBrK2xja2k5V29tSEVSbkNTaDI1MVVWZ0Rldi91dGNEdUNM?=
+ =?utf-8?B?NUlnTHMvWit6WjBTdEErd0hSNkUrMkZvQ05KZmxCRy96cGY4bWhyTGhleit4?=
+ =?utf-8?Q?sLiq/zgoBJn6BtmyP0dtfyh+F?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 3/6] vhost: Do not reset suspended devices on stop
-To: Eugenio Perez Martin <eperezma@redhat.com>
-Cc: qemu-devel@nongnu.org, "Michael S . Tsirkin" <mst@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, German Maglione <gmaglione@redhat.com>
-References: <20230711155230.64277-1-hreitz@redhat.com>
- <20230711155230.64277-4-hreitz@redhat.com>
- <CAJaqyWdPjyJF4rijXwpq09E94oR1U4JA3dK4Q1XN4uy+Z6UCLw@mail.gmail.com>
- <720e7cdb-1071-a975-8c63-7d0efe3577d4@redhat.com>
- <CAJaqyWc0Eonb=8WDrvp-xLohaDjDSD7j8rD=c0u7guu_Y3O+ow@mail.gmail.com>
- <f27e3bf9-ef34-dae2-2f92-6f339f63a422@redhat.com>
- <CAJaqyWet7vjS+4qy5TWBWm9j7jyf8Cm4rv_0t-eYB-PMDrKjpQ@mail.gmail.com>
- <64443883-5e35-0088-561f-4f0e77c59037@redhat.com>
- <CAJaqyWd-bdA5CgdEvMoiAOWGUzUZV+Urvd4WW7+BFqSbhC0FqQ@mail.gmail.com>
-Content-Language: en-US
-From: Hanna Czenczek <hreitz@redhat.com>
-In-Reply-To: <CAJaqyWd-bdA5CgdEvMoiAOWGUzUZV+Urvd4WW7+BFqSbhC0FqQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.091, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-OriginatorOrg: archeros.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: ZQ0PR01MB1015.CHNPR01.prod.partner.outlook.cn
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8bcaaf72-614e-46b1-d582-08db8da69e82
+X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Jul 2023 07:04:56.6384 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 8387253c-f44a-4a28-8058-3e5c20af6b4d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: SttYB5su+kuxuJzaMf3EXJHlP0407ODBSUGkbsbrjFWFeXNdjst1I4rGCW/aWd5y7p9S7De+tDoBAmDCjxuIBw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: ZQ0PR01MB1061
+Received-SPF: none client-ip=42.159.36.115;
+ envelope-from=Evanzhang@archeros.com;
+ helo=CN01-BJB-obe.outbound.protection.partner.outlook.cn
+X-Spam_score_int: -8
+X-Spam_score: -0.9
+X-Spam_bar: /
+X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, FORGED_SPF_HELO=1,
+ KHOP_HELO_FCRDNS=0.001, SPF_HELO_PASS=-0.001, SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,329 +146,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 25.07.23 20:53, Eugenio Perez Martin wrote:
-> On Tue, Jul 25, 2023 at 3:09 PM Hanna Czenczek <hreitz@redhat.com> wrote:
->> On 25.07.23 12:03, Eugenio Perez Martin wrote:
->>> On Tue, Jul 25, 2023 at 9:53 AM Hanna Czenczek <hreitz@redhat.com> wrote:
->>>> On 24.07.23 17:48, Eugenio Perez Martin wrote:
->>>>> On Fri, Jul 21, 2023 at 6:07 PM Hanna Czenczek <hreitz@redhat.com> wrote:
->>>>>> On 21.07.23 17:25, Eugenio Perez Martin wrote:
->>>>>>> On Tue, Jul 11, 2023 at 5:52 PM Hanna Czenczek <hreitz@redhat.com> wrote:
->>>>>>>> Move the `suspended` field from vhost_vdpa into the global vhost_dev
->>>>>>>> struct, so vhost_dev_stop() can check whether the back-end has been
->>>>>>>> suspended by `vhost_ops->vhost_dev_start(hdev, false)`.  If it has,
->>>>>>>> there is no need to reset it; the reset is just a fall-back to stop
->>>>>>>> device operations for back-ends that do not support suspend.
->>>>>>>>
->>>>>>>> Unfortunately, for vDPA specifically, RESUME is not yet implemented, so
->>>>>>>> when the device is re-started, we still have to do the reset to have it
->>>>>>>> un-suspend.
->>>>>>>>
->>>>>>>> Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
->>>>>>>> ---
->>>>>>>>      include/hw/virtio/vhost-vdpa.h |  2 --
->>>>>>>>      include/hw/virtio/vhost.h      |  8 ++++++++
->>>>>>>>      hw/virtio/vhost-vdpa.c         | 11 +++++++----
->>>>>>>>      hw/virtio/vhost.c              |  8 +++++++-
->>>>>>>>      4 files changed, 22 insertions(+), 7 deletions(-)
->>>>>>>>
->>>>>>>> diff --git a/include/hw/virtio/vhost-vdpa.h b/include/hw/virtio/vhost-vdpa.h
->>>>>>>> index e64bfc7f98..72c3686b7f 100644
->>>>>>>> --- a/include/hw/virtio/vhost-vdpa.h
->>>>>>>> +++ b/include/hw/virtio/vhost-vdpa.h
->>>>>>>> @@ -42,8 +42,6 @@ typedef struct vhost_vdpa {
->>>>>>>>          bool shadow_vqs_enabled;
->>>>>>>>          /* Vdpa must send shadow addresses as IOTLB key for data queues, not GPA */
->>>>>>>>          bool shadow_data;
->>>>>>>> -    /* Device suspended successfully */
->>>>>>>> -    bool suspended;
->>>>>>>>          /* IOVA mapping used by the Shadow Virtqueue */
->>>>>>>>          VhostIOVATree *iova_tree;
->>>>>>>>          GPtrArray *shadow_vqs;
->>>>>>>> diff --git a/include/hw/virtio/vhost.h b/include/hw/virtio/vhost.h
->>>>>>>> index 6a173cb9fa..69bf59d630 100644
->>>>>>>> --- a/include/hw/virtio/vhost.h
->>>>>>>> +++ b/include/hw/virtio/vhost.h
->>>>>>>> @@ -120,6 +120,14 @@ struct vhost_dev {
->>>>>>>>          uint64_t backend_cap;
->>>>>>>>          /* @started: is the vhost device started? */
->>>>>>>>          bool started;
->>>>>>>> +    /**
->>>>>>>> +     * @suspended: Whether the vhost device is currently suspended.  Set
->>>>>>>> +     * and reset by implementations (vhost-user, vhost-vdpa, ...), which
->>>>>>>> +     * are supposed to automatically suspend/resume in their
->>>>>>>> +     * vhost_dev_start handlers as required.  Must also be cleared when
->>>>>>>> +     * the device is reset.
->>>>>>>> +     */
->>>>>>>> +    bool suspended;
->>>>>>>>          bool log_enabled;
->>>>>>>>          uint64_t log_size;
->>>>>>>>          Error *migration_blocker;
->>>>>>>> diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
->>>>>>>> index 7b7dee468e..f7fd19a203 100644
->>>>>>>> --- a/hw/virtio/vhost-vdpa.c
->>>>>>>> +++ b/hw/virtio/vhost-vdpa.c
->>>>>>>> @@ -858,13 +858,12 @@ static int vhost_vdpa_get_device_id(struct vhost_dev *dev,
->>>>>>>>
->>>>>>>>      static int vhost_vdpa_reset_device(struct vhost_dev *dev)
->>>>>>>>      {
->>>>>>>> -    struct vhost_vdpa *v = dev->opaque;
->>>>>>>>          int ret;
->>>>>>>>          uint8_t status = 0;
->>>>>>>>
->>>>>>>>          ret = vhost_vdpa_call(dev, VHOST_VDPA_SET_STATUS, &status);
->>>>>>>>          trace_vhost_vdpa_reset_device(dev);
->>>>>>>> -    v->suspended = false;
->>>>>>>> +    dev->suspended = false;
->>>>>>>>          return ret;
->>>>>>>>      }
->>>>>>>>
->>>>>>>> @@ -1278,7 +1277,7 @@ static void vhost_vdpa_suspend(struct vhost_dev *dev)
->>>>>>>>              if (unlikely(r)) {
->>>>>>>>                  error_report("Cannot suspend: %s(%d)", g_strerror(errno), errno);
->>>>>>>>              } else {
->>>>>>>> -            v->suspended = true;
->>>>>>>> +            dev->suspended = true;
->>>>>>>>                  return;
->>>>>>>>              }
->>>>>>>>          }
->>>>>>>> @@ -1313,6 +1312,10 @@ static int vhost_vdpa_dev_start(struct vhost_dev *dev, bool started)
->>>>>>>>                  return -1;
->>>>>>>>              }
->>>>>>>>              vhost_vdpa_set_vring_ready(dev);
->>>>>>>> +        if (dev->suspended) {
->>>>>>>> +            /* TODO: When RESUME is available, use it instead of resetting */
->>>>>>>> +            vhost_vdpa_reset_status(dev);
->>>>>>> How is that we reset the status at each vhost_vdpa_dev_start? That
->>>>>>> will clean all the vqs configured, features negotiated, etc. in the
->>>>>>> vDPA device. Or am I missing something?
->>>>>> What alternative do you propose?  We don’t have RESUME for vDPA in qemu,
->>>>>> but we somehow need to lift the previous SUSPEND so the device will
->>>>>> again respond to guest requests, do we not?
->>>>>>
->>>>> Reset also clears the suspend state in vDPA, and it should be called
->>>>> at vhost_dev_stop. So the device should never be in suspended state
->>>>> here. Does that solve your concerns?
->>>> My intention with this patch was precisely not to reset in
->>>> vhost_dev_stop when suspending is supported.  So now I’m more confused
->>>> than before.
->>>>
->>> At this moment, I think that should be focused as an optimization and
->>> not to be included in the main series.
->> It is absolutely not an optimization but vital for my use case.
->> virtiofsd does not currently implement resetting, but if it did (and we
->> want this support in the future), resetting it during stop/cont would be
->> catastrophic.  There must be a way to have qemu not issue a reset.  This
->> patch is the reason why this series exists.
->>
-> Sorry, I see I confused things with the first reply. Let me do a recap.
->
-> If I understand the problem correctly, your use case requires that
-> qemu does not reset the device before the device state is fetched with
-> virtio_save in the case of a migration.
-
-That is only part of the problem, the bigger picture has nothing to do 
-with migration at all.  The problem is that when the VM is paused 
-(stop), we invoke vhost_dev_stop(), and when it is resumed (cont), we 
-invoke vhost_dev_start().  To me, it therefore sounds absolutely wrong 
-to reset the back-end in either of these functions.  For stateless 
-devices, it was determined to not be an issue (I still find it extremely 
-strange), and as far as I’ve understood, we’ve come to the agreement 
-that it’s basically a fallback for when there is no other way to stop 
-the back-end.  But stateful devices like virtio-fs would be completely 
-broken by resetting them there.
-
-Therefore, if virtiofsd did implement reset through SET_STATUS, 
-stop/cont would break it today.  Maybe other vhost-user devices, too, 
-which just implement RESET_OWNER/RESET_DEVICE, which aren’t even called 
-when the device is supposed to be reset in vhost_dev_stop() (patch 6).
-
-So not just because of migration, but in general, there must be a way 
-for back-ends to force qemu not to reset them in vhost_dev_start()/stop().
-
-Or we stop using vhost_dev_start()/stop() when the VM is paused/resumed 
-(stop/cont).
-
-> This is understandable and I
-> think we have a solution for that: to move the vhost_ops call to
-> virtio_reset and the end of virtio_save.
-
-Why would we reset the device in virtio_save()?
-
-> To remove the reset call from
-> vhost_dev_stop is somehow mandatory, as it is called before
-> virtio_save.
->
-> But we cannot move to vhost_vdpa_dev_start, as proposed here. The reasons are:
-> * All the features, vq parameters, etc are set before any
-> vhost_vdpa_dev_start call. To reset at any vhost_vdpa_dev_start would
-> wipe them.
-> * The device needs to hold all the resources until it is reset. Things
-> like descriptor status etc.
->
-> And, regarding the comment "When RESUME is available, use it instead
-> of resetting", we cannot use resume to replace reset in all cases.
-> This is because the semantics are different.
->
-> For example, vhost_dev_stop and vhost_dev_start are also called when
-> the guest reset by itself the device. You can check it rmmoding and
-> modprobing virtio-net driver, for example. In this case, the driver
-> expects to find all vqs to start with 0, but the resume must not reset
-> these indexes.
-
-This isn’t quite clear to me.  I understand this to mean that there must 
-be a reset somewhere in vhost_dev_stop() and/or vhost_dev_start().  But 
-above, you proposed moving the reset from vhost_dev_stop() into 
-virtio_reset().  Is virtio_reset() called in addition to 
-vhost_dev_stop() and vhost_dev_start() when the guest driver is changed?
-
-Because we can’t have an always-present reset in vhost_dev_stop() or 
-vhost_dev_start().  It just doesn’t work with stop/cont.  At the same 
-time, I understand that you say we must have it because 
-vhost_dev_{stop,start}() are also used when the guest driver changes.  
-Consequently, it sounds clear to me that using the exact same functions 
-in stop/cont and when the guest driver is unloaded/loaded is and has 
-always been wrong.  Because in stop/cont, the guest driver never 
-changes, so we shouldn’t tell the back-end that it did (by sending 
-SET_STATUS(0)).
-
-> It can be applied as an optimizations sometimes, but not for the general case.
->
->>>>>> But more generally, is this any different from what is done before this
->>>>>> patch?  Before this patch, vhost_dev_stop() unconditionally invokes
->>>>>> vhost_reset_status(), so the device is reset in every stop/start cycle,
->>>>>> that doesn’t change.  And we still won’t reset it on the first
->>>>>> vhost_dev_start(), because dev->suspended will be false then, only on
->>>>>> subsequent stop/start cycles, as before.  So the only difference is that
->>>>>> now the device is reset on start, not on stop.
->>>>>>
->>>>> The difference is that vhost_vdpa_dev_start is called after features
->>>>> ack (via vhost_dev_start, through vhost_dev_set_features call) and vq
->>>>> configuration (using vhost_virtqueue_start). A device reset forces the
->>>>> device to forget about all of that, and qemu cannot configure them
->>>>> again until qemu acks the features again.
->>>> Now I’m completely confused, because I don’t see the point of
->>>> implementing suspend at all if we rely on a reset immediately afterwards
->>>> anyway.
->>> It's not immediate. From vhost_dev_stop, comments added only in this mail:
->>>
->>> void vhost_virtqueue_stop(struct vhost_dev *dev,
->>>                             struct VirtIODevice *vdev,
->>>                             struct vhost_virtqueue *vq,
->>>                             unsigned idx)
->>> {
->>>       ...
->>>       // Get each vring indexes, trusting the destination device can
->>> continue safely from there
->>>       r = dev->vhost_ops->vhost_get_vring_base(dev, &state);
->>>       if (r < 0) {
->>>           VHOST_OPS_DEBUG(r, "vhost VQ %u ring restore failed: %d", idx, r);
->>>           /* Connection to the backend is broken, so let's sync internal
->>>            * last avail idx to the device used idx.
->>>            */
->>>           virtio_queue_restore_last_avail_idx(vdev, idx);
->>>       } else {
->>>           virtio_queue_set_last_avail_idx(vdev, idx, state.num);
->>>       }
->>>       ...
->>> }
->>>
->>> void vhost_dev_stop(struct vhost_dev *hdev, VirtIODevice *vdev, bool vrings)
->>> {
->>>       ...
->>>       // Suspend the device, so we can trust in vring indexes / vq state
->> I don’t understand this purpose.  GET_VRING_BASE stops the vring in
->> question, so the vring index returned must be trustworthy, no?
->>
-> That only happens in vhost-user, not in vhost-vdpa.
-
-OK, so that begs the question: Was SUSPEND ever intended to do anything 
-but stop all vrings?  Because this series is about to make its meaning a 
-whole lot broader than that in vhost-user.
-
->>>       if (hdev->vhost_ops->vhost_dev_start) {
->>>           hdev->vhost_ops->vhost_dev_start(hdev, false);
->>>       }
->>>       if (vrings) {
->>>           vhost_dev_set_vring_enable(hdev, false);
->>>       }
->>>
->>>       // Fetch each vq index / state and store in vdev->vq[i]
->>>       for (i = 0; i < hdev->nvqs; ++i) {
->>>           vhost_virtqueue_stop(hdev,
->>>                                vdev,
->>>                                hdev->vqs + i,
->>>                                hdev->vq_index + i);
->>>       }
->>>
->>>       // Reset the device, as we don't need it anymore and it can
->>> release the resources
->>>       if (hdev->vhost_ops->vhost_reset_status) {
->>>           hdev->vhost_ops->vhost_reset_status(hdev);
->>>       }
->>> }
->>> ---
->>>
->>>>    It was my impression this whole time that suspending would
->>>> remove the need to reset.  Well, at least until the device should be
->>>> resumed again, i.e. in vhost_dev_start().
->>>>
->>> It cannot. vhost_dev_stop is also called when the guest reset the
->>> device, so the guest trusts the device to be in a clean state.
->>>
->>> Also, the reset is the moment when the device frees the unused
->>> resources. This would mandate the device to
->> What resources are we talking about?  This function is called when the
->> VM is paused (stop).  If a stateful device is reset to free “unused
->> resources”, this means dropping its internal state, which is absolutely
->> wrong in a stop/cont cycle.
->>
-> But is the expected result in the virtio reset cycle. We need to split
-> these paths.
->
->>>> In addition, I also don’t understand the magnitude of the problem with
->>>> ordering.  If the order in vhost_dev_start() is wrong, can we not easily
->>>> fix it?
->>> The order in vhost_dev_start follows the VirtIO standard.
->> What does the VirtIO standard say about suspended vhost back-ends?
->>
-> Suspend does not exist in the VirtIO standard. I meant the device
-> initialization order in "3.1 Device Initialization":
->
-> 1. Reset the device.
-> ...
-> 5. Set the FEATURES_OK status bit. [...]
-> ...
-> 7. Perform device-specific setup, including discovery of virtqueues
-> for the device, optional per-bus setup, reading and possibly writing
-> the device’s virtio configuration space, and population of virtqueues.
-> 8.Set the DRIVER_OK status bit. At this point the device is “live”.
->
-> Steps 4-8 are all done in vhost_dev_start, in that particular order.
-> To call vhost_vdpa_reset_status from vhost_vdpa_dev_start(true) would
-> reset the device back to step 1, but there is no more code to set all
-> configuration from 2-7 before 8 (DRIVER_OK).
-
-That’s why I’ve proposed doing the reset at the start of 
-vhost_dev_start() (quoted below still).  To me, that sounds in line with 
-the virtio specification.
-
-Still, if you insist there must a reset somewhere in 
-vhost_dev_start()/stop() because it may be guest-initiated, then there 
-is no solution that can work for both.  We must be able to distinguish 
-between a paused VM and a change in the guest driver.
-
->> Hanna
->>
->>> The move of
->>> the reset should be to remove it from vhost_dev_stop to something like
->>> both virtio_reset and the end of virtio_save. I'm not sure if I'm
->>> forgetting some other use cases.
->>>
->>>> E.g. add a full vhost_dev_resume callback to invoke right at
->>>> the start of vhost_dev_start(); or check (in the same place) whether the
->>>> back-end supports resuming, and if it doesn’t (and it is currently
->>>> suspended), reset it there.
-
-
+Pk9uIDI1LjA3LjIzIDE4OjEzLCBEZW5pcyBWLiBMdW5ldiB3cm90ZToNCj4+T24gNy8yNS8yMyAx
+NjoyNSwgVmxhZGltaXIgU2VtZW50c292LU9naWV2c2tpeSB3cm90ZToNCj4+Pk9uIDI0LjA3LjIz
+IDEwOjMwLCBFdmFuemhhbmcgd3JvdGU6DQo+Pj4+IE9uIDcvMjYvMjMgMDE6NDEsIFZsYWRpbWly
+IFNlbWVudHNvdi1PZ2lldnNraXkgd3JvdGU6DQo+Pj4+YmxvY2tfc3RyZWFtIHdpbGwgbm90IGFj
+dGl2ZWx5IGZsdXNoIGwyX3RhYmxlX2NhY2hlLHdoZW4gcWVtdSANCj4+Pj4gcHJvY2VzcyBleGNl
+cHRpb24gZXhpdCxjYXVzaW5nIGRpc2sgZGF0YSBsb3NzDQo+Pj4+DQo+Pj4+U2lnbmVkLW9mZi1i
+eTogRXZhbnpoYW5nIDxFdmFuemhhbmdAYXJjaGVyb3MuY29tPg0KPj4+Pi0tLQ0KPj4+PiDCoCBi
+bG9jay9zdHJlYW0uYyB8IDYgKysrKysrDQo+Pj4+IMKgIDEgZmlsZSBjaGFuZ2VkLCA2IGluc2Vy
+dGlvbnMoKykNCj4+Pj4NCj4+PiA+ZGlmZiAtLWdpdCBhL2Jsb2NrL3N0cmVhbS5jIGIvYmxvY2sv
+c3RyZWFtLmMgaW5kZXggZTUyMmJiZC4uYTVlMDhkYSANCj4+Pj4xMDA2NDQNCj4+Pj4gLS0tIGEv
+YmxvY2svc3RyZWFtLmMNCj4+Pj4gKysrIGIvYmxvY2svc3RyZWFtLmMNCj4+Pj5AQCAtMjA3LDYg
+KzIwNywxMiBAQCBzdGF0aWMgaW50IGNvcm91dGluZV9mbiBzdHJlYW1fcnVuKEpvYiAqam9iLCAN
+Cj4+Pj4gRXJyb3IgKiplcnJwKQ0KPj4+PiDCoMKgwqDCoMKgwqDCoMKgwqAgfQ0KPj4+PiDCoMKg
+wqDCoMKgIH0NCj4+Pj4gwqAgK8KgwqDCoCAvKg0KPj4+PiArwqDCoMKgwqAgKiBDb21wbGV0ZSBz
+dHJlYW1fcG9wdWxhdGUsZm9yY2UgZmx1c2ggbDJfdGFibGVfY2FjaGUsdG8NCj4+Pj4gK8KgwqDC
+oMKgICogYXZvaWQgdW5leHBlY3RlZCB0ZXJtaW5hdGlvbiBvZiBwcm9jZXNzLCBsMl90YWJsZSBs
+b3NzDQo+Pj4+ICvCoMKgwqDCoCAqLw0KPj4+PiArwqDCoMKgIHFjb3cyX2NhY2hlX2ZsdXNoKGJz
+LCAoKEJEUlZRY293MlN0YXRlIA0KPj4+PiArKilicy0+b3BhcXVlKS0+bDJfdGFibGVfY2FjaGUp
+Ow0KPj4+PiArDQo+Pj4+IMKgwqDCoMKgwqAgLyogRG8gbm90IHJlbW92ZSB0aGUgYmFja2luZyBm
+aWxlIGlmIGFuIGVycm9yIHdhcyB0aGVyZSBidXQgDQo+Pj4+IGlnbm9yZWQuICovDQo+Pj4+IMKg
+wqDCoMKgwqAgcmV0dXJuIGVycm9yOw0KPj4+PiDCoCB9DQo+Pj4NCj4+PiBIaSENCj4+Pg0KPj4+
+IEkgdGhpbmssIGl0J3MgbW9yZSBjb3JyZWN0IGp1c3QgY2FsbCBiZHJ2X2NvX2ZsdXNoKGJzKSwg
+d2hpY2ggc2hvdWxkIGRvIGFsbCB0aGUgam9iLiBBbHNvLCBzdHJlYW1fcnVuKCkgc2hvdWxkIGZh
+aWwgaWYgZmx1c2ggZmFpbHMuDQo+Pj4NCj4+PiBBbHNvLCBJIHJlbWVtYmVyIEkndmUgZG9uZSBp
+dCBmb3IgYWxsIChvciBhdCBsZWFzdCBzZXZlcmFsKSBibG9ja2pvYnMgZ2VuZXJpY2FsbHksIHNv
+IHRoYXQgYW55IGJsb2Nram9iIG11c3Qgc3VjY2VzZnVsbHkgZmx1c2ggdGFyZ2V0IHRvIHJlcG9y
+dCBzdWNjZXNzLi4gQnV0IG5vdyBJIGNhbiBmaW5kIG5laXRoZXIgbXkgcGF0Y2hlcyBub3IgdGhl
+IGNvZGUgOiggRGVuLCBLZXZpbiwgSGFubmEsIGRvbid0IHlvdSByZW1lbWJlciB0aGlzIHRvcGlj
+Pw0KPj4+DQo+PiBUaGlzIHdhcyBhIHBhcnQgb2YgY29tcHJlc3NlZCB3cml0ZSBjYWNoZSBzZXJp
+ZXMsIHdoaWNoIHdhcyBwb3N0cG9uZWQuDQo+PiANCj4+IGh0dHBzOi8vbG9yZS5rZXJuZWwub3Jn
+L2FsbC8yMDIxMDMwNTE3MzUwNy4zOTMxMzctMS12c2VtZW50c292QHZpcnR1b3oNCj4+IHpvLmNv
+bS9ULyNtODczMTU1OTNlZDVhYjE2ZTVkMGU0ZTdhNWFlNmQ3NzZmYmJhZWM3Nw0KPj4gDQo+PiBX
+ZSBoYXZlIGl0IHBvcnRlZCB0byA3LjAgUUVNVS4NCj4+IA0KPj4gTm90IGEgcHJvYmxlbSB0byBw
+b3J0IHRvIG1hc3RlciBhbmQgcmVzZW5kLg0KPj4gV2lsbCB0aGlzIG1ha2UgYSBzZW5zZT8NCj4+
+IA0KDQo+TywgdGhhbmtzISBQYXRjaCAwMSBhcHBsaWVzIHdpdGggYSBsaXR0bGUgY29uZmxpY3Qg
+dG8gbWFzdGVyLCBzbyBJJ2xsIGp1c3QgcmVzZW5kIGl0IG15c2VsZi4NCj4NCg0KVGhhbmtzIGFs
+bCAhIA0KV2l0aCBiZXN0IHJlZ2FyZHMgIQ0K
 
