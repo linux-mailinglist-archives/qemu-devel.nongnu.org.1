@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 885A3763C7C
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jul 2023 18:29:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BAA39763C89
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jul 2023 18:31:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOhHP-00039T-5d; Wed, 26 Jul 2023 12:22:27 -0400
+	id 1qOhJl-0004I2-LY; Wed, 26 Jul 2023 12:24:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qOhHN-00038L-Jo
- for qemu-devel@nongnu.org; Wed, 26 Jul 2023 12:22:25 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ id 1qOhIV-0003o9-8i
+ for qemu-devel@nongnu.org; Wed, 26 Jul 2023 12:23:35 -0400
+Received: from mail-pj1-x1031.google.com ([2607:f8b0:4864:20::1031])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qOhHM-0008D2-2U
- for qemu-devel@nongnu.org; Wed, 26 Jul 2023 12:22:25 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1b9c5e07c1bso52813355ad.2
- for <qemu-devel@nongnu.org>; Wed, 26 Jul 2023 09:22:23 -0700 (PDT)
+ id 1qOhIS-0008OQ-Jp
+ for qemu-devel@nongnu.org; Wed, 26 Jul 2023 12:23:35 -0400
+Received: by mail-pj1-x1031.google.com with SMTP id
+ 98e67ed59e1d1-2680eee423aso12519a91.2
+ for <qemu-devel@nongnu.org>; Wed, 26 Jul 2023 09:23:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690388542; x=1690993342;
+ d=linaro.org; s=google; t=1690388611; x=1690993411;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=EqIENYRbm1i8biB1t2dr1SOuzrfmRiON9nBaYtYqjCc=;
- b=YCoQ+usDZrM0r9vrgcNRs673JGMJ4Xoz0oshGxRhXg03mjn/lGoQC/dQvypPolKLdg
- cvWeKzz+2j5+kmYpsUOdRu1VAEDdu8TRUicTDl9KHNE8SDTlKaROzWAY7e8BCwB87G45
- 1YL1qecOh166sv+Wxex8jmj2MsFGUXujFlAQXn7M8I0AjzZFqm6Uz/pHLK2KrprsaiOO
- SHWEcOg3ZkRbaxAVlhf9BZWXXhkxWECRfGw8e67ppt41dYotyb3ftgZVFWMH/dp+P5Ik
- 2VP+OGMpnddCnp2vihTt3egje4dWwzDwIhW6sfd5ck6jEknI/MEY96GEXQ9koj0gAhv4
- /e6g==
+ bh=mfDyvJ7mqNKcI5sJeE35jf90D/jeLVIJrd6UlbZ9nbw=;
+ b=RjBQCnKY4tkM0y9qgOxp1R7Rm4KlzdYPUEwNuXUUMyEupppS6mVei/UPFpDkxPwepu
+ ZQJR/KEZhlWxPmqB6N8v8Gm3B8Dhx+7tI4SPYekUpnYim5PKjuai2T7h7JM8qBXJYbIC
+ RQH/gzuYvHwLp5gB3MCB15+c4UB2WWQTbVN248weB8KJwuDKObHkYq9vkp5HlBkL2wB+
+ BKcd5DWSOWm4pCi6L4iAzNvre46fa3R9CB4OGtHEELyvRGa+RRNqi5NYngp8PRPq70mT
+ rkHQZV0Ro0h5i6SYsZNHBdwP+uqEvMQSKzrAps3c0wfluvZNLWW3sMHiYYGZx4xIZNE4
+ 4CLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690388542; x=1690993342;
+ d=1e100.net; s=20221208; t=1690388611; x=1690993411;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=EqIENYRbm1i8biB1t2dr1SOuzrfmRiON9nBaYtYqjCc=;
- b=JA280GJdhjjM7Q7BkCO5EsjLjojqRAR50yHBn/3gEgBqaf818I1CJJflfG7cf8hyCl
- /flZYv5d1236Osw/cglrwQ8VPlQLFJCPDjiNKwEV0dNvgDaDz1mGhorCMufpDLpAT/NN
- 7kpdkRlyjj7GaKVNkxW475bi9QbIOMMvTAmGm4LFFQOgm4dbsWogxYs7CTMeG9T7ro0r
- 7WhDaTbP23hUi91y/rY/CYeBDt9FBle0UzNQY2ezU23HzLQ0zevtIQ2e3xcLJy6LFlMg
- cS9cyUk0PrSym1ZgXc1tt8vgiWtbPdRs3QNK6nrwfbJ7/L+QMtrZq6GCqDthngTJ33ly
- sb8Q==
-X-Gm-Message-State: ABy/qLZgBTbHFy/fHKQ6lBKTujKJNm1tFjhWqt4c+sUTDqHqyXW49gHz
- rYMrRMXyENI4przsQhajFiy/8w==
-X-Google-Smtp-Source: APBJJlEFwTVKHOMzGSmNLP6gkjywIuaJtkC701CW+OaLZEVGdXhhyblIGwBVvMXFfG2+pz1Dty4Zxg==
-X-Received: by 2002:a17:903:2343:b0:1b8:76fc:5bf6 with SMTP id
- c3-20020a170903234300b001b876fc5bf6mr3105413plh.43.1690388542280; 
- Wed, 26 Jul 2023 09:22:22 -0700 (PDT)
+ bh=mfDyvJ7mqNKcI5sJeE35jf90D/jeLVIJrd6UlbZ9nbw=;
+ b=glCaX/D5Vk/gceOCr5adnwmCqHjQgQJYk+7QkzH9LxzalPiLozfgQDtpQ35H6xh5i8
+ b7JAgowFdXZf+Zha+DNq0bZzbUelsxeTEjUTyfBvKuNQjJCyZLUYFlFm15FTkrY3+t/K
+ Mq5P3sGtZYBZ7tNGyAwWxP/HVSIzayP+F29nmxgcvbmBetq1LLAQsTgH515xWtpOPQn9
+ SLYA8z8/Kfn3QcgdMGZw+7vvIX9pV1QDuGa6DZwhtOqxCkf32cErzfrd+IeFkHE/sJU6
+ xZvSObCPzW2k307/I2PSlpdy9EW8cDCR1afCTqrpKW+3PvcI1JA0qXwvE1hm/NvomFX1
+ 9otg==
+X-Gm-Message-State: ABy/qLZ+8ku0GInpv8HM3/cJ9zCesOCx+481POqg5LUFI2hLQj4+fahF
+ HtF0vMUVa57s3SA4GsI0tP+DHg==
+X-Google-Smtp-Source: APBJJlEvvLddn8c4y4zTp8NSkgfV/9vIHrMgGsWCRoELr3RNKFwMASOOKkBx+F8xQXGPTRkmN3u7GA==
+X-Received: by 2002:a17:90a:aa96:b0:262:ece1:5fd0 with SMTP id
+ l22-20020a17090aaa9600b00262ece15fd0mr2090538pjq.12.1690388611208; 
+ Wed, 26 Jul 2023 09:23:31 -0700 (PDT)
 Received: from ?IPV6:2602:ae:1598:4c01:9456:37ab:20dc:17e1?
  ([2602:ae:1598:4c01:9456:37ab:20dc:17e1])
  by smtp.gmail.com with ESMTPSA id
- ji17-20020a170903325100b001a6f7744a27sm13391622plb.87.2023.07.26.09.22.21
+ bg11-20020a17090b0d8b00b0026833291740sm1442882pjb.46.2023.07.26.09.23.30
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 26 Jul 2023 09:22:21 -0700 (PDT)
-Message-ID: <2915d99d-18de-4d02-8efc-0c6bf2091071@linaro.org>
-Date: Wed, 26 Jul 2023 09:22:20 -0700
+ Wed, 26 Jul 2023 09:23:30 -0700 (PDT)
+Message-ID: <80f31372-2199-f911-2912-e913bc138ec9@linaro.org>
+Date: Wed, 26 Jul 2023 09:23:28 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PULL 0/2] Misc next patches
+Subject: Re: [PULL 00/25] Migration 20230726 patches
 Content-Language: en-US
-To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- qemu-devel@nongnu.org
-Cc: "Canokeys.org" <contact@canokeys.org>, Gerd Hoffmann <kraxel@redhat.com>, 
- "Hongren (Zenithal) Zheng" <i@zenithal.me>
-References: <20230725162304.156157-1-berrange@redhat.com>
+To: Juan Quintela <quintela@redhat.com>, qemu-devel@nongnu.org
+Cc: Leonardo Bras <leobras@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, libvir-list@redhat.com,
+ Markus Armbruster <armbru@redhat.com>, Laurent Vivier <lvivier@redhat.com>
+References: <20230726121459.1837-1-quintela@redhat.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230725162304.156157-1-berrange@redhat.com>
+In-Reply-To: <20230726121459.1837-1-quintela@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1031;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1031.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -97,24 +98,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/25/23 09:23, Daniel P. Berrangé wrote:
-> The following changes since commit a279ca4ea07383314b2d2b2f1d550be9482f148e:
+On 7/26/23 05:14, Juan Quintela wrote:
+> The following changes since commit 6cb2011fedf8c4e7b66b4a3abd6b42c1bae99ce6:
 > 
->    Merge tag 'pull-target-arm-20230725' ofhttps://git.linaro.org/people/pmaydell/qemu-arm  into staging (2023-07-25 12:44:39 +0100)
+>    Update version for v8.1.0-rc1 release (2023-07-25 20:09:05 +0100)
 > 
 > are available in the Git repository at:
 > 
->    https://gitlab.com/berrange/qemu  tags/misc-next-pull-request
+>    https://gitlab.com/juan.quintela/qemu.git  tags/migration-20230726-pull-request
 > 
-> for you to fetch changes up to 095be0910b89b5d156e20641bd65ac6cab3f8305:
+> for you to fetch changes up to 697c4c86ab515a728ffb2adc2c3c04b22fa9210f:
 > 
->    hw/usb/canokey: change license to GPLv2+ (2023-07-25 17:15:59 +0100)
+>    migration/rdma: Split qemu_fopen_rdma() into input/output functions (2023-07-26 10:55:56 +0200)
 > 
 > ----------------------------------------------------------------
-> Miscellaneous fixes
+> Migration Pull request
 > 
->   * Switch canokey device license from Apache to GPLv2+
->   * Fix uninitialized variable warning in LUKS code
+> Hi
+> 
+> This is the migration PULL request.  It is the same than yesterday with proper PULL headers.
+> It pass CI. It contains:
+> - Fabiano rosas trheadinfo cleanups
+> - Hyman Huang dirtylimit changes
+> - Part of my changes
+> - Peter Xu documentation
+> - Tejus updato to migration descriptions
+> - Wei want improvements for postocpy and multifd setup
+> 
+> Please apply.
+> 
+> Thanks, Juan.
+> 
+> -------
 
 Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
 
