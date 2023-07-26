@@ -2,77 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 820FA7627CC
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jul 2023 02:35:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4847762808
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jul 2023 03:12:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOSUE-0002hb-KR; Tue, 25 Jul 2023 20:34:44 -0400
+	id 1qOT32-0005dr-97; Tue, 25 Jul 2023 21:10:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qOSU4-0002NH-Ie
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 20:34:33 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qOSU2-0003Gn-5g
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 20:34:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690331669;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=F5xerAzameuwUcWJLh2CpRUU0MVacN+v0fS5ArJFekU=;
- b=Xo1326CH7bHp05yFTVtSs5oqgmZCPgo6swhrFCtcs8gQALFCTeMarUVEE0IBPN2/lz1jcH
- nFzKAFU6/O11ns6wvPP/XxGRlulyezdtnxyUd45BWpljXTqKxN4tmsuNTOTNf0XN/pY0cQ
- 6zKWGprSLm3bhyqcniNhqIUdg3r9TKA=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-606-L4uT3TutNh2ip98KgVrFtQ-1; Tue, 25 Jul 2023 20:34:24 -0400
-X-MC-Unique: L4uT3TutNh2ip98KgVrFtQ-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C6C668008A4;
- Wed, 26 Jul 2023 00:34:22 +0000 (UTC)
-Received: from gshan.redhat.com (unknown [10.64.136.80])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 5EEE54A9004;
- Wed, 26 Jul 2023 00:34:14 +0000 (UTC)
-From: Gavin Shan <gshan@redhat.com>
-To: qemu-arm@nongnu.org
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, peter.maydell@linaro.org,
- b.galvani@gmail.com, strahinja.p.jankovic@gmail.com,
- sundeep.lkml@gmail.com, kfting@nuvoton.com, wuhaotsh@google.com,
- nieklinnenbank@gmail.com, rad@semihalf.com, quic_llindhol@quicinc.com,
- marcin.juszkiewicz@linaro.org, eduardo@habkost.net,
- marcel.apfelbaum@gmail.com, philmd@linaro.org, wangyanan55@huawei.com,
- laurent@vivier.eu, vijai@behindbytes.com, palmer@dabbelt.com,
- alistair.francis@wdc.com, bin.meng@windriver.com, liweiwei@iscas.ac.cn,
- dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
- imammedo@redhat.com, cohuck@redhat.com, richard.henderson@linaro.org,
- pbonzini@redhat.com, shan.gavin@gmail.com
-Subject: [PATCH v2 8/8] hw/riscv/shakti_c: Check CPU type in
- machine_run_board_init()
-Date: Wed, 26 Jul 2023 10:32:05 +1000
-Message-ID: <20230726003205.1599788-9-gshan@redhat.com>
-In-Reply-To: <20230726003205.1599788-1-gshan@redhat.com>
-References: <20230726003205.1599788-1-gshan@redhat.com>
+ (Exim 4.90_1) (envelope-from <gurchetansingh@chromium.org>)
+ id 1qOT2x-0005dJ-Qx
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 21:10:37 -0400
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <gurchetansingh@chromium.org>)
+ id 1qOT2w-0007DW-2t
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 21:10:35 -0400
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-991c786369cso952306766b.1
+ for <qemu-devel@nongnu.org>; Tue, 25 Jul 2023 18:10:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=chromium.org; s=google; t=1690333829; x=1690938629;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=cJ4lfL0GXep5g+fTvzH5INlAouvz2XhJhb6DInty43o=;
+ b=M8JCPPYAdCFmhXsyuAGR6OD4wtA6JoqWsyubBtXCOLRkOcTtih8sPrLhzojrChIpF+
+ w6jzRIsJCWFtLo+PoBcCYEXPe0u2Q47PE+PmPeCf/l7w/JQ6FYo7ZkOKwjqRaxy0Z6fV
+ dXDG50vXzstkgWT7N7L0MluWzUdKJ9Q632D6k=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1690333829; x=1690938629;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=cJ4lfL0GXep5g+fTvzH5INlAouvz2XhJhb6DInty43o=;
+ b=J9SLHK0Eahe/E3Ri6yGydo7WOVlIxSFAJEuOfquzstSstTOrKuxpyEkON2ztU3Ogx7
+ EMhdgeixxKpc1ze7amCPL8QF7Ks89R+Lo4B2Zi+wewrz+YTKeEmA0MZVQCZDf11HI8dO
+ dlWKWGDFE4wOaDosUC/o4G7l1bEnhXkngExVudIiRJUhv21th9IQe9bobeA4M2k4jFW1
+ 5zWDI2ErpufCoY6ZFEvEv8hI3am4pq/A9x3uFQvUXHTZRaTRXiKTpEV0DWsN/mV5PmFS
+ FYcYu9Ql2aYQ9kdQ8iDDSpO+wrdWbsA8zBj9uQjjgYX7PWZSG5B4sfNDwD1LoRzhWvYZ
+ zfgA==
+X-Gm-Message-State: ABy/qLaN1jV6flLoJZlIbarxW/6tFSdQAhAlwqDSONpdhtnsiA388nR1
+ DcgFAGow5S6fxH38KFdk3dKp9XF3F8F9SXlwdhgx3w==
+X-Google-Smtp-Source: APBJJlHzZnaey0v06GikBmCFNe+8AxJGNqieys2inEdQ9BlClg6LhQ6Ii8jccW6747vsAYCG/6VV+w==
+X-Received: by 2002:a17:906:738b:b0:993:dcca:9607 with SMTP id
+ f11-20020a170906738b00b00993dcca9607mr386560ejl.2.1690333829188; 
+ Tue, 25 Jul 2023 18:10:29 -0700 (PDT)
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com.
+ [209.85.208.41]) by smtp.gmail.com with ESMTPSA id
+ rv7-20020a17090710c700b00993a9a951fasm9021552ejb.11.2023.07.25.18.10.28
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 25 Jul 2023 18:10:29 -0700 (PDT)
+Received: by mail-ed1-f41.google.com with SMTP id
+ 4fb4d7f45d1cf-516500163b2so2951a12.1
+ for <qemu-devel@nongnu.org>; Tue, 25 Jul 2023 18:10:28 -0700 (PDT)
+X-Received: by 2002:a50:d0c9:0:b0:522:2dd2:afa5 with SMTP id
+ g9-20020a50d0c9000000b005222dd2afa5mr200901edf.7.1690333828241; Tue, 25 Jul
+ 2023 18:10:28 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=gshan@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20230711025649.708-1-gurchetansingh@chromium.org>
+ <87351diqf9.fsf@alyssa.is>
+In-Reply-To: <87351diqf9.fsf@alyssa.is>
+From: Gurchetan Singh <gurchetansingh@chromium.org>
+Date: Tue, 25 Jul 2023 18:10:15 -0700
+X-Gmail-Original-Message-ID: <CAAfnVBkm6yjR8HVWgpCCQkzpQ53unBCTP4Ngk=Z8QeEZ-7MbMw@mail.gmail.com>
+Message-ID: <CAAfnVBkm6yjR8HVWgpCCQkzpQ53unBCTP4Ngk=Z8QeEZ-7MbMw@mail.gmail.com>
+Subject: Re: [PATCH v1 0/9] gfxstream + rutabaga_gfx
+To: Alyssa Ross <hi@alyssa.is>
+Cc: qemu-devel@nongnu.org, kraxel@redhat.com, marcandre.lureau@redhat.com, 
+ akihiko.odaki@gmail.com, dmitry.osipenko@collabora.com, ray.huang@amd.com, 
+ alex.bennee@linaro.org, shentey@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=gurchetansingh@chromium.org; helo=mail-ej1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,58 +99,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Set mc->valid_cpu_{types, models} so that the specified CPU type
-can be checked in machine_run_board_init(). We needn't to do the
-check by ourselves.
+On Mon, Jul 24, 2023 at 2:56=E2=80=AFAM Alyssa Ross <hi@alyssa.is> wrote:
+>
+> Gurchetan Singh <gurchetansingh@chromium.org> writes:
+>
+> > In terms of API stability/versioning/packaging, once this series is
+> > reviewed, the plan is to cut a "gfxstream upstream release branch".  We
+> > will have the same API guarantees as any other QEMU project then, i.e n=
+o
+> > breaking API changes for 5 years.
+>
+> What about Rutabaga?
 
-Signed-off-by: Gavin Shan <gshan@redhat.com>
----
- hw/riscv/shakti_c.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
-
-diff --git a/hw/riscv/shakti_c.c b/hw/riscv/shakti_c.c
-index 12ea74b032..0bd59d47cd 100644
---- a/hw/riscv/shakti_c.c
-+++ b/hw/riscv/shakti_c.c
-@@ -28,6 +28,15 @@
- #include "exec/address-spaces.h"
- #include "hw/riscv/boot.h"
- 
-+static const char * const valid_cpu_types[] = {
-+    RISCV_CPU_TYPE_NAME("shakti-c"),
-+    NULL
-+};
-+
-+static const char * const valid_cpu_models[] = {
-+    "shakti-c",
-+    NULL
-+};
- 
- static const struct MemmapEntry {
-     hwaddr base;
-@@ -47,12 +56,6 @@ static void shakti_c_machine_state_init(MachineState *mstate)
-     ShaktiCMachineState *sms = RISCV_SHAKTI_MACHINE(mstate);
-     MemoryRegion *system_memory = get_system_memory();
- 
--    /* Allow only Shakti C CPU for this platform */
--    if (strcmp(mstate->cpu_type, TYPE_RISCV_CPU_SHAKTI_C) != 0) {
--        error_report("This board can only be used with Shakti C CPU");
--        exit(1);
--    }
--
-     /* Initialize SoC */
-     object_initialize_child(OBJECT(mstate), "soc", &sms->soc,
-                             TYPE_RISCV_SHAKTI_SOC);
-@@ -85,6 +88,8 @@ static void shakti_c_machine_class_init(ObjectClass *klass, void *data)
-     mc->desc = "RISC-V Board compatible with Shakti SDK";
-     mc->init = shakti_c_machine_state_init;
-     mc->default_cpu_type = TYPE_RISCV_CPU_SHAKTI_C;
-+    mc->valid_cpu_types = valid_cpu_types;
-+    mc->valid_cpu_models = valid_cpu_models;
-     mc->default_ram_id = "riscv.shakti.c.ram";
- }
- 
--- 
-2.41.0
-
+Yes, rutabaga + gfxstream will both be versioned and maintain API
+backwards compatibility in line with QEMU guidelines.
 
