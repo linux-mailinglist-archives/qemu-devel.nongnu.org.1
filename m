@@ -2,90 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EC9D762D28
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jul 2023 09:24:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FC15762D59
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jul 2023 09:27:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOYrp-0003E4-Bc; Wed, 26 Jul 2023 03:23:29 -0400
+	id 1qOYvK-0004MI-QC; Wed, 26 Jul 2023 03:27:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qOYrm-0003DH-Fi
- for qemu-devel@nongnu.org; Wed, 26 Jul 2023 03:23:26 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1qOYv9-0004M4-Dg
+ for qemu-devel@nongnu.org; Wed, 26 Jul 2023 03:26:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qOYrk-0001WP-Pv
- for qemu-devel@nongnu.org; Wed, 26 Jul 2023 03:23:26 -0400
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1qOYv7-0002R0-St
+ for qemu-devel@nongnu.org; Wed, 26 Jul 2023 03:26:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690356203;
+ s=mimecast20190719; t=1690356412;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Pmw6wl1dl2hF+adlNw6TZD6m3IUv+FWrjfWGf2H5N7s=;
- b=VmtJQ6iKvqYmc9ng90Fsovv3fThUsvNmME9k4/oF0NaBzENrToO8oj6OxKYKndd6oYxkLD
- ya7X9r8cWwsggq+E4hSCYrklYY+H0TsRCdRozGGYca6/ERW1VdLZIXqgBSfzntL9GsUEzV
- LobF7rEApW4erEKSzESqp7ipFfL3daQ=
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
- [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=nwtGQKyzasT4BagATqnb1msP6Otumuz4N/5SexwFmRc=;
+ b=T5q0mLrkXkW7NcGtIt2YLnW44uDl28xQe3Y+zjF6vQmYX5OpopwG93mt00xxNuYaHCQM/e
+ pGPuaFeEOlNxAq1aRQRni53DhBQuKEJVqVJ9kOcb9DuDqekpgIV1eePCfTMt93QvM2tmXN
+ kbDRM3sTYf+pk5/xR+d5o3lf2t95rsg=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-155-okeFuGa_M_m1bRCK4v3_xQ-1; Wed, 26 Jul 2023 03:23:21 -0400
-X-MC-Unique: okeFuGa_M_m1bRCK4v3_xQ-1
-Received: by mail-pl1-f197.google.com with SMTP id
- d9443c01a7336-1bb8f751372so32318255ad.0
- for <qemu-devel@nongnu.org>; Wed, 26 Jul 2023 00:23:21 -0700 (PDT)
+ us-mta-488-zJuF-uQRO7uPv98Uvrgiqg-1; Wed, 26 Jul 2023 03:26:50 -0400
+X-MC-Unique: zJuF-uQRO7uPv98Uvrgiqg-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-98e40d91fdfso3393966b.3
+ for <qemu-devel@nongnu.org>; Wed, 26 Jul 2023 00:26:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690356200; x=1690961000;
- h=to:references:message-id:content-transfer-encoding:cc:date
- :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Pmw6wl1dl2hF+adlNw6TZD6m3IUv+FWrjfWGf2H5N7s=;
- b=fi1tZ1SYVQVddapEnlfGBUp3PRowqmUkUXnxZ7j62spAqWw+BOua1JtyQhiv4xDb0I
- 2AhISt3xzm/NopIXGsZqrpwnQn6qpn75JzkRlD3ru1tMXWPxLlPo5Q4G91Xo4SXk71PC
- eMrNhBE60YaR1O+H4KL2YVmeY4JANechdUdaIH8Fbb9l/6CInNSID6G4TZIcwfLSBB60
- WUuBo23fCLSvbtGQhXffGI0SzHTKfCiXa8QCb86rfZigVvpgWtXpNqir/nVpw1OUUrtb
- ukQDF5/rJOhUnHqrZIzxBMvBtgPg+lEPWeViPnGrVhGeucKEJ+066nyL/4oaKOVfCWBo
- O7xA==
-X-Gm-Message-State: ABy/qLZRCkOR0jNN5wP8ig3aKwEDx+hiZu8LWz9HEUk6PVBirvwMw9aY
- 5wsgAVuWX7OSur0qqoY01va/11TSgvO2sE2+Sxz8qRmq3Xwt17Af9w/a5HmOwJiHdoyANuYFAMe
- S6HhDO+NdJyzX/dY=
-X-Received: by 2002:a17:903:1cd:b0:1bb:7d2f:7c19 with SMTP id
- e13-20020a17090301cd00b001bb7d2f7c19mr1349466plh.64.1690356200555; 
- Wed, 26 Jul 2023 00:23:20 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHEIUibhuwaZAv0T7nUCnb1rcq3zVE2vCo4hWZ4i2aSxzO9NjzH07mzR+MXBDNw+PoXCeCVlw==
-X-Received: by 2002:a17:903:1cd:b0:1bb:7d2f:7c19 with SMTP id
- e13-20020a17090301cd00b001bb7d2f7c19mr1349448plh.64.1690356200209; 
- Wed, 26 Jul 2023 00:23:20 -0700 (PDT)
-Received: from smtpclient.apple ([115.96.152.59])
+ d=1e100.net; s=20221208; t=1690356409; x=1690961209;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=nwtGQKyzasT4BagATqnb1msP6Otumuz4N/5SexwFmRc=;
+ b=N/53JUA6x27WdeE5PMr7ndhmLgmjwZMGyh5NYZj4kyE2uLxoe6dpf6okO0sfEouBKO
+ ABV3n75c6eBUTpaAOeKKF1E8JX8Db8CpxmGVig9B8pQr29ek5/uNKB8BW2tMJfZNppCb
+ 23ekkYAXSUFy86GLdAxCAwJtk7RSXYQ4aC6jU71a1J6uLUDeQgNlXkk9iacX3eKYDvw3
+ xiF6NLTMmrNznjJHJ6Pw+e4fybmciLE/poe6CXJiL+/Kg/p5K3fCKiWsrCQFcmQnDzB4
+ hfoPmF2Lo/eSrdNw8/LfSnqBNqXnhqR+mXGcBcURqYb/r+3bb6eNWOgDSLd48ul9uiiF
+ weOQ==
+X-Gm-Message-State: ABy/qLbtGishiebNiB2tPR7+J9QaiVnU+NsES5X3QkPOfU2AFC8XjDvY
+ 5kwmnH8P+Iveat+qYMIo/n20seHec4ToBlbuqoz+xrCO38cZXuw4dQq5m4FrTWxAd+mHFD4/Z2+
+ oPmTI40TjIAyNmAc=
+X-Received: by 2002:a17:907:7883:b0:993:eddd:6df4 with SMTP id
+ ku3-20020a170907788300b00993eddd6df4mr1057041ejc.10.1690356408944; 
+ Wed, 26 Jul 2023 00:26:48 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlHuVmZFk3ajVlNOSxsWnguMBuAScgsV284eoVEAd7zeUcaYcgBBC0rEaLGkpFLrpX8nOuQglg==
+X-Received: by 2002:a17:907:7883:b0:993:eddd:6df4 with SMTP id
+ ku3-20020a170907788300b00993eddd6df4mr1057024ejc.10.1690356408570; 
+ Wed, 26 Jul 2023 00:26:48 -0700 (PDT)
+Received: from sgarzare-redhat ([5.77.111.137])
  by smtp.gmail.com with ESMTPSA id
- y19-20020a170902ed5300b001b3bf8001a9sm3782491plb.48.2023.07.26.00.23.15
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Wed, 26 Jul 2023 00:23:19 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.3\))
-Subject: Re: [PATCH v2 2/6] python/machine: close sock_pair in cleanup path
-From: Ani Sinha <anisinha@redhat.com>
-In-Reply-To: <ZMAR3L4O9sSEV4AL@redhat.com>
-Date: Wed, 26 Jul 2023 12:53:13 +0530
-Cc: John Snow <jsnow@redhat.com>, qemu-devel <qemu-devel@nongnu.org>,
- =?utf-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
- Hanna Reitz <hreitz@redhat.com>, Cleber Rosa <crosa@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>, qemu-arm@nongnu.org,
- qemu-block@nongnu.org, Andrew Jeffery <andrew@aj.id.au>,
- Joel Stanley <joel@jms.id.au>, Kevin Wolf <kwolf@redhat.com>,
- =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Beraldo Leal <bleal@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <1E4E4974-524B-497B-B605-8906ABB526DF@redhat.com>
-References: <20230725180337.2937292-1-jsnow@redhat.com>
- <20230725180337.2937292-3-jsnow@redhat.com> <ZMAR3L4O9sSEV4AL@redhat.com>
-To: =?utf-8?B?IkRhbmllbCBQLiBCZXJyYW5nw6ki?= <berrange@redhat.com>
-X-Mailer: Apple Mail (2.3696.120.41.1.3)
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
+ a6-20020a1709065f8600b0098ec690e6d7sm9236392eju.73.2023.07.26.00.26.47
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 26 Jul 2023 00:26:48 -0700 (PDT)
+Date: Wed, 26 Jul 2023 09:26:45 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org, Hanna Reitz <hreitz@redhat.com>, 
+ Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org,
+ Qing Wang <qinwang@redhat.com>
+Subject: Re: [PATCH 1/2] block/blkio: fix opening virtio-blk drivers
+Message-ID: <zba7q3vye5fwm33wkmmoajiya6mq3oesn3isqtf4qb24vdbn6u@ru7fzcovwmow>
+References: <20230724154611.178858-1-sgarzare@redhat.com>
+ <20230724154611.178858-2-sgarzare@redhat.com>
+ <20230725200038.GB749269@fedora>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20230725200038.GB749269@fedora>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=sgarzare@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -110,62 +102,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Tue, Jul 25, 2023 at 04:00:38PM -0400, Stefan Hajnoczi wrote:
+>On Mon, Jul 24, 2023 at 05:46:10PM +0200, Stefano Garzarella wrote:
+>> libblkio 1.3.0 added support of "fd" property for virtio-blk-vhost-vdpa
+>> driver. In QEMU, starting from commit cad2ccc395 ("block/blkio: use
+>> qemu_open() to support fd passing for virtio-blk") we are using
+>> `blkio_get_int(..., "fd")` to check if the "fd" property is supported
+>> for all the virtio-blk-* driver.
+>>
+>> Unfortunately that property is also available for those driver that do
+>> not support it, such as virtio-blk-vhost-user. Indeed now QEMU is
+>> failing if used with virtio-blk-vhost-user in this way:
+>>
+>>    -blockdev node-name=drive0,driver=virtio-blk-vhost-user,path=vhost-user-blk.sock,cache.direct=on: Could not open 'vhost-user-blk.sock': No such device or address
+>>
+>> So, `blkio_get_int()` is not enough to check whether the driver supports
+>> the `fd` property or not. This is because the virito-blk common libblkio
+>> driver only checks whether or not `fd` is set during `blkio_connect()`
+>> and fails for those transports that do not support it (all except
+>> vhost-vdpa for now).
+>>
+>> So for now let's also check that the driver is virtio-blk-vhost-vdpa,
+>> since that's the only one that supports it.
+>
+>What happens when more virtio-blk-* libblkio drivers gain support for
+>`fd`? I think we'll be back to the same problem because QEMU will be
+>unable to distinguish between old and new libraries.
 
+If we release a v1.3.1 version of libblkio with
+https://gitlab.com/libblkio/libblkio/-/merge_requests/208
+we can set a minimum requirement in QEMU and use blkio_set_fd() here.
 
-> On 25-Jul-2023, at 11:48 PM, Daniel P. Berrang=C3=A9 =
-<berrange@redhat.com> wrote:
->=20
-> On Tue, Jul 25, 2023 at 02:03:33PM -0400, John Snow wrote:
->> If everything has gone smoothly, we'll already have closed the socket =
-we
->> gave to the child during post_launch. The other half of the pair that =
-we
->> gave to the QMP connection should, likewise, be definitively closed =
-by
->> now.
->>=20
->> However, in the cleanup path, it's possible we've created the =
-socketpair
->> but flubbed the launch and need to clean up resources. These =
-resources
->> *would* be handled by the garbage collector, but that can happen at
->> unpredictable times. Nicer to just clean them up synchronously on the
->> exit path, here.
->>=20
->> Signed-off-by: John Snow <jsnow@redhat.com>
+>
+>How about retrying with `path` if opening with `fd` fails?
 
-Reviewed-by: Ani Sinha <anisinha@redhat.com>
+IIUC the only way is to check if blkio_connect() will fail with -EINVAL,
+that can also be generated by other issues, then retry forcing `path`.
 
->> ---
->> python/qemu/machine/machine.py | 5 +++++
->> 1 file changed, 5 insertions(+)
->>=20
->> diff --git a/python/qemu/machine/machine.py =
-b/python/qemu/machine/machine.py
->> index 8be0f684fe..26f0fb8a81 100644
->> --- a/python/qemu/machine/machine.py
->> +++ b/python/qemu/machine/machine.py
->> @@ -395,6 +395,11 @@ def _post_shutdown(self) -> None:
->>         finally:
->>             assert self._qmp_connection is None
->>=20
->> +        if self._sock_pair:
->> +            self._sock_pair[0].close()
->> +            self._sock_pair[1].close()
->> +            self._sock_pair =3D None
->> +
->=20
-> Reviewed-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
->=20
-> With regards,
-> Daniel
-> --=20
-> |: https://berrange.com      -o-    =
-https://www.flickr.com/photos/dberrange :|
-> |: https://libvirt.org         -o-            =
-https://fstop138.berrange.com :|
-> |: https://entangle-photo.org    -o-    =
-https://www.instagram.com/dberrange :|
->=20
+Do you see other ways?
+
+The code wouldn't be great, but we could do it for now and then when
+we release a new version of libblkio, do the revert and use
+blkio_set_int(fd) to see if it's supported or not.
+
+I don't know if it is worth it, or if it is better to merge this,
+release libblkio v1.3.1 and force the minimum requirement.
+
+WDYT?
+
+Thanks,
+Stefano
 
 
