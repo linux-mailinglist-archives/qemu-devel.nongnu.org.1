@@ -2,77 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DBED763FA9
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jul 2023 21:32:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16CB7763EC5
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jul 2023 20:45:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOia6-0003rv-AT; Wed, 26 Jul 2023 13:45:50 -0400
+	id 1qOilB-0006Ik-77; Wed, 26 Jul 2023 13:57:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qOia3-0003rQ-II
- for qemu-devel@nongnu.org; Wed, 26 Jul 2023 13:45:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qOil8-0006GV-Qy
+ for qemu-devel@nongnu.org; Wed, 26 Jul 2023 13:57:14 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qOia2-0003k1-1S
- for qemu-devel@nongnu.org; Wed, 26 Jul 2023 13:45:47 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qOil7-0006Jh-23
+ for qemu-devel@nongnu.org; Wed, 26 Jul 2023 13:57:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690393545;
+ s=mimecast20190719; t=1690394232;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=9GImxgUdYMZ49yLQ1z4eXiQK62MzicyE5+gftMX7p48=;
- b=HbGcORBII/uxIcdLWbLtSS2Qo+5i1Jzdx60E2lALYf0nelvT6DeSshw/YjwxoR8fuUtQ8B
- 1ky7VUjJQ3UdyaMcPZ+c/u/ehJB+f9cM07jSEolZrJzZPKPpxRAGgwbeALFzqpzXZLNENw
- oBcjyfsY55TOdMxwOtnNRONOkIY7bJc=
-Received: from mail-ua1-f70.google.com (mail-ua1-f70.google.com
- [209.85.222.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-673-f73_EPSwPwmZ0ZKQWhdTFg-1; Wed, 26 Jul 2023 13:45:43 -0400
-X-MC-Unique: f73_EPSwPwmZ0ZKQWhdTFg-1
-Received: by mail-ua1-f70.google.com with SMTP id
- a1e0cc1a2514c-79a06901112so2696241.0
- for <qemu-devel@nongnu.org>; Wed, 26 Jul 2023 10:45:43 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690393543; x=1690998343;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=9GImxgUdYMZ49yLQ1z4eXiQK62MzicyE5+gftMX7p48=;
- b=AlYlapFdrPj6dS7t4s4U8y8ORQMX800u5S/iVMo/fqyOZVkxLED3iq/D567G0DSDmw
- Um0Xi7DVq1oRskxJ6/T32pO8eCzQiRlgKzdPFWwbCzRBHA8nEF4uqhq6j+XdVqxjQi1Q
- XHbTasGM4wUvVFl6Y0/58ZyTNXtFTJMYXJNUIoOtTMNrdRRqyaBeB022gaxLF8SEw5XE
- MxIHGByhBLBwUCbBnkNTrEfh9sUCCdunK/JM6ctAiM0bbqktBBSM2N7F5LCu/kElnuZu
- SGqoJG7K4RZj3DKWnIVfiJV9GsJqQ2USAXciFuO9KgjpT68aEP/8coimHSy1cecdiplb
- xr4A==
-X-Gm-Message-State: ABy/qLZXreR2BkT5gp3FB3Ifml6t62NhTw8sBPXNR34HFGR/nKWBZyOj
- paPZ8ZXlS7GXl6ROD4muQ9TGfq78zlcxVtvCjEgv2X9JnxOSkEKs3K7OElYdWmJ3vbxGrsfiiJR
- LQ0HQJpbJ9hyUwSQ=
-X-Received: by 2002:a05:6122:d91:b0:47e:9d33:6da1 with SMTP id
- bc17-20020a0561220d9100b0047e9d336da1mr1518548vkb.0.1690393543087; 
- Wed, 26 Jul 2023 10:45:43 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHsylbaqozANyJjSxPAIbUg83FrrMxmKoVnXwqqYjc00e6TFhh+WrPD1olph+hNhXD6xs93hg==
-X-Received: by 2002:a05:6122:d91:b0:47e:9d33:6da1 with SMTP id
- bc17-20020a0561220d9100b0047e9d336da1mr1518536vkb.0.1690393542823; 
- Wed, 26 Jul 2023 10:45:42 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- z20-20020a0cf014000000b006362d4eeb6esm5188913qvk.144.2023.07.26.10.45.42
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 26 Jul 2023 10:45:42 -0700 (PDT)
-Date: Wed, 26 Jul 2023 13:45:40 -0400
-From: Peter Xu <peterx@redhat.com>
-To: hongmianquan <hongmianquan@bytedance.com>
-Cc: qemu-devel@nongnu.org, philmd@linaro.org, david@redhat.com,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH] memory: avoid updating ioeventfds for some address_space
-Message-ID: <ZMFbxFnv82AWlzLD@x1n>
-References: <20230725112037.1762608-1-hongmianquan@bytedance.com>
+ bh=EBQSZSTRvSf5kFl9PNozYmR+l5P+cSVCx5LGFbGqtEQ=;
+ b=M7G257O38pjDQwSibnxIVtbiWakRQEh/GyxgcixOgWRv4+how4Ss7DFe1n+KNv5YDA/plk
+ TRLUFeqTjc3SEvmX2AiAYCRHOImyN/e8aADE2NIcmUkj3Tb2VW8OjS/n9QZwrCMQJX9ubx
+ 4PqmEIqTr6e/kbK7yMTMRRvHJ6/83I8=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-684-NkPbJlhdMl6CmJ_EIxMWoA-1; Wed, 26 Jul 2023 13:57:08 -0400
+X-MC-Unique: NkPbJlhdMl6CmJ_EIxMWoA-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 61166805951;
+ Wed, 26 Jul 2023 17:57:08 +0000 (UTC)
+Received: from redhat.com (unknown [10.2.16.93])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id C69444094DC1;
+ Wed, 26 Jul 2023 17:57:07 +0000 (UTC)
+Date: Wed, 26 Jul 2023 12:57:06 -0500
+From: Eric Blake <eblake@redhat.com>
+To: "Denis V. Lunev" <den@openvz.org>
+Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, 
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ qemu-stable@nongnu.org
+Subject: Re: [PATCH 1/1] qemu-nbd: regression with arguments passing into
+ nbd_client_thread()
+Message-ID: <5arr3gmamjxaev6wgwyewnc6ij2wl3oddmju5r2n6lx4rgfcoz@wejhxbmrzyon>
+References: <20230726145247.297454-1-den@openvz.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230725112037.1762608-1-hongmianquan@bytedance.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+In-Reply-To: <20230726145247.297454-1-den@openvz.org>
+User-Agent: NeoMutt/20230517
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -81,7 +64,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,24 +80,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jul 25, 2023 at 07:20:37PM +0800, hongmianquan wrote:
-> When updating ioeventfds, we need to iterate all address spaces,
-> but some address spaces do not register eventfd_add|del call when
-> memory_listener_register() and they do nothing when updating ioeventfds.
-> So we can skip these AS in address_space_update_ioeventfds().
+On Wed, Jul 26, 2023 at 04:52:47PM +0200, Denis V. Lunev wrote:
+> Unfortunately
+>     commit 03b67621445d601c9cdc7dfe25812e9f19b81488
+>     Author: Denis V. Lunev <den@openvz.org>
+>     Date:   Mon Jul 17 16:55:40 2023 +0200
+>     qemu-nbd: pass structure into nbd_client_thread instead of plain char*
+> has introduced a regression. struct NbdClientOpts resides on stack inside
+> 'if' block. This specifically means that this stack space could be reused
+> once the execution will leave that block of the code.
 > 
-> The overhead of memory_region_transaction_commit() can be significantly
-> reduced. For example, a VM with 8 vhost net devices and each one has
-> 64 vectors, can reduce the time spent on memory_region_transaction_commit by 20%.
+> This means that parameters passed into nbd_client_thread could be
+> overwritten at any moment.
 > 
-> Signed-off-by: hongmianquan <hongmianquan@bytedance.com>
+> The patch moves the data to the namespace of main() function effectively
+> preserving it for the whole process lifetime.
+> 
+> Signed-off-by: Denis V. Lunev <den@openvz.org>
+> CC: Eric Blake <eblake@redhat.com>
+> CC: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+> CC: <qemu-stable@nongnu.org>
+> ---
+>  qemu-nbd.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/qemu-nbd.c b/qemu-nbd.c
+> index 5b2757920c..7a15085ade 100644
+> --- a/qemu-nbd.c
+> +++ b/qemu-nbd.c
+> @@ -589,6 +589,7 @@ int main(int argc, char **argv)
+>      const char *pid_file_name = NULL;
+>      const char *selinux_label = NULL;
+>      BlockExportOptions *export_opts;
+> +    struct NbdClientOpts opts;
+>  
+>  #ifdef CONFIG_POSIX
+>      os_setup_early_signal_handling();
+> @@ -1145,7 +1146,7 @@ int main(int argc, char **argv)
+>      if (device) {
+>  #if HAVE_NBD_DEVICE
+>          int ret;
+> -        struct NbdClientOpts opts = {
+> +        opts = (struct NbdClientOpts) {
 
-Reviewed-by: Peter Xu <peterx@redhat.com>
+Does this case a compiler warning for an unused variable when
+HAVE_NBD_DEVICE is not set?  If so, the solution is to also wrap the
+declaration in the same #if.  I'll see if I can figure out the CI
+enough to prove (or disprove) my theory on a BSD machine which likely
+lacks HAVE_NBD_DEVICE.
 
-Should be for 8.2, though.  Please always copy Paolo for memory related
-patches.  I hope Paolo can see this.
+With that addressed, I'm fine with:
+
+Reviewed-by: Eric Blake <eblake@redhat.com>
+
+and I will queue it through my NBD tree in time for 8.1-rc2.
 
 -- 
-Peter Xu
+Eric Blake, Principal Software Engineer
+Red Hat, Inc.
+Virtualization:  qemu.org | libguestfs.org
 
 
