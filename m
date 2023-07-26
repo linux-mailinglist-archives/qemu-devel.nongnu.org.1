@@ -2,35 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03A7B7671CB
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 18:24:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04B3D767411
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 19:57:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qPPxZ-0004p9-95; Fri, 28 Jul 2023 12:04:57 -0400
+	id 1qPR5Z-0007wh-Rv; Fri, 28 Jul 2023 13:17:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1qPPxW-0004oS-PO
- for qemu-devel@nongnu.org; Fri, 28 Jul 2023 12:04:54 -0400
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1qPR5X-0007w9-Cz
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 13:17:15 -0400
 Received: from mail-b.sr.ht ([173.195.146.151])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1qPPxV-0004L0-0v
- for qemu-devel@nongnu.org; Fri, 28 Jul 2023 12:04:54 -0400
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1qPR5V-0004nA-32
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 13:17:14 -0400
 Authentication-Results: mail-b.sr.ht; dkim=none 
 Received: from git.sr.ht (unknown [173.195.146.142])
- by mail-b.sr.ht (Postfix) with ESMTPSA id 9BCD211EFC0;
- Fri, 28 Jul 2023 16:04:51 +0000 (UTC)
+ by mail-b.sr.ht (Postfix) with ESMTPSA id E99B511EF7E;
+ Fri, 28 Jul 2023 17:17:11 +0000 (UTC)
 From: ~hyman <hyman@git.sr.ht>
-Date: Thu, 27 Jul 2023 02:10:09 +0800
-Subject: [PATCH QEMU 3/3] MAINTAINERS: Add Hyman Huang as maintainer
+Date: Thu, 27 Jul 2023 02:25:43 +0800
+Subject: [PATCH QEMU 2/3] tests/migration: Introduce dirty-ring-size option
+ into guestperf
 MIME-Version: 1.0
-Message-ID: <169056029099.1291.9838508091499564970-3@git.sr.ht>
+Message-ID: <169056463135.22823.13693920045521586976-2@git.sr.ht>
 X-Mailer: git.sr.ht
-In-Reply-To: <169056029099.1291.9838508091499564970-0@git.sr.ht>
+In-Reply-To: <169056463135.22823.13693920045521586976-0@git.sr.ht>
 To: qemu-devel@nongnu.org
 Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
- Leonardo Bras <leobras@redhat.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>
+ Leonardo Bras <leobras@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 Received-SPF: pass client-ip=173.195.146.151; envelope-from=outgoing@sr.ht;
@@ -59,39 +60,113 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
 
-I've built interests in dirty-limit and dirty page rate
-features and also have been working on projects related
-to this subsystem.
+Dirty ring size configuration is not supported by guestperf tool.
 
-Self-recommand myself as a maintainer for this subsystem
-so that I can help to improve the dirty-limit algorithm
-and review the patches about dirty page rate.
+Introduce dirty-ring-size (ranges in [1024, 65536]) option so
+developers can play with dirty-ring and dirty-limit feature easier.
+
+To set dirty ring size with 4096 during migration test:
+$ ./tests/migration/guestperf.py --dirty-ring-size 4096 xxx
 
 Signed-off-by: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
 ---
- MAINTAINERS | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ tests/migration/guestperf/engine.py   | 6 +++++-
+ tests/migration/guestperf/hardware.py | 8 ++++++--
+ tests/migration/guestperf/shell.py    | 6 +++++-
+ 3 files changed, 16 insertions(+), 4 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 12e59b6b27..d4b1c91096 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3437,6 +3437,15 @@ F: hw/core/clock-vmstate.c
- F: hw/core/qdev-clock.c
- F: docs/devel/clocks.rst
+diff --git a/tests/migration/guestperf/engine.py b/tests/migration/guestperf/=
+engine.py
+index e69d16a62c..29ebb5011b 100644
+--- a/tests/migration/guestperf/engine.py
++++ b/tests/migration/guestperf/engine.py
+@@ -325,7 +325,6 @@ class Engine(object):
+             cmdline =3D "'" + cmdline + "'"
 =20
-+Dirty-limit and dirty page rate feature
-+M: Hyman Huang <yong.huang@smartx.com>
-+S: Maintained
-+F: softmmu/dirtylimit.c
-+F: include/sysemu/dirtylimit.h
-+F: migration/dirtyrate.c
-+F: migration/dirtyrate.h
-+F: include/sysemu/dirtyrate.h
+         argv =3D [
+-            "-accel", "kvm",
+             "-cpu", "host",
+             "-kernel", self._kernel,
+             "-initrd", self._initrd,
+@@ -333,6 +332,11 @@ class Engine(object):
+             "-m", str((hardware._mem * 1024) + 512),
+             "-smp", str(hardware._cpus),
+         ]
++        if hardware._dirty_ring_size:
++            argv.extend(["-accel", "kvm,dirty-ring-size=3D%s" %
++                         hardware._dirty_ring_size])
++        else:
++            argv.extend(["-accel", "kvm"])
+=20
+         argv.extend(self._get_qemu_serial_args())
+=20
+diff --git a/tests/migration/guestperf/hardware.py b/tests/migration/guestper=
+f/hardware.py
+index 3145785ffd..f779cc050b 100644
+--- a/tests/migration/guestperf/hardware.py
++++ b/tests/migration/guestperf/hardware.py
+@@ -23,7 +23,8 @@ class Hardware(object):
+                  src_cpu_bind=3DNone, src_mem_bind=3DNone,
+                  dst_cpu_bind=3DNone, dst_mem_bind=3DNone,
+                  prealloc_pages =3D False,
+-                 huge_pages=3DFalse, locked_pages=3DFalse):
++                 huge_pages=3DFalse, locked_pages=3DFalse,
++                 dirty_ring_size=3D0):
+         self._cpus =3D cpus
+         self._mem =3D mem # GiB
+         self._src_mem_bind =3D src_mem_bind # List of NUMA nodes
+@@ -33,6 +34,7 @@ class Hardware(object):
+         self._prealloc_pages =3D prealloc_pages
+         self._huge_pages =3D huge_pages
+         self._locked_pages =3D locked_pages
++        self._dirty_ring_size =3D dirty_ring_size
+=20
+=20
+     def serialize(self):
+@@ -46,6 +48,7 @@ class Hardware(object):
+             "prealloc_pages": self._prealloc_pages,
+             "huge_pages": self._huge_pages,
+             "locked_pages": self._locked_pages,
++            "dirty_ring_size": self._dirty_ring_size,
+         }
+=20
+     @classmethod
+@@ -59,4 +62,5 @@ class Hardware(object):
+             data["dst_mem_bind"],
+             data["prealloc_pages"],
+             data["huge_pages"],
+-            data["locked_pages"])
++            data["locked_pages"],
++            data["dirty_ring_size"])
+diff --git a/tests/migration/guestperf/shell.py b/tests/migration/guestperf/s=
+hell.py
+index 8a809e3dda..7d6b8cd7cf 100644
+--- a/tests/migration/guestperf/shell.py
++++ b/tests/migration/guestperf/shell.py
+@@ -60,6 +60,8 @@ class BaseShell(object):
+         parser.add_argument("--prealloc-pages", dest=3D"prealloc_pages", def=
+ault=3DFalse)
+         parser.add_argument("--huge-pages", dest=3D"huge_pages", default=3DF=
+alse)
+         parser.add_argument("--locked-pages", dest=3D"locked_pages", default=
+=3DFalse)
++        parser.add_argument("--dirty-ring-size", dest=3D"dirty_ring_size",
++                            default=3D0, type=3Dint)
+=20
+         self._parser =3D parser
+=20
+@@ -89,7 +91,9 @@ class BaseShell(object):
+=20
+                         locked_pages=3Dargs.locked_pages,
+                         huge_pages=3Dargs.huge_pages,
+-                        prealloc_pages=3Dargs.prealloc_pages)
++                        prealloc_pages=3Dargs.prealloc_pages,
 +
- Usermode Emulation
- ------------------
- Overall usermode emulation
++                        dirty_ring_size=3Dargs.dirty_ring_size)
+=20
+=20
+ class Shell(BaseShell):
 --=20
 2.38.5
+
 
