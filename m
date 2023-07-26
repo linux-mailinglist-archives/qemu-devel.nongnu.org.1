@@ -2,66 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA726762F7B
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jul 2023 10:18:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26AFA762F7F
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jul 2023 10:19:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOZiC-0003qB-OL; Wed, 26 Jul 2023 04:17:36 -0400
+	id 1qOZjJ-0004Ws-5L; Wed, 26 Jul 2023 04:18:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ardb@kernel.org>) id 1qOZi9-0003pi-Im
- for qemu-devel@nongnu.org; Wed, 26 Jul 2023 04:17:34 -0400
-Received: from dfw.source.kernel.org ([139.178.84.217])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qOZjE-0004Re-CM
+ for qemu-devel@nongnu.org; Wed, 26 Jul 2023 04:18:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ardb@kernel.org>) id 1qOZi7-0001e5-TH
- for qemu-devel@nongnu.org; Wed, 26 Jul 2023 04:17:33 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qOZjB-0001op-4z
+ for qemu-devel@nongnu.org; Wed, 26 Jul 2023 04:18:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1690359516;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=GvSbp+59BDFH7AgiJd2TzjcuAjqhxI06bAvJrOkT4D4=;
+ b=eihdT+RqIwsnmdFhek9nhn3qz1kKJASLrgZ6rzzxan/V9PyWPjXQJvzTl4cyDKRfA3PHQe
+ AfiowVo4R1cBm5mXAqqATQHaLc8jRxA2cuFWCWhxQq+jTVyxShVoDtaqovHnWHb7HiB06v
+ rtJzwlL+kV12yLY8PFncVYmmp6gj18c=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-587-YMg8Gnc0PmCZfAdvLi39BA-1; Wed, 26 Jul 2023 04:18:32 -0400
+X-MC-Unique: YMg8Gnc0PmCZfAdvLi39BA-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 7C2626182F;
- Wed, 26 Jul 2023 08:17:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF351C433C8;
- Wed, 26 Jul 2023 08:17:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1690359441;
- bh=y8XDVLlLUG9TcUvhyT8tlZ6bs1bvY7y2wzACPFZTjCA=;
- h=From:To:Cc:Subject:Date:From;
- b=FYubeef0yufLZmV4Aun+6MC00fq/P1oBr8U5DWMoDUDMUpVlcWV88Za+RaUiSyvRg
- M4yzzprraY3M9tSyt+FA6gXxte9WKN5SoJFfTPPTII+lL40L5SeE+CYlN96jW99Fh5
- aqRFA8eNJ2miaBWdRAEB0lM2g2HaEs/memfBZQdRPPoE8nCaRMa3Y/4Cg/ZjMFPpaR
- h17it3xnBEa4B2IY6BtAzW9syKv6dVxDPpYU7UV3D8NYc/VSf5ljGUboVsDtf+YXp7
- fD7eEdhM4mN27JiMw0xqW2tHyQS3wpFUudbLjx9eA9cZw1eBQ/QQQ5OFicJ03AjGll
- jDuRbGrtSs5kw==
-From: Ard Biesheuvel <ardb@kernel.org>
-To: qemu-devel@nongnu.org
-Cc: Ard Biesheuvel <ardb@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: [RFC PATCH] target/i386: Truncate ESP when exiting from long mode
-Date: Wed, 26 Jul 2023 10:17:10 +0200
-Message-Id: <20230726081710.1051126-1-ardb@kernel.org>
-X-Mailer: git-send-email 2.39.2
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 78FBE3811F3A;
+ Wed, 26 Jul 2023 08:18:32 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.52])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 60C591121330;
+ Wed, 26 Jul 2023 08:18:18 +0000 (UTC)
+Date: Wed, 26 Jul 2023 09:18:16 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: qemu-devel@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
+ qemu-block@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Qing Wang <qinwang@redhat.com>
+Subject: Re: [PATCH v2] block/blkio: do not use open flags in qemu_open()
+Message-ID: <ZMDWyNHBJ57yUmMP@redhat.com>
+References: <20230726074807.14041-1-sgarzare@redhat.com>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1847; i=ardb@kernel.org;
- h=from:subject; bh=y8XDVLlLUG9TcUvhyT8tlZ6bs1bvY7y2wzACPFZTjCA=;
- b=owGbwMvMwCFmkMcZplerG8N4Wi2JIeXAtTYX3es3wkRPhMcEruy8fnN31uzQplL/FUfT3y696
- JG0Ql22o5SFQYyDQVZMkUVg9t93O09PlKp1niULM4eVCWQIAxenAEwk5Dwjw6PvaydabbgzZRrT
- o/wd59zFWcX3tsqJZ9wxdxJcdK9yhhXDP6vZDArzeL6mKWbYK1kfuFma27VBbVF9cPPNPf8mrdJ
- h4gQA
-X-Developer-Key: i=ardb@kernel.org; a=openpgp;
- fpr=F43D03328115A198C90016883D200E9CA6329909
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=139.178.84.217; envelope-from=ardb@kernel.org;
- helo=dfw.source.kernel.org
-X-Spam_score_int: -70
-X-Spam_score: -7.1
-X-Spam_bar: -------
-X-Spam_report: (-7.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+In-Reply-To: <20230726074807.14041-1-sgarzare@redhat.com>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,54 +81,44 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-While working on some EFI boot changes for Linux/x86, I noticed that TCG
-deviates from bare metal when it comes to how it handles the value of
-the stack pointer register RSP when dropping out of long mode.
+On Wed, Jul 26, 2023 at 09:48:07AM +0200, Stefano Garzarella wrote:
+> qemu_open() in blkio_virtio_blk_common_open() is used to open the
+> character device (e.g. /dev/vhost-vdpa-0 or /dev/vfio/vfio) or in
+> the future eventually the unix socket.
+> 
+> In all these cases we cannot open the path in read-only mode,
+> when the `read-only` option of blockdev is on, because the exchange
+> of IOCTL commands for example will fail.
+> 
+> In order to open the device read-only, we have to use the `read-only`
+> property of the libblkio driver as we already do in blkio_file_open().
+> 
+> Fixes: cad2ccc395 ("block/blkio: use qemu_open() to support fd passing for virtio-blk")
+> Buglink: https://bugzilla.redhat.com/show_bug.cgi?id=2225439
+> Reported-by: Qing Wang <qinwang@redhat.com>
+> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+> ---
+> 
+> Notes:
+>     v2:
+>     - added comment on top of qemu_open() [Daniel]
+>     
+>     v1: https://lore.kernel.org/qemu-devel/20230725111155.85426-1-sgarzare@redhat.com/
+> 
+>  block/blkio.c | 21 ++++++++++++---------
+>  1 file changed, 12 insertions(+), 9 deletions(-)
 
-On bare metal, RSP is truncated to 32 bits, even if the code that runs
-in 32-bit protected mode never uses the stack at all (and uses a long
-jump rather than long return to switch back to long mode). This means
-64-bit code cannot rely on RSP surviving any excursions into 32-bit
-protected mode (with paging disabled).
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 
-Let's align TCG with this behavior, so that code that relies on RSP
-retaining its value does not inadvertently work while bare metal does
-not.
-
-Observed on Intel Ice Lake cores.
-
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Richard Henderson <richard.henderson@linaro.org>
-Cc: Eduardo Habkost <eduardo@habkost.net>
-Link: https://lore.kernel.org/all/20230711091453.2543622-11-ardb@kernel.org/
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
-I used this patch locally to reproduce an issue that was reported on Ice
-Lake but didn't trigger in my QEMU testing.
-
-Hints welcome on where the architectural behavior is specified, and in
-particular, whether or not other 64-bit GPRs can be relied upon to
-preserve their full 64-bit length values.
-
- target/i386/helper.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/target/i386/helper.c b/target/i386/helper.c
-index 89aa696c6d53d68c..a338da23a87746ed 100644
---- a/target/i386/helper.c
-+++ b/target/i386/helper.c
-@@ -149,6 +149,7 @@ void cpu_x86_update_cr0(CPUX86State *env, uint32_t new_cr0)
-         env->efer &= ~MSR_EFER_LMA;
-         env->hflags &= ~(HF_LMA_MASK | HF_CS64_MASK);
-         env->eip &= 0xffffffff;
-+        env->regs[R_ESP] &= 0xffffffff;
-     }
- #endif
-     env->cr[0] = new_cr0 | CR0_ET_MASK;
+With regards,
+Daniel
 -- 
-2.39.2
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
