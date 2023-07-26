@@ -2,29 +2,29 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D37CC763BA9
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jul 2023 17:54:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F272763C7B
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jul 2023 18:29:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOghZ-0006BH-O1; Wed, 26 Jul 2023 11:45:27 -0400
+	id 1qOghb-0006BF-AM; Wed, 26 Jul 2023 11:45:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jcd@tribudubois.net>)
- id 1qOgfr-00043R-7K; Wed, 26 Jul 2023 11:43:40 -0400
+ id 1qOgfo-00040f-O7; Wed, 26 Jul 2023 11:43:36 -0400
 Received: from relay3-d.mail.gandi.net ([2001:4b98:dc4:8::223])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jcd@tribudubois.net>)
- id 1qOgfo-0006Ir-UC; Wed, 26 Jul 2023 11:43:38 -0400
-Received: by mail.gandi.net (Postfix) with ESMTPA id D21076000B;
- Wed, 26 Jul 2023 15:43:33 +0000 (UTC)
+ id 1qOgfl-0006HQ-R0; Wed, 26 Jul 2023 11:43:36 -0400
+Received: by mail.gandi.net (Postfix) with ESMTPA id 2A90060005;
+ Wed, 26 Jul 2023 15:43:29 +0000 (UTC)
 From: Jean-Christophe Dubois <jcd@tribudubois.net>
 To: qemu-arm@nongnu.org
 Cc: jcdubois <jcd@tribudubois.net>,
 	qemu-devel@nongnu.org
-Subject: [PATCH 3/3] Add i.MX7 SRC device implementation
-Date: Wed, 26 Jul 2023 17:43:08 +0200
-Message-Id: <d620c9fcf72507db73a3f31df9065bd417f72704.1690385928.git.jcd@tribudubois.net>
+Subject: [PATCH 1/3] Rework i.MX6UL device implementation/instantiation
+Date: Wed, 26 Jul 2023 17:43:06 +0200
+Message-Id: <84ace91e6076ed4460fb6c1f9fe699660dda30d5.1690385928.git.jcd@tribudubois.net>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <cover.1690385928.git.jcd@tribudubois.net>
 References: <cover.1690385928.git.jcd@tribudubois.net>
@@ -56,466 +56,669 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: jcdubois <jcd@tribudubois.net>
 
-The SRC device is normaly used to start the secondary CPU.
-
-When running Linux directly, Qemu is emulating a PSCI interface that UBOOT
-is installing at boot time and therefore the fact that the SRC device is
-unimplemented is hidden as Qemu respond directly to PSCI requets without
-using the SRC device.
-
-But if you try to run a more bare metal application (maybe uboot itself),
-then it is not possible to start the secondary CPU as the SRC is an
-unimplemented device.
-
-This patch adds the ability to start the secondary CPU through the SRC
-device so that you can use this feature in bare metal application.
+* Add Addr and size definition for all i.MX6UL devices in i.MX6UL header file.
+* Use those newly defined named constants whenever possible.
+* Standardize the way we init a familly of unimplemented devices
+  - SAI
+  - PWM (add missing PWM instances)
+  - CAN
+* Add TZASC as unimplemented device.
+  - Allow bare metal application to access this (unimplemented) device
+* Add CSU as unimplemented device.
+  - Allow bare metal application to access this (unimplemented) device
+* Change CAAM specific memory from ROM to RAM.
+* Add/rework few comments
 
 Signed-off-by: jcdubois <jcd@tribudubois.net>
 ---
- hw/arm/fsl-imx7.c          |   9 +-
- hw/misc/imx7_src.c         | 289 +++++++++++++++++++++++++++++++++++++
- hw/misc/meson.build        |   1 +
- include/hw/arm/fsl-imx7.h  |   2 +
- include/hw/misc/imx7_src.h |  68 +++++++++
- 5 files changed, 368 insertions(+), 1 deletion(-)
- create mode 100644 hw/misc/imx7_src.c
- create mode 100644 include/hw/misc/imx7_src.h
+ hw/arm/fsl-imx6ul.c         | 163 +++++++++++++++++++++++++-----------
+ include/hw/arm/fsl-imx6ul.h | 149 +++++++++++++++++++++++++++++---
+ 2 files changed, 252 insertions(+), 60 deletions(-)
 
-diff --git a/hw/arm/fsl-imx7.c b/hw/arm/fsl-imx7.c
-index 05cdd4831e..db103069e1 100644
---- a/hw/arm/fsl-imx7.c
-+++ b/hw/arm/fsl-imx7.c
-@@ -82,6 +82,11 @@ static void fsl_imx7_init(Object *obj)
-      */
-     object_initialize_child(obj, "gpcv2", &s->gpcv2, TYPE_IMX_GPCV2);
+diff --git a/hw/arm/fsl-imx6ul.c b/hw/arm/fsl-imx6ul.c
+index 2189dcbb72..75aaf2adb4 100644
+--- a/hw/arm/fsl-imx6ul.c
++++ b/hw/arm/fsl-imx6ul.c
+@@ -69,7 +69,7 @@ static void fsl_imx6ul_init(Object *obj)
+     object_initialize_child(obj, "gpr", &s->gpr, TYPE_IMX7_GPR);
  
-+    /*
-+     * SRC
-+     */
-+    object_initialize_child(obj, "src", &s->src, TYPE_IMX7_SRC);
-+
      /*
-      * ECSPIs
+-     * GPIOs 1 to 5
++     * GPIOs
       */
-@@ -90,6 +95,7 @@ static void fsl_imx7_init(Object *obj)
-         object_initialize_child(obj, name, &s->spi[i], TYPE_IMX_SPI);
+     for (i = 0; i < FSL_IMX6UL_NUM_GPIOS; i++) {
+         snprintf(name, NAME_SIZE, "gpio%d", i);
+@@ -77,7 +77,7 @@ static void fsl_imx6ul_init(Object *obj)
      }
  
-+
      /*
-      * I2Cs
+-     * GPT 1, 2
++     * GPTs
       */
-@@ -490,7 +496,8 @@ static void fsl_imx7_realize(DeviceState *dev, Error **errp)
-     /*
-      * SRC
-      */
--    create_unimplemented_device("src", FSL_IMX7_SRC_ADDR, FSL_IMX7_SRC_SIZE);
-+    sysbus_realize(SYS_BUS_DEVICE(&s->src), &error_abort);
-+    sysbus_mmio_map(SYS_BUS_DEVICE(&s->src), 0, FSL_IMX7_SRC_ADDR);
+     for (i = 0; i < FSL_IMX6UL_NUM_GPTS; i++) {
+         snprintf(name, NAME_SIZE, "gpt%d", i);
+@@ -85,7 +85,7 @@ static void fsl_imx6ul_init(Object *obj)
+     }
  
      /*
-      * Watchdogs
-diff --git a/hw/misc/imx7_src.c b/hw/misc/imx7_src.c
-new file mode 100644
-index 0000000000..b1b7d11e8f
---- /dev/null
-+++ b/hw/misc/imx7_src.c
-@@ -0,0 +1,289 @@
-+/*
-+ * IMX7 System Reset Controller
-+ *
-+ * Copyright (c) 2023 Jean-Christophe Dubois <jcd@tribudubois.net>
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or later.
-+ * See the COPYING file in the top-level directory.
-+ *
-+ */
+-     * EPIT 1, 2
++     * EPITs
+      */
+     for (i = 0; i < FSL_IMX6UL_NUM_EPITS; i++) {
+         snprintf(name, NAME_SIZE, "epit%d", i + 1);
+@@ -93,7 +93,7 @@ static void fsl_imx6ul_init(Object *obj)
+     }
+ 
+     /*
+-     * eCSPI
++     * eCSPIs
+      */
+     for (i = 0; i < FSL_IMX6UL_NUM_ECSPIS; i++) {
+         snprintf(name, NAME_SIZE, "spi%d", i + 1);
+@@ -101,7 +101,7 @@ static void fsl_imx6ul_init(Object *obj)
+     }
+ 
+     /*
+-     * I2C
++     * I2Cs
+      */
+     for (i = 0; i < FSL_IMX6UL_NUM_I2CS; i++) {
+         snprintf(name, NAME_SIZE, "i2c%d", i + 1);
+@@ -109,7 +109,7 @@ static void fsl_imx6ul_init(Object *obj)
+     }
+ 
+     /*
+-     * UART
++     * UARTs
+      */
+     for (i = 0; i < FSL_IMX6UL_NUM_UARTS; i++) {
+         snprintf(name, NAME_SIZE, "uart%d", i);
+@@ -117,25 +117,31 @@ static void fsl_imx6ul_init(Object *obj)
+     }
+ 
+     /*
+-     * Ethernet
++     * Ethernets
+      */
+     for (i = 0; i < FSL_IMX6UL_NUM_ETHS; i++) {
+         snprintf(name, NAME_SIZE, "eth%d", i);
+         object_initialize_child(obj, name, &s->eth[i], TYPE_IMX_ENET);
+     }
+ 
+-    /* USB */
++    /*
++     * USB PHYs
++     */
+     for (i = 0; i < FSL_IMX6UL_NUM_USB_PHYS; i++) {
+         snprintf(name, NAME_SIZE, "usbphy%d", i);
+         object_initialize_child(obj, name, &s->usbphy[i], TYPE_IMX_USBPHY);
+     }
 +
-+#include "qemu/osdep.h"
-+#include "hw/misc/imx7_src.h"
-+#include "migration/vmstate.h"
-+#include "qemu/bitops.h"
-+#include "qemu/log.h"
-+#include "qemu/main-loop.h"
-+#include "qemu/module.h"
-+#include "target/arm/arm-powerctl.h"
-+#include "hw/core/cpu.h"
++    /*
++     * USBs
++     */
+     for (i = 0; i < FSL_IMX6UL_NUM_USBS; i++) {
+         snprintf(name, NAME_SIZE, "usb%d", i);
+         object_initialize_child(obj, name, &s->usb[i], TYPE_CHIPIDEA);
+     }
+ 
+     /*
+-     * SDHCI
++     * SDHCIs
+      */
+     for (i = 0; i < FSL_IMX6UL_NUM_USDHCS; i++) {
+         snprintf(name, NAME_SIZE, "usdhc%d", i);
+@@ -143,7 +149,7 @@ static void fsl_imx6ul_init(Object *obj)
+     }
+ 
+     /*
+-     * Watchdog
++     * Watchdogs
+      */
+     for (i = 0; i < FSL_IMX6UL_NUM_WDTS; i++) {
+         snprintf(name, NAME_SIZE, "wdt%d", i);
+@@ -189,10 +195,10 @@ static void fsl_imx6ul_realize(DeviceState *dev, Error **errp)
+      * A7MPCORE DAP
+      */
+     create_unimplemented_device("a7mpcore-dap", FSL_IMX6UL_A7MPCORE_DAP_ADDR,
+-                                0x100000);
++                                FSL_IMX6UL_A7MPCORE_DAP_SIZE);
+ 
+     /*
+-     * GPT 1, 2
++     * GPTs
+      */
+     for (i = 0; i < FSL_IMX6UL_NUM_GPTS; i++) {
+         static const hwaddr FSL_IMX6UL_GPTn_ADDR[FSL_IMX6UL_NUM_GPTS] = {
+@@ -217,7 +223,7 @@ static void fsl_imx6ul_realize(DeviceState *dev, Error **errp)
+     }
+ 
+     /*
+-     * EPIT 1, 2
++     * EPITs
+      */
+     for (i = 0; i < FSL_IMX6UL_NUM_EPITS; i++) {
+         static const hwaddr FSL_IMX6UL_EPITn_ADDR[FSL_IMX6UL_NUM_EPITS] = {
+@@ -242,7 +248,7 @@ static void fsl_imx6ul_realize(DeviceState *dev, Error **errp)
+     }
+ 
+     /*
+-     * GPIO
++     * GPIOs
+      */
+     for (i = 0; i < FSL_IMX6UL_NUM_GPIOS; i++) {
+         static const hwaddr FSL_IMX6UL_GPIOn_ADDR[FSL_IMX6UL_NUM_GPIOS] = {
+@@ -286,15 +292,10 @@ static void fsl_imx6ul_realize(DeviceState *dev, Error **errp)
+     /*
+      * IOMUXC and IOMUXC_GPR
+      */
+-    for (i = 0; i < 1; i++) {
+-        static const hwaddr FSL_IMX6UL_IOMUXCn_ADDR[FSL_IMX6UL_NUM_IOMUXCS] = {
+-            FSL_IMX6UL_IOMUXC_ADDR,
+-            FSL_IMX6UL_IOMUXC_GPR_ADDR,
+-        };
+-
+-        snprintf(name, NAME_SIZE, "iomuxc%d", i);
+-        create_unimplemented_device(name, FSL_IMX6UL_IOMUXCn_ADDR[i], 0x4000);
+-    }
++    create_unimplemented_device("iomuxc", FSL_IMX6UL_IOMUXC_ADDR,
++                                FSL_IMX6UL_IOMUXC_SIZE);
++    create_unimplemented_device("iomuxc_gpr", FSL_IMX6UL_IOMUXC_GPR_ADDR,
++                                FSL_IMX6UL_IOMUXC_GPR_SIZE);
+ 
+     /*
+      * CCM
+@@ -314,7 +315,9 @@ static void fsl_imx6ul_realize(DeviceState *dev, Error **errp)
+     sysbus_realize(SYS_BUS_DEVICE(&s->gpcv2), &error_abort);
+     sysbus_mmio_map(SYS_BUS_DEVICE(&s->gpcv2), 0, FSL_IMX6UL_GPC_ADDR);
+ 
+-    /* Initialize all ECSPI */
++    /*
++     * ECSPIs
++     */
+     for (i = 0; i < FSL_IMX6UL_NUM_ECSPIS; i++) {
+         static const hwaddr FSL_IMX6UL_SPIn_ADDR[FSL_IMX6UL_NUM_ECSPIS] = {
+             FSL_IMX6UL_ECSPI1_ADDR,
+@@ -342,7 +345,7 @@ static void fsl_imx6ul_realize(DeviceState *dev, Error **errp)
+     }
+ 
+     /*
+-     * I2C
++     * I2Cs
+      */
+     for (i = 0; i < FSL_IMX6UL_NUM_I2CS; i++) {
+         static const hwaddr FSL_IMX6UL_I2Cn_ADDR[FSL_IMX6UL_NUM_I2CS] = {
+@@ -368,7 +371,7 @@ static void fsl_imx6ul_realize(DeviceState *dev, Error **errp)
+     }
+ 
+     /*
+-     * UART
++     * UARTs
+      */
+     for (i = 0; i < FSL_IMX6UL_NUM_UARTS; i++) {
+         static const hwaddr FSL_IMX6UL_UARTn_ADDR[FSL_IMX6UL_NUM_UARTS] = {
+@@ -406,7 +409,7 @@ static void fsl_imx6ul_realize(DeviceState *dev, Error **errp)
+     }
+ 
+     /*
+-     * Ethernet
++     * Ethernets
+      *
+      * We must use two loops since phy_connected affects the other interface
+      * and we have to set all properties before calling sysbus_realize().
+@@ -459,28 +462,45 @@ static void fsl_imx6ul_realize(DeviceState *dev, Error **errp)
+                                             FSL_IMX6UL_ENETn_TIMER_IRQ[i]));
+     }
+ 
+-    /* USB */
++    /*
++     * USB PHYs
++     */
+     for (i = 0; i < FSL_IMX6UL_NUM_USB_PHYS; i++) {
++        static const hwaddr
++                     FSL_IMX6UL_USB_PHYn_ADDR[FSL_IMX6UL_NUM_USB_PHYS] = {
++            FSL_IMX6UL_USBPHY1_ADDR,
++            FSL_IMX6UL_USBPHY2_ADDR,
++        };
 +
-+#define DEBUG_IMX7_SRC 1
-+#ifndef DEBUG_IMX7_SRC
-+#define DEBUG_IMX7_SRC 0
-+#endif
+         sysbus_realize(SYS_BUS_DEVICE(&s->usbphy[i]), &error_abort);
+         sysbus_mmio_map(SYS_BUS_DEVICE(&s->usbphy[i]), 0,
+-                        FSL_IMX6UL_USBPHY1_ADDR + i * 0x1000);
++                        FSL_IMX6UL_USB_PHYn_ADDR[i]);
+     }
+ 
++    /*
++     * USBs
++     */
+     for (i = 0; i < FSL_IMX6UL_NUM_USBS; i++) {
++        static const hwaddr FSL_IMX6UL_USB02_USBn_ADDR[FSL_IMX6UL_NUM_USBS] = {
++            FSL_IMX6UL_USBO2_USB1_ADDR,
++            FSL_IMX6UL_USBO2_USB2_ADDR,
++        };
 +
-+#define DPRINTF(fmt, args...) \
-+    do { \
-+        if (DEBUG_IMX7_SRC) { \
-+            fprintf(stderr, "[%s]%s: " fmt , TYPE_IMX7_SRC, \
-+                                             __func__, ##args); \
-+        } \
-+    } while (0)
+         static const int FSL_IMX6UL_USBn_IRQ[] = {
+             FSL_IMX6UL_USB1_IRQ,
+             FSL_IMX6UL_USB2_IRQ,
+         };
 +
-+static const char *imx7_src_reg_name(uint32_t reg)
-+{
-+    static char unknown[20];
+         sysbus_realize(SYS_BUS_DEVICE(&s->usb[i]), &error_abort);
+         sysbus_mmio_map(SYS_BUS_DEVICE(&s->usb[i]), 0,
+-                        FSL_IMX6UL_USBO2_USB_ADDR + i * 0x200);
++                        FSL_IMX6UL_USB02_USBn_ADDR[i]);
+         sysbus_connect_irq(SYS_BUS_DEVICE(&s->usb[i]), 0,
+                            qdev_get_gpio_in(DEVICE(&s->a7mpcore),
+                                             FSL_IMX6UL_USBn_IRQ[i]));
+     }
+ 
+     /*
+-     * USDHC
++     * USDHCs
+      */
+     for (i = 0; i < FSL_IMX6UL_NUM_USDHCS; i++) {
+         static const hwaddr FSL_IMX6UL_USDHCn_ADDR[FSL_IMX6UL_NUM_USDHCS] = {
+@@ -512,7 +532,7 @@ static void fsl_imx6ul_realize(DeviceState *dev, Error **errp)
+     sysbus_mmio_map(SYS_BUS_DEVICE(&s->snvs), 0, FSL_IMX6UL_SNVS_HP_ADDR);
+ 
+     /*
+-     * Watchdog
++     * Watchdogs
+      */
+     for (i = 0; i < FSL_IMX6UL_NUM_WDTS; i++) {
+         static const hwaddr FSL_IMX6UL_WDOGn_ADDR[FSL_IMX6UL_NUM_WDTS] = {
+@@ -520,6 +540,7 @@ static void fsl_imx6ul_realize(DeviceState *dev, Error **errp)
+             FSL_IMX6UL_WDOG2_ADDR,
+             FSL_IMX6UL_WDOG3_ADDR,
+         };
 +
-+    switch (reg) {
-+    case SRC_SCR:
-+        return "SRC_SCR";
-+    case SRC_A7RCR0:
-+        return "SRC_A7RCR0";
-+    case SRC_A7RCR1:
-+        return "SRC_A7RCR1";
-+    case SRC_M4RCR:
-+        return "SRC_M4RCR";
-+    case SRC_ERCR:
-+        return "SRC_ERCR";
-+    case SRC_HSICPHY_RCR:
-+        return "SRC_HSICPHY_RCR";
-+    case SRC_USBOPHY1_RCR:
-+        return "SRC_USBOPHY1_RCR";
-+    case SRC_USBOPHY2_RCR:
-+        return "SRC_USBOPHY2_RCR";
-+    case SRC_PCIEPHY_RCR:
-+        return "SRC_PCIEPHY_RCR";
-+    case SRC_SBMR1:
-+        return "SRC_SBMR1";
-+    case SRC_SRSR:
-+        return "SRC_SRSR";
-+    case SRC_SISR:
-+        return "SRC_SISR";
-+    case SRC_SIMR:
-+        return "SRC_SIMR";
-+    case SRC_SBMR2:
-+        return "SRC_SBMR2";
-+    case SRC_GPR1:
-+        return "SRC_GPR1";
-+    case SRC_GPR2:
-+        return "SRC_GPR2";
-+    case SRC_GPR3:
-+        return "SRC_GPR3";
-+    case SRC_GPR4:
-+        return "SRC_GPR4";
-+    case SRC_GPR5:
-+        return "SRC_GPR5";
-+    case SRC_GPR6:
-+        return "SRC_GPR6";
-+    case SRC_GPR7:
-+        return "SRC_GPR7";
-+    case SRC_GPR8:
-+        return "SRC_GPR8";
-+    case SRC_GPR9:
-+        return "SRC_GPR9";
-+    case SRC_GPR10:
-+        return "SRC_GPR10";
-+    default:
-+        sprintf(unknown, "%u ?", reg);
-+        return unknown;
+         static const int FSL_IMX6UL_WDOGn_IRQ[FSL_IMX6UL_NUM_WDTS] = {
+             FSL_IMX6UL_WDOG1_IRQ,
+             FSL_IMX6UL_WDOG2_IRQ,
+@@ -546,33 +567,63 @@ static void fsl_imx6ul_realize(DeviceState *dev, Error **errp)
+     /*
+      * SDMA
+      */
+-    create_unimplemented_device("sdma", FSL_IMX6UL_SDMA_ADDR, 0x4000);
++    create_unimplemented_device("sdma", FSL_IMX6UL_SDMA_ADDR,
++                                FSL_IMX6UL_SDMA_SIZE);
+ 
+     /*
+-     * SAI (Audio SSI (Synchronous Serial Interface))
++     * SAIs (Audio SSI (Synchronous Serial Interface))
+      */
+-    create_unimplemented_device("sai1", FSL_IMX6UL_SAI1_ADDR, 0x4000);
+-    create_unimplemented_device("sai2", FSL_IMX6UL_SAI2_ADDR, 0x4000);
+-    create_unimplemented_device("sai3", FSL_IMX6UL_SAI3_ADDR, 0x4000);
++    for (i = 0; i < FSL_IMX6UL_NUM_SAIS; i++) {
++        static const hwaddr FSL_IMX6UL_SAIn_ADDR[FSL_IMX6UL_NUM_SAIS] = {
++            FSL_IMX6UL_SAI1_ADDR,
++            FSL_IMX6UL_SAI2_ADDR,
++            FSL_IMX6UL_SAI3_ADDR,
++        };
++
++        snprintf(name, NAME_SIZE, "sai%d", i);
++        create_unimplemented_device(name, FSL_IMX6UL_SAIn_ADDR[i],
++                                    FSL_IMX6UL_SAIn_SIZE);
 +    }
-+}
+ 
+     /*
+-     * PWM
++     * PWMs
+      */
+-    create_unimplemented_device("pwm1", FSL_IMX6UL_PWM1_ADDR, 0x4000);
+-    create_unimplemented_device("pwm2", FSL_IMX6UL_PWM2_ADDR, 0x4000);
+-    create_unimplemented_device("pwm3", FSL_IMX6UL_PWM3_ADDR, 0x4000);
+-    create_unimplemented_device("pwm4", FSL_IMX6UL_PWM4_ADDR, 0x4000);
++    for (i = 0; i < FSL_IMX6UL_NUM_PWMS; i++) {
++        static const hwaddr FSL_IMX6UL_PWMn_ADDR[FSL_IMX6UL_NUM_PWMS] = {
++            FSL_IMX6UL_PWM1_ADDR,
++            FSL_IMX6UL_PWM2_ADDR,
++            FSL_IMX6UL_PWM3_ADDR,
++            FSL_IMX6UL_PWM4_ADDR,
++            FSL_IMX6UL_PWM5_ADDR,
++            FSL_IMX6UL_PWM6_ADDR,
++            FSL_IMX6UL_PWM7_ADDR,
++            FSL_IMX6UL_PWM8_ADDR,
++        };
 +
-+static const VMStateDescription vmstate_imx7_src = {
-+    .name = TYPE_IMX7_SRC,
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .fields = (VMStateField[]) {
-+        VMSTATE_UINT32_ARRAY(regs, IMX7SRCState, SRC_MAX),
-+        VMSTATE_END_OF_LIST()
-+    },
-+};
-+
-+static void imx7_src_reset(DeviceState *dev)
-+{
-+    IMX7SRCState *s = IMX7_SRC(dev);
-+
-+    DPRINTF("\n");
-+
-+    memset(s->regs, 0, sizeof(s->regs));
-+
-+    /* Set reset values */
-+    s->regs[SRC_SCR] = 0xA0;
-+    s->regs[SRC_SRSR] = 0x1;
-+    s->regs[SRC_SIMR] = 0x1F;
-+}
-+
-+static uint64_t imx7_src_read(void *opaque, hwaddr offset, unsigned size)
-+{
-+    uint32_t value = 0;
-+    IMX7SRCState *s = (IMX7SRCState *)opaque;
-+    uint32_t index = offset >> 2;
-+
-+    if (index < SRC_MAX) {
-+        value = s->regs[index];
-+    } else {
-+        qemu_log_mask(LOG_GUEST_ERROR, "[%s]%s: Bad register at offset 0x%"
-+                      HWADDR_PRIx "\n", TYPE_IMX7_SRC, __func__, offset);
++        snprintf(name, NAME_SIZE, "pwm%d", i);
++        create_unimplemented_device(name, FSL_IMX6UL_PWMn_ADDR[i],
++                                    FSL_IMX6UL_PWMn_SIZE);
 +    }
+ 
+     /*
+      * Audio ASRC (asynchronous sample rate converter)
+      */
+-    create_unimplemented_device("asrc", FSL_IMX6UL_ASRC_ADDR, 0x4000);
++    create_unimplemented_device("asrc", FSL_IMX6UL_ASRC_ADDR,
++                                FSL_IMX6UL_ASRC_SIZE);
+ 
+     /*
+-     * CAN
++     * CANs
+      */
+-    create_unimplemented_device("can1", FSL_IMX6UL_CAN1_ADDR, 0x4000);
+-    create_unimplemented_device("can2", FSL_IMX6UL_CAN2_ADDR, 0x4000);
++    for (i = 0; i < FSL_IMX6UL_NUM_CANS; i++) {
++        static const hwaddr FSL_IMX6UL_CANn_ADDR[FSL_IMX6UL_NUM_CANS] = {
++            FSL_IMX6UL_CAN1_ADDR,
++            FSL_IMX6UL_CAN2_ADDR,
++        };
 +
-+    DPRINTF("reg[%s] => 0x%" PRIx32 "\n", imx7_src_reg_name(index), value);
-+
-+    return value;
-+}
-+
-+
-+/*
-+ * The reset is asynchronous so we need to defer clearing the reset
-+ * bit until the work is completed.
-+ */
-+
-+struct SRCSCRResetInfo {
-+    IMX7SRCState *s;
-+    uint32_t reset_bit;
-+};
-+
-+static void imx7_clear_reset_bit(CPUState *cpu, run_on_cpu_data data)
-+{
-+    struct SRCSCRResetInfo *ri = data.host_ptr;
-+    IMX7SRCState *s = ri->s;
-+
-+    assert(qemu_mutex_iothread_locked());
-+
-+    s->regs[SRC_A7RCR0] = deposit32(s->regs[SRC_A7RCR0], ri->reset_bit, 1, 0);
-+    DPRINTF("reg[%s] <= 0x%" PRIx32 "\n",
-+            imx7_src_reg_name(SRC_A7RCR0), s->regs[SRC_A7RCR0]);
-+
-+    g_free(ri);
-+}
-+
-+static void imx7_defer_clear_reset_bit(uint32_t cpuid,
-+                                       IMX7SRCState *s,
-+                                       uint32_t reset_shift)
-+{
-+    struct SRCSCRResetInfo *ri;
-+    CPUState *cpu = arm_get_cpu_by_id(cpuid);
-+
-+    if (!cpu) {
-+        return;
++        snprintf(name, NAME_SIZE, "can%d", i);
++        create_unimplemented_device(name, FSL_IMX6UL_CANn_ADDR[i],
++                                    FSL_IMX6UL_CANn_SIZE);
 +    }
+ 
+     /*
+      * APHB_DMA
+@@ -590,13 +641,27 @@ static void fsl_imx6ul_realize(DeviceState *dev, Error **errp)
+         };
+ 
+         snprintf(name, NAME_SIZE, "adc%d", i);
+-        create_unimplemented_device(name, FSL_IMX6UL_ADCn_ADDR[i], 0x4000);
++        create_unimplemented_device(name, FSL_IMX6UL_ADCn_ADDR[i],
++                                    FSL_IMX6UL_ADCn_SIZE);
+     }
+ 
+     /*
+      * LCD
+      */
+-    create_unimplemented_device("lcdif", FSL_IMX6UL_LCDIF_ADDR, 0x4000);
++    create_unimplemented_device("lcdif", FSL_IMX6UL_LCDIF_ADDR,
++                                FSL_IMX6UL_LCDIF_SIZE);
 +
-+    ri = g_new(struct SRCSCRResetInfo, 1);
-+    ri->s = s;
-+    ri->reset_bit = reset_shift;
++    /*
++     * CSU
++     */
++    create_unimplemented_device("csu", FSL_IMX6UL_CSU_ADDR,
++                                FSL_IMX6UL_CSU_SIZE);
 +
-+    async_run_on_cpu(cpu, imx7_clear_reset_bit, RUN_ON_CPU_HOST_PTR(ri));
-+}
++    /*
++     * TZASC
++     */
++    create_unimplemented_device("tzasc", FSL_IMX6UL_TZASC_ADDR,
++                                FSL_IMX6UL_TZASC_SIZE);
+ 
+     /*
+      * ROM memory
+@@ -609,7 +674,7 @@ static void fsl_imx6ul_realize(DeviceState *dev, Error **errp)
+     /*
+      * CAAM memory
+      */
+-    memory_region_init_rom(&s->caam, OBJECT(dev), "imx6ul.caam",
++    memory_region_init_ram(&s->caam, OBJECT(dev), "imx6ul.caam",
+                            FSL_IMX6UL_CAAM_MEM_SIZE, &error_abort);
+     memory_region_add_subregion(get_system_memory(), FSL_IMX6UL_CAAM_MEM_ADDR,
+                                 &s->caam);
+diff --git a/include/hw/arm/fsl-imx6ul.h b/include/hw/arm/fsl-imx6ul.h
+index 9ee15ae38d..7cb25a6bd6 100644
+--- a/include/hw/arm/fsl-imx6ul.h
++++ b/include/hw/arm/fsl-imx6ul.h
+@@ -58,6 +58,9 @@ enum FslIMX6ULConfiguration {
+     FSL_IMX6UL_NUM_ADCS         = 2,
+     FSL_IMX6UL_NUM_USB_PHYS     = 2,
+     FSL_IMX6UL_NUM_USBS         = 2,
++    FSL_IMX6UL_NUM_SAIS         = 3,
++    FSL_IMX6UL_NUM_CANS         = 2,
++    FSL_IMX6UL_NUM_PWMS         = 8,
+ };
+ 
+ struct FslIMX6ULState {
+@@ -94,119 +97,243 @@ struct FslIMX6ULState {
+ 
+ enum FslIMX6ULMemoryMap {
+     FSL_IMX6UL_MMDC_ADDR            = 0x80000000,
+-    FSL_IMX6UL_MMDC_SIZE            = 2 * 1024 * 1024 * 1024UL,
++    FSL_IMX6UL_MMDC_SIZE            = (2 * 1024 * 1024 * 1024UL),
+ 
+     FSL_IMX6UL_QSPI1_MEM_ADDR       = 0x60000000,
++    FSL_IMX6UL_QSPI1_MEM_SIZE       = (256 * 1024 * 1024UL),
 +
+     FSL_IMX6UL_EIM_ALIAS_ADDR       = 0x58000000,
++    FSL_IMX6UL_EIM_ALIAS_SIZE       = (128 * 1024 * 1024UL),
 +
-+static void imx7_src_write(void *opaque, hwaddr offset, uint64_t value,
-+                           unsigned size)
-+{
-+    IMX7SRCState *s = (IMX7SRCState *)opaque;
-+    uint32_t index = offset >> 2;
-+    long unsigned int change_mask;
-+    uint32_t current_value = value;
+     FSL_IMX6UL_EIM_CS_ADDR          = 0x50000000,
++    FSL_IMX6UL_EIM_CS_SIZE          = (128 * 1024 * 1024UL),
 +
-+    if (index >= SRC_MAX) {
-+        qemu_log_mask(LOG_GUEST_ERROR, "[%s]%s: Bad register at offset 0x%"
-+                      HWADDR_PRIx "\n", TYPE_IMX7_SRC, __func__, offset);
-+        return;
-+    }
+     FSL_IMX6UL_AES_ENCRYPT_ADDR     = 0x10000000,
++    FSL_IMX6UL_AES_ENCRYPT_SIZE     = (1024 * 1024UL),
 +
-+    DPRINTF("reg[%s] <= 0x%" PRIx32 "\n", imx7_src_reg_name(index),
-+            (uint32_t)current_value);
+     FSL_IMX6UL_QSPI1_RX_ADDR        = 0x0C000000,
++    FSL_IMX6UL_QSPI1_RX_SIZE        = (32 * 1024 * 1024UL),
+ 
+-    /* AIPS-2 */
++    /* AIPS-2 Begin */
+     FSL_IMX6UL_UART6_ADDR           = 0x021FC000,
 +
-+    change_mask = s->regs[index] ^ (uint32_t)current_value;
+     FSL_IMX6UL_I2C4_ADDR            = 0x021F8000,
 +
-+    switch (index) {
-+    case SRC_A7RCR0:
-+        if (EXTRACT(change_mask, CORE0_RST)) {
-+            arm_reset_cpu(0);
-+            imx7_defer_clear_reset_bit(0, s, CORE0_RST_SHIFT);
-+        }
-+        if (EXTRACT(change_mask, CORE1_RST)) {
-+            arm_reset_cpu(1);
-+            imx7_defer_clear_reset_bit(1, s, CORE1_RST_SHIFT);
-+        }
-+        s->regs[index] = current_value;
-+        break;
-+    case SRC_A7RCR1:
-+        /*
-+         * On real hardware when the system reset controller starts a
-+         * secondary CPU it runs through some boot ROM code which reads
-+         * the SRC_GPRX registers controlling the start address and branches
-+         * to it.
-+         * Here we are taking a short cut and branching directly to the
-+         * requested address (we don't want to run the boot ROM code inside
-+         * QEMU)
-+         */
-+        if (EXTRACT(change_mask, CORE1_ENABLE)) {
-+            if (EXTRACT(current_value, CORE1_ENABLE)) {
-+                /* CORE 1 is brought up */
-+                arm_set_cpu_on(1, s->regs[SRC_GPR3], s->regs[SRC_GPR4],
-+                               3, false);
-+            } else {
-+                /* CORE 1 is shut down */
-+                arm_set_cpu_off(1);
-+            }
-+            /* We clear the reset bits as the processor changed state */
-+            imx7_defer_clear_reset_bit(1, s, CORE1_RST_SHIFT);
-+            clear_bit(CORE1_RST_SHIFT, &change_mask);
-+        }
-+        s->regs[index] = current_value;
-+        break;
-+    default:
-+        s->regs[index] = current_value;
-+        break;
-+    }
-+}
+     FSL_IMX6UL_UART5_ADDR           = 0x021F4000,
+     FSL_IMX6UL_UART4_ADDR           = 0x021F0000,
+     FSL_IMX6UL_UART3_ADDR           = 0x021EC000,
+     FSL_IMX6UL_UART2_ADDR           = 0x021E8000,
 +
-+static const struct MemoryRegionOps imx7_src_ops = {
-+    .read = imx7_src_read,
-+    .write = imx7_src_write,
-+    .endianness = DEVICE_NATIVE_ENDIAN,
-+    .valid = {
-+        /*
-+         * Our device would not work correctly if the guest was doing
-+         * unaligned access. This might not be a limitation on the real
-+         * device but in practice there is no reason for a guest to access
-+         * this device unaligned.
-+         */
-+        .min_access_size = 4,
-+        .max_access_size = 4,
-+        .unaligned = false,
-+    },
-+};
+     FSL_IMX6UL_WDOG3_ADDR           = 0x021E4000,
 +
-+static void imx7_src_realize(DeviceState *dev, Error **errp)
-+{
-+    IMX7SRCState *s = IMX7_SRC(dev);
+     FSL_IMX6UL_QSPI_ADDR            = 0x021E0000,
++    FSL_IMX6UL_QSPI_SIZE            = 0x500,
 +
-+    memory_region_init_io(&s->iomem, OBJECT(dev), &imx7_src_ops, s,
-+                          TYPE_IMX7_SRC, 0x1000);
-+    sysbus_init_mmio(SYS_BUS_DEVICE(dev), &s->iomem);
-+}
+     FSL_IMX6UL_SYS_CNT_CTRL_ADDR    = 0x021DC000,
++    FSL_IMX6UL_SYS_CNT_CTRL_SIZE    = (16 * 1024UL),
 +
-+static void imx7_src_class_init(ObjectClass *klass, void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(klass);
+     FSL_IMX6UL_SYS_CNT_CMP_ADDR     = 0x021D8000,
++    FSL_IMX6UL_SYS_CNT_CMP_SIZE     = (16 * 1024UL),
 +
-+    dc->realize = imx7_src_realize;
-+    dc->reset = imx7_src_reset;
-+    dc->vmsd = &vmstate_imx7_src;
-+    dc->desc = "i.MX6 System Reset Controller";
-+}
+     FSL_IMX6UL_SYS_CNT_RD_ADDR      = 0x021D4000,
++    FSL_IMX6UL_SYS_CNT_RD_SIZE      = (16 * 1024UL),
 +
-+static const TypeInfo imx7_src_info = {
-+    .name          = TYPE_IMX7_SRC,
-+    .parent        = TYPE_SYS_BUS_DEVICE,
-+    .instance_size = sizeof(IMX7SRCState),
-+    .class_init    = imx7_src_class_init,
-+};
+     FSL_IMX6UL_TZASC_ADDR           = 0x021D0000,
++    FSL_IMX6UL_TZASC_SIZE           = (16 * 1024UL),
 +
-+static void imx7_src_register_types(void)
-+{
-+    type_register_static(&imx7_src_info);
-+}
+     FSL_IMX6UL_PXP_ADDR             = 0x021CC000,
++    FSL_IMX6UL_PXP_SIZE             = (16 * 1024UL),
 +
-+type_init(imx7_src_register_types)
-diff --git a/hw/misc/meson.build b/hw/misc/meson.build
-index 892f8b91c5..d9a370c1de 100644
---- a/hw/misc/meson.build
-+++ b/hw/misc/meson.build
-@@ -60,6 +60,7 @@ system_ss.add(when: 'CONFIG_IMX', if_true: files(
-   'imx6_src.c',
-   'imx6ul_ccm.c',
-   'imx7_ccm.c',
-+  'imx7_src.c',
-   'imx7_gpr.c',
-   'imx7_snvs.c',
-   'imx_ccm.c',
-diff --git a/include/hw/arm/fsl-imx7.h b/include/hw/arm/fsl-imx7.h
-index 6138221350..1ae92b2feb 100644
---- a/include/hw/arm/fsl-imx7.h
-+++ b/include/hw/arm/fsl-imx7.h
-@@ -25,6 +25,7 @@
- #include "hw/misc/imx7_ccm.h"
- #include "hw/misc/imx7_snvs.h"
- #include "hw/misc/imx7_gpr.h"
-+#include "hw/misc/imx7_src.h"
- #include "hw/watchdog/wdt_imx2.h"
- #include "hw/gpio/imx_gpio.h"
- #include "hw/char/imx_serial.h"
-@@ -73,6 +74,7 @@ struct FslIMX7State {
-     IMX7CCMState       ccm;
-     IMX7AnalogState    analog;
-     IMX7SNVSState      snvs;
-+    IMX7SRCState       src;
-     IMXGPCv2State      gpcv2;
-     IMXSPIState        spi[FSL_IMX7_NUM_ECSPIS];
-     IMXI2CState        i2c[FSL_IMX7_NUM_I2CS];
-diff --git a/include/hw/misc/imx7_src.h b/include/hw/misc/imx7_src.h
-new file mode 100644
-index 0000000000..bfd0b81fec
---- /dev/null
-+++ b/include/hw/misc/imx7_src.h
-@@ -0,0 +1,68 @@
-+/*
-+ * IMX7 System Reset Controller
-+ *
-+ * Copyright (C) 2023 Jean-Christophe Dubois <jcd@tribudubois.net>
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or later.
-+ * See the COPYING file in the top-level directory.
-+ */
+     FSL_IMX6UL_LCDIF_ADDR           = 0x021C8000,
++    FSL_IMX6UL_LCDIF_SIZE           = 0x100,
 +
-+#ifndef IMX7_SRC_H
-+#define IMX7_SRC_H
+     FSL_IMX6UL_CSI_ADDR             = 0x021C4000,
++    FSL_IMX6UL_CSI_SIZE             = 0x100,
 +
-+#include "hw/sysbus.h"
-+#include "qemu/bitops.h"
-+#include "qom/object.h"
+     FSL_IMX6UL_CSU_ADDR             = 0x021C0000,
++    FSL_IMX6UL_CSU_SIZE             = (16 * 1024UL),
 +
-+#define SRC_SCR 0
-+#define SRC_A7RCR0 1
-+#define SRC_A7RCR1 2
-+#define SRC_M4RCR 3
-+#define SRC_ERCR 5
-+#define SRC_HSICPHY_RCR 7
-+#define SRC_USBOPHY1_RCR 8
-+#define SRC_USBOPHY2_RCR 9
-+#define SRC_MPIPHY_RCR 10
-+#define SRC_PCIEPHY_RCR 11
-+#define SRC_SBMR1 22
-+#define SRC_SRSR 23
-+#define SRC_SISR 26
-+#define SRC_SIMR 27
-+#define SRC_SBMR2 28
-+#define SRC_GPR1 29
-+#define SRC_GPR2 30
-+#define SRC_GPR3 31
-+#define SRC_GPR4 32
-+#define SRC_GPR5 33
-+#define SRC_GPR6 34
-+#define SRC_GPR7 35
-+#define SRC_GPR8 36
-+#define SRC_GPR9 37
-+#define SRC_GPR10 38
-+#define SRC_MAX 39
+     FSL_IMX6UL_OCOTP_CTRL_ADDR      = 0x021BC000,
++    FSL_IMX6UL_OCOTP_CTRL_SIZE      = 0x1000,
 +
-+/* SRC_A7SCR1 */
-+#define CORE1_ENABLE_SHIFT     1
-+#define CORE1_ENABLE_LENGTH    1
-+/* SRC_A7SCR0 */
-+#define CORE1_RST_SHIFT        5
-+#define CORE1_RST_LENGTH       1
-+#define CORE0_RST_SHIFT        4
-+#define CORE0_RST_LENGTH       1
+     FSL_IMX6UL_EIM_ADDR             = 0x021B8000,
++    FSL_IMX6UL_EIM_SIZE             = 0x100,
 +
-+#define EXTRACT(value, name) extract32(value, name##_SHIFT, name##_LENGTH)
+     FSL_IMX6UL_SIM2_ADDR            = 0x021B4000,
 +
-+#define TYPE_IMX7_SRC "imx7.src"
-+OBJECT_DECLARE_SIMPLE_TYPE(IMX7SRCState, IMX7_SRC)
+     FSL_IMX6UL_MMDC_CFG_ADDR        = 0x021B0000,
++    FSL_IMX6UL_MMDC_CFG_SIZE        = 0x1000,
 +
-+struct IMX7SRCState {
-+    /* <private> */
-+    SysBusDevice parent_obj;
+     FSL_IMX6UL_ROMCP_ADDR           = 0x021AC000,
++    FSL_IMX6UL_ROMCP_SIZE           = 0x300,
 +
-+    /* <public> */
-+    MemoryRegion iomem;
+     FSL_IMX6UL_I2C3_ADDR            = 0x021A8000,
+     FSL_IMX6UL_I2C2_ADDR            = 0x021A4000,
+     FSL_IMX6UL_I2C1_ADDR            = 0x021A0000,
++    FSL_IMX6UL_I2Cn_SIZE            = 0x20,
 +
-+    uint32_t regs[SRC_MAX];
-+};
+     FSL_IMX6UL_ADC2_ADDR            = 0x0219C000,
+     FSL_IMX6UL_ADC1_ADDR            = 0x02198000,
++    FSL_IMX6UL_ADCn_SIZE            = 0x100,
 +
-+#endif /* IMX7_SRC_H */
+     FSL_IMX6UL_USDHC2_ADDR          = 0x02194000,
+     FSL_IMX6UL_USDHC1_ADDR          = 0x02190000,
++    FSL_IMX6UL_USDHCn_SIZE          = 0x100,
++
+     FSL_IMX6UL_SIM1_ADDR            = 0x0218C000,
++    FSL_IMX6UL_SIMn_SIZE            = (16 * 1024UL),
++
+     FSL_IMX6UL_ENET1_ADDR           = 0x02188000,
++    FSL_IMX6UL_ENETn_SIZE           = 0x800,
++
+     FSL_IMX6UL_USBO2_USBMISC_ADDR   = 0x02184800,
+-    FSL_IMX6UL_USBO2_USB_ADDR       = 0x02184000,
++    FSL_IMX6UL_USBO2_USB1_ADDR      = 0x02184000,
++    FSL_IMX6UL_USBO2_USB2_ADDR      = 0x02184200,
++    FSL_IMX6UL_USBO2_USBn_SIZE      = 0x200,
++
+     FSL_IMX6UL_USBO2_PL301_ADDR     = 0x02180000,
++    FSL_IMX6UL_USBO2_PL301_SIZE     = (16 * 1024UL),
++
+     FSL_IMX6UL_AIPS2_CFG_ADDR       = 0x0217C000,
++    FSL_IMX6UL_AIPS2_CFG_SIZE       = 0x100,
++
+     FSL_IMX6UL_CAAM_ADDR            = 0x02140000,
++    FSL_IMX6UL_CAAM_SIZE            = (16 * 1024UL),
++
+     FSL_IMX6UL_A7MPCORE_DAP_ADDR    = 0x02100000,
++    FSL_IMX6UL_A7MPCORE_DAP_SIZE    = (4 * 1024UL),
++    /* AIPS-2 End */
+ 
+-    /* AIPS-1 */
++    /* AIPS-1 Begin */
+     FSL_IMX6UL_PWM8_ADDR            = 0x020FC000,
+     FSL_IMX6UL_PWM7_ADDR            = 0x020F8000,
+     FSL_IMX6UL_PWM6_ADDR            = 0x020F4000,
+     FSL_IMX6UL_PWM5_ADDR            = 0x020F0000,
++
+     FSL_IMX6UL_SDMA_ADDR            = 0x020EC000,
++    FSL_IMX6UL_SDMA_SIZE            = 0x300,
++
+     FSL_IMX6UL_GPT2_ADDR            = 0x020E8000,
++    FSL_IMX6UL_GPTn_SIZE            = 0x30,
++
+     FSL_IMX6UL_IOMUXC_GPR_ADDR      = 0x020E4000,
++    FSL_IMX6UL_IOMUXC_GPR_SIZE      = 0x40,
++
+     FSL_IMX6UL_IOMUXC_ADDR          = 0x020E0000,
++    FSL_IMX6UL_IOMUXC_SIZE          = 0x700,
++
+     FSL_IMX6UL_GPC_ADDR             = 0x020DC000,
++    FSL_IMX6UL_GPC_SIZE             = 0x300,
++
+     FSL_IMX6UL_SRC_ADDR             = 0x020D8000,
++    FSL_IMX6UL_SRC_SIZE             = 0x100,
++
+     FSL_IMX6UL_EPIT2_ADDR           = 0x020D4000,
+     FSL_IMX6UL_EPIT1_ADDR           = 0x020D0000,
++    FSL_IMX6UL_EPITn_SIZE           = 0x20,
++
+     FSL_IMX6UL_SNVS_HP_ADDR         = 0x020CC000,
++    FSL_IMX6UL_SNVS_HP_SIZE         = 0x1000,
++
+     FSL_IMX6UL_USBPHY2_ADDR         = 0x020CA000,
+-    FSL_IMX6UL_USBPHY2_SIZE         = (4 * 1024),
+     FSL_IMX6UL_USBPHY1_ADDR         = 0x020C9000,
+-    FSL_IMX6UL_USBPHY1_SIZE         = (4 * 1024),
++    FSL_IMX6UL_USBPHYn_SIZE         = 0x100,
++
+     FSL_IMX6UL_ANALOG_ADDR          = 0x020C8000,
++    FSL_IMX6UL_ANALOG_SIZE          = 0x300,
++
+     FSL_IMX6UL_CCM_ADDR             = 0x020C4000,
++    FSL_IMX6UL_CCM_SIZE             = 0x100,
++
+     FSL_IMX6UL_WDOG2_ADDR           = 0x020C0000,
+     FSL_IMX6UL_WDOG1_ADDR           = 0x020BC000,
++    FSL_IMX6UL_WDOGn_SIZE           = 0x10,
++
+     FSL_IMX6UL_KPP_ADDR             = 0x020B8000,
++    FSL_IMX6UL_KPP_SIZE             = 0x10,
++
+     FSL_IMX6UL_ENET2_ADDR           = 0x020B4000,
++
+     FSL_IMX6UL_SNVS_LP_ADDR         = 0x020B0000,
++    FSL_IMX6UL_SNVS_LP_SIZE         = (16 * 1024UL),
++
+     FSL_IMX6UL_GPIO5_ADDR           = 0x020AC000,
+     FSL_IMX6UL_GPIO4_ADDR           = 0x020A8000,
+     FSL_IMX6UL_GPIO3_ADDR           = 0x020A4000,
+     FSL_IMX6UL_GPIO2_ADDR           = 0x020A0000,
+     FSL_IMX6UL_GPIO1_ADDR           = 0x0209C000,
++    FSL_IMX6UL_GPIOn_SIZE           = 0x20,
++
+     FSL_IMX6UL_GPT1_ADDR            = 0x02098000,
++
+     FSL_IMX6UL_CAN2_ADDR            = 0x02094000,
+     FSL_IMX6UL_CAN1_ADDR            = 0x02090000,
++    FSL_IMX6UL_CANn_SIZE            = 0x1000,
++
+     FSL_IMX6UL_PWM4_ADDR            = 0x0208C000,
+     FSL_IMX6UL_PWM3_ADDR            = 0x02088000,
+     FSL_IMX6UL_PWM2_ADDR            = 0x02084000,
+     FSL_IMX6UL_PWM1_ADDR            = 0x02080000,
++    FSL_IMX6UL_PWMn_SIZE            = 0x20,
++
+     FSL_IMX6UL_AIPS1_CFG_ADDR       = 0x0207C000,
++    FSL_IMX6UL_AIPS1_CFG_SIZE       = (16 * 1024UL),
++
+     FSL_IMX6UL_BEE_ADDR             = 0x02044000,
++    FSL_IMX6UL_BEE_SIZE             = (16 * 1024UL),
++
+     FSL_IMX6UL_TOUCH_CTRL_ADDR      = 0x02040000,
++    FSL_IMX6UL_TOUCH_CTRL_SIZE      = 0x100,
++
+     FSL_IMX6UL_SPBA_ADDR            = 0x0203C000,
++    FSL_IMX6UL_SPBA_SIZE            = 0x100,
++
+     FSL_IMX6UL_ASRC_ADDR            = 0x02034000,
++    FSL_IMX6UL_ASRC_SIZE            = 0x100,
++
+     FSL_IMX6UL_SAI3_ADDR            = 0x02030000,
+     FSL_IMX6UL_SAI2_ADDR            = 0x0202C000,
+     FSL_IMX6UL_SAI1_ADDR            = 0x02028000,
++    FSL_IMX6UL_SAIn_SIZE            = 0x200,
++
+     FSL_IMX6UL_UART8_ADDR           = 0x02024000,
+     FSL_IMX6UL_UART1_ADDR           = 0x02020000,
+     FSL_IMX6UL_UART7_ADDR           = 0x02018000,
++    FSL_IMX6UL_UARTn_SIZE           = 0x100,
++
+     FSL_IMX6UL_ECSPI4_ADDR          = 0x02014000,
+     FSL_IMX6UL_ECSPI3_ADDR          = 0x02010000,
+     FSL_IMX6UL_ECSPI2_ADDR          = 0x0200C000,
+     FSL_IMX6UL_ECSPI1_ADDR          = 0x02008000,
++    FSL_IMX6UL_ECSPIn_SIZE          = 0x100,
++
+     FSL_IMX6UL_SPDIF_ADDR           = 0x02004000,
++    FSL_IMX6UL_SPDIF_SIZE           = 0x100,
++    /* AIPS-1 End */
++
++    FSL_IMX6UL_BCH_ADDR             = 0x01808000,
++    FSL_IMX6UL_BCH_SIZE             = 0x200,
++
++    FSL_IMX6UL_GPMI_ADDR            = 0x01806000,
++    FSL_IMX6UL_GPMI_SIZE            = 0x200,
+ 
+     FSL_IMX6UL_APBH_DMA_ADDR        = 0x01804000,
+-    FSL_IMX6UL_APBH_DMA_SIZE        = (32 * 1024),
++    FSL_IMX6UL_APBH_DMA_SIZE        = 0x1000,
+ 
+     FSL_IMX6UL_A7MPCORE_ADDR        = 0x00A00000,
++    FSL_IMX6UL_A7MPCORE_SIZE        = (32 * 1024UL),
+ 
+     FSL_IMX6UL_OCRAM_ALIAS_ADDR     = 0x00920000,
+-    FSL_IMX6UL_OCRAM_ALIAS_SIZE     = 0x00060000,
++    FSL_IMX6UL_OCRAM_ALIAS_SIZE     = (384 * 1024UL),
++
+     FSL_IMX6UL_OCRAM_MEM_ADDR       = 0x00900000,
+-    FSL_IMX6UL_OCRAM_MEM_SIZE       = 0x00020000,
++    FSL_IMX6UL_OCRAM_MEM_SIZE       = (128 * 1024UL),
++
+     FSL_IMX6UL_CAAM_MEM_ADDR        = 0x00100000,
+-    FSL_IMX6UL_CAAM_MEM_SIZE        = 0x00008000,
++    FSL_IMX6UL_CAAM_MEM_SIZE        = (32 * 1024UL),
++
+     FSL_IMX6UL_ROM_ADDR             = 0x00000000,
+-    FSL_IMX6UL_ROM_SIZE             = 0x00018000,
++    FSL_IMX6UL_ROM_SIZE             = (96 * 1024UL),
+ };
+ 
+ enum FslIMX6ULIRQs {
 -- 
 2.34.1
 
