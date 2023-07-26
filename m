@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B475763627
+	by mail.lfdr.de (Postfix) with ESMTPS id 257A0763628
 	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jul 2023 14:22:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOdRu-0007nQ-5V; Wed, 26 Jul 2023 08:17:02 -0400
+	id 1qOdRx-00084F-LZ; Wed, 26 Jul 2023 08:17:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qOdQu-0006cn-NB
- for qemu-devel@nongnu.org; Wed, 26 Jul 2023 08:16:04 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1qOdQy-0006d4-GC
+ for qemu-devel@nongnu.org; Wed, 26 Jul 2023 08:16:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qOdQt-0004Mg-2c
- for qemu-devel@nongnu.org; Wed, 26 Jul 2023 08:16:00 -0400
+ id 1qOdQw-0004N2-EC
+ for qemu-devel@nongnu.org; Wed, 26 Jul 2023 08:16:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690373758;
+ s=mimecast20190719; t=1690373760;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=RC26ZXvpIri6vHXLfG4jnz3zBcpECA8/T8I9HfCGWhY=;
- b=e+qMqyQyMjAHodbB+Z2ea2BCFE1TZiKshDuj7946mMIK4f1u+DUlypeFG8xFm4SHxH3W3S
- GMG82NWFTQcT/3XcgJPAh/Y30dYBeUQlzV/5y2XwQhaXNa7cuwyS/nTJ0uP9En2N+4aLje
- U+vgQRwiqHL16NH8np/CdnUUhIJ2d0Q=
+ bh=tvznSVvrLqLSpbAniNlQaSrKd09QwBSoD5r3kvK3Uhk=;
+ b=NK0UN0c3BES+steTk+0/oIMlqLeKeGMx8npswZqya/OZbbQngwg74oknqCScNDzOebkF4u
+ BB0LGgWKWtBFXTTrKrU2ULY4zfPPGNI+uR3itaX2K2HT7RMCVEfDTvbIIiEehGMwMztbkL
+ CQGWZMOrKzL1Tq+IXDFe+WhF3ocSIAg=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-167-wc_UdGO3PcumaY0I5YsF9A-1; Wed, 26 Jul 2023 08:15:56 -0400
-X-MC-Unique: wc_UdGO3PcumaY0I5YsF9A-1
+ us-mta-590-7Jxcv05LOGG_LSwve3vw4w-1; Wed, 26 Jul 2023 08:15:58 -0400
+X-MC-Unique: 7Jxcv05LOGG_LSwve3vw4w-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
  [10.11.54.1])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 85B0D1044589
- for <qemu-devel@nongnu.org>; Wed, 26 Jul 2023 12:15:56 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7BB3F88D549
+ for <qemu-devel@nongnu.org>; Wed, 26 Jul 2023 12:15:58 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.194.151])
- by smtp.corp.redhat.com (Postfix) with ESMTP id D5F5040C2070;
- Wed, 26 Jul 2023 12:15:54 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id CCDC440C2070;
+ Wed, 26 Jul 2023 12:15:56 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Leonardo Bras <leobras@redhat.com>, Eric Blake <eblake@redhat.com>,
@@ -49,15 +49,15 @@ Cc: Leonardo Bras <leobras@redhat.com>, Eric Blake <eblake@redhat.com>,
  Thomas Huth <thuth@redhat.com>, libvir-list@redhat.com,
  Markus Armbruster <armbru@redhat.com>, Juan Quintela <quintela@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>
-Subject: [PULL 23/25] qemu-file: Simplify qemu_file_shutdown()
-Date: Wed, 26 Jul 2023 14:14:57 +0200
-Message-Id: <20230726121459.1837-24-quintela@redhat.com>
+Subject: [PULL 24/25] qemu-file: Make qemu_file_get_error_obj() static
+Date: Wed, 26 Jul 2023 14:14:58 +0200
+Message-Id: <20230726121459.1837-25-quintela@redhat.com>
 In-Reply-To: <20230726121459.1837-1-quintela@redhat.com>
 References: <20230726121459.1837-1-quintela@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -82,39 +82,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+It was not used outside of qemu_file.c anyways.
+
 Reviewed-by: Peter Xu <peterx@redhat.com>
-Message-ID: <20230530183941.7223-20-quintela@redhat.com>
+Message-ID: <20230530183941.7223-21-quintela@redhat.com>
 Signed-off-by: Juan Quintela <quintela@redhat.com>
 ---
- migration/qemu-file.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ migration/qemu-file.h | 1 -
+ migration/qemu-file.c | 2 +-
+ 2 files changed, 1 insertion(+), 2 deletions(-)
 
+diff --git a/migration/qemu-file.h b/migration/qemu-file.h
+index a081ef6c3f..8b8b7d27fe 100644
+--- a/migration/qemu-file.h
++++ b/migration/qemu-file.h
+@@ -128,7 +128,6 @@ void qemu_file_skip(QEMUFile *f, int size);
+  * accounting information tracks the total migration traffic.
+  */
+ void qemu_file_credit_transfer(QEMUFile *f, size_t size);
+-int qemu_file_get_error_obj(QEMUFile *f, Error **errp);
+ int qemu_file_get_error_obj_any(QEMUFile *f1, QEMUFile *f2, Error **errp);
+ void qemu_file_set_error_obj(QEMUFile *f, int ret, Error *err);
+ void qemu_file_set_error(QEMUFile *f, int ret);
 diff --git a/migration/qemu-file.c b/migration/qemu-file.c
-index 9a89e17924..4c577bdff8 100644
+index 4c577bdff8..d30bf3c377 100644
 --- a/migration/qemu-file.c
 +++ b/migration/qemu-file.c
-@@ -65,8 +65,6 @@ struct QEMUFile {
+@@ -158,7 +158,7 @@ void qemu_file_set_hooks(QEMUFile *f, const QEMUFileHooks *hooks)
+  * is not 0.
+  *
   */
- int qemu_file_shutdown(QEMUFile *f)
+-int qemu_file_get_error_obj(QEMUFile *f, Error **errp)
++static int qemu_file_get_error_obj(QEMUFile *f, Error **errp)
  {
--    int ret = 0;
--
-     /*
-      * We must set qemufile error before the real shutdown(), otherwise
-      * there can be a race window where we thought IO all went though
-@@ -96,10 +94,10 @@ int qemu_file_shutdown(QEMUFile *f)
-     }
- 
-     if (qio_channel_shutdown(f->ioc, QIO_CHANNEL_SHUTDOWN_BOTH, NULL) < 0) {
--        ret = -EIO;
-+        return -EIO;
-     }
- 
--    return ret;
-+    return 0;
- }
- 
- bool qemu_file_mode_is_not_valid(const char *mode)
+     if (errp) {
+         *errp = f->last_error_obj ? error_copy(f->last_error_obj) : NULL;
 -- 
 2.40.1
 
