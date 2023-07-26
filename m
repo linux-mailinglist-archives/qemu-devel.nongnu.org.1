@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC35E763F7A
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jul 2023 21:25:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC49B763EF5
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jul 2023 20:50:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOjMn-0000ih-4w; Wed, 26 Jul 2023 14:36:09 -0400
+	id 1qOjMx-0000jy-G5; Wed, 26 Jul 2023 14:36:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qOjMi-0000g9-LY; Wed, 26 Jul 2023 14:36:04 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1qOjMn-0000jD-3Q; Wed, 26 Jul 2023 14:36:09 -0400
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qOjMg-0008Im-FX; Wed, 26 Jul 2023 14:36:04 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1bb7b8390e8so507845ad.2; 
- Wed, 26 Jul 2023 11:36:01 -0700 (PDT)
+ id 1qOjMl-0008Jw-Cj; Wed, 26 Jul 2023 14:36:08 -0400
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-1bba48b0bd2so533235ad.3; 
+ Wed, 26 Jul 2023 11:36:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1690396561; x=1691001361;
+ d=gmail.com; s=20221208; t=1690396565; x=1691001365;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Lhgb5AXx1P4s219Mrw/Q8V+vpVdydwuZ2XT+9le2vYo=;
- b=KwzKR2aWXz/BoNZH0Sv8zfVDQ94QjFg0d+Z/O6/xnwxr9josQBnpaFt8nTCnIrlmdc
- JXaM2gC2SZp87CYhTe30sF87dS0Vr9Jw2ljSaCHV0vQxtKALbYfVxDQw3p5y0jzzN20Y
- KktQ1Jzr6Nnoj0LyBNJpnj+F3Q0Q999/N4PtrLABfugMdkxmKzEw4PUxPTnHqP829LiA
- vEkkFXcBNlyD9s/OtnRImzBuYVNDNaAr55EofvqBpZDjhQjOCySv7mS6Ia9mmcysMQVp
- TO6i+wZ28jyxl7ltXCgkVhuWvuCRZbew/Fl+Xn2x0b1/AfLb1UyOI06yi5qTFt3cDP/Q
- qaSw==
+ bh=OTYHHB7LsLK6VsyELQ8ySde/gWfncQJsmnmH13BQxoE=;
+ b=JswuT1or989InqtJZC2IJY6ASZ3yHoHYltOe/1hRvtwgYJIscyqY/mNreI8l+bqnLk
+ pgSmmKVBJSEQtZGbx4Ajo2XH9sSVZiL23RMPlmzaZVkusxCjv1u5myGKxCG3jt60ajEY
+ 3Trn3vgdP5+MeSygzW/EaspyKZwFkSsQHf/ZK1vB+5XJqeYbgSLnSwd/Y1/zP/RvRK7Z
+ BtelwQjCBGfCvIxlmRh/Dkt0Tfm7fJCayBp2KQV3mL2Rr8R53a7kZtGbUtHKQ3rRFG2N
+ hQHxAxPB0phrw2iMlzdswFf2K0qYQNjFdRVm43FVofq9zV4UUwXQKpfBl6ta4fkOKXY1
+ +qhQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690396561; x=1691001361;
+ d=1e100.net; s=20221208; t=1690396565; x=1691001365;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Lhgb5AXx1P4s219Mrw/Q8V+vpVdydwuZ2XT+9le2vYo=;
- b=dKUOWppAF8RGC1Hs7Nun9u4WY7DJ403y0eBqgu8wztr8lh/oZX+OmQ1V5x8qlqW642
- IMyE8UNMIdfOQv6VQ85MOa7By7Iw2n4dmkvZx8LPIq9jykkRgln+iZmu1jtMlkYRbP36
- 6f7mWFNQnzyV/ymoF16ZLHspgqvcuWgPdoeqooLSIeht0yhKCGjA35zHhtD7QxGcHwPo
- GGLp6wYKxICTCMB2kUCeEBfkz7QkA1V/sGlqJQ2eTPa0SLGkeEgwcMcJ6hOuv9wwqqpL
- UmU3OwwxxxGE6yYz+prgrnwEZxq0vCU3DI3/RmiY1EhA3CYy4phY6viABPQNsM2hzrJ1
- tQTw==
-X-Gm-Message-State: ABy/qLavkWv4LbdJbtECbnwYTrlYTzGhg1E9EvjEEMyD34wVjjGkYdGu
- BxBD6/oF3ZyWhRC8mwkjXso=
-X-Google-Smtp-Source: APBJJlGc7HuiA+LZvUMMk956MQm8xWy8PAs8hjQCLgNYWvrXm9SIf2kdaytv6NWYgtsck0qhitmI+Q==
-X-Received: by 2002:a17:903:284:b0:1bb:876a:abe with SMTP id
- j4-20020a170903028400b001bb876a0abemr2566618plr.0.1690396560887; 
- Wed, 26 Jul 2023 11:36:00 -0700 (PDT)
+ bh=OTYHHB7LsLK6VsyELQ8ySde/gWfncQJsmnmH13BQxoE=;
+ b=eZJGWVvACrqv6Ukyn5CpYyMSE8bi+aMhiy18BQMPB49YVODVtv+3FbxhRrjPLsBh6K
+ e0P/QtB3WUFu/RJgQB7eVq8ZAbuXAvJA2WPv33igjIBmGRfBuaeMYLXHFhqx0tDXp3W9
+ 2TcRC1kdkph/GC1c5BIWcxHOHcFpkP1VjZC4EWeuRuZToi5Ms9UvsfhZuXOHV74vAP/S
+ vf8ikPwSczmN+icUOCRL+2WmE26hUImR5h28c26qWCb58eK5cl8n71/qib+VZmFDYEar
+ c+1TkYMZ/aVrx4Oa7GT28ATYP2qbfnYrTGrAEMdNyrBWLU/+s1S3sS9LidgEKNWsW0u+
+ fzrw==
+X-Gm-Message-State: ABy/qLbTr4CQZnThE+gUMDAp/oYg1Xngt83lj6pBaPBuIdDZxDaFp0ou
+ Q5zWIs/g11tzxnfOFPEyW9hLXj3i3Cw=
+X-Google-Smtp-Source: APBJJlEBrn4ZZyISfngkvT0N+sxKxSbsq558UZqm+/SV0DNRC/jcIk4kbg6/eTHTaBTCbyFPdcIgTg==
+X-Received: by 2002:a17:902:e5cb:b0:1b8:a328:c1e6 with SMTP id
+ u11-20020a170902e5cb00b001b8a328c1e6mr2848995plf.63.1690396565636; 
+ Wed, 26 Jul 2023 11:36:05 -0700 (PDT)
 Received: from wheely.local0.net ([118.102.104.45])
  by smtp.gmail.com with ESMTPSA id
- e13-20020a17090301cd00b001b83dc8649dsm13485670plh.250.2023.07.26.11.35.56
+ e13-20020a17090301cd00b001b83dc8649dsm13485670plh.250.2023.07.26.11.36.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 26 Jul 2023 11:36:00 -0700 (PDT)
+ Wed, 26 Jul 2023 11:36:05 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: Daniel Henrique Barboza <danielhb413@gmail.com>
 Cc: Nicholas Piggin <npiggin@gmail.com>,
@@ -63,17 +63,17 @@ Cc: Nicholas Piggin <npiggin@gmail.com>,
  Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
  Paolo Bonzini <pbonzini@redhat.com>, qemu-ppc@nongnu.org,
  qemu-devel@nongnu.org, Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
-Subject: [PATCH 4/7] spapr: Fix record-replay machine reset consuming too many
- events
-Date: Thu, 27 Jul 2023 04:35:29 +1000
-Message-Id: <20230726183532.434380-5-npiggin@gmail.com>
+Subject: [PATCH 5/7] tests/avocado: boot ppc64 pseries replay-record test to
+ Linux VFS mount
+Date: Thu, 27 Jul 2023 04:35:30 +1000
+Message-Id: <20230726183532.434380-6-npiggin@gmail.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230726183532.434380-1-npiggin@gmail.com>
 References: <20230726183532.434380-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,70 +96,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-spapr_machine_reset gets a random number to populate the device-tree
-rng seed with. When loading a snapshot for record-replay, the machine
-is reset again, and that tries to consume the random event record
-again, crashing due to inconsistent record
-
-Fix this by saving the seed to populate the device tree with, and
-skipping the rng on snapshot load.
+This the ppc64 record-replay test is able to replay the full kernel boot
+so try enabling it.
 
 Cc: Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/ppc/spapr.c         | 12 +++++++++---
- include/hw/ppc/spapr.h |  1 +
- 2 files changed, 10 insertions(+), 3 deletions(-)
+ tests/avocado/replay_kernel.py | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index 7d84244f03..ecfbdb0030 100644
---- a/hw/ppc/spapr.c
-+++ b/hw/ppc/spapr.c
-@@ -1022,7 +1022,6 @@ static void spapr_dt_chosen(SpaprMachineState *spapr, void *fdt, bool reset)
- {
-     MachineState *machine = MACHINE(spapr);
-     SpaprMachineClass *smc = SPAPR_MACHINE_GET_CLASS(machine);
--    uint8_t rng_seed[32];
-     int chosen;
+diff --git a/tests/avocado/replay_kernel.py b/tests/avocado/replay_kernel.py
+index 79c607b0e7..a18610542e 100644
+--- a/tests/avocado/replay_kernel.py
++++ b/tests/avocado/replay_kernel.py
+@@ -255,8 +255,7 @@ def test_ppc64_pseries(self):
+         kernel_path = self.fetch_asset(kernel_url, asset_hash=kernel_hash)
  
-     _FDT(chosen = fdt_add_subnode(fdt, 0, "chosen"));
-@@ -1100,8 +1099,7 @@ static void spapr_dt_chosen(SpaprMachineState *spapr, void *fdt, bool reset)
-         spapr_dt_ov5_platform_support(spapr, fdt, chosen);
-     }
+         kernel_command_line = self.KERNEL_COMMON_COMMAND_LINE + 'console=hvc0'
+-        # icount is not good enough for PPC64 for complete boot yet
+-        console_pattern = 'Kernel command line: %s' % kernel_command_line
++        console_pattern = 'VFS: Cannot open root device'
+         self.run_rr(kernel_path, kernel_command_line, console_pattern)
  
--    qemu_guest_getrandom_nofail(rng_seed, sizeof(rng_seed));
--    _FDT(fdt_setprop(fdt, chosen, "rng-seed", rng_seed, sizeof(rng_seed)));
-+    _FDT(fdt_setprop(fdt, chosen, "rng-seed", spapr->fdt_rng_seed, 32));
- 
-     _FDT(spapr_dt_ovec(fdt, chosen, spapr->ov5_cas, "ibm,architecture-vec-5"));
- }
-@@ -1654,6 +1652,14 @@ static void spapr_machine_reset(MachineState *machine, ShutdownCause reason)
-     void *fdt;
-     int rc;
- 
-+    if (reason != SHUTDOWN_CAUSE_SNAPSHOT_LOAD) {
-+        /*
-+         * Record-replay snapshot load must not consume random, this was
-+         * already replayed from initial machine reset.
-+         */
-+        qemu_guest_getrandom_nofail(spapr->fdt_rng_seed, 32);
-+    }
-+
-     pef_kvm_reset(machine->cgs, &error_fatal);
-     spapr_caps_apply(spapr);
- 
-diff --git a/include/hw/ppc/spapr.h b/include/hw/ppc/spapr.h
-index f47e8419a5..f4bd204d86 100644
---- a/include/hw/ppc/spapr.h
-+++ b/include/hw/ppc/spapr.h
-@@ -204,6 +204,7 @@ struct SpaprMachineState {
-     uint32_t fdt_size;
-     uint32_t fdt_initial_size;
-     void *fdt_blob;
-+    uint8_t fdt_rng_seed[32];
-     long kernel_size;
-     bool kernel_le;
-     uint64_t kernel_addr;
+     def test_ppc64_powernv(self):
 -- 
 2.40.1
 
