@@ -2,82 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81BE97635DE
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jul 2023 14:08:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7CCB76360B
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jul 2023 14:16:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOdIS-0004F3-JH; Wed, 26 Jul 2023 08:07:16 -0400
+	id 1qOdQU-0006IV-S5; Wed, 26 Jul 2023 08:15:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qOdIP-0004EY-NF
- for qemu-devel@nongnu.org; Wed, 26 Jul 2023 08:07:14 -0400
-Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qOdIN-0007gg-3U
- for qemu-devel@nongnu.org; Wed, 26 Jul 2023 08:07:13 -0400
-Received: by mail-ej1-x62e.google.com with SMTP id
- a640c23a62f3a-992f15c36fcso1117818966b.3
- for <qemu-devel@nongnu.org>; Wed, 26 Jul 2023 05:07:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1690373228; x=1690978028;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=TnV+X/kkkUNkxSt220ubtfvM0KelxWI0dETujDMGfLo=;
- b=DQH/+FjmVXYlxrOMrBW4vRneL9Ez5I5bVCOFO3Zgk+Eyh2flEv9XwnTcG1whBRG2RX
- tbBBSD9WXkqtnHmFgUGVbASg4CX+5V+gyShVrWKBoaQWgCPoqzYn4DpqxaXvv+4XL1Ea
- jt0A5N3SgS9y+kdvxagt4SRwT3hTRGUtZOEj6ZYMcV6PFysQw6DziaGHW3XrPfoPLFAh
- pVPczdH+Xxj2O8AUfhhnlpBVa8lb3iD8YeCRdOTHKfMweC9IuQEvRfZfFFlSUakw4jVi
- mCIhWe4Mmx9qUddXZuPuvLiHRp3Op5VyZOyz1aPiasXpE6o9c3O91SKO0GL1cKOjfQrJ
- FZow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690373228; x=1690978028;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=TnV+X/kkkUNkxSt220ubtfvM0KelxWI0dETujDMGfLo=;
- b=dc1jfthGfvvtCl9jAVDW6XRzbQpDnz5iruitoojtA0HaEz7h/NXrzIlvkExkjLlbHT
- +qRNZ2Ktu3LgxZA4GgKI1+m5rt+c1YCwVTGEl6utZ0NJgTCr5pOKDUGAMACBKTl1tGjL
- 5lyXiykL2W6MuECs8P0feYiXij8+oRh1ST2N9UXt+dki1LJkW8tSIctXm06q99C4g2me
- SHaIxWymAXWpnE4dlbx3cVI3e2RGEoPyoIKDA2U6C+DbqXTL2G+MLHcRHNJrtklsQ9KB
- VW1jA3+TaHd6RpiH8cG7sSZI4FlX4jk6fmcwpFcMTmotMfibUAt6sBHUA8Zzh9ZeudZN
- K4GQ==
-X-Gm-Message-State: ABy/qLbPjwOgqbrNV6o5WxTKEPg3bA23wvgLi1MgCHz4ekpIcdC06SO4
- gceDWxx+DaWjNa1d6TmMaRHR4X/Jt/XAwGPXQd8=
-X-Google-Smtp-Source: APBJJlEVWFQm+I3I1AG4OyJao96yKRPu42x+o8X3/LMBVthyirmgiBHm8XoXMnNmY0lCOnHT+AIgxA==
-X-Received: by 2002:a17:906:315b:b0:993:d88e:41ed with SMTP id
- e27-20020a170906315b00b00993d88e41edmr1548186eje.3.1690373228025; 
- Wed, 26 Jul 2023 05:07:08 -0700 (PDT)
-Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
- [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
- by smtp.gmail.com with ESMTPSA id
- a6-20020a1709062b0600b0099297782aa9sm9491820ejg.49.2023.07.26.05.07.07
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 26 Jul 2023 05:07:07 -0700 (PDT)
-From: Andrew Jones <ajones@ventanamicro.com>
-To: qemu-devel@nongnu.org,
-	qemu-riscv@nongnu.org
-Cc: alistair.francis@wdc.com, palmer@dabbelt.com, bin.meng@windriver.com,
- peter.maydell@linaro.org,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH] docs/devel: Add cross-compiling doc
-Date: Wed, 26 Jul 2023 14:07:07 +0200
-Message-ID: <20230726120706.335340-2-ajones@ventanamicro.com>
-X-Mailer: git-send-email 2.41.0
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qOdQ4-0006Hz-R7
+ for qemu-devel@nongnu.org; Wed, 26 Jul 2023 08:15:09 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qOdQ2-00040F-Pz
+ for qemu-devel@nongnu.org; Wed, 26 Jul 2023 08:15:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1690373705;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=zOGwEVRfK1CgfPXTWPl79vEamwam6+pArT1iGtb4PjA=;
+ b=X+ZVHx5ZRo9YC7xLtYbZD7vrBupCHvjQfj+LatXA0ytzeYupWstfSATRaXpnNqo/gltEqK
+ 0hXPI2dgqP1oy/46+cWV3LDi3+nUuWHvmiKjkuNDiXFBScQMj48QtR8MYDYDAiWnVkF66k
+ n6dWoZbk1XuZwEGXBMiXik4iNzdDWqk=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-597-Ij_m-T-yMS6XeShU8o5-xA-1; Wed, 26 Jul 2023 08:15:04 -0400
+X-MC-Unique: Ij_m-T-yMS6XeShU8o5-xA-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C7B042A59561
+ for <qemu-devel@nongnu.org>; Wed, 26 Jul 2023 12:15:03 +0000 (UTC)
+Received: from secure.mitica (unknown [10.39.194.151])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id D3A2240C2063;
+ Wed, 26 Jul 2023 12:15:00 +0000 (UTC)
+From: Juan Quintela <quintela@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Leonardo Bras <leobras@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, libvir-list@redhat.com,
+ Markus Armbruster <armbru@redhat.com>, Juan Quintela <quintela@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>
+Subject: [PULL 00/25] Migration 20230726 patches
+Date: Wed, 26 Jul 2023 14:14:34 +0200
+Message-Id: <20230726121459.1837-1-quintela@redhat.com>
 MIME-Version: 1.0
-Content-type: text/plain
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
- envelope-from=ajones@ventanamicro.com; helo=mail-ej1-x62e.google.com
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,248 +80,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add instructions for how to cross-compile QEMU for RISC-V. The
-file is named generically because there's no reason not to collect
-other architectures steps into the same file, especially because
-several subsections like those for cross-compiling QEMU dependencies
-using meson and a cross-file could be shared. Additionally, other
-approaches to creating sysroots, such as with debootstrap, may be
-documented in this file in the future.
+The following changes since commit 6cb2011fedf8c4e7b66b4a3abd6b42c1bae99ce6:
 
-Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
----
- docs/devel/cross-compiling.rst | 221 +++++++++++++++++++++++++++++++++
- 1 file changed, 221 insertions(+)
- create mode 100644 docs/devel/cross-compiling.rst
+  Update version for v8.1.0-rc1 release (2023-07-25 20:09:05 +0100)
 
-diff --git a/docs/devel/cross-compiling.rst b/docs/devel/cross-compiling.rst
-new file mode 100644
-index 000000000000..1b988ba54e4c
---- /dev/null
-+++ b/docs/devel/cross-compiling.rst
-@@ -0,0 +1,221 @@
-+.. SPDX-License-Identifier: GPL-2.0-or-later
-+
-+====================
-+Cross-compiling QEMU
-+====================
-+
-+Cross-compiling QEMU first requires the preparation of a cross-toolchain
-+and the cross-compiling of QEMU's dependencies. While the steps will be
-+similar across architectures, each architecture will have its own specific
-+recommendations. This document collects architecture-specific procedures
-+and hints that may be used to cross-compile QEMU, where typically the host
-+environment is x86.
-+
-+RISC-V
-+======
-+
-+Toolchain
-+---------
-+
-+Select a root directory for the cross environment
-+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-+
-+Export an environment variable pointing to a root directory
-+for the cross environment. For example, ::
-+
-+  $ export PREFIX="$HOME/opt/riscv"
-+
-+Create a work directory
-+^^^^^^^^^^^^^^^^^^^^^^^
-+
-+Tools and several components will need to be downloaded and built. Create
-+a directory for all the work, ::
-+
-+  $ export WORK_DIR="$HOME/work/xqemu"
-+  $ mkdir -p "$WORK_DIR"
-+
-+Select and prepare the toolchain
-+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-+
-+Select a toolchain such as [riscv-toolchain]_ and follow its instructions
-+for building and installing it to ``$PREFIX``, e.g. ::
-+
-+  $ cd "$WORK_DIR"
-+  $ git clone https://github.com/riscv/riscv-gnu-toolchain
-+  $ cd riscv-gnu-toolchain
-+  $ ./configure --prefix="$PREFIX"
-+  $ make -j$(nproc) linux
-+
-+Set the ``$CROSS_COMPILE`` environment variable to the prefix of the cross
-+tools and add the tools to ``$PATH``, ::
-+
-+$ export CROSS_COMPILE=riscv64-unknown-linux-gnu-
-+$ export PATH="$PREFIX/bin:$PATH"
-+
-+Also set ``$SYSROOT``, where all QEMU cross-compiled dependencies will be
-+installed. The toolchain installation likely created a 'sysroot' directory
-+at ``$PREFIX/sysroot``, which is the default location for most cross
-+tools, making it a good location, ::
-+
-+  $ mkdir -p "$PREFIX/sysroot"
-+  $ export SYSROOT="$PREFIX/sysroot"
-+
-+Create a pkg-config wrapper
-+^^^^^^^^^^^^^^^^^^^^^^^^^^^
-+
-+The build processes of QEMU and some of its dependencies depend on
-+pkg-config. Create a wrapper script for it which works for the cross
-+environment: ::
-+
-+  $ cat <<EOF >"$PREFIX/bin/${CROSS_COMPILE}pkg-config"
-+  #!/bin/sh
-+
-+  [ "\$SYSROOT" ] || exit 1
-+
-+  export PKG_CONFIG_PATH=
-+  export PKG_CONFIG_LIBDIR="\${SYSROOT}/usr/lib/pkgconfig:\${SYSROOT}/usr/lib64/pkgconfig:\${SYSROOT}/usr/share/pkgconfig"
-+
-+  exec pkg-config "\$@"
-+  EOF
-+  $ chmod +x "$PREFIX/bin/${CROSS_COMPILE}pkg-config"
-+
-+Create a cross-file for meson builds
-+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-+
-+meson setup, used by some of QEMU's dependencies, needs a "cross-file" to
-+configure the cross environment. Create one, ::
-+
-+  $ cd "$WORK_DIR"
-+  $ cat <<EOF >cross_file.txt
-+  [host_machine]
-+  system = 'linux'
-+  cpu_family = 'riscv64'
-+  cpu = 'riscv64'
-+  endian = 'little'
-+
-+  [binaries]
-+  c = '${CROSS_COMPILE}gcc'
-+  cpp = '${CROSS_COMPILE}g++'
-+  ar = '${CROSS_COMPILE}ar'
-+  ld = '${CROSS_COMPILE}ld'
-+  objcopy = '${CROSS_COMPILE}objcopy'
-+  strip = '${CROSS_COMPILE}strip'
-+  pkgconfig = '${CROSS_COMPILE}pkg-config'
-+  EOF
-+
-+Cross-compile dependencies
-+--------------------------
-+
-+glibc
-+^^^^^
-+
-+If [riscv-toolchain]_ was selected for the toolchain then this step is
-+already complete and glibc has already been installed into ``$SYSROOT``.
-+Otherwise, cross-compile glibc and install it to ``$SYSROOT``.
-+
-+libffi
-+^^^^^^
-+
-+::
-+
-+  $ cd "$WORK_DIR"
-+  $ git clone https://gitlab.freedesktop.org/gstreamer/meson-ports/libffi.git
-+  $ cd libffi
-+  $ meson setup --cross-file ../cross_file.txt --prefix="$SYSROOT/usr" _build
-+  $ ninja -C _build
-+  $ ninja -C _build install
-+
-+*Building libffi seperately avoids a compilation error generated when
-+building it as a subproject of glib.*
-+
-+glib
-+^^^^
-+
-+::
-+
-+  $ cd "$WORK_DIR"
-+  $ git clone https://github.com/GNOME/glib.git
-+  $ cd glib
-+  $ meson setup --cross-file ../cross_file.txt --prefix="$SYSROOT/usr" _build
-+  $ ninja -C _build
-+  $ ninja -C _build install
-+
-+libslirp [optional]
-+^^^^^^^^^^^^^^^^^^^
-+
-+::
-+
-+  $ cd "$WORK_DIR"
-+  $ git clone https://gitlab.com/qemu-project/libslirp.git
-+  $ cd libslirp
-+  $ meson setup --cross-file ../cross_file.txt --prefix="$SYSROOT/usr" _build
-+  $ ninja -C _build
-+  $ ninja -C _build install
-+
-+pixman
-+^^^^^^
-+
-+First ensure the 'libtool' package is installed, e.g.
-+``sudo dnf install libtool`` or ``sudo apt install libtool``
-+
-+::
-+
-+  $ cd "$WORK_DIR"
-+  $ git clone https://gitlab.freedesktop.org/pixman/pixman
-+  $ cd pixman
-+  $ ./autogen.sh
-+  $ ./configure --prefix="$SYSROOT/usr" --host=riscv64-unknown-linux-gnu
-+  $ make -j$(nproc)
-+  $ make install
-+
-+Cross-compile QEMU
-+------------------
-+
-+::
-+
-+  $ cd "$WORK_DIR"
-+  $ git clone https://gitlab.com/qemu-project/qemu.git
-+  $ cd qemu
-+  $ mkdir -p build/install_dir
-+  $ cd build
-+  $ ../configure --target-list=riscv64-softmmu --cross-prefix=$CROSS_COMPILE --prefix="$PWD/install_dir"
-+  $ make -j$(nproc)
-+  $ make install
-+
-+*Cross-compiling QEMU with different configurations may require more
-+dependencies to be built and installed in the sysroot.*
-+
-+Running QEMU
-+------------
-+
-+``build/install_dir`` may now be copied to the target and its bin
-+directory may be added to the target user's PATH. Prior to running
-+QEMU, ensure all the libraries it depends on are present, ::
-+
-+  $ ldd /path/to/bin/qemu-system-riscv64
-+
-+For example, it may necessary to install zlib libraries, e.g.
-+``sudo dnf install zlib-devel`` or ``sudo apt install zlib1g-dev``
-+
-+Subsequent QEMU Cross-compiling
-+-------------------------------
-+
-+Unless it's necessary to update and recompile the toolchain or
-+dependencies, then most steps do not need to be repeated for subsequent
-+compiles. Simply ensure the toolchain is in ``$PATH``, ``$SYSROOT`` points
-+at the sysroot, and then follow the QEMU cross-compile steps in
-+"Cross-compile QEMU". For example, ::
-+
-+  $ export PATH="$HOME/opt/riscv/bin:$PATH"
-+  $ export SYSROOT="$HOME/opt/riscv/sysroot"
-+  $ cd /path/to/qemu
-+  $ mkdir -p build/install_dir
-+  $ cd build
-+  $ ../configure --target-list=riscv64-softmmu --cross-prefix=riscv64-unknown-linux-gnu- --prefix="$PWD/install_dir"
-+  $ make -j
-+  $ make install
-+
-+References
-+----------
-+
-+.. [riscv-toolchain] https://github.com/riscv/riscv-gnu-toolchain
+are available in the Git repository at:
+
+  https://gitlab.com/juan.quintela/qemu.git tags/migration-20230726-pull-request
+
+for you to fetch changes up to 697c4c86ab515a728ffb2adc2c3c04b22fa9210f:
+
+  migration/rdma: Split qemu_fopen_rdma() into input/output functions (2023-07-26 10:55:56 +0200)
+
+----------------------------------------------------------------
+Migration Pull request
+
+Hi
+
+This is the migration PULL request.  It is the same than yesterday with proper PULL headers.
+It pass CI. It contains:
+- Fabiano rosas trheadinfo cleanups
+- Hyman Huang dirtylimit changes
+- Part of my changes
+- Peter Xu documentation
+- Tejus updato to migration descriptions
+- Wei want improvements for postocpy and multifd setup
+
+Please apply.
+
+Thanks, Juan.
+
+----------------------------------------------------------------
+
+Fabiano Rosas (2):
+  migration/multifd: Rename threadinfo.c functions
+  migration/multifd: Protect accesses to migration_threads
+
+Hyman Huang(黄勇) (8):
+  softmmu/dirtylimit: Add parameter check for hmp "set_vcpu_dirty_limit"
+  qapi/migration: Introduce x-vcpu-dirty-limit-period parameter
+  qapi/migration: Introduce vcpu-dirty-limit parameters
+  migration: Introduce dirty-limit capability
+  migration: Refactor auto-converge capability logic
+  migration: Put the detection logic before auto-converge checking
+  migration: Implement dirty-limit convergence algo
+  migration: Extend query-migrate to provide dirty page limit info
+
+Juan Quintela (11):
+  migration-test: Be consistent for ppc
+  migration-test: Make machine_opts regular with other options
+  migration-test: Create arch_opts
+  migration-test: machine_opts is really arch specific
+  migration: skipped field is really obsolete.
+  qemu-file: Rename qemu_file_transferred_ fast -> noflush
+  migration: Change qemu_file_transferred to noflush
+  qemu_file: Make qemu_file_is_writable() static
+  qemu-file: Simplify qemu_file_shutdown()
+  qemu-file: Make qemu_file_get_error_obj() static
+  migration/rdma: Split qemu_fopen_rdma() into input/output functions
+
+Peter Xu (1):
+  docs/migration: Update postcopy bits
+
+Tejus GK (1):
+  migration: Update error description whenever migration fails
+
+Wei Wang (2):
+  migration: enforce multifd and postcopy preempt to be set before
+    incoming
+  qtest/migration-tests.c: use "-incoming defer" for postcopy tests
+
+ docs/about/deprecated.rst      | 10 ++++
+ docs/devel/migration.rst       | 94 ++++++++++++++++++++++----------
+ qapi/migration.json            | 87 ++++++++++++++++++++++++++----
+ include/sysemu/dirtylimit.h    |  2 +
+ migration/options.h            |  1 +
+ migration/qemu-file.h          | 14 ++---
+ migration/threadinfo.h         |  7 +--
+ migration/migration-hmp-cmds.c | 26 +++++++++
+ migration/migration.c          | 36 +++++++++----
+ migration/multifd.c            |  4 +-
+ migration/options.c            | 87 +++++++++++++++++++++++++++++-
+ migration/qemu-file.c          | 24 ++-------
+ migration/ram.c                | 59 +++++++++++++++++----
+ migration/rdma.c               | 39 +++++++-------
+ migration/savevm.c             |  6 +--
+ migration/threadinfo.c         | 19 +++++--
+ migration/vmstate.c            |  4 +-
+ softmmu/dirtylimit.c           | 97 ++++++++++++++++++++++++++++++----
+ tests/qtest/migration-test.c   | 48 ++++++++---------
+ migration/trace-events         |  1 +
+ 20 files changed, 510 insertions(+), 155 deletions(-)
+
 -- 
-2.41.0
+2.40.1
 
 
