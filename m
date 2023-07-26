@@ -2,83 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 443DC762FFA
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jul 2023 10:37:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57C56763027
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jul 2023 10:45:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOa05-0007nW-Lu; Wed, 26 Jul 2023 04:36:05 -0400
+	id 1qOa7r-0001zG-Jk; Wed, 26 Jul 2023 04:44:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qOa03-0007my-Lf
- for qemu-devel@nongnu.org; Wed, 26 Jul 2023 04:36:03 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qOa01-0003Y6-OO
- for qemu-devel@nongnu.org; Wed, 26 Jul 2023 04:36:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690360561;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=sMXNw/fgKVvdY5aHitoqTnjttgtvO3LJEYlWtEdHkGo=;
- b=Gp4y7LNRjMec7utzj+1rhiEHJKlolgrRxNlPv/74gFMy/KaZL3n/jKe5JlScW9jegSjee6
- ddxqKC92X+EK0CUw2Fp99Ugsr+R0ASqJVE+wU8EVCR0e+LYCH026psA0Gm4temR/9X/3rO
- UVs0ydA7b1hZ3CVewtT5IALjOQ47g6M=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-93-UuYhttLFMR6oAnZMMslIvg-1; Wed, 26 Jul 2023 04:35:57 -0400
-X-MC-Unique: UuYhttLFMR6oAnZMMslIvg-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 198EB858290;
- Wed, 26 Jul 2023 08:35:57 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.52])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id BC973492C13;
- Wed, 26 Jul 2023 08:35:55 +0000 (UTC)
-Date: Wed, 26 Jul 2023 09:35:53 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Het Gala <het.gala@nutanix.com>
-Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- Prerna Saxena <prerna.saxena@nutanix.com>,
- "quintela@redhat.com" <quintela@redhat.com>,
- "dgilbert@redhat.com" <dgilbert@redhat.com>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "armbru@redhat.com" <armbru@redhat.com>,
- "eblake@redhat.com" <eblake@redhat.com>,
- Manish Mishra <manish.mishra@nutanix.com>,
- Aravind Retnakaran <aravind.retnakaran@nutanix.com>
-Subject: Re: [PATCH v9 06/10] migration: New migrate and migrate-incoming
- argument 'channels'
-Message-ID: <ZMDa6WNFeylS00QK@redhat.com>
-References: <20230721144914.170991-1-het.gala@nutanix.com>
- <20230721144914.170991-7-het.gala@nutanix.com>
- <ZMAVodWyElfN9EFb@redhat.com> <ZMAWcnPgZJQvB93A@redhat.com>
- <f5109fbe-ce45-020d-fcb7-e32892d9135d@nutanix.com>
+ (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
+ id 1qOa7p-0001z3-RN
+ for qemu-devel@nongnu.org; Wed, 26 Jul 2023 04:44:05 -0400
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
+ id 1qOa7o-000671-9X
+ for qemu-devel@nongnu.org; Wed, 26 Jul 2023 04:44:05 -0400
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-31758eb5db8so3344688f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 26 Jul 2023 01:44:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1690361042; x=1690965842;
+ h=content-transfer-encoding:in-reply-to:organization:content-language
+ :references:to:subject:reply-to:user-agent:mime-version:date
+ :message-id:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=TLHCyT22OHs+LJV54wrD4aED9tLGhvIvXXAt/egjBSY=;
+ b=DLADNVBGmTSGdHRZaNpM2fe1FcWsyWRES1oDq8lhAoYARsVrVqyWlvE89HAouS0pye
+ /mf4wxvZJxU3RemM7vuCt0XElsxdHUoDt3KblOJe8hBayI6+KiBWhUZ/iMS3K3gYZDCA
+ 4Y+96tqq6EPUcylKRUkNvrILLgn2JNg9uDLkl8GpHi8KT8rUYqA/azceb7qXmGIHzaKk
+ FLuA0Vl+ggJ7IgchZw70Kz1y+u4PlBWfq6cZgdozQXxuaP9cd2GB20TcTCs4R3rjLmj/
+ xJl7rc6Rtpz9AffiDuyCxqwjgSFHmKmqovGsJBb212L4bC+ddQtLkTG7beu+QJMCgew3
+ OBGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1690361042; x=1690965842;
+ h=content-transfer-encoding:in-reply-to:organization:content-language
+ :references:to:subject:reply-to:user-agent:mime-version:date
+ :message-id:from:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=TLHCyT22OHs+LJV54wrD4aED9tLGhvIvXXAt/egjBSY=;
+ b=GexKe1FHtzBfcQi5Wy1/Q5s104pcpLBkrciPD01vQubzM7plzIWtg5zozyCUZMWPMu
+ FTOptgWhqPPZlXf56fFm41kd9+r7uTF0jJZm19oCda7cn01npe0LjaIOh1AXggfgMUfY
+ exlWKEAK0Ll0DuSceDToXhtgyxiaz8gbFnS9yz/vwL7Tla2K6mpOXNxmd+MOlfY0WgW4
+ uwRa23YP1dIr6BwKz/4Pw7pdmXQLGCWSbqBUMrFp9cpJUaZxyewgsd8i1U4QSxi9dTTo
+ 3SiZ7XuIE4o3K4licpr0KvzzxvU+laQeEatsdnwGl23EPuBme57XSeAfxKmtRa6TiVfE
+ bPaw==
+X-Gm-Message-State: ABy/qLaKL612DdeAsh2K7P/QWv4GXooLFKKNQekk9+PVsXLx6QyzRwla
+ xfCumgJJzBhvBFra3xG+ICg=
+X-Google-Smtp-Source: APBJJlEFhFR9BzWR9nyf7SoybIgXrceFTt8PAO+gnJV4DHrZnQZKabpMLYuJdAlT4roc881scQIPBg==
+X-Received: by 2002:adf:de09:0:b0:317:6310:a616 with SMTP id
+ b9-20020adfde09000000b003176310a616mr923261wrm.36.1690361041697; 
+ Wed, 26 Jul 2023 01:44:01 -0700 (PDT)
+Received: from [192.168.24.200] (54-240-197-226.amazon.com. [54.240.197.226])
+ by smtp.gmail.com with ESMTPSA id
+ z11-20020a5d640b000000b003174f6dc947sm12755731wru.32.2023.07.26.01.44.00
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 26 Jul 2023 01:44:01 -0700 (PDT)
+From: Paul Durrant <xadimgnik@gmail.com>
+X-Google-Original-From: Paul Durrant <paul@xen.org>
+Message-ID: <e2df69f7-d7d1-a2c4-6bf0-e2142f64a53b@xen.org>
+Date: Wed, 26 Jul 2023 09:44:00 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <f5109fbe-ce45-020d-fcb7-e32892d9135d@nutanix.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: i386/xen: prevent guest from binding loopback event channel to
+ itself
+To: David Woodhouse <dwmw2@infradead.org>, Paolo Bonzini
+ <pbonzini@redhat.com>, Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ qemu-devel <qemu-devel@nongnu.org>
+References: <c976d480399a44e09b1da3ad201e3021def223f7.camel@infradead.org>
+Content-Language: en-US
+Organization: Xen Project
+In-Reply-To: <c976d480399a44e09b1da3ad201e3021def223f7.camel@infradead.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=xadimgnik@gmail.com; helo=mail-wr1-x42a.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ NICE_REPLY_A=-0.091, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,110 +98,24 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+Reply-To: paul@xen.org
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jul 26, 2023 at 01:24:48AM +0530, Het Gala wrote:
-> Sorry, last reply on this patch was accidently replied only to Daniel.
-> Pasting the reply again so it is received by all the active maintianers
-> here. Apologies for the error 😅
+On 25/07/2023 11:05, David Woodhouse wrote:
+> From: David Woodhouse <dwmw@amazon.co.uk>
 > 
-> On 26/07/23 12:07 am, Daniel P. Berrangé wrote:
-> > On Tue, Jul 25, 2023 at 07:34:09PM +0100, Daniel P. Berrangé wrote:
-> > > On Fri, Jul 21, 2023 at 02:49:31PM +0000, Het Gala wrote:
-> > > > MigrateChannelList allows to connect accross multiple interfaces.
-> > > > Add MigrateChannelList struct as argument to migration QAPIs.
-> > > > 
-> > > > We plan to include multiple channels in future, to connnect
-> > > > multiple interfaces. Hence, we choose 'MigrateChannelList'
-> > > > as the new argument over 'MigrateChannel' to make migration
-> > > > QAPIs future proof.
-> > > > 
-> > > > Suggested-by: Aravind Retnakaran <aravind.retnakaran@nutanix.com>
-> > > > Signed-off-by: Het Gala <het.gala@nutanix.com>
-> > > > Acked-by: Markus Armbruster <armbru@redhat.com>
-> > > > ---
-> > > >   migration/migration-hmp-cmds.c |   6 +-
-> > > >   migration/migration.c          |  34 ++++++++--
-> > > >   qapi/migration.json            | 109 ++++++++++++++++++++++++++++++++-
-> > > >   softmmu/vl.c                   |   2 +-
-> > > >   4 files changed, 139 insertions(+), 12 deletions(-)
-> > > > 
-> > > > diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
-> > > > index 9885d7c9f7..49b150f33f 100644
-> > > > --- a/migration/migration-hmp-cmds.c
-> > > > +++ b/migration/migration-hmp-cmds.c
-> > > > @@ -424,7 +424,7 @@ void hmp_migrate_incoming(Monitor *mon, const QDict *qdict)
-> > > >       Error *err = NULL;
-> > > >       const char *uri = qdict_get_str(qdict, "uri");
-> > > > -    qmp_migrate_incoming(uri, &err);
-> > > > +    qmp_migrate_incoming(uri, false, NULL, &err);
-> > > >       hmp_handle_error(mon, err);
-> > > >   }
-> > > > @@ -705,8 +705,8 @@ void hmp_migrate(Monitor *mon, const QDict *qdict)
-> > > >       const char *uri = qdict_get_str(qdict, "uri");
-> > > >       Error *err = NULL;
-> > > > -    qmp_migrate(uri, !!blk, blk, !!inc, inc,
-> > > > -                false, false, true, resume, &err);
-> > > > +    qmp_migrate(uri, false, NULL, !!blk, blk, !!inc, inc,
-> > > > +                 false, false, true, resume, &err);
-> > > >       if (hmp_handle_error(mon, err)) {
-> > > >           return;
-> > > >       }
-> > > > diff --git a/migration/migration.c b/migration/migration.c
-> > > > index f37b388876..bd3a93fc8c 100644
-> > > > --- a/migration/migration.c
-> > > > +++ b/migration/migration.c
-> > > > @@ -466,10 +466,22 @@ static bool migrate_uri_parse(const char *uri,
-> > > >       return true;
-> > > >   }
-> > > > -static void qemu_start_incoming_migration(const char *uri, Error **errp)
-> > > > +static void qemu_start_incoming_migration(const char *uri, bool has_channels,
-> > > > +                                          MigrationChannelList *channels,
-> > > > +                                          Error **errp)
-> > > >   {
-> > > >       g_autoptr(MigrationAddress) channel = g_new0(MigrationAddress, 1);
-> > > > +    /*
-> > > > +     * Having preliminary checks for uri and channel
-> > > > +     */
-> > > > +    if (uri && has_channels) {
-> > > > +        error_setg(errp, "'uri' and 'channels' arguments are mutually "
-> > > > +                   "exclusive; exactly one of the two should be present in "
-> > > > +                   "'migrate-incoming' qmp command ");
-> > > > +        return;
-> > > > +    }
-> > > This checks is both are present.
-> > > 
-> > > Also needs a check if neither are present as that's invalid.
-> > Also it should (temporarily) raise an error if "has_channels" is
-> > set, as while we've added the parameter in QAPI, we've not
-> > implemented it yet. IOW, raise an error now, and remove the
-> > error in a later patch.
-> Ack. So in total there should be 3 checks right. 1) if 'has_channels' is
-> set, 2) if 'uri' and 'channels' both are present, 3) if 'uri' and 'channels'
-> both are absent. Basically right now only uri should allowed and should
-> atleast be present.
+> Fuzzing showed that a guest could bind an interdomain port to itself, by
+> guessing the next port to be allocated and putting that as the 'remote'
+> port number. By chance, that works because the newly-allocated port has
+> type EVTCHNSTAT_unbound. It shouldn't.
+> 
+> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+> ---
+>   hw/i386/kvm/xen_evtchn.c | 11 +++++++++--
+>   1 file changed, 9 insertions(+), 2 deletions(-)
+> 
 
-Correct.
-
-> I think overall only 1) would be enough and should be checked before
-> 'migration_channels_and_uri_compatible()' and if 'has_channels' is set, just
-> return for now. With this 2) would not be necessary or not come into play in
-> this patch. 3) will be taken care by
-> 'migration_channels_and_uri_compatible()' itself IMO.
-
-I think all the checks should be in this method, as it is the entrypoint
-for execution of the QMP command and thus where parameter validation
-should live. Spreading it across methods will make it very easy to open
-bugs by refactoring code and not realizing the new codepaths don't do
-the right checks.
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Reviewed-by: Paul Durrant <paul@xen.org>
 
 
