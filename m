@@ -2,84 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B19CE763F0B
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jul 2023 20:53:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C73D763EE9
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jul 2023 20:49:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOjN1-0000nN-4G; Wed, 26 Jul 2023 14:36:23 -0400
+	id 1qOjSv-0002Vu-Ue; Wed, 26 Jul 2023 14:42:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qOjMy-0000mq-TS; Wed, 26 Jul 2023 14:36:20 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qOjMx-0008O8-16; Wed, 26 Jul 2023 14:36:20 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-1b8ad8383faso833695ad.0; 
- Wed, 26 Jul 2023 11:36:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1690396575; x=1691001375;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=kbEjOnkySITmLw82s9WCGkUqlGYptTamWi06s3l0n7s=;
- b=lrJYSj/CKxLoBVwnudwupTv1NE9+vgiguez8ZPCHLa7sFdG2gYaykTPeeJ6sLTRn2B
- uwo2ghNk/QtV1KM9xK+RR7W3QZAHD+WHs9R2UnMMcgc7AwxkmR13n2ItoEeuciEMjFUu
- e0WkRAmZQkAObtk4QQJQRlWpzE8OJuwKz46rg4LJgYBi2wQCsmxZPiZAzaelfKHqKTQ5
- 4UrlmTPPKaNpwGzhpkI2XGDA6b4c8R3QxNgqMLTvsDNOxLaAalXXLz/zgvu8I94rNXWc
- phU5A0a3RciiD1DonXDKwFlLM0udwzGXUjZtfytZ50QOC28duU6hpjgScFC6oH3MUnP2
- IioA==
+ (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
+ id 1qOjSt-0002Vi-Q4
+ for qemu-devel@nongnu.org; Wed, 26 Jul 2023 14:42:27 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
+ id 1qOjSr-0001kt-Mn
+ for qemu-devel@nongnu.org; Wed, 26 Jul 2023 14:42:27 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1690396943;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=xEFRUBIGZXh8Tl1pSSZCoXm7cZLy+yGYlx3uOrbLuyA=;
+ b=Loq0u5WmtABD1K4YDk42nTRR1J/BYWReEgEiR1H/LCmzLM2NPku5fSkGk7M24KR8oMtq+3
+ QEVoE3ymqTCLq/FMOEibgsh+JdJq+nYo3nOrr/ibgRnLiew5pvvLkvVGV5+Gi++23XUIkz
+ 9uobAsJjiRzIg0y0aj9qINlz7HoUiZA=
+Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
+ [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-527-_TGmhtF_PLWAzk0IEyYfvg-1; Wed, 26 Jul 2023 14:42:21 -0400
+X-MC-Unique: _TGmhtF_PLWAzk0IEyYfvg-1
+Received: by mail-lj1-f200.google.com with SMTP id
+ 38308e7fff4ca-2b961c3af8fso531021fa.0
+ for <qemu-devel@nongnu.org>; Wed, 26 Jul 2023 11:42:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690396575; x=1691001375;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20221208; t=1690396940; x=1691001740;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kbEjOnkySITmLw82s9WCGkUqlGYptTamWi06s3l0n7s=;
- b=QvnVUSSrxH5WZh0ZAj3hd76IRSUuJ901H+NqXLI/h22kIFfoUNmDIC+Ny/Gtd1HVQK
- PvWUXw1gJ9xeMJHaE9CEaZudju9+ax56nFI08M2QRc0KpJd+6MdMunlt9rv3cmJkIr+f
- hE03229H5gjxbactu3a/SI3sQ8YdkbzaT44vSeUH4bR7dH/uhppRJN+DC15i6ahXPzz+
- SssaQpf7p/Kki3KHbrxDj9rUCKMAAFgTE0JrJjpauoSZUuq8pPzk8MUwK/7PenpO6OSL
- 9Y6dblykE8FmEeSCE4MR8oUG4gd2TnFS4D55bvC890OF42VgeLs+iN8rGM7RPX8qvR/d
- sXXQ==
-X-Gm-Message-State: ABy/qLa1Y0OfkVDNhp7u8hfYJOai63993RyWTemVJJOvx8kKZKVw3E3I
- DequTTU26QSk7txvabVC8QY=
-X-Google-Smtp-Source: APBJJlF5/fDOPSw+Q1LCBloGJicZ0hEasezVw9N/HnVZQl1W2EG9jOIxWwa1HeHzc6WwR4FZMG8oPQ==
-X-Received: by 2002:a17:903:489:b0:1bb:961e:dfbc with SMTP id
- jj9-20020a170903048900b001bb961edfbcmr2503911plb.20.1690396575474; 
- Wed, 26 Jul 2023 11:36:15 -0700 (PDT)
-Received: from wheely.local0.net ([118.102.104.45])
- by smtp.gmail.com with ESMTPSA id
- e13-20020a17090301cd00b001b83dc8649dsm13485670plh.250.2023.07.26.11.36.10
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 26 Jul 2023 11:36:15 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: Daniel Henrique Barboza <danielhb413@gmail.com>
-Cc: Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-ppc@nongnu.org,
- qemu-devel@nongnu.org, Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
-Subject: [PATCH 7/7] tests/avocado: ppc64 reverse debugging tests for pseries
- and powernv
-Date: Thu, 27 Jul 2023 04:35:32 +1000
-Message-Id: <20230726183532.434380-8-npiggin@gmail.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230726183532.434380-1-npiggin@gmail.com>
-References: <20230726183532.434380-1-npiggin@gmail.com>
+ bh=xEFRUBIGZXh8Tl1pSSZCoXm7cZLy+yGYlx3uOrbLuyA=;
+ b=Q25JgwiTqSKV2KMKWW2peu8Ie3oewOcLLxgc+RWTIP9euPpQD8KyrV9OOaNAFQDUX4
+ 7UsXhE545n2QASlRrT5JzvKqsLJYbapriZ/ZYd0kGoNKnRT/dN+612PCnCloeOwKjnIR
+ iCJF5QPd3RPGuWEcqN5UuSMcQH4B0cSVbt80QSUEYjVPYon5Rhrz5VYpFxUYWSLPjj/M
+ 94PSO4bnL9j/Hp+UXEURV/4xd5zSyVSISogALkKHdxc1+mX5ranF8k5C04gtNUccZdwq
+ r7xl1Uy44vjXaQzX5xhHEOzc1z2uE72Q2cSfsKHGc6YXefgJn27zBeeyeRE+v9HBmhhb
+ Z8Mw==
+X-Gm-Message-State: ABy/qLZi+sKfR2X3gYyo1QUSkqhHfVY9xlDKgeLjmFoIB2l5OxjNydjM
+ BJGTFUwsRAZQMBEDEhyjQIgJKIquoQ+tktuTNg9qbgZ8PZDQUxp6/mSkaHR/i/EVBCxk9qsSPn2
+ MVQlTPs+xx/IPjNIW2Gg0Tl2VjuiP59A=
+X-Received: by 2002:ac2:4f0c:0:b0:4fe:c40:3583 with SMTP id
+ k12-20020ac24f0c000000b004fe0c403583mr19954lfr.39.1690396940486; 
+ Wed, 26 Jul 2023 11:42:20 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlEVWgJbrQMIHIQlTvztRmSSTUmuea8YU+s81vqUN5BCDDc20N5nfi1Nlf34bD1QmIJEGq5BnGO7Maig2GXrJjI=
+X-Received: by 2002:ac2:4f0c:0:b0:4fe:c40:3583 with SMTP id
+ k12-20020ac24f0c000000b004fe0c403583mr19940lfr.39.1690396940195; Wed, 26 Jul
+ 2023 11:42:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x630.google.com
+References: <20230726161942.229093-1-berrange@redhat.com>
+ <0d0f9f65-2ead-6852-20c2-a83e256eecac@redhat.com>
+In-Reply-To: <0d0f9f65-2ead-6852-20c2-a83e256eecac@redhat.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
+Date: Wed, 26 Jul 2023 22:42:08 +0400
+Message-ID: <CAMxuvaxrBSw7nNr=3WEwACcwhnJ4XhT2_o4mTwuCojhr3U_TFw@mail.gmail.com>
+Subject: Re: [PATCH] gitlab: remove duplication between msys jobs
+To: Thomas Huth <thuth@redhat.com>
+Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ qemu-devel@nongnu.org, Beraldo Leal <bleal@redhat.com>, 
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Yonggang Luo <luoyonggang@gmail.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ Bin Meng <bin.meng@windriver.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mlureau@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,53 +101,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These machines run reverse-debugging well enough to pass basic tests.
-Wire them up.
+Hi
 
-Cc: Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- tests/avocado/reverse_debugging.py | 29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+On Wed, Jul 26, 2023 at 10:21=E2=80=AFPM Thomas Huth <thuth@redhat.com> wro=
+te:
+>
+> On 26/07/2023 18.19, Daniel P. Berrang=C3=A9 wrote:
+> > Although they share a common parent, the two msys jobs still have
+> > massive duplication in their script definitions that can easily be
+> > collapsed.
+> >
+> > Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+> > ---
+> >   .gitlab-ci.d/windows.yml | 132 +++++++++++++++-----------------------=
+-
+> >   1 file changed, 49 insertions(+), 83 deletions(-)
+>
+> We originally had different sets of packages in the 32-bit and 64-bit job=
+s,
+> to distribute the load between the two jobs ... but it got unified in com=
+mit
+> 14547e0877f3522. Now considering that we are facing timeouts again, we
+> should maybe rather revert that commit instead of unifying the lists fore=
+ver?
+>
+> Anyway, before we unify the compiler package name suffix between the two
+> jobs, I really would like to see whether the mingw Clang builds QEMU fast=
+er
+> in the 64-bit job ... but so far I failed to convince meson to accept the
+> Clang from the mingw package ... does anybody know how to use Clang with
+> MSYS2 properly?
 
-diff --git a/tests/avocado/reverse_debugging.py b/tests/avocado/reverse_debugging.py
-index 7d1a478df1..fc47874eda 100644
---- a/tests/avocado/reverse_debugging.py
-+++ b/tests/avocado/reverse_debugging.py
-@@ -233,3 +233,32 @@ def test_aarch64_virt(self):
- 
-         self.reverse_debugging(
-             args=('-kernel', kernel_path))
-+
-+class ReverseDebugging_ppc64(ReverseDebugging):
-+    """
-+    :avocado: tags=accel:tcg
-+    """
-+
-+    REG_PC = 0x40
-+
-+    # unidentified gitlab timeout problem
-+    @skipIf(os.getenv('GITLAB_CI'), 'Running on GitLab')
-+    def test_ppc64_pseries(self):
-+        """
-+        :avocado: tags=arch:ppc64
-+        :avocado: tags=machine:pseries
-+        """
-+        # SLOF branches back to its entry point, which causes this test
-+        # to take the 'hit a breakpoint again' path. That's not a problem,
-+        # just slightly different than the other machines.
-+        self.endian_is_le = False
-+        self.reverse_debugging()
-+
-+    @skipIf(os.getenv('GITLAB_CI'), 'Running on GitLab')
-+    def test_ppc64_powernv(self):
-+        """
-+        :avocado: tags=arch:ppc64
-+        :avocado: tags=machine:powernv
-+        """
-+        self.endian_is_le = False
-+        self.reverse_debugging()
--- 
-2.40.1
+I checked it this week (because of bug #1782), and it compiled
+successfully. Although I think we may have some issues with clang on
+windows, as it doesn't pack struct the expected way. See also:
+https://discourse.llvm.org/t/how-to-undo-the-effect-of-mms-bitfields/72271.
+
+It may be a good idea to add some extra static checks about our packed
+struct padding expectations..
+
+Eh, it didn't feel much faster to compile with clang :)
 
 
