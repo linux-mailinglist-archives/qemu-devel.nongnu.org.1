@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45B577638EF
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jul 2023 16:21:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22D40763923
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jul 2023 16:30:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOeWw-00038P-2x; Wed, 26 Jul 2023 09:26:18 -0400
+	id 1qOeWt-00036c-Dg; Wed, 26 Jul 2023 09:26:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <serg.oker@gmail.com>)
- id 1qOeWa-0002pG-PN; Wed, 26 Jul 2023 09:25:56 -0400
-Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
+ id 1qOeWa-0002pD-On; Wed, 26 Jul 2023 09:25:56 -0400
+Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <serg.oker@gmail.com>)
- id 1qOeWW-0003LB-Sz; Wed, 26 Jul 2023 09:25:55 -0400
-Received: by mail-lf1-x130.google.com with SMTP id
- 2adb3069b0e04-4fde022de07so9479284e87.1; 
- Wed, 26 Jul 2023 06:25:50 -0700 (PDT)
+ id 1qOeWW-0003M3-UH; Wed, 26 Jul 2023 09:25:56 -0400
+Received: by mail-lf1-x131.google.com with SMTP id
+ 2adb3069b0e04-4fe11652b64so978121e87.0; 
+ Wed, 26 Jul 2023 06:25:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1690377949; x=1690982749;
+ d=gmail.com; s=20221208; t=1690377950; x=1690982750;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=YD7YWh1gD1ryuvX4jYCwJqGNdPGhCLfiSZBq/8ofA4M=;
- b=dR/wU8d85rnBxT26E6CUOtQmYe6kndO3WUOmj3wOKRHyp97Ca/0CYGjmiIh6VPZ0L6
- 0aa70R0MK7Yp5f99+f9KG9Hh8Zsi/4MC+AeHdfgPsbq0E4P5pYQCQCjouk5tcLPVxYou
- C/IN4odkE0HnAQjs7Xo77L0ZsqYJzh3YZRlk5FjHTBIdzwFEqDRza/GJHrCQy6nT796A
- Bv29Zv/eNTZuoFt8Uw3o7f8Ep9Z9/BlfxEtD4yFArnT6iYkf2s26Mxd5VekxyfWpBKCF
- L+j5xU9RjFQic9KHv1i14hB9RBSIExouLjPCj3EGGiiqVIa00Hq/rsV5v/DrKGx/vbLh
- vfaQ==
+ bh=QbfsBj/+K4fj7D8dqGOr1JbmZZeN9V37pJVq9TrwgUQ=;
+ b=VXQptpi6UUNjS7OhaBnD6VmS8UbaD1QsTbhx6E+aSk3o8JtpN5wP60l0VhLDwziEqT
+ CapsUv5c/6THl0oqHP5IRWQC79VvvX7QWd0r1gfHuCBZAk65eFtvf4XX/O754NnUrzTu
+ 0CoMdR6YFOW6OTpk+IVgwXaNkHf5PUlZSdcLZ28Mkgq3d5IAQcsibPKP5PlqQhtw97xW
+ fl5gfyvj71mOVL/Q2ObFqhKXWPxrMMHDSxo+0+QX3RUNa7CCOaskgZTSPgilUkweYKQb
+ CuSJJlvA0k3nA9IAq1Kwk46+RRoZAdSZG3IlwEHtM+HIBatY7hUpmJz5OdlhdWJ4UbXB
+ fF/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690377949; x=1690982749;
+ d=1e100.net; s=20221208; t=1690377950; x=1690982750;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YD7YWh1gD1ryuvX4jYCwJqGNdPGhCLfiSZBq/8ofA4M=;
- b=Ce9bQmaGRWXUHM6G1hSXj3kSrgHGD0seWYGPogLOZX6dFCSQJoVJlZJVoWKoCKLkOP
- T3ZeiMPHiEFlcsmhR8ihj1Ak9nNwjXoFNdaxl47WkWuiyfQKwjLaZEQsOh1vrbehSjHa
- NPEtTxtZwmsZt9pv2zflxkmOGIoBYMb8btljdIe1LqnZST7u1LyCgS3g+ukSIMffUOBd
- IY+cJ7QfqctqlS7BxrQgbdh5YtE+mNqWscX9bc2Nzp4HbyPllwBNX5ml+NusVXjk6/lM
- kBZR3NK3HcmSdk9ELySzo+LKJYWCfxqoc/fP92O6Rak56eTaXowiDiXgJIJ+Dr4wx8Vo
- EZng==
-X-Gm-Message-State: ABy/qLaywXqTRqYceThbub65Rn3x6qw9jAx07dklMlstV5U+FpJNUHPP
- t4pqUlG/KXq5rEjSuREksb8nMkfaKbo=
-X-Google-Smtp-Source: APBJJlECyJy6GEO+HYsooUHBJDSLeID1m/kkwnsbguObBV0NHrwfP/XijJjwPJZk6AzAhGhxbf7IFg==
-X-Received: by 2002:a19:7705:0:b0:4fd:c923:db62 with SMTP id
- s5-20020a197705000000b004fdc923db62mr1352788lfc.23.1690377947933; 
- Wed, 26 Jul 2023 06:25:47 -0700 (PDT)
+ bh=QbfsBj/+K4fj7D8dqGOr1JbmZZeN9V37pJVq9TrwgUQ=;
+ b=hTMmuthzaZJHbjyst6QHLHx/9w0FQ2qP+F3NNBarm2lXLsqgsqYgkUwqnwY3AaEC+B
+ Cyg7n+oMX77dhby8RyJeyDGVZYwZQbTfG/gQt7VFb5n/xyjNEpaGergdQNr2eV8kXKK9
+ LRo7Hkfvk6/KLfiiG6ttaX47fZnIntlKLfKJmvYx84kJMrBqdzIU38ZgA9Yb6X88E5BE
+ jh0ytkDqXQ2O6il0011N5HHlPKwWWlVbNzZqewAHC4wzcTkk9i4k8lfzzTYouZx4sgTx
+ 8jCdiNJx8CVzGPmDHXE2d6ms8KxDWwcgvJVTkF5YwioYQT78unz/Hxitn16LBgtcqK58
+ Pqww==
+X-Gm-Message-State: ABy/qLa+K374dIAiaVCpGbNuqslu8Xul/wrjbWzcBeKhIP/e3UpFs/BX
+ TmMpUWMTUGexvDRQ43xsLRScyNPm0uk=
+X-Google-Smtp-Source: APBJJlFMVZ7FAifU0TtPpycOF77V3e91tK9d2PFUmA0k3YWCN6Ha2D8HJ0Gr6Qb8JNDHZIVntCg+3g==
+X-Received: by 2002:a19:ca0e:0:b0:4f8:6dfd:faa0 with SMTP id
+ a14-20020a19ca0e000000b004f86dfdfaa0mr1457298lfg.2.1690377949945; 
+ Wed, 26 Jul 2023 06:25:49 -0700 (PDT)
 Received: from sergevik-thinkpad.localdomain ([213.197.136.186])
  by smtp.gmail.com with ESMTPSA id
- j22-20020a19f516000000b004fe0c3d8bb4sm565079lfb.84.2023.07.26.06.25.47
+ j22-20020a19f516000000b004fe0c3d8bb4sm565079lfb.84.2023.07.26.06.25.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 26 Jul 2023 06:25:47 -0700 (PDT)
+ Wed, 26 Jul 2023 06:25:49 -0700 (PDT)
 From: Sergey Kambalin <serg.oker@gmail.com>
 X-Google-Original-From: Sergey Kambalin <sergey.kambalin@auriga.com>
 To: qemu-arm@nongnu.org
 Cc: qemu-devel@nongnu.org,
 	Sergey Kambalin <sergey.kambalin@auriga.com>
-Subject: [PATCH 24/44] Add GENET register structs. Part 2
-Date: Wed, 26 Jul 2023 16:24:52 +0300
-Message-Id: <20230726132512.149618-25-sergey.kambalin@auriga.com>
+Subject: [PATCH 25/44] Add GENET register structs. Part 3
+Date: Wed, 26 Jul 2023 16:24:53 +0300
+Message-Id: <20230726132512.149618-26-sergey.kambalin@auriga.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230726132512.149618-1-sergey.kambalin@auriga.com>
 References: <20230726132512.149618-1-sergey.kambalin@auriga.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::130;
- envelope-from=serg.oker@gmail.com; helo=mail-lf1-x130.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::131;
+ envelope-from=serg.oker@gmail.com; helo=mail-lf1-x131.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,148 +93,37 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
 ---
- include/hw/net/bcm2838_genet.h | 218 +++++++++++++++++++++++++++++++++
- 1 file changed, 218 insertions(+)
+ include/hw/net/bcm2838_genet.h | 206 +++++++++++++++++++++++++++++++++
+ 1 file changed, 206 insertions(+)
 
 diff --git a/include/hw/net/bcm2838_genet.h b/include/hw/net/bcm2838_genet.h
-index 89b45eb39f..4542f27eba 100644
+index 4542f27eba..4cf70a17d3 100644
 --- a/include/hw/net/bcm2838_genet.h
 +++ b/include/hw/net/bcm2838_genet.h
-@@ -18,6 +18,10 @@ OBJECT_DECLARE_SIMPLE_TYPE(BCM2838GenetState, BCM2838_GENET)
- #define BCM2838_GENET_REV_MAJOR         6
- #define BCM2838_GENET_REV_MINOR         0
+@@ -22,6 +22,9 @@ OBJECT_DECLARE_SIMPLE_TYPE(BCM2838GenetState, BCM2838_GENET)
+ #define BCM2838_GENET_DMA_RING_CNT      17
+ #define BCM2838_GENET_DMA_RING_DEFAULT  (BCM2838_GENET_DMA_RING_CNT - 1)
  
-+#define BCM2838_GENET_DMA_DESC_CNT      256
-+#define BCM2838_GENET_DMA_RING_CNT      17
-+#define BCM2838_GENET_DMA_RING_DEFAULT  (BCM2838_GENET_DMA_RING_CNT - 1)
++#define BCM2838_GENET_HFB_FILTER_CNT      48
++#define BCM2838_GENET_HFB_FILTER_SIZE     128
 +
  typedef union {
      uint32_t value;
      struct {
-@@ -66,6 +70,135 @@ typedef union {
+@@ -179,6 +182,25 @@ typedef union {
      } fields;
- } BCM2838GenetIntrl1;
+ } BCM2838GenetDmaStatus;
  
 +typedef union {
 +    uint32_t value;
 +    struct {
-+        uint32_t tx_en:1;
-+        uint32_t rx_en:1;
-+        uint32_t speed:2;
-+        uint32_t promisc:1;
-+        uint32_t pad_en:1;
-+        uint32_t crc_fwd:1;
-+        uint32_t pause_fwd:1;
-+        uint32_t rx_pause_ignore:1;
-+        uint32_t tx_addr_ins:1;
-+        uint32_t hd_en:1;
-+        uint32_t sw_reset_old:1;
-+        uint32_t reserved_12:1;
-+        uint32_t sw_reset:1;
-+        uint32_t reserved_14:1;
-+        uint32_t lcl_loop_en:1;
-+        uint32_t reserved_16_21:6;
-+        uint32_t auto_config:1;
-+        uint32_t cntl_frm_en:1;
-+        uint32_t no_len_chk:1;
-+        uint32_t rmt_loop_en:1;
-+        uint32_t rx_err_disc:1;
-+        uint32_t prbl_en:1;
-+        uint32_t tx_pause_ignore:1;
-+        uint32_t tx_rx_en:1;
-+        uint32_t runt_filter_dis:1;
-+        uint32_t reserved_31:1;
-+    } fields;
-+} BCM2838GenetUmacCmd;
-+
-+typedef union {
-+    uint32_t value;
-+    struct {
-+        uint32_t addr_3:8;
-+        uint32_t addr_2:8;
-+        uint32_t addr_1:8;
-+        uint32_t addr_0:8;
-+    } fields;
-+} BCM2838GenetUmacMac0;
-+
-+typedef union {
-+    uint32_t value;
-+    struct {
-+        uint32_t addr_5:8;
-+        uint32_t addr_4:8;
-+        uint32_t reserved_16_31:16;
-+    } fields;
-+} BCM2838GenetUmacMac1;
-+
-+typedef union {
-+    uint32_t value;
-+    struct {
-+        uint32_t reg_data:16;
-+        uint32_t reg_id:5;
-+        uint32_t phy_id:5;
-+        uint32_t wr:1;
-+        uint32_t rd:1;
-+        uint32_t rd_fail:1;
-+        uint32_t start_busy:1;
-+        uint32_t reserved_30_31:2;
-+    } fields;
-+} BCM2838GenetUmacMdioCmd;
-+
-+typedef union {
-+    uint32_t value;
-+    struct {
-+        uint32_t en:17;
-+        uint32_t reserved_17_31:15;
-+    } fields;
-+} BCM2838GenetDmaRingCfg;
-+
-+typedef union {
-+    uint32_t value;
-+    struct {
-+        uint32_t en:1;
-+        uint32_t ring_buf_en:17;
-+        uint32_t reserved_18_19:2;
-+        uint32_t tsb_swap_en:1;
-+        uint32_t reserved_21_31:11;
-+    } fields;
-+} BCM2838GenetDmaCtrl;
-+
-+typedef union {
-+    uint32_t value;
-+    struct {
-+        uint32_t index:16;
-+        uint32_t discard_cnt:16;
-+    } fields;
-+} BCM2838GenetDmaProdIndex;
-+
-+typedef union {
-+    uint32_t value;
-+    struct {
-+        uint32_t index:16;
-+        uint32_t reserved_16_31:16;
-+    } fields;
-+} BCM2838GenetDmaConsIndex;
-+
-+typedef union {
-+    uint32_t value;
-+    struct {
-+        uint32_t disabled:1;
-+        uint32_t desc_ram_init_busy:1;
-+        uint32_t reserved_2_31:30;
-+    } fields;
-+} BCM2838GenetDmaStatus;
-+
-+typedef union {
-+    uint32_t value;
-+    struct {
-+        uint32_t overrun:1;
-+        uint32_t crc_error:1;
-+        uint32_t rxerr:1;
-+        uint32_t no:1;
-+        uint32_t lg:1;
-+        uint32_t multicast:1;
-+        uint32_t broadcast:1;
-+        uint32_t reserved_7_11:5;
++        uint32_t reserved_0_3:4;
++        uint32_t do_csum:1;
++        uint32_t ow_crc:1;
++        uint32_t append_crc:1;
++        uint32_t reserved_7_8:2;
++        uint32_t underrun:1;
++        uint32_t reserved_10_11:2;
 +        uint32_t wrap:1;
 +        uint32_t sop:1;
 +        uint32_t eop:1;
@@ -242,110 +131,218 @@ index 89b45eb39f..4542f27eba 100644
 +        uint32_t buflength:12;
 +        uint32_t reserved_28_31:4;
 +    } fields;
-+} BCM2838GenetRdmaLengthStatus;
++} BCM2838GenetTdmaLengthStatus;
 +
- typedef struct {
-     BCM2838GenetSysRevCtrl rev_ctrl;
-     uint32_t port_ctrl;
-@@ -131,6 +264,88 @@ typedef struct {
-     uint8_t reserved_0x18[0xE8];
- } __attribute__((__packed__)) BCM2838GenetRegsTbuf;
+ typedef union {
+     uint32_t value;
+     struct {
+@@ -346,6 +368,53 @@ typedef struct {
+     uint8_t reserved_0x10D0[0xF30];
+ } __attribute__((__packed__)) BCM2838GenetRegsRdma;
  
 +typedef struct {
-+    uint8_t reserved_0x0[0x4];
-+    uint32_t hd_bkp_ctrl;
-+    BCM2838GenetUmacCmd cmd;
-+    BCM2838GenetUmacMac0 mac0;
-+    BCM2838GenetUmacMac1 mac1;
-+    uint32_t max_frame_len;
-+    uint32_t pause_quanta;
-+    uint8_t reserved_0x1C[0x28];
-+    uint32_t mode;
-+    uint32_t frm_tag0;
-+    uint32_t frm_tag1;
-+    uint8_t reserved_0x50[0xC];
-+    uint32_t tx_ipg_len;
-+    uint8_t reserved_0x60[0x4];
-+    uint32_t eee_ctrl;
-+    uint32_t eee_lpi_timer;
-+    uint32_t eee_wake_timer;
-+    uint32_t eee_ref_count;
-+    uint8_t reserved_0x74[0x4];
-+    uint32_t rx_ipg_inv;
-+    uint8_t reserved_0x7C[0x294];
-+    uint32_t macsec_prog_tx_crc;
-+    uint32_t macsec_ctrl;
-+    uint8_t reserved_0x318[0x18];
-+    uint32_t pause_ctrl;
-+    uint32_t tx_flush;
-+    uint32_t rx_fifo_status;
-+    uint32_t tx_fifo_status;
-+    uint8_t reserved_0x340[0xC0];
-+    uint8_t mib[0x180];
-+    uint32_t mib_ctrl;
-+    uint8_t reserved_0x584[0x90];
-+    BCM2838GenetUmacMdioCmd mdio_cmd;
-+    uint8_t reserved_0x618[0x8];
-+    uint32_t mpd_ctrl;
-+    uint32_t mpd_pw_ms;
-+    uint32_t mpd_pw_ls;
-+    uint8_t reserved_0x62C[0xC];
-+    uint32_t mdf_err_cnt;
-+    uint8_t reserved_0x63C[0x14];
-+    uint32_t mdf_ctrl;
-+    uint32_t mdf_addr;
-+    uint8_t reserved_0x658[0x1A8];
-+} __attribute__((__packed__)) BCM2838GenetRegsUmac;
-+
-+typedef struct {
-+    BCM2838GenetRdmaLengthStatus length_status;
++    BCM2838GenetTdmaLengthStatus length_status;
 +    uint32_t address_lo;
 +    uint32_t address_hi;
-+} __attribute__((__packed__)) BCM2838GenetRdmaDesc;
++} __attribute__((__packed__)) BCM2838GenetTdmaDesc;
 +
 +typedef struct {
-+    uint32_t write_ptr;
-+    uint32_t write_ptr_hi;
-+    BCM2838GenetDmaProdIndex prod_index;
++    uint32_t read_ptr;
++    uint32_t read_ptr_hi;
 +    BCM2838GenetDmaConsIndex cons_index;
++    BCM2838GenetDmaProdIndex prod_index;
 +    uint32_t ring_buf_size;
 +    uint32_t start_addr;
 +    uint32_t start_addr_hi;
 +    uint32_t end_addr;
 +    uint32_t end_addr_hi;
 +    uint32_t mbuf_done_tresh;
-+    uint32_t xon_xoff_tresh;
-+    uint32_t read_ptr;
-+    uint32_t read_ptr_hi;
++    uint32_t flow_period;
++    uint32_t write_ptr;
++    uint32_t write_ptr_hi;
 +    uint8_t reserved_0x34[0xC];
-+} __attribute__((__packed__)) BCM2838GenetRdmaRing;
++} __attribute__((__packed__)) BCM2838GenetTdmaRing;
 +
 +typedef struct {
-+    BCM2838GenetRdmaDesc descs[BCM2838_GENET_DMA_DESC_CNT];
-+    BCM2838GenetRdmaRing rings[BCM2838_GENET_DMA_RING_CNT];
++    BCM2838GenetTdmaDesc descs[BCM2838_GENET_DMA_DESC_CNT];
++    BCM2838GenetTdmaRing rings[BCM2838_GENET_DMA_RING_CNT];
 +    BCM2838GenetDmaRingCfg ring_cfg;
 +    BCM2838GenetDmaCtrl ctrl;
 +    BCM2838GenetDmaStatus status;
 +    uint32_t scb_burst_size;
 +    uint8_t reserved_0x1050[0x1C];
-+    uint32_t ring_timeout[17];
-+    uint32_t index2ring[8];
-+    uint8_t reserved_0x10D0[0xF30];
-+} __attribute__((__packed__)) BCM2838GenetRegsRdma;
++    uint32_t arb_ctrl;
++    uint32_t priority[3];
++    uint8_t reserved_0x10D0[0xF84];
++} __attribute__((__packed__)) BCM2838GenetRegsTdma;
++
++typedef struct {
++    uint8_t flt[BCM2838_GENET_HFB_FILTER_CNT * BCM2838_GENET_HFB_FILTER_SIZE
++                * sizeof(uint32_t)];
++    uint8_t reserved_0x6000[0x1C00];
++    uint32_t ctrl;
++    uint32_t flt_enable[2];
++    uint8_t reserved_0x7C0C[0x10];
++    uint32_t flt_len[BCM2838_GENET_HFB_FILTER_CNT / sizeof(uint32_t)];
++    uint8_t reserved_0x7C4C[0x3B4];
++} __attribute__((__packed__)) BCM2838GenetRegsHfb;
 +
  typedef struct {
      BCM2838GenetRegsSys sys;
      BCM2838GenetRegsGrBridge gr_bridge;
-@@ -143,6 +358,9 @@ typedef struct {
-     uint8_t reserved_0x400[0x200];
-     BCM2838GenetRegsTbuf tbuf;
-     uint8_t reserved_0x700[0x100];
-+    BCM2838GenetRegsUmac umac;
-+    uint8_t reserved_0x1000[0x1000];
-+    BCM2838GenetRegsRdma rdma;
+@@ -361,8 +430,144 @@ typedef struct {
+     BCM2838GenetRegsUmac umac;
+     uint8_t reserved_0x1000[0x1000];
+     BCM2838GenetRegsRdma rdma;
++    BCM2838GenetRegsTdma tdma;
++    uint8_t reserved_0x6000[0x2000];
++    BCM2838GenetRegsHfb hfb;
  } __attribute__((__packed__)) BCM2838GenetRegs;
  
++typedef union {
++    uint16_t value;
++    struct {
++        uint16_t reserved_0_5:6;
++        uint16_t speed1000:1;
++        uint16_t ctst:1;
++        uint16_t fulldplx:1;
++        uint16_t anrestart:1;
++        uint16_t isolate:1;
++        uint16_t pdown:1;
++        uint16_t aenable:1;
++        uint16_t speed100:1;
++        uint16_t loopback:1;
++        uint16_t reset:1;
++    } fields;
++} BCM2838GenetPhyBmcr;
++
++typedef union {
++    uint16_t value;
++    struct {
++        uint16_t ercap:1;
++        uint16_t jcd:1;
++        uint16_t lstatus:1;
++        uint16_t anegcapable:1;
++        uint16_t rfault:1;
++        uint16_t anegcomplete:1;
++        uint16_t reserved_6_7:2;
++        uint16_t estaten:1;
++        uint16_t _100half2:1;
++        uint16_t _100full2:1;
++        uint16_t _10half:1;
++        uint16_t _10full:1;
++        uint16_t _100half:1;
++        uint16_t _100full:1;
++        uint16_t _100base4:1;
++    } fields;
++} BCM2838GenetPhyBmsr;
++
++typedef union {
++    uint16_t value;
++    struct {
++        uint16_t slct:5;
++        uint16_t _10half_1000xfull:1;
++        uint16_t _10full_1000xhalf:1;
++        uint16_t _100half_1000xpause:1;
++        uint16_t _100full_1000xpause_asym:1;
++        uint16_t _100base4:1;
++        uint16_t pause_cap:1;
++        uint16_t pause_asym:1;
++        uint16_t reserved_12:1;
++        uint16_t rfault:1;
++        uint16_t lpack:1;
++        uint16_t npage:1;
++    } fields;
++} BCM2838GenetPhyLpa;
++
++typedef union {
++    uint16_t value;
++    struct {
++        uint16_t reserved_0_9:10;
++        uint16_t _1000half:1;
++        uint16_t _1000full:1;
++        uint16_t _1000remrxok:1;
++        uint16_t _1000localrxok:1;
++        uint16_t _1000msres:1;
++        uint16_t _1000msfail:1;
++    } fields;
++} BCM2838GenetPhyStat1000;
++
++typedef union {
++    uint16_t value;
++    struct {
++        uint16_t reg_id_mask:3;
++        uint16_t reserved_3:1;
++        uint16_t reg_data:8;
++        uint16_t reg_id:3;
++        uint16_t misc_wren:1;
++    } fields_1;
++    struct {
++        uint16_t reserved_0_3:4;
++        uint16_t reg_data:12;
++    } fields_2;
++} BCM2838GenetPhyAuxCtl;
++
++typedef union {
++    uint16_t value;
++    struct {
++        uint16_t reg_data:10;
++        uint16_t reg_id:5;
++        uint16_t wr:1;
++    } fields;
++} BCM2838GenetPhyShadow;
++
++
++typedef struct {
++    uint8_t reg_id;
++    uint8_t block_id;
++}  __attribute__((__packed__)) BCM2838GenetPhyExpSel;
++
++typedef struct {
++    BCM2838GenetPhyBmcr bmcr;
++    BCM2838GenetPhyBmsr bmsr;
++    uint16_t sid1;
++    uint16_t sid2;
++    uint16_t advertise;
++    BCM2838GenetPhyLpa lpa;
++    uint16_t expansion;
++    uint16_t next_page;
++    uint16_t lpa_next_page;
++    uint16_t ctrl1000;
++    BCM2838GenetPhyStat1000 stat1000;
++    uint16_t reserved_11_12[2];
++    uint16_t mmd_ctrl;
++    uint16_t mmd_data;
++    uint16_t estatus;
++    uint16_t ecr;
++    uint16_t esr;
++    uint16_t dcounter;
++    uint16_t fcscounter;
++    uint16_t nwaytest;
++    uint16_t exp_data;
++    uint16_t srevision;
++    BCM2838GenetPhyExpSel exp_ctrl;
++    BCM2838GenetPhyAuxCtl aux_ctl;
++    uint16_t phyaddr;
++    uint16_t isr;
++    uint16_t imr;
++    BCM2838GenetPhyShadow shd;
++    uint16_t reserved_29;
++    uint16_t rdb_addr;
++    uint16_t rdb_data;
++} __attribute__((__packed__)) BCM2838GenetPhyRegs;
++
  struct BCM2838GenetState {
+     /*< private >*/
+     SysBusDevice parent_obj;
+@@ -373,6 +578,7 @@ struct BCM2838GenetState {
+     AddressSpace dma_as;
+ 
+     BCM2838GenetRegs regs;
++    BCM2838GenetPhyRegs phy_regs;
+ 
+     qemu_irq irq_default;
+     qemu_irq irq_prio;
 -- 
 2.34.1
 
