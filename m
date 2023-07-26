@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35CF37627C5
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jul 2023 02:35:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC07C7627CD
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jul 2023 02:36:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOSTk-0001yN-3l; Tue, 25 Jul 2023 20:34:12 -0400
+	id 1qOSTi-0001wJ-32; Tue, 25 Jul 2023 20:34:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qOSTh-0001wK-Lt
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 20:34:09 -0400
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qOSTg-0001uH-7Z
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 20:34:08 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qOSTd-0003Am-CB
- for qemu-devel@nongnu.org; Tue, 25 Jul 2023 20:34:09 -0400
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qOSTd-0003B5-BL
+ for qemu-devel@nongnu.org; Tue, 25 Jul 2023 20:34:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690331634;
+ s=mimecast20190719; t=1690331639;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=cK/u9hBezZjv5U8uB342B7vDcqbotvyMZ2sIvXNJXuw=;
- b=I5qOfScqUFlnJ7GV1ug8RMKLiXpZ9mEhSRiHYi4ZWjEImytu8WDDJfX/2bNXzWnx77/lDQ
- 3oaRWhCLOdonwPu1sgHXXH7WvMgNSwROVckKSNGWh9XhofGqFGUBjuYBXZebAh2Y49p9MK
- fA7S6dcMzkPpZVVHkIUAH8KdL//H/5Q=
+ bh=J8S0eAWzN6EGtNTjC2qFLYW++XUaEL4oEsl8iKKMElY=;
+ b=IY5WVeiceHRIVmRaQJuVo+oNvQ8BtsBECERaudajt+AmsiqVSCpMVugENnca/ncUP0PhGp
+ ODq8rrqAqOb5EAk7q0iqhQ2T9f+4+Crq+VT1fEfPdT6bPSBs2ab6Q8Q6ElXzA0JtA65MdY
+ ZSeI+PlefBf/5+Loy331y8O2Z3m7S50=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-5-J2x1c4w3PviT9B5_7O8dmg-1; Tue, 25 Jul 2023 20:33:48 -0400
-X-MC-Unique: J2x1c4w3PviT9B5_7O8dmg-1
+ us-mta-573-05eIoiskP4W0CGpOtJpIhA-1; Tue, 25 Jul 2023 20:33:57 -0400
+X-MC-Unique: 05eIoiskP4W0CGpOtJpIhA-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
  [10.11.54.10])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C410885A58A;
- Wed, 26 Jul 2023 00:33:46 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E09FF8030AC;
+ Wed, 26 Jul 2023 00:33:55 +0000 (UTC)
 Received: from gshan.redhat.com (unknown [10.64.136.80])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 32EB0492C13;
- Wed, 26 Jul 2023 00:33:37 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 6621F4A9004;
+ Wed, 26 Jul 2023 00:33:47 +0000 (UTC)
 From: Gavin Shan <gshan@redhat.com>
 To: qemu-arm@nongnu.org
 Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, peter.maydell@linaro.org,
@@ -53,9 +53,9 @@ Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, peter.maydell@linaro.org,
  dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
  imammedo@redhat.com, cohuck@redhat.com, richard.henderson@linaro.org,
  pbonzini@redhat.com, shan.gavin@gmail.com
-Subject: [PATCH v2 4/8] hw/arm/virt: Check CPU type in machine_run_board_init()
-Date: Wed, 26 Jul 2023 10:32:01 +1000
-Message-ID: <20230726003205.1599788-5-gshan@redhat.com>
+Subject: [PATCH v2 5/8] hw/arm/virt: Unsupported host CPU model on TCG
+Date: Wed, 26 Jul 2023 10:32:02 +1000
+Message-ID: <20230726003205.1599788-6-gshan@redhat.com>
 In-Reply-To: <20230726003205.1599788-1-gshan@redhat.com>
 References: <20230726003205.1599788-1-gshan@redhat.com>
 MIME-Version: 1.0
@@ -87,88 +87,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Set mc->valid_cpu_{types, models} so that the specified CPU type
-can be checked in machine_run_board_init(). We needn't to do the
-check by ourselves.
+The 'host' CPU model isn't supported until KVM or HVF is enabled.
+For example, the following error messages are seen when the guest
+is started with option '-cpu cortex-a8'.
+
+  qemu-system-aarch64: Invalid CPU type: cortex-a8-arm-cpu
+  The valid models are: cortex-a7, cortex-a15, cortex-a35,
+  cortex-a55, cortex-a72, cortex-a76, a64fx, neoverse-n1,
+  neoverse-v1, cortex-a53, cortex-a57, host, max
+
+Hide 'host' CPU model until KVM or HVF is enabled.
 
 Signed-off-by: Gavin Shan <gshan@redhat.com>
 ---
- hw/arm/virt.c | 39 ++++++++++++++++++++++-----------------
- 1 file changed, 22 insertions(+), 17 deletions(-)
+ hw/arm/virt.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 7d9dbc2663..debd85614e 100644
+index debd85614e..2562ca0c1e 100644
 --- a/hw/arm/virt.c
 +++ b/hw/arm/virt.c
-@@ -203,7 +203,7 @@ static const int a15irqmap[] = {
-     [VIRT_PLATFORM_BUS] = 112, /* ...to 112 + PLATFORM_BUS_NUM_IRQS -1 */
- };
- 
--static const char *valid_cpus[] = {
-+static const char * const valid_cpu_types[] = {
- #ifdef CONFIG_TCG
-     ARM_CPU_TYPE_NAME("cortex-a7"),
-     ARM_CPU_TYPE_NAME("cortex-a15"),
-@@ -219,19 +219,27 @@ static const char *valid_cpus[] = {
-     ARM_CPU_TYPE_NAME("cortex-a57"),
-     ARM_CPU_TYPE_NAME("host"),
-     ARM_CPU_TYPE_NAME("max"),
-+    NULL
- };
- 
--static bool cpu_type_valid(const char *cpu)
--{
--    int i;
--
--    for (i = 0; i < ARRAY_SIZE(valid_cpus); i++) {
--        if (strcmp(cpu, valid_cpus[i]) == 0) {
--            return true;
--        }
--    }
--    return false;
--}
-+static const char * const valid_cpu_models[] = {
-+#ifdef CONFIG_TCG
-+    "cortex-a7",
-+    "cortex-a15",
-+    "cortex-a35",
-+    "cortex-a55",
-+    "cortex-a72",
-+    "cortex-a76",
-+    "a64fx",
-+    "neoverse-n1",
-+    "neoverse-v1",
-+#endif
-+    "cortex-a53",
-+    "cortex-a57",
-+    "host",
-+    "max",
-+    NULL
-+};
- 
- static void create_randomness(MachineState *ms, const char *node)
- {
-@@ -2030,11 +2038,6 @@ static void machvirt_init(MachineState *machine)
-     unsigned int smp_cpus = machine->smp.cpus;
-     unsigned int max_cpus = machine->smp.max_cpus;
- 
--    if (!cpu_type_valid(machine->cpu_type)) {
--        error_report("mach-virt: CPU type %s not supported", machine->cpu_type);
--        exit(1);
--    }
--
-     possible_cpus = mc->possible_cpu_arch_ids(machine);
- 
-     /*
-@@ -2953,6 +2956,8 @@ static void virt_machine_class_init(ObjectClass *oc, void *data)
- #else
-     mc->default_cpu_type = ARM_CPU_TYPE_NAME("max");
+@@ -217,7 +217,9 @@ static const char * const valid_cpu_types[] = {
  #endif
-+    mc->valid_cpu_types = valid_cpu_types;
-+    mc->valid_cpu_models = valid_cpu_models;
-     mc->get_default_cpu_node_id = virt_get_default_cpu_node_id;
-     mc->kvm_type = virt_kvm_type;
-     assert(!mc->get_hotplug_handler);
+     ARM_CPU_TYPE_NAME("cortex-a53"),
+     ARM_CPU_TYPE_NAME("cortex-a57"),
++#if defined(CONFIG_KVM) || defined(CONFIG_HVF)
+     ARM_CPU_TYPE_NAME("host"),
++#endif
+     ARM_CPU_TYPE_NAME("max"),
+     NULL
+ };
+@@ -236,7 +238,9 @@ static const char * const valid_cpu_models[] = {
+ #endif
+     "cortex-a53",
+     "cortex-a57",
++#if defined(CONFIG_KVM) || defined(CONFIG_HVF)
+     "host",
++#endif
+     "max",
+     NULL
+ };
 -- 
 2.41.0
 
