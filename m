@@ -2,88 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F32BC763C51
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jul 2023 18:24:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B14B8763C0D
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jul 2023 18:11:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOgye-0002JY-QU; Wed, 26 Jul 2023 12:03:04 -0400
+	id 1qOgyU-0002EE-7o; Wed, 26 Jul 2023 12:02:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qOgx0-0001TY-2J
- for qemu-devel@nongnu.org; Wed, 26 Jul 2023 12:01:22 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qOgyS-0002DJ-O9
+ for qemu-devel@nongnu.org; Wed, 26 Jul 2023 12:02:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qOgww-00048K-TM
- for qemu-devel@nongnu.org; Wed, 26 Jul 2023 12:01:20 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qOgyR-0004dZ-6q
+ for qemu-devel@nongnu.org; Wed, 26 Jul 2023 12:02:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690387276;
+ s=mimecast20190719; t=1690387370;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=AhY1Hs7QOV6A70CnYUt6ytS3aAg6p7aC6MnWNaWl6HI=;
- b=ADc9xWwntYLfnlo/nvcn9hTgKwQZj57pmUopoYLKD0RbMslVbM2ES9QUD2mCkYG8jryaME
- XKgSpNo1JVPCXSxhU4B8ZsFDwjV/RAxgO4xSyVCAXav3ODuGOr42YiFTne+47h+YdvZFVd
- 0wRsOSqZMi9d+rW82aAYk8LRttcaCRo=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=rZZLy8l+7VAilXfQQ7ZH9vv3kVijAPeW8XYe8UBV+I4=;
+ b=YITzHG+hp9kV8Vx8Qx6nKEkW+NoM6jNckoXliZEXhiGV6TQRfwDbjp+K2+oe+AZcj7PDUL
+ BYxn/b10NRVnSkhLiEJ5yGFnSQFtT0vmavp3lLS3tFQ0889vhigjmLTN6Or0OQzObDa0nw
+ BiXICrS3FThsAceTfjaDhgtiL18HsH4=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-164-72H-ViqjMHeeNRsX3AisjA-1; Wed, 26 Jul 2023 12:01:13 -0400
-X-MC-Unique: 72H-ViqjMHeeNRsX3AisjA-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-99bb3a2c781so133921966b.1
- for <qemu-devel@nongnu.org>; Wed, 26 Jul 2023 09:01:13 -0700 (PDT)
+ us-mta-615-jt65U20yMhqLJVXHFSVoeQ-1; Wed, 26 Jul 2023 12:02:47 -0400
+X-MC-Unique: jt65U20yMhqLJVXHFSVoeQ-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-31444df0fafso3972705f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 26 Jul 2023 09:02:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690387273; x=1690992073;
+ d=1e100.net; s=20221208; t=1690387366; x=1690992166;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=AhY1Hs7QOV6A70CnYUt6ytS3aAg6p7aC6MnWNaWl6HI=;
- b=igINI/fbCC13eXWwGnlbp1r6OXfvbpQoXEUrFRG08+h5YYwSWUD8oXMNcMbUw7qEKS
- 4IPdv2wziKS2dd7s9jHjg6rnleuzz2FrdZpeDGkqrQyu8xNibsIoxn0rQXZWg1Yal+aT
- gmahdn85DwmUYLGWkI5TNEwFtQNZCo8+wf20VgtzeVXHn1W1rsjnGCRMIEfjUA9WgrjH
- THij/KYCAA9GqhFJljMrVF6qSHmvYTZ+ymysLOfbTohBahPEeue6xYl5MhEEMpaXHD+I
- itZV43lmmzphmqfxVnJXS12Fo2KXlSZ3ffBTv2evHecgCcmnoDP2txV6ZyMYfz05Dwqn
- 2KMw==
-X-Gm-Message-State: ABy/qLa7j5a3jQgpFaTpwVG5AeqRbqhDa9eSWdl6nVQWhmacDSYzTdmS
- 0YTJBXmizb7vVr4HiSuRoSvlYwf7SjkMAHEosMyvaKdJg1tGhkG7eBZD82xX8fS2vCBCve4owKe
- oO+bx0XC7gbHaBsU=
-X-Received: by 2002:a17:906:6495:b0:977:e310:1ce7 with SMTP id
- e21-20020a170906649500b00977e3101ce7mr2239635ejm.38.1690387272806; 
- Wed, 26 Jul 2023 09:01:12 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlG1L+AG4ddmpoqNyrxJMl0PWlzoUaXUY6KXA4UGwKS/61jEW0cDEnSsh6rhCfqHmaoIX95XJg==
-X-Received: by 2002:a17:906:6495:b0:977:e310:1ce7 with SMTP id
- e21-20020a170906649500b00977e3101ce7mr2239613ejm.38.1690387272455; 
- Wed, 26 Jul 2023 09:01:12 -0700 (PDT)
+ bh=rZZLy8l+7VAilXfQQ7ZH9vv3kVijAPeW8XYe8UBV+I4=;
+ b=KO4otHJ3z3jZ/oVKSCN0SGny4XFCQQ1wbsWgvLbIT07wsbU4Sy3tu2KOk96fwMOQ4q
+ lZ4xejY2kFKW8zOKWUuR38n4ppQQAkK6kb7WpKjXhUHL4Nbykk6wAX7RKGt3fadj9BjG
+ NuGvG14v66NbXpNueonp/3JolAotuU+T/uKKyKI+sG78IBzr3wmFH3Zl0inY6WKjP2VZ
+ 1Pf6ShrPnjHzuA64l0lF9mZ8k01j4rNbj6wI480cHOOZzo0rS/pm82hYUCHklI35vN4d
+ uQlKKWbHXorRGo2Ax+3782hmH9xIX2k+Rn3m8xIcgwy7yprUVd7JMrHjVj1dY4tNf1AZ
+ Vo3w==
+X-Gm-Message-State: ABy/qLYG1ALNMWP1glzYMCdYm6hnjY7NzY+aDqsGEWpYWG1db+DRwWsZ
+ bGW/PJSFQDBUWS4ajQjqTpSNYn/ZFrvgca0IwLHY/7Fz61RvfyOwMabR3jH8MjGxJucjPgM+0/r
+ jvjUN2rwACDGkfkk=
+X-Received: by 2002:a5d:6a85:0:b0:317:61d8:3c7e with SMTP id
+ s5-20020a5d6a85000000b0031761d83c7emr1689615wru.26.1690387365978; 
+ Wed, 26 Jul 2023 09:02:45 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlENEFAIWEpwv+cBFcnxTKpWLe+SVN6Bhmmem6FbzFvp+dXBQq4UD/En9Br0bdMc6cm8D1+Flg==
+X-Received: by 2002:a5d:6a85:0:b0:317:61d8:3c7e with SMTP id
+ s5-20020a5d6a85000000b0031761d83c7emr1689587wru.26.1690387365626; 
+ Wed, 26 Jul 2023 09:02:45 -0700 (PDT)
 Received: from redhat.com ([2.52.14.22]) by smtp.gmail.com with ESMTPSA id
- rl6-20020a170907216600b009920a690cd9sm9759284ejb.59.2023.07.26.09.01.05
+ h7-20020adfe987000000b003176aa612b1sm6276117wrm.38.2023.07.26.09.02.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 26 Jul 2023 09:01:10 -0700 (PDT)
-Date: Wed, 26 Jul 2023 12:01:01 -0400
+ Wed, 26 Jul 2023 09:02:44 -0700 (PDT)
+Date: Wed, 26 Jul 2023 12:02:33 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: Stefano Garzarella <sgarzare@redhat.com>,
+Cc: Stefan Hajnoczi <stefanha@gmail.com>,
  Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
  qemu-devel@nongnu.org, virtio-dev@lists.oasis-open.org,
  slp@redhat.com, marcandre.lureau@redhat.com,
- viresh.kumar@linaro.org, takahiro.akashi@linaro.org,
- erik.schilling@linaro.org, manos.pitsidianakis@linaro.org,
- mathieu.poirier@linaro.org
-Subject: Re: [virtio-dev] [RFC PATCH] docs/interop: define STANDALONE
- protocol feature for vhost-user
-Message-ID: <20230726120004-mutt-send-email-mst@kernel.org>
+ viresh.kumar@linaro.org, sgarzare@redhat.com,
+ takahiro.akashi@linaro.org, erik.schilling@linaro.org,
+ manos.pitsidianakis@linaro.org, mathieu.poirier@linaro.org
+Subject: Re: [RFC PATCH] docs/interop: define STANDALONE protocol feature for
+ vhost-user
+Message-ID: <20230726120158-mutt-send-email-mst@kernel.org>
 References: <20230704123600.1808604-1-alex.bennee@linaro.org>
- <3ogh7u3ezp7vlrp3ticquoajgsnpnglplm44osrsd7gvxv2lyn@g22qgf4vwgp5>
- <87o7krg0sn.fsf@linaro.org>
- <qmwvywoy7lfkgr7kcc6cxghulgd5g2gvnv76mvkuxbqclbwmti@4qyiktfiu2ej>
- <20230720193601.GI210977@fedora>
+ <20230706124347-mutt-send-email-mst@kernel.org>
+ <20230720195837.GJ210977@fedora>
+ <20230720171321-mutt-send-email-mst@kernel.org>
+ <CAJSP0QVDBA0Fb+LVjJVWq7Dp7FosXAJsRJUCcAtdNr-VyzYipg@mail.gmail.com>
+ <20230720182128-mutt-send-email-mst@kernel.org>
+ <20230724180839.GC222590@fedora>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230720193601.GI210977@fedora>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+In-Reply-To: <20230724180839.GC222590@fedora>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -108,58 +110,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 20, 2023 at 03:36:01PM -0400, Stefan Hajnoczi wrote:
-> On Fri, Jul 07, 2023 at 12:27:39PM +0200, Stefano Garzarella wrote:
-> > On Tue, Jul 04, 2023 at 04:02:42PM +0100, Alex Bennée wrote:
+On Mon, Jul 24, 2023 at 02:08:39PM -0400, Stefan Hajnoczi wrote:
+> On Thu, Jul 20, 2023 at 06:22:08PM -0400, Michael S. Tsirkin wrote:
+> > On Thu, Jul 20, 2023 at 05:31:03PM -0400, Stefan Hajnoczi wrote:
+> > > On Thu, 20 Jul 2023 at 17:15, Michael S. Tsirkin <mst@redhat.com> wrote:
+> > > >
+> > > > On Thu, Jul 20, 2023 at 03:58:37PM -0400, Stefan Hajnoczi wrote:
+> > > > > On Thu, Jul 06, 2023 at 12:48:20PM -0400, Michael S. Tsirkin wrote:
+> > > > > > On Tue, Jul 04, 2023 at 01:36:00PM +0100, Alex Bennée wrote:
+> > > > > > > Currently QEMU has to know some details about the back-end to be able
+> > > > > > > to setup the guest. While various parts of the setup can be delegated
+> > > > > > > to the backend (for example config handling) this is a very piecemeal
+> > > > > > > approach.
+> > > > > >
+> > > > > > > This patch suggests a new feature flag (VHOST_USER_PROTOCOL_F_STANDALONE)
+> > > > > > > which the back-end can advertise which allows a probe message to be
+> > > > > > > sent to get all the details QEMU needs to know in one message.
+> > > > > >
+> > > > > > The reason we do piecemeal is that these existing pieces can be reused
+> > > > > > as others evolve or fall by wayside.
+> > > > > >
+> > > > > > For example, I can think of instances where you want to connect
+> > > > > > specifically to e.g. networking backend, and specify it
+> > > > > > on command line. Reasons could be many, e.g. for debugging,
+> > > > > > or to prevent connecting to wrong device on wrong channel
+> > > > > > (kind of like type safety).
+> > > > > >
+> > > > > > What is the reason to have 1 message? startup latency?
+> > > > > > How about we allow pipelining several messages then?
+> > > > > > Will be easier.
+> > > > >
+> > > > > This flag effectively says that the back-end is a full VIRTIO device
+> > > > > with a Device Status Register, Configuration Space, Virtqueues, the
+> > > > > device type, etc. This is different from previous vhost-user devices
+> > > > > which sometimes just offloaded certain virtqueues without providing the
+> > > > > full VIRTIO device (parts were emulated in the VMM).
+> > > > >
+> > > > > So for example, a vhost-user-net device does not support the controlq.
+> > > > > Alex's "standalone" device is a mode where the vhost-user protocol is
+> > > > > used but the back-end must implement a full virtio-net device.
+> > > > > Standalone devices are like vDPA device in this respect.
+> > > > >
+> > > > > I think it is important to have a protocol feature bit that advertises
+> > > > > that this is a standalone device, since the semantics are different for
+> > > > > traditional vhost-user-net devices.
+> > > >
+> > > > Not sure what that would gain as compared to a feature bit per
+> > > > message as we did previously.
 > > > 
-> > > Stefano Garzarella <sgarzare@redhat.com> writes:
+> > > Having a single feature bit makes it easier to distinguish between a
+> > > traditional vhost-user device and a standalone device.
 > > > 
-> > > > On Tue, Jul 04, 2023 at 01:36:00PM +0100, Alex Bennée wrote:
-> > > > > diff --git a/docs/interop/vhost-user.rst b/docs/interop/vhost-user.rst
-> > > > > index 5a070adbc1..85b1b1583a 100644
-> > > > > --- a/docs/interop/vhost-user.rst
-> > > > > +++ b/docs/interop/vhost-user.rst
-> > > > > @@ -275,6 +275,21 @@ Inflight description
-> > > > > 
-> > > > > :queue size: a 16-bit size of virtqueues
-> > > > > 
-> > > > > +Backend specifications
-> > > > > +^^^^^^^^^^^^^^^^^^^^^^
-> > > > > +
-> > > > > ++-----------+-------------+------------+------------+
-> > > > > +| device id | config size |   min_vqs  |   max_vqs  |
-> > > > > ++-----------+-------------+------------+------------+
-> > > > > +
-> > > > > +:device id: a 32-bit value holding the VirtIO device ID
-> > > > > +
-> > > > > +:config size: a 32-bit value holding the config size (see ``VHOST_USER_GET_CONFIG``)
-> > > > > +
-> > > > > +:min_vqs: a 32-bit value holding the minimum number of vqs supported
-> > > > 
-> > > > Why do we need the minimum?
+> > > For example, the presence of VHOST_USER_F_GET_DEVICE_ID doesn't tell
+> > > you whether this device is a standalone device that is appropriate for
+> > > a new generic QEMU --device vhost-user-device feature that Alex is
+> > > working on. It could be a traditional vhost-user device that is not
+> > > standalone but implements the VHOST_USER_GET_DEVICE_ID message.
 > > > 
-> > > We need to know the minimum number because some devices have fixed VQs
-> > > that must be present.
+> > > How will we detect standalone devices? It will be messy if there is no
+> > > single feature bit that advertises that this back-end is a standalone
+> > > device.
+> > > 
+> > > Stefan
 > > 
-> > But does QEMU need to know this?
-> > 
-> > Or is it okay that the driver will then fail in the guest if there
-> > are not the right number of queues?
+> > Looks like standalone implies some 5-6 messages to be supported.
+> > So just test the 6 bits are all ones.
 > 
-> I don't understand why min_vqs is needed either. It's not the
-> front-end's job to ensure that the device will be used properly. A
-> spec-compliant driver will work with a spec-compliant device, so it's
-> not clear why the front-end needs this information.
+> It's not clear to me that the individual bits together mean this is
+> really a standalone device, but let's go with individual commands and
+> see if a front-end can distinguish standalone devices or not. If not,
+> then we can still add "standalone" feature bit before merging the code.
 > 
 > Stefan
 
 
-
-I think this really demonstrates why we should keep separate
-messages and not the "standalone" thing which seems to
-mean "bundle a bunch of mostly unrelated stuff in one message":
-this way each field is carefully documented.
-
+I think it just shows that what a "standalone" device is just isn't
+that well defined ;).
 
 -- 
 MST
