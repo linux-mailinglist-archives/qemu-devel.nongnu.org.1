@@ -2,60 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7CCB76360B
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jul 2023 14:16:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB9B3763616
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jul 2023 14:17:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOdQU-0006IV-S5; Wed, 26 Jul 2023 08:15:34 -0400
+	id 1qOdQY-0006J1-5h; Wed, 26 Jul 2023 08:15:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qOdQ4-0006Hz-R7
- for qemu-devel@nongnu.org; Wed, 26 Jul 2023 08:15:09 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1qOdQA-0006IF-L7
+ for qemu-devel@nongnu.org; Wed, 26 Jul 2023 08:15:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qOdQ2-00040F-Pz
- for qemu-devel@nongnu.org; Wed, 26 Jul 2023 08:15:08 -0400
+ id 1qOdQ5-00040b-1f
+ for qemu-devel@nongnu.org; Wed, 26 Jul 2023 08:15:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690373705;
+ s=mimecast20190719; t=1690373708;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=zOGwEVRfK1CgfPXTWPl79vEamwam6+pArT1iGtb4PjA=;
- b=X+ZVHx5ZRo9YC7xLtYbZD7vrBupCHvjQfj+LatXA0ytzeYupWstfSATRaXpnNqo/gltEqK
- 0hXPI2dgqP1oy/46+cWV3LDi3+nUuWHvmiKjkuNDiXFBScQMj48QtR8MYDYDAiWnVkF66k
- n6dWoZbk1XuZwEGXBMiXik4iNzdDWqk=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-597-Ij_m-T-yMS6XeShU8o5-xA-1; Wed, 26 Jul 2023 08:15:04 -0400
-X-MC-Unique: Ij_m-T-yMS6XeShU8o5-xA-1
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=VyedKh1dNtVU/WHKU4Zp18V/WTgaYdHAH48231Q1C1Q=;
+ b=OTcBoUVWhWlqS7M95hN4J2oxeroJbYprbOdQkZvTabbaGw8PyzCixDwoFLdgtqlJHAqffy
+ v1zVRzmVDtbJMocVpKaeo8H6pj4GMq6VRuwjju01O9UhOwFwooJxGJZwMb3o+hqgM0ubpB
+ wG9o99+fd5gh0dVVX0Dm5dyY22QTcbk=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-342-jDJH2vJ_Mf-qSipeWKULZw-1; Wed, 26 Jul 2023 08:15:06 -0400
+X-MC-Unique: jDJH2vJ_Mf-qSipeWKULZw-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
  [10.11.54.1])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C7B042A59561
- for <qemu-devel@nongnu.org>; Wed, 26 Jul 2023 12:15:03 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1031B185A78F;
+ Wed, 26 Jul 2023 12:15:06 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.194.151])
- by smtp.corp.redhat.com (Postfix) with ESMTP id D3A2240C2063;
- Wed, 26 Jul 2023 12:15:00 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 1844040C206F;
+ Wed, 26 Jul 2023 12:15:03 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Leonardo Bras <leobras@redhat.com>, Eric Blake <eblake@redhat.com>,
  Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Thomas Huth <thuth@redhat.com>, libvir-list@redhat.com,
  Markus Armbruster <armbru@redhat.com>, Juan Quintela <quintela@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>
-Subject: [PULL 00/25] Migration 20230726 patches
-Date: Wed, 26 Jul 2023 14:14:34 +0200
-Message-Id: <20230726121459.1837-1-quintela@redhat.com>
+ Laurent Vivier <lvivier@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 01/25] migration/multifd: Rename threadinfo.c functions
+Date: Wed, 26 Jul 2023 14:14:35 +0200
+Message-Id: <20230726121459.1837-2-quintela@redhat.com>
+In-Reply-To: <20230726121459.1837-1-quintela@redhat.com>
+References: <20230726121459.1837-1-quintela@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -80,98 +84,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 6cb2011fedf8c4e7b66b4a3abd6b42c1bae99ce6:
+From: Fabiano Rosas <farosas@suse.de>
 
-  Update version for v8.1.0-rc1 release (2023-07-25 20:09:05 +0100)
+We're about to add more functions to this file so make it use the same
+coding style as the rest of the code.
 
-are available in the Git repository at:
+Signed-off-by: Fabiano Rosas <farosas@suse.de>
+Reviewed-by: Juan Quintela <quintela@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Message-Id: <20230607161306.31425-2-farosas@suse.de>
+Signed-off-by: Juan Quintela <quintela@redhat.com>
+---
+ migration/threadinfo.h | 5 ++---
+ migration/migration.c  | 4 ++--
+ migration/multifd.c    | 4 ++--
+ migration/threadinfo.c | 4 ++--
+ 4 files changed, 8 insertions(+), 9 deletions(-)
 
-  https://gitlab.com/juan.quintela/qemu.git tags/migration-20230726-pull-request
-
-for you to fetch changes up to 697c4c86ab515a728ffb2adc2c3c04b22fa9210f:
-
-  migration/rdma: Split qemu_fopen_rdma() into input/output functions (2023-07-26 10:55:56 +0200)
-
-----------------------------------------------------------------
-Migration Pull request
-
-Hi
-
-This is the migration PULL request.  It is the same than yesterday with proper PULL headers.
-It pass CI. It contains:
-- Fabiano rosas trheadinfo cleanups
-- Hyman Huang dirtylimit changes
-- Part of my changes
-- Peter Xu documentation
-- Tejus updato to migration descriptions
-- Wei want improvements for postocpy and multifd setup
-
-Please apply.
-
-Thanks, Juan.
-
-----------------------------------------------------------------
-
-Fabiano Rosas (2):
-  migration/multifd: Rename threadinfo.c functions
-  migration/multifd: Protect accesses to migration_threads
-
-Hyman Huang(黄勇) (8):
-  softmmu/dirtylimit: Add parameter check for hmp "set_vcpu_dirty_limit"
-  qapi/migration: Introduce x-vcpu-dirty-limit-period parameter
-  qapi/migration: Introduce vcpu-dirty-limit parameters
-  migration: Introduce dirty-limit capability
-  migration: Refactor auto-converge capability logic
-  migration: Put the detection logic before auto-converge checking
-  migration: Implement dirty-limit convergence algo
-  migration: Extend query-migrate to provide dirty page limit info
-
-Juan Quintela (11):
-  migration-test: Be consistent for ppc
-  migration-test: Make machine_opts regular with other options
-  migration-test: Create arch_opts
-  migration-test: machine_opts is really arch specific
-  migration: skipped field is really obsolete.
-  qemu-file: Rename qemu_file_transferred_ fast -> noflush
-  migration: Change qemu_file_transferred to noflush
-  qemu_file: Make qemu_file_is_writable() static
-  qemu-file: Simplify qemu_file_shutdown()
-  qemu-file: Make qemu_file_get_error_obj() static
-  migration/rdma: Split qemu_fopen_rdma() into input/output functions
-
-Peter Xu (1):
-  docs/migration: Update postcopy bits
-
-Tejus GK (1):
-  migration: Update error description whenever migration fails
-
-Wei Wang (2):
-  migration: enforce multifd and postcopy preempt to be set before
-    incoming
-  qtest/migration-tests.c: use "-incoming defer" for postcopy tests
-
- docs/about/deprecated.rst      | 10 ++++
- docs/devel/migration.rst       | 94 ++++++++++++++++++++++----------
- qapi/migration.json            | 87 ++++++++++++++++++++++++++----
- include/sysemu/dirtylimit.h    |  2 +
- migration/options.h            |  1 +
- migration/qemu-file.h          | 14 ++---
- migration/threadinfo.h         |  7 +--
- migration/migration-hmp-cmds.c | 26 +++++++++
- migration/migration.c          | 36 +++++++++----
- migration/multifd.c            |  4 +-
- migration/options.c            | 87 +++++++++++++++++++++++++++++-
- migration/qemu-file.c          | 24 ++-------
- migration/ram.c                | 59 +++++++++++++++++----
- migration/rdma.c               | 39 +++++++-------
- migration/savevm.c             |  6 +--
- migration/threadinfo.c         | 19 +++++--
- migration/vmstate.c            |  4 +-
- softmmu/dirtylimit.c           | 97 ++++++++++++++++++++++++++++++----
- tests/qtest/migration-test.c   | 48 ++++++++---------
- migration/trace-events         |  1 +
- 20 files changed, 510 insertions(+), 155 deletions(-)
-
+diff --git a/migration/threadinfo.h b/migration/threadinfo.h
+index 4d69423c0a..8aa6999d58 100644
+--- a/migration/threadinfo.h
++++ b/migration/threadinfo.h
+@@ -23,6 +23,5 @@ struct MigrationThread {
+     QLIST_ENTRY(MigrationThread) node;
+ };
+ 
+-MigrationThread *MigrationThreadAdd(const char *name, int thread_id);
+-
+-void MigrationThreadDel(MigrationThread *info);
++MigrationThread *migration_threads_add(const char *name, int thread_id);
++void migration_threads_remove(MigrationThread *info);
+diff --git a/migration/migration.c b/migration/migration.c
+index 91bba630a8..ae49d42eab 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -2953,7 +2953,7 @@ static void *migration_thread(void *opaque)
+     MigThrError thr_error;
+     bool urgent = false;
+ 
+-    thread = MigrationThreadAdd("live_migration", qemu_get_thread_id());
++    thread = migration_threads_add("live_migration", qemu_get_thread_id());
+ 
+     rcu_register_thread();
+ 
+@@ -3031,7 +3031,7 @@ static void *migration_thread(void *opaque)
+     migration_iteration_finish(s);
+     object_unref(OBJECT(s));
+     rcu_unregister_thread();
+-    MigrationThreadDel(thread);
++    migration_threads_remove(thread);
+     return NULL;
+ }
+ 
+diff --git a/migration/multifd.c b/migration/multifd.c
+index 0e3ae87449..0f6b203877 100644
+--- a/migration/multifd.c
++++ b/migration/multifd.c
+@@ -651,7 +651,7 @@ static void *multifd_send_thread(void *opaque)
+     int ret = 0;
+     bool use_zero_copy_send = migrate_zero_copy_send();
+ 
+-    thread = MigrationThreadAdd(p->name, qemu_get_thread_id());
++    thread = migration_threads_add(p->name, qemu_get_thread_id());
+ 
+     trace_multifd_send_thread_start(p->id);
+     rcu_register_thread();
+@@ -767,7 +767,7 @@ out:
+     qemu_mutex_unlock(&p->mutex);
+ 
+     rcu_unregister_thread();
+-    MigrationThreadDel(thread);
++    migration_threads_remove(thread);
+     trace_multifd_send_thread_end(p->id, p->num_packets, p->total_normal_pages);
+ 
+     return NULL;
+diff --git a/migration/threadinfo.c b/migration/threadinfo.c
+index 1de8b31855..3dd9b14ae6 100644
+--- a/migration/threadinfo.c
++++ b/migration/threadinfo.c
+@@ -14,7 +14,7 @@
+ 
+ static QLIST_HEAD(, MigrationThread) migration_threads;
+ 
+-MigrationThread *MigrationThreadAdd(const char *name, int thread_id)
++MigrationThread *migration_threads_add(const char *name, int thread_id)
+ {
+     MigrationThread *thread =  g_new0(MigrationThread, 1);
+     thread->name = name;
+@@ -25,7 +25,7 @@ MigrationThread *MigrationThreadAdd(const char *name, int thread_id)
+     return thread;
+ }
+ 
+-void MigrationThreadDel(MigrationThread *thread)
++void migration_threads_remove(MigrationThread *thread)
+ {
+     if (thread) {
+         QLIST_REMOVE(thread, node);
 -- 
 2.40.1
 
