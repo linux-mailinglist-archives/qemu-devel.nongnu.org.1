@@ -2,64 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E6EA763675
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jul 2023 14:38:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 537DB763620
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jul 2023 14:20:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOdRs-0007Sa-2W; Wed, 26 Jul 2023 08:17:00 -0400
+	id 1qOdQp-0006To-AI; Wed, 26 Jul 2023 08:15:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qOdQe-0006RS-Id
- for qemu-devel@nongnu.org; Wed, 26 Jul 2023 08:15:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1qOdQg-0006Sa-Jo
+ for qemu-devel@nongnu.org; Wed, 26 Jul 2023 08:15:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qOdQc-0004At-2w
- for qemu-devel@nongnu.org; Wed, 26 Jul 2023 08:15:44 -0400
+ id 1qOdQd-0004BY-Sb
+ for qemu-devel@nongnu.org; Wed, 26 Jul 2023 08:15:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690373741;
+ s=mimecast20190719; t=1690373743;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=f3x0NpgM3mvJ20NVMC0fW/AFj7Fy+5n9NDeTZHUDEUg=;
- b=b/56bx+k2fvLjVKoW51AEiSIr+vxs8/lwR7uzKfXguX+7HhKqVu4dCF3ihobaAbW7+GPGe
- kpxPND06d8/MvUs0pFl5VMNiogMdZj7MM+ixDuE6a2q8VIdpj7/oBv6f54G9WfjR/+LkVe
- IQVd6DEh4SpwVRP48KnvLne701L6khE=
+ bh=QiOZ1ggUM9oK6J9I8Tk59DOGpnsa6ThaMxsEexebhCs=;
+ b=L5PypNWybWdQIP1jW77luOFfHqpq+9J3pWFqV49Q20GYfDGjAzy7ajXx1aXsaSjTF6r73o
+ g9GDraw2KBKqhzT+PtmD7XuQo0OE6ggr6kv4nB92FZEqlWnm4g+l4mvRr8QuCO5s3lvi91
+ ziuCBckwKPPqbKJu3zEIAmPdiEpw588=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-547-Ka5osULNPMOlp-yVDGgCyA-1; Wed, 26 Jul 2023 08:15:39 -0400
-X-MC-Unique: Ka5osULNPMOlp-yVDGgCyA-1
+ us-mta-288-9to0_j4nPsiBPW4O2gDYDA-1; Wed, 26 Jul 2023 08:15:42 -0400
+X-MC-Unique: 9to0_j4nPsiBPW4O2gDYDA-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
  [10.11.54.1])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8E45580C4FF
- for <qemu-devel@nongnu.org>; Wed, 26 Jul 2023 12:15:39 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CE094104459C
+ for <qemu-devel@nongnu.org>; Wed, 26 Jul 2023 12:15:41 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.194.151])
- by smtp.corp.redhat.com (Postfix) with ESMTP id B712E40C206F;
- Wed, 26 Jul 2023 12:15:37 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id D488B40C2070;
+ Wed, 26 Jul 2023 12:15:39 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Leonardo Bras <leobras@redhat.com>, Eric Blake <eblake@redhat.com>,
  Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Thomas Huth <thuth@redhat.com>, libvir-list@redhat.com,
  Markus Armbruster <armbru@redhat.com>, Juan Quintela <quintela@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 15/25] migration: skipped field is really obsolete.
-Date: Wed, 26 Jul 2023 14:14:49 +0200
-Message-Id: <20230726121459.1837-16-quintela@redhat.com>
+ Laurent Vivier <lvivier@redhat.com>, Laszlo Ersek <lersek@redhat.com>
+Subject: [PULL 16/25] docs/migration: Update postcopy bits
+Date: Wed, 26 Jul 2023 14:14:50 +0200
+Message-Id: <20230726121459.1837-17-quintela@redhat.com>
 In-Reply-To: <20230726121459.1837-1-quintela@redhat.com>
 References: <20230726121459.1837-1-quintela@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -84,104 +82,161 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Has return zero for more than 10 years.
+From: Peter Xu <peterx@redhat.com>
 
-Specifically we introduced the field in 1.5.0
+We have postcopy recovery but not reflected in the document, do an update
+for that.
 
-commit f1c72795af573b24a7da5eb52375c9aba8a37972
-Author: Peter Lieven <pl@kamp.de>
-Date:   Tue Mar 26 10:58:37 2013 +0100
+Add a very small section on postcopy preempt.
 
-    migration: do not sent zero pages in bulk stage
+Touch up the pagemap section, dropping the unsent map because it's already
+been dropped in the source code in commit 1e7cf8c323 ("migration/postcopy:
+unsentmap is not necessary for postcopy").
 
-    during bulk stage of ram migration if a page is a
-    zero page do not send it at all.
-    the memory at the destination reads as zero anyway.
+Touch up the postcopy section to remove "network connection" failures as
+downside, because now it's not fatal and can be recovered.  Suggested by
+Laszlo.
 
-    even if there is an madvise with QEMU_MADV_DONTNEED
-    at the target upon receipt of a zero page I have observed
-    that the target starts swapping if the memory is overcommitted.
-    it seems that the pages are dropped asynchronously.
-
-    this patch also updates QMP to return the number of
-    skipped pages in MigrationStats.
-
-but removed its usage in 1.5.3
-
-commit 9ef051e5536b6368a1076046ec6c4ec4ac12b5c6
-Author: Peter Lieven <pl@kamp.de>
-Date:   Mon Jun 10 12:14:19 2013 +0200
-
-    Revert "migration: do not sent zero pages in bulk stage"
-
-    Not sending zero pages breaks migration if a page is zero
-    at the source but not at the destination. This can e.g. happen
-    if different BIOS versions are used at source and destination.
-    It has also been reported that migration on pseries is completely
-    broken with this patch.
-
-    This effectively reverts commit f1c72795af573b24a7da5eb52375c9aba8a37972.
-
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-ID: <20230612193344.3796-2-quintela@redhat.com>
+Acked-by: Laszlo Ersek <lersek@redhat.com>
+Signed-off-by: Peter Xu <peterx@redhat.com>
+Reviewed-by: Juan Quintela <quintela@redhat.com>
+Message-ID: <20230706115611.371048-1-peterx@redhat.com>
 Signed-off-by: Juan Quintela <quintela@redhat.com>
 ---
- docs/about/deprecated.rst | 10 ++++++++++
- qapi/migration.json       | 12 ++++++++++--
- 2 files changed, 20 insertions(+), 2 deletions(-)
+ docs/devel/migration.rst | 94 ++++++++++++++++++++++++++++------------
+ 1 file changed, 67 insertions(+), 27 deletions(-)
 
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index 02ea5a839f..1c35f55666 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -451,3 +451,13 @@ both, older and future versions of QEMU.
- The ``blacklist`` config file option has been renamed to ``block-rpcs``
- (to be in sync with the renaming of the corresponding command line
- option).
+diff --git a/docs/devel/migration.rst b/docs/devel/migration.rst
+index 6f65c23b47..c3e1400c0c 100644
+--- a/docs/devel/migration.rst
++++ b/docs/devel/migration.rst
+@@ -594,8 +594,7 @@ Postcopy
+ 'Postcopy' migration is a way to deal with migrations that refuse to converge
+ (or take too long to converge) its plus side is that there is an upper bound on
+ the amount of migration traffic and time it takes, the down side is that during
+-the postcopy phase, a failure of *either* side or the network connection causes
+-the guest to be lost.
++the postcopy phase, a failure of *either* side causes the guest to be lost.
+ 
+ In postcopy the destination CPUs are started before all the memory has been
+ transferred, and accesses to pages that are yet to be transferred cause
+@@ -721,6 +720,42 @@ processing.
+    is no longer used by migration, while the listen thread carries on servicing
+    page data until the end of migration.
+ 
++Postcopy Recovery
++-----------------
 +
-+Migration
-+---------
++Comparing to precopy, postcopy is special on error handlings.  When any
++error happens (in this case, mostly network errors), QEMU cannot easily
++fail a migration because VM data resides in both source and destination
++QEMU instances.  On the other hand, when issue happens QEMU on both sides
++will go into a paused state.  It'll need a recovery phase to continue a
++paused postcopy migration.
 +
-+``skipped`` MigrationStats field (since 8.1)
-+''''''''''''''''''''''''''''''''''''''''''''
++The recovery phase normally contains a few steps:
 +
-+``skipped`` field in Migration stats has been deprecated.  It hasn't
-+been used for more than 10 years.
++  - When network issue occurs, both QEMU will go into PAUSED state
 +
-diff --git a/qapi/migration.json b/qapi/migration.json
-index 440660bced..388425b4c8 100644
---- a/qapi/migration.json
-+++ b/qapi/migration.json
-@@ -23,7 +23,8 @@
- #
- # @duplicate: number of duplicate (zero) pages (since 1.2)
- #
--# @skipped: number of skipped zero pages (since 1.5)
-+# @skipped: number of skipped zero pages. Always zero, only provided for
-+#     compatibility (since 1.5)
- #
- # @normal: number of normal pages (since 1.2)
- #
-@@ -62,11 +63,18 @@
- #     between 0 and @dirty-sync-count * @multifd-channels.  (since
- #     7.1)
- #
-+# Features:
-+#
-+# @deprecated: Member @skipped is always zero since 1.5.3
-+#
- # Since: 0.14
-+#
- ##
- { 'struct': 'MigrationStats',
-   'data': {'transferred': 'int', 'remaining': 'int', 'total': 'int' ,
--           'duplicate': 'int', 'skipped': 'int', 'normal': 'int',
-+           'duplicate': 'int',
-+           'skipped': { 'type': 'int', 'features': ['deprecated'] },
-+           'normal': 'int',
-            'normal-bytes': 'int', 'dirty-pages-rate': 'int',
-            'mbps': 'number', 'dirty-sync-count': 'int',
-            'postcopy-requests': 'int', 'page-size': 'int',
++  - When the network is recovered (or a new network is provided), the admin
++    can setup the new channel for migration using QMP command
++    'migrate-recover' on destination node, preparing for a resume.
++
++  - On source host, the admin can continue the interrupted postcopy
++    migration using QMP command 'migrate' with resume=true flag set.
++
++  - After the connection is re-established, QEMU will continue the postcopy
++    migration on both sides.
++
++During a paused postcopy migration, the VM can logically still continue
++running, and it will not be impacted from any page access to pages that
++were already migrated to destination VM before the interruption happens.
++However, if any of the missing pages got accessed on destination VM, the VM
++thread will be halted waiting for the page to be migrated, it means it can
++be halted until the recovery is complete.
++
++The impact of accessing missing pages can be relevant to different
++configurations of the guest.  For example, when with async page fault
++enabled, logically the guest can proactively schedule out the threads
++accessing missing pages.
++
+ Postcopy states
+ ---------------
+ 
+@@ -765,36 +800,31 @@ ADVISE->DISCARD->LISTEN->RUNNING->END
+     (although it can't do the cleanup it would do as it
+     finishes a normal migration).
+ 
++ - Paused
++
++    Postcopy can run into a paused state (normally on both sides when
++    happens), where all threads will be temporarily halted mostly due to
++    network errors.  When reaching paused state, migration will make sure
++    the qemu binary on both sides maintain the data without corrupting
++    the VM.  To continue the migration, the admin needs to fix the
++    migration channel using the QMP command 'migrate-recover' on the
++    destination node, then resume the migration using QMP command 'migrate'
++    again on source node, with resume=true flag set.
++
+  - End
+ 
+     The listen thread can now quit, and perform the cleanup of migration
+     state, the migration is now complete.
+ 
+-Source side page maps
+----------------------
+-
+-The source side keeps two bitmaps during postcopy; 'the migration bitmap'
+-and 'unsent map'.  The 'migration bitmap' is basically the same as in
+-the precopy case, and holds a bit to indicate that page is 'dirty' -
+-i.e. needs sending.  During the precopy phase this is updated as the CPU
+-dirties pages, however during postcopy the CPUs are stopped and nothing
+-should dirty anything any more.
+-
+-The 'unsent map' is used for the transition to postcopy. It is a bitmap that
+-has a bit cleared whenever a page is sent to the destination, however during
+-the transition to postcopy mode it is combined with the migration bitmap
+-to form a set of pages that:
+-
+-   a) Have been sent but then redirtied (which must be discarded)
+-   b) Have not yet been sent - which also must be discarded to cause any
+-      transparent huge pages built during precopy to be broken.
+-
+-Note that the contents of the unsentmap are sacrificed during the calculation
+-of the discard set and thus aren't valid once in postcopy.  The dirtymap
+-is still valid and is used to ensure that no page is sent more than once.  Any
+-request for a page that has already been sent is ignored.  Duplicate requests
+-such as this can happen as a page is sent at about the same time the
+-destination accesses it.
++Source side page map
++--------------------
++
++The 'migration bitmap' in postcopy is basically the same as in the precopy,
++where each of the bit to indicate that page is 'dirty' - i.e. needs
++sending.  During the precopy phase this is updated as the CPU dirties
++pages, however during postcopy the CPUs are stopped and nothing should
++dirty anything any more. Instead, dirty bits are cleared when the relevant
++pages are sent during postcopy.
+ 
+ Postcopy with hugepages
+ -----------------------
+@@ -853,6 +883,16 @@ Retro-fitting postcopy to existing clients is possible:
+      guest memory access is made while holding a lock then all other
+      threads waiting for that lock will also be blocked.
+ 
++Postcopy Preemption Mode
++------------------------
++
++Postcopy preempt is a new capability introduced in 8.0 QEMU release, it
++allows urgent pages (those got page fault requested from destination QEMU
++explicitly) to be sent in a separate preempt channel, rather than queued in
++the background migration channel.  Anyone who cares about latencies of page
++faults during a postcopy migration should enable this feature.  By default,
++it's not enabled.
++
+ Firmware
+ ========
+ 
 -- 
 2.40.1
 
