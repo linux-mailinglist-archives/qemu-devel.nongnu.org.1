@@ -2,70 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49F6A763CA0
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jul 2023 18:38:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 885A3763C7C
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jul 2023 18:29:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOhHN-000330-0q; Wed, 26 Jul 2023 12:22:25 -0400
+	id 1qOhHP-00039T-5d; Wed, 26 Jul 2023 12:22:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qOhEu-0001Pu-Sx
- for qemu-devel@nongnu.org; Wed, 26 Jul 2023 12:19:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qOhEs-0006Bf-Bq
- for qemu-devel@nongnu.org; Wed, 26 Jul 2023 12:19:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690388388;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=fkrC9xx/iOOdNJzYzj+RdPgJsAuMdIqXJYlmNbYsnz4=;
- b=SY3ZFS86uH/reorJO0lLGUABY5TTZaY2XSkphZ2EWpbRYxc+iaC3NiRo2/or8vn4tZPPIj
- 47jlROvWa01oaxbD5/Ur06pf2+LXBZZOfQ8FZQxHIXjR9twqa3imhRhYKI52Ayk62GpU8Z
- PWNsqXta41JiD5P8Nw0g3CDzy+Pv7Vw=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-646-fJJozFhiPXONDfcDaX02rw-1; Wed, 26 Jul 2023 12:19:45 -0400
-X-MC-Unique: fJJozFhiPXONDfcDaX02rw-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DF3FA856506;
- Wed, 26 Jul 2023 16:19:44 +0000 (UTC)
-Received: from localhost.localdomain.com (unknown [10.42.28.52])
- by smtp.corp.redhat.com (Postfix) with ESMTP id CFECB4094DC0;
- Wed, 26 Jul 2023 16:19:43 +0000 (UTC)
-From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Beraldo Leal <bleal@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Yonggang Luo <luoyonggang@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH] gitlab: remove duplication between msys jobs
-Date: Wed, 26 Jul 2023 17:19:42 +0100
-Message-ID: <20230726161942.229093-1-berrange@redhat.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qOhHN-00038L-Jo
+ for qemu-devel@nongnu.org; Wed, 26 Jul 2023 12:22:25 -0400
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qOhHM-0008D2-2U
+ for qemu-devel@nongnu.org; Wed, 26 Jul 2023 12:22:25 -0400
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-1b9c5e07c1bso52813355ad.2
+ for <qemu-devel@nongnu.org>; Wed, 26 Jul 2023 09:22:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1690388542; x=1690993342;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=EqIENYRbm1i8biB1t2dr1SOuzrfmRiON9nBaYtYqjCc=;
+ b=YCoQ+usDZrM0r9vrgcNRs673JGMJ4Xoz0oshGxRhXg03mjn/lGoQC/dQvypPolKLdg
+ cvWeKzz+2j5+kmYpsUOdRu1VAEDdu8TRUicTDl9KHNE8SDTlKaROzWAY7e8BCwB87G45
+ 1YL1qecOh166sv+Wxex8jmj2MsFGUXujFlAQXn7M8I0AjzZFqm6Uz/pHLK2KrprsaiOO
+ SHWEcOg3ZkRbaxAVlhf9BZWXXhkxWECRfGw8e67ppt41dYotyb3ftgZVFWMH/dp+P5Ik
+ 2VP+OGMpnddCnp2vihTt3egje4dWwzDwIhW6sfd5ck6jEknI/MEY96GEXQ9koj0gAhv4
+ /e6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1690388542; x=1690993342;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=EqIENYRbm1i8biB1t2dr1SOuzrfmRiON9nBaYtYqjCc=;
+ b=JA280GJdhjjM7Q7BkCO5EsjLjojqRAR50yHBn/3gEgBqaf818I1CJJflfG7cf8hyCl
+ /flZYv5d1236Osw/cglrwQ8VPlQLFJCPDjiNKwEV0dNvgDaDz1mGhorCMufpDLpAT/NN
+ 7kpdkRlyjj7GaKVNkxW475bi9QbIOMMvTAmGm4LFFQOgm4dbsWogxYs7CTMeG9T7ro0r
+ 7WhDaTbP23hUi91y/rY/CYeBDt9FBle0UzNQY2ezU23HzLQ0zevtIQ2e3xcLJy6LFlMg
+ cS9cyUk0PrSym1ZgXc1tt8vgiWtbPdRs3QNK6nrwfbJ7/L+QMtrZq6GCqDthngTJ33ly
+ sb8Q==
+X-Gm-Message-State: ABy/qLZgBTbHFy/fHKQ6lBKTujKJNm1tFjhWqt4c+sUTDqHqyXW49gHz
+ rYMrRMXyENI4przsQhajFiy/8w==
+X-Google-Smtp-Source: APBJJlEFwTVKHOMzGSmNLP6gkjywIuaJtkC701CW+OaLZEVGdXhhyblIGwBVvMXFfG2+pz1Dty4Zxg==
+X-Received: by 2002:a17:903:2343:b0:1b8:76fc:5bf6 with SMTP id
+ c3-20020a170903234300b001b876fc5bf6mr3105413plh.43.1690388542280; 
+ Wed, 26 Jul 2023 09:22:22 -0700 (PDT)
+Received: from ?IPV6:2602:ae:1598:4c01:9456:37ab:20dc:17e1?
+ ([2602:ae:1598:4c01:9456:37ab:20dc:17e1])
+ by smtp.gmail.com with ESMTPSA id
+ ji17-20020a170903325100b001a6f7744a27sm13391622plb.87.2023.07.26.09.22.21
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 26 Jul 2023 09:22:21 -0700 (PDT)
+Message-ID: <2915d99d-18de-4d02-8efc-0c6bf2091071@linaro.org>
+Date: Wed, 26 Jul 2023 09:22:20 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PULL 0/2] Misc next patches
+Content-Language: en-US
+To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ qemu-devel@nongnu.org
+Cc: "Canokeys.org" <contact@canokeys.org>, Gerd Hoffmann <kraxel@redhat.com>, 
+ "Hongren (Zenithal) Zheng" <i@zenithal.me>
+References: <20230725162304.156157-1-berrange@redhat.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230725162304.156157-1-berrange@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -82,167 +97,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Although they share a common parent, the two msys jobs still have
-massive duplication in their script definitions that can easily be
-collapsed.
+On 7/25/23 09:23, Daniel P. Berrangé wrote:
+> The following changes since commit a279ca4ea07383314b2d2b2f1d550be9482f148e:
+> 
+>    Merge tag 'pull-target-arm-20230725' ofhttps://git.linaro.org/people/pmaydell/qemu-arm  into staging (2023-07-25 12:44:39 +0100)
+> 
+> are available in the Git repository at:
+> 
+>    https://gitlab.com/berrange/qemu  tags/misc-next-pull-request
+> 
+> for you to fetch changes up to 095be0910b89b5d156e20641bd65ac6cab3f8305:
+> 
+>    hw/usb/canokey: change license to GPLv2+ (2023-07-25 17:15:59 +0100)
+> 
+> ----------------------------------------------------------------
+> Miscellaneous fixes
+> 
+>   * Switch canokey device license from Apache to GPLv2+
+>   * Fix uninitialized variable warning in LUKS code
 
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
----
- .gitlab-ci.d/windows.yml | 132 +++++++++++++++------------------------
- 1 file changed, 49 insertions(+), 83 deletions(-)
+Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
 
-diff --git a/.gitlab-ci.d/windows.yml b/.gitlab-ci.d/windows.yml
-index f889a468b5..f086540e40 100644
---- a/.gitlab-ci.d/windows.yml
-+++ b/.gitlab-ci.d/windows.yml
-@@ -35,97 +35,63 @@
-   - .\msys64\usr\bin\bash -lc 'pacman --noconfirm -Syuu'  # Core update
-   - .\msys64\usr\bin\bash -lc 'pacman --noconfirm -Syuu'  # Normal update
-   - taskkill /F /FI "MODULES eq msys-2.0.dll"
--
--msys2-64bit:
--  extends: .shared_msys2_builder
-   script:
-   - .\msys64\usr\bin\bash -lc "pacman -Sy --noconfirm --needed
-       bison diffutils flex
-       git grep make sed
--      mingw-w64-x86_64-capstone
--      mingw-w64-x86_64-curl
--      mingw-w64-x86_64-cyrus-sasl
--      mingw-w64-x86_64-dtc
--      mingw-w64-x86_64-gcc
--      mingw-w64-x86_64-glib2
--      mingw-w64-x86_64-gnutls
--      mingw-w64-x86_64-gtk3
--      mingw-w64-x86_64-libgcrypt
--      mingw-w64-x86_64-libjpeg-turbo
--      mingw-w64-x86_64-libnfs
--      mingw-w64-x86_64-libpng
--      mingw-w64-x86_64-libssh
--      mingw-w64-x86_64-libtasn1
--      mingw-w64-x86_64-libusb
--      mingw-w64-x86_64-lzo2
--      mingw-w64-x86_64-nettle
--      mingw-w64-x86_64-ninja
--      mingw-w64-x86_64-pixman
--      mingw-w64-x86_64-pkgconf
--      mingw-w64-x86_64-python
--      mingw-w64-x86_64-SDL2
--      mingw-w64-x86_64-SDL2_image
--      mingw-w64-x86_64-snappy
--      mingw-w64-x86_64-spice
--      mingw-w64-x86_64-usbredir
--      mingw-w64-x86_64-zstd "
-+      $MINGW_TARGET-capstone
-+      $MINGW_TARGET-curl
-+      $MINGW_TARGET-cyrus-sasl
-+      $MINGW_TARGET-dtc
-+      $MINGW_TARGET-gcc
-+      $MINGW_TARGET-glib2
-+      $MINGW_TARGET-gnutls
-+      $MINGW_TARGET-gtk3
-+      $MINGW_TARGET-libgcrypt
-+      $MINGW_TARGET-libjpeg-turbo
-+      $MINGW_TARGET-libnfs
-+      $MINGW_TARGET-libpng
-+      $MINGW_TARGET-libssh
-+      $MINGW_TARGET-libtasn1
-+      $MINGW_TARGET-libusb
-+      $MINGW_TARGET-lzo2
-+      $MINGW_TARGET-nettle
-+      $MINGW_TARGET-ninja
-+      $MINGW_TARGET-pixman
-+      $MINGW_TARGET-pkgconf
-+      $MINGW_TARGET-python
-+      $MINGW_TARGET-SDL2
-+      $MINGW_TARGET-SDL2_image
-+      $MINGW_TARGET-snappy
-+      $MINGW_TARGET-spice
-+      $MINGW_TARGET-usbredir
-+      $MINGW_TARGET-zstd "
-   - $env:CHERE_INVOKING = 'yes'  # Preserve the current working directory
--  - $env:MSYSTEM = 'MINGW64'     # Start a 64-bit MinGW environment
-   - $env:MSYS = 'winsymlinks:native' # Enable native Windows symlink
-   - mkdir build
-   - cd build
--  # Note: do not remove "--without-default-devices"!
--  # commit 9f8e6cad65a6 ("gitlab-ci: Speed up the msys2-64bit job by using --without-default-devices"
--  # changed to compile QEMU with the --without-default-devices switch
--  # for the msys2 64-bit job, due to the build could not complete within
--  # the project timeout.
--  - ..\msys64\usr\bin\bash -lc '../configure --target-list=x86_64-softmmu
--      --without-default-devices --enable-fdt=system'
--  - ..\msys64\usr\bin\bash -lc 'make'
--  # qTests don't run successfully with "--without-default-devices",
--  # so let's exclude the qtests from CI for now.
--  - ..\msys64\usr\bin\bash -lc 'make check MTESTARGS=\"--no-suite qtest\" || { cat meson-logs/testlog.txt; exit 1; } ;'
-+  - ..\msys64\usr\bin\bash -lc "../configure --enable-fdt=system $CONFIGURE_ARGS"
-+  - ..\msys64\usr\bin\bash -lc "make"
-+  - ..\msys64\usr\bin\bash -lc "make check MTESTARGS='$TEST_ARGS' || { cat meson-logs/testlog.txt; exit 1; } ;"
-+
-+msys2-64bit:
-+  extends: .shared_msys2_builder
-+  variables:
-+    MINGW_TARGET: mingw-w64-x86_64
-+    MSYSTEM: MINGW64
-+    # do not remove "--without-default-devices"!
-+    # commit 9f8e6cad65a6 ("gitlab-ci: Speed up the msys2-64bit job by using --without-default-devices"
-+    # changed to compile QEMU with the --without-default-devices switch
-+    # for the msys2 64-bit job, due to the build could not complete within
-+    CONFIGURE_ARGS:  --target-list=x86_64-softmmu --without-default-devices
-+    # qTests don't run successfully with "--without-default-devices",
-+    # so let's exclude the qtests from CI for now.
-+    TEST_ARGS: --no-suite qtest
- 
- msys2-32bit:
-   extends: .shared_msys2_builder
--  script:
--  - .\msys64\usr\bin\bash -lc "pacman -Sy --noconfirm --needed
--      bison diffutils flex
--      git grep make sed
--      mingw-w64-i686-capstone
--      mingw-w64-i686-curl
--      mingw-w64-i686-cyrus-sasl
--      mingw-w64-i686-dtc
--      mingw-w64-i686-gcc
--      mingw-w64-i686-glib2
--      mingw-w64-i686-gnutls
--      mingw-w64-i686-gtk3
--      mingw-w64-i686-libgcrypt
--      mingw-w64-i686-libjpeg-turbo
--      mingw-w64-i686-libnfs
--      mingw-w64-i686-libpng
--      mingw-w64-i686-libssh
--      mingw-w64-i686-libtasn1
--      mingw-w64-i686-libusb
--      mingw-w64-i686-lzo2
--      mingw-w64-i686-nettle
--      mingw-w64-i686-ninja
--      mingw-w64-i686-pixman
--      mingw-w64-i686-pkgconf
--      mingw-w64-i686-python
--      mingw-w64-i686-SDL2
--      mingw-w64-i686-SDL2_image
--      mingw-w64-i686-snappy
--      mingw-w64-i686-spice
--      mingw-w64-i686-usbredir
--      mingw-w64-i686-zstd "
--  - $env:CHERE_INVOKING = 'yes'  # Preserve the current working directory
--  - $env:MSYSTEM = 'MINGW32'     # Start a 32-bit MinGW environment
--  - $env:MSYS = 'winsymlinks:native' # Enable native Windows symlink
--  - mkdir build
--  - cd build
--  - ..\msys64\usr\bin\bash -lc '../configure --target-list=ppc64-softmmu
--                                --enable-fdt=system'
--  - ..\msys64\usr\bin\bash -lc 'make'
--  - ..\msys64\usr\bin\bash -lc 'make check MTESTARGS=\"--no-suite qtest\" ||
--                                { cat meson-logs/testlog.txt; exit 1; }'
-+  variables:
-+    MINGW_TARGET: mingw-w64-i686
-+    MSYSTEM: MINGW32
-+    CONFIGURE_ARGS:  --target-list=ppc64-softmmu
-+    TEST_ARGS: --no-suite qtest
--- 
-2.41.0
+
+r~
 
 
