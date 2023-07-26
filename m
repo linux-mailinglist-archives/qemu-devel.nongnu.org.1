@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBC66763E89
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jul 2023 20:31:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5C36763E6C
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jul 2023 20:28:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOjAT-0003vq-PY; Wed, 26 Jul 2023 14:23:28 -0400
+	id 1qOjAT-0003vr-Pa; Wed, 26 Jul 2023 14:23:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qOj9s-0003qs-Q8; Wed, 26 Jul 2023 14:22:48 -0400
-Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
+ id 1qOj9w-0003rP-R5; Wed, 26 Jul 2023 14:22:54 -0400
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qOj9r-0008RE-68; Wed, 26 Jul 2023 14:22:48 -0400
-Received: by mail-pj1-x1030.google.com with SMTP id
- 98e67ed59e1d1-2685bcd046eso89834a91.3; 
- Wed, 26 Jul 2023 11:22:46 -0700 (PDT)
+ id 1qOj9u-0008Rq-TT; Wed, 26 Jul 2023 14:22:52 -0400
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-686efb9ee3cso103421b3a.3; 
+ Wed, 26 Jul 2023 11:22:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1690395765; x=1691000565;
+ d=gmail.com; s=20221208; t=1690395769; x=1691000569;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Fu3SNX5pWMfAFlu2iRITWI/ZZuTkozaiKRck9Odx43Y=;
- b=qb2TeLzHRUXsFSEAwyANagQBOBm788fpl9ZiDfhGFgVeZYZDZ1i8NRo4PtEgF+EhzE
- yWHT5Tp4+OtdEqUo73L/gGrLliw7AyJlbAnLME2o927lVqFCrpqMJS6kWd5Av/kcQm9l
- 9Cg1AHcwMuyN/9qadMZutSgZGO4by1RfBY3Z+52IXb4CjFanU0YHtl32ALYSJomnKNNl
- 63XFVnNuGPkxKQw6Cf8LIaE40BzUZ/vFxyZG/bz/5LcUWXEpGnSojqZiV0nJdmjzMN+W
- cojXhRkenET41mXl/kfWYAoTEBngnwPY/KCnWJdqIPTy1KZUNA5qcoXLxYLlaGa926rN
- SuTg==
+ bh=U/FtV0fq+M1oqQhY61vaP0OZ0xzxbuzvQTaIIl0I9dk=;
+ b=bcROapOsw4QK/wccgMPX5/ousDa0Cp0wIuWAFAxnCKfsVO7K3Ka+jRg01yG6EqaC/r
+ YH43+79VmtBMHrBGZlxiH5Uj7Q6VzJFm2LkwCleIHT/lX4kUXr91a/BUJeAufX2nDtKc
+ I5dPBWPjAKaorTp5rDtLAgc+7tjx8NGrXBlaH99c2UCT0lO/9/mtBPRKZLQk9CD+W4JN
+ UcIqftbEfult6demAi9hY8p83+vgYQa52jzKleN0H7Kdl1pxA3brDWEl1h8T+QKYnH1U
+ 5WfHU/dM1L7427WbPfgNkxt+4mtUZx5/D01/c7FzrK2aXcIVLUtfi9ZTzuS1mJjHJHA2
+ 6e8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690395765; x=1691000565;
+ d=1e100.net; s=20221208; t=1690395769; x=1691000569;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Fu3SNX5pWMfAFlu2iRITWI/ZZuTkozaiKRck9Odx43Y=;
- b=ZeT22yra57VN/O77sH3hzQOCgcRpgCQZMyOwJdcfvPmpjm6S+MeBcW4bWYOBYTCLc/
- x5EHtsp7gvbCV2LpIkGc+QPdn1gXws+eyFeeT9bZY0jlhHRDaw8127kwVs7jqEb1pNmF
- M3CUDN3JOvL+DZjR/2xcvJcK8DJDy7PGV2DAxercNIGASkhOmAOK833BlVyFOCDMHnDG
- YB+NkzzT/mFS32IcBMbapr/qbH1QaAagu8WY73Utz+FgNrJ7H6Ag1HXVwJMwyMsH6dRZ
- kFHk92/bGg+WoV2sizALyMfHi6gGgW9osE4XMqFopKxuRjkGgu+k5G74rg+0Dz1BZ28F
- gEmg==
-X-Gm-Message-State: ABy/qLZDwm5VfwdsZwKuIjpWAHaW3Cc7IuRu6p4f0Xr8YxcOdJ843wSE
- oAmxw4jOCx0F/KqhfGaziLhd+z2Fnos=
-X-Google-Smtp-Source: APBJJlFKYA3Pdb9lw3igXuBfpChEYpcfFqq7NEzycQOnoFrp3djeFFGZKshn9+mDXdmw2JeXbalY3A==
-X-Received: by 2002:a17:90b:2388:b0:25e:d013:c22c with SMTP id
- mr8-20020a17090b238800b0025ed013c22cmr2242675pjb.47.1690395765310; 
- Wed, 26 Jul 2023 11:22:45 -0700 (PDT)
+ bh=U/FtV0fq+M1oqQhY61vaP0OZ0xzxbuzvQTaIIl0I9dk=;
+ b=XSqU5ip5D/jrKGdcEF+4i+OACSNRxWdpa3DXR3mHB1kDmpP1n3kvAuWR8PRv6D6Ttg
+ CwEtGRK2/+roAfjhcA6bnr5nryT1mHOb2+VxZB81k1iGtLufjiGio5c62U9ouzn3LBoS
+ Cgjjv6NkQzgb7gT99XzByzbsgyT+qAhrn743ZSEXcuYdUGXjxwhLrPnCst69cKVb8iPg
+ QHa99mL2XXb7ZeWtynxRU0LdfBIfvbS9npMtXGn2nhduVSafKfuko+8DgaAbVLHXo5z1
+ +GY//A6G+jPykUa0Nj1FFc9sUmrNnfJYLiRJDoCnBJVgzpbA+9rjHqvuCX8Ggzf3uPdM
+ ilnA==
+X-Gm-Message-State: ABy/qLb6X3lxfZTQh/bacDJiZabo4BOPLYNC6mFKuo6vKmxHOP31869g
+ oSnNKySDPAf6b34ZCQnudx8=
+X-Google-Smtp-Source: APBJJlEO6bqyGRrcTqB1M0HhzpCuq5jdwJ3ImsYBb6Y07JOkFWomg+J2HbwwwVbRaoV8G7BM0DYcEg==
+X-Received: by 2002:a05:6a21:3381:b0:134:4de4:d5e6 with SMTP id
+ yy1-20020a056a21338100b001344de4d5e6mr3698310pzb.57.1690395769308; 
+ Wed, 26 Jul 2023 11:22:49 -0700 (PDT)
 Received: from wheely.local0.net ([118.102.104.45])
  by smtp.gmail.com with ESMTPSA id
- b25-20020a639319000000b0055adced9e13sm360185pge.0.2023.07.26.11.22.41
+ b25-20020a639319000000b0055adced9e13sm360185pge.0.2023.07.26.11.22.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 26 Jul 2023 11:22:45 -0700 (PDT)
+ Wed, 26 Jul 2023 11:22:49 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: Daniel Henrique Barboza <danielhb413@gmail.com>
 Cc: Nicholas Piggin <npiggin@gmail.com>,
@@ -61,16 +61,16 @@ Cc: Nicholas Piggin <npiggin@gmail.com>,
  David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org,
  qemu-devel@nongnu.org
-Subject: [PATCH 1/6] target/ppc: Implement ASDR register for ISA v3.0 for HPT
-Date: Thu, 27 Jul 2023 04:22:25 +1000
-Message-Id: <20230726182230.433945-2-npiggin@gmail.com>
+Subject: [PATCH 2/6] target/ppc: Fix VRMA page size for ISA v3.0
+Date: Thu, 27 Jul 2023 04:22:26 +1000
+Message-Id: <20230726182230.433945-3-npiggin@gmail.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230726182230.433945-1-npiggin@gmail.com>
 References: <20230726182230.433945-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
- envelope-from=npiggin@gmail.com; helo=mail-pj1-x1030.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,117 +93,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The ASDR register was introduced in ISA v3.0. It has not been
-implemented for HPT. With HPT, ASDR is the format of the slbmte RS
-operand (containing VSID), which matches the ppc_slb_t field.
+Until v2.07s, the VRMA page size (L||LP) was encoded in LPCR[VRMASD].
+In v3.0 that moved to the partition table PS field.
+
+The powernv machine can now run KVM HPT guests on POWER9/10 CPUs with
+this fix and the patch to add ASDR.
 
 Fixes: 3367c62f522b ("target/ppc: Support for POWER9 native hash")
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/mmu-hash64.c | 27 ++++++++++++++++-----------
- 1 file changed, 16 insertions(+), 11 deletions(-)
+ target/ppc/mmu-hash64.c | 41 +++++++++++++++++++++++++++++++++++------
+ 1 file changed, 35 insertions(+), 6 deletions(-)
 
 diff --git a/target/ppc/mmu-hash64.c b/target/ppc/mmu-hash64.c
-index 900f906990..a0c90df3ce 100644
+index a0c90df3ce..7f8bbbbdb0 100644
 --- a/target/ppc/mmu-hash64.c
 +++ b/target/ppc/mmu-hash64.c
-@@ -770,7 +770,8 @@ static bool ppc_hash64_use_vrma(CPUPPCState *env)
-     }
+@@ -874,12 +874,41 @@ static target_ulong rmls_limit(PowerPCCPU *cpu)
+     return rma_sizes[rmls];
  }
  
--static void ppc_hash64_set_isi(CPUState *cs, int mmu_idx, uint64_t error_code)
-+static void ppc_hash64_set_isi(CPUState *cs, int mmu_idx, uint64_t slb_vsid,
-+                               uint64_t error_code)
+-static int build_vrma_slbe(PowerPCCPU *cpu, ppc_slb_t *slb)
++/* Return the LLP in SLB_VSID format */
++static uint64_t get_vrma_llp(PowerPCCPU *cpu)
  {
-     CPUPPCState *env = &POWERPC_CPU(cs)->env;
-     bool vpm;
-@@ -782,13 +783,15 @@ static void ppc_hash64_set_isi(CPUState *cs, int mmu_idx, uint64_t error_code)
-     }
-     if (vpm && !mmuidx_hv(mmu_idx)) {
-         cs->exception_index = POWERPC_EXCP_HISI;
-+        env->spr[SPR_ASDR] = slb_vsid;
-     } else {
-         cs->exception_index = POWERPC_EXCP_ISI;
-     }
-     env->error_code = error_code;
- }
+     CPUPPCState *env = &cpu->env;
+-    target_ulong lpcr = env->spr[SPR_LPCR];
+-    uint32_t vrmasd = (lpcr & LPCR_VRMASD) >> LPCR_VRMASD_SHIFT;
+-    target_ulong vsid = SLB_VSID_VRMA | ((vrmasd << 4) & SLB_VSID_LLP_MASK);
++    uint64_t llp;
++
++    if (env->mmu_model == POWERPC_MMU_3_00) {
++        ppc_v3_pate_t pate;
++        uint64_t ps;
++
++        /*
++         * ISA v3.0 removes the LPCR[VRMASD] field and puts the VRMA base
++         * page size (L||LP equivalent) in the PS field in the HPT partition
++         * table entry.
++         */
++        if (!ppc64_v3_get_pate(cpu, cpu->env.spr[SPR_LPIDR], &pate)) {
++            error_report("Bad VRMA with no partition table entry");
++            return 0;
++        }
++        ps = pate.dw0 >> (63 - 58);
++        llp = ((ps & 0x4) << (63 - 55 - 2)) | ((ps & 0x3) << (63 - 59));
++
++    } else {
++        uint64_t lpcr = env->spr[SPR_LPCR];
++        target_ulong vrmasd = (lpcr & LPCR_VRMASD) >> LPCR_VRMASD_SHIFT;
++
++        llp = (vrmasd << 4) & SLB_VSID_LLP_MASK;
++    }
++
++    return llp;
++}
++
++static int build_vrma_slbe(PowerPCCPU *cpu, ppc_slb_t *slb)
++{
++    target_ulong vsid = SLB_VSID_VRMA | get_vrma_llp(cpu);
+     int i;
  
--static void ppc_hash64_set_dsi(CPUState *cs, int mmu_idx, uint64_t dar, uint64_t dsisr)
-+static void ppc_hash64_set_dsi(CPUState *cs, int mmu_idx, uint64_t slb_vsid,
-+                               uint64_t dar, uint64_t dsisr)
- {
-     CPUPPCState *env = &POWERPC_CPU(cs)->env;
-     bool vpm;
-@@ -802,6 +805,7 @@ static void ppc_hash64_set_dsi(CPUState *cs, int mmu_idx, uint64_t dar, uint64_t
-         cs->exception_index = POWERPC_EXCP_HDSI;
-         env->spr[SPR_HDAR] = dar;
-         env->spr[SPR_HDSISR] = dsisr;
-+        env->spr[SPR_ASDR] = slb_vsid;
-     } else {
-         cs->exception_index = POWERPC_EXCP_DSI;
-         env->spr[SPR_DAR] = dar;
-@@ -963,13 +967,13 @@ bool ppc_hash64_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
-                 }
-                 switch (access_type) {
-                 case MMU_INST_FETCH:
--                    ppc_hash64_set_isi(cs, mmu_idx, SRR1_PROTFAULT);
-+                    ppc_hash64_set_isi(cs, mmu_idx, 0, SRR1_PROTFAULT);
-                     break;
-                 case MMU_DATA_LOAD:
--                    ppc_hash64_set_dsi(cs, mmu_idx, eaddr, DSISR_PROTFAULT);
-+                    ppc_hash64_set_dsi(cs, mmu_idx, 0, eaddr, DSISR_PROTFAULT);
-                     break;
-                 case MMU_DATA_STORE:
--                    ppc_hash64_set_dsi(cs, mmu_idx, eaddr,
-+                    ppc_hash64_set_dsi(cs, mmu_idx, 0, eaddr,
-                                        DSISR_PROTFAULT | DSISR_ISSTORE);
-                     break;
-                 default:
-@@ -1022,7 +1026,7 @@ bool ppc_hash64_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
-     /* 3. Check for segment level no-execute violation */
-     if (access_type == MMU_INST_FETCH && (slb->vsid & SLB_VSID_N)) {
-         if (guest_visible) {
--            ppc_hash64_set_isi(cs, mmu_idx, SRR1_NOEXEC_GUARD);
-+            ppc_hash64_set_isi(cs, mmu_idx, slb->vsid, SRR1_NOEXEC_GUARD);
+     for (i = 0; i < PPC_PAGE_SIZES_MAX_SZ; i++) {
+@@ -897,8 +926,8 @@ static int build_vrma_slbe(PowerPCCPU *cpu, ppc_slb_t *slb)
          }
-         return false;
      }
-@@ -1035,13 +1039,14 @@ bool ppc_hash64_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
-         }
-         switch (access_type) {
-         case MMU_INST_FETCH:
--            ppc_hash64_set_isi(cs, mmu_idx, SRR1_NOPTE);
-+            ppc_hash64_set_isi(cs, mmu_idx, slb->vsid, SRR1_NOPTE);
-             break;
-         case MMU_DATA_LOAD:
--            ppc_hash64_set_dsi(cs, mmu_idx, eaddr, DSISR_NOPTE);
-+            ppc_hash64_set_dsi(cs, mmu_idx, slb->vsid, eaddr, DSISR_NOPTE);
-             break;
-         case MMU_DATA_STORE:
--            ppc_hash64_set_dsi(cs, mmu_idx, eaddr, DSISR_NOPTE | DSISR_ISSTORE);
-+            ppc_hash64_set_dsi(cs, mmu_idx, slb->vsid, eaddr,
-+                               DSISR_NOPTE | DSISR_ISSTORE);
-             break;
-         default:
-             g_assert_not_reached();
-@@ -1075,7 +1080,7 @@ bool ppc_hash64_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
-             if (PAGE_EXEC & ~amr_prot) {
-                 srr1 |= SRR1_IAMR; /* Access violates virt pg class key prot */
-             }
--            ppc_hash64_set_isi(cs, mmu_idx, srr1);
-+            ppc_hash64_set_isi(cs, mmu_idx, slb->vsid, srr1);
-         } else {
-             int dsisr = 0;
-             if (need_prot & ~pp_prot) {
-@@ -1087,7 +1092,7 @@ bool ppc_hash64_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
-             if (need_prot & ~amr_prot) {
-                 dsisr |= DSISR_AMR;
-             }
--            ppc_hash64_set_dsi(cs, mmu_idx, eaddr, dsisr);
-+            ppc_hash64_set_dsi(cs, mmu_idx, slb->vsid, eaddr, dsisr);
-         }
-         return false;
-     }
+ 
+-    error_report("Bad page size encoding in LPCR[VRMASD]; LPCR=0x"
+-                 TARGET_FMT_lx, lpcr);
++    error_report("Bad VRMA page size encoding 0x" TARGET_FMT_lx,
++                 get_vrma_llp(cpu));
+ 
+     return -1;
+ }
 -- 
 2.40.1
 
