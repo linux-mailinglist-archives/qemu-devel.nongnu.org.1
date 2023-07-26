@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7875763F29
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jul 2023 21:02:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 661E8763F44
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jul 2023 21:10:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOjAe-0003yx-Q8; Wed, 26 Jul 2023 14:23:36 -0400
+	id 1qOjAg-00043N-HP; Wed, 26 Jul 2023 14:23:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qOjA5-0003sT-Su; Wed, 26 Jul 2023 14:23:07 -0400
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ id 1qOjA8-0003sX-9W; Wed, 26 Jul 2023 14:23:07 -0400
+Received: from mail-ot1-x331.google.com ([2607:f8b0:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qOjA4-0008Sv-7s; Wed, 26 Jul 2023 14:23:01 -0400
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-686efdeabaeso84731b3a.3; 
- Wed, 26 Jul 2023 11:22:58 -0700 (PDT)
+ id 1qOjA6-0008UO-MB; Wed, 26 Jul 2023 14:23:04 -0400
+Received: by mail-ot1-x331.google.com with SMTP id
+ 46e09a7af769-6b9b52724ccso62229a34.1; 
+ Wed, 26 Jul 2023 11:23:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1690395777; x=1691000577;
+ d=gmail.com; s=20221208; t=1690395781; x=1691000581;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=H0qoXrPvoquYQTQlBD4shTNqfDEEX1RsqpNF9V5SWPc=;
- b=B3wGmMWFO3XJMuyGEoyug48XJIh15PYfIFa2oSM1BTpOwu2j4HQb5IIhqeDL6B70F0
- vrTyarTn2u9v6PBYio/VS69KZREc7U8UerY8ELnQPKlPtj+epjKEawrkVFHZg77fguDa
- C11x8IRFyBD8jJLs8Wlfz7NYnEiI+u3PmhetlaleNNe0SgtR7tTpuAJh8e5Wf9yfptL1
- XJMB3PECpZt5mgqCFbSfz597aYil8+jHmPmkzn2+hFyb/v0DMiVTkvsAx8tubeLcAfUP
- zYbSrooHK70PO94WwmsV3BCWx1MEBJAkTldGs4ytdnK98cH45TTGvTTj0VGakcUUn6KG
- rFTw==
+ bh=GZQTChBYLoqHBg/YGc0TeJy3uEDe22OcFDiFrIsmZvA=;
+ b=FJv+P7Cj3SdeNBq230/tt5yiRrRgiRu45XvmZSfhDlK8MUyxKUVen80z/XkPZkt2zC
+ VtBDExK2pI0GoJ+BEXC/mJP3CaEfa4yhUaxjAiP8lmUrbIKsT0kfYmBSf3R8DyNSvkNT
+ f0foY/nap43eOoZn+qwGlzXWdUFKIilLw03JSHVMDaGgFOz/bhBkZn+AX58MQra8HiNC
+ Vt+QZHo+I4JoJ7WxprBQzvfG25OHlMBptc0tLMEJwDOKbQhGGUZaurJ/KEuiJ3pVD/76
+ ll7j9oINfXDHEJrkdRZhpNT/jFUTl5Z8AIPDd8oGJtIYQ9KbZKfBlT+fJG+pJl8dHi2Q
+ HT7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690395777; x=1691000577;
+ d=1e100.net; s=20221208; t=1690395781; x=1691000581;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=H0qoXrPvoquYQTQlBD4shTNqfDEEX1RsqpNF9V5SWPc=;
- b=CAs7YL1XWXJORhQj5yQDU2gfFIoPEGMwiNtGQ99UrxftRUOZgjN7bjHpiKXftIm7k+
- IjymyIjgqGP0VoHCZMAVUvliO3jrU3oubYrWa7VCUSXqpsNRFmhjbDYB3go6Q1T+VC9Y
- gPBiDmBh+JamCjkRnK+ua29S4GCoebSRDk4rUP+Nmo2FcmFRalQudmQEERsGGYElpkWw
- B4DZF1EDsUqV8hOhLxGrJn2agiz2+r4MvaF3LHpzhdGEG8MWMPIh+mcDd1Mcg/AeX/nP
- 0NIZmGETJuK9nfjhP2tnEoRZUMyKq13t5mzsEhABCxOER3usMiqMeptdxmaaIAkg+9Zg
- 05EQ==
-X-Gm-Message-State: ABy/qLZD/nXjQx5MV1Vo1Zp8riLUsasOiys8NBTza2H6W7BSZ9KBE8se
- mkrqhGBoaKun34x6/oIgZh8=
-X-Google-Smtp-Source: APBJJlF9DQuaUtkL1fP91w0hYg+EcarJH6svrfzjFHZNdPrtLJ5ODu45Lu5irTijvk990ifXRlyMPg==
-X-Received: by 2002:a05:6a20:7f84:b0:126:43f7:e271 with SMTP id
- d4-20020a056a207f8400b0012643f7e271mr2655208pzj.39.1690395777122; 
- Wed, 26 Jul 2023 11:22:57 -0700 (PDT)
+ bh=GZQTChBYLoqHBg/YGc0TeJy3uEDe22OcFDiFrIsmZvA=;
+ b=ZgsWYl3KlcVDsojnGLY5scdQQsE2ErGcJZaobbVcAv3JBoA8DmeHXUrhXKG0pPHwLD
+ BcgvwhW1B2G588OJHU44+O+QKf8ZU65nvYvJxcQXQMJpo61jXYO2+RISUSJDjvX8f4X1
+ cNauqC5WfOdMedjNCy8xb0ZDwrBnU81atCSRibWhYyWpk2duXy1ldxVmynCzPXKsmdhz
+ 07c1KNn6GD6awKv6naPXHIdoSrUw9U7ATldfaGPrx1Nwk5KVro+2sYtsaXXo9jikHO5N
+ pJcoX5aijCbsrbjZbtc5qBoxzPwEpYYeAc3t3AWF/S0OHrQ7eTlXwolBp0YoKc6CoI7I
+ Dnyw==
+X-Gm-Message-State: ABy/qLaC/58eOI7Aboc6Q0gmMTIIIMWdlrj6FNJQDQ+CWu/x0AsoO1nd
+ Q5EzpZN/12h8RBoMyqtlgk8=
+X-Google-Smtp-Source: APBJJlHje8nUVDReIA09Qwl2vMWRuzqyeNeAFmmIDlwgm5VOF8QsyI6bBTs0gg7JToIvVD9Biz6U/Q==
+X-Received: by 2002:a05:6358:41a3:b0:134:de8b:17f0 with SMTP id
+ w35-20020a05635841a300b00134de8b17f0mr2606054rwc.19.1690395781046; 
+ Wed, 26 Jul 2023 11:23:01 -0700 (PDT)
 Received: from wheely.local0.net ([118.102.104.45])
  by smtp.gmail.com with ESMTPSA id
- b25-20020a639319000000b0055adced9e13sm360185pge.0.2023.07.26.11.22.53
+ b25-20020a639319000000b0055adced9e13sm360185pge.0.2023.07.26.11.22.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 26 Jul 2023 11:22:56 -0700 (PDT)
+ Wed, 26 Jul 2023 11:23:00 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: Daniel Henrique Barboza <danielhb413@gmail.com>
 Cc: Nicholas Piggin <npiggin@gmail.com>,
@@ -61,16 +61,16 @@ Cc: Nicholas Piggin <npiggin@gmail.com>,
  David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org,
  qemu-devel@nongnu.org
-Subject: [PATCH 4/6] hw/ppc: Avoid decrementer rounding errors
-Date: Thu, 27 Jul 2023 04:22:28 +1000
-Message-Id: <20230726182230.433945-5-npiggin@gmail.com>
+Subject: [PATCH 5/6] hw/ppc: Always store the decrementer value
+Date: Thu, 27 Jul 2023 04:22:29 +1000
+Message-Id: <20230726182230.433945-6-npiggin@gmail.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230726182230.433945-1-npiggin@gmail.com>
 References: <20230726182230.433945-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x433.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::331;
+ envelope-from=npiggin@gmail.com; helo=mail-ot1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,105 +93,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The decrementer register contains a relative time in timebase units.
-When writing to DECR this is converted and stored as an absolute value
-in nanosecond units, reading DECR converts back to relative timebase.
+When writing a value to the decrementer that raises an exception, the
+irq is raised, but the value is not stored so the store doesn't appear
+to have changed the register when it is read again.
 
-The tb<->ns conversion of the relative part can cause rounding such that
-a value writen to the decrementer can read back a different, with time
-held constant. This is a particular problem for a deterministic icount
-and record-replay trace.
+Always store the write value to the register.
 
-Fix this by storing the absolute value in timebase units rather than
-nanoseconds. The math before:
-  store:  decr_next = now_ns + decr * ns_per_sec / tb_per_sec
-  load:        decr = (decr_next - now_ns) * tb_per_sec / ns_per_sec
-  load(store): decr = decr * ns_per_sec / tb_per_sec * tb_per_sec /
-                      ns_per_sec
-
-After:
-  store:  decr_next = now_ns * tb_per_sec / ns_per_sec + decr
-  load:        decr = decr_next - now_ns * tb_per_sec / ns_per_sec
-  load(store): decr = decr
-
-Fixes: 9fddaa0c0cab ("PowerPC merge: real time TB and decrementer - faster and simpler exception handling (Jocelyn Mayer)")
+Fixes: e81a982aa53 ("PPC: Clean up DECR implementation")
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/ppc/ppc.c | 41 ++++++++++++++++++++++++-----------------
- 1 file changed, 24 insertions(+), 17 deletions(-)
+ hw/ppc/ppc.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/hw/ppc/ppc.c b/hw/ppc/ppc.c
-index 0e0a3d93c3..fa60f76dd4 100644
+index fa60f76dd4..cd1993e9c1 100644
 --- a/hw/ppc/ppc.c
 +++ b/hw/ppc/ppc.c
-@@ -686,16 +686,17 @@ bool ppc_decr_clear_on_delivery(CPUPPCState *env)
- static inline int64_t _cpu_ppc_load_decr(CPUPPCState *env, uint64_t next)
- {
-     ppc_tb_t *tb_env = env->tb_env;
--    int64_t decr, diff;
-+    uint64_t now, n;
-+    int64_t decr;
- 
--    diff = next - qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
--    if (diff >= 0) {
--        decr = muldiv64(diff, tb_env->decr_freq, NANOSECONDS_PER_SECOND);
--    } else if (tb_env->flags & PPC_TIMER_BOOKE) {
-+    now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
-+    n = muldiv64(now, tb_env->decr_freq, NANOSECONDS_PER_SECOND);
-+    if (next > n && tb_env->flags & PPC_TIMER_BOOKE) {
-         decr = 0;
--    }  else {
--        decr = -muldiv64(-diff, tb_env->decr_freq, NANOSECONDS_PER_SECOND);
-+    } else {
-+        decr = next - n;
+@@ -812,6 +812,11 @@ static void __cpu_ppc_store_decr(PowerPCCPU *cpu, uint64_t *nextp,
+         return;
      }
-+
-     trace_ppc_decr_load(decr);
  
-     return decr;
-@@ -834,11 +835,11 @@ static void __cpu_ppc_store_decr(PowerPCCPU *cpu, uint64_t *nextp,
- 
-     /* Calculate the next timer event */
-     now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
--    next = now + muldiv64(value, NANOSECONDS_PER_SECOND, tb_env->decr_freq);
--    *nextp = next;
++    /* Calculate the next timer event */
++    now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
 +    next = muldiv64(now, tb_env->decr_freq, NANOSECONDS_PER_SECOND) + value;
 +    *nextp = next; /* nextp is in timebase units */
- 
-     /* Adjust timer */
--    timer_mod(timer, next);
-+    timer_mod(timer, muldiv64(next, NANOSECONDS_PER_SECOND, tb_env->decr_freq));
- }
- 
- static inline void _cpu_ppc_store_decr(PowerPCCPU *cpu, target_ulong decr,
-@@ -1153,14 +1154,20 @@ static void start_stop_pit (CPUPPCState *env, ppc_tb_t *tb_env, int is_excp)
-     } else {
-         trace_ppc4xx_pit_start(ppc40x_timer->pit_reload);
-         now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
--        next = now + muldiv64(ppc40x_timer->pit_reload,
--                              NANOSECONDS_PER_SECOND, tb_env->decr_freq);
--        if (is_excp)
--            next += tb_env->decr_next - now;
--        if (next == now)
--            next++;
 +
-+        if (is_excp) {
-+            tb_env->decr_next += ppc40x_timer->pit_reload;
-+        } else {
-+            tb_env->decr_next = muldiv64(now, tb_env->decr_freq,
-+                                         NANOSECONDS_PER_SECOND)
-+                                + ppc40x_timer->pit_reload;
-+        }
-+        next = muldiv64(tb_env->decr_next, NANOSECONDS_PER_SECOND,
-+                        tb_env->decr_freq);
-+        if (next <= now) {
-+            next = now + 1;
-+        }
-         timer_mod(tb_env->decr_timer, next);
--        tb_env->decr_next = next;
+     /*
+      * Going from 1 -> 0 or 0 -> -1 is the event to generate a DEC interrupt.
+      *
+@@ -833,11 +838,6 @@ static void __cpu_ppc_store_decr(PowerPCCPU *cpu, uint64_t *nextp,
+         (*lower_excp)(cpu);
      }
- }
  
+-    /* Calculate the next timer event */
+-    now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
+-    next = muldiv64(now, tb_env->decr_freq, NANOSECONDS_PER_SECOND) + value;
+-    *nextp = next; /* nextp is in timebase units */
+-
+     /* Adjust timer */
+     timer_mod(timer, muldiv64(next, NANOSECONDS_PER_SECOND, tb_env->decr_freq));
+ }
 -- 
 2.40.1
 
