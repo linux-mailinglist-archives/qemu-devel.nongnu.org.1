@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74A38762952
+	by mail.lfdr.de (Postfix) with ESMTPS id 499D576294F
 	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jul 2023 05:33:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOVGE-0005N8-M4; Tue, 25 Jul 2023 23:32:26 -0400
+	id 1qOVGG-0005Ou-JF; Tue, 25 Jul 2023 23:32:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chris@laplante.io>)
- id 1qOVG2-0005MJ-JL; Tue, 25 Jul 2023 23:32:14 -0400
+ id 1qOVG5-0005NA-Qh; Tue, 25 Jul 2023 23:32:23 -0400
 Received: from mail-40136.proton.ch ([185.70.40.136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chris@laplante.io>)
- id 1qOVG0-0006Qw-Qx; Tue, 25 Jul 2023 23:32:14 -0400
-Date: Wed, 26 Jul 2023 03:31:51 +0000
+ id 1qOVG3-0006vQ-R3; Tue, 25 Jul 2023 23:32:17 -0400
+Date: Wed, 26 Jul 2023 03:31:59 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=laplante.io;
- s=protonmail3; t=1690342322; x=1690601522;
- bh=CYxoj1AwwohRjVj/umFNzIRU2yOes9wWnbtuyhtBtvs=;
+ s=protonmail3; t=1690342333; x=1690601533;
+ bh=HgHvDYfqmVARdVYQabwTUqO/6ANgGN89IeXI5IaKM+I=;
  h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
  Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
  Message-ID:BIMI-Selector;
- b=3rQrH1JRxpN/n3XGP+TAvZcWuLa8MzgTzVY+rpDoauM6WVuZ1al1V/BPAxlSUZP0W
- WI8A4QaSiBbMAZdOtk2Nd1Ehh7oTa4TkUPHRJD+SoNpPmF9Xsi6zlROxAhy5ffr4BL
- BGdHkAEuGO2VM5qczoGxq0Mru7GjaPb4Cd8i9ucDYaGYynUGRMIe0Ye+ymdN4VbEKS
- jWcZ5ciEhLXWwO1sEzoNgsYOKi45hrjlSGiHzaOm5UtNrKoun4hizY9+EgDhR8qzJ1
- saaQkQF/EBqWeN1LYhJRCoqOK6as/F9g3/ZNQUrmx9WBWYgXn4YWXP4+srRb9Grm0/
- EQKvxRMkeXagA==
+ b=MAFK/OeLLnE+b1UAHimaQKRWlnZuR82x+yOTce/CucuOEEROTpzvZ0ZuBMvqihsxP
+ Q0n3aTybwSEjePB9Fal9yX2CICP5tR5K3IRebS5aDxlPQfyX+PUibhAMB1GnAaQi1q
+ 769yHKqsbme95DU3J0wSRdOdqy6/ndaOXIHkoofXv+GLTm3yVzIbYE9BUVmEjKWHlY
+ eXmDizenh65toc1pGCwNBHYq14+r0Ewe5xeIVA33koxPddvvRfMiohYUq+flWefJxe
+ hE4Oti97rxIhIqcGgRsCANufkcLkMZr1UreeAoDg5hdBmeV5pkEqCUKVx0pU2ICuxD
+ JyveTLWj9Q6jQ==
 To: qemu-devel@nongnu.org
 From: Chris Laplante <chris@laplante.io>
 Cc: Joel Stanley <joel@jms.id.au>, Peter Maydell <peter.maydell@linaro.org>,
  qemu-arm@nongnu.org, Chris Laplante <chris@laplante.io>
-Subject: [PATCH v2 1/6] hw/gpio/nrf51: implement DETECT signal
-Message-ID: <20230726030450.757462-2-chris@laplante.io>
+Subject: [PATCH v2 2/6] qtest: factor out qtest_install_gpio_out_intercept
+Message-ID: <20230726030450.757462-3-chris@laplante.io>
 In-Reply-To: <20230726030450.757462-1-chris@laplante.io>
 References: <20230726030450.757462-1-chris@laplante.io>
 Feedback-ID: 43500449:user:proton
@@ -65,78 +65,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Implement nRF51 DETECT signal in the GPIO peripheral.
-
-The reference manual makes mention of a per-pin DETECT signal, but these
-are not exposed to the user. See https://devzone.nordicsemi.com/f/nordic-q-=
-a/39858/gpio-per-pin-detect-signal-available
-for more information. Currently, I don't see a reason to model these.
-
 Signed-off-by: Chris Laplante <chris@laplante.io>
 ---
- hw/gpio/nrf51_gpio.c         | 14 +++++++++++++-
- include/hw/gpio/nrf51_gpio.h |  1 +
- 2 files changed, 14 insertions(+), 1 deletion(-)
+ softmmu/qtest.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/hw/gpio/nrf51_gpio.c b/hw/gpio/nrf51_gpio.c
-index b47fddf4ed..08396c69a4 100644
---- a/hw/gpio/nrf51_gpio.c
-+++ b/hw/gpio/nrf51_gpio.c
-@@ -78,6 +78,7 @@ static void update_state(NRF51GPIOState *s)
-     int pull;
-     size_t i;
-     bool connected_out, dir, connected_in, out, in, input;
-+    bool assert_detect =3D false;
+diff --git a/softmmu/qtest.c b/softmmu/qtest.c
+index f8d764b719..1c92e5a6a3 100644
+--- a/softmmu/qtest.c
++++ b/softmmu/qtest.c
+@@ -365,6 +365,15 @@ void qtest_set_command_cb(bool (*pc_cb)(CharBackend *c=
+hr, gchar **words))
+     process_command_cb =3D pc_cb;
+ }
 =20
-     for (i =3D 0; i < NRF51_GPIO_PINS; i++) {
-         pull =3D pull_value(s->cnf[i]);
-@@ -99,7 +100,15 @@ static void update_state(NRF51GPIOState *s)
-                 qemu_log_mask(LOG_GUEST_ERROR,
-                               "GPIO pin %zu short circuited\n", i);
-             }
--            if (!connected_in) {
-+            if (connected_in) {
-+                uint32_t detect_config =3D extract32(s->cnf[i], 16, 2);
-+                if ((detect_config =3D=3D 2) && (in =3D=3D 1)) {
-+                    assert_detect =3D true;
-+                }
-+                if ((detect_config =3D=3D 3) && (in =3D=3D 0)) {
-+                    assert_detect =3D true;
-+                }
-+            } else {
-                 /*
-                  * Floating input: the output stimulates IN if connected,
-                  * otherwise pull-up/pull-down resistors put a value on bo=
-th
-@@ -116,6 +125,8 @@ static void update_state(NRF51GPIOState *s)
-         }
-         update_output_irq(s, i, connected_out, out);
-     }
++static void qtest_install_gpio_out_intercept(DeviceState *dev, const char =
+*name, int n)
++{
++    qemu_irq *disconnected =3D g_new0(qemu_irq, 1);
++    qemu_irq icpt =3D qemu_allocate_irq(qtest_irq_handler,
++                                      disconnected, n);
 +
-+    qemu_set_irq(s->detect, assert_detect);
- }
-=20
- /*
-@@ -291,6 +302,7 @@ static void nrf51_gpio_init(Object *obj)
-=20
-     qdev_init_gpio_in(DEVICE(s), nrf51_gpio_set, NRF51_GPIO_PINS);
-     qdev_init_gpio_out(DEVICE(s), s->output, NRF51_GPIO_PINS);
-+    qdev_init_gpio_out_named(DEVICE(s), &s->detect, "detect", 1);
- }
-=20
- static void nrf51_gpio_class_init(ObjectClass *klass, void *data)
-diff --git a/include/hw/gpio/nrf51_gpio.h b/include/hw/gpio/nrf51_gpio.h
-index 8f9c2f86da..fcfa2bac17 100644
---- a/include/hw/gpio/nrf51_gpio.h
-+++ b/include/hw/gpio/nrf51_gpio.h
-@@ -64,6 +64,7 @@ struct NRF51GPIOState {
-     uint32_t old_out_connected;
-=20
-     qemu_irq output[NRF51_GPIO_PINS];
-+    qemu_irq detect;
- };
-=20
-=20
++    *disconnected =3D qdev_intercept_gpio_out(dev, icpt,name, n);
++}
++
+ static void qtest_process_command(CharBackend *chr, gchar **words)
+ {
+     const gchar *command;
+@@ -415,12 +424,7 @@ static void qtest_process_command(CharBackend *chr, gc=
+har **words)
+             if (words[0][14] =3D=3D 'o') {
+                 int i;
+                 for (i =3D 0; i < ngl->num_out; ++i) {
+-                    qemu_irq *disconnected =3D g_new0(qemu_irq, 1);
+-                    qemu_irq icpt =3D qemu_allocate_irq(qtest_irq_handler,
+-                                                      disconnected, i);
+-
+-                    *disconnected =3D qdev_intercept_gpio_out(dev, icpt,
+-                                                            ngl->name, i);
++                    qtest_install_gpio_out_intercept(dev, ngl->name, i);
+                 }
+             } else {
+                 qemu_irq_intercept_in(ngl->in, qtest_irq_handler,
 --=20
 2.41.0
 
