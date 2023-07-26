@@ -2,95 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A587763FA3
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jul 2023 21:30:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BFFC9763F08
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jul 2023 20:53:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOj8r-0003Z5-FB; Wed, 26 Jul 2023 14:21:45 -0400
+	id 1qOjAB-0003rJ-8C; Wed, 26 Jul 2023 14:23:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qOj8p-0003Ys-71
- for qemu-devel@nongnu.org; Wed, 26 Jul 2023 14:21:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qOj8n-0008GG-P9
- for qemu-devel@nongnu.org; Wed, 26 Jul 2023 14:21:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690395700;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=RCPaISCfgH8GkIPOWFaHoTth6gOE8hm60IM3F7rtrEo=;
- b=aB2rJnnzUjcEgrKeW4UZe9etmEKMGmD6wuMqLoaaGosscmv8PjoF2h+SLqqAKFg/lQ7h5v
- e0qmEK40QXOkgC6Qdar/L/eW0SGvdH66qola3rYMIrOpWJHHrsK5N95NzrDXagqdk5HOlv
- yjHCRDBCwJwb/SgSFFhIr7uNZZW95WA=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-678-ElJ33nonOMqoHw2eYyALHw-1; Wed, 26 Jul 2023 14:21:39 -0400
-X-MC-Unique: ElJ33nonOMqoHw2eYyALHw-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-317421b94a4so43592f8f.3
- for <qemu-devel@nongnu.org>; Wed, 26 Jul 2023 11:21:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qOj9p-0003qO-1p; Wed, 26 Jul 2023 14:22:45 -0400
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qOj9n-0008QY-KI; Wed, 26 Jul 2023 14:22:44 -0400
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-6686a05bc66so125794b3a.1; 
+ Wed, 26 Jul 2023 11:22:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1690395761; x=1691000561;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=2II+fYqZBc1CEvPiY2247804mv7Uqmq4zLyfC+64ZSY=;
+ b=M8+WedE/9fTb6Vd1B42g88Xe4L/4gpDQ23czGQgPg8557iJvw0hyKN6OPu2KvfWTSa
+ FwgbQs0WrvqtIDn6mGX7wpXFFOx5pHUnyiuyxJBFE+punZoLg4G9xCJ3vx5ppwtSW8ho
+ 5q9fI1Mf86I8UDG5oKZXQGozl3EyrYa4Qg2kD5lRIAdOcfH5RovF2em5aiOhQvgoRm8I
+ 2fmA7gjsigQqL7QEbM1nVLTTL2LNA2XUW/PMmPFF/ukFeQHUVB77oFCAp8szMhOVmrYv
+ jWl7QM7NVPfSXjtB6bFxhGAh4CTqqtkInqK3QpZVUM+31X7bLjWhbdclkLglh7SswGCZ
+ m5Kg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690395698; x=1691000498;
- h=content-transfer-encoding:in-reply-to:subject:from:content-language
- :references:cc:to:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=RCPaISCfgH8GkIPOWFaHoTth6gOE8hm60IM3F7rtrEo=;
- b=TzNcxlo1SF+skX9ylEFjuzgZpDnsr0Q7hQB7OK3yBIY7T3a9p0t2NvnGxkX9X73lsz
- +s9ONCVIPhoTAMCa+b1ciC2ZxHWI5Y57jZXmw+9BAwV4sOM6rN9dMz7lJPTLUe2MkXvI
- l6mFR1OhlTNaZiZykkeDWIWJlRyQss4BbL+PV5EE7JcNJ+u/gDVi0+FQ81QwznwYM6sB
- j7FfVs40qpb4kr5ibvoEX+SMsYvHX/G5JnsW6B6gx/FzmBGg9HTLFpw8Rfu2Am8OWT3y
- f0cceXcYuh6r/5zQk6PqiWyT/TMjDyHb3qd9mzfaNMpUA+SPv8vgD/uBixgE6YT+igLL
- +dSg==
-X-Gm-Message-State: ABy/qLbD6AjR+GphxNNLI8GdBfbeIDQ0icPGqz9lycWg+hUf+0Gh+aol
- qi3CWQLA8XOK7dMQZuzSEz9FTnPwIjF1VPWbVifCDy5GGatq7SHaTQULsXCfe/UMN+PGfZyyghT
- JkvSBldmuGwgpPKQ=
-X-Received: by 2002:a05:6000:12d2:b0:314:1f6:2c24 with SMTP id
- l18-20020a05600012d200b0031401f62c24mr2017201wrx.36.1690395697965; 
- Wed, 26 Jul 2023 11:21:37 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlGN23pgPuGNbuZAYB5yqzt9FdSKo3vltf/dNI/axf5xq9xpXvYBrqgLu97fxyprawTsryVlkQ==
-X-Received: by 2002:a05:6000:12d2:b0:314:1f6:2c24 with SMTP id
- l18-20020a05600012d200b0031401f62c24mr2017195wrx.36.1690395697670; 
- Wed, 26 Jul 2023 11:21:37 -0700 (PDT)
-Received: from [192.168.8.101] (tmo-099-211.customers.d1-online.com.
- [80.187.99.211]) by smtp.gmail.com with ESMTPSA id
- b13-20020a5d4d8d000000b0031417fd473csm7302377wru.78.2023.07.26.11.21.35
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 26 Jul 2023 11:21:37 -0700 (PDT)
-Message-ID: <0d0f9f65-2ead-6852-20c2-a83e256eecac@redhat.com>
-Date: Wed, 26 Jul 2023 20:21:33 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ d=1e100.net; s=20221208; t=1690395761; x=1691000561;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=2II+fYqZBc1CEvPiY2247804mv7Uqmq4zLyfC+64ZSY=;
+ b=WhUshYp2p6U596XU8efocwjMMQj2eArUdFcjAvB/RA1Henmx8kvWZBM7jkSYiIAftJ
+ M8+DlDsQhyrHoH9aXAuMdln/wDXWJOqKYEcihQo5Lg+a284DtfWFo6rZJidZtwmJ70SR
+ yaC5pXfAX48eIXy75uosOp5GllWPgIy98tnmQ4WOV3kEcqPKWHNFGW7Lip7IPFPCMPOw
+ XTaNo8rtVV021qGsl6ExUkmlkEqEZuEeFmK+knYkeuZeSx/qwXiIKeqRRzHnnK2AtG6B
+ E6RkNLu9KpSXkw4QGijkkfXvBdEMwx8QCWmGs1Hi4wfMu9DGdY2y1a3PFB8ORYFF2Jkj
+ wucQ==
+X-Gm-Message-State: ABy/qLYpixwdIQgm5GM3hf6tJGSAD3mejJmTjbXHaW4dNELu/nINu9X+
+ lomUqwtemN7hnUadzp2qLwI=
+X-Google-Smtp-Source: APBJJlH7OTA8LfnPxHVX0YYRftlr/frSZElxXN1q7RH3aSYry0BV6Wdxs20dzDA8UFR09nP0wFNpag==
+X-Received: by 2002:a05:6a20:7d82:b0:135:6ef6:17f with SMTP id
+ v2-20020a056a207d8200b001356ef6017fmr3136090pzj.43.1690395761213; 
+ Wed, 26 Jul 2023 11:22:41 -0700 (PDT)
+Received: from wheely.local0.net ([118.102.104.45])
+ by smtp.gmail.com with ESMTPSA id
+ b25-20020a639319000000b0055adced9e13sm360185pge.0.2023.07.26.11.22.37
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 26 Jul 2023 11:22:40 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: Daniel Henrique Barboza <danielhb413@gmail.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org,
  qemu-devel@nongnu.org
-Cc: Beraldo Leal <bleal@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Yonggang Luo <luoyonggang@gmail.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- Bin Meng <bin.meng@windriver.com>
-References: <20230726161942.229093-1-berrange@redhat.com>
-Content-Language: en-US
-From: Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH] gitlab: remove duplication between msys jobs
-In-Reply-To: <20230726161942.229093-1-berrange@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: [PATCH 0/6] ppc fixes possibly for 8.1
+Date: Thu, 27 Jul 2023 04:22:24 +1000
+Message-Id: <20230726182230.433945-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.40.1
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x436.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -107,27 +90,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 26/07/2023 18.19, Daniel P. Berrangé wrote:
-> Although they share a common parent, the two msys jobs still have
-> massive duplication in their script definitions that can easily be
-> collapsed.
-> 
-> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-> ---
->   .gitlab-ci.d/windows.yml | 132 +++++++++++++++------------------------
->   1 file changed, 49 insertions(+), 83 deletions(-)
+Sorry for the delay following up on the fixes, I got sucked down
+the decrementer rabbit hole that took longer than expected.
 
-We originally had different sets of packages in the 32-bit and 64-bit jobs, 
-to distribute the load between the two jobs ... but it got unified in commit 
-14547e0877f3522. Now considering that we are facing timeouts again, we 
-should maybe rather revert that commit instead of unifying the lists forever?
+Question about what is suitable for merge at this time and what
+should be stable. The first 3 have caused crashes or hangs running
+Linux and other software. Second 3 fix some issues with dec that
+could cause problems, especially with migration. But they affect
+more machines in more complex ways than the first 3.
 
-Anyway, before we unify the compiler package name suffix between the two 
-jobs, I really would like to see whether the mingw Clang builds QEMU faster 
-in the 64-bit job ... but so far I failed to convince meson to accept the 
-Clang from the mingw package ... does anybody know how to use Clang with 
-MSYS2 properly?
+No changes to the first 3 already posted except to add Fixes:
+tags.
 
-  Thomas
+Thanks,
+Nick
+
+Nicholas Piggin (6):
+  target/ppc: Implement ASDR register for ISA v3.0 for HPT
+  target/ppc: Fix VRMA page size for ISA v3.0
+  target/ppc: Fix pending HDEC when entering PM state
+  hw/ppc: Avoid decrementer rounding errors
+  hw/ppc: Always store the decrementer value
+  target/ppc: Migrate DECR SPR
+
+ hw/ppc/ppc.c             | 47 +++++++++++++++------------
+ target/ppc/excp_helper.c |  6 ++++
+ target/ppc/machine.c     | 14 +++++++++
+ target/ppc/mmu-hash64.c  | 68 ++++++++++++++++++++++++++++++----------
+ 4 files changed, 98 insertions(+), 37 deletions(-)
+
+-- 
+2.40.1
 
 
