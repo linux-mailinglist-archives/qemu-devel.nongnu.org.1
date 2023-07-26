@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C37787639C1
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jul 2023 17:00:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13734763B2C
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jul 2023 17:35:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOeWu-00037Z-Q2; Wed, 26 Jul 2023 09:26:16 -0400
+	id 1qOeWy-0003Ax-HR; Wed, 26 Jul 2023 09:26:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <serg.oker@gmail.com>)
- id 1qOeWc-0002qh-Ku; Wed, 26 Jul 2023 09:25:59 -0400
-Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
+ id 1qOeWc-0002qi-LQ; Wed, 26 Jul 2023 09:25:59 -0400
+Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <serg.oker@gmail.com>)
- id 1qOeWY-0003MQ-Sm; Wed, 26 Jul 2023 09:25:57 -0400
-Received: by mail-lf1-x12c.google.com with SMTP id
- 2adb3069b0e04-4f4b2bc1565so10542485e87.2; 
- Wed, 26 Jul 2023 06:25:52 -0700 (PDT)
+ id 1qOeWY-0003Mz-T9; Wed, 26 Jul 2023 09:25:57 -0400
+Received: by mail-lf1-x129.google.com with SMTP id
+ 2adb3069b0e04-4fcd615d7d6so10426960e87.3; 
+ Wed, 26 Jul 2023 06:25:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1690377951; x=1690982751;
+ d=gmail.com; s=20221208; t=1690377952; x=1690982752;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=iPdZTmCIrme/QnBBrjhsf79S6kax7iTDj/A1vih6UL4=;
- b=fEA2UYx3WYfc9uiFlYtPoirlX4vSiNQ6QT7WdVAl883FuzrAYouLFSr8Tq/tpKVzkb
- zdZPYNNDdMV/5HK1PKTVO+KDbM1rdA4Vbh3i7XC7q6NXW8NpDjN/YHP2HQPtQcyptvkT
- +LHCnJPz/G1nMzFMqaTT2yKdxkc/WmUbth1p6bmIhuMCG8sNwFDkt8qthDiCxlfjcCBV
- B67iFdARn8tBcPYF78LiyoKfLAKSTFLPofA9jW4BwzCQpUgC80wXy4xrhKMQ4EzC5o33
- shzo73mCOok6k5DOE5blk+EWlm/buIH6v4KzY+T7pvRTm8jOElZExMsIZtDXILgbrYkf
- QoCw==
+ bh=Ac3+bfyVJ5khbZA2SP9svGm7ghoDWvAusTIwWDpppFY=;
+ b=reqYemqrVS+xiWyPWahv9kOBbPb8wg/myPmrgT/JC0BG84zlKbLMqsh/hQh1OhaWK+
+ RRmQpOMNmUWbQtLqB3HVPFECrfC8P03hyDmnctRo22Qyf2ZzrXp197l+MYPuIbG+KtMM
+ So0hHD8UxLTcF184sogIj2Viis1WiSwjl48i7gTLcdFJTP+qziluRmU/jqdIDcgasgcw
+ TfkAObYtXckYFEWPAIEeqdAFA5VjKUpMNrD5gSX2HqRGQNTLDRkGJArFdR4Jn3ZK5YaT
+ 9uiy4JUmPFUa5/JPYhDy0FCeVNBplOJO6fyGsxqHLu3VY+OwL2TGwQwR7NrsAmE4lh3y
+ /j5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690377951; x=1690982751;
+ d=1e100.net; s=20221208; t=1690377952; x=1690982752;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=iPdZTmCIrme/QnBBrjhsf79S6kax7iTDj/A1vih6UL4=;
- b=dibgVlvSEJJVRFZcMN0eeLJsScnxxsBSXEmImOOeuFRhnPQ9Qk81HZafpEZ0lsDX8d
- g2FMlRb8MDgvuEnP7F2yly5tQBu/O+DoFYdGVm3JYRI1zlVgzowYOkrtSWlJ+3P7te4y
- fevPw0dOtjD+oWoGLZIemcky7XmnzmHFPgcVBl9NkS2tuH/xx69Ff+6gWTSeuVO0LvqU
- i7y4xYr6UrSKaapc1qknsGLngALTATDLHhttl/4TFdlaoFREcSq05DlyCGP2hkSTY0Lc
- tXinGnQ4b3yVqueqmGb7I8lVxOc/bI6Tedg69I+W1+bwd89Qp4a9F9x6kRrbP6gILV5l
- pvtA==
-X-Gm-Message-State: ABy/qLabLz6Rl1hAg3e1G6eOoquIXqoU1EadDX89loXXi0hdqsShJWpm
- OGmyoflwcUyxmx+6gqAwVnJBGspo+fA=
-X-Google-Smtp-Source: APBJJlH8XbMfkOJjSZiHfSZm9RDq3x2m583JKHJ8PAKxgEKqYrktmIaLkqafQr6hnOoRT+96TMYeNA==
-X-Received: by 2002:a05:6512:6c4:b0:4fd:faa2:884c with SMTP id
- u4-20020a05651206c400b004fdfaa2884cmr1457804lff.29.1690377951103; 
- Wed, 26 Jul 2023 06:25:51 -0700 (PDT)
+ bh=Ac3+bfyVJ5khbZA2SP9svGm7ghoDWvAusTIwWDpppFY=;
+ b=f6v2+pwGsb0WyTV4WS8tokMSS3I8HzmAdUUbBTG2y6ixKFGAYHidNpUPzzOLB6xshQ
+ 8Bwo+CPNNq0cpdZqA9U/u9OsP/bI+Hef6vSimTMbH6FF4YYfCAkEuvNfwVNK3sj8zJpz
+ NtS/kwCBKplYfoh04/PRlSwa4T2OWOIVSRst6TuCuxS+bIZ9nUx4PZgyhANQb+Ol4Oez
+ sVFTiuhWii3+69xJc2DsjAWV1qPH789ATU7grRmQQkydQD7jySYU2lZbgIRHcpfWAwhz
+ bWueKcHnr/67dCvQOpFCu4ipya3/gpQDn2nWPDdogWnYKhOec2cyW4gDqDPWeJzrBMVB
+ At0A==
+X-Gm-Message-State: ABy/qLagliAoDXnO/GPD6HY9qAQ1+PSm+t+yDXIA+U2fvhSXe08QQzFu
+ 8SexzpUDiOuSC7Fxdd6DF5E9+dqQS3o=
+X-Google-Smtp-Source: APBJJlEPm7Xos2hyLMaGlL9cL30Xnu/DPv9rc8Nies6OPYy8RrMayHx5bIXP9PtqcNaoMpBNlA6gwA==
+X-Received: by 2002:a19:4f03:0:b0:4fb:8bab:48b6 with SMTP id
+ d3-20020a194f03000000b004fb8bab48b6mr1371284lfb.52.1690377952224; 
+ Wed, 26 Jul 2023 06:25:52 -0700 (PDT)
 Received: from sergevik-thinkpad.localdomain ([213.197.136.186])
  by smtp.gmail.com with ESMTPSA id
- j22-20020a19f516000000b004fe0c3d8bb4sm565079lfb.84.2023.07.26.06.25.50
+ j22-20020a19f516000000b004fe0c3d8bb4sm565079lfb.84.2023.07.26.06.25.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 26 Jul 2023 06:25:50 -0700 (PDT)
+ Wed, 26 Jul 2023 06:25:51 -0700 (PDT)
 From: Sergey Kambalin <serg.oker@gmail.com>
 X-Google-Original-From: Sergey Kambalin <sergey.kambalin@auriga.com>
 To: qemu-arm@nongnu.org
 Cc: qemu-devel@nongnu.org,
 	Sergey Kambalin <sergey.kambalin@auriga.com>
-Subject: [PATCH 26/44] Add GENET register structs. Part 4
-Date: Wed, 26 Jul 2023 16:24:54 +0300
-Message-Id: <20230726132512.149618-27-sergey.kambalin@auriga.com>
+Subject: [PATCH 27/44] Add GENET register access macros
+Date: Wed, 26 Jul 2023 16:24:55 +0300
+Message-Id: <20230726132512.149618-28-sergey.kambalin@auriga.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230726132512.149618-1-sergey.kambalin@auriga.com>
 References: <20230726132512.149618-1-sergey.kambalin@auriga.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
- envelope-from=serg.oker@gmail.com; helo=mail-lf1-x12c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::129;
+ envelope-from=serg.oker@gmail.com; helo=mail-lf1-x129.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01,
+ UPPERCASE_50_75=0.008 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,74 +94,99 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
 ---
- include/hw/net/bcm2838_genet.h | 40 ++++++++++++++++++++++++++++++++++
- 1 file changed, 40 insertions(+)
+ include/hw/net/bcm2838_genet.h | 76 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 76 insertions(+)
 
 diff --git a/include/hw/net/bcm2838_genet.h b/include/hw/net/bcm2838_genet.h
-index 4cf70a17d3..4b549ed431 100644
+index 4b549ed431..bfe5e3ab31 100644
 --- a/include/hw/net/bcm2838_genet.h
 +++ b/include/hw/net/bcm2838_genet.h
-@@ -25,6 +25,15 @@ OBJECT_DECLARE_SIMPLE_TYPE(BCM2838GenetState, BCM2838_GENET)
+@@ -22,9 +22,85 @@ OBJECT_DECLARE_SIMPLE_TYPE(BCM2838GenetState, BCM2838_GENET)
+ #define BCM2838_GENET_DMA_RING_CNT      17
+ #define BCM2838_GENET_DMA_RING_DEFAULT  (BCM2838_GENET_DMA_RING_CNT - 1)
+ 
++#define BCM2838_GENET_HFB_FILTER_REGS     offsetof(BCM2838GenetRegs, hfb)
++#define BCM2838_GENET_HFB_FILTER_REG(reg) (BCM2838_GENET_HFB_FILTER_REGS \
++                                           + offsetof(BCM2838GenetRegsHfb, reg))
  #define BCM2838_GENET_HFB_FILTER_CNT      48
  #define BCM2838_GENET_HFB_FILTER_SIZE     128
  
-+#define BCM2838_GENET_PHY_AUX_CTL_MISC  0x7
-+#define BCM2838_GENET_PHY_AUX_CTL_REGS_SIZE 8
++#define BCM2838_GENET_INTRL0_REG(reg)   (offsetof(BCM2838GenetRegs, intrl0) \
++                                        + offsetof(BCM2838GenetRegsIntrl0, reg))
++#define BCM2838_GENET_INTRL0_SET        BCM2838_GENET_INTRL0_REG(set)
++#define BCM2838_GENET_INTRL0_CLEAR      BCM2838_GENET_INTRL0_REG(clear)
++#define BCM2838_GENET_INTRL0_MASK_SET   BCM2838_GENET_INTRL0_REG(mask_set)
++#define BCM2838_GENET_INTRL0_MASK_CLEAR BCM2838_GENET_INTRL0_REG(mask_clear)
 +
-+#define SIZEOF_FIELD(type, field)      sizeof(((type*) 0)->field)
-+#define BCM2838_GENET_PHY_EXP_SHD_BLOCKS_CNT \
-+    (1u << (8 * SIZEOF_FIELD(BCM2838GenetPhyExpSel, block_id)))
-+#define BCM2838_GENET_PHY_EXP_SHD_REGS_CNT \
-+    (1u << (8 * SIZEOF_FIELD(BCM2838GenetPhyExpSel, reg_id)))
++#define BCM2838_GENET_INTRL1_REG(reg)   (offsetof(BCM2838GenetRegs, intrl1) \
++                                        + offsetof(BCM2838GenetRegsIntrl1, reg))
++#define BCM2838_GENET_INTRL1_SET        BCM2838_GENET_INTRL1_REG(set)
++#define BCM2838_GENET_INTRL1_CLEAR      BCM2838_GENET_INTRL1_REG(clear)
++#define BCM2838_GENET_INTRL1_MASK_SET   BCM2838_GENET_INTRL1_REG(mask_set)
++#define BCM2838_GENET_INTRL1_MASK_CLEAR BCM2838_GENET_INTRL1_REG(mask_clear)
 +
- typedef union {
-     uint32_t value;
-     struct {
-@@ -568,6 +577,34 @@ typedef struct {
-     uint16_t rdb_data;
- } __attribute__((__packed__)) BCM2838GenetPhyRegs;
++#define BCM2838_GENET_UMAC_REG(reg)     (offsetof(BCM2838GenetRegs, umac) \
++                                         + offsetof(BCM2838GenetRegsUmac, reg))
++#define BCM2838_GENET_UMAC_CMD          BCM2838_GENET_UMAC_REG(cmd)
++#define BCM2838_GENET_UMAC_MAC0         BCM2838_GENET_UMAC_REG(mac0)
++#define BCM2838_GENET_UMAC_MAC1         BCM2838_GENET_UMAC_REG(mac1)
++#define BCM2838_GENET_UMAC_MDIO_CMD     BCM2838_GENET_UMAC_REG(mdio_cmd)
++
++#define BCM2838_GENET_TDMA_REGS         offsetof(BCM2838GenetRegs, tdma)
++#define BCM2838_GENET_TDMA_REG(reg)     (BCM2838_GENET_TDMA_REGS \
++                                         + offsetof(BCM2838GenetRegsTdma, reg))
++#define BCM2838_GENET_TDMA_RINGS        BCM2838_GENET_TDMA_REG(rings)
++#define BCM2838_GENET_TDMA_RING_CFG     BCM2838_GENET_TDMA_REG(ring_cfg)
++#define BCM2838_GENET_TDMA_CTRL         BCM2838_GENET_TDMA_REG(ctrl)
++
++#define BCM2838_GENET_RDMA_REGS         offsetof(BCM2838GenetRegs, rdma)
++#define BCM2838_GENET_RDMA_REG(reg)     (BCM2838_GENET_RDMA_REGS \
++                                         + offsetof(BCM2838GenetRegsRdma, reg))
++#define BCM2838_GENET_RDMA_RINGS        BCM2838_GENET_RDMA_REG(rings)
++#define BCM2838_GENET_RDMA_RING_CFG     BCM2838_GENET_RDMA_REG(ring_cfg)
++#define BCM2838_GENET_RDMA_CTRL         BCM2838_GENET_RDMA_REG(ctrl)
++
++#define BCM2838_GENET_TRING_REG(reg)    offsetof(BCM2838GenetTdmaRing, reg)
++#define BCM2838_GENET_TRING_WRITE_PTR BCM2838_GENET_TRING_REG(write_ptr)
++#define BCM2838_GENET_TRING_WRITE_PTR_HI BCM2838_GENET_TRING_REG(write_ptr_hi)
++#define BCM2838_GENET_TRING_PROD_INDEX BCM2838_GENET_TRING_REG(prod_index)
++#define BCM2838_GENET_TRING_CONS_INDEX BCM2838_GENET_TRING_REG(cons_index)
++#define BCM2838_GENET_TRING_RING_BUF_SIZE BCM2838_GENET_TRING_REG(ring_buf_size)
++#define BCM2838_GENET_TRING_RING_START_ADDR BCM2838_GENET_TRING_REG(start_addr)
++#define BCM2838_GENET_TRING_RING_START_ADDR_HI BCM2838_GENET_TRING_REG(start_addr_hi)
++#define BCM2838_GENET_TRING_RING_END_ADDR BCM2838_GENET_TRING_REG(end_addr)
++#define BCM2838_GENET_TRING_RING_END_ADDR_HI BCM2838_GENET_TRING_REG(end_addr_hi)
++#define BCM2838_GENET_TRING_RING_MBUF_DONE_TRESH BCM2838_GENET_TRING_REG(mbuf_done_tresh)
++#define BCM2838_GENET_TRING_RING_FLOW_PERIOD BCM2838_GENET_TRING_REG(flow_period)
++#define BCM2838_GENET_TRING_RING_READ_PTR BCM2838_GENET_TRING_REG(read_ptr)
++#define BCM2838_GENET_TRING_RING_READ_PTR_HI BCM2838_GENET_TRING_REG(read_ptr_hi)
++
++#define BCM2838_GENET_RRING_REG(reg)    offsetof(BCM2838GenetRdmaRing, reg)
++#define BCM2838_GENET_RRING_WRITE_PTR BCM2838_GENET_RRING_REG(write_ptr)
++#define BCM2838_GENET_RRING_WRITE_PTR_HI BCM2838_GENET_RRING_REG(write_ptr_hi)
++#define BCM2838_GENET_RRING_PROD_INDEX BCM2838_GENET_RRING_REG(prod_index)
++#define BCM2838_GENET_RRING_CONS_INDEX BCM2838_GENET_RRING_REG(cons_index)
++#define BCM2838_GENET_RRING_RING_BUF_SIZE BCM2838_GENET_RRING_REG(ring_buf_size)
++#define BCM2838_GENET_RRING_RING_START_ADDR BCM2838_GENET_RRING_REG(start_addr)
++#define BCM2838_GENET_RRING_RING_START_ADDR_HI BCM2838_GENET_RRING_REG(start_addr_hi)
++#define BCM2838_GENET_RRING_RING_END_ADDR BCM2838_GENET_RRING_REG(end_addr)
++#define BCM2838_GENET_RRING_RING_END_ADDR_HI BCM2838_GENET_RRING_REG(end_addr_hi)
++#define BCM2838_GENET_RRING_RING_MBUF_DONE_TRESH BCM2838_GENET_RRING_REG(mbuf_done_tresh)
++#define BCM2838_GENET_RRING_RING_XON_XOFF_TRESH BCM2838_GENET_RRING_REG(xon_xoff_tresh)
++#define BCM2838_GENET_RRING_RING_READ_PTR BCM2838_GENET_RRING_REG(read_ptr)
++#define BCM2838_GENET_RRING_RING_READ_PTR_HI BCM2838_GENET_RRING_REG(read_ptr_hi)
++
++
++#define BCM2838_GENET_PHY_REG(reg)      (offsetof(BCM2838GenetPhyRegs, reg) / 2)
++#define BCM2838_GENET_PHY_BMCR          BCM2838_GENET_PHY_REG(bmcr)
++#define BCM2838_GENET_PHY_AUX_CTL       BCM2838_GENET_PHY_REG(aux_ctl)
++#define BCM2838_GENET_PHY_SHD           BCM2838_GENET_PHY_REG(shd)
++#define BCM2838_GENET_EXP_DATA          BCM2838_GENET_PHY_REG(exp_data)
++#define BCM2838_GENET_EXP_SEL           BCM2838_GENET_PHY_REG(exp_ctrl)
++
+ #define BCM2838_GENET_PHY_AUX_CTL_MISC  0x7
+ #define BCM2838_GENET_PHY_AUX_CTL_REGS_SIZE 8
  
-+typedef struct {
-+    uint16_t reserved_0_2[3];
-+    uint16_t clk_ctl;
-+    uint16_t scr2;
-+    uint16_t scr3;
-+    uint16_t reserved_6_9[4];
-+    uint16_t apd;
-+    uint16_t rgmii_mode;
-+    uint16_t reserved_12;
-+    uint16_t leds1;
-+    uint16_t reserved_14_18[5];
-+    uint16_t _100fx_ctrl;
-+    uint16_t ssd;
-+    uint16_t reserved_21_30[10];
-+    uint16_t mode;
-+} __attribute__((__packed__)) BCM2838GenetPhyShdRegs;
-+
-+typedef struct {
-+    uint16_t auxctl;
-+    uint16_t reserved_1_6[BCM2838_GENET_PHY_AUX_CTL_REGS_SIZE - 2];
-+    uint16_t misc;
-+} __attribute__((__packed__)) BCM2838GenetPhyAuxShdRegs;
-+
-+typedef struct {
-+    uint16_t regs[BCM2838_GENET_PHY_EXP_SHD_BLOCKS_CNT]
-+                 [BCM2838_GENET_PHY_EXP_SHD_REGS_CNT];
-+} __attribute__((__packed__)) BCM2838GenetPhyExpShdRegs;
-+
- struct BCM2838GenetState {
-     /*< private >*/
-     SysBusDevice parent_obj;
-@@ -579,6 +616,9 @@ struct BCM2838GenetState {
- 
-     BCM2838GenetRegs regs;
-     BCM2838GenetPhyRegs phy_regs;
-+    BCM2838GenetPhyShdRegs phy_shd_regs;
-+    BCM2838GenetPhyAuxShdRegs phy_aux_ctl_shd_regs;
-+    BCM2838GenetPhyExpShdRegs phy_exp_shd_regs;
- 
-     qemu_irq irq_default;
-     qemu_irq irq_prio;
 -- 
 2.34.1
 
