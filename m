@@ -2,61 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F863763E35
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jul 2023 20:15:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DBED763FA9
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jul 2023 21:32:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOiUH-0002yH-52; Wed, 26 Jul 2023 13:39:49 -0400
+	id 1qOia6-0003rv-AT; Wed, 26 Jul 2023 13:45:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qOiUF-0002y7-3I
- for qemu-devel@nongnu.org; Wed, 26 Jul 2023 13:39:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qOia3-0003rQ-II
+ for qemu-devel@nongnu.org; Wed, 26 Jul 2023 13:45:47 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qOiUC-0006d8-9I
- for qemu-devel@nongnu.org; Wed, 26 Jul 2023 13:39:46 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qOia2-0003k1-1S
+ for qemu-devel@nongnu.org; Wed, 26 Jul 2023 13:45:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690393183;
+ s=mimecast20190719; t=1690393545;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=bJskVo7nakUVrWqfYNTIq6stWPFFB6Tb1jHIV6KWhxU=;
- b=ERsrW8KrQ+ZZ+1EBaExCFzkAZewQd/ow7iy5ljJaVQD7Yq4sqgyIS89kD9HETCT9YzZ9sr
- GD7YwcCsb4EGdMmLGvref72/+/hx0p5eDLDbc+cjIiD48xcIEnFpuGNcLVXIUTBsVqA99D
- DmEz1A+BmqR//lfX9K8I74FqBiIZ2Ik=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-244-pdIDkI7FMUe95gvZ5nuasw-1; Wed, 26 Jul 2023 13:39:42 -0400
-X-MC-Unique: pdIDkI7FMUe95gvZ5nuasw-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 05A0D185A795
- for <qemu-devel@nongnu.org>; Wed, 26 Jul 2023 17:39:42 +0000 (UTC)
-Received: from localhost (unknown [10.39.208.19])
- by smtp.corp.redhat.com (Postfix) with ESMTP id CD74E4094DC0;
- Wed, 26 Jul 2023 17:39:40 +0000 (UTC)
-From: marcandre.lureau@redhat.com
-To: qemu-devel@nongnu.org
-Cc: Gerd Hoffmann <kraxel@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH 2/2] virtio-gpu: reset gfx resources in main thread
-Date: Wed, 26 Jul 2023 21:39:29 +0400
-Message-ID: <20230726173929.690601-3-marcandre.lureau@redhat.com>
-In-Reply-To: <20230726173929.690601-1-marcandre.lureau@redhat.com>
-References: <20230726173929.690601-1-marcandre.lureau@redhat.com>
+ bh=9GImxgUdYMZ49yLQ1z4eXiQK62MzicyE5+gftMX7p48=;
+ b=HbGcORBII/uxIcdLWbLtSS2Qo+5i1Jzdx60E2lALYf0nelvT6DeSshw/YjwxoR8fuUtQ8B
+ 1ky7VUjJQ3UdyaMcPZ+c/u/ehJB+f9cM07jSEolZrJzZPKPpxRAGgwbeALFzqpzXZLNENw
+ oBcjyfsY55TOdMxwOtnNRONOkIY7bJc=
+Received: from mail-ua1-f70.google.com (mail-ua1-f70.google.com
+ [209.85.222.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-673-f73_EPSwPwmZ0ZKQWhdTFg-1; Wed, 26 Jul 2023 13:45:43 -0400
+X-MC-Unique: f73_EPSwPwmZ0ZKQWhdTFg-1
+Received: by mail-ua1-f70.google.com with SMTP id
+ a1e0cc1a2514c-79a06901112so2696241.0
+ for <qemu-devel@nongnu.org>; Wed, 26 Jul 2023 10:45:43 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1690393543; x=1690998343;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=9GImxgUdYMZ49yLQ1z4eXiQK62MzicyE5+gftMX7p48=;
+ b=AlYlapFdrPj6dS7t4s4U8y8ORQMX800u5S/iVMo/fqyOZVkxLED3iq/D567G0DSDmw
+ Um0Xi7DVq1oRskxJ6/T32pO8eCzQiRlgKzdPFWwbCzRBHA8nEF4uqhq6j+XdVqxjQi1Q
+ XHbTasGM4wUvVFl6Y0/58ZyTNXtFTJMYXJNUIoOtTMNrdRRqyaBeB022gaxLF8SEw5XE
+ MxIHGByhBLBwUCbBnkNTrEfh9sUCCdunK/JM6ctAiM0bbqktBBSM2N7F5LCu/kElnuZu
+ SGqoJG7K4RZj3DKWnIVfiJV9GsJqQ2USAXciFuO9KgjpT68aEP/8coimHSy1cecdiplb
+ xr4A==
+X-Gm-Message-State: ABy/qLZXreR2BkT5gp3FB3Ifml6t62NhTw8sBPXNR34HFGR/nKWBZyOj
+ paPZ8ZXlS7GXl6ROD4muQ9TGfq78zlcxVtvCjEgv2X9JnxOSkEKs3K7OElYdWmJ3vbxGrsfiiJR
+ LQ0HQJpbJ9hyUwSQ=
+X-Received: by 2002:a05:6122:d91:b0:47e:9d33:6da1 with SMTP id
+ bc17-20020a0561220d9100b0047e9d336da1mr1518548vkb.0.1690393543087; 
+ Wed, 26 Jul 2023 10:45:43 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlHsylbaqozANyJjSxPAIbUg83FrrMxmKoVnXwqqYjc00e6TFhh+WrPD1olph+hNhXD6xs93hg==
+X-Received: by 2002:a05:6122:d91:b0:47e:9d33:6da1 with SMTP id
+ bc17-20020a0561220d9100b0047e9d336da1mr1518536vkb.0.1690393542823; 
+ Wed, 26 Jul 2023 10:45:42 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ z20-20020a0cf014000000b006362d4eeb6esm5188913qvk.144.2023.07.26.10.45.42
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 26 Jul 2023 10:45:42 -0700 (PDT)
+Date: Wed, 26 Jul 2023 13:45:40 -0400
+From: Peter Xu <peterx@redhat.com>
+To: hongmianquan <hongmianquan@bytedance.com>
+Cc: qemu-devel@nongnu.org, philmd@linaro.org, david@redhat.com,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH] memory: avoid updating ioeventfds for some address_space
+Message-ID: <ZMFbxFnv82AWlzLD@x1n>
+References: <20230725112037.1762608-1-hongmianquan@bytedance.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=marcandre.lureau@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230725112037.1762608-1-hongmianquan@bytedance.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -81,131 +97,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marc-André Lureau <marcandre.lureau@redhat.com>
+On Tue, Jul 25, 2023 at 07:20:37PM +0800, hongmianquan wrote:
+> When updating ioeventfds, we need to iterate all address spaces,
+> but some address spaces do not register eventfd_add|del call when
+> memory_listener_register() and they do nothing when updating ioeventfds.
+> So we can skip these AS in address_space_update_ioeventfds().
+> 
+> The overhead of memory_region_transaction_commit() can be significantly
+> reduced. For example, a VM with 8 vhost net devices and each one has
+> 64 vectors, can reduce the time spent on memory_region_transaction_commit by 20%.
+> 
+> Signed-off-by: hongmianquan <hongmianquan@bytedance.com>
 
-Calling OpenGL from different threads can have bad consequences if not
-carefully reviewed. It's not generally supported. In my case, I was
-debugging a crash in glDeleteTextures from OPENGL32.DLL, where I asked
-qemu for gl=es, and thus ANGLE implementation was expected. libepoxy did
-resolution of the global pointer for glGenTexture to the GLES version
-from the main thread. But it resolved glDeleteTextures to the GL
-version, because it was done from a different thread without correct
-context. Oops.
+Reviewed-by: Peter Xu <peterx@redhat.com>
 
-Let's stick to the main thread for GL calls by using a BH.
+Should be for 8.2, though.  Please always copy Paolo for memory related
+patches.  I hope Paolo can see this.
 
-Note: I didn't use atomics for reset_finished check, assuming the BQL
-will provide enough of sync, but I might be wrong.
-
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
----
- include/hw/virtio/virtio-gpu.h |  3 +++
- hw/display/virtio-gpu.c        | 38 +++++++++++++++++++++++++++-------
- 2 files changed, 34 insertions(+), 7 deletions(-)
-
-diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
-index 05bee09e1a..390c4642b8 100644
---- a/include/hw/virtio/virtio-gpu.h
-+++ b/include/hw/virtio/virtio-gpu.h
-@@ -169,6 +169,9 @@ struct VirtIOGPU {
- 
-     QEMUBH *ctrl_bh;
-     QEMUBH *cursor_bh;
-+    QEMUBH *reset_bh;
-+    QemuCond reset_cond;
-+    bool reset_finished;
- 
-     QTAILQ_HEAD(, virtio_gpu_simple_resource) reslist;
-     QTAILQ_HEAD(, virtio_gpu_ctrl_command) cmdq;
-diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
-index b1f5d392bb..bbd5c6561a 100644
---- a/hw/display/virtio-gpu.c
-+++ b/hw/display/virtio-gpu.c
-@@ -14,6 +14,7 @@
- #include "qemu/osdep.h"
- #include "qemu/units.h"
- #include "qemu/iov.h"
-+#include "sysemu/cpus.h"
- #include "ui/console.h"
- #include "trace.h"
- #include "sysemu/dma.h"
-@@ -41,6 +42,7 @@ virtio_gpu_find_check_resource(VirtIOGPU *g, uint32_t resource_id,
- 
- static void virtio_gpu_cleanup_mapping(VirtIOGPU *g,
-                                        struct virtio_gpu_simple_resource *res);
-+static void virtio_gpu_reset_bh(void *opaque);
- 
- void virtio_gpu_update_cursor_data(VirtIOGPU *g,
-                                    struct virtio_gpu_scanout *s,
-@@ -1387,6 +1389,8 @@ void virtio_gpu_device_realize(DeviceState *qdev, Error **errp)
-                                      &qdev->mem_reentrancy_guard);
-     g->cursor_bh = qemu_bh_new_guarded(virtio_gpu_cursor_bh, g,
-                                        &qdev->mem_reentrancy_guard);
-+    g->reset_bh = qemu_bh_new(virtio_gpu_reset_bh, g);
-+    qemu_cond_init(&g->reset_cond);
-     QTAILQ_INIT(&g->reslist);
-     QTAILQ_INIT(&g->cmdq);
-     QTAILQ_INIT(&g->fenceq);
-@@ -1398,20 +1402,44 @@ static void virtio_gpu_device_unrealize(DeviceState *qdev)
- 
-     g_clear_pointer(&g->ctrl_bh, qemu_bh_delete);
-     g_clear_pointer(&g->cursor_bh, qemu_bh_delete);
-+    g_clear_pointer(&g->reset_bh, qemu_bh_delete);
-+    qemu_cond_destroy(&g->reset_cond);
-     virtio_gpu_base_device_unrealize(qdev);
- }
- 
--void virtio_gpu_reset(VirtIODevice *vdev)
-+static void virtio_gpu_reset_bh(void *opaque)
- {
--    VirtIOGPU *g = VIRTIO_GPU(vdev);
-+    VirtIOGPU *g = VIRTIO_GPU(opaque);
-     struct virtio_gpu_simple_resource *res, *tmp;
--    struct virtio_gpu_ctrl_command *cmd;
-     int i = 0;
- 
-     QTAILQ_FOREACH_SAFE(res, &g->reslist, next, tmp) {
-         virtio_gpu_resource_destroy(g, res);
-     }
- 
-+    for (i = 0; i < g->parent_obj.conf.max_outputs; i++) {
-+        dpy_gfx_replace_surface(g->parent_obj.scanout[i].con, NULL);
-+    }
-+
-+    g->reset_finished = true;
-+    qemu_cond_signal(&g->reset_cond);
-+}
-+
-+void virtio_gpu_reset(VirtIODevice *vdev)
-+{
-+    VirtIOGPU *g = VIRTIO_GPU(vdev);
-+    struct virtio_gpu_ctrl_command *cmd;
-+
-+    if (qemu_in_vcpu_thread()) {
-+        g->reset_finished = false;
-+        qemu_bh_schedule(g->reset_bh);
-+        while (!g->reset_finished) {
-+            qemu_cond_wait_iothread(&g->reset_cond);
-+        }
-+    } else {
-+        virtio_gpu_reset_bh(g);
-+    }
-+
-     while (!QTAILQ_EMPTY(&g->cmdq)) {
-         cmd = QTAILQ_FIRST(&g->cmdq);
-         QTAILQ_REMOVE(&g->cmdq, cmd, next);
-@@ -1425,10 +1453,6 @@ void virtio_gpu_reset(VirtIODevice *vdev)
-         g_free(cmd);
-     }
- 
--    for (i = 0; i < g->parent_obj.conf.max_outputs; i++) {
--        dpy_gfx_replace_surface(g->parent_obj.scanout[i].con, NULL);
--    }
--
-     virtio_gpu_base_reset(VIRTIO_GPU_BASE(vdev));
- }
- 
 -- 
-2.41.0
+Peter Xu
 
 
