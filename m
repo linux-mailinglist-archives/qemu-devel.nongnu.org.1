@@ -2,44 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60C2F763B85
-	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jul 2023 17:47:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BA3A763AD0
+	for <lists+qemu-devel@lfdr.de>; Wed, 26 Jul 2023 17:21:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOftR-0003Fr-LV; Wed, 26 Jul 2023 10:53:37 -0400
+	id 1qOfu2-0003VY-V1; Wed, 26 Jul 2023 10:54:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qOft3-000374-Bj; Wed, 26 Jul 2023 10:53:13 -0400
-Received: from relay.virtuozzo.com ([130.117.225.111])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qOftv-0003QN-2G
+ for qemu-devel@nongnu.org; Wed, 26 Jul 2023 10:54:07 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qOfsq-0007LU-0w; Wed, 26 Jul 2023 10:53:12 -0400
-Received: from ch-vpn.virtuozzo.com ([130.117.225.6] helo=iris.sw.ru)
- by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <den@openvz.org>) id 1qOfqn-00EXdH-3C;
- Wed, 26 Jul 2023 16:52:36 +0200
-From: "Denis V. Lunev" <den@openvz.org>
-To: qemu-block@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: den@openvz.org, Eric Blake <eblake@redhat.com>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- qemu-stable@nongnu.org
-Subject: [PATCH 1/1] qemu-nbd: regression with arguments passing into
- nbd_client_thread()
-Date: Wed, 26 Jul 2023 16:52:47 +0200
-Message-Id: <20230726145247.297454-1-den@openvz.org>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qOftt-0007aR-22
+ for qemu-devel@nongnu.org; Wed, 26 Jul 2023 10:54:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1690383243;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=WirGreAj/leZe8mN3psw1MPXHf6g+6toR2d2XFQIowo=;
+ b=EckneQlip1CKxgGj5z+OXBXOvtJOuC+xEDkNb//KxjEII71xvOcSiG6mW/eEEK20yeUOV4
+ zmfYLETwfZ14suJ3C1xd2fW5SMO0VqZA5w/zd9NCfWxfUtb/9h2FZ/zvnzMK6DwPU80vQx
+ pMulRQJfa3I7LcIN8NcMnFmMcHjpbAc=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-308-uF89ZbflP_6qp6CNEWP_Hg-1; Wed, 26 Jul 2023 10:53:59 -0400
+X-MC-Unique: uF89ZbflP_6qp6CNEWP_Hg-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D7D1F803FDC;
+ Wed, 26 Jul 2023 14:53:58 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.52])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 983FB40C2063;
+ Wed, 26 Jul 2023 14:53:57 +0000 (UTC)
+Date: Wed, 26 Jul 2023 15:53:55 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Het Gala <het.gala@nutanix.com>
+Cc: qemu-devel@nongnu.org, prerna.saxena@nutanix.com, quintela@redhat.com,
+ dgilbert@redhat.com, pbonzini@redhat.com, armbru@redhat.com,
+ eblake@redhat.com, manish.mishra@nutanix.com,
+ aravind.retnakaran@nutanix.com
+Subject: Re: [PATCH v10 06/10] migration: New migrate and migrate-incoming
+ argument 'channels'
+Message-ID: <ZMEzg/Qd6K1pD9Xi@redhat.com>
+References: <20230726141833.50252-1-het.gala@nutanix.com>
+ <20230726141833.50252-7-het.gala@nutanix.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=130.117.225.111; envelope-from=den@openvz.org;
- helo=relay.virtuozzo.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+In-Reply-To: <20230726141833.50252-7-het.gala@nutanix.com>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -52,54 +84,37 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Unfortunately
-    commit 03b67621445d601c9cdc7dfe25812e9f19b81488
-    Author: Denis V. Lunev <den@openvz.org>
-    Date:   Mon Jul 17 16:55:40 2023 +0200
-    qemu-nbd: pass structure into nbd_client_thread instead of plain char*
-has introduced a regression. struct NbdClientOpts resides on stack inside
-'if' block. This specifically means that this stack space could be reused
-once the execution will leave that block of the code.
+On Wed, Jul 26, 2023 at 02:18:29PM +0000, Het Gala wrote:
+> MigrateChannelList allows to connect accross multiple interfaces.
+> Add MigrateChannelList struct as argument to migration QAPIs.
+> 
+> We plan to include multiple channels in future, to connnect
+> multiple interfaces. Hence, we choose 'MigrateChannelList'
+> as the new argument over 'MigrateChannel' to make migration
+> QAPIs future proof.
+> 
+> Suggested-by: Aravind Retnakaran <aravind.retnakaran@nutanix.com>
+> Signed-off-by: Het Gala <het.gala@nutanix.com>
+> Acked-by: Markus Armbruster <armbru@redhat.com>
+> ---
+>  migration/migration-hmp-cmds.c |   6 +-
+>  migration/migration.c          |  56 +++++++++++++++--
+>  qapi/migration.json            | 109 ++++++++++++++++++++++++++++++++-
+>  softmmu/vl.c                   |   2 +-
+>  4 files changed, 161 insertions(+), 12 deletions(-)
 
-This means that parameters passed into nbd_client_thread could be
-overwritten at any moment.
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 
-The patch moves the data to the namespace of main() function effectively
-preserving it for the whole process lifetime.
 
-Signed-off-by: Denis V. Lunev <den@openvz.org>
-CC: Eric Blake <eblake@redhat.com>
-CC: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-CC: <qemu-stable@nongnu.org>
----
- qemu-nbd.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/qemu-nbd.c b/qemu-nbd.c
-index 5b2757920c..7a15085ade 100644
---- a/qemu-nbd.c
-+++ b/qemu-nbd.c
-@@ -589,6 +589,7 @@ int main(int argc, char **argv)
-     const char *pid_file_name = NULL;
-     const char *selinux_label = NULL;
-     BlockExportOptions *export_opts;
-+    struct NbdClientOpts opts;
- 
- #ifdef CONFIG_POSIX
-     os_setup_early_signal_handling();
-@@ -1145,7 +1146,7 @@ int main(int argc, char **argv)
-     if (device) {
- #if HAVE_NBD_DEVICE
-         int ret;
--        struct NbdClientOpts opts = {
-+        opts = (struct NbdClientOpts) {
-             .device = device,
-             .fork_process = fork_process,
-             .verbose = verbose,
+With regards,
+Daniel
 -- 
-2.34.1
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
