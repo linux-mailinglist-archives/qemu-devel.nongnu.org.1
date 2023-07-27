@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3F6376581F
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 17:57:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6B257657FA
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 17:45:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qP2uJ-0005kF-7d; Thu, 27 Jul 2023 11:28:03 -0400
+	id 1qP37d-0000yk-Ku; Thu, 27 Jul 2023 11:41:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qP2u7-0005jw-Ca
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 11:27:51 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qP37b-0000yW-VZ
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 11:41:47 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qP2u5-0007xB-Mi
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 11:27:50 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qP37Y-0003R8-VV
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 11:41:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690471668;
+ s=mimecast20190719; t=1690472503;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ugmq0Ruyl255MDNBooduGPt+G6eHR1r7x3267U28RT4=;
- b=XoOS/QQJ1+pkMKf6wBPNXS/aHi6pcyDppYfwGHkL135TpwsebMwnS+Fc08SzGsxBd9uN+0
- C2Z2snz/jQOceWIfAZ1j43c9JhGYZ+MIJyMfUy0eA8W42QgCvMWBdnL1u6DJPk7WIwEGH6
- BYt840yQJLicJHRyC8gQIHAl3Qv/4MQ=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=3twflg7qq146CAW1UkGRcyOhrEf6j72/eSiga4zvOL8=;
+ b=dCAcldn+LNr5oEcOPAY+foJyLM5ei506iczNWHvwtKCRzLRs3VwcB1IcFpc1n0EsMhnMaM
+ nDcgwWqXBsybqIp4QaV3xsFLlyUZpvW6Td8pB4HS0dWfUlncui8FcpiK2+cW/HEu5wbDpg
+ DQitnLHIQna2WLWUSUhncQ54N495SUM=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-589-fpFyigBIMq-aKrga_F5FCQ-1; Thu, 27 Jul 2023 11:27:46 -0400
-X-MC-Unique: fpFyigBIMq-aKrga_F5FCQ-1
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-5225a8f625dso717109a12.0
- for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 08:27:46 -0700 (PDT)
+ us-mta-359-TE_ilbIzM2yuJfz9eKR_mw-1; Thu, 27 Jul 2023 11:41:42 -0400
+X-MC-Unique: TE_ilbIzM2yuJfz9eKR_mw-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-993c24f3246so140418266b.1
+ for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 08:41:42 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690471665; x=1691076465;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20221208; t=1690472501; x=1691077301;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ugmq0Ruyl255MDNBooduGPt+G6eHR1r7x3267U28RT4=;
- b=NCxaThc3x2Gl8mUl8bhAPDFQMRHzvtu3yxxc+khy+b2OKOmgqX4S389xdx6nXyXRd4
- pZBeUHrrJtIGSUKR4aXebVfLfn/vkKvENSCIlNDaarmEuYBb7fCLuBywy8u9jzdgtQ4r
- yCnz0ZXAyyboZLkUUfPMPQuX93CdzIk6HK+L06Yk9/EQGTD/5LLZ8q3GEwD5sKE2HsaW
- VlR+S7CAQGYmcy9ug7D+oE/IN3/J2bHTaO2WiK5t1uJbxjFLDVqcoegXG4MOWcc9QGdq
- MnOrD4lmLyepGHXmf5Of4i4uPGpHhBzOkPEVieJniaacR6khsmoS5TEAbbm6MZOQx/S1
- GyOQ==
-X-Gm-Message-State: ABy/qLbBwCoVqXZrLKX5z0TPjzW/pRWbBi0c/jC8VZOtn7es7AI1R2/t
- mIt3YLdqAMKTOgC7500OC+9fetS5vKtonxSR03BTUtX5fiQdGho7t4k03jsx42v6m4+RFJ6hEC6
- +MD7RxfsX1lLAums=
-X-Received: by 2002:aa7:d842:0:b0:522:806b:8f4a with SMTP id
- f2-20020aa7d842000000b00522806b8f4amr1917393eds.32.1690471665521; 
- Thu, 27 Jul 2023 08:27:45 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHdjE4oKoAyfg3mRXLg7uY59xCrd0VWm9m3FGKMma9+LbDnmpkt+wwLehRP+acsf+lLqMVFVw==
-X-Received: by 2002:aa7:d842:0:b0:522:806b:8f4a with SMTP id
- f2-20020aa7d842000000b00522806b8f4amr1917376eds.32.1690471665175; 
- Thu, 27 Jul 2023 08:27:45 -0700 (PDT)
+ bh=3twflg7qq146CAW1UkGRcyOhrEf6j72/eSiga4zvOL8=;
+ b=YmmpsIHTpzlYG2cutgWmv1pUpapEbXp4I25qxgrlpiakuiCiMCeXOof4VifGNRO4Xc
+ Q1wUQWbY9MLtQ+gyrbWiXFR++rKhfbI1c0RE88OCVLEWV+j1VgOaxaGrupKN9H+xTe8x
+ bPqvl5ZSyzimtb1RM+4D1KhCvDwQW/5slnbQX3ashePZ4YO6ddA6y7hF3Ji1YD0W6oYo
+ CXSjtJd/vDws2VopVNk+6CC8D2MtYobmNqnvJhYPi3Jr8noSCkFO0Di3zdx2R24KwzYB
+ nhdL5R/L4MD71t3ibUyeILulZU/cRnGadOnvWrkxE0CwWAMT65T3XE3zxulvavOgFcYm
+ IoXA==
+X-Gm-Message-State: ABy/qLallCVFCDtHQMhBb3vHkj/0bnefTAl3Lz3TOdFDQo77bz1WuFhj
+ skU69j/SQKAXYyuUK8N3G9vfvZf1XYu2R/rb8fp62JfYgoQWqPZHV6btDG5WHaaZLn9Mgfzqx4u
+ i/mA56FaR18NUpqg=
+X-Received: by 2002:a17:907:a075:b0:99b:4bab:2841 with SMTP id
+ ia21-20020a170907a07500b0099b4bab2841mr2843918ejc.26.1690472501204; 
+ Thu, 27 Jul 2023 08:41:41 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlHNOiomoD6HV4cDzzOx9/XdpV3Nx4TtXTla4iyATNjL9Fzavj9tNyT0264iy9CjstbtvMFKgA==
+X-Received: by 2002:a17:907:a075:b0:99b:4bab:2841 with SMTP id
+ ia21-20020a170907a07500b0099b4bab2841mr2843897ejc.26.1690472500867; 
+ Thu, 27 Jul 2023 08:41:40 -0700 (PDT)
 Received: from ?IPV6:2003:cf:d71a:f311:3075:1f38:7e25:e17a?
  (p200300cfd71af31130751f387e25e17a.dip0.t-ipconnect.de.
  [2003:cf:d71a:f311:3075:1f38:7e25:e17a])
  by smtp.gmail.com with ESMTPSA id
- m4-20020a056402050400b0051e22660835sm777654edv.46.2023.07.27.08.27.44
+ m21-20020a1709066d1500b009920a690cd9sm909897ejr.59.2023.07.27.08.41.39
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 27 Jul 2023 08:27:44 -0700 (PDT)
-Message-ID: <7cb8aa1d-7f65-cc15-4d9c-b195e464f8c3@redhat.com>
-Date: Thu, 27 Jul 2023 17:27:43 +0200
+ Thu, 27 Jul 2023 08:41:40 -0700 (PDT)
+Message-ID: <1c703fbb-41a9-a702-e051-ccb950cb70f6@redhat.com>
+Date: Thu, 27 Jul 2023 17:41:39 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH v4] block-jobs: flush target at the end of .run()
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- qemu-block@nongnu.org
-Cc: qemu-devel@nongnu.org, kwolf@redhat.com, jsnow@redhat.com,
- den@openvz.org, Evanzhang@archeros.com,
- Vladimir Sementsov-Ogievskiy <vsementsov@virtuozzo.com>
-References: <20230725174008.1147467-1-vsementsov@yandex-team.ru>
+Subject: Re: [PATCH v4 6/9] throttle: use enum ThrottleDirection instead of
+ bool is_write
 Content-Language: en-US
+To: zhenwei pi <pizhenwei@bytedance.com>, berto@igalia.com, kwolf@redhat.com, 
+ groug@kaod.org, qemu_oss@crudebyte.com
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, berrange@redhat.com
+References: <20230724100939.1022984-1-pizhenwei@bytedance.com>
+ <20230724100939.1022984-7-pizhenwei@bytedance.com>
 From: Hanna Czenczek <hreitz@redhat.com>
-In-Reply-To: <20230725174008.1147467-1-vsementsov@yandex-team.ru>
+In-Reply-To: <20230724100939.1022984-7-pizhenwei@bytedance.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
@@ -89,7 +89,7 @@ X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  NICE_REPLY_A=-0.091, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
  RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,92 +105,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 25.07.23 19:40, Vladimir Sementsov-Ogievskiy wrote:
-> From: Vladimir Sementsov-Ogievskiy <vsementsov@virtuozzo.com>
+On 24.07.23 12:09, zhenwei pi wrote:
+> enum ThrottleDirection is already there, use ThrottleDirection instead
+> of 'bool is_write' for throttle API, also modify related codes from
+> block, fsdev, cryptodev and tests.
 >
-> Actually block job is not completed without this final flush. It's
-> rather unexpected to have broken target when job was successfully
-> completed long ago and now we fail to flush or process just
-> crashed/killed.
->
-> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+> Signed-off-by: zhenwei pi <pizhenwei@bytedance.com>
 > ---
->   block/backup.c               |  7 +++++--
->   block/commit.c               |  2 +-
->   block/mirror.c               |  4 ++++
->   block/stream.c               |  7 ++++++-
->   blockjob.c                   | 18 ++++++++++++++++++
->   include/block/blockjob_int.h | 11 +++++++++++
->   6 files changed, 45 insertions(+), 4 deletions(-)
-
-Yes, that’s a good change.
+>   backends/cryptodev.c        |  9 +++++----
+>   block/throttle-groups.c     |  6 ++++--
+>   fsdev/qemu-fsdev-throttle.c |  8 +++++---
+>   include/qemu/throttle.h     |  5 +++--
+>   tests/unit/test-throttle.c  |  4 ++--
+>   util/throttle.c             | 31 +++++++++++++++++--------------
+>   6 files changed, 36 insertions(+), 27 deletions(-)
 
 [...]
 
-> diff --git a/block/stream.c b/block/stream.c
-> index e522bbdec5..f7e8b35e94 100644
-> --- a/block/stream.c
-> +++ b/block/stream.c
-
-[...]
-
-> @@ -207,6 +207,11 @@ static int coroutine_fn stream_run(Job *job, Error **errp)
->           }
->       }
+> diff --git a/util/throttle.c b/util/throttle.c
+> index 0439028d21..9a37209bb8 100644
+> --- a/util/throttle.c
+> +++ b/util/throttle.c
+> @@ -136,11 +136,11 @@ int64_t throttle_compute_wait(LeakyBucket *bkt)
 >   
-> +    ret = block_job_final_target_flush(&s->common, s->target_bs);
-> +    if (error == 0) {
-> +        error = ret;
-> +    }
+>   /* This function compute the time that must be waited while this IO
+>    *
+> - * @is_write:   true if the current IO is a write, false if it's a read
+> + * @throttle:   throttle direction
 
-In all other jobs, this function is invoked only if the job was 
-successful, but here it’s called unconditionally.  I don’t mind one way 
-or the other, but I think it should be consistent.  (Mainly just because 
-inconsistency makes me wonder whether there’s an undocumented reason for 
-it.)
+The parameter is now named @direction, so this should be changed. (Same 
+in all other comments describing functions in this patch.)
 
-> +
->       /* Do not remove the backing file if an error was there but ignored. */
->       return error;
->   }
-> diff --git a/blockjob.c b/blockjob.c
-> index 25fe8e625d..313e586b0d 100644
-> --- a/blockjob.c
-> +++ b/blockjob.c
-> @@ -611,3 +611,21 @@ AioContext *block_job_get_aio_context(BlockJob *job)
->       GLOBAL_STATE_CODE();
->       return job->job.aio_context;
->   }
-> +
-> +int coroutine_fn
-> +block_job_final_target_flush(BlockJob *job, BlockDriverState *target_bs)
-> +{
-> +    int ret;
-> +
+With that done (in all 4 places):
 
-Should we mark this as IO_CODE()?
+Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
 
-> +    WITH_GRAPH_RDLOCK_GUARD() {
-> +        ret = bdrv_co_flush(target_bs);
-> +    }
-> +
-> +    if (ret < 0 && !block_job_is_internal(job)) {
-> +        qapi_event_send_block_job_error(job->job.id,
-> +                                        IO_OPERATION_TYPE_WRITE,
-> +                                        BLOCK_ERROR_ACTION_REPORT);
-> +    }
-
-Would it make sense to rely on block_job_error_action() instead?  If so, 
-should we use the on-target-error setting?
-
-I have no informed opinion on this, but I think using 
-block_job_error_action() does come to mind, so if we consciously decide 
-against it, that’s probably worth a comment, too.
-
-Hanna
-
-> +
-> +    return ret;
-> +}
+>    * @ret:        time to wait
+>    */
+>   static int64_t throttle_compute_wait_for(ThrottleState *ts,
+> -                                         bool is_write)
+> +                                         ThrottleDirection direction)
+>   {
+>       BucketType to_check[2][4] = { {THROTTLE_BPS_TOTAL,
+>                                      THROTTLE_OPS_TOTAL,
 
 
