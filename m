@@ -2,92 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC2B476574B
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 17:20:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D852765719
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 17:13:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qP26N-0001ps-AM; Thu, 27 Jul 2023 10:36:29 -0400
+	id 1qP2IS-0007ea-2M; Thu, 27 Jul 2023 10:48:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qP269-0001pA-8p
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 10:36:13 -0400
+ (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
+ id 1qP2IM-0007eQ-V0
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 10:48:51 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qP267-0008MJ-5Z
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 10:36:13 -0400
+ (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
+ id 1qP2IK-0004h9-Fz
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 10:48:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690468569;
+ s=mimecast20190719; t=1690469326;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=xVKlUsSSA3xHw1nS4p3mv13mheS7JGW5p8PMpkTpcCc=;
- b=aWCR2HSJfmJXBjbK6ifM1ad/vihW6mlFij6UzNHKNi/LYVQDGK0Ic5WKmEvJCxbNuQDs44
- 6j2TQC11hz5r48fqElcSSzWjDzA0ybFPO5/bzgUtwq8TaQ3sRUiuBtUrdTjuhy6Ng1flcd
- FFAxkYXOv9gXq1ejsU8WoQ4CbXWQcQM=
-Received: from mail-ua1-f69.google.com (mail-ua1-f69.google.com
- [209.85.222.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=tjvLWj5Df0gei6C/oFm2OBfyPp3/2c60N7P7mUNXKCg=;
+ b=hJNZZv78L2xsv9nCu5D5uXqhWwmyVdDt+sb7WnWiIQr+3tKxFpoAyFZpLA6vHmYRBBCNVT
+ oGMoufuR1+8sTRJ9yMNBn5cGpvlnS/wi9yrFM+Hv/aB9G7wM8KtsEnBfCUL8cTYj8fUqK+
+ SWiZ5qOBlgOk4hWyEIfcSjDtG5f6+ww=
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
+ [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-308-YDJYgaNhMJeM-dmKTSwLww-1; Thu, 27 Jul 2023 10:36:08 -0400
-X-MC-Unique: YDJYgaNhMJeM-dmKTSwLww-1
-Received: by mail-ua1-f69.google.com with SMTP id
- a1e0cc1a2514c-79a1de8b323so29063241.1
- for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 07:36:08 -0700 (PDT)
+ us-mta-312-W1V-c18iNdaJvL7_J1XqKQ-1; Thu, 27 Jul 2023 10:48:42 -0400
+X-MC-Unique: W1V-c18iNdaJvL7_J1XqKQ-1
+Received: by mail-pj1-f70.google.com with SMTP id
+ 98e67ed59e1d1-267f18688efso912702a91.1
+ for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 07:48:42 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690468568; x=1691073368;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=xVKlUsSSA3xHw1nS4p3mv13mheS7JGW5p8PMpkTpcCc=;
- b=Cn/nihzCatYmNl5WDz/o+X9ZU3Z0doT5UF6e1tmdeSMZPBpWS9H0d4xrg7jeyJRT0N
- q8Xasuvy7X/fE51MvVvaxMAckOIvrE3ily8hLMlou6AP/tRKj0ZAmvKUPKz9QNg9oX4M
- ed6riN8KIXYYZ4gXTF3C6H/pDd40dRWwnilJW7DFvP85fsxwrOpBiQAAwlYVWw9NLYQq
- 1xv0O4HTYmFRiIiTI+a3/zBYYw2+3zmWPNNjLHTeLIoV2tFxq8VXKsBjnnzkAGB34beu
- PMRLBJFurfGGq70tiLR19WpriwNUfPtYS4TzXdaCYRPPDOyxZRlo2FWNSThqeMfpGDl9
- zJWg==
-X-Gm-Message-State: ABy/qLZFwefcGnENf6BZTnlsAz2szK0/I+dqDE5tKYAnY9hvHl/xK3UJ
- CppgfhNh3JEgb0AmlO5aNd9Ti23LAL4GhLjlvKnRplUrg3ITOXgZhqOxfRuSs6slSjDWuwbk77B
- XtI91+8JbEkq9eBg=
-X-Received: by 2002:a05:6122:2387:b0:485:b2ad:bf with SMTP id
- bu7-20020a056122238700b00485b2ad00bfmr2545605vkb.1.1690468567776; 
- Thu, 27 Jul 2023 07:36:07 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlGhcLUlfDH2MxzsJDTE8vVATXiu8/Q5ZiJUeRaHr0tB0+bGSllSCCWe//v7Xe4rW4wO0GS9Zw==
-X-Received: by 2002:a05:6122:2387:b0:485:b2ad:bf with SMTP id
- bu7-20020a056122238700b00485b2ad00bfmr2545585vkb.1.1690468567454; 
- Thu, 27 Jul 2023 07:36:07 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- n2-20020a0ce542000000b0061b5dbf1994sm440778qvm.146.2023.07.27.07.36.06
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 27 Jul 2023 07:36:07 -0700 (PDT)
-Date: Thu, 27 Jul 2023 10:36:06 -0400
-From: Peter Xu <peterx@redhat.com>
-To: hongmainquan <hongmianquan@bytedance.com>
-Cc: qemu-devel@nongnu.org, philmd@linaro.org, david@redhat.com,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [External] Re: [PATCH] memory: avoid updating ioeventfds for
- some address_space
-Message-ID: <ZMKA1n+8tmQC4JLA@x1n>
-References: <20230725112037.1762608-1-hongmianquan@bytedance.com>
- <ZMFbxFnv82AWlzLD@x1n>
- <35f53340-dda3-c25d-41c7-b717da6a9121@bytedance.com>
- <ZMJoumdi54neHzkC@x1n>
- <9343c790-7fa6-1f1e-ed1c-2f350de44ec9@bytedance.com>
+ d=1e100.net; s=20221208; t=1690469322; x=1691074122;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=tjvLWj5Df0gei6C/oFm2OBfyPp3/2c60N7P7mUNXKCg=;
+ b=bhKbvGZ2XK+i1kCTC7C6WW57OOXZC7aad37nl29UT/5mckUceaYZEtymnK3nme81c6
+ Io0P2ynbQKQhCbtCcsBJc20R7CQjJElsMcmZnF/7eZt7wMbggv8pzvpn/aHrI0CXcFdV
+ 5/m9MkwrzseL0NuFOKg6+N3hhrGzP29ymHvBTZtxGK8sZ9OjJYwTLm64mhRjoFmQgvIy
+ I29rsEE3xNVlgfyJEXEWsy8naBTBObOPXQ+VKIQiM8tWmYDYmsdMlvGc9gqUspaTs2rl
+ qZt0EC4RJZLLkEDZ21u7OFcGL5QQXbjkv7HgGnW7Mjk3Jn08YOLMzuyT+NM/qEgRGEF6
+ POPg==
+X-Gm-Message-State: ABy/qLa+gWED53eSV9a+XQ0VfEmfcWYPgKl3GGk78DrZL6z6qF0OTR3E
+ AKlOriB7xqugTMtzkaX1VFfZlUyWYlFLjMzz4nzmVCZfW6ZS5flXMIr/veJMmdyHpJWjfsOnBlx
+ EGCU1OBuG57A0vT4TPUojCA3b5UaodGc=
+X-Received: by 2002:a17:90b:2394:b0:262:fe45:860b with SMTP id
+ mr20-20020a17090b239400b00262fe45860bmr5280118pjb.0.1690469321676; 
+ Thu, 27 Jul 2023 07:48:41 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlEwME5oup10zhtyMJDZE6tVQyQYMIwC6yURZMFoniT9GKWR8A421oAjvhp96Eo7VQ1ov7m24ZPGDEayrP7Rl0I=
+X-Received: by 2002:a17:90b:2394:b0:262:fe45:860b with SMTP id
+ mr20-20020a17090b239400b00262fe45860bmr5280095pjb.0.1690469321264; Thu, 27
+ Jul 2023 07:48:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <9343c790-7fa6-1f1e-ed1c-2f350de44ec9@bytedance.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+References: <20230626073426.285659-1-aesteve@redhat.com>
+ <20230626073426.285659-4-aesteve@redhat.com>
+ <20230710150030-mutt-send-email-mst@kernel.org>
+ <CADSE00+MYYeTto5CCROpynB2p+FjcCASp6azyxb2FVRm7VhBrw@mail.gmail.com>
+ <20230717100739-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20230717100739-mutt-send-email-mst@kernel.org>
+From: Albert Esteve <aesteve@redhat.com>
+Date: Thu, 27 Jul 2023 16:48:30 +0200
+Message-ID: <CADSE00Jm45pbhvWgN8uQGjqZkEZr2UEHV2ARuqWheT-pXL-85Q@mail.gmail.com>
+Subject: Re: [PATCH v4 3/4] vhost-user: add shared_object msg
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: qemu-devel@nongnu.org, marcandre.lureau@gmail.com, cohuck@redhat.com, 
+ Fam Zheng <fam@euphon.net>, kraxel@redhat.com
+Content-Type: multipart/alternative; boundary="00000000000065e9330601790f16"
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=aesteve@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,54 +97,158 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 27, 2023 at 09:23:34PM +0800, hongmainquan wrote:
-> 
-> 
-> 在 2023/7/27 8:53 下午, Peter Xu 写道:
-> > On Thu, Jul 27, 2023 at 11:59:43AM +0800, hongmainquan wrote:
-> > > 
-> > > 
-> > > 在 2023/7/27 1:45 上午, Peter Xu 写道:
-> > > > On Tue, Jul 25, 2023 at 07:20:37PM +0800, hongmianquan wrote:
-> > > > > When updating ioeventfds, we need to iterate all address spaces,
-> > > > > but some address spaces do not register eventfd_add|del call when
-> > > > > memory_listener_register() and they do nothing when updating ioeventfds.
-> > > > > So we can skip these AS in address_space_update_ioeventfds().
-> > > > > 
-> > > > > The overhead of memory_region_transaction_commit() can be significantly
-> > > > > reduced. For example, a VM with 8 vhost net devices and each one has
-> > > > > 64 vectors, can reduce the time spent on memory_region_transaction_commit by 20%.
-> > > > > 
-> > > > > Signed-off-by: hongmianquan <hongmianquan@bytedance.com>
-> > > > 
-> > > > Reviewed-by: Peter Xu <peterx@redhat.com>
-> > > > 
-> > > > Should be for 8.2, though.  Please always copy Paolo for memory related
-> > > > patches.  I hope Paolo can see this.
-> > > > 
-> > > Thanks, I hope so. Also, I'm not quite sure what 'Should be for 8.2' means.
-> > > Does it imply that there will be changes to this logic after version 8.2?
-> > 
-> > See:
-> > 
-> > https://wiki.qemu.org/Planning/8.1
-> > 
-> > We're already right before 8.1-rc2 release, perf patch isn't normally the
-> > target of this phase.
-> > 
-> > Thanks,
-> > 
-> Understood. Hope for some suggestions from you.
+--00000000000065e9330601790f16
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-No further suggestion from my side. You can just keep an eye on this patch
-after the 8.1 release - it probably just won't get merged before that.
+On Mon, Jul 17, 2023 at 4:11=E2=80=AFPM Michael S. Tsirkin <mst@redhat.com>=
+ wrote:
 
-Some maintainers prefer a resend after the release, but many don't.  It's
-optional in this case I think.
+>
+>
+>
+>
+> On Mon, Jul 17, 2023 at 01:42:02PM +0200, Albert Esteve wrote:
+> > Hi Michael,
+> >
+> > True. It may be a good idea to impose a limit in the number of entries
+> that can
+> > be added to the table.
+> > And fail to add new entries once it reaches the limit.
+> >
+> > Not sure what would be a good limit though. For example,
+> https://www.kernel.org
+> > /doc/html/v4.9/media/uapi/v4l/vidioc-reqbufs.html#c.v4l2_requestbuffers
+> > does not limit the number of buffers that can be allocated
+> simultaneously, it
+> > is an unsigned 32-bits value.
+> > However, I guess 16-bits (65535) would suffice to cover the vast
+> majority of
+> > usecases. Or even lower, and
+> > can be adjusted later, as this API gets (more) used.
+> >
+> > Does that make sense?
+> >
+> > Thanks.
+> > BR,
+> > Albert
+>
+> let's not top-post please.
+>
+> Maybe. Another concern is qemu running out of FDs with a bad backend.
+>
+> Question: why does qemu have to maintain these UUIDs in its memory?
+>
+> Can't it query the backend with UUID and get the fd back?
+>
 
-Thanks,
+In the end, we have one backend sharing an object with other backends.
+From the importer POV, it does not know who the exporter is, so it cannot
+go pocking other backends until it finds the one that is holding a resource
+with
+the same UUID, it relies on qemu providing this information.
 
--- 
-Peter Xu
+If we do not want qemu to hold the fds, we could, for instance, store
+references to
+backends that act as exporters. And then, once an importer requests for a
+specific
+object with its UUID, we ask for the fd to the exporter(s), hoping to find
+it.
+
+But the current solution sounds better fit to the shared objects virtio
+feature.
+I would be more keen to look into something like what Gerd suggested,
+limiting
+the memory that we use.
+
+Nonetheless, in qemu we are storing fds, and not mmaping the dmabufs.
+So I think limiting the number of entries should suffice, to ensure
+that we do not run out of FDs, and memory.
+
+
+>
+> And then, the hash table in QEMU becomes just a cache
+> to speed up lookups.
+>
+> --
+> MST
+>
+>
+
+--00000000000065e9330601790f16
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><div><div dir=3D"ltr" class=3D"gmail_sign=
+ature"><div dir=3D"ltr"><br></div></div></div></div><br><div class=3D"gmail=
+_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Mon, Jul 17, 2023 at 4:11=
+=E2=80=AFPM Michael S. Tsirkin &lt;<a href=3D"mailto:mst@redhat.com">mst@re=
+dhat.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D=
+"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-le=
+ft:1ex"><br>
+<br>
+<br>
+<br>
+On Mon, Jul 17, 2023 at 01:42:02PM +0200, Albert Esteve wrote:<br>
+&gt; Hi Michael,<br>
+&gt; <br>
+&gt; True. It may be a good idea to impose a limit in the number of entries=
+ that can<br>
+&gt; be added to the table.<br>
+&gt; And fail to add new entries once it reaches the limit.<br>
+&gt; <br>
+&gt; Not sure what would be a good limit though. For example,=C2=A0<a href=
+=3D"https://www.kernel.org" rel=3D"noreferrer" target=3D"_blank">https://ww=
+w.kernel.org</a><br>
+&gt; /doc/html/v4.9/media/uapi/v4l/vidioc-reqbufs.html#c.v4l2_requestbuffer=
+s<br>
+&gt; does not limit the number of buffers that can be allocated simultaneou=
+sly, it<br>
+&gt; is an unsigned 32-bits value.<br>
+&gt; However, I guess 16-bits (65535) would suffice to cover the vast major=
+ity of<br>
+&gt; usecases. Or even lower, and<br>
+&gt; can be adjusted later, as this API gets (more) used.<br>
+&gt; <br>
+&gt; Does that make sense?<br>
+&gt; <br>
+&gt; Thanks.<br>
+&gt; BR,<br>
+&gt; Albert<br>
+<br>
+let&#39;s not top-post please.<br>
+<br>
+Maybe. Another concern is qemu running out of FDs with a bad backend.<br>
+<br>
+Question: why does qemu have to maintain these UUIDs in its memory?<br>
+<br>
+Can&#39;t it query the backend with UUID and get the fd back?<br></blockquo=
+te><div><br></div><div>In the end, we have one backend sharing an object wi=
+th other backends.</div><div>From the importer POV, it does not know who th=
+e exporter is, so it cannot</div><div>go pocking other backends until it fi=
+nds the one that is holding a resource with</div><div>the same UUID, it rel=
+ies on qemu providing this information.</div><div><br></div><div>If we do n=
+ot want qemu to hold the fds, we could, for instance, store references to</=
+div><div>backends that act as exporters. And then, once an importer request=
+s for a specific</div><div>object with its UUID, we ask for the fd to the e=
+xporter(s), hoping to find it.</div><div><br></div><div>But the current sol=
+ution sounds better fit to the shared objects virtio feature.</div><div>I w=
+ould be more keen to look into something like what Gerd suggested, limiting=
+</div><div>the memory that we use.=C2=A0</div><div><br></div><div>Nonethele=
+ss, in qemu we are storing fds, and not mmaping the dmabufs.</div><div>So I=
+ think limiting the number of entries should suffice, to ensure</div><div>t=
+hat we do not run out of FDs, and memory.</div><div>=C2=A0</div><blockquote=
+ class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px so=
+lid rgb(204,204,204);padding-left:1ex">
+<br>
+And then, the hash table in QEMU becomes just a cache<br>
+to speed up lookups.<br>
+<br>
+-- <br>
+MST<br>
+<br>
+</blockquote></div></div>
+
+--00000000000065e9330601790f16--
 
 
