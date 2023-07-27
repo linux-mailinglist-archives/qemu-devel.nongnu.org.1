@@ -2,72 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1422C765820
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 17:57:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98E9376589C
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 18:27:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qP3IK-0003lw-9K; Thu, 27 Jul 2023 11:52:52 -0400
+	id 1qP396-0001As-JH; Thu, 27 Jul 2023 11:43:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qP3II-0003ia-3q
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 11:52:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qP3IF-000783-Td
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 11:52:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690473166;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=MVtBZLYZTJj42RiGfkFKRQObhKkzkzzNPbJm5A/b3r4=;
- b=TzCS2JBWdHxV6JZSTjwWKAT2VIkhEEuOQ4Dsgd6UyBBPZKOrlNcw22o1VT400kEpZgr1eF
- oC/mxFX25YWAtVZsOuJoehwSZ9FPhqlJs2rBDcNcFuOcoJZIAROegNiYe0ccnDilfWC4uE
- LN1/k3Aqkf5HjuvXGRNhjwZbfCeuyYY=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-658-pNtRYKs5PiO3bYZ5IBBVTQ-1; Thu, 27 Jul 2023 11:52:42 -0400
-X-MC-Unique: pNtRYKs5PiO3bYZ5IBBVTQ-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 363A286F124;
- Thu, 27 Jul 2023 15:52:42 +0000 (UTC)
-Received: from localhost (unknown [10.39.193.84])
- by smtp.corp.redhat.com (Postfix) with ESMTP id A3925492B02;
- Thu, 27 Jul 2023 15:52:41 +0000 (UTC)
-Date: Thu, 27 Jul 2023 11:52:39 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Jeuk Kim <jeuk20.kim@gmail.com>
-Cc: qemu-devel@nongnu.org, fam@euphon.net, hreitz@redhat.com,
- k.jensen@samsung.com, kwolf@redhat.com, pbonzini@redhat.com,
- qemu-block@nongnu.org, berrange@redhat.com,
- marcandre.lureau@redhat.com, marcel.apfelbaum@gmail.com,
- mst@redhat.com, philmd@linaro.org, thuth@redhat.com,
- lvivier@redhat.com, jeuk20.kim@samsung.com
-Subject: Re: [PATCH v8 0/4] hw/ufs: Add Universal Flash Storage (UFS) support
-Message-ID: <20230727155239.GA979354@fedora>
-References: <cover.1690446561.git.jeuk20.kim@samsung.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qP393-0001A7-JE
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 11:43:17 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qP391-0003hy-Sl
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 11:43:17 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-3fbc63c2e84so12316445e9.3
+ for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 08:43:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1690472593; x=1691077393;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=hEX2yXanu6lI6E29oJscX+qcEyz7+geVl0H0uFbsIWY=;
+ b=hvd1QyVrBZDYC1iVAlTK2lIxwDqf3WPN47mB29iOitO2K9J2D1T5tREezyINzni2N7
+ 8jgHYX+s84S1LwmsB9fHcR3RjzljyFeT9d5TDQ3cOxrMDYvuI7CQZLmvNSxxwVwvn4aB
+ /dS8y16OfiLNnqjVBCYQSVVuhSx75YMHceuNTKWp+INE1J+si8nGgDHKJuEw0G0o3Y1k
+ SEGbpexUuzsQcY/Bi96Pi+L5A3ykGVe3quuVDwt7hVTmZbYR7qG5XgLkkOH9s3YRWuPo
+ 8BK7wFSBWZOJOR2l9fvRNAcoctJRaIWdkRi7hFNKAcX0+Egcjy4UootkNgG/YwoaJMkI
+ qPOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1690472593; x=1691077393;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=hEX2yXanu6lI6E29oJscX+qcEyz7+geVl0H0uFbsIWY=;
+ b=gEDdswVBKCeF3B5SYBXY0lfsKPUN/7SdZ0kzGWn6qIDSdRpVpgzIhnQ/CyZJcA9HYh
+ 82eZGEgHIG7SenZfzaehe53yPTdH5F8ajAv3YXdyVBrRDPIeB0KAat2sEL4WsQZnvePN
+ usmp4QF8hgO6ROxy9mH/vXiT4qbG7mWVgHwNqdGCoerMxFKL+H02fmUTkItM0w52q39a
+ yB14EwhXhd1/Q+N5Rx/VIf+qFEzJ4qv3GOQFSiu1T8GTzGtto3hoQCmV7nLjiqxEq2BZ
+ v18KgkG0srkWjabXqEf1Xo1DaZm2ur1zXHTImNlx9kHrlIS9SkORLB5jcXWXTcVYG4Is
+ 05hA==
+X-Gm-Message-State: ABy/qLaHTsef5obhTgwZZaT4XSwvzrGEjCSAU0DLxM/epfby0t8SDn26
+ aSu1x5U6LtMm0QyChbYRBr1B1MwhN218RZgdP+Z7zQ==
+X-Google-Smtp-Source: APBJJlGpR3oAOSauh2N1BylSzmAfP6iFM60UW3z8HrfrOSG1YRXj7cF+fMCUIZdImPCWGjSV53Y7DxtIkoaY2MsAyzI=
+X-Received: by 2002:a5d:6706:0:b0:315:a043:5e03 with SMTP id
+ o6-20020a5d6706000000b00315a0435e03mr2363865wru.55.1690472593068; Thu, 27 Jul
+ 2023 08:43:13 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="o+MJfcnV4JRJ/n2N"
-Content-Disposition: inline
-In-Reply-To: <cover.1690446561.git.jeuk20.kim@samsung.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20230725150002.621-1-shameerali.kolothum.thodi@huawei.com>
+In-Reply-To: <20230725150002.621-1-shameerali.kolothum.thodi@huawei.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 27 Jul 2023 16:43:02 +0100
+Message-ID: <CAFEAcA_3+=m8nt6_eJMiEpxyGcSAXJRC5LWMVvU3f9CHAxKzCw@mail.gmail.com>
+Subject: Re: [RFC PATCH] arm/kvm: Enable support for
+ KVM_CAP_ARM_EAGER_SPLIT_CHUNK_SIZE
+To: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, ricarkol@google.com, 
+ kvm@vger.kernel.org, jonathan.cameron@huawei.com, linuxarm@huawei.com
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -84,130 +86,155 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Tue, 25 Jul 2023 at 16:01, Shameer Kolothum
+<shameerali.kolothum.thodi@huawei.com> wrote:
+>
+> Now that we have Eager Page Split support added for ARM in the kernel[0],
+> enable it in Qemu. This adds,
+>  -eager-split-size to Qemu options to set the eager page split chunk size.
+>  -enable KVM_CAP_ARM_EAGER_SPLIT_CHUNK_SIZE.
 
---o+MJfcnV4JRJ/n2N
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+It looks from the code like you've added a new sub-option
+to -accel, not a new global option. This is the right thing,
+but your commit message should document the actual option syntax
+to avoid confusion.
 
-On Thu, Jul 27, 2023 at 05:45:17PM +0900, Jeuk Kim wrote:
-> Since v7:
-> In ufs-test.c, make the following changes
-> - Change TIMEOUT from 5 to 10 (Thomas's review comment)
-> - Rename the temporary file to "qemu-ufs.XXXX" (Thomas's review comment)
-> - Use "-blockdev" instead of "-drive" (Stefan's review comment)
->=20
-> Since v6:
-> - Add tests/qtest/ufs-test.c to test ufs initialisation and I/O
-> - Add struct UtpTaskReqDesc to include/block/ufs.h
-> - Fix ufs_log2() logic
-> - Fix ufs-lu to use 4K as default block size to match the ufs spec
->=20
-> Since I created a new file, tests/qtest/ufs-test.c, I added Laurent Vivie=
-r to the cc list.
-> Thank you.
->=20
-> Since v5:
-> - Fix to print an error message instead of a segmentation fault
->   when no drive property is specified for a ufs-lu device
->=20
-> Since v4:
-> Addressed review comment from Stefan Hajnoczi. The fixes are as
-> follows.
-> - Keep u->reg fields in host endian (Removed little-endian helper=20
->   functions from MemoryRegionOps)
-> - Remove unnecessary NULL checks for g_new and g_malloc0
-> - Replace DEFINE_PROP_DRIVE_IOTHREAD -> DEFINE_PROP_DRIVE
->=20
-> In case you were wondering, ufs and ufs-lu have been tested for the
-> following behaviours.
-> 1. Checked ufs device recognition in Windows10 environment
-> 2. Verified ufs device recognition in Ubuntu 22.04 environment
-> 3. Verified io behaviour via fio in Ubuntu 22.04 environment
-> 4. Verified query request via ufs-tools in Ubuntu 22.04 environment
->=20
-> Since v3:
-> - Replace softmmu_ss -> system_ss in meson
->=20
-> Since v2:
-> Addressed review comment from Stefan Hajnoczi. The main fixes are as
-> follows.
-> - Use of SPDX licence identifiers
-> - fixed endianness error
-> - removed memory leak
-> - fixed DMA error handling logic
->=20
-> Since v1:
-> - use macros of "hw/registerfields.h" (Addressed Philippe's review
->   comments)
->=20
-> This patch series adds support for a new PCI-based UFS device.
->=20
-> The UFS pci device id (PCI_DEVICE_ID_REDHAT_UFS) is not registered
-> in the Linux kernel yet, so it does not work right away, but I confirmed
-> that it works with Linux when the UFS pci device id is registered.
->=20
-> I have also verified that it works with Windows 10.
->=20
-> Jeuk Kim (4):
->   hw/ufs: Initial commit for emulated Universal-Flash-Storage
->   hw/ufs: Support for Query Transfer Requests
->   hw/ufs: Support for UFS logical unit
->   tests/qtest: Introduce tests for UFS
->=20
->  MAINTAINERS              |    7 +
->  docs/specs/pci-ids.rst   |    2 +
->  hw/Kconfig               |    1 +
->  hw/meson.build           |    1 +
->  hw/ufs/Kconfig           |    4 +
->  hw/ufs/lu.c              | 1445 ++++++++++++++++++++++++++++++++++++
->  hw/ufs/meson.build       |    1 +
->  hw/ufs/trace-events      |   58 ++
->  hw/ufs/trace.h           |    1 +
->  hw/ufs/ufs.c             | 1494 ++++++++++++++++++++++++++++++++++++++
->  hw/ufs/ufs.h             |  131 ++++
->  include/block/ufs.h      | 1090 +++++++++++++++++++++++++++
->  include/hw/pci/pci.h     |    1 +
->  include/hw/pci/pci_ids.h |    1 +
->  include/scsi/constants.h |    1 +
->  meson.build              |    1 +
->  tests/qtest/meson.build  |    1 +
->  tests/qtest/ufs-test.c   |  573 +++++++++++++++
->  18 files changed, 4813 insertions(+)
->  create mode 100644 hw/ufs/Kconfig
->  create mode 100644 hw/ufs/lu.c
->  create mode 100644 hw/ufs/meson.build
->  create mode 100644 hw/ufs/trace-events
->  create mode 100644 hw/ufs/trace.h
->  create mode 100644 hw/ufs/ufs.c
->  create mode 100644 hw/ufs/ufs.h
->  create mode 100644 include/block/ufs.h
->  create mode 100644 tests/qtest/ufs-test.c
->=20
-> --=20
-> 2.34.1
->=20
+> The chunk size specifies how many pages to break at a time, using a
+> single allocation. Bigger the chunk size, more pages need to be
+> allocated ahead of time.
+>
+> Notes:
+>  - I am not sure whether we need to call kvm_vm_check_extension() for
+>    KVM_CAP_ARM_EAGER_SPLIT_CHUNK_SIZE or not as kernel seems to disable
+>    eager page size by default and it will return zero always.
+>
+>   -ToDo: Update qemu-options.hx
+>
+> [0]: https://lore.kernel.org/all/168426111477.3193133.10748106199843780930.b4-ty@linux.dev/
 
-Thanks, applied to my block-next tree:
-https://gitlab.com/stefanha/qemu/commits/block-next
+Speaking of confusion, this message says "It's an optimization used
+in Google Cloud since 2016 on x86, and for the last couple of months
+on ARM." so I'm not sure why we've ended up with an Arm-specific
+KVM_CAP and code in target/arm/kvm.c rather than something more
+generic ?
 
-Stefan
+If this is going to arrive for other architectures in the future
+we should probably think about whether some of this code should
+be generic, not arm-specific.
 
---o+MJfcnV4JRJ/n2N
-Content-Type: application/pgp-signature; name="signature.asc"
+Also this seems to be an obscure tuning parameter -- it could
+use good documentation so users have some idea when it can help.
 
------BEGIN PGP SIGNATURE-----
+As a more specific case of that: the kernel patchset says it
+makes Arm do the same thing that x86 already does, and split
+the huge pages automatically based on use of the dirty log.
+If the kernel can do this automatically and we never felt
+the need to provide a manual tuning knob for x86, do we even
+need to expose the Arm manual control via QEMU?
 
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmTCkscACgkQnKSrs4Gr
-c8jKUwf+L1F1R0sXI5jONsnoylutI+Ip3hOnXeUaiUBB2HzEjdNz2JHg8Z6xyLjM
-QFp2dJfg4DinNjsfhXJgoalAdsZ8oE2XIms4UFSJm7Bu/tZh3rhgGE2UnXHj+L7q
-soq/akVW+maxOWv5MGY648AA7GTYXtTxJLJCSgYHXAQI2QfxBk0dtN6XE/EOnF/h
-ba/Tq311lvT9vQ7rAqyH4NmvA40r5w5pVzaLibAe812Y0qZFTARwz6HA4aKW/QDT
-8zMt9HFSYJnhdfwfitmVfjIy8Fs+qvTjohnzhC8ZWg2LZhmG9yNKYmOPCrYVt7Gj
-me4TrCFfY6Ei64MHOTTwfGa5tKNWlQ==
-=rbVU
------END PGP SIGNATURE-----
+Other than that, I have a few minor coding things below.
 
---o+MJfcnV4JRJ/n2N--
+> +static bool kvm_arm_eager_split_size_valid(uint64_t req_size, uint32_t sizes)
+> +{
+> +    int i;
+> +
+> +    for (i = 0; i < sizeof(uint32_t) * BITS_PER_BYTE; i++) {
+> +        if (!(sizes & (1 << i))) {
+> +            continue;
+> +        }
+> +
+> +        if (req_size == (1 << i)) {
+> +            return true;
+> +        }
+> +    }
 
+We know req_size is a power of 2 here, so if you also explicitly
+rule out 0 then you can do
+     return sizes & (1 << ctz64(req_size));
+rather than having to loop through. (Need to rule out 0
+because otherwise ctz64() returns 64 and the shift is UB.)
+
+> +
+> +    return false;
+> +}
+> +
+>  int kvm_arch_init(MachineState *ms, KVMState *s)
+>  {
+>      int ret = 0;
+> @@ -280,6 +298,21 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
+>          }
+>      }
+>
+> +    if (s->kvm_eager_split_size) {
+> +        uint32_t sizes;
+> +
+> +        sizes = kvm_vm_check_extension(s, KVM_CAP_ARM_SUPPORTED_BLOCK_SIZES);
+> +        if (!sizes) {
+> +            error_report("Eager Page Split not supported on host");
+> +        } else if (!kvm_arm_eager_split_size_valid(s->kvm_eager_split_size,
+> +                                                   sizes)) {
+> +            error_report("Eager Page Split requested chunk size not valid");
+> +        } else if (kvm_vm_enable_cap(s, KVM_CAP_ARM_EAGER_SPLIT_CHUNK_SIZE, 0,
+> +                                     s->kvm_eager_split_size)) {
+> +            error_report("Failed to set Eager Page Split chunk size");
+> +        }
+> +    }
+> +
+>      kvm_arm_init_debug(s);
+>
+>      return ret;
+> @@ -1062,6 +1095,46 @@ bool kvm_arch_cpu_check_are_resettable(void)
+>      return true;
+>  }
+>
+> +static void kvm_arch_get_eager_split_size(Object *obj, Visitor *v,
+> +                                          const char *name, void *opaque,
+> +                                          Error **errp)
+> +{
+> +    KVMState *s = KVM_STATE(obj);
+> +    uint64_t value = s->kvm_eager_split_size;
+> +
+> +    visit_type_size(v, name, &value, errp);
+> +}
+> +
+> +static void kvm_arch_set_eager_split_size(Object *obj, Visitor *v,
+> +                                          const char *name, void *opaque,
+> +                                          Error **errp)
+> +{
+> +    KVMState *s = KVM_STATE(obj);
+> +    uint64_t value;
+> +
+> +    if (s->fd != -1) {
+> +        error_setg(errp, "Cannot set properties after the accelerator has been initialized");
+> +        return;
+> +    }
+> +
+> +    if (!visit_type_size(v, name, &value, errp)) {
+> +        return;
+> +    }
+> +
+> +    if (value & (value - 1)) {
+
+"if (!is_power_of_2(value))" is a clearer way to write this.
+
+> +        error_setg(errp, "early-split-size must be a power of two.");
+> +        return;
+> +    }
+> +
+> +    s->kvm_eager_split_size = value;
+> +}
+> +
+>  void kvm_arch_accel_class_init(ObjectClass *oc)
+>  {
+> +    object_class_property_add(oc, "eager-split-size", "size",
+> +                              kvm_arch_get_eager_split_size,
+> +                              kvm_arch_set_eager_split_size, NULL, NULL);
+> +
+> +    object_class_property_set_description(oc, "eager-split-size",
+> +        "Configure Eager Page Split chunk size for hugepages. (default: 0, disabled)");
+>  }
+> --
+
+thanks
+-- PMM
 
