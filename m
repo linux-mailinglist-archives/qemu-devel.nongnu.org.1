@@ -2,70 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F40B76556C
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 15:57:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AEE537655BC
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 16:17:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qP1K9-0007bV-St; Thu, 27 Jul 2023 09:46:38 -0400
+	id 1qP0mT-00034E-8O; Thu, 27 Jul 2023 09:11:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qP1K2-0007Zq-0m
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 09:46:32 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qP1Jz-0002ZK-Hx
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 09:46:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690465583;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=OtyG4xHHVnLid0FX7E0W0qJZkcLnLtsDa5kTrc0KIuI=;
- b=APS4oesgGfPOfN6oK9inThFh0ahEwQgI1BSpk4maIDnbr2uBjEJowY4m61wEcSKBX8xW2S
- ppD3sLCnkBJ0nMFEdIBDiyXg3zCURFX2uytnuvS8ZzZOWr1ci18rYmqU3Gmgif9fR1t/+4
- RSB+RY0Fnyt9rnRT+bD0dUVU4XtaY30=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-114-YFc2QStwMwCpUvISq4ORmw-1; Thu, 27 Jul 2023 09:46:19 -0400
-X-MC-Unique: YFc2QStwMwCpUvISq4ORmw-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2052D924908;
- Thu, 27 Jul 2023 13:46:19 +0000 (UTC)
-Received: from localhost (unknown [10.39.193.84])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 913E91454150;
- Thu, 27 Jul 2023 13:46:18 +0000 (UTC)
-Date: Thu, 27 Jul 2023 09:46:16 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Sam Li <faithilikerun@gmail.com>
-Cc: qemu-devel@nongnu.org, hare@suse.de, mjrosato@linux.ibm.com,
- qemu-block@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
- dmitry.fomichev@wdc.com, Kevin Wolf <kwolf@redhat.com>, dlemoal@kernel.org
-Subject: Re: [PATCH v2] block/file-posix: fix g_file_get_contents return path
-Message-ID: <20230727134616.GA868174@fedora>
-References: <20230727115844.8480-1-faithilikerun@gmail.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qP0mB-00033T-Qb
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 09:11:32 -0400
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qP0m6-0006MU-Iv
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 09:11:30 -0400
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-51e28cac164so4609693a12.1
+ for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 06:11:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1690463484; x=1691068284;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=y4TqWaihVPWhz2w3wfclf52xN4o5dm6ZXkSKe4EH2xQ=;
+ b=WpyLVoKW388OiH+eH/RfP1Xke8aVYlpQ+WbxA/vN7Jzth+IwYdEZixRMZzZVYBl7Ta
+ 2f1LTUi0EfogBm8MUMiB3OHsIEk+WPXzieHC9x9rdhBv5ocuZRQpdOOszIqTtf+sHQYO
+ JfdQ/Ya1vCcN9oZOiZcBRWVvvC9aJC13TO2ktPF25izYSc0sHwXX05IyExpslsAAM/ov
+ IlnTVPI3Qt/kCZGc4rJ6fcRLMpUp2AuiUM61PHq8O8pWiBycIpoRFmqDzfM9QoZIikbU
+ bEnfgRUHbfHMvgQDNwjm7A5L1Potx9Zzjhk0z2Qz0DMJs5SQ4ohy7Ssz21ziHBh7KKB6
+ bV+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1690463484; x=1691068284;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=y4TqWaihVPWhz2w3wfclf52xN4o5dm6ZXkSKe4EH2xQ=;
+ b=DPDRh4T5pmhrBkUfGrxRN9EtI2rkFVe9ZMP2/M6gtdsqejyVQPirVdjd9dF4eMHbVo
+ cRNiTB4ygLMTCPBXQXPcUUkES9l/VLBoFPOkDpVQfwxzUXAtB77iPzd8inJlw/gGA/ju
+ QOcK8CNXTyidEgYtqNaDT9pVpwwdYokgiOTUmNeDVOBU4+YYuWeoXfsP88/6DX2gaEQ4
+ QOPJrE9dzcVF1XE+kYrNYTHir/oftIIUYHpNYYr8XduFV/JaDE2uGwD5qMSfdofRpkKn
+ y0/ACk2TMaW0tKUlkFis3HBm3KeOGPslczKkF3/+V3kAuxgYbuqtmWfTrQuuGJSsd2ki
+ mENw==
+X-Gm-Message-State: ABy/qLZncZ0iJIO78Cmp/KZNXcvhADNbLpzAr8bsKawF53WFxrKbqdxz
+ /bb4n6VxEkfatSpj8+p6Wrf5zPmOQn1qsZiT9dqklA==
+X-Google-Smtp-Source: APBJJlGK8594xh49u2RMe/Q8CSqoCoE4rsnlN6ERb5dWCIdd4HccvYomwZIbk2V1ZsdkkRDL+uyOzyC7hL4ooaMmyr4=
+X-Received: by 2002:a05:6402:2690:b0:51e:5bd5:fe7e with SMTP id
+ w16-20020a056402269000b0051e5bd5fe7emr2301857edd.17.1690463484487; Thu, 27
+ Jul 2023 06:11:24 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="TZ7UV44oKKVKxaV+"
-Content-Disposition: inline
-In-Reply-To: <20230727115844.8480-1-faithilikerun@gmail.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20230726165416.309624-1-richard.henderson@linaro.org>
+In-Reply-To: <20230726165416.309624-1-richard.henderson@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 27 Jul 2023 14:11:13 +0100
+Message-ID: <CAFEAcA9f5h0wcq8==PMwcbt-jCKDxfFmOyysGiMaxy=WsSZYyQ@mail.gmail.com>
+Subject: Re: [PATCH for-8.1] target/arm: Fix MemOp for STGP
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,47 +84,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
---TZ7UV44oKKVKxaV+
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Thu, Jul 27, 2023 at 07:58:44PM +0800, Sam Li wrote:
-> The g_file_get_contents() function returns a g_boolean. If it fails, the
-> returned value will be 0 instead of -1. Solve the issue by skipping
-> assigning ret value.
->=20
-> This issue was found by Matthew Rosato using virtio-blk-{pci,ccw} backed
-> by an NVMe partition e.g. /dev/nvme0n1p1 on s390x.
->=20
-> Signed-off-by: Sam Li <faithilikerun@gmail.com>
-> Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
-> Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+On Wed, 26 Jul 2023 at 19:34, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> When converting to decodetree, the code to rebuild mop for the pair
+> only made it into trans_STP and not into trans_STGP.
+>
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1790
+> Fixes: 8c212eb6594 ("target/arm: Convert load/store-pair to decodetree")
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->  block/file-posix.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
 
-Thanks, applied to my block tree:
-https://gitlab.com/stefanha/qemu/commits/block
+Applied to target-arm.next, thanks.
 
-Stefan
-
---TZ7UV44oKKVKxaV+
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmTCdSgACgkQnKSrs4Gr
-c8iA+AgAoOZqXIxICnlBrOscJu+yOPlm3CtKPzrQ6a3o2KN6d4L9WJA93B3Lsthx
-IGj5eHJSNqz8smmk3msuoiZDGAHbJXeFNIccBqKCdJ+uqnNI/KyCKWmitD/2YsVm
-61kh/gTxt8jHsMX/ykK5PYLkgvGVTVxsGwQVenFM1ifBp38cZDZz91J2GNrEAbxf
-IdvmZrEGih/bh48vhxLKSrhUvC7k+TTYaBOgSluw8gz4H/Mc8fA9neGQPprzqDFX
-3RmgbHtzeAcBIjPiEK0+6dd2DGOvdr1CJZqLwh5KQTwReXFM9m/MLERfGt/6WBzs
-9qTCFg3djRM48uZ4KuPthB0Jo/XTxg==
-=7q7X
------END PGP SIGNATURE-----
-
---TZ7UV44oKKVKxaV+--
-
+-- PMM
 
