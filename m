@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9783765961
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 19:01:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75327765A21
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 19:24:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qP3Zj-0008MY-AI; Thu, 27 Jul 2023 12:10:51 -0400
+	id 1qP3Zr-0008Sz-3I; Thu, 27 Jul 2023 12:10:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1qP3Ze-0008M8-Az
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 12:10:47 -0400
+ id 1qP3Zp-0008SF-7n
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 12:10:57 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1qP3Zc-0003TG-OF
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 12:10:46 -0400
+ id 1qP3Zn-0003Vg-NO
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 12:10:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690474244;
+ s=mimecast20190719; t=1690474255;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=jqeG9yHjAZRo995Zo9p4ae7SEMnzY0vCfyw0QCThnX8=;
- b=SJwcR+azxck1eSpZEmT+KXcbhfoMKFLitdMsa0C2OyGzixBS642yB1koM9nnRbGyvfSuhV
- ZlMgS/En0qvi+bOG6xN+1FJTnB2mSDQ1tZPtR+dfeyUMG2qXvIRRe/vI9emlt/4xslK7R+
- fK6+NMePL1PsUKDoXVqgO0GsLNB1GR4=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=h/gg+RbKBeeQMtBE1iLrClo2NCkAFcmUaOrV45LPbjM=;
+ b=NmA1lWQpz0LcOI3iXYN3j2sgNa5UcUxMVUuDmXt3Qp5gGicdwqTvHioXnL7Q5GsdyweWU8
+ hHAIcRZwBV/EfNRESflS4OhNA27ggO0NN9tLz9zXP20ixUqR0vxxyUmR0JxtVXDEUrshMA
+ fyVpEa4ujGngJ4zoucEYvxqcUXYk8j8=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-680-teRgy_WiOFOyIslLN3p2pg-1; Thu, 27 Jul 2023 12:10:42 -0400
-X-MC-Unique: teRgy_WiOFOyIslLN3p2pg-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-30793c16c78so672501f8f.3
- for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 09:10:42 -0700 (PDT)
+ us-mta-282-ql7huGlCNkOpR2BfHSZ6RQ-1; Thu, 27 Jul 2023 12:10:51 -0400
+X-MC-Unique: ql7huGlCNkOpR2BfHSZ6RQ-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-30e3ee8a42eso606770f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 09:10:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690474241; x=1691079041;
+ d=1e100.net; s=20221208; t=1690474250; x=1691079050;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jqeG9yHjAZRo995Zo9p4ae7SEMnzY0vCfyw0QCThnX8=;
- b=ZkZHpvqqmC7BJMsiF3cIqFdI2d4afeiu44W6xkfcfwGBmAA0iWExpBEU4GJp3MqdYy
- pP/hpggdBtQEjEPAwSnl/UvE28swJjI9bwqkOnqAx2TytrXhaAGn7q6ynWqvZpxjJRKx
- 1NoJetv9ve/gbGEqgOclhlAQA34NPfbXu2e9uwoEhkpS2VP33DESN7jeEYu0GysxwG29
- DErSFzfMRN7baCz7+tHlrDrbQne1Ay8kwiMMWyNkM04FmY/6xqCq00U66M93vPIdF/jS
- oj095S9rNCy6plf0IyGwZ87f1Bhl5f/w6C1Dx7gpY5gWMG3O382klTg7uZa5beOKNJMe
- vQgw==
-X-Gm-Message-State: ABy/qLbpU+pm9YmXRUxbmNhuVbOaO5Dhif2mUYNEwodSUt5i4H0Tvrbb
- 8Lqs6otowPLxTPPEZsOLeDhOoC94RP7dQkbuTFXBDs211SfEVVApmpPq1nxjjLrvQdnIP7/r/7S
- WdxcmMw9riA+v4sP7gXbfA0it1h1rb4G7Xk3DGuCX6sR7xfTM7sK9krq0vGbqfILGlN4rlNMKnX
- M=
-X-Received: by 2002:adf:dec1:0:b0:317:61af:d64a with SMTP id
- i1-20020adfdec1000000b0031761afd64amr2413232wrn.3.1690474241094; 
- Thu, 27 Jul 2023 09:10:41 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlH9KkPEhif4cJq6kfNeGpkr0ct4rzMdspxy9Y6mMBPUlpPW+fLwETRRSybkO122bqRP5Q9dEg==
-X-Received: by 2002:adf:dec1:0:b0:317:61af:d64a with SMTP id
- i1-20020adfdec1000000b0031761afd64amr2413202wrn.3.1690474240724; 
- Thu, 27 Jul 2023 09:10:40 -0700 (PDT)
+ bh=h/gg+RbKBeeQMtBE1iLrClo2NCkAFcmUaOrV45LPbjM=;
+ b=NsN5ndWM/qthP5ZCQc5Ws3kQkKNmUF7ps+HMlZwsnYToA8UF5rcnOyQpvU/qSrpNtl
+ sFWC4hTesIR3RovMVBcaItA1b+wJxppwYO5S+Cs2biOy4yA4yOShk4mrvI0PvjSZ+dew
+ 83lzMkcwIi3FTpdYhpV+7soZHURs4mVIBa4gfNVtp03nZHnvPe2NOmyWhwdkdbextvrv
+ C/c/PADGBqpPi8H47of8e2/iJXcFu1IY3EDRAM1wOR5nkjWbEkQ+5WVk0m9JWdaGv7Ln
+ eC+VHPFZ3PxzXW8ackuPyc/rzTDUqmvgajKsKEicgobbCLJMK8QutnhDAGqZiCxImBq1
+ 5tpw==
+X-Gm-Message-State: ABy/qLYZxqFNqpRZJp0m1+FvO00ub1Ob+8dFPEiy+MS5PCCGnmWOx/U0
+ 3YUKVwZYX9A08rsnJX0fPHebjggGCIFrbVg1K0jbL4USNK3C+WVJ6/jw/QkDXYR7nUXZRCDHdbr
+ RGHn+tYxMoJ1O4zTHNA/AZdBwc0QqEhaE3tUDNvKhehMNL2yI/ic6Vg+/jY9TILf87WjjWl5cFF
+ U=
+X-Received: by 2002:a05:6000:1146:b0:316:f5b1:98c with SMTP id
+ d6-20020a056000114600b00316f5b1098cmr2104237wrx.24.1690474250102; 
+ Thu, 27 Jul 2023 09:10:50 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlHh1jpgH47RbF/5wD7KFPg4htWAQYmjvR0cJngReSpTeQPsoeTTgsh/y7jgVuLL/Hf5VCPHCQ==
+X-Received: by 2002:a05:6000:1146:b0:316:f5b1:98c with SMTP id
+ d6-20020a056000114600b00316f5b1098cmr2104216wrx.24.1690474249801; 
+ Thu, 27 Jul 2023 09:10:49 -0700 (PDT)
 Received: from step1.redhat.com ([193.207.170.163])
  by smtp.gmail.com with ESMTPSA id
- h16-20020adffa90000000b0031423a8f4f7sm2427734wrr.56.2023.07.27.09.10.36
+ z7-20020a5d4407000000b0031766e99429sm2398506wrq.115.2023.07.27.09.10.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 27 Jul 2023 09:10:40 -0700 (PDT)
+ Thu, 27 Jul 2023 09:10:49 -0700 (PDT)
 From: Stefano Garzarella <sgarzare@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
  Hanna Reitz <hreitz@redhat.com>, qemu-block@nongnu.org,
  Stefano Garzarella <sgarzare@redhat.com>
-Subject: [PATCH v2 1/4] block/blkio: move blkio_connect() in the drivers
- functions
-Date: Thu, 27 Jul 2023 18:10:17 +0200
-Message-ID: <20230727161020.84213-2-sgarzare@redhat.com>
+Subject: [PATCH v2 2/4] block/blkio: retry blkio_connect() if it fails using
+ `fd`
+Date: Thu, 27 Jul 2023 18:10:18 +0200
+Message-ID: <20230727161020.84213-3-sgarzare@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230727161020.84213-1-sgarzare@redhat.com>
 References: <20230727161020.84213-1-sgarzare@redhat.com>
@@ -104,137 +104,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is in preparation for the next patch, where for virtio-blk
-drivers we need to handle the failure of blkio_connect().
+libblkio 1.3.0 added support of "fd" property for virtio-blk-vhost-vdpa
+driver. In QEMU, starting from commit cad2ccc395 ("block/blkio: use
+qemu_open() to support fd passing for virtio-blk") we are using
+`blkio_get_int(..., "fd")` to check if the "fd" property is supported
+for all the virtio-blk-* driver.
 
-Let's also rename the *_open() functions to *_connect() to make
-the code reflect the changes applied.
+Unfortunately that property is also available for those driver that do
+not support it, such as virtio-blk-vhost-user.
 
+So, `blkio_get_int()` is not enough to check whether the driver supports
+the `fd` property or not. This is because the virito-blk common libblkio
+driver only checks whether or not `fd` is set during `blkio_connect()`
+and fails with -EINVAL for those transports that do not support it
+(all except vhost-vdpa for now).
+
+So let's handle the `blkio_connect()` failure, retrying it using `path`
+directly.
+
+Fixes: cad2ccc395 ("block/blkio: use qemu_open() to support fd passing for virtio-blk")
+Suggested-by: Stefan Hajnoczi <stefanha@redhat.com>
 Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
 ---
- block/blkio.c | 67 ++++++++++++++++++++++++++++++---------------------
- 1 file changed, 40 insertions(+), 27 deletions(-)
+
+Notes:
+    v2:
+    - reworked retrying blkio_connect() [Stefan]
+
+ block/blkio.c | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
 diff --git a/block/blkio.c b/block/blkio.c
-index 7eb1b94820..8ad7c0b575 100644
+index 8ad7c0b575..60d2d0f129 100644
 --- a/block/blkio.c
 +++ b/block/blkio.c
-@@ -603,8 +603,8 @@ static void blkio_unregister_buf(BlockDriverState *bs, void *host, size_t size)
-     }
- }
- 
--static int blkio_io_uring_open(BlockDriverState *bs, QDict *options, int flags,
--                               Error **errp)
-+static int blkio_io_uring_connect(BlockDriverState *bs, QDict *options,
-+                                  int flags, Error **errp)
- {
-     const char *filename = qdict_get_str(options, "filename");
-     BDRVBlkioState *s = bs->opaque;
-@@ -627,11 +627,18 @@ static int blkio_io_uring_open(BlockDriverState *bs, QDict *options, int flags,
-         }
+@@ -733,6 +733,35 @@ static int blkio_virtio_blk_connect(BlockDriverState *bs, QDict *options,
      }
  
-+    ret = blkio_connect(s->blkio);
-+    if (ret < 0) {
-+        error_setg_errno(errp, -ret, "blkio_connect failed: %s",
-+                         blkio_get_error_msg());
-+        return ret;
+     ret = blkio_connect(s->blkio);
++    /*
++     * If the libblkio driver doesn't support the `fd` property, blkio_connect()
++     * will fail with -EINVAL. So let's try calling blkio_connect() again by
++     * directly setting `path`.
++     */
++    if (fd_supported && ret == -EINVAL) {
++        qemu_close(fd);
++
++        /*
++         * We need to clear the `fd` property we set previously by setting
++         * it to -1.
++         */
++        ret = blkio_set_int(s->blkio, "fd", -1);
++        if (ret < 0) {
++            error_setg_errno(errp, -ret, "failed to set fd: %s",
++                             blkio_get_error_msg());
++            return ret;
++        }
++
++        ret = blkio_set_str(s->blkio, "path", path);
++        if (ret < 0) {
++            error_setg_errno(errp, -ret, "failed to set path: %s",
++                             blkio_get_error_msg());
++            return ret;
++        }
++
++        ret = blkio_connect(s->blkio);
 +    }
 +
-     return 0;
- }
- 
--static int blkio_nvme_io_uring(BlockDriverState *bs, QDict *options, int flags,
--                               Error **errp)
-+static int blkio_nvme_io_uring_connect(BlockDriverState *bs, QDict *options,
-+                                       int flags, Error **errp)
- {
-     const char *path = qdict_get_try_str(options, "path");
-     BDRVBlkioState *s = bs->opaque;
-@@ -655,11 +662,18 @@ static int blkio_nvme_io_uring(BlockDriverState *bs, QDict *options, int flags,
-         return -EINVAL;
-     }
- 
-+    ret = blkio_connect(s->blkio);
-+    if (ret < 0) {
-+        error_setg_errno(errp, -ret, "blkio_connect failed: %s",
-+                         blkio_get_error_msg());
-+        return ret;
-+    }
-+
-     return 0;
- }
- 
--static int blkio_virtio_blk_common_open(BlockDriverState *bs,
--        QDict *options, int flags, Error **errp)
-+static int blkio_virtio_blk_connect(BlockDriverState *bs, QDict *options,
-+                                    int flags, Error **errp)
- {
-     const char *path = qdict_get_try_str(options, "path");
-     BDRVBlkioState *s = bs->opaque;
-@@ -718,6 +732,13 @@ static int blkio_virtio_blk_common_open(BlockDriverState *bs,
-         }
-     }
- 
-+    ret = blkio_connect(s->blkio);
-+    if (ret < 0) {
-+        error_setg_errno(errp, -ret, "blkio_connect failed: %s",
-+                         blkio_get_error_msg());
-+        return ret;
-+    }
-+
-     qdict_del(options, "path");
- 
-     return 0;
-@@ -737,24 +758,6 @@ static int blkio_file_open(BlockDriverState *bs, QDict *options, int flags,
-         return ret;
-     }
- 
--    if (strcmp(blkio_driver, "io_uring") == 0) {
--        ret = blkio_io_uring_open(bs, options, flags, errp);
--    } else if (strcmp(blkio_driver, "nvme-io_uring") == 0) {
--        ret = blkio_nvme_io_uring(bs, options, flags, errp);
--    } else if (strcmp(blkio_driver, "virtio-blk-vfio-pci") == 0) {
--        ret = blkio_virtio_blk_common_open(bs, options, flags, errp);
--    } else if (strcmp(blkio_driver, "virtio-blk-vhost-user") == 0) {
--        ret = blkio_virtio_blk_common_open(bs, options, flags, errp);
--    } else if (strcmp(blkio_driver, "virtio-blk-vhost-vdpa") == 0) {
--        ret = blkio_virtio_blk_common_open(bs, options, flags, errp);
--    } else {
--        g_assert_not_reached();
--    }
--    if (ret < 0) {
--        blkio_destroy(&s->blkio);
--        return ret;
--    }
--
-     if (!(flags & BDRV_O_RDWR)) {
-         ret = blkio_set_bool(s->blkio, "read-only", true);
-         if (ret < 0) {
-@@ -765,10 +768,20 @@ static int blkio_file_open(BlockDriverState *bs, QDict *options, int flags,
-         }
-     }
- 
--    ret = blkio_connect(s->blkio);
-+    if (strcmp(blkio_driver, "io_uring") == 0) {
-+        ret = blkio_io_uring_connect(bs, options, flags, errp);
-+    } else if (strcmp(blkio_driver, "nvme-io_uring") == 0) {
-+        ret = blkio_nvme_io_uring_connect(bs, options, flags, errp);
-+    } else if (strcmp(blkio_driver, "virtio-blk-vfio-pci") == 0) {
-+        ret = blkio_virtio_blk_connect(bs, options, flags, errp);
-+    } else if (strcmp(blkio_driver, "virtio-blk-vhost-user") == 0) {
-+        ret = blkio_virtio_blk_connect(bs, options, flags, errp);
-+    } else if (strcmp(blkio_driver, "virtio-blk-vhost-vdpa") == 0) {
-+        ret = blkio_virtio_blk_connect(bs, options, flags, errp);
-+    } else {
-+        g_assert_not_reached();
-+    }
      if (ret < 0) {
--        error_setg_errno(errp, -ret, "blkio_connect failed: %s",
--                         blkio_get_error_msg());
-         blkio_destroy(&s->blkio);
-         return ret;
-     }
+         error_setg_errno(errp, -ret, "blkio_connect failed: %s",
+                          blkio_get_error_msg());
 -- 
 2.41.0
 
