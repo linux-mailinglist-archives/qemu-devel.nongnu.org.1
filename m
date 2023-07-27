@@ -2,79 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6AAE76608C
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 02:11:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E4E27660E1
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 02:48:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qPAV8-0008Sp-Uz; Thu, 27 Jul 2023 19:34:34 -0400
+	id 1qPAj7-0002cP-G5; Thu, 27 Jul 2023 19:49:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mike.maslenkin@gmail.com>)
- id 1qPAV1-0008Rj-H8
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 19:34:27 -0400
-Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qPAiy-0002c3-MO
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 19:48:53 -0400
+Received: from mail-pj1-x102c.google.com ([2607:f8b0:4864:20::102c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <mike.maslenkin@gmail.com>)
- id 1qPAV0-0001DI-1I
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 19:34:27 -0400
-Received: by mail-lf1-x133.google.com with SMTP id
- 2adb3069b0e04-4fb960b7c9dso2752080e87.0
- for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 16:34:25 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qPAix-0000Zr-4s
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 19:48:52 -0400
+Received: by mail-pj1-x102c.google.com with SMTP id
+ 98e67ed59e1d1-267fcd6985cso1055513a91.2
+ for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 16:48:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1690500864; x=1691105664;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=zWDN8OQ7S1a/kBflaC/qAdwP0GllihYkz9NZehoKxpM=;
- b=o2I14X4vOjr7lIVCpUdmkBl8LPNtyzDobd/aIpZ4XQY/nX/Ss6hWvG/FdZ3JaMZt9N
- HMLo/HqYP7dT8PBELeJbfmIBr5QgEcfoyfv6pmwtLLSVqKjcPP3BROn6zwEbVw6vwgyV
- 3zJK4AtYi0f9m5Ak9TxhC/+UQ5aj7UefaJ5HIQY5eRyHTrHuFvFyp4GS77vvqwVoc69J
- i0hW/RyDa07DZVj7ipNdurToQqCvlbR5AwhkNfVMJlJ6z8CaOXWUI0HmZekz6lmryl9r
- wA4dOI5BE/zQQrbQvRK7L17RE0I7YksdYGf9P7mqs6HWs8uKiafaEiF1n8G08Kpif/ub
- 8gpA==
+ d=linaro.org; s=google; t=1690501728; x=1691106528;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=WLxNPOBzULVKYVKdnNiqLUg+vmLBWe5W8HRjr/iUQMk=;
+ b=eCkyev24dBHJtTlRBDzYXXjFSNWwacgCqWB9QzVH99ipa/zqayanARghX8uiDKemke
+ iRFzcaiAhiKP2hnzMcZEaEbcNL8eom8mebcCfo12YVpZ5TtbC3fZPweBZztjYl08d/mR
+ JUMpC7VY5LnyThMs5OsfGLeVMLmd3/1fI5RaevzysHft52MBnvNX/90+B+1DoKReZ8tN
+ U3JWsnj3LVTD23xZWBCMbJFzIRaI+sC7xHngbZpAgfUV0D/mBWtfHYx1eedSzuaw6qb3
+ 55ke6ULx6ZBbgvjs64aFQR0rBw3Gbk16JkXF6Rg0I+X3dYc7W2mi7y42rgodG6a0lRd9
+ gD7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690500864; x=1691105664;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=zWDN8OQ7S1a/kBflaC/qAdwP0GllihYkz9NZehoKxpM=;
- b=PdiwwXWq5bNu/yYh2kxvZR52C0aR44yIoO81vtQ1EMUtzgTvPmyap1SGhJhjcn1NnP
- OaXfOEmnO2+U/lnPxuxrqRgitxqpyfMxP4cEoadN/lE8e5DAEbphLO9+VKmfJUBYWsy1
- SijOlH9Qz1Pun7r9qsPsi+vOM9PH5pg4kx8wNIVcxRT91WAgs+8bP5uzF2/h1v2WJh8M
- 34ESyYyakRnSun6i77dx6E2ORhT0gAEYcq3bHW1agMwYYlGjmrEQBnJc5Lqevi6dP51L
- Lkl6m5i4ZTQ1BNoJqT0MJPvW2dzsefvIcQxYOb654E5CPTsVd82sLgEXCU4N9LSLcs0h
- 2Gsw==
-X-Gm-Message-State: ABy/qLZK65EERzHtRonWZmzMs6y6Irn6ue7FqWg97qKfWykRJm57KM76
- sbmKHpUhCyOEltyfvOsGvEcQdnadN89F+Q==
-X-Google-Smtp-Source: APBJJlFV7By6X1CnP4vmdLnehqJoQD/NMgSB0HXPm9ojPiiHZeZe5+z7h0nz1uSpRW1UvBHxcDMMXg==
-X-Received: by 2002:a05:6512:605:b0:4fb:780d:2a49 with SMTP id
- b5-20020a056512060500b004fb780d2a49mr415704lfe.5.1690500864192; 
- Thu, 27 Jul 2023 16:34:24 -0700 (PDT)
-Received: from localhost.localdomain ([185.9.78.206])
+ d=1e100.net; s=20221208; t=1690501728; x=1691106528;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=WLxNPOBzULVKYVKdnNiqLUg+vmLBWe5W8HRjr/iUQMk=;
+ b=kcIT+JhswOUfRAIJ1OPyhg3AXSabtLYkysUII0iBjJ9IrsF2YwYp7ydHUpjcA7A+Xe
+ 8HMGY3+yb8moy79vOJ6IOvEHVR1OK84DKjzQnAB33xFnpVX54uffmcmhDvw2VBLKBvC8
+ 2293res9IZoBIDoXa+VNcVW1A/p5QnB0Zap1UtlQtzTfzecMkLJa2T5FCDNshKtyAxLP
+ JKGnmcEkweuBcThQ6vD7lEIJFC4JWxPY+aB2f94nd70+JaBTA6JZ4moYI1HfrM1oSiul
+ BUDb8BWtVAQhCaX6E/O6UB5FRMx05BYTHEudSzTo39Ry5l6KEO44aBTwDfLT2QriFe+m
+ nC9w==
+X-Gm-Message-State: ABy/qLbZ50KTqwp5UyKajBw5KcCCWN56kOIcr5ICMv6laq0PEq9ESZEw
+ YjAOFcM3FWa1FEz04z80rIJoOA==
+X-Google-Smtp-Source: APBJJlF3qxj7Uh06enILFwctWT9k4PL3y7+77hyyfdUZcMo1F3jyTFO3IhjvidllLnVXk/OhT8oTlg==
+X-Received: by 2002:a17:90a:6304:b0:268:17a8:3b91 with SMTP id
+ e4-20020a17090a630400b0026817a83b91mr83724pjj.28.1690501728305; 
+ Thu, 27 Jul 2023 16:48:48 -0700 (PDT)
+Received: from ?IPV6:2602:ae:154e:c001:943b:b6e1:1f00:9721?
+ ([2602:ae:154e:c001:943b:b6e1:1f00:9721])
  by smtp.gmail.com with ESMTPSA id
- h16-20020ac25970000000b004fe0de39fddsm528241lfp.290.2023.07.27.16.34.23
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 27 Jul 2023 16:34:23 -0700 (PDT)
-From: Mike Maslenkin <mike.maslenkin@gmail.com>
-To: 
-Cc: qemu-devel@nongnu.org, jeuk20.kim@samsung.com, stefanha@redhat.com,
- Mike Maslenkin <mike.maslenkin@gmail.com>
-Subject: [PATCH 3/3] hw/ufs: change ufs_process_db signature
-Date: Fri, 28 Jul 2023 02:34:05 +0300
-Message-Id: <20230727233405.35937-4-mike.maslenkin@gmail.com>
-X-Mailer: git-send-email 2.32.0 (Apple Git-132)
-In-Reply-To: <20230727233405.35937-1-mike.maslenkin@gmail.com>
-References: <20230727233405.35937-1-mike.maslenkin@gmail.com>
+ c16-20020a17090ad91000b00265a7145fe5sm3258533pjv.41.2023.07.27.16.48.47
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 27 Jul 2023 16:48:47 -0700 (PDT)
+Message-ID: <88ff156e-5ec3-6306-3b83-6a8e2b103551@linaro.org>
+Date: Thu, 27 Jul 2023 16:48:45 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::133;
- envelope-from=mike.maslenkin@gmail.com; helo=mail-lf1-x133.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 5/9] Replace target_ulong with abi_ptr in cpu_[st|ld]*()
+Content-Language: en-US
+To: Anton Johansson <anjo@rev.ng>, qemu-devel@nongnu.org
+Cc: ale@rev.ng, pbonzini@redhat.com, philmd@linaro.org, agraf@csgraf.de,
+ dirty@apple.com, rbolshakov@ddn.com, anielhb413@gmail.com,
+ pasic@linux.ibm.com, borntraeger@linux.ibm.com, palmer@dabbelt.com,
+ alistair.francis@wdc.com, bin.meng@windriver.com,
+ ysato@users.sourceforge.jp, peter.maydell@linaro.org
+References: <20230721205827.7502-1-anjo@rev.ng>
+ <20230721205827.7502-6-anjo@rev.ng>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230721205827.7502-6-anjo@rev.ng>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102c.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -92,30 +100,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Actually UTRLDBR is 32bit register. There is no need to pass 64bit
-value to ufs_process_db() function.
+On 7/21/23 13:58, Anton Johansson wrote:
+> Changes the address type of the guest memory read/write functions from
+> target_ulong to abi_ptr. (abi_ptr is currently typedef'd to target_ulong
+> but that will change in a following commit.) This will reduce the
+> coupling between accel/ and target/.
+> 
+> Note: Function pointers that point to cpu_[st|ld]*() in target/riscv and
+> target/rx are also updated in this commit.
+> 
+> Signed-off-by: Anton Johansson<anjo@rev.ng>
+> ---
+>   accel/tcg/atomic_template.h  | 16 ++++++++--------
+>   include/exec/cpu_ldst.h      | 24 ++++++++++++------------
+>   accel/tcg/cputlb.c           | 10 +++++-----
+>   target/riscv/vector_helper.c |  2 +-
+>   target/rx/op_helper.c        |  6 +++---
+>   5 files changed, 29 insertions(+), 29 deletions(-)
 
-Cc: Jeuk Kim <jeuk20.kim@samsung.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>
-Signed-off-by: Mike Maslenkin <mike.maslenkin@gmail.com>
----
- hw/ufs/ufs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-diff --git a/hw/ufs/ufs.c b/hw/ufs/ufs.c
-index b0656e47598e..af57ba6df02c 100644
---- a/hw/ufs/ufs.c
-+++ b/hw/ufs/ufs.c
-@@ -256,7 +256,7 @@ static void ufs_irq_check(UfsHc *u)
-     }
- }
- 
--static void ufs_process_db(UfsHc *u, uint64_t val)
-+static void ufs_process_db(UfsHc *u, uint32_t val)
- {
-     uint32_t slot;
-     uint32_t nutrs = u->params.nutrs;
--- 
-2.32.0 (Apple Git-132)
 
+r~
 
