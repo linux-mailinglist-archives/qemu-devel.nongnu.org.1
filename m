@@ -2,82 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5667676551F
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 15:34:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3A6F7654CA
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 15:19:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qP0h8-0001ze-JH; Thu, 27 Jul 2023 09:06:18 -0400
+	id 1qP0i4-0002Q7-T5; Thu, 27 Jul 2023 09:07:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qP0h5-0001yx-UM
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 09:06:15 -0400
-Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qP0h2-0004tM-JK
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 09:06:14 -0400
-Received: by mail-lf1-x12a.google.com with SMTP id
- 2adb3069b0e04-4f95bf5c493so1654875e87.3
- for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 06:06:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690463170; x=1691067970;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=8qyDSDkajXCyk30Z5QuWV36IT8LpvE+bjKqjFlBeTjA=;
- b=mATEbYpHuxnPnoXPapVur4nX2fJ9+4TD3FKmV/IYg3t9+hGg4FXvaOPU9mfSBHjPIq
- OjdPDFo07WAj5D41NBKEnyJX07c3U9UicPRimHHSpaWQ6WpjIrl1DEEktH0mgmNaQZqB
- KyJT48t6BEo/kPo89n20WeOXHJWOu5iLN7n3QAa22OR8WrCGSpMGv1mDqhGaQZ7UV1B4
- 6ALlBUymiyjdSvB1qOtbYBALnXbbQhBay1BFTWQtM0XjrZrYZCFFVYnzA2nUDpFiG7Qa
- 01yRdHTan25N3pcXq7c257POwRRI4WfYct53v7iuz5L28lfq1ctESTCS6LFFoFduzJJh
- KzbQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690463170; x=1691067970;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=8qyDSDkajXCyk30Z5QuWV36IT8LpvE+bjKqjFlBeTjA=;
- b=F47sgFJ4KirrkwGQkxvLf3njBKW7RgGR4TVdWTNArIX/Q7y26rWJIfkB4AYD3I8jR3
- fNvalu0YQP+t/gFVCGyPvefmXOsouH6HZ7SgSs+QHKigO+rLaz+P1KS6PiJhdPkCAzLf
- duoHHE8gSCoHN3nPRU1zu81OPVJmn4WCra/pk8t1iW7+kzHZSTxRqXgnuBjMq799kQ40
- EzjvFQdjGDz1k/pzZSAV3d6Ba6DRzH4nci2pNFwoafnQxKLZnMJrUc4ubZITgySJMSRE
- X0kENyfRabmzZJDfWUB4gLCmGUMIO+uZc0A1+xcQ191wRPAUH3UhFqDgqaFd7usFqCBx
- P46A==
-X-Gm-Message-State: ABy/qLaRGI5l2al8NeCY3qGJBZkTCxry33+h/GrU8bVTOT6uyxTlQbGC
- kKiquUWSyZu8JfI7tEvaJin1U1iaFyUE5H1HXwsxpg==
-X-Google-Smtp-Source: APBJJlHUaCYQ0o91/wHoHjaEhDSCQ5SeJc+b0A6vG2UAXHZ6JaKmvJWegHrT+p+P0MZu07Va3/WpxFK6J1goSo/9MBU=
-X-Received: by 2002:a05:6512:2386:b0:4fb:821e:2241 with SMTP id
- c6-20020a056512238600b004fb821e2241mr2358984lfv.23.1690463170267; Thu, 27 Jul
- 2023 06:06:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <SRS0=csIm=DN=kaod.org=clg@ozlabs.org>)
+ id 1qP0i0-0002Pv-Si; Thu, 27 Jul 2023 09:07:12 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=csIm=DN=kaod.org=clg@ozlabs.org>)
+ id 1qP0hy-0004yf-Cp; Thu, 27 Jul 2023 09:07:12 -0400
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4RBWJ86NQCz4wxn;
+ Thu, 27 Jul 2023 23:07:04 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4RBWJ64Rsdz4wbP;
+ Thu, 27 Jul 2023 23:07:02 +1000 (AEST)
+Message-ID: <b0ff2811-ef70-d018-4952-df8b2b6d8413@kaod.org>
+Date: Thu, 27 Jul 2023 15:07:00 +0200
 MIME-Version: 1.0
-References: <20230725180337.2937292-1-jsnow@redhat.com>
-In-Reply-To: <20230725180337.2937292-1-jsnow@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 27 Jul 2023 14:05:59 +0100
-Message-ID: <CAFEAcA8hGsXsfLECdRwe7u=DRtK6LE2twT3HaF7w_T2-SNYwgw@mail.gmail.com>
-Subject: Re: [PATCH v2 0/6] python/machine: use socketpair() for console socket
-To: John Snow <jsnow@redhat.com>
-Cc: qemu-devel@nongnu.org, =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, 
- Hanna Reitz <hreitz@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Cleber Rosa <crosa@redhat.com>, 
- Wainer dos Santos Moschetta <wainersm@redhat.com>, qemu-arm@nongnu.org,
- qemu-block@nongnu.org, 
- Andrew Jeffery <andrew@aj.id.au>, Joel Stanley <joel@jms.id.au>,
- Kevin Wolf <kwolf@redhat.com>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Beraldo Leal <bleal@redhat.com>, Daniel Berrange <berrange@redhat.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::12a;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01, WEIRD_PORT=0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 2/6] target/ppc: Fix VRMA page size for ISA v3.0
+Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>
+Cc: David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org,
+ qemu-devel@nongnu.org
+References: <20230726182230.433945-1-npiggin@gmail.com>
+ <20230726182230.433945-3-npiggin@gmail.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20230726182230.433945-3-npiggin@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=csIm=DN=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.091, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,170 +67,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 25 Jul 2023 at 19:04, John Snow <jsnow@redhat.com> wrote:
->
-> Like we did for the QMP socket, use socketpair() for the console socket
-> so that hopefully there isn't a race condition during early boot where
-> data might get dropped on the floor.
->
-> May or may not help with various race conditions where early console
-> output is not showing up in the logs and/or potentially being missed by
-> wait_for_console_pattern.
->
+On 7/26/23 20:22, Nicholas Piggin wrote:
+> Until v2.07s, the VRMA page size (L||LP) was encoded in LPCR[VRMASD].
+> In v3.0 that moved to the partition table PS field.
+> 
+> The powernv machine can now run KVM HPT guests on POWER9/10 CPUs with
+> this fix and the patch to add ASDR.
+> 
+> Fixes: 3367c62f522b ("target/ppc: Support for POWER9 native hash")
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>   target/ppc/mmu-hash64.c | 41 +++++++++++++++++++++++++++++++++++------
+>   1 file changed, 35 insertions(+), 6 deletions(-)
+> 
+> diff --git a/target/ppc/mmu-hash64.c b/target/ppc/mmu-hash64.c
+> index a0c90df3ce..7f8bbbbdb0 100644
+> --- a/target/ppc/mmu-hash64.c
+> +++ b/target/ppc/mmu-hash64.c
+> @@ -874,12 +874,41 @@ static target_ulong rmls_limit(PowerPCCPU *cpu)
+>       return rma_sizes[rmls];
+>   }
+>   
+> -static int build_vrma_slbe(PowerPCCPU *cpu, ppc_slb_t *slb)
+> +/* Return the LLP in SLB_VSID format */
+> +static uint64_t get_vrma_llp(PowerPCCPU *cpu)
+>   {
+>       CPUPPCState *env = &cpu->env;
+> -    target_ulong lpcr = env->spr[SPR_LPCR];
+> -    uint32_t vrmasd = (lpcr & LPCR_VRMASD) >> LPCR_VRMASD_SHIFT;
+> -    target_ulong vsid = SLB_VSID_VRMA | ((vrmasd << 4) & SLB_VSID_LLP_MASK);
+> +    uint64_t llp;
+> +
+> +    if (env->mmu_model == POWERPC_MMU_3_00) {
+> +        ppc_v3_pate_t pate;
+> +        uint64_t ps;
+> +
+> +        /*
+> +         * ISA v3.0 removes the LPCR[VRMASD] field and puts the VRMA base
+> +         * page size (L||LP equivalent) in the PS field in the HPT partition
+> +         * table entry.
+> +         */
+> +        if (!ppc64_v3_get_pate(cpu, cpu->env.spr[SPR_LPIDR], &pate)) {
+> +            error_report("Bad VRMA with no partition table entry");
+> +            return 0;
+> +        }
+> +        ps = pate.dw0 >> (63 - 58);
+> +        llp = ((ps & 0x4) << (63 - 55 - 2)) | ((ps & 0x3) << (63 - 59));
 
-This seems to improve the test I was having trouble with on s390
-(machine_aarch64_sbsaref.py:Aarch64SbsarefMachine.test_sbsaref_edk2_firmware)
+Please add bitfield definitions for these numbers :)
 
-However it still fails sometimes, apparently we get the first line
-of output from the guest but lose a couple of subsequent lines.
-Here's a failing log:
+> +
+> +    } else {
+> +        uint64_t lpcr = env->spr[SPR_LPCR];
+> +        target_ulong vrmasd = (lpcr & LPCR_VRMASD) >> LPCR_VRMASD_SHIFT;
+> +
+> +        llp = (vrmasd << 4) & SLB_VSID_LLP_MASK;
+> +    }
+> +
+> +    return llp;
+> +}
+> +
+> +static int build_vrma_slbe(PowerPCCPU *cpu, ppc_slb_t *slb)
+> +{
+> +    target_ulong vsid = SLB_VSID_VRMA | get_vrma_llp(cpu);
 
-2023-07-27 12:55:29,870 protocol         L0481 DEBUG| Transitioning
-from 'Runstate.CONNECTING' to 'Runstate.RUNNING'.
-2023-07-27 12:55:29,930 __init__         L0153 DEBUG| NOTICE:  Booting
-Trusted Firmware
-2023-07-27 12:55:29,955 __init__         L0153 DEBUG| NOTICE:  BL1: Booting BL2
-2023-07-27 12:55:29,955 __init__         L0153 DEBUG| NOTICE:  BL2:
-v2.9(release):v2.9.0-51-gc0d8ee386
-2023-07-27 12:55:29,955 __init__         L0153 DEBUG| NOTICE:  BL2:
-Built : 16:44:16, May 30 2023
-2023-07-27 12:55:30,092 __init__         L0153 DEBUG| NOTICE:  BL1: Booting BL31
-2023-07-27 12:55:30,092 __init__         L0153 DEBUG| NOTICE:  BL31:
-v2.9(release):v2.9.0-51-gc0d8ee386
-2023-07-27 12:55:30,092 __init__         L0153 DEBUG| NOTICE:  BL31:
-Built : 16:44:16, May 30 2023
-2023-07-27 12:55:30,092 __init__         L0153 DEBUG| UEFI firmware
-(version 1.0 built at 17:14:57 on Mar 21 2023)
-2023-07-27 12:55:45,281 __init__         L0153 DEBUG|
-ESC[2JESC[04DESC[=3hESC[2JESC[09DESC[2JESC[04DESC[0mESC[30mESC[40m
-2023-07-27 12:55:45,538 __init__         L0153 DEBUG|
-ESC[01;01HESC[0mESC[34mESC[47m
-2023-07-27 12:55:45,642 __init__         L0153 DEBUG|
-ESC[01;01HESC[02;02HQEMU SBSA-REF MachineESC[03;02Harm-virtESC[44C2.00
-GHzESC[04;02H1.0ESC[49C1024 MB
-RAMESC[05;02HESC[52CESC[06;02HESC[52CESC[0mESC[37mESC[40mESC[21;01H
-2023-07-27 12:55:45,840 __init__         L0153 DEBUG|
-ESC[21;01HESC[0mESC[30mESC[40mESC[25;53H  ESC[01D  ESC[01D  ESC[01D
-ESC[01D  ESC[01D  ESC[01D  ESC[01D  ESC[01D  ESC[01D  ESC[01D  ESC[01D
- ESC[01D  ESC[01D  ESC[01D  ESC[01D  ESC[01D  ESC[01D  ESC[01D
-ESC[01D  ESC[01D  ESC[0mESC[30mESC[47mESC[07;01H
-2023-07-27 12:55:45,926 __init__         L0153 DEBUG| ESC[07;01H
-2023-07-27 12:55:46,032 __init__         L0153 DEBUG|
-ESC[0mESC[37mESC[40mESC[30C<Standard English>ESC[0mESC[30mESC[47m
-   ESC[57D   Select Language            ESC[0mESC[34mESC[47mESC[09;01H
+May be you could introduce a 'uint64_t llp' variable instead and use it
+directly in error_report and in the slb encoding test. This is minor.
 
-ESC[0mESC[30mESC[47mESC[10;01H   ESC[02D>ESC[01CDevice Manager
-                               ESC[11;01H   ESC[02D>ESC[01CBoot
-Manager                                          ESC[12;01H
-ESC[02D>ESC[01CBoot Maintenance Manager
-ESC[0mESC[34mESC[47mESC[13;01H
-                ESC[0mESC[30mESC[47mESC[14;01H   Continue
-                                ESC[15;01H   Reset
-                            ESC[16;01H
-                        ESC[17;01H
-                    ESC[18;01H
-                ESC[19;01H
-            ESC[20;01H
-2023-07-27 12:55:46,067 __init__         L0153 DEBUG|
-ESC[0mESC[37mESC[40mESC[23;02H ESC[22;02H ESC[50C
-   ESC[51D                          ESC[23;53H
-  ESC[77D^v=Move Highlight       ESC[22;03H
-ESC[23;27H<Enter>=Select Entry      ESC[0mESC[34mESC[47mESC[08;58HThis
-is the option
-2023-07-27 12:55:46,076 __init__         L0153 DEBUG| ESC[57Cone
-adjusts to change
-2023-07-27 12:55:46,076 __init__         L0153 DEBUG| ESC[57Cthe
-language for the
-2023-07-27 12:55:46,080 __init__         L0153 DEBUG| ESC[57Ccurrent system
-2023-07-27 12:55:46,085 __init__         L0153 DEBUG| ESC[57C
-2023-07-27 12:55:46,085 __init__         L0153 DEBUG| ESC[57C
-2023-07-27 12:55:46,087 __init__         L0153 DEBUG| ESC[57C
-2023-07-27 12:55:46,090 __init__         L0153 DEBUG| ESC[57C
-2023-07-27 12:55:46,094 __init__         L0153 DEBUG| ESC[57C
-2023-07-27 12:55:46,094 __init__         L0153 DEBUG| ESC[57C
-2023-07-27 12:55:46,100 __init__         L0153 DEBUG| ESC[57C
-2023-07-27 12:55:46,101 __init__         L0153 DEBUG| ESC[57C
-2023-07-27 12:58:25,379 stacktrace       L0039 ERROR|
-2023-07-27 12:58:25,380 stacktrace       L0041 ERROR| Reproduced
-traceback from:
-/home/linux1/qemu/build/aarch64/tests/venv/lib/python3.8/site-packages/avocado/core/test.py:770
-2023-07-27 12:58:25,381 stacktrace       L0045 ERROR| Traceback (most
-recent call last):
-2023-07-27 12:58:25,381 stacktrace       L0045 ERROR|   File
-"/home/linux1/qemu/build/aarch64/tests/venv/lib/python3.8/site-packages/avocado/core/decorators.py",
-line 90, in wrapper
-2023-07-27 12:58:25,381 stacktrace       L0045 ERROR|     return
-function(obj, *args, **kwargs)
-2023-07-27 12:58:25,381 stacktrace       L0045 ERROR|   File
-"/home/linux1/qemu/build/aarch64/tests/avocado/machine_aarch64_sbsaref.py",
-line 96, in test_sbsaref_edk2_firmware
-2023-07-27 12:58:25,381 stacktrace       L0045 ERROR|
-wait_for_console_pattern(self, "BL1: v2.9(release):v2.9")
-2023-07-27 12:58:25,381 stacktrace       L0045 ERROR|   File
-"/home/linux1/qemu/build/aarch64/tests/avocado/avocado_qemu/__init__.py",
-line 199, in wait_for_console_pattern
-2023-07-27 12:58:25,381 stacktrace       L0045 ERROR|
-_console_interaction(test, success_message, failure_message, None,
-vm=vm)
-2023-07-27 12:58:25,381 stacktrace       L0045 ERROR|   File
-"/home/linux1/qemu/build/aarch64/tests/avocado/avocado_qemu/__init__.py",
-line 148, in _console_interaction
-2023-07-27 12:58:25,381 stacktrace       L0045 ERROR|     msg =
-console.readline().decode().strip()
-2023-07-27 12:58:25,381 stacktrace       L0045 ERROR|   File
-"/usr/lib/python3.8/socket.py", line 669, in readinto
-2023-07-27 12:58:25,381 stacktrace       L0045 ERROR|     return
-self._sock.recv_into(b)
-2023-07-27 12:58:25,381 stacktrace       L0045 ERROR|   File
-"/home/linux1/qemu/build/aarch64/tests/venv/lib/python3.8/site-packages/avocado/plugins/runner.py",
-line 77, in sigterm_handler
-2023-07-27 12:58:25,381 stacktrace       L0045 ERROR|     raise
-RuntimeError("Test interrupted by SIGTERM")
-2023-07-27 12:58:25,381 stacktrace       L0045 ERROR| RuntimeError:
-Test interrupted by SIGTERM
+Thanks,
 
-Compared to the output logs for a passing run, you can see that
-although we captured the first line of output from the guest
-("Booting Trusted Firmware") we missed lines 2 and 3 (the
-BL1 version line and the BL1 Built: line).
+C.
 
-2023-07-27 12:54:07,676 protocol         L0481 DEBUG| Transitioning
-from 'Runstate.CONNECTING' to 'Runstate.RUNNING'.
-2023-07-27 12:54:07,690 __init__         L0153 DEBUG| NOTICE:  Booting
-Trusted Firmware
-2023-07-27 12:54:07,691 __init__         L0153 DEBUG| NOTICE:  BL1:
-v2.9(release):v2.9.0-51-gc0d8ee386
-2023-07-27 12:54:07,691 __init__         L0153 DEBUG| BL1: Built :
-16:44:16, May 30 2023
-2023-07-27 12:54:07,754 __init__         L0153 DEBUG| NOTICE:  BL1: Booting BL2
-2023-07-27 12:54:07,828 __init__         L0153 DEBUG| NOTICE:  BL2:
-v2.9(release):v2.9.0-51-gc0d8ee386
-2023-07-27 12:54:07,828 __init__         L0153 DEBUG| NOTICE:  BL2:
-Built : 16:44:16, May 30 2023
-2023-07-27 12:54:07,855 __init__         L0153 DEBUG| NOTICE:  BL1: Booting BL31
-2023-07-27 12:54:07,877 __init__         L0153 DEBUG| NOTICE:  BL31:
-v2.9(release):v2.9.0-51-gc0d8ee386
-2023-07-27 12:54:07,883 __init__         L0153 DEBUG| NOTICE:  BL31:
-Built : 16:44:16, May 30 2023
-2023-07-27 12:54:07,891 __init__         L0153 DEBUG| UEFI firmware
-(version 1.0 built at 17:14:57 on Mar 21 2023)
-2023-07-27 12:54:18,354 __init__         L0153 DEBUG|
-ESC[2JESC[04DESC[=3hESC[2JESC[09DESC[2JESC[04DESC[0mESC[30mESC[40m
-2023-07-27 12:54:18,539 __init__         L0153 DEBUG|
-ESC[01;01HESC[0mESC[34mESC[47m
-2023-07-27 12:54:18,631 __init__         L0153 DEBUG|
-ESC[01;01HESC[02;02HQEMU SBSA-REF MachineESC[03;02Harm-virtESC[44C2.00
-GHzESC[04;02H1.0ESC[49C1024 MB
-RAMESC[05;02HESC[52CESC[06;02HESC[52CESC[0mESC[37mESC[40mESC[21;01H
-2023-07-27 12:54:18,639 machine          L0627 DEBUG| Shutting down VM
-appliance; timeout=30
-2023-07-27 12:54:18,639 machine          L0551 DEBUG| Attempting
-graceful termination
-2023-07-27 12:54:18,639 machine          L0518 DEBUG| Closing console socket
-2023-07-27 12:54:18,640 machine          L0561 DEBUG| Politely asking
-QEMU to terminate
+>       int i;
+>   
+>       for (i = 0; i < PPC_PAGE_SIZES_MAX_SZ; i++) {
+> @@ -897,8 +926,8 @@ static int build_vrma_slbe(PowerPCCPU *cpu, ppc_slb_t *slb)
+>           }
+>       }
+>   
+> -    error_report("Bad page size encoding in LPCR[VRMASD]; LPCR=0x"
+> -                 TARGET_FMT_lx, lpcr);
+> +    error_report("Bad VRMA page size encoding 0x" TARGET_FMT_lx,
+> +                 get_vrma_llp(cpu));
+>   
+>       return -1;
+>   }
 
-
-thanks
--- PMM
 
