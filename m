@@ -2,82 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8405D765FD7
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 00:42:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41D6476602A
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 01:12:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qP9BU-0001R4-8g; Thu, 27 Jul 2023 18:10:13 -0400
+	id 1qP9pY-0001ce-Ta; Thu, 27 Jul 2023 18:51:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qP9BO-0001QE-UJ
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 18:10:06 -0400
-Received: from mail-oo1-xc33.google.com ([2607:f8b0:4864:20::c33])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qP9BN-00059a-6P
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 18:10:06 -0400
-Received: by mail-oo1-xc33.google.com with SMTP id
- 006d021491bc7-56c4c4e822eso753108eaf.3
- for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 15:10:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1690495804; x=1691100604;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=TT8K7Pgq6e6QtLVLiCrNKns9T2qf11s3cVvYvb10ScU=;
- b=pMxfzMBdrvd82CWGYg86oNRaFJAXanjZK70NRyfOUs0qGPqFzivfOh9O2ngVsSQ/WZ
- jzUDwEpYQpOV8wGORXWoCe1FXg2cc8cJ0a3ahIlG2DrzYa8gOYaTYGd+G8zWQXyMNALG
- SPlXUJhiCdEgJx+WfLpWbivTCgKFbguGwBJRxz8rUT+eTP+PbNe3UDFMNj0yNukfU+lk
- HCgsAeAG5dlVbc4WgHe+ddG+3M/ZejiZEq7S0V6dp1Jk7EooHm2bVt324f0nT+aJDL4h
- glj7huceNVSguqow2rBJjrybvjXvZBlHtAz1f1y2QfkKUN5MQF7Lo23n87a1lclk94aa
- 7G4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690495804; x=1691100604;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=TT8K7Pgq6e6QtLVLiCrNKns9T2qf11s3cVvYvb10ScU=;
- b=f4VMx/2aI5PFtwwIDNFW+WJDNhl/PavfNY5OjLAadyU9JvjyFsdtVuOXZ7xcdqnyIo
- 0sZOkcs7lnz2X4iw8jqzF5WHKlOz8TFtzfkJOzwkFOyTylULBm3b15HjfPlA/4jyzgTx
- JFWvFUPV6A6Sp23Iybl7BcspOCpqGA1vW27NCKl01zQk61HSaBWPpjjXFVXokBQPoRCL
- k4WespzhBkDLSLrDZm3lpeU9LqyO0GuyS1C77cyDnhEMh/ClnDOCFQZwxzPWu3406nkH
- lzPyt1hgPBs8dSZ9XdESodCLo9zfG+gT01CPg4SNuP4z8n3fFdS634mIxo3t6A1LQVzr
- iezg==
-X-Gm-Message-State: ABy/qLYn+TQMKiC3dJUzvkOwy+s0H30nkzQ3pdNZ3xmeeJJF0mMw4Jst
- sFXWe8eiSKtysCk0t4V3s/elIJV5JfVEiRZs2BhP1w==
-X-Google-Smtp-Source: APBJJlHiOPKnHku+ugc5hKpiGo/NlmOPAfiieJSTtOSrkY2748GR/Qdb4yuRySu0AG0vnPAAPzacdA==
-X-Received: by 2002:a4a:3c4e:0:b0:566:f1f6:9de7 with SMTP id
- p14-20020a4a3c4e000000b00566f1f69de7mr789556oof.9.1690495803860; 
- Thu, 27 Jul 2023 15:10:03 -0700 (PDT)
-Received: from grind.. (201-69-66-36.dial-up.telesp.net.br. [201.69.66.36])
- by smtp.gmail.com with ESMTPSA id
- y136-20020a4a458e000000b0051134f333d3sm1070471ooa.16.2023.07.27.15.10.01
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 27 Jul 2023 15:10:03 -0700 (PDT)
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v6 12/12] target/riscv: deprecate the 'any' CPU type
-Date: Thu, 27 Jul 2023 19:09:27 -0300
-Message-ID: <20230727220927.62950-13-dbarboza@ventanamicro.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230727220927.62950-1-dbarboza@ventanamicro.com>
-References: <20230727220927.62950-1-dbarboza@ventanamicro.com>
+ (Exim 4.90_1) (envelope-from <chris@laplante.io>)
+ id 1qP9pT-0001c4-0f; Thu, 27 Jul 2023 18:51:31 -0400
+Received: from mail-4323.proton.ch ([185.70.43.23])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <chris@laplante.io>)
+ id 1qP9pQ-0000OM-7s; Thu, 27 Jul 2023 18:51:30 -0400
+Date: Thu, 27 Jul 2023 22:51:08 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=laplante.io;
+ s=protonmail3; t=1690498284; x=1690757484;
+ bh=GwWlYL2UvwlOrUg5NFvCC/4Xk3RqRiNQvjX65p9oWzU=;
+ h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+ Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+ Message-ID:BIMI-Selector;
+ b=FNUlG1aoipHKGdQ224hIJ/ssoadO1F91Umh9ctxTDMVswdCHU2JXD6HDmwxo4HNmD
+ hFaZvm/YMGT/U2th7rM8imA/l3T2kFX5IZdydd454bRMgraETP5QEZSDRWQfEQ9+CJ
+ b2611Z03WK3X4w8dx1XUgPCMhUP+MYCswKn8H9K4EHDllQGR+yiELKx5CW3r/ot85q
+ TCqATr4N9tHqTacPGThlbFyzIsN8oL0u5kPc+D2vCY5ZgipNFa/sqbzj6hro3Hzy6h
+ SP0+6G7YlzKU5DKERe3jnFKEcTMnlikm4SQfGU5dCDz5b31/31cSqMlztoFEFlvkZF
+ XQpI2jpwfj4tA==
+To: Peter Maydell <peter.maydell@linaro.org>
+From: Chris Laplante <chris@laplante.io>
+Cc: qemu-devel@nongnu.org, Joel Stanley <joel@jms.id.au>, qemu-arm@nongnu.org
+Subject: Re: [PATCH 0/6] Add nRF51 DETECT signal with test
+Message-ID: <yokIQT37oK_0HPVzoPJBD5moVrsM_9vvTfjLSATREN7NSvy794przKE2H0mtVB7Puff1nucD8N0Boa4tdRv8CcqFZHaM2FY6Wxty2-tkTjY=@laplante.io>
+In-Reply-To: <CAFEAcA_HWapg170-7yu2cZ-ePTe4PaX-tWyL7FJzENgig=dq5g@mail.gmail.com>
+References: <20230714232659.76434-1-chris@laplante.io>
+ <CAFEAcA_gGia=ckyv4=XHNX4=VHJJ=rmVGXQbdnOAGv5h1rzLzw@mail.gmail.com>
+ <uJ83qRpjm3C76JRjI4OOm2NAz3uF-RDUa2WL8sp3ftAzoH16KDfxZhwxsqxqxrHTfXHKkZZXy0JY6UUpq7nD0jfYEUtYM_K340O6E6BFwJY=@laplante.io>
+ <CAFEAcA_HWapg170-7yu2cZ-ePTe4PaX-tWyL7FJzENgig=dq5g@mail.gmail.com>
+Feedback-ID: 43500449:user:proton
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c33;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oo1-xc33.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=185.70.43.23; envelope-from=chris@laplante.io;
+ helo=mail-4323.proton.ch
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,74 +67,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The 'any' CPU type was introduced in commit dc5bd18fa5725 ("RISC-V CPU
-Core Definition"), being around since the beginning. It's not an easy
-CPU to use: it's undocumented and its name doesn't tell users much about
-what the CPU is supposed to bring. 'git log' doesn't help us either in
-knowing what was the original design of this CPU type.
+Hi Peter,
 
-The closest we have is a comment from Alistair [1] where he recalls from
-memory that the 'any' CPU is supposed to behave like the newly added
-'max' CPU. He also suggested that the 'any' CPU should be removed.
+> > 2. I also have some implementations for pieces of CLOCK, namely the HFC=
+LKSTART/HFCLKSTOP events and HFCLKSTARTED event. Should I include that in t=
+his patch series, or would you prefer it in a separate series? It is unrela=
+ted to DETECT and POWER.
+>=20
+>=20
+> If you think they're ready to go in, and it doesn't
+> make the series more than about 12-15 patches long,
+> you can put them on the end of the series. If the
+> patchset is starting to get a bit big then it might
+> be easier to get the POWER/DETECT parts reviewed
+> first.
 
-The default CPUs are rv32 and rv64, so removing the 'any' CPU will have
-impact only on users that might have a script that uses '-cpu any'.
-And those users are better off using the default CPUs or the new 'max'
-CPU.
+Unrelated question regarding the CLOCK module. Should I model the startup t=
+imes for the various crystal oscillators? Or should I just assume they star=
+t instantly for simplicity? External xtal startup time is 750-800 us. Inter=
+nal RC startup time is 4-5 us. I've already modeled the delay for the exter=
+nal xtal, but just wondering if its worth the extra code.
 
-We would love to just remove the code and be done with it, but one does
-not simply remove a feature in QEMU. We'll put the CPU in quarantine
-first, letting users know that we have the intent of removing it in the
-future.
-
-[1] https://lists.gnu.org/archive/html/qemu-devel/2023-07/msg02891.html
-
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
----
- docs/about/deprecated.rst | 12 ++++++++++++
- target/riscv/cpu.c        |  5 +++++
- 2 files changed, 17 insertions(+)
-
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index 02ea5a839f..68afa43fd0 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -371,6 +371,18 @@ QEMU's ``vhost`` feature, which would eliminate the high latency costs under
- which the 9p ``proxy`` backend currently suffers. However as of to date nobody
- has indicated plans for such kind of reimplemention unfortunately.
- 
-+RISC-V 'any' CPU type ``-cpu any`` (since 8.2)
-+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-+
-+The 'any' CPU type was introduced back in 2018 and has been around since the
-+initial RISC-V QEMU port. Its usage has always been unclear: users don't know
-+what to expect from a CPU called 'any', and in fact the CPU does not do anything
-+special that aren't already done by the default CPUs rv32/rv64.
-+
-+After the introduction of the 'max' CPU type RISC-V now has a good coverage
-+of generic CPUs: rv32 and rv64 as default CPUs and 'max' as a feature complete
-+CPU for both 32 and 64 bit builds. Users are then discouraged to use the 'any'
-+CPU type starting in 8.2.
- 
- Block device options
- ''''''''''''''''''''
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 3e840f1a20..b5a2266eef 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -1477,6 +1477,11 @@ static void riscv_cpu_realize(DeviceState *dev, Error **errp)
-     RISCVCPUClass *mcc = RISCV_CPU_GET_CLASS(dev);
-     Error *local_err = NULL;
- 
-+    if (object_dynamic_cast(OBJECT(dev), TYPE_RISCV_CPU_ANY) != NULL) {
-+        warn_report("The 'any' CPU is deprecated and will be "
-+                    "removed in the future.");
-+    }
-+
-     cpu_exec_realizefn(cs, &local_err);
-     if (local_err != NULL) {
-         error_propagate(errp, local_err);
--- 
-2.41.0
-
+Thanks,
+Chris
 
