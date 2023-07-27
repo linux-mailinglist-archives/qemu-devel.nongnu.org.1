@@ -2,69 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6120A764D71
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 10:33:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC976764AFB
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 10:13:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOv1u-0000aj-TX; Thu, 27 Jul 2023 03:03:22 -0400
+	id 1qOv4f-0000rL-Ep; Thu, 27 Jul 2023 03:06:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ardb@kernel.org>) id 1qOv1s-0000aI-83
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 03:03:20 -0400
-Received: from dfw.source.kernel.org ([139.178.84.217])
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qOv4c-0000qn-W2
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 03:06:11 -0400
+Received: from mout.gmx.net ([212.227.17.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ardb@kernel.org>) id 1qOv1q-0002Ap-FN
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 03:03:20 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 9705D61D60;
- Thu, 27 Jul 2023 07:03:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69053C433C9;
- Thu, 27 Jul 2023 07:03:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1690441396;
- bh=EnwkjD7XZCmYzf4rw9ZPtvIKxQEOlV+/mmLROuC/t10=;
- h=From:To:Cc:Subject:Date:From;
- b=uefqACiqVAcWFwt90EBoazVdFZOacLw/by5PDHjuO8cOS0UPmQwmUJTfD2WtFSFiN
- Cu17eSgiMkoM+Px0lbnp16mazXtKQ3EcC3iOejrhrKe4FAkDK65XKwMaZlNu527ANj
- 6AifWVklMcKI7wLWSxYF2pAzn8ycgdt9ce/x4FPUO+Euu3+Vp+LBcsFJZ5rYI6Nd0I
- 5RsfzzFBZXGDKKo0Q3CCiqES00CE8zePQLZFjSaTliaQLqxRs6jrNNL/l5P2oHmrrq
- XSREoGV9ccJ81G8ejEuOCLC44MPAti7DmnsNT96vX8B4H853SJHT14KtQTjPdJYt1Z
- GaImui3eHmOYQ==
-From: Ard Biesheuvel <ardb@kernel.org>
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qOv4a-0002rL-04
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 03:06:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
+ s=s31663417; t=1690441562; x=1691046362; i=deller@gmx.de;
+ bh=pKnMUfIW9/Sf9A9l6uPQTG3DwwQZWzXRAKJkydm85ZY=;
+ h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:References;
+ b=J1DL/5k8b/tH4sBA/211fDwkqwvwWNqhgtg/SxmDPI1CZJi/VOQJQRbMDhqyJBE+cGpTGal
+ HzK7Q2IRqVXVt9cNKnd8ialMsRr12NYBOEM+wYpiYt5CTf/YRjAs/H5sYr+FszusNDB14VD98
+ b8YuXgu5zNJOL6H6WWidShy2y6CaxGcVenDWzdSVShRxs8tOqVMHKpySqit+2O+J5cWMOoLkz
+ UsXI+PkcEdmlptrxQVQdPoOpFdOtwJ1hXNC3+OM8LFBK3TpWObh6YHGAqXtdD4FXLfDSY5g0a
+ CpPrGgnyMwiYFFNk/oo6FabXWtavYPkcKH++sSDDPIg1Kj9PXQNg==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from p100.fritz.box ([94.134.159.20]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MVvLB-1qHanv0xEL-00Rnem; Thu, 27
+ Jul 2023 09:06:02 +0200
+From: Helge Deller <deller@gmx.de>
 To: qemu-devel@nongnu.org
-Cc: Ard Biesheuvel <ardb@kernel.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Zewen Ye <lustrew@foxmail.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Junqiang Wang <wangjunqiang@iscas.ac.cn>
-Subject: [PATCH] target/riscv: Use existing lookup tables for AES MixColumns
-Date: Thu, 27 Jul 2023 09:03:03 +0200
-Message-Id: <20230727070303.1220037-1-ardb@kernel.org>
-X-Mailer: git-send-email 2.39.2
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini <pbonzini@redhat.com>,
+ Helge Deller <deller@gmx.de>
+Subject: [PATCH v4 3/3] linux-user: Load pie executables at upper memory
+Date: Thu, 27 Jul 2023 09:06:01 +0200
+Message-ID: <20230727070601.31383-4-deller@gmx.de>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230727070601.31383-1-deller@gmx.de>
+References: <20230727070601.31383-1-deller@gmx.de>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4152; i=ardb@kernel.org;
- h=from:subject; bh=EnwkjD7XZCmYzf4rw9ZPtvIKxQEOlV+/mmLROuC/t10=;
- b=owGbwMvMwCFmkMcZplerG8N4Wi2JIeWQ2LImN9PP+249UvH8rf6hoEPP71KDJ+fGGSutdhSmH
- b3p1WjQUcrCIMbBICumyCIw+++7nacnStU6z5KFmcPKBDKEgYtTACYyWZbhf2V8dvka0eebl4gz
- tfoVfXr48bVg/TmBWZOYb37vj9bjfgtUIbSeNXzOrCN9Z1+7lx4JaJ2TwLxf6NjZuB2K5sb331t
- xAAA=
-X-Developer-Key: i=ardb@kernel.org; a=openpgp;
- fpr=F43D03328115A198C90016883D200E9CA6329909
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=139.178.84.217; envelope-from=ardb@kernel.org;
- helo=dfw.source.kernel.org
-X-Spam_score_int: -70
-X-Spam_score: -7.1
-X-Spam_bar: -------
-X-Spam_report: (-7.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:GFaL+/aQFqXct/HMzeQrbDHg//CAhVdVeI4WBFtbwHfL6zPR8+Y
+ b6lHntUmpRvMTtZ8j1640aj9we8a4V+qlbq2PvUpJ3eh3SoAcsGEg9+VEvwGAYEknXpUHnZ
+ LYSlAFTtmNMxbCH/dCDNmV7zN0pUZkSePWHeRePJKJFf2tkVBNyBSoq0n40b/ycinxQkD3X
+ 2D7lym5ivYx6PX4NRiZpw==
+UI-OutboundReport: notjunk:1;M01:P0:jv8/9ivQ5l0=;u+/mc8a78/yckpTMwb4z3GRuwxZ
+ 6dSzTa24soMg6Lnzk1nIighC3QAOD1RHKBDTKE9F8A09rht+IxXka5FzhCp/W2qVTcLTBYEw8
+ wF0LXkLPmspfxy2f0y/Mjf8akrRZ+lqY5cO5vrunUTNcZZjTV/CQzDNHka90Y62iMBL8mM00a
+ ZRqQrrtS2aAKIS8p3hJoitfcahL8ieW6mjwwrPwTbuZPiyFHO2haDtE4mz1HXpBYGrJsmUwKV
+ ZoIRMhCM4JOEmctY5DJT3Zt+GUFKRrI1OJqrJCRELxR5Aabt81PFiT3DCSKAF6EnbH8mffLBN
+ pgh6Gzr0xVBoPjkNjEpmZiHCRiBm18VJehUmLvMh1IPLnJvyhgJPUzEeQcZW06l95PGuh6h7i
+ k0Za6tcoeRX/ep2gvlPDBD6on7l+mXCL4SeMjYVjbZhQ5MBBkl/8Gprl78sbQ3oguKlH84Fy3
+ 4BcJOms7QvxiBAegb0GTiBzeVcXl77xwvFaykqyysK4RNMv1wKu+6uDxmqhrK21xtIRKpuGKu
+ v7rqO5NI++Rp4B3EixXGuH0xQVmQFh1ur4gRBbMYynklUOcxLT4s/KVz4KgpT6QvAwMK1HUQe
+ vqbrJpIHGy7nDUjlXAMJArm2kcufAbN2IoFoZOD6nHMT0IMxGUY3nsW8UUP1rsbe3TDzUzmSf
+ YzCtXIGlf8UGUUbe8TrnrYmJvkxHckhhESelmdqk6z6GJuqYBn4AWu5L1symlUgaJGzwOJJR/
+ g4OYGZhrvYfryUQ9vLAJKcxCmDUNmDXXUN0GE7V8Db0hgOSxUB7JDtLKTdApyRrJeMwWUYkEd
+ BN0QOnjRHB5QaD5fnuO6633QKE/cuVhU/qISJvB2bGYdY5SRNZ4Y9xZKMwd1QB3ckM9opdkz4
+ +J43zfEfIa7UyrCynNIMfbWrMgYv4AuLD+RGlctMEh9To6Ywe7vcMlUjKFZusFb/odh0ORnSN
+ B4srUw==
+Received-SPF: pass client-ip=212.227.17.21; envelope-from=deller@gmx.de;
+ helo=mout.gmx.net
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,126 +85,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The AES MixColumns and InvMixColumns operations are relatively
-expensive 4x4 matrix multiplications in GF(2^8), which is why C
-implementations usually rely on precomputed lookup tables rather than
-performing the calculations on demand.
+Adjust the loader to load dynamic pie executables at around:
+~ 0x5500000000  for 64-bit guest binaries on 64-bit host,
+- 0x00500000    for 32-bit guest binaries on 64-bit host, and
+- 0x00000000    for 32-bit guest binaries on 32-bit host.
 
-Given that we already carry those tables in QEMU, we can just grab the
-right value in the implementation of the RISC-V AES32 instructions. Note
-that the tables in question are permuted according to the respective
-Sbox, so we can omit the Sbox lookup as well in this case.
+This fixes the Thread Sanitizer (TSan) application again, as it was
+done in aab613fb9597 ("linux-user: Update TASK_UNMAPPED_BASE for
+aarch64"). Additionally it increases the free heap space for
+applications.
 
-Cc: Richard Henderson <richard.henderson@linaro.org>
-Cc: Philippe Mathieu-Daudé <philmd@linaro.org>
-Cc: Zewen Ye <lustrew@foxmail.com>
-Cc: Weiwei Li <liweiwei@iscas.ac.cn>
-Cc: Junqiang Wang <wangjunqiang@iscas.ac.cn>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- crypto/aes.c                 |  5 ++--
- include/crypto/aes.h         |  7 +++++
- target/riscv/crypto_helper.c | 30 ++++----------------
- 3 files changed, 14 insertions(+), 28 deletions(-)
+Signed-off-by: Helge Deller <deller@gmx.de>
+=2D--
+ linux-user/elfload.c |  6 ++++--
+ linux-user/loader.h  | 12 ++++++++++++
+ linux-user/mmap.c    | 16 +---------------
+ 3 files changed, 17 insertions(+), 17 deletions(-)
 
-diff --git a/crypto/aes.c b/crypto/aes.c
-index 836d7d5c0bf1b392..27d7e1a22dfe8c74 100644
---- a/crypto/aes.c
-+++ b/crypto/aes.c
-@@ -272,7 +272,7 @@ AES_Td3[x] = Si[x].[09, 0d, 0b, 0e];
- AES_Td4[x] = Si[x].[01, 01, 01, 01];
- */
- 
--static const uint32_t AES_Te0[256] = {
-+const uint32_t AES_Te0[256] = {
-     0xc66363a5U, 0xf87c7c84U, 0xee777799U, 0xf67b7b8dU,
-     0xfff2f20dU, 0xd66b6bbdU, 0xde6f6fb1U, 0x91c5c554U,
-     0x60303050U, 0x02010103U, 0xce6767a9U, 0x562b2b7dU,
-@@ -606,8 +606,7 @@ static const uint32_t AES_Te4[256] = {
-     0x41414141U, 0x99999999U, 0x2d2d2d2dU, 0x0f0f0f0fU,
-     0xb0b0b0b0U, 0x54545454U, 0xbbbbbbbbU, 0x16161616U,
- };
--
--static const uint32_t AES_Td0[256] = {
-+const uint32_t AES_Td0[256] = {
-     0x51f4a750U, 0x7e416553U, 0x1a17a4c3U, 0x3a275e96U,
-     0x3bab6bcbU, 0x1f9d45f1U, 0xacfa58abU, 0x4be30393U,
-     0x2030fa55U, 0xad766df6U, 0x88cc7691U, 0xf5024c25U,
-diff --git a/include/crypto/aes.h b/include/crypto/aes.h
-index 709d4d226bfe158b..381f24c9022d2aa8 100644
---- a/include/crypto/aes.h
-+++ b/include/crypto/aes.h
-@@ -30,4 +30,11 @@ void AES_decrypt(const unsigned char *in, unsigned char *out,
- extern const uint8_t AES_sbox[256];
- extern const uint8_t AES_isbox[256];
- 
-+/*
-+AES_Te0[x] = S [x].[02, 01, 01, 03];
-+AES_Td0[x] = Si[x].[0e, 09, 0d, 0b];
-+*/
-+
-+extern const uint32_t AES_Te0[256], AES_Td0[256];
-+
- #endif
-diff --git a/target/riscv/crypto_helper.c b/target/riscv/crypto_helper.c
-index 99d85a618843e87e..40f95c71cef45877 100644
---- a/target/riscv/crypto_helper.c
-+++ b/target/riscv/crypto_helper.c
-@@ -25,29 +25,6 @@
- #include "crypto/aes-round.h"
- #include "crypto/sm4.h"
- 
--#define AES_XTIME(a) \
--    ((a << 1) ^ ((a & 0x80) ? 0x1b : 0))
--
--#define AES_GFMUL(a, b) (( \
--    (((b) & 0x1) ? (a) : 0) ^ \
--    (((b) & 0x2) ? AES_XTIME(a) : 0) ^ \
--    (((b) & 0x4) ? AES_XTIME(AES_XTIME(a)) : 0) ^ \
--    (((b) & 0x8) ? AES_XTIME(AES_XTIME(AES_XTIME(a))) : 0)) & 0xFF)
--
--static inline uint32_t aes_mixcolumn_byte(uint8_t x, bool fwd)
--{
--    uint32_t u;
--
--    if (fwd) {
--        u = (AES_GFMUL(x, 3) << 24) | (x << 16) | (x << 8) |
--            (AES_GFMUL(x, 2) << 0);
--    } else {
--        u = (AES_GFMUL(x, 0xb) << 24) | (AES_GFMUL(x, 0xd) << 16) |
--            (AES_GFMUL(x, 0x9) << 8) | (AES_GFMUL(x, 0xe) << 0);
--    }
--    return u;
--}
--
- #define sext32_xlen(x) (target_ulong)(int32_t)(x)
- 
- static inline target_ulong aes32_operation(target_ulong shamt,
-@@ -62,18 +39,21 @@ static inline target_ulong aes32_operation(target_ulong shamt,
-     if (enc) {
-         so = AES_sbox[si];
-         if (mix) {
--            mixed = aes_mixcolumn_byte(so, true);
-+            mixed = AES_Te0[si];
-         } else {
-             mixed = so;
-         }
-     } else {
-         so = AES_isbox[si];
-         if (mix) {
--            mixed = aes_mixcolumn_byte(so, false);
-+            mixed = AES_Td0[si];
-         } else {
-             mixed = so;
+diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+index 47a118e430..8f5a79b537 100644
+=2D-- a/linux-user/elfload.c
++++ b/linux-user/elfload.c
+@@ -3021,6 +3021,7 @@ static void load_elf_image(const char *image_name, i=
+nt image_fd,
+     struct elfhdr *ehdr =3D (struct elfhdr *)bprm_buf;
+     struct elf_phdr *phdr;
+     abi_ulong load_addr, load_bias, loaddr, hiaddr, error;
++    unsigned long load_offset =3D 0;
+     int i, retval, prot_exec;
+     Error *err =3D NULL;
+     bool is_main_executable;
+@@ -3121,6 +3122,7 @@ static void load_elf_image(const char *image_name, i=
+nt image_fd,
+              * select guest_base.  In this case we pass a size.
+              */
+             probe_guest_base(image_name, 0, hiaddr - loaddr);
++            load_offset =3D TASK_UNMAPPED_BASE_PIE;
          }
      }
-+    if (!HOST_BIG_ENDIAN && mix) {
-+        mixed = bswap32(mixed);
-+    }
-     mixed = rol32(mixed, shamt);
-     res = rs1 ^ mixed;
- 
--- 
-2.39.2
+
+@@ -3138,7 +3140,7 @@ static void load_elf_image(const char *image_name, i=
+nt image_fd,
+      * In both cases, we will overwrite pages in this range with mappings
+      * from the executable.
+      */
+-    load_addr =3D target_mmap(loaddr, (size_t)hiaddr - loaddr + 1, PROT_N=
+ONE,
++    load_addr =3D target_mmap(loaddr + load_offset, (size_t)hiaddr - load=
+dr + 1, PROT_NONE,
+                             MAP_PRIVATE | MAP_ANON | MAP_NORESERVE |
+                             (is_main_executable ? MAP_FIXED : 0),
+                             -1, 0);
+@@ -3176,7 +3178,7 @@ static void load_elf_image(const char *image_name, i=
+nt image_fd,
+     info->start_data =3D -1;
+     info->end_data =3D 0;
+     /* possible start for brk is behind all sections of this ELF file. */
+-    info->brk =3D TARGET_PAGE_ALIGN(hiaddr);
++    info->brk =3D TARGET_PAGE_ALIGN(load_offset + hiaddr);
+     info->elf_flags =3D ehdr->e_flags;
+
+     prot_exec =3D PROT_EXEC;
+diff --git a/linux-user/loader.h b/linux-user/loader.h
+index 59cbeacf24..799016cc99 100644
+=2D-- a/linux-user/loader.h
++++ b/linux-user/loader.h
+@@ -18,6 +18,18 @@
+ #ifndef LINUX_USER_LOADER_H
+ #define LINUX_USER_LOADER_H
+
++/* where to map binaries? */
++#if HOST_LONG_BITS =3D=3D 64 && TARGET_ABI_BITS =3D=3D 64
++# define TASK_UNMAPPED_BASE_PIE 0x5500000000
++# define TASK_UNMAPPED_BASE	0x7000000000
++#elif HOST_LONG_BITS =3D=3D 64 && TARGET_ABI_BITS =3D=3D 32
++# define TASK_UNMAPPED_BASE_PIE	0x00500000
++# define TASK_UNMAPPED_BASE	0xfa000000
++#else /* HOST_LONG_BITS =3D=3D 32 && TARGET_ABI_BITS =3D=3D 32 */
++# define TASK_UNMAPPED_BASE_PIE	0x00000000
++# define TASK_UNMAPPED_BASE	0x40000000
++#endif
++
+ /*
+  * Read a good amount of data initially, to hopefully get all the
+  * program headers loaded.
+diff --git a/linux-user/mmap.c b/linux-user/mmap.c
+index 848d2fd4bb..9434bc805d 100644
+=2D-- a/linux-user/mmap.c
++++ b/linux-user/mmap.c
+@@ -23,6 +23,7 @@
+ #include "user-internals.h"
+ #include "user-mmap.h"
+ #include "target_mman.h"
++#include "loader.h"
+
+ static pthread_mutex_t mmap_mutex =3D PTHREAD_MUTEX_INITIALIZER;
+ static __thread int mmap_lock_count;
+@@ -295,21 +296,6 @@ static bool mmap_frag(abi_ulong real_start, abi_ulong=
+ start, abi_ulong last,
+     return true;
+ }
+
+-#if HOST_LONG_BITS =3D=3D 64 && TARGET_ABI_BITS =3D=3D 64
+-#ifdef TARGET_AARCH64
+-# define TASK_UNMAPPED_BASE  0x5500000000
+-#else
+-# define TASK_UNMAPPED_BASE  0x4000000000
+-#endif
+-#elif HOST_LONG_BITS =3D=3D 64 && TARGET_ABI_BITS =3D=3D 32
+-#ifdef TARGET_HPPA
+-# define TASK_UNMAPPED_BASE  0xfa000000
+-#else
+-# define TASK_UNMAPPED_BASE  0xe0000000
+-#endif
+-#else /* HOST_LONG_BITS =3D=3D 32 && TARGET_ABI_BITS =3D=3D 32 */
+-# define TASK_UNMAPPED_BASE  0x40000000
+-#endif
+ abi_ulong mmap_next_start =3D TASK_UNMAPPED_BASE;
+
+ unsigned long last_brk;
+=2D-
+2.41.0
 
 
