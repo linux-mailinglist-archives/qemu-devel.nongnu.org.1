@@ -2,87 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B5937656D8
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 17:05:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC2B476574B
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 17:20:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qP25t-0001ft-Dl; Thu, 27 Jul 2023 10:35:57 -0400
+	id 1qP26N-0001ps-AM; Thu, 27 Jul 2023 10:36:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qP25h-0001en-8d
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 10:35:47 -0400
-Received: from mail-ot1-x32c.google.com ([2607:f8b0:4864:20::32c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qP25d-0008Hd-5e
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 10:35:43 -0400
-Received: by mail-ot1-x32c.google.com with SMTP id
- 46e09a7af769-6b9aadde448so880696a34.0
- for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 07:35:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1690468539; x=1691073339;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=kl+MtuSlJaqDuRE0rLePOkxRxcldTJlNtAo3zNGeDNE=;
- b=LdKi421ILH59AOYRnPMc02+V0tl8BvpDGSJxdL6m+dwmlHzAsKYXrRWilQ6X0MbcYB
- tqJ+INSYnaIbk/5hvk3roiL5vd79qmYkdmi2GQJI6hh/pbjcfArBqJgZuglBWhniTjah
- AokOEll8km58ppNpRHzqU19k1lcra4VVIhvxcf6bAeBE7kTBTz3SCvWJAlAmCPdF7W3i
- jS9ZhUZ2WsTFHyYe1w6y9VhXrHJetEhgt1H9X8Ka/xZcoTr4XettabItljSNjlN/+oaY
- ETteEnrxSVU3AfbHPI4mpW7CgRwUaAjos6wDMYgm8MtnJbsp3y7FsSukfMTCudgUiGpL
- 1xgw==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qP269-0001pA-8p
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 10:36:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qP267-0008MJ-5Z
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 10:36:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1690468569;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=xVKlUsSSA3xHw1nS4p3mv13mheS7JGW5p8PMpkTpcCc=;
+ b=aWCR2HSJfmJXBjbK6ifM1ad/vihW6mlFij6UzNHKNi/LYVQDGK0Ic5WKmEvJCxbNuQDs44
+ 6j2TQC11hz5r48fqElcSSzWjDzA0ybFPO5/bzgUtwq8TaQ3sRUiuBtUrdTjuhy6Ng1flcd
+ FFAxkYXOv9gXq1ejsU8WoQ4CbXWQcQM=
+Received: from mail-ua1-f69.google.com (mail-ua1-f69.google.com
+ [209.85.222.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-308-YDJYgaNhMJeM-dmKTSwLww-1; Thu, 27 Jul 2023 10:36:08 -0400
+X-MC-Unique: YDJYgaNhMJeM-dmKTSwLww-1
+Received: by mail-ua1-f69.google.com with SMTP id
+ a1e0cc1a2514c-79a1de8b323so29063241.1
+ for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 07:36:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690468539; x=1691073339;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20221208; t=1690468568; x=1691073368;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=kl+MtuSlJaqDuRE0rLePOkxRxcldTJlNtAo3zNGeDNE=;
- b=hwIMSeOeC/iEj9ha11jE/XSzqZQ81bV8dwZIemTfn9NslUJo70vcO1dVXHV8c/pdjU
- oYMnKgv6T2a5dp7JHwyKtBM3FfE83fO2yAmXOjteD1XA1/vl1V94YtWAcwsHqTmfjGCW
- 5KSAvYrZFCY2fImfpM1Fm3e8xSXJtJC7pyOBmifcT4r4sgxrK9WMCIlVURKL8S1uZ9nQ
- Cj5QXb4NCDGobv00FFyYtmnlSlbFwHPBac2vepNFoOFkNKhuM1AsAut4x6fcsMicvxaE
- 7j72mANFlDbH52xiljHWE8ZCAua+wSr4KKCf50Hro+omskyW5OHMZPjPuMTLT600FKKH
- +ZTw==
-X-Gm-Message-State: ABy/qLa8ety8lNr8rL9AIsYR6ZvpB2kIo6mrLBMiNSlCE0c1JWWKpjWK
- q8l8g2Ct50q6tbyWrJevLBnI7EDonrfXF0e2P6sSeQ==
-X-Google-Smtp-Source: APBJJlGHAOevBZsPbSVcrA23+cVJl9+O7pN/YI+g+jh0EzP5rzfgKmnPGTE+gZyyR/gyjkgU+gHs3w==
-X-Received: by 2002:a05:6870:350f:b0:1bb:4d4e:ea69 with SMTP id
- k15-20020a056870350f00b001bb4d4eea69mr3511666oah.54.1690468539585; 
- Thu, 27 Jul 2023 07:35:39 -0700 (PDT)
-Received: from [192.168.68.108] (201-69-66-36.dial-up.telesp.net.br.
- [201.69.66.36]) by smtp.gmail.com with ESMTPSA id
- a17-20020a056830009100b006b83a36c08bsm667393oto.53.2023.07.27.07.35.36
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 27 Jul 2023 07:35:39 -0700 (PDT)
-Message-ID: <71f06817-1a63-efad-fa9f-bdbdb1eb1694@ventanamicro.com>
-Date: Thu, 27 Jul 2023 11:35:34 -0300
+ bh=xVKlUsSSA3xHw1nS4p3mv13mheS7JGW5p8PMpkTpcCc=;
+ b=Cn/nihzCatYmNl5WDz/o+X9ZU3Z0doT5UF6e1tmdeSMZPBpWS9H0d4xrg7jeyJRT0N
+ q8Xasuvy7X/fE51MvVvaxMAckOIvrE3ily8hLMlou6AP/tRKj0ZAmvKUPKz9QNg9oX4M
+ ed6riN8KIXYYZ4gXTF3C6H/pDd40dRWwnilJW7DFvP85fsxwrOpBiQAAwlYVWw9NLYQq
+ 1xv0O4HTYmFRiIiTI+a3/zBYYw2+3zmWPNNjLHTeLIoV2tFxq8VXKsBjnnzkAGB34beu
+ PMRLBJFurfGGq70tiLR19WpriwNUfPtYS4TzXdaCYRPPDOyxZRlo2FWNSThqeMfpGDl9
+ zJWg==
+X-Gm-Message-State: ABy/qLZFwefcGnENf6BZTnlsAz2szK0/I+dqDE5tKYAnY9hvHl/xK3UJ
+ CppgfhNh3JEgb0AmlO5aNd9Ti23LAL4GhLjlvKnRplUrg3ITOXgZhqOxfRuSs6slSjDWuwbk77B
+ XtI91+8JbEkq9eBg=
+X-Received: by 2002:a05:6122:2387:b0:485:b2ad:bf with SMTP id
+ bu7-20020a056122238700b00485b2ad00bfmr2545605vkb.1.1690468567776; 
+ Thu, 27 Jul 2023 07:36:07 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlGhcLUlfDH2MxzsJDTE8vVATXiu8/Q5ZiJUeRaHr0tB0+bGSllSCCWe//v7Xe4rW4wO0GS9Zw==
+X-Received: by 2002:a05:6122:2387:b0:485:b2ad:bf with SMTP id
+ bu7-20020a056122238700b00485b2ad00bfmr2545585vkb.1.1690468567454; 
+ Thu, 27 Jul 2023 07:36:07 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ n2-20020a0ce542000000b0061b5dbf1994sm440778qvm.146.2023.07.27.07.36.06
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 27 Jul 2023 07:36:07 -0700 (PDT)
+Date: Thu, 27 Jul 2023 10:36:06 -0400
+From: Peter Xu <peterx@redhat.com>
+To: hongmainquan <hongmianquan@bytedance.com>
+Cc: qemu-devel@nongnu.org, philmd@linaro.org, david@redhat.com,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [External] Re: [PATCH] memory: avoid updating ioeventfds for
+ some address_space
+Message-ID: <ZMKA1n+8tmQC4JLA@x1n>
+References: <20230725112037.1762608-1-hongmianquan@bytedance.com>
+ <ZMFbxFnv82AWlzLD@x1n>
+ <35f53340-dda3-c25d-41c7-b717da6a9121@bytedance.com>
+ <ZMJoumdi54neHzkC@x1n>
+ <9343c790-7fa6-1f1e-ed1c-2f350de44ec9@bytedance.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] hw/riscv: virt: Fix riscv,pmu DT node path
-Content-Language: en-US
-To: Conor Dooley <conor@kernel.org>, qemu-riscv@nongnu.org
-Cc: Conor Dooley <conor.dooley@microchip.com>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-devel@nongnu.org
-References: <20230727-groom-decline-2c57ce42841c@spud>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20230727-groom-decline-2c57ce42841c@spud>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32c;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-ot1-x32c.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <9343c790-7fa6-1f1e-ed1c-2f350de44ec9@bytedance.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,48 +104,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 7/27/23 11:24, Conor Dooley wrote:
-> From: Conor Dooley <conor.dooley@microchip.com>
+On Thu, Jul 27, 2023 at 09:23:34PM +0800, hongmainquan wrote:
 > 
-> On a dtb dumped from the virt machine, dt-validate complains:
-> soc: pmu: {'riscv,event-to-mhpmcounters': [[1, 1, 524281], [2, 2, 524284], [65561, 65561, 524280], [65563, 65563, 524280], [65569, 65569, 524280]], 'compatible': ['riscv,pmu']} should not be valid under {'type': 'object'}
->          from schema $id: http://devicetree.org/schemas/simple-bus.yaml#
-> That's pretty cryptic, but running the dtb back through dtc produces
-> something a lot more reasonable:
-> Warning (simple_bus_reg): /soc/pmu: missing or empty reg/ranges property
 > 
-> Moving the riscv,pmu node out of the soc bus solves the problem.
-> 
-> Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
-> ---
+> 在 2023/7/27 8:53 下午, Peter Xu 写道:
+> > On Thu, Jul 27, 2023 at 11:59:43AM +0800, hongmainquan wrote:
+> > > 
+> > > 
+> > > 在 2023/7/27 1:45 上午, Peter Xu 写道:
+> > > > On Tue, Jul 25, 2023 at 07:20:37PM +0800, hongmianquan wrote:
+> > > > > When updating ioeventfds, we need to iterate all address spaces,
+> > > > > but some address spaces do not register eventfd_add|del call when
+> > > > > memory_listener_register() and they do nothing when updating ioeventfds.
+> > > > > So we can skip these AS in address_space_update_ioeventfds().
+> > > > > 
+> > > > > The overhead of memory_region_transaction_commit() can be significantly
+> > > > > reduced. For example, a VM with 8 vhost net devices and each one has
+> > > > > 64 vectors, can reduce the time spent on memory_region_transaction_commit by 20%.
+> > > > > 
+> > > > > Signed-off-by: hongmianquan <hongmianquan@bytedance.com>
+> > > > 
+> > > > Reviewed-by: Peter Xu <peterx@redhat.com>
+> > > > 
+> > > > Should be for 8.2, though.  Please always copy Paolo for memory related
+> > > > patches.  I hope Paolo can see this.
+> > > > 
+> > > Thanks, I hope so. Also, I'm not quite sure what 'Should be for 8.2' means.
+> > > Does it imply that there will be changes to this logic after version 8.2?
+> > 
+> > See:
+> > 
+> > https://wiki.qemu.org/Planning/8.1
+> > 
+> > We're already right before 8.1-rc2 release, perf patch isn't normally the
+> > target of this phase.
+> > 
+> > Thanks,
+> > 
+> Understood. Hope for some suggestions from you.
 
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+No further suggestion from my side. You can just keep an eye on this patch
+after the 8.1 release - it probably just won't get merged before that.
 
-> CC: Palmer Dabbelt <palmer@dabbelt.com>
-> CC: Alistair Francis <alistair.francis@wdc.com>
-> CC: Bin Meng <bin.meng@windriver.com>
-> CC: Weiwei Li <liweiwei@iscas.ac.cn>
-> CC: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> CC: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-> CC: qemu-riscv@nongnu.org
-> CC: qemu-devel@nongnu.org
-> ---
->   hw/riscv/virt.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-> index d90286dc46..25dcc2616e 100644
-> --- a/hw/riscv/virt.c
-> +++ b/hw/riscv/virt.c
-> @@ -732,7 +732,7 @@ static void create_fdt_pmu(RISCVVirtState *s)
->       MachineState *ms = MACHINE(s);
->       RISCVCPU hart = s->soc[0].harts[0];
->   
-> -    pmu_name = g_strdup_printf("/soc/pmu");
-> +    pmu_name = g_strdup_printf("/pmu");
->       qemu_fdt_add_subnode(ms->fdt, pmu_name);
->       qemu_fdt_setprop_string(ms->fdt, pmu_name, "compatible", "riscv,pmu");
->       riscv_pmu_generate_fdt_node(ms->fdt, hart.cfg.pmu_num, pmu_name);
+Some maintainers prefer a resend after the release, but many don't.  It's
+optional in this case I think.
+
+Thanks,
+
+-- 
+Peter Xu
+
 
