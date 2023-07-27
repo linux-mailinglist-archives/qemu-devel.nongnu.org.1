@@ -2,91 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9506765B2F
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 20:09:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66B04765B27
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 20:06:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qP4jt-0007bU-7U; Thu, 27 Jul 2023 13:25:25 -0400
+	id 1qP5E7-0000FH-4K; Thu, 27 Jul 2023 13:56:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
- id 1qP4ji-0007bC-BB
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 13:25:14 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
- id 1qP4jc-0000AT-IM
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 13:25:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690478706;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ap/tbzOZHSb7q8jApGyzFidDiHSo1f7zBt8xrZetVXM=;
- b=H/PrrxqCAiRDyuRwUzcjYaUKYS3zZlWL+vh438vQ6kcVHaDRETlcmjas9PC8UTPSOZ6RvR
- 64A404AwRLUbg1CerO7K7w/Sn46LJoOyiFOXiA0BnLKVl9QWF+mSUurxfW2lFfU7RzGwho
- 7Xr85TEuPyJwJNT0S+FQg48NVkxsXr4=
-Received: from mail-io1-f71.google.com (mail-io1-f71.google.com
- [209.85.166.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-643-f3ugiuabPLKxYFJWcfpG-w-1; Thu, 27 Jul 2023 13:25:05 -0400
-X-MC-Unique: f3ugiuabPLKxYFJWcfpG-w-1
-Received: by mail-io1-f71.google.com with SMTP id
- ca18e2360f4ac-78705f0e3feso74833139f.1
- for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 10:25:05 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690478705; x=1691083505;
- h=content-transfer-encoding:mime-version:organization:references
- :in-reply-to:message-id:subject:cc:to:from:date:x-gm-message-state
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qP5E5-0000EB-6O
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 13:56:37 -0400
+Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qP5E3-0000EP-Cy
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 13:56:36 -0400
+Received: by mail-pg1-x52b.google.com with SMTP id
+ 41be03b00d2f7-55c85b4b06bso694295a12.2
+ for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 10:56:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1690480594; x=1691085394;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=ap/tbzOZHSb7q8jApGyzFidDiHSo1f7zBt8xrZetVXM=;
- b=fVv5DmRlGt35cOdBeDgwVVPXMnyDyivSTGWwBc77Ulm3o5iCywUIlr5MhK36tg2pwg
- wTmMYX1icH2V2LaiqjnaLLVuwZWA6Whcxwu9Gtvhdt9MKnzTenJMOcl+f9Yre4BAPjaJ
- DbcMdR25MmgU7D5KJbour7pCPB568vxSQTZ8RnFauQyZzZR0lNiUd8AAfTGR4ztP8A46
- jcCEvfAkA7nToDn/86B7kr/ZcIXz8fjeGeEOr7fhENSut7t7/wciRDYIhsT09/iIC1rh
- z70dRHnfiS6tUrm4Gl9GFQIW0MOBE+IPj1tiB60JlU9QpZmiB0TzFQKV05vqb4uC8UGl
- oPXw==
-X-Gm-Message-State: ABy/qLYCbu+n8fnjiu7NEKH4WRbjDYcBcbzRMUQnzeQJKWTggWLLdxiE
- lD94KYme9vPWxB/IFaAHf2y9Not7VaSjqQVJLKMzvGyKGuWj441Eyq8lhqfWLwdwIMPH80/4uZm
- v74dyXPvuIDrTlJY=
-X-Received: by 2002:a5e:de0b:0:b0:780:bf50:32ce with SMTP id
- e11-20020a5ede0b000000b00780bf5032cemr143966iok.19.1690478704981; 
- Thu, 27 Jul 2023 10:25:04 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlF9rT5rWbj/+sIvch3Dm/McOsGYT2pRRYiWizj0Lzu9E0NkoEaJJeROwDk/fpeewCAB9I+PqQ==
-X-Received: by 2002:a5e:de0b:0:b0:780:bf50:32ce with SMTP id
- e11-20020a5ede0b000000b00780bf5032cemr143956iok.19.1690478704737; 
- Thu, 27 Jul 2023 10:25:04 -0700 (PDT)
-Received: from redhat.com ([38.15.60.12]) by smtp.gmail.com with ESMTPSA id
- i7-20020a02cc47000000b0042b0ce92dddsm539928jaq.161.2023.07.27.10.25.04
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 27 Jul 2023 10:25:04 -0700 (PDT)
-Date: Thu, 27 Jul 2023 11:25:03 -0600
-From: Alex Williamson <alex.williamson@redhat.com>
-To: Jing Liu <jing2.liu@intel.com>
-Cc: qemu-devel@nongnu.org, clg@redhat.com, pbonzini@redhat.com,
- kevin.tian@intel.com, reinette.chatre@intel.com
-Subject: Re: [PATCH RFC v1 2/3] vfio/pci: enable vector on dynamic MSI-X
- allocation
-Message-ID: <20230727112503.4160f411.alex.williamson@redhat.com>
-In-Reply-To: <20230727072410.135743-3-jing2.liu@intel.com>
-References: <20230727072410.135743-1-jing2.liu@intel.com>
- <20230727072410.135743-3-jing2.liu@intel.com>
-Organization: Red Hat
+ bh=q55Yk4bcrQlGRW7j3t485OcQBSm3401IpPIDfZgOgW4=;
+ b=WpOhJroJkG8NuPqf/tI7AZZvS0caGHxbDMiQrfmoKBIouGzp2Ku9k6iFQxDYuF2yAg
+ pVrmumYqznGZSW688zD+te+EivNVHXWt5grhM+JFfBPANaWccADBJMCrs3w6aODF7vNZ
+ mW85XsnruAp7kdntZ4A5mU7wrAPBHRca8XEmr28hqhM3D6zWFP4Op6rNcyhg5yqrrOLo
+ 7ztnaKh5rQ//t5AtvzRXq+tm5dzNvSvVCHplbpD3PSBb0RW7XNbPM26HDCCUiHhP9nC8
+ k4MLAzDDjS7Gx9Ntl9QTzXEw7HvIaMo3L1YxfkxOWjVVkt/1A3O8mQqQY+e/v+LOZNXR
+ paUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1690480594; x=1691085394;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=q55Yk4bcrQlGRW7j3t485OcQBSm3401IpPIDfZgOgW4=;
+ b=JVW1YDBmzIqM+IXYdPMmVLKOJyXmGnjUono5G4azdIo1dsJTwN2uS0EKPR+3Bpal06
+ kYkoLP9AvMNbAOmzVGPpH78/XH1hGZjBkgdyfRO5kxIy/axo2g/yd16egySKmTsappv1
+ p7NvYozxBJwlPvtN1MOgXdH+XLaFdjm+LIE+D6z6UhNHEri8S3kT35T36SxoH2NWC63M
+ Af9g4FUA/dZuuiyKDu9/8/2OqL891Wl5wtYF7vW1EYWA6osH+PNhugaunvhb9CISOfOd
+ wYWyAiAXIch5Zl9ZFfX8Z9hk4TJVsf663BQ/2Qh+MuHWCl98nT2uWLA1Q2peXoZZ+gXd
+ 13Wg==
+X-Gm-Message-State: ABy/qLYgn+brCZOAeakU/DQG/P8QjwQ14Ai3wFY+ntxJ/97nWXuT0O10
+ cDxyWxxcHt0bpP4KXL0uvd2ZbQ==
+X-Google-Smtp-Source: APBJJlFBP/34KZSY2+f+d/PmTArDsMxYxm5m754Cqc7fki9LJzjXEXEcN6L57hXPKNIAc5e12NGVdQ==
+X-Received: by 2002:a17:90a:64cf:b0:268:10a3:cea8 with SMTP id
+ i15-20020a17090a64cf00b0026810a3cea8mr53874pjm.9.1690480593870; 
+ Thu, 27 Jul 2023 10:56:33 -0700 (PDT)
+Received: from ?IPV6:2602:ae:154e:c001:caf5:5ae2:432a:1bdf?
+ ([2602:ae:154e:c001:caf5:5ae2:432a:1bdf])
+ by smtp.gmail.com with ESMTPSA id
+ r6-20020a17090b050600b00263f8915aa3sm3048131pjz.31.2023.07.27.10.56.32
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 27 Jul 2023 10:56:33 -0700 (PDT)
+Message-ID: <173fb35e-a4c3-4112-afd9-b313c6d95b2e@linaro.org>
+Date: Thu, 27 Jul 2023 10:56:31 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=alex.williamson@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [RFC PATCH] target/i386: Truncate ESP when exiting from long mode
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+To: Ard Biesheuvel <ardb@kernel.org>, qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>
+References: <20230726081710.1051126-1-ardb@kernel.org>
+ <67a8967e-338a-fbd1-1c06-d5a35f2db509@linaro.org>
+In-Reply-To: <67a8967e-338a-fbd1-1c06-d5a35f2db509@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52b.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -103,108 +96,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 27 Jul 2023 03:24:09 -0400
-Jing Liu <jing2.liu@intel.com> wrote:
-
-> The vector_use callback is used to enable vector that is unmasked in
-> guest. The kernel used to only support static MSI-X allocation. When
-> allocating a new interrupt using "static MSI-X allocation" kernels,
-> Qemu first disables all previously allocated vectors and then
-> re-allocates all including the new one. The nr_vectors of VFIOPCIDevice
-> indicates that all vectors from 0 to nr_vectors are allocated (and may
-> be enabled), which is used to to loop all the possibly used vectors
-> When, e.g., disabling MSI-X interrupts.
+On 7/26/23 08:01, Richard Henderson wrote:
+> On 7/26/23 01:17, Ard Biesheuvel wrote:
+>> Hints welcome on where the architectural behavior is specified, and in particular,
+>> whether or not other 64-bit GPRs can be relied upon to preserve their full 64-bit
+>> length values.
 > 
-> Extend the vector_use function to support dynamic MSI-X allocation when
-> host supports the capability. Qemu therefore can individually allocate
-> and enable a new interrupt without affecting others or causing interrupts
-> lost during runtime.
-> 
-> Utilize nr_vectors to calculate the upper bound of enabled vectors in
-> dynamic MSI-X allocation mode since looping all msix_entries_nr is not
-> efficient and unnecessary.
-> 
-> Signed-off-by: Jing Liu <jing2.liu@intel.com>
-> Tested-by: Reinette Chatre <reinette.chatre@intel.com>
-> ---
->  hw/vfio/pci.c | 40 +++++++++++++++++++++++++++-------------
->  1 file changed, 27 insertions(+), 13 deletions(-)
-> 
-> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-> index 0c4ac0873d40..8c485636445c 100644
-> --- a/hw/vfio/pci.c
-> +++ b/hw/vfio/pci.c
-> @@ -512,12 +512,20 @@ static int vfio_msix_vector_do_use(PCIDevice *pdev, unsigned int nr,
->      }
->  
->      /*
-> -     * We don't want to have the host allocate all possible MSI vectors
-> -     * for a device if they're not in use, so we shutdown and incrementally
-> -     * increase them as needed.
-> +     * When dynamic allocation is not supported, we don't want to have the
-> +     * host allocate all possible MSI vectors for a device if they're not
-> +     * in use, so we shutdown and incrementally increase them as needed.
-> +     * And nr_vectors stands for the number of vectors being allocated.
+> No idea about chapter and verse, but it has the feel of being part and parcel with the
+> truncation of eip.  While esp is always special, I suspect that none of the GPRs can be 
+> relied on carrying all bits.
 
-"nr_vectors represents the total number of vectors allocated."
+Coincidentally, I was having a gander at the newly announced APX extension [1],
+and happened across
 
-> +     *
-> +     * When dynamic allocation is supported, let the host only allocate
-> +     * and enable a vector when it is in use in guest. nr_vectors stands
-> +     * for the upper bound of vectors being enabled (but not all of the
-> +     * ranges is allocated or enabled).
+3.1.4.1.2 Extended GPR Access (Direct and Indirect)
 
-s/stands for/represents/
+     ... Entering/leaving 64-bit mode via traditional (explicit)
+     control flow does not directly alter the content of the EGPRs
+     (EGPRs behave similar to R8-R15 in this regard).
 
->       */
-> -    if (vdev->nr_vectors < nr + 1) {
-> +    if ((vdev->msix->irq_info_flags & VFIO_IRQ_INFO_NORESIZE) &&
+which suggests to me that the 8 low registers are squashed to 32-bit
+on transition to 32-bit IA-32e mode.
 
-Testing vdev->msix->noresize would be cleaner.
+I still have not found similar language in the main architecture manual.
 
-> +        (vdev->nr_vectors < nr + 1)) {
->          vdev->nr_vectors = nr + 1;
-> +
->          if (!vdev->defer_kvm_irq_routing) {
->              vfio_disable_irqindex(&vdev->vbasedev, VFIO_PCI_MSIX_IRQ_INDEX);
->              ret = vfio_enable_vectors(vdev, true);
-> @@ -529,16 +537,22 @@ static int vfio_msix_vector_do_use(PCIDevice *pdev, unsigned int nr,
->          Error *err = NULL;
->          int32_t fd;
->  
-> -        if (vector->virq >= 0) {
-> -            fd = event_notifier_get_fd(&vector->kvm_interrupt);
-> -        } else {
-> -            fd = event_notifier_get_fd(&vector->interrupt);
-> -        }
-> +        if (!vdev->defer_kvm_irq_routing) {
-> +            if (vector->virq >= 0) {
-> +                fd = event_notifier_get_fd(&vector->kvm_interrupt);
-> +            } else {
-> +                fd = event_notifier_get_fd(&vector->interrupt);
-> +            }
->  
-> -        if (vfio_set_irq_signaling(&vdev->vbasedev,
-> -                                     VFIO_PCI_MSIX_IRQ_INDEX, nr,
-> -                                     VFIO_IRQ_SET_ACTION_TRIGGER, fd, &err)) {
-> -            error_reportf_err(err, VFIO_MSG_PREFIX, vdev->vbasedev.name);
-> +            if (vfio_set_irq_signaling(&vdev->vbasedev,
-> +                                       VFIO_PCI_MSIX_IRQ_INDEX, nr,
-> +                                       VFIO_IRQ_SET_ACTION_TRIGGER, fd, &err)) {
-> +                error_reportf_err(err, VFIO_MSG_PREFIX, vdev->vbasedev.name);
-> +            }
-> +        }
-> +        /* Increase for dynamic allocation case. */
-> +        if (vdev->nr_vectors < nr + 1) {
-> +            vdev->nr_vectors = nr + 1;
->          }
 
-We now have two branches where the bulk of the code is skipped when
-defer_kvm_irq_routing is enabled and doing effectively the same update
-to nr_vectors otherwise.  This suggests we should move the
-defer_kvm_irq_routing test out and create a common place to update
-nr_vectors.  Thanks,
+r~
 
-Alex
+
+[1] 
+https://www.intel.com/content/www/us/en/content-details/784266/intel-advanced-performance-extensions-intel-apx-architecture-specification.html
 
 
