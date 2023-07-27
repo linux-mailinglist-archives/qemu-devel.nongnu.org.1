@@ -2,79 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79F16765544
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 15:42:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D3877654C8
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 15:18:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qP0V8-0007Qo-KV; Thu, 27 Jul 2023 08:53:54 -0400
+	id 1qP0Uk-0007JQ-3I; Thu, 27 Jul 2023 08:53:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qP0V2-0007QM-TB
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 08:53:51 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qP0Ue-0007It-Uj
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 08:53:25 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qP0V0-00012g-MF
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 08:53:48 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qP0Ud-0000zV-AC
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 08:53:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690462425;
+ s=mimecast20190719; t=1690462401;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=EHZ7RYbvJDoOftWLGoIxm3vBkSe0CYlebODAwjxwL7w=;
- b=D0WArtH+CM8M+Hkta9VbMIOv7FJTodKEewGju2oMBEl0L74mIYzPyZ34HFIVUJSj3jDYX/
- m7MdCpOU+9jdmwo7ufm2sol7cguC36o+JLwV4yJeOL/SRMVMgPddN237Jc0IIBXr7oeWNv
- ybOiCHdi4cSDmK4/XFCzv4jXK41Y5SU=
-Received: from mail-vs1-f70.google.com (mail-vs1-f70.google.com
- [209.85.217.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=lvzK7Qd5T9nch4e+IYqu2cHIKZLmlHNqbDQzSOLOYY8=;
+ b=aJ9HAsKLtLsDwEYxUfTCm2EOMff2ByObPPA2HlZMHiy8zb49BedoloqCy9+DMnhJBsyIST
+ 1uzXYDei2SsGv1nMYs0fJIlTe270pWM8xagk72nLZaTSyKa0jH3gjhOOlAW9YLG8KTU4AC
+ rVIoOOVpXzBs5ZirCkSfUBjxbFwwxhs=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-64-ECOHDrAjMYitDzM7qkjFpg-1; Thu, 27 Jul 2023 08:53:44 -0400
-X-MC-Unique: ECOHDrAjMYitDzM7qkjFpg-1
-Received: by mail-vs1-f70.google.com with SMTP id
- ada2fe7eead31-4475cacfffeso226210137.2
- for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 05:53:44 -0700 (PDT)
+ us-mta-546-vmHkyMlWMUmVbP_Vt_C_BA-1; Thu, 27 Jul 2023 08:53:17 -0400
+X-MC-Unique: vmHkyMlWMUmVbP_Vt_C_BA-1
+Received: by mail-qt1-f200.google.com with SMTP id
+ d75a77b69052e-4054266d0beso2268511cf.0
+ for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 05:53:17 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690462423; x=1691067223;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=EHZ7RYbvJDoOftWLGoIxm3vBkSe0CYlebODAwjxwL7w=;
- b=HJqvZ3/Yua0L1FHMhKXJi+FXnN2YNH3Bc4Buhr3uVfcap+DI7ZxQSBff9QcAiO6so9
- T+c/rJZ0wQZDMyqafJue3l7dbd2D70PsyFx3tlsB2kSrETuD70UCPu2PkAE+SZmDgPkJ
- GwKJZS0pENPuF8k9kl1glzNNbplBWWx8UTxe2vZYe5iNihMiyUOAv2JfCgqV2cZ/LFKv
- mF92wQWAh0NzQOICViK80BxDXmnnFigczz8MwPaAovywddoz6LeUNZCBJz28tURBbSVd
- 4I80A9WyySvJee8nSPX3ut6pgKCCIT+Hh9Ze+Y0P1hT7FDtpdwcJiz+mBX7stGfG12Iq
- N++g==
-X-Gm-Message-State: ABy/qLYuhKHA3fjS2a1Gk4RE1p+rIC0Ydc4MNyKtAZviLe7LMLeSacSd
- 6BL4WbetPPLrQVW+vVwNvlUFCoOkW2rs9kn3ctyTgBQV7/+F7GmN9O5YvNfcdIA2N9MtvUWALDv
- MPJx9ZS92aBRxbq2Y4/qFxrATWu1D6EM=
-X-Received: by 2002:a05:6102:a28:b0:443:9037:d8e4 with SMTP id
- 8-20020a0561020a2800b004439037d8e4mr1167383vsb.8.1690462423502; 
- Thu, 27 Jul 2023 05:53:43 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlH9ncEPhFK3MRczkTisHVSmiIPlpyhgkzUHWFA8RFxXh78KjWzBfu0oi52uTyXIQt6lEXJGwEcGLP2BchzaHnw=
-X-Received: by 2002:a05:6102:a28:b0:443:9037:d8e4 with SMTP id
- 8-20020a0561020a2800b004439037d8e4mr1167368vsb.8.1690462423186; Thu, 27 Jul
- 2023 05:53:43 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1690462397; x=1691067197;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=lvzK7Qd5T9nch4e+IYqu2cHIKZLmlHNqbDQzSOLOYY8=;
+ b=GEGZk49CaKA8G7byGksC5luztEWM/mOPCPyUr3/yoXA5ZE7cbq/a1Ma+5auUiXQsY6
+ eiV1Xmm9JksqNee/zDFxe4dPSTAAyiHCYR95N2JpZ8lB1PjlYYhY3J3iM51HW9LMWPPZ
+ ArnOTt0wVJEoYVS0HYWyoFS5Q/DC4gvF7+u2KX6ImXgbXjpKPjofZ8bbNhhIe50wQsT9
+ PvyQNu0nSymyjmtveq41yGb2EZg7cDpOxO0Bbjyr9JNoiFV8krCtu/ymKhSCuIYAERXk
+ J1GbxNPo+L0QuM+NvFsk7Z+QO53M7JanhZfpoYLNCl12qODikRlwQmfNC58RWQ4PP09r
+ ymxw==
+X-Gm-Message-State: ABy/qLbSAzqioj2MUEZHRNvN2/rh2msIkU+rJ/AAOXUuVVw1VgyxTmQK
+ Hgibv3NM3HECOhj5IqNteakdJRVd+BOyplFPaVc4aVOBTwXBLo1+pXhTBhco3ANl9GlQ0DQAPZA
+ Xerg8S1ll8PKzE1o=
+X-Received: by 2002:a05:622a:1809:b0:403:ae76:12da with SMTP id
+ t9-20020a05622a180900b00403ae7612damr6245383qtc.1.1690462397381; 
+ Thu, 27 Jul 2023 05:53:17 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlFAUSybR4sbo/WGdCiahkjJCsAKg3FWrHEEEjqYPVTsBbJPgK1FZUnApO0c3mbUt34GDxnvCw==
+X-Received: by 2002:a05:622a:1809:b0:403:ae76:12da with SMTP id
+ t9-20020a05622a180900b00403ae7612damr6245367qtc.1.1690462397156; 
+ Thu, 27 Jul 2023 05:53:17 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ 3-20020ac85743000000b00403b44bc230sm385781qtx.95.2023.07.27.05.53.16
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 27 Jul 2023 05:53:16 -0700 (PDT)
+Date: Thu, 27 Jul 2023 08:53:14 -0400
+From: Peter Xu <peterx@redhat.com>
+To: hongmainquan <hongmianquan@bytedance.com>
+Cc: qemu-devel@nongnu.org, philmd@linaro.org, david@redhat.com,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [External] Re: [PATCH] memory: avoid updating ioeventfds for
+ some address_space
+Message-ID: <ZMJoumdi54neHzkC@x1n>
+References: <20230725112037.1762608-1-hongmianquan@bytedance.com>
+ <ZMFbxFnv82AWlzLD@x1n>
+ <35f53340-dda3-c25d-41c7-b717da6a9121@bytedance.com>
 MIME-Version: 1.0
-References: <20230720181459.607008-1-eperezma@redhat.com>
- <CAJaqyWdkyX9Ha-kd+haqEpfXfpVhSLmRa5hkZZGkvZjrD4Ketg@mail.gmail.com>
- <18f8d9c7-fa1d-7e45-82cc-7bd742ec18fd@redhat.com>
-In-Reply-To: <18f8d9c7-fa1d-7e45-82cc-7bd742ec18fd@redhat.com>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Thu, 27 Jul 2023 14:53:07 +0200
-Message-ID: <CAJaqyWddSBUqp4mGpQdZDVhy8WCZ3iu9AWqH1KZOwZZ2zC53=A@mail.gmail.com>
-Subject: Re: [RFC PATCH 00/12] Prefer to use SVQ to stall dataplane at NIC
- state restore through CVQ
-To: Jason Wang <jasowang@redhat.com>
-Cc: qemu-devel@nongnu.org, yvugenfi@redhat.com, si-wei.liu@oracle.com, 
- "Michael S. Tsirkin" <mst@redhat.com>, Dragos Tatulea <dtatulea@nvidia.com>, 
- Shannon Nelson <snelson@pensando.io>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <35f53340-dda3-c25d-41c7-b717da6a9121@bytedance.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -99,123 +102,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jul 25, 2023 at 9:15=E2=80=AFAM Jason Wang <jasowang@redhat.com> wr=
-ote:
->
->
-> =E5=9C=A8 2023/7/21 14:48, Eugenio Perez Martin =E5=86=99=E9=81=93:
-> > On Thu, Jul 20, 2023 at 8:15=E2=80=AFPM Eugenio P=C3=A9rez <eperezma@re=
-dhat.com> wrote:
-> >> At this moment the migration of net features that depends on CVQ is no=
-t
-> >> possible, as there is no reliable way to restore the device state like=
- mac
-> >> address, number of enabled queues, etc to the destination.  This is ma=
-inly
-> >> caused because the device must only read CVQ, and process all the comm=
-ands
-> >> before resuming the dataplane.
-> >>
-> >> This series uses the VirtIO feature _F_RING_RESET to achieve it, addin=
-g an
-> >> alternative method to late vq enabling proposed in [1][2].  It expose =
-SVQ to
-> >> the device until it process all the CVQ messages, and then replaces th=
-e vring
-> >> for the guest's one.
-> >>
-> > A couple of things I forgot to add:
-> > * Assuming the implementation of _F_RING_RESET in vdpa is calling
-> > kernel vdpa ops .set_vq_ready(vq, false). I'm not sure if this is the
-> > best implementation, but it is currently unused in the kernel. At the
-> > same time, .set_vq_ready(vq, true) also enables the vq again.
->
->
-> I think we need another ops, as set_vq_ready() tends to be functional
-> equivalent to queue_enable.
->
-> If we reuse set_vq_ready(vq, false), we would get conflict in the future
-> when driver is allowed to stop/resume a specific virtqueue via setting 0
-> to queue_enable. And that's also the reason why queue_enable is not
-> resued to reset a virtqueue.
->
+On Thu, Jul 27, 2023 at 11:59:43AM +0800, hongmainquan wrote:
+> 
+> 
+> 在 2023/7/27 1:45 上午, Peter Xu 写道:
+> > On Tue, Jul 25, 2023 at 07:20:37PM +0800, hongmianquan wrote:
+> > > When updating ioeventfds, we need to iterate all address spaces,
+> > > but some address spaces do not register eventfd_add|del call when
+> > > memory_listener_register() and they do nothing when updating ioeventfds.
+> > > So we can skip these AS in address_space_update_ioeventfds().
+> > > 
+> > > The overhead of memory_region_transaction_commit() can be significantly
+> > > reduced. For example, a VM with 8 vhost net devices and each one has
+> > > 64 vectors, can reduce the time spent on memory_region_transaction_commit by 20%.
+> > > 
+> > > Signed-off-by: hongmianquan <hongmianquan@bytedance.com>
+> > 
+> > Reviewed-by: Peter Xu <peterx@redhat.com>
+> > 
+> > Should be for 8.2, though.  Please always copy Paolo for memory related
+> > patches.  I hope Paolo can see this.
+> > 
+> Thanks, I hope so. Also, I'm not quite sure what 'Should be for 8.2' means.
+> Does it imply that there will be changes to this logic after version 8.2?
 
-Yes, I totally agree.
+See:
 
->
-> >
-> >> As an advantage, it uses a feature well deviced in the VirtIO standard=
-.  As a
-> >> disadvantage, current HW already support the late enabling and it does=
- not
-> >> support RING_RESET.
-> >>
-> >> This patch must be applied on top of the series ("Enable vdpa net migr=
-ation
-> >> with features depending on CVQ") [1][2].
-> >>
-> >> The patch has been tested with vp_vdpa, but using high IOVA instead of=
- a
-> >> sepparated ID for shadow CVQ and shadow temporal vrings.
-> >>
-> > And with _F_STATE implementation I sent long ago.
-> >
-> > Based on this, my suggestion is:
-> > * Leave the late enable for vDPA devices.
-> > * Make them fail if the vDPA parent device does not support it. This
-> > can be considered as a fix.
-> > * Leave _F_RING_RESET to be added on top, as the semantics are not
-> > implemented in vDPA at the moment.
-> >
-> > Would that work?
->
->
-> I think it can work, let's start from late enabling which seems
-> lightweight than reset and see. We can leave the vp_vdpa to be done on
-> top with another series.
->
+https://wiki.qemu.org/Planning/8.1
 
-great!
+We're already right before 8.1-rc2 release, perf patch isn't normally the
+target of this phase.
 
-Thanks!
+Thanks,
 
-
-> Thanks
->
->
-> >
-> >> [1] Message-id: <20230706191227.835526-1-eperezma@redhat.com>
-> >> [2] https://lists.nongnu.org/archive/html/qemu-devel/2023-07/msg01325.=
-html
-> >>
-> >> Eugenio P=C3=A9rez (12):
-> >>    vhost: add vhost_reset_queue_op
-> >>    vhost: add vhost_restart_queue_op
-> >>    vhost_net: Use ops->vhost_restart_queue in vhost_net_virtqueue_rest=
-art
-> >>    vhost_net: Use ops->vhost_reset_queue in vhost_net_virtqueue_reset
-> >>    vdpa: add vhost_vdpa_set_vring_ready_internal
-> >>    vdpa: add vhost_vdpa_svq_stop
-> >>    vdpa: add vhost_vdpa_reset_queue
-> >>    vdpa: add vhost_vdpa_svq_start
-> >>    vdpa: add vhost_vdpa_restart_queue
-> >>    vdpa: enable all vqs if the device support RING_RESET feature
-> >>    vdpa: use SVQ to stall dataplane while NIC state is being restored
-> >>    vhost: Allow _F_RING_RESET with shadow virtqueue
-> >>
-> >>   include/hw/virtio/vhost-backend.h  |   6 ++
-> >>   hw/net/vhost_net.c                 |  16 ++--
-> >>   hw/virtio/vhost-shadow-virtqueue.c |   1 +
-> >>   hw/virtio/vhost-vdpa.c             | 139 +++++++++++++++++++++------=
---
-> >>   net/vhost-vdpa.c                   |  55 ++++++++++--
-> >>   hw/virtio/trace-events             |   2 +-
-> >>   6 files changed, 171 insertions(+), 48 deletions(-)
-> >>
-> >> --
-> >> 2.39.3
-> >>
-> >>
->
+-- 
+Peter Xu
 
 
