@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A3C67652B4
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 13:41:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F9BE7651CD
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 12:59:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOyOn-0005d9-8z; Thu, 27 Jul 2023 06:39:13 -0400
+	id 1qOyPF-0005eN-GP; Thu, 27 Jul 2023 06:39:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qOyOl-0005cM-K2
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 06:39:11 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qOyOj-0000TE-R4
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 06:39:11 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-3141fa31c2bso792785f8f.2
- for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 03:39:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690454348; x=1691059148;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=uXfHqz+RHJ/O21c1DjEA4/cGZpHuHI1aduBBkgJ49gQ=;
- b=v2ys6ePfPlWbMK7qpNrCRyXx5ekx4+Tx32ThbEq0xZwfM0yOH4x7x/iPPuDPMEiwX3
- edOsRPIjRg2etXhBreUIXmc9SQHEhj8nLQ2cfKXdx+7t1ypSUjg5HXPhfJYM5SmjQjxh
- gkdMavaJlCrfjyQNJd17wxt/k3Ux4V3BqpnGAKCHT8WDAg0NZ4U6m02yluoB2uljZ8uP
- RiqGNg6pMMULXsoC8EsI/3h6u88n0avvuV9hSoo5LLD0OEo7vkORHaxB9ShSOo7wUQtd
- 9qslgr0L2KFVEQI4A1jZji5Tn66vejWjztn7daTcwXCIoOjIgvoh5IsobCag4JegOu+h
- roSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690454348; x=1691059148;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=uXfHqz+RHJ/O21c1DjEA4/cGZpHuHI1aduBBkgJ49gQ=;
- b=h4W3smAWm+4JfGwmjn8Gws8xjq6bFKEEN2cQzinDkBRxC1qv4VYPy9dJOg+Bx3NaqA
- vqsSGYXr6O41G1ueMZepi+k9T4BFOy7gpvEgS54mNrvybeiaZRNY8MPHb8UwrUSgGK00
- U65n/vkUE7KIFC1xw3yLoeLcA5DrPDLi9Iao5hDkp3hdqCU72mjh6SMjre9wplpiwwNC
- NY4FiXGsbia2KtTfpdnnBiVVehfk0tn6wp8czEfFt3JR6NZwovDsWQPaMb4+Rc5xRvIi
- kUPVkI5hXn4QOzt0kEeR4MdeNuPkUsZpbmDgjxS525qfRyne/TFIoTbHjrdj1c++Q+Me
- ulcg==
-X-Gm-Message-State: ABy/qLYlpJy/VWbJCF6Qs6UzhQzv8koLBtVJFYZgPgFAjehOsa44lzmT
- TB2vvZByEZ3KohV93e5/SFVjFQ==
-X-Google-Smtp-Source: APBJJlGPk3p1fVLvI8M8HifwoBK+9lBSQyhgmCJrTvJpUIUYC+/aPye85b9fuiPb2VcryIPWQ9wElQ==
-X-Received: by 2002:a5d:6706:0:b0:316:e422:38e8 with SMTP id
- o6-20020a5d6706000000b00316e42238e8mr1466785wru.66.1690454348154; 
- Thu, 27 Jul 2023 03:39:08 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- c4-20020a056000104400b003143b14848dsm1633205wrx.102.2023.07.27.03.39.07
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 27 Jul 2023 03:39:07 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org
-Subject: [PATCH] target/arm: Avoid writing to constant TCGv in trans_CSEL()
-Date: Thu, 27 Jul 2023 11:39:06 +0100
-Message-Id: <20230727103906.2641264-1-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qOyPB-0005e0-08
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 06:39:37 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qOyP9-0000WS-3T
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 06:39:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1690454373;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=csj4A8kp0waFUSPqH7/5lnv5CZEMtkA4hJrYhIPW6zc=;
+ b=J8fwLZaGY8+Pv0iYa9JFMfbNzLvOmMfS6WKlo294SKWugyZ7xMjEmWshIzP+R6al2R95cy
+ TxU/SzprbVo2zn7CV4HN+gSE0hhntHi4pe5hDRFCTomHAABtj5R08dh8D/IvNFfqfvdKcg
+ 1BTTFzoBgTiFoDltD0f2Y97chuM8RQs=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-343-TRK1ejuMMYSZ-7Jqyvz-xg-1; Thu, 27 Jul 2023 06:39:29 -0400
+X-MC-Unique: TRK1ejuMMYSZ-7Jqyvz-xg-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5C7661C0896E;
+ Thu, 27 Jul 2023 10:39:29 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.19])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 01E7E1121330;
+ Thu, 27 Jul 2023 10:39:27 +0000 (UTC)
+Date: Thu, 27 Jul 2023 11:39:25 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel@nongnu.org, Beraldo Leal <bleal@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Yonggang Luo <luoyonggang@gmail.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+ Bin Meng <bin.meng@windriver.com>
+Subject: Re: [PATCH] gitlab: remove duplication between msys jobs
+Message-ID: <ZMJJS5lUtPKpld0q@redhat.com>
+References: <20230726161942.229093-1-berrange@redhat.com>
+ <0d0f9f65-2ead-6852-20c2-a83e256eecac@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42c.google.com
+In-Reply-To: <0d0f9f65-2ead-6852-20c2-a83e256eecac@redhat.com>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,81 +86,58 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In commit 0b188ea05acb5 we changed the implementation of
-trans_CSEL() to use tcg_constant_i32(). However, this change
-was incorrect, because the implementation of the function
-sets up the TCGv_i32 rn and rm to be either zero or else
-a TCG temp created in load_reg(), and these TCG temps are
-then in both cases written to by the emitted TCG ops.
-The result is that we hit a TCG assertion:
+On Wed, Jul 26, 2023 at 08:21:33PM +0200, Thomas Huth wrote:
+> On 26/07/2023 18.19, Daniel P. Berrangé wrote:
+> > Although they share a common parent, the two msys jobs still have
+> > massive duplication in their script definitions that can easily be
+> > collapsed.
+> > 
+> > Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+> > ---
+> >   .gitlab-ci.d/windows.yml | 132 +++++++++++++++------------------------
+> >   1 file changed, 49 insertions(+), 83 deletions(-)
+> 
+> We originally had different sets of packages in the 32-bit and 64-bit jobs,
+> to distribute the load between the two jobs ... but it got unified in commit
+> 14547e0877f3522. Now considering that we are facing timeouts again, we
+> should maybe rather revert that commit instead of unifying the lists
+> forever?
 
-qemu-system-arm: ../../tcg/tcg.c:4455: tcg_reg_alloc_mov: Assertion `!temp_readonly(ots)' failed.
+IMHO we shouldn't be maintaining package lists at all, because they get
+stale over time. IOW, I would like to make this job use the package list
+from lcitool.
 
-(or on a non-debug build, just produce a garbage result)
+We could get the same end result, however, but having a package exclude
+list defined as a variable per job
 
-Adjust the code so that rn and rm are always writeable
-temporaries whether the instruction is using the special
-case "0" or a normal register as input.
+ variables:
+   MINGW_TARGET: mingw-w64-i686
+   MSYSTEM: MINGW32
+   CONFIGURE_ARGS:  --target-list=ppc64-softmmu
+   TEST_ARGS: --no-suite qtest
+   PACKAGE_EXCLUDE: mingw-w64-gtk3 mingw-w64-nettle mingw-w64-zstd
 
-Cc: qemu-stable@nongnu.org
-Fixes: 0b188ea05acb5 ("target/arm: Use tcg_constant in trans_CSEL")
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
-These insns are v8.1M-only, which is why this bug has
-lingered for so long.
----
- target/arm/tcg/translate.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+> Anyway, before we unify the compiler package name suffix between the two
+> jobs, I really would like to see whether the mingw Clang builds QEMU faster
+> in the 64-bit job ... but so far I failed to convince meson to accept the
+> Clang from the mingw package ... does anybody know how to use Clang with
+> MSYS2 properly?
 
-diff --git a/target/arm/tcg/translate.c b/target/arm/tcg/translate.c
-index 13c88ba1b9f..b71ac2d0d53 100644
---- a/target/arm/tcg/translate.c
-+++ b/target/arm/tcg/translate.c
-@@ -8799,7 +8799,7 @@ static bool trans_IT(DisasContext *s, arg_IT *a)
- /* v8.1M CSEL/CSINC/CSNEG/CSINV */
- static bool trans_CSEL(DisasContext *s, arg_CSEL *a)
- {
--    TCGv_i32 rn, rm, zero;
-+    TCGv_i32 rn, rm;
-     DisasCompare c;
- 
-     if (!arm_dc_feature(s, ARM_FEATURE_V8_1M)) {
-@@ -8817,16 +8817,17 @@ static bool trans_CSEL(DisasContext *s, arg_CSEL *a)
-     }
- 
-     /* In this insn input reg fields of 0b1111 mean "zero", not "PC" */
--    zero = tcg_constant_i32(0);
-+    rn = tcg_temp_new_i32();
-+    rm = tcg_temp_new_i32();
-     if (a->rn == 15) {
--        rn = zero;
-+        tcg_gen_movi_i32(rn, 0);
-     } else {
--        rn = load_reg(s, a->rn);
-+        load_reg_var(s, rn, a->rn);
-     }
-     if (a->rm == 15) {
--        rm = zero;
-+        tcg_gen_movi_i32(rm, 0);
-     } else {
--        rm = load_reg(s, a->rm);
-+        load_reg_var(s, rm, a->rm);
-     }
- 
-     switch (a->op) {
-@@ -8846,7 +8847,7 @@ static bool trans_CSEL(DisasContext *s, arg_CSEL *a)
-     }
- 
-     arm_test_cc(&c, a->fcond);
--    tcg_gen_movcond_i32(c.cond, rn, c.value, zero, rn, rm);
-+    tcg_gen_movcond_i32(c.cond, rn, c.value, tcg_constant_i32(0), rn, rm);
- 
-     store_reg(s, a->rd, rn);
-     return true;
+AFAIK it shouldn't be anything worse than
+
+  CC=clang ./configure ....
+
+if that doesn't work then its a bug IMHO
+
+With regards,
+Daniel
 -- 
-2.34.1
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
