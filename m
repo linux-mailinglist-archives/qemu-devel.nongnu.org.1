@@ -2,91 +2,107 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 355D7765A9A
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 19:40:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A645F765AD2
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 19:55:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qP4je-0007UN-Ns; Thu, 27 Jul 2023 13:25:10 -0400
+	id 1qP4qs-0002Rc-Qj; Thu, 27 Jul 2023 13:32:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
- id 1qP4jY-0007RC-Ex
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 13:25:04 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
+ id 1qP4qq-0002R6-JV; Thu, 27 Jul 2023 13:32:36 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
- id 1qP4jW-0008Pf-Gx
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 13:25:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690478701;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=oghVzF4nOFeyBEiPgYBACsdepkdnc21taneX+DNg3c4=;
- b=YZe+zoYZbLb6+zlPFopO+rGNY4h1YVLn2McR72Unq6DR3Tg+ao6NMA/foJkACFt6GRw87+
- 4U5iSuqsmqHyOXHgPcIGI98Y/MmpI6pCX2gPnsXdVp6l90gymCE70d8SilUbO5ucahld1Z
- zePnl20hp9j9xU0tCjnMoQNw87iXYaU=
-Received: from mail-io1-f70.google.com (mail-io1-f70.google.com
- [209.85.166.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-547-ziEWcZBiN-K1qcx3eUjSDQ-1; Thu, 27 Jul 2023 13:24:59 -0400
-X-MC-Unique: ziEWcZBiN-K1qcx3eUjSDQ-1
-Received: by mail-io1-f70.google.com with SMTP id
- ca18e2360f4ac-780addd7382so78710339f.1
- for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 10:24:59 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690478698; x=1691083498;
- h=content-transfer-encoding:mime-version:organization:references
- :in-reply-to:message-id:subject:cc:to:from:date:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=oghVzF4nOFeyBEiPgYBACsdepkdnc21taneX+DNg3c4=;
- b=C/wuYrxJdrrqBpIad4deibCF0pvt6JB4zHb92RO9it9sfr7kiKZdM3TgThDIxLWAke
- wRFy4yuOnHidsgpa0au7TUatgZQ02dXTOyW7Sk3Ue0fAqnlzucP+gpwXEN6WYLSlWJjv
- ppBeLsCO6/I4naD3HT7whOUgXzYr3q6aQvHZ2uxlCGq3oRLb2rhr9BXzv4BfAoFjb2ZY
- w2DnTgLL4n6r1rNtlk+HMcnFzFgOyDnSI/hrt/OO6L5uFDjAwO4bLtOGmrsiGHPLzv8O
- 0AJaktOGwYldqcj6Hn/4Bdokb5q2uLY/HPICIBZ9EesX6czDsIF7pVGHxSzsFy78LRXa
- HfQA==
-X-Gm-Message-State: ABy/qLbfiDu7jMRhF1oN2gXv6DfRiFWai9CY811+jlilu73MppHKNHyC
- 6zf9I9eQpDqS9/Pm9t+kbJ41D3r7F8SUYr18QxpKP1lcWbAuaCNgZY5e0OBChePZC0i0zpaYqLM
- ssTV94jHGftLOT70=
-X-Received: by 2002:a5d:8705:0:b0:783:5e20:768d with SMTP id
- u5-20020a5d8705000000b007835e20768dmr132486iom.18.1690478698510; 
- Thu, 27 Jul 2023 10:24:58 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlEaVNopm+jtJhZoml0RG2ikPDllQBT+HCTH7xhvWIs2oaqaHwPPCVuveXrFGiUYvNsJVL6BgA==
-X-Received: by 2002:a5d:8705:0:b0:783:5e20:768d with SMTP id
- u5-20020a5d8705000000b007835e20768dmr132469iom.18.1690478698231; 
- Thu, 27 Jul 2023 10:24:58 -0700 (PDT)
-Received: from redhat.com ([38.15.60.12]) by smtp.gmail.com with ESMTPSA id
- cw11-20020a05663849cb00b0042adc25ab12sm556261jab.44.2023.07.27.10.24.57
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 27 Jul 2023 10:24:57 -0700 (PDT)
-Date: Thu, 27 Jul 2023 11:24:57 -0600
-From: Alex Williamson <alex.williamson@redhat.com>
-To: Jing Liu <jing2.liu@intel.com>
-Cc: qemu-devel@nongnu.org, clg@redhat.com, pbonzini@redhat.com,
- kevin.tian@intel.com, reinette.chatre@intel.com
-Subject: Re: [PATCH RFC v1 1/3] vfio/pci: detect the support of dynamic
- MSI-X allocation
-Message-ID: <20230727112457.1422f285.alex.williamson@redhat.com>
-In-Reply-To: <20230727072410.135743-2-jing2.liu@intel.com>
-References: <20230727072410.135743-1-jing2.liu@intel.com>
- <20230727072410.135743-2-jing2.liu@intel.com>
-Organization: Red Hat
+ (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
+ id 1qP4qo-0001Y2-Ad; Thu, 27 Jul 2023 13:32:36 -0400
+Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 36RH9LTN018402; Thu, 27 Jul 2023 17:31:29 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=g3a2bhNqgnlAVrlDmF+421W4rV27G9n1h1IOHywgeUE=;
+ b=NC+mPVPyc6RJLA8Jt1PXvjEjqHh7QkZ+44qeEGYXV4vU3dlZDdZX/ARiW8yYsFylz+wY
+ lUSwkdF8I+hQ9nEWuq/01kGaz6fh1zT8WqvzgOKZMzsloy63Q5KaUkUVeycEzWEiO8aM
+ oobyT0ROnMBUx804cVLrAC6bknTygvdrQZ49whbN4hbDnJQuWEqHi25pR53DUicBOgQx
+ LzHpZNjvDEiYE/W7xFlxiSiiwCeFm1cX9tGQttO9MKv5Cf0UGgproydfWkC1ay99SIAI
+ lqGBbfdLayCefz+zcsq7jHpB4TaHJ5050epxPJjYGIeagqZKGLF26MqqUXDl4TG4BRPr NA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s3vqpgmjn-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 27 Jul 2023 17:31:29 +0000
+Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36RHUgfK029981;
+ Thu, 27 Jul 2023 17:31:28 GMT
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s3vqpgmjg-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 27 Jul 2023 17:31:28 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 36RGqbAR026189; Thu, 27 Jul 2023 17:31:27 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3s0sesfu7p-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 27 Jul 2023 17:31:27 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
+ [10.20.54.104])
+ by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 36RHVN8Q19464806
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 27 Jul 2023 17:31:24 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D834B20049;
+ Thu, 27 Jul 2023 17:31:23 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8DFF120040;
+ Thu, 27 Jul 2023 17:31:23 +0000 (GMT)
+Received: from li-978a334c-2cba-11b2-a85c-a0743a31b510.ibm.com (unknown
+ [9.152.224.238])
+ by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 27 Jul 2023 17:31:23 +0000 (GMT)
+Message-ID: <c77a22b26120b29899c327dd8b95ad2fc2145b62.camel@linux.ibm.com>
+Subject: Re: [PATCH v21 03/20] target/s390x/cpu topology: handle STSI(15)
+ and build the SYSIB
+From: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+To: Pierre Morel <pmorel@linux.ibm.com>, qemu-s390x@nongnu.org
+Cc: qemu-devel@nongnu.org, borntraeger@de.ibm.com, pasic@linux.ibm.com,
+ richard.henderson@linaro.org, david@redhat.com, thuth@redhat.com,
+ cohuck@redhat.com, mst@redhat.com, pbonzini@redhat.com,
+ kvm@vger.kernel.org, ehabkost@redhat.com, marcel.apfelbaum@gmail.com,
+ eblake@redhat.com, armbru@redhat.com, seiden@linux.ibm.com,
+ nrb@linux.ibm.com, frankja@linux.ibm.com, berrange@redhat.com, clg@kaod.org
+Date: Thu, 27 Jul 2023 19:31:23 +0200
+In-Reply-To: <20230630091752.67190-4-pmorel@linux.ibm.com>
+References: <20230630091752.67190-1-pmorel@linux.ibm.com>
+ <20230630091752.67190-4-pmorel@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=alex.williamson@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: QL6wqWdzYRLWpw9JH2I31XfVr9BeNWcS
+X-Proofpoint-GUID: WhT_qCi530ioRHnrottdIQzSKjmBtENL
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-27_07,2023-07-26_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 adultscore=0
+ lowpriorityscore=0 impostorscore=0 suspectscore=0 spamscore=0
+ mlxlogscore=999 mlxscore=0 malwarescore=0 priorityscore=1501 phishscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2307270154
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=nsg@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -103,95 +119,173 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 27 Jul 2023 03:24:08 -0400
-Jing Liu <jing2.liu@intel.com> wrote:
-
-> From: Reinette Chatre <reinette.chatre@intel.com>
-> 
-> Kernel provides the guidance of dynamic MSI-X allocation support of
-> passthrough device, by clearing the VFIO_IRQ_INFO_NORESIZE flag to
-> guide user space.
-> 
-> Fetch and store the flags from host for later use to determine if
-> specific flags are set.
-> 
-> Signed-off-by: Reinette Chatre <reinette.chatre@intel.com>
-> Signed-off-by: Jing Liu <jing2.liu@intel.com>
+On Fri, 2023-06-30 at 11:17 +0200, Pierre Morel wrote:
+> On interception of STSI(15.1.x) the System Information Block
+> (SYSIB) is built from the list of pre-ordered topology entries.
+>=20
+> Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
 > ---
->  hw/vfio/pci.c        | 12 ++++++++++++
->  hw/vfio/pci.h        |  1 +
->  hw/vfio/trace-events |  2 ++
->  3 files changed, 15 insertions(+)
-> 
-> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-> index a205c6b1130f..0c4ac0873d40 100644
-> --- a/hw/vfio/pci.c
-> +++ b/hw/vfio/pci.c
-> @@ -1572,6 +1572,7 @@ static void vfio_msix_early_setup(VFIOPCIDevice *vdev, Error **errp)
->  
->  static int vfio_msix_setup(VFIOPCIDevice *vdev, int pos, Error **errp)
->  {
-> +    struct vfio_irq_info irq_info = { .argsz = sizeof(irq_info) };
->      int ret;
->      Error *err = NULL;
->  
-> @@ -1624,6 +1625,17 @@ static int vfio_msix_setup(VFIOPCIDevice *vdev, int pos, Error **errp)
->          memory_region_set_enabled(&vdev->pdev.msix_table_mmio, false);
->      }
->  
-> +    irq_info.index = VFIO_PCI_MSIX_IRQ_INDEX;
-> +    ret = ioctl(vdev->vbasedev.fd, VFIO_DEVICE_GET_IRQ_INFO, &irq_info);
-> +    if (ret) {
-> +        /* This can fail for an old kernel or legacy PCI dev */
-> +        trace_vfio_msix_setup_get_irq_info_failure(strerror(errno));
-
-We only call vfio_msix_setup() if the device has an MSI-X capability,
-so the "legacy PCI" portion of this comment seems unjustified.
-Otherwise the GET_IRQ_INFO ioctl has always existed, so I'd also
-question the "old kernel" part of this comment.  We don't currently
-sanity test the device exposed MSI-X info versus that reported by
-GET_IRQ_INFO, but it seems valid to do so.  I'd expect this to happen
-in vfio_msix_early_setup() though, especially since that's where the
-remainder of VFIOMSIXInfo is setup.
-
-> +    } else {
-> +        vdev->msix->irq_info_flags = irq_info.flags;
-> +    }
-> +    trace_vfio_msix_setup_irq_info_flags(vdev->vbasedev.name,
-> +                                         vdev->msix->irq_info_flags);
+>  MAINTAINERS                      |   1 +
+>  qapi/machine-target.json         |  14 ++
+>  include/hw/s390x/cpu-topology.h  |  25 +++
+>  include/hw/s390x/sclp.h          |   1 +
+>  target/s390x/cpu.h               |  76 ++++++++
+>  hw/s390x/cpu-topology.c          |   4 +-
+>  target/s390x/kvm/kvm.c           |   5 +-
+>  target/s390x/kvm/stsi-topology.c | 310 +++++++++++++++++++++++++++++++
+>  target/s390x/kvm/meson.build     |   3 +-
+>  9 files changed, 436 insertions(+), 3 deletions(-)
+>  create mode 100644 target/s390x/kvm/stsi-topology.c
+>=20
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 0b03ac5a9b..b8d3e8815c 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -1702,6 +1702,7 @@ M: Pierre Morel <pmorel@linux.ibm.com>
+>  S: Supported
+>  F: include/hw/s390x/cpu-topology.h
+>  F: hw/s390x/cpu-topology.c
+> +F: target/s390x/kvm/stsi-topology.c
+> =20
+>  X86 Machines
+>  ------------
+> diff --git a/qapi/machine-target.json b/qapi/machine-target.json
+> index 3362f8dc3f..8ea4834e63 100644
+> --- a/qapi/machine-target.json
+> +++ b/qapi/machine-target.json
+> @@ -361,3 +361,17 @@
+>                     'TARGET_MIPS',
+>                     'TARGET_LOONGARCH64',
+>                     'TARGET_RISCV' ] } }
 > +
->      return 0;
->  }
->  
-> diff --git a/hw/vfio/pci.h b/hw/vfio/pci.h
-> index a2771b9ff3cc..ad34ec56d0ae 100644
-> --- a/hw/vfio/pci.h
-> +++ b/hw/vfio/pci.h
-> @@ -113,6 +113,7 @@ typedef struct VFIOMSIXInfo {
->      uint32_t table_offset;
->      uint32_t pba_offset;
->      unsigned long *pending;
-> +    uint32_t irq_info_flags;
+> +##
+> +# @CpuS390Polarization:
+> +#
+> +# An enumeration of cpu polarization that can be assumed by a virtual
+> +# S390 CPU
+> +#
+> +# Since: 8.1
+> +##
+> +{ 'enum': 'CpuS390Polarization',
+> +  'prefix': 'S390_CPU_POLARIZATION',
+> +  'data': [ 'horizontal', 'vertical' ],
+> +    'if': { 'all': [ 'TARGET_S390X' , 'CONFIG_KVM' ] }
+> +}
+> diff --git a/include/hw/s390x/cpu-topology.h b/include/hw/s390x/cpu-topol=
+ogy.h
+> index 9164ac00a7..193b33a2fc 100644
+> --- a/include/hw/s390x/cpu-topology.h
+> +++ b/include/hw/s390x/cpu-topology.h
+> @@ -15,10 +15,35 @@
+>  #include "hw/boards.h"
+>  #include "qapi/qapi-types-machine-target.h"
+> =20
+> +#define S390_TOPOLOGY_CPU_IFL   0x03
+> +
+> +typedef union s390_topology_id {
+> +    uint64_t id;
+> +    struct {
+> +        uint8_t sentinel;
+> +        uint8_t drawer;
+> +        uint8_t book;
+> +        uint8_t socket;
+> +        uint8_t dedicated;
+> +        uint8_t entitlement;
+> +        uint8_t type;
+> +        uint8_t origin;
 
-Why not simply pull out a "noresize" bool?  Thanks,
+The order here is not quite right according to the PoP. Type should be
+higher, after socket, such that all cpus of the same type in a socket
+are stored as a block.
+Also entitlement and dedication need to be inverted, e.g such that
+dedicated cpus are shown before non dedicated ones.
 
-Alex
+> +    };
+> +} s390_topology_id;
+> +
 
->  } VFIOMSIXInfo;
->  
->  #define TYPE_VFIO_PCI "vfio-pci"
-> diff --git a/hw/vfio/trace-events b/hw/vfio/trace-events
-> index ee7509e68e4f..7d4a398f044d 100644
-> --- a/hw/vfio/trace-events
-> +++ b/hw/vfio/trace-events
-> @@ -28,6 +28,8 @@ vfio_pci_read_config(const char *name, int addr, int len, int val) " (%s, @0x%x,
->  vfio_pci_write_config(const char *name, int addr, int val, int len) " (%s, @0x%x, 0x%x, len=0x%x)"
->  vfio_msi_setup(const char *name, int pos) "%s PCI MSI CAP @0x%x"
->  vfio_msix_early_setup(const char *name, int pos, int table_bar, int offset, int entries) "%s PCI MSI-X CAP @0x%x, BAR %d, offset 0x%x, entries %d"
-> +vfio_msix_setup_get_irq_info_failure(const char *errstr) "VFIO_DEVICE_GET_IRQ_INFO failure: %s"
-> +vfio_msix_setup_irq_info_flags(const char *name, uint32_t flags) " (%s) MSI-X irq info flags 0x%x"
->  vfio_check_pcie_flr(const char *name) "%s Supports FLR via PCIe cap"
->  vfio_check_pm_reset(const char *name) "%s Supports PM reset"
->  vfio_check_af_flr(const char *name) "%s Supports FLR via AF cap"
+[...]
+
+> +/**
+> + * s390_topology_empty_list:
+> + *
+> + * Clear all entries in the S390Topology list except the sentinel.
+
+The comment is out of date.
+
+> + */
+> +static void s390_topology_empty_list(S390TopologyList *topology_list)
+> +{
+> +    S390TopologyEntry *entry =3D NULL;
+> +    S390TopologyEntry *tmp =3D NULL;
+> +
+> +    QTAILQ_FOREACH_SAFE(entry, topology_list, next, tmp) {
+> +        QTAILQ_REMOVE(topology_list, entry, next);
+> +        g_free(entry);
+> +    }
+> +}
+> +
+> +/**
+> + * insert_stsi_15_1_x:
+> + * cpu: the CPU doing the call for which we set CC
+> + * sel2: the selector 2, containing the nested level
+> + * addr: Guest logical address of the guest SysIB
+> + * ar: the access register number
+> + *
+> + * Create a list head for the Topology entries and initialize it.
+> + * Insert the first entry as a sentinelle.
+> + *
+> + * Emulate STSI 15.1.x, that is, perform all necessary checks and
+> + * fill the SYSIB.
+> + * In case the topology description is too long to fit into the SYSIB,
+> + * set CC=3D3 and abort without writing the SYSIB.
+> + */
+> +void insert_stsi_15_1_x(S390CPU *cpu, int sel2, uint64_t addr, uint8_t a=
+r)
+> +{
+> +    S390TopologyList topology_list;
+> +    S390TopologyEntry *entry;
+> +    SysIB sysib =3D {0};
+> +    int length;
+> +
+> +    if (!s390_has_topology() || sel2 < 2 || sel2 > SCLP_READ_SCP_INFO_MN=
+EST) {
+> +        setcc(cpu, 3);
+> +        return;
+> +    }
+> +
+> +    QTAILQ_INIT(&topology_list);
+> +    entry =3D g_malloc0(sizeof(S390TopologyEntry));
+> +    entry->id.sentinel =3D 0xff;
+> +    QTAILQ_INSERT_HEAD(&topology_list, entry, next);
+> +
+> +    s390_topology_fill_list_sorted(&topology_list);
+> +
+> +    length =3D setup_stsi(&topology_list, &sysib.sysib_151x, sel2);
+> +
+> +    if (!length) {
+> +        setcc(cpu, 3);
+> +        return;
+> +    }
+> +
+> +    sysib.sysib_151x.length =3D cpu_to_be16(length);
+> +    s390_cpu_virt_mem_write(cpu, addr, ar, &sysib, length);
+> +    setcc(cpu, 0);
+> +
+> +    s390_topology_empty_list(&topology_list);
+> +}
+> diff --git a/target/s390x/kvm/meson.build b/target/s390x/kvm/meson.build
+> index 37253f75bf..bcf014ba87 100644
+> --- a/target/s390x/kvm/meson.build
+> +++ b/target/s390x/kvm/meson.build
+> @@ -1,6 +1,7 @@
+> =20
+>  s390x_ss.add(when: 'CONFIG_KVM', if_true: files(
+> -  'kvm.c'
+> +  'kvm.c',
+> +  'stsi-topology.c'
+>  ), if_false: files(
+>    'stubs.c'
+>  ))
 
 
