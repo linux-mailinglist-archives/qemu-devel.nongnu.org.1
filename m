@@ -2,56 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B73776551E
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 15:34:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3880D76554C
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 15:44:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qP0Yv-0008Vh-8p; Thu, 27 Jul 2023 08:57:49 -0400
+	id 1qP0gv-0001yf-Sq; Thu, 27 Jul 2023 09:06:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=csIm=DN=kaod.org=clg@ozlabs.org>)
- id 1qP0Ys-0008US-Na; Thu, 27 Jul 2023 08:57:46 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qP0gr-0001vY-RB
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 09:06:01 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=csIm=DN=kaod.org=clg@ozlabs.org>)
- id 1qP0Yq-0002OI-GG; Thu, 27 Jul 2023 08:57:46 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4RBW5G6Fpfz4wxK;
- Thu, 27 Jul 2023 22:57:38 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4RBW5D5H3Lz4wqW;
- Thu, 27 Jul 2023 22:57:36 +1000 (AEST)
-Message-ID: <8429260a-e169-2e4f-b1ea-4d832be2e99b@kaod.org>
-Date: Thu, 27 Jul 2023 14:57:34 +0200
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qP0gq-0004sb-70
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 09:06:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1690463159;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=HrILHOUsBYF8bhAlbmvO9P9RdB2fu0GKMiM6+oi/5T4=;
+ b=CUS/yCUH6UdSuzzAqQosQGv29wpTmDr2YV0J/u+BRPI0dg58CkGjT9cGKku9vkIcERzd/I
+ MJ8HJfFdfJdvSu7KHE6xSygIbSCNu22W1T8aHeJ8MlMqcoIm/qXK9VqNl1Cvbp77aoM/TH
+ 69bWGdaDiwsxhyiRdp+JAQubHgmOLBE=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-428-uAMkAVaRNMuQVBBEsghKVg-1; Thu, 27 Jul 2023 09:05:57 -0400
+X-MC-Unique: uAMkAVaRNMuQVBBEsghKVg-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-50a16ab50e6so559138a12.0
+ for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 06:05:57 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1690463156; x=1691067956;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=HrILHOUsBYF8bhAlbmvO9P9RdB2fu0GKMiM6+oi/5T4=;
+ b=V/mSBl2htGY3JmD90t2PMWDf313oSV4IT2l0L5bgkFoC68Q3j6TZhmCYZp/KCh9DRn
+ m1gPZoiHyEV4d0vZw7OFoMVPAMRLEWcOBzVcu8LmgtfDtLGHU8eVPkkwG1YmvhuphS6l
+ 0uNP0T1U8slmrcWNx5cw1p0lojAi1Mmlj9N1YcvZ+71LKi8jte9th/iDlsxCupjnPXVV
+ xNKD9wLG+WwVO4Aad7TQnX/vAxUynaJgVTHglvB99NlTGBs5inlQciwXBCR2dw7buxdx
+ 6cVgU3hUYbPM9TRYsGJEmc/2S2Ae0Jtovr61nDHNZCq5gdsrzHedvM7HQRCw1qmWDsT8
+ RzCA==
+X-Gm-Message-State: ABy/qLbiTkH4OqR/BTJ0yngf6IVSgtvcFo1frcCH75mf9jFo07Beuyaa
+ 7JpTdBdo6dQxb/HkCp6+rNb418+hb5Q1GQLYu0yAO32UOml9wH0Ex4GofjhAunBjl6MjnJ66LlE
+ 8drxsMjMH+ArZMHA=
+X-Received: by 2002:a17:906:1c9:b0:99b:8ed2:8ff with SMTP id
+ 9-20020a17090601c900b0099b8ed208ffmr1976146ejj.1.1690463156630; 
+ Thu, 27 Jul 2023 06:05:56 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlFYnMKbM5iydaNuA6NaVHpoEVl+2QPet4osQbpwUoJWQBVyXeEUaMaGsWUnaKS08Wd3flvZ+A==
+X-Received: by 2002:a17:906:1c9:b0:99b:8ed2:8ff with SMTP id
+ 9-20020a17090601c900b0099b8ed208ffmr1976128ejj.1.1690463156346; 
+ Thu, 27 Jul 2023 06:05:56 -0700 (PDT)
+Received: from redhat.com ([2.52.14.22]) by smtp.gmail.com with ESMTPSA id
+ e6-20020a1709067e0600b00992b66e54e9sm735719ejr.214.2023.07.27.06.05.52
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 27 Jul 2023 06:05:53 -0700 (PDT)
+Date: Thu, 27 Jul 2023 09:05:50 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Eugenio Perez Martin <eperezma@redhat.com>
+Cc: qemu-devel@nongnu.org, yvugenfi@redhat.com, si-wei.liu@oracle.com,
+ Jason Wang <jasowang@redhat.com>, Dragos Tatulea <dtatulea@nvidia.com>,
+ Shannon Nelson <snelson@pensando.io>
+Subject: Re: [RFC PATCH 00/12] Prefer to use SVQ to stall dataplane at NIC
+ state restore through CVQ
+Message-ID: <20230727090312-mutt-send-email-mst@kernel.org>
+References: <20230720181459.607008-1-eperezma@redhat.com>
+ <CAJaqyWdkyX9Ha-kd+haqEpfXfpVhSLmRa5hkZZGkvZjrD4Ketg@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 3/6] target/ppc: Fix pending HDEC when entering PM state
-Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>
-Cc: David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org,
- qemu-devel@nongnu.org
-References: <20230726182230.433945-1-npiggin@gmail.com>
- <20230726182230.433945-4-npiggin@gmail.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20230726182230.433945-4-npiggin@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=csIm=DN=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.091, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJaqyWdkyX9Ha-kd+haqEpfXfpVhSLmRa5hkZZGkvZjrD4Ketg@mail.gmail.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,44 +99,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/26/23 20:22, Nicholas Piggin wrote:
-> HDEC is defined to not wake from PM state. There is a check in the HDEC
-> timer to avoid setting the interrupt if we are in a PM state, but no
-> check on PM entry to lower HDEC if it already fired. This can cause a
-> HDECR wake up and  QEMU abort with unsupported exception in Power Save
-> mode.
-> 
-> Fixes: 4b236b621bf ("ppc: Initial HDEC support")
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+On Fri, Jul 21, 2023 at 08:48:02AM +0200, Eugenio Perez Martin wrote:
+> * Leave _F_RING_RESET to be added on top, as the semantics are not
+> implemented in vDPA at the moment.
 
+We really need _F_RING_RESET in vdpa too though.
+You did code it up already - why do you want to leave
+it out?
 
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
-
-Thanks,
-
-C.
-
-
-> ---
->   target/ppc/excp_helper.c | 6 ++++++
->   1 file changed, 6 insertions(+)
-> 
-> diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-> index 003805b202..9aa8e46566 100644
-> --- a/target/ppc/excp_helper.c
-> +++ b/target/ppc/excp_helper.c
-> @@ -2685,6 +2685,12 @@ void helper_pminsn(CPUPPCState *env, uint32_t insn)
->       env->resume_as_sreset = (insn != PPC_PM_STOP) ||
->           (env->spr[SPR_PSSCR] & PSSCR_EC);
->   
-> +    /* HDECR is not to wake from PM state, it may have already fired */
-> +    if (env->resume_as_sreset) {
-> +        PowerPCCPU *cpu = env_archcpu(env);
-> +        ppc_set_irq(cpu, PPC_INTERRUPT_HDECR, 0);
-> +    }
-> +
->       ppc_maybe_interrupt(env);
->   }
->   #endif /* defined(TARGET_PPC64) */
+-- 
+MST
 
 
