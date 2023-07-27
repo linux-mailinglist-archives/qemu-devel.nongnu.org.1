@@ -2,70 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 865167651B8
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 12:56:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42784765203
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 13:13:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOyR1-0005wl-NI; Thu, 27 Jul 2023 06:41:31 -0400
+	id 1qOyWo-0006Xo-HW; Thu, 27 Jul 2023 06:47:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qOyQy-0005vz-GA
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 06:41:28 -0400
+ id 1qOyWl-0006Xf-Ps
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 06:47:27 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qOyQw-0001Gd-RR
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 06:41:28 -0400
+ id 1qOyWk-0003j0-5h
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 06:47:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690454485;
+ s=mimecast20190719; t=1690454845;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=BgVEgkjy0v24sA29rrQPBpaIveXcGiH1BPynrvViBF0=;
- b=H4r8WNshbtfXgZ+impoLc/eO/8PEIO+R8xN52oJv6zIg14I/pHSZKlFwQ5hZpxScsha/RT
- hqiFKeIWJwE9rypWIy9wpxkUmWd1skBRBbA6Hx/QfKnQqUlQsWS6WM0IF6Tyx0Y1hiGm03
- yMQyjp9+Pu4nZkaktHAhNIcwTRUx/i8=
+ bh=gUh1dJfVuP+Tgn4Sa9PFuuQFXkAxBHH/fihyQQ25SAs=;
+ b=Cmr9Riwv1xL3U1aSJeVV+1xa1UlX/CMH3vxmlBBkHod0msN1g/559P4dEYx/rWwfEhU4sF
+ lTGGPsNvpd1qXFZcUAksAsqZcD3JP3MIpTwOR0dcn4zGFBqAhhGMS4+bt2VHfjmbw8e9bp
+ ejzLx2kNdkOjFfsmbDPtVhAvNfeS+gc=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-145-WpodngWyNbKhEN4i_AZbWA-1; Thu, 27 Jul 2023 06:41:24 -0400
-X-MC-Unique: WpodngWyNbKhEN4i_AZbWA-1
+ us-mta-649-ZBpIjJzaM6iJlYuV1t_Rcg-1; Thu, 27 Jul 2023 06:47:23 -0400
+X-MC-Unique: ZBpIjJzaM6iJlYuV1t_Rcg-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4CCB5104458D;
- Thu, 27 Jul 2023 10:41:24 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8ABB8185A792
+ for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 10:47:23 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.19])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id E6759C2C7D3;
- Thu, 27 Jul 2023 10:41:21 +0000 (UTC)
-Date: Thu, 27 Jul 2023 11:41:18 +0100
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 0115CC2C7D3;
+ Thu, 27 Jul 2023 10:47:22 +0000 (UTC)
+Date: Thu, 27 Jul 2023 11:47:20 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Ani Sinha <anisinha@redhat.com>
-Cc: John Snow <jsnow@redhat.com>, qemu-devel <qemu-devel@nongnu.org>,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
- Hanna Reitz <hreitz@redhat.com>, Cleber Rosa <crosa@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- qemu-arm <qemu-arm@nongnu.org>, Qemu-block <qemu-block@nongnu.org>,
- Andrew Jeffery <andrew@aj.id.au>, Joel Stanley <joel@jms.id.au>,
- Kevin Wolf <kwolf@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Beraldo Leal <bleal@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>
-Subject: Re: [PATCH v2 4/6] python/machine: use socketpair() for console
- connections
-Message-ID: <ZMJJzkTaZaQ0z0Rj@redhat.com>
-References: <20230725180337.2937292-1-jsnow@redhat.com>
- <20230725180337.2937292-5-jsnow@redhat.com>
- <B867C4E8-24FC-4C4E-9FE8-2353CC21320C@redhat.com>
- <CAFn=p-bdA5cVMmsUkE0os0CVT6XMXzWk2M3UcKb0DFQmi130Mg@mail.gmail.com>
- <4EE2965D-F72B-4002-99BF-732F5F9734C6@redhat.com>
+To: John Snow <jsnow@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel <qemu-devel@nongnu.org>
+Subject: Re: Implementing "tee" in python asyncio
+Message-ID: <ZMJLOJYueAWYA1mN@redhat.com>
+References: <CAFn=p-aKWG7r2zRdQ-O6kod_jVOTMELGi_ObbKBAM=9ZgXt7Ww@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <4EE2965D-F72B-4002-99BF-732F5F9734C6@redhat.com>
+In-Reply-To: <CAFn=p-aKWG7r2zRdQ-O6kod_jVOTMELGi_ObbKBAM=9ZgXt7Ww@mail.gmail.com>
 User-Agent: Mutt/2.2.9 (2022-11-12)
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
@@ -94,37 +80,37 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 27, 2023 at 11:22:35AM +0530, Ani Sinha wrote:
+On Wed, Jul 26, 2023 at 04:25:34PM -0400, John Snow wrote:
+> Hi folks,
 > 
+> I'm currently wondering how to take a StreamReader as found on
+> https://docs.python.org/3/library/asyncio-subprocess.html#asyncio.subprocess.Process
+> and to consume the data while optionally re-streaming it to a
+> secondary consumer.
 > 
-> > On 26-Jul-2023, at 10:51 PM, John Snow <jsnow@redhat.com> wrote:
-> > 
-> > 
-> > 
-> > On Wed, Jul 26, 2023, 6:50 AM Ani Sinha <anisinha@redhat.com> wrote:
-> > 
-> > 
-> > > On 25-Jul-2023, at 11:33 PM, John Snow <jsnow@redhat.com> wrote:
-> > > 
-> > > Create a socketpair for the console output. This should help eliminate
-> > > race conditions around console text early in the boot process that might
-> > > otherwise have been dropped on the floor before being able to connect to
-> > > QEMU under "server,nowait".
-> > > 
-> > > Signed-off-by: John Snow <jsnow@redhat.com>
-> > 
-> > Thanks for doing this. I recall we spoke about this late last year in the context of fixing my bios-bits avocado test and adding a console output there.
-> > 
-> > Yep! I think you need a few more changes to do what you wanted. IIRC, you also want to be able to drain the console log while waiting for the vm to terminate of its own accord, which I don't support yet.
-> > 
-> > (If you use console socket's self draining mode, it should be possible to forego the early termination of the console socket and allow this behavior. Maybe I can work that in now...)
+> What I'd like to do is create a StreamWatcher class that consumes
+> console data while optionally logging to python logging and/or a file;
+> but re-buffers the data into an async stream where an additional
+> consumer is free to use the "standard asyncio API" to consume console
+> data at their leisure in a way that's unsurprising.
 > 
-> yeah we want to collect all the console logs while the VM is running until it self terminates. Maybe you can add a flag for this behavior to not early terminate the socket. I think we need to add mathods to keep reading the socket and write to a file until the socket is closed. Maybe QemuMachine needs to be enhanced.
+> What I'd like this *for* is to be able to do aggressive logging of
+> stdout/stderr and console data without denying tests the ability to
+> consume the data as they see fit for their testing purposes. I want to
+> have my cake and eat it too, and we don't do a good job of managing
+> this consistently across the board.
+> 
+> I am wondering if there's any way around creating a literal socketpair
+> and suffering the creation of a full four StreamReader/StreamWriter
+> instances (one pair per socket...) and then just hanging on to the
+> "unused" reader/writer per each. It seems kind of foolishly excessive.
+> It also seems like it might be a pain in the butt if I want
+> cross-platform compatibility with windows for the machine appliance.
+> 
+> Anyone got any bright ideas?
 
-
-There's no special code required for that - any -chardev backend can
-have logfile=/some/path added to it.
-
+Don't bother with any of the above, just add 'logfile=/path/to/log'
+to the -chardev argument.
 
 With regards,
 Daniel
