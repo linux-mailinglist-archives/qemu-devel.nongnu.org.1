@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9555276572D
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 17:17:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E00F765748
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 17:19:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qP2Y9-0008Pe-CU; Thu, 27 Jul 2023 11:05:09 -0400
+	id 1qP2aN-0001CE-5f; Thu, 27 Jul 2023 11:07:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qP2Y6-0008KL-W5
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 11:05:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qP2Y5-0008Ra-4t
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 11:05:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690470304;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=iQTMRSPiN1/Eaa8tGEpgFJp2loxSoa0yOVYWsMGN05c=;
- b=RJ9JIJun9LMUS2NYRLGqEs4ZmFMJ+4ky7Pf0j2XsCXP30MUufPuHwd03nKQgpjAOvR07ey
- Qbasfn3TNgVHubiXnTkyHtg4dOmnTNhhT+f0R0DuxlP1iJxsjzed5TpjfotTvJgliLm8Yj
- 29UIAizc7YITdz57nvBj5hmBHD4KLzo=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-442-eNGdfpUzPzC1gi8hI6Rvig-1; Thu, 27 Jul 2023 11:04:58 -0400
-X-MC-Unique: eNGdfpUzPzC1gi8hI6Rvig-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 876C9803FDC;
- Thu, 27 Jul 2023 15:04:57 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.19])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 3C656F6CD2;
- Thu, 27 Jul 2023 15:04:54 +0000 (UTC)
-Date: Thu, 27 Jul 2023 16:04:52 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- dinglimin@cmss.chinamobile.com, Michael Tokarev <mjt@tls.msk.ru>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Subject: Re: [PATCH] semihosting/uaccess.c: Replaced a malloc call with
- g_malloc.
-Message-ID: <ZMKHlCHA+5IWd9EE@redhat.com>
-References: <20230725080630.1083-1-dinglimin@cmss.chinamobile.com>
- <20230725090039.1271-1-dinglimin@cmss.chinamobile.com>
- <106cf02f-f746-e216-22be-8f7594028695@tls.msk.ru>
- <CAFEAcA-ErMrk60uZMu8M-0G15aTvhOZsYsvJD1F-YbLGOFDBYA@mail.gmail.com>
- <E1qOWH5-0002Du-U6@lists.gnu.org>
- <CAFEAcA8UdN4-DU4dAiY3VGLA77mLK-ohfFJs5+5fDt3v1mAAcg@mail.gmail.com>
- <9a05f370-1857-2c28-a184-a5197455b314@linaro.org>
- <CAFEAcA-4qzq7hivk-vuZMfxOaMXU7zusATtotiashNqrSbupSg@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qP2a8-0001BO-9I
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 11:07:13 -0400
+Received: from mail-lj1-x22c.google.com ([2a00:1450:4864:20::22c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qP2a5-0000Me-J2
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 11:07:10 -0400
+Received: by mail-lj1-x22c.google.com with SMTP id
+ 38308e7fff4ca-2b9540031acso17014031fa.3
+ for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 08:07:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1690470428; x=1691075228;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=TNqurY0rUHeNdsZsiViYGt28p6dzwriboasUAovzxOw=;
+ b=T184Cx35+AxKDV8k/Ri/jkEVjRDQu9aWHHiYvakkP9KdVg6OO3N8S/6woY44HWkFap
+ f/28Ux0phI7omqNLVLx3FI7JIauRLxXCIO/XiibiLld/xBTehM1QHjgRxcA0wr3Omfhk
+ DV9QeF7erNv9LYV7Qm8D6/Wm944VvhbZuLZp9eSe+5OOXmK4VH5L8TiKEB17b9fE3io6
+ UrZhjUcheRoHv2IC/obcicsHdAiLUBXteNf9Z45cfeYaHpmqnOIDqab+GK14YYu0ojFF
+ vQcVoryjez/19AcdZfzvjlMScW2Rw1/c+p3Y6cniB3QWewQk24n21TKUSSrhZG+Xb0si
+ C8Yg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1690470428; x=1691075228;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=TNqurY0rUHeNdsZsiViYGt28p6dzwriboasUAovzxOw=;
+ b=RyCwgUCBVx1W4aTNVAwEG47H0d70JvOd/J7Zqm1Q+pwM0TMsNmOs4OwnLJd+vhYgKW
+ piPo1soGMQHQRfA6NOSiTt7NIGxG6FBxxu1TFUUW4EFpzGTRw7sdC065kq0oj6CImoGT
+ Ctkmp6bS4tiCVIx5KZzZVFtNNSj20kOrAwcOEr9dKsyMMGzYU1BHMmhvTiy2ns34MRD5
+ uoH3A5KcVKX2/67eZycCD9vH2mNHx0K4woKr/4lizLmoi6/9+/xOKZ4YVq3BJekyZTB6
+ XhmnDbThDWO3Bp+vz1JDtvL6t4yvW7+XEA6ArM2My5oPheiHJtdUlCSnkf5oyVaLDAeX
+ lXZQ==
+X-Gm-Message-State: ABy/qLYgEq7LybOGIwelXwDkXRiE1pdkVpDni+TOIF/hYr+iuEsrxsf7
+ 2n9r3jpY2YBbloaK6GIRTBQ9hdCHHKfwFBalWa4=
+X-Google-Smtp-Source: APBJJlHe8LB9bo0rx8whYYGpsa707dxZ8adUPZqQTvmvVm7N1NJ/NFR4ZWmz4XtmAxfxf3nNwNY1zw==
+X-Received: by 2002:a2e:88c9:0:b0:2b9:6d6e:df5c with SMTP id
+ a9-20020a2e88c9000000b002b96d6edf5cmr1992941ljk.5.1690470427851; 
+ Thu, 27 Jul 2023 08:07:07 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ i15-20020adffdcf000000b003145559a691sm2323498wrs.41.2023.07.27.08.07.06
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 27 Jul 2023 08:07:07 -0700 (PDT)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, Ronnie Sahlberg <ronniesahlberg@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Lieven <pl@kamp.de>,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>
+Subject: [PATCH] block/iscsi: Document why we use raw malloc()
+Date: Thu, 27 Jul 2023 16:07:05 +0100
+Message-Id: <20230727150705.2664464-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAFEAcA-4qzq7hivk-vuZMfxOaMXU7zusATtotiashNqrSbupSg@mail.gmail.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::22c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -86,54 +87,36 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 27, 2023 at 03:56:23PM +0100, Peter Maydell wrote:
-> On Wed, 26 Jul 2023 at 16:21, Richard Henderson
-> <richard.henderson@linaro.org> wrote:
-> >
-> > On 7/26/23 02:43, Peter Maydell wrote:
-> > > (Something went wrong with the quoting in your email. I've
-> > > fixed it up.)
-> > >
-> > > On Wed, 26 Jul 2023 at 05:38, <dinglimin@cmss.chinamobile.com> wrote:
-> > >> Peter Maydell wrote:
-> > >>> The third part here, is that g_malloc() does not ever
-> > >>> fail -- it will abort() on out of memory. However
-> > >>> the code here is still handling g_malloc() returning NULL.
-> > >>> The equivalent for "we expect this might fail" (which we want
-> > >>> here, because the guest is passing us the length of memory
-> > >>> to try to allocate) is g_try_malloc().
-> > >
-> > >> g_malloc() is preferred more than g_try_* functions, which return NULL on error,
-> > >> when the size of the requested allocation  is small.
-> > >> This is because allocating few bytes should not be a problem in a healthy system.
-> > >
-> > > This is true. But in this particular case we cannot be sure
-> > > that the size of the allocation is small, because the size
-> > > is controlled by the guest. So we want g_try_malloc().
-> >
-> > And why do we want to use g_try_malloc instead of just sticking with malloc?
-> 
-> The only real reason is just consistency
+In block/iscsi.c we use a raw malloc() call, which is unusual
+given the project standard is to use the glib memory allocation
+functions. Document why we do so, to avoid it being converted
+to g_malloc() by mistake.
 
-I think it is slightly stronger than that.
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+There aren't many uses of raw malloc() in the codebase
+other than third-party library sourcecode. Mostly we have
+a comment noting when we're doing it deliberately.
+---
+ block/iscsi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-By using g_try_malloc we make it explicit that this scenario is
-expecting the allocation to fail and needs to handle that.
-
-If we use plain 'malloc' it isn't clear whether we genuinely expect
-the allocation to fail, or someone just blindly checked malloc
-return value out of habit, because they didn't realize QEMU wants
-abort-on-OOM behaviour most of the time.
-
-With regards,
-Daniel
+diff --git a/block/iscsi.c b/block/iscsi.c
+index 34f97ab6460..5640c8b5657 100644
+--- a/block/iscsi.c
++++ b/block/iscsi.c
+@@ -1058,6 +1058,7 @@ static BlockAIOCB *iscsi_aio_ioctl(BlockDriverState *bs,
+         return NULL;
+     }
+ 
++    /* Must use malloc(): this is freed via scsi_free_scsi_task() */
+     acb->task = malloc(sizeof(struct scsi_task));
+     if (acb->task == NULL) {
+         error_report("iSCSI: Failed to allocate task for scsi command. %s",
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.34.1
 
 
