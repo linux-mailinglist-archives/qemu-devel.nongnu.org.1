@@ -2,58 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C26B8765D4F
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 22:26:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C2E3765D05
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 22:13:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qP7Af-0000dv-GD; Thu, 27 Jul 2023 16:01:13 -0400
+	id 1qP7Ag-0000ep-Sg; Thu, 27 Jul 2023 16:01:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qP7AY-0000dI-QF
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 16:01:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1qP7Ac-0000db-7m
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 16:01:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qP7AX-0002eN-3B
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 16:01:06 -0400
+ id 1qP7AZ-0002fl-Sh
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 16:01:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690488064;
+ s=mimecast20190719; t=1690488066;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=7wE4c33Fs/OIa+SJUhr1amUPRTZE15FofWJpfMXqOe8=;
- b=atpZrLpG64yeD/q4SqiPka4Eda7ysNk9aEAF5XTaRy+XSmNFt5ZMotVD2640YCpZJApdBj
- B2hOMNEUeGYmbQUx9sGCCgnFdPBzkh0UI5C4ZxkQjsF8Z+RzC/Md5chDQF6HRuzDqoW1dv
- MvPlqfJWROhweukd/OaXris+hs/lkME=
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=EJCKaXx2reEQv2jkA9KLDOTxJPVAu6k6sc0PzTJpPbY=;
+ b=DX0aa1lnfzXhjS1gLJlk5rnF+FzwcLVO3MuMEQp11bEUvzPTvc+bKgGxNf4U2bAS3vIQgE
+ O4DtacGRQ5Zq7hh3XQWoRxnOCmYmN3OUADIe2OhPxBOvqNC0/cOWOnzMQ92LRwwvlFtSZX
+ 9yvkYGpZ2ZuY4E1AHvZVOgDbKy/SFLY=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-177-86sFMb0SODOHVS4yW-hHGQ-1; Thu, 27 Jul 2023 16:01:02 -0400
-X-MC-Unique: 86sFMb0SODOHVS4yW-hHGQ-1
+ us-mta-126-2a7PcnEoON6gcp39mIFEkQ-1; Thu, 27 Jul 2023 16:01:04 -0400
+X-MC-Unique: 2a7PcnEoON6gcp39mIFEkQ-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
  [10.11.54.7])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8D997805BC3;
- Thu, 27 Jul 2023 20:01:01 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B4878802A7D;
+ Thu, 27 Jul 2023 20:01:03 +0000 (UTC)
 Received: from localhost (unknown [10.39.193.84])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 8E7BE1454147;
- Thu, 27 Jul 2023 20:01:00 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 207CB1454147;
+ Thu, 27 Jul 2023 20:01:02 +0000 (UTC)
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
  Fam Zheng <fam@euphon.net>, qemu-block@nongnu.org,
- Richard Henderson <rth@twiddle.net>, Hanna Reitz <hreitz@redhat.com>
-Subject: [PULL for-8.1 0/8] Block patches
-Date: Thu, 27 Jul 2023 16:00:50 -0400
-Message-ID: <20230727200058.1071776-1-stefanha@redhat.com>
+ Richard Henderson <rth@twiddle.net>, Hanna Reitz <hreitz@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>
+Subject: [PULL for-8.1 1/8] block/blkio: enable the completion eventfd
+Date: Thu, 27 Jul 2023 16:00:51 -0400
+Message-ID: <20230727200058.1071776-2-stefanha@redhat.com>
+In-Reply-To: <20230727200058.1071776-1-stefanha@redhat.com>
+References: <20230727200058.1071776-1-stefanha@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -78,44 +81,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 66547f416a61e0cb711dc76821890242432ba193:
+From: Stefano Garzarella <sgarzare@redhat.com>
 
-  block/nvme: invoke blk_io_plug_call() outside q->lock (2023-07-17 09:17:41 -0400)
+Until libblkio 1.3.0, virtio-blk drivers had completion eventfd
+notifications enabled from the start, but from the next releases
+this is no longer the case, so we have to explicitly enable them.
 
-are available in the Git repository at:
+In fact, the libblkio documentation says they could be disabled,
+so we should always enable them at the start if we want to be
+sure to get completion eventfd notifications:
 
-  https://gitlab.com/stefanha/qemu.git tags/block-pull-request
+    By default, the driver might not generate completion events for
+    requests so it is necessary to explicitly enable the completion
+    file descriptor before use:
 
-for you to fetch changes up to 1c38fe69e2b8a05c1762b122292fa7e3662f06fd:
+    void blkioq_set_completion_fd_enabled(struct blkioq *q, bool enable);
 
-  block/blkio: use blkio_set_int("fd") to check fd support (2023-07-27 15:51:46 -0400)
+I discovered this while trying a development version of libblkio:
+the guest kernel hangs during boot, while probing the device.
 
-----------------------------------------------------------------
-Pull request
+Fixes: fd66dbd424f5 ("blkio: add libblkio block driver")
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Message-id: 20230725103744.77343-1-sgarzare@redhat.com
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+---
+ block/blkio.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Please include these bug fixes in QEMU 8.1. Thanks!
-
-----------------------------------------------------------------
-
-Hanna Czenczek (1):
-  block: Fix pad_request's request restriction
-
-Sam Li (1):
-  block/file-posix: fix g_file_get_contents return path
-
-Stefano Garzarella (6):
-  block/blkio: enable the completion eventfd
-  block/blkio: do not use open flags in qemu_open()
-  block/blkio: move blkio_connect() in the drivers functions
-  block/blkio: retry blkio_connect() if it fails using `fd`
-  block/blkio: fall back on using `path` when `fd` setting fails
-  block/blkio: use blkio_set_int("fd") to check fd support
-
- block/blkio.c      | 132 ++++++++++++++++++++++++++++++---------------
- block/file-posix.c |   6 +--
- block/io.c         |   8 ++-
- 3 files changed, 97 insertions(+), 49 deletions(-)
-
+diff --git a/block/blkio.c b/block/blkio.c
+index 1798648134..bc1fac48b7 100644
+--- a/block/blkio.c
++++ b/block/blkio.c
+@@ -845,6 +845,7 @@ static int blkio_file_open(BlockDriverState *bs, QDict *options, int flags,
+     QLIST_INIT(&s->bounce_bufs);
+     s->blkioq = blkio_get_queue(s->blkio, 0);
+     s->completion_fd = blkioq_get_completion_fd(s->blkioq);
++    blkioq_set_completion_fd_enabled(s->blkioq, true);
+ 
+     blkio_attach_aio_context(bs, bdrv_get_aio_context(bs));
+     return 0;
 -- 
 2.41.0
 
