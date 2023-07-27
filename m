@@ -2,57 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2C327655CD
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 16:20:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED8257655B5
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 16:16:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qP0xJ-000743-5F; Thu, 27 Jul 2023 09:23:01 -0400
+	id 1qP0y5-0007Da-OI; Thu, 27 Jul 2023 09:23:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=csIm=DN=kaod.org=clg@ozlabs.org>)
- id 1qP0x5-00072f-Ox; Thu, 27 Jul 2023 09:22:48 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=csIm=DN=kaod.org=clg@ozlabs.org>)
- id 1qP0x1-0002EU-29; Thu, 27 Jul 2023 09:22:47 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4RBWf44D0cz4wbj;
- Thu, 27 Jul 2023 23:22:36 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4RBWf22lFNz4wbP;
- Thu, 27 Jul 2023 23:22:34 +1000 (AEST)
-Message-ID: <f3a7f1d8-4f4a-e45d-4b9f-aebc44dd08b7@kaod.org>
-Date: Thu, 27 Jul 2023 15:22:31 +0200
+ (Exim 4.90_1) (envelope-from <hongmianquan@bytedance.com>)
+ id 1qP0y3-0007DS-Ej
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 09:23:47 -0400
+Received: from mail-pf1-x442.google.com ([2607:f8b0:4864:20::442])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <hongmianquan@bytedance.com>)
+ id 1qP0y0-0002Kn-Ck
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 09:23:47 -0400
+Received: by mail-pf1-x442.google.com with SMTP id
+ d2e1a72fcca58-686ba29ccb1so582396b3a.1
+ for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 06:23:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=bytedance.com; s=google; t=1690464220; x=1691069020;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=qRnwMvOZIRuUFJ6Biq51cRwCE9GKelaYEx3Mhzz1Nis=;
+ b=W/78D46bwWZ2ezY1yTxf3Osb3CTbs2jGfx4HdQYTYr0DxirHux5ICuCh5VcQxCdfog
+ 8UBFqjLMo5DZX9Fto+R45EBLKt5k71U0eUTTeDnHk1uRjgVGRL3XdLOrO3jwSGVXwF66
+ EG3ctms/7CR0ZG5YqWNp7V8KPneCPLlWSIFy5jfMaaNGx8wJ43mhRm8JUksEf6YfBLnp
+ o82OuPXIrIFu74OtXAt2UmBj1xSjCsGOmVn7FdIPCsPLxE4hgtedWLF4nVz985z/gBFh
+ XhZj6dMOcNtMjtuAtJ1Gr/TQTSVVTZcBxQUG+/1+L6oMecS30tpPMKAimr2L2tceTKNm
+ Ej2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1690464220; x=1691069020;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=qRnwMvOZIRuUFJ6Biq51cRwCE9GKelaYEx3Mhzz1Nis=;
+ b=jFrlmpX3+9kAJvusVGMT+NSEaN5Lr9M5EoFxX15BEeQAOspp1OfdzfWoI2cCItWjyx
+ h66a8b+HST7kw4crq/sOInfaV6c8IkjowYRjW2x/758V/P/NEpxF0VvPk5URf6I/5GL4
+ VqfE/dPib2wQhSK5s/PsReYMekT90wz4oHpPy8DYOL0wcVJMVLlb+kMd03JNDe0U6OQT
+ N3WDaHDQLX5rAB7ImNXm9crV4gD6aoTaZ+aSUwTnsjkYMJlmfu7jFDcjiMIOBr5hDAAY
+ poHnLsa+ZXDqBhqqFsRzmFjIKidgFpZUHBpmLip4bvcNk7T4/XncvVkEnYPRCA4kRSwx
+ LDYA==
+X-Gm-Message-State: ABy/qLZLH9gf/k4498u5zp1Fe6F1wHn6PZnlaSETmsv61qoCd8E1V7r3
+ C1ZJt0d3NTPkQR5/ElDAM9ZDjQ==
+X-Google-Smtp-Source: APBJJlFaq3Ws9gPhY/TXlBGtgipLaNtz0jK0wVtsi3K64MGKEPo0XnbOKlXDIuBI6DFssARLNOnegg==
+X-Received: by 2002:a05:6a20:441e:b0:133:7ad8:71b5 with SMTP id
+ ce30-20020a056a20441e00b001337ad871b5mr3961428pzb.0.1690464219688; 
+ Thu, 27 Jul 2023 06:23:39 -0700 (PDT)
+Received: from [10.254.120.136] ([139.177.225.229])
+ by smtp.gmail.com with ESMTPSA id
+ f17-20020a635551000000b00563ea47c948sm1439915pgm.53.2023.07.27.06.23.36
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 27 Jul 2023 06:23:38 -0700 (PDT)
+Message-ID: <9343c790-7fa6-1f1e-ed1c-2f350de44ec9@bytedance.com>
+Date: Thu, 27 Jul 2023 21:23:34 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 1/6] target/ppc: Implement ASDR register for ISA v3.0 for
- HPT
+User-Agent: Mozilla Thunderbird
+Subject: Re: [External] Re: [PATCH] memory: avoid updating ioeventfds for some
+ address_space
 Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>
-Cc: David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org,
- qemu-devel@nongnu.org
-References: <20230726182230.433945-1-npiggin@gmail.com>
- <20230726182230.433945-2-npiggin@gmail.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20230726182230.433945-2-npiggin@gmail.com>
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, philmd@linaro.org, david@redhat.com,
+ Paolo Bonzini <pbonzini@redhat.com>
+References: <20230725112037.1762608-1-hongmianquan@bytedance.com>
+ <ZMFbxFnv82AWlzLD@x1n> <35f53340-dda3-c25d-41c7-b717da6a9121@bytedance.com>
+ <ZMJoumdi54neHzkC@x1n>
+From: hongmainquan <hongmianquan@bytedance.com>
+In-Reply-To: <ZMJoumdi54neHzkC@x1n>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=csIm=DN=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -40
-X-Spam_score: -4.1
-X-Spam_bar: ----
-X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.091,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::442;
+ envelope-from=hongmianquan@bytedance.com; helo=mail-pf1-x442.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -69,128 +97,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/26/23 20:22, Nicholas Piggin wrote:
-> The ASDR register was introduced in ISA v3.0. It has not been
-> implemented for HPT. With HPT, ASDR is the format of the slbmte RS
-> operand (containing VSID), which matches the ppc_slb_t field.
+
+
+在 2023/7/27 8:53 下午, Peter Xu 写道:
+> On Thu, Jul 27, 2023 at 11:59:43AM +0800, hongmainquan wrote:
+>>
+>>
+>> 在 2023/7/27 1:45 上午, Peter Xu 写道:
+>>> On Tue, Jul 25, 2023 at 07:20:37PM +0800, hongmianquan wrote:
+>>>> When updating ioeventfds, we need to iterate all address spaces,
+>>>> but some address spaces do not register eventfd_add|del call when
+>>>> memory_listener_register() and they do nothing when updating ioeventfds.
+>>>> So we can skip these AS in address_space_update_ioeventfds().
+>>>>
+>>>> The overhead of memory_region_transaction_commit() can be significantly
+>>>> reduced. For example, a VM with 8 vhost net devices and each one has
+>>>> 64 vectors, can reduce the time spent on memory_region_transaction_commit by 20%.
+>>>>
+>>>> Signed-off-by: hongmianquan <hongmianquan@bytedance.com>
+>>>
+>>> Reviewed-by: Peter Xu <peterx@redhat.com>
+>>>
+>>> Should be for 8.2, though.  Please always copy Paolo for memory related
+>>> patches.  I hope Paolo can see this.
+>>>
+>> Thanks, I hope so. Also, I'm not quite sure what 'Should be for 8.2' means.
+>> Does it imply that there will be changes to this logic after version 8.2?
 > 
-> Fixes: 3367c62f522b ("target/ppc: Support for POWER9 native hash")
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-
-According to the ISA, the Address Access Segment Descriptor Register (ASDR)
-can also be set with an MCE. Anyway,
-
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
-
-Thanks,
-
-C.
-
-
-> ---
->   target/ppc/mmu-hash64.c | 27 ++++++++++++++++-----------
->   1 file changed, 16 insertions(+), 11 deletions(-)
+> See:
 > 
-> diff --git a/target/ppc/mmu-hash64.c b/target/ppc/mmu-hash64.c
-> index 900f906990..a0c90df3ce 100644
-> --- a/target/ppc/mmu-hash64.c
-> +++ b/target/ppc/mmu-hash64.c
-> @@ -770,7 +770,8 @@ static bool ppc_hash64_use_vrma(CPUPPCState *env)
->       }
->   }
->   
-> -static void ppc_hash64_set_isi(CPUState *cs, int mmu_idx, uint64_t error_code)
-> +static void ppc_hash64_set_isi(CPUState *cs, int mmu_idx, uint64_t slb_vsid,
-> +                               uint64_t error_code)
->   {
->       CPUPPCState *env = &POWERPC_CPU(cs)->env;
->       bool vpm;
-> @@ -782,13 +783,15 @@ static void ppc_hash64_set_isi(CPUState *cs, int mmu_idx, uint64_t error_code)
->       }
->       if (vpm && !mmuidx_hv(mmu_idx)) {
->           cs->exception_index = POWERPC_EXCP_HISI;
-> +        env->spr[SPR_ASDR] = slb_vsid;
->       } else {
->           cs->exception_index = POWERPC_EXCP_ISI;
->       }
->       env->error_code = error_code;
->   }
->   
-> -static void ppc_hash64_set_dsi(CPUState *cs, int mmu_idx, uint64_t dar, uint64_t dsisr)
-> +static void ppc_hash64_set_dsi(CPUState *cs, int mmu_idx, uint64_t slb_vsid,
-> +                               uint64_t dar, uint64_t dsisr)
->   {
->       CPUPPCState *env = &POWERPC_CPU(cs)->env;
->       bool vpm;
-> @@ -802,6 +805,7 @@ static void ppc_hash64_set_dsi(CPUState *cs, int mmu_idx, uint64_t dar, uint64_t
->           cs->exception_index = POWERPC_EXCP_HDSI;
->           env->spr[SPR_HDAR] = dar;
->           env->spr[SPR_HDSISR] = dsisr;
-> +        env->spr[SPR_ASDR] = slb_vsid;
->       } else {
->           cs->exception_index = POWERPC_EXCP_DSI;
->           env->spr[SPR_DAR] = dar;
-> @@ -963,13 +967,13 @@ bool ppc_hash64_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
->                   }
->                   switch (access_type) {
->                   case MMU_INST_FETCH:
-> -                    ppc_hash64_set_isi(cs, mmu_idx, SRR1_PROTFAULT);
-> +                    ppc_hash64_set_isi(cs, mmu_idx, 0, SRR1_PROTFAULT);
->                       break;
->                   case MMU_DATA_LOAD:
-> -                    ppc_hash64_set_dsi(cs, mmu_idx, eaddr, DSISR_PROTFAULT);
-> +                    ppc_hash64_set_dsi(cs, mmu_idx, 0, eaddr, DSISR_PROTFAULT);
->                       break;
->                   case MMU_DATA_STORE:
-> -                    ppc_hash64_set_dsi(cs, mmu_idx, eaddr,
-> +                    ppc_hash64_set_dsi(cs, mmu_idx, 0, eaddr,
->                                          DSISR_PROTFAULT | DSISR_ISSTORE);
->                       break;
->                   default:
-> @@ -1022,7 +1026,7 @@ bool ppc_hash64_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
->       /* 3. Check for segment level no-execute violation */
->       if (access_type == MMU_INST_FETCH && (slb->vsid & SLB_VSID_N)) {
->           if (guest_visible) {
-> -            ppc_hash64_set_isi(cs, mmu_idx, SRR1_NOEXEC_GUARD);
-> +            ppc_hash64_set_isi(cs, mmu_idx, slb->vsid, SRR1_NOEXEC_GUARD);
->           }
->           return false;
->       }
-> @@ -1035,13 +1039,14 @@ bool ppc_hash64_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
->           }
->           switch (access_type) {
->           case MMU_INST_FETCH:
-> -            ppc_hash64_set_isi(cs, mmu_idx, SRR1_NOPTE);
-> +            ppc_hash64_set_isi(cs, mmu_idx, slb->vsid, SRR1_NOPTE);
->               break;
->           case MMU_DATA_LOAD:
-> -            ppc_hash64_set_dsi(cs, mmu_idx, eaddr, DSISR_NOPTE);
-> +            ppc_hash64_set_dsi(cs, mmu_idx, slb->vsid, eaddr, DSISR_NOPTE);
->               break;
->           case MMU_DATA_STORE:
-> -            ppc_hash64_set_dsi(cs, mmu_idx, eaddr, DSISR_NOPTE | DSISR_ISSTORE);
-> +            ppc_hash64_set_dsi(cs, mmu_idx, slb->vsid, eaddr,
-> +                               DSISR_NOPTE | DSISR_ISSTORE);
->               break;
->           default:
->               g_assert_not_reached();
-> @@ -1075,7 +1080,7 @@ bool ppc_hash64_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
->               if (PAGE_EXEC & ~amr_prot) {
->                   srr1 |= SRR1_IAMR; /* Access violates virt pg class key prot */
->               }
-> -            ppc_hash64_set_isi(cs, mmu_idx, srr1);
-> +            ppc_hash64_set_isi(cs, mmu_idx, slb->vsid, srr1);
->           } else {
->               int dsisr = 0;
->               if (need_prot & ~pp_prot) {
-> @@ -1087,7 +1092,7 @@ bool ppc_hash64_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
->               if (need_prot & ~amr_prot) {
->                   dsisr |= DSISR_AMR;
->               }
-> -            ppc_hash64_set_dsi(cs, mmu_idx, eaddr, dsisr);
-> +            ppc_hash64_set_dsi(cs, mmu_idx, slb->vsid, eaddr, dsisr);
->           }
->           return false;
->       }
+> https://wiki.qemu.org/Planning/8.1
+> 
+> We're already right before 8.1-rc2 release, perf patch isn't normally the
+> target of this phase.
+> 
+> Thanks,
+> 
+Understood. Hope for some suggestions from you.
 
+Thanks!
 
