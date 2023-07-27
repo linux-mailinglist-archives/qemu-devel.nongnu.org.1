@@ -2,81 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8A86765D7F
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 22:39:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46D76765D58
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 22:29:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qP77j-0000LD-Ec; Thu, 27 Jul 2023 15:58:11 -0400
+	id 1qP78Q-0000Ra-DM; Thu, 27 Jul 2023 15:58:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qP77e-0000KT-5R
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 15:58:06 -0400
-Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qP77c-0001IO-Eb
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 15:58:05 -0400
-Received: by mail-lf1-x12f.google.com with SMTP id
- 2adb3069b0e04-4fdfefdf5abso2386623e87.1
- for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 12:58:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690487882; x=1691092682;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=34agnrziPL9mxHsgVtlV+MC8UVIIF2Rquj32rqL7wfo=;
- b=LtmbCVJVx0+QPyIcdAAmeBk7hOj+xeGPuQSc/3G0drEIqnmz7k8Vipo5INi504YqJZ
- i9cDUFsLMOaaIXJ3Gxaa68EoE5H6WbvifawpaHUeXirF8/YXgGxFjWfxA5iet14rdzKG
- Im0Jy567jnxVGl39c4shqtMGgne9uLx9wKODmj2bUht8/FRUjRi+jfxRsb5LzCd5JW66
- 7dF4Syd+wLEvIFsJ+HahYAUAXPLzdQ/CLOMzcQegyETF+T/YOUjRhwIUbPOBepKuKziD
- ftiyRlJOlb/yReyOmy6OrQG92g2zQ60x5aGrg60joL9V1TNJY5Hy+HT08weJ5WWW8w+H
- OIEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690487882; x=1691092682;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=34agnrziPL9mxHsgVtlV+MC8UVIIF2Rquj32rqL7wfo=;
- b=TZVjQPDUvQtxWNGahz4952VUGxYw7SLRqbj2grqWMVWH4rLKXVoqZ8ddHDx9XO0lB7
- S+yV+SeTH9BpulAbK1oRiSVb2Fq7s3uQGgBbtBINF0xhbCptuJiVt64qb2sHD+/izS8U
- blP6ckxiJT7trYfbq4Y9mpvbzjfDVnhulfHoxpd++KSZSbF8aDDRS34pfWN3ZndmL4+u
- 2g1LOEXX+TrYt4/RWDVx2THV05yvvf1/oI/JwSF5p/zQcaJrqE+mcf09T8oiyAHl8ChM
- Lg0UoVaxOwO4TIh5sECDI70F2w1wXi1eiAR2+h+3IJ1xsTPPh4KX9E+DjuAHeqxVrKsw
- 1csA==
-X-Gm-Message-State: ABy/qLbvGK4icPkBwkcaJc0Qqn0yWe+xHmUs4jDRVhOLnhs+Y22ynORS
- BKukFumTKyRR1es6q6+yUXatnHdgv7twTITVadWK3Q==
-X-Google-Smtp-Source: APBJJlH/uM+p4ndamJ2n6RSi0n2LENgHeASSp8TsN+tYgM9YKJQY5d6XFFZNaLbtY47xZL39gwIVY6UWcY5+8ismePo=
-X-Received: by 2002:a05:6512:2018:b0:4fd:d4b4:faba with SMTP id
- a24-20020a056512201800b004fdd4b4fabamr123573lfb.51.1690487882054; Thu, 27 Jul
- 2023 12:58:02 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qP788-0000NE-7V
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 15:58:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qP786-0001LU-Hn
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 15:58:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1690487913;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=28+iWJ/o6ksLu3t0IRH81U3H2cUHgoVQBuGAQG1mGKg=;
+ b=AfAsmnbb0MDTK/iolFcVrgwSUY/DNlVyLgY6hui4WrRkcRgWg787PGOXeJWcHpGS4dUJ/a
+ WITciDpQ0ykvPN8VVLwM/1ytpj7CZVm0jvaVvgfmjMGoL371pKYMUQmU16dhGERhnGomBq
+ HmJ0dBZ440M4XYfdpjoHUzQjQ7lHyHc=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-131-hvv2SV53MSyluXZcOeHXxA-1; Thu, 27 Jul 2023 15:58:29 -0400
+X-MC-Unique: hvv2SV53MSyluXZcOeHXxA-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7B53980C4FF;
+ Thu, 27 Jul 2023 19:58:29 +0000 (UTC)
+Received: from localhost (unknown [10.39.193.84])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id F01D6F7830;
+ Thu, 27 Jul 2023 19:58:28 +0000 (UTC)
+Date: Thu, 27 Jul 2023 15:58:26 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, qemu-block@nongnu.org
+Subject: Re: [PATCH v2 0/4] block/blkio: fix opening virtio-blk drivers
+Message-ID: <20230727195826.GA986673@fedora>
+References: <20230727161020.84213-1-sgarzare@redhat.com>
 MIME-Version: 1.0
-References: <CAFEAcA--tJPhQO49W3BDO1MABQFHrr50MU=q54TFYpbkOxVWHw@mail.gmail.com>
- <CA+bd_6Krq9aCCQe01OjXxb+T-=3XrSnvVHrKs3F-3cwdZEGH8Q@mail.gmail.com>
- <CAFEAcA9txYV4GZQi-uRPWuXd1oOiVHB7ZUQ5-+=zA4T+Of-g1g@mail.gmail.com>
- <CA+bd_6LsQw3ao1KQk8Jk-VvAb9SZ1ioxSdBsghtNqJK-cnMRXA@mail.gmail.com>
-In-Reply-To: <CA+bd_6LsQw3ao1KQk8Jk-VvAb9SZ1ioxSdBsghtNqJK-cnMRXA@mail.gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 27 Jul 2023 20:57:51 +0100
-Message-ID: <CAFEAcA9_W3LFmZqarA7ZSYhL9WP46Ew+4=P0EVG=60nfpQ1XVA@mail.gmail.com>
-Subject: Re: avocado test failing INTERRUPTED for "Missing asset"
-To: Cleber Rosa <crosa@redhat.com>
-Cc: QEMU Developers <qemu-devel@nongnu.org>,
- =?UTF-8?Q?Phil_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::12f;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12f.google.com
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="rA7yuC0gneJcI/xm"
+Content-Disposition: inline
+In-Reply-To: <20230727161020.84213-1-sgarzare@redhat.com>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,66 +80,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 27 Jul 2023 at 20:08, Cleber Rosa <crosa@redhat.com> wrote:
->
-> On Thu, Jul 27, 2023 at 11:50=E2=80=AFAM Peter Maydell <peter.maydell@lin=
-aro.org> wrote:
-> >
-> > Ah, so the problem is that we are trying to download the asset
-> > file, and the remote server is stalling so it doesn't actually
-> > download the file in 90s, and Avocado doesn't distinguish
-> > "hit the timeout while trying to download assets" from
-> > "hit the timeout running the actual test" ?
-> >
->
-> Yes, exactly.  Once the test starts, that's the only timeout being
-> enforced.  The fetch_asset() (and all the download code path) is
-> simply part of the test and thus under the test timeout.  Also, right
-> now, avocado.Test.fetch_asset() doesn't provide a timeout parameter
-> (but the underlying avocado.utils.asset.Asset.fetch() does).
->
-> > This sounds to me like the ideal would be that there is a separate
-> > timeout for file downloads (which could then be a lot shorter than
-> > the overall test timeout), and "timeout during asset download"
-> > would be detected separately from "timeout while actually running
-> > test".  But maybe the separation-of-phases in newer Avocado achieves
-> > that already ?
-> >
->
-> The mechanism in newer Avocado will simply never attempt to run tests
-> that don't have the stated requirements fulfilled.  With regards to
-> timeouts, each of the different kinds of requirement implementations
-> (file downloads and cache, A.K.A. "assets", packages installation,
-> ansible module execution,  etc) are supposed to provide their own
-> features, including timeouts.
->
-> Anyways, I'll look into, and report back on:
->
-> 1. expanding avocado.Test.fetch_asset() with a timeout parameter
 
-If newer-avocado does all this stuff differently it might not
-be worth the extra effort on something we're going to move away from.
+--rA7yuC0gneJcI/xm
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> 2. making sure the newer implementation for the requirement types used
-> by QEMU respect a timeout (they don't need to be smaller than the
-> test, because they run completely outside of the test).
+On Thu, Jul 27, 2023 at 06:10:16PM +0200, Stefano Garzarella wrote:
+> There is a problem with virtio-blk-vhost-vdpa.
+> The first patch does some preparation changes. The second and third patch=
+es
+> fix the issues, the last patch tries to prepare QEMU for a future version=
+ of
+> libblkio where we can use blkio_set_fd() to check whether the property is
+> supported or not.
+>=20
+> While testing, I realized that the main problem was that qemu_open() does=
+ not
+> support UDS, but still the problem with blkio_connect() which can fail re=
+mains.
+>=20
+> v2:
+> - added first patch in preparation of the others
+> - reworked patch 2 retrying blkio_connect [Stefan]
+> - added patch 3 since qemu_open() fails in UDS
+> - changed patch 4 commit description [Stefan]
+>=20
+> v1: https://lore.kernel.org/qemu-devel/20230724154611.178858-1-sgarzare@r=
+edhat.com/
+>=20
+> Based on stefanha/block branch.
+>=20
+> Stefano Garzarella (4):
+>   block/blkio: move blkio_connect() in the drivers functions
+>   block/blkio: retry blkio_connect() if it fails using `fd`
+>   block/blkio: fall back on using `path` when `fd` setting fails
+>   block/blkio: use blkio_set_int("fd") to check fd support
+>=20
+>  block/blkio.c | 108 +++++++++++++++++++++++++++++++++++---------------
+>  1 file changed, 75 insertions(+), 33 deletions(-)
+>=20
+> --=20
+> 2.41.0
+>=20
 
-The main thing I think is that timeouts on asset fetch should
-result in a SKIP or CANCEL status, not INTERRUPTED, because
-the CI treats INTERRUPTED as a failure, whereas SKIP and CANCEL
-are OK.
+Thanks, applied to my block tree:
+https://gitlab.com/stefanha/qemu/commits/block
 
-> For now, are you OK with re-running those jobs if the servers stall
-> the transfers? Or would you rather see a patch that changes the
-> find_only parameter to True, so that if the pre-test attempt to
-> download the asset fails, the transfer is never attempted during the
-> test?
+Stefan
 
-I think for the moment we're OK retrying (or more usually, saying
-"this job is failing today, ignore it") -- usually this kind
-of thing is "somebody's server is having troubles" and it goes
-away after a day or so.
+--rA7yuC0gneJcI/xm
+Content-Type: application/pgp-signature; name="signature.asc"
 
-thanks
--- PMM
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmTCzGIACgkQnKSrs4Gr
+c8j1Gwf+MeDjUmFUtV23g4MnYOwOJ4ULjaHJ8KszioSCyRy2z0rW1R4TXy5O+fJJ
+5zKkbx3SnWQtcJBpNDOmehelH1lt1HT166XviarjzjxWuFD+yHWJYRcjY2rL5CMi
+EsiALPun2RcsLzxm4X0XK7cQ/DnekYdrobllcu+sxwAYeY+p3b7AvjCfYADhWS5q
+jQ/HnHDasKxQMimnnBZMed2UaJ7PjgnmdLAyhc6OfBeYaIUriDrEwA7Uzkob4dt0
+yiYkTW02qocgf62ZJZVJU9sreOlCgmKesQjeR+60z2FLu7yBmBonM15MJhe6i+CJ
+BPW/g82h+ofWHVWdOZYpncGzO2ncHw==
+=VkOl
+-----END PGP SIGNATURE-----
+
+--rA7yuC0gneJcI/xm--
+
 
