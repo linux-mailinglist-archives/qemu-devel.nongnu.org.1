@@ -2,72 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0AA57655FE
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 16:30:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFBD1765609
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 16:34:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qP1KG-0007gW-5R; Thu, 27 Jul 2023 09:46:44 -0400
+	id 1qP1Wo-000584-3Q; Thu, 27 Jul 2023 09:59:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qP1KB-0007fP-Ni
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 09:46:42 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <conor@kernel.org>)
+ id 1qP1Wl-00055A-Bb; Thu, 27 Jul 2023 09:59:39 -0400
+Received: from dfw.source.kernel.org ([139.178.84.217])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qP1KA-0002fl-Br
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 09:46:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690465597;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=XP82NJ0PAn1yarrEv0Ujbxk3AAxIUTsONunvdgYuTEg=;
- b=YbAtlmKZZFxHzy4lMQEHw1eEMTzQk0mBcRHtuXacZXgPUNkwKQhO0bgQRVZVOtN6GeXFVR
- WCEqctUkYCgYtfXboQVW0vXv86ya+AzMRWSnBxJJ470am6rNsjHjZWWCvcvtV3lBvo3NNs
- eL3NlkWMxvy9C1mnZo7uwCsDGG0cxM0=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-340-2DiN40u_PpyNnLp9k6sUsA-1; Thu, 27 Jul 2023 09:46:33 -0400
-X-MC-Unique: 2DiN40u_PpyNnLp9k6sUsA-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (Exim 4.90_1) (envelope-from <conor@kernel.org>)
+ id 1qP1Wj-0006Y0-Nw; Thu, 27 Jul 2023 09:59:39 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D65F01C29AEF;
- Thu, 27 Jul 2023 13:46:32 +0000 (UTC)
-Received: from localhost (unknown [10.39.193.84])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 04BA6140E949;
- Thu, 27 Jul 2023 13:46:31 +0000 (UTC)
-Date: Thu, 27 Jul 2023 09:46:30 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
-Cc: Sam Li <faithilikerun@gmail.com>, qemu-devel@nongnu.org, hare@suse.de,
- mjrosato@linux.ibm.com, qemu-block@nongnu.org,
- Hanna Reitz <hreitz@redhat.com>, dmitry.fomichev@wdc.com,
- Kevin Wolf <kwolf@redhat.com>, dlemoal@kernel.org
-Subject: Re: [PATCH v2] block/file-posix: fix g_file_get_contents return path
-Message-ID: <20230727134630.GB868174@fedora>
-References: <20230727115844.8480-1-faithilikerun@gmail.com>
- <ZMJf5JwIAeR0G52G@redhat.com>
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 198F660695;
+ Thu, 27 Jul 2023 13:59:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D200AC433C7;
+ Thu, 27 Jul 2023 13:59:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1690466368;
+ bh=ZzDSIlJCwse1xnbgVm6j02bD6rHDKIR4AehVqHegf3s=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=TKj1RCXzEA6cODr/OVmx8LaFwnVKzrRTK/XACqnecgaEkNhuMDP3vMMnVHkNtzVGK
+ 4GgGKLz3gsgrStWPB7wq0L5bQ3EEnBqodxfArjwgRJLYH72MIlLZNgxmEjtl43QN5R
+ kr2/IQEyZX2KxHo2Dfu5t/hk2DKGSJu0x4qJ8LrZh/+anVzeIJymLDm7auLEE7dau+
+ yB+M7zCXt9RlR3ihrFaG4c7+AMxRivAJOwOLva3KsKgwrEaH44XI2cYgKlpAa2/HfG
+ XwuIl4RE+ZMSz5Gr7FWPXcdLXPPjzfp7QEaMxBtHg8JhTfrfgXpCUd0Q3fdA+og/Fp
+ Qi0Mm01vU4yAg==
+Date: Thu, 27 Jul 2023 14:59:24 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn,
+ zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com
+Subject: Re: [PATCH for-8.2 v5 09/11] target/riscv: add 'max' CPU type
+Message-ID: <20230727-armful-french-e572d80fcac1@spud>
+References: <20230720171933.404398-1-dbarboza@ventanamicro.com>
+ <20230720171933.404398-10-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="j3cTX/J+5HKXgACC"
+ protocol="application/pgp-signature"; boundary="TQTLQ3T5Ey+fZbus"
 Content-Disposition: inline
-In-Reply-To: <ZMJf5JwIAeR0G52G@redhat.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+In-Reply-To: <20230720171933.404398-10-dbarboza@ventanamicro.com>
+Received-SPF: pass client-ip=139.178.84.217; envelope-from=conor@kernel.org;
+ helo=dfw.source.kernel.org
+X-Spam_score_int: -70
+X-Spam_score: -7.1
+X-Spam_bar: -------
+X-Spam_report: (-7.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,50 +74,65 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
---j3cTX/J+5HKXgACC
-Content-Type: text/plain; charset=iso-8859-1
+--TQTLQ3T5Ey+fZbus
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jul 27, 2023 at 01:15:32PM +0100, Daniel P. Berrang=E9 wrote:
-> On Thu, Jul 27, 2023 at 07:58:44PM +0800, Sam Li wrote:
-> > The g_file_get_contents() function returns a g_boolean. If it fails, the
-> > returned value will be 0 instead of -1. Solve the issue by skipping
-> > assigning ret value.
-> >=20
-> > This issue was found by Matthew Rosato using virtio-blk-{pci,ccw} backed
-> > by an NVMe partition e.g. /dev/nvme0n1p1 on s390x.
-> >=20
-> > Signed-off-by: Sam Li <faithilikerun@gmail.com>
-> > Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
-> > Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-> > ---
-> >  block/file-posix.c | 6 ++----
-> >  1 file changed, 2 insertions(+), 4 deletions(-)
+Hey Daniel,
+
+On Thu, Jul 20, 2023 at 02:19:31PM -0300, Daniel Henrique Barboza wrote:
+> The 'max' CPU type is used by tooling to determine what's the most
+> capable CPU a current QEMU version implements. Other archs such as ARM
+> implements this type. Let's add it to RISC-V.
 >=20
-> Reviewed-by: Daniel P. Berrang=E9 <berrange@redhat.com>
+> What we consider "most capable CPU" in this context are related to
+> ratified, non-vendor extensions. This means that we want the 'max' CPU
+> to enable all (possible) ratified extensions by default. The reasoning
+> behind this design is (1) vendor extensions can conflict with each other
+> and we won't play favorities deciding which one is default or not and
+> (2) non-ratified extensions are always prone to changes, not being
+> stable enough to be enabled by default.
 >=20
-> We should put this in 8.1 rc2 IMHO
+> All this said, we're still not able to enable all ratified extensions
+> due to conflicts between them. Zfinx and all its dependencies aren't
+> enabled because of a conflict with RVF. zce, zcmp and zcmt are also
+> disabled due to RVD conflicts. When running with 64 bits we're also
+> disabling zcf.
+>=20
+> MISA bits RVG, RVJ and RVV are also being set manually since they're
+> default disabled.
+>=20
+> This is the resulting 'riscv,isa' DT for this new CPU:
+>=20
+> rv64imafdcvh_zicbom_zicboz_zicsr_zifencei_zihintpause_zawrs_zfa_
+> zfh_zfhmin_zca_zcb_zcd_zba_zbb_zbc_zbkb_zbkc_zbkx_zbs_zk_zkn_zknd_
+> zkne_zknh_zkr_zks_zksed_zksh_zkt_zve32f_zve64f_zve64d_
+> smstateen_sscofpmf_sstc_svadu_svinval_svnapot_svpbmt
+>=20
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> Reviewed-by: Weiwei Li <liweiwei@iscas.ac.cn>
 
-Agreed, I will send a block pull request for 8.1.
+I was giving this another go today, like so
+$(qemu) -smp 4 -M virt,aia=3Daplic,dumpdtb=3Dqemu.dtb -cpu max -m 1G
+which lead to a few
+vector version is not specified, use the default value v1.0
+printed. Should the max cpu set a vector version w/o user input
+being required?
 
-Stefan
+Cheers,
+Conor.
 
---j3cTX/J+5HKXgACC
+--TQTLQ3T5Ey+fZbus
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmTCdTYACgkQnKSrs4Gr
-c8jViQf/ea725+jZw3GIKLjB42r9fRwzI7Y0zA1lszmvUA9VoL1/6ZFPl5Alxj6l
-zrA2vCqcRk//+QysCKfL4DHulEYdxp5xVCyyWzknfkF46oeOY7meFPZQaYn7agRG
-2DjRZVH76UeuZ7kqBXpEMTOqhXOXd/BVO+JeA4Q7n5mbqenegqINPn270RAHshaW
-dV339wtHQhdnbLJ3x2GkD0PwyUEP8O2cDJoA41jUwk79zToXBQ8omRHMrl4/mLII
-osc2MMtBQ0mE0WGtNl5/ZIAY87ie34iNfB8tmGYYz5RuIOkqLOr1zAN48h1Mz8ns
-1wzk4LrkTLk9S75sizF2OcClMGF/BQ==
-=aGWO
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZMJ4PAAKCRB4tDGHoIJi
+0uMQAP0cyH+MmoYDq0bYqc1tDH4XJx8aqF7Nnl51fyCgkhswTQD+IGEtJb1Kpfwn
+bn0tQDipAdeNStQ35ykLjoCpsinO0gU=
+=1IdJ
 -----END PGP SIGNATURE-----
 
---j3cTX/J+5HKXgACC--
-
+--TQTLQ3T5Ey+fZbus--
 
