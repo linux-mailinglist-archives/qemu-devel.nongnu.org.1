@@ -2,51 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 008D176554F
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 15:47:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51399765576
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 15:59:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qP1H6-00062E-RE; Thu, 27 Jul 2023 09:43:28 -0400
+	id 1qP1H6-00061h-Iw; Thu, 27 Jul 2023 09:43:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jing2.liu@intel.com>)
- id 1qOvVt-0005ew-1y
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 03:34:21 -0400
+ id 1qOvVv-0005fI-R0
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 03:34:23 -0400
 Received: from [192.55.52.136] (helo=mgamail.intel.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jing2.liu@intel.com>)
- id 1qOvVr-0004N7-CH
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 03:34:20 -0400
+ id 1qOvVu-0004Nk-78
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 03:34:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1690443259; x=1721979259;
+ t=1690443262; x=1721979262;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=loxFiijST0IQty0YeY0ldu2O+ixiW/kkhN5LYkEB+U0=;
- b=TKCDCWI7MMVs3rIuqS861z1NIQN6zxmd/1bKz1IFFegSSit63oLihP+H
- wX3utb+wFcjJ05hoXQu5O5BiRtvx9m/U9JHCMNNFDz1kSsB3SOlpH/Gwq
- LHQQfK87PNVSQX0nVm/bgGZG1LnEj5F3As1hYlYWoyX0KK3tUiH8ssYn+
- Wi4yKpRmU61AiMbPqE44C6uxZ7Xv17/odl9F3u1S5LQ+EeleYYBHBfUAW
- gw91O/nnbxjSPMJ/ze9bRlpqOzb5xkA7c5Pxz18gFEmno5WakCoKaruVS
- zLH6U4HtSLRN4B8q0W4Wb+pnS+uJJDSvkbZJPtz8/WMb4h+G6MNgeEDV+ g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10783"; a="347842874"
-X-IronPort-AV: E=Sophos;i="6.01,234,1684825200"; d="scan'208";a="347842874"
+ bh=PDY6PXgBHsLC8cUf42XTMOY4sPIs93ocKgpDuj7Te6A=;
+ b=E8V7UkQauWE6NxD3lEq7hN91mUUiqASGeR/S26ivYwvEFawx9NPxn/Op
+ oIBHB5q6o7ScLT4HQWtaF7SaMC820GCPrlx5S7u/dXeOP9xoizNRRFwKu
+ g2/VRiGisQfjZymScLh7/crZvjacZs5n+Vrw3a8f/PrSl5WKARZoOlOXJ
+ k1Tg1r25OygI8Jc33BMWuiEEuSXR0Flq9d/9eOL10//JxOIod7KUOr8/W
+ /nvxIBMXDzR80j+5gC4ew+dRaCO2nRWkDv6tUu6Mnp62Shx74mtfhobgt
+ iNctoPtESSmhDt9FG3YKRP6WmVmuVa4j1cixkxvfUv5AHPQnShJyPH1KU Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10783"; a="347842880"
+X-IronPort-AV: E=Sophos;i="6.01,234,1684825200"; d="scan'208";a="347842880"
 Received: from orsmga008.jf.intel.com ([10.7.209.65])
  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Jul 2023 00:24:20 -0700
+ 27 Jul 2023 00:24:22 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10783"; a="756547372"
-X-IronPort-AV: E=Sophos;i="6.01,234,1684825200"; d="scan'208";a="756547372"
+X-IronPort-AV: E=McAfee;i="6600,9927,10783"; a="756547376"
+X-IronPort-AV: E=Sophos;i="6.01,234,1684825200"; d="scan'208";a="756547376"
 Received: from vmmteam.bj.intel.com ([10.240.192.110])
- by orsmga008.jf.intel.com with ESMTP; 27 Jul 2023 00:24:17 -0700
+ by orsmga008.jf.intel.com with ESMTP; 27 Jul 2023 00:24:20 -0700
 From: Jing Liu <jing2.liu@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, pbonzini@redhat.com,
  kevin.tian@intel.com, reinette.chatre@intel.com, jing2.liu@intel.com
-Subject: [PATCH RFC v1 2/3] vfio/pci: enable vector on dynamic MSI-X allocation
-Date: Thu, 27 Jul 2023 03:24:09 -0400
-Message-Id: <20230727072410.135743-3-jing2.liu@intel.com>
+Subject: [PATCH RFC v1 3/3] vfio/pci: dynamic MSI-X allocation in interrupt
+ restoring
+Date: Thu, 27 Jul 2023 03:24:10 -0400
+Message-Id: <20230727072410.135743-4-jing2.liu@intel.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20230727072410.135743-1-jing2.liu@intel.com>
 References: <20230727072410.135743-1-jing2.liu@intel.com>
@@ -78,91 +79,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The vector_use callback is used to enable vector that is unmasked in
-guest. The kernel used to only support static MSI-X allocation. When
-allocating a new interrupt using "static MSI-X allocation" kernels,
-Qemu first disables all previously allocated vectors and then
-re-allocates all including the new one. The nr_vectors of VFIOPCIDevice
-indicates that all vectors from 0 to nr_vectors are allocated (and may
-be enabled), which is used to to loop all the possibly used vectors
-When, e.g., disabling MSI-X interrupts.
+During migration restoring, vfio_enable_vectors() is called to restore
+enabling MSI-X interrupts for assigned devices. It sets the range from 0
+to nr_vectors to kernel to enable MSI-X and the vectors unmasked in
+guest. During the MSI-X enabling, all the vectors within the range are
+allocated according to the ioctl().
 
-Extend the vector_use function to support dynamic MSI-X allocation when
-host supports the capability. Qemu therefore can individually allocate
-and enable a new interrupt without affecting others or causing interrupts
-lost during runtime.
-
-Utilize nr_vectors to calculate the upper bound of enabled vectors in
-dynamic MSI-X allocation mode since looping all msix_entries_nr is not
-efficient and unnecessary.
+When dynamic MSI-X allocation is supported, we only want the guest
+unmasked vectors being allocated and enabled. Therefore, Qemu can first
+set vector 0 to enable MSI-X and after that, all the vectors can be
+allocated in need.
 
 Signed-off-by: Jing Liu <jing2.liu@intel.com>
-Tested-by: Reinette Chatre <reinette.chatre@intel.com>
 ---
- hw/vfio/pci.c | 40 +++++++++++++++++++++++++++-------------
- 1 file changed, 27 insertions(+), 13 deletions(-)
+ hw/vfio/pci.c | 32 ++++++++++++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
 diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index 0c4ac0873d40..8c485636445c 100644
+index 8c485636445c..43ffacd5b36a 100644
 --- a/hw/vfio/pci.c
 +++ b/hw/vfio/pci.c
-@@ -512,12 +512,20 @@ static int vfio_msix_vector_do_use(PCIDevice *pdev, unsigned int nr,
-     }
+@@ -375,6 +375,38 @@ static int vfio_enable_vectors(VFIOPCIDevice *vdev, bool msix)
+     int ret = 0, i, argsz;
+     int32_t *fds;
  
-     /*
--     * We don't want to have the host allocate all possible MSI vectors
--     * for a device if they're not in use, so we shutdown and incrementally
--     * increase them as needed.
-+     * When dynamic allocation is not supported, we don't want to have the
-+     * host allocate all possible MSI vectors for a device if they're not
-+     * in use, so we shutdown and incrementally increase them as needed.
-+     * And nr_vectors stands for the number of vectors being allocated.
++    /*
++     * If dynamic MSI-X allocation is supported, the vectors to be allocated
++     * and enabled can be scattered. Before kernel enabling MSI-X, setting
++     * nr_vectors causes all these vectors being allocated on host.
 +     *
-+     * When dynamic allocation is supported, let the host only allocate
-+     * and enable a vector when it is in use in guest. nr_vectors stands
-+     * for the upper bound of vectors being enabled (but not all of the
-+     * ranges is allocated or enabled).
-      */
--    if (vdev->nr_vectors < nr + 1) {
-+    if ((vdev->msix->irq_info_flags & VFIO_IRQ_INFO_NORESIZE) &&
-+        (vdev->nr_vectors < nr + 1)) {
-         vdev->nr_vectors = nr + 1;
++     * To keep allocation as needed, first setup vector 0 with an invalid
++     * fd to make MSI-X enabled, then enable vectors by setting all so that
++     * kernel allocates and enables interrupts only when enabled in guest.
++     */
++    if (msix && !(vdev->msix->irq_info_flags & VFIO_IRQ_INFO_NORESIZE)) {
++        argsz = sizeof(*irq_set) + sizeof(*fds);
 +
-         if (!vdev->defer_kvm_irq_routing) {
-             vfio_disable_irqindex(&vdev->vbasedev, VFIO_PCI_MSIX_IRQ_INDEX);
-             ret = vfio_enable_vectors(vdev, true);
-@@ -529,16 +537,22 @@ static int vfio_msix_vector_do_use(PCIDevice *pdev, unsigned int nr,
-         Error *err = NULL;
-         int32_t fd;
- 
--        if (vector->virq >= 0) {
--            fd = event_notifier_get_fd(&vector->kvm_interrupt);
--        } else {
--            fd = event_notifier_get_fd(&vector->interrupt);
--        }
-+        if (!vdev->defer_kvm_irq_routing) {
-+            if (vector->virq >= 0) {
-+                fd = event_notifier_get_fd(&vector->kvm_interrupt);
-+            } else {
-+                fd = event_notifier_get_fd(&vector->interrupt);
-+            }
- 
--        if (vfio_set_irq_signaling(&vdev->vbasedev,
--                                     VFIO_PCI_MSIX_IRQ_INDEX, nr,
--                                     VFIO_IRQ_SET_ACTION_TRIGGER, fd, &err)) {
--            error_reportf_err(err, VFIO_MSG_PREFIX, vdev->vbasedev.name);
-+            if (vfio_set_irq_signaling(&vdev->vbasedev,
-+                                       VFIO_PCI_MSIX_IRQ_INDEX, nr,
-+                                       VFIO_IRQ_SET_ACTION_TRIGGER, fd, &err)) {
-+                error_reportf_err(err, VFIO_MSG_PREFIX, vdev->vbasedev.name);
-+            }
++        irq_set = g_malloc0(argsz);
++        irq_set->argsz = argsz;
++        irq_set->flags = VFIO_IRQ_SET_DATA_EVENTFD |
++                         VFIO_IRQ_SET_ACTION_TRIGGER;
++        irq_set->index = msix ? VFIO_PCI_MSIX_IRQ_INDEX :
++                         VFIO_PCI_MSI_IRQ_INDEX;
++        irq_set->start = 0;
++        irq_set->count = 1;
++        fds = (int32_t *)&irq_set->data;
++        fds[0] = -1;
++
++        ret = ioctl(vdev->vbasedev.fd, VFIO_DEVICE_SET_IRQS, irq_set);
++
++        g_free(irq_set);
++
++        if (ret) {
++            return ret;
 +        }
-+        /* Increase for dynamic allocation case. */
-+        if (vdev->nr_vectors < nr + 1) {
-+            vdev->nr_vectors = nr + 1;
-         }
-     }
++    }
++
+     argsz = sizeof(*irq_set) + (vdev->nr_vectors * sizeof(*fds));
  
+     irq_set = g_malloc0(argsz);
 -- 
 2.27.0
 
