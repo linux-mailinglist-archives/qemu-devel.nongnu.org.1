@@ -2,75 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD4C176590D
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 18:44:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D2FE76590B
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 18:44:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qP3ov-0003z9-6O; Thu, 27 Jul 2023 12:26:33 -0400
+	id 1qP3u7-0005Ns-BE; Thu, 27 Jul 2023 12:31:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qP3op-0003vG-8d
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 12:26:27 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ id 1qP3u3-0005Na-Up
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 12:31:52 -0400
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qP3on-0000fV-8f
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 12:26:26 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-6862842a028so904763b3a.0
- for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 09:26:23 -0700 (PDT)
+ id 1qP3u2-0001mJ-B1
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 12:31:51 -0400
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-1bb775625e2so7446335ad.1
+ for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 09:31:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690475183; x=1691079983;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=3G2qvF807dtcBmq3t7VF0034ERKCeVyIfRSjPFahYwM=;
- b=sMG0w/xn9GQ2iZUQ2aEEE/C0ljYIaczAdwqPdn9zwWYC7TFXk5oe2IO3KGvM8AvLHV
- Sh0bTB3tZqW9mFiacCBJeMV0fGtwCT8rGbEO3AXgtzJyHWyX6FlUStZWkOghbdPbLeBH
- 2P4ZAZYkdfaxnP6UKnTN2Z2KoD7Kc3A2D1Qj6wVsJZtdRQj6VmV3K29yb2YMAsIak6Q4
- 9BDK0UUZwJjLUUmVk9l0fN8qnmAW1UVZGKLvA0utfxIeH+g34zQalQ0bE5Uy1LoLNC4E
- ZBqZe6lOUaYNVIp/Vwu5mxlbWbCGPrQ3HkbAO7ZNjORFZMqJFBhObl9YBgglb3jpxSE5
- VMww==
+ d=linaro.org; s=google; t=1690475507; x=1691080307;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=t8jhy7LbSEamd15YQjdZjcGdRphBrK/yDrSg5BLGz2k=;
+ b=PJLQ7yAYo0WddKi3y81E4zm9hF+v9pRELVnSMii6uoUQZvRnvhcIV6YJuLrRMbsb1F
+ f+Kks13Y85EP0zVTAwizFwh0wjBCE+rIJQNnd3gbPBCMOP0vkH8OUHeeC9lDmdvUxyIQ
+ ToFL8VbpaAMFjKUSjFAbKgCT2MaucUHJvblmpq9jHzTODOfcsxIvQIZA2aLEuY+YYMOT
+ qTifZgTUGvOS89wzRAEcJmx/8pL9p1KAeKuUOsixsOMH4cqU41GiTu3V3+W6VQ00mYGI
+ lxZbc+ShOrJk2i9OH0fgclwtCOsm2ER6UABFL9Zma/+zAKrHOVUP6EuQ9J5A0WUmZXOn
+ EFkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690475183; x=1691079983;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=3G2qvF807dtcBmq3t7VF0034ERKCeVyIfRSjPFahYwM=;
- b=JmnyWBo8sqvvZdDlvE4xZQzrEr0B61Diqy/WA2dmIkOz1ChEsFH1Mslz1AsMWZPwEH
- pDYElnti48TXgzD+PP8RffDmR7V7MZpk7xklWnJOzVH4K2ofv/WQVkYpUhQv3VO3wHGZ
- FyC1UscyA3vDBq54kZrebZ+7TVD50kwQJ6GS61p0Ve5IG847MVWG7VKBp3p9IhtTH6b3
- BfBitd55BzzJkdU1JkQBB1+7/x6XoL2/MblPwTzMY47BIuOfOXXRJkvIuxgK6HpfJtP4
- A9gZk22mNOiNUUcB8PzKeKEXb7yyaps8TOPcEGL1YXHHgDfaJBiANCFwlltHH5lQHcLL
- ypeQ==
-X-Gm-Message-State: ABy/qLYZPlnE1YQG7GdYQqcrQYt3QCtI/bPt7ndr8vVD0qTDgtj7bQIZ
- sWSmjQpheTG41sP82lZ0kPzbhm2u1CzzSeN9qS8=
-X-Google-Smtp-Source: APBJJlE84JoSbhXLKVKkktTKsRDpetXbFE7P3PoosBnRp1vF8w51yiT3C7PLiIU9m7yFMfpuo0zjXw==
-X-Received: by 2002:a05:6a00:1a94:b0:682:2e99:9de0 with SMTP id
- e20-20020a056a001a9400b006822e999de0mr5566719pfv.23.1690475182516; 
- Thu, 27 Jul 2023 09:26:22 -0700 (PDT)
-Received: from stoup.. ([2602:ae:154e:c001:caf5:5ae2:432a:1bdf])
+ d=1e100.net; s=20221208; t=1690475507; x=1691080307;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=t8jhy7LbSEamd15YQjdZjcGdRphBrK/yDrSg5BLGz2k=;
+ b=M1HJq2OT3ZpesPtpSG656WTmSeLVxti+UKwGXRbN8I0rDBuPbnXZ7K/cQ48xRv0n6E
+ Q7WpSwWmPeQBhf9ujio9sYPJe4bvrpYAVVByRCk1G03xyaq65pFZ9HmPUrzX1zUpAkfz
+ 37BHJrzqcQQlMj/SYDB9In2p2jiUcNoc4iqRN5U4nwKFpFsdN8XscxzsXFKxHeQ1BPlg
+ COPcnYL+hDzjovtIUAoo76vjU7g0a/aqmPAG5fiCt5mqze5E5TkG+GKNVJmeTdyL193W
+ swhZWAXixLeQD/anX7oqjHp054G5GZJ5ewtM57kzQdOQszbsppTUBQUpadIFuusQpO0I
+ KciA==
+X-Gm-Message-State: ABy/qLbjeM8XlwBFLZiQGgWXog8YlLZtKv7bkKP30hzwjQeJlRwzfjUS
+ YkmRJa1Om5qjntawkm5pGMAzGQ==
+X-Google-Smtp-Source: APBJJlGP47KJLw5aSVClOsM+4kRsb6+2myOXR1kv2tVZEhp6NfK1+Y/BIz7WyPnEI5EDaM82/rq40g==
+X-Received: by 2002:a17:903:2351:b0:1b8:417d:d042 with SMTP id
+ c17-20020a170903235100b001b8417dd042mr3766349plh.20.1690475507280; 
+ Thu, 27 Jul 2023 09:31:47 -0700 (PDT)
+Received: from ?IPV6:2602:ae:154e:c001:caf5:5ae2:432a:1bdf?
+ ([2602:ae:154e:c001:caf5:5ae2:432a:1bdf])
  by smtp.gmail.com with ESMTPSA id
- p13-20020aa7860d000000b00682c1db7551sm1687786pfn.49.2023.07.27.09.26.21
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 27 Jul 2023 09:26:22 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org
-Subject: [PATCH] target/arm: Do not use gen_mte_checkN in trans_STGP
-Date: Thu, 27 Jul 2023 09:26:21 -0700
-Message-Id: <20230727162621.445400-1-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
+ iz12-20020a170902ef8c00b001b8b45b177esm1835420plb.274.2023.07.27.09.31.46
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 27 Jul 2023 09:31:46 -0700 (PDT)
+Message-ID: <ebdf2692-a155-6d2f-d46c-ddef02f4752a@linaro.org>
+Date: Thu, 27 Jul 2023 09:31:44 -0700
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] semihosting/uaccess.c: Replaced a malloc call with
+ g_malloc.
+Content-Language: en-US
+To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>
+Cc: dinglimin@cmss.chinamobile.com, Michael Tokarev <mjt@tls.msk.ru>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+References: <20230725080630.1083-1-dinglimin@cmss.chinamobile.com>
+ <20230725090039.1271-1-dinglimin@cmss.chinamobile.com>
+ <106cf02f-f746-e216-22be-8f7594028695@tls.msk.ru>
+ <CAFEAcA-ErMrk60uZMu8M-0G15aTvhOZsYsvJD1F-YbLGOFDBYA@mail.gmail.com>
+ <E1qOWH5-0002Du-U6@lists.gnu.org>
+ <CAFEAcA8UdN4-DU4dAiY3VGLA77mLK-ohfFJs5+5fDt3v1mAAcg@mail.gmail.com>
+ <9a05f370-1857-2c28-a184-a5197455b314@linaro.org>
+ <CAFEAcA-4qzq7hivk-vuZMfxOaMXU7zusATtotiashNqrSbupSg@mail.gmail.com>
+ <ZMKHlCHA+5IWd9EE@redhat.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <ZMKHlCHA+5IWd9EE@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -88,80 +106,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-STGP writes to tag memory, it does not check it.
-This happened to work because we wrote tag memory first
-so that the check always succeeded.
+On 7/27/23 08:04, Daniel P. Berrangé wrote:
+> On Thu, Jul 27, 2023 at 03:56:23PM +0100, Peter Maydell wrote:
+>> On Wed, 26 Jul 2023 at 16:21, Richard Henderson
+>> <richard.henderson@linaro.org> wrote:
+>>>
+>>> On 7/26/23 02:43, Peter Maydell wrote:
+>>>> (Something went wrong with the quoting in your email. I've
+>>>> fixed it up.)
+>>>>
+>>>> On Wed, 26 Jul 2023 at 05:38, <dinglimin@cmss.chinamobile.com> wrote:
+>>>>> Peter Maydell wrote:
+>>>>>> The third part here, is that g_malloc() does not ever
+>>>>>> fail -- it will abort() on out of memory. However
+>>>>>> the code here is still handling g_malloc() returning NULL.
+>>>>>> The equivalent for "we expect this might fail" (which we want
+>>>>>> here, because the guest is passing us the length of memory
+>>>>>> to try to allocate) is g_try_malloc().
+>>>>
+>>>>> g_malloc() is preferred more than g_try_* functions, which return NULL on error,
+>>>>> when the size of the requested allocation  is small.
+>>>>> This is because allocating few bytes should not be a problem in a healthy system.
+>>>>
+>>>> This is true. But in this particular case we cannot be sure
+>>>> that the size of the allocation is small, because the size
+>>>> is controlled by the guest. So we want g_try_malloc().
+>>>
+>>> And why do we want to use g_try_malloc instead of just sticking with malloc?
+>>
+>> The only real reason is just consistency
+> 
+> I think it is slightly stronger than that.
+> 
+> By using g_try_malloc we make it explicit that this scenario is
+> expecting the allocation to fail and needs to handle that.
+> 
+> If we use plain 'malloc' it isn't clear whether we genuinely expect
+> the allocation to fail, or someone just blindly checked malloc
+> return value out of habit, because they didn't realize QEMU wants
+> abort-on-OOM behaviour most of the time.
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- target/arm/tcg/translate-a64.c | 41 +++++++++++++---------------------
- 1 file changed, 15 insertions(+), 26 deletions(-)
+Ok, fair enough.
 
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 5fa1257d32..dfd18e19ca 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -3020,37 +3020,17 @@ static bool trans_STGP(DisasContext *s, arg_ldstpair *a)
-         tcg_gen_addi_i64(dirty_addr, dirty_addr, offset);
-     }
- 
--    if (!s->ata) {
--        /*
--         * TODO: We could rely on the stores below, at least for
--         * system mode, if we arrange to add MO_ALIGN_16.
--         */
--        gen_helper_stg_stub(cpu_env, dirty_addr);
--    } else if (tb_cflags(s->base.tb) & CF_PARALLEL) {
--        gen_helper_stg_parallel(cpu_env, dirty_addr, dirty_addr);
--    } else {
--        gen_helper_stg(cpu_env, dirty_addr, dirty_addr);
--    }
--
--    mop = finalize_memop(s, MO_64);
--    clean_addr = gen_mte_checkN(s, dirty_addr, true, false, 2 << MO_64, mop);
--
-+    clean_addr = clean_data_tbi(s, dirty_addr);
-     tcg_rt = cpu_reg(s, a->rt);
-     tcg_rt2 = cpu_reg(s, a->rt2);
- 
-     /*
--     * STGP is defined as two 8-byte memory operations and one tag operation.
--     * We implement it as one single 16-byte memory operation for convenience.
--     * Rebuild mop as for STP.
--     * TODO: The atomicity with LSE2 is stronger than required.
--     * Need a form of MO_ATOM_WITHIN16_PAIR that never requires
--     * 16-byte atomicity.
-+     * STGP is defined as two 8-byte memory operations, aligned to TAG_GRANULE,
-+     * and one tag operation.  We implement it as one single aligned 16-byte
-+     * memory operation for convenience.  Note that the alignment ensures
-+     * MO_ATOM_IFALIGN_PAIR produces 8-byte atomicity for the memory store.
-      */
--    mop = MO_128;
--    if (s->align_mem) {
--        mop |= MO_ALIGN_8;
--    }
--    mop = finalize_memop_pair(s, mop);
-+    mop = MO_128 | MO_ALIGN | MO_ATOM_IFALIGN_PAIR;
- 
-     tmp = tcg_temp_new_i128();
-     if (s->be_data == MO_LE) {
-@@ -3060,6 +3040,15 @@ static bool trans_STGP(DisasContext *s, arg_ldstpair *a)
-     }
-     tcg_gen_qemu_st_i128(tmp, clean_addr, get_mem_index(s), mop);
- 
-+    /* Perform the tag store, if tag access enabled. */
-+    if (s->ata) {
-+        if (tb_cflags(s->base.tb) & CF_PARALLEL) {
-+            gen_helper_stg_parallel(cpu_env, dirty_addr, dirty_addr);
-+        } else {
-+            gen_helper_stg(cpu_env, dirty_addr, dirty_addr);
-+        }
-+    }
-+
-     op_addr_ldstpair_post(s, a, dirty_addr, offset);
-     return true;
- }
--- 
-2.34.1
 
+r~
 
