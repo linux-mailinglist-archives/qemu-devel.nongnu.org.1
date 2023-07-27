@@ -2,74 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CE9B765A8D
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 19:39:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D2C576595A
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 18:59:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qP3aR-0000BT-1D; Thu, 27 Jul 2023 12:11:35 -0400
+	id 1qP3ak-0000ED-TN; Thu, 27 Jul 2023 12:11:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qP3aP-0000BE-00
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 12:11:33 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qP3aj-0000Dm-AW
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 12:11:53 -0400
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qP3aI-0003g9-TD
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 12:11:32 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-31757edd9edso1221178f8f.2
- for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 09:11:26 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qP3ah-00046Q-Kp
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 12:11:53 -0400
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1bb9e6c2a90so8800205ad.1
+ for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 09:11:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690474285; x=1691079085;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=SqEb7fDLtdXCQ0FEVkKZ1JfH1sE3u+bGhNdu3epiPzs=;
- b=U0gykGZuXn2GSSOogo/sU45GBVa8ew5WcA3m1Yuqpga2Tjv0rguRV4wQxQxKFDf/4I
- iQx4217p4Ui0U+9XHu+M+sdzLgn6u2fWvtMa0QQE0L2fn8cSvUXqicppZhN1k8YBvrJ/
- IvyuuJj8SAMgC6/yMJwXSk3BV+Mxts/fWZ/vVLOn27V5akslOYFLz0i8KkQgXaGrRhtB
- hidg7ILlfcjR0kKn2p0PQMhSR0FJJQocxCfz/0msl4vaKwJePtmCRUXKsxAf/eeNViqL
- daNtWAbujqRG0K14iTDI3Hmtw9Q1pSJyCY31omUPi4J3h/eHyU7HwdvJrzs2L/yuT9qG
- L+Ng==
+ d=linaro.org; s=google; t=1690474310; x=1691079110;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=mlAaXL3bxV/cTeXm/tHUXfFmU7oIzFbeSbiCq9TZf/A=;
+ b=h2oGLtGJb3Kc1jlBvVxBTqrgzHayr6U5xH642Ot3kUuqEWro062QMG0LNoYubhWPZ5
+ zTJruWFh9wKK4S508YtDoqWuToHdX9W9XiQIEn/0nse3r+feAQAb1SSiwGbKThM5EiME
+ oCnA39xqsZoMLIa6TDqzBnigQCZYQUFS2OOSTjcGQbTIVbuwuwSbAneZOsaEJveGLbWb
+ dtK5TlCGDD64S+1X6UO/1OGQ11KQ7Cqi1bgnvDG0on0Kh43O6b7FGEn6s0MTgupuffwn
+ komR9oIaCRAJRnCcVfu8WjXT/jOY0bD3baeCnxFcjeaBa6nrVjTzj7W/owJ5ZoSMc9gH
+ XBqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690474285; x=1691079085;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20221208; t=1690474310; x=1691079110;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=SqEb7fDLtdXCQ0FEVkKZ1JfH1sE3u+bGhNdu3epiPzs=;
- b=X64JNU46SEf0fxgJIxKccoFIcTmOeGAyHaahDtJ2NhiJlEQYTAPKedFNjkFcelqmP5
- F4vbckg53esOjpWrPRIekvwlwfkXHpnAk84ifgOJhcb8hhOSSD/pBL4QpKMMI4iOOs0y
- RJqZuYwLUtnSP+A43Th6Kuqp1vWDYrtnWBq8laJbWayCOF6pU5T+XUS8MWZx9t71NQcH
- O7OWe/Ztj8twhbuj63rbQWlrIK8jdBYFpf+MgwivM2dkktgmIHqEKg7r2kJDRiCXEkx2
- eQpBy5gLCoowPTo+bmYO44BTx++HesaR9likgpwQY4GlPx+nFhwZNR6g+breRga1ZIE/
- lJag==
-X-Gm-Message-State: ABy/qLaNLvlC+p5vY8z9XbJlmlcL3jYa6XVgNYYaMCsc3CGeIR51nJ6b
- gPtcbTpB4xiQVXUNb4wFjdC+0szZCA0Hw4eNggGso1HwiLYhfNrx
-X-Google-Smtp-Source: APBJJlH6tTS1otZl/XsfJ/n5RxO4bJE1aNQCd8P3QatVbiYI6wOhpRcGq4SywVS4xbGuMsrbDtil3xZ/9Moe0FMvfys=
-X-Received: by 2002:a5d:4405:0:b0:317:70cb:4f58 with SMTP id
- z5-20020a5d4405000000b0031770cb4f58mr1917570wrq.63.1690474285235; Thu, 27 Jul
- 2023 09:11:25 -0700 (PDT)
+ bh=mlAaXL3bxV/cTeXm/tHUXfFmU7oIzFbeSbiCq9TZf/A=;
+ b=YpbU+sFMe9JmMCOeeNCxi72N011AlpNormCxouVsR9L/pWCRf9xSL7o24wwomTWB3J
+ LdtSj9xyb7b5skDZ54m+2CI9PjNI3b64jN7513cakN27qHECWSiK8dvgdDnGM2oLqabQ
+ Tt8F/0ZkVHUUqq73/Qh84io82MHw2nwV0lCMbosgqed1rEbxPNbUgS39iamsfUPR/OiH
+ La5EoiuMZFq1xZHtghRTRliXyuMENWR9Pur197pBIjTHMNsQb7EE8+hmbre60zmroRbV
+ bl7k10zIqGk6QCemzT8lxywcVYAyvdRNUfXjoCzQsz5uQ/a+uFdZKoX4ODr87pfTBRHA
+ 5WPQ==
+X-Gm-Message-State: ABy/qLb9atH2aMEUnh91GY4UifFbE/la7iUR81Ng+smwtWfFsfQHGdwd
+ Zm9gvYAj8o35eolMkg2SBW7aoMNijctUkOY9eD0=
+X-Google-Smtp-Source: APBJJlFsdTjsuDI+0RDdc0fiI//FtdRIyLHVzuLESflhuqzZxsAP8tHFeMe8CfIXWHJMm4e2I/+4dQ==
+X-Received: by 2002:a17:902:7792:b0:1b0:6038:2982 with SMTP id
+ o18-20020a170902779200b001b060382982mr4827166pll.41.1690474310220; 
+ Thu, 27 Jul 2023 09:11:50 -0700 (PDT)
+Received: from stoup.. ([2602:ae:154e:c001:caf5:5ae2:432a:1bdf])
+ by smtp.gmail.com with ESMTPSA id
+ b21-20020a170902d31500b001b9be79729csm1834329plc.165.2023.07.27.09.11.49
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 27 Jul 2023 09:11:49 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: imp@bsdimp.com
+Subject: [PATCH] bsd-user: Properly allocate guest virtual address space
+Date: Thu, 27 Jul 2023 09:11:48 -0700
+Message-Id: <20230727161148.444988-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20230726030450.757462-1-chris@laplante.io>
- <20230726030450.757462-3-chris@laplante.io>
-In-Reply-To: <20230726030450.757462-3-chris@laplante.io>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 27 Jul 2023 17:11:14 +0100
-Message-ID: <CAFEAcA_Js28L0bLwexp9s1CCB5_CU3+cVymq64awriXjf3td2Q@mail.gmail.com>
-Subject: Re: [PATCH v2 2/6] qtest: factor out qtest_install_gpio_out_intercept
-To: Chris Laplante <chris@laplante.io>
-Cc: qemu-devel@nongnu.org, Joel Stanley <joel@jms.id.au>, qemu-arm@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42a.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,37 +88,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 26 Jul 2023 at 04:32, Chris Laplante <chris@laplante.io> wrote:
->
-> Signed-off-by: Chris Laplante <chris@laplante.io>
-> ---
->  softmmu/qtest.c | 16 ++++++++++------
->  1 file changed, 10 insertions(+), 6 deletions(-)
->
-> diff --git a/softmmu/qtest.c b/softmmu/qtest.c
-> index f8d764b719..1c92e5a6a3 100644
-> --- a/softmmu/qtest.c
-> +++ b/softmmu/qtest.c
-> @@ -365,6 +365,15 @@ void qtest_set_command_cb(bool (*pc_cb)(CharBackend *chr, gchar **words))
->      process_command_cb = pc_cb;
->  }
->
-> +static void qtest_install_gpio_out_intercept(DeviceState *dev, const char *name, int n)
-> +{
-> +    qemu_irq *disconnected = g_new0(qemu_irq, 1);
-> +    qemu_irq icpt = qemu_allocate_irq(qtest_irq_handler,
-> +                                      disconnected, n);
-> +
-> +    *disconnected = qdev_intercept_gpio_out(dev, icpt,name, n);
+Do not hard-code guest_base at 32GB.
+Do not override mmap_next_start for reserved_va.
 
-Missing space after comma.
-Otherwise
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Hi Warner,
 
-(If this is the only issue with the series I'll fix it
-when I pick it up, no need for a respin.)
+With the blitz-trial branch you provided, the host libc allocates
+thread-local storage within the [32GB, 36GB) region that you currently
+assume is free.
 
-thanks
--- PMM
+The armv7-hello program happens to map on top of this thread-local
+storage, and then we crash later accessing some host TLS variable.
+
+While the linux-user probe_guest_base is significantly more complex,
+we are also trying to handle 32-bit hosts.  I think freebsd is always
+assuming 64-bit hosts, which makes this simpler.
+
+
+r~
+---
+ bsd-user/main.c | 37 +++++++++++++++++++------------------
+ 1 file changed, 19 insertions(+), 18 deletions(-)
+
+diff --git a/bsd-user/main.c b/bsd-user/main.c
+index f500ec292b..9760aad9f6 100644
+--- a/bsd-user/main.c
++++ b/bsd-user/main.c
+@@ -50,20 +50,8 @@
+ 
+ int do_strace;
+ 
+-/*
+- * Going hand in hand with the va space needed (see below), we need
+- * to find a host address to map the guest to. Assume that qemu
+- * itself doesn't need memory above 32GB (or that we don't collide
+- * with anything interesting). This is selected rather arbitrarily,
+- * but seems to produce good results in tests to date.
+- */
+-# if HOST_LONG_BITS >= 64
+-uintptr_t guest_base = 0x800000000ul;    /* at 32GB */
+-bool have_guest_base = true;
+-#else
+-uintptr_t guest_base;    /* TODO: use sysctl to find big enough hole */
++uintptr_t guest_base;
+ bool have_guest_base;
+-#endif
+ static bool opt_one_insn_per_tb;
+ static const char *cpu_model;
+ static const char *cpu_type;
+@@ -522,10 +510,6 @@ int main(int argc, char **argv)
+     target_environ = envlist_to_environ(envlist, NULL);
+     envlist_free(envlist);
+ 
+-    if (reserved_va) {
+-        mmap_next_start = reserved_va + 1;
+-    }
+-
+     {
+         Error *err = NULL;
+         if (seed_optarg != NULL) {
+@@ -543,7 +527,24 @@ int main(int argc, char **argv)
+      * Now that page sizes are configured we can do
+      * proper page alignment for guest_base.
+      */
+-    guest_base = HOST_PAGE_ALIGN(guest_base);
++    if (have_guest_base) {
++       if (guest_base & ~qemu_host_page_mask) {
++            error_report("Selected guest base not host page aligned");
++            exit(1);
++        }
++    } else if (reserved_va) {
++        void *p = mmap(NULL, reserved_va + 1, PROT_NONE, MAP_GUARD, -1, 0);
++        if (p == MAP_FAILED) {
++            const char *err = strerror(errno);
++            char *sz = size_to_str(reserved_va + 1);
++
++            error_report("Cannot allocate %s bytes for guest address space: %s",
++                         sz, err);
++            exit(1);
++        }
++        guest_base = (uintptr_t)p;
++        have_guest_base = true;
++    }
+ 
+     if (loader_exec(filename, argv + optind, target_environ, regs, info,
+                     &bprm) != 0) {
+-- 
+2.41.0
+
 
