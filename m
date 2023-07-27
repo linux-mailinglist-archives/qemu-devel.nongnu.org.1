@@ -2,88 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E29C9765D25
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 22:23:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8A86765D7F
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 22:39:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qP6eM-0001dM-DY; Thu, 27 Jul 2023 15:27:50 -0400
+	id 1qP77j-0000LD-Ec; Thu, 27 Jul 2023 15:58:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qP6eI-0001cw-6E
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 15:27:46 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qP77e-0000KT-5R
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 15:58:06 -0400
+Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qP6eG-0000Cr-LC
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 15:27:45 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-686ba97e4feso1381993b3a.0
- for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 12:27:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qP77c-0001IO-Eb
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 15:58:05 -0400
+Received: by mail-lf1-x12f.google.com with SMTP id
+ 2adb3069b0e04-4fdfefdf5abso2386623e87.1
+ for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 12:58:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690486063; x=1691090863;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Bm8TMvX2XHx+mvLmgiRQv6pyZeA2kCauapbXEfX9qP8=;
- b=WnuGHEEnElX3EcoO7ipXf17U1p44jb2Mp64DsSdMG7RRmMxxqK/D0bvJxYuKCx5jt/
- mvRSI7ZVV53sdSJG4rC40hX69dQgtqVS+AY+Qvku4r5njFkFrKB6vfULyDCndviADgnr
- Cuq28ymO9lNPewsGxYI8jv+yoovAx3+hQZMWkU5Wyq5VJx8occDQ9TyNHwQoU9tVI+nR
- ivtIcf6cXJ8GI40uXoVbQfr4+X4stlQdIRtYdLhby9hswJCio+hT7/waqVOjL02p6MEX
- sgNokBJ4jdGv25Ss7zV+0fuakFgREBClKzjEHKQfcTSo0ROQAJAAJEQuQIx35MnypNRe
- IH3Q==
+ d=linaro.org; s=google; t=1690487882; x=1691092682;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=34agnrziPL9mxHsgVtlV+MC8UVIIF2Rquj32rqL7wfo=;
+ b=LtmbCVJVx0+QPyIcdAAmeBk7hOj+xeGPuQSc/3G0drEIqnmz7k8Vipo5INi504YqJZ
+ i9cDUFsLMOaaIXJ3Gxaa68EoE5H6WbvifawpaHUeXirF8/YXgGxFjWfxA5iet14rdzKG
+ Im0Jy567jnxVGl39c4shqtMGgne9uLx9wKODmj2bUht8/FRUjRi+jfxRsb5LzCd5JW66
+ 7dF4Syd+wLEvIFsJ+HahYAUAXPLzdQ/CLOMzcQegyETF+T/YOUjRhwIUbPOBepKuKziD
+ ftiyRlJOlb/yReyOmy6OrQG92g2zQ60x5aGrg60joL9V1TNJY5Hy+HT08weJ5WWW8w+H
+ OIEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690486063; x=1691090863;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Bm8TMvX2XHx+mvLmgiRQv6pyZeA2kCauapbXEfX9qP8=;
- b=X2FvkqrMYx+GBJ8rlwBgNmlBemgXIc12Fu0kDJPADNjJ6XNeAFloGjc/sNexh9xiyp
- k0OcR0hU7RQr1unLknLQp1SK+sH/NHdczguC/vp21wFpWbm7xxkbFfyAJFq8xihene+j
- uRSYjvg/Jy31mPkXoOy8kIi+7733CLd0Nw5u8jZbYKhJQkOlXzRdHTX/CkVxK0SmLWSr
- bq/MBqlJKw01DLu8AJ8+zeLHZ07OZv+Q5fu29tP2jRW15e3K+w7mMsU3zIUaVw2DuigL
- 9iUYVDGm5A2m0PJvJgKrrZrD6NupgD1iq1p6rX8zUI+dlXR3k0fhzlrZ/vK/BcKViSy7
- 6s5Q==
-X-Gm-Message-State: ABy/qLb7bVusV71PwazxlEewc0QcZnie3Xv/BBPHY+xGMz2rEr7l3qBW
- PsQ0T+E0KqHgipG7J/vxAvilCw==
-X-Google-Smtp-Source: APBJJlFNt+o0T1bGpXeo5xyRH/lphL9z0JF5YKk3J9BeAwpjA7rM0QzMKozGeboQ0PjbLPDrEQbKUg==
-X-Received: by 2002:a05:6a00:1889:b0:680:98c:c595 with SMTP id
- x9-20020a056a00188900b00680098cc595mr103594pfh.13.1690486062387; 
- Thu, 27 Jul 2023 12:27:42 -0700 (PDT)
-Received: from ?IPV6:2602:ae:154e:c001:caf5:5ae2:432a:1bdf?
- ([2602:ae:154e:c001:caf5:5ae2:432a:1bdf])
- by smtp.gmail.com with ESMTPSA id
- m1-20020aa79001000000b00686940bfb77sm1829278pfo.71.2023.07.27.12.27.41
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 27 Jul 2023 12:27:41 -0700 (PDT)
-Message-ID: <23d2a2d6-eb18-059a-a652-6abaac28a0dd@linaro.org>
-Date: Thu, 27 Jul 2023 12:27:40 -0700
+ d=1e100.net; s=20221208; t=1690487882; x=1691092682;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=34agnrziPL9mxHsgVtlV+MC8UVIIF2Rquj32rqL7wfo=;
+ b=TZVjQPDUvQtxWNGahz4952VUGxYw7SLRqbj2grqWMVWH4rLKXVoqZ8ddHDx9XO0lB7
+ S+yV+SeTH9BpulAbK1oRiSVb2Fq7s3uQGgBbtBINF0xhbCptuJiVt64qb2sHD+/izS8U
+ blP6ckxiJT7trYfbq4Y9mpvbzjfDVnhulfHoxpd++KSZSbF8aDDRS34pfWN3ZndmL4+u
+ 2g1LOEXX+TrYt4/RWDVx2THV05yvvf1/oI/JwSF5p/zQcaJrqE+mcf09T8oiyAHl8ChM
+ Lg0UoVaxOwO4TIh5sECDI70F2w1wXi1eiAR2+h+3IJ1xsTPPh4KX9E+DjuAHeqxVrKsw
+ 1csA==
+X-Gm-Message-State: ABy/qLbvGK4icPkBwkcaJc0Qqn0yWe+xHmUs4jDRVhOLnhs+Y22ynORS
+ BKukFumTKyRR1es6q6+yUXatnHdgv7twTITVadWK3Q==
+X-Google-Smtp-Source: APBJJlH/uM+p4ndamJ2n6RSi0n2LENgHeASSp8TsN+tYgM9YKJQY5d6XFFZNaLbtY47xZL39gwIVY6UWcY5+8ismePo=
+X-Received: by 2002:a05:6512:2018:b0:4fd:d4b4:faba with SMTP id
+ a24-20020a056512201800b004fdd4b4fabamr123573lfb.51.1690487882054; Thu, 27 Jul
+ 2023 12:58:02 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 3/9] target: Use vaddr for
- kvm_arch_[insert|remove]_hw_breakpoint
-Content-Language: en-US
-To: Anton Johansson <anjo@rev.ng>, qemu-devel@nongnu.org
-Cc: ale@rev.ng, pbonzini@redhat.com, philmd@linaro.org, agraf@csgraf.de,
- dirty@apple.com, rbolshakov@ddn.com, anielhb413@gmail.com,
- pasic@linux.ibm.com, borntraeger@linux.ibm.com, palmer@dabbelt.com,
- alistair.francis@wdc.com, bin.meng@windriver.com,
- ysato@users.sourceforge.jp, peter.maydell@linaro.org
-References: <20230721205827.7502-1-anjo@rev.ng>
- <20230721205827.7502-4-anjo@rev.ng>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230721205827.7502-4-anjo@rev.ng>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <CAFEAcA--tJPhQO49W3BDO1MABQFHrr50MU=q54TFYpbkOxVWHw@mail.gmail.com>
+ <CA+bd_6Krq9aCCQe01OjXxb+T-=3XrSnvVHrKs3F-3cwdZEGH8Q@mail.gmail.com>
+ <CAFEAcA9txYV4GZQi-uRPWuXd1oOiVHB7ZUQ5-+=zA4T+Of-g1g@mail.gmail.com>
+ <CA+bd_6LsQw3ao1KQk8Jk-VvAb9SZ1ioxSdBsghtNqJK-cnMRXA@mail.gmail.com>
+In-Reply-To: <CA+bd_6LsQw3ao1KQk8Jk-VvAb9SZ1ioxSdBsghtNqJK-cnMRXA@mail.gmail.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 27 Jul 2023 20:57:51 +0100
+Message-ID: <CAFEAcA9_W3LFmZqarA7ZSYhL9WP46Ew+4=P0EVG=60nfpQ1XVA@mail.gmail.com>
+Subject: Re: avocado test failing INTERRUPTED for "Missing asset"
+To: Cleber Rosa <crosa@redhat.com>
+Cc: QEMU Developers <qemu-devel@nongnu.org>,
+ =?UTF-8?Q?Phil_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::12f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -101,57 +92,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/21/23 13:58, Anton Johansson wrote:
-> Changes the signature of the target-defined functions for
-> inserting/removing kvm hw breakpoints. The address and length arguments
-> are now of vaddr type, which both matches the type used internally in
-> accel/kvm/kvm-all.c and makes the api target-agnostic.
-> 
-> Signed-off-by: Anton Johansson <anjo@rev.ng>
-> ---
->   include/sysemu/kvm.h   |  6 ++----
->   target/arm/kvm64.c     | 16 ++++++++--------
->   target/i386/kvm/kvm.c  | 15 +++++++--------
->   target/ppc/kvm.c       | 15 +++++++--------
->   target/s390x/kvm/kvm.c | 11 +++++------
->   5 files changed, 29 insertions(+), 34 deletions(-)
-> 
-> diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
-> index 5670306dbf..19d87b20e8 100644
-> --- a/include/sysemu/kvm.h
-> +++ b/include/sysemu/kvm.h
-> @@ -426,10 +426,8 @@ int kvm_arch_insert_sw_breakpoint(CPUState *cpu,
->                                     struct kvm_sw_breakpoint *bp);
->   int kvm_arch_remove_sw_breakpoint(CPUState *cpu,
->                                     struct kvm_sw_breakpoint *bp);
-> -int kvm_arch_insert_hw_breakpoint(target_ulong addr,
-> -                                  target_ulong len, int type);
-> -int kvm_arch_remove_hw_breakpoint(target_ulong addr,
-> -                                  target_ulong len, int type);
-> +int kvm_arch_insert_hw_breakpoint(vaddr addr, vaddr len, int type);
-> +int kvm_arch_remove_hw_breakpoint(vaddr addr, vaddr len, int type);
->   void kvm_arch_remove_all_hw_breakpoints(void);
->   
->   void kvm_arch_update_guest_debug(CPUState *cpu, struct kvm_guest_debug *dbg);
-> diff --git a/target/arm/kvm64.c b/target/arm/kvm64.c
-> index 94bbd9661f..c0750792cb 100644
-> --- a/target/arm/kvm64.c
-> +++ b/target/arm/kvm64.c
-> @@ -49,32 +49,32 @@ void kvm_arm_init_debug(KVMState *s)
->       return;
->   }
->   
-> -int kvm_arch_insert_hw_breakpoint(target_ulong addr,
-> -                                  target_ulong len, int type)
-> +int kvm_arch_insert_hw_breakpoint(vaddr addr, vaddr len, int type)
->   {
->       switch (type) {
->       case GDB_BREAKPOINT_HW:
-> -        return insert_hw_breakpoint(addr);
-> +        return insert_hw_breakpoint((target_ulong) addr);
+On Thu, 27 Jul 2023 at 20:08, Cleber Rosa <crosa@redhat.com> wrote:
+>
+> On Thu, Jul 27, 2023 at 11:50=E2=80=AFAM Peter Maydell <peter.maydell@lin=
+aro.org> wrote:
+> >
+> > Ah, so the problem is that we are trying to download the asset
+> > file, and the remote server is stalling so it doesn't actually
+> > download the file in 90s, and Avocado doesn't distinguish
+> > "hit the timeout while trying to download assets" from
+> > "hit the timeout running the actual test" ?
+> >
+>
+> Yes, exactly.  Once the test starts, that's the only timeout being
+> enforced.  The fetch_asset() (and all the download code path) is
+> simply part of the test and thus under the test timeout.  Also, right
+> now, avocado.Test.fetch_asset() doesn't provide a timeout parameter
+> (but the underlying avocado.utils.asset.Asset.fetch() does).
+>
+> > This sounds to me like the ideal would be that there is a separate
+> > timeout for file downloads (which could then be a lot shorter than
+> > the overall test timeout), and "timeout during asset download"
+> > would be detected separately from "timeout while actually running
+> > test".  But maybe the separation-of-phases in newer Avocado achieves
+> > that already ?
+> >
+>
+> The mechanism in newer Avocado will simply never attempt to run tests
+> that don't have the stated requirements fulfilled.  With regards to
+> timeouts, each of the different kinds of requirement implementations
+> (file downloads and cache, A.K.A. "assets", packages installation,
+> ansible module execution,  etc) are supposed to provide their own
+> features, including timeouts.
+>
+> Anyways, I'll look into, and report back on:
+>
+> 1. expanding avocado.Test.fetch_asset() with a timeout parameter
 
-No need for the casts.
+If newer-avocado does all this stuff differently it might not
+be worth the extra effort on something we're going to move away from.
 
+> 2. making sure the newer implementation for the requirement types used
+> by QEMU respect a timeout (they don't need to be smaller than the
+> test, because they run completely outside of the test).
 
-r~
+The main thing I think is that timeouts on asset fetch should
+result in a SKIP or CANCEL status, not INTERRUPTED, because
+the CI treats INTERRUPTED as a failure, whereas SKIP and CANCEL
+are OK.
+
+> For now, are you OK with re-running those jobs if the servers stall
+> the transfers? Or would you rather see a patch that changes the
+> find_only parameter to True, so that if the pre-test attempt to
+> download the asset fails, the transfer is never attempted during the
+> test?
+
+I think for the moment we're OK retrying (or more usually, saying
+"this job is failing today, ignore it") -- usually this kind
+of thing is "somebody's server is having troubles" and it goes
+away after a day or so.
+
+thanks
+-- PMM
 
