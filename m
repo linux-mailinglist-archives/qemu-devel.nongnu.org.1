@@ -2,93 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99D5F764CB4
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 10:25:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 437C7764E38
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 10:55:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOvmd-0000Rb-2Q; Thu, 27 Jul 2023 03:51:39 -0400
+	id 1qOw0e-0004QM-6L; Thu, 27 Jul 2023 04:06:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
- id 1qOvmP-0000Qd-4H
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 03:51:25 -0400
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
- id 1qOvmL-00007N-UV
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 03:51:23 -0400
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-3128fcd58f3so688461f8f.1
- for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 00:51:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1690444280; x=1691049080;
- h=content-transfer-encoding:in-reply-to:organization:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:from:from:to:cc:subject:date:message-id:reply-to;
- bh=cdITa7Wq+4eiw2rue221D0NdRfR3sO7CGc4YXAsZpSM=;
- b=dfYJocuFX58uoB/lZ0qThGXsuRnYBqoi2FczdSNLnCnSLRkoXQNPGbqscm7s7QXOSN
- FzoaNjtTp1pw3G8AB/C3WBb/v9Zz3wGvjPSXwnd1tulDZflBAM4cuGfoGR1wdiHy6AFZ
- 5q0vMBOhdGuruljsur4GtxG4GXwZ3LFBQ+M0P42xj2Z/CF4Bp1ugHEu03XySzsE/w6Rv
- e3tLkfZjHy2gcfPMYGmyNb0TTPZzYIjuHmlBn6DFAGXNUbGNinTQdXCLw9kMAbzGHws0
- VCKrVaqyn4ggI8nOXizWAKwD2ChUSnPLwNivjjwqz+Yd0tnZLxTXX19ahk1XvABnQXge
- Zigw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690444280; x=1691049080;
- h=content-transfer-encoding:in-reply-to:organization:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:from:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=cdITa7Wq+4eiw2rue221D0NdRfR3sO7CGc4YXAsZpSM=;
- b=GI/JRJi8CuFkjW2YYUMGNcNKZidQnNMZJYjomcY8bV/YckopunE9E0DLHXdwCrnWBE
- 0xDbf/uDWVdgi1BsrsWUr/24nUjbYiHMS95MRMIpCfNE/WYzPf6odvK6W/BdJD5bbL/j
- LaQrAnVJQTIDVd8gnJQGnHYHYqbG7lYrDNXInwr05dt6GeiuCpwQTKchkGFf6VF17w6x
- XnHwng4V1LBdSm1nrT866goCvgzsyM7dJnKBihmsWmWrO+5daEwrb8S3bW8ZQhjCEQDn
- TQmc8zPTLglmuPs84lKUKOoVWvE9cXOVo9gf4dj2+h8TBJr8HBQDXQC28i8JyTQUmKVm
- FfEw==
-X-Gm-Message-State: ABy/qLY8DJBy9e2kuiF+Cu8zNKrX6N44ERhctWkhD1yNjxkd5fpWIc5q
- IfXQzjRyGEfkgQD4FPNmrUg=
-X-Google-Smtp-Source: APBJJlGbm9sqXaDx4iRrqGi6MDRxZyjeroAuBLvHzibVYdsWVshwxb9/DgAr9sAx8eQh64NKb/DGLQ==
-X-Received: by 2002:a5d:45cf:0:b0:313:f1c8:a963 with SMTP id
- b15-20020a5d45cf000000b00313f1c8a963mr1266338wrs.2.1690444280046; 
- Thu, 27 Jul 2023 00:51:20 -0700 (PDT)
-Received: from [192.168.12.179] (54-240-197-231.amazon.com. [54.240.197.231])
- by smtp.gmail.com with ESMTPSA id
- r1-20020a5d4941000000b00314427091a2sm1172046wrs.98.2023.07.27.00.51.19
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 27 Jul 2023 00:51:19 -0700 (PDT)
-From: Paul Durrant <xadimgnik@gmail.com>
-X-Google-Original-From: Paul Durrant <paul@xen.org>
-Message-ID: <3aaaa43e-b129-35aa-f07d-d50200a4c2ec@xen.org>
-Date: Thu, 27 Jul 2023 08:51:18 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v1] xen-platform: do full PCI reset during unplug of IDE
- devices
-Content-Language: en-US
-To: Olaf Hering <olaf@aepfle.de>, xen-devel@lists.xenproject.org,
+ (Exim 4.90_1) (envelope-from <nikita.shubin@maquefel.me>)
+ id 1qOw0Y-0004Q2-B1; Thu, 27 Jul 2023 04:06:03 -0400
+Received: from forward102c.mail.yandex.net ([178.154.239.213])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <nikita.shubin@maquefel.me>)
+ id 1qOw0S-0006ys-3F; Thu, 27 Jul 2023 04:05:58 -0400
+Received: from mail-nwsmtp-smtp-production-main-90.myt.yp-c.yandex.net
+ (mail-nwsmtp-smtp-production-main-90.myt.yp-c.yandex.net
+ [IPv6:2a02:6b8:c12:27a9:0:640:8a40:0])
+ by forward102c.mail.yandex.net (Yandex) with ESMTP id BDAF660045;
+ Thu, 27 Jul 2023 11:05:48 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-90.myt.yp-c.yandex.net
+ (smtp/Yandex) with ESMTPSA id j5HG9SAWtOs0-nd11sTU5; 
+ Thu, 27 Jul 2023 11:05:47 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=maquefel.me; s=mail;
+ t=1690445147; bh=MLJcUZ3ysH8S/MlHXo9RiQS2w9EFUreLeL09xC5HriM=;
+ h=Message-Id:Date:Cc:Subject:To:From;
+ b=c6OUpgGnxYD8tqBEkP3lMehJwo1w/WxkZoXmQ2tLfw8Z2RWYFaA1j7OHvTP9lJVWE
+ 4WJ5/4PTgWtlQ70W/OntZ7+vz8dWpMLJqpF/MaDnkc/aLooAtxBrd659DFSmQywPJJ
+ us8SWrf87JVN/3LV4MRK2TThklQNFiXO0Ai5Wpjw=
+Authentication-Results: mail-nwsmtp-smtp-production-main-90.myt.yp-c.yandex.net;
+ dkim=pass header.i=@maquefel.me
+From: Nikita Shubin <nikita.shubin@maquefel.me>
+To: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Sunil V L <sunilvl@ventanamicro.com>
+Cc: Nikita Shubin <n.shubin@yadro.com>, qemu-riscv@nongnu.org,
  qemu-devel@nongnu.org
-Cc: Stefano Stabellini <sstabellini@kernel.org>,
- Anthony Perard <anthony.perard@citrix.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-References: <20230720072950.20198-1-olaf@aepfle.de>
-Organization: Xen Project
-In-Reply-To: <20230720072950.20198-1-olaf@aepfle.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=xadimgnik@gmail.com; helo=mail-wr1-x42b.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Subject: [RFC PATCH] hw/riscv: hart: allow other cpu instance
+Date: Thu, 27 Jul 2023 11:05:45 +0300
+Message-Id: <20230727080545.7908-1-nikita.shubin@maquefel.me>
+X-Mailer: git-send-email 2.39.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=178.154.239.213;
+ envelope-from=nikita.shubin@maquefel.me; helo=forward102c.mail.yandex.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,50 +68,231 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: paul@xen.org
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 20/07/2023 08:29, Olaf Hering wrote:
-> The IDE unplug function needs to reset the entire PCI device, to make
-> sure all state is initialized to defaults. This is done by calling
-> pci_device_reset, which resets not only the chip specific registers, but
-> also all PCI state. This fixes "unplug" in a Xen HVM domU with the
-> modular legacy xenlinux PV drivers.
-> 
-> Commit ee358e919e38 ("hw/ide/piix: Convert reset handler to
-> DeviceReset") changed the way how the the disks are unplugged. Prior
-> this commit the PCI device remained unchanged. After this change,
-> piix_ide_reset is exercised after the "unplug" command, which was not
-> the case prior that commit. This function resets the command register.
-> As a result the ata_piix driver inside the domU will see a disabled PCI
-> device. The generic PCI code will reenable the PCI device. On the qemu
-> side, this runs pci_default_write_config/pci_update_mappings. Here a
-> changed address is returned by pci_bar_address, this is the address
-> which was truncated in piix_ide_reset. In case of a Xen HVM domU, the
-> address changes from 0xc120 to 0xc100. This truncation was a bug in
-> piix_ide_reset, which was fixed in commit 230dfd9257 ("hw/ide/piix:
-> properly initialize the BMIBA register"). If pci_xen_ide_unplug had used
-> pci_device_reset, the PCI registers would have been properly reset, and
-> commit ee358e919e38 would have not introduced a regression for this
-> specific domU environment.
-> 
-> While the unplug is supposed to hide the IDE disks, the changed BMIBA
-> address broke the UHCI device. In case the domU has an USB tablet
-> configured, to recive absolute pointer coordinates for the GUI, it will
-> cause a hang during device discovery of the partly discovered USB hid
-> device. Reading the USBSTS word size register will fail. The access ends
-> up in the QEMU piix-bmdma device, instead of the expected uhci device.
-> Here a byte size request is expected, and a value of ~0 is returned. As
-> a result the UCHI driver sees an error state in the register, and turns
-> off the UHCI controller.
-> 
-> Signed-off-by: Olaf Hering <olaf@aepfle.de>
-> ---
->   hw/i386/xen/xen_platform.c | 7 ++++---
->   1 file changed, 4 insertions(+), 3 deletions(-)
-> 
+From: Nikita Shubin <n.shubin@yadro.com>
 
-Reviewed-by: Paul Durrant <paul@xen.org>
+Allow using instances derivative from RISCVCPU
+
+Signed-off-by: Nikita Shubin <n.shubin@yadro.com>
+---
+Currently it is not possible to overload instance of RISCVCPU, 
+i.e. something like this:
+
+static const TypeInfo riscv_cpu_type_infos[] = {
+     {
+        .name = TYPE_ANOTHER_RISCV_CPU,
+        .parent = TYPE_RISCV_CPU,
+        .instance_size = sizeof(MyCPUState),
+        .instance_init = riscv_my_cpu_init,
+    }
+};
+
+Because we have RISCVHartArrayState.harts with exactly 
+the size of RISCVCPU.
+
+Using own instances can be used to store some internal hart state.
+---
+ hw/riscv/boot.c               |  5 +++--
+ hw/riscv/riscv_hart.c         | 20 ++++++++++++--------
+ hw/riscv/sifive_u.c           |  7 +++++--
+ hw/riscv/spike.c              |  4 +++-
+ hw/riscv/virt-acpi-build.c    |  2 +-
+ hw/riscv/virt.c               |  6 +++---
+ include/hw/riscv/riscv_hart.h | 18 +++++++++++++++++-
+ 7 files changed, 44 insertions(+), 18 deletions(-)
+
+diff --git a/hw/riscv/boot.c b/hw/riscv/boot.c
+index 52bf8e67de..c0456dcc2e 100644
+--- a/hw/riscv/boot.c
++++ b/hw/riscv/boot.c
+@@ -36,7 +36,8 @@
+ 
+ bool riscv_is_32bit(RISCVHartArrayState *harts)
+ {
+-    return harts->harts[0].env.misa_mxl_max == MXL_RV32;
++    RISCVCPU *hart = riscv_array_get_hart(harts, 0);
++    return hart->env.misa_mxl_max == MXL_RV32;
+ }
+ 
+ /*
+@@ -414,7 +415,7 @@ void riscv_setup_rom_reset_vec(MachineState *machine, RISCVHartArrayState *harts
+         reset_vec[4] = 0x0182b283;   /*     ld     t0, 24(t0) */
+     }
+ 
+-    if (!harts->harts[0].cfg.ext_icsr) {
++    if (!riscv_array_get_hart(harts, 0)->cfg.ext_icsr) {
+         /*
+          * The Zicsr extension has been disabled, so let's ensure we don't
+          * run the CSR instruction. Let's fill the address with a non
+diff --git a/hw/riscv/riscv_hart.c b/hw/riscv/riscv_hart.c
+index 613ea2aaa0..74fc10ef48 100644
+--- a/hw/riscv/riscv_hart.c
++++ b/hw/riscv/riscv_hart.c
+@@ -43,24 +43,28 @@ static void riscv_harts_cpu_reset(void *opaque)
+ }
+ 
+ static bool riscv_hart_realize(RISCVHartArrayState *s, int idx,
+-                               char *cpu_type, Error **errp)
++                               char *cpu_type, size_t size, Error **errp)
+ {
+-    object_initialize_child(OBJECT(s), "harts[*]", &s->harts[idx], cpu_type);
+-    qdev_prop_set_uint64(DEVICE(&s->harts[idx]), "resetvec", s->resetvec);
+-    s->harts[idx].env.mhartid = s->hartid_base + idx;
+-    qemu_register_reset(riscv_harts_cpu_reset, &s->harts[idx]);
+-    return qdev_realize(DEVICE(&s->harts[idx]), NULL, errp);
++    RISCVCPU *hart = riscv_array_get_hart(s, idx);
++    object_initialize_child_internal(OBJECT(s), "harts[*]",
++                                    hart, size, cpu_type);
++    qdev_prop_set_uint64(DEVICE(hart), "resetvec", s->resetvec);
++    hart->env.mhartid = s->hartid_base + idx;
++    qemu_register_reset(riscv_harts_cpu_reset, hart);
++    return qdev_realize(DEVICE(hart), NULL, errp);
+ }
+ 
+ static void riscv_harts_realize(DeviceState *dev, Error **errp)
+ {
+     RISCVHartArrayState *s = RISCV_HART_ARRAY(dev);
++    size_t size = object_type_get_instance_size(s->cpu_type);
+     int n;
+ 
+-    s->harts = g_new0(RISCVCPU, s->num_harts);
++    s->harts = g_new0(RISCVCPU *, s->num_harts);
+ 
+     for (n = 0; n < s->num_harts; n++) {
+-        if (!riscv_hart_realize(s, n, s->cpu_type, errp)) {
++        s->harts[n] = RISCV_CPU(object_new(s->cpu_type));
++        if (!riscv_hart_realize(s, n, s->cpu_type, size, errp)) {
+             return;
+         }
+     }
+diff --git a/hw/riscv/sifive_u.c b/hw/riscv/sifive_u.c
+index 35a335b8d0..b8a54db81b 100644
+--- a/hw/riscv/sifive_u.c
++++ b/hw/riscv/sifive_u.c
+@@ -104,6 +104,7 @@ static void create_fdt(SiFiveUState *s, const MemMapEntry *memmap,
+     char *nodename;
+     uint32_t plic_phandle, prci_phandle, gpio_phandle, phandle = 1;
+     uint32_t hfclk_phandle, rtcclk_phandle, phy_phandle;
++    RISCVCPU *hart;
+     static const char * const ethclk_names[2] = { "pclk", "hclk" };
+     static const char * const clint_compat[2] = {
+         "sifive,clint0", "riscv,clint0"
+@@ -180,9 +181,11 @@ static void create_fdt(SiFiveUState *s, const MemMapEntry *memmap,
+             } else {
+                 qemu_fdt_setprop_string(fdt, nodename, "mmu-type", "riscv,sv48");
+             }
+-            isa = riscv_isa_string(&s->soc.u_cpus.harts[cpu - 1]);
++            hart = riscv_array_get_hart(&s->soc.u_cpus, cpu - 1);
++            isa = riscv_isa_string(hart);
+         } else {
+-            isa = riscv_isa_string(&s->soc.e_cpus.harts[0]);
++            hart = riscv_array_get_hart(&s->soc.e_cpus, 0);
++            isa = riscv_isa_string(hart);
+         }
+         qemu_fdt_setprop_string(fdt, nodename, "riscv,isa", isa);
+         qemu_fdt_setprop_string(fdt, nodename, "compatible", "riscv");
+diff --git a/hw/riscv/spike.c b/hw/riscv/spike.c
+index 81f7e53aed..85b7568dad 100644
+--- a/hw/riscv/spike.c
++++ b/hw/riscv/spike.c
+@@ -61,6 +61,7 @@ static void create_fdt(SpikeState *s, const MemMapEntry *memmap,
+     uint32_t cpu_phandle, intc_phandle, phandle = 1;
+     char *name, *mem_name, *clint_name, *clust_name;
+     char *core_name, *cpu_name, *intc_name;
++    RISCVCPU *hart;
+     static const char * const clint_compat[2] = {
+         "sifive,clint0", "riscv,clint0"
+     };
+@@ -103,6 +104,7 @@ static void create_fdt(SpikeState *s, const MemMapEntry *memmap,
+         clint_cells =  g_new0(uint32_t, s->soc[socket].num_harts * 4);
+ 
+         for (cpu = s->soc[socket].num_harts - 1; cpu >= 0; cpu--) {
++            hart = riscv_array_get_hart(&s->soc[socket], cpu);
+             cpu_phandle = phandle++;
+ 
+             cpu_name = g_strdup_printf("/cpus/cpu@%d",
+@@ -113,7 +115,7 @@ static void create_fdt(SpikeState *s, const MemMapEntry *memmap,
+             } else {
+                 qemu_fdt_setprop_string(fdt, cpu_name, "mmu-type", "riscv,sv48");
+             }
+-            name = riscv_isa_string(&s->soc[socket].harts[cpu]);
++            name = riscv_isa_string(hart);
+             qemu_fdt_setprop_string(fdt, cpu_name, "riscv,isa", name);
+             g_free(name);
+             qemu_fdt_setprop_string(fdt, cpu_name, "compatible", "riscv");
+diff --git a/hw/riscv/virt-acpi-build.c b/hw/riscv/virt-acpi-build.c
+index 7331248f59..7cff4e4baf 100644
+--- a/hw/riscv/virt-acpi-build.c
++++ b/hw/riscv/virt-acpi-build.c
+@@ -158,7 +158,7 @@ static void build_rhct(GArray *table_data,
+     isa_offset = table_data->len - table.table_offset;
+     build_append_int_noprefix(table_data, 0, 2);   /* Type 0 */
+ 
+-    cpu = &s->soc[0].harts[0];
++    cpu = riscv_array_get_hart(&s->soc[0], 0);
+     isa = riscv_isa_string(cpu);
+     len = 8 + strlen(isa) + 1;
+     aligned_len = (len % 2) ? (len + 1) : len;
+diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
+index d90286dc46..59b42cc5e4 100644
+--- a/hw/riscv/virt.c
++++ b/hw/riscv/virt.c
+@@ -236,7 +236,7 @@ static void create_fdt_socket_cpus(RISCVVirtState *s, int socket,
+     uint8_t satp_mode_max;
+ 
+     for (cpu = s->soc[socket].num_harts - 1; cpu >= 0; cpu--) {
+-        RISCVCPU *cpu_ptr = &s->soc[socket].harts[cpu];
++        RISCVCPU *cpu_ptr = riscv_array_get_hart(&s->soc[socket], cpu);
+ 
+         cpu_phandle = (*phandle)++;
+ 
+@@ -730,12 +730,12 @@ static void create_fdt_pmu(RISCVVirtState *s)
+ {
+     char *pmu_name;
+     MachineState *ms = MACHINE(s);
+-    RISCVCPU hart = s->soc[0].harts[0];
++    RISCVCPU *hart = riscv_array_get_hart(&s->soc[0], 0);
+ 
+     pmu_name = g_strdup_printf("/soc/pmu");
+     qemu_fdt_add_subnode(ms->fdt, pmu_name);
+     qemu_fdt_setprop_string(ms->fdt, pmu_name, "compatible", "riscv,pmu");
+-    riscv_pmu_generate_fdt_node(ms->fdt, hart.cfg.pmu_num, pmu_name);
++    riscv_pmu_generate_fdt_node(ms->fdt, hart->cfg.pmu_num, pmu_name);
+ 
+     g_free(pmu_name);
+ }
+diff --git a/include/hw/riscv/riscv_hart.h b/include/hw/riscv/riscv_hart.h
+index bbc21cdc9a..a5393c361b 100644
+--- a/include/hw/riscv/riscv_hart.h
++++ b/include/hw/riscv/riscv_hart.h
+@@ -38,7 +38,23 @@ struct RISCVHartArrayState {
+     uint32_t hartid_base;
+     char *cpu_type;
+     uint64_t resetvec;
+-    RISCVCPU *harts;
++    RISCVCPU **harts;
+ };
+ 
++/**
++ * riscv_array_get_hart:
++ */
++static inline RISCVCPU *riscv_array_get_hart(RISCVHartArrayState *harts, int i)
++{
++    return harts->harts[i];
++}
++
++/**
++ * riscv_array_get_num_harts:
++ */
++static inline unsigned riscv_array_get_num_harts(RISCVHartArrayState *harts)
++{
++    return harts->num_harts;
++}
++
+ #endif
+-- 
+2.39.2
 
 
