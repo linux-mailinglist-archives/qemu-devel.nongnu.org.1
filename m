@@ -2,88 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E061765C2E
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 21:34:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01954765CDB
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 22:05:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qP6jh-0002hU-1X; Thu, 27 Jul 2023 15:33:21 -0400
+	id 1qP6YL-0008PP-BS; Thu, 27 Jul 2023 15:21:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <crosa@redhat.com>) id 1qP6je-0002fX-PH
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 15:33:18 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <crosa@redhat.com>) id 1qP6jd-0002yX-6h
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 15:33:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690486395;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=2YVOnRFN+L8UMr6O9Z2gPvYZyRpCduNFOop3Nn4nZkU=;
- b=MlVrL7FKdQrgd6KN5FtpvavVgaWfaXNBLgCxW2A51KpF13N/+eQ15xGA0+3LMNKdw514AQ
- +XHBotZDpc1nu6xpSo1ktVsmHxWoMbXow74wIoTYElqFJgNCvlyMlF6JY9k+NMQzq1jYFU
- iAHEGZC3lTiKC5zLVt4iO6ut111/L88=
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
- [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-29-aer7CZ18MwK1sBaXcsM64g-1; Thu, 27 Jul 2023 15:33:09 -0400
-X-MC-Unique: aer7CZ18MwK1sBaXcsM64g-1
-Received: by mail-pj1-f70.google.com with SMTP id
- 98e67ed59e1d1-26304c2e178so1200270a91.3
- for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 12:33:08 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qP6YG-0008OX-GM
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 15:21:32 -0400
+Received: from mail-oa1-x2c.google.com ([2001:4860:4864:20::2c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qP6YD-0006Bv-3m
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 15:21:31 -0400
+Received: by mail-oa1-x2c.google.com with SMTP id
+ 586e51a60fabf-1bb89ac2013so1021706fac.1
+ for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 12:21:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1690485687; x=1691090487;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=hlWdPAZ549TvKjo+IYOx2FfMDiM9i+0YPUX4XOYoAyo=;
+ b=Io1yep/3Sx3ALymGR8UFAsiVrhsBbGKhpsgfcwJoQtn6a7BLn0ZcqB7ggNv0Y/pIwk
+ m2+dfTiujXYc40IhFPRVS8lwBikj27u6B3+TNbeUKe0eBXcbNnH4Zbxfyy+PO2MAcnB2
+ WjYGoy050hxRbaAJNaKaCWNgb7af2TrZJhmMrmlKgyvc2w+vdLqAdQxClwFkwQxNU0ga
+ cMlbElzBx7TW3HGmJkXiaw7/PSHkpB/KmvkdUWM38aJ8iGQrOve1sepAnmFB/NHF+j9y
+ fvQpZU4AGPEWrT9M/IONBXmUXhDsjdf6JSK7Z0AKtSyke0Iq52LSIxMX2vSvOMSo9z2C
+ qnSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690486388; x=1691091188;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=2YVOnRFN+L8UMr6O9Z2gPvYZyRpCduNFOop3Nn4nZkU=;
- b=Gqr2B4aIltyw03nnGpwhv1Ow3S8uzO4e+7NQ28axAmIkb3CPnuz9hSapRPi1D3Esk6
- a5V4ZltISvE37OFTJriHae2kbIKoZ1hLr6Eir1VoBYQZlWNHYfCnKbkcx9+AtEvt+Y8F
- ZuSFbtS/J3mnmYCvApsMzpGcXaQXCClHNUu3FfXq2eerIR1FnVPxZCuI2zExa328w3qr
- jeXtUIe+SMhSlgV88Hzt87KNSZhHKeRmsKcUphZ5byL6XCQKBXjtAEpUTkSNBTlgqJK6
- kFRrZgd0FMYZNT+twSQ/WCRTgXXgSHFg+HdbNjFsHRVG7LDIc4322us5ylMC4Q+jSDsf
- xb8g==
-X-Gm-Message-State: ABy/qLaQlt7W/vClJbAPrYWfuBLHx1UG3s785t5AOUrO5+v0BOOtrBMd
- TblxO3QktOeBwF27ZC2bVS1kjKvkK1RfBRoSSxyCZGg4fsTHj+AxbO/B4DpkW0h1w7yiGtXQpiL
- Y1L4caNZxdmQi0QVc+LxOP8SLWFvVrSY=
-X-Received: by 2002:a17:90a:ee81:b0:268:18e:ade5 with SMTP id
- i1-20020a17090aee8100b00268018eade5mr253049pjz.24.1690486387997; 
- Thu, 27 Jul 2023 12:33:07 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlFpt3RsvjD7JJg4K2s7qajVziGvL4xEHmpkNecF6ODx88P4R/JHt14AW3/7nWVuctimkKqYzA5AaucA5Op4iio=
-X-Received: by 2002:a17:90a:ee81:b0:268:18e:ade5 with SMTP id
- i1-20020a17090aee8100b00268018eade5mr253033pjz.24.1690486387711; Thu, 27 Jul
- 2023 12:33:07 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1690485687; x=1691090487;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=hlWdPAZ549TvKjo+IYOx2FfMDiM9i+0YPUX4XOYoAyo=;
+ b=S2/hzZ8qXoWnoC4AzHW1o0LQXLuDhFj1RD/MNyxKSB0duChecWlyRVEurS2oxsPm5E
+ DIl83VvxwZSeHJeKWKxJqJt66OP6PS5KOO8ihxPfUwh/Ycvleilm4kaGDRg454C6a3g8
+ XE4CEBNvNrAhkV+p9dxCrsTas2REk56Hv9a6L+6la7GTfYXzLG+RcDBTx3jwsikkYLCU
+ KgKt+UWDPzYUynw7pn8M8MLEax+1YyAl/VS6erg4q+o9zM5ypwzAB2DlsJUlKknb1bMD
+ jYLdbgKEGeP2p1wZw8ALsClL/OZJ6LVOu7oM3sgK0dhgic1ddidd4xiTa7SWXGI8I40s
+ 43+w==
+X-Gm-Message-State: ABy/qLZobtn1/vK4Cv0Hly+1sKEzYGEEbnsaLFeTE4hk6EWfhKmuEg0k
+ EbtdB4h6xEql+uhSeXJn6he1XQ==
+X-Google-Smtp-Source: APBJJlEu+4ZbfeNQSvbPS/YCBR88v3nIKHdDgdLQfhtzyisbVrna4Xef6eaIr8p5b/0b1lcqKvmUqw==
+X-Received: by 2002:a05:6870:40c9:b0:1ba:cc77:1d81 with SMTP id
+ l9-20020a05687040c900b001bacc771d81mr445194oal.46.1690485687513; 
+ Thu, 27 Jul 2023 12:21:27 -0700 (PDT)
+Received: from ?IPV6:2602:ae:154e:c001:caf5:5ae2:432a:1bdf?
+ ([2602:ae:154e:c001:caf5:5ae2:432a:1bdf])
+ by smtp.gmail.com with ESMTPSA id
+ q17-20020a638c51000000b0050f85ef50d1sm1886827pgn.26.2023.07.27.12.21.26
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 27 Jul 2023 12:21:27 -0700 (PDT)
+Message-ID: <88f34612-738e-a490-6836-56bc9b3ede92@linaro.org>
+Date: Thu, 27 Jul 2023 12:21:25 -0700
 MIME-Version: 1.0
-References: <CAFEAcA--tJPhQO49W3BDO1MABQFHrr50MU=q54TFYpbkOxVWHw@mail.gmail.com>
- <ad623dea-4ed8-6e06-3c70-60fcf863a79e@linaro.org>
- <92f09c35-6ccd-5f5f-2176-6bf6c49d61cf@redhat.com>
-In-Reply-To: <92f09c35-6ccd-5f5f-2176-6bf6c49d61cf@redhat.com>
-From: Cleber Rosa <crosa@redhat.com>
-Date: Thu, 27 Jul 2023 15:32:56 -0400
-Message-ID: <CA+bd_6+A-rgy27gKMpUixrvKPii3gHwkNEfQzxtnjBzXVEF+FQ@mail.gmail.com>
-Subject: Re: avocado test failing INTERRUPTED for "Missing asset"
-To: Thomas Huth <thuth@redhat.com>
-Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Peter Maydell <peter.maydell@linaro.org>,
- QEMU Developers <qemu-devel@nongnu.org>, 
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, Jan Richter <jarichte@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=crosa@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 1/9] accel/kvm: Widen pc/saved_insn for kvm_sw_breakpoint
+Content-Language: en-US
+To: Anton Johansson <anjo@rev.ng>, qemu-devel@nongnu.org
+Cc: ale@rev.ng, pbonzini@redhat.com, philmd@linaro.org, agraf@csgraf.de,
+ dirty@apple.com, rbolshakov@ddn.com, anielhb413@gmail.com,
+ pasic@linux.ibm.com, borntraeger@linux.ibm.com, palmer@dabbelt.com,
+ alistair.francis@wdc.com, bin.meng@windriver.com,
+ ysato@users.sourceforge.jp, peter.maydell@linaro.org
+References: <20230721205827.7502-1-anjo@rev.ng>
+ <20230721205827.7502-2-anjo@rev.ng>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230721205827.7502-2-anjo@rev.ng>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2001:4860:4864:20::2c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2c.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,75 +100,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jul 26, 2023 at 5:07=E2=80=AFAM Thomas Huth <thuth@redhat.com> wrot=
-e:
->
-> On 26/07/2023 09.33, Philippe Mathieu-Daud=C3=A9 wrote:
-> > On 25/7/23 19:13, Peter Maydell wrote:
-> >> Currently this CI job is failing:
-> >>
-> >> https://gitlab.com/qemu-project/qemu/-/jobs/4737819946
-> >>
-> >> because:
-> >>
-> >> (05/59)
-> >> tests/avocado/boot_linux_console.py:BootLinuxConsole.test_arm_exynos42=
-10_initrd:
-> >> INTERRUPTED: Missing asset
-> >> https://snapshot.debian.org/archive/debian/20190928T224601Z/pool/main/=
-l/linux/linux-image-4.19.0-6-armmp_4.19.67-2+deb10u1_armhf.deb\nRunner
-> >> error occurred: Timeout reached\nOriginal status: CANCEL\n{'name':
-> >> '05-tests/avocado/boot_linux_console... (90.67 s)
-> >>
-> >> Why is a "Missing asset" causing a timeout after 90 seconds,
-> >> rather than being accounted as a "SKIP" ("missing requirements
-> >> in the test environment" sounds like what we have here) ?
-> >
-> > Maybe something to report to upstream Avocado.
->
-> We're back to using Avocado v88.1 in QEMU. We first need someone who can
-> update to the latest Avocado release and take care of the remaining
-> problems... This is *very* frustrating.
->
->   Thomas
->
+On 7/21/23 13:58, Anton Johansson wrote:
+> Widens the pc and saved_insn fields of kvm_sw_breakpoint from
+> target_ulong to vaddr. The pc argument of kvm_find_sw_breakpoint is also
+> widened to match.
+> 
+> Signed-off-by: Anton Johansson<anjo@rev.ng>
+> ---
+>   include/sysemu/kvm.h | 6 +++---
+>   accel/kvm/kvm-all.c  | 3 +--
+>   2 files changed, 4 insertions(+), 5 deletions(-)
 
-Hi Thomas,
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-As you might remember from a couple of months ago, I was (and still
-am) running the Avocado QEMU tests extensively with the latest Avocado
-and attempting to cover all gaps before the 103.0 LTS release.
 
-To make it clear, Avocado is currently on sprint #103[1] which will
-release 103.0, a "Long Term Stability'' release.  It may sound like a
-marketing gimmick, but it's important for QEMU because we want to be
-able to address all bugs that are eventually caught after its release
-while still minimizing disruption.
-
-The frustration you mentioned with the attempt to migrate from 88.1 to
-101.0, and now back to 88.1 is the kind of disruption we want to
-avoid.  With 103.0 LTS, like with 92.X LTS, we can and will release
-minor releases with needed fixes.
-
-So, this is also an invitation to everyone else running the
-Avocado-based  QEMU tests with either Avocado 102.0, or the latest
-development version and report issues.
-
-BTW, Avocado's GitHub has a "customer:QEMU"[2] label that can be added
-to issues that will certainly increase its classification and
-priority.
-
-PS: 88.1 was a minor release to address an issue with the release
-process itself, so there were no differences from 88.0 that mattered
-to users, nor was there the possibility of a 88.2 release with more
-fixes.
-
-Thanks,
-- Cleber.
-
-[1] - https://github.com/avocado-framework/avocado/milestone/29
-[2] - https://github.com/avocado-framework/avocado/issues?q=3Dis%3Aopen+is%=
-3Aissue+label%3Acustomer%3AQEMU+milestone%3A%22%23103+%28LTS+release+-+Soun=
-d+of+Freedom%29%22
-
+r~
 
