@@ -2,85 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 601E5765947
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 18:53:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32431765A54
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 19:33:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qP42x-0007u2-AC; Thu, 27 Jul 2023 12:41:03 -0400
+	id 1qP43d-0008Gu-GC; Thu, 27 Jul 2023 12:41:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qP42h-0007qX-S7
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 12:40:48 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qP43b-0008Ef-Fg
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 12:41:43 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qP42g-0004Vy-Ce
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 12:40:47 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1bbc87ded50so7424045ad.1
- for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 09:40:45 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qP43a-0004bv-0i
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 12:41:43 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-3fd2f298712so12506035e9.2
+ for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 09:41:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690476044; x=1691080844;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Vs3TygtsJVBW9W2alZ3wUYkMBn9wc62TWXkwrOFFFIQ=;
- b=j0R1+WjcUWeIy54HYQ+ialSCmMhU1B1EFNxcHB2mzU3B7hgtbIzBpcCqG3ybF2556m
- XKOItSSs87CByQ3NUXxfBtgua5mo9H0Na0wYmSis2IOdtQ5BePeSemT/pd3aydAtuqmz
- o952Mq5Zj7Df6ODDWUXV3Ho0hVwKQLspCYBwunYH3I7qUp7EbMHYihE+OagN5rZw/ny4
- +NOpjw6FyziHcQCx7/CFi11HaazvmJ2rR3Td9Mo3AWNqkJ4zPObNeUu4v9EcJpKApHQ/
- 5M2lD72yrksvlQT32Va9GvCjoM7+HtQH9zi5/lcUrL1Fflrag7YbRXKHjw4I72jC+tWg
- A9XQ==
+ d=linaro.org; s=google; t=1690476100; x=1691080900;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=CMtpyiyPv3+t5Uvcv4Tv2aBXS8NdLCmOXzk4TsZHVBU=;
+ b=nYs6nI7zVA1JckfJ+7cB0+sGRuS0zl82mJgutdvTjdvYO8BqJycwmX1KXQTgbSOkTi
+ dCQhBWKPixG/VjPCGvT1SxNxH5aZf7ai+/RnzT6g7B+kytb3ZNGyL+brm67N7HynknDX
+ B3fMgUsl8o3Jxn6I3vJHpxm/EkZAbQOlvaTUQ2VjM3kVykfGrEHHgrD5yA64k8HKb+GM
+ jyTKeVPXjUvRw54u37fp9Ecm7jRQ4E8mOWneURvzPDIbSLs8EQ3FLU/DK7Gmxy9DJ+n0
+ sqlm/LtaFa1SHTY82M1G2J0Sg6tn+dPbpB/NRtzYKN/4AxhtKbhp2WPFJUBu8LksK96n
+ cuTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690476044; x=1691080844;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Vs3TygtsJVBW9W2alZ3wUYkMBn9wc62TWXkwrOFFFIQ=;
- b=ZA4o4oC+LiWAvc1JD1MamTda9QXVcB8n7iVSOyZ8MRdxWWvNLYa1gvk8JrKjuSVsbe
- 2aqFjSeW/YVfcxzckSjzQMEZ06ssa68uYIO2F7mW1cf8PrQlfcHMYcy3dZjtJhZfy5F9
- bHXPiabwLYLfj5iJVBAGQJ1L5Raldvno8UCqerop4p6aCfwlPuxznI7gsHznLJU6nd+6
- jkIoUq+qXF5wGLRAUEi4PtIRAFo80gz3661LkCEfkXtOA1NWTyPHI/+JB1n+Y63TD+rP
- R9CDh+2Lztg0yrfruK+7rpjvvZphWVHsu6Y+W4pJTWSiC9WhAOsZvGHIMS7aCq3nvmZE
- MnAw==
-X-Gm-Message-State: ABy/qLZ1jiboRwQQ0TvnZyoUqhoT9VQsH/pxadDALAnKljpT0wAtHJZ3
- x+wU20kmioEmZblBQhjm2SLxqbmXYTiazHnPIQA=
-X-Google-Smtp-Source: APBJJlEWIvZgQBAvmRjiYP2mUi4feI9SD3rT6+O4+5Q13Zr4QdTbFRK1ISnSpmJY0EqzZ1exB/2gfQ==
-X-Received: by 2002:a17:903:181:b0:1b1:ae33:30de with SMTP id
- z1-20020a170903018100b001b1ae3330demr5745585plg.13.1690476044538; 
- Thu, 27 Jul 2023 09:40:44 -0700 (PDT)
-Received: from ?IPV6:2602:ae:154e:c001:caf5:5ae2:432a:1bdf?
- ([2602:ae:154e:c001:caf5:5ae2:432a:1bdf])
- by smtp.gmail.com with ESMTPSA id
- jj6-20020a170903048600b001bba7aab826sm1865523plb.163.2023.07.27.09.40.43
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 27 Jul 2023 09:40:44 -0700 (PDT)
-Message-ID: <4dc8f541-2cf9-c8fa-1032-e5ae632c4881@linaro.org>
-Date: Thu, 27 Jul 2023 09:40:42 -0700
+ d=1e100.net; s=20221208; t=1690476100; x=1691080900;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=CMtpyiyPv3+t5Uvcv4Tv2aBXS8NdLCmOXzk4TsZHVBU=;
+ b=dRDgPmXlAiKmkwRhBd8ioDBbDcP5HhrvFDDqp+zxAx/2F7ops4IrCoHXx/SjMxeOck
+ OkuZyf8sFnjrEZNpUj90NzaZ5p0QmuAv0OSFrBpjKgop3nmmPIOg31+UofPVCPz2FTgZ
+ YWsTLWvLdOxiHXtzutUUk93IGcrvX6cebOBd0AD0mVT9hb9qtek12gC4WM+KB9vyPD6M
+ 7bqE4RhpGrk05+hr+umrEK2e4h4aGyO7XE0rMPQ64OFdffltw8m7Sq+WdPAN6FNw/80z
+ nyF7l1g6zU+3DAmo5ym5T3A5bvShjfkpMZL8xMwGytiQsx0oorJN0G3/oS+TV0l+VJZN
+ L3IQ==
+X-Gm-Message-State: ABy/qLYWCYp1FHdjozmTqNSliryBE2nkItoFbw/J/OuOcW52pHIQ+rev
+ xq+zmyWy5+rQjH3itNPAESIVOFl7V6MDMTE7fwQk/ftb5MugZX83
+X-Google-Smtp-Source: APBJJlHWA5SXjqNmo4Dq5qW9RcpsXHKVXe/wZl59B/L6M4MlMn6vVMk1dMN8QedgRmVdwnP98etoxxgbDcNaC4grlBo=
+X-Received: by 2002:a1c:ed16:0:b0:3fc:9e:eead with SMTP id
+ l22-20020a1ced16000000b003fc009eeeadmr1969200wmh.20.1690476099832; 
+ Thu, 27 Jul 2023 09:41:39 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] target/riscv: Use existing lookup tables for AES
- MixColumns
-Content-Language: en-US
-To: Ard Biesheuvel <ardb@kernel.org>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Zewen Ye <lustrew@foxmail.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Junqiang Wang <wangjunqiang@iscas.ac.cn>
-References: <20230727070303.1220037-1-ardb@kernel.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230727070303.1220037-1-ardb@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <cover.1690385928.git.jcd@tribudubois.net>
+ <84ace91e6076ed4460fb6c1f9fe699660dda30d5.1690385928.git.jcd@tribudubois.net>
+In-Reply-To: <84ace91e6076ed4460fb6c1f9fe699660dda30d5.1690385928.git.jcd@tribudubois.net>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 27 Jul 2023 17:41:28 +0100
+Message-ID: <CAFEAcA-sjHQK=VmQ4TYEY73C5vpxQBME1j8eF=ZXUkWTb4naTw@mail.gmail.com>
+Subject: Re: [PATCH 1/3] Rework i.MX6UL device implementation/instantiation
+To: Jean-Christophe Dubois <jcd@tribudubois.net>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -98,55 +85,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/27/23 00:03, Ard Biesheuvel wrote:
-> @@ -606,8 +606,7 @@ static const uint32_t AES_Te4[256] = {
->       0x41414141U, 0x99999999U, 0x2d2d2d2dU, 0x0f0f0f0fU,
->       0xb0b0b0b0U, 0x54545454U, 0xbbbbbbbbU, 0x16161616U,
->   };
-> -
-> -static const uint32_t AES_Td0[256] = {
-> +const uint32_t AES_Td0[256] = {
+On Wed, 26 Jul 2023 at 16:55, Jean-Christophe Dubois
+<jcd@tribudubois.net> wrote:
+>
+> From: jcdubois <jcd@tribudubois.net>
+>
+> * Add Addr and size definition for all i.MX6UL devices in i.MX6UL header file.
+> * Use those newly defined named constants whenever possible.
+> * Standardize the way we init a familly of unimplemented devices
+>   - SAI
+>   - PWM (add missing PWM instances)
+>   - CAN
+> * Add TZASC as unimplemented device.
+>   - Allow bare metal application to access this (unimplemented) device
+> * Add CSU as unimplemented device.
+>   - Allow bare metal application to access this (unimplemented) device
+> * Change CAAM specific memory from ROM to RAM.
+> * Add/rework few comments
 
-Don't drop the blank line.
+This generally looks OK, but please can you split
+out "refactoring, no behaviour change" changes into
+separate patches from "change the behaviour" changes ?
+The refactoring bits can all stay in one patch, but these
+changes:
 
-> @@ -62,18 +39,21 @@ static inline target_ulong aes32_operation(target_ulong shamt,
->       if (enc) {
->           so = AES_sbox[si];
->           if (mix) {
-> -            mixed = aes_mixcolumn_byte(so, true);
-> +            mixed = AES_Te0[si];
->           } else {
->               mixed = so;
->           }
->       } else {
->           so = AES_isbox[si];
->           if (mix) {
-> -            mixed = aes_mixcolumn_byte(so, false);
-> +            mixed = AES_Td0[si];
->           } else {
->               mixed = so;
->           }
->       }
-> +    if (!HOST_BIG_ENDIAN && mix) {
-> +        mixed = bswap32(mixed);
-> +    }
->       mixed = rol32(mixed, shamt);
+> * Add TZASC as unimplemented device.
+>   - Allow bare metal application to access this (unimplemented) device
+> * Add CSU as unimplemented device.
+>   - Allow bare metal application to access this (unimplemented) device
+> * Change CAAM specific memory from ROM to RAM.
 
-Better as
+should not be in the same patch with them.
 
-     if (enc) {
-         if (mix) {
-             mixed = be32_to_cpu(AES_Te0[si]);
-         } else {
-             mixed = AES_sbox[si];
-         }
-     } else {
-         ...
-     }
-     mixed = rol32(mixed, shamt);
+It would also be handy for the commit message for the CAAM
+patch to say why we want to change it to RAM.
 
-But thanks for the update -- I had ignored rv32 when doing the other AES bits.
-
-r~
-
+thanks
+-- PMM
 
