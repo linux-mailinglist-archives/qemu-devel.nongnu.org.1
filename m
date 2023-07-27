@@ -2,83 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 656BA764A5C
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 10:09:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99D5F764CB4
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 10:25:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOvTf-0005LC-Ob; Thu, 27 Jul 2023 03:32:03 -0400
+	id 1qOvmd-0000Rb-2Q; Thu, 27 Jul 2023 03:51:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qOvTc-0005HS-Fy
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 03:32:00 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
+ id 1qOvmP-0000Qd-4H
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 03:51:25 -0400
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qOvTa-0003pa-TW
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 03:32:00 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-686efa1804eso493927b3a.3
- for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 00:31:58 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
+ id 1qOvmL-00007N-UV
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 03:51:23 -0400
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-3128fcd58f3so688461f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 00:51:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1690443117; x=1691047917;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=KryCFoTvBP3nIdEsg77nTIkWzqmuMWTWodPXHjNoS7w=;
- b=sT7eY9uWJvO3BMx6lFVxseP9F1PeovS6Qw2urWg1NPKLVRcu28M/oqgLlLGgrpFyTY
- 1vwQMtWatcerVjfj2BlQVAOCUoNwR3trS/c72W+2MlMSsV0b1SRJ/hNchg3RtkC4MjBI
- LhHpdeolCx+g0bz21dokX19IdvNXpMNexhbpVAzG9xhFpD/dnUGuRD6/BBwVxZmgLBu3
- ftOlzh/5Z0t49+mijXRwEpCB0a4JJkbr+fFG4Q0KsX3EzJG6cdbx4bnfnnj1IcT6kVjr
- g3anDuem2i5j0Wxo1P875QPwoecKOhkEmjx85WmYodu52vj5jhygb3Hp0UzHRHwyaCzs
- /ZFw==
+ d=gmail.com; s=20221208; t=1690444280; x=1691049080;
+ h=content-transfer-encoding:in-reply-to:organization:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=cdITa7Wq+4eiw2rue221D0NdRfR3sO7CGc4YXAsZpSM=;
+ b=dfYJocuFX58uoB/lZ0qThGXsuRnYBqoi2FczdSNLnCnSLRkoXQNPGbqscm7s7QXOSN
+ FzoaNjtTp1pw3G8AB/C3WBb/v9Zz3wGvjPSXwnd1tulDZflBAM4cuGfoGR1wdiHy6AFZ
+ 5q0vMBOhdGuruljsur4GtxG4GXwZ3LFBQ+M0P42xj2Z/CF4Bp1ugHEu03XySzsE/w6Rv
+ e3tLkfZjHy2gcfPMYGmyNb0TTPZzYIjuHmlBn6DFAGXNUbGNinTQdXCLw9kMAbzGHws0
+ VCKrVaqyn4ggI8nOXizWAKwD2ChUSnPLwNivjjwqz+Yd0tnZLxTXX19ahk1XvABnQXge
+ Zigw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690443117; x=1691047917;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=KryCFoTvBP3nIdEsg77nTIkWzqmuMWTWodPXHjNoS7w=;
- b=TZmKcJk/MyXoJb1sGTXd6NHFQYaPIKR9rm08kq8NnE3H62L/mAcsVTZs9EBwawInJ9
- Whafvstz8yN39lZVZpCtJina+ajc/At/9bYvQ33sBPVFzU7CvNxUO3Z4RvR/YXLp1hME
- iJ7m5zYJWeJj5WUEuFAGR213umYWWhSg3ExMRw1Zb6kofUqDrkf7vIftG91kP+qxZQLG
- V82blO8/3RzvNOe6sy5dfEjmcUpWG5uwBKiEDOZ1N8XCs4LFhaM9upjA3c2DcuhnutzO
- 51gqJRNaUp/3t+/h72NtRSwZ770flcpkU0zrvwboT1j9eyr4H7riR9JG9bCFdPmXunoy
- bzlQ==
-X-Gm-Message-State: ABy/qLbVVVpeNw/dQpk5NiJkmoJUWQ6TCeroX2sxEF0gxtAqdc3NNgLL
- +hxdoDWzNAKKVXaCJpnW+ulM5EhZT0R/b7R/umA=
-X-Google-Smtp-Source: APBJJlGoR80KicuYnq4Q3XY7GzEAoTXmN+bZbfxdkyHGuoNwvVoBjOiW9+g73QffU6YklFvoelFu/A==
-X-Received: by 2002:a05:6a00:139c:b0:66b:8d48:8e64 with SMTP id
- t28-20020a056a00139c00b0066b8d488e64mr4516779pfg.12.1690443117393; 
- Thu, 27 Jul 2023 00:31:57 -0700 (PDT)
-Received: from alarm.flets-east.jp ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
+ d=1e100.net; s=20221208; t=1690444280; x=1691049080;
+ h=content-transfer-encoding:in-reply-to:organization:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:from:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=cdITa7Wq+4eiw2rue221D0NdRfR3sO7CGc4YXAsZpSM=;
+ b=GI/JRJi8CuFkjW2YYUMGNcNKZidQnNMZJYjomcY8bV/YckopunE9E0DLHXdwCrnWBE
+ 0xDbf/uDWVdgi1BsrsWUr/24nUjbYiHMS95MRMIpCfNE/WYzPf6odvK6W/BdJD5bbL/j
+ LaQrAnVJQTIDVd8gnJQGnHYHYqbG7lYrDNXInwr05dt6GeiuCpwQTKchkGFf6VF17w6x
+ XnHwng4V1LBdSm1nrT866goCvgzsyM7dJnKBihmsWmWrO+5daEwrb8S3bW8ZQhjCEQDn
+ TQmc8zPTLglmuPs84lKUKOoVWvE9cXOVo9gf4dj2+h8TBJr8HBQDXQC28i8JyTQUmKVm
+ FfEw==
+X-Gm-Message-State: ABy/qLY8DJBy9e2kuiF+Cu8zNKrX6N44ERhctWkhD1yNjxkd5fpWIc5q
+ IfXQzjRyGEfkgQD4FPNmrUg=
+X-Google-Smtp-Source: APBJJlGbm9sqXaDx4iRrqGi6MDRxZyjeroAuBLvHzibVYdsWVshwxb9/DgAr9sAx8eQh64NKb/DGLQ==
+X-Received: by 2002:a5d:45cf:0:b0:313:f1c8:a963 with SMTP id
+ b15-20020a5d45cf000000b00313f1c8a963mr1266338wrs.2.1690444280046; 
+ Thu, 27 Jul 2023 00:51:20 -0700 (PDT)
+Received: from [192.168.12.179] (54-240-197-231.amazon.com. [54.240.197.231])
  by smtp.gmail.com with ESMTPSA id
- d9-20020aa78689000000b0064fa2fdfa9esm802002pfo.81.2023.07.27.00.31.55
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 27 Jul 2023 00:31:57 -0700 (PDT)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-To: 
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, kvm@vger.kernel.org,
- Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v5 6/6] accel/kvm: Make kvm_dirty_ring_reaper_init() void
-Date: Thu, 27 Jul 2023 16:31:31 +0900
-Message-ID: <20230727073134.134102-7-akihiko.odaki@daynix.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230727073134.134102-1-akihiko.odaki@daynix.com>
-References: <20230727073134.134102-1-akihiko.odaki@daynix.com>
+ r1-20020a5d4941000000b00314427091a2sm1172046wrs.98.2023.07.27.00.51.19
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 27 Jul 2023 00:51:19 -0700 (PDT)
+From: Paul Durrant <xadimgnik@gmail.com>
+X-Google-Original-From: Paul Durrant <paul@xen.org>
+Message-ID: <3aaaa43e-b129-35aa-f07d-d50200a4c2ec@xen.org>
+Date: Thu, 27 Jul 2023 08:51:18 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::429;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x429.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v1] xen-platform: do full PCI reset during unplug of IDE
+ devices
+Content-Language: en-US
+To: Olaf Hering <olaf@aepfle.de>, xen-devel@lists.xenproject.org,
+ qemu-devel@nongnu.org
+Cc: Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony Perard <anthony.perard@citrix.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>
+References: <20230720072950.20198-1-olaf@aepfle.de>
+Organization: Xen Project
+In-Reply-To: <20230720072950.20198-1-olaf@aepfle.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=xadimgnik@gmail.com; helo=mail-wr1-x42b.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,50 +102,50 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: paul@xen.org
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The returned value was always zero and had no meaning.
+On 20/07/2023 08:29, Olaf Hering wrote:
+> The IDE unplug function needs to reset the entire PCI device, to make
+> sure all state is initialized to defaults. This is done by calling
+> pci_device_reset, which resets not only the chip specific registers, but
+> also all PCI state. This fixes "unplug" in a Xen HVM domU with the
+> modular legacy xenlinux PV drivers.
+> 
+> Commit ee358e919e38 ("hw/ide/piix: Convert reset handler to
+> DeviceReset") changed the way how the the disks are unplugged. Prior
+> this commit the PCI device remained unchanged. After this change,
+> piix_ide_reset is exercised after the "unplug" command, which was not
+> the case prior that commit. This function resets the command register.
+> As a result the ata_piix driver inside the domU will see a disabled PCI
+> device. The generic PCI code will reenable the PCI device. On the qemu
+> side, this runs pci_default_write_config/pci_update_mappings. Here a
+> changed address is returned by pci_bar_address, this is the address
+> which was truncated in piix_ide_reset. In case of a Xen HVM domU, the
+> address changes from 0xc120 to 0xc100. This truncation was a bug in
+> piix_ide_reset, which was fixed in commit 230dfd9257 ("hw/ide/piix:
+> properly initialize the BMIBA register"). If pci_xen_ide_unplug had used
+> pci_device_reset, the PCI registers would have been properly reset, and
+> commit ee358e919e38 would have not introduced a regression for this
+> specific domU environment.
+> 
+> While the unplug is supposed to hide the IDE disks, the changed BMIBA
+> address broke the UHCI device. In case the domU has an USB tablet
+> configured, to recive absolute pointer coordinates for the GUI, it will
+> cause a hang during device discovery of the partly discovered USB hid
+> device. Reading the USBSTS word size register will fail. The access ends
+> up in the QEMU piix-bmdma device, instead of the expected uhci device.
+> Here a byte size request is expected, and a value of ~0 is returned. As
+> a result the UCHI driver sees an error state in the register, and turns
+> off the UHCI controller.
+> 
+> Signed-off-by: Olaf Hering <olaf@aepfle.de>
+> ---
+>   hw/i386/xen/xen_platform.c | 7 ++++---
+>   1 file changed, 4 insertions(+), 3 deletions(-)
+> 
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
- accel/kvm/kvm-all.c | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
-
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 4591669d78..a4a1b4e05d 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -1454,15 +1454,13 @@ static void *kvm_dirty_ring_reaper_thread(void *data)
-     return NULL;
- }
- 
--static int kvm_dirty_ring_reaper_init(KVMState *s)
-+static void kvm_dirty_ring_reaper_init(KVMState *s)
- {
-     struct KVMDirtyRingReaper *r = &s->reaper;
- 
-     qemu_thread_create(&r->reaper_thr, "kvm-reaper",
-                        kvm_dirty_ring_reaper_thread,
-                        s, QEMU_THREAD_JOINABLE);
--
--    return 0;
- }
- 
- static int kvm_dirty_ring_init(KVMState *s)
-@@ -2744,10 +2742,7 @@ static int kvm_init(MachineState *ms)
-     }
- 
-     if (s->kvm_dirty_ring_size) {
--        ret = kvm_dirty_ring_reaper_init(s);
--        if (ret) {
--            goto err;
--        }
-+        kvm_dirty_ring_reaper_init(s);
-     }
- 
-     if (kvm_check_extension(kvm_state, KVM_CAP_BINARY_STATS_FD)) {
--- 
-2.41.0
+Reviewed-by: Paul Durrant <paul@xen.org>
 
 
