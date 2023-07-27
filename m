@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B3907660E2
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 02:49:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2BA9766089
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 02:10:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qPAlk-0002um-Iu; Thu, 27 Jul 2023 19:51:44 -0400
+	id 1qPAmJ-00036k-8S; Thu, 27 Jul 2023 19:52:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qPAlh-0002ub-MJ
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 19:51:41 -0400
-Received: from mail-oi1-x230.google.com ([2607:f8b0:4864:20::230])
+ id 1qPAmH-00036b-OH
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 19:52:17 -0400
+Received: from mail-pj1-x102a.google.com ([2607:f8b0:4864:20::102a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qPAlf-0001Ns-IE
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 19:51:41 -0400
-Received: by mail-oi1-x230.google.com with SMTP id
- 5614622812f47-3a5ac84718dso1287080b6e.0
- for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 16:51:39 -0700 (PDT)
+ id 1qPAmF-0001RE-Mb
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 19:52:17 -0400
+Received: by mail-pj1-x102a.google.com with SMTP id
+ 98e67ed59e1d1-267ffa7e441so1083152a91.1
+ for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 16:52:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690501898; x=1691106698;
+ d=linaro.org; s=google; t=1690501934; x=1691106734;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=Hib0QVAeKDTAPyfWZ72X/rToAN338wgP43CR9anYPBE=;
- b=yb1bTfP4euEZQIzhtiCtN8ql5APlLQosWmM0mfKsZ7yr7xxblX6eSkflkA29+n2tra
- u00Avt+U1h8Tlev2MNpm04ndhtwFQMTFk0ScZqg4M4IWYE0kzRDxaGex0pyG6i42m1Ea
- zwSsnbrtQgYiNvdmOvdBrkIoaZeVc0UUMWl5qPIPmPAcKKVA88gx52rfq2CGlJCKvjLI
- jCNWM0ukeSOhHz3HTke6ag1/Pz4LdOPpnnPy5vIaFGds7z2hpkian/4MgWkhPJBbOTTS
- GMYevnt+3wtH8pBDA7/n03N8iMTuDzcB1lE+SDXkG39W1PvVHE41ZDSx9pJtZPJjVEez
- +EQA==
+ bh=0XyNgCHCsYz04Jk6gTK0hdoPhBowKTtWi9C/iSWfenc=;
+ b=PTLe1axylaHpsFegMUJrkHh9gM/LbQ6TMu/u1FmkTWrugZ85cGsaqx/7J484y7n5vr
+ JY88eOuaoHzPA9OkGeSH8yCG0IqRXydUnBVIBEP456gmkvn1sEWb2xvfmEM3+71rqVTm
+ 09UHWu2I7+XJuyb2Kx7EN/lB6RDXtmqLUkVf70oWnKBipuwJWfaDpZPv8P4vL9q2mqz5
+ jBal42hp4B4NRxWjgLQ9bQPASEUAeEQDm6olzekFPtv023Z5Rr8lu+n2hsVk7oAZNXb8
+ Htm7PLY9yrVPzcgoCmS4tc6mLRbwF/7OpgEgjbfcz6tj7dQdcsQqbfpyvbxRrXRvisxv
+ yRTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690501898; x=1691106698;
+ d=1e100.net; s=20221208; t=1690501934; x=1691106734;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Hib0QVAeKDTAPyfWZ72X/rToAN338wgP43CR9anYPBE=;
- b=Ik+jnZs17C2OTaH9AEPBeY/jb7Hgw1yGY+ewJq4glbjYbuKWkOCX0lJJ4LEIYaQl6X
- Yo5Wz9i2OiY/8qCGnlR5LuFeo7Kd8KR1Ds7ztGmqZHRRHslkWaGPtd9ZM6B17HWPOI5z
- GcnKLgByYPwlwndGypmALfz4nJ1z+5Cz1u9ofOhWFjSCJtasZknJg/ev2UpZaBEUSQUG
- krWs2W4HVqzKa5NfWWxkRDwoKvq0wV6/WmnNaZJnHQNsK7SMXPN0iRAUsOu2F+TNiVC5
- 61EAePTXe/213/y0LxBsmsX+qJlMYz5RhZv84Ghsoh5sT/phaW5HzPdL6iO97O6AAy+d
- ug+A==
-X-Gm-Message-State: ABy/qLakf66MHzp8jeCAFs3z0VEQAPRCeq7gJJUsCXq3xpmefp55kVjh
- NZcr9PxV/6zuRL5uY+FgvaoTXQ==
-X-Google-Smtp-Source: APBJJlG8Ej/gUd8N80xTMt9BPZ8vFSwXdjYZ3wLTxcn3sY8QtZqncF0G5WbbsoRUeeeGaUPOBjvyxg==
-X-Received: by 2002:a54:4692:0:b0:3a3:6244:2b0a with SMTP id
- k18-20020a544692000000b003a362442b0amr788719oic.23.1690501898171; 
- Thu, 27 Jul 2023 16:51:38 -0700 (PDT)
+ bh=0XyNgCHCsYz04Jk6gTK0hdoPhBowKTtWi9C/iSWfenc=;
+ b=SLGRckqS1Mx+fEbK2y0mNn4ZzAARZVBJAlGBDMiZnyK9ISTbBYUkN1ECmTKFkdwBs5
+ +TJcj+1czWXh+qoydJtIIWnu99RfVdJUEEruBdHb2EJSGSlxTMAaOtewYKZ+aDTq6meB
+ Yv6CpRAzmvdTWQqzNEPEKFcV/JLDu7Ys/M2NJP4YMqEWyDAfv+ZueJ3FSbPDI8UfGAvJ
+ 1mam+b75LSH1J3YjvsBSa1Pk6s/pmjItPopgSHRCKSJ+jjQlVSD/9bieRzDAZ+nRyLEn
+ S4Q1zFcYmgkliqcyezgwpfRmRhkFqXQym7hovFII3gni6gso4d6RyFg8tyP3d6vyxebt
+ XSPQ==
+X-Gm-Message-State: ABy/qLY9zcKCK1XaXYWDmo9C6BGDlInQ4ZSyPLMbVgolYnTVvtLK4H7d
+ wqikOgzzLbjovVmWJP4RNpbQbg==
+X-Google-Smtp-Source: APBJJlGKveFOR8/v3l+dNh1KDjY8Y9yHNWstyj5oXGjEelVmXttYRKYBLpyWhO5pF1YRJgFP0RoG/w==
+X-Received: by 2002:a17:90b:897:b0:261:685:95b6 with SMTP id
+ bj23-20020a17090b089700b00261068595b6mr88071pjb.13.1690501934228; 
+ Thu, 27 Jul 2023 16:52:14 -0700 (PDT)
 Received: from ?IPV6:2602:ae:154e:c001:943b:b6e1:1f00:9721?
  ([2602:ae:154e:c001:943b:b6e1:1f00:9721])
  by smtp.gmail.com with ESMTPSA id
- g4-20020a170902c38400b001b85bb5fd77sm2184892plg.119.2023.07.27.16.51.37
+ gz24-20020a17090b0ed800b002677739860fsm1607433pjb.34.2023.07.27.16.52.13
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 27 Jul 2023 16:51:37 -0700 (PDT)
-Message-ID: <f682b315-8da5-9519-3d79-7505e7af2087@linaro.org>
-Date: Thu, 27 Jul 2023 16:51:35 -0700
+ Thu, 27 Jul 2023 16:52:13 -0700 (PDT)
+Message-ID: <efe27780-e634-0be0-8dd3-0415892c21a9@linaro.org>
+Date: Thu, 27 Jul 2023 16:52:11 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH 6/9] include/exec: typedef abi_ptr to vaddr in softmmu
+Subject: Re: [PATCH 7/9] include/exec: Widen tlb_hit/tlb_hit_page()
 Content-Language: en-US
 To: Anton Johansson <anjo@rev.ng>, qemu-devel@nongnu.org
 Cc: ale@rev.ng, pbonzini@redhat.com, philmd@linaro.org, agraf@csgraf.de,
@@ -71,13 +71,13 @@ Cc: ale@rev.ng, pbonzini@redhat.com, philmd@linaro.org, agraf@csgraf.de,
  alistair.francis@wdc.com, bin.meng@windriver.com,
  ysato@users.sourceforge.jp, peter.maydell@linaro.org
 References: <20230721205827.7502-1-anjo@rev.ng>
- <20230721205827.7502-7-anjo@rev.ng>
+ <20230721205827.7502-8-anjo@rev.ng>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230721205827.7502-7-anjo@rev.ng>
+In-Reply-To: <20230721205827.7502-8-anjo@rev.ng>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::230;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x230.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102a.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -101,14 +101,12 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 7/21/23 13:58, Anton Johansson wrote:
-> In system mode, abi_ptr is primarily used for representing addresses
-> when accessing guest memory with cpu_[st|ld]*(). Widening it from
-> target_ulong to vaddr reduces the target dependence of these functions
-> and is step towards building accel/ once for system mode.
+> tlb_addr is changed from target_ulong to uint64_t to match the type of
+> a CPUTLBEntry value, and the addressed is changed to vaddr.
 > 
 > Signed-off-by: Anton Johansson<anjo@rev.ng>
 > ---
->   include/exec/cpu_ldst.h | 4 ++--
+>   include/exec/cpu-all.h | 4 ++--
 >   1 file changed, 2 insertions(+), 2 deletions(-)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
