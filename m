@@ -2,158 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 165237652A2
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 13:39:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 685B3765308
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 13:59:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qOzCB-0000Ff-7h; Thu, 27 Jul 2023 07:30:15 -0400
+	id 1qOzRh-0005yX-Ig; Thu, 27 Jul 2023 07:46:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <het.gala@nutanix.com>)
- id 1qOzC8-0000FW-G8
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 07:30:13 -0400
-Received: from mx0a-002c1b01.pphosted.com ([148.163.151.68])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qOzRd-0005xG-HX
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 07:46:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <het.gala@nutanix.com>)
- id 1qOzC5-00089V-5C
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 07:30:11 -0400
-Received: from pps.filterd (m0127840.ppops.net [127.0.0.1])
- by mx0a-002c1b01.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id
- 36QNdA5L031048; Thu, 27 Jul 2023 04:30:04 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
- message-id:date:subject:to:cc:references:from:in-reply-to
- :content-type:content-transfer-encoding:mime-version; s=
- proofpoint20171006; bh=WH07v2KG0zeOytAwtlAiCW1lQ/aqDnrkP1fuvrMwz
- h4=; b=ojBf6+51Ywhc3RSsI9XSpQEEVWJOA9MvHwy92Tt+gn/Bb40mDbZKAcOJl
- 6+t7RAEjNKVpb29a2Dgp0iJOU3IwzHa1Yy2VeMqgQ7Hs40hamnQ0fhUZT45FcYGF
- hRPrxLI9FJlN6BPIls3dhfQuuU7OfDw2x+YGTxjuM2hcQhevlCig71bTcb9hAO/1
- rSAntUNKSg+VN+0EoEvG0fwnrI+/ejh4yyn1f1WAir4d8w4WUjDn9AJS1YY1d0gh
- 0hZYIM9Hz61gROqp1b6awJEP68u7XiUI+yxM+kgQPVUbXfn15Z6oU1LLrOJWYEsj
- GxSWVI3WJeon42DledB4lfHo+OrNQ==
-Received: from nam11-dm6-obe.outbound.protection.outlook.com
- (mail-dm6nam11lp2174.outbound.protection.outlook.com [104.47.57.174])
- by mx0a-002c1b01.pphosted.com (PPS) with ESMTPS id 3s0ber2bc4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 27 Jul 2023 04:30:04 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=NuE4VZLWQxe1VrM4V3dZGr/EOQO98FxWP5HQ0W5LcxGm748JV5my7c+sY0NhtouUTmE37aiWtw/AKwgj5PZGm0hNdM+tXbK3CN+uXmdH1QGJcqIsEGDRpyo6+IAzuuTavo2f7eSn2+856Cnm1JtwoY758mHfLVE8aOAhGbO0qb4qmaIi1KCsaRwRhueTXvEQw1drL4BqqHBIWFbrr7FEymOjsC7rniLZSeylju99h9itCa80VVqgDM+4JkyRqSMklI3eOiaEKy5w1aev7Dlcn8vj4L9x744MxtFIjSxaPQQTSy/xjqYxiu4XEZZb+BgjWzE9DRkHEtRRIfVY6oD7SQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WH07v2KG0zeOytAwtlAiCW1lQ/aqDnrkP1fuvrMwzh4=;
- b=nLNddudjrTKYweXGzcdoMbOoTFhYIYjNjwt2+F0IBwO5eDYVo6uejL66VkN3+Uw0K4r4U4Q3t8fHW4eUrj55o4Df+f+2wallPEB8U5ZwvFHm/qQMAvBrwP9UFrC1OMbfaXcKN95Ms/7cCYYui3/gMAkmLEgM4sNFfMGpYbT+IP0B6QzpHnkP0aOf5M8Y47NAnJ4VyJsyOc5yCRfCAs24qcsNuh/gyQAwXtTNMuVZ/IFdP2aqIE2JpXdF4c+f/DXB7fMVoyDelpHXcPZoSQ+PDzZvhUzBTxYinLayZRVvfj7/BsEEASX/h1ymjPeBzhMN93jteGpJ+PfZa6ZQed/nxw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
- dkim=pass header.d=nutanix.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WH07v2KG0zeOytAwtlAiCW1lQ/aqDnrkP1fuvrMwzh4=;
- b=oFw/9iozLF2GcLoi5DDeLAQ5PAjzi3yHik29Ilv4Mkpw4ZKJ0b9hQhZzbR8giQIV6xs0i34uvJR84Z9yJCxM9/1roU7mF1+Ligc14Tqpu1oOt11CpB3en6ZvnbvrjF9+mSyirT/mrL73chRQ46OoRyCn5GLExpsNYxW7+chUA7toHJy77Ng2JuYijb7yU4/xWtnyxqmWL2+q/VbLdaMD0GakovK9+7NuHqoIiZERGXoV1Cb7sqJ86lPhQgYJQahDuMRrXpiInRGbA5Qhjt+Y+BAiTmRrbZOvT2fal5AH4azDmz4Ei60Hws80aUbKnJIRs6D5aHboulYrkBMucGa78A==
-Received: from BYAPR02MB4343.namprd02.prod.outlook.com (2603:10b6:a03:57::18)
- by CY5PR02MB8990.namprd02.prod.outlook.com (2603:10b6:930:39::11)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6631.12; Thu, 27 Jul
- 2023 11:30:00 +0000
-Received: from BYAPR02MB4343.namprd02.prod.outlook.com
- ([fe80::2c:438b:2b97:26ad]) by BYAPR02MB4343.namprd02.prod.outlook.com
- ([fe80::2c:438b:2b97:26ad%3]) with mapi id 15.20.6631.026; Thu, 27 Jul 2023
- 11:30:00 +0000
-Message-ID: <30cffa41-3e39-205f-5119-d84d6303f58c@nutanix.com>
-Date: Thu, 27 Jul 2023 16:59:48 +0530
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.13.0
-Subject: Re: [PATCH v10 00/10] migration: Modify 'migrate' and
- 'migrate-incoming' QAPI commands for migration
-To: qemu-devel@nongnu.org
-Cc: prerna.saxena@nutanix.com, quintela@redhat.com, dgilbert@redhat.com,
- pbonzini@redhat.com, berrange@redhat.com, armbru@redhat.com,
- eblake@redhat.com, manish.mishra@nutanix.com,
- aravind.retnakaran@nutanix.com
-References: <20230726141833.50252-1-het.gala@nutanix.com>
-From: Het Gala <het.gala@nutanix.com>
-In-Reply-To: <20230726141833.50252-1-het.gala@nutanix.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA0PR01CA0095.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:af::6) To BYAPR02MB4343.namprd02.prod.outlook.com
- (2603:10b6:a03:57::18)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qOzRb-0005Xn-Ax
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 07:46:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1690458370;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=tFt9tnFAwUVlbpL00qtRIKGorelz4/JgjJPdrX2Ykc4=;
+ b=A6BG7F9jjxqHJBrUHjNpfS4IUr916lDaFGMneH3T1V3VTiWWfIHSVKWxvMhvj1NRJIOA2K
+ ev/xeb0HIgn+pgA8GgJv3sMLAYdVWAPfM+xpE3BxkuI0fFYOLvUkNCdr1EjQ9XlFvv32Pw
+ AVC1Fc9AMdlL4iG1pEqrYHiQRgwl7lQ=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-615--w-8QNYRPzy6Xxus_orz8Q-1; Thu, 27 Jul 2023 07:46:06 -0400
+X-MC-Unique: -w-8QNYRPzy6Xxus_orz8Q-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 293603C108DD;
+ Thu, 27 Jul 2023 11:46:06 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.19])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id DB7F72166B25;
+ Thu, 27 Jul 2023 11:46:03 +0000 (UTC)
+Date: Thu, 27 Jul 2023 12:46:01 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Jonah Palmer <jonah.palmer@oracle.com>
+Cc: qemu-devel@nongnu.org, philmd@linaro.org, laurent@vivier.eu,
+ mst@redhat.com, boris.ostrovsky@oracle.com, alex.bennee@linaro.org,
+ viresh.kumar@linaro.org, armbru@redhat.com, pbonzini@redhat.com,
+ eduardo@habkost.net
+Subject: Re: [PATCH v2 1/2] qmp: remove virtio_list, search QOM tree instead
+Message-ID: <ZMJY+auV/NbIjfmh@redhat.com>
+References: <20230609132040.2180710-1-jonah.palmer@oracle.com>
+ <20230609132040.2180710-2-jonah.palmer@oracle.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BYAPR02MB4343:EE_|CY5PR02MB8990:EE_
-X-MS-Office365-Filtering-Correlation-Id: 01eda9fa-1b01-4296-4361-08db8e94cfa1
-x-proofpoint-crosstenant: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: I9pALAbvkH6FZ6KqcGvxrXstSv6qUO+SKMYWltAugRmWBVBUAoqElNwuSHmV8BJH7MFCUdtqQG9Vf4JwApVyzw7194AjZp7CtJGAGglRACbRTaWj7PYMUG8EsR3qq+qMLEC9lctqC96m6IcIbquz9KugmJTN12q/I5K0CXMiqyU6Fjlx8Y9dijkSuCf9A3GwIWnEpBTXeonT4vRQhOhGj+4hiMqKPV0oCjK7MiuyfVa23KUhyQogOUvLL9Lhev4XXzO2D6t17S/U4oPB8Xvnw7VHtd/NyNTc3p6bC4W7kOrz0ImzV6axLQC8nEsujpcti9lGr72AHXFs/AHIYBkwesLd5DzpTrwDve8BvThk2N+nqVJKFEpBNweJdczfpyHLt8iSwI+frmBAmIZjKRsab+gHSMQmFQXU2FPZjhGEdAFFLIqQp1yZyrU+oiYn1QI48dcwotl+VZ1bMNwUr8PUaVVyhO2Pak40Gux3haI6Sg/twHdYCqPx7yzHE1Aluwg0yTOrHqy9vmFy4j3BzZ1/vL2WIgBklOGpEW0peYqznBaBQV/UHN+tkx21OnIjWRmL3BB4cHohmPFieKgR6+YkoLLPXP74ZSs86sQGDTZoUCfNskHezv0Sl14F3IQo1tLFaZcO3Qqj5LenRyUOR6IAU/z9Yljtml2/z7OlUt+5fAQGQcQWfDqXjhRbq4HsuRbU
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BYAPR02MB4343.namprd02.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(376002)(366004)(346002)(136003)(39860400002)(396003)(451199021)(44832011)(5660300002)(8936002)(8676002)(41300700001)(83380400001)(316002)(31686004)(2616005)(6486002)(6512007)(66476007)(31696002)(2906002)(66556008)(26005)(66946007)(38100700002)(966005)(86362001)(4326008)(6666004)(107886003)(36756003)(6916009)(478600001)(6506007)(53546011)(186003)(43740500002)(45980500001);
- DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ait5VWgwRG5QV2E1RjNmU0dtWVk5b0cxbnNGb2lnc1RiSDAxb1hzY0Q1ZmZo?=
- =?utf-8?B?bFcva3pYSXNGR2R3elhEUWNJM1VXSk0zbW9YZlI3NEE0clZablpLZTErZ0dC?=
- =?utf-8?B?THFsVktNNC93dWJ3YkdKcUIrZmI5WmxGclhocWpTNkFLWkFXVk9jSFgxdjMr?=
- =?utf-8?B?eVU4L3FOODUwYVpYd2RRZ2hDMVFHL1lJc0wxbTNTSTd4bnR3aTFjZCtacUUw?=
- =?utf-8?B?aDhybnRpT3VzTUd5T1hwNjVna1lORzcxMjNDMEJRVEtrMWhqS29rN2RVVUFt?=
- =?utf-8?B?THc4VituYlBORzAyOThRUWt0TnlDYmxlM0FDM0JxbjFwM3F0TWhldWI1YnBp?=
- =?utf-8?B?dU1ua0h5bFo5eDRmSnJZODhyVS8wWGI1cDFiaUI4bU9kU0Z0bjYzV29Xak1U?=
- =?utf-8?B?K2U2U3BPb0RtN2tSVUZ6OFBTeXJIVlpDclRNWVhBdSsrSzRRZ0htMGZWbDly?=
- =?utf-8?B?Znk5aUlBTHVqOTNSZHYxL0FNQ3NhQUlkV005dzhhdG5iYlVtbUZBekt4UkZW?=
- =?utf-8?B?MVBYQThsK3ZCSzRHMUhRd2lQNVFocjFGeHV5UGpOVm5Hb2ZBbVgreUo1L0xl?=
- =?utf-8?B?VUNZaStyd0RLTWpoUkN3VnJPQ05KS1Vlb0wrci9JbDJWMnR5SWxTcUNuR1Js?=
- =?utf-8?B?emM4b2pQZHkzZVdoYytDZGZmSnRZcVNESnZNemVZcGcvQUY4bFBrS0ZjWlY3?=
- =?utf-8?B?V3lsN0dQeVFla2kveGwrK0NyMTgwM2luQ21mR0k0U3hTR3k4bUhLL3JZNFJz?=
- =?utf-8?B?SitwR3llK2N6ODM0UmlVdTVrZmZLOUR1WUtqWWRvSUZlL2dXbEdkMXpTT3pz?=
- =?utf-8?B?ZGFVMzZLNFN0ZGdRdUVocUxHWlQyV2puZk1BeHk0YU1qVmdKdFhQK01ETEpT?=
- =?utf-8?B?d0syY2NiZWZ0ckRyMHUwTlpiYmFQZGd6c2sydVlVNXowL0JaMmFZQWVxWnQ0?=
- =?utf-8?B?OEFCNlUzWW9mY1VOS1NkMGJJWklsTUxxbWZSV3dXWjR0M3NhMVNVeVM4Tm1o?=
- =?utf-8?B?TEluUkZnVkU1OUpmM3VZTWlKSjg5WStEYXJzcXhSS09nWHpYTlBwZU1GUE90?=
- =?utf-8?B?VmN6a0VTT2grQ0NqazVLTFJyU0NaeGR5UXQ3c2w0dUJZUzdmM05HL0lRcmJH?=
- =?utf-8?B?TThXUVlFazR6MTJNTTlvOGdNRkdIS1ZPMDB0WXhsZGlJS2JnVUlEcEVtdzhT?=
- =?utf-8?B?UHk1cXA1MlFvamtPbnkvd3BxS1lack1aYU9pc2dpSVgrRUladkJLMkg2VTlJ?=
- =?utf-8?B?eHFibElnRVpXNlhNbUdwS3UwMjg4djl2YnQxaXMxVm0rYjRnZnhCTXA1TWs1?=
- =?utf-8?B?LytTY1EwZVBYMVVDa2JzZ2wxdUkrYXBsWWZSQXV4dVhkb3pEQ1Zma0o0eDFj?=
- =?utf-8?B?Z2Z1NGdqcmpPZXZnZy94cEtoMk1PSUFxb1hMcFNTNjFrdkZyLzJsYVdwNUhz?=
- =?utf-8?B?UEJjYWQ4RUNwMHdsSFdxWXprL0pQNGxNeE9wVUk2cFU5MVFlWi80NkV2Q3kx?=
- =?utf-8?B?ZU9HMEYzNDhCdG1mRExZS3hsMWpZbk9uR21Pd0p2OXJnanNsdVdCSHcxQWEr?=
- =?utf-8?B?TWhjOXMrZ0pxay9wcUI4dEpFOTNEcEc4SEdVUXkxcGJ0VW1yNm85Um9Jemk5?=
- =?utf-8?B?ZVRMeTJiUnc4SHRPSkN0Z3Z2cmNJYVVhOE5QS2FXTTdJZWNKcDNFbEgxbTBw?=
- =?utf-8?B?QU1WMk41NDN5TEJITjlxMllBV0pSU1Zjc1JaQkFwems2MFRJNGdwT0lFVmtR?=
- =?utf-8?B?YVBFQUlLS2E1eldVaEZ4U0tIc3NYMnptaituOFhqdm5pdTBGMzQvMVJjYUx4?=
- =?utf-8?B?L1J6MHZvOFF6WFlpaG9BOUJ5REgrUjR6TXlYZDYzejUrUDFPRFFKbjAzSFFH?=
- =?utf-8?B?WjdKeWpLN0ozakFtbXVlVWc5dndFbFo3djVtb0lZc2VrUUY2eWY2YThUSEJu?=
- =?utf-8?B?U1ZiaElvSkZHY2hBdHJ5cDVXNDg5bEhQQ2xEVnhWcGNudk4xMW9vcEdubmFz?=
- =?utf-8?B?N0lRV1pmUWIycDBzSkRiL05nMVM4TlFPeVIvUHcrcFRGakRHNjJNRlFlU25W?=
- =?utf-8?B?cC9VK1NMUHVJOUlOR1ZDejhjNlN0MkdtLzhQRHhJWmlWVGdrb3NkZ3JjSmdi?=
- =?utf-8?Q?eBBmCnCsJWlDs+MttIF7TZqpf?=
-X-OriginatorOrg: nutanix.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 01eda9fa-1b01-4296-4361-08db8e94cfa1
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR02MB4343.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jul 2023 11:29:59.7778 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gM8QHxz03mu4Xjqex4MHjL1YapNKI2LtpewbAig7Ns7ubgbq4giHS1x1sJjGfOu7NoaSgt8WGBmrodlo7mtbDg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR02MB8990
-X-Proofpoint-GUID: Y9PhcfQZ8aZeGOoEw3Q33R4WZsz2_DLB
-X-Proofpoint-ORIG-GUID: Y9PhcfQZ8aZeGOoEw3Q33R4WZsz2_DLB
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-27_06,2023-07-26_01,2023-05-22_02
-X-Proofpoint-Spam-Reason: safe
-Received-SPF: pass client-ip=148.163.151.68; envelope-from=het.gala@nutanix.com;
- helo=mx0a-002c1b01.pphosted.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230609132040.2180710-2-jonah.palmer@oracle.com>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.091, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ URIBL_SBL_A=0.1 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -166,98 +80,300 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is just a ping for Juan and other migration maintainers, if it's 
-possible to have a look at the migration patches for new QAPI design and 
-suggest some review comments if any.
+On Fri, Jun 09, 2023 at 09:20:39AM -0400, Jonah Palmer wrote:
+> The virtio_list duplicates information about virtio devices that already
+> exist in the QOM composition tree. Instead of creating this list of
+> realized virtio devices, search the QOM composition tree instead.
+> 
+> This patch modifies the QMP command qmp_x_query_virtio to instead search
+> the partial paths of '/machine/peripheral/' &
+> '/machine/peripheral-anon/' in the QOM composition tree for virtio
+> devices.
+> 
+> A device is found to be a valid virtio device if (1) its canonical path
+> is of 'TYPE_VIRTIO_DEVICE' and (2) the device has been realized.
+> 
+> [Jonah: In the previous commit I had written that a device is found to
+>  be a valid virtio device if (1) it has a canonical path ending with
+>  'virtio-backend'.
+> 
+>  The code now determines if it's a virtio device by appending
+>  'virtio-backend' (if needed) to a given canonical path and then
+>  checking that path to see if the device is of type
+> 'TYPE_VIRTIO_DEVICE'.
+> 
+>  The patch also instead now checks to make sure it's a virtio device
+>  before attempting to check whether the device is realized or not.]
+> 
+> Signed-off-by: Jonah Palmer <jonah.palmer@oracle.com>
+> ---
+>  hw/virtio/virtio-qmp.c | 128 ++++++++++++++++++++++++++---------------
+>  hw/virtio/virtio-qmp.h |   8 +--
+>  hw/virtio/virtio.c     |   6 --
+>  3 files changed, 82 insertions(+), 60 deletions(-)
+> 
+> diff --git a/hw/virtio/virtio-qmp.c b/hw/virtio/virtio-qmp.c
+> index b5e1835299..e936cc8ce5 100644
+> --- a/hw/virtio/virtio-qmp.c
+> +++ b/hw/virtio/virtio-qmp.c
+> @@ -668,67 +668,101 @@ VirtioDeviceFeatures *qmp_decode_features(uint16_t device_id, uint64_t bitmap)
 
-Update till now : Have got acked-by label from Markus for the new 
-migrate QAPI design, and reviewd-by label from Daniel on the QAPI 
-implementation side patches.
 
-On 26/07/23 7:48 pm, Het Gala wrote:
-> This is v10 patchset of modified 'migrate' and 'migrate-incoming' QAPI design
-> for upstream review.
->
-> Would like to thank all the maintainers that actively participated in the v9
-> patchset discussion and gave insightful suggestions to improve the patches.
->
->
-> Link to previous upstream community patchset links:
-> v1: https://lists.gnu.org/archive/html/qemu-devel/2022-12/msg04339.html
-> v2: https://lists.gnu.org/archive/html/qemu-devel/2023-02/msg02106.html
-> v3: https://lists.gnu.org/archive/html/qemu-devel/2023-02/msg02473.html
-> v4: https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg03064.html
-> v5: https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg04845.html
-> v6: https://lists.gnu.org/archive/html/qemu-devel/2023-06/msg01251.html
-> v7: https://lists.gnu.org/archive/html/qemu-devel/2023-07/msg02027.html
-> v8: https://lists.gnu.org/archive/html/qemu-devel/2023-07/msg02770.html
-> v9: https://lists.gnu.org/archive/html/qemu-devel/2023-07/msg04216.html
->
-> v9 -> v10 changelog:
-> -------------------
-> - Patch6 : Added extra checks for migration arguments.
-> - Patch8 : Added checks for 'uri' and 'channels' both not present.
-> - Patch9 : Missed adding hmp_handle_error call to print error messages.
-> Abstract:
-> ---------
->
-> Current QAPI 'migrate' command design (for initiating a migration
-> stream) contains information regarding different migrate transport mechanism
-> (tcp / unix / exec), dest-host IP address, and binding port number in form of
-> a string. Thus the design does seem to have some design issues. Some of the
-> issues, stated below are:
->
-> 1. Use of string URIs is a data encoding scheme within a data encoding scheme.
->     QEMU code should directly be able to work with the results from QAPI,
->     without resorting to do a second level of parsing (eg. socket_parse()).
-> 2. For features / parameters related to migration, the migration tunables needs
->     to be defined and updated upfront. For example, 'migrate-set-capability'
->     and 'migrate-set-parameter' is required to enable multifd capability and
->     multifd-number of channels respectively. Instead, 'Multifd-channels' can
->     directly be represented as a single additional parameter to 'migrate'
->     QAPI. 'migrate-set-capability' and 'migrate-set-parameter' commands could
->     be used for runtime tunables that need setting after migration has already
->     started.
->
-> The current patchset focuses on solving the first problem of multi-level
-> encoding of URIs. The patch defines 'migrate' command as a QAPI discriminated
-> union for the various transport backends (like socket, exec and rdma), and on
-> basis of transport backends, different migration parameters are defined.
->
-> (uri) string -->  (channel) Channel-type
->                              Transport-type
->                              Migration parameters based on transport type
-> ------------------------------------------------------------------------------
->
-> Het Gala (10):
->    migration: New QAPI type 'MigrateAddress'
->    migration: convert migration 'uri' into 'MigrateAddress'
->    migration: convert socket backend to accept MigrateAddress
->    migration: convert rdma backend to accept MigrateAddress
->    migration: convert exec backend to accept MigrateAddress.
->    migration: New migrate and migrate-incoming argument 'channels'
->    migration: modify migration_channels_and_uri_compatible() for new QAPI
->      syntax
->    migration: Implement MigrateChannelList to qmp migration flow.
->    migration: Implement MigrateChannelList to hmp migration flow.
->    migration: modify test_multifd_tcp_none() to use new QAPI syntax.
->
->   migration/exec.c               |  72 +++++++++----
->   migration/exec.h               |   8 +-
->   migration/migration-hmp-cmds.c |  17 ++-
->   migration/migration.c          | 190 ++++++++++++++++++++++++++-------
->   migration/migration.h          |   3 +-
->   migration/rdma.c               |  34 +++---
->   migration/rdma.h               |   6 +-
->   migration/socket.c             |  39 ++-----
->   migration/socket.h             |   7 +-
->   qapi/migration.json            | 150 +++++++++++++++++++++++++-
->   softmmu/vl.c                   |   2 +-
->   tests/qtest/migration-test.c   |   7 +-
->   12 files changed, 409 insertions(+), 126 deletions(-)
-Regards,
-Het Gala
+
+>  VirtioInfoList *qmp_x_query_virtio(Error **errp)
+>  {
+>      VirtioInfoList *list = NULL;
+> -    VirtioInfo *node;
+> -    VirtIODevice *vdev;
+>  
+> -    QTAILQ_FOREACH(vdev, &virtio_list, next) {
+> -        DeviceState *dev = DEVICE(vdev);
+> -        Error *err = NULL;
+> -        QObject *obj = qmp_qom_get(dev->canonical_path, "realized", &err);
+> -
+> -        if (err == NULL) {
+> -            GString *is_realized = qobject_to_json_pretty(obj, true);
+> -            /* virtio device is NOT realized, remove it from list */
+> -            if (!strncmp(is_realized->str, "false", 4)) {
+> -                QTAILQ_REMOVE(&virtio_list, vdev, next);
+> -            } else {
+> -                node = g_new(VirtioInfo, 1);
+> -                node->path = g_strdup(dev->canonical_path);
+> -                node->name = g_strdup(vdev->name);
+> -                QAPI_LIST_PREPEND(list, node);
+> +    /* Query the QOM composition tree for virtio devices */
+> +    qmp_set_virtio_device_list("/machine/peripheral/", &list);
+> +    qmp_set_virtio_device_list("/machine/peripheral-anon/", &list);
+> +    if (list == NULL) {
+> +        error_setg(errp, "No virtio devices found");
+> +        return NULL;
+> +    }
+> +    return list;
+> +}
+> +
+> +/* qmp_set_virtio_device_list:
+> + * @ppath: An incomplete peripheral path to search from.
+> + * @list: A list of realized virtio devices.
+> + * Searches a given incomplete peripheral path (e.g. '/machine/peripheral/'
+> + * or '/machine/peripheral-anon/') for realized virtio devices and adds them
+> + * to a given list of virtio devices.
+> + */
+> +void qmp_set_virtio_device_list(const char *ppath, VirtioInfoList **list)
+> +{
+> +    ObjectPropertyInfoList *plist;
+> +    VirtioInfoList *node;
+> +    Error *err = NULL;
+> +
+> +    /* Search an incomplete path for virtio devices */
+> +    plist = qmp_qom_list(ppath, &err);
+> +    if (err == NULL) {
+> +        ObjectPropertyInfoList *start = plist;
+> +        while (plist != NULL) {
+> +            ObjectPropertyInfo *value = plist->value;
+> +            GString *path = g_string_new(ppath);
+> +            g_string_append(path, value->name);
+> +            g_string_append(path, "/virtio-backend");
+> +
+> +            /* Determine if full path is a realized virtio device */
+> +            VirtIODevice *vdev = qmp_find_virtio_device(path->str);
+> +            if (vdev != NULL) {
+> +                node = g_new0(VirtioInfoList, 1);
+> +                node->value = g_new(VirtioInfo, 1);
+> +                node->value->path = g_strdup(path->str);
+> +                node->value->name = g_strdup(vdev->name);
+> +                QAPI_LIST_PREPEND(*list, node->value);
+>              }
+> -           g_string_free(is_realized, true);
+> +            g_string_free(path, true);
+> +            plist = plist->next;
+>          }
+> -        qobject_unref(obj);
+> +        qapi_free_ObjectPropertyInfoList(start);
+>      }
+> -
+> -    return list;
+>  }
+
+This is all way too complicated. AFAICT, it shouldn't require
+much more than this:
+
+static int one_child(Object *child, void *opaque)
+{
+    VirtioInfoList **devs = opaque;
+    VirtIODevice *dev = object_dynamic_cast(child, TYPE_VIRTIO_DEVICE);
+    if (dev != NULL) {
+        VirtioInfo *info =g_new(VirtioInfo, 1);
+        info->path = g_strdup(path->str);
+        info->name = g_strdup(vdev->name);
+        QAPI_LIST_PREPEND(*devs, info);
+    }
+     
+    return 0;
+}
+
+
+VirtioInfoList *qmp_x_query_virtio(Error **errp)
+{
+   VirtioInfoList *devs = NULL;
+   object_child_foreach_recursive(object_get_root(),
+                                  one_child,
+                                  &devs);
+    if (devs == NULL) {
+        error_setg(errp, "No virtio devices found");
+        return NULL;
+    }
+    return devs;
+}
+
+
+
+
+
+>  
+>  VirtIODevice *qmp_find_virtio_device(const char *path)
+>  {
+> -    VirtIODevice *vdev;
+> -
+> -    QTAILQ_FOREACH(vdev, &virtio_list, next) {
+> -        DeviceState *dev = DEVICE(vdev);
+> -
+> -        if (strcmp(dev->canonical_path, path) != 0) {
+> -            continue;
+> +    Error *err = NULL;
+> +    char *basename;
+> +
+> +    /* Append 'virtio-backend' to path if needed */
+> +    basename = g_path_get_basename(path);
+> +    if (strcmp(basename, "virtio-backend")) {
+> +        GString *temp = g_string_new(path);
+> +        char *last = strrchr(path, '/');
+> +        if (g_strcmp0(last, "/")) {
+> +            g_string_append(temp, "/virtio-backend");
+> +        } else {
+> +            g_string_append(temp, "virtio-backend");
+>          }
+> +        path = g_strdup(temp->str);
+> +        g_string_free(temp, true);
+> +    }
+>  
+> -        Error *err = NULL;
+> -        QObject *obj = qmp_qom_get(dev->canonical_path, "realized", &err);
+> -        if (err == NULL) {
+> -            GString *is_realized = qobject_to_json_pretty(obj, true);
+> -            /* virtio device is NOT realized, remove it from list */
+> -            if (!strncmp(is_realized->str, "false", 4)) {
+> -                g_string_free(is_realized, true);
+> -                qobject_unref(obj);
+> -                QTAILQ_REMOVE(&virtio_list, vdev, next);
+> -                return NULL;
+> -            }
+> +    /* Verify the canonical path is a virtio device */
+> +    Object *obj = object_resolve_path(path, NULL);
+> +    if (!obj || !object_dynamic_cast(obj, TYPE_VIRTIO_DEVICE)) {
+> +        object_unref(obj);
+> +        return NULL;
+> +    }
+> +
+> +    /* Verify the virtio device is realized */
+> +    QObject *qobj = qmp_qom_get(path, "realized", &err);
+> +    if (err == NULL) {
+> +        GString *is_realized = qobject_to_json_pretty(qobj, true);
+> +        if (!strncmp(is_realized->str, "false", 4)) {
+>              g_string_free(is_realized, true);
+> -        } else {
+> -            /* virtio device doesn't exist in QOM tree */
+> -            QTAILQ_REMOVE(&virtio_list, vdev, next);
+> -            qobject_unref(obj);
+> +            qobject_unref(qobj);
+>              return NULL;
+>          }
+> -        /* device exists in QOM tree & is realized */
+> -        qobject_unref(obj);
+> -        return vdev;
+> +        g_string_free(is_realized, true);
+> +    } else {
+> +        qobject_unref(qobj);
+> +        return NULL;
+>      }
+> -    return NULL;
+> +    qobject_unref(qobj);
+> +
+> +    /* Get VirtIODevice object */
+> +    VirtIODevice *vdev = VIRTIO_DEVICE(obj);
+> +    return vdev;
+>  }
+>  
+>  VirtioStatus *qmp_x_query_virtio_status(const char *path, Error **errp)
+> diff --git a/hw/virtio/virtio-qmp.h b/hw/virtio/virtio-qmp.h
+> index 8af5f5e65a..4b2b7875b4 100644
+> --- a/hw/virtio/virtio-qmp.h
+> +++ b/hw/virtio/virtio-qmp.h
+> @@ -15,13 +15,7 @@
+>  #include "hw/virtio/virtio.h"
+>  #include "hw/virtio/vhost.h"
+>  
+> -#include "qemu/queue.h"
+> -
+> -typedef QTAILQ_HEAD(QmpVirtIODeviceList, VirtIODevice) QmpVirtIODeviceList;
+> -
+> -/* QAPI list of realized VirtIODevices */
+> -extern QmpVirtIODeviceList virtio_list;
+> -
+> +void qmp_set_virtio_device_list(const char *ppath, VirtioInfoList **list);
+>  VirtIODevice *qmp_find_virtio_device(const char *path);
+>  VirtioDeviceStatus *qmp_decode_status(uint8_t bitmap);
+>  VhostDeviceProtocols *qmp_decode_protocols(uint64_t bitmap);
+> diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
+> index 295a603e58..83c5db3d26 100644
+> --- a/hw/virtio/virtio.c
+> +++ b/hw/virtio/virtio.c
+> @@ -45,8 +45,6 @@
+>  #include "standard-headers/linux/virtio_mem.h"
+>  #include "standard-headers/linux/virtio_vsock.h"
+>  
+> -QmpVirtIODeviceList virtio_list;
+> -
+>  /*
+>   * Maximum size of virtio device config space
+>   */
+> @@ -3616,7 +3614,6 @@ static void virtio_device_realize(DeviceState *dev, Error **errp)
+>      vdev->listener.commit = virtio_memory_listener_commit;
+>      vdev->listener.name = "virtio";
+>      memory_listener_register(&vdev->listener, vdev->dma_as);
+> -    QTAILQ_INSERT_TAIL(&virtio_list, vdev, next);
+>  }
+>  
+>  static void virtio_device_unrealize(DeviceState *dev)
+> @@ -3631,7 +3628,6 @@ static void virtio_device_unrealize(DeviceState *dev)
+>          vdc->unrealize(dev);
+>      }
+>  
+> -    QTAILQ_REMOVE(&virtio_list, vdev, next);
+>      g_free(vdev->bus_name);
+>      vdev->bus_name = NULL;
+>  }
+> @@ -3805,8 +3801,6 @@ static void virtio_device_class_init(ObjectClass *klass, void *data)
+>      vdc->stop_ioeventfd = virtio_device_stop_ioeventfd_impl;
+>  
+>      vdc->legacy_features |= VIRTIO_LEGACY_FEATURES;
+> -
+> -    QTAILQ_INIT(&virtio_list);
+>  }
+>  
+>  bool virtio_device_ioeventfd_enabled(VirtIODevice *vdev)
+> -- 
+> 2.39.3
+> 
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+
 
