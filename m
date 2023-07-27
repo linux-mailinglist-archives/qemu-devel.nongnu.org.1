@@ -2,73 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F07A6765A26
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 19:26:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 491FF765ABB
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 19:51:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qP4BY-0003AD-Lz; Thu, 27 Jul 2023 12:49:56 -0400
+	id 1qP4En-0004DQ-Uq; Thu, 27 Jul 2023 12:53:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qP4BV-00037s-RE
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 12:49:54 -0400
-Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qP4BU-0006vq-3Q
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 12:49:53 -0400
-Received: by mail-ed1-x536.google.com with SMTP id
- 4fb4d7f45d1cf-5217bb5ae05so1489605a12.0
- for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 09:49:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690476590; x=1691081390;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=4Gog43nmYGFaOfneXZzqhRpcKKnJfPIUhs1hwzsNkXM=;
- b=pHuuaLg3SRndfzM+A1Eq6ZRvtLL/wY4K7jxog0OAH4Y62kY8wJzUfOjD6NOLpd1VSi
- V+oz0n8JbxdgFfal3pNQ4CuDVrZMn8o+NdF2NP25+FlcDgUgbBlGHPF7Oxwj1vpratLs
- nj2H4e2//df+Ii6Quq7t2F8yTerlAjljVzr3OHESYgQbty2vYd1ShbM0Ex1yZUVo1tG6
- zP4yJzbpPBGG/FLzQzFC6THt8dn29Na/HTml1ekFocEbI0cWB8SEI5Hs2GnXpooaZK61
- vOd5oo0EeGiGgicJd+eCiwmYhLBN8CEi+I/UMOlgzWysjoOCM5ap/shlpqUc7lrarJTs
- hh1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690476590; x=1691081390;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=4Gog43nmYGFaOfneXZzqhRpcKKnJfPIUhs1hwzsNkXM=;
- b=dl7GaprM4ovS/nrVn9s5i5j5TN9feiV2Pk7KSoNLoxmWs4RYkbEC0liAalSCC8kTGw
- oqINqlVxKhSrQ1gOe5uNDUIyWktShgH4Z5EVU1FW2h1nzGWS2e4dVY3OaBbQhhYHRIkT
- LewSocMvju9E6KFosqt+dijH+KWjtvC0R8gAA1e/RqfP45VC7WGa+hPIFgR9WJNvh3+K
- WafMnAoH2QqB5WPlNytgaMkE3rn5VaZwwZspbEl3OQHkajRzZtPneGXd/nlIRr382YzR
- GCd7k7y4Aq0kpkX4UYscc59S8P1pgPqlRcTgCx/wxOwmU24GH2ZeCBaf9XdFOwvrf3uk
- Ds2w==
-X-Gm-Message-State: ABy/qLZlqyaslGnMYmqGKOLl+h2Cw1GpRmh76iqRx44bByvry6OBBElJ
- lEOUtWSSemkdg1RtQiCRXuRf85vnfFWgPb9m5hvqPg==
-X-Google-Smtp-Source: APBJJlERfmm6rtttDc+rUhDjyKucN8BUeBmjwi66vrNq+21J9pp04fYp9F/cp3c86tEFTKuMMEthALzVUSZvE+xEQxM=
-X-Received: by 2002:aa7:d303:0:b0:522:1eab:e466 with SMTP id
- p3-20020aa7d303000000b005221eabe466mr1978291edq.28.1690476590202; Thu, 27 Jul
- 2023 09:49:50 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qP4Em-00049i-4w
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 12:53:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qP4Ek-0007gt-EF
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 12:53:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1690476793;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Jc1qe/mz3SKAHWd2ZGyKrlZBAb6OAzb6dPRKVfrHcI0=;
+ b=A1yMXN/L0SGFLLShvdzlwRgSrl6EalXlkYqjSAKap7Y0bOZBhVJAyIHFBeqg6+nXIZW9LE
+ iYUMwT7U0fJComFYQYywJmlaOf5zX3JSW/jGHccEeGlzE9a03cmaFm2GUxC7v9m0koPliA
+ bV0hW0zHSAGziBKgGGNIsFd0fBOXDPU=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-401-_VIYr2ySOeW9aZaq4qx4Og-1; Thu, 27 Jul 2023 12:53:12 -0400
+X-MC-Unique: _VIYr2ySOeW9aZaq4qx4Og-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0B75A88D1B2
+ for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 16:53:12 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.19])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 788ECF7825;
+ Thu, 27 Jul 2023 16:53:11 +0000 (UTC)
+Date: Thu, 27 Jul 2023 17:53:09 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: John Snow <jsnow@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel <qemu-devel@nongnu.org>
+Subject: Re: Implementing "tee" in python asyncio
+Message-ID: <ZMKg9QY8+2D3GKxO@redhat.com>
+References: <CAFn=p-aKWG7r2zRdQ-O6kod_jVOTMELGi_ObbKBAM=9ZgXt7Ww@mail.gmail.com>
+ <ZMJLOJYueAWYA1mN@redhat.com>
+ <CAFn=p-Z+Tn08gGa2vb+RRYF=0PLys+qL6wMw+vLN-eXAzUh=vg@mail.gmail.com>
 MIME-Version: 1.0
-References: <cover.1690385928.git.jcd@tribudubois.net>
- <d620c9fcf72507db73a3f31df9065bd417f72704.1690385928.git.jcd@tribudubois.net>
-In-Reply-To: <d620c9fcf72507db73a3f31df9065bd417f72704.1690385928.git.jcd@tribudubois.net>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 27 Jul 2023 17:49:39 +0100
-Message-ID: <CAFEAcA_4wa5afcgSz6uZ3wHSj0oxjum60V5g9RBxkaX6LyTY+Q@mail.gmail.com>
-Subject: Re: [PATCH 3/3] Add i.MX7 SRC device implementation
-To: Jean-Christophe Dubois <jcd@tribudubois.net>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::536;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x536.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAFn=p-Z+Tn08gGa2vb+RRYF=0PLys+qL6wMw+vLN-eXAzUh=vg@mail.gmail.com>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -82,98 +81,67 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 26 Jul 2023 at 16:54, Jean-Christophe Dubois
-<jcd@tribudubois.net> wrote:
->
-> From: jcdubois <jcd@tribudubois.net>
->
-> The SRC device is normaly used to start the secondary CPU.
->
-> When running Linux directly, Qemu is emulating a PSCI interface that UBOOT
-> is installing at boot time and therefore the fact that the SRC device is
-> unimplemented is hidden as Qemu respond directly to PSCI requets without
-> using the SRC device.
->
-> But if you try to run a more bare metal application (maybe uboot itself),
-> then it is not possible to start the secondary CPU as the SRC is an
-> unimplemented device.
->
-> This patch adds the ability to start the secondary CPU through the SRC
-> device so that you can use this feature in bare metal application.
->
-> Signed-off-by: jcdubois <jcd@tribudubois.net>
+On Thu, Jul 27, 2023 at 12:49:10PM -0400, John Snow wrote:
+> On Thu, Jul 27, 2023, 6:47 AM Daniel P. Berrangé <berrange@redhat.com>
+> wrote:
+> 
+> > On Wed, Jul 26, 2023 at 04:25:34PM -0400, John Snow wrote:
+> > > Hi folks,
+> > >
+> > > I'm currently wondering how to take a StreamReader as found on
+> > >
+> > https://docs.python.org/3/library/asyncio-subprocess.html#asyncio.subprocess.Process
+> > > and to consume the data while optionally re-streaming it to a
+> > > secondary consumer.
+> > >
+> > > What I'd like to do is create a StreamWatcher class that consumes
+> > > console data while optionally logging to python logging and/or a file;
+> > > but re-buffers the data into an async stream where an additional
+> > > consumer is free to use the "standard asyncio API" to consume console
+> > > data at their leisure in a way that's unsurprising.
+> > >
+> > > What I'd like this *for* is to be able to do aggressive logging of
+> > > stdout/stderr and console data without denying tests the ability to
+> > > consume the data as they see fit for their testing purposes. I want to
+> > > have my cake and eat it too, and we don't do a good job of managing
+> > > this consistently across the board.
+> > >
+> > > I am wondering if there's any way around creating a literal socketpair
+> > > and suffering the creation of a full four StreamReader/StreamWriter
+> > > instances (one pair per socket...) and then just hanging on to the
+> > > "unused" reader/writer per each. It seems kind of foolishly excessive.
+> > > It also seems like it might be a pain in the butt if I want
+> > > cross-platform compatibility with windows for the machine appliance.
+> > >
+> > > Anyone got any bright ideas?
+> >
+> > Don't bother with any of the above, just add 'logfile=/path/to/log'
+> > to the -chardev argument.
+> >
+> 
+> Part of me feels like it'd be a shame to miss out on the chance to do the
+> logging in the library, but it *would* be a lot easier to just not worry
+> about it.
+> 
+> anyway, this is easy for console, what about stdio? is there a way to run
+> that through a chardev that's just connected to stdio but we attach a
+> logfile?
 
-I have a few style-type comments below, but overall this looks good.
-
-> ---
->  hw/arm/fsl-imx7.c          |   9 +-
->  hw/misc/imx7_src.c         | 289 +++++++++++++++++++++++++++++++++++++
->  hw/misc/meson.build        |   1 +
->  include/hw/arm/fsl-imx7.h  |   2 +
->  include/hw/misc/imx7_src.h |  68 +++++++++
->  5 files changed, 368 insertions(+), 1 deletion(-)
->  create mode 100644 hw/misc/imx7_src.c
->  create mode 100644 include/hw/misc/imx7_src.h
->
-> diff --git a/hw/arm/fsl-imx7.c b/hw/arm/fsl-imx7.c
-> index 05cdd4831e..db103069e1 100644
-> --- a/hw/arm/fsl-imx7.c
-> +++ b/hw/arm/fsl-imx7.c
-> @@ -82,6 +82,11 @@ static void fsl_imx7_init(Object *obj)
->       */
->      object_initialize_child(obj, "gpcv2", &s->gpcv2, TYPE_IMX_GPCV2);
->
-> +    /*
-> +     * SRC
-> +     */
-> +    object_initialize_child(obj, "src", &s->src, TYPE_IMX7_SRC);
-> +
->      /*
->       * ECSPIs
->       */
-> @@ -90,6 +95,7 @@ static void fsl_imx7_init(Object *obj)
->          object_initialize_child(obj, name, &s->spi[i], TYPE_IMX_SPI);
->      }
->
-> +
->      /*
->       * I2Cs
->       */
-
-Stray whitespace change.
-
-> @@ -490,7 +496,8 @@ static void fsl_imx7_realize(DeviceState *dev, Error **errp)
->      /*
->       * SRC
->       */
-> -    create_unimplemented_device("src", FSL_IMX7_SRC_ADDR, FSL_IMX7_SRC_SIZE);
-> +    sysbus_realize(SYS_BUS_DEVICE(&s->src), &error_abort);
-> +    sysbus_mmio_map(SYS_BUS_DEVICE(&s->src), 0, FSL_IMX7_SRC_ADDR);
->
->      /*
->       * Watchdogs
+When you say 'stdio' are you refering to a '-chardev stdio' backend, or
+simply whatever the python code dup()s onto stdio when spawnnig QEMU ?
+The former case can use ',logfile=...', and in the latter case we could
+open a log file and dup() its FD onto stdout/stderr when spawning QEMU.
 
 
-> +#define DPRINTF(fmt, args...) \
-> +    do { \
-> +        if (DEBUG_IMX7_SRC) { \
-> +            fprintf(stderr, "[%s]%s: " fmt , TYPE_IMX7_SRC, \
-> +                                             __func__, ##args); \
-> +        } \
-> +    } while (0)
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
-Please don't add DEBUG/DPRINTF macros in new code. Use
-tracepoints instead.
-
-> +#define EXTRACT(value, name) extract32(value, name##_SHIFT, name##_LENGTH)
-
-Please don't define new wrappers around extract32() and
-friends. If you want to have something name based, use
-FIELD_EX32() from hw/registerfields.h.
-
-thanks
--- PMM
 
