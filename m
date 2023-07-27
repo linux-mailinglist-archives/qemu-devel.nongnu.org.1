@@ -2,80 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1051D765A7F
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 19:36:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F7CC765ABC
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 19:51:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qP4JN-0005t6-EP; Thu, 27 Jul 2023 12:58:01 -0400
+	id 1qP4Jh-0005vl-LA; Thu, 27 Jul 2023 12:58:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qP4JK-0005su-6s
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 12:57:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qP4Jf-0005vb-TH
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 12:58:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qP4Iz-0001Ir-7G
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 12:57:39 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qP4Je-0001NO-ER
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 12:58:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690477056;
+ s=mimecast20190719; t=1690477097;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=l8ckzjPwir78HT0GjuYrlbpQl3qKpFIfwFeQxwaMtww=;
- b=EHIehpDKoFkvys+aAIxninMnTEEZOhXe79K0IONfC0bT3SorIq/ZbTRv/K+OKWnKmt16Lu
- Ijufw5VB3sEF/RRM9eZa1yKtclz/gpvawNnTii3SFMh7sl0dD4tDvbbTeTwLCehFunFkUw
- z14X5AQV9Prskn9cdGsVQBwy+mVnHTQ=
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
- [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=m9XPyUvJXurY3nbwRDos0PfDbaqejKfC2NDwQgV0nLA=;
+ b=NsrgtjRF+G9kh2+6mVF94gDcgul6cGxhM1FpDSShaI6YfdG/7vP0+iu6uGkt5bmJ0R+Fx5
+ ebVbibCc7zccFB+irZ0WBjhnLqWxJaW4iWZdPVSRZFc1npT3BQvSs6yKIlEJsqMLOZz9Jb
+ 3TUrg7Cgzj3gz9pjN7a58jHlfbfgCTM=
+Received: from mail-ot1-f72.google.com (mail-ot1-f72.google.com
+ [209.85.210.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-396-CcVkurklPr2nOvLr7kq69g-1; Thu, 27 Jul 2023 12:57:34 -0400
-X-MC-Unique: CcVkurklPr2nOvLr7kq69g-1
-Received: by mail-pj1-f69.google.com with SMTP id
- 98e67ed59e1d1-267f61da571so1080941a91.0
- for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 09:57:34 -0700 (PDT)
+ us-mta-655-0TVocsAJNti-JKQL6q-6-w-1; Thu, 27 Jul 2023 12:58:16 -0400
+X-MC-Unique: 0TVocsAJNti-JKQL6q-6-w-1
+Received: by mail-ot1-f72.google.com with SMTP id
+ 46e09a7af769-6bc7afd0498so412162a34.0
+ for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 09:58:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690477053; x=1691081853;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=l8ckzjPwir78HT0GjuYrlbpQl3qKpFIfwFeQxwaMtww=;
- b=cJsDxu5USooKvaKw49lq72qW0u5Y5+2TzGjtwCHyz2Bkac2HCmWG57a+qeovvmH6MU
- Lhxo8yIi7wRtFUNz4AxenVOL6Ne5yr+AnurJjwoXaKcD3EBJid7jd15EIHP7purZ/p1p
- SCoJbXh+JkMwU2Oixh/we7hR0Fh5hihCnVrBeQqbp1BJcqB3RadXbt399338fJW/8CoB
- mB+glZDOAXe+hUGv0/w/UU0sn/1kFAulZWc0g1b0n550ZW7nguyWoJyEyWd2mfvQGYKd
- xFVk4799DewEYSa9VPDlxZO3n/4KoROKxtXugz9W/YW6ae3ofvWgqwx+K2xRu4mLtZyd
- WO3Q==
-X-Gm-Message-State: ABy/qLbcRWML42Sw34dpZf5d/bSoendQqYlnId6mn18eOJScQl17+rPv
- BkrrywdC010RsLIfAx+zRWK3etUp7AMjPl82fdMIB0Cubi2j715PJRe2B0/CYAnCjl0Hgz9w7Ou
- TM1jXJ/4e99wwgY2sG8Xa84I53fWcEiI=
-X-Received: by 2002:a17:90a:2fc8:b0:268:51ab:a84a with SMTP id
- n8-20020a17090a2fc800b0026851aba84amr5024505pjm.4.1690477052965; 
- Thu, 27 Jul 2023 09:57:32 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlE6IzsY8epr6BhaP9TGLBYLzkdchJzZFhqWas/9v+HL/Erm2qMVISLuvm+UAbjLAUIuYUtGoBZY0IUEPQWoxVA=
-X-Received: by 2002:a17:90a:2fc8:b0:268:51ab:a84a with SMTP id
- n8-20020a17090a2fc800b0026851aba84amr5024495pjm.4.1690477052649; Thu, 27 Jul
- 2023 09:57:32 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1690477095; x=1691081895;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=m9XPyUvJXurY3nbwRDos0PfDbaqejKfC2NDwQgV0nLA=;
+ b=RlYv5WvWAIz5l0Mku+GdrWzaCIkpCp+2kRG1cDwnTGZGhWPkwQyjeFiZ61y0utR91D
+ TVc+1IYc+AaGdQsPSPmWaIrel6J+rdlUQgE6mW4OZ9P9qadX33x96GISlmZlhmfg1+vX
+ ObrPUuZRQbJweGFzKlqxTeq85O5WOfei8xyF1vo/Jkp9ZVqm6KtJ0PcWknLdfLsrYdt/
+ xMw7TiKYiV7YrmIoBWEKMaZg5dZLz3iq53VBObuFhujj4jdifbEk+Zsbfy3ttA3HaHhP
+ K+qYTYIXaXxt10W2tgskCy1AyuEYOZV5N0fJN0pi5EXr50RTMuXeBb+VMFf6falmju10
+ 8nkA==
+X-Gm-Message-State: ABy/qLaxk21FzlJeR/GViloDE/7aKRSMb2WA8q9VOZKusFVVZQscQ/Q3
+ rL+k8IJeKtU9n9QI5CK+PPrVmg7LD8OPx55muzDgE5OCZdNJ6q+gEwHUbcfxMTQv6D6pZKG30Ap
+ EAuKsQMxSLgoDQHk=
+X-Received: by 2002:a05:6830:4805:b0:6b9:b096:2617 with SMTP id
+ dg5-20020a056830480500b006b9b0962617mr4794052otb.14.1690477095415; 
+ Thu, 27 Jul 2023 09:58:15 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlH2jd6cgKGZW8G5zDpXipS6eyUP8yQ2nlfjQ8ci+Yw3ItQ8DHX5DaOD6PCDO2bSiHrDtePePA==
+X-Received: by 2002:a05:6830:4805:b0:6b9:b096:2617 with SMTP id
+ dg5-20020a056830480500b006b9b0962617mr4794036otb.14.1690477095119; 
+ Thu, 27 Jul 2023 09:58:15 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:3f78:514a:4f03:fdc0?
+ ([2a01:e0a:280:24f0:3f78:514a:4f03:fdc0])
+ by smtp.gmail.com with ESMTPSA id
+ y3-20020a0cd983000000b0062de6537febsm550463qvj.58.2023.07.27.09.58.13
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 27 Jul 2023 09:58:14 -0700 (PDT)
+Message-ID: <841b1ff1-0a50-e9c9-d405-256a16ffdf8c@redhat.com>
+Date: Thu, 27 Jul 2023 18:58:12 +0200
 MIME-Version: 1.0
-References: <CAFn=p-aKWG7r2zRdQ-O6kod_jVOTMELGi_ObbKBAM=9ZgXt7Ww@mail.gmail.com>
- <ZMJLOJYueAWYA1mN@redhat.com>
- <CAFn=p-Z+Tn08gGa2vb+RRYF=0PLys+qL6wMw+vLN-eXAzUh=vg@mail.gmail.com>
- <ZMKg9QY8+2D3GKxO@redhat.com>
-In-Reply-To: <ZMKg9QY8+2D3GKxO@redhat.com>
-From: John Snow <jsnow@redhat.com>
-Date: Thu, 27 Jul 2023 12:57:20 -0400
-Message-ID: <CAFn=p-Y+H_5iHQyzsUshg+BAdLPuwK7yN=qhOeK7eodW7ZeXWA@mail.gmail.com>
-Subject: Re: Implementing "tee" in python asyncio
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel <qemu-devel@nongnu.org>
-Content-Type: multipart/alternative; boundary="000000000000397e9006017adc24"
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH RFC v1 1/3] vfio/pci: detect the support of dynamic MSI-X
+ allocation
+Content-Language: en-US
+To: Jing Liu <jing2.liu@intel.com>, qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, pbonzini@redhat.com, kevin.tian@intel.com,
+ reinette.chatre@intel.com
+References: <20230727072410.135743-1-jing2.liu@intel.com>
+ <20230727072410.135743-2-jing2.liu@intel.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <20230727072410.135743-2-jing2.liu@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ NICE_REPLY_A=-0.091, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
  RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -93,211 +104,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000397e9006017adc24
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Hello Jing,
 
-On Thu, Jul 27, 2023, 12:53 PM Daniel P. Berrang=C3=A9 <berrange@redhat.com=
->
-wrote:
+On 7/27/23 09:24, Jing Liu wrote:
+> From: Reinette Chatre <reinette.chatre@intel.com>
+> 
+> Kernel provides the guidance of dynamic MSI-X allocation support of
+> passthrough device, by clearing the VFIO_IRQ_INFO_NORESIZE flag to
+> guide user space.
+> 
+> Fetch and store the flags from host for later use to determine if
+> specific flags are set.
+> 
+> Signed-off-by: Reinette Chatre <reinette.chatre@intel.com>
+> Signed-off-by: Jing Liu <jing2.liu@intel.com>
+> ---
+>   hw/vfio/pci.c        | 12 ++++++++++++
+>   hw/vfio/pci.h        |  1 +
+>   hw/vfio/trace-events |  2 ++
+>   3 files changed, 15 insertions(+)
+> 
+> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+> index a205c6b1130f..0c4ac0873d40 100644
+> --- a/hw/vfio/pci.c
+> +++ b/hw/vfio/pci.c
+> @@ -1572,6 +1572,7 @@ static void vfio_msix_early_setup(VFIOPCIDevice *vdev, Error **errp)
+>   
+>   static int vfio_msix_setup(VFIOPCIDevice *vdev, int pos, Error **errp)
+>   {
+> +    struct vfio_irq_info irq_info = { .argsz = sizeof(irq_info) };
+>       int ret;
+>       Error *err = NULL;
+>   
+> @@ -1624,6 +1625,17 @@ static int vfio_msix_setup(VFIOPCIDevice *vdev, int pos, Error **errp)
+>           memory_region_set_enabled(&vdev->pdev.msix_table_mmio, false);
+>       }
+>   
+> +    irq_info.index = VFIO_PCI_MSIX_IRQ_INDEX;
+> +    ret = ioctl(vdev->vbasedev.fd, VFIO_DEVICE_GET_IRQ_INFO, &irq_info);
+> +    if (ret) {
+> +        /* This can fail for an old kernel or legacy PCI dev */
+> +        trace_vfio_msix_setup_get_irq_info_failure(strerror(errno));
 
-> On Thu, Jul 27, 2023 at 12:49:10PM -0400, John Snow wrote:
-> > On Thu, Jul 27, 2023, 6:47 AM Daniel P. Berrang=C3=A9 <berrange@redhat.=
-com>
-> > wrote:
-> >
-> > > On Wed, Jul 26, 2023 at 04:25:34PM -0400, John Snow wrote:
-> > > > Hi folks,
-> > > >
-> > > > I'm currently wondering how to take a StreamReader as found on
-> > > >
-> > >
-> https://docs.python.org/3/library/asyncio-subprocess.html#asyncio.subproc=
-ess.Process
-> > > > and to consume the data while optionally re-streaming it to a
-> > > > secondary consumer.
-> > > >
-> > > > What I'd like to do is create a StreamWatcher class that consumes
-> > > > console data while optionally logging to python logging and/or a
-> file;
-> > > > but re-buffers the data into an async stream where an additional
-> > > > consumer is free to use the "standard asyncio API" to consume conso=
-le
-> > > > data at their leisure in a way that's unsurprising.
-> > > >
-> > > > What I'd like this *for* is to be able to do aggressive logging of
-> > > > stdout/stderr and console data without denying tests the ability to
-> > > > consume the data as they see fit for their testing purposes. I want
-> to
-> > > > have my cake and eat it too, and we don't do a good job of managing
-> > > > this consistently across the board.
-> > > >
-> > > > I am wondering if there's any way around creating a literal
-> socketpair
-> > > > and suffering the creation of a full four StreamReader/StreamWriter
-> > > > instances (one pair per socket...) and then just hanging on to the
-> > > > "unused" reader/writer per each. It seems kind of foolishly
-> excessive.
-> > > > It also seems like it might be a pain in the butt if I want
-> > > > cross-platform compatibility with windows for the machine appliance=
-.
-> > > >
-> > > > Anyone got any bright ideas?
-> > >
-> > > Don't bother with any of the above, just add 'logfile=3D/path/to/log'
-> > > to the -chardev argument.
-> > >
-> >
-> > Part of me feels like it'd be a shame to miss out on the chance to do t=
-he
-> > logging in the library, but it *would* be a lot easier to just not worr=
-y
-> > about it.
-> >
-> > anyway, this is easy for console, what about stdio? is there a way to r=
-un
-> > that through a chardev that's just connected to stdio but we attach a
-> > logfile?
->
-> When you say 'stdio' are you refering to a '-chardev stdio' backend, or
-> simply whatever the python code dup()s onto stdio when spawnnig QEMU ?
-> The former case can use ',logfile=3D...', and in the latter case we could
-> open a log file and dup() its FD onto stdout/stderr when spawning QEMU.
->
+Is it possible to detect the error reported by a kernel (< 6.4) when
+dynamic MSI-X are not supported. Looking at vfio_pci_ioctl_get_irq_info()
+in the kernel, could info.flags be tested against VFIO_IRQ_INFO_NORESIZE ?
 
-I mean stdout and stderr for the QEMU process itself. Some tests like to
-watch the output for various strings, but we also need to capture and log
-that output to be able to show it during unhandled exceptions, etc.
+In that case, QEMU should report an error and the trace event is not
+needed.
 
+Thanks,
 
->
-> With regards,
-> Daniel
-> --
-> |: https://berrange.com      -o-
-> https://www.flickr.com/photos/dberrange :|
-> |: https://libvirt.org         -o-
-> https://fstop138.berrange.com :|
-> |: https://entangle-photo.org    -o-
-> https://www.instagram.com/dberrange :|
->
->
+C.
 
---000000000000397e9006017adc24
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
-class=3D"gmail_attr">On Thu, Jul 27, 2023, 12:53 PM Daniel P. Berrang=C3=A9=
- &lt;<a href=3D"mailto:berrange@redhat.com">berrange@redhat.com</a>&gt; wro=
-te:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;b=
-order-left:1px #ccc solid;padding-left:1ex">On Thu, Jul 27, 2023 at 12:49:1=
-0PM -0400, John Snow wrote:<br>
-&gt; On Thu, Jul 27, 2023, 6:47 AM Daniel P. Berrang=C3=A9 &lt;<a href=3D"m=
-ailto:berrange@redhat.com" target=3D"_blank" rel=3D"noreferrer">berrange@re=
-dhat.com</a>&gt;<br>
-&gt; wrote:<br>
-&gt; <br>
-&gt; &gt; On Wed, Jul 26, 2023 at 04:25:34PM -0400, John Snow wrote:<br>
-&gt; &gt; &gt; Hi folks,<br>
-&gt; &gt; &gt;<br>
-&gt; &gt; &gt; I&#39;m currently wondering how to take a StreamReader as fo=
-und on<br>
-&gt; &gt; &gt;<br>
-&gt; &gt; <a href=3D"https://docs.python.org/3/library/asyncio-subprocess.h=
-tml#asyncio.subprocess.Process" rel=3D"noreferrer noreferrer" target=3D"_bl=
-ank">https://docs.python.org/3/library/asyncio-subprocess.html#asyncio.subp=
-rocess.Process</a><br>
-&gt; &gt; &gt; and to consume the data while optionally re-streaming it to =
-a<br>
-&gt; &gt; &gt; secondary consumer.<br>
-&gt; &gt; &gt;<br>
-&gt; &gt; &gt; What I&#39;d like to do is create a StreamWatcher class that=
- consumes<br>
-&gt; &gt; &gt; console data while optionally logging to python logging and/=
-or a file;<br>
-&gt; &gt; &gt; but re-buffers the data into an async stream where an additi=
-onal<br>
-&gt; &gt; &gt; consumer is free to use the &quot;standard asyncio API&quot;=
- to consume console<br>
-&gt; &gt; &gt; data at their leisure in a way that&#39;s unsurprising.<br>
-&gt; &gt; &gt;<br>
-&gt; &gt; &gt; What I&#39;d like this *for* is to be able to do aggressive =
-logging of<br>
-&gt; &gt; &gt; stdout/stderr and console data without denying tests the abi=
-lity to<br>
-&gt; &gt; &gt; consume the data as they see fit for their testing purposes.=
- I want to<br>
-&gt; &gt; &gt; have my cake and eat it too, and we don&#39;t do a good job =
-of managing<br>
-&gt; &gt; &gt; this consistently across the board.<br>
-&gt; &gt; &gt;<br>
-&gt; &gt; &gt; I am wondering if there&#39;s any way around creating a lite=
-ral socketpair<br>
-&gt; &gt; &gt; and suffering the creation of a full four StreamReader/Strea=
-mWriter<br>
-&gt; &gt; &gt; instances (one pair per socket...) and then just hanging on =
-to the<br>
-&gt; &gt; &gt; &quot;unused&quot; reader/writer per each. It seems kind of =
-foolishly excessive.<br>
-&gt; &gt; &gt; It also seems like it might be a pain in the butt if I want<=
-br>
-&gt; &gt; &gt; cross-platform compatibility with windows for the machine ap=
-pliance.<br>
-&gt; &gt; &gt;<br>
-&gt; &gt; &gt; Anyone got any bright ideas?<br>
-&gt; &gt;<br>
-&gt; &gt; Don&#39;t bother with any of the above, just add &#39;logfile=3D/=
-path/to/log&#39;<br>
-&gt; &gt; to the -chardev argument.<br>
-&gt; &gt;<br>
-&gt; <br>
-&gt; Part of me feels like it&#39;d be a shame to miss out on the chance to=
- do the<br>
-&gt; logging in the library, but it *would* be a lot easier to just not wor=
-ry<br>
-&gt; about it.<br>
-&gt; <br>
-&gt; anyway, this is easy for console, what about stdio? is there a way to =
-run<br>
-&gt; that through a chardev that&#39;s just connected to stdio but we attac=
-h a<br>
-&gt; logfile?<br>
-<br>
-When you say &#39;stdio&#39; are you refering to a &#39;-chardev stdio&#39;=
- backend, or<br>
-simply whatever the python code dup()s onto stdio when spawnnig QEMU ?<br>
-The former case can use &#39;,logfile=3D...&#39;, and in the latter case we=
- could<br>
-open a log file and dup() its FD onto stdout/stderr when spawning QEMU.<br>=
-</blockquote></div></div><div dir=3D"auto"><br></div><div dir=3D"auto">I me=
-an stdout and stderr for the QEMU process itself. Some tests like to watch =
-the output for various strings, but we also need to capture and log that ou=
-tput to be able to show it during unhandled exceptions, etc.</div><div dir=
-=3D"auto"><br></div><div dir=3D"auto"><div class=3D"gmail_quote"><blockquot=
-e class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc sol=
-id;padding-left:1ex">
-<br>
-<br>
-With regards,<br>
-Daniel<br>
--- <br>
-|: <a href=3D"https://berrange.com" rel=3D"noreferrer noreferrer" target=3D=
-"_blank">https://berrange.com</a>=C2=A0 =C2=A0 =C2=A0 -o-=C2=A0 =C2=A0 <a h=
-ref=3D"https://www.flickr.com/photos/dberrange" rel=3D"noreferrer noreferre=
-r" target=3D"_blank">https://www.flickr.com/photos/dberrange</a> :|<br>
-|: <a href=3D"https://libvirt.org" rel=3D"noreferrer noreferrer" target=3D"=
-_blank">https://libvirt.org</a>=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0-o-=C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 <a href=3D"https://fstop138.berrange.com=
-" rel=3D"noreferrer noreferrer" target=3D"_blank">https://fstop138.berrange=
-.com</a> :|<br>
-|: <a href=3D"https://entangle-photo.org" rel=3D"noreferrer noreferrer" tar=
-get=3D"_blank">https://entangle-photo.org</a>=C2=A0 =C2=A0 -o-=C2=A0 =C2=A0=
- <a href=3D"https://www.instagram.com/dberrange" rel=3D"noreferrer noreferr=
-er" target=3D"_blank">https://www.instagram.com/dberrange</a> :|<br>
-<br>
-</blockquote></div></div></div>
-
---000000000000397e9006017adc24--
+> +    } else {
+> +        vdev->msix->irq_info_flags = irq_info.flags;
+> +    }
+> +    trace_vfio_msix_setup_irq_info_flags(vdev->vbasedev.name,
+> +                                         vdev->msix->irq_info_flags);
+> +
+>       return 0;
+>   }
+>   
+> diff --git a/hw/vfio/pci.h b/hw/vfio/pci.h
+> index a2771b9ff3cc..ad34ec56d0ae 100644
+> --- a/hw/vfio/pci.h
+> +++ b/hw/vfio/pci.h
+> @@ -113,6 +113,7 @@ typedef struct VFIOMSIXInfo {
+>       uint32_t table_offset;
+>       uint32_t pba_offset;
+>       unsigned long *pending;
+> +    uint32_t irq_info_flags;
+>   } VFIOMSIXInfo;
+>   
+>   #define TYPE_VFIO_PCI "vfio-pci"
+> diff --git a/hw/vfio/trace-events b/hw/vfio/trace-events
+> index ee7509e68e4f..7d4a398f044d 100644
+> --- a/hw/vfio/trace-events
+> +++ b/hw/vfio/trace-events
+> @@ -28,6 +28,8 @@ vfio_pci_read_config(const char *name, int addr, int len, int val) " (%s, @0x%x,
+>   vfio_pci_write_config(const char *name, int addr, int val, int len) " (%s, @0x%x, 0x%x, len=0x%x)"
+>   vfio_msi_setup(const char *name, int pos) "%s PCI MSI CAP @0x%x"
+>   vfio_msix_early_setup(const char *name, int pos, int table_bar, int offset, int entries) "%s PCI MSI-X CAP @0x%x, BAR %d, offset 0x%x, entries %d"
+> +vfio_msix_setup_get_irq_info_failure(const char *errstr) "VFIO_DEVICE_GET_IRQ_INFO failure: %s"
+> +vfio_msix_setup_irq_info_flags(const char *name, uint32_t flags) " (%s) MSI-X irq info flags 0x%x"
+>   vfio_check_pcie_flr(const char *name) "%s Supports FLR via PCIe cap"
+>   vfio_check_pm_reset(const char *name) "%s Supports PM reset"
+>   vfio_check_af_flr(const char *name) "%s Supports FLR via AF cap"
 
 
