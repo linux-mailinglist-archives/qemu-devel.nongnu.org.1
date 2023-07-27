@@ -2,63 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F6E0765D51
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 22:27:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C88D2765CF6
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 22:10:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qP7B1-0000fZ-1c; Thu, 27 Jul 2023 16:01:37 -0400
+	id 1qP7BE-0000nm-Nw; Thu, 27 Jul 2023 16:01:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qP7Ag-0000ez-8l
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 16:01:14 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qP7Ao-0000gC-Aa
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 16:01:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qP7Ae-0002ie-IQ
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 16:01:13 -0400
+ id 1qP7Ak-0002jV-Br
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 16:01:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690488071;
+ s=mimecast20190719; t=1690488076;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=qBxH1iRanqco3HtF82nh9FMyY8AR3YyxU+2pBdaif24=;
- b=KjBFYZPPaxHjTzAmFduMurtJEC1wSZiJD5Lq+NU8kmWQE/lSaWnqCUHALd9J783y+Qoe+h
- Q2IyEydltL8DgU2o/V7v7u8nLY75/YngYES6QMaxtadG40mO+rNDit/hqscE+wwC5Q/D9h
- 4XjjOoAcrPgQGu5XpMac5aWo663byz8=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-488-f5ICcI7kMFG2uOf07W61wg-1; Thu, 27 Jul 2023 16:01:08 -0400
-X-MC-Unique: f5ICcI7kMFG2uOf07W61wg-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
+ bh=tsxiWqVUN4b/jGAtlTYnRiq+MCbYH2vLoTyH/YKZ3Gc=;
+ b=dH3gkSq1ZnQmgs/vWoKFPYnyfwRyhy9MRJX+NUdz+yjwN/OOUHJK/rZ7g6CyT29sa+ncpW
+ fmn8CLNDImX8Hki+6xotO7wbi+0LGaMS5161ZZEzVMCHAFdxdvcud/ZXAlmuJpBfjfiRan
+ EcPkOFmdCCgomKAkx5cPjTR3Cy21mmM=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-623-SZ-bJ80iPMCPYhZZSr-Efw-1; Thu, 27 Jul 2023 16:01:12 -0400
+X-MC-Unique: SZ-bJ80iPMCPYhZZSr-Efw-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A9C5938149B8;
- Thu, 27 Jul 2023 20:01:06 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D5469185A78F;
+ Thu, 27 Jul 2023 20:01:09 +0000 (UTC)
 Received: from localhost (unknown [10.39.193.84])
- by smtp.corp.redhat.com (Postfix) with ESMTP id EE2C2C57964;
- Thu, 27 Jul 2023 20:01:05 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 4FAD540C2063;
+ Thu, 27 Jul 2023 20:01:08 +0000 (UTC)
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
  Fam Zheng <fam@euphon.net>, qemu-block@nongnu.org,
  Richard Henderson <rth@twiddle.net>, Hanna Reitz <hreitz@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>, Qing Wang <qinwang@redhat.com>,
+ Sam Li <faithilikerun@gmail.com>, Matthew Rosato <mjrosato@linux.ibm.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL for-8.1 2/8] block/blkio: do not use open flags in qemu_open()
-Date: Thu, 27 Jul 2023 16:00:52 -0400
-Message-ID: <20230727200058.1071776-3-stefanha@redhat.com>
+Subject: [PULL for-8.1 3/8] block/file-posix: fix g_file_get_contents return
+ path
+Date: Thu, 27 Jul 2023 16:00:53 -0400
+Message-ID: <20230727200058.1071776-4-stefanha@redhat.com>
 In-Reply-To: <20230727200058.1071776-1-stefanha@redhat.com>
 References: <20230727200058.1071776-1-stefanha@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -83,62 +84,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Stefano Garzarella <sgarzare@redhat.com>
+From: Sam Li <faithilikerun@gmail.com>
 
-qemu_open() in blkio_virtio_blk_common_open() is used to open the
-character device (e.g. /dev/vhost-vdpa-0 or /dev/vfio/vfio) or in
-the future eventually the unix socket.
+The g_file_get_contents() function returns a g_boolean. If it fails, the
+returned value will be 0 instead of -1. Solve the issue by skipping
+assigning ret value.
 
-In all these cases we cannot open the path in read-only mode,
-when the `read-only` option of blockdev is on, because the exchange
-of IOCTL commands for example will fail.
+This issue was found by Matthew Rosato using virtio-blk-{pci,ccw} backed
+by an NVMe partition e.g. /dev/nvme0n1p1 on s390x.
 
-In order to open the device read-only, we have to use the `read-only`
-property of the libblkio driver as we already do in blkio_file_open().
-
-Fixes: cad2ccc395 ("block/blkio: use qemu_open() to support fd passing for virtio-blk")
-Buglink: https://bugzilla.redhat.com/show_bug.cgi?id=2225439
-Reported-by: Qing Wang <qinwang@redhat.com>
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: Sam Li <faithilikerun@gmail.com>
+Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-id: 20230726074807.14041-1-sgarzare@redhat.com
+Message-id: 20230727115844.8480-1-faithilikerun@gmail.com
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 ---
- block/blkio.c | 21 ++++++++++++---------
- 1 file changed, 12 insertions(+), 9 deletions(-)
+ block/file-posix.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/block/blkio.c b/block/blkio.c
-index bc1fac48b7..7eb1b94820 100644
---- a/block/blkio.c
-+++ b/block/blkio.c
-@@ -686,15 +686,18 @@ static int blkio_virtio_blk_common_open(BlockDriverState *bs,
-      * layer through the "/dev/fdset/N" special path.
-      */
-     if (fd_supported) {
--        int open_flags;
--
--        if (flags & BDRV_O_RDWR) {
--            open_flags = O_RDWR;
--        } else {
--            open_flags = O_RDONLY;
--        }
--
--        fd = qemu_open(path, open_flags, errp);
-+        /*
-+         * `path` can contain the path of a character device
-+         * (e.g. /dev/vhost-vdpa-0 or /dev/vfio/vfio) or a unix socket.
-+         *
-+         * So, we should always open it with O_RDWR flag, also if BDRV_O_RDWR
-+         * is not set in the open flags, because the exchange of IOCTL commands
-+         * for example will fail.
-+         *
-+         * In order to open the device read-only, we are using the `read-only`
-+         * property of the libblkio driver in blkio_file_open().
-+         */
-+        fd = qemu_open(path, O_RDWR, errp);
-         if (fd < 0) {
-             return -EINVAL;
-         }
+diff --git a/block/file-posix.c b/block/file-posix.c
+index 9e8e3d8ca5..b16e9c21a1 100644
+--- a/block/file-posix.c
++++ b/block/file-posix.c
+@@ -1232,7 +1232,6 @@ static int hdev_get_max_hw_transfer(int fd, struct stat *st)
+ static int get_sysfs_str_val(struct stat *st, const char *attribute,
+                              char **val) {
+     g_autofree char *sysfspath = NULL;
+-    int ret;
+     size_t len;
+ 
+     if (!S_ISBLK(st->st_mode)) {
+@@ -1242,8 +1241,7 @@ static int get_sysfs_str_val(struct stat *st, const char *attribute,
+     sysfspath = g_strdup_printf("/sys/dev/block/%u:%u/queue/%s",
+                                 major(st->st_rdev), minor(st->st_rdev),
+                                 attribute);
+-    ret = g_file_get_contents(sysfspath, val, &len, NULL);
+-    if (ret == -1) {
++    if (!g_file_get_contents(sysfspath, val, &len, NULL)) {
+         return -ENOENT;
+     }
+ 
+@@ -1253,7 +1251,7 @@ static int get_sysfs_str_val(struct stat *st, const char *attribute,
+     if (*(p + len - 1) == '\n') {
+         *(p + len - 1) = '\0';
+     }
+-    return ret;
++    return 0;
+ }
+ #endif
+ 
 -- 
 2.41.0
 
