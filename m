@@ -2,85 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B91A765941
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 18:53:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A36A7658CB
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 18:34:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qP3l1-0003Dh-7J; Thu, 27 Jul 2023 12:22:31 -0400
+	id 1qP3mF-0003Jc-Tu; Thu, 27 Jul 2023 12:23:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qP3kz-0003DR-J7
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 12:22:29 -0400
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qP3mE-0003J8-Dd
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 12:23:46 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qP3kx-0007Pa-RW
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 12:22:29 -0400
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-1bb7b8390e8so7055285ad.2
- for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 09:22:27 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qP3mC-0007e2-R6
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 12:23:46 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-3fbc5d5742bso12871075e9.2
+ for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 09:23:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690474946; x=1691079746;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=dE+RaGmoN2KwC/lSwdCLBe3OQltgtBdSPDAyLwGX1Ec=;
- b=bDr07gO9c+DqSTUH8bpYuSJ91WGFXG+p/LISkHL3fP+u+l88aeS9Hg05MSbPdw7W+d
- KbLyVTNZCFi2QZlGrQ4mHBy2SXMn5NC+C2uhZKT/UjvCZkA1oaxamtOdsvUQRbe2Mhoi
- CFga/LfMwXwzYfVUKYrh+5xNfgh2xLI3It3Ow8oIFb6DoKiyYh0dU0xxq52TF/uSX+JD
- AOdJO4MIvYf9sd9tG5SYdrsF17r/OnOI4/mbZJVoOEDroOzxhakHNsL4ThB1rDgOJ6gN
- pSdpbXlI/lygw5GNbmt/JAF9tTicPuc/AYT18E5uXPFHZKdBzeuKPREcBigwsIHHqZCv
- G8qg==
+ d=linaro.org; s=google; t=1690475023; x=1691079823;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=V36/DHcWI5oDYfiNaB4fBVaYDTTuSZ7njmDgF6uH6ZY=;
+ b=S2slxnvTwXBHnvncqwDbsc7QtMvDuJYrGSM3uxbAwINLV8SvdsPar4hG5alc7EpejT
+ zwEzTbNysDFgdSI9HnyWnZHlzsfWP4I4uoh7Bu2mXlXn2A5ATQN31kaBmCrizyWEoLxb
+ Qnu14RAUerQObUMgnJmZFSuidJRWgIVwgQtwOPVZfXCPGH86C4l73mEUa+cPT2IbYaLh
+ 9wlf18coqllWVjZWjiItjXkN7k/seqXr+gHbF6GwigAw4em8SufnPrfsKslYtvsX3ysI
+ bg/ggG3tZUbAggsdLkAtrjD9thC56rsAoBrvTn+fQ3bq7rkDzXBRZy1MluinjQYyU2nN
+ GTQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690474946; x=1691079746;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=dE+RaGmoN2KwC/lSwdCLBe3OQltgtBdSPDAyLwGX1Ec=;
- b=YO4WMtg/BdmYuSMmIVaAizCneVnZi/ysoTKlTGl1al/rtzfGDAicSYcpc4b2LCJO3w
- GyF2jSwmDCI2Ofa6+qjaocUoeyJ/34lOKWbEtD+1gNvmpdZFD7/Z4gujXtlj9qdWtzk2
- OVA3QLfVQ+0ZOHfMYu9l/UlKSjcTL1bgrztE5TvRmIBZ85moKn/bM/uumXc1YQ8JPZV7
- yeHD6B16WIUFLjU4DZVcj7Yvn9LIzv+PCRIzBv40ZaksAvLxDOZzDgN3qVb2I/pC6Ndw
- JhcJjue9WTG5qZ/dGR/H2jEQE952KyRmC9hug2pyJd87zBUVg+xqtYbr8gU6YUTWO01K
- y9yA==
-X-Gm-Message-State: ABy/qLaISA3dtPWQjPvJWTzPQUaL71L/RvE3MmcjuoGkKbMxgZ3d1ZcN
- w49gYFXqhv4V14ea8jSaCSi1dg==
-X-Google-Smtp-Source: APBJJlG8PkCGvJGfztoM4pfdSaiQcUPRcl9nIh8bg9Qd2Fc2pZ3+E/SMt6TBRYLd1nLqdUSXfnmBPQ==
-X-Received: by 2002:a17:90a:cf10:b0:268:522a:e31 with SMTP id
- h16-20020a17090acf1000b00268522a0e31mr3782232pju.42.1690474946075; 
- Thu, 27 Jul 2023 09:22:26 -0700 (PDT)
-Received: from ?IPV6:2602:ae:154e:c001:caf5:5ae2:432a:1bdf?
- ([2602:ae:154e:c001:caf5:5ae2:432a:1bdf])
- by smtp.gmail.com with ESMTPSA id
- w24-20020a170902d71800b001b8052d58a0sm1815818ply.305.2023.07.27.09.22.25
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 27 Jul 2023 09:22:25 -0700 (PDT)
-Message-ID: <f1b9a6d3-026c-33ef-c5d5-9ab32ebe8d71@linaro.org>
-Date: Thu, 27 Jul 2023 09:22:23 -0700
+ d=1e100.net; s=20221208; t=1690475023; x=1691079823;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=V36/DHcWI5oDYfiNaB4fBVaYDTTuSZ7njmDgF6uH6ZY=;
+ b=ihSk6TDbhWjLyJKCCQ74MzdqhuLzFMiZRdMEPFWCWvPVGR2aezK7qFGMBySpsykljR
+ 3nnARHh38brVvDtaBvwelz0YiD7pWGW3lie6Kjzdp1+zFmJz9CvTli742iPfYj6jjy58
+ PtcbXHmRPWn4kdZAwoeClWjetN+IqcCcpj/E1CiZ0ecvbv6lhUC3QbeTb4kklcZCygFo
+ gJa+H0J2w+/R31R0UX7/UZd6TWJc3ZfBvfgja9it1EMrw9T12m9hh+Xs8RtUeV5w/IPL
+ tSvLyXUV1pCgRtkhgOPfMDhDlUrOzOekKy+oH4EYkO15OMez98rqPWL2BKhc53qDAzuy
+ hQEA==
+X-Gm-Message-State: ABy/qLbL9F4u4z5DhtimlxCxHqSKNUPMrfp+hmi9+vL0Y6OoCdf2RJwt
+ MMjpVsSgcpgQUvnmI18nG82FwSCJ29TW8p8b+C8gKA==
+X-Google-Smtp-Source: APBJJlHudoX4YxnrA3drqGxH8R8ovrAp5DzJvWwEq50NPISAkDAqBeIFQ0meSPJi/PguIQ32ho4bkxa90tlm3VYB6xs=
+X-Received: by 2002:adf:d0c8:0:b0:314:1a09:6e71 with SMTP id
+ z8-20020adfd0c8000000b003141a096e71mr2010900wrh.53.1690475023256; Thu, 27 Jul
+ 2023 09:23:43 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] target/arm: Avoid writing to constant TCGv in trans_CSEL()
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org
-References: <20230727103906.2641264-1-peter.maydell@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230727103906.2641264-1-peter.maydell@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <20230726030450.757462-1-chris@laplante.io>
+ <20230726030450.757462-4-chris@laplante.io>
+In-Reply-To: <20230726030450.757462-4-chris@laplante.io>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 27 Jul 2023 17:23:32 +0100
+Message-ID: <CAFEAcA_K+Rzt8=0apiyO5tB3EwTRJMo8afKu3wkb2=jAsyLvmg@mail.gmail.com>
+Subject: Re: [PATCH v2 3/6] qtest: implement named interception of out-GPIO
+To: Chris Laplante <chris@laplante.io>
+Cc: qemu-devel@nongnu.org, Joel Stanley <joel@jms.id.au>, qemu-arm@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,36 +85,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/27/23 03:39, Peter Maydell wrote:
-> In commit 0b188ea05acb5 we changed the implementation of
-> trans_CSEL() to use tcg_constant_i32(). However, this change
-> was incorrect, because the implementation of the function
-> sets up the TCGv_i32 rn and rm to be either zero or else
-> a TCG temp created in load_reg(), and these TCG temps are
-> then in both cases written to by the emitted TCG ops.
-> The result is that we hit a TCG assertion:
-> 
-> qemu-system-arm: ../../tcg/tcg.c:4455: tcg_reg_alloc_mov: Assertion `!temp_readonly(ots)' failed.
-> 
-> (or on a non-debug build, just produce a garbage result)
-> 
-> Adjust the code so that rn and rm are always writeable
-> temporaries whether the instruction is using the special
-> case "0" or a normal register as input.
-> 
-> Cc: qemu-stable@nongnu.org
-> Fixes: 0b188ea05acb5 ("target/arm: Use tcg_constant in trans_CSEL")
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+On Wed, 26 Jul 2023 at 04:32, Chris Laplante <chris@laplante.io> wrote:
+>
+> Adds qtest_irq_intercept_out_named method, which utilizes a new optional
+> name parameter to the irq_intercept_out qtest command.
+>
+> Signed-off-by: Chris Laplante <chris@laplante.io>
 > ---
-> These insns are v8.1M-only, which is why this bug has
-> lingered for so long.
-> ---
->   target/arm/tcg/translate.c | 15 ++++++++-------
->   1 file changed, 8 insertions(+), 7 deletions(-)
+>  softmmu/qtest.c        | 24 ++++++++++++++++--------
+>  tests/qtest/libqtest.c |  6 ++++++
+>  tests/qtest/libqtest.h | 11 +++++++++++
+>  3 files changed, 33 insertions(+), 8 deletions(-)
+>
+> diff --git a/softmmu/qtest.c b/softmmu/qtest.c
+> index 1c92e5a6a3..7fd8546ed2 100644
+> --- a/softmmu/qtest.c
+> +++ b/softmmu/qtest.c
+> @@ -397,8 +397,12 @@ static void qtest_process_command(CharBackend *chr, gchar **words)
+>          || strcmp(words[0], "irq_intercept_in") == 0) {
+>          DeviceState *dev;
+>          NamedGPIOList *ngl;
+> +        bool is_named;
+> +        bool is_outbound;
+>
+>          g_assert(words[1]);
+> +        is_named = words[2] != NULL;
+> +        is_outbound = words[0][14] == 'o';
+>          dev = DEVICE(object_resolve_path(words[1], NULL));
+>          if (!dev) {
+>              qtest_send_prefix(chr);
+> @@ -417,14 +421,18 @@ static void qtest_process_command(CharBackend *chr, gchar **words)
+>          }
+>
+>          QLIST_FOREACH(ngl, &dev->gpios, node) {
+> -            /* We don't support intercept of named GPIOs yet */
+> -            if (ngl->name) {
+> -                continue;
+> -            }
+> -            if (words[0][14] == 'o') {
+> -                int i;
+> -                for (i = 0; i < ngl->num_out; ++i) {
+> -                    qtest_install_gpio_out_intercept(dev, ngl->name, i);
+> +            /* We don't support inbound interception of named GPIOs yet */
+> +            if (is_outbound) {
+> +                if (is_named) {
+> +                    if (ngl->name && strcmp(ngl->name, words[2]) == 0) {
+> +                        qtest_install_gpio_out_intercept(dev, ngl->name, 0);
+> +                        break;
+> +                    }
 
+Named gpio-outs can have more than one line, the same as
+unnamed ones (you create them with
+qdev_init_gpio_out_named(dev, pins, name, n) -- there's an
+argument for how many to create), so I think this is_named
+branch also needs to install an intercept for each one, not
+just for 0.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> +                } else if (!ngl->name) {
+> +                    int i;
+> +                    for (i = 0; i < ngl->num_out; ++i) {
+> +                        qtest_install_gpio_out_intercept(dev, ngl->name, i);
+> +                    }
 
+...at which point the code looks pretty similar in both branches
+of the if(), so I think you end up with something like
 
-r~
+         if (is_outbound) {
+             /* NULL is valid and matchable, for "unnamed GPIO" */
+             if (g_strcmp0(ngl->name, words[2]) == 0) {
+                 int i;
+;                for (i = 0; i < ngl->num_out; ++i) {
+                     qtest_install_gpio_out_intercept(dev, ngl->name, i);
+                 }
+             }
+         } ...
+
+(g_strcmp0() can handle the NULL case without having
+to special case it -- this is how qdev_get_named_gpio_list()
+finds entries in the ngl list.)
+
+Apologies for not noticing that on the first round of review.
+
+thanks
+-- PMM
 
