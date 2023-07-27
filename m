@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32431765A54
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 19:33:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BEABC765A5E
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 19:33:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qP43d-0008Gu-GC; Thu, 27 Jul 2023 12:41:45 -0400
+	id 1qP44V-0000BK-TE; Thu, 27 Jul 2023 12:42:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qP43b-0008Ef-Fg
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 12:41:43 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ id 1qP44T-0000Al-S6
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 12:42:37 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qP43a-0004bv-0i
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 12:41:43 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-3fd2f298712so12506035e9.2
- for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 09:41:41 -0700 (PDT)
+ id 1qP44S-0004oT-Cl
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 12:42:37 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-3fd18b1d924so11941655e9.1
+ for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 09:42:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690476100; x=1691080900;
+ d=linaro.org; s=google; t=1690476155; x=1691080955;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=CMtpyiyPv3+t5Uvcv4Tv2aBXS8NdLCmOXzk4TsZHVBU=;
- b=nYs6nI7zVA1JckfJ+7cB0+sGRuS0zl82mJgutdvTjdvYO8BqJycwmX1KXQTgbSOkTi
- dCQhBWKPixG/VjPCGvT1SxNxH5aZf7ai+/RnzT6g7B+kytb3ZNGyL+brm67N7HynknDX
- B3fMgUsl8o3Jxn6I3vJHpxm/EkZAbQOlvaTUQ2VjM3kVykfGrEHHgrD5yA64k8HKb+GM
- jyTKeVPXjUvRw54u37fp9Ecm7jRQ4E8mOWneURvzPDIbSLs8EQ3FLU/DK7Gmxy9DJ+n0
- sqlm/LtaFa1SHTY82M1G2J0Sg6tn+dPbpB/NRtzYKN/4AxhtKbhp2WPFJUBu8LksK96n
- cuTA==
+ bh=TIyxuEBMmrQuRgDOalt0BNUhwLpABLdvgEFEdTgqM/Q=;
+ b=YCqOaomLOhpYB3HjvcUzWmuzTfo0LhQ8SalXIwPzOB2OF6xKV6riQ59TGfBoDfqWyf
+ 7rYbG28a/vB+GCrg1OJYRAxadaahT5HmEcOiMJnybkiNeeO37qjtyO6BWC6z9ILI04NX
+ S0Lyc1EuuXCrcdTwu5W7NqkSP1PGiZLZb/+F0Gez68VLlcRsiAJy/gyu+oj0kAse+4gI
+ vt78PJDh/bFeVlyVThwhc9/lBpnuJ6Zo7XS+jtmTkLuWpQTUjVGWXvTaIspKHUpcpBlo
+ AEH7SVwPcrBytjb8zGm+R2lnYi52ie3IPsruxs9QE+SorgXC4+GajUSPKa6E/CaTeGLb
+ b22w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690476100; x=1691080900;
+ d=1e100.net; s=20221208; t=1690476155; x=1691080955;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=CMtpyiyPv3+t5Uvcv4Tv2aBXS8NdLCmOXzk4TsZHVBU=;
- b=dRDgPmXlAiKmkwRhBd8ioDBbDcP5HhrvFDDqp+zxAx/2F7ops4IrCoHXx/SjMxeOck
- OkuZyf8sFnjrEZNpUj90NzaZ5p0QmuAv0OSFrBpjKgop3nmmPIOg31+UofPVCPz2FTgZ
- YWsTLWvLdOxiHXtzutUUk93IGcrvX6cebOBd0AD0mVT9hb9qtek12gC4WM+KB9vyPD6M
- 7bqE4RhpGrk05+hr+umrEK2e4h4aGyO7XE0rMPQ64OFdffltw8m7Sq+WdPAN6FNw/80z
- nyF7l1g6zU+3DAmo5ym5T3A5bvShjfkpMZL8xMwGytiQsx0oorJN0G3/oS+TV0l+VJZN
- L3IQ==
-X-Gm-Message-State: ABy/qLYWCYp1FHdjozmTqNSliryBE2nkItoFbw/J/OuOcW52pHIQ+rev
- xq+zmyWy5+rQjH3itNPAESIVOFl7V6MDMTE7fwQk/ftb5MugZX83
-X-Google-Smtp-Source: APBJJlHWA5SXjqNmo4Dq5qW9RcpsXHKVXe/wZl59B/L6M4MlMn6vVMk1dMN8QedgRmVdwnP98etoxxgbDcNaC4grlBo=
-X-Received: by 2002:a1c:ed16:0:b0:3fc:9e:eead with SMTP id
- l22-20020a1ced16000000b003fc009eeeadmr1969200wmh.20.1690476099832; 
- Thu, 27 Jul 2023 09:41:39 -0700 (PDT)
+ bh=TIyxuEBMmrQuRgDOalt0BNUhwLpABLdvgEFEdTgqM/Q=;
+ b=Ay1AvjcsNHUwFykwXd6gROHNP9+LEqmmB0hMN1qM0dgiSRubriFf4yx/GfOEd8uF15
+ GkomlDAzR2BKRr06dBeyL3fqVU3cqVilU6yUsO48YagB574u/rrA80Qay9+miemfDKOA
+ ihqCwPFq+/Er2m8W2oc4AoIzyI4nL4ezEcpgc15Me6ZFc7jDJmi6PEKoWkthBRxlXGmZ
+ utkRrJsWSDK6DlDnnlWVXjJ/qtCJECu4ojoDuE+QypbBZVGbqMecmlNsgzYEuNSzS9CD
+ Q4IlGBOn9zaI9ka9+ou3sBIUcRPJEb5UBDxMjDAolB7hjb9wqwwJRyotGKjKzCdnHfYK
+ RBhA==
+X-Gm-Message-State: ABy/qLYRtGIl5dWDO0nviWe+H+tk7Fh6ftCLXHBpYCl7vJHL8JUjJU90
+ A5KiMPgrIW+g+Z7EiE3EOdFzdE+pkhyZ7e59nsH4Zg==
+X-Google-Smtp-Source: APBJJlG/VeW3n98YwL7YK/mMLtl8kKeWnzlrnTxPAW6hqoD3JgmBoE2RoNa77uZYixHJFrUC22yv6tUAPAbEbgy5y7Q=
+X-Received: by 2002:a5d:6e42:0:b0:317:71bb:7ccd with SMTP id
+ j2-20020a5d6e42000000b0031771bb7ccdmr2130008wrz.52.1690476155026; Thu, 27 Jul
+ 2023 09:42:35 -0700 (PDT)
 MIME-Version: 1.0
 References: <cover.1690385928.git.jcd@tribudubois.net>
- <84ace91e6076ed4460fb6c1f9fe699660dda30d5.1690385928.git.jcd@tribudubois.net>
-In-Reply-To: <84ace91e6076ed4460fb6c1f9fe699660dda30d5.1690385928.git.jcd@tribudubois.net>
+ <9c780f2b9893a550565725e1523885ee80835bd3.1690385928.git.jcd@tribudubois.net>
+In-Reply-To: <9c780f2b9893a550565725e1523885ee80835bd3.1690385928.git.jcd@tribudubois.net>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 27 Jul 2023 17:41:28 +0100
-Message-ID: <CAFEAcA-sjHQK=VmQ4TYEY73C5vpxQBME1j8eF=ZXUkWTb4naTw@mail.gmail.com>
-Subject: Re: [PATCH 1/3] Rework i.MX6UL device implementation/instantiation
+Date: Thu, 27 Jul 2023 17:42:23 +0100
+Message-ID: <CAFEAcA8T=jrR0RMvTdKSqZ-aSRe=aZvsBGgKrbnr5yr-+VU-Qg@mail.gmail.com>
+Subject: Re: [PATCH 2/3] Rework i.MX7 device implementation/instantiation
 To: Jean-Christophe Dubois <jcd@tribudubois.net>
 Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -85,40 +85,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 26 Jul 2023 at 16:55, Jean-Christophe Dubois
+On Wed, 26 Jul 2023 at 16:52, Jean-Christophe Dubois
 <jcd@tribudubois.net> wrote:
 >
 > From: jcdubois <jcd@tribudubois.net>
 >
-> * Add Addr and size definition for all i.MX6UL devices in i.MX6UL header file.
+> * Add Addr and size definition for all i.MX7 devices in i.MX7 header file.
 > * Use those newly defined named constants whenever possible.
 > * Standardize the way we init a familly of unimplemented devices
 >   - SAI
->   - PWM (add missing PWM instances)
+>   - PWM
 >   - CAN
 > * Add TZASC as unimplemented device.
 >   - Allow bare metal application to access this (unimplemented) device
 > * Add CSU as unimplemented device.
 >   - Allow bare metal application to access this (unimplemented) device
-> * Change CAAM specific memory from ROM to RAM.
+> * Add various memory segments
+>   - OCRAM
+>   - OCRAM EPDC
+>   - OCRAM PXP
+>   - OCRAM S
+>   - ROM
+>   - CAAM
 > * Add/rework few comments
 
-This generally looks OK, but please can you split
-out "refactoring, no behaviour change" changes into
-separate patches from "change the behaviour" changes ?
-The refactoring bits can all stay in one patch, but these
-changes:
-
-> * Add TZASC as unimplemented device.
->   - Allow bare metal application to access this (unimplemented) device
-> * Add CSU as unimplemented device.
->   - Allow bare metal application to access this (unimplemented) device
-> * Change CAAM specific memory from ROM to RAM.
-
-should not be in the same patch with them.
-
-It would also be handy for the commit message for the CAAM
-patch to say why we want to change it to RAM.
+This patch should have the functional changes split out from
+the refactoring changes too, please.
 
 thanks
 -- PMM
