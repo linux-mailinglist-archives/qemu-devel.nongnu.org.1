@@ -2,85 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D852765719
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 17:13:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1C457656DA
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 17:05:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qP2IS-0007ea-2M; Thu, 27 Jul 2023 10:48:56 -0400
+	id 1qP2LR-0000ZV-9N; Thu, 27 Jul 2023 10:52:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
- id 1qP2IM-0007eQ-V0
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 10:48:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
+ id 1qP2LJ-0000XQ-P5
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 10:51:54 -0400
+Received: from szxga08-in.huawei.com ([45.249.212.255])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
- id 1qP2IK-0004h9-Fz
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 10:48:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690469326;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=tjvLWj5Df0gei6C/oFm2OBfyPp3/2c60N7P7mUNXKCg=;
- b=hJNZZv78L2xsv9nCu5D5uXqhWwmyVdDt+sb7WnWiIQr+3tKxFpoAyFZpLA6vHmYRBBCNVT
- oGMoufuR1+8sTRJ9yMNBn5cGpvlnS/wi9yrFM+Hv/aB9G7wM8KtsEnBfCUL8cTYj8fUqK+
- SWiZ5qOBlgOk4hWyEIfcSjDtG5f6+ww=
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
- [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-312-W1V-c18iNdaJvL7_J1XqKQ-1; Thu, 27 Jul 2023 10:48:42 -0400
-X-MC-Unique: W1V-c18iNdaJvL7_J1XqKQ-1
-Received: by mail-pj1-f70.google.com with SMTP id
- 98e67ed59e1d1-267f18688efso912702a91.1
- for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 07:48:42 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690469322; x=1691074122;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=tjvLWj5Df0gei6C/oFm2OBfyPp3/2c60N7P7mUNXKCg=;
- b=bhKbvGZ2XK+i1kCTC7C6WW57OOXZC7aad37nl29UT/5mckUceaYZEtymnK3nme81c6
- Io0P2ynbQKQhCbtCcsBJc20R7CQjJElsMcmZnF/7eZt7wMbggv8pzvpn/aHrI0CXcFdV
- 5/m9MkwrzseL0NuFOKg6+N3hhrGzP29ymHvBTZtxGK8sZ9OjJYwTLm64mhRjoFmQgvIy
- I29rsEE3xNVlgfyJEXEWsy8naBTBObOPXQ+VKIQiM8tWmYDYmsdMlvGc9gqUspaTs2rl
- qZt0EC4RJZLLkEDZ21u7OFcGL5QQXbjkv7HgGnW7Mjk3Jn08YOLMzuyT+NM/qEgRGEF6
- POPg==
-X-Gm-Message-State: ABy/qLa+gWED53eSV9a+XQ0VfEmfcWYPgKl3GGk78DrZL6z6qF0OTR3E
- AKlOriB7xqugTMtzkaX1VFfZlUyWYlFLjMzz4nzmVCZfW6ZS5flXMIr/veJMmdyHpJWjfsOnBlx
- EGCU1OBuG57A0vT4TPUojCA3b5UaodGc=
-X-Received: by 2002:a17:90b:2394:b0:262:fe45:860b with SMTP id
- mr20-20020a17090b239400b00262fe45860bmr5280118pjb.0.1690469321676; 
- Thu, 27 Jul 2023 07:48:41 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlEwME5oup10zhtyMJDZE6tVQyQYMIwC6yURZMFoniT9GKWR8A421oAjvhp96Eo7VQ1ov7m24ZPGDEayrP7Rl0I=
-X-Received: by 2002:a17:90b:2394:b0:262:fe45:860b with SMTP id
- mr20-20020a17090b239400b00262fe45860bmr5280095pjb.0.1690469321264; Thu, 27
- Jul 2023 07:48:41 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
+ id 1qP2LD-0005Fr-Jw
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 10:51:53 -0400
+Received: from kwepemi100023.china.huawei.com (unknown [172.30.72.55])
+ by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4RBYbm4vMJz1GDGV;
+ Thu, 27 Jul 2023 22:50:44 +0800 (CST)
+Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
+ kwepemi100023.china.huawei.com (7.221.188.59) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Thu, 27 Jul 2023 22:51:38 +0800
+Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
+ lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.027; 
+ Thu, 27 Jul 2023 15:51:36 +0100
+To: lixianglai <lixianglai@loongson.cn>, Gavin Shan <gshan@redhat.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, zhukeqian
+ <zhukeqian1@huawei.com>, Bibo Mao <maobibo@loongson.cn>
+CC: Salil Mehta <salil.mehta@opnsrc.net>
+Subject: RE: [PATCH 0/8] Adds CPU hot-plug support to Loongarch
+Thread-Topic: [PATCH 0/8] Adds CPU hot-plug support to Loongarch
+Thread-Index: AQHZut1S/3Pg6wJUHEOwtjZl057Sma/MxBCAgAAVewCAAN8c4A==
+Date: Thu, 27 Jul 2023 14:51:36 +0000
+Message-ID: <0e2212c9533f49d9ba9dc7e728b8b586@huawei.com>
+References: <cover.1689837093.git.lixianglai@loongson.cn>
+ <83d5c2b6-20a2-0637-8373-c1935d97dc68@redhat.com>
+ <e1c36ce7-6799-b003-9a47-b8094f869168@loongson.cn>
+In-Reply-To: <e1c36ce7-6799-b003-9a47-b8094f869168@loongson.cn>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.126.173.64]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-References: <20230626073426.285659-1-aesteve@redhat.com>
- <20230626073426.285659-4-aesteve@redhat.com>
- <20230710150030-mutt-send-email-mst@kernel.org>
- <CADSE00+MYYeTto5CCROpynB2p+FjcCASp6azyxb2FVRm7VhBrw@mail.gmail.com>
- <20230717100739-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20230717100739-mutt-send-email-mst@kernel.org>
-From: Albert Esteve <aesteve@redhat.com>
-Date: Thu, 27 Jul 2023 16:48:30 +0200
-Message-ID: <CADSE00Jm45pbhvWgN8uQGjqZkEZr2UEHV2ARuqWheT-pXL-85Q@mail.gmail.com>
-Subject: Re: [PATCH v4 3/4] vhost-user: add shared_object msg
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: qemu-devel@nongnu.org, marcandre.lureau@gmail.com, cohuck@redhat.com, 
- Fam Zheng <fam@euphon.net>, kraxel@redhat.com
-Content-Type: multipart/alternative; boundary="00000000000065e9330601790f16"
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=aesteve@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=45.249.212.255;
+ envelope-from=salil.mehta@huawei.com; helo=szxga08-in.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,161 +70,87 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Salil Mehta <salil.mehta@huawei.com>
+From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000065e9330601790f16
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Mon, Jul 17, 2023 at 4:11=E2=80=AFPM Michael S. Tsirkin <mst@redhat.com>=
- wrote:
-
->
->
->
->
-> On Mon, Jul 17, 2023 at 01:42:02PM +0200, Albert Esteve wrote:
-> > Hi Michael,
-> >
-> > True. It may be a good idea to impose a limit in the number of entries
-> that can
-> > be added to the table.
-> > And fail to add new entries once it reaches the limit.
-> >
-> > Not sure what would be a good limit though. For example,
-> https://www.kernel.org
-> > /doc/html/v4.9/media/uapi/v4l/vidioc-reqbufs.html#c.v4l2_requestbuffers
-> > does not limit the number of buffers that can be allocated
-> simultaneously, it
-> > is an unsigned 32-bits value.
-> > However, I guess 16-bits (65535) would suffice to cover the vast
-> majority of
-> > usecases. Or even lower, and
-> > can be adjusted later, as this API gets (more) used.
-> >
-> > Does that make sense?
-> >
-> > Thanks.
-> > BR,
-> > Albert
->
-> let's not top-post please.
->
-> Maybe. Another concern is qemu running out of FDs with a bad backend.
->
-> Question: why does qemu have to maintain these UUIDs in its memory?
->
-> Can't it query the backend with UUID and get the fd back?
->
-
-In the end, we have one backend sharing an object with other backends.
-From the importer POV, it does not know who the exporter is, so it cannot
-go pocking other backends until it finds the one that is holding a resource
-with
-the same UUID, it relies on qemu providing this information.
-
-If we do not want qemu to hold the fds, we could, for instance, store
-references to
-backends that act as exporters. And then, once an importer requests for a
-specific
-object with its UUID, we ask for the fd to the exporter(s), hoping to find
-it.
-
-But the current solution sounds better fit to the shared objects virtio
-feature.
-I would be more keen to look into something like what Gerd suggested,
-limiting
-the memory that we use.
-
-Nonetheless, in qemu we are storing fds, and not mmaping the dmabufs.
-So I think limiting the number of entries should suffice, to ensure
-that we do not run out of FDs, and memory.
-
-
->
-> And then, the hash table in QEMU becomes just a cache
-> to speed up lookups.
->
-> --
-> MST
->
->
-
---00000000000065e9330601790f16
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr"><div><div dir=3D"ltr" class=3D"gmail_sign=
-ature"><div dir=3D"ltr"><br></div></div></div></div><br><div class=3D"gmail=
-_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Mon, Jul 17, 2023 at 4:11=
-=E2=80=AFPM Michael S. Tsirkin &lt;<a href=3D"mailto:mst@redhat.com">mst@re=
-dhat.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D=
-"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-le=
-ft:1ex"><br>
-<br>
-<br>
-<br>
-On Mon, Jul 17, 2023 at 01:42:02PM +0200, Albert Esteve wrote:<br>
-&gt; Hi Michael,<br>
-&gt; <br>
-&gt; True. It may be a good idea to impose a limit in the number of entries=
- that can<br>
-&gt; be added to the table.<br>
-&gt; And fail to add new entries once it reaches the limit.<br>
-&gt; <br>
-&gt; Not sure what would be a good limit though. For example,=C2=A0<a href=
-=3D"https://www.kernel.org" rel=3D"noreferrer" target=3D"_blank">https://ww=
-w.kernel.org</a><br>
-&gt; /doc/html/v4.9/media/uapi/v4l/vidioc-reqbufs.html#c.v4l2_requestbuffer=
-s<br>
-&gt; does not limit the number of buffers that can be allocated simultaneou=
-sly, it<br>
-&gt; is an unsigned 32-bits value.<br>
-&gt; However, I guess 16-bits (65535) would suffice to cover the vast major=
-ity of<br>
-&gt; usecases. Or even lower, and<br>
-&gt; can be adjusted later, as this API gets (more) used.<br>
-&gt; <br>
-&gt; Does that make sense?<br>
-&gt; <br>
-&gt; Thanks.<br>
-&gt; BR,<br>
-&gt; Albert<br>
-<br>
-let&#39;s not top-post please.<br>
-<br>
-Maybe. Another concern is qemu running out of FDs with a bad backend.<br>
-<br>
-Question: why does qemu have to maintain these UUIDs in its memory?<br>
-<br>
-Can&#39;t it query the backend with UUID and get the fd back?<br></blockquo=
-te><div><br></div><div>In the end, we have one backend sharing an object wi=
-th other backends.</div><div>From the importer POV, it does not know who th=
-e exporter is, so it cannot</div><div>go pocking other backends until it fi=
-nds the one that is holding a resource with</div><div>the same UUID, it rel=
-ies on qemu providing this information.</div><div><br></div><div>If we do n=
-ot want qemu to hold the fds, we could, for instance, store references to</=
-div><div>backends that act as exporters. And then, once an importer request=
-s for a specific</div><div>object with its UUID, we ask for the fd to the e=
-xporter(s), hoping to find it.</div><div><br></div><div>But the current sol=
-ution sounds better fit to the shared objects virtio feature.</div><div>I w=
-ould be more keen to look into something like what Gerd suggested, limiting=
-</div><div>the memory that we use.=C2=A0</div><div><br></div><div>Nonethele=
-ss, in qemu we are storing fds, and not mmaping the dmabufs.</div><div>So I=
- think limiting the number of entries should suffice, to ensure</div><div>t=
-hat we do not run out of FDs, and memory.</div><div>=C2=A0</div><blockquote=
- class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px so=
-lid rgb(204,204,204);padding-left:1ex">
-<br>
-And then, the hash table in QEMU becomes just a cache<br>
-to speed up lookups.<br>
-<br>
--- <br>
-MST<br>
-<br>
-</blockquote></div></div>
-
---00000000000065e9330601790f16--
-
+SGVsbG8sDQoNCj4gRnJvbTogbGl4aWFuZ2xhaSA8bGl4aWFuZ2xhaUBsb29uZ3Nvbi5jbj4NCj4g
+U2VudDogVGh1cnNkYXksIEp1bHkgMjcsIDIwMjMgMzoxNCBBTQ0KPiBUbzogR2F2aW4gU2hhbiA8
+Z3NoYW5AcmVkaGF0LmNvbT47IHFlbXUtZGV2ZWxAbm9uZ251Lm9yZzsgU2FsaWwgTWVodGENCj4g
+PHNhbGlsLm1laHRhQGh1YXdlaS5jb20+OyB6aHVrZXFpYW4gPHpodWtlcWlhbjFAaHVhd2VpLmNv
+bT47IEJpYm8gTWFvDQo+IDxtYW9iaWJvQGxvb25nc29uLmNuPg0KPiBTdWJqZWN0OiBSZTogW1BB
+VENIIDAvOF0gQWRkcyBDUFUgaG90LXBsdWcgc3VwcG9ydCB0byBMb29uZ2FyY2gNCj4gDQo+IEhp
+IEdhdmluIGFuZCBTYWxpbCwNCj4gDQo+IE9uIDcvMjcvMjMgODo1NyBBTSwgR2F2aW4gU2hhbiB3
+cm90ZToNCj4gPiBIaSBYaWFuZ2xhaSwNCj4gPg0KPiA+IE9uIDcvMjAvMjMgMTc6MTUsIHhpYW5n
+bGFpIGxpIHdyb3RlOg0KPiA+PiBIZWxsbyBldmVyeW9uZSwgV2UgcmVmZXIgdG8gdGhlIGltcGxl
+bWVudGF0aW9uIG9mIEFSTSBDUFUNCj4gPj4gSG90LVBsdWcgdG8gYWRkIEdFRC1iYXNlZCBDUFUg
+SG90LVBsdWcgc3VwcG9ydCB0byBMb29uZ2FyY2guDQo+ID4+DQo+ID4+IFRoZSBmaXJzdCA0IHBh
+dGNoZXMgYXJlIGNoYW5nZXMgdG8gdGhlIFFFTVUgY29tbW9uIGNvZGUsDQo+ID4+IGluY2x1ZGlu
+ZyBhZGRpbmcgR0VEIHN1cHBvcnQgZm9yIENQVSBIb3QtUGx1ZywgdXBkYXRpbmcNCj4gPj4gdGhl
+IEFDUEkgdGFibGUgY3JlYXRpb24gcHJvY2VzcywgYW5kIGFkZGluZw0KPiA+PiBxZGV2X2Rpc2Nv
+bm5lY3RfZ3Bpb19vdXRfbmFtZWQNCj4gPj4gYW5kIGNwdV9hZGRyZXNzX3NwYWNlX2Rlc3Ryb3kg
+aW50ZXJmYWNlcyB0byByZWxlYXNlIHJlc291cmNlcw0KPiA+PiB3aGVuIENQVSB1bi1wbHVnLg0K
+PiA+Pg0KPiA+PiBUaGUgbGFzdCBmb3VyIHBhdGNoZXMgYXJlIExvb25nYXJjaCBhcmNoaXRlY3R1
+cmUtcmVsYXRlZCwNCj4gPj4gYW5kIHRoZSBtb2RpZmljYXRpb25zIGluY2x1ZGUgdGhlIGRlZmlu
+aXRpb24gb2YgdGhlIGhvb2sNCj4gPj4gZnVuY3Rpb24gcmVsYXRlZCB0byB0aGUgQ1BVIEhvdC0o
+VU4pUGx1ZywgdGhlIGFsbG9jYXRpb24NCj4gPj4gYW5kIHJlbGVhc2Ugb2YgQ1BVIHJlc291cmNl
+cyB3aGVuIENQVSBIb3QtKFVOKVBsdWcsDQo+ID4+IHRoZSBjcmVhdGlvbiBwcm9jZXNzIG9mIHVw
+ZGF0aW5nIHRoZSBBQ1BJIHRhYmxlLA0KPiA+PiBhbmQgZmluYWxseSB0aGUgY3VzdG9tIHN3aXRj
+aCBmb3IgdGhlIENQVSBIb3QtUGx1Zy4NCj4gPj4NCj4gPg0KPiA+IFsuLi5dDQo+ID4NCj4gPiBJ
+dCBzZWVtcyB0aGUgZGVzaWduIGZvciBBUk02NCBob3RwbHVnIGhhcyBiZWVuIGdyZWF0bHkgcmVm
+ZXJyZWQsIGJ1dCB0aGUgYXV0aG9ycw0KPiA+IGFyZSBtaXNzZWQgdG8gYmUgY29waWVkIGlmIHlv
+dSB3ZXJlIHJlZmVycmluZyB0byB0aGUgZm9sbG93aW5nIHJlcG9zaXRvcnkuIFRoZXJlDQo+ID4g
+d2lsbCBiZSBjb25mbGljdHMgYmV0d2VlbiB0aG9zZSB0d28gcGF0Y2hzZXRzIGFzIEkgY2FuIHNl
+ZSBhbmQgSSdtIG5vdCBzdXJlIGhvdw0KPiA+IGl0IGNhbiBiZSByZXNvbHZlZC4gSW4gdGhlb3J5
+LCBvbmUgcGF0Y2hzZXQgbmVlZHMgdG8gYmUgcmViYXNlZCBvbiBhbm90aGVyIG9uZQ0KPiA+IHNp
+bmNlIHRoZXkncmUgc2hhcmluZyBsYXJnZSBhbW91bnQgb2YgY29kZXMuDQo+ID4NCj4gPiDCoCBo
+dHRwczovL2dpdGh1Yi5jb20vc2FsaWwtbWVodGEvcWVtdS5naXQNCj4gPiDCoCAoYnJhbmNoOiB2
+aXJ0LWNwdWhwLWFybXY4L3JmYy12MS1wb3J0MTEwNTIwMjMuZGV2LTEpDQo+ID4NCj4gPiBJIHRv
+b2sgYSBxdWljayBzY2FuIG9uIHRoaXMgc2VyaWVzLiBMb29uZ2FyY2ggZG9lc24ndCBoYXZlIEFS
+TTY0J3MgY29uc3RyYWludCBkdWUNCj4gPiB0byB2R0lDMyB3aGVyZSBhbGwgdkNQVXMncyBmaWxl
+IGRlc2NyaXB0b3IgbmVlZHMgdG8gYmUgaW4gcGxhY2UuIEl0IG1lYW5zIHRoZSBwb3NzaWJsZQ0K
+PiA+IGFuZCBub3QgeWV0IHByZXNlbnQgdkNQVSBuZWVkcyB0byBiZSB2aXNpYmxlIHRvIEtWTS4g
+V2l0aG91dCB0aGlzIGNvbnN0cmFpbnQsIHRoZQ0KPiA+IGltcGxlbWVudGF0aW9uIGlzIHNpbXBs
+aWZpZWQgYSBsb3QuDQo+IA0KPiBXZSBoYXZlIGdyZWF0IHJlc3BlY3QgYW5kIGdyYXRpdHVkZSB0
+byBTYWxpbCBhbmQgaGlzIHRlYW0gZm9yIHRoZWlyIHdvcmsNCj4gYW5kIGNvbnRyaWJ1dGlvbnMg
+dG8gQ1BVIEhvdFBsdWcsDQoNCg0KTWFueSB0aGFua3MhIFJlYWxseSBhcHByZWNpYXRlIHRoaXMu
+DQoNCg0KPiB3aGljaCBncmVhdGx5IHJlZHVjZWQgdGhlIGRpZmZpY3VsdHkgb2YgZGV2ZWxvcGlu
+ZyBDUFUgSG90UGx1ZyBpbg0KPiBMb29uZ2FyY2guDQoNCg0KV2UgYXJlIGdsYWQgdGhhdCB0aGlz
+IHdvcmsgaXMgdXNlZnVsIHRvIG90aGVyIGNvbXBhbmllcyBhcyB3ZWxsIHRoaXMNCndhcyBvbmUg
+b2Ygb3VyIGdvYWwuDQoNCg0KPiBTbywgV2UgcGxhbiB0byByZWJhc2UgdGhlIG5leHQgdmVyc2lv
+biBvZiBwYXRjaCBiYXNlZCBvbiB0aGVpciBjb2RlLg0KDQoNCkdyZWF0LiBUaGFua3MgZm9yIGNs
+YXJpZnlpbmcgdGhpcyBhcyBhY2NvdW50YWJpbGl0eSBpcyBpbXBvcnRhbnQNCmV2ZW4gdGhvdWdo
+IHdlIGFyZSB3b3JraW5nIGluIGEgY29sbGFib3JhdGl2ZSBlbnZpcm9ubWVudC4NCg0KQXMgc3Vj
+aCwgSSBhbSBwbGFubmluZyB0byBzZW5kIHRoZSBSRkMgVjIgaW4gMiB3ZWVrcyBvZiB0aW1lIGFu
+ZA0Kd2lsbCBtYWtlIHN1cmUgdGhhdCB0aGUgcGF0Y2hlcyB3aGljaCBhcmUgcmVxdWlyZWQgYnkg
+eW91ciBwYXRjaC1zZXQNCmFyZSBmb3JtZWQgaW4gc3VjaCBhIHdheSB0aGF0IHRoZXkgY2FuIGJl
+IGluZGVwZW5kZW50bHkgYWNjZXB0ZWQNCncuci50IHJlc3Qgb2YgdGhlIEFSTTY0IGFyY2hpdGVj
+dHVyZSBzcGVjaWZpYyBwYXRjaC1zZXQuDQoNCg0KPiBIaSBTYWxpbCwNCj4gDQo+IEkgZXN0aW1h
+dGUgdGhhdCBpdCB3aWxsIHRha2UgcXVpdGUgc29tZSB0aW1lIGZvciB5b3VyIHBhdGNoIHNlcmll
+cyB0bw0KPiBtZXJnZSBpbiwNCj4gDQo+IGlmIGFsbG93ZWQsIGNhbiB5b3UgbWVyZ2UgeW91ciBw
+YXRjaCBzZXJpZXMgY2hhbmdlcyB0byB0aGUgY29tbW9uIGNvZGUNCj4gc2VjdGlvbiBpbnRvIHRo
+ZSBjb21tdW5pdHkgZmlyc3QsDQo+IA0KPiBzbyB0aGF0IG91ciBjb2RlIGNhbiBiZSByZWJhc2Ug
+YW5kIG1lcmdlZC4NCg0KDQpTdXJlLCBhcyBjbGFyaWZpZWQgYWJvdmUsIHNvbWV0aGluZyBzaW1p
+bGFyLCB3aWxsIGNyZWF0ZSBhIHBhdGNoLXNldA0Kd2hpY2ggd2lsbCBoYXZlIHBhdGNoZXMgd2hp
+Y2ggY2FuIGJlIGluZGVwZW5kZW50bHkgYWNjZXB0ZWQvQWNrJ2VkDQphbmQgY29uc3VtZWQgZXZl
+biBiZWZvcmUgdGhlIGNvbXBsZXRlIHBhdGNoLXNldC4NCg0KQWx0aG91Z2ggSSB0aGluaywgZXZl
+biBpbiBjdXJyZW50IGZvcm0gbW9zdCBwYXRjaGVzIGhhdmUgYmVlbiBhcnJhbmdlZA0KaW4gc3Vj
+aCBhIHdheS4gQnV0IEkgd2lsbCBkb3VibHkgY2hlY2sgYWdhaW4gYmVmb3JlIEkgZmxvYXQgUkZD
+IFYyLg0KDQoNCj4gPiBCZXNpZGVzLCB3ZSBmb3VuZCB0aGUgdkNQVSBob3RwbHVnIGlzbid0IHdv
+cmtpbmcgZm9yIFRDRyB3aGVuIFNhbGlsJ3MNCj4gPiBzZXJpZXMgd2FzDQo+ID4gdGVzdGVkLiBJ
+J20gbm90IHN1cmUgaWYgd2UgaGF2ZSBzYW1lIGlzc3VlIHdpdGggdGhpcyBzZXJpZXMsIG9yIFRD
+Rw0KPiA+IGlzbid0IGEgY29uY2Vybg0KPiA+IHRvIHVzIGF0IGFsbD8NCj4gDQo+IEF0IHByZXNl
+bnQsIFFFTVUgb25seSBzdXBwb3J0cyBUQ0cgdW5kZXIgTG9vbmdhcmNoLA0KPiANCj4gYW5kIHdl
+IHRlc3QgQ1BVIEhvdFBsdWcgaXMgYWxzbyBjYXJyaWVkIG91dCB1bmRlciBRRU1VIFRDRywNCj4g
+DQo+IGFuZCBDUFUgSG90UGx1ZyBjYW4gd29yayBub3JtYWxseSB3aGVuIHRlc3RpbmcuDQo+IA0K
+PiBPZiBjb3Vyc2UsIHdlIGFyZSBhbHNvIHZlcnkgaGFwcHkgdG8gc2VlIHlvdSB0ZXN0aW5nIENQ
+VSBob3RwbHVnIHVuZGVyDQo+IExvb25nYXJjaCwNCj4gDQo+IHdoaWNoIGNhbiBmaW5kIG1vcmUg
+cHJvYmxlbXMgYW5kIGhlbHAgdXMgaW1wcm92ZSBvdXIgcGF0Y2guDQoNCg0KV2Uga25vdyB0aGF0
+LiBUaGVyZSBhcmUgc29tZSB0cml2aWFsIGZpeGVzIHdlIGFscmVhZHkgaGF2ZSwgSSB3aWxsIHB1
+c2gNCnRoZW0gYXMgd2VsbCBmb3IgdGhlIGNvbXBsZXRpb24uIFdlIHdlcmUgbm90IHN1cmUgaWYg
+YW55Ym9keSBuZWVkcyB0aGVtDQphcyB1c2FnZSBvZiB2Q1BVIEhvdHBsdWcgdW5kZXIgJ2FjY2Vs
+PXRjZycgaXMgaGlnaGx5IHVubGlrZWx5IGV4Y2VwdCBmb3INCnRlc3RpbmcgY2FzZXMuIFBsZWFz
+ZSBsZXQgdXMga25vdyBpZiB5b3UgaGF2ZSBhbnk/DQoNCg0KTWFueSB0aGFua3MhDQpTYWxpbC4N
+Cg0K
 
