@@ -2,73 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2EAC765923
-	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 18:48:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD4C176590D
+	for <lists+qemu-devel@lfdr.de>; Thu, 27 Jul 2023 18:44:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qP3nY-0003U4-VG; Thu, 27 Jul 2023 12:25:08 -0400
+	id 1qP3ov-0003z9-6O; Thu, 27 Jul 2023 12:26:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qP3nW-0003T8-Bt
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 12:25:06 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qP3op-0003vG-8d
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 12:26:27 -0400
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qP3nT-00006S-M2
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 12:25:06 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-31758eb5db8so1185484f8f.2
- for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 09:25:00 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qP3on-0000fV-8f
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 12:26:26 -0400
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-6862842a028so904763b3a.0
+ for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 09:26:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690475100; x=1691079900;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=ATtLFGQUcWDGOEGU9Sv7z00BgRg1ac5CcPUhNhDpLYw=;
- b=YWsgSyZ3RJzki4VOYiozlA4stCKofK8Vnq19e43XLjUPKyoJnTB4rVscRk1rjkbPf3
- OWOZNKEqpFzOfMcNGWe0rYujrbqyTQE/zxeX8AeZSaGI+Rctp5ID2CMDR5GHAS54UvNE
- lpr52G015g24ke/jt4ufNNODIWJFX4+SclBdvVmLh+INFhFsBAwHEJksQytN2m0ajfD4
- zXPCQwH526L/IR0qX14Dam/DtPwIo2A+sC013iYLHo5K+O5FIoqQibYxucjAuDdZxJ91
- VqgBI23I2GGjxwBIRPj9gwWevOjci/82f5zzXzFgCm2WRthzYh7764Eh1i9XmX+eUry2
- A9/A==
+ d=linaro.org; s=google; t=1690475183; x=1691079983;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=3G2qvF807dtcBmq3t7VF0034ERKCeVyIfRSjPFahYwM=;
+ b=sMG0w/xn9GQ2iZUQ2aEEE/C0ljYIaczAdwqPdn9zwWYC7TFXk5oe2IO3KGvM8AvLHV
+ Sh0bTB3tZqW9mFiacCBJeMV0fGtwCT8rGbEO3AXgtzJyHWyX6FlUStZWkOghbdPbLeBH
+ 2P4ZAZYkdfaxnP6UKnTN2Z2KoD7Kc3A2D1Qj6wVsJZtdRQj6VmV3K29yb2YMAsIak6Q4
+ 9BDK0UUZwJjLUUmVk9l0fN8qnmAW1UVZGKLvA0utfxIeH+g34zQalQ0bE5Uy1LoLNC4E
+ ZBqZe6lOUaYNVIp/Vwu5mxlbWbCGPrQ3HkbAO7ZNjORFZMqJFBhObl9YBgglb3jpxSE5
+ VMww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690475100; x=1691079900;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20221208; t=1690475183; x=1691079983;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=ATtLFGQUcWDGOEGU9Sv7z00BgRg1ac5CcPUhNhDpLYw=;
- b=j4veH0NvwO+Wh+kX7JCjxxi8KhKBmPQsKhtyRlQW6VKmgYW8UY34vyfovIB3ncyHk0
- eprzaKDsfEXWU2fkpaFpRQBNTECVtR+NB2qKpSyCpG62Oj6v9XacRH7nmNr3/u5/YoJw
- 10oqmqHXX2pwA87j+k9EdCB6c5IZiPXPnNYI89qFAQWEffpcEHscHKDxfNK7fg0cRmDo
- vsDoDeBS/D2tvY3Dnoip2qWAczHgUcA3ljWirv7zdy37Ud2TvjuQzj/P+s3blLiR+IBv
- IHnohi/oCRZuDvSvlCBe/TtBVdap0Zy9pg1WUOy0eNGIfvEc3OCyACYz/80pDEL4D3ST
- 2yZw==
-X-Gm-Message-State: ABy/qLZjF6PdRrELCZVkODIIKhi/dNgdrxH0j+4j5cRtjcJq+zghTwMO
- pDoO/mUOiiSIHQdfc9a8CXeTxjNq2tHNPptzxq2Dlw==
-X-Google-Smtp-Source: APBJJlGAuf6RzmRZVaKPuBkJIIRKNeZb1Bl8v5YAiWx4fkxZc/RSLyvPh/eHpTMJd0NejlTehhFTmTC6VHxYwgjFwIE=
-X-Received: by 2002:a5d:4c4b:0:b0:314:c16:56a9 with SMTP id
- n11-20020a5d4c4b000000b003140c1656a9mr2309208wrt.7.1690475099825; Thu, 27 Jul
- 2023 09:24:59 -0700 (PDT)
+ bh=3G2qvF807dtcBmq3t7VF0034ERKCeVyIfRSjPFahYwM=;
+ b=JmnyWBo8sqvvZdDlvE4xZQzrEr0B61Diqy/WA2dmIkOz1ChEsFH1Mslz1AsMWZPwEH
+ pDYElnti48TXgzD+PP8RffDmR7V7MZpk7xklWnJOzVH4K2ofv/WQVkYpUhQv3VO3wHGZ
+ FyC1UscyA3vDBq54kZrebZ+7TVD50kwQJ6GS61p0Ve5IG847MVWG7VKBp3p9IhtTH6b3
+ BfBitd55BzzJkdU1JkQBB1+7/x6XoL2/MblPwTzMY47BIuOfOXXRJkvIuxgK6HpfJtP4
+ A9gZk22mNOiNUUcB8PzKeKEXb7yyaps8TOPcEGL1YXHHgDfaJBiANCFwlltHH5lQHcLL
+ ypeQ==
+X-Gm-Message-State: ABy/qLYZPlnE1YQG7GdYQqcrQYt3QCtI/bPt7ndr8vVD0qTDgtj7bQIZ
+ sWSmjQpheTG41sP82lZ0kPzbhm2u1CzzSeN9qS8=
+X-Google-Smtp-Source: APBJJlE84JoSbhXLKVKkktTKsRDpetXbFE7P3PoosBnRp1vF8w51yiT3C7PLiIU9m7yFMfpuo0zjXw==
+X-Received: by 2002:a05:6a00:1a94:b0:682:2e99:9de0 with SMTP id
+ e20-20020a056a001a9400b006822e999de0mr5566719pfv.23.1690475182516; 
+ Thu, 27 Jul 2023 09:26:22 -0700 (PDT)
+Received: from stoup.. ([2602:ae:154e:c001:caf5:5ae2:432a:1bdf])
+ by smtp.gmail.com with ESMTPSA id
+ p13-20020aa7860d000000b00682c1db7551sm1687786pfn.49.2023.07.27.09.26.21
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 27 Jul 2023 09:26:22 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org
+Subject: [PATCH] target/arm: Do not use gen_mte_checkN in trans_STGP
+Date: Thu, 27 Jul 2023 09:26:21 -0700
+Message-Id: <20230727162621.445400-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20230726030450.757462-1-chris@laplante.io>
-In-Reply-To: <20230726030450.757462-1-chris@laplante.io>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 27 Jul 2023 17:24:48 +0100
-Message-ID: <CAFEAcA-a-xqeuKWpimA46kneXPGz2oWnp6FowpuGX=s8jh9myQ@mail.gmail.com>
-Subject: Re: [PATCH v2 0/6] Add nRF51 DETECT signal with test
-To: Chris Laplante <chris@laplante.io>
-Cc: qemu-devel@nongnu.org, Joel Stanley <joel@jms.id.au>, qemu-arm@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42e.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,28 +88,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 26 Jul 2023 at 04:32, Chris Laplante <chris@laplante.io> wrote:
->
-> This patch series implements the nRF51 DETECT signal
-> in the GPIO peripheral. A qtest is added exercising the signal.
->
-> To implement the test, named out-GPIO IRQ interception had to be added
-> to the qtest framework. I also took the opportunity to improve IRQ
-> interception a bit by adding 'FAIL' responses when interception fails.
-> Otherwise, it is frustrating to troubleshoot why calls to
-> qtest_irq_intercept_out and friends appears to do nothing.
->
-> v1: https://patchwork.kernel.org/project/qemu-devel/list/?series=766078
->
-> Testing
-> =======
-> Passes 'make check'
+STGP writes to tag memory, it does not check it.
+This happened to work because we wrote tag memory first
+so that the check always succeeded.
 
-There was a trivial typo in patch 2, and I think patch 3
-needs some (not very big) changes to handle named GPIOs
-where there's more than 1 GPIO in the array, but other
-than that this is looking good.
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ target/arm/tcg/translate-a64.c | 41 +++++++++++++---------------------
+ 1 file changed, 15 insertions(+), 26 deletions(-)
 
-thanks
--- PMM
+diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
+index 5fa1257d32..dfd18e19ca 100644
+--- a/target/arm/tcg/translate-a64.c
++++ b/target/arm/tcg/translate-a64.c
+@@ -3020,37 +3020,17 @@ static bool trans_STGP(DisasContext *s, arg_ldstpair *a)
+         tcg_gen_addi_i64(dirty_addr, dirty_addr, offset);
+     }
+ 
+-    if (!s->ata) {
+-        /*
+-         * TODO: We could rely on the stores below, at least for
+-         * system mode, if we arrange to add MO_ALIGN_16.
+-         */
+-        gen_helper_stg_stub(cpu_env, dirty_addr);
+-    } else if (tb_cflags(s->base.tb) & CF_PARALLEL) {
+-        gen_helper_stg_parallel(cpu_env, dirty_addr, dirty_addr);
+-    } else {
+-        gen_helper_stg(cpu_env, dirty_addr, dirty_addr);
+-    }
+-
+-    mop = finalize_memop(s, MO_64);
+-    clean_addr = gen_mte_checkN(s, dirty_addr, true, false, 2 << MO_64, mop);
+-
++    clean_addr = clean_data_tbi(s, dirty_addr);
+     tcg_rt = cpu_reg(s, a->rt);
+     tcg_rt2 = cpu_reg(s, a->rt2);
+ 
+     /*
+-     * STGP is defined as two 8-byte memory operations and one tag operation.
+-     * We implement it as one single 16-byte memory operation for convenience.
+-     * Rebuild mop as for STP.
+-     * TODO: The atomicity with LSE2 is stronger than required.
+-     * Need a form of MO_ATOM_WITHIN16_PAIR that never requires
+-     * 16-byte atomicity.
++     * STGP is defined as two 8-byte memory operations, aligned to TAG_GRANULE,
++     * and one tag operation.  We implement it as one single aligned 16-byte
++     * memory operation for convenience.  Note that the alignment ensures
++     * MO_ATOM_IFALIGN_PAIR produces 8-byte atomicity for the memory store.
+      */
+-    mop = MO_128;
+-    if (s->align_mem) {
+-        mop |= MO_ALIGN_8;
+-    }
+-    mop = finalize_memop_pair(s, mop);
++    mop = MO_128 | MO_ALIGN | MO_ATOM_IFALIGN_PAIR;
+ 
+     tmp = tcg_temp_new_i128();
+     if (s->be_data == MO_LE) {
+@@ -3060,6 +3040,15 @@ static bool trans_STGP(DisasContext *s, arg_ldstpair *a)
+     }
+     tcg_gen_qemu_st_i128(tmp, clean_addr, get_mem_index(s), mop);
+ 
++    /* Perform the tag store, if tag access enabled. */
++    if (s->ata) {
++        if (tb_cflags(s->base.tb) & CF_PARALLEL) {
++            gen_helper_stg_parallel(cpu_env, dirty_addr, dirty_addr);
++        } else {
++            gen_helper_stg(cpu_env, dirty_addr, dirty_addr);
++        }
++    }
++
+     op_addr_ldstpair_post(s, a, dirty_addr, offset);
+     return true;
+ }
+-- 
+2.34.1
+
 
