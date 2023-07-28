@@ -2,76 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4018C766262
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 05:26:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 253FA766261
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 05:26:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qPD5r-0007wF-0Y; Thu, 27 Jul 2023 22:20:39 -0400
+	id 1qPD5r-0007wz-Vh; Thu, 27 Jul 2023 22:20:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pizhenwei@bytedance.com>)
- id 1qPD5f-0007vR-Kk
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 22:20:28 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1qPD5i-0007vl-Vz
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 22:20:32 -0400
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pizhenwei@bytedance.com>)
- id 1qPD5e-0006yx-2T
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 22:20:27 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-1b8ad907ba4so10723775ad.0
- for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 19:20:25 -0700 (PDT)
+ id 1qPD5h-00070Q-LK
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 22:20:30 -0400
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-686fa3fc860so868939b3a.1
+ for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 19:20:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1690510825; x=1691115625;
+ d=bytedance.com; s=google; t=1690510828; x=1691115628;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=wg78UB7cYAokVViU4U5tFWb/GJUMtPAxxn2JcC2wYiI=;
- b=T8Og8lb22kMN7nQ4vVkGyoRUBjRifex91RdCuo99G1iGgBNppqYVUDFfG1mPB2Ygki
- cX/AOw6piPyq7OA5LflU+aIPFUR7etkKY4DU3W5wH+JgCf9TU2gapulOzZIpOYaHxBZA
- bxFa7r8NdyXMEAQXxCKti+QZqerXPv4rfZqj2PBT+ARUBQS7+kEq73vu2nNhm9JSnoMq
- mu0GGQHftMjONPjQ1DJot3qUxXYjbXRYU1nXRzvULLxgl3kQCbE28M61jOl6XbqZMXvH
- xB/f0DQq8Cpy+EtOtgEtUaqFdQGF3SNH2+XVC5pvCRnusb47zBRSBbumV5rFXVD9bR12
- Je2g==
+ bh=jsfS6gGno2BOtGoWmduTdiYdaH87lQQ6CJY7M9PeK50=;
+ b=UqzFMGFVTj+tn0qR0mc9WITus+aDL5vJSaAKKqQVUopw9ZBhABMDyzvSiiUaIXjgFf
+ 6VUtW4nPJiAhIOmrsqGd5nn+iY4vpHEAPc+Jgc4F1RzAh4aKdrtM5ksfElNiWExZf0uM
+ G93eApVxkwExTilRoH8xCqAg+XGQZ2sFF6fxeaSrxGMSA7ondo9p03mnGMehWRKzAHbf
+ lkxIQi2oNjSI81/Ewjq/9JP8N+y6V0TNwJw2lw6CxiDAYebA1r3z4FRXakggm15VLJ82
+ VgkJ3PLUxFhAQhbkMYpk70E3bS9m3ieWgRQUBxl/+Up5R2/b+SRRDWaO/VTVPE22TbWE
+ 2tsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690510825; x=1691115625;
+ d=1e100.net; s=20221208; t=1690510828; x=1691115628;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wg78UB7cYAokVViU4U5tFWb/GJUMtPAxxn2JcC2wYiI=;
- b=f7IyZfm4fLoezUR+dp0eOFmznmECC+AXsrX6mksXdhdiW8QK6KMvMYA4XpQnUR23Zl
- dig0DKF2gK2E2FU43JwMmzdHjdZaFLyxb0dSKbhEzIBB+h/l74tKzyoCPDYWA7R5hrSX
- 427nC86m016bC4m4J0Z9jsHx3MbwcUISdG+GQbkTr+7L9s66Vrcf8Y/UXF5NI9NbZQfO
- 1vuZ32ezShQQACJSWR4Ct6LslRJTZDojUsX7W8l5q5/smq2cYStQbRLMRd0DleQiOy9G
- EdRlGvs27F9XxCI1c3hmoDxXo0F95OIkjOab9vew2wqFJs4TB1HH64JqT/hptK5EJj0n
- d2/w==
-X-Gm-Message-State: ABy/qLYzTwS5DAV73V8/DefSGXBn1PLgo+U/GamQZJrJLIhOgdJ4bT4l
- vE0Onf6adMOBDLMjftX8oSVzWQ==
-X-Google-Smtp-Source: APBJJlFiA3NUxb9GBA+KDT7AP7hwiWJamewbEn9uoRfZGtTYj+8NapOyvPwtzuawCbqoMaY/Hrtetg==
-X-Received: by 2002:a17:902:a405:b0:1b8:7d0d:5ac5 with SMTP id
- p5-20020a170902a40500b001b87d0d5ac5mr245491plq.50.1690510824833; 
- Thu, 27 Jul 2023 19:20:24 -0700 (PDT)
+ bh=jsfS6gGno2BOtGoWmduTdiYdaH87lQQ6CJY7M9PeK50=;
+ b=A/YbxG7l0EBxm84t/3Oj9eFSMcW0GE9UbUDk83occsg83SphPV9ZGnNuYABdHPTtkL
+ GC/jvOIl138rPE4+OO4X1if7SVMC8FBxg7dlC+8koI7DeHCDiCMdhw8sHKe5vZHBOqkQ
+ RFCAqAygcXs44Groaj3CDsdJaHEM31gggVn7JRJYBWc684GP4ZOUfhKVnTFXxAX27ElX
+ Xhc+bDKzityq5VCbaQZkqHqJ8GsmcnSW116e9bHa6bVQ/nKGf441vHpQO/+9iLZIfBPS
+ +qO/Wv+ax1t+JyLakS8bxmtK2ZBMOwrm9dDQY8hHhB6yf1gWrS7ZUw9622AzMzuP/Zu5
+ 3DHg==
+X-Gm-Message-State: ABy/qLZQ2cw3lS1lZmStIHnL5220bh4/rsrvA4+H/apqfgsb3M04i71c
+ 50ibFKEY5a6UzxsRvm/Nlw4VVw==
+X-Google-Smtp-Source: APBJJlG2cZx+NmOpnBUeKklGEgd9UTHsVLMI3xun/tXbH1zZ7KZvMtpGIPTIDH7jG6wwfYyL7E7Dtw==
+X-Received: by 2002:a05:6a21:7888:b0:121:ca90:df01 with SMTP id
+ bf8-20020a056a21788800b00121ca90df01mr430252pzc.40.1690510827825; 
+ Thu, 27 Jul 2023 19:20:27 -0700 (PDT)
 Received: from libai.bytedance.net ([61.213.176.11])
  by smtp.gmail.com with ESMTPSA id
- b21-20020a170902d31500b001bb9f104328sm2312947plc.146.2023.07.27.19.20.22
+ b21-20020a170902d31500b001bb9f104328sm2312947plc.146.2023.07.27.19.20.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 27 Jul 2023 19:20:24 -0700 (PDT)
+ Thu, 27 Jul 2023 19:20:27 -0700 (PDT)
 From: zhenwei pi <pizhenwei@bytedance.com>
 To: berto@igalia.com,
 	kwolf@redhat.com,
 	hreitz@redhat.com
 Cc: qemu_oss@crudebyte.com, qemu-devel@nongnu.org, qemu-block@nongnu.org,
  zhenwei pi <pizhenwei@bytedance.com>
-Subject: [PATCH v5 4/9] test-throttle: test read only and write only
-Date: Fri, 28 Jul 2023 10:20:01 +0800
-Message-Id: <20230728022006.1098509-5-pizhenwei@bytedance.com>
+Subject: [PATCH v5 5/9] cryptodev: use NULL throttle timer cb for read
+ direction
+Date: Fri, 28 Jul 2023 10:20:02 +0800
+Message-Id: <20230728022006.1098509-6-pizhenwei@bytedance.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230728022006.1098509-1-pizhenwei@bytedance.com>
 References: <20230728022006.1098509-1-pizhenwei@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=pizhenwei@bytedance.com; helo=mail-pl1-x630.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
+ envelope-from=pizhenwei@bytedance.com; helo=mail-pf1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,97 +95,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Operations on a cryptodev are considered as *write* only, the callback
+of read direction is never invoked. Use NULL instead of an unreachable
+path(cryptodev_backend_throttle_timer_cb on read direction).
+
+The dummy read timer(never invoked) is already removed here, it means
+that the 'FIXME' tag is no longer needed.
+
 Reviewed-by: Alberto Garcia <berto@igalia.com>
 Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
 Signed-off-by: zhenwei pi <pizhenwei@bytedance.com>
 ---
- tests/unit/test-throttle.c | 66 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 66 insertions(+)
+ backends/cryptodev.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/tests/unit/test-throttle.c b/tests/unit/test-throttle.c
-index a60b5fe22e..5547837a58 100644
---- a/tests/unit/test-throttle.c
-+++ b/tests/unit/test-throttle.c
-@@ -184,6 +184,70 @@ static void test_init(void)
-     throttle_timers_destroy(tt);
- }
+diff --git a/backends/cryptodev.c b/backends/cryptodev.c
+index 7d29517843..5cfa25c61c 100644
+--- a/backends/cryptodev.c
++++ b/backends/cryptodev.c
+@@ -331,8 +331,7 @@ static void cryptodev_backend_set_throttle(CryptoDevBackend *backend, int field,
+     if (!enabled) {
+         throttle_init(&backend->ts);
+         throttle_timers_init(&backend->tt, qemu_get_aio_context(),
+-                             QEMU_CLOCK_REALTIME,
+-                             cryptodev_backend_throttle_timer_cb, /* FIXME */
++                             QEMU_CLOCK_REALTIME, NULL,
+                              cryptodev_backend_throttle_timer_cb, backend);
+     }
  
-+static void test_init_readonly(void)
-+{
-+    int i;
-+
-+    tt = &tgm.throttle_timers;
-+
-+    /* fill the structures with crap */
-+    memset(&ts, 1, sizeof(ts));
-+    memset(tt, 1, sizeof(*tt));
-+
-+    /* init structures */
-+    throttle_init(&ts);
-+    throttle_timers_init(tt, ctx, QEMU_CLOCK_VIRTUAL,
-+                         read_timer_cb, NULL, &ts);
-+
-+    /* check initialized fields */
-+    g_assert(tt->clock_type == QEMU_CLOCK_VIRTUAL);
-+    g_assert(tt->timers[THROTTLE_READ]);
-+    g_assert(!tt->timers[THROTTLE_WRITE]);
-+
-+    /* check other fields where cleared */
-+    g_assert(!ts.previous_leak);
-+    g_assert(!ts.cfg.op_size);
-+    for (i = 0; i < BUCKETS_COUNT; i++) {
-+        g_assert(!ts.cfg.buckets[i].avg);
-+        g_assert(!ts.cfg.buckets[i].max);
-+        g_assert(!ts.cfg.buckets[i].level);
-+    }
-+
-+    throttle_timers_destroy(tt);
-+}
-+
-+static void test_init_writeonly(void)
-+{
-+    int i;
-+
-+    tt = &tgm.throttle_timers;
-+
-+    /* fill the structures with crap */
-+    memset(&ts, 1, sizeof(ts));
-+    memset(tt, 1, sizeof(*tt));
-+
-+    /* init structures */
-+    throttle_init(&ts);
-+    throttle_timers_init(tt, ctx, QEMU_CLOCK_VIRTUAL,
-+                         NULL, write_timer_cb, &ts);
-+
-+    /* check initialized fields */
-+    g_assert(tt->clock_type == QEMU_CLOCK_VIRTUAL);
-+    g_assert(!tt->timers[THROTTLE_READ]);
-+    g_assert(tt->timers[THROTTLE_WRITE]);
-+
-+    /* check other fields where cleared */
-+    g_assert(!ts.previous_leak);
-+    g_assert(!ts.cfg.op_size);
-+    for (i = 0; i < BUCKETS_COUNT; i++) {
-+        g_assert(!ts.cfg.buckets[i].avg);
-+        g_assert(!ts.cfg.buckets[i].max);
-+        g_assert(!ts.cfg.buckets[i].level);
-+    }
-+
-+    throttle_timers_destroy(tt);
-+}
-+
- static void test_destroy(void)
- {
-     int i;
-@@ -752,6 +816,8 @@ int main(int argc, char **argv)
-     g_test_add_func("/throttle/leak_bucket",        test_leak_bucket);
-     g_test_add_func("/throttle/compute_wait",       test_compute_wait);
-     g_test_add_func("/throttle/init",               test_init);
-+    g_test_add_func("/throttle/init_readonly",      test_init_readonly);
-+    g_test_add_func("/throttle/init_writeonly",     test_init_writeonly);
-     g_test_add_func("/throttle/destroy",            test_destroy);
-     g_test_add_func("/throttle/have_timer",         test_have_timer);
-     g_test_add_func("/throttle/detach_attach",      test_detach_attach);
 -- 
 2.34.1
 
