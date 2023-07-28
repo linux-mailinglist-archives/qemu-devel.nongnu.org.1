@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCA01766DDC
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 15:11:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58685766DDB
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 15:07:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qPMZw-0004OE-0v; Fri, 28 Jul 2023 08:28:20 -0400
+	id 1qPMlA-0000wZ-F4; Fri, 28 Jul 2023 08:39:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vkuznets@redhat.com>)
- id 1qPMZt-0004Nx-AX
- for qemu-devel@nongnu.org; Fri, 28 Jul 2023 08:28:17 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vkuznets@redhat.com>)
- id 1qPMZr-0000RK-4n
- for qemu-devel@nongnu.org; Fri, 28 Jul 2023 08:28:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690547293;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=qeDxsoVMm0MIeYcGnCx9Wi3Ubyezw8i1LZEDcUgNAiQ=;
- b=i5WRCAYjRMhvl8/JItn4vhrwTP8L3RhYxVBy8AwyCZVf8IRxch1/j0Q7Dl3Evj2wtWLGpV
- g5R98ZMPkzy2qF8XC1VI9+r4rwDu0pR9hd0Ur02E8eoq1wnMOu+7KJqTRC9pXJ4TAeR1eJ
- 882CYDjXT68cS4IhuGPV7r9vl2uCILg=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-624-aLrrCUOePl-k3YK5rmDZxQ-1; Fri, 28 Jul 2023 08:28:12 -0400
-X-MC-Unique: aLrrCUOePl-k3YK5rmDZxQ-1
-Received: by mail-qv1-f69.google.com with SMTP id
- 6a1803df08f44-63cfe46bbb6so22048306d6.2
- for <qemu-devel@nongnu.org>; Fri, 28 Jul 2023 05:28:11 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qPMkW-0000qM-SA
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 08:39:20 -0400
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qPMkP-0007ED-F8
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 08:39:14 -0400
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-51d95aed33aso2665607a12.3
+ for <qemu-devel@nongnu.org>; Fri, 28 Jul 2023 05:38:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1690547935; x=1691152735;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=9kYkF3fs/8OSj9tOCqUjHX5qqa+EgTWeQIdGoJocM1U=;
+ b=gid9TxYGZfpylaRb395lNn6FhvYBHhUOp8cTQeGd+qvrqVnjGHXN+EOh9R6ei5mmHa
+ nOE0qR9GNT/w8OhF2rYves6mV3VPX6oTK5hdCldgQeUaqJE+qX9jx3EBGQNdbWDZl2aa
+ rnJIkmYn8fB6+DQQ9xo9xFPQXKBAzc/yimCxBZjwDA8CRnCLqPJ2aTkIfjN8legUe+T1
+ W84CSlpeVIDMzh6oUkrSyq97jlAVonYoMDRa/Hk9vikBILRVNo3mvBtfm0fR+lsoCWMa
+ 9YgcehAbPP6rnc4TCsh+MJSsBDwtTrWmLrlziwQphB0Ty0erj6jWiPjT0OygFJLM9qy7
+ mHXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690547291; x=1691152091;
- h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=qeDxsoVMm0MIeYcGnCx9Wi3Ubyezw8i1LZEDcUgNAiQ=;
- b=j8KVerhXrJEz5xDRdP8ONgEiAAvm/AbD/bkIP8V/ULk416HLOdry/DDoCCiflaas1t
- zsULb0S9FrWwyO/mVKXG9QzL2X3BaCZFRMDpET+QvPOui085UxEtD/UPENLE/wO3TQXE
- JlVLl3sHWpbqmOXgyfip7GkamVD49YvrYOqelI3QqbWdzTc3Llk31tdzuyOXBgxVnK9E
- P87jrd59emVud03j65hYxj786x+jTGWjpKmutzSpNinggzQnQdVBTbNX5bmhuEVaCSTK
- R1OFHboR3MOerNKdi6JD3qwDoUm589HKHDx0skmy0Du4uzD8/3c60wHsbeKknAOP1Dub
- U/ow==
-X-Gm-Message-State: ABy/qLb/1b3bVnLJ6FU7n8yQrSVnuMw3BrumE/fL8qKaXWY79ojYT9XQ
- DrHe0ByTD/k0HUkLH/hGbx6hfen3ILU/6umaJ0tLg+RuquZCWoyARje9Twl6X8ylLXzdoxTRJq9
- SIRYzT+4iufwZwm8=
-X-Received: by 2002:a0c:f3cf:0:b0:62d:f515:9320 with SMTP id
- f15-20020a0cf3cf000000b0062df5159320mr2355948qvm.28.1690547291512; 
- Fri, 28 Jul 2023 05:28:11 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlFm///4uuFv8vOfNipAsnPI2nSUkwMRDz8yQstfp/S3RmdC2oB2S5PEQnLNbY9l9urHe6Bkow==
-X-Received: by 2002:a0c:f3cf:0:b0:62d:f515:9320 with SMTP id
- f15-20020a0cf3cf000000b0062df5159320mr2355938qvm.28.1690547291278; 
- Fri, 28 Jul 2023 05:28:11 -0700 (PDT)
-Received: from fedora (g2.ign.cz. [91.219.240.8])
- by smtp.gmail.com with ESMTPSA id
- h7-20020a0cf207000000b006238b37fb05sm1181197qvk.119.2023.07.28.05.28.10
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 28 Jul 2023 05:28:10 -0700 (PDT)
-From: Vitaly Kuznetsov <vkuznets@redhat.com>
-To: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>
-Cc: Marcelo Tosatti <mtosatti@redhat.com>
-Subject: Re: [PATCH 0/2] i386: Fix Hyper-V Gen1 guests stuck on boot with
- 'hv-passthrough'
-In-Reply-To: <875y79paq6.fsf@redhat.com>
-References: <20230612084201.294248-1-vkuznets@redhat.com>
- <875y79paq6.fsf@redhat.com>
-Date: Fri, 28 Jul 2023 14:28:08 +0200
-Message-ID: <87mszgmd9j.fsf@redhat.com>
+ d=1e100.net; s=20221208; t=1690547935; x=1691152735;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=9kYkF3fs/8OSj9tOCqUjHX5qqa+EgTWeQIdGoJocM1U=;
+ b=gZ5+Bpg+x3Q23MR2GtSgmRhQS9okG3GwWgHGamkbaGtXwCaeHPYv3hZiZk+lGj9gI0
+ 0AVixbJNoCI0lOflsDreFXArt7nfujRhqe7v5ScRlD/2c6/beQb0Pay4kqFYNIAK3ris
+ zrcAHB1p+8qZM7dtqj1uSr+DNt7m8VTeKkeTjufsf0e0xJd0d65rC7T80EUWyPf+P7jt
+ TGkwDSBVrjAbUEVuzKrRPQFggpqQGzIjTPMrCwh+eWm7JT5qLdUu2o/ANvYBtizMz8W2
+ aYdxRmMRexDsB1PK9X1h03+y//CDfTB4go/hCTFyuZx7XnV2ahqjF8XLGsf+qvTnS/kP
+ HlhQ==
+X-Gm-Message-State: ABy/qLa/f8ZhsNPy4qAFmZCIpAnBGuRmb9croAQ2PwylAU1xJ68WUVbT
+ uAb2AAMIvSLo+/t1K7yCOLJVwxJpMgVlWHqJ9JzkxQ==
+X-Google-Smtp-Source: APBJJlHSSa1nIUOxWi0d5FTRx47lRiwaqdp+qSc3+AUbwhXvBDOE4yRGPjCb1c/aihMN2Jrz6WuD/9OYgN1EoHFAxgw=
+X-Received: by 2002:aa7:d712:0:b0:522:946b:4e46 with SMTP id
+ t18-20020aa7d712000000b00522946b4e46mr1623201edq.24.1690547935011; Fri, 28
+ Jul 2023 05:38:55 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=vkuznets@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <cover.1689837093.git.lixianglai@loongson.cn>
+ <6f3c91ecab2d61c2cfb2d1a34a0f2120138e28ed.1689837093.git.lixianglai@loongson.cn>
+In-Reply-To: <6f3c91ecab2d61c2cfb2d1a34a0f2120138e28ed.1689837093.git.lixianglai@loongson.cn>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 28 Jul 2023 13:38:44 +0100
+Message-ID: <CAFEAcA9_yJki9Ntp-diviYHfxts-eJawcFiV1tYvpB2V0e7Mqw@mail.gmail.com>
+Subject: Re: [PATCH 3/8] Introduced a new function to disconnect GPIO
+ connections
+To: xianglai li <lixianglai@loongson.cn>
+Cc: qemu-devel@nongnu.org, Xiaojuan Yang <yangxiaojuan@loongson.cn>, 
+ Song Gao <gaosong@loongson.cn>, "Michael S. Tsirkin" <mst@redhat.com>, 
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Yanan Wang <wangyanan55@huawei.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x531.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,32 +98,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Vitaly Kuznetsov <vkuznets@redhat.com> writes:
-
-> Vitaly Kuznetsov <vkuznets@redhat.com> writes:
+On Thu, 20 Jul 2023 at 08:16, xianglai li <lixianglai@loongson.cn> wrote:
 >
->> Hyper-V Gen1 guests are getting stuck on boot when 'hv-passthrough' is
->> used. While 'hv-passthrough' is a debug only feature, this significantly
->> limit its usefullness. While debugging the problem, I found that there are
->> two loosely connected issues:
->> - 'hv-passthrough' enables 'hv-syndbg' and this is undesired.
->> - 'hv-syndbg's support by KVM is detected incorrectly when !CONFIG_SYNDBG.
->>
->> Fix both issues; exclude 'hv-syndbg' from 'hv-passthrough' and don't allow
->> to turn on 'hv-syndbg' for !CONFIG_SYNDBG builds. 
->>
->> Vitaly Kuznetsov (2):
->>   i386: Fix conditional CONFIG_SYNDBG enablement
->>   i386: Exclude 'hv-syndbg' from 'hv-passthrough'
->>
->>  docs/system/i386/hyperv.rst | 13 +++++++++----
->>  target/i386/cpu.c           |  2 ++
->>  target/i386/kvm/kvm.c       | 18 ++++++++++++------
->>  3 files changed, 23 insertions(+), 10 deletions(-)
+> It introduces a new function to unwire the
+> vcpu<->exioi interrupts for the vcpu hot-(un)plug cases.
+>
+> Cc: Xiaojuan Yang <yangxiaojuan@loongson.cn>
+> Cc: Song Gao <gaosong@loongson.cn>
+> Cc: "Michael S. Tsirkin" <mst@redhat.com>
+> Cc: Igor Mammedov <imammedo@redhat.com>
+> Cc: Ani Sinha <anisinha@redhat.com>
+> Cc: Paolo Bonzini <pbonzini@redhat.com>
+> Cc: Richard Henderson <richard.henderson@linaro.org>
+> Cc: Eduardo Habkost <eduardo@habkost.net>
+> Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+> Cc: "Philippe Mathieu-Daud=C3=A9" <philmd@linaro.org>
+> Cc: Yanan Wang <wangyanan55@huawei.com>
+> Cc: "Daniel P. Berrang=C3=A9" <berrange@redhat.com>
+> Cc: Peter Xu <peterx@redhat.com>
+> Cc: David Hildenbrand <david@redhat.com>
+> Signed-off-by: xianglai li <lixianglai@loongson.cn>
+> ---
+>  hw/core/gpio.c         | 4 ++--
+>  include/hw/qdev-core.h | 2 ++
+>  2 files changed, 4 insertions(+), 2 deletions(-)
+>
+> diff --git a/hw/core/gpio.c b/hw/core/gpio.c
+> index 80d07a6ec9..4fc6409545 100644
+> --- a/hw/core/gpio.c
+> +++ b/hw/core/gpio.c
+> @@ -143,8 +143,8 @@ qemu_irq qdev_get_gpio_out_connector(DeviceState *dev=
+, const char *name, int n)
+>
+>  /* disconnect a GPIO output, returning the disconnected input (if any) *=
+/
+>
+> -static qemu_irq qdev_disconnect_gpio_out_named(DeviceState *dev,
+> -                                               const char *name, int n)
+> +qemu_irq qdev_disconnect_gpio_out_named(DeviceState *dev,
+> +                                        const char *name, int n)
+>  {
+>      char *propname =3D g_strdup_printf("%s[%d]",
+>                                       name ? name : "unnamed-gpio-out", n=
+);
 
-Monthly ping)
+This function as currently written is intended only for
+use in qdev_intercept_gpio_out(), which in turn is there
+only for qtest test case use. I would be a bit cautious
+about whether there are unexpected issues with trying
+to use it in "production" functionality with a running
+QEMU (eg when perhaps some device might be trying to
+signal the gpio line in another thread while this one
+is trying to disconnect it).
 
--- 
-Vitaly
-
+thanks
+-- PMM
 
