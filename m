@@ -2,76 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF1F576720C
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 18:40:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B834767307
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 19:13:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qPQLY-0007UM-Gv; Fri, 28 Jul 2023 12:29:44 -0400
+	id 1qPQVb-0002ll-Vj; Fri, 28 Jul 2023 12:40:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1qPQLV-0007SD-F9
- for qemu-devel@nongnu.org; Fri, 28 Jul 2023 12:29:41 -0400
-Received: from mail-io1-xd31.google.com ([2607:f8b0:4864:20::d31])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qPQVW-0002bf-Ku
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 12:40:04 -0400
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1qPQLT-0007gD-S6
- for qemu-devel@nongnu.org; Fri, 28 Jul 2023 12:29:41 -0400
-Received: by mail-io1-xd31.google.com with SMTP id
- ca18e2360f4ac-785cbc5bfd2so92115239f.2
- for <qemu-devel@nongnu.org>; Fri, 28 Jul 2023 09:29:39 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qPQVU-0003iT-5H
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 12:40:01 -0400
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-1b8ad8383faso19093565ad.0
+ for <qemu-devel@nongnu.org>; Fri, 28 Jul 2023 09:39:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20221208.gappssmtp.com; s=20221208; t=1690561778; x=1691166578;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=sHvFvgWaKoBsMB0EX+juv/wbA79eq/aNJemQawAvSgc=;
- b=WX49/z4oeK173vRH3rebN0Lm7rO8FgfJKYGHFsfg7n7o9SoOE2Dr1r4/GdiQgWkUTu
- pnrl4xp7fU95pG/DDleTP8B/RFGXm70O/SLLfGGN0q+vm4VAPEY0AdX1903+1ba4gfqZ
- KZGxia8NJAY3uzUVCixs9MYp9ALrbPbosQA6ujwrYhJOEttXJL2WqN3qJ5rl1tL3pExY
- p7ZU/B6tKiK+MWpn/GRofADOR8VWVywRWceAWkvwjMqKs6+gh4KK/dRPto0/8pEyz8rm
- oIDDbBW2CwAt6FY6eQvyGKAFQqpGDJRb8dqH1BGGFu54GNH/+wsFd1Ne3r/Fm5tVhA8n
- ojBg==
+ d=linaro.org; s=google; t=1690562398; x=1691167198;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=p4Ep410uvBQR8kPBBg5jCf+WZsG2dZZ9v/PIUKiWGeI=;
+ b=BK3uGLRiap+oiG5tJSzMGKFx79heqHCrN3MHZ0cB9/evIRTAYY0kQkKjmy6dL3ED/7
+ /4MFjrN5xaLb8COXD/miAFuVVxiFDqsGh5pfdJ612euvVc1MdOQJLa6FVuDs9tmvlI9H
+ MBwqcinRk3GNHRQ9flHQ14HYe5VUZ9pBivDGFEC0sV53xrR276im/wIoEMS5uU82sngt
+ 6o4mcX7iKyXeNKQ0iy4pR8qL9Zec7OXbQT/cbepgjPR+w4NvGB70Y2Gl44FzMkDIk9xG
+ HZZaK4a/w3WMvniW+IMgJ67pKn6F4/77m2qCQuaxYZTLXTLBLgjGFrfh6aOv7bzz8W0D
+ UJjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690561778; x=1691166578;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=sHvFvgWaKoBsMB0EX+juv/wbA79eq/aNJemQawAvSgc=;
- b=FKyf1MERsnHzOJpdKD6+u3XxqickGB7/D4K8+iKdXlbqtZJKhoYNowjzWZwM+SNk2b
- XzwCqzsLM9gCSPHCVDe37Pr6nnB9P8hSIJvoJk0fTvAtPplAfrC7sxKpWj/al1MRsjxP
- x5KNWZbsrjrbXBm1lekYMp1L1Uw+4ChmcgZE/PlY1OyjV2dMQr5P8oeE3hbC1y4eFo/C
- QC5taMsa7iDHYIWZsmHNFHUfxRgtJsU9tVuzZPC77eNVvHmrxDXA1NdMevo6Bl96Ji5S
- H3ScRHChA9U1PWESyUm9XSKYqMhv91M3Zy5RTuL8g39karzz7Jj/odetyOmU3p4BvP0x
- yFNA==
-X-Gm-Message-State: ABy/qLY3++hPOpVq8Ni8EF6cAkdMOg1SXiiyvfEq+c/CeQoLmT1SFoAd
- gRHnkrsygsl0PYttGU/fJ2Owpl6eLisuyKadmwl2Iw==
-X-Google-Smtp-Source: APBJJlHEhRJUWWGte6TAd79VU5gc9+XLPhi3b0EtuVVF21R6UL0LuiPGBqLLotAD/xI9F8V+0JalkA==
-X-Received: by 2002:a6b:db01:0:b0:780:c787:637d with SMTP id
- t1-20020a6bdb01000000b00780c787637dmr34884ioc.17.1690561777860; 
- Fri, 28 Jul 2023 09:29:37 -0700 (PDT)
-Received: from dune.bsdimp.com.bsdimp.com
- (50-253-99-174-static.hfc.comcastbusiness.net. [50.253.99.174])
+ d=1e100.net; s=20221208; t=1690562398; x=1691167198;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=p4Ep410uvBQR8kPBBg5jCf+WZsG2dZZ9v/PIUKiWGeI=;
+ b=LCubpyMWP+OdRQIJSPbsYFPV+1f3WrHqivYWBVk339XGZhIqubCXbY6+VbAkMoMXEM
+ jKimgVRg06lZTU76yNLRwfQRZs6kexaTA24AkdB72wybmP6JkwHJuvq59WcrFJjbhdNK
+ F0lsf6Bgvc05f4Dva6lqaqv50Y/SxfnNu+HjiKsbBH8JwxSp3dpgwiFc2ApHhB+nlyHI
+ NJY/Ci5RDgTnEZ8OGCRCh7oJgqqyb91dlCxqxngpYnN5mEyF6Z/U82bYsvZkKMkoiup1
+ AQdecKkDSgxC/Tie+OA8uxNdTVF+o/WoZxw8B5vI4qghS4PFPIHMxipI+pk+mNaMGM18
+ WiWA==
+X-Gm-Message-State: ABy/qLZ5nlJP8VdCYTBiao9zLB5sWv/85/jqUBGJLp/EuEQodEUym2gq
+ RI6t1SSnweKBvX2CtSswoYO5XQ==
+X-Google-Smtp-Source: APBJJlF8TkYoZ2IsScLxVQ6s+jHpOVqKJ5yHuHfcV8obkR617p6kxmrWfq7mhhe7HumGrEMT9F/v4Q==
+X-Received: by 2002:a17:902:c14b:b0:1b3:d608:899a with SMTP id
+ 11-20020a170902c14b00b001b3d608899amr2222350plj.68.1690562398547; 
+ Fri, 28 Jul 2023 09:39:58 -0700 (PDT)
+Received: from ?IPV6:2602:ae:154e:c001:cfba:2f6a:7070:67a9?
+ ([2602:ae:154e:c001:cfba:2f6a:7070:67a9])
  by smtp.gmail.com with ESMTPSA id
- h16-20020a0566380f9000b0041a9022c3dasm1152875jal.118.2023.07.28.09.29.37
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 28 Jul 2023 09:29:37 -0700 (PDT)
-From: Warner Losh <imp@bsdimp.com>
-To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, kevans@freebsd.org,
- Warner Losh <imp@bsdimp.com>
-Subject: [PATCH v2] bsd-user: Specify host page alignment if none specified
-Date: Fri, 28 Jul 2023 10:29:27 -0600
-Message-Id: <20230728162927.5009-1-imp@bsdimp.com>
-X-Mailer: git-send-email 2.40.0
+ t14-20020a1709028c8e00b001b8062c1db3sm3806748plo.82.2023.07.28.09.39.57
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 28 Jul 2023 09:39:58 -0700 (PDT)
+Message-ID: <a55d72cd-055e-ac66-6631-cfe01d99e4df@linaro.org>
+Date: Fri, 28 Jul 2023 09:39:56 -0700
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [RFC PATCH 4/6] hw/i386/intel_iommu: Fix VTD_IR_TableEntry for
+ ms_struct layout
+Content-Language: en-US
+To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?=
+ <marcandre.lureau@redhat.com>, Stefan Weil <sw@weilnetz.de>,
+ Yonggang Luo <luoyonggang@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>
+References: <20230728142748.305341-1-thuth@redhat.com>
+ <20230728142748.305341-5-thuth@redhat.com> <ZMPSsCjZhj0AQeS0@redhat.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <ZMPSsCjZhj0AQeS0@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::d31;
- envelope-from=imp@bsdimp.com; helo=mail-io1-xd31.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.094,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,29 +101,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We're hitting an assert when we pass in alignment == 0 since that's not
-a power of two. so pass in the ideal page size.
+On 7/28/23 07:37, Daniel P. Berrangé wrote:
+> On Fri, Jul 28, 2023 at 04:27:46PM +0200, Thomas Huth wrote:
+>> We might want to compile QEMU with Clang on Windows - but it
+>> does not support the __attribute__((gcc_struct)) yet. So we
+>> have to make sure that the structs will stay the same when
+>> the compiler uses the "ms_struct" layout. The VTD_IR_TableEntry
+>> struct is affected - rewrite it a little bit so that it works
+>> fine with both struct layouts.
+>>
+>> Reported-by: Daniel P. Berrangé <berrange@redhat.com>
+>> Signed-off-by: Thomas Huth <thuth@redhat.com>
+>> ---
+>>   include/hw/i386/intel_iommu.h | 14 ++++++++------
+>>   hw/i386/intel_iommu.c         |  2 +-
+>>   2 files changed, 9 insertions(+), 7 deletions(-)
+>>
+>> diff --git a/include/hw/i386/intel_iommu.h b/include/hw/i386/intel_iommu.h
+>> index 89dcbc5e1e..08bf220393 100644
+>> --- a/include/hw/i386/intel_iommu.h
+>> +++ b/include/hw/i386/intel_iommu.h
+>> @@ -204,18 +204,20 @@ union VTD_IR_TableEntry {
+>>   #endif
+>>           uint32_t dest_id;            /* Destination ID */
+>>           uint16_t source_id;          /* Source-ID */
+>> +        uint16_t __reserved_2;       /* Reserved 2 */
+>>   #if HOST_BIG_ENDIAN
+>> -        uint64_t __reserved_2:44;    /* Reserved 2 */
+>> -        uint64_t sid_vtype:2;        /* Source-ID Validation Type */
+>> -        uint64_t sid_q:2;            /* Source-ID Qualifier */
+>> +        uint32_t __reserved_3:28;    /* Reserved 3 */
+>> +        uint32_t sid_vtype:2;        /* Source-ID Validation Type */
+>> +        uint32_t sid_q:2;            /* Source-ID Qualifier */
+>>   #else
+>> -        uint64_t sid_q:2;            /* Source-ID Qualifier */
+>> -        uint64_t sid_vtype:2;        /* Source-ID Validation Type */
+>> -        uint64_t __reserved_2:44;    /* Reserved 2 */
+>> +        uint32_t sid_q:2;            /* Source-ID Qualifier */
+>> +        uint32_t sid_vtype:2;        /* Source-ID Validation Type */
+>> +        uint32_t __reserved_3:28;    /* Reserved 3 */
+> 
+> Hasn't this has changed the struct layout in the else clause
+> 
+>   Old layout:
+> 
+>     source_id : 16
+>     sid_q : 2
+>     sid_vtype : 2
+>     reserved_2 : 44
+> 
+>   New layout
+> 
+>     source_id : 16
+>     reserved_2 : 16
+>     sid_q : 2
+>     sid_vtype : 2
+>     reserved_3 : 28
+> 
+> Was there something wrong with the change I suggested to
+> just make source_id be a bitfield too:
+> 
+>         uint64_t source_id: 16;          /* Source-ID */
+> 
+> which could make ms_struct layout avoid padding to the following
+> bitfields.
+> 
+>>   #endif
+>>       } QEMU_PACKED irte;
+>>       uint64_t data[2];
+>>   };
 
-Signed-off-by: Warner Losh <imp@bsdimp.com>
----
- bsd-user/mmap.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Making the point that we should never use bitfields to match hardware.  This should be 
+converted to <hw/registerfields.h>, ARRAY_FIELD_EX64.
 
-diff --git a/bsd-user/mmap.c b/bsd-user/mmap.c
-index 74ed00b9fe3..b62a69bd075 100644
---- a/bsd-user/mmap.c
-+++ b/bsd-user/mmap.c
-@@ -260,7 +260,8 @@ static abi_ulong mmap_find_vma_aligned(abi_ulong start, abi_ulong size,
- 
-     if (reserved_va) {
-         return mmap_find_vma_reserved(start, size,
--            (alignment != 0 ? 1 << alignment : 0));
-+            (alignment != 0 ? 1 << alignment :
-+             MAX(qemu_host_page_size, TARGET_PAGE_SIZE)));
-     }
- 
-     addr = start;
--- 
-2.40.0
 
+r~
 
