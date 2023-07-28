@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9443F766E8F
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 15:39:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31D3E766DF5
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 15:19:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qPNK0-0006Tl-1Z; Fri, 28 Jul 2023 09:15:56 -0400
+	id 1qPNJz-0006TQ-Lz; Fri, 28 Jul 2023 09:15:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qPNJw-0006Qu-Qg
- for qemu-devel@nongnu.org; Fri, 28 Jul 2023 09:15:53 -0400
-Received: from mail-oa1-x2f.google.com ([2001:4860:4864:20::2f])
+ id 1qPNJv-0006Qk-HE
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 09:15:51 -0400
+Received: from mail-oa1-x31.google.com ([2001:4860:4864:20::31])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qPNJt-0003Mg-2X
- for qemu-devel@nongnu.org; Fri, 28 Jul 2023 09:15:52 -0400
-Received: by mail-oa1-x2f.google.com with SMTP id
- 586e51a60fabf-1bb94563d19so1299970fac.0
- for <qemu-devel@nongnu.org>; Fri, 28 Jul 2023 06:15:32 -0700 (PDT)
+ id 1qPNJr-0003PL-U9
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 09:15:50 -0400
+Received: by mail-oa1-x31.google.com with SMTP id
+ 586e51a60fabf-1bbdddd3c94so1196632fac.0
+ for <qemu-devel@nongnu.org>; Fri, 28 Jul 2023 06:15:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1690550131; x=1691154931;
+ d=ventanamicro.com; s=google; t=1690550134; x=1691154934;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=XFuP7PaPRBJxoHUtdhdAxyN5WwLUi/EV/+uL9Zmq2Jk=;
- b=UDxx1aQE1TD+ZikaIjARYYn6DI3M883bFzZO5pyuB2h+J9+QTodUCSisUpS6yylsyv
- ATU+V8KNcArCaRfUUEsqJ8OjQNNbsSjA2N+1I0MWBJkaQJwqi/T7TJVyEe703LJboeUi
- 41c27LyxeDxvC74enttkSdRMltHark25NWc28GkdpSg2MnYmTXzu2bFFeWJp9lvtBJ7o
- dJqiJmxRbIMka4W6Q1+k+lTw0cAdWuHsw80UoPIokYaFtAZYSZqhrwQRlMvMZ0VRNrJQ
- tnHucZkxBXVhPUjX7amQelS2TLhfvM/moDM/52sYdwHs04hbee1XGlCixTNxIB4plycU
- 4X4g==
+ bh=87P/tos8Xfm7sOyDFm5C5C2VI/dnIEuzH+4kr2XLTao=;
+ b=fAxVKAjFQs8UcgvVap2dIJqR4N/lRhBnLDNqFN8fKvAcWtjyF9v1mvA9hSh5NWqI5p
+ Gw6w9YkXhshC3gULKkylHI9JTTnJu4Is1pTrSeRtQDuvs4IjnpACSJBxn/FffcQqAmvA
+ YgokrYjRWvABs5hPe7cW89LbUlnWytnvIrQ34/BcB7fg2/G3AXXLvWOcXLnS32oEacuQ
+ wyrMaNczCPH7zaD25/vFVmMKoACgHs58bDwLGVdQ8eel/gFKcp0TMzfwOUCSyfOvHoAC
+ n6K+LQj9T2rjG/Lz0RQ9XHtxubHyX8fCY7DB9E5VnejcPYyuEg3vA2wogQikdAjwV0IK
+ s3AA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690550131; x=1691154931;
+ d=1e100.net; s=20221208; t=1690550134; x=1691154934;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=XFuP7PaPRBJxoHUtdhdAxyN5WwLUi/EV/+uL9Zmq2Jk=;
- b=G7mBq2g0n0hvigpvkX2gxtE5oMxS4ZOejVe5xDowT03lqoAwBpiRVMv7WYGZLvPCQX
- YnLyLFMXe8cxvsWt/Wm/pSFRHz02DEFcBjMW0bpDPNbg0UKxtNij1xyeUFfiqA4mwH+G
- hQ5YrkunsksU3WQmECk9BK4s9bUgvhoRpVwD65GDhKdSVE7H6CTGxxTS1dNnV0vrXkVD
- wVjG0XKecBgcodwk2ocTUQjdg0ZyBMNzioXBkDHvSbXoQgikUenb+3Uo3qY6puZ4RlyC
- usdDGD8Y5L7S5dLg4zsjBl8pTQUk+CCbkSQ+55iBG7wSrgtlBbrD3QNt8rezrTRlFqtE
- 8Cng==
-X-Gm-Message-State: ABy/qLYuOtOAa9/8L4iuSNhFa5kpz6aelwyLlLhWTsEoB8hyW9xz2Ewm
- aC/t0sFl8L4jkzcIWOwcBZ7nkbev97p3Lqx6h9g+Kg==
-X-Google-Smtp-Source: APBJJlGQN6qpG9mOd1nEy3Dyugc7BtmVFInmNnTXbDjXLIKYylVD36KIR8cjgHwwz5C36G/3T7LZVA==
-X-Received: by 2002:a05:6870:472b:b0:1bb:7f1d:10f5 with SMTP id
- b43-20020a056870472b00b001bb7f1d10f5mr4909077oaq.20.1690550131395; 
- Fri, 28 Jul 2023 06:15:31 -0700 (PDT)
+ bh=87P/tos8Xfm7sOyDFm5C5C2VI/dnIEuzH+4kr2XLTao=;
+ b=QWUozv4ZHz+8sVNi4a2Ubdoyes6l7JBHBOH6ufVZTTQEtum/X9f7zmxcJe4JwZ1kTP
+ cmYeFy8gJ3vVey7OJGZZh8G8fdf9BU8SJ4u4LRlK058eyYlk9q0SzxLlIYHE15G84fJr
+ Y6RWZAkxRwB9lhnZqtyRwRj8Y7CS4Zx9XLMYH1lb5dUQBuiTTO6b8//qNfvpF86QPb/m
+ xPohOES+cvEnv046ysGLE8aA2QAGY+wdtrwCndehW6vEVPsc2uvJ8ZHlALTrfU5CUEUa
+ rJKfgZISJy49zq9tEv35A6CTEtp1mGiynMytdETy82JuIqfxzxvSV1zMQu5J9SSN0QcX
+ 0diw==
+X-Gm-Message-State: ABy/qLYg6EMItw9g0gnO8nAaW9DpxUpbcC/yoo/1QcVGjM0DqTcdXo0k
+ nOFmJ8T3dInyFRSmZEGgNISCl7ubJJfqx+/BCuqZvQ==
+X-Google-Smtp-Source: APBJJlG5yfSmDjGcXSNSMQaFGtLMuztkBnx32DSYNGsxX3EgvDqcCk4h1ATGCnWTwT+I8SXC68KCxQ==
+X-Received: by 2002:a05:6870:b50e:b0:1bb:8162:dfcc with SMTP id
+ v14-20020a056870b50e00b001bb8162dfccmr3419952oap.11.1690550134196; 
+ Fri, 28 Jul 2023 06:15:34 -0700 (PDT)
 Received: from grind.. (201-69-66-36.dial-up.telesp.net.br. [201.69.66.36])
  by smtp.gmail.com with ESMTPSA id
- hv6-20020a056871cc0600b001b3d93884fdsm1699371oac.57.2023.07.28.06.15.29
+ hv6-20020a056871cc0600b001b3d93884fdsm1699371oac.57.2023.07.28.06.15.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 28 Jul 2023 06:15:31 -0700 (PDT)
+ Fri, 28 Jul 2023 06:15:33 -0700 (PDT)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH 2/8] target/riscv: make CPUCFG() macro public
-Date: Fri, 28 Jul 2023 10:15:14 -0300
-Message-ID: <20230728131520.110394-3-dbarboza@ventanamicro.com>
+Subject: [PATCH 3/8] target/riscv/cpu.c: introduce cpu_cfg_ext_auto_update()
+Date: Fri, 28 Jul 2023 10:15:15 -0300
+Message-ID: <20230728131520.110394-4-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230728131520.110394-1-dbarboza@ventanamicro.com>
 References: <20230728131520.110394-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::2f;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x2f.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::31;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x31.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,76 +93,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The RISC-V KVM driver uses a CPUCFG() macro that calculates the offset
-of a certain field in the struct RISCVCPUConfig. We're going to use this
-macro in target/riscv/cpu.c as well in the next patches. Make it public.
+During realize() time we're activating a lot of extensions based on some
+criteria, e.g.:
 
-Rename it to CPU_CFG_OFFSET() for more clarity while we're at it.
+    if (cpu->cfg.ext_zk) {
+        cpu->cfg.ext_zkn = true;
+        cpu->cfg.ext_zkr = true;
+        cpu->cfg.ext_zkt = true;
+    }
+
+This practice resulted in at least one case where we ended up enabling
+something we shouldn't: RVC enabling zca/zcd/zcf when using a CPU that
+has priv_spec older than 1.12.0.
+
+We're also not considering user choice. There's no way of doing it now
+but this is about to change in the next few patches.
+
+cpu_cfg_ext_auto_update() will check for priv version mismatches before
+enabling extensions. If we have a mismatch between the current priv
+version and the extension we want to enable, do not enable it. In the
+near future, this same function will also consider user choice when
+deciding if we're going to enable/disable an extension or not.
+
+For now let's use it to handle zca/zcd/zcf enablement if RVC is enabled.
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 ---
- target/riscv/cpu.c | 2 +-
- target/riscv/cpu.h | 2 ++
- target/riscv/kvm.c | 8 +++-----
- 3 files changed, 6 insertions(+), 6 deletions(-)
+ target/riscv/cpu.c | 44 +++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 41 insertions(+), 3 deletions(-)
 
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 644ce7a018..3e62881d85 100644
+index 3e62881d85..75dc83407e 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
-@@ -48,7 +48,7 @@ struct isa_ext_data {
- };
- 
- #define ISA_EXT_DATA_ENTRY(_name, _min_ver, _prop) \
--    {#_name, _min_ver, offsetof(struct RISCVCPUConfig, _prop)}
-+    {#_name, _min_ver, CPU_CFG_OFFSET(_prop)}
- 
- /*
-  * From vector_helper.c
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 6ea22e0eea..577abcd724 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -62,6 +62,8 @@
- const char *riscv_get_misa_ext_name(uint32_t bit);
- const char *riscv_get_misa_ext_description(uint32_t bit);
- 
-+#define CPU_CFG_OFFSET(_prop) offsetof(struct RISCVCPUConfig, _prop)
-+
- /* Privileged specification version */
- enum {
-     PRIV_VERSION_1_10_0 = 0,
-diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
-index 9d8a8982f9..9b8565d809 100644
---- a/target/riscv/kvm.c
-+++ b/target/riscv/kvm.c
-@@ -198,10 +198,8 @@ static void kvm_riscv_update_cpu_misa_ext(RISCVCPU *cpu, CPUState *cs)
-     }
+@@ -168,6 +168,44 @@ static void isa_ext_update_enabled(RISCVCPU *cpu, uint32_t ext_offset,
+     *ext_enabled = en;
  }
  
--#define CPUCFG(_prop) offsetof(struct RISCVCPUConfig, _prop)
--
- #define KVM_EXT_CFG(_name, _prop, _reg_id) \
--    {.name = _name, .offset = CPUCFG(_prop), \
-+    {.name = _name, .offset = CPU_CFG_OFFSET(_prop), \
-      .kvm_reg_id = _reg_id}
++static int cpu_cfg_ext_get_min_version(uint32_t ext_offset)
++{
++    int i;
++
++    for (i = 0; i < ARRAY_SIZE(isa_edata_arr); i++) {
++        if (isa_edata_arr[i].ext_enable_offset != ext_offset) {
++            continue;
++        }
++
++        return isa_edata_arr[i].min_version;
++    }
++
++    /* Default to oldest priv spec if no match found */
++    return PRIV_VERSION_1_10_0;
++}
++
++static void cpu_cfg_ext_auto_update(RISCVCPU *cpu, uint32_t ext_offset,
++                                    bool value)
++{
++    CPURISCVState *env = &cpu->env;
++    bool prev_val = isa_ext_is_enabled(cpu, ext_offset);
++    int min_version;
++
++    if (prev_val == value) {
++        return;
++    }
++
++    if (value && env->priv_ver != PRIV_VERSION_LATEST) {
++        /* Do not enable it if priv_ver is older than min_version */
++        min_version = cpu_cfg_ext_get_min_version(ext_offset);
++        if (env->priv_ver < min_version) {
++            return;
++        }
++    }
++
++    isa_ext_update_enabled(cpu, ext_offset, value);
++}
++
+ const char * const riscv_int_regnames[] = {
+     "x0/zero", "x1/ra",  "x2/sp",  "x3/gp",  "x4/tp",  "x5/t0",   "x6/t1",
+     "x7/t2",   "x8/s0",  "x9/s1",  "x10/a0", "x11/a1", "x12/a2",  "x13/a3",
+@@ -1248,12 +1286,12 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
  
- static KVMCPUConfig kvm_multi_ext_cfgs[] = {
-@@ -278,13 +276,13 @@ static void kvm_cpu_set_multi_ext_cfg(Object *obj, Visitor *v,
- 
- static KVMCPUConfig kvm_cbom_blocksize = {
-     .name = "cbom_blocksize",
--    .offset = CPUCFG(cbom_blocksize),
-+    .offset = CPU_CFG_OFFSET(cbom_blocksize),
-     .kvm_reg_id = KVM_REG_RISCV_CONFIG_REG(zicbom_block_size)
- };
- 
- static KVMCPUConfig kvm_cboz_blocksize = {
-     .name = "cboz_blocksize",
--    .offset = CPUCFG(cboz_blocksize),
-+    .offset = CPU_CFG_OFFSET(cboz_blocksize),
-     .kvm_reg_id = KVM_REG_RISCV_CONFIG_REG(zicboz_block_size)
- };
+     /* zca, zcd and zcf has a PRIV 1.12.0 restriction */
+     if (riscv_has_ext(env, RVC) && env->priv_ver >= PRIV_VERSION_1_12_0) {
+-        cpu->cfg.ext_zca = true;
++        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zca), true);
+         if (riscv_has_ext(env, RVF) && env->misa_mxl_max == MXL_RV32) {
+-            cpu->cfg.ext_zcf = true;
++            cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zcf), true);
+         }
+         if (riscv_has_ext(env, RVD)) {
+-            cpu->cfg.ext_zcd = true;
++            cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zcd), true);
+         }
+     }
  
 -- 
 2.41.0
