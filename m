@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF319767865
-	for <lists+qemu-devel@lfdr.de>; Sat, 29 Jul 2023 00:14:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AD4E76787C
+	for <lists+qemu-devel@lfdr.de>; Sat, 29 Jul 2023 00:28:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qPV9r-00005t-4T; Fri, 28 Jul 2023 17:37:59 -0400
+	id 1qPVBn-0000Kr-So; Fri, 28 Jul 2023 17:39:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qPV9p-00005V-9W
- for qemu-devel@nongnu.org; Fri, 28 Jul 2023 17:37:57 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qPVBm-0000Kh-QJ
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 17:39:58 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qPV9n-0006UQ-R3
- for qemu-devel@nongnu.org; Fri, 28 Jul 2023 17:37:57 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qPVBl-0006rH-BL
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 17:39:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690580274;
+ s=mimecast20190719; t=1690580396;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=b5t2zmIDsu28RKNXD2LZZmIihAz2BehwW/CWrKvVzVA=;
- b=R9bHZGcIl0khrF3BgptdrFgcw7a5egwVWX1IFSRrP9qg9Qg9HKHTYCiYvdCzisQWQybdg+
- TFGEsPgBUFdslh94WNyFNOuUVwoLNjuZZMndEVv872U6gbKUeKMnzA8M9UWk8EVzhRwQVE
- FjwnOZKI476rybJpyOsjzT6C6HIl7h0=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=OVp/7NREXfaWjdQLRdHvNiSkU0DMfyvTjHhUQFyZ7Wc=;
+ b=XwV+sq/oxh4kDT/+9XdRGSNs4xoi+cu8+BIeim4n1jWssagLYuwNH+sijnpnHPqcuEk7/4
+ IRyNGMUUgtXOImC9eCzVGxnnCIHCzp2zI2s61NGdDcE8qDkjyl28jCPTNME2A/BG91vJCj
+ utcE3uSjKDLaQ6KVjF8VZYc58G+hLEw=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-547-uPWOERrMPpOF1qJbSaKBkw-1; Fri, 28 Jul 2023 17:37:52 -0400
-X-MC-Unique: uPWOERrMPpOF1qJbSaKBkw-1
-Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-63cebe9238bso5165176d6.1
- for <qemu-devel@nongnu.org>; Fri, 28 Jul 2023 14:37:52 -0700 (PDT)
+ us-mta-659-OOO-komQPDSHsYzT3hp4Sg-1; Fri, 28 Jul 2023 17:39:54 -0400
+X-MC-Unique: OOO-komQPDSHsYzT3hp4Sg-1
+Received: by mail-qt1-f197.google.com with SMTP id
+ d75a77b69052e-4054266d0beso5591871cf.0
+ for <qemu-devel@nongnu.org>; Fri, 28 Jul 2023 14:39:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690580272; x=1691185072;
+ d=1e100.net; s=20221208; t=1690580393; x=1691185193;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=b5t2zmIDsu28RKNXD2LZZmIihAz2BehwW/CWrKvVzVA=;
- b=j+EK5miWFrC5cr3aRtZfFGRDIp7EH0+ukTMYwYUydIwh/N/ky1pDsD6Pn/SNOXXxla
- FuOaKdms6/UpA/As//G263yz26Dm/huiN+h9f4CG3D2QC+FFoTU0+mKKvDyH7XiTgl97
- Q1BgjPwKQNQJPbe64QmTEugohd3hxGDtQilT5PmIKmYF62mOaq17XwopYic61LBQNIm6
- ciUAVQvol5hqKTwPnQX7UafjMUymvQjyrmF4C/EnIEs4n6S1hbk4t/CQMPC9E+lyMpi1
- 0uMenSNpog7zOmMnsnGgmudS0MM8QWgzMVFaKwfIFN7HRRDb4r7YMjPmCFttgSdVaKuL
- xdfQ==
-X-Gm-Message-State: ABy/qLaPuYyofXol4TEd8h0KAuzFwpQPXFPVOEzquTBzDpn3r6PLwyCs
- e6hLnw6q/QeghhVC/BjKbSgSC7+GReGmea5ju8gCwe6ZI517hYADbFJCGQJvSXjba0FYAlXx1B/
- FDwKXUnPqhGumDjE=
-X-Received: by 2002:a05:6214:5090:b0:63d:ee8:4127 with SMTP id
- kk16-20020a056214509000b0063d0ee84127mr536720qvb.2.1690580271972; 
- Fri, 28 Jul 2023 14:37:51 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlF2We8K5GRzxb+1BLE3l8Q0cpZ2f6mjH4nux8eMAMLZYuWT0SpTuN0csBXe+rAQ0xqTpj7b+Q==
-X-Received: by 2002:a05:6214:5090:b0:63d:ee8:4127 with SMTP id
- kk16-20020a056214509000b0063d0ee84127mr536707qvb.2.1690580271736; 
- Fri, 28 Jul 2023 14:37:51 -0700 (PDT)
+ bh=OVp/7NREXfaWjdQLRdHvNiSkU0DMfyvTjHhUQFyZ7Wc=;
+ b=inJLH1HfQo8H0qdhYSo8+w09waJhrb69Q2gy3TtgXKasnijiHGxvYnxfN2ecqCSn1/
+ 3QFeDC59mngakp7I+Dsj89sa2pYW7Qan5HUxDkLkzM9dm6siB/DGjOUBrpYz4SmT9z+n
+ Zgy53+U8cAEUBCBcckHDxps1Tgl3myqhPQNDaKYrIXeOj6o8/BPebEsvcGRnm/2gNiXz
+ eumYstUGliDRBDqCLlbMo3AOOCMecrnmMxKNsA0aajRVK2JjFyO82zDeMb17dTmTkPga
+ 9dneg31mJkrChchdYcTCyCk+G0tETmLBhhbdNnZm/dz6uEF5bPoupwUINBIqtPfEi8Tw
+ 8TkA==
+X-Gm-Message-State: ABy/qLYCiE/uxk2rPF82qFFLEZE25m/Lb4rMatWJLuEXLuZV+TU4vhkW
+ 3H/qVaZ3JIHoASuY7iRPbzurUZmn7yX6uQUvoJn9jWZniMAgXChz9HH+7emqmVsXa5eCfHq6hTX
+ JDStgOfq+ODLNX1o=
+X-Received: by 2002:a05:622a:19a4:b0:405:379e:c78d with SMTP id
+ u36-20020a05622a19a400b00405379ec78dmr890415qtc.3.1690580393474; 
+ Fri, 28 Jul 2023 14:39:53 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlHtH6Hlea1xIoXI8FUne6bliofq+MoPsD0ygTYLlGLXLMOHLE0DhZU3Zq9cNWCAb7Ui3LQ5Gg==
+X-Received: by 2002:a05:622a:19a4:b0:405:379e:c78d with SMTP id
+ u36-20020a05622a19a400b00405379ec78dmr890404qtc.3.1690580393220; 
+ Fri, 28 Jul 2023 14:39:53 -0700 (PDT)
 Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
  [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- a11-20020a0ce34b000000b006365a41c354sm1546589qvm.132.2023.07.28.14.37.51
+ z24-20020ac84558000000b003f872332a9asm1432188qtn.64.2023.07.28.14.39.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 28 Jul 2023 14:37:51 -0700 (PDT)
-Date: Fri, 28 Jul 2023 17:37:49 -0400
+ Fri, 28 Jul 2023 14:39:52 -0700 (PDT)
+Date: Fri, 28 Jul 2023 17:39:50 -0400
 From: Peter Xu <peterx@redhat.com>
 To: Fabiano Rosas <farosas@suse.de>
 Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
  Leonardo Bras <leobras@redhat.com>
-Subject: Re: [PATCH 1/3] migration: Stop marking RP bad after shutdown
-Message-ID: <ZMQ1LbTl5kGmAG21@x1n>
+Subject: Re: [PATCH 2/3] migration: Simplify calling of
+ await_return_path_close_on_source
+Message-ID: <ZMQ1ppAIJVbk8ZBg@x1n>
 References: <20230728121516.16258-1-farosas@suse.de>
- <20230728121516.16258-2-farosas@suse.de>
+ <20230728121516.16258-3-farosas@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230728121516.16258-2-farosas@suse.de>
+In-Reply-To: <20230728121516.16258-3-farosas@suse.de>
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -98,49 +99,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jul 28, 2023 at 09:15:14AM -0300, Fabiano Rosas wrote:
-> When waiting for the return path (RP) thread to finish, there is
-> really nothing wrong in the RP if the destination end of the migration
-> stops responding, leaving it stuck.
+On Fri, Jul 28, 2023 at 09:15:15AM -0300, Fabiano Rosas wrote:
+> We're about to reuse this function so move the 'rp_thread_created'
+> check into it and remove the redundant tracing and comment.
 > 
-> Stop returning an error at that point and leave it to other parts of
-> the code to catch. One such part is the very next routine run by
-> migration_completion() which checks 'to_dst_file' for an error and fails
-> the migration. Another is the RP thread itself when the recvmsg()
-> returns an error.
-> 
-> With this we stop marking RP bad from outside of the thread and can
-> reuse await_return_path_close_on_source() in the next patches to wait
-> on the thread during a paused migration.
+> Add a new tracepoint akin to what is already done at
+> migration_completion().
 > 
 > Signed-off-by: Fabiano Rosas <farosas@suse.de>
 > ---
->  migration/migration.c | 1 -
->  1 file changed, 1 deletion(-)
+>  migration/migration.c  | 21 +++++++--------------
+>  migration/trace-events |  3 +--
+>  2 files changed, 8 insertions(+), 16 deletions(-)
 > 
 > diff --git a/migration/migration.c b/migration/migration.c
-> index 91bba630a8..051067f8c5 100644
+> index 051067f8c5..d6f4470265 100644
 > --- a/migration/migration.c
 > +++ b/migration/migration.c
-> @@ -2049,7 +2049,6 @@ static int await_return_path_close_on_source(MigrationState *ms)
->           * waiting for the destination.
->           */
->          qemu_file_shutdown(ms->rp_state.from_dst_file);
-> -        mark_source_rp_bad(ms);
+> @@ -2038,6 +2038,10 @@ static int open_return_path_on_source(MigrationState *ms,
+>  /* Returns 0 if the RP was ok, otherwise there was an error on the RP */
+>  static int await_return_path_close_on_source(MigrationState *ms)
+>  {
+> +    if (!ms->rp_state.rp_thread_created) {
+> +        return 0;
+> +    }
+> +
+>      /*
+>       * If this is a normal exit then the destination will send a SHUT and the
+>       * rp_thread will exit, however if there's an error we need to cause
+> @@ -2350,20 +2354,9 @@ static void migration_completion(MigrationState *s)
+>          goto fail;
 >      }
->      trace_await_return_path_close_on_source_joining();
->      qemu_thread_join(&ms->rp_state.rp_thread);
+>  
+> -    /*
+> -     * If rp was opened we must clean up the thread before
+> -     * cleaning everything else up (since if there are no failures
+> -     * it will wait for the destination to send it's status in
+> -     * a SHUT command).
+> -     */
+> -    if (s->rp_state.rp_thread_created) {
+> -        int rp_error;
+> -        trace_migration_return_path_end_before();
+> -        rp_error = await_return_path_close_on_source(s);
+> -        trace_migration_return_path_end_after(rp_error);
+> -        if (rp_error) {
+> -            goto fail;
+> -        }
+> +    if (await_return_path_close_on_source(s)) {
+> +        trace_migration_completion_rp_err();
+> +        goto fail;
+>      }
+>  
+>      if (qemu_file_get_error(s->to_dst_file)) {
+> diff --git a/migration/trace-events b/migration/trace-events
+> index 5259c1044b..33a69064ca 100644
+> --- a/migration/trace-events
+> +++ b/migration/trace-events
+> @@ -157,13 +157,12 @@ migrate_pending_estimate(uint64_t size, uint64_t pre, uint64_t post) "estimate p
+>  migrate_send_rp_message(int msg_type, uint16_t len) "%d: len %d"
+>  migrate_send_rp_recv_bitmap(char *name, int64_t size) "block '%s' size 0x%"PRIi64
+>  migration_completion_file_err(void) ""
+> +migration_completion_rp_err(void) ""
+>  migration_completion_vm_stop(int ret) "ret %d"
+>  migration_completion_postcopy_end(void) ""
+>  migration_completion_postcopy_end_after_complete(void) ""
+>  migration_rate_limit_pre(int ms) "%d ms"
+>  migration_rate_limit_post(int urgent) "urgent: %d"
+> -migration_return_path_end_before(void) ""
+> -migration_return_path_end_after(int rp_error) "%d"
+>  migration_thread_after_loop(void) ""
+>  migration_thread_file_err(void) ""
+>  migration_thread_setup_complete(void) ""
+> -- 
+> 2.35.3
+> 
 
-The retval of await_return_path_close_on_source() relies on
-ms->rp_state.error.  If mark_source_rp_bad() is dropped, is it possible
-that it'll start to return succeed where it used to return failure?
-
-Maybe not a big deal: I see migration_completion() also has another
-qemu_file_get_error() later to catch errors, but I don't know how solid
-that is.
-
-I think as long as after this patch we can fail properly on e.g. network
-failures for precopy when cap return-path=on, then we should be good.
+Just in case someone may still want to see the old
+trace_migration_return_path_end_before() tracepoint, maybe just move them
+all over?
 
 -- 
 Peter Xu
