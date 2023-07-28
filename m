@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6D01766298
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 05:43:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABC68766253
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 05:17:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qPD5t-0007zA-C9; Thu, 27 Jul 2023 22:20:41 -0400
+	id 1qPD5u-0007zE-CK; Thu, 27 Jul 2023 22:20:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pizhenwei@bytedance.com>)
- id 1qPD5p-0007we-8u
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 22:20:38 -0400
-Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
+ id 1qPD5s-0007yR-Je
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 22:20:40 -0400
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pizhenwei@bytedance.com>)
- id 1qPD5n-00073a-MY
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 22:20:36 -0400
-Received: by mail-pg1-x536.google.com with SMTP id
- 41be03b00d2f7-55ba895d457so942888a12.0
- for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 19:20:35 -0700 (PDT)
+ id 1qPD5q-000744-Tm
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 22:20:40 -0400
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-1b9c368f4b5so18402725ad.0
+ for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 19:20:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1690510834; x=1691115634;
+ d=bytedance.com; s=google; t=1690510837; x=1691115637;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=tQs4Fsv0nvz66FedKG0+cIDiS7sJUOlO0kK/3h8TTRs=;
- b=kyiw5jllxwHNwrbk3CVtgNjKAtFn+NqoHre5dXloqMy2O7iY6O3MLnYCoiEbc0mBD+
- sHleeYbNdhyQ5ZgFJHiGzqlyvxC/Cou8oVJB4UPfXcKyKPdb8CM2ZKeLxAD20AamByy9
- p1uv+Hfy+P7ut2kjIQKmrNJ3I0P2VOd7KegYOdpO5v2v4cN9QP1NzVbX5wMFl9KThFPy
- FbU8jpaiDobhmfBzjNDiTXO38lFNiKtYEIeTwkoFZtdDH4xKF9VXRGeH8HEZhZ5vaeeG
- mHaawhvtuRZNMU/f5SSYLcoEbTT7hmZCwdwcOYlx6Ke5JW3YDXV8YVLYkhVOFrWj0iiE
- k/Cw==
+ bh=B9iF4jVh41otFASCZmoc1VL/sJXGCh2dQxBqUQfIoLI=;
+ b=JPPOCFtytHdtOJdV9PsjLqtyfPMh8e8yHGKgcvN9G+zKQ1ZGqV68HOtVmk51iQIez9
+ eACWwa/Gwa7pkmE/6rt5humiI7ZMRlCb1VN12/aWshtkZLuOut0qWltl2G9ropD1BLP0
+ Gn9nLH7lN6OskXDtQZgTe2XkemNl5TkHisFitO21FrmW2d9MznncQKsX6KDRo630KkVb
+ c+Y4Z8i2tJr7W7qvXTsV/yNEBvs2ekhl+SOJqCtwM4pjV99hvJ4ueyguQ5Mf6b0ssZlf
+ RySZeElR/ENP45XyP6PxZ3AFPBdKKg6cCXTvGtLXTUT0lp8jj739d2ZzLcl9MPHarSPc
+ pFBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690510834; x=1691115634;
+ d=1e100.net; s=20221208; t=1690510837; x=1691115637;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tQs4Fsv0nvz66FedKG0+cIDiS7sJUOlO0kK/3h8TTRs=;
- b=LQNfpkdMk5LALZw5MrXUgtHZaGp8j0GtgP6z3BUOSZeV/vObJNbSN83R7NayCsKRdh
- hxtltcs4MR9Qw5bE0EcOcZk0dLdHnkeGG4T7b36IaDvhCJIH3/g+ImoB0Zud7M/RVgRv
- palpUdK+pGuENujpiJeLoKzmbqNXXRbWo0L7m4YUePWRKhI7IXTeRg+vc/HhzHskGjD/
- f0Gb9V9tMsUVWIfMEZ1juu2rL5tsK+2gCdZNnRNCnt9uj4dx+CuNLL+0dL9iVruBOK/G
- L8hpOs4XI6jbRSfJR36b13ntYPUqkN4bzhlcPZJOB+tXscjbuTnQ7NgUdDwpcvyxEEBZ
- M/tw==
-X-Gm-Message-State: ABy/qLbEnx22TYLv42q9MnZdDF48hSl5fY/3NR5uTjaWOB+FNLrx3xw1
- XEYATxRYSpIheFHq6bDdzxLD3sgxJ9L5JsyJp+I=
-X-Google-Smtp-Source: APBJJlE/DygaADj5u/W1WFcICNeiMm7VI/qeYk9wPlMZpq/6BfajQaxeV7HZDnNT/nTMgxapK0cw8Q==
-X-Received: by 2002:a05:6a20:1591:b0:132:84e4:4bea with SMTP id
- h17-20020a056a20159100b0013284e44beamr473910pzj.12.1690510834378; 
- Thu, 27 Jul 2023 19:20:34 -0700 (PDT)
+ bh=B9iF4jVh41otFASCZmoc1VL/sJXGCh2dQxBqUQfIoLI=;
+ b=SswZ6g96pd9PbSjALcLa/ywRJ4NAfWtCc5ZQL9qbL6QFbo5tdr9FHDQUpT+Eb4bSUQ
+ qXLsCpykDgNMe6CDIAoMgWNsLR3p1UOeNTPHtz8LxRlIHiCWhas0QmtojlTstH2BxHtV
+ I42K1TI5DxjK/YNOeqnwHytZ21CT4+3dvS7wtfLCD3IuoS3n08LXNnYmka5Z/5VepcTx
+ IIN4U8XYBe/W5OsDxXFPrH1aMn5W7fKSTqxrHqGVua13d3DT962EIU3TZxFisoAhfzA+
+ q7dUYJHjvO/x1kG0dYrSTVdAlEGkm/2jA2ke/5dRrCFkOms63dB+iXUh0WX8wQHKxr5s
+ O1pw==
+X-Gm-Message-State: ABy/qLYk9MahU9MsuFNvl7+zSjYN1T7XESGay5vkX9OtXaSBscbDAa+2
+ 08kH+0HVAb3tfhqZVZxmRoMRBQ==
+X-Google-Smtp-Source: APBJJlELzRp2vWAAJRLYJIclzHKdqKRyHOngGv6WeNtRexV9CKG2crjRp+rPHXTyF+hK2u+Cnm2HKA==
+X-Received: by 2002:a17:902:d481:b0:1b8:3936:7b64 with SMTP id
+ c1-20020a170902d48100b001b839367b64mr599479plg.1.1690510837548; 
+ Thu, 27 Jul 2023 19:20:37 -0700 (PDT)
 Received: from libai.bytedance.net ([61.213.176.11])
  by smtp.gmail.com with ESMTPSA id
- b21-20020a170902d31500b001bb9f104328sm2312947plc.146.2023.07.27.19.20.31
+ b21-20020a170902d31500b001bb9f104328sm2312947plc.146.2023.07.27.19.20.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 27 Jul 2023 19:20:33 -0700 (PDT)
+ Thu, 27 Jul 2023 19:20:37 -0700 (PDT)
 From: zhenwei pi <pizhenwei@bytedance.com>
 To: berto@igalia.com,
 	kwolf@redhat.com,
 	hreitz@redhat.com
 Cc: qemu_oss@crudebyte.com, qemu-devel@nongnu.org, qemu-block@nongnu.org,
- zhenwei pi <pizhenwei@bytedance.com>
-Subject: [PATCH v5 7/9] throttle: use THROTTLE_MAX/ARRAY_SIZE for hard code
-Date: Fri, 28 Jul 2023 10:20:04 +0800
-Message-Id: <20230728022006.1098509-8-pizhenwei@bytedance.com>
+ zhenwei pi <pizhenwei@bytedance.com>, Greg Kurz <groug@kaod.org>
+Subject: [PATCH v5 8/9] fsdev: Use ThrottleDirection instread of bool is_write
+Date: Fri, 28 Jul 2023 10:20:05 +0800
+Message-Id: <20230728022006.1098509-9-pizhenwei@bytedance.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230728022006.1098509-1-pizhenwei@bytedance.com>
 References: <20230728022006.1098509-1-pizhenwei@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
- envelope-from=pizhenwei@bytedance.com; helo=mail-pg1-x536.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=pizhenwei@bytedance.com; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,66 +94,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The first dimension of both to_check and
-bucket_types_size/bucket_types_units is used as throttle direction,
-use THROTTLE_MAX instead of hard coded number. Also use ARRAY_SIZE()
-to avoid hard coded number for the second dimension.
+'bool is_write' style is obsolete from throttle framework, adapt
+fsdev to the new style.
 
-Hanna noticed that the two array should be static. Yes, turn them
-into static variables.
-
+Cc: Greg Kurz <groug@kaod.org>
 Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
 Signed-off-by: zhenwei pi <pizhenwei@bytedance.com>
 ---
- util/throttle.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ fsdev/qemu-fsdev-throttle.c | 14 +++++++-------
+ fsdev/qemu-fsdev-throttle.h |  4 ++--
+ hw/9pfs/cofile.c            |  4 ++--
+ 3 files changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/util/throttle.c b/util/throttle.c
-index 7d3eb6032f..9582899da3 100644
---- a/util/throttle.c
-+++ b/util/throttle.c
-@@ -142,7 +142,8 @@ int64_t throttle_compute_wait(LeakyBucket *bkt)
- static int64_t throttle_compute_wait_for(ThrottleState *ts,
-                                          ThrottleDirection direction)
- {
--    BucketType to_check[2][4] = { {THROTTLE_BPS_TOTAL,
-+    static const BucketType to_check[THROTTLE_MAX][4] = {
-+                                  {THROTTLE_BPS_TOTAL,
-                                    THROTTLE_OPS_TOTAL,
-                                    THROTTLE_BPS_READ,
-                                    THROTTLE_OPS_READ},
-@@ -153,7 +154,7 @@ static int64_t throttle_compute_wait_for(ThrottleState *ts,
-     int64_t wait, max_wait = 0;
-     int i;
- 
--    for (i = 0; i < 4; i++) {
-+    for (i = 0; i < ARRAY_SIZE(to_check[THROTTLE_READ]); i++) {
-         BucketType index = to_check[direction][i];
-         wait = throttle_compute_wait(&ts->cfg.buckets[index]);
-         if (wait > max_wait) {
-@@ -469,11 +470,11 @@ bool throttle_schedule_timer(ThrottleState *ts,
- void throttle_account(ThrottleState *ts, ThrottleDirection direction,
-                       uint64_t size)
- {
--    const BucketType bucket_types_size[2][2] = {
-+    static const BucketType bucket_types_size[THROTTLE_MAX][2] = {
-         { THROTTLE_BPS_TOTAL, THROTTLE_BPS_READ },
-         { THROTTLE_BPS_TOTAL, THROTTLE_BPS_WRITE }
-     };
--    const BucketType bucket_types_units[2][2] = {
-+    static const BucketType bucket_types_units[THROTTLE_MAX][2] = {
-         { THROTTLE_OPS_TOTAL, THROTTLE_OPS_READ },
-         { THROTTLE_OPS_TOTAL, THROTTLE_OPS_WRITE }
-     };
-@@ -486,7 +487,7 @@ void throttle_account(ThrottleState *ts, ThrottleDirection direction,
-         units = (double) size / ts->cfg.op_size;
+diff --git a/fsdev/qemu-fsdev-throttle.c b/fsdev/qemu-fsdev-throttle.c
+index 1c137d6f0f..d912da906d 100644
+--- a/fsdev/qemu-fsdev-throttle.c
++++ b/fsdev/qemu-fsdev-throttle.c
+@@ -94,22 +94,22 @@ void fsdev_throttle_init(FsThrottle *fst)
      }
+ }
  
--    for (i = 0; i < 2; i++) {
-+    for (i = 0; i < ARRAY_SIZE(bucket_types_size[THROTTLE_READ]); i++) {
-         LeakyBucket *bkt;
+-void coroutine_fn fsdev_co_throttle_request(FsThrottle *fst, bool is_write,
++void coroutine_fn fsdev_co_throttle_request(FsThrottle *fst,
++                                            ThrottleDirection direction,
+                                             struct iovec *iov, int iovcnt)
+ {
+-    ThrottleDirection direction = is_write ? THROTTLE_WRITE : THROTTLE_READ;
+-
++    assert(direction < THROTTLE_MAX);
+     if (throttle_enabled(&fst->cfg)) {
+         if (throttle_schedule_timer(&fst->ts, &fst->tt, direction) ||
+-            !qemu_co_queue_empty(&fst->throttled_reqs[is_write])) {
+-            qemu_co_queue_wait(&fst->throttled_reqs[is_write], NULL);
++            !qemu_co_queue_empty(&fst->throttled_reqs[direction])) {
++            qemu_co_queue_wait(&fst->throttled_reqs[direction], NULL);
+         }
  
-         bkt = &ts->cfg.buckets[bucket_types_size[direction][i]];
+         throttle_account(&fst->ts, direction, iov_size(iov, iovcnt));
+ 
+-        if (!qemu_co_queue_empty(&fst->throttled_reqs[is_write]) &&
++        if (!qemu_co_queue_empty(&fst->throttled_reqs[direction]) &&
+             !throttle_schedule_timer(&fst->ts, &fst->tt, direction)) {
+-            qemu_co_queue_next(&fst->throttled_reqs[is_write]);
++            qemu_co_queue_next(&fst->throttled_reqs[direction]);
+         }
+     }
+ }
+diff --git a/fsdev/qemu-fsdev-throttle.h b/fsdev/qemu-fsdev-throttle.h
+index a21aecddc7..daa8ca2494 100644
+--- a/fsdev/qemu-fsdev-throttle.h
++++ b/fsdev/qemu-fsdev-throttle.h
+@@ -23,14 +23,14 @@ typedef struct FsThrottle {
+     ThrottleState ts;
+     ThrottleTimers tt;
+     ThrottleConfig cfg;
+-    CoQueue      throttled_reqs[2];
++    CoQueue      throttled_reqs[THROTTLE_MAX];
+ } FsThrottle;
+ 
+ int fsdev_throttle_parse_opts(QemuOpts *, FsThrottle *, Error **);
+ 
+ void fsdev_throttle_init(FsThrottle *);
+ 
+-void coroutine_fn fsdev_co_throttle_request(FsThrottle *, bool ,
++void coroutine_fn fsdev_co_throttle_request(FsThrottle *, ThrottleDirection ,
+                                             struct iovec *, int);
+ 
+ void fsdev_throttle_cleanup(FsThrottle *);
+diff --git a/hw/9pfs/cofile.c b/hw/9pfs/cofile.c
+index 9c5344039e..71174c3e4a 100644
+--- a/hw/9pfs/cofile.c
++++ b/hw/9pfs/cofile.c
+@@ -252,7 +252,7 @@ int coroutine_fn v9fs_co_pwritev(V9fsPDU *pdu, V9fsFidState *fidp,
+     if (v9fs_request_cancelled(pdu)) {
+         return -EINTR;
+     }
+-    fsdev_co_throttle_request(s->ctx.fst, true, iov, iovcnt);
++    fsdev_co_throttle_request(s->ctx.fst, THROTTLE_WRITE, iov, iovcnt);
+     v9fs_co_run_in_worker(
+         {
+             err = s->ops->pwritev(&s->ctx, &fidp->fs, iov, iovcnt, offset);
+@@ -272,7 +272,7 @@ int coroutine_fn v9fs_co_preadv(V9fsPDU *pdu, V9fsFidState *fidp,
+     if (v9fs_request_cancelled(pdu)) {
+         return -EINTR;
+     }
+-    fsdev_co_throttle_request(s->ctx.fst, false, iov, iovcnt);
++    fsdev_co_throttle_request(s->ctx.fst, THROTTLE_READ, iov, iovcnt);
+     v9fs_co_run_in_worker(
+         {
+             err = s->ops->preadv(&s->ctx, &fidp->fs, iov, iovcnt, offset);
 -- 
 2.34.1
 
