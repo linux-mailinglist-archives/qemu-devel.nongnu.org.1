@@ -2,88 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 334B17666E9
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 10:23:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFDD97666AD
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 10:15:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qPI0S-0006vm-6C; Fri, 28 Jul 2023 03:35:24 -0400
+	id 1qPICa-0003cg-E7; Fri, 28 Jul 2023 03:47:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yui.washidu@gmail.com>)
- id 1qPI0Q-0006ve-64
- for qemu-devel@nongnu.org; Fri, 28 Jul 2023 03:35:22 -0400
-Received: from mail-oa1-x29.google.com ([2001:4860:4864:20::29])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qPICY-0003cS-OV
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 03:47:54 -0400
+Received: from mail-oi1-x22a.google.com ([2607:f8b0:4864:20::22a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yui.washidu@gmail.com>)
- id 1qPI0O-0007Qr-Dn
- for qemu-devel@nongnu.org; Fri, 28 Jul 2023 03:35:21 -0400
-Received: by mail-oa1-x29.google.com with SMTP id
- 586e51a60fabf-1bba254a7d4so1455417fac.2
- for <qemu-devel@nongnu.org>; Fri, 28 Jul 2023 00:35:19 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qPICW-0004uU-VN
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 03:47:54 -0400
+Received: by mail-oi1-x22a.google.com with SMTP id
+ 5614622812f47-3a425ef874dso1491515b6e.0
+ for <qemu-devel@nongnu.org>; Fri, 28 Jul 2023 00:47:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1690529718; x=1691134518;
+ d=ventanamicro.com; s=google; t=1690530472; x=1691135272;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=Nmg25CEg3DyYzz54q7smFELsJPKN9VtRn/ce0istu/I=;
- b=CJpYa7WwVT3ijDbnYK/Hwcevw+VTJrs7C9xqIvKaoUKVI3bESGge5eruc86OBtnOnM
- FxVfDNDwQZWBUvNnST4a8kRI0k3qDSe8BhjszY9FU06/mcNuzY5FXGgHPWtRTkX6TucD
- g/9Ix3R154FSkLlGLLrGnhJ7urIjZtuB/2Bw3/BpFwrWgEgyNXO4F8E6c837UY4OH/vi
- APWk0YgCgv8Fw0KqtDneS4p2B4+eXp8czvBweMz8hRMuLiayVNHBOMcpeycmr4ppv/LI
- lNCgeYXSEpQS2gDTJP4bcd1qt5HaqYxumQOmVOM4adDXSmMrgkYXsCdp8rSUNzuZ9UTV
- qqxQ==
+ bh=MMQFu/gMC2oZ2PpZP1iQJImmfvVCtzU/hGKfgdPRKpA=;
+ b=lFpqAqGnOyGpHWnVMV3Uv4xakcjjCVdTwwiU0mda2+ZE52wbMHADY9YDCJ6XALJrja
+ 4kWapCbcFb8/5k6HBVxKkQT+Ml8QXwOiOCWucK61PBBuY9iLQ1tkHZ2AbjRE0KAAie2j
+ g622cKj81vVrgmYG+F2JBaC6hnpQqcuIsm5y2CWmp3WjxCsv5c5bKVXYJOrHsuzH0Qsw
+ 5UOLA0JJLQOeyjMvmfazVB4RsBc2Ij7kvFp1oQ6GLXQaWiYOmKpGcz7MSAPRSl4/bcRk
+ symlEGVbDVdxywzb3+/CJRzv/3OjSHkejENmaSWuO0G8+zmVfwNVrmlEAV15qqlOVPmZ
+ C1/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690529718; x=1691134518;
+ d=1e100.net; s=20221208; t=1690530472; x=1691135272;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Nmg25CEg3DyYzz54q7smFELsJPKN9VtRn/ce0istu/I=;
- b=GX/L23p2nQN+SZIKyzSWEZ6kDQtK38z9y6w5RKCo5thmKs3AVm6OyR+SMvfEHIahPx
- f+8IHDBJqYJk2kTfK98IXvfOW9kERiOvlVtM5NRHucx4JpXQy7epyiQj0ngk8ExoC9/2
- gxJqjE3SsyNnOYAJ//0maz2wU6e6T34dwFcD0nIn66/LvyYdZWvsitNdrDGRQOONxqkp
- y6vrwVELpq6IWK7KInAoubGZ4tP8loOFaIoGVGopv74t4cr5+F06xEGPTEDLV9fE3hH5
- Ky8hcXk4/aajjZWbrk0XkA2rpypuIi93/wiXEvTw/kL3CoA8wyF3mIeHyrEZR1kBObL5
- Xp+A==
-X-Gm-Message-State: ABy/qLbyl8Vo0yn/NuaY/iPi5XxHbqhHYZDhTFOuBqbNVhTsvlaBiUOY
- r7xE6ukM90NH6Nc56PtpSvk=
-X-Google-Smtp-Source: APBJJlFKVjPGatl5I47YyfeyGVbrcDkYQy9TEv623kSljBxCFoG3h0LQP+VGdAzm2EpZQHp5kkOJGw==
-X-Received: by 2002:a05:6871:612:b0:1b4:6d3b:3e15 with SMTP id
- w18-20020a056871061200b001b46d3b3e15mr2390496oan.3.1690529718531; 
- Fri, 28 Jul 2023 00:35:18 -0700 (PDT)
-Received: from [172.20.149.24] ([222.151.198.97])
- by smtp.gmail.com with ESMTPSA id
- k12-20020aa790cc000000b00682c1db7551sm448495pfk.49.2023.07.28.00.35.15
+ bh=MMQFu/gMC2oZ2PpZP1iQJImmfvVCtzU/hGKfgdPRKpA=;
+ b=J7yO7mF1TfqVZPTqn5QJInGVuwYX2yRYlh1MlzqdSoO25bZ85KRCGaHxCzpx4rsNw0
+ DF3n2cN/iS1a2nN+Il8XM7ySQpwc6sIzCtKmRONaFe5lXe2V05cg0pcPka1Wy7omMwd2
+ BY9msQFP9tfRvJ9uDCRAbBwcPmWMS56ZRajgPqT07r/eqPn1eJQzq98MVFbGqZ1Ba5Q3
+ YHJ4MnNpk5YNrAkEwqHh7L9k4e80zKjoFhforOwaH5zDDy4igGo8QH0ygNHvycuaeOpP
+ 8nNOYQNseyvViSEZoWKLWJBLbG3JsIZZr7l+RO5CMd1P268RuueNH2H8TQROF5syi7sg
+ wp+w==
+X-Gm-Message-State: ABy/qLbDwFb9TmI0uIGsYO2NcVIT4rLgb//JKCoxbZcHHF2UP5O3f0fV
+ F0NU2rmjV9ciojOMENV871hRAA==
+X-Google-Smtp-Source: APBJJlGmnoHWUUdp9sO2U1N1XcRY2IImvZJ2jh0RrMSYRPMULGQO1kmIqfLxHn+PEWKip/8SQLSmvQ==
+X-Received: by 2002:a05:6808:bd4:b0:3a5:ca93:fb69 with SMTP id
+ o20-20020a0568080bd400b003a5ca93fb69mr2711299oik.55.1690530471578; 
+ Fri, 28 Jul 2023 00:47:51 -0700 (PDT)
+Received: from [192.168.68.108] (201-69-66-36.dial-up.telesp.net.br.
+ [201.69.66.36]) by smtp.gmail.com with ESMTPSA id
+ z2-20020a056808048200b003a422b6ff4csm1402054oid.49.2023.07.28.00.47.49
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 28 Jul 2023 00:35:18 -0700 (PDT)
-Message-ID: <2d0c5e29-49d0-a1cc-eb96-d80550984ee2@gmail.com>
-Date: Fri, 28 Jul 2023 16:35:11 +0900
+ Fri, 28 Jul 2023 00:47:51 -0700 (PDT)
+Message-ID: <27b8fef7-7850-d99c-ae7b-110fa18ccaa9@ventanamicro.com>
+Date: Fri, 28 Jul 2023 04:47:47 -0300
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [RFC 0/1] virtio-net: add support for SR-IOV emulation
+Subject: Re: [PATCH] target/riscv: Fix zfa fleq.d and fltq.d
 Content-Language: en-US
-To: Jason Wang <jasowang@redhat.com>
-Cc: qemu-devel@nongnu.org, mst@redhat.com, akihiko.odaki@daynix.com,
- yvugenfi@redhat.com, ybendito@redhat.com, mapfelba@redhat.com,
- marcel@redhat.com, ghammer@redhat.com, mdean@redhat.com
-References: <1689731808-3009-1-git-send-email-yui.washidu@gmail.com>
- <CACGkMEv9yVCherC89W5ihyP-iZZHDhn1xZy-8aOd4ZSs+1Dk_Q@mail.gmail.com>
- <ef14eb09-e739-3a3a-ebda-13b385a85d8e@gmail.com>
- <CACGkMEtUUq6988VJoZuPhfdODMeyMsZUkm4Pq6u4NYzEZo3zeQ@mail.gmail.com>
-From: Yui Washizu <yui.washidu@gmail.com>
-In-Reply-To: <CACGkMEtUUq6988VJoZuPhfdODMeyMsZUkm4Pq6u4NYzEZo3zeQ@mail.gmail.com>
+To: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-devel@nongnu.org
+Cc: Alistair.Francis@wdc.com, palmer@dabbelt.com, bin.meng@windriver.com,
+ liweiwei@iscas.ac.cn, qemu-riscv@nongnu.org
+References: <20230728003906.768-1-zhiwei_liu@linux.alibaba.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20230728003906.768-1-zhiwei_liu@linux.alibaba.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::29;
- envelope-from=yui.washidu@gmail.com; helo=mail-oa1-x29.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22a;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-oi1-x22a.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- NICE_REPLY_A=-0.091, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,135 +96,40 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
-On 2023/07/24 15:58, Jason Wang wrote:
-> On Mon, Jul 24, 2023 at 10:32 AM Yui Washizu <yui.washidu@gmail.com> wrote:
->>
->> On 2023/07/20 11:20, Jason Wang wrote:
->>> On Wed, Jul 19, 2023 at 9:59 AM Yui Washizu <yui.washidu@gmail.com> wrote:
->>>> This patch series is the first step towards enabling
->>>> hardware offloading of the L2 packet switching feature on virtio-net device to host machine.
->>>> We are considering that this hardware offloading enables
->>>> the use of high-performance networks in virtual infrastructures,
->>>> such as container infrastructures on VMs.
->>>>
->>>> To enable L2 packet switching by SR-IOV VFs, we are considering the following:
->>>> - making the guest recognize virtio-net devices as SR-IOV PF devices
->>>>     (archived with this patch series)
->>>> - allowing virtio-net devices to connect SR-IOV VFs to the backend networks,
->>>>     leaving the L2 packet switching feature to the management layer like libvirt
->>> Could you please show the qemu command line you want to propose here?
->>
->> I am considering how to specify the properties of VFs to connect SR-IOV
->> VFs to the backend networks.
->>
->>
->> For example:
->>
->>
->> qemu-system-x86_64 -device
->> pcie-root-port,port=8,chassis=8,id=pci.8,bus=pcie.0,multifunction=on
->>                      -netdev tap,id=hostnet0,vhost=on
->>                      -netdev tap,id=vfnet1,vhost=on # backend network for
->> SR-IOV VF 1
->>                      -netdev tap,id=vfnet2,vhost=on # backend network for
->> SR-IOV VF 2
->>                      -device
->> virtio-net-pci,netdev=hostnet0,sriov_max_vfs=2,sriov_netdev=vfnet1:vfnet2,...
->>
->>
->> In this example, we can specify multiple backend networks to the VFs
->> by adding "sriov_netdev" and separating them with ":".
-> This seems what is in my mind as well, more below
->
->> Additionally, when passing properties like "rx_queue_size" to VFs, we
->> can utilize new properties,
->> such as "sriov_rx_queue_size_per_vfs," to ensure that the same value is
->> passed to all VFs.
-> Or we can introduce new device like:
->
-> -netdev tap,id=hn0 \
-> -device virtio-net-pci,netdev=hn0,id=vnet_pf \
-> -netdev tap,netdev=hn1 \
-> -device virtio-net-pci-vf,netdev=hn1,id=vf0,pf=vnet_pf,rx_queue_size=XYZ ... \
->
-> This allows us to reuse the codes for configuring vf parameters.
 
+On 7/27/23 21:39, LIU Zhiwei wrote:
+> Commit a47842d ("riscv: Add support for the Zfa extension") implemented the zfa extension.
+> However, it has some typos for fleq.d and fltq.d. Both of them misused the fltq.s
+> helper function.
+> 
+> Signed-off-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+> ---
 
-Yes, I was also considering this method was one of the option.
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-
-I was concerned that the implementation
-for it might be different from other devices specified by the "-device" 
-option
-because VF devices are created when the guest creates VFs from PFs,
-not when the guest starts,
-and the implementation may be complicated.
-So I dropped the idea then.
-
-
-However, I think it is a cleaner way for specifying VFs than my 
-suggested one.
-
-
-I will further consider whether the implementation will be really 
-difficult or not.
-
-
-Thank you.
-
-
-> But
-> note that rx_queue_size doesn't make too much sense to vhost-vDPA, as
-> qemu can perform nothing more than a simple sanity test.
->
-> Thanks
->
->> I'm still considering about how to specify it, so please give me any
->> comments if you have any.
->>
->>
->>>>     - This makes hardware offloading of L2 packet switching possible.
->>>>       For example, when using vDPA devices, it allows the guest
->>>>       to utilize SR-IOV NIC embedded switch of hosts.
->>> This would be interesting.
->>>
->>> Thanks
->>>
->>>> This patch series aims to enable SR-IOV emulation on virtio-net devices.
->>>> With this series, the guest can identify the virtio-net device as an SR-IOV PF device.
->>>> The newly added property 'sriov_max_vfs' allows us to enable the SR-IOV feature
->>>> on the virtio-net device.
->>>> Currently, we are unable to specify the properties of a VF created from the guest.
->>>> The properties are set to their default values.
->>>> In the future, we plan to allow users to set the properties.
->>>>
->>>> qemu-system-x86_64 --device virtio-net,sriov_max_vfs=<num>
->>>> # when 'sriov_max_vfs' is present, the SR-IOV feature will be automatically enabled
->>>> # <num> means the max number of VF on guest
->>>>
->>>> Example commands to create VFs in virtio-net device from the guest:
->>>>
->>>> guest% readlink -f /sys/class/net/eth1/device
->>>>    /sys/devices/pci0000:00/0000:00:02.0/0000:01:00.0/virtio1
->>>> guest% echo "2" > /sys/devices/pci0000:00/0000:00:02.0/0000:01:00.0/sriov_numvfs
->>>> guest% ip link show
->>>>    eth0: ....
->>>>    eth1: ....
->>>>    eth2: .... #virtual VF created
->>>>    eth3: .... #virtual VF created
->>>>
->>>> Please note that communication between VF and PF/VF is not possible by this patch series itself.
->>>>
->>>> Yui Washizu (1):
->>>>     virtio-pci: add SR-IOV capability
->>>>
->>>>    hw/pci/msix.c                  |  8 +++--
->>>>    hw/pci/pci.c                   |  4 +++
->>>>    hw/virtio/virtio-pci.c         | 62 ++++++++++++++++++++++++++++++----
->>>>    include/hw/virtio/virtio-pci.h |  1 +
->>>>    4 files changed, 66 insertions(+), 9 deletions(-)
->>>>
->>>> --
->>>> 2.39.3
->>>>
+>   target/riscv/insn_trans/trans_rvzfa.c.inc | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/target/riscv/insn_trans/trans_rvzfa.c.inc b/target/riscv/insn_trans/trans_rvzfa.c.inc
+> index 2c715af3e5..0fdd2698f6 100644
+> --- a/target/riscv/insn_trans/trans_rvzfa.c.inc
+> +++ b/target/riscv/insn_trans/trans_rvzfa.c.inc
+> @@ -470,7 +470,7 @@ bool trans_fleq_d(DisasContext *ctx, arg_fleq_d *a)
+>       TCGv_i64 src1 = get_fpr_hs(ctx, a->rs1);
+>       TCGv_i64 src2 = get_fpr_hs(ctx, a->rs2);
+>   
+> -    gen_helper_fltq_s(dest, cpu_env, src1, src2);
+> +    gen_helper_fleq_d(dest, cpu_env, src1, src2);
+>       gen_set_gpr(ctx, a->rd, dest);
+>       return true;
+>   }
+> @@ -485,7 +485,7 @@ bool trans_fltq_d(DisasContext *ctx, arg_fltq_d *a)
+>       TCGv_i64 src1 = get_fpr_hs(ctx, a->rs1);
+>       TCGv_i64 src2 = get_fpr_hs(ctx, a->rs2);
+>   
+> -    gen_helper_fltq_s(dest, cpu_env, src1, src2);
+> +    gen_helper_fltq_d(dest, cpu_env, src1, src2);
+>       gen_set_gpr(ctx, a->rd, dest);
+>       return true;
+>   }
 
