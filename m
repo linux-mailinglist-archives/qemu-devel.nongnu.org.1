@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46AB1767566
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 20:27:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72A867675D6
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 20:51:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qPR95-0001aY-6P; Fri, 28 Jul 2023 13:20:55 -0400
+	id 1qPR97-0001ao-4m; Fri, 28 Jul 2023 13:20:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qPR93-0001Ze-4W
- for qemu-devel@nongnu.org; Fri, 28 Jul 2023 13:20:53 -0400
+ id 1qPR95-0001ac-BM
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 13:20:55 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qPR91-00009U-MG
- for qemu-devel@nongnu.org; Fri, 28 Jul 2023 13:20:52 -0400
+ id 1qPR94-0000Er-15
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 13:20:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690564851;
+ s=mimecast20190719; t=1690564853;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=SsZLuDbr8hKAlocP8fEDhU4P8chzoS8FDIBSDERk4N8=;
- b=dac8VJlrCwZPS1g2SY79U7+haZQPUl8zntI62oEK5ECEkomiQHZu7hGBLwWUH725qgrH8d
- vozb0jHmygZVaM0GfLJEdsgN8EWnHz1DoRrzt8dwcGv5JBbBGj+3kvamivktMIRN8R97Mt
- LRnaVR4XpixXz5F3lBlaVSavwthAo2A=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-682-VWUAtlpeMwq7sv7Ct-ub3Q-1; Fri, 28 Jul 2023 13:20:47 -0400
-X-MC-Unique: VWUAtlpeMwq7sv7Ct-ub3Q-1
+ bh=DLBGJawtkrYHfVbJApKuQXOsyi31D2kKEHtjvnCvcO8=;
+ b=A5u/iCinbMr13vWK7FXnks1jbSVwQaDVBbJ153iHotHItK28U+EDPZmEvIbbw7QSEv9uK5
+ wFRJlJHi6IdS0mnwCD4Td5wCezfKZDGGCxgwlKau5d/l+3BI6oAnvjdRe/UnYzREQIOH9V
+ rb7ma2aucBGCaBC4SI/cPV+GlHG8A/o=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-112-wjjaCNrdMzqMgyaW8Rbbuw-1; Fri, 28 Jul 2023 13:20:50 -0400
+X-MC-Unique: wjjaCNrdMzqMgyaW8Rbbuw-1
 Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
  [10.11.54.3])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 302543C0D84C;
- Fri, 28 Jul 2023 17:20:47 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B00C78008A4;
+ Fri, 28 Jul 2023 17:20:49 +0000 (UTC)
 Received: from eperezma.remote.csb (unknown [10.39.193.99])
- by smtp.corp.redhat.com (Postfix) with ESMTP id ED9741121330;
- Fri, 28 Jul 2023 17:20:44 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 7244C1121330;
+ Fri, 28 Jul 2023 17:20:47 +0000 (UTC)
 From: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Jason Wang <jasowang@redhat.com>, Gautam Dawar <gdawar@xilinx.com>,
@@ -52,9 +52,9 @@ Cc: Jason Wang <jasowang@redhat.com>, Gautam Dawar <gdawar@xilinx.com>,
  Harpreet Singh Anand <hanand@xilinx.com>,
  Laurent Vivier <lvivier@redhat.com>, Shannon Nelson <snelson@pensando.io>,
  Lei Yang <leiyang@redhat.com>, Dragos Tatulea <dtatulea@nvidia.com>
-Subject: [PATCH 5/7] vdpa: delay enable of data vqs
-Date: Fri, 28 Jul 2023 19:20:26 +0200
-Message-Id: <20230728172028.2074052-6-eperezma@redhat.com>
+Subject: [PATCH 6/7] vdpa: enable cvq svq if data vq are shadowed
+Date: Fri, 28 Jul 2023 19:20:27 +0200
+Message-Id: <20230728172028.2074052-7-eperezma@redhat.com>
 In-Reply-To: <20230728172028.2074052-1-eperezma@redhat.com>
 References: <20230728172028.2074052-1-eperezma@redhat.com>
 MIME-Version: 1.0
@@ -86,94 +86,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-To restore the device at the destination of a live migration we send
-the commands through control virtqueue.  For a device to read CVQ it
-must have received the DRIVER_OK status bit.
-
-However this opens a window where the device could start receiving
-packets in rx queue 0 before it receives the RSS configuration.  To
-avoid that, we do not send vring_enable until all configuration is used
-by the device.
+Previous to this commit, it was assumed that data can only be shadowed
+with x-cvq, or if a migration was in place.  So CVQ did not need to
+check for migration.
 
 Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
 ---
-v2: Enable the dataplane vqs if cannot shadow CVQ because of device
-features or ASID.
----
- net/vhost-vdpa.c | 44 +++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 43 insertions(+), 1 deletion(-)
+ net/vhost-vdpa.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
 diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index 3d7dc3e5c0..2c1cfda657 100644
+index 2c1cfda657..118837c6b9 100644
 --- a/net/vhost-vdpa.c
 +++ b/net/vhost-vdpa.c
-@@ -283,6 +283,15 @@ static VhostVDPAState *vhost_vdpa_net_first_nc_vdpa(VhostVDPAState *s)
-     return DO_UPCAST(VhostVDPAState, nc, nc0);
- }
+@@ -514,11 +514,10 @@ static int vhost_vdpa_net_cvq_start(NetClientState *nc)
  
-+/** From any vdpa net client, get the netclient of the last queue pair */
-+static VhostVDPAState *vhost_vdpa_net_last_nc_vdpa(VhostVDPAState *s)
-+{
-+    VirtIONet *n = qemu_get_nic_opaque(s->nc.peer);
-+    NetClientState *nc = qemu_get_peer(n->nic->ncs, n->max_ncs - 1);
-+
-+    return DO_UPCAST(VhostVDPAState, nc, nc);
-+}
-+
- static void vhost_vdpa_net_log_global_enable(VhostVDPAState *s, bool enable)
- {
-     struct vhost_vdpa *v = &s->vhost_vdpa;
-@@ -996,6 +1005,13 @@ static int vhost_vdpa_net_load(NetClientState *nc)
-         return r;
+     s0 = vhost_vdpa_net_first_nc_vdpa(s);
+     v->shadow_data = s0->vhost_vdpa.shadow_vqs_enabled;
+-    v->shadow_vqs_enabled = s->always_svq;
++    v->shadow_vqs_enabled = v->shadow_data;
+     s->vhost_vdpa.address_space_id = VHOST_VDPA_GUEST_PA_ASID;
+ 
+-    if (s->vhost_vdpa.shadow_data) {
+-        /* SVQ is already configured for all virtqueues */
++    if (s->always_svq) {
+         goto out;
      }
  
-+    for (int i = 0; i < v->dev->vq_index; ++i) {
-+        r = vhost_vdpa_set_vring_ready(v, i);
-+        if (unlikely(r)) {
-+            return r;
-+        }
-+    }
-+
-     return 0;
- }
- 
-@@ -1255,9 +1271,35 @@ static const VhostShadowVirtqueueOps vhost_vdpa_net_svq_ops = {
-     .avail_handler = vhost_vdpa_net_handle_ctrl_avail,
- };
- 
-+/**
-+ * Check if a vhost_vdpa device should enable before DRIVER_OK
-+ *
-+ * CVQ must always start first if we want to restore the state safely. Do not
-+ * start data vqs if the device has CVQ.
-+ */
- static bool vhost_vdpa_should_enable(const struct vhost_vdpa *v)
- {
--    return true;
-+    struct vhost_dev *dev = v->dev;
-+    VhostVDPAState *s = container_of(v, VhostVDPAState, vhost_vdpa);
-+    VhostVDPAState *cvq_s = vhost_vdpa_net_last_nc_vdpa(s);
-+
-+    if (!(dev->vq_index_end % 2)) {
-+        /* vDPA device does not have CVQ */
-+        return true;
-+    }
-+
-+    if (dev->vq_index + 1 == dev->vq_index_end) {
-+        /* We're evaluating CVQ, that must always enable first */
-+        return true;
-+    }
-+
-+    if (!vhost_vdpa_net_valid_svq_features(v->dev->features, NULL) ||
-+        !cvq_s->cvq_isolated) {
-+        /* CVQ is not isolated, so let's enable as usual */
-+        return true;
-+    }
-+
-+    return false;
- }
- 
- static const VhostVDPAVirtIOOps vhost_vdpa_virtio_net_ops = {
 -- 
 2.39.3
 
