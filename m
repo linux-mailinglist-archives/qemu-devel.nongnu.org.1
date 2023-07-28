@@ -2,81 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 257967660CB
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 02:38:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F6C37660C9
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 02:37:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qPBAO-0002LG-AV; Thu, 27 Jul 2023 20:17:12 -0400
+	id 1qPBOU-00065e-DY; Thu, 27 Jul 2023 20:31:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qPBAM-0002H0-DT
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 20:17:10 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ id 1qPBOP-00065Q-Lv
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 20:31:42 -0400
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qPBAK-0003ky-JI
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 20:17:10 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-1bba2318546so12681685ad.1
- for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 17:17:08 -0700 (PDT)
+ id 1qPBOO-0001AH-1H
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 20:31:41 -0400
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-1b8ad9eede0so12570605ad.1
+ for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 17:31:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690503427; x=1691108227;
+ d=linaro.org; s=google; t=1690504298; x=1691109098;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=C48ZAd0IrnpMpSqrXdJfsJvbUfMrKePokldpfYASTso=;
- b=wqlKnWEAegs+T3b709ruuvGC78k1SsNfeFkz7vDDIzk89+9VEdpP2sOtMxug5A9Dpv
- My5nXgznO6saECsDp94qHqjZDmSch6K7N9f0CBxdVQxognVQqwxCU9OJZ00e86aJUj59
- nzBTap0CaacfYv/6GzhlEF1iBhN5hDL2DRHBIjx1zgDkkvkT09cs6LJuubDmSivtjf8W
- guRYNGP8E4c8UBiLhfA51Y/3WJfb0kmVNIdqwgdKKTfiucVQ7pCrxlMPrhUAzqtt8AJ3
- gdsrQzNr3Fe+b0/0egEMtwCnG+GLUkjLprI4VWgFdGv6Ot/m5DxW3ZX3nPRKU677ayXo
- xGqg==
+ bh=G1D4Iz2+82TpRZU4lEBcp/9r0ojDM4mrF7QC7469i20=;
+ b=QojrNwL8mrBzs88FFOtnU277FLzhSy/z0joTtfG5dwgMRkpXPxuEBjZUmPlzreFOl0
+ H7JdYTqFZiQCTQBQL00JWnNfoZ25NG+ZobeAzeKE9eNUsSZmzacX7C9ATUOcFwvmuY2C
+ yf2rXg5mDXgFUBTFfw5+Ck5DVV95vBRAIHtc/lF+VMupWcWuV/rQck25Ra6d6E2wM3jB
+ ap0saXJ0epXLsIq/AXs1bCOi7HrOhTqVyqrdIVAfExNXKj9FnT2YrCvU2E5eiUSN9gZ8
+ SEW6L3Di1+UI2JHLByQAau1+mNfDWgIiqrBMV3MGmW4d778qGKONsWtN/NQHrvLcL+yh
+ kUQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690503427; x=1691108227;
+ d=1e100.net; s=20221208; t=1690504298; x=1691109098;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=C48ZAd0IrnpMpSqrXdJfsJvbUfMrKePokldpfYASTso=;
- b=C9HF2QUpONNImEJUGGIimjz8ufKOvdGj7dI12/3dNp9mjiZSJIH8IzZnbU+DpVqpci
- oaEuQh7awmxwdxHyG8wX1xsEQvnxpa4nnhDi83vi/G7fcgb8XeWj2VgQgCt8XNQl4A5D
- vyOF19nTTgoqHzsjrDWCzAhfLIiqHh2C+iXkIsMDUUX+rsJtwl+Hqu+ijnZpz/6VYS9i
- CcJSaBXT33FejUwfzLieeFDKW/NDF6O6SdhSU/oUUNDUD74wJLcdgU7+TlWeSnS0AkSv
- Bw3GxsCwtVVm1MVDG/uefNQwX4+mFQhiO3Dh30lN7EKdr/O80jbEkN3ZFEVSUCkPg/EV
- u4TA==
-X-Gm-Message-State: ABy/qLbXv/bSFmCBMG9eY98VNWcIfIYAoclxM5VMKWGgrIwNAvILirke
- EuOMfrx+AX5DA87LtMk9GQndt2bC6DteFraY2Vw=
-X-Google-Smtp-Source: APBJJlE6QJIDqlkcMLHdVKyMj1XQFXPvv1Q0+He4wJ0/r/pxq2z6+kZLB3V+sybBflfBFY5YKPmNJQ==
-X-Received: by 2002:a17:902:ee4d:b0:1b8:a31b:ac85 with SMTP id
- 13-20020a170902ee4d00b001b8a31bac85mr138226plo.41.1690503426784; 
- Thu, 27 Jul 2023 17:17:06 -0700 (PDT)
+ bh=G1D4Iz2+82TpRZU4lEBcp/9r0ojDM4mrF7QC7469i20=;
+ b=WXmJ0YqVoRJ47yuvNbuWqL2Z9JNM5AkAYWar/PFJeK9jfjIznVViDGDLiRE82MNc1T
+ 9T0Nd79RoIxy4YY/L7EcSWooRT4WUlVBL1a8VngmQ96CrxMvkJIZtufkeFbI3e2VDrB4
+ QfFGng+V7OF/2UEwL0CFXOaz+te71k3FI4VHH3Es8c7Q+dd6cDO7jwJwvMNI3l4qBYgv
+ OYbN1DzrIiltbRvg/+FK5zy5+FhCEFZ8r9eqRMTE2qXosZeuHzRqcA1SaMBe1OXx4h/W
+ 8JqpdndGHChoDxTGY2Epp2YZnmf4RHcDCb9SkDslw4rOEJmxUqR1d57xlgUrCkecnIFy
+ T8Gw==
+X-Gm-Message-State: ABy/qLa5AW9h91NHZC9xgyI4TB8oEHwoHzSX85ZjNassBjXW7kHsQlK4
+ RGyWKxp8avxJRqxVSU5gxJ9q8ynB+HQCO+uF4Kc=
+X-Google-Smtp-Source: APBJJlFcbjSNsJT99mVU8O0X9vG8egssfAJFxvxW2HqL0MiQ+kSTilf6DVCUmOW4XuoOGdoibODEjA==
+X-Received: by 2002:a17:903:124e:b0:1b8:b41e:66b4 with SMTP id
+ u14-20020a170903124e00b001b8b41e66b4mr171413plh.67.1690504298270; 
+ Thu, 27 Jul 2023 17:31:38 -0700 (PDT)
 Received: from ?IPV6:2602:ae:154e:c001:943b:b6e1:1f00:9721?
  ([2602:ae:154e:c001:943b:b6e1:1f00:9721])
  by smtp.gmail.com with ESMTPSA id
- 2-20020a170902e9c200b001bba27d1b65sm2207459plk.85.2023.07.27.17.17.06
+ jn13-20020a170903050d00b001b895a18472sm2213156plb.117.2023.07.27.17.31.37
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 27 Jul 2023 17:17:06 -0700 (PDT)
-Message-ID: <3a3c124a-23ca-08fd-661e-53023fc2be6e@linaro.org>
-Date: Thu, 27 Jul 2023 17:17:03 -0700
+ Thu, 27 Jul 2023 17:31:37 -0700 (PDT)
+Message-ID: <8faebb0b-b70b-101f-2f4a-9e434cb765f1@linaro.org>
+Date: Thu, 27 Jul 2023 17:31:36 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [RFC PATCH] target/i386: Truncate ESP when exiting from long mode
+Subject: Re: [PATCH] bsd-user: Properly allocate guest virtual address space
 Content-Language: en-US
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>
-References: <20230726081710.1051126-1-ardb@kernel.org>
- <67a8967e-338a-fbd1-1c06-d5a35f2db509@linaro.org>
- <173fb35e-a4c3-4112-afd9-b313c6d95b2e@linaro.org>
- <CAMj1kXGwZFzpU7hcJn625LfBTMB8g6mumvRneKGOabXRc9XtCw@mail.gmail.com>
+To: Warner Losh <imp@bsdimp.com>
+Cc: qemu-devel@nongnu.org
+References: <20230727161148.444988-1-richard.henderson@linaro.org>
+ <CANCZdfrLKgVJhXqZ8nJdyoKOsLKscFPYSsZ=w6mSbusn0aX5Ww@mail.gmail.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <CAMj1kXGwZFzpU7hcJn625LfBTMB8g6mumvRneKGOabXRc9XtCw@mail.gmail.com>
+In-Reply-To: <CANCZdfrLKgVJhXqZ8nJdyoKOsLKscFPYSsZ=w6mSbusn0aX5Ww@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -99,49 +96,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/27/23 14:36, Ard Biesheuvel wrote:
-> On Thu, 27 Jul 2023 at 19:56, Richard Henderson
-> <richard.henderson@linaro.org> wrote:
->>
->> On 7/26/23 08:01, Richard Henderson wrote:
->>> On 7/26/23 01:17, Ard Biesheuvel wrote:
->>>> Hints welcome on where the architectural behavior is specified, and in particular,
->>>> whether or not other 64-bit GPRs can be relied upon to preserve their full 64-bit
->>>> length values.
->>>
->>> No idea about chapter and verse, but it has the feel of being part and parcel with the
->>> truncation of eip.  While esp is always special, I suspect that none of the GPRs can be
->>> relied on carrying all bits.
->>
->> Coincidentally, I was having a gander at the newly announced APX extension [1],
->> and happened across
->>
->> 3.1.4.1.2 Extended GPR Access (Direct and Indirect)
->>
->>       ... Entering/leaving 64-bit mode via traditional (explicit)
->>       control flow does not directly alter the content of the EGPRs
->>       (EGPRs behave similar to R8-R15 in this regard).
->>
->> which suggests to me that the 8 low registers are squashed to 32-bit
->> on transition to 32-bit IA-32e mode.
->>
->> I still have not found similar language in the main architecture manual.
->>
-> 
-> Interesting - that matches my observations on those Ice Lake cores:
-> RSP will be truncated, but preserving/restoring it to/from R8 across
-> the exit from long mode works fine.
+On 7/27/23 17:09, Warner Losh wrote:
+> Yes. FreeBSD's bsd-user binary will only run on 64-bit hosts. The project
+> has started phasing out support for 32-bit hosts, and the role of bsd-user
+> (package builder tool) is such that 32-bit hosts don't make sense.
 
-Found it:
+Ok, fine.
 
-Volume 1 Basic Architecture
-3.4.1.1 General-Purpose Registers in 64-Bit Mode
+> I've tested this out, and it works for me. Any chance we can get this into
+> 8.1 as a bug fix for the last minute breakage of bsd-user (without this and
+> another patch, the static hello world that used to work broke). I can send
+> that second patch out for review. I can queue this fix in the mean time for
+> whenever the tree opens up.
 
-# Registers only available in 64-bit mode (R8-R15 and XMM8-XMM15)
-# are preserved across transitions from 64-bit mode into compatibility mode
-# then back into 64-bit mode. However, values of R8-R15 and XMM8-XMM15 are
-# undefined after transitions from 64-bit mode through compatibility mode
-# to legacy or real mode and then back through compatibility mode to 64-bit mode.
+Yes. I can queue this to tcg-next, which will have another round before rc2.
+Send the alignment patch tomorrow and I can include that too.
 
 
 r~
