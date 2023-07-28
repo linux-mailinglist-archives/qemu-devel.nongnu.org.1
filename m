@@ -2,97 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA5457667BB
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 10:50:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F2F0766851
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 11:10:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qPIws-0008JI-1r; Fri, 28 Jul 2023 04:35:46 -0400
+	id 1qPJ2C-0001GP-QJ; Fri, 28 Jul 2023 04:41:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qPIwp-0008J3-I7
- for qemu-devel@nongnu.org; Fri, 28 Jul 2023 04:35:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qPIwn-0001IW-VL
- for qemu-devel@nongnu.org; Fri, 28 Jul 2023 04:35:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690533340;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=kq1LgYi6oC3fMR4NuUg6fWErYqzAV2rHjq3iUcm74qA=;
- b=Ylj1zVsDU9af6GnT8r93Grc89PShXvcHzqeEkzGFSFOJHhB04pY5W62lS+Z7brHgueivez
- /jbrBsVrUDYVJTgIVy/ZgPOGrpBIo+pVmPZ4gDE4R2a+2gCy2D1XsZY0oxxLfbopjvksWr
- a9N0SMF9m+CXiVj+YvJnjG5j6OGccFg=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-62-7v1F9RTiNmWhgsju_e4lxA-1; Fri, 28 Jul 2023 04:35:38 -0400
-X-MC-Unique: 7v1F9RTiNmWhgsju_e4lxA-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-3fd2778f5e4so9867945e9.1
- for <qemu-devel@nongnu.org>; Fri, 28 Jul 2023 01:35:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <yuri.benditovich@daynix.com>)
+ id 1qPJ2A-0001GH-Ea
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 04:41:14 -0400
+Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <yuri.benditovich@daynix.com>)
+ id 1qPJ28-0002Ro-Ib
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 04:41:14 -0400
+Received: by mail-ej1-x62f.google.com with SMTP id
+ a640c23a62f3a-98e39784a85so666453166b.1
+ for <qemu-devel@nongnu.org>; Fri, 28 Jul 2023 01:41:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1690533664; x=1691138464;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=QQgYaOdHzCl++J9NMsdAiruYMkZ9LY8h7wiUCud6BpE=;
+ b=ggK5hes4DBL4Dt8RgZRvAk2z08PSPRK+P9sG4fc7DXVlTyOris5rdkcXQydIAwMgJ9
+ x9biRFENlIAhP4wtNylc8vBeXBUOeK0MHX/iYsz2y5Fz8mf5ekppplYam+wzBXV5Fk6Y
+ h0nK8ZHJJx+HD2otRAJ2uZQi8SA5T11HVa3GxDIjeJIXgSyDEzY4CeZbWnr449jFcoMb
+ JpcjJ8hudW/J/p9U1EC4MlwfraGB/k2n/8oVDtCMHCdgTBVbGX7vlUGhf5CGUi5SGSt0
+ RMgXOJx4QjaY6h48xqiV5o6u/0ekEKRo0h+7/MbaayBrtOPphzJb0UlqfzsmcoJ/02Na
+ Vfeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690533337; x=1691138137;
- h=content-transfer-encoding:in-reply-to:subject:from:content-language
- :references:cc:to:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=kq1LgYi6oC3fMR4NuUg6fWErYqzAV2rHjq3iUcm74qA=;
- b=W+8snpFjEaaVAs7Fjv1rFDIfgJ5I6k90jBj7PM1pDoF6q4UjHWkFjnehM5YAiZed9+
- Ls4rRLNdZJnN3QxfXkqQf8GbTTRcebsRVf83Q4rpBwRcoTmYJv5vSsHPX6iIwulKHmLd
- Oi8Ru7t4JVqKBSgFMrJm2l/5IgvyJ4+tgW8C6qfv2WziXZ9+v9eOBnolbxK3+OGpkwPo
- m8JUuHdbAgRjU50iL5JH8L/LtASl9JKl8naTgAMzjAteqMlCqJE2Ty+GRj6LwUHp+KLT
- BgQCMq1dBHgxHb8eSU82ZO7wlcyeXBRWguOPGC8JfrioqUGa68FOC6pP3D1huMtQWM4v
- iZFQ==
-X-Gm-Message-State: ABy/qLYTjNekC4wCOAoN8MC/GXyzR0cVt7hZyVugL3/VhSPqAbAp0FqX
- MIv6hW9AsQdPWPG1PyLSHIbsFwHgCfjNL0KnqwFVK5kDj2OdSAHYg9M93a9clrQCIfT4KPmLHnm
- SD1Stiz9Apwf25c8=
-X-Received: by 2002:a1c:7211:0:b0:3fb:416d:7324 with SMTP id
- n17-20020a1c7211000000b003fb416d7324mr1437407wmc.6.1690533337485; 
- Fri, 28 Jul 2023 01:35:37 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHJLflB75ntTeoI7vGpvSzSoQwNgB3qqzIBaGU6dqlvwML+IoEWB6OdoiO2ugVyABfYIsHVtg==
-X-Received: by 2002:a1c:7211:0:b0:3fb:416d:7324 with SMTP id
- n17-20020a1c7211000000b003fb416d7324mr1437391wmc.6.1690533337209; 
- Fri, 28 Jul 2023 01:35:37 -0700 (PDT)
-Received: from [192.168.0.3] (ip-109-43-178-20.web.vodafone.de.
- [109.43.178.20]) by smtp.gmail.com with ESMTPSA id
- x20-20020a1c7c14000000b003fc01f7b415sm6471342wmc.39.2023.07.28.01.35.36
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 28 Jul 2023 01:35:36 -0700 (PDT)
-Message-ID: <a56c06a0-a6b4-cee6-be97-3586a836f4d3@redhat.com>
-Date: Fri, 28 Jul 2023 10:35:35 +0200
+ d=1e100.net; s=20221208; t=1690533664; x=1691138464;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=QQgYaOdHzCl++J9NMsdAiruYMkZ9LY8h7wiUCud6BpE=;
+ b=JHQg/uIJ6epo9gAEPxc6BOk1nED//N8q0PiHpia9PWwb+R8+OBlEJ1MyDaiaNTA6un
+ +tHpXuFiK5m2TQxcY7jrEdBCl1MhCpdKaf0L+q2mnHPWwsQMzFJ85rH+y31qaHYI86yI
+ jLABbzCaMgMMfr0WbXJi0ZnT0wkOUb9Uuoc6FgVWJ4iP46QYS+9fTL5LEHpUt/XCs5qF
+ ijiSrhMPWRIVgkmIxbE4R3EEZA4jY59RaGcgkiCuFba1t94UkM/3WR3cev9vhcXeI6Ov
+ QUD6cAU+BuJm9b3YYQpi/rlHbsjccZS060Q9sCfBZ4JXeParqPVSfIOrVDkOEDwxQG7l
+ FvJw==
+X-Gm-Message-State: ABy/qLaJMAUfadv0f6B1Ks57TnQgoyRmcnGVj/sZ3BLxOSLN9f/cvZ9L
+ bFn35LPpwWfzYyOVGhgob25P5p6vUAbbcerbv8o=
+X-Google-Smtp-Source: APBJJlGO6n3c108Bi7Iz8zgYtsJflqQ2lABs6QW9sQYttdzKKvrVVZ5lBCtwcbNfztMVwsL/HcjVeg==
+X-Received: by 2002:a17:907:7625:b0:989:450:e565 with SMTP id
+ jy5-20020a170907762500b009890450e565mr1802821ejc.23.1690533664408; 
+ Fri, 28 Jul 2023 01:41:04 -0700 (PDT)
+Received: from localhost.localdomain
+ ([2a06:c701:46e6:7e00:c5bb:d943:dc1b:8245])
+ by smtp.gmail.com with ESMTPSA id
+ kq6-20020a170906abc600b009828e26e519sm1769066ejb.122.2023.07.28.01.41.03
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 28 Jul 2023 01:41:03 -0700 (PDT)
+From: Yuri Benditovich <yuri.benditovich@daynix.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ qemu-devel@nongnu.org (open list:All patches CC here)
+Cc: yan@daynix.com
+Subject: [PATCH] pci: do not respond config requests after PCI device eject
+Date: Fri, 28 Jul 2023 11:40:49 +0300
+Message-Id: <20230728084049.191454-1-yuri.benditovich@daynix.com>
+X-Mailer: git-send-email 2.34.3
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, Beraldo Leal <bleal@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Yonggang Luo <luoyonggang@gmail.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- Bin Meng <bin.meng@windriver.com>
-References: <20230726161942.229093-1-berrange@redhat.com>
- <0d0f9f65-2ead-6852-20c2-a83e256eecac@redhat.com>
- <ZMJJS5lUtPKpld0q@redhat.com>
-Content-Language: en-US
-From: Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH] gitlab: remove duplication between msys jobs
-In-Reply-To: <ZMJJS5lUtPKpld0q@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.091, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: none client-ip=2a00:1450:4864:20::62f;
+ envelope-from=yuri.benditovich@daynix.com; helo=mail-ej1-x62f.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,36 +90,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 27/07/2023 12.39, Daniel P. Berrangé wrote:
-> On Wed, Jul 26, 2023 at 08:21:33PM +0200, Thomas Huth wrote:
->> On 26/07/2023 18.19, Daniel P. Berrangé wrote:
-...
->> Anyway, before we unify the compiler package name suffix between the two
->> jobs, I really would like to see whether the mingw Clang builds QEMU faster
->> in the 64-bit job ... but so far I failed to convince meson to accept the
->> Clang from the mingw package ... does anybody know how to use Clang with
->> MSYS2 properly?
-> 
-> AFAIK it shouldn't be anything worse than
-> 
->    CC=clang ./configure ....
-> 
-> if that doesn't work then its a bug IMHO
+Fixes: https://bugzilla.redhat.com/show_bug.cgi?id=2224964
 
-No, it's not that easy ... As Marc-André explained to me, MSYS2 maintains a 
-completely separate environment for Clang, i.e. you have to select this 
-different environment with $env:MSYSTEM = 'CLANG64' and then install the 
-packages that have the "mingw-w64-clang-x86_64-" prefix.
+In migration with VF failover, Windows guest and ACPI hot
+unplug we do not need to satisfy config requests, otherwise
+the guest immediately detects the device and brings up its
+driver. Many network VF's are stuck on the guest PCI bus after
+the migration.
 
-After lots of trial and error, I was able to get a test build here:
+Signed-off-by: Yuri Benditovich <yuri.benditovich@daynix.com>
+---
+ hw/pci/pci_host.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-  https://gitlab.com/thuth/qemu/-/jobs/4758605925
-
-I had to disable Spice and use --disable-werror in that build to make it 
-succeed, but at least it shows that Clang seems to be a little bit faster - 
-the job finished in 58 minutes. So if we can get the warnings fixed, this 
-might be a solution for the timeouts here...
-
-  Thomas
+diff --git a/hw/pci/pci_host.c b/hw/pci/pci_host.c
+index 7af8afdcbe..a18aa0a8d4 100644
+--- a/hw/pci/pci_host.c
++++ b/hw/pci/pci_host.c
+@@ -62,6 +62,17 @@ static void pci_adjust_config_limit(PCIBus *bus, uint32_t *limit)
+     }
+ }
+ 
++static bool is_pci_dev_ejected(PCIDevice *pci_dev)
++{
++    /*
++     * device unplug was requested and the guest acked it,
++     * so we stop responding config accesses even if the
++     * device is not deleted (failover flow)
++     */
++    return pci_dev && pci_dev->partially_hotplugged &&
++           !pci_dev->qdev.pending_deleted_event;
++}
++
+ void pci_host_config_write_common(PCIDevice *pci_dev, uint32_t addr,
+                                   uint32_t limit, uint32_t val, uint32_t len)
+ {
+@@ -75,7 +86,7 @@ void pci_host_config_write_common(PCIDevice *pci_dev, uint32_t addr,
+      * allowing direct removal of unexposed functions.
+      */
+     if ((pci_dev->qdev.hotplugged && !pci_get_function_0(pci_dev)) ||
+-        !pci_dev->has_power) {
++        !pci_dev->has_power || is_pci_dev_ejected(pci_dev)) {
+         return;
+     }
+ 
+@@ -100,7 +111,7 @@ uint32_t pci_host_config_read_common(PCIDevice *pci_dev, uint32_t addr,
+      * allowing direct removal of unexposed functions.
+      */
+     if ((pci_dev->qdev.hotplugged && !pci_get_function_0(pci_dev)) ||
+-        !pci_dev->has_power) {
++        !pci_dev->has_power || is_pci_dev_ejected(pci_dev)) {
+         return ~0x0;
+     }
+ 
+-- 
+2.34.3
 
 
