@@ -2,71 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5FBF766F88
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 16:33:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B75FD766F5C
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 16:23:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qPO94-0004V7-MG; Fri, 28 Jul 2023 10:08:42 -0400
+	id 1qPNK2-0006UT-Fy; Fri, 28 Jul 2023 09:15:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <markus@oberhumer.com>)
- id 1qPGI7-000588-EI
- for qemu-devel@nongnu.org; Fri, 28 Jul 2023 01:45:31 -0400
-Received: from mail.servus.at ([193.170.194.20])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <markus@oberhumer.com>)
- id 1qPGI4-0002Ka-C9
- for qemu-devel@nongnu.org; Fri, 28 Jul 2023 01:45:31 -0400
-Received: from localhost (localhost [127.0.0.1])
- by mail.servus.at (Postfix) with ESMTP id 8583229722;
- Fri, 28 Jul 2023 07:45:23 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=oberhumer.com; h=
- content-transfer-encoding:content-type:content-type:in-reply-to
- :mime-version:user-agent:date:date:message-id:organization:from
- :from:references:subject:subject:received:received; s=main; t=
- 1690523122; x=1692337523; bh=wkz/JU8lebbXBt0ByfX+Yqc28ivJDCO2B+J
- +XwyJ3P0=; b=licsjnynPnF3DVtWRqY7LgPSVu5YooTDCVUJWh2pc/Z6ILFiVA6
- f6z6FNHFxy3bkLFXc1fRPLtQ/tStvU0tvrMILPj9MEwqUcFoGkc70yOWyatJ0pjn
- xtRbkmwdwjy88r+SoPOqqYIxZMb/A7LHzSg8NVsJP1sawxV3RUKbBqY4=
-X-Virus-Scanned: amavisd-new at servus.at
-Received: from mail.servus.at ([127.0.0.1])
- by localhost (mail.servus.at [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id gJgCXyEN72DS; Fri, 28 Jul 2023 07:45:22 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at servus.at
-Received: from [192.168.216.53] (unknown [81.10.228.128])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
- (No client certificate requested) (Authenticated sender: oh_markus)
- by mail.servus.at (Postfix) with ESMTPSA id 0BAFD2196F;
- Fri, 28 Jul 2023 07:45:18 +0200 (CEST)
-Subject: Re: [PATCH v2] linux-user/armeb: Fix __kernel_cmpxchg() for armeb
-To: Helge Deller <deller@gmx.de>, Laurent Vivier <laurent@vivier.eu>,
- Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <ZMNJ+Ga7A4zDXjAg@p100>
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- John Reiser <jreiser@bitwagon.com>
-From: "Markus F.X.J. Oberhumer" <markus@oberhumer.com>
-Organization: oberhumer.com
-Message-ID: <64C355ED.4050405@oberhumer.com>
-Date: Fri, 28 Jul 2023 07:45:17 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101
- Thunderbird/38.3.0
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qPNJy-0006Sv-9Q
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 09:15:54 -0400
+Received: from mail-oa1-x33.google.com ([2001:4860:4864:20::33])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qPNJt-0003R6-4E
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 09:15:53 -0400
+Received: by mail-oa1-x33.google.com with SMTP id
+ 586e51a60fabf-1a28de15c8aso1665800fac.2
+ for <qemu-devel@nongnu.org>; Fri, 28 Jul 2023 06:15:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1690550142; x=1691154942;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=i6sZacMewneSeQj5bmv5KaBVBjn8NIxNMS30kFI2Yv0=;
+ b=lwyrLf50hxXJ4lvgmF0KvcNvAAwO/3i/lCO7l5hiyjdwr3AIYvezKxmp2bJ3SiSGe2
+ VgRRalJHbARMw0G3HtKuhFPYtk1eJiY47VoeXnwVikX+YhcaD2Bfon0nt/YudvhRlgVU
+ pGZ50anvoOc6PbXsYQKIqeC1HDaPRNwAMzw9/Ml0fqIxfv/ST+ZZAtq5DSq8CvFGzevf
+ FAujvkqr6e8UZDkIOfYb9SeGAdgOc5+2EUvqes12xR31GwI1rR92zP537eB5bMH7OAMn
+ IHcz+zY5GM1iE5s7C7c7GVN6UpsjpigVE5sYRs1c3oTc19uIMmQ31pJwXOdkpO+IOxSF
+ 6Hhg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1690550142; x=1691154942;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=i6sZacMewneSeQj5bmv5KaBVBjn8NIxNMS30kFI2Yv0=;
+ b=iPkvkA+7aziQZdQ7nZssYhn5tQKygf9HRhKXHtiwTTX75dOcPn6U9ynQE527gdjDvv
+ Rk7sWh+yk+rEao9DeZdJJVsQEpfKtLa1sKN3ixfvF8nmJjL0lhnzgm733nVubaMA9/VK
+ wJ/K/KzDzyK2Pg/Q3C0gHODjycwnzuXLvB6elFuNA0ENkomsEm1/JkZrdNBPdGv0N66m
+ aMxBtw/bjTmsWyVsq4A+NQ5HYjaUzBzawHPY7sXurrUgHQ2AHmll/C0SOSW3Y8TSAtCv
+ GZvPqfo58RvQ2IEb8enE6IXRT0rg7UWJreWd4RTY06HiidY0kLdJFDt0ZWgDZ7e49U9I
+ BvcA==
+X-Gm-Message-State: ABy/qLZ7ER7IwRc0UCAxdEakpGjA/lNqodL09nJL5EUGJf5SD6QyRoy/
+ p1PMiOsZZnqZjKGQ8v1aZubhAnQkclRY3ssrr0xbDg==
+X-Google-Smtp-Source: APBJJlGOF15QRQWtVMJmRwH7cwPGlSv5xIW3nUqj/0VtMrl6V/99OdOWzAAI2ZmIvSv1AjWdJXm4+w==
+X-Received: by 2002:a05:6870:73cf:b0:1bb:7d67:a807 with SMTP id
+ a15-20020a05687073cf00b001bb7d67a807mr3199896oan.51.1690550142094; 
+ Fri, 28 Jul 2023 06:15:42 -0700 (PDT)
+Received: from grind.. (201-69-66-36.dial-up.telesp.net.br. [201.69.66.36])
+ by smtp.gmail.com with ESMTPSA id
+ hv6-20020a056871cc0600b001b3d93884fdsm1699371oac.57.2023.07.28.06.15.39
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 28 Jul 2023 06:15:41 -0700 (PDT)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH 6/8] target/riscv: use isa_ext_update_enabled() in
+ init_max_cpu_extensions()
+Date: Fri, 28 Jul 2023 10:15:18 -0300
+Message-ID: <20230728131520.110394-7-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230728131520.110394-1-dbarboza@ventanamicro.com>
+References: <20230728131520.110394-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
-In-Reply-To: <ZMNJ+Ga7A4zDXjAg@p100>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=193.170.194.20; envelope-from=markus@oberhumer.com;
- helo=mail.servus.at
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2001:4860:4864:20::33;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x33.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Fri, 28 Jul 2023 10:08:37 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,64 +94,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The fix in arm_kernel_cmpxchg64_helper probably should use tswap64() instead
-of tswap32().
+Before adding support to detect if an extension was user set we need to
+handle how we're enabling extensions in riscv_init_max_cpu_extensions().
+object_property_set_bool() calls the set() callback for the property,
+and we're going to use this callback to set the 'multi_ext_user_opts'
+hash.
 
-~Markus
+This means that, as is today, all extensions we're setting for the 'max'
+CPU will be seen as user set in the future. Let's change set_bool() to
+isa_ext_update_enabled() that will just enable/disable the flag on a
+certain offset.
 
-On 2023-07-28 06:54, Helge Deller wrote:
-> Commit 7f4f0d9ea870 ("linux-user/arm: Implement __kernel_cmpxchg with host
-> atomics") switched to use qatomic_cmpxchg() to swap a word with the memory
-> content, but missed to endianess-swap the oldval and newval values when
-> emulating an armeb CPU, which expects words to be stored in big endian in
-> the guest memory.
-> 
-> The bug can be verified with qemu >= v7.2 on any little-endian host, when
-> starting the armeb binary of the upx program, which just hangs without
-> this patch.
-> 
-> Signed-off-by: Helge Deller <deller@gmx.de>
-> Cc: Richard Henderson <richard.henderson@linaro.org>
-> Cc: Peter Maydell <peter.maydell@linaro.org>
-> Cc: qemu-stable@nongnu.org
-> Reported-by: "Markus F.X.J. Oberhumer" <markus@oberhumer.com>
-> Reported-by: John Reiser <jreiser@BitWagon.com>
-> Closes: https://github.com/upx/upx/issues/687
-> 
-> --
-> v2:
-> - add tswap32() in arm_kernel_cmpxchg64_helper()
-> 
-> 
-> diff --git a/linux-user/arm/cpu_loop.c b/linux-user/arm/cpu_loop.c
-> index a992423257..0907cd8c15 100644
-> --- a/linux-user/arm/cpu_loop.c
-> +++ b/linux-user/arm/cpu_loop.c
-> @@ -117,8 +117,9 @@ static void arm_kernel_cmpxchg32_helper(CPUARMState *env)
->  {
->      uint32_t oldval, newval, val, addr, cpsr, *host_addr;
-> 
-> -    oldval = env->regs[0];
-> -    newval = env->regs[1];
-> +    /* endianess-swap if emulating armeb */
-> +    oldval = tswap32(env->regs[0]);
-> +    newval = tswap32(env->regs[1]);
->      addr = env->regs[2];
-> 
->      mmap_lock();
-> @@ -174,6 +175,10 @@ static void arm_kernel_cmpxchg64_helper(CPUARMState *env)
->          return;
->      }
-> 
-> +    /* endianess-swap if emulating armeb */
-> +    oldval = tswap32(oldval);
-> +    newval = tswap32(newval);
-> +
->  #ifdef CONFIG_ATOMIC64
->      val = qatomic_cmpxchg__nocheck(host_addr, oldval, newval);
->      cpsr = (val == oldval) * CPSR_C;
-> 
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+---
+ target/riscv/cpu.c | 19 +++++++++----------
+ 1 file changed, 9 insertions(+), 10 deletions(-)
 
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index b588f6969f..a40dc865a0 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -2096,25 +2096,24 @@ static void riscv_init_max_cpu_extensions(Object *obj)
+     set_misa(env, env->misa_mxl, env->misa_ext | RVG | RVJ | RVV);
+ 
+     for (int i = 0; i < ARRAY_SIZE(riscv_cpu_extensions); i++) {
+-        object_property_set_bool(obj, riscv_cpu_extensions[i].name,
+-                                 true, NULL);
++        isa_ext_update_enabled(cpu, riscv_cpu_extensions[i].offset, true);
+     }
+ 
+     /* set vector version */
+     env->vext_ver = VEXT_VERSION_1_00_0;
+ 
+     /* Zfinx is not compatible with F. Disable it */
+-    object_property_set_bool(obj, "zfinx", false, NULL);
+-    object_property_set_bool(obj, "zdinx", false, NULL);
+-    object_property_set_bool(obj, "zhinx", false, NULL);
+-    object_property_set_bool(obj, "zhinxmin", false, NULL);
++    isa_ext_update_enabled(cpu, CPU_CFG_OFFSET(ext_zfinx), false);
++    isa_ext_update_enabled(cpu, CPU_CFG_OFFSET(ext_zdinx), false);
++    isa_ext_update_enabled(cpu, CPU_CFG_OFFSET(ext_zhinx), false);
++    isa_ext_update_enabled(cpu, CPU_CFG_OFFSET(ext_zhinxmin), false);
+ 
+-    object_property_set_bool(obj, "zce", false, NULL);
+-    object_property_set_bool(obj, "zcmp", false, NULL);
+-    object_property_set_bool(obj, "zcmt", false, NULL);
++    isa_ext_update_enabled(cpu, CPU_CFG_OFFSET(ext_zce), false);
++    isa_ext_update_enabled(cpu, CPU_CFG_OFFSET(ext_zcmp), false);
++    isa_ext_update_enabled(cpu, CPU_CFG_OFFSET(ext_zcmt), false);
+ 
+     if (env->misa_mxl != MXL_RV32) {
+-        object_property_set_bool(obj, "zcf", false, NULL);
++        isa_ext_update_enabled(cpu, CPU_CFG_OFFSET(ext_zcf), false);
+     }
+ }
+ 
 -- 
-Markus Oberhumer, <markus@oberhumer.com>, http://www.oberhumer.com/
+2.41.0
+
 
