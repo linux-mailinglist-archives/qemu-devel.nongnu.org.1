@@ -2,84 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59B47766EDE
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 15:55:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C96D766EA9
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 15:46:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qPNie-0007S5-MP; Fri, 28 Jul 2023 09:41:24 -0400
+	id 1qPNmp-0008TN-54; Fri, 28 Jul 2023 09:45:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qPNib-0007Rr-CU
- for qemu-devel@nongnu.org; Fri, 28 Jul 2023 09:41:21 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ (Exim 4.90_1) (envelope-from <cfontana@suse.de>) id 1qPNml-0008O8-24
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 09:45:40 -0400
+Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qPNiZ-00083A-Tl
- for qemu-devel@nongnu.org; Fri, 28 Jul 2023 09:41:21 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1bba04b9df3so16515355ad.0
- for <qemu-devel@nongnu.org>; Fri, 28 Jul 2023 06:41:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690551678; x=1691156478;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=bI8eA/IrdDp/EIcBD/HQyR8ZB4pmx0M5NZvazyQwLbc=;
- b=uzY41kTiHI87ceqZ0rRe2920gVXb4k2w9TFMHJnt6Fu4uQ24bbL41bFAgSQJzYnew+
- AwYpv/TNux74nAOhuJ/GQC/7naAxF1FCeZx7Ul24v93PoPUBXji3ZRRmq6qFUYCw9iaT
- D33jjpfL96ikMeMBaxoa4bPNkcbgl0bsBiOi/X0qVED6wrwV+T7BwsqSr5EW2pIkzKQP
- /CIJrjXm8cKIagHTA1xf2rRPGs/qXK1NZx5RUeEZr7J29v5W8yPkPuoyuWSXBnLn8e3b
- HEvtmC/zo/A2+JTBJoqXArFeoIsHb2MGiWtgsAfd5ciLPkR5S/qrSW/UyqKvH5cmOckH
- /2/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690551678; x=1691156478;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=bI8eA/IrdDp/EIcBD/HQyR8ZB4pmx0M5NZvazyQwLbc=;
- b=Cj8xS18DYVO7G9eQi5oxMNgcZN7tT17v+0t3/iIhV0qDt4/mEmMjri7G55inQY+BOd
- bryitTxj78pw2c0JqzpWdCOYbA5MazG3ExrUAm6/QHvKglFN5buSODbtg47RPLQghhht
- Yv3WecLVXy+D58gkpFGob0Z2ntsiKRAair1SoZyTvOyLNAYRvEkQnHUH03U45Ld6XFpm
- M088d5MXiJDp7fJSsaqJ2dybA+cQnyRAeKBNux6zVZmFsQps4ZIbIrvku4k2or9QdCbq
- gOAvZzcUDqDzxkHj5cXjTvvtMYhR7LK7rSnYrvmaY1bMAGL3iNvMc3i93nvmj/dyBEmj
- 8FNg==
-X-Gm-Message-State: ABy/qLY9oET1VhXwOERDKwxdnYdZqIAm9pFxPd+HjQUOPJebXZqYuw/x
- vkOqIXeZG5fbSSxMgNN+5qSu7w==
-X-Google-Smtp-Source: APBJJlHvhsxny34nBoo7m98Z24/mR+RNl/4drX8KJw4iSd36OJVkaa2Cl8Wjqv7DlDz+Bnb6thOWUQ==
-X-Received: by 2002:a17:903:18f:b0:1b8:10a:d925 with SMTP id
- z15-20020a170903018f00b001b8010ad925mr2089135plg.5.1690551678450; 
- Fri, 28 Jul 2023 06:41:18 -0700 (PDT)
-Received: from ?IPV6:2602:ae:154e:c001:cfba:2f6a:7070:67a9?
- ([2602:ae:154e:c001:cfba:2f6a:7070:67a9])
- by smtp.gmail.com with ESMTPSA id
- a9-20020a170902ee8900b001bbd8cf6b57sm3584763pld.230.2023.07.28.06.41.17
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 28 Jul 2023 06:41:17 -0700 (PDT)
-Message-ID: <3f2d28ff-8746-b7fb-d2ee-0d8e08403281@linaro.org>
-Date: Fri, 28 Jul 2023 06:41:16 -0700
+ (Exim 4.90_1) (envelope-from <cfontana@suse.de>) id 1qPNmh-0003N8-QZ
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 09:45:37 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id AAA141F6E6;
+ Fri, 28 Jul 2023 13:45:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1690551928; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=VuvXpGMJeG0MijE3qApRbciz+5MlisciWG5PVk3tQkM=;
+ b=bE6qlUMNQC1D1Ee6hpVx+4iyKcTVbWUhfBNhbmg7MV8tes1S0jrfPRw0r0KBEPlpQurc0q
+ QKBXry0tyc6gZpceDr0AcDW12FJjULzOVMkRPWCAzzxRqgz3/m84hCw1mezjJhDLj52dLq
+ Ynz9EPbL3FS8PaoxcVLvbvSxxy5Q3qY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1690551928;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=VuvXpGMJeG0MijE3qApRbciz+5MlisciWG5PVk3tQkM=;
+ b=UsfIRvjyhxm+7kwWwcKC0RBoM641ISPc6jgO9bpR8rTxinnULgQJXvAprZ5YdL+/b9eVfm
+ hx3Os20qHkoxVBDA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 72B2A13276;
+ Fri, 28 Jul 2023 13:45:28 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id MvWgGXjGw2RKEgAAMHmgww
+ (envelope-from <cfontana@suse.de>); Fri, 28 Jul 2023 13:45:28 +0000
+Message-ID: <77b0a57e-68f6-8515-b3fa-3ec9988894bc@suse.de>
+Date: Fri, 28 Jul 2023 15:45:27 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] bsd-user: Specify host page alignment if none specified
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.0
+Subject: Re: assert fails in s390x TCG
 Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-To: Warner Losh <imp@bsdimp.com>, qemu-devel@nongnu.org
-Cc: Kyle Evans <kevans@freebsd.org>
-References: <20230728035456.99066-1-imp@bsdimp.com>
- <10ae7649-7712-9884-0604-645cb12068aa@linaro.org>
-In-Reply-To: <10ae7649-7712-9884-0604-645cb12068aa@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+To: Richard Henderson <richard.henderson@linaro.org>,
+ Cornelia Huck <cohuck@redhat.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>, =?UTF-8?Q?Alex_Benn=c3=a9e?=
+ <alex.bennee@linaro.org>
+References: <eaec32e3-d56a-e6a7-fcbe-860948e79658@suse.de>
+ <def2df0d-fb58-8e67-a0eb-7d646da3be42@linaro.org>
+ <0e06f694-7aeb-66d1-48d8-317a93f8f741@suse.de>
+ <2a417aaa-9ef9-6e24-cc54-e76e2d25b968@linaro.org>
+From: Claudio Fontana <cfontana@suse.de>
+In-Reply-To: <2a417aaa-9ef9-6e24-cc54-e76e2d25b968@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2001:67c:2178:6::1d;
+ envelope-from=cfontana@suse.de; helo=smtp-out2.suse.de
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.094,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,37 +92,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/28/23 06:34, Richard Henderson wrote:
-> On 7/27/23 20:54, Warner Losh wrote:
->> We're hitting an assert when we pass in alignment == 0 since that's not
->> a power of two. so pass in the ideal page size.
+On 7/28/23 15:33, Richard Henderson wrote:
+> On 7/28/23 06:29, Claudio Fontana wrote:
+>> On 7/27/23 19:41, Richard Henderson wrote:
+>>> On 7/21/23 02:08, Claudio Fontana wrote:
+>>>> Thread 3 "qemu-system-s39" received signal SIGABRT, Aborted.
+>>>> [Switching to Thread 0x7ffff53516c0 (LWP 215975)]
+>>>> (gdb) bt
+>>>> #0  0x00007ffff730dabc in __pthread_kill_implementation () at /lib64/libc.so.6
+>>>> #1  0x00007ffff72bc266 in raise () at /lib64/libc.so.6
+>>>> #2  0x00007ffff72a4897 in abort () at /lib64/libc.so.6
+>>>> #3  0x00007ffff76f0eee in  () at /lib64/libglib-2.0.so.0
+>>>> #4  0x00007ffff775649a in g_assertion_message_expr () at /lib64/libglib-2.0.so.0
+>>>> #5  0x0000555555b96134 in page_unlock__debug (pd=0x7ffee8680440) at ../accel/tcg/tb-maint.c:348
+>>>> #6  0x0000555555b962a9 in page_unlock (pd=0x7ffee8680440) at ../accel/tcg/tb-maint.c:397
+>>>> #7  0x0000555555b96580 in tb_unlock_pages (tb=0x7fffefffeb00) at ../accel/tcg/tb-maint.c:483
+>>>> #8  0x0000555555b94698 in cpu_exec_longjmp_cleanup (cpu=0x555556566a30) at ../accel/tcg/cpu-exec.c:556
+>>>
+>>>
+>>> https://patchew.org/QEMU/20230726201330.357175-1-richard.henderson@linaro.org/
+>>>
+>>>
+>>> r~
 >>
->> Signed-off-by: Warner Losh <imp@bsdimp.com>
->> ---
->>   bsd-user/mmap.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
+>> Hi Richard,
+>>
+>> I applied your patch, however I still encounter an assert:
+>>
+>> ERROR:../accel/tcg/tb-maint.c:367:assert_no_pages_locked: assertion failed: (g_hash_table_size(ht_pages_locked_debug) == 0)
+>> Bail out! ERROR:../accel/tcg/tb-maint.c:367:assert_no_pages_locked: assertion failed: (g_hash_table_size(ht_pages_locked_debug) == 0)
 > 
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> What's the test case?
 > 
 > 
 > r~
-> 
->>
->> diff --git a/bsd-user/mmap.c b/bsd-user/mmap.c
->> index 74ed00b9fe3..e3ce4ab1fc7 100644
->> --- a/bsd-user/mmap.c
->> +++ b/bsd-user/mmap.c
->> @@ -260,7 +260,7 @@ static abi_ulong mmap_find_vma_aligned(abi_ulong start, abi_ulong size,
->>       if (reserved_va) {
->>           return mmap_find_vma_reserved(start, size,
->> -            (alignment != 0 ? 1 << alignment : 0));
->> +            (alignment != 0 ? 1 << alignment : qemu_host_page_size));
 
-Actually, it probably should be MAX(qemu_host_page_size, TARGET_PAGE_SIZE).
+It is a test environment for building packages, so the guest at the time of the error is running ./configure for the package swig-v4.1.1.tar.gz
 
-Does freebsd currently support any hosts with a page size that is not 4k? It would have 
-been true in the past, certainly, but perhaps they've all been deprecated and removed.
+checking build system type... s390x-ibm-linux-gnu^M
+checking host system type... s390x-ibm-linux-gnu^M
+checking for a BSD-compatible install... /usr/bin/install -c^M
+checking whether build environment is sane... [New Thread 0x7ffea3fff6c0 (LWP 116436)]
+[New Thread 0x7ffec14e26c0 (LWP 116437)]
+[New Thread 0x7ffecf73e6c0 (LWP 116438)]
+[New Thread 0x7ffecde2c6c0 (LWP 116439)]
+[New Thread 0x7ffec2beb6c0 (LWP 116440)]
+yes^M
+checking for a thread-safe mkdir -p... /usr/bin/mkdir -p^M
+checking for gawk... gawk^M
+checking whether make sets $(MAKE)... yes^M
+checking whether make supports nested variables... yes^M
+checking for s390x-ibm-linux-gnu-gcc... gcc^M
+checking whether the C compiler works... **
+
+So I presume we are in:
+
+AC_PROG_CC
 
 
-r~
+
 
