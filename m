@@ -2,79 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF4E176609C
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 02:15:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 257967660CB
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 02:38:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qPB5e-0008Mk-Qh; Thu, 27 Jul 2023 20:12:22 -0400
+	id 1qPBAO-0002LG-AV; Thu, 27 Jul 2023 20:17:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qPB5c-0008Hc-FX
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 20:12:16 -0400
-Received: from mail-oi1-x22f.google.com ([2607:f8b0:4864:20::22f])
+ id 1qPBAM-0002H0-DT
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 20:17:10 -0400
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qPB5a-0002tl-OT
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 20:12:16 -0400
-Received: by mail-oi1-x22f.google.com with SMTP id
- 5614622812f47-38c35975545so1287468b6e.1
- for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 17:12:14 -0700 (PDT)
+ id 1qPBAK-0003ky-JI
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 20:17:10 -0400
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-1bba2318546so12681685ad.1
+ for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 17:17:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690503133; x=1691107933;
+ d=linaro.org; s=google; t=1690503427; x=1691108227;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=WB7bZ6q8enmhov8oSskMAuQ5HPXdeZ6/Vaftpio2EvQ=;
- b=QxQdffqtkdFCS3T+p/uhl44FqUOJ/LjLxGVcxeQNnRhYhkHWOileRMX6D6FA98EV9i
- lw2RXuQBPQt7jWkvB9S2p69FiecGJGGDgSbGZiGKXh0jykW3rc5ENtpZxOAOKMpUubKA
- DGkWa8KqZdHn9RHzfUiNlcgHACilu23/Gb8jo+8IS0OgM4hr7M9RF9S7yuLLQ7UU39Aq
- Ovvc890ihSmHZmEFWdcNeC/4ZEcv49xyOtGBgcHqbKUX9ciZUNTgVZiyA3+eoFPOgAGA
- DgefkoY4z97iK84q+Zm0wiqFVnyPbb254A8x0dmvCw2jc5/BDy/bdiBFoISp4l+8C76k
- fTag==
+ bh=C48ZAd0IrnpMpSqrXdJfsJvbUfMrKePokldpfYASTso=;
+ b=wqlKnWEAegs+T3b709ruuvGC78k1SsNfeFkz7vDDIzk89+9VEdpP2sOtMxug5A9Dpv
+ My5nXgznO6saECsDp94qHqjZDmSch6K7N9f0CBxdVQxognVQqwxCU9OJZ00e86aJUj59
+ nzBTap0CaacfYv/6GzhlEF1iBhN5hDL2DRHBIjx1zgDkkvkT09cs6LJuubDmSivtjf8W
+ guRYNGP8E4c8UBiLhfA51Y/3WJfb0kmVNIdqwgdKKTfiucVQ7pCrxlMPrhUAzqtt8AJ3
+ gdsrQzNr3Fe+b0/0egEMtwCnG+GLUkjLprI4VWgFdGv6Ot/m5DxW3ZX3nPRKU677ayXo
+ xGqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690503133; x=1691107933;
+ d=1e100.net; s=20221208; t=1690503427; x=1691108227;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=WB7bZ6q8enmhov8oSskMAuQ5HPXdeZ6/Vaftpio2EvQ=;
- b=P4stzlt40MX10glcPWdmqoi3An0DCWQmGPRe0klRBkpswWhBo0Ak3LYsHPuls/SidO
- g+SEXCBZugIqZYpXbWJyyi2K3wSDh0sUFOoTO+wXDR/bD48Syt2SZegldHnbXlGpprg1
- UEicglocvZWCr8Gx/bT/sEXCQf2qECnRnKpEgcAuQPS/87PFvdeonKkBwrll3eO2USNw
- Kz5FozB4CNJdnrSi/lWl9I7FKtLiYhyXFLpEi4GUJkD8sfsFxzCqgPpj71MJ8gJvpbEr
- 3meTExTxxWSt6fmkI6U5BBtlTKDJTeQuI/oKrBR/uH24cZePfCBq8lumThjv+TenPGue
- IkYw==
-X-Gm-Message-State: ABy/qLZ/2BnV57/MPIE0R24KhywS7z8RuL5hMSJDCHm9G2EN6/RE7/G8
- hMWn4sa4LOSyV4yTYR/a/yrn+bBPM/me/krKqzg=
-X-Google-Smtp-Source: APBJJlFBoq3pc2yHTsB8D8DUMHyGXSLKG++Vod5Q5nxT4SCL/V2DYkMwR95Pxb/hKXWUpIErGSB2dw==
-X-Received: by 2002:a05:6808:1449:b0:3a1:eb47:a943 with SMTP id
- x9-20020a056808144900b003a1eb47a943mr1066838oiv.10.1690503133348; 
- Thu, 27 Jul 2023 17:12:13 -0700 (PDT)
+ bh=C48ZAd0IrnpMpSqrXdJfsJvbUfMrKePokldpfYASTso=;
+ b=C9HF2QUpONNImEJUGGIimjz8ufKOvdGj7dI12/3dNp9mjiZSJIH8IzZnbU+DpVqpci
+ oaEuQh7awmxwdxHyG8wX1xsEQvnxpa4nnhDi83vi/G7fcgb8XeWj2VgQgCt8XNQl4A5D
+ vyOF19nTTgoqHzsjrDWCzAhfLIiqHh2C+iXkIsMDUUX+rsJtwl+Hqu+ijnZpz/6VYS9i
+ CcJSaBXT33FejUwfzLieeFDKW/NDF6O6SdhSU/oUUNDUD74wJLcdgU7+TlWeSnS0AkSv
+ Bw3GxsCwtVVm1MVDG/uefNQwX4+mFQhiO3Dh30lN7EKdr/O80jbEkN3ZFEVSUCkPg/EV
+ u4TA==
+X-Gm-Message-State: ABy/qLbXv/bSFmCBMG9eY98VNWcIfIYAoclxM5VMKWGgrIwNAvILirke
+ EuOMfrx+AX5DA87LtMk9GQndt2bC6DteFraY2Vw=
+X-Google-Smtp-Source: APBJJlE6QJIDqlkcMLHdVKyMj1XQFXPvv1Q0+He4wJ0/r/pxq2z6+kZLB3V+sybBflfBFY5YKPmNJQ==
+X-Received: by 2002:a17:902:ee4d:b0:1b8:a31b:ac85 with SMTP id
+ 13-20020a170902ee4d00b001b8a31bac85mr138226plo.41.1690503426784; 
+ Thu, 27 Jul 2023 17:17:06 -0700 (PDT)
 Received: from ?IPV6:2602:ae:154e:c001:943b:b6e1:1f00:9721?
  ([2602:ae:154e:c001:943b:b6e1:1f00:9721])
  by smtp.gmail.com with ESMTPSA id
- q17-20020a638c51000000b0050f85ef50d1sm2127166pgn.26.2023.07.27.17.12.12
+ 2-20020a170902e9c200b001bba27d1b65sm2207459plk.85.2023.07.27.17.17.06
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 27 Jul 2023 17:12:12 -0700 (PDT)
-Message-ID: <1e1db540-b07e-bcae-c614-67ec6c6300f0@linaro.org>
-Date: Thu, 27 Jul 2023 17:12:10 -0700
+ Thu, 27 Jul 2023 17:17:06 -0700 (PDT)
+Message-ID: <3a3c124a-23ca-08fd-661e-53023fc2be6e@linaro.org>
+Date: Thu, 27 Jul 2023 17:17:03 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: linux-user/armeb: Fix __kernel_cmpxchg() for armeb
+Subject: Re: [RFC PATCH] target/i386: Truncate ESP when exiting from long mode
 Content-Language: en-US
-To: Helge Deller <deller@gmx.de>, Laurent Vivier <laurent@vivier.eu>,
- qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>
-Cc: John Reiser <jreiser@bitwagon.com>,
- "Markus F.X.J. Oberhumer" <markus@oberhumer.com>
-References: <ZMLfYE3fYCUhnaEE@p100>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>
+References: <20230726081710.1051126-1-ardb@kernel.org>
+ <67a8967e-338a-fbd1-1c06-d5a35f2db509@linaro.org>
+ <173fb35e-a4c3-4112-afd9-b313c6d95b2e@linaro.org>
+ <CAMj1kXGwZFzpU7hcJn625LfBTMB8g6mumvRneKGOabXRc9XtCw@mail.gmail.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <ZMLfYE3fYCUhnaEE@p100>
+In-Reply-To: <CAMj1kXGwZFzpU7hcJn625LfBTMB8g6mumvRneKGOabXRc9XtCw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22f;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -97,47 +99,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/27/23 14:19, Helge Deller wrote:
-> Words are stored in big endian in the guest memory for armeb.
+On 7/27/23 14:36, Ard Biesheuvel wrote:
+> On Thu, 27 Jul 2023 at 19:56, Richard Henderson
+> <richard.henderson@linaro.org> wrote:
+>>
+>> On 7/26/23 08:01, Richard Henderson wrote:
+>>> On 7/26/23 01:17, Ard Biesheuvel wrote:
+>>>> Hints welcome on where the architectural behavior is specified, and in particular,
+>>>> whether or not other 64-bit GPRs can be relied upon to preserve their full 64-bit
+>>>> length values.
+>>>
+>>> No idea about chapter and verse, but it has the feel of being part and parcel with the
+>>> truncation of eip.  While esp is always special, I suspect that none of the GPRs can be
+>>> relied on carrying all bits.
+>>
+>> Coincidentally, I was having a gander at the newly announced APX extension [1],
+>> and happened across
+>>
+>> 3.1.4.1.2 Extended GPR Access (Direct and Indirect)
+>>
+>>       ... Entering/leaving 64-bit mode via traditional (explicit)
+>>       control flow does not directly alter the content of the EGPRs
+>>       (EGPRs behave similar to R8-R15 in this regard).
+>>
+>> which suggests to me that the 8 low registers are squashed to 32-bit
+>> on transition to 32-bit IA-32e mode.
+>>
+>> I still have not found similar language in the main architecture manual.
+>>
 > 
-> Commit 7f4f0d9ea870 ("linux-user/arm: Implement __kernel_cmpxchg with
-> host atomics") switched to use qatomic_cmpxchg() to swap a word with the
-> memory content, but missed to endianess-swap the oldval and newval
-> values when emulating an armeb CPU.
-> 
-> The bug can be verified with qemu >= v7.2 on any little-endian host,
-> when starting the armeb binary of the upx program, which just hangs
-> without this patch.
-> 
-> Signed-off-by: Helge Deller <deller@gmx.de>
-> Cc: Richard Henderson <richard.henderson@linaro.org>
-> Cc: Peter Maydell <peter.maydell@linaro.org>
-> Cc: qemu-stable@nongnu.org
-> Reported-by: "Markus F.X.J. Oberhumer" <markus@oberhumer.com>
-> Reported-by: John Reiser <jreiser@BitWagon.com>
-> Closes: https://github.com/upx/upx/issues/687
-> 
-> diff --git a/linux-user/arm/cpu_loop.c b/linux-user/arm/cpu_loop.c
-> index a992423257..ff0bff7c63 100644
-> --- a/linux-user/arm/cpu_loop.c
-> +++ b/linux-user/arm/cpu_loop.c
-> @@ -117,8 +117,8 @@ static void arm_kernel_cmpxchg32_helper(CPUARMState *env)
->   {
->       uint32_t oldval, newval, val, addr, cpsr, *host_addr;
-> 
-> -    oldval = env->regs[0];
-> -    newval = env->regs[1];
-> +    oldval = tswap32(env->regs[0]);
-> +    newval = tswap32(env->regs[1]);
->       addr = env->regs[2];
+> Interesting - that matches my observations on those Ice Lake cores:
+> RSP will be truncated, but preserving/restoring it to/from R8 across
+> the exit from long mode works fine.
 
-There's a similar bug with arm_kernel_cmpxchg64_helper just below, but
+Found it:
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Volume 1 Basic Architecture
+3.4.1.1 General-Purpose Registers in 64-Bit Mode
 
-as far as this goes.
+# Registers only available in 64-bit mode (R8-R15 and XMM8-XMM15)
+# are preserved across transitions from 64-bit mode into compatibility mode
+# then back into 64-bit mode. However, values of R8-R15 and XMM8-XMM15 are
+# undefined after transitions from 64-bit mode through compatibility mode
+# to legacy or real mode and then back through compatibility mode to 64-bit mode.
 
 
 r~
-
 
