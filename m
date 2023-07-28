@@ -2,74 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DA0A767674
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 21:40:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E92C7676D0
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 22:16:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qPT3f-0006Sg-5r; Fri, 28 Jul 2023 15:23:27 -0400
+	id 1qPSwk-0002KC-Uu; Fri, 28 Jul 2023 15:16:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qPT3c-0006SI-PC
- for qemu-devel@nongnu.org; Fri, 28 Jul 2023 15:23:25 -0400
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qPSwj-0002Jy-8D
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 15:16:17 -0400
 Received: from mout.gmx.net ([212.227.17.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qPT3Z-0003uW-89
- for qemu-devel@nongnu.org; Fri, 28 Jul 2023 15:23:23 -0400
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qPSwh-0007Lv-Gl
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 15:16:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1690572192; x=1691176992; i=deller@gmx.de;
- bh=AmW2GCjxV9YeRkdz8TFBsT3ucbzO2I+VFehcFjwhZVg=;
- h=X-UI-Sender-Class:Date:From:To:Subject;
- b=RLWAcjcwkYThnvrKks+/IH38V2O0WrATxR3ENnB/0hOl36qWOo43jiRCU0mHzqXlw5DHIBk
- LjnRdw9c4u2M3hjdjqEJy1d4ox0AQItuvLPkomTvhY24OulzT1oHnI4u7bBUk443ZO7VMG5np
- pXySPHNgPiI0pXCOL/801DICg8JdjSqB1qgHd+5D+q7o/qOBKJLqzEiEc8Epy4VK8P3k/Uhp8
- KCXJhzX05kpsrHj3FxZC1TO6dRKgyBGbDG0QwIIcGGQ24KUkL8XP8S6utwkpQoZEMcDKZK7Qu
- CXEPOc61VcnCRayFPolz/bwF2xsaKW+JOzX91RJqRDeKoBLyqJGg==
+ s=s31663417; t=1690571765; x=1691176565; i=deller@gmx.de;
+ bh=CWPvn2dcz7K/ujAeFTorKidDmn5/zJNS3abKDui1vEM=;
+ h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+ b=iNEkmG+AVvP7l4A6Kwg7EzFE/jimRNX8gYU2EUWP+bXo6Fr8tW/e32ul3n9SVSgPz3nn2Hu
+ OwkTDsxGnadqg5ynX2p0wNpWZ5SL7dvn2VFxvWMtRbw+aTqCMP8/9lPk+GZmNPA9De3WEAftS
+ RbvCuhrQfW96DlUCvoIh7SR2V903Rf6SJVyi6mn1BYQbS8iFpkt+vA5aRaiUtOvMkJBnfMYET
+ zuJmseiII+/N2fK/TPkTBSmThDdalpFggh5ZTNOKXCiMgT1Dv53mS+BIh7TcwwzTE7PXSFRRM
+ GdXZNO97a2Ckn7dsUDKfP2UKjuZV3i1BdFUI+IE4H8r1oRzw5/uA==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from p100 ([94.134.159.73]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1N1OXT-1pkkGy3Ttz-012m7k; Fri, 28
- Jul 2023 21:23:11 +0200
-Date: Fri, 28 Jul 2023 21:23:10 +0200
-From: Helge Deller <deller@gmx.de>
-To: Laurent Vivier <laurent@vivier.eu>,
- Richard Henderson <richard.henderson@linaro.org>,
- qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+Received: from [192.168.20.60] ([94.134.159.73]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MSc1B-1qJFee2xIn-00Sxg9; Fri, 28
+ Jul 2023 21:16:05 +0200
+Message-ID: <93cf0369-504d-53be-a0f1-63acf82a5d5d@gmx.de>
+Date: Fri, 28 Jul 2023 21:16:05 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v2] linux-user/armeb: Fix __kernel_cmpxchg() for armeb
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>,
+ Laurent Vivier <laurent@vivier.eu>, qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
  John Reiser <jreiser@bitwagon.com>,
  "Markus F.X.J. Oberhumer" <markus@oberhumer.com>
-Subject: [PATCH v3] linux-user/armeb: Fix __kernel_cmpxchg() for armeb
-Message-ID: <ZMQVnqY+F+5sTNFd@p100>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Provags-ID: V03:K1:RUohHrEhMGEK4xJlkQSY5+guKQfGB+NnZNFBC5v5bo2hItpq0dw
- vbIeUd5LTrKtJYiP+hNF9YF9vHcvtfETonmTNk15hvhDA5B0anZ5tQKEYlwfeDgaBMVNlju
- CfOW7o7ElaAm5VESNc5pKWrM/Zqgw8OIkb8oGw9zXuzZ7tSDCWLmJTDNf5Ma+BnKOD6Bo7E
- /sHFWiPy2JWj15ij2ziaA==
-UI-OutboundReport: notjunk:1;M01:P0:iGrgrZy47G4=;myHMWI50dAQGCIk7XZMlGzHjjEH
- cElBgRyEXtaSYWYDZGKWJzqhya2ev7ebwlBFNNuCIw5jD5maKIqiGjQYvV0YIf1CtWgk1ILE2
- 8uHbfai2Hu99gE9RObOciB9YoQ8FiHth1uhIU8tSISEMJN9uUx/5nTRENSDZafQLDq7nUp0E/
- qGW5d+TrfEPNQowaB1MV7ll5UaAkP9MNPgKkMTEVQfruKNU+QJlkEbBBGI6oraYXgCt9G9eJd
- n3fMVey3fq3SrjxNshTwBIBC8/p0Z9cUZ9Iuvq7eS12Jme6v4OskKVPXJc58jIvOIVyvgVhLT
- CLi+9T66bJE72aXIBoGfsufiBMGcDr1AaWRlWIP7pTT0NVZgQLLJsNK9elud7vN8ox72cg+1R
- rZ6ZR2B46guhZKIbgc2TCku1FJBDtR4jtw1jaR61D3zT0YehbJ9RPyqK/onzAtMUzwlTegrab
- rBpAS9QMSenH/sFPpE6mZJiZP8b0K2DZvOk1nzEWzGzpU4EdqBZoh6ierFcOSuMyyJRK3Bay8
- 9MfvFONxUaAZ17GT3TqW7/YeS8t6E0Ignh5Nd6Ju8W2v07Vl2pTKRvFQr95IMZxApLxq8d6bd
- 5qwOvQ3I+5XRGKkUFv8cEVe9w45kY6UHSJl/2HueXCDn36hupQjDEDfktFQalFr6mMwNjYkwp
- UJVmIe+4Xx6Pw16sEahTKwZ+eQXLvDGU68XpllfrT7EZTaclYyEKLc9Y1FCvZ+e3OuAEwTJ0R
- CeNPu55THChliLdUhclZZBsIMWeFWoWF6DT4bSoXg2rqJII/dc1fwR392VNYVhW89JJ/E4TUK
- uDwKwMpEztjLpVfov8CX7r2/ceUB+ZWzHMj46TCQ9opq0DCz75l+0s045F8ciFPD6CwUNwaA6
- N7g+zYvTX7o498xOwkyTrEVlz6FgEqG/Vs0DFJUZrZvnmOL41a4oPjUuL63c03XD5TryOfbJg
- Km049g==
+References: <ZMNJ+Ga7A4zDXjAg@p100>
+ <f6129139-54f6-1d96-1edc-cb1bdf7dac89@linaro.org>
+From: Helge Deller <deller@gmx.de>
+In-Reply-To: <f6129139-54f6-1d96-1edc-cb1bdf7dac89@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:f348NXsM5WxHa+Lm7B+KQFcLo2yfrw7aVwfHgR3rh/ua0HXvTDL
+ DS00Ty/JHgG7mC4HpVatF5H7eYptofGgEZ28cohh55K5b12Cl14pv8Y2JMX1ZIjweh0GM9Y
+ BjzT7+oF680K0ppvoh0XoR3uPY9CxA+pM4NRzt/YGkNNgpcgQwJItjaW9vwaDbxuvqaHCCa
+ AAEqa6fNZgVbuK+dqW9+g==
+UI-OutboundReport: notjunk:1;M01:P0:T+JhtyhA2gE=;YyphQ0b5crs/YBYQW40s3Gk4N6J
+ zRt+Z+FH/xn/UxGYyfymChoKF9wI9izOIq7Qm5yxx5C7nqZKe2qfnCBjG15ViK5PnnohY1pY0
+ U5QfQ6D48lekE0GtgvW0DMV659Xwc+I3qEVy/016z1uxk/yopQya9/m6eS33oOvrKVOW26Z78
+ hFBEg0PNlt1AXO40Yt2E/q4MBFw3Pu7tsgzNMEx7qZGnzGY2+j//EmVxKgMaucehTYuhC08tH
+ 4h21mMowo7e2/FM+MHn+uXE/ei5S7mwNKzQtVj/Ltwcbk+V4xZHivYwbcpk49AGiIMvezLJ+8
+ vTmRZ5UxUcjjY2ZKWJTWu/etKv0V2Gbop4vWCo+8S3JNVxxUJc1WYrWvulz60X3t/s0II6Yrm
+ CDHpx5uGaqHe70OwVcsueeqkGZQCB8ftQ6Z8ICtoVnkiSsiaDs0ryJ7WIYc/eKReTu9MbptAx
+ oUpvat0kfuUXVen0g3l+YRaGJE6YH7u1phHJGOIv6aZWQFMi1wJo5R8nuQcVuzsv2q9/et4re
+ vt/UO2vksjLc6k1bTT9uCOvYu817UktjHTe0kECeneGfBr3a3Dg4kbdqw0fDBWNcXw10fgrTt
+ k0aIpnzbfIEu57vT6dp7PZqM9HpHlsUop/UD/cSzc4qz1FxUzgNpOkHcDAbTPJTWNLUn7e+b/
+ Om5g8zzLj8y+Uv81UrjimIuRDLDEcRy5c+ZxSIU+eeGO+IkCBwxLJMs/YsHEwOSmgo5ybEJ/1
+ OezkCCXsuF4aK93KpoUbBgMumVUak0sMmBR1epYTebUMLqFYgHvZIMbQ7GSMi3JIb+f7Aiqvf
+ /OJBHBny7vuUFF4ia2SwDsl5s8kKy/b8amMxDl1ct+CA9k/gvIY0XIoW7tQeVgDDzZNyfB8wy
+ zeyfg5sCoXByEw85pgmH7AONjbwD2ERQ7Fws7uU8zBmZH3BTHllXYoNAU5/F6QJYHK8k9Spjb
+ X6y3wHQEfnJ+dlZmy80VdhE/v8A=
 Received-SPF: pass client-ip=212.227.17.21; envelope-from=deller@gmx.de;
  helo=mout.gmx.net
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+X-Spam_score_int: -28
+X-Spam_score: -2.9
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ NICE_REPLY_A=-0.094, RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,60 +91,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit 7f4f0d9ea870 ("linux-user/arm: Implement __kernel_cmpxchg with host
-atomics") switched to use qatomic_cmpxchg() to swap a word with the memory
-content, but missed to endianess-swap the oldval and newval values when
-emulating an armeb CPU, which expects words to be stored in big endian in
-the guest memory.
+On 7/28/23 17:35, Richard Henderson wrote:
+> On 7/27/23 21:54, Helge Deller wrote:
+>> @@ -174,6 +175,10 @@ static void arm_kernel_cmpxchg64_helper(CPUARMStat=
+e *env)
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+>>
+>> +=C2=A0=C2=A0=C2=A0 /* endianess-swap if emulating armeb */
+>> +=C2=A0=C2=A0=C2=A0 oldval =3D tswap32(oldval);
+>> +=C2=A0=C2=A0=C2=A0 newval =3D tswap32(newval);
+>
+> Must be tswap64.
 
-The bug can be verified with qemu >=3D v7.0 on any little-endian host, whe=
-n
-starting the armeb binary of the upx program, which just hangs without
-this patch.
+Oh, of course!
+I send a v3.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: Richard Henderson <richard.henderson@linaro.org>
-Cc: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-stable@nongnu.org
-Reported-by: "Markus F.X.J. Oberhumer" <markus@oberhumer.com>
-Reported-by: John Reiser <jreiser@BitWagon.com>
-Closes: https://github.com/upx/upx/issues/687
-
-=2D-
-v3:
-- use tswap64() in arm_kernel_cmpxchg64_helper() [review from Richard]
-- mention that bug exists since qemu v7.0 [info from Markus]
-v2:
-- add tswap32() in arm_kernel_cmpxchg64_helper() [bisected by John]
-
-
-diff --git a/linux-user/arm/cpu_loop.c b/linux-user/arm/cpu_loop.c
-index a992423257..f58154108e 100644
-=2D-- a/linux-user/arm/cpu_loop.c
-+++ b/linux-user/arm/cpu_loop.c
-@@ -117,8 +117,9 @@ static void arm_kernel_cmpxchg32_helper(CPUARMState *e=
-nv)
- {
-     uint32_t oldval, newval, val, addr, cpsr, *host_addr;
-
--    oldval =3D env->regs[0];
--    newval =3D env->regs[1];
-+    /* endianess-swap if emulating armeb */
-+    oldval =3D tswap32(env->regs[0]);
-+    newval =3D tswap32(env->regs[1]);
-     addr =3D env->regs[2];
-
-     mmap_lock();
-@@ -174,6 +175,10 @@ static void arm_kernel_cmpxchg64_helper(CPUARMState *=
-env)
-         return;
-     }
-
-+    /* endianess-swap if emulating armeb */
-+    oldval =3D tswap64(oldval);
-+    newval =3D tswap64(newval);
-+
- #ifdef CONFIG_ATOMIC64
-     val =3D qatomic_cmpxchg__nocheck(host_addr, oldval, newval);
-     cpsr =3D (val =3D=3D oldval) * CPSR_C;
+Helge
 
