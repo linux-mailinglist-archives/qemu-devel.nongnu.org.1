@@ -2,89 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 411747660BB
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 02:21:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D9A97660DE
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 02:45:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qPAwc-0005cz-57; Thu, 27 Jul 2023 20:02:58 -0400
+	id 1qPB3f-0006Uv-0O; Thu, 27 Jul 2023 20:10:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qPAwa-0005cq-7Z
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 20:02:56 -0400
-Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qPB3W-0006UX-8y
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 20:10:06 -0400
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qPAwY-0006Nr-Ni
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 20:02:56 -0400
-Received: by mail-pg1-x52d.google.com with SMTP id
- 41be03b00d2f7-563d3e4f73cso875593a12.3
- for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 17:02:53 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qPB3T-0002JS-1Q
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 20:10:06 -0400
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-51e619bcbf9so1925470a12.3
+ for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 17:10:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690502572; x=1691107372;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=IOWNs3M8Q7rxoijuf3VpUmwG0sB8W8o62na9Dm2jR44=;
- b=Ad6fsyghz2qVm3O+CYXLdSIrJDd6o0Y37SGnRNElGCBJ9iQ4SRHcnQs+I5aNyQ2pDe
- dtx71yLtVGjjaPLNk2eyUDQDNRMoznwZD1GZpByUDKGVNtby85lNgbDA4WeTEI2xsxco
- e3fdqvWflGftuMDdgD2Brb3u2C+9+AHWtFg9bIgIDFY+oEL55uSxdCyEHlxFj+mJCL/N
- lNoQxYi0fLeE+xUNwqVyPc9o9r2Q4tj4HGNSl3cML2FZc8KNgip6q0Upu61/g1C9rCXR
- O2sofZR9b6am4UBqJfvt/km6YerH0oPfyYf9dbJJ1mFyy96AQGD0NVJE0YMuDAV7alFs
- TB0w==
+ d=bsdimp-com.20221208.gappssmtp.com; s=20221208; t=1690503000; x=1691107800;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=EbMGLoTtOycWTftcJPkpwdS2efF7zFtSpuKICJ8KTH4=;
+ b=rIc5CMgDujC16FcG7ijTxxRjxF5NVXdGTZzKbtKGZNh9VzkPlGiEMjIfr/tG2Uw6k8
+ YWduLfKsl4m49ZFzXgi61ExNqWvKVe12+SHS4lgiVqxPj9nMDkW3IvHgOQI3hR9hYkPy
+ apK1GTJ5WZGx17hEWakKZ+grPHPmBhK/nYROsrrx6fXXAls018m+54/cgecddckNyTNn
+ nzO1CvInJJM8ObjnlTo2HSWJ5T41+4KHd4VHiect72cZW6VTxkNpTZqrEh0txlFaUMpt
+ KhD/t0VlUcinZDpinc8D4wrRBozJQWLtthh7IgLlel41CqHIPr1qJVLvfO35Qu/12Ov9
+ leEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690502572; x=1691107372;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=IOWNs3M8Q7rxoijuf3VpUmwG0sB8W8o62na9Dm2jR44=;
- b=UqHj1m20OrXlBeOPZZcxVvmyuYCc6AESsaBuBVWvcrJ9TeT38AwtjWxSbVeGOCF7Xj
- lREnCCyc6aBCcsJFgOJa/FcFEWWzeNtTms9dPM2/+mig2M7ITzi0zJkGHBtiy/PQfNTE
- apHAqJLc5xpBwkqSL+9gBdNpVH0ypn3PqfoLtxzn2KGr50H1H9pPYFIq3RRaWetwNJkl
- j/hY7tWNRDedVx7sa1nzMbbQljKHRvp6Myo1aK0y8XFH98l2fe/1B51t1qzTv+49sccZ
- KaKiNr2WM4jx9yYSdLj7tloZMwIL8V3ekKRi2Pv47dnNg4cNza0MhwN1DwHMM4cmudvq
- 35XA==
-X-Gm-Message-State: ABy/qLacci+jgmC+p/S6McU8L291dWdzmi3sQLah39P1IcCjtJV1zGKG
- ItqTuRNCWbOA3HxJvtDKWhARrg==
-X-Google-Smtp-Source: APBJJlEHAmZOtPAiA3VJ+IvDOsf8U3QPrj7dm/UTSL0joR4kMTGeYM/tpL500BrnKA7enc3xgoUJHA==
-X-Received: by 2002:a17:90b:4f81:b0:267:f893:d562 with SMTP id
- qe1-20020a17090b4f8100b00267f893d562mr79546pjb.8.1690502572490; 
- Thu, 27 Jul 2023 17:02:52 -0700 (PDT)
-Received: from ?IPV6:2602:ae:154e:c001:943b:b6e1:1f00:9721?
- ([2602:ae:154e:c001:943b:b6e1:1f00:9721])
- by smtp.gmail.com with ESMTPSA id
- mg20-20020a17090b371400b00262fc3d911esm3249369pjb.28.2023.07.27.17.02.51
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 27 Jul 2023 17:02:52 -0700 (PDT)
-Message-ID: <270f0cfd-b57a-24b8-7c13-789bb9ee13ed@linaro.org>
-Date: Thu, 27 Jul 2023 17:02:49 -0700
+ d=1e100.net; s=20221208; t=1690503000; x=1691107800;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=EbMGLoTtOycWTftcJPkpwdS2efF7zFtSpuKICJ8KTH4=;
+ b=MhWHkmvGIcJGGwhXPZ4QbX7a2DLAwgubFo1jns4+xKPWubymqbQHAXDa2xIzS8jQgV
+ IagdxgBPxu1YJdCBJEfMlo6crmMremrsGGDrIHj42DfQMCg1zzP3VsuXfR9PYTRXytUD
+ KybSkwX1UMv6iKfmUihIt50avIDlpenzcXehXsoDOTgRe3S9z8DzVgiv7btiMjN0PZLb
+ Oemb8uuZfxVboGzD2gSviqhGFLGsqkuLuQvLV65xizxSnU/P7mZKobqrPq79J+nYuyid
+ RlRTpsICIMWTyDOz74qpA7jbnp/JWjGzxe4D97tG4aq4rQ3J4y04eZ8jJD9kmI/PWa6w
+ Y25w==
+X-Gm-Message-State: ABy/qLbfkoxe5sZuEBVtE2FdOt6dKTYjHUL/v087d+VqQyM8dqYNIOce
+ lz+MSX4T4fSFPgQePp8VUc4DaK9YpW/9R6PRhzutDQ==
+X-Google-Smtp-Source: APBJJlEHgy1e3in4QVIw/2e5Gv8uTacyYEihPWl333KLE2Rk/Jy01BfTbqnPkacjpXvtki00SHnJWAVXmXDcwYropUI=
+X-Received: by 2002:aa7:d903:0:b0:522:23e8:2c69 with SMTP id
+ a3-20020aa7d903000000b0052223e82c69mr434417edr.27.1690502999820; Thu, 27 Jul
+ 2023 17:09:59 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: avocado test failing INTERRUPTED for "Missing asset"
-Content-Language: en-US
-To: Cleber Rosa <crosa@redhat.com>, Peter Maydell <peter.maydell@linaro.org>
-Cc: QEMU Developers <qemu-devel@nongnu.org>,
- =?UTF-8?Q?Phil_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>
-References: <CAFEAcA--tJPhQO49W3BDO1MABQFHrr50MU=q54TFYpbkOxVWHw@mail.gmail.com>
- <CA+bd_6Krq9aCCQe01OjXxb+T-=3XrSnvVHrKs3F-3cwdZEGH8Q@mail.gmail.com>
- <CAFEAcA9txYV4GZQi-uRPWuXd1oOiVHB7ZUQ5-+=zA4T+Of-g1g@mail.gmail.com>
- <CA+bd_6LsQw3ao1KQk8Jk-VvAb9SZ1ioxSdBsghtNqJK-cnMRXA@mail.gmail.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <CA+bd_6LsQw3ao1KQk8Jk-VvAb9SZ1ioxSdBsghtNqJK-cnMRXA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52d.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+References: <20230727161148.444988-1-richard.henderson@linaro.org>
+In-Reply-To: <20230727161148.444988-1-richard.henderson@linaro.org>
+From: Warner Losh <imp@bsdimp.com>
+Date: Thu, 27 Jul 2023 18:09:48 -0600
+Message-ID: <CANCZdfrLKgVJhXqZ8nJdyoKOsLKscFPYSsZ=w6mSbusn0aX5Ww@mail.gmail.com>
+Subject: Re: [PATCH] bsd-user: Properly allocate guest virtual address space
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org
+Content-Type: multipart/alternative; boundary="000000000000cbdbf5060180e63e"
+Received-SPF: none client-ip=2a00:1450:4864:20::532;
+ envelope-from=wlosh@bsdimp.com; helo=mail-ed1-x532.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,24 +82,259 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/27/23 12:08, Cleber Rosa wrote:
-> Anyways, I'll look into, and report back on:
-> 
-> 1. expanding avocado.Test.fetch_asset() with a timeout parameter
-> 2. making sure the newer implementation for the requirement types used
-> by QEMU respect a timeout (they don't need to be smaller than the
-> test, because they run completely outside of the test).
-> 
-> For now, are you OK with re-running those jobs if the servers stall
-> the transfers? Or would you rather see a patch that changes the
-> find_only parameter to True, so that if the pre-test attempt to
-> download the asset fails, the transfer is never attempted during the
-> test?
+--000000000000cbdbf5060180e63e
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-I would be perfectly happy with find_only.  From your description that more-or-less 
-matches the behaviour of v103.  I would also suggest that if the pre-test attempt fails, 
-trying again in just a few minutes during the test isn't likely to work either.
+On Thu, Jul 27, 2023 at 10:11=E2=80=AFAM Richard Henderson <
+richard.henderson@linaro.org> wrote:
+
+> Do not hard-code guest_base at 32GB.
+> Do not override mmap_next_start for reserved_va.
+>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>
+> Hi Warner,
+>
+> With the blitz-trial branch you provided, the host libc allocates
+> thread-local storage within the [32GB, 36GB) region that you currently
+> assume is free.
+>
+> The armv7-hello program happens to map on top of this thread-local
+> storage, and then we crash later accessing some host TLS variable.
+>
+> While the linux-user probe_guest_base is significantly more complex,
+> we are also trying to handle 32-bit hosts.  I think freebsd is always
+> assuming 64-bit hosts, which makes this simpler.
+>
+
+Double mapping makes sense for problems to arise. I'd not have thought
+this would be the problem, but it does eliminate a bunch of code that I'd
+thought suspect (made worse by my trying to 'fix' old kludges with new
+kludges of my own).
+
+Yes. FreeBSD's bsd-user binary will only run on 64-bit hosts. The project
+has started phasing out support for 32-bit hosts, and the role of bsd-user
+(package builder tool) is such that 32-bit hosts don't make sense.
+
+I've tested this out, and it works for me. Any chance we can get this into
+8.1 as a bug fix for the last minute breakage of bsd-user (without this and
+another patch, the static hello world that used to work broke). I can send
+that second patch out for review. I can queue this fix in the mean time for
+whenever the tree opens up.
+
+Reviewed by: Warner Losh <imp@bsdimp.com>
 
 
-r~
+>
+> r~
+> ---
+>  bsd-user/main.c | 37 +++++++++++++++++++------------------
+>  1 file changed, 19 insertions(+), 18 deletions(-)
+>
+> diff --git a/bsd-user/main.c b/bsd-user/main.c
+> index f500ec292b..9760aad9f6 100644
+> --- a/bsd-user/main.c
+> +++ b/bsd-user/main.c
+> @@ -50,20 +50,8 @@
+>
+>  int do_strace;
+>
+> -/*
+> - * Going hand in hand with the va space needed (see below), we need
+> - * to find a host address to map the guest to. Assume that qemu
+> - * itself doesn't need memory above 32GB (or that we don't collide
+> - * with anything interesting). This is selected rather arbitrarily,
+> - * but seems to produce good results in tests to date.
+> - */
+> -# if HOST_LONG_BITS >=3D 64
+> -uintptr_t guest_base =3D 0x800000000ul;    /* at 32GB */
+> -bool have_guest_base =3D true;
+> -#else
+> -uintptr_t guest_base;    /* TODO: use sysctl to find big enough hole */
+> +uintptr_t guest_base;
+>  bool have_guest_base;
+> -#endif
+>  static bool opt_one_insn_per_tb;
+>  static const char *cpu_model;
+>  static const char *cpu_type;
+> @@ -522,10 +510,6 @@ int main(int argc, char **argv)
+>      target_environ =3D envlist_to_environ(envlist, NULL);
+>      envlist_free(envlist);
+>
+> -    if (reserved_va) {
+> -        mmap_next_start =3D reserved_va + 1;
+> -    }
+> -
+>      {
+>          Error *err =3D NULL;
+>          if (seed_optarg !=3D NULL) {
+> @@ -543,7 +527,24 @@ int main(int argc, char **argv)
+>       * Now that page sizes are configured we can do
+>       * proper page alignment for guest_base.
+>       */
+> -    guest_base =3D HOST_PAGE_ALIGN(guest_base);
+> +    if (have_guest_base) {
+> +       if (guest_base & ~qemu_host_page_mask) {
+> +            error_report("Selected guest base not host page aligned");
+> +            exit(1);
+> +        }
+> +    } else if (reserved_va) {
+> +        void *p =3D mmap(NULL, reserved_va + 1, PROT_NONE, MAP_GUARD, -1=
+,
+> 0);
+> +        if (p =3D=3D MAP_FAILED) {
+> +            const char *err =3D strerror(errno);
+> +            char *sz =3D size_to_str(reserved_va + 1);
+> +
+> +            error_report("Cannot allocate %s bytes for guest address
+> space: %s",
+> +                         sz, err);
+> +            exit(1);
+> +        }
+> +        guest_base =3D (uintptr_t)p;
+> +        have_guest_base =3D true;
+> +    }
+>
+>      if (loader_exec(filename, argv + optind, target_environ, regs, info,
+>                      &bprm) !=3D 0) {
+> --
+> 2.41.0
+>
+>
+
+--000000000000cbdbf5060180e63e
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Thu, Jul 27, 2023 at 10:11=E2=80=
+=AFAM Richard Henderson &lt;<a href=3D"mailto:richard.henderson@linaro.org"=
+>richard.henderson@linaro.org</a>&gt; wrote:<br></div><blockquote class=3D"=
+gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(20=
+4,204,204);padding-left:1ex">Do not hard-code guest_base at 32GB.<br>
+Do not override mmap_next_start for reserved_va.<br>
+<br>
+Signed-off-by: Richard Henderson &lt;<a href=3D"mailto:richard.henderson@li=
+naro.org" target=3D"_blank">richard.henderson@linaro.org</a>&gt;<br>
+---<br>
+<br>
+Hi Warner,<br>
+<br>
+With the blitz-trial branch you provided, the host libc allocates<br>
+thread-local storage within the [32GB, 36GB) region that you currently<br>
+assume is free.<br>
+<br>
+The armv7-hello program happens to map on top of this thread-local<br>
+storage, and then we crash later accessing some host TLS variable.<br>
+<br>
+While the linux-user probe_guest_base is significantly more complex,<br>
+we are also trying to handle 32-bit hosts.=C2=A0 I think freebsd is always<=
+br>
+assuming 64-bit hosts, which makes this simpler.<br></blockquote><div><br><=
+/div><div>Double mapping makes sense for problems to arise. I&#39;d not hav=
+e thought</div><div>this would be the problem, but it does eliminate a bunc=
+h of code that I&#39;d</div><div>thought suspect (made worse by my trying t=
+o &#39;fix&#39; old kludges with new</div><div>kludges of my own).</div><di=
+v><br></div><div>Yes. FreeBSD&#39;s bsd-user binary will only run on 64-bit=
+ hosts. The project</div><div>has started phasing out support for 32-bit ho=
+sts, and the role of bsd-user</div><div>(package builder tool) is such that=
+ 32-bit hosts don&#39;t make sense.</div><div><br></div><div>I&#39;ve teste=
+d this out, and it works for me. Any chance we can get this into</div><div>=
+8.1 as a bug fix for the last minute breakage of bsd-user (without this and=
+</div><div>another patch, the static hello world that used to work broke). =
+I can send</div><div>that second patch out for review. I can queue this fix=
+ in the mean time for</div><div>whenever the tree opens up.</div><div><br><=
+/div><div>Reviewed by: Warner Losh &lt;<a href=3D"mailto:imp@bsdimp.com">im=
+p@bsdimp.com</a>&gt;</div><div>=C2=A0</div><blockquote class=3D"gmail_quote=
+" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);=
+padding-left:1ex">
+<br>
+r~<br>
+---<br>
+=C2=A0bsd-user/main.c | 37 +++++++++++++++++++------------------<br>
+=C2=A01 file changed, 19 insertions(+), 18 deletions(-)<br>
+<br>
+diff --git a/bsd-user/main.c b/bsd-user/main.c<br>
+index f500ec292b..9760aad9f6 100644<br>
+--- a/bsd-user/main.c<br>
++++ b/bsd-user/main.c<br>
+@@ -50,20 +50,8 @@<br>
+<br>
+=C2=A0int do_strace;<br>
+<br>
+-/*<br>
+- * Going hand in hand with the va space needed (see below), we need<br>
+- * to find a host address to map the guest to. Assume that qemu<br>
+- * itself doesn&#39;t need memory above 32GB (or that we don&#39;t collide=
+<br>
+- * with anything interesting). This is selected rather arbitrarily,<br>
+- * but seems to produce good results in tests to date.<br>
+- */<br>
+-# if HOST_LONG_BITS &gt;=3D 64<br>
+-uintptr_t guest_base =3D 0x800000000ul;=C2=A0 =C2=A0 /* at 32GB */<br>
+-bool have_guest_base =3D true;<br>
+-#else<br>
+-uintptr_t guest_base;=C2=A0 =C2=A0 /* TODO: use sysctl to find big enough =
+hole */<br>
++uintptr_t guest_base;<br>
+=C2=A0bool have_guest_base;<br>
+-#endif<br>
+=C2=A0static bool opt_one_insn_per_tb;<br>
+=C2=A0static const char *cpu_model;<br>
+=C2=A0static const char *cpu_type;<br>
+@@ -522,10 +510,6 @@ int main(int argc, char **argv)<br>
+=C2=A0 =C2=A0 =C2=A0target_environ =3D envlist_to_environ(envlist, NULL);<b=
+r>
+=C2=A0 =C2=A0 =C2=A0envlist_free(envlist);<br>
+<br>
+-=C2=A0 =C2=A0 if (reserved_va) {<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 mmap_next_start =3D reserved_va + 1;<br>
+-=C2=A0 =C2=A0 }<br>
+-<br>
+=C2=A0 =C2=A0 =C2=A0{<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0Error *err =3D NULL;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (seed_optarg !=3D NULL) {<br>
+@@ -543,7 +527,24 @@ int main(int argc, char **argv)<br>
+=C2=A0 =C2=A0 =C2=A0 * Now that page sizes are configured we can do<br>
+=C2=A0 =C2=A0 =C2=A0 * proper page alignment for guest_base.<br>
+=C2=A0 =C2=A0 =C2=A0 */<br>
+-=C2=A0 =C2=A0 guest_base =3D HOST_PAGE_ALIGN(guest_base);<br>
++=C2=A0 =C2=A0 if (have_guest_base) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0if (guest_base &amp; ~qemu_host_page_mask) {<br=
+>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 error_report(&quot;Selected gues=
+t base not host page aligned&quot;);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 exit(1);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
++=C2=A0 =C2=A0 } else if (reserved_va) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 void *p =3D mmap(NULL, reserved_va + 1, PROT_N=
+ONE, MAP_GUARD, -1, 0);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (p =3D=3D MAP_FAILED) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 const char *err =3D strerror(err=
+no);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 char *sz =3D size_to_str(reserve=
+d_va + 1);<br>
++<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 error_report(&quot;Cannot alloca=
+te %s bytes for guest address space: %s&quot;,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0sz, err);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 exit(1);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 guest_base =3D (uintptr_t)p;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 have_guest_base =3D true;<br>
++=C2=A0 =C2=A0 }<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0if (loader_exec(filename, argv + optind, target_environ=
+, regs, info,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0&amp;bprm) !=3D 0) {<br>
+-- <br>
+2.41.0<br>
+<br>
+</blockquote></div></div>
+
+--000000000000cbdbf5060180e63e--
 
