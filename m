@@ -2,85 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07607766680
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 10:11:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DB7B766651
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 10:06:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qPIFP-0004x4-E6; Fri, 28 Jul 2023 03:50:51 -0400
+	id 1qPIEY-0004U7-G0; Fri, 28 Jul 2023 03:49:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qPIFK-0004wB-48
- for qemu-devel@nongnu.org; Fri, 28 Jul 2023 03:50:46 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qPIFI-00051G-0J
- for qemu-devel@nongnu.org; Fri, 28 Jul 2023 03:50:45 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-686ed1d2594so1767848b3a.2
- for <qemu-devel@nongnu.org>; Fri, 28 Jul 2023 00:48:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20221208.gappssmtp.com; s=20221208; t=1690530522; x=1691135322;
- h=references:to:cc:in-reply-to:date:subject:mime-version:message-id
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=mCH+nmn66CoaR2OP8IWJDMZKXVg0TkpeuymStfGb0EM=;
- b=ligpwT2MTn32+KzWk87y81/9IZS0c/Y5dPPkT/in1pmgFXu5Va5wbv2DAhK+80LbmW
- /pw3Sfjs+ANlJJ4rxtKaHMn54Y7FNa6X+8LGEdtj205JFTvrAOODqTcwW9ZsBAVP9hC7
- n/bEmM2fIg2MqKdEvlR4HjNaR1UzLqe8ShvOaDOfFKK+RYKxuoXe+w44XPB2Eshpmm5r
- ScDCTEvTFWJxj04XOveeRx+4gIy+CcFkM4W4EguyjPRUkIDYmiikkUb2nmzyIuJdhA/B
- CUr8Ixtns+RBSs6bnxvtV1QcagsCBiWxWKnWDhjWgGbNh59bSpUfuW4LkvbXiGeqSOSN
- BrRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690530522; x=1691135322;
- h=references:to:cc:in-reply-to:date:subject:mime-version:message-id
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=mCH+nmn66CoaR2OP8IWJDMZKXVg0TkpeuymStfGb0EM=;
- b=h0IEX/Yn8z13kED46VGgc1Fbuqrw1EtnwAtFqb4oFJruFnfUCdwCsKsdaoX9SH9O/l
- lEM4UC6ss4AqIKbRRJeLZ6+A2WvK0WztBNv5BsqbzwJQQyD8eEnccyfH5jJrL4VGnB28
- 5mGIao10Uid8juLZ9XIg7a6EUW7Fmm1v3oeyKAa2uy3avhmHKXrh0t8hU7rwY9SPqeQl
- 2I5qQpmVz/vW93ZdVVpJqUTxOgycZpKoQ0CQddVtQgXZBTSGs1e67iAvR95wgWe+kPeg
- VLUowu3ELVnFrl+e4nqIC4+8pzGUxNZIKWvUA8CZxe2KBH7H2MYZHjxqBfR6it78o1su
- oopA==
-X-Gm-Message-State: ABy/qLbvUyexeTF7gyniyDkwmMddG2cDeDYDxp1hNNMamUfbvnt9ADLQ
- ajq7VfG5CBD8tagPqoKkeoxMmA==
-X-Google-Smtp-Source: APBJJlHxyG8S2M6zmArNRlTdjfj7i9gWhVi7hXINRtxlnqPK30hZ75Gm6WcGMWoWAyzcV6aiUE42SA==
-X-Received: by 2002:a05:6300:8082:b0:133:d1b:a880 with SMTP id
- ap2-20020a056300808200b001330d1ba880mr1198525pzc.23.1690530522399; 
- Fri, 28 Jul 2023 00:48:42 -0700 (PDT)
-Received: from smtpclient.apple ([47.75.78.161])
- by smtp.gmail.com with ESMTPSA id
- u3-20020a62ed03000000b00682a839d0aesm2622934pfh.112.2023.07.28.00.48.39
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Fri, 28 Jul 2023 00:48:41 -0700 (PDT)
-From: Li Feng <fengli@smartx.com>
-Message-Id: <09BB8CEC-26F4-4FC5-A2DB-479FCD5F0548@smartx.com>
-Content-Type: multipart/alternative;
- boundary="Apple-Mail=_FEDE57A7-0C95-4B67-A6D1-7730607A6DCC"
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.300.101.1.3\))
-Subject: Re: [PATCH v2 2/4] vhost-user-common: send get_inflight_fd once
-Date: Fri, 28 Jul 2023 15:49:02 +0800
-In-Reply-To: <20230728020156-mutt-send-email-mst@kernel.org>
-Cc: Raphael Norwitz <raphael.norwitz@nutanix.com>,
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
- =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Viresh Kumar <viresh.kumar@linaro.org>,
- "open list:Block layer core" <qemu-block@nongnu.org>,
- "open list:All patches CC here" <qemu-devel@nongnu.org>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-References: <20230721105205.1714449-1-fengli@smartx.com>
- <20230725104256.4861-1-fengli@smartx.com>
- <20230725104256.4861-3-fengli@smartx.com>
- <20230728020156-mutt-send-email-mst@kernel.org>
-X-Mailer: Apple Mail (2.3731.300.101.1.3)
-Received-SPF: none client-ip=2607:f8b0:4864:20::42f;
- envelope-from=fengli@smartx.com; helo=mail-pf1-x42f.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qPIEA-0004Qa-PY
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 03:49:40 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qPIE1-00055A-Eu
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 03:49:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1690530562;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=bkGe1fEbcEoaFdKxAxSgQUkHfHZjliGd4qXwt1R/P8s=;
+ b=GosLxjgzjig0eYHNLIDGYRqgMybGaed7B0fBqaVf9vimHCzE0dOpsacKw9GjfuZsQcMVXr
+ xwaOfFs05fC5nfhxfN1Pmn0bRv7GQkp6go0VT0qNID/rCfgyr4+SrNISRVHB/czKTGLr+J
+ h42Xf+xqL5mw3j0W23tdLdP4kj5HJZk=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-37-8uvd82nWNQyXXs6IDghq0Q-1; Fri, 28 Jul 2023 03:49:18 -0400
+X-MC-Unique: 8uvd82nWNQyXXs6IDghq0Q-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4BE6D1008142;
+ Fri, 28 Jul 2023 07:49:18 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.193.50])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 0EA7D2166B25;
+ Fri, 28 Jul 2023 07:49:17 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id EE37721E6690; Fri, 28 Jul 2023 09:49:16 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: ~hyman <hyman@git.sr.ht>
+Cc: qemu-devel@nongnu.org,  ~hyman <yong.huang@smartx.com>,  Juan Quintela
+ <quintela@redhat.com>,  Eric Blake <eblake@redhat.com>,  Peter Xu
+ <peterx@redhat.com>,  Leonardo Bras <leobras@redhat.com>
+Subject: Re: [PATCH QEMU 1/2] qapi: Reformat and craft the migration doc
+ comments
+References: <169040075240.21656.5651891935411754498-1@git.sr.ht>
+Date: Fri, 28 Jul 2023 09:49:16 +0200
+In-Reply-To: <169040075240.21656.5651891935411754498-1@git.sr.ht>
+ (hyman@git.sr.ht's message of "Thu, 27 Jul 2023 01:27:50 +0800")
+Message-ID: <87y1j0lblv.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,306 +84,191 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+~hyman <hyman@git.sr.ht> writes:
 
---Apple-Mail=_FEDE57A7-0C95-4B67-A6D1-7730607A6DCC
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain;
-	charset=utf-8
+> From: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
+>
+> Reformat migration doc comments to conform to current conventions
+> as commit a937b6aa739 (qapi: Reformat doc comments to conform to
+> current conventions).
+>
+> Also, craft the dirty-limit capability comment.
 
+Split into two patches?
 
+> Signed-off-by: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
+> ---
+>  qapi/migration.json | 66 +++++++++++++++++++++------------------------
+>  1 file changed, 31 insertions(+), 35 deletions(-)
+>
+> diff --git a/qapi/migration.json b/qapi/migration.json
+> index 6b49593d2f..5d5649c885 100644
+> --- a/qapi/migration.json
+> +++ b/qapi/migration.json
+> @@ -258,17 +258,17 @@
+>  #     blocked.  Present and non-empty when migration is blocked.
+>  #     (since 6.0)
+>  #
+> -# @dirty-limit-throttle-time-per-round: Maximum throttle time (in micros=
+econds) of virtual
+> -#                                       CPUs each dirty ring full round,=
+ which shows how
+> -#                                       MigrationCapability dirty-limit =
+affects the guest
+> -#                                       during live migration. (since 8.=
+1)
+> -#
+> -# @dirty-limit-ring-full-time: Estimated average dirty ring full time (i=
+n microseconds)
+> -#                              each dirty ring full round, note that the=
+ value equals
+> -#                              dirty ring memory size divided by average=
+ dirty page rate
+> -#                              of virtual CPU, which can be used to obse=
+rve the average
+> -#                              memory load of virtual CPU indirectly. No=
+te that zero
+> -#                              means guest doesn't dirty memory (since 8=
+.1)
+> +# @dirty-limit-throttle-time-per-round: Maximum throttle time
+> +#     (in microseconds) of virtual CPUs each dirty ring full round,
+> +#     which shows how MigrationCapability dirty-limit affects the
 
-> 2023=E5=B9=B47=E6=9C=8828=E6=97=A5 =E4=B8=8B=E5=8D=882:04=EF=BC=8CMichae=
-l S. Tsirkin <mst@redhat.com> =E5=86=99=E9=81=93=EF=BC=9A
->=20
-> On Tue, Jul 25, 2023 at 06:42:45PM +0800, Li Feng wrote:
->> Get_inflight_fd is sent only once. When reconnecting to the backend,
->> qemu sent set_inflight_fd to the backend.
->=20
-> I don't understand what you are trying to say here.
-> Should be:
-> Currently ABCD. This is wrong/unnecessary because EFG. This patch HIJ.
+Perhaps "for each ... round"?
 
-Thanks, I will reorganize the commit message in v3.
->=20
->> Signed-off-by: Li Feng <fengli@smartx.com>
->> ---
->> hw/scsi/vhost-scsi-common.c | 37 =
-++++++++++++++++++-------------------
->> 1 file changed, 18 insertions(+), 19 deletions(-)
->>=20
->> diff --git a/hw/scsi/vhost-scsi-common.c =
-b/hw/scsi/vhost-scsi-common.c
->> index a06f01af26..664adb15b4 100644
->> --- a/hw/scsi/vhost-scsi-common.c
->> +++ b/hw/scsi/vhost-scsi-common.c
->> @@ -52,20 +52,28 @@ int vhost_scsi_common_start(VHostSCSICommon *vsc)
->>=20
->>     vsc->dev.acked_features =3D vdev->guest_features;
->>=20
->> -    assert(vsc->inflight =3D=3D NULL);
->> -    vsc->inflight =3D g_new0(struct vhost_inflight, 1);
->> -    ret =3D vhost_dev_get_inflight(&vsc->dev,
->> -                                 vs->conf.virtqueue_size,
->> -                                 vsc->inflight);
->> +    ret =3D vhost_dev_prepare_inflight(&vsc->dev, vdev);
->>     if (ret < 0) {
->> -        error_report("Error get inflight: %d", -ret);
->> +        error_report("Error setting inflight format: %d", -ret);
->>         goto err_guest_notifiers;
->>     }
->>=20
->> -    ret =3D vhost_dev_set_inflight(&vsc->dev, vsc->inflight);
->> -    if (ret < 0) {
->> -        error_report("Error set inflight: %d", -ret);
->> -        goto err_guest_notifiers;
->> +    if (vsc->inflight) {
->> +        if (!vsc->inflight->addr) {
->> +            ret =3D vhost_dev_get_inflight(&vsc->dev,
->> +                                        vs->conf.virtqueue_size,
->> +                                        vsc->inflight);
->> +            if (ret < 0) {
->> +                error_report("Error get inflight: %d", -ret);
->=20
-> As long as you are fixing this - should be "getting inflight=E2=80=9D.
-I will fix it in v3.
->=20
->> +                goto err_guest_notifiers;
->> +            }
->> +        }
->> +
->> +        ret =3D vhost_dev_set_inflight(&vsc->dev, vsc->inflight);
->> +        if (ret < 0) {
->> +            error_report("Error set inflight: %d", -ret);
->> +            goto err_guest_notifiers;
->> +        }
->>     }
->>=20
->>     ret =3D vhost_dev_start(&vsc->dev, vdev, true);
->> @@ -85,9 +93,6 @@ int vhost_scsi_common_start(VHostSCSICommon *vsc)
->>     return ret;
->>=20
->> err_guest_notifiers:
->> -    g_free(vsc->inflight);
->> -    vsc->inflight =3D NULL;
->> -
->>     k->set_guest_notifiers(qbus->parent, vsc->dev.nvqs, false);
->> err_host_notifiers:
->>     vhost_dev_disable_notifiers(&vsc->dev, vdev);
->> @@ -111,12 +116,6 @@ void vhost_scsi_common_stop(VHostSCSICommon =
-*vsc)
->>     }
->>     assert(ret >=3D 0);
->>=20
->> -    if (vsc->inflight) {
->> -        vhost_dev_free_inflight(vsc->inflight);
->> -        g_free(vsc->inflight);
->> -        vsc->inflight =3D NULL;
->> -    }
->> -
->>     vhost_dev_disable_notifiers(&vsc->dev, vdev);
->> }
->>=20
->> --=20
->> 2.41.0
+Remind me, what's a "dirty ring full round"?
 
+> +#     guest during live migration.  (Since 8.1)
+> +#
+> +# @dirty-limit-ring-full-time: Estimated average dirty ring full
+> +#     time (in microseconds) each dirty ring full round. The value
 
---Apple-Mail=_FEDE57A7-0C95-4B67-A6D1-7730607A6DCC
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/html;
-	charset=utf-8
+Likewise.
 
-<html><head><meta http-equiv=3D"content-type" content=3D"text/html; =
-charset=3Dutf-8"></head><body style=3D"overflow-wrap: break-word; =
--webkit-nbsp-mode: space; line-break: =
-after-white-space;"><br><div><br><blockquote =
-type=3D"cite"><div>2023=E5=B9=B47=E6=9C=8828=E6=97=A5 =
-=E4=B8=8B=E5=8D=882:04=EF=BC=8CMichael S. Tsirkin &lt;mst@redhat.com&gt; =
-=E5=86=99=E9=81=93=EF=BC=9A</div><br =
-class=3D"Apple-interchange-newline"><div><meta charset=3D"UTF-8"><span =
-style=3D"caret-color: rgb(0, 0, 0); font-family: Monaco; font-size: =
-12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
-display: inline !important;">On Tue, Jul 25, 2023 at 06:42:45PM +0800, =
-Li Feng wrote:</span><br style=3D"caret-color: rgb(0, 0, 0); =
-font-family: Monaco; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none;"><blockquote type=3D"cite" style=3D"font-family: =
-Monaco; font-size: 12px; font-style: normal; font-variant-caps: normal; =
-font-weight: 400; letter-spacing: normal; orphans: auto; text-align: =
-start; text-indent: 0px; text-transform: none; white-space: normal; =
-widows: auto; word-spacing: 0px; -webkit-text-size-adjust: auto; =
--webkit-text-stroke-width: 0px; text-decoration: none;">Get_inflight_fd =
-is sent only once. When reconnecting to the backend,<br>qemu sent =
-set_inflight_fd to the backend.<br></blockquote><br style=3D"caret-color: =
-rgb(0, 0, 0); font-family: Monaco; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none;"><span style=3D"caret-color: rgb(0, 0, 0); =
-font-family: Monaco; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none; float: none; display: inline !important;">I don't =
-understand what you are trying to say here.</span><br =
-style=3D"caret-color: rgb(0, 0, 0); font-family: Monaco; font-size: =
-12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><span =
-style=3D"caret-color: rgb(0, 0, 0); font-family: Monaco; font-size: =
-12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
-display: inline !important;">Should be:</span><br style=3D"caret-color: =
-rgb(0, 0, 0); font-family: Monaco; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none;"><span style=3D"caret-color: rgb(0, 0, 0); =
-font-family: Monaco; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none; float: none; display: inline =
-!important;">Currently ABCD. This is wrong/unnecessary because EFG. This =
-patch HIJ.</span><br style=3D"caret-color: rgb(0, 0, 0); font-family: =
-Monaco; font-size: 12px; font-style: normal; font-variant-caps: normal; =
-font-weight: 400; letter-spacing: normal; text-align: start; =
-text-indent: 0px; text-transform: none; white-space: normal; =
-word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
-none;"></div></blockquote><div><br></div>Thanks, I will reorganize the =
-commit message in v3.<br><blockquote type=3D"cite"><div><br =
-style=3D"caret-color: rgb(0, 0, 0); font-family: Monaco; font-size: =
-12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><blockquote =
-type=3D"cite" style=3D"font-family: Monaco; font-size: 12px; font-style: =
-normal; font-variant-caps: normal; font-weight: 400; letter-spacing: =
-normal; orphans: auto; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; widows: auto; word-spacing: =
-0px; -webkit-text-size-adjust: auto; -webkit-text-stroke-width: 0px; =
-text-decoration: none;">Signed-off-by: Li Feng =
-&lt;fengli@smartx.com&gt;<br>---<br>hw/scsi/vhost-scsi-common.c | 37 =
-++++++++++++++++++-------------------<br>1 file changed, 18 =
-insertions(+), 19 deletions(-)<br><br>diff --git =
-a/hw/scsi/vhost-scsi-common.c b/hw/scsi/vhost-scsi-common.c<br>index =
-a06f01af26..664adb15b4 100644<br>--- =
-a/hw/scsi/vhost-scsi-common.c<br>+++ b/hw/scsi/vhost-scsi-common.c<br>@@ =
--52,20 +52,28 @@ int vhost_scsi_common_start(VHostSCSICommon =
-*vsc)<br><br>&nbsp;&nbsp;&nbsp;&nbsp;vsc-&gt;dev.acked_features =3D =
-vdev-&gt;guest_features;<br><br>- =
-&nbsp;&nbsp;&nbsp;assert(vsc-&gt;inflight =3D=3D NULL);<br>- =
-&nbsp;&nbsp;&nbsp;vsc-&gt;inflight =3D g_new0(struct vhost_inflight, =
-1);<br>- &nbsp;&nbsp;&nbsp;ret =3D =
-vhost_dev_get_inflight(&amp;vsc-&gt;dev,<br>- =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
-p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vs-&gt;conf.virtqueue_size,<br=
->- =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
-p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vsc-&gt;inflight);<br>+ =
-&nbsp;&nbsp;&nbsp;ret =3D vhost_dev_prepare_inflight(&amp;vsc-&gt;dev, =
-vdev);<br>&nbsp;&nbsp;&nbsp;&nbsp;if (ret &lt; 0) {<br>- =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_report("Error get =
-inflight: %d", -ret);<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_report("Error setting =
-inflight format: %d", =
--ret);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;goto =
-err_guest_notifiers;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>- =
-&nbsp;&nbsp;&nbsp;ret =3D vhost_dev_set_inflight(&amp;vsc-&gt;dev, =
-vsc-&gt;inflight);<br>- &nbsp;&nbsp;&nbsp;if (ret &lt; 0) {<br>- =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_report("Error set =
-inflight: %d", -ret);<br>- =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;goto err_guest_notifiers;<br>+ =
-&nbsp;&nbsp;&nbsp;if (vsc-&gt;inflight) {<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if =
-(!vsc-&gt;inflight-&gt;addr) {<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ret =3D =
-vhost_dev_get_inflight(&amp;vsc-&gt;dev,<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
-p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
-&nbsp;&nbsp;vs-&gt;conf.virtqueue_size,<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
-p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
-&nbsp;&nbsp;vsc-&gt;inflight);<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if =
-(ret &lt; 0) {<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;error_report("Error get inflight: %d", =
--ret);<br></blockquote><br style=3D"caret-color: rgb(0, 0, 0); =
-font-family: Monaco; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none;"><span style=3D"caret-color: rgb(0, 0, 0); =
-font-family: Monaco; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none; float: none; display: inline !important;">As long =
-as you are fixing this - should be "getting inflight=E2=80=9D.</span><br =
-style=3D"caret-color: rgb(0, 0, 0); font-family: Monaco; font-size: =
-12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: =
-none;"></div></blockquote>I will fix it in v3.<br><blockquote =
-type=3D"cite"><div><br style=3D"caret-color: rgb(0, 0, 0); font-family: =
-Monaco; font-size: 12px; font-style: normal; font-variant-caps: normal; =
-font-weight: 400; letter-spacing: normal; text-align: start; =
-text-indent: 0px; text-transform: none; white-space: normal; =
-word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
-none;"><blockquote type=3D"cite" style=3D"font-family: Monaco; =
-font-size: 12px; font-style: normal; font-variant-caps: normal; =
-font-weight: 400; letter-spacing: normal; orphans: auto; text-align: =
-start; text-indent: 0px; text-transform: none; white-space: normal; =
-widows: auto; word-spacing: 0px; -webkit-text-size-adjust: auto; =
--webkit-text-stroke-width: 0px; text-decoration: none;">+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;goto err_guest_notifiers;<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>+<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ret =3D =
-vhost_dev_set_inflight(&amp;vsc-&gt;dev, vsc-&gt;inflight);<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (ret &lt; 0) {<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_re=
-port("Error set inflight: %d", -ret);<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;goto =
-err_guest_notifiers;<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;}<b=
-r><br>&nbsp;&nbsp;&nbsp;&nbsp;ret =3D vhost_dev_start(&amp;vsc-&gt;dev, =
-vdev, true);<br>@@ -85,9 +93,6 @@ int =
-vhost_scsi_common_start(VHostSCSICommon =
-*vsc)<br>&nbsp;&nbsp;&nbsp;&nbsp;return =
-ret;<br><br>err_guest_notifiers:<br>- =
-&nbsp;&nbsp;&nbsp;g_free(vsc-&gt;inflight);<br>- =
-&nbsp;&nbsp;&nbsp;vsc-&gt;inflight =3D =
-NULL;<br>-<br>&nbsp;&nbsp;&nbsp;&nbsp;k-&gt;set_guest_notifiers(qbus-&gt;p=
-arent, vsc-&gt;dev.nvqs, =
-false);<br>err_host_notifiers:<br>&nbsp;&nbsp;&nbsp;&nbsp;vhost_dev_disabl=
-e_notifiers(&amp;vsc-&gt;dev, vdev);<br>@@ -111,12 +116,6 @@ void =
-vhost_scsi_common_stop(VHostSCSICommon =
-*vsc)<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;assert(ret =
-&gt;=3D 0);<br><br>- &nbsp;&nbsp;&nbsp;if (vsc-&gt;inflight) {<br>- =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vhost_dev_free_inflight(vsc-&gt;=
-inflight);<br>- =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;g_free(vsc-&gt;inflight);<br>- =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vsc-&gt;inflight =3D =
-NULL;<br>- =
-&nbsp;&nbsp;&nbsp;}<br>-<br>&nbsp;&nbsp;&nbsp;&nbsp;vhost_dev_disable_noti=
-fiers(&amp;vsc-&gt;dev, vdev);<br>}<br><br>--<span =
-class=3D"Apple-converted-space">&nbsp;</span><br>2.41.0</blockquote></div>=
-</blockquote></div><br></body></html>=
+> +#     equals dirty ring memory size divided by average dirty page
 
---Apple-Mail=_FEDE57A7-0C95-4B67-A6D1-7730607A6DCC--
+"the dirty ring memory size divided by the average ..."
+
+> +#     rate of the virtual CPU, which can be used to observe the
+> +#     average memory load of the virtual CPU indirectly. Note that
+> +#     zero means guest doesn't dirty memory.  (Since 8.1)
+
+Two spaces between sentences for consistency.
+
+>  #
+>  # Since: 0.14
+>  ##
+> @@ -519,15 +519,11 @@
+>  #     are present.  'return-path' capability must be enabled to use
+>  #     it.  (since 8.1)
+>  #
+> -# @dirty-limit: If enabled, migration will use the dirty-limit algo to
+> -#               throttle down guest instead of auto-converge algo.
+> -#               Throttle algo only works when vCPU's dirtyrate greater
+> -#               than 'vcpu-dirty-limit', read processes in guest os
+> -#               aren't penalized any more, so this algo can improve
+> -#               performance of vCPU during live migration. This is an
+> -#               optional performance feature and should not affect the
+> -#               correctness of the existing auto-converge algo.
+> -#               (since 8.1)
+> +# @dirty-limit: If enabled, migration will throttle vCPUs as needed to
+> +#     keep their dirty page rate within @vcpu-dirty-limit.  This can
+> +#     improve responsiveness of large guests during live migration,
+> +#     and can result in more stable read performance.  Requires KVM
+> +#     with accelerator property "dirty-ring-size" set.  (Since 8.1)
+>  #
+>  # Features:
+>  #
+> @@ -822,17 +818,17 @@
+>  #     Nodes are mapped to their block device name if there is one, and
+>  #     to their node name otherwise.  (Since 5.2)
+>  #
+> -# @x-vcpu-dirty-limit-period: Periodic time (in milliseconds) of dirty l=
+imit during
+> -#                             live migration. Should be in the range 1 t=
+o 1000ms,
+> -#                             defaults to 1000ms. (Since 8.1)
+> +# @x-vcpu-dirty-limit-period: Periodic time (in milliseconds) of dirty
+> +#     limit during  live migration. Should be in the range 1 to 1000ms,
+
+Single space in "during live", and two space between sentences, please.
+
+> +#     defaults to 1000ms.  (Since 8.1)
+
+I dislike that we mix milli- and microseconds.  Too late to fix, I'm
+afraid.
+
+Remind me, what't the "periodic time of dirty limit during live
+migration"?
+
+>  #
+>  # @vcpu-dirty-limit: Dirtyrate limit (MB/s) during live migration.
+> -#                    Defaults to 1. (Since 8.1)
+> +#     Defaults to 1.  (Since 8.1)
+>  #
+>  # Features:
+>  #
+>  # @unstable: Members @x-checkpoint-delay and @x-vcpu-dirty-limit-period
+> -#            are experimental.
+> +#     are experimental.
+>  #
+>  # Since: 2.4
+>  ##
+> @@ -988,17 +984,17 @@
+>  #     Nodes are mapped to their block device name if there is one, and
+>  #     to their node name otherwise.  (Since 5.2)
+>  #
+> -# @x-vcpu-dirty-limit-period: Periodic time (in milliseconds) of dirty l=
+imit during
+> -#                             live migration. Should be in the range 1 t=
+o 1000ms,
+> -#                             defaults to 1000ms. (Since 8.1)
+> +# @x-vcpu-dirty-limit-period: Periodic time (in milliseconds) of dirty
+> +#     limit during live migration. Should be in the range 1 to 1000ms,
+
+Two spaces between sentences.
+
+> +#     defaults to 1000ms.  (Since 8.1)
+>  #
+>  # @vcpu-dirty-limit: Dirtyrate limit (MB/s) during live migration.
+> -#                    Defaults to 1. (Since 8.1)
+> +#     Defaults to 1.  (Since 8.1)
+>  #
+>  # Features:
+>  #
+>  # @unstable: Members @x-checkpoint-delay and @x-vcpu-dirty-limit-period
+> -#            are experimental.
+> +#     are experimental.
+>  #
+>  # TODO: either fuse back into MigrationParameters, or make
+>  #     MigrationParameters members mandatory
+> @@ -1191,17 +1187,17 @@
+>  #     Nodes are mapped to their block device name if there is one, and
+>  #     to their node name otherwise.  (Since 5.2)
+>  #
+> -# @x-vcpu-dirty-limit-period: Periodic time (in milliseconds) of dirty l=
+imit during
+> -#                             live migration. Should be in the range 1 t=
+o 1000ms,
+> -#                             defaults to 1000ms. (Since 8.1)
+> +# @x-vcpu-dirty-limit-period: Periodic time (in milliseconds) of dirty
+> +#     limit during live migration. Should be in the range 1 to 1000ms,
+
+Two spaces between sentences.
+
+> +#     defaults to 1000ms.  (Since 8.1)
+>  #
+>  # @vcpu-dirty-limit: Dirtyrate limit (MB/s) during live migration.
+> -#                    Defaults to 1. (Since 8.1)
+> +#     Defaults to 1.  (Since 8.1)
+>  #
+>  # Features:
+>  #
+>  # @unstable: Members @x-checkpoint-delay and @x-vcpu-dirty-limit-period
+> -#            are experimental.
+> +#     are experimental.
+>  #
+>  # Since: 2.4
+>  ##
+
 
