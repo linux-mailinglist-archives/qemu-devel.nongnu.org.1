@@ -2,63 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE270766C47
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 13:59:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78A26766C6E
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 14:02:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qPLy3-0000eX-B0; Fri, 28 Jul 2023 07:49:11 -0400
+	id 1qPM8E-0003hu-QY; Fri, 28 Jul 2023 07:59:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1qPLxo-0000dI-Qw; Fri, 28 Jul 2023 07:48:56 -0400
-Received: from proxmox-new.maurer-it.com ([94.136.29.106])
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qPM8C-0003hW-Et
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 07:59:40 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1qPLxn-0003sC-1a; Fri, 28 Jul 2023 07:48:56 -0400
-Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 559DD41935;
- Fri, 28 Jul 2023 13:48:29 +0200 (CEST)
-Message-ID: <8b7788bb-e7d6-ff54-2452-655891ac4e3f@proxmox.com>
-Date: Fri, 28 Jul 2023 13:48:21 +0200
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qPM8A-0001mL-MN
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 07:59:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1690545575;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=TQoe252ie8jNfmmYlJDCVnlTCDBl2AUuA9WMnu9cfQA=;
+ b=RpYQvYukVxfbFrdrPdThbksGpTTQCgQs+b9TLgaziNSedvL6vuGU6GKdTiXjdn/+P+spqj
+ IKNTT+ocq3vjo+HU1QXpUG6vCHjgt8d1H3xaRM5PjE4nEJOuRJNGKO5xtLKjln9uPZqNgH
+ JBpMQDHwkArCZWR/FFLJG36bHY1kQQI=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-625-B8vgCUvCMNqE1MHoAGIuzA-1; Fri, 28 Jul 2023 07:59:33 -0400
+X-MC-Unique: B8vgCUvCMNqE1MHoAGIuzA-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-521f84b8c42so1501832a12.2
+ for <qemu-devel@nongnu.org>; Fri, 28 Jul 2023 04:59:33 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1690545572; x=1691150372;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=TQoe252ie8jNfmmYlJDCVnlTCDBl2AUuA9WMnu9cfQA=;
+ b=cDB0vgfDfPyh90FdqfPWFIXMjrZ/RaqfEKuWXBKHWJEn8tdA/44McCUy0U8doIgQYr
+ qshympPrbfcdMhbLdokLcCD6C8aSjUD8wszHXNo3R8PBpM5g5I1jp1NthMBaq1Y/S6g/
+ GluLl0y1R6Cna+eqtB3wNG8Arhru52o88eSpG71kXo+0nfho6vRmhtWsfOvp9yvVaPJa
+ z3h/ojK/vliRHlkpRyiUk0Y5tzDSjExM2Q3u8QyrFixPO7mhNizJQAP6CJs3cemIVsd6
+ 2LnzLDy+sB6KVVdn+HPhG2ObNJTDbxd+xk4bbYN0+L6Z/E/DUFK7LqJ/hE0D5lZSlwsE
+ cTcw==
+X-Gm-Message-State: ABy/qLaTintW6p8CJZD16RiJBU+HlzStvx+8WbxFr39ZctNWcTBD6lWI
+ 4pWnPzP9y5Rhn8i30PPgeXCTUyItLTIkQXvLKAzbg9Mn9TiSmV1GKAR+EiB+9Z60kHDKdM7v83Q
+ HwQX2aKtk23l4aCs=
+X-Received: by 2002:aa7:d889:0:b0:522:2bc7:1c57 with SMTP id
+ u9-20020aa7d889000000b005222bc71c57mr1626413edq.33.1690545572607; 
+ Fri, 28 Jul 2023 04:59:32 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlEpJ3VoTVXAiZgLfXcngoGxFzhOW4mlvYgDnhDs0GHOGG4+nLpOhwCBQEeeoEkSnC1XZrSf0w==
+X-Received: by 2002:aa7:d889:0:b0:522:2bc7:1c57 with SMTP id
+ u9-20020aa7d889000000b005222bc71c57mr1626390edq.33.1690545572277; 
+ Fri, 28 Jul 2023 04:59:32 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ i14-20020a056402054e00b005219de74217sm1775201edx.43.2023.07.28.04.59.31
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 28 Jul 2023 04:59:31 -0700 (PDT)
+Date: Fri, 28 Jul 2023 13:59:30 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: xianglai li <lixianglai@loongson.cn>
+Cc: qemu-devel@nongnu.org, Xiaojuan Yang <yangxiaojuan@loongson.cn>, Song
+ Gao <gaosong@loongson.cn>, "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha
+ <anisinha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, Richard
+ Henderson <richard.henderson@linaro.org>, Eduardo Habkost
+ <eduardo@habkost.net>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?= <philmd@linaro.org>, Yanan Wang
+ <wangyanan55@huawei.com>, "Daniel P. =?UTF-8?B?QmVycmFuZ8Op?="
+ <berrange@redhat.com>, Peter Xu <peterx@redhat.com>, David Hildenbrand
+ <david@redhat.com>
+Subject: Re: [PATCH 3/8] Introduced a new function to disconnect GPIO
+ connections
+Message-ID: <20230728135930.456842ad@imammedo.users.ipa.redhat.com>
+In-Reply-To: <6f3c91ecab2d61c2cfb2d1a34a0f2120138e28ed.1689837093.git.lixianglai@loongson.cn>
+References: <cover.1689837093.git.lixianglai@loongson.cn>
+ <6f3c91ecab2d61c2cfb2d1a34a0f2120138e28ed.1689837093.git.lixianglai@loongson.cn>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PULL 09/12] migration: Use migration_transferred_bytes() to
- calculate rate_limit
-From: Fiona Ebner <f.ebner@proxmox.com>
-To: Juan Quintela <quintela@redhat.com>, qemu-devel@nongnu.org
-Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
- Leonardo Bras <leobras@redhat.com>, David Hildenbrand <david@redhat.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>, qemu-s390x@nongnu.org,
- Stefan Hajnoczi <stefanha@redhat.com>, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- Eric Farman <farman@linux.ibm.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- Ilya Leoshkevich <iii@linux.ibm.com>, Fam Zheng <fam@euphon.net>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Greg Kurz <groug@kaod.org>, Halil Pasic <pasic@linux.ibm.com>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-ppc@nongnu.org,
- Peter Xu <peterx@redhat.com>, Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Hailiang Zhang <zhanghailiang@xfusion.com>, John Snow <jsnow@redhat.com>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, qemu-block@nongnu.org,
- Eric Blake <eblake@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>
-References: <20230518171304.95006-1-quintela@redhat.com>
- <20230518171304.95006-10-quintela@redhat.com>
- <5023cb18-9e9a-4666-e6b5-a7eb0e8dbd6c@proxmox.com>
-Content-Language: en-US
-In-Reply-To: <5023cb18-9e9a-4666-e6b5-a7eb0e8dbd6c@proxmox.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
- helo=proxmox-new.maurer-it.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.094,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -76,39 +110,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 23.05.23 um 14:31 schrieb Fiona Ebner:
-> Am 18.05.23 um 19:13 schrieb Juan Quintela:
->> diff --git a/migration/migration-stats.c b/migration/migration-stats.c
->> index feec7d7369..97759a45f3 100644
->> --- a/migration/migration-stats.c
->> +++ b/migration/migration-stats.c
->> @@ -24,7 +24,9 @@ bool migration_rate_exceeded(QEMUFile *f)
->>          return true;
->>      }
->>  
->> -    uint64_t rate_limit_used = stat64_get(&mig_stats.rate_limit_used);
->> +    uint64_t rate_limit_start = stat64_get(&mig_stats.rate_limit_start);
->> +    uint64_t rate_limit_current = migration_transferred_bytes(f);
->> +    uint64_t rate_limit_used = rate_limit_current - rate_limit_start;
->>      uint64_t rate_limit_max = stat64_get(&mig_stats.rate_limit_max);
->>  
->>      if (rate_limit_max == RATE_LIMIT_DISABLED) {
-> 
-> Hi,
-> just wanted to let you know that the call to
-> migration_transferred_bytes(f) here can introduce a huge performance
-> penalty when taking a snapshot. I ran into the issue when testing
-> something else, with a single-disk snapshot. Without this call it takes
-> about two seconds, with the call about two minutes.
-> 
-> 
+On Thu, 20 Jul 2023 15:15:08 +0800
+xianglai li <lixianglai@loongson.cn> wrote:
 
-Unfortunately, the regression is still in current master and v8.1-rc1.
-Did the v2 [0] of the series never make it?
+> It introduces a new function to unwire the
+> vcpu<->exioi interrupts for the vcpu hot-(un)plug cases.
 
-[0]: https://lists.nongnu.org/archive/html/qemu-devel/2023-05/msg07708.html
+it's not a new function.
+You probably wanted to say:
 
-Best Regards,
-Fiona
+subj: make foo() public
+
+it will be reused .someplace. for ...
+
+>=20
+> Cc: Xiaojuan Yang <yangxiaojuan@loongson.cn>
+> Cc: Song Gao <gaosong@loongson.cn>
+> Cc: "Michael S. Tsirkin" <mst@redhat.com>
+> Cc: Igor Mammedov <imammedo@redhat.com>
+> Cc: Ani Sinha <anisinha@redhat.com>
+> Cc: Paolo Bonzini <pbonzini@redhat.com>
+> Cc: Richard Henderson <richard.henderson@linaro.org>
+> Cc: Eduardo Habkost <eduardo@habkost.net>
+> Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+> Cc: "Philippe Mathieu-Daud=C3=A9" <philmd@linaro.org>
+> Cc: Yanan Wang <wangyanan55@huawei.com>
+> Cc: "Daniel P. Berrang=C3=A9" <berrange@redhat.com>
+> Cc: Peter Xu <peterx@redhat.com>
+> Cc: David Hildenbrand <david@redhat.com>
+> Signed-off-by: xianglai li <lixianglai@loongson.cn>
+> ---
+>  hw/core/gpio.c         | 4 ++--
+>  include/hw/qdev-core.h | 2 ++
+>  2 files changed, 4 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/hw/core/gpio.c b/hw/core/gpio.c
+> index 80d07a6ec9..4fc6409545 100644
+> --- a/hw/core/gpio.c
+> +++ b/hw/core/gpio.c
+> @@ -143,8 +143,8 @@ qemu_irq qdev_get_gpio_out_connector(DeviceState *dev=
+, const char *name, int n)
+> =20
+>  /* disconnect a GPIO output, returning the disconnected input (if any) */
+> =20
+> -static qemu_irq qdev_disconnect_gpio_out_named(DeviceState *dev,
+> -                                               const char *name, int n)
+> +qemu_irq qdev_disconnect_gpio_out_named(DeviceState *dev,
+> +                                        const char *name, int n)
+>  {
+>      char *propname =3D g_strdup_printf("%s[%d]",
+>                                       name ? name : "unnamed-gpio-out", n=
+);
+> diff --git a/include/hw/qdev-core.h b/include/hw/qdev-core.h
+> index 884c726a87..992f5419fa 100644
+> --- a/include/hw/qdev-core.h
+> +++ b/include/hw/qdev-core.h
+> @@ -739,6 +739,8 @@ qemu_irq qdev_get_gpio_out_connector(DeviceState *dev=
+, const char *name, int n);
+>   */
+>  qemu_irq qdev_intercept_gpio_out(DeviceState *dev, qemu_irq icpt,
+>                                   const char *name, int n);
+> +qemu_irq qdev_disconnect_gpio_out_named(DeviceState *dev,
+> +                                               const char *name, int n);
+
+watch for proper alignment=20
+
+have you tried to run ./scripts/checkpatch.pl on you series?
+(it should catch such cases)
+
+> =20
+>  BusState *qdev_get_child_bus(DeviceState *dev, const char *name);
+> =20
 
 
