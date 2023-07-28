@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B7BF766EA2
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 15:44:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99127766E7A
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 15:35:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qPNRT-0001l2-TM; Fri, 28 Jul 2023 09:23:40 -0400
+	id 1qPNV4-0002hu-73; Fri, 28 Jul 2023 09:27:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qPNRQ-0001kh-1D
- for qemu-devel@nongnu.org; Fri, 28 Jul 2023 09:23:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1qPNUj-0002hI-Uv
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 09:27:03 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qPNRN-0007PQ-Tc
- for qemu-devel@nongnu.org; Fri, 28 Jul 2023 09:23:35 -0400
+ id 1qPNUi-0008Hc-4p
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 09:27:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690550613;
+ s=mimecast20190719; t=1690550819;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=kW5dp9bznKqUPnHyL9s/AnyT/WfstKwZp9MOI+oN+tI=;
- b=BK9EDAygsewfjZ+KYR7XXxne0UQLV4vQDHu++2XjLv6bEm8e5GCufuHNV3GiH+k2Xj38NP
- j9XzF8EwQHl+aH0zXeJMo5IojByYn4L4eYf98krwyhSDoiJ4lqQwWhnDa2PNpTu/RPKw2M
- 6IzSELhXguUf7Kk/Tda3uUjB2AFxAq0=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=OsGlaP1kJrkmTBAYnSYp8J76UU1KYDV6msPqR21kILE=;
+ b=Oj1noSb4njR2NNBVl0CYrZmSCtJDAXgsn7BD+1xgI8nO7VrkBU/el1zODedEZq0qPtnoRD
+ tss63wUkR9I6It+MMByfkw2vBZ7Y9XLpK88WnH0OXRMktTrrhJSk6pqZt7qF5j5eG5AiFS
+ JkGMlOAahjYhAiKbYIjKOY4uDNjc8O4=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-501-leOrUM1mOOqxzJYkjzdxKw-1; Fri, 28 Jul 2023 09:23:31 -0400
-X-MC-Unique: leOrUM1mOOqxzJYkjzdxKw-1
-Received: by mail-lj1-f197.google.com with SMTP id
- 38308e7fff4ca-2b93faa81c9so22597721fa.0
- for <qemu-devel@nongnu.org>; Fri, 28 Jul 2023 06:23:31 -0700 (PDT)
+ us-mta-632-LvAiwjmvNE2LH-2TxqNLDQ-1; Fri, 28 Jul 2023 09:26:58 -0400
+X-MC-Unique: LvAiwjmvNE2LH-2TxqNLDQ-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-98e40d91fdfso134345466b.3
+ for <qemu-devel@nongnu.org>; Fri, 28 Jul 2023 06:26:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690550610; x=1691155410;
+ d=1e100.net; s=20221208; t=1690550817; x=1691155617;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kW5dp9bznKqUPnHyL9s/AnyT/WfstKwZp9MOI+oN+tI=;
- b=BoqWDv0xFOGmM9YbIM0AcFJlMsSA/Oec/4PPSSLe1vAMc4Stk0oGpUmqKfw+c7zZ1t
- UfAvq+MCLgcLRTLNR97y29QKu3qmcNYEMP33iDCXE4ZmvbLv8K0Nw+VxdCg+/1wojDNR
- ROty1rxx69KR2hWMZqWf9lszmCknLHCJGdWxSwsoVogNv8PXWQr/OgoRCeJ3f9L+6gxl
- W3htiUv8elX2zXuL9gUWIqlMIm6a2JtyYU4q+V3MAl3cFabygGRQEeviX2aoZpMqnmTX
- ILJiZbYa6LCsmoZmhEmiWlAigQGzkkaDODz6D6yV66KzuqYPlCTKEVptPCcbMq7J+UvC
- HllQ==
-X-Gm-Message-State: ABy/qLbK1hPguLJExsFNZdFPKnkQ0I+QVAJWynXtzpjz7NCilb9Z7MsX
- rAWWOZZZuWpJoF5lfp96dZDoWDbj9vLTbHxAlm3UuOclGza+DYjwC0ZcVbbqQ0KrWPvozof3y71
- Et3fFALGPu1I0uxg=
-X-Received: by 2002:a2e:2403:0:b0:2b9:a63f:6415 with SMTP id
- k3-20020a2e2403000000b002b9a63f6415mr1783094ljk.5.1690550610082; 
- Fri, 28 Jul 2023 06:23:30 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlGpsV4CVeb+zG5jVZ3eex1WrDnoVFqkzassd4SN+FYN52xg7jft2x7MlSt9G1Wnkq2u7yb2rQ==
-X-Received: by 2002:a2e:2403:0:b0:2b9:a63f:6415 with SMTP id
- k3-20020a2e2403000000b002b9a63f6415mr1783074ljk.5.1690550609787; 
- Fri, 28 Jul 2023 06:23:29 -0700 (PDT)
+ bh=OsGlaP1kJrkmTBAYnSYp8J76UU1KYDV6msPqR21kILE=;
+ b=ISiKI4F+xLM7a0aXfZojZlfESu5Fdv/ByrFiYMdtk5mqxrekbNU16uAfC0/PgdGkXF
+ H8TpL/Q4D1fO4SK0wyZCz0EktMQL9yfPlbMytF3rQa0i6HjCRcZ559C67FqSbQmp2xWp
+ Y1gWczkUT5rTDJExEYfCtvHq6aLj7OlI1FeCNAM6N7Ml9fPFPXJ7upK/KC9pl1Stm7nM
+ HyKAaO4vl4PYM4qE5vJnGTj4Mdwr1gljkwGAFz3tNCt3AKg3x5sEqIAEe16lU64qjAA5
+ YqX54X3jc1k0EvsgALW5dlHsweKJ7Tdx4Y+e2+w2eZxXsvmtK+k1ZJ67N4FwfEFV475o
+ ctwA==
+X-Gm-Message-State: ABy/qLZc53QTOGtsM7LbvDjPJkGghTQ7EvVqhIQMXoLOMGu0wZdff5kV
+ m8154g4dTSM3T6FMsAtPIyZLCwl0hFu77IkgPZA2JmnETnPiMBCsUkdxALkXhmIjUC/IWJMGesW
+ Z0x+ba6GKvFeM8uk=
+X-Received: by 2002:a17:906:845c:b0:99b:465c:fb9f with SMTP id
+ e28-20020a170906845c00b0099b465cfb9fmr2359650ejy.8.1690550816956; 
+ Fri, 28 Jul 2023 06:26:56 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlF4Cr+9jLFqwD7Kq37urPBirtacUEC7mpc3jswmGS459nJz9J/PXGwU8AS4URsmzjjA1+pOhQ==
+X-Received: by 2002:a17:906:845c:b0:99b:465c:fb9f with SMTP id
+ e28-20020a170906845c00b0099b465cfb9fmr2359642ejy.8.1690550816634; 
+ Fri, 28 Jul 2023 06:26:56 -0700 (PDT)
 Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
  [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- b12-20020a170906038c00b00991faf3810esm2110586eja.146.2023.07.28.06.23.28
+ dc26-20020a170906c7da00b00988e953a586sm2065189ejb.61.2023.07.28.06.26.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 28 Jul 2023 06:23:29 -0700 (PDT)
-Date: Fri, 28 Jul 2023 15:23:28 +0200
+ Fri, 28 Jul 2023 06:26:56 -0700 (PDT)
+Date: Fri, 28 Jul 2023 15:26:55 +0200
 From: Igor Mammedov <imammedo@redhat.com>
 To: xianglai li <lixianglai@loongson.cn>
 Cc: qemu-devel@nongnu.org, Xiaojuan Yang <yangxiaojuan@loongson.cn>, Song
@@ -75,16 +75,16 @@ Cc: qemu-devel@nongnu.org, Xiaojuan Yang <yangxiaojuan@loongson.cn>, Song
  <wangyanan55@huawei.com>, "Daniel P. =?UTF-8?B?QmVycmFuZ8Op?="
  <berrange@redhat.com>, Peter Xu <peterx@redhat.com>, David Hildenbrand
  <david@redhat.com>
-Subject: Re: [PATCH 6/8] Add support of *unrealize* for loongarch cpu
-Message-ID: <20230728152328.37420bee@imammedo.users.ipa.redhat.com>
-In-Reply-To: <3c03a7e5c3a3e93adb50b852264a02790221865e.1689837093.git.lixianglai@loongson.cn>
+Subject: Re: [PATCH 7/8] Update the ACPI table for the Loongarch CPU
+Message-ID: <20230728152655.1b941ee4@imammedo.users.ipa.redhat.com>
+In-Reply-To: <c5caccd85916783d4682b34d6c4011aaa342d73a.1689837093.git.lixianglai@loongson.cn>
 References: <cover.1689837093.git.lixianglai@loongson.cn>
- <3c03a7e5c3a3e93adb50b852264a02790221865e.1689837093.git.lixianglai@loongson.cn>
+ <c5caccd85916783d4682b34d6c4011aaa342d73a.1689837093.git.lixianglai@loongson.cn>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -109,12 +109,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 20 Jul 2023 15:15:11 +0800
+On Thu, 20 Jul 2023 15:15:12 +0800
 xianglai li <lixianglai@loongson.cn> wrote:
 
-> 1.Add the Unrealize function to the Loongarch CPU for cpu hot-(un)plug
-> 2.Add CPU topology-related properties to the Loongarch CPU for cpu hot-(u=
-n)plug
+> 1.Create a new GED device type for Loongarch,
+> mount cpu_madt function to update the ACPI table
+
+madt changes should be its own patch
+
+> 2.Update the APIC table for loongarch based on
+> CPU information to support CPU hot-(un)plug
 >=20
 > Cc: Xiaojuan Yang <yangxiaojuan@loongson.cn>
 > Cc: Song Gao <gaosong@loongson.cn>
@@ -132,104 +136,166 @@ n)plug
 > Cc: David Hildenbrand <david@redhat.com>
 > Signed-off-by: xianglai li <lixianglai@loongson.cn>
 > ---
->  target/loongarch/cpu.c | 33 +++++++++++++++++++++++++++++++++
->  target/loongarch/cpu.h |  1 +
->  2 files changed, 34 insertions(+)
+>  hw/acpi/acpi-cpu-hotplug-stub.c               |  9 +++++
+>  hw/loongarch/acpi-build.c                     | 35 ++++++++++++++++--
+>  hw/loongarch/generic_event_device_loongarch.c | 36 +++++++++++++++++++
+>  hw/loongarch/meson.build                      |  2 +-
+>  4 files changed, 79 insertions(+), 3 deletions(-)
+>  create mode 100644 hw/loongarch/generic_event_device_loongarch.c
 >=20
-> diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-> index ad93ecac92..97c577820f 100644
-> --- a/target/loongarch/cpu.c
-> +++ b/target/loongarch/cpu.c
-> @@ -18,6 +18,7 @@
->  #include "cpu-csr.h"
->  #include "sysemu/reset.h"
->  #include "tcg/tcg.h"
-> +#include "hw/qdev-properties.h"
-> =20
->  const char * const regnames[32] =3D {
->      "r0", "r1", "r2", "r3", "r4", "r5", "r6", "r7",
-> @@ -540,6 +541,24 @@ static void loongarch_cpu_realizefn(DeviceState *dev=
-, Error **errp)
->      lacc->parent_realize(dev, errp);
+> diff --git a/hw/acpi/acpi-cpu-hotplug-stub.c b/hw/acpi/acpi-cpu-hotplug-s=
+tub.c
+> index 2aec90d968..af9fda2cf4 100644
+> --- a/hw/acpi/acpi-cpu-hotplug-stub.c
+> +++ b/hw/acpi/acpi-cpu-hotplug-stub.c
+> @@ -19,6 +19,15 @@ void legacy_acpi_cpu_hotplug_init(MemoryRegion *parent=
+, Object *owner,
+>      return;
 >  }
 > =20
-> +static void loongarch_cpu_unrealizefn(DeviceState *dev)
+> +void build_cpus_aml(Aml *table, MachineState *machine, CPUHotplugFeature=
+s opts,
+> +                    hwaddr mmap_io_base,
+> +                    const char *res_root,
+> +                    const char *event_handler_method,
+> +                    AmlRegionSpace rs)
 > +{
-> +    LoongArchCPUClass *mcc =3D LOONGARCH_CPU_GET_CLASS(dev);
-> +
-> +#ifndef CONFIG_USER_ONLY
-> +    CPUState *cs =3D CPU(dev);
-> +    LoongArchCPU *cpu =3D LOONGARCH_CPU(dev);
-> +    CPULoongArchState *env =3D &cpu->env;
-> +
-> +    cpu_remove_sync(CPU(dev));
-> +    cpu_address_space_destroy(cs, 0);
-> +    address_space_destroy(&env->address_space_iocsr);
-> +    memory_region_del_subregion(&env->system_iocsr, &env->iocsr_mem);
-> +#endif
-> +
-> +    mcc->parent_unrealize(dev);
+> +    return;
 > +}
 > +
->  #ifndef CONFIG_USER_ONLY
->  static void loongarch_qemu_write(void *opaque, hwaddr addr,
->                                   uint64_t val, unsigned size)
-> @@ -697,6 +716,15 @@ static gchar *loongarch_gdb_arch_name(CPUState *cs)
->      return g_strdup("loongarch64");
->  }
-> =20
-
-
-> +static Property loongarch_cpu_properties[] =3D {
-> +    DEFINE_PROP_INT32("socket-id", LoongArchCPU, socket_id, 0),
-> +    DEFINE_PROP_INT32("core-id", LoongArchCPU, core_id, 0),
-> +    DEFINE_PROP_INT32("thread-id", LoongArchCPU, thread_id, 0),
-> +    DEFINE_PROP_INT32("node-id", LoongArchCPU, node_id, CPU_UNSET_NUMA_N=
-ODE_ID),
-> +
-> +    DEFINE_PROP_END_OF_LIST()
-> +};
-this should be a part of topo patches
-
-> +
->  static void loongarch_cpu_class_init(ObjectClass *c, void *data)
+>  void acpi_cpu_ospm_status(CPUHotplugState *cpu_st, ACPIOSTInfoList ***li=
+st)
 >  {
->      LoongArchCPUClass *lacc =3D LOONGARCH_CPU_CLASS(c);
-> @@ -704,8 +732,12 @@ static void loongarch_cpu_class_init(ObjectClass *c,=
- void *data)
->      DeviceClass *dc =3D DEVICE_CLASS(c);
->      ResettableClass *rc =3D RESETTABLE_CLASS(c);
-> =20
-> +    device_class_set_props(dc, loongarch_cpu_properties);
->      device_class_set_parent_realize(dc, loongarch_cpu_realizefn,
->                                      &lacc->parent_realize);
-> +    device_class_set_parent_unrealize(dc, loongarch_cpu_unrealizefn,
-> +                                  &lacc->parent_unrealize);
-> +
->      resettable_class_set_parent_phases(rc, NULL, loongarch_cpu_reset_hol=
-d, NULL,
->                                         &lacc->parent_phases);
-> =20
-> @@ -730,6 +762,7 @@ static void loongarch_cpu_class_init(ObjectClass *c, =
-void *data)
->  #ifdef CONFIG_TCG
->      cc->tcg_ops =3D &loongarch_tcg_ops;
+>      return;
+> diff --git a/hw/loongarch/acpi-build.c b/hw/loongarch/acpi-build.c
+> index 0b62c3a2f7..312908fb2f 100644
+> --- a/hw/loongarch/acpi-build.c
+> +++ b/hw/loongarch/acpi-build.c
+> @@ -46,6 +46,23 @@
+>  #define ACPI_BUILD_DPRINTF(fmt, ...)
 >  #endif
-> +    dc->user_creatable =3D true;
+> =20
+> +void virt_madt_cpu_entry(int uid,
+> +                         const CPUArchIdList *apic_ids,
+> +                         GArray *entry, bool force_enabled)
+> +{
+> +    uint32_t apic_id =3D apic_ids->cpus[uid].arch_id;
+> +    /* Flags =E2=80=93 Local APIC Flags */
+> +    uint32_t flags =3D apic_ids->cpus[uid].cpu !=3D NULL || force_enable=
+d ?
+> +                     1 /* Enabled */ : 0;
+> +
+> +    /* Rev 1.0b, Table 5-13 Processor Local APIC Structure */
+> +    build_append_int_noprefix(entry, 0, 1);       /* Type */
+> +    build_append_int_noprefix(entry, 8, 1);       /* Length */
+> +    build_append_int_noprefix(entry, uid, 1);     /* ACPI Processor ID */
+> +    build_append_int_noprefix(entry, apic_id, 1); /* APIC ID */
+> +    build_append_int_noprefix(entry, flags, 4); /* Flags */
+> +}
+> +
+>  /* build FADT */
+>  static void init_common_fadt_data(AcpiFadtData *data)
+>  {
+> @@ -121,15 +138,18 @@ build_madt(GArray *table_data, BIOSLinker *linker, =
+LoongArchMachineState *lams)
+>      build_append_int_noprefix(table_data, 1 /* PCAT_COMPAT */, 4); /* Fl=
+ags */
+> =20
+>      for (i =3D 0; i < arch_ids->len; i++) {
+> +        uint32_t flags;
+> +
+>          /* Processor Core Interrupt Controller Structure */
+>          arch_id =3D arch_ids->cpus[i].arch_id;
+> +        flags =3D arch_ids->cpus[i].cpu ? 1 : 0;
+> =20
+>          build_append_int_noprefix(table_data, 17, 1);    /* Type */
+>          build_append_int_noprefix(table_data, 15, 1);    /* Length */
+>          build_append_int_noprefix(table_data, 1, 1);     /* Version */
+> -        build_append_int_noprefix(table_data, i + 1, 4); /* ACPI Process=
+or ID */
+> +        build_append_int_noprefix(table_data, i, 4);     /* ACPI Process=
+or ID */
+>          build_append_int_noprefix(table_data, arch_id, 4); /* Core ID */
+> -        build_append_int_noprefix(table_data, 1, 4);     /* Flags */
+> +        build_append_int_noprefix(table_data, flags, 4);   /* Flags */
+>      }
+> =20
+>      /* Extend I/O Interrupt Controller Structure */
+> @@ -292,6 +312,17 @@ build_la_ged_aml(Aml *dsdt, MachineState *machine)
+>                                   AML_SYSTEM_MEMORY,
+>                                   VIRT_GED_MEM_ADDR);
+>      }
+> +
+> +    if (event & ACPI_GED_CPU_HOTPLUG_EVT) {
+> +        CPUHotplugFeatures opts =3D {
+> +            .acpi_1_compatible =3D false,
+> +            .has_legacy_cphp =3D false
+> +        };
+> +
+> +        build_cpus_aml(dsdt, machine, opts, VIRT_GED_CPUHP_ADDR,
+> +                       "\\_SB", "\\_GPE._E01", AML_SYSTEM_MEMORY);
+> +
+> +    }
+>      acpi_dsdt_add_power_button(dsdt);
 >  }
 > =20
->  #define DEFINE_LOONGARCH_CPU_TYPE(model, initfn) \
-> diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
-> index f4439c245f..32feee4fe6 100644
-> --- a/target/loongarch/cpu.h
-> +++ b/target/loongarch/cpu.h
-> @@ -397,6 +397,7 @@ struct LoongArchCPUClass {
->      /*< public >*/
+> diff --git a/hw/loongarch/generic_event_device_loongarch.c b/hw/loongarch=
+/generic_event_device_loongarch.c
+> new file mode 100644
+> index 0000000000..1fe550239b
+> --- /dev/null
+> +++ b/hw/loongarch/generic_event_device_loongarch.c
+> @@ -0,0 +1,36 @@
+> +/*
+> + * loongarch variant of the generic event device for hw reduced acpi
+> + *
+> + * This program is free software; you can redistribute it and/or modify =
+it
+> + * under the terms and conditions of the GNU General Public License,
+> + * version 2 or later, as published by the Free Software Foundation.
+> + */
+> +
+> +#include "qemu/osdep.h"
+> +#include "hw/acpi/generic_event_device.h"
+> +#include "hw/loongarch/virt.h"
+> +
+> +static void acpi_ged_loongarch_class_init(ObjectClass *class, void *data)
+> +{
+> +    AcpiDeviceIfClass *adevc =3D ACPI_DEVICE_IF_CLASS(class);
+> +
+> +    adevc->madt_cpu =3D virt_madt_cpu_entry;
+> +}
+> +
+> +static const TypeInfo acpi_ged_loongarch_info =3D {
+> +    .name          =3D TYPE_ACPI_GED_LOONGARCH,
+> +    .parent        =3D TYPE_ACPI_GED,
+> +    .class_init    =3D acpi_ged_loongarch_class_init,
+> +    .interfaces =3D (InterfaceInfo[]) {
+> +        { TYPE_HOTPLUG_HANDLER },
+> +        { TYPE_ACPI_DEVICE_IF },
+> +        { }
+> +    }
+> +};
+> +
+> +static void acpi_ged_loongarch_register_types(void)
+> +{
+> +    type_register_static(&acpi_ged_loongarch_info);
+> +}
+> +
+> +type_init(acpi_ged_loongarch_register_types)
+> diff --git a/hw/loongarch/meson.build b/hw/loongarch/meson.build
+> index c0421502ab..8d21addee3 100644
+> --- a/hw/loongarch/meson.build
+> +++ b/hw/loongarch/meson.build
+> @@ -3,6 +3,6 @@ loongarch_ss.add(files(
+>      'fw_cfg.c',
+>  ))
+>  loongarch_ss.add(when: 'CONFIG_LOONGARCH_VIRT', if_true: [files('virt.c'=
+), fdt])
+> -loongarch_ss.add(when: 'CONFIG_ACPI', if_true: files('acpi-build.c'))
+> +loongarch_ss.add(when: 'CONFIG_ACPI', if_true: files('acpi-build.c', 'ge=
+neric_event_device_loongarch.c'))
 > =20
->      DeviceRealize parent_realize;
-> +    DeviceUnrealize parent_unrealize;
->      ResettablePhases parent_phases;
->  };
-> =20
+>  hw_arch +=3D {'loongarch': loongarch_ss}
 
 
