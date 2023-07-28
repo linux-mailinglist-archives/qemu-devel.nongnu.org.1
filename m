@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CF02766DF4
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 15:19:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11073766DF6
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 15:19:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qPNKN-0006kK-Mc; Fri, 28 Jul 2023 09:16:19 -0400
+	id 1qPNK6-0006ZG-HJ; Fri, 28 Jul 2023 09:16:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qPNJv-0006Qh-Fd
+ id 1qPNJv-0006Qi-Fx
  for qemu-devel@nongnu.org; Fri, 28 Jul 2023 09:15:51 -0400
-Received: from mail-oa1-x2b.google.com ([2001:4860:4864:20::2b])
+Received: from mail-ot1-x335.google.com ([2607:f8b0:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qPNJr-0003Pk-Uu
+ id 1qPNJr-0003QC-NU
  for qemu-devel@nongnu.org; Fri, 28 Jul 2023 09:15:50 -0400
-Received: by mail-oa1-x2b.google.com with SMTP id
- 586e51a60fabf-1bb74752ddbso1666188fac.0
- for <qemu-devel@nongnu.org>; Fri, 28 Jul 2023 06:15:37 -0700 (PDT)
+Received: by mail-ot1-x335.google.com with SMTP id
+ 46e09a7af769-6b9ede6195cso1811763a34.3
+ for <qemu-devel@nongnu.org>; Fri, 28 Jul 2023 06:15:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1690550137; x=1691154937;
+ d=ventanamicro.com; s=google; t=1690550139; x=1691154939;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=hURLgEYq1ah5AvqohmfouRDP0rqjlMJUdkrq8M2Fn4k=;
- b=SzFZbs5Bs1zvTAEsyk46J/s6cTaBuIiVx4axjsYkVdIMoTA0Ov1CKVxHfOvGIV/Agz
- Gg+qQP5bT3Lw4wFTobl7j0qUZJevQqLLbOVA/+whOZvrGMtdhc7ydf5nFwYIyl58kQ0c
- h8V4+ISYfkmve3j3aePTu2fT14Ip9RD9EDJ2JqVqX+7uH2clTXsOQ9cBAa2n41u/BdiB
- 4ORFV6LRhPQv1afpipPA8dIGhsMcwGCfDSqBJEpNvrwSylqcAE6RewHkcEp+cUUmOAno
- kDSAtebmgLQ3HeAxHWpvgpttI4gX+pBAVpMjbOF6obCxzWcHLxhZiTH0RmCnlz/lStI9
- xqgg==
+ bh=IpJo8abEeyCDApwOlh5w7EvNS+cv5QHlOzNKGp10Uwo=;
+ b=kQWmg7k5Z14ftZUjttpY8FrZrN6KleBBoCQbT6yyXMgiIHtg0rWhQG9iKkqh743wFZ
+ O2hErt9uthiiNG2JUdHk6qFcdOoTiS9xqKmBgo9zbWJHR/QO46+/nav/WFhE6f4bR9Tx
+ 8eAGEMAsTrhZJtcSNeSPcdcMJCE5N46BIeKwLNWHK9desFuJ15uw2QZvqj9jjbdP8EUG
+ 6hicjg0q+V6tncys4seH47WJtWLhtn7ypDIqwRpDwjqkgye5WX3/r7DAKiyoSKIJMKGl
+ gbb8eRuNzz0yiUamQOP+XHr82SModE2ZubrKppAFnyoE3fAONWOQIb5+w6xKq8ICD7YF
+ x4aw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690550137; x=1691154937;
+ d=1e100.net; s=20221208; t=1690550139; x=1691154939;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hURLgEYq1ah5AvqohmfouRDP0rqjlMJUdkrq8M2Fn4k=;
- b=TrS24fIoXCRb6zWOTldp6LMWMgqL2QkWNUBjONylvGgXI9y4cZW78tnY0KphV9/99D
- 1orwvDWEbSuF2hZ469VHr9PSo7/p087tBUOpLn+s+2s4kFO3cZgRGqmJq57clFUy2J8M
- UCaG5j7X7Ko3viLgyKfI9SJCkPDCWlOkDXkfmL6ioDA1qWeknVvSaVqjaovZDTwAa9IM
- 91h1tBUngf7UALWz6EbOolk9owA8HP3/Ahu9YcYtxzZW5JqLBnTrcS6YDfcn3TAF6fvi
- H6fxMJLH2lhybV6QWnMjvNkdGKKHVUr8HNF6DWtx0jbK6N4bo8gWexPmAP1Am16hNHIo
- PXNg==
-X-Gm-Message-State: ABy/qLZCCxpEUM0Sc8hNB/p9SwGgEvwYnbPzBA7tQAGgTDwrItxPIIX5
- lg1q5GEQ3P3Rc6sOAQgV1uyoS+H4TVokefo5DENtqA==
-X-Google-Smtp-Source: APBJJlFaD6lUXHpCyfYfbHsuve2yFQWDgZKquVN3bkPU4+TKlyM7sWpTPGTbKqn5SCNuc3YxPTqtBw==
-X-Received: by 2002:a05:6870:c093:b0:1b0:b13:c18 with SMTP id
- c19-20020a056870c09300b001b00b130c18mr3363467oad.3.1690550136837; 
- Fri, 28 Jul 2023 06:15:36 -0700 (PDT)
+ bh=IpJo8abEeyCDApwOlh5w7EvNS+cv5QHlOzNKGp10Uwo=;
+ b=Zy4EpmWnuGts9dwPEX07p6QgKmrAsVgn4SUnuMj9zxxkkBWgGVICUgwbH9JcyALPCj
+ nRSZ6a2Q09NvyiZ8JGkI5yGdfYkloD5tdCxf+6eMO0UOZG1owf70DwGbp5k4bbBrwFZ6
+ I/21mQ53HaVMm8hxfyUgpKDKndelD1hYHkli7L9j4GF7urxxLQ95AbWA8wQLNBshlQn9
+ VUcry6/EcrvTJYb6ecsR0OayBR9t2Kp+N39rhJHYl+uu2sc7R0JJ26e2VHU29L2rsl6Z
+ 5XcxeNPowKXGenHphIlny6aLZN4YunbBZ7Xx20JB87EZ/6+5uM4dEJqiwZInR/6l6Lkj
+ NuyQ==
+X-Gm-Message-State: ABy/qLYzI9X4k0gyNDDcqQit/Wy1/aikJZd3OMoq7xYzqle7YgS5jyN4
+ xI/luXuNECXXo+FI+nvdnWVF3cCnXsqI7eG6VqB6Nw==
+X-Google-Smtp-Source: APBJJlFSaF4oCukFjxSA1UX+TW7N6XudC7oKuMZiXH/UwkIst38TVzDsG5AfMwJYlh87BQkf5cF0Sw==
+X-Received: by 2002:a05:6870:2115:b0:1bb:b13c:7fa4 with SMTP id
+ f21-20020a056870211500b001bbb13c7fa4mr3107521oae.26.1690550139463; 
+ Fri, 28 Jul 2023 06:15:39 -0700 (PDT)
 Received: from grind.. (201-69-66-36.dial-up.telesp.net.br. [201.69.66.36])
  by smtp.gmail.com with ESMTPSA id
- hv6-20020a056871cc0600b001b3d93884fdsm1699371oac.57.2023.07.28.06.15.34
+ hv6-20020a056871cc0600b001b3d93884fdsm1699371oac.57.2023.07.28.06.15.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 28 Jul 2023 06:15:36 -0700 (PDT)
+ Fri, 28 Jul 2023 06:15:39 -0700 (PDT)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH 4/8] target/riscv/cpu.c: use cpu_cfg_ext_auto_update() during
- realize()
-Date: Fri, 28 Jul 2023 10:15:16 -0300
-Message-ID: <20230728131520.110394-5-dbarboza@ventanamicro.com>
+Subject: [PATCH 5/8] target/riscv/cpu.c: introduce RISCVCPUMultiExtConfig
+Date: Fri, 28 Jul 2023 10:15:17 -0300
+Message-ID: <20230728131520.110394-6-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230728131520.110394-1-dbarboza@ventanamicro.com>
 References: <20230728131520.110394-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::2b;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x2b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::335;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-ot1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,133 +93,340 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Let's change the other instances in realize() where we're enabling an
-extension based on a certain criteria (e.g. it's a dependency of another
-extension).
+If we want to make better decisions when auto-enabling extensions during
+realize() we need a way to tell if an user set an extension manually.
+The RISC-V KVM driver has its own solution via a KVMCPUConfig struct
+that has an 'user_set' flag that is set during the Property set()
+callback. The set() callback also does init() time validations based on
+the current KVM driver capabilities.
 
-We're leaving icsr and ifencei being enabled during RVG for later -
-we'll want to error out in that case. Every other extension enablement
-during realize is now done via cpu_cfg_ext_auto_update().
+For TCG we would want a 'user_set' mechanic too, but we would look
+ad-hoc via cpu_cfg_ext_auto_update() if a certain extension was user set
+or not. If we copy what was made in the KVM side we would look for
+'user_set' for one into 60+ extension structs spreaded in 3 arrays
+(riscv_cpu_extensions, riscv_cpu_experimental_exts,
+riscv_cpu_vendor_exts).
 
-The end goal is that only cpu init() functions will handle extension
-flags directly via "cpu->cfg.ext_N = true|false".
+We'll still need an extension struct but we won't be using the
+'user_set' flag:
+
+- 'RISCVCPUMultiExtConfig' will be our specialized structure, similar to what
+we're already doing with the MISA extensions in 'RISCVCPUMisaExtConfig'.
+DEFINE_PROP_BOOL() for all 3 extensions arrays were replaced by
+MULTI_EXT_CFG_BOOL(), a macro that will init our specialized struct;
+
+- the 'multi_ext_user_opts' hash will be used to store the offset of each
+extension that the user set via the set() callback, cpu_set_multi_ext_cfg().
+For now we're just initializing and populating it - next patch will use
+it to determine if a certain extension was user set;
+
+- cpu_add_multi_ext_prop() is a new helper that will replace the
+qdev_property_add_static() calls that our macros are doing to populate
+user properties. The macro was renamed to ADD_CPU_MULTIEXT_PROPS_ARRAY()
+for clarity. Note that the non-extension properties in
+riscv_cpu_options[] still need to be declared via qdev().
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 ---
- target/riscv/cpu.c | 50 +++++++++++++++++++++++-----------------------
- 1 file changed, 25 insertions(+), 25 deletions(-)
+ target/riscv/cpu.c | 231 ++++++++++++++++++++++++++++-----------------
+ 1 file changed, 145 insertions(+), 86 deletions(-)
 
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 75dc83407e..88b263e830 100644
+index 88b263e830..b588f6969f 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
-@@ -1174,7 +1174,7 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
+@@ -153,6 +153,9 @@ static const struct isa_ext_data isa_edata_arr[] = {
+     ISA_EXT_DATA_ENTRY(xventanacondops, PRIV_VERSION_1_12_0, ext_XVentanaCondOps),
+ };
+ 
++/* Hash that stores user set extensions */
++static GHashTable *multi_ext_user_opts;
++
+ static bool isa_ext_is_enabled(RISCVCPU *cpu, uint32_t ext_offset)
+ {
+     bool *ext_enabled = (void *)&cpu->cfg + ext_offset;
+@@ -1668,6 +1671,8 @@ static void riscv_cpu_init(Object *obj)
+     qdev_init_gpio_in(DEVICE(cpu), riscv_cpu_set_irq,
+                       IRQ_LOCAL_MAX + IRQ_LOCAL_GUEST_MAX);
+ #endif /* CONFIG_USER_ONLY */
++
++    multi_ext_user_opts = g_hash_table_new(NULL, g_direct_equal);
+ }
+ 
+ typedef struct RISCVCPUMisaExtConfig {
+@@ -1819,94 +1824,104 @@ static void riscv_cpu_add_misa_properties(Object *cpu_obj)
      }
+ }
  
-     if (cpu->cfg.ext_zfh) {
--        cpu->cfg.ext_zfhmin = true;
-+        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zfhmin), true);
-     }
+-static Property riscv_cpu_extensions[] = {
++typedef struct RISCVCPUMultiExtConfig {
++    const char *name;
++    uint32_t offset;
++    bool enabled;
++} RISCVCPUMultiExtConfig;
++
++#define MULTI_EXT_CFG_BOOL(_name, _prop, _defval) \
++    {.name = _name, .offset = CPU_CFG_OFFSET(_prop), \
++     .enabled = _defval}
++
++static RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
+     /* Defaults for standard extensions */
+-    DEFINE_PROP_BOOL("sscofpmf", RISCVCPU, cfg.ext_sscofpmf, false),
+-    DEFINE_PROP_BOOL("Zifencei", RISCVCPU, cfg.ext_ifencei, true),
+-    DEFINE_PROP_BOOL("Zicsr", RISCVCPU, cfg.ext_icsr, true),
+-    DEFINE_PROP_BOOL("Zihintpause", RISCVCPU, cfg.ext_zihintpause, true),
+-    DEFINE_PROP_BOOL("Zawrs", RISCVCPU, cfg.ext_zawrs, true),
+-    DEFINE_PROP_BOOL("Zfa", RISCVCPU, cfg.ext_zfa, true),
+-    DEFINE_PROP_BOOL("Zfh", RISCVCPU, cfg.ext_zfh, false),
+-    DEFINE_PROP_BOOL("Zfhmin", RISCVCPU, cfg.ext_zfhmin, false),
+-    DEFINE_PROP_BOOL("Zve32f", RISCVCPU, cfg.ext_zve32f, false),
+-    DEFINE_PROP_BOOL("Zve64f", RISCVCPU, cfg.ext_zve64f, false),
+-    DEFINE_PROP_BOOL("Zve64d", RISCVCPU, cfg.ext_zve64d, false),
+-    DEFINE_PROP_BOOL("sstc", RISCVCPU, cfg.ext_sstc, true),
+-
+-    DEFINE_PROP_BOOL("smstateen", RISCVCPU, cfg.ext_smstateen, false),
+-    DEFINE_PROP_BOOL("svadu", RISCVCPU, cfg.ext_svadu, true),
+-    DEFINE_PROP_BOOL("svinval", RISCVCPU, cfg.ext_svinval, false),
+-    DEFINE_PROP_BOOL("svnapot", RISCVCPU, cfg.ext_svnapot, false),
+-    DEFINE_PROP_BOOL("svpbmt", RISCVCPU, cfg.ext_svpbmt, false),
+-
+-    DEFINE_PROP_BOOL("zba", RISCVCPU, cfg.ext_zba, true),
+-    DEFINE_PROP_BOOL("zbb", RISCVCPU, cfg.ext_zbb, true),
+-    DEFINE_PROP_BOOL("zbc", RISCVCPU, cfg.ext_zbc, true),
+-    DEFINE_PROP_BOOL("zbkb", RISCVCPU, cfg.ext_zbkb, false),
+-    DEFINE_PROP_BOOL("zbkc", RISCVCPU, cfg.ext_zbkc, false),
+-    DEFINE_PROP_BOOL("zbkx", RISCVCPU, cfg.ext_zbkx, false),
+-    DEFINE_PROP_BOOL("zbs", RISCVCPU, cfg.ext_zbs, true),
+-    DEFINE_PROP_BOOL("zk", RISCVCPU, cfg.ext_zk, false),
+-    DEFINE_PROP_BOOL("zkn", RISCVCPU, cfg.ext_zkn, false),
+-    DEFINE_PROP_BOOL("zknd", RISCVCPU, cfg.ext_zknd, false),
+-    DEFINE_PROP_BOOL("zkne", RISCVCPU, cfg.ext_zkne, false),
+-    DEFINE_PROP_BOOL("zknh", RISCVCPU, cfg.ext_zknh, false),
+-    DEFINE_PROP_BOOL("zkr", RISCVCPU, cfg.ext_zkr, false),
+-    DEFINE_PROP_BOOL("zks", RISCVCPU, cfg.ext_zks, false),
+-    DEFINE_PROP_BOOL("zksed", RISCVCPU, cfg.ext_zksed, false),
+-    DEFINE_PROP_BOOL("zksh", RISCVCPU, cfg.ext_zksh, false),
+-    DEFINE_PROP_BOOL("zkt", RISCVCPU, cfg.ext_zkt, false),
+-
+-    DEFINE_PROP_BOOL("zdinx", RISCVCPU, cfg.ext_zdinx, false),
+-    DEFINE_PROP_BOOL("zfinx", RISCVCPU, cfg.ext_zfinx, false),
+-    DEFINE_PROP_BOOL("zhinx", RISCVCPU, cfg.ext_zhinx, false),
+-    DEFINE_PROP_BOOL("zhinxmin", RISCVCPU, cfg.ext_zhinxmin, false),
+-
+-    DEFINE_PROP_BOOL("zicbom", RISCVCPU, cfg.ext_icbom, true),
+-    DEFINE_PROP_BOOL("zicboz", RISCVCPU, cfg.ext_icboz, true),
+-
+-    DEFINE_PROP_BOOL("zmmul", RISCVCPU, cfg.ext_zmmul, false),
+-
+-    DEFINE_PROP_BOOL("zca", RISCVCPU, cfg.ext_zca, false),
+-    DEFINE_PROP_BOOL("zcb", RISCVCPU, cfg.ext_zcb, false),
+-    DEFINE_PROP_BOOL("zcd", RISCVCPU, cfg.ext_zcd, false),
+-    DEFINE_PROP_BOOL("zce", RISCVCPU, cfg.ext_zce, false),
+-    DEFINE_PROP_BOOL("zcf", RISCVCPU, cfg.ext_zcf, false),
+-    DEFINE_PROP_BOOL("zcmp", RISCVCPU, cfg.ext_zcmp, false),
+-    DEFINE_PROP_BOOL("zcmt", RISCVCPU, cfg.ext_zcmt, false),
++    MULTI_EXT_CFG_BOOL("sscofpmf", ext_sscofpmf, false),
++    MULTI_EXT_CFG_BOOL("Zifencei", ext_ifencei, true),
++    MULTI_EXT_CFG_BOOL("Zicsr", ext_icsr, true),
++    MULTI_EXT_CFG_BOOL("Zihintpause", ext_zihintpause, true),
++    MULTI_EXT_CFG_BOOL("Zawrs", ext_zawrs, true),
++    MULTI_EXT_CFG_BOOL("Zfa", ext_zfa, true),
++    MULTI_EXT_CFG_BOOL("Zfh", ext_zfh, false),
++    MULTI_EXT_CFG_BOOL("Zfhmin", ext_zfhmin, false),
++    MULTI_EXT_CFG_BOOL("Zve32f", ext_zve32f, false),
++    MULTI_EXT_CFG_BOOL("Zve64f", ext_zve64f, false),
++    MULTI_EXT_CFG_BOOL("Zve64d", ext_zve64d, false),
++    MULTI_EXT_CFG_BOOL("sstc", ext_sstc, true),
++
++    MULTI_EXT_CFG_BOOL("smstateen", ext_smstateen, false),
++    MULTI_EXT_CFG_BOOL("svadu", ext_svadu, true),
++    MULTI_EXT_CFG_BOOL("svinval", ext_svinval, false),
++    MULTI_EXT_CFG_BOOL("svnapot", ext_svnapot, false),
++    MULTI_EXT_CFG_BOOL("svpbmt", ext_svpbmt, false),
++
++    MULTI_EXT_CFG_BOOL("zba", ext_zba, true),
++    MULTI_EXT_CFG_BOOL("zbb", ext_zbb, true),
++    MULTI_EXT_CFG_BOOL("zbc", ext_zbc, true),
++    MULTI_EXT_CFG_BOOL("zbkb", ext_zbkb, false),
++    MULTI_EXT_CFG_BOOL("zbkc", ext_zbkc, false),
++    MULTI_EXT_CFG_BOOL("zbkx", ext_zbkx, false),
++    MULTI_EXT_CFG_BOOL("zbs", ext_zbs, true),
++    MULTI_EXT_CFG_BOOL("zk", ext_zk, false),
++    MULTI_EXT_CFG_BOOL("zkn", ext_zkn, false),
++    MULTI_EXT_CFG_BOOL("zknd", ext_zknd, false),
++    MULTI_EXT_CFG_BOOL("zkne", ext_zkne, false),
++    MULTI_EXT_CFG_BOOL("zknh", ext_zknh, false),
++    MULTI_EXT_CFG_BOOL("zkr", ext_zkr, false),
++    MULTI_EXT_CFG_BOOL("zks", ext_zks, false),
++    MULTI_EXT_CFG_BOOL("zksed", ext_zksed, false),
++    MULTI_EXT_CFG_BOOL("zksh", ext_zksh, false),
++    MULTI_EXT_CFG_BOOL("zkt", ext_zkt, false),
++
++    MULTI_EXT_CFG_BOOL("zdinx", ext_zdinx, false),
++    MULTI_EXT_CFG_BOOL("zfinx", ext_zfinx, false),
++    MULTI_EXT_CFG_BOOL("zhinx", ext_zhinx, false),
++    MULTI_EXT_CFG_BOOL("zhinxmin", ext_zhinxmin, false),
++
++    MULTI_EXT_CFG_BOOL("zicbom", ext_icbom, true),
++    MULTI_EXT_CFG_BOOL("zicboz", ext_icboz, true),
++
++    MULTI_EXT_CFG_BOOL("zmmul", ext_zmmul, false),
++
++    MULTI_EXT_CFG_BOOL("zca", ext_zca, false),
++    MULTI_EXT_CFG_BOOL("zcb", ext_zcb, false),
++    MULTI_EXT_CFG_BOOL("zcd", ext_zcd, false),
++    MULTI_EXT_CFG_BOOL("zce", ext_zce, false),
++    MULTI_EXT_CFG_BOOL("zcf", ext_zcf, false),
++    MULTI_EXT_CFG_BOOL("zcmp", ext_zcmp, false),
++    MULTI_EXT_CFG_BOOL("zcmt", ext_zcmt, false),
+ };
  
-     if (cpu->cfg.ext_zfhmin && !riscv_has_ext(env, RVF)) {
-@@ -1200,17 +1200,17 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
-         }
+-static Property riscv_cpu_vendor_exts[] = {
+-    DEFINE_PROP_BOOL("xtheadba", RISCVCPU, cfg.ext_xtheadba, false),
+-    DEFINE_PROP_BOOL("xtheadbb", RISCVCPU, cfg.ext_xtheadbb, false),
+-    DEFINE_PROP_BOOL("xtheadbs", RISCVCPU, cfg.ext_xtheadbs, false),
+-    DEFINE_PROP_BOOL("xtheadcmo", RISCVCPU, cfg.ext_xtheadcmo, false),
+-    DEFINE_PROP_BOOL("xtheadcondmov", RISCVCPU, cfg.ext_xtheadcondmov, false),
+-    DEFINE_PROP_BOOL("xtheadfmemidx", RISCVCPU, cfg.ext_xtheadfmemidx, false),
+-    DEFINE_PROP_BOOL("xtheadfmv", RISCVCPU, cfg.ext_xtheadfmv, false),
+-    DEFINE_PROP_BOOL("xtheadmac", RISCVCPU, cfg.ext_xtheadmac, false),
+-    DEFINE_PROP_BOOL("xtheadmemidx", RISCVCPU, cfg.ext_xtheadmemidx, false),
+-    DEFINE_PROP_BOOL("xtheadmempair", RISCVCPU, cfg.ext_xtheadmempair, false),
+-    DEFINE_PROP_BOOL("xtheadsync", RISCVCPU, cfg.ext_xtheadsync, false),
+-    DEFINE_PROP_BOOL("xventanacondops", RISCVCPU, cfg.ext_XVentanaCondOps, false),
++static RISCVCPUMultiExtConfig riscv_cpu_vendor_exts[] = {
++    MULTI_EXT_CFG_BOOL("xtheadba", ext_xtheadba, false),
++    MULTI_EXT_CFG_BOOL("xtheadbb", ext_xtheadbb, false),
++    MULTI_EXT_CFG_BOOL("xtheadbs", ext_xtheadbs, false),
++    MULTI_EXT_CFG_BOOL("xtheadcmo", ext_xtheadcmo, false),
++    MULTI_EXT_CFG_BOOL("xtheadcondmov", ext_xtheadcondmov, false),
++    MULTI_EXT_CFG_BOOL("xtheadfmemidx", ext_xtheadfmemidx, false),
++    MULTI_EXT_CFG_BOOL("xtheadfmv", ext_xtheadfmv, false),
++    MULTI_EXT_CFG_BOOL("xtheadmac", ext_xtheadmac, false),
++    MULTI_EXT_CFG_BOOL("xtheadmemidx", ext_xtheadmemidx, false),
++    MULTI_EXT_CFG_BOOL("xtheadmempair", ext_xtheadmempair, false),
++    MULTI_EXT_CFG_BOOL("xtheadsync", ext_xtheadsync, false),
++    MULTI_EXT_CFG_BOOL("xventanacondops", ext_XVentanaCondOps, false),
+ };
  
-         /* The V vector extension depends on the Zve64d extension */
--        cpu->cfg.ext_zve64d = true;
-+        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zve64d), true);
-     }
+ /* These are experimental so mark with 'x-' */
+-static Property riscv_cpu_experimental_exts[] = {
+-    DEFINE_PROP_BOOL("x-zicond", RISCVCPU, cfg.ext_zicond, false),
++static RISCVCPUMultiExtConfig riscv_cpu_experimental_exts[] = {
++    MULTI_EXT_CFG_BOOL("x-zicond", ext_zicond, false),
  
-     /* The Zve64d extension depends on the Zve64f extension */
-     if (cpu->cfg.ext_zve64d) {
--        cpu->cfg.ext_zve64f = true;
-+        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zve64f), true);
-     }
+     /* ePMP 0.9.3 */
+-    DEFINE_PROP_BOOL("x-epmp", RISCVCPU, cfg.epmp, false),
+-    DEFINE_PROP_BOOL("x-smaia", RISCVCPU, cfg.ext_smaia, false),
+-    DEFINE_PROP_BOOL("x-ssaia", RISCVCPU, cfg.ext_ssaia, false),
++    MULTI_EXT_CFG_BOOL("x-epmp", epmp, false),
++    MULTI_EXT_CFG_BOOL("x-smaia", ext_smaia, false),
++    MULTI_EXT_CFG_BOOL("x-ssaia", ext_ssaia, false),
  
-     /* The Zve64f extension depends on the Zve32f extension */
-     if (cpu->cfg.ext_zve64f) {
--        cpu->cfg.ext_zve32f = true;
-+        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zve32f), true);
-     }
+-    DEFINE_PROP_BOOL("x-zvfh", RISCVCPU, cfg.ext_zvfh, false),
+-    DEFINE_PROP_BOOL("x-zvfhmin", RISCVCPU, cfg.ext_zvfhmin, false),
++    MULTI_EXT_CFG_BOOL("x-zvfh", ext_zvfh, false),
++    MULTI_EXT_CFG_BOOL("x-zvfhmin", ext_zvfhmin, false),
  
-     if (cpu->cfg.ext_zve64d && !riscv_has_ext(env, RVD)) {
-@@ -1224,7 +1224,7 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
-     }
+-    DEFINE_PROP_BOOL("x-zfbfmin", RISCVCPU, cfg.ext_zfbfmin, false),
+-    DEFINE_PROP_BOOL("x-zvfbfmin", RISCVCPU, cfg.ext_zvfbfmin, false),
+-    DEFINE_PROP_BOOL("x-zvfbfwma", RISCVCPU, cfg.ext_zvfbfwma, false),
++    MULTI_EXT_CFG_BOOL("x-zfbfmin", ext_zfbfmin, false),
++    MULTI_EXT_CFG_BOOL("x-zvfbfmin", ext_zvfbfmin, false),
++    MULTI_EXT_CFG_BOOL("x-zvfbfwma", ext_zvfbfwma, false),
+ };
  
-     if (cpu->cfg.ext_zvfh) {
--        cpu->cfg.ext_zvfhmin = true;
-+        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zvfhmin), true);
-     }
+ static Property riscv_cpu_options[] = {
+@@ -1925,6 +1940,49 @@ static Property riscv_cpu_options[] = {
+     DEFINE_PROP_UINT16("cboz_blocksize", RISCVCPU, cfg.cboz_blocksize, 64),
+ };
  
-     if (cpu->cfg.ext_zvfhmin && !cpu->cfg.ext_zve32f) {
-@@ -1254,7 +1254,7 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
++static void cpu_set_multi_ext_cfg(Object *obj, Visitor *v, const char *name,
++                                  void *opaque, Error **errp)
++{
++    const RISCVCPUMultiExtConfig *multi_ext_cfg = opaque;
++    bool value;
++
++    if (!visit_type_bool(v, name, &value, errp)) {
++        return;
++    }
++
++    isa_ext_update_enabled(RISCV_CPU(obj), multi_ext_cfg->offset, value);
++
++    g_hash_table_insert(multi_ext_user_opts,
++                        GUINT_TO_POINTER(multi_ext_cfg->offset),
++                        (gpointer)value);
++}
++
++static void cpu_get_multi_ext_cfg(Object *obj, Visitor *v, const char *name,
++                                  void *opaque, Error **errp)
++{
++    const RISCVCPUMultiExtConfig *multi_ext_cfg = opaque;
++    bool value = isa_ext_is_enabled(RISCV_CPU(obj), multi_ext_cfg->offset);
++
++    visit_type_bool(v, name, &value, errp);
++}
++
++static void cpu_add_multi_ext_prop(Object *cpu_obj,
++                                   RISCVCPUMultiExtConfig *multi_cfg)
++{
++    object_property_add(cpu_obj, multi_cfg->name, "bool",
++                        cpu_get_multi_ext_cfg,
++                        cpu_set_multi_ext_cfg,
++                        NULL, (void *)multi_cfg);
++
++    /*
++     * Set def val directly instead of using
++     * object_property_set_bool() to save the set()
++     * callback hash for user inputs.
++     */
++    isa_ext_update_enabled(RISCV_CPU(cpu_obj), multi_cfg->offset,
++                           multi_cfg->enabled);
++}
++
+ #ifndef CONFIG_USER_ONLY
+ static void cpu_set_cfg_unavailable(Object *obj, Visitor *v,
+                                     const char *name,
+@@ -1944,10 +2002,10 @@ static void cpu_set_cfg_unavailable(Object *obj, Visitor *v,
+ }
+ #endif
  
-     /* Set the ISA extensions, checks should have happened above */
-     if (cpu->cfg.ext_zhinx) {
--        cpu->cfg.ext_zhinxmin = true;
-+        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zca), true);
-     }
+-#define ADD_CPU_QDEV_PROPERTIES_ARRAY(_dev, _array) \
++#define ADD_CPU_MULTIEXT_PROPS_ARRAY(_obj, _array) \
+     do { \
+         for (int i = 0; i < ARRAY_SIZE(_array); i++) { \
+-            qdev_property_add_static(_dev, &_array[i]); \
++            cpu_add_multi_ext_prop(_obj, &_array[i]); \
+         } \
+     } while (0)
  
-     if ((cpu->cfg.ext_zdinx || cpu->cfg.ext_zhinxmin) && !cpu->cfg.ext_zfinx) {
-@@ -1275,12 +1275,12 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
-     }
+@@ -2005,8 +2063,6 @@ static void riscv_cpu_add_kvm_properties(Object *obj)
+  */
+ static void riscv_cpu_add_user_properties(Object *obj)
+ {
+-    DeviceState *dev = DEVICE(obj);
+-
+ #ifndef CONFIG_USER_ONLY
+     riscv_add_satp_mode_properties(obj);
  
-     if (cpu->cfg.ext_zce) {
--        cpu->cfg.ext_zca = true;
--        cpu->cfg.ext_zcb = true;
--        cpu->cfg.ext_zcmp = true;
--        cpu->cfg.ext_zcmt = true;
-+        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zca), true);
-+        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zcb), true);
-+        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zcmp), true);
-+        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zcmt), true);
-         if (riscv_has_ext(env, RVF) && env->misa_mxl_max == MXL_RV32) {
--            cpu->cfg.ext_zcf = true;
-+            cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zcf), true);
-         }
-     }
+@@ -2018,10 +2074,13 @@ static void riscv_cpu_add_user_properties(Object *obj)
  
-@@ -1329,26 +1329,26 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
-     }
+     riscv_cpu_add_misa_properties(obj);
  
-     if (cpu->cfg.ext_zk) {
--        cpu->cfg.ext_zkn = true;
--        cpu->cfg.ext_zkr = true;
--        cpu->cfg.ext_zkt = true;
-+        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zkn), true);
-+        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zkr), true);
-+        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zkt), true);
-     }
+-    ADD_CPU_QDEV_PROPERTIES_ARRAY(dev, riscv_cpu_extensions);
+-    ADD_CPU_QDEV_PROPERTIES_ARRAY(dev, riscv_cpu_options);
+-    ADD_CPU_QDEV_PROPERTIES_ARRAY(dev, riscv_cpu_vendor_exts);
+-    ADD_CPU_QDEV_PROPERTIES_ARRAY(dev, riscv_cpu_experimental_exts);
++    ADD_CPU_MULTIEXT_PROPS_ARRAY(obj, riscv_cpu_extensions);
++    ADD_CPU_MULTIEXT_PROPS_ARRAY(obj, riscv_cpu_vendor_exts);
++    ADD_CPU_MULTIEXT_PROPS_ARRAY(obj, riscv_cpu_experimental_exts);
++
++    for (int i = 0; i < ARRAY_SIZE(riscv_cpu_options); i++) {
++        qdev_property_add_static(DEVICE(obj), &riscv_cpu_options[i]);
++    }
+ }
  
-     if (cpu->cfg.ext_zkn) {
--        cpu->cfg.ext_zbkb = true;
--        cpu->cfg.ext_zbkc = true;
--        cpu->cfg.ext_zbkx = true;
--        cpu->cfg.ext_zkne = true;
--        cpu->cfg.ext_zknd = true;
--        cpu->cfg.ext_zknh = true;
-+        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zbkb), true);
-+        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zbkc), true);
-+        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zbkx), true);
-+        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zkne), true);
-+        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zknd), true);
-+        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zknh), true);
-     }
- 
-     if (cpu->cfg.ext_zks) {
--        cpu->cfg.ext_zbkb = true;
--        cpu->cfg.ext_zbkc = true;
--        cpu->cfg.ext_zbkx = true;
--        cpu->cfg.ext_zksed = true;
--        cpu->cfg.ext_zksh = true;
-+        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zbkb), true);
-+        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zbkc), true);
-+        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zbkx), true);
-+        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zksed), true);
-+        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zksh), true);
-     }
- 
-     /*
+ /*
 -- 
 2.41.0
 
