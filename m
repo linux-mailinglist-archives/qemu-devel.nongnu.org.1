@@ -2,83 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25C2176726C
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 18:52:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D28276729C
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 19:00:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qPQby-0006uX-5h; Fri, 28 Jul 2023 12:46:42 -0400
+	id 1qPQdA-0007AV-DQ; Fri, 28 Jul 2023 12:47:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qPQbv-0006u3-RX
- for qemu-devel@nongnu.org; Fri, 28 Jul 2023 12:46:39 -0400
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qPQbu-0006Zn-Ab
- for qemu-devel@nongnu.org; Fri, 28 Jul 2023 12:46:39 -0400
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-68336d06620so2291804b3a.1
- for <qemu-devel@nongnu.org>; Fri, 28 Jul 2023 09:46:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690562795; x=1691167595;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=CF4f66H0mjhCmliOUtC5TGKXFUGbLWWPvI24d7OVtkM=;
- b=iQpH3Yzokzix/36yGZ60IxMkbsBfcpUbMANJjmXSmw1Yzyb8L8Vz2y5jjlcdLIqGU6
- wX9laiskyuGjHTGozczbL9/OzqnjYowSy4Hl9PvDlY7EpWgPlYtIzcl1u+K1TzJJyu1c
- Nlw5SSpNQnW5PGfGfc+z+40XG2V36YV2yen6ESGX5LtYutk8ReOrfmMwLSLHkiYdI0FG
- /aZ5rMzOfrF3/3TdPjGVm+BhpXsEdhIDqA7o0OJxMwXnywFQCGrbLyFqPbkjUox5/4Yq
- iDzGZ7nqDid7mcA1/bDp2pTsEesYoe2KHoi/ajkdFeMS+Z2XO1BZeS7K5hPaLLNjd8Xx
- GieA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690562795; x=1691167595;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=CF4f66H0mjhCmliOUtC5TGKXFUGbLWWPvI24d7OVtkM=;
- b=iHFVCn6OBRhy9nT+A2ZCJOBuHf9oDlyky9ELDsae+yDuQSfvRYXvzAr5xmi7fQfWFa
- sgLzjHyGK89jSMYaYh4lRU+/wLr4QTDGovwjeVOk+dksPMubWoJA8UnKuXtMIqxEHpYa
- zUSVbbamTnMRwC5YU93qXAdw2SCmfqfn0Uve1QV260z6OtxJQirqKRaROkuluNleTTFN
- 9VSHyte6kXDy8qvOxnts1Ssb338ifpZTK9qG2GV3YFKkWfz4b06/dvd9vSfU7pLu22r7
- XF6RFti3qAlTJNP9PEAHbjHKC7rabv3lpY7d1GkaIJfDJCJa7UY84/UzIB6iDheGJiqf
- oMhQ==
-X-Gm-Message-State: ABy/qLa67kksYAZbTwqyQJ5nfoJyzv1jPuJmg0cDTp4mJSjGoOmmV9ty
- 7xKesh5rD6+6yTG/b0/fAW8xpau+xBK7ZTqDd5U=
-X-Google-Smtp-Source: APBJJlF35NAiYXNyHYMDpKG2mak6xq0gQRZX1Vzq3BAopvJ3m0XHfoF7baOy8bgwWF+ZzgfOlmQLCw==
-X-Received: by 2002:a05:6a00:3a0d:b0:67a:8fc7:1b61 with SMTP id
- fj13-20020a056a003a0d00b0067a8fc71b61mr2779806pfb.11.1690562795136; 
- Fri, 28 Jul 2023 09:46:35 -0700 (PDT)
-Received: from ?IPV6:2602:ae:154e:c001:cfba:2f6a:7070:67a9?
- ([2602:ae:154e:c001:cfba:2f6a:7070:67a9])
- by smtp.gmail.com with ESMTPSA id
- a18-20020a62bd12000000b0067acbc74977sm3519384pff.96.2023.07.28.09.46.34
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 28 Jul 2023 09:46:34 -0700 (PDT)
-Message-ID: <9fa0b0b0-aeda-63d8-3363-f8db137fed08@linaro.org>
-Date: Fri, 28 Jul 2023 09:46:32 -0700
+ (Exim 4.90_1) (envelope-from <ardb@kernel.org>) id 1qPQcn-00078A-Kd
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 12:47:35 -0400
+Received: from dfw.source.kernel.org ([139.178.84.217])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ardb@kernel.org>) id 1qPQcl-0006gV-P4
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 12:47:33 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 4426B621B1
+ for <qemu-devel@nongnu.org>; Fri, 28 Jul 2023 16:47:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AF5FC433C9
+ for <qemu-devel@nongnu.org>; Fri, 28 Jul 2023 16:47:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1690562848;
+ bh=wn21dJZmtDZ05oU1nLLvJ4Rp918tpi3jcsfUfxxppyQ=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=T8+V0yWkA3mDoh5/ifU8ziRWNcMLsTU/mvYK8kMQE6gZ/jnLICqMzXpHr5xHobReC
+ wZAx/jQ0e1KsMmNaFfMfydR9r4g1GHcD3CRqZrUJuG0fRCJd4mv+xubbIkR0bSkAN6
+ mOLhnls7dm+ruyPgSWOHCYLBcCJZak57KiPOHki8kHFqq1EwkI366rdLtOaRtbheBj
+ 22Lh6VwIK3Dy+QG4sX8AN47zdfPm9zD6PkzXkbelt9vJOWrHcaBcMSmGqqqenxN3QL
+ K/Tn2yRue1e6SwJtVLAxDNgqb0oOPMgz8QDXA/xvu+ZXax5CICVYHv4SXx57Re/GSs
+ oq77Fa9R2ntvw==
+Received: by mail-lj1-f182.google.com with SMTP id
+ 38308e7fff4ca-2b9b50be31aso35883021fa.3
+ for <qemu-devel@nongnu.org>; Fri, 28 Jul 2023 09:47:28 -0700 (PDT)
+X-Gm-Message-State: ABy/qLa3vkQGMQisA7YTKSTQ9FWURYOH0X2c6JEHaRPg/bMv1rxC5R/y
+ KYkvWyLBO6nuXYVMPecv6ojbDpBkFs3PYd44bJM=
+X-Google-Smtp-Source: APBJJlHuZI2h1RO/O8tzoPvR512VBSpkbvJXhwMtOFDzJpaFCoCiIlWVCiZmkw7OBOJl6r70iJr4Ly7m9PVkKeUX30o=
+X-Received: by 2002:a2e:9589:0:b0:2b9:4aa1:71e1 with SMTP id
+ w9-20020a2e9589000000b002b94aa171e1mr2006215ljh.50.1690562846578; Fri, 28 Jul
+ 2023 09:47:26 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2] bsd-user: Specify host page alignment if none specified
-Content-Language: en-US
-To: Warner Losh <imp@bsdimp.com>, qemu-devel@nongnu.org
-Cc: kevans@freebsd.org
-References: <20230728162927.5009-1-imp@bsdimp.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230728162927.5009-1-imp@bsdimp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.094,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+References: <20230726081710.1051126-1-ardb@kernel.org>
+ <67a8967e-338a-fbd1-1c06-d5a35f2db509@linaro.org>
+ <173fb35e-a4c3-4112-afd9-b313c6d95b2e@linaro.org>
+ <CAMj1kXGwZFzpU7hcJn625LfBTMB8g6mumvRneKGOabXRc9XtCw@mail.gmail.com>
+ <3a3c124a-23ca-08fd-661e-53023fc2be6e@linaro.org>
+In-Reply-To: <3a3c124a-23ca-08fd-661e-53023fc2be6e@linaro.org>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Fri, 28 Jul 2023 18:47:15 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXHnC8e=780aNHNZwGkE=D3BLyjoTFi+e+JPNiXibJxc+A@mail.gmail.com>
+Message-ID: <CAMj1kXHnC8e=780aNHNZwGkE=D3BLyjoTFi+e+JPNiXibJxc+A@mail.gmail.com>
+Subject: Re: [RFC PATCH] target/i386: Truncate ESP when exiting from long mode
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
+ Eduardo Habkost <eduardo@habkost.net>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=139.178.84.217; envelope-from=ardb@kernel.org;
+ helo=dfw.source.kernel.org
+X-Spam_score_int: -70
+X-Spam_score: -7.1
+X-Spam_bar: -------
+X-Spam_report: (-7.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,35 +83,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/28/23 09:29, Warner Losh wrote:
-> We're hitting an assert when we pass in alignment == 0 since that's not
-> a power of two. so pass in the ideal page size.
-> 
-> Signed-off-by: Warner Losh <imp@bsdimp.com>
-> ---
->   bsd-user/mmap.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
+On Fri, 28 Jul 2023 at 02:17, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> On 7/27/23 14:36, Ard Biesheuvel wrote:
+> > On Thu, 27 Jul 2023 at 19:56, Richard Henderson
+> > <richard.henderson@linaro.org> wrote:
+> >>
+> >> On 7/26/23 08:01, Richard Henderson wrote:
+> >>> On 7/26/23 01:17, Ard Biesheuvel wrote:
+> >>>> Hints welcome on where the architectural behavior is specified, and in particular,
+> >>>> whether or not other 64-bit GPRs can be relied upon to preserve their full 64-bit
+> >>>> length values.
+> >>>
+> >>> No idea about chapter and verse, but it has the feel of being part and parcel with the
+> >>> truncation of eip.  While esp is always special, I suspect that none of the GPRs can be
+> >>> relied on carrying all bits.
+> >>
+> >> Coincidentally, I was having a gander at the newly announced APX extension [1],
+> >> and happened across
+> >>
+> >> 3.1.4.1.2 Extended GPR Access (Direct and Indirect)
+> >>
+> >>       ... Entering/leaving 64-bit mode via traditional (explicit)
+> >>       control flow does not directly alter the content of the EGPRs
+> >>       (EGPRs behave similar to R8-R15 in this regard).
+> >>
+> >> which suggests to me that the 8 low registers are squashed to 32-bit
+> >> on transition to 32-bit IA-32e mode.
+> >>
+> >> I still have not found similar language in the main architecture manual.
+> >>
+> >
+> > Interesting - that matches my observations on those Ice Lake cores:
+> > RSP will be truncated, but preserving/restoring it to/from R8 across
+> > the exit from long mode works fine.
+>
+> Found it:
+>
+> Volume 1 Basic Architecture
+> 3.4.1.1 General-Purpose Registers in 64-Bit Mode
+>
+> # Registers only available in 64-bit mode (R8-R15 and XMM8-XMM15)
+> # are preserved across transitions from 64-bit mode into compatibility mode
+> # then back into 64-bit mode. However, values of R8-R15 and XMM8-XMM15 are
+> # undefined after transitions from 64-bit mode through compatibility mode
+> # to legacy or real mode and then back through compatibility mode to 64-bit mode.
+>
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-
-and queued.
-
-
-r~
-> 
-> diff --git a/bsd-user/mmap.c b/bsd-user/mmap.c
-> index 74ed00b9fe3..b62a69bd075 100644
-> --- a/bsd-user/mmap.c
-> +++ b/bsd-user/mmap.c
-> @@ -260,7 +260,8 @@ static abi_ulong mmap_find_vma_aligned(abi_ulong start, abi_ulong size,
->   
->       if (reserved_va) {
->           return mmap_find_vma_reserved(start, size,
-> -            (alignment != 0 ? 1 << alignment : 0));
-> +            (alignment != 0 ? 1 << alignment :
-> +             MAX(qemu_host_page_size, TARGET_PAGE_SIZE)));
->       }
->   
->       addr = start;
-
+Thanks. Not what I was hoping though ...
 
