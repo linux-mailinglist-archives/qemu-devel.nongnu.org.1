@@ -2,107 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44D33766A9B
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 12:30:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C374766A3F
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 12:24:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qPJwv-0006Fn-4c; Fri, 28 Jul 2023 05:39:53 -0400
+	id 1qPK3y-0000Du-7c; Fri, 28 Jul 2023 05:47:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <seiden@linux.ibm.com>)
- id 1qPJws-0006Et-HS; Fri, 28 Jul 2023 05:39:50 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qPK3v-0000Bf-Ce
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 05:47:07 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <seiden@linux.ibm.com>)
- id 1qPJwq-0004Uh-Cd; Fri, 28 Jul 2023 05:39:50 -0400
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36S9c0XA024713; Fri, 28 Jul 2023 09:39:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- subject : from : to : cc : references : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=VHK1LVFTUni/dq44FULBMmBw36Nn7CGUI7tutYo/Qs0=;
- b=Ocrqb6Ck270ckG3ake11n31zGEC2Wf5quNRhpRbtMGRqytqxtGDAe60ivDuBFpYXW6Gt
- fh0Kll4MBNz4tYUrYHmf9OO/nVFV2IQVfcFe5JRSrG/iK+BBwc6yQPfyyF8aS9SFGCyC
- 1g1hg69V6gnYzhgNoD7MipJu7Q7X6WxLQEhmioMDIZ88AIgLQS21bk4sneylk9JaAwtY
- 0ntA3It/bNWW0OtZUbGeiVEJVtOP1CfSebT+9pGNfspVCOhL4RpnC9klkfjBeMDQV/s+
- NrfcDv6rYFeWVxlSlnCdcUIU2aEbEz8FuTSE3y7IZd02xtJWSkFP2IIthawvNIi+By5P iA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s4av28pcn-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 28 Jul 2023 09:39:46 +0000
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36S9cg4C028337;
- Fri, 28 Jul 2023 09:39:43 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s4av28p8e-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 28 Jul 2023 09:39:42 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36S7wwKr002181; Fri, 28 Jul 2023 09:39:35 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3s0unk4hnt-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 28 Jul 2023 09:39:35 +0000
-Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com
- [10.241.53.103])
- by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 36S9dYfE34210290
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 28 Jul 2023 09:39:34 GMT
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3420A58062;
- Fri, 28 Jul 2023 09:39:34 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EEE0E58052;
- Fri, 28 Jul 2023 09:39:32 +0000 (GMT)
-Received: from [9.171.58.222] (unknown [9.171.58.222])
- by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Fri, 28 Jul 2023 09:39:32 +0000 (GMT)
-Message-ID: <c1c7fd52-2584-415d-78ef-8ffa71668687@linux.ibm.com>
-Date: Fri, 28 Jul 2023 11:39:32 +0200
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qPK3t-00085y-QA
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 05:47:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1690537624;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=MjEp4IT1Pu3C8/YB1CFL65lRQcW0UIFIsLBxr2oBMyA=;
+ b=d0xS71/vEkFE+6UwTMr7VjGqkU6F94WsO6LJiesOUTqRNbMomQB2Iw/UiWyjvQ+dQgMU1G
+ 98Vkh6b4Oj1VzAF1Sa2pZCQ+1fzOEqLUH7tZAjbWgjrFMRs/kQXqUTfbvFyUk24T2p0WKw
+ eDmlb7iVo0juqjPNqzuebsZwDe3JzQU=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-400-DBp34cRdObqFaB6yarYGVA-1; Fri, 28 Jul 2023 05:47:03 -0400
+X-MC-Unique: DBp34cRdObqFaB6yarYGVA-1
+Received: by mail-ed1-f71.google.com with SMTP id
+ 4fb4d7f45d1cf-522a85b4caaso261138a12.0
+ for <qemu-devel@nongnu.org>; Fri, 28 Jul 2023 02:47:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1690537621; x=1691142421;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=MjEp4IT1Pu3C8/YB1CFL65lRQcW0UIFIsLBxr2oBMyA=;
+ b=ZO52uTP+upoarP+wT7MVrXBTLv+kniVYXiya3fnyHSWhEK1Z0VxwRaFb7oObIHCOMy
+ OOqwGPdePfIHkM4XzohyffweOQ0PMWQGeWrgeEqvuDCrzoa6tT2MpfsF9gsPq5HhNT7w
+ deFzCCYBY0Tn+eBWIuB+9qSc+qCjgr13W+32m6CXIMpPG3BNW4OKOiJ2z7rFTrk2oXWu
+ QxAVb4Ol5+E6axj0xGwStd5qEXID/wqtHI2OM97sFL8haNPYJX3M8WMkkM7b+0v2cIQx
+ pf3I48nB1z49jGXT/HmDdf6vn5U9g1VEAqkJJW1qVBA8ksLv7ipLzPb3NElxoL9ZYJiH
+ 8IcA==
+X-Gm-Message-State: ABy/qLbxVXzcRmIDkPZfmG2Rz6oAT2LOS8NFmgFXHoc/9540C8lS/0id
+ 9Z6ohp2pS+m6Y40iHTR4jTAdg9ipSJBftZ9ieLK+N1bF4g0t1bsgbLPsWID7lGDpiPEUkFeTVdj
+ 0vUdCigIcCaI+j/lgSmwfHZQ=
+X-Received: by 2002:a05:6402:270f:b0:51e:588b:20ca with SMTP id
+ y15-20020a056402270f00b0051e588b20camr5749414edd.8.1690537621779; 
+ Fri, 28 Jul 2023 02:47:01 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlECajQ1dd8WbYozrsJ1O5N/ffFMC+x4xMcnmfuEwWFQortKuE9i0BKtWkI+9bP8Wa76yZE2hw==
+X-Received: by 2002:a05:6402:270f:b0:51e:588b:20ca with SMTP id
+ y15-20020a056402270f00b0051e588b20camr5749398edd.8.1690537621505; 
+ Fri, 28 Jul 2023 02:47:01 -0700 (PDT)
+Received: from ?IPV6:2003:cf:d71a:f311:3075:1f38:7e25:e17a?
+ (p200300cfd71af31130751f387e25e17a.dip0.t-ipconnect.de.
+ [2003:cf:d71a:f311:3075:1f38:7e25:e17a])
+ by smtp.gmail.com with ESMTPSA id
+ y23-20020aa7c257000000b005226f281bc5sm1607756edo.25.2023.07.28.02.47.00
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 28 Jul 2023 02:47:00 -0700 (PDT)
+Message-ID: <807ee713-ff9e-5277-3495-5fa4c0b0e86d@redhat.com>
+Date: Fri, 28 Jul 2023 11:47:00 +0200
+MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH 0/3] KVM: s390: Enable AP instructions for pv-guests
-From: Steffen Eiden <seiden@linux.ibm.com>
-To: qemu-s390x@nongnu.org, qemu-devel@nongnu.org
-Cc: Janosch Frank <frankja@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
- David Hildenbrand <david@redhat.com>,
- Michael Mueller <mimu@linux.vnet.ibm.com>,
- Marc Hartmayer <mhartmay@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>
-References: <20230727122503.775084-1-seiden@linux.ibm.com>
+Subject: Re: [PATCH v5 9/9] block/throttle-groups: Use ThrottleDirection
+ instread of bool is_write
 Content-Language: en-US
-In-Reply-To: <20230727122503.775084-1-seiden@linux.ibm.com>
+To: zhenwei pi <pizhenwei@bytedance.com>, berto@igalia.com, kwolf@redhat.com
+Cc: qemu_oss@crudebyte.com, qemu-devel@nongnu.org, qemu-block@nongnu.org
+References: <20230728022006.1098509-1-pizhenwei@bytedance.com>
+ <20230728022006.1098509-10-pizhenwei@bytedance.com>
+From: Hanna Czenczek <hreitz@redhat.com>
+In-Reply-To: <20230728022006.1098509-10-pizhenwei@bytedance.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 0nyStWpDb0vcK1R4kimWT6crr1cfTAh1
-X-Proofpoint-GUID: FzCEgt2SSfukZxNIzDu6zGeaZjl3RUAS
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
-MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-27_10,2023-07-26_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 bulkscore=0
- priorityscore=1501 lowpriorityscore=0 suspectscore=0 phishscore=0
- mlxlogscore=473 impostorscore=0 clxscore=1015 adultscore=0 mlxscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2307280087
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=seiden@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=hreitz@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.091, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,59 +104,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 28.07.23 04:20, zhenwei pi wrote:
+> 'bool is_write' style is obsolete from throttle framework, adapt
+> block throttle groups to the new style:
+> - use ThrottleDirection instead of 'bool is_write'. Ex,
+>    schedule_next_request(ThrottleGroupMember *tgm, bool is_write)
+>    -> schedule_next_request(ThrottleGroupMember *tgm, ThrottleDirection direction)
+>
+> - use THROTTLE_MAX instead of hard code. Ex, ThrottleGroupMember *tokens[2]
+>    -> ThrottleGroupMember *tokens[THROTTLE_MAX]
+>
+> - use ThrottleDirection instead of hard code on iteration. Ex, (i = 0; i < 2; i++)
+>    -> for (dir = THROTTLE_READ; dir < THROTTLE_MAX; dir++)
+>
+> Use a simple python script to test the new style:
+>   #!/usr/bin/python3
+> import subprocess
+> import random
+> import time
+>
+> commands = ['virsh blkdeviotune jammy vda --write-bytes-sec ', \
+>              'virsh blkdeviotune jammy vda --write-iops-sec ', \
+>              'virsh blkdeviotune jammy vda --read-bytes-sec ', \
+>              'virsh blkdeviotune jammy vda --read-iops-sec ']
+>
+> for loop in range(1, 1000):
+>      time.sleep(random.randrange(3, 5))
+>      command = commands[random.randrange(0, 3)] + str(random.randrange(0, 1000000))
+>      subprocess.run(command, shell=True, check=True)
+>
+> This works fine.
+>
+> Signed-off-by: zhenwei pi <pizhenwei@bytedance.com>
+> ---
+>   block/block-backend.c           |   4 +-
+>   block/throttle-groups.c         | 161 ++++++++++++++++----------------
+>   block/throttle.c                |   8 +-
+>   include/block/throttle-groups.h |   6 +-
+>   4 files changed, 90 insertions(+), 89 deletions(-)
 
-On 7/27/23 14:25, Steffen Eiden wrote:
-> This series enables general QEMU support for AP pass-through for Secure
-> Execution guests (pv-guests).
-> 
-> To enable AP-PT on pv-guests QEMU has to turn on the corresponding bits
-> in the KVM CPU-model[1] if the CPU firmware supports it. However, it
-> only makes sense to turn on AP-PT if the QEMU user enabled (general) AP
-> for that guest. If AP is turned on (ap=on) QEMU also turns on AP-PT for
-> secure execution guests(appv=on) if the CPU supports it.
-> 
-> The series consists of three patches:
->   1) update kvm-s390 header for this series
->   2) small cleanup for kvm_s390_set_attr()
->      refactor code to add ap_available()
->   3) Add UV_CALL CPU model enablement
-> 
-> There is **one** problem with the current implementation:
-> If the user does not enable AP in the cpu model QEMU produces the
-> following warning:
-> ```
-> qemu-system-s390x: warning: 'appv' requires 'ap'.
-> ```
-> 
-> During `check_consistency()` the model has appv=on and ap=offi, hence
-> the warning. However, appv is not turned on during the model
-> realization, as the code checks for AP in beforehand.
-> 
-> appv is in the default z16 model so that it is automatically enabled if
-> ap=on was specified.
-> 
-> I did not find a concept of dynamic defaults to model this behavior
-> (ap=on -> appv=on -> appvi=on). So I hope someone on the list can help
-> me and give some pointers on how to implement that.
-> 
-> 
-> Steffen
+Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
 
-[1] v2 KVM series:
-https://lore.kernel.org/linux-s390/20230728092341.1131787-1-seiden@linux.ibm.com/T/#t
-
-> 
-> Steffen Eiden (3):
->    linux-headers: update asm-s390/kvm.h
->    target/s390x: refractor AP functionalities
->    target/s390x: AP-passthrough for PV guests
-> 
->   linux-headers/asm-s390/kvm.h        | 21 +++++++
->   target/s390x/cpu_features.h         |  1 +
->   target/s390x/cpu_features_def.h.inc |  4 ++
->   target/s390x/cpu_models.c           |  2 +
->   target/s390x/gen-features.c         |  4 ++
->   target/s390x/kvm/kvm.c              | 91 ++++++++++++++++++++++++++---
->   6 files changed, 116 insertions(+), 7 deletions(-)
-> 
 
