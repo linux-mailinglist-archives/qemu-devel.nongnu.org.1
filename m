@@ -2,81 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E46C676727B
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 18:56:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25C2176726C
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 18:52:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qPQZ6-00051l-Le; Fri, 28 Jul 2023 12:43:44 -0400
+	id 1qPQby-0006uX-5h; Fri, 28 Jul 2023 12:46:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qPQZ3-000503-HV
- for qemu-devel@nongnu.org; Fri, 28 Jul 2023 12:43:41 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ id 1qPQbv-0006u3-RX
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 12:46:39 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qPQZ2-0004zb-3l
- for qemu-devel@nongnu.org; Fri, 28 Jul 2023 12:43:41 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1bba2318546so19026565ad.1
- for <qemu-devel@nongnu.org>; Fri, 28 Jul 2023 09:43:39 -0700 (PDT)
+ id 1qPQbu-0006Zn-Ab
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 12:46:39 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-68336d06620so2291804b3a.1
+ for <qemu-devel@nongnu.org>; Fri, 28 Jul 2023 09:46:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690562618; x=1691167418;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ d=linaro.org; s=google; t=1690562795; x=1691167595;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=J2cWrxy3mDioZjNZP55jW0gNtONdh912ipDvrvjKeg4=;
- b=iQ/c7JMCerbAoZ9pGq2FGAsRi34fZKJpT6MYQy0P6EsK7geEiI/8zgSt3rnq/9NUjX
- 8T4vlLHxNHWakEi9zHGmXa7VtlmAtOCZPIiJRo+ap8COnYRzolmXOHTm5S7JFJVBinyF
- KHjGLA0RMHIwfaLV4GiABmfpYw2W4jFxF4Xl+roIDqeIg82ftx+UkYLrgzngm6NQ+YJX
- OjmcQ9pZb/QbI1eng6LLf5oSFD/WFhMks5K53V33v3buqIGGYc8IzF2jRHkoB3MMRXhs
- pheOZux+JxSo2dX1Zl78bm3XZ6HNYLsimIJL5rAW3fitgQgqJE/27pLFF6Qy4Xt3lIEZ
- bKrw==
+ bh=CF4f66H0mjhCmliOUtC5TGKXFUGbLWWPvI24d7OVtkM=;
+ b=iQpH3Yzokzix/36yGZ60IxMkbsBfcpUbMANJjmXSmw1Yzyb8L8Vz2y5jjlcdLIqGU6
+ wX9laiskyuGjHTGozczbL9/OzqnjYowSy4Hl9PvDlY7EpWgPlYtIzcl1u+K1TzJJyu1c
+ Nlw5SSpNQnW5PGfGfc+z+40XG2V36YV2yen6ESGX5LtYutk8ReOrfmMwLSLHkiYdI0FG
+ /aZ5rMzOfrF3/3TdPjGVm+BhpXsEdhIDqA7o0OJxMwXnywFQCGrbLyFqPbkjUox5/4Yq
+ iDzGZ7nqDid7mcA1/bDp2pTsEesYoe2KHoi/ajkdFeMS+Z2XO1BZeS7K5hPaLLNjd8Xx
+ GieA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690562618; x=1691167418;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ d=1e100.net; s=20221208; t=1690562795; x=1691167595;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=J2cWrxy3mDioZjNZP55jW0gNtONdh912ipDvrvjKeg4=;
- b=HjFtDx4qMr6GVnbCAjFSKLGh7GClugTHS+cVfQDJEUxVnaywAL0SD9Z8BFb5BSUrk0
- ySEvh4FabQ0v0LI/TctoyzRsTqa2y6wBsdh9/p3PpayUOuLI0aFisvv43v4dXs9A2SUm
- mBpodpWWYteMCGJQauQL0iGaKBId5oge0uVg9Dq+YjC9nJmX4gEn+dZ5mn8iR2OoFDfF
- 0x8fODRTZsGQXI/jrnMAtpR7d55vNgLuo9nIWr31srT7dDAMaK64CZwKA4aAWrQDXI2F
- 6EIyu9OpYha7viGcWWcovcoGPtAAgSqOGK2TOMHOxW+FfuFXksu15Cdnw+MxU1X2tWI6
- LObA==
-X-Gm-Message-State: ABy/qLbE3zLUF/VPhPoNysbFeGsdnG9cVXeEbS/WJBBabAxS16xS8wmO
- B79wb4gFFfHACmIaLnIXTUHhog==
-X-Google-Smtp-Source: APBJJlFABN2E8Qon8LHduX+wsOfHwH3Mua0TypRCZzvrnFEcndl1Dr9h3df0HlajdKW9LcdiGgTNhg==
-X-Received: by 2002:a17:902:e847:b0:1b9:ea60:cd82 with SMTP id
- t7-20020a170902e84700b001b9ea60cd82mr2689519plg.5.1690562618656; 
- Fri, 28 Jul 2023 09:43:38 -0700 (PDT)
+ bh=CF4f66H0mjhCmliOUtC5TGKXFUGbLWWPvI24d7OVtkM=;
+ b=iHFVCn6OBRhy9nT+A2ZCJOBuHf9oDlyky9ELDsae+yDuQSfvRYXvzAr5xmi7fQfWFa
+ sgLzjHyGK89jSMYaYh4lRU+/wLr4QTDGovwjeVOk+dksPMubWoJA8UnKuXtMIqxEHpYa
+ zUSVbbamTnMRwC5YU93qXAdw2SCmfqfn0Uve1QV260z6OtxJQirqKRaROkuluNleTTFN
+ 9VSHyte6kXDy8qvOxnts1Ssb338ifpZTK9qG2GV3YFKkWfz4b06/dvd9vSfU7pLu22r7
+ XF6RFti3qAlTJNP9PEAHbjHKC7rabv3lpY7d1GkaIJfDJCJa7UY84/UzIB6iDheGJiqf
+ oMhQ==
+X-Gm-Message-State: ABy/qLa67kksYAZbTwqyQJ5nfoJyzv1jPuJmg0cDTp4mJSjGoOmmV9ty
+ 7xKesh5rD6+6yTG/b0/fAW8xpau+xBK7ZTqDd5U=
+X-Google-Smtp-Source: APBJJlF35NAiYXNyHYMDpKG2mak6xq0gQRZX1Vzq3BAopvJ3m0XHfoF7baOy8bgwWF+ZzgfOlmQLCw==
+X-Received: by 2002:a05:6a00:3a0d:b0:67a:8fc7:1b61 with SMTP id
+ fj13-20020a056a003a0d00b0067a8fc71b61mr2779806pfb.11.1690562795136; 
+ Fri, 28 Jul 2023 09:46:35 -0700 (PDT)
 Received: from ?IPV6:2602:ae:154e:c001:cfba:2f6a:7070:67a9?
  ([2602:ae:154e:c001:cfba:2f6a:7070:67a9])
  by smtp.gmail.com with ESMTPSA id
- x17-20020a1709027c1100b001bb33ee4057sm3825087pll.43.2023.07.28.09.43.37
+ a18-20020a62bd12000000b0067acbc74977sm3519384pff.96.2023.07.28.09.46.34
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 28 Jul 2023 09:43:38 -0700 (PDT)
-Message-ID: <14787dc3-66ae-e15e-0bdf-14ca53bff17d@linaro.org>
-Date: Fri, 28 Jul 2023 09:43:36 -0700
+ Fri, 28 Jul 2023 09:46:34 -0700 (PDT)
+Message-ID: <9fa0b0b0-aeda-63d8-3363-f8db137fed08@linaro.org>
+Date: Fri, 28 Jul 2023 09:46:32 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: assert fails in s390x TCG
+Subject: Re: [PATCH v2] bsd-user: Specify host page alignment if none specified
 Content-Language: en-US
+To: Warner Losh <imp@bsdimp.com>, qemu-devel@nongnu.org
+Cc: kevans@freebsd.org
+References: <20230728162927.5009-1-imp@bsdimp.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-To: Claudio Fontana <cfontana@suse.de>, Cornelia Huck <cohuck@redhat.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>, =?UTF-8?Q?Alex_Benn=c3=a9e?=
- <alex.bennee@linaro.org>
-References: <eaec32e3-d56a-e6a7-fcbe-860948e79658@suse.de>
- <def2df0d-fb58-8e67-a0eb-7d646da3be42@linaro.org>
- <0e06f694-7aeb-66d1-48d8-317a93f8f741@suse.de>
- <6a3e8443-2d0a-451e-a481-cc26575d8211@linaro.org>
-In-Reply-To: <6a3e8443-2d0a-451e-a481-cc26575d8211@linaro.org>
+In-Reply-To: <20230728162927.5009-1-imp@bsdimp.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -99,15 +95,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/28/23 09:05, Richard Henderson wrote:
-> It's the page containing both code and a page table entry that concerns me.  It seems like 
-> a kernel bug, though obviously we shouldn't crash.  I'm not sure what to do about it.
+On 7/28/23 09:29, Warner Losh wrote:
+> We're hitting an assert when we pass in alignment == 0 since that's not
+> a power of two. so pass in the ideal page size.
+> 
+> Signed-off-by: Warner Losh <imp@bsdimp.com>
+> ---
+>   bsd-user/mmap.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
 
-Bah.  Of course it's not a kernel bug, since the store is to LowCore.
-And of course LowCore is part of a larger page, which easily has other stuff.
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-Still trying to work out what to do...
+and queued.
 
 
 r~
+> 
+> diff --git a/bsd-user/mmap.c b/bsd-user/mmap.c
+> index 74ed00b9fe3..b62a69bd075 100644
+> --- a/bsd-user/mmap.c
+> +++ b/bsd-user/mmap.c
+> @@ -260,7 +260,8 @@ static abi_ulong mmap_find_vma_aligned(abi_ulong start, abi_ulong size,
+>   
+>       if (reserved_va) {
+>           return mmap_find_vma_reserved(start, size,
+> -            (alignment != 0 ? 1 << alignment : 0));
+> +            (alignment != 0 ? 1 << alignment :
+> +             MAX(qemu_host_page_size, TARGET_PAGE_SIZE)));
+>       }
+>   
+>       addr = start;
+
 
