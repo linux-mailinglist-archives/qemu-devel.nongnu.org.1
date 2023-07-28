@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C9BD7673A2
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 19:41:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39CE17673A5
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 19:43:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qPR90-0001X9-2n; Fri, 28 Jul 2023 13:20:50 -0400
+	id 1qPR9E-0001bR-HN; Fri, 28 Jul 2023 13:21:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qPR8x-0001PH-Tj
- for qemu-devel@nongnu.org; Fri, 28 Jul 2023 13:20:47 -0400
+ id 1qPR98-0001b4-A4
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 13:20:58 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qPR8w-0008OU-KI
- for qemu-devel@nongnu.org; Fri, 28 Jul 2023 13:20:47 -0400
+ id 1qPR97-0000MP-0L
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 13:20:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690564846;
+ s=mimecast20190719; t=1690564856;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=fJnf01bbsUf53Izrt6GXdJzd9ID7pODZMAOQ02cP6nc=;
- b=RgangJO+ouG9UUZpsws2SaADqS3V2UrAPOLgGgB6ACylku+pB0qJCU6oWslbQB2CLSZdqh
- TUIThYWqe6LfKE2oZzOg71ju1JLG4BrCZnyXawPXsMYun7yf7Z7WbkMjyVy7uva9PeJRF/
- 8cV74g0e5BxHL9tit1tkuolX7B23nE0=
+ bh=g/7pQzHfU65+0Q5ONhHthvSzKMuKtyj9JrntdEQCv4w=;
+ b=YtPccQ+oxSYphSVgrU4856jORsk3LnWH4K40nx0gZvSroNOCVt4g9uWQ44E4fMQBgRx8T1
+ xQz9Sz+CrTJUZTRhd9uzZp+cxtdjvd0DADdKhPISo7WFwycjoYbP1IrHYN6VPAFINKsWWG
+ T9NFF6zQ29RA8t1oc0++/InksRJ40eA=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-487-qhkVz3lDO8ailwr81Z_qRQ-1; Fri, 28 Jul 2023 13:20:42 -0400
-X-MC-Unique: qhkVz3lDO8ailwr81Z_qRQ-1
+ us-mta-283-t0kkvNi7PzOZpCZk5arIIg-1; Fri, 28 Jul 2023 13:20:52 -0400
+X-MC-Unique: t0kkvNi7PzOZpCZk5arIIg-1
 Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
  [10.11.54.3])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 355E6805C3F;
- Fri, 28 Jul 2023 17:20:42 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3331D856F67;
+ Fri, 28 Jul 2023 17:20:52 +0000 (UTC)
 Received: from eperezma.remote.csb (unknown [10.39.193.99])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 4EBB11121330;
- Fri, 28 Jul 2023 17:20:38 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id F07F31121330;
+ Fri, 28 Jul 2023 17:20:49 +0000 (UTC)
 From: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Jason Wang <jasowang@redhat.com>, Gautam Dawar <gdawar@xilinx.com>,
@@ -52,10 +52,9 @@ Cc: Jason Wang <jasowang@redhat.com>, Gautam Dawar <gdawar@xilinx.com>,
  Harpreet Singh Anand <hanand@xilinx.com>,
  Laurent Vivier <lvivier@redhat.com>, Shannon Nelson <snelson@pensando.io>,
  Lei Yang <leiyang@redhat.com>, Dragos Tatulea <dtatulea@nvidia.com>
-Subject: [PATCH 3/7] vdpa: use virtio_ops->should_enable at
- vhost_vdpa_set_vrings_ready
-Date: Fri, 28 Jul 2023 19:20:24 +0200
-Message-Id: <20230728172028.2074052-4-eperezma@redhat.com>
+Subject: [PATCH 7/7] vdpa: remove net cvq migration blocker
+Date: Fri, 28 Jul 2023 19:20:28 +0200
+Message-Id: <20230728172028.2074052-8-eperezma@redhat.com>
 In-Reply-To: <20230728172028.2074052-1-eperezma@redhat.com>
 References: <20230728172028.2074052-1-eperezma@redhat.com>
 MIME-Version: 1.0
@@ -87,29 +86,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This allow to skip some rings that qemu does not want to enable.
+Now that we have add migration blockers if the device does not support
+all the needed features, remove the general blocker applied to all net
+devices with CVQ.
 
 Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
 ---
- hw/virtio/vhost-vdpa.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/vhost-vdpa.c | 12 ------------
+ 1 file changed, 12 deletions(-)
 
-diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
-index bebcc9fe7c..1281502a71 100644
---- a/hw/virtio/vhost-vdpa.c
-+++ b/hw/virtio/vhost-vdpa.c
-@@ -896,6 +896,11 @@ static int vhost_vdpa_set_vrings_ready(struct vhost_dev *dev)
- 
-     assert(dev->vhost_ops->backend_type == VHOST_BACKEND_TYPE_VDPA);
- 
-+    if (v->virtio_ops && v->virtio_ops->should_enable
-+        && !(v->virtio_ops->should_enable(v))) {
-+        return 0;
-+    }
-+
-     for (i = 0; i < dev->nvqs; ++i) {
-         vhost_vdpa_set_vring_ready(v, dev->vq_index + i);
+diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+index 118837c6b9..cc3455d131 100644
+--- a/net/vhost-vdpa.c
++++ b/net/vhost-vdpa.c
+@@ -1443,18 +1443,6 @@ static NetClientState *net_vhost_vdpa_init(NetClientState *peer,
+         s->vhost_vdpa.shadow_vq_ops = &vhost_vdpa_net_svq_ops;
+         s->vhost_vdpa.shadow_vq_ops_opaque = s;
+         s->cvq_isolated = cvq_isolated;
+-
+-        /*
+-         * TODO: We cannot migrate devices with CVQ and no x-svq enabled as
+-         * there is no way to set the device state (MAC, MQ, etc) before
+-         * starting the datapath.
+-         *
+-         * Migration blocker ownership now belongs to s->vhost_vdpa.
+-         */
+-        if (!svq) {
+-            error_setg(&s->vhost_vdpa.migration_blocker,
+-                       "net vdpa cannot migrate with CVQ feature");
+-        }
      }
+     ret = vhost_vdpa_add(nc, (void *)&s->vhost_vdpa, queue_pair_index, nvqs);
+     if (ret) {
 -- 
 2.39.3
 
