@@ -2,69 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A45587676D7
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 22:18:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A314A76772D
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 22:46:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qPTaE-00032y-CG; Fri, 28 Jul 2023 15:57:06 -0400
+	id 1qPTaF-00034B-Vm; Fri, 28 Jul 2023 15:57:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qPTa8-00032U-VS; Fri, 28 Jul 2023 15:57:01 -0400
-Received: from mail-oa1-x2c.google.com ([2001:4860:4864:20::2c])
+ id 1qPTaA-00032j-HO; Fri, 28 Jul 2023 15:57:03 -0400
+Received: from mail-oa1-x29.google.com ([2001:4860:4864:20::29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qPTa7-0004mO-EN; Fri, 28 Jul 2023 15:57:00 -0400
-Received: by mail-oa1-x2c.google.com with SMTP id
- 586e51a60fabf-1bbb8daeefaso1943220fac.2; 
- Fri, 28 Jul 2023 12:56:58 -0700 (PDT)
+ id 1qPTa9-0004ms-58; Fri, 28 Jul 2023 15:57:02 -0400
+Received: by mail-oa1-x29.google.com with SMTP id
+ 586e51a60fabf-1bba254a7d4so1924735fac.2; 
+ Fri, 28 Jul 2023 12:57:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1690574217; x=1691179017;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=cK0wTA84D1QgR8qLv8d4Bl7d3/e8HHOpy8GoO7L5fYM=;
- b=fdNO23fFc80aPsYKdfZsYGVO5oC5U5u1dSs9gQbEeQbFp8Qth524JECaVmcPrbMEdi
- FJ6qvDGQi8GjqFqoBCGD6u+o/K17pxPmmthN+YpZSSud8zqi7UzSSVgnFdBR87C54mvt
- jwew6BO7hBCmMWDVsXi3bFaW6X5PnGhqRcfIGBH0HO+BwARcnfEOLHEHoAi3EN3IEnA5
- rPxVxg7gBw/U5EoC7oLmANicfM0MgptE/99L+pPoC/T89zoge0NGf4fGKIP9B9T7bjyu
- YHSB5U4weiraRIe5eJ8883fIcRfQj6iSkwOBrCTilnZfAy+pUP5Rz2cTgPSH8HpGcjkJ
- wlqA==
+ d=gmail.com; s=20221208; t=1690574219; x=1691179019;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=vS+TVeZ0EksmCAFo0RsvrYC95AcrMT9z2jCTN7Sy8gY=;
+ b=hH7CADAMFqMOKcK3seUDBQ3aP3xX7bQAAS2QyZN9x1X8UxRcpIJhqzAL/3f/2/NpZO
+ gSBO1nyUK6AP+qj8bG8ZTyCd/ebXsMmaCkFA5cynHzzfgp5GKE0FhYmn6kgck15xOKfj
+ yViYMkLFDWNxBv+tNAXehWuC3CrjYG9u8Bg4tvkmGJusyH70CN86Lr54qCuX+VpkQyA/
+ 1ZaScWBpIAPkQDv/AlsI5OUzJh0/l0QOOdQO2HebzremTF2+7Y/gSTdbYcgcVLaUX9fK
+ mK313OVdf5AQ9f+tDNpMwQmuVeUsqNQ5spESdsUZdE+1dtbU8D15MmzaxZOIGAXn2TCB
+ VpWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690574217; x=1691179017;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=cK0wTA84D1QgR8qLv8d4Bl7d3/e8HHOpy8GoO7L5fYM=;
- b=DZKg+ZlR715MHFJIsJatr+zatfJYhC1qmqqLHfOXotcto/thnAfwTYdmzwAuWQyBNH
- MW2Ktsb312J9KP/C0Ai46JUrpDb3h19BK9BdgR97BFguY0Ljm1H9DrwYBIjSPlKF1K/d
- 7Yp1wz8j9EW86Dsl80jyOIRYbKZGn+lzLtqkEztysgf4VmrT4eK4A0enGJy2LC8VXCNF
- 6Hf8UJzEX45K9aX/57VrmyTKW7q9H2RQoi9D3VrRkvKmrV1E4+xgpz06r45XJViJWpd/
- 8Llj9P2X+ypxHrHDvrxdiwYtQYxYixkulAykm5boL1CGradJa2sLm93Ss1Ku+v674hRE
- 6K6Q==
-X-Gm-Message-State: ABy/qLYEB/OELJlax6qRyw2DETBhQhtr0lxtrYXHgfapFvYX6BGr64Xo
- IQgFrMDFrBipLoyt1c1H9b/Fz8hZqHs=
-X-Google-Smtp-Source: APBJJlGzzzskGRONZUrxQap8c9GPsRQQ2d3THy2eXKQohFmIi7nzq/XoDvTps9TMLuJUI2gHa6KL7g==
-X-Received: by 2002:a05:6870:f695:b0:1b7:60aa:43f1 with SMTP id
- el21-20020a056870f69500b001b760aa43f1mr5111884oab.11.1690574217180; 
- Fri, 28 Jul 2023 12:56:57 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1690574219; x=1691179019;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=vS+TVeZ0EksmCAFo0RsvrYC95AcrMT9z2jCTN7Sy8gY=;
+ b=hR+C/RV7/CttNshx7WgXRGunxgdF290WV/c3c/6HynSBfnfRXXWa153BjlYKEC7tLc
+ ei6lInwjmDGA/VqOavJ0IalfsNmzMryBFHFDL2MFplRSEdXbdqFnoRZRpZo2I+cZmpSE
+ 0DOitMSc1bPgq91tquQ/fmAm2gkddNvvO3VTymIEwHDHLBJv3q181MwrSCv+4CG2UKe6
+ yfXM8Z9PFGydzwVwKLOFdGvyj20FDFXWjKfnyS5yA7JDzGJvRPM9k/XfaOg+LM+cUj5r
+ pHf+bU2d67ZdHafKzEEHbIKgyhWu0DRb4Qm3YOfV2R4UGga/bp8HEQN4Qei0/zYbXn/w
+ ARDg==
+X-Gm-Message-State: ABy/qLZnVhrKj01aSb87CXiX8tGgigc/srdesuUrh5OzqWd2IOkOOs61
+ H/HZ4NVw/0/sBnq/UMwEJYC6yj4giCk=
+X-Google-Smtp-Source: APBJJlFMawrzK1Pn5L3cUjW8rg9O0qatUnyduF/mTB1dLfh5VeyEvzidxDhKwJ2heq2wLOo/Evw+lA==
+X-Received: by 2002:a05:6870:64a4:b0:1bb:fd78:4f22 with SMTP id
+ cz36-20020a05687064a400b001bbfd784f22mr3300239oab.34.1690574219090; 
+ Fri, 28 Jul 2023 12:56:59 -0700 (PDT)
 Received: from grind.. (201-69-66-36.dial-up.telesp.net.br. [201.69.66.36])
  by smtp.gmail.com with ESMTPSA id
- t6-20020a056870180600b001b02a3426ddsm2087050oaf.14.2023.07.28.12.56.55
+ t6-20020a056870180600b001b02a3426ddsm2087050oaf.14.2023.07.28.12.56.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 28 Jul 2023 12:56:56 -0700 (PDT)
+ Fri, 28 Jul 2023 12:56:58 -0700 (PDT)
 From: Daniel Henrique Barboza <danielhb413@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-trivial@nongnu.org,
  Daniel Henrique Barboza <danielhb413@gmail.com>
-Subject: [PATCH for-8.2 0/2] ppc: get rid of free() (gitlab #1798)
-Date: Fri, 28 Jul 2023 16:56:44 -0300
-Message-ID: <20230728195646.168997-1-danielhb413@gmail.com>
+Subject: [PATCH for-8.2 1/2] hw/ppc: use g_free() in
+ spapr_tce_table_post_load()
+Date: Fri, 28 Jul 2023 16:56:45 -0300
+Message-ID: <20230728195646.168997-2-danielhb413@gmail.com>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230728195646.168997-1-danielhb413@gmail.com>
+References: <20230728195646.168997-1-danielhb413@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::2c;
- envelope-from=danielhb413@gmail.com; helo=mail-oa1-x2c.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::29;
+ envelope-from=danielhb413@gmail.com; helo=mail-oa1-x29.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -88,28 +92,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello,
+tcet->mig_table is memcpy'ed from tcet->table, which in turn is created
+via spapr_tce_alloc_table().
 
-Here's some trivial changes following Peter's call to arms against
-free() and friends in gitlab issue #1798 in an attempt to enforce
-our memory management guidelines [1].
+Use g_free() instead of free() to deallocate it.
 
-We only have 2 "free()" occurences that needs fixing in the ppc tree.
-The hard part is to be dilligent to to not introduce new ones.
+Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
+---
+ hw/ppc/spapr_iommu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Michael, feel free to take it via qemu-trivial.
-
-
-[1] https://www.qemu.org/docs/master/devel/style.html#low-level-memory-management 
-
-Daniel Henrique Barboza (2):
-  hw/ppc: use g_free() in spapr_tce_table_post_load()
-  target/ppc: use g_free() in test_opcode_table()
-
- hw/ppc/spapr_iommu.c   | 2 +-
- target/ppc/translate.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
-
+diff --git a/hw/ppc/spapr_iommu.c b/hw/ppc/spapr_iommu.c
+index 63e34d457a..5e3973fc5f 100644
+--- a/hw/ppc/spapr_iommu.c
++++ b/hw/ppc/spapr_iommu.c
+@@ -248,7 +248,7 @@ static int spapr_tce_table_post_load(void *opaque, int version_id)
+         memcpy(tcet->table, tcet->mig_table,
+                tcet->nb_table * sizeof(tcet->table[0]));
+ 
+-        free(tcet->mig_table);
++        g_free(tcet->mig_table);
+         tcet->mig_table = NULL;
+     }
+ 
 -- 
 2.41.0
 
