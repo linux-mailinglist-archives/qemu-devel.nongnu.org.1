@@ -2,62 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31D4D7663E5
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 08:05:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 826A17663F3
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 08:15:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qPGJJ-0005H1-BP; Fri, 28 Jul 2023 01:46:45 -0400
+	id 1qPGaI-0007Zc-HB; Fri, 28 Jul 2023 02:04:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <logoerthiner1@163.com>)
- id 1qPGJE-0005GQ-Sp
- for qemu-devel@nongnu.org; Fri, 28 Jul 2023 01:46:42 -0400
-Received: from m1382.mail.163.com ([220.181.13.82])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <logoerthiner1@163.com>) id 1qPGJ6-0002ue-Gy
- for qemu-devel@nongnu.org; Fri, 28 Jul 2023 01:46:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
- s=s110527; h=Date:From:Subject:Content-Type:MIME-Version:
- Message-ID; bh=KqT2YScU8mc5Hdt03IBmfrIUmT4gfL8XlMi/T3k1A5w=; b=p
- E98qYNLQKRw4GknETUYsezB7ZtCe1Yu3C//VTPIT7HbRr4yS5MrnYMBYgm6SJJci
- z+XRSwaZ6CaUEt7ymZIf1FRko7y6Df0wY7tI+xhvqxcVw4RG9fcksBkGnCjUSy/x
- uth53/YzKoQsHzRTogDWdSu7fnIBPGZdIWbnkr81ck=
-Received: from logoerthiner1$163.com ( [183.242.254.172] ) by
- ajax-webmail-wmsvr82 (Coremail) ; Fri, 28 Jul 2023 13:46:21 +0800 (CST)
-X-Originating-IP: [183.242.254.172]
-Date: Fri, 28 Jul 2023 13:46:21 +0800 (CST)
-From: ThinerLogoer  <logoerthiner1@163.com>
-To: "David Hildenbrand" <david@redhat.com>, qemu-devel@nongnu.org
-Cc: imammedo@redhat.com
-Subject: Re:Re: [PATCH v2] softmmu/physmem: try opening file readonly before
- failure in file_ram_open
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT5.0.14 build 20230109(dcb5de15)
- Copyright (c) 2002-2023 www.mailtech.cn 163com
-In-Reply-To: <e908495c-252c-745c-036b-1b19778435d9@redhat.com>
-References: <20230726145912.88545-1-logoerthiner1@163.com>
- <183e16a8-55c3-7550-a9ff-21f31f65d0e5@redhat.com>
- <6bdbce7f.3e8e.18997f05e47.Coremail.logoerthiner1@163.com>
- <e908495c-252c-745c-036b-1b19778435d9@redhat.com>
-X-NTES-SC: AL_QuySAvmZvEkj5imRYukXnk4Shuc2XMu4u/gu34JTP5E0iSrKwjIJXXFdFnfH7/OoKDuuvhadUANTy9ZKU6paZaJo074b+Z6k+FwiWEqIP5Od
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=GBK
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qPGaG-0007ZI-Q1
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 02:04:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qPGaF-0003el-4q
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 02:04:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1690524253;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=QTOthJ+WNOkgZHJ+ob27X7QvS+Dkq2di6xZmoc1tRLE=;
+ b=edrFgxojPOgli8mjwb9NJfM2vn4UaMeBFRwlZBynSzpCxlVL1SH3Xrk4e2SDqQ1e+dH2hC
+ K0QgmbDefHKObi0NmeS7XueUKjZ82gcc9guX5itntbcoxYXM1XV+Sma6+3zTliuAfyg9Bq
+ axVBdUIsAc8Fey6231wTYd4Oqam9fm0=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-398-NcKetGKFMcShk5F6_kP3kA-1; Fri, 28 Jul 2023 02:04:11 -0400
+X-MC-Unique: NcKetGKFMcShk5F6_kP3kA-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-993c24f3246so241702866b.1
+ for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 23:04:10 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1690524250; x=1691129050;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=QTOthJ+WNOkgZHJ+ob27X7QvS+Dkq2di6xZmoc1tRLE=;
+ b=PMPpWBE6uw9PwQFdRFKsBb6f5YT+H2/FdXMrqn9hWrOWv/4x2+aUGU/vLPI6U1Dc51
+ l5lKvQuRduhYjfyBw913JCASIu/CVpFEEg94Evu2haGBijX7NJBNTzlMnQIr/TLRnZbP
+ Ei+8kh44QsE/+euV0Ra0L0asLmdrKRAq3aZQlPiaOkwIj4ZJ4W4LYIKmlYj/Zy5gN4kd
+ ngP0uoEaZH0T89qOwk7IF2UC1OnEJvw3YRVI9COaY1QR0Scp0jUzkfSq4Sg/yEhOppfg
+ 1y3DeOLwxX9PfWdg3qyiULLrpD7I8Q67gKGaGN1BaFLQAkJbJ9I2dW1bpwQXAmjvP7PK
+ JMgw==
+X-Gm-Message-State: ABy/qLZhQXPzb6OGvS9EY6nSKIgwOZ+sqTyRnNOyyntXvWtUL0InRM+f
+ unhdygfElCeeTgvTFUBH1AX8IMNn40LtmCTzGOAs8pIWDG668PLRwbMYjmUGE10rwIReoRdQ9U2
+ VBD1TeaevODUJA68=
+X-Received: by 2002:a17:907:a07a:b0:988:b61e:4219 with SMTP id
+ ia26-20020a170907a07a00b00988b61e4219mr1673192ejc.29.1690524249970; 
+ Thu, 27 Jul 2023 23:04:09 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlHxexpFYycX+WhmbW1H3tCAMN00+iRMz/k1eP9+VbLwJyDSklfyxjySkhxIrJu7GLIAa/TtTA==
+X-Received: by 2002:a17:907:a07a:b0:988:b61e:4219 with SMTP id
+ ia26-20020a170907a07a00b00988b61e4219mr1673176ejc.29.1690524249687; 
+ Thu, 27 Jul 2023 23:04:09 -0700 (PDT)
+Received: from redhat.com ([2.52.14.22]) by smtp.gmail.com with ESMTPSA id
+ sd26-20020a170906ce3a00b0099bc08862b6sm1653184ejb.171.2023.07.27.23.04.06
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 27 Jul 2023 23:04:08 -0700 (PDT)
+Date: Fri, 28 Jul 2023 02:04:04 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Li Feng <fengli@smartx.com>
+Cc: Raphael Norwitz <raphael.norwitz@nutanix.com>,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ Viresh Kumar <viresh.kumar@linaro.org>,
+ "open list:Block layer core" <qemu-block@nongnu.org>,
+ "open list:All patches CC here" <qemu-devel@nongnu.org>
+Subject: Re: [PATCH v2 2/4] vhost-user-common: send get_inflight_fd once
+Message-ID: <20230728020156-mutt-send-email-mst@kernel.org>
+References: <20230721105205.1714449-1-fengli@smartx.com>
+ <20230725104256.4861-1-fengli@smartx.com>
+ <20230725104256.4861-3-fengli@smartx.com>
 MIME-Version: 1.0
-Message-ID: <615091df.3495.1899b089fc8.Coremail.logoerthiner1@163.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID: UsGowAAXL48tVsNkjbAKAA--.54726W
-X-CM-SenderInfo: 5orj0vpuwkx0thurqiywtou0bp/xtbBZhu6nlaEEZX54wABsU
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
-Received-SPF: pass client-ip=220.181.13.82; envelope-from=logoerthiner1@163.com;
- helo=m1382.mail.163.com
-X-Spam_score_int: -14
-X-Spam_score: -1.5
-X-Spam_bar: -
-X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230725104256.4861-3-fengli@smartx.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -73,102 +103,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-U29ycnkgbXkgbWFpbCBhZ2VudCBqdXN0IGhhdmUgYSBidWcKCkF0IDIwMjMtMDctMjggMDI6MzA6
-MDksICJEYXZpZCBIaWxkZW5icmFuZCIgPGRhdmlkQHJlZGhhdC5jb20+IHdyb3RlOgo+T24gMjcu
-MDcuMjMgMTc6MjAsIFRoaW5lckxvZ29lciB3cm90ZToKPj4gCj4+IEF0IDIwMjMtMDctMjcgMjE6
-MTg6NDQsICJEYXZpZCBIaWxkZW5icmFuZCIgPGRhdmlkQHJlZGhhdC5jb20+IHdyb3RlOgo+Pj4g
-T24gMjYuMDcuMjMgMTY6NTksIFRoaW5lciBMb2dvZXIgd3JvdGU6Cj4+Pj4gVXNlcnMgbWF5IGdp
-dmUgIi1tZW0tcGF0aCIgYSByZWFkIG9ubHkgZmlsZSBhbmQgZXhwZWN0IHRoZSBmaWxlCj4+Pj4g
-dG8gYmUgbWFwcGVkIHJlYWQtd3JpdGUgcHJpdmF0ZWx5LiBBbGxvdyB0aGlzIGJ1dCBnaXZlIGEg
-d2FybmluZwo+Pj4+IHNpbmNlIG90aGVyIHVzZXJzIG1heSBzdXJwcmlzZSB3aGVuIHRoZSByYW0g
-ZmlsZSBpcyByZWFkb25seSBhbmQKPj4+PiBxZW11IHN1ZGRlbmx5IGFib3J0cyBlbHNld2hlcmUu
-Cj4+Pj4KPj4+PiBTdWdnZXN0ZWQtYnk6IERhdmlkIEhpbGRlbmJyYW5kIDxkYXZpZEByZWRoYXQu
-Y29tPgo+Pj4+IFNpZ25lZC1vZmYtYnk6IFRoaW5lciBMb2dvZXIgPGxvZ29lcnRoaW5lcjFAMTYz
-LmNvbT4KPj4+PiAtLS0KPj4+Pgo+Pj4+IFNlZSB0aGUgcHJldmlvdXMgdmVyc2lvbiBhdDoKPj4+
-PiBodHRwczovL2xvcmUua2VybmVsLm9yZy9xZW11LWRldmVsLzk2YTQ2MmVjLTZmOWQtZmQ4My1m
-Njk3LTczZTEzMjQzMmNhNEByZWRoYXQuY29tL1QvCj4+Pj4KPj4+PiB2ZXJpZmllZCwgdGhpcyBw
-YXRjaCB3b3JrcyBmb3IgbXkgc2V0dXAsIGJvdGggZnVuY3Rpb25hbGl0eSBhbmQgdGhlIHdhcm5p
-bmcKPj4+PiBhcmUgZXhwZWN0ZWQgYmVoYXZpb3IuCj4+Pj4KPj4+PiBBbHNvIGFub3RoZXIgcHJv
-YmxlbSB3aGVuIEkgbG9vayBhdCB0aGUgZmlsZV9yYW1fb3Blbgo+Pj4+Cj4+Pj4gV2hlbiByZWFk
-b25seSBpcyB0cnVlIGFuZCB0aGUgcGF0aCBpcyBhIGRpcmVjdG9yeSwgdGhlIG9wZW4gd2lsbCBz
-dWNjZWVkIGJ1dAo+Pj4+IGFueSBsYXRlciBvcGVyYXRpb25zIHdpbGwgZmFpbCBzaW5jZSBpdCBp
-cyBhIGRpcmVjdG9yeSBmZC4gVGhpcyBtYXkgcmVxdWlyZQo+Pj4+IGFkZGl0aW9uYWwgY29tbWl0
-cyB3aGljaCBpcyBvdXQgb2YgbXkgc2NvcGUuIE1lcmVseSByZWNvcmQgdGhlIHF1ZXN0aW9uIGhl
-cmUuCj4+IAo+PiBNYXliZSB5b3UgY2FuIG5vdGljZSB0aGlzIGVkZ2UgY2FzZT8gSSBhbSBub3Qg
-c3VyZSB3aGV0aGVyIHRoaXMKPj4gY2FzZSBpcyBvbiB5b3VyIHRvZG8gbGlzdD8KPgo+SSBndWVz
-cyB3ZSB3b3VsZCBoYXZlIHRvIGNoZWNrIGlmIHdlIG9wZW5lZCBhIGRpcmVjdG9yeS4gU2hvdWxk
-IGJlIGVhc3kgdG8gYWRkLgo+Cj5BcyBsb25nIGFzIFFFTVUgZmFpbHMgcmVhc29uYWJseSB3ZWxs
-IGxhdGVyLCBnb29kIGZvciBub3cgOikKPgo+PiAKPj4+Pgo+Pj4+ICAgIHNvZnRtbXUvcGh5c21l
-bS5jIHwgMTQgKysrKysrKysrKysrKysKPj4+PiAgICAxIGZpbGUgY2hhbmdlZCwgMTQgaW5zZXJ0
-aW9ucygrKQo+Pj4+Cj4+Pj4gZGlmZiAtLWdpdCBhL3NvZnRtbXUvcGh5c21lbS5jIGIvc29mdG1t
-dS9waHlzbWVtLmMKPj4+PiBpbmRleCAzZGY3MzU0MmUxLi5lODI3OWQ2OWQ0IDEwMDY0NAo+Pj4+
-IC0tLSBhL3NvZnRtbXUvcGh5c21lbS5jCj4+Pj4gKysrIGIvc29mdG1tdS9waHlzbWVtLmMKPj4+
-PiBAQCAtMTI5Niw2ICsxMjk2LDcgQEAgc3RhdGljIGludCBmaWxlX3JhbV9vcGVuKGNvbnN0IGNo
-YXIgKnBhdGgsCj4+Pj4gICAgICAgIGNoYXIgKnNhbml0aXplZF9uYW1lOwo+Pj4+ICAgICAgICBj
-aGFyICpjOwo+Pj4+ICAgICAgICBpbnQgZmQgPSAtMTsKPj4+PiArICAgIGJvb2wgZmlyc3RfdHJp
-YWwgPSB0cnVlOwo+Pj4+ICAgIAo+Pj4+ICAgICAgICAqY3JlYXRlZCA9IGZhbHNlOwo+Pj4+ICAg
-ICAgICBmb3IgKDs7KSB7Cj4+Pj4gQEAgLTEzMzIsNiArMTMzMywxOCBAQCBzdGF0aWMgaW50IGZp
-bGVfcmFtX29wZW4oY29uc3QgY2hhciAqcGF0aCwKPj4+PiAgICAgICAgICAgICAgICAgICAgYnJl
-YWs7Cj4+Pj4gICAgICAgICAgICAgICAgfQo+Pj4+ICAgICAgICAgICAgICAgIGdfZnJlZShmaWxl
-bmFtZSk7Cj4+Pj4gKyAgICAgICAgfSBlbHNlIGlmIChmaXJzdF90cmlhbCAmJiAhcmVhZG9ubHkg
-JiYgZXJybm8gPT0gRUFDQ0VTKSB7Cj4+Pgo+Pj4gSSBndWVzcyBpdCdzIGJldHRlciB0byBvbmx5
-IHJldHJ5IG9uIHByaXZhdGUgbWFwcGluZ3MsIGZvciBzaGFyZWQKPj4+IG1hcHBpbmdzIHRoYXQg
-Y2Fubm90IHBvc3NpYmx5IHdvcmsuCj4+IAo+PiBJIGZlZWwgdGhhdCB0aGUgcmV0cnkgY2FuIGJl
-IGFwcGxpZWQgaW4gZ2VuZXJhbCAtIGZvciBzaGFyZWQgbWFwcGluZ3MsCj4+IGl0IHdpbGwgbWVy
-ZWx5IGZhaWwgb24gdGhlIG1tYXAgc3RlcCBhbmQgc2hvdWxkIGJlIG9rPwo+Cj5JIGd1ZXNzIGEg
-cHJvcGVyICJjYW4ndCBvcGVuIGJhY2tpbmcgc3RvcmUiIG1lc3NhZ2UgaXMgYmV0dGVyIGZvciB0
-aGUgY2FzZXMgdGhhdCBvYnZpb3VzbHkgY2FuJ3Qgd29yay4KPgo+PiAKPj4gVGhvdWdoLCB0byBy
-ZXRyeSBvbmx5IG9uIHByaXZhdGUgbWFwcGluZyBzZWVtcyBzdHJhaWdodGZvcndhcmRzIC0KPj4g
-dGhpcyBmdW5jdGlvbiBpcyBjYWxsZWQgb25seSBvbmNlLCBhbmQgd2hldGhlciB0aGUgbWFwcGlu
-ZyBpcyBwcml2YXRlCj4+IGNhbiBiZSBwYXNzZWQgaGVyZSB3aXRoIGEgYm9vbGVhbiBmbGFnIGFz
-IGFyZ3VtZW50LiBOb25ldGhlbGVzcwo+PiBpdCBtYXkgbWFrZSB0aGUgbG9naWMgb2YgdGhlIGZ1
-bmN0aW9uIG1vcmUgY29tcGxleCBhbmQgbGVzcyBpbnR1aXRpdmUuCj4KPlF1aWNrIHVudGVzdGVk
-IGF0dGVtcHQgdG8gbW92ZSByZXRyeSBoYW5kbGluZyB0byB0aGUgY2FsbGVyOgo+Cj5kaWZmIC0t
-Z2l0IGEvc29mdG1tdS9waHlzbWVtLmMgYi9zb2Z0bW11L3BoeXNtZW0uYwo+aW5kZXggM2RmNzM1
-NDJlMS4uYzgyNmJiNzhmYyAxMDA2NDQKPi0tLSBhL3NvZnRtbXUvcGh5c21lbS5jCj4rKysgYi9z
-b2Z0bW11L3BoeXNtZW0uYwo+QEAgLTEyODksOCArMTI4OSw3IEBAIHN0YXRpYyBpbnQ2NF90IGdl
-dF9maWxlX2FsaWduKGludCBmZCkKPiAgc3RhdGljIGludCBmaWxlX3JhbV9vcGVuKGNvbnN0IGNo
-YXIgKnBhdGgsCj4gICAgICAgICAgICAgICAgICAgICAgICAgICBjb25zdCBjaGFyICpyZWdpb25f
-bmFtZSwKPiAgICAgICAgICAgICAgICAgICAgICAgICAgIGJvb2wgcmVhZG9ubHksCgpGb3Igc29t
-ZSByZWFzb24gdGhpcyBwcmVyZXEgcGFydCBvZiBwYXRjaCBoYXMgb25lIGFkZGl0aW9uYWwgc3Bh
-Y2UsCndoaWNoIGNhdXNlcyBteSBgcGF0Y2hgIHRvIHJlamVjdCB0aGUgcGF0Y2guIEkgaGF2ZSB0
-byBtYW51YWxseQpmaXggaXQgdG8gdGVzdCBsYXRlci4KCj4tICAgICAgICAgICAgICAgICAgICAg
-ICAgIGJvb2wgKmNyZWF0ZWQsCj4tICAgICAgICAgICAgICAgICAgICAgICAgIEVycm9yICoqZXJy
-cCkKPisgICAgICAgICAgICAgICAgICAgICAgICAgYm9vbCAqY3JlYXRlZCkKPiAgewo+ICAgICAg
-Y2hhciAqZmlsZW5hbWU7Cj4gICAgICBjaGFyICpzYW5pdGl6ZWRfbmFtZTsKPkBAIC0xMzM0LDEw
-ICsxMzMzLDcgQEAgc3RhdGljIGludCBmaWxlX3JhbV9vcGVuKGNvbnN0IGNoYXIgKnBhdGgsCj4g
-ICAgICAgICAgICAgIGdfZnJlZShmaWxlbmFtZSk7Cj4gICAgICAgICAgfQo+ICAgICAgICAgIGlm
-IChlcnJubyAhPSBFRVhJU1QgJiYgZXJybm8gIT0gRUlOVFIpIHsKPi0gICAgICAgICAgICBlcnJv
-cl9zZXRnX2Vycm5vKGVycnAsIGVycm5vLAo+LSAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ImNhbid0IG9wZW4gYmFja2luZyBzdG9yZSAlcyBmb3IgZ3Vlc3QgUkFNIiwKPi0gICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgIHBhdGgpOwo+LSAgICAgICAgICAgIHJldHVybiAtMTsKPisgICAg
-ICAgICAgICByZXR1cm4gLWVycm5vOwo+ICAgICAgICAgIH0KPiAgICAgICAgICAvKgo+ICAgICAg
-ICAgICAqIFRyeSBhZ2FpbiBvbiBFSU5UUiBhbmQgRUVYSVNULiAgVGhlIGxhdHRlciBoYXBwZW5z
-IHdoZW4KPkBAIC0xOTQ2LDkgKzE5NDIsMjMgQEAgUkFNQmxvY2sgKnFlbXVfcmFtX2FsbG9jX2Zy
-b21fZmlsZShyYW1fYWRkcl90IHNpemUsIE1lbW9yeVJlZ2lvbiAqbXIsCj4gICAgICBib29sIGNy
-ZWF0ZWQ7Cj4gICAgICBSQU1CbG9jayAqYmxvY2s7Cj4gIAo+LSAgICBmZCA9IGZpbGVfcmFtX29w
-ZW4obWVtX3BhdGgsIG1lbW9yeV9yZWdpb25fbmFtZShtciksIHJlYWRvbmx5LCAmY3JlYXRlZCwK
-Pi0gICAgICAgICAgICAgICAgICAgICAgIGVycnApOwo+KyAgICBmZCA9IGZpbGVfcmFtX29wZW4o
-bWVtX3BhdGgsIG1lbW9yeV9yZWdpb25fbmFtZShtciksIHJlYWRvbmx5LCAmY3JlYXRlZCk7Cj4r
-ICAgIGlmIChmZCA9PSAtRUFDQ0VTICYmICEocmFtX2ZsYWdzICYgUkFNX1NIQVJFRCkgJiYgcmVh
-ZG9ubHkpIHsKCiJyZWFkb25seSIgc2hvdWxkIGJlICIhcmVhZG9ubHkiIGhlcmU/IFRoZSByZWFk
-b25seSB2YXJpYWJsZSBpbiB0aGlzIGZ1bmN0aW9uIGlzCmFib3V0IHdoZXRoZXIgdGhlIG1hcHBp
-bmcgaXMgcmVhZG9ubHkuIEluIG91ciBjYXNlIHRoZSBtYXBwaW5nIGlzIHByaXZhdGUKd3JpdGFi
-bGUsIHNvIHJlYWRvbmx5IHdpbGwgYmUgZmFsc2UuCgpBZnRlciBtYW51YWxseSBmaXggdGhpcyB1
-cCwgdGhpcyBwYXRjaCBhbHNvIHdvcmtzIGluIG15IGVudmlyb25tZW50LCBib3RoCmZ1bmN0aW9u
-YWxpdHkgYW5kIHRoZSB3YXJuaW5nLgoKTWF5YmUgeW91IGNhbiBkaXJlY3RseSBmb3JtYXQgdGhl
-IHBhdGNoIGFuZCBzdGFydCBhIG5ldyB0aHJlYWQgdGhlcmU/Cgo+KyAgICAgICAgLyoKPisgICAg
-ICAgICAqIFdlIGNhbiBoYXZlIGEgd3JpdGFibGUgTUFQX1BSSVZBVEUgbWFwcGluZyBvZiBhIHJl
-YWRvbmx5IGZpbGUuCj4rICAgICAgICAgKiBIb3dldmVyLCBzb21lIG9wZXJhdGlvbnMgbGlrZSBm
-dHJ1bmNhdGUoKSBvciBmYWxsb2NhdGUoKSBtaWdodCBmYWlsCj4rICAgICAgICAgKiBsYXRlciwg
-bGV0J3Mgd2FybiB0aGUgdXNlci4KPisgICAgICAgICAqLwo+KyAgICAgICAgZmQgPSBmaWxlX3Jh
-bV9vcGVuKG1lbV9wYXRoLCBtZW1vcnlfcmVnaW9uX25hbWUobXIpLCB0cnVlLCAmY3JlYXRlZCk7
-Cj4rICAgICAgICBpZiAoZmQgPj0gMCkgewo+KyAgICAgICAgICAgIHdhcm5fcmVwb3J0KCJiYWNr
-aW5nIHN0b3JlICVzIGZvciBndWVzdCBSQU0gKE1BUF9QUklWQVRFKSBvcGVuZWQiCj4rICAgICAg
-ICAgICAgICAgICAgICAgICAgIiByZWFkb25seSBiZWNhdXNlIHRoZSBmaWxlIGlzIG5vdCB3cml0
-YWJsZSIsIG1lbV9wYXRoKTsKPisgICAgICAgIH0KPisgICAgfQo+ICAgICAgaWYgKGZkIDwgMCkg
-ewo+KyAgICAgICAgZXJyb3Jfc2V0Z19lcnJubyhlcnJwLCAtZmQsCj4rICAgICAgICAgICAgICAg
-ICAgICAgICAgICJjYW4ndCBvcGVuIGJhY2tpbmcgc3RvcmUgJXMgZm9yIGd1ZXN0IFJBTSIsCj4r
-ICAgICAgICAgICAgICAgICAgICAgICAgIG1lbV9wYXRoKTsKPiAgICAgICAgICByZXR1cm4gTlVM
-TDsKPiAgICAgIH0KPgoKLS0tCgpSZWdhcmRzLAoKbG9nb2VydGhpbmVy
+On Tue, Jul 25, 2023 at 06:42:45PM +0800, Li Feng wrote:
+> Get_inflight_fd is sent only once. When reconnecting to the backend,
+> qemu sent set_inflight_fd to the backend.
+
+I don't understand what you are trying to say here.
+Should be:
+Currently ABCD. This is wrong/unnecessary because EFG. This patch HIJ.
+
+> Signed-off-by: Li Feng <fengli@smartx.com>
+> ---
+>  hw/scsi/vhost-scsi-common.c | 37 ++++++++++++++++++-------------------
+>  1 file changed, 18 insertions(+), 19 deletions(-)
+> 
+> diff --git a/hw/scsi/vhost-scsi-common.c b/hw/scsi/vhost-scsi-common.c
+> index a06f01af26..664adb15b4 100644
+> --- a/hw/scsi/vhost-scsi-common.c
+> +++ b/hw/scsi/vhost-scsi-common.c
+> @@ -52,20 +52,28 @@ int vhost_scsi_common_start(VHostSCSICommon *vsc)
+>  
+>      vsc->dev.acked_features = vdev->guest_features;
+>  
+> -    assert(vsc->inflight == NULL);
+> -    vsc->inflight = g_new0(struct vhost_inflight, 1);
+> -    ret = vhost_dev_get_inflight(&vsc->dev,
+> -                                 vs->conf.virtqueue_size,
+> -                                 vsc->inflight);
+> +    ret = vhost_dev_prepare_inflight(&vsc->dev, vdev);
+>      if (ret < 0) {
+> -        error_report("Error get inflight: %d", -ret);
+> +        error_report("Error setting inflight format: %d", -ret);
+>          goto err_guest_notifiers;
+>      }
+>  
+> -    ret = vhost_dev_set_inflight(&vsc->dev, vsc->inflight);
+> -    if (ret < 0) {
+> -        error_report("Error set inflight: %d", -ret);
+> -        goto err_guest_notifiers;
+> +    if (vsc->inflight) {
+> +        if (!vsc->inflight->addr) {
+> +            ret = vhost_dev_get_inflight(&vsc->dev,
+> +                                        vs->conf.virtqueue_size,
+> +                                        vsc->inflight);
+> +            if (ret < 0) {
+> +                error_report("Error get inflight: %d", -ret);
+
+As long as you are fixing this - should be "getting inflight".
+
+> +                goto err_guest_notifiers;
+> +            }
+> +        }
+> +
+> +        ret = vhost_dev_set_inflight(&vsc->dev, vsc->inflight);
+> +        if (ret < 0) {
+> +            error_report("Error set inflight: %d", -ret);
+> +            goto err_guest_notifiers;
+> +        }
+>      }
+>  
+>      ret = vhost_dev_start(&vsc->dev, vdev, true);
+> @@ -85,9 +93,6 @@ int vhost_scsi_common_start(VHostSCSICommon *vsc)
+>      return ret;
+>  
+>  err_guest_notifiers:
+> -    g_free(vsc->inflight);
+> -    vsc->inflight = NULL;
+> -
+>      k->set_guest_notifiers(qbus->parent, vsc->dev.nvqs, false);
+>  err_host_notifiers:
+>      vhost_dev_disable_notifiers(&vsc->dev, vdev);
+> @@ -111,12 +116,6 @@ void vhost_scsi_common_stop(VHostSCSICommon *vsc)
+>      }
+>      assert(ret >= 0);
+>  
+> -    if (vsc->inflight) {
+> -        vhost_dev_free_inflight(vsc->inflight);
+> -        g_free(vsc->inflight);
+> -        vsc->inflight = NULL;
+> -    }
+> -
+>      vhost_dev_disable_notifiers(&vsc->dev, vdev);
+>  }
+>  
+> -- 
+> 2.41.0
+
 
