@@ -2,79 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E92C7676D0
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 22:16:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FB0A7676C8
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 22:12:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qPSwk-0002KC-Uu; Fri, 28 Jul 2023 15:16:18 -0400
+	id 1qPT4k-0006Ux-Sb; Fri, 28 Jul 2023 15:24:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qPSwj-0002Jy-8D
- for qemu-devel@nongnu.org; Fri, 28 Jul 2023 15:16:17 -0400
-Received: from mout.gmx.net ([212.227.17.21])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qPSwh-0007Lv-Gl
- for qemu-devel@nongnu.org; Fri, 28 Jul 2023 15:16:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1690571765; x=1691176565; i=deller@gmx.de;
- bh=CWPvn2dcz7K/ujAeFTorKidDmn5/zJNS3abKDui1vEM=;
- h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
- b=iNEkmG+AVvP7l4A6Kwg7EzFE/jimRNX8gYU2EUWP+bXo6Fr8tW/e32ul3n9SVSgPz3nn2Hu
- OwkTDsxGnadqg5ynX2p0wNpWZ5SL7dvn2VFxvWMtRbw+aTqCMP8/9lPk+GZmNPA9De3WEAftS
- RbvCuhrQfW96DlUCvoIh7SR2V903Rf6SJVyi6mn1BYQbS8iFpkt+vA5aRaiUtOvMkJBnfMYET
- zuJmseiII+/N2fK/TPkTBSmThDdalpFggh5ZTNOKXCiMgT1Dv53mS+BIh7TcwwzTE7PXSFRRM
- GdXZNO97a2Ckn7dsUDKfP2UKjuZV3i1BdFUI+IE4H8r1oRzw5/uA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([94.134.159.73]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MSc1B-1qJFee2xIn-00Sxg9; Fri, 28
- Jul 2023 21:16:05 +0200
-Message-ID: <93cf0369-504d-53be-a0f1-63acf82a5d5d@gmx.de>
-Date: Fri, 28 Jul 2023 21:16:05 +0200
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qPT4j-0006Uo-PP
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 15:24:33 -0400
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qPT4i-000461-0b
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 15:24:33 -0400
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-68706b39c4cso1216687b3a.2
+ for <qemu-devel@nongnu.org>; Fri, 28 Jul 2023 12:24:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1690572270; x=1691177070;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=I2CqDLjpVGtdYwJJJ8UR5ZYKjEsUEX566jPirHNo6PE=;
+ b=vWI0LY7nJ035Kyex8iX75Jp9ahSEtX/Xbg26zg8PeflCWHafZo5Wew0LHdNk8yIpCI
+ rfy1yMosQohGS9WBsXe5Y7KejyrLeiOOka0zT80PSjbpObxDepr372xWCIBzJsn0/lLI
+ TLa1ycchFGPC9NEAKDIsdyG53/PvQuwG8j2HIekXGoE8NcJzx2HlSmRw2E0/83nl19+f
+ Jjy6s/MHhZjXXiRLd2G+VGwmORhT3vc3Lb8yfd1Idx1a25nf0xGAq4vFrM660MDd/1gw
+ g22BVCQlZZlvjcue3/AXS+dAsM2Vb049GnTFAnJHhfnAIRLYHFDhcWJE5KCjhNu1Kxsu
+ zo/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1690572270; x=1691177070;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=I2CqDLjpVGtdYwJJJ8UR5ZYKjEsUEX566jPirHNo6PE=;
+ b=EYELBEBXN1ySf6ncZtk14RaoRXcz6ajOM0g/wwSKd/BhJa7ev9EySWOCBeVY9rIOSp
+ xG9oQXSgbhfV4wAUtejPKrQEz+rNrScAqeYTeY2uv5EdKQqN7BGZqFOSCfEMXbNTJsS0
+ K0uGJZQp3M1doWsPv8cPi9MN+lfAwDzn5mrO9qUAgSngdTaq9sML3RfwG79RYQ82E8ZY
+ p7F6A6MvwLybDSV9/mm77j45PaoOpuLPoyJgdrlh8TSApneHhbp4rruy1Qb+Z53+bIJf
+ 4sE4ak8GyiVI/4NOQlmt4qkzIHMBYi0uEsj0E5FyP39+U/gcM4i3lwTXVup1UwEcFrDA
+ GXdw==
+X-Gm-Message-State: ABy/qLY26aq6y6h/ylCQiJT93PwpVSPNMSkR45qkhCOhwn52JtVK3HfC
+ I9YXjS3pyIOP/jaan7bRZZVCDw==
+X-Google-Smtp-Source: APBJJlE8cKmwD4NkVxgBkARZZ7lFJfE4aDrDnX3iYUJCu2Fa9XymIUeORmMhKEMx773AF5QCdc0/lw==
+X-Received: by 2002:a05:6a00:2e91:b0:668:69fa:f791 with SMTP id
+ fd17-20020a056a002e9100b0066869faf791mr2989833pfb.3.1690572270434; 
+ Fri, 28 Jul 2023 12:24:30 -0700 (PDT)
+Received: from ?IPV6:2602:ae:154e:c001:cfba:2f6a:7070:67a9?
+ ([2602:ae:154e:c001:cfba:2f6a:7070:67a9])
+ by smtp.gmail.com with ESMTPSA id
+ n9-20020aa78a49000000b00668652b020bsm3520753pfa.105.2023.07.28.12.24.29
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 28 Jul 2023 12:24:30 -0700 (PDT)
+Message-ID: <27d4fc25-085c-6bd0-c6bf-441f8c754cba@linaro.org>
+Date: Fri, 28 Jul 2023 12:24:27 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH v2] linux-user/armeb: Fix __kernel_cmpxchg() for armeb
+Subject: Re: [PULL for-8.1 0/1] NBD patches for 2023-07-28
 Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>, qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- John Reiser <jreiser@bitwagon.com>,
- "Markus F.X.J. Oberhumer" <markus@oberhumer.com>
-References: <ZMNJ+Ga7A4zDXjAg@p100>
- <f6129139-54f6-1d96-1edc-cb1bdf7dac89@linaro.org>
-From: Helge Deller <deller@gmx.de>
-In-Reply-To: <f6129139-54f6-1d96-1edc-cb1bdf7dac89@linaro.org>
+To: Eric Blake <eblake@redhat.com>, qemu-devel@nongnu.org
+References: <20230728145548.1058053-3-eblake@redhat.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230728145548.1058053-3-eblake@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:f348NXsM5WxHa+Lm7B+KQFcLo2yfrw7aVwfHgR3rh/ua0HXvTDL
- DS00Ty/JHgG7mC4HpVatF5H7eYptofGgEZ28cohh55K5b12Cl14pv8Y2JMX1ZIjweh0GM9Y
- BjzT7+oF680K0ppvoh0XoR3uPY9CxA+pM4NRzt/YGkNNgpcgQwJItjaW9vwaDbxuvqaHCCa
- AAEqa6fNZgVbuK+dqW9+g==
-UI-OutboundReport: notjunk:1;M01:P0:T+JhtyhA2gE=;YyphQ0b5crs/YBYQW40s3Gk4N6J
- zRt+Z+FH/xn/UxGYyfymChoKF9wI9izOIq7Qm5yxx5C7nqZKe2qfnCBjG15ViK5PnnohY1pY0
- U5QfQ6D48lekE0GtgvW0DMV659Xwc+I3qEVy/016z1uxk/yopQya9/m6eS33oOvrKVOW26Z78
- hFBEg0PNlt1AXO40Yt2E/q4MBFw3Pu7tsgzNMEx7qZGnzGY2+j//EmVxKgMaucehTYuhC08tH
- 4h21mMowo7e2/FM+MHn+uXE/ei5S7mwNKzQtVj/Ltwcbk+V4xZHivYwbcpk49AGiIMvezLJ+8
- vTmRZ5UxUcjjY2ZKWJTWu/etKv0V2Gbop4vWCo+8S3JNVxxUJc1WYrWvulz60X3t/s0II6Yrm
- CDHpx5uGaqHe70OwVcsueeqkGZQCB8ftQ6Z8ICtoVnkiSsiaDs0ryJ7WIYc/eKReTu9MbptAx
- oUpvat0kfuUXVen0g3l+YRaGJE6YH7u1phHJGOIv6aZWQFMi1wJo5R8nuQcVuzsv2q9/et4re
- vt/UO2vksjLc6k1bTT9uCOvYu817UktjHTe0kECeneGfBr3a3Dg4kbdqw0fDBWNcXw10fgrTt
- k0aIpnzbfIEu57vT6dp7PZqM9HpHlsUop/UD/cSzc4qz1FxUzgNpOkHcDAbTPJTWNLUn7e+b/
- Om5g8zzLj8y+Uv81UrjimIuRDLDEcRy5c+ZxSIU+eeGO+IkCBwxLJMs/YsHEwOSmgo5ybEJ/1
- OezkCCXsuF4aK93KpoUbBgMumVUak0sMmBR1epYTebUMLqFYgHvZIMbQ7GSMi3JIb+f7Aiqvf
- /OJBHBny7vuUFF4ia2SwDsl5s8kKy/b8amMxDl1ct+CA9k/gvIY0XIoW7tQeVgDDzZNyfB8wy
- zeyfg5sCoXByEw85pgmH7AONjbwD2ERQ7Fws7uU8zBmZH3BTHllXYoNAU5/F6QJYHK8k9Spjb
- X6y3wHQEfnJ+dlZmy80VdhE/v8A=
-Received-SPF: pass client-ip=212.227.17.21; envelope-from=deller@gmx.de;
- helo=mout.gmx.net
-X-Spam_score_int: -28
-X-Spam_score: -2.9
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x432.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- NICE_REPLY_A=-0.094, RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.094,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -91,21 +94,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/28/23 17:35, Richard Henderson wrote:
-> On 7/27/23 21:54, Helge Deller wrote:
->> @@ -174,6 +175,10 @@ static void arm_kernel_cmpxchg64_helper(CPUARMStat=
-e *env)
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
->>
->> +=C2=A0=C2=A0=C2=A0 /* endianess-swap if emulating armeb */
->> +=C2=A0=C2=A0=C2=A0 oldval =3D tswap32(oldval);
->> +=C2=A0=C2=A0=C2=A0 newval =3D tswap32(newval);
->
-> Must be tswap64.
+On 7/28/23 07:55, Eric Blake wrote:
+> The following changes since commit ccdd31267678db9d80578b5f80bbe94141609ef4:
+> 
+>    Merge tag 'pull-qapi-2023-07-26-v2' of https://repo.or.cz/qemu/armbru into staging (2023-07-26 07:16:19 -0700)
+> 
+> are available in the Git repository at:
+> 
+>    https://repo.or.cz/qemu/ericb.git tags/pull-nbd-2023-07-28
+> 
+> for you to fetch changes up to e5b815b0defcc3617f473ba70c3e675ef0ee69c2:
+> 
+>    qemu-nbd: regression with arguments passing into nbd_client_thread() (2023-07-27 08:33:44 -0500)
+> 
+> ----------------------------------------------------------------
+> NBD patches for 2023-07-28
+> 
+> - Denis V. Lunev: Fix regression in 'qemu-nbd -c /dev/nbdN'
 
-Oh, of course!
-I send a v3.
+Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
 
-Helge
+
+r~
+
+
+> 
+> ----------------------------------------------------------------
+> Denis V. Lunev (1):
+>        qemu-nbd: regression with arguments passing into nbd_client_thread()
+> 
+>   qemu-nbd.c | 5 ++++-
+>   1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> base-commit: ccdd31267678db9d80578b5f80bbe94141609ef4
+
 
