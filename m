@@ -2,86 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B78A766E13
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 15:24:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59749766DF2
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 15:18:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qPN0s-0007aY-QR; Fri, 28 Jul 2023 08:56:10 -0400
+	id 1qPNKA-0006bm-Ey; Fri, 28 Jul 2023 09:16:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qPN0q-0007aA-UT
- for qemu-devel@nongnu.org; Fri, 28 Jul 2023 08:56:08 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qPNJt-0006Qc-BO
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 09:15:51 -0400
+Received: from mail-ot1-x332.google.com ([2607:f8b0:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qPN0o-0000RL-II
- for qemu-devel@nongnu.org; Fri, 28 Jul 2023 08:56:08 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-686b91c2744so1604912b3a.0
- for <qemu-devel@nongnu.org>; Fri, 28 Jul 2023 05:56:06 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qPNJc-0003J2-5o
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 09:15:49 -0400
+Received: by mail-ot1-x332.google.com with SMTP id
+ 46e09a7af769-6b9c434fe75so1788498a34.0
+ for <qemu-devel@nongnu.org>; Fri, 28 Jul 2023 06:15:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690548965; x=1691153765;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=yaDvuOzjT/cE8KTBWyp8O1ZzjSSrXtCAPkVOGLmfrMk=;
- b=kARtKhtf+WmpbkswSmmjhHybmpm6xDoyE/r/tDv17xYkbWUbUq5iAZjTV/GN4bkeuq
- SCBOxlShfucwSpT8JoQ0ho9IJ6nUdo9qFQBplD84P6/LYsbh02C8p1RJKrOXt4yXAeDY
- lWvpBcZexijH5+BpMVB4zIqiAk6Kwq4ViacY3fD7PKcRPYdG8OmxaDS7skB2M47SbOH+
- zEsytdREHP0GBq4zktXSs9/3uVGRBrjP+hOFTilI5iimuMCIBBLXdAw0IdahUvg0POS2
- e0F43+PDE5GHfCFVlBg9Q1Ur4ZHY7RXWS/d0/EEoMu8utYXGCgPM7DiOW//OKEEwvS5N
- ylDQ==
+ d=ventanamicro.com; s=google; t=1690550126; x=1691154926;
+ h=content-transfer-encoding:based-on:mime-version:message-id:date
+ :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=W9nvMVvIgywNUYmmvCjsN6Rzo9AhC8RrxwrxIFZBN8M=;
+ b=PTF+rapybBExNQDuE2may6H4zTdS5pZVVTRzO3zQX+g4pdubLAtuXslaQdqG2ssdgj
+ jAVhvp83bEa6YLqBa07FvrZNC4sIr6q+kotUPHrTBDOEHh4v4PGY3/ViXtL9sSrgFqJz
+ D2gqDiyN8CtW0RrAmqRZMzQ/+LwmUZfiJATOBM4B3cEAgGOXABePXPu7gfef56h097hT
+ f5i+rKRruq5NuKzF1gWqUG3OUhD/2qc3BNWlOrHj0LWN5oqt3UNV7uh4GU//P7eCLwYk
+ QcHDCtHHj6sKl2PrpktXnDukjdJVgJIz/ToxF1HAGL3tmeMx/gQGBzMx5sMbvkcEGqM5
+ TDZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690548965; x=1691153765;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=yaDvuOzjT/cE8KTBWyp8O1ZzjSSrXtCAPkVOGLmfrMk=;
- b=KZPT8h2FA0FwNbSyOatI2T7mvoQhreitBwafeVgxtQuKUUzvccJbpoSrrBdSI53jgd
- pto60+AqXl/ScTjcOpD6YoW5RIDmcP0xbJnVhxz2gzOIMNwvv/jIwaQOUvyw1xzdbDNu
- YYZcoJkq0nmMbd4W9T9u847LJP7RPBZTDPLRbZDNpxG2nzJ7CWRYrzXtaIMK6vTtdPbA
- nMeoqKvqyyvrngJPTHIL+32e654QPob/pBPgM7RWL/xHjfFacrxGIdbYbnhzsCA1+5ID
- 4kLzce6TweDfVl044dKG7j+dml/7YPnZ4uLuq8llyw5glBHrgDeFhu6V9kRicahfP5yb
- YqaQ==
-X-Gm-Message-State: ABy/qLaz6bUmT589BDDsyLG0CvAPiaJiP8aSVpi2xnOYzLHUIOgGLKJD
- Ud6WeyWmacpZQpapUxKTeoJCRA==
-X-Google-Smtp-Source: APBJJlHe0Rbpq3oeewPMnTPb7wfwpRACmC0C2BklswS8r2M9z8Smry5Aoc29SAU+f3KuGZ7fqJYHZQ==
-X-Received: by 2002:a05:6a21:a109:b0:133:cf5c:4d2e with SMTP id
- aq9-20020a056a21a10900b00133cf5c4d2emr1476406pzc.20.1690548964581; 
- Fri, 28 Jul 2023 05:56:04 -0700 (PDT)
-Received: from ?IPV6:2602:ae:154e:c001:cfba:2f6a:7070:67a9?
- ([2602:ae:154e:c001:cfba:2f6a:7070:67a9])
+ d=1e100.net; s=20221208; t=1690550126; x=1691154926;
+ h=content-transfer-encoding:based-on:mime-version:message-id:date
+ :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=W9nvMVvIgywNUYmmvCjsN6Rzo9AhC8RrxwrxIFZBN8M=;
+ b=WzQqDknaMQ531P6iDMCaomvxg2h4e+s/u4PPTSotJQozRmFRe3OCj/3v3u2kBYF6KB
+ A4jyoqLV+Lwz1OAfOgzanx5SS67juJDak5+bEcHVQ/yN+WZaxL7Np1l/mciVljprZVoG
+ 45Eqzb12uZjrOoruT02ETw4TSUdd+LCxJ+kliG2H6ajtENVIk6j+oZOCqGgZeYyW5dAi
+ Kj/HtEdt9Qj40lP4+Ybw5drteVaunUC91r6kmGajIKFQYBYfhA3UBl9OYB63tUaOGAwv
+ s5g0KlEUOxfEx+KBY6l9780SvH8eUVXwZirG1YEJGiS6bweZM2gR1GWMZREqdNFabzu0
+ F9bg==
+X-Gm-Message-State: ABy/qLYeKIko44LcmIxLosmnCIi17Qj6oVt4jIU3sQ5rXTn0M1+T82Xw
+ MtJHLxarzEw/naVkNY6MVtHMqOhJMAj+bP7Qp99PJg==
+X-Google-Smtp-Source: APBJJlFK+p3Jan9KJ2dQ9SmFRkRI7qe4LridbKC1a+XtTeq7ZLIZWvV8MZzSf1HE4RXVV/8eD1H3OQ==
+X-Received: by 2002:a05:6870:a918:b0:1bb:39f8:fcb6 with SMTP id
+ eq24-20020a056870a91800b001bb39f8fcb6mr3195427oab.20.1690550126109; 
+ Fri, 28 Jul 2023 06:15:26 -0700 (PDT)
+Received: from grind.. (201-69-66-36.dial-up.telesp.net.br. [201.69.66.36])
  by smtp.gmail.com with ESMTPSA id
- e6-20020a170902cf4600b001b8b2b95068sm3502071plg.204.2023.07.28.05.56.03
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 28 Jul 2023 05:56:03 -0700 (PDT)
-Message-ID: <7d4fa349-25c4-dbc4-a3da-bf9bd05c22a0@linaro.org>
-Date: Fri, 28 Jul 2023 05:56:01 -0700
+ hv6-20020a056871cc0600b001b3d93884fdsm1699371oac.57.2023.07.28.06.15.23
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 28 Jul 2023 06:15:25 -0700 (PDT)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH 0/8] riscv: detecting user choice in TCG extensions
+Date: Fri, 28 Jul 2023 10:15:12 -0300
+Message-ID: <20230728131520.110394-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PULL for-8.1 0/8] Block patches
-To: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org
-Cc: Kevin Wolf <kwolf@redhat.com>, Fam Zheng <fam@euphon.net>,
- qemu-block@nongnu.org, Richard Henderson <rth@twiddle.net>,
- Hanna Reitz <hreitz@redhat.com>
-References: <20230727200058.1071776-1-stefanha@redhat.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230727200058.1071776-1-stefanha@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x436.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Based-on: 20230727220927.62950-1-dbarboza@ventanamicro.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::332;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-ot1-x332.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.094,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,51 +91,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/27/23 13:00, Stefan Hajnoczi wrote:
-> The following changes since commit 66547f416a61e0cb711dc76821890242432ba193:
-> 
->    block/nvme: invoke blk_io_plug_call() outside q->lock (2023-07-17 09:17:41 -0400)
-> 
-> are available in the Git repository at:
-> 
->    https://gitlab.com/stefanha/qemu.git tags/block-pull-request
-> 
-> for you to fetch changes up to 1c38fe69e2b8a05c1762b122292fa7e3662f06fd:
-> 
->    block/blkio: use blkio_set_int("fd") to check fd support (2023-07-27 15:51:46 -0400)
-> 
-> ----------------------------------------------------------------
-> Pull request
-> 
-> Please include these bug fixes in QEMU 8.1. Thanks!
+Hi,
 
-Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
+This series, based on the work done in "[PATCH for-8.2 v6 00/11] riscv:
+add 'max' CPU, deprecate 'any'", aims to solve two problem we have in
+TCG properties handling:
+
+- we are not checking for priv_ver when auto-enabling extensions during
+  realize();
+
+- we are not able to honor user choice during validation because we're
+  not able to tell if the user set an extension flag or not.
+
+The solution adopted here is a modification of what we did in the RISC-V
+KVM driver for 8.1. Instead of adding an 'user_set' flag and doing a
+linear search in all the extensions (now split between multiple arrays),
+we'll use a hash to store the 'offset' value of the property that the
+user set in the command line in the set() callback of the property. The
+existence of an entry in the hash indicates that the user set a value
+for that extension, and the store val indicates what the user set. This
+can be used in the future in case we decide to overwrite the user input
+in a corner case.
+
+Aside from this detail, the changes to convert the existing code to use
+the new structure (RISCVCPUMultiExtConfig) is quite similar to what was
+already done before in the KVM driver.
+
+I also added a new concept called 'auto_update' (any other name is
+welcome) to refer to the action of changing extension state during
+realize() without user knowledge. All these cases are now wrapped in a
+cpu_cfg_ext_auto_update() function that checks if the priv_ver is valid
+and if the user set the extension to an specific val. User choice
+prevails in this case, regardless of the noble intentions we have when
+auto-updating an extensions (e.g. extension dependencies).
+
+Yes, users will have an easier time breaking validation and guest boot,
+but that's the idea. Users will have more power, and the adequate dose
+of responsibility that comes with it.
 
 
-r~
+Daniel Henrique Barboza (8):
+  target/riscv/cpu.c: use offset in isa_ext_is_enabled/update_enabled
+  target/riscv: make CPUCFG() macro public
+  target/riscv/cpu.c: introduce cpu_cfg_ext_auto_update()
+  target/riscv/cpu.c: use cpu_cfg_ext_auto_update() during realize()
+  target/riscv/cpu.c: introduce RISCVCPUMultiExtConfig
+  target/riscv: use isa_ext_update_enabled() in
+    init_max_cpu_extensions()
+  target/riscv/cpu.c: honor user choice in cpu_cfg_ext_auto_update()
+  target/riscv/cpu.c: consider user option with RVG
 
+ target/riscv/cpu.c | 392 +++++++++++++++++++++++++++++----------------
+ target/riscv/cpu.h |   2 +
+ target/riscv/kvm.c |   8 +-
+ 3 files changed, 261 insertions(+), 141 deletions(-)
 
-> 
-> ----------------------------------------------------------------
-> 
-> Hanna Czenczek (1):
->    block: Fix pad_request's request restriction
-> 
-> Sam Li (1):
->    block/file-posix: fix g_file_get_contents return path
-> 
-> Stefano Garzarella (6):
->    block/blkio: enable the completion eventfd
->    block/blkio: do not use open flags in qemu_open()
->    block/blkio: move blkio_connect() in the drivers functions
->    block/blkio: retry blkio_connect() if it fails using `fd`
->    block/blkio: fall back on using `path` when `fd` setting fails
->    block/blkio: use blkio_set_int("fd") to check fd support
-> 
->   block/blkio.c      | 132 ++++++++++++++++++++++++++++++---------------
->   block/file-posix.c |   6 +--
->   block/io.c         |   8 ++-
->   3 files changed, 97 insertions(+), 49 deletions(-)
-> 
+-- 
+2.41.0
 
 
