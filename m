@@ -2,48 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFF96767073
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 17:24:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EA87767064
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 17:22:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qPOtn-0000r2-Q2; Fri, 28 Jul 2023 10:56:59 -0400
+	id 1qPOtq-0000rp-Th; Fri, 28 Jul 2023 10:57:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qPOtl-0000py-Ib
- for qemu-devel@nongnu.org; Fri, 28 Jul 2023 10:56:57 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qPOtp-0000rc-0t
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 10:57:01 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qPOtk-0005H9-2G
- for qemu-devel@nongnu.org; Fri, 28 Jul 2023 10:56:57 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qPOtn-0005Hs-LM
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 10:57:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690556214;
+ s=mimecast20190719; t=1690556218;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=XwL5jqjrWy3VUmwDVvA4JhWXfBmO1G48xB/s/F+fxyk=;
- b=L3CiY63ulp7A3kTvPQ375IE+57V+wbjbEG069vwuUL9ZTlTP34gUIdKMHOvYpMx5A9E+lQ
- 6f1orI+H2SD//NDP89dMnozGevjWAdVNVn0EPY8Wm9eozS2TBGONXbSj1g9nYYvuSjM8++
- ZhcVR4hUWoHs9SaA/VXijDuS4RT3+88=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-55-PAs5JexLMSqIZ2tkgTkqcw-1; Fri, 28 Jul 2023 10:56:52 -0400
-X-MC-Unique: PAs5JexLMSqIZ2tkgTkqcw-1
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=F0grccV+tHsmhdlizM9TiUKQEm4CzEmZusXfYKZaRV4=;
+ b=FxD5p+M6f8bRV1A6f75JFpp1VC+A8fnVcq4dTlzznPwAJMqCt1iDIijjTeHItEW1W7cv5M
+ nRwkaJkI08XrINr8aVgJeqF6SJPD8xHdfRvSDzFsMqcIyMwZEhhWj8wzOLxbajJZccwry0
+ cHCCevJS3rpj6GDk9dqYLkIfc/tJhec=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-613-QTR-kf3qN6GCu7qMwH9Nmw-1; Fri, 28 Jul 2023 10:56:55 -0400
+X-MC-Unique: QTR-kf3qN6GCu7qMwH9Nmw-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 547CD38008C6
- for <qemu-devel@nongnu.org>; Fri, 28 Jul 2023 14:56:52 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 012A21044589;
+ Fri, 28 Jul 2023 14:56:55 +0000 (UTC)
 Received: from green.redhat.com (unknown [10.2.16.35])
- by smtp.corp.redhat.com (Postfix) with ESMTP id A547C492B02
- for <qemu-devel@nongnu.org>; Fri, 28 Jul 2023 14:56:50 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 8C3D9492B02;
+ Fri, 28 Jul 2023 14:56:53 +0000 (UTC)
 From: Eric Blake <eblake@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL for-8.1 0/1] NBD patches for 2023-07-28
-Date: Fri, 28 Jul 2023 09:55:49 -0500
-Message-ID: <20230728145548.1058053-3-eblake@redhat.com>
+Cc: "Denis V. Lunev" <den@openvz.org>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ qemu-stable@nongnu.org,
+ qemu-block@nongnu.org (open list:Network Block Dev...)
+Subject: [PULL 1/1] qemu-nbd: regression with arguments passing into
+ nbd_client_thread()
+Date: Fri, 28 Jul 2023 09:55:50 -0500
+Message-ID: <20230728145548.1058053-4-eblake@redhat.com>
+In-Reply-To: <20230728145548.1058053-3-eblake@redhat.com>
+References: <20230728145548.1058053-3-eblake@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
@@ -57,7 +65,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -73,31 +81,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit ccdd31267678db9d80578b5f80bbe94141609ef4:
+From: "Denis V. Lunev" <den@openvz.org>
 
-  Merge tag 'pull-qapi-2023-07-26-v2' of https://repo.or.cz/qemu/armbru into staging (2023-07-26 07:16:19 -0700)
+Unfortunately
+    commit 03b67621445d601c9cdc7dfe25812e9f19b81488
+    Author: Denis V. Lunev <den@openvz.org>
+    Date:   Mon Jul 17 16:55:40 2023 +0200
+    qemu-nbd: pass structure into nbd_client_thread instead of plain char*
+has introduced a regression. struct NbdClientOpts resides on stack inside
+'if' block. This specifically means that this stack space could be reused
+once the execution will leave that block of the code.
 
-are available in the Git repository at:
+This means that parameters passed into nbd_client_thread could be
+overwritten at any moment.
 
-  https://repo.or.cz/qemu/ericb.git tags/pull-nbd-2023-07-28
+The patch moves the data to the namespace of main() function effectively
+preserving it for the whole process lifetime.
 
-for you to fetch changes up to e5b815b0defcc3617f473ba70c3e675ef0ee69c2:
-
-  qemu-nbd: regression with arguments passing into nbd_client_thread() (2023-07-27 08:33:44 -0500)
-
-----------------------------------------------------------------
-NBD patches for 2023-07-28
-
-- Denis V. Lunev: Fix regression in 'qemu-nbd -c /dev/nbdN'
-
-----------------------------------------------------------------
-Denis V. Lunev (1):
-      qemu-nbd: regression with arguments passing into nbd_client_thread()
-
+Signed-off-by: Denis V. Lunev <den@openvz.org>
+CC: Eric Blake <eblake@redhat.com>
+CC: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+CC: <qemu-stable@nongnu.org>
+Reviewed-by: Eric Blake <eblake@redhat.com>
+Message-ID: <20230727105828.324314-1-den@openvz.org>
+Signed-off-by: Eric Blake <eblake@redhat.com>
+---
  qemu-nbd.c | 5 ++++-
  1 file changed, 4 insertions(+), 1 deletion(-)
 
-base-commit: ccdd31267678db9d80578b5f80bbe94141609ef4
+diff --git a/qemu-nbd.c b/qemu-nbd.c
+index 5b2757920c1..aaccaa33184 100644
+--- a/qemu-nbd.c
++++ b/qemu-nbd.c
+@@ -589,6 +589,9 @@ int main(int argc, char **argv)
+     const char *pid_file_name = NULL;
+     const char *selinux_label = NULL;
+     BlockExportOptions *export_opts;
++#if HAVE_NBD_DEVICE
++    struct NbdClientOpts opts;
++#endif
+
+ #ifdef CONFIG_POSIX
+     os_setup_early_signal_handling();
+@@ -1145,7 +1148,7 @@ int main(int argc, char **argv)
+     if (device) {
+ #if HAVE_NBD_DEVICE
+         int ret;
+-        struct NbdClientOpts opts = {
++        opts = (struct NbdClientOpts) {
+             .device = device,
+             .fork_process = fork_process,
+             .verbose = verbose,
 -- 
 2.41.0
 
