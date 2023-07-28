@@ -2,82 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2AEA766092
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 02:12:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 411747660BB
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 02:21:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qPAnw-0003Vv-9S; Thu, 27 Jul 2023 19:54:00 -0400
+	id 1qPAwc-0005cz-57; Thu, 27 Jul 2023 20:02:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qPAnu-0003VY-M1
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 19:53:58 -0400
-Received: from mail-il1-x12a.google.com ([2607:f8b0:4864:20::12a])
+ id 1qPAwa-0005cq-7Z
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 20:02:56 -0400
+Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qPAnt-0001Zc-7V
- for qemu-devel@nongnu.org; Thu, 27 Jul 2023 19:53:58 -0400
-Received: by mail-il1-x12a.google.com with SMTP id
- e9e14a558f8ab-3465bd756afso6389565ab.3
- for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 16:53:56 -0700 (PDT)
+ id 1qPAwY-0006Nr-Ni
+ for qemu-devel@nongnu.org; Thu, 27 Jul 2023 20:02:56 -0400
+Received: by mail-pg1-x52d.google.com with SMTP id
+ 41be03b00d2f7-563d3e4f73cso875593a12.3
+ for <qemu-devel@nongnu.org>; Thu, 27 Jul 2023 17:02:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690502035; x=1691106835;
+ d=linaro.org; s=google; t=1690502572; x=1691107372;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=/7rJRcsZDtoFwKLeZD9p520evCk9FjWLU5t5hU8J9/g=;
- b=L3gzHzzb+4qPQbi5QYojRDnRJS9leMayKfWbDHsgcOKnr6uzQdGJ7O+hXlb9L6AiHn
- JY3I6YKDYMeS4pra+h5y7cUNqNiB1QgdW/gSh8lGiGoaEFACx6JbjoPi9QK03W53msGE
- Z0U5ih95HTVq4Lp8xxIOwyaClL/s9AVbLuc7u7QPRUAVtNl/zJEahdPZlm32pnHxIxgp
- zOZl64fZBYeUu9CjuY9jx+rJRCuL++FfhmM2M5R2qDYnmOX2X0jEXwqSerXgc16R0RIc
- JEHyAhGX5843gz1LgBSZIZjW/XbJqOS69KNhsmHQGVkrJOOOkuNYkMXUes1AhHkUqx1P
- 3lLQ==
+ bh=IOWNs3M8Q7rxoijuf3VpUmwG0sB8W8o62na9Dm2jR44=;
+ b=Ad6fsyghz2qVm3O+CYXLdSIrJDd6o0Y37SGnRNElGCBJ9iQ4SRHcnQs+I5aNyQ2pDe
+ dtx71yLtVGjjaPLNk2eyUDQDNRMoznwZD1GZpByUDKGVNtby85lNgbDA4WeTEI2xsxco
+ e3fdqvWflGftuMDdgD2Brb3u2C+9+AHWtFg9bIgIDFY+oEL55uSxdCyEHlxFj+mJCL/N
+ lNoQxYi0fLeE+xUNwqVyPc9o9r2Q4tj4HGNSl3cML2FZc8KNgip6q0Upu61/g1C9rCXR
+ O2sofZR9b6am4UBqJfvt/km6YerH0oPfyYf9dbJJ1mFyy96AQGD0NVJE0YMuDAV7alFs
+ TB0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690502035; x=1691106835;
+ d=1e100.net; s=20221208; t=1690502572; x=1691107372;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=/7rJRcsZDtoFwKLeZD9p520evCk9FjWLU5t5hU8J9/g=;
- b=Ap7wELQ+0hRSvF+ikxkWeUtuZiZrBVNd7EPicrkzwuGlRysgyS05mzSPdqAbfxfGxl
- m5MvMBuGKn5rffrcfBKc9MQ7LhgwVC9jMC1bjxS3540plfPvRd0jDWIQkXwqijYkTWt0
- 7JZp4EbEBCVBiIYpi2gYBzTN5fGz/rmozoH8RKrsCBek5XiwNwWZzFXnhL5YqnK3dHIX
- m+jiJvrcwseBwseJuVN8UHgpxcyLOWLozZo0bM5oG+031CWsYk6X4SdThHLEpeqfN0xp
- WH3RZc+7iKgyEmIpwk5NJa4tap4C8Neep1xz5DREU1GnzGplt43wcpfp9qRsE8IZN6On
- 3wbQ==
-X-Gm-Message-State: ABy/qLZWqxGHgFX2+19E7VClxDBTWQ8/vgGM66mCsEFRLHvq2iqs+5bN
- 7rnIICXnTzzobamktnBhwYVxYA==
-X-Google-Smtp-Source: APBJJlHk9kt5XYXP8z1tZd9A5CofmSZN+O4I0U00kjlnMojugFmT/4h1aagBoNzjEdCPklJESK/97A==
-X-Received: by 2002:a05:6e02:d4b:b0:348:8125:acd with SMTP id
- h11-20020a056e020d4b00b0034881250acdmr875153ilj.27.1690502035608; 
- Thu, 27 Jul 2023 16:53:55 -0700 (PDT)
+ bh=IOWNs3M8Q7rxoijuf3VpUmwG0sB8W8o62na9Dm2jR44=;
+ b=UqHj1m20OrXlBeOPZZcxVvmyuYCc6AESsaBuBVWvcrJ9TeT38AwtjWxSbVeGOCF7Xj
+ lREnCCyc6aBCcsJFgOJa/FcFEWWzeNtTms9dPM2/+mig2M7ITzi0zJkGHBtiy/PQfNTE
+ apHAqJLc5xpBwkqSL+9gBdNpVH0ypn3PqfoLtxzn2KGr50H1H9pPYFIq3RRaWetwNJkl
+ j/hY7tWNRDedVx7sa1nzMbbQljKHRvp6Myo1aK0y8XFH98l2fe/1B51t1qzTv+49sccZ
+ KaKiNr2WM4jx9yYSdLj7tloZMwIL8V3ekKRi2Pv47dnNg4cNza0MhwN1DwHMM4cmudvq
+ 35XA==
+X-Gm-Message-State: ABy/qLacci+jgmC+p/S6McU8L291dWdzmi3sQLah39P1IcCjtJV1zGKG
+ ItqTuRNCWbOA3HxJvtDKWhARrg==
+X-Google-Smtp-Source: APBJJlEHAmZOtPAiA3VJ+IvDOsf8U3QPrj7dm/UTSL0joR4kMTGeYM/tpL500BrnKA7enc3xgoUJHA==
+X-Received: by 2002:a17:90b:4f81:b0:267:f893:d562 with SMTP id
+ qe1-20020a17090b4f8100b00267f893d562mr79546pjb.8.1690502572490; 
+ Thu, 27 Jul 2023 17:02:52 -0700 (PDT)
 Received: from ?IPV6:2602:ae:154e:c001:943b:b6e1:1f00:9721?
  ([2602:ae:154e:c001:943b:b6e1:1f00:9721])
  by smtp.gmail.com with ESMTPSA id
- 18-20020aa79152000000b00686f0b15b06sm1970418pfi.188.2023.07.27.16.53.54
+ mg20-20020a17090b371400b00262fc3d911esm3249369pjb.28.2023.07.27.17.02.51
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 27 Jul 2023 16:53:55 -0700 (PDT)
-Message-ID: <76fccd58-b475-9784-0401-01e75fc6551c@linaro.org>
-Date: Thu, 27 Jul 2023 16:53:52 -0700
+ Thu, 27 Jul 2023 17:02:52 -0700 (PDT)
+Message-ID: <270f0cfd-b57a-24b8-7c13-789bb9ee13ed@linaro.org>
+Date: Thu, 27 Jul 2023 17:02:49 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH 9/9] accel/tcg: Update run_on_cpu_data static assert
+Subject: Re: avocado test failing INTERRUPTED for "Missing asset"
 Content-Language: en-US
-To: Anton Johansson <anjo@rev.ng>, qemu-devel@nongnu.org
-Cc: ale@rev.ng, pbonzini@redhat.com, philmd@linaro.org, agraf@csgraf.de,
- dirty@apple.com, rbolshakov@ddn.com, anielhb413@gmail.com,
- pasic@linux.ibm.com, borntraeger@linux.ibm.com, palmer@dabbelt.com,
- alistair.francis@wdc.com, bin.meng@windriver.com,
- ysato@users.sourceforge.jp, peter.maydell@linaro.org
-References: <20230721205827.7502-1-anjo@rev.ng>
- <20230721205827.7502-10-anjo@rev.ng>
+To: Cleber Rosa <crosa@redhat.com>, Peter Maydell <peter.maydell@linaro.org>
+Cc: QEMU Developers <qemu-devel@nongnu.org>,
+ =?UTF-8?Q?Phil_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>
+References: <CAFEAcA--tJPhQO49W3BDO1MABQFHrr50MU=q54TFYpbkOxVWHw@mail.gmail.com>
+ <CA+bd_6Krq9aCCQe01OjXxb+T-=3XrSnvVHrKs3F-3cwdZEGH8Q@mail.gmail.com>
+ <CAFEAcA9txYV4GZQi-uRPWuXd1oOiVHB7ZUQ5-+=zA4T+Of-g1g@mail.gmail.com>
+ <CA+bd_6LsQw3ao1KQk8Jk-VvAb9SZ1ioxSdBsghtNqJK-cnMRXA@mail.gmail.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230721205827.7502-10-anjo@rev.ng>
+In-Reply-To: <CA+bd_6LsQw3ao1KQk8Jk-VvAb9SZ1ioxSdBsghtNqJK-cnMRXA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::12a;
- envelope-from=richard.henderson@linaro.org; helo=mail-il1-x12a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52d.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -100,16 +101,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/21/23 13:58, Anton Johansson wrote:
-> As we are now using vaddr for representing guest addresses, update the
-> static assert to check that vaddr fits in the run_on_cpu_data union.
+On 7/27/23 12:08, Cleber Rosa wrote:
+> Anyways, I'll look into, and report back on:
 > 
-> Signed-off-by: Anton Johansson<anjo@rev.ng>
-> ---
->   accel/tcg/cputlb.c | 5 +++--
->   1 file changed, 3 insertions(+), 2 deletions(-)
+> 1. expanding avocado.Test.fetch_asset() with a timeout parameter
+> 2. making sure the newer implementation for the requirement types used
+> by QEMU respect a timeout (they don't need to be smaller than the
+> test, because they run completely outside of the test).
+> 
+> For now, are you OK with re-running those jobs if the servers stall
+> the transfers? Or would you rather see a patch that changes the
+> find_only parameter to True, so that if the pre-test attempt to
+> download the asset fails, the transfer is never attempted during the
+> test?
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+I would be perfectly happy with find_only.  From your description that more-or-less 
+matches the behaviour of v103.  I would also suggest that if the pre-test attempt fails, 
+trying again in just a few minutes during the test isn't likely to work either.
+
 
 r~
 
