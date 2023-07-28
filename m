@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C8C5767749
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 22:57:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25BFD76775E
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 23:02:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qPURe-0002Lt-9f; Fri, 28 Jul 2023 16:52:18 -0400
+	id 1qPUWM-0006AY-UJ; Fri, 28 Jul 2023 16:57:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qPURZ-0002Li-30
- for qemu-devel@nongnu.org; Fri, 28 Jul 2023 16:52:13 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ id 1qPUWL-0006A4-AO
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 16:57:09 -0400
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qPURK-0003xT-Il
- for qemu-devel@nongnu.org; Fri, 28 Jul 2023 16:52:12 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-686f19b6dd2so1719357b3a.2
- for <qemu-devel@nongnu.org>; Fri, 28 Jul 2023 13:51:48 -0700 (PDT)
+ id 1qPUWJ-0007vV-6c
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 16:57:08 -0400
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-686f25d045cso1696284b3a.0
+ for <qemu-devel@nongnu.org>; Fri, 28 Jul 2023 13:57:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690577507; x=1691182307;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=linaro.org; s=google; t=1690577826; x=1691182626;
+ h=content-transfer-encoding:in-reply-to:references:to:from
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=H+U5/odfBci0jKQ+52/X4/F7BJkoJq66wdv4khYU59Y=;
- b=yynO8IpKlabbzoihxW5V1K5J7A+QCwBI0Dy9t0N2Tx7qQxxCLRtH0Yh62tS1ut2j0c
- 89afXwLXJvz0Op5luOXKrnmxk02I7VeF2DRoQjDkiWEwcVyolCkF09N0/sQbt1K2dwJr
- FZmZgX/AfOQxkSnExP8zaQhUIS4x+jGwoKlcwqeiL6HQNBKewty5ruS49KZVY1k9WdlV
- rMTMpzsKfOrcfG2yi3pnBwvDgt9pGXyu3T6/WkMgaJZoijqzozF+EhBPv7A71Nb63szG
- 71cDeFtjAV8c5BHeXQfJp9cak1h0PpRjsQRUoOx833TIfqBMY8MKtcpKHFG3954j99nb
- +Q9Q==
+ bh=9iDWGCG/cNRkv+1EhYqolIZnBarC0fFCOKzRzINfRb4=;
+ b=amH0hQrsJCSxvX/TVxqopubkv3SyjhYOo/y+Z7abYQTDafN9EhjLLslLy+W6E+V2V4
+ yOB1K57BRB8V4DiEB/eybpW5qHfc4t/QOyxdMuvzqI4Kg8eCLCu6O3jlCuE3UsYvczaD
+ QjqWGQMQv2w6MQIM97TMMscv1f1Zt4UzW4FV/ZtdaiyehGJ1uVJOdCk/8J1/XX5cMDAT
+ 6HaJRUDXRwsGyB0oYOFDw1qTBslHzsrZSPoCqb8UxbsWC5XOWhVjt/OwTksSk21whRfH
+ dvM3HVR/VItYs5Uiu8LkxMlR98m5vtD3XlWc5EKlfNi1w72GRhyCrJBJSfK/SUPhxCCJ
+ 3Z3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690577507; x=1691182307;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=1e100.net; s=20221208; t=1690577826; x=1691182626;
+ h=content-transfer-encoding:in-reply-to:references:to:from
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=H+U5/odfBci0jKQ+52/X4/F7BJkoJq66wdv4khYU59Y=;
- b=kEm1JGKm4f9RbE9zNqoIYpCAI51j4yQYrwEyBj/s2T4zpdxB8XqOTJ3NkTaP2xnC5M
- SpUSh3cHCYo/zR6fEElGNv3bzNNd1lCXAQgzfiXcQHXEpuRhdXuXrZ/NUxYHWNJSZTd3
- z/Jrx8//a7E8Vl6Ef/5nj0euM/+5gsJRVzbPDS3Elf+PoOYsXh6tDMCeQtgx3sizeF+m
- Aq70urOquYIgNcka/XzUIiZVUH1l2uPbDblGPWprxjIJmxGiQWYXdmAJ1jG/lU8KUQFD
- RuPAJgRTQmIYevX2JELPJLxZDm1R2JawvPkLV0xYnRVKXSadmBGd3c2S/6NkGfVMX4X+
- f1dw==
-X-Gm-Message-State: ABy/qLa/zIn70mzK1N6Jwv7RrjKTmapRfqXorJekj1eF4WZco8xWToPk
- dY13TeKSjq9UVtqFlr3dVRYj3Q==
-X-Google-Smtp-Source: APBJJlH5JjM3OihWLt7nFZ38w78CHQUM6TGOhCG+aoYv0h9+Qhk6/Z8agsTzN4NXv9q5XzrMlv/9Kg==
-X-Received: by 2002:a05:6a00:1253:b0:687:1be4:46d9 with SMTP id
- u19-20020a056a00125300b006871be446d9mr535751pfi.1.1690577507641; 
- Fri, 28 Jul 2023 13:51:47 -0700 (PDT)
+ bh=9iDWGCG/cNRkv+1EhYqolIZnBarC0fFCOKzRzINfRb4=;
+ b=UUJoGsCHWwEfReAFwzSRnHW4CjZpcZcRrVwNLIHX4jytUn8XD4tHaLmMN2df1ZARSA
+ W+0BGWLadSBYgpzR3hyyhc2uepq1MduIcXt06f6i75lezgTr1yxZXJf1sZohMyBMQx3f
+ dEU/tryF3/ICVTvLxJuE6JR/6OZ9KRCaVjw2G0Lf7OYaz3xaANAfFxipYtK2yDWqGuGo
+ wzHXhFjwWQAtBuGgc+y1OzAyBksTPGqPTTp1WOYl2prVrdvlq6w/ERkOmGsi/BxVJrva
+ tjWCbzCpQeunbY9wB7CRXxgr4yHdqAlZ7RueuaLsxZsi8ATnAl2yNT09qVLiyfBleLaE
+ 2+9A==
+X-Gm-Message-State: ABy/qLZPnVZ4sHnSrzfGIC6x4UZC+1T59ji6mwyEj0KhBWlMurmtEOhc
+ zDLE39RMlk6nVlo3a6FzrgQNcA==
+X-Google-Smtp-Source: APBJJlHtbVkoOjgW5AMbXQgBL/IFPIwkFbMEZNQVnCbEcpJJBTG5WDkJER1Vgp8g42KK896s9gdnxQ==
+X-Received: by 2002:a05:6a00:1a87:b0:663:5624:6fde with SMTP id
+ e7-20020a056a001a8700b0066356246fdemr3242522pfv.22.1690577825687; 
+ Fri, 28 Jul 2023 13:57:05 -0700 (PDT)
 Received: from ?IPV6:2602:ae:154e:c001:cfba:2f6a:7070:67a9?
  ([2602:ae:154e:c001:cfba:2f6a:7070:67a9])
  by smtp.gmail.com with ESMTPSA id
- m8-20020aa78a08000000b00686bbf5c573sm408141pfa.119.2023.07.28.13.51.46
+ o4-20020a63a804000000b005533c53f550sm3983767pgf.45.2023.07.28.13.57.04
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 28 Jul 2023 13:51:47 -0700 (PDT)
-Message-ID: <b3249b9e-d687-68e1-77b6-9c8703644266@linaro.org>
-Date: Fri, 28 Jul 2023 13:51:45 -0700
+ Fri, 28 Jul 2023 13:57:05 -0700 (PDT)
+Message-ID: <73d477e3-a647-a166-f735-3d1400e505b0@linaro.org>
+Date: Fri, 28 Jul 2023 13:57:03 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
 Subject: Re: [PATCH v3] linux-user/armeb: Fix __kernel_cmpxchg() for armeb
 Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
 To: Helge Deller <deller@gmx.de>, Laurent Vivier <laurent@vivier.eu>,
  qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  John Reiser <jreiser@bitwagon.com>,
  "Markus F.X.J. Oberhumer" <markus@oberhumer.com>
 References: <ZMQVnqY+F+5sTNFd@p100>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <ZMQVnqY+F+5sTNFd@p100>
+ <b3249b9e-d687-68e1-77b6-9c8703644266@linaro.org>
+In-Reply-To: <b3249b9e-d687-68e1-77b6-9c8703644266@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -97,14 +98,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/28/23 12:23, Helge Deller wrote:
-> +    /* endianess-swap if emulating armeb */
-> +    oldval = tswap64(oldval);
-> +    newval = tswap64(newval);
+On 7/28/23 13:51, Richard Henderson wrote:
+> On 7/28/23 12:23, Helge Deller wrote:
+>> +    /* endianess-swap if emulating armeb */
+>> +    oldval = tswap64(oldval);
+>> +    newval = tswap64(newval);
+> 
+> Oh btw, it's not about arm vs armeb, but guest vs host.
+> This also fixes armel on big-endian hosts.
 
-Oh btw, it's not about arm vs armeb, but guest vs host.
-This also fixes armel on big-endian hosts.
+Anyway, I adjusted the comment and queued.
 
 
 r~
+
 
