@@ -2,62 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33A37766352
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 06:47:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1D2B76637B
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 07:05:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qPFDx-0004UG-An; Fri, 28 Jul 2023 00:37:09 -0400
+	id 1qPFUo-0003d1-3t; Fri, 28 Jul 2023 00:54:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <logoerthiner1@163.com>)
- id 1qPFDt-0004U5-Ue
- for qemu-devel@nongnu.org; Fri, 28 Jul 2023 00:37:06 -0400
-Received: from m1368.mail.163.com ([220.181.13.68])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <logoerthiner1@163.com>) id 1qPFDp-00035L-II
- for qemu-devel@nongnu.org; Fri, 28 Jul 2023 00:37:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
- s=s110527; h=Date:From:Subject:Content-Type:MIME-Version:
- Message-ID; bh=eECHLChEk9wqrU2RYZH6i2swG8Bh0W2ZzQEFHfdntdA=; b=C
- seQRcdLADq2441DNqn6e3L4EYkdGOOAVuWF28/3qy+JFpKVBSJ028XUmTdabWXsc
- NB6ef0O1YC6SoiXnzh7qse6lRY734MhhdYYdtMDTaifS6D/hLAfdt9I8AExWQtmU
- eum7CBrE9tdlFuCpUi4c4gvNXnxY4a6lErqcLdD9/4=
-Received: from logoerthiner1$163.com ( [183.242.254.172] ) by
- ajax-webmail-wmsvr68 (Coremail) ; Fri, 28 Jul 2023 12:36:49 +0800 (CST)
-X-Originating-IP: [183.242.254.172]
-Date: Fri, 28 Jul 2023 12:36:49 +0800 (CST)
-From: ThinerLogoer  <logoerthiner1@163.com>
-To: "David Hildenbrand" <david@redhat.com>, qemu-devel@nongnu.org
-Cc: imammedo@redhat.com
-Subject: Re:Re: [PATCH v2] softmmu/physmem: try opening file readonly before
- failure in file_ram_open
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT5.0.14 build 20230109(dcb5de15)
- Copyright (c) 2002-2023 www.mailtech.cn 163com
-In-Reply-To: <e908495c-252c-745c-036b-1b19778435d9@redhat.com>
-References: <20230726145912.88545-1-logoerthiner1@163.com>
- <183e16a8-55c3-7550-a9ff-21f31f65d0e5@redhat.com>
- <6bdbce7f.3e8e.18997f05e47.Coremail.logoerthiner1@163.com>
- <e908495c-252c-745c-036b-1b19778435d9@redhat.com>
-X-NTES-SC: AL_QuySAvmatkgr7yecbOkXnk4Shuc2XMu4u/gu34JTP5E0mSrw1yQrRXBOD0LnwtKADDKXvxeHUyN27/t9cY9cba35tN8+YCPBNhT69nkMfa/A
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=GBK
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qPFUl-0003cX-FY
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 00:54:31 -0400
+Received: from mout.gmx.net ([212.227.15.18])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qPFUj-0002iV-C3
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 00:54:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
+ s=s31663417; t=1690520057; x=1691124857; i=deller@gmx.de;
+ bh=vi57fuA25YiER519U8fKnD3YwuI2mZdmBtlNo8Jml2Q=;
+ h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
+ b=RN61CABBZ7ZYL8VF9oWFDs3pDG2u6jyOpnfj2zOAszPvsYOdbV4ZP19z3IdCqKJhDwhtij7
+ 4M+fBS8RgwT/iOlT838ztDwFsl66akin+gYFZ+MwXocbvWkXSlbpvA5/i+g2G4FxsDS5Fxs0X
+ TqT/XHmaBf1X4RVBIbn1xMWDXQ+F9n/wd2QjMkM7OPHGUhirlU7S6MCAQWipqyQpgz6QRATxm
+ 4/k1FZ4kMA9ci4C7jby4FTwJk3TbFBUbo91yDHPrtPj2ZppSJuxN3smeaNNAj6DNc9/H3qbph
+ 6gFWjt9UotjktL2fFO4QSVZJzZQ05lLSONqMqaeAY1KMBNOUpehA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from p100 ([94.134.159.73]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MmlT2-1pzZuR2LtG-00jtVv; Fri, 28
+ Jul 2023 06:54:17 +0200
+Date: Fri, 28 Jul 2023 06:54:16 +0200
+From: Helge Deller <deller@gmx.de>
+To: Laurent Vivier <laurent@vivier.eu>,
+ Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ John Reiser <jreiser@bitwagon.com>,
+ "Markus F.X.J. Oberhumer" <markus@oberhumer.com>
+Subject: [PATCH v2] linux-user/armeb: Fix __kernel_cmpxchg() for armeb
+Message-ID: <ZMNJ+Ga7A4zDXjAg@p100>
 MIME-Version: 1.0
-Message-ID: <6993611e.30d2.1899ac8f9d8.Coremail.logoerthiner1@163.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID: RMGowAAX3rDhRcNkKaUKAA--.27026W
-X-CM-SenderInfo: 5orj0vpuwkx0thurqiywtou0bp/xtbBZh+5nlaEEZAmaQACsA
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
-Received-SPF: pass client-ip=220.181.13.68; envelope-from=logoerthiner1@163.com;
- helo=m1368.mail.163.com
-X-Spam_score_int: -14
-X-Spam_score: -1.5
-X-Spam_bar: -
-X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Provags-ID: V03:K1:KfEm6USRqxXIiljbLe48LmkE4FLdaxXd6h9jLmQiGaqR2yJKUw+
+ C7k969x+8Mv5HbnTRGb7SrDVu7HyvG5B/JPL8JrPh2pm5wDuVhrxEx8DSj0mCtRuQ+6BqPK
+ IaPUe01KP3e/u8bYPhk0KV5nR/TJDupUF9kUFabA2fH6BhpY+25BSzFhQgpV9bcbqHo/d4t
+ 8OlHu579vs1xeCZgu49Ow==
+UI-OutboundReport: notjunk:1;M01:P0:2OQSvq9iyto=;/muWtudt/k/rI+T5tqoohL+in4+
+ 2XwYm55HYCoKLAEX9rrEW68CQc849aenNVk7cavU+fA9j2gvq++udplsgWjPZ7N4BZg7Ex3MI
+ s+BKGSbkPxnLMjPjU5jcFuS5mtVX8bf+2PQZGTGBHf8C8FFNfTVHxODB+2Mm9dsgd7vd6LsQw
+ RtzJyDU/P3njxVcO4Pu2U1TbbE5gGlg9Wco1jsjGGgPSKCrOeG9aCUDELOU1+AVOdiuUj98KN
+ lrkGBZP9eOrG7ph+3FzG4W/n2wI2NwSo3c5L6E0ac8Izf5EP0V7XMCC0cldWqrUYNt02IwMzy
+ HeHkSuIj+XzTQ0OdC+0w5arQ1h4u6KH/8H7PKjV0e3j+ech9lQqXab8AFJJoc/1C7EHNAugx1
+ eAZ0B22Ad+5ciasHlt76V8BU+fMk39T5fumEFE588ltUsfLLYb1LKW22T3mHTYQfKhTh9kldA
+ /F64Inxl2YJ3LJp2A9sY0V+TkT7HbQF7FqCq3KaoqmqMwFC7rObnqYY2cD5Djgan1vYv8B6w5
+ X9/s2BB7EWsokpp7j1OPZfqZuJHSc/rBjOdVgLqggq5anVc/5e1VtrGnFzCiQLC9rckdOCdzA
+ 8sKzsH7KJXSqGcGttKnOjswg9QjKsD1VCly/+sKcP6wvLzpK9CNZMldhoTtlK6jyD3SPxpvir
+ LyrcDhUs/Zacn5Uc1cdnZz8kxJiwxjSPxZRHJizZ/tIfUC/NTP45MMZIIgKJT9SMUbFBferri
+ FOGcSXUCAH9AjxKD5FX+9YEHTQYLA0ikpU5uun3c4/RSnB9kM8lAUKXjpWo8NOOXxTgcZPScg
+ WoXQ/74m8umBu67YYSNGeJSvQRaDPmaIV707aP3mdh0OKcF8FCMUK0mt5LwxHSmfo9COljSZL
+ HldNXbOEVqBYseO+rKK6FoRCgovHYwxz/HF+1Gyug1gKwhXTdV2I2R58cLC90ld6hujMYwo9P
+ h0otpca8wrP/oCREst5yT39OY3w=
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=212.227.15.18; envelope-from=deller@gmx.de;
+ helo=mout.gmx.net
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -73,93 +85,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-CgoKCgoKCgoKCgoKCgoKCkF0IDIwMjMtMDctMjggMDI6MzA6MDksICJEYXZpZCBIaWxkZW5icmFu
-ZCIgPGRhdmlkQHJlZGhhdC5jb20+IHdyb3RlOgo+T24gMjcuMDcuMjMgMTc6MjAsIFRoaW5lckxv
-Z29lciB3cm90ZToKPj4gCj4+IEF0IDIwMjMtMDctMjcgMjE6MTg6NDQsICJEYXZpZCBIaWxkZW5i
-cmFuZCIgPGRhdmlkQHJlZGhhdC5jb20+IHdyb3RlOgo+Pj4gT24gMjYuMDcuMjMgMTY6NTksIFRo
-aW5lciBMb2dvZXIgd3JvdGU6Cj4+Pj4gVXNlcnMgbWF5IGdpdmUgIi1tZW0tcGF0aCIgYSByZWFk
-IG9ubHkgZmlsZSBhbmQgZXhwZWN0IHRoZSBmaWxlCj4+Pj4gdG8gYmUgbWFwcGVkIHJlYWQtd3Jp
-dGUgcHJpdmF0ZWx5LiBBbGxvdyB0aGlzIGJ1dCBnaXZlIGEgd2FybmluZwo+Pj4+IHNpbmNlIG90
-aGVyIHVzZXJzIG1heSBzdXJwcmlzZSB3aGVuIHRoZSByYW0gZmlsZSBpcyByZWFkb25seSBhbmQK
-Pj4+PiBxZW11IHN1ZGRlbmx5IGFib3J0cyBlbHNld2hlcmUuCj4+Pj4KPj4+PiBTdWdnZXN0ZWQt
-Ynk6IERhdmlkIEhpbGRlbmJyYW5kIDxkYXZpZEByZWRoYXQuY29tPgo+Pj4+IFNpZ25lZC1vZmYt
-Ynk6IFRoaW5lciBMb2dvZXIgPGxvZ29lcnRoaW5lcjFAMTYzLmNvbT4KPj4+PiAtLS0KPj4+Pgo+
-Pj4+IFNlZSB0aGUgcHJldmlvdXMgdmVyc2lvbiBhdDoKPj4+PiBodHRwczovL2xvcmUua2VybmVs
-Lm9yZy9xZW11LWRldmVsLzk2YTQ2MmVjLTZmOWQtZmQ4My1mNjk3LTczZTEzMjQzMmNhNEByZWRo
-YXQuY29tL1QvCj4+Pj4KPj4+PiB2ZXJpZmllZCwgdGhpcyBwYXRjaCB3b3JrcyBmb3IgbXkgc2V0
-dXAsIGJvdGggZnVuY3Rpb25hbGl0eSBhbmQgdGhlIHdhcm5pbmcKPj4+PiBhcmUgZXhwZWN0ZWQg
-YmVoYXZpb3IuCj4+Pj4KPj4+PiBBbHNvIGFub3RoZXIgcHJvYmxlbSB3aGVuIEkgbG9vayBhdCB0
-aGUgZmlsZV9yYW1fb3Blbgo+Pj4+Cj4+Pj4gV2hlbiByZWFkb25seSBpcyB0cnVlIGFuZCB0aGUg
-cGF0aCBpcyBhIGRpcmVjdG9yeSwgdGhlIG9wZW4gd2lsbCBzdWNjZWVkIGJ1dAo+Pj4+IGFueSBs
-YXRlciBvcGVyYXRpb25zIHdpbGwgZmFpbCBzaW5jZSBpdCBpcyBhIGRpcmVjdG9yeSBmZC4gVGhp
-cyBtYXkgcmVxdWlyZQo+Pj4+IGFkZGl0aW9uYWwgY29tbWl0cyB3aGljaCBpcyBvdXQgb2YgbXkg
-c2NvcGUuIE1lcmVseSByZWNvcmQgdGhlIHF1ZXN0aW9uIGhlcmUuCj4+IAo+PiBNYXliZSB5b3Ug
-Y2FuIG5vdGljZSB0aGlzIGVkZ2UgY2FzZT8gSSBhbSBub3Qgc3VyZSB3aGV0aGVyIHRoaXMKPj4g
-Y2FzZSBpcyBvbiB5b3VyIHRvZG8gbGlzdD8KPgo+SSBndWVzcyB3ZSB3b3VsZCBoYXZlIHRvIGNo
-ZWNrIGlmIHdlIG9wZW5lZCBhIGRpcmVjdG9yeS4gU2hvdWxkIGJlIGVhc3kgdG8gYWRkLgo+Cj5B
-cyBsb25nIGFzIFFFTVUgZmFpbHMgcmVhc29uYWJseSB3ZWxsIGxhdGVyLCBnb29kIGZvciBub3cg
-OikKPgo+PiAKPj4+Pgo+Pj4+ICAgIHNvZnRtbXUvcGh5c21lbS5jIHwgMTQgKysrKysrKysrKysr
-KysKPj4+PiAgICAxIGZpbGUgY2hhbmdlZCwgMTQgaW5zZXJ0aW9ucygrKQo+Pj4+Cj4+Pj4gZGlm
-ZiAtLWdpdCBhL3NvZnRtbXUvcGh5c21lbS5jIGIvc29mdG1tdS9waHlzbWVtLmMKPj4+PiBpbmRl
-eCAzZGY3MzU0MmUxLi5lODI3OWQ2OWQ0IDEwMDY0NAo+Pj4+IC0tLSBhL3NvZnRtbXUvcGh5c21l
-bS5jCj4+Pj4gKysrIGIvc29mdG1tdS9waHlzbWVtLmMKPj4+PiBAQCAtMTI5Niw2ICsxMjk2LDcg
-QEAgc3RhdGljIGludCBmaWxlX3JhbV9vcGVuKGNvbnN0IGNoYXIgKnBhdGgsCj4+Pj4gICAgICAg
-IGNoYXIgKnNhbml0aXplZF9uYW1lOwo+Pj4+ICAgICAgICBjaGFyICpjOwo+Pj4+ICAgICAgICBp
-bnQgZmQgPSAtMTsKPj4+PiArICAgIGJvb2wgZmlyc3RfdHJpYWwgPSB0cnVlOwo+Pj4+ICAgIAo+
-Pj4+ICAgICAgICAqY3JlYXRlZCA9IGZhbHNlOwo+Pj4+ICAgICAgICBmb3IgKDs7KSB7Cj4+Pj4g
-QEAgLTEzMzIsNiArMTMzMywxOCBAQCBzdGF0aWMgaW50IGZpbGVfcmFtX29wZW4oY29uc3QgY2hh
-ciAqcGF0aCwKPj4+PiAgICAgICAgICAgICAgICAgICAgYnJlYWs7Cj4+Pj4gICAgICAgICAgICAg
-ICAgfQo+Pj4+ICAgICAgICAgICAgICAgIGdfZnJlZShmaWxlbmFtZSk7Cj4+Pj4gKyAgICAgICAg
-fSBlbHNlIGlmIChmaXJzdF90cmlhbCAmJiAhcmVhZG9ubHkgJiYgZXJybm8gPT0gRUFDQ0VTKSB7
-Cj4+Pgo+Pj4gSSBndWVzcyBpdCdzIGJldHRlciB0byBvbmx5IHJldHJ5IG9uIHByaXZhdGUgbWFw
-cGluZ3MsIGZvciBzaGFyZWQKPj4+IG1hcHBpbmdzIHRoYXQgY2Fubm90IHBvc3NpYmx5IHdvcmsu
-Cj4+IAo+PiBJIGZlZWwgdGhhdCB0aGUgcmV0cnkgY2FuIGJlIGFwcGxpZWQgaW4gZ2VuZXJhbCAt
-IGZvciBzaGFyZWQgbWFwcGluZ3MsCj4+IGl0IHdpbGwgbWVyZWx5IGZhaWwgb24gdGhlIG1tYXAg
-c3RlcCBhbmQgc2hvdWxkIGJlIG9rPwo+Cj5JIGd1ZXNzIGEgcHJvcGVyICJjYW4ndCBvcGVuIGJh
-Y2tpbmcgc3RvcmUiIG1lc3NhZ2UgaXMgYmV0dGVyIGZvciB0aGUgY2FzZXMgdGhhdCBvYnZpb3Vz
-bHkgY2FuJ3Qgd29yay4KPgo+PiAKPj4gVGhvdWdoLCB0byByZXRyeSBvbmx5IG9uIHByaXZhdGUg
-bWFwcGluZyBzZWVtcyBzdHJhaWdodGZvcndhcmRzIC0KPj4gdGhpcyBmdW5jdGlvbiBpcyBjYWxs
-ZWQgb25seSBvbmNlLCBhbmQgd2hldGhlciB0aGUgbWFwcGluZyBpcyBwcml2YXRlCj4+IGNhbiBi
-ZSBwYXNzZWQgaGVyZSB3aXRoIGEgYm9vbGVhbiBmbGFnIGFzIGFyZ3VtZW50LiBOb25ldGhlbGVz
-cwo+PiBpdCBtYXkgbWFrZSB0aGUgbG9naWMgb2YgdGhlIGZ1bmN0aW9uIG1vcmUgY29tcGxleCBh
-bmQgbGVzcyBpbnR1aXRpdmUuCj4KPlF1aWNrIHVudGVzdGVkIGF0dGVtcHQgdG8gbW92ZSByZXRy
-eSBoYW5kbGluZyB0byB0aGUgY2FsbGVyOgo+Cj5kaWZmIC0tZ2l0IGEvc29mdG1tdS9waHlzbWVt
-LmMgYi9zb2Z0bW11L3BoeXNtZW0uYwo+aW5kZXggM2RmNzM1NDJlMS4uYzgyNmJiNzhmYyAxMDA2
-NDQKPi0tLSBhL3NvZnRtbXUvcGh5c21lbS5jCj4rKysgYi9zb2Z0bW11L3BoeXNtZW0uYwo+QEAg
-LTEyODksOCArMTI4OSw3IEBAIHN0YXRpYyBpbnQ2NF90IGdldF9maWxlX2FsaWduKGludCBmZCkK
-PiAgc3RhdGljIGludCBmaWxlX3JhbV9vcGVuKGNvbnN0IGNoYXIgKnBhdGgsCj4gICAgICAgICAg
-ICAgICAgICAgICAgICAgICBjb25zdCBjaGFyICpyZWdpb25fbmFtZSwKPiAgICAgICAgICAgICAg
-ICAgICAgICAgICAgIGJvb2wgcmVhZG9ubHksCj4tICAgICAgICAgICAgICAgICAgICAgICAgIGJv
-b2wgKmNyZWF0ZWQsCj4tICAgICAgICAgICAgICAgICAgICAgICAgIEVycm9yICoqZXJycCkKPisg
-ICAgICAgICAgICAgICAgICAgICAgICAgYm9vbCAqY3JlYXRlZCkKPiAgewo+ICAgICAgY2hhciAq
-ZmlsZW5hbWU7Cj4gICAgICBjaGFyICpzYW5pdGl6ZWRfbmFtZTsKPkBAIC0xMzM0LDEwICsxMzMz
-LDcgQEAgc3RhdGljIGludCBmaWxlX3JhbV9vcGVuKGNvbnN0IGNoYXIgKnBhdGgsCj4gICAgICAg
-ICAgICAgIGdfZnJlZShmaWxlbmFtZSk7Cj4gICAgICAgICAgfQo+ICAgICAgICAgIGlmIChlcnJu
-byAhPSBFRVhJU1QgJiYgZXJybm8gIT0gRUlOVFIpIHsKPi0gICAgICAgICAgICBlcnJvcl9zZXRn
-X2Vycm5vKGVycnAsIGVycm5vLAo+LSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgImNhbid0
-IG9wZW4gYmFja2luZyBzdG9yZSAlcyBmb3IgZ3Vlc3QgUkFNIiwKPi0gICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgIHBhdGgpOwo+LSAgICAgICAgICAgIHJldHVybiAtMTsKPisgICAgICAgICAg
-ICByZXR1cm4gLWVycm5vOwo+ICAgICAgICAgIH0KPiAgICAgICAgICAvKgo+ICAgICAgICAgICAq
-IFRyeSBhZ2FpbiBvbiBFSU5UUiBhbmQgRUVYSVNULiAgVGhlIGxhdHRlciBoYXBwZW5zIHdoZW4K
-PkBAIC0xOTQ2LDkgKzE5NDIsMjMgQEAgUkFNQmxvY2sgKnFlbXVfcmFtX2FsbG9jX2Zyb21fZmls
-ZShyYW1fYWRkcl90IHNpemUsIE1lbW9yeVJlZ2lvbiAqbXIsCj4gICAgICBib29sIGNyZWF0ZWQ7
-Cj4gICAgICBSQU1CbG9jayAqYmxvY2s7Cj4gIAo+LSAgICBmZCA9IGZpbGVfcmFtX29wZW4obWVt
-X3BhdGgsIG1lbW9yeV9yZWdpb25fbmFtZShtciksIHJlYWRvbmx5LCAmY3JlYXRlZCwKPi0gICAg
-ICAgICAgICAgICAgICAgICAgIGVycnApOwo+KyAgICBmZCA9IGZpbGVfcmFtX29wZW4obWVtX3Bh
-dGgsIG1lbW9yeV9yZWdpb25fbmFtZShtciksIHJlYWRvbmx5LCAmY3JlYXRlZCk7Cj4rICAgIGlm
-IChmZCA9PSAtRUFDQ0VTICYmICEocmFtX2ZsYWdzICYgUkFNX1NIQVJFRCkgJiYgcmVhZG9ubHkp
-IHsKPisgICAgICAgIC8qCj4rICAgICAgICAgKiBXZSBjYW4gaGF2ZSBhIHdyaXRhYmxlIE1BUF9Q
-UklWQVRFIG1hcHBpbmcgb2YgYSByZWFkb25seSBmaWxlLgo+KyAgICAgICAgICogSG93ZXZlciwg
-c29tZSBvcGVyYXRpb25zIGxpa2UgZnRydW5jYXRlKCkgb3IgZmFsbG9jYXRlKCkgbWlnaHQgZmFp
-bAo+KyAgICAgICAgICogbGF0ZXIsIGxldCdzIHdhcm4gdGhlIHVzZXIuCj4rICAgICAgICAgKi8K
-PisgICAgICAgIGZkID0gZmlsZV9yYW1fb3BlbihtZW1fcGF0aCwgbWVtb3J5X3JlZ2lvbl9uYW1l
-KG1yKSwgdHJ1ZSwgJmNyZWF0ZWQpOwo+KyAgICAgICAgaWYgKGZkID49IDApIHsKPisgICAgICAg
-ICAgICB3YXJuX3JlcG9ydCgiYmFja2luZyBzdG9yZSAlcyBmb3IgZ3Vlc3QgUkFNIChNQVBfUFJJ
-VkFURSkgb3BlbmVkIgo+KyAgICAgICAgICAgICAgICAgICAgICAgICIgcmVhZG9ubHkgYmVjYXVz
-ZSB0aGUgZmlsZSBpcyBub3Qgd3JpdGFibGUiLCBtZW1fcGF0aCk7Cj4rICAgICAgICB9Cj4rICAg
-IH0KPiAgICAgIGlmIChmZCA8IDApIHsKPisgICAgICAgIGVycm9yX3NldGdfZXJybm8oZXJycCwg
-LWZkLAo+KyAgICAgICAgICAgICAgICAgICAgICAgICAiY2FuJ3Qgb3BlbiBiYWNraW5nIHN0b3Jl
-ICVzIGZvciBndWVzdCBSQU0iLAo+KyAgICAgICAgICAgICAgICAgICAgICAgICBtZW1fcGF0aCk7
-Cj4gICAgICAgICAgcmV0dXJuIE5VTEw7Cj4gICAgICB9Cj4gIAo+LS0gCj4yLjQxLjAKPgo+Cj4K
-Pgo+LS0gCj5DaGVlcnMsCj4KPkRhdmlkIC8gZGhpbGRlbmIK
+Commit 7f4f0d9ea870 ("linux-user/arm: Implement __kernel_cmpxchg with host
+atomics") switched to use qatomic_cmpxchg() to swap a word with the memory
+content, but missed to endianess-swap the oldval and newval values when
+emulating an armeb CPU, which expects words to be stored in big endian in
+the guest memory.
+
+The bug can be verified with qemu >=3D v7.2 on any little-endian host, whe=
+n
+starting the armeb binary of the upx program, which just hangs without
+this patch.
+
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: Richard Henderson <richard.henderson@linaro.org>
+Cc: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-stable@nongnu.org
+Reported-by: "Markus F.X.J. Oberhumer" <markus@oberhumer.com>
+Reported-by: John Reiser <jreiser@BitWagon.com>
+Closes: https://github.com/upx/upx/issues/687
+
+=2D-
+v2:
+- add tswap32() in arm_kernel_cmpxchg64_helper()
+
+
+diff --git a/linux-user/arm/cpu_loop.c b/linux-user/arm/cpu_loop.c
+index a992423257..0907cd8c15 100644
+=2D-- a/linux-user/arm/cpu_loop.c
++++ b/linux-user/arm/cpu_loop.c
+@@ -117,8 +117,9 @@ static void arm_kernel_cmpxchg32_helper(CPUARMState *e=
+nv)
+ {
+     uint32_t oldval, newval, val, addr, cpsr, *host_addr;
+
+-    oldval =3D env->regs[0];
+-    newval =3D env->regs[1];
++    /* endianess-swap if emulating armeb */
++    oldval =3D tswap32(env->regs[0]);
++    newval =3D tswap32(env->regs[1]);
+     addr =3D env->regs[2];
+
+     mmap_lock();
+@@ -174,6 +175,10 @@ static void arm_kernel_cmpxchg64_helper(CPUARMState *=
+env)
+         return;
+     }
+
++    /* endianess-swap if emulating armeb */
++    oldval =3D tswap32(oldval);
++    newval =3D tswap32(newval);
++
+ #ifdef CONFIG_ATOMIC64
+     val =3D qatomic_cmpxchg__nocheck(host_addr, oldval, newval);
+     cpsr =3D (val =3D=3D oldval) * CPSR_C;
 
