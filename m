@@ -2,75 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA6DF766EA1
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 15:44:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7DC9766EA3
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 15:46:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qPNKL-0006hd-9K; Fri, 28 Jul 2023 09:16:17 -0400
+	id 1qPNLT-0007Dx-1H; Fri, 28 Jul 2023 09:17:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qPNJz-0006TS-1X
- for qemu-devel@nongnu.org; Fri, 28 Jul 2023 09:15:55 -0400
-Received: from mail-oa1-x36.google.com ([2001:4860:4864:20::36])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qPNLQ-0007DQ-7f
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 09:17:24 -0400
+Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qPNJt-0003Vk-C6
- for qemu-devel@nongnu.org; Fri, 28 Jul 2023 09:15:54 -0400
-Received: by mail-oa1-x36.google.com with SMTP id
- 586e51a60fabf-1bbaa549bcbso1663281fac.3
- for <qemu-devel@nongnu.org>; Fri, 28 Jul 2023 06:15:48 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qPNLO-0003sa-40
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 09:17:23 -0400
+Received: by mail-ej1-x62a.google.com with SMTP id
+ a640c23a62f3a-98e39784a85so718591866b.1
+ for <qemu-devel@nongnu.org>; Fri, 28 Jul 2023 06:17:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1690550148; x=1691154948;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=HDa6yMT5aLs7zW0tfsJSZj3Oa5XrkTDlwa0+B86L+T0=;
- b=o/jT3dcwwh3XR2UtClubXxzuPb0PZMx/IM8yE2A2dbU5GxJYHJbklZveV0lUCscAE3
- DND/M+MOEs51d/UPxlR5PATuFA54g29knTKAJSD3WA2EeNNWL74xMY1jDLNDELIjxP4+
- /GwB2Tkw6+t79OD/cxAC1N1m7U7SpqzLvSOBBc1d7jgSEEjwd/xXbNz2S63inS4hM3Tb
- szDK/PKvOkj3V32STaExe56oKXeGC/VoUAVWII5c3SIg72syF1VO0b5NVdC8p8qDF9/A
- z+hB1C7GDfOnKGPeoDpUznqKCjF9ECWlyYEAYGyQ53R6gB0roie6P8srBX0p3zxuERXv
- QnBg==
+ d=linaro.org; s=google; t=1690550240; x=1691155040;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=GFbN8q9s4W5AgNtxdnnEe5FyvzzlnPyKwbHX0ggSmbA=;
+ b=RSNEGJDUbI2MY085SAOHyDtcupGzld6MMVCEbA8XHBH/XZaskXk/WsnuDN6sEXUymF
+ g7X3L3h7RmLx1X2kgAfRW7CWwOwosyv05Y/MZVHjEQaAtb1ej36b59ayLO0tozvuTh6s
+ 6cZlRtHBO6JAsgZ5MdcVBamN3UtSsnXRdcjtuLnzHsa2U5OtBqA/cMARaZ2BknRahxiB
+ 9zE1PgjWxU8AHPfDj+PgAXCPa0j3AJsWLdhqlb40YZJAc5D11zk1EWtptY1PU5ljVV3N
+ s8i9alcrZN3lWY2vztLQW8GEx5BKShPJHCJwCe38IoZAhviGpl4sFGUN19QH7tc6NWtY
+ LcVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690550148; x=1691154948;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=HDa6yMT5aLs7zW0tfsJSZj3Oa5XrkTDlwa0+B86L+T0=;
- b=SqSH8WZ8lCse37dqN0s/bFGGD6n6MdhXS3Pg7zIgL6NDEiTA663aZ2ohp0T8ngrruf
- RiyPgrTZj61KWzPdopfO6VljAPdyCDIZnknzL/7k1MBN6QZwkCvw6cdmMO1vmygEpbK2
- z4L3OVYCcw3WdRO+XYQRhy8NDj7DR8nGDiwlaB3dHc+NPgZE27ZyIQwSQMNERWTvzrHz
- 2ZJIUqpxsgi+kqTdGnVcp9b03O17E//GU1cfjWxpJzALYo9d+hoAlhsPBZFwfRCRPf2n
- XkdRYSq4WcTAN1GL1DtTg+qb4euXhXYSMjqKflCwIpkplFefz5iIoHTlWXFhP+K/4tB5
- XH8Q==
-X-Gm-Message-State: ABy/qLYxTFjAPvx9eqtXGa5NvcS6LJKaXY+b+rMgN3izZAekpexGjPO4
- GhJhoF9hgyQd3DYR9Yc05sONpjQE60Eh+TVjMtT2+A==
-X-Google-Smtp-Source: APBJJlH4AIaa1v4ib38stcZXYfvq6lz2MnGifddJcZA86CgfhmHwX2HrrZd+X22QkKB7AgTtxiboFg==
-X-Received: by 2002:a05:6870:f70b:b0:1b7:609f:e0d4 with SMTP id
- ej11-20020a056870f70b00b001b7609fe0d4mr2899257oab.15.1690550147992; 
- Fri, 28 Jul 2023 06:15:47 -0700 (PDT)
-Received: from grind.. (201-69-66-36.dial-up.telesp.net.br. [201.69.66.36])
- by smtp.gmail.com with ESMTPSA id
- hv6-20020a056871cc0600b001b3d93884fdsm1699371oac.57.2023.07.28.06.15.45
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 28 Jul 2023 06:15:47 -0700 (PDT)
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH 8/8] target/riscv/cpu.c: consider user option with RVG
-Date: Fri, 28 Jul 2023 10:15:20 -0300
-Message-ID: <20230728131520.110394-9-dbarboza@ventanamicro.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230728131520.110394-1-dbarboza@ventanamicro.com>
-References: <20230728131520.110394-1-dbarboza@ventanamicro.com>
+ d=1e100.net; s=20221208; t=1690550240; x=1691155040;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=GFbN8q9s4W5AgNtxdnnEe5FyvzzlnPyKwbHX0ggSmbA=;
+ b=caD2Scl1vD65X3NCZqoUax6oiNhPdWVELFS9yP0ZQNyZ9zzq7/yvUBYELNOMWVE3Mc
+ zHyiILU/avWVyd8cjZscHvCF4uB2zBfTtNtySlogl44RH6OipDnQrKq/SXOLImWuTfoz
+ hYOy8bWr0wWxQdf1R+Pmr3pc+PfFI3urgeFX5dGrSo6BAZ9u/AXdNNLTnoll4MWze6p+
+ S9lECSjt0xfZTwICYz2u9GmGvFheFzEp2m0rwwNZuGIsPpgP2RkDuvXL6a5+i7F3PFzJ
+ Tbrogs6I3OO3RmJP+JjneYxtGAHlHBE6+R82fY8QaY2rpKcrW0mTTNCefTJoBn5hPQ2d
+ XTww==
+X-Gm-Message-State: ABy/qLZcp7eW2TDPWNBZzucEe3Mq5Xn7MShqq/Zr4V1MzXMlLcrBmPFp
+ 4jPcmy7ActTbZ6ImXkI0geQnrq934/wSNRYXTLYe+Q==
+X-Google-Smtp-Source: APBJJlFE6Pezfxd7weBOnFHurey+bc1rXc6xxYLNp+hxU+oFvlAnnRRjoa1hk3cP8cFtR7pDh0pHZgywrXSug+GK4qc=
+X-Received: by 2002:a17:907:3e0b:b0:994:fec:e1b7 with SMTP id
+ hp11-20020a1709073e0b00b009940fece1b7mr7215592ejc.0.1690550240326; Fri, 28
+ Jul 2023 06:17:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::36;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x36.google.com
+References: <20230727162621.445400-1-richard.henderson@linaro.org>
+In-Reply-To: <20230727162621.445400-1-richard.henderson@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 28 Jul 2023 14:17:09 +0100
+Message-ID: <CAFEAcA_oycCzi9ucp6njiZMs9puO_pshY0xDgT3ed6KQZP=bKg@mail.gmail.com>
+Subject: Re: [PATCH] target/arm: Do not use gen_mte_checkN in trans_STGP
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ej1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,53 +84,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Enabling RVG will enable a set of extensions that we're not checking if
-the user was okay enabling or not. And in this case we want to error
-out, instead of ignoring, otherwise we will be inconsistent enabling RVG
-without all its extensions.
+On Thu, 27 Jul 2023 at 17:33, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> STGP writes to tag memory, it does not check it.
+> This happened to work because we wrote tag memory first
+> so that the check always succeeded.
 
-After this patch, disabling ifencei or icsr while enabling RVG will
-result in error:
+So this is code cleanup to be more sensible, rather
+than a guest visible bug ?
 
-$ ./build/qemu-system-riscv64 -M virt -cpu rv64,g=true,Zifencei=false --nographic
-qemu-system-riscv64: warning: Setting G will also set IMAFD_Zicsr_Zifencei
-qemu-system-riscv64: RVG requires Zifencei but user set Zifencei to false
-
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
----
- target/riscv/cpu.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
-
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 644d0fdad2..72a36b47ed 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -1135,8 +1135,22 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
-           riscv_has_ext(env, RVD) &&
-           cpu->cfg.ext_icsr && cpu->cfg.ext_ifencei)) {
-         warn_report("Setting G will also set IMAFD_Zicsr_Zifencei");
--        cpu->cfg.ext_icsr = true;
--        cpu->cfg.ext_ifencei = true;
-+
-+        if (cpu_cfg_ext_is_user_set(CPU_CFG_OFFSET(ext_icsr)) &&
-+            !cpu->cfg.ext_icsr) {
-+            error_setg(errp, "RVG requires Zicsr but user set Zicsr to false");
-+            return;
-+        }
-+
-+        if (cpu_cfg_ext_is_user_set(CPU_CFG_OFFSET(ext_ifencei)) &&
-+            !cpu->cfg.ext_ifencei) {
-+            error_setg(errp, "RVG requires Zifencei but user set "
-+                       "Zifencei to false");
-+            return;
-+        }
-+
-+        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_icsr), true);
-+        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_ifencei), true);
- 
-         env->misa_ext |= RVI | RVM | RVA | RVF | RVD;
-         env->misa_ext_mask |= RVI | RVM | RVA | RVF | RVD;
--- 
-2.41.0
-
+thanks
+-- PMM
 
