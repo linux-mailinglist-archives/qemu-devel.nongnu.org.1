@@ -2,86 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4FAC7677F1
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 23:55:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF319767865
+	for <lists+qemu-devel@lfdr.de>; Sat, 29 Jul 2023 00:14:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qPUxk-00055U-0g; Fri, 28 Jul 2023 17:25:28 -0400
+	id 1qPV9r-00005t-4T; Fri, 28 Jul 2023 17:37:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qPUxi-00055L-6z
- for qemu-devel@nongnu.org; Fri, 28 Jul 2023 17:25:26 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qPV9p-00005V-9W
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 17:37:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qPUxg-0000pd-D7
- for qemu-devel@nongnu.org; Fri, 28 Jul 2023 17:25:25 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qPV9n-0006UQ-R3
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 17:37:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690579523;
+ s=mimecast20190719; t=1690580274;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=Ou7md5uwLIpoQif4+4pIEbuD38nJB39fBTQxrN3HW5k=;
- b=K7DUc2RwJKPcdtQKnX+dBozx3wFS+frooVYJvbRoAudJ7I8OdORUvT1gOK9RhojKnTT512
- LyB2dcOMeU20Re/RGXCQWlopJKHzBuBmo6VpoKDSGNq/CZC3hnkVmrf/eYBImUgtOqccew
- 4vrvqGx7LS2Ov58TYzjLfh3VYhEr3do=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=b5t2zmIDsu28RKNXD2LZZmIihAz2BehwW/CWrKvVzVA=;
+ b=R9bHZGcIl0khrF3BgptdrFgcw7a5egwVWX1IFSRrP9qg9Qg9HKHTYCiYvdCzisQWQybdg+
+ TFGEsPgBUFdslh94WNyFNOuUVwoLNjuZZMndEVv872U6gbKUeKMnzA8M9UWk8EVzhRwQVE
+ FjwnOZKI476rybJpyOsjzT6C6HIl7h0=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-32-fsGXFcE1PAuq8IfLJdzvtw-1; Fri, 28 Jul 2023 17:25:21 -0400
-X-MC-Unique: fsGXFcE1PAuq8IfLJdzvtw-1
-Received: by mail-qk1-f200.google.com with SMTP id
- af79cd13be357-76c7cffef41so24515085a.1
- for <qemu-devel@nongnu.org>; Fri, 28 Jul 2023 14:25:21 -0700 (PDT)
+ us-mta-547-uPWOERrMPpOF1qJbSaKBkw-1; Fri, 28 Jul 2023 17:37:52 -0400
+X-MC-Unique: uPWOERrMPpOF1qJbSaKBkw-1
+Received: by mail-qv1-f71.google.com with SMTP id
+ 6a1803df08f44-63cebe9238bso5165176d6.1
+ for <qemu-devel@nongnu.org>; Fri, 28 Jul 2023 14:37:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690579521; x=1691184321;
+ d=1e100.net; s=20221208; t=1690580272; x=1691185072;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Ou7md5uwLIpoQif4+4pIEbuD38nJB39fBTQxrN3HW5k=;
- b=ctY9YvJtNnkUlUKBTDDnOllARKPKTwmgib/ReuFJNK+P0tySL8RLuM6s9DVMRIhvxo
- FaFE2ojN2fxtWv3J26m+kXncUW7bm03VCAz80cPRHPubQAk6le+KG+ADC/MZD4DPnxr7
- dGctBPwJQ9+NuIi+hwRdyiksv7uW8+Xj54NG2/SbQ9oKIhm4yNyJPCJODcrNN1n/freY
- AKPnPLrGrBX7emIgz1Di13Zp1L2+6rjBXcGFEExFa9fSZiKCDZ+JuAum8Se3xRltz3IR
- hVPRBE9MOTilNidNyG/awD6RPOaRu5CeinuXAJAZMW0mmjmmBG+C8QrGYSxvxuOiIs0D
- RbUw==
-X-Gm-Message-State: ABy/qLa1UpWqrNtg08FZ/I2K31hoB6W8emetMZGZZf20KaJB594clzSh
- lU9YAYOWPSkBiniigL4491J0garRECTqFfSjDWaHLI9TdiaUs3/WsMHHMNXfIzpwwR0/p/sHuOl
- Qzt+89mJl2oZZM3E=
-X-Received: by 2002:a05:620a:198a:b0:767:ffb:58aa with SMTP id
- bm10-20020a05620a198a00b007670ffb58aamr377568qkb.3.1690579521205; 
- Fri, 28 Jul 2023 14:25:21 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlGrpXZEleiSEj5ENTUB0rPMBfI7ddKxprUn5HxOJgpwX2jrdrIg3FLp+4+GCYl1CLkBfH//0w==
-X-Received: by 2002:a05:620a:198a:b0:767:ffb:58aa with SMTP id
- bm10-20020a05620a198a00b007670ffb58aamr377553qkb.3.1690579520962; 
- Fri, 28 Jul 2023 14:25:20 -0700 (PDT)
+ bh=b5t2zmIDsu28RKNXD2LZZmIihAz2BehwW/CWrKvVzVA=;
+ b=j+EK5miWFrC5cr3aRtZfFGRDIp7EH0+ukTMYwYUydIwh/N/ky1pDsD6Pn/SNOXXxla
+ FuOaKdms6/UpA/As//G263yz26Dm/huiN+h9f4CG3D2QC+FFoTU0+mKKvDyH7XiTgl97
+ Q1BgjPwKQNQJPbe64QmTEugohd3hxGDtQilT5PmIKmYF62mOaq17XwopYic61LBQNIm6
+ ciUAVQvol5hqKTwPnQX7UafjMUymvQjyrmF4C/EnIEs4n6S1hbk4t/CQMPC9E+lyMpi1
+ 0uMenSNpog7zOmMnsnGgmudS0MM8QWgzMVFaKwfIFN7HRRDb4r7YMjPmCFttgSdVaKuL
+ xdfQ==
+X-Gm-Message-State: ABy/qLaPuYyofXol4TEd8h0KAuzFwpQPXFPVOEzquTBzDpn3r6PLwyCs
+ e6hLnw6q/QeghhVC/BjKbSgSC7+GReGmea5ju8gCwe6ZI517hYADbFJCGQJvSXjba0FYAlXx1B/
+ FDwKXUnPqhGumDjE=
+X-Received: by 2002:a05:6214:5090:b0:63d:ee8:4127 with SMTP id
+ kk16-20020a056214509000b0063d0ee84127mr536720qvb.2.1690580271972; 
+ Fri, 28 Jul 2023 14:37:51 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlF2We8K5GRzxb+1BLE3l8Q0cpZ2f6mjH4nux8eMAMLZYuWT0SpTuN0csBXe+rAQ0xqTpj7b+Q==
+X-Received: by 2002:a05:6214:5090:b0:63d:ee8:4127 with SMTP id
+ kk16-20020a056214509000b0063d0ee84127mr536707qvb.2.1690580271736; 
+ Fri, 28 Jul 2023 14:37:51 -0700 (PDT)
 Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
  [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- pe8-20020a05620a850800b0076c707f3bafsm1345249qkn.94.2023.07.28.14.25.19
+ a11-20020a0ce34b000000b006365a41c354sm1546589qvm.132.2023.07.28.14.37.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 28 Jul 2023 14:25:20 -0700 (PDT)
-Date: Fri, 28 Jul 2023 17:25:17 -0400
+ Fri, 28 Jul 2023 14:37:51 -0700 (PDT)
+Date: Fri, 28 Jul 2023 17:37:49 -0400
 From: Peter Xu <peterx@redhat.com>
-To: Bui Quang Minh <minhquangbui99@gmail.com>
-Cc: qemu-devel@nongnu.org, David Woodhouse <dwmw2@infradead.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Igor Mammedov <imammedo@redhat.com>,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Joao Martins <joao.m.martins@oracle.com>, Jason Wang <jasowang@redhat.com>
-Subject: Re: [PATCH v7 4/5] intel_iommu: allow Extended Interrupt Mode when
- using userspace APIC
-Message-ID: <ZMQyPbbnyZZ0Foc/@x1n>
-References: <20230728144229.49860-1-minhquangbui99@gmail.com>
- <20230728144229.49860-5-minhquangbui99@gmail.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>
+Subject: Re: [PATCH 1/3] migration: Stop marking RP bad after shutdown
+Message-ID: <ZMQ1LbTl5kGmAG21@x1n>
+References: <20230728121516.16258-1-farosas@suse.de>
+ <20230728121516.16258-2-farosas@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230728144229.49860-5-minhquangbui99@gmail.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+In-Reply-To: <20230728121516.16258-2-farosas@suse.de>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -106,14 +98,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jul 28, 2023 at 09:42:28PM +0700, Bui Quang Minh wrote:
-> As userspace APIC now supports x2APIC, intel interrupt remapping
-> hardware can be set to EIM mode when userspace local APIC is used.
+On Fri, Jul 28, 2023 at 09:15:14AM -0300, Fabiano Rosas wrote:
+> When waiting for the return path (RP) thread to finish, there is
+> really nothing wrong in the RP if the destination end of the migration
+> stops responding, leaving it stuck.
 > 
-> Suggested-by: Joao Martins <joao.m.martins@oracle.com>
-> Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
+> Stop returning an error at that point and leave it to other parts of
+> the code to catch. One such part is the very next routine run by
+> migration_completion() which checks 'to_dst_file' for an error and fails
+> the migration. Another is the RP thread itself when the recvmsg()
+> returns an error.
+> 
+> With this we stop marking RP bad from outside of the thread and can
+> reuse await_return_path_close_on_source() in the next patches to wait
+> on the thread during a paused migration.
+> 
+> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+> ---
+>  migration/migration.c | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/migration/migration.c b/migration/migration.c
+> index 91bba630a8..051067f8c5 100644
+> --- a/migration/migration.c
+> +++ b/migration/migration.c
+> @@ -2049,7 +2049,6 @@ static int await_return_path_close_on_source(MigrationState *ms)
+>           * waiting for the destination.
+>           */
+>          qemu_file_shutdown(ms->rp_state.from_dst_file);
+> -        mark_source_rp_bad(ms);
+>      }
+>      trace_await_return_path_close_on_source_joining();
+>      qemu_thread_join(&ms->rp_state.rp_thread);
 
-Acked-by: Peter Xu <peterx@redhat.com>
+The retval of await_return_path_close_on_source() relies on
+ms->rp_state.error.  If mark_source_rp_bad() is dropped, is it possible
+that it'll start to return succeed where it used to return failure?
+
+Maybe not a big deal: I see migration_completion() also has another
+qemu_file_get_error() later to catch errors, but I don't know how solid
+that is.
+
+I think as long as after this patch we can fail properly on e.g. network
+failures for precopy when cap return-path=on, then we should be good.
 
 -- 
 Peter Xu
