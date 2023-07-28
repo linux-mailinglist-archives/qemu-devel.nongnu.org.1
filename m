@@ -2,43 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1792D7660F1
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 02:59:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9F00766102
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 03:11:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qPBlc-0006ek-Up; Thu, 27 Jul 2023 20:55:40 -0400
+	id 1qPBp3-0006yp-OU; Thu, 27 Jul 2023 20:59:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qPBla-0006eU-In; Thu, 27 Jul 2023 20:55:38 -0400
-Received: from zero.eik.bme.hu ([152.66.115.2])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qPBlY-0001zv-Fw; Thu, 27 Jul 2023 20:55:38 -0400
-Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 0445B745958;
- Fri, 28 Jul 2023 02:55:27 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id C43417456CE; Fri, 28 Jul 2023 02:55:26 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH] hw/i2c: Fix bitbang_i2c_data trace event
-Date: Fri, 28 Jul 2023 02:45:24 +0200
+ (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
+ id 1qPBp0-0006y7-QH; Thu, 27 Jul 2023 20:59:10 -0400
+Received: from smtp84.cstnet.cn ([159.226.251.84] helo=cstnet.cn)
+ by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_CBC_SHA1:256)
+ (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
+ id 1qPBoy-00068A-0z; Thu, 27 Jul 2023 20:59:10 -0400
+Received: from [192.168.0.120] (unknown [180.165.241.20])
+ by APP-05 (Coremail) with SMTP id zQCowACHj+vLEsNkUWs1Dw--.8762S2;
+ Fri, 28 Jul 2023 08:58:52 +0800 (CST)
+Message-ID: <0d4a2904-7187-861a-9a7e-6e4c8b11c1c9@iscas.ac.cn>
+Date: Fri, 28 Jul 2023 08:58:51 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-To: qemu-devel@nongnu.org,
-    qemu-trivial@nongnu.org
-Cc: Corey Minyard <cminyard@mvista.com>
-Message-Id: <20230728005526.C43417456CE@zero.eik.bme.hu>
-X-Spam-Probability: 8%
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Cc: liweiwei@iscas.ac.cn, Alistair.Francis@wdc.com, palmer@dabbelt.com,
+ bin.meng@windriver.com, dbarboza@ventanamicro.com, qemu-riscv@nongnu.org
+Subject: Re: [PATCH] target/riscv: Fix zfa fleq.d and fltq.d
+To: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-devel@nongnu.org
+References: <20230728003906.768-1-zhiwei_liu@linux.alibaba.com>
+Content-Language: en-US
+From: Weiwei Li <liweiwei@iscas.ac.cn>
+In-Reply-To: <20230728003906.768-1-zhiwei_liu@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID: zQCowACHj+vLEsNkUWs1Dw--.8762S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7ur43Aw1DJF48tr4xKw1kuFg_yoW8GF4kpF
+ s5CFyUKr4rJr93Aa40ya15Xry7Xa1Fgr4rG3sYyw43KF47JrZ8ur43Kr1agryUJrWvgrWF
+ ya47A3ZxZ3y7JFDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ 9KBjDU0xBIdaVrnRJUUUkm14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+ rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+ 1l84ACjcxK6xIIjxv20xvE14v26r1I6r4UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+ 6F4UM28EF7xvwVC2z280aVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4j6r
+ 4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+ I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
+ 4UM4x0Y48IcVAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCYjI0SjxkI62AI1cAE67vI
+ Y487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI
+ 0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y
+ 0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
+ WUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1l
+ IxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjfUoOJ5UUUUU
+X-Originating-IP: [180.165.241.20]
+X-CM-SenderInfo: 5olzvxxzhlqxpvfd2hldfou0/
+Received-SPF: pass client-ip=159.226.251.84; envelope-from=liweiwei@iscas.ac.cn;
+ helo=cstnet.cn
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.091,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -54,45 +75,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The clock and data values were logged swapped. Correct the trace event
-text to match what is logged. Also fix a typo in a comment nearby.
 
-Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
----
-By the way, get_maintainer.pl does not find a maintainer for
-bitbang_i2c.c, should it be added somewhere with the rest of hw/i2c?
+On 2023/7/28 08:39, LIU Zhiwei wrote:
+> Commit a47842d ("riscv: Add support for the Zfa extension") implemented the zfa extension.
+> However, it has some typos for fleq.d and fltq.d. Both of them misused the fltq.s
+> helper function.
+>
+> Signed-off-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+> ---
 
- hw/i2c/bitbang_i2c.c | 2 +-
- hw/i2c/trace-events  | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+Reviewed-by: Weiwei Li <liweiwei@iscas.ac.cn>
 
-diff --git a/hw/i2c/bitbang_i2c.c b/hw/i2c/bitbang_i2c.c
-index bb18954765..de5f5aacf5 100644
---- a/hw/i2c/bitbang_i2c.c
-+++ b/hw/i2c/bitbang_i2c.c
-@@ -70,7 +70,7 @@ static int bitbang_i2c_ret(bitbang_i2c_interface *i2c, int level)
-     return level & i2c->last_data;
- }
- 
--/* Leave device data pin unodified.  */
-+/* Leave device data pin unmodified.  */
- static int bitbang_i2c_nop(bitbang_i2c_interface *i2c)
- {
-     return bitbang_i2c_ret(i2c, i2c->device_out);
-diff --git a/hw/i2c/trace-events b/hw/i2c/trace-events
-index 8e88aa24c1..d7b1e25858 100644
---- a/hw/i2c/trace-events
-+++ b/hw/i2c/trace-events
-@@ -5,7 +5,7 @@ bitbang_i2c_state(const char *old_state, const char *new_state) "state %s -> %s"
- bitbang_i2c_addr(uint8_t addr) "Address 0x%02x"
- bitbang_i2c_send(uint8_t byte) "TX byte 0x%02x"
- bitbang_i2c_recv(uint8_t byte) "RX byte 0x%02x"
--bitbang_i2c_data(unsigned dat, unsigned clk, unsigned old_out, unsigned new_out) "dat %u clk %u out %u -> %u"
-+bitbang_i2c_data(unsigned clk, unsigned dat, unsigned old_out, unsigned new_out) "clk %u dat %u out %u -> %u"
- 
- # core.c
- 
--- 
-2.30.9
+Weiwei Li
+
+>   target/riscv/insn_trans/trans_rvzfa.c.inc | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/target/riscv/insn_trans/trans_rvzfa.c.inc b/target/riscv/insn_trans/trans_rvzfa.c.inc
+> index 2c715af3e5..0fdd2698f6 100644
+> --- a/target/riscv/insn_trans/trans_rvzfa.c.inc
+> +++ b/target/riscv/insn_trans/trans_rvzfa.c.inc
+> @@ -470,7 +470,7 @@ bool trans_fleq_d(DisasContext *ctx, arg_fleq_d *a)
+>       TCGv_i64 src1 = get_fpr_hs(ctx, a->rs1);
+>       TCGv_i64 src2 = get_fpr_hs(ctx, a->rs2);
+>   
+> -    gen_helper_fltq_s(dest, cpu_env, src1, src2);
+> +    gen_helper_fleq_d(dest, cpu_env, src1, src2);
+>       gen_set_gpr(ctx, a->rd, dest);
+>       return true;
+>   }
+> @@ -485,7 +485,7 @@ bool trans_fltq_d(DisasContext *ctx, arg_fltq_d *a)
+>       TCGv_i64 src1 = get_fpr_hs(ctx, a->rs1);
+>       TCGv_i64 src2 = get_fpr_hs(ctx, a->rs2);
+>   
+> -    gen_helper_fltq_s(dest, cpu_env, src1, src2);
+> +    gen_helper_fltq_d(dest, cpu_env, src1, src2);
+>       gen_set_gpr(ctx, a->rd, dest);
+>       return true;
+>   }
 
 
