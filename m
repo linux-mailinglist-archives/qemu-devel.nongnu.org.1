@@ -2,87 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 883447668B3
-	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 11:23:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57CD37668ED
+	for <lists+qemu-devel@lfdr.de>; Fri, 28 Jul 2023 11:34:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qPJQN-0000wX-8L; Fri, 28 Jul 2023 05:06:15 -0400
+	id 1qPJYJ-0004A2-P2; Fri, 28 Jul 2023 05:14:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
- id 1qPJQC-0000ta-BN
- for qemu-devel@nongnu.org; Fri, 28 Jul 2023 05:06:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
- id 1qPJQ6-0006eO-E5
- for qemu-devel@nongnu.org; Fri, 28 Jul 2023 05:06:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690535157;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=AGWS6q6vYaIA9wZ092+QED3mBjscQd0r1GZzgvOuVzo=;
- b=DOrNc5OeCQ0DRF9ZySeWq96xib5Ss+KIJJPPqmM6dE/vx/yuS+BrXhWzQwx1+Da3q9wMr5
- L+byjoATJujnc+i4YsMK820aaeT6ITVT1DFSZCo4MLUPk+a+aNNWqdmZfmVt8KUPp15SkM
- Si49MB0JMnA2xeGkxE0XGum1kAlerxs=
-Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com
- [209.85.167.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-354-hE3O4QN-MV20YwMttBh9KQ-1; Fri, 28 Jul 2023 05:05:55 -0400
-X-MC-Unique: hE3O4QN-MV20YwMttBh9KQ-1
-Received: by mail-oi1-f200.google.com with SMTP id
- 5614622812f47-3a1e58db5caso3888401b6e.0
- for <qemu-devel@nongnu.org>; Fri, 28 Jul 2023 02:05:55 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1qPJXw-00047i-M9
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 05:14:05 -0400
+Received: from mail-oi1-x231.google.com ([2607:f8b0:4864:20::231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1qPJXr-000534-6b
+ for qemu-devel@nongnu.org; Fri, 28 Jul 2023 05:14:04 -0400
+Received: by mail-oi1-x231.google.com with SMTP id
+ 5614622812f47-3a426e70575so1269487b6e.0
+ for <qemu-devel@nongnu.org>; Fri, 28 Jul 2023 02:11:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=smartx-com.20221208.gappssmtp.com; s=20221208; t=1690535515; x=1691140315;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=GpO5xqW1rQSuk5dRZGcuWJHfIDym0MKiw4QbCXYCzOk=;
+ b=eE3GpgaXeau9t//PTLRR0kXy+/smzFjPFjDjXW4W94qgV2yR6SI0XTg36fY37svHBk
+ kDMx9O4EHH2Nq0zuwn3FZLtZxHWHpGECyX3Gnq1eudtZZOvGVGPwP0VhBOTpCLDyLl9n
+ 1YC2BA/fr2lU+ig7xvvtB69Rfo9G51owvLiSSu/87tUEEaXLE2fkg6Y97UpvAmaJtNhs
+ LgnSQWDbi+0A8L06kAY8TvkrU8R+3zl73PMwTmbE2llZGDgBsES6NhXwJvi8hz8loj8j
+ UIy3fP4eZLWQHkYbasolPkG5XJeAT/mDgLnIijlZ5+KJIUJt2sbzar6UVvTJaj3KXY7b
+ V0hw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690535155; x=1691139955;
+ d=1e100.net; s=20221208; t=1690535515; x=1691140315;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=AGWS6q6vYaIA9wZ092+QED3mBjscQd0r1GZzgvOuVzo=;
- b=lrYaesREpfTIFYMVJF6SgHE1q0sCkviKl4b9WBP/PV0nJqEoYN05FthBtK12M7WG2L
- psomdnoH5UmjKCQ2gHu5ZM7sz6QYtjD7uzOTsJyAAeuoJsA5RFgOoCn+n82mG/J0vM5V
- YThuC1ztRNViCfxSiSJhrQSUrWbJZqqN6WnWkyWLlZZUiMTFt7Csb7QnN9ySDIsEiUze
- 0uvBVE/3RZ5+Gr6yTuzzxqK9eK5GBTnKNTxhXM0X5GwApHeHbIS2ZdQHZvytxd07k6PH
- HyLmME1fFz2uVK1KMVwaaCIk7R718B/Oltx01moDlf3ntE7bcTmK7JEhHu0sbWCr+UkA
- Nw0g==
-X-Gm-Message-State: ABy/qLb6Cufm9lddXW6g9NExZlPU5wE+cy33S7kccWNG4fToMhz+zZOE
- k1eH5mquovpJJZ5gcoyxqUwP+t07Vk2tzd9QVKLgVdQ/Cu+9NhPIrsNsB0sFe7c9BgUy63aFUR5
- aG99unot4Y6fx4lB8hdKvd3SPCCsoWSs=
-X-Received: by 2002:a05:6808:1153:b0:3a3:b058:6c80 with SMTP id
- u19-20020a056808115300b003a3b0586c80mr2959646oiu.0.1690535154627; 
- Fri, 28 Jul 2023 02:05:54 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlFtjo4IRUffpMCoON2BT7qiy1KpgDzpBub8EIIsH7z8DEQXW8oZLf2Nls+2hKtbDr0SHeiq3azZe1P0Xlf4VJ4=
-X-Received: by 2002:a05:6808:1153:b0:3a3:b058:6c80 with SMTP id
- u19-20020a056808115300b003a3b0586c80mr2959627oiu.0.1690535154376; Fri, 28 Jul
- 2023 02:05:54 -0700 (PDT)
+ bh=GpO5xqW1rQSuk5dRZGcuWJHfIDym0MKiw4QbCXYCzOk=;
+ b=GqKvpLT6/FR2PssWSngZR0E//g0RYJKE0lcxgECZ6p05zqfk6d+v7k7aA9WkrvQHRZ
+ IJPru9pDmU2tD2WjxXRd3Ojm/8hWrJK5w5ftKpMRpIpQ2CkNxakpVWoXyjBKmqvatrfL
+ 6xOpiR8xZ5e1IxdOD0GR8v82Z3KvQyHt8ujCp7yOcTw8V9DOlZrHdsfIWeBQ/uFYwr8o
+ ZxBjGT8OszH7iKKwnSEKQvOv85S38LgK/hCuYIJNRTKxPwpjHhpcgRPf6BgnJ+qqUwbx
+ 7hnPkQvDVFFbx5sVOyWMAGYs+NpyeQ2s29/odAr53z8/nomEtUu5Wx+hL6VD/6tY9yi9
+ t6CQ==
+X-Gm-Message-State: ABy/qLao7G/cY4UhyzrNLAZ3makSl3mPLHf6OPcU8d8v4jlFibvkytG0
+ w7wFg/fAVCGUEOF5opMvObbt3eEKl+OwogwHGaTAeg==
+X-Google-Smtp-Source: APBJJlGrCxqR35LXLpRWDO85Buw7qo+5CMoOv7xQre1DqvGMO6x8MXO6LG5Saq6YpK5PVUtXMXj67AZTCNJpCEzRGE8=
+X-Received: by 2002:a05:6808:1708:b0:3a4:8a41:c69c with SMTP id
+ bc8-20020a056808170800b003a48a41c69cmr2116693oib.13.1690535515053; Fri, 28
+ Jul 2023 02:11:55 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230626073426.285659-1-aesteve@redhat.com>
- <20230626073426.285659-4-aesteve@redhat.com>
- <20230710150030-mutt-send-email-mst@kernel.org>
- <CADSE00+MYYeTto5CCROpynB2p+FjcCASp6azyxb2FVRm7VhBrw@mail.gmail.com>
- <20230717100739-mutt-send-email-mst@kernel.org>
- <CADSE00Jm45pbhvWgN8uQGjqZkEZr2UEHV2ARuqWheT-pXL-85Q@mail.gmail.com>
- <20230727105523-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20230727105523-mutt-send-email-mst@kernel.org>
-From: Albert Esteve <aesteve@redhat.com>
-Date: Fri, 28 Jul 2023 11:05:43 +0200
-Message-ID: <CADSE00LXn4-dupxjW_v+BeWKWPeiBmPGof=XBuPNGYij0+t4sA@mail.gmail.com>
-Subject: Re: [PATCH v4 3/4] vhost-user: add shared_object msg
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: qemu-devel@nongnu.org, marcandre.lureau@gmail.com, cohuck@redhat.com, 
- Fam Zheng <fam@euphon.net>, kraxel@redhat.com
-Content-Type: multipart/alternative; boundary="0000000000005b759706018863b8"
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=aesteve@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+References: <169040075240.21656.5651891935411754498-1@git.sr.ht>
+ <87y1j0lblv.fsf@pond.sub.org>
+In-Reply-To: <87y1j0lblv.fsf@pond.sub.org>
+From: Yong Huang <yong.huang@smartx.com>
+Date: Fri, 28 Jul 2023 17:11:38 +0800
+Message-ID: <CAK9dgmaWfHyPDKneJVEo2TDehZ9PX0a-YLSp2x+Z=kYeJohmOQ@mail.gmail.com>
+Subject: Re: [PATCH QEMU 1/2] qapi: Reformat and craft the migration doc
+ comments
+To: Markus Armbruster <armbru@redhat.com>
+Cc: "~hyman" <hyman@git.sr.ht>, qemu-devel@nongnu.org, 
+ Juan Quintela <quintela@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Peter Xu <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>
+Content-Type: multipart/alternative; boundary="000000000000daf76106018878dd"
+Received-SPF: none client-ip=2607:f8b0:4864:20::231;
+ envelope-from=yong.huang@smartx.com; helo=mail-oi1-x231.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,253 +88,531 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000005b759706018863b8
+--000000000000daf76106018878dd
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jul 27, 2023 at 4:57=E2=80=AFPM Michael S. Tsirkin <mst@redhat.com>=
- wrote:
+On Fri, Jul 28, 2023 at 3:49=E2=80=AFPM Markus Armbruster <armbru@redhat.co=
+m> wrote:
 
-> On Thu, Jul 27, 2023 at 04:48:30PM +0200, Albert Esteve wrote:
-> >
-> >
-> > On Mon, Jul 17, 2023 at 4:11=E2=80=AFPM Michael S. Tsirkin <mst@redhat.=
-com>
-> wrote:
-> >
-> >
-> >
-> >
-> >
-> >     On Mon, Jul 17, 2023 at 01:42:02PM +0200, Albert Esteve wrote:
-> >     > Hi Michael,
-> >     >
-> >     > True. It may be a good idea to impose a limit in the number of
-> entries
-> >     that can
-> >     > be added to the table.
-> >     > And fail to add new entries once it reaches the limit.
-> >     >
-> >     > Not sure what would be a good limit though. For example, https://
-> >     www.kernel.org
-> >     >
-> /doc/html/v4.9/media/uapi/v4l/vidioc-reqbufs.html#c.v4l2_requestbuffers
-> >     > does not limit the number of buffers that can be allocated
-> >     simultaneously, it
-> >     > is an unsigned 32-bits value.
-> >     > However, I guess 16-bits (65535) would suffice to cover the vast
-> majority
-> >     of
-> >     > usecases. Or even lower, and
-> >     > can be adjusted later, as this API gets (more) used.
-> >     >
-> >     > Does that make sense?
-> >     >
-> >     > Thanks.
-> >     > BR,
-> >     > Albert
-> >
-> >     let's not top-post please.
-> >
-> >     Maybe. Another concern is qemu running out of FDs with a bad backen=
-d.
-> >
-> >     Question: why does qemu have to maintain these UUIDs in its memory?
-> >
-> >     Can't it query the backend with UUID and get the fd back?
-> >
-> >
-> > In the end, we have one backend sharing an object with other backends.
-> > From the importer POV, it does not know who the exporter is, so it cann=
-ot
-> > go pocking other backends until it finds the one that is holding a
-> resource
-> > with
-> > the same UUID, it relies on qemu providing this information.
-> >
-> > If we do not want qemu to hold the fds, we could, for instance, store
-> > references to
-> > backends that act as exporters. And then, once an importer requests for=
- a
-> > specific
-> > object with its UUID, we ask for the fd to the exporter(s), hoping to
-> find it.
+> ~hyman <hyman@git.sr.ht> writes:
 >
+> > From: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
+> >
+> > Reformat migration doc comments to conform to current conventions
+> > as commit a937b6aa739 (qapi: Reformat doc comments to conform to
+> > current conventions).
+> >
+> > Also, craft the dirty-limit capability comment.
 >
-> right. I'd do this. and then the existing table can be regarded
-> as a cache.
+> Split into two patches?
 >
-
-It is true that it is not easy to find a limit that fits all usecases,
-and the cache proposal could result in a more maintanable
-solution in the long term.
-
-I'll explore this and post a proposal for the next version
-of the patch. It will mean having a bigger changeset, so
-I'll try to push something as clean as possible.
-
-BR,
-Albert
-
+Ok.
 
 >
-> > But the current solution sounds better fit to the shared objects virtio
-> > feature.
-> > I would be more keen to look into something like what Gerd suggested,
-> limiting
-> > the memory that we use.
+> > Signed-off-by: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
+> > ---
+> >  qapi/migration.json | 66 +++++++++++++++++++++------------------------
+> >  1 file changed, 31 insertions(+), 35 deletions(-)
 > >
-> > Nonetheless, in qemu we are storing fds, and not mmaping the dmabufs.
-> > So I think limiting the number of entries should suffice, to ensure
-> > that we do not run out of FDs, and memory.
+> > diff --git a/qapi/migration.json b/qapi/migration.json
+> > index 6b49593d2f..5d5649c885 100644
+> > --- a/qapi/migration.json
+> > +++ b/qapi/migration.json
+> > @@ -258,17 +258,17 @@
+> >  #     blocked.  Present and non-empty when migration is blocked.
+> >  #     (since 6.0)
+> >  #
+> > -# @dirty-limit-throttle-time-per-round: Maximum throttle time (in
+> microseconds) of virtual
+> > -#                                       CPUs each dirty ring full
+> round, which shows how
+> > -#                                       MigrationCapability dirty-limi=
+t
+> affects the guest
+> > -#                                       during live migration. (since
+> 8.1)
+> > -#
+> > -# @dirty-limit-ring-full-time: Estimated average dirty ring full time
+> (in microseconds)
+> > -#                              each dirty ring full round, note that
+> the value equals
+> > -#                              dirty ring memory size divided by
+> average dirty page rate
+> > -#                              of virtual CPU, which can be used to
+> observe the average
+> > -#                              memory load of virtual CPU indirectly.
+> Note that zero
+> > -#                              means guest doesn't dirty memory (since
+> 8.1)
+> > +# @dirty-limit-throttle-time-per-round: Maximum throttle time
+> > +#     (in microseconds) of virtual CPUs each dirty ring full round,
+> > +#     which shows how MigrationCapability dirty-limit affects the
 >
-> my point is you really don't know how much to limit it.
-> if there's ability to drop the entries then you
-> can do this, and cache things in memory.
+> Perhaps "for each ... round"?
 >
+> Remind me, what's a "dirty ring full round"?
 >
-> >
-> >
-> >     And then, the hash table in QEMU becomes just a cache
-> >     to speed up lookups.
-> >
-> >     --
-> >     MST
-> >
-> >
+Every time the x86 PML buffer is filled with gpa, hardware throws an
+exception and
+guest exits to kvm, then to qemu. Qemu will handle the exception with
+reaping the
+dirty ring and get the dirty page info, then enter the kvm, empty the PML
+buffer and
+enter guests again, i call this "dirty ring full round", but it seems not
+straightforward,
+please help me describe that,  thanks.
+
+
+> > +#     guest during live migration.  (Since 8.1)
+> > +#
+> > +# @dirty-limit-ring-full-time: Estimated average dirty ring full
+> > +#     time (in microseconds) each dirty ring full round. The value
+>
+> Likewise.
+>
+> > +#     equals dirty ring memory size divided by average dirty page
+>
+> "the dirty ring memory size divided by the average ..."
+>
+> > +#     rate of the virtual CPU, which can be used to observe the
+> > +#     average memory load of the virtual CPU indirectly. Note that
+> > +#     zero means guest doesn't dirty memory.  (Since 8.1)
+>
+> Two spaces between sentences for consistency.
+>
+> >  #
+> >  # Since: 0.14
+> >  ##
+> > @@ -519,15 +519,11 @@
+> >  #     are present.  'return-path' capability must be enabled to use
+> >  #     it.  (since 8.1)
+> >  #
+> > -# @dirty-limit: If enabled, migration will use the dirty-limit algo to
+> > -#               throttle down guest instead of auto-converge algo.
+> > -#               Throttle algo only works when vCPU's dirtyrate greater
+> > -#               than 'vcpu-dirty-limit', read processes in guest os
+> > -#               aren't penalized any more, so this algo can improve
+> > -#               performance of vCPU during live migration. This is an
+> > -#               optional performance feature and should not affect the
+> > -#               correctness of the existing auto-converge algo.
+> > -#               (since 8.1)
+> > +# @dirty-limit: If enabled, migration will throttle vCPUs as needed to
+> > +#     keep their dirty page rate within @vcpu-dirty-limit.  This can
+> > +#     improve responsiveness of large guests during live migration,
+> > +#     and can result in more stable read performance.  Requires KVM
+> > +#     with accelerator property "dirty-ring-size" set.  (Since 8.1)
+> >  #
+> >  # Features:
+> >  #
+> > @@ -822,17 +818,17 @@
+> >  #     Nodes are mapped to their block device name if there is one, and
+> >  #     to their node name otherwise.  (Since 5.2)
+> >  #
+> > -# @x-vcpu-dirty-limit-period: Periodic time (in milliseconds) of dirty
+> limit during
+> > -#                             live migration. Should be in the range 1
+> to 1000ms,
+> > -#                             defaults to 1000ms. (Since 8.1)
+> > +# @x-vcpu-dirty-limit-period: Periodic time (in milliseconds) of dirty
+> > +#     limit during  live migration. Should be in the range 1 to 1000ms=
+,
+>
+> Single space in "during live", and two space between sentences, please.
+>
+> > +#     defaults to 1000ms.  (Since 8.1)
+>
+> I dislike that we mix milli- and microseconds.  Too late to fix, I'm
+> afraid.
+>
+> Remind me, what't the "periodic time of dirty limit during live
+> migration"?
+>
+It is the period to calculate the dirty page rate for each vCPU.
+So Qemu will use it to compare with the dirty-limit value.
+If the period is too short, cpu overhead is increasing and if
+it is too long, the result may not be precise. So we make it
+configurable.
+
+>
+> >  #
+> >  # @vcpu-dirty-limit: Dirtyrate limit (MB/s) during live migration.
+> > -#                    Defaults to 1. (Since 8.1)
+> > +#     Defaults to 1.  (Since 8.1)
+> >  #
+> >  # Features:
+> >  #
+> >  # @unstable: Members @x-checkpoint-delay and @x-vcpu-dirty-limit-perio=
+d
+> > -#            are experimental.
+> > +#     are experimental.
+> >  #
+> >  # Since: 2.4
+> >  ##
+> > @@ -988,17 +984,17 @@
+> >  #     Nodes are mapped to their block device name if there is one, and
+> >  #     to their node name otherwise.  (Since 5.2)
+> >  #
+> > -# @x-vcpu-dirty-limit-period: Periodic time (in milliseconds) of dirty
+> limit during
+> > -#                             live migration. Should be in the range 1
+> to 1000ms,
+> > -#                             defaults to 1000ms. (Since 8.1)
+> > +# @x-vcpu-dirty-limit-period: Periodic time (in milliseconds) of dirty
+> > +#     limit during live migration. Should be in the range 1 to 1000ms,
+>
+> Two spaces between sentences.
+>
+> > +#     defaults to 1000ms.  (Since 8.1)
+> >  #
+> >  # @vcpu-dirty-limit: Dirtyrate limit (MB/s) during live migration.
+> > -#                    Defaults to 1. (Since 8.1)
+> > +#     Defaults to 1.  (Since 8.1)
+> >  #
+> >  # Features:
+> >  #
+> >  # @unstable: Members @x-checkpoint-delay and @x-vcpu-dirty-limit-perio=
+d
+> > -#            are experimental.
+> > +#     are experimental.
+> >  #
+> >  # TODO: either fuse back into MigrationParameters, or make
+> >  #     MigrationParameters members mandatory
+> > @@ -1191,17 +1187,17 @@
+> >  #     Nodes are mapped to their block device name if there is one, and
+> >  #     to their node name otherwise.  (Since 5.2)
+> >  #
+> > -# @x-vcpu-dirty-limit-period: Periodic time (in milliseconds) of dirty
+> limit during
+> > -#                             live migration. Should be in the range 1
+> to 1000ms,
+> > -#                             defaults to 1000ms. (Since 8.1)
+> > +# @x-vcpu-dirty-limit-period: Periodic time (in milliseconds) of dirty
+> > +#     limit during live migration. Should be in the range 1 to 1000ms,
+>
+> Two spaces between sentences.
+>
+> > +#     defaults to 1000ms.  (Since 8.1)
+> >  #
+> >  # @vcpu-dirty-limit: Dirtyrate limit (MB/s) during live migration.
+> > -#                    Defaults to 1. (Since 8.1)
+> > +#     Defaults to 1.  (Since 8.1)
+> >  #
+> >  # Features:
+> >  #
+> >  # @unstable: Members @x-checkpoint-delay and @x-vcpu-dirty-limit-perio=
+d
+> > -#            are experimental.
+> > +#     are experimental.
+> >  #
+> >  # Since: 2.4
+> >  ##
 >
 >
 
---0000000000005b759706018863b8
+--=20
+Best regards
+
+--000000000000daf76106018878dd
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr"><div dir=3D"ltr"><br clear=3D"all"><div><div dir=3D"ltr" c=
-lass=3D"gmail_signature"><div dir=3D"ltr"><p style=3D"color:rgb(0,0,0);font=
--family:RedHatText,sans-serif;font-weight:bold;margin:0px;padding:0px;font-=
-size:14px"><br></p></div></div></div></div><br><div class=3D"gmail_quote"><=
-div dir=3D"ltr" class=3D"gmail_attr">On Thu, Jul 27, 2023 at 4:57=E2=80=AFP=
-M Michael S. Tsirkin &lt;<a href=3D"mailto:mst@redhat.com">mst@redhat.com</=
-a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0p=
-x 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">On=
- Thu, Jul 27, 2023 at 04:48:30PM +0200, Albert Esteve wrote:<br>
-&gt; <br>
-&gt; <br>
-&gt; On Mon, Jul 17, 2023 at 4:11=E2=80=AFPM Michael S. Tsirkin &lt;<a href=
-=3D"mailto:mst@redhat.com" target=3D"_blank">mst@redhat.com</a>&gt; wrote:<=
-br>
-&gt; <br>
-&gt; <br>
-&gt; <br>
-&gt; <br>
-&gt; <br>
-&gt;=C2=A0 =C2=A0 =C2=A0On Mon, Jul 17, 2023 at 01:42:02PM +0200, Albert Es=
-teve wrote:<br>
-&gt;=C2=A0 =C2=A0 =C2=A0&gt; Hi Michael,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0&gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0&gt; True. It may be a good idea to impose a limit =
-in the number of entries<br>
-&gt;=C2=A0 =C2=A0 =C2=A0that can<br>
-&gt;=C2=A0 =C2=A0 =C2=A0&gt; be added to the table.<br>
-&gt;=C2=A0 =C2=A0 =C2=A0&gt; And fail to add new entries once it reaches th=
-e limit.<br>
-&gt;=C2=A0 =C2=A0 =C2=A0&gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0&gt; Not sure what would be a good limit though. Fo=
-r example,=C2=A0https://<br>
-&gt;=C2=A0 =C2=A0 =C2=A0<a href=3D"http://www.kernel.org" rel=3D"noreferrer=
-" target=3D"_blank">www.kernel.org</a><br>
-&gt;=C2=A0 =C2=A0 =C2=A0&gt; /doc/html/v4.9/media/uapi/v4l/vidioc-reqbufs.h=
-tml#c.v4l2_requestbuffers<br>
-&gt;=C2=A0 =C2=A0 =C2=A0&gt; does not limit the number of buffers that can =
-be allocated<br>
-&gt;=C2=A0 =C2=A0 =C2=A0simultaneously, it<br>
-&gt;=C2=A0 =C2=A0 =C2=A0&gt; is an unsigned 32-bits value.<br>
-&gt;=C2=A0 =C2=A0 =C2=A0&gt; However, I guess 16-bits (65535) would suffice=
- to cover the vast majority<br>
-&gt;=C2=A0 =C2=A0 =C2=A0of<br>
-&gt;=C2=A0 =C2=A0 =C2=A0&gt; usecases. Or even lower, and<br>
-&gt;=C2=A0 =C2=A0 =C2=A0&gt; can be adjusted later, as this API gets (more)=
- used.<br>
-&gt;=C2=A0 =C2=A0 =C2=A0&gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0&gt; Does that make sense?<br>
-&gt;=C2=A0 =C2=A0 =C2=A0&gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0&gt; Thanks.<br>
-&gt;=C2=A0 =C2=A0 =C2=A0&gt; BR,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0&gt; Albert<br>
-&gt; <br>
-&gt;=C2=A0 =C2=A0 =C2=A0let&#39;s not top-post please.<br>
-&gt; <br>
-&gt;=C2=A0 =C2=A0 =C2=A0Maybe. Another concern is qemu running out of FDs w=
-ith a bad backend.<br>
-&gt; <br>
-&gt;=C2=A0 =C2=A0 =C2=A0Question: why does qemu have to maintain these UUID=
-s in its memory?<br>
-&gt; <br>
-&gt;=C2=A0 =C2=A0 =C2=A0Can&#39;t it query the backend with UUID and get th=
-e fd back?<br>
-&gt; <br>
-&gt; <br>
-&gt; In the end, we have one backend sharing an object with other backends.=
+<div dir=3D"ltr"><div dir=3D"ltr"><div class=3D"gmail_default" style=3D"fon=
+t-family:&quot;comic sans ms&quot;,sans-serif"><br></div></div><br><div cla=
+ss=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Fri, Jul 28, 20=
+23 at 3:49=E2=80=AFPM Markus Armbruster &lt;<a href=3D"mailto:armbru@redhat=
+.com">armbru@redhat.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_=
+quote" style=3D"margin:0px 0px 0px 0.8ex;border-left-width:1px;border-left-=
+style:solid;border-left-color:rgb(204,204,204);padding-left:1ex">~hyman &lt=
+;<a href=3D"mailto:hyman@git.sr.ht" target=3D"_blank">hyman@git.sr.ht</a>&g=
+t; writes:<br>
 <br>
-&gt; From the importer POV, it does not know who the exporter is, so it can=
-not<br>
-&gt; go pocking other backends until it finds the one that is holding a res=
-ource<br>
-&gt; with<br>
-&gt; the same UUID, it relies on qemu providing this information.<br>
-&gt; <br>
-&gt; If we do not want qemu to hold the fds, we could, for instance, store<=
-br>
-&gt; references to<br>
-&gt; backends that act as exporters. And then, once an importer requests fo=
-r a<br>
-&gt; specific<br>
-&gt; object with its UUID, we ask for the fd to the exporter(s), hoping to =
-find it.<br>
+&gt; From: Hyman Huang(=E9=BB=84=E5=8B=87) &lt;<a href=3D"mailto:yong.huang=
+@smartx.com" target=3D"_blank">yong.huang@smartx.com</a>&gt;<br>
+&gt;<br>
+&gt; Reformat migration doc comments to conform to current conventions<br>
+&gt; as commit a937b6aa739 (qapi: Reformat doc comments to conform to<br>
+&gt; current conventions).<br>
+&gt;<br>
+&gt; Also, craft the dirty-limit capability comment.<br>
 <br>
+Split into two patches?<br></blockquote><div class=3D"gmail_default" style=
+=3D"font-family:&quot;comic sans ms&quot;,sans-serif">Ok.</div><blockquote =
+class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left-width:1=
+px;border-left-style:solid;border-left-color:rgb(204,204,204);padding-left:=
+1ex">
 <br>
-right. I&#39;d do this. and then the existing table can be regarded<br>
-as a cache.<br></blockquote><div><br></div><div>It is true that it is not e=
-asy to find a limit that fits all usecases,</div><div>and the cache proposa=
-l could result in a more maintanable</div><div>solution in the long term.</=
-div><div><br></div><div>I&#39;ll explore this and post a proposal for the n=
-ext version</div><div>of the patch. It will mean having a bigger changeset,=
- so</div><div>I&#39;ll try to push something as clean as possible.</div><di=
-v><br></div><div>BR,</div><div>Albert</div><div>=C2=A0</div><blockquote cla=
-ss=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid =
-rgb(204,204,204);padding-left:1ex">
+&gt; Signed-off-by: Hyman Huang(=E9=BB=84=E5=8B=87) &lt;<a href=3D"mailto:y=
+ong.huang@smartx.com" target=3D"_blank">yong.huang@smartx.com</a>&gt;<br>
+&gt; ---<br>
+&gt;=C2=A0 qapi/migration.json | 66 +++++++++++++++++++++------------------=
+------<br>
+&gt;=C2=A0 1 file changed, 31 insertions(+), 35 deletions(-)<br>
+&gt;<br>
+&gt; diff --git a/qapi/migration.json b/qapi/migration.json<br>
+&gt; index 6b49593d2f..5d5649c885 100644<br>
+&gt; --- a/qapi/migration.json<br>
+&gt; +++ b/qapi/migration.json<br>
+&gt; @@ -258,17 +258,17 @@<br>
+&gt;=C2=A0 #=C2=A0 =C2=A0 =C2=A0blocked.=C2=A0 Present and non-empty when m=
+igration is blocked.<br>
+&gt;=C2=A0 #=C2=A0 =C2=A0 =C2=A0(since 6.0)<br>
+&gt;=C2=A0 #<br>
+&gt; -# @dirty-limit-throttle-time-per-round: Maximum throttle time (in mic=
+roseconds) of virtual<br>
+&gt; -#=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0CP=
+Us each dirty ring full round, which shows how<br>
+&gt; -#=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0Mi=
+grationCapability dirty-limit affects the guest<br>
+&gt; -#=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0du=
+ring live migration. (since 8.1)<br>
+&gt; -#<br>
+&gt; -# @dirty-limit-ring-full-time: Estimated average dirty ring full time=
+ (in microseconds)<br>
+&gt; -#=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 each dirty ring full round, note tha=
+t the value equals<br>
+&gt; -#=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 dirty ring memory size divided by av=
+erage dirty page rate<br>
+&gt; -#=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 of virtual CPU, which can be used to=
+ observe the average<br>
+&gt; -#=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 memory load of virtual CPU indirectl=
+y. Note that zero<br>
+&gt; -#=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 means guest doesn&#39;t dirty memory=
+ (since 8.1)<br>
+&gt; +# @dirty-limit-throttle-time-per-round: Maximum throttle time<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0(in microseconds) of virtual CPUs each dirty rin=
+g full round,<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0which shows how MigrationCapability dirty-limit =
+affects the<br>
 <br>
-&gt; But the current solution sounds better fit to the shared objects virti=
+Perhaps &quot;for each ... round&quot;?<br>
+<br>
+Remind me, what&#39;s a &quot;dirty ring full round&quot;?<br></blockquote>=
+<div class=3D"gmail_default" style=3D"font-family:&quot;comic sans ms&quot;=
+,sans-serif">Every time the x86 PML buffer is filled with gpa, hardware thr=
+ows an exception and</div><div class=3D"gmail_default" style=3D"font-family=
+:&quot;comic sans ms&quot;,sans-serif">guest exits to kvm, then to qemu. Qe=
+mu will handle the exception with reaping the=C2=A0</div><div class=3D"gmai=
+l_default" style=3D"font-family:&quot;comic sans ms&quot;,sans-serif">dirty=
+ ring and get the dirty page info, then enter the kvm, empty the PML buffer=
+ and</div><div class=3D"gmail_default" style=3D"font-family:&quot;comic san=
+s ms&quot;,sans-serif">enter guests again, i call this &quot;dirty ring ful=
+l round&quot;, but it seems not straightforward,</div><div class=3D"gmail_d=
+efault" style=3D"font-family:&quot;comic sans ms&quot;,sans-serif">please h=
+elp me describe that, =C2=A0thanks.</div><div class=3D"gmail_default" style=
+=3D"font-family:&quot;comic sans ms&quot;,sans-serif"><br></div><blockquote=
+ class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left-width:=
+1px;border-left-style:solid;border-left-color:rgb(204,204,204);padding-left=
+:1ex">
+<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0guest during live migration.=C2=A0 (Since 8.1)<b=
+r>
+&gt; +#<br>
+&gt; +# @dirty-limit-ring-full-time: Estimated average dirty ring full<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0time (in microseconds) each dirty ring full roun=
+d. The value<br>
+<br>
+Likewise.<br>
+<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0equals dirty ring memory size divided by average=
+ dirty page<br>
+<br>
+&quot;the dirty ring memory size divided by the average ...&quot;<br>
+<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0rate of the virtual CPU, which can be used to ob=
+serve the<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0average memory load of the virtual CPU indirectl=
+y. Note that<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0zero means guest doesn&#39;t dirty memory.=C2=A0=
+ (Since 8.1)<br>
+<br>
+Two spaces between sentences for consistency.<br>
+<br>
+&gt;=C2=A0 #<br>
+&gt;=C2=A0 # Since: 0.14<br>
+&gt;=C2=A0 ##<br>
+&gt; @@ -519,15 +519,11 @@<br>
+&gt;=C2=A0 #=C2=A0 =C2=A0 =C2=A0are present.=C2=A0 &#39;return-path&#39; ca=
+pability must be enabled to use<br>
+&gt;=C2=A0 #=C2=A0 =C2=A0 =C2=A0it.=C2=A0 (since 8.1)<br>
+&gt;=C2=A0 #<br>
+&gt; -# @dirty-limit: If enabled, migration will use the dirty-limit algo t=
 o<br>
-&gt; feature.<br>
-&gt; I would be more keen to look into something like what Gerd suggested, =
-limiting<br>
-&gt; the memory that we use.=C2=A0<br>
-&gt; <br>
-&gt; Nonetheless, in qemu we are storing fds, and not mmaping the dmabufs.<=
-br>
-&gt; So I think limiting the number of entries should suffice, to ensure<br=
+&gt; -#=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0throttle down=
+ guest instead of auto-converge algo.<br>
+&gt; -#=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0Throttle algo=
+ only works when vCPU&#39;s dirtyrate greater<br>
+&gt; -#=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0than &#39;vcp=
+u-dirty-limit&#39;, read processes in guest os<br>
+&gt; -#=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0aren&#39;t pe=
+nalized any more, so this algo can improve<br>
+&gt; -#=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0performance o=
+f vCPU during live migration. This is an<br>
+&gt; -#=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0optional perf=
+ormance feature and should not affect the<br>
+&gt; -#=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0correctness o=
+f the existing auto-converge algo.<br>
+&gt; -#=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0(since 8.1)<b=
+r>
+&gt; +# @dirty-limit: If enabled, migration will throttle vCPUs as needed t=
+o<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0keep their dirty page rate within @vcpu-dirty-li=
+mit.=C2=A0 This can<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0improve responsiveness of large guests during li=
+ve migration,<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0and can result in more stable read performance.=
+=C2=A0 Requires KVM<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0with accelerator property &quot;dirty-ring-size&=
+quot; set.=C2=A0 (Since 8.1)<br>
+&gt;=C2=A0 #<br>
+&gt;=C2=A0 # Features:<br>
+&gt;=C2=A0 #<br>
+&gt; @@ -822,17 +818,17 @@<br>
+&gt;=C2=A0 #=C2=A0 =C2=A0 =C2=A0Nodes are mapped to their block device name=
+ if there is one, and<br>
+&gt;=C2=A0 #=C2=A0 =C2=A0 =C2=A0to their node name otherwise.=C2=A0 (Since =
+5.2)<br>
+&gt;=C2=A0 #<br>
+&gt; -# @x-vcpu-dirty-limit-period: Periodic time (in milliseconds) of dirt=
+y limit during<br>
+&gt; -#=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0live migration. Should be in the rang=
+e 1 to 1000ms,<br>
+&gt; -#=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0defaults to 1000ms. (Since 8.1)<br>
+&gt; +# @x-vcpu-dirty-limit-period: Periodic time (in milliseconds) of dirt=
+y<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0limit during=C2=A0 live migration. Should be in =
+the range 1 to 1000ms,<br>
+<br>
+Single space in &quot;during live&quot;, and two space between sentences, p=
+lease.<br>
+<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0defaults to 1000ms.=C2=A0 (Since 8.1)<br>
+<br>
+I dislike that we mix milli- and microseconds.=C2=A0 Too late to fix, I&#39=
+;m<br>
+afraid.<br>
+<br>
+Remind me, what&#39;t the &quot;periodic time of dirty limit during live<br=
 >
-&gt; that we do not run out of FDs, and memory.<br>
+migration&quot;?<br></blockquote><div class=3D"gmail_default" style=3D"font=
+-family:&quot;comic sans ms&quot;,sans-serif">It is the period to calculate=
+ the dirty page rate for each vCPU.</div><div class=3D"gmail_default" style=
+=3D"font-family:&quot;comic sans ms&quot;,sans-serif">So Qemu will use it t=
+o compare with the dirty-limit value.</div><div class=3D"gmail_default" sty=
+le=3D"font-family:&quot;comic sans ms&quot;,sans-serif">If the period is to=
+o short, cpu overhead is increasing and if</div><div class=3D"gmail_default=
+" style=3D"font-family:&quot;comic sans ms&quot;,sans-serif">it is too long=
+, the result may not be precise. So we make it</div><div class=3D"gmail_def=
+ault" style=3D"font-family:&quot;comic sans ms&quot;,sans-serif">configurab=
+le.=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0p=
+x 0.8ex;border-left-width:1px;border-left-style:solid;border-left-color:rgb=
+(204,204,204);padding-left:1ex">
 <br>
-my point is you really don&#39;t know how much to limit it.<br>
-if there&#39;s ability to drop the entries then you<br>
-can do this, and cache things in memory.<br>
+&gt;=C2=A0 #<br>
+&gt;=C2=A0 # @vcpu-dirty-limit: Dirtyrate limit (MB/s) during live migratio=
+n.<br>
+&gt; -#=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 Defaults to 1. (Since 8.1)<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0Defaults to 1.=C2=A0 (Since 8.1)<br>
+&gt;=C2=A0 #<br>
+&gt;=C2=A0 # Features:<br>
+&gt;=C2=A0 #<br>
+&gt;=C2=A0 # @unstable: Members @x-checkpoint-delay and @x-vcpu-dirty-limit=
+-period<br>
+&gt; -#=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 are experimental.<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0are experimental.<br>
+&gt;=C2=A0 #<br>
+&gt;=C2=A0 # Since: 2.4<br>
+&gt;=C2=A0 ##<br>
+&gt; @@ -988,17 +984,17 @@<br>
+&gt;=C2=A0 #=C2=A0 =C2=A0 =C2=A0Nodes are mapped to their block device name=
+ if there is one, and<br>
+&gt;=C2=A0 #=C2=A0 =C2=A0 =C2=A0to their node name otherwise.=C2=A0 (Since =
+5.2)<br>
+&gt;=C2=A0 #<br>
+&gt; -# @x-vcpu-dirty-limit-period: Periodic time (in milliseconds) of dirt=
+y limit during<br>
+&gt; -#=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0live migration. Should be in the rang=
+e 1 to 1000ms,<br>
+&gt; -#=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0defaults to 1000ms. (Since 8.1)<br>
+&gt; +# @x-vcpu-dirty-limit-period: Periodic time (in milliseconds) of dirt=
+y<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0limit during live migration. Should be in the ra=
+nge 1 to 1000ms,<br>
 <br>
+Two spaces between sentences.<br>
 <br>
-&gt; <br>
-&gt; <br>
-&gt;=C2=A0 =C2=A0 =C2=A0And then, the hash table in QEMU becomes just a cac=
-he<br>
-&gt;=C2=A0 =C2=A0 =C2=A0to speed up lookups.<br>
-&gt; <br>
-&gt;=C2=A0 =C2=A0 =C2=A0--<br>
-&gt;=C2=A0 =C2=A0 =C2=A0MST<br>
-&gt; <br>
-&gt; <br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0defaults to 1000ms.=C2=A0 (Since 8.1)<br>
+&gt;=C2=A0 #<br>
+&gt;=C2=A0 # @vcpu-dirty-limit: Dirtyrate limit (MB/s) during live migratio=
+n.<br>
+&gt; -#=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 Defaults to 1. (Since 8.1)<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0Defaults to 1.=C2=A0 (Since 8.1)<br>
+&gt;=C2=A0 #<br>
+&gt;=C2=A0 # Features:<br>
+&gt;=C2=A0 #<br>
+&gt;=C2=A0 # @unstable: Members @x-checkpoint-delay and @x-vcpu-dirty-limit=
+-period<br>
+&gt; -#=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 are experimental.<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0are experimental.<br>
+&gt;=C2=A0 #<br>
+&gt;=C2=A0 # TODO: either fuse back into MigrationParameters, or make<br>
+&gt;=C2=A0 #=C2=A0 =C2=A0 =C2=A0MigrationParameters members mandatory<br>
+&gt; @@ -1191,17 +1187,17 @@<br>
+&gt;=C2=A0 #=C2=A0 =C2=A0 =C2=A0Nodes are mapped to their block device name=
+ if there is one, and<br>
+&gt;=C2=A0 #=C2=A0 =C2=A0 =C2=A0to their node name otherwise.=C2=A0 (Since =
+5.2)<br>
+&gt;=C2=A0 #<br>
+&gt; -# @x-vcpu-dirty-limit-period: Periodic time (in milliseconds) of dirt=
+y limit during<br>
+&gt; -#=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0live migration. Should be in the rang=
+e 1 to 1000ms,<br>
+&gt; -#=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0defaults to 1000ms. (Since 8.1)<br>
+&gt; +# @x-vcpu-dirty-limit-period: Periodic time (in milliseconds) of dirt=
+y<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0limit during live migration. Should be in the ra=
+nge 1 to 1000ms,<br>
 <br>
-</blockquote></div></div>
+Two spaces between sentences.<br>
+<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0defaults to 1000ms.=C2=A0 (Since 8.1)<br>
+&gt;=C2=A0 #<br>
+&gt;=C2=A0 # @vcpu-dirty-limit: Dirtyrate limit (MB/s) during live migratio=
+n.<br>
+&gt; -#=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 Defaults to 1. (Since 8.1)<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0Defaults to 1.=C2=A0 (Since 8.1)<br>
+&gt;=C2=A0 #<br>
+&gt;=C2=A0 # Features:<br>
+&gt;=C2=A0 #<br>
+&gt;=C2=A0 # @unstable: Members @x-checkpoint-delay and @x-vcpu-dirty-limit=
+-period<br>
+&gt; -#=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 are experimental.<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0are experimental.<br>
+&gt;=C2=A0 #<br>
+&gt;=C2=A0 # Since: 2.4<br>
+&gt;=C2=A0 ##<br>
+<br>
+</blockquote></div><br clear=3D"all"><div><br></div><span class=3D"gmail_si=
+gnature_prefix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature"><d=
+iv dir=3D"ltr"><font face=3D"comic sans ms, sans-serif">Best regards</font>=
+</div></div></div>
 
---0000000000005b759706018863b8--
-
+--000000000000daf76106018878dd--
 
