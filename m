@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B973C76806D
-	for <lists+qemu-devel@lfdr.de>; Sat, 29 Jul 2023 17:57:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F26B9768068
+	for <lists+qemu-devel@lfdr.de>; Sat, 29 Jul 2023 17:46:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qPlqa-0002tU-AJ; Sat, 29 Jul 2023 11:27:12 -0400
+	id 1qPlvw-0003Kj-Fl; Sat, 29 Jul 2023 11:32:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qPlqY-0002t3-1O
- for qemu-devel@nongnu.org; Sat, 29 Jul 2023 11:27:10 -0400
-Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ id 1qPlvu-0003Jo-6M
+ for qemu-devel@nongnu.org; Sat, 29 Jul 2023 11:32:42 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qPlqU-0005vM-Qs
- for qemu-devel@nongnu.org; Sat, 29 Jul 2023 11:27:09 -0400
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-5221e2e69bdso3950303a12.2
- for <qemu-devel@nongnu.org>; Sat, 29 Jul 2023 08:27:05 -0700 (PDT)
+ id 1qPlvr-000859-Kx
+ for qemu-devel@nongnu.org; Sat, 29 Jul 2023 11:32:41 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-3fb4146e8deso35682375e9.0
+ for <qemu-devel@nongnu.org>; Sat, 29 Jul 2023 08:32:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690644424; x=1691249224;
+ d=linaro.org; s=google; t=1690644758; x=1691249558;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=e3xliaUbV8HgFjq433LYBKj5J0JmxGcmuARLnJ7CKP8=;
- b=XyK5dvRAkTz16Ao6+Y4XYubCCZsD1GYtkNslTKz0xi/L9zWe/O8puoriAKLmDPGHbZ
- Gs1gbG34PDrJyvLNDdZ0B1k8725NwdLZNQAHxtFDWm4V8pRw9jajjCYq8OJYWkE5FfF9
- H1BEUdSj8Wqf7Afx/Tjahia11jDR+eoeqRqpTtSm3oEBGMh9KZNxAS66D7CwDlg6OIQb
- 6kGaRtXix0PoCIbUOgwg97MU4zG0yFby4GJLA6MgSyYFu5KSrtUOzsZMDU1AHiUEeOtK
- QtzFAxvU3wBERwnZoev7Po5qqh/DSkXZH411/6tVoUqOGAOMCDX8ao1zpR/XZUNVVf/3
- os/Q==
+ bh=zFSEOV+/KCHbaF2/scRJkd3cPshqRAc2e7Z/Z+qxErM=;
+ b=CpsJqyWGVqnC9Trucnn1BfQlbKPTY47CpaMPxOy8ea8Sg8IUMvfEVB/8KwvFEPoU7j
+ XcPhGxKe7zVEehqdCEyWRE3B5OklymmLFIIoqkhobryMDx21goT1GvvyIvQITu2S9K6i
+ Y/uH1hJHUJqRcTmDY7EN3ZJkdat2zQcz6TDZMf+U1H8ysQZJxeGz6GWKTRSHhEg7G2iu
+ /VIaQOP9j5XXLYRBTCTTpRjyiuZN7emwoEnIDZTungtwGdFlsKk6tDyXDmpWL2SDWan4
+ WhUoavLia0xg3A9j1jYT6e96X3XyDmJYvibMjYr/v8/2zbyJmSs9NZdsl5+do/yA0J0R
+ sHZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690644425; x=1691249225;
+ d=1e100.net; s=20221208; t=1690644758; x=1691249558;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=e3xliaUbV8HgFjq433LYBKj5J0JmxGcmuARLnJ7CKP8=;
- b=gySP8oaXXlqF8Iayw+76xXcmm2cy173wqrwdq2R4qUNKrmQuqdqqjjhxXxpAUj4wOW
- mghnh9bkfeNoDDgv/M/y8NIgImGi4rMEwII4QMeMx63oZVpztlA9J2uJN6JXXrD04VQj
- ccizQFyabI73X2H9YET0RDHlOgsGtV2I6b+/U7K+cCHQcWAtimtxakKgbd7UweTwcCE0
- tGhhp4bINj25VyCzdOGm3X5HtYVCVlhwalavUm9G9g4LaD+q4Zx6h8fCi8626IMNG7xU
- OHNVFyg2Fv737R+40S7RRRi2azu0bI8AR7CiZF5UHazUkYV8QGz0rj1kquPseJdLszj5
- XrTg==
-X-Gm-Message-State: ABy/qLZkuRlKbQfKW9eEW0GZSLRzw762IXgebnpQSHhN3hDjUGj/GqGG
- dx3tiLQPzmlVdyGVZ2VbvEu0h9LspHMYKFx9l++xug==
-X-Google-Smtp-Source: APBJJlHqI/khkTXCyh74n3Fc87CGK7ZbQWtGSxITaK6rCjewqXm1U7wPb/GP9jFziJumfLLvEtkMGcFsXvU45Ck075g=
-X-Received: by 2002:a05:6402:1055:b0:522:4d1b:3acf with SMTP id
- e21-20020a056402105500b005224d1b3acfmr4397060edu.37.1690644424587; Sat, 29
- Jul 2023 08:27:04 -0700 (PDT)
+ bh=zFSEOV+/KCHbaF2/scRJkd3cPshqRAc2e7Z/Z+qxErM=;
+ b=FlGaL3NeWdJd6yW5T9sOK784fKWLgiX1qmjjGSS77ApeLUdoNPx+YeBvMN9prmG8Wa
+ yLIfj0G4fOtGw+BybEe1Ij/gA7Q+StHS9BvLM+WZZxnrT4UO5Vnop2YYbd18dw2iwenl
+ 4nfQBFSfgWouFLYHQH56IHfv65gyLY5Bb9Vk3u2GMwAG+X4h6PlmZBcBckEAEs91xieq
+ HFhpZqCUhg90hmQ9f6g6OR6gQ9j8CppZ55gv/k1buMJ24loopj0sWVi20hMEHU0lPouB
+ wRRgNATGOZL4Ijy2m/EhPho0EJ4XwB7GlPvXyd6A6tihUcCQEXYnsvuHdENlAxt8CqP3
+ wIQw==
+X-Gm-Message-State: ABy/qLYtf8WRrS0FGow2PNJ/qd+47ahVfn3GYVPIE3ySMheizFJPsZ5v
+ PNmBRgwkcNCp64zRIO0r29txBvwiOgehTMM77ARK8g==
+X-Google-Smtp-Source: APBJJlFSFS6fgkDPSs6V2VQIjDu1/itJ7No0ThVx4F6Zvby34TXMlErAPZgl8GyBiRBbxbOyvdJG0DYomQ+Rxc3buos=
+X-Received: by 2002:a5d:458a:0:b0:313:e520:936f with SMTP id
+ p10-20020a5d458a000000b00313e520936fmr4847388wrq.17.1690644757984; Sat, 29
+ Jul 2023 08:32:37 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230728195646.168997-1-danielhb413@gmail.com>
- <20230728195646.168997-2-danielhb413@gmail.com>
-In-Reply-To: <20230728195646.168997-2-danielhb413@gmail.com>
+ <20230728195646.168997-3-danielhb413@gmail.com>
+In-Reply-To: <20230728195646.168997-3-danielhb413@gmail.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Sat, 29 Jul 2023 16:26:53 +0100
-Message-ID: <CAFEAcA8MJ8pPwgQMLJZbwVkBLv4BBzLYTGmFw8cOErUo_Z=TOA@mail.gmail.com>
-Subject: Re: [PATCH for-8.2 1/2] hw/ppc: use g_free() in
- spapr_tce_table_post_load()
+Date: Sat, 29 Jul 2023 16:32:27 +0100
+Message-ID: <CAFEAcA9vsv4BpSfFb6=W=MFjGdR283KEGFN13Sfy=TxtcjT4hA@mail.gmail.com>
+Subject: Re: [PATCH for-8.2 2/2] target/ppc: use g_free() in
+ test_opcode_table()
 To: Daniel Henrique Barboza <danielhb413@gmail.com>
 Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, qemu-trivial@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -86,39 +86,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 28 Jul 2023 at 21:15, Daniel Henrique Barboza
+On Fri, 28 Jul 2023 at 21:47, Daniel Henrique Barboza
 <danielhb413@gmail.com> wrote:
 >
-> tcet->mig_table is memcpy'ed from tcet->table,
-
-The pointer is just copied, not memcpy'd.
-
-> which in turn is created
-> via spapr_tce_alloc_table().
-
-You could mention that this uses g_new0() for the allocation.
-
-> Use g_free() instead of free() to deallocate it.
+> Use g_free(table[i]) instead of free(table[i]) to comply with QEMU low
+> level memory management guidelines.
 >
 > Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
 > ---
->  hw/ppc/spapr_iommu.c | 2 +-
+>  target/ppc/translate.c | 2 +-
 >  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/hw/ppc/spapr_iommu.c b/hw/ppc/spapr_iommu.c
-> index 63e34d457a..5e3973fc5f 100644
-> --- a/hw/ppc/spapr_iommu.c
-> +++ b/hw/ppc/spapr_iommu.c
-> @@ -248,7 +248,7 @@ static int spapr_tce_table_post_load(void *opaque, int version_id)
->          memcpy(tcet->table, tcet->mig_table,
->                 tcet->nb_table * sizeof(tcet->table[0]));
->
-> -        free(tcet->mig_table);
-> +        g_free(tcet->mig_table);
->          tcet->mig_table = NULL;
->      }
+> diff --git a/target/ppc/translate.c b/target/ppc/translate.c
+> index e6a0709066..d90535266e 100644
+> --- a/target/ppc/translate.c
+> +++ b/target/ppc/translate.c
+> @@ -7129,7 +7129,7 @@ static int test_opcode_table(opc_handler_t **table, int len)
+>                  tmp = test_opcode_table(ind_table(table[i]),
+>                      PPC_CPU_INDIRECT_OPCODES_LEN);
+>                  if (tmp == 0) {
+> -                    free(table[i]);
+> +                    g_free(table[i]);
+>                      table[i] = &invalid_handler;
+>                  } else {
+>                      count++;
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Where is the allocation that this memory is free()ing? I
+think it is the g_new() in create_new_table(), but the code
+is a little complicated for me to understand...
 
 thanks
 -- PMM
