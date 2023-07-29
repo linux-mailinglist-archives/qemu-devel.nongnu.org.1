@@ -2,48 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C49C767BEF
-	for <lists+qemu-devel@lfdr.de>; Sat, 29 Jul 2023 05:38:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23AAA767C4A
+	for <lists+qemu-devel@lfdr.de>; Sat, 29 Jul 2023 07:16:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qPaSF-0002BR-W2; Fri, 28 Jul 2023 23:17:20 -0400
+	id 1qPbsp-0005sx-33; Sat, 29 Jul 2023 00:48:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
- id 1qPaSB-0002Ai-KE; Fri, 28 Jul 2023 23:17:15 -0400
-Received: from out30-97.freemail.mail.aliyun.com ([115.124.30.97])
+ (Exim 4.90_1) (envelope-from <SRS0=69fR=DP=kaod.org=clg@ozlabs.org>)
+ id 1qPbsm-0005sk-4g; Sat, 29 Jul 2023 00:48:48 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
- id 1qPaS9-0000Dz-8L; Fri, 28 Jul 2023 23:17:15 -0400
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R131e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=ay29a033018046060;
- MF=zhiwei_liu@linux.alibaba.com; NM=1; PH=DS; RN=9; SR=0;
- TI=SMTPD_---0VoS1816_1690600613; 
-Received: from L-PF1D6DP4-1208.hz.ali.com(mailfrom:zhiwei_liu@linux.alibaba.com
- fp:SMTPD_---0VoS1816_1690600613) by smtp.aliyun-inc.com;
- Sat, 29 Jul 2023 11:16:54 +0800
-From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-To: qemu-devel@nongnu.org
-Cc: Alistair.Francis@wdc.com, palmer@dabbelt.com, bin.meng@windriver.com,
- liweiwei@iscas.ac.cn, dbarboza@ventanamicro.com, qemu-riscv@nongnu.org,
- richard.henderson@linaro.org, LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-Subject: [PATCH] target/riscv: Fix page_check_range use in fault-only-first
-Date: Sat, 29 Jul 2023 11:16:18 +0800
-Message-Id: <20230729031618.821-1-zhiwei_liu@linux.alibaba.com>
-X-Mailer: git-send-email 2.23.0
+ (Exim 4.90_1) (envelope-from <SRS0=69fR=DP=kaod.org=clg@ozlabs.org>)
+ id 1qPbsk-0006vz-7T; Sat, 29 Jul 2023 00:48:47 -0400
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4RCX826P6rz4wy6;
+ Sat, 29 Jul 2023 14:48:34 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4RCX805VMpz4wxR;
+ Sat, 29 Jul 2023 14:48:32 +1000 (AEST)
+Message-ID: <26613c0a-6c5d-7a90-b6b2-db97e8a6e059@kaod.org>
+Date: Sat, 29 Jul 2023 06:48:28 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] target/ppc: Disable goto_tb with architectural singlestep
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, npiggin@gmail.com, groug@kaod.org,
+ david@gibson.dropbear.id.au
+References: <20230728173520.486025-1-richard.henderson@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20230728173520.486025-1-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=115.124.30.97;
- envelope-from=zhiwei_liu@linux.alibaba.com;
- helo=out30-97.freemail.mail.aliyun.com
-X-Spam_score_int: -98
-X-Spam_score: -9.9
-X-Spam_bar: ---------
-X-Spam_report: (-9.9 / 5.0 requ) BAYES_00=-1.9, ENV_AND_HDR_SPF_MATCH=-0.5,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01, UNPARSEABLE_RELAY=0.001,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=69fR=DP=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -40
+X-Spam_score: -4.1
+X-Spam_bar: ----
+X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.094,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -59,30 +66,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit bef6f008b98(accel/tcg: Return bool from page_check_range) converts
-integer return value to bool type. However, it wrongly converted the use
-of the API in riscv fault-only-first, where page_check_range < = 0, should
-be converted to !page_check_range.
+On 7/28/23 19:35, Richard Henderson wrote:
+> The change to use translator_use_goto_tb went too far, as the
+> CF_SINGLE_STEP flag managed by the translator only handles
+> gdb single stepping and not the architectural single stepping
+> modeled in DisasContext.singlestep_enabled.
+> 
+> Fixes: 6e9cc373ec5 ("target/ppc: Use translator_use_goto_tb")
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1795
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
-Signed-off-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
----
- target/riscv/vector_helper.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
-index 4d06754826..a059ef3900 100644
---- a/target/riscv/vector_helper.c
-+++ b/target/riscv/vector_helper.c
-@@ -583,7 +583,7 @@ vext_ldff(void *vd, void *v0, target_ulong base,
-                                          cpu_mmu_index(env, false));
-                 if (host) {
- #ifdef CONFIG_USER_ONLY
--                    if (page_check_range(addr, offset, PAGE_READ)) {
-+                    if (!page_check_range(addr, offset, PAGE_READ)) {
-                         vl = i;
-                         goto ProbeSuccess;
-                     }
--- 
-2.17.1
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
+
+Thanks,
+
+C.
+
+
+> ---
+>   target/ppc/translate.c | 3 +++
+>   1 file changed, 3 insertions(+)
+> 
+> diff --git a/target/ppc/translate.c b/target/ppc/translate.c
+> index e6a0709066..74796ec7ba 100644
+> --- a/target/ppc/translate.c
+> +++ b/target/ppc/translate.c
+> @@ -4175,6 +4175,9 @@ static void pmu_count_insns(DisasContext *ctx)
+>   
+>   static inline bool use_goto_tb(DisasContext *ctx, target_ulong dest)
+>   {
+> +    if (unlikely(ctx->singlestep_enabled)) {
+> +        return false;
+> +    }
+>       return translator_use_goto_tb(&ctx->base, dest);
+>   }
+>   
 
 
