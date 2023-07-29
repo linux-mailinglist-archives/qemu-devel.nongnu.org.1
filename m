@@ -2,73 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B4EC768067
-	for <lists+qemu-devel@lfdr.de>; Sat, 29 Jul 2023 17:45:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50403768210
+	for <lists+qemu-devel@lfdr.de>; Sat, 29 Jul 2023 23:58:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qPlzE-0005kR-Hj; Sat, 29 Jul 2023 11:36:08 -0400
+	id 1qPrBb-0000We-7P; Sat, 29 Jul 2023 17:09:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qPlzC-0005di-Pc
- for qemu-devel@nongnu.org; Sat, 29 Jul 2023 11:36:06 -0400
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ (Exim 4.90_1) (envelope-from <shorne@gmail.com>) id 1qPrBZ-0000WV-QI
+ for qemu-devel@nongnu.org; Sat, 29 Jul 2023 17:09:13 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qPlzB-0000R2-Bm
- for qemu-devel@nongnu.org; Sat, 29 Jul 2023 11:36:06 -0400
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-52256241c66so6417283a12.1
- for <qemu-devel@nongnu.org>; Sat, 29 Jul 2023 08:36:04 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <shorne@gmail.com>) id 1qPrBY-0008Vu-9y
+ for qemu-devel@nongnu.org; Sat, 29 Jul 2023 17:09:13 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-3fbea14706eso32574055e9.2
+ for <qemu-devel@nongnu.org>; Sat, 29 Jul 2023 14:09:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690644963; x=1691249763;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=ve3lKj8r/zaJeKPeEgv98Ye5+Ok4TppUCldJHeR2sO0=;
- b=asl+adFbyFdVWXoLgN/T+zUpKlCq0wUIkPd8pvEkZIiVAfGLoFLjOaG+nHHK+wOzl4
- UvHz/UE1TQnPC29wU/K47qaAFHX3GC/fDJ4HOZ4ndPrSYd953+ssJ/tjXGQi2wq/15ok
- p0NTPWKxtYbZrTp8f203NdqQzfHb6j/4ztRuK5c6VdyWZ3JGtuelk3E8cntIqihUqjGa
- 6NG6HUYIlv6F6e5Re4Pyfm0ovIezo6W0df2ldee8B4Gy+m/sRtpDvi+DUdKNRyjobgyE
- KihHlPwE32uVUi09hiLMvPFswvwv261uVWkTK+778ZYPuXKCSt5UKpNTxNufH2pS1dcY
- GzMA==
+ d=gmail.com; s=20221208; t=1690664950; x=1691269750;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=8vqUV0jLDURPCeUa2/WSzC33t4u1BZ3jNStq61EGNh8=;
+ b=rZpQriHW1cJj7TE0UV0kq/PnPHVcFKlAjzN1lodDDGEHnGKMADCmUmYFQzdL/DaIAm
+ bq0Nna7tUtzGUjzpxRdHCJ8+XdiQ4dUHFtEmZvSu4QFg57ijz0C9fGx2aJy9GJ+DqBGv
+ YF5CAqoTX35FkcJZ/wu80M1jD9zpvIxZ5pkFPAcgoIFhW44FnDc4j2QpQCTO27pE4sFP
+ XlxwkkohsGKxfYhGIAquzc72xstTrK1l7JEtZG5IOb7Sa81YVXFeW0KIbNnJVVu5F1Po
+ ez8OOzMm9JPzQvcs0PpbLdGAD12fIWiS/AddS6C3eV+8jgbtfUdlVzJkzvLApWbdEo7T
+ Ho0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690644963; x=1691249763;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20221208; t=1690664950; x=1691269750;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=ve3lKj8r/zaJeKPeEgv98Ye5+Ok4TppUCldJHeR2sO0=;
- b=aGyzZN4SeAnkQ+CvcqD5+4/WQPNwCZmbnZL6ASkCpr51kZGrMKicXQNUfA6bnBEFer
- kMlGuiTqEqa/nxKXJDbGnBJGKt6hZ+eJgHMWiXRU/AArgWA+qUj9ksKRHa/BZtwTzpE3
- zsZScmyUj5zx0rWuy7A4yjmTHseub6W9u4ybD4MlbsHn8pB9tpVJoCM9WHQPVWDouTcJ
- T3QefTBIyNlLWk9cuAIQHTwXOKi3xztMz2x0ASJ4PPzW9Ivoc4Xbs0oRcI1l8iCUmIbM
- cSWunABqD0pKx0kwApflvNvQqsIOh9XnyDPFkOBjuhOtFQDLzNb1eTIxuQFEfoGBr4kD
- Xlsw==
-X-Gm-Message-State: ABy/qLboAFx0BUmQK2mIjGx21iN+cz/8D5/16AG06JzXQCiryr3wgco7
- RkaAiv/u/BCcllMptqCkjaCFrQgPrCUVRbgbqqYdeQ==
-X-Google-Smtp-Source: APBJJlEeR9mHTtIPSi9NuM/cxxtpoZ9yWRDM8iHED4MD3svT6IfixWc6LL6GbUA9ei1OmKYF0uKegPApwfvGjcgvue4=
-X-Received: by 2002:aa7:cc18:0:b0:51e:421e:d209 with SMTP id
- q24-20020aa7cc18000000b0051e421ed209mr5956541edt.13.1690644962902; Sat, 29
- Jul 2023 08:36:02 -0700 (PDT)
+ bh=8vqUV0jLDURPCeUa2/WSzC33t4u1BZ3jNStq61EGNh8=;
+ b=fo69qEdJdoUWQZ8POtYwa0oKY/eeV3MwzJi86v9jqafoKMTLpG9gMKWegBmvmIxKco
+ /uZuHGkPCB4D2J2OZkVFx+wGPz18vSWtFXu+JTkQBJWK468yd/ERHmC4LqYi8SZqWiLu
+ 93R0nGWQm4VWMocK4FkZmoWUpWkCo6vTYkP/mziEGhCJjhTJX5LjtftPxfZZfgQe3tqU
+ 8TM6y6y4nh6m5bxk9lm0dPo/ApmbWA4zCoKjTbXAlqMAxBTey/T4HyWSXq+RSmDqXiE2
+ 3Fzap2kQOPBhEmBQITONzhz78eqEN0MpTImZ30YVqgHcZJbSNhe+waqWCNTppd5aUis1
+ IWRg==
+X-Gm-Message-State: ABy/qLZo5M16u+9mipHbFJYgyb2+8C8LHoG+2dWXymg6zBfICkvrbMn5
+ Zs/B6vvSgQXdYWrH/PWMVkKpdWE4/m3nvw==
+X-Google-Smtp-Source: APBJJlGKLfOoRqamGsw/OhdaKl/OvrzwPwsoyKbXU8cAWK5TsDUCOvLKMBP3EVZ8E53nPB1CsP/HZQ==
+X-Received: by 2002:a1c:4c11:0:b0:3fe:19cf:93c9 with SMTP id
+ z17-20020a1c4c11000000b003fe19cf93c9mr1420245wmf.1.1690664949686; 
+ Sat, 29 Jul 2023 14:09:09 -0700 (PDT)
+Received: from localhost (cpc1-brnt4-2-0-cust862.4-2.cable.virginm.net.
+ [86.9.131.95]) by smtp.gmail.com with ESMTPSA id
+ n14-20020a05600c4f8e00b003fd2e898aa3sm12701310wmq.0.2023.07.29.14.09.09
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 29 Jul 2023 14:09:09 -0700 (PDT)
+From: Stafford Horne <shorne@gmail.com>
+To: QEMU Development <qemu-devel@nongnu.org>
+Cc: Stafford Horne <shorne@gmail.com>
+Subject: [PATCH] target/openrisc: Set EPCR to next PC on FPE exceptions
+Date: Sat, 29 Jul 2023 22:08:51 +0100
+Message-Id: <20230729210851.3097340-1-shorne@gmail.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-References: <20230728195646.168997-1-danielhb413@gmail.com>
-In-Reply-To: <20230728195646.168997-1-danielhb413@gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Sat, 29 Jul 2023 16:35:52 +0100
-Message-ID: <CAFEAcA-79hxq7Uxne1wRx_waWkCy75ObKw5+krtbp-aTbxFkoQ@mail.gmail.com>
-Subject: Re: [PATCH for-8.2 0/2] ppc: get rid of free() (gitlab #1798)
-To: Daniel Henrique Barboza <danielhb413@gmail.com>
-Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, qemu-trivial@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x531.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=shorne@gmail.com; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,26 +86,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 28 Jul 2023 at 21:57, Daniel Henrique Barboza
-<danielhb413@gmail.com> wrote:
-> Here's some trivial changes following Peter's call to arms against
-> free() and friends in gitlab issue #1798 in an attempt to enforce
-> our memory management guidelines [1].
+The architecture specification calls for the EPCR to be set to "Address
+of next not executed instruction" when there is a floating point
+exception (FPE).  This was not being done, so fix it by using the same
+method as syscall.  Note, this may need a lot more work if we start
+seeing floating point operations in delay slots which exceptions
+enabled.
 
-To clarify, this isn't a "call to arms". The issue is marked up as
-a "bite-sized task", which is to say that it's a potential easy
-place to start for newcomers to the community who might be making
-their first contribution to the codebase. The changes it suggests
-aren't urgent; at most they're a nice-to-have, since glib
-guarantees that you can mix malloc/free and g_malloc/g_free.
+Without this patch FPU exceptions will loop, as the exception hanlding
+will always return back to the failed floating point instruction.
 
-We've had this sitting around as a suggestion on the wiki page
-for bite-sized-tasks for years, and occasionally people come
-through and have a go at it. I wanted to clean up and expand
-on the description of what we had in mind for the change, to
-give those people a better chance of successfully completing
-the task.
+This was not noticed in earlier testing because:
 
-thanks
--- PMM
+ 1. The compiler usually generates code which clobbers the input operand
+    such as:
+
+      lf.div.s r19,r17,r19
+
+ 2. The target will store the operation output before to the register
+    before handling the exception.  So an operation such as:
+
+      float a = 100.0f;
+      float b = 0.0f;
+      float c = a / b;    /* lf.div.s r19,r17,r19 */
+
+    Will first execute:
+
+      100 / 0    -> Store inf to c (r19)
+                 -> triggering divide by zero exception
+                 -> handle and return
+
+    Then it will exectute:
+
+      100 / inf  -> Store 0 to c  (no exception)
+
+To confirm the looping behavoid and the fix I used the following:
+
+    float fpu_div(float a, float b) {
+	float c;
+	asm volatile("lf.div.s %0, %1, %2"
+		      : "+r" (c)
+		      : "r" (a), "r" (b));
+	return c;
+    }
+
+Signed-off-by: Stafford Horne <shorne@gmail.com>
+---
+ target/openrisc/interrupt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/target/openrisc/interrupt.c b/target/openrisc/interrupt.c
+index 3887812810..9b14b8a2c6 100644
+--- a/target/openrisc/interrupt.c
++++ b/target/openrisc/interrupt.c
+@@ -34,7 +34,7 @@ void openrisc_cpu_do_interrupt(CPUState *cs)
+     int exception = cs->exception_index;
+ 
+     env->epcr = env->pc;
+-    if (exception == EXCP_SYSCALL) {
++    if (exception == EXCP_SYSCALL || exception == EXCP_FPE) {
+         env->epcr += 4;
+     }
+     /* When we have an illegal instruction the error effective address
+-- 
+2.39.1
+
 
