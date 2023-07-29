@@ -2,55 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23AAA767C4A
-	for <lists+qemu-devel@lfdr.de>; Sat, 29 Jul 2023 07:16:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 451B0767C46
+	for <lists+qemu-devel@lfdr.de>; Sat, 29 Jul 2023 07:04:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qPbsp-0005sx-33; Sat, 29 Jul 2023 00:48:51 -0400
+	id 1qPbvc-0006kY-1O; Sat, 29 Jul 2023 00:51:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=69fR=DP=kaod.org=clg@ozlabs.org>)
- id 1qPbsm-0005sk-4g; Sat, 29 Jul 2023 00:48:48 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=69fR=DP=kaod.org=clg@ozlabs.org>)
- id 1qPbsk-0006vz-7T; Sat, 29 Jul 2023 00:48:47 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4RCX826P6rz4wy6;
- Sat, 29 Jul 2023 14:48:34 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4RCX805VMpz4wxR;
- Sat, 29 Jul 2023 14:48:32 +1000 (AEST)
-Message-ID: <26613c0a-6c5d-7a90-b6b2-db97e8a6e059@kaod.org>
-Date: Sat, 29 Jul 2023 06:48:28 +0200
+ (Exim 4.90_1) (envelope-from <logoerthiner1@163.com>)
+ id 1qPbvW-0006kM-HS
+ for qemu-devel@nongnu.org; Sat, 29 Jul 2023 00:51:39 -0400
+Received: from m13102.mail.163.com ([220.181.13.102])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <logoerthiner1@163.com>) id 1qPbvQ-0007hx-12
+ for qemu-devel@nongnu.org; Sat, 29 Jul 2023 00:51:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+ s=s110527; h=Date:From:Subject:Content-Type:MIME-Version:
+ Message-ID; bh=hDQMFvO4FdfAv/+YAbIC9R2H/ofXhtdQVd4Dk1Ln8c0=; b=h
+ pG6LPWmkMbYcxmufh7HKMd8xg4yWi6WLJHmHU4ncronws11Op6PUrER1x5s75Htu
+ a8dQvEGT+UZxkZEFfz0Ge6RDy0GEYeZ7RT/KQBIFJItBany1kJQprVvH+TIenmY2
+ qCztc9HtaBR/zGPz8nBtjORfmN61gF0NBO22se67a8=
+Received: from logoerthiner1$163.com ( [183.242.254.172] ) by
+ ajax-webmail-wmsvr102 (Coremail) ; Sat, 29 Jul 2023 12:51:10 +0800 (CST)
+X-Originating-IP: [183.242.254.172]
+Date: Sat, 29 Jul 2023 12:51:10 +0800 (CST)
+From: ThinerLogoer  <logoerthiner1@163.com>
+To: "David Hildenbrand" <david@redhat.com>, qemu-devel@nongnu.org
+Cc: imammedo@redhat.com
+Subject: Re:Re: [PATCH v2] softmmu/physmem: try opening file readonly before
+ failure in file_ram_open
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version XT5.0.14 build 20230109(dcb5de15)
+ Copyright (c) 2002-2023 www.mailtech.cn 163com
+In-Reply-To: <e2e82f40-2691-b947-bf06-bea0ded99eae@redhat.com>
+References: <20230726145912.88545-1-logoerthiner1@163.com>
+ <183e16a8-55c3-7550-a9ff-21f31f65d0e5@redhat.com>
+ <6bdbce7f.3e8e.18997f05e47.Coremail.logoerthiner1@163.com>
+ <e908495c-252c-745c-036b-1b19778435d9@redhat.com>
+ <615091df.3495.1899b089fc8.Coremail.logoerthiner1@163.com>
+ <e2e82f40-2691-b947-bf06-bea0ded99eae@redhat.com>
+X-NTES-SC: AL_QuySAvqbuUos5iCaYOkXnk4Shuc2XMu4u/gu34JTP5E0kSv86zkmb0FoGWvEyt+hLDigjia3WRhfydhKUpNBQK5SS+HLdkzt9Y4sTJHY89zm
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=GBK
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] target/ppc: Disable goto_tb with architectural singlestep
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, npiggin@gmail.com, groug@kaod.org,
- david@gibson.dropbear.id.au
-References: <20230728173520.486025-1-richard.henderson@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20230728173520.486025-1-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=69fR=DP=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -40
-X-Spam_score: -4.1
-X-Spam_bar: ----
-X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.094,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Message-ID: <36da060e.fd2.1899ffc764b.Coremail.logoerthiner1@163.com>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID: ZsGowAAn6i6+msRkWvgKAA--.28750W
+X-CM-SenderInfo: 5orj0vpuwkx0thurqiywtou0bp/xtbBoQq6nmI0ZkNm7AACs0
+X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
+Received-SPF: pass client-ip=220.181.13.102;
+ envelope-from=logoerthiner1@163.com; helo=m13102.mail.163.com
+X-Spam_score_int: -14
+X-Spam_score: -1.5
+X-Spam_bar: -
+X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -66,41 +75,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/28/23 19:35, Richard Henderson wrote:
-> The change to use translator_use_goto_tb went too far, as the
-> CF_SINGLE_STEP flag managed by the translator only handles
-> gdb single stepping and not the architectural single stepping
-> modeled in DisasContext.singlestep_enabled.
-> 
-> Fixes: 6e9cc373ec5 ("target/ppc: Use translator_use_goto_tb")
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1795
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-
-
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
-
-Thanks,
-
-C.
-
-
-> ---
->   target/ppc/translate.c | 3 +++
->   1 file changed, 3 insertions(+)
-> 
-> diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-> index e6a0709066..74796ec7ba 100644
-> --- a/target/ppc/translate.c
-> +++ b/target/ppc/translate.c
-> @@ -4175,6 +4175,9 @@ static void pmu_count_insns(DisasContext *ctx)
->   
->   static inline bool use_goto_tb(DisasContext *ctx, target_ulong dest)
->   {
-> +    if (unlikely(ctx->singlestep_enabled)) {
-> +        return false;
-> +    }
->       return translator_use_goto_tb(&ctx->base, dest);
->   }
->   
-
+QXQgMjAyMy0wNy0yOCAxODo0NToyMCwgIkRhdmlkIEhpbGRlbmJyYW5kIiA8ZGF2aWRAcmVkaGF0
+LmNvbT4gd3JvdGU6Cj4+PiBRdWljayB1bnRlc3RlZCBhdHRlbXB0IHRvIG1vdmUgcmV0cnkgaGFu
+ZGxpbmcgdG8gdGhlIGNhbGxlcjoKPj4+Cj4+PiBkaWZmIC0tZ2l0IGEvc29mdG1tdS9waHlzbWVt
+LmMgYi9zb2Z0bW11L3BoeXNtZW0uYwo+Pj4gaW5kZXggM2RmNzM1NDJlMS4uYzgyNmJiNzhmYyAx
+MDA2NDQKPj4+IC0tLSBhL3NvZnRtbXUvcGh5c21lbS5jCj4+PiArKysgYi9zb2Z0bW11L3BoeXNt
+ZW0uYwo+Pj4gQEAgLTEyODksOCArMTI4OSw3IEBAIHN0YXRpYyBpbnQ2NF90IGdldF9maWxlX2Fs
+aWduKGludCBmZCkKPj4+ICAgc3RhdGljIGludCBmaWxlX3JhbV9vcGVuKGNvbnN0IGNoYXIgKnBh
+dGgsCj4+PiAgICAgICAgICAgICAgICAgICAgICAgICAgICBjb25zdCBjaGFyICpyZWdpb25fbmFt
+ZSwKPj4+ICAgICAgICAgICAgICAgICAgICAgICAgICAgIGJvb2wgcmVhZG9ubHksCj4+IAo+PiBG
+b3Igc29tZSByZWFzb24gdGhpcyBwcmVyZXEgcGFydCBvZiBwYXRjaCBoYXMgb25lIGFkZGl0aW9u
+YWwgc3BhY2UsCj4+IHdoaWNoIGNhdXNlcyBteSBgcGF0Y2hgIHRvIHJlamVjdCB0aGUgcGF0Y2gu
+IEkgaGF2ZSB0byBtYW51YWxseQo+PiBmaXggaXQgdG8gdGVzdCBsYXRlci4KPgo+WWVzLCB0byBi
+ZSBleHBlY3RlZC4gUGFzdGluZyBhICJnaXQgc2hvdyIgZGlmZiBhbHdheXMgbWVzc2VzIHVwIAo+
+d2hpdGVzcGFjZSBmb3IgbWUuIEl0IHdhcyBvbmx5IG1lYW50IGFzIGEgUE9DLgo+Cj4+IAo+Pj4g
+LSAgICAgICAgICAgICAgICAgICAgICAgICBib29sICpjcmVhdGVkLAo+Pj4gLSAgICAgICAgICAg
+ICAgICAgICAgICAgICBFcnJvciAqKmVycnApCj4+PiArICAgICAgICAgICAgICAgICAgICAgICAg
+IGJvb2wgKmNyZWF0ZWQpCj4+PiAgIHsKPj4+ICAgICAgIGNoYXIgKmZpbGVuYW1lOwo+Pj4gICAg
+ICAgY2hhciAqc2FuaXRpemVkX25hbWU7Cj4+PiBAQCAtMTMzNCwxMCArMTMzMyw3IEBAIHN0YXRp
+YyBpbnQgZmlsZV9yYW1fb3Blbihjb25zdCBjaGFyICpwYXRoLAo+Pj4gICAgICAgICAgICAgICBn
+X2ZyZWUoZmlsZW5hbWUpOwo+Pj4gICAgICAgICAgIH0KPj4+ICAgICAgICAgICBpZiAoZXJybm8g
+IT0gRUVYSVNUICYmIGVycm5vICE9IEVJTlRSKSB7Cj4+PiAtICAgICAgICAgICAgZXJyb3Jfc2V0
+Z19lcnJubyhlcnJwLCBlcnJubywKPj4+IC0gICAgICAgICAgICAgICAgICAgICAgICAgICAgICJj
+YW4ndCBvcGVuIGJhY2tpbmcgc3RvcmUgJXMgZm9yIGd1ZXN0IFJBTSIsCj4+PiAtICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICBwYXRoKTsKPj4+IC0gICAgICAgICAgICByZXR1cm4gLTE7Cj4+
+PiArICAgICAgICAgICAgcmV0dXJuIC1lcnJubzsKPj4+ICAgICAgICAgICB9Cj4+PiAgICAgICAg
+ICAgLyoKPj4+ICAgICAgICAgICAgKiBUcnkgYWdhaW4gb24gRUlOVFIgYW5kIEVFWElTVC4gIFRo
+ZSBsYXR0ZXIgaGFwcGVucyB3aGVuCj4+PiBAQCAtMTk0Niw5ICsxOTQyLDIzIEBAIFJBTUJsb2Nr
+ICpxZW11X3JhbV9hbGxvY19mcm9tX2ZpbGUocmFtX2FkZHJfdCBzaXplLCBNZW1vcnlSZWdpb24g
+Km1yLAo+Pj4gICAgICAgYm9vbCBjcmVhdGVkOwo+Pj4gICAgICAgUkFNQmxvY2sgKmJsb2NrOwo+
+Pj4gICAKPj4+IC0gICAgZmQgPSBmaWxlX3JhbV9vcGVuKG1lbV9wYXRoLCBtZW1vcnlfcmVnaW9u
+X25hbWUobXIpLCByZWFkb25seSwgJmNyZWF0ZWQsCj4+PiAtICAgICAgICAgICAgICAgICAgICAg
+ICBlcnJwKTsKPj4+ICsgICAgZmQgPSBmaWxlX3JhbV9vcGVuKG1lbV9wYXRoLCBtZW1vcnlfcmVn
+aW9uX25hbWUobXIpLCByZWFkb25seSwgJmNyZWF0ZWQpOwo+Pj4gKyAgICBpZiAoZmQgPT0gLUVB
+Q0NFUyAmJiAhKHJhbV9mbGFncyAmIFJBTV9TSEFSRUQpICYmIHJlYWRvbmx5KSB7Cj4+IAo+PiAi
+cmVhZG9ubHkiIHNob3VsZCBiZSAiIXJlYWRvbmx5IiBoZXJlPyBUaGUgcmVhZG9ubHkgdmFyaWFi
+bGUgaW4gdGhpcyBmdW5jdGlvbiBpcwo+PiBhYm91dCB3aGV0aGVyIHRoZSBtYXBwaW5nIGlzIHJl
+YWRvbmx5LiBJbiBvdXIgY2FzZSB0aGUgbWFwcGluZyBpcyBwcml2YXRlCj4+IHdyaXRhYmxlLCBz
+byByZWFkb25seSB3aWxsIGJlIGZhbHNlLgo+Cj5ZZXMsIGluZGVlZCEKPgo+PiAKPj4gQWZ0ZXIg
+bWFudWFsbHkgZml4IHRoaXMgdXAsIHRoaXMgcGF0Y2ggYWxzbyB3b3JrcyBpbiBteSBlbnZpcm9u
+bWVudCwgYm90aAo+PiBmdW5jdGlvbmFsaXR5IGFuZCB0aGUgd2FybmluZy4KPj4gCj4+IE1heWJl
+IHlvdSBjYW4gZGlyZWN0bHkgZm9ybWF0IHRoZSBwYXRjaCBhbmQgc3RhcnQgYSBuZXcgdGhyZWFk
+IHRoZXJlPwo+Cj4KPldoYXRldmVyIHlvdSBwcmVmZXIhIElmIEkgcmVzZW5kIHRoZSBwYXRjaCwg
+SSB3b3VsZCBrZWVwIHlvdSB0aGUgYXV0aG9yIAo+YW5kIG9ubHkgYWRkIG15IENvLWF1dGhvcmVk
+LWJ5OiBTaWduZWQtb2ZmLWJ5Oi4KPgo+SnVzdCBsZXQgbWUga25vdy4KCkV2ZXJ5dGhpbmcgaXMg
+Z29vZCBhbmQgY2xlYXIgbm93LiBJIHRoaW5rIGl0IGlzIGJldHRlciB0aGF0IHlvdSBkbyB0aGUg
+cGF0Y2gKaGVyZS4gV2FpdGluZyBmb3IgdGhlIGZpbmFsIHZlcnNpb24gb2YgcGF0Y2guCgo+Cj4t
+LSAKPkNoZWVycywKPgo+RGF2aWQgLyBkaGlsZGVuYgo=
 
