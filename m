@@ -2,68 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F26B9768068
-	for <lists+qemu-devel@lfdr.de>; Sat, 29 Jul 2023 17:46:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B4EC768067
+	for <lists+qemu-devel@lfdr.de>; Sat, 29 Jul 2023 17:45:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qPlvw-0003Kj-Fl; Sat, 29 Jul 2023 11:32:44 -0400
+	id 1qPlzE-0005kR-Hj; Sat, 29 Jul 2023 11:36:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qPlvu-0003Jo-6M
- for qemu-devel@nongnu.org; Sat, 29 Jul 2023 11:32:42 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ id 1qPlzC-0005di-Pc
+ for qemu-devel@nongnu.org; Sat, 29 Jul 2023 11:36:06 -0400
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qPlvr-000859-Kx
- for qemu-devel@nongnu.org; Sat, 29 Jul 2023 11:32:41 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-3fb4146e8deso35682375e9.0
- for <qemu-devel@nongnu.org>; Sat, 29 Jul 2023 08:32:39 -0700 (PDT)
+ id 1qPlzB-0000R2-Bm
+ for qemu-devel@nongnu.org; Sat, 29 Jul 2023 11:36:06 -0400
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-52256241c66so6417283a12.1
+ for <qemu-devel@nongnu.org>; Sat, 29 Jul 2023 08:36:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690644758; x=1691249558;
+ d=linaro.org; s=google; t=1690644963; x=1691249763;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=zFSEOV+/KCHbaF2/scRJkd3cPshqRAc2e7Z/Z+qxErM=;
- b=CpsJqyWGVqnC9Trucnn1BfQlbKPTY47CpaMPxOy8ea8Sg8IUMvfEVB/8KwvFEPoU7j
- XcPhGxKe7zVEehqdCEyWRE3B5OklymmLFIIoqkhobryMDx21goT1GvvyIvQITu2S9K6i
- Y/uH1hJHUJqRcTmDY7EN3ZJkdat2zQcz6TDZMf+U1H8ysQZJxeGz6GWKTRSHhEg7G2iu
- /VIaQOP9j5XXLYRBTCTTpRjyiuZN7emwoEnIDZTungtwGdFlsKk6tDyXDmpWL2SDWan4
- WhUoavLia0xg3A9j1jYT6e96X3XyDmJYvibMjYr/v8/2zbyJmSs9NZdsl5+do/yA0J0R
- sHZQ==
+ bh=ve3lKj8r/zaJeKPeEgv98Ye5+Ok4TppUCldJHeR2sO0=;
+ b=asl+adFbyFdVWXoLgN/T+zUpKlCq0wUIkPd8pvEkZIiVAfGLoFLjOaG+nHHK+wOzl4
+ UvHz/UE1TQnPC29wU/K47qaAFHX3GC/fDJ4HOZ4ndPrSYd953+ssJ/tjXGQi2wq/15ok
+ p0NTPWKxtYbZrTp8f203NdqQzfHb6j/4ztRuK5c6VdyWZ3JGtuelk3E8cntIqihUqjGa
+ 6NG6HUYIlv6F6e5Re4Pyfm0ovIezo6W0df2ldee8B4Gy+m/sRtpDvi+DUdKNRyjobgyE
+ KihHlPwE32uVUi09hiLMvPFswvwv261uVWkTK+778ZYPuXKCSt5UKpNTxNufH2pS1dcY
+ GzMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690644758; x=1691249558;
+ d=1e100.net; s=20221208; t=1690644963; x=1691249763;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=zFSEOV+/KCHbaF2/scRJkd3cPshqRAc2e7Z/Z+qxErM=;
- b=FlGaL3NeWdJd6yW5T9sOK784fKWLgiX1qmjjGSS77ApeLUdoNPx+YeBvMN9prmG8Wa
- yLIfj0G4fOtGw+BybEe1Ij/gA7Q+StHS9BvLM+WZZxnrT4UO5Vnop2YYbd18dw2iwenl
- 4nfQBFSfgWouFLYHQH56IHfv65gyLY5Bb9Vk3u2GMwAG+X4h6PlmZBcBckEAEs91xieq
- HFhpZqCUhg90hmQ9f6g6OR6gQ9j8CppZ55gv/k1buMJ24loopj0sWVi20hMEHU0lPouB
- wRRgNATGOZL4Ijy2m/EhPho0EJ4XwB7GlPvXyd6A6tihUcCQEXYnsvuHdENlAxt8CqP3
- wIQw==
-X-Gm-Message-State: ABy/qLYtf8WRrS0FGow2PNJ/qd+47ahVfn3GYVPIE3ySMheizFJPsZ5v
- PNmBRgwkcNCp64zRIO0r29txBvwiOgehTMM77ARK8g==
-X-Google-Smtp-Source: APBJJlFSFS6fgkDPSs6V2VQIjDu1/itJ7No0ThVx4F6Zvby34TXMlErAPZgl8GyBiRBbxbOyvdJG0DYomQ+Rxc3buos=
-X-Received: by 2002:a5d:458a:0:b0:313:e520:936f with SMTP id
- p10-20020a5d458a000000b00313e520936fmr4847388wrq.17.1690644757984; Sat, 29
- Jul 2023 08:32:37 -0700 (PDT)
+ bh=ve3lKj8r/zaJeKPeEgv98Ye5+Ok4TppUCldJHeR2sO0=;
+ b=aGyzZN4SeAnkQ+CvcqD5+4/WQPNwCZmbnZL6ASkCpr51kZGrMKicXQNUfA6bnBEFer
+ kMlGuiTqEqa/nxKXJDbGnBJGKt6hZ+eJgHMWiXRU/AArgWA+qUj9ksKRHa/BZtwTzpE3
+ zsZScmyUj5zx0rWuy7A4yjmTHseub6W9u4ybD4MlbsHn8pB9tpVJoCM9WHQPVWDouTcJ
+ T3QefTBIyNlLWk9cuAIQHTwXOKi3xztMz2x0ASJ4PPzW9Ivoc4Xbs0oRcI1l8iCUmIbM
+ cSWunABqD0pKx0kwApflvNvQqsIOh9XnyDPFkOBjuhOtFQDLzNb1eTIxuQFEfoGBr4kD
+ Xlsw==
+X-Gm-Message-State: ABy/qLboAFx0BUmQK2mIjGx21iN+cz/8D5/16AG06JzXQCiryr3wgco7
+ RkaAiv/u/BCcllMptqCkjaCFrQgPrCUVRbgbqqYdeQ==
+X-Google-Smtp-Source: APBJJlEeR9mHTtIPSi9NuM/cxxtpoZ9yWRDM8iHED4MD3svT6IfixWc6LL6GbUA9ei1OmKYF0uKegPApwfvGjcgvue4=
+X-Received: by 2002:aa7:cc18:0:b0:51e:421e:d209 with SMTP id
+ q24-20020aa7cc18000000b0051e421ed209mr5956541edt.13.1690644962902; Sat, 29
+ Jul 2023 08:36:02 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230728195646.168997-1-danielhb413@gmail.com>
- <20230728195646.168997-3-danielhb413@gmail.com>
-In-Reply-To: <20230728195646.168997-3-danielhb413@gmail.com>
+In-Reply-To: <20230728195646.168997-1-danielhb413@gmail.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Sat, 29 Jul 2023 16:32:27 +0100
-Message-ID: <CAFEAcA9vsv4BpSfFb6=W=MFjGdR283KEGFN13Sfy=TxtcjT4hA@mail.gmail.com>
-Subject: Re: [PATCH for-8.2 2/2] target/ppc: use g_free() in
- test_opcode_table()
+Date: Sat, 29 Jul 2023 16:35:52 +0100
+Message-ID: <CAFEAcA-79hxq7Uxne1wRx_waWkCy75ObKw5+krtbp-aTbxFkoQ@mail.gmail.com>
+Subject: Re: [PATCH for-8.2 0/2] ppc: get rid of free() (gitlab #1798)
 To: Daniel Henrique Barboza <danielhb413@gmail.com>
 Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, qemu-trivial@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x531.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -86,34 +84,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 28 Jul 2023 at 21:47, Daniel Henrique Barboza
+On Fri, 28 Jul 2023 at 21:57, Daniel Henrique Barboza
 <danielhb413@gmail.com> wrote:
->
-> Use g_free(table[i]) instead of free(table[i]) to comply with QEMU low
-> level memory management guidelines.
->
-> Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
-> ---
->  target/ppc/translate.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-> index e6a0709066..d90535266e 100644
-> --- a/target/ppc/translate.c
-> +++ b/target/ppc/translate.c
-> @@ -7129,7 +7129,7 @@ static int test_opcode_table(opc_handler_t **table, int len)
->                  tmp = test_opcode_table(ind_table(table[i]),
->                      PPC_CPU_INDIRECT_OPCODES_LEN);
->                  if (tmp == 0) {
-> -                    free(table[i]);
-> +                    g_free(table[i]);
->                      table[i] = &invalid_handler;
->                  } else {
->                      count++;
+> Here's some trivial changes following Peter's call to arms against
+> free() and friends in gitlab issue #1798 in an attempt to enforce
+> our memory management guidelines [1].
 
-Where is the allocation that this memory is free()ing? I
-think it is the g_new() in create_new_table(), but the code
-is a little complicated for me to understand...
+To clarify, this isn't a "call to arms". The issue is marked up as
+a "bite-sized task", which is to say that it's a potential easy
+place to start for newcomers to the community who might be making
+their first contribution to the codebase. The changes it suggests
+aren't urgent; at most they're a nice-to-have, since glib
+guarantees that you can mix malloc/free and g_malloc/g_free.
+
+We've had this sitting around as a suggestion on the wiki page
+for bite-sized-tasks for years, and occasionally people come
+through and have a go at it. I wanted to clean up and expand
+on the description of what we had in mind for the change, to
+give those people a better chance of successfully completing
+the task.
 
 thanks
 -- PMM
