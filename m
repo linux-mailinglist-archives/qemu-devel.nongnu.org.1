@@ -2,64 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 451B0767C46
-	for <lists+qemu-devel@lfdr.de>; Sat, 29 Jul 2023 07:04:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5F84767C97
+	for <lists+qemu-devel@lfdr.de>; Sat, 29 Jul 2023 08:43:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qPbvc-0006kY-1O; Sat, 29 Jul 2023 00:51:44 -0400
+	id 1qPdBh-00057n-Rs; Sat, 29 Jul 2023 02:12:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <logoerthiner1@163.com>)
- id 1qPbvW-0006kM-HS
- for qemu-devel@nongnu.org; Sat, 29 Jul 2023 00:51:39 -0400
-Received: from m13102.mail.163.com ([220.181.13.102])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <logoerthiner1@163.com>) id 1qPbvQ-0007hx-12
- for qemu-devel@nongnu.org; Sat, 29 Jul 2023 00:51:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
- s=s110527; h=Date:From:Subject:Content-Type:MIME-Version:
- Message-ID; bh=hDQMFvO4FdfAv/+YAbIC9R2H/ofXhtdQVd4Dk1Ln8c0=; b=h
- pG6LPWmkMbYcxmufh7HKMd8xg4yWi6WLJHmHU4ncronws11Op6PUrER1x5s75Htu
- a8dQvEGT+UZxkZEFfz0Ge6RDy0GEYeZ7RT/KQBIFJItBany1kJQprVvH+TIenmY2
- qCztc9HtaBR/zGPz8nBtjORfmN61gF0NBO22se67a8=
-Received: from logoerthiner1$163.com ( [183.242.254.172] ) by
- ajax-webmail-wmsvr102 (Coremail) ; Sat, 29 Jul 2023 12:51:10 +0800 (CST)
-X-Originating-IP: [183.242.254.172]
-Date: Sat, 29 Jul 2023 12:51:10 +0800 (CST)
-From: ThinerLogoer  <logoerthiner1@163.com>
-To: "David Hildenbrand" <david@redhat.com>, qemu-devel@nongnu.org
-Cc: imammedo@redhat.com
-Subject: Re:Re: [PATCH v2] softmmu/physmem: try opening file readonly before
- failure in file_ram_open
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT5.0.14 build 20230109(dcb5de15)
- Copyright (c) 2002-2023 www.mailtech.cn 163com
-In-Reply-To: <e2e82f40-2691-b947-bf06-bea0ded99eae@redhat.com>
-References: <20230726145912.88545-1-logoerthiner1@163.com>
- <183e16a8-55c3-7550-a9ff-21f31f65d0e5@redhat.com>
- <6bdbce7f.3e8e.18997f05e47.Coremail.logoerthiner1@163.com>
- <e908495c-252c-745c-036b-1b19778435d9@redhat.com>
- <615091df.3495.1899b089fc8.Coremail.logoerthiner1@163.com>
- <e2e82f40-2691-b947-bf06-bea0ded99eae@redhat.com>
-X-NTES-SC: AL_QuySAvqbuUos5iCaYOkXnk4Shuc2XMu4u/gu34JTP5E0kSv86zkmb0FoGWvEyt+hLDigjia3WRhfydhKUpNBQK5SS+HLdkzt9Y4sTJHY89zm
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=GBK
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qPdBf-00055H-8s
+ for qemu-devel@nongnu.org; Sat, 29 Jul 2023 02:12:23 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qPdBd-0006uq-FJ
+ for qemu-devel@nongnu.org; Sat, 29 Jul 2023 02:12:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1690611140;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=VqwEkgm0+AuPoKehsQi4ZJGs07wiUgtgUyFrHKgnyRk=;
+ b=AYlZlSGxFQWQMfc6JckHMc47k6AY551qD7mGTEeZYvGEij7hdEHoAdRbwAqbupugoE5Imz
+ pdpHZEuHq3xHqi+wXJCmT1f71+vUdVivCydP4gku2rZPTHgPV2ONaq9oB8SXbJwprIIdC7
+ KhAhLp0G3T9geUOaPsrJZZLrEbcYLB8=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-643-kS47WyqAOVixcXsnfulICw-1; Sat, 29 Jul 2023 02:12:16 -0400
+X-MC-Unique: kS47WyqAOVixcXsnfulICw-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1A3E7101A54E;
+ Sat, 29 Jul 2023 06:12:16 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.193.50])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id A26B0F783E;
+ Sat, 29 Jul 2023 06:12:15 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 7BCEB21E6690; Sat, 29 Jul 2023 08:12:14 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: ~hyman <hyman@git.sr.ht>
+Cc: qemu-devel@nongnu.org,  ~hyman <yong.huang@smartx.com>,  Juan Quintela
+ <quintela@redhat.com>,  Peter Xu <peterx@redhat.com>,  Leonardo Bras
+ <leobras@redhat.com>,  Eric Blake <eblake@redhat.com>
+Subject: Re: [PATCH QEMU 3/3] MAINTAINERS: Add Hyman Huang as maintainer
+References: <169056029099.1291.9838508091499564970-3@git.sr.ht>
+Date: Sat, 29 Jul 2023 08:12:14 +0200
+In-Reply-To: <169056029099.1291.9838508091499564970-3@git.sr.ht>
+ (hyman@git.sr.ht's message of "Thu, 27 Jul 2023 02:10:09 +0800")
+Message-ID: <873517gsap.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Message-ID: <36da060e.fd2.1899ffc764b.Coremail.logoerthiner1@163.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID: ZsGowAAn6i6+msRkWvgKAA--.28750W
-X-CM-SenderInfo: 5orj0vpuwkx0thurqiywtou0bp/xtbBoQq6nmI0ZkNm7AACs0
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
-Received-SPF: pass client-ip=220.181.13.102;
- envelope-from=logoerthiner1@163.com; helo=m13102.mail.163.com
-X-Spam_score_int: -14
-X-Spam_score: -1.5
-X-Spam_bar: -
-X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -75,51 +83,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-QXQgMjAyMy0wNy0yOCAxODo0NToyMCwgIkRhdmlkIEhpbGRlbmJyYW5kIiA8ZGF2aWRAcmVkaGF0
-LmNvbT4gd3JvdGU6Cj4+PiBRdWljayB1bnRlc3RlZCBhdHRlbXB0IHRvIG1vdmUgcmV0cnkgaGFu
-ZGxpbmcgdG8gdGhlIGNhbGxlcjoKPj4+Cj4+PiBkaWZmIC0tZ2l0IGEvc29mdG1tdS9waHlzbWVt
-LmMgYi9zb2Z0bW11L3BoeXNtZW0uYwo+Pj4gaW5kZXggM2RmNzM1NDJlMS4uYzgyNmJiNzhmYyAx
-MDA2NDQKPj4+IC0tLSBhL3NvZnRtbXUvcGh5c21lbS5jCj4+PiArKysgYi9zb2Z0bW11L3BoeXNt
-ZW0uYwo+Pj4gQEAgLTEyODksOCArMTI4OSw3IEBAIHN0YXRpYyBpbnQ2NF90IGdldF9maWxlX2Fs
-aWduKGludCBmZCkKPj4+ICAgc3RhdGljIGludCBmaWxlX3JhbV9vcGVuKGNvbnN0IGNoYXIgKnBh
-dGgsCj4+PiAgICAgICAgICAgICAgICAgICAgICAgICAgICBjb25zdCBjaGFyICpyZWdpb25fbmFt
-ZSwKPj4+ICAgICAgICAgICAgICAgICAgICAgICAgICAgIGJvb2wgcmVhZG9ubHksCj4+IAo+PiBG
-b3Igc29tZSByZWFzb24gdGhpcyBwcmVyZXEgcGFydCBvZiBwYXRjaCBoYXMgb25lIGFkZGl0aW9u
-YWwgc3BhY2UsCj4+IHdoaWNoIGNhdXNlcyBteSBgcGF0Y2hgIHRvIHJlamVjdCB0aGUgcGF0Y2gu
-IEkgaGF2ZSB0byBtYW51YWxseQo+PiBmaXggaXQgdG8gdGVzdCBsYXRlci4KPgo+WWVzLCB0byBi
-ZSBleHBlY3RlZC4gUGFzdGluZyBhICJnaXQgc2hvdyIgZGlmZiBhbHdheXMgbWVzc2VzIHVwIAo+
-d2hpdGVzcGFjZSBmb3IgbWUuIEl0IHdhcyBvbmx5IG1lYW50IGFzIGEgUE9DLgo+Cj4+IAo+Pj4g
-LSAgICAgICAgICAgICAgICAgICAgICAgICBib29sICpjcmVhdGVkLAo+Pj4gLSAgICAgICAgICAg
-ICAgICAgICAgICAgICBFcnJvciAqKmVycnApCj4+PiArICAgICAgICAgICAgICAgICAgICAgICAg
-IGJvb2wgKmNyZWF0ZWQpCj4+PiAgIHsKPj4+ICAgICAgIGNoYXIgKmZpbGVuYW1lOwo+Pj4gICAg
-ICAgY2hhciAqc2FuaXRpemVkX25hbWU7Cj4+PiBAQCAtMTMzNCwxMCArMTMzMyw3IEBAIHN0YXRp
-YyBpbnQgZmlsZV9yYW1fb3Blbihjb25zdCBjaGFyICpwYXRoLAo+Pj4gICAgICAgICAgICAgICBn
-X2ZyZWUoZmlsZW5hbWUpOwo+Pj4gICAgICAgICAgIH0KPj4+ICAgICAgICAgICBpZiAoZXJybm8g
-IT0gRUVYSVNUICYmIGVycm5vICE9IEVJTlRSKSB7Cj4+PiAtICAgICAgICAgICAgZXJyb3Jfc2V0
-Z19lcnJubyhlcnJwLCBlcnJubywKPj4+IC0gICAgICAgICAgICAgICAgICAgICAgICAgICAgICJj
-YW4ndCBvcGVuIGJhY2tpbmcgc3RvcmUgJXMgZm9yIGd1ZXN0IFJBTSIsCj4+PiAtICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICBwYXRoKTsKPj4+IC0gICAgICAgICAgICByZXR1cm4gLTE7Cj4+
-PiArICAgICAgICAgICAgcmV0dXJuIC1lcnJubzsKPj4+ICAgICAgICAgICB9Cj4+PiAgICAgICAg
-ICAgLyoKPj4+ICAgICAgICAgICAgKiBUcnkgYWdhaW4gb24gRUlOVFIgYW5kIEVFWElTVC4gIFRo
-ZSBsYXR0ZXIgaGFwcGVucyB3aGVuCj4+PiBAQCAtMTk0Niw5ICsxOTQyLDIzIEBAIFJBTUJsb2Nr
-ICpxZW11X3JhbV9hbGxvY19mcm9tX2ZpbGUocmFtX2FkZHJfdCBzaXplLCBNZW1vcnlSZWdpb24g
-Km1yLAo+Pj4gICAgICAgYm9vbCBjcmVhdGVkOwo+Pj4gICAgICAgUkFNQmxvY2sgKmJsb2NrOwo+
-Pj4gICAKPj4+IC0gICAgZmQgPSBmaWxlX3JhbV9vcGVuKG1lbV9wYXRoLCBtZW1vcnlfcmVnaW9u
-X25hbWUobXIpLCByZWFkb25seSwgJmNyZWF0ZWQsCj4+PiAtICAgICAgICAgICAgICAgICAgICAg
-ICBlcnJwKTsKPj4+ICsgICAgZmQgPSBmaWxlX3JhbV9vcGVuKG1lbV9wYXRoLCBtZW1vcnlfcmVn
-aW9uX25hbWUobXIpLCByZWFkb25seSwgJmNyZWF0ZWQpOwo+Pj4gKyAgICBpZiAoZmQgPT0gLUVB
-Q0NFUyAmJiAhKHJhbV9mbGFncyAmIFJBTV9TSEFSRUQpICYmIHJlYWRvbmx5KSB7Cj4+IAo+PiAi
-cmVhZG9ubHkiIHNob3VsZCBiZSAiIXJlYWRvbmx5IiBoZXJlPyBUaGUgcmVhZG9ubHkgdmFyaWFi
-bGUgaW4gdGhpcyBmdW5jdGlvbiBpcwo+PiBhYm91dCB3aGV0aGVyIHRoZSBtYXBwaW5nIGlzIHJl
-YWRvbmx5LiBJbiBvdXIgY2FzZSB0aGUgbWFwcGluZyBpcyBwcml2YXRlCj4+IHdyaXRhYmxlLCBz
-byByZWFkb25seSB3aWxsIGJlIGZhbHNlLgo+Cj5ZZXMsIGluZGVlZCEKPgo+PiAKPj4gQWZ0ZXIg
-bWFudWFsbHkgZml4IHRoaXMgdXAsIHRoaXMgcGF0Y2ggYWxzbyB3b3JrcyBpbiBteSBlbnZpcm9u
-bWVudCwgYm90aAo+PiBmdW5jdGlvbmFsaXR5IGFuZCB0aGUgd2FybmluZy4KPj4gCj4+IE1heWJl
-IHlvdSBjYW4gZGlyZWN0bHkgZm9ybWF0IHRoZSBwYXRjaCBhbmQgc3RhcnQgYSBuZXcgdGhyZWFk
-IHRoZXJlPwo+Cj4KPldoYXRldmVyIHlvdSBwcmVmZXIhIElmIEkgcmVzZW5kIHRoZSBwYXRjaCwg
-SSB3b3VsZCBrZWVwIHlvdSB0aGUgYXV0aG9yIAo+YW5kIG9ubHkgYWRkIG15IENvLWF1dGhvcmVk
-LWJ5OiBTaWduZWQtb2ZmLWJ5Oi4KPgo+SnVzdCBsZXQgbWUga25vdy4KCkV2ZXJ5dGhpbmcgaXMg
-Z29vZCBhbmQgY2xlYXIgbm93LiBJIHRoaW5rIGl0IGlzIGJldHRlciB0aGF0IHlvdSBkbyB0aGUg
-cGF0Y2gKaGVyZS4gV2FpdGluZyBmb3IgdGhlIGZpbmFsIHZlcnNpb24gb2YgcGF0Y2guCgo+Cj4t
-LSAKPkNoZWVycywKPgo+RGF2aWQgLyBkaGlsZGVuYgo=
+Recommend to tweak the subject to
+
+    MAINTAINERS: Add section "TITLE"
+
+where TITLE is whatever you use in MAINTAINERS, provided it's short
+enough to fit.
+
+~hyman <hyman@git.sr.ht> writes:
+
+> From: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
+>
+> I've built interests in dirty-limit and dirty page rate
+
+Recommend to drop the dash.
+
+> features and also have been working on projects related
+> to this subsystem.
+>
+> Self-recommand myself as a maintainer for this subsystem
+
+"Add myself as ..."
+
+> so that I can help to improve the dirty-limit algorithm
+> and review the patches about dirty page rate.
+>
+> Signed-off-by: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
+> ---
+>  MAINTAINERS | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 12e59b6b27..d4b1c91096 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -3437,6 +3437,15 @@ F: hw/core/clock-vmstate.c
+>  F: hw/core/qdev-clock.c
+>  F: docs/devel/clocks.rst
+>=20=20
+> +Dirty-limit and dirty page rate feature
+
+Suggest
+
+   Migration dirty limit and dirty page rate
+
+> +M: Hyman Huang <yong.huang@smartx.com>
+> +S: Maintained
+> +F: softmmu/dirtylimit.c
+> +F: include/sysemu/dirtylimit.h
+> +F: migration/dirtyrate.c
+> +F: migration/dirtyrate.h
+> +F: include/sysemu/dirtyrate.h
+> +
+
+Should this go right after section "Migration"?  Or are there other
+applications?
+
+>  Usermode Emulation
+>  ------------------
+>  Overall usermode emulation
+
 
