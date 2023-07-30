@@ -2,70 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D04FD768425
-	for <lists+qemu-devel@lfdr.de>; Sun, 30 Jul 2023 09:21:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36075768432
+	for <lists+qemu-devel@lfdr.de>; Sun, 30 Jul 2023 09:31:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQ07a-000510-Ui; Sun, 30 Jul 2023 02:41:42 -0400
+	id 1qQ07s-00053J-IU; Sun, 30 Jul 2023 02:42:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dinahbaum123@gmail.com>)
- id 1qQ07H-00050O-Os
- for qemu-devel@nongnu.org; Sun, 30 Jul 2023 02:41:24 -0400
-Received: from mail-oo1-xc2a.google.com ([2607:f8b0:4864:20::c2a])
+ id 1qQ07J-00050R-MZ
+ for qemu-devel@nongnu.org; Sun, 30 Jul 2023 02:41:26 -0400
+Received: from mail-qt1-x82c.google.com ([2607:f8b0:4864:20::82c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dinahbaum123@gmail.com>)
- id 1qQ07G-000631-5T
- for qemu-devel@nongnu.org; Sun, 30 Jul 2023 02:41:23 -0400
-Received: by mail-oo1-xc2a.google.com with SMTP id
- 006d021491bc7-56cbea15415so20084eaf.1
- for <qemu-devel@nongnu.org>; Sat, 29 Jul 2023 23:41:21 -0700 (PDT)
+ id 1qQ07H-00065O-T4
+ for qemu-devel@nongnu.org; Sun, 30 Jul 2023 02:41:25 -0400
+Received: by mail-qt1-x82c.google.com with SMTP id
+ d75a77b69052e-40648d758f1so24957981cf.0
+ for <qemu-devel@nongnu.org>; Sat, 29 Jul 2023 23:41:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1690699280; x=1691304080;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=DKy6YGVQs9rXVjJ6p4MJiwzWP2aR7maxASM7DQfFfDA=;
- b=ecXw8pKsGcrzZuvgklArJWcYBV/929yzfOMFXWYAjMt2LnC/o7PRIJLnNHNd+v2IkC
- Ynph3GfQ6spWvJ0wQie6xBjq4xMyWYZTTTUhDnARgB0T6Su1+Hj9PwhOkD944MCkCEzx
- LBbK03P5pLpQ2ENXlqhWeQXVItQBEUaGHa1e+dKJAKlK1wGAKXnnd2/N0eg9qAntPeUH
- TxggSQmUyNh/xwhQFlV+3mz02MW13x5tYQQSGqAd4MGQz060jV7zY5ImklBJBZCpr6ID
- W07lQJ7fap9iUqBYb8B7bW/rn2Z4J4QBxaBlLZ9sfsIfhEty63V0LKOsRfM0jlUHBDTS
- LP0g==
+ d=gmail.com; s=20221208; t=1690699282; x=1691304082;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=dI0gdpPKANQUK3lyruxPBH4LnSOmWsKb8Vgds5YhBjQ=;
+ b=Kkom9EQb4yMB6hqvBYeUR1rZwZDCrai/GRnmHksucKUwqMpU6vvTKNRdIWsQGcG260
+ HluAvEMIQw5Hqtq8MTktNiJRWin9phoLEJGi3dE2XKruZIkXWu/wljfZ9sVDtZKHiai4
+ iHgEiJcy9+dCxx/EDiXxiYoKZugDDr2wfVCfyrmBdWmobGk5FQbw7EH2E/DMbei7Nhk/
+ ofDixx7oTNjmgHyQ/svhUlFlgfhvDi9qBFJDE/sIdZ5d2yiTP2fVzFRjgx/6nuYtbunP
+ MUtOgiZSTxSGCDsq1foZS15/XQxzTtwKLMmK0daEUSC1BU52cBwPR94uLg9zvoV9Sfv6
+ +obA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690699280; x=1691304080;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=DKy6YGVQs9rXVjJ6p4MJiwzWP2aR7maxASM7DQfFfDA=;
- b=ApduJxvd+QiYqNh5B+xn2/++7TUR6B9/VnL7osNmUvWRe3GeYxHk/upCAZZ1NpxlND
- EbQbF8sdM70syCd5oc9kkrz7LVTkH3SWj9TgqaRyjpnQ+pweVjOKFmDWdfa6Jkk2DtwA
- Ha3APyiLn5Kjt93aHnukDrm9dyfhW0H7n4UDA0d/63atTZHKDsPZ2q71T8W7JbCDfraU
- BUfn18vc/KC0KxoC3scz+rs+aGQdnYsSDwlMinrd+8YT+1pLFRr2BHySSNQYVwO26U+5
- IDJh4NbWMMZZ8jsDDWZutuOn/4bEIoEA+FsDrmmt/MerOOeISGtL7we2T6PGQp5iDtXv
- R2ag==
-X-Gm-Message-State: ABy/qLb3GOFBQuJw+QDYL72U5PulnS7Zo5n4Y2Owz38botONu/kPOVtt
- 8kTnEH668oNk6ltDhrT4o+cxT1pmdX0=
-X-Google-Smtp-Source: APBJJlGL8E7dIX1w0lA7fmUOaxbU6/jbE4MewwjnR7OvVGE5aBj715Dy9e336HS2DxHnNVZR1xf5EQ==
-X-Received: by 2002:a05:6358:e499:b0:134:5662:60a with SMTP id
- by25-20020a056358e49900b001345662060amr4634554rwb.6.1690699279875; 
- Sat, 29 Jul 2023 23:41:19 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1690699282; x=1691304082;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=dI0gdpPKANQUK3lyruxPBH4LnSOmWsKb8Vgds5YhBjQ=;
+ b=ggWXBSTzyzBNv5pOdFLUrFQEs5Dv+CsNzRIhP6FbgqKRR/J/VPBB+5RQsqoPTPboeZ
+ URYbro+r+xhpLupht6Pk75FUzxxTOfB/s0a4euXKf0IL/mRXF5GXkbLxzhAzvHBHCmN+
+ 2KXxtWEcdM77sh3kzyKU8Mdo7KVxpd6emHxs2+r8MLnWaPVdrz3EZX5ClbLjLgHHUocO
+ orWerEs5PEGf+34h51rr3n9RvJ/S6w9VBxXTmtKnGaC/nCaMQMpQKWEXX3QH+gfghsXK
+ QU7oCwWxHL/tPCk89zo49RghRg3nY9u4YMwmTJwGi26mDGIFsbVtcgElD9DzkC8GLnW1
+ vvbA==
+X-Gm-Message-State: ABy/qLYG+58lo2oYXRZmbJaJfv6OS5MlX2Wg2s8Ze+4fTbLbS5ISWCqz
+ tXX6m1jnijNiPuzsFen4dFAvAOUGqVRpBg==
+X-Google-Smtp-Source: APBJJlEPfOEB+/Zx1QqmVSfslVzIDOlk9ggrIgqH5KDfmh4q3okahhkh/asvNvoGYzklowAWwkH2cw==
+X-Received: by 2002:ac8:5887:0:b0:401:e423:3ef4 with SMTP id
+ t7-20020ac85887000000b00401e4233ef4mr9950841qta.63.1690699282575; 
+ Sat, 29 Jul 2023 23:41:22 -0700 (PDT)
 Received: from debian.hsd1.ma.comcast.net ([2601:182:cc00:77b0::aecb])
  by smtp.gmail.com with ESMTPSA id
- oq7-20020a05620a610700b00767c961eb47sm2347254qkn.43.2023.07.29.23.41.18
+ oq7-20020a05620a610700b00767c961eb47sm2347254qkn.43.2023.07.29.23.41.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 29 Jul 2023 23:41:19 -0700 (PDT)
+ Sat, 29 Jul 2023 23:41:22 -0700 (PDT)
 From: Dinah Baum <dinahbaum123@gmail.com>
 To: qemu-devel@nongnu.org
-Cc: Dinah Baum <dinahbaum123@gmail.com>
-Subject: [PATCH v3 0/3] Enable -cpu <cpu>,help
-Date: Sun, 30 Jul 2023 02:40:54 -0400
-Message-Id: <20230730064057.357598-1-dinahbaum123@gmail.com>
+Cc: Dinah Baum <dinahbaum123@gmail.com>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>
+Subject: [PATCH v3 1/3] qapi: Moved architecture agnostic data types to
+ `machine`
+Date: Sun, 30 Jul 2023 02:40:55 -0400
+Message-Id: <20230730064057.357598-2-dinahbaum123@gmail.com>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20230730064057.357598-1-dinahbaum123@gmail.com>
+References: <20230730064057.357598-1-dinahbaum123@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2a;
- envelope-from=dinahbaum123@gmail.com; helo=mail-oo1-xc2a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::82c;
+ envelope-from=dinahbaum123@gmail.com; helo=mail-qt1-x82c.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -89,43 +98,186 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch adds the ability to query for CPU
-features. Currently it is limited to the architecture that
-support feature probing (arm, i386, and s390x).
+Signed-off-by: Dinah Baum <dinahbaum123@gmail.com>
+---
+ qapi/machine-target.json | 78 +---------------------------------------
+ qapi/machine.json        | 77 +++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 78 insertions(+), 77 deletions(-)
 
-Ex:
-athlon features:
-  3dnow=<qbool>
-  3dnowext=<qbool>
-  3dnowprefetch=<qbool>
-  ...
-  
-Suggested-by: Peter Maydell
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1480
-
-Dinah Baum (3):
-  qapi: Moved architecture agnostic data types to `machine`
-  qapi, target/: Enable 'query-cpu-model-expansion' on all architectures
-  cpu, softmmu/vl.c: Change parsing of -cpu argument to allow -cpu
-    cpu,help to print options for the CPU type similar to how the
-    '-device' option works.
-
- cpu.c                            |  61 ++++++++++++++
- include/exec/cpu-common.h        |   7 ++
- include/qapi/qmp/qdict.h         |   1 +
- qapi/machine-target.json         | 138 +------------------------------
- qapi/machine.json                | 130 +++++++++++++++++++++++++++++
- qemu-options.hx                  |   7 +-
- qobject/qdict.c                  |   5 ++
- softmmu/vl.c                     |  35 +++++++-
- target/arm/arm-qmp-cmds.c        |   7 +-
- target/arm/cpu.h                 |   7 ++
- target/i386/cpu-sysemu.c         |   7 +-
- target/i386/cpu.h                |   6 ++
- target/s390x/cpu.h               |   7 ++
- target/s390x/cpu_models_sysemu.c |   6 +-
- 14 files changed, 273 insertions(+), 151 deletions(-)
-
+diff --git a/qapi/machine-target.json b/qapi/machine-target.json
+index f0a6b72414..3ee2f7ca6b 100644
+--- a/qapi/machine-target.json
++++ b/qapi/machine-target.json
+@@ -4,83 +4,7 @@
+ # This work is licensed under the terms of the GNU GPL, version 2 or later.
+ # See the COPYING file in the top-level directory.
+ 
+-##
+-# @CpuModelInfo:
+-#
+-# Virtual CPU model.
+-#
+-# A CPU model consists of the name of a CPU definition, to which delta
+-# changes are applied (e.g. features added/removed). Most magic values
+-# that an architecture might require should be hidden behind the name.
+-# However, if required, architectures can expose relevant properties.
+-#
+-# @name: the name of the CPU definition the model is based on
+-#
+-# @props: a dictionary of QOM properties to be applied
+-#
+-# Since: 2.8
+-##
+-{ 'struct': 'CpuModelInfo',
+-  'data': { 'name': 'str',
+-            '*props': 'any' } }
+-
+-##
+-# @CpuModelExpansionType:
+-#
+-# An enumeration of CPU model expansion types.
+-#
+-# @static: Expand to a static CPU model, a combination of a static
+-#     base model name and property delta changes.  As the static base
+-#     model will never change, the expanded CPU model will be the
+-#     same, independent of QEMU version, machine type, machine
+-#     options, and accelerator options.  Therefore, the resulting
+-#     model can be used by tooling without having to specify a
+-#     compatibility machine - e.g. when displaying the "host" model.
+-#     The @static CPU models are migration-safe.
+-#
+-# @full: Expand all properties.  The produced model is not guaranteed
+-#     to be migration-safe, but allows tooling to get an insight and
+-#     work with model details.
+-#
+-# Note: When a non-migration-safe CPU model is expanded in static
+-#     mode, some features enabled by the CPU model may be omitted,
+-#     because they can't be implemented by a static CPU model
+-#     definition (e.g. cache info passthrough and PMU passthrough in
+-#     x86). If you need an accurate representation of the features
+-#     enabled by a non-migration-safe CPU model, use @full.  If you
+-#     need a static representation that will keep ABI compatibility
+-#     even when changing QEMU version or machine-type, use @static
+-#     (but keep in mind that some features may be omitted).
+-#
+-# Since: 2.8
+-##
+-{ 'enum': 'CpuModelExpansionType',
+-  'data': [ 'static', 'full' ] }
+-
+-##
+-# @CpuModelCompareResult:
+-#
+-# An enumeration of CPU model comparison results.  The result is
+-# usually calculated using e.g. CPU features or CPU generations.
+-#
+-# @incompatible: If model A is incompatible to model B, model A is not
+-#     guaranteed to run where model B runs and the other way around.
+-#
+-# @identical: If model A is identical to model B, model A is
+-#     guaranteed to run where model B runs and the other way around.
+-#
+-# @superset: If model A is a superset of model B, model B is
+-#     guaranteed to run where model A runs.  There are no guarantees
+-#     about the other way.
+-#
+-# @subset: If model A is a subset of model B, model A is guaranteed to
+-#     run where model B runs.  There are no guarantees about the other
+-#     way.
+-#
+-# Since: 2.8
+-##
+-{ 'enum': 'CpuModelCompareResult',
+-  'data': [ 'incompatible', 'identical', 'superset', 'subset' ] }
++{ 'include': 'machine.json' }
+ 
+ ##
+ # @CpuModelBaselineInfo:
+diff --git a/qapi/machine.json b/qapi/machine.json
+index a08b6576ca..192c781310 100644
+--- a/qapi/machine.json
++++ b/qapi/machine.json
+@@ -1691,3 +1691,80 @@
+ { 'command': 'dumpdtb',
+   'data': { 'filename': 'str' },
+   'if': 'CONFIG_FDT' }
++
++##
++# @CpuModelInfo:
++#
++# Virtual CPU model.
++#
++# A CPU model consists of the name of a CPU definition, to which delta
++# changes are applied (e.g. features added/removed). Most magic values
++# that an architecture might require should be hidden behind the name.
++# However, if required, architectures can expose relevant properties.
++#
++# @name: the name of the CPU definition the model is based on
++#
++# @props: a dictionary of QOM properties to be applied
++#
++# Since: 2.8
++##
++{ 'struct': 'CpuModelInfo',
++  'data': { 'name': 'str', '*props': 'any' } }
++
++##
++# @CpuModelExpansionType:
++#
++# An enumeration of CPU model expansion types.
++#
++# @static: Expand to a static CPU model, a combination of a static
++#     base model name and property delta changes.  As the static base
++#     model will never change, the expanded CPU model will be the
++#     same, independent of QEMU version, machine type, machine
++#     options, and accelerator options.  Therefore, the resulting
++#     model can be used by tooling without having to specify a
++#     compatibility machine - e.g. when displaying the "host" model.
++#     The @static CPU models are migration-safe.
++#
++# @full: Expand all properties.  The produced model is not guaranteed
++#     to be migration-safe, but allows tooling to get an insight and
++#     work with model details.
++#
++# Note: When a non-migration-safe CPU model is expanded in static
++#     mode, some features enabled by the CPU model may be omitted,
++#     because they can't be implemented by a static CPU model
++#     definition (e.g. cache info passthrough and PMU passthrough in
++#     x86). If you need an accurate representation of the features
++#     enabled by a non-migration-safe CPU model, use @full.  If you
++#     need a static representation that will keep ABI compatibility
++#     even when changing QEMU version or machine-type, use @static
++#     (but keep in mind that some features may be omitted).
++#
++# Since: 2.8
++##
++{ 'enum': 'CpuModelExpansionType',
++  'data': [ 'static', 'full' ] }
++
++##
++# @CpuModelCompareResult:
++#
++# An enumeration of CPU model comparison results.  The result is
++# usually calculated using e.g.  CPU features or CPU generations.
++#
++# @incompatible: If model A is incompatible to model B, model A is not
++#     guaranteed to run where model B runs and the other way around.
++#
++# @identical: If model A is identical to model B, model A is
++#     guaranteed to run where model B runs and the other way around.
++#
++# @superset: If model A is a superset of model B, model B is
++#     guaranteed to run where model A runs.  There are no guarantees
++#     about the other way.
++#
++# @subset: If model A is a subset of model B, model A is guaranteed to
++#     run where model B runs.  There are no guarantees about the other
++#     way.
++#
++# Since: 2.8
++##
++{ 'enum': 'CpuModelCompareResult',
++  'data': [ 'incompatible', 'identical', 'superset', 'subset' ] }
 -- 
 2.30.2
 
