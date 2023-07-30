@@ -2,80 +2,111 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F1EA76851B
-	for <lists+qemu-devel@lfdr.de>; Sun, 30 Jul 2023 13:41:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C0047685D7
+	for <lists+qemu-devel@lfdr.de>; Sun, 30 Jul 2023 15:53:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQ4Rx-0001b4-Ot; Sun, 30 Jul 2023 07:19:01 -0400
+	id 1qQ69q-0001RY-L7; Sun, 30 Jul 2023 09:08:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qQ4Rr-0001aP-Ns; Sun, 30 Jul 2023 07:18:55 -0400
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qQ4Rq-00044y-21; Sun, 30 Jul 2023 07:18:55 -0400
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-686daaa5f1fso2494863b3a.3; 
- Sun, 30 Jul 2023 04:18:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1690715932; x=1691320732;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=SURs+ScrIjn9khViEWr6aLjSCMUqJ5Hwe3Wsaf1fdW0=;
- b=SZXNGUnZnOd9H9Ab5/YD7hrmRRpjdmhTt774Y0uyVpR44BruX7p2jam2iH5Qf/MkfK
- 2fGveXNJjEQNYgJMMx80U+OLTWJte0MjvSAz/Km4/uW4CgY9gJP3iN9DG6g4rhmk56/0
- P8saXujFfz3xjq1TPaoOYs+a4JAWuNM0DD/ERkrevwrmOdrcMCFj7x+A6wzHQ6NHZz/6
- NvS8i8KNO8CqYd1OrqcJzlI3kzXVb1v0IrvIMY5jt2Ox/lb1cAm0M+F7ol2xH4+nk3H1
- 2DHg2cCdZkW01uA8KFxX+EGRTYmr7h2SgsUJonKZW4mH72uyX+2Ean6d50tUgrhzMKkX
- okFw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690715932; x=1691320732;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=SURs+ScrIjn9khViEWr6aLjSCMUqJ5Hwe3Wsaf1fdW0=;
- b=gorMpeyGQu1U65xAhL/UH2z/LjSCQFtoQIMZPGxGOcZPKn9Vu0dq7KDqicdnpjbOLG
- EoU2NpIGayR8JuYmSnlc3Ws+tZ27reLoOHbOcMDEPVzsykw6K6H27nedDEV0ubfAB0dR
- SmJJyu/g9xM22LI3b96nKzw8S4Zv/7H6Pixkwz8bYeWSMUvG8sPtrTFPOgJJ38ISXM16
- f++ZwjnLmeC6AGi9k4uzHVKxZJPmuBgdBPsxr6h6X48wJu8RI0UxYk2uLk04w1Q6yqDP
- vPu+an8M7bHWShlP+TX0qXivm6btzRLeainCdbGV+kvMfvjc0+GXwMKZ63zReuDG+xYt
- UKgg==
-X-Gm-Message-State: ABy/qLZxILa7aWwZefB0icYmD+EM8/NmH108urVvJytB/ESyvG5shfGj
- V5hkyVlcdAZmzuRIJDiNB9c=
-X-Google-Smtp-Source: APBJJlFpagWPeA6SJOih2+UmKvRn0/G9utNOAzuLmsO33MUtfZ+GkTwOq+vbNIgS35tI2k2oRAn8fg==
-X-Received: by 2002:a05:6a20:7f95:b0:130:835b:e6b7 with SMTP id
- d21-20020a056a207f9500b00130835be6b7mr7684494pzj.47.1690715931714; 
- Sun, 30 Jul 2023 04:18:51 -0700 (PDT)
-Received: from wheely.local0.net (110-174-143-94.tpgi.com.au. [110.174.143.94])
- by smtp.gmail.com with ESMTPSA id
- w8-20020a170902e88800b001bb1f09189bsm6482441plg.221.2023.07.30.04.18.47
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 30 Jul 2023 04:18:51 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: Daniel Henrique Barboza <danielhb413@gmail.com>
-Cc: Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org,
- qemu-devel@nongnu.org
-Subject: [PATCH v2] target/ppc: Fix VRMA page size for ISA v3.0
-Date: Sun, 30 Jul 2023 21:18:42 +1000
-Message-Id: <20230730111842.39292-1-npiggin@gmail.com>
-X-Mailer: git-send-email 2.40.1
-MIME-Version: 1.0
+ (Exim 4.90_1) (envelope-from <liyq.yuanqing@outlook.com>)
+ id 1qPyie-00040l-2W; Sun, 30 Jul 2023 01:11:53 -0400
+Received: from mail-tycjpn01olkn20819.outbound.protection.outlook.com
+ ([2a01:111:f403:7010::819]
+ helo=JPN01-TYC-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <liyq.yuanqing@outlook.com>)
+ id 1qPyia-0004vn-Av; Sun, 30 Jul 2023 01:11:50 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=f6IjqjN7XYtbiN7WbMJiSZqadQVlS89apQo9kt3fGu5Z07T5clfoN211cWxD52e45KcO+gaEx0xfhQdscq8c6FdF0YhilpxldC7KQBX0auB6S8uBbsd8Rsy/kRgiC0owDkCPEvhGzLCco00SBUU35dIEgtj2U19AZVDl9+H9agNxX3U6B7dNRgBo69cDH/h40zPYTy98dVawWQ/Rx/lfi6g+oKKxZwBSEiUFVihHfFL8GXX+ur8jMiRlKLFj65N+Cy6SXPpKS+lFOMjuLA1swFygFWKTCVw3hdkQJAGVTKWMeuopQ9xZ26GpgXaPmXE9QgoT1PsQYceOU8u2nRlhqQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=vccijCw2wsIsnbl9JzWiPl1JaSOA3pRv2hGtf8f7IAo=;
+ b=OgUOnQVZ7/GZ1nsrbcdAhDxYD3I1dlPrFO9TAft5RarMVkw+is+ycx2kIamz81KGY9szNRL5Dvx5mr6CPVJpswj+xhhq2OQlFJED+Bm/7mjPgOOT7rTHSQnQhXFzYOvFUIEGRWrvst86bBwulqJli7KRvfRI3ibkl1Xy4VYq3J8aWII8Jk8mIlxhhd+Nb/aMLwLZ1YGwjq8kxViQuTASHEz+UTKutzC8nsalFKI3DoG5WSNZBTzUOYbiH/lUAUapzZpT6VFHQ3SZTtVYiOR25Bph+3u7CuwHZxQ1q1Mwsvyw0IR29Q9QER1LAq63nLCOI8LVlnegXbwsorUml5JjoA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vccijCw2wsIsnbl9JzWiPl1JaSOA3pRv2hGtf8f7IAo=;
+ b=dEvfrLTPzDU30+X9vckGspA+NxIMaf3N/sPXSvlWoLpL1JJO5LkZUDsgvKdwLafsB2PPasrZTA9egdfkGj+pvrUwopm/OXk1cg7mO+20TA7HmnB06YL+4eGBIAjksB6tCtMBKrPVaT6OXkbCJNya5mSWcn7/s5Mpf3jgrH0y697d49sPBxB1zOIHiQ8nCJSHlWuIljmmasOPGFUy54aUpNa5b3/YvwEtmb7riAXGw17hesh25FZBQQFHp0SCbpRo+MncRspSMcIeupD1WWPpn/HSCezqbkLzuqlicCUoMhb8YlInPJQUo/aUwCpDQ0YJJUPfAHattItGYZcIiHfscg==
+Received: from OSZP286MB1275.JPNP286.PROD.OUTLOOK.COM (2603:1096:604:136::7)
+ by TYWP286MB2155.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:174::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6631.42; Sun, 30 Jul
+ 2023 05:11:41 +0000
+Received: from OSZP286MB1275.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::f8b9:66e4:9d4e:f63c]) by OSZP286MB1275.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::f8b9:66e4:9d4e:f63c%5]) with mapi id 15.20.6631.042; Sun, 30 Jul 2023
+ 05:11:41 +0000
+From: Yuanqing Li <liyq.yuanqing@outlook.com>
+To: qemu-devel@nongnu.org
+Cc: Yuanqing Li <liyq.yuanqing@outlook.com>,
+	qemu-trivial@nongnu.org
+Subject: [PATCH] hda-audio: use log-scale for amplifier levels
+Date: Sun, 30 Jul 2023 05:08:58 +0000
+Message-ID: <TYCP286MB12667F4B46EE030F93FFDA47ED04A@TYCP286MB1266.JPNP286.PROD.OUTLOOK.COM>
+X-Mailer: git-send-email 2.41.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x431.google.com
+Content-Type: text/plain
+X-TMN: [VFcGLYZJSVYrPc+NJFuA2pGQpH4ZhF55]
+X-ClientProxiedBy: PH7PR17CA0043.namprd17.prod.outlook.com
+ (2603:10b6:510:323::9) To TYCP286MB1266.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:b9::7)
+X-Microsoft-Original-Message-ID: <20230730050948.63946-2-liyq.yuanqing@outlook.com>
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: OSZP286MB1275:EE_|TYWP286MB2155:EE_
+X-MS-Office365-Filtering-Correlation-Id: 014adad0-406c-47f2-b7f4-08db90bb7456
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: yuxdChb9ogMU+j5AmjwrMOjvvznMakyRq7E7MM9fkAt4AmA7+EuL6Fm5g64qK5r7/azh48ZjIme3962FGeahPhc76oSYQE4eqNpgrV2n3xCiXSD+9jUFS6tBtzCc1fq0wzsl+duSmgIbyZOxJb+S28up7DKMZKn7OvAbflSrJl+KUui/++rFzMtkxqVTcP6q8q8lM4uxhAQ0erefTO8Bd23/cBOmD6jyAsBYF7hmG1FSTGEkXimacZFf5FyKr0E5FmtT3KvDFv6D2i4nzEbVPBM2Rl5MRftk9AGbNUborMvursg9Hu8kROxCQko0GFQ7Gh1U8/682jfUGIPtmvBlo/gM6h2KUPlnzhtMH9hvU5lFA2ahbLlYp4/KQI+PQBJlaGjGblPMZiIclElrgzdTJhUPjDsSvwkNrpvUt/cR4BvGxAgs5AGuPDHMNeV/ZtfdI8UiR5ZGKsfitkYTxAYEA/nxVVgIS6O6zlyZK3vxBS/uzNESYcAFwQj9Khq5u/19aO2OLWQ8V4f/3ULV9rx3YHrB4/ww84waIeH7pavxiTf1WOPXaIkppF34ial3DUaPko146FstJib4dyAif5oEToZjpOdlUj0Zvoj0nJ2flrT9AUfAoqBSJLCzN2e0iFSp
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?W3178mc8jONwVESizgoqxsW4oM/bXGAeXfEd/Ryoa/H/Zl3X1f6Sz2iK8ZkQ?=
+ =?us-ascii?Q?iOB9P4m3meYQzks563CVgRVtatSJI3OUT0okQeayVvzMSaY3o+ijZ4ueCZ50?=
+ =?us-ascii?Q?C4yBeNgA85f8JF/pDOXSOMev1hFaa3L6IdyBMpk2V5MvNA35j1a4IzTxnVMq?=
+ =?us-ascii?Q?GI1E1147u9++IO2siTMfGh4u57P5yA34eNkGI9jJAkK2m0q+odJ69qZULCqo?=
+ =?us-ascii?Q?9aSbl6vffrFYjMN7gqF1leWOe9yQztjSBzdCFJ65wH/sPIwH23HpKZOXAJf5?=
+ =?us-ascii?Q?Rh9U5FmjyJnN3U+Y5x6TxoKmSlDhiI1BBwgln/ZQdSZ+Q4z+btytjDvCqhpA?=
+ =?us-ascii?Q?P5J3VEBCUtnF90PVWfHEREmQFW3RT2XlnFqvgHVQ3Yelooj9bDI7QqexbGT9?=
+ =?us-ascii?Q?/F5B4b/3BVRlc6fhSGmStO4yQlOA85uebiMjU53xDBSojj0US4F9cPYNipSO?=
+ =?us-ascii?Q?tLvVYb4E1aAELqC4tpUeClr6JLg/8wzM9XTv2qdJp3/NaiABlN8CWriOeGun?=
+ =?us-ascii?Q?TACziOHmRwYBOeZ99XVYGlUYRBss+172vG766rflc2LFYx5PGnZytW4e8bM4?=
+ =?us-ascii?Q?Z1DJFfddjKaOzu8OVwrEN7PLIQuJ/iiTXPC0z9vQwtS2Gprqft0kUjVYBGEE?=
+ =?us-ascii?Q?UhUpA7s5xSisr14fJFJOXjQKTP6FTMbIFYkx/hkx4vzJkABrKEbTrTl5WO/X?=
+ =?us-ascii?Q?rpPLn3PS9Uuix/bQtlO9DoDvM8RADW2bIjTM7ZQHoQrVsRr3Nsv/MtjjQ/NK?=
+ =?us-ascii?Q?J0ffvpFzZS6DSptwXNiNWACOU7G6Mmieb6sSRAgWBCEn+xd6527oxQtLzPmr?=
+ =?us-ascii?Q?EB2t0Lf+Z6mcquPftIt1FHO1EwWOiBhvdrLRD733eF9caGDM+1nbO8TBJhKV?=
+ =?us-ascii?Q?P6eLtPwMLgxfks/GU0fbr1H74Cx5X2SQ0NPwIeInxsUk1XbtWHFtW9o1/dkb?=
+ =?us-ascii?Q?GaKhBW/sgeqRsHjdgDjvTK3mYrwCpTcfq72WSGnhszDwjiIbGbvQQ9neAvxg?=
+ =?us-ascii?Q?/RdNlZNPZg/X76VvBTyIQekET3gP99oyrvkw1iq1D3qWTckHc01Zj43+N4Yp?=
+ =?us-ascii?Q?aP3QpHCCDcCl7veNyEBfQQYmz0yS5uvtZMgk7iQZUwJGqki1A4d7rHvRoMAk?=
+ =?us-ascii?Q?ggSuq+a1XXr7+zkN+5YSCwki3y7EZDI1B2DqtlFO4+knGIm8asdzBb4OOfLN?=
+ =?us-ascii?Q?rxDfDdEZxYAbgy7B9Vq+GDrJZmHGCNkFKEzp/fbxbuMIKmHHCfIjFX3DcDw?=
+ =?us-ascii?Q?=3D?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 014adad0-406c-47f2-b7f4-08db90bb7456
+X-MS-Exchange-CrossTenant-AuthSource: TYCP286MB1266.JPNP286.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jul 2023 05:11:41.6128 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYWP286MB2155
+Received-SPF: pass client-ip=2a01:111:f403:7010::819;
+ envelope-from=liyq.yuanqing@outlook.com;
+ helo=JPN01-TYC-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Sun, 30 Jul 2023 09:08:23 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,121 +121,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Until v2.07s, the VRMA page size (L||LP) was encoded in LPCR[VRMASD].
-In v3.0 that moved to the partition table PS field.
+According Intel's High Definition Audio Specification (Revision 1.0a,
+Section 7.3.4.10: Amplifier Capabilities), the amplifier gain levels
+should be evenly spaced in dB, i.e. using a log scale instead of linear.
 
-The powernv machine can now run KVM HPT guests on POWER9/10 CPUs with
-this fix and the patch to add ASDR.
+Here, the hda-codec reports amplifier levels from 0 to -48 dB at 1-dB
+steps matching the 8-bit dynamic range, and the -49 dB level is mapped
+to 0 (muted).
 
-Fixes: 3367c62f522b ("target/ppc: Support for POWER9 native hash")
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Yuanqing Li <liyq.yuanqing@outlook.com>
 ---
-Since v1:
-- Added llp variable to avoid calling get_vrma_llp twice [Cedric].
-- Added some bit defines for architected fields and values [Cedric].
+ hw/audio/hda-codec.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-Patches 1,3 from the previously posted series, let's defer 4-6
-decrementer fixes until after 8.1, so this is the last remaining
-one from the series.
-
-Thanks,
-Nick
-
- target/ppc/mmu-hash64.c | 45 +++++++++++++++++++++++++++++++++++------
- target/ppc/mmu-hash64.h |  5 +++++
- 2 files changed, 44 insertions(+), 6 deletions(-)
-
-diff --git a/target/ppc/mmu-hash64.c b/target/ppc/mmu-hash64.c
-index a0c90df3ce..d645c0bb94 100644
---- a/target/ppc/mmu-hash64.c
-+++ b/target/ppc/mmu-hash64.c
-@@ -874,12 +874,46 @@ static target_ulong rmls_limit(PowerPCCPU *cpu)
-     return rma_sizes[rmls];
+diff --git a/hw/audio/hda-codec.c b/hw/audio/hda-codec.c
+index c51d8ba617..c2aa71624b 100644
+--- a/hw/audio/hda-codec.c
++++ b/hw/audio/hda-codec.c
+@@ -121,7 +121,7 @@ static void hda_codec_parse_fmt(uint32_t format, struct audsettings *as)
+ #define QEMU_HDA_PCM_FORMATS (AC_SUPPCM_BITS_16 |       \
+                               0x1fc /* 16 -> 96 kHz */)
+ #define QEMU_HDA_AMP_NONE    (0)
+-#define QEMU_HDA_AMP_STEPS   0x4a
++#define QEMU_HDA_AMP_STEPS   0x31 /* 20 * log10(255) = 48 dB dynamic range */
+ 
+ #define   PARAM mixemu
+ #define   HDA_MIXER
+@@ -433,6 +433,14 @@ static void hda_audio_set_running(HDAAudioStream *st, bool running)
+     }
  }
  
--static int build_vrma_slbe(PowerPCCPU *cpu, ppc_slb_t *slb)
-+/* Return the LLP in SLB_VSID format */
-+static uint64_t get_vrma_llp(PowerPCCPU *cpu)
- {
-     CPUPPCState *env = &cpu->env;
--    target_ulong lpcr = env->spr[SPR_LPCR];
--    uint32_t vrmasd = (lpcr & LPCR_VRMASD) >> LPCR_VRMASD_SHIFT;
--    target_ulong vsid = SLB_VSID_VRMA | ((vrmasd << 4) & SLB_VSID_LLP_MASK);
-+    uint64_t llp;
-+
-+    if (env->mmu_model == POWERPC_MMU_3_00) {
-+        ppc_v3_pate_t pate;
-+        uint64_t ps, l, lp;
-+
-+        /*
-+         * ISA v3.0 removes the LPCR[VRMASD] field and puts the VRMA base
-+         * page size (L||LP equivalent) in the PS field in the HPT partition
-+         * table entry.
-+         */
-+        if (!ppc64_v3_get_pate(cpu, cpu->env.spr[SPR_LPIDR], &pate)) {
-+            error_report("Bad VRMA with no partition table entry");
-+            return 0;
-+        }
-+        ps = PATE0_GET_PS(pate.dw0);
-+        /* PS has L||LP in 3 consecutive bits, put them into SLB LLP format */
-+        l = (ps >> 2) & 0x1;
-+        lp = ps & 0x3;
-+        llp = (l << SLB_VSID_L_SHIFT) | (lp << SLB_VSID_LP_SHIFT);
-+
-+    } else {
-+        uint64_t lpcr = env->spr[SPR_LPCR];
-+        target_ulong vrmasd = (lpcr & LPCR_VRMASD) >> LPCR_VRMASD_SHIFT;
-+
-+        /* VRMASD LLP matches SLB format, just shift and mask it */
-+        llp = (vrmasd << SLB_VSID_LP_SHIFT) & SLB_VSID_LLP_MASK;
-+    }
-+
-+    return llp;
++/* first muted; then from -48 dB to 0 dB */
++static const uint32_t hda_vol_table[] = {
++    0,   1,   1,   1,   1,   2,   2,   2,   2,   3,   3,   3,   4,   4,   5,
++    5,   6,   6,   7,   8,   9,   10,  11,  13,  14,  16,  18,  20,  23,  26,
++    29,  32,  36,  40,  45,  51,  57,  64,  72,  81,  90,  102, 114, 128, 143,
++    161, 181, 203, 227, 255
 +}
 +
-+static int build_vrma_slbe(PowerPCCPU *cpu, ppc_slb_t *slb)
-+{
-+    uint64_t llp = get_vrma_llp(cpu);
-+    target_ulong vsid = SLB_VSID_VRMA | llp;
-     int i;
+ static void hda_audio_set_amp(HDAAudioStream *st)
+ {
+     bool muted;
+@@ -446,8 +454,8 @@ static void hda_audio_set_amp(HDAAudioStream *st)
+     left  = st->mute_left  ? 0 : st->gain_left;
+     right = st->mute_right ? 0 : st->gain_right;
  
-     for (i = 0; i < PPC_PAGE_SIZES_MAX_SZ; i++) {
-@@ -897,8 +931,7 @@ static int build_vrma_slbe(PowerPCCPU *cpu, ppc_slb_t *slb)
-         }
-     }
+-    left = left * 255 / QEMU_HDA_AMP_STEPS;
+-    right = right * 255 / QEMU_HDA_AMP_STEPS;
++    left = hda_vol_table[left];
++    right = hda_vol_table[right];
  
--    error_report("Bad page size encoding in LPCR[VRMASD]; LPCR=0x"
--                 TARGET_FMT_lx, lpcr);
-+    error_report("Bad VRMA page size encoding 0x" TARGET_FMT_lx, llp);
- 
-     return -1;
- }
-diff --git a/target/ppc/mmu-hash64.h b/target/ppc/mmu-hash64.h
-index 1496955d38..de653fcae5 100644
---- a/target/ppc/mmu-hash64.h
-+++ b/target/ppc/mmu-hash64.h
-@@ -41,8 +41,10 @@ void ppc_hash64_finalize(PowerPCCPU *cpu);
- #define SLB_VSID_KP             0x0000000000000400ULL
- #define SLB_VSID_N              0x0000000000000200ULL /* no-execute */
- #define SLB_VSID_L              0x0000000000000100ULL
-+#define SLB_VSID_L_SHIFT        PPC_BIT_NR(55)
- #define SLB_VSID_C              0x0000000000000080ULL /* class */
- #define SLB_VSID_LP             0x0000000000000030ULL
-+#define SLB_VSID_LP_SHIFT       PPC_BIT_NR(59)
- #define SLB_VSID_ATTR           0x0000000000000FFFULL
- #define SLB_VSID_LLP_MASK       (SLB_VSID_L | SLB_VSID_LP)
- #define SLB_VSID_4K             0x0000000000000000ULL
-@@ -58,6 +60,9 @@ void ppc_hash64_finalize(PowerPCCPU *cpu);
- #define SDR_64_HTABSIZE        0x000000000000001FULL
- 
- #define PATE0_HTABORG           0x0FFFFFFFFFFC0000ULL
-+#define PATE0_PS                PPC_BITMASK(56, 58)
-+#define PATE0_GET_PS(dw0)       (((dw0) & PATE0_PS) >> PPC_BIT_NR(58))
-+
- #define HPTES_PER_GROUP         8
- #define HASH_PTE_SIZE_64        16
- #define HASH_PTEG_SIZE_64       (HASH_PTE_SIZE_64 * HPTES_PER_GROUP)
+     if (!st->state->mixer) {
+         return;
 -- 
-2.40.1
+2.41.0
 
 
