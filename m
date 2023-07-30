@@ -2,85 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1C127687CD
-	for <lists+qemu-devel@lfdr.de>; Sun, 30 Jul 2023 22:04:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5FD476880B
+	for <lists+qemu-devel@lfdr.de>; Sun, 30 Jul 2023 22:39:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQCdS-0001Rm-ET; Sun, 30 Jul 2023 16:03:26 -0400
+	id 1qQDAx-0006cP-6R; Sun, 30 Jul 2023 16:38:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qQCdQ-0001Re-PN
- for qemu-devel@nongnu.org; Sun, 30 Jul 2023 16:03:24 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qQCdP-0004WI-9b
- for qemu-devel@nongnu.org; Sun, 30 Jul 2023 16:03:24 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-1b9c5e07c1bso32758975ad.2
- for <qemu-devel@nongnu.org>; Sun, 30 Jul 2023 13:03:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690747401; x=1691352201;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=tTMRyA2MQre4KleArxU4diJpXc22LJ+IEdIFzEfdJzg=;
- b=bVYbqWr5Xul4Jq0UzVzx/6/UIKCvcG9HsHEy7+TylSIowkuvRA1hyAYIiTgy2cBxD9
- LeaRsPynwcEiq2D4Ne3Ndmx06DFW32iioQpUS7JAK4fU3Ywhmeb+OX78ZBimO0Q53kel
- kPAhR1gQYZZRwopS9oqfzw9Qnv7G+q1TfORqRNASWcuGqf7pNISpSmwUjshNfhBihKvx
- MkI5RDBhlCx9eTLDB71xYfpnNqnVaR4788Pj+eeWMpY3njV97htDZJ9jEaytQY1ktJ89
- /rZuab/nQP7hKtQ21ESbxvbL6NxDYOI9SpJ4TsBSqJ+SaeGqg7BLS8ptoNcI41LqwIow
- TYJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690747401; x=1691352201;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=tTMRyA2MQre4KleArxU4diJpXc22LJ+IEdIFzEfdJzg=;
- b=TktX+7zs4tYd6o5MOdxImUmRL45owjzo5S4dOdQ7yAAOX+Bk7cNknowLnzhjJPPwJH
- NY6rQyCXs7gA79iLGc+psxa+VuXLNjSkbmSK+Y5Eim76wM4JBoQB98hTS+jTPEffJt2b
- kSAGVk51ZiC4ZWWPxVImA9P+M8O70KW9GfJThkDDRv/du6dNz2hL0zEEyBd+/vpZhhl0
- T1UmJb6T77hkSWi+q6c8JMEhd1xOIQvolqJpn69AzyJ1SC8aeprLZWX0u7JWma1T7qOE
- HAj5Q3Hwl3WFs1H13PyTd+ntdgU2Ko67SNR5EBrVt+BPspyAN8HCPoeMBpUwZvOuWmKh
- O4PQ==
-X-Gm-Message-State: ABy/qLbT4LOHCGzRYcwuS285Pctkm9YSr1zU3Tp1mioDpJCR3U0+tMhS
- 7LX3rVuixlwFj0zB2j3nnjX4uw==
-X-Google-Smtp-Source: APBJJlFyVVfCjMX95FXu2MvvRBy+k1pHCkOTHjCQ+aAq3YRWXDXsitGAhlWO2USGKjW3o6X/BWr6bQ==
-X-Received: by 2002:a17:902:db08:b0:1b8:a19e:a3d3 with SMTP id
- m8-20020a170902db0800b001b8a19ea3d3mr9512019plx.52.1690747401254; 
- Sun, 30 Jul 2023 13:03:21 -0700 (PDT)
-Received: from ?IPV6:2602:47:d490:6901:bc22:a670:ff11:5de6?
- ([2602:47:d490:6901:bc22:a670:ff11:5de6])
- by smtp.gmail.com with ESMTPSA id
- co4-20020a17090afe8400b00267e299f71dsm5100852pjb.7.2023.07.30.13.03.20
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 30 Jul 2023 13:03:20 -0700 (PDT)
-Message-ID: <b0ff6b75-60c9-aa3e-e701-a4062558a9bf@linaro.org>
-Date: Sun, 30 Jul 2023 13:03:18 -0700
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qQDAv-0006cH-9H
+ for qemu-devel@nongnu.org; Sun, 30 Jul 2023 16:38:01 -0400
+Received: from mout.gmx.net ([212.227.17.20])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qQDAt-0004Mr-CR
+ for qemu-devel@nongnu.org; Sun, 30 Jul 2023 16:38:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
+ s=s31663417; t=1690749476; x=1691354276; i=deller@gmx.de;
+ bh=V4qQg+rlOj8GWAESp0aa6+NEISv+GRu2S/ZMCU7dqFw=;
+ h=X-UI-Sender-Class:Date:Subject:To:References:From:In-Reply-To;
+ b=jcCDXtum1DxwMj2+Jkn6I9lczSGoHdqE6Qpl1be3vDo9N32ZJ+yWnatWNRFpsPHN7ohYDfq
+ 3JP7SkA3m6w/vIRhyKftdEA6CqrG2S3z8GvP2EhE+N3iWtc1XhS+aK67kGP3W4uF3T3KOfN7v
+ aS0vrqzAQ/aQv4EFgv2ISWMdbmhtRYGJMDhN9q6rg9mlQ3OKidPD6GHAX/KqC80/jzenYv5gI
+ Pj5pzTJSB45KC3coN98DziC237J6nPnLggIFsC6v5ZWmHs3iSWX5yj8K77LoyE3knbNhZNNB9
+ fhY4YlHxf1tr2wKHvV4Dyaf/VkJjaT2GHaERCF6805tfdpOIYE6Q==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.60] ([94.134.144.241]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MeU0q-1ppmUa1NHI-00aV6U; Sun, 30
+ Jul 2023 22:37:56 +0200
+Message-ID: <2c178363-b1a3-1192-09ac-2bbfa7ae7672@gmx.de>
+Date: Sun, 30 Jul 2023 22:37:55 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
 Subject: Re: [RFC][PATCH] accel/tcg: Use lookup_and_goto_ptr() for linux-user
  in translator_use_goto_tb()
 Content-Language: en-US
-To: Helge Deller <deller@gmx.de>, Laurent Vivier <laurent@vivier.eu>,
- qemu-devel@nongnu.org
+To: Richard Henderson <richard.henderson@linaro.org>,
+ Laurent Vivier <laurent@vivier.eu>, qemu-devel@nongnu.org
 References: <ZMakYpOgco2Ihg0G@p100>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <ZMakYpOgco2Ihg0G@p100>
+ <b0ff6b75-60c9-aa3e-e701-a4062558a9bf@linaro.org>
+From: Helge Deller <deller@gmx.de>
+In-Reply-To: <b0ff6b75-60c9-aa3e-e701-a4062558a9bf@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:6yCMDsrqpQni1Hmn0kiIqACCKsG1/U2xi7DYSQDjYiV6Yq6h0yv
+ WHUQGUDtAVe1fBx/Smq9VZj0xYNDIDKKswHuJPYwjvfTjOOJuaut7QWlEUVwt65CFKb8nCv
+ IAoG+hw/2QOk+fRSHlUjiO+qerWp21MMXDBZFWk02YZ3zthMVhVctGAe8fAr/4Cxj9x3ryP
+ VH9sZ6jkJ+roMv0rDXXcw==
+UI-OutboundReport: notjunk:1;M01:P0:7Mus97HbWsU=;6cuQt9Ln0xqmEdbJRrso1Uz9ULj
+ otq+OYcIHRNDf+/vpgE7dWIOdtmsTBod4CfmPcbF6ATgUcVHKrlA9eAfLP/VNoYHmU3W5ucWA
+ mt1gS0vp1tlHjRD/wv4wKVyTY5J24uXHvA2vRBiNxiCl8qhEf8mc+xpzOVjN7z4hQI/h/n7oO
+ e3xtjvyI7vEZ1HoKIsa4HHcGJdsJCpwxWNlgTpFVeUo2MhJpm/Z6BhZ2oKTD5YiJ1S52NWcul
+ olB8BuAJjmz8whu3hqsxCxwzsEB1E8nfHYOeo03GKiZ/o1qG+wA3TauDN61suNhj/+q8zqc0x
+ v4hVtyAUOkFdyRxEU2U3WFkKsItHKTpfuRQnKPDKpQh+thiNQQj9+Re7IU5viJ4k53i1J8cIL
+ Zt0sI/lhQ+X3rQQbdIi/ET+JoFMW4UzrZ8bUJAAkOmWBfpBjCl6IjVJtD+58ewfumjzAexn2g
+ t76780axFQgVfOaV+Xj+5uflF8i7aqmEboaCQvu/HsVii5DYVuQo61PxlOlekI+AjVGX8/vyQ
+ sPagW2ilrOao037wR7mAj/g8MSSf8m/Q7wnUXgIa4rybO+PIXva9w/hzbrlUMimaY1DZa2h7k
+ fBl7MDFfK1I9MXdxnChzlZjXXU3tDPN/NQBbyV9ZU7l3GVCd7GEUUG+u6xFriEdlq03P/nNSs
+ 2P6nlkhlWGuQnTXfC7KWAkCpEI8GrjE1IJlPI+FdFdA+KrttpfVmA3eE5IMIJA462bc21sN2i
+ Z+F61NelXIx9DCDW0dgKVReGRvjUxsoBKlFB+BLG65A9Ka54qjC0BK4i+xl2HG5e301XB3piH
+ NSIU5WeyhCTM6Req2vWODL0d7h3MRzdHNVlaidAsrg02S/2Y4ZYU34zY1ol/bis6fpsTVgIa5
+ S2I8Zo6qbL3Zan+3+mhe3+QtGPdBs5pn93QJNFZu9WLHB9BNM7iSEZI9gsXou2p3J0LbGSQc/
+ mrGzXA==
+Received-SPF: pass client-ip=212.227.17.20; envelope-from=deller@gmx.de;
+ helo=mout.gmx.net
+X-Spam_score_int: -28
+X-Spam_score: -2.9
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.101,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ NICE_REPLY_A=-0.101, RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,37 +88,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/30/23 10:56, Helge Deller wrote:
-> I'm quite unclear about translator_use_goto_tb() for qemu-user
-> emulation....(and in general).
-> 
-> Based on the function name, the function translator_use_goto_tb() shall
-> help to decide if a program should use goto_tb() and exit_tb() to jump
-> to the next instruction.
-> 
-> Currently, if the destination is on the same page, it returns true.
-> I wonder, if it shouldn't return false in this case instead, because
-> arches have code like this: (taken from target/hppa/translate.c):
->      if (... && translator_use_goto_tb(ctx, f)) {
->          tcg_gen_goto_tb(which);
->          tcg_gen_movi_reg(cpu_iaoq_f, f);
->          tcg_gen_movi_reg(cpu_iaoq_b, b);
->          tcg_gen_exit_tb(ctx->base.tb, which);
->      } else {
->          copy_iaoq_entry(cpu_iaoq_f, f, cpu_iaoq_b);
->          copy_iaoq_entry(cpu_iaoq_b, b, ctx->iaoq_n_var);
->          tcg_gen_lookup_and_goto_ptr();
->      }
-> 
-> Shouldn't, if the destination is on the same page, the (faster?)
-> path with tcg_gen_lookup_and_goto_ptr() be taken instead?
+On 7/30/23 22:03, Richard Henderson wrote:
+> On 7/30/23 10:56, Helge Deller wrote:
+>> I'm quite unclear about translator_use_goto_tb() for qemu-user
+>> emulation....(and in general).
+>>
+>> Based on the function name, the function translator_use_goto_tb() shall
+>> help to decide if a program should use goto_tb() and exit_tb() to jump
+>> to the next instruction.
+>>
+>> Currently, if the destination is on the same page, it returns true.
+>> I wonder, if it shouldn't return false in this case instead, because
+>> arches have code like this: (taken from target/hppa/translate.c):
+>> =C2=A0=C2=A0=C2=A0=C2=A0 if (... && translator_use_goto_tb(ctx, f)) {
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tcg_gen_goto_tb(which)=
+;
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tcg_gen_movi_reg(cpu_i=
+aoq_f, f);
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tcg_gen_movi_reg(cpu_i=
+aoq_b, b);
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tcg_gen_exit_tb(ctx->b=
+ase.tb, which);
+>> =C2=A0=C2=A0=C2=A0=C2=A0 } else {
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 copy_iaoq_entry(cpu_ia=
+oq_f, f, cpu_iaoq_b);
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 copy_iaoq_entry(cpu_ia=
+oq_b, b, ctx->iaoq_n_var);
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tcg_gen_lookup_and_got=
+o_ptr();
+>> =C2=A0=C2=A0=C2=A0=C2=A0 }
+>>
+>> Shouldn't, if the destination is on the same page, the (faster?)
+>> path with tcg_gen_lookup_and_goto_ptr() be taken instead?
+>
+> No, because tcg_gen_lookup_and_goto_ptr is not the faster path.
+> That always involves a lookup, then an indirect branch.
 
-No, because tcg_gen_lookup_and_goto_ptr is not the faster path.
-That always involves a lookup, then an indirect branch.
+Ah, ok. So my assumption was wrong, and this explains it.
 
-The goto_tb path is linked, so only requires a lookup once, and the branch may be direct 
-(depending on the host architecture).
+> The goto_tb path is linked, so only requires a lookup once, and the
+> branch may be direct (depending on the host architecture).
+Probably the last question in this regard:
 
+This code:
+IN:
+0x00010c98:  cmpib,<>,n 0,r19,0x10c98
 
-r~
+generates "nop/jmp" in the code:
+
+the tcg_gen_goto_tb() branch:
+OUT:
+0x7fd7e400070e:  85 db                    testl    %ebx, %ebx
+0x7fd7e4000710:  0f 85 20 00 00 00        jne      0x7fd7e4000736
+0x7fd7e4000716:  90                       nop				<- from "tcg_gen_op1i(IND=
+EX_op_goto_tb, idx)" in tcg_gen_goto_tb()
+0x7fd7e4000717:  e9 00 00 00 00           jmp      0x7fd7e400071c	<- jump =
+is effective useless.
+0x7fd7e400071c:  c7 45 00 a3 0c 01 00     movl     $0x10ca3, (%rbp)
+0x7fd7e4000723:  c7 45 04 a7 0c 01 00     movl     $0x10ca7, 4(%rbp)
+0x7fd7e400072a:  48 8d 05 0f ff ff ff     leaq     -0xf1(%rip), %rax
+0x7fd7e4000731:  e9 e2 f8 ff ff           jmp      0x7fd7e4000018
+0x7fd7e4000736:  90                       nop				<- here too.
+0x7fd7e4000737:  e9 00 00 00 00           jmp      0x7fd7e400073c
+0x7fd7e400073c:  c7 45 00 9f 0c 01 00     movl     $0x10c9f, (%rbp)
+0x7fd7e4000743:  c7 45 04 9b 0c 01 00     movl     $0x10c9b, 4(%rbp)
+0x7fd7e400074a:  48 8d 05 f0 fe ff ff     leaq     -0x110(%rip), %rax
+0x7fd7e4000751:  e9 c2 f8 ff ff           jmp      0x7fd7e4000018
+
+I assume those nops/jmp+0 is to be able to insert breakpoints?
+
+But those nops/jmps are never in the tcg_gen_lookup_and_goto_ptr() branch,
+probably because breakpoints are checked in HELPER(lookup_tb_ptr), right?
+
+0x7ff47c0006d0:  0f 85 18 00 00 00        jne      0x7ff47c0006ee
+0x7ff47c0006d6:  c7 45 00 a3 0c 01 00     movl     $0x10ca3, (%rbp)
+0x7ff47c0006dd:  c7 45 04 a7 0c 01 00     movl     $0x10ca7, 4(%rbp)
+0x7ff47c0006e4:  48 8b fd                 movq     %rbp, %rdi
+0x7ff47c0006e7:  e8 34 bf 42 0f           callq    0x7ff48b42c620
+0x7ff47c0006ec:  ff e0                    jmpq     *%rax
+0x7ff47c0006ee:  c7 45 00 9f 0c 01 00     movl     $0x10c9f, (%rbp)
+0x7ff47c0006f5:  c7 45 04 9b 0c 01 00     movl     $0x10c9b, 4(%rbp)
+0x7ff47c0006fc:  48 8b fd                 movq     %rbp, %rdi
+0x7ff47c0006ff:  e8 1c bf 42 0f           callq    0x7ff48b42c620
+0x7ff47c000704:  ff e0                    jmpq     *%rax
+
+Question:
+Couldn't those nops be avoided in the tcg_gen_goto_tb() branch too, e.g.
+if breakpoints are checked when returning through the prologue exit path?
+
+Thanks!
+Helge
 
