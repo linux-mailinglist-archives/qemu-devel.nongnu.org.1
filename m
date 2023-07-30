@@ -2,72 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50AD476875A
-	for <lists+qemu-devel@lfdr.de>; Sun, 30 Jul 2023 21:18:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F4C9768779
+	for <lists+qemu-devel@lfdr.de>; Sun, 30 Jul 2023 21:31:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQBuu-0003DE-Pg; Sun, 30 Jul 2023 15:17:24 -0400
+	id 1qQC76-00062Z-Om; Sun, 30 Jul 2023 15:30:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qQBur-0003D2-6A; Sun, 30 Jul 2023 15:17:21 -0400
-Received: from mail-qt1-x82d.google.com ([2607:f8b0:4864:20::82d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qQBup-0002Pa-MX; Sun, 30 Jul 2023 15:17:20 -0400
-Received: by mail-qt1-x82d.google.com with SMTP id
- d75a77b69052e-40849e69eb5so10580711cf.1; 
- Sun, 30 Jul 2023 12:17:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1690744637; x=1691349437;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=IC9+2XmSwELvjjFh+s/lbhVTMpjfnGZKtH/c+xknbh0=;
- b=VBQAkdFHlq7dHGBkAxioRf1wCQhWkh+ImCJ9qmFqviJ5GIxjNlVMhrr7uwis3Y+C8y
- WxVw+xqBEtpD9mq+fbHmNfaD+lwEzXDHSgaZBlRA9loKPB9dHRUUVavaPv3xeDoxFIfB
- H6OSwpGUWmyFtZqegsGn93ALzX6TJZDEbZqGgfxYZ3B+FVp0xe0Joh3rxzVVwFUsOGXT
- Q0sjIxETv03RJaLYM03ufdKQkx0YCuLaFlDjOJu9j4EhLtkohBAPmKnSq+hdAoldEkTt
- LcEZDPqAfMNo93GzHT1NdPyh9qRPiKn9nbhMiUtYGP0JCpgid5kP0Nvbmv+XpGJXi3SL
- 0tiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690744637; x=1691349437;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=IC9+2XmSwELvjjFh+s/lbhVTMpjfnGZKtH/c+xknbh0=;
- b=gJSky5ZaHUIaDSUxEf+kfCd0kaJYZGaYsYT+LBk++lvv0Kv7QSUhmYpYEC2C6m0f18
- P9rfbO+6uWmZO3HKVOKNYl5QshY5QH/gTtmOjrpWURpHgwX4y1G2YCwTy3NN10xdtvZm
- vSq+nPM2JtjbnURFGf5qEZaxUgtQcLr8Ll7KD98LWWjppyb740oZNBn9QiVjG9qQ0KWK
- L2evJeP9NKDc2M7nAC2+XjIN63g+wQb6JvAx3f8s4niE2xSLMjrGNhaQSX3i1qJpAgU/
- d5xFhvnTS1LFUG3XcjLkG5aALzjTCuGVEBO0k1r/UeUK/e1ckIA7RWNCzXpIwZxG8eil
- Umuw==
-X-Gm-Message-State: ABy/qLZVML00RHWsQjbIFF+AYT6hrpKYadFhmyDem2a2ELCNZQOzKI+A
- Hxac1DkCBs13dbY2JkFSN4PwQy7V1qh7afu3b6A=
-X-Google-Smtp-Source: APBJJlHk+k8RdMbKN4hUMkqYe8m53ghhUmgLDhEsiaF9g4+ySWP2kf1eOrtRO/nn9emu7OPxot3WZNAnuUyH06sxueU=
-X-Received: by 2002:a05:622a:3cf:b0:406:948b:1b29 with SMTP id
- k15-20020a05622a03cf00b00406948b1b29mr9969473qtx.17.1690744637084; Sun, 30
- Jul 2023 12:17:17 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
+ id 1qQC70-00061n-HC; Sun, 30 Jul 2023 15:29:54 -0400
+Received: from out5-smtp.messagingengine.com ([66.111.4.29])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
+ id 1qQC6y-0005LH-8b; Sun, 30 Jul 2023 15:29:53 -0400
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+ by mailout.nyi.internal (Postfix) with ESMTP id 931965C0088;
+ Sun, 30 Jul 2023 15:29:47 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+ by compute4.internal (MEProxy); Sun, 30 Jul 2023 15:29:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
+ h=cc:cc:content-transfer-encoding:content-type:content-type
+ :date:date:from:from:in-reply-to:message-id:mime-version
+ :reply-to:sender:subject:subject:to:to; s=fm2; t=1690745387; x=
+ 1690831787; bh=Nv+3JqwDwzmeHwH/T5CYdkGxStotVFplaM8rvT+hCfA=; b=V
+ 6cHYxJt04z2aLTuQ8xyVM7tLi9wufGSPIiDYs3JBHa4RN7OdSxlNyO4jNizrGXCN
+ Um6NGOCLGeABS+F4uZ2H5wRRN2CZtfSMS3vxlcCkERkhs6gZbuiTbIdVwp/0/n+P
+ WYJMA0/cMFvbeoocmhjKRE1GozJzeO5zc3cR7d2Hg802ccCFPjO9VnnkT92li3TL
+ J07q13zDbU17WVzcZBCoy1LabjFBYt+WIBiBNEgkeyKmKaO+ktIr/lvobOohrT21
+ TBuCITYrBDCw9I5GEpbsVsgwIUk5S62RnQClNNGVZ0i2vzE3XAU7EgSB+SCFJryw
+ Gr4BiS07pHi1wDBJXuukw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-transfer-encoding
+ :content-type:content-type:date:date:feedback-id:feedback-id
+ :from:from:in-reply-to:message-id:mime-version:reply-to:sender
+ :subject:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender
+ :x-me-sender:x-sasl-enc; s=fm3; t=1690745387; x=1690831787; bh=N
+ v+3JqwDwzmeHwH/T5CYdkGxStotVFplaM8rvT+hCfA=; b=UTplew20bELkDlIaR
+ n3e0mi74Ru4S37/lTVCH8AVLN9vozvUROaIw8QJGd4uUS61PBk04MUUxIaZ74u8Q
+ Qkojj1q20iKXq1c68XBweCs20ihUSwJxa9NCbtWKDy21hQ+SiqDEF2xsG7XXbF3p
+ oNpJzVKIREl6ydioCoM7KPWPmDYVP3p6GxwzB2JDaNzUTo+B2I4LH/3CE1ihRFN4
+ T+lzaEw4rqGdGFnwVdPcAWEevuw7QoWeQH9tnJDDwAAZEBJksbZXrEcEBse//T5Q
+ Rhfla9vA7g6AxAlPqQnP7oPr9SuN7tX6Q3EYLf9d8KtYYEWmqXH2tDfu/VgP4TAb
+ Zne9Q==
+X-ME-Sender: <xms:KbrGZO18T1vSafu8hVzfAAnOWfzaXSvprqS2xueB_iIItW_BqkWTrA>
+ <xme:KbrGZBE7h0NpYwrYPYF4NIqk0HC9Z4yWJ5Ar73gIVTt9b2p8Y6RalRamf9ufxKABv
+ -hJQal8ZSwLZWpSQpA>
+X-ME-Received: <xmr:KbrGZG7EsWiF7-mr0G4X9eKJZoBLCRs1BEb41X_bdl7_cvLAX0YWBqXSu7wLU9BS7qG1togYoRE>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrjedugddufeejucetufdoteggodetrfdotf
+ fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+ uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+ cujfgurhephffvvefufffkofggtgfgsehtkeertdertdejnecuhfhrohhmpefmlhgruhhs
+ ucflvghnshgvnhcuoehithhssehirhhrvghlvghvrghnthdrughkqeenucggtffrrghtth
+ gvrhhnpeehjeevvedugfehfeeiieegudetgeetudeufffhheekheelueeukeevueffkefg
+ ffenucffohhmrghinhepohhrrdgtiidpghhithhlrggsrdgtohhmnecuvehluhhsthgvrh
+ fuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepihhtshesihhrrhgvlhgvvhgr
+ nhhtrdgukh
+X-ME-Proxy: <xmx:KbrGZP3idgiIIfI5Er6UJQ3rEahJ75uDf67_PhyJp2BKa4NVj091ug>
+ <xmx:KbrGZBG4DU6MFoeuP8kJeM_-heKcwPkH5qx6Brlz5kecxzGrui97ow>
+ <xmx:KbrGZI9ByX1iXzbt5vj3S2NrUuaKYFj9seE8nYZ0IiR95DnZxLXzTQ>
+ <xmx:K7rGZAC9rutsc8w1dVnmCNNTcy7Rk3EdO9mhItckzhPQ-jiEU98DMA>
+Feedback-ID: idc91472f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 30 Jul 2023 15:29:43 -0400 (EDT)
+From: Klaus Jensen <its@irrelevant.dk>
+To: Peter Maydell <peter.maydell@linaro.org>,
+	qemu-devel@nongnu.org
+Cc: Keith Busch <kbusch@kernel.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-block@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
+ Klaus Jensen <its@irrelevant.dk>, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, Fam Zheng <fam@euphon.net>,
+ Klaus Jensen <k.jensen@samsung.com>
+Subject: [PULL 0/1] hw/nvme fixes
+Date: Sun, 30 Jul 2023 21:29:42 +0200
+Message-ID: <20230730192941.44019-3-its@irrelevant.dk>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-References: <TYCP286MB12667F4B46EE030F93FFDA47ED04A@TYCP286MB1266.JPNP286.PROD.OUTLOOK.COM>
-In-Reply-To: <TYCP286MB12667F4B46EE030F93FFDA47ED04A@TYCP286MB1266.JPNP286.PROD.OUTLOOK.COM>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Sun, 30 Jul 2023 23:17:05 +0400
-Message-ID: <CAJ+F1CLxhmRgtFetFrpTz8pJzYQCY6Y-xmR1FMOS4Zh+s9esPg@mail.gmail.com>
-Subject: Re: [PATCH] hda-audio: use log-scale for amplifier levels
-To: Yuanqing Li <liyq.yuanqing@outlook.com>
-Cc: qemu-devel@nongnu.org, qemu-trivial@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::82d;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x82d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1384; i=k.jensen@samsung.com;
+ h=from:subject; bh=vCyuqQFabVIJZlR18WCIaaHHU6M3FQFQhMnIl72HuzA=;
+ b=kA0DAAoBTeGvMW1PDekByyZiAGTGuiWju35pg7Q+Nmmm1gMwu353BMFUfU6xE3lHHhStyul+l
+ YkBMwQAAQoAHRYhBFIoM6p14tzmokdmwE3hrzFtTw3pBQJkxrolAAoJEE3hrzFtTw3pl0EH/2PD
+ 4c+VrlDFLV4dUy7lQjZx7uUPI5hlKO9LYfvX+mVn/QSvukOLIRJGtdHoZQPHoH4AYTUCFna2ybM
+ /bfMVtHy36DLwUqAwSMzFz7KGm8xvhGHCv3ZzrtzygEVgfrsm8CAvxIJTjI7ESyR9J04Og6mIOu
+ xt2g7BuYVZns0atRaX6ie7ab9MQLlYcmOwDxPmJVf0TrYjuZRvklrIMP1cmPk6TfqSn9Qja4kpS
+ lJETGBtB9KBvEmBIZudBkAkODnVvGl8QEbqIDwxAstT+FPuS95JwbZ3n2BUU+oNcn6/V8DNzxk/
+ IeG2wpqnVqkpozD7X21pEsq4ZTYwp6IXgmEjMIM=
+X-Developer-Key: i=k.jensen@samsung.com; a=openpgp;
+ fpr=DDCA4D9C9EF931CC3468427263D56FC5E55DA838
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=66.111.4.29; envelope-from=its@irrelevant.dk;
+ helo=out5-smtp.messagingengine.com
+X-Spam_score_int: -37
+X-Spam_score: -3.8
+X-Spam_bar: ---
+X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -84,77 +117,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
+From: Klaus Jensen <k.jensen@samsung.com>
 
-On Sun, Jul 30, 2023 at 5:52=E2=80=AFPM Yuanqing Li <liyq.yuanqing@outlook.=
-com> wrote:
->
-> According Intel's High Definition Audio Specification (Revision 1.0a,
-> Section 7.3.4.10: Amplifier Capabilities), the amplifier gain levels
-> should be evenly spaced in dB, i.e. using a log scale instead of linear.
->
-> Here, the hda-codec reports amplifier levels from 0 to -48 dB at 1-dB
-> steps matching the 8-bit dynamic range, and the -49 dB level is mapped
-> to 0 (muted).
->
-> Signed-off-by: Yuanqing Li <liyq.yuanqing@outlook.com>
-> ---
->  hw/audio/hda-codec.c | 14 +++++++++++---
->  1 file changed, 11 insertions(+), 3 deletions(-)
->
-> diff --git a/hw/audio/hda-codec.c b/hw/audio/hda-codec.c
-> index c51d8ba617..c2aa71624b 100644
-> --- a/hw/audio/hda-codec.c
-> +++ b/hw/audio/hda-codec.c
-> @@ -121,7 +121,7 @@ static void hda_codec_parse_fmt(uint32_t format, stru=
-ct audsettings *as)
->  #define QEMU_HDA_PCM_FORMATS (AC_SUPPCM_BITS_16 |       \
->                                0x1fc /* 16 -> 96 kHz */)
->  #define QEMU_HDA_AMP_NONE    (0)
-> -#define QEMU_HDA_AMP_STEPS   0x4a
-> +#define QEMU_HDA_AMP_STEPS   0x31 /* 20 * log10(255) =3D 48 dB dynamic r=
-ange */
->
->  #define   PARAM mixemu
->  #define   HDA_MIXER
-> @@ -433,6 +433,14 @@ static void hda_audio_set_running(HDAAudioStream *st=
-, bool running)
->      }
->  }
->
-> +/* first muted; then from -48 dB to 0 dB */
-> +static const uint32_t hda_vol_table[] =3D {
-> +    0,   1,   1,   1,   1,   2,   2,   2,   2,   3,   3,   3,   4,   4, =
-  5,
-> +    5,   6,   6,   7,   8,   9,   10,  11,  13,  14,  16,  18,  20,  23,=
-  26,
-> +    29,  32,  36,  40,  45,  51,  57,  64,  72,  81,  90,  102, 114, 128=
-, 143,
-> +    161, 181, 203, 227, 255
-> +}
+Hi,
 
-It was not clear to me which scale is applied by the backend. I guess
-mixeng uses linear, and thus all others should too.
+This should also fix coverity cid 1518067 and 1518066.
 
-> +
->  static void hda_audio_set_amp(HDAAudioStream *st)
->  {
->      bool muted;
-> @@ -446,8 +454,8 @@ static void hda_audio_set_amp(HDAAudioStream *st)
->      left  =3D st->mute_left  ? 0 : st->gain_left;
->      right =3D st->mute_right ? 0 : st->gain_right;
->
-> -    left =3D left * 255 / QEMU_HDA_AMP_STEPS;
-> -    right =3D right * 255 / QEMU_HDA_AMP_STEPS;
-> +    left =3D hda_vol_table[left];
-> +    right =3D hda_vol_table[right];
->
+The following changes since commit ccb86f079a9e4d94918086a9df18c1844347aff8:
 
-Whoo, better check bounds here. (value can go up to AC_AMP_GAIN 0x7f,
-reading the code)
+  Merge tag 'pull-nbd-2023-07-28' of https://repo.or.cz/qemu/ericb into staging (2023-07-28 09:56:57 -0700)
 
-Definitely not trivial material imho
+are available in the Git repository at:
 
---=20
-Marc-Andr=C3=A9 Lureau
+  https://gitlab.com/birkelund/qemu.git tags/nvme-next-pull-request
+
+for you to fetch changes up to c1e244b6552efdff5612a33c6630aaf95964eaf5:
+
+  hw/nvme: use stl/ldl pci dma api (2023-07-30 20:09:54 +0200)
+
+----------------------------------------------------------------
+hw/nvme fixes
+
+- use the stl/ldl pci dma api
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEUigzqnXi3OaiR2bATeGvMW1PDekFAmTGuc8ACgkQTeGvMW1P
+Dek41wgAwqgRmtUhmmaQJJpF5Pya3J7n3Zkbp+cULdnSp/su7W7yIUTcTzdbr34d
+9LbNHmWerXYinlIxG08ZWw2lq0TwApKj+8gv/wf8H7dG86/pBYfoQvOlkNx2QKyR
+vtRNlILCEbJpbSfY3LbFNvRGOkArr6HkzT4hZprUIfCvRg58u5oIxEx/ZYa+m3WU
+ED0y/46e7HbVbmbwJKrn4EK3k0zGdFyeINRZ5TB5DML3lCTX6eaZTLUXGIb7LLcK
+Xyv6/TCkPTggDszTam24kx0A7DhC+3f2C8DsJg7H8jnWb1F+oq/2EJam/0HU22Uk
+n348MrWOusuF7kbHMCP9h28gYT3aWw==
+=KjVO
+-----END PGP SIGNATURE-----
+
+----------------------------------------------------------------
+
+Klaus Jensen (1):
+  hw/nvme: use stl/ldl pci dma api
+
+ hw/nvme/ctrl.c | 42 +++++++++++++-----------------------------
+ 1 file changed, 13 insertions(+), 29 deletions(-)
+
+-- 
+2.41.0
+
 
