@@ -2,72 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A85ED768685
-	for <lists+qemu-devel@lfdr.de>; Sun, 30 Jul 2023 18:49:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B71AF76867D
+	for <lists+qemu-devel@lfdr.de>; Sun, 30 Jul 2023 18:44:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQ9JM-0008LU-Fc; Sun, 30 Jul 2023 12:30:28 -0400
+	id 1qQ9P1-0001Zj-6N; Sun, 30 Jul 2023 12:36:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qQ9JK-0008L6-T5
- for qemu-devel@nongnu.org; Sun, 30 Jul 2023 12:30:26 -0400
-Received: from mout.gmx.net ([212.227.15.18])
+ (Exim 4.90_1) (envelope-from <SRS0=LlZL=DQ=kaod.org=clg@ozlabs.org>)
+ id 1qQ9Oz-0001ZL-4C; Sun, 30 Jul 2023 12:36:17 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qQ9JJ-0000wN-1d
- for qemu-devel@nongnu.org; Sun, 30 Jul 2023 12:30:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1690734620; x=1691339420; i=deller@gmx.de;
- bh=FQ0+4UJTlGFglkV5PDHtWriV9JJEijSTX1f8Cfgj9uw=;
- h=X-UI-Sender-Class:Date:From:To:Subject;
- b=eZYOiV5KzpljE4r9c3YaRmlxVZU4gt2Xd8J1vCsWIj/STeALhR1OVmmbMA00JtRUB1TCIel
- aIYSoswMI2QSIc6H8jsluvKaO3IvG0GLk6K31LysHs/ZXdcc19F1iPEso8r4b1u0HtcY/ylwd
- 8e8VAGzEujBFzPygk8XpAbtaFowtIE6G0DhVLx7R/fwdWCkv2fleSp/lOToeKW9pz9GU8rGsr
- PQWQen0btLZO+KAGTY8HWFxEpHeQ7gDW5X+4PY/GkELTv4feRJOxu899XH6XG+FDRsX9PD3J0
- x3ra64NujtpsN1vvNWr9Y33ZuQuF7o6gDlc6Gb0ILySBF2AZvcPQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from p100 ([94.134.144.241]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MfHEP-1px8LP2BMh-00gniA; Sun, 30
- Jul 2023 18:30:20 +0200
-Date: Sun, 30 Jul 2023 18:30:19 +0200
-From: Helge Deller <deller@gmx.de>
-To: Laurent Vivier <laurent@vivier.eu>,
- Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Subject: [PATCH] target/hppa: Move iaoq registers and thus reduce generated
- code size
-Message-ID: <ZMaQGwK1Ikj27ZPk@p100>
+ (Exim 4.90_1) (envelope-from <SRS0=LlZL=DQ=kaod.org=clg@ozlabs.org>)
+ id 1qQ9Or-0002xs-GH; Sun, 30 Jul 2023 12:36:16 -0400
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4RDRnt6JZtz4wyJ;
+ Mon, 31 Jul 2023 02:36:02 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4RDRnr2zQFz4wyD;
+ Mon, 31 Jul 2023 02:36:00 +1000 (AEST)
+Message-ID: <335bb32c-85ad-b02c-b8a9-dc030d13238f@kaod.org>
+Date: Sun, 30 Jul 2023 18:35:58 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Provags-ID: V03:K1:llv/z49cooYYgX94gJz0KmRRKcVa1rhVcp5XIKV4EyXXWJkJTHD
- XUZvUxMlIexqhEH+4PnaYLYujbLsaAMPRCgPuMgLREaQRRiCOsl7LfiD5s5DGckyQ7E6pRD
- kutSEfAgLZyti3fsJHDRZ7qaH9UsgGLLGuAxifEFPpBHi39Hc6ETimVxLAblkStglPq/JeK
- AsHiXQmfca5kNl7PoOKYw==
-UI-OutboundReport: notjunk:1;M01:P0:d9Nh2afesoo=;o9fbB/uzYPI4pmD6FZ/O8vwMLfC
- Qm23f3pMz+ui0Lx8jxNQ5Ct7eka4F4g4IYdP5Jy6um7oF/pHfyoLaiVmxeAlbsslY35vWEdil
- Nlc39lYIwmFztFGAAS6/VhtwpZOIQ/j4IMiVZaVKYUAd/10fzgCVwQb6J0su69Ld3EJeobl6X
- YcicjZfPkNwCp3xhHJVWC8rLu6bj5uT+c1tdtMuwIU4Uqwzeu+0LMv7D+qOvzOAZMQ48SmYJc
- 3TO1h++j82w3a5qqUl2pm1JD9WPTzwjBfzBSr2Atz5LAmBNmpRHPGvwfkAdV2YCdQabuPqOI1
- L+lAsvn9MdW+zk+I+gfddE9HyVZzm6+kYVb5oPn8GGDJM0dDuumenYO5ivgNW3gm4BCnc6ecq
- NQao1Hcztlzsdu3elBYFTrQhnbdVEMqGtS2XCBZJI0R1Pj0f+SdQoaJAGhUXlUi6BUxUYWDqm
- AHz8Rx3UmjyxBryA+uV8P9WiIZT4z44uMZVtPCku6aCk4iBfcRG1G+yct4c7Dm2OLr6QpsCJ8
- Xl1iXoP08OIrHqzfFXbCgNLzEjsFE0btO5a+Gu7P1svWrKzOJTDXCoEaWvY2U6O6SSP5MK25c
- yKJquba4ERF2N6BFoZY/Lmw1L/d10PzkcL4WWn+kOuGrwounVd+b9jjBwgsV3RPmTUwh9UjN8
- 32zD+QPAs+vl1yGR//yXEndNek3fgsEAvwCPQ6NCNpaSfI4s7skGPnKfEabsRIXoOwXPKD0i1
- zSGauW7ilvS973fvCrZho4ENtomhYP2PdTtFvK8kb1z8EkSLA+vvbNmc6P4Tm1uyA+BjEA8IP
- QvdSEtJDcFyC7r6NNQ7RKRhPOzx2oyMxMT8qnHebnl+wLKvD4K6QAopWsVVtShkwtprPwP6sN
- mURdAq9AtUnTasSl8VTqzJscihTiPdZnLByUibqzogFMT6ahNNUDtod/nTrZFZYv1TJx2dkr6
- 0oSFcl9wfaWXrCSRcfWugL/pZuY=
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=212.227.15.18; envelope-from=deller@gmx.de;
- helo=mout.gmx.net
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v2] target/ppc: Fix VRMA page size for ISA v3.0
+Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>
+Cc: David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org,
+ qemu-devel@nongnu.org
+References: <20230730111842.39292-1-npiggin@gmail.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20230730111842.39292-1-npiggin@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=LlZL=DQ=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -40
+X-Spam_score: -4.1
+X-Spam_bar: ----
+X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.101,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,58 +68,129 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On hppa the Instruction Address Offset Queue (IAOQ) registers specifies
-the next to-be-executed instructions addresses. Each generated TB writes t=
-hose
-registers at least once, so those registers are used heavily in generated
-code.
+On 7/30/23 13:18, Nicholas Piggin wrote:
+> Until v2.07s, the VRMA page size (L||LP) was encoded in LPCR[VRMASD].
+> In v3.0 that moved to the partition table PS field.
+> 
+> The powernv machine can now run KVM HPT guests on POWER9/10 CPUs with
+> this fix and the patch to add ASDR.
+> 
+> Fixes: 3367c62f522b ("target/ppc: Support for POWER9 native hash")
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+> Since v1:
+> - Added llp variable to avoid calling get_vrma_llp twice [Cedric].
+> - Added some bit defines for architected fields and values [Cedric].
 
-Looking at the generated assembly, for a x86-64 host this code
-to write the address $0x7ffe826f into iaoq_f is generated:
-0x7f73e8000184:  c7 85 d4 01 00 00 6f 82  movl     $0x7ffe826f, 0x1d4(%rbp=
-)
-0x7f73e800018c:  fe 7f
-0x7f73e800018e:  c7 85 d8 01 00 00 73 82  movl     $0x7ffe8273, 0x1d8(%rbp=
-)
-0x7f73e8000196:  fe 7f
+Thanks,
 
-With the trivial change, by moving the variables iaoq_f and iaoq_b to
-the top of struct CPUArchState, the offset to %rbp is reduced (from
-0x1d4 to 0), which allows the x86-64 tcg to generate 3 bytes less of
-generated code per move instruction:
-0x7fc1e800018c:  c7 45 00 6f 82 fe 7f     movl     $0x7ffe826f, (%rbp)
-0x7fc1e8000193:  c7 45 04 73 82 fe 7f     movl     $0x7ffe8273, 4(%rbp)
 
-Overall this is a reduction of generated code (not a reduction of
-number of instructions).
-A test run with checks the generated code size by running "/bin/ls"
-with qemu-user shows that the code size shrinks from 1616767 to 1569273
-bytes, which is ~97% of the former size.
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
 
-Signed-off-by: Helge Deller <deller@gmx.de>
+C.
 
-diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
-index 9fe79b1242..75c5c0ccf7 100644
-=2D-- a/target/hppa/cpu.h
-+++ b/target/hppa/cpu.h
-@@ -168,6 +168,9 @@ typedef struct {
- } hppa_tlb_entry;
 
- typedef struct CPUArchState {
-+    target_ureg iaoq_f;      /* front */
-+    target_ureg iaoq_b;      /* back, aka next instruction */
-+
-     target_ureg gr[32];
-     uint64_t fr[32];
-     uint64_t sr[8];          /* stored shifted into place for gva */
-@@ -186,8 +189,6 @@ typedef struct CPUArchState {
-     target_ureg psw_cb;      /* in least significant bit of next nibble *=
-/
-     target_ureg psw_cb_msb;  /* boolean */
-
--    target_ureg iaoq_f;      /* front */
--    target_ureg iaoq_b;      /* back, aka next instruction */
-     uint64_t iasq_f;
-     uint64_t iasq_b;
+> 
+> Patches 1,3 from the previously posted series, let's defer 4-6
+> decrementer fixes until after 8.1, so this is the last remaining
+> one from the series.
+> 
+> Thanks,
+> Nick
+> 
+>   target/ppc/mmu-hash64.c | 45 +++++++++++++++++++++++++++++++++++------
+>   target/ppc/mmu-hash64.h |  5 +++++
+>   2 files changed, 44 insertions(+), 6 deletions(-)
+> 
+> diff --git a/target/ppc/mmu-hash64.c b/target/ppc/mmu-hash64.c
+> index a0c90df3ce..d645c0bb94 100644
+> --- a/target/ppc/mmu-hash64.c
+> +++ b/target/ppc/mmu-hash64.c
+> @@ -874,12 +874,46 @@ static target_ulong rmls_limit(PowerPCCPU *cpu)
+>       return rma_sizes[rmls];
+>   }
+>   
+> -static int build_vrma_slbe(PowerPCCPU *cpu, ppc_slb_t *slb)
+> +/* Return the LLP in SLB_VSID format */
+> +static uint64_t get_vrma_llp(PowerPCCPU *cpu)
+>   {
+>       CPUPPCState *env = &cpu->env;
+> -    target_ulong lpcr = env->spr[SPR_LPCR];
+> -    uint32_t vrmasd = (lpcr & LPCR_VRMASD) >> LPCR_VRMASD_SHIFT;
+> -    target_ulong vsid = SLB_VSID_VRMA | ((vrmasd << 4) & SLB_VSID_LLP_MASK);
+> +    uint64_t llp;
+> +
+> +    if (env->mmu_model == POWERPC_MMU_3_00) {
+> +        ppc_v3_pate_t pate;
+> +        uint64_t ps, l, lp;
+> +
+> +        /*
+> +         * ISA v3.0 removes the LPCR[VRMASD] field and puts the VRMA base
+> +         * page size (L||LP equivalent) in the PS field in the HPT partition
+> +         * table entry.
+> +         */
+> +        if (!ppc64_v3_get_pate(cpu, cpu->env.spr[SPR_LPIDR], &pate)) {
+> +            error_report("Bad VRMA with no partition table entry");
+> +            return 0;
+> +        }
+> +        ps = PATE0_GET_PS(pate.dw0);
+> +        /* PS has L||LP in 3 consecutive bits, put them into SLB LLP format */
+> +        l = (ps >> 2) & 0x1;
+> +        lp = ps & 0x3;
+> +        llp = (l << SLB_VSID_L_SHIFT) | (lp << SLB_VSID_LP_SHIFT);
+> +
+> +    } else {
+> +        uint64_t lpcr = env->spr[SPR_LPCR];
+> +        target_ulong vrmasd = (lpcr & LPCR_VRMASD) >> LPCR_VRMASD_SHIFT;
+> +
+> +        /* VRMASD LLP matches SLB format, just shift and mask it */
+> +        llp = (vrmasd << SLB_VSID_LP_SHIFT) & SLB_VSID_LLP_MASK;
+> +    }
+> +
+> +    return llp;
+> +}
+> +
+> +static int build_vrma_slbe(PowerPCCPU *cpu, ppc_slb_t *slb)
+> +{
+> +    uint64_t llp = get_vrma_llp(cpu);
+> +    target_ulong vsid = SLB_VSID_VRMA | llp;
+>       int i;
+>   
+>       for (i = 0; i < PPC_PAGE_SIZES_MAX_SZ; i++) {
+> @@ -897,8 +931,7 @@ static int build_vrma_slbe(PowerPCCPU *cpu, ppc_slb_t *slb)
+>           }
+>       }
+>   
+> -    error_report("Bad page size encoding in LPCR[VRMASD]; LPCR=0x"
+> -                 TARGET_FMT_lx, lpcr);
+> +    error_report("Bad VRMA page size encoding 0x" TARGET_FMT_lx, llp);
+>   
+>       return -1;
+>   }
+> diff --git a/target/ppc/mmu-hash64.h b/target/ppc/mmu-hash64.h
+> index 1496955d38..de653fcae5 100644
+> --- a/target/ppc/mmu-hash64.h
+> +++ b/target/ppc/mmu-hash64.h
+> @@ -41,8 +41,10 @@ void ppc_hash64_finalize(PowerPCCPU *cpu);
+>   #define SLB_VSID_KP             0x0000000000000400ULL
+>   #define SLB_VSID_N              0x0000000000000200ULL /* no-execute */
+>   #define SLB_VSID_L              0x0000000000000100ULL
+> +#define SLB_VSID_L_SHIFT        PPC_BIT_NR(55)
+>   #define SLB_VSID_C              0x0000000000000080ULL /* class */
+>   #define SLB_VSID_LP             0x0000000000000030ULL
+> +#define SLB_VSID_LP_SHIFT       PPC_BIT_NR(59)
+>   #define SLB_VSID_ATTR           0x0000000000000FFFULL
+>   #define SLB_VSID_LLP_MASK       (SLB_VSID_L | SLB_VSID_LP)
+>   #define SLB_VSID_4K             0x0000000000000000ULL
+> @@ -58,6 +60,9 @@ void ppc_hash64_finalize(PowerPCCPU *cpu);
+>   #define SDR_64_HTABSIZE        0x000000000000001FULL
+>   
+>   #define PATE0_HTABORG           0x0FFFFFFFFFFC0000ULL
+> +#define PATE0_PS                PPC_BITMASK(56, 58)
+> +#define PATE0_GET_PS(dw0)       (((dw0) & PATE0_PS) >> PPC_BIT_NR(58))
+> +
+>   #define HPTES_PER_GROUP         8
+>   #define HASH_PTE_SIZE_64        16
+>   #define HASH_PTEG_SIZE_64       (HASH_PTE_SIZE_64 * HPTES_PER_GROUP)
 
 
