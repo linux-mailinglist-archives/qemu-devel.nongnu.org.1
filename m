@@ -2,76 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD1337686D9
-	for <lists+qemu-devel@lfdr.de>; Sun, 30 Jul 2023 19:48:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9F0376871D
+	for <lists+qemu-devel@lfdr.de>; Sun, 30 Jul 2023 20:19:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQASR-0007Zn-TK; Sun, 30 Jul 2023 13:43:55 -0400
+	id 1qQAZL-0006CA-8o; Sun, 30 Jul 2023 13:51:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qQASP-0007ZP-Ai
- for qemu-devel@nongnu.org; Sun, 30 Jul 2023 13:43:53 -0400
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ id 1qQAZJ-0006A0-2r
+ for qemu-devel@nongnu.org; Sun, 30 Jul 2023 13:51:01 -0400
+Received: from mail-pg1-x52c.google.com ([2607:f8b0:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qQASN-0003np-Bj
- for qemu-devel@nongnu.org; Sun, 30 Jul 2023 13:43:53 -0400
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-1bbc06f830aso23463245ad.0
- for <qemu-devel@nongnu.org>; Sun, 30 Jul 2023 10:43:50 -0700 (PDT)
+ id 1qQAZD-0006AY-E5
+ for qemu-devel@nongnu.org; Sun, 30 Jul 2023 13:51:00 -0400
+Received: by mail-pg1-x52c.google.com with SMTP id
+ 41be03b00d2f7-563de62f861so2200038a12.1
+ for <qemu-devel@nongnu.org>; Sun, 30 Jul 2023 10:50:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690739029; x=1691343829;
+ d=linaro.org; s=google; t=1690739452; x=1691344252;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=QtGwLS/VdYydX/glCIj5f7bhJig2rdszW3l5C9a0VU4=;
- b=pmpDI1EphtbhAjpZNJq2uuanvNXbH2Sw7VdqO+JIQRDOGhwqzg9pWzU3eyr5Q3Kong
- gxssvqw7nbswomAOWNm90lV6G+1rRg/O5hTqVxid4WdVLxJZqxoH+Kb3u6R/cMtGuY44
- bA+AEvRV8oW0qC8UnRJXB9QnA/IFTG870F72KePHVXYl9xj7AZXWqxpABTfpg1v9fC91
- M8sMoCLgRHFMZkz+wsUBJ366pBlVxdrjzexsb/zetgbypXx2iSeXSSNrFQnXJUMPlhMd
- IbuUo52OL6n7AIHGpunx7UBSzP7uYC+Uzv9duP83FLuzsTDjtFHUuWKeNF8vUfGi6mLt
- oJ6g==
+ bh=V5C+q1hDP46rXQTn3Sqn5gPM8wPaQ2ax9Bdf7ROhUdA=;
+ b=EIcbNMJLt/1vxh0dNXGnEz7hHIW/ScqUSonj9xg25GtqQc9cNRljbrU6qFlWIXFV17
+ Y5hgm8b3G/xvRQFAkf2pkxbtzrU6fwgNVeQiRPISZ54pnbkANNpvVb6mWiTDg4jysQrv
+ X+x8p9QzFB103lMQoi1AVNeaPh+KW8s6TvNeeoydcyKyFkfyvo9WUiUDKcQ5KtNxSMpD
+ 0RjnIX37d6NErUxnBPBfBiBQUf0/q+UFzDhC7egJ0sdJJBp7riYTnLiCdhrjbOC/dTNM
+ 48f4MN/4YZKUPfYTTQ5ImVsLcrRlRLCwtAYdxNJkLUOCLnR7oIZmosQJZKGRhIQGdhyM
+ ZF4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690739029; x=1691343829;
+ d=1e100.net; s=20221208; t=1690739452; x=1691344252;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=QtGwLS/VdYydX/glCIj5f7bhJig2rdszW3l5C9a0VU4=;
- b=CED0IYf8t7DA4UU5O0LI/O6EnrxDTPErUpheQHK3WfhYydQUByeATy+DciIS61MVrN
- uONN3jAFn+EyNHCueYWtDb9Nox2t5T2CgPskWSBRm1BCRCrLGhO2Wr2otnqVV86xGi3u
- uGpz4BMCP50jR4xW2iA1lCk1b7yFY6pDC9Az/zA0zTOUmuzT0/tPGuBkwfCExxcKP1Ne
- upXOq2jA/WOTLqEX5ns1Jpm60xx5HYUmp8+vAMyQb6FB/IAAozUFk4Q2DPvOlc82WMq4
- y/nsIhH16axs+FNYT2uIsqEaqRutgL4Rn4B6SRIIPvRXXHyaeXwl2IRoewYjqu1vm5FA
- dF1w==
-X-Gm-Message-State: ABy/qLbOTPlrESloM+aLR0WqBi+ty+adqBsXK0uKzaPKeRa+EcPe3PcE
- q4QCV6sE58EDPO8vEGqE6scG4Q==
-X-Google-Smtp-Source: APBJJlH4YCrmn5ZG10q3rQjKC+8KeZ6nElg685IK0cQqKXqK/4itAEng1nFYMdmyF5X9VXTbimkKdg==
-X-Received: by 2002:a17:902:ceca:b0:1b7:ca9c:4f5c with SMTP id
- d10-20020a170902ceca00b001b7ca9c4f5cmr8514770plg.28.1690739028470; 
- Sun, 30 Jul 2023 10:43:48 -0700 (PDT)
+ bh=V5C+q1hDP46rXQTn3Sqn5gPM8wPaQ2ax9Bdf7ROhUdA=;
+ b=IAwn5gF1Sv2L5bMmPKiOUMb/AIHE7FNOSKjrwHg6cJrCQ0PTv3RT4sZ0VqyekQ7rWQ
+ bjJ4XQ95xW/ZoMZ5m7EI7gwUQ4MXUc6JqreoQV9Brb9F67hV3iNq5o9gz0KwADspdb0s
+ yK46XmzPOmzmG7vC+QGRqrVjGJ4sdUF9w3SmyV29mF6FhTT9eLIBr1cUNEv0Jj8XoXiI
+ FmcaKU2vD8kXO2pQnR0ZI6ngok2xkAC4+LQgAydrHG1peib/zPtmsQzHt7vOOhHvq/XG
+ M7fD0aBj/iD9RseiB+JEA/QYtIjaZfjwrvBAbh7sVr1I0qH42YUObeXWLdvFOJwSc00G
+ b7iw==
+X-Gm-Message-State: ABy/qLZHqkaod8ncfUk7QZbFUqPMopGegxYyIr56eEjYCn+LBsEs53LB
+ 6KDC9DwooOTWCPK0vwP7aGbHqA==
+X-Google-Smtp-Source: APBJJlFudyPKdpq1suW2HyuhWIrYytlkLUOgOYUglvO6cTro6dzEwl894CG7U41a1Fq9EelOaPDpEw==
+X-Received: by 2002:a17:90a:b101:b0:268:5575:93d9 with SMTP id
+ z1-20020a17090ab10100b00268557593d9mr7043079pjq.10.1690739452468; 
+ Sun, 30 Jul 2023 10:50:52 -0700 (PDT)
 Received: from ?IPV6:2602:47:d490:6901:a7b4:380e:e513:5ef2?
  ([2602:47:d490:6901:a7b4:380e:e513:5ef2])
  by smtp.gmail.com with ESMTPSA id
- o2-20020a639202000000b00563397f1624sm6668168pgd.69.2023.07.30.10.43.47
+ l7-20020a17090a150700b002636dfcc6f5sm5341979pja.3.2023.07.30.10.50.51
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 30 Jul 2023 10:43:48 -0700 (PDT)
-Message-ID: <19b913a1-57d1-1631-06bb-04149b8a7bd1@linaro.org>
-Date: Sun, 30 Jul 2023 10:43:45 -0700
+ Sun, 30 Jul 2023 10:50:52 -0700 (PDT)
+Message-ID: <8dcbe033-bf15-4df3-5042-5fbd3319ad22@linaro.org>
+Date: Sun, 30 Jul 2023 10:50:50 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH] target/openrisc: Set EPCR to next PC on FPE exceptions
+Subject: Re: [PATCH] target/hppa: Move iaoq registers and thus reduce
+ generated code size
 Content-Language: en-US
-To: Stafford Horne <shorne@gmail.com>, QEMU Development <qemu-devel@nongnu.org>
-References: <20230729210851.3097340-1-shorne@gmail.com>
+To: Helge Deller <deller@gmx.de>, Laurent Vivier <laurent@vivier.eu>,
+ qemu-devel@nongnu.org
+References: <ZMaQGwK1Ikj27ZPk@p100>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230729210851.3097340-1-shorne@gmail.com>
+In-Reply-To: <ZMaQGwK1Ikj27ZPk@p100>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52c.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -94,87 +96,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/29/23 14:08, Stafford Horne wrote:
-> The architecture specification calls for the EPCR to be set to "Address
-> of next not executed instruction" when there is a floating point
-> exception (FPE).  This was not being done, so fix it by using the same
-> method as syscall.  Note, this may need a lot more work if we start
-> seeing floating point operations in delay slots which exceptions
-> enabled.
+On 7/30/23 09:30, Helge Deller wrote:
+> On hppa the Instruction Address Offset Queue (IAOQ) registers specifies
+> the next to-be-executed instructions addresses. Each generated TB writes those
+> registers at least once, so those registers are used heavily in generated
+> code.
 > 
-> Without this patch FPU exceptions will loop, as the exception hanlding
-> will always return back to the failed floating point instruction.
+> Looking at the generated assembly, for a x86-64 host this code
+> to write the address $0x7ffe826f into iaoq_f is generated:
+> 0x7f73e8000184:  c7 85 d4 01 00 00 6f 82  movl     $0x7ffe826f, 0x1d4(%rbp)
+> 0x7f73e800018c:  fe 7f
+> 0x7f73e800018e:  c7 85 d8 01 00 00 73 82  movl     $0x7ffe8273, 0x1d8(%rbp)
+> 0x7f73e8000196:  fe 7f
 > 
-> This was not noticed in earlier testing because:
+> With the trivial change, by moving the variables iaoq_f and iaoq_b to
+> the top of struct CPUArchState, the offset to %rbp is reduced (from
+> 0x1d4 to 0), which allows the x86-64 tcg to generate 3 bytes less of
+> generated code per move instruction:
+> 0x7fc1e800018c:  c7 45 00 6f 82 fe 7f     movl     $0x7ffe826f, (%rbp)
+> 0x7fc1e8000193:  c7 45 04 73 82 fe 7f     movl     $0x7ffe8273, 4(%rbp)
 > 
->   1. The compiler usually generates code which clobbers the input operand
->      such as:
+> Overall this is a reduction of generated code (not a reduction of
+> number of instructions).
+> A test run with checks the generated code size by running "/bin/ls"
+> with qemu-user shows that the code size shrinks from 1616767 to 1569273
+> bytes, which is ~97% of the former size.
 > 
->        lf.div.s r19,r17,r19
-> 
->   2. The target will store the operation output before to the register
->      before handling the exception.  So an operation such as:
-> 
->        float a = 100.0f;
->        float b = 0.0f;
->        float c = a / b;    /* lf.div.s r19,r17,r19 */
-> 
->      Will first execute:
-> 
->        100 / 0    -> Store inf to c (r19)
->                   -> triggering divide by zero exception
->                   -> handle and return
-> 
->      Then it will exectute:
-> 
->        100 / inf  -> Store 0 to c  (no exception)
-> 
-> To confirm the looping behavoid and the fix I used the following:
-> 
->      float fpu_div(float a, float b) {
-> 	float c;
-> 	asm volatile("lf.div.s %0, %1, %2"
-> 		      : "+r" (c)
-> 		      : "r" (a), "r" (b));
-> 	return c;
->      }
-> 
-> Signed-off-by: Stafford Horne <shorne@gmail.com>
-> ---
->   target/openrisc/interrupt.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/target/openrisc/interrupt.c b/target/openrisc/interrupt.c
-> index 3887812810..9b14b8a2c6 100644
-> --- a/target/openrisc/interrupt.c
-> +++ b/target/openrisc/interrupt.c
-> @@ -34,7 +34,7 @@ void openrisc_cpu_do_interrupt(CPUState *cs)
->       int exception = cs->exception_index;
->   
->       env->epcr = env->pc;
-> -    if (exception == EXCP_SYSCALL) {
-> +    if (exception == EXCP_SYSCALL || exception == EXCP_FPE) {
->           env->epcr += 4;
->       }
->       /* When we have an illegal instruction the error effective address
+> Signed-off-by: Helge Deller<deller@gmx.de>
 
-According to Table 6-3, when in a delay slot the EPCR should be the address of the jump, 
-for both syscall and fpe.  This whole block should be moved down...
-
->     /* Set/clear dsx to indicate if we are in a delay slot exception.  */
->     if (env->dflag) {
->         env->dflag = 0;
->         env->sr |= SR_DSX;
->         env->epcr -= 4;
->     } else {
->         env->sr &= ~SR_DSX;
->     }
-
-... into the else.
-
-With that,
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-
 
 r~
 
