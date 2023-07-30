@@ -2,79 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36075768432
-	for <lists+qemu-devel@lfdr.de>; Sun, 30 Jul 2023 09:31:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29F45768413
+	for <lists+qemu-devel@lfdr.de>; Sun, 30 Jul 2023 08:56:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQ07s-00053J-IU; Sun, 30 Jul 2023 02:42:00 -0400
+	id 1qQ07n-00052y-Ku; Sun, 30 Jul 2023 02:41:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dinahbaum123@gmail.com>)
- id 1qQ07J-00050R-MZ
- for qemu-devel@nongnu.org; Sun, 30 Jul 2023 02:41:26 -0400
-Received: from mail-qt1-x82c.google.com ([2607:f8b0:4864:20::82c])
+ id 1qQ07P-00050k-0a; Sun, 30 Jul 2023 02:41:31 -0400
+Received: from mail-qk1-x72a.google.com ([2607:f8b0:4864:20::72a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dinahbaum123@gmail.com>)
- id 1qQ07H-00065O-T4
- for qemu-devel@nongnu.org; Sun, 30 Jul 2023 02:41:25 -0400
-Received: by mail-qt1-x82c.google.com with SMTP id
- d75a77b69052e-40648d758f1so24957981cf.0
- for <qemu-devel@nongnu.org>; Sat, 29 Jul 2023 23:41:23 -0700 (PDT)
+ id 1qQ07L-00066U-6J; Sun, 30 Jul 2023 02:41:29 -0400
+Received: by mail-qk1-x72a.google.com with SMTP id
+ af79cd13be357-76c8dd2ce79so189077785a.1; 
+ Sat, 29 Jul 2023 23:41:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1690699282; x=1691304082;
+ d=gmail.com; s=20221208; t=1690699285; x=1691304085;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=dI0gdpPKANQUK3lyruxPBH4LnSOmWsKb8Vgds5YhBjQ=;
- b=Kkom9EQb4yMB6hqvBYeUR1rZwZDCrai/GRnmHksucKUwqMpU6vvTKNRdIWsQGcG260
- HluAvEMIQw5Hqtq8MTktNiJRWin9phoLEJGi3dE2XKruZIkXWu/wljfZ9sVDtZKHiai4
- iHgEiJcy9+dCxx/EDiXxiYoKZugDDr2wfVCfyrmBdWmobGk5FQbw7EH2E/DMbei7Nhk/
- ofDixx7oTNjmgHyQ/svhUlFlgfhvDi9qBFJDE/sIdZ5d2yiTP2fVzFRjgx/6nuYtbunP
- MUtOgiZSTxSGCDsq1foZS15/XQxzTtwKLMmK0daEUSC1BU52cBwPR94uLg9zvoV9Sfv6
- +obA==
+ bh=qxoiJ1KNHxU2qf88USj0WCY4QRM2Fyx05FkITUz6usI=;
+ b=oldkp5AVVpNVmICrBqRCbvUQCGOi7dvyogptA6YwUdSagAkZu0AYKH06m+FSey9DfT
+ 7bMTQcmDQj3vuKVHQ+YnRSErrB4cvyrIX87gY7X+xyyil61Mrqc3RQcPvbFVxuYcy7Wp
+ /qW0S/C4GpoMDSUwu8DV6UpkRtDhUHXHOaXvrcfCd/A5JGBmNhzbuAlafagMelai4p6R
+ xhdm4rTuzBcWYousVcfSqkMwUe9VAJwQWssihZ9zVj4iN2qrCFfuN6zNaOClI875NxyM
+ R2APp6pQu4i7RXj1I/Pj5/Uiq40C1nbDcuwK6VzL5LCLtDCycymSXRWZUcjxmoIanrKw
+ C+Mw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690699282; x=1691304082;
+ d=1e100.net; s=20221208; t=1690699285; x=1691304085;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dI0gdpPKANQUK3lyruxPBH4LnSOmWsKb8Vgds5YhBjQ=;
- b=ggWXBSTzyzBNv5pOdFLUrFQEs5Dv+CsNzRIhP6FbgqKRR/J/VPBB+5RQsqoPTPboeZ
- URYbro+r+xhpLupht6Pk75FUzxxTOfB/s0a4euXKf0IL/mRXF5GXkbLxzhAzvHBHCmN+
- 2KXxtWEcdM77sh3kzyKU8Mdo7KVxpd6emHxs2+r8MLnWaPVdrz3EZX5ClbLjLgHHUocO
- orWerEs5PEGf+34h51rr3n9RvJ/S6w9VBxXTmtKnGaC/nCaMQMpQKWEXX3QH+gfghsXK
- QU7oCwWxHL/tPCk89zo49RghRg3nY9u4YMwmTJwGi26mDGIFsbVtcgElD9DzkC8GLnW1
- vvbA==
-X-Gm-Message-State: ABy/qLYG+58lo2oYXRZmbJaJfv6OS5MlX2Wg2s8Ze+4fTbLbS5ISWCqz
- tXX6m1jnijNiPuzsFen4dFAvAOUGqVRpBg==
-X-Google-Smtp-Source: APBJJlEPfOEB+/Zx1QqmVSfslVzIDOlk9ggrIgqH5KDfmh4q3okahhkh/asvNvoGYzklowAWwkH2cw==
-X-Received: by 2002:ac8:5887:0:b0:401:e423:3ef4 with SMTP id
- t7-20020ac85887000000b00401e4233ef4mr9950841qta.63.1690699282575; 
- Sat, 29 Jul 2023 23:41:22 -0700 (PDT)
+ bh=qxoiJ1KNHxU2qf88USj0WCY4QRM2Fyx05FkITUz6usI=;
+ b=P2Ju9nX9RTt3bwPwVv+AKGX5RSLCbPpkF9mJADcuU5qo/RX0ltW/KUzy6GHOmc1/H+
+ 2TEb0Rjn0M5xTAS+9Ao4Hlyv7zFMQ/pzg2mTabKDX5YEQpKek4422h0Tmd3HimzsayDR
+ 39MadF1H0C4Y0MWnj8GkXPpzXsUL0LYBFzZ8df+nuOTcok/dx7RxR/+2GmMRu5xsePO2
+ bbYhL/syE7dmHQqD4EI1DRoTSYUEnY7ZXVI1fIaU7zrXr1NuGHDvS46XenlLltmnt36e
+ cuoIw/ShH2vRICd2D08UVNRe8RlZlqYLqTZfTj/ZBJLuyftTgyOLLt2KdsHblbgxs6os
+ NMxQ==
+X-Gm-Message-State: ABy/qLaRr3zl1Y9NqpzrcHBT/sCz3SZY+EToI+OfeDPWzRjYQ6b7hlQK
+ /KAlzt8ToKq9qa2AdX7FYTncEAMLfy64mA==
+X-Google-Smtp-Source: APBJJlHCLjie/HyFoHFEVb5YPQkKb/Wc3HTMeVr+qo5ep3msqKcuxyhF1fDsmqeLVp9OLQVwlplIfA==
+X-Received: by 2002:a05:620a:4051:b0:767:197e:4417 with SMTP id
+ i17-20020a05620a405100b00767197e4417mr9073351qko.3.1690699284793; 
+ Sat, 29 Jul 2023 23:41:24 -0700 (PDT)
 Received: from debian.hsd1.ma.comcast.net ([2601:182:cc00:77b0::aecb])
  by smtp.gmail.com with ESMTPSA id
- oq7-20020a05620a610700b00767c961eb47sm2347254qkn.43.2023.07.29.23.41.21
+ oq7-20020a05620a610700b00767c961eb47sm2347254qkn.43.2023.07.29.23.41.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 29 Jul 2023 23:41:22 -0700 (PDT)
+ Sat, 29 Jul 2023 23:41:24 -0700 (PDT)
 From: Dinah Baum <dinahbaum123@gmail.com>
 To: qemu-devel@nongnu.org
-Cc: Dinah Baum <dinahbaum123@gmail.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
+Cc: Dinah Baum <dinahbaum123@gmail.com>, Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>
-Subject: [PATCH v3 1/3] qapi: Moved architecture agnostic data types to
- `machine`
-Date: Sun, 30 Jul 2023 02:40:55 -0400
-Message-Id: <20230730064057.357598-2-dinahbaum123@gmail.com>
+ Yanan Wang <wangyanan55@huawei.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Thomas Huth <thuth@redhat.com>,
+ qemu-arm@nongnu.org (open list:ARM TCG CPUs),
+ qemu-s390x@nongnu.org (open list:S390 TCG CPUs)
+Subject: [PATCH v3 2/3] qapi,
+ target/: Enable 'query-cpu-model-expansion' on all architectures
+Date: Sun, 30 Jul 2023 02:40:56 -0400
+Message-Id: <20230730064057.357598-3-dinahbaum123@gmail.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20230730064057.357598-1-dinahbaum123@gmail.com>
 References: <20230730064057.357598-1-dinahbaum123@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::82c;
- envelope-from=dinahbaum123@gmail.com; helo=mail-qt1-x82c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::72a;
+ envelope-from=dinahbaum123@gmail.com; helo=mail-qk1-x72a.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -98,186 +102,322 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Only architectures that implement the command will return
+results, others will return an error message as before.
+
 Signed-off-by: Dinah Baum <dinahbaum123@gmail.com>
 ---
- qapi/machine-target.json | 78 +---------------------------------------
- qapi/machine.json        | 77 +++++++++++++++++++++++++++++++++++++++
- 2 files changed, 78 insertions(+), 77 deletions(-)
+ cpu.c                            | 20 +++++++++++
+ include/exec/cpu-common.h        |  7 ++++
+ qapi/machine-target.json         | 60 --------------------------------
+ qapi/machine.json                | 53 ++++++++++++++++++++++++++++
+ target/arm/arm-qmp-cmds.c        |  7 ++--
+ target/arm/cpu.h                 |  7 ++++
+ target/i386/cpu-sysemu.c         |  7 ++--
+ target/i386/cpu.h                |  6 ++++
+ target/s390x/cpu.h               |  7 ++++
+ target/s390x/cpu_models_sysemu.c |  6 ++--
+ 10 files changed, 110 insertions(+), 70 deletions(-)
 
+diff --git a/cpu.c b/cpu.c
+index 1c948d1161..a99d09cd47 100644
+--- a/cpu.c
++++ b/cpu.c
+@@ -292,6 +292,26 @@ void list_cpus(void)
+ #endif
+ }
+ 
++CpuModelExpansionInfo *get_cpu_model_expansion_info(CpuModelExpansionType type,
++                                                    CpuModelInfo *model,
++                                                    Error **errp)
++{
++    /* XXX: implement cpu_model_expansion for targets that still miss it */
++#if defined(cpu_model_expansion)
++    return cpu_model_expansion(type, model, errp);
++#else
++    error_setg(errp, "Could not query cpu model information");
++    return NULL;
++#endif
++}
++
++CpuModelExpansionInfo *qmp_query_cpu_model_expansion(CpuModelExpansionType type,
++                                                     CpuModelInfo *model,
++                                                     Error **errp)
++{
++    return get_cpu_model_expansion_info(type, model, errp);
++}
++
+ #if defined(CONFIG_USER_ONLY)
+ void tb_invalidate_phys_addr(hwaddr addr)
+ {
+diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
+index 87dc9a752c..653f8a9d2b 100644
+--- a/include/exec/cpu-common.h
++++ b/include/exec/cpu-common.h
+@@ -6,6 +6,7 @@
+ #ifndef CONFIG_USER_ONLY
+ #include "exec/hwaddr.h"
+ #endif
++#include "qapi/qapi-commands-machine.h"
+ 
+ /**
+  * vaddr:
+@@ -167,4 +168,10 @@ int cpu_memory_rw_debug(CPUState *cpu, vaddr addr,
+ /* vl.c */
+ void list_cpus(void);
+ 
++CpuModelExpansionInfo *get_cpu_model_expansion_info(CpuModelExpansionType type,
++                                                    CpuModelInfo *model,
++                                                    Error **errp);
++void list_cpu_model_expansion(CpuModelExpansionType type,
++                              CpuModelInfo *model, Error **errp);
++
+ #endif /* CPU_COMMON_H */
 diff --git a/qapi/machine-target.json b/qapi/machine-target.json
-index f0a6b72414..3ee2f7ca6b 100644
+index 3ee2f7ca6b..a658b1754b 100644
 --- a/qapi/machine-target.json
 +++ b/qapi/machine-target.json
-@@ -4,83 +4,7 @@
- # This work is licensed under the terms of the GNU GPL, version 2 or later.
- # See the COPYING file in the top-level directory.
+@@ -139,66 +139,6 @@
+   'returns': 'CpuModelBaselineInfo',
+   'if': 'TARGET_S390X' }
  
 -##
--# @CpuModelInfo:
+-# @CpuModelExpansionInfo:
 -#
--# Virtual CPU model.
+-# The result of a cpu model expansion.
 -#
--# A CPU model consists of the name of a CPU definition, to which delta
--# changes are applied (e.g. features added/removed). Most magic values
--# that an architecture might require should be hidden behind the name.
--# However, if required, architectures can expose relevant properties.
--#
--# @name: the name of the CPU definition the model is based on
--#
--# @props: a dictionary of QOM properties to be applied
+-# @model: the expanded CpuModelInfo.
 -#
 -# Since: 2.8
 -##
--{ 'struct': 'CpuModelInfo',
--  'data': { 'name': 'str',
--            '*props': 'any' } }
+-{ 'struct': 'CpuModelExpansionInfo',
+-  'data': { 'model': 'CpuModelInfo' },
+-  'if': { 'any': [ 'TARGET_S390X',
+-                   'TARGET_I386',
+-                   'TARGET_ARM' ] } }
 -
 -##
--# @CpuModelExpansionType:
+-# @query-cpu-model-expansion:
 -#
--# An enumeration of CPU model expansion types.
+-# Expands a given CPU model (or a combination of CPU model +
+-# additional options) to different granularities, allowing tooling to
+-# get an understanding what a specific CPU model looks like in QEMU
+-# under a certain configuration.
 -#
--# @static: Expand to a static CPU model, a combination of a static
--#     base model name and property delta changes.  As the static base
--#     model will never change, the expanded CPU model will be the
--#     same, independent of QEMU version, machine type, machine
--#     options, and accelerator options.  Therefore, the resulting
--#     model can be used by tooling without having to specify a
--#     compatibility machine - e.g. when displaying the "host" model.
--#     The @static CPU models are migration-safe.
+-# This interface can be used to query the "host" CPU model.
 -#
--# @full: Expand all properties.  The produced model is not guaranteed
--#     to be migration-safe, but allows tooling to get an insight and
--#     work with model details.
+-# The data returned by this command may be affected by:
 -#
--# Note: When a non-migration-safe CPU model is expanded in static
--#     mode, some features enabled by the CPU model may be omitted,
--#     because they can't be implemented by a static CPU model
--#     definition (e.g. cache info passthrough and PMU passthrough in
--#     x86). If you need an accurate representation of the features
--#     enabled by a non-migration-safe CPU model, use @full.  If you
--#     need a static representation that will keep ABI compatibility
--#     even when changing QEMU version or machine-type, use @static
--#     (but keep in mind that some features may be omitted).
+-# * QEMU version: CPU models may look different depending on the QEMU
+-#   version.  (Except for CPU models reported as "static" in
+-#   query-cpu-definitions.)
+-# * machine-type: CPU model may look different depending on the
+-#   machine-type.  (Except for CPU models reported as "static" in
+-#   query-cpu-definitions.)
+-# * machine options (including accelerator): in some architectures,
+-#   CPU models may look different depending on machine and accelerator
+-#   options.  (Except for CPU models reported as "static" in
+-#   query-cpu-definitions.)
+-# * "-cpu" arguments and global properties: arguments to the -cpu
+-#   option and global properties may affect expansion of CPU models.
+-#   Using query-cpu-model-expansion while using these is not advised.
+-#
+-# Some architectures may not support all expansion types.  s390x
+-# supports "full" and "static". Arm only supports "full".
+-#
+-# Returns: a CpuModelExpansionInfo.  Returns an error if expanding CPU
+-#     models is not supported, if the model cannot be expanded, if the
+-#     model contains an unknown CPU definition name, unknown
+-#     properties or properties with a wrong type.  Also returns an
+-#     error if an expansion type is not supported.
 -#
 -# Since: 2.8
 -##
--{ 'enum': 'CpuModelExpansionType',
--  'data': [ 'static', 'full' ] }
+-{ 'command': 'query-cpu-model-expansion',
+-  'data': { 'type': 'CpuModelExpansionType',
+-            'model': 'CpuModelInfo' },
+-  'returns': 'CpuModelExpansionInfo',
+-  'if': { 'any': [ 'TARGET_S390X',
+-                   'TARGET_I386',
+-                   'TARGET_ARM' ] } }
 -
--##
--# @CpuModelCompareResult:
--#
--# An enumeration of CPU model comparison results.  The result is
--# usually calculated using e.g. CPU features or CPU generations.
--#
--# @incompatible: If model A is incompatible to model B, model A is not
--#     guaranteed to run where model B runs and the other way around.
--#
--# @identical: If model A is identical to model B, model A is
--#     guaranteed to run where model B runs and the other way around.
--#
--# @superset: If model A is a superset of model B, model B is
--#     guaranteed to run where model A runs.  There are no guarantees
--#     about the other way.
--#
--# @subset: If model A is a subset of model B, model A is guaranteed to
--#     run where model B runs.  There are no guarantees about the other
--#     way.
--#
--# Since: 2.8
--##
--{ 'enum': 'CpuModelCompareResult',
--  'data': [ 'incompatible', 'identical', 'superset', 'subset' ] }
-+{ 'include': 'machine.json' }
- 
  ##
- # @CpuModelBaselineInfo:
+ # @CpuDefinitionInfo:
+ #
 diff --git a/qapi/machine.json b/qapi/machine.json
-index a08b6576ca..192c781310 100644
+index 192c781310..f24e19815e 100644
 --- a/qapi/machine.json
 +++ b/qapi/machine.json
-@@ -1691,3 +1691,80 @@
- { 'command': 'dumpdtb',
-   'data': { 'filename': 'str' },
-   'if': 'CONFIG_FDT' }
+@@ -1768,3 +1768,56 @@
+ ##
+ { 'enum': 'CpuModelCompareResult',
+   'data': [ 'incompatible', 'identical', 'superset', 'subset' ] }
 +
 +##
-+# @CpuModelInfo:
++# @CpuModelExpansionInfo:
 +#
-+# Virtual CPU model.
++# The result of a cpu model expansion.
 +#
-+# A CPU model consists of the name of a CPU definition, to which delta
-+# changes are applied (e.g. features added/removed). Most magic values
-+# that an architecture might require should be hidden behind the name.
-+# However, if required, architectures can expose relevant properties.
-+#
-+# @name: the name of the CPU definition the model is based on
-+#
-+# @props: a dictionary of QOM properties to be applied
++# @model: the expanded CpuModelInfo.
 +#
 +# Since: 2.8
 +##
-+{ 'struct': 'CpuModelInfo',
-+  'data': { 'name': 'str', '*props': 'any' } }
++{ 'struct': 'CpuModelExpansionInfo',
++  'data': { 'model': 'CpuModelInfo' }}
 +
 +##
-+# @CpuModelExpansionType:
++# @query-cpu-model-expansion:
 +#
-+# An enumeration of CPU model expansion types.
++# Expands a given CPU model (or a combination of CPU model +
++# additional options) to different granularities, allowing tooling to
++# get an understanding what a specific CPU model looks like in QEMU
++# under a certain configuration.
 +#
-+# @static: Expand to a static CPU model, a combination of a static
-+#     base model name and property delta changes.  As the static base
-+#     model will never change, the expanded CPU model will be the
-+#     same, independent of QEMU version, machine type, machine
-+#     options, and accelerator options.  Therefore, the resulting
-+#     model can be used by tooling without having to specify a
-+#     compatibility machine - e.g. when displaying the "host" model.
-+#     The @static CPU models are migration-safe.
++# This interface can be used to query the "host" CPU model.
 +#
-+# @full: Expand all properties.  The produced model is not guaranteed
-+#     to be migration-safe, but allows tooling to get an insight and
-+#     work with model details.
++# The data returned by this command may be affected by:
 +#
-+# Note: When a non-migration-safe CPU model is expanded in static
-+#     mode, some features enabled by the CPU model may be omitted,
-+#     because they can't be implemented by a static CPU model
-+#     definition (e.g. cache info passthrough and PMU passthrough in
-+#     x86). If you need an accurate representation of the features
-+#     enabled by a non-migration-safe CPU model, use @full.  If you
-+#     need a static representation that will keep ABI compatibility
-+#     even when changing QEMU version or machine-type, use @static
-+#     (but keep in mind that some features may be omitted).
++# * QEMU version: CPU models may look different depending on the QEMU
++#   version.  (Except for CPU models reported as "static" in
++#   query-cpu-definitions.)
++# * machine-type: CPU model may look different depending on the
++#   machine-type.  (Except for CPU models reported as "static" in
++#   query-cpu-definitions.)
++# * machine options (including accelerator): in some architectures,
++#   CPU models may look different depending on machine and accelerator
++#   options.  (Except for CPU models reported as "static" in
++#   query-cpu-definitions.)
++# * "-cpu" arguments and global properties: arguments to the -cpu
++#   option and global properties may affect expansion of CPU models.
++#   Using query-cpu-model-expansion while using these is not advised.
++#
++# Some architectures may not support all expansion types.  s390x
++# supports "full" and "static". Arm only supports "full".
++#
++# Returns: a CpuModelExpansionInfo. Returns an error if expanding CPU
++#     models is not supported, if the model cannot be expanded, if the
++#     model contains an unknown CPU definition name, unknown
++#     properties or properties with a wrong type.  Also returns an
++#     error if an expansion type is not supported.
 +#
 +# Since: 2.8
 +##
-+{ 'enum': 'CpuModelExpansionType',
-+  'data': [ 'static', 'full' ] }
++{ 'command': 'query-cpu-model-expansion',
++  'data': { 'type': 'CpuModelExpansionType', 'model': 'CpuModelInfo' },
++  'returns': 'CpuModelExpansionInfo'}
+diff --git a/target/arm/arm-qmp-cmds.c b/target/arm/arm-qmp-cmds.c
+index c8fa524002..295d690e93 100644
+--- a/target/arm/arm-qmp-cmds.c
++++ b/target/arm/arm-qmp-cmds.c
+@@ -22,6 +22,7 @@
+ 
+ #include "qemu/osdep.h"
+ #include "hw/boards.h"
++#include "cpu.h"
+ #include "kvm_arm.h"
+ #include "qapi/error.h"
+ #include "qapi/visitor.h"
+@@ -99,9 +100,9 @@ static const char *cpu_model_advertised_features[] = {
+     NULL
+ };
+ 
+-CpuModelExpansionInfo *qmp_query_cpu_model_expansion(CpuModelExpansionType type,
+-                                                     CpuModelInfo *model,
+-                                                     Error **errp)
++CpuModelExpansionInfo *get_cpu_model_expansion(CpuModelExpansionType type,
++                                               CpuModelInfo *model,
++                                               Error **errp)
+ {
+     CpuModelExpansionInfo *expansion_info;
+     const QDict *qdict_in = NULL;
+diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+index 88e5accda6..71b15d4884 100644
+--- a/target/arm/cpu.h
++++ b/target/arm/cpu.h
+@@ -2740,6 +2740,13 @@ bool write_cpustate_to_list(ARMCPU *cpu, bool kvm_sync);
+ 
+ #define cpu_list arm_cpu_list
+ 
++#ifdef CONFIG_SOFTMMU
++CpuModelExpansionInfo *get_cpu_model_expansion(CpuModelExpansionType type,
++                                               CpuModelInfo *model,
++                                               Error **errp);
++#define cpu_model_expansion get_cpu_model_expansion
++#endif
 +
-+##
-+# @CpuModelCompareResult:
-+#
-+# An enumeration of CPU model comparison results.  The result is
-+# usually calculated using e.g.  CPU features or CPU generations.
-+#
-+# @incompatible: If model A is incompatible to model B, model A is not
-+#     guaranteed to run where model B runs and the other way around.
-+#
-+# @identical: If model A is identical to model B, model A is
-+#     guaranteed to run where model B runs and the other way around.
-+#
-+# @superset: If model A is a superset of model B, model B is
-+#     guaranteed to run where model A runs.  There are no guarantees
-+#     about the other way.
-+#
-+# @subset: If model A is a subset of model B, model A is guaranteed to
-+#     run where model B runs.  There are no guarantees about the other
-+#     way.
-+#
-+# Since: 2.8
-+##
-+{ 'enum': 'CpuModelCompareResult',
-+  'data': [ 'incompatible', 'identical', 'superset', 'subset' ] }
+ /* ARM has the following "translation regimes" (as the ARM ARM calls them):
+  *
+  * If EL3 is 64-bit:
+diff --git a/target/i386/cpu-sysemu.c b/target/i386/cpu-sysemu.c
+index 28115edf44..c01c85839c 100644
+--- a/target/i386/cpu-sysemu.c
++++ b/target/i386/cpu-sysemu.c
+@@ -176,10 +176,9 @@ out:
+     return xc;
+ }
+ 
+-CpuModelExpansionInfo *
+-qmp_query_cpu_model_expansion(CpuModelExpansionType type,
+-                                                      CpuModelInfo *model,
+-                                                      Error **errp)
++CpuModelExpansionInfo *get_cpu_model_expansion(CpuModelExpansionType type,
++                                               CpuModelInfo *model,
++                                               Error **errp)
+ {
+     X86CPU *xc = NULL;
+     Error *err = NULL;
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index e0771a1043..699b987d12 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -2249,6 +2249,12 @@ uint64_t cpu_get_tsc(CPUX86State *env);
+ #endif
+ 
+ #define cpu_list x86_cpu_list
++#ifdef CONFIG_SOFTMMU
++CpuModelExpansionInfo *get_cpu_model_expansion(CpuModelExpansionType type,
++                                               CpuModelInfo *model,
++                                               Error **errp);
++#define cpu_model_expansion get_cpu_model_expansion
++#endif
+ 
+ /* MMU modes definitions */
+ #define MMU_KSMAP_IDX   0
+diff --git a/target/s390x/cpu.h b/target/s390x/cpu.h
+index eb5b65b7d3..932f8b642a 100644
+--- a/target/s390x/cpu.h
++++ b/target/s390x/cpu.h
+@@ -804,6 +804,13 @@ static inline uint8_t s390_cpu_get_state(S390CPU *cpu)
+ /* cpu_models.c */
+ void s390_cpu_list(void);
+ #define cpu_list s390_cpu_list
++#ifdef CONFIG_SOFTMMU
++CpuModelExpansionInfo *get_cpu_model_expansion(CpuModelExpansionType type,
++                                               CpuModelInfo *model,
++                                               Error **errp);
++#define cpu_model_expansion get_cpu_model_expansion
++#endif
++
+ void s390_set_qemu_cpu_model(uint16_t type, uint8_t gen, uint8_t ec_ga,
+                              const S390FeatInit feat_init);
+ 
+diff --git a/target/s390x/cpu_models_sysemu.c b/target/s390x/cpu_models_sysemu.c
+index 63981bf36b..ef3845f11c 100644
+--- a/target/s390x/cpu_models_sysemu.c
++++ b/target/s390x/cpu_models_sysemu.c
+@@ -213,9 +213,9 @@ static void cpu_info_from_model(CpuModelInfo *info, const S390CPUModel *model,
+     }
+ }
+ 
+-CpuModelExpansionInfo *qmp_query_cpu_model_expansion(CpuModelExpansionType type,
+-                                                      CpuModelInfo *model,
+-                                                      Error **errp)
++CpuModelExpansionInfo *get_cpu_model_expansion(CpuModelExpansionType type,
++                                               CpuModelInfo *model,
++                                               Error **errp)
+ {
+     Error *err = NULL;
+     CpuModelExpansionInfo *expansion_info = NULL;
 -- 
 2.30.2
 
