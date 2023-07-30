@@ -2,84 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9F0376871D
-	for <lists+qemu-devel@lfdr.de>; Sun, 30 Jul 2023 20:19:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10F7476870E
+	for <lists+qemu-devel@lfdr.de>; Sun, 30 Jul 2023 20:08:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQAZL-0006CA-8o; Sun, 30 Jul 2023 13:51:03 -0400
+	id 1qQAf7-0000ye-PN; Sun, 30 Jul 2023 13:57:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qQAZJ-0006A0-2r
- for qemu-devel@nongnu.org; Sun, 30 Jul 2023 13:51:01 -0400
-Received: from mail-pg1-x52c.google.com ([2607:f8b0:4864:20::52c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qQAZD-0006AY-E5
- for qemu-devel@nongnu.org; Sun, 30 Jul 2023 13:51:00 -0400
-Received: by mail-pg1-x52c.google.com with SMTP id
- 41be03b00d2f7-563de62f861so2200038a12.1
- for <qemu-devel@nongnu.org>; Sun, 30 Jul 2023 10:50:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690739452; x=1691344252;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=V5C+q1hDP46rXQTn3Sqn5gPM8wPaQ2ax9Bdf7ROhUdA=;
- b=EIcbNMJLt/1vxh0dNXGnEz7hHIW/ScqUSonj9xg25GtqQc9cNRljbrU6qFlWIXFV17
- Y5hgm8b3G/xvRQFAkf2pkxbtzrU6fwgNVeQiRPISZ54pnbkANNpvVb6mWiTDg4jysQrv
- X+x8p9QzFB103lMQoi1AVNeaPh+KW8s6TvNeeoydcyKyFkfyvo9WUiUDKcQ5KtNxSMpD
- 0RjnIX37d6NErUxnBPBfBiBQUf0/q+UFzDhC7egJ0sdJJBp7riYTnLiCdhrjbOC/dTNM
- 48f4MN/4YZKUPfYTTQ5ImVsLcrRlRLCwtAYdxNJkLUOCLnR7oIZmosQJZKGRhIQGdhyM
- ZF4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690739452; x=1691344252;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=V5C+q1hDP46rXQTn3Sqn5gPM8wPaQ2ax9Bdf7ROhUdA=;
- b=IAwn5gF1Sv2L5bMmPKiOUMb/AIHE7FNOSKjrwHg6cJrCQ0PTv3RT4sZ0VqyekQ7rWQ
- bjJ4XQ95xW/ZoMZ5m7EI7gwUQ4MXUc6JqreoQV9Brb9F67hV3iNq5o9gz0KwADspdb0s
- yK46XmzPOmzmG7vC+QGRqrVjGJ4sdUF9w3SmyV29mF6FhTT9eLIBr1cUNEv0Jj8XoXiI
- FmcaKU2vD8kXO2pQnR0ZI6ngok2xkAC4+LQgAydrHG1peib/zPtmsQzHt7vOOhHvq/XG
- M7fD0aBj/iD9RseiB+JEA/QYtIjaZfjwrvBAbh7sVr1I0qH42YUObeXWLdvFOJwSc00G
- b7iw==
-X-Gm-Message-State: ABy/qLZHqkaod8ncfUk7QZbFUqPMopGegxYyIr56eEjYCn+LBsEs53LB
- 6KDC9DwooOTWCPK0vwP7aGbHqA==
-X-Google-Smtp-Source: APBJJlFudyPKdpq1suW2HyuhWIrYytlkLUOgOYUglvO6cTro6dzEwl894CG7U41a1Fq9EelOaPDpEw==
-X-Received: by 2002:a17:90a:b101:b0:268:5575:93d9 with SMTP id
- z1-20020a17090ab10100b00268557593d9mr7043079pjq.10.1690739452468; 
- Sun, 30 Jul 2023 10:50:52 -0700 (PDT)
-Received: from ?IPV6:2602:47:d490:6901:a7b4:380e:e513:5ef2?
- ([2602:47:d490:6901:a7b4:380e:e513:5ef2])
- by smtp.gmail.com with ESMTPSA id
- l7-20020a17090a150700b002636dfcc6f5sm5341979pja.3.2023.07.30.10.50.51
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 30 Jul 2023 10:50:52 -0700 (PDT)
-Message-ID: <8dcbe033-bf15-4df3-5042-5fbd3319ad22@linaro.org>
-Date: Sun, 30 Jul 2023 10:50:50 -0700
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qQAf2-0000x7-5M
+ for qemu-devel@nongnu.org; Sun, 30 Jul 2023 13:56:56 -0400
+Received: from mout.gmx.net ([212.227.17.22])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qQAf0-0008Re-BZ
+ for qemu-devel@nongnu.org; Sun, 30 Jul 2023 13:56:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
+ s=s31663417; t=1690739811; x=1691344611; i=deller@gmx.de;
+ bh=AvYxrSCaTkYW1Ki7kGR6deSg6YvOAOVEtGYv15Krc/U=;
+ h=X-UI-Sender-Class:Date:From:To:Subject;
+ b=JfMj59JGyIixk89yGIVbOhjceEVchyPNOr0v26AnYyc/Vm/K4wSJ7zhjvdNBEpbwkm2RK8F
+ FTVJmVT8I5QYpC1tPPwrTYvoyb9mSpmxUwIbEJRkdyeLnS67/XXsWftD5zDOx+OwHGONLbGYT
+ U+EjoPcJ+0cTMyICwnQVhGT7Napmbdroudi+A62U0StzxoTcEEMd8O97hPf80AO/tx1BmDAMY
+ +J5fw1fqGuA2iqrVUY+rutU9w2QWLVUjGuiaUD9zg+eTh8Z2wGP+fsW2D78dIKmmMm6vpeRye
+ 3bs5qOwlcOuZbqVQ5ZSuKqgmul80W3oNNheS1xsM/MxCSPg0AhQA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from p100 ([94.134.144.241]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1N6KYb-1poyLK2gYb-016gE3; Sun, 30
+ Jul 2023 19:56:51 +0200
+Date: Sun, 30 Jul 2023 19:56:50 +0200
+From: Helge Deller <deller@gmx.de>
+To: Richard Henderson <richard.henderson@linaro.org>,
+ Laurent Vivier <laurent@vivier.eu>, qemu-devel@nongnu.org
+Subject: [RFC][PATCH] accel/tcg: Use lookup_and_goto_ptr() for linux-user in
+ translator_use_goto_tb()
+Message-ID: <ZMakYpOgco2Ihg0G@p100>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] target/hppa: Move iaoq registers and thus reduce
- generated code size
-Content-Language: en-US
-To: Helge Deller <deller@gmx.de>, Laurent Vivier <laurent@vivier.eu>,
- qemu-devel@nongnu.org
-References: <ZMaQGwK1Ikj27ZPk@p100>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <ZMaQGwK1Ikj27ZPk@p100>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52c.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Provags-ID: V03:K1:yexKCKXR83SmljFsRKTd3enoZo2Ceibjc7PqUWGQx85He2b6/fm
+ Z7dSgemnYTYyIldLmK9QAMh8JnjMPSIQN+jI0++A4czftuE0Y5HIytb+wU2Y+J570WScfzC
+ iZ6e8fFXFAde0ggRXOKuh0ZcJVMI/X7Nauz6L77aCHf9bEr+KLKF9fAYb2zZYiDx2vnKlVt
+ 8A1K5JS05Ou6TpULc9uwA==
+UI-OutboundReport: notjunk:1;M01:P0:pzwldy9NnQs=;yNd41EtdNwmFsuWgXdlDcS58k9x
+ GnAZLUVV22C0rXuw5KAJ8DhZ2BiUQ0wgXlXs3wL/DYI9D1UwjG5qQ+WIZsnAy9453ayRuc/dO
+ kmWRRHUJqb3zXoX2WjKfb62pI/x3rLz/5qg9TChDubt6Wmeo7L1Ksx5+PJBovBWf0WCIgpw3a
+ QApeBTgFhJRF8mxD+yOLr/rdCYCucAkDsFzS8yHm3YxEJoei7Dnkb712wltq6kwwCgtLkVySW
+ 3keFARPPHvBGejJpe5eiJ/P164wFFGjbqs+pH9qTPLUVFsT6T896AIHglmocuF6Oxuj6sjtun
+ q8yZC2Oz5oAI7E59hqqMM3fNVp2STA2hts0ipxNqlW9lRilgJeQ4vVR13CQCL97iw/ybJXC5a
+ +vrXL0WeMeorqNJgnDnV0s1K+JBpHZh+GkafgyJoYZMbmfGNJFvTXwg/g8LnVomsvxmKJVTO7
+ 87NzHLjffPn1xKFOKJxkE/Gvxm696QAvTbV7LPe00Fswi9/yNyZnSsNql9TpkPqCC6tuy1y3A
+ JWMzgEUBaDDrCmYTtDF4NCAP+1f7sHvdroFGSXdJoffus/kGNBWPuvvqqcL0NiYQWbw64hsLj
+ 5ZQAp7hZxXO+J6i4JDeUnjGtfW4x6ewNRYFEetvK3SpnUWH/tHM0AVWkJ9KRSozfpHS8tIiLS
+ 1nIgPC0EpAN9IXoYyjEYjWE5t7UdKcj9zM1br7lo4DLQRmzxjxfmSphDx47oKqEdfHNeKNu7M
+ qbDtsoTRXU1vHURIYn0nE9iaYZFmOnZujI/+VkbV6Xw6HrLLrxv5RnlGkpSKg/nDR+4c1sqOA
+ JV+TyGiI40I/RsdUK0ejw8Jnimw0Oqjg8sNvPKfv+NWX2/7Jq8kDLBjEVBRNRoobfCBF1qo3O
+ TFvafuyv+8VIekhyQsWXGjuR+1/33RoIiuHBu8UvRUpxW39Jv/c7/fpuLlccYffibE8rTUvy+
+ 9KbNuNGym6ihroq6SYyHsvPZnuE=
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=212.227.17.22; envelope-from=deller@gmx.de;
+ helo=mout.gmx.net
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.101,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,35 +84,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/30/23 09:30, Helge Deller wrote:
-> On hppa the Instruction Address Offset Queue (IAOQ) registers specifies
-> the next to-be-executed instructions addresses. Each generated TB writes those
-> registers at least once, so those registers are used heavily in generated
-> code.
-> 
-> Looking at the generated assembly, for a x86-64 host this code
-> to write the address $0x7ffe826f into iaoq_f is generated:
-> 0x7f73e8000184:  c7 85 d4 01 00 00 6f 82  movl     $0x7ffe826f, 0x1d4(%rbp)
-> 0x7f73e800018c:  fe 7f
-> 0x7f73e800018e:  c7 85 d8 01 00 00 73 82  movl     $0x7ffe8273, 0x1d8(%rbp)
-> 0x7f73e8000196:  fe 7f
-> 
-> With the trivial change, by moving the variables iaoq_f and iaoq_b to
-> the top of struct CPUArchState, the offset to %rbp is reduced (from
-> 0x1d4 to 0), which allows the x86-64 tcg to generate 3 bytes less of
-> generated code per move instruction:
-> 0x7fc1e800018c:  c7 45 00 6f 82 fe 7f     movl     $0x7ffe826f, (%rbp)
-> 0x7fc1e8000193:  c7 45 04 73 82 fe 7f     movl     $0x7ffe8273, 4(%rbp)
-> 
-> Overall this is a reduction of generated code (not a reduction of
-> number of instructions).
-> A test run with checks the generated code size by running "/bin/ls"
-> with qemu-user shows that the code size shrinks from 1616767 to 1569273
-> bytes, which is ~97% of the former size.
-> 
-> Signed-off-by: Helge Deller<deller@gmx.de>
+I'm quite unclear about translator_use_goto_tb() for qemu-user
+emulation....(and in general).
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Based on the function name, the function translator_use_goto_tb() shall
+help to decide if a program should use goto_tb() and exit_tb() to jump
+to the next instruction.
 
-r~
+Currently, if the destination is on the same page, it returns true.
+I wonder, if it shouldn't return false in this case instead, because
+arches have code like this: (taken from target/hppa/translate.c):
+    if (... && translator_use_goto_tb(ctx, f)) {
+        tcg_gen_goto_tb(which);
+        tcg_gen_movi_reg(cpu_iaoq_f, f);
+        tcg_gen_movi_reg(cpu_iaoq_b, b);
+        tcg_gen_exit_tb(ctx->base.tb, which);
+    } else {
+        copy_iaoq_entry(cpu_iaoq_f, f, cpu_iaoq_b);
+        copy_iaoq_entry(cpu_iaoq_b, b, ctx->iaoq_n_var);
+        tcg_gen_lookup_and_goto_ptr();
+    }
+
+Shouldn't, if the destination is on the same page, the (faster?)
+path with tcg_gen_lookup_and_goto_ptr() be taken instead?
+
+Now, for user-mode emulation page faults can't happen at all.
+Shouldn't in this case the tcg_gen_lookup_and_goto_ptr() path been taken
+unconditionally, as shown in the patch below?
+
+Signed-off-by: Helge Deller <deller@gmx.de>
+
+diff --git a/accel/tcg/translator.c b/accel/tcg/translator.c
+index 1a6a5448c8..07224a7f83 100644
+=2D-- a/accel/tcg/translator.c
++++ b/accel/tcg/translator.c
+@@ -124,8 +124,13 @@ bool translator_use_goto_tb(DisasContextBase *db, vad=
+dr dest)
+         return false;
+     }
+
++#ifndef CONFIG_USER_ONLY
+     /* Check for the dest on the same page as the start of the TB.  */
+     return ((db->pc_first ^ dest) & TARGET_PAGE_MASK) =3D=3D 0;
++#else
++    /* linux-user doesn't need to fear pagefaults for exec swap-in */
++    return false;
++#endif
+ }
+
+ void translator_loop(CPUState *cpu, TranslationBlock *tb, int *max_insns,
 
