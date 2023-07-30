@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 996937686CD
-	for <lists+qemu-devel@lfdr.de>; Sun, 30 Jul 2023 19:38:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD1337686D9
+	for <lists+qemu-devel@lfdr.de>; Sun, 30 Jul 2023 19:48:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQ9z7-0007ue-Hv; Sun, 30 Jul 2023 13:13:37 -0400
+	id 1qQASR-0007Zn-TK; Sun, 30 Jul 2023 13:43:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qQ9z5-0007uC-8M; Sun, 30 Jul 2023 13:13:35 -0400
-Received: from mail-oi1-x229.google.com ([2607:f8b0:4864:20::229])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qQASP-0007ZP-Ai
+ for qemu-devel@nongnu.org; Sun, 30 Jul 2023 13:43:53 -0400
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qQ9z3-0003i9-NW; Sun, 30 Jul 2023 13:13:35 -0400
-Received: by mail-oi1-x229.google.com with SMTP id
- 5614622812f47-3a3c78ede4bso3018270b6e.2; 
- Sun, 30 Jul 2023 10:13:32 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qQASN-0003np-Bj
+ for qemu-devel@nongnu.org; Sun, 30 Jul 2023 13:43:53 -0400
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-1bbc06f830aso23463245ad.0
+ for <qemu-devel@nongnu.org>; Sun, 30 Jul 2023 10:43:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1690737212; x=1691342012;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=linaro.org; s=google; t=1690739029; x=1691343829;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=SWL6EHCQeViUbN65x4SyzzXVs9zI02tk25qs3q7X04g=;
- b=PHa0c7l/2t4VT6vyNnfq+TKYshC3athz82QEOoxNWhtmJQag4LawOn4IGZgv9GqD1s
- Ty34L0ZFtizSZAJGe8imgrP5IUqrmT0ltpSYrVDseTheMMfLjHk28fw5yZKqoSDQUM+a
- vmHJzP1GWKNM8uVR/0XhqHO4YCVJerYcYz6aPT8mrJ4CIYQrwUM+E0mt8H4EeEX1L8gW
- HqAMi9TkeKwRl9fdR1TOE+mJK+MREbvEst5jWKXMAqpuF9cJMmSnE+ZXkm6rM9dPm1Cn
- ymE/DiSxm5GYE1Esgx8sVz00GNTT+QrhkXQ3ZbBoRPHwHfjYYQEEh7USMoyd7bl2sLmN
- zC+Q==
+ bh=QtGwLS/VdYydX/glCIj5f7bhJig2rdszW3l5C9a0VU4=;
+ b=pmpDI1EphtbhAjpZNJq2uuanvNXbH2Sw7VdqO+JIQRDOGhwqzg9pWzU3eyr5Q3Kong
+ gxssvqw7nbswomAOWNm90lV6G+1rRg/O5hTqVxid4WdVLxJZqxoH+Kb3u6R/cMtGuY44
+ bA+AEvRV8oW0qC8UnRJXB9QnA/IFTG870F72KePHVXYl9xj7AZXWqxpABTfpg1v9fC91
+ M8sMoCLgRHFMZkz+wsUBJ366pBlVxdrjzexsb/zetgbypXx2iSeXSSNrFQnXJUMPlhMd
+ IbuUo52OL6n7AIHGpunx7UBSzP7uYC+Uzv9duP83FLuzsTDjtFHUuWKeNF8vUfGi6mLt
+ oJ6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690737212; x=1691342012;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20221208; t=1690739029; x=1691343829;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=SWL6EHCQeViUbN65x4SyzzXVs9zI02tk25qs3q7X04g=;
- b=XaCtK/chzy8d2riOop2/VFVUPTxZOkpYSD6P+y0OL3nze4ax3kL/JqiRN693YyFpkd
- C1gL32GAaCSnSC6QoTXRXf6eMFB5P7Dpb5BOjQdOk01Q3vh3e0e4P3ciwEIE/ehh95So
- rxECAv52cJMaN+IxH5GMK1qH8J/frW7iIiUDXizZD9zTWX1Ufk9AwDBGliWoSzv56Jll
- ++5Fkrj+3lznHznPkUdlXz5gb8n51cIDDZbTYPSmeg59N+7zq4cG0UcWbXnx6pE6S2Cj
- HSgigJf0EuGaq8e08tYRHU7bf9wLXzlCbDHTjNVZsrVUPLh5MX0mQciUvGlaLNBjLRMj
- pVdA==
-X-Gm-Message-State: ABy/qLbsjbn9fRxZg9eREPEiZaBTQWysvjHA0OW6F+Euk+9srGyjeuJW
- Vu/3qRJu4mXZB66Rd+9FUI0=
-X-Google-Smtp-Source: APBJJlEqtuZHZ8aDMaaOX0SIHixaDxrUu5n05gWhTWFPso9R/xmuHZd3f76rENNIyyac3iI2putpXg==
-X-Received: by 2002:a05:6808:3009:b0:3a5:a4b4:f93e with SMTP id
- ay9-20020a056808300900b003a5a4b4f93emr10465365oib.7.1690737211796; 
- Sun, 30 Jul 2023 10:13:31 -0700 (PDT)
-Received: from [192.168.68.108] (201-69-66-36.dial-up.telesp.net.br.
- [201.69.66.36]) by smtp.gmail.com with ESMTPSA id
- t4-20020a4a8244000000b00567829a4991sm3599330oog.36.2023.07.30.10.13.30
+ bh=QtGwLS/VdYydX/glCIj5f7bhJig2rdszW3l5C9a0VU4=;
+ b=CED0IYf8t7DA4UU5O0LI/O6EnrxDTPErUpheQHK3WfhYydQUByeATy+DciIS61MVrN
+ uONN3jAFn+EyNHCueYWtDb9Nox2t5T2CgPskWSBRm1BCRCrLGhO2Wr2otnqVV86xGi3u
+ uGpz4BMCP50jR4xW2iA1lCk1b7yFY6pDC9Az/zA0zTOUmuzT0/tPGuBkwfCExxcKP1Ne
+ upXOq2jA/WOTLqEX5ns1Jpm60xx5HYUmp8+vAMyQb6FB/IAAozUFk4Q2DPvOlc82WMq4
+ y/nsIhH16axs+FNYT2uIsqEaqRutgL4Rn4B6SRIIPvRXXHyaeXwl2IRoewYjqu1vm5FA
+ dF1w==
+X-Gm-Message-State: ABy/qLbOTPlrESloM+aLR0WqBi+ty+adqBsXK0uKzaPKeRa+EcPe3PcE
+ q4QCV6sE58EDPO8vEGqE6scG4Q==
+X-Google-Smtp-Source: APBJJlH4YCrmn5ZG10q3rQjKC+8KeZ6nElg685IK0cQqKXqK/4itAEng1nFYMdmyF5X9VXTbimkKdg==
+X-Received: by 2002:a17:902:ceca:b0:1b7:ca9c:4f5c with SMTP id
+ d10-20020a170902ceca00b001b7ca9c4f5cmr8514770plg.28.1690739028470; 
+ Sun, 30 Jul 2023 10:43:48 -0700 (PDT)
+Received: from ?IPV6:2602:47:d490:6901:a7b4:380e:e513:5ef2?
+ ([2602:47:d490:6901:a7b4:380e:e513:5ef2])
+ by smtp.gmail.com with ESMTPSA id
+ o2-20020a639202000000b00563397f1624sm6668168pgd.69.2023.07.30.10.43.47
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 30 Jul 2023 10:13:31 -0700 (PDT)
-Message-ID: <6dc430f0-07d0-81d6-2639-5d03231f203b@gmail.com>
-Date: Sun, 30 Jul 2023 14:13:29 -0300
+ Sun, 30 Jul 2023 10:43:48 -0700 (PDT)
+Message-ID: <19b913a1-57d1-1631-06bb-04149b8a7bd1@linaro.org>
+Date: Sun, 30 Jul 2023 10:43:45 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH for-8.2 0/2] ppc: get rid of free() (gitlab #1798)
+Subject: Re: [PATCH] target/openrisc: Set EPCR to next PC on FPE exceptions
 Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, qemu-trivial@nongnu.org
-References: <20230728195646.168997-1-danielhb413@gmail.com>
- <CAFEAcA-79hxq7Uxne1wRx_waWkCy75ObKw5+krtbp-aTbxFkoQ@mail.gmail.com>
-From: Daniel Henrique Barboza <danielhb413@gmail.com>
-In-Reply-To: <CAFEAcA-79hxq7Uxne1wRx_waWkCy75ObKw5+krtbp-aTbxFkoQ@mail.gmail.com>
+To: Stafford Horne <shorne@gmail.com>, QEMU Development <qemu-devel@nongnu.org>
+References: <20230729210851.3097340-1-shorne@gmail.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230729210851.3097340-1-shorne@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::229;
- envelope-from=danielhb413@gmail.com; helo=mail-oi1-x229.google.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, NICE_REPLY_A=-0.101,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.101,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -94,43 +94,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 7/29/23 12:35, Peter Maydell wrote:
-> On Fri, 28 Jul 2023 at 21:57, Daniel Henrique Barboza
-> <danielhb413@gmail.com> wrote:
->> Here's some trivial changes following Peter's call to arms against
->> free() and friends in gitlab issue #1798 in an attempt to enforce
->> our memory management guidelines [1].
+On 7/29/23 14:08, Stafford Horne wrote:
+> The architecture specification calls for the EPCR to be set to "Address
+> of next not executed instruction" when there is a floating point
+> exception (FPE).  This was not being done, so fix it by using the same
+> method as syscall.  Note, this may need a lot more work if we start
+> seeing floating point operations in delay slots which exceptions
+> enabled.
 > 
-> To clarify, this isn't a "call to arms". The issue is marked up as
-> a "bite-sized task", which is to say that it's a potential easy
-> place to start for newcomers to the community who might be making
-> their first contribution to the codebase. The changes it suggests
-> aren't urgent; at most they're a nice-to-have, since glib
-> guarantees that you can mix malloc/free and g_malloc/g_free.
-
-I failed to realized it was a byte sized task :/ and my Coccinelle comment
-in the bug makes me fell dumb hehe (given that Coccinelle is not newcomer
-friendly).
-
+> Without this patch FPU exceptions will loop, as the exception hanlding
+> will always return back to the failed floating point instruction.
 > 
-> We've had this sitting around as a suggestion on the wiki page
-> for bite-sized-tasks for years, and occasionally people come
-> through and have a go at it. I wanted to clean up and expand
-> on the description of what we had in mind for the change, to
-> give those people a better chance of successfully completing
-> the task.
-
-What we can do then, since I already sent these, is perhaps link these patches
-as example/template in the gitlab issue later on.
-
-
-Thanks,
-
-Daniel
-
+> This was not noticed in earlier testing because:
 > 
-> thanks
-> -- PMM
+>   1. The compiler usually generates code which clobbers the input operand
+>      such as:
+> 
+>        lf.div.s r19,r17,r19
+> 
+>   2. The target will store the operation output before to the register
+>      before handling the exception.  So an operation such as:
+> 
+>        float a = 100.0f;
+>        float b = 0.0f;
+>        float c = a / b;    /* lf.div.s r19,r17,r19 */
+> 
+>      Will first execute:
+> 
+>        100 / 0    -> Store inf to c (r19)
+>                   -> triggering divide by zero exception
+>                   -> handle and return
+> 
+>      Then it will exectute:
+> 
+>        100 / inf  -> Store 0 to c  (no exception)
+> 
+> To confirm the looping behavoid and the fix I used the following:
+> 
+>      float fpu_div(float a, float b) {
+> 	float c;
+> 	asm volatile("lf.div.s %0, %1, %2"
+> 		      : "+r" (c)
+> 		      : "r" (a), "r" (b));
+> 	return c;
+>      }
+> 
+> Signed-off-by: Stafford Horne <shorne@gmail.com>
+> ---
+>   target/openrisc/interrupt.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/target/openrisc/interrupt.c b/target/openrisc/interrupt.c
+> index 3887812810..9b14b8a2c6 100644
+> --- a/target/openrisc/interrupt.c
+> +++ b/target/openrisc/interrupt.c
+> @@ -34,7 +34,7 @@ void openrisc_cpu_do_interrupt(CPUState *cs)
+>       int exception = cs->exception_index;
+>   
+>       env->epcr = env->pc;
+> -    if (exception == EXCP_SYSCALL) {
+> +    if (exception == EXCP_SYSCALL || exception == EXCP_FPE) {
+>           env->epcr += 4;
+>       }
+>       /* When we have an illegal instruction the error effective address
+
+According to Table 6-3, when in a delay slot the EPCR should be the address of the jump, 
+for both syscall and fpe.  This whole block should be moved down...
+
+>     /* Set/clear dsx to indicate if we are in a delay slot exception.  */
+>     if (env->dflag) {
+>         env->dflag = 0;
+>         env->sr |= SR_DSX;
+>         env->epcr -= 4;
+>     } else {
+>         env->sr &= ~SR_DSX;
+>     }
+
+... into the else.
+
+With that,
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+
+
+r~
 
