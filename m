@@ -2,96 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E041768680
-	for <lists+qemu-devel@lfdr.de>; Sun, 30 Jul 2023 18:47:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A85ED768685
+	for <lists+qemu-devel@lfdr.de>; Sun, 30 Jul 2023 18:49:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQ9F9-0007mN-Bp; Sun, 30 Jul 2023 12:26:07 -0400
+	id 1qQ9JM-0008LU-Fc; Sun, 30 Jul 2023 12:30:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qQ9Ey-0007lw-K5
- for qemu-devel@nongnu.org; Sun, 30 Jul 2023 12:25:59 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qQ9JK-0008L6-T5
+ for qemu-devel@nongnu.org; Sun, 30 Jul 2023 12:30:26 -0400
+Received: from mout.gmx.net ([212.227.15.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qQ9Eq-0008OA-4q
- for qemu-devel@nongnu.org; Sun, 30 Jul 2023 12:25:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690734341;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=9+gJmVn2BwTDwqdgjEoNnqmrolSKLANb5EDmdM2Rnl4=;
- b=MZiiPLgEkHXndIiW7Sld7TPMk3nJt/WFlQ+1Z3tL91U4Cal9z+1dSlq6IyXXKwx2qH1zyM
- VHkPHXVOlaG22E4hsBGi8NfJ+iJMEWaAnySnt0P56tq4plFEr2fOPJlm7zPezcvF//foh7
- L77Peanae2I94gs54G/c/FWVFgq2nK8=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-617-ch04V72HNpmxgEruHOYyCg-1; Sun, 30 Jul 2023 12:25:38 -0400
-X-MC-Unique: ch04V72HNpmxgEruHOYyCg-1
-Received: by mail-lj1-f197.google.com with SMTP id
- 38308e7fff4ca-2b9bcf13746so29316501fa.0
- for <qemu-devel@nongnu.org>; Sun, 30 Jul 2023 09:25:38 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690734337; x=1691339137;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=9+gJmVn2BwTDwqdgjEoNnqmrolSKLANb5EDmdM2Rnl4=;
- b=Oha/vNXkgXBWdOR8qFYXM14DzSG2vpZwB0YzKP6oDkTtP3AwPzR0wAgvfQUDyxVZwR
- JViX4BLyUxS6vePUP09JANEX7LVkQ/iSzHk/fm1WI33MDtyyZ+H1lHmpKmcbsT15D7l2
- I4nXZqq91pVnZ+JNNjoaGhRzburCJz4P+Tvp2vIvcLOA7Y6ldbET71tiE4ZqsyocrQ9D
- BTYvKcikFW1TEZwPL/JoIHkxwRTrbGwfi88M25L0Cf2C//gqeW0AbuCxJqVtZ6Ai7SpV
- jFGQYbedukU6o1BMJtmd3DSxbwqaN6hw0om8wa2wJBg+PSa1oE6Knz+QctLO1wdKzl3S
- zeQQ==
-X-Gm-Message-State: ABy/qLaW10IxT3RwM9scbTtSTxxlggi9kdUepc+fmxW9He3nr+HEQ7n8
- jUT6OOslgASn1RMRArF7we8FYDA9WQqJSeKrSEBeMWXkijt9WermlsW16/HkesDeur26IdBLf7N
- 9eLFwGk0IbIcecFw=
-X-Received: by 2002:a2e:b0d1:0:b0:2b9:acad:b4b2 with SMTP id
- g17-20020a2eb0d1000000b002b9acadb4b2mr4737745ljl.6.1690734337136; 
- Sun, 30 Jul 2023 09:25:37 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHJvn/8QZMlqLwPqi1O2HZvuGXIa9J5UK+jGrkLgj6gcQhYmsumRGg8A65wyCvUkUJ6XWpMkw==
-X-Received: by 2002:a2e:b0d1:0:b0:2b9:acad:b4b2 with SMTP id
- g17-20020a2eb0d1000000b002b9acadb4b2mr4737735ljl.6.1690734336843; 
- Sun, 30 Jul 2023 09:25:36 -0700 (PDT)
-Received: from ?IPV6:2a01:cb19:853d:fa00:c28a:3e3d:34f3:3891?
- ([2a01:cb19:853d:fa00:c28a:3e3d:34f3:3891])
- by smtp.gmail.com with ESMTPSA id
- b10-20020a5d4b8a000000b003175f00e555sm10322701wrt.97.2023.07.30.09.25.35
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 30 Jul 2023 09:25:36 -0700 (PDT)
-Message-ID: <dc2365df-4e71-e2d8-988d-f74431800123@redhat.com>
-Date: Sun, 30 Jul 2023 18:25:35 +0200
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qQ9JJ-0000wN-1d
+ for qemu-devel@nongnu.org; Sun, 30 Jul 2023 12:30:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
+ s=s31663417; t=1690734620; x=1691339420; i=deller@gmx.de;
+ bh=FQ0+4UJTlGFglkV5PDHtWriV9JJEijSTX1f8Cfgj9uw=;
+ h=X-UI-Sender-Class:Date:From:To:Subject;
+ b=eZYOiV5KzpljE4r9c3YaRmlxVZU4gt2Xd8J1vCsWIj/STeALhR1OVmmbMA00JtRUB1TCIel
+ aIYSoswMI2QSIc6H8jsluvKaO3IvG0GLk6K31LysHs/ZXdcc19F1iPEso8r4b1u0HtcY/ylwd
+ 8e8VAGzEujBFzPygk8XpAbtaFowtIE6G0DhVLx7R/fwdWCkv2fleSp/lOToeKW9pz9GU8rGsr
+ PQWQen0btLZO+KAGTY8HWFxEpHeQ7gDW5X+4PY/GkELTv4feRJOxu899XH6XG+FDRsX9PD3J0
+ x3ra64NujtpsN1vvNWr9Y33ZuQuF7o6gDlc6Gb0ILySBF2AZvcPQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from p100 ([94.134.144.241]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MfHEP-1px8LP2BMh-00gniA; Sun, 30
+ Jul 2023 18:30:20 +0200
+Date: Sun, 30 Jul 2023 18:30:19 +0200
+From: Helge Deller <deller@gmx.de>
+To: Laurent Vivier <laurent@vivier.eu>,
+ Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Subject: [PATCH] target/hppa: Move iaoq registers and thus reduce generated
+ code size
+Message-ID: <ZMaQGwK1Ikj27ZPk@p100>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH for-8.2 1/6] vfio/migration: Move from STOP_COPY to STOP
- in vfio_save_cleanup()
-Content-Language: en-US
-To: Avihai Horon <avihaih@nvidia.com>, qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Joao Martins
- <joao.m.martins@oracle.com>, Yishai Hadas <yishaih@nvidia.com>,
- Jason Gunthorpe <jgg@nvidia.com>, Maor Gottlieb <maorg@nvidia.com>,
- Kirti Wankhede <kwankhede@nvidia.com>, Tarun Gupta <targupta@nvidia.com>
-References: <20230716081541.27900-1-avihaih@nvidia.com>
- <20230716081541.27900-2-avihaih@nvidia.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20230716081541.27900-2-avihaih@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Provags-ID: V03:K1:llv/z49cooYYgX94gJz0KmRRKcVa1rhVcp5XIKV4EyXXWJkJTHD
+ XUZvUxMlIexqhEH+4PnaYLYujbLsaAMPRCgPuMgLREaQRRiCOsl7LfiD5s5DGckyQ7E6pRD
+ kutSEfAgLZyti3fsJHDRZ7qaH9UsgGLLGuAxifEFPpBHi39Hc6ETimVxLAblkStglPq/JeK
+ AsHiXQmfca5kNl7PoOKYw==
+UI-OutboundReport: notjunk:1;M01:P0:d9Nh2afesoo=;o9fbB/uzYPI4pmD6FZ/O8vwMLfC
+ Qm23f3pMz+ui0Lx8jxNQ5Ct7eka4F4g4IYdP5Jy6um7oF/pHfyoLaiVmxeAlbsslY35vWEdil
+ Nlc39lYIwmFztFGAAS6/VhtwpZOIQ/j4IMiVZaVKYUAd/10fzgCVwQb6J0su69Ld3EJeobl6X
+ YcicjZfPkNwCp3xhHJVWC8rLu6bj5uT+c1tdtMuwIU4Uqwzeu+0LMv7D+qOvzOAZMQ48SmYJc
+ 3TO1h++j82w3a5qqUl2pm1JD9WPTzwjBfzBSr2Atz5LAmBNmpRHPGvwfkAdV2YCdQabuPqOI1
+ L+lAsvn9MdW+zk+I+gfddE9HyVZzm6+kYVb5oPn8GGDJM0dDuumenYO5ivgNW3gm4BCnc6ecq
+ NQao1Hcztlzsdu3elBYFTrQhnbdVEMqGtS2XCBZJI0R1Pj0f+SdQoaJAGhUXlUi6BUxUYWDqm
+ AHz8Rx3UmjyxBryA+uV8P9WiIZT4z44uMZVtPCku6aCk4iBfcRG1G+yct4c7Dm2OLr6QpsCJ8
+ Xl1iXoP08OIrHqzfFXbCgNLzEjsFE0btO5a+Gu7P1svWrKzOJTDXCoEaWvY2U6O6SSP5MK25c
+ yKJquba4ERF2N6BFoZY/Lmw1L/d10PzkcL4WWn+kOuGrwounVd+b9jjBwgsV3RPmTUwh9UjN8
+ 32zD+QPAs+vl1yGR//yXEndNek3fgsEAvwCPQ6NCNpaSfI4s7skGPnKfEabsRIXoOwXPKD0i1
+ zSGauW7ilvS973fvCrZho4ENtomhYP2PdTtFvK8kb1z8EkSLA+vvbNmc6P4Tm1uyA+BjEA8IP
+ QvdSEtJDcFyC7r6NNQ7RKRhPOzx2oyMxMT8qnHebnl+wLKvD4K6QAopWsVVtShkwtprPwP6sN
+ mURdAq9AtUnTasSl8VTqzJscihTiPdZnLByUibqzogFMT6ahNNUDtod/nTrZFZYv1TJx2dkr6
+ 0oSFcl9wfaWXrCSRcfWugL/pZuY=
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=212.227.15.18; envelope-from=deller@gmx.de;
+ helo=mout.gmx.net
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.101, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01,
- RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,65 +83,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/16/23 10:15, Avihai Horon wrote:
-> Changing the device state from STOP_COPY to STOP can take time as the
-> device may need to free resources and do other operations as part of the
-> transition. Currently, this is done in vfio_save_complete_precopy() and
-> therefore it is counted in the migration downtime.
-> 
-> To avoid this, change the device state from STOP_COPY to STOP in
-> vfio_save_cleanup(), which is called after migration has completed and
-> thus is not part of migration downtime.
-> 
-> Signed-off-by: Avihai Horon <avihaih@nvidia.com>
+On hppa the Instruction Address Offset Queue (IAOQ) registers specifies
+the next to-be-executed instructions addresses. Each generated TB writes t=
+hose
+registers at least once, so those registers are used heavily in generated
+code.
 
-Have you tried this series with vGPUs ? If so, are there any improvement
-to report ?
+Looking at the generated assembly, for a x86-64 host this code
+to write the address $0x7ffe826f into iaoq_f is generated:
+0x7f73e8000184:  c7 85 d4 01 00 00 6f 82  movl     $0x7ffe826f, 0x1d4(%rbp=
+)
+0x7f73e800018c:  fe 7f
+0x7f73e800018e:  c7 85 d8 01 00 00 73 82  movl     $0x7ffe8273, 0x1d8(%rbp=
+)
+0x7f73e8000196:  fe 7f
 
-Thanks,
+With the trivial change, by moving the variables iaoq_f and iaoq_b to
+the top of struct CPUArchState, the offset to %rbp is reduced (from
+0x1d4 to 0), which allows the x86-64 tcg to generate 3 bytes less of
+generated code per move instruction:
+0x7fc1e800018c:  c7 45 00 6f 82 fe 7f     movl     $0x7ffe826f, (%rbp)
+0x7fc1e8000193:  c7 45 04 73 82 fe 7f     movl     $0x7ffe8273, 4(%rbp)
 
-C.
+Overall this is a reduction of generated code (not a reduction of
+number of instructions).
+A test run with checks the generated code size by running "/bin/ls"
+with qemu-user shows that the code size shrinks from 1616767 to 1569273
+bytes, which is ~97% of the former size.
 
-> ---
->   hw/vfio/migration.c | 19 +++++++++++++------
->   1 file changed, 13 insertions(+), 6 deletions(-)
-> 
-> diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
-> index 2674f4bc47..8acd182a8b 100644
-> --- a/hw/vfio/migration.c
-> +++ b/hw/vfio/migration.c
-> @@ -383,6 +383,19 @@ static void vfio_save_cleanup(void *opaque)
->       VFIODevice *vbasedev = opaque;
->       VFIOMigration *migration = vbasedev->migration;
->   
-> +    /*
-> +     * Changing device state from STOP_COPY to STOP can take time. Do it here,
-> +     * after migration has completed, so it won't increase downtime.
-> +     */
-> +    if (migration->device_state == VFIO_DEVICE_STATE_STOP_COPY) {
-> +        /*
-> +         * If setting the device in STOP state fails, the device should be
-> +         * reset. To do so, use ERROR state as a recover state.
-> +         */
-> +        vfio_migration_set_state(vbasedev, VFIO_DEVICE_STATE_STOP,
-> +                                 VFIO_DEVICE_STATE_ERROR);
-> +    }
-> +
->       g_free(migration->data_buffer);
->       migration->data_buffer = NULL;
->       migration->precopy_init_size = 0;
-> @@ -508,12 +521,6 @@ static int vfio_save_complete_precopy(QEMUFile *f, void *opaque)
->           return ret;
->       }
->   
-> -    /*
-> -     * If setting the device in STOP state fails, the device should be reset.
-> -     * To do so, use ERROR state as a recover state.
-> -     */
-> -    ret = vfio_migration_set_state(vbasedev, VFIO_DEVICE_STATE_STOP,
-> -                                   VFIO_DEVICE_STATE_ERROR);
->       trace_vfio_save_complete_precopy(vbasedev->name, ret);
->   
->       return ret;
+Signed-off-by: Helge Deller <deller@gmx.de>
+
+diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
+index 9fe79b1242..75c5c0ccf7 100644
+=2D-- a/target/hppa/cpu.h
++++ b/target/hppa/cpu.h
+@@ -168,6 +168,9 @@ typedef struct {
+ } hppa_tlb_entry;
+
+ typedef struct CPUArchState {
++    target_ureg iaoq_f;      /* front */
++    target_ureg iaoq_b;      /* back, aka next instruction */
++
+     target_ureg gr[32];
+     uint64_t fr[32];
+     uint64_t sr[8];          /* stored shifted into place for gva */
+@@ -186,8 +189,6 @@ typedef struct CPUArchState {
+     target_ureg psw_cb;      /* in least significant bit of next nibble *=
+/
+     target_ureg psw_cb_msb;  /* boolean */
+
+-    target_ureg iaoq_f;      /* front */
+-    target_ureg iaoq_b;      /* back, aka next instruction */
+     uint64_t iasq_f;
+     uint64_t iasq_b;
 
 
