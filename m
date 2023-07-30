@@ -2,78 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88855768726
-	for <lists+qemu-devel@lfdr.de>; Sun, 30 Jul 2023 20:42:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50AD476875A
+	for <lists+qemu-devel@lfdr.de>; Sun, 30 Jul 2023 21:18:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQB1A-0003QM-R5; Sun, 30 Jul 2023 14:19:48 -0400
+	id 1qQBuu-0003DE-Pg; Sun, 30 Jul 2023 15:17:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qQB13-0003Pv-V6
- for qemu-devel@nongnu.org; Sun, 30 Jul 2023 14:19:42 -0400
-Received: from mout.gmx.net ([212.227.17.21])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qQB12-0004mm-3I
- for qemu-devel@nongnu.org; Sun, 30 Jul 2023 14:19:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1690741177; x=1691345977; i=deller@gmx.de;
- bh=Z3q52t1v1UQnxe4FkcGRXfBd6lGumkKUY9u/ltaHTAQ=;
- h=X-UI-Sender-Class:Date:Subject:To:References:From:In-Reply-To;
- b=TDB10boiS7hRb3emSmtUDBsf/Ab1yCZJq0ECpPxWLlG8HOP7sRS50gjEGtvqSM8CdbbWxZo
- tKaljyZzCl47tqJ8rcqFOByKHs3zfUKekpSpc2drYr67tv6Lel/16tgyzpxT9eo86QFZqyrrX
- yTP5WDrBZgyIetmnabksvTcCO7jReuffOzY6nzOxDZ/UqIMjMgscSMQkv+9IYrrtiOrkqFSPU
- sN2diBh0qGd4CD0acpEndynoQYxHYPaLFAnA7ZtLnAzF0JqWoC4A9jmH0BugTATpOnv/r+2vj
- 3NO37VYm952TGJkCg7njvoxx8R/bUt35ZevBzZR7KLNZyeBR96OQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([94.134.144.241]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1My36N-1peY8U0c5H-00zZMA; Sun, 30
- Jul 2023 20:19:37 +0200
-Message-ID: <3eaa136d-c95b-41f1-17b6-5ee8df902de7@gmx.de>
-Date: Sun, 30 Jul 2023 20:19:36 +0200
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qQBur-0003D2-6A; Sun, 30 Jul 2023 15:17:21 -0400
+Received: from mail-qt1-x82d.google.com ([2607:f8b0:4864:20::82d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qQBup-0002Pa-MX; Sun, 30 Jul 2023 15:17:20 -0400
+Received: by mail-qt1-x82d.google.com with SMTP id
+ d75a77b69052e-40849e69eb5so10580711cf.1; 
+ Sun, 30 Jul 2023 12:17:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1690744637; x=1691349437;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=IC9+2XmSwELvjjFh+s/lbhVTMpjfnGZKtH/c+xknbh0=;
+ b=VBQAkdFHlq7dHGBkAxioRf1wCQhWkh+ImCJ9qmFqviJ5GIxjNlVMhrr7uwis3Y+C8y
+ WxVw+xqBEtpD9mq+fbHmNfaD+lwEzXDHSgaZBlRA9loKPB9dHRUUVavaPv3xeDoxFIfB
+ H6OSwpGUWmyFtZqegsGn93ALzX6TJZDEbZqGgfxYZ3B+FVp0xe0Joh3rxzVVwFUsOGXT
+ Q0sjIxETv03RJaLYM03ufdKQkx0YCuLaFlDjOJu9j4EhLtkohBAPmKnSq+hdAoldEkTt
+ LcEZDPqAfMNo93GzHT1NdPyh9qRPiKn9nbhMiUtYGP0JCpgid5kP0Nvbmv+XpGJXi3SL
+ 0tiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1690744637; x=1691349437;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=IC9+2XmSwELvjjFh+s/lbhVTMpjfnGZKtH/c+xknbh0=;
+ b=gJSky5ZaHUIaDSUxEf+kfCd0kaJYZGaYsYT+LBk++lvv0Kv7QSUhmYpYEC2C6m0f18
+ P9rfbO+6uWmZO3HKVOKNYl5QshY5QH/gTtmOjrpWURpHgwX4y1G2YCwTy3NN10xdtvZm
+ vSq+nPM2JtjbnURFGf5qEZaxUgtQcLr8Ll7KD98LWWjppyb740oZNBn9QiVjG9qQ0KWK
+ L2evJeP9NKDc2M7nAC2+XjIN63g+wQb6JvAx3f8s4niE2xSLMjrGNhaQSX3i1qJpAgU/
+ d5xFhvnTS1LFUG3XcjLkG5aALzjTCuGVEBO0k1r/UeUK/e1ckIA7RWNCzXpIwZxG8eil
+ Umuw==
+X-Gm-Message-State: ABy/qLZVML00RHWsQjbIFF+AYT6hrpKYadFhmyDem2a2ELCNZQOzKI+A
+ Hxac1DkCBs13dbY2JkFSN4PwQy7V1qh7afu3b6A=
+X-Google-Smtp-Source: APBJJlHk+k8RdMbKN4hUMkqYe8m53ghhUmgLDhEsiaF9g4+ySWP2kf1eOrtRO/nn9emu7OPxot3WZNAnuUyH06sxueU=
+X-Received: by 2002:a05:622a:3cf:b0:406:948b:1b29 with SMTP id
+ k15-20020a05622a03cf00b00406948b1b29mr9969473qtx.17.1690744637084; Sun, 30
+ Jul 2023 12:17:17 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [RFC][PATCH] accel/tcg: Use lookup_and_goto_ptr() for linux-user
- in translator_use_goto_tb()
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>, qemu-devel@nongnu.org
-References: <ZMakYpOgco2Ihg0G@p100>
- <1f3bd7a5-ac39-1706-99f1-6ae56a7cf4a7@linaro.org>
- <f12379de-1e90-74f4-2c24-6199e904344c@linaro.org>
-From: Helge Deller <deller@gmx.de>
-In-Reply-To: <f12379de-1e90-74f4-2c24-6199e904344c@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+References: <TYCP286MB12667F4B46EE030F93FFDA47ED04A@TYCP286MB1266.JPNP286.PROD.OUTLOOK.COM>
+In-Reply-To: <TYCP286MB12667F4B46EE030F93FFDA47ED04A@TYCP286MB1266.JPNP286.PROD.OUTLOOK.COM>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Sun, 30 Jul 2023 23:17:05 +0400
+Message-ID: <CAJ+F1CLxhmRgtFetFrpTz8pJzYQCY6Y-xmR1FMOS4Zh+s9esPg@mail.gmail.com>
+Subject: Re: [PATCH] hda-audio: use log-scale for amplifier levels
+To: Yuanqing Li <liyq.yuanqing@outlook.com>
+Cc: qemu-devel@nongnu.org, qemu-trivial@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:nu7HKmbI/KngS+31InYXVFSW95vn3l6H0KKTnyyvPspmmFSnipk
- jO4/sK+rMdjs0LGReE569qB7R8lK2iLNS8F9OTOOBfCW2zFK0EUmSVID+lysArV332Fzc5+
- ccebT3LeJmUCoX1J52tXsxiRVMLkVG7Bk6z1IaiKNvL7bY5V9n+qI8yslcsROEOl10REzK5
- 7mMHDKF1vf0x8EQfJ2TkA==
-UI-OutboundReport: notjunk:1;M01:P0:AGEXAFHeGfE=;DDFDSycTi/xyNOtqxcHJWN6q3sa
- KZ63z4G/f8XuY6skoLK5E5sw32abP9aC87lB56n5fahewAsz0ef1CRVkNPSS0GSN0JVSIkSVL
- moDjfyobaK7R/5mws7kUYgmwG8sH3UVDcTOLMjYoreG6Kj/OlFPo86i2znE5e9p9g7fHbbtKf
- 9jg1ySN9yGnVSU2PHjr3UGxpDde4P1q/6DtP02a6vnnB8psaIwXLtSyKk98n4bsBqBJaAqFpX
- 9RNQRj+A66hmGUxjcyfXPC8NOWTTuSMz/NkEH7Ccwjfg8Efy2AqhWgWBs9BfBvrdMsfN1ZOCg
- zIfB3w8yToXRkM47parW3FXx4T9rDMxmoafpl/XLM+jKZN0YYk43pEVkDlo5DPMTtYhZQbdTF
- zV+5wvDMFTmugCRqQ4l9ioEVJoOrlMxvLH1qNzDYCvvgL8FKMb6Ge1lVJD6L06SyLtTH3k9Pj
- cfPxrHWT8dgGzNnlYu+u2tq4/w9NdP3jkYb2nq8MuR3rMIEG8S1MOYToNY5gMKtmUqWYmbliw
- nhoO/+YiNoviZ1YzFO/jvlUevEuJi7NIlpYdOzTQLI+z13AjHLY+QVnjuX5YG3dkZSiWjMT41
- rPH4iXCJJZKi5B5/U4SJ+Aw9FZ+BAlH1565Mv1ix0vYk81D5rKUo1cSDlpGNYoPd/TXehd/3A
- yAyuwy6p5fCs1G3VyyF/sqqzax86GXGJCsqnmrYnT9iJs/e09JldfEr+YsF0pcu3D4WA2Ehbl
- QYfvwLTgd7QME0QWpj09FpXRcAulS6HR+/cbaflzZhaDOghtNyO4FTZ2r0hnRZarmaK+XRFEF
- +GeSPXULqsXWT+w+wyFdLhKM2hhDgFFyAgicVREZjk7qckYt6JYjIg/GmdPdUplCRCCEP700O
- 4wzsofA44cOc38q78ayCKDk1IBnF1y0ceQe31Ubcdox8IGTLVmHrRtZn5sBTVLFXRXgtqW1vg
- 6rSh6Z8BKK3MZU+j7Sp6AwE7xBY=
-Received-SPF: pass client-ip=212.227.17.21; envelope-from=deller@gmx.de;
- helo=mout.gmx.net
-X-Spam_score_int: -28
-X-Spam_score: -2.9
+Received-SPF: pass client-ip=2607:f8b0:4864:20::82d;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x82d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- NICE_REPLY_A=-0.101, RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -90,34 +84,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/30/23 20:02, Richard Henderson wrote:
-> On 7/30/23 11:01, Richard Henderson wrote:
->> On 7/30/23 10:56, Helge Deller wrote:
->>> +++ b/accel/tcg/translator.c
->>> @@ -124,8 +124,13 @@ bool translator_use_goto_tb(DisasContextBase *db,=
- vaddr dest)
->>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return false;
->>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
->>>
->>> +#ifndef CONFIG_USER_ONLY
->>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* Check for the dest on the same page =
-as the start of the TB.=C2=A0 */
->>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return ((db->pc_first ^ dest) & TARGET_=
-PAGE_MASK) =3D=3D 0;
->>> +#else
->>> +=C2=A0=C2=A0=C2=A0 /* linux-user doesn't need to fear pagefaults for =
-exec swap-in */
->>> +=C2=A0=C2=A0=C2=A0 return false;
->>> +#endif
->>> =C2=A0 }
->>
->> No, we still need to stop at pages for breakpoints.
-> ... and munmap for e.g. dlclose.
+Hi
 
-Ok, so we can't optimize for linux-user.
-But what about my other question: Shouldn't it be
-   return ((db->pc_first ^ dest) & TARGET_PAGE_MASK) !=3D 0;
-?
+On Sun, Jul 30, 2023 at 5:52=E2=80=AFPM Yuanqing Li <liyq.yuanqing@outlook.=
+com> wrote:
+>
+> According Intel's High Definition Audio Specification (Revision 1.0a,
+> Section 7.3.4.10: Amplifier Capabilities), the amplifier gain levels
+> should be evenly spaced in dB, i.e. using a log scale instead of linear.
+>
+> Here, the hda-codec reports amplifier levels from 0 to -48 dB at 1-dB
+> steps matching the 8-bit dynamic range, and the -49 dB level is mapped
+> to 0 (muted).
+>
+> Signed-off-by: Yuanqing Li <liyq.yuanqing@outlook.com>
+> ---
+>  hw/audio/hda-codec.c | 14 +++++++++++---
+>  1 file changed, 11 insertions(+), 3 deletions(-)
+>
+> diff --git a/hw/audio/hda-codec.c b/hw/audio/hda-codec.c
+> index c51d8ba617..c2aa71624b 100644
+> --- a/hw/audio/hda-codec.c
+> +++ b/hw/audio/hda-codec.c
+> @@ -121,7 +121,7 @@ static void hda_codec_parse_fmt(uint32_t format, stru=
+ct audsettings *as)
+>  #define QEMU_HDA_PCM_FORMATS (AC_SUPPCM_BITS_16 |       \
+>                                0x1fc /* 16 -> 96 kHz */)
+>  #define QEMU_HDA_AMP_NONE    (0)
+> -#define QEMU_HDA_AMP_STEPS   0x4a
+> +#define QEMU_HDA_AMP_STEPS   0x31 /* 20 * log10(255) =3D 48 dB dynamic r=
+ange */
+>
+>  #define   PARAM mixemu
+>  #define   HDA_MIXER
+> @@ -433,6 +433,14 @@ static void hda_audio_set_running(HDAAudioStream *st=
+, bool running)
+>      }
+>  }
+>
+> +/* first muted; then from -48 dB to 0 dB */
+> +static const uint32_t hda_vol_table[] =3D {
+> +    0,   1,   1,   1,   1,   2,   2,   2,   2,   3,   3,   3,   4,   4, =
+  5,
+> +    5,   6,   6,   7,   8,   9,   10,  11,  13,  14,  16,  18,  20,  23,=
+  26,
+> +    29,  32,  36,  40,  45,  51,  57,  64,  72,  81,  90,  102, 114, 128=
+, 143,
+> +    161, 181, 203, 227, 255
+> +}
 
-helge
+It was not clear to me which scale is applied by the backend. I guess
+mixeng uses linear, and thus all others should too.
+
+> +
+>  static void hda_audio_set_amp(HDAAudioStream *st)
+>  {
+>      bool muted;
+> @@ -446,8 +454,8 @@ static void hda_audio_set_amp(HDAAudioStream *st)
+>      left  =3D st->mute_left  ? 0 : st->gain_left;
+>      right =3D st->mute_right ? 0 : st->gain_right;
+>
+> -    left =3D left * 255 / QEMU_HDA_AMP_STEPS;
+> -    right =3D right * 255 / QEMU_HDA_AMP_STEPS;
+> +    left =3D hda_vol_table[left];
+> +    right =3D hda_vol_table[right];
+>
+
+Whoo, better check bounds here. (value can go up to AC_AMP_GAIN 0x7f,
+reading the code)
+
+Definitely not trivial material imho
+
+--=20
+Marc-Andr=C3=A9 Lureau
 
