@@ -2,70 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D140176A200
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 22:35:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E97D76A208
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 22:38:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQZaR-0000OZ-9g; Mon, 31 Jul 2023 16:33:51 -0400
+	id 1qQZdy-0001Wj-A2; Mon, 31 Jul 2023 16:37:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1qQZaM-0000OC-FX; Mon, 31 Jul 2023 16:33:46 -0400
-Received: from smtp-out2.suse.de ([195.135.220.29])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qQZdv-0001Vo-I2
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 16:37:27 -0400
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1qQZaK-0007U7-QD; Mon, 31 Jul 2023 16:33:46 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id A52451FD66;
- Mon, 31 Jul 2023 20:33:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1690835622; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
- bh=20eFLenmoW0+o661qoG3HDBmX3kqoKWYYb2zPqPTErs=;
- b=fGyp4eHLX/qQIu+oXpN8NwSN4h7j0jG6PuA84BLyeeC1oMWVSXqu8wmwcyTdKzRATQfpmA
- nhu/f77cfQyl/d2xALd0XdurksyQ0cN3T72ubMdMLMbzz6ssavLYPO1/mAlFOA75shbXlv
- 7aILUxJsqa7MOO35oz6N0zOvhZzOIBc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1690835622;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
- bh=20eFLenmoW0+o661qoG3HDBmX3kqoKWYYb2zPqPTErs=;
- b=4gw3novSFPrRmT8xu+IQ/3K/AJ5FoDn8+vjjza9nqiW5O4XAedgj6fG7orEtzlRh3yA/Qb
- b3WQMINiRxEskhBQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id AF6C21322C;
- Mon, 31 Jul 2023 20:33:40 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id HaABHqQayGSFegAAMHmgww
- (envelope-from <farosas@suse.de>); Mon, 31 Jul 2023 20:33:40 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
- Fam Zheng <fam@euphon.net>, Juan Quintela <quintela@redhat.com>,
- Peter Xu <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>
-Subject: [PATCH] block-migration: Ensure we don't crash during migration
- cleanup
-Date: Mon, 31 Jul 2023 17:33:38 -0300
-Message-Id: <20230731203338.27581-1-farosas@suse.de>
-X-Mailer: git-send-email 2.35.3
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qQZdt-00088a-SZ
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 16:37:27 -0400
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-686be28e1a8so3293694b3a.0
+ for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 13:37:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1690835844; x=1691440644;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=AJPzZsYrkQgwAwKOdYAGlHwCWQTA7Pd07yBgQK2WZgk=;
+ b=bXqi1Y8eQmTCqnXud86e4NNpmrHa8RjWgjLTHrbLS4o5+kmpDplVrerXboqRvwuu/c
+ h6GMDVRSZiYoIplfhvp9uxR/lUXZsi01r+KQ/+ZGf7+Oo2d732dP0WHi/voq+5/Qezmw
+ pI6Q1Jmen23fRzvb1I6aEQq2IbwHclhY3lfaWJHq3OibS6ldVjr1nDY0ZrcGBDvduEzp
+ tb2gEJMAsWbze3YSQC1ig2MCzg0UKNMF7cBG0F14squapJywj25V8TXXVhFLuby2Z+Ft
+ aaxaFHUhCp7QFW1AlIjf7z6I5S+xREZJU6iSZalOQfgocEE3YdpKO3GGhUev6n3U6rfa
+ hQtw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1690835844; x=1691440644;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=AJPzZsYrkQgwAwKOdYAGlHwCWQTA7Pd07yBgQK2WZgk=;
+ b=bTE9vNfvFmmHBndS3QkKZ/iO9rQpXzT6Ta0TNUuCy5sFiGKj82rI84Z2c/6b3ifINp
+ lnpTi+7wJ6bHcb3klbsEXRErAbySElTmWSwftsr/VDk6IVnULD/lYkBBqkQslvmdfiw4
+ gGAQ4rnj+bK+d+McsZwLWByMeeFX7zrhenqfJilkb6oItnWjcsN15nhSFIX5ZTXoPWOj
+ VdIk3I9GKf4XB3nnfXttOAEIsICEvYBFBiu17Fzbwd9SuW01fov5zkVTbNFJ15PEoObg
+ m7A/ky4qel3bkkmmoqZBH936UZgXdmcCIqpN2XtWzZEeAligR/dXJobru5NtYf2dUINa
+ jEgQ==
+X-Gm-Message-State: ABy/qLY1XejRI8LVludZLlKB4TgFUxRWMr7WczQBU/iCa1sZhMBhRXc8
+ 1AL9EzOzt3CjtL5kWDgALujS8w==
+X-Google-Smtp-Source: APBJJlG2UYVfxWG8LZ4LXSyFJHIo3jc6hjf8qBqD4VgzNcA+yXVRMCePwE3S29ZRjZ+et7Rl1LavDA==
+X-Received: by 2002:a05:6a20:6a0f:b0:130:b19d:ec1f with SMTP id
+ p15-20020a056a206a0f00b00130b19dec1fmr11160296pzk.11.1690835844070; 
+ Mon, 31 Jul 2023 13:37:24 -0700 (PDT)
+Received: from ?IPV6:2602:47:d490:6901:4f6f:6b:2de4:e0cb?
+ ([2602:47:d490:6901:4f6f:6b:2de4:e0cb])
+ by smtp.gmail.com with ESMTPSA id
+ u3-20020a62ed03000000b00682a839d0aesm7993190pfh.112.2023.07.31.13.37.23
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 31 Jul 2023 13:37:23 -0700 (PDT)
+Message-ID: <4b38596d-1db6-e03f-8b42-65c4464132ab@linaro.org>
+Date: Mon, 31 Jul 2023 13:37:21 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] disas/riscv: Further correction to LUI disassembly
+Content-Language: en-US
+To: Richard Bagley <rbagley@ventanamicro.com>, qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ dbarboza@ventanamicro.com
+References: <20230731183320.410922-1-rbagley@ventanamicro.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230731183320.410922-1-rbagley@ventanamicro.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.101,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,67 +97,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We can fail the blk_insert_bs() at init_blk_migration(), leaving the
-BlkMigDevState without a dirty_bitmap and BlockDriverState. Account
-for the possibly missing elements when doing cleanup.
+On 7/31/23 11:33, Richard Bagley wrote:
+> The recent commit 36df75a0a9 corrected one aspect of LUI disassembly
+> by recovering the immediate argument from the result of LUI with a
+> shift right by 12. However, the shift right will left-fill with the
+> sign. By applying a mask we recover an unsigned representation of the
+> 20-bit field (which includes a sign bit).
 
-Fix the following crashes:
+Why would you want that?  Surely
 
-Thread 1 "qemu-system-x86" received signal SIGSEGV, Segmentation fault.
-0x0000555555ec83ef in bdrv_release_dirty_bitmap (bitmap=0x0) at ../block/dirty-bitmap.c:359
-359         BlockDriverState *bs = bitmap->bs;
- #0  0x0000555555ec83ef in bdrv_release_dirty_bitmap (bitmap=0x0) at ../block/dirty-bitmap.c:359
- #1  0x0000555555bba331 in unset_dirty_tracking () at ../migration/block.c:371
- #2  0x0000555555bbad98 in block_migration_cleanup_bmds () at ../migration/block.c:681
+     lui r1, -1
 
-Thread 1 "qemu-system-x86" received signal SIGSEGV, Segmentation fault.
-0x0000555555e971ff in bdrv_op_unblock (bs=0x0, op=BLOCK_OP_TYPE_BACKUP_SOURCE, reason=0x0) at ../block.c:7073
-7073        QLIST_FOREACH_SAFE(blocker, &bs->op_blockers[op], list, next) {
- #0  0x0000555555e971ff in bdrv_op_unblock (bs=0x0, op=BLOCK_OP_TYPE_BACKUP_SOURCE, reason=0x0) at ../block.c:7073
- #1  0x0000555555e9734a in bdrv_op_unblock_all (bs=0x0, reason=0x0) at ../block.c:7095
- #2  0x0000555555bbae13 in block_migration_cleanup_bmds () at ../migration/block.c:690
+is more accurate than
 
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
----
- migration/block.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+     lui r1, 0xfffff
 
-diff --git a/migration/block.c b/migration/block.c
-index b9580a6c7e..86c2256a2b 100644
---- a/migration/block.c
-+++ b/migration/block.c
-@@ -368,7 +368,9 @@ static void unset_dirty_tracking(void)
-     BlkMigDevState *bmds;
- 
-     QSIMPLEQ_FOREACH(bmds, &block_mig_state.bmds_list, entry) {
--        bdrv_release_dirty_bitmap(bmds->dirty_bitmap);
-+        if (bmds->dirty_bitmap) {
-+            bdrv_release_dirty_bitmap(bmds->dirty_bitmap);
-+        }
-     }
- }
- 
-@@ -676,13 +678,18 @@ static int64_t get_remaining_dirty(void)
- static void block_migration_cleanup_bmds(void)
- {
-     BlkMigDevState *bmds;
-+    BlockDriverState *bs;
-     AioContext *ctx;
- 
-     unset_dirty_tracking();
- 
-     while ((bmds = QSIMPLEQ_FIRST(&block_mig_state.bmds_list)) != NULL) {
-         QSIMPLEQ_REMOVE_HEAD(&block_mig_state.bmds_list, entry);
--        bdrv_op_unblock_all(blk_bs(bmds->blk), bmds->blocker);
-+
-+        bs = blk_bs(bmds->blk);
-+        if (bs) {
-+            bdrv_op_unblock_all(bs, bmds->blocker);
-+        }
-         error_free(bmds->blocker);
- 
-         /* Save ctx, because bmds->blk can disappear during blk_unref.  */
--- 
-2.35.3
 
+r~
 
