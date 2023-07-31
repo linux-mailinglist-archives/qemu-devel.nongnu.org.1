@@ -2,47 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14EC7769046
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 10:32:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 730D7769052
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 10:36:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQOJ9-0005xJ-Tu; Mon, 31 Jul 2023 04:31:16 -0400
+	id 1qQONM-0000Br-5D; Mon, 31 Jul 2023 04:35:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qQOJ6-0005w0-5e
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 04:31:12 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <ardb@kernel.org>) id 1qQONJ-0000BY-2s
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 04:35:33 -0400
+Received: from dfw.source.kernel.org ([139.178.84.217])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qQOJ1-0001zs-Db
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 04:31:11 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 8303A16EFA;
- Mon, 31 Jul 2023 11:31:08 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 03AF11A2E1;
- Mon, 31 Jul 2023 11:30:56 +0300 (MSK)
-Message-ID: <b24a53bd-eb25-b21c-8d4e-700761292644@tls.msk.ru>
-Date: Mon, 31 Jul 2023 11:30:55 +0300
+ (Exim 4.90_1) (envelope-from <ardb@kernel.org>) id 1qQONH-0002pA-A7
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 04:35:32 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 890AC60F40
+ for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 08:35:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3F03C433CB
+ for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 08:35:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1690792522;
+ bh=snMdew0fKuETUzgiPrmMqut8AO1uC44xjHMWGD9CkDA=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=dfSBTs2zKgbuxtvG4AfceJTxUstUu5TjVLY080AC+43H0ZmNtq9rs8p3NrthraWWW
+ GGwmo8i8KASIfNae7nfWb5HoMC4dNrjfOP5geAZ8apB1ORiBaJ/nSZIUurAiGQAsWc
+ g2TO96id2wuL10R3mEq+9QB4/n4RlgvKKXsxOm60+uBMQu/PFY6uvbY2qbbkpDFKt6
+ 7C27ZS8xwHUY0WYN8sxC7rGAPWnw9TS2COhlHu2vv+XAgyNTTYnGT2YTOYaPj15H1Z
+ pA4qbSmerL9qzc2L/Qed1u4QVnz3I2nD4EebTgKDvKzUlo7wDhzkM0hZcfCjknVtju
+ Ko+c0QXvZUgiA==
+Received: by mail-lf1-f53.google.com with SMTP id
+ 2adb3069b0e04-4f4b2bc1565so6558459e87.2
+ for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 01:35:21 -0700 (PDT)
+X-Gm-Message-State: ABy/qLYuGfrZKd3tLoBdk8Ie88EWk+dKnblEHObcA3wTBvIKqaU7IX12
+ EMySDF+zLQSC4KlDPc2jXF9lQqODdlMeLQbkDV0=
+X-Google-Smtp-Source: APBJJlEVeRiDTxGJs2zFhXFbSJE/lIS5XW2zMcRo7H9TDnIdcjW9CiyQ3aTeYKWrhhHsjlwRy4utptvuHWXP861ipTo=
+X-Received: by 2002:a2e:9495:0:b0:2b6:bd09:4d64 with SMTP id
+ c21-20020a2e9495000000b002b6bd094d64mr6035588ljh.34.1690792519974; Mon, 31
+ Jul 2023 01:35:19 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v5 0/3] linux-user: Fix and optimize target memory layout
-Content-Language: en-US
-To: Helge Deller <deller@gmx.de>, qemu-devel@nongnu.org
-Cc: Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>
-References: <20230728173127.259192-1-deller@gmx.de>
-From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <20230728173127.259192-1-deller@gmx.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -69
-X-Spam_score: -7.0
+References: <20230726081710.1051126-1-ardb@kernel.org>
+ <67a8967e-338a-fbd1-1c06-d5a35f2db509@linaro.org>
+In-Reply-To: <67a8967e-338a-fbd1-1c06-d5a35f2db509@linaro.org>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Mon, 31 Jul 2023 10:35:08 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXFeO88bosaJ5=ZTRHPH0zxjaujtRtdYWb9e_AMRp0rYgA@mail.gmail.com>
+Message-ID: <CAMj1kXFeO88bosaJ5=ZTRHPH0zxjaujtRtdYWb9e_AMRp0rYgA@mail.gmail.com>
+Subject: Re: [RFC PATCH] target/i386: Truncate ESP when exiting from long mode
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
+ Eduardo Habkost <eduardo@habkost.net>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=139.178.84.217; envelope-from=ardb@kernel.org;
+ helo=dfw.source.kernel.org
+X-Spam_score_int: -70
+X-Spam_score: -7.1
 X-Spam_bar: -------
-X-Spam_report: (-7.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.101,
+X-Spam_report: (-7.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -60,17 +80,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-28.07.2023 20:31, Helge Deller wrote:
+On Wed, 26 Jul 2023 at 17:01, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> On 7/26/23 01:17, Ard Biesheuvel wrote:
+> > While working on some EFI boot changes for Linux/x86, I noticed that TCG deviates from
+> > bare metal when it comes to how it handles the value of the stack pointer register RSP
+> > when dropping out of long mode.
+> >
+> > On bare metal, RSP is truncated to 32 bits, even if the code that runs in 32-bit
+> > protected mode never uses the stack at all (and uses a long jump rather than long
+> > return to switch back to long mode). This means 64-bit code cannot rely on RSP
+> > surviving any excursions into 32-bit protected mode (with paging disabled).
+> >
+> > Let's align TCG with this behavior, so that code that relies on RSP retaining its value
+> > does not inadvertently work while bare metal does not.
+> >
+> > Observed on Intel Ice Lake cores.
+> >
+> > Cc: Paolo Bonzini<pbonzini@redhat.com> Cc: Richard
+> > Henderson<richard.henderson@linaro.org> Cc: Eduardo Habkost<eduardo@habkost.net>
+> > Link:https://lore.kernel.org/all/20230711091453.2543622-11-ardb@kernel.org/
+> > Signed-off-by: Ard Biesheuvel<ardb@kernel.org> --- I used this patch locally to
+> > reproduce an issue that was reported on Ice Lake but didn't trigger in my QEMU
+> > testing.
+> >
+> > Hints welcome on where the architectural behavior is specified, and in particular,
+> > whether or not other 64-bit GPRs can be relied upon to preserve their full 64-bit
+> > length values.
+>
+> No idea about chapter and verse, but it has the feel of being part and parcel with the
+> truncation of eip.  While esp is always special, I suspect that none of the GPRs can be
+> relied on carrying all bits.
+>
+> I'm happy with the change though, since similar behaviour can be observed on hw.
+>
+> Acked-by: Richard Henderson <richard.henderson@linaro.org>
+>
 
-> NOTE:
-> - this patch series is for qemu v8.1.0-rc ONLY.
-> - do not apply on top of v8.0-stable series, which uses
->    a different search algorithm for free mmap memory
->    and thus will give incorrect memory layouts.
+I experimented with truncating all GPRs that exist in 32-bit mode, and
+this actually breaks kexec on Linux if it happens to load the kernel
+above 4G (which it appears to do reproducibly when sufficient memory
+is available)
 
-Hm. I included a previous version of this patchset in debian
-qemu 8.0 package.  Wonder what should we do on 8.0 and on
-debian..
+This is due to the 4/5 level paging switch trampoline, which is called
+while RBX, RBP and RSI are live and refer to assets in memory that may
+reside above 4G.
 
-/mjt
+I am fixing that code, but it does mean we should probably limit this
+change to ESP (as apparently, current hw only happens to truncate ESP
+but no other GPRs)
 
