@@ -2,82 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A5F476A054
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 20:25:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2403176A07B
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 20:35:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQXZ1-0006EA-GP; Mon, 31 Jul 2023 14:24:15 -0400
+	id 1qQXiC-0002tB-Qy; Mon, 31 Jul 2023 14:33:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qQXYy-0006Dc-Su
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 14:24:12 -0400
-Received: from mout.gmx.net ([212.227.15.19])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qQXYw-0006R4-HP
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 14:24:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1690827847; x=1691432647; i=deller@gmx.de;
- bh=XXe0e2kf5na1yBlA0g2NBqi9cKT1sXfottFhYfvewTg=;
- h=X-UI-Sender-Class:Date:Subject:From:To:Cc:References:In-Reply-To;
- b=ffaREzXsEIyNGGKFHHk7ytryq61qvom4IylEkpkRYSNJXCocx9REsW3TAg8LvyxGS/7Crvi
- KeBYyzPCZ2KHjUfIDOizZP8a4tRDOdECfIR65vYZI/FNqgl8fm2RYEAaxOrV844ZjXrwQ6Sot
- uv62Pq0j8ZH2D7iU2QgE9/NlWCwj7sFvW2KhEqcLiSm+V7dNlUZ0cYX4M9bZ3T67ahNkKV2Tq
- g60NW9d8x91bnlrztaOK8P0HDKHoyQK2JWeg2IEt5fAXDuSaoeomor6KlMyHad9RP9ke4Do12
- uUk77tep3FY9uruR09UMPwW3bJ8SzPf/DoasMDmk+V7tONauWfhw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([94.134.159.238]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MmDIo-1pzyFj0liy-00iEjn; Mon, 31
- Jul 2023 20:24:07 +0200
-Message-ID: <def4abbf-ec8a-7986-1831-d9c839acff8c@gmx.de>
-Date: Mon, 31 Jul 2023 20:24:05 +0200
+ (Exim 4.90_1) (envelope-from <rbagley@ventanamicro.com>)
+ id 1qQXi8-0002rB-0d
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 14:33:40 -0400
+Received: from mail-oo1-xc35.google.com ([2607:f8b0:4864:20::c35])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <rbagley@ventanamicro.com>)
+ id 1qQXi5-0007w5-NI
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 14:33:39 -0400
+Received: by mail-oo1-xc35.google.com with SMTP id
+ 006d021491bc7-55b8f1c930eso3318268eaf.3
+ for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 11:33:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1690828416; x=1691433216;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=xHYBdGz4N7U1VASepPMDG7kS7w6jguArgFuCythYmKI=;
+ b=Eb1oz2XSx+RTXHyhWW3zb+QDBppEX9aSdzamQx63cAuqOuYJJLe52cUV0deVjJ7u1a
+ LhMVRbsaM6Wuj6lU3uNoa6zHO2KPJqUuAtQ1ebKbXo0+rzdFND7Gq2XB20bHdQlMtk4K
+ H9cBHaIxyRvOuGAaU+nI97+W71aLXAyi2FvblHX5JlVD0mDYYscSBCCMUKhxdChAKVpV
+ iYO74r6FVSMcL03nw+x19bhkR0Dhc/W5DQXEOmFHDqI7LECPLfOAywtwIOgydyJDmyI8
+ +/uiZQQbaA9DAtR+tGtgne5cAbCLm4L1ACseiBjo2iMKVWpUWXT9OHXPDvxe1T5xRE8g
+ j5mg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1690828416; x=1691433216;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=xHYBdGz4N7U1VASepPMDG7kS7w6jguArgFuCythYmKI=;
+ b=GlUupZN9evRWt/nQA+UUmPKhU5DUmYRygzgqSbKw4ZnD1Jwt9m8o3RHwcq+J2uQegQ
+ yDYXS4/UFrPY4YlWl9/c5YF+qCmgjiQvkdfXU7FzMkT1XyjhlAAZ2OQ8b83vySo2dCo1
+ +7Yd22kzpLppOh5pPzXIn37RwDTTR5ng3SdHM1Gh83/+p9XJecJJOnTur7sfBw96Aw8K
+ It1hipjzWmbAnzW+5eWGc1Z5zfj/12Mut5/Kp9AGEe5iplTrC/ZnMuK/9R0E2a1JZ4S/
+ /R8hz1V2DHXbS3sclRgy3KOVMixt31Pi5f7Alh09k3MuJmeIhvb1Q+Q6X1oibrb5/M6s
+ 6jpA==
+X-Gm-Message-State: ABy/qLZDNNuHbHpqjtq/7awa79Hp87rTpQmmT6Xga4c910irIrcwsF4j
+ ds++GyKaxDCPAXkfZ0wuhO1pe8X9rSi4SrqAyd8JXQ==
+X-Google-Smtp-Source: APBJJlHluSToi76MpGLs67PDrz7nlgknW4XQw35EHdILIVIBIx2pJdA8xRX/Cja1kJhBhGSuqISFTQ==
+X-Received: by 2002:a05:6808:f01:b0:3a7:48d4:8a7d with SMTP id
+ m1-20020a0568080f0100b003a748d48a7dmr220251oiw.46.1690828415789; 
+ Mon, 31 Jul 2023 11:33:35 -0700 (PDT)
+Received: from richard-XPS-17-9710.dc1.ventanamicro.com
+ (c-73-223-56-230.hsd1.ca.comcast.net. [73.223.56.230])
+ by smtp.gmail.com with ESMTPSA id
+ o24-20020a17090ad25800b0025645ce761dsm8064330pjw.35.2023.07.31.11.33.31
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 31 Jul 2023 11:33:35 -0700 (PDT)
+From: Richard Bagley <rbagley@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ dbarboza@ventanamicro.com, Richard Bagley <rbagley@ventanamicro.com>
+Subject: [PATCH] disas/riscv: Further correction to LUI disassembly
+Date: Mon, 31 Jul 2023 11:33:20 -0700
+Message-Id: <20230731183320.410922-1-rbagley@ventanamicro.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 0/5] linux-user: brk/mmap fixes
-Content-Language: en-US
-From: Helge Deller <deller@gmx.de>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>, Joel Stanley <joel@jms.id.au>,
- Michael Tokarev <mjt@tls.msk.ru>
-Cc: qemu-devel@nongnu.org, Laurent Vivier <laurent@vivier.eu>
-References: <20230731080317.112658-1-akihiko.odaki@daynix.com>
- <3088d223-64fd-9aab-3c08-000f0924607c@tls.msk.ru>
- <CACPK8XfcOkn281JZNYc7+AhDAxP_N9__G4Snxtx=ZhXgVChXgg@mail.gmail.com>
- <0643c953-bfa8-45a9-5b07-714bc18c03a6@daynix.com>
- <57d9980d-b881-b16e-844a-e651d6d09de7@gmx.de>
- <c3ed33f0-998d-5386-1880-22436af149b7@gmx.de>
-In-Reply-To: <c3ed33f0-998d-5386-1880-22436af149b7@gmx.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:AX+TJnZYQH4xLZjzpzL3bB/3wDo6ZP4UtyMOylQtPltJGWDUIV0
- q1cj1GtWOduttoVWaQDFUWbyrMjuJ7+ND3+jF8QDPPeWs8/OzOuSnZ6OSGG5FQ37UJmX1sA
- vRoAaxJRyU5GVI9ek4fbEqN0ZUfqYgDk+xJcCiEboTOLib5JzyFWpDLo0/9P/9Yw5sZN32z
- payigabsF+RbCwT4fbaaw==
-UI-OutboundReport: notjunk:1;M01:P0:j6VV95UqSx0=;72A9KpL3RIDUpO7zYJXcvpRR2Ni
- u1eYkb2NrGUTBfa5ujKFIAsl5IVXng/9clxzNiB5RIN6maQnUdVdYTTTeyj+H1l7nDYja+Mtu
- jixJQFiQLcc/DYuQjd2rDmOQZaaFWQWgFKO7Q+4NhqVu1zWSHrn4+22DCEDt+ozFj35nQ8OIm
- iQZFoRQfo1qPq0Eh/ylAZTMFwxkpR1inTKA3ObroFgtvGrez1MUkUuH+gvVsMPbMcMZ96adJq
- Xs0GXVPuOVOqBHhdLq+F7r66p2DgXVbaijVCH86lZz5bx1mXpDTH+BkH9m6NXfIqw5Z5YqtCE
- c1KJNiULh2PTQg722zKSrtj16XN+cIIRnQuzrtPCzk/+4jr2g9mrT5zo3EwxojN+vUWj7ZBXk
- ZiixAi6wde/wX2j/4oYYNrrPUqgqSLb8Di15Vy9lks8ZEtOO2V6N/TR3IRl+tqMC2Dj/JypH4
- 71gvrxxqIGz9f6OrEWK02rdfUflnbMX3IY20WTqhtKvpvYu/L0T9/tFA8p3NCpHvXRJODpHHt
- 1I/F3YTENlZ+9gurwtYykOHGjInG3XOZrRiLtGf81se/tl66MlyEZxxXDtNOZzx9aCRs8eM1S
- 3k43s0nQOAKv7cfVfZUm7Zzr5OdWBG/IP+pHlvqmAB2tUbXeL/9+YqVKRaKQSqtM5zGVd9pR2
- RpsxODUWYxguHXQoA6MNZMuua78VndwJVDfKht1vMAlaibnyfalGcIVrqZZeEBkExU2YAxC7b
- o1GwyycEFUUsV5yd3GDbysHafmzghfomEeimuFAdVu49iVPIiaxlM4YOOHW51UPyF7quBmTrM
- cI0iwQ4VpN6GxV/vGH4s4/1bgqF3Yc1y9B5CRDgir4zxSdWuSTQQ9HGFCPH/St3UjkBxgYI+y
- NLckNk3u84XpA3DBk2qk5gGRBDajKPTmY+Zk3OJTsouEpq13cshnVW8lTzP37gBssMQg1W+j4
- Y30j6u9DtEhMGKw9l2FJHvroR30=
-Received-SPF: pass client-ip=212.227.15.19; envelope-from=deller@gmx.de;
- helo=mout.gmx.net
-X-Spam_score_int: -28
-X-Spam_score: -2.9
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c35;
+ envelope-from=rbagley@ventanamicro.com; helo=mail-oo1-xc35.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- NICE_REPLY_A=-0.101, RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,66 +91,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/31/23 19:43, Helge Deller wrote:
-> On 7/31/23 18:47, Helge Deller wrote:
->> On 7/31/23 12:23, Akihiko Odaki wrote:
->>> On 2023/07/31 19:17, Joel Stanley wrote:
->>>> On Mon, 31 Jul 2023 at 09:31, Michael Tokarev <mjt@tls.msk.ru> wrote:
->>>>>
->>>>> 31.07.2023 11:03, Akihiko Odaki wrote:
->>>>>> linux-user was failing on M2 MacBook Air. Digging into the details,=
- I found
->>>>>> several bugs in brk and mmap so here are fixes.
->>>>>
->>>>> There's another work in this area by Helge Deller, have you seen it?
->>>>> ("linux-user: Fix and optimize target memory layout", a v5 already).
->>>>
->>>> Applying this series fixes the qemu-arm running the static armhf
->>>> binary on my ppc64le host that I reported here[1].
->>> >> [1] https://lore.kernel.org/qemu-devel/CACPK8XeyqcEDyyL3Jw2WYWs_gGd=
-tTCf2=3DLy04CMgkshSMdj7RA@mail.gmail.com/
->>>>
->>>> Tested-by: Joel Stanley <joel@jms.id.au>
->>>
->>> Thanks for testing.
->>>
->>>>
->>>> The changes conflict with Helge's patches, so it would be good to wor=
-k
->>>> out which of your changes should be combined with his.
->>>
->>> I suggest Helge to rebase his change to my series. The below is some
->>> detailed explanation:
->>
->>> It is almost orthogonal to my series, but patch 2 will conflict with
->>> my series since it changes how the initial brk is calculated.
->>>
->>> Unfortunately I think patch 2 has a bug. Without my patch, do_brk()
->>> assumes the heap is aligned with the host page size, but the patch
->>> does not consider the case that the host and target page sizes are
->>> different.
->> I've included your patches #2 (bugfix) and #3 (cleanup) to my latest
->> patch series and published it at
->> https://github.com/hdeller/qemu-hppa/tree/brk-fixes-akihiko
->>
->> Maybe you and Joel could try it out?
->
-> I re-read the thread again. As it seems Joel already tried the latest
-> version from me? Sadly I can't test myself on ppc64le (static binary
-> needs klibc-PupSAGgtpafMlSLXOLgje1kXFo8.so in /usr/lib which I can't
-> install on a debian porterbox).
->
-> I still believe we need to track host and target brk page, but I'll give
-> your patch a try.
+The recent commit 36df75a0a9 corrected one aspect of LUI disassembly
+by recovering the immediate argument from the result of LUI with a
+shift right by 12. However, the shift right will left-fill with the
+sign. By applying a mask we recover an unsigned representation of the
+20-bit field (which includes a sign bit).
 
-As suggested, I've based my patches on top of yours and the tree can be
-pulled from:
-git pull https://github.com/hdeller/qemu-hppa/   brk-fixes-akihiko-2
+Example:
+0xfffff000 >> 12 = 0xffffffff
+0xfffff000 >> 12 & 0xfffff = 0x000fffff
 
-My patches are neccessary to fix an arm-static testcase:
-	/usr/bin/qemu-arm-static ./fstype
+Fixes: 36df75a0a9 ("riscv/disas: Fix disas output of upper immediates")
+Signed-off-by: Richard Bagley <rbagley@ventanamicro.com>
+---
+ disas/riscv.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-Let's try this patch series...
+diff --git a/disas/riscv.c b/disas/riscv.c
+index 4023e3fc65..690eb4a1ac 100644
+--- a/disas/riscv.c
++++ b/disas/riscv.c
+@@ -4723,9 +4723,12 @@ static void format_inst(char *buf, size_t buflen, size_t tab, rv_decode *dec)
+             break;
+         case 'U':
+             fmt++;
+-            snprintf(tmp, sizeof(tmp), "%d", dec->imm >> 12);
+-            append(buf, tmp, buflen);
+-            if (*fmt == 'o') {
++            if (*fmt == 'i') {
++                snprintf(tmp, sizeof(tmp), "%d", dec->imm >> 12 & 0xfffff);
++                append(buf, tmp, buflen);
++            } else if (*fmt == 'o') {
++                snprintf(tmp, sizeof(tmp), "%d", dec->imm >> 12);
++                append(buf, tmp, buflen);
+                 while (strlen(buf) < tab * 2) {
+                     append(buf, " ", buflen);
+                 }
+-- 
+2.34.1
 
-Helge
 
