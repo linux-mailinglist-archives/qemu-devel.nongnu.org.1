@@ -2,159 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D04E8768EA2
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 09:25:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0563A768DF3
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 09:19:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQNH5-0007Bw-Nt; Mon, 31 Jul 2023 03:25:03 -0400
+	id 1qQNAg-0005wp-Eb; Mon, 31 Jul 2023 03:18:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jing2.liu@intel.com>)
- id 1qQNH3-0007BR-Cp
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 03:25:01 -0400
-Received: from [134.134.136.65] (helo=mgamail.intel.com)
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qQNAX-0005wB-QK
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 03:18:17 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jing2.liu@intel.com>)
- id 1qQNH0-00084m-Aw
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 03:25:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1690788298; x=1722324298;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=8HpDp5dHqMC9I6gqySC6yDIh/0sHVw0l7+bDKzNZnqk=;
- b=CEKVNFMJpK0QgNVNOjyzPhHUzYduhDS0rtpd2RmU0hPbazNwpb9JpVxE
- 61/S1BMkv0nbXI09JYwhMuuNFyfwVsNJFmsuQ34Tk8JmQAgqFJIWOIs4N
- iHvCP9li2cKOGKejkNttsnMCFGF3kGcYkzas5LBbOy04a9B/spxJQGNeA
- nMvD3YG7Fi9/43kQewfNOXOyzOqVLWO/R6m+cvBMo4KNvzIGhe+qlb9n6
- sm+JtQO8hwXizjRPJmnbqmD8X4TDwiZQyBMR5QR9tR+3zbHsjxE/s5vte
- DZWJ+JQxxaXsXN6+9znqze8hNPzvrn6L5GQ7awHooa6y0TXVhk42alGoc A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10787"; a="372571712"
-X-IronPort-AV: E=Sophos;i="6.01,244,1684825200"; d="scan'208";a="372571712"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
- by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Jul 2023 00:17:34 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10787"; a="793614575"
-X-IronPort-AV: E=Sophos;i="6.01,244,1684825200"; d="scan'208";a="793614575"
-Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
- by fmsmga008.fm.intel.com with ESMTP; 31 Jul 2023 00:17:33 -0700
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Mon, 31 Jul 2023 00:17:33 -0700
-Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27 via Frontend Transport; Mon, 31 Jul 2023 00:17:33 -0700
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.168)
- by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.27; Mon, 31 Jul 2023 00:17:33 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=VbUNnSQYGedy/wRWtww9U0TkWUbT2iRE7MVw9b0ljCmOJvMfnN/iBhv3TG9TT5Y7VSHwpSxnDLTRKHcPduuuHHS2BTiaSIt3XzR346qAYYjhIU4ou5fcRbFwv9TyQqtLQcBJKzytMyJ9r9KjbmmkISnzGma1rLPXzGRRMBbqWHCrbYC0Qu4W51zThFhk85kf2gBxMbcYwlcejq7Rv7iy9geD1Udv+TmWPtdmj1nNr8mZQKPg6m10ktgt6ttI5Ws/7ovton83g6WB08OY0OJHbcXDOUqUOF2mwXBAKUtJtEnPvCjfJVpERyK8720y6n4T+REnzfny4RGXg4lUQp8Q1w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vmjRERtMKEg4vX2mv280qBKBXUTtZ81cFMMuRGc9bts=;
- b=LW2CabCKgE2T+YqtOftzHznqW4QdCbDefSH1/oj6WDd+eWnpyHd5/+u85K2M6pf0vNRBW1ygKsSiDht7NylKX7BS2yq4/Sd3r43zPqew8AT9cRWEqDn/ih+ONYCpHO30sKvF5HOwbmCJeiFwiHMRE0ePZcmz7asEQlL/DPgr3nMhsM7PqPmQYvcpJvb/J/zG6ZEvS2sYEFH5ICwzDb3yfw1m+0nn3a/XmmE3Iga9XOtEkJEc4ayDm4U7rgpjxiDYTtYE4Uqa6II5k2gsvEwODytr5L65yL7t1fs9M1jFRLJWaquqbsKl+/Xm9QnSvkyKQ4JAJeLejlZu5tOWPSJqhA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from DS0PR11MB8114.namprd11.prod.outlook.com (2603:10b6:8:129::6) by
- PH7PR11MB7593.namprd11.prod.outlook.com (2603:10b6:510:27f::9) with
- Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6631.42; Mon, 31 Jul 2023 07:17:31 +0000
-Received: from DS0PR11MB8114.namprd11.prod.outlook.com
- ([fe80::5de4:80fa:4a96:5dbd]) by DS0PR11MB8114.namprd11.prod.outlook.com
- ([fe80::5de4:80fa:4a96:5dbd%7]) with mapi id 15.20.6631.026; Mon, 31 Jul 2023
- 07:17:31 +0000
-From: "Liu, Jing2" <jing2.liu@intel.com>
-To: Alex Williamson <alex.williamson@redhat.com>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "clg@redhat.com"
- <clg@redhat.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>, "Tian, Kevin"
- <kevin.tian@intel.com>, "Chatre, Reinette" <reinette.chatre@intel.com>, "Liu, 
- Jing2" <jing2.liu@intel.com>
-Subject: RE: [PATCH RFC v1 2/3] vfio/pci: enable vector on dynamic MSI-X
- allocation
-Thread-Topic: [PATCH RFC v1 2/3] vfio/pci: enable vector on dynamic MSI-X
- allocation
-Thread-Index: AQHZwFtipVhx7+TaJ06pO5DGzBBhP6/N3deAgAVn56A=
-Date: Mon, 31 Jul 2023 07:17:30 +0000
-Message-ID: <DS0PR11MB811422B6DEDE5E0C74B59D97A905A@DS0PR11MB8114.namprd11.prod.outlook.com>
-References: <20230727072410.135743-1-jing2.liu@intel.com>
- <20230727072410.135743-3-jing2.liu@intel.com>
- <20230727112503.4160f411.alex.williamson@redhat.com>
-In-Reply-To: <20230727112503.4160f411.alex.williamson@redhat.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DS0PR11MB8114:EE_|PH7PR11MB7593:EE_
-x-ms-office365-filtering-correlation-id: d11024a7-ddb1-4bd6-30cd-08db91963430
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: aHLE7Zsmtl6c3nN1/Vt7fu1/wK5GdoLSymsgVYefrH7XGyArH34WOgRG7I5kFx3wFMDGGnxX6B+ELDf8p764w2jTuWR3j5uZv5C7MKbj64SQBxTQRnk0OCoFxgPw0Dby1UseDCisVQlM3CsNz2Nl4kavqjyD4BeWRw1cKuPsTG0S979Q7RjZr2kjy/igBEjwoS9vLZqK51i9Mm6gLV2I24D7wtme8a08cCEDSX8ni1I1c7U/94JzRPNSpUB63CLs6sFh9ohoqvUGzejYyyNzd91xr5H9cRq4b8gpYztBClpex8yHLycy6Uc4r0FG9jKmtE7XEQzoSy6R3AdyjbZDFXwl0Mr+1VN8bnZSug1NZ2QKTKBd2wM83+70MlWkcCOzNgei0upsCkEA2SzZ2vakWAJdEX2v5KQOZ48ZS69eeoTKjVnv1T+NB5UvWvTJWOE2k7ExIJvsOkN+PiuGWNuCTBfqcJNTcPZqXmqYs1n0HHizi4tdkB9s5whGCJIZIdVE/b1VJvNM/igzZUKuUOcACCMnOls4y/eLEBW46XYdgp4rq7oAHJQuNhUENqJpugNLTE7Dc1kWy74k0IEeOQNK5w/PTWT3PzzGguUBeXU129H8dKnxOyIxSd0q4/HYgqEI
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DS0PR11MB8114.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(39860400002)(366004)(346002)(376002)(396003)(136003)(451199021)(9686003)(7696005)(55016003)(6506007)(26005)(83380400001)(107886003)(186003)(33656002)(76116006)(66946007)(66556008)(52536014)(38070700005)(122000001)(54906003)(82960400001)(41300700001)(86362001)(66476007)(316002)(64756008)(66446008)(4326008)(5660300002)(6916009)(8936002)(8676002)(38100700002)(2906002)(71200400001)(478600001);
- DIR:OUT; SFP:1102; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?MCWWn/ujk7MRWXRskfpzu1VUYXnROEOLdm2T7IDTZy14Xcoj9s+38A6bnFe2?=
- =?us-ascii?Q?dzrFjFiTYaE9o+PfqV/9LbZcXpYTm6RY/buVAaxPgFqi5dB+C44PIpEboZ3q?=
- =?us-ascii?Q?aFFoWqESsn6efbKf3fBiyrE6Deu/FLP0gXKqUIEUXrCW9pZCO9K6QmAgU7MS?=
- =?us-ascii?Q?c1CeThqVi03WRUzCTfXybnX9v6BiCz9teS3tzcXJDNUSusG+Rv5Aolsl7GRP?=
- =?us-ascii?Q?LQEDaHN6Tdz1RFyAqmQRGWN+8YkioKRBvWQfMtcQZwMfkVWwLNlYriC4rlMm?=
- =?us-ascii?Q?DWgSA0FyHRFSYnkEhWDWJS1m0xDESHUyG2tFHwTTnTsLR0s5fh3GRqO7As2R?=
- =?us-ascii?Q?jtLRoDHXAMG4ZZwouBwNxmj8m/p2tARENLccCDJSJAVrEfNylv+YDR3PShPp?=
- =?us-ascii?Q?0slBY94tVz+bmBok3En/YsrwMx3mQY0+WoeimzV96LH88SS7+xHFlB3pGdyt?=
- =?us-ascii?Q?LEHJDr1JNQ+viE/I+SYhO/B2X1Hv6SnkCywlZ2V8IWrRo/lmc3qNbqTs7obi?=
- =?us-ascii?Q?u8/KceUsyYbwwIHbjwo68OvgYb0yEi6qTZ7BFewy4Wcn8QW9IHwTvQIYlHk2?=
- =?us-ascii?Q?wT8TJLn7cbj0O8DBvlKZ9lyzIWcjA1PCjC+kW3o45FKwtTeN8CIy4i1juI1A?=
- =?us-ascii?Q?zZfLfXkaDlLxiBM9/ruVp4xuIZZZvO0VstD8rwB4fvQ9c7KevtBLz8eFKIZS?=
- =?us-ascii?Q?mAE/llgOVvAyJCjZfhenFeQzki/9e4nzkI4HE4lNLVLcfqSVFb9JsVW6a6WO?=
- =?us-ascii?Q?I6RGnlW7WsP5PHLdCs327TbyEpmdOIQGLeNITNamZUGCLMCwSb/oLyL1M28y?=
- =?us-ascii?Q?BHX+qBf0RjqkzOB6blAuo+XSFm4A900RnTLfYrTXW6p5Pj3I/rnE46sM4A2g?=
- =?us-ascii?Q?YrU++YncQJXTBkKQGytPuRd4QM3Ou0W/aLINm7/zLocCtZDlahNU7c7WLwzU?=
- =?us-ascii?Q?7Biir9tWxg+PzZH2hncmg9W2LjmCqplDfCwcR+yWwxA2Je5x2weJ4Pxa3nhL?=
- =?us-ascii?Q?JOuAvnOkH4CoAlLN136qH1CeTYxx16SWvEBIDW+vDoghAXT3Pl+nsAc7plWm?=
- =?us-ascii?Q?TX1jwdsarre6HtwzDAMeZfUyqesFZ7T/VkLBMZgLaMduOuJw1aAxeHJwDv3W?=
- =?us-ascii?Q?EsXYN9tfCWf6ONS+JsfxyKhdXyxfbL9YmjAHCn8CYCN/t8MsO9NPBN3W+ruW?=
- =?us-ascii?Q?CCsv90z1ACMLRFOj8wd3HtFhXpa/oyQU+vnkZ75ZQBxxZ8cBaUOuNtZIzPWv?=
- =?us-ascii?Q?PAhU6T1Zp9f76eiXVVEq16/SjZXNKhdtbITtYJp5PiqXMTRdux3TIcD6wnFv?=
- =?us-ascii?Q?S0HYJ49XCboPxYwTgjTl60+LVPbbxnGO59LfJAUJqd26nL2YYufjS051wmZ2?=
- =?us-ascii?Q?06C7UxCaN3keixyx0/jEoXK3pu/k9HG7OSbVOtSY+9wDcPJsOk6WF+TmioZQ?=
- =?us-ascii?Q?GYI4pIcVQPNo/IRyx6ejthN8kd48oMPjkMQ6HNTdZZYIcwoaxCcKSoaMF+j+?=
- =?us-ascii?Q?OtFRLEkq/8/I0W4mzqbU6mMXfLbKxBG9yHPJI/RoR5ohMYQrdGManBFtO6sz?=
- =?us-ascii?Q?CKLjTdpXU8mU2U/wLYUpQ+DwFduQalb2b8diuDRI?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qQNAW-0006jH-49
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 03:18:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1690787894;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=sMk26EAq8L8ijc5ZaGiVV0fxfAolpQBv9JQamEGeqmc=;
+ b=G0/GTRGWXSICsBKyLVWa/dKuQVztBvFauH42qX5PFy+vpQMD51yC21pMGECCnmnTXJEobc
+ btOKooTwzLRlbPTG2vQeT3/eFM17zs9JJsSdfR/pPQoI0oQbOQCI3f9VPuevDJ7f2w3Ay9
+ sNHQAziv7q/STwQXGysyaU0d1tdTbVw=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-74-tw1S6CvHOsy0vxqcPdvVhA-1; Mon, 31 Jul 2023 03:18:12 -0400
+X-MC-Unique: tw1S6CvHOsy0vxqcPdvVhA-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-30e6153f0eeso1992461f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 00:18:12 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1690787891; x=1691392691;
+ h=content-transfer-encoding:in-reply-to:subject:organization:from
+ :content-language:references:cc:to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=sMk26EAq8L8ijc5ZaGiVV0fxfAolpQBv9JQamEGeqmc=;
+ b=dT3EKIFJLlyMmrk6R/qrAKTvOzMc8nZlPH5GVb5V4YxuQaul9CNiISW0WDL6WYLear
+ TMNTKD8L/58Qo19i8GMTzfl4zpkPe9ub1Md4RZKGzAZEjfGGRp6rvI+4bCOuhKi2LvFe
+ vFjVLwWaF6p0ipZj61Xj6zVcNq+3u59wUvxeBPpVTikaOvTfLf4GjoIkIzJorJxl/Krx
+ E/4j2O7fk5QCENjOSGH7f9+EOI+uYKOiV8FF67Ap3PobujTAyFIOjKOAGV8+gsqfP+pw
+ XIC8zDidS+b3RJKeRJ3+Nll4HNBrMkOQs6aXlONCcCqJIHgsm5T9l/0keuqDvmYo6tLw
+ rh5w==
+X-Gm-Message-State: ABy/qLaR7i9FL7gbAmssK44UPakG7NH2Bm+StSaqMHnvAAJ/3JfAux1S
+ sOKLrgiii37f6eW62cAIa5+hqJ+6ygz6YZOo6N6+62YMCIFMJA6iREDwT1yqWVYv+kyX+uzFSx/
+ 4e5n0nhqCFlCDft4=
+X-Received: by 2002:a5d:6805:0:b0:315:83d4:7dd6 with SMTP id
+ w5-20020a5d6805000000b0031583d47dd6mr6100455wru.5.1690787891016; 
+ Mon, 31 Jul 2023 00:18:11 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlGBr//7WrxXhTgUY1c3N/lFd9J/vDWViAmwcaSPrHkbojWwcX3SzE1pRxxkU7JYR1iybjWJqw==
+X-Received: by 2002:a5d:6805:0:b0:315:83d4:7dd6 with SMTP id
+ w5-20020a5d6805000000b0031583d47dd6mr6100439wru.5.1690787890648; 
+ Mon, 31 Jul 2023 00:18:10 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c723:4c00:5c85:5575:c321:cea3?
+ (p200300cbc7234c005c855575c321cea3.dip0.t-ipconnect.de.
+ [2003:cb:c723:4c00:5c85:5575:c321:cea3])
+ by smtp.gmail.com with ESMTPSA id
+ r6-20020adfce86000000b003179b3fd837sm4842452wrn.33.2023.07.31.00.18.09
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 31 Jul 2023 00:18:10 -0700 (PDT)
+Message-ID: <af597a7c-5580-ffc5-d435-dd7e0ccc63d2@redhat.com>
+Date: Mon, 31 Jul 2023 09:18:09 +0200
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB8114.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d11024a7-ddb1-4bd6-30cd-08db91963430
-X-MS-Exchange-CrossTenant-originalarrivaltime: 31 Jul 2023 07:17:30.9711 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: fwF/01Z7LDRFNg7WKjQx4FluRZch7nJdKTVxnbHX15qU4luxDGw/gVWnWQRkE8niXptixd5GVPy3p6Qm26+vQg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB7593
-X-OriginatorOrg: intel.com
-X-Host-Lookup-Failed: Reverse DNS lookup failed for 134.134.136.65 (failed)
-Received-SPF: pass client-ip=134.134.136.65; envelope-from=jing2.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+To: Gavin Shan <gshan@redhat.com>, qemu-arm@nongnu.org
+Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, philmd@linaro.org,
+ peter.maydell@linaro.org, shan.gavin@gmail.com
+References: <20230730234840.1989974-1-gshan@redhat.com>
+Content-Language: en-US
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+Subject: Re: [PATCH] kvm: Fix crash by initializing kvm_state early
+In-Reply-To: <20230730234840.1989974-1-gshan@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RDNS_NONE=0.793, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ NICE_REPLY_A=-0.101, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01,
+ RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -171,171 +105,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Alex,
+On 31.07.23 01:48, Gavin Shan wrote:
+> Runs into core dump on arm64 and the backtrace extracted from the
+> core dump is shown as below. It's caused by accessing @kvm_state which
+> isn't initialized at that point due to commit 176d073029 ("hw/arm/virt:
+> Use machine_memory_devices_init()"), where the machine's memory region
+> is added ealier than before.
 
-> On July 28, 2023 1:25 AM,  Alex Williamson <alex.williamson@redhat.com> w=
-rote:
->=20
-> On Thu, 27 Jul 2023 03:24:09 -0400
-> Jing Liu <jing2.liu@intel.com> wrote:
->=20
-> > The vector_use callback is used to enable vector that is unmasked in
-> > guest. The kernel used to only support static MSI-X allocation. When
-> > allocating a new interrupt using "static MSI-X allocation" kernels,
-> > Qemu first disables all previously allocated vectors and then
-> > re-allocates all including the new one. The nr_vectors of
-> > VFIOPCIDevice indicates that all vectors from 0 to nr_vectors are
-> > allocated (and may be enabled), which is used to to loop all the
-> > possibly used vectors When, e.g., disabling MSI-X interrupts.
-> >
-> > Extend the vector_use function to support dynamic MSI-X allocation
-> > when host supports the capability. Qemu therefore can individually
-> > allocate and enable a new interrupt without affecting others or
-> > causing interrupts lost during runtime.
-> >
-> > Utilize nr_vectors to calculate the upper bound of enabled vectors in
-> > dynamic MSI-X allocation mode since looping all msix_entries_nr is not
-> > efficient and unnecessary.
-> >
-> > Signed-off-by: Jing Liu <jing2.liu@intel.com>
-> > Tested-by: Reinette Chatre <reinette.chatre@intel.com>
-> > ---
-> >  hw/vfio/pci.c | 40 +++++++++++++++++++++++++++-------------
-> >  1 file changed, 27 insertions(+), 13 deletions(-)
-> >
-> > diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c index
-> > 0c4ac0873d40..8c485636445c 100644
-> > --- a/hw/vfio/pci.c
-> > +++ b/hw/vfio/pci.c
-> > @@ -512,12 +512,20 @@ static int vfio_msix_vector_do_use(PCIDevice
-> *pdev, unsigned int nr,
-> >      }
-> >
-> >      /*
-> > -     * We don't want to have the host allocate all possible MSI vector=
-s
-> > -     * for a device if they're not in use, so we shutdown and incremen=
-tally
-> > -     * increase them as needed.
-> > +     * When dynamic allocation is not supported, we don't want to have=
- the
-> > +     * host allocate all possible MSI vectors for a device if they're =
-not
-> > +     * in use, so we shutdown and incrementally increase them as neede=
-d.
-> > +     * And nr_vectors stands for the number of vectors being allocated=
-.
->=20
-> "nr_vectors represents the total number of vectors allocated."
+s/ealier/earlier/
 
-Will change.
+> 
+>      main
+>      qemu_init
+>      configure_accelerators
+>      qemu_opts_foreach
+>      do_configure_accelerator
+>      accel_init_machine
+>      kvm_init
+>      virt_kvm_type
+>      virt_set_memmap
+>      machine_memory_devices_init
+>      memory_region_add_subregion
+>      memory_region_add_subregion_common
+>      memory_region_update_container_subregions
+>      memory_region_transaction_begin
+>      qemu_flush_coalesced_mmio_buffer
+>      kvm_flush_coalesced_mmio_buffer
+> 
+> Fix it by initializing @kvm_state early. With this applied, no crash
+> is observed on arm64.
 
->=20
-> > +     *
-> > +     * When dynamic allocation is supported, let the host only allocat=
-e
-> > +     * and enable a vector when it is in use in guest. nr_vectors stan=
-ds
-> > +     * for the upper bound of vectors being enabled (but not all of th=
-e
-> > +     * ranges is allocated or enabled).
->=20
-> s/stands for/represents/
-Will change.
->=20
-> >       */
-> > -    if (vdev->nr_vectors < nr + 1) {
-> > +    if ((vdev->msix->irq_info_flags & VFIO_IRQ_INFO_NORESIZE) &&
->=20
-> Testing vdev->msix->noresize would be cleaner.
->=20
-> > +        (vdev->nr_vectors < nr + 1)) {
-> >          vdev->nr_vectors =3D nr + 1;
-> > +
-> >          if (!vdev->defer_kvm_irq_routing) {
-> >              vfio_disable_irqindex(&vdev->vbasedev, VFIO_PCI_MSIX_IRQ_I=
-NDEX);
-> >              ret =3D vfio_enable_vectors(vdev, true); @@ -529,16 +537,2=
-2
-> > @@ static int vfio_msix_vector_do_use(PCIDevice *pdev, unsigned int nr,
-> >          Error *err =3D NULL;
-> >          int32_t fd;
-> >
-> > -        if (vector->virq >=3D 0) {
-> > -            fd =3D event_notifier_get_fd(&vector->kvm_interrupt);
-> > -        } else {
-> > -            fd =3D event_notifier_get_fd(&vector->interrupt);
-> > -        }
-> > +        if (!vdev->defer_kvm_irq_routing) {
-> > +            if (vector->virq >=3D 0) {
-> > +                fd =3D event_notifier_get_fd(&vector->kvm_interrupt);
-> > +            } else {
-> > +                fd =3D event_notifier_get_fd(&vector->interrupt);
-> > +            }
-> >
-> > -        if (vfio_set_irq_signaling(&vdev->vbasedev,
-> > -                                     VFIO_PCI_MSIX_IRQ_INDEX, nr,
-> > -                                     VFIO_IRQ_SET_ACTION_TRIGGER, fd, =
-&err)) {
-> > -            error_reportf_err(err, VFIO_MSG_PREFIX, vdev->vbasedev.nam=
-e);
-> > +            if (vfio_set_irq_signaling(&vdev->vbasedev,
-> > +                                       VFIO_PCI_MSIX_IRQ_INDEX, nr,
-> > +                                       VFIO_IRQ_SET_ACTION_TRIGGER, fd=
-, &err)) {
-> > +                error_reportf_err(err, VFIO_MSG_PREFIX, vdev->vbasedev=
-.name);
-> > +            }
-> > +        }
-> > +        /* Increase for dynamic allocation case. */
-> > +        if (vdev->nr_vectors < nr + 1) {
-> > +            vdev->nr_vectors =3D nr + 1;
-> >          }
->=20
-> We now have two branches where the bulk of the code is skipped when
-> defer_kvm_irq_routing is enabled and doing effectively the same update to
-> nr_vectors otherwise.  This suggests we should move the
-> defer_kvm_irq_routing test out and create a common place to update
-> nr_vectors.  Thanks,
+Interestingly, we register memory listeners in kvm_init() after setting 
+kvm_state, so in theory it should have worked fine.
 
-I make a new logic as follows that moves the defer_kvm_irq_routing test out=
-.
-Since the vfio_enable_vectors() function need an updated nr_vectors value
-so need first update and test the different conditions using old value,
-e.g. old_nr_vec.
+But it's rather surprising that we see kvm_flush_coalesced_mmio_buffer() 
+call even though we didn't even setup a listener with 
+kvm_coalesce_mmio_region / kvm_uncoalesce_mmio_region.
 
-int old_nr_vec =3D vdev->nr_vectors;
-...
-...
-if (vdev->nr_vectors < nr + 1) {
-    vdev->nr_vectors =3D nr + 1;
-}
-if (!vdev->defer_kvm_irq_routing) {
-    if (vdev->msix->noresize && (old_nr_vec < nr + 1)) {
-            vfio_disable_irqindex(&vdev->vbasedev, VFIO_PCI_MSIX_IRQ_INDEX)=
-;
-            ret =3D vfio_enable_vectors(vdev, true);  // use updated nr_vec=
-tors
-            ...
-    } else {
-            if (vector->virq >=3D 0) {
-                fd =3D event_notifier_get_fd(&vector->kvm_interrupt);
-            } else {
-                fd =3D event_notifier_get_fd(&vector->interrupt);
-            }
-            if (vfio_set_irq_signaling(&vdev->vbasedev,
-                                       VFIO_PCI_MSIX_IRQ_INDEX, nr,
-                                       VFIO_IRQ_SET_ACTION_TRIGGER, fd, &er=
-r)) {
-                error_reportf_err(err, VFIO_MSG_PREFIX, vdev->vbasedev.name=
-);
-            }       =20
-    }
-}
-Thanks,
-Jing
+Such a notifier-specific flush might have been better placed in the 
+MemoryListener->begin() call. But that needs more thought, as 
+qemu_flush_coalesced_mmio_buffer() is called from a couple of places.
+> 
+> Fixes: 176d073029 ("hw/arm/virt: Use machine_memory_devices_init()")
+> Signed-off-by: Gavin Shan <gshan@redhat.com>
+> ---
+>   accel/kvm/kvm-all.c | 3 +--
+>   1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+> index 373d876c05..c825cba12f 100644
+> --- a/accel/kvm/kvm-all.c
+> +++ b/accel/kvm/kvm-all.c
+> @@ -2464,6 +2464,7 @@ static int kvm_init(MachineState *ms)
+>       qemu_mutex_init(&kml_slots_lock);
+>   
+>       s = KVM_STATE(ms->accelerator);
+> +    kvm_state = s;
+>   
+>       /*
+>        * On systems where the kernel can support different base page
+> @@ -2695,8 +2696,6 @@ static int kvm_init(MachineState *ms)
+>   #endif
+>       }
+>   
+> -    kvm_state = s;
+> -
+>       ret = kvm_arch_init(ms, s);
+>       if (ret < 0) {
+>           goto err;
 
->=20
-> Alex
+As an alternative, we might simply do nothing in 
+kvm_flush_coalesced_mmio_buffer(), in case kvm_state is not setup yet. 
+We don't have any notifier registered in that case.
+
+Thanks!
+
+-- 
+Cheers,
+
+David / dhildenb
 
 
