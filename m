@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D383769CCC
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 18:36:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8473769CD4
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 18:37:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQVrm-0005Lp-DG; Mon, 31 Jul 2023 12:35:30 -0400
+	id 1qQVrZ-0005RZ-3J; Mon, 31 Jul 2023 12:35:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1qQVq8-0004kN-MP
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 12:33:51 -0400
+ id 1qQVqH-0004uz-7S
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 12:34:02 -0400
 Received: from [134.134.136.126] (helo=mgamail.intel.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1qQVq6-0001Oy-NL
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 12:33:48 -0400
+ id 1qQVqF-0001QK-KD
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 12:33:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1690821226; x=1722357226;
+ t=1690821235; x=1722357235;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=heHOwr2oExdov2YnZXE+amN8spk5BZtW366haLX5N0Q=;
- b=aAaVOG0vIVLYvY+H3hiSuVjkGGc4eKZEoAVBfE2/rVkHAoYC91F8Ok1Y
- QaleNeE5ufm6n6RSQpPn9VjKaL4flBG0kvKX9LeG44P61XrXflIrOkMVc
- pz2uV7xQ2A8UfWkj5BT0GMJ/LVR86ITing/t1oOQWPgCEL8rkAb6ILHqL
- YwV72yhU3mKc0M6fOOHaC8Oy0Fl6P3QFpznPggKqsjQ66222r2RxyCFf/
- rYzOREillyXm+NpcSL1TjJOMIXA5CMihG2GPGKNT/T5brEbONgwW3eZyp
- LzCYddYqhdQwyVug4velVHMH5kIPpMwKkuwsGIL3PRhqGKWT2KV5A6Ouw g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10788"; a="353993598"
-X-IronPort-AV: E=Sophos;i="6.01,244,1684825200"; d="scan'208";a="353993598"
+ bh=aoypxCuYdLER3/LcqIyTOOIsOC8SNNr7NYzaoP86WMg=;
+ b=dP8Szrz3D55SomKoE8kp+8s3H0YgsG9FHOOr2M60Z41ezZqiD7GgihCo
+ GCueTWMish+ip2zPmj6+07KWDvexT51EhzYPvh6PYo2K7bThm8Er0usfA
+ 1mfnIVCC8DFUi0wK8bKb1mJ63FUrenj/F7zVY/SSU9FlAjCTu2Ewhj52h
+ A2ooCg/T6mMu6Gaq5LSU9PyOBSi5POQUk2Sh0gbADeoe9k0zo6R4O6YK+
+ 9hbiB0tjKN3x2Mx8JGNdkIdFu8nAy2E64qAbTW7oy4VB9EHZKP95GPWxN
+ HWO9uRpcMJMqJnGjQVwZZ62s4GHXl5cBwmwWMM9JJcgEg2+MTzBZM1fqI A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10788"; a="353993623"
+X-IronPort-AV: E=Sophos;i="6.01,244,1684825200"; d="scan'208";a="353993623"
 Received: from orsmga008.jf.intel.com ([10.7.209.65])
  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Jul 2023 09:26:06 -0700
+ 31 Jul 2023 09:26:11 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10788"; a="757984384"
-X-IronPort-AV: E=Sophos;i="6.01,244,1684825200"; d="scan'208";a="757984384"
+X-IronPort-AV: E=McAfee;i="6600,9927,10788"; a="757984415"
+X-IronPort-AV: E=Sophos;i="6.01,244,1684825200"; d="scan'208";a="757984415"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.46])
- by orsmga008.jf.intel.com with ESMTP; 31 Jul 2023 09:26:01 -0700
+ by orsmga008.jf.intel.com with ESMTP; 31 Jul 2023 09:26:06 -0700
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  Sean Christopherson <seanjc@google.com>,
@@ -54,10 +54,10 @@ Cc: Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>,
  Peter Xu <peterx@redhat.com>, Chao Peng <chao.p.peng@linux.intel.com>,
  Michael Roth <michael.roth@amd.com>, isaku.yamahata@gmail.com,
  xiaoyao.li@intel.com, qemu-devel@nongnu.org, kvm@vger.kernel.org
-Subject: [RFC PATCH 16/19] trace/kvm: Add trace for page convertion between
- shared and private
-Date: Mon, 31 Jul 2023 12:21:58 -0400
-Message-Id: <20230731162201.271114-17-xiaoyao.li@intel.com>
+Subject: [RFC PATCH 17/19] pci-host/q35: Move PAM initialization above SMRAM
+ initialization
+Date: Mon, 31 Jul 2023 12:21:59 -0400
+Message-Id: <20230731162201.271114-18-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230731162201.271114-1-xiaoyao.li@intel.com>
 References: <20230731162201.271114-1-xiaoyao.li@intel.com>
@@ -91,35 +91,52 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Isaku Yamahata <isaku.yamahata@intel.com>
 
+In mch_realize(), process PAM initialization before SMRAM initialization so
+that later patch can skill all the SMRAM related with a single check.
+
 Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 ---
- accel/kvm/kvm-all.c    | 1 +
- accel/kvm/trace-events | 2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ hw/pci-host/q35.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 72d50b923bf2..c9f3aab5e587 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -3048,6 +3048,7 @@ static int kvm_convert_memory(hwaddr start, hwaddr size, bool to_private)
-     ram_addr_t offset;
-     int ret = -1;
+diff --git a/hw/pci-host/q35.c b/hw/pci-host/q35.c
+index 91c46df9ae31..ac1518a94ee4 100644
+--- a/hw/pci-host/q35.c
++++ b/hw/pci-host/q35.c
+@@ -575,6 +575,16 @@ static void mch_realize(PCIDevice *d, Error **errp)
+     /* setup pci memory mapping */
+     pc_pci_as_mapping_init(mch->system_memory, mch->pci_address_space);
  
-+    trace_kvm_convert_memory(start, size, to_private ? "shared_to_private" : "private_to_shared");
-     section = memory_region_find(get_system_memory(), start, size);
-     if (!section.mr) {
-         return ret;
-diff --git a/accel/kvm/trace-events b/accel/kvm/trace-events
-index 80694683acea..4935c9c5cf0b 100644
---- a/accel/kvm/trace-events
-+++ b/accel/kvm/trace-events
-@@ -25,4 +25,4 @@ kvm_dirty_ring_reaper(const char *s) "%s"
- kvm_dirty_ring_reap(uint64_t count, int64_t t) "reaped %"PRIu64" pages (took %"PRIi64" us)"
- kvm_dirty_ring_reaper_kick(const char *reason) "%s"
- kvm_dirty_ring_flush(int finished) "%d"
++    /* PAM */
++    init_pam(&mch->pam_regions[0], OBJECT(mch), mch->ram_memory,
++             mch->system_memory, mch->pci_address_space,
++             PAM_BIOS_BASE, PAM_BIOS_SIZE);
++    for (i = 0; i < ARRAY_SIZE(mch->pam_regions) - 1; ++i) {
++        init_pam(&mch->pam_regions[i + 1], OBJECT(mch), mch->ram_memory,
++                 mch->system_memory, mch->pci_address_space,
++                 PAM_EXPAN_BASE + i * PAM_EXPAN_SIZE, PAM_EXPAN_SIZE);
++    }
++
+     /* if *disabled* show SMRAM to all CPUs */
+     memory_region_init_alias(&mch->smram_region, OBJECT(mch), "smram-region",
+                              mch->pci_address_space, MCH_HOST_BRIDGE_SMRAM_C_BASE,
+@@ -641,15 +651,6 @@ static void mch_realize(PCIDevice *d, Error **errp)
+ 
+     object_property_add_const_link(qdev_get_machine(), "smram",
+                                    OBJECT(&mch->smram));
 -
-+kvm_convert_memory(uint64_t start, uint64_t size, const char *msg) "start 0x%" PRIx64 " size 0x%" PRIx64 " %s"
+-    init_pam(&mch->pam_regions[0], OBJECT(mch), mch->ram_memory,
+-             mch->system_memory, mch->pci_address_space,
+-             PAM_BIOS_BASE, PAM_BIOS_SIZE);
+-    for (i = 0; i < ARRAY_SIZE(mch->pam_regions) - 1; ++i) {
+-        init_pam(&mch->pam_regions[i + 1], OBJECT(mch), mch->ram_memory,
+-                 mch->system_memory, mch->pci_address_space,
+-                 PAM_EXPAN_BASE + i * PAM_EXPAN_SIZE, PAM_EXPAN_SIZE);
+-    }
+ }
+ 
+ uint64_t mch_mcfg_base(void)
 -- 
 2.34.1
 
