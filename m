@@ -2,85 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 071A57696FF
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 15:01:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D77E5769708
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 15:03:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQSW5-00082i-2U; Mon, 31 Jul 2023 09:00:54 -0400
+	id 1qQSYd-0001BY-6n; Mon, 31 Jul 2023 09:03:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qQSVt-0007tR-0x
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 09:00:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qQSYb-0001BI-By
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 09:03:29 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qQSVr-00005w-CF
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 09:00:40 -0400
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qQSYZ-0000sb-MG
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 09:03:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690808438;
+ s=mimecast20190719; t=1690808607;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=BHnF+sy+d3zFQbgHmPB9jYr/hDJRe+YhEB6Mqx1kcUQ=;
- b=U50li3uhIMHTVgl0KQKqTNCSLpUWUyMS8lVgpyIc1fzyZ7pPJkiJehFOW7L7hmyrlxsDdO
- hGRpP+qGnzETSN5Ls6B4JTz839x05vhqqnn+z+pWIc5m5ImuEZAojyuQOKGawzdLgAykaF
- gzAU+pbF5fUTHf/gYmFhyZ7rSHOTqy0=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=EZg3dj7fZg1WDALPDyeGDR0/qrHkWE2blrqwfx5+n9M=;
+ b=FrgLAFE9RCIc61UIYIlcEBbXbljbXR9+7sAOdPpj2JChGoCiWIyBTkog0kX/bL+/l3BSv6
+ +lWBfURRrrqfCTBtRGhBl79LAE0mkTvCksZmbsbS/pP/tfw7aoHGqilEqtU7DzYbXR0zHm
+ 6an4yb4yOvnJaLgF++XwgepdGv8ymwE=
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com
+ [209.85.210.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-189-y_rKht7QPY-P_cyCgv8h5Q-1; Mon, 31 Jul 2023 09:00:35 -0400
-X-MC-Unique: y_rKht7QPY-P_cyCgv8h5Q-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-3fe13f529f5so16548605e9.1
- for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 06:00:35 -0700 (PDT)
+ us-mta-152-er_ClU7oNkubUOOGMQdMsQ-1; Mon, 31 Jul 2023 09:03:25 -0400
+X-MC-Unique: er_ClU7oNkubUOOGMQdMsQ-1
+Received: by mail-pf1-f198.google.com with SMTP id
+ d2e1a72fcca58-686f0c37911so5217359b3a.1
+ for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 06:03:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690808434; x=1691413234;
- h=content-transfer-encoding:in-reply-to:organization:from:references
- :cc:to:content-language:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=BHnF+sy+d3zFQbgHmPB9jYr/hDJRe+YhEB6Mqx1kcUQ=;
- b=aMvDsGA/mp9NUjj9ytq2MLrh1VWcUtppktHh7tmbTJv2iRXicI7X6aQ0YIaUi7xOhs
- SMf6tQK04IXv/DmY28PYBtgD71Ks90oF+iDKIayr6Kox+0h+TNMsgJL7NKONXqEb2p22
- 6DmmUEV7XguIyzmZnxaueKVz8stfKXI518xU9jUe/He7+Xs4dYOxTfWK/MxlHedvw0cu
- 6IIFekZu15uTU4K79T5e3ezCx0Wib83Ba8bqeURTTLdt9rLgv9gcijLG9CZe5Ot3FT1i
- D1lzTrpQhY/QhAe5x0Dtt5b62DifItMAk5Sn2KiAse2E9wWXeo4SUf30zoDtchtOuxqK
- o8AA==
-X-Gm-Message-State: ABy/qLYlxM9gpAnMHgGGzjCHqkJZnH0o5EF9CtUdd9oNBCkSnCBrf4S9
- Ksmnhqiq5NxxcOvs+Vy4vvQmSYmtI13lZKwmZtsLOpyyurbY3+HQozTzNF1ZnVuFkT2Vx9DSjl6
- bmb7p5e1FxC+jch4=
-X-Received: by 2002:a1c:f202:0:b0:3fb:a0fc:1ba1 with SMTP id
- s2-20020a1cf202000000b003fba0fc1ba1mr8373853wmc.35.1690808433999; 
- Mon, 31 Jul 2023 06:00:33 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlFJs4d0JSubOVy3i34droRuNIImJOF0Y8wJ8e4yOlX/w0GH2xoMVbGt2dZybU/OHJgkT7pGPg==
-X-Received: by 2002:a1c:f202:0:b0:3fb:a0fc:1ba1 with SMTP id
- s2-20020a1cf202000000b003fba0fc1ba1mr8373833wmc.35.1690808433548; 
- Mon, 31 Jul 2023 06:00:33 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c723:4c00:5c85:5575:c321:cea3?
- (p200300cbc7234c005c855575c321cea3.dip0.t-ipconnect.de.
- [2003:cb:c723:4c00:5c85:5575:c321:cea3])
+ d=1e100.net; s=20221208; t=1690808604; x=1691413404;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=EZg3dj7fZg1WDALPDyeGDR0/qrHkWE2blrqwfx5+n9M=;
+ b=LU+SG28HdcIYZHl9oaMnbkLcefWs5uVzCW98UbriptXfSuOEUi/H6Rn1r2UgtJuunj
+ dMTwh3aGaYX6iOkIKOplKuCGcJkQkFsw0l1jQcVOBsEBBTnX4iozWXtmEKKZilnvl2yd
+ 8NyKKeGT2OfcQ9/8SNHrGb+b1tSRUM5CuVtlkltFoY5gvVNitZNaR/WLiD8CLFfDuprv
+ tkoOE9UdFyYcIcK1VvXj7/5Lgg5KulFUJd+B2MvH3iGnqQMROL6S1eCKvC+/2HMKAK+X
+ egxfMJ14OpddRfhc62vHwJC53KG84d0NkTpAhURcrBoUeiPAkWmlxhl6gDMal67XSrY8
+ GhTA==
+X-Gm-Message-State: ABy/qLZzNDZ7uNn8Y/xuCfAzWMDX6ZauRavkRaeErY/+sKz76igqF15G
+ XU8rBVc4IesKQSDM4M8P6uYDGxzWTZzXbYnWFK3QsJVXoaB/UU2v/crwF3yDI2ojHrSD4UqyPN0
+ wFnohN3lKF3g8lBs=
+X-Received: by 2002:a05:6a20:32aa:b0:137:3b34:93e5 with SMTP id
+ g42-20020a056a2032aa00b001373b3493e5mr8347041pzd.59.1690808604167; 
+ Mon, 31 Jul 2023 06:03:24 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlG2tGTxviPz00+OI3d4S+IrzitZNqwKLTa1I/1z/iE7RfOHF5UJJ2SdTJv4ahJX6JDCanYS7A==
+X-Received: by 2002:a05:6a20:32aa:b0:137:3b34:93e5 with SMTP id
+ g42-20020a056a2032aa00b001373b3493e5mr8347014pzd.59.1690808603735; 
+ Mon, 31 Jul 2023 06:03:23 -0700 (PDT)
+Received: from ?IPV6:2001:8003:e5b0:9f00:dbbc:1945:6e65:ec5?
+ ([2001:8003:e5b0:9f00:dbbc:1945:6e65:ec5])
  by smtp.gmail.com with ESMTPSA id
- 9-20020a05600c230900b003fbe561f6a3sm14139827wmo.37.2023.07.31.06.00.32
+ p2-20020a62ab02000000b006826c9e4397sm7601291pff.48.2023.07.31.06.03.19
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 31 Jul 2023 06:00:33 -0700 (PDT)
-Message-ID: <008f4ae2-c5bb-3570-3ec9-4ace4b5c4788@redhat.com>
-Date: Mon, 31 Jul 2023 15:00:32 +0200
+ Mon, 31 Jul 2023 06:03:22 -0700 (PDT)
+Message-ID: <c86779f3-3d27-c67d-efb4-e1a664b2e5c6@redhat.com>
+Date: Mon, 31 Jul 2023 23:03:17 +1000
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2] kvm: Fix crash due to access uninitialized kvm_state
+ Thunderbird/102.12.0
+Subject: Re: [PATCH] kvm: Fix crash by initializing kvm_state early
 Content-Language: en-US
-To: Gavin Shan <gshan@redhat.com>, qemu-arm@nongnu.org
-Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, peter.maydell@linaro.org,
+To: Peter Maydell <peter.maydell@linaro.org>,
+ David Hildenbrand <david@redhat.com>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, pbonzini@redhat.com,
  philmd@linaro.org, shan.gavin@gmail.com
-References: <20230731125946.2038742-1-gshan@redhat.com>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-In-Reply-To: <20230731125946.2038742-1-gshan@redhat.com>
+References: <20230730234840.1989974-1-gshan@redhat.com>
+ <af597a7c-5580-ffc5-d435-dd7e0ccc63d2@redhat.com>
+ <CAFEAcA8Uc7S4oBzKi_9AGCEkNdeZX1U73bvit6RmQo8_A7QLoA@mail.gmail.com>
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <CAFEAcA8Uc7S4oBzKi_9AGCEkNdeZX1U73bvit6RmQo8_A7QLoA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=gshan@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -105,64 +105,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 31.07.23 14:59, Gavin Shan wrote:
-> Runs into core dump on arm64 and the backtrace extracted from the
-> core dump is shown as below. It's caused by accessing uninitialized
-> @kvm_state in kvm_flush_coalesced_mmio_buffer() due to commit 176d073029
-> ("hw/arm/virt: Use machine_memory_devices_init()"), where the machine's
-> memory region is added earlier than before.
-> 
->      main
->      qemu_init
->      configure_accelerators
->      qemu_opts_foreach
->      do_configure_accelerator
->      accel_init_machine
->      kvm_init
->      virt_kvm_type
->      virt_set_memmap
->      machine_memory_devices_init
->      memory_region_add_subregion
->      memory_region_add_subregion_common
->      memory_region_update_container_subregions
->      memory_region_transaction_begin
->      qemu_flush_coalesced_mmio_buffer
->      kvm_flush_coalesced_mmio_buffer
-> 
-> Fix it by bailing early in kvm_flush_coalesced_mmio_buffer() on the
-> uninitialized @kvm_state. With this applied, no crash is observed on
-> arm64.
-> 
-> Fixes: 176d073029 ("hw/arm/virt: Use machine_memory_devices_init()")
-> Signed-off-by: Gavin Shan <gshan@redhat.com>
-> ---
-> v2: Bail early in kvm_flush_coalesced_mmio_buffer() on the uninitialized
->      @kvm_state and improved changelog        (David/Peter)
-> ---
->   accel/kvm/kvm-all.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-> index 373d876c05..7b3da8dc3a 100644
-> --- a/accel/kvm/kvm-all.c
-> +++ b/accel/kvm/kvm-all.c
-> @@ -2812,7 +2812,7 @@ void kvm_flush_coalesced_mmio_buffer(void)
->   {
->       KVMState *s = kvm_state;
->   
-> -    if (s->coalesced_flush_in_progress) {
-> +    if (!s || s->coalesced_flush_in_progress) {
->           return;
->       }
->   
 
-Thanks Gavin!
 
-Reviewed-by: David Hildenbrand <david@redhat.com>
+On 7/31/23 22:39, Peter Maydell wrote:
+> On Mon, 31 Jul 2023 at 08:18, David Hildenbrand <david@redhat.com> wrote:
+>>
+>> On 31.07.23 01:48, Gavin Shan wrote:
+>>> Runs into core dump on arm64 and the backtrace extracted from the
+>>> core dump is shown as below. It's caused by accessing @kvm_state which
+>>> isn't initialized at that point due to commit 176d073029 ("hw/arm/virt:
+>>> Use machine_memory_devices_init()"), where the machine's memory region
+>>> is added ealier than before.
+>>
+>> s/ealier/earlier/
+>>
+>>>
+>>>       main
+>>>       qemu_init
+>>>       configure_accelerators
+>>>       qemu_opts_foreach
+>>>       do_configure_accelerator
+>>>       accel_init_machine
+>>>       kvm_init
+>>>       virt_kvm_type
+>>>       virt_set_memmap
+>>>       machine_memory_devices_init
+>>>       memory_region_add_subregion
+>>>       memory_region_add_subregion_common
+>>>       memory_region_update_container_subregions
+>>>       memory_region_transaction_begin
+>>>       qemu_flush_coalesced_mmio_buffer
+>>>       kvm_flush_coalesced_mmio_buffer
+>>>
+>>> Fix it by initializing @kvm_state early. With this applied, no crash
+>>> is observed on arm64.
+> 
+>> As an alternative, we might simply do nothing in
+>> kvm_flush_coalesced_mmio_buffer(), in case kvm_state is not setup yet.
+>> We don't have any notifier registered in that case.
+> 
+> Yes, this seems better I think -- conceptually kvm_init()
+> probably ought to first set up the accelerator state and
+> then set kvm_state last, so that other code that looks
+> at the kvm_state global either sees NULL or else a
+> completely valid state, not a possibly half-initialised
+> one. (We should probably also NULL the global in the
+> error-exit path, though I imagine we're about to exit
+> in that case.)
+> 
+> Is somebody able to write/test a patch for that today?
+> Ideally we'd fix this for tomorrow's rc...
+> 
 
--- 
-Cheers,
+Thanks for your comments, David and Peter. v2 was posted for a quick merge.
 
-David / dhildenb
+https://lists.nongnu.org/archive/html/qemu-arm/2023-07/msg00702.html
+
+Thanks,
+Gavin
 
 
