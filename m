@@ -2,80 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 178217691E9
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 11:38:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F0B97691ED
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 11:39:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQPLk-0003ix-7b; Mon, 31 Jul 2023 05:38:00 -0400
+	id 1qQPMy-0004v7-UK; Mon, 31 Jul 2023 05:39:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qQPLi-0003iW-Jo
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 05:37:58 -0400
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qQPLg-0006xM-W0
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 05:37:58 -0400
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-5221b90f763so6321372a12.0
- for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 02:37:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690796275; x=1691401075;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=ZC+dnKa/qp5jrTcc1wAu0yckcU8SthpzOdgpibtn6NY=;
- b=JQHF1SuH3gXRAOjr/1oCY335+4Pfjc6WCesNsdRIHzR4jo26mHmMYi9iUMnuzOkzww
- ziSd7ss/VKhZ9BTfRs395ODCCscLlSH1FG8Hmzg3E8WRwuooyhZ42N0YO6FqaaMfKIK1
- 6FHnxfRQdW8SjMdQR7jmqYmqTTUKoLvcD3GHa1eVAUX3Nfw6UvEpjdrj87RFTVt3bV9n
- otaneX/YsmBirxMKlHga4FI6VHHojiwPGuZMKEjXunS9JuluZx6/CBmXEocT1j+u04jf
- cp8Kmv5uHnSJmykpvDKYjivMvIKEz91gcE/Ub3onWb/KXRG1sD4hP0vIuWG9FdCSV4On
- GYEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690796275; x=1691401075;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=ZC+dnKa/qp5jrTcc1wAu0yckcU8SthpzOdgpibtn6NY=;
- b=KqB4RNatqD20H6XxGBQJnlHeb9iOT4Oxj8sidjtc4mm8bJFUITHp7szzVzxSHxW4az
- 4ocxrlh5Wf2sar3BtJZ+n19rkILsiXstmnqXKwZ8B129zHis47PeSMxYWrydTRaNVPo4
- +zWe9GLFojKyWDDcy0fStrFte1pIPlKDSvc0FsQ1HEfzmySnDiYO1eg0g1dwxvEAQYly
- 6irxijen7jSUWCu+5pdBlXx3BIEi2a/q3dizzY5vOWiWR470lVXuzwFjDmUd5msUzmAe
- sEn+oU3ci0NBexi7Hzaz22CDA8wQjzvn9e0KWc7de2pOfqeJxWQKIPUURzYRhXQ1cdYY
- /4ug==
-X-Gm-Message-State: ABy/qLYSCGCaD4stKGG2oXY7/8M69bl4rrayAgWyXTECFRfTr3w0tROD
- cduvMQRnD5aCmhMP429NcWlmwR2lvzCKc4yWLyhD/A==
-X-Google-Smtp-Source: APBJJlGmaB+suTXADjLNNJSjrtzdrugR6VgJuOR02qXeYZ2I2ZOGupmRrdBOGSOkdxkR+1+vZsr0X5kXOlV0E3o3zYA=
-X-Received: by 2002:aa7:c401:0:b0:51e:fbe:dc81 with SMTP id
- j1-20020aa7c401000000b0051e0fbedc81mr7643168edq.3.1690796274966; Mon, 31 Jul
- 2023 02:37:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <ardb@kernel.org>) id 1qQPMv-0004uO-Dk
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 05:39:13 -0400
+Received: from dfw.source.kernel.org ([139.178.84.217])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ardb@kernel.org>) id 1qQPMt-00077p-Ct
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 05:39:13 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id B66FA60FD0;
+ Mon, 31 Jul 2023 09:39:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21129C433C8;
+ Mon, 31 Jul 2023 09:39:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1690796349;
+ bh=e5b+jaLb9qzOD64Op6iaJSDogIEYmK5afQapkfb1vj8=;
+ h=From:To:Cc:Subject:Date:From;
+ b=Ve0AGchtr4uvvrBK6fkwhrTC54RVtehU6xfhhANwK6Mv6NvVvDHk1lzNO7fSmpK2V
+ t+7Pm1NB+Vz+Qic6Ei0dZqtEStSF8YY6+pb1xVTQNOzdnv1w1cafbJK2lusIfCJ0+d
+ w75peVPmi6HheUUCLzhkltDwp/3/A2gWoMb8tdprNhYhQ61WHzrBkq52ztBxYv5PlD
+ KXumx6RhKXNSh9OFYWJBIHEsoJ/oZC8r6abPQXZ5YXtVuL1N94T97lxzrLO05WblFh
+ 50r07/bpNAK/pxdvvXxWFfywFQIfGZ7rwGJhlQFBzfa1suIO4zB5QgLFABJa7MCz00
+ IOEeFaUP/eqrA==
+From: Ard Biesheuvel <ardb@kernel.org>
+To: qemu-devel@nongnu.org
+Cc: Ard Biesheuvel <ardb@kernel.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH] target/riscv: Use accelerated helper for AES64KS1I
+Date: Mon, 31 Jul 2023 11:39:02 +0200
+Message-Id: <20230731093902.1796249-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-References: <20230730180329.851576-1-sw@weilnetz.de>
-In-Reply-To: <20230730180329.851576-1-sw@weilnetz.de>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 31 Jul 2023 10:37:43 +0100
-Message-ID: <CAFEAcA_SEUFgM8R=W0Ddm-UCPJhc=exMcXPaQJHg4tCqt3De9w@mail.gmail.com>
-Subject: Re: [PATCH] Fix some typos in documentation and comments
-To: Stefan Weil <sw@weilnetz.de>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Keith Busch <kbusch@kernel.org>, Klaus Jensen <its@irrelevant.dk>,
- Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- libvir-list@redhat.com, qemu-block@nongnu.org, qemu-devel@nongnu.org, 
- qemu-trivial@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::530;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x530.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1698; i=ardb@kernel.org;
+ h=from:subject; bh=e5b+jaLb9qzOD64Op6iaJSDogIEYmK5afQapkfb1vj8=;
+ b=owGbwMvMwCFmkMcZplerG8N4Wi2JIeV4o4lRgvDD1T5+Ksszbd4oHntcOlNvxrOjwY+Up2p/y
+ rl5buGujlIWBjEOBlkxRRaB2X/f7Tw9UarWeZYszBxWJpAhDFycAjCR1/8Z/ntn/9c+IDLzQPup
+ La/v+Oqc7/+6t36ixe3vjIbX5vUsWi7P8Id/harO5/K/57xrl/NN3jt1xRv1PbMeVzffF7H3c3G
+ IrGECAA==
+X-Developer-Key: i=ardb@kernel.org; a=openpgp;
+ fpr=F43D03328115A198C90016883D200E9CA6329909
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=139.178.84.217; envelope-from=ardb@kernel.org;
+ helo=dfw.source.kernel.org
+X-Spam_score_int: -70
+X-Spam_score: -7.1
+X-Spam_bar: -------
+X-Spam_report: (-7.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,13 +78,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, 30 Jul 2023 at 19:55, Stefan Weil via <qemu-devel@nongnu.org> wrote:
->
-> Signed-off-by: Stefan Weil <sw@weilnetz.de>
-> ---
+Use the accelerated SubBytes/ShiftRows/AddRoundKey AES helper to
+implement the first half of the key schedule derivation. This does not
+actually involve shifting rows, so clone the same uint32_t 4 times into
+the AES vector to counter that.
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Cc: Richard Henderson <richard.henderson@linaro.org>
+Cc: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+ target/riscv/crypto_helper.c | 17 +++++------------
+ 1 file changed, 5 insertions(+), 12 deletions(-)
 
-thanks
--- PMM
+diff --git a/target/riscv/crypto_helper.c b/target/riscv/crypto_helper.c
+index 4d65945429c6dcc4..257c5c4863fb160f 100644
+--- a/target/riscv/crypto_helper.c
++++ b/target/riscv/crypto_helper.c
+@@ -148,24 +148,17 @@ target_ulong HELPER(aes64ks1i)(target_ulong rs1, target_ulong rnum)
+ 
+     uint8_t enc_rnum = rnum;
+     uint32_t temp = (RS1 >> 32) & 0xFFFFFFFF;
+-    uint8_t rcon_ = 0;
+-    target_ulong result;
++    AESState t, rc = {};
+ 
+     if (enc_rnum != 0xA) {
+         temp = ror32(temp, 8); /* Rotate right by 8 */
+-        rcon_ = round_consts[enc_rnum];
++        rc.w[0] = rc.w[1] = rc.w[2] = rc.w[3] = round_consts[enc_rnum];
+     }
+ 
+-    temp = ((uint32_t)AES_sbox[(temp >> 24) & 0xFF] << 24) |
+-           ((uint32_t)AES_sbox[(temp >> 16) & 0xFF] << 16) |
+-           ((uint32_t)AES_sbox[(temp >> 8) & 0xFF] << 8) |
+-           ((uint32_t)AES_sbox[(temp >> 0) & 0xFF] << 0);
++    t.w[0] = t.w[1] = t.w[2] = t.w[3] = temp;
++    aesenc_SB_SR_AK(&t, &t, &rc, false);
+ 
+-    temp ^= rcon_;
+-
+-    result = ((uint64_t)temp << 32) | temp;
+-
+-    return result;
++    return t.d[0];
+ }
+ 
+ target_ulong HELPER(aes64im)(target_ulong rs1)
+-- 
+2.39.2
+
 
