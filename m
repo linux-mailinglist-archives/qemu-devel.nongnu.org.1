@@ -2,74 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86ABB768C15
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 08:37:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2CC5768C21
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 08:42:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQMVk-0001Iv-N2; Mon, 31 Jul 2023 02:36:08 -0400
+	id 1qQMav-0002sg-6A; Mon, 31 Jul 2023 02:41:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qQMVh-0001IL-1B
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 02:36:05 -0400
+ id 1qQMas-0002sD-Cg
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 02:41:26 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qQMVd-0005tK-Q9
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 02:36:03 -0400
+ id 1qQMaq-0006jt-Ub
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 02:41:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690785360;
+ s=mimecast20190719; t=1690785684;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=QOipC11ww0LU4lt8bpbsSsC5jaOhn3FCqWtuh/ulA2s=;
- b=VGuzORD+rv8MMmW+Gz8p6sJAYtaV8b1AmddaxVD6p9hTUYgjkf86N/0UBdbzpWvWBWECQR
- BhzrME1mP/QZxQC396HgXh006xzb4bBSZAVk/gVCpJAixd1Ixk3pHRH1/8NxrozFRwu+iS
- UKNeQxtqDJWxNGhmjrJWLJxGmKTHxZY=
-Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
- [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=SqNcy01R5fjJB7XZ1ZripJdQGPMDIkzTskROtnBaoPk=;
+ b=VdWMh8/RwYMnLNTDrT8BrkYuSPldZ/mqhbVmVhHqPwQ37sK15TBfvcaxMwoPD/QKjPKZy/
+ AFefJYX5tEvm3ruXuGYu+jt9dvLYILOTUGQsqFnkjt7v+Rmq64iyGzkS/CUSoEetvwHsW7
+ Kg3AlH7VPJykP4UV/TrEHHG4MNMf7E0=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-298-BABK1iPjO1KJlzo7KNDjDw-1; Mon, 31 Jul 2023 02:35:55 -0400
-X-MC-Unique: BABK1iPjO1KJlzo7KNDjDw-1
-Received: by mail-lj1-f198.google.com with SMTP id
- 38308e7fff4ca-2b9b00a80e9so33205291fa.1
- for <qemu-devel@nongnu.org>; Sun, 30 Jul 2023 23:35:55 -0700 (PDT)
+ us-mta-192-b76VBNgDPdCdhWTozI46Hw-1; Mon, 31 Jul 2023 02:41:22 -0400
+X-MC-Unique: b76VBNgDPdCdhWTozI46Hw-1
+Received: by mail-lf1-f69.google.com with SMTP id
+ 2adb3069b0e04-4fe2f10381cso714713e87.3
+ for <qemu-devel@nongnu.org>; Sun, 30 Jul 2023 23:41:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690785353; x=1691390153;
+ d=1e100.net; s=20221208; t=1690785681; x=1691390481;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QOipC11ww0LU4lt8bpbsSsC5jaOhn3FCqWtuh/ulA2s=;
- b=HHDfHXoJF2iHz6PX2QWwpY+dxquCEet0LFTNGaym2H/yS4jNs04AAEgwt092+7Ez+6
- XFUlr5B3TwUpjpC+n5wv9MZVYhdkWpesQl7UjwKd1T2awNlutsNM+TYJTnpAo6H7LaLZ
- KDbIOipNGHpxyE3mNkXu79yq1e/XID2G5JuZa7SeAunrC1jSpkpPy3ClqsXzzK6Rys/N
- HeEvPDgtJZ+39rnRh9xnCOv+pVHwYEoZSH+27Ho7lCL6loyyRVcoHOjbVFIk9HIMDbfR
- Be4z+ktT8ZuJ0UjB1+zr+85+ode551UfTSYVMHF+BSU51Ft9wLjgVc5FnLM4LHNJybne
- VcGQ==
-X-Gm-Message-State: ABy/qLYaGQ4BvzzAKZ6csDOvVOZOHX5mNo7LIWTIzhqRGiCH8KY6rC1w
- Vuy7mBnyehZxrw8j9pv8Wk5QXp8Y2qYSCTsEJ2oUFtEJILN/6vtAarXUeKF9W7ezxiGfAp5sgG6
- 59jB1gWnnO2b9embAXIkmgk1ssPj0Z9I=
-X-Received: by 2002:a2e:9a95:0:b0:2b7:3633:2035 with SMTP id
- p21-20020a2e9a95000000b002b736332035mr5876745lji.32.1690785353552; 
- Sun, 30 Jul 2023 23:35:53 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlH1YtrVosh1Pad/Lldk0Ld9nm70+x3wZqAP7OSDWP9SYDyOMDrkbxUZMT/LRDiJAPzifSp+/Y6f99wDksi0s10=
-X-Received: by 2002:a2e:9a95:0:b0:2b7:3633:2035 with SMTP id
- p21-20020a2e9a95000000b002b736332035mr5876738lji.32.1690785353250; Sun, 30
- Jul 2023 23:35:53 -0700 (PDT)
+ bh=SqNcy01R5fjJB7XZ1ZripJdQGPMDIkzTskROtnBaoPk=;
+ b=ep+I3ptGbqM2uHpszvzj6bOVDANOnJ5bkwDuuXKiy1QD5Q8jWguEr4Rmpu4vQw6OFV
+ 4sRoA/DdFlO7i6nHOlbcnOcogp0PRtSiNBGC/cDGs391Cj5eIaw/Z8UjMtd0WoS2bx4R
+ abpZavo/niGVipxqt+hJuHC+/96NTgAHmj6XNY71lTeaPMQyWyx9YiCCnnmjIyV8DSHW
+ ieNkDmgLCGqNWnpx2PRU/81mhgNu+KpHH1zerxsADRXDZj8vAuFIYsAffAui1gyINZjm
+ 6qMcPc6oHuij/TD2afoBqK658B/lS+M81VWJi9TmGDq8zYPcTTlXLQxIVMz30fzHE386
+ KgEg==
+X-Gm-Message-State: ABy/qLYugFi1vo4/5R2FhzTPhlZ30jP9+xMUD+lgxzMzjvw3aQqt9JPd
+ lkZaMxR6s4SW+7tq8xCZ6KWDIMa7L7JqFbpRsJEmFBAJc9WHu9KvxspgA3Eq0P49BdiBKswHHZb
+ yvCMgmLx6tC2TCDWxmcyOX1LQLUUSRDw=
+X-Received: by 2002:a2e:9812:0:b0:2b9:5b06:b724 with SMTP id
+ a18-20020a2e9812000000b002b95b06b724mr5880050ljj.42.1690785680874; 
+ Sun, 30 Jul 2023 23:41:20 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlHXS7f+tQ5I3UICQqDIolazmr2AfYpG0kvn7/Uq5oTcB4ysMPq6X5RTHNoQ/9P4T2D9iWyz2IqIl/zwbiT0Yco=
+X-Received: by 2002:a2e:9812:0:b0:2b9:5b06:b724 with SMTP id
+ a18-20020a2e9812000000b002b95b06b724mr5880034ljj.42.1690785680576; Sun, 30
+ Jul 2023 23:41:20 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230725182143.1523091-1-eperezma@redhat.com>
- <CACGkMEsqbZNGKdK1kM-qQeZShNeonQKK4_65vtCueQxUsRFTsQ@mail.gmail.com>
- <CAJaqyWeCNdmZX_iNywHxiD3fG39k5bRPOD2U13cmevbcUct+hA@mail.gmail.com>
-In-Reply-To: <CAJaqyWeCNdmZX_iNywHxiD3fG39k5bRPOD2U13cmevbcUct+hA@mail.gmail.com>
+References: <20230728172028.2074052-1-eperezma@redhat.com>
+In-Reply-To: <20230728172028.2074052-1-eperezma@redhat.com>
 From: Jason Wang <jasowang@redhat.com>
-Date: Mon, 31 Jul 2023 14:35:42 +0800
-Message-ID: <CACGkMEv4HNw-Fqsdn+BmzjrWsbxG4rR=kqYPS5kX41D-r=sUow@mail.gmail.com>
-Subject: Re: [PATCH] vdpa: set old virtio status at cvq isolation probing end
-To: Eugenio Perez Martin <eperezma@redhat.com>
-Cc: qemu-devel@nongnu.org, si-wei.liu@oracle.com, qemu-stable@nongnu.org, 
- Hawkins Jiawei <yin31149@gmail.com>
+Date: Mon, 31 Jul 2023 14:41:09 +0800
+Message-ID: <CACGkMEsPRp5ieCXyVDu0z0xynATL8eeY5Dtb8QNPo7f2Gde=ww@mail.gmail.com>
+Subject: Re: [PATCH 0/7] Enable vdpa net migration with features depending on
+ CVQ
+To: =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>
+Cc: qemu-devel@nongnu.org, Gautam Dawar <gdawar@xilinx.com>,
+ si-wei.liu@oracle.com, 
+ Zhu Lingshan <lingshan.zhu@intel.com>, Stefano Garzarella <sgarzare@redhat.com>,
+ Parav Pandit <parav@mellanox.com>, Cindy Lu <lulu@redhat.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Harpreet Singh Anand <hanand@xilinx.com>,
+ Laurent Vivier <lvivier@redhat.com>, 
+ Shannon Nelson <snelson@pensando.io>, Lei Yang <leiyang@redhat.com>, 
+ Dragos Tatulea <dtatulea@nvidia.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
@@ -81,7 +86,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,104 +102,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jul 26, 2023 at 2:27=E2=80=AFPM Eugenio Perez Martin
-<eperezma@redhat.com> wrote:
+On Sat, Jul 29, 2023 at 1:20=E2=80=AFAM Eugenio P=C3=A9rez <eperezma@redhat=
+.com> wrote:
 >
-> On Wed, Jul 26, 2023 at 4:07=E2=80=AFAM Jason Wang <jasowang@redhat.com> =
-wrote:
-> >
-> > On Wed, Jul 26, 2023 at 2:21=E2=80=AFAM Eugenio P=C3=A9rez <eperezma@re=
-dhat.com> wrote:
-> > >
-> > > The device already has a virtio status set by vhost_vdpa_init by the
-> > > time vhost_vdpa_probe_cvq_isolation is called. vhost_vdpa_init set
-> > > S_ACKNOWLEDGE and S_DRIVER, so it is invalid to just reset it.
-> > >
-> > > It is invalid to start the device after it, but all devices seems to =
-be
-> > > fine with it.  Fixing qemu so it follows virtio start procedure.
-> > >
-> > > Fixes: 152128d64697 ("vdpa: move CVQ isolation check to net_init_vhos=
-t_vdpa")
-> > > Reported-by: Dragos Tatulea <dtatulea@nvidia.com>
-> > > Signed-off-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
-> > > ---
-> > >  net/vhost-vdpa.c | 2 ++
-> > >  1 file changed, 2 insertions(+)
-> > >
-> > > diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-> > > index 9795306742..d7e2b714b4 100644
-> > > --- a/net/vhost-vdpa.c
-> > > +++ b/net/vhost-vdpa.c
-> > > @@ -1333,6 +1333,8 @@ static int vhost_vdpa_probe_cvq_isolation(int d=
-evice_fd, uint64_t features,
-> > >  out:
-> > >      status =3D 0;
-> > >      ioctl(device_fd, VHOST_VDPA_SET_STATUS, &status);
-> > > +    status =3D VIRTIO_CONFIG_S_ACKNOWLEDGE | VIRTIO_CONFIG_S_DRIVER;
-> > > +    ioctl(device_fd, VHOST_VDPA_SET_STATUS, &status);
-> >
-> > So if we fail after FEATURES_OK, this basically clears that bit. Spec
-> > doesn't say it can or not, I wonder if a reset is better?
-> >
+> At this moment the migration of net features that depends on CVQ is not
+> possible, as there is no reliable way to restore the device state like ma=
+c
+> address, number of enabled queues, etc to the destination.  This is mainl=
+y
+> caused because the device must only read CVQ, and process all the command=
+s
+> before resuming the dataplane.
 >
-> I don't follow this, the reset is just above the added code, isn't it?
+> This series lift that requirement, sending the VHOST_VDPA_SET_VRING_ENABL=
+E
+> ioctl for dataplane vqs only after the device has processed all commands.
 
-I meant for error path:
+I think it's better to explain (that is what I don't understand) why
+we can not simply reorder vhost_net_start_one() in vhost_net_start()?
 
-E.g:
-    uint8_t status =3D VIRTIO_CONFIG_S_ACKNOWLEDGE |
-                     VIRTIO_CONFIG_S_DRIVER |
-                     VIRTIO_CONFIG_S_FEATURES_OK;
-...
-    r =3D ioctl(device_fd, VHOST_VDPA_SET_STATUS, &status);
-....
-        if (cvq_group !=3D -ENOTSUP) {
-            r =3D cvq_group;
-            goto out;
+    for (i =3D 0; i < nvhosts; i++) {
+        if (i < data_queue_pairs) {
+            peer =3D qemu_get_peer(ncs, i);
+        } else {
+            peer =3D qemu_get_peer(ncs, n->max_queue_pairs);
         }
 
-out:
-    status =3D VIRTIO_CONFIG_S_ACKNOWLEDGE | VIRTIO_CONFIG_S_DRIVER;
-    ioctl(device_fd, VHOST_VDPA_SET_STATUS, &status);
+        if (peer->vring_enable) {
+            /* restore vring enable state */
+            r =3D vhost_set_vring_enable(peer, peer->vring_enable);
 
-We're basically clearing FEATURES_OK?
+            if (r < 0) {
+                goto err_start;
+            }
+        }
 
->
-> > Btw, spec requires a read of status after setting FEATURES_OK, this
-> > seems to be missed in the current code.
-> >
->
-> I'm ok with that, but this patch does not touch that part.
->
-> To fix this properly we should:
-> - Expose vhost_vdpa_set_dev_features_fd as we did in previous versions
-> of the series that added vhost_vdpa_probe_cvq_isolation [1].
-> - Get status after vhost_vdpa_add_status, so both vhost start code and
-> this follows the standard properly.
->
-> Is it ok to do these on top of this patch?
+=3D>      r =3D vhost_net_start_one(get_vhost_net(peer), dev);
+        if (r < 0) {
+            goto err_start;
+        }
+    }
 
-Fine.
+Can we simply start cvq first here?
 
 Thanks
 
+> ---
+> From FRC:
+> * Enable vqs early in case CVQ cannot be shadowed.
 >
-> Thanks!
+> Eugenio P=C3=A9rez (7):
+>   vdpa: export vhost_vdpa_set_vring_ready
+>   vdpa: add should_enable op
+>   vdpa: use virtio_ops->should_enable at vhost_vdpa_set_vrings_ready
+>   vdpa: add stub vhost_vdpa_should_enable
+>   vdpa: delay enable of data vqs
+>   vdpa: enable cvq svq if data vq are shadowed
+>   vdpa: remove net cvq migration blocker
 >
-> [1] https://lore.kernel.org/qemu-devel/20230509154435.1410162-4-eperezma@=
-redhat.com/
+>  include/hw/virtio/vhost-vdpa.h |  9 +++++
+>  hw/virtio/vhost-vdpa.c         | 33 ++++++++++++----
+>  net/vhost-vdpa.c               | 69 ++++++++++++++++++++++++++--------
+>  hw/virtio/trace-events         |  2 +-
+>  4 files changed, 89 insertions(+), 24 deletions(-)
 >
+> --
+> 2.39.3
 >
-> > Thanks
-> >
-> > >      return r;
-> > >  }
-> > >
-> > > --
-> > > 2.39.3
-> > >
-> >
 >
 
 
