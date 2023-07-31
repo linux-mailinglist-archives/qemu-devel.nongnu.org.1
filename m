@@ -2,95 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09501768C7F
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 09:00:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 489C8768C77
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 09:00:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQMsL-0007S1-KW; Mon, 31 Jul 2023 02:59:29 -0400
+	id 1qQMs9-0007Oo-7H; Mon, 31 Jul 2023 02:59:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qQMsI-0007RO-Uv
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 02:59:26 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
+ id 1qQMs5-0007OZ-Bg; Mon, 31 Jul 2023 02:59:13 -0400
+Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qQMsG-0001Je-GR
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 02:59:26 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1bbc7b2133fso25475935ad.1
- for <qemu-devel@nongnu.org>; Sun, 30 Jul 2023 23:59:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
+ id 1qQMs2-0001IJ-Up; Mon, 31 Jul 2023 02:59:13 -0400
+Received: by mail-ej1-x636.google.com with SMTP id
+ a640c23a62f3a-9936b3d0286so662147566b.0; 
+ Sun, 30 Jul 2023 23:59:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1690786763; x=1691391563;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=CO7fy32xenrVhWZYD9ETTxnPRxcdVezcG1Q1gQ0RmBw=;
- b=EfLF4fppayLzjItnuta8ctFqIoTgEF5mEpipkaNCKlIL/dJu9PaOgyWekixIJ6Zi4d
- Qjgoa772Y46aBa/lF2fmvLXjc7XmuHoNfOTKZoM6YFaeX5NZSl2ARf01FFauLhtQWa8E
- WRAyX2lAtF2x4npVbVup0L7HOBTdah9c3llVRdiPX4nWilbwKld9/30fu61cKK8eg0WT
- lq/W5+XAJ6clSzZbh93UErX0p9HFW9Ejm/uwFuDoSB5eswSgJ00cBIroB+/rLVCi0G5N
- xVUYJptcA4wBljSndj7/WnAfr+MWXmuaQ4F0n9lzma79rgUAzFYWjwII1+q4KY3jReuN
- hevg==
+ d=jms.id.au; s=google; t=1690786748; x=1691391548;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=xhaS7hK3rZFDGMOlFXsnipU4QaqfUrYIYdaopBrccg0=;
+ b=IEivPDKyZNHPlTt+lb5k9bpiJIFBrDoY7ZtHJkTDEfcV2OORFZk/tKzf5jGvmxROfV
+ CcHaP+AQtPtRkqtXCLR1w2HcpGqajYONfroJITpjdou+ojSrVv4XMSewnRmlIHyaR6LK
+ cKwXwP0pLyL2FO8MzRpqb/+3aLyheC3Z4uJL8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690786763; x=1691391563;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=CO7fy32xenrVhWZYD9ETTxnPRxcdVezcG1Q1gQ0RmBw=;
- b=Iz9DL6UyMWFuZ1DlVCPvqkuXk/R6940Z1uahmiTEGCcBIZWteWxdJxuyTfOYFFqiof
- QJY1bZ/UEIl0XZGKI5Z1YdmWMlwAckg5rhHSE5OomD4TfhGCJEEv9+BcU0FDKBjGfUai
- hwF13iRW5dqp5wC8Uqga391Ce6zYzOMnNsgIvuB9ObMxn0WePVnb5uk8R/XZ15ESegdM
- L1gy5o7yeFPZYBuEnfFTM1J3d9w+UQuSJuLEGFxEtwgA00YQlrLo1ElMjw1FKH4bdGav
- ujPHX6hx0BruaqNxbVFxlSARl8QSKGNivNIlntBXuEjA8Tlp5GEdajV2QiqRt6SMP+HP
- T46Q==
-X-Gm-Message-State: ABy/qLYjOeAOgThxgcFZf4ZzyZrkBQz/KA8H4OkvoTTe8q13WAETTjlt
- gHh20vN6Jb3W4GZXWDtI+uZ9og==
-X-Google-Smtp-Source: APBJJlFAh+kLRCpyCJgYiETki0U6CRXFBIcTiB/Qkv53nIKSAruNdwANCAagMYM8RRxytU0pU0IklA==
-X-Received: by 2002:a17:902:82c3:b0:1bb:b86e:8d60 with SMTP id
- u3-20020a17090282c300b001bbb86e8d60mr8821519plz.46.1690786763130; 
- Sun, 30 Jul 2023 23:59:23 -0700 (PDT)
-Received: from alarm.. ([157.82.204.253]) by smtp.gmail.com with ESMTPSA id
- l16-20020a170903121000b001b8af7f632asm7684988plh.176.2023.07.30.23.59.18
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 30 Jul 2023 23:59:22 -0700 (PDT)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-To: 
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
- Thomas Huth <thuth@redhat.com>, Juan Quintela <quintela@redhat.com>,
- Peter Xu <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Brian Cain <bcain@quicinc.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>, Song Gao <gaosong@loongson.cn>,
- Xiaojuan Yang <yangxiaojuan@loongson.cn>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Aurelien Jarno <aurelien@aurel32.net>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Chris Wulff <crwulff@gmail.com>, Marek Vasut <marex@denx.de>,
- David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- qemu-devel@nongnu.org, qemu-s390x@nongnu.org, qemu-arm@nongnu.org,
- Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH 1/3] pc-bios/optionrom: Add -fno-stack-protector
-Date: Mon, 31 Jul 2023 15:58:54 +0900
-Message-ID: <20230731065904.5869-2-akihiko.odaki@daynix.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230731065904.5869-1-akihiko.odaki@daynix.com>
-References: <20230731065904.5869-1-akihiko.odaki@daynix.com>
+ d=1e100.net; s=20221208; t=1690786748; x=1691391548;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=xhaS7hK3rZFDGMOlFXsnipU4QaqfUrYIYdaopBrccg0=;
+ b=Ziyh5xoeC5EhB6cSOf5DbvYBRaPbbOwYBrFTCZadBLjIoxio0b/a0y4g3hmLncHZ0c
+ eI+KfyYXvrjUURBpQ5sD/6S8dlKetvBMlKxLiCvi9NfRdDV06Mla2DK4FLN6Q6/yd9Gj
+ s8COIz0zcU/m3//+2TLwsxT62z4vvlYOSntthlLSlZjihBpJ4CrcUBoDOGgBaLANeO9s
+ tTfnY+qJC4bBxa+sJ7CD7t7DWINRTwfDDM9J/7Lxm1iJvGK42xHGTU92LvVogW5gYXHK
+ 0HoXAmJFHFmYyE/ZlYpiISOE/gW6zLwKWBHUVlQY6wNdK9bdhzjmq3B9YjDaxlT7Ir3D
+ 3H2Q==
+X-Gm-Message-State: ABy/qLYWEeC/4pDRmvNLmar/NLd3EjsncdX98dWSxsmlvWXTm29AdtiQ
+ x950vyJNbpOEGE5wHc+SsVP7uJcT8e4EXVWp9/M=
+X-Google-Smtp-Source: APBJJlF88otNRBOoAhGSYBSuYJBSZWGw/8fCLzWracg6Y+ajMnC3kP5quGGvwjhc201ZPjCB7YV8pQtmFTEQBJSjNhQ=
+X-Received: by 2002:a17:906:53d4:b0:99b:4668:8666 with SMTP id
+ p20-20020a17090653d400b0099b46688666mr6546918ejo.6.1690786748379; Sun, 30 Jul
+ 2023 23:59:08 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::62c;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62c.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
+References: <20230711085903.304496-1-npiggin@gmail.com>
+ <a18e346fc0e38f1014f5484e0b1ef27a7bc8cb41.1689073223.git.quic_mathbern@quicinc.com>
+ <CTZTUVQXKUGA.11SSOS1KIFLZK@wheely>
+ <CACPK8Xf-fa4qKZpgg4FvMkgzwbqgP1rh4=qLmv12N1JFcBn3Cg@mail.gmail.com>
+ <CUFEQY5EGPAK.BFTBD2ZPJV5A@wheely>
+In-Reply-To: <CUFEQY5EGPAK.BFTBD2ZPJV5A@wheely>
+From: Joel Stanley <joel@jms.id.au>
+Date: Mon, 31 Jul 2023 06:58:55 +0000
+Message-ID: <CACPK8XdTVArJCVh0UaSe2mwY2FtO3zpMepkqPfkDy7zAmc16jQ@mail.gmail.com>
+Subject: Re: [PATCH] gdbstub: Fix client Ctrl-C handling
+To: Nicholas Piggin <npiggin@gmail.com>, alex.bennee@linaro.org, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>,
+ fbarrat@linux.ibm.com, qemu-devel@nongnu.org, qemu-stable@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::636;
+ envelope-from=joel.stan@gmail.com; helo=mail-ej1-x636.google.com
+X-Spam_score_int: -14
+X-Spam_score: -1.5
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.25,
+ FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,44 +86,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A build of GCC 13.2 will have stack protector enabled by default if it
-was configured with --enable-default-ssp option. For such a compiler,
-it is necessary to explicitly disable stack protector when linking
-without standard libraries.
+On Sun, 30 Jul 2023 at 09:43, Nicholas Piggin <npiggin@gmail.com> wrote:
+>
+> On Wed Jul 26, 2023 at 4:35 PM AEST, Joel Stanley wrote:
+> > On Wed, 12 Jul 2023 at 02:12, Nicholas Piggin <npiggin@gmail.com> wrote:
+> > >
+> > > On Tue Jul 11, 2023 at 9:03 PM AEST, Matheus Tavares Bernardino wrote:
+> > > > > Nicholas Piggin <npiggin@gmail.com> wrote:
+> > > > >
+> > > > > diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
+> > > > > index 6911b73c07..ce8b42eb15 100644
+> > > > > --- a/gdbstub/gdbstub.c
+> > > > > +++ b/gdbstub/gdbstub.c
+> > > > > @@ -2051,8 +2051,17 @@ void gdb_read_byte(uint8_t ch)
+> > > > >              return;
+> > > > >      }
+> > > > >      if (runstate_is_running()) {
+> > > > > -        /* when the CPU is running, we cannot do anything except stop
+> > > > > -           it when receiving a char */
+> > > > > +        /*
+> > > > > +         * When the CPU is running, we cannot do anything except stop
+> > > > > +         * it when receiving a char. This is expected on a Ctrl-C in the
+> > > > > +         * gdb client. Because we are in all-stop mode, gdb sends a
+> > > > > +         * 0x03 byte which is not a usual packet, so we handle it specially
+> > > > > +         * here, but it does expect a stop reply.
+> > > > > +         */
+> > > > > +        if (ch != 0x03) {
+> > > > > +            warn_report("gdbstub: client sent packet while target running\n");
+> > > > > +        }
+> > > > > +        gdbserver_state.allow_stop_reply = true;
+> > > > >          vm_stop(RUN_STATE_PAUSED);
+> > > > >      } else
+> > > > >  #endif
+> > > >
+> > > > Makes sense to me, but shouldn't we send the stop-reply packet only for
+> > > > Ctrl+C/0x03?
+> > >
+> > > Good question.
+> > >
+> > > I think if we get a character here that's not a 3, we're already in
+> > > trouble, and we eat it so even worse. Since we only send a stop packet
+> > > back when the vm stops, then if we don't send one now we might never
+> > > send it. At least if we send one then the client might have some chance
+> > > to get back to a sane state. And this does at least take us back to
+> > > behaviour before the stop filtering patch.
+> > >
+> > > Could go further and only stop the machine if it was a 3, or send a
+> > > stop packet even if we were stopped, etc. but all that get further from
+> > > a minimal fix.
+> >
+> > I was taking a look at -rc1 and it looks like this hasn't made it in.
+> > Is it something we want to propose including?
+> >
+> > As a user of qemu I'd vote for it to go in.
+>
+> I think it should, gdb is hardly usable without it.
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
- pc-bios/optionrom/Makefile | 2 +-
- pc-bios/s390-ccw/Makefile  | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+I think I hit this issue when debugging u-boot in the aspeed arm
+machines. Your patch fixed things:
 
-diff --git a/pc-bios/optionrom/Makefile b/pc-bios/optionrom/Makefile
-index b1fff0ba6c..f220d81f2c 100644
---- a/pc-bios/optionrom/Makefile
-+++ b/pc-bios/optionrom/Makefile
-@@ -19,7 +19,7 @@ quiet-command = $(call quiet-@,$2 $@)$1
- override CPPFLAGS += -MMD -MP -MT $@ -MF $(@D)/$(*F).d
- 
- override CFLAGS += -march=i486 -Wall $(EXTRA_CFLAGS) -m16
--override CFLAGS += -ffreestanding -I$(TOPSRC_DIR)/include
-+override CFLAGS += -ffreestanding -fno-stack-protector -I$(TOPSRC_DIR)/include
- 
- cc-test = $(CC) -Werror $1 -c -o /dev/null -xc /dev/null >/dev/null 2>/dev/null
- cc-option = if $(call cc-test, $1); then \
-diff --git a/pc-bios/s390-ccw/Makefile b/pc-bios/s390-ccw/Makefile
-index acfcd1e71a..446d448913 100644
---- a/pc-bios/s390-ccw/Makefile
-+++ b/pc-bios/s390-ccw/Makefile
-@@ -38,7 +38,7 @@ OBJECTS = start.o main.o bootmap.o jump2ipl.o sclp.o menu.o \
- EXTRA_CFLAGS += -Wall
- EXTRA_CFLAGS += -ffreestanding -fno-delete-null-pointer-checks -fno-common -fPIE
- EXTRA_CFLAGS += -fwrapv -fno-strict-aliasing -fno-asynchronous-unwind-tables
--EXTRA_CFLAGS += -msoft-float
-+EXTRA_CFLAGS += -fno-stack-protector -msoft-float
- EXTRA_CFLAGS += -std=gnu99
- LDFLAGS += -Wl,-pie -nostdlib
- 
--- 
-2.41.0
+Tested-by: Joel Stanley <joel@jms.id.au>
 
+Alex, Philippe, can we get this queued for 8.1?
+
+Cheers,
+
+Joel
 
