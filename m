@@ -2,77 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6288A76993A
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 16:16:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93448769951
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 16:21:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQTgd-0005al-AQ; Mon, 31 Jul 2023 10:15:51 -0400
+	id 1qQTli-0003PA-EJ; Mon, 31 Jul 2023 10:21:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qQTgT-0005Xy-Tm
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 10:15:41 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qQTlg-0003Oo-9k
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 10:21:04 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qQTgR-0007ex-QP
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 10:15:41 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-3fe2048c910so9789235e9.1
- for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 07:15:39 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qQTle-0000Ef-KO
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 10:21:04 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-3fbc244d307so49890825e9.1
+ for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 07:21:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690812938; x=1691417738;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=umPuKK0TP/i1glV8Qojb6FP6t/DJTY4yK7JJ/sINZ5E=;
- b=MFrKBW+iLqvFD3CUTIt8nain8KfYljuJkzxSmKOVH2WaY2eHKUQ/bZBX9g2NqO4BtS
- vfqZJnerM9oyDYR0uGaMweOhuHoRE9KETpezJxS9yOEDgz6XlJUHGpDS/SNxID04pXfp
- +R5+CMe1nnV1IHHjeQnuPMjV2NALGZB0wmSdgMpkgu1mBszVXXOE4Yjr2A7dj4qNHQht
- vPpyzBquqZUn9l86j8j4ugjY/K3ng3KMy6wh6nfKp4O1Hj+TZHuccFzpHG5IxPnIyKU+
- TBT6wVsP3q5PrlpS1J8RXPk8VuWJ5ElB6JQCKcSNi/tYKKjGMvww5e0BTNKnoEyffzg7
- KUdg==
+ d=linaro.org; s=google; t=1690813261; x=1691418061;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=BCP/6rJR8Z4ywb61kGEudrHUFQ9M5QFvs6yWYM+1hSs=;
+ b=caE9F18YKhEs/Avn3sln5LeJ2cr2M4d7b2KxcLIMtRN9BHFiZEp0r/2yQzfU1Di5Zc
+ ajxJ1+YjJUWtj2IVGKDSviFxyM5qjGJQQYzxW61CEkgh/Ty3EjnUSDyM/kcPvcoin3Zr
+ g+OwJG/XT6G+n4vuq3pddss/HVSd8BMBWgNBtKsgv6Z+0iygHvtGymVZtfmK/XWWcre5
+ epu1xkU4t5yQHTy4ph7NLxs2hgO4ahviaHmMQdWfw2ACcUX3kues435UZcj5UxC6hOkq
+ UaFLMDnayCsS/8eMFaPvDrcWyOYD8OWs3qRVSMcj00YhSOntLdyn/c0q1wtSgxbZ6UpB
+ GVhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690812938; x=1691417738;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=umPuKK0TP/i1glV8Qojb6FP6t/DJTY4yK7JJ/sINZ5E=;
- b=KARH+nFz7diFro5g8565NrS4N2fpo+vUpxxaUZ/P7ZSRSgjtVfrrZxveNGxTjGnxZf
- HIjn3N7Y5qrpPtSPz+yadldoGRViITg9Hwfxm7iEDLxtE8GNnl/TeMPy+rIPfJypafUF
- an5Bm9rnjZ9O64ClqIe0MWemM63lNztugqKNV+kv55DrFF2toeVbINX+uZ4OOM1u6Q2n
- BgbXBo12nGMiW/rdgyCjc8al9ches66/RXmnxCSClqTdYMGFCGPHhK9dWwRFs3tV6NpA
- Y51ajH46eiUCSJBeOmgS64Kp0fej9H0N1ENRPB6oarTjDc4RGL68LY2UfaC4DL883BC8
- NgSQ==
-X-Gm-Message-State: ABy/qLY+vSr3QraxG9TKC+IneB4cMd/7ucMA9w+Yrj7Qi6zYpLeptcDs
- ZSFBU3SaKR7j52K7wpEBta8TMWcyedg7ZpWsCwE=
-X-Google-Smtp-Source: APBJJlGOSesnwnG5ZiYGHKNIwSI6goZcnKQnF/tNx/wE9gsyxL61i+We79zbJocQVsSPs16fKHSt7A==
-X-Received: by 2002:a05:600c:215:b0:3fe:25b3:951d with SMTP id
- 21-20020a05600c021500b003fe25b3951dmr77568wmi.5.1690812938053; 
- Mon, 31 Jul 2023 07:15:38 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ d=1e100.net; s=20221208; t=1690813261; x=1691418061;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=BCP/6rJR8Z4ywb61kGEudrHUFQ9M5QFvs6yWYM+1hSs=;
+ b=lmv/fttCbGVMlGGYQPuiJjS41Q117uS7eRi4eGM+sXXEr8BnjlCmqtvmTXQz9UijOR
+ br3Xx7yERqLh8d++V+IKIvTW3qCb+ipbgKnkdGjs8W8Rj/R+szTZ8QJIOJdfq0cyCY8F
+ /3VUWykkzGou3Dt0ELGDYem5F5E11ABi87njw5tkZo7Nf9SAfKtDH56w5PyA5Ia7lJ1A
+ MEBZC0MvdcpJmFZVlQJs/ly0gTxoXZpWdDSMqiZLWcPLh4WI/mNe8VV9Sbafllm8hdR0
+ 7xC+X4x6Rp+wmN0EIYx2RSgF9TIOY4dzhPwQzgEV3sJRB2E0gtT8rjxWCDyUQ9x/jw0B
+ EBFw==
+X-Gm-Message-State: ABy/qLYr7iI/IOidPiUSKyaUB9fW9SvIMO+DnTqoaLjKAFA2Cqm6syuR
+ 6Zu3X8uC5kKcxVV9ZX9CjuzJIw==
+X-Google-Smtp-Source: APBJJlEvWlG+ufLkmNxRqeaX4PL9VtJHBR63mQOxEVt/pETljqjP/bD4e+sxXAbmUa8B2OMWZUlVIQ==
+X-Received: by 2002:a05:600c:2286:b0:3fe:1871:1826 with SMTP id
+ 6-20020a05600c228600b003fe18711826mr55340wmf.27.1690813260896; 
+ Mon, 31 Jul 2023 07:21:00 -0700 (PDT)
+Received: from [192.168.69.115] ([176.187.198.42])
  by smtp.gmail.com with ESMTPSA id
- z15-20020a05600c114f00b003fbb5506e54sm11450675wmz.29.2023.07.31.07.15.37
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 31 Jul 2023 07:15:37 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PULL 6/6] gdbstub: Fix client Ctrl-C handling
-Date: Mon, 31 Jul 2023 15:15:33 +0100
-Message-Id: <20230731141533.3303894-7-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230731141533.3303894-1-peter.maydell@linaro.org>
-References: <20230731141533.3303894-1-peter.maydell@linaro.org>
+ f17-20020a7bcc11000000b003fd2d33ea53sm11700610wmh.14.2023.07.31.07.20.59
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 31 Jul 2023 07:21:00 -0700 (PDT)
+Message-ID: <835a0b9e-6477-941a-743c-eda3a6a15eb6@linaro.org>
+Date: Mon, 31 Jul 2023 16:20:58 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.13.0
+Subject: Re: [RFC PATCH 3/6] util/oslib-win32: Fix compiling with Clang from
+ MSYS2
+Content-Language: en-US
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
+ =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>
+Cc: Stefan Weil <sw@weilnetz.de>, Yonggang Luo <luoyonggang@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>
+References: <20230728142748.305341-1-thuth@redhat.com>
+ <20230728142748.305341-4-thuth@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230728142748.305341-4-thuth@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.101,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -90,58 +97,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Nicholas Piggin <npiggin@gmail.com>
+On 28/7/23 16:27, Thomas Huth wrote:
+> Clang complains:
+> 
+> ../util/oslib-win32.c:483:56: error: omitting the parameter name in a
+>   function definition is a C2x extension [-Werror,-Wc2x-extensions]
+> win32_close_exception_handler(struct _EXCEPTION_RECORD*,
+>                                                         ^
+> 
+> Fix it by adding parameter names.
+> 
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
+>   util/oslib-win32.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/util/oslib-win32.c b/util/oslib-win32.c
+> index 429542face..070bb455d3 100644
+> --- a/util/oslib-win32.c
+> +++ b/util/oslib-win32.c
+> @@ -480,8 +480,8 @@ int qemu_bind_wrap(int sockfd, const struct sockaddr *addr,
+>   }
+>   
+>   EXCEPTION_DISPOSITION
+> -win32_close_exception_handler(struct _EXCEPTION_RECORD*,
+> -                              void*, struct _CONTEXT*, void*)
+> +win32_close_exception_handler(struct _EXCEPTION_RECORD *exrec,
+> +                              void *ptr1, struct _CONTEXT *cntx, void *ptr2)
 
-The gdb remote protocol has a special interrupt character (0x03) that is
-transmitted outside the regular packet processing, and represents a
-Ctrl-C pressed in the client. Despite not being a regular packet, it
-does expect a regular stop response if the stub successfully stops the
-running program.
+Per https://learn.microsoft.com/en-us/cpp/c-runtime-library/except-handler3:
 
-See: https://sourceware.org/gdb/onlinedocs/gdb/Interrupts.html
+-- >8 --
+diff --git a/include/sysemu/os-win32.h b/include/sysemu/os-win32.h
+index 91aa0d7ec0..cb42508745 100644
+--- a/include/sysemu/os-win32.h
++++ b/include/sysemu/os-win32.h
+@@ -260,8 +260,9 @@ ssize_t qemu_recvfrom_wrap(int sockfd, void *buf, 
+size_t len, int flags,
+                             struct sockaddr *addr, socklen_t *addrlen);
 
-Inhibiting the stop reply packet can lead to gdb client hang. So permit
-a stop response when receiving a character from gdb that stops the vm.
-Additionally, add a warning if that was not a 0x03 character, because
-the gdb session is likely to end up getting confused if this happens.
+  EXCEPTION_DISPOSITION
+-win32_close_exception_handler(struct _EXCEPTION_RECORD*, void*,
+-                              struct _CONTEXT*, void*);
++win32_close_exception_handler(struct _EXCEPTION_RECORD *exception_record,
++                              void *registration, struct _CONTEXT *context,
++                              void *dispatcher);
 
-Cc: qemu-stable@nongnu.org
-Fixes: 758370052fb ("gdbstub: only send stop-reply packets when allowed to")
-Reported-by: Frederic Barrat <fbarrat@linux.ibm.com>
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-Tested-by: Joel Stanley <joel@jms.id.au>
-Message-id: 20230711085903.304496-1-npiggin@gmail.com
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+  void *qemu_win32_map_alloc(size_t size, HANDLE *h, Error **errp);
+  void qemu_win32_map_free(void *ptr, HANDLE h, Error **errp);
+diff --git a/util/oslib-win32.c b/util/oslib-win32.c
+index 429542face..19a0ea7fbe 100644
+--- a/util/oslib-win32.c
++++ b/util/oslib-win32.c
+@@ -480,8 +480,9 @@ int qemu_bind_wrap(int sockfd, const struct sockaddr 
+*addr,
+  }
+
+  EXCEPTION_DISPOSITION
+-win32_close_exception_handler(struct _EXCEPTION_RECORD*,
+-                              void*, struct _CONTEXT*, void*)
++win32_close_exception_handler(struct _EXCEPTION_RECORD *exception_record,
++                              void *registration, struct _CONTEXT *context,
++                              void *dispatcher)
+  {
+      return EXCEPTION_EXECUTE_HANDLER;
+  }
 ---
- gdbstub/gdbstub.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
-index 6911b73c079..ce8b42eb159 100644
---- a/gdbstub/gdbstub.c
-+++ b/gdbstub/gdbstub.c
-@@ -2051,8 +2051,17 @@ void gdb_read_byte(uint8_t ch)
-             return;
-     }
-     if (runstate_is_running()) {
--        /* when the CPU is running, we cannot do anything except stop
--           it when receiving a char */
-+        /*
-+         * When the CPU is running, we cannot do anything except stop
-+         * it when receiving a char. This is expected on a Ctrl-C in the
-+         * gdb client. Because we are in all-stop mode, gdb sends a
-+         * 0x03 byte which is not a usual packet, so we handle it specially
-+         * here, but it does expect a stop reply.
-+         */
-+        if (ch != 0x03) {
-+            warn_report("gdbstub: client sent packet while target running\n");
-+        }
-+        gdbserver_state.allow_stop_reply = true;
-         vm_stop(RUN_STATE_PAUSED);
-     } else
- #endif
--- 
-2.34.1
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
