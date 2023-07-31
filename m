@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28B8E769C92
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ADAA769C93
 	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 18:33:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQVox-0001hq-FK; Mon, 31 Jul 2023 12:32:35 -0400
+	id 1qQVp1-0001nG-7Q; Mon, 31 Jul 2023 12:32:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1qQVou-0001X4-0I
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 12:32:32 -0400
+ id 1qQVox-0001mE-Us
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 12:32:35 -0400
 Received: from [134.134.136.126] (helo=mgamail.intel.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1qQVos-00010F-5e
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 12:32:31 -0400
+ id 1qQVow-00010F-AB
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 12:32:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1690821150; x=1722357150;
+ t=1690821154; x=1722357154;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=dRjJnplBZqshOVUlL2HsM+HSmg8sekLwwBqcDcf81FM=;
- b=fOrEadhRE86wgCpGRZRyVUhFrje3JG/3VHuE2f4iRWB5TcfoIv4iLdhG
- ossGRNJg0d/OwDapI9b4piTXvqcZ/elf1BQKb0OBncWB74SXNnNIQIcEH
- jslVOGUE2vD/n97xb8uy4tSMoMN0XIcwN3lc42tXlOZyGIp8ALA64xEge
- vTnAEfzO6M1ecb3g1LEwQ63WOxKuzpsfmIhIEUHsvxYsz+oDRv+vB3r+Y
- EICjdOZOGWU93k7ZOMQHIFqAwWd292PCv8UyJqBcDYVaRgx7Tppjxpn9+
- eZ1er4dgPIowDo8U09YWC5b+/KA4J+cx0mBIEF00j+cLXu/QcZu4naPih w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10788"; a="353993396"
-X-IronPort-AV: E=Sophos;i="6.01,244,1684825200"; d="scan'208";a="353993396"
+ bh=aL1UPlr2chE5l10fcGzhJ5ApDBOAfrYAdLTB07kHh9c=;
+ b=bdXRp/IzbDMJ2qRGcA7gxB9FbfO6oh9Mh4zfLfXuUZMZaDELkv4HjSA2
+ IHN1AcLZu6d7wU70g5NxQzGt/tJ8dwL+4yNb6JxaqxaFY6wiM1T1VyGuO
+ CDFgAN1AsMRdnnoUwW4RNMCKi0BZH/B8dRg90w9M2zuNXMmI80UXHloPu
+ L3Wh2rW1ojkMg++oz8G+Brqe9ZDba94K41CoX5y31NU+7dQ8ysgUd9OiD
+ IypRLboS0tsFn2Wwiyoa+NROO5ieuKcHQ1pui5BA0ExjGvHBqYTrPRzkv
+ OPWo5sFrBvnLRwoN1y3zk7eUVTUk+mH6iAgsFsdH0WMCiUtAWe23hhR+L A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10788"; a="353993416"
+X-IronPort-AV: E=Sophos;i="6.01,244,1684825200"; d="scan'208";a="353993416"
 Received: from orsmga008.jf.intel.com ([10.7.209.65])
  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Jul 2023 09:25:05 -0700
+ 31 Jul 2023 09:25:10 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10788"; a="757984045"
-X-IronPort-AV: E=Sophos;i="6.01,244,1684825200"; d="scan'208";a="757984045"
+X-IronPort-AV: E=McAfee;i="6600,9927,10788"; a="757984060"
+X-IronPort-AV: E=Sophos;i="6.01,244,1684825200"; d="scan'208";a="757984060"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.46])
- by orsmga008.jf.intel.com with ESMTP; 31 Jul 2023 09:25:01 -0700
+ by orsmga008.jf.intel.com with ESMTP; 31 Jul 2023 09:25:05 -0700
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  Sean Christopherson <seanjc@google.com>,
@@ -54,9 +54,9 @@ Cc: Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>,
  Peter Xu <peterx@redhat.com>, Chao Peng <chao.p.peng@linux.intel.com>,
  Michael Roth <michael.roth@amd.com>, isaku.yamahata@gmail.com,
  xiaoyao.li@intel.com, qemu-devel@nongnu.org, kvm@vger.kernel.org
-Subject: [RFC PATCH 03/19] RAMBlock: Support KVM gmemory
-Date: Mon, 31 Jul 2023 12:21:45 -0400
-Message-Id: <20230731162201.271114-4-xiaoyao.li@intel.com>
+Subject: [RFC PATCH 04/19] memory: Introduce memory_region_can_be_private()
+Date: Mon, 31 Jul 2023 12:21:46 -0400
+Message-Id: <20230731162201.271114-5-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230731162201.271114-1-xiaoyao.li@intel.com>
 References: <20230731162201.271114-1-xiaoyao.li@intel.com>
@@ -88,93 +88,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Chao Peng <chao.p.peng@linux.intel.com>
-
-Add KVM gmem support to RAMBlock so we can have both normal
-hva based memory and gmem fd based memory in one RAMBlock.
-
-The gmem part is represented by the gmem_fd.
-
-Signed-off-by: Chao Peng <chao.p.peng@linux.intel.com>
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 ---
- include/exec/memory.h   | 8 ++++++++
- include/exec/ramblock.h | 1 +
- softmmu/memory.c        | 9 +++++++++
- softmmu/physmem.c       | 2 ++
- 4 files changed, 20 insertions(+)
+ include/exec/memory.h | 9 +++++++++
+ softmmu/memory.c      | 5 +++++
+ 2 files changed, 14 insertions(+)
 
 diff --git a/include/exec/memory.h b/include/exec/memory.h
-index 7f5c11a0cc9e..61e31c7b9874 100644
+index 61e31c7b9874..e119d3ce1a1d 100644
 --- a/include/exec/memory.h
 +++ b/include/exec/memory.h
-@@ -1376,6 +1376,14 @@ void memory_region_init_ram_from_fd(MemoryRegion *mr,
-                                     int fd,
-                                     ram_addr_t offset,
-                                     Error **errp);
-+/**
-+ * memory_region_set_gmem_fd:  Set RAM memory region with a restricted fd.
-+ *
-+ * @mr: the #MemoryRegion to be set.
-+ * @fd: the fd to provide restricted memory.
-+ */
-+void memory_region_set_gmem_fd(MemoryRegion *mr, int fd);
-+
- #endif
+@@ -1679,6 +1679,15 @@ static inline bool memory_region_is_romd(MemoryRegion *mr)
+  */
+ bool memory_region_is_protected(MemoryRegion *mr);
  
++/**
++ * memory_region_can_be_private: check whether a memory region can be private
++ *
++ * Returns %true if a memory region's ram_block has valid gmem fd assigned.
++ *
++ * @mr: the memory region being queried
++ */
++bool memory_region_can_be_private(MemoryRegion *mr);
++
  /**
-diff --git a/include/exec/ramblock.h b/include/exec/ramblock.h
-index 69c6a5390293..0d158b3909c9 100644
---- a/include/exec/ramblock.h
-+++ b/include/exec/ramblock.h
-@@ -41,6 +41,7 @@ struct RAMBlock {
-     QLIST_HEAD(, RAMBlockNotifier) ramblock_notifiers;
-     int fd;
-     uint64_t fd_offset;
-+    int gmem_fd;
-     size_t page_size;
-     /* dirty bitmap used during migration */
-     unsigned long *bmap;
+  * memory_region_get_iommu: check whether a memory region is an iommu
+  *
 diff --git a/softmmu/memory.c b/softmmu/memory.c
-index 7d9494ce7028..4f8f8c0a02e6 100644
+index 4f8f8c0a02e6..336c76ede660 100644
 --- a/softmmu/memory.c
 +++ b/softmmu/memory.c
-@@ -1661,6 +1661,15 @@ void memory_region_init_ram_from_fd(MemoryRegion *mr,
-         error_propagate(errp, err);
-     }
+@@ -1855,6 +1855,11 @@ bool memory_region_is_protected(MemoryRegion *mr)
+     return mr->ram && (mr->ram_block->flags & RAM_PROTECTED);
  }
-+
-+void memory_region_set_gmem_fd(MemoryRegion *mr, int fd)
+ 
++bool memory_region_can_be_private(MemoryRegion *mr)
 +{
-+    if (mr->ram_block) {
-+        assert(fd >= 0);
-+        mr->ram_block->gmem_fd = fd;
-+    }
++    return mr->ram_block && mr->ram_block->gmem_fd >= 0;
 +}
 +
- #endif
- 
- void memory_region_init_ram_ptr(MemoryRegion *mr,
-diff --git a/softmmu/physmem.c b/softmmu/physmem.c
-index 3df73542e1fe..8f64128de0b5 100644
---- a/softmmu/physmem.c
-+++ b/softmmu/physmem.c
-@@ -1920,6 +1920,7 @@ RAMBlock *qemu_ram_alloc_from_fd(ram_addr_t size, MemoryRegion *mr,
-     new_block->used_length = size;
-     new_block->max_length = size;
-     new_block->flags = ram_flags;
-+    new_block->gmem_fd = -1;
-     new_block->host = file_ram_alloc(new_block, size, fd, readonly,
-                                      !file_size, offset, errp);
-     if (!new_block->host) {
-@@ -1990,6 +1991,7 @@ RAMBlock *qemu_ram_alloc_internal(ram_addr_t size, ram_addr_t max_size,
-     new_block->max_length = max_size;
-     assert(max_size >= size);
-     new_block->fd = -1;
-+    new_block->gmem_fd = -1;
-     new_block->page_size = qemu_real_host_page_size();
-     new_block->host = host;
-     new_block->flags = ram_flags;
+ uint8_t memory_region_get_dirty_log_mask(MemoryRegion *mr)
+ {
+     uint8_t mask = mr->dirty_log_mask;
 -- 
 2.34.1
 
