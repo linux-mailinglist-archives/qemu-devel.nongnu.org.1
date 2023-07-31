@@ -2,67 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F0B97691ED
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 11:39:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CB027691EF
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 11:41:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQPMy-0004v7-UK; Mon, 31 Jul 2023 05:39:16 -0400
+	id 1qQPOS-0005qF-T9; Mon, 31 Jul 2023 05:40:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ardb@kernel.org>) id 1qQPMv-0004uO-Dk
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 05:39:13 -0400
-Received: from dfw.source.kernel.org ([139.178.84.217])
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1qQPOR-0005pk-1a
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 05:40:47 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ardb@kernel.org>) id 1qQPMt-00077p-Ct
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 05:39:13 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id B66FA60FD0;
- Mon, 31 Jul 2023 09:39:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21129C433C8;
- Mon, 31 Jul 2023 09:39:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1690796349;
- bh=e5b+jaLb9qzOD64Op6iaJSDogIEYmK5afQapkfb1vj8=;
- h=From:To:Cc:Subject:Date:From;
- b=Ve0AGchtr4uvvrBK6fkwhrTC54RVtehU6xfhhANwK6Mv6NvVvDHk1lzNO7fSmpK2V
- t+7Pm1NB+Vz+Qic6Ei0dZqtEStSF8YY6+pb1xVTQNOzdnv1w1cafbJK2lusIfCJ0+d
- w75peVPmi6HheUUCLzhkltDwp/3/A2gWoMb8tdprNhYhQ61WHzrBkq52ztBxYv5PlD
- KXumx6RhKXNSh9OFYWJBIHEsoJ/oZC8r6abPQXZ5YXtVuL1N94T97lxzrLO05WblFh
- 50r07/bpNAK/pxdvvXxWFfywFQIfGZ7rwGJhlQFBzfa1suIO4zB5QgLFABJa7MCz00
- IOEeFaUP/eqrA==
-From: Ard Biesheuvel <ardb@kernel.org>
-To: qemu-devel@nongnu.org
-Cc: Ard Biesheuvel <ardb@kernel.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH] target/riscv: Use accelerated helper for AES64KS1I
-Date: Mon, 31 Jul 2023 11:39:02 +0200
-Message-Id: <20230731093902.1796249-1-ardb@kernel.org>
-X-Mailer: git-send-email 2.39.2
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1qQPOP-0007XK-7C
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 05:40:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1690796444;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=CUIRN3OAGHS6tbFDh2SjsE3p+YOa4AKChdNqGW9eHmo=;
+ b=X6OJrPa4Du0Ozzp3o9OBjAe4dejtBnhJKfRf3ABrN1aUw4aPsAH3tRa+4R+udBvXeVO5iV
+ 0J6uVaq1j8B1I+aerHnYwHvh+Vj4CE6V1muoV/rrxbvLx2P/qKjMBD1VD05dmvKComs7ba
+ N9xuh12b16pkbLx4tSL6yn3ImBanOWk=
+Received: from mail-yb1-f198.google.com (mail-yb1-f198.google.com
+ [209.85.219.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-518-z0sLaftEO6aRksnbTtLYWw-1; Mon, 31 Jul 2023 05:40:43 -0400
+X-MC-Unique: z0sLaftEO6aRksnbTtLYWw-1
+Received: by mail-yb1-f198.google.com with SMTP id
+ 3f1490d57ef6-d2a7ec86216so2520149276.0
+ for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 02:40:43 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1690796442; x=1691401242;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=CUIRN3OAGHS6tbFDh2SjsE3p+YOa4AKChdNqGW9eHmo=;
+ b=jGGOa0pUk3XWgwNUwJ/EKvDEkvkGb2VLCh6EJYgyFlHypKkLuB2r5uM72ppqLfkGO7
+ npi7Jx8Ux7hWmREFasvMbKJMKx8PgSNDPcnYvqu/aHk3V9s6cbaR+OsmswsWkG5ZoiEj
+ /enWDqU7h3H2y1soyjV9/sPTeQbhKIxaenS89O5q3Z33TaPX4j7kANORoDuWCpb6B1Ip
+ 1rKGjxL6csCqFgvhmAgns5ycfGHZ8d9g7020RG9nWbMW+xjyx4S4rc2/Laac1YOXoGjj
+ 7L6TWMR0DNZ15+KuqMW1gZbMwHLYJiXUsZsWazgxqo0EJgBuPeSPz5fuoiXBTfHAOtks
+ 9STQ==
+X-Gm-Message-State: ABy/qLbWz1bHYKY4mC2lAo0yOYqYM3YR2EaA/Etk9M6DNofw06Lk2COF
+ rft33TMYpEYk0Ld5j23fvSqxBxQonoRgpdST6fw3JNdn2oWc2DbB/PAjs9xQL5msXoRkpUMKEoh
+ OasNxCRp4o39aifpsM26gL7dMnGxeA5Q=
+X-Received: by 2002:a25:3d6:0:b0:ba8:2e05:3e9c with SMTP id
+ 205-20020a2503d6000000b00ba82e053e9cmr9030038ybd.24.1690796442107; 
+ Mon, 31 Jul 2023 02:40:42 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlHgaYEBh5V3JACItBQIsnnOoGjsPT7am3Bp7BRmF0cAicGYvdNconaCaHmoKFzGdKps7map5S0EYhurSBCW5as=
+X-Received: by 2002:a25:3d6:0:b0:ba8:2e05:3e9c with SMTP id
+ 205-20020a2503d6000000b00ba82e053e9cmr9030032ybd.24.1690796441835; Mon, 31
+ Jul 2023 02:40:41 -0700 (PDT)
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1698; i=ardb@kernel.org;
- h=from:subject; bh=e5b+jaLb9qzOD64Op6iaJSDogIEYmK5afQapkfb1vj8=;
- b=owGbwMvMwCFmkMcZplerG8N4Wi2JIeV4o4lRgvDD1T5+Ksszbd4oHntcOlNvxrOjwY+Up2p/y
- rl5buGujlIWBjEOBlkxRRaB2X/f7Tw9UarWeZYszBxWJpAhDFycAjCR1/8Z/ntn/9c+IDLzQPup
- La/v+Oqc7/+6t36ixe3vjIbX5vUsWi7P8Id/harO5/K/57xrl/NN3jt1xRv1PbMeVzffF7H3c3G
- IrGECAA==
-X-Developer-Key: i=ardb@kernel.org; a=openpgp;
- fpr=F43D03328115A198C90016883D200E9CA6329909
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=139.178.84.217; envelope-from=ardb@kernel.org;
- helo=dfw.source.kernel.org
-X-Spam_score_int: -70
-X-Spam_score: -7.1
-X-Spam_bar: -------
-X-Spam_report: (-7.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+References: <20230725182143.1523091-1-eperezma@redhat.com>
+ <CACGkMEsqbZNGKdK1kM-qQeZShNeonQKK4_65vtCueQxUsRFTsQ@mail.gmail.com>
+ <CAJaqyWeCNdmZX_iNywHxiD3fG39k5bRPOD2U13cmevbcUct+hA@mail.gmail.com>
+ <CACGkMEv4HNw-Fqsdn+BmzjrWsbxG4rR=kqYPS5kX41D-r=sUow@mail.gmail.com>
+ <CAJaqyWeLm6o7ikrgCa5kmEHXqXniFvvsDGd8uQwOVHL9qiqwWQ@mail.gmail.com>
+ <CACGkMEswqFZzgv2TH8ggx2upB5-xewSPMt_wk4Kpr+YLffnJwg@mail.gmail.com>
+In-Reply-To: <CACGkMEswqFZzgv2TH8ggx2upB5-xewSPMt_wk4Kpr+YLffnJwg@mail.gmail.com>
+From: Eugenio Perez Martin <eperezma@redhat.com>
+Date: Mon, 31 Jul 2023 11:40:05 +0200
+Message-ID: <CAJaqyWcKUNhjLS6oz-Lfsa8j0prBhmOOsHz9wpfp90YPTeQBNw@mail.gmail.com>
+Subject: Re: [PATCH] vdpa: set old virtio status at cvq isolation probing end
+To: Jason Wang <jasowang@redhat.com>
+Cc: qemu-devel@nongnu.org, si-wei.liu@oracle.com, qemu-stable@nongnu.org, 
+ Hawkins Jiawei <yin31149@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,53 +100,147 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use the accelerated SubBytes/ShiftRows/AddRoundKey AES helper to
-implement the first half of the key schedule derivation. This does not
-actually involve shifting rows, so clone the same uint32_t 4 times into
-the AES vector to counter that.
+On Mon, Jul 31, 2023 at 10:42=E2=80=AFAM Jason Wang <jasowang@redhat.com> w=
+rote:
+>
+> On Mon, Jul 31, 2023 at 4:05=E2=80=AFPM Eugenio Perez Martin
+> <eperezma@redhat.com> wrote:
+> >
+> > On Mon, Jul 31, 2023 at 8:36=E2=80=AFAM Jason Wang <jasowang@redhat.com=
+> wrote:
+> > >
+> > > On Wed, Jul 26, 2023 at 2:27=E2=80=AFPM Eugenio Perez Martin
+> > > <eperezma@redhat.com> wrote:
+> > > >
+> > > > On Wed, Jul 26, 2023 at 4:07=E2=80=AFAM Jason Wang <jasowang@redhat=
+.com> wrote:
+> > > > >
+> > > > > On Wed, Jul 26, 2023 at 2:21=E2=80=AFAM Eugenio P=C3=A9rez <epere=
+zma@redhat.com> wrote:
+> > > > > >
+> > > > > > The device already has a virtio status set by vhost_vdpa_init b=
+y the
+> > > > > > time vhost_vdpa_probe_cvq_isolation is called. vhost_vdpa_init =
+set
+> > > > > > S_ACKNOWLEDGE and S_DRIVER, so it is invalid to just reset it.
+> > > > > >
+> > > > > > It is invalid to start the device after it, but all devices see=
+ms to be
+> > > > > > fine with it.  Fixing qemu so it follows virtio start procedure=
+.
+> > > > > >
+> > > > > > Fixes: 152128d64697 ("vdpa: move CVQ isolation check to net_ini=
+t_vhost_vdpa")
+> > > > > > Reported-by: Dragos Tatulea <dtatulea@nvidia.com>
+> > > > > > Signed-off-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
+> > > > > > ---
+> > > > > >  net/vhost-vdpa.c | 2 ++
+> > > > > >  1 file changed, 2 insertions(+)
+> > > > > >
+> > > > > > diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+> > > > > > index 9795306742..d7e2b714b4 100644
+> > > > > > --- a/net/vhost-vdpa.c
+> > > > > > +++ b/net/vhost-vdpa.c
+> > > > > > @@ -1333,6 +1333,8 @@ static int vhost_vdpa_probe_cvq_isolation=
+(int device_fd, uint64_t features,
+> > > > > >  out:
+> > > > > >      status =3D 0;
+> > > > > >      ioctl(device_fd, VHOST_VDPA_SET_STATUS, &status);
+> > > > > > +    status =3D VIRTIO_CONFIG_S_ACKNOWLEDGE | VIRTIO_CONFIG_S_D=
+RIVER;
+> > > > > > +    ioctl(device_fd, VHOST_VDPA_SET_STATUS, &status);
+> > > > >
+> > > > > So if we fail after FEATURES_OK, this basically clears that bit. =
+Spec
+> > > > > doesn't say it can or not, I wonder if a reset is better?
+> > > > >
+> > > >
+> > > > I don't follow this, the reset is just above the added code, isn't =
+it?
+> > >
+> > > I meant for error path:
+> > >
+> > > E.g:
+> > >     uint8_t status =3D VIRTIO_CONFIG_S_ACKNOWLEDGE |
+> > >                      VIRTIO_CONFIG_S_DRIVER |
+> > >                      VIRTIO_CONFIG_S_FEATURES_OK;
+> > > ...
+> > >     r =3D ioctl(device_fd, VHOST_VDPA_SET_STATUS, &status);
+> > > ....
+> > >         if (cvq_group !=3D -ENOTSUP) {
+> > >             r =3D cvq_group;
+> > >             goto out;
+> > >         }
+> > >
+> > > out:
+> > >     status =3D VIRTIO_CONFIG_S_ACKNOWLEDGE | VIRTIO_CONFIG_S_DRIVER;
+> > >     ioctl(device_fd, VHOST_VDPA_SET_STATUS, &status);
+> > >
+> > > We're basically clearing FEATURES_OK?
+> > >
+> >
+> > Yes, it is the state that previous functions (vhost_vdpa_init) set. We
+> > need to leave it that way, either if the backend supports cvq
+> > isolation or not, or in the case of an error. Not doing that way makes
+> > vhost_dev_start (and vhost_vdpa_set_features) set the features before
+> > setting VIRTIO_CONFIG_S_ACKNOWLEDGE | VIRTIO_CONFIG_S_DRIVER.
+> > Otherwise, the guest can (and do) access to config space before
+> > _S_ACKNOWLEDGE | _S_DRIVER.
+>
+> I'm not sure if it is supported by the spec or not (I meant clearing
+> the FEATURES_OK). Or maybe we need a reset here?
+>
 
-Cc: Richard Henderson <richard.henderson@linaro.org>
-Cc: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- target/riscv/crypto_helper.c | 17 +++++------------
- 1 file changed, 5 insertions(+), 12 deletions(-)
+Sorry, I'm still missing it :). The reset just above in all fail
+paths. They go to "out" label, and the first ioctl reset the device,
+the second set the VIRTIO_CONFIG_S_ACKNOWLEDGE |
+VIRTIO_CONFIG_S_DRIVER.
 
-diff --git a/target/riscv/crypto_helper.c b/target/riscv/crypto_helper.c
-index 4d65945429c6dcc4..257c5c4863fb160f 100644
---- a/target/riscv/crypto_helper.c
-+++ b/target/riscv/crypto_helper.c
-@@ -148,24 +148,17 @@ target_ulong HELPER(aes64ks1i)(target_ulong rs1, target_ulong rnum)
- 
-     uint8_t enc_rnum = rnum;
-     uint32_t temp = (RS1 >> 32) & 0xFFFFFFFF;
--    uint8_t rcon_ = 0;
--    target_ulong result;
-+    AESState t, rc = {};
- 
-     if (enc_rnum != 0xA) {
-         temp = ror32(temp, 8); /* Rotate right by 8 */
--        rcon_ = round_consts[enc_rnum];
-+        rc.w[0] = rc.w[1] = rc.w[2] = rc.w[3] = round_consts[enc_rnum];
-     }
- 
--    temp = ((uint32_t)AES_sbox[(temp >> 24) & 0xFF] << 24) |
--           ((uint32_t)AES_sbox[(temp >> 16) & 0xFF] << 16) |
--           ((uint32_t)AES_sbox[(temp >> 8) & 0xFF] << 8) |
--           ((uint32_t)AES_sbox[(temp >> 0) & 0xFF] << 0);
-+    t.w[0] = t.w[1] = t.w[2] = t.w[3] = temp;
-+    aesenc_SB_SR_AK(&t, &t, &rc, false);
- 
--    temp ^= rcon_;
--
--    result = ((uint64_t)temp << 32) | temp;
--
--    return result;
-+    return t.d[0];
- }
- 
- target_ulong HELPER(aes64im)(target_ulong rs1)
--- 
-2.39.2
+> Thanks
+>
+> >
+> >
+> > > >
+> > > > > Btw, spec requires a read of status after setting FEATURES_OK, th=
+is
+> > > > > seems to be missed in the current code.
+> > > > >
+> > > >
+> > > > I'm ok with that, but this patch does not touch that part.
+> > > >
+> > > > To fix this properly we should:
+> > > > - Expose vhost_vdpa_set_dev_features_fd as we did in previous versi=
+ons
+> > > > of the series that added vhost_vdpa_probe_cvq_isolation [1].
+> > > > - Get status after vhost_vdpa_add_status, so both vhost start code =
+and
+> > > > this follows the standard properly.
+> > > >
+> > > > Is it ok to do these on top of this patch?
+> > >
+> > > Fine.
+> > >
+> > > Thanks
+> > >
+> > > >
+> > > > Thanks!
+> > > >
+> > > > [1] https://lore.kernel.org/qemu-devel/20230509154435.1410162-4-epe=
+rezma@redhat.com/
+> > > >
+> > > >
+> > > > > Thanks
+> > > > >
+> > > > > >      return r;
+> > > > > >  }
+> > > > > >
+> > > > > > --
+> > > > > > 2.39.3
+> > > > > >
+> > > > >
+> > > >
+> > >
+> >
+>
 
 
