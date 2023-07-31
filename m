@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0AC6769C7E
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 18:29:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 050D0769C7F
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 18:29:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQVkd-0003bd-A2; Mon, 31 Jul 2023 12:28:07 -0400
+	id 1qQVkx-0003fu-0w; Mon, 31 Jul 2023 12:28:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1qQVka-0003ay-I5
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 12:28:04 -0400
+ id 1qQVki-0003e6-N9
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 12:28:12 -0400
 Received: from mgamail.intel.com ([134.134.136.126])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1qQVkX-0008I7-Jo
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 12:28:04 -0400
+ id 1qQVkg-0008I7-KS
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 12:28:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1690820881; x=1722356881;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=xEZHx0KbCw3rxQuoCBZM6LeOuuc/cDcIdUS8q7SYhFA=;
- b=LRjXJny1vjX68Tc79AVBcPHdF70xNiPr5W7X/mMvt0jhuETY8rzhyYoT
- mJtN/quqm1n1z0GI5mMDfPCht7gbLMHDcznnELdKTUJ/V6nhTmc/idjjT
- V0Z6Ing8Zok+kToGDW3iO+DSgDDYv9BxgtTxb0D7UUaYgYTOToSdhrkCZ
- SgD279mpHE7SQKhFurO3v+5jKOh488gfKMTdS0ucst+0SPs9cSX/WArly
- zrsdGnN5gWXT5TsFV1Do25842FrrCfhhZ7g9RuJVOfjQh+piLt5S5R23c
- +xN1J2XJgTmltTlJMMm1KMJGMRN6LysKDoSJ1MipZudHAkXzT8PiCzsMB A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10788"; a="353993275"
-X-IronPort-AV: E=Sophos;i="6.01,244,1684825200"; d="scan'208";a="353993275"
+ t=1690820890; x=1722356890;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=rGg2cVGBDP7vKJG5NcZCnC1i778S3kaV/6nLpZcWGp8=;
+ b=G0Ffnae72CgAe2ttXiQCebE5pWKYpNb9c8ilgj6gsH0aPisZ47ItKOvU
+ i6MPGShOfV5EzYuNkWkQh7BhIPDlpp+j/Cu+5+XdO3srNWnaLhyQLFOCB
+ jIpw9P3u5vFxw8MMJ5cjX6sRoXgh+sSuFMF6ilij5ZsfL0oRku4T19dYE
+ lI67IA7eKJbZUwozHUuXIR3LrJfJkXeveEWmsH+MNfDnmVQm3vEaz16gp
+ TZXABfxsr9BWR+ZTr7Vtf0mPHw9BpkqRJSoad8oHuID45GX5EYx7vgt6c
+ whTUS3A4gwNjANOYDONmC5LhH9MKw9x8r0WvzSxu5wHQfHb+r/zMSxmnk w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10788"; a="353993307"
+X-IronPort-AV: E=Sophos;i="6.01,244,1684825200"; d="scan'208";a="353993307"
 Received: from orsmga008.jf.intel.com ([10.7.209.65])
  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Jul 2023 09:24:51 -0700
+ 31 Jul 2023 09:24:56 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10788"; a="757983862"
-X-IronPort-AV: E=Sophos;i="6.01,244,1684825200"; d="scan'208";a="757983862"
+X-IronPort-AV: E=McAfee;i="6600,9927,10788"; a="757983895"
+X-IronPort-AV: E=Sophos;i="6.01,244,1684825200"; d="scan'208";a="757983895"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.46])
- by orsmga008.jf.intel.com with ESMTP; 31 Jul 2023 09:24:47 -0700
+ by orsmga008.jf.intel.com with ESMTP; 31 Jul 2023 09:24:51 -0700
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  Sean Christopherson <seanjc@google.com>,
@@ -54,10 +54,13 @@ Cc: Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>,
  Peter Xu <peterx@redhat.com>, Chao Peng <chao.p.peng@linux.intel.com>,
  Michael Roth <michael.roth@amd.com>, isaku.yamahata@gmail.com,
  xiaoyao.li@intel.com, qemu-devel@nongnu.org, kvm@vger.kernel.org
-Subject: [RFC PATCH 00/19] QEMU gmem implemention
-Date: Mon, 31 Jul 2023 12:21:42 -0400
-Message-Id: <20230731162201.271114-1-xiaoyao.li@intel.com>
+Subject: [RFC PATCH 01/19] trace/kvm: Split address space and slot id in
+ trace_kvm_set_user_memory()
+Date: Mon, 31 Jul 2023 12:21:43 -0400
+Message-Id: <20230731162201.271114-2-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230731162201.271114-1-xiaoyao.li@intel.com>
+References: <20230731162201.271114-1-xiaoyao.li@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=134.134.136.126;
@@ -84,104 +87,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is the first RFC version of enabling KVM gmem[1] as the backend for
-private memory of KVM_X86_PROTECTED_VM.
+The upper 16 bits of kvm_userspace_memory_region::slot are
+address space id. Parse it separately in trace_kvm_set_user_memory().
 
-It adds the support to create a specific KVM_X86_PROTECTED_VM type VM,
-and introduces 'private' property for memory backend. When the vm type
-is KVM_X86_PROTECTED_VM and memory backend has private enabled as below,
-it will call KVM gmem ioctl to allocate private memory for the backend.
+Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+---
+ accel/kvm/kvm-all.c    | 5 +++--
+ accel/kvm/trace-events | 2 +-
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-    $qemu -object memory-backend-ram,id=mem0,size=1G,private=on \
-          -machine q35,kvm-type=sw-protected-vm,memory-backend=mem0 \
-	  ...
-
-Unfortunately this patch series fails the boot of OVMF at very early
-stage due to triple fault because KVM doesn't support emulate string IO
-to private memory. We leave it as an open to be discussed.
-
-There are following design opens that need to be discussed:
-
-1. how to determine the vm type?
-
-   a. like this series, specify the vm type via machine property
-      'kvm-type'
-   b. check the memory backend, if any backend has 'private' property
-      set, the vm-type is set to KVM_X86_PROTECTED_VM.
-
-2. whether 'private' property is needed if we choose 1.b as design 
-
-   with 1.b, QEMU can decide whether the memory region needs to be
-   private (allocates gmem fd for it) or not, on its own.
-
-3. What is KVM_X86_SW_PROTECTED_VM going to look like? What's the
-   purose of it and what's the requirement on it. I think it's the
-   questions for KVM folks than QEMU folks.
-
-Any other idea/open/question is welcomed.
-
-
-Beside, TDX QEMU implemetation is based on this series to provide
-private gmem for TD private memory, which can be found at [2].
-And it can work corresponding KVM [3] to boot TDX guest. 
-
-[1] https://lore.kernel.org/all/20230718234512.1690985-1-seanjc@google.com/
-[2] https://github.com/intel/qemu-tdx/tree/tdx-upstream-wip
-[3] https://github.com/intel/tdx/tree/kvm-upstream-2023.07.27-v6.5-rc2-workaround
-
-Chao Peng (4):
-  RAMBlock: Support KVM gmemory
-  kvm: Enable KVM_SET_USER_MEMORY_REGION2 for memslot
-  physmem: Add ram_block_convert_range
-  kvm: handle KVM_EXIT_MEMORY_FAULT
-
-Isaku Yamahata (4):
-  HostMem: Add private property to indicate to use kvm gmem
-  trace/kvm: Add trace for page convertion between shared and private
-  pci-host/q35: Move PAM initialization above SMRAM initialization
-  q35: Introduce smm_ranges property for q35-pci-host
-
-Xiaoyao Li (11):
-  trace/kvm: Split address space and slot id in
-    trace_kvm_set_user_memory()
-  *** HACK *** linux-headers: Update headers to pull in gmem APIs
-  memory: Introduce memory_region_can_be_private()
-  i386/pc: Drop pc_machine_kvm_type()
-  target/i386: Implement mc->kvm_type() to get VM type
-  i386/kvm: Create gmem fd for KVM_X86_SW_PROTECTED_VM
-  kvm: Introduce support for memory_attributes
-  kvm/memory: Introduce the infrastructure to set the default
-    shared/private value
-  i386/kvm: Set memory to default private for KVM_X86_SW_PROTECTED_VM
-  physmem: replace function name with __func__ in
-    ram_block_discard_range()
-  i386: Disable SMM mode for X86_SW_PROTECTED_VM
-
- accel/kvm/kvm-all.c         | 166 +++++++++++++++++++++++++++++++++---
- accel/kvm/trace-events      |   4 +-
- backends/hostmem.c          |  18 ++++
- hw/i386/pc.c                |   5 --
- hw/i386/pc_q35.c            |   3 +-
- hw/i386/x86.c               |  27 ++++++
- hw/pci-host/q35.c           |  61 ++++++++-----
- include/exec/cpu-common.h   |   2 +
- include/exec/memory.h       |  24 ++++++
- include/exec/ramblock.h     |   1 +
- include/hw/i386/pc.h        |   4 +-
- include/hw/i386/x86.h       |   4 +
- include/hw/pci-host/q35.h   |   1 +
- include/sysemu/hostmem.h    |   2 +-
- include/sysemu/kvm.h        |   3 +
- include/sysemu/kvm_int.h    |   2 +
- linux-headers/asm-x86/kvm.h |   3 +
- linux-headers/linux/kvm.h   |  50 +++++++++++
- qapi/qom.json               |   4 +
- softmmu/memory.c            |  27 ++++++
- softmmu/physmem.c           |  97 ++++++++++++++-------
- target/i386/kvm/kvm.c       |  84 ++++++++++++++++++
- target/i386/kvm/kvm_i386.h  |   1 +
- 23 files changed, 517 insertions(+), 76 deletions(-)
-
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index 373d876c0580..d8eee405de24 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -309,8 +309,9 @@ static int kvm_set_user_memory_region(KVMMemoryListener *kml, KVMSlot *slot, boo
+     ret = kvm_vm_ioctl(s, KVM_SET_USER_MEMORY_REGION, &mem);
+     slot->old_flags = mem.flags;
+ err:
+-    trace_kvm_set_user_memory(mem.slot, mem.flags, mem.guest_phys_addr,
+-                              mem.memory_size, mem.userspace_addr, ret);
++    trace_kvm_set_user_memory(mem.slot >> 16, (uint16_t)mem.slot, mem.flags,
++                              mem.guest_phys_addr, mem.memory_size,
++                              mem.userspace_addr, ret);
+     if (ret < 0) {
+         error_report("%s: KVM_SET_USER_MEMORY_REGION failed, slot=%d,"
+                      " start=0x%" PRIx64 ", size=0x%" PRIx64 ": %s",
+diff --git a/accel/kvm/trace-events b/accel/kvm/trace-events
+index 399aaeb0ec75..14ebfa1b991c 100644
+--- a/accel/kvm/trace-events
++++ b/accel/kvm/trace-events
+@@ -15,7 +15,7 @@ kvm_irqchip_update_msi_route(int virq) "Updating MSI route virq=%d"
+ kvm_irqchip_release_virq(int virq) "virq %d"
+ kvm_set_ioeventfd_mmio(int fd, uint64_t addr, uint32_t val, bool assign, uint32_t size, bool datamatch) "fd: %d @0x%" PRIx64 " val=0x%x assign: %d size: %d match: %d"
+ kvm_set_ioeventfd_pio(int fd, uint16_t addr, uint32_t val, bool assign, uint32_t size, bool datamatch) "fd: %d @0x%x val=0x%x assign: %d size: %d match: %d"
+-kvm_set_user_memory(uint32_t slot, uint32_t flags, uint64_t guest_phys_addr, uint64_t memory_size, uint64_t userspace_addr, int ret) "Slot#%d flags=0x%x gpa=0x%"PRIx64 " size=0x%"PRIx64 " ua=0x%"PRIx64 " ret=%d"
++kvm_set_user_memory(uint16_t as, uint16_t slot, uint32_t flags, uint64_t guest_phys_addr, uint64_t memory_size, uint64_t userspace_addr, int ret) "AddrSpace#%d Slot#%d flags=0x%x gpa=0x%"PRIx64 " size=0x%"PRIx64 " ua=0x%"PRIx64 " ret=%d"
+ kvm_clear_dirty_log(uint32_t slot, uint64_t start, uint32_t size) "slot#%"PRId32" start 0x%"PRIx64" size 0x%"PRIx32
+ kvm_resample_fd_notify(int gsi) "gsi %d"
+ kvm_dirty_ring_full(int id) "vcpu %d"
 -- 
 2.34.1
 
