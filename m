@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ACA576A4E7
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 01:35:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1101776A4E9
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 01:36:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQcPJ-0007xM-8h; Mon, 31 Jul 2023 19:34:33 -0400
+	id 1qQcQ2-00004y-Rw; Mon, 31 Jul 2023 19:35:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <raphael.norwitz@nutanix.com>)
- id 1qQcPG-0007wO-Kv; Mon, 31 Jul 2023 19:34:30 -0400
-Received: from mx0b-002c1b01.pphosted.com ([148.163.155.12])
+ id 1qQcQ0-0008WA-IK; Mon, 31 Jul 2023 19:35:16 -0400
+Received: from mx0a-002c1b01.pphosted.com ([148.163.151.68])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <raphael.norwitz@nutanix.com>)
- id 1qQcPE-000734-1t; Mon, 31 Jul 2023 19:34:30 -0400
-Received: from pps.filterd (m0127841.ppops.net [127.0.0.1])
- by mx0b-002c1b01.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id
- 36VKjmLP019320; Mon, 31 Jul 2023 16:34:18 -0700
+ id 1qQcPy-0008Dz-3r; Mon, 31 Jul 2023 19:35:16 -0400
+Received: from pps.filterd (m0127840.ppops.net [127.0.0.1])
+ by mx0a-002c1b01.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id
+ 36VKj1qQ000575; Mon, 31 Jul 2023 16:35:06 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
  from:to:cc:subject:date:message-id:references:in-reply-to
  :content-type:content-id:content-transfer-encoding:mime-version;
- s=proofpoint20171006; bh=Mer+/dF1VcmJK0g4AByk1ttcrPhzEtT36jimEq
- cm5iI=; b=YA03w0Ctoq/CkqOY0lkYcOf718EJF8WXklhIgc3+sTBgHQ1WhMP+U3
- 4n1vmqKaul5h2vIkroe91iQqDgermG2KLrW7526t6ytXf8Y6u8Cc/nLI2DsdjUAD
- ZYt6dqbbIqrr6K3DH37SspVbEXoG5tPfG3OUNI6cVbDsYMk8VNu95m1Kc4UvrBll
- 7GxSrhiuplFdEAFxMQvJkZ5Y3yg5XivZABnvCUybzDP6aw6NBsBWPEIqqEvunwlI
- tQMQnSL2q70Zret8FNkvKixGISbY8C04woo1cBV+EZS0TmqDzvpTuUiOoW4CPF7Z
- ZzrdzBcokrGWkDpEuRBQ1AajH0VYKnuA==
-Received: from nam10-bn7-obe.outbound.protection.outlook.com
- (mail-bn7nam10lp2105.outbound.protection.outlook.com [104.47.70.105])
- by mx0b-002c1b01.pphosted.com (PPS) with ESMTPS id 3s50a642hu-1
+ s=proofpoint20171006; bh=DQZl4wXBhHhW9JlHOi47OdeLZxENHw/LJljrkr
+ cuCQk=; b=2IllN7FN+RfH+SptNhmdNwBIyKhLFoKaN2sR8cqzIrL8YlNJB8SaN1
+ mCCdptJlTr2Cle6C9eCkcYieHJicp51V9+sIMs6VBaSYbP8yHZIPwMz5E4x+1oYv
+ n1lKvelBuU44aByuRbQ7Qkl3fwCGmUVb5dYc6igvTgj1WBoY+L+DlBPWHj8FXkWL
+ 8ykLhjld3NW52XmmzNWqHoRsLF+amSkCYcv8D6duv3zdNrpl2oiNuzmtKFcu4M2W
+ PI+8/NemXmHwiskTDzZGaG/aoHIdibadRHWUsg1cM088bRjdXkpsHIC6lAJzhqpA
+ 7M9hUpErW1qCywAkny4KN/1tFfgP0Cjw==
+Received: from nam11-bn8-obe.outbound.protection.outlook.com
+ (mail-bn8nam11lp2168.outbound.protection.outlook.com [104.47.58.168])
+ by mx0a-002c1b01.pphosted.com (PPS) with ESMTPS id 3s4y3rch1j-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 31 Jul 2023 16:34:18 -0700 (PDT)
+ Mon, 31 Jul 2023 16:35:05 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=TfDQqVXjr3+PNOQc4cSDyHMbmOYZG24pvoWAqPOts2hks3kLWuu9/EMNutcpRaqw0Z+uU/FovnlrYudCFJNof1BK6drUbQ/HvOa+V1uriOp3WnonDp1dWAel6dGnY3rnZlVPmBt2HHVDgLyCEmEN+GDo2g6djVHu9/DckZFvWdxKHMtftaK7RAaFOLW2N9JREG/UpXyDrcb44fMMdtFr/Hnx/gzJuSCF9ZTLRFwSMKA6RRgqlNbSoHJ4d9ZwYF2uawHUZykRAANJLiWyRyQOseAM6xQxrX/Kc9Zfb55xaR5P/4d9r9tOSO4vX286HwQabaxbl8jwtoYXvYheT48VVw==
+ b=kRin7FrJOAwkXV8mutRACxn2NzL4RG7FadMCwlJQ6O9K6OIMGP5riW+Y0SC4jpFAPAExlRuAjrxmKuXHu7mT09+pEgOieEWzVWhED+6c9E6Xn+eiMBMsUZHUVULZs0epn1MyXnItYs9iX+PZlyu+bQdvpvt358yTCBL0GiwC0jp1u9nO2pZQNSqUjgCPAGHF3TU41ArmkVOwq8zndy8OesyVJCHoeEbeDoFkq2Ic/EahGj9bocZPuhUY722vmXeul801JI9xlMdo7yfnIIAHhWCJDcxeggviUQ35g9OBv+B5MGkfLeM3vwi5aiM80X+hsNchKerDKiD1YAU+8EDGEQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Mer+/dF1VcmJK0g4AByk1ttcrPhzEtT36jimEqcm5iI=;
- b=iQ0B7nqxI++yn2d9LE6c4WydSJbNdb0igrukY8/Kt4MxPDIIZ4U2oxCCj8Z8nUVz9SEJQSsCN/vUhF0AwlOVVF4/4E4qznfCqDBYiCxfmHlc3+c5X6uS+A/ABTQoWARr53WIgp5R4JivNuhlPZL1dSa7bzi31NI1tkBd0GLnA7Fw7dA+7pSI0qWth9ikkXg6TM5mIZTZ96donpjacOBpkN8NRqWxHIR4eqT9YR3j2IE8Ge/BTrsgWOfND9tLZ0lqupSPUwhJkUiOG5qBEuGuRmI6QOX8aREmBEClSk8ku3CbqsEgBJR8WKtKTdQN4D4GS6tZl38ndPZI6pl71RFdVQ==
+ bh=DQZl4wXBhHhW9JlHOi47OdeLZxENHw/LJljrkrcuCQk=;
+ b=lPcIDBCwF9EMQexvivwvT64v/VtqnF7i5FfnOVe5/SU+/ktqvMiIZ6w0io842li+aKOaGOxwx3Xun+Fl5RdleHQR3yKoT6crxwI9DJY0bY4tWxno6/kV8+gyodU1/wvjARXe7RxsH3s7bmwOOymQsWTAdMjYoCNZZf5hH2UJDBjVsVx4MqhBFQRK6Xbxpv4SzmoHTjfv8TdRG3NQJvGkb07MbX4ZTBdYNka+sWPBOOiJe09TacwrRLzVOMQ0e9vDdTAsIG2q5LZK+aumxDCOk7SRzTxRsnOTKZlufYnSIKLTEpFL8JKN0O4JsfGkic6KVXgDOyA4x9tPMZdpyeQu2g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
  dkim=pass header.d=nutanix.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Mer+/dF1VcmJK0g4AByk1ttcrPhzEtT36jimEqcm5iI=;
- b=taBbhQ32py6P1lse3IEFsC72kRU2jsZFzEosikKxCAWB1NfG6jbX6UEs8qi/xdZiv5tV3qliVA5nlRZnfHoZEXrJ+j7OcBSVGa6gObG0R9HUE7zZ6evSTsjB996OL0Y/8a/XxLLy5UeVlXJr/6RONOIeBTYdnhQzOHl3NaN6Jk3bUJa0pUFYxGs1GCseBxTaOAiP6kDp3pqKFYmjdVD4NvtGl/xs+opCHGi6e4JwtpM35s1UNmYRcRFfsPfiPfG9WglZ/pf2XTA5fwbJos335qjiLuPtV2eA/qZ6UeeuWcE0z9XKVZlQ7P6dOnRoWWUTr6n1+sewyfEKD5co5dlgvg==
+ bh=DQZl4wXBhHhW9JlHOi47OdeLZxENHw/LJljrkrcuCQk=;
+ b=dlM6lXnYx65AYru9U7cCJvNA2LthPe4ln2iTan2jjolOXO5E0guW2vG6rpZdHFCkZHBrAZlarVevY1bki++fEPmb88B8tD7JdKjuiVjfxfmLa1BjshIlJnOxelmLjNUsqz5Ui84kKwTIkDCYIox+ogclg8HVK0K1Q4abz/9B//B18lkQfCebE2RUunyr4fQInY53cQ85H3Rfmg7q5tUQOjf9kDdhrErKaiaqGYZ5urWYYuMf/hj8D7bVjmWzH1X96mIssW0TAsWsZ8toDy391wf3XvU3FkofucqW5Sfs5rwM9tiHMqQf8UZPwVrEWt6U0cEiQCCREr2o5/9pIk9uDQ==
 Received: from BL3PR02MB7938.namprd02.prod.outlook.com (2603:10b6:208:355::20)
  by CO6PR02MB8819.namprd02.prod.outlook.com (2603:10b6:303:143::21)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6652.5; Mon, 31 Jul
- 2023 23:34:15 +0000
+ 2023 23:35:03 +0000
 Received: from BL3PR02MB7938.namprd02.prod.outlook.com
  ([fe80::6abe:dbe0:dc92:9239]) by BL3PR02MB7938.namprd02.prod.outlook.com
  ([fe80::6abe:dbe0:dc92:9239%3]) with mapi id 15.20.6652.004; Mon, 31 Jul 2023
- 23:34:15 +0000
+ 23:35:02 +0000
 From: Raphael Norwitz <raphael.norwitz@nutanix.com>
 To: Li Feng <fengli@smartx.com>
 CC: "Michael S. Tsirkin" <mst@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
@@ -66,15 +66,15 @@ CC: "Michael S. Tsirkin" <mst@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
  <alex.bennee@linaro.org>, Viresh Kumar <viresh.kumar@linaro.org>, "open
  list:Block layer core" <qemu-block@nongnu.org>, "open list:All patches CC
  here" <qemu-devel@nongnu.org>
-Subject: Re: [PATCH v3 2/5] vhost-user-common: send get_inflight_fd once
-Thread-Topic: [PATCH v3 2/5] vhost-user-common: send get_inflight_fd once
-Thread-Index: AQHZw6gaTo6YA4BL8kK6GH8x7X84nK/Uh7aA
-Date: Mon, 31 Jul 2023 23:34:15 +0000
-Message-ID: <116EBF5B-915F-4237-A832-F9F93BF97D00@nutanix.com>
+Subject: Re: [PATCH v3 4/5] vhost-user-scsi: support reconnect to backend
+Thread-Topic: [PATCH v3 4/5] vhost-user-scsi: support reconnect to backend
+Thread-Index: AQHZw6gcnY28hTTLc0Gmqx+LOs320a/Uh/AA
+Date: Mon, 31 Jul 2023 23:35:02 +0000
+Message-ID: <8C15909F-9F22-4C29-97DA-093474B5737D@nutanix.com>
 References: <20230721105205.1714449-1-fengli@smartx.com>
  <20230731121018.2856310-1-fengli@smartx.com>
- <20230731121018.2856310-3-fengli@smartx.com>
-In-Reply-To: <20230731121018.2856310-3-fengli@smartx.com>
+ <20230731121018.2856310-5-fengli@smartx.com>
+In-Reply-To: <20230731121018.2856310-5-fengli@smartx.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -82,68 +82,68 @@ X-MS-TNEF-Correlator:
 x-mailer: Apple Mail (2.3696.120.41.1.1)
 x-ms-publictraffictype: Email
 x-ms-traffictypediagnostic: BL3PR02MB7938:EE_|CO6PR02MB8819:EE_
-x-ms-office365-filtering-correlation-id: fa4273f0-e1d1-40cd-345e-08db921ea758
+x-ms-office365-filtering-correlation-id: 66e9a8e5-35aa-4f3d-e20b-08db921ec37b
 x-proofpoint-crosstenant: true
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: InT4uWSRL+DXWU4L4/w11IOn1yo0ZHhiAHJJ/ro3kX2r36rdPWkrC/Fxu7Dr2X0eJgyYOq8n9QGWKgUm+f5RvGW93XrqaGUymRk1YOE8/0RVz2u2I++4ElxjfkjmWo4hKcwoWLXgPO1FWSl1E6zU3UP1Gw83W0ktQu4QlpGkle4SgGAipjn/+BcTKdAWl8HsFeAbZsj0sB9b8AIPkphhEsLp4qOPvbKuwujyRD8F8LbA/9KBgxxUxk9YYFG1NdrFyrzdHc3kn7Cj2x0R+qAy78gdkZVY2sBjQIHLY5gJIkEWLY2kRNWzdYxSFTi7H47O2PzHvhcoJGyrbERhDThTEAyvcuz1+qWWNOXGCKhNxlWS7MDL2B7fV2tMoma3aUAqASXIImNVwxGkIulHMFBXZS8Ab7lmEGoaFAGFCFs7FVCey+inrfMpQvUujvs0S50brEXmjWNLqNFmCJmg1RkP1kv2GYue/VLDkzeXvry/RK/eHry2TYWV0lOIllJIzBbVbtDPvIGCQSCzNzEsNMlLOVCRd9ZBIp00UGR3MJvOJFb2qWrR2fneKsOwxayMCuU+iaRXq41J4kjXwI6gSyn3MBBmFeoi7Ge4+KNsr8cIK2Kw1i+dN5b9NHzqie0PGOo7iYSJVDveAoeoIyYOFURf+A==
+x-microsoft-antispam-message-info: m3R1X1x8yinB8a5f2hon8zh84dSWCRPvD9OYyFWiB6ZLSR7Vu6zzGiyJXFiwpV2VAAd1xlT/OGeWw0mm6XGv2ArFz8Ba0paqTnoH5NEYe+Y0fp53sO47xSUydXKTrU5SSRhqf+X9i1wa9bIBptWP59fPGXVp5AKt1BZSDRynOcOxmTJwTsIQUbYwpU+SYY93cFXCRx64iL+tU0vvMpSYOnL1JCcnW9aA6b1TDuFy0YwYeDQWAGsokE5z8j6RGxnNiMQrOvO1ZtJmeJGPsVen+AHjp6BoloOJwAkjjrrxw6ayT8r0whEh+pOM1FiqEz1IQDyYsg5ICZn27ttsj09REUbhOBVBNX9lAK07WTZmlvLilRLlNtPdFQb7BBmZyHa99H8ur4m/tsvkdE2lQdsf7wexr1Alb2nxV+Kv+ZMBJw/v5UBlcYqmsRUGw+6amXaxSDOQbEHjHbPsAeJPeIgajFGd/bFyWXqPhnbpGPDqki4vf3XUzKuTElin3tNTTlpOYSQjf1ybfGskHycnsRduaUx+tnDmqqTpPyVU27wkiafkWmYYath3ePw6GJW5lEx5WXZdyvTYtu43+YrXOrA0pN8aGCi8j05FAI5CHu+Ibi3XBckVhSSXPcuCOSQL2+Ts6pcW+niCnivEDUteOrmztQ==
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:BL3PR02MB7938.namprd02.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230028)(136003)(39860400002)(366004)(376002)(396003)(346002)(451199021)(71200400001)(26005)(186003)(2616005)(41300700001)(6506007)(76116006)(4326008)(66556008)(53546011)(6916009)(66446008)(64756008)(91956017)(66476007)(8936002)(83380400001)(5660300002)(7416002)(66946007)(44832011)(6486002)(6512007)(316002)(8676002)(478600001)(54906003)(2906002)(38100700002)(33656002)(36756003)(38070700005)(86362001)(122000001)(45980500001);
  DIR:OUT; SFP:1102; 
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?yincxEIZyEpAKi6Kjuxy4JO8oWIHwiODur3zuvoRTwwi+ddsPQ/5C5Qiaw?=
- =?iso-8859-1?Q?hmc8O1cniyI6jr1a+oY2fKH/qMbp1uZTu6+0NznneBHDSHqyrEALCTnpyG?=
- =?iso-8859-1?Q?FXgS4qUtAXgYkf2elw3OEArF/YuoEhWfxHdOJV69QJ/tL3rBfGWggAWgUW?=
- =?iso-8859-1?Q?6Ca4noI4gmqOd9sh91dpz+7mbmtXGUryitsJHMLZMHfbnvrhlqf/YZCdgv?=
- =?iso-8859-1?Q?vtG0zaLzv+q1PzOFznuAPuxEsXIBxUlPdYvMx9zVMAlmMnPwonEoJLOEn2?=
- =?iso-8859-1?Q?0Uw+sstw/wFFbUHpRSoTy/8j1KELsG5wMkIsdV/YnS6aHUTNChaBIebO5L?=
- =?iso-8859-1?Q?A97vLw7jehQMqIqDvLmWcajMn97ufaHvLUdiLQ9w+NTFjf5EBMIvHamCs3?=
- =?iso-8859-1?Q?USJc8s6ju6gx8Ns2q2SKAItWzoHYw+gqfTOQ4y9QzlCHD1qVgbQHkK8dG0?=
- =?iso-8859-1?Q?bnaAB3428ET7JM9FbDYmk4OUPt//Ih1Se+HVbzU3iPnK2poOBXkWFtjxVk?=
- =?iso-8859-1?Q?T6uqsbxVJlw5/qWxHJX+9x8ktpTCqB6P2O1PNV++IBkwpr6Hz1Rf85HRgw?=
- =?iso-8859-1?Q?L4y5ZlbgYqRSVjsDI0dpBl/OXg1mJ524mTyNHP7RKDsJxUxwmfTGRmRih8?=
- =?iso-8859-1?Q?XQ4Q1QUHZWRsIUx0PWJZejMkhUMQFKSbyPZgJU0i+sWD3Tc4oJWMIzE2Nh?=
- =?iso-8859-1?Q?6B+Yg/BsNLe+2VHN9giL5A0T2WvSgNXkngpvTGDmd3RJ0NkAFrL4Z9U5dB?=
- =?iso-8859-1?Q?lna6fjLMRT314UItdO955KSAuk7RQv0+xXyc3YFbtbthI3DY2klasF5Mqb?=
- =?iso-8859-1?Q?LOfSTtVRtzU7qmdvO7jgtQogs05P/LeGTrxwQ8nt717ms5bqAaeBZGdSL0?=
- =?iso-8859-1?Q?fTTkxkR8TpdEnbpbE6reHwFt05mO22/WJeHQKsRe9z6zfU9a7OxB52S84e?=
- =?iso-8859-1?Q?nv15TZ5OG3pyggEkHktX9soIhUmwF3z5xzGqXvmw2SrG194GxQdFnDJNsU?=
- =?iso-8859-1?Q?glC05k995o/nJ30vCtFVpfNDqE9k4MwaGs4f9NCbTcbfynvJHxE75+EJey?=
- =?iso-8859-1?Q?SrpAuaZ/sjQdQDCgLh3PWAlgW/YQQTAB+7zu/hCfHhe+wiDlg+0WCKPtyK?=
- =?iso-8859-1?Q?PoNi+Dhi5mg9C4Gl+pn/QXJPSUxaSm39EqH52Gm9QRg1c2g/5EJ+Vj3MIZ?=
- =?iso-8859-1?Q?8/HBqR6d6f6NVDNU5Du9C4hQMIoO63+WFsUkujOuSEBwVlSK5LSPsAmrkn?=
- =?iso-8859-1?Q?7sPzm1E5pTtlTgxsDoTGEXSPD6wR/oydoDfZYbS/W5V33D+xQt/Z5t6pA2?=
- =?iso-8859-1?Q?+5t+GBOrKrra8BZuo46O89nHnvJ+UBUm0mRt4X0jqwzvxCtWVr9phjjMUa?=
- =?iso-8859-1?Q?7DCSdnM9kwMZxp9jpOiEo/aJ/qKS88jVGib+YpFZbcaganeMba7MhwE+2m?=
- =?iso-8859-1?Q?sfVYTm03gq6yNJVmGjTyTgwlZMpcBY/GvxldBRJmZQ3GyHPB4d+9CMEocs?=
- =?iso-8859-1?Q?ZI5q0B7XagLdKAJNylVCi1UJVQsQ0Z/ScHG72OE59XG6EToYQTh2TwNvG5?=
- =?iso-8859-1?Q?xL+zTFdDotmd0JyPi1RNHtCYHWqbYVl8Siu/EauzHrBm3FkkeknFGV7EyD?=
- =?iso-8859-1?Q?ECYMwQy87KpqlsGz1m270k+YReDzVTO3mn/72UE3CttrzVVZMqEPCXXA?=
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?IQD+P4S1X7e1dDOso42ThKLrGQ+3SPYXQc3FIyj4osT+e9L/5IyC4NhKzt?=
+ =?iso-8859-1?Q?ZAjhxVVvQ57bu13Jreg95ybTWTsb1cR+d1aKsvzpi9s648Q+pfkN4teiqs?=
+ =?iso-8859-1?Q?OOPZacjR11WGxn+vT5z9jiF4q9rZXHQSihJZVZ9j0mWtjxkqU9FwLHjWrg?=
+ =?iso-8859-1?Q?kp7YHQrlu+FfHb5ouFNS97xPqrLVqPm7FuiMdEhafX+WtuukBP+iKttgUB?=
+ =?iso-8859-1?Q?yLP0uoz8DiCMD2SEgxozrugO5dWkldxax7tT/ofWQnx3owKGANmF7vpIG1?=
+ =?iso-8859-1?Q?CI+MltyFklX1wLeSBouoIgswcDm8a6wFkNxPmVcgX7I6IJF8ATLSA5Zj8H?=
+ =?iso-8859-1?Q?NqQYrDF2O7Z8N77tR4RUo+4hHNDH4e9zh4XWf8OlTgLfRrI1W+e1ohvO8g?=
+ =?iso-8859-1?Q?r06fuUt57/OTA4lCdj7vjctlPsCw6Br1XwF7f6ejChcmYSzTpbt/bgs+xQ?=
+ =?iso-8859-1?Q?yCzqLKzNPfhC14u/+MnqNeHjLRyxnHzpYEGYchXomjlMwgusn78cYjLLdM?=
+ =?iso-8859-1?Q?f7WZzhYg/UEbFSyE+zWI19+7puQDjzFZyq+2jup2i9i+tF9RolZKwY0Loj?=
+ =?iso-8859-1?Q?gQHxIBWYfCIHsljZwg2iW0Cx2Tp3l8FVTnSYCffjBAgYchDa7Bj1gnIZ4O?=
+ =?iso-8859-1?Q?7ShgP7h8XbyBdn88j1uFm+yXOYRuuPvGeHE5A8WsTtJf8CXVkF7MandWto?=
+ =?iso-8859-1?Q?Yi44nVngdb+ZaUbgtuUYxnv9n9LQ/OQx5LdswqhDS0rtsdoDZyytvWss0l?=
+ =?iso-8859-1?Q?9dCg8pXpumTs7bRNnUvckHS2e8v+JpCV9Y6nMZSN4KMoAc//ny09M6gwp6?=
+ =?iso-8859-1?Q?9KG7sCvGtKLGU0ES90Ylq+xZr90ekE2L3QJQ3vh9s7B3NWrLCsWF9/TYOj?=
+ =?iso-8859-1?Q?11j/ILleSy+L7TN2nijTGvGzcHVvhou58j4Rlrpp4p66gjiSPIolj7XaZJ?=
+ =?iso-8859-1?Q?0cTbxdhN+hsfzgvogFz6NnBmgIiEWdvkmryp6WpOBGWSqeM7P6UtL3twQY?=
+ =?iso-8859-1?Q?sO0IrNJJjmq9uuZdsCKvlcR1/eRLCrkQsi9w+akHtjL4bTKWJuSynYyxsa?=
+ =?iso-8859-1?Q?xNqGF5+FBWT/tJNvZRI6wxsnVi5d5ZgTmKjqxxYy+F/Kr6rIZeLtb6AE4l?=
+ =?iso-8859-1?Q?1xly4UDQM+2sjMERB3i/evzcHhL84A8iNaVOvANe3Rk1XAosbgWdqXGsFL?=
+ =?iso-8859-1?Q?rvzdOpiiHltDyxDlf6E3lk5VbOv0ll7a/bRWPJSP11fdWKnbTQuKE63JVY?=
+ =?iso-8859-1?Q?EtphDY3JBwW8u7jS1hzLo/w1vbUbMYwVOWuwBG3i8Ceg16YeQXd94hZ+qi?=
+ =?iso-8859-1?Q?QpfPt4ZjzmepU48uRlkCfouBmqzJ+84TUAU1kxhHMq8PyWH2cK1TOhXHO/?=
+ =?iso-8859-1?Q?H34aPL0wkmeud0Q3WtXW6r65eWDvZraTh9wTdjRz+9fpKYPFwBHL8M6hi9?=
+ =?iso-8859-1?Q?Xve1EPunZ1xHk2MkgUHNlP5qDpBW9tYxoGQDoZfdIJ4KUYpnJCqWsQiaKi?=
+ =?iso-8859-1?Q?rhJODGx9m+MOnBIrEHBFNwmaaOX3boknHb6xy4zurBTwqMEDQoqNu4f4JP?=
+ =?iso-8859-1?Q?pHuLWtjqRYpY/y9SwZjY+qrGKBaOCJVhSG7zUTj/vZ7F2twP1V4F/N/786?=
+ =?iso-8859-1?Q?JSjXwygcEbcxZEFW0w9z8zQ/xXRGfZtp8nSLzk0/nJxiIm+prKeVKdZQ?=
  =?iso-8859-1?Q?=3D=3D?=
 Content-Type: text/plain; charset="iso-8859-1"
-Content-ID: <ACA9761E659EE84EBE8726A88ADB215A@namprd02.prod.outlook.com>
+Content-ID: <FB54EA9397E1044AAEE2B76BB3253A71@namprd02.prod.outlook.com>
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: nutanix.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: BL3PR02MB7938.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fa4273f0-e1d1-40cd-345e-08db921ea758
-X-MS-Exchange-CrossTenant-originalarrivaltime: 31 Jul 2023 23:34:15.6835 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 66e9a8e5-35aa-4f3d-e20b-08db921ec37b
+X-MS-Exchange-CrossTenant-originalarrivaltime: 31 Jul 2023 23:35:02.9238 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: bb047546-786f-4de1-bd75-24e5b6f79043
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Fy2189rzLUUhKcf+7qR5jXPEHYmuwaoCGcap8ZghbvpPEJ/ZxlUdcvQ2CQRTDtYWVAlIGXuAyaJPn9yeuB3BM4d4eK8Ini83WJIcoD5pcjk=
+X-MS-Exchange-CrossTenant-userprincipalname: FN22EXLx+sAcsdQt8ALzR2G8nSSZhsphIB1gaA59NADZsulEdZDsiN6ykGMy5AxU0SYDqjg3sRgmeBxrTFIJvLRMOGzdyhCoAq0cBRAn/KQ=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO6PR02MB8819
-X-Proofpoint-ORIG-GUID: -dFH6k3K0D1KuntvyMeqoZ3SOMAeDe1V
-X-Proofpoint-GUID: -dFH6k3K0D1KuntvyMeqoZ3SOMAeDe1V
+X-Proofpoint-ORIG-GUID: B95BnKWysOD6n2zGcIIPi8V3l8EGCKZB
+X-Proofpoint-GUID: B95BnKWysOD6n2zGcIIPi8V3l8EGCKZB
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-31_16,2023-07-31_02,2023-05-22_02
+ definitions=2023-07-31_15,2023-07-31_02,2023-05-22_02
 X-Proofpoint-Spam-Reason: safe
-Received-SPF: pass client-ip=148.163.155.12;
- envelope-from=raphael.norwitz@nutanix.com; helo=mx0b-002c1b01.pphosted.com
+Received-SPF: pass client-ip=148.163.151.68;
+ envelope-from=raphael.norwitz@nutanix.com; helo=mx0a-002c1b01.pphosted.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -170,90 +170,323 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 > On Jul 31, 2023, at 8:10 AM, Li Feng <fengli@smartx.com> wrote:
 >=20
-> Currently the get_inflight_fd will be sent every time the device is start=
-ed, and
-> the backend will allocate shared memory to save the inflight state. If th=
-e
-> backend finds that it receives the second get_inflight_fd, it will releas=
-e the
-> previous shared memory, which breaks inflight working logic.
+> If the backend crashes and restarts, the device is broken.
+> This patch adds reconnect for vhost-user-scsi.
 >=20
-> This patch is a preparation for the following patches.
+> Tested with spdk backend.
 >=20
 > Signed-off-by: Li Feng <fengli@smartx.com>
 
 Reviewed-by: Raphael Norwitz <raphael.norwitz@nutanix.com>
 
 > ---
-> hw/scsi/vhost-scsi-common.c | 37 ++++++++++++++++++-------------------
-> 1 file changed, 18 insertions(+), 19 deletions(-)
+> hw/scsi/vhost-user-scsi.c           | 199 +++++++++++++++++++++++++---
+> include/hw/virtio/vhost-user-scsi.h |   4 +
+> 2 files changed, 184 insertions(+), 19 deletions(-)
 >=20
-> diff --git a/hw/scsi/vhost-scsi-common.c b/hw/scsi/vhost-scsi-common.c
-> index a06f01af26..a61cd0e907 100644
-> --- a/hw/scsi/vhost-scsi-common.c
-> +++ b/hw/scsi/vhost-scsi-common.c
-> @@ -52,20 +52,28 @@ int vhost_scsi_common_start(VHostSCSICommon *vsc)
+> diff --git a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c
+> index ee99b19e7a..5bf012461b 100644
+> --- a/hw/scsi/vhost-user-scsi.c
+> +++ b/hw/scsi/vhost-user-scsi.c
+> @@ -43,26 +43,54 @@ enum VhostUserProtocolFeature {
+>     VHOST_USER_PROTOCOL_F_RESET_DEVICE =3D 13,
+> };
 >=20
->     vsc->dev.acked_features =3D vdev->guest_features;
->=20
-> -    assert(vsc->inflight =3D=3D NULL);
-> -    vsc->inflight =3D g_new0(struct vhost_inflight, 1);
-> -    ret =3D vhost_dev_get_inflight(&vsc->dev,
-> -                                 vs->conf.virtqueue_size,
-> -                                 vsc->inflight);
-> +    ret =3D vhost_dev_prepare_inflight(&vsc->dev, vdev);
->     if (ret < 0) {
-> -        error_report("Error get inflight: %d", -ret);
-> +        error_report("Error setting inflight format: %d", -ret);
->         goto err_guest_notifiers;
->     }
->=20
-> -    ret =3D vhost_dev_set_inflight(&vsc->dev, vsc->inflight);
-> -    if (ret < 0) {
-> -        error_report("Error set inflight: %d", -ret);
-> -        goto err_guest_notifiers;
-> +    if (vsc->inflight) {
-> +        if (!vsc->inflight->addr) {
-> +            ret =3D vhost_dev_get_inflight(&vsc->dev,
-> +                                        vs->conf.virtqueue_size,
-> +                                        vsc->inflight);
-> +            if (ret < 0) {
-> +                error_report("Error getting inflight: %d", -ret);
-> +                goto err_guest_notifiers;
-> +            }
-> +        }
+> +static int vhost_user_scsi_start(VHostUserSCSI *s)
+> +{
+> +    VHostSCSICommon *vsc =3D VHOST_SCSI_COMMON(s);
+> +    int ret;
 > +
-> +        ret =3D vhost_dev_set_inflight(&vsc->dev, vsc->inflight);
-> +        if (ret < 0) {
-> +            error_report("Error setting inflight: %d", -ret);
-> +            goto err_guest_notifiers;
-> +        }
+> +    ret =3D vhost_scsi_common_start(vsc);
+> +    s->started_vu =3D (ret < 0 ? false : true);
+> +
+> +    return ret;
+> +}
+> +
+> +static void vhost_user_scsi_stop(VHostUserSCSI *s)
+> +{
+> +    VHostSCSICommon *vsc =3D VHOST_SCSI_COMMON(s);
+> +
+> +    if (!s->started_vu) {
+> +        return;
+> +    }
+> +    s->started_vu =3D false;
+> +
+> +    vhost_scsi_common_stop(vsc);
+> +}
+> +
+> static void vhost_user_scsi_set_status(VirtIODevice *vdev, uint8_t status=
+)
+> {
+>     VHostUserSCSI *s =3D (VHostUserSCSI *)vdev;
+> +    DeviceState *dev =3D &s->parent_obj.parent_obj.parent_obj.parent_obj=
+;
+>     VHostSCSICommon *vsc =3D VHOST_SCSI_COMMON(s);
+> -    bool start =3D (status & VIRTIO_CONFIG_S_DRIVER_OK) && vdev->vm_runn=
+ing;
+> +    VirtIOSCSICommon *vs =3D VIRTIO_SCSI_COMMON(dev);
+> +    bool should_start =3D virtio_device_should_start(vdev, status);
+> +    int ret;
+>=20
+> -    if (vhost_dev_is_started(&vsc->dev) =3D=3D start) {
+> +    if (!s->connected) {
+>         return;
 >     }
 >=20
->     ret =3D vhost_dev_start(&vsc->dev, vdev, true);
-> @@ -85,9 +93,6 @@ int vhost_scsi_common_start(VHostSCSICommon *vsc)
->     return ret;
+> -    if (start) {
+> -        int ret;
+> +    if (vhost_dev_is_started(&vsc->dev) =3D=3D should_start) {
+> +        return;
+> +    }
 >=20
-> err_guest_notifiers:
-> -    g_free(vsc->inflight);
-> -    vsc->inflight =3D NULL;
-> -
->     k->set_guest_notifiers(qbus->parent, vsc->dev.nvqs, false);
-> err_host_notifiers:
->     vhost_dev_disable_notifiers(&vsc->dev, vdev);
-> @@ -111,12 +116,6 @@ void vhost_scsi_common_stop(VHostSCSICommon *vsc)
+> -        ret =3D vhost_scsi_common_start(vsc);
+> +    if (should_start) {
+> +        ret =3D vhost_user_scsi_start(s);
+>         if (ret < 0) {
+>             error_report("unable to start vhost-user-scsi: %s", strerror(=
+-ret));
+> -            exit(1);
+> +            qemu_chr_fe_disconnect(&vs->conf.chardev);
+>         }
+>     } else {
+> -        vhost_scsi_common_stop(vsc);
+> +        vhost_user_scsi_stop(s);
 >     }
->     assert(ret >=3D 0);
->=20
-> -    if (vsc->inflight) {
-> -        vhost_dev_free_inflight(vsc->inflight);
-> -        g_free(vsc->inflight);
-> -        vsc->inflight =3D NULL;
-> -    }
-> -
->     vhost_dev_disable_notifiers(&vsc->dev, vdev);
 > }
 >=20
+> @@ -89,14 +117,126 @@ static void vhost_dummy_handle_output(VirtIODevice =
+*vdev, VirtQueue *vq)
+> {
+> }
+>=20
+> +static int vhost_user_scsi_connect(DeviceState *dev, Error **errp)
+> +{
+> +    VirtIODevice *vdev =3D VIRTIO_DEVICE(dev);
+> +    VHostUserSCSI *s =3D VHOST_USER_SCSI(vdev);
+> +    VHostSCSICommon *vsc =3D VHOST_SCSI_COMMON(s);
+> +    VirtIOSCSICommon *vs =3D VIRTIO_SCSI_COMMON(dev);
+> +    int ret =3D 0;
+> +
+> +    if (s->connected) {
+> +        return 0;
+> +    }
+> +    s->connected =3D true;
+> +
+> +    vsc->dev.num_queues =3D vs->conf.num_queues;
+> +    vsc->dev.nvqs =3D VIRTIO_SCSI_VQ_NUM_FIXED + vs->conf.num_queues;
+> +    vsc->dev.vqs =3D s->vhost_vqs;
+> +    vsc->dev.vq_index =3D 0;
+> +    vsc->dev.backend_features =3D 0;
+> +
+> +    ret =3D vhost_dev_init(&vsc->dev, &s->vhost_user, VHOST_BACKEND_TYPE=
+_USER, 0,
+> +                         errp);
+> +    if (ret < 0) {
+> +        return ret;
+> +    }
+> +
+> +    /* restore vhost state */
+> +    if (virtio_device_started(vdev, vdev->status)) {
+> +        ret =3D vhost_user_scsi_start(s);
+> +        if (ret < 0) {
+> +            return ret;
+> +        }
+> +    }
+> +
+> +    return 0;
+> +}
+> +
+> +static void vhost_user_scsi_event(void *opaque, QEMUChrEvent event);
+> +
+> +static void vhost_user_scsi_disconnect(DeviceState *dev)
+> +{
+> +    VirtIODevice *vdev =3D VIRTIO_DEVICE(dev);
+> +    VHostUserSCSI *s =3D VHOST_USER_SCSI(vdev);
+> +    VHostSCSICommon *vsc =3D VHOST_SCSI_COMMON(s);
+> +    VirtIOSCSICommon *vs =3D VIRTIO_SCSI_COMMON(dev);
+> +
+> +    if (!s->connected) {
+> +        return;
+> +    }
+> +    s->connected =3D false;
+> +
+> +    vhost_user_scsi_stop(s);
+> +
+> +    vhost_dev_cleanup(&vsc->dev);
+> +
+> +    /* Re-instate the event handler for new connections */
+> +    qemu_chr_fe_set_handlers(&vs->conf.chardev, NULL, NULL,
+> +                             vhost_user_scsi_event, NULL, dev, NULL, tru=
+e);
+> +}
+> +
+> +static void vhost_user_scsi_event(void *opaque, QEMUChrEvent event)
+> +{
+> +    DeviceState *dev =3D opaque;
+> +    VirtIODevice *vdev =3D VIRTIO_DEVICE(dev);
+> +    VHostUserSCSI *s =3D VHOST_USER_SCSI(vdev);
+> +    VHostSCSICommon *vsc =3D VHOST_SCSI_COMMON(s);
+> +    VirtIOSCSICommon *vs =3D VIRTIO_SCSI_COMMON(dev);
+> +    Error *local_err =3D NULL;
+> +
+> +    switch (event) {
+> +    case CHR_EVENT_OPENED:
+> +        if (vhost_user_scsi_connect(dev, &local_err) < 0) {
+> +            error_report_err(local_err);
+> +            qemu_chr_fe_disconnect(&vs->conf.chardev);
+> +            return;
+> +        }
+> +        break;
+> +    case CHR_EVENT_CLOSED:
+> +        /* defer close until later to avoid circular close */
+> +        vhost_user_async_close(dev, &vs->conf.chardev, &vsc->dev,
+> +                               vhost_user_scsi_disconnect);
+> +        break;
+> +    case CHR_EVENT_BREAK:
+> +    case CHR_EVENT_MUX_IN:
+> +    case CHR_EVENT_MUX_OUT:
+> +        /* Ignore */
+> +        break;
+> +    }
+> +}
+> +
+> +static int vhost_user_scsi_realize_connect(VHostUserSCSI *s, Error **err=
+p)
+> +{
+> +    DeviceState *dev =3D &s->parent_obj.parent_obj.parent_obj.parent_obj=
+;
+> +    VirtIOSCSICommon *vs =3D VIRTIO_SCSI_COMMON(dev);
+> +    int ret;
+> +
+> +    s->connected =3D false;
+> +
+> +    ret =3D qemu_chr_fe_wait_connected(&vs->conf.chardev, errp);
+> +    if (ret < 0) {
+> +        return ret;
+> +    }
+> +
+> +    ret =3D vhost_user_scsi_connect(dev, errp);
+> +    if (ret < 0) {
+> +        qemu_chr_fe_disconnect(&vs->conf.chardev);
+> +        return ret;
+> +    }
+> +    assert(s->connected);
+> +
+> +    return 0;
+> +}
+> +
+> static void vhost_user_scsi_realize(DeviceState *dev, Error **errp)
+> {
+>     VirtIOSCSICommon *vs =3D VIRTIO_SCSI_COMMON(dev);
+>     VHostUserSCSI *s =3D VHOST_USER_SCSI(dev);
+>     VHostSCSICommon *vsc =3D VHOST_SCSI_COMMON(s);
+> -    struct vhost_virtqueue *vqs =3D NULL;
+>     Error *err =3D NULL;
+>     int ret;
+> +    int retries =3D VU_REALIZE_CONN_RETRIES;
+>=20
+>     if (!vs->conf.chardev.chr) {
+>         error_setg(errp, "vhost-user-scsi: missing chardev");
+> @@ -115,18 +255,28 @@ static void vhost_user_scsi_realize(DeviceState *de=
+v, Error **errp)
+>         goto free_virtio;
+>     }
+>=20
+> -    vsc->dev.nvqs =3D VIRTIO_SCSI_VQ_NUM_FIXED + vs->conf.num_queues;
+> -    vsc->dev.vqs =3D g_new0(struct vhost_virtqueue, vsc->dev.nvqs);
+> -    vsc->dev.vq_index =3D 0;
+> -    vsc->dev.backend_features =3D 0;
+> -    vqs =3D vsc->dev.vqs;
+> +    vsc->inflight =3D g_new0(struct vhost_inflight, 1);
+> +    s->vhost_vqs =3D g_new0(struct vhost_virtqueue,
+> +                          VIRTIO_SCSI_VQ_NUM_FIXED + vs->conf.num_queues=
+);
+> +
+> +    assert(!*errp);
+> +    do {
+> +        if (*errp) {
+> +            error_prepend(errp, "Reconnecting after error: ");
+> +            error_report_err(*errp);
+> +            *errp =3D NULL;
+> +        }
+> +        ret =3D vhost_user_scsi_realize_connect(s, errp);
+> +    } while (ret < 0 && retries--);
+>=20
+> -    ret =3D vhost_dev_init(&vsc->dev, &s->vhost_user,
+> -                         VHOST_BACKEND_TYPE_USER, 0, errp);
+>     if (ret < 0) {
+>         goto free_vhost;
+>     }
+>=20
+> +    /* we're fully initialized, now we can operate, so add the handler *=
+/
+> +    qemu_chr_fe_set_handlers(&vs->conf.chardev,  NULL, NULL,
+> +                             vhost_user_scsi_event, NULL, (void *)dev,
+> +                             NULL, true);
+>     /* Channel and lun both are 0 for bootable vhost-user-scsi disk */
+>     vsc->channel =3D 0;
+>     vsc->lun =3D 0;
+> @@ -135,8 +285,12 @@ static void vhost_user_scsi_realize(DeviceState *dev=
+, Error **errp)
+>     return;
+>=20
+> free_vhost:
+> +    g_free(s->vhost_vqs);
+> +    s->vhost_vqs =3D NULL;
+> +    g_free(vsc->inflight);
+> +    vsc->inflight =3D NULL;
+>     vhost_user_cleanup(&s->vhost_user);
+> -    g_free(vqs);
+> +
+> free_virtio:
+>     virtio_scsi_common_unrealize(dev);
+> }
+> @@ -146,16 +300,23 @@ static void vhost_user_scsi_unrealize(DeviceState *=
+dev)
+>     VirtIODevice *vdev =3D VIRTIO_DEVICE(dev);
+>     VHostUserSCSI *s =3D VHOST_USER_SCSI(dev);
+>     VHostSCSICommon *vsc =3D VHOST_SCSI_COMMON(s);
+> -    struct vhost_virtqueue *vqs =3D vsc->dev.vqs;
+> +    VirtIOSCSICommon *vs =3D VIRTIO_SCSI_COMMON(dev);
+>=20
+>     /* This will stop the vhost backend. */
+>     vhost_user_scsi_set_status(vdev, 0);
+> +    qemu_chr_fe_set_handlers(&vs->conf.chardev, NULL, NULL, NULL, NULL, =
+NULL,
+> +                             NULL, false);
+>=20
+>     vhost_dev_cleanup(&vsc->dev);
+> -    g_free(vqs);
+> +    g_free(s->vhost_vqs);
+> +    s->vhost_vqs =3D NULL;
+> +
+> +    vhost_dev_free_inflight(vsc->inflight);
+> +    g_free(vsc->inflight);
+> +    vsc->inflight =3D NULL;
+>=20
+> -    virtio_scsi_common_unrealize(dev);
+>     vhost_user_cleanup(&s->vhost_user);
+> +    virtio_scsi_common_unrealize(dev);
+> }
+>=20
+> static Property vhost_user_scsi_properties[] =3D {
+> diff --git a/include/hw/virtio/vhost-user-scsi.h b/include/hw/virtio/vhos=
+t-user-scsi.h
+> index 521b08e559..b405ec952a 100644
+> --- a/include/hw/virtio/vhost-user-scsi.h
+> +++ b/include/hw/virtio/vhost-user-scsi.h
+> @@ -29,6 +29,10 @@ OBJECT_DECLARE_SIMPLE_TYPE(VHostUserSCSI, VHOST_USER_S=
+CSI)
+> struct VHostUserSCSI {
+>     VHostSCSICommon parent_obj;
+>     VhostUserState vhost_user;
+> +    bool connected;
+> +    bool started_vu;
+> +
+> +    struct vhost_virtqueue *vhost_vqs;
+> };
+>=20
+> #endif /* VHOST_USER_SCSI_H */
 > --=20
 > 2.41.0
 >=20
