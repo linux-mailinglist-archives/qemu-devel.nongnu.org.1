@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75A2476A25E
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 23:03:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C33876A25B
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 23:03:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQa22-0000qv-QI; Mon, 31 Jul 2023 17:02:22 -0400
+	id 1qQa25-0000t8-Lt; Mon, 31 Jul 2023 17:02:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qQa20-0000pg-EU
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 17:02:20 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1qQa21-0000ql-LT
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 17:02:21 -0400
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qQa1y-0006Od-QP
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 17:02:20 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1bba2318546so42501735ad.1
- for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 14:02:18 -0700 (PDT)
+ id 1qQa1z-0006P6-Li
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 17:02:21 -0400
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-1bb81809ca8so39340605ad.3
+ for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 14:02:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690837337; x=1691442137;
+ d=linaro.org; s=google; t=1690837338; x=1691442138;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=UO4NGNMOmfX4cDWpdhP1KDrgQG8uGQRDWa46RjUxab0=;
- b=lLMHSj3qBlUmoNc/cnMvH0quFXz2UGLAQWB2Ca21mMMz3X9DinqI5GGiNWduXb/Ok0
- PFa9t8zmoywyregelON7qqMKy28Y6IQS4hSFkK+5BmGl6CnBDHBLPti/m11RcpEFma7I
- lCHlQfIe/fLoJiXeXUnyB+4v07m0bmwY3mn7ty3sdm+4WAQkLGZhwM5WbFpvG+aDClwK
- k0myEtR0rGLGW6uc40W/cMjRjfwM4leTFuJPBcjsSzF3ofdczXgiHRZwlkOKAa1g4jK5
- 0KdG4iNIbaTielT84y2ciqEd3+bPWwU2SqMvJOv7vvR/8QWe4q6bWmA/tSfvP+qriOi/
- SjXA==
+ :reply-to; bh=i9wtzUb42CilMWSLYTGlUi5KdxK2jdYVPNnbOFMGOWc=;
+ b=XEDB3HPo7xsOAgetbkrHgeVGIHD+tWXWpHbTLfPNKtfEbvO5VS3c8d0q3mHYlpUh/v
+ YN89FaJGfHDmSPXIeGR/Cg/Eca5VUbHDnwKS9o2f5cS8C+WHHzCv2UbA+0AWIDD4WB6o
+ fidVOQRUrAQJpwd0YI11nP4fQT02B77qH4Bfy1i1KIV91MFFkaucMm8EIsTzI7LVuP5s
+ RVXuswHeWI7UkO3IIRBHKGYrm1hKA9pEeYdysVkXO2PWCqDWPxdWjIRW+ydEyDt7vhUV
+ ZOGg2pNpef0hEuDreTBdxrRlBoxxM1CD2w3vRXfAv8k9vQsPdnBR70NfP2DlK39b5O13
+ DrlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690837337; x=1691442137;
+ d=1e100.net; s=20221208; t=1690837338; x=1691442138;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=UO4NGNMOmfX4cDWpdhP1KDrgQG8uGQRDWa46RjUxab0=;
- b=ShyShCM90p41u7icxRy41jOl2hirdHAxmAbktejbdNojRXdcy3KqvYQKwWih11Onh4
- ScXtHr3166hsDryCC52YE1920YMlCB4gINwbkp9sNT8xSxd6bLWQmL4ID2A9wjE/xFfR
- vJENw54XDb5jQxLaa5K3TsT1jpjCrvZ03v+efcn0r3sYPUEO+LlK5tJ+vagVmR5qCM+U
- dqj8nwUfvkTP7HU0tWuLcWylGBqSlG4Yqr8KB9YJtti2G8EHfFpHzlkddroPCYKRpssp
- ij8Yico984zeFTldyGnfA5g+8zHCaOZP5O6tiWO5OmtAaRwJpIT6bpy1BR3jiXbhTTvA
- admg==
-X-Gm-Message-State: ABy/qLZtGwhgd5icOuKI6h/FSwUxQp8EFgDz18UpQLeIsA5M4sN2Eujb
- FSqKPvVfTiKn9aKY2Cm2f4PxCOE0G7ySFjB5JNM=
-X-Google-Smtp-Source: APBJJlGqVhxKO9cAxdA1AbAOPm40Ex5sRVWMhaV6ItdfUEDggnp3is4wmHsTvhhmh4hELWwLM9YJfQ==
-X-Received: by 2002:a17:902:9b94:b0:1bb:a6db:3fd0 with SMTP id
- y20-20020a1709029b9400b001bba6db3fd0mr9435135plp.69.1690837337383; 
- Mon, 31 Jul 2023 14:02:17 -0700 (PDT)
+ bh=i9wtzUb42CilMWSLYTGlUi5KdxK2jdYVPNnbOFMGOWc=;
+ b=hhiQPEELA7VS+xZyqAuNiezsx/zYnHh1QvtEb95h8SNij1TVOkOBlpJKIDp+99j79d
+ qEBmIDVXo6hfq1JW4uBFgbZFO6XwttkeOHtoTqAWQtAoc9r5cJmQvG4V5F83rvIGCJmq
+ yoCac4f0vtG9BhEq12io0XWmCQn1/iF1P1cqyCgUN+hgw3+VOHN+xmfbQJzf6vHzzg1D
+ dEK3zKkwzO8fnj08y/kFsZRWIgdgQh3eqWtw7a1AaRZVhGOfRhY+Vv8VWTCcVom5u1iV
+ dVTqX21GZCSo8VvEt57YnF1VwBNmWRSJx2+64dQ/ZYuu5WxYf0DJlLJEQqg9cllXjhUI
+ ORng==
+X-Gm-Message-State: ABy/qLZ3lmAoKsH++3S+W7JUr9ZjPvdZ9w8vNR2ptYUENALulceZRzn8
+ 2az/fkTm1w1jQfDQizK5Y/2CFXhTOBpbEYxOu+c=
+X-Google-Smtp-Source: APBJJlFiKi1ARSQKr6+MJSi8at9EoHTt0aCVYYDS4POZdYEzEWXm+KYEHdX58/QlDx2kyJxWjb57lw==
+X-Received: by 2002:a17:902:c947:b0:1bb:ab0d:4f76 with SMTP id
+ i7-20020a170902c94700b001bbab0d4f76mr14105475pla.58.1690837338186; 
+ Mon, 31 Jul 2023 14:02:18 -0700 (PDT)
 Received: from stoup.. ([2602:47:d490:6901:4f6f:6b:2de4:e0cb])
  by smtp.gmail.com with ESMTPSA id
- r11-20020a1709028bcb00b001bb8895848bsm8924230plo.71.2023.07.31.14.02.16
+ r11-20020a1709028bcb00b001bb8895848bsm8924230plo.71.2023.07.31.14.02.17
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 31 Jul 2023 14:02:16 -0700 (PDT)
+ Mon, 31 Jul 2023 14:02:17 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 05/10] accel/tcg: Clear tcg_ctx->gen_tb on buffer overflow
-Date: Mon, 31 Jul 2023 14:02:06 -0700
-Message-Id: <20230731210211.137353-6-richard.henderson@linaro.org>
+Subject: [PULL 06/10] bsd-user: Allocate guest virtual address space
+Date: Mon, 31 Jul 2023 14:02:07 -0700
+Message-Id: <20230731210211.137353-7-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230731210211.137353-1-richard.henderson@linaro.org>
 References: <20230731210211.137353-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,32 +90,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On overflow of code_gen_buffer, we unlock the guest pages we had been
-translating, but failed to clear gen_tb.  On restart, if we cannot
-allocate a TB, we exit to the main loop to perform the flush of all
-TBs as soon as possible.  With garbage in gen_tb, we hit an assert:
+With reserved_va, mmap.c expects to have pre-allocated host address
+space for the entire guest address space.  When combined with the -B
+command-line option, ensure that the chosen address does not overlap
+anything else.  Ensure that mmap_next_start is within reserved_va,
+as we use it within mmap.c without checking.
 
-../src/accel/tcg/tb-maint.c:348:page_unlock__debug: \
-    assertion failed: (page_is_locked(pd))
-
-Fixes: deba78709ae8 ("accel/tcg: Always lock pages before translation")
+Reviewed by: Warner Losh <imp@bsdimp.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20230727161148.444988-1-richard.henderson@linaro.org>
 ---
- accel/tcg/translate-all.c | 1 +
- 1 file changed, 1 insertion(+)
+ bsd-user/main.c | 48 +++++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 43 insertions(+), 5 deletions(-)
 
-diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
-index a1782db5dd..b2d4e22c17 100644
---- a/accel/tcg/translate-all.c
-+++ b/accel/tcg/translate-all.c
-@@ -374,6 +374,7 @@ TranslationBlock *tb_gen_code(CPUState *cpu,
-                           "Restarting code generation for "
-                           "code_gen_buffer overflow\n");
-             tb_unlock_pages(tb);
-+            tcg_ctx->gen_tb = NULL;
-             goto buffer_overflow;
+diff --git a/bsd-user/main.c b/bsd-user/main.c
+index b597328118..381bb18df8 100644
+--- a/bsd-user/main.c
++++ b/bsd-user/main.c
+@@ -473,10 +473,6 @@ int main(int argc, char **argv)
+     target_environ = envlist_to_environ(envlist, NULL);
+     envlist_free(envlist);
  
-         case -2:
+-    if (reserved_va) {
+-        mmap_next_start = reserved_va + 1;
+-    }
+-
+     {
+         Error *err = NULL;
+         if (seed_optarg != NULL) {
+@@ -494,7 +490,49 @@ int main(int argc, char **argv)
+      * Now that page sizes are configured we can do
+      * proper page alignment for guest_base.
+      */
+-    guest_base = HOST_PAGE_ALIGN(guest_base);
++    if (have_guest_base) {
++        if (guest_base & ~qemu_host_page_mask) {
++            error_report("Selected guest base not host page aligned");
++            exit(1);
++        }
++    }
++
++    /*
++     * If reserving host virtual address space, do so now.
++     * Combined with '-B', ensure that the chosen range is free.
++     */
++    if (reserved_va) {
++        void *p;
++
++        if (have_guest_base) {
++            p = mmap((void *)guest_base, reserved_va + 1, PROT_NONE,
++                     MAP_ANON | MAP_PRIVATE | MAP_FIXED | MAP_EXCL, -1, 0);
++        } else {
++            p = mmap(NULL, reserved_va + 1, PROT_NONE,
++                     MAP_ANON | MAP_PRIVATE, -1, 0);
++        }
++        if (p == MAP_FAILED) {
++            const char *err = strerror(errno);
++            char *sz = size_to_str(reserved_va + 1);
++
++            if (have_guest_base) {
++                error_report("Cannot allocate %s bytes at -B %p for guest "
++                             "address space: %s", sz, (void *)guest_base, err);
++            } else {
++                error_report("Cannot allocate %s bytes for guest "
++                             "address space: %s", sz, err);
++            }
++            exit(1);
++        }
++        guest_base = (uintptr_t)p;
++        have_guest_base = true;
++
++        /* Ensure that mmap_next_start is within range. */
++        if (reserved_va <= mmap_next_start) {
++            mmap_next_start = (reserved_va / 4 * 3)
++                              & TARGET_PAGE_MASK & qemu_host_page_mask;
++        }
++    }
+ 
+     if (loader_exec(filename, argv + optind, target_environ, regs, info,
+                     &bprm) != 0) {
 -- 
 2.34.1
 
