@@ -2,94 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D77E5769708
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 15:03:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A551B769710
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 15:04:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQSYd-0001BY-6n; Mon, 31 Jul 2023 09:03:31 -0400
+	id 1qQSZc-0001xw-VN; Mon, 31 Jul 2023 09:04:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qQSYb-0001BI-By
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 09:03:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qQSYZ-0000sb-MG
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 09:03:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690808607;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qQSZb-0001xU-ED
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 09:04:31 -0400
+Received: from smtp-out1.suse.de ([195.135.220.28])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qQSZZ-0000yv-GA
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 09:04:31 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 382922222E;
+ Mon, 31 Jul 2023 13:04:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1690808668; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=EZg3dj7fZg1WDALPDyeGDR0/qrHkWE2blrqwfx5+n9M=;
- b=FrgLAFE9RCIc61UIYIlcEBbXbljbXR9+7sAOdPpj2JChGoCiWIyBTkog0kX/bL+/l3BSv6
- +lWBfURRrrqfCTBtRGhBl79LAE0mkTvCksZmbsbS/pP/tfw7aoHGqilEqtU7DzYbXR0zHm
- 6an4yb4yOvnJaLgF++XwgepdGv8ymwE=
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com
- [209.85.210.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-152-er_ClU7oNkubUOOGMQdMsQ-1; Mon, 31 Jul 2023 09:03:25 -0400
-X-MC-Unique: er_ClU7oNkubUOOGMQdMsQ-1
-Received: by mail-pf1-f198.google.com with SMTP id
- d2e1a72fcca58-686f0c37911so5217359b3a.1
- for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 06:03:24 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690808604; x=1691413404;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=EZg3dj7fZg1WDALPDyeGDR0/qrHkWE2blrqwfx5+n9M=;
- b=LU+SG28HdcIYZHl9oaMnbkLcefWs5uVzCW98UbriptXfSuOEUi/H6Rn1r2UgtJuunj
- dMTwh3aGaYX6iOkIKOplKuCGcJkQkFsw0l1jQcVOBsEBBTnX4iozWXtmEKKZilnvl2yd
- 8NyKKeGT2OfcQ9/8SNHrGb+b1tSRUM5CuVtlkltFoY5gvVNitZNaR/WLiD8CLFfDuprv
- tkoOE9UdFyYcIcK1VvXj7/5Lgg5KulFUJd+B2MvH3iGnqQMROL6S1eCKvC+/2HMKAK+X
- egxfMJ14OpddRfhc62vHwJC53KG84d0NkTpAhURcrBoUeiPAkWmlxhl6gDMal67XSrY8
- GhTA==
-X-Gm-Message-State: ABy/qLZzNDZ7uNn8Y/xuCfAzWMDX6ZauRavkRaeErY/+sKz76igqF15G
- XU8rBVc4IesKQSDM4M8P6uYDGxzWTZzXbYnWFK3QsJVXoaB/UU2v/crwF3yDI2ojHrSD4UqyPN0
- wFnohN3lKF3g8lBs=
-X-Received: by 2002:a05:6a20:32aa:b0:137:3b34:93e5 with SMTP id
- g42-20020a056a2032aa00b001373b3493e5mr8347041pzd.59.1690808604167; 
- Mon, 31 Jul 2023 06:03:24 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlG2tGTxviPz00+OI3d4S+IrzitZNqwKLTa1I/1z/iE7RfOHF5UJJ2SdTJv4ahJX6JDCanYS7A==
-X-Received: by 2002:a05:6a20:32aa:b0:137:3b34:93e5 with SMTP id
- g42-20020a056a2032aa00b001373b3493e5mr8347014pzd.59.1690808603735; 
- Mon, 31 Jul 2023 06:03:23 -0700 (PDT)
-Received: from ?IPV6:2001:8003:e5b0:9f00:dbbc:1945:6e65:ec5?
- ([2001:8003:e5b0:9f00:dbbc:1945:6e65:ec5])
- by smtp.gmail.com with ESMTPSA id
- p2-20020a62ab02000000b006826c9e4397sm7601291pff.48.2023.07.31.06.03.19
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 31 Jul 2023 06:03:22 -0700 (PDT)
-Message-ID: <c86779f3-3d27-c67d-efb4-e1a664b2e5c6@redhat.com>
-Date: Mon, 31 Jul 2023 23:03:17 +1000
+ bh=vs4Fzts90JJmVjii4KN0ZhOg0pTZQs/yWz56Ins7eDs=;
+ b=xOdJBJ2Lj7sK70vVv+ZU2QNhD9II6yCKXUgDgZx1QcR6Bc5oasc04noqydGNeByFToGjxQ
+ /6bZpbj9kK5mYwzO5A1vWUMXAmm7pC3tsrxq5t4h/0WhoUgr7u5Zn3W+1pGc952cbvYUig
+ m0Ov4aoYYKgWuLichF6mOkHhvyjjZYI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1690808668;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=vs4Fzts90JJmVjii4KN0ZhOg0pTZQs/yWz56Ins7eDs=;
+ b=6se748/P3/rWoznBH3LeyycBWEkjFTql+bY/eXYm1s7tGmae0YZ+yAiZrnTOMvXvXX69+E
+ QtjZlxE209JIvNDg==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id BC361133F7;
+ Mon, 31 Jul 2023 13:04:27 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id qdVLIVuxx2R+LQAAMHmgww
+ (envelope-from <farosas@suse.de>); Mon, 31 Jul 2023 13:04:27 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>, Leonardo
+ Bras <leobras@redhat.com>
+Subject: Re: [PATCH 3/3] migration: Replace the return path retry logic
+In-Reply-To: <ZMQ29X5/pcDkR7RC@x1n>
+References: <20230728121516.16258-1-farosas@suse.de>
+ <20230728121516.16258-4-farosas@suse.de> <ZMQ29X5/pcDkR7RC@x1n>
+Date: Mon, 31 Jul 2023 10:04:25 -0300
+Message-ID: <87ila08c6e.fsf@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH] kvm: Fix crash by initializing kvm_state early
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>,
- David Hildenbrand <david@redhat.com>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, pbonzini@redhat.com,
- philmd@linaro.org, shan.gavin@gmail.com
-References: <20230730234840.1989974-1-gshan@redhat.com>
- <af597a7c-5580-ffc5-d435-dd7e0ccc63d2@redhat.com>
- <CAFEAcA8Uc7S4oBzKi_9AGCEkNdeZX1U73bvit6RmQo8_A7QLoA@mail.gmail.com>
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <CAFEAcA8Uc7S4oBzKi_9AGCEkNdeZX1U73bvit6RmQo8_A7QLoA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=gshan@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.101, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01,
- RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain
+Received-SPF: pass client-ip=195.135.220.28; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,63 +83,201 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Peter Xu <peterx@redhat.com> writes:
 
+> On Fri, Jul 28, 2023 at 09:15:16AM -0300, Fabiano Rosas wrote:
+>> Replace the return path retry logic with finishing and restarting the
+>> thread. This fixes a race when resuming the migration that leads to a
+>> segfault.
+>> 
+>> Currently when doing postcopy we consider that an IO error on the
+>> return path file could be due to a network intermittency. We then keep
+>> the thread alive but have it do cleanup of the 'from_dst_file' and
+>> wait on the 'postcopy_pause_rp' semaphore. When the user issues a
+>> migrate resume, a new return path is opened and the thread is allowed
+>> to continue.
+>> 
+>> There's a race condition in the above mechanism. It is possible for
+>> the new return path file to be setup *before* the cleanup code in the
+>> return path thread has had a chance to run, leading to the *new* file
+>> being closed and the pointer set to NULL. When the thread is released
+>> after the resume, it tries to dereference 'from_dst_file' and crashes:
+>> 
+>> Thread 7 "return path" received signal SIGSEGV, Segmentation fault.
+>> [Switching to Thread 0x7fffd1dbf700 (LWP 9611)]
+>> 0x00005555560e4893 in qemu_file_get_error_obj (f=0x0, errp=0x0) at ../migration/qemu-file.c:154
+>> 154         return f->last_error;
+>> 
+>> (gdb) bt
+>>  #0  0x00005555560e4893 in qemu_file_get_error_obj (f=0x0, errp=0x0) at ../migration/qemu-file.c:154
+>>  #1  0x00005555560e4983 in qemu_file_get_error (f=0x0) at ../migration/qemu-file.c:206
+>>  #2  0x0000555555b9a1df in source_return_path_thread (opaque=0x555556e06000) at ../migration/migration.c:1876
+>>  #3  0x000055555602e14f in qemu_thread_start (args=0x55555782e780) at ../util/qemu-thread-posix.c:541
+>>  #4  0x00007ffff38d76ea in start_thread (arg=0x7fffd1dbf700) at pthread_create.c:477
+>>  #5  0x00007ffff35efa6f in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:95
+>> 
+>> Here's the race (important bit is open_return_path happening before
+>> migration_release_dst_files):
+>> 
+>> migration                 | qmp                         | return path
+>> --------------------------+-----------------------------+---------------------------------
+>> 			    qmp_migrate_pause()
+>> 			     shutdown(ms->to_dst_file)
+>> 			      f->last_error = -EIO
+>> migrate_detect_error()
+>>  postcopy_pause()
+>>   set_state(PAUSED)
+>>   wait(postcopy_pause_sem)
+>> 			    qmp_migrate(resume)
+>> 			    migrate_fd_connect()
+>> 			     resume = state == PAUSED
+>> 			     open_return_path <-- TOO SOON!
+>> 			     set_state(RECOVER)
+>> 			     post(postcopy_pause_sem)
+>> 							(incoming closes to_src_file)
+>> 							res = qemu_file_get_error(rp)
+>> 							migration_release_dst_files()
+>> 							ms->rp_state.from_dst_file = NULL
+>>   post(postcopy_pause_rp_sem)
+>> 							postcopy_pause_return_path_thread()
+>> 							  wait(postcopy_pause_rp_sem)
+>> 							rp = ms->rp_state.from_dst_file
+>> 							goto retry
+>> 							qemu_file_get_error(rp)
+>> 							SIGSEGV
+>> -------------------------------------------------------------------------------------------
+>> 
+>> We can keep the retry logic without having the thread alive and
+>> waiting. The only piece of data used by it is the 'from_dst_file' and
+>> it is only allowed to proceed after a migrate resume is issued and the
+>> semaphore released at migrate_fd_connect().
+>> 
+>> Move the retry logic to outside the thread by having
+>> open_return_path_on_source() wait for the thread to finish before
+>> creating a new one with the updated 'from_dst_file'.
+>
+> If we can remove that (along with the sync sem) it'll be pretty nice.  If
+> you want, and if this works well, not sure whether you're interested in
+> doing similarly to the other threads.  Currently we halt all the threads,
+> I'm not sure whether we can do similiar things on dest and whether that can
+> also benefit on sync efforts.
 
-On 7/31/23 22:39, Peter Maydell wrote:
-> On Mon, 31 Jul 2023 at 08:18, David Hildenbrand <david@redhat.com> wrote:
->>
->> On 31.07.23 01:48, Gavin Shan wrote:
->>> Runs into core dump on arm64 and the backtrace extracted from the
->>> core dump is shown as below. It's caused by accessing @kvm_state which
->>> isn't initialized at that point due to commit 176d073029 ("hw/arm/virt:
->>> Use machine_memory_devices_init()"), where the machine's memory region
->>> is added ealier than before.
->>
->> s/ealier/earlier/
->>
->>>
->>>       main
->>>       qemu_init
->>>       configure_accelerators
->>>       qemu_opts_foreach
->>>       do_configure_accelerator
->>>       accel_init_machine
->>>       kvm_init
->>>       virt_kvm_type
->>>       virt_set_memmap
->>>       machine_memory_devices_init
->>>       memory_region_add_subregion
->>>       memory_region_add_subregion_common
->>>       memory_region_update_container_subregions
->>>       memory_region_transaction_begin
->>>       qemu_flush_coalesced_mmio_buffer
->>>       kvm_flush_coalesced_mmio_buffer
->>>
->>> Fix it by initializing @kvm_state early. With this applied, no crash
->>> is observed on arm64.
-> 
->> As an alternative, we might simply do nothing in
->> kvm_flush_coalesced_mmio_buffer(), in case kvm_state is not setup yet.
->> We don't have any notifier registered in that case.
-> 
-> Yes, this seems better I think -- conceptually kvm_init()
-> probably ought to first set up the accelerator state and
-> then set kvm_state last, so that other code that looks
-> at the kvm_state global either sees NULL or else a
-> completely valid state, not a possibly half-initialised
-> one. (We should probably also NULL the global in the
-> error-exit path, though I imagine we're about to exit
-> in that case.)
-> 
-> Is somebody able to write/test a patch for that today?
-> Ideally we'd fix this for tomorrow's rc...
-> 
+I'm interested but I don't know the postcopy code too well, I'll have to
+spend some time with it.
 
-Thanks for your comments, David and Peter. v2 was posted for a quick merge.
+Next on my list was the multifd p->running flag which seems entirely
+superfluous to me.
 
-https://lists.nongnu.org/archive/html/qemu-arm/2023-07/msg00702.html
+>
+> Still one comment below.
+>
+>> 
+>> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+>> ---
+>>  migration/migration.c | 72 +++++++++++++++----------------------------
+>>  migration/migration.h |  1 -
+>>  2 files changed, 25 insertions(+), 48 deletions(-)
+>> 
+>> diff --git a/migration/migration.c b/migration/migration.c
+>> index d6f4470265..36cdd7bda8 100644
+>> --- a/migration/migration.c
+>> +++ b/migration/migration.c
+>> @@ -97,6 +97,7 @@ static int migration_maybe_pause(MigrationState *s,
+>>                                   int *current_active_state,
+>>                                   int new_state);
+>>  static void migrate_fd_cancel(MigrationState *s);
+>> +static int await_return_path_close_on_source(MigrationState *ms);
+>>  
+>>  static bool migration_needs_multiple_sockets(void)
+>>  {
+>> @@ -1764,18 +1765,6 @@ static void migrate_handle_rp_req_pages(MigrationState *ms, const char* rbname,
+>>      }
+>>  }
+>>  
+>> -/* Return true to retry, false to quit */
+>> -static bool postcopy_pause_return_path_thread(MigrationState *s)
+>> -{
+>> -    trace_postcopy_pause_return_path();
+>> -
+>> -    qemu_sem_wait(&s->postcopy_pause_rp_sem);
+>> -
+>> -    trace_postcopy_pause_return_path_continued();
+>> -
+>> -    return true;
+>> -}
+>> -
+>>  static int migrate_handle_rp_recv_bitmap(MigrationState *s, char *block_name)
+>>  {
+>>      RAMBlock *block = qemu_ram_block_by_name(block_name);
+>> @@ -1859,7 +1848,6 @@ static void *source_return_path_thread(void *opaque)
+>>      trace_source_return_path_thread_entry();
+>>      rcu_register_thread();
+>>  
+>> -retry:
+>>      while (!ms->rp_state.error && !qemu_file_get_error(rp) &&
+>>             migration_is_setup_or_active(ms->state)) {
+>>          trace_source_return_path_thread_loop_top();
+>> @@ -1981,28 +1969,18 @@ retry:
+>>      }
+>>  
+>>  out:
+>> -    res = qemu_file_get_error(rp);
+>> -    if (res) {
+>> -        if (res && migration_in_postcopy()) {
+>> +    if (qemu_file_get_error(rp)) {
+>> +        if (migration_in_postcopy()) {
+>>              /*
+>> -             * Maybe there is something we can do: it looks like a
+>> -             * network down issue, and we pause for a recovery.
+>> +             * This could be a network issue that would have been
+>> +             * detected by the main migration thread and caused the
+>> +             * migration to pause. Do cleanup and finish.
+>>               */
+>> -            migration_release_dst_files(ms);
+>> -            rp = NULL;
+>> -            if (postcopy_pause_return_path_thread(ms)) {
+>> -                /*
+>> -                 * Reload rp, reset the rest.  Referencing it is safe since
+>> -                 * it's reset only by us above, or when migration completes
+>> -                 */
+>> -                rp = ms->rp_state.from_dst_file;
+>> -                ms->rp_state.error = false;
+>> -                goto retry;
+>> -            }
+>> +            ms->rp_state.error = false;
+>> +        } else {
+>> +            trace_source_return_path_thread_bad_end();
+>> +            mark_source_rp_bad(ms);
+>>          }
+>> -
+>> -        trace_source_return_path_thread_bad_end();
+>> -        mark_source_rp_bad(ms);
+>>      }
+>>  
+>>      trace_source_return_path_thread_end();
+>> @@ -2012,8 +1990,21 @@ out:
+>>  }
+>>  
+>>  static int open_return_path_on_source(MigrationState *ms,
+>> -                                      bool create_thread)
+>> +                                      bool resume)
+>>  {
+>> +    if (resume) {
+>> +        assert(ms->state == MIGRATION_STATUS_POSTCOPY_PAUSED);
+>> +
+>> +        /*
+>> +         * We're resuming from a paused postcopy migration. Wait for
+>> +         * the thread to do its cleanup before re-opening the return
+>> +         * path.
+>> +         */
+>> +        if (await_return_path_close_on_source(ms)) {
+>> +            return -1;
+>> +        }
+>
+> This smells a bit hacky.  Can we do this in postcopy_pause(), perhaps
+> before we switch to PAUSED state?  Then we know after being PAUSED we're
+> ready to recover.
 
-Thanks,
-Gavin
+It looks like we could. I'll move it.
 
 
