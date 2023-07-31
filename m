@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 504FE769F66
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 19:22:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48512769F75
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 19:26:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQWbA-0007cJ-0W; Mon, 31 Jul 2023 13:22:24 -0400
+	id 1qQWeK-00009u-Ca; Mon, 31 Jul 2023 13:25:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qQWb2-0007c0-Kb
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 13:22:19 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qQWeG-00009m-7E
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 13:25:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qQWb1-0003Hu-8T
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 13:22:16 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qQWeC-000416-VU
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 13:25:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690824132;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1690824331;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=XWICzdCPmUTJX/+ZHynxSMjBmCq9ZDxjynL/w9DWhcs=;
- b=QdToZJJfCU8LglqCxXUsSWbpRrSROjAv7ZwQ9F3JwkwaaN4TeZITm+3OpS8lFuYtQ3DLnS
- PAUIecocbhwTDyB1QOPcGyabTMVe5OcSESI9o+LY/iyWE7C4+0BrG1KorRq3E07IUhUxab
- x1EvIEbOnGRTztrTVnuGtLX1Uxnpx/I=
+ bh=gVfGik6EnEDxeho7tEDCXJ3DG3m4WPCUrnMIWOsLU8g=;
+ b=MS0ixErcaLpRzdg9c2Sz4gakRpSRDu0ARx1GeI7mufaI48TrokjnCL6gvXWGU8v6T9b6aS
+ jG4WxDyRDRLf7LCp2jpCZBsQfQIgjPFMVpI3297YfRG9gAgZ6gbhwCmyUoCdFBIKsaExnd
+ jZLKKvvn3E5ByUP31CEpwuaiQyG5Hzc=
 Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-30-grBvdCx7P7qw3lCg8_9SnA-1; Mon, 31 Jul 2023 13:22:10 -0400
-X-MC-Unique: grBvdCx7P7qw3lCg8_9SnA-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
+ us-mta-477--LmCnhERNvSHQcYT3XZsAQ-1; Mon, 31 Jul 2023 13:25:28 -0400
+X-MC-Unique: -LmCnhERNvSHQcYT3XZsAQ-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 556A61C068C5;
- Mon, 31 Jul 2023 17:22:06 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.193.50])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 1DA12492B03;
- Mon, 31 Jul 2023 17:22:06 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 16D6621E692A; Mon, 31 Jul 2023 19:22:05 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,  Sean Christopherson
- <seanjc@google.com>,  David Hildenbrand <david@redhat.com>,  Igor Mammedov
- <imammedo@redhat.com>,  "Michael S. Tsirkin" <mst@redhat.com>,  Marcel
- Apfelbaum <marcel.apfelbaum@gmail.com>,  Richard Henderson
- <richard.henderson@linaro.org>,  Marcelo Tosatti <mtosatti@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,  Eric Blake <eblake@redhat.com>,
- Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>,  Peter Xu <peterx@redhat.com>,  Chao Peng
- <chao.p.peng@linux.intel.com>,  Michael Roth <michael.roth@amd.com>,
- isaku.yamahata@gmail.com,  qemu-devel@nongnu.org,  kvm@vger.kernel.org
-Subject: Re: [RFC PATCH 08/19] HostMem: Add private property to indicate to
- use kvm gmem
-References: <20230731162201.271114-1-xiaoyao.li@intel.com>
- <20230731162201.271114-9-xiaoyao.li@intel.com>
-Date: Mon, 31 Jul 2023 19:22:05 +0200
-In-Reply-To: <20230731162201.271114-9-xiaoyao.li@intel.com> (Xiaoyao Li's
- message of "Mon, 31 Jul 2023 12:21:50 -0400")
-Message-ID: <87o7js808y.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C53F43C0ED40;
+ Mon, 31 Jul 2023 17:25:27 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.93])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id BEBB640C2063;
+ Mon, 31 Jul 2023 17:25:26 +0000 (UTC)
+Date: Mon, 31 Jul 2023 18:25:24 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: Thomas Huth <thuth@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+ Stefan Weil <sw@weilnetz.de>, Yonggang Luo <luoyonggang@gmail.com>
+Subject: Re: [RFC PATCH 5/6] include/qemu/compiler: Fix problem with
+ gcc_struct and Clang
+Message-ID: <ZMfuhFxIcSZtqCdO@redhat.com>
+References: <20230728142748.305341-1-thuth@redhat.com>
+ <20230728142748.305341-6-thuth@redhat.com>
+ <CAFEAcA9PuwSzaWXJYrF9PTs8Yz9oG6_sUY=p7S5rnx6NiS1HeQ@mail.gmail.com>
+ <6ca265d4-0dad-3725-1cd5-84da685bc63a@redhat.com>
+ <ZMd/pdT5DmPxtjYW@redhat.com>
+ <2ff2a91e-6199-045b-c86e-1023e88eb32c@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2ff2a91e-6199-045b-c86e-1023e88eb32c@linaro.org>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -88,47 +88,48 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Xiaoyao Li <xiaoyao.li@intel.com> writes:
+On Mon, Jul 31, 2023 at 04:10:36PM +0200, Philippe Mathieu-Daudé wrote:
+> On 31/7/23 11:32, Daniel P. Berrangé wrote:
+> 
+> > I was surprised to see that we're not using ccache in gitlab CI. It wouldn't
+> > help the from-clean compile time, but thereafter it ought to help. I'm doing
+> > some tests with that to see the impact.
+> 
+> I tried that few years ago and this had very negative impact on custom
+> runners (maybe I wasn't doing it correctly). Hopefully that changed.
 
-> From: Isaku Yamahata <isaku.yamahata@intel.com>
->
-> Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
-> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Our runner usage model has changed since then quite alot. What was previously
+mostly on shared runners, is now on Azure private runners. I can imagine it
+will vary tremendously on what you're using as a private runner.
 
-[...]
+In the specific case of the windows jobs though, we're using the shared
+runners.
 
-> diff --git a/qapi/qom.json b/qapi/qom.json
-> index 7f92ea43e8e1..e0b2044e3d20 100644
-> --- a/qapi/qom.json
-> +++ b/qapi/qom.json
-> @@ -605,6 +605,9 @@
->  # @reserve: if true, reserve swap space (or huge pages) if applicable
->  #     (default: true) (since 6.1)
->  #
-> +# @private: if true, use KVM gmem private memory
-> +#           (default: false) (since 8.1)
-> +#
+Either way, if our jobs are all wired up for ccache correctly, it is then
+trivial to selectively turn off usage of ccache by just tweaking a few
+env vars.
 
-Please format like
+> See some previous comments:
+> https://lists.nongnu.org/archive/html/qemu-devel/2021-04/msg02220.html
+> 
+> > Another option might be to try precompiled headers, which meson supports
+> > quite nicely / transparently. Might especially help on Windows where the
+> > entire world is declared in windows.h
+> > 
+> > 
+> > With regards,
+> > Daniel
+> 
 
-   # @private: if true, use KVM gmem private memory (default: false)
-   #     (since 8.1)
-
-to blend in with recent commit a937b6aa739 (qapi: Reformat doc comments
-to conform to current conventions).
-
->  # @size: size of the memory region in bytes
->  #
->  # @x-use-canonical-path-for-ramblock-id: if true, the canonical path
-> @@ -631,6 +634,7 @@
->              '*prealloc-context': 'str',
->              '*share': 'bool',
->              '*reserve': 'bool',
-> +            '*private': 'bool',
->              'size': 'size',
->              '*x-use-canonical-path-for-ramblock-id': 'bool' } }
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
