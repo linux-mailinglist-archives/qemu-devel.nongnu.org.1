@@ -2,73 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 774E67692C4
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 12:09:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE12E7692E2
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 12:17:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQPpm-0007PK-AK; Mon, 31 Jul 2023 06:09:02 -0400
+	id 1qQPwW-0004Xq-Mc; Mon, 31 Jul 2023 06:16:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1qQPph-0007On-Ss
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 06:08:57 -0400
-Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1qQPpf-0003sc-3c
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 06:08:57 -0400
-Received: by mail-ej1-x632.google.com with SMTP id
- a640c23a62f3a-99c1d03e124so64497066b.2
- for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 03:08:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=jms.id.au; s=google; t=1690798133; x=1691402933;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=dvmzdTWPLUoH2OThh4NDIdXgzp8yb2XuT3JilMo8co4=;
- b=f/aC48UC1eoQ9KbvnSPJWR7fsQDz2+oBiqBYSlV8hjhF6PptjlnLP/RZCnMV+Osn2N
- ThDrkBi7pXILnYkFY+4gaGbmsZeQGBNNCWB1baDnrPJ160ka479+mKdHZ5rb+9++Kkyn
- H8TkkmaNVbqTI9m2+Mg4MWiNJWZUWFO23BBCo=
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1qQPwM-0004XQ-Na
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 06:15:51 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1qQPwK-00058Y-Tk
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 06:15:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1690798547;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=2op9uT+D64YwC/WB7rjKWmmlh8/31Sr0Yo7KKu8TK2w=;
+ b=RpnMOj4n3N+XYn4dftyVIZxs8bhcDRMHCqf7LaPsKKyX5dfgHnuBC1hMhFXAHxEmCmomYu
+ GHeqXf21sPWxmPhn/onA4y5dOcJL4ENZkEFeU98j48kPKM3D6y0cfpPgJ33M57wqhehGPM
+ dyYQjwBO9XvWHh9lrheN4vnJvRRhThk=
+Received: from mail-vs1-f72.google.com (mail-vs1-f72.google.com
+ [209.85.217.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-191-T5mMAVeSMWOu6vyb5xv3Gw-1; Mon, 31 Jul 2023 06:15:46 -0400
+X-MC-Unique: T5mMAVeSMWOu6vyb5xv3Gw-1
+Received: by mail-vs1-f72.google.com with SMTP id
+ ada2fe7eead31-4475debcebfso731404137.0
+ for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 03:15:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690798133; x=1691402933;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=dvmzdTWPLUoH2OThh4NDIdXgzp8yb2XuT3JilMo8co4=;
- b=ZypXzCOG8CPNGAFSK+/e3ndRVI7LKYHaSV8ess/uubZ+2wfoxxtOTSdN0GXH5kspvb
- KrViGFB0coCovR9D5J06hRWKnGztaHgDDU45Ny+CI1eA3nJ0eYQMOHxBGY3mTiKkl3sg
- SSbdiNEotx9DaHxvqC4xrCu+1DQx2Gyb3oBMayk+rASFINz/qDyXa9cZDxD0drBWJHVz
- Xb32vTOwnQ6apX4Fmxy1iMxMfG6vc+HRTq4lSMXijbBQP17o0bkxEA0n79f3ViUeNrm/
- wEIcnUtWGj8m+Qpcug4bS3086/wbD2iAN6FkRgGZxRyGvOG4P126gTsjXQgbqH72M+gc
- VI7w==
-X-Gm-Message-State: ABy/qLYTlpnHOauqWbXeHjK7VmIsZKLSypPgklH5bqIht8wxVj7QFQt6
- /Lh/IiM1miSduBAM0zxsWS+sdE9j4wJpprNdDyE=
-X-Google-Smtp-Source: APBJJlFLxeKNFtfDgSyKZuB4sl2JMiCXRQOYvpOflxU6bWQmXw1nDhhOJc9xq10D8USTVj/618r8bohH0mWo9PUChIw=
-X-Received: by 2002:a17:907:1dea:b0:99b:4a2b:2ea3 with SMTP id
- og42-20020a1709071dea00b0099b4a2b2ea3mr5744920ejc.17.1690798132867; Mon, 31
- Jul 2023 03:08:52 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1690798546; x=1691403346;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=2op9uT+D64YwC/WB7rjKWmmlh8/31Sr0Yo7KKu8TK2w=;
+ b=RcXUAKXYSVvcWoT+Fxb/KHHFnpIYawwnBluX5jwuSnIbqKAPFfb32TotfWKlWXc32l
+ k0bDhm9j8lLa9enESQ/iSDIy76vq0L00Fyqa5qfnJM1xxon0zlVQb0hB1qdVY66PTt2B
+ VqsebB5g7r2pN/AJf1DYd+VRgv7panNFk7DlTOFNmUyMdoybQqvs0cCyh0+vgR0bIPDt
+ 2wHYjYgYB0G1jeo36iw5VqPr9medmz4tL0EqRs6VDscjYWXQUqkEPwfeYzLcbXgWGcym
+ PjdO4eBvw6+vN2tB5EgRcqRuzbtaj3mY/ag7++70tUcaOtCzR5bM0SUOytTrDhc5/EL7
+ 4spg==
+X-Gm-Message-State: ABy/qLZPjHlKZsaF5mIqc6kWhKKLSso3gegChGBSi0xnhg+lcRZIrwUi
+ CQPaYHVXUHd8MUEgEJVh0ZGcOnUjS/IPllqgb1oHHZ7TkO+ZKZq9eGuBsmvlyaV2WOt9fkcOxf/
+ xeXSYHC6fmqzWCCrTuDYJKherDo1roG8=
+X-Received: by 2002:a67:e90a:0:b0:447:7cb1:3148 with SMTP id
+ c10-20020a67e90a000000b004477cb13148mr1840727vso.33.1690798545609; 
+ Mon, 31 Jul 2023 03:15:45 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlGURdqy3aAtCWZzsh86XSQmBmVx9dW5T0KYauK3FigVUtjvg4G/ipzFUnIzc8wAlWybgHr9BJy8mQhGP9+NuAY=
+X-Received: by 2002:a67:e90a:0:b0:447:7cb1:3148 with SMTP id
+ c10-20020a67e90a000000b004477cb13148mr1840712vso.33.1690798545124; Mon, 31
+ Jul 2023 03:15:45 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230728173127.259192-1-deller@gmx.de>
-In-Reply-To: <20230728173127.259192-1-deller@gmx.de>
-From: Joel Stanley <joel@jms.id.au>
-Date: Mon, 31 Jul 2023 10:08:40 +0000
-Message-ID: <CACPK8XeyqcEDyyL3Jw2WYWs_gGdtTCf2=Ly04CMgkshSMdj7RA@mail.gmail.com>
-Subject: Re: [PATCH v5 0/3] linux-user: Fix and optimize target memory layout
-To: Helge Deller <deller@gmx.de>
-Cc: qemu-devel@nongnu.org, Laurent Vivier <laurent@vivier.eu>, 
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>
+References: <20230728172028.2074052-1-eperezma@redhat.com>
+ <CACGkMEsPRp5ieCXyVDu0z0xynATL8eeY5Dtb8QNPo7f2Gde=ww@mail.gmail.com>
+In-Reply-To: <CACGkMEsPRp5ieCXyVDu0z0xynATL8eeY5Dtb8QNPo7f2Gde=ww@mail.gmail.com>
+From: Eugenio Perez Martin <eperezma@redhat.com>
+Date: Mon, 31 Jul 2023 12:15:08 +0200
+Message-ID: <CAJaqyWccXD1PcA=jV59LCkxzCbnvghtPrk_ShFscdDXe1Aj4uQ@mail.gmail.com>
+Subject: Re: [PATCH 0/7] Enable vdpa net migration with features depending on
+ CVQ
+To: Jason Wang <jasowang@redhat.com>
+Cc: qemu-devel@nongnu.org, Gautam Dawar <gdawar@xilinx.com>,
+ si-wei.liu@oracle.com, 
+ Zhu Lingshan <lingshan.zhu@intel.com>, Stefano Garzarella <sgarzare@redhat.com>,
+ Parav Pandit <parav@mellanox.com>, Cindy Lu <lulu@redhat.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Harpreet Singh Anand <hanand@xilinx.com>,
+ Laurent Vivier <lvivier@redhat.com>, 
+ Shannon Nelson <snelson@pensando.io>, Lei Yang <leiyang@redhat.com>, 
+ Dragos Tatulea <dtatulea@nvidia.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::632;
- envelope-from=joel.stan@gmail.com; helo=mail-ej1-x632.google.com
-X-Spam_score_int: -14
-X-Spam_score: -1.5
-X-Spam_bar: -
-X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.25,
- FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,204 +103,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 28 Jul 2023 at 18:58, Helge Deller <deller@gmx.de> wrote:
+On Mon, Jul 31, 2023 at 8:41=E2=80=AFAM Jason Wang <jasowang@redhat.com> wr=
+ote:
 >
-> While trying to fix a bug which prevents running a static
-> armhf binary with linux-user, I noticed a whole bunch of
-> memory layout issues on various platforms. Most noteably
-> the free heap space was very limited in the current setup.
-> A large heap is important for example, if you want to
-> use qemu-user for building Linux packages where gcc requires
-> lots of space (e.g. using qemu-user as buildd for debian
-> packages).
+> On Sat, Jul 29, 2023 at 1:20=E2=80=AFAM Eugenio P=C3=A9rez <eperezma@redh=
+at.com> wrote:
+> >
+> > At this moment the migration of net features that depends on CVQ is not
+> > possible, as there is no reliable way to restore the device state like =
+mac
+> > address, number of enabled queues, etc to the destination.  This is mai=
+nly
+> > caused because the device must only read CVQ, and process all the comma=
+nds
+> > before resuming the dataplane.
+> >
+> > This series lift that requirement, sending the VHOST_VDPA_SET_VRING_ENA=
+BLE
+> > ioctl for dataplane vqs only after the device has processed all command=
+s.
 >
-> Those findings led to this patch series, which
-> - fixes qemu-arm to run static armhf binaries
+> I think it's better to explain (that is what I don't understand) why
+> we can not simply reorder vhost_net_start_one() in vhost_net_start()?
+>
+>     for (i =3D 0; i < nvhosts; i++) {
+>         if (i < data_queue_pairs) {
+>             peer =3D qemu_get_peer(ncs, i);
+>         } else {
+>             peer =3D qemu_get_peer(ncs, n->max_queue_pairs);
+>         }
+>
+>         if (peer->vring_enable) {
+>             /* restore vring enable state */
+>             r =3D vhost_set_vring_enable(peer, peer->vring_enable);
+>
+>             if (r < 0) {
+>                 goto err_start;
+>             }
+>         }
+>
+> =3D>      r =3D vhost_net_start_one(get_vhost_net(peer), dev);
+>         if (r < 0) {
+>             goto err_start;
+>         }
+>     }
+>
+> Can we simply start cvq first here?
+>
 
-Applying this on top of master and trying to run a simple armhf binary
-on a ppc64le host fails:
+Well the current order is:
+* set dev features (conditioned by
+* Configure all vq addresses
+* Configure all vq size
+...
+* Enable cvq
+* DRIVER_OK
+* Enable all the rest of the queues.
 
-qemu$ ./build/qemu-arm -d guest_errors,page,strace ~/hello-armhf
-host mmap_min_addr=0x10000
-pgb_find_hole: base @ 10000 for 4294967296 bytes
-pgb_static: base @ 10000 for 4294967295 bytes
-pgb_reserved_va: base @ 0x10000 for 4294967296 bytes
-Locating guest address space @ 0x10000
-page layout changed following mmap
-start    end      size     prot
-00010000-00060000 00050000 ---
-00060000-00066000 00006000 ---
-ffff0000-00000000 00010000 r-x
-page layout changed following mmap
-start    end      size     prot
-00010000-00060000 00050000 r-x
-00060000-00066000 00006000 ---
-ffff0000-00000000 00010000 r-x
-page layout changed following mmap
-start    end      size     prot
-00010000-00060000 00050000 r-x
-00060000-00064000 00004000 rw-
-00064000-00066000 00002000 ---
-ffff0000-00000000 00010000 r-x
-page layout changed following mmap
-start    end      size     prot
-00010000-00060000 00050000 r-x
-00060000-00064000 00004000 rw-
-00064000-00066000 00002000 rw-
-f3000000-f3810000 00810000 rw-
-ffff0000-00000000 00010000 r-x
-page layout changed following mmap
-start    end      size     prot
-00010000-00060000 00050000 r-x
-00060000-00064000 00004000 rw-
-00064000-00066000 00002000 rw-
-f3000000-f3010000 00010000 ---
-f3010000-f3811000 00801000 rw-
-ffff0000-00000000 00010000 r-x
-guest_base  0x10000
-page layout changed following binary load
-start    end      size     prot
-00010000-00060000 00050000 r-x
-00060000-00064000 00004000 rw-
-00064000-00066000 00002000 rw-
-f3000000-f3010000 00010000 ---
-f3010000-f3810000 00800000 rw-
-f3810000-f3811000 00001000 r-x
-ffff0000-00000000 00010000 r-x
-start_brk   0x00000000
-end_code    0x0005f9c8
-start_code  0x00010000
-start_data  0x00060414
-end_data    0x0006327c
-start_stack 0xf380f420
-brk         0x00066000
-entry       0x00010341
-argv_start  0xf380f424
-env_start   0xf380f42c
-auxv_start  0xf380f4a8
-95718 brk(NULL) = 0x00066000
-95718 brk(0x00066874) = 0x00066874
-95718 set_tid_address(0x66068) = 95718
-95718 set_robust_list(0x6606c,12) = -1 errno=38 (Function not implemented)
-95718 Unknown syscall 398
-95718 ugetrlimit(3,-209652764,328608,404128,401408,1) = 0
-95718 readlinkat(AT_FDCWD,"/proc/self/exe",0xf380e390,4096) = 22
-95718 getrandom(0x65940,4,1) = 4
-95718 brk(NULL) = 0x00066874
-95718 brk(0x00087874)page layout changed following mmap
-start    end      size     prot
-00010000-00060000 00050000 r-x
-00060000-00064000 00004000 rw-
-00064000-00066000 00002000 rw-
-00070000-00090000 00020000 rw-
-f3000000-f3010000 00010000 ---
-f3010000-f3810000 00800000 rw-
-f3810000-f3811000 00001000 r-x
-ffff0000-00000000 00010000 r-x
- = 0x00087874
-95718 brk(0x00088000) = 0x00088000
-95718 mprotect(0x00060000,8192,PROT_READ) = 0
-95718 statx(1,"",AT_EMPTY_PATH|AT_NO_AUTOMOUNT|AT_STATX_SYNC_AS_STAT,STATX_BASIC_STATS,0xf380f078)
-= 0
-95718 write(1,0x66b08,14) = -1 errno=14 (Bad address)
-95718 exit_group(0)
+If we just start CVQ first, we need to modify vhost_vdpa_set_features
+as minimum. A lot of code that depends on vdev->vq_index{,_end} may be
+affected.
 
-A working arm binary by comparison:
+Also, I'm not sure if all the devices will support configure address,
+vq size, etc after DRIVER_OK.
 
-qemu$ ./build/qemu-arm -d guest_errors,page,strace ~/hello
-host mmap_min_addr=0x10000
-pgb_find_hole: base @ 10000 for 4294967296 bytes
-pgb_static: base @ 10000 for 4294967295 bytes
-pgb_reserved_va: base @ 0x10000 for 4294967296 bytes
-Locating guest address space @ 0x10000
-page layout changed following mmap
-start    end      size     prot
-00010000-00090000 00080000 ---
-00090000-0009b000 0000b000 ---
-ffff0000-00000000 00010000 r-x
-page layout changed following mmap
-start    end      size     prot
-00010000-00090000 00080000 r-x
-00090000-0009b000 0000b000 ---
-ffff0000-00000000 00010000 r-x
-page layout changed following mmap
-start    end      size     prot
-00010000-00090000 00080000 r-x
-00090000-000a0000 00010000 rw-
-ffff0000-00000000 00010000 r-x
-page layout changed following mmap
-start    end      size     prot
-00010000-00090000 00080000 r-x
-00090000-000a0000 00010000 rw-
-f3000000-f3810000 00810000 rw-
-ffff0000-00000000 00010000 r-x
-page layout changed following mmap
-start    end      size     prot
-00010000-00090000 00080000 r-x
-00090000-000a0000 00010000 rw-
-f3000000-f3010000 00010000 ---
-f3010000-f3811000 00801000 rw-
-ffff0000-00000000 00010000 r-x
-guest_base  0x10000
-page layout changed following binary load
-start    end      size     prot
-00010000-00090000 00080000 r-x
-00090000-000a0000 00010000 rw-
-f3000000-f3010000 00010000 ---
-f3010000-f3810000 00800000 rw-
-f3810000-f3811000 00001000 r-x
-ffff0000-00000000 00010000 r-x
-start_brk   0x00000000
-end_code    0x00084f7c
-start_code  0x00010000
-start_data  0x00095098
-end_data    0x00098394
-start_stack 0xf380f430
-brk         0x0009b000
-entry       0x00010418
-argv_start  0xf380f434
-env_start   0xf380f43c
-auxv_start  0xf380f4b8
-95733 brk(NULL) = 0x0009b000
-95733 brk(0x0009b8fc) = 0x0009b8fc
-95733 set_tid_address(0x9b068) = 95733
-95733 set_robust_list(0x9b070,12) = -1 errno=38 (Function not implemented)
-95733 Unknown syscall 398
-95733 uname(0xfffffffff380f270) = 0
-95733 ugetrlimit(3,-209652756,469816,622616,618496,1) = 0
-95733 readlink("/proc/self/exe",0xf380e380,4096) = 16
-95733 getrandom(0x9ab10,4,1) = 4
-95733 brk(0x000cb8fc)page layout changed following mmap
-start    end      size     prot
-00010000-00090000 00080000 r-x
-00090000-000a0000 00010000 rw-
-000a0000-000d0000 00030000 rw-
-f3000000-f3010000 00010000 ---
-f3010000-f3810000 00800000 rw-
-f3810000-f3811000 00001000 r-x
-ffff0000-00000000 00010000 r-x
- = 0x000cb8fc
-95733 brk(0x000d0000) = 0x000d0000
-95733 statx(1,"",AT_EMPTY_PATH|AT_NO_AUTOMOUNT|AT_STATX_SYNC_AS_STAT,STATX_BASIC_STATS,0xf380f0b8)
-= 0
-95733 write(1,0x9bb90,14)Hello, World!
- = 14
-95733 exit_group(0)
+> Thanks
+>
+> > ---
+> > From FRC:
+> > * Enable vqs early in case CVQ cannot be shadowed.
+> >
+> > Eugenio P=C3=A9rez (7):
+> >   vdpa: export vhost_vdpa_set_vring_ready
+> >   vdpa: add should_enable op
+> >   vdpa: use virtio_ops->should_enable at vhost_vdpa_set_vrings_ready
+> >   vdpa: add stub vhost_vdpa_should_enable
+> >   vdpa: delay enable of data vqs
+> >   vdpa: enable cvq svq if data vq are shadowed
+> >   vdpa: remove net cvq migration blocker
+> >
+> >  include/hw/virtio/vhost-vdpa.h |  9 +++++
+> >  hw/virtio/vhost-vdpa.c         | 33 ++++++++++++----
+> >  net/vhost-vdpa.c               | 69 ++++++++++++++++++++++++++--------
+> >  hw/virtio/trace-events         |  2 +-
+> >  4 files changed, 89 insertions(+), 24 deletions(-)
+> >
+> > --
+> > 2.39.3
+> >
+> >
+>
 
-The test program is:
-
-#include <stdio.h>
-int main() { printf("Hello, World!\n");}
-
-Built like this:
-
-arm-linux-gnueabihf-gcc -o hello-armhf hello.c -static
-
-arm-linux-gnueabi-gcc -o hello hello.c -static
-
-on an Ubuntu 23.04 host.
-
-Cheers,
-
-Joel
 
