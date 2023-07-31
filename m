@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A014769CA0
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 18:33:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BD0B769CA5
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 18:34:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQVpr-0003nb-VL; Mon, 31 Jul 2023 12:33:32 -0400
+	id 1qQVqF-0004cf-IZ; Mon, 31 Jul 2023 12:33:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1qQVpp-0003gs-6V
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 12:33:29 -0400
+ id 1qQVq5-0004RF-Vm
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 12:33:46 -0400
 Received: from [134.134.136.126] (helo=mgamail.intel.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1qQVpn-0001LE-9j
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 12:33:28 -0400
+ id 1qQVq3-0001Oy-S0
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 12:33:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1690821207; x=1722357207;
+ t=1690821223; x=1722357223;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=/dXf+igjdEHFljunA6/Y/7Okg+auCCSxG402x9zxZbs=;
- b=RiduMP4j0YOV5jpgr8ue4G6PeyuCb52e54o0WeVQAxGM4lm7tDFFI5oM
- g6eu5gh6kVRLfs7NtyiP6BIk0gJo1c9LrfRxJnV7Reirz57A2IMHkgDrM
- RN9ls/Xq5g5fk3t+IIBYdiWVFFtkN97FMIdGL+YsZ3oCg9qEXs3s7NSPn
- rRgVr3RTl+QktlPk6lSCSvtaeWrlJkFE8Q2exJ4wz2aSVd/rNuaO7m3XK
- 9IZt1jUPLDTBZahFAc6sKyFBD35QuGCl8wQSWZCSQR9YfhsNIaUbhHOmn
- JTPPYaayyFePXL1yEpC2kPyIwsnaJJq6ptZAnloHQk2u1OUS/3uQG2Gcn w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10788"; a="353993558"
-X-IronPort-AV: E=Sophos;i="6.01,244,1684825200"; d="scan'208";a="353993558"
+ bh=GSbcff0w9eBcLKQoepD8WEW33V5SkOKmuZmwcCsYEA0=;
+ b=NTlfG4LxaWZX26o/nJ0Ut5/yHPWaViOZxlu9Rtjb1cK2VV2Byb6+J+38
+ mQxXcvmHpEjYazh/o1xSwo3yjMHNFU3oQRRnUdE0gKfKT+PPy1IeBHsio
+ G0e7QRmF1lND7XFi5HimFhGxbmY+Dg3ReG1jnpCL5g6heL7t7paHEnoIH
+ TbU232/Q8Z0PABzS9Ub3qfcLIPvQwbp2NkPQE853ly9Nqj2E0G4stlY8+
+ H/zPuH1FKtGABDD0mEXE1/uvVgREro+yRQS+3fXp7H2CQIl/xgDvnyT2l
+ 3NsQiBoiI0q+pLeqhVZqVBt8yHmtjNgQSketCEmIqWCeM4vMhVJ5enF/e Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10788"; a="353993572"
+X-IronPort-AV: E=Sophos;i="6.01,244,1684825200"; d="scan'208";a="353993572"
 Received: from orsmga008.jf.intel.com ([10.7.209.65])
  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Jul 2023 09:25:56 -0700
+ 31 Jul 2023 09:26:01 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10788"; a="757984310"
-X-IronPort-AV: E=Sophos;i="6.01,244,1684825200"; d="scan'208";a="757984310"
+X-IronPort-AV: E=McAfee;i="6600,9927,10788"; a="757984336"
+X-IronPort-AV: E=Sophos;i="6.01,244,1684825200"; d="scan'208";a="757984336"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.46])
- by orsmga008.jf.intel.com with ESMTP; 31 Jul 2023 09:25:52 -0700
+ by orsmga008.jf.intel.com with ESMTP; 31 Jul 2023 09:25:56 -0700
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  Sean Christopherson <seanjc@google.com>,
@@ -54,9 +54,9 @@ Cc: Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>,
  Peter Xu <peterx@redhat.com>, Chao Peng <chao.p.peng@linux.intel.com>,
  Michael Roth <michael.roth@amd.com>, isaku.yamahata@gmail.com,
  xiaoyao.li@intel.com, qemu-devel@nongnu.org, kvm@vger.kernel.org
-Subject: [RFC PATCH 14/19] physmem: Add ram_block_convert_range
-Date: Mon, 31 Jul 2023 12:21:56 -0400
-Message-Id: <20230731162201.271114-15-xiaoyao.li@intel.com>
+Subject: [RFC PATCH 15/19] kvm: handle KVM_EXIT_MEMORY_FAULT
+Date: Mon, 31 Jul 2023 12:21:57 -0400
+Message-Id: <20230731162201.271114-16-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230731162201.271114-1-xiaoyao.li@intel.com>
 References: <20230731162201.271114-1-xiaoyao.li@intel.com>
@@ -90,133 +90,90 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Chao Peng <chao.p.peng@linux.intel.com>
 
-This new routine adds support for memory conversion between
-shared/private memory for gmem fd based private ram_block.
+Currently only KVM_MEMORY_EXIT_FLAG_PRIVATE in flags is valid when
+KVM_EXIT_MEMORY_FAULT happens. It indicates userspace needs to do
+the memory conversion on the RAMBlock to turn the memory into desired
+attribute, i.e., private/shared.
+
+Note, KVM_EXIT_MEMORY_FAULT makes sense only when the RAMBlock has
+gmem memory backend.
 
 Signed-off-by: Chao Peng <chao.p.peng@linux.intel.com>
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 ---
- include/exec/cpu-common.h |  2 ++
- softmmu/physmem.c         | 61 ++++++++++++++++++++++++++++++---------
- 2 files changed, 50 insertions(+), 13 deletions(-)
+ accel/kvm/kvm-all.c | 52 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 52 insertions(+)
 
-diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
-index 87dc9a752c9a..558684b9f246 100644
---- a/include/exec/cpu-common.h
-+++ b/include/exec/cpu-common.h
-@@ -157,6 +157,8 @@ typedef int (RAMBlockIterFunc)(RAMBlock *rb, void *opaque);
- 
- int qemu_ram_foreach_block(RAMBlockIterFunc func, void *opaque);
- int ram_block_discard_range(RAMBlock *rb, uint64_t start, size_t length);
-+int ram_block_convert_range(RAMBlock *rb, uint64_t start, size_t length,
-+                            bool shared_to_private);
- 
- #endif
- 
-diff --git a/softmmu/physmem.c b/softmmu/physmem.c
-index 05c981e5c18e..2acc8bee5b33 100644
---- a/softmmu/physmem.c
-+++ b/softmmu/physmem.c
-@@ -3415,15 +3415,9 @@ int qemu_ram_foreach_block(RAMBlockIterFunc func, void *opaque)
-     return ret;
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index f9b5050b8885..72d50b923bf2 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -3040,6 +3040,48 @@ static void kvm_eat_signals(CPUState *cpu)
+     } while (sigismember(&chkset, SIG_IPI));
  }
  
--/*
-- * Unmap pages of memory from start to start+length such that
-- * they a) read as 0, b) Trigger whatever fault mechanism
-- * the OS provides for postcopy.
-- * The pages must be unmapped by the end of the function.
-- * Returns: 0 on success, none-0 on failure
-- *
-- */
--int ram_block_discard_range(RAMBlock *rb, uint64_t start, size_t length)
-+static int ram_block_discard_range_fd(RAMBlock *rb, uint64_t start,
-+                                      size_t length, int fd)
-+
- {
-     int ret = -1;
- 
-@@ -3449,8 +3443,8 @@ int ram_block_discard_range(RAMBlock *rb, uint64_t start, size_t length)
-          *    fallocate works on hugepages and shmem
-          *    shared anonymous memory requires madvise REMOVE
-          */
--        need_madvise = (rb->page_size == qemu_host_page_size);
--        need_fallocate = rb->fd != -1;
-+        need_madvise = (rb->page_size == qemu_host_page_size) && (rb->fd == fd);
-+        need_fallocate = fd != -1;
-         if (need_fallocate) {
-             /* For a file, this causes the area of the file to be zero'd
-              * if read, and for hugetlbfs also causes it to be unmapped
-@@ -3475,7 +3469,7 @@ int ram_block_discard_range(RAMBlock *rb, uint64_t start, size_t length)
-                                  " users of the file", __func__);
-             }
- 
--            ret = fallocate(rb->fd, FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE,
-+            ret = fallocate(fd, FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE,
-                             start, length);
-             if (ret) {
-                 ret = -errno;
-@@ -3498,7 +3492,7 @@ int ram_block_discard_range(RAMBlock *rb, uint64_t start, size_t length)
-              * fallocate'd away).
-              */
- #if defined(CONFIG_MADVISE)
--            if (qemu_ram_is_shared(rb) && rb->fd < 0) {
-+            if (qemu_ram_is_shared(rb) && fd < 0) {
-                 ret = madvise(host_startaddr, length, QEMU_MADV_REMOVE);
-             } else {
-                 ret = madvise(host_startaddr, length, QEMU_MADV_DONTNEED);
-@@ -3528,6 +3522,20 @@ err:
-     return ret;
- }
- 
-+/*
-+ * Unmap pages of memory from start to start+length such that
-+ * they a) read as 0, b) Trigger whatever fault mechanism
-+ * the OS provides for postcopy.
-+ *
-+ * The pages must be unmapped by the end of the function.
-+ * Returns: 0 on success, none-0 on failure.
-+ */
-+int ram_block_discard_range(RAMBlock *rb, uint64_t start, size_t length)
++static int kvm_convert_memory(hwaddr start, hwaddr size, bool to_private)
 +{
-+    return ram_block_discard_range_fd(rb, start, length, rb->fd);
-+}
++    MemoryRegionSection section;
++    void *addr;
++    RAMBlock *rb;
++    ram_addr_t offset;
++    int ret = -1;
 +
-+
- bool ramblock_is_pmem(RAMBlock *rb)
- {
-     return rb->flags & RAM_PMEM;
-@@ -3715,3 +3723,30 @@ bool ram_block_discard_is_required(void)
-     return qatomic_read(&ram_block_discard_required_cnt) ||
-            qatomic_read(&ram_block_coordinated_discard_required_cnt);
- }
-+
-+int ram_block_convert_range(RAMBlock *rb, uint64_t start, size_t length,
-+                            bool shared_to_private)
-+{
-+    int fd;
-+
-+    if (!rb || rb->gmem_fd < 0) {
-+        return -1;
++    section = memory_region_find(get_system_memory(), start, size);
++    if (!section.mr) {
++        return ret;
 +    }
 +
-+    if (!QEMU_PTR_IS_ALIGNED(start, rb->page_size) ||
-+        !QEMU_PTR_IS_ALIGNED(length, rb->page_size)) {
-+        return -1;
-+    }
++    if (memory_region_can_be_private(section.mr)) {
++        if (to_private) {
++            ret = kvm_set_memory_attributes_private(start, size);
++        } else {
++            ret = kvm_set_memory_attributes_shared(start, size);
++        }
 +
-+    if (length > rb->max_length) {
-+        return -1;
-+    }
++        if (ret) {
++            return ret;
++        }
 +
-+    if (shared_to_private) {
-+        fd = rb->fd;
++        addr = memory_region_get_ram_ptr(section.mr) +
++               section.offset_within_region;
++        rb = qemu_ram_block_from_host(addr, false, &offset);
++        /*
++         * With KVM_SET_MEMORY_ATTRIBUTES by kvm_set_memory_attributes(),
++         * operation on underlying file descriptor is only for releasing
++         * unnecessary pages.
++         */
++        ram_block_convert_range(rb, offset, size, to_private);
 +    } else {
-+        fd = rb->gmem_fd;
++        warn_report("Convert non guest-memfd backed memory region (0x%"HWADDR_PRIx" ,+ 0x%"HWADDR_PRIx") to %s",
++                    start, size, to_private ? "private" : "shared");
 +    }
 +
-+    return ram_block_discard_range_fd(rb, start, length, fd);
++    memory_region_unref(section.mr);
++    return ret;
 +}
++
+ int kvm_cpu_exec(CPUState *cpu)
+ {
+     struct kvm_run *run = cpu->kvm_run;
+@@ -3198,6 +3240,16 @@ int kvm_cpu_exec(CPUState *cpu)
+                 break;
+             }
+             break;
++        case KVM_EXIT_MEMORY_FAULT:
++            if (run->memory.flags & ~KVM_MEMORY_EXIT_FLAG_PRIVATE) {
++                error_report("KVM_EXIT_MEMORY_FAULT: Unknown flag 0x%" PRIx64,
++                             (uint64_t)run->memory.flags);
++                ret = -1;
++                break;
++            }
++            ret = kvm_convert_memory(run->memory.gpa, run->memory.size,
++                                     run->memory.flags & KVM_MEMORY_EXIT_FLAG_PRIVATE);
++            break;
+         default:
+             DPRINTF("kvm_arch_handle_exit\n");
+             ret = kvm_arch_handle_exit(cpu, run);
 -- 
 2.34.1
 
