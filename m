@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93B0C769C98
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 18:33:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D245769CCB
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 18:36:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQVpc-0002We-Pd; Mon, 31 Jul 2023 12:33:16 -0400
+	id 1qQVpe-0002m0-1F; Mon, 31 Jul 2023 12:33:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1qQVpI-00027C-02
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 12:33:01 -0400
+ id 1qQVpL-00027M-Ja
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 12:33:06 -0400
 Received: from [134.134.136.126] (helo=mgamail.intel.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1qQVpG-000165-5f
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 12:32:55 -0400
+ id 1qQVpI-000165-AD
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 12:32:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1690821174; x=1722357174;
+ t=1690821176; x=1722357176;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=4pSQ7+7eqxjS895xnE1dyhv7L8BA0IkSr37vKkLRLiM=;
- b=ZFPMHnWZ+n5yzwZn8QCtZk1s18km7Bis9JR5JVacdYdD5zuiJsHR556S
- 6+Ka9lrCaxd06jMwiiQZ2w2mxQ6HN1gYmqOs1fb7E5OMQ79Ec5NzKKnfw
- //cTHfLwbMetuEumeaIJMR87kYGmBhX4c0XPWDsVrAVV+wovRUU7CmqKt
- NDtBkoB1fg/Iw0uutDmeda9F7JaViefBQQ3cWIrtyGUFOqMsXTaTmhj3X
- wGKwRyUw0JuzSB9b/ltgAMhUp5zw9ddamG76UXfbNKdgmB68cnJQ/BmLg
- W2PqeP1MFhlq6jpRiw9croN/GeO6s1Bq12fc1Ke8cyEa1JUCwU8KMy4me w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10788"; a="353993454"
-X-IronPort-AV: E=Sophos;i="6.01,244,1684825200"; d="scan'208";a="353993454"
+ bh=Ta4InYtMSOxVmVlrTdpkepm14awSYjV/tD5ZIXGmuAY=;
+ b=SBtgqK/5ZGjJ48UX75YmcFPr21nlGgLxipPRIGtXh5geFIANkT+wVyt/
+ PXsiaFYF8sTPVGFJBceX/EWYFgUcG6vTbq0rZDZlPKZAb/gTSjSbPLo6y
+ Dz1Ws4hvKRlvm9bEdUNq6cZYKBITB05TBkzSlxKBuDseoncje1guicYAA
+ JFYdLjXmF3nvEmUBr1BzCENWWQgRy8d0ZBvzizTpScaBmBDkKlhdigSL2
+ taN9UIAoIcPN1mMKvKuTcMkLrtCKGcV49F/OKFebt1f2FHaQbaoP8wyYJ
+ FZFeop6o6j5AdCOHBwhwo39U3SGm4YObO+OJWIyU1I4ffpAi0V71HY+aT w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10788"; a="353993468"
+X-IronPort-AV: E=Sophos;i="6.01,244,1684825200"; d="scan'208";a="353993468"
 Received: from orsmga008.jf.intel.com ([10.7.209.65])
  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Jul 2023 09:25:24 -0700
+ 31 Jul 2023 09:25:29 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10788"; a="757984151"
-X-IronPort-AV: E=Sophos;i="6.01,244,1684825200"; d="scan'208";a="757984151"
+X-IronPort-AV: E=McAfee;i="6600,9927,10788"; a="757984187"
+X-IronPort-AV: E=Sophos;i="6.01,244,1684825200"; d="scan'208";a="757984187"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.46])
- by orsmga008.jf.intel.com with ESMTP; 31 Jul 2023 09:25:20 -0700
+ by orsmga008.jf.intel.com with ESMTP; 31 Jul 2023 09:25:24 -0700
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  Sean Christopherson <seanjc@google.com>,
@@ -54,9 +54,10 @@ Cc: Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>,
  Peter Xu <peterx@redhat.com>, Chao Peng <chao.p.peng@linux.intel.com>,
  Michael Roth <michael.roth@amd.com>, isaku.yamahata@gmail.com,
  xiaoyao.li@intel.com, qemu-devel@nongnu.org, kvm@vger.kernel.org
-Subject: [RFC PATCH 07/19] target/i386: Implement mc->kvm_type() to get VM type
-Date: Mon, 31 Jul 2023 12:21:49 -0400
-Message-Id: <20230731162201.271114-8-xiaoyao.li@intel.com>
+Subject: [RFC PATCH 08/19] HostMem: Add private property to indicate to use
+ kvm gmem
+Date: Mon, 31 Jul 2023 12:21:50 -0400
+Message-Id: <20230731162201.271114-9-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230731162201.271114-1-xiaoyao.li@intel.com>
 References: <20230731162201.271114-1-xiaoyao.li@intel.com>
@@ -88,152 +89,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Implement mc->kvm_type() for i386 machines. It provides a way for user
-to create SW_PROTECTE_VM.
+From: Isaku Yamahata <isaku.yamahata@intel.com>
 
+Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 ---
- hw/i386/x86.c              | 27 +++++++++++++++++++++++++++
- include/hw/i386/x86.h      |  4 ++++
- target/i386/kvm/kvm.c      | 38 ++++++++++++++++++++++++++++++++++++++
- target/i386/kvm/kvm_i386.h |  1 +
- 4 files changed, 70 insertions(+)
+ backends/hostmem.c       | 18 ++++++++++++++++++
+ include/sysemu/hostmem.h |  2 +-
+ qapi/qom.json            |  4 ++++
+ 3 files changed, 23 insertions(+), 1 deletion(-)
 
-diff --git a/hw/i386/x86.c b/hw/i386/x86.c
-index a88a126123be..3ccd06154249 100644
---- a/hw/i386/x86.c
-+++ b/hw/i386/x86.c
-@@ -1382,6 +1382,26 @@ static void machine_set_sgx_epc(Object *obj, Visitor *v, const char *name,
-     qapi_free_SgxEPCList(list);
+diff --git a/backends/hostmem.c b/backends/hostmem.c
+index 747e7838c031..dbdbb0aafd45 100644
+--- a/backends/hostmem.c
++++ b/backends/hostmem.c
+@@ -461,6 +461,20 @@ static void host_memory_backend_set_reserve(Object *o, bool value, Error **errp)
+     }
+     backend->reserve = value;
  }
- 
-+static int x86_kvm_type(MachineState *ms, const char *vm_type)
++
++static bool host_memory_backend_get_private(Object *o, Error **errp)
 +{
-+    return kvm_get_vm_type(ms, vm_type);
++    HostMemoryBackend *backend = MEMORY_BACKEND(o);
++
++    return backend->private;
 +}
 +
-+static char *x86_machine_get_kvm_type(Object *obj, Error **errp)
++static void host_memory_backend_set_private(Object *o, bool value, Error **errp)
 +{
-+    X86MachineState *x86ms = X86_MACHINE(obj);
++    HostMemoryBackend *backend = MEMORY_BACKEND(o);
 +
-+    return g_strdup(x86ms->kvm_type);
++    backend->private = value;
 +}
-+
-+static void x86_machine_set_kvm_type(Object *obj, const char *value, Error **errp)
-+{
-+    X86MachineState *x86ms = X86_MACHINE(obj);
-+
-+    g_free(x86ms->kvm_type);
-+    x86ms->kvm_type = g_strdup(value);
-+}
-+
- static void x86_machine_initfn(Object *obj)
- {
-     X86MachineState *x86ms = X86_MACHINE(obj);
-@@ -1406,6 +1426,7 @@ static void x86_machine_class_init(ObjectClass *oc, void *data)
-     mc->cpu_index_to_instance_props = x86_cpu_index_to_props;
-     mc->get_default_cpu_node_id = x86_get_default_cpu_node_id;
-     mc->possible_cpu_arch_ids = x86_possible_cpu_arch_ids;
-+    mc->kvm_type = x86_kvm_type;
-     x86mc->save_tsc_khz = true;
-     x86mc->fwcfg_dma_enabled = true;
-     nc->nmi_monitor_handler = x86_nmi;
-@@ -1464,6 +1485,12 @@ static void x86_machine_class_init(ObjectClass *oc, void *data)
-         NULL, NULL);
-     object_class_property_set_description(oc, "sgx-epc",
-         "SGX EPC device");
-+
-+    object_class_property_add_str(oc, X86_MACHINE_KVM_TYPE,
-+                                  x86_machine_get_kvm_type,
-+                                  x86_machine_set_kvm_type);
-+    object_class_property_set_description(oc, X86_MACHINE_KVM_TYPE,
-+                                          "KVM guest type (default, sw_protected_vm)");
- }
+ #endif /* CONFIG_LINUX */
  
- static const TypeInfo x86_machine_info = {
-diff --git a/include/hw/i386/x86.h b/include/hw/i386/x86.h
-index da19ae15463a..a3d03f78cefe 100644
---- a/include/hw/i386/x86.h
-+++ b/include/hw/i386/x86.h
-@@ -42,6 +42,9 @@ struct X86MachineState {
+ static bool
+@@ -541,6 +555,10 @@ host_memory_backend_class_init(ObjectClass *oc, void *data)
+         host_memory_backend_get_reserve, host_memory_backend_set_reserve);
+     object_class_property_set_description(oc, "reserve",
+         "Reserve swap space (or huge pages) if applicable");
++    object_class_property_add_bool(oc, "private",
++        host_memory_backend_get_private, host_memory_backend_set_private);
++    object_class_property_set_description(oc, "private",
++        "Use KVM gmem private memory");
+ #endif /* CONFIG_LINUX */
+     /*
+      * Do not delete/rename option. This option must be considered stable
+diff --git a/include/sysemu/hostmem.h b/include/sysemu/hostmem.h
+index 39326f1d4f9c..d88970395618 100644
+--- a/include/sysemu/hostmem.h
++++ b/include/sysemu/hostmem.h
+@@ -65,7 +65,7 @@ struct HostMemoryBackend {
+     /* protected */
+     uint64_t size;
+     bool merge, dump, use_canonical_path;
+-    bool prealloc, is_mapped, share, reserve;
++    bool prealloc, is_mapped, share, reserve, private;
+     uint32_t prealloc_threads;
+     ThreadContext *prealloc_context;
+     DECLARE_BITMAP(host_nodes, MAX_NODES + 1);
+diff --git a/qapi/qom.json b/qapi/qom.json
+index 7f92ea43e8e1..e0b2044e3d20 100644
+--- a/qapi/qom.json
++++ b/qapi/qom.json
+@@ -605,6 +605,9 @@
+ # @reserve: if true, reserve swap space (or huge pages) if applicable
+ #     (default: true) (since 6.1)
+ #
++# @private: if true, use KVM gmem private memory
++#           (default: false) (since 8.1)
++#
+ # @size: size of the memory region in bytes
+ #
+ # @x-use-canonical-path-for-ramblock-id: if true, the canonical path
+@@ -631,6 +634,7 @@
+             '*prealloc-context': 'str',
+             '*share': 'bool',
+             '*reserve': 'bool',
++            '*private': 'bool',
+             'size': 'size',
+             '*x-use-canonical-path-for-ramblock-id': 'bool' } }
  
-     /*< public >*/
- 
-+    char *kvm_type;
-+    unsigned int vm_type;
-+
-     /* Pointers to devices and objects: */
-     ISADevice *rtc;
-     FWCfgState *fw_cfg;
-@@ -91,6 +94,7 @@ struct X86MachineState {
- #define X86_MACHINE_OEM_ID           "x-oem-id"
- #define X86_MACHINE_OEM_TABLE_ID     "x-oem-table-id"
- #define X86_MACHINE_BUS_LOCK_RATELIMIT  "bus-lock-ratelimit"
-+#define X86_MACHINE_KVM_TYPE         "kvm-type"
- 
- #define TYPE_X86_MACHINE   MACHINE_TYPE_NAME("x86")
- OBJECT_DECLARE_TYPE(X86MachineState, X86MachineClass, X86_MACHINE)
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index f8cc8eb1fe70..7971f0fd74b1 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -154,6 +154,44 @@ static KVMMSRHandlers msr_handlers[KVM_MSR_FILTER_MAX_RANGES];
- static RateLimit bus_lock_ratelimit_ctrl;
- static int kvm_get_one_msr(X86CPU *cpu, int index, uint64_t *value);
- 
-+static const char* vm_type_name[] = {
-+    [KVM_X86_DEFAULT_VM] = "default",
-+    [KVM_X86_SW_PROTECTED_VM] = "sw-protected-vm",
-+};
-+
-+int kvm_get_vm_type(MachineState *ms, const char *vm_type)
-+{
-+    X86MachineState *x86ms = X86_MACHINE(ms);
-+    int kvm_type = KVM_X86_DEFAULT_VM;
-+
-+    if (vm_type) {
-+        if (!g_ascii_strcasecmp(vm_type, "default") || !g_ascii_strcasecmp(vm_type, "")) {
-+            kvm_type = KVM_X86_DEFAULT_VM;
-+        } else if (!g_ascii_strcasecmp(vm_type, "sw-protected-vm")) {
-+            kvm_type = KVM_X86_SW_PROTECTED_VM;
-+        } else {
-+            error_report("Unknown kvm-type specified '%s'", vm_type);
-+            exit(1);
-+        }
-+    }
-+
-+    /*
-+     * old KVM doesn't support KVM_CAP_VM_TYPES and KVM_X86_DEFAULT_VM
-+     * is always supported
-+     */
-+    if (kvm_type == KVM_X86_DEFAULT_VM) {
-+        return kvm_type;
-+    }
-+
-+    if (!(kvm_check_extension(KVM_STATE(ms->accelerator), KVM_CAP_VM_TYPES) & BIT(kvm_type))) {
-+        error_report("vm-type %s not supported by KVM", vm_type_name[kvm_type]);
-+        exit(1);
-+    }
-+
-+    x86ms->vm_type = kvm_type;
-+    return kvm_type;
-+}
-+
- int kvm_has_pit_state2(void)
- {
-     return has_pit_state2;
-diff --git a/target/i386/kvm/kvm_i386.h b/target/i386/kvm/kvm_i386.h
-index e24753abfe6a..ea3a5b174ac0 100644
---- a/target/i386/kvm/kvm_i386.h
-+++ b/target/i386/kvm/kvm_i386.h
-@@ -37,6 +37,7 @@ bool kvm_has_adjust_clock(void);
- bool kvm_has_adjust_clock_stable(void);
- bool kvm_has_exception_payload(void);
- void kvm_synchronize_all_tsc(void);
-+int kvm_get_vm_type(MachineState *ms, const char *vm_type);
- void kvm_arch_reset_vcpu(X86CPU *cs);
- void kvm_arch_after_reset_vcpu(X86CPU *cpu);
- void kvm_arch_do_init_vcpu(X86CPU *cs);
 -- 
 2.34.1
 
