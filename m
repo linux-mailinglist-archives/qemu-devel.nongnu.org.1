@@ -2,86 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44EA8768F98
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 10:06:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BA6E769000
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 10:22:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQNuS-0005lo-7F; Mon, 31 Jul 2023 04:05:44 -0400
+	id 1qQO94-0001Yn-Ni; Mon, 31 Jul 2023 04:20:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qQNuQ-0005lD-KY
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 04:05:42 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qQO92-0001Yd-Nt
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 04:20:48 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qQNuO-0006Ns-Ri
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 04:05:42 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qQO90-0000PI-U4
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 04:20:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690790739;
+ s=mimecast20190719; t=1690791645;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=K3B1viCt1VnT6k3aBfhXSmVvLPxLPFX6yaDucjUzVjY=;
- b=TFlsBEtCud2c83B4TxKX0c2dfy9F8P1fnn2ToJTe4Wt4V7J5dfoKy2Ic6gwBDc34b3r5qq
- Z9pukfQBj0Z5nxiMlhGE/w/2TnuH6BqMPZqCmGEHt19B6dqBlcrNn37Xm62fE1S2ITNQtr
- 2M21Gh4NDPix3GAV5xDgi0K0pJaaeqc=
-Received: from mail-yb1-f199.google.com (mail-yb1-f199.google.com
- [209.85.219.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=q8KDJNoJhyjteq4OVz6LutxemV3ogQ5nWyEX9kMI8/c=;
+ b=XMQSB43WkhrZLbszFJuwLvDf7iKZKw/DZBnN/pNaRVVzhiVBA1EtYMfP3givzqapSVBuAg
+ QWx3POChVh1ejgcMW+6xbN68EKom0ahPsft8wL4Vv2G6toPgXiYToTn6qfacbq4ImSEyke
+ gykiy19U8OEdc6WSz2NGi9EDhROzQ0Q=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-421-8sgIwglmMRa_k-xSX1SKAg-1; Mon, 31 Jul 2023 04:05:37 -0400
-X-MC-Unique: 8sgIwglmMRa_k-xSX1SKAg-1
-Received: by mail-yb1-f199.google.com with SMTP id
- 3f1490d57ef6-d074da73c3eso3579076276.3
- for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 01:05:36 -0700 (PDT)
+ us-mta-115-mkBzxQm8O-KSZEg3x6kb3w-1; Mon, 31 Jul 2023 04:20:44 -0400
+X-MC-Unique: mkBzxQm8O-KSZEg3x6kb3w-1
+Received: by mail-qv1-f71.google.com with SMTP id
+ 6a1803df08f44-5eee6742285so54215256d6.2
+ for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 01:20:44 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690790736; x=1691395536;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=K3B1viCt1VnT6k3aBfhXSmVvLPxLPFX6yaDucjUzVjY=;
- b=TgcDfImtYZaePClbIpQ9RWqN6WE6z2QjUPmGkqTep4aAzbwcwepnV2KYflBeIB/4XU
- fOfsYW+3OgfcxElgANgUZpKxB9Bi88KOk75VAqHYoaPzgdWyMdqvH1oUwqexeIYM7+fu
- w4KffUqk8fYKGNJ05ckPpSLBW02ADI/dilX8dsIFNv0/akvzgysR6Lau0F5dOIdfBOuw
- xPufnhQ+M161/gl7y6Eahik9JPfLzL6e+IEpUdse9C9o7FqKwlMwxpe8pEwH3fXCDkvM
- C/WJlHUpqNLRJ6Ji1/RrZs4NPee4GZ3LVpOXgWVeKL7WHPCM4Fd7zgyaFcvFoVVqIOAB
- aF3w==
-X-Gm-Message-State: ABy/qLaVSVkZPGtDlX09ES9h2bEtsP2e7diJ/RiNgg/ucPtGivUoqFxh
- JfPxD/4qxStyxzieygpbm4htsES+13RalONlqdvVzjx0jOasKl/1HMXItoejV2AOJCxo0UrJhcT
- 4Ygs7qx+slemoZxj6P4XH10emS3YBIkc=
-X-Received: by 2002:a25:abe3:0:b0:d01:52da:9625 with SMTP id
- v90-20020a25abe3000000b00d0152da9625mr6909944ybi.13.1690790736163; 
- Mon, 31 Jul 2023 01:05:36 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlGqvxvo5Q1SB3jGGGCs91UnlnRr2HTkNeIi4mzBc/odBTvNoUqtMrMEWCMn5MXXufL8HzwmtyNF8KeeraeVrgI=
-X-Received: by 2002:a25:abe3:0:b0:d01:52da:9625 with SMTP id
- v90-20020a25abe3000000b00d0152da9625mr6909932ybi.13.1690790735890; Mon, 31
- Jul 2023 01:05:35 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1690791643; x=1691396443;
+ h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+ :content-language:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=q8KDJNoJhyjteq4OVz6LutxemV3ogQ5nWyEX9kMI8/c=;
+ b=IwEJPyM7dwv/+TzocQddgM/Gp6w4IikUsP9zwZtVNO35zjs+otdx96BUCyl6Iif1Nm
+ NpLSc3m0SyKLIEdTgLQjETYlIvYgGRzvYN3HAQZU0JNA7sURp5EOTiwdDUUDrtHTrzKA
+ de9YK4zX4AGyOYPaqfZR7G55FpZPlbPDdXPBLLLJ7xfjZwfgc30TvmgUMyfV0Z1JVDzx
+ 7Xnni4aecMiiGIYb6qoLLk10Rj7JzE0291JamMFJEkEIxUESHqvmA6vRyeD07rNgyI0A
+ w104dGaPyrM8YclET0X1YNEXEaVrbhnFbwHdafasFQqhNCUmmI4kp9Tv4KNYSbfc7gmj
+ UAuQ==
+X-Gm-Message-State: ABy/qLbhaaXvZfhrVR2hx3nxvicLryhM0PWxuxJwH+P2enjbk1Dbri7B
+ s8MbKYjld+cUXW2K6HvRyoVCNdluABF9i5ONnj/y22253R/IHnkFMaU6Zcx1DXSBULRRChZlFsy
+ lrxDS8PsZrelOf/Q=
+X-Received: by 2002:a05:6214:5143:b0:63d:f8d:102f with SMTP id
+ kh3-20020a056214514300b0063d0f8d102fmr9069352qvb.18.1690791643733; 
+ Mon, 31 Jul 2023 01:20:43 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlFKFn29vuVsttFKoXxGX8VtqVKZPlQY99ErifiZFHDOT5ZYWjI5WGeVbm8LoDJbG0yxj0x6Lw==
+X-Received: by 2002:a05:6214:5143:b0:63d:f8d:102f with SMTP id
+ kh3-20020a056214514300b0063d0f8d102fmr9069339qvb.18.1690791643473; 
+ Mon, 31 Jul 2023 01:20:43 -0700 (PDT)
+Received: from [10.33.192.205] (nat-pool-str-t.redhat.com. [149.14.88.106])
+ by smtp.gmail.com with ESMTPSA id
+ x11-20020a0ce24b000000b0063d06946b2bsm3498181qvl.100.2023.07.31.01.20.41
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 31 Jul 2023 01:20:43 -0700 (PDT)
+Message-ID: <12453b16-5fee-63aa-7292-feb2133675b6@redhat.com>
+Date: Mon, 31 Jul 2023 10:20:40 +0200
 MIME-Version: 1.0
-References: <20230725182143.1523091-1-eperezma@redhat.com>
- <CACGkMEsqbZNGKdK1kM-qQeZShNeonQKK4_65vtCueQxUsRFTsQ@mail.gmail.com>
- <CAJaqyWeCNdmZX_iNywHxiD3fG39k5bRPOD2U13cmevbcUct+hA@mail.gmail.com>
- <CACGkMEv4HNw-Fqsdn+BmzjrWsbxG4rR=kqYPS5kX41D-r=sUow@mail.gmail.com>
-In-Reply-To: <CACGkMEv4HNw-Fqsdn+BmzjrWsbxG4rR=kqYPS5kX41D-r=sUow@mail.gmail.com>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Mon, 31 Jul 2023 10:04:59 +0200
-Message-ID: <CAJaqyWeLm6o7ikrgCa5kmEHXqXniFvvsDGd8uQwOVHL9qiqwWQ@mail.gmail.com>
-Subject: Re: [PATCH] vdpa: set old virtio status at cvq isolation probing end
-To: Jason Wang <jasowang@redhat.com>
-Cc: qemu-devel@nongnu.org, si-wei.liu@oracle.com, qemu-stable@nongnu.org, 
- Hawkins Jiawei <yin31149@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Content-Language: en-US
+To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?=
+ <marcandre.lureau@redhat.com>, Stefan Weil <sw@weilnetz.de>,
+ Yonggang Luo <luoyonggang@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Jason Wang <jasowang@redhat.com>
+References: <20230728142748.305341-1-thuth@redhat.com>
+ <20230728142748.305341-5-thuth@redhat.com> <ZMPSsCjZhj0AQeS0@redhat.com>
+From: Thomas Huth <thuth@redhat.com>
+Subject: Re: [RFC PATCH 4/6] hw/i386/intel_iommu: Fix VTD_IR_TableEntry for
+ ms_struct layout
+In-Reply-To: <ZMPSsCjZhj0AQeS0@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ NICE_REPLY_A=-0.101, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01,
+ RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,120 +107,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jul 31, 2023 at 8:36=E2=80=AFAM Jason Wang <jasowang@redhat.com> wr=
-ote:
->
-> On Wed, Jul 26, 2023 at 2:27=E2=80=AFPM Eugenio Perez Martin
-> <eperezma@redhat.com> wrote:
-> >
-> > On Wed, Jul 26, 2023 at 4:07=E2=80=AFAM Jason Wang <jasowang@redhat.com=
-> wrote:
-> > >
-> > > On Wed, Jul 26, 2023 at 2:21=E2=80=AFAM Eugenio P=C3=A9rez <eperezma@=
-redhat.com> wrote:
-> > > >
-> > > > The device already has a virtio status set by vhost_vdpa_init by th=
-e
-> > > > time vhost_vdpa_probe_cvq_isolation is called. vhost_vdpa_init set
-> > > > S_ACKNOWLEDGE and S_DRIVER, so it is invalid to just reset it.
-> > > >
-> > > > It is invalid to start the device after it, but all devices seems t=
-o be
-> > > > fine with it.  Fixing qemu so it follows virtio start procedure.
-> > > >
-> > > > Fixes: 152128d64697 ("vdpa: move CVQ isolation check to net_init_vh=
-ost_vdpa")
-> > > > Reported-by: Dragos Tatulea <dtatulea@nvidia.com>
-> > > > Signed-off-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
-> > > > ---
-> > > >  net/vhost-vdpa.c | 2 ++
-> > > >  1 file changed, 2 insertions(+)
-> > > >
-> > > > diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-> > > > index 9795306742..d7e2b714b4 100644
-> > > > --- a/net/vhost-vdpa.c
-> > > > +++ b/net/vhost-vdpa.c
-> > > > @@ -1333,6 +1333,8 @@ static int vhost_vdpa_probe_cvq_isolation(int=
- device_fd, uint64_t features,
-> > > >  out:
-> > > >      status =3D 0;
-> > > >      ioctl(device_fd, VHOST_VDPA_SET_STATUS, &status);
-> > > > +    status =3D VIRTIO_CONFIG_S_ACKNOWLEDGE | VIRTIO_CONFIG_S_DRIVE=
-R;
-> > > > +    ioctl(device_fd, VHOST_VDPA_SET_STATUS, &status);
-> > >
-> > > So if we fail after FEATURES_OK, this basically clears that bit. Spec
-> > > doesn't say it can or not, I wonder if a reset is better?
-> > >
-> >
-> > I don't follow this, the reset is just above the added code, isn't it?
->
-> I meant for error path:
->
-> E.g:
->     uint8_t status =3D VIRTIO_CONFIG_S_ACKNOWLEDGE |
->                      VIRTIO_CONFIG_S_DRIVER |
->                      VIRTIO_CONFIG_S_FEATURES_OK;
-> ...
->     r =3D ioctl(device_fd, VHOST_VDPA_SET_STATUS, &status);
-> ....
->         if (cvq_group !=3D -ENOTSUP) {
->             r =3D cvq_group;
->             goto out;
->         }
->
-> out:
->     status =3D VIRTIO_CONFIG_S_ACKNOWLEDGE | VIRTIO_CONFIG_S_DRIVER;
->     ioctl(device_fd, VHOST_VDPA_SET_STATUS, &status);
->
-> We're basically clearing FEATURES_OK?
->
+On 28/07/2023 16.37, Daniel P. Berrangé wrote:
+> On Fri, Jul 28, 2023 at 04:27:46PM +0200, Thomas Huth wrote:
+>> We might want to compile QEMU with Clang on Windows - but it
+>> does not support the __attribute__((gcc_struct)) yet. So we
+>> have to make sure that the structs will stay the same when
+>> the compiler uses the "ms_struct" layout. The VTD_IR_TableEntry
+>> struct is affected - rewrite it a little bit so that it works
+>> fine with both struct layouts.
+>>
+>> Reported-by: Daniel P. Berrangé <berrange@redhat.com>
+>> Signed-off-by: Thomas Huth <thuth@redhat.com>
+>> ---
+>>   include/hw/i386/intel_iommu.h | 14 ++++++++------
+>>   hw/i386/intel_iommu.c         |  2 +-
+>>   2 files changed, 9 insertions(+), 7 deletions(-)
+>>
+>> diff --git a/include/hw/i386/intel_iommu.h b/include/hw/i386/intel_iommu.h
+>> index 89dcbc5e1e..08bf220393 100644
+>> --- a/include/hw/i386/intel_iommu.h
+>> +++ b/include/hw/i386/intel_iommu.h
+>> @@ -204,18 +204,20 @@ union VTD_IR_TableEntry {
+>>   #endif
+>>           uint32_t dest_id;            /* Destination ID */
+>>           uint16_t source_id;          /* Source-ID */
+>> +        uint16_t __reserved_2;       /* Reserved 2 */
+>>   #if HOST_BIG_ENDIAN
+>> -        uint64_t __reserved_2:44;    /* Reserved 2 */
+>> -        uint64_t sid_vtype:2;        /* Source-ID Validation Type */
+>> -        uint64_t sid_q:2;            /* Source-ID Qualifier */
+>> +        uint32_t __reserved_3:28;    /* Reserved 3 */
+>> +        uint32_t sid_vtype:2;        /* Source-ID Validation Type */
+>> +        uint32_t sid_q:2;            /* Source-ID Qualifier */
+>>   #else
+>> -        uint64_t sid_q:2;            /* Source-ID Qualifier */
+>> -        uint64_t sid_vtype:2;        /* Source-ID Validation Type */
+>> -        uint64_t __reserved_2:44;    /* Reserved 2 */
+>> +        uint32_t sid_q:2;            /* Source-ID Qualifier */
+>> +        uint32_t sid_vtype:2;        /* Source-ID Validation Type */
+>> +        uint32_t __reserved_3:28;    /* Reserved 3 */
+> 
+> Hasn't this has changed the struct layout in the else clause
+> 
+>   Old layout:
+> 
+>     source_id : 16
+>     sid_q : 2
+>     sid_vtype : 2
+>     reserved_2 : 44
+> 
+>   New layout
+> 
+>     source_id : 16
+>     reserved_2 : 16
+>     sid_q : 2
+>     sid_vtype : 2
+>     reserved_3 : 28
 
-Yes, it is the state that previous functions (vhost_vdpa_init) set. We
-need to leave it that way, either if the backend supports cvq
-isolation or not, or in the case of an error. Not doing that way makes
-vhost_dev_start (and vhost_vdpa_set_features) set the features before
-setting VIRTIO_CONFIG_S_ACKNOWLEDGE | VIRTIO_CONFIG_S_DRIVER.
-Otherwise, the guest can (and do) access to config space before
-_S_ACKNOWLEDGE | _S_DRIVER.
+Drat, you're right, I missed the fact that the whole stuff is read and 
+written via the uint64_t data[2] part from the union in the code ... :-(
 
+> Was there something wrong with the change I suggested to
+> just make source_id be a bitfield too:
+> 
+>         uint64_t source_id: 16;          /* Source-ID */
+> 
+> which could make ms_struct layout avoid padding to the following
+> bitfields.
 
-> >
-> > > Btw, spec requires a read of status after setting FEATURES_OK, this
-> > > seems to be missed in the current code.
-> > >
-> >
-> > I'm ok with that, but this patch does not touch that part.
-> >
-> > To fix this properly we should:
-> > - Expose vhost_vdpa_set_dev_features_fd as we did in previous versions
-> > of the series that added vhost_vdpa_probe_cvq_isolation [1].
-> > - Get status after vhost_vdpa_add_status, so both vhost start code and
-> > this follows the standard properly.
-> >
-> > Is it ok to do these on top of this patch?
->
-> Fine.
->
-> Thanks
->
-> >
-> > Thanks!
-> >
-> > [1] https://lore.kernel.org/qemu-devel/20230509154435.1410162-4-eperezm=
-a@redhat.com/
-> >
-> >
-> > > Thanks
-> > >
-> > > >      return r;
-> > > >  }
-> > > >
-> > > > --
-> > > > 2.39.3
-> > > >
-> > >
-> >
->
+That likely works, but I think we then need to add it then twice, one time 
+in the HOST_BIG_ENDIAN at the end, and one time in the #else part?
+
+Anyway, that whole code looks like it's completely wrong on big endian 
+machines. The struct is read via dma_memory_read() from guest memory, but 
+then the values are never byte-swapped, except for the error_report and 
+trace functions, e.g. entry->irte.present is used without calling 
+le64_to_cpu() first.
+entry->irte.source_id is swapped with le32_to_cpu() which looks also wrong 
+since this is a 16 bit field.
+
+Sigh. This is another good example why we shouldn't use bitfields at all in 
+structures that exchange data. As Richard suggested in his reply, this 
+really should be rewritten, e.g. with the stuff from hw/registerfields.h.
+
+  Thomas
 
 
