@@ -2,62 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 362277695A9
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 14:10:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BC267695D1
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 14:14:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQRie-0000RD-8H; Mon, 31 Jul 2023 08:09:48 -0400
+	id 1qQRlj-00039E-6o; Mon, 31 Jul 2023 08:12:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pavel.dovgalyuk@ispras.ru>)
- id 1qQRic-0000Qx-Dv; Mon, 31 Jul 2023 08:09:46 -0400
-Received: from mail.ispras.ru ([83.149.199.84])
- by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pavel.dovgalyuk@ispras.ru>)
- id 1qQRia-0004c2-Ol; Mon, 31 Jul 2023 08:09:46 -0400
-Received: from [10.12.102.111] (unknown [85.142.117.226])
- by mail.ispras.ru (Postfix) with ESMTPSA id AF3B540F1DF9;
- Mon, 31 Jul 2023 12:09:42 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru AF3B540F1DF9
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
- s=default; t=1690805382;
- bh=Jxo4PH2ieTYvFyB05tXQiTqHTF4Ff6heSeijrZBZEmI=;
- h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
- b=cKMW/W+cWxO0Efl6OvqzCfgEmpDLVXgwm6xmoDEQmdxniwQVBETYWa/pU5hlIl4ST
- fcjuToMRXwXnHqufeI2fJIAxBpVuGWdTO+Iz5zfZlHiBIdUFeTdQqf8o8nx//sgHAR
- KZvM3cAVGPKFGUUTnIejN4OJomdIlH7omgWFDvrY=
-Message-ID: <137331e2-2d20-9578-e932-c28072c4c2a9@ispras.ru>
-Date: Mon, 31 Jul 2023 15:09:42 +0300
+ (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qQRlg-00038i-DP
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 08:12:56 -0400
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qQRld-00052Q-Rp
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 08:12:56 -0400
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-686f25d045cso2852762b3a.0
+ for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 05:10:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=smartx-com.20221208.gappssmtp.com; s=20221208; t=1690805448; x=1691410248;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=qyUgZh9TwicnD21beZzQv3fygUBvQcNjmz/7LwSmFBY=;
+ b=NhroPMxnN9FT8sUzN5GcJa10I5XKkSB4d4jf4VfFN2ml+CxHF+wiWZG2QWs+9PBX5S
+ Unxh9Rh5/GTcFjZxpsj6ZKe6LJQqSM676oWNcjcZuV47NEJlyerNM+nGgTuziR1vxmUs
+ j18nKZgcUeeMvLANnPdhM3BdvEUTMHSzFfhS12WyCIcOIoe/n851PKwZa/Qr7gUbXKC1
+ +oSVD9I+it3ymVDE9GZFjUx+g1uQ/ZJXjGhsh/LlIxkBa2KZSM0QkJB/cuulGmwojj0j
+ dWP8f4diJsYimxSmLJa/H7+ScDZKNGWAQvCKaD+icdpo2DB9oxho7yZKDzF+H01/ii4P
+ yXiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1690805448; x=1691410248;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=qyUgZh9TwicnD21beZzQv3fygUBvQcNjmz/7LwSmFBY=;
+ b=CT6t8Kqvx3rrHcuf3QGEHmdS3VVu51EjvY6uQjEpETnY8H7Mi6CleZEvzp7kW8FwPz
+ xXLm/VnxRFUNMbTysqiOHO5tRttOOoQ2IBUsp9yJ6du9s1AXCembmdmYC4X0SU0XxnqD
+ jLzyLv/jLCQ7OKdGRZzaqSlSXUW1F2CFMwO5bgz3T+d072zA7c+cxFV9DbZLPhmpRxP8
+ EzKoTgjYwgwvL9DCtYzGCauLeeGRwE7o3ANPgP8Y13iaM4Zj0zPjSSzmYDctNKplo+E9
+ elm9GuGHaxhryK+iSlmog0llZWVwR1RdXEmo145svgzZbHrYsq9y4NutxvzmrlVmliFn
+ EWCg==
+X-Gm-Message-State: ABy/qLYnwP6mS4ajAzS82PYqyr/JU9WVBURYlpmec7Gc6EHmLrjQLhq2
+ DGxZXHYBdaV5AWtpljjVF2qDWg==
+X-Google-Smtp-Source: APBJJlEj9YxpB8KuqNIwBFARddYFEXzyaU1fYN+n+8tQjQDpvpXmQFeYUj6UEJm0g0beELjmXIWp2w==
+X-Received: by 2002:a05:6a20:9195:b0:132:a85f:b2e7 with SMTP id
+ v21-20020a056a20919500b00132a85fb2e7mr9801548pzd.53.1690805448272; 
+ Mon, 31 Jul 2023 05:10:48 -0700 (PDT)
+Received: from localhost.localdomain.gitgo.cc ([47.75.78.161])
+ by smtp.gmail.com with ESMTPSA id
+ a10-20020a62bd0a000000b005d22639b577sm7385690pff.165.2023.07.31.05.10.44
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 31 Jul 2023 05:10:47 -0700 (PDT)
+From: Li Feng <fengli@smartx.com>
+To: Raphael Norwitz <raphael.norwitz@nutanix.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Fam Zheng <fam@euphon.net>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Viresh Kumar <viresh.kumar@linaro.org>,
+ qemu-block@nongnu.org (open list:Block layer core),
+ qemu-devel@nongnu.org (open list:All patches CC here)
+Cc: Li Feng <fengli@smartx.com>
+Subject: [PATCH v3 0/5] Implement reconnect for vhost-user-scsi
+Date: Mon, 31 Jul 2023 20:10:05 +0800
+Message-ID: <20230731121018.2856310-1-fengli@smartx.com>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230721105205.1714449-1-fengli@smartx.com>
+References: <20230721105205.1714449-1-fengli@smartx.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH 7/7] tests/avocado: ppc64 reverse debugging tests for
- pseries and powernv
-Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>
-Cc: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-ppc@nongnu.org,
- qemu-devel@nongnu.org
-References: <20230726183532.434380-1-npiggin@gmail.com>
- <20230726183532.434380-8-npiggin@gmail.com>
-From: Pavel Dovgalyuk <pavel.dovgalyuk@ispras.ru>
-In-Reply-To: <20230726183532.434380-8-npiggin@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=83.149.199.84;
- envelope-from=pavel.dovgalyuk@ispras.ru; helo=mail.ispras.ru
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.101,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::432;
+ envelope-from=fengli@smartx.com; helo=mail-pf1-x432.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -73,54 +95,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
+This patchset adds reconnect support for vhost-user-scsi. At the same
+times, fix vhost fd leak and refactor some code.
 
-On 26.07.2023 21:35, Nicholas Piggin wrote:
-> These machines run reverse-debugging well enough to pass basic tests.
-> Wire them up.
-> 
-> Cc: Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->   tests/avocado/reverse_debugging.py | 29 +++++++++++++++++++++++++++++
->   1 file changed, 29 insertions(+)
-> 
-> diff --git a/tests/avocado/reverse_debugging.py b/tests/avocado/reverse_debugging.py
-> index 7d1a478df1..fc47874eda 100644
-> --- a/tests/avocado/reverse_debugging.py
-> +++ b/tests/avocado/reverse_debugging.py
-> @@ -233,3 +233,32 @@ def test_aarch64_virt(self):
->   
->           self.reverse_debugging(
->               args=('-kernel', kernel_path))
-> +
-> +class ReverseDebugging_ppc64(ReverseDebugging):
-> +    """
-> +    :avocado: tags=accel:tcg
-> +    """
-> +
-> +    REG_PC = 0x40
-> +
-> +    # unidentified gitlab timeout problem
-> +    @skipIf(os.getenv('GITLAB_CI'), 'Running on GitLab')
-> +    def test_ppc64_pseries(self):
-> +        """
-> +        :avocado: tags=arch:ppc64
-> +        :avocado: tags=machine:pseries
-> +        """
-> +        # SLOF branches back to its entry point, which causes this test
-> +        # to take the 'hit a breakpoint again' path. That's not a problem,
-> +        # just slightly different than the other machines.
-> +        self.endian_is_le = False
-> +        self.reverse_debugging()
-> +
-> +    @skipIf(os.getenv('GITLAB_CI'), 'Running on GitLab')
-> +    def test_ppc64_powernv(self):
-> +        """
-> +        :avocado: tags=arch:ppc64
-> +        :avocado: tags=machine:powernv
-> +        """
-> +        self.endian_is_le = False
-> +        self.reverse_debugging()
+Changes for v3:
+- Split the vhost_user_scsi_handle_output to a separate patch;
+- Move the started_vu from vhost scsi common header to vhost-user-scsi header;
+- Fix a log print error;
+
+Changes for v2:
+- Split the v1 patch to small separate patchset;
+- New patch for fixing fd leak, which has sent to reviewers in another
+  mail;
+- Implement the `vhost_user_scsi_handle_output`;
+- Add the started_vu safe check;
+- Fix error handler;
+- Check the inflight before set/get inflight fd.
+
+Li Feng (5):
+  vhost: fix the fd leak
+  vhost-user-common: send get_inflight_fd once
+  vhost: move and rename the conn retry times
+  vhost-user-scsi: support reconnect to backend
+  vhost-user-scsi: start vhost when guest kicks
+
+ hw/block/vhost-user-blk.c           |   4 +-
+ hw/scsi/vhost-scsi-common.c         |  37 ++---
+ hw/scsi/vhost-user-scsi.c           | 247 +++++++++++++++++++++++++---
+ hw/virtio/vhost-user-gpio.c         |   3 +-
+ hw/virtio/vhost.c                   |   2 +
+ include/hw/virtio/vhost-user-scsi.h |   4 +
+ include/hw/virtio/vhost.h           |   2 +
+ 7 files changed, 252 insertions(+), 47 deletions(-)
+
+-- 
+2.41.0
 
 
