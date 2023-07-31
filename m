@@ -2,74 +2,113 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E63A7697ED
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 15:46:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7CB87697EF
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 15:46:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQTDt-0000yu-As; Mon, 31 Jul 2023 09:46:09 -0400
+	id 1qQTDr-0000vj-Ip; Mon, 31 Jul 2023 09:46:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qQTDj-0000lJ-CU
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 09:46:00 -0400
-Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qQTDh-0000ht-29
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 09:45:57 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qQTDh-0001rh-SB
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 09:45:59 -0400
-Received: by mail-lf1-x136.google.com with SMTP id
- 2adb3069b0e04-4fe1489ced6so7282273e87.0
- for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 06:45:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qQTDf-0001rD-DK
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 09:45:56 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-31765792c7cso4857705f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 06:45:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690811155; x=1691415955;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=BDioFdyOKNBAC/5ktGE7rEx9840GVQkINa2od7dedX4=;
- b=ZISYPyoDOvfQhMsahedqmyHFlIFnV2eGD6/HXJ6wyLfMCVusXmpXzJag3p6UoA8yVw
- o3meNMHSTunai3oECBVwETP+FA3fXrtqFUSIonZp1dfVy4LZmQjTFlU/M7agjizQPzop
- yY+U0drxKCOsS+2C/kI+6o6lO3UjO9PRjg2D7yxCKa49A1ptbFin2el1VnojFgEfNnot
- ZVkp8aDqe04ame19KVgIcQRDeOk1Xz11PLRdywfnDnbgcffo7v/VROIloN22gyYezs67
- 4P/W6MKjuTbMz2Yoty5FtGCMzfwGpTdbcR1RMpABeyozX6sFbkevAVt6BDyXG3rCXjQu
- Rjzw==
+ d=linaro.org; s=google; t=1690811153; x=1691415953;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=nQ3reraINQ9aqfKUKaeldl1vlh1lyTB9JIH6X3eokKs=;
+ b=h9lwSGncjCHcAn12JKsftrabS4nfigm3sHN+MhY6qrIozYkfycqMaJwYAVGMULRLRl
+ hCIAFrlDlr5qOK4DzdtoxX0IeATQbS+bc7oRO3QQlbIQ3t+A010rT78zpKnbN1GqMa31
+ MTHUga9IVCtMFnLJBPb0UBswnRupNB6r8jzRRur33UAiwjLgczomFkN2LArkuSW2zie1
+ +VWN47jxXanCA0sq3gFMCibAmT8KqIJ6jxQT3dSmBE3a3FFc8zVhUORcIykbbs5tz9YQ
+ 1VIlmgsjKh19oF8n7CP97ygzELRD5uY8v+I88WDDD9/1qnUdOM1f0lg1YWGbz62BF7fE
+ XwHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690811155; x=1691415955;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=BDioFdyOKNBAC/5ktGE7rEx9840GVQkINa2od7dedX4=;
- b=cZlPUCP7NyhqNTEMbPfE4ezjGfGp1YxGWKrdM1lym6z6x0MO+e9sCR4G3qS2Lxk8UY
- qtc20CP8NXu/M92EYX3mW7DFk2DtgAvEQT93HAQHjEgO2jn3xU7lptcbZendtcBsA0fh
- pWQPyJ7t404uQwcXaTs3gSK/QnJtI54YrRgDcuQJADHYb3EDP0ApOXT1OpLsgLOcq5B1
- m5Aa+O0uUrpQVB+yUOUGdhvhsKQ2XaVoydvZA40BTlyFpZQpPTRW4pmknq/+/hdRwvZ6
- hS4MdW+FQ4kaYXxVDXfj8XqZoRPo7hjK9pzdsRPmQjxvD8vWQkilACL6g2Vpae9OTJT1
- 56Jg==
-X-Gm-Message-State: ABy/qLbm6SWGUfzDjUTVsZFQZetQqpKG1ZBDre8g/4qiWtPogXCHAyUo
- ElD7Q9qtgYfyVSDfCjS4Qz82a/4kuF8glXdjM6+ReQ==
-X-Google-Smtp-Source: APBJJlHNEVVCp2Cx0DjZW2me4IB9ONCsOO8MNrOuHt7tGH2ugKxl5tnVxRrU3L1+Qhe1IC2lIRdqnZdaMUsL7Adz6q8=
-X-Received: by 2002:a19:9116:0:b0:4f8:6625:f2ca with SMTP id
- t22-20020a199116000000b004f86625f2camr5106812lfd.61.1690811155000; Mon, 31
- Jul 2023 06:45:55 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1690811153; x=1691415953;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=nQ3reraINQ9aqfKUKaeldl1vlh1lyTB9JIH6X3eokKs=;
+ b=epiXT5k6CMI+/16Sw2Nt7btE5xJD6VfKl+Uplg2q4hhRVREZWxTHKxMY8t2AuaiO1n
+ T1oCwv4CduIhn1wfjPxfeax+YgzTDC+mxFyPixOAzFlNB7DYMamjZWhbpQv0qAcDJ2G+
+ dPGW0oBGUf3fBtbWIlghgd/C/ipUheKHHFtyToA2GQlEo5tQQyGlJO+NboqnKPne9lSw
+ YB3JE75UjP+6UwAET5z5OrdetSNybWUuepCyZ9SWT5svBAR54vSVC9jOBjb1in4vpQU7
+ y0I1+Tq1sozW/udD50Iq1fwO4zdPAwielCexWS6eL8F8sYFwzzZKGUg34uZqzJ/IckAs
+ QItg==
+X-Gm-Message-State: ABy/qLauRdwNQDAGNscFeBo5VmbDy5ZoWDxL2qA+NtXF7fLsP/BmV0El
+ q0BzFXFXR1MoRhCAz3uLpHyQvw==
+X-Google-Smtp-Source: APBJJlH4gyq7JrTkfEpvQa84k4NIFE18KTu4UsifBNdTs57wOfERvKO5Hcmx4G0JBwtVPCjxuezb3A==
+X-Received: by 2002:a5d:4acf:0:b0:316:e04a:29e8 with SMTP id
+ y15-20020a5d4acf000000b00316e04a29e8mr7512961wrs.54.1690811152959; 
+ Mon, 31 Jul 2023 06:45:52 -0700 (PDT)
+Received: from [192.168.69.115] ([176.187.198.42])
+ by smtp.gmail.com with ESMTPSA id
+ y18-20020adff152000000b0031784ac0babsm12011439wro.28.2023.07.31.06.45.46
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 31 Jul 2023 06:45:52 -0700 (PDT)
+Message-ID: <6b4c6870-35a3-0f7f-b405-ca6e6634c4ab@linaro.org>
+Date: Mon, 31 Jul 2023 15:45:44 +0200
 MIME-Version: 1.0
-References: <20230731080317.112658-1-akihiko.odaki@daynix.com>
- <20230731080317.112658-4-akihiko.odaki@daynix.com>
- <CAFEAcA_gdK_nSkiaJQ2mDPeb3Se39AYN+DkDg1U-D2CJ1vUOuQ@mail.gmail.com>
- <9f2a49dd-75ce-4e23-3873-0ad4fd78277b@daynix.com>
-In-Reply-To: <9f2a49dd-75ce-4e23-3873-0ad4fd78277b@daynix.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 31 Jul 2023 14:45:43 +0100
-Message-ID: <CAFEAcA-Ljap52x8NB0h0PvNm1mmy85gA8zetqc8LXVuDV+PaVA@mail.gmail.com>
-Subject: Re: [PATCH 3/5] linux-user: Use MAP_FIXED_NOREPLACE for do_brk()
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.13.0
+Subject: Re: [RFC PATCH 08/24] target/ppc: Use GDBFeature for dynamic XML
+Content-Language: en-US
 To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: qemu-devel@nongnu.org, Laurent Vivier <laurent@vivier.eu>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::136;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x136.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Cc: Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Alex_Benn=c3=a9e?=
+ <alex.bennee@linaro.org>, Thomas Huth <thuth@redhat.com>,
+ Alexandre Iooss <erdnaxe@crans.org>, Mahmoud Mandour
+ <ma.mandourr@gmail.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Michael Rolnik
+ <mrolnik@gmail.com>, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Brian Cain <bcain@quicinc.com>, Song Gao <gaosong@loongson.cn>,
+ Xiaojuan Yang <yangxiaojuan@loongson.cn>, Laurent Vivier
+ <laurent@vivier.eu>, Aurelien Jarno <aurelien@aurel32.net>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ Chris Wulff <crwulff@gmail.com>, Marek Vasut <marex@denx.de>,
+ Stafford Horne <shorne@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Artyom Tarasenko <atar4qemu@gmail.com>,
+ Bastian Koppelmann <kbastian@mail.uni-paderborn.de>,
+ Max Filippov <jcmvbkbc@gmail.com>, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org, qemu-ppc@nongnu.org, qemu-riscv@nongnu.org,
+ qemu-s390x@nongnu.org
+References: <20230731084354.115015-1-akihiko.odaki@daynix.com>
+ <20230731084354.115015-9-akihiko.odaki@daynix.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230731084354.115015-9-akihiko.odaki@daynix.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.101,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -87,27 +126,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 31 Jul 2023 at 14:32, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
->
-> On 2023/07/31 20:44, Peter Maydell wrote:
-> > On Mon, 31 Jul 2023 at 09:04, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
-> >>
-> >> MAP_FIXED_NOREPLACE can ensure the mapped address is fixed without
-> >> concerning that the new mapping overwrites something else.
-> >
-> > MAP_FIXED_NOREPLACE only came in with Linux 4.17. So
-> > I think we still need to handle the "mapped address
-> > is not the one we asked for" error condition, because
-> > it can happen on older host kernels that ignore the
-> > MAP_FIXED_NOREPLACE flag.
+On 31/7/23 10:43, Akihiko Odaki wrote:
+> In preparation for a change to use GDBFeature as a parameter of
+> gdb_register_coprocessor(), convert the internal representation of
+> dynamic feature from plain XML to GDBFeature.
+> 
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> ---
+>   target/ppc/cpu-qom.h  |  3 +--
+>   target/ppc/cpu.h      |  2 +-
+>   target/ppc/cpu_init.c |  2 +-
+>   target/ppc/gdbstub.c  | 13 +++++++------
+>   4 files changed, 10 insertions(+), 10 deletions(-)
 
-> MAP_FIXED_NOREPLACE is substituted with MAP_FIXED before passing to the
-> host with patch 1. The NOREPLACE constraint is still ensured by
-> inspecting the guest page table.
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Oh, I see, this patch is a call to target_mmap(), not host
-mmap(). Sorry, I misread that.
-
-thanks
--- PMM
 
