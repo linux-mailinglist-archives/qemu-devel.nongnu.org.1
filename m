@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 730D7769052
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 10:36:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C074769085
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 10:42:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQONM-0000Br-5D; Mon, 31 Jul 2023 04:35:36 -0400
+	id 1qQOSq-00039l-17; Mon, 31 Jul 2023 04:41:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ardb@kernel.org>) id 1qQONJ-0000BY-2s
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 04:35:33 -0400
+ (Exim 4.90_1) (envelope-from <ardb@kernel.org>) id 1qQOSZ-000385-5f
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 04:41:02 -0400
 Received: from dfw.source.kernel.org ([139.178.84.217])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ardb@kernel.org>) id 1qQONH-0002pA-A7
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 04:35:32 -0400
+ (Exim 4.90_1) (envelope-from <ardb@kernel.org>) id 1qQOSX-0003gR-00
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 04:40:58 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 890AC60F40
- for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 08:35:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3F03C433CB
- for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 08:35:21 +0000 (UTC)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 049BB60EC6;
+ Mon, 31 Jul 2023 08:40:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3C46C433C7;
+ Mon, 31 Jul 2023 08:40:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1690792522;
- bh=snMdew0fKuETUzgiPrmMqut8AO1uC44xjHMWGD9CkDA=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=dfSBTs2zKgbuxtvG4AfceJTxUstUu5TjVLY080AC+43H0ZmNtq9rs8p3NrthraWWW
- GGwmo8i8KASIfNae7nfWb5HoMC4dNrjfOP5geAZ8apB1ORiBaJ/nSZIUurAiGQAsWc
- g2TO96id2wuL10R3mEq+9QB4/n4RlgvKKXsxOm60+uBMQu/PFY6uvbY2qbbkpDFKt6
- 7C27ZS8xwHUY0WYN8sxC7rGAPWnw9TS2COhlHu2vv+XAgyNTTYnGT2YTOYaPj15H1Z
- pA4qbSmerL9qzc2L/Qed1u4QVnz3I2nD4EebTgKDvKzUlo7wDhzkM0hZcfCjknVtju
- Ko+c0QXvZUgiA==
-Received: by mail-lf1-f53.google.com with SMTP id
- 2adb3069b0e04-4f4b2bc1565so6558459e87.2
- for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 01:35:21 -0700 (PDT)
-X-Gm-Message-State: ABy/qLYuGfrZKd3tLoBdk8Ie88EWk+dKnblEHObcA3wTBvIKqaU7IX12
- EMySDF+zLQSC4KlDPc2jXF9lQqODdlMeLQbkDV0=
-X-Google-Smtp-Source: APBJJlEVeRiDTxGJs2zFhXFbSJE/lIS5XW2zMcRo7H9TDnIdcjW9CiyQ3aTeYKWrhhHsjlwRy4utptvuHWXP861ipTo=
-X-Received: by 2002:a2e:9495:0:b0:2b6:bd09:4d64 with SMTP id
- c21-20020a2e9495000000b002b6bd094d64mr6035588ljh.34.1690792519974; Mon, 31
- Jul 2023 01:35:19 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230726081710.1051126-1-ardb@kernel.org>
- <67a8967e-338a-fbd1-1c06-d5a35f2db509@linaro.org>
-In-Reply-To: <67a8967e-338a-fbd1-1c06-d5a35f2db509@linaro.org>
+ s=k20201202; t=1690792855;
+ bh=FcucIh08QQsOT72TbI90X3diSUrXpIIg/PJ64UEQM1k=;
+ h=From:To:Cc:Subject:Date:From;
+ b=nPR7LhwLbsFIT0zA7tgcyocw1vkc3twSsZlygS/SrXYGkKi38hxUNIGJdbIUDul5T
+ +Z/IQ+0OaB7w5ivjuUN8VdjLNWcfnFjC1z2fQssOUgjDXNPA5ddB1ZCM/KlGxQKDsu
+ zI5OQFuOnB4XsaeSftOT1ONlDU+MgvsO7QeaFy6FopDRPL6Hr9fz1tILVqoYvIzV9L
+ fIbAKZty7iWhC0uwwd90Y2NtYzXSwJCTBWO+noSrKSVQwd1dofS5JzZkUK0p0WlrOP
+ vu8SHeibNGG7ON2SLX3OgAipwhX8tF0PIe6tbM5WRYsscWRJ4OAYvNhjwO67shzWf7
+ 57hkiBTXjyMLA==
 From: Ard Biesheuvel <ardb@kernel.org>
-Date: Mon, 31 Jul 2023 10:35:08 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXFeO88bosaJ5=ZTRHPH0zxjaujtRtdYWb9e_AMRp0rYgA@mail.gmail.com>
-Message-ID: <CAMj1kXFeO88bosaJ5=ZTRHPH0zxjaujtRtdYWb9e_AMRp0rYgA@mail.gmail.com>
-Subject: Re: [RFC PATCH] target/i386: Truncate ESP when exiting from long mode
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
- Eduardo Habkost <eduardo@habkost.net>
-Content-Type: text/plain; charset="UTF-8"
+To: qemu-devel@nongnu.org
+Cc: Ard Biesheuvel <ardb@kernel.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Zewen Ye <lustrew@foxmail.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
+ Junqiang Wang <wangjunqiang@iscas.ac.cn>
+Subject: [PATCH v2] target/riscv: Use existing lookup tables for MixColumns
+Date: Mon, 31 Jul 2023 10:40:43 +0200
+Message-Id: <20230731084043.1791984-1-ardb@kernel.org>
+X-Mailer: git-send-email 2.39.2
+MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4324; i=ardb@kernel.org;
+ h=from:subject; bh=FcucIh08QQsOT72TbI90X3diSUrXpIIg/PJ64UEQM1k=;
+ b=owGbwMvMwCFmkMcZplerG8N4Wi2JIeV4cZuR29sLO1ovr13MLbO4NFTD+embp2utv83c/efUr
+ uaZywrTO0pZGMQ4GGTFFFkEZv99t/P0RKla51myMHNYmUCGMHBxCsBEJvky/PedwTxJ5q3J8WsP
+ Nkx5riiXtiLbT+DPUg6j9yX/z8p2vg1hZGhOjPucciPZV3K9a3PnRF21q0oTlxdcac2ZtfixZe1
+ xDiYA
+X-Developer-Key: i=ardb@kernel.org; a=openpgp;
+ fpr=F43D03328115A198C90016883D200E9CA6329909
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=139.178.84.217; envelope-from=ardb@kernel.org;
  helo=dfw.source.kernel.org
 X-Spam_score_int: -70
@@ -80,54 +80,132 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 26 Jul 2023 at 17:01, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> On 7/26/23 01:17, Ard Biesheuvel wrote:
-> > While working on some EFI boot changes for Linux/x86, I noticed that TCG deviates from
-> > bare metal when it comes to how it handles the value of the stack pointer register RSP
-> > when dropping out of long mode.
-> >
-> > On bare metal, RSP is truncated to 32 bits, even if the code that runs in 32-bit
-> > protected mode never uses the stack at all (and uses a long jump rather than long
-> > return to switch back to long mode). This means 64-bit code cannot rely on RSP
-> > surviving any excursions into 32-bit protected mode (with paging disabled).
-> >
-> > Let's align TCG with this behavior, so that code that relies on RSP retaining its value
-> > does not inadvertently work while bare metal does not.
-> >
-> > Observed on Intel Ice Lake cores.
-> >
-> > Cc: Paolo Bonzini<pbonzini@redhat.com> Cc: Richard
-> > Henderson<richard.henderson@linaro.org> Cc: Eduardo Habkost<eduardo@habkost.net>
-> > Link:https://lore.kernel.org/all/20230711091453.2543622-11-ardb@kernel.org/
-> > Signed-off-by: Ard Biesheuvel<ardb@kernel.org> --- I used this patch locally to
-> > reproduce an issue that was reported on Ice Lake but didn't trigger in my QEMU
-> > testing.
-> >
-> > Hints welcome on where the architectural behavior is specified, and in particular,
-> > whether or not other 64-bit GPRs can be relied upon to preserve their full 64-bit
-> > length values.
->
-> No idea about chapter and verse, but it has the feel of being part and parcel with the
-> truncation of eip.  While esp is always special, I suspect that none of the GPRs can be
-> relied on carrying all bits.
->
-> I'm happy with the change though, since similar behaviour can be observed on hw.
->
-> Acked-by: Richard Henderson <richard.henderson@linaro.org>
->
+The AES MixColumns and InvMixColumns operations are relatively
+expensive 4x4 matrix multiplications in GF(2^8), which is why C
+implementations usually rely on precomputed lookup tables rather than
+performing the calculations on demand.
 
-I experimented with truncating all GPRs that exist in 32-bit mode, and
-this actually breaks kexec on Linux if it happens to load the kernel
-above 4G (which it appears to do reproducibly when sufficient memory
-is available)
+Given that we already carry those tables in QEMU, we can just grab the
+right value in the implementation of the RISC-V AES32 instructions. Note
+that the tables in question are permuted according to the respective
+Sbox, so we can omit the Sbox lookup as well in this case.
 
-This is due to the 4/5 level paging switch trampoline, which is called
-while RBX, RBP and RSI are live and refer to assets in memory that may
-reside above 4G.
+Cc: Richard Henderson <richard.henderson@linaro.org>
+Cc: Philippe Mathieu-Daudé <philmd@linaro.org>
+Cc: Zewen Ye <lustrew@foxmail.com>
+Cc: Weiwei Li <liweiwei@iscas.ac.cn>
+Cc: Junqiang Wang <wangjunqiang@iscas.ac.cn>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+v2:
+- ignore host endianness and use be32_to_cpu() unconditionally
 
-I am fixing that code, but it does mean we should probably limit this
-change to ESP (as apparently, current hw only happens to truncate ESP
-but no other GPRs)
+ crypto/aes.c                 |  4 +--
+ include/crypto/aes.h         |  7 ++++
+ target/riscv/crypto_helper.c | 34 +++-----------------
+ 3 files changed, 13 insertions(+), 32 deletions(-)
+
+diff --git a/crypto/aes.c b/crypto/aes.c
+index 836d7d5c0bf1b392..df4362ac6022eac2 100644
+--- a/crypto/aes.c
++++ b/crypto/aes.c
+@@ -272,7 +272,7 @@ AES_Td3[x] = Si[x].[09, 0d, 0b, 0e];
+ AES_Td4[x] = Si[x].[01, 01, 01, 01];
+ */
+ 
+-static const uint32_t AES_Te0[256] = {
++const uint32_t AES_Te0[256] = {
+     0xc66363a5U, 0xf87c7c84U, 0xee777799U, 0xf67b7b8dU,
+     0xfff2f20dU, 0xd66b6bbdU, 0xde6f6fb1U, 0x91c5c554U,
+     0x60303050U, 0x02010103U, 0xce6767a9U, 0x562b2b7dU,
+@@ -607,7 +607,7 @@ static const uint32_t AES_Te4[256] = {
+     0xb0b0b0b0U, 0x54545454U, 0xbbbbbbbbU, 0x16161616U,
+ };
+ 
+-static const uint32_t AES_Td0[256] = {
++const uint32_t AES_Td0[256] = {
+     0x51f4a750U, 0x7e416553U, 0x1a17a4c3U, 0x3a275e96U,
+     0x3bab6bcbU, 0x1f9d45f1U, 0xacfa58abU, 0x4be30393U,
+     0x2030fa55U, 0xad766df6U, 0x88cc7691U, 0xf5024c25U,
+diff --git a/include/crypto/aes.h b/include/crypto/aes.h
+index 709d4d226bfe158b..381f24c9022d2aa8 100644
+--- a/include/crypto/aes.h
++++ b/include/crypto/aes.h
+@@ -30,4 +30,11 @@ void AES_decrypt(const unsigned char *in, unsigned char *out,
+ extern const uint8_t AES_sbox[256];
+ extern const uint8_t AES_isbox[256];
+ 
++/*
++AES_Te0[x] = S [x].[02, 01, 01, 03];
++AES_Td0[x] = Si[x].[0e, 09, 0d, 0b];
++*/
++
++extern const uint32_t AES_Te0[256], AES_Td0[256];
++
+ #endif
+diff --git a/target/riscv/crypto_helper.c b/target/riscv/crypto_helper.c
+index 99d85a618843e87e..4d65945429c6dcc4 100644
+--- a/target/riscv/crypto_helper.c
++++ b/target/riscv/crypto_helper.c
+@@ -25,29 +25,6 @@
+ #include "crypto/aes-round.h"
+ #include "crypto/sm4.h"
+ 
+-#define AES_XTIME(a) \
+-    ((a << 1) ^ ((a & 0x80) ? 0x1b : 0))
+-
+-#define AES_GFMUL(a, b) (( \
+-    (((b) & 0x1) ? (a) : 0) ^ \
+-    (((b) & 0x2) ? AES_XTIME(a) : 0) ^ \
+-    (((b) & 0x4) ? AES_XTIME(AES_XTIME(a)) : 0) ^ \
+-    (((b) & 0x8) ? AES_XTIME(AES_XTIME(AES_XTIME(a))) : 0)) & 0xFF)
+-
+-static inline uint32_t aes_mixcolumn_byte(uint8_t x, bool fwd)
+-{
+-    uint32_t u;
+-
+-    if (fwd) {
+-        u = (AES_GFMUL(x, 3) << 24) | (x << 16) | (x << 8) |
+-            (AES_GFMUL(x, 2) << 0);
+-    } else {
+-        u = (AES_GFMUL(x, 0xb) << 24) | (AES_GFMUL(x, 0xd) << 16) |
+-            (AES_GFMUL(x, 0x9) << 8) | (AES_GFMUL(x, 0xe) << 0);
+-    }
+-    return u;
+-}
+-
+ #define sext32_xlen(x) (target_ulong)(int32_t)(x)
+ 
+ static inline target_ulong aes32_operation(target_ulong shamt,
+@@ -55,23 +32,20 @@ static inline target_ulong aes32_operation(target_ulong shamt,
+                                            bool enc, bool mix)
+ {
+     uint8_t si = rs2 >> shamt;
+-    uint8_t so;
+     uint32_t mixed;
+     target_ulong res;
+ 
+     if (enc) {
+-        so = AES_sbox[si];
+         if (mix) {
+-            mixed = aes_mixcolumn_byte(so, true);
++            mixed = be32_to_cpu(AES_Te0[si]);
+         } else {
+-            mixed = so;
++            mixed = AES_sbox[si];
+         }
+     } else {
+-        so = AES_isbox[si];
+         if (mix) {
+-            mixed = aes_mixcolumn_byte(so, false);
++            mixed = be32_to_cpu(AES_Td0[si]);
+         } else {
+-            mixed = so;
++            mixed = AES_isbox[si];
+         }
+     }
+     mixed = rol32(mixed, shamt);
+-- 
+2.39.2
+
 
