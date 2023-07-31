@@ -2,116 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E94B276979D
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 15:29:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFC587697AC
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 15:33:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQSwY-0000Vd-M3; Mon, 31 Jul 2023 09:28:14 -0400
+	id 1qQT0q-0004us-VB; Mon, 31 Jul 2023 09:32:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qQSwW-0000Tc-91
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 09:28:12 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qQT0b-0004gb-72
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 09:32:28 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qQSwT-0005QP-7Z
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 09:28:11 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-3fe1d462762so10243665e9.0
- for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 06:28:07 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qQT0Z-0006Ii-Pl
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 09:32:24 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-686f19b6dd2so2859266b3a.2
+ for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 06:32:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690810086; x=1691414886;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1690810342; x=1691415142;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=8gMMA/S+lNdmt0rM5meRi6+/oF86zlRB/iWExxnovjs=;
- b=eKyept5pR0+LCuvgVtuHqz+gUkYvmH1fOnCKrWkN1C4/AHre8Gr9NuFwoqKkGNYnzM
- HGfZHqhlFvvuZUoDH5xVpuaNGge3GabK4g69MYb/eDBlK9MI7NIUn+fecjwmWhHwzOWd
- 7WAuLe11k9DIdATZ0J/grBL5tZkDft8E8DtL5wwBTi60ja7v8XzfpE95Xh9nEIYqPlfQ
- lNwXEcxGkHpa+deZoQoz+P7iTnhh4hRqsTEw6bu0fPMBDNQDvtsbRnqVB45ynma1QbIU
- qwCPbmXoG9SII0AMySgmiCVxOvyH8luhT+xFnkbNDWc8io9dV5rqMiAmLUs+29ETR2p0
- MgSg==
+ bh=qA6thExMMXJkyGHzexY+V4aBKe9NBakxHIryUUSoUHs=;
+ b=zV57vkkmk+xrVuWGWTMvzhQmq5fSoLBpXtUYznfcYcBm6f3Wm3LCOnDN5OFx1gfJVi
+ ecCsvGegFka91GECA3egaBx4oCzd/uJgMHDE1ZviEpeYOuPRTijWQeAHdE/yHTLz4qhl
+ pB4tMsAUjorpMLyOdoNLmNUkuG/k9IRzQIYgad3roGI84n35vStCEgu3Ia0+lnm9x7tx
+ TqtZda69bCDo75Rf3Doqj0tSYL4D1GLKMrbtupz7JGoD+G3Gbpr/EHK4Uk5Fn5z9TlPI
+ cnYmFD0oP8g1N6ZE/DpUi60bNKs1OzZ+Q2aeAmC/4UUypU711nFe8kAwauOps7CQq9B4
+ Yu7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690810086; x=1691414886;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20221208; t=1690810342; x=1691415142;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=8gMMA/S+lNdmt0rM5meRi6+/oF86zlRB/iWExxnovjs=;
- b=huMvvcJJ9F7IzgYFQecTHuoePCcw2lZJEaIo9jjRiofR7plbxY9XaHLxyygcHj06MU
- Obo7mJ+kbHkilkxlOydV3lM0I4+YMsz+/kLhPQeqi/XI01m/OwxuzYlKwp2UfnxH4xam
- 8/+iyNhOzUys+xxkyrrAYiJpHnoDvwER7ybew8n7wGkH5B5usZpHpYc5BVMwwKaaCUya
- KaobKynWeYYReldyIwdSYOjW+VN1gV0aKkKv+9gn79NyKaQ50yT3kij85o42J7qpZPIA
- MAcHaf2AKMZ/yQb42upJlN/E/gkk9sEMiMPX795uF2dCdXOk4PCcEN4maw+0umCn6r66
- A9tg==
-X-Gm-Message-State: ABy/qLa0xWQiCrQe09BiPm7ZHy+YOy2NIQcaaI1P2u4UJSWpRZaZbEan
- igbXvmqeQHvQ/O/RVt1lYPgJjg==
-X-Google-Smtp-Source: APBJJlHMwNoxRxepGnxKznkemeh+5H/tbO8K1yA/ssP05TfXPMen4vhX1EkgXRhaigZL+EBcbX0dSw==
-X-Received: by 2002:a1c:7c1a:0:b0:3fc:f9c:a3e6 with SMTP id
- x26-20020a1c7c1a000000b003fc0f9ca3e6mr7632898wmc.9.1690810086070; 
- Mon, 31 Jul 2023 06:28:06 -0700 (PDT)
-Received: from [192.168.69.115] ([176.187.198.42])
+ bh=qA6thExMMXJkyGHzexY+V4aBKe9NBakxHIryUUSoUHs=;
+ b=SS0DwwyLqkIz5kQU3FggeSJbp+EbMQIwCGQIFcGIBmyHGD5ZQ3Y3muQvAhAUlwXEPh
+ OIUybFuhElYlH6DnFSO0Au/1MNQdMLXMIxB5uBawItwK6QV4T1h8egFmBSpGe808WD1p
+ g+5SBUTyl/i3KOqQWF6++EuIYWMf9fHSEnsOjqj1gnqnN1qEjaiGxNVswPs8hlSX73BV
+ FhRZHqCtdEG9v/YCFCdEQbly8z7yWp1nTpG8tZlOTLvuJQ+uGzbG+ei9rJy3OCcW3NC2
+ jgHlp6p5Nkl1+0wzw8yZCg2/7xgoM4PAia03ZJZrXGGCajakWdL2juhnrimWp2I+Jnqy
+ PPhQ==
+X-Gm-Message-State: ABy/qLZTzdKP0Nu6FpWt2MDAIYxULsoNYHxlNL4wFsFJBtP/H5d7/uen
+ ajwIZDABIyJiPng+LwjR3+FsMxD14NflezOgP2c=
+X-Google-Smtp-Source: APBJJlFSEOqRUvoBtWlbvbCBGjMmIXsEPb2Phqk6E5EBR7FcDHvcXLzMXIDALYLd64cBERLW8OQMYw==
+X-Received: by 2002:a05:6a00:983:b0:686:25fe:d575 with SMTP id
+ u3-20020a056a00098300b0068625fed575mr11860637pfg.11.1690810341738; 
+ Mon, 31 Jul 2023 06:32:21 -0700 (PDT)
+Received: from [10.4.77.224] ([118.103.63.129])
  by smtp.gmail.com with ESMTPSA id
- f2-20020a7bc8c2000000b003fbc9b9699dsm11464862wml.45.2023.07.31.06.27.59
+ a15-20020a62e20f000000b0068664ace38asm7863256pfi.19.2023.07.31.06.32.20
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 31 Jul 2023 06:28:05 -0700 (PDT)
-Message-ID: <09cad822-85c2-3e0b-9414-e1da9de2a2d1@linaro.org>
-Date: Mon, 31 Jul 2023 15:27:56 +0200
+ Mon, 31 Jul 2023 06:32:21 -0700 (PDT)
+Message-ID: <9f2a49dd-75ce-4e23-3873-0ad4fd78277b@daynix.com>
+Date: Mon, 31 Jul 2023 22:32:19 +0900
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.13.0
-Subject: Re: [RFC PATCH 06/24] hw/core/cpu: Replace gdb_core_xml_file with
- gdb_core_feature
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/5] linux-user: Use MAP_FIXED_NOREPLACE for do_brk()
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, Laurent Vivier <laurent@vivier.eu>
+References: <20230731080317.112658-1-akihiko.odaki@daynix.com>
+ <20230731080317.112658-4-akihiko.odaki@daynix.com>
+ <CAFEAcA_gdK_nSkiaJQ2mDPeb3Se39AYN+DkDg1U-D2CJ1vUOuQ@mail.gmail.com>
 Content-Language: en-US
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Alex_Benn=c3=a9e?=
- <alex.bennee@linaro.org>, Thomas Huth <thuth@redhat.com>,
- Alexandre Iooss <erdnaxe@crans.org>, Mahmoud Mandour
- <ma.mandourr@gmail.com>, Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Michael Rolnik
- <mrolnik@gmail.com>, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Brian Cain <bcain@quicinc.com>, Song Gao <gaosong@loongson.cn>,
- Xiaojuan Yang <yangxiaojuan@loongson.cn>, Laurent Vivier
- <laurent@vivier.eu>, Aurelien Jarno <aurelien@aurel32.net>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Chris Wulff <crwulff@gmail.com>, Marek Vasut <marex@denx.de>,
- Stafford Horne <shorne@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
- Nicholas Piggin <npiggin@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Artyom Tarasenko <atar4qemu@gmail.com>,
- Bastian Koppelmann <kbastian@mail.uni-paderborn.de>,
- Max Filippov <jcmvbkbc@gmail.com>, qemu-devel@nongnu.org,
- qemu-arm@nongnu.org, qemu-ppc@nongnu.org, qemu-riscv@nongnu.org,
- qemu-s390x@nongnu.org
-References: <20230731084354.115015-1-akihiko.odaki@daynix.com>
- <20230731084354.115015-7-akihiko.odaki@daynix.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230731084354.115015-7-akihiko.odaki@daynix.com>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <CAFEAcA_gdK_nSkiaJQ2mDPeb3Se39AYN+DkDg1U-D2CJ1vUOuQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.101,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Received-SPF: none client-ip=2607:f8b0:4864:20::431;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x431.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -127,65 +94,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 31/7/23 10:43, Akihiko Odaki wrote:
-> This is a tree-wide change to replace gdb_core_xml_file, the path to
-> GDB XML file with gdb_core_feature, the pointer to GDBFeature. This
-> also replaces the values assigned to gdb_num_core_regs with the
-> num_regs member of GDBFeature where applicable to remove magic numbers.
+On 2023/07/31 20:44, Peter Maydell wrote:
+> On Mon, 31 Jul 2023 at 09:04, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
+>>
+>> MAP_FIXED_NOREPLACE can ensure the mapped address is fixed without
+>> concerning that the new mapping overwrites something else.
 > 
-> A following change will utilize additional information provided by
-> GDBFeature to simplify XML file lookup.
+> MAP_FIXED_NOREPLACE only came in with Linux 4.17. So
+> I think we still need to handle the "mapped address
+> is not the one we asked for" error condition, because
+> it can happen on older host kernels that ignore the
+> MAP_FIXED_NOREPLACE flag.
 > 
-> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> ---
->   include/hw/core/cpu.h   | 5 +++--
->   target/s390x/cpu.h      | 2 --
->   gdbstub/gdbstub.c       | 6 +++---
->   target/arm/cpu.c        | 4 ++--
->   target/arm/cpu64.c      | 4 ++--
->   target/arm/tcg/cpu32.c  | 3 ++-
->   target/avr/cpu.c        | 4 ++--
->   target/hexagon/cpu.c    | 2 +-
->   target/i386/cpu.c       | 7 +++----
->   target/loongarch/cpu.c  | 4 ++--
->   target/m68k/cpu.c       | 7 ++++---
->   target/microblaze/cpu.c | 4 ++--
->   target/ppc/cpu_init.c   | 4 ++--
->   target/riscv/cpu.c      | 7 ++++---
->   target/rx/cpu.c         | 4 ++--
->   target/s390x/cpu.c      | 4 ++--
->   16 files changed, 36 insertions(+), 35 deletions(-)
+> thanks
+> -- PMM
 
+MAP_FIXED_NOREPLACE is substituted with MAP_FIXED before passing to the 
+host with patch 1. The NOREPLACE constraint is still ensured by 
+inspecting the guest page table.
 
-> diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-> index d71a162070..a206ab6b1b 100644
-> --- a/target/arm/cpu.c
-> +++ b/target/arm/cpu.c
-> @@ -2353,7 +2353,6 @@ static void arm_cpu_class_init(ObjectClass *oc, void *data)
->   #ifndef CONFIG_USER_ONLY
->       cc->sysemu_ops = &arm_sysemu_ops;
->   #endif
-> -    cc->gdb_num_core_regs = 26;
->       cc->gdb_arch_name = arm_gdb_arch_name;
->       cc->gdb_get_dynamic_xml = arm_gdb_get_dynamic_xml;
->       cc->gdb_stop_before_watchpoint = true;
-> @@ -2378,7 +2377,8 @@ static void cpu_register_class_init(ObjectClass *oc, void *data)
->       CPUClass *cc = CPU_CLASS(acc);
->   
->       acc->info = data;
-> -    cc->gdb_core_xml_file = "arm-core.xml";
-> +    cc->gdb_core_feature = gdb_find_static_feature("arm-core.xml");
-
-Can we have:
-
-   cc->gdb_core_feature = gdb_find_static_feature(cc->gdb_core_xml_file);
-
-once in hw/core/cpu-common.c::cpu_class_init()?
-
-(haven't verified, just wondering)
-
-> +    cc->gdb_num_core_regs = cc->gdb_core_feature->num_regs;
->   }
-
-
+Regards,
+Akihiko Odaki
 
