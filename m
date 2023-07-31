@@ -2,61 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33D4876A412
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 00:23:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C2BF76A433
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 00:33:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQbGo-0006uR-HT; Mon, 31 Jul 2023 18:21:42 -0400
+	id 1qQbRR-00011d-5v; Mon, 31 Jul 2023 18:32:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fermium@anarchist.gay>)
- id 1qQb5s-0005jK-7Q; Mon, 31 Jul 2023 18:10:24 -0400
-Received: from box.anarchist.gay ([178.62.216.29])
+ (Exim 4.90_1) (envelope-from <yuri.benditovich@daynix.com>)
+ id 1qQbRP-00011D-8W
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 18:32:39 -0400
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <fermium@anarchist.gay>)
- id 1qQb5q-00023m-E9; Mon, 31 Jul 2023 18:10:23 -0400
-Received: from authenticated-user (box.anarchist.gay [178.62.216.29])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
- (No client certificate requested)
- by box.anarchist.gay (Postfix) with ESMTPSA id 9E8D97EA91;
- Mon, 31 Jul 2023 18:10:19 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=anarchist.gay;
- s=mail; t=1690841420;
- bh=BE3TpyORXTw1UsQ1yvio3SF6Xv3TxE6hxvtplIC1q24=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=R26aK2pHRwmtmvYmn/EJ4gqWxL+zNlFIIQo4sBXRuVqGNrXx8fBaaCTM3WTby8Y9g
- R3tSyNmychKbrrvbkI1FuVtoFUH3MOKU+flVOm0Xc8/4RmWmUfyL0GdEkykLDU7ASt
- R+id1PMgpDxQgk+rNu24JixpW1wr3AwgRwGtbpfDzLeWHvcfnaXw4rsFxcbBNJW5zn
- t6KhlWr+SpGsv/AHiRJ225qnhC/DX9J/efHeyYeG7gqPjNZQ7VoFfpPLNULMdTnS3M
- /du4fvy6XY1cRGm+V7IVMj6LY6CYDmX6KqIh/6N5Xi2GolqlOcvqfh1KADsdlYtVmh
- +OcoD7SpMegrg==
-From: Lilly Anderson <fermium@anarchist.gay>
-To: qemu-devel@nongnu.org,
-	qemu-riscv@nongnu.org
-Cc: Lilly Anderson <fermium@anarchist.gay>,
- Sunil V L <sunilvl@ventanamicro.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-Subject: [PATCH 1/1] Added support for the MMU node in the RHCT
-Date: Mon, 31 Jul 2023 18:09:59 -0400
-Message-ID: <20230731220959.4142636-2-fermium@anarchist.gay>
-In-Reply-To: <20230731220959.4142636-1-fermium@anarchist.gay>
-References: <20230731220959.4142636-1-fermium@anarchist.gay>
+ (Exim 4.90_1) (envelope-from <yuri.benditovich@daynix.com>)
+ id 1qQbRN-0002Ti-HI
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 18:32:39 -0400
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-5222b917e0cso7364753a12.0
+ for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 15:32:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1690842755; x=1691447555;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=noJRsMWrXqZ8CbewAnBQvTuIkOeRLbws6veGvOiLNq8=;
+ b=JUhLVgb0wZ1QS8QokEJ9jQszvBfehBSnkMjIMMMVndJzh7eDV2Y3MnkRtLRjTGhQO1
+ SkuPeAGDZyXZiyT3cpv/+pwYtnKBanExe7VQj3lxffwrD0u79kvuuH2e4HixTpEx2OHk
+ wFGDDK5h/tRf7wKwEbFuFU5SA7mNhNO4cFFM3XNOajpW7hWg7tfR8F1uZYmFejstESEC
+ kAwhJ5fY0qMCIjYVVe5XKhizYHaBHFJKLysNKuZSB7gavwAGCrFe7mIXkL0QJvpCb8RO
+ Mlbi1qg908dGjV0ZHXnwG3kjj5isPqHW6OQ924dJ4hlx0XLj7wWKEDUORS0skbqWGXvk
+ +LHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1690842755; x=1691447555;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=noJRsMWrXqZ8CbewAnBQvTuIkOeRLbws6veGvOiLNq8=;
+ b=LSb84zxxvdGfTYJFpbatDQFMdzLj4GoehnhkaYoV7slGoghs22fJuIaG4O51NDnUTZ
+ XGu+wNpyF1zDmuMvZBzMDYTMgr+H4io9Fq9vSeuHIVHXPMUvqJ5tZKhxTzSkNdWFzjP6
+ 168Lv3Ka74hp0QB71hVa00Y/SPKmU+qmLG+ogsmEgVdniguO1J98Q6JYbfHS27ZVHD7d
+ mts1HgAoUCG+RtGFqISVmchDd6ihiUgLTAjJiK2wtQiZUfBB9kFI8hZ/4VkNT6T70Xfa
+ hyBIm03qQlVamteahciP29f8M5nsEBLzQIyaGJM5vaw/pEOtz8Ak2kSxdxtJXPk/nCib
+ 6guQ==
+X-Gm-Message-State: ABy/qLZxKeSY98DvU+zJw1NlkVtWx3ev1Z69yTvv2qAYaZ3I4hfWqYnX
+ lsELczrgTs+3G2VfHmvOWokhlQ==
+X-Google-Smtp-Source: APBJJlE9zL0lXjwlb3LFLP+sBzJGzHgCm6lN0a31kZZh20+sgvGYXeogZ1lLSYdAHUqRj153y8R98g==
+X-Received: by 2002:aa7:d149:0:b0:522:1dce:ca09 with SMTP id
+ r9-20020aa7d149000000b005221dceca09mr911012edo.29.1690842755499; 
+ Mon, 31 Jul 2023 15:32:35 -0700 (PDT)
+Received: from localhost.localdomain
+ ([2a06:c701:46e5:f400:91e1:5f50:afab:4c79])
+ by smtp.gmail.com with ESMTPSA id
+ x5-20020aa7dac5000000b005223c34259fsm5915088eds.57.2023.07.31.15.32.33
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 31 Jul 2023 15:32:34 -0700 (PDT)
+From: Yuri Benditovich <yuri.benditovich@daynix.com>
+To: eduardo@habkost.net, marcel.apfelbaum@gmail.com, philmd@linaro.org,
+ wangyanan55@huawei.com, dmitry.fleytman@gmail.com,
+ akihiko.odaki@daynix.com, jasowang@redhat.com, sriram.yagnaraman@est.tech,
+ mst@redhat.com, sw@weilnetz.de, qemu-devel@nongnu.org
+Cc: yan@daynix.com
+Subject: [PATCH v2 0/4] virtio-net: add USO feature (UDP segmentation offload)
+Date: Tue,  1 Aug 2023 01:31:44 +0300
+Message-Id: <20230731223148.1002258-1-yuri.benditovich@daynix.com>
+X-Mailer: git-send-email 2.34.3
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=178.62.216.29; envelope-from=fermium@anarchist.gay;
- helo=box.anarchist.gay
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: none client-ip=2a00:1450:4864:20::536;
+ envelope-from=yuri.benditovich@daynix.com; helo=mail-ed1-x536.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Mon, 31 Jul 2023 18:21:39 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,61 +91,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
----
- hw/riscv/virt-acpi-build.c | 17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+Starting from 6.2 the kernel supports UDP segmentation offload, it=0D
+uses GSO_UDP_L4 to mark packets with UDP sermentation request=0D
+=0D
+v1->v2:=0D
+ Enable USO features by default starting from 8.1=0D
+ Move command-line parameters to the last patch=0D
 
-diff --git a/hw/riscv/virt-acpi-build.c b/hw/riscv/virt-acpi-build.c
-index 7331248f59..cb36e52169 100644
---- a/hw/riscv/virt-acpi-build.c
-+++ b/hw/riscv/virt-acpi-build.c
-@@ -119,7 +119,8 @@ static void acpi_dsdt_add_fw_cfg(Aml *scope, const MemMapEntry *fw_cfg_memmap)
- /*
-  * ACPI spec, Revision 6.5+
-  * 5.2.36 RISC-V Hart Capabilities Table (RHCT)
-- * REF: https://github.com/riscv-non-isa/riscv-acpi/issues/16
-+ * REF: https://github.com/riscv-non-isa/riscv-acpi/issues/18
-+ *      https://drive.google.com/file/d/1sKbOa8m1UZw1JkquZYe3F1zQBN1xXsaf/view
-  *      https://drive.google.com/file/d/1nP3nFiH4jkPMp6COOxP6123DCZKR-tia/view
-  */
- static void build_rhct(GArray *table_data,
-@@ -133,6 +134,7 @@ static void build_rhct(GArray *table_data,
-     uint32_t isa_offset, num_rhct_nodes;
-     RISCVCPU *cpu;
-     char *isa;
-+    uint8_t mmu_type;
- 
-     AcpiTable table = { .sig = "RHCT", .rev = 1, .oem_id = s->oem_id,
-                         .oem_table_id = s->oem_table_id };
-@@ -145,8 +147,8 @@ static void build_rhct(GArray *table_data,
-     build_append_int_noprefix(table_data,
-                               RISCV_ACLINT_DEFAULT_TIMEBASE_FREQ, 8);
- 
--    /* ISA + N hart info */
--    num_rhct_nodes = 1 + ms->smp.cpus;
-+    /* ISA + MMU + N hart info */
-+    num_rhct_nodes = 2 + ms->smp.cpus;
- 
-     /* Number of RHCT nodes*/
-     build_append_int_noprefix(table_data, num_rhct_nodes, 4);
-@@ -174,6 +176,15 @@ static void build_rhct(GArray *table_data,
-         build_append_int_noprefix(table_data, 0x0, 1);   /* Optional Padding */
-     }
- 
-+    /* MMU Node */
-+    build_append_int_noprefix(table_data, 2, 2); /* Type 2 */
-+    build_append_int_noprefix(table_data, 8, 2); /* Length */
-+    build_append_int_noprefix(table_data, 1, 2); /* Revision */
-+    build_append_int_noprefix(table_data, 0, 1); /* Reserved */
-+    
-+    mmu_type = satp_mode_max_from_map(riscv_cpu_cfg(&cpu->env)->satp_mode.map) - 8;
-+    build_append_int_noprefix(table_data, mmu_type, 1); /* MMU Type */
-+
-     /* Hart Info Node */
-     for (int i = 0; i < arch_ids->len; i++) {
-         build_append_int_noprefix(table_data, 0xFFFF, 2);  /* Type */
--- 
-2.41.0
+Andrew Melnychenko (2):
+  tap: Add USO support to tap device.
+  virtio-net: Add USO flags to vhost support.
 
-Signed-off-by: Lilly Anderson <fermium@anarchist.gay>
+Yuri Benditovich (2):
+  tap: Add check for USO features
+  virtio-net: Add support for USO features
+
+ hw/core/machine.c    |  4 ++++
+ hw/net/e1000e_core.c |  2 +-
+ hw/net/igb_core.c    |  2 +-
+ hw/net/vhost_net.c   |  3 +++
+ hw/net/virtio-net.c  | 35 ++++++++++++++++++++++++++++++++---
+ hw/net/vmxnet3.c     |  2 ++
+ include/net/net.h    |  7 +++++--
+ net/net.c            | 13 +++++++++++--
+ net/tap-bsd.c        |  7 ++++++-
+ net/tap-linux.c      | 27 ++++++++++++++++++++++++---
+ net/tap-linux.h      |  2 ++
+ net/tap-solaris.c    |  7 ++++++-
+ net/tap-stub.c       |  7 ++++++-
+ net/tap-win32.c      |  2 +-
+ net/tap.c            | 18 +++++++++++++++---
+ net/tap_int.h        |  4 +++-
+ net/vhost-vdpa.c     |  3 +++
+ 17 files changed, 125 insertions(+), 20 deletions(-)
+
+--=20
+2.34.3
+
 
