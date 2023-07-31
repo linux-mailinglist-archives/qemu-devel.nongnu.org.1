@@ -2,75 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FC8D76A25C
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 23:03:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D4AD76A27E
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 23:14:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQa2p-0002V5-Lx; Mon, 31 Jul 2023 17:03:11 -0400
+	id 1qQaCq-00073J-8R; Mon, 31 Jul 2023 17:13:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shorne@gmail.com>) id 1qQa2n-0002HW-EA
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 17:03:09 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qQaCo-00072v-DD
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 17:13:30 -0400
+Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shorne@gmail.com>) id 1qQa2l-0006bX-Kk
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 17:03:09 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-3128fcd58f3so5174902f8f.1
- for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 14:03:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1690837385; x=1691442185;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=iKD6WWO6p/9oTv8bApcU7nPsFXgbOEwMT1T7aFVY2oY=;
- b=IQg7xvZ4H5QOwiXB0dNujySCOq3O7FsKOGFjUSbxbtD+pyBeXvqJu0qJsHRS2+ZbcR
- 0r6yez6HzT7mlVGNn2L/c9Z767t18qXIpBzdzOO4fW04bCbWjTtydYAesGajtcOnGDo0
- xrM4cTjMk4u14WwBJyYAiZaF+S5Zs92T4BuCko1fjFGSeDITnbpZKIpiX/Wx+TS9aVUo
- +wkjAXM66ecGCow2jWQa6AEdDP6ol9+TCDVDWB+hHfhcGWNZK5OlV2STWMXV1S8A2rBT
- GbjLNjdB5wnvgmhAuI93/u84YomlUN9MA3Cmr+eIc/K9txz4FQqhUMnRnDjPH29lqmpn
- +BoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690837385; x=1691442185;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=iKD6WWO6p/9oTv8bApcU7nPsFXgbOEwMT1T7aFVY2oY=;
- b=aHaW/K3cyt9s5u/IiLoqEVcUFPcmOxdCr9RXG3odSUvvThx94bPxeJFmGFj87nlDL4
- seB1afIxmkl/+p0G7DEe+9ZpeZtgbxJS8dalSaV5QfS5SeJKRpiu/60Dag4tkrmkz9Cj
- DZVZnEs8G33FYAynp7i8TFVTxGZzzZMP5a/S13SG2yPkxZr8R7lFMxB5AkXkIQ0mZMAC
- M9RfLZaAmUk089cnFxZHnFO3uASIUo2MNizCaUoDFQ1e8CN2TKKreg+QKcQlQUxjsdhE
- eZxhxYu6ccOLra7EdcbAF+MkUSMkghopEwVaTcMDYNKhU9WMV3QrE4/k7kNNs3wg9KMa
- 476Q==
-X-Gm-Message-State: ABy/qLZ0T1B4hskZshTmqzp6djjiIhzT5yuLSsizeldEi+S4nxAo+hKZ
- tMTzcyhc9PpBYX4WcZDe/peehVYRz2c8+A==
-X-Google-Smtp-Source: APBJJlG8Hg7YjTAx+naZoCSXgAYMa905YuW/i1AbKFMeCH1s8byTtoihf56pki3FxK0s9kWHlihX5w==
-X-Received: by 2002:adf:fd8b:0:b0:314:3ca0:c8c2 with SMTP id
- d11-20020adffd8b000000b003143ca0c8c2mr735391wrr.11.1690837385268; 
- Mon, 31 Jul 2023 14:03:05 -0700 (PDT)
-Received: from localhost (cpc1-brnt4-2-0-cust862.4-2.cable.virginm.net.
- [86.9.131.95]) by smtp.gmail.com with ESMTPSA id
- b10-20020a5d4b8a000000b003175f00e555sm13965510wrt.97.2023.07.31.14.03.04
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 31 Jul 2023 14:03:04 -0700 (PDT)
-From: Stafford Horne <shorne@gmail.com>
-To: QEMU Development <qemu-devel@nongnu.org>
-Cc: Stafford Horne <shorne@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v2] target/openrisc: Set EPCR to next PC on FPE exceptions
-Date: Mon, 31 Jul 2023 22:03:01 +0100
-Message-Id: <20230731210301.3360723-1-shorne@gmail.com>
-X-Mailer: git-send-email 2.39.1
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qQaCm-0001Aa-NP
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 17:13:30 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id D12BA1F893;
+ Mon, 31 Jul 2023 21:13:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1690838006; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=r+QtKAmXQFrsiNdVYrScffUlm6PtW/xKtbgjBYWeEnc=;
+ b=O/X8+6Zo97oQdotdwg+1cSU0WRkNOIxis7Q3u4QMkIZtkstWwyMFNGU1ZhMtM+6OKzmMER
+ mcZH+zHESa0wXn5g5vS70gilIYI/fb4BZP0cGXlXwaVrivnrOQ94sxVM15zfqSkLn0IYiX
+ u91mHBoVF0eKNp282cA5wZOJRQZxbeM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1690838006;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=r+QtKAmXQFrsiNdVYrScffUlm6PtW/xKtbgjBYWeEnc=;
+ b=IFakzJ5nDo1PnE1Qah06GpQTviLKYmZ/sxSr25nZyq8paTZr/3VGmLL/3QXWEfUBwtkrir
+ x5ePXW2MQCovWMBA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 62DCC1322C;
+ Mon, 31 Jul 2023 21:13:26 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id GSmNC/YjyGTVCwAAMHmgww
+ (envelope-from <farosas@suse.de>); Mon, 31 Jul 2023 21:13:26 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>, Leonardo
+ Bras <leobras@redhat.com>
+Subject: Re: [PATCH 1/3] migration: Stop marking RP bad after shutdown
+In-Reply-To: <87cz07yetb.fsf@suse.de>
+References: <20230728121516.16258-1-farosas@suse.de>
+ <20230728121516.16258-2-farosas@suse.de> <ZMQ1LbTl5kGmAG21@x1n>
+ <87cz07yetb.fsf@suse.de>
+Date: Mon, 31 Jul 2023 18:13:24 -0300
+Message-ID: <87a5vbyebv.fsf@suse.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=shorne@gmail.com; helo=mail-wr1-x42a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain
+Received-SPF: pass client-ip=2001:67c:2178:6::1d; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -87,82 +84,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The architecture specification calls for the EPCR to be set to "Address
-of next not executed instruction" when there is a floating point
-exception (FPE).  This was not being done, so fix it by using the same
-pattern as syscall.  Also, we move this logic down to be done for
-instructions not in the delay slot as called for by the architecture
-manual.
+Fabiano Rosas <farosas@suse.de> writes:
 
-Without this patch FPU exceptions will loop, as the exception handling
-will always return back to the failed floating point instruction.
+> Peter Xu <peterx@redhat.com> writes:
+>
+>> On Fri, Jul 28, 2023 at 09:15:14AM -0300, Fabiano Rosas wrote:
+>>> When waiting for the return path (RP) thread to finish, there is
+>>> really nothing wrong in the RP if the destination end of the migration
+>>> stops responding, leaving it stuck.
+>>> 
+>>> Stop returning an error at that point and leave it to other parts of
+>>> the code to catch. One such part is the very next routine run by
+>>> migration_completion() which checks 'to_dst_file' for an error and fails
+>>> the migration. Another is the RP thread itself when the recvmsg()
+>>> returns an error.
+>>> 
+>>> With this we stop marking RP bad from outside of the thread and can
+>>> reuse await_return_path_close_on_source() in the next patches to wait
+>>> on the thread during a paused migration.
+>>> 
+>>> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+>>> ---
+>>>  migration/migration.c | 1 -
+>>>  1 file changed, 1 deletion(-)
+>>> 
+>>> diff --git a/migration/migration.c b/migration/migration.c
+>>> index 91bba630a8..051067f8c5 100644
+>>> --- a/migration/migration.c
+>>> +++ b/migration/migration.c
+>>> @@ -2049,7 +2049,6 @@ static int await_return_path_close_on_source(MigrationState *ms)
+>>>           * waiting for the destination.
+>>>           */
+>>>          qemu_file_shutdown(ms->rp_state.from_dst_file);
+>>> -        mark_source_rp_bad(ms);
+>>>      }
+>>>      trace_await_return_path_close_on_source_joining();
+>>>      qemu_thread_join(&ms->rp_state.rp_thread);
+>>
+>> The retval of await_return_path_close_on_source() relies on
+>> ms->rp_state.error.  If mark_source_rp_bad() is dropped, is it possible
+>> that it'll start to return succeed where it used to return failure?
+>
+> Yep, as described in the commit message, I think it's ok to do that. The
+> critical part is doing the shutdown. Other instances of
+> mark_source_rp_bad() continue existing and we continue returning
+> rp_state.error.
+>
+>>
+>> Maybe not a big deal: I see migration_completion() also has another
+>> qemu_file_get_error() later to catch errors, but I don't know how solid
+>> that is.
+>
+> That is the instance I refer to in the commit message. At
+> await_return_path_close_on_source() we only call mark_source_rp_bad() if
+> to_dst_file has an error. That will be caught by this
+> qemu_file_get_error() anyway.
 
-This was not noticed in earlier testing because:
-
- 1. The compiler usually generates code which clobbers the input operand
-    such as:
-
-      lf.div.s r19,r17,r19
-
- 2. The target will store the operation output before to the register
-    before handling the exception.  So an operation such as:
-
-      float a = 100.0f;
-      float b = 0.0f;
-      float c = a / b;    /* lf.div.s r19,r17,r19 */
-
-    Will first execute:
-
-      100 / 0    -> Store inf to c (r19)
-                 -> triggering divide by zero exception
-                 -> handle and return
-
-    Then it will execute:
-
-      100 / inf  -> Store 0 to c  (no exception)
-
-To confirm the looping behavior and the fix I used the following:
-
-    float fpu_div(float a, float b) {
-	float c;
-	asm volatile("lf.div.s %0, %1, %2"
-		      : "+r" (c)
-		      : "r" (a), "r" (b));
-	return c;
-    }
-
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Stafford Horne <shorne@gmail.com>
----
- target/openrisc/interrupt.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
-
-diff --git a/target/openrisc/interrupt.c b/target/openrisc/interrupt.c
-index 3887812810..d4fdb8ce8e 100644
---- a/target/openrisc/interrupt.c
-+++ b/target/openrisc/interrupt.c
-@@ -34,9 +34,7 @@ void openrisc_cpu_do_interrupt(CPUState *cs)
-     int exception = cs->exception_index;
- 
-     env->epcr = env->pc;
--    if (exception == EXCP_SYSCALL) {
--        env->epcr += 4;
--    }
-+
-     /* When we have an illegal instruction the error effective address
-        shall be set to the illegal instruction address.  */
-     if (exception == EXCP_ILLEGAL) {
-@@ -63,6 +61,9 @@ void openrisc_cpu_do_interrupt(CPUState *cs)
-         env->epcr -= 4;
-     } else {
-         env->sr &= ~SR_DSX;
-+        if (exception == EXCP_SYSCALL || exception == EXCP_FPE) {
-+            env->epcr += 4;
-+        }
-     }
- 
-     if (exception > 0 && exception < EXCP_NR) {
--- 
-2.39.1
+Actually, I can do better, I can merge this shutdown() into
+migration_completion(). Then this dependency becomes explicit. Since you
+suggested moving await_return_path_close_on_source() into
+postcopy_pause(), it doesn't make sense to check to_dst_file anymore,
+because when pausing we clear that file.
 
 
