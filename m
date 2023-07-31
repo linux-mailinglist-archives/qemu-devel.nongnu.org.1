@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE47D769939
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C211769937
 	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 16:16:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQTgb-0005aA-2a; Mon, 31 Jul 2023 10:15:50 -0400
+	id 1qQTgW-0005Zz-Gx; Mon, 31 Jul 2023 10:15:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qQTgS-0005Wa-L8
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 10:15:40 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ id 1qQTgT-0005XJ-5D
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 10:15:41 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qQTgQ-0007ei-ON
+ id 1qQTgR-0007et-07
  for qemu-devel@nongnu.org; Mon, 31 Jul 2023 10:15:40 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-3fb4146e8fcso31569445e9.0
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-3fe2048c910so9789195e9.1
  for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 07:15:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1690812937; x=1691417737;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=itpHEVbLfs3D8/erGt8kWjQtJGFDTxDKtjwIc6dYdN8=;
- b=e5+4En45SlVWfKIsyAyz7S0ZUVgFHYMsM+E+yPGBgy+tnKUF/VfSNKbp2JSi68nZv6
- AEGVg+pc21h5s1nhNYTDUQD9Ve003ADYmqNRXvbjd58hJgLLIfCiBv1kffNODXG2O5Vi
- P14BoUUZEbPwOFTllStI91VZF7BVCUQMEwHZipaXgMVWn4OiBOTF53WcXe1T+KS5JXl6
- DHyXZJH0u2iu2rNV1qO/lqA/cyDC3hJLwN+iAeKtq9xMRuxk5kjLoeGtlyNvNVFeGV3c
- nS/DWejQngouDrfRmwbkRFUUeqiB4cbyWLOD7PbgWpD52W4znvEERh0izytx5IboL6En
- wL2w==
+ :reply-to; bh=nGXXdjxZdAaUuuyvA4vW1eeAGJKvdfA5mFX80NPb9+I=;
+ b=t0vvZVRQbYm4SQlk+vv03R+1hzQ6xwOI/R4QeLRgj9pnOImRQsDwiNR+nRCxon7yUg
+ lbnkGojE7rMLRd7IMiQzrd4PkkXWFOQxf/bo+F/l98PdbVpbbtb1GRV6N8/n4/w45a1F
+ lMbCW9Z+LRaVtcfTm6XKMtHed2RjCMDiOSXDvEjUAl4+ATDlzCwqoRcaZ7+7rnWDfZn3
+ Wb47otAHEAcO+vr/45bWuOaY1J2rloaKTB8ZmtGEwSsWdzM7dMd3LHrc7BsOgL97bqOg
+ M7pdTdNT/DErhokuoSQoMW2WKmABYByx/fabN9frA13/qhSUUR7pNhz7yDXha3W5epup
+ /gqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1690812937; x=1691417737;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=itpHEVbLfs3D8/erGt8kWjQtJGFDTxDKtjwIc6dYdN8=;
- b=RpS9i4jiYAmOwOSDntEH0ljgdA8Ywj47S8t4TJFnirxtdD4FosxKtZTlZjamyHCbRj
- Lr69jm1vM94fZNg7IBwk74+iEMV0cRxgXYecNtPNHNpbvRP16PPcXnO2QvXqm2hxNYwp
- firnFnqw1lSK/cxDjxEWeoq5iV6sMkhy2HTAgim+GA1dkTm+TZG9fMP3cK6e8gEmSBBJ
- Jf0fJedIN+hjwxETSSX+YQI+I9ov76/NPE5K9qNgdMob5Nu1pQrJX3Ic5Mu/z2kypTIY
- n3j9LhChXVa5Lcz1BYV/Rglm0MIndiEa20VBVmYjothr94khSkoamOo775Itbhvjyele
- v8/A==
-X-Gm-Message-State: ABy/qLZWYpazJBCCwolYoiF2081V7+R4g1ucmRiqSwt9rxiZPOi76H2a
- Ls/NVfCyLKgGcR7OhmZVELeC4xmd7DMFYFcjsr8=
-X-Google-Smtp-Source: APBJJlH3/iXOLSmQVS82aDbh+0PRPg1jOccDSVBBkBx1dNYj1ASBIgmoAuYhlKZxMUDSlT2ws10NQg==
-X-Received: by 2002:a05:600c:3d13:b0:3fb:e1d0:6417 with SMTP id
- bh19-20020a05600c3d1300b003fbe1d06417mr10584857wmb.19.1690812937057; 
+ bh=nGXXdjxZdAaUuuyvA4vW1eeAGJKvdfA5mFX80NPb9+I=;
+ b=b7dhNTkLdKTFAKElBfvh8eQXBZwBKQOgBO1P5n6Y0506NfnySO+udOrRpCj9OSduWu
+ ai5vDvQjRPM0LMVpHzmvmzPh5EDg+QUgR1DL0L/NerfjIZZzB3wXkvhwGQPP+91kueLA
+ /trYZE9gVT1u+rAgY9uZ1mf4l4gwFVpS9RILKjFUA4ZvnxhUn/NW3AVVWjUQEfAXY07V
+ 5ryQnJNew/UJpvP05neNf4p5KGbbOYaU2XSqMpjcQgVcjNnH2TxEKGTY+jl8yp7NrK8S
+ ITZSivwgG1+Wkrjy50eHZI9eqcahNmB2eRuUamVH89CTxVEKc1qKRtD/fJ5EIzqocPXl
+ D+uQ==
+X-Gm-Message-State: ABy/qLYl54KxkEacCMotWZV9k4h4sVcz51h/Os9+iz5+fL0g/2V1HxSL
+ IjXAAggmkQOp8l8xHZ/UL5EGf2NLWOkgloIyYO0=
+X-Google-Smtp-Source: APBJJlGweNEEVM1MIhxDK0mw0tmyG1h4p4atbtBdwUEelkKr+u4RnMzBJz3zaSHiBGdgOHTAeuwbAw==
+X-Received: by 2002:a05:600c:2482:b0:3fe:2167:97d4 with SMTP id
+ 2-20020a05600c248200b003fe216797d4mr61136wms.29.1690812937549; 
  Mon, 31 Jul 2023 07:15:37 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- z15-20020a05600c114f00b003fbb5506e54sm11450675wmz.29.2023.07.31.07.15.36
+ z15-20020a05600c114f00b003fbb5506e54sm11450675wmz.29.2023.07.31.07.15.37
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 31 Jul 2023 07:15:36 -0700 (PDT)
+ Mon, 31 Jul 2023 07:15:37 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 4/6] target/arm/tcg: Don't build AArch64 decodetree files for
- qemu-system-arm
-Date: Mon, 31 Jul 2023 15:15:31 +0100
-Message-Id: <20230731141533.3303894-5-peter.maydell@linaro.org>
+Subject: [PULL 5/6] kvm: Fix crash due to access uninitialized kvm_state
+Date: Mon, 31 Jul 2023 15:15:32 +0100
+Message-Id: <20230731141533.3303894-6-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230731141533.3303894-1-peter.maydell@linaro.org>
 References: <20230731141533.3303894-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,56 +91,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently we list all the Arm decodetree files together and add them
-unconditionally to arm_ss.  This means we build them for both
-qemu-system-aarch64 and qemu-system-arm.  However, some of them are
-AArch64-specific, so there is no need to build them for
-qemu-system-arm.  (Meson is smart enough to notice that the generated
-.c.inc file is not used by any objects that go into qemu-system-arm,
-so we only unnecessarily run decodetree, not anything more
-heavyweight like a recompile or relink, but it's still unnecessary
-work.)
+From: Gavin Shan <gshan@redhat.com>
 
-Split gen into gen_a32 and gen_a64, and only add gen_a64 for
-TARGET_AARCH64 compiles.
+Runs into core dump on arm64 and the backtrace extracted from the
+core dump is shown as below. It's caused by accessing uninitialized
+@kvm_state in kvm_flush_coalesced_mmio_buffer() due to commit 176d073029
+("hw/arm/virt: Use machine_memory_devices_init()"), where the machine's
+memory region is added earlier than before.
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+    main
+    qemu_init
+    configure_accelerators
+    qemu_opts_foreach
+    do_configure_accelerator
+    accel_init_machine
+    kvm_init
+    virt_kvm_type
+    virt_set_memmap
+    machine_memory_devices_init
+    memory_region_add_subregion
+    memory_region_add_subregion_common
+    memory_region_update_container_subregions
+    memory_region_transaction_begin
+    qemu_flush_coalesced_mmio_buffer
+    kvm_flush_coalesced_mmio_buffer
+
+Fix it by bailing early in kvm_flush_coalesced_mmio_buffer() on the
+uninitialized @kvm_state. With this applied, no crash is observed on
+arm64.
+
+Fixes: 176d073029 ("hw/arm/virt: Use machine_memory_devices_init()")
+Signed-off-by: Gavin Shan <gshan@redhat.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20230718104628.1137734-1-peter.maydell@linaro.org
+Message-id: 20230731125946.2038742-1-gshan@redhat.com
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/tcg/meson.build | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ accel/kvm/kvm-all.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/arm/tcg/meson.build b/target/arm/tcg/meson.build
-index bdcab564899..6fca38f2ccb 100644
---- a/target/arm/tcg/meson.build
-+++ b/target/arm/tcg/meson.build
-@@ -1,7 +1,11 @@
--gen = [
-+gen_a64 = [
-+  decodetree.process('a64.decode', extra_args: ['--static-decode=disas_a64']),
-   decodetree.process('sve.decode', extra_args: '--decode=disas_sve'),
-   decodetree.process('sme.decode', extra_args: '--decode=disas_sme'),
-   decodetree.process('sme-fa64.decode', extra_args: '--static-decode=disas_sme_fa64'),
-+]
-+
-+gen_a32 = [
-   decodetree.process('neon-shared.decode', extra_args: '--decode=disas_neon_shared'),
-   decodetree.process('neon-dp.decode', extra_args: '--decode=disas_neon_dp'),
-   decodetree.process('neon-ls.decode', extra_args: '--decode=disas_neon_ls'),
-@@ -13,10 +17,10 @@ gen = [
-   decodetree.process('a32-uncond.decode', extra_args: '--static-decode=disas_a32_uncond'),
-   decodetree.process('t32.decode', extra_args: '--static-decode=disas_t32'),
-   decodetree.process('t16.decode', extra_args: ['-w', '16', '--static-decode=disas_t16']),
--  decodetree.process('a64.decode', extra_args: ['--static-decode=disas_a64']),
- ]
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index 373d876c058..7b3da8dc3ab 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -2812,7 +2812,7 @@ void kvm_flush_coalesced_mmio_buffer(void)
+ {
+     KVMState *s = kvm_state;
  
--arm_ss.add(gen)
-+arm_ss.add(gen_a32)
-+arm_ss.add(when: 'TARGET_AARCH64', if_true: gen_a64)
+-    if (s->coalesced_flush_in_progress) {
++    if (!s || s->coalesced_flush_in_progress) {
+         return;
+     }
  
- arm_ss.add(files(
-   'cpu32.c',
 -- 
 2.34.1
 
