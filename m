@@ -2,136 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26CEF7699F1
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 16:44:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44196769A19
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 16:51:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQU7l-0003VO-Dk; Mon, 31 Jul 2023 10:43:53 -0400
+	id 1qQUEf-0007ha-Aj; Mon, 31 Jul 2023 10:51:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1qQU7j-0003V9-Dg; Mon, 31 Jul 2023 10:43:51 -0400
-Received: from mail-db5eur01on0721.outbound.protection.outlook.com
- ([2a01:111:f400:fe02::721]
- helo=EUR01-DB5-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1qQU7h-0004e7-TA; Mon, 31 Jul 2023 10:43:51 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Tg4NLILjacXaP6Ub6/x46vZyVYw4AVLpDccqKdqnMxp5ieEiw6aNsrmBiLE4a4IqQj1+01K3VzDPLfCckEWvZ1uxUO3scgwF2RIusdNofi/svhsQd6C46w0+WFgbV2HmxnZRGxN4fgrXyojx/dpy0jfOSr1MZklXkysX1fNnPX4WjyeAWWLZaifUp1WzmAOBi5x9HSZaIAdgNpA81RHw2sTyrGAdFJK9EdwhGFl0Y+Um1cMLkpCRAuYEmdVcApk0nDiyRhSXXrZsVvjRyqTEDdPrNpcUyVPdiXbEn4zpFuC29e/WTSjFW5/YC0qe/94BmfqCglPEVMAg1qq5SywqsQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RB3eJYl1F3HZ7ifIi4AGIu5AUb9nUHu3EkruFA+rJjA=;
- b=Bmom89SHOT/Y+o6IurmEIcnxA1YC2Wd2PbYJx0fZskofkQAcZ9P1n2A0M9h86OO+m902JsYlPcnSSh9ItM0PUp95Eyfz2nOUi+fxnsBA9C2SKbXTFV7fFTSfCslnaKLVoqGJ2yPcRxUzW7s4wps8tADKAryLgnYC1iJaLaGckKZjrLNM/4Wlib9q+mKAjJzB7NGzHlXYGGg+mexZiXK5WmkLXGzn19RjN46000AMKkrMpI1qXe35Enzm7LhUxuM1hSfFGcJLBDDAIKzDBg2mKe3shyOtnunv8J2dlsA//ogC8SA+p98p4PSsB57KhizpYrjvDQkba2mo7JhnMZLIdA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
- header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RB3eJYl1F3HZ7ifIi4AGIu5AUb9nUHu3EkruFA+rJjA=;
- b=JNhVgmi7d0qlxe7Ddq+6DlFQlYOqj/AYsUfqMwl8GQWwJTgcM8dD3jZ1+KaYW/1NDfZa4CldVDs/zg2L86tpLzfOJWw3co3dYrvPOKQwi0BkA3G4qZnqR7Bj+UFw3j3XV8UhWZNn2leiq5ozuGe2x6d0CJobnb0WEfq7fDTd+1BjMQPuukOv0tYCXyDRoHf5vIdqIlrC1/uvzhzvpzn9kjREuwHDtSUlVP+hXvNMfV76IEN5ySHu4Jp+Ax4vNXv3UVjRIximaAbQKSgcloSgUyKPtEEty0c7bydMxhyFDYoHLpu+wxfQVXSJsC03FSKaJkmn0jBNzf+rV1XhWn2bTg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=virtuozzo.com;
-Received: from AM4PR08MB2932.eurprd08.prod.outlook.com (2603:10a6:205:e::33)
- by PAVPR08MB8920.eurprd08.prod.outlook.com (2603:10a6:102:328::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6631.42; Mon, 31 Jul
- 2023 14:43:46 +0000
-Received: from AM4PR08MB2932.eurprd08.prod.outlook.com
- ([fe80::4a49:5a92:afb6:c681]) by AM4PR08MB2932.eurprd08.prod.outlook.com
- ([fe80::4a49:5a92:afb6:c681%4]) with mapi id 15.20.6631.026; Mon, 31 Jul 2023
- 14:43:46 +0000
-Message-ID: <b847bd77-d23d-c0e4-dbb5-e69dba0d2db8@virtuozzo.com>
-Date: Mon, 31 Jul 2023 17:45:31 +0300
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/3] qemu-img: map: implement support for compressed
- clusters
-Content-Language: en-US
-From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-To: qemu-block@nongnu.org
-Cc: qemu-devel@nongnu.org, kwolf@redhat.com, hreitz@redhat.com,
- fam@euphon.net, eblake@redhat.com, vsementsov@yandex-team.ru,
- den@virtuozzo.com
-References: <20230706163047.128999-1-andrey.drobyshev@virtuozzo.com>
- <8c0bc7da-175d-a367-3d7d-32f570953e7c@virtuozzo.com>
-In-Reply-To: <8c0bc7da-175d-a367-3d7d-32f570953e7c@virtuozzo.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR2P281CA0124.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:9d::18) To AM4PR08MB2932.eurprd08.prod.outlook.com
- (2603:10a6:205:e::33)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qQUET-0007eM-Tj
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 10:50:51 -0400
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qQUER-0006Nt-NV
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 10:50:49 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-686bc261111so3246524b3a.3
+ for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 07:50:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1690815044; x=1691419844;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=23BfVe44Mz4FAVTmRxrfNUmkAlP1s8jGUx9p2E0iIsk=;
+ b=i51yBfqWYHJZNXOOO3Zc1aD/8heRb844C2UlRyj58BqK13MJVEO6oqGcOoc37KSVim
+ Dcn1CAbDXIS5bWd+FzwculI07tj7HtydhOFWenb2VY7lNoQXPdYodP3i8XVJKKbb9XUa
+ vAIAKcnA5iz5WJ49Ydmkn6HCqzzLdIL8sks8bWCZkgez8mB21CkiCr4hTeLJpxIdfxp1
+ qL/uF0OUotW/gMU3H1rolJyKri9pKW20TwiwXQtN6eb8h9H+5XvnrxUffCE+dC9CKFyH
+ U2j3aCy63DX4JLEaNOTtokMAvUq9qcvH2rCvT1D1UsI1ohxKirZuM+FHddBh1fNNTv0a
+ jYlQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1690815044; x=1691419844;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=23BfVe44Mz4FAVTmRxrfNUmkAlP1s8jGUx9p2E0iIsk=;
+ b=d/O1bNPfJbyNwxRuUAoG+jjjHMrDnrpy1/tbQ92S8Y4hdds6pPfWHuai6fxrw3UzVc
+ 5UGtrys0Uv+XmZO90YLwGjdb4em+na8Dwt97vwXkJUO/QA8tiBjGCiU486uV7BNnVlME
+ PV2HXY+EPx71u2Bj8B66M04hd6ZMaw1b5pWtAxtvT3RrJZhzpKMXVZbnLpALPYdjRCVM
+ y/sbAlD2AcpuO5wE+Skx+ENmDSvv72+ASZHJyVYlhURDFXak2gH/emXeElYaiuvxV24K
+ m7PFk8XWS5TVGFBIm64drWdsBnvlDeHrFt9qILHFOhRcF3a3/BjUBAOeEa4vMUggbd+z
+ +Utw==
+X-Gm-Message-State: ABy/qLZDaAU9koP1exZBF3u+PsnCy/FpVyspwU8HrBGIDJvn800QBuXv
+ a0DAFykA/mE+3YFbaSlTRZJbTw==
+X-Google-Smtp-Source: APBJJlGMr3yda+j16r38qAU8+BkBMJCsZv72GAUadHlLQJ9gh4amUL77Lwq+oidWDfqWqMcOetLO3A==
+X-Received: by 2002:a05:6a21:4887:b0:134:ad98:fb0c with SMTP id
+ av7-20020a056a21488700b00134ad98fb0cmr11296590pzc.4.1690815044052; 
+ Mon, 31 Jul 2023 07:50:44 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.144.105])
+ by smtp.gmail.com with ESMTPSA id
+ z5-20020a63ac45000000b0056420d3cd20sm5761452pgn.71.2023.07.31.07.50.43
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 31 Jul 2023 07:50:43 -0700 (PDT)
+Message-ID: <fa0e79f3-acdc-09b2-3377-a3fae6eca8bc@linaro.org>
+Date: Mon, 31 Jul 2023 07:50:41 -0700
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM4PR08MB2932:EE_|PAVPR08MB8920:EE_
-X-MS-Office365-Filtering-Correlation-Id: 559249a2-4572-48c1-1a88-08db91d48bc6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 3ArkiObXtCi7U1VTlX9sf28bwkwoFFM/ffVLeT6jeFALHtd5iU1ejbsyNVTVLKWAiSIEVdgI9BFA3UVHhNhtAFJYxt8e3GEWLvdhpr2SkqYr3dglZhlBJlmUZb/tm+WxleswldCcJfLG8TOIaIbdrsMHo4RJtoymHeqwvFTym56FnnfTyTkiFL69t5liNaV8e/3srHUFQpDqMVLTzKyX/5ie33G9wpx8d4lAHpm8CGIFdqvah0xM5POUW0zoXnJ/aH9q2dqdb9YWp3XYuKBGKMQYmZR8CnJpUmMnRY32y4eDfX8MFZ/4UxDnwkevZmFrQECMPDlDWdXjlAShr11nuVm3ISJw4JX1XvZfo3shgagYJDMeyiWiiG5kh1/Bi9LSU5UUaeCeieQlGvppEJ80NI5rAqaJwZDz4yPRYbbV4tmY3d92embWSCdqoNB4Oru8fzpEZpcy9Tmuq2JRnfQ8wh5yxvTuO243EcSzL1hC3sIl112hx2LcvTI07X3Vhrim7b00bWnpExk1r3js5NpufAY4KIkRvKyzOQ40WPyUu5rP4VHRPG1Xvp8sUO6E8DE/CkT8sakDSmj79vkV3hzgw8v79wg3CyafeW0j/FTjzhmGaSl53ZnOCK6bD9XtS9sR9YfBxYUOejn4FcPkrcDpmQ==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:AM4PR08MB2932.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(4636009)(396003)(39840400004)(346002)(366004)(136003)(376002)(451199021)(38100700002)(31696002)(86362001)(36756003)(6512007)(966005)(478600001)(6486002)(6666004)(2616005)(53546011)(107886003)(186003)(26005)(8676002)(8936002)(6506007)(44832011)(5660300002)(4326008)(2906002)(66476007)(66946007)(66556008)(6916009)(41300700001)(31686004)(316002)(83380400001)(45980500001)(43740500002);
- DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?QzN4aU9KdTE3eHBYaWFDelBrR1lodmtTVW9XbFlwT3R2eGFMcU50Qkhaakd1?=
- =?utf-8?B?T0UzUmlyZ014L3RzWjBjUTM0QnUzN0dTOVdxZ0wxQVZhbTV2b2tUc2hnbUJD?=
- =?utf-8?B?cHZIckI1RW1KNUt5NlA1dERkRWM2SzQvamhsVnVSV2hFdkdVdkRNejVHVHli?=
- =?utf-8?B?QlZlcGcwaGJYdzhLTi83eE03VXIwV0RWSTlPS25tWTgrZzNEV1BTVm9kdko4?=
- =?utf-8?B?VkhGVFU1UTBOd09OQWRQakw1YndQa2RqM21kQnhTUGMwbGVRTDNvaWZhMnkw?=
- =?utf-8?B?M2gvdkZkbDZBYnZLRmVnUjZJNVAzQ004RWh6eWduaHRQdHdqSmE1ME1aUnJO?=
- =?utf-8?B?bW5SN09DQ0ZBM00veFBoMklVTUNxNE1uK0Vqc1ptVWQyVlp2NkREVldIaFlI?=
- =?utf-8?B?TEZtWHJzazNrdGFROWNMYUdLYWhtTDgwb1dlMUVISDc4M0Q5Rlg1dnBmeCtF?=
- =?utf-8?B?ajNKSmVTTzRGVndiVkkwMmdzL1poQWxmaHcyUDhJU3NiRXdpU3o0c1MxU0ZD?=
- =?utf-8?B?ckVMQjA3QlNzWVc0Q3ZSMEZ5b1Z1cllGb04vZ2tpenNud1RsMFpmbis2SlBB?=
- =?utf-8?B?TzEwUys3SVJRb1luU21ZZU5PbXFiTk51dnd1RCt1djBPZ29lVk5xSy9aeGRF?=
- =?utf-8?B?Tm1NTkk4VG0rZERIMlZ3eGloK0tPWGlKSnZhUWxjRDZKUDlFcjV0VnZ4S3JK?=
- =?utf-8?B?QjZUUy95UVgvTG9jVXoxZkE2VWcvKzRGOHFyMG1pNTFDN1Y2cmdhNTladXh2?=
- =?utf-8?B?NGhGWW1OejZNRWUyTDBRMTJNSkZJb0Yva1FtQVFLM1hpZjV3WmNUNlJWM1Jn?=
- =?utf-8?B?WTdkOVQ3SFB3eG9vQXBLYU50TnZTVnlRZWZFSEhuU0FpUG84ekM5bEU3R2lh?=
- =?utf-8?B?YjNhRXhaL3ZLTE1IdzdnM1pnTWtvaDhEVnBhbk9xWTRGdms2QWpUTUp0WnVy?=
- =?utf-8?B?SjFqaCtzYkt2ckNaRU9UNTBHZmNwU3dBTVFRZ1FIQ1V2SlNTaEx2aUcvSTAx?=
- =?utf-8?B?MkdtWHg0cGpwUDdoUlYzNnNGakFMYVdnL3BXcFZGS1NuMkZKazZBOFAyQ3d6?=
- =?utf-8?B?MElDR2FTdUNNN0VrRU5yY2kxbzBKa1RjejUxMEtkaWExdkltVEFrVnFiSlpz?=
- =?utf-8?B?TVhjcEJoZDhOdk1xdUJzY3dFOG1MMERtSVhuNUlHYXBrVFhpWjNCcFZrcFVh?=
- =?utf-8?B?NFVlcFZrSE1RY0lkWjZFb0JtUjVVdkgzanNacmVMRjRkRHZ1TU9BbG82aS9q?=
- =?utf-8?B?dnp0MFNFMU0rdXJpY0tuZTJoY1ppVHBoNmdhb3ovQURTS0xCT285Y2FWbVpk?=
- =?utf-8?B?dHVOYzVxWHV0YnlZNzkrZEZ4VFpteXlXNUk2andkZ2VlT1NMczlOQzNjN0FJ?=
- =?utf-8?B?OGdabHhVTVgvdElwOGFpYXpjNEdnMWpGVmw1RmI5cWVkaVVIOXJuQUNvWXNV?=
- =?utf-8?B?WFVJVFlxRXNWLzFUaGhzd1A1UnAycjRuTm5ZZTZRYUducitYWHZQVXkzUjVq?=
- =?utf-8?B?aDJzR2c5eThFN21lTzk4TFNjZlVaTHhpSU1xYklCNFlCOHl3b21xVzRrakV1?=
- =?utf-8?B?VDhvU0V4K0ZFTEVQc1U1S2hwVlpTZW9QRDliUFFzcFlURVZ4VmNDeEhqcm9q?=
- =?utf-8?B?cWhFaE1iSVpEYXFGMnh6dTRtV1R3eExUc3oyTGJnMFhJM0tkb3I4aEtlVnJk?=
- =?utf-8?B?VXdiLzlGQ0NPWEluOGp1aU1MelhYMlk2dHpDeWVpOWs5d1VZcDBNNjVUTURX?=
- =?utf-8?B?MWVzN0k1eDhMYzVKSGtqTkpibjJiZ0J6Y1dpRy9MTmtOeU8yY2FvcUdPNGxH?=
- =?utf-8?B?RWQ1S0swT0ZXczJ4VXhvcHpuWWFaeFVzS1l3ZjB2ZmR2UE1SUHBqaXRUeWMx?=
- =?utf-8?B?L2N6L2tDb3grYk1ldnl0V1djMGcxT2tBeitBWXllMk5uakJxV2tRSHk5NU5P?=
- =?utf-8?B?T1ViNU9tTHFPc2FiMDR6RWxtU0pGNm1vdlRvTG1EYXpNZUdTU3VoNFFSWHZK?=
- =?utf-8?B?T1lrL2ptQnowbk96MXhiYXd0c2tQOUdWbVRwQ3RJRkYzSEpoZmc1U3psM2g4?=
- =?utf-8?B?NFlxMWUwUXFKMlgxcWRmVy9Zdnc2bTRvOFIxZDdEVENCa1k1Uk9tM3hSNUsy?=
- =?utf-8?B?ZEt2VGNzYmxJZ1RlNmt6OG9NcXdIclRJTFN3ZXEyZGtBL0FNYmFFRFBjU3Bs?=
- =?utf-8?Q?0PSM6yKGL1f5oToh0oZDYV0=3D?=
-X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 559249a2-4572-48c1-1a88-08db91d48bc6
-X-MS-Exchange-CrossTenant-AuthSource: AM4PR08MB2932.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Jul 2023 14:43:46.8328 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: w0d/AsYBnOKrTR8qGI9FLJB0imfPHTBCvN/AZuhNoE0QthVXg2znGjWEWfhUPpfaewnewNVmqF3Ai2XUoCif8/X60PS1+HngAaubKtF524w=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAVPR08MB8920
-Received-SPF: pass client-ip=2a01:111:f400:fe02::721;
- envelope-from=andrey.drobyshev@virtuozzo.com;
- helo=EUR01-DB5-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [RFC][PATCH] accel/tcg: Use lookup_and_goto_ptr() for linux-user
+ in translator_use_goto_tb()
+To: Helge Deller <deller@gmx.de>, Laurent Vivier <laurent@vivier.eu>,
+ qemu-devel@nongnu.org
+References: <ZMakYpOgco2Ihg0G@p100>
+ <b0ff6b75-60c9-aa3e-e701-a4062558a9bf@linaro.org>
+ <2c178363-b1a3-1192-09ac-2bbfa7ae7672@gmx.de>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <2c178363-b1a3-1192-09ac-2bbfa7ae7672@gmx.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.101,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -147,37 +97,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/24/23 16:10, Andrey Drobyshev wrote:
-> On 7/6/23 19:30, Andrey Drobyshev wrote:
->> v1 --> v2:
->>   * Add vmdk format to the 1st commit.  Tweak commit message accordingly;
->>   * Make "compressed" field in MapEntry optional.
+On 7/30/23 13:37, Helge Deller wrote:
+> On 7/30/23 22:03, Richard Henderson wrote:
+>> On 7/30/23 10:56, Helge Deller wrote:
+>>> I'm quite unclear about translator_use_goto_tb() for qemu-user
+>>> emulation....(and in general).
+>>>
+>>> Based on the function name, the function translator_use_goto_tb() shall
+>>> help to decide if a program should use goto_tb() and exit_tb() to jump
+>>> to the next instruction.
+>>>
+>>> Currently, if the destination is on the same page, it returns true.
+>>> I wonder, if it shouldn't return false in this case instead, because
+>>> arches have code like this: (taken from target/hppa/translate.c):
+>>>      if (... && translator_use_goto_tb(ctx, f)) {
+>>>          tcg_gen_goto_tb(which);
+>>>          tcg_gen_movi_reg(cpu_iaoq_f, f);
+>>>          tcg_gen_movi_reg(cpu_iaoq_b, b);
+>>>          tcg_gen_exit_tb(ctx->base.tb, which);
+>>>      } else {
+>>>          copy_iaoq_entry(cpu_iaoq_f, f, cpu_iaoq_b);
+>>>          copy_iaoq_entry(cpu_iaoq_b, b, ctx->iaoq_n_var);
+>>>          tcg_gen_lookup_and_goto_ptr();
+>>>      }
+>>>
+>>> Shouldn't, if the destination is on the same page, the (faster?)
+>>> path with tcg_gen_lookup_and_goto_ptr() be taken instead?
 >>
->> v1: https://lists.nongnu.org/archive/html/qemu-block/2023-06/msg00184.html
->>
->> Andrey Drobyshev (3):
->>   block: add BDRV_BLOCK_COMPRESSED flag for bdrv_block_status()
->>   qemu-img: map: report compressed data blocks
->>   qemu-iotests: update expected tests output to contain "compressed"
->>     field
->>
->>  block/qcow.c                                  |   5 +-
->>  block/qcow2.c                                 |   3 +
->>  block/vmdk.c                                  |   2 +
->>  include/block/block-common.h                  |   3 +
->>  qapi/block-core.json                          |   7 +-
->>  qemu-img.c                                    |  16 +-
->>  tests/qemu-iotests/122.out                    |  84 ++++----
->>  tests/qemu-iotests/154.out                    | 194 +++++++++---------
->>  tests/qemu-iotests/179.out                    | 178 ++++++++--------
->>  tests/qemu-iotests/244.out                    |  24 +--
->>  tests/qemu-iotests/252.out                    |  10 +-
->>  tests/qemu-iotests/274.out                    |  48 ++---
->>  .../tests/nbd-qemu-allocation.out             |   6 +-
->>  13 files changed, 302 insertions(+), 278 deletions(-)
->>
+>> No, because tcg_gen_lookup_and_goto_ptr is not the faster path.
+>> That always involves a lookup, then an indirect branch.
 > 
-> Ping
+> Ah, ok. So my assumption was wrong, and this explains it.
+> 
+>> The goto_tb path is linked, so only requires a lookup once, and the
+>> branch may be direct (depending on the host architecture).
+> Probably the last question in this regard:
+> 
+> This code:
+> IN:
+> 0x00010c98:  cmpib,<>,n 0,r19,0x10c98
+> 
+> generates "nop/jmp" in the code:
+> 
+> the tcg_gen_goto_tb() branch:
+> OUT:
+> 0x7fd7e400070e:  85 db                    testl    %ebx, %ebx
+> 0x7fd7e4000710:  0f 85 20 00 00 00        jne      0x7fd7e4000736
+> 0x7fd7e4000716:  90                       nop                <- from 
+> "tcg_gen_op1i(INDEX_op_goto_tb, idx)" in tcg_gen_goto_tb()
+> 0x7fd7e4000717:  e9 00 00 00 00           jmp      0x7fd7e400071c    <- jump is effective 
+> useless.
+> 0x7fd7e400071c:  c7 45 00 a3 0c 01 00     movl     $0x10ca3, (%rbp)
+> 0x7fd7e4000723:  c7 45 04 a7 0c 01 00     movl     $0x10ca7, 4(%rbp)
+> 0x7fd7e400072a:  48 8d 05 0f ff ff ff     leaq     -0xf1(%rip), %rax
+> 0x7fd7e4000731:  e9 e2 f8 ff ff           jmp      0x7fd7e4000018
+> 0x7fd7e4000736:  90                       nop                <- here too.
+> 0x7fd7e4000737:  e9 00 00 00 00           jmp      0x7fd7e400073c
+> 0x7fd7e400073c:  c7 45 00 9f 0c 01 00     movl     $0x10c9f, (%rbp)
+> 0x7fd7e4000743:  c7 45 04 9b 0c 01 00     movl     $0x10c9b, 4(%rbp)
+> 0x7fd7e400074a:  48 8d 05 f0 fe ff ff     leaq     -0x110(%rip), %rax
+> 0x7fd7e4000751:  e9 c2 f8 ff ff           jmp      0x7fd7e4000018
+> 
+> I assume those nops/jmp+0 is to be able to insert breakpoints?
 
-Yet another ping
+No.
+
+The destination of the jmp is patched by tb_target_set_jmp_target, which happens some time 
+after this disassembly.  The nop is present to ensure that the patch point is aligned, so 
+that it is one 4-byte atomic store.
+
+
+r~
 
