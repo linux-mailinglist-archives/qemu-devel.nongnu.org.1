@@ -2,58 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43AC276912F
+	by mail.lfdr.de (Postfix) with ESMTPS id 06C6B76912E
 	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 11:12:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQOvh-0007l1-DM; Mon, 31 Jul 2023 05:11:05 -0400
+	id 1qQOvj-0007la-R2; Mon, 31 Jul 2023 05:11:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qQOve-0007iQ-1a
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 05:11:03 -0400
-Received: from mail-ot1-x32b.google.com ([2607:f8b0:4864:20::32b])
+ id 1qQOvg-0007jL-1j
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 05:11:04 -0400
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qQOva-0001PN-Qu
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 05:11:01 -0400
-Received: by mail-ot1-x32b.google.com with SMTP id
- 46e09a7af769-6bb07d274feso3406662a34.0
- for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 02:10:56 -0700 (PDT)
+ id 1qQOve-0001Pz-H0
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 05:11:03 -0400
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-686f94328a4so2355463b3a.0
+ for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 02:11:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1690794656; x=1691399456;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=stHb44EFqAwCnYucBnH3WIBdFRhGcLwC/3ZzkYUmkbs=;
- b=Q8tVCvhLOWvSB/8QNgYeM5Z0I8naMqT/1ij7ZGBWEEShascjfRmzwv2u1pBqn2ubZN
- sN5vmeP2lfgflSTXpvqpXdOreoJHokt8swb6yyS75B+4LTx+CIQrm4IeSmZtSudKQig4
- TipXt5nZ9QSOV9bjQClJIDDxKsbE3Xkyk3jLz7jbhRdEjZc0PzGtk8tDDNi+uiNPvN6m
- DrdiYQPyw7evBiMTteSz5y3nHbSucsGiC89/rR94OmJAKEvoVGNzj4jmRtLP9hOwuu0i
- 54YGCKyJ6NKp/a3zX+0uqJHbX0ORECl1c/0BikhKb0nMmb/ejbqXwRg+rLyweWpk5oYD
- RYkg==
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1690794661; x=1691399461;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=0QScuJRMU4ixMa/1gO5xg54HCFVlbOwEsTWMxlZ9iNs=;
+ b=R5fBkwEMVaYXMy5KYwHGzehAFl6Wd2lg39Evu6jauf7SCxAkRHWtQaMWcizh3Cpsem
+ s2GbeXG+cy4YHr0lArEgaGUyjInoKT+umizX3TMK33aWCbYXRE5Y87jKtGp85KMPepq2
+ wXDqV0bDP1U9ckd3EyEUVCXq2QvdZW57RFTyOTSVhyqeLKi/xAZR6k/H53jsuGIa0xpJ
+ /AjA3wNGxyee1DuScWTnooROU817g1DZjreT5jDNw8gU147GI7vZB3NepAFFqW4isXLo
+ +q73x8e4eSeegKsW8RJ2zkzwQDaXb3OHmEtYNmFRGGMXaPkvKNa/rEuWXS2DXMsqfBNz
+ hg0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690794656; x=1691399456;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=stHb44EFqAwCnYucBnH3WIBdFRhGcLwC/3ZzkYUmkbs=;
- b=J/MbJJfcYjc0Z7pQM/Fc0E07AwYV4DfAJcUWjGV1aJRJlUlE7SAK5xUxJPY/ECzBU/
- JP3JrN2AoDXR7PH9SRG6ZSWLhuUIVYicSkGn2HQgtbtFATBYRXDB4Zt+/+ef1m52S1rr
- ZdW+vcBz7ol7oxILF+toRRNjZ6FUmd7SG0rf7J4xUWmst7LlRKF3+55Ms0fh+0X7fPbc
- 6iAMsd4FXWIWGTAkZ6t33KwuPTLxdICX8YAYQ7Th1tGu5Zh0epyXqivenFJF9uZ/BjSn
- NNsxajGyMQRQtpUrlmVDDBOnJ8LngZQ+i5g6HzRkb48cjT2Iw7uliwwAP624fndFipMD
- sdbA==
-X-Gm-Message-State: ABy/qLbYCmLmbusCJKIKmTN6ka7yAHQaNiDGy366uOaL0e4rJdDME39i
- A601PW4nWr7Hd4+lpiJTcmDtrg==
-X-Google-Smtp-Source: APBJJlGbbL4xERGnny20VCy/wPqtT8sQofkZCKoZmTxDqVad9O03Go5TmTeBhf135zuLlLJmb5j+oA==
-X-Received: by 2002:a05:6358:7e9a:b0:139:a0fd:780a with SMTP id
- o26-20020a0563587e9a00b00139a0fd780amr5945500rwn.12.1690794655548; 
- Mon, 31 Jul 2023 02:10:55 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1690794661; x=1691399461;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=0QScuJRMU4ixMa/1gO5xg54HCFVlbOwEsTWMxlZ9iNs=;
+ b=J2IB5auhDeey7EljSM1zIrowA9snWL3949JgyRXnKQflQLpTzYz5T7nxdQSQB6xgNw
+ WRMdPPiwKjqnFUDti8svlN7QOPaDLkkPY2tqsQx7oyjeC4JL0IEsyTt0JensygRpwG6z
+ 86B4YMO6m98YfFr2n9IKVibsN0BywP47lqxAEQ6H3tcyRwzKEltwfEMjW+0ACa+4l3CY
+ rmLM7iY5AAkvYqG82/1iQw6tSjybHpXj6wvoX9cq6371z8jurmii7qcaWw1h5dNfejU7
+ m9vnR0ix/Xy7itJjAjjiNyV5GG/NZ9GxLhECBHXPrdJCcOOdWMu1c3VTZ8fInIM3a8Zf
+ Q73g==
+X-Gm-Message-State: ABy/qLadu1lu+oIH1+kJIjNAJYRrxGQCGnwruFPbmds/xYTXI+ZTEup5
+ 7t5FyHaME+FCBVT0a6KdCO5RhQ==
+X-Google-Smtp-Source: APBJJlGrOLJqT3pZnkX3SqIn+mqbTJRIWSFx1d0xOGE3sftLBhXpixRdd4Hn2FLKa/wgMbDVsV5Paw==
+X-Received: by 2002:a05:6a20:431f:b0:139:cef4:936a with SMTP id
+ h31-20020a056a20431f00b00139cef4936amr9337274pzk.21.1690794660849; 
+ Mon, 31 Jul 2023 02:11:00 -0700 (PDT)
 Received: from alarm.. ([157.82.204.253]) by smtp.gmail.com with ESMTPSA id
- p22-20020a639516000000b005633941a547sm7714752pgd.27.2023.07.31.02.10.50
+ p22-20020a639516000000b005633941a547sm7714752pgd.27.2023.07.31.02.10.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 31 Jul 2023 02:10:55 -0700 (PDT)
+ Mon, 31 Jul 2023 02:11:00 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 To: 
 Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
@@ -73,14 +74,16 @@ Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
  David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
  qemu-devel@nongnu.org, qemu-s390x@nongnu.org, qemu-arm@nongnu.org,
  Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v2 0/2] Accompany -nostdlib with -fno-stack-protector
-Date: Mon, 31 Jul 2023 18:10:38 +0900
-Message-ID: <20230731091042.139159-1-akihiko.odaki@daynix.com>
+Subject: [PATCH v2 1/2] tests/migration: Add -fno-stack-protector
+Date: Mon, 31 Jul 2023 18:10:39 +0900
+Message-ID: <20230731091042.139159-2-akihiko.odaki@daynix.com>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230731091042.139159-1-akihiko.odaki@daynix.com>
+References: <20230731091042.139159-1-akihiko.odaki@daynix.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::32b;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-ot1-x32b.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::434;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x434.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -102,34 +105,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A build of GCC 13.2 will have stack protector enabled by default if it was
-configured with --enable-default-ssp option. For such a compiler, it is
-necessary to explicitly disable stack protector when linking without
-standard libraries.
+A build of GCC 13.2 will have stack protector enabled by default if it
+was configured with --enable-default-ssp option. For such a compiler,
+it is necessary to explicitly disable stack protector when linking
+without standard libraries.
 
-This is a tree-wide change to add -fno-stack-protector where -nostdlib is
-present.
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Reviewed-by: Juan Quintela <quintela@redhat.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+---
+ tests/migration/s390x/Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-V1 -> V2:
-  Dropped changes for pc-bios as they already had the option. (Thomas Huth)
-  Make the change for softmmu tests in a central place. (Thomas Huth)
-
-Akihiko Odaki (2):
-  tests/migration: Add -fno-stack-protector
-  tests/tcg: Add -fno-stack-protector
-
- tests/tcg/mips/hello-mips.c       | 4 ++--
- tests/migration/s390x/Makefile    | 4 ++--
- tests/tcg/Makefile.target         | 2 +-
- tests/tcg/aarch64/Makefile.target | 2 +-
- tests/tcg/arm/Makefile.target     | 2 +-
- tests/tcg/cris/Makefile.target    | 2 +-
- tests/tcg/hexagon/Makefile.target | 2 +-
- tests/tcg/i386/Makefile.target    | 2 +-
- tests/tcg/minilib/Makefile.target | 2 +-
- tests/tcg/mips/Makefile.target    | 2 +-
- 10 files changed, 12 insertions(+), 12 deletions(-)
-
+diff --git a/tests/migration/s390x/Makefile b/tests/migration/s390x/Makefile
+index 6393c3e5b9..6671de2efc 100644
+--- a/tests/migration/s390x/Makefile
++++ b/tests/migration/s390x/Makefile
+@@ -6,8 +6,8 @@ all: a-b-bios.h
+ fwdir=../../../pc-bios/s390-ccw
+ 
+ CFLAGS+=-ffreestanding -fno-delete-null-pointer-checks -fPIE -Os \
+-	-msoft-float -march=z900 -fno-asynchronous-unwind-tables -Wl,-pie \
+-	-Wl,--build-id=none -nostdlib
++	-msoft-float -march=z900 -fno-asynchronous-unwind-tables \
++	-fno-stack-protector -Wl,-pie -Wl,--build-id=none -nostdlib
+ 
+ a-b-bios.h: s390x.elf
+ 	echo "$$__note" > header.tmp
 -- 
 2.41.0
 
