@@ -2,88 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85995769C84
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 18:31:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D85B769D24
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 18:49:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQVnK-0007kJ-J6; Mon, 31 Jul 2023 12:30:54 -0400
+	id 1qQW4D-0007WA-Lh; Mon, 31 Jul 2023 12:48:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qQVmt-0007b0-03
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 12:30:27 -0400
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qQVmk-0000Ta-RF
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 12:30:20 -0400
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-686bc261111so3344188b3a.3
- for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 09:30:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690821017; x=1691425817;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=B3UhabbQhX1k+qo55fEhKGmYzKBzaUjJnaU5yev56e0=;
- b=lZpfAda313yb6q79CU+6/6I6WuMWGFvfKRxJ33VF20S1mxjtR4JExyttMH9ZqM8yeO
- VfTWBHboifFzjjIXV9Wj0ya6p7P9ymhNm12aH/Zjfw9NWgyZjVeHYLTrlTFRr0L2uBgt
- 0YVCWm/Joa0m3EWDr8ayaVRJOWVXDUKwxEFbrI+xoKPqYbaaDYwHjYAB61VJA1GWh69b
- u8umKucRfSXT/r85k3DB4Uouo9azwK/HD9BgIxDZabbWPkUyp+K3xvaD82Brzbcj4OvN
- /rUufuUeGaPbRCay2VqEDHvPhd9qIRx7lXyJuKuDQwN7o36zAXNW/nv5SWGKd5nTN0mW
- 1a1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690821017; x=1691425817;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=B3UhabbQhX1k+qo55fEhKGmYzKBzaUjJnaU5yev56e0=;
- b=FmREjFo4qM32o9egQuVF+9hfSLdsuwXwXlmM2mTD/fCbpynQz3GvvmuP5O8Y6zwOGt
- nuCRqI49Aqjt+DmUpyVrrFGkLmRPgfYCTl+sHQHnflmj3xnb43Z6S/CgNfcWBr7GIGn/
- HKkGtoDjGj3ztrw5upfyT3/mvSuJv50krQdd+Rx0//WaQ+nJ8DtXAeR9rXEHk0waIuKR
- 0Gch9BVb42AbgQLQ2QTPAjwjCB4Gxul6Vl+OkNeDUndkMCd3Ib9wIeUNOECH9DVZ2avv
- uoLueLEgP9rNkDFQdHg9drkWaIS6QbYYJAA6a7L78dzn5wRFhmrnlwLFv3DcykmFWAzO
- MUSw==
-X-Gm-Message-State: ABy/qLYs1KCgzDBXLxT9W9ZveJDO/52p3pSiJNTMoGA7BMsl659pcx3H
- 4yasIbi2phhHWd+zOhrNkkCAQg==
-X-Google-Smtp-Source: APBJJlH58WYU/dZGMz93zpXmjdZydH7uGEASq3ziAO3/nJBj3LaCv3md8GKGljZHSzB4ipT5X7VHFA==
-X-Received: by 2002:a05:6a20:324e:b0:13d:bf07:7444 with SMTP id
- hm14-20020a056a20324e00b0013dbf077444mr3296237pzc.0.1690821017495; 
- Mon, 31 Jul 2023 09:30:17 -0700 (PDT)
-Received: from ?IPV6:2602:47:d490:6901:4f6f:6b:2de4:e0cb?
- ([2602:47:d490:6901:4f6f:6b:2de4:e0cb])
- by smtp.gmail.com with ESMTPSA id
- p12-20020a62ab0c000000b00682bec0b680sm7747848pff.89.2023.07.31.09.30.16
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 31 Jul 2023 09:30:16 -0700 (PDT)
-Message-ID: <998a1cd0-036a-f6c3-5b21-3526da4c5709@linaro.org>
-Date: Mon, 31 Jul 2023 09:26:00 -0700
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qQW3y-0007TL-0Z
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 12:48:09 -0400
+Received: from mout.gmx.net ([212.227.15.15])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qQW3v-0004pU-D2
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 12:48:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
+ s=s31663417; t=1690822075; x=1691426875; i=deller@gmx.de;
+ bh=SCZi6LzFidRwlTPvwcksxd2bfB+ef0qrS45hSgMyNUM=;
+ h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+ b=WamBSGXKNlhnQ7nMN1GfhkAs1dEGWtqp42+ma/myQyYZ0FTII5WJgG/1s6gon70vAef3zzP
+ xtAqYs8EMqpuC7RxCIOKqGrO8Rws4Vlfx+RMnrc5k10oUPmdums9hq2fCOFmyDzW1nSBYfNVG
+ UUH+kVZvc9nCTcGiGgUa5Itg1VO3lO5tQU4TgmpFbVmqfDrPimgbFEb3Zw7Ez1Ta+XlJ609k8
+ JvsVji82fkltJFbQaMmnu/dZqKcVE4qNkFaNtyuiUkfZ9QeMIbB+x5pwMLjv+koxoprNjgLt2
+ K7Q0ugwvt3isKa3LghjtvLjBXoSc/zFEckxNMsJeBqkEhZK1oWLw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.60] ([94.134.159.238]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mlf0K-1pzOhd1Mkk-00iiQY; Mon, 31
+ Jul 2023 18:47:55 +0200
+Message-ID: <57d9980d-b881-b16e-844a-e651d6d09de7@gmx.de>
+Date: Mon, 31 Jul 2023 18:47:52 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PULL 0/1] hw/nvme fixes
+Subject: Re: [PATCH 0/5] linux-user: brk/mmap fixes
 Content-Language: en-US
-To: Klaus Jensen <its@irrelevant.dk>, Peter Maydell
- <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-Cc: Keith Busch <kbusch@kernel.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-block@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- Fam Zheng <fam@euphon.net>, Klaus Jensen <k.jensen@samsung.com>
-References: <20230730192941.44019-3-its@irrelevant.dk>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230730192941.44019-3-its@irrelevant.dk>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>, Joel Stanley <joel@jms.id.au>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Cc: qemu-devel@nongnu.org, Laurent Vivier <laurent@vivier.eu>
+References: <20230731080317.112658-1-akihiko.odaki@daynix.com>
+ <3088d223-64fd-9aab-3c08-000f0924607c@tls.msk.ru>
+ <CACPK8XfcOkn281JZNYc7+AhDAxP_N9__G4Snxtx=ZhXgVChXgg@mail.gmail.com>
+ <0643c953-bfa8-45a9-5b07-714bc18c03a6@daynix.com>
+From: Helge Deller <deller@gmx.de>
+In-Reply-To: <0643c953-bfa8-45a9-5b07-714bc18c03a6@daynix.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42d.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:3JycbAlLSnB51EOY1U5YIMG2RRN2hvEwM9xr8ff7telIjU90IcI
+ 4alYQSuRDXF4iDNvU5yLSh+oIZ/EIDMCjB4uisbaexoGTzPXBLcCG7dVLS3AiIzCjjcoQ/6
+ gCZ1GEUtGyBMhfE9yjxANTEBuP2hCt5kcvxLqkyCKiIiYOrkQAflCw3DsJlhdplgwNcfj8S
+ 1xfR9rRYTpXcqnV4nPHzg==
+UI-OutboundReport: notjunk:1;M01:P0:ldUIAaCLz7E=;VkiChSJDFcSXtXYYkk+jSk46Bs9
+ RvE/V45j1P1pmF2lgEPmea9obbWHqzQ7KSR42q1WtZJ0zRYiP0HbKjX7VulbbuDUjZg/lpV3F
+ pjzRWOTqBgSAzlAeVn2WlHcWEliCpJtF3hk5+TbMic89axdEEqLSGbla1XPsdUXwDsqk5CQl1
+ lJda3MWYPeUDyVi/9UwqnyQpBBpB785FkndyBEDk2IM38QduxGikLC+uVrQ9Ieo1c5SUNSKuf
+ BagVDVuZoASLYMD6CemafgCUCoAvgXrc4jJzjSUb4YMCiJ9xcU/tKlxmeRlkKux1bzon52OhW
+ YbI2YFuppum33tAxtbzaM0hqXYPVewbeByoU1MbQa8rE0KRSQwyCxj8GSFA5lK3j4EZ4xCwtf
+ aa2zGlsTp8sGtzlQYdcmcIYmlKSIu49hCoitdn27loYN6UxZ8VyG5e5E1PGa6oV/UuhyPdOre
+ pAoqWzzKFObPjX1X+Lk8k5E5J/W0c1bzmcCa5zGxaqsfdT7zbEQ9qSVEWZAHVp2a9moUWQnBx
+ lrBmZatsdIu5p2YV1BL7EIVpNVvgrqumfFpG05b6r2Mm+Z/CtQ6/Ck/vXnmqgKcevEbd/JhHS
+ Mxr1Kx7Axjb48Tvmc13EMA0sD9CMLWoistouroU2VxK2OG9PaEbGQyJm9i/WDrIwH8r7slDn5
+ GowoSpdg8wqVOaj2rD01KQIlcn4j1OeZQRVg4TBroE3z7kpk9eqicY75ubtowyb2FNeCbTOx5
+ cRPVm+IOsfHETuYtAPKEfjRRAiYfbFuiXR5YMbgpKvJUXKxrVtn4/smEaltCjUnRRJjVMedgM
+ irwncpUGxnp3BpoqWI3oHt3uDscjCDUAhB31q7Dw6fPgh6sLB7XHwPu0sSZDI+ZkOf7RtWB5k
+ 2syWy6mvm1ei8Wm2Pvc6C+RvIaCMwBg1p5oe2x97oFN0DfwSijeY2sDCrvAofZPcEm/L6VyGf
+ uf57Mo/vUXSlXqwYwAdWWa574c4=
+Received-SPF: pass client-ip=212.227.15.15; envelope-from=deller@gmx.de;
+ helo=mout.gmx.net
+X-Spam_score_int: -28
+X-Spam_score: -2.9
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.101,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ NICE_REPLY_A=-0.101, RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,28 +91,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/30/23 12:29, Klaus Jensen wrote:
-> From: Klaus Jensen<k.jensen@samsung.com>
-> 
-> Hi,
-> 
-> This should also fix coverity cid 1518067 and 1518066.
-> 
-> The following changes since commit ccb86f079a9e4d94918086a9df18c1844347aff8:
-> 
->    Merge tag 'pull-nbd-2023-07-28' ofhttps://repo.or.cz/qemu/ericb  into staging (2023-07-28 09:56:57 -0700)
-> 
-> are available in the Git repository at:
-> 
->    https://gitlab.com/birkelund/qemu.git  tags/nvme-next-pull-request
-> 
-> for you to fetch changes up to c1e244b6552efdff5612a33c6630aaf95964eaf5:
-> 
->    hw/nvme: use stl/ldl pci dma api (2023-07-30 20:09:54 +0200)
+On 7/31/23 12:23, Akihiko Odaki wrote:
+> On 2023/07/31 19:17, Joel Stanley wrote:
+>> On Mon, 31 Jul 2023 at 09:31, Michael Tokarev <mjt@tls.msk.ru> wrote:
+>>>
+>>> 31.07.2023 11:03, Akihiko Odaki wrote:
+>>>> linux-user was failing on M2 MacBook Air. Digging into the details, I=
+ found
+>>>> several bugs in brk and mmap so here are fixes.
+>>>
+>>> There's another work in this area by Helge Deller, have you seen it?
+>>> ("linux-user: Fix and optimize target memory layout", a v5 already).
+>>
+>> Applying this series fixes the qemu-arm running the static armhf
+>> binary on my ppc64le host that I reported here[1].
+> >> [1] https://lore.kernel.org/qemu-devel/CACPK8XeyqcEDyyL3Jw2WYWs_gGdtT=
+Cf2=3DLy04CMgkshSMdj7RA@mail.gmail.com/
+>>
+>> Tested-by: Joel Stanley <joel@jms.id.au>
+>
+> Thanks for testing.
+>
+>>
+>> The changes conflict with Helge's patches, so it would be good to work
+>> out which of your changes should be combined with his.
+>
+> I suggest Helge to rebase his change to my series. The below is some
+> detailed explanation:
 
-Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
+> It is almost orthogonal to my series, but patch 2 will conflict with
+> my series since it changes how the initial brk is calculated.
+>
+> Unfortunately I think patch 2 has a bug. Without my patch, do_brk()
+> assumes the heap is aligned with the host page size, but the patch
+> does not consider the case that the host and target page sizes are
+> different.
+I've included your patches #2 (bugfix) and #3 (cleanup) to my latest
+patch series and published it at
+https://github.com/hdeller/qemu-hppa/tree/brk-fixes-akihiko
 
+Maybe you and Joel could try it out?
 
-r~
-
+Helge
 
