@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BC267695D1
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 14:14:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 580967695C3
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 14:13:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQRlj-00039E-6o; Mon, 31 Jul 2023 08:12:59 -0400
+	id 1qQRlk-0003AP-Mr; Mon, 31 Jul 2023 08:13:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qQRlg-00038i-DP
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 08:12:56 -0400
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+ (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qQRlh-00038z-L0
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 08:12:57 -0400
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qQRld-00052Q-Rp
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 08:12:56 -0400
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-686f25d045cso2852762b3a.0
- for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 05:10:50 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qQRle-00053R-8E
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 08:12:57 -0400
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-686efb9ee0cso4389242b3a.3
+ for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 05:10:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20221208.gappssmtp.com; s=20221208; t=1690805448; x=1691410248;
+ d=smartx-com.20221208.gappssmtp.com; s=20221208; t=1690805452; x=1691410252;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=qyUgZh9TwicnD21beZzQv3fygUBvQcNjmz/7LwSmFBY=;
- b=NhroPMxnN9FT8sUzN5GcJa10I5XKkSB4d4jf4VfFN2ml+CxHF+wiWZG2QWs+9PBX5S
- Unxh9Rh5/GTcFjZxpsj6ZKe6LJQqSM676oWNcjcZuV47NEJlyerNM+nGgTuziR1vxmUs
- j18nKZgcUeeMvLANnPdhM3BdvEUTMHSzFfhS12WyCIcOIoe/n851PKwZa/Qr7gUbXKC1
- +oSVD9I+it3ymVDE9GZFjUx+g1uQ/ZJXjGhsh/LlIxkBa2KZSM0QkJB/cuulGmwojj0j
- dWP8f4diJsYimxSmLJa/H7+ScDZKNGWAQvCKaD+icdpo2DB9oxho7yZKDzF+H01/ii4P
- yXiw==
+ bh=EmF2rPUr8kcukZB0aZbqQbeTdRQhvpW4qihewNCbxJ8=;
+ b=pOFSpZF7CJ50fLdrkGKuhXeJbet6VUS/U5k2naveKlfWLRo/uzCSGF+Ho6/wtTguTA
+ SmBpt3bZNkxaGLBaWcsPj9bdZ7ryqC0CJ3JpP4JpG3kQvhG4IY5OMnFnBdy7D3cMCbSG
+ qSnEkVgi6eAEEv82G9TM+dmz/yEnPS6u/XXPwIgJf70WbnxOtQ4/J39jDEZ2XoxUTHTQ
+ M262T3Npr5f+2QtS8oPCWb71hYrZDutQhkCn9+Aq5WFgU+QOK17exfCz18cpTNeyrxG2
+ 4PUR5YeJqotadjmspOhCnNYRcW6Qnyyayuk+y1ULAIHyyjW8/44yvzBzCah+/BQxPbid
+ hAZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690805448; x=1691410248;
+ d=1e100.net; s=20221208; t=1690805452; x=1691410252;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=qyUgZh9TwicnD21beZzQv3fygUBvQcNjmz/7LwSmFBY=;
- b=CT6t8Kqvx3rrHcuf3QGEHmdS3VVu51EjvY6uQjEpETnY8H7Mi6CleZEvzp7kW8FwPz
- xXLm/VnxRFUNMbTysqiOHO5tRttOOoQ2IBUsp9yJ6du9s1AXCembmdmYC4X0SU0XxnqD
- jLzyLv/jLCQ7OKdGRZzaqSlSXUW1F2CFMwO5bgz3T+d072zA7c+cxFV9DbZLPhmpRxP8
- EzKoTgjYwgwvL9DCtYzGCauLeeGRwE7o3ANPgP8Y13iaM4Zj0zPjSSzmYDctNKplo+E9
- elm9GuGHaxhryK+iSlmog0llZWVwR1RdXEmo145svgzZbHrYsq9y4NutxvzmrlVmliFn
- EWCg==
-X-Gm-Message-State: ABy/qLYnwP6mS4ajAzS82PYqyr/JU9WVBURYlpmec7Gc6EHmLrjQLhq2
- DGxZXHYBdaV5AWtpljjVF2qDWg==
-X-Google-Smtp-Source: APBJJlEj9YxpB8KuqNIwBFARddYFEXzyaU1fYN+n+8tQjQDpvpXmQFeYUj6UEJm0g0beELjmXIWp2w==
-X-Received: by 2002:a05:6a20:9195:b0:132:a85f:b2e7 with SMTP id
- v21-20020a056a20919500b00132a85fb2e7mr9801548pzd.53.1690805448272; 
- Mon, 31 Jul 2023 05:10:48 -0700 (PDT)
+ bh=EmF2rPUr8kcukZB0aZbqQbeTdRQhvpW4qihewNCbxJ8=;
+ b=W1lXlN/oXvRjpobDxhoT8tz/YP+NTvJeK/lxInE5iqixTxQt6jQTxVcAxBu7rGmtwo
+ ko58oTLGW6r/KvIQwYVUwpCFxDLPxUolYylGYRw7jiQQfH3DngRYFkGkN4HRRCPuYFFX
+ VI/skaQD1BFJ+JXg0j8zU8pEmuMSJ4w8V6t01I7abZFYOawZ3QD6hfnF94VoHP9EVXLP
+ 9IfLFjxmXp7tONYWCJO/+nDLP/mbqJNCnvPggIFzWVJ4YJEJd7WvW8lb7QsQGUaR161q
+ LYFrx+CJNntVLgQbz2w4vqHzEn8cX6VsTGsYfCyXjZkt2lL4V3FEAfGwk1/pp5yffDN/
+ TVdA==
+X-Gm-Message-State: ABy/qLbrpH5hkRpJvnXXEbM2Bi1w5sVVcZk+8oWb+O/VJ6MOVoHQdjaH
+ wDy2JnsAByyRE/yEyXRMftPPdw==
+X-Google-Smtp-Source: APBJJlGuWp2D80lSbIybokl43feIX4m1gFG4J/5s6SQ7bn38kaDUmY3kJJQd7N2lfPmlN0u8s5boXw==
+X-Received: by 2002:a05:6a20:7352:b0:122:c6c4:36b1 with SMTP id
+ v18-20020a056a20735200b00122c6c436b1mr11873001pzc.4.1690805452229; 
+ Mon, 31 Jul 2023 05:10:52 -0700 (PDT)
 Received: from localhost.localdomain.gitgo.cc ([47.75.78.161])
  by smtp.gmail.com with ESMTPSA id
- a10-20020a62bd0a000000b005d22639b577sm7385690pff.165.2023.07.31.05.10.44
+ a10-20020a62bd0a000000b005d22639b577sm7385690pff.165.2023.07.31.05.10.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 31 Jul 2023 05:10:47 -0700 (PDT)
+ Mon, 31 Jul 2023 05:10:51 -0700 (PDT)
 From: Li Feng <fengli@smartx.com>
 To: Raphael Norwitz <raphael.norwitz@nutanix.com>,
  "Michael S. Tsirkin" <mst@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
@@ -64,16 +64,17 @@ To: Raphael Norwitz <raphael.norwitz@nutanix.com>,
  qemu-block@nongnu.org (open list:Block layer core),
  qemu-devel@nongnu.org (open list:All patches CC here)
 Cc: Li Feng <fengli@smartx.com>
-Subject: [PATCH v3 0/5] Implement reconnect for vhost-user-scsi
-Date: Mon, 31 Jul 2023 20:10:05 +0800
-Message-ID: <20230731121018.2856310-1-fengli@smartx.com>
+Subject: [PATCH v3 1/5] vhost: fix the fd leak
+Date: Mon, 31 Jul 2023 20:10:06 +0800
+Message-ID: <20230731121018.2856310-2-fengli@smartx.com>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721105205.1714449-1-fengli@smartx.com>
+In-Reply-To: <20230731121018.2856310-1-fengli@smartx.com>
 References: <20230721105205.1714449-1-fengli@smartx.com>
+ <20230731121018.2856310-1-fengli@smartx.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::432;
- envelope-from=fengli@smartx.com; helo=mail-pf1-x432.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=fengli@smartx.com; helo=mail-pf1-x42d.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -95,39 +96,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patchset adds reconnect support for vhost-user-scsi. At the same
-times, fix vhost fd leak and refactor some code.
+When the vhost-user reconnect to the backend, the notifer should be
+cleanup. Otherwise, the fd resource will be exhausted.
 
-Changes for v3:
-- Split the vhost_user_scsi_handle_output to a separate patch;
-- Move the started_vu from vhost scsi common header to vhost-user-scsi header;
-- Fix a log print error;
+Fixes: f9a09ca3ea ("vhost: add support for configure interrupt")
 
-Changes for v2:
-- Split the v1 patch to small separate patchset;
-- New patch for fixing fd leak, which has sent to reviewers in another
-  mail;
-- Implement the `vhost_user_scsi_handle_output`;
-- Add the started_vu safe check;
-- Fix error handler;
-- Check the inflight before set/get inflight fd.
+Signed-off-by: Li Feng <fengli@smartx.com>
+Reviewed-by: Raphael Norwitz <raphael.norwitz@nutanix.com>
+---
+ hw/virtio/vhost.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Li Feng (5):
-  vhost: fix the fd leak
-  vhost-user-common: send get_inflight_fd once
-  vhost: move and rename the conn retry times
-  vhost-user-scsi: support reconnect to backend
-  vhost-user-scsi: start vhost when guest kicks
-
- hw/block/vhost-user-blk.c           |   4 +-
- hw/scsi/vhost-scsi-common.c         |  37 ++---
- hw/scsi/vhost-user-scsi.c           | 247 +++++++++++++++++++++++++---
- hw/virtio/vhost-user-gpio.c         |   3 +-
- hw/virtio/vhost.c                   |   2 +
- include/hw/virtio/vhost-user-scsi.h |   4 +
- include/hw/virtio/vhost.h           |   2 +
- 7 files changed, 252 insertions(+), 47 deletions(-)
-
+diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+index abf0d03c8d..e2f6ffb446 100644
+--- a/hw/virtio/vhost.c
++++ b/hw/virtio/vhost.c
+@@ -2044,6 +2044,8 @@ void vhost_dev_stop(struct vhost_dev *hdev, VirtIODevice *vdev, bool vrings)
+     event_notifier_test_and_clear(
+         &hdev->vqs[VHOST_QUEUE_NUM_CONFIG_INR].masked_config_notifier);
+     event_notifier_test_and_clear(&vdev->config_notifier);
++    event_notifier_cleanup(
++        &hdev->vqs[VHOST_QUEUE_NUM_CONFIG_INR].masked_config_notifier);
+ 
+     trace_vhost_dev_stop(hdev, vdev->name, vrings);
+ 
 -- 
 2.41.0
 
