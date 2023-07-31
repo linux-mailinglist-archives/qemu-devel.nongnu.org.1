@@ -2,70 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A1E8769D2D
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 18:52:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12C7A769EC7
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 19:08:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQW7Y-0001GN-FI; Mon, 31 Jul 2023 12:51:48 -0400
+	id 1qQWMC-00006Q-42; Mon, 31 Jul 2023 13:06:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qQW7Q-0001Ez-Bz
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 12:51:42 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qQWM5-000063-E2
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 13:06:50 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qQW7O-0005dK-LX
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 12:51:40 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qQWM3-0000EG-VJ
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 13:06:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690822297;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=JvLXCcMmGv5hKdcLx3cUZEwjA2OrWpQwWaxNmIEK5uM=;
- b=VW08Inc12NKBgAY0LFEg4I0s2ZMV9Xm3nPBw8aJbvSfY5Xi9BCJsGyTbpNbm2UqBEemgyB
- VCw958mTws/pdBaGySVF/9hAnZoZWklsI7PLu8UekH0mJC+DiIcVZo+a/GM5Ke3SmUsJng
- ne+rvfO14VXZRNBPeDbDycaaKfIrZj4=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-679-R0vH1opIM9S4G6o22AH58g-1; Mon, 31 Jul 2023 12:51:34 -0400
-X-MC-Unique: R0vH1opIM9S4G6o22AH58g-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 64C5F894EDC;
- Mon, 31 Jul 2023 16:51:33 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.93])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 261BB1121325;
- Mon, 31 Jul 2023 16:51:31 +0000 (UTC)
-Date: Mon, 31 Jul 2023 17:51:28 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Sean Christopherson <seanjc@google.com>,
- David Hildenbrand <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Xu <peterx@redhat.com>, Chao Peng <chao.p.peng@linux.intel.com>,
- Michael Roth <michael.roth@amd.com>, isaku.yamahata@gmail.com,
- qemu-devel@nongnu.org, kvm@vger.kernel.org
-Subject: Re: [RFC PATCH 00/19] QEMU gmem implemention
-Message-ID: <ZMfmkCQImgsinE6T@redhat.com>
-References: <20230731162201.271114-1-xiaoyao.li@intel.com>
+ s=mimecast20190719; t=1690823206;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=/ezZ4BiSM9otoFB/6u1ScMq73QfaXtnbvKJH7lPNVLo=;
+ b=Oag27CXTozbcSidL2Xs4IA6Nab6V6wYvmxYu/PDx7HK7pWWZqOb9eCQ6aF9hA0/lr9iLhO
+ zz/TStmu3rRX9Y27dDOoY3nq1oOUKuDgdrKpplJUiGkAL3nClPhQPT3S5G+jXUplDvCUZc
+ EWrFnl5IL5zZfMJWOiFfB+PjOJZaMlA=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-113-hHi66qOWPOiD9WxM3P8BvQ-1; Mon, 31 Jul 2023 13:06:44 -0400
+X-MC-Unique: hHi66qOWPOiD9WxM3P8BvQ-1
+Received: by mail-qt1-f200.google.com with SMTP id
+ d75a77b69052e-40fa24ab5c8so2535351cf.1
+ for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 10:06:44 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1690823204; x=1691428004;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=/ezZ4BiSM9otoFB/6u1ScMq73QfaXtnbvKJH7lPNVLo=;
+ b=eJJuWWQLQbWpd6lZWuc4DM+2GbSNa8+NuPIh/4onuQcBRMchR8fp2xhVUnhnw8Pemc
+ Dd3KYuQdPeBMOz5PAAdpP3ezBEfzhJ/tbKNb2OE8KWNUt+WIcwPKLaQzKtVyOB81Ur8D
+ fUR99XpA+KlApF6wiF+vJPtKJ5DBiVUM7yPXXSEIIxru+PjEgen9lVufqxqfGHryyxTW
+ 3U/6C9Y1T3KAkW3ONPjcqpi2ReZNd679jm40HcINfFIfuSW2qaImZOqqkYMZ2xJ0qvXY
+ 5VCR0wHwoQiHSjl+pk55Og3B59ItaWEqOYsYqVZBdac/yNet4OXM7myaRSSoeM1Tlngi
+ w8XA==
+X-Gm-Message-State: ABy/qLZrU/DQx2b0lHB2D7CJCH1znUHZo1O0oo9NYvrYZswmj8unvGsY
+ qdyJhjIbilgfTLMrpb3yXtSgr55qNceeqBzUAkQFrOfMb3I+a+7iKbqht++KP17bgth7SNEUcre
+ carxh6fzbso5DwfQ=
+X-Received: by 2002:a05:622a:1aa5:b0:40c:8ba5:33e0 with SMTP id
+ s37-20020a05622a1aa500b0040c8ba533e0mr9210108qtc.3.1690823203996; 
+ Mon, 31 Jul 2023 10:06:43 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlFaHCr7QoFqmWO8YexCPiEQk23r9RFmadz74ZMk9Z1gcD/E9aECclmZWLkBKEeKmGChI5s7MA==
+X-Received: by 2002:a05:622a:1aa5:b0:40c:8ba5:33e0 with SMTP id
+ s37-20020a05622a1aa500b0040c8ba533e0mr9210088qtc.3.1690823203715; 
+ Mon, 31 Jul 2023 10:06:43 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ f2-20020ac840c2000000b00404f8e9902dsm1650019qtm.2.2023.07.31.10.06.43
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 31 Jul 2023 10:06:43 -0700 (PDT)
+Date: Mon, 31 Jul 2023 13:06:41 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>
+Subject: Re: [PATCH 2/3] migration: Simplify calling of
+ await_return_path_close_on_source
+Message-ID: <ZMfqIb2c9tCxaNKy@x1n>
+References: <20230728121516.16258-1-farosas@suse.de>
+ <20230728121516.16258-3-farosas@suse.de> <ZMQ1ppAIJVbk8ZBg@x1n>
+ <87leew8d70.fsf@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230731162201.271114-1-xiaoyao.li@intel.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+In-Reply-To: <87leew8d70.fsf@suse.de>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -87,80 +97,18 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jul 31, 2023 at 12:21:42PM -0400, Xiaoyao Li wrote:
-> This is the first RFC version of enabling KVM gmem[1] as the backend for
-> private memory of KVM_X86_PROTECTED_VM.
-> 
-> It adds the support to create a specific KVM_X86_PROTECTED_VM type VM,
-> and introduces 'private' property for memory backend. When the vm type
-> is KVM_X86_PROTECTED_VM and memory backend has private enabled as below,
-> it will call KVM gmem ioctl to allocate private memory for the backend.
-> 
->     $qemu -object memory-backend-ram,id=mem0,size=1G,private=on \
->           -machine q35,kvm-type=sw-protected-vm,memory-backend=mem0 \
-> 	  ...
-> 
-> Unfortunately this patch series fails the boot of OVMF at very early
-> stage due to triple fault because KVM doesn't support emulate string IO
-> to private memory. We leave it as an open to be discussed.
-> 
-> There are following design opens that need to be discussed:
-> 
-> 1. how to determine the vm type?
-> 
->    a. like this series, specify the vm type via machine property
->       'kvm-type'
->    b. check the memory backend, if any backend has 'private' property
->       set, the vm-type is set to KVM_X86_PROTECTED_VM.
-> 
-> 2. whether 'private' property is needed if we choose 1.b as design 
-> 
->    with 1.b, QEMU can decide whether the memory region needs to be
->    private (allocates gmem fd for it) or not, on its own.
-> 
-> 3. What is KVM_X86_SW_PROTECTED_VM going to look like? What's the
->    purose of it and what's the requirement on it. I think it's the
->    questions for KVM folks than QEMU folks.
-> 
-> Any other idea/open/question is welcomed.
-> 
-> 
-> Beside, TDX QEMU implemetation is based on this series to provide
-> private gmem for TD private memory, which can be found at [2].
-> And it can work corresponding KVM [3] to boot TDX guest. 
+On Mon, Jul 31, 2023 at 09:42:27AM -0300, Fabiano Rosas wrote:
+> They are made redundant by
+> trace_await_return_path_close_on_source_joining() and
+> trace_await_return_path_close_on_source_close() which already exist in
+> the function.
 
-We already have a general purpose configuration mechanism for
-confidential guests.  The -machine argument has a property
-confidential-guest-support=$OBJECT-ID, for pointing to an
-object that implements the TYPE_CONFIDENTIAL_GUEST_SUPPORT
-interface in QEMU. This is implemented with SEV, PPC PEF
-mode, and s390 protvirt.
+Oh.. that's okay then.  Thanks,
 
-I would expect TDX to follow this same design ie
-
-    qemu-system-x86_64 \
-      -object tdx-guest,id=tdx0,..... \
-      -machine q35,confidential-guest-support=tdx0 \
-      ...
-
-and not require inventing the new 'kvm-type' attribute at least.
-
-For the memory backend though, I'm not so sure - possibly that
-might be something that still wants an extra property to identify
-the type of memory to allocate, since we use memory-backend-ram
-for a variety of use cases.  Or it could be an entirely new object
-type such as "memory-backend-gmem"
-
-
-With regards,
-Daniel
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Peter Xu
 
 
