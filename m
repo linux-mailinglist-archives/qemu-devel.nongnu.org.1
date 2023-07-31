@@ -2,85 +2,135 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44196769A19
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 16:51:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25622769A0D
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 16:50:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQUEf-0007ha-Aj; Mon, 31 Jul 2023 10:51:01 -0400
+	id 1qQUDC-0006gi-4e; Mon, 31 Jul 2023 10:49:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qQUET-0007eM-Tj
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 10:50:51 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qQUER-0006Nt-NV
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 10:50:49 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-686bc261111so3246524b3a.3
- for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 07:50:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690815044; x=1691419844;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=23BfVe44Mz4FAVTmRxrfNUmkAlP1s8jGUx9p2E0iIsk=;
- b=i51yBfqWYHJZNXOOO3Zc1aD/8heRb844C2UlRyj58BqK13MJVEO6oqGcOoc37KSVim
- Dcn1CAbDXIS5bWd+FzwculI07tj7HtydhOFWenb2VY7lNoQXPdYodP3i8XVJKKbb9XUa
- vAIAKcnA5iz5WJ49Ydmkn6HCqzzLdIL8sks8bWCZkgez8mB21CkiCr4hTeLJpxIdfxp1
- qL/uF0OUotW/gMU3H1rolJyKri9pKW20TwiwXQtN6eb8h9H+5XvnrxUffCE+dC9CKFyH
- U2j3aCy63DX4JLEaNOTtokMAvUq9qcvH2rCvT1D1UsI1ohxKirZuM+FHddBh1fNNTv0a
- jYlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690815044; x=1691419844;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=23BfVe44Mz4FAVTmRxrfNUmkAlP1s8jGUx9p2E0iIsk=;
- b=d/O1bNPfJbyNwxRuUAoG+jjjHMrDnrpy1/tbQ92S8Y4hdds6pPfWHuai6fxrw3UzVc
- 5UGtrys0Uv+XmZO90YLwGjdb4em+na8Dwt97vwXkJUO/QA8tiBjGCiU486uV7BNnVlME
- PV2HXY+EPx71u2Bj8B66M04hd6ZMaw1b5pWtAxtvT3RrJZhzpKMXVZbnLpALPYdjRCVM
- y/sbAlD2AcpuO5wE+Skx+ENmDSvv72+ASZHJyVYlhURDFXak2gH/emXeElYaiuvxV24K
- m7PFk8XWS5TVGFBIm64drWdsBnvlDeHrFt9qILHFOhRcF3a3/BjUBAOeEa4vMUggbd+z
- +Utw==
-X-Gm-Message-State: ABy/qLZDaAU9koP1exZBF3u+PsnCy/FpVyspwU8HrBGIDJvn800QBuXv
- a0DAFykA/mE+3YFbaSlTRZJbTw==
-X-Google-Smtp-Source: APBJJlGMr3yda+j16r38qAU8+BkBMJCsZv72GAUadHlLQJ9gh4amUL77Lwq+oidWDfqWqMcOetLO3A==
-X-Received: by 2002:a05:6a21:4887:b0:134:ad98:fb0c with SMTP id
- av7-20020a056a21488700b00134ad98fb0cmr11296590pzc.4.1690815044052; 
- Mon, 31 Jul 2023 07:50:44 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.144.105])
- by smtp.gmail.com with ESMTPSA id
- z5-20020a63ac45000000b0056420d3cd20sm5761452pgn.71.2023.07.31.07.50.43
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 31 Jul 2023 07:50:43 -0700 (PDT)
-Message-ID: <fa0e79f3-acdc-09b2-3377-a3fae6eca8bc@linaro.org>
-Date: Mon, 31 Jul 2023 07:50:41 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [RFC][PATCH] accel/tcg: Use lookup_and_goto_ptr() for linux-user
- in translator_use_goto_tb()
-To: Helge Deller <deller@gmx.de>, Laurent Vivier <laurent@vivier.eu>,
- qemu-devel@nongnu.org
-References: <ZMakYpOgco2Ihg0G@p100>
- <b0ff6b75-60c9-aa3e-e701-a4062558a9bf@linaro.org>
- <2c178363-b1a3-1192-09ac-2bbfa7ae7672@gmx.de>
+ (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
+ id 1qQUD9-0006fY-D9; Mon, 31 Jul 2023 10:49:27 -0400
+Received: from mail-vi1eur05on20724.outbound.protection.outlook.com
+ ([2a01:111:f400:7d00::724]
+ helo=EUR05-VI1-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
+ id 1qQUD6-0005nZ-My; Mon, 31 Jul 2023 10:49:26 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=lHvWzhaZwJgg7QLriBVF+ReZ2JbHm+sQl0MeN6IGlyp830zL8jER6jCtXU1X30gb1QEwXQnkTHmgiiZ4YteBsKODcd0EKQdZKxgZ7Teau9DRGalsXDfnkSLaNGoytFMAHFINM6fsvutcrqUuvEsqv6mjN9KIFXEI1k6sEByGs8wXyggBOe9egKHJPBLd5uFIfME+0zVTQwE9EkPxr4gjGSPbobnC6r8LoZOwW9sIZFbAA4nXy9jZh429O5i+05FW8kbpcTNLSmdnOmD6GBVefXUAWk7uidYWkiRM9flo5uFQLjMYRU+HP/ECyWNtpBahr+4L+qKO48UyMWR9U3LNsA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=tsw8afC5OvT1dhiK4jleQo9aRz7GJyFlb1yfLNW6B54=;
+ b=i4J8Q5AVH+COaYQdj98UZDFqwm6Ay1/n65k7lFLEdnbhkXnUrsO82OmWHGvwwe58dPrB5nLkQMN/046hI5iL3JX/80FQ4qNieO9SpQk0AWkLJxhQQkLAsnsWdeVONROcJKryGiovoyqzyVxzAbwJwNqiZ94JX3ial918t+6oLoETXo3/MuE+qUP7T+Jj47tuF0+dvvSl68JjkY+n/1WhbQHnMTP4OaM60hNa2HHOmzAtETstt3/BEhb41SEegm4JIiZOFpGpaxktx28hZBQb8jL3lQHZFIUCgqYMbWskC0ulyzZKRN7q0BrGXCiV3GNWF7+lH24AnGTDFpf+PujecA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
+ header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=tsw8afC5OvT1dhiK4jleQo9aRz7GJyFlb1yfLNW6B54=;
+ b=L6+wpkxrTGvVPVAOypHOupfqzVA3FgYRharYAX+hR7Ft83BeMMKD+a5ckwzgvEOV8jkIfMwKqFU8WTI2W4JJR5AaxHiOAaPXjYFFptzJqzAcBkP2GgQgJvu5sCfxk06UgLbl+9I+bQVaqmT4tKitYNb5Vd7XnM/Xfkddy6ykzOCGbVhqIL0K8fo+rdzkA05d4gTkcfYqTrzdGmHGr6RpCTi69XCHt6XokIxebfRAfH8LtboxD1nsl/bPFP2oc+4YsKY0mmKo/PGiYPWISgtEojonXkMOADHzyuMvJKeF5W+uv52uddi4oMDZ9mjiJpk0oez6ZV/UyS48Csr4JQ8Qmg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=virtuozzo.com;
+Received: from AM4PR08MB2932.eurprd08.prod.outlook.com (2603:10a6:205:e::33)
+ by GV2PR08MB8511.eurprd08.prod.outlook.com (2603:10a6:150:b5::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6631.42; Mon, 31 Jul
+ 2023 14:49:17 +0000
+Received: from AM4PR08MB2932.eurprd08.prod.outlook.com
+ ([fe80::4a49:5a92:afb6:c681]) by AM4PR08MB2932.eurprd08.prod.outlook.com
+ ([fe80::4a49:5a92:afb6:c681%4]) with mapi id 15.20.6631.026; Mon, 31 Jul 2023
+ 14:49:17 +0000
+Message-ID: <85e0a9bb-8e8f-e414-70ad-528e45a803e4@virtuozzo.com>
+Date: Mon, 31 Jul 2023 17:51:00 +0300
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/3] block: align CoR requests to subclusters
 Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <2c178363-b1a3-1192-09ac-2bbfa7ae7672@gmx.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+To: qemu-block@nongnu.org, qemu-stable@nongnu.org
+Cc: qemu-devel@nongnu.org, kwolf@redhat.com, hreitz@redhat.com,
+ vsementsov@yandex-team.ru, eblake@redhat.com, den@openvz.org,
+ stefanha@redhat.com, fam@euphon.net, jsnow@redhat.com
+References: <20230711172553.234055-1-andrey.drobyshev@virtuozzo.com>
+ <c49fd209-9a6a-9e0d-752f-30a5178d855b@virtuozzo.com>
+In-Reply-To: <c49fd209-9a6a-9e0d-752f-30a5178d855b@virtuozzo.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR0P281CA0209.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:ad::6) To AM4PR08MB2932.eurprd08.prod.outlook.com
+ (2603:10a6:205:e::33)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM4PR08MB2932:EE_|GV2PR08MB8511:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7be55a19-5eed-46bd-26e9-08db91d5508c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: /PQ/uq9u9/MbHCBC3+xImMQ5E+GL5EWHs7vTHhIJ9+sDHaIkWJUZ8ceIRdKdLEBDiYOBvxXM8kEzKKtxgcWircwZpbCLowUMUndI5AfbULXLr+/wsxovh4S514+Y3qW0MaoCPjtiEJOKVFCMfT9PHidrgUi5r0WwtJIHFkTQ2RGkCSkUfXofNzI+JbBMHZp5EjvaMtcMCZ2arDXfaUmndfN9xweBubDV9aKyZYm25AmAGKJe5VXTC3t6YqyQOa18fbymOSIr4UWauYCcat7bUppP0+XfDDI/67TWgOeAPHGJCx7N5pmsBNUaNRcRcaw7HPpcfAw18RyCsdFiL2v3FWxLd8AxINKR/Qc8f2aqd0C8ig0mC2hfigwzuXFNO8rw6yb0LuIFvlko3U3kbx36Mdpfz/BDGi7NYUk7Hx2dZjVGVasIIFZs5tP9ChPx9/D3ZAZBJ6O2Aob18Gd3Sq8UrB3abY2TtlmhZmB7FtCCqJovtbopdUacxj2PVnUeZbmz1Wi/VoWRDfz6E+gBS0z1zgWJtMfyMIxMyzc/HodHvNmvchFvOHHHGEAHNq9cdEn3Mp1wxmj/9eGlkmxgeyfcjIS8enRw5HoEADEoYYiJLA/hmIvb6csOkpnZEIbEuswE
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:AM4PR08MB2932.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230028)(4636009)(366004)(39850400004)(136003)(396003)(346002)(376002)(451199021)(966005)(6512007)(6486002)(36756003)(53546011)(2616005)(26005)(6506007)(83380400001)(186003)(44832011)(66946007)(66556008)(7416002)(41300700001)(31696002)(66476007)(86362001)(316002)(4326008)(5660300002)(8676002)(8936002)(31686004)(2906002)(6666004)(478600001)(38100700002)(4744005)(43740500002)(45980500001);
+ DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?cWZPUkUrMiszUXlsdnhGcFRNbENkYkhQTVoxVVV1cWowYjZmWHMxOVdVckZQ?=
+ =?utf-8?B?Q0ZUVGN0bCs1TWY3bWpwTTFnd0E1ZEZIaHVEbDI3UGxZbEJBaG5kek00a1Nj?=
+ =?utf-8?B?cmJFdHlDU0pnWHM3RllyTHVRNXhpcjZLdVhmY1VOR3RkU0I5WktxUkt6cDJh?=
+ =?utf-8?B?Q0VaYlVaOFNFZW13RnM3TDdWZ3JXRXUvSHhNcU9xTUhaTjlNN1A0bXBRNFdP?=
+ =?utf-8?B?R1YraTNlbi9zRHNzS2J1aXlXMFoyWlhVKy8wSmIyMXh4WGFaMWJ3K1BsQ2JZ?=
+ =?utf-8?B?cFEzTXV4RWRmSE1ZVjdoYTZIaStFdEV4bG9VUEtGdldCTHE1Mm9tYnlnTEZB?=
+ =?utf-8?B?SHoxOXQwVnY1UzJCSGVrOWZnazl6dGVOeTRJcEg4aEZqUlVBYU1qYXQwd3Y2?=
+ =?utf-8?B?aXNjYlVLem1TV2MwTTN4QmxjUUl6NS83d0N0NzFLOUdtbkJvYm03OGFUbGVX?=
+ =?utf-8?B?eitBQ3NGaFY1Slh5U3hONzFqY3lrRi9GNVNPYWpXS09pdjZmc3BuMERwS2Nr?=
+ =?utf-8?B?ODNiRnFRS0NxYW5RWm9VOFNFVCtQQS9HWFlkdHlVbFBJRGtINDc4ZlNKbTZv?=
+ =?utf-8?B?azBpT25wd1ROUS9yK0YydTRnSDloaWIzNWVwSFo2T1JYeUhKSHA5a25Sck1w?=
+ =?utf-8?B?c1R1SnI1S1d6bkhSTUZkeURSQUdxSHNxQ3RzVEo2bVNxUlkrcklGOUtUNmpi?=
+ =?utf-8?B?S3dZVVM4RXgvcERSbU1QOWxRbC9GcVZtMDVGRzNPQmdEWTgvVUVKanRhK3BW?=
+ =?utf-8?B?dkdJREtoczlFb0tMYzk1STBDS3dtQ3llNlZWMVRRUWE3NjlNVmkraEJNWGxI?=
+ =?utf-8?B?eURtUTI0akIzWUw5K0VWR0RjYWRPNkRieFVlT2srUmpxaWJqWkdwTXUvaHhp?=
+ =?utf-8?B?ZnY1YjFXeEpCZlFZZkx2eVlac25lUi9LOGF0SWMwMjJiSjkrQklqdWFoVTU0?=
+ =?utf-8?B?T0xiZHVSc1NFTURSSGNVNFppZDRZMCtia05TVUJtT0JpcmZIRjdtWUlING5t?=
+ =?utf-8?B?MUNtU2lGWEFRWE1ISStEdWlqMzBsSVNhdlVKODFtUE5Ka1RxdS9WRXF1ZVlF?=
+ =?utf-8?B?VWlYdlFEaDF3M1JuaFVub3NJbXJYREp5Rndkc0VIc0VZT3R5MEE1bUVDVGMw?=
+ =?utf-8?B?UDkwUGRqOUFRRThGOThFakw0Sk5uTUZSNjA1d0dvM2RtRkluRkJvY1VTTTli?=
+ =?utf-8?B?YjR1a0Z5anVDK2Yyb1BCZGRFUnI0V2lnZkt2UjVadWdoMWZja1A3VEhGaFFI?=
+ =?utf-8?B?S3pXdHBuZ3AxZEcwQThJUWJRaStOVnhTVkUvMGZNM1FQUGw0L3RRblZGWEdC?=
+ =?utf-8?B?S0plN1Vna0xTQXBnMUlEc1RmaU1IbGQ0YlhVeHZDb3A4L3R3K0cvdXdxZTJJ?=
+ =?utf-8?B?OCtWUUl4NkVBSDFvWjNUdXFHZk9nWlk0MFFmSE5JTTZDUSszdEpqTTUyV1lS?=
+ =?utf-8?B?WHRjQk9FTFRCZlpqYXVGWWVROUN3bHZpemk1ZEgxa0h4Sm15Z2NDRWxscDd2?=
+ =?utf-8?B?MkdDWHR2a1h5SkJZVTExTzFoRGpYWmdrZytiSGpzSTcwSXBGWmNPNWZDYldt?=
+ =?utf-8?B?eTQxUXNPMDlNNjJtMjZobjN4M0VjODdJYTloYXEyaHlDZjk4aVRMeUQ4dnBm?=
+ =?utf-8?B?ajJLbkpOYkZaOHdaMUk0Skl6dy9ueWMyUmtvUU1BMGY5K3Q4UG5lMjhwQlNu?=
+ =?utf-8?B?TWZvMUM1dk9WRi82bTE4ZUpJZXgxYUxxRWplMkhLdlBnanF6N2JhWXpuQStu?=
+ =?utf-8?B?ZDFabGRkOEQ4SlRtUnhyTzFFNVRFOTlHT25XWGVMd0hpbVd5a0lHZk5QZzV2?=
+ =?utf-8?B?YjVCcW9Xdy9wTUJXaXFMZHl6RVNIZk1Mc1FSSDNpR1FuOFdUSWF3YWE3UUNm?=
+ =?utf-8?B?c084aW0xMU5QNGw5ODY0a1lZT0sycjNzUy9iS1ZBVXBRZFFFbXZUcHY1S3l5?=
+ =?utf-8?B?d2NheWwzM0prYU1iUHBzQ0hyc2NyTmtYNy9NM0NxUmpJOC8zeWt0allSTVJ5?=
+ =?utf-8?B?ZmhHbHNZTHhNUFduaDh5WmthNnNVczIvYjN1VXlCWWhBOTdGdkZzK0JoWnpa?=
+ =?utf-8?B?WUhTYTRsVWk2U29oMEwycnhZNzRhWGJuVEowTHBadDdyMDRYRnhRK0doYjAy?=
+ =?utf-8?B?RWpTTmtRcXRoQm5aUWpBbjlLYjZIL01kV1lNZldyV3grK1orcGd2aXpSL01z?=
+ =?utf-8?Q?hj+C/RQt/tIkm940oukjijU=3D?=
+X-OriginatorOrg: virtuozzo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7be55a19-5eed-46bd-26e9-08db91d5508c
+X-MS-Exchange-CrossTenant-AuthSource: AM4PR08MB2932.eurprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Jul 2023 14:49:17.1792 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nxvWdpbx9m/PFt1JfRpcxPf/yeypIVRxrHBu1RYczZ03EN9hvQVDl0QKy1QDmMDRxazG4JrspaX/K3aesWTmAXhQ/hKjRms/byyEok8t9sw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR08MB8511
+Received-SPF: pass client-ip=2a01:111:f400:7d00::724;
+ envelope-from=andrey.drobyshev@virtuozzo.com;
+ helo=EUR05-VI1-obe.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.101,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,75 +147,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/30/23 13:37, Helge Deller wrote:
-> On 7/30/23 22:03, Richard Henderson wrote:
->> On 7/30/23 10:56, Helge Deller wrote:
->>> I'm quite unclear about translator_use_goto_tb() for qemu-user
->>> emulation....(and in general).
->>>
->>> Based on the function name, the function translator_use_goto_tb() shall
->>> help to decide if a program should use goto_tb() and exit_tb() to jump
->>> to the next instruction.
->>>
->>> Currently, if the destination is on the same page, it returns true.
->>> I wonder, if it shouldn't return false in this case instead, because
->>> arches have code like this: (taken from target/hppa/translate.c):
->>>      if (... && translator_use_goto_tb(ctx, f)) {
->>>          tcg_gen_goto_tb(which);
->>>          tcg_gen_movi_reg(cpu_iaoq_f, f);
->>>          tcg_gen_movi_reg(cpu_iaoq_b, b);
->>>          tcg_gen_exit_tb(ctx->base.tb, which);
->>>      } else {
->>>          copy_iaoq_entry(cpu_iaoq_f, f, cpu_iaoq_b);
->>>          copy_iaoq_entry(cpu_iaoq_b, b, ctx->iaoq_n_var);
->>>          tcg_gen_lookup_and_goto_ptr();
->>>      }
->>>
->>> Shouldn't, if the destination is on the same page, the (faster?)
->>> path with tcg_gen_lookup_and_goto_ptr() be taken instead?
+On 7/24/23 16:11, Andrey Drobyshev wrote:
+> On 7/11/23 20:25, Andrey Drobyshev wrote:
+>> v1 --> v2:
+>>  * Fixed line indentation;
+>>  * Fixed wording in a comment;
+>>  * Added R-b.
 >>
->> No, because tcg_gen_lookup_and_goto_ptr is not the faster path.
->> That always involves a lookup, then an indirect branch.
+>> v1: https://lists.nongnu.org/archive/html/qemu-block/2023-06/msg00606.html
+>>
+>> Andrey Drobyshev (3):
+>>   block: add subcluster_size field to BlockDriverInfo
+>>   block/io: align requests to subcluster_size
+>>   tests/qemu-iotests/197: add testcase for CoR with subclusters
+>>
+>>  block.c                      |  7 +++++
+>>  block/io.c                   | 50 ++++++++++++++++++------------------
+>>  block/mirror.c               |  8 +++---
+>>  block/qcow2.c                |  1 +
+>>  include/block/block-common.h |  5 ++++
+>>  include/block/block-io.h     |  8 +++---
+>>  tests/qemu-iotests/197       | 29 +++++++++++++++++++++
+>>  tests/qemu-iotests/197.out   | 24 +++++++++++++++++
+>>  8 files changed, 99 insertions(+), 33 deletions(-)
+>>
 > 
-> Ah, ok. So my assumption was wrong, and this explains it.
-> 
->> The goto_tb path is linked, so only requires a lookup once, and the
->> branch may be direct (depending on the host architecture).
-> Probably the last question in this regard:
-> 
-> This code:
-> IN:
-> 0x00010c98:  cmpib,<>,n 0,r19,0x10c98
-> 
-> generates "nop/jmp" in the code:
-> 
-> the tcg_gen_goto_tb() branch:
-> OUT:
-> 0x7fd7e400070e:  85 db                    testl    %ebx, %ebx
-> 0x7fd7e4000710:  0f 85 20 00 00 00        jne      0x7fd7e4000736
-> 0x7fd7e4000716:  90                       nop                <- from 
-> "tcg_gen_op1i(INDEX_op_goto_tb, idx)" in tcg_gen_goto_tb()
-> 0x7fd7e4000717:  e9 00 00 00 00           jmp      0x7fd7e400071c    <- jump is effective 
-> useless.
-> 0x7fd7e400071c:  c7 45 00 a3 0c 01 00     movl     $0x10ca3, (%rbp)
-> 0x7fd7e4000723:  c7 45 04 a7 0c 01 00     movl     $0x10ca7, 4(%rbp)
-> 0x7fd7e400072a:  48 8d 05 0f ff ff ff     leaq     -0xf1(%rip), %rax
-> 0x7fd7e4000731:  e9 e2 f8 ff ff           jmp      0x7fd7e4000018
-> 0x7fd7e4000736:  90                       nop                <- here too.
-> 0x7fd7e4000737:  e9 00 00 00 00           jmp      0x7fd7e400073c
-> 0x7fd7e400073c:  c7 45 00 9f 0c 01 00     movl     $0x10c9f, (%rbp)
-> 0x7fd7e4000743:  c7 45 04 9b 0c 01 00     movl     $0x10c9b, 4(%rbp)
-> 0x7fd7e400074a:  48 8d 05 f0 fe ff ff     leaq     -0x110(%rip), %rax
-> 0x7fd7e4000751:  e9 c2 f8 ff ff           jmp      0x7fd7e4000018
-> 
-> I assume those nops/jmp+0 is to be able to insert breakpoints?
+> Ping
 
-No.
-
-The destination of the jmp is patched by tb_target_set_jmp_target, which happens some time 
-after this disassembly.  The nop is present to ensure that the patch point is aligned, so 
-that it is one 4-byte atomic store.
-
-
-r~
+Another ping
 
