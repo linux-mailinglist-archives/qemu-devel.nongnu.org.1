@@ -2,94 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5F56768C7D
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 09:00:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49555768D1A
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 09:05:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQMsY-0007kh-2K; Mon, 31 Jul 2023 02:59:42 -0400
+	id 1qQMxv-0000G3-D5; Mon, 31 Jul 2023 03:05:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qQMsS-0007j0-QC
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 02:59:36 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qQMsQ-0001LG-L9
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 02:59:36 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1bba54f7eefso32894545ad.1
- for <qemu-devel@nongnu.org>; Sun, 30 Jul 2023 23:59:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1690786773; x=1691391573;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=6DYvTqXgC0HuTtAYRh6gTiT5Q7fqN8+LSUnzr3N+U04=;
- b=umsz1RVwPsjEqe/i4ojdN0v+m0aRKucs0oVY8nTTe3tcTQDMe87jNdJtuz5lv3PjLi
- BzNwgIUXeXeuMY2zpvfidnvNZzoXXJ4y8lN6LRMQylcw+plnTsONBsQied12YJTQRCaB
- XCV4XkXWIH+6hLxdOhW+Ob2FFyQHkcHwQ1ZIzdh/0IZc/SFV7vdt95eRHfRDk5F0eMH3
- dOW7orrES+pkp1Hyynqk6fAYfjLl+0teuDFn/aHsU7Yk1uOpi9lpKM2tOu7IJZiIAEzk
- Rf33widYlmse8lSgK4c5F6H/bAa5rd04LuHfJpwPzcQQDmbVTpdlItmKOJqnQcLLv3Cd
- EDKg==
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qQMxo-0000Dn-LW
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 03:05:09 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qQMxm-0002Cr-Ee
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 03:05:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1690787105;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=zyPzxjw4nq3YiXm4Q+Ua++OzWzr5VCkFsBcMiFNYTAo=;
+ b=PSA8KPlWj3PfQuObwKNmNDJhSC8zbGwfyb5Xrew1iKZeYG2BEIjyoeuAL96XrEhYd/rwAY
+ hmqWzE26vSUEv10Fe4g6F7S8HuM3npOTulXp49GXCevPZLJxEiO/6JhZSM0s1J8Bw+ucid
+ BPmLon686Btk26x+A9fpLMA0AZ53kFw=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-480-TyWmXzjqOASitiwpZ-WUgA-1; Mon, 31 Jul 2023 03:05:03 -0400
+X-MC-Unique: TyWmXzjqOASitiwpZ-WUgA-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-3fe11910e46so12278295e9.0
+ for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 00:05:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690786773; x=1691391573;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=6DYvTqXgC0HuTtAYRh6gTiT5Q7fqN8+LSUnzr3N+U04=;
- b=DpAMP4XRoc5WNk0qs8PBX9LohVgvj5MLaLWIFlXOFLCgufAT1/3V4RtbhNBkXcrZuj
- Jn12mUihP1IxKS6perVRTCeGg4ClwUz8IQfoXNu75XoP1WmIbsXCjwhI3LEwdtidZBFh
- BW247N4AitEZhPE65iFKLWfp3y54c+jLR+ukY+n5QPR3JeABYkCLIsp9awAW4YqTe2eT
- 0OqRgTqnQ/XfkNXdQ8HjDki82MXNEvAw7qzG4DkuxKie4zc8JcJjrX3o16oE1cTK01BB
- pQAhw/PXLXXeiiY/Nl5CKA9/APEF5lu7xA6i2HCyupqJlBax9tkJs0kwOAHfnPOpK4PG
- cD2Q==
-X-Gm-Message-State: ABy/qLaD+UdVWEGt52kKlx3SxjClJiv+PczbbGz7Lz5VdtFD+rz2yxau
- jn81LZaCgbIgg8kbPA2isFqlXw==
-X-Google-Smtp-Source: APBJJlFKp4TTFlMl/her2N0AEcMZD+PaG20O6grzYfDHXpaibX0vxZywkKL7VX5DxcLInDlHS1Hs/g==
-X-Received: by 2002:a17:903:41d1:b0:1b0:3ab6:5140 with SMTP id
- u17-20020a17090341d100b001b03ab65140mr10379402ple.4.1690786773391; 
- Sun, 30 Jul 2023 23:59:33 -0700 (PDT)
-Received: from alarm.. ([157.82.204.253]) by smtp.gmail.com with ESMTPSA id
- l16-20020a170903121000b001b8af7f632asm7684988plh.176.2023.07.30.23.59.28
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 30 Jul 2023 23:59:33 -0700 (PDT)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-To: 
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
- Thomas Huth <thuth@redhat.com>, Juan Quintela <quintela@redhat.com>,
- Peter Xu <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Brian Cain <bcain@quicinc.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>, Song Gao <gaosong@loongson.cn>,
- Xiaojuan Yang <yangxiaojuan@loongson.cn>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Aurelien Jarno <aurelien@aurel32.net>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Chris Wulff <crwulff@gmail.com>, Marek Vasut <marex@denx.de>,
- David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- qemu-devel@nongnu.org, qemu-s390x@nongnu.org, qemu-arm@nongnu.org,
- Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH 3/3] tests/tcg: Add -fno-stack-protector
-Date: Mon, 31 Jul 2023 15:58:56 +0900
-Message-ID: <20230731065904.5869-4-akihiko.odaki@daynix.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230731065904.5869-1-akihiko.odaki@daynix.com>
-References: <20230731065904.5869-1-akihiko.odaki@daynix.com>
+ d=1e100.net; s=20221208; t=1690787102; x=1691391902;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=zyPzxjw4nq3YiXm4Q+Ua++OzWzr5VCkFsBcMiFNYTAo=;
+ b=EFJ1jC/8EocYHHH1kB+6Mw+hLxvlylBL3p11h3yVGHiS8oU04Mxyq5pmWGvGuIsDgn
+ 9EPFd7HaEuoq4vSWIwWP+BiyTGAuJ9THCUDf+nj+/wAsaHV2wlqK/lUyAinPrQVTkTFw
+ av2ykBFH3KJC4gSZchGs8dQPCwQ7GbefXiaCjmofQPBKMd+Baki8j1ryjWivmRPlpzwZ
+ XH8Cltrl+WSKdmt6irQboUax8YEEdkfc1Di+KVaD31fSvlRMALmJvYQ/5JaTKrNG67n2
+ u+//N135Qei6I4KAgkBG7i5yrnPlRB4jgeFAi7HAPe4mVd0MiXY57TqohlNYrgh/earn
+ TZyQ==
+X-Gm-Message-State: ABy/qLayGYaBorWrB8qMrT4fqzQ2tRNn0HewYaPerF2UENwMRPULQ2/9
+ sB6fJSqovX+WSktOIQRZwQBLK36/va0yotu3+vrhEF7oPX0dF/Y/dlfnq/gYRP3PNS2Lq/CHjrC
+ LJLUcIp4oKMboBDI=
+X-Received: by 2002:a05:600c:20c4:b0:3f7:e660:cdc5 with SMTP id
+ y4-20020a05600c20c400b003f7e660cdc5mr7258056wmm.9.1690787102351; 
+ Mon, 31 Jul 2023 00:05:02 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlEycIzw0ZcdYaNi2sf8mzOeGbZhx2LV/J/1SaoB2xM4U/CRWgW4xmna8X82HgoQ2KkQPyCf0g==
+X-Received: by 2002:a05:600c:20c4:b0:3f7:e660:cdc5 with SMTP id
+ y4-20020a05600c20c400b003f7e660cdc5mr7258036wmm.9.1690787102040; 
+ Mon, 31 Jul 2023 00:05:02 -0700 (PDT)
+Received: from ?IPV6:2a01:cb19:853d:fa00:c28a:3e3d:34f3:3891?
+ ([2a01:cb19:853d:fa00:c28a:3e3d:34f3:3891])
+ by smtp.gmail.com with ESMTPSA id
+ v21-20020a7bcb55000000b003fe0a0e03fcsm7801083wmj.12.2023.07.31.00.05.01
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 31 Jul 2023 00:05:01 -0700 (PDT)
+Message-ID: <ddc55863-2a74-dfa2-a28b-a7592ee2f3e2@redhat.com>
+Date: Mon, 31 Jul 2023 09:05:00 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH for-8.2 1/6] vfio/migration: Move from STOP_COPY to STOP
+ in vfio_save_cleanup()
+Content-Language: en-US
+To: Avihai Horon <avihaih@nvidia.com>, qemu-devel@nongnu.org
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Joao Martins
+ <joao.m.martins@oracle.com>, Yishai Hadas <yishaih@nvidia.com>,
+ Jason Gunthorpe <jgg@nvidia.com>, Maor Gottlieb <maorg@nvidia.com>,
+ Kirti Wankhede <kwankhede@nvidia.com>, Tarun Gupta <targupta@nvidia.com>
+References: <20230716081541.27900-1-avihaih@nvidia.com>
+ <20230716081541.27900-2-avihaih@nvidia.com>
+ <dc2365df-4e71-e2d8-988d-f74431800123@redhat.com>
+ <26daa2db-13fd-3705-fbbf-22b8643dc9ee@nvidia.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <26daa2db-13fd-3705-fbbf-22b8643dc9ee@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::62b;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62b.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.101, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01,
+ RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,227 +109,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A build of GCC 13.2 will have stack protector enabled by default if it
-was configured with --enable-default-ssp option. For such a compiler,
-it is necessary to explicitly disable stack protector when linking
-without standard libraries.
+On 7/31/23 08:32, Avihai Horon wrote:
+> 
+> On 30/07/2023 19:25, Cédric Le Goater wrote:
+>> External email: Use caution opening links or attachments
+>>
+>>
+>> On 7/16/23 10:15, Avihai Horon wrote:
+>>> Changing the device state from STOP_COPY to STOP can take time as the
+>>> device may need to free resources and do other operations as part of the
+>>> transition. Currently, this is done in vfio_save_complete_precopy() and
+>>> therefore it is counted in the migration downtime.
+>>>
+>>> To avoid this, change the device state from STOP_COPY to STOP in
+>>> vfio_save_cleanup(), which is called after migration has completed and
+>>> thus is not part of migration downtime.
+>>>
+>>> Signed-off-by: Avihai Horon <avihaih@nvidia.com>
+>>
+>> Have you tried this series with vGPUs ? If so, are there any improvement
+>> to report ?
+>>
+> Not with a vGPU.
+> But I tried it with a ConnectX-7 VF and I could see up to 6% downtime improvement.
+> I mentioned this in the cover letter.
+> Do you want to mention it also in the commit message?
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
- tests/tcg/mips/hello-mips.c                   | 4 ++--
- tests/tcg/aarch64/Makefile.softmmu-target     | 2 +-
- tests/tcg/aarch64/Makefile.target             | 2 +-
- tests/tcg/alpha/Makefile.softmmu-target       | 2 +-
- tests/tcg/arm/Makefile.target                 | 2 +-
- tests/tcg/cris/Makefile.target                | 2 +-
- tests/tcg/hexagon/Makefile.target             | 2 +-
- tests/tcg/i386/Makefile.softmmu-target        | 2 +-
- tests/tcg/i386/Makefile.target                | 2 +-
- tests/tcg/loongarch64/Makefile.softmmu-target | 2 +-
- tests/tcg/minilib/Makefile.target             | 2 +-
- tests/tcg/mips/Makefile.target                | 2 +-
- tests/tcg/nios2/Makefile.softmmu-target       | 2 +-
- tests/tcg/s390x/Makefile.softmmu-target       | 2 +-
- tests/tcg/x86_64/Makefile.softmmu-target      | 2 +-
- 15 files changed, 16 insertions(+), 16 deletions(-)
+This is not necessary.
 
-diff --git a/tests/tcg/mips/hello-mips.c b/tests/tcg/mips/hello-mips.c
-index 4e1cf501af..0ba5f1bf23 100644
---- a/tests/tcg/mips/hello-mips.c
-+++ b/tests/tcg/mips/hello-mips.c
-@@ -5,8 +5,8 @@
- * http://www.linux-mips.org/wiki/MIPSABIHistory
- * http://www.linux.com/howtos/Assembly-HOWTO/mips.shtml
- *
--* mipsel-linux-gcc -nostdlib -mno-abicalls -fno-PIC -mabi=32 \
--*                  -O2 -static -o hello-mips hello-mips.c
-+* mipsel-linux-gcc -nostdlib -mno-abicalls -fno-PIC -fno-stack-protector \
-+                   -mabi=32 -O2 -static -o hello-mips hello-mips.c
- *
- */
- #define __NR_SYSCALL_BASE	4000
-diff --git a/tests/tcg/aarch64/Makefile.softmmu-target b/tests/tcg/aarch64/Makefile.softmmu-target
-index b74a2534e3..11016ffab2 100644
---- a/tests/tcg/aarch64/Makefile.softmmu-target
-+++ b/tests/tcg/aarch64/Makefile.softmmu-target
-@@ -16,7 +16,7 @@ LINK_SCRIPT=$(AARCH64_SYSTEM_SRC)/kernel.ld
- LDFLAGS=-Wl,-T$(LINK_SCRIPT)
- TESTS+=$(AARCH64_TESTS) $(MULTIARCH_TESTS)
- EXTRA_RUNS+=$(MULTIARCH_RUNS)
--CFLAGS+=-nostdlib -ggdb -O0 $(MINILIB_INC)
-+CFLAGS+=-nostdlib -fno-stack-protector -ggdb -O0 $(MINILIB_INC)
- LDFLAGS+=-static -nostdlib $(CRT_OBJS) $(MINILIB_OBJS) -lgcc
- 
- config-cc.mak: Makefile
-diff --git a/tests/tcg/aarch64/Makefile.target b/tests/tcg/aarch64/Makefile.target
-index 617f821613..55f8609897 100644
---- a/tests/tcg/aarch64/Makefile.target
-+++ b/tests/tcg/aarch64/Makefile.target
-@@ -49,7 +49,7 @@ endif
- # bti-1 tests the elf notes, so we require special compiler support.
- ifneq ($(CROSS_CC_HAS_ARMV8_BTI),)
- AARCH64_TESTS += bti-1 bti-3
--bti-1 bti-3: CFLAGS += -mbranch-protection=standard
-+bti-1 bti-3: CFLAGS += -fno-stack-protector -mbranch-protection=standard
- bti-1 bti-3: LDFLAGS += -nostdlib
- endif
- # bti-2 tests PROT_BTI, so no special compiler support required.
-diff --git a/tests/tcg/alpha/Makefile.softmmu-target b/tests/tcg/alpha/Makefile.softmmu-target
-index 09193a62d6..99c23c2903 100644
---- a/tests/tcg/alpha/Makefile.softmmu-target
-+++ b/tests/tcg/alpha/Makefile.softmmu-target
-@@ -15,7 +15,7 @@ CRT_PATH=$(ALPHA_SYSTEM_SRC)
- LINK_SCRIPT=$(ALPHA_SYSTEM_SRC)/kernel.ld
- LDFLAGS=-Wl,-T$(LINK_SCRIPT)
- TESTS+=$(ALPHA_TESTS) $(MULTIARCH_TESTS)
--CFLAGS+=-nostdlib -g -O1 -mcpu=ev6 $(MINILIB_INC)
-+CFLAGS+=-fno-stack-protector -nostdlib -g -O1 -mcpu=ev6 $(MINILIB_INC)
- LDFLAGS+=-static -nostdlib $(CRT_OBJS) $(MINILIB_OBJS) -lgcc
- 
- # building head blobs
-diff --git a/tests/tcg/arm/Makefile.target b/tests/tcg/arm/Makefile.target
-index 0038cef02c..3473f4619e 100644
---- a/tests/tcg/arm/Makefile.target
-+++ b/tests/tcg/arm/Makefile.target
-@@ -12,7 +12,7 @@ float_madds: CFLAGS+=-mfpu=neon-vfpv4
- 
- # Basic Hello World
- ARM_TESTS = hello-arm
--hello-arm: CFLAGS+=-marm -ffreestanding
-+hello-arm: CFLAGS+=-marm -ffreestanding -fno-stack-protector
- hello-arm: LDFLAGS+=-nostdlib
- 
- # IWMXT floating point extensions
-diff --git a/tests/tcg/cris/Makefile.target b/tests/tcg/cris/Makefile.target
-index 43587d2769..713e2a5b6c 100644
---- a/tests/tcg/cris/Makefile.target
-+++ b/tests/tcg/cris/Makefile.target
-@@ -30,7 +30,7 @@ AS	= $(CC) -x assembler-with-cpp
- LD      = $(CC)
- 
- # we rely on GCC inline:ing the stuff we tell it to in many places here.
--CFLAGS  = -Winline -Wall -g -O2 -static
-+CFLAGS  = -Winline -Wall -g -O2 -static -fno-stack-protector
- NOSTDFLAGS = -nostartfiles -nostdlib
- ASFLAGS += -mcpu=v10 -g -Wa,-I,$(SRC_PATH)/tests/tcg/cris/bare
- CRT_FILES = crt.o sys.o
-diff --git a/tests/tcg/hexagon/Makefile.target b/tests/tcg/hexagon/Makefile.target
-index 87ed2c90b9..f839b2c0d5 100644
---- a/tests/tcg/hexagon/Makefile.target
-+++ b/tests/tcg/hexagon/Makefile.target
-@@ -19,7 +19,7 @@
- EXTRA_RUNS =
- 
- CFLAGS += -Wno-incompatible-pointer-types -Wno-undefined-internal
--CFLAGS += -fno-unroll-loops
-+CFLAGS += -fno-unroll-loops -fno-stack-protector
- 
- HEX_SRC=$(SRC_PATH)/tests/tcg/hexagon
- VPATH += $(HEX_SRC)
-diff --git a/tests/tcg/i386/Makefile.softmmu-target b/tests/tcg/i386/Makefile.softmmu-target
-index 5266f2335a..8e9d0d7690 100644
---- a/tests/tcg/i386/Makefile.softmmu-target
-+++ b/tests/tcg/i386/Makefile.softmmu-target
-@@ -15,7 +15,7 @@ CRT_OBJS=boot.o
- CRT_PATH=$(I386_SYSTEM_SRC)
- LINK_SCRIPT=$(I386_SYSTEM_SRC)/kernel.ld
- LDFLAGS=-Wl,-T$(LINK_SCRIPT) -Wl,-melf_i386
--CFLAGS+=-nostdlib -ggdb -O0 $(MINILIB_INC)
-+CFLAGS+=-nostdlib -fno-stack-protector -ggdb -O0 $(MINILIB_INC)
- LDFLAGS+=-static -nostdlib $(CRT_OBJS) $(MINILIB_OBJS) -lgcc
- 
- TESTS+=$(MULTIARCH_TESTS)
-diff --git a/tests/tcg/i386/Makefile.target b/tests/tcg/i386/Makefile.target
-index fdf757c6ce..3dec7c6c42 100644
---- a/tests/tcg/i386/Makefile.target
-+++ b/tests/tcg/i386/Makefile.target
-@@ -35,7 +35,7 @@ run-test-aes: QEMU_OPTS += -cpu max
- #
- # hello-i386 is a barebones app
- #
--hello-i386: CFLAGS+=-ffreestanding
-+hello-i386: CFLAGS+=-ffreestanding -fno-stack-protector
- hello-i386: LDFLAGS+=-nostdlib
- 
- # test-386 includes a couple of additional objects that need to be
-diff --git a/tests/tcg/loongarch64/Makefile.softmmu-target b/tests/tcg/loongarch64/Makefile.softmmu-target
-index 908f3a8c0f..4a348469f7 100644
---- a/tests/tcg/loongarch64/Makefile.softmmu-target
-+++ b/tests/tcg/loongarch64/Makefile.softmmu-target
-@@ -15,7 +15,7 @@ CRT_PATH=$(LOONGARCH64_SYSTEM_SRC)
- LINK_SCRIPT=$(LOONGARCH64_SYSTEM_SRC)/kernel.ld
- LDFLAGS=-Wl,-T$(LINK_SCRIPT)
- TESTS+=$(LOONGARCH64_TESTS) $(MULTIARCH_TESTS)
--CFLAGS+=-nostdlib -g -O1 -march=loongarch64 -mabi=lp64d $(MINILIB_INC)
-+CFLAGS+=-nostdlib -fno-stack-protector -g -O1 -march=loongarch64 -mabi=lp64d $(MINILIB_INC)
- LDFLAGS+=-static -nostdlib $(CRT_OBJS) $(MINILIB_OBJS) -lgcc
- 
- # building head blobs
-diff --git a/tests/tcg/minilib/Makefile.target b/tests/tcg/minilib/Makefile.target
-index c821d2806a..af0bf54be9 100644
---- a/tests/tcg/minilib/Makefile.target
-+++ b/tests/tcg/minilib/Makefile.target
-@@ -12,7 +12,7 @@ SYSTEM_MINILIB_SRC=$(SRC_PATH)/tests/tcg/minilib
- MINILIB_SRCS=$(wildcard $(SYSTEM_MINILIB_SRC)/*.c)
- MINILIB_OBJS=$(patsubst $(SYSTEM_MINILIB_SRC)/%.c, %.o, $(MINILIB_SRCS))
- 
--MINILIB_CFLAGS+=-nostdlib -ggdb -O0
-+MINILIB_CFLAGS+=-nostdlib -fno-stack-protector -ggdb -O0
- MINILIB_INC=-isystem $(SYSTEM_MINILIB_SRC)
- 
- .PRECIOUS: $(MINILIB_OBJS)
-diff --git a/tests/tcg/mips/Makefile.target b/tests/tcg/mips/Makefile.target
-index 1a994d5525..5d17c1706e 100644
---- a/tests/tcg/mips/Makefile.target
-+++ b/tests/tcg/mips/Makefile.target
-@@ -14,6 +14,6 @@ MIPS_TESTS=hello-mips
- 
- TESTS += $(MIPS_TESTS)
- 
--hello-mips: CFLAGS+=-mno-abicalls -fno-PIC -mabi=32
-+hello-mips: CFLAGS+=-mno-abicalls -fno-PIC -fno-stack-protector -mabi=32
- hello-mips: LDFLAGS+=-nostdlib
- endif
-diff --git a/tests/tcg/nios2/Makefile.softmmu-target b/tests/tcg/nios2/Makefile.softmmu-target
-index bc7fd55060..96833b385f 100644
---- a/tests/tcg/nios2/Makefile.softmmu-target
-+++ b/tests/tcg/nios2/Makefile.softmmu-target
-@@ -12,7 +12,7 @@ VPATH += $(NIOS2_SYSTEM_SRC)
- CRT_OBJS = boot.o intr.o $(MINILIB_OBJS)
- LINK_SCRIPT = $(NIOS2_SYSTEM_SRC)/10m50-ghrd.ld
- 
--CFLAGS  += -nostdlib -g -O0 $(MINILIB_INC)
-+CFLAGS  += -nostdlib -fno-stack-protector -g -O0 $(MINILIB_INC)
- LDFLAGS += -Wl,-T$(LINK_SCRIPT) -static -nostdlib $(CRT_OBJS) -lgcc
- 
- %.o: %.S
-diff --git a/tests/tcg/s390x/Makefile.softmmu-target b/tests/tcg/s390x/Makefile.softmmu-target
-index 76345b6e64..27f2d68235 100644
---- a/tests/tcg/s390x/Makefile.softmmu-target
-+++ b/tests/tcg/s390x/Makefile.softmmu-target
-@@ -2,7 +2,7 @@ S390X_SRC=$(SRC_PATH)/tests/tcg/s390x
- VPATH+=$(S390X_SRC)
- QEMU_OPTS=-action panic=exit-failure -nographic -kernel
- LINK_SCRIPT=$(S390X_SRC)/softmmu.ld
--CFLAGS+=-ggdb -O0
-+CFLAGS+=-fno-stack-protector -ggdb -O0
- LDFLAGS=-nostdlib -static
- 
- %.o: %.S
-diff --git a/tests/tcg/x86_64/Makefile.softmmu-target b/tests/tcg/x86_64/Makefile.softmmu-target
-index 1bd763f2e6..23887a1660 100644
---- a/tests/tcg/x86_64/Makefile.softmmu-target
-+++ b/tests/tcg/x86_64/Makefile.softmmu-target
-@@ -15,7 +15,7 @@ CRT_OBJS=boot.o
- CRT_PATH=$(X64_SYSTEM_SRC)
- LINK_SCRIPT=$(X64_SYSTEM_SRC)/kernel.ld
- LDFLAGS=-Wl,-T$(LINK_SCRIPT) -Wl,-melf_x86_64
--CFLAGS+=-nostdlib -ggdb -O0 $(MINILIB_INC)
-+CFLAGS+=-nostdlib -fno-stack-protector -ggdb -O0 $(MINILIB_INC)
- LDFLAGS+=-static -nostdlib $(CRT_OBJS) $(MINILIB_OBJS) -lgcc
- 
- TESTS+=$(MULTIARCH_TESTS)
--- 
-2.41.0
+Thanks,
+
+C.
+
+
 
 
