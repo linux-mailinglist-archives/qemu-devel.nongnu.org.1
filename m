@@ -2,87 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E01976951B
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 13:41:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD7C876951A
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 13:41:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQRGp-0005Mu-7W; Mon, 31 Jul 2023 07:41:03 -0400
+	id 1qQRGb-0004eQ-8l; Mon, 31 Jul 2023 07:40:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qQRGm-0005Jo-Er
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 07:41:00 -0400
-Received: from mail-pj1-x102b.google.com ([2607:f8b0:4864:20::102b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qQRGk-00047D-0c
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 07:41:00 -0400
-Received: by mail-pj1-x102b.google.com with SMTP id
- 98e67ed59e1d1-267fabc8465so2498059a91.1
- for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 04:38:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20221208.gappssmtp.com; s=20221208; t=1690803535; x=1691408335;
- h=references:to:cc:in-reply-to:date:subject:mime-version:message-id
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=ekwMlhWRUPDz6ieNKXXMKv+Ieku0hKLHcG+apOM1tYg=;
- b=JSpqjkRqCUTO9H+ge86KlYbsYL0IYK6QDgonSiqwtRoFQWBpQnDPXu6WFymtX7ZrHm
- jW3HGedmmUwdGFhAUxpgwUp6CEWiQszwA//OISnvLMIFqiYvmCx6cRk0Sv29M5LquTew
- A4PaAw2IBy4/A06mkrDjocS1btTtjCBll7yPyIsQLzcnXrohJohomU5ohU/dnFgmnmVs
- JDWxMXdViC6ogn7ZC2G0SbHVwMIVlrLouImRMnUKbhASxl1hwfQJmJkcUzv0bD0yanmT
- Fah5LTAWEyETtlTfIwiWVRwSibC0F4DCIQULj4D5Ae9xiN2LQgl0XV/S/lfJ3Uf5JajP
- AZog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690803535; x=1691408335;
- h=references:to:cc:in-reply-to:date:subject:mime-version:message-id
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ekwMlhWRUPDz6ieNKXXMKv+Ieku0hKLHcG+apOM1tYg=;
- b=CcLxkPuBjy3h/elczmhTxlPYQyqRvO8Sa/pEYouInQyP6lb6p63FEQuWe/HyeCyaKw
- gQYIGulzRbIlp/iUKWsjnLlmHiqkWeemeM8Wct+WydGvUvPdvzZvpDRYAQXxEz/xRKyT
- d0S0thJR/zk48Zbov161VjmmO01zmQ8Xiv2jKY2eYIMOtXnxiA1M+9P2Orp7y76dUdLQ
- ot6gwihjYCuIzmZJ46kIhNOj2Iu8Ksw/ikE6EXvLwzYRnWXhO1wu+A6aHQegHMOK0yfL
- 60McMhL07i5RgNoBjPAJWUw/AQO4BxK+SYkTRNg5qiLHmos5wJWDtPijT9xuorHV2z20
- bc3w==
-X-Gm-Message-State: ABy/qLY/PxWmeYszs3cceGrzJG3KnTO1OHnDGaJeC2ennV6QONJQ+Q6l
- pm/mnizDbTt5WDznpXBln16lzQ==
-X-Google-Smtp-Source: APBJJlGtc0jhFApMVXXHa/FC9pq0v1WmGsmgIZKX0iaWyB4A9fbFa6PW5pNcfmcU4begaosyYKw6Ag==
-X-Received: by 2002:a17:90b:3e89:b0:268:1222:6fef with SMTP id
- rj9-20020a17090b3e8900b0026812226fefmr9084641pjb.23.1690803534558; 
- Mon, 31 Jul 2023 04:38:54 -0700 (PDT)
-Received: from smtpclient.apple ([47.75.78.161])
- by smtp.gmail.com with ESMTPSA id
- bu5-20020a17090aee4500b00268dac826d4sm478526pjb.0.2023.07.31.04.38.50
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Mon, 31 Jul 2023 04:38:54 -0700 (PDT)
-From: Li Feng <fengli@smartx.com>
-Message-Id: <8D0EABBD-CB21-4BF4-A96F-CC64CA92C99B@smartx.com>
-Content-Type: multipart/alternative;
- boundary="Apple-Mail=_5B62229F-CA9F-4AB2-9AA1-32009DF91599"
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.300.101.1.3\))
-Subject: Re: [PATCH v2 2/4] vhost-user-common: send get_inflight_fd once
-Date: Mon, 31 Jul 2023 19:38:37 +0800
-In-Reply-To: <70D32B59-8B40-45E2-AFEC-0E3395867D15@nutanix.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Fam Zheng <fam@euphon.net>,
- =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Viresh Kumar <viresh.kumar@linaro.org>,
- "open list:Block layer core" <qemu-block@nongnu.org>,
- "open list:All patches CC here" <qemu-devel@nongnu.org>
-To: Raphael Norwitz <raphael.norwitz@nutanix.com>
-References: <20230721105205.1714449-1-fengli@smartx.com>
- <20230725104256.4861-1-fengli@smartx.com>
- <20230725104256.4861-3-fengli@smartx.com>
- <20230728020156-mutt-send-email-mst@kernel.org>
- <09BB8CEC-26F4-4FC5-A2DB-479FCD5F0548@smartx.com>
- <70D32B59-8B40-45E2-AFEC-0E3395867D15@nutanix.com>
-X-Mailer: Apple Mail (2.3731.300.101.1.3)
-Received-SPF: none client-ip=2607:f8b0:4864:20::102b;
- envelope-from=fengli@smartx.com; helo=mail-pj1-x102b.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+ (Exim 4.90_1) (envelope-from <pavel.dovgalyuk@ispras.ru>)
+ id 1qQRGX-0004dW-1X; Mon, 31 Jul 2023 07:40:45 -0400
+Received: from mail.ispras.ru ([83.149.199.84])
+ by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pavel.dovgalyuk@ispras.ru>)
+ id 1qQRGU-0004vw-Rz; Mon, 31 Jul 2023 07:40:44 -0400
+Received: from [10.12.102.111] (unknown [85.142.117.226])
+ by mail.ispras.ru (Postfix) with ESMTPSA id 28198401014B;
+ Mon, 31 Jul 2023 11:40:38 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 28198401014B
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+ s=default; t=1690803638;
+ bh=ubfDDkOx8pQi8Z2zS8eu4I8iTYh4r3oJj1Y0I1BjYBs=;
+ h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+ b=Vb01sYk6ep6tQFiWSFaMjY0qcvKjWNuU5vKicfGis4Pbj2vwxffHo9q2vE/olKfZb
+ 5y/IfD3ehxRN3VWI+E8LQJei8Sux44rDWZThWbba+uQx5c69A3qdDNHzlwmJ8M/M3v
+ 36M0hNyH0jd6gPFgx8bU4MoOXiiS30KEoVnCRNaM=
+Message-ID: <5c5a0cdc-00d9-dc5c-74f1-bca36fcbb185@ispras.ru>
+Date: Mon, 31 Jul 2023 14:40:37 +0300
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH 4/7] spapr: Fix record-replay machine reset consuming too
+ many events
+Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>
+Cc: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-ppc@nongnu.org,
+ qemu-devel@nongnu.org
+References: <20230726183532.434380-1-npiggin@gmail.com>
+ <20230726183532.434380-5-npiggin@gmail.com>
+From: Pavel Dovgalyuk <pavel.dovgalyuk@ispras.ru>
+In-Reply-To: <20230726183532.434380-5-npiggin@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=83.149.199.84;
+ envelope-from=pavel.dovgalyuk@ispras.ru; helo=mail.ispras.ru
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.101,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,330 +73,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Acked-by: Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
 
---Apple-Mail=_5B62229F-CA9F-4AB2-9AA1-32009DF91599
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain;
-	charset=utf-8
+On 26.07.2023 21:35, Nicholas Piggin wrote:
+> spapr_machine_reset gets a random number to populate the device-tree
+> rng seed with. When loading a snapshot for record-replay, the machine
+> is reset again, and that tries to consume the random event record
+> again, crashing due to inconsistent record
+> 
+> Fix this by saving the seed to populate the device tree with, and
+> skipping the rng on snapshot load.
+> 
+> Cc: Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>   hw/ppc/spapr.c         | 12 +++++++++---
+>   include/hw/ppc/spapr.h |  1 +
+>   2 files changed, 10 insertions(+), 3 deletions(-)
+> 
+> diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+> index 7d84244f03..ecfbdb0030 100644
+> --- a/hw/ppc/spapr.c
+> +++ b/hw/ppc/spapr.c
+> @@ -1022,7 +1022,6 @@ static void spapr_dt_chosen(SpaprMachineState *spapr, void *fdt, bool reset)
+>   {
+>       MachineState *machine = MACHINE(spapr);
+>       SpaprMachineClass *smc = SPAPR_MACHINE_GET_CLASS(machine);
+> -    uint8_t rng_seed[32];
+>       int chosen;
+>   
+>       _FDT(chosen = fdt_add_subnode(fdt, 0, "chosen"));
+> @@ -1100,8 +1099,7 @@ static void spapr_dt_chosen(SpaprMachineState *spapr, void *fdt, bool reset)
+>           spapr_dt_ov5_platform_support(spapr, fdt, chosen);
+>       }
+>   
+> -    qemu_guest_getrandom_nofail(rng_seed, sizeof(rng_seed));
+> -    _FDT(fdt_setprop(fdt, chosen, "rng-seed", rng_seed, sizeof(rng_seed)));
+> +    _FDT(fdt_setprop(fdt, chosen, "rng-seed", spapr->fdt_rng_seed, 32));
+>   
+>       _FDT(spapr_dt_ovec(fdt, chosen, spapr->ov5_cas, "ibm,architecture-vec-5"));
+>   }
+> @@ -1654,6 +1652,14 @@ static void spapr_machine_reset(MachineState *machine, ShutdownCause reason)
+>       void *fdt;
+>       int rc;
+>   
+> +    if (reason != SHUTDOWN_CAUSE_SNAPSHOT_LOAD) {
+> +        /*
+> +         * Record-replay snapshot load must not consume random, this was
+> +         * already replayed from initial machine reset.
+> +         */
+> +        qemu_guest_getrandom_nofail(spapr->fdt_rng_seed, 32);
+> +    }
+> +
+>       pef_kvm_reset(machine->cgs, &error_fatal);
+>       spapr_caps_apply(spapr);
+>   
+> diff --git a/include/hw/ppc/spapr.h b/include/hw/ppc/spapr.h
+> index f47e8419a5..f4bd204d86 100644
+> --- a/include/hw/ppc/spapr.h
+> +++ b/include/hw/ppc/spapr.h
+> @@ -204,6 +204,7 @@ struct SpaprMachineState {
+>       uint32_t fdt_size;
+>       uint32_t fdt_initial_size;
+>       void *fdt_blob;
+> +    uint8_t fdt_rng_seed[32];
+>       long kernel_size;
+>       bool kernel_le;
+>       uint64_t kernel_addr;
 
-
-
-> 2023=E5=B9=B47=E6=9C=8831=E6=97=A5 06:13=EF=BC=8CRaphael Norwitz =
-<raphael.norwitz@nutanix.com> =E5=86=99=E9=81=93=EF=BC=9A
->=20
->>=20
->> On Jul 28, 2023, at 3:49 AM, Li Feng <fengli@smartx.com> wrote:
->>=20
->>=20
->>=20
->>> 2023=E5=B9=B47=E6=9C=8828=E6=97=A5 =E4=B8=8B=E5=8D=882:04=EF=BC=8CMich=
-ael S. Tsirkin <mst@redhat.com> =E5=86=99=E9=81=93=EF=BC=9A
->>>=20
->>> On Tue, Jul 25, 2023 at 06:42:45PM +0800, Li Feng wrote:
->>>> Get_inflight_fd is sent only once. When reconnecting to the =
-backend,
->>>> qemu sent set_inflight_fd to the backend.
->>>=20
->>> I don't understand what you are trying to say here.
->>> Should be:
->>> Currently ABCD. This is wrong/unnecessary because EFG. This patch =
-HIJ.
->>=20
->> Thanks, I will reorganize the commit message in v3.
->>>=20
->>>> Signed-off-by: Li Feng <fengli@smartx.com>
->>>> ---
->>>> hw/scsi/vhost-scsi-common.c | 37 =
-++++++++++++++++++-------------------
->>>> 1 file changed, 18 insertions(+), 19 deletions(-)
->>>>=20
->>>> diff --git a/hw/scsi/vhost-scsi-common.c =
-b/hw/scsi/vhost-scsi-common.c
->>>> index a06f01af26..664adb15b4 100644
->>>> --- a/hw/scsi/vhost-scsi-common.c
->>>> +++ b/hw/scsi/vhost-scsi-common.c
->>>> @@ -52,20 +52,28 @@ int vhost_scsi_common_start(VHostSCSICommon =
-*vsc)
->>>>=20
->>>>    vsc->dev.acked_features =3D vdev->guest_features;
->>>>=20
->>>> -    assert(vsc->inflight =3D=3D NULL);
->>>> -    vsc->inflight =3D g_new0(struct vhost_inflight, 1);
->>>> -    ret =3D vhost_dev_get_inflight(&vsc->dev,
->>>> -                                 vs->conf.virtqueue_size,
->>>> -                                 vsc->inflight);
->>>> +    ret =3D vhost_dev_prepare_inflight(&vsc->dev, vdev);
->>>>    if (ret < 0) {
->>>> -        error_report("Error get inflight: %d", -ret);
->>>> +        error_report("Error setting inflight format: %d", -ret);
->>>>        goto err_guest_notifiers;
->>>>    }
->>>>=20
->>>> -    ret =3D vhost_dev_set_inflight(&vsc->dev, vsc->inflight);
->>>> -    if (ret < 0) {
->>>> -        error_report("Error set inflight: %d", -ret);
->>>> -        goto err_guest_notifiers;
->>>> +    if (vsc->inflight) {
->>>> +        if (!vsc->inflight->addr) {
->>>> +            ret =3D vhost_dev_get_inflight(&vsc->dev,
->>>> +                                        vs->conf.virtqueue_size,
->>>> +                                        vsc->inflight);
->>>> +            if (ret < 0) {
->>>> +                error_report("Error get inflight: %d", -ret);
->>>=20
->>> As long as you are fixing this - should be "getting inflight=E2=80=9D.=
-
->> I will fix it in v3.
->>>=20
->>>> +                goto err_guest_notifiers;
->>>> +            }
->>>> +        }
->>>> +
->=20
-> Looks like you reworked this a bit so to avoid a potential crash if =
-vsc->inflight is NULL
->=20
-> Should we fix it for vhost-user-blk too?
->=20
-This check is mainly for the vhost-scsi code, that doesn=E2=80=99t need =
-allocate the inflight memory.
-
-The vhost-user-blk doesn=E2=80=99t need this check, because there isn't =
-a vhost-blk device that reuse the code.
-
->>>> +        ret =3D vhost_dev_set_inflight(&vsc->dev, vsc->inflight);
->>>> +        if (ret < 0) {
->>>> +            error_report("Error set inflight: %d", -ret);
->>>> +            goto err_guest_notifiers;
->>>> +        }
->>>>    }
->>>>=20
->>>>    ret =3D vhost_dev_start(&vsc->dev, vdev, true);
->>>> @@ -85,9 +93,6 @@ int vhost_scsi_common_start(VHostSCSICommon *vsc)
->>>>    return ret;
->>>>=20
->>>> err_guest_notifiers:
->>>> -    g_free(vsc->inflight);
->>>> -    vsc->inflight =3D NULL;
->>>> -
->>>>    k->set_guest_notifiers(qbus->parent, vsc->dev.nvqs, false);
->>>> err_host_notifiers:
->>>>    vhost_dev_disable_notifiers(&vsc->dev, vdev);
->>>> @@ -111,12 +116,6 @@ void vhost_scsi_common_stop(VHostSCSICommon =
-*vsc)
->>>>    }
->>>>    assert(ret >=3D 0);
->>>>=20
->=20
-> As I said before, I think this introduces a leak.
-I have answered in the previous mail.
-
->=20
->>>> -    if (vsc->inflight) {
->>>> -        vhost_dev_free_inflight(vsc->inflight);
->>>> -        g_free(vsc->inflight);
->>>> -        vsc->inflight =3D NULL;
->>>> -    }
->>>> -
->>>>    vhost_dev_disable_notifiers(&vsc->dev, vdev);
->>>> }
->>>>=20
->>>> --=20
->>>> 2.41.0
-
-
---Apple-Mail=_5B62229F-CA9F-4AB2-9AA1-32009DF91599
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/html;
-	charset=utf-8
-
-<html><head><meta http-equiv=3D"content-type" content=3D"text/html; =
-charset=3Dutf-8"></head><body style=3D"overflow-wrap: break-word; =
--webkit-nbsp-mode: space; line-break: =
-after-white-space;"><br><div><br><blockquote =
-type=3D"cite"><div>2023=E5=B9=B47=E6=9C=8831=E6=97=A5 06:13=EF=BC=8CRaphae=
-l Norwitz &lt;raphael.norwitz@nutanix.com&gt; =E5=86=99=E9=81=93=EF=BC=9A<=
-/div><br class=3D"Apple-interchange-newline"><div><meta =
-charset=3D"UTF-8"><blockquote type=3D"cite" style=3D"font-family: =
-Helvetica; font-size: 12px; font-style: normal; font-variant-caps: =
-normal; font-weight: 400; letter-spacing: normal; orphans: auto; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; widows: auto; word-spacing: 0px; -webkit-text-size-adjust: auto; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><br =
-class=3D"Apple-interchange-newline">On Jul 28, 2023, at 3:49 AM, Li Feng =
-&lt;fengli@smartx.com&gt; wrote:<br><br><br><br><blockquote =
-type=3D"cite">2023=E5=B9=B47=E6=9C=8828=E6=97=A5 =E4=B8=8B=E5=8D=882:04=EF=
-=BC=8CMichael S. Tsirkin &lt;mst@redhat.com&gt; =E5=86=99=E9=81=93=EF=BC=9A=
-<br><br>On Tue, Jul 25, 2023 at 06:42:45PM +0800, Li Feng =
-wrote:<br><blockquote type=3D"cite">Get_inflight_fd is sent only once. =
-When reconnecting to the backend,<br>qemu sent set_inflight_fd to the =
-backend.<br></blockquote><br>I don't understand what you are trying to =
-say here.<br>Should be:<br>Currently ABCD. This is wrong/unnecessary =
-because EFG. This patch HIJ.<br></blockquote><br>Thanks, I will =
-reorganize the commit message in v3.<br><blockquote =
-type=3D"cite"><br><blockquote type=3D"cite">Signed-off-by: Li Feng =
-&lt;fengli@smartx.com&gt;<br>---<br>hw/scsi/vhost-scsi-common.c | 37 =
-++++++++++++++++++-------------------<br>1 file changed, 18 =
-insertions(+), 19 deletions(-)<br><br>diff --git =
-a/hw/scsi/vhost-scsi-common.c b/hw/scsi/vhost-scsi-common.c<br>index =
-a06f01af26..664adb15b4 100644<br>--- =
-a/hw/scsi/vhost-scsi-common.c<br>+++ b/hw/scsi/vhost-scsi-common.c<br>@@ =
--52,20 +52,28 @@ int vhost_scsi_common_start(VHostSCSICommon =
-*vsc)<br><br>&nbsp;&nbsp;&nbsp;vsc-&gt;dev.acked_features =3D =
-vdev-&gt;guest_features;<br><br>- =
-&nbsp;&nbsp;&nbsp;assert(vsc-&gt;inflight =3D=3D NULL);<br>- =
-&nbsp;&nbsp;&nbsp;vsc-&gt;inflight =3D g_new0(struct vhost_inflight, =
-1);<br>- &nbsp;&nbsp;&nbsp;ret =3D =
-vhost_dev_get_inflight(&amp;vsc-&gt;dev,<br>- =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
-p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vs-&gt;conf.virtqueue_size,<br=
->- =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
-p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vsc-&gt;inflight);<br>+ =
-&nbsp;&nbsp;&nbsp;ret =3D vhost_dev_prepare_inflight(&amp;vsc-&gt;dev, =
-vdev);<br>&nbsp;&nbsp;&nbsp;if (ret &lt; 0) {<br>- =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_report("Error get =
-inflight: %d", -ret);<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_report("Error setting =
-inflight format: %d", =
--ret);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;goto =
-err_guest_notifiers;<br>&nbsp;&nbsp;&nbsp;}<br><br>- =
-&nbsp;&nbsp;&nbsp;ret =3D vhost_dev_set_inflight(&amp;vsc-&gt;dev, =
-vsc-&gt;inflight);<br>- &nbsp;&nbsp;&nbsp;if (ret &lt; 0) {<br>- =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_report("Error set =
-inflight: %d", -ret);<br>- =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;goto err_guest_notifiers;<br>+ =
-&nbsp;&nbsp;&nbsp;if (vsc-&gt;inflight) {<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if =
-(!vsc-&gt;inflight-&gt;addr) {<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ret =3D =
-vhost_dev_get_inflight(&amp;vsc-&gt;dev,<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
-p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
-&nbsp;&nbsp;vs-&gt;conf.virtqueue_size,<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
-p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
-&nbsp;&nbsp;vsc-&gt;inflight);<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if =
-(ret &lt; 0) {<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;error_report("Error get inflight: %d", =
--ret);<br></blockquote><br>As long as you are fixing this - should be =
-"getting inflight=E2=80=9D.<br></blockquote>I will fix it in =
-v3.<br><blockquote type=3D"cite"><br><blockquote type=3D"cite">+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;goto err_guest_notifiers;<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>+<br></blockquote></blockqu=
-ote></blockquote><br style=3D"caret-color: rgb(0, 0, 0); font-family: =
-Helvetica; font-size: 12px; font-style: normal; font-variant-caps: =
-normal; font-weight: 400; letter-spacing: normal; text-align: start; =
-text-indent: 0px; text-transform: none; white-space: normal; =
-word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
-none;"><span style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; =
-font-size: 12px; font-style: normal; font-variant-caps: normal; =
-font-weight: 400; letter-spacing: normal; text-align: start; =
-text-indent: 0px; text-transform: none; white-space: normal; =
-word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
-none; float: none; display: inline !important;">Looks like you reworked =
-this a bit so to avoid a potential crash if vsc-&gt;inflight is =
-NULL</span><br style=3D"caret-color: rgb(0, 0, 0); font-family: =
-Helvetica; font-size: 12px; font-style: normal; font-variant-caps: =
-normal; font-weight: 400; letter-spacing: normal; text-align: start; =
-text-indent: 0px; text-transform: none; white-space: normal; =
-word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
-none;"><br style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; =
-font-size: 12px; font-style: normal; font-variant-caps: normal; =
-font-weight: 400; letter-spacing: normal; text-align: start; =
-text-indent: 0px; text-transform: none; white-space: normal; =
-word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
-none;"><span style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; =
-font-size: 12px; font-style: normal; font-variant-caps: normal; =
-font-weight: 400; letter-spacing: normal; text-align: start; =
-text-indent: 0px; text-transform: none; white-space: normal; =
-word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
-none; float: none; display: inline !important;">Should we fix it for =
-vhost-user-blk too?</span><br style=3D"caret-color: rgb(0, 0, 0); =
-font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none;"><br style=3D"caret-color: rgb(0, 0, 0); =
-font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none;"></div></blockquote>This check is mainly for the =
-vhost-scsi code, that doesn=E2=80=99t need allocate the inflight =
-memory.</div><div><br>The vhost-user-blk doesn=E2=80=99t need this =
-check, because there isn't a vhost-blk device that reuse the =
-code.</div><div><br><blockquote type=3D"cite"><div><blockquote =
-type=3D"cite" style=3D"font-family: Helvetica; font-size: 12px; =
-font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; orphans: auto; text-align: start; text-indent: =
-0px; text-transform: none; white-space: normal; widows: auto; =
-word-spacing: 0px; -webkit-text-size-adjust: auto; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><blockquote =
-type=3D"cite"><blockquote type=3D"cite">+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ret =3D =
-vhost_dev_set_inflight(&amp;vsc-&gt;dev, vsc-&gt;inflight);<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (ret &lt; 0) {<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_re=
-port("Error set inflight: %d", -ret);<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;goto =
-err_guest_notifiers;<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;}<br><br>=
-&nbsp;&nbsp;&nbsp;ret =3D vhost_dev_start(&amp;vsc-&gt;dev, vdev, =
-true);<br>@@ -85,9 +93,6 @@ int vhost_scsi_common_start(VHostSCSICommon =
-*vsc)<br>&nbsp;&nbsp;&nbsp;return ret;<br><br>err_guest_notifiers:<br>- =
-&nbsp;&nbsp;&nbsp;g_free(vsc-&gt;inflight);<br>- =
-&nbsp;&nbsp;&nbsp;vsc-&gt;inflight =3D =
-NULL;<br>-<br>&nbsp;&nbsp;&nbsp;k-&gt;set_guest_notifiers(qbus-&gt;parent,=
- vsc-&gt;dev.nvqs, =
-false);<br>err_host_notifiers:<br>&nbsp;&nbsp;&nbsp;vhost_dev_disable_noti=
-fiers(&amp;vsc-&gt;dev, vdev);<br>@@ -111,12 +116,6 @@ void =
-vhost_scsi_common_stop(VHostSCSICommon =
-*vsc)<br>&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;assert(ret &gt;=3D =
-0);<br><br></blockquote></blockquote></blockquote><br =
-style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
-12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><span =
-style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
-12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
-display: inline !important;">As I said before, I think this introduces a =
-leak.</span></div></blockquote>I have answered in the previous =
-mail.</div><div><br></div><div><blockquote type=3D"cite"><div><br =
-style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
-12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; text-align: start; text-indent: 0px; =
-text-transform: none; white-space: normal; word-spacing: 0px; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><blockquote =
-type=3D"cite" style=3D"font-family: Helvetica; font-size: 12px; =
-font-style: normal; font-variant-caps: normal; font-weight: 400; =
-letter-spacing: normal; orphans: auto; text-align: start; text-indent: =
-0px; text-transform: none; white-space: normal; widows: auto; =
-word-spacing: 0px; -webkit-text-size-adjust: auto; =
--webkit-text-stroke-width: 0px; text-decoration: none;"><blockquote =
-type=3D"cite"><blockquote type=3D"cite">- &nbsp;&nbsp;&nbsp;if =
-(vsc-&gt;inflight) {<br>- =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vhost_dev_free_inflight(vsc-&gt;=
-inflight);<br>- =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;g_free(vsc-&gt;inflight);<br>- =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vsc-&gt;inflight =3D =
-NULL;<br>- =
-&nbsp;&nbsp;&nbsp;}<br>-<br>&nbsp;&nbsp;&nbsp;vhost_dev_disable_notifiers(=
-&amp;vsc-&gt;dev, vdev);<br>}<br><br>--<span =
-class=3D"Apple-converted-space">&nbsp;</span><br>2.41.0</blockquote></bloc=
-kquote></blockquote></div></blockquote></div><br></body></html>=
-
---Apple-Mail=_5B62229F-CA9F-4AB2-9AA1-32009DF91599--
 
