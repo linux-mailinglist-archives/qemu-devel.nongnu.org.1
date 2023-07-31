@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A8C4769842
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 15:53:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93AB9769859
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 15:53:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQTJc-0004Q5-Ef; Mon, 31 Jul 2023 09:52:04 -0400
+	id 1qQTKl-0005Ku-Po; Mon, 31 Jul 2023 09:53:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qQTJU-0004OI-HS
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 09:51:57 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qQTKg-0005Jl-Ki
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 09:53:12 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qQTJR-0002tp-Au
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 09:51:56 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-3fe1e1142caso13576035e9.0
- for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 06:51:52 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qQTKc-00037x-QU
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 09:53:10 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-3fe1fc8768aso12189155e9.1
+ for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 06:53:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690811511; x=1691416311;
+ d=linaro.org; s=google; t=1690811584; x=1691416384;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=9C61sNBuLzkP1k7MRGfWxhB6WPJh2Tq71aTnep3VwTY=;
- b=hgL3LJ4UbBI66bG/QiBth9eUNg5I+oqxWFsmTMTz1CCwJSbu61BSpk0r/IdaOeHuka
- Gx3C7ghuD3CaQffRhxbvAaISlraH7FmeBl4U/lvb2m6BnJQwHjazCPFTJvbCpgKahCbZ
- 0BGtLzVHJ21k4/pyfYFYH0Na+Abts0XOdUYIZqMreN17bT5DnMsMdxAZbUkAYKwQxKDl
- fZlUFoAkHd1QbHHDGDWPHgKT2HRtJsEkUIbJ5eH0KGP1FyzfSuZwfTGPAy11imywQxbH
- qCLJBGB09vPQZWLgHMIFdpBumwCCTuqxcJKIlnVnuIqzPFY+hXkQYxvCbnRH363Tgp9s
- l9zQ==
+ bh=PYb25o9TpeL44fOb3xpjsBI4FbNNQ2EW5i5KDKsqu3k=;
+ b=UIjQ2gGSy+jYPBMBq1tldQaAYXTXPs77jNiqJt9CeniXajehblRSvLglG2LmBAccxh
+ rS/DQ8I2aTnR4BkmqjBtDtZv+X5/3aYZwMgDzaMVlGtexZ7s1ohv6sZSK3TzNwS5HMGh
+ SRU7zO53mpfk4QFnz4Vnd/B1dXMtLfXwyYrq5dgZbJaMuwApTNTlFjk0OfUuSjaYoIiY
+ P/O1snTMRLNetDwqWWJxno2IHKPQGGBA8ZSWQaSg3/q68RmDHhFR6SCjjijCo88Fyieq
+ aJ6iZ12syciQH3WjKXERI/SV8tH0GNgyInHQlPaZxvIXj7AD7sntiyXQbRiAIUCfcsym
+ 8Q1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690811511; x=1691416311;
+ d=1e100.net; s=20221208; t=1690811584; x=1691416384;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=9C61sNBuLzkP1k7MRGfWxhB6WPJh2Tq71aTnep3VwTY=;
- b=S7xP5UnGq0AKiWnSybp9bTewCq05dj0/bRuQD/NnPJO5GenTLJs+velYL9cYq51rd9
- iqU2/3adfKvSGR5erp0sTbrKyjtcxYuYihVS9QdnQ+Z0G/ZOkXrnbQ+SdHKQlN5c7cUh
- 6UJyxleiKaS2PbmMwrtbpoN3uhBlfOTwePfUuzhhocqQbVfhTtgotshPA04bXSZ921og
- nq3+xY4fBJ5QZQgxnSEQeIAWOWmJS1pveJ9RiRKKO5zOvA122RvuPqY/+WccSxbljU4G
- GEsfOacvlZ8OA6dXCVXHrzhLXjmW0vDWYsCMknPFTR/wy7JEW+VJ4LngCLuWdk6kBYh3
- pBkw==
-X-Gm-Message-State: ABy/qLato7c934BP9nMe5XUb0UkpA4Q7dZgEaHCewMYw/9CWRNe8EDpc
- Oi0TR0TpYgWpXnT3YLqL+OvCVA==
-X-Google-Smtp-Source: APBJJlHILCBJRNZrn5crmer00CWRWg2FEycLAoJ3X2ChQegv8+/byit6ZlNXsw37noTTEhadIYXccw==
-X-Received: by 2002:adf:ef05:0:b0:315:8f4f:81b8 with SMTP id
- e5-20020adfef05000000b003158f4f81b8mr8322326wro.50.1690811511118; 
- Mon, 31 Jul 2023 06:51:51 -0700 (PDT)
+ bh=PYb25o9TpeL44fOb3xpjsBI4FbNNQ2EW5i5KDKsqu3k=;
+ b=XZ+9EFj0jIZYrx/atCkrGxM7ecy3AW0Gstlgc2v7YAJPJo3x4hT7tQHlnYTFZgipql
+ IimxPideojBhjzMYmaA2kAFBFT6MfP4sPjJrXuXTOuZNtGSXC+gH9a31GbLdh1ot4rP4
+ 46BJJCNHpcqAijwZ9A1OhVLUe3f7Fr6FcJXCHo9rRo/WzvBrYMRosHnCEHyO0rGpi3V1
+ 9/tNfji1f02COtqa6sRQxxheZYU1TZ5+ILayzS7NiEDuMBtPlqcKgsroAD+/JDxVuFHH
+ OlbMoy3uaaEQsHp1VjEBm6UXAdoit5PEkS3uIcSqpgqN6jMskmAW48gjJmvjWv2x68+y
+ 2Cuw==
+X-Gm-Message-State: ABy/qLagI8N/AFLD03YtRzF/F/cJFLcC/lC5r2x0Y7uQ6kvQJz2Y4U+R
+ W6dWcVGFozm4DbSg5pbKaPQeGg==
+X-Google-Smtp-Source: APBJJlFPzk5Nu7U0ttJ6pmM9RL12liha3SjICEr5rZuoE6S/5szC9pKQ6MiH0J0L4j42LA/msmfY8A==
+X-Received: by 2002:a1c:ed0d:0:b0:3f9:255e:ee3b with SMTP id
+ l13-20020a1ced0d000000b003f9255eee3bmr9260364wmh.30.1690811584364; 
+ Mon, 31 Jul 2023 06:53:04 -0700 (PDT)
 Received: from [192.168.69.115] ([176.187.198.42])
  by smtp.gmail.com with ESMTPSA id
- h4-20020adffa84000000b0031417fd473csm13249602wrr.78.2023.07.31.06.51.45
+ f2-20020a7bc8c2000000b003fbc9b9699dsm11520994wml.45.2023.07.31.06.52.58
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 31 Jul 2023 06:51:50 -0700 (PDT)
-Message-ID: <f087def2-31f9-f18a-c6e1-03243af04b5e@linaro.org>
-Date: Mon, 31 Jul 2023 15:51:43 +0200
+ Mon, 31 Jul 2023 06:53:03 -0700 (PDT)
+Message-ID: <dc296d6d-6959-c924-b0f0-97d122807d15@linaro.org>
+Date: Mon, 31 Jul 2023 15:52:57 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.13.0
-Subject: Re: [RFC PATCH 02/24] gdbstub: Introduce GDBFeature structure
+Subject: Re: [RFC PATCH 04/24] gdbstub: Introduce gdb_find_static_feature()
 Content-Language: en-US
 To: Akihiko Odaki <akihiko.odaki@daynix.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Alex_Benn=c3=a9e?=
@@ -97,13 +97,13 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Alex_Benn=c3=a9e?=
  qemu-arm@nongnu.org, qemu-ppc@nongnu.org, qemu-riscv@nongnu.org,
  qemu-s390x@nongnu.org
 References: <20230731084354.115015-1-akihiko.odaki@daynix.com>
- <20230731084354.115015-3-akihiko.odaki@daynix.com>
+ <20230731084354.115015-5-akihiko.odaki@daynix.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230731084354.115015-3-akihiko.odaki@daynix.com>
+In-Reply-To: <20230731084354.115015-5-akihiko.odaki@daynix.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -127,47 +127,58 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 31/7/23 10:43, Akihiko Odaki wrote:
-> Before this change, the information from a XML file was stored in an
-> array that is not descriptive. Introduce a dedicated structure type to
-> make it easier to understand and to extend with more fields.
+> This function is useful to determine the number of registers exposed to
+> GDB from the XML name.
 > 
 > Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 > ---
->   MAINTAINERS             |  2 +-
->   meson.build             |  2 +-
->   include/exec/gdbstub.h  |  9 ++++--
->   gdbstub/gdbstub.c       |  4 +--
->   stubs/gdbstub.c         |  6 ++--
->   scripts/feature_to_c.py | 44 ++++++++++++++++++++++++++
->   scripts/feature_to_c.sh | 69 -----------------------------------------
->   7 files changed, 58 insertions(+), 78 deletions(-)
->   create mode 100755 scripts/feature_to_c.py
->   delete mode 100644 scripts/feature_to_c.sh
-
-
+>   include/exec/gdbstub.h |  2 ++
+>   gdbstub/gdbstub.c      | 13 +++++++++++++
+>   2 files changed, 15 insertions(+)
+> 
 > diff --git a/include/exec/gdbstub.h b/include/exec/gdbstub.h
-> index 7d743fe1e9..bd5bc91dda 100644
+> index 22e5add5b1..3115dc21c0 100644
 > --- a/include/exec/gdbstub.h
 > +++ b/include/exec/gdbstub.h
-> @@ -10,6 +10,11 @@
->   #define GDB_WATCHPOINT_READ      3
->   #define GDB_WATCHPOINT_ACCESS    4
->   
-> +typedef struct GDBFeature {
-> +    const char *xmlname;
-> +    const char *xml;
-> +} GDBFeature;
-> +
->   
->   /* Get or set a register.  Returns the size of the register.  */
->   typedef int (*gdb_get_reg_cb)(CPUArchState *env, GByteArray *buf, int reg);
-> @@ -38,7 +43,7 @@ void gdb_set_stop_cpu(CPUState *cpu);
+> @@ -34,6 +34,8 @@ void gdb_register_coprocessor(CPUState *cpu,
 >    */
->   extern bool gdb_has_xml;
+>   int gdbserver_start(const char *port_or_device);
 >   
-> -/* in gdbstub-xml.c, generated by scripts/feature_to_c.sh */
-> -extern const char *const xml_builtin[][2];
-> +/* in gdbstub-xml.c, generated by scripts/feature_to_c.py */
-> +extern const GDBFeature gdb_features[];
-Maybe clearer named gdb_static_features[].
+> +const GDBFeature *gdb_find_static_feature(const char *xmlname);
+> +
+>   void gdb_set_stop_cpu(CPUState *cpu);
+>   
+>   /**
+> diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
+> index fad70200d8..6d9cef5b95 100644
+> --- a/gdbstub/gdbstub.c
+> +++ b/gdbstub/gdbstub.c
+> @@ -414,6 +414,19 @@ static const char *get_feature_xml(const char *p, const char **newp,
+>       return name ? gdb_features[i].xml : NULL;
+>   }
+>   
+> +const GDBFeature *gdb_find_static_feature(const char *xmlname)
+> +{
+> +    const GDBFeature *feature;
+
+Alternatively (in case you consider the suggestion to use array
+of dyn_features):
+
+const GDBFeature *gdb_find_feature(const GDBFeature *gdb_features,
+                                    const char *xmlname)
+{
+     const GDBFeature *feature;
+     const GDBFeature *features = gdb_features ?: gdb_static_features;
+
+> +    for (feature = gdb_features; feature->xmlname; feature++) {
+> +        if (!strcmp(feature->xmlname, xmlname)) {
+> +            return feature;
+> +        }
+> +    }
+> +
+> +    return NULL;
+> +}
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
 
