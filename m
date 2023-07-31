@@ -2,76 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78969769A8E
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 17:14:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6BD5769AA0
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 17:17:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQUaI-00020h-MQ; Mon, 31 Jul 2023 11:13:22 -0400
+	id 1qQUd5-0002nW-B7; Mon, 31 Jul 2023 11:16:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qQUa4-0001uf-CA
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 11:13:11 -0400
-Received: from mout.gmx.net ([212.227.15.15])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qQUa1-0002aD-Gz
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 11:13:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1690816383; x=1691421183; i=deller@gmx.de;
- bh=leQiNpiVJpAKD9D7jkMkYqnqJkUPWWi/YESHds89W4M=;
- h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
- b=GINa/rFYUZE8sEOFkriQUtW7C15EkHbLnyHMjXkUAykclSEMKmpwZOx4PKzAD3RaJncOW0a
- Eqq3dRQkitD6cnJD6eql5KYGizgSEpfLZLnUlitpqQTulvPGEvlA4L0X314DOdoyq2GaJUJGI
- 1ZrgFNaCi1ajxCdKazlext0C8LeRanpvppQM9LsxFSb9acObq2CzrbcZbvvp1t0Cip5kFPDbv
- uYiwlIgaT2wQkEiSMmXZK6wTN0Ul6GzPQ1+TxCbXZAB1vlPM1Hr/R9a0C8RKBJThIeR3hmnJl
- KgacLP75cJuOXFlt0mPZd9V7cgiPvh5Ec+CwadyFb8YQ52qwChYw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([94.134.159.238]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MvK4Z-1pZDIs01mT-00rDCg; Mon, 31
- Jul 2023 17:13:03 +0200
-Message-ID: <0cdb50a4-5a89-20e5-88aa-e026646e6fe1@gmx.de>
-Date: Mon, 31 Jul 2023 17:13:02 +0200
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qQUd2-0002n2-EN
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 11:16:12 -0400
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qQUcx-0003IV-MC
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 11:16:12 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-686efa1804eso3257503b3a.3
+ for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 08:16:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1690816565; x=1691421365;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=fZa2g5LcB9ShxVAbbKF2yjP62FnZCjkpuV9gQxAh/mc=;
+ b=XdOFesFcnBlIuUaMgU36lcCGL/l8byeL3yk3tDluIKVZN+cnvCU5FBwfBONP/uO8A0
+ jqTbxbvVIWYiQDpJqJptuFIVPEx46ouav0PgzgPlQNFZOwiqzCgz0z+9ha4Mm2WuoLOG
+ bVuXpgsd9M3OnfqDjJAZfP/Cla41NM7L+0lsHfcERQwW4SXvOPV2RewWXMOOqD7f7LeL
+ U2uOV07QwvAANAHBDZWRW6+iyy7d/6Zu2nfb1BK1RFnSg49iyNq4WkMc2oso36ua7u7R
+ 7KTyc8/ROeBN1C+IqREKfJaMNT+Th61oiN+MY3tXlmsX2RbnGVRvKxTdQZWhxIb0yJG2
+ bpZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1690816565; x=1691421365;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=fZa2g5LcB9ShxVAbbKF2yjP62FnZCjkpuV9gQxAh/mc=;
+ b=EEJuJ9hy40BtU9RlHch7AobkKU5GkHT3+x2ogjuTdP4RqoSd/Yxowj3Rr34pZsNl0+
+ kXW1KtDLlIg4zsrGyUoavykhJ/Vlj5x68fK5NqnLmls9jiYotDOyZN0J72QWwHPsrd9P
+ sWeHjpblNX6OQRlxdC+cVpn0+MrkLb64XUfeIpf2nS/rWxMy6x2JuG7Y0uA5Z8BrTH+L
+ qco+AMP8H6eEEtNJU8wkOtrZotWfkuSZiHFROB1bmxpkaXESOKbp/0WPypu7aRuipKCW
+ REoCpBF4dP5H7jggL30ZX485yjsq0agfnvJfTAJcR6o9BesKgWeVApxK6e8EtmkGOXiZ
+ y65w==
+X-Gm-Message-State: ABy/qLaGV6ax7znS7KbFt7gvdweFa7a71Uu/Wy9OPxf2JyZqGNs6jEkf
+ eoR31eOfPWoW+7Ye9AtUjYYTRg==
+X-Google-Smtp-Source: APBJJlE2dT0HVcfhwMadgorMNBdeRrk0jh7WixlDy4FWv1zW0HjkwRH6e7e4wMi+KvU6YCbHPmTntA==
+X-Received: by 2002:a05:6a00:1991:b0:66a:4a45:e017 with SMTP id
+ d17-20020a056a00199100b0066a4a45e017mr11972987pfl.20.1690816564722; 
+ Mon, 31 Jul 2023 08:16:04 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.144.105])
+ by smtp.gmail.com with ESMTPSA id
+ m3-20020aa78a03000000b00686e8b00a50sm5998569pfa.104.2023.07.31.08.16.03
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 31 Jul 2023 08:16:04 -0700 (PDT)
+Message-ID: <db4d8cd1-a214-5991-0169-a66147816f72@linaro.org>
+Date: Mon, 31 Jul 2023 08:16:02 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH 2/5] linux-user: Do not call get_errno() in do_brk()
+Subject: Re: [PATCH v2] target/riscv: Use existing lookup tables for MixColumns
 Content-Language: en-US
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: qemu-devel@nongnu.org, Laurent Vivier <laurent@vivier.eu>
-References: <20230731080317.112658-1-akihiko.odaki@daynix.com>
- <20230731080317.112658-3-akihiko.odaki@daynix.com>
-From: Helge Deller <deller@gmx.de>
-In-Reply-To: <20230731080317.112658-3-akihiko.odaki@daynix.com>
+To: Ard Biesheuvel <ardb@kernel.org>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Zewen Ye <lustrew@foxmail.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
+ Junqiang Wang <wangjunqiang@iscas.ac.cn>
+References: <20230731084043.1791984-1-ardb@kernel.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230731084043.1791984-1-ardb@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:iC9ea5ViPoZh9TNxX+aIn5bGMf8GmwF0Jh/Lt1OzquOp30Odzc/
- SCQ5xRXYsHRXKNMVNFigVcj66UFEMoGVddqaxtp/G6Pohog2YktLHz+AHIPTjA0hsvzyulU
- lBZcnwBw1n0QRgBGekHxfBJbMv0XrCY8364ybRM3+24t0k7bDyHiKtf75LfY1pr3cc1nj/o
- 79rpu7AhMITWmWmZ5EmrQ==
-UI-OutboundReport: notjunk:1;M01:P0:DEgJt7yfM9Y=;NLrA1yFx/Uov3JNwec4s0l3H78Z
- r5U8PEwR43bIjEzGQ8+UyXZqOArf9qHTHeFSg+jjfARQwn+XkNlAkVLOgK4fLSxAagoBJLAsD
- t81Bv2pp9EZUslbJbYuMTsZPz1HvjGYCaLEp3hiiKlOhq+I8PeoG2n0T6XafPxw9vV16KMFwq
- nGO7Q12X39zxBFqvnrcK43nSTqBB+Qwf04hDdlI+KK7tWSS0+5MISxGBDmVzvAQvtQff8IQhD
- o0S7CzLzA6OTZZbfP0xIQ9IdiWWQ4Mor1Xb4oqbZqgoYVhI0sh3+veulrNQm6U35Md7kZW7LQ
- YM9AkxxJMYA5ttIzoKSBk4XYAhlirwpM8ql69WVqW1tmYGeIcGDPkTQDVN/GjtKrfBHQs2t57
- bW/G/eWyUx0yr0M728nm+tYFVzilJZ1shYLtGGAndcKmN+X3BO8MrVvNboxXhnKKy+BAKT/vo
- qT9uwt0bJI1GR56zFIVnfkUCLTmr11wENOrqWoZbiPqm7asPEfIwVK+qMhNo02AS6qz8lDweG
- IE3xQvkDzjzT4MJY47WHY862haGsfFu2UqFFph373dny8GJcIXv1+36upQAFfYsUkrxiMPpYG
- uuAgvLV6LmFDCVM3UGGhg6WxnKy8p21DaNDjcdK6KWtbe2nDHYwBDcUhLkUDcw/BfDeMJAxap
- M6rDlY5zwoc5aCN0KiFg660NomvCqgzDt3xHMnEgQYHT7SNvlO1DzCElwXQ9or/4UCvMyodNt
- te3hsRCYfeJsfoVeZFwzIXp4vcUL940gDpfSppwbb0foP1UhSavCehTdUk3j/xi96B/i7ybfm
- DVnZ6NaX83+ZEkPUNbZvLsxQ4VTRvzoEYey2MBHbqDbMxWP76KDeVK4iYLKQ82RB5szD/3H+g
- Dq/vLu/igceSn/WjIL7rr85bJHvgKNzxk8xWwQ6VhkE6+TiamNFgQeWZ+vB0Pw8mmlaLZ4zdV
- hNoWJktWBAtGnfa6SKZSmD0pHgI=
-Received-SPF: pass client-ip=212.227.15.15; envelope-from=deller@gmx.de;
- helo=mout.gmx.net
-X-Spam_score_int: -28
-X-Spam_score: -2.9
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- NICE_REPLY_A=-0.101, RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.101,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -88,37 +96,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/31/23 10:03, Akihiko Odaki wrote:
-> Later the returned value is compared with -1, and negated errno is not
-> expected.
->
-> Fixes: 00faf08c95 ("linux-user: Don't use MAP_FIXED in do_brk()")
-> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-
-Reviewed-by: Helge Deller <deller@gmx.de>
-
-Helge
-
+On 7/31/23 01:40, Ard Biesheuvel wrote:
+> The AES MixColumns and InvMixColumns operations are relatively
+> expensive 4x4 matrix multiplications in GF(2^8), which is why C
+> implementations usually rely on precomputed lookup tables rather than
+> performing the calculations on demand.
+> 
+> Given that we already carry those tables in QEMU, we can just grab the
+> right value in the implementation of the RISC-V AES32 instructions. Note
+> that the tables in question are permuted according to the respective
+> Sbox, so we can omit the Sbox lookup as well in this case.
+> 
+> Cc: Richard Henderson<richard.henderson@linaro.org>
+> Cc: Philippe Mathieu-Daudé<philmd@linaro.org>
+> Cc: Zewen Ye<lustrew@foxmail.com>
+> Cc: Weiwei Li<liweiwei@iscas.ac.cn>
+> Cc: Junqiang Wang<wangjunqiang@iscas.ac.cn>
+> Signed-off-by: Ard Biesheuvel<ardb@kernel.org>
 > ---
->   linux-user/syscall.c | 6 +++---
->   1 file changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-> index 95727a816a..b9d2ec02f9 100644
-> --- a/linux-user/syscall.c
-> +++ b/linux-user/syscall.c
-> @@ -862,9 +862,9 @@ abi_long do_brk(abi_ulong brk_val)
->        */
->       if (new_host_brk_page > brk_page) {
->           new_alloc_size =3D new_host_brk_page - brk_page;
-> -        mapped_addr =3D get_errno(target_mmap(brk_page, new_alloc_size,
-> -                                        PROT_READ|PROT_WRITE,
-> -                                        MAP_ANON|MAP_PRIVATE, 0, 0));
-> +        mapped_addr =3D target_mmap(brk_page, new_alloc_size,
-> +                                  PROT_READ|PROT_WRITE,
-> +                                  MAP_ANON|MAP_PRIVATE, 0, 0);
->       } else {
->           new_alloc_size =3D 0;
->           mapped_addr =3D brk_page;
+> v2:
+> - ignore host endianness and use be32_to_cpu() unconditionally
 
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+
+r~
 
