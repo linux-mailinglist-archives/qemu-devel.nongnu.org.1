@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93448769951
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 16:21:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F18076996B
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 16:23:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQTli-0003PA-EJ; Mon, 31 Jul 2023 10:21:06 -0400
+	id 1qQTnw-0005Db-0V; Mon, 31 Jul 2023 10:23:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qQTlg-0003Oo-9k
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 10:21:04 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qQTnp-000586-FC
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 10:23:17 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qQTle-0000Ef-KO
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 10:21:04 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-3fbc244d307so49890825e9.1
- for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 07:21:02 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qQTnn-0000e5-Pu
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 10:23:17 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-307d20548adso4098129f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 07:23:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690813261; x=1691418061;
+ d=linaro.org; s=google; t=1690813394; x=1691418194;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=BCP/6rJR8Z4ywb61kGEudrHUFQ9M5QFvs6yWYM+1hSs=;
- b=caE9F18YKhEs/Avn3sln5LeJ2cr2M4d7b2KxcLIMtRN9BHFiZEp0r/2yQzfU1Di5Zc
- ajxJ1+YjJUWtj2IVGKDSviFxyM5qjGJQQYzxW61CEkgh/Ty3EjnUSDyM/kcPvcoin3Zr
- g+OwJG/XT6G+n4vuq3pddss/HVSd8BMBWgNBtKsgv6Z+0iygHvtGymVZtfmK/XWWcre5
- epu1xkU4t5yQHTy4ph7NLxs2hgO4ahviaHmMQdWfw2ACcUX3kues435UZcj5UxC6hOkq
- UaFLMDnayCsS/8eMFaPvDrcWyOYD8OWs3qRVSMcj00YhSOntLdyn/c0q1wtSgxbZ6UpB
- GVhA==
+ bh=ZZcB9Z+1fkeLt/d1VCn+ga9XJ/QfNhwxcjth8l7Z9nM=;
+ b=n5CGc3YCsRexafqEMkTQJXIu3/LKHqEvnjDdb9vb/mPOGS51r9c3F4spu+1k/Wr+Yn
+ cYmQq+09+CpKwLE+tSmjNhrcbCk49217gFtfcCtJAib8By8QMr0Dm+P0wBiLhCBXzgXj
+ mtUSPtclwvT3ifq0EMNWsSeulqpOiELP+rkPcPVqu3B+zLehnqJqpMWMBi7RKgRwY4mH
+ KSniI1zZ7ULjzE4vepN2bcNqV3p6tmNcA+z+PtgjPVcnOFmVBOhYyX59zCRzQCN3qOYG
+ XHiUhRb0lMzJIR2QNVOSgIBZIcWiULu+2x66dQ/mT+Os5hATl5ys0A7QH5nJ5wOz9OyQ
+ 2gWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690813261; x=1691418061;
+ d=1e100.net; s=20221208; t=1690813394; x=1691418194;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=BCP/6rJR8Z4ywb61kGEudrHUFQ9M5QFvs6yWYM+1hSs=;
- b=lmv/fttCbGVMlGGYQPuiJjS41Q117uS7eRi4eGM+sXXEr8BnjlCmqtvmTXQz9UijOR
- br3Xx7yERqLh8d++V+IKIvTW3qCb+ipbgKnkdGjs8W8Rj/R+szTZ8QJIOJdfq0cyCY8F
- /3VUWykkzGou3Dt0ELGDYem5F5E11ABi87njw5tkZo7Nf9SAfKtDH56w5PyA5Ia7lJ1A
- MEBZC0MvdcpJmFZVlQJs/ly0gTxoXZpWdDSMqiZLWcPLh4WI/mNe8VV9Sbafllm8hdR0
- 7xC+X4x6Rp+wmN0EIYx2RSgF9TIOY4dzhPwQzgEV3sJRB2E0gtT8rjxWCDyUQ9x/jw0B
- EBFw==
-X-Gm-Message-State: ABy/qLYr7iI/IOidPiUSKyaUB9fW9SvIMO+DnTqoaLjKAFA2Cqm6syuR
- 6Zu3X8uC5kKcxVV9ZX9CjuzJIw==
-X-Google-Smtp-Source: APBJJlEvWlG+ufLkmNxRqeaX4PL9VtJHBR63mQOxEVt/pETljqjP/bD4e+sxXAbmUa8B2OMWZUlVIQ==
-X-Received: by 2002:a05:600c:2286:b0:3fe:1871:1826 with SMTP id
- 6-20020a05600c228600b003fe18711826mr55340wmf.27.1690813260896; 
- Mon, 31 Jul 2023 07:21:00 -0700 (PDT)
+ bh=ZZcB9Z+1fkeLt/d1VCn+ga9XJ/QfNhwxcjth8l7Z9nM=;
+ b=S2iwGvDcGdDOvzLNz79usHcTtFFEkz3O3FB7LyWOCSICe19fH4wqTe0F18xwTb2z90
+ i9iDup/wi+LH4a1tqCeeRyaxGuNUlTWXzuUlJD5SUaV3THddXJ/mIDzBiKSzWaJPqsO9
+ gYVs9VcR5RAoNYsn5xglHQOK7CdVp+5fjj00+e7lG1dLwIkQ0sdiU/iCqiBljqYmv4Z+
+ nLveOPxOT5dU0HDVzm3PjhNxaYi1eF7kzXyGGuBPapxrSo/QQxRbmGmQvmEiDlkqbVn8
+ vNFLSPk6IvvTL8zTls65yaDvF5qRAXb5hj5U/k2ohVveXq8NI91idq3ncVuEaCoyw2zP
+ YTSA==
+X-Gm-Message-State: ABy/qLamoC6N4Biy5PB/8FZD95muXQ9EyVVNZVpJ9AavS+et9r19oOa+
+ ADWaNRGA4+kUVEx27f/gVABfAQ==
+X-Google-Smtp-Source: APBJJlECc345k7d9c6dthcWZ3U5QD1YwjUKgQuIuBaMzS7tpQ53iJQbBELAts8J3KByCjE4RLDq8vA==
+X-Received: by 2002:a5d:67c5:0:b0:317:3f0e:8cb1 with SMTP id
+ n5-20020a5d67c5000000b003173f0e8cb1mr6905068wrw.45.1690813394108; 
+ Mon, 31 Jul 2023 07:23:14 -0700 (PDT)
 Received: from [192.168.69.115] ([176.187.198.42])
  by smtp.gmail.com with ESMTPSA id
- f17-20020a7bcc11000000b003fd2d33ea53sm11700610wmh.14.2023.07.31.07.20.59
+ l11-20020adfe9cb000000b00314329f7d8asm13237129wrn.29.2023.07.31.07.23.12
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 31 Jul 2023 07:21:00 -0700 (PDT)
-Message-ID: <835a0b9e-6477-941a-743c-eda3a6a15eb6@linaro.org>
-Date: Mon, 31 Jul 2023 16:20:58 +0200
+ Mon, 31 Jul 2023 07:23:13 -0700 (PDT)
+Message-ID: <62b923c2-5c22-44c5-99cd-95351fd200db@linaro.org>
+Date: Mon, 31 Jul 2023 16:23:11 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.13.0
-Subject: Re: [RFC PATCH 3/6] util/oslib-win32: Fix compiling with Clang from
- MSYS2
+Subject: Re: [RFC PATCH 6/6] gitlab-ci.d/windows: Use Clang for compiling in
+ the 64-bit MSYS2 job
 Content-Language: en-US
 To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
  =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?= <berrange@redhat.com>,
@@ -68,13 +68,13 @@ To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
 Cc: Stefan Weil <sw@weilnetz.de>, Yonggang Luo <luoyonggang@gmail.com>,
  Peter Maydell <peter.maydell@linaro.org>
 References: <20230728142748.305341-1-thuth@redhat.com>
- <20230728142748.305341-4-thuth@redhat.com>
+ <20230728142748.305341-7-thuth@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230728142748.305341-4-thuth@redhat.com>
+In-Reply-To: <20230728142748.305341-7-thuth@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -98,72 +98,50 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 28/7/23 16:27, Thomas Huth wrote:
-> Clang complains:
+> We are struggeling with timeouts in the 64-bit MSYS2 job. Clang seems
+> to be a little bit faster, so let's use this compiler now instead.
 > 
-> ../util/oslib-win32.c:483:56: error: omitting the parameter name in a
->   function definition is a C2x extension [-Werror,-Wc2x-extensions]
-> win32_close_exception_handler(struct _EXCEPTION_RECORD*,
->                                                         ^
-> 
-> Fix it by adding parameter names.
+> There is a problem with compiling the spice headers with Clang, though,
+> so we can only test this in the 32-bit builds with GCC now. And we have
+> to disable dbus-display - otherwise the compilation aborts in the CI.
 > 
 > Signed-off-by: Thomas Huth <thuth@redhat.com>
 > ---
->   util/oslib-win32.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
+>   .gitlab-ci.d/windows.yml | 14 ++++++++------
+>   1 file changed, 8 insertions(+), 6 deletions(-)
 > 
-> diff --git a/util/oslib-win32.c b/util/oslib-win32.c
-> index 429542face..070bb455d3 100644
-> --- a/util/oslib-win32.c
-> +++ b/util/oslib-win32.c
-> @@ -480,8 +480,8 @@ int qemu_bind_wrap(int sockfd, const struct sockaddr *addr,
->   }
->   
->   EXCEPTION_DISPOSITION
-> -win32_close_exception_handler(struct _EXCEPTION_RECORD*,
-> -                              void*, struct _CONTEXT*, void*)
-> +win32_close_exception_handler(struct _EXCEPTION_RECORD *exrec,
-> +                              void *ptr1, struct _CONTEXT *cntx, void *ptr2)
+> diff --git a/.gitlab-ci.d/windows.yml b/.gitlab-ci.d/windows.yml
+> index f086540e40..ff9e9af4bb 100644
+> --- a/.gitlab-ci.d/windows.yml
+> +++ b/.gitlab-ci.d/windows.yml
+> @@ -43,7 +43,6 @@
+>         $MINGW_TARGET-curl
+>         $MINGW_TARGET-cyrus-sasl
+>         $MINGW_TARGET-dtc
+> -      $MINGW_TARGET-gcc
+>         $MINGW_TARGET-glib2
+>         $MINGW_TARGET-gnutls
+>         $MINGW_TARGET-gtk3
+> @@ -63,9 +62,9 @@
+>         $MINGW_TARGET-SDL2
+>         $MINGW_TARGET-SDL2_image
+>         $MINGW_TARGET-snappy
+> -      $MINGW_TARGET-spice
+>         $MINGW_TARGET-usbredir
+> -      $MINGW_TARGET-zstd "
+> +      $MINGW_TARGET-zstd
+> +      $EXTRA_PACKAGES "
+>     - $env:CHERE_INVOKING = 'yes'  # Preserve the current working directory
+>     - $env:MSYS = 'winsymlinks:native' # Enable native Windows symlink
+>     - mkdir build
+> @@ -77,13 +76,15 @@
+>   msys2-64bit:
+>     extends: .shared_msys2_builder
+>     variables:
+> -    MINGW_TARGET: mingw-w64-x86_64
+> -    MSYSTEM: MINGW64
+> +    MINGW_TARGET: mingw-w64-clang-x86_64
+> +    MSYSTEM: CLANG64
 
-Per https://learn.microsoft.com/en-us/cpp/c-runtime-library/except-handler3:
-
--- >8 --
-diff --git a/include/sysemu/os-win32.h b/include/sysemu/os-win32.h
-index 91aa0d7ec0..cb42508745 100644
---- a/include/sysemu/os-win32.h
-+++ b/include/sysemu/os-win32.h
-@@ -260,8 +260,9 @@ ssize_t qemu_recvfrom_wrap(int sockfd, void *buf, 
-size_t len, int flags,
-                             struct sockaddr *addr, socklen_t *addrlen);
-
-  EXCEPTION_DISPOSITION
--win32_close_exception_handler(struct _EXCEPTION_RECORD*, void*,
--                              struct _CONTEXT*, void*);
-+win32_close_exception_handler(struct _EXCEPTION_RECORD *exception_record,
-+                              void *registration, struct _CONTEXT *context,
-+                              void *dispatcher);
-
-  void *qemu_win32_map_alloc(size_t size, HANDLE *h, Error **errp);
-  void qemu_win32_map_free(void *ptr, HANDLE h, Error **errp);
-diff --git a/util/oslib-win32.c b/util/oslib-win32.c
-index 429542face..19a0ea7fbe 100644
---- a/util/oslib-win32.c
-+++ b/util/oslib-win32.c
-@@ -480,8 +480,9 @@ int qemu_bind_wrap(int sockfd, const struct sockaddr 
-*addr,
-  }
-
-  EXCEPTION_DISPOSITION
--win32_close_exception_handler(struct _EXCEPTION_RECORD*,
--                              void*, struct _CONTEXT*, void*)
-+win32_close_exception_handler(struct _EXCEPTION_RECORD *exception_record,
-+                              void *registration, struct _CONTEXT *context,
-+                              void *dispatcher)
-  {
-      return EXCEPTION_EXECUTE_HANDLER;
-  }
----
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
+OK to use Clang, but I'm tempted to keep the GCC job in manual mode...
 
