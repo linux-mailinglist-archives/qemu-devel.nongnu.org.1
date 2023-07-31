@@ -2,113 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 172427697EE
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E63A7697ED
 	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 15:46:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQTCi-0000An-1f; Mon, 31 Jul 2023 09:44:56 -0400
+	id 1qQTDt-0000yu-As; Mon, 31 Jul 2023 09:46:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qQTCg-0000AQ-5L
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 09:44:54 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qQTDj-0000lJ-CU
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 09:46:00 -0400
+Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qQTCe-0001Pj-Gn
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 09:44:53 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-3fe20e7e5caso10735635e9.3
- for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 06:44:51 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qQTDh-0001rh-SB
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 09:45:59 -0400
+Received: by mail-lf1-x136.google.com with SMTP id
+ 2adb3069b0e04-4fe1489ced6so7282273e87.0
+ for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 06:45:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690811091; x=1691415891;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=5EwGHoMLAhNqYUVT0oA6NfF6LfmubritLODr0v0MJtQ=;
- b=i+8ADQ5GQHcDMQj22X/FA0iDyqcUk+Dcf3/pTyWw8snGgzC213RXMBdWQ+Gvc+oscJ
- LZ2p2MneWsTlNGNS3fsCLYc6R4lBAGAAZ+fIQ5uPjjzDpVUItZ4qIvErlUk9VZ6MKCLt
- Pwi6fYLZoaEexBTXNqgA4Jnjs72ce7MUvbBrjjCEIdgOC9/Nw9q0JDHsr5CPj5bDns20
- lnWdKLAI9VdvUZms3fg0QshFfanfjFkaGffyNaNammNkVlc8XLhMMFNPO3n3wnVEZYq0
- qPvD4nICE7BazifeTsH5XFl2n3d/61WH9Ok/bq+y4XYj5NsTsvh2sX5bvUEKK8zt+WcH
- uIGg==
+ d=linaro.org; s=google; t=1690811155; x=1691415955;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=BDioFdyOKNBAC/5ktGE7rEx9840GVQkINa2od7dedX4=;
+ b=ZISYPyoDOvfQhMsahedqmyHFlIFnV2eGD6/HXJ6wyLfMCVusXmpXzJag3p6UoA8yVw
+ o3meNMHSTunai3oECBVwETP+FA3fXrtqFUSIonZp1dfVy4LZmQjTFlU/M7agjizQPzop
+ yY+U0drxKCOsS+2C/kI+6o6lO3UjO9PRjg2D7yxCKa49A1ptbFin2el1VnojFgEfNnot
+ ZVkp8aDqe04ame19KVgIcQRDeOk1Xz11PLRdywfnDnbgcffo7v/VROIloN22gyYezs67
+ 4P/W6MKjuTbMz2Yoty5FtGCMzfwGpTdbcR1RMpABeyozX6sFbkevAVt6BDyXG3rCXjQu
+ Rjzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690811091; x=1691415891;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=5EwGHoMLAhNqYUVT0oA6NfF6LfmubritLODr0v0MJtQ=;
- b=bbiNfkIuYAT+BpT7jbXDPiwqShAlzXcBQEQZznar311UbV2W/7qsNXBnSf1ZvldWIH
- +yogX+cUxP1qDGSxgKKeRRqOPeAyVfbpsJgcVmII/LUYjlAy7sskiOtmrqX9bpkFf/Hx
- jF2pu8x98WyTTDU2QHJKvWXe8VvGXD7ixXWwjbALFCO6FqoYyDfz94Jb+Wf58OGYacAZ
- 0PXjSRZ3gnuDOlSYxIE1JpcsLMgjHozYjOapXb/cfovuI1wcDQVMyHdNR24Y61cFtO3l
- 1gZ4OzsLY9ESnBi0p+WHz1A4QBMN42nxnNX3xIiAOrKYQ4TFof4LCWOpCjx35c1DNWqJ
- A3gA==
-X-Gm-Message-State: ABy/qLYs8VBO2waHDf9NOpppMSP2UKq1xvG1X/XCsWeoUbrItwL9WKZJ
- AL97GYlPu3U2uT8/1gZUP1qScQ==
-X-Google-Smtp-Source: APBJJlFvU/UKA6OnFuC+hta+gt8YF5CUA5lRNK9tWn2/Gg55fXyDkOO1nqE80rh6qABbSklGYurOxA==
-X-Received: by 2002:a05:600c:2296:b0:3fe:ad3:b066 with SMTP id
- 22-20020a05600c229600b003fe0ad3b066mr8228885wmf.41.1690811090841; 
- Mon, 31 Jul 2023 06:44:50 -0700 (PDT)
-Received: from [192.168.69.115] ([176.187.198.42])
- by smtp.gmail.com with ESMTPSA id
- z8-20020adfec88000000b0031773a8e5c4sm13147248wrn.37.2023.07.31.06.44.43
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 31 Jul 2023 06:44:50 -0700 (PDT)
-Message-ID: <6c92b326-d386-2dd4-c9a0-cbf9e7583243@linaro.org>
-Date: Mon, 31 Jul 2023 15:44:42 +0200
+ d=1e100.net; s=20221208; t=1690811155; x=1691415955;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=BDioFdyOKNBAC/5ktGE7rEx9840GVQkINa2od7dedX4=;
+ b=cZlPUCP7NyhqNTEMbPfE4ezjGfGp1YxGWKrdM1lym6z6x0MO+e9sCR4G3qS2Lxk8UY
+ qtc20CP8NXu/M92EYX3mW7DFk2DtgAvEQT93HAQHjEgO2jn3xU7lptcbZendtcBsA0fh
+ pWQPyJ7t404uQwcXaTs3gSK/QnJtI54YrRgDcuQJADHYb3EDP0ApOXT1OpLsgLOcq5B1
+ m5Aa+O0uUrpQVB+yUOUGdhvhsKQ2XaVoydvZA40BTlyFpZQpPTRW4pmknq/+/hdRwvZ6
+ hS4MdW+FQ4kaYXxVDXfj8XqZoRPo7hjK9pzdsRPmQjxvD8vWQkilACL6g2Vpae9OTJT1
+ 56Jg==
+X-Gm-Message-State: ABy/qLbm6SWGUfzDjUTVsZFQZetQqpKG1ZBDre8g/4qiWtPogXCHAyUo
+ ElD7Q9qtgYfyVSDfCjS4Qz82a/4kuF8glXdjM6+ReQ==
+X-Google-Smtp-Source: APBJJlHNEVVCp2Cx0DjZW2me4IB9ONCsOO8MNrOuHt7tGH2ugKxl5tnVxRrU3L1+Qhe1IC2lIRdqnZdaMUsL7Adz6q8=
+X-Received: by 2002:a19:9116:0:b0:4f8:6625:f2ca with SMTP id
+ t22-20020a199116000000b004f86625f2camr5106812lfd.61.1690811155000; Mon, 31
+ Jul 2023 06:45:55 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.13.0
-Subject: Re: [RFC PATCH 07/24] target/arm: Use GDBFeature for dynamic XML
-Content-Language: en-US
+References: <20230731080317.112658-1-akihiko.odaki@daynix.com>
+ <20230731080317.112658-4-akihiko.odaki@daynix.com>
+ <CAFEAcA_gdK_nSkiaJQ2mDPeb3Se39AYN+DkDg1U-D2CJ1vUOuQ@mail.gmail.com>
+ <9f2a49dd-75ce-4e23-3873-0ad4fd78277b@daynix.com>
+In-Reply-To: <9f2a49dd-75ce-4e23-3873-0ad4fd78277b@daynix.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 31 Jul 2023 14:45:43 +0100
+Message-ID: <CAFEAcA-Ljap52x8NB0h0PvNm1mmy85gA8zetqc8LXVuDV+PaVA@mail.gmail.com>
+Subject: Re: [PATCH 3/5] linux-user: Use MAP_FIXED_NOREPLACE for do_brk()
 To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Alex_Benn=c3=a9e?=
- <alex.bennee@linaro.org>, Thomas Huth <thuth@redhat.com>,
- Alexandre Iooss <erdnaxe@crans.org>, Mahmoud Mandour
- <ma.mandourr@gmail.com>, Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Michael Rolnik
- <mrolnik@gmail.com>, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Brian Cain <bcain@quicinc.com>, Song Gao <gaosong@loongson.cn>,
- Xiaojuan Yang <yangxiaojuan@loongson.cn>, Laurent Vivier
- <laurent@vivier.eu>, Aurelien Jarno <aurelien@aurel32.net>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Chris Wulff <crwulff@gmail.com>, Marek Vasut <marex@denx.de>,
- Stafford Horne <shorne@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
- Nicholas Piggin <npiggin@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Artyom Tarasenko <atar4qemu@gmail.com>,
- Bastian Koppelmann <kbastian@mail.uni-paderborn.de>,
- Max Filippov <jcmvbkbc@gmail.com>, qemu-devel@nongnu.org,
- qemu-arm@nongnu.org, qemu-ppc@nongnu.org, qemu-riscv@nongnu.org,
- qemu-s390x@nongnu.org
-References: <20230731084354.115015-1-akihiko.odaki@daynix.com>
- <20230731084354.115015-8-akihiko.odaki@daynix.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230731084354.115015-8-akihiko.odaki@daynix.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Cc: qemu-devel@nongnu.org, Laurent Vivier <laurent@vivier.eu>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::136;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x136.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.101,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -126,89 +87,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 31/7/23 10:43, Akihiko Odaki wrote:
-> In preparation for a change to use GDBFeature as a parameter of
-> gdb_register_coprocessor(), convert the internal representation of
-> dynamic feature from plain XML to GDBFeature.
-> 
-> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> ---
->   target/arm/cpu.h       | 20 +++++------
->   target/arm/internals.h |  2 +-
->   target/arm/gdbstub.c   | 80 +++++++++++++++++++++++-------------------
->   target/arm/gdbstub64.c | 11 +++---
->   4 files changed, 60 insertions(+), 53 deletions(-)
-> 
-> diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-> index 88e5accda6..d6c2378d05 100644
-> --- a/target/arm/cpu.h
-> +++ b/target/arm/cpu.h
-> @@ -136,23 +136,21 @@ enum {
->    */
->   
->   /**
-> - * DynamicGDBXMLInfo:
-> - * @desc: Contains the XML descriptions.
-> - * @num: Number of the registers in this XML seen by GDB.
-> + * DynamicGDBFeatureInfo:
-> + * @desc: Contains the feature descriptions.
->    * @data: A union with data specific to the set of registers
->    *    @cpregs_keys: Array that contains the corresponding Key of
->    *                  a given cpreg with the same order of the cpreg
->    *                  in the XML description.
->    */
-> -typedef struct DynamicGDBXMLInfo {
-> -    char *desc;
-> -    int num;
-> +typedef struct DynamicGDBFeatureInfo {
-> +    GDBFeature desc;
->       union {
->           struct {
->               uint32_t *keys;
->           } cpregs;
->       } data;
-> -} DynamicGDBXMLInfo;
-> +} DynamicGDBFeatureInfo;
->   
->   /* CPU state for each instance of a generic timer (in cp15 c14) */
->   typedef struct ARMGenericTimer {
-> @@ -881,10 +879,10 @@ struct ArchCPU {
->       uint64_t *cpreg_vmstate_values;
->       int32_t cpreg_vmstate_array_len;
->   
-> -    DynamicGDBXMLInfo dyn_sysreg_xml;
-> -    DynamicGDBXMLInfo dyn_svereg_xml;
-> -    DynamicGDBXMLInfo dyn_m_systemreg_xml;
-> -    DynamicGDBXMLInfo dyn_m_secextreg_xml;
-> +    DynamicGDBFeatureInfo dyn_sysreg_feature;
-> +    DynamicGDBFeatureInfo dyn_svereg_feature;
-> +    DynamicGDBFeatureInfo dyn_m_systemreg_feature;
-> +    DynamicGDBFeatureInfo dyn_m_secextreg_feature;
+On Mon, 31 Jul 2023 at 14:32, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
+>
+> On 2023/07/31 20:44, Peter Maydell wrote:
+> > On Mon, 31 Jul 2023 at 09:04, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
+> >>
+> >> MAP_FIXED_NOREPLACE can ensure the mapped address is fixed without
+> >> concerning that the new mapping overwrites something else.
+> >
+> > MAP_FIXED_NOREPLACE only came in with Linux 4.17. So
+> > I think we still need to handle the "mapped address
+> > is not the one we asked for" error condition, because
+> > it can happen on older host kernels that ignore the
+> > MAP_FIXED_NOREPLACE flag.
 
-Since now DynamicGDBFeatureInfo.desc contains xmlname, we can replace
-all these by a generic 'DynamicGDBFeatureInfo *dyn_features' and have
-arm_gdb_get_dynamic_xml() looking up the xmlname.
+> MAP_FIXED_NOREPLACE is substituted with MAP_FIXED before passing to the
+> host with patch 1. The NOREPLACE constraint is still ensured by
+> inspecting the guest page table.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Oh, I see, this patch is a call to target_mmap(), not host
+mmap(). Sorry, I misread that.
 
-> @@ -489,14 +497,14 @@ const char *arm_gdb_get_dynamic_xml(CPUState *cs, const char *xmlname)
->       ARMCPU *cpu = ARM_CPU(cs);
->   
->       if (strcmp(xmlname, "system-registers.xml") == 0) {
-> -        return cpu->dyn_sysreg_xml.desc;
-> +        return cpu->dyn_sysreg_feature.desc.xml;
->       } else if (strcmp(xmlname, "sve-registers.xml") == 0) {
-> -        return cpu->dyn_svereg_xml.desc;
-> +        return cpu->dyn_svereg_feature.desc.xml;
->       } else if (strcmp(xmlname, "arm-m-system.xml") == 0) {
-> -        return cpu->dyn_m_systemreg_xml.desc;
-> +        return cpu->dyn_m_systemreg_feature.desc.xml;
->   #ifndef CONFIG_USER_ONLY
->       } else if (strcmp(xmlname, "arm-m-secext.xml") == 0) {
-> -        return cpu->dyn_m_secextreg_xml.desc;
-> +        return cpu->dyn_m_secextreg_feature.desc.xml;
->   #endif
->       }
->       return NULL;
-
+thanks
+-- PMM
 
