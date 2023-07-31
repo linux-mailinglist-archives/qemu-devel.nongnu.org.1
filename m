@@ -2,85 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D9697695C4
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 14:13:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C32EA769686
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 14:41:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQRm8-0003RP-R9; Mon, 31 Jul 2023 08:13:24 -0400
+	id 1qQSBh-0007Lh-BY; Mon, 31 Jul 2023 08:39:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qQRm4-0003MU-5J
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 08:13:20 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qQSBf-0007Kc-6l
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 08:39:47 -0400
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qQRm2-00059q-4C
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 08:13:19 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-686b9964ae2so2930204b3a.3
- for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 05:11:17 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qQSBd-0001ue-HF
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 08:39:46 -0400
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-52222562f1eso6675649a12.3
+ for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 05:39:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20221208.gappssmtp.com; s=20221208; t=1690805476; x=1691410276;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=9PoeHQ72MxcC2TaPE9HsDberM+yq2oYNtqnB7MFftuE=;
- b=pISqWFbCwW9ucqWlz66+soLewmbIPUhI8FE2tBVSQJGxtRVdwdQts9r3x7OhIeTffh
- l7S1B2v5+WQgIAE/96wfoEpdc0h0AQEkjo8M+rbagzh4MlmsUgThzw9Vp6v2k5DJr327
- 7A3joGei3XMEr4CiUMKV+IfOuiyhn6y0GSLQYNohGgMbCAeX7xQYTqaz9FOT885uszn2
- ZLbPtvglVO9NHqInthjSzcGn4Mc2Qqc0GiM5PRE5Kg/9ptB4iCgHRLn+LF/dFRsKnO5b
- GVhUGKygfTOv3+UA8B/k7DnpeCB6Wl+n6dpk/EKNS2t58CEnzpxRR84Uyvj23Pwuob6H
- vSJw==
+ d=linaro.org; s=google; t=1690807184; x=1691411984;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=/XiD5kf5yxuft+dYYppI1TYu3hyIMtw7QNRYgFpVgTo=;
+ b=j+MnGbvFwgOYCDYHck1BKz7teqZ/SZgv6MSXarJjXhdoEj9aXX1lfMyjaWbGJQHWF0
+ c/nkBzx79mimAh4DtTvtTKwq5lAj8ed6okFV2w+YL9B7q72Opa+Z3ZuJiBDetpDFNy39
+ hSHz1efnm7aGxHsR9ZDMqItmzfNchnIp26oeBCdZ55ZUk6C3O4bBhmgKLiC+fspFZq0n
+ BdV+MztQV/iZcvtNCs+gfTWVu1iFnCZHVX9jeqElYh9XdXyr8oz0gRWw4IZUhpM0g7Zu
+ 3qSDQIkeaEnFBJryVowF1qMTkVRBTerpB9xWHITvqQ7AfLepO42HVJAX9DjFS7H5EnXQ
+ O4Ww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690805476; x=1691410276;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=9PoeHQ72MxcC2TaPE9HsDberM+yq2oYNtqnB7MFftuE=;
- b=Td7K3oF+4mapJLZD7BYhyoCOiaiqDgdIVMMeF22DfS7dkD0iZJn7Y/mQSdyNFpIBx1
- oyEwITI6GOvKNSx7qGwLCYOqfOu2CKeUOBjhaxUoBjLyJy8qMxkEB2Rej56Kmyxalblv
- zRuNa8WAww8/YF4pzkJSzqT6h5OYBEeYh8VntO9hg9zO44BI9h7FdcdeAirxdkxh4qFY
- ouD0loQ3Kq51hJKe3MMUjwk79gIGFTFbcSBcZNxKn3SLhswPBtoDjhfA2qXkJcUNlyPZ
- cgDNNHUooARzyUGo4qtKDHew+mmXwvptJtUWYM3Z6a6lzYU3PuuI5ixMnlYLu34pYrQ9
- +1oQ==
-X-Gm-Message-State: ABy/qLbRnRROAcUcAGWqi88tkSY8+C+l104vtPnYF+JesbXNjVb71PnM
- mYHQn15wMgiwSEfO4a9IjKJuFw==
-X-Google-Smtp-Source: APBJJlGvs5vbuz3clvEV1NOqCyUvCsVXlIsFRSq9+nYD0/K6ffo41A3QvOpsdxDarHmIXPIEEb6l5A==
-X-Received: by 2002:a05:6a20:7492:b0:133:c12a:4d6 with SMTP id
- p18-20020a056a20749200b00133c12a04d6mr9289657pzd.1.1690805476490; 
- Mon, 31 Jul 2023 05:11:16 -0700 (PDT)
-Received: from localhost.localdomain.gitgo.cc ([47.75.78.161])
- by smtp.gmail.com with ESMTPSA id
- a10-20020a62bd0a000000b005d22639b577sm7385690pff.165.2023.07.31.05.11.10
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 31 Jul 2023 05:11:15 -0700 (PDT)
-From: Li Feng <fengli@smartx.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>,
- Raphael Norwitz <raphael.norwitz@nutanix.com>,
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Viresh Kumar <viresh.kumar@linaro.org>,
- qemu-block@nongnu.org (open list:Block layer core),
- qemu-devel@nongnu.org (open list:All patches CC here)
-Cc: Li Feng <fengli@smartx.com>
-Subject: [PATCH v3 5/5] vhost-user-scsi: start vhost when guest kicks
-Date: Mon, 31 Jul 2023 20:10:10 +0800
-Message-ID: <20230731121018.2856310-6-fengli@smartx.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230731121018.2856310-1-fengli@smartx.com>
-References: <20230721105205.1714449-1-fengli@smartx.com>
- <20230731121018.2856310-1-fengli@smartx.com>
+ d=1e100.net; s=20221208; t=1690807184; x=1691411984;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=/XiD5kf5yxuft+dYYppI1TYu3hyIMtw7QNRYgFpVgTo=;
+ b=enID0sdgqR893QolXpKfzIUUHwz2ETLo0B/xrJbDFn4AJ9a7IQkbgyDD7Q6gD0zpWX
+ dILEt3GumQ2Px/D6LI7D0jub78JWoUAjI4Yrbya8n9e7OU07cP3nPqgwZU9yoHYN73tp
+ /6pWeETvsURAi4earr+APO57QdtajwQK9wXx8yIqaruRIYVey/2jnha+xgcF2YYJy1Fb
+ NXjUYHpQG+ys1hE2KLCpBG92s+x7wX5+SYwBgQu0ICnGcCX3LXkPe70dzKBGDaGSsyS9
+ 7Azzc+ps4pd2nj7aE9ssS595JtaOciUZc5iCA/xkonn4PGSSSVPIH9rk+6TL0kAP7YGU
+ 2XVg==
+X-Gm-Message-State: ABy/qLYjoXw9iTcYmGDk7ug6FGLHWyssjcmPVy5CXEH8W1E09ykhxvMP
+ BI2pozlKtTkthxDfE0I8s3HC9L0bPQaLRp1q412gsQ==
+X-Google-Smtp-Source: APBJJlFLD2Vt+WrevBHfPfWrff7Fzd24Uzq+iYqVRnT0dKZbh/RgPUdRAh73BWHP0SDEfD+hytslL3HajOGkiK/zWPY=
+X-Received: by 2002:a05:6402:1208:b0:51e:1af0:3a90 with SMTP id
+ c8-20020a056402120800b0051e1af03a90mr8538827edw.37.1690807183801; Mon, 31 Jul
+ 2023 05:39:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::42f;
- envelope-from=fengli@smartx.com; helo=mail-pf1-x42f.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <20230730234840.1989974-1-gshan@redhat.com>
+ <af597a7c-5580-ffc5-d435-dd7e0ccc63d2@redhat.com>
+In-Reply-To: <af597a7c-5580-ffc5-d435-dd7e0ccc63d2@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 31 Jul 2023 13:39:32 +0100
+Message-ID: <CAFEAcA8Uc7S4oBzKi_9AGCEkNdeZX1U73bvit6RmQo8_A7QLoA@mail.gmail.com>
+Subject: Re: [PATCH] kvm: Fix crash by initializing kvm_state early
+To: David Hildenbrand <david@redhat.com>
+Cc: Gavin Shan <gshan@redhat.com>, qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
+ pbonzini@redhat.com, philmd@linaro.org, shan.gavin@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x536.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,83 +86,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Let's keep the same behavior as vhost-user-blk.
+On Mon, 31 Jul 2023 at 08:18, David Hildenbrand <david@redhat.com> wrote:
+>
+> On 31.07.23 01:48, Gavin Shan wrote:
+> > Runs into core dump on arm64 and the backtrace extracted from the
+> > core dump is shown as below. It's caused by accessing @kvm_state which
+> > isn't initialized at that point due to commit 176d073029 ("hw/arm/virt:
+> > Use machine_memory_devices_init()"), where the machine's memory region
+> > is added ealier than before.
+>
+> s/ealier/earlier/
+>
+> >
+> >      main
+> >      qemu_init
+> >      configure_accelerators
+> >      qemu_opts_foreach
+> >      do_configure_accelerator
+> >      accel_init_machine
+> >      kvm_init
+> >      virt_kvm_type
+> >      virt_set_memmap
+> >      machine_memory_devices_init
+> >      memory_region_add_subregion
+> >      memory_region_add_subregion_common
+> >      memory_region_update_container_subregions
+> >      memory_region_transaction_begin
+> >      qemu_flush_coalesced_mmio_buffer
+> >      kvm_flush_coalesced_mmio_buffer
+> >
+> > Fix it by initializing @kvm_state early. With this applied, no crash
+> > is observed on arm64.
 
-Some old guests kick virtqueue before setting VIRTIO_CONFIG_S_DRIVER_OK.
+> As an alternative, we might simply do nothing in
+> kvm_flush_coalesced_mmio_buffer(), in case kvm_state is not setup yet.
+> We don't have any notifier registered in that case.
 
-Signed-off-by: Li Feng <fengli@smartx.com>
----
- hw/scsi/vhost-user-scsi.c | 48 +++++++++++++++++++++++++++++++++++----
- 1 file changed, 44 insertions(+), 4 deletions(-)
+Yes, this seems better I think -- conceptually kvm_init()
+probably ought to first set up the accelerator state and
+then set kvm_state last, so that other code that looks
+at the kvm_state global either sees NULL or else a
+completely valid state, not a possibly half-initialised
+one. (We should probably also NULL the global in the
+error-exit path, though I imagine we're about to exit
+in that case.)
 
-diff --git a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c
-index 5bf012461b..a7fa8e8df2 100644
---- a/hw/scsi/vhost-user-scsi.c
-+++ b/hw/scsi/vhost-user-scsi.c
-@@ -113,8 +113,48 @@ static void vhost_user_scsi_reset(VirtIODevice *vdev)
-     }
- }
- 
--static void vhost_dummy_handle_output(VirtIODevice *vdev, VirtQueue *vq)
-+static void vhost_user_scsi_handle_output(VirtIODevice *vdev, VirtQueue *vq)
- {
-+    VHostUserSCSI *s = (VHostUserSCSI *)vdev;
-+    DeviceState *dev = &s->parent_obj.parent_obj.parent_obj.parent_obj;
-+    VHostSCSICommon *vsc = VHOST_SCSI_COMMON(s);
-+    VirtIOSCSICommon *vs = VIRTIO_SCSI_COMMON(dev);
-+
-+    Error *local_err = NULL;
-+    int i, ret;
-+
-+    if (!vdev->start_on_kick) {
-+        return;
-+    }
-+
-+    if (!s->connected) {
-+        return;
-+    }
-+
-+    if (vhost_dev_is_started(&vsc->dev)) {
-+        return;
-+    }
-+
-+    /*
-+     * Some guests kick before setting VIRTIO_CONFIG_S_DRIVER_OK so start
-+     * vhost here instead of waiting for .set_status().
-+     */
-+    ret = vhost_user_scsi_start(s);
-+    if (ret < 0) {
-+        error_reportf_err(local_err, "vhost-user-scsi: vhost start failed: ");
-+        qemu_chr_fe_disconnect(&vs->conf.chardev);
-+        return;
-+    }
-+
-+    /* Kick right away to begin processing requests already in vring */
-+    for (i = 0; i < vsc->dev.nvqs; i++) {
-+        VirtQueue *kick_vq = virtio_get_queue(vdev, i);
-+
-+        if (!virtio_queue_get_desc_addr(vdev, i)) {
-+            continue;
-+        }
-+        event_notifier_set(virtio_queue_get_host_notifier(kick_vq));
-+    }
- }
- 
- static int vhost_user_scsi_connect(DeviceState *dev, Error **errp)
-@@ -243,9 +283,9 @@ static void vhost_user_scsi_realize(DeviceState *dev, Error **errp)
-         return;
-     }
- 
--    virtio_scsi_common_realize(dev, vhost_dummy_handle_output,
--                               vhost_dummy_handle_output,
--                               vhost_dummy_handle_output, &err);
-+    virtio_scsi_common_realize(dev, vhost_user_scsi_handle_output,
-+                               vhost_user_scsi_handle_output,
-+                               vhost_user_scsi_handle_output, &err);
-     if (err != NULL) {
-         error_propagate(errp, err);
-         return;
--- 
-2.41.0
+Is somebody able to write/test a patch for that today?
+Ideally we'd fix this for tomorrow's rc...
 
+thanks
+-- PMM
 
