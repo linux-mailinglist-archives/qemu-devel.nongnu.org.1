@@ -2,72 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D4AD76A27E
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 23:14:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 777E176A298
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 23:25:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQaCq-00073J-8R; Mon, 31 Jul 2023 17:13:32 -0400
+	id 1qQaN4-0001bb-Co; Mon, 31 Jul 2023 17:24:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qQaCo-00072v-DD
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 17:13:30 -0400
-Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qQaCm-0001Aa-NP
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 17:13:30 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id D12BA1F893;
- Mon, 31 Jul 2023 21:13:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1690838006; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qQaN2-0001aw-C9
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 17:24:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qQaN0-0003dJ-QU
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 17:24:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1690838641;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=r+QtKAmXQFrsiNdVYrScffUlm6PtW/xKtbgjBYWeEnc=;
- b=O/X8+6Zo97oQdotdwg+1cSU0WRkNOIxis7Q3u4QMkIZtkstWwyMFNGU1ZhMtM+6OKzmMER
- mcZH+zHESa0wXn5g5vS70gilIYI/fb4BZP0cGXlXwaVrivnrOQ94sxVM15zfqSkLn0IYiX
- u91mHBoVF0eKNp282cA5wZOJRQZxbeM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1690838006;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=r+QtKAmXQFrsiNdVYrScffUlm6PtW/xKtbgjBYWeEnc=;
- b=IFakzJ5nDo1PnE1Qah06GpQTviLKYmZ/sxSr25nZyq8paTZr/3VGmLL/3QXWEfUBwtkrir
- x5ePXW2MQCovWMBA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 62DCC1322C;
- Mon, 31 Jul 2023 21:13:26 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id GSmNC/YjyGTVCwAAMHmgww
- (envelope-from <farosas@suse.de>); Mon, 31 Jul 2023 21:13:26 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>, Leonardo
- Bras <leobras@redhat.com>
-Subject: Re: [PATCH 1/3] migration: Stop marking RP bad after shutdown
-In-Reply-To: <87cz07yetb.fsf@suse.de>
-References: <20230728121516.16258-1-farosas@suse.de>
- <20230728121516.16258-2-farosas@suse.de> <ZMQ1LbTl5kGmAG21@x1n>
- <87cz07yetb.fsf@suse.de>
-Date: Mon, 31 Jul 2023 18:13:24 -0300
-Message-ID: <87a5vbyebv.fsf@suse.de>
+ bh=PTqKIyP+8QjHd2CeZ0ivuYsdhtM4vC5XouYymdmLlRw=;
+ b=WYwYO9rQbSZA2zyUZg7wVAjnOzA5v3ILyMh47YsJMgcoeiiqP4lQEKTi4uaatkRgXAUsDa
+ BbMndW3RKUnzvn2zxrJNNmwnRZHFKLeGycHYw89zRHGw4nW3XQ2h7tmFnQhw31Z+a7u1RN
+ FD2IwdUqED2nv2BRxkwosKdctvUEGaM=
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
+ [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-677--80uAOsRM5mMwM9I9_4thQ-1; Mon, 31 Jul 2023 17:23:59 -0400
+X-MC-Unique: -80uAOsRM5mMwM9I9_4thQ-1
+Received: by mail-qt1-f199.google.com with SMTP id
+ d75a77b69052e-4054266d0beso11542631cf.0
+ for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 14:23:59 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1690838639; x=1691443439;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=PTqKIyP+8QjHd2CeZ0ivuYsdhtM4vC5XouYymdmLlRw=;
+ b=APwRLqKGXRjqfWP87h6BQ/ovW3Ygrn3yLy5P4rNMJiJNeGQ5bLFh2q94XXpqbECKp6
+ 2Yi0TAS1kD84PxoDZaHH+DDTSayCBxl664b+E4r9SjXcInWttzp7DDoljMBPsad2SypA
+ 0/GtMwaPSjwTTu6JH/3VpItlsvCTMV23R/8wCcMVCE002ByU18gcc0L0DI+hw9pfglfR
+ S4oNAkglGa2hTxuGispiIjbKn4nhBOJLEzGnn0Yv6BhkM7QSFa408uUJWJvBF8a7zltY
+ FV65L2JagoOgkiubYWxRxHnsTAuzpmCvvZxNvsthHzOlg0zkNtL3iQfNWTQwybzJ3Mg3
+ 0CtQ==
+X-Gm-Message-State: ABy/qLZAzShpzvaI2em1ddbze20+b84COuYPj/Cw2W8nMR6U7jkfiSbS
+ pLhOhpQyeQ3iKOeKWtKfZW29xlPEPSdObOJDgqbWXEXJFDSd7Ox1v12mqb5p5pYWWaDgIW59Jl7
+ 4qWt2b4Unqsl1LTY=
+X-Received: by 2002:ad4:5b83:0:b0:63c:f5fd:d30f with SMTP id
+ 3-20020ad45b83000000b0063cf5fdd30fmr10962079qvp.1.1690838639013; 
+ Mon, 31 Jul 2023 14:23:59 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlEYHqrFI7EZFpBux2VqE7D+hh0uzgUPIcnUR449EgzybpVrYgHBidpiJ/WjnkIRm4YgwKpJcw==
+X-Received: by 2002:ad4:5b83:0:b0:63c:f5fd:d30f with SMTP id
+ 3-20020ad45b83000000b0063cf5fdd30fmr10962059qvp.1.1690838638706; 
+ Mon, 31 Jul 2023 14:23:58 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ q14-20020a0cf5ce000000b0063d30c10f1esm4110904qvm.70.2023.07.31.14.23.57
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 31 Jul 2023 14:23:58 -0700 (PDT)
+Date: Mon, 31 Jul 2023 17:23:55 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Sean Christopherson <seanjc@google.com>,
+ David Hildenbrand <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Marcelo Tosatti <mtosatti@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Chao Peng <chao.p.peng@linux.intel.com>,
+ Michael Roth <michael.roth@amd.com>, isaku.yamahata@gmail.com,
+ qemu-devel@nongnu.org, kvm@vger.kernel.org
+Subject: Re: [RFC PATCH 04/19] memory: Introduce memory_region_can_be_private()
+Message-ID: <ZMgma0cRi/lkTKSz@x1n>
+References: <20230731162201.271114-1-xiaoyao.li@intel.com>
+ <20230731162201.271114-5-xiaoyao.li@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=2001:67c:2178:6::1d; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230731162201.271114-5-xiaoyao.li@intel.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -84,66 +109,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fabiano Rosas <farosas@suse.de> writes:
+On Mon, Jul 31, 2023 at 12:21:46PM -0400, Xiaoyao Li wrote:
+> +bool memory_region_can_be_private(MemoryRegion *mr)
+> +{
+> +    return mr->ram_block && mr->ram_block->gmem_fd >= 0;
+> +}
 
-> Peter Xu <peterx@redhat.com> writes:
->
->> On Fri, Jul 28, 2023 at 09:15:14AM -0300, Fabiano Rosas wrote:
->>> When waiting for the return path (RP) thread to finish, there is
->>> really nothing wrong in the RP if the destination end of the migration
->>> stops responding, leaving it stuck.
->>> 
->>> Stop returning an error at that point and leave it to other parts of
->>> the code to catch. One such part is the very next routine run by
->>> migration_completion() which checks 'to_dst_file' for an error and fails
->>> the migration. Another is the RP thread itself when the recvmsg()
->>> returns an error.
->>> 
->>> With this we stop marking RP bad from outside of the thread and can
->>> reuse await_return_path_close_on_source() in the next patches to wait
->>> on the thread during a paused migration.
->>> 
->>> Signed-off-by: Fabiano Rosas <farosas@suse.de>
->>> ---
->>>  migration/migration.c | 1 -
->>>  1 file changed, 1 deletion(-)
->>> 
->>> diff --git a/migration/migration.c b/migration/migration.c
->>> index 91bba630a8..051067f8c5 100644
->>> --- a/migration/migration.c
->>> +++ b/migration/migration.c
->>> @@ -2049,7 +2049,6 @@ static int await_return_path_close_on_source(MigrationState *ms)
->>>           * waiting for the destination.
->>>           */
->>>          qemu_file_shutdown(ms->rp_state.from_dst_file);
->>> -        mark_source_rp_bad(ms);
->>>      }
->>>      trace_await_return_path_close_on_source_joining();
->>>      qemu_thread_join(&ms->rp_state.rp_thread);
->>
->> The retval of await_return_path_close_on_source() relies on
->> ms->rp_state.error.  If mark_source_rp_bad() is dropped, is it possible
->> that it'll start to return succeed where it used to return failure?
->
-> Yep, as described in the commit message, I think it's ok to do that. The
-> critical part is doing the shutdown. Other instances of
-> mark_source_rp_bad() continue existing and we continue returning
-> rp_state.error.
->
->>
->> Maybe not a big deal: I see migration_completion() also has another
->> qemu_file_get_error() later to catch errors, but I don't know how solid
->> that is.
->
-> That is the instance I refer to in the commit message. At
-> await_return_path_close_on_source() we only call mark_source_rp_bad() if
-> to_dst_file has an error. That will be caught by this
-> qemu_file_get_error() anyway.
+This is not really MAP_PRIVATE, am I right?  If so, is there still chance
+we rename it (it seems to be also in the kernel proposal all across..)?
 
-Actually, I can do better, I can merge this shutdown() into
-migration_completion(). Then this dependency becomes explicit. Since you
-suggested moving await_return_path_close_on_source() into
-postcopy_pause(), it doesn't make sense to check to_dst_file anymore,
-because when pausing we clear that file.
+I worry it can be very confusing in the future against MAP_PRIVATE /
+MAP_SHARED otherwise.
+
+Thanks,
+
+-- 
+Peter Xu
 
 
