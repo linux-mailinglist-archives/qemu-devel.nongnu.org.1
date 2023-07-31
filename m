@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05B7476993F
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 16:17:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87F5676993C
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 16:16:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQTgV-0005Xg-53; Mon, 31 Jul 2023 10:15:43 -0400
+	id 1qQTgb-0005a3-1k; Mon, 31 Jul 2023 10:15:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qQTgS-0005WH-1f
+ id 1qQTgS-0005WX-Go
  for qemu-devel@nongnu.org; Mon, 31 Jul 2023 10:15:40 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qQTgP-0007eR-N9
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 10:15:39 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-3fe2048c910so9788865e9.1
+ id 1qQTgP-0007eT-Pi
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 10:15:40 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-3fbc5d5746cso49716645e9.2
  for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 07:15:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1690812936; x=1691417736;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=G2c+LxpkCJdqb0ZH/SG20fuSzrbSnvwdJMIMMiLTze0=;
- b=yq/4W2XGdu8ykukOpT6cYpEf3IlhIlZQI+lS53iuJMxn3wIw0Krfh2abatuug68f1N
- jCLftmQvJI9tUdrjVSwpm60Sfa6O5w3f+mP3hd/tDzTUUJG1djgw90LJJt6SpTSq0p1G
- nP3J3RKFg8xAeJ+67hwkOTh1PrDAYOkyy39aiExLMWIrfOTNgLklwIDGf/2x9s6ERaJg
- gWG2QNyyOk7JeU9tu/f20m/cZ6iRXbkFUC7wb5WV1FkzR3eJ6o1NEKoh9YvRsLAyNEI4
- +TTgx46WRYQSh8R5gyTxwdHi3SUDpfV9rVwuxVRPtiZI1dqA61ZATot8YZF9U8qtNUcJ
- SqCw==
+ :reply-to; bh=IRJJsXiQGVscOzwBrvnsqBjJfHH56GzCgg2J9O7gwx0=;
+ b=uxeB1ZzkopKK73UMeuz+c3AxaygULbEBZEGT7Pyfuwmdu+TqS/mtrbPzKjBJKpuBHG
+ IUI9y6oQw3z08sgSqf1tfMJ3QPNq+yagO18HhLWSWcdprtedSLqTm4oy2WCiAEUSsPEv
+ FHa+gGBRR1c08SqV6WdqnMXoY3X84x4OIQx9ijKMJV3hDs3cizqOAptu0BpMU8vsuIaU
+ ZoxWX0VUMFkCkwXGk6b+X2YqlT8eQTR5RnuNhb7FXGZmtVEq1chCyKWYgmqJC6F4d6Dy
+ 8oiZ4KV3tBrMkAikbidCcbkB7GZ8iLI6cDmjB6xBVv3tgzeoPsu6kEmTH10YXJFKHvTZ
+ 5B1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1690812936; x=1691417736;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=G2c+LxpkCJdqb0ZH/SG20fuSzrbSnvwdJMIMMiLTze0=;
- b=QFtB+MaTwaIDvD5AcAwHZQFBl/KCRxG2WHTzvlubmyPKo7G87r4vNEuGqDXGTaxONW
- m6ITFGsb4FJm0N+Ojpxx114YOE7UqOlNns37lBByUzVjWr4xBxFVDcnZfHEjaqsLuVu4
- 2gy+f+nX9ZJ5rNXyYVx0YcrvAbtu5Me2AWPboI9nibJizTLQ5CvBrCmEjBZclRhqsVHB
- JwFQxVHV4a+EyD6K49BwiYT00ksBxqseHa0rsNyYhCHkcZ8ueE34vCkdn5lXM/3b1UaN
- QCmD9I/EJPtkzfOxkHLYd3v51hyFUQBOofCGztQtvB3YjaV2zpUu/VtxExAYErCysDIM
- RAog==
-X-Gm-Message-State: ABy/qLaz63m0WLMbFWgfHZr0rfjmAaWTvoyupIqWLvsUMdZp2qNOYwEa
- AVNDxXJI0gUg8bIodiIlWQlv1xdBZyX17PhrFYw=
-X-Google-Smtp-Source: APBJJlGk8mcii20ejdalQtBStTUHOKxfovSuCt9Zo5krGCsix3g1wnlrZMlBHKOdbKU1QAMTAShEKQ==
-X-Received: by 2002:a1c:7c03:0:b0:3fe:2140:f504 with SMTP id
- x3-20020a1c7c03000000b003fe2140f504mr71732wmc.20.1690812935803; 
- Mon, 31 Jul 2023 07:15:35 -0700 (PDT)
+ bh=IRJJsXiQGVscOzwBrvnsqBjJfHH56GzCgg2J9O7gwx0=;
+ b=MhR//X9ntfC2YuvnbC5zxadsua7qNJAXYPHmhxm3/6uVTRgCkjBxiJg4s2/fPQQgpc
+ OEexS4I9Zo5BOzjIwffcAl+KZEwBXv4DSRz0EP6chPVAFeoSSRu1Wz8bc1rInZnvvin+
+ ekdEj8xcD3uXSypPEa+lG/CfvX3HsXY985c/18JA7g5CnSUsXsH3+7JBp3VK4uAWN2KV
+ NrAH6FjGhBLhxtNdKw4p805dnrCYeIdbZd/Kox+/R3ZeIMsoU1LS4INW7CkEvKlZfDjx
+ fjc7ShlUldN/LzwkveqyD4CIkdbomc583KRFiNaKpdHCd1kK8Q3WQj7YltdT8sc3whLD
+ Hh5w==
+X-Gm-Message-State: ABy/qLb2fXz6dUNb5IaF2wLcsXa8ubDKtFsf3Q/xe3mTijl6FfxYuJ3c
+ wsfLB6AEWmkTHCvYTzaNjxGlqllqTLgG+UmwKto=
+X-Google-Smtp-Source: APBJJlE9lXKlYmNfKeuZuUET56z4AGdSedb/jWaxtytphZSzNnaTQEBJ9pbI1Q+Ivq4B1c3/kvVeMw==
+X-Received: by 2002:a7b:cb86:0:b0:3fa:9538:963e with SMTP id
+ m6-20020a7bcb86000000b003fa9538963emr37649wmi.36.1690812936227; 
+ Mon, 31 Jul 2023 07:15:36 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  z15-20020a05600c114f00b003fbb5506e54sm11450675wmz.29.2023.07.31.07.15.35
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 31 Jul 2023 07:15:35 -0700 (PDT)
+ Mon, 31 Jul 2023 07:15:36 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 1/6] target/arm: Fix MemOp for STGP
-Date: Mon, 31 Jul 2023 15:15:28 +0100
-Message-Id: <20230731141533.3303894-2-peter.maydell@linaro.org>
+Subject: [PULL 2/6] elf2dmp: Don't abandon when Prcb is set to 0
+Date: Mon, 31 Jul 2023 15:15:29 +0100
+Message-Id: <20230731141533.3303894-3-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230731141533.3303894-1-peter.maydell@linaro.org>
 References: <20230731141533.3303894-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,64 +90,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-When converting to decodetree, the code to rebuild mop for the pair
-only made it into trans_STP and not into trans_STGP.
+Prcb may be set to 0 for some CPUs if the dump was taken before they
+start. The dump may still contain valuable information for started CPUs
+so don't abandon conversion in such a case.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1790
-Fixes: 8c212eb6594 ("target/arm: Convert load/store-pair to decodetree")
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20230726165416.309624-1-richard.henderson@linaro.org
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Reviewed-by: Viktor Prutyanov <viktor.prutyanov@phystech.edu>
+Message-id: 20230611033434.14659-1-akihiko.odaki@daynix.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/tcg/translate-a64.c | 21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
+ contrib/elf2dmp/main.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index ef0c47407a9..5fa1257d32a 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -3004,6 +3004,9 @@ static bool trans_STGP(DisasContext *s, arg_ldstpair *a)
-     MemOp mop;
-     TCGv_i128 tmp;
+diff --git a/contrib/elf2dmp/main.c b/contrib/elf2dmp/main.c
+index 89f0c69ab0f..6d4d18501a3 100644
+--- a/contrib/elf2dmp/main.c
++++ b/contrib/elf2dmp/main.c
+@@ -316,6 +316,11 @@ static int fill_context(KDDEBUGGER_DATA64 *kdbg,
+             return 1;
+         }
  
-+    /* STGP only comes in one size. */
-+    tcg_debug_assert(a->sz == MO_64);
++        if (!Prcb) {
++            eprintf("Context for CPU #%d is missing\n", i);
++            continue;
++        }
 +
-     if (!dc_isar_feature(aa64_mte_insn_reg, s)) {
-         return false;
-     }
-@@ -3029,13 +3032,25 @@ static bool trans_STGP(DisasContext *s, arg_ldstpair *a)
-         gen_helper_stg(cpu_env, dirty_addr, dirty_addr);
-     }
- 
--    mop = finalize_memop(s, a->sz);
--    clean_addr = gen_mte_checkN(s, dirty_addr, true, false, 2 << a->sz, mop);
-+    mop = finalize_memop(s, MO_64);
-+    clean_addr = gen_mte_checkN(s, dirty_addr, true, false, 2 << MO_64, mop);
- 
-     tcg_rt = cpu_reg(s, a->rt);
-     tcg_rt2 = cpu_reg(s, a->rt2);
- 
--    assert(a->sz == 3);
-+    /*
-+     * STGP is defined as two 8-byte memory operations and one tag operation.
-+     * We implement it as one single 16-byte memory operation for convenience.
-+     * Rebuild mop as for STP.
-+     * TODO: The atomicity with LSE2 is stronger than required.
-+     * Need a form of MO_ATOM_WITHIN16_PAIR that never requires
-+     * 16-byte atomicity.
-+     */
-+    mop = MO_128;
-+    if (s->align_mem) {
-+        mop |= MO_ALIGN_8;
-+    }
-+    mop = finalize_memop_pair(s, mop);
- 
-     tmp = tcg_temp_new_i128();
-     if (s->be_data == MO_LE) {
+         if (va_space_rw(vs, Prcb + kdbg->OffsetPrcbContext,
+                     &Context, sizeof(Context), 0)) {
+             eprintf("Failed to read CPU #%d ContextFrame location\n", i);
 -- 
 2.34.1
 
