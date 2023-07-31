@@ -2,79 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A51B769501
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 13:36:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E01976951B
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 13:41:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQRB7-00013z-Ob; Mon, 31 Jul 2023 07:35:09 -0400
+	id 1qQRGp-0005Mu-7W; Mon, 31 Jul 2023 07:41:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qQRB5-00013i-C1
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 07:35:07 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qQRGm-0005Jo-Er
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 07:41:00 -0400
+Received: from mail-pj1-x102b.google.com ([2607:f8b0:4864:20::102b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qQRB1-0003B5-7C
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 07:35:07 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-1bbf3da0ea9so14522115ad.2
- for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 04:33:00 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qQRGk-00047D-0c
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 07:41:00 -0400
+Received: by mail-pj1-x102b.google.com with SMTP id
+ 98e67ed59e1d1-267fabc8465so2498059a91.1
+ for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 04:38:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20221208.gappssmtp.com; s=20221208; t=1690803179; x=1691407979;
+ d=smartx-com.20221208.gappssmtp.com; s=20221208; t=1690803535; x=1691408335;
  h=references:to:cc:in-reply-to:date:subject:mime-version:message-id
  :from:from:to:cc:subject:date:message-id:reply-to;
- bh=m3OZPOJyezwqBRoSnh57/gryU51kIwcnfGZWX1RLong=;
- b=QX9htMwBalfqhtC/ciX+0vRqcIP2eeNbQbOCw7YuckpxcnR/7uA6U05q4qoQIu01ch
- FdqtaD7MKzq36vjLmibU7nPP9jGujKKTmnWDfeTQOmuKaRGfzWxYEUwdjGxp6Il3fgjU
- md1wDdvSrv2lU+FxR5FNcD1dypB0Iet9rcwAxT6MPAyw/1RecFP3JQrSgpVjCvaZ3Fhb
- XqxrW2FkVUK00b0sDO+0uduudvG9a4CfwavUsQqL+oYH3hwYRFU3LAOEYf5pkAdCerD9
- iIVr0SteuryDGgNSayXQXnUzCZZhwFuqaUHvplWbjhYbvPRpLmeuEuQh3kyhdoXbuQ6+
- ROjQ==
+ bh=ekwMlhWRUPDz6ieNKXXMKv+Ieku0hKLHcG+apOM1tYg=;
+ b=JSpqjkRqCUTO9H+ge86KlYbsYL0IYK6QDgonSiqwtRoFQWBpQnDPXu6WFymtX7ZrHm
+ jW3HGedmmUwdGFhAUxpgwUp6CEWiQszwA//OISnvLMIFqiYvmCx6cRk0Sv29M5LquTew
+ A4PaAw2IBy4/A06mkrDjocS1btTtjCBll7yPyIsQLzcnXrohJohomU5ohU/dnFgmnmVs
+ JDWxMXdViC6ogn7ZC2G0SbHVwMIVlrLouImRMnUKbhASxl1hwfQJmJkcUzv0bD0yanmT
+ Fah5LTAWEyETtlTfIwiWVRwSibC0F4DCIQULj4D5Ae9xiN2LQgl0XV/S/lfJ3Uf5JajP
+ AZog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690803179; x=1691407979;
+ d=1e100.net; s=20221208; t=1690803535; x=1691408335;
  h=references:to:cc:in-reply-to:date:subject:mime-version:message-id
  :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=m3OZPOJyezwqBRoSnh57/gryU51kIwcnfGZWX1RLong=;
- b=Q6LQ77vYJ1Hyhb32LUbdiy1Fjr2xuLzukGNBS2HB8cuh2JjHmLxGOeji6Yi6Wvtsjv
- X7Au8W5bY9KEoMe0vI1XrbqVeUZwWYSNKypB4UX8TEINJIZAAfR+D3USXaCpxFApGmxy
- +URWYhGS7YwLpoK8UUhiQXRkZYWKdmH+TKXu5aXtGHLABE6gM9cKeWM0LoPIJnesYx4g
- xk1uYOP3Fmn7YyWZaoqEvf4TXP8n6iHbX3+p/UWYsEcSGoMFXW/NCDfvvQmxNFBx5gsf
- iFtloiR9kDy1eM87Iu0TtKMPaKtclBJr1q5n7aR1pTZIQmmWcq0tVQddlS6RbgxP+1JE
- XxFg==
-X-Gm-Message-State: ABy/qLa3LEcFe23OQkUnBfyC1w/3J6ZF2TkCGr+hGgOHO4Mni4jJuzY+
- A7CGkfy5hmgUkAADwJTh7Uyzcg==
-X-Google-Smtp-Source: APBJJlE149P26L60KAuwOc8lIbZ/tzQ1XVj+flI4likTQiWntO8/Una4IxzzrTTxwJPV+Shi5sjGYA==
-X-Received: by 2002:a17:903:1cb:b0:1b8:2ba0:c9c0 with SMTP id
- e11-20020a17090301cb00b001b82ba0c9c0mr9682516plh.59.1690803178845; 
- Mon, 31 Jul 2023 04:32:58 -0700 (PDT)
+ bh=ekwMlhWRUPDz6ieNKXXMKv+Ieku0hKLHcG+apOM1tYg=;
+ b=CcLxkPuBjy3h/elczmhTxlPYQyqRvO8Sa/pEYouInQyP6lb6p63FEQuWe/HyeCyaKw
+ gQYIGulzRbIlp/iUKWsjnLlmHiqkWeemeM8Wct+WydGvUvPdvzZvpDRYAQXxEz/xRKyT
+ d0S0thJR/zk48Zbov161VjmmO01zmQ8Xiv2jKY2eYIMOtXnxiA1M+9P2Orp7y76dUdLQ
+ ot6gwihjYCuIzmZJ46kIhNOj2Iu8Ksw/ikE6EXvLwzYRnWXhO1wu+A6aHQegHMOK0yfL
+ 60McMhL07i5RgNoBjPAJWUw/AQO4BxK+SYkTRNg5qiLHmos5wJWDtPijT9xuorHV2z20
+ bc3w==
+X-Gm-Message-State: ABy/qLY/PxWmeYszs3cceGrzJG3KnTO1OHnDGaJeC2ennV6QONJQ+Q6l
+ pm/mnizDbTt5WDznpXBln16lzQ==
+X-Google-Smtp-Source: APBJJlGtc0jhFApMVXXHa/FC9pq0v1WmGsmgIZKX0iaWyB4A9fbFa6PW5pNcfmcU4begaosyYKw6Ag==
+X-Received: by 2002:a17:90b:3e89:b0:268:1222:6fef with SMTP id
+ rj9-20020a17090b3e8900b0026812226fefmr9084641pjb.23.1690803534558; 
+ Mon, 31 Jul 2023 04:38:54 -0700 (PDT)
 Received: from smtpclient.apple ([47.75.78.161])
  by smtp.gmail.com with ESMTPSA id
- w8-20020a170902e88800b001b83e5ec666sm8383072plg.6.2023.07.31.04.32.54
+ bu5-20020a17090aee4500b00268dac826d4sm478526pjb.0.2023.07.31.04.38.50
  (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Mon, 31 Jul 2023 04:32:58 -0700 (PDT)
+ Mon, 31 Jul 2023 04:38:54 -0700 (PDT)
 From: Li Feng <fengli@smartx.com>
-Message-Id: <3CE8EB18-6E86-4E83-8675-8722D954830D@smartx.com>
+Message-Id: <8D0EABBD-CB21-4BF4-A96F-CC64CA92C99B@smartx.com>
 Content-Type: multipart/alternative;
- boundary="Apple-Mail=_C7363ABD-8574-4088-9DAA-702D6DA28F8F"
+ boundary="Apple-Mail=_5B62229F-CA9F-4AB2-9AA1-32009DF91599"
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.300.101.1.3\))
-Subject: Re: [PATCH] vhost-user-scsi: support reconnect to backend
-Date: Mon, 31 Jul 2023 19:32:41 +0800
-In-Reply-To: <C276F259-F8E2-467C-82DF-3064BB0D5884@nutanix.com>
+Subject: Re: [PATCH v2 2/4] vhost-user-common: send get_inflight_fd once
+Date: Mon, 31 Jul 2023 19:38:37 +0800
+In-Reply-To: <70D32B59-8B40-45E2-AFEC-0E3395867D15@nutanix.com>
 Cc: "Michael S. Tsirkin" <mst@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
  Hanna Reitz <hreitz@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Fam Zheng <fam@euphon.net>,
+ =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Viresh Kumar <viresh.kumar@linaro.org>,
  "open list:Block layer core" <qemu-block@nongnu.org>,
  "open list:All patches CC here" <qemu-devel@nongnu.org>
 To: Raphael Norwitz <raphael.norwitz@nutanix.com>
 References: <20230721105205.1714449-1-fengli@smartx.com>
- <DDDB71EA-E549-4325-9CDC-E9C746AE2E9B@nutanix.com>
- <15166F8E-9F1C-4AEB-9941-E83E5776B3A7@smartx.com>
- <1C6B7B1C-5B5A-4CAC-9FE4-3BB29B8BD625@nutanix.com>
- <58D37DBE-A5A2-4875-B129-A21F667E6615@smartx.com>
- <C276F259-F8E2-467C-82DF-3064BB0D5884@nutanix.com>
+ <20230725104256.4861-1-fengli@smartx.com>
+ <20230725104256.4861-3-fengli@smartx.com>
+ <20230728020156-mutt-send-email-mst@kernel.org>
+ <09BB8CEC-26F4-4FC5-A2DB-479FCD5F0548@smartx.com>
+ <70D32B59-8B40-45E2-AFEC-0E3395867D15@nutanix.com>
 X-Mailer: Apple Mail (2.3731.300.101.1.3)
-Received-SPF: none client-ip=2607:f8b0:4864:20::632;
- envelope-from=fengli@smartx.com; helo=mail-pl1-x632.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::102b;
+ envelope-from=fengli@smartx.com; helo=mail-pj1-x102b.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -98,529 +100,138 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
---Apple-Mail=_C7363ABD-8574-4088-9DAA-702D6DA28F8F
+--Apple-Mail=_5B62229F-CA9F-4AB2-9AA1-32009DF91599
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain;
 	charset=utf-8
 
 
 
-> 2023=E5=B9=B47=E6=9C=8831=E6=97=A5 06:09=EF=BC=8CRaphael Norwitz =
+> 2023=E5=B9=B47=E6=9C=8831=E6=97=A5 06:13=EF=BC=8CRaphael Norwitz =
 <raphael.norwitz@nutanix.com> =E5=86=99=E9=81=93=EF=BC=9A
 >=20
->=20
->=20
->> On Jul 28, 2023, at 3:48 AM, Li Feng <fengli@smartx.com> wrote:
 >>=20
->> Thanks for your reply.
+>> On Jul 28, 2023, at 3:49 AM, Li Feng <fengli@smartx.com> wrote:
 >>=20
->>> 2023=E5=B9=B47=E6=9C=8828=E6=97=A5 =E4=B8=8A=E5=8D=885:21=EF=BC=8CRaph=
-ael Norwitz <raphael.norwitz@nutanix.com> =E5=86=99=E9=81=93=EF=BC=9A
+>>=20
+>>=20
+>>> 2023=E5=B9=B47=E6=9C=8828=E6=97=A5 =E4=B8=8B=E5=8D=882:04=EF=BC=8CMich=
+ael S. Tsirkin <mst@redhat.com> =E5=86=99=E9=81=93=EF=BC=9A
 >>>=20
+>>> On Tue, Jul 25, 2023 at 06:42:45PM +0800, Li Feng wrote:
+>>>> Get_inflight_fd is sent only once. When reconnecting to the =
+backend,
+>>>> qemu sent set_inflight_fd to the backend.
 >>>=20
+>>> I don't understand what you are trying to say here.
+>>> Should be:
+>>> Currently ABCD. This is wrong/unnecessary because EFG. This patch =
+HIJ.
+>>=20
+>> Thanks, I will reorganize the commit message in v3.
 >>>=20
->>>> On Jul 25, 2023, at 6:19 AM, Li Feng <fengli@smartx.com> wrote:
+>>>> Signed-off-by: Li Feng <fengli@smartx.com>
+>>>> ---
+>>>> hw/scsi/vhost-scsi-common.c | 37 =
+++++++++++++++++++-------------------
+>>>> 1 file changed, 18 insertions(+), 19 deletions(-)
 >>>>=20
->>>> Thanks for your comments.
->>>>=20
->>>>> 2023=E5=B9=B47=E6=9C=8825=E6=97=A5 =E4=B8=8A=E5=8D=881:21=EF=BC=8CRa=
-phael Norwitz <raphael.norwitz@nutanix.com> =E5=86=99=E9=81=93=EF=BC=9A
->>>>>=20
->>>>> Very excited to see this. High level looks good modulo a few small =
-things.
->>>>>=20
->>>>> My major concern is around existing vhost-user-scsi backends which =
-don=E2=80=99t support VHOST_USER_PROTOCOL_F_INFLIGHT_SHMFD. IMO we =
-should hide the reconnect behavior behind a =
-VHOST_USER_PROTOCOL_F_INFLIGHT_SHMFD check. We may want to do the same =
-for vhost-user-blk.
->>>>>=20
->>>>> The question is then what happens if the check is false. IIUC =
-without an inflight FD, if a device processes requests out of order, =
-it=E2=80=99s not safe to continue execution on reconnect, as there=E2=80=99=
-s no way for the backend to know how to replay IO. Should we permanently =
-wedge the device or have QEMU fail out? May be nice to have a toggle for =
-this.
->>>>=20
->>>> Based on what MST said, is there anything else I need to do?
->>>=20
->>> I don=E2=80=99t think so.
->>>=20
->>>>>=20
->>>>>> On Jul 21, 2023, at 6:51 AM, Li Feng <fengli@smartx.com> wrote:
->>>>>>=20
->>>>>> If the backend crashes and restarts, the device is broken.
->>>>>> This patch adds reconnect for vhost-user-scsi.
->>>>>>=20
->>>>>> Tested with spdk backend.
->>>>>>=20
->>>>>> Signed-off-by: Li Feng <fengli@smartx.com>
->>>>>> ---
->>>>>> hw/block/vhost-user-blk.c           |   2 -
->>>>>> hw/scsi/vhost-scsi-common.c         |  27 ++---
->>>>>> hw/scsi/vhost-user-scsi.c           | 163 =
-+++++++++++++++++++++++++---
->>>>>> include/hw/virtio/vhost-user-scsi.h |   3 +
->>>>>> include/hw/virtio/vhost.h           |   2 +
->>>>>> 5 files changed, 165 insertions(+), 32 deletions(-)
->>>>>>=20
->>>>>> diff --git a/hw/block/vhost-user-blk.c =
-b/hw/block/vhost-user-blk.c
->>>>>> index eecf3f7a81..f250c740b5 100644
->>>>>> --- a/hw/block/vhost-user-blk.c
->>>>>> +++ b/hw/block/vhost-user-blk.c
->>>>>> @@ -32,8 +32,6 @@
->>>>>> #include "sysemu/sysemu.h"
->>>>>> #include "sysemu/runstate.h"
->>>>>>=20
->>>>>> -#define REALIZE_CONNECTION_RETRIES 3
->>>>>> -
->>>>>> static const int user_feature_bits[] =3D {
->>>>>>  VIRTIO_BLK_F_SIZE_MAX,
->>>>>>  VIRTIO_BLK_F_SEG_MAX,
->>>>>> diff --git a/hw/scsi/vhost-scsi-common.c =
+>>>> diff --git a/hw/scsi/vhost-scsi-common.c =
 b/hw/scsi/vhost-scsi-common.c
->>>>>=20
->>>>> Why can=E2=80=99t all the vhost-scsi-common stuff be moved to a =
-separate change?
+>>>> index a06f01af26..664adb15b4 100644
+>>>> --- a/hw/scsi/vhost-scsi-common.c
+>>>> +++ b/hw/scsi/vhost-scsi-common.c
+>>>> @@ -52,20 +52,28 @@ int vhost_scsi_common_start(VHostSCSICommon =
+*vsc)
 >>>>=20
->>>> I will move this code to separate patch.
->>>>>=20
->>>>> Especially the stuff introduced for vhost-user-blk in =
-1b0063b3048af65dfaae6422a572c87db8575a92 should be moved out.
->>>> OK.
+>>>>    vsc->dev.acked_features =3D vdev->guest_features;
 >>>>=20
->>>>>=20
->>>>>> index a06f01af26..08801886b8 100644
->>>>>> --- a/hw/scsi/vhost-scsi-common.c
->>>>>> +++ b/hw/scsi/vhost-scsi-common.c
->>>>>> @@ -52,16 +52,22 @@ int vhost_scsi_common_start(VHostSCSICommon =
-*vsc)
->>>>>>=20
->>>>>>  vsc->dev.acked_features =3D vdev->guest_features;
->>>>>>=20
->>>>>> -    assert(vsc->inflight =3D=3D NULL);
->>>>>> -    vsc->inflight =3D g_new0(struct vhost_inflight, 1);
->>>>>> -    ret =3D vhost_dev_get_inflight(&vsc->dev,
->>>>>> -                                 vs->conf.virtqueue_size,
->>>>>> -                                 vsc->inflight);
->>>>>> +    ret =3D vhost_dev_prepare_inflight(&vsc->dev, vdev);
->>>>>>  if (ret < 0) {
->>>>>> -        error_report("Error get inflight: %d", -ret);
->>>>>> +        error_report("Error setting inflight format: %d", -ret);
->>>>>>      goto err_guest_notifiers;
->>>>>>  }
->>>>>>=20
->>>>>> +    if (!vsc->inflight->addr) {
->>>>>> +        ret =3D vhost_dev_get_inflight(&vsc->dev,
->>>>>> +                                    vs->conf.virtqueue_size,
->>>>>> +                                    vsc->inflight);
->>>>>> +        if (ret < 0) {
->>>>>> +            error_report("Error get inflight: %d", -ret);
->>>>>> +            goto err_guest_notifiers;
->>>>>> +        }
->>>>>> +    }
->>>>>> +
->>>>>>  ret =3D vhost_dev_set_inflight(&vsc->dev, vsc->inflight);
->>>>>>  if (ret < 0) {
->>>>>>      error_report("Error set inflight: %d", -ret);
->>>>>> @@ -85,9 +91,6 @@ int vhost_scsi_common_start(VHostSCSICommon =
-*vsc)
->>>>>>  return ret;
->>>>>>=20
->>>>>> err_guest_notifiers:
->>>>>> -    g_free(vsc->inflight);
->>>>>> -    vsc->inflight =3D NULL;
->>>>>> -
->>>>>>  k->set_guest_notifiers(qbus->parent, vsc->dev.nvqs, false);
->>>>>> err_host_notifiers:
->>>>>>  vhost_dev_disable_notifiers(&vsc->dev, vdev);
->>>>>> @@ -111,12 +114,6 @@ void vhost_scsi_common_stop(VHostSCSICommon =
-*vsc)
->>>>>>  }
->>>>>>  assert(ret >=3D 0);
->>>>>>=20
->>>>>=20
->>>>> In the vhost-scsi (kernel backend) path, what will cleanup =
-vsc->inflight now?
->>>> OK, we should check the vsc->inflight if it is null, the vhost-scsi =
-doesn=E2=80=99t allocate the
->>>> inflight object memory.
+>>>> -    assert(vsc->inflight =3D=3D NULL);
+>>>> -    vsc->inflight =3D g_new0(struct vhost_inflight, 1);
+>>>> -    ret =3D vhost_dev_get_inflight(&vsc->dev,
+>>>> -                                 vs->conf.virtqueue_size,
+>>>> -                                 vsc->inflight);
+>>>> +    ret =3D vhost_dev_prepare_inflight(&vsc->dev, vdev);
+>>>>    if (ret < 0) {
+>>>> -        error_report("Error get inflight: %d", -ret);
+>>>> +        error_report("Error setting inflight format: %d", -ret);
+>>>>        goto err_guest_notifiers;
+>>>>    }
+>>>>=20
+>>>> -    ret =3D vhost_dev_set_inflight(&vsc->dev, vsc->inflight);
+>>>> -    if (ret < 0) {
+>>>> -        error_report("Error set inflight: %d", -ret);
+>>>> -        goto err_guest_notifiers;
+>>>> +    if (vsc->inflight) {
+>>>> +        if (!vsc->inflight->addr) {
+>>>> +            ret =3D vhost_dev_get_inflight(&vsc->dev,
+>>>> +                                        vs->conf.virtqueue_size,
+>>>> +                                        vsc->inflight);
+>>>> +            if (ret < 0) {
+>>>> +                error_report("Error get inflight: %d", -ret);
 >>>=20
->>> Are you saying vhost-scsi never allocates inflight so we don=E2=80=99t=
- need to check for it?
->> We have checked the vsc->inflight, and only if allocated, we send the =
-get/set_inflight_fd.
->> This works with vhost-user-scsi/vhost-scsi both.
+>>> As long as you are fixing this - should be "getting inflight=E2=80=9D.=
+
+>> I will fix it in v3.
+>>>=20
+>>>> +                goto err_guest_notifiers;
+>>>> +            }
+>>>> +        }
+>>>> +
 >=20
-> So then it sounds like this code introduces a resource leak. =
-g_free(vsc->inflight) should be added to the vhost-scsi code in =
-vhost_scsi_stop().
+> Looks like you reworked this a bit so to avoid a potential crash if =
+vsc->inflight is NULL
+>=20
+> Should we fix it for vhost-user-blk too?
+>=20
+This check is mainly for the vhost-scsi code, that doesn=E2=80=99t need =
+allocate the inflight memory.
 
-No, the vhost-scsi doesn=E2=80=99t need =E2=80=98inflight', it doesn=E2=80=
-=99t allocate the inflight memory.
+The vhost-user-blk doesn=E2=80=99t need this check, because there isn't =
+a vhost-blk device that reuse the code.
 
-The rule is =E2=80=98who allocates, who free it=E2=80=99.
+>>>> +        ret =3D vhost_dev_set_inflight(&vsc->dev, vsc->inflight);
+>>>> +        if (ret < 0) {
+>>>> +            error_report("Error set inflight: %d", -ret);
+>>>> +            goto err_guest_notifiers;
+>>>> +        }
+>>>>    }
+>>>>=20
+>>>>    ret =3D vhost_dev_start(&vsc->dev, vdev, true);
+>>>> @@ -85,9 +93,6 @@ int vhost_scsi_common_start(VHostSCSICommon *vsc)
+>>>>    return ret;
+>>>>=20
+>>>> err_guest_notifiers:
+>>>> -    g_free(vsc->inflight);
+>>>> -    vsc->inflight =3D NULL;
+>>>> -
+>>>>    k->set_guest_notifiers(qbus->parent, vsc->dev.nvqs, false);
+>>>> err_host_notifiers:
+>>>>    vhost_dev_disable_notifiers(&vsc->dev, vdev);
+>>>> @@ -111,12 +116,6 @@ void vhost_scsi_common_stop(VHostSCSICommon =
+*vsc)
+>>>>    }
+>>>>    assert(ret >=3D 0);
+>>>>=20
+>=20
+> As I said before, I think this introduces a leak.
+I have answered in the previous mail.
 
 >=20
->>>=20
+>>>> -    if (vsc->inflight) {
+>>>> -        vhost_dev_free_inflight(vsc->inflight);
+>>>> -        g_free(vsc->inflight);
+>>>> -        vsc->inflight =3D NULL;
+>>>> -    }
+>>>> -
+>>>>    vhost_dev_disable_notifiers(&vsc->dev, vdev);
+>>>> }
 >>>>=20
->>>>>=20
->>>>>> -    if (vsc->inflight) {
->>>>>> -        vhost_dev_free_inflight(vsc->inflight);
->>>>>> -        g_free(vsc->inflight);
->>>>>> -        vsc->inflight =3D NULL;
->>>>>> -    }
->>>>>> -
->>>>>>  vhost_dev_disable_notifiers(&vsc->dev, vdev);
->>>>>> }
->>>>>>=20
->>>>>> diff --git a/hw/scsi/vhost-user-scsi.c =
-b/hw/scsi/vhost-user-scsi.c
->>>>>> index ee99b19e7a..e0e88b0c42 100644
->>>>>> --- a/hw/scsi/vhost-user-scsi.c
->>>>>> +++ b/hw/scsi/vhost-user-scsi.c
->>>>>> @@ -89,14 +89,126 @@ static void =
-vhost_dummy_handle_output(VirtIODevice *vdev, VirtQueue *vq)
->>>>>> {
->>>>>> }
->>>>>>=20
->>>>>> +static int vhost_user_scsi_connect(DeviceState *dev, Error =
-**errp)
->>>>>> +{
->>>>>> +    VirtIODevice *vdev =3D VIRTIO_DEVICE(dev);
->>>>>> +    VHostUserSCSI *s =3D VHOST_USER_SCSI(vdev);
->>>>>> +    VHostSCSICommon *vsc =3D VHOST_SCSI_COMMON(s);
->>>>>> +    VirtIOSCSICommon *vs =3D VIRTIO_SCSI_COMMON(dev);
->>>>>> +    int ret =3D 0;
->>>>>> +
->>>>>> +    if (s->connected) {
->>>>>> +        return 0;
->>>>>> +    }
->>>>>> +    s->connected =3D true;
->>>>>> +
->>>>>> +    vsc->dev.num_queues =3D vs->conf.num_queues;
->>>>>> +    vsc->dev.nvqs =3D VIRTIO_SCSI_VQ_NUM_FIXED + =
-vs->conf.num_queues;
->>>>>> +    vsc->dev.vqs =3D s->vhost_vqs;
->>>>>> +    vsc->dev.vq_index =3D 0;
->>>>>> +    vsc->dev.backend_features =3D 0;
->>>>>> +
->>>>>> +    ret =3D vhost_dev_init(&vsc->dev, &s->vhost_user, =
-VHOST_BACKEND_TYPE_USER, 0,
->>>>>> +                         errp);
->>>>>> +    if (ret < 0) {
->>>>>> +        return ret;
->>>>>> +    }
->>>>>> +
->>>>>> +    /* restore vhost state */
->>>>>=20
->>>>> Should this use virtio_device_should_start like vhost_user_blk?
->>>> I will change this.
->>>>>=20
->>>>>> +    if (virtio_device_started(vdev, vdev->status)) {
->>>>>> +        ret =3D vhost_scsi_common_start(vsc);
->>>>>> +        if (ret < 0) {
->>>>>> +            return ret;
->>>>>> +        }
->>>>>> +    }
->>>>>> +
->>>>>> +    return 0;
->>>>>> +}
->>>>>> +
->>>>>> +static void vhost_user_scsi_event(void *opaque, QEMUChrEvent =
-event);
->>>>>> +
->>>>>> +static void vhost_user_scsi_disconnect(DeviceState *dev)
->>>>>> +{
->>>>>> +    VirtIODevice *vdev =3D VIRTIO_DEVICE(dev);
->>>>>> +    VHostUserSCSI *s =3D VHOST_USER_SCSI(vdev);
->>>>>> +    VHostSCSICommon *vsc =3D VHOST_SCSI_COMMON(s);
->>>>>> +    VirtIOSCSICommon *vs =3D VIRTIO_SCSI_COMMON(dev);
->>>>>> +
->>>>>=20
->>>>> I don=E2=80=99t think we want to execute vhost_scsi_common_stop() =
-if the device hasn=E2=80=99t been started. I remember that caused a =
-number of races with the vhost_user_blk connecting/disconnecting on =
-startup.
->>>>>=20
->>>>> Let=E2=80=99s add a similar started_vu check?
->>>> I will add it.
->>>>>=20
->>>>>> +    if (!s->connected) {
->>>>>> +        return;
->>>>>> +    }
->>>>>> +    s->connected =3D false;
->>>>>> +
->>>>>> +    vhost_scsi_common_stop(vsc);
->>>>>> +
->>>>>> +    vhost_dev_cleanup(&vsc->dev);
->>>>>> +
->>>>>> +    /* Re-instate the event handler for new connections */
->>>>>> +    qemu_chr_fe_set_handlers(&vs->conf.chardev, NULL, NULL,
->>>>>> +                             vhost_user_scsi_event, NULL, dev, =
-NULL, true);
->>>>>> +}
->>>>>> +
->>>>>> +static void vhost_user_scsi_event(void *opaque, QEMUChrEvent =
-event)
->>>>>> +{
->>>>>> +    DeviceState *dev =3D opaque;
->>>>>> +    VirtIODevice *vdev =3D VIRTIO_DEVICE(dev);
->>>>>> +    VHostUserSCSI *s =3D VHOST_USER_SCSI(vdev);
->>>>>> +    VHostSCSICommon *vsc =3D VHOST_SCSI_COMMON(s);
->>>>>> +    VirtIOSCSICommon *vs =3D VIRTIO_SCSI_COMMON(dev);
->>>>>> +    Error *local_err =3D NULL;
->>>>>> +
->>>>>> +    switch (event) {
->>>>>> +    case CHR_EVENT_OPENED:
->>>>>> +        if (vhost_user_scsi_connect(dev, &local_err) < 0) {
->>>>>> +            error_report_err(local_err);
->>>>>> +            qemu_chr_fe_disconnect(&vs->conf.chardev);
->>>>>> +            return;
->>>>>> +        }
->>>>>> +        break;
->>>>>> +    case CHR_EVENT_CLOSED:
->>>>>> +        /* defer close until later to avoid circular close */
->>>>>> +        vhost_user_async_close(dev, &vs->conf.chardev, =
-&vsc->dev,
->>>>>> +                               vhost_user_scsi_disconnect);
->>>>>> +        break;
->>>>>> +    case CHR_EVENT_BREAK:
->>>>>> +    case CHR_EVENT_MUX_IN:
->>>>>> +    case CHR_EVENT_MUX_OUT:
->>>>>> +        /* Ignore */
->>>>>> +        break;
->>>>>> +    }
->>>>>> +}
->>>>>> +
->>>>>> +static int vhost_user_scsi_realize_connect(VHostUserSCSI *s, =
-Error **errp)
->>>>>> +{
->>>>>> +    DeviceState *dev =3D =
-&s->parent_obj.parent_obj.parent_obj.parent_obj;
->>>>>> +    VirtIOSCSICommon *vs =3D VIRTIO_SCSI_COMMON(dev);
->>>>>> +    int ret;
->>>>>> +
->>>>>> +    s->connected =3D false;
->>>>>> +
->>>>>> +    ret =3D qemu_chr_fe_wait_connected(&vs->conf.chardev, errp);
->>>>>> +    if (ret < 0) {
->>>>>> +        return ret;
->>>>>> +    }
->>>>>> +
->>>>>> +    ret =3D vhost_user_scsi_connect(dev, errp);
->>>>>> +    if (ret < 0) {
->>>>>> +        qemu_chr_fe_disconnect(&vs->conf.chardev);
->>>>>> +        return ret;
->>>>>> +    }
->>>>>> +    assert(s->connected);
->>>>>> +
->>>>>> +    return 0;
->>>>>> +}
->>>>>> +
->>>>>> static void vhost_user_scsi_realize(DeviceState *dev, Error =
-**errp)
->>>>>> {
->>>>>>  VirtIOSCSICommon *vs =3D VIRTIO_SCSI_COMMON(dev);
->>>>>>  VHostUserSCSI *s =3D VHOST_USER_SCSI(dev);
->>>>>>  VHostSCSICommon *vsc =3D VHOST_SCSI_COMMON(s);
->>>>>> -    struct vhost_virtqueue *vqs =3D NULL;
->>>>>>  Error *err =3D NULL;
->>>>>>  int ret;
->>>>>> +    int retries =3D REALIZE_CONNECTION_RETRIES;
->>>>>>=20
->>>>>>  if (!vs->conf.chardev.chr) {
->>>>>>      error_setg(errp, "vhost-user-scsi: missing chardev");
->>>>>> @@ -112,21 +224,31 @@ static void =
-vhost_user_scsi_realize(DeviceState *dev, Error **errp)
->>>>>>  }
->>>>>>=20
->>>>>>  if (!vhost_user_init(&s->vhost_user, &vs->conf.chardev, errp)) {
->>>>>=20
->>>>> Why execute vhost_user_cleanup() if vhost_user_init() fails?
->>>> OK, move this line up in v2.
->>>>=20
->>>>>=20
->>>>>> -        goto free_virtio;
->>>>>> +        goto free_vhost;
->>>>>>  }
->>>>>>=20
->>>>>> -    vsc->dev.nvqs =3D VIRTIO_SCSI_VQ_NUM_FIXED + =
-vs->conf.num_queues;
->>>>>> -    vsc->dev.vqs =3D g_new0(struct vhost_virtqueue, =
-vsc->dev.nvqs);
->>>>>> -    vsc->dev.vq_index =3D 0;
->>>>>> -    vsc->dev.backend_features =3D 0;
->>>>>> -    vqs =3D vsc->dev.vqs;
->>>>>> +    vsc->inflight =3D g_new0(struct vhost_inflight, 1);
->>>>>> +    s->vhost_vqs =3D g_new0(struct vhost_virtqueue,
->>>>>> +                          VIRTIO_SCSI_VQ_NUM_FIXED + =
-vs->conf.num_queues);
->>>>>> +
->>>>>> +    assert(!*errp);
->>>>>> +    do {
->>>>>> +        if (*errp) {
->>>>>> +            error_prepend(errp, "Reconnecting after error: ");
->>>>>> +            error_report_err(*errp);
->>>>>> +            *errp =3D NULL;
->>>>>> +        }
->>>>>> +        ret =3D vhost_user_scsi_realize_connect(s, errp);
->>>>>> +    } while (ret < 0 && retries--);
->>>>>>=20
->>>>>> -    ret =3D vhost_dev_init(&vsc->dev, &s->vhost_user,
->>>>>> -                         VHOST_BACKEND_TYPE_USER, 0, errp);
->>>>>>  if (ret < 0) {
->>>>>> -        goto free_vhost;
->>>>>> +        goto free_vqs;
->>>>>>  }
->>>>>>=20
->>>>>> +    /* we're fully initialized, now we can operate, so add the =
-handler */
->>>>>> +    qemu_chr_fe_set_handlers(&vs->conf.chardev,  NULL, NULL,
->>>>>> +                             vhost_user_scsi_event, NULL, (void =
-*)dev,
->>>>>> +                             NULL, true);
->>>>>>  /* Channel and lun both are 0 for bootable vhost-user-scsi disk =
-*/
->>>>>>  vsc->channel =3D 0;
->>>>>>  vsc->lun =3D 0;
->>>>>> @@ -134,10 +256,15 @@ static void =
-vhost_user_scsi_realize(DeviceState *dev, Error **errp)
->>>>>>=20
->>>>>>  return;
->>>>>>=20
->>>>>> +free_vqs:
->>>>>> +    g_free(s->vhost_vqs);
->>>>>> +    s->vhost_vqs =3D NULL;
->>>>>> +    g_free(vsc->inflight);
->>>>>> +    vsc->inflight =3D NULL;
->>>>>> +
->>>>>> free_vhost:
->>>>>>  vhost_user_cleanup(&s->vhost_user);
->>>>>> -    g_free(vqs);
->>>>>> -free_virtio:
->>>>>> +
->>>>>>  virtio_scsi_common_unrealize(dev);
->>>>>> }
->>>>>>=20
->>>>>> @@ -146,16 +273,22 @@ static void =
-vhost_user_scsi_unrealize(DeviceState *dev)
->>>>>>  VirtIODevice *vdev =3D VIRTIO_DEVICE(dev);
->>>>>>  VHostUserSCSI *s =3D VHOST_USER_SCSI(dev);
->>>>>>  VHostSCSICommon *vsc =3D VHOST_SCSI_COMMON(s);
->>>>>> -    struct vhost_virtqueue *vqs =3D vsc->dev.vqs;
->>>>>> +    VirtIOSCSICommon *vs =3D VIRTIO_SCSI_COMMON(dev);
->>>>>>=20
->>>>>>  /* This will stop the vhost backend. */
->>>>>>  vhost_user_scsi_set_status(vdev, 0);
->>>>>> +    qemu_chr_fe_set_handlers(&vs->conf.chardev, NULL, NULL, =
-NULL, NULL, NULL,
->>>>>> +                             NULL, false);
->>>>>>=20
->>>>>>  vhost_dev_cleanup(&vsc->dev);
->>>>>> -    g_free(vqs);
->>>>>=20
->>>>> Nit: Why not put vhost_dev_free_inflight next to the remaining =
-inflight cleanup?
->>>> OK.
->>>>>=20
->>>>>> +    vhost_dev_free_inflight(vsc->inflight);
->>>>>> +    g_free(s->vhost_vqs);
->>>>>> +    s->vhost_vqs =3D NULL;
->>>>>> +    g_free(vsc->inflight);
->>>>>> +    vsc->inflight =3D NULL;
->>>>>>=20
->>>>>=20
->>>>> Curiosity - why reorder here? Is something in vhost_user_cleanup() =
-dependent on state freed in virtio_scsi_common_unrealize()?
->>>>>=20
->>>>> If so, should that go as a standalone fix?
->>>>=20
->>>> Because in vhost_user_scsi_realize, we initialize in order:
->>>> virtio_scsi_common_realize
->>>> vhost_user_init
->>>>=20
->>>> And in the error handler of vhost_user_scsi_realize, the =
-uninitialize in order:
->>>> vhost_user_cleanup
->>>> virtio_scsi_common_unrealize
->>>>=20
->>>> I think in vhost_user_scsi_unrealize we should keep it the same =
-order, right?
->>>=20
->>> I=E2=80=99m not saying it=E2=80=99s wrong. If there=E2=80=99s no =
-dependency (i.e. this is not fixing a bug, just a stylistic improvement) =
-it can stay in the same change.
->> OK.
->>>=20
->>>>=20
->>>>>=20
->>>>>> -    virtio_scsi_common_unrealize(dev);
->>>>>>  vhost_user_cleanup(&s->vhost_user);
->>>>>> +    virtio_scsi_common_unrealize(dev);
->>>>>> }
->>>>>>=20
->>>>>> static Property vhost_user_scsi_properties[] =3D {
->>>>>> diff --git a/include/hw/virtio/vhost-user-scsi.h =
-b/include/hw/virtio/vhost-user-scsi.h
->>>>>> index 521b08e559..c66acc68b7 100644
->>>>>> --- a/include/hw/virtio/vhost-user-scsi.h
->>>>>> +++ b/include/hw/virtio/vhost-user-scsi.h
->>>>>> @@ -29,6 +29,9 @@ OBJECT_DECLARE_SIMPLE_TYPE(VHostUserSCSI, =
-VHOST_USER_SCSI)
->>>>>> struct VHostUserSCSI {
->>>>>>  VHostSCSICommon parent_obj;
->>>>>>  VhostUserState vhost_user;
->>>>>=20
->>>>> See above - we should probably have started_vu here/
->>>> I will add it.
->>>>>=20
->>>>> Maybe we should have some shared struct with vhost_user_blk for =
-connectivity params?
->>>>=20
->>>> In the future vhost-user-blk/scsi can be refactored to share the =
-same code.
->>>=20
->>> Sure - this can be done at some point in the future.
->>>=20
->>>>>=20
->>>>>> +    bool connected;
->>>>>> +
->>>>>> +    struct vhost_virtqueue *vhost_vqs;
->>>>>> };
->>>>>>=20
->>>>>> #endif /* VHOST_USER_SCSI_H */
->>>>>> diff --git a/include/hw/virtio/vhost.h =
-b/include/hw/virtio/vhost.h
->>>>>> index 6a173cb9fa..b904346fe1 100644
->>>>>> --- a/include/hw/virtio/vhost.h
->>>>>> +++ b/include/hw/virtio/vhost.h
->>>>>> @@ -8,6 +8,8 @@
->>>>>> #define VHOST_F_DEVICE_IOTLB 63
->>>>>> #define VHOST_USER_F_PROTOCOL_FEATURES 30
->>>>>>=20
->>>>>=20
->>>>> Should the macro name indicate that this is for vhost-user?
->>>>>=20
->>>>> VU_REALIZE_CONN_RETRIES?=20
->>>> I will rename it in v2.
->>>>=20
->>>>>=20
->>>>>> +#define REALIZE_CONNECTION_RETRIES 3
->>>>>> +
->>>>>> /* Generic structures common for any vhost based device. */
->>>>>>=20
->>>>>> struct vhost_inflight {
->>>>>> --=20
->>>>>> 2.41.0
->>=20
->> Any comments about other patches?
->=20
-> I=E2=80=99ll send shortly.
+>>>> --=20
+>>>> 2.41.0
 
 
---Apple-Mail=_C7363ABD-8574-4088-9DAA-702D6DA28F8F
+--Apple-Mail=_5B62229F-CA9F-4AB2-9AA1-32009DF91599
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/html;
 	charset=utf-8
@@ -629,82 +240,35 @@ Content-Type: text/html;
 charset=3Dutf-8"></head><body style=3D"overflow-wrap: break-word; =
 -webkit-nbsp-mode: space; line-break: =
 after-white-space;"><br><div><br><blockquote =
-type=3D"cite"><div>2023=E5=B9=B47=E6=9C=8831=E6=97=A5 06:09=EF=BC=8CRaphae=
+type=3D"cite"><div>2023=E5=B9=B47=E6=9C=8831=E6=97=A5 06:13=EF=BC=8CRaphae=
 l Norwitz &lt;raphael.norwitz@nutanix.com&gt; =E5=86=99=E9=81=93=EF=BC=9A<=
 /div><br class=3D"Apple-interchange-newline"><div><meta =
-charset=3D"UTF-8"><br style=3D"caret-color: rgb(0, 0, 0); font-family: =
+charset=3D"UTF-8"><blockquote type=3D"cite" style=3D"font-family: =
 Helvetica; font-size: 12px; font-style: normal; font-variant-caps: =
-normal; font-weight: 400; letter-spacing: normal; text-align: start; =
-text-indent: 0px; text-transform: none; white-space: normal; =
-word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
-none;"><br style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; =
-font-size: 12px; font-style: normal; font-variant-caps: normal; =
-font-weight: 400; letter-spacing: normal; text-align: start; =
-text-indent: 0px; text-transform: none; white-space: normal; =
-word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
-none;"><blockquote type=3D"cite" style=3D"font-family: Helvetica; =
-font-size: 12px; font-style: normal; font-variant-caps: normal; =
-font-weight: 400; letter-spacing: normal; orphans: auto; text-align: =
-start; text-indent: 0px; text-transform: none; white-space: normal; =
-widows: auto; word-spacing: 0px; -webkit-text-size-adjust: auto; =
--webkit-text-stroke-width: 0px; text-decoration: none;">On Jul 28, 2023, =
-at 3:48 AM, Li Feng &lt;fengli@smartx.com&gt; wrote:<br><br>Thanks for =
-your reply.<br><br><blockquote type=3D"cite">2023=E5=B9=B47=E6=9C=8828=E6=97=
-=A5 =E4=B8=8A=E5=8D=885:21=EF=BC=8CRaphael Norwitz =
-&lt;raphael.norwitz@nutanix.com&gt; =E5=86=99=E9=81=93=EF=BC=9A<br><br><br=
-><br><blockquote type=3D"cite">On Jul 25, 2023, at 6:19 AM, Li Feng =
-&lt;fengli@smartx.com&gt; wrote:<br><br>Thanks for your =
-comments.<br><br><blockquote type=3D"cite">2023=E5=B9=B47=E6=9C=8825=E6=97=
-=A5 =E4=B8=8A=E5=8D=881:21=EF=BC=8CRaphael Norwitz =
-&lt;raphael.norwitz@nutanix.com&gt; =E5=86=99=E9=81=93=EF=BC=9A<br><br>Ver=
-y excited to see this. High level looks good modulo a few small =
-things.<br><br>My major concern is around existing vhost-user-scsi =
-backends which don=E2=80=99t support =
-VHOST_USER_PROTOCOL_F_INFLIGHT_SHMFD. IMO we should hide the reconnect =
-behavior behind a VHOST_USER_PROTOCOL_F_INFLIGHT_SHMFD check. We may =
-want to do the same for vhost-user-blk.<br><br>The question is then what =
-happens if the check is false. IIUC without an inflight FD, if a device =
-processes requests out of order, it=E2=80=99s not safe to continue =
-execution on reconnect, as there=E2=80=99s no way for the backend to =
-know how to replay IO. Should we permanently wedge the device or have =
-QEMU fail out? May be nice to have a toggle for =
-this.<br></blockquote><br>Based on what MST said, is there anything else =
-I need to do?<br></blockquote><br>I don=E2=80=99t think =
-so.<br><br><blockquote type=3D"cite"><blockquote =
-type=3D"cite"><br><blockquote type=3D"cite">On Jul 21, 2023, at 6:51 AM, =
-Li Feng &lt;fengli@smartx.com&gt; wrote:<br><br>If the backend crashes =
-and restarts, the device is broken.<br>This patch adds reconnect for =
-vhost-user-scsi.<br><br>Tested with spdk backend.<br><br>Signed-off-by: =
-Li Feng &lt;fengli@smartx.com&gt;<br>---<br>hw/block/vhost-user-blk.c =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| =
-&nbsp;&nbsp;2 -<br>hw/scsi/vhost-scsi-common.c =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| &nbsp;27 =
-++---<br>hw/scsi/vhost-user-scsi.c =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 163 =
-+++++++++++++++++++++++++---<br>include/hw/virtio/vhost-user-scsi.h | =
-&nbsp;&nbsp;3 +<br>include/hw/virtio/vhost.h =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| =
-&nbsp;&nbsp;2 +<br>5 files changed, 165 insertions(+), 32 =
-deletions(-)<br><br>diff --git a/hw/block/vhost-user-blk.c =
-b/hw/block/vhost-user-blk.c<br>index eecf3f7a81..f250c740b5 =
-100644<br>--- a/hw/block/vhost-user-blk.c<br>+++ =
-b/hw/block/vhost-user-blk.c<br>@@ -32,8 +32,6 @@<br>#include =
-"sysemu/sysemu.h"<br>#include "sysemu/runstate.h"<br><br>-#define =
-REALIZE_CONNECTION_RETRIES 3<br>-<br>static const int =
-user_feature_bits[] =3D =
-{<br>&nbsp;VIRTIO_BLK_F_SIZE_MAX,<br>&nbsp;VIRTIO_BLK_F_SEG_MAX,<br>diff =
---git a/hw/scsi/vhost-scsi-common.c =
-b/hw/scsi/vhost-scsi-common.c<br></blockquote><br>Why can=E2=80=99t all =
-the vhost-scsi-common stuff be moved to a separate =
-change?<br></blockquote><br>I will move this code to separate =
-patch.<br><blockquote type=3D"cite"><br>Especially the stuff introduced =
-for vhost-user-blk in 1b0063b3048af65dfaae6422a572c87db8575a92 should be =
-moved out.<br></blockquote>OK.<br><br><blockquote =
-type=3D"cite"><br><blockquote type=3D"cite">index a06f01af26..08801886b8 =
-100644<br>--- a/hw/scsi/vhost-scsi-common.c<br>+++ =
-b/hw/scsi/vhost-scsi-common.c<br>@@ -52,16 +52,22 @@ int =
-vhost_scsi_common_start(VHostSCSICommon =
-*vsc)<br><br>&nbsp;vsc-&gt;dev.acked_features =3D =
+normal; font-weight: 400; letter-spacing: normal; orphans: auto; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; widows: auto; word-spacing: 0px; -webkit-text-size-adjust: auto; =
+-webkit-text-stroke-width: 0px; text-decoration: none;"><br =
+class=3D"Apple-interchange-newline">On Jul 28, 2023, at 3:49 AM, Li Feng =
+&lt;fengli@smartx.com&gt; wrote:<br><br><br><br><blockquote =
+type=3D"cite">2023=E5=B9=B47=E6=9C=8828=E6=97=A5 =E4=B8=8B=E5=8D=882:04=EF=
+=BC=8CMichael S. Tsirkin &lt;mst@redhat.com&gt; =E5=86=99=E9=81=93=EF=BC=9A=
+<br><br>On Tue, Jul 25, 2023 at 06:42:45PM +0800, Li Feng =
+wrote:<br><blockquote type=3D"cite">Get_inflight_fd is sent only once. =
+When reconnecting to the backend,<br>qemu sent set_inflight_fd to the =
+backend.<br></blockquote><br>I don't understand what you are trying to =
+say here.<br>Should be:<br>Currently ABCD. This is wrong/unnecessary =
+because EFG. This patch HIJ.<br></blockquote><br>Thanks, I will =
+reorganize the commit message in v3.<br><blockquote =
+type=3D"cite"><br><blockquote type=3D"cite">Signed-off-by: Li Feng =
+&lt;fengli@smartx.com&gt;<br>---<br>hw/scsi/vhost-scsi-common.c | 37 =
+++++++++++++++++++-------------------<br>1 file changed, 18 =
+insertions(+), 19 deletions(-)<br><br>diff --git =
+a/hw/scsi/vhost-scsi-common.c b/hw/scsi/vhost-scsi-common.c<br>index =
+a06f01af26..664adb15b4 100644<br>--- =
+a/hw/scsi/vhost-scsi-common.c<br>+++ b/hw/scsi/vhost-scsi-common.c<br>@@ =
+-52,20 +52,28 @@ int vhost_scsi_common_start(VHostSCSICommon =
+*vsc)<br><br>&nbsp;&nbsp;&nbsp;vsc-&gt;dev.acked_features =3D =
 vdev-&gt;guest_features;<br><br>- =
 &nbsp;&nbsp;&nbsp;assert(vsc-&gt;inflight =3D=3D NULL);<br>- =
 &nbsp;&nbsp;&nbsp;vsc-&gt;inflight =3D g_new0(struct vhost_inflight, =
@@ -718,356 +282,147 @@ p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vs-&gt;conf.virtqueue_size,<br=
 bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
 p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vsc-&gt;inflight);<br>+ =
 &nbsp;&nbsp;&nbsp;ret =3D vhost_dev_prepare_inflight(&amp;vsc-&gt;dev, =
-vdev);<br>&nbsp;if (ret &lt; 0) {<br>- =
+vdev);<br>&nbsp;&nbsp;&nbsp;if (ret &lt; 0) {<br>- =
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_report("Error get =
 inflight: %d", -ret);<br>+ =
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_report("Error setting =
-inflight format: %d", -ret);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;goto =
-err_guest_notifiers;<br>&nbsp;}<br><br>+ &nbsp;&nbsp;&nbsp;if =
+inflight format: %d", =
+-ret);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;goto =
+err_guest_notifiers;<br>&nbsp;&nbsp;&nbsp;}<br><br>- =
+&nbsp;&nbsp;&nbsp;ret =3D vhost_dev_set_inflight(&amp;vsc-&gt;dev, =
+vsc-&gt;inflight);<br>- &nbsp;&nbsp;&nbsp;if (ret &lt; 0) {<br>- =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_report("Error set =
+inflight: %d", -ret);<br>- =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;goto err_guest_notifiers;<br>+ =
+&nbsp;&nbsp;&nbsp;if (vsc-&gt;inflight) {<br>+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if =
 (!vsc-&gt;inflight-&gt;addr) {<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ret =3D =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ret =3D =
 vhost_dev_get_inflight(&amp;vsc-&gt;dev,<br>+ =
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
 bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
-p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vs-&gt;conf.=
-virtqueue_size,<br>+ =
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;vs-&gt;conf.virtqueue_size,<br>+ =
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
 bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
-p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vsc-&gt;infl=
-ight);<br>+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (ret &lt; 0) =
-{<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_re=
-port("Error get inflight: %d", -ret);<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;goto =
-err_guest_notifiers;<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>+ =
-&nbsp;&nbsp;&nbsp;}<br>+<br>&nbsp;ret =3D =
-vhost_dev_set_inflight(&amp;vsc-&gt;dev, vsc-&gt;inflight);<br>&nbsp;if =
-(ret &lt; 0) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_report("Error set =
-inflight: %d", -ret);<br>@@ -85,9 +91,6 @@ int =
-vhost_scsi_common_start(VHostSCSICommon *vsc)<br>&nbsp;return =
-ret;<br><br>err_guest_notifiers:<br>- =
-&nbsp;&nbsp;&nbsp;g_free(vsc-&gt;inflight);<br>- =
-&nbsp;&nbsp;&nbsp;vsc-&gt;inflight =3D =
-NULL;<br>-<br>&nbsp;k-&gt;set_guest_notifiers(qbus-&gt;parent, =
-vsc-&gt;dev.nvqs, =
-false);<br>err_host_notifiers:<br>&nbsp;vhost_dev_disable_notifiers(&amp;v=
-sc-&gt;dev, vdev);<br>@@ -111,12 +114,6 @@ void =
-vhost_scsi_common_stop(VHostSCSICommon =
-*vsc)<br>&nbsp;}<br>&nbsp;assert(ret &gt;=3D =
-0);<br><br></blockquote><br>In the vhost-scsi (kernel backend) path, =
-what will cleanup vsc-&gt;inflight now?<br></blockquote>OK, we should =
-check the vsc-&gt;inflight if it is null, the vhost-scsi doesn=E2=80=99t =
-allocate the<br>inflight object memory.<br></blockquote><br>Are you =
-saying vhost-scsi never allocates inflight so we don=E2=80=99t need to =
-check for it?<br></blockquote>We have checked the vsc-&gt;inflight, and =
-only if allocated, we send the get/set_inflight_fd.<br>This works with =
-vhost-user-scsi/vhost-scsi both.<br></blockquote><br style=3D"caret-color:=
- rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: =
-normal; font-variant-caps: normal; font-weight: 400; letter-spacing: =
-normal; text-align: start; text-indent: 0px; text-transform: none; =
-white-space: normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none;"><span style=3D"caret-color: rgb(0, 0, 0); =
-font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none; float: none; display: inline !important;">So then =
-it sounds like this code introduces a resource leak. =
-g_free(vsc-&gt;inflight) should be added to the vhost-scsi code in =
-vhost_scsi_stop().</span><br style=3D"caret-color: rgb(0, 0, 0); =
-font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none;"></div></blockquote><div><br></div>No, the =
-vhost-scsi doesn=E2=80=99t need =E2=80=98inflight', it doesn=E2=80=99t =
-allocate the inflight memory.</div><div><br></div><div>The rule is =
-=E2=80=98who allocates, who free it=E2=80=99.</div><div><br><blockquote =
-type=3D"cite"><div><br style=3D"caret-color: rgb(0, 0, 0); font-family: =
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;vsc-&gt;inflight);<br>+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if =
+(ret &lt; 0) {<br>+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;error_report("Error get inflight: %d", =
+-ret);<br></blockquote><br>As long as you are fixing this - should be =
+"getting inflight=E2=80=9D.<br></blockquote>I will fix it in =
+v3.<br><blockquote type=3D"cite"><br><blockquote type=3D"cite">+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;goto err_guest_notifiers;<br>+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>+<br></blockquote></blockqu=
+ote></blockquote><br style=3D"caret-color: rgb(0, 0, 0); font-family: =
 Helvetica; font-size: 12px; font-style: normal; font-variant-caps: =
 normal; font-weight: 400; letter-spacing: normal; text-align: start; =
 text-indent: 0px; text-transform: none; white-space: normal; =
 word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
-none;"><blockquote type=3D"cite" style=3D"font-family: Helvetica; =
+none;"><span style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; =
 font-size: 12px; font-style: normal; font-variant-caps: normal; =
-font-weight: 400; letter-spacing: normal; orphans: auto; text-align: =
-start; text-indent: 0px; text-transform: none; white-space: normal; =
-widows: auto; word-spacing: 0px; -webkit-text-size-adjust: auto; =
+font-weight: 400; letter-spacing: normal; text-align: start; =
+text-indent: 0px; text-transform: none; white-space: normal; =
+word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
+none; float: none; display: inline !important;">Looks like you reworked =
+this a bit so to avoid a potential crash if vsc-&gt;inflight is =
+NULL</span><br style=3D"caret-color: rgb(0, 0, 0); font-family: =
+Helvetica; font-size: 12px; font-style: normal; font-variant-caps: =
+normal; font-weight: 400; letter-spacing: normal; text-align: start; =
+text-indent: 0px; text-transform: none; white-space: normal; =
+word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
+none;"><br style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; =
+font-size: 12px; font-style: normal; font-variant-caps: normal; =
+font-weight: 400; letter-spacing: normal; text-align: start; =
+text-indent: 0px; text-transform: none; white-space: normal; =
+word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
+none;"><span style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; =
+font-size: 12px; font-style: normal; font-variant-caps: normal; =
+font-weight: 400; letter-spacing: normal; text-align: start; =
+text-indent: 0px; text-transform: none; white-space: normal; =
+word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
+none; float: none; display: inline !important;">Should we fix it for =
+vhost-user-blk too?</span><br style=3D"caret-color: rgb(0, 0, 0); =
+font-family: Helvetica; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none;"><br style=3D"caret-color: rgb(0, 0, 0); =
+font-family: Helvetica; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none;"></div></blockquote>This check is mainly for the =
+vhost-scsi code, that doesn=E2=80=99t need allocate the inflight =
+memory.</div><div><br>The vhost-user-blk doesn=E2=80=99t need this =
+check, because there isn't a vhost-blk device that reuse the =
+code.</div><div><br><blockquote type=3D"cite"><div><blockquote =
+type=3D"cite" style=3D"font-family: Helvetica; font-size: 12px; =
+font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; orphans: auto; text-align: start; text-indent: =
+0px; text-transform: none; white-space: normal; widows: auto; =
+word-spacing: 0px; -webkit-text-size-adjust: auto; =
 -webkit-text-stroke-width: 0px; text-decoration: none;"><blockquote =
-type=3D"cite"><br><blockquote type=3D"cite"><br><blockquote =
-type=3D"cite"><br><blockquote type=3D"cite">- &nbsp;&nbsp;&nbsp;if =
+type=3D"cite"><blockquote type=3D"cite">+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ret =3D =
+vhost_dev_set_inflight(&amp;vsc-&gt;dev, vsc-&gt;inflight);<br>+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (ret &lt; 0) {<br>+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_re=
+port("Error set inflight: %d", -ret);<br>+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;goto =
+err_guest_notifiers;<br>+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;}<br><br>=
+&nbsp;&nbsp;&nbsp;ret =3D vhost_dev_start(&amp;vsc-&gt;dev, vdev, =
+true);<br>@@ -85,9 +93,6 @@ int vhost_scsi_common_start(VHostSCSICommon =
+*vsc)<br>&nbsp;&nbsp;&nbsp;return ret;<br><br>err_guest_notifiers:<br>- =
+&nbsp;&nbsp;&nbsp;g_free(vsc-&gt;inflight);<br>- =
+&nbsp;&nbsp;&nbsp;vsc-&gt;inflight =3D =
+NULL;<br>-<br>&nbsp;&nbsp;&nbsp;k-&gt;set_guest_notifiers(qbus-&gt;parent,=
+ vsc-&gt;dev.nvqs, =
+false);<br>err_host_notifiers:<br>&nbsp;&nbsp;&nbsp;vhost_dev_disable_noti=
+fiers(&amp;vsc-&gt;dev, vdev);<br>@@ -111,12 +116,6 @@ void =
+vhost_scsi_common_stop(VHostSCSICommon =
+*vsc)<br>&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;assert(ret &gt;=3D =
+0);<br><br></blockquote></blockquote></blockquote><br =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none;"><span =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
+display: inline !important;">As I said before, I think this introduces a =
+leak.</span></div></blockquote>I have answered in the previous =
+mail.</div><div><br></div><div><blockquote type=3D"cite"><div><br =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Helvetica; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none;"><blockquote =
+type=3D"cite" style=3D"font-family: Helvetica; font-size: 12px; =
+font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; orphans: auto; text-align: start; text-indent: =
+0px; text-transform: none; white-space: normal; widows: auto; =
+word-spacing: 0px; -webkit-text-size-adjust: auto; =
+-webkit-text-stroke-width: 0px; text-decoration: none;"><blockquote =
+type=3D"cite"><blockquote type=3D"cite">- &nbsp;&nbsp;&nbsp;if =
 (vsc-&gt;inflight) {<br>- =
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vhost_dev_free_inflight(vsc-&gt;=
 inflight);<br>- =
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;g_free(vsc-&gt;inflight);<br>- =
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vsc-&gt;inflight =3D =
 NULL;<br>- =
-&nbsp;&nbsp;&nbsp;}<br>-<br>&nbsp;vhost_dev_disable_notifiers(&amp;vsc-&gt=
-;dev, vdev);<br>}<br><br>diff --git a/hw/scsi/vhost-user-scsi.c =
-b/hw/scsi/vhost-user-scsi.c<br>index ee99b19e7a..e0e88b0c42 =
-100644<br>--- a/hw/scsi/vhost-user-scsi.c<br>+++ =
-b/hw/scsi/vhost-user-scsi.c<br>@@ -89,14 +89,126 @@ static void =
-vhost_dummy_handle_output(VirtIODevice *vdev, VirtQueue =
-*vq)<br>{<br>}<br><br>+static int vhost_user_scsi_connect(DeviceState =
-*dev, Error **errp)<br>+{<br>+ &nbsp;&nbsp;&nbsp;VirtIODevice *vdev =3D =
-VIRTIO_DEVICE(dev);<br>+ &nbsp;&nbsp;&nbsp;VHostUserSCSI *s =3D =
-VHOST_USER_SCSI(vdev);<br>+ &nbsp;&nbsp;&nbsp;VHostSCSICommon *vsc =3D =
-VHOST_SCSI_COMMON(s);<br>+ &nbsp;&nbsp;&nbsp;VirtIOSCSICommon *vs =3D =
-VIRTIO_SCSI_COMMON(dev);<br>+ &nbsp;&nbsp;&nbsp;int ret =3D 0;<br>+<br>+ =
-&nbsp;&nbsp;&nbsp;if (s-&gt;connected) {<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 0;<br>+ =
-&nbsp;&nbsp;&nbsp;}<br>+ &nbsp;&nbsp;&nbsp;s-&gt;connected =3D =
-true;<br>+<br>+ &nbsp;&nbsp;&nbsp;vsc-&gt;dev.num_queues =3D =
-vs-&gt;conf.num_queues;<br>+ &nbsp;&nbsp;&nbsp;vsc-&gt;dev.nvqs =3D =
-VIRTIO_SCSI_VQ_NUM_FIXED + vs-&gt;conf.num_queues;<br>+ =
-&nbsp;&nbsp;&nbsp;vsc-&gt;dev.vqs =3D s-&gt;vhost_vqs;<br>+ =
-&nbsp;&nbsp;&nbsp;vsc-&gt;dev.vq_index =3D 0;<br>+ =
-&nbsp;&nbsp;&nbsp;vsc-&gt;dev.backend_features =3D 0;<br>+<br>+ =
-&nbsp;&nbsp;&nbsp;ret =3D vhost_dev_init(&amp;vsc-&gt;dev, =
-&amp;s-&gt;vhost_user, VHOST_BACKEND_TYPE_USER, 0,<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;errp=
-);<br>+ &nbsp;&nbsp;&nbsp;if (ret &lt; 0) {<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return ret;<br>+ =
-&nbsp;&nbsp;&nbsp;}<br>+<br>+ &nbsp;&nbsp;&nbsp;/* restore vhost state =
-*/<br></blockquote><br>Should this use virtio_device_should_start like =
-vhost_user_blk?<br></blockquote>I will change this.<br><blockquote =
-type=3D"cite"><br><blockquote type=3D"cite">+ &nbsp;&nbsp;&nbsp;if =
-(virtio_device_started(vdev, vdev-&gt;status)) {<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ret =3D =
-vhost_scsi_common_start(vsc);<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (ret &lt; 0) {<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return =
-ret;<br>+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>+ =
-&nbsp;&nbsp;&nbsp;}<br>+<br>+ &nbsp;&nbsp;&nbsp;return =
-0;<br>+}<br>+<br>+static void vhost_user_scsi_event(void *opaque, =
-QEMUChrEvent event);<br>+<br>+static void =
-vhost_user_scsi_disconnect(DeviceState *dev)<br>+{<br>+ =
-&nbsp;&nbsp;&nbsp;VirtIODevice *vdev =3D VIRTIO_DEVICE(dev);<br>+ =
-&nbsp;&nbsp;&nbsp;VHostUserSCSI *s =3D VHOST_USER_SCSI(vdev);<br>+ =
-&nbsp;&nbsp;&nbsp;VHostSCSICommon *vsc =3D VHOST_SCSI_COMMON(s);<br>+ =
-&nbsp;&nbsp;&nbsp;VirtIOSCSICommon *vs =3D =
-VIRTIO_SCSI_COMMON(dev);<br>+<br></blockquote><br>I don=E2=80=99t think =
-we want to execute vhost_scsi_common_stop() if the device hasn=E2=80=99t =
-been started. I remember that caused a number of races with the =
-vhost_user_blk connecting/disconnecting on startup.<br><br>Let=E2=80=99s =
-add a similar started_vu check?<br></blockquote>I will add =
-it.<br><blockquote type=3D"cite"><br><blockquote type=3D"cite">+ =
-&nbsp;&nbsp;&nbsp;if (!s-&gt;connected) {<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return;<br>+ =
-&nbsp;&nbsp;&nbsp;}<br>+ &nbsp;&nbsp;&nbsp;s-&gt;connected =3D =
-false;<br>+<br>+ =
-&nbsp;&nbsp;&nbsp;vhost_scsi_common_stop(vsc);<br>+<br>+ =
-&nbsp;&nbsp;&nbsp;vhost_dev_cleanup(&amp;vsc-&gt;dev);<br>+<br>+ =
-&nbsp;&nbsp;&nbsp;/* Re-instate the event handler for new connections =
-*/<br>+ =
-&nbsp;&nbsp;&nbsp;qemu_chr_fe_set_handlers(&amp;vs-&gt;conf.chardev, =
-NULL, NULL,<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
-p;&nbsp;&nbsp;&nbsp;vhost_user_scsi_event, NULL, dev, NULL, =
-true);<br>+}<br>+<br>+static void vhost_user_scsi_event(void *opaque, =
-QEMUChrEvent event)<br>+{<br>+ &nbsp;&nbsp;&nbsp;DeviceState *dev =3D =
-opaque;<br>+ &nbsp;&nbsp;&nbsp;VirtIODevice *vdev =3D =
-VIRTIO_DEVICE(dev);<br>+ &nbsp;&nbsp;&nbsp;VHostUserSCSI *s =3D =
-VHOST_USER_SCSI(vdev);<br>+ &nbsp;&nbsp;&nbsp;VHostSCSICommon *vsc =3D =
-VHOST_SCSI_COMMON(s);<br>+ &nbsp;&nbsp;&nbsp;VirtIOSCSICommon *vs =3D =
-VIRTIO_SCSI_COMMON(dev);<br>+ &nbsp;&nbsp;&nbsp;Error *local_err =3D =
-NULL;<br>+<br>+ &nbsp;&nbsp;&nbsp;switch (event) {<br>+ =
-&nbsp;&nbsp;&nbsp;case CHR_EVENT_OPENED:<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if =
-(vhost_user_scsi_connect(dev, &amp;local_err) &lt; 0) {<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_re=
-port_err(local_err);<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qemu_chr=
-_fe_disconnect(&amp;vs-&gt;conf.chardev);<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return;<=
-br>+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<br>+ =
-&nbsp;&nbsp;&nbsp;case CHR_EVENT_CLOSED:<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/* defer close until later to =
-avoid circular close */<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vhost_user_async_close(dev, =
-&amp;vs-&gt;conf.chardev, &amp;vsc-&gt;dev,<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
-p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vhost_user_scsi_disconnect);<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<br>+ =
-&nbsp;&nbsp;&nbsp;case CHR_EVENT_BREAK:<br>+ &nbsp;&nbsp;&nbsp;case =
-CHR_EVENT_MUX_IN:<br>+ &nbsp;&nbsp;&nbsp;case CHR_EVENT_MUX_OUT:<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/* Ignore */<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<br>+ =
-&nbsp;&nbsp;&nbsp;}<br>+}<br>+<br>+static int =
-vhost_user_scsi_realize_connect(VHostUserSCSI *s, Error =
-**errp)<br>+{<br>+ &nbsp;&nbsp;&nbsp;DeviceState *dev =3D =
-&amp;s-&gt;parent_obj.parent_obj.parent_obj.parent_obj;<br>+ =
-&nbsp;&nbsp;&nbsp;VirtIOSCSICommon *vs =3D VIRTIO_SCSI_COMMON(dev);<br>+ =
-&nbsp;&nbsp;&nbsp;int ret;<br>+<br>+ &nbsp;&nbsp;&nbsp;s-&gt;connected =3D=
- false;<br>+<br>+ &nbsp;&nbsp;&nbsp;ret =3D =
-qemu_chr_fe_wait_connected(&amp;vs-&gt;conf.chardev, errp);<br>+ =
-&nbsp;&nbsp;&nbsp;if (ret &lt; 0) {<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return ret;<br>+ =
-&nbsp;&nbsp;&nbsp;}<br>+<br>+ &nbsp;&nbsp;&nbsp;ret =3D =
-vhost_user_scsi_connect(dev, errp);<br>+ &nbsp;&nbsp;&nbsp;if (ret &lt; =
-0) {<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qemu_chr_fe_disconnect(&amp;vs-&=
-gt;conf.chardev);<br>+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return =
-ret;<br>+ &nbsp;&nbsp;&nbsp;}<br>+ =
-&nbsp;&nbsp;&nbsp;assert(s-&gt;connected);<br>+<br>+ =
-&nbsp;&nbsp;&nbsp;return 0;<br>+}<br>+<br>static void =
-vhost_user_scsi_realize(DeviceState *dev, Error =
-**errp)<br>{<br>&nbsp;VirtIOSCSICommon *vs =3D =
-VIRTIO_SCSI_COMMON(dev);<br>&nbsp;VHostUserSCSI *s =3D =
-VHOST_USER_SCSI(dev);<br>&nbsp;VHostSCSICommon *vsc =3D =
-VHOST_SCSI_COMMON(s);<br>- &nbsp;&nbsp;&nbsp;struct vhost_virtqueue *vqs =
-=3D NULL;<br>&nbsp;Error *err =3D NULL;<br>&nbsp;int ret;<br>+ =
-&nbsp;&nbsp;&nbsp;int retries =3D =
-REALIZE_CONNECTION_RETRIES;<br><br>&nbsp;if (!vs-&gt;conf.chardev.chr) =
-{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_setg(errp, "vhost-user-scsi: =
-missing chardev");<br>@@ -112,21 +224,31 @@ static void =
-vhost_user_scsi_realize(DeviceState *dev, Error =
-**errp)<br>&nbsp;}<br><br>&nbsp;if =
-(!vhost_user_init(&amp;s-&gt;vhost_user, &amp;vs-&gt;conf.chardev, =
-errp)) {<br></blockquote><br>Why execute vhost_user_cleanup() if =
-vhost_user_init() fails?<br></blockquote>OK, move this line up in =
-v2.<br><br><blockquote type=3D"cite"><br><blockquote type=3D"cite">- =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;goto free_virtio;<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;goto =
-free_vhost;<br>&nbsp;}<br><br>- &nbsp;&nbsp;&nbsp;vsc-&gt;dev.nvqs =3D =
-VIRTIO_SCSI_VQ_NUM_FIXED + vs-&gt;conf.num_queues;<br>- =
-&nbsp;&nbsp;&nbsp;vsc-&gt;dev.vqs =3D g_new0(struct vhost_virtqueue, =
-vsc-&gt;dev.nvqs);<br>- &nbsp;&nbsp;&nbsp;vsc-&gt;dev.vq_index =3D =
-0;<br>- &nbsp;&nbsp;&nbsp;vsc-&gt;dev.backend_features =3D 0;<br>- =
-&nbsp;&nbsp;&nbsp;vqs =3D vsc-&gt;dev.vqs;<br>+ =
-&nbsp;&nbsp;&nbsp;vsc-&gt;inflight =3D g_new0(struct vhost_inflight, =
-1);<br>+ &nbsp;&nbsp;&nbsp;s-&gt;vhost_vqs =3D g_new0(struct =
-vhost_virtqueue,<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
-p;VIRTIO_SCSI_VQ_NUM_FIXED + vs-&gt;conf.num_queues);<br>+<br>+ =
-&nbsp;&nbsp;&nbsp;assert(!*errp);<br>+ &nbsp;&nbsp;&nbsp;do {<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (*errp) {<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_pr=
-epend(errp, "Reconnecting after error: ");<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_re=
-port_err(*errp);<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*errp =
-=3D NULL;<br>+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ret =3D =
-vhost_user_scsi_realize_connect(s, errp);<br>+ &nbsp;&nbsp;&nbsp;} while =
-(ret &lt; 0 &amp;&amp; retries--);<br><br>- &nbsp;&nbsp;&nbsp;ret =3D =
-vhost_dev_init(&amp;vsc-&gt;dev, &amp;s-&gt;vhost_user,<br>- =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VHOS=
-T_BACKEND_TYPE_USER, 0, errp);<br>&nbsp;if (ret &lt; 0) {<br>- =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;goto free_vhost;<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;goto =
-free_vqs;<br>&nbsp;}<br><br>+ &nbsp;&nbsp;&nbsp;/* we're fully =
-initialized, now we can operate, so add the handler */<br>+ =
-&nbsp;&nbsp;&nbsp;qemu_chr_fe_set_handlers(&amp;vs-&gt;conf.chardev, =
-&nbsp;NULL, NULL,<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
-p;&nbsp;&nbsp;&nbsp;vhost_user_scsi_event, NULL, (void *)dev,<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
-p;&nbsp;&nbsp;&nbsp;NULL, true);<br>&nbsp;/* Channel and lun both are 0 =
-for bootable vhost-user-scsi disk */<br>&nbsp;vsc-&gt;channel =3D =
-0;<br>&nbsp;vsc-&gt;lun =3D 0;<br>@@ -134,10 +256,15 @@ static void =
-vhost_user_scsi_realize(DeviceState *dev, Error =
-**errp)<br><br>&nbsp;return;<br><br>+free_vqs:<br>+ =
-&nbsp;&nbsp;&nbsp;g_free(s-&gt;vhost_vqs);<br>+ =
-&nbsp;&nbsp;&nbsp;s-&gt;vhost_vqs =3D NULL;<br>+ =
-&nbsp;&nbsp;&nbsp;g_free(vsc-&gt;inflight);<br>+ =
-&nbsp;&nbsp;&nbsp;vsc-&gt;inflight =3D =
-NULL;<br>+<br>free_vhost:<br>&nbsp;vhost_user_cleanup(&amp;s-&gt;vhost_use=
-r);<br>- =
-&nbsp;&nbsp;&nbsp;g_free(vqs);<br>-free_virtio:<br>+<br>&nbsp;virtio_scsi_=
-common_unrealize(dev);<br>}<br><br>@@ -146,16 +273,22 @@ static void =
-vhost_user_scsi_unrealize(DeviceState *dev)<br>&nbsp;VirtIODevice *vdev =
-=3D VIRTIO_DEVICE(dev);<br>&nbsp;VHostUserSCSI *s =3D =
-VHOST_USER_SCSI(dev);<br>&nbsp;VHostSCSICommon *vsc =3D =
-VHOST_SCSI_COMMON(s);<br>- &nbsp;&nbsp;&nbsp;struct vhost_virtqueue *vqs =
-=3D vsc-&gt;dev.vqs;<br>+ &nbsp;&nbsp;&nbsp;VirtIOSCSICommon *vs =3D =
-VIRTIO_SCSI_COMMON(dev);<br><br>&nbsp;/* This will stop the vhost =
-backend. */<br>&nbsp;vhost_user_scsi_set_status(vdev, 0);<br>+ =
-&nbsp;&nbsp;&nbsp;qemu_chr_fe_set_handlers(&amp;vs-&gt;conf.chardev, =
-NULL, NULL, NULL, NULL, NULL,<br>+ =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
-p;&nbsp;&nbsp;&nbsp;NULL, =
-false);<br><br>&nbsp;vhost_dev_cleanup(&amp;vsc-&gt;dev);<br>- =
-&nbsp;&nbsp;&nbsp;g_free(vqs);<br></blockquote><br>Nit: Why not put =
-vhost_dev_free_inflight next to the remaining inflight =
-cleanup?<br></blockquote>OK.<br><blockquote type=3D"cite"><br><blockquote =
-type=3D"cite">+ =
-&nbsp;&nbsp;&nbsp;vhost_dev_free_inflight(vsc-&gt;inflight);<br>+ =
-&nbsp;&nbsp;&nbsp;g_free(s-&gt;vhost_vqs);<br>+ =
-&nbsp;&nbsp;&nbsp;s-&gt;vhost_vqs =3D NULL;<br>+ =
-&nbsp;&nbsp;&nbsp;g_free(vsc-&gt;inflight);<br>+ =
-&nbsp;&nbsp;&nbsp;vsc-&gt;inflight =3D =
-NULL;<br><br></blockquote><br>Curiosity - why reorder here? Is something =
-in vhost_user_cleanup() dependent on state freed in =
-virtio_scsi_common_unrealize()?<br><br>If so, should that go as a =
-standalone fix?<br></blockquote><br>Because in vhost_user_scsi_realize, =
-we initialize in =
-order:<br>virtio_scsi_common_realize<br>vhost_user_init<br><br>And in =
-the error handler of vhost_user_scsi_realize, the uninitialize in =
-order:<br>vhost_user_cleanup<br>virtio_scsi_common_unrealize<br><br>I =
-think in vhost_user_scsi_unrealize we should keep it the same order, =
-right?<br></blockquote><br>I=E2=80=99m not saying it=E2=80=99s wrong. If =
-there=E2=80=99s no dependency (i.e. this is not fixing a bug, just a =
-stylistic improvement) it can stay in the same =
-change.<br></blockquote>OK.<br><blockquote type=3D"cite"><br><blockquote =
-type=3D"cite"><br><blockquote type=3D"cite"><br><blockquote =
-type=3D"cite">- =
-&nbsp;&nbsp;&nbsp;virtio_scsi_common_unrealize(dev);<br>&nbsp;vhost_user_c=
-leanup(&amp;s-&gt;vhost_user);<br>+ =
-&nbsp;&nbsp;&nbsp;virtio_scsi_common_unrealize(dev);<br>}<br><br>static =
-Property vhost_user_scsi_properties[] =3D {<br>diff --git =
-a/include/hw/virtio/vhost-user-scsi.h =
-b/include/hw/virtio/vhost-user-scsi.h<br>index 521b08e559..c66acc68b7 =
-100644<br>--- a/include/hw/virtio/vhost-user-scsi.h<br>+++ =
-b/include/hw/virtio/vhost-user-scsi.h<br>@@ -29,6 +29,9 @@ =
-OBJECT_DECLARE_SIMPLE_TYPE(VHostUserSCSI, VHOST_USER_SCSI)<br>struct =
-VHostUserSCSI {<br>&nbsp;VHostSCSICommon =
-parent_obj;<br>&nbsp;VhostUserState vhost_user;<br></blockquote><br>See =
-above - we should probably have started_vu here/<br></blockquote>I will =
-add it.<br><blockquote type=3D"cite"><br>Maybe we should have some =
-shared struct with vhost_user_blk for connectivity =
-params?<br></blockquote><br>In the future vhost-user-blk/scsi can be =
-refactored to share the same code.<br></blockquote><br>Sure - this can =
-be done at some point in the future.<br><br><blockquote =
-type=3D"cite"><blockquote type=3D"cite"><br><blockquote type=3D"cite">+ =
-&nbsp;&nbsp;&nbsp;bool connected;<br>+<br>+ &nbsp;&nbsp;&nbsp;struct =
-vhost_virtqueue *vhost_vqs;<br>};<br><br>#endif /* VHOST_USER_SCSI_H =
-*/<br>diff --git a/include/hw/virtio/vhost.h =
-b/include/hw/virtio/vhost.h<br>index 6a173cb9fa..b904346fe1 =
-100644<br>--- a/include/hw/virtio/vhost.h<br>+++ =
-b/include/hw/virtio/vhost.h<br>@@ -8,6 +8,8 @@<br>#define =
-VHOST_F_DEVICE_IOTLB 63<br>#define VHOST_USER_F_PROTOCOL_FEATURES =
-30<br><br></blockquote><br>Should the macro name indicate that this is =
-for vhost-user?<br><br>VU_REALIZE_CONN_RETRIES?<span =
-class=3D"Apple-converted-space">&nbsp;</span><br></blockquote>I will =
-rename it in v2.<br><br><blockquote type=3D"cite"><br><blockquote =
-type=3D"cite">+#define REALIZE_CONNECTION_RETRIES 3<br>+<br>/* Generic =
-structures common for any vhost based device. */<br><br>struct =
-vhost_inflight {<br>--<span =
-class=3D"Apple-converted-space">&nbsp;</span><br>2.41.0<br></blockquote></=
-blockquote></blockquote></blockquote><br>Any comments about other =
-patches?<br></blockquote><br style=3D"caret-color: rgb(0, 0, 0); =
-font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none;"><span style=3D"caret-color: rgb(0, 0, 0); =
-font-family: Helvetica; font-size: 12px; font-style: normal; =
-font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
-text-align: start; text-indent: 0px; text-transform: none; white-space: =
-normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
-text-decoration: none; float: none; display: inline !important;">I=E2=80=99=
-ll send shortly.</span></div></blockquote></div><br></body></html>=
+&nbsp;&nbsp;&nbsp;}<br>-<br>&nbsp;&nbsp;&nbsp;vhost_dev_disable_notifiers(=
+&amp;vsc-&gt;dev, vdev);<br>}<br><br>--<span =
+class=3D"Apple-converted-space">&nbsp;</span><br>2.41.0</blockquote></bloc=
+kquote></blockquote></div></blockquote></div><br></body></html>=
 
---Apple-Mail=_C7363ABD-8574-4088-9DAA-702D6DA28F8F--
+--Apple-Mail=_5B62229F-CA9F-4AB2-9AA1-32009DF91599--
 
