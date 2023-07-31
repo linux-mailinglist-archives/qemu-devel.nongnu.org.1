@@ -2,52 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A4C9769936
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 16:16:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05B7476993F
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 16:17:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQTgT-0005WW-GV; Mon, 31 Jul 2023 10:15:41 -0400
+	id 1qQTgV-0005Xg-53; Mon, 31 Jul 2023 10:15:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qQTgR-0005Vd-60
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 10:15:39 -0400
+ id 1qQTgS-0005WH-1f
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 10:15:40 -0400
 Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qQTgP-0007eQ-Bq
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 10:15:38 -0400
+ id 1qQTgP-0007eR-N9
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 10:15:39 -0400
 Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-3fb4146e8ceso42439355e9.0
- for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 07:15:36 -0700 (PDT)
+ 5b1f17b1804b1-3fe2048c910so9788865e9.1
+ for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 07:15:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690812935; x=1691417735;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=qvygQ0COgngCU7qc2BFLcdA0T/qIUSKjC7okGba7Vpw=;
- b=h2AGp2mfiJmW+smK1p2KmaWYxD9fzZNpaftvEPwHOuGcumrngDEXjYtxjg38iQqV7H
- 8R/UVZAZJraYAU7eXfSvLpTIJicqtoGu+Q3zkCaeCm3uCoi+cdAiy9ojZZO4IrQ7keeo
- 65ztZZC2JSdVdMtQ4UAt2mzoT5z/TJeNr/Oq5UTeAG5mldrsv72Z3VmjEm/V2Tz7Csfr
- 0KRY388TAfIjQo7TD6tKf38M9F1KFeK+R3LBL9sWsqd/1xk3Cp2t2CvLxF/sRFj+v3z5
- E7BgQnNl4A6OSBEFGiorPDKcojPku+fLqtJZxbGtwg/LoKMGnq3gWKsQcJINg3OyAikZ
- eKiA==
+ d=linaro.org; s=google; t=1690812936; x=1691417736;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=G2c+LxpkCJdqb0ZH/SG20fuSzrbSnvwdJMIMMiLTze0=;
+ b=yq/4W2XGdu8ykukOpT6cYpEf3IlhIlZQI+lS53iuJMxn3wIw0Krfh2abatuug68f1N
+ jCLftmQvJI9tUdrjVSwpm60Sfa6O5w3f+mP3hd/tDzTUUJG1djgw90LJJt6SpTSq0p1G
+ nP3J3RKFg8xAeJ+67hwkOTh1PrDAYOkyy39aiExLMWIrfOTNgLklwIDGf/2x9s6ERaJg
+ gWG2QNyyOk7JeU9tu/f20m/cZ6iRXbkFUC7wb5WV1FkzR3eJ6o1NEKoh9YvRsLAyNEI4
+ +TTgx46WRYQSh8R5gyTxwdHi3SUDpfV9rVwuxVRPtiZI1dqA61ZATot8YZF9U8qtNUcJ
+ SqCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690812935; x=1691417735;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=qvygQ0COgngCU7qc2BFLcdA0T/qIUSKjC7okGba7Vpw=;
- b=QChv228Ligv1j+T85/nmITPAvWrsV4mbXWonOrpcEbeTmyCy2zqVSwPHTvVCOmTzPy
- gptzYFwDLKpTV/WBC+XLXdeeT1a0fzCVPW8H1BZEqdMpO7Nx78phnueFQnGSVoHw5xml
- jIlve+vLjCeu8dJ6JISR/974OCfO9A4Itz410DPKGjbLtnMcjQq1+9wrFlRxjmFOWWd7
- HmHoxaD7ZF2lnSSYahvCVDcOaEz3Pff4DCiakpI5RUf754bxdUxGh8MrPBu52OCIhPo1
- i11tQ9RjssvNHYPSIpeHMU4awbuDFxawSYWcBCZo2E2dMGoSDbCrXfGKhMQnVn5nIT2g
- /Gtw==
-X-Gm-Message-State: ABy/qLbTooPkpdcU68ozCSlcml84AAvfL5PgGqLxzG8p1rgFuSc9JK7t
- wDE8MR5BQWlhY4fngtZ659xhJiyhOIkYjkQjMyg=
-X-Google-Smtp-Source: APBJJlEu77wv3oY9MN/au+iJXjBf5I3C08+vHSoLzwZKiNjyYcYFpQYTgUZ4q2hpefisOkqNZ07MgA==
-X-Received: by 2002:a1c:f309:0:b0:3fc:e7d:ca57 with SMTP id
- q9-20020a1cf309000000b003fc0e7dca57mr69957wmq.2.1690812935423; 
+ d=1e100.net; s=20221208; t=1690812936; x=1691417736;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=G2c+LxpkCJdqb0ZH/SG20fuSzrbSnvwdJMIMMiLTze0=;
+ b=QFtB+MaTwaIDvD5AcAwHZQFBl/KCRxG2WHTzvlubmyPKo7G87r4vNEuGqDXGTaxONW
+ m6ITFGsb4FJm0N+Ojpxx114YOE7UqOlNns37lBByUzVjWr4xBxFVDcnZfHEjaqsLuVu4
+ 2gy+f+nX9ZJ5rNXyYVx0YcrvAbtu5Me2AWPboI9nibJizTLQ5CvBrCmEjBZclRhqsVHB
+ JwFQxVHV4a+EyD6K49BwiYT00ksBxqseHa0rsNyYhCHkcZ8ueE34vCkdn5lXM/3b1UaN
+ QCmD9I/EJPtkzfOxkHLYd3v51hyFUQBOofCGztQtvB3YjaV2zpUu/VtxExAYErCysDIM
+ RAog==
+X-Gm-Message-State: ABy/qLaz63m0WLMbFWgfHZr0rfjmAaWTvoyupIqWLvsUMdZp2qNOYwEa
+ AVNDxXJI0gUg8bIodiIlWQlv1xdBZyX17PhrFYw=
+X-Google-Smtp-Source: APBJJlGk8mcii20ejdalQtBStTUHOKxfovSuCt9Zo5krGCsix3g1wnlrZMlBHKOdbKU1QAMTAShEKQ==
+X-Received: by 2002:a1c:7c03:0:b0:3fe:2140:f504 with SMTP id
+ x3-20020a1c7c03000000b003fe2140f504mr71732wmc.20.1690812935803; 
  Mon, 31 Jul 2023 07:15:35 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
@@ -57,12 +58,13 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Mon, 31 Jul 2023 07:15:35 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 0/6] target-arm queue
-Date: Mon, 31 Jul 2023 15:15:27 +0100
-Message-Id: <20230731141533.3303894-1-peter.maydell@linaro.org>
+Subject: [PULL 1/6] target/arm: Fix MemOp for STGP
+Date: Mon, 31 Jul 2023 15:15:28 +0100
+Message-Id: <20230731141533.3303894-2-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230731141533.3303894-1-peter.maydell@linaro.org>
+References: <20230731141533.3303894-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
  envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32f.google.com
@@ -88,56 +90,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi; here's a target-arm pull for rc2. Four arm-related fixes,
-and a couple of bug fixes for other areas of the codebase
-that seemed like they'd fallen through the cracks.
+From: Richard Henderson <richard.henderson@linaro.org>
 
-thanks
--- PMM
+When converting to decodetree, the code to rebuild mop for the pair
+only made it into trans_STP and not into trans_STGP.
 
-The following changes since commit ccb86f079a9e4d94918086a9df18c1844347aff8:
-
-  Merge tag 'pull-nbd-2023-07-28' of https://repo.or.cz/qemu/ericb into staging (2023-07-28 09:56:57 -0700)
-
-are available in the Git repository at:
-
-  https://git.linaro.org/people/pmaydell/qemu-arm.git tags/pull-target-arm-20230731
-
-for you to fetch changes up to 108e8180c6b0c315711aa54e914030a313505c17:
-
-  gdbstub: Fix client Ctrl-C handling (2023-07-31 14:57:32 +0100)
-
-----------------------------------------------------------------
-target-arm queue:
- * Don't build AArch64 decodetree files for qemu-system-arm
- * Fix TCG assert in v8.1M CSEL etc
- * Fix MemOp for STGP
- * gdbstub: Fix client Ctrl-C handling
- * kvm: Fix crash due to access uninitialized kvm_state
- * elf2dmp: Don't abandon when Prcb is set to 0
-
-----------------------------------------------------------------
-Akihiko Odaki (1):
-      elf2dmp: Don't abandon when Prcb is set to 0
-
-Gavin Shan (1):
-      kvm: Fix crash due to access uninitialized kvm_state
-
-Nicholas Piggin (1):
-      gdbstub: Fix client Ctrl-C handling
-
-Peter Maydell (2):
-      target/arm: Avoid writing to constant TCGv in trans_CSEL()
-      target/arm/tcg: Don't build AArch64 decodetree files for qemu-system-arm
-
-Richard Henderson (1):
-      target/arm: Fix MemOp for STGP
-
- accel/kvm/kvm-all.c            |  2 +-
- contrib/elf2dmp/main.c         |  5 +++++
- gdbstub/gdbstub.c              | 13 +++++++++++--
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1790
+Fixes: 8c212eb6594 ("target/arm: Convert load/store-pair to decodetree")
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20230726165416.309624-1-richard.henderson@linaro.org
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
  target/arm/tcg/translate-a64.c | 21 ++++++++++++++++++---
- target/arm/tcg/translate.c     | 15 ++++++++-------
- target/arm/tcg/meson.build     | 10 +++++++---
- 6 files changed, 50 insertions(+), 16 deletions(-)
+ 1 file changed, 18 insertions(+), 3 deletions(-)
+
+diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
+index ef0c47407a9..5fa1257d32a 100644
+--- a/target/arm/tcg/translate-a64.c
++++ b/target/arm/tcg/translate-a64.c
+@@ -3004,6 +3004,9 @@ static bool trans_STGP(DisasContext *s, arg_ldstpair *a)
+     MemOp mop;
+     TCGv_i128 tmp;
+ 
++    /* STGP only comes in one size. */
++    tcg_debug_assert(a->sz == MO_64);
++
+     if (!dc_isar_feature(aa64_mte_insn_reg, s)) {
+         return false;
+     }
+@@ -3029,13 +3032,25 @@ static bool trans_STGP(DisasContext *s, arg_ldstpair *a)
+         gen_helper_stg(cpu_env, dirty_addr, dirty_addr);
+     }
+ 
+-    mop = finalize_memop(s, a->sz);
+-    clean_addr = gen_mte_checkN(s, dirty_addr, true, false, 2 << a->sz, mop);
++    mop = finalize_memop(s, MO_64);
++    clean_addr = gen_mte_checkN(s, dirty_addr, true, false, 2 << MO_64, mop);
+ 
+     tcg_rt = cpu_reg(s, a->rt);
+     tcg_rt2 = cpu_reg(s, a->rt2);
+ 
+-    assert(a->sz == 3);
++    /*
++     * STGP is defined as two 8-byte memory operations and one tag operation.
++     * We implement it as one single 16-byte memory operation for convenience.
++     * Rebuild mop as for STP.
++     * TODO: The atomicity with LSE2 is stronger than required.
++     * Need a form of MO_ATOM_WITHIN16_PAIR that never requires
++     * 16-byte atomicity.
++     */
++    mop = MO_128;
++    if (s->align_mem) {
++        mop |= MO_ALIGN_8;
++    }
++    mop = finalize_memop_pair(s, mop);
+ 
+     tmp = tcg_temp_new_i128();
+     if (s->be_data == MO_LE) {
+-- 
+2.34.1
+
 
