@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8215769C99
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 18:33:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A014769CA0
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 18:33:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQVpp-0003eE-1N; Mon, 31 Jul 2023 12:33:29 -0400
+	id 1qQVpr-0003nb-VL; Mon, 31 Jul 2023 12:33:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1qQVpm-0003Yl-Q9
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 12:33:26 -0400
+ id 1qQVpp-0003gs-6V
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 12:33:29 -0400
 Received: from [134.134.136.126] (helo=mgamail.intel.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1qQVpl-0001LE-39
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 12:33:26 -0400
+ id 1qQVpn-0001LE-9j
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 12:33:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1690821205; x=1722357205;
+ t=1690821207; x=1722357207;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=FHpLYKCG5XsNyQYsZISCBt3MZkpY6KPjFJu1ItFTkyA=;
- b=a2ousdTPz5cyzqLX2Kf/mt8GmxZiowoOXqxLNarwW1RqnTtADoUyCDam
- hQryEwp3EZ3A85NGklJBu1rWPULzuXBhitC/2DKtEHkM0n90+4ruMsAXz
- lAFCqzm4+eRwbrFwzXMl+LrZXBCyy6QUBlMTFOjtg/ylWu2lNgZJ9/V9k
- 4RBtwTGmbGkONfUTk30XcB6sqrTcB1lQmbFvneFVY2ABuYbE1tKarm86V
- Jka3PRE5szIFVUBYZLIzc5P2FDS/v9jXHtY3rOJFQGV5FXbNtuG7MBjUe
- qrt49/o/a0O/LNs7KuT2l1Cpb9OVsyF+jNaj9xOm3RXMmUfj+rkeGQ00W A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10788"; a="353993543"
-X-IronPort-AV: E=Sophos;i="6.01,244,1684825200"; d="scan'208";a="353993543"
+ bh=/dXf+igjdEHFljunA6/Y/7Okg+auCCSxG402x9zxZbs=;
+ b=RiduMP4j0YOV5jpgr8ue4G6PeyuCb52e54o0WeVQAxGM4lm7tDFFI5oM
+ g6eu5gh6kVRLfs7NtyiP6BIk0gJo1c9LrfRxJnV7Reirz57A2IMHkgDrM
+ RN9ls/Xq5g5fk3t+IIBYdiWVFFtkN97FMIdGL+YsZ3oCg9qEXs3s7NSPn
+ rRgVr3RTl+QktlPk6lSCSvtaeWrlJkFE8Q2exJ4wz2aSVd/rNuaO7m3XK
+ 9IZt1jUPLDTBZahFAc6sKyFBD35QuGCl8wQSWZCSQR9YfhsNIaUbhHOmn
+ JTPPYaayyFePXL1yEpC2kPyIwsnaJJq6ptZAnloHQk2u1OUS/3uQG2Gcn w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10788"; a="353993558"
+X-IronPort-AV: E=Sophos;i="6.01,244,1684825200"; d="scan'208";a="353993558"
 Received: from orsmga008.jf.intel.com ([10.7.209.65])
  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Jul 2023 09:25:52 -0700
+ 31 Jul 2023 09:25:56 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10788"; a="757984304"
-X-IronPort-AV: E=Sophos;i="6.01,244,1684825200"; d="scan'208";a="757984304"
+X-IronPort-AV: E=McAfee;i="6600,9927,10788"; a="757984310"
+X-IronPort-AV: E=Sophos;i="6.01,244,1684825200"; d="scan'208";a="757984310"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.46])
- by orsmga008.jf.intel.com with ESMTP; 31 Jul 2023 09:25:47 -0700
+ by orsmga008.jf.intel.com with ESMTP; 31 Jul 2023 09:25:52 -0700
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  Sean Christopherson <seanjc@google.com>,
@@ -54,10 +54,9 @@ Cc: Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>,
  Peter Xu <peterx@redhat.com>, Chao Peng <chao.p.peng@linux.intel.com>,
  Michael Roth <michael.roth@amd.com>, isaku.yamahata@gmail.com,
  xiaoyao.li@intel.com, qemu-devel@nongnu.org, kvm@vger.kernel.org
-Subject: [RFC PATCH 13/19] physmem: replace function name with __func__ in
- ram_block_discard_range()
-Date: Mon, 31 Jul 2023 12:21:55 -0400
-Message-Id: <20230731162201.271114-14-xiaoyao.li@intel.com>
+Subject: [RFC PATCH 14/19] physmem: Add ram_block_convert_range
+Date: Mon, 31 Jul 2023 12:21:56 -0400
+Message-Id: <20230731162201.271114-15-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230731162201.271114-1-xiaoyao.li@intel.com>
 References: <20230731162201.271114-1-xiaoyao.li@intel.com>
@@ -89,101 +88,135 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+From: Chao Peng <chao.p.peng@linux.intel.com>
+
+This new routine adds support for memory conversion between
+shared/private memory for gmem fd based private ram_block.
+
+Signed-off-by: Chao Peng <chao.p.peng@linux.intel.com>
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 ---
- softmmu/physmem.c | 34 +++++++++++++++-------------------
- 1 file changed, 15 insertions(+), 19 deletions(-)
+ include/exec/cpu-common.h |  2 ++
+ softmmu/physmem.c         | 61 ++++++++++++++++++++++++++++++---------
+ 2 files changed, 50 insertions(+), 13 deletions(-)
 
+diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
+index 87dc9a752c9a..558684b9f246 100644
+--- a/include/exec/cpu-common.h
++++ b/include/exec/cpu-common.h
+@@ -157,6 +157,8 @@ typedef int (RAMBlockIterFunc)(RAMBlock *rb, void *opaque);
+ 
+ int qemu_ram_foreach_block(RAMBlockIterFunc func, void *opaque);
+ int ram_block_discard_range(RAMBlock *rb, uint64_t start, size_t length);
++int ram_block_convert_range(RAMBlock *rb, uint64_t start, size_t length,
++                            bool shared_to_private);
+ 
+ #endif
+ 
 diff --git a/softmmu/physmem.c b/softmmu/physmem.c
-index 8f64128de0b5..05c981e5c18e 100644
+index 05c981e5c18e..2acc8bee5b33 100644
 --- a/softmmu/physmem.c
 +++ b/softmmu/physmem.c
-@@ -3430,16 +3430,15 @@ int ram_block_discard_range(RAMBlock *rb, uint64_t start, size_t length)
-     uint8_t *host_startaddr = rb->host + start;
+@@ -3415,15 +3415,9 @@ int qemu_ram_foreach_block(RAMBlockIterFunc func, void *opaque)
+     return ret;
+ }
  
-     if (!QEMU_PTR_IS_ALIGNED(host_startaddr, rb->page_size)) {
--        error_report("ram_block_discard_range: Unaligned start address: %p",
--                     host_startaddr);
-+        error_report("%s: Unaligned start address: %p",
-+                     __func__, host_startaddr);
-         goto err;
-     }
+-/*
+- * Unmap pages of memory from start to start+length such that
+- * they a) read as 0, b) Trigger whatever fault mechanism
+- * the OS provides for postcopy.
+- * The pages must be unmapped by the end of the function.
+- * Returns: 0 on success, none-0 on failure
+- *
+- */
+-int ram_block_discard_range(RAMBlock *rb, uint64_t start, size_t length)
++static int ram_block_discard_range_fd(RAMBlock *rb, uint64_t start,
++                                      size_t length, int fd)
++
+ {
+     int ret = -1;
  
-     if ((start + length) <= rb->max_length) {
-         bool need_madvise, need_fallocate;
-         if (!QEMU_IS_ALIGNED(length, rb->page_size)) {
--            error_report("ram_block_discard_range: Unaligned length: %zx",
--                         length);
-+            error_report("%s: Unaligned length: %zx", __func__, length);
-             goto err;
-         }
- 
-@@ -3469,27 +3468,26 @@ int ram_block_discard_range(RAMBlock *rb, uint64_t start, size_t length)
-              * file.
-              */
-             if (!qemu_ram_is_shared(rb)) {
--                warn_report_once("ram_block_discard_range: Discarding RAM"
-+                warn_report_once("%s: Discarding RAM"
-                                  " in private file mappings is possibly"
-                                  " dangerous, because it will modify the"
-                                  " underlying file and will affect other"
--                                 " users of the file");
-+                                 " users of the file", __func__);
+@@ -3449,8 +3443,8 @@ int ram_block_discard_range(RAMBlock *rb, uint64_t start, size_t length)
+          *    fallocate works on hugepages and shmem
+          *    shared anonymous memory requires madvise REMOVE
+          */
+-        need_madvise = (rb->page_size == qemu_host_page_size);
+-        need_fallocate = rb->fd != -1;
++        need_madvise = (rb->page_size == qemu_host_page_size) && (rb->fd == fd);
++        need_fallocate = fd != -1;
+         if (need_fallocate) {
+             /* For a file, this causes the area of the file to be zero'd
+              * if read, and for hugetlbfs also causes it to be unmapped
+@@ -3475,7 +3469,7 @@ int ram_block_discard_range(RAMBlock *rb, uint64_t start, size_t length)
+                                  " users of the file", __func__);
              }
  
-             ret = fallocate(rb->fd, FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE,
+-            ret = fallocate(rb->fd, FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE,
++            ret = fallocate(fd, FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE,
                              start, length);
              if (ret) {
                  ret = -errno;
--                error_report("ram_block_discard_range: Failed to fallocate "
--                             "%s:%" PRIx64 " +%zx (%d)",
--                             rb->idstr, start, length, ret);
-+                error_report("%s: Failed to fallocate %s:%" PRIx64 " +%zx (%d)",
-+                             __func__, rb->idstr, start, length, ret);
-                 goto err;
-             }
- #else
-             ret = -ENOSYS;
--            error_report("ram_block_discard_range: fallocate not available/file"
-+            error_report("%s: fallocate not available/file"
-                          "%s:%" PRIx64 " +%zx (%d)",
--                         rb->idstr, start, length, ret);
-+                         __func__, rb->idstr, start, length, ret);
-             goto err;
- #endif
-         }
-@@ -3507,25 +3505,23 @@ int ram_block_discard_range(RAMBlock *rb, uint64_t start, size_t length)
-             }
-             if (ret) {
-                 ret = -errno;
--                error_report("ram_block_discard_range: Failed to discard range "
-+                error_report("%s: Failed to discard range "
-                              "%s:%" PRIx64 " +%zx (%d)",
--                             rb->idstr, start, length, ret);
-+                             __func__, rb->idstr, start, length, ret);
-                 goto err;
-             }
- #else
-             ret = -ENOSYS;
--            error_report("ram_block_discard_range: MADVISE not available"
--                         "%s:%" PRIx64 " +%zx (%d)",
--                         rb->idstr, start, length, ret);
-+            error_report("%s: MADVISE not available %s:%" PRIx64 " +%zx (%d)",
-+                         __func__, rb->idstr, start, length, ret);
-             goto err;
- #endif
-         }
-         trace_ram_block_discard_range(rb->idstr, host_startaddr, length,
-                                       need_madvise, need_fallocate, ret);
-     } else {
--        error_report("ram_block_discard_range: Overrun block '%s' (%" PRIu64
--                     "/%zx/" RAM_ADDR_FMT")",
--                     rb->idstr, start, length, rb->max_length);
-+        error_report("%s: Overrun block '%s' (%" PRIu64 "/%zx/" RAM_ADDR_FMT")",
-+                     __func__, rb->idstr, start, length, rb->max_length);
-     }
+@@ -3498,7 +3492,7 @@ int ram_block_discard_range(RAMBlock *rb, uint64_t start, size_t length)
+              * fallocate'd away).
+              */
+ #if defined(CONFIG_MADVISE)
+-            if (qemu_ram_is_shared(rb) && rb->fd < 0) {
++            if (qemu_ram_is_shared(rb) && fd < 0) {
+                 ret = madvise(host_startaddr, length, QEMU_MADV_REMOVE);
+             } else {
+                 ret = madvise(host_startaddr, length, QEMU_MADV_DONTNEED);
+@@ -3528,6 +3522,20 @@ err:
+     return ret;
+ }
  
- err:
++/*
++ * Unmap pages of memory from start to start+length such that
++ * they a) read as 0, b) Trigger whatever fault mechanism
++ * the OS provides for postcopy.
++ *
++ * The pages must be unmapped by the end of the function.
++ * Returns: 0 on success, none-0 on failure.
++ */
++int ram_block_discard_range(RAMBlock *rb, uint64_t start, size_t length)
++{
++    return ram_block_discard_range_fd(rb, start, length, rb->fd);
++}
++
++
+ bool ramblock_is_pmem(RAMBlock *rb)
+ {
+     return rb->flags & RAM_PMEM;
+@@ -3715,3 +3723,30 @@ bool ram_block_discard_is_required(void)
+     return qatomic_read(&ram_block_discard_required_cnt) ||
+            qatomic_read(&ram_block_coordinated_discard_required_cnt);
+ }
++
++int ram_block_convert_range(RAMBlock *rb, uint64_t start, size_t length,
++                            bool shared_to_private)
++{
++    int fd;
++
++    if (!rb || rb->gmem_fd < 0) {
++        return -1;
++    }
++
++    if (!QEMU_PTR_IS_ALIGNED(start, rb->page_size) ||
++        !QEMU_PTR_IS_ALIGNED(length, rb->page_size)) {
++        return -1;
++    }
++
++    if (length > rb->max_length) {
++        return -1;
++    }
++
++    if (shared_to_private) {
++        fd = rb->fd;
++    } else {
++        fd = rb->gmem_fd;
++    }
++
++    return ram_block_discard_range_fd(rb, start, length, fd);
++}
 -- 
 2.34.1
 
