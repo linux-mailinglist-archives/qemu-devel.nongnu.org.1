@@ -2,86 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F18076996B
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 16:23:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FCBE769991
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 16:32:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQTnw-0005Db-0V; Mon, 31 Jul 2023 10:23:24 -0400
+	id 1qQTvZ-0008SH-37; Mon, 31 Jul 2023 10:31:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qQTnp-000586-FC
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 10:23:17 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qQTvX-0008Rm-9x
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 10:31:15 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qQTnn-0000e5-Pu
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 10:23:17 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-307d20548adso4098129f8f.0
- for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 07:23:15 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qQTvV-0002Ea-NH
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 10:31:15 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-3fe20e7e5caso11266015e9.3
+ for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 07:31:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690813394; x=1691418194;
+ d=linaro.org; s=google; t=1690813871; x=1691418671;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=ZZcB9Z+1fkeLt/d1VCn+ga9XJ/QfNhwxcjth8l7Z9nM=;
- b=n5CGc3YCsRexafqEMkTQJXIu3/LKHqEvnjDdb9vb/mPOGS51r9c3F4spu+1k/Wr+Yn
- cYmQq+09+CpKwLE+tSmjNhrcbCk49217gFtfcCtJAib8By8QMr0Dm+P0wBiLhCBXzgXj
- mtUSPtclwvT3ifq0EMNWsSeulqpOiELP+rkPcPVqu3B+zLehnqJqpMWMBi7RKgRwY4mH
- KSniI1zZ7ULjzE4vepN2bcNqV3p6tmNcA+z+PtgjPVcnOFmVBOhYyX59zCRzQCN3qOYG
- XHiUhRb0lMzJIR2QNVOSgIBZIcWiULu+2x66dQ/mT+Os5hATl5ys0A7QH5nJ5wOz9OyQ
- 2gWQ==
+ bh=3HySA3W+K1+tfTye0CohDBSCFD3dSPCVOaxmgIA/hsE=;
+ b=AzZo+uKtrjQ0CXM+n0MEdKhLSCOFQggQ5amnEedqOAa9PAKPO+EW+xzBWFgaY7D+Lz
+ xIKecPSUjNBqcgONGfoaH5ZykEzXARDDzvgbmlP2JrbYmYy7F6ifiC4e27EgbrgUikC4
+ isuT84K9koWUsNqzULZKfY75j/juah3+nkKY2F8OejEZUwdwTz0zW8jPfhyFNiFKeUvy
+ DQ92gjnmmMUroo0WJjBGNPZ4CGswuISvQdv4U8edGkCd1n5nNVka7qtGHyrV89QjtKvQ
+ AbJ5qQTY1gtrUzepFh1WFjlLWVWN7lz96Dxc6oNbGswI4D/cmW0BNth2eI97IxH81d66
+ xMXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690813394; x=1691418194;
+ d=1e100.net; s=20221208; t=1690813871; x=1691418671;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ZZcB9Z+1fkeLt/d1VCn+ga9XJ/QfNhwxcjth8l7Z9nM=;
- b=S2iwGvDcGdDOvzLNz79usHcTtFFEkz3O3FB7LyWOCSICe19fH4wqTe0F18xwTb2z90
- i9iDup/wi+LH4a1tqCeeRyaxGuNUlTWXzuUlJD5SUaV3THddXJ/mIDzBiKSzWaJPqsO9
- gYVs9VcR5RAoNYsn5xglHQOK7CdVp+5fjj00+e7lG1dLwIkQ0sdiU/iCqiBljqYmv4Z+
- nLveOPxOT5dU0HDVzm3PjhNxaYi1eF7kzXyGGuBPapxrSo/QQxRbmGmQvmEiDlkqbVn8
- vNFLSPk6IvvTL8zTls65yaDvF5qRAXb5hj5U/k2ohVveXq8NI91idq3ncVuEaCoyw2zP
- YTSA==
-X-Gm-Message-State: ABy/qLamoC6N4Biy5PB/8FZD95muXQ9EyVVNZVpJ9AavS+et9r19oOa+
- ADWaNRGA4+kUVEx27f/gVABfAQ==
-X-Google-Smtp-Source: APBJJlECc345k7d9c6dthcWZ3U5QD1YwjUKgQuIuBaMzS7tpQ53iJQbBELAts8J3KByCjE4RLDq8vA==
-X-Received: by 2002:a5d:67c5:0:b0:317:3f0e:8cb1 with SMTP id
- n5-20020a5d67c5000000b003173f0e8cb1mr6905068wrw.45.1690813394108; 
- Mon, 31 Jul 2023 07:23:14 -0700 (PDT)
+ bh=3HySA3W+K1+tfTye0CohDBSCFD3dSPCVOaxmgIA/hsE=;
+ b=Fv/srQo2bSvky5lsktl9Lyrzqe7J2+wNcHasdiQQz4Dx2BlsVXzfXfICGhd33MMl7u
+ kfmr66m+pOAHaj29VEKwXOgDRdqT+sV1k7hrnw6tzdUXGdBIlfwxA8HyMi5QGjfVKJmK
+ ltc/0qbK5EvlxeVrckkIbLrqcTZ7ZgnxbnRYiBKjoQi8iXViXtW3mn95WxFNmP+bXBcM
+ mqLUxs37ChBzz1DpOxBGIQ/Vv5ckEdI7eoPsc1CjKeAPvx75UsJVE5PQ4G6PP+XltXjk
+ zIWCzI9DR7NndznEBTiTvo2I9y+IWYzhAo2UF8dw3612o4Jq7PGPBoKgnI2yBlug9YWt
+ I4cw==
+X-Gm-Message-State: ABy/qLZxkLRad8i2lYaFHrJw4sOIxN0fVoJ2frZHPGkayA6BICZPdj3S
+ sz37XZx/pgFQIXsmnl5qmNi5h8lV0ms6tI1bNBs=
+X-Google-Smtp-Source: APBJJlEPQNIzHCmZ56Dd2t69Arbk93xlC3MBexeOaYffzVSq7pxOkridgWUfj4JVS+mrdZmeU08x1w==
+X-Received: by 2002:adf:e98e:0:b0:317:5c82:10c2 with SMTP id
+ h14-20020adfe98e000000b003175c8210c2mr9258242wrm.59.1690813871265; 
+ Mon, 31 Jul 2023 07:31:11 -0700 (PDT)
 Received: from [192.168.69.115] ([176.187.198.42])
  by smtp.gmail.com with ESMTPSA id
- l11-20020adfe9cb000000b00314329f7d8asm13237129wrn.29.2023.07.31.07.23.12
+ l11-20020adfe9cb000000b00314329f7d8asm13256202wrn.29.2023.07.31.07.31.07
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 31 Jul 2023 07:23:13 -0700 (PDT)
-Message-ID: <62b923c2-5c22-44c5-99cd-95351fd200db@linaro.org>
-Date: Mon, 31 Jul 2023 16:23:11 +0200
+ Mon, 31 Jul 2023 07:31:10 -0700 (PDT)
+Message-ID: <95b7fe87-0a0d-7182-7706-e119769d4d59@linaro.org>
+Date: Mon, 31 Jul 2023 16:31:05 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.13.0
-Subject: Re: [RFC PATCH 6/6] gitlab-ci.d/windows: Use Clang for compiling in
- the 64-bit MSYS2 job
+Subject: Re: [PATCH v2 1/5] Refactor i.MX6UL processor code
 Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>
-Cc: Stefan Weil <sw@weilnetz.de>, Yonggang Luo <luoyonggang@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>
-References: <20230728142748.305341-1-thuth@redhat.com>
- <20230728142748.305341-7-thuth@redhat.com>
+To: Jean-Christophe Dubois <jcd@tribudubois.net>, qemu-arm@nongnu.org
+Cc: qemu-devel@nongnu.org
+References: <cover.1690663106.git.jcd@tribudubois.net>
+ <6795fbc55daf5bdf196bf98f1ff8ac1891fe5a1e.1690663106.git.jcd@tribudubois.net>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230728142748.305341-7-thuth@redhat.com>
+In-Reply-To: <6795fbc55daf5bdf196bf98f1ff8ac1891fe5a1e.1690663106.git.jcd@tribudubois.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.101,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,51 +93,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 28/7/23 16:27, Thomas Huth wrote:
-> We are struggeling with timeouts in the 64-bit MSYS2 job. Clang seems
-> to be a little bit faster, so let's use this compiler now instead.
-> 
-> There is a problem with compiling the spice headers with Clang, though,
-> so we can only test this in the 32-bit builds with GCC now. And we have
-> to disable dbus-display - otherwise the compilation aborts in the CI.
-> 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->   .gitlab-ci.d/windows.yml | 14 ++++++++------
->   1 file changed, 8 insertions(+), 6 deletions(-)
-> 
-> diff --git a/.gitlab-ci.d/windows.yml b/.gitlab-ci.d/windows.yml
-> index f086540e40..ff9e9af4bb 100644
-> --- a/.gitlab-ci.d/windows.yml
-> +++ b/.gitlab-ci.d/windows.yml
-> @@ -43,7 +43,6 @@
->         $MINGW_TARGET-curl
->         $MINGW_TARGET-cyrus-sasl
->         $MINGW_TARGET-dtc
-> -      $MINGW_TARGET-gcc
->         $MINGW_TARGET-glib2
->         $MINGW_TARGET-gnutls
->         $MINGW_TARGET-gtk3
-> @@ -63,9 +62,9 @@
->         $MINGW_TARGET-SDL2
->         $MINGW_TARGET-SDL2_image
->         $MINGW_TARGET-snappy
-> -      $MINGW_TARGET-spice
->         $MINGW_TARGET-usbredir
-> -      $MINGW_TARGET-zstd "
-> +      $MINGW_TARGET-zstd
-> +      $EXTRA_PACKAGES "
->     - $env:CHERE_INVOKING = 'yes'  # Preserve the current working directory
->     - $env:MSYS = 'winsymlinks:native' # Enable native Windows symlink
->     - mkdir build
-> @@ -77,13 +76,15 @@
->   msys2-64bit:
->     extends: .shared_msys2_builder
->     variables:
-> -    MINGW_TARGET: mingw-w64-x86_64
-> -    MSYSTEM: MINGW64
-> +    MINGW_TARGET: mingw-w64-clang-x86_64
-> +    MSYSTEM: CLANG64
+Hi Jean-Christophe,
 
-OK to use Clang, but I'm tempted to keep the GCC job in manual mode...
+On 29/7/23 23:17, Jean-Christophe Dubois wrote:
+> * Add Addr and size definition for all i.MX6UL devices in i.MX6UL header file.
+> * Use those newly defined named constants whenever possible.
+> * Standardize the way we init a familly of unimplemented devices
+>    - SAI
+>    - PWM (add missing PWM instances)
+>    - CAN
+> * Add/rework few comments
+> 
+> Signed-off-by: Jean-Christophe Dubois <jcd@tribudubois.net>
+> ---
+>   hw/arm/fsl-imx6ul.c         | 149 ++++++++++++++++++++++++------------
+>   include/hw/arm/fsl-imx6ul.h | 149 +++++++++++++++++++++++++++++++++---
+>   2 files changed, 239 insertions(+), 59 deletions(-)
+
+
+>   enum FslIMX6ULMemoryMap {
+>       FSL_IMX6UL_MMDC_ADDR            = 0x80000000,
+> -    FSL_IMX6UL_MMDC_SIZE            = 2 * 1024 * 1024 * 1024UL,
+> +    FSL_IMX6UL_MMDC_SIZE            = (2 * 1024 * 1024 * 1024UL),
+>   
+>       FSL_IMX6UL_QSPI1_MEM_ADDR       = 0x60000000,
+> +    FSL_IMX6UL_QSPI1_MEM_SIZE       = (256 * 1024 * 1024UL),
+> +
+>       FSL_IMX6UL_EIM_ALIAS_ADDR       = 0x58000000,
+> +    FSL_IMX6UL_EIM_ALIAS_SIZE       = (128 * 1024 * 1024UL),
+> +
+>       FSL_IMX6UL_EIM_CS_ADDR          = 0x50000000,
+> +    FSL_IMX6UL_EIM_CS_SIZE          = (128 * 1024 * 1024UL),
+> +
+>       FSL_IMX6UL_AES_ENCRYPT_ADDR     = 0x10000000,
+> +    FSL_IMX6UL_AES_ENCRYPT_SIZE     = (1024 * 1024UL),
+> +
+>       FSL_IMX6UL_QSPI1_RX_ADDR        = 0x0C000000,
+> +    FSL_IMX6UL_QSPI1_RX_SIZE        = (32 * 1024 * 1024UL),
+
+Please use the KiB / MiB definitions from "qemu/units.h" (the
+resulting code is easier to read. No need for parenthesis.
 
