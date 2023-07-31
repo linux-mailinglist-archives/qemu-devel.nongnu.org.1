@@ -2,46 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CD267691B4
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 11:30:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4301D7691C6
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 11:31:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQPDs-0004qH-2J; Mon, 31 Jul 2023 05:29:52 -0400
+	id 1qQPFL-0006u8-Gq; Mon, 31 Jul 2023 05:31:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qQPDk-0004Zr-MW
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 05:29:44 -0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qQPFI-0006oG-7y
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 05:31:20 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qQPDj-0005PD-6p
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 05:29:44 -0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qQPFG-0005i9-Bf
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 05:31:19 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 72CA016F46;
- Mon, 31 Jul 2023 12:29:53 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 6394716F49;
+ Mon, 31 Jul 2023 12:31:28 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id CE4C91A315;
- Mon, 31 Jul 2023 12:29:40 +0300 (MSK)
-Message-ID: <f3fec072-caf4-b0a7-151e-9531bafd7c25@tls.msk.ru>
-Date: Mon, 31 Jul 2023 12:29:40 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id CB5861A317;
+ Mon, 31 Jul 2023 12:31:15 +0300 (MSK)
+Message-ID: <3088d223-64fd-9aab-3c08-000f0924607c@tls.msk.ru>
+Date: Mon, 31 Jul 2023 12:31:15 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: linux-user/armeb: Fix __kernel_cmpxchg() for armeb
+Subject: Re: [PATCH 0/5] linux-user: brk/mmap fixes
 Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Helge Deller <deller@gmx.de>,
- Richard Henderson <richard.henderson@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>, qemu-devel@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>
-Cc: John Reiser <jreiser@bitwagon.com>,
- "Markus F.X.J. Oberhumer" <markus@oberhumer.com>
-References: <ZMLfYE3fYCUhnaEE@p100>
- <acab2aed-93ca-7c57-5018-16118572018c@linaro.org>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: qemu-devel@nongnu.org, Laurent Vivier <laurent@vivier.eu>
+References: <20230731080317.112658-1-akihiko.odaki@daynix.com>
 From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <acab2aed-93ca-7c57-5018-16118572018c@linaro.org>
+In-Reply-To: <20230731080317.112658-1-akihiko.odaki@daynix.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
 X-Spam_score_int: -69
@@ -65,13 +59,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-31.07.2023 12:26, Philippe Mathieu-Daudé wrote:
-> On 27/7/23 23:19, Helge Deller wrote:
->> Words are stored in big endian in the guest memory for armeb.
-..
-> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+31.07.2023 11:03, Akihiko Odaki wrote:
+> linux-user was failing on M2 MacBook Air. Digging into the details, I found
+> several bugs in brk and mmap so here are fixes.
 
-There was a v3 of this patch already, fwiw.
+There's another work in this area by Helge Deller, have you seen it?
+("linux-user: Fix and optimize target memory layout", a v5 already).
+
+FWIW,
 
 /mjt
 
