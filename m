@@ -2,80 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C93087692B4
-	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 12:07:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 774E67692C4
+	for <lists+qemu-devel@lfdr.de>; Mon, 31 Jul 2023 12:09:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQPmq-0006bG-A3; Mon, 31 Jul 2023 06:06:00 -0400
+	id 1qQPpm-0007PK-AK; Mon, 31 Jul 2023 06:09:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qQPmn-0006b7-8S
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 06:05:57 -0400
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
+ id 1qQPph-0007On-Ss
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 06:08:57 -0400
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qQPml-0003UF-1K
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 06:05:56 -0400
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-522b77956d2so2421536a12.3
- for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 03:05:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
+ id 1qQPpf-0003sc-3c
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 06:08:57 -0400
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-99c1d03e124so64497066b.2
+ for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 03:08:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690797953; x=1691402753;
+ d=jms.id.au; s=google; t=1690798133; x=1691402933;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=3F9p2pSs6R3JTrObS3/84XQ7b1HEeZ3IqqBymucmX5Y=;
- b=nYxoHOQUP0LR+m2ydkKmnb2BMNWFqBCavG5ohmNqwyr5lvqVXEhyFJRW5rsh3JCNna
- uoEwPApzequL34+6K+8AhOPFCep5l0L2evPhzTX4AgfwC5dl4T6hvNjio4y540UZ2lM8
- GGON0uiCWWpyiPmy6ccyoTgiM85zhcfzA1NDlWyawYjeE2gpwzfAAtpI69A1MV+hUCP0
- M1FudRvZW1+Rnkc0Yg6fD+xzURRVpEZQjk4xV26vV7RRFQKrE0R5FB/IhGoi3mzJVIbn
- C3Hylr3969VYyAMxPkppaJCvI808gUPbsoHMqJ4Npnpnrd3cKkrkGNIw0dFuiRmQ0NJl
- s66Q==
+ bh=dvmzdTWPLUoH2OThh4NDIdXgzp8yb2XuT3JilMo8co4=;
+ b=f/aC48UC1eoQ9KbvnSPJWR7fsQDz2+oBiqBYSlV8hjhF6PptjlnLP/RZCnMV+Osn2N
+ ThDrkBi7pXILnYkFY+4gaGbmsZeQGBNNCWB1baDnrPJ160ka479+mKdHZ5rb+9++Kkyn
+ H8TkkmaNVbqTI9m2+Mg4MWiNJWZUWFO23BBCo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690797953; x=1691402753;
+ d=1e100.net; s=20221208; t=1690798133; x=1691402933;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=3F9p2pSs6R3JTrObS3/84XQ7b1HEeZ3IqqBymucmX5Y=;
- b=SbL4XTueqUjDu+GGTWpfZKLeiplEVbRW+arlpvu8tY8vkpMEkzbWKV2utcfcXcrOFH
- FB9+BB2gRtaxAAzW4nuyLpJz9EiKrSiO8W0/Ir+Z0dOTU8GnDyJdXxxYpY1pANAlYTb+
- 6TyBuFeeNcZbAMEzFr8QPgwJxXoxSvlCxS5Yi/RhARwDY94yztf7j34rZ5hfJp4GgeY8
- +X80rMxonL3+SrM2BpqqLeYvgPRPZYcnFLeYZtxMpDYU6N/NTObdhnU0gQHprWT5IRPq
- Rj73QkpCUtOdpufJHVZ2kWiL0nMhWOAgA3fR7y4+SxLCojNcVES2fyNXw2RRLvg1vr3m
- V2JQ==
-X-Gm-Message-State: ABy/qLbFTfEU3vP0k/frd1T9VoQGYS085j3ODHe6xSCr4w4txMXSjoIA
- 911/gxn7816LWDLGAl9E1J2z0P3y5Z07WvWzJWx4Fg==
-X-Google-Smtp-Source: APBJJlHMo0CakWa0BDNM0J9VPjRsLEKSdy2NaJ1HpZ8NqhfuUvdNKvT7LCIb1tGiye/MnuSU90VW9WSMwRk/4yIEzLc=
-X-Received: by 2002:a05:6402:746:b0:522:3410:de23 with SMTP id
- p6-20020a056402074600b005223410de23mr7779998edy.3.1690797953182; Mon, 31 Jul
- 2023 03:05:53 -0700 (PDT)
+ bh=dvmzdTWPLUoH2OThh4NDIdXgzp8yb2XuT3JilMo8co4=;
+ b=ZypXzCOG8CPNGAFSK+/e3ndRVI7LKYHaSV8ess/uubZ+2wfoxxtOTSdN0GXH5kspvb
+ KrViGFB0coCovR9D5J06hRWKnGztaHgDDU45Ny+CI1eA3nJ0eYQMOHxBGY3mTiKkl3sg
+ SSbdiNEotx9DaHxvqC4xrCu+1DQx2Gyb3oBMayk+rASFINz/qDyXa9cZDxD0drBWJHVz
+ Xb32vTOwnQ6apX4Fmxy1iMxMfG6vc+HRTq4lSMXijbBQP17o0bkxEA0n79f3ViUeNrm/
+ wEIcnUtWGj8m+Qpcug4bS3086/wbD2iAN6FkRgGZxRyGvOG4P126gTsjXQgbqH72M+gc
+ VI7w==
+X-Gm-Message-State: ABy/qLYTlpnHOauqWbXeHjK7VmIsZKLSypPgklH5bqIht8wxVj7QFQt6
+ /Lh/IiM1miSduBAM0zxsWS+sdE9j4wJpprNdDyE=
+X-Google-Smtp-Source: APBJJlFLxeKNFtfDgSyKZuB4sl2JMiCXRQOYvpOflxU6bWQmXw1nDhhOJc9xq10D8USTVj/618r8bohH0mWo9PUChIw=
+X-Received: by 2002:a17:907:1dea:b0:99b:4a2b:2ea3 with SMTP id
+ og42-20020a1709071dea00b0099b4a2b2ea3mr5744920ejc.17.1690798132867; Mon, 31
+ Jul 2023 03:08:52 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230728142748.305341-1-thuth@redhat.com>
- <20230728142748.305341-6-thuth@redhat.com>
- <CAFEAcA9PuwSzaWXJYrF9PTs8Yz9oG6_sUY=p7S5rnx6NiS1HeQ@mail.gmail.com>
- <6ca265d4-0dad-3725-1cd5-84da685bc63a@redhat.com>
-In-Reply-To: <6ca265d4-0dad-3725-1cd5-84da685bc63a@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 31 Jul 2023 11:05:42 +0100
-Message-ID: <CAFEAcA-F=6QqdjCSexG9kKsq9irjDGTv63xJNKQn+TD9-5U1pg@mail.gmail.com>
-Subject: Re: [RFC PATCH 5/6] include/qemu/compiler: Fix problem with
- gcc_struct and Clang
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org,
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- Stefan Weil <sw@weilnetz.de>, Yonggang Luo <luoyonggang@gmail.com>
+References: <20230728173127.259192-1-deller@gmx.de>
+In-Reply-To: <20230728173127.259192-1-deller@gmx.de>
+From: Joel Stanley <joel@jms.id.au>
+Date: Mon, 31 Jul 2023 10:08:40 +0000
+Message-ID: <CACPK8XeyqcEDyyL3Jw2WYWs_gGdtTCf2=Ly04CMgkshSMdj7RA@mail.gmail.com>
+Subject: Re: [PATCH v5 0/3] linux-user: Fix and optimize target memory layout
+To: Helge Deller <deller@gmx.de>
+Cc: qemu-devel@nongnu.org, Laurent Vivier <laurent@vivier.eu>, 
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x533.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=joel.stan@gmail.com; helo=mail-ej1-x632.google.com
+X-Spam_score_int: -14
+X-Spam_score: -1.5
+X-Spam_bar: -
+X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.25,
+ FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,15 +84,204 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 31 Jul 2023 at 10:11, Thomas Huth <thuth@redhat.com> wrote:
-> Or do you see another possibility how we could fix that timeout problem in
-> the 64-bit MSYS2 job? Still switching to clang, but compiling with
-> --extra-cflags="-Wno-unknown-attributes" maybe?
+On Fri, 28 Jul 2023 at 18:58, Helge Deller <deller@gmx.de> wrote:
+>
+> While trying to fix a bug which prevents running a static
+> armhf binary with linux-user, I noticed a whole bunch of
+> memory layout issues on various platforms. Most noteably
+> the free heap space was very limited in the current setup.
+> A large heap is important for example, if you want to
+> use qemu-user for building Linux packages where gcc requires
+> lots of space (e.g. using qemu-user as buildd for debian
+> packages).
+>
+> Those findings led to this patch series, which
+> - fixes qemu-arm to run static armhf binaries
 
-Is there any way we can separate out the "take 25 minutes to
-install a pile of packages" part from the "actually compile and
-test QEMU" part ?
+Applying this on top of master and trying to run a simple armhf binary
+on a ppc64le host fails:
 
-thanks
--- PMM
+qemu$ ./build/qemu-arm -d guest_errors,page,strace ~/hello-armhf
+host mmap_min_addr=0x10000
+pgb_find_hole: base @ 10000 for 4294967296 bytes
+pgb_static: base @ 10000 for 4294967295 bytes
+pgb_reserved_va: base @ 0x10000 for 4294967296 bytes
+Locating guest address space @ 0x10000
+page layout changed following mmap
+start    end      size     prot
+00010000-00060000 00050000 ---
+00060000-00066000 00006000 ---
+ffff0000-00000000 00010000 r-x
+page layout changed following mmap
+start    end      size     prot
+00010000-00060000 00050000 r-x
+00060000-00066000 00006000 ---
+ffff0000-00000000 00010000 r-x
+page layout changed following mmap
+start    end      size     prot
+00010000-00060000 00050000 r-x
+00060000-00064000 00004000 rw-
+00064000-00066000 00002000 ---
+ffff0000-00000000 00010000 r-x
+page layout changed following mmap
+start    end      size     prot
+00010000-00060000 00050000 r-x
+00060000-00064000 00004000 rw-
+00064000-00066000 00002000 rw-
+f3000000-f3810000 00810000 rw-
+ffff0000-00000000 00010000 r-x
+page layout changed following mmap
+start    end      size     prot
+00010000-00060000 00050000 r-x
+00060000-00064000 00004000 rw-
+00064000-00066000 00002000 rw-
+f3000000-f3010000 00010000 ---
+f3010000-f3811000 00801000 rw-
+ffff0000-00000000 00010000 r-x
+guest_base  0x10000
+page layout changed following binary load
+start    end      size     prot
+00010000-00060000 00050000 r-x
+00060000-00064000 00004000 rw-
+00064000-00066000 00002000 rw-
+f3000000-f3010000 00010000 ---
+f3010000-f3810000 00800000 rw-
+f3810000-f3811000 00001000 r-x
+ffff0000-00000000 00010000 r-x
+start_brk   0x00000000
+end_code    0x0005f9c8
+start_code  0x00010000
+start_data  0x00060414
+end_data    0x0006327c
+start_stack 0xf380f420
+brk         0x00066000
+entry       0x00010341
+argv_start  0xf380f424
+env_start   0xf380f42c
+auxv_start  0xf380f4a8
+95718 brk(NULL) = 0x00066000
+95718 brk(0x00066874) = 0x00066874
+95718 set_tid_address(0x66068) = 95718
+95718 set_robust_list(0x6606c,12) = -1 errno=38 (Function not implemented)
+95718 Unknown syscall 398
+95718 ugetrlimit(3,-209652764,328608,404128,401408,1) = 0
+95718 readlinkat(AT_FDCWD,"/proc/self/exe",0xf380e390,4096) = 22
+95718 getrandom(0x65940,4,1) = 4
+95718 brk(NULL) = 0x00066874
+95718 brk(0x00087874)page layout changed following mmap
+start    end      size     prot
+00010000-00060000 00050000 r-x
+00060000-00064000 00004000 rw-
+00064000-00066000 00002000 rw-
+00070000-00090000 00020000 rw-
+f3000000-f3010000 00010000 ---
+f3010000-f3810000 00800000 rw-
+f3810000-f3811000 00001000 r-x
+ffff0000-00000000 00010000 r-x
+ = 0x00087874
+95718 brk(0x00088000) = 0x00088000
+95718 mprotect(0x00060000,8192,PROT_READ) = 0
+95718 statx(1,"",AT_EMPTY_PATH|AT_NO_AUTOMOUNT|AT_STATX_SYNC_AS_STAT,STATX_BASIC_STATS,0xf380f078)
+= 0
+95718 write(1,0x66b08,14) = -1 errno=14 (Bad address)
+95718 exit_group(0)
+
+A working arm binary by comparison:
+
+qemu$ ./build/qemu-arm -d guest_errors,page,strace ~/hello
+host mmap_min_addr=0x10000
+pgb_find_hole: base @ 10000 for 4294967296 bytes
+pgb_static: base @ 10000 for 4294967295 bytes
+pgb_reserved_va: base @ 0x10000 for 4294967296 bytes
+Locating guest address space @ 0x10000
+page layout changed following mmap
+start    end      size     prot
+00010000-00090000 00080000 ---
+00090000-0009b000 0000b000 ---
+ffff0000-00000000 00010000 r-x
+page layout changed following mmap
+start    end      size     prot
+00010000-00090000 00080000 r-x
+00090000-0009b000 0000b000 ---
+ffff0000-00000000 00010000 r-x
+page layout changed following mmap
+start    end      size     prot
+00010000-00090000 00080000 r-x
+00090000-000a0000 00010000 rw-
+ffff0000-00000000 00010000 r-x
+page layout changed following mmap
+start    end      size     prot
+00010000-00090000 00080000 r-x
+00090000-000a0000 00010000 rw-
+f3000000-f3810000 00810000 rw-
+ffff0000-00000000 00010000 r-x
+page layout changed following mmap
+start    end      size     prot
+00010000-00090000 00080000 r-x
+00090000-000a0000 00010000 rw-
+f3000000-f3010000 00010000 ---
+f3010000-f3811000 00801000 rw-
+ffff0000-00000000 00010000 r-x
+guest_base  0x10000
+page layout changed following binary load
+start    end      size     prot
+00010000-00090000 00080000 r-x
+00090000-000a0000 00010000 rw-
+f3000000-f3010000 00010000 ---
+f3010000-f3810000 00800000 rw-
+f3810000-f3811000 00001000 r-x
+ffff0000-00000000 00010000 r-x
+start_brk   0x00000000
+end_code    0x00084f7c
+start_code  0x00010000
+start_data  0x00095098
+end_data    0x00098394
+start_stack 0xf380f430
+brk         0x0009b000
+entry       0x00010418
+argv_start  0xf380f434
+env_start   0xf380f43c
+auxv_start  0xf380f4b8
+95733 brk(NULL) = 0x0009b000
+95733 brk(0x0009b8fc) = 0x0009b8fc
+95733 set_tid_address(0x9b068) = 95733
+95733 set_robust_list(0x9b070,12) = -1 errno=38 (Function not implemented)
+95733 Unknown syscall 398
+95733 uname(0xfffffffff380f270) = 0
+95733 ugetrlimit(3,-209652756,469816,622616,618496,1) = 0
+95733 readlink("/proc/self/exe",0xf380e380,4096) = 16
+95733 getrandom(0x9ab10,4,1) = 4
+95733 brk(0x000cb8fc)page layout changed following mmap
+start    end      size     prot
+00010000-00090000 00080000 r-x
+00090000-000a0000 00010000 rw-
+000a0000-000d0000 00030000 rw-
+f3000000-f3010000 00010000 ---
+f3010000-f3810000 00800000 rw-
+f3810000-f3811000 00001000 r-x
+ffff0000-00000000 00010000 r-x
+ = 0x000cb8fc
+95733 brk(0x000d0000) = 0x000d0000
+95733 statx(1,"",AT_EMPTY_PATH|AT_NO_AUTOMOUNT|AT_STATX_SYNC_AS_STAT,STATX_BASIC_STATS,0xf380f0b8)
+= 0
+95733 write(1,0x9bb90,14)Hello, World!
+ = 14
+95733 exit_group(0)
+
+The test program is:
+
+#include <stdio.h>
+int main() { printf("Hello, World!\n");}
+
+Built like this:
+
+arm-linux-gnueabihf-gcc -o hello-armhf hello.c -static
+
+arm-linux-gnueabi-gcc -o hello hello.c -static
+
+on an Ubuntu 23.04 host.
+
+Cheers,
+
+Joel
 
