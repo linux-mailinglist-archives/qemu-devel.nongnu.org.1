@@ -2,65 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34CA476BAD8
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 19:11:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4300876BB20
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 19:23:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQsst-0006jb-K7; Tue, 01 Aug 2023 13:10:11 -0400
+	id 1qQt4E-0002lR-GC; Tue, 01 Aug 2023 13:21:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cfontana@suse.de>) id 1qQsss-0006jR-16
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 13:10:10 -0400
-Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <cfontana@suse.de>) id 1qQssp-0004RZ-0B
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 13:10:09 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 320391FD96;
- Tue,  1 Aug 2023 17:10:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1690909805; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qQt4A-0002lB-QK
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 13:21:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qQt48-0003fg-8D
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 13:21:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1690910493;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=7yNtEU9Zy261xZ3vbDMsFc4F01pjUVwn8FOxPvflC1M=;
- b=Mf4d+sBvRKqIg568KLnPQ2TyBgZnMcfDI6RGk2vMe9CLL1FxlmrgPCDQ7Ny6uPxpbOEynF
- gZeZoPCY/aBUWM2TqThqy2yhDXc5LBv7r6KKp/1Qbum//gOKrDQoHRctiTPwl+CyhOkBf2
- zaTTEedxE2pMpeJ59F5IQzbWJS4Idq4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1690909805;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=7yNtEU9Zy261xZ3vbDMsFc4F01pjUVwn8FOxPvflC1M=;
- b=JUNrVyj/c5+JwcV5TPYCc2zRvuTT/6H93+FhagCdmes0CXsfLscM+DoevRXfLe+LQGFH58
- YYSmQgsfrtnVIpCA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 57149139BD;
- Tue,  1 Aug 2023 17:10:04 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id Z7ZjE2w8yWSENwAAMHmgww
- (envelope-from <cfontana@suse.de>); Tue, 01 Aug 2023 17:10:04 +0000
-Message-ID: <abf251ad-12d5-fb05-d3af-5a6ecbf56bb4@suse.de>
-Date: Tue, 1 Aug 2023 19:10:03 +0200
+ bh=ROo/Ae0SLVWvc31NlQ3/7ySJDiQ2R4inbuWZXREp8R4=;
+ b=LENlKo14YJJTS+6RYXRGGlGx6xFCQmXrVqjKykBSv/vVRieK8wEKHcm7LMUTiUsVATOYOL
+ vFG/PlHn+++4pDVd/BWim54yqK+1AcLcZxCeWLR+V6Bf12VTtiKvQ01CfoCSITellJuEFz
+ KdVGxLNmxk0+XtUOeQcQAvW2iIxwEeI=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-543-HrlL0K6oMqCW3oUJ5quozg-1; Tue, 01 Aug 2023 13:21:29 -0400
+X-MC-Unique: HrlL0K6oMqCW3oUJ5quozg-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-31444df0fafso3648758f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 01 Aug 2023 10:21:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1690910488; x=1691515288;
+ h=content-transfer-encoding:in-reply-to:organization:from:references
+ :cc:to:content-language:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ROo/Ae0SLVWvc31NlQ3/7ySJDiQ2R4inbuWZXREp8R4=;
+ b=B3hQDy42jZFexVXdTDBNPySwLvNkrVcWWzp3H8R8Df18dfkzaXmkda/heOpzJDpQNv
+ l6fsNLH0sffDmFv1T7nV4j7xH9EZ+r7A5VOaIBJJk+KsfuWqJB7r7MpT4p48RGpZgrI5
+ woHqvU7CGe4xGU6v9wA+I+jlEGssXcolxEPnjWRgBATPmaUpo6ytdS+x7L8GJi3fk+70
+ mnqXiXWhSWAQzgpu617aoFDms1CPEkytb1EDDQtqg2wh11FgnF+MTH9eGVyyF6/u85+Q
+ GxwL4vOdKkNF9K8v2XbWEp5kRFnUhE/tRXN5UVhTqB0haMUShGHqU6BemBzEtjyzs72Z
+ POLg==
+X-Gm-Message-State: ABy/qLaElwkY/dxEkFMJQDOnZqbET1A0xCmJ/qTsv4nD5QSr4Vz5pHx6
+ ZS8WKDMAvLuli/WlZAB8RK23lOMu/h6Jr+p/YMXk/V2Gt4iuwDIVTmIc4C8wId/FZkCvYDggmJR
+ D1pDGU5psS6xVjCE=
+X-Received: by 2002:adf:ce8a:0:b0:317:5c18:f31d with SMTP id
+ r10-20020adfce8a000000b003175c18f31dmr2742478wrn.35.1690910488350; 
+ Tue, 01 Aug 2023 10:21:28 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlHA/lZAv6MlzSEtAu652lxjKogfAOHacftQnt8E9vLvWLgVkO5LUHNn2DntUItyYxZZiKjDow==
+X-Received: by 2002:adf:ce8a:0:b0:317:5c18:f31d with SMTP id
+ r10-20020adfce8a000000b003175c18f31dmr2742452wrn.35.1690910487918; 
+ Tue, 01 Aug 2023 10:21:27 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c705:d100:871b:ec55:67d:5247?
+ (p200300cbc705d100871bec55067d5247.dip0.t-ipconnect.de.
+ [2003:cb:c705:d100:871b:ec55:67d:5247])
+ by smtp.gmail.com with ESMTPSA id
+ x7-20020adff647000000b00317731a6e07sm16638322wrp.62.2023.08.01.10.21.26
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 01 Aug 2023 10:21:27 -0700 (PDT)
+Message-ID: <f8e40f1a-729b-f520-299a-4132e371be61@redhat.com>
+Date: Tue, 1 Aug 2023 19:21:26 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.4.0
-Subject: Re: [RFC PATCH 05/19] kvm: Enable KVM_SET_USER_MEMORY_REGION2 for
- memslot
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [RFC PATCH 08/19] HostMem: Add private property to indicate to
+ use kvm gmem
 Content-Language: en-US
 To: Xiaoyao Li <xiaoyao.li@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Sean Christopherson <seanjc@google.com>, David Hildenbrand
- <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
+ Sean Christopherson <seanjc@google.com>, Igor Mammedov
+ <imammedo@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Marcelo Tosatti <mtosatti@redhat.com>
@@ -71,19 +85,21 @@ Cc: Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>,
  Michael Roth <michael.roth@amd.com>, isaku.yamahata@gmail.com,
  qemu-devel@nongnu.org, kvm@vger.kernel.org
 References: <20230731162201.271114-1-xiaoyao.li@intel.com>
- <20230731162201.271114-6-xiaoyao.li@intel.com>
-From: Claudio Fontana <cfontana@suse.de>
-In-Reply-To: <20230731162201.271114-6-xiaoyao.li@intel.com>
-Content-Type: text/plain; charset=UTF-8
+ <20230731162201.271114-9-xiaoyao.li@intel.com>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+In-Reply-To: <20230731162201.271114-9-xiaoyao.li@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2001:67c:2178:6::1d;
- envelope-from=cfontana@suse.de; helo=smtp-out2.suse.de
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.092,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.092, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,160 +116,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/31/23 18:21, Xiaoyao Li wrote:
-> From: Chao Peng <chao.p.peng@linux.intel.com>
+On 31.07.23 18:21, Xiaoyao Li wrote:
+> From: Isaku Yamahata <isaku.yamahata@intel.com>
 > 
-> Switch to KVM_SET_USER_MEMORY_REGION2 when supported by KVM.
-> 
-> With KVM_SET_USER_MEMORY_REGION2, QEMU can set up memory region that
-> backen'ed both by hva-based shared memory and gmem fd based private
-> memory.
-> 
-> Signed-off-by: Chao Peng <chao.p.peng@linux.intel.com>
-> Codeveloped-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
 > Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 > ---
->  accel/kvm/kvm-all.c      | 57 +++++++++++++++++++++++++++++++++-------
->  accel/kvm/trace-events   |  2 +-
->  include/sysemu/kvm_int.h |  2 ++
->  3 files changed, 51 insertions(+), 10 deletions(-)
+>   backends/hostmem.c       | 18 ++++++++++++++++++
+>   include/sysemu/hostmem.h |  2 +-
+>   qapi/qom.json            |  4 ++++
+>   3 files changed, 23 insertions(+), 1 deletion(-)
 > 
-> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-> index d8eee405de24..7b1818334ba7 100644
-> --- a/accel/kvm/kvm-all.c
-> +++ b/accel/kvm/kvm-all.c
-> @@ -288,35 +288,68 @@ int kvm_physical_memory_addr_from_host(KVMState *s, void *ram,
->  static int kvm_set_user_memory_region(KVMMemoryListener *kml, KVMSlot *slot, bool new)
->  {
->      KVMState *s = kvm_state;
-> -    struct kvm_userspace_memory_region mem;
-> +    struct kvm_userspace_memory_region2 mem;
-> +    static int cap_user_memory2 = -1;
->      int ret;
->  
-> +    if (cap_user_memory2 == -1) {
-> +        cap_user_memory2 = kvm_check_extension(s, KVM_CAP_USER_MEMORY2);
-> +    }
+> diff --git a/backends/hostmem.c b/backends/hostmem.c
+> index 747e7838c031..dbdbb0aafd45 100644
+> --- a/backends/hostmem.c
+> +++ b/backends/hostmem.c
+> @@ -461,6 +461,20 @@ static void host_memory_backend_set_reserve(Object *o, bool value, Error **errp)
+>       }
+>       backend->reserve = value;
+>   }
 > +
-> +    if (!cap_user_memory2 && slot->fd >= 0) {
-> +        error_report("%s, KVM doesn't support gmem!", __func__);
-> +        exit(1);
-> +    }
-
-We handle this special error case here,
-while the existing callers of kvm_set_user_memory_region handle the other error cases in different places.
-
-Not that the rest of kvm-all does an excellent job at error handling, but maybe we can avoid compounding on the issue.
-
+> +static bool host_memory_backend_get_private(Object *o, Error **errp)
+> +{
+> +    HostMemoryBackend *backend = MEMORY_BACKEND(o);
 > +
->      mem.slot = slot->slot | (kml->as_id << 16);
->      mem.guest_phys_addr = slot->start_addr;
->      mem.userspace_addr = (unsigned long)slot->ram;
->      mem.flags = slot->flags;
-> +    mem.gmem_fd = slot->fd;
-> +    mem.gmem_offset = slot->ofs;
->  
-> -    if (slot->memory_size && !new && (mem.flags ^ slot->old_flags) & KVM_MEM_READONLY) {
-> +    if (slot->memory_size && !new && (slot->flags ^ slot->old_flags) & KVM_MEM_READONLY) {
-
-Why the change if mem.flags == slot->flags ?
-
->          /* Set the slot size to 0 before setting the slot to the desired
->           * value. This is needed based on KVM commit 75d61fbc. */
->          mem.memory_size = 0;
-> -        ret = kvm_vm_ioctl(s, KVM_SET_USER_MEMORY_REGION, &mem);
+> +    return backend->private;
+> +}
 > +
-> +        if (cap_user_memory2) {
-> +            ret = kvm_vm_ioctl(s, KVM_SET_USER_MEMORY_REGION2, &mem);
-> +        } else {
-> +            ret = kvm_vm_ioctl(s, KVM_SET_USER_MEMORY_REGION, &mem);
-> +	    }
->          if (ret < 0) {
->              goto err;
->          }
->      }
->      mem.memory_size = slot->memory_size;
-> -    ret = kvm_vm_ioctl(s, KVM_SET_USER_MEMORY_REGION, &mem);
-> +    if (cap_user_memory2) {
-> +        ret = kvm_vm_ioctl(s, KVM_SET_USER_MEMORY_REGION2, &mem);
-> +    } else {
-> +        ret = kvm_vm_ioctl(s, KVM_SET_USER_MEMORY_REGION, &mem);
-> +    }
->      slot->old_flags = mem.flags;
->  err:
->      trace_kvm_set_user_memory(mem.slot >> 16, (uint16_t)mem.slot, mem.flags,
->                                mem.guest_phys_addr, mem.memory_size,
-> -                              mem.userspace_addr, ret);
-> +                              mem.userspace_addr, mem.gmem_fd,
-> +			      mem.gmem_offset, ret);
->      if (ret < 0) {
-> -        error_report("%s: KVM_SET_USER_MEMORY_REGION failed, slot=%d,"
-> -                     " start=0x%" PRIx64 ", size=0x%" PRIx64 ": %s",
-> -                     __func__, mem.slot, slot->start_addr,
-> -                     (uint64_t)mem.memory_size, strerror(errno));
-> +        if (cap_user_memory2) {
-> +                error_report("%s: KVM_SET_USER_MEMORY_REGION2 failed, slot=%d,"
-> +                        " start=0x%" PRIx64 ", size=0x%" PRIx64 ","
-> +                        " flags=0x%" PRIx32 ","
-> +                        " gmem_fd=%" PRId32 ", gmem_offset=0x%" PRIx64 ": %s",
-> +                        __func__, mem.slot, slot->start_addr,
-> +                (uint64_t)mem.memory_size, mem.flags,
-> +                        mem.gmem_fd, (uint64_t)mem.gmem_offset,
-> +                        strerror(errno));
-> +        } else {
-> +                error_report("%s: KVM_SET_USER_MEMORY_REGION failed, slot=%d,"
-> +                            " start=0x%" PRIx64 ", size=0x%" PRIx64 ": %s",
-> +                __func__, mem.slot, slot->start_addr,
-> +                (uint64_t)mem.memory_size, strerror(errno));
-> +        }
->      }
->      return ret;
->  }
-> @@ -472,6 +505,9 @@ static int kvm_mem_flags(MemoryRegion *mr)
->      if (readonly && kvm_readonly_mem_allowed) {
->          flags |= KVM_MEM_READONLY;
->      }
-> +    if (memory_region_can_be_private(mr)) {
-> +        flags |= KVM_MEM_PRIVATE;
-> +    }
->      return flags;
->  }
->  
-> @@ -1402,6 +1438,9 @@ static void kvm_set_phys_mem(KVMMemoryListener *kml,
->          mem->ram_start_offset = ram_start_offset;
->          mem->ram = ram;
->          mem->flags = kvm_mem_flags(mr);
-> +        mem->fd = mr->ram_block->gmem_fd;
-> +        mem->ofs = (uint8_t*)ram - mr->ram_block->host;
+> +static void host_memory_backend_set_private(Object *o, bool value, Error **errp)
+> +{
+> +    HostMemoryBackend *backend = MEMORY_BACKEND(o);
 > +
->          kvm_slot_init_dirty_bitmap(mem);
->          err = kvm_set_user_memory_region(kml, mem, true);
->          if (err) {
-> diff --git a/accel/kvm/trace-events b/accel/kvm/trace-events
-> index 14ebfa1b991c..80694683acea 100644
-> --- a/accel/kvm/trace-events
-> +++ b/accel/kvm/trace-events
-> @@ -15,7 +15,7 @@ kvm_irqchip_update_msi_route(int virq) "Updating MSI route virq=%d"
->  kvm_irqchip_release_virq(int virq) "virq %d"
->  kvm_set_ioeventfd_mmio(int fd, uint64_t addr, uint32_t val, bool assign, uint32_t size, bool datamatch) "fd: %d @0x%" PRIx64 " val=0x%x assign: %d size: %d match: %d"
->  kvm_set_ioeventfd_pio(int fd, uint16_t addr, uint32_t val, bool assign, uint32_t size, bool datamatch) "fd: %d @0x%x val=0x%x assign: %d size: %d match: %d"
-> -kvm_set_user_memory(uint16_t as, uint16_t slot, uint32_t flags, uint64_t guest_phys_addr, uint64_t memory_size, uint64_t userspace_addr, int ret) "AddrSpace#%d Slot#%d flags=0x%x gpa=0x%"PRIx64 " size=0x%"PRIx64 " ua=0x%"PRIx64 " ret=%d"
-> +kvm_set_user_memory(uint16_t as, uint16_t slot, uint32_t flags, uint64_t guest_phys_addr, uint64_t memory_size, uint64_t userspace_addr, uint32_t fd, uint64_t fd_offset, int ret) "AddrSpace#%d Slot#%d flags=0x%x gpa=0x%"PRIx64 " size=0x%"PRIx64 " ua=0x%"PRIx64 " gmem_fd=%d" " gmem_fd_offset=0x%" PRIx64 " ret=%d"
->  kvm_clear_dirty_log(uint32_t slot, uint64_t start, uint32_t size) "slot#%"PRId32" start 0x%"PRIx64" size 0x%"PRIx32
->  kvm_resample_fd_notify(int gsi) "gsi %d"
->  kvm_dirty_ring_full(int id) "vcpu %d"
-> diff --git a/include/sysemu/kvm_int.h b/include/sysemu/kvm_int.h
-> index 511b42bde5c4..48220c0793ac 100644
-> --- a/include/sysemu/kvm_int.h
-> +++ b/include/sysemu/kvm_int.h
-> @@ -30,6 +30,8 @@ typedef struct KVMSlot
->      int as_id;
->      /* Cache of the offset in ram address space */
->      ram_addr_t ram_start_offset;
-> +    int fd;
-> +    hwaddr ofs;
->  } KVMSlot;
->  
->  typedef struct KVMMemoryUpdate {
+> +    backend->private = value;
+> +}
+>   #endif /* CONFIG_LINUX */
+>   
+>   static bool
+> @@ -541,6 +555,10 @@ host_memory_backend_class_init(ObjectClass *oc, void *data)
+>           host_memory_backend_get_reserve, host_memory_backend_set_reserve);
+>       object_class_property_set_description(oc, "reserve",
+>           "Reserve swap space (or huge pages) if applicable");
+> +    object_class_property_add_bool(oc, "private",
+> +        host_memory_backend_get_private, host_memory_backend_set_private);
+> +    object_class_property_set_description(oc, "private",
+> +        "Use KVM gmem private memory");
+>   #endif /* CONFIG_LINUX */
+>       /*
+>        * Do not delete/rename option. This option must be considered stable
+> diff --git a/include/sysemu/hostmem.h b/include/sysemu/hostmem.h
+> index 39326f1d4f9c..d88970395618 100644
+> --- a/include/sysemu/hostmem.h
+> +++ b/include/sysemu/hostmem.h
+> @@ -65,7 +65,7 @@ struct HostMemoryBackend {
+>       /* protected */
+>       uint64_t size;
+>       bool merge, dump, use_canonical_path;
+> -    bool prealloc, is_mapped, share, reserve;
+> +    bool prealloc, is_mapped, share, reserve, private;
+>       uint32_t prealloc_threads;
+>       ThreadContext *prealloc_context;
+>       DECLARE_BITMAP(host_nodes, MAX_NODES + 1);
+> diff --git a/qapi/qom.json b/qapi/qom.json
+> index 7f92ea43e8e1..e0b2044e3d20 100644
+> --- a/qapi/qom.json
+> +++ b/qapi/qom.json
+> @@ -605,6 +605,9 @@
+>   # @reserve: if true, reserve swap space (or huge pages) if applicable
+>   #     (default: true) (since 6.1)
+>   #
+> +# @private: if true, use KVM gmem private memory
+> +#           (default: false) (since 8.1)
+> +#
+
+But that's not what any of this does.
+
+This patch only adds a property and doesn't even explain what it intends 
+to achieve with that.
+
+How will it be used from a user? What will it affect internally? What 
+will it modify in regards of the memory backend?
+
+That all should go into the surprisingly empty patch description.
+
+-- 
+Cheers,
+
+David / dhildenb
 
 
