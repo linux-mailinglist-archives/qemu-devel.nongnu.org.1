@@ -2,77 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C13076AECA
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 11:42:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4094076AEB8
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 11:41:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQlsF-0003DB-6s; Tue, 01 Aug 2023 05:41:03 -0400
+	id 1qQlsJ-0003Fi-1g; Tue, 01 Aug 2023 05:41:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <prvs=570bccec8=anthony.perard@citrix.com>)
- id 1qQls4-00036b-Ug
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 05:40:56 -0400
-Received: from esa6.hc3370-68.iphmx.com ([216.71.155.175])
+ id 1qQlsC-0003B6-8Z
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 05:41:01 -0400
+Received: from esa2.hc3370-68.iphmx.com ([216.71.145.153])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <prvs=570bccec8=anthony.perard@citrix.com>)
- id 1qQls3-0005B8-59
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 05:40:52 -0400
+ id 1qQlsA-0005Bq-KJ
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 05:41:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
- d=citrix.com; s=securemail; t=1690882850;
+ d=citrix.com; s=securemail; t=1690882858;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=M3jbWill5Sy9NGpPrccd8eNlL4c/zG31nNIP3712Yu4=;
- b=XZ1s1GAu/2m5NYG+bZBFWQrVkWIOIR0YgWZNewCbjEvJNSjN2inOiXfd
- YLbrqdvgbJkjf5wFZbXGyQ13O/No+EjP9k5Knw6SOTf/Lo91PseQm8j7b
- QQnnTdvnmhN1jy8Nir/j29ax4d5Ou1SfcQhXagMIkUkB7e5i9xPn/gTMB o=;
-Authentication-Results: esa6.hc3370-68.iphmx.com;
+ bh=OC1WEjAz+/iKZdGM0POuUnljqucVKYlkFVCZyFyI6m4=;
+ b=UBa8vvQWMyIKl3i/N3IVrQj9ov5bRz27RlyWXcITvn+dui56Zb76tLsT
+ RO0Iqe9lKPLy9aAn8TWVt+zSM8asIRf9TokmA8DfgJGTcj1K3McYAk9RU
+ P+4/orkjnYmE+oY28Uc/wIStRkl+snlkVHl2hxym2/b2P85mL8kaKB53G 8=;
+Authentication-Results: esa2.hc3370-68.iphmx.com;
  dkim=none (message not signed) header.i=none
 X-SBRS: 4.0
-X-MesageID: 117381814
-X-Ironport-Server: esa6.hc3370-68.iphmx.com
+X-MesageID: 117971006
+X-Ironport-Server: esa2.hc3370-68.iphmx.com
 X-Remote-IP: 162.221.156.123
 X-Policy: $RELAYED
-IronPort-Data: A9a23:vJrMnqyAqZ4Ynv8hNfl6t+dYxirEfRIJ4+MujC+fZmUNrF6WrkVUz
- GNNXWGBOv6LZ2ujKd12YYm1oU8D68eBnNVmSVZt+CAxQypGp/SeCIXCJC8cHc8wwu7rFxs7s
+IronPort-Data: A9a23:n8UrkayPNjVTTjzZi4V6t+dlxirEfRIJ4+MujC+fZmUNrF6WrkUDn
+ TMaCjuEPq6IN2HzeItwOo/j/E4GvJXdn9ZlGwc9qCAxQypGp/SeCIXCJC8cHc8wwu7rFxs7s
  ppEOrEsCOhuExcwcz/0auCJQUFUjP3OHfykTrafYEidfCc8IA85kxVvhuUltYBhhNm9Emult
  Mj75sbSIzdJ4RYtWo4vw/zF8EoHUMja4mtC5QRhPqkT5zcyqlFOZH4hDfDpR5fHatE88t6SH
  47r0Ly/92XFyBYhYvvNfmHTKxBirhb6ZGBiu1IOM0SQqkEqSh8ai87XAME0e0ZP4whlqvgqo
- Dl7WT5cfi9yVkHEsLx1vxC1iEiSN4UekFPMCSDXXcB+UyQq2pYjqhljJBheAGEWxgp4KU4Q2
- vZJb2AIVSiogr+u4pTlavVIgv12eaEHPKtH0p1h5TTQDPJgSpHfWaTao9Rf2V/chOgXQ6yYP
- ZBAL2MyMlKZOUYn1lQ/UfrSmM+hgGX/dDtJ7kqYv6Mt70DYzRBr0airO93QEjCPbZwMwR3I/
- zKfowwVBDkDGMCn8Qfa6EiOxeHAjSz8VbwJFfqBo6sCbFq7mTVIVUx+uUGAieC0j1P7V99BJ
- kg8/C0ooq4vskuxQbHVUwK9v1aNuxcOXNwWGOp89QLl90bPy1/HXC5eFGcHMYF48pZsHlTGy
- 2NlgfvGWxNl4frFTEml3bLJtRGUZwgJCWs7MHpsoRQ+3zXznG0ipkuRH44zT/Hv14Wd9SLYm
- G7T8nVn71kHpYtSjvjgowia6965jsKRJjPZ8Dk7SY5MAulRQIe+L7Kl5lHAhRqrBNbIFwLR1
- JTodiX30QzvMX1uvHbXKAn1NOv1j8tpyRWF6bKVI7Ev9i6251modp1K7Td1KS9Ba5hVIW+zM
- BOM5V8Lu/e/2UdGiocuMuqM5zkCl/C8RbwJqNiKBjaxXnSBXFDep3w/DaJh92vsjFItgckC1
- WSzKK6R4YIhIf0/llKeHr5NuYLHMwhinQs/s7inlUX4uVdfDVbJIYo43KymNLBltfnZ8VqPq
- r6y9aKikn1ibQE3WQGPmaZ7ELzABSJT6UzewyCPStO+Hw==
-IronPort-HdrOrdr: A9a23:UrP68q4pht2IwiGwMgPXwKvXdLJyesId70hD6qkRc3xom6mj/P
- xG88536faZslwssRIb+OxoRpPufZq0z/cc3WB7B9uftWfd1leVEA==
-X-Talos-CUID: =?us-ascii?q?9a23=3Al8Tz0GmARsf6cByuIV/OOGojuNjXOVKD432BZB+?=
- =?us-ascii?q?9Ml5CTeCNa3nO2L9Al/M7zg=3D=3D?=
-X-Talos-MUID: 9a23:fCGVhAoUXqNl4JEPHkUezyhOKP9Q3vu0MmJOn5oWtM6JCzdxfA7I2Q==
-X-IronPort-AV: E=Sophos;i="6.01,246,1684814400"; d="scan'208";a="117381814"
+ Dl7WT5cfi9yVkHEsLx1vxC1iEiSN4UekFPMCSDXXcB+UyQq2pYjqhljJBheAGEWxgp4KXBV+
+ L8cCAwiUhysvb2IyajibbZinf12eaEHPKtH0p1h5TTQDPJgSpHfWaTao9Rf2V/chOgXQ6yYP
+ ZBAL2MyMlKZOUYn1lQ/UfrSmM+hgGX/dDtJ7kqYv6Mt70DYzRBr0airO93QEjCPbZwMwRfH/
+ zqeoQwVBDkBZNi6yjCG806luf/VgCigR8FLSaaRo6sCbFq7mTVIVUx+uUGAieC0j1P7V99BJ
+ kg8/C0ooq4vskuxQbHAswaQ+SDe+ERGApwJTrN8sVvWokbJ3+qHLnkfQ31FSOAJiMMZf2MU3
+ 0XQuIznHgU65dV5VkmhGqeoQSKaYHZEdT9dOnVdFWPp8PG4/tht00unosJLVffs04arQWyYL
+ yWi9nBWulkFsSIcO0xXF3jjiinkmJXGRxVdCu7/DjP8tVMRiGJIiuWVBbnnARVodtzxoqGp5
+ iRspiRnxLlm4WuxvCKMWv4RO7qi+uyINjbR6XY2Qch5p279pyH/IdoPiN2bGKuOGp9VEQIFn
+ WeJ4V8BjHOtFCXCgVBLj3KZVJ1xkPmI+SXNXfHIdNteCqWdhyfelByCkXW4hji3+GB1yPFXB
+ HtuWZr0ZZrsIfg9nWXeqiZ0+eND+x3SMkuJFcyilUn2juDHDJNXIJ9cWGazgikCxPvsiG3oH
+ xx3Z6NmFz03vDXCXxTq
+IronPort-HdrOrdr: A9a23:CRgy86gYnkTdtreHz2VbRkUhJHBQXrkji2hC6mlwRA09TyX4ra
+ CTdZEgviMc5wx9ZJhNo7q90cq7IE80i6Qb3WB5B97LYOCMggeVxe9Zg7ff/w==
+X-Talos-CUID: =?us-ascii?q?9a23=3AQhiHAmr23gbGqmEQ+aKrb7fmUdE+fz7Z7Ev/H0O?=
+ =?us-ascii?q?XMzlXQafMbgCe45oxxg=3D=3D?=
+X-Talos-MUID: 9a23:QVQ7uAg6adRKalx6CR8UKcMpL5dsxqekC0ExmKoWodSPbjMzYmqGpWHi
+X-IronPort-AV: E=Sophos;i="6.01,246,1684814400"; d="scan'208";a="117971006"
 To: <qemu-devel@nongnu.org>
-CC: David Woodhouse <dwmw@amazon.co.uk>, Anthony PERARD
- <anthony.perard@citrix.com>
-Subject: [PULL 1/5] hw/xen: Clarify (lack of) error handling in
- transaction_commit()
-Date: Tue, 1 Aug 2023 10:40:34 +0100
-Message-ID: <20230801094038.11026-2-anthony.perard@citrix.com>
+CC: Anthony PERARD <anthony.perard@citrix.com>
+Subject: [PULL 2/5] xen-block: Avoid leaks on new error path
+Date: Tue, 1 Aug 2023 10:40:35 +0100
+Message-ID: <20230801094038.11026-3-anthony.perard@citrix.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230801094038.11026-1-anthony.perard@citrix.com>
 References: <20230801094038.11026-1-anthony.perard@citrix.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Received-SPF: pass client-ip=216.71.155.175;
+Received-SPF: pass client-ip=216.71.145.153;
  envelope-from=prvs=570bccec8=anthony.perard@citrix.com;
- helo=esa6.hc3370-68.iphmx.com
+ helo=esa2.hc3370-68.iphmx.com
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -97,62 +95,78 @@ From:  Anthony PERARD via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+From: Anthony PERARD <anthony.perard@citrix.com>
 
-Coverity was unhappy (CID 1508359) because we didn't check the return of
-init_walk_op() in transaction_commit(), despite doing so at every other
-call site.
+Commit 189829399070 ("xen-block: Use specific blockdev driver")
+introduced a new error path, without taking care of allocated
+resources.
 
-Strictly speaking, this is a false positive since it can never fail. It
-only fails for invalid user input (transaction ID or path), and both of
-those are hard-coded to known sane values in this invocation.
+So only allocate the qdicts after the error check, and free both
+`filename` and `driver` when we are about to return and thus taking
+care of both success and error path.
 
-But Coverity doesn't know that, and neither does the casual reader of the
-code.
+Coverity only spotted the leak of qdicts (*_layer variables).
 
-Returning an error here would be weird, since the transaction *is*
-committed by this point; all the walk_op is doing is firing watches on
-the newly-committed changed nodes. So make it a g_assert(!ret), since
-it really should never happen.
-
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Reported-by: Peter Maydell <peter.maydell@linaro.org>
+Fixes: Coverity CID 1508722, 1398649
+Fixes: 189829399070 ("xen-block: Use specific blockdev driver")
+Signed-off-by: Anthony PERARD <anthony.perard@citrix.com>
 Reviewed-by: Paul Durrant <paul@xen.org>
-Message-Id: <20076888f6bdf06a65aafc5cf954260965d45b97.camel@infradead.org>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Message-Id: <20230704171819.42564-1-anthony.perard@citrix.com>
 Signed-off-by: Anthony PERARD <anthony.perard@citrix.com>
 ---
- hw/i386/kvm/xenstore_impl.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ hw/block/xen-block.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/hw/i386/kvm/xenstore_impl.c b/hw/i386/kvm/xenstore_impl.c
-index 305fe75519..d9732b567e 100644
---- a/hw/i386/kvm/xenstore_impl.c
-+++ b/hw/i386/kvm/xenstore_impl.c
-@@ -1022,6 +1022,7 @@ static int transaction_commit(XenstoreImplState *s, XsTransaction *tx)
- {
-     struct walk_op op;
-     XsNode **n;
-+    int ret;
+diff --git a/hw/block/xen-block.c b/hw/block/xen-block.c
+index f099914831..3906b9058b 100644
+--- a/hw/block/xen-block.c
++++ b/hw/block/xen-block.c
+@@ -781,14 +781,15 @@ static XenBlockDrive *xen_block_drive_create(const char *id,
+     drive = g_new0(XenBlockDrive, 1);
+     drive->id = g_strdup(id);
  
-     if (s->root_tx != tx->base_tx) {
-         return EAGAIN;
-@@ -1032,7 +1033,16 @@ static int transaction_commit(XenstoreImplState *s, XsTransaction *tx)
-     s->root_tx = tx->tx_id;
-     s->nr_nodes = tx->nr_nodes;
- 
--    init_walk_op(s, &op, XBT_NULL, tx->dom_id, "/", &n);
-+    ret = init_walk_op(s, &op, XBT_NULL, tx->dom_id, "/", &n);
-+    /*
-+     * There are two reasons why init_walk_op() may fail: an invalid tx_id,
-+     * or an invalid path. We pass XBT_NULL and "/", and it cannot fail.
-+     * If it does, the world is broken. And returning 'ret' would be weird
-+     * because the transaction *was* committed, and all this tree walk is
-+     * trying to do is fire the resulting watches on newly-committed nodes.
-+     */
-+    g_assert(!ret);
+-    file_layer = qdict_new();
+-    driver_layer = qdict_new();
+-
+     rc = stat(filename, &st);
+     if (rc) {
+         error_setg_errno(errp, errno, "Could not stat file '%s'", filename);
+         goto done;
+     }
 +
-     op.deleted_in_tx = false;
-     op.mutating = true;
++    file_layer = qdict_new();
++    driver_layer = qdict_new();
++
+     if (S_ISBLK(st.st_mode)) {
+         qdict_put_str(file_layer, "driver", "host_device");
+     } else {
+@@ -796,7 +797,6 @@ static XenBlockDrive *xen_block_drive_create(const char *id,
+     }
  
+     qdict_put_str(file_layer, "filename", filename);
+-    g_free(filename);
+ 
+     if (mode && *mode != 'w') {
+         qdict_put_bool(file_layer, "read-only", true);
+@@ -831,7 +831,6 @@ static XenBlockDrive *xen_block_drive_create(const char *id,
+     qdict_put_str(file_layer, "locking", "off");
+ 
+     qdict_put_str(driver_layer, "driver", driver);
+-    g_free(driver);
+ 
+     qdict_put(driver_layer, "file", file_layer);
+ 
+@@ -842,6 +841,8 @@ static XenBlockDrive *xen_block_drive_create(const char *id,
+     qobject_unref(driver_layer);
+ 
+ done:
++    g_free(filename);
++    g_free(driver);
+     if (*errp) {
+         xen_block_drive_destroy(drive, NULL);
+         return NULL;
 -- 
 Anthony PERARD
 
