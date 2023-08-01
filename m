@@ -2,72 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8938076AECE
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 11:42:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C13076AECA
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 11:42:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQlsE-0003An-UI; Tue, 01 Aug 2023 05:41:02 -0400
+	id 1qQlsF-0003DB-6s; Tue, 01 Aug 2023 05:41:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <prvs=570bccec8=anthony.perard@citrix.com>)
- id 1qQls5-00036d-2q
+ id 1qQls4-00036b-Ug
  for qemu-devel@nongnu.org; Tue, 01 Aug 2023 05:40:56 -0400
-Received: from esa1.hc3370-68.iphmx.com ([216.71.145.142])
+Received: from esa6.hc3370-68.iphmx.com ([216.71.155.175])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <prvs=570bccec8=anthony.perard@citrix.com>)
- id 1qQls3-0005Ao-2a
+ id 1qQls3-0005B8-59
  for qemu-devel@nongnu.org; Tue, 01 Aug 2023 05:40:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
  d=citrix.com; s=securemail; t=1690882850;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=Wl4X0D1/3bPUD0unWr6NjqyJYukClfBN3sM+ylWIAfg=;
- b=f86/l7lnClyOcTmWSt9k/slbzdmHcwIER1k0+lSCWlhbnbKiav/3BM3U
- RiAQc4BZeLC2ffMbGJnjhZS2/Lya4gb3zeUsPoe1MZw4CrSGd/bb2EUsn
- HbO6VZvnRETTzhVgNnMcIHFF4IAqCHlxomNmJ9ENw8nO9TZyWmhn8/mJ6 o=;
-Authentication-Results: esa1.hc3370-68.iphmx.com;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=M3jbWill5Sy9NGpPrccd8eNlL4c/zG31nNIP3712Yu4=;
+ b=XZ1s1GAu/2m5NYG+bZBFWQrVkWIOIR0YgWZNewCbjEvJNSjN2inOiXfd
+ YLbrqdvgbJkjf5wFZbXGyQ13O/No+EjP9k5Knw6SOTf/Lo91PseQm8j7b
+ QQnnTdvnmhN1jy8Nir/j29ax4d5Ou1SfcQhXagMIkUkB7e5i9xPn/gTMB o=;
+Authentication-Results: esa6.hc3370-68.iphmx.com;
  dkim=none (message not signed) header.i=none
 X-SBRS: 4.0
-X-MesageID: 118528044
-X-Ironport-Server: esa1.hc3370-68.iphmx.com
+X-MesageID: 117381814
+X-Ironport-Server: esa6.hc3370-68.iphmx.com
 X-Remote-IP: 162.221.156.123
 X-Policy: $RELAYED
-IronPort-Data: A9a23:BT0EzaPn9mwuu8nvrR33l8FynXyQoLVcMsEvi/4bfWQNrUpw12ZWn
- 2obUGqBO6zbNjShfYp3PoS38BwCusfWydVkQQto+SlhQUwRpJueD7x1DKtS0wC6dZSfER09v
- 63yTvGacajYm1eF/k/F3oDJ9CU6jufQAOKnUoYoAwgpLSd8UiAtlBl/rOAwh49skLCRDhiE/
- Nj/uKUzAnf8s9JPGjxSs/vrRC9H5qyo42tH5QVmPpingXeF/5UrJMNHTU2OByOQrrl8RoaSW
- +vFxbelyWLVlz9F5gSNy+uTnuUiG9Y+DCDW4pZkc/HKbitq/0Te5p0TJvsEAXq7vh3S9zxHJ
- HehgrTrIeshFvWkdO3wyHC0GQkmVUFN0OevzXRSLaV/ZqAJGpfh66wGMa04AWEX0v5FIUZ1r
- t4aEzwiKR2ZuNmS0o2AcuY506zPLOGzVG8eknRpzDWfBvc6W5HTBa7N4Le03h9p2JoIR6yHI
- ZNEN3w2Nk+ojx5nYz/7DLo3mvuogX/uNSVVsluPqYI84nTJzRw327/oWDbQUoXTFZgPzh7E+
- goq+UzbJA4ba+HBwwO780uKt8jdjSznCKsdQejQGvlC3wTImz175ActfUK2pOT8hkOgVtZ3L
- UsS9Swz668o+ySWosLVBkPi5iTe51hFBoQWSrdhgO2Q9kbKyx6rJk8/FRxDU9AJ88IsegcOx
- GCyp9y8UFSDr4appWKhGqa89G3jYXhKcjVbPUfoXiNevYC9/dhbYgbnC486TfXr1oCd9STYm
- WjikcQou1kEYSfnPY2f9EuPvT+jr4OhouUdtlSOBTLNAu+UieeYi22UBbvzt6wowH6xFAXpg
- ZT9s5H2ABoyJZ+MjjeRZ+4GAauk4f2IWBWF3w83T8Nxq2vxpyT8FWy13N2ZDB44WvvohBezO
- BOD0e+vzME70ISWgV9fPNvqVpVCIVnIHtX5TPHEBueikbAoHDJrCBpGPBbKt0i0yRhErE3KE
- cvDGSpaJSpAWPsPIfvfb7t17ILHMQhklT+KH82qkE7+uVdcDVbMIYo43JK1RrhRxMu5TM/9q
- b6z6+PiJ81jbdDD
-IronPort-HdrOrdr: A9a23:SX1lza1X3q3q6L8kU6FafwqjBNEkLtp133Aq2lEZdPU1SKylfq
- WV98jzuiWYtN98YhsdcLO7WZVoP0myyXcd2+B4AV7IZmXbUQWTQr1f0Q==
-X-Talos-CUID: 9a23:AmRoQWAzSQQjSuX6EzFV1GkvQeInSXHyi3rKHHScG1lScLLAHA==
-X-Talos-MUID: 9a23:AOhYzAkhN+MVLswddda3dnpAEthpvJnwAnkzkKwgiu6WJSNsax6S2WE=
-X-IronPort-AV: E=Sophos;i="6.01,246,1684814400"; d="scan'208";a="118528044"
+IronPort-Data: A9a23:vJrMnqyAqZ4Ynv8hNfl6t+dYxirEfRIJ4+MujC+fZmUNrF6WrkVUz
+ GNNXWGBOv6LZ2ujKd12YYm1oU8D68eBnNVmSVZt+CAxQypGp/SeCIXCJC8cHc8wwu7rFxs7s
+ ppEOrEsCOhuExcwcz/0auCJQUFUjP3OHfykTrafYEidfCc8IA85kxVvhuUltYBhhNm9Emult
+ Mj75sbSIzdJ4RYtWo4vw/zF8EoHUMja4mtC5QRhPqkT5zcyqlFOZH4hDfDpR5fHatE88t6SH
+ 47r0Ly/92XFyBYhYvvNfmHTKxBirhb6ZGBiu1IOM0SQqkEqSh8ai87XAME0e0ZP4whlqvgqo
+ Dl7WT5cfi9yVkHEsLx1vxC1iEiSN4UekFPMCSDXXcB+UyQq2pYjqhljJBheAGEWxgp4KU4Q2
+ vZJb2AIVSiogr+u4pTlavVIgv12eaEHPKtH0p1h5TTQDPJgSpHfWaTao9Rf2V/chOgXQ6yYP
+ ZBAL2MyMlKZOUYn1lQ/UfrSmM+hgGX/dDtJ7kqYv6Mt70DYzRBr0airO93QEjCPbZwMwR3I/
+ zKfowwVBDkDGMCn8Qfa6EiOxeHAjSz8VbwJFfqBo6sCbFq7mTVIVUx+uUGAieC0j1P7V99BJ
+ kg8/C0ooq4vskuxQbHVUwK9v1aNuxcOXNwWGOp89QLl90bPy1/HXC5eFGcHMYF48pZsHlTGy
+ 2NlgfvGWxNl4frFTEml3bLJtRGUZwgJCWs7MHpsoRQ+3zXznG0ipkuRH44zT/Hv14Wd9SLYm
+ G7T8nVn71kHpYtSjvjgowia6965jsKRJjPZ8Dk7SY5MAulRQIe+L7Kl5lHAhRqrBNbIFwLR1
+ JTodiX30QzvMX1uvHbXKAn1NOv1j8tpyRWF6bKVI7Ev9i6251modp1K7Td1KS9Ba5hVIW+zM
+ BOM5V8Lu/e/2UdGiocuMuqM5zkCl/C8RbwJqNiKBjaxXnSBXFDep3w/DaJh92vsjFItgckC1
+ WSzKK6R4YIhIf0/llKeHr5NuYLHMwhinQs/s7inlUX4uVdfDVbJIYo43KymNLBltfnZ8VqPq
+ r6y9aKikn1ibQE3WQGPmaZ7ELzABSJT6UzewyCPStO+Hw==
+IronPort-HdrOrdr: A9a23:UrP68q4pht2IwiGwMgPXwKvXdLJyesId70hD6qkRc3xom6mj/P
+ xG88536faZslwssRIb+OxoRpPufZq0z/cc3WB7B9uftWfd1leVEA==
+X-Talos-CUID: =?us-ascii?q?9a23=3Al8Tz0GmARsf6cByuIV/OOGojuNjXOVKD432BZB+?=
+ =?us-ascii?q?9Ml5CTeCNa3nO2L9Al/M7zg=3D=3D?=
+X-Talos-MUID: 9a23:fCGVhAoUXqNl4JEPHkUezyhOKP9Q3vu0MmJOn5oWtM6JCzdxfA7I2Q==
+X-IronPort-AV: E=Sophos;i="6.01,246,1684814400"; d="scan'208";a="117381814"
 To: <qemu-devel@nongnu.org>
-CC: Anthony PERARD <anthony.perard@citrix.com>
-Subject: [PULL 0/5] Misc fixes, for thread-pool, xen, and xen-emulate
-Date: Tue, 1 Aug 2023 10:40:33 +0100
-Message-ID: <20230801094038.11026-1-anthony.perard@citrix.com>
+CC: David Woodhouse <dwmw@amazon.co.uk>, Anthony PERARD
+ <anthony.perard@citrix.com>
+Subject: [PULL 1/5] hw/xen: Clarify (lack of) error handling in
+ transaction_commit()
+Date: Tue, 1 Aug 2023 10:40:34 +0100
+Message-ID: <20230801094038.11026-2-anthony.perard@citrix.com>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230801094038.11026-1-anthony.perard@citrix.com>
+References: <20230801094038.11026-1-anthony.perard@citrix.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=216.71.145.142;
+Content-Type: text/plain
+Received-SPF: pass client-ip=216.71.155.175;
  envelope-from=prvs=570bccec8=anthony.perard@citrix.com;
- helo=esa1.hc3370-68.iphmx.com
+ helo=esa6.hc3370-68.iphmx.com
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -92,46 +97,63 @@ From:  Anthony PERARD via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 802341823f1720511dd5cf53ae40285f7978c61b:
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-  Merge tag 'pull-tcg-20230731' of https://gitlab.com/rth7680/qemu into staging (2023-07-31 14:02:51 -0700)
+Coverity was unhappy (CID 1508359) because we didn't check the return of
+init_walk_op() in transaction_commit(), despite doing so at every other
+call site.
 
-are available in the Git repository at:
+Strictly speaking, this is a false positive since it can never fail. It
+only fails for invalid user input (transaction ID or path), and both of
+those are hard-coded to known sane values in this invocation.
 
-  https://xenbits.xen.org/git-http/people/aperard/qemu-dm.git tags/pull-xen-20230801
+But Coverity doesn't know that, and neither does the casual reader of the
+code.
 
-for you to fetch changes up to 856ca10f9ce1fcffeab18546b36a64f79017c905:
+Returning an error here would be weird, since the transaction *is*
+committed by this point; all the walk_op is doing is firing watches on
+the newly-committed changed nodes. So make it a g_assert(!ret), since
+it really should never happen.
 
-  xen-platform: do full PCI reset during unplug of IDE devices (2023-08-01 10:22:33 +0100)
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Reviewed-by: Paul Durrant <paul@xen.org>
+Message-Id: <20076888f6bdf06a65aafc5cf954260965d45b97.camel@infradead.org>
+Signed-off-by: Anthony PERARD <anthony.perard@citrix.com>
+---
+ hw/i386/kvm/xenstore_impl.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-----------------------------------------------------------------
-Misc fixes, for thread-pool, xen, and xen-emulate
+diff --git a/hw/i386/kvm/xenstore_impl.c b/hw/i386/kvm/xenstore_impl.c
+index 305fe75519..d9732b567e 100644
+--- a/hw/i386/kvm/xenstore_impl.c
++++ b/hw/i386/kvm/xenstore_impl.c
+@@ -1022,6 +1022,7 @@ static int transaction_commit(XenstoreImplState *s, XsTransaction *tx)
+ {
+     struct walk_op op;
+     XsNode **n;
++    int ret;
+ 
+     if (s->root_tx != tx->base_tx) {
+         return EAGAIN;
+@@ -1032,7 +1033,16 @@ static int transaction_commit(XenstoreImplState *s, XsTransaction *tx)
+     s->root_tx = tx->tx_id;
+     s->nr_nodes = tx->nr_nodes;
+ 
+-    init_walk_op(s, &op, XBT_NULL, tx->dom_id, "/", &n);
++    ret = init_walk_op(s, &op, XBT_NULL, tx->dom_id, "/", &n);
++    /*
++     * There are two reasons why init_walk_op() may fail: an invalid tx_id,
++     * or an invalid path. We pass XBT_NULL and "/", and it cannot fail.
++     * If it does, the world is broken. And returning 'ret' would be weird
++     * because the transaction *was* committed, and all this tree walk is
++     * trying to do is fire the resulting watches on newly-committed nodes.
++     */
++    g_assert(!ret);
++
+     op.deleted_in_tx = false;
+     op.mutating = true;
+ 
+-- 
+Anthony PERARD
 
-* fix an access to `request_cond` QemuCond in thread-pool
-* fix issue with PCI devices when unplugging IDE devices in Xen guest
-* several fixes for issues pointed out by Coverity
-
-----------------------------------------------------------------
-Anthony PERARD (2):
-      xen-block: Avoid leaks on new error path
-      thread-pool: signal "request_cond" while locked
-
-David Woodhouse (1):
-      hw/xen: Clarify (lack of) error handling in transaction_commit()
-
-Olaf Hering (1):
-      xen-platform: do full PCI reset during unplug of IDE devices
-
-Peter Maydell (1):
-      xen: Don't pass MemoryListener around by value
-
- hw/arm/xen_arm.c                |  4 ++--
- hw/block/xen-block.c            | 11 ++++++-----
- hw/i386/kvm/xenstore_impl.c     | 12 +++++++++++-
- hw/i386/xen/xen-hvm.c           |  4 ++--
- hw/i386/xen/xen_platform.c      |  7 ++++---
- hw/xen/xen-hvm-common.c         |  8 ++++----
- include/hw/xen/xen-hvm-common.h |  2 +-
- util/thread-pool.c              |  2 +-
- 8 files changed, 31 insertions(+), 19 deletions(-)
 
