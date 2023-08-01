@@ -2,52 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B0F876BB74
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 19:39:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7DA776BB98
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 19:48:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQtJg-0006Jy-1K; Tue, 01 Aug 2023 13:37:52 -0400
+	id 1qQtSW-00016t-PL; Tue, 01 Aug 2023 13:47:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qQtJc-0006Fx-A7; Tue, 01 Aug 2023 13:37:48 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qQtSU-00016N-Rf
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 13:46:59 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qQtJa-0002HZ-Jc; Tue, 01 Aug 2023 13:37:48 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E0278174EC;
- Tue,  1 Aug 2023 20:37:46 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id D6E261A9BC;
- Tue,  1 Aug 2023 20:37:31 +0300 (MSK)
-Message-ID: <a77ece2f-34ea-6af3-9b36-410ec511eaee@tls.msk.ru>
-Date: Tue, 1 Aug 2023 20:37:31 +0300
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qQtSS-00075l-Hf
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 13:46:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1690912015;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=BLDF/HvE/xOFgSbar1kUmpbEcAu9bsVBfjwCBbik3EM=;
+ b=GndZ7U2TXQign8yXbPLAd+gG6Y7Olii0qTsxFz1P5q1j+19bCCDLWTbTl+axMXuhS2b3q/
+ uwsaBlF8SDwOb8YjOIJkO7kVlx2SY9ilIhxYrPEyPq28pMA+kEH+zr9UvE4RvuSqm0jVzz
+ TkipYbRRy7qVLxboyAfV9PFWb3SPXuM=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-388-7S4OkJNgOSWFLbCLtIphGA-1; Tue, 01 Aug 2023 13:46:52 -0400
+X-MC-Unique: 7S4OkJNgOSWFLbCLtIphGA-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 326C88A7F6B;
+ Tue,  1 Aug 2023 17:46:52 +0000 (UTC)
+Received: from localhost.localdomain.com (unknown [10.42.28.93])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 5DCBC401DA9;
+ Tue,  1 Aug 2023 17:46:51 +0000 (UTC)
+From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ qemu-stable@nongnu.org,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@gmail.com>,
+ Mauro Matteo Cascella <mcascell@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PULL 0/1 for 8.1] TLS crash fix
+Date: Tue,  1 Aug 2023 18:46:49 +0100
+Message-ID: <20230801174650.177924-1-berrange@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.1
-Subject: Re: [PATCH v2] io: remove io watch if TLS channel is closed during
- handshake
-Content-Language: en-US
-To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@gmail.com>,
- qemu-stable@nongnu.org, Mauro Matteo Cascella <mcascell@redhat.com>,
- jiangyegen <jiangyegen@huawei.com>
-References: <20230712165547.584157-1-berrange@redhat.com>
-From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <20230712165547.584157-1-berrange@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -69
-X-Spam_score: -7.0
-X-Spam_bar: -------
-X-Spam_report: (-7.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.092,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,23 +80,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-12.07.2023 19:55, Daniel P. Berrangé wrote:
-> The TLS handshake make take some time to complete, during which time an
-> I/O watch might be registered with the main loop. If the owner of the
-> I/O channel invokes qio_channel_close() while the handshake is waiting
-> to continue the I/O watch must be removed. Failing to remove it will
-> later trigger the completion callback which the owner is not expecting
-> to receive. In the case of the VNC server, this results in a SEGV as
-> vnc_disconnect_start() tries to shutdown a client connection that is
-> already gone / NULL.
-> 
-> CVE-2023-3354
-> Reported-by: jiangyegen <jiangyegen@huawei.com>
-> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+The following changes since commit 802341823f1720511dd5cf53ae40285f7978c61b:
 
-Can we have this in 8.1 please?
+  Merge tag 'pull-tcg-20230731' of https://gitlab.com/rth7680/qemu into staging (2023-07-31 14:02:51 -0700)
 
-What's needed to get this one into 8.1?
+are available in the Git repository at:
 
-/mjt
+  https://gitlab.com/berrange/qemu tags/io-tls-hs-crash-pull-request
+
+for you to fetch changes up to 10be627d2b5ec2d6b3dce045144aa739eef678b4:
+
+  io: remove io watch if TLS channel is closed during handshake (2023-08-01 18:45:27 +0100)
+
+----------------------------------------------------------------
+Fix crash during early close of TLS channel
+
+----------------------------------------------------------------
+
+Daniel P. Berrangé (1):
+  io: remove io watch if TLS channel is closed during handshake
+
+ include/io/channel-tls.h |  1 +
+ io/channel-tls.c         | 18 ++++++++++++------
+ 2 files changed, 13 insertions(+), 6 deletions(-)
+
+-- 
+2.41.0
+
 
