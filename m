@@ -2,74 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E93E76AE93
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 11:40:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8938076AECE
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 11:42:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQlqz-0001or-1E; Tue, 01 Aug 2023 05:39:45 -0400
+	id 1qQlsE-0003An-UI; Tue, 01 Aug 2023 05:41:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qQlqu-0001m5-LT
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 05:39:42 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1)
+ (envelope-from <prvs=570bccec8=anthony.perard@citrix.com>)
+ id 1qQls5-00036d-2q
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 05:40:56 -0400
+Received: from esa1.hc3370-68.iphmx.com ([216.71.145.142])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qQlqt-0004n9-1O
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 05:39:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690882777;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=PaUDgtYi/teIWkkoRplo+n2xCUGsY4ZKELv/pSpNuq8=;
- b=Cprk4hjyjk2yBMmbJ38p0nA52AShVdTS7YJ3ghCAP1hCLs0moSU8Xsswvh2b/jLUXknb7Z
- VKHf3WVstziNjA13RSx/kOsjAv5PDkIbXE46+hFGVd4hztK1H9Ozv2/uJ83WfKo1937xNm
- 9jk6PIG2y/6NtTx+z726P9xxypOOmBs=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-550-rRd2Q4-lO6aiVfZNhIOecQ-1; Tue, 01 Aug 2023 05:39:36 -0400
-X-MC-Unique: rRd2Q4-lO6aiVfZNhIOecQ-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E55D481DA5D;
- Tue,  1 Aug 2023 09:39:35 +0000 (UTC)
-Received: from localhost (unknown [10.39.208.5])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 319781454147;
- Tue,  1 Aug 2023 09:39:34 +0000 (UTC)
-From: marcandre.lureau@redhat.com
-To: qemu-devel@nongnu.org
-Cc: zhouzongmin@kylinos.cn,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PATCH 2/2] vmmouse: use explicit code
-Date: Tue,  1 Aug 2023 13:39:28 +0400
-Message-ID: <20230801093928.309361-2-marcandre.lureau@redhat.com>
-In-Reply-To: <20230801093928.309361-1-marcandre.lureau@redhat.com>
-References: <20230801093928.309361-1-marcandre.lureau@redhat.com>
+ (Exim 4.90_1)
+ (envelope-from <prvs=570bccec8=anthony.perard@citrix.com>)
+ id 1qQls3-0005Ao-2a
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 05:40:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+ d=citrix.com; s=securemail; t=1690882850;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=Wl4X0D1/3bPUD0unWr6NjqyJYukClfBN3sM+ylWIAfg=;
+ b=f86/l7lnClyOcTmWSt9k/slbzdmHcwIER1k0+lSCWlhbnbKiav/3BM3U
+ RiAQc4BZeLC2ffMbGJnjhZS2/Lya4gb3zeUsPoe1MZw4CrSGd/bb2EUsn
+ HbO6VZvnRETTzhVgNnMcIHFF4IAqCHlxomNmJ9ENw8nO9TZyWmhn8/mJ6 o=;
+Authentication-Results: esa1.hc3370-68.iphmx.com;
+ dkim=none (message not signed) header.i=none
+X-SBRS: 4.0
+X-MesageID: 118528044
+X-Ironport-Server: esa1.hc3370-68.iphmx.com
+X-Remote-IP: 162.221.156.123
+X-Policy: $RELAYED
+IronPort-Data: A9a23:BT0EzaPn9mwuu8nvrR33l8FynXyQoLVcMsEvi/4bfWQNrUpw12ZWn
+ 2obUGqBO6zbNjShfYp3PoS38BwCusfWydVkQQto+SlhQUwRpJueD7x1DKtS0wC6dZSfER09v
+ 63yTvGacajYm1eF/k/F3oDJ9CU6jufQAOKnUoYoAwgpLSd8UiAtlBl/rOAwh49skLCRDhiE/
+ Nj/uKUzAnf8s9JPGjxSs/vrRC9H5qyo42tH5QVmPpingXeF/5UrJMNHTU2OByOQrrl8RoaSW
+ +vFxbelyWLVlz9F5gSNy+uTnuUiG9Y+DCDW4pZkc/HKbitq/0Te5p0TJvsEAXq7vh3S9zxHJ
+ HehgrTrIeshFvWkdO3wyHC0GQkmVUFN0OevzXRSLaV/ZqAJGpfh66wGMa04AWEX0v5FIUZ1r
+ t4aEzwiKR2ZuNmS0o2AcuY506zPLOGzVG8eknRpzDWfBvc6W5HTBa7N4Le03h9p2JoIR6yHI
+ ZNEN3w2Nk+ojx5nYz/7DLo3mvuogX/uNSVVsluPqYI84nTJzRw327/oWDbQUoXTFZgPzh7E+
+ goq+UzbJA4ba+HBwwO780uKt8jdjSznCKsdQejQGvlC3wTImz175ActfUK2pOT8hkOgVtZ3L
+ UsS9Swz668o+ySWosLVBkPi5iTe51hFBoQWSrdhgO2Q9kbKyx6rJk8/FRxDU9AJ88IsegcOx
+ GCyp9y8UFSDr4appWKhGqa89G3jYXhKcjVbPUfoXiNevYC9/dhbYgbnC486TfXr1oCd9STYm
+ WjikcQou1kEYSfnPY2f9EuPvT+jr4OhouUdtlSOBTLNAu+UieeYi22UBbvzt6wowH6xFAXpg
+ ZT9s5H2ABoyJZ+MjjeRZ+4GAauk4f2IWBWF3w83T8Nxq2vxpyT8FWy13N2ZDB44WvvohBezO
+ BOD0e+vzME70ISWgV9fPNvqVpVCIVnIHtX5TPHEBueikbAoHDJrCBpGPBbKt0i0yRhErE3KE
+ cvDGSpaJSpAWPsPIfvfb7t17ILHMQhklT+KH82qkE7+uVdcDVbMIYo43JK1RrhRxMu5TM/9q
+ b6z6+PiJ81jbdDD
+IronPort-HdrOrdr: A9a23:SX1lza1X3q3q6L8kU6FafwqjBNEkLtp133Aq2lEZdPU1SKylfq
+ WV98jzuiWYtN98YhsdcLO7WZVoP0myyXcd2+B4AV7IZmXbUQWTQr1f0Q==
+X-Talos-CUID: 9a23:AmRoQWAzSQQjSuX6EzFV1GkvQeInSXHyi3rKHHScG1lScLLAHA==
+X-Talos-MUID: 9a23:AOhYzAkhN+MVLswddda3dnpAEthpvJnwAnkzkKwgiu6WJSNsax6S2WE=
+X-IronPort-AV: E=Sophos;i="6.01,246,1684814400"; d="scan'208";a="118528044"
+To: <qemu-devel@nongnu.org>
+CC: Anthony PERARD <anthony.perard@citrix.com>
+Subject: [PULL 0/5] Misc fixes, for thread-pool, xen, and xen-emulate
+Date: Tue, 1 Aug 2023 10:40:33 +0100
+Message-ID: <20230801094038.11026-1-anthony.perard@citrix.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=marcandre.lureau@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Received-SPF: pass client-ip=216.71.145.142;
+ envelope-from=prvs=570bccec8=anthony.perard@citrix.com;
+ helo=esa1.hc3370-68.iphmx.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -83,51 +87,51 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Anthony PERARD <anthony.perard@citrix.com>
+From:  Anthony PERARD via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marc-André Lureau <marcandre.lureau@redhat.com>
+The following changes since commit 802341823f1720511dd5cf53ae40285f7978c61b:
 
-It's weird to shift x & y without obvious reason. Let's make this more
-explicit and future-proof.
+  Merge tag 'pull-tcg-20230731' of https://gitlab.com/rth7680/qemu into staging (2023-07-31 14:02:51 -0700)
 
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
----
- hw/i386/vmmouse.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+are available in the Git repository at:
 
-diff --git a/hw/i386/vmmouse.c b/hw/i386/vmmouse.c
-index fce13a5cde..cd9ac11afc 100644
---- a/hw/i386/vmmouse.c
-+++ b/hw/i386/vmmouse.c
-@@ -46,6 +46,11 @@
- 
- #define VMMOUSE_VERSION		0x3442554a
- 
-+#define VMMOUSE_MIN_X 0
-+#define VMMOUSE_MIN_Y 0
-+#define VMMOUSE_MAX_X 0xFFFF
-+#define VMMOUSE_MAX_Y 0xFFFF
-+
- #define TYPE_VMMOUSE "vmmouse"
- OBJECT_DECLARE_SIMPLE_TYPE(VMMouseState, VMMOUSE)
- 
-@@ -106,8 +111,12 @@ static void vmmouse_mouse_event(void *opaque, int x, int y, int dz, int buttons_
-         buttons |= 0x08;
- 
-     if (s->absolute) {
--        x <<= 1;
--        y <<= 1;
-+        x = qemu_input_scale_axis(x,
-+                                  INPUT_EVENT_ABS_MIN, INPUT_EVENT_ABS_MAX,
-+                                  VMMOUSE_MIN_X, VMMOUSE_MAX_X);
-+        y = qemu_input_scale_axis(y,
-+                                  INPUT_EVENT_ABS_MIN, INPUT_EVENT_ABS_MAX,
-+                                  VMMOUSE_MIN_Y, VMMOUSE_MAX_Y);
-     }
- 
-     s->queue[s->nb_queue++] = buttons;
--- 
-2.41.0
+  https://xenbits.xen.org/git-http/people/aperard/qemu-dm.git tags/pull-xen-20230801
 
+for you to fetch changes up to 856ca10f9ce1fcffeab18546b36a64f79017c905:
+
+  xen-platform: do full PCI reset during unplug of IDE devices (2023-08-01 10:22:33 +0100)
+
+----------------------------------------------------------------
+Misc fixes, for thread-pool, xen, and xen-emulate
+
+* fix an access to `request_cond` QemuCond in thread-pool
+* fix issue with PCI devices when unplugging IDE devices in Xen guest
+* several fixes for issues pointed out by Coverity
+
+----------------------------------------------------------------
+Anthony PERARD (2):
+      xen-block: Avoid leaks on new error path
+      thread-pool: signal "request_cond" while locked
+
+David Woodhouse (1):
+      hw/xen: Clarify (lack of) error handling in transaction_commit()
+
+Olaf Hering (1):
+      xen-platform: do full PCI reset during unplug of IDE devices
+
+Peter Maydell (1):
+      xen: Don't pass MemoryListener around by value
+
+ hw/arm/xen_arm.c                |  4 ++--
+ hw/block/xen-block.c            | 11 ++++++-----
+ hw/i386/kvm/xenstore_impl.c     | 12 +++++++++++-
+ hw/i386/xen/xen-hvm.c           |  4 ++--
+ hw/i386/xen/xen_platform.c      |  7 ++++---
+ hw/xen/xen-hvm-common.c         |  8 ++++----
+ include/hw/xen/xen-hvm-common.h |  2 +-
+ util/thread-pool.c              |  2 +-
+ 8 files changed, 31 insertions(+), 19 deletions(-)
 
