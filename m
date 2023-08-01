@@ -2,80 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB8EC76BF30
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 23:23:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C24B176BF46
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 23:28:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQwom-0003xy-C9; Tue, 01 Aug 2023 17:22:12 -0400
+	id 1qQwtg-0006Bt-ED; Tue, 01 Aug 2023 17:27:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qQwok-0003xj-Ao
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 17:22:10 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qQwoi-0002ER-JK
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 17:22:10 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-307d58b3efbso5473301f8f.0
- for <qemu-devel@nongnu.org>; Tue, 01 Aug 2023 14:22:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690924926; x=1691529726;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=667roFLV/YbxfTprICXPvM+41CddL6PU8tSUuzeNg2Q=;
- b=RKMaTnNssg3CyALLCXSwvSV07UTMUnEMpba75VB40rvOIhUSgGsBaUWg1023taK+fK
- N/OQumWz65t5/w7QuZGgSiNUM6thY/g+9nXWTzsa7TPjNO0PMPuDGSwSbSgM7t9oLY9f
- qRl34ywYvTqev2jcz+A28CK9XWulGWEnC5R/wMKHqX+27Y3lJpo/vCn9aldd4XGMaxBb
- cx3CgEG5PgwRO7F30pjbnr+ePKj+dATMcQHvn1BVU1KJ0HhVNfay4hHdzdhD2G/wFBP3
- n/+DtreS03dkCmp/Te5Yxs0o2CapRMt7y1cJnw5xKXawJi0W7SRshIXWvTNq4SGg505U
- OmEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690924926; x=1691529726;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=667roFLV/YbxfTprICXPvM+41CddL6PU8tSUuzeNg2Q=;
- b=CkeX2VURGdt4tfx7brKkM8g/cVthQyoJl8Tpe0Au3snvvwZf0g0lm1qA0oRVAwmMGE
- KFtUbPvgYZFg1ncKqfn6ZN7SN6rJKirM1P/NOtEHZCMDgN+HWccdvyD5JNUlHJxSHMdo
- nigNNTlALdwYybIxE/VrmgHvN1Pfb1++KwH93712jbAJTvhQ1OCK9tCz6u6+wacQ+rfY
- oiXzapAafO6RFf+FvEtkpKYkArGm9upuovmn/9DuIp1R9Rsqi3aaV3/AKNVKHkoitvvC
- XQXok1768lc/lJut64LkfuxGpOBQ83Pd0xkp03q8eZlCjikGE6tDCr8uADcYvql596AF
- O8SA==
-X-Gm-Message-State: ABy/qLYFBpTZLo2ZJp4LfecjRC8lAuOGY/31Vfn4YGSBVp2CxtKzPdDP
- L4ym5DHWxq7LcnIE7RMf+TpmoA8uCO4/sRKlPh0=
-X-Google-Smtp-Source: APBJJlEhINZO8GpnmTF77ltBe/fGjnky7aCRBZ+b9tAzs3ZHfgvTmOjJwmHachxfYrklpfgYI2FUdw==
-X-Received: by 2002:adf:f9c3:0:b0:317:66c0:9d82 with SMTP id
- w3-20020adff9c3000000b0031766c09d82mr3085936wrr.64.1690924926647; 
- Tue, 01 Aug 2023 14:22:06 -0700 (PDT)
-Received: from [192.168.69.115] ([176.176.174.59])
- by smtp.gmail.com with ESMTPSA id
- k17-20020adfe8d1000000b003143867d2ebsm17072173wrn.63.2023.08.01.14.22.05
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 01 Aug 2023 14:22:06 -0700 (PDT)
-Message-ID: <b7736fa4-7b7c-2455-0ec5-aeb5e1e3f0e2@linaro.org>
-Date: Tue, 1 Aug 2023 23:22:04 +0200
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qQwte-0006Bg-MB
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 17:27:14 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qQwtc-0005o9-W9
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 17:27:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1690925232;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=qWpzn6EDfV3epZYHPu3ZWiKxJPJcv6XZsVNadt1LM98=;
+ b=JkERyqePstRYoch4Qhef9WfC90+exuqH1f4ykWsx/Ghe69KuqD87zTYBbDOnaTQvuniuqB
+ NdfndXXarnfJMOJ/xMnvTUnHyyEfGsX6SSXfbX3ZMA3suh/tqgDrqGTbNq2rLSPLNHt5KL
+ RE8bBnqkcUeenF0oM2pYk68l1DZ9rD8=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-108-e9nC9lpSP2Ctlxo3K2P79w-1; Tue, 01 Aug 2023 17:27:07 -0400
+X-MC-Unique: e9nC9lpSP2Ctlxo3K2P79w-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AA9461C05134;
+ Tue,  1 Aug 2023 21:27:06 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.93])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id B7C0FC57963;
+ Tue,  1 Aug 2023 21:27:05 +0000 (UTC)
+Date: Tue, 1 Aug 2023 22:27:03 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Helge Deller <deller@gmx.de>
+Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Laurent Vivier <laurent@vivier.eu>, qemu-arm@nongnu.org
+Subject: Re: [PATCH 1/2] linux-user: Fix openat() emulation to correctly
+ detect accesses to /proc
+Message-ID: <ZMl4p2oLv9vhGfAV@redhat.com>
+References: <20230801191035.374120-1-deller@gmx.de>
+ <20230801191035.374120-2-deller@gmx.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.13.0
-Subject: Re: [PATCH 3/3] accel/tcg: Do not issue misaligned i/o
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20230801184220.75224-1-richard.henderson@linaro.org>
- <20230801184220.75224-4-richard.henderson@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230801184220.75224-4-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+In-Reply-To: <20230801191035.374120-2-deller@gmx.de>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.092,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -89,20 +83,80 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/8/23 20:42, Richard Henderson wrote:
-> In the single-page case we were issuing misaligned i/o to
-> the memory subsystem, which does not handle it properly.
-> Split such accesses via do_{ld,st}_mmio_*.
+On Tue, Aug 01, 2023 at 09:10:34PM +0200, Helge Deller wrote:
+> In qemu we catch accesses to files like /proc/cpuinfo or /proc/net/route
+> and return to the guest contents which would be visible on a real system
+> (instead what the host would show).
 > 
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1800
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   accel/tcg/cputlb.c | 118 +++++++++++++++++++++++++++------------------
->   1 file changed, 72 insertions(+), 46 deletions(-)
+> This patch fixes a bug, where for example the accesses
+>     cat /proc////cpuinfo
+> or
+>     cd /proc && cat cpuinfo
+> will not be recognized by qemu and where qemu will wrongly show
+> the contents of the host's /proc/cpuinfo file.
+> 
+> Signed-off-by: Helge Deller <deller@gmx.de>
+> 
+> --
+> v2:
+> - use g_autofree instead of pathname on stack
+>   Daniel P. Berrangé requested to not put buffers on stack.
+>   Using g_autofree keeps code much cleaner than using
+>   extended semantics of realpath(), unless I can use g_autofree
+>   on malloced area from realpath().
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+g_autofree is backed by free(), so it is fine to use that
+with the realpath() allocated buffer.
+
+> ---
+>  linux-user/syscall.c | 12 +++++++++++-
+>  1 file changed, 11 insertions(+), 1 deletion(-)
+> 
+> diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+> index 95727a816a..a089463969 100644
+> --- a/linux-user/syscall.c
+> +++ b/linux-user/syscall.c
+> @@ -8539,9 +8539,12 @@ static int open_hardware(CPUArchState *cpu_env, int fd)
+>  }
+>  #endif
+> 
+> -int do_guest_openat(CPUArchState *cpu_env, int dirfd, const char *pathname,
+> +
+> +int do_guest_openat(CPUArchState *cpu_env, int dirfd, const char *fname,
+>                      int flags, mode_t mode, bool safe)
+>  {
+> +    g_autofree char *proc_name = g_new(char, PATH_MAX);
+> +    const char *pathname;
+>      struct fake_open {
+>          const char *filename;
+>          int (*fill)(CPUArchState *cpu_env, int fd);
+> @@ -8567,6 +8570,13 @@ int do_guest_openat(CPUArchState *cpu_env, int dirfd, const char *pathname,
+>          { NULL, NULL, NULL }
+>      };
+> 
+> +    /* if this is a file from /proc/ filesystem, expand full name */
+> +    if (realpath(fname, proc_name) && strncmp(proc_name, "/proc/", 6) == 0) {
+> +        pathname = proc_name;
+> +    } else {
+> +        pathname = fname;
+> +    }
+> +
+>      if (is_proc_myself(pathname, "exe")) {
+>          if (safe) {
+>              return safe_openat(dirfd, exec_path, flags, mode);
+> --
+> 2.41.0
+> 
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
