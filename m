@@ -2,97 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7D7576BA93
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 19:04:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F3AD76BAD6
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 19:10:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQsmh-0005Lk-HZ; Tue, 01 Aug 2023 13:03:47 -0400
+	id 1qQssS-0006fm-14; Tue, 01 Aug 2023 13:09:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <groeck7@gmail.com>)
- id 1qQsmd-0005LW-SS; Tue, 01 Aug 2023 13:03:44 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <groeck7@gmail.com>)
- id 1qQsmb-0000wW-W1; Tue, 01 Aug 2023 13:03:43 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-1b8ad8383faso50295595ad.0; 
- Tue, 01 Aug 2023 10:03:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1690909419; x=1691514219;
- h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
- :content-language:user-agent:mime-version:date:message-id:sender
- :from:to:cc:subject:date:message-id:reply-to;
- bh=nwjHOD/bDcTVCu/4XOe7iUE4KjdIb5EAC6hcQ6ZVkvk=;
- b=V5LHnRGwtJbcQnzA6DzLnYVF8fw2vvyrEO60yHsuIjcPqKn3d0OWdSUMEwGGBHDESh
- GGbkVBSYvXqRGYnGq16JUML9XvEogNijPmvXw2U/ReznwTxj5r5ljdYq6mUi5m9cdEVV
- FohzrAbrk2Diq8e+ouW/VoPV/hrj5WJKNkuZNnD+VaoZj9DWXNJGcWLI3KRtZjI11+ja
- chw22SW9JRyDbZzhXtKNckZUD7w4X3pSDXLatTeskAvUEOKKAk5EYVFesl6repnyGZMM
- y2v+O1TptgkkvopQ/HPwxWtoCy+scTdLfWOZe43DyEwCpuhL8IK2WgscSt1TyfXtbDrm
- TpQQ==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qQssI-0006fR-Jz
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 13:09:34 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qQssE-0004Cs-WD
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 13:09:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1690909767;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=7TYdUQSbsMdQlXtHfoM5M3lYMBKRaXC7t6qTUsDgJ84=;
+ b=A1S7Pn+52ECq5EszXFpCY0D1mz/MVto4Z1YeQrfpqIQBHD8SICdbJp5t2b1YRi5X2IpFu+
+ xXsoQbfeHE3mTicVecxVeQt0eMiJELN6u/2Gqa9Gg771F6L8eKEX90GXV6PlYF9Wr52xTr
+ S+sn2q7kgm4pe4XVqjYKbkL9FjYyzns=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-426--ys7HvB1NkWh1H4lSg9l_g-1; Tue, 01 Aug 2023 13:09:25 -0400
+X-MC-Unique: -ys7HvB1NkWh1H4lSg9l_g-1
+Received: by mail-qk1-f197.google.com with SMTP id
+ af79cd13be357-76c8e07cbe9so102935385a.1
+ for <qemu-devel@nongnu.org>; Tue, 01 Aug 2023 10:09:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690909419; x=1691514219;
- h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
- :content-language:user-agent:mime-version:date:message-id:sender
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=nwjHOD/bDcTVCu/4XOe7iUE4KjdIb5EAC6hcQ6ZVkvk=;
- b=eAxmOhgJyt1H/eB/5sft5PIvSKNt0RaXIXSwFyriQDhZsfSTA0KkfF0HYHKsMnAbpp
- 4AeK5zegKhu8Uiw4THcZ5w6miswbMZ4j9COgksAHRgMvC9d3heIsXyuOjTNo/D+eQk5I
- oaoOXqcxrQkwQggOtJYu9OzN+G8bNWd8yR273BRUCc2bgk8ZfQMxE7K7obZLtABXqvqc
- 5RgLFci9HZmQkFQ12iXDP60Z+Se+bbYVa5eum9iB1W87MLS7VriYLL19sFbQP4NCrX0Z
- 96ZiuXUV512aVi4tdltg0ESb0mstA6lG+8QhCHwTZ/7GtiXVRNA4eNS4UDwhlb+20qu3
- 0hbQ==
-X-Gm-Message-State: ABy/qLbjhRsk9jKoReqWpV+dNdv2qo80Aj1ZPihr9QYU81sJMR/Zh4c+
- O+VzPu8Vd8PACa2UEEjoIgU=
-X-Google-Smtp-Source: APBJJlFO3X8TXmLbq69bLnmVWkIIbRa4ypcX41UTW+s83odQ3Znqy36hirW83jf9vwfpvVWFycyeUg==
-X-Received: by 2002:a17:902:ce86:b0:1b6:797d:33fb with SMTP id
- f6-20020a170902ce8600b001b6797d33fbmr14716501plg.64.1690909418940; 
- Tue, 01 Aug 2023 10:03:38 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c?
- ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
- by smtp.gmail.com with ESMTPSA id
- iw12-20020a170903044c00b001bbbc655ca1sm10740957plb.219.2023.08.01.10.03.37
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 01 Aug 2023 10:03:38 -0700 (PDT)
-Message-ID: <33601690-df21-55ec-bc61-c720e8861aa4@roeck-us.net>
-Date: Tue, 1 Aug 2023 10:03:36 -0700
+ d=1e100.net; s=20221208; t=1690909765; x=1691514565;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=7TYdUQSbsMdQlXtHfoM5M3lYMBKRaXC7t6qTUsDgJ84=;
+ b=MDEn2m/YTWpPf7A5zj0ntVSfJDMgrr1YG5qNuKj3bv5luRcHdEh4kvKaeouQBzMTq6
+ jSpyMHQsYFyR8n570DEVdM8e5LLUnrZdQyyNInTms1fO3bh8EbUo00UpBpKvGHwVHB/w
+ hea4cjfFEKgE3Guhg/2yJOSCU6fy3ddqu3gBTAEXTBXWN02N1i4o4DeIT/yzmCzaQdst
+ wyoEdMrZHlmnPqRGfgNuQ8Gnf20ehbBWWp2j1saqsa3KNusFncxNxzeXzne1twD7QvOr
+ d5e+LJ1pMf4X/RFPp31Zw3mOyBfpfmd6nCiG57IIwEeSL2Khns8nS1KFUnu9p+Rs2wPW
+ 1WTw==
+X-Gm-Message-State: ABy/qLY0/FvtYH7+9USqXbjYJxz72kZW1Mde2SpefuaKXHcB7TkqNjbK
+ bJd23+9XtpneOcfTRcvgKpxLNuPBdI9la6WsJdod4YnhNiXQqk0QD2SZMfoK9MBVwe8Mhj5fxWx
+ +dmwQ/oTe8EnrpAU=
+X-Received: by 2002:a05:620a:2a05:b0:76c:c782:de60 with SMTP id
+ o5-20020a05620a2a0500b0076cc782de60mr2061860qkp.4.1690909765135; 
+ Tue, 01 Aug 2023 10:09:25 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlHvAPKlX6rFjJPNAYdOVKtEd2UYKnjJ6suC2euGTiq8NWnPWXgkyVwwOaiPDjVFk7B60+Zqxw==
+X-Received: by 2002:a05:620a:2a05:b0:76c:c782:de60 with SMTP id
+ o5-20020a05620a2a0500b0076cc782de60mr2061839qkp.4.1690909764826; 
+ Tue, 01 Aug 2023 10:09:24 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ 27-20020a05620a079b00b00767da9b6ae9sm4283810qka.11.2023.08.01.10.09.24
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 01 Aug 2023 10:09:24 -0700 (PDT)
+Date: Tue, 1 Aug 2023 13:09:22 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Andrei Gudkov <gudkov.andrei@huawei.com>
+Cc: qemu-devel@nongnu.org, quintela@redhat.com, leobras@redhat.com,
+ eblake@redhat.com, armbru@redhat.com
+Subject: Re: [PATCH] migration/calc-dirty-rate: millisecond precision period
+Message-ID: <ZMk8QmJ1fjghgwXD@x1n>
+References: <8571da37847f9bb39b84e62ef4998e68ef3c10d1.1688028297.git.gudkov.andrei@huawei.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qianfanguijin@163.com, qemu-arm@nongnu.org, qemu-devel@nongnu.org,
- Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
- Beniamino Galvani <b.galvani@gmail.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Niek Linnenbank <nieklinnenbank@gmail.com>
-References: <20230523100508.32564-1-qianfanguijin@163.com>
- <20230523100508.32564-2-qianfanguijin@163.com>
- <41e71eae-72ad-410d-9cd8-cc495c06dac4@roeck-us.net>
- <CAFEAcA8aEQWAap36CtHMrEkFQUPnDCH7=-X5+TE2GJ-qzm3Y9w@mail.gmail.com>
- <2044dc69-93de-d855-fe44-ee6f3ab3576b@roeck-us.net>
- <CAFEAcA8vtJNwbxBreDMFB6q-Z=G5FiOcWzAAz+F69A4-Er_4EA@mail.gmail.com>
- <a51c71c5-4c5e-8723-76f1-2cc9410f601b@roeck-us.net>
- <01087628-44c0-2b15-61bc-8677b7d1b459@roeck-us.net>
- <CAFEAcA_mRY3bULpX0Qst--8XkDP9DYJqFbRBPgEpvEB1QnDr_A@mail.gmail.com>
-From: Guenter Roeck <linux@roeck-us.net>
-Subject: Re: [PATCH v5 01/11] hw: arm: Add bananapi M2-Ultra and allwinner-r40
- support
-In-Reply-To: <CAFEAcA_mRY3bULpX0Qst--8XkDP9DYJqFbRBPgEpvEB1QnDr_A@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=groeck7@gmail.com; helo=mail-pl1-x632.google.com
-X-Spam_score_int: -13
-X-Spam_score: -1.4
-X-Spam_bar: -
-X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_ENVFROM_END_DIGIT=0.25,
- FREEMAIL_FORGED_FROMDOMAIN=0.25, FREEMAIL_FROM=0.001,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.092,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <8571da37847f9bb39b84e62ef4998e68ef3c10d1.1688028297.git.gudkov.andrei@huawei.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,87 +97,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/1/23 09:01, Peter Maydell wrote:
-> On Sat, 24 Jun 2023 at 16:02, Guenter Roeck <linux@roeck-us.net> wrote:
->>
->> On 6/24/23 07:23, Guenter Roeck wrote:
->>> On 6/24/23 03:40, Peter Maydell wrote:
->>>> On Fri, 23 Jun 2023 at 20:33, Guenter Roeck <linux@roeck-us.net> wrote:
->>>>>
->>>>> On 6/23/23 10:44, Peter Maydell wrote:
->>>>>> On Sat, 17 Jun 2023 at 17:29, Guenter Roeck <linux@roeck-us.net> wrote:
->>>>>>> Main problem is that the SD card gets instantiated randomly to
->>>>>>> mmc0, mmc1, or mmc2, making it all but impossible to specify a
->>>>>>> root file system device. The non-instantiated cards are always
->>>>>>> reported as non-removable, including mmc0. Example:
->>>>>>>
->>>>>>> mmc0: Failed to initialize a non-removable card
->>>>>>
->>>>>> Do you mean that QEMU randomly connects the SD card to
->>>>>> a different MMC controller each time, or that Linux is
->>>>>> randomly assigning mmc0 to a different MMC controller each
->>>>>> time ?
->>>>>>
->>>>>
->>>>> Good question. Given the workaround (fix ?) I suggested is
->>>>> in the devicetree file, I would assume it is the latter. I suspect
->>>>> that Linux assigns drive names based on hardware detection order,
->>>>> and that this is not deterministic for some reason. It is odd
->>>>> because I have never experienced that with any other emulation.
->>>>
->>>> Yeah, I don't really understand why it would be non-deterministic.
->>>> But it does make it sound like the right thing is for the
->>>> device tree file to explicitly say which MMC controller is
->>>> which -- presumably you might get unlucky with the timing
->>>> on real hardware too.
->>>>
->>>
->>> Agreed, only someone with real hardware would have to confirm
->>> that this is the case.
->>>
->>
->> Actually, the reason is quite simple. In the Linux kernel:
->>
->> static struct platform_driver sunxi_mmc_driver = {
->>           .driver = {
->>                   .name   = "sunxi-mmc",
->>                   .probe_type = PROBE_PREFER_ASYNCHRONOUS,
->>                                 ^^^^^^^^^^^^^^^^^^^^^^^^^
->>                   .of_match_table = sunxi_mmc_of_match,
->>                   .pm = &sunxi_mmc_pm_ops,
->>           },
->>           .probe          = sunxi_mmc_probe,
->>           .remove         = sunxi_mmc_remove,
->> };
->>
->> All mmc devices instantiate at the same time, thus the
->> device name association is random. If I drop the probe_type
->> assignment, it becomes deterministic.
->>
->> On top of that, Linux does know which drives are removable
->> from the devicetree file. However, since probe order is
->> random, the assignment of the one removable drive to device
->> names is random. Sometimes mmc0 shows up as removable,
->> sometimes it is mmc1 or mmc2.
->>
->> So my conclusion is that qemu isn't doing anything wrong,
->> it is all happening in the Linux kernel.
+On Thu, Jun 29, 2023 at 11:59:03AM +0300, Andrei Gudkov wrote:
+> Introduces alternative argument calc-time-ms, which is the
+> the same as calc-time but accepts millisecond value.
+> Millisecond precision allows to make predictions whether
+> migration will succeed or not. To do this, calculate dirty
+> rate with calc-time-ms set to max allowed downtime, convert
+> measured rate into volume of dirtied memory, and divide by
+> network throughput. If the value is lower than max allowed
+> downtime, then migration will converge.
 > 
-> Hi Guenter -- do you know if this "random MMC controller"
-> issue has been fixed in Linux ? If so, we might be able
-> to update our test case image to avoid the slightly ugly
-> "root=b300" workaround at some point.
+> Measurement results for single thread randomly writing to
+> a 24GiB region:
+> +--------------+--------------------+
+> | calc-time-ms | dirty-rate (MiB/s) |
+> +--------------+--------------------+
+> |          100 |               1880 |
+> |          200 |               1340 |
+> |          300 |               1120 |
+> |          400 |               1030 |
+> |          500 |                868 |
+> |          750 |                720 |
+> |         1000 |                636 |
+> |         1500 |                498 |
+> |         2000 |                423 |
+> +--------------+--------------------+
 > 
+> Signed-off-by: Andrei Gudkov <gudkov.andrei@huawei.com>
 
-No, it has not been fixed, or at least there is nothing in linux-next.
-I don't have real hardware, so I am not in a position to submit, much
-less test, a patch on it. Someone had mentioned that real hardware would
-handle the problem in initramfs. That seems wrong to me, but it is what
-it is.
+Andrei, do you plan to enhance the commit message and data in a repost?  I
+assume you may want to have your data points updated after the discussion,
+and it won't need to be in a rush as it will only land 8.2.
 
-I changed my own test to use the "root=b300" hack. That seems highly kludgy,
-but at least it works.
+The patch itself looks fine to me:
 
-Guenter
+Acked-by: Peter Xu <peterx@redhat.com>
+
+Thanks,
+
+-- 
+Peter Xu
 
 
