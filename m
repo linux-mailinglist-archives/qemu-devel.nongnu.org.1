@@ -2,80 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB87076B8F4
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 17:46:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57FFD76B950
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 18:04:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQrYy-0001jY-SK; Tue, 01 Aug 2023 11:45:32 -0400
+	id 1qQrp4-00083B-Pd; Tue, 01 Aug 2023 12:02:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qQrYr-0001h3-7d
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 11:45:25 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ id 1qQroF-0007fz-Tf
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 12:01:24 -0400
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qQrYp-00042z-DY
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 11:45:25 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-3178dd81ac4so4314303f8f.3
- for <qemu-devel@nongnu.org>; Tue, 01 Aug 2023 08:45:22 -0700 (PDT)
+ id 1qQroC-0004Ug-Nw
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 12:01:18 -0400
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-522bc9556f5so4322746a12.0
+ for <qemu-devel@nongnu.org>; Tue, 01 Aug 2023 09:01:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690904721; x=1691509521;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=f0+coTLzDrNM167uzJa6E+m7LPT8bGvKfu02ozqr8PA=;
- b=S67VyW/5FImcd5YByTwxj6oPF3BARzyghoE0YeL7UPDFC6lPwnCPvy8Bx9ZynDYPM0
- V5HXTsvOICOotS4wqseYr8abqV8A0CWQlqJv2KAT7nn/ZYPuxt0m5cdq5jbiexjGOA45
- SnNbWOTYrNJbs7cXJjwt7dLa5NsKeFNFxJNM6Fe1rl+sdmV4Wi8mIV/bDZ2PQgaC6Dmr
- np5uJYX/qXRWZwU9JKwtB0lGmzEGHWhRkAWhypaAVZ51JxBSCMkMqg/PRS0k0ZdFtY9r
- UiYSShKBLSNVHzRqzMjNiKtOhHVpokXcEIV/0dskTuUY3zUJoUXTY26bwAW13r806dO8
- jH9w==
+ d=linaro.org; s=google; t=1690905675; x=1691510475;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=uHSqRcpiT02GTGeITNtnXVMmijcnbe/B+zmv+9E7TDA=;
+ b=cL+52DR25DTAZOR/t9BTofYZaSBMrN5BwC3FrqfrsqJCHWp0X4RDZHtmU7z4e0Uo4b
+ mFZ9WHCnEQzFEhOYIEsOD+jag5hnRi5pNrD3d0BDbrTbK6+XSkC58xTVV7fIdUagNKao
+ eJE/ZYgzjbPtpF4IfBp4E9oTJHABFzI5M+Z111Hmnyq7RvL+zdY3mr+xKsqZITH8WdrG
+ mfFMh9dXxfL3Luw+GVBy6wDWbF0TezWt35lF35KeslYpwHLjYP074YYlK3Z4gu0EX7Ih
+ MhvnTjt98tOgz2erNF8tmfSGTBsPjuBCZnVc9cVgibnkPB+CtARUky5Uu4l9GMkgZibF
+ G89A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690904721; x=1691509521;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20221208; t=1690905675; x=1691510475;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=f0+coTLzDrNM167uzJa6E+m7LPT8bGvKfu02ozqr8PA=;
- b=I+yD8KtZLdfd86p23av6WSlZ61wpua+2bBziR4cut0hkeHU2lOec+srx2jFNIBLpcN
- 1663e9U1AYllbKBOZSVTU1gmm089SVcMwntC9IQACNE1Z4ygNlJhCUqeCHZx9UDyf8C8
- 9RqugVxwHtmXcS8DGMEhyt/XQu5ueQR4buoF9vBNgh4sD6GRu/sofD0XbqzXdUjy20CR
- cxKrtKJ7nre2HcPv7PpSFikrsmOZ+McqMPlna2qpLLUh84fQJHpvopr7f8Ge0zoBQuD0
- p7m2o8wFD74lSraNZlSxeTjrNKs2fGudGmWEQNxoXMN4QZU59IurhBYeTb5wbvPhskiy
- QgoA==
-X-Gm-Message-State: ABy/qLbiMGQmTmEJ9mgvLtY7YwLMraH7C8A3L7i5VuU35Nk+ZDDhAl23
- 6AFWpQcdxil4LpUYX3bLgK+H7F3jdd0mHjrAfHQ=
-X-Google-Smtp-Source: APBJJlHnFr8CWySk2SFnaM+E99csADtjcDPOONeJD8tGjfhm1JNLDzH6/jbFNldrrtxJ3nrrkiI9bQ==
-X-Received: by 2002:adf:d84a:0:b0:317:61d8:3c7e with SMTP id
- k10-20020adfd84a000000b0031761d83c7emr2647688wrl.26.1690904720992; 
- Tue, 01 Aug 2023 08:45:20 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- s6-20020a5d6a86000000b003142ea7a661sm16368050wru.21.2023.08.01.08.45.20
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 01 Aug 2023 08:45:20 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Laurent Vivier <laurent@vivier.eu>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Keith Packard <keithp@keithp.com>
-Subject: [PATCH for-8.1] target/m68k: Fix semihost lseek offset computation
-Date: Tue,  1 Aug 2023 16:45:19 +0100
-Message-Id: <20230801154519.3505531-1-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
+ bh=uHSqRcpiT02GTGeITNtnXVMmijcnbe/B+zmv+9E7TDA=;
+ b=JeupJIehRGpcLT/EFrTAeJ1m+tAyaHkP1DVcTNM84LvWM0EJi8UkDL7usqcNWJm0ZO
+ VQHu+57G9i0QR7ixWYWwIZFOjrDGnoVWWg/KAQNl1YPe9XoE1up7h3iqa2E29kTbWWfa
+ TP+aV2vJlR17z3Tm8RDIOEzLop8Wg3ZEfjVbrnLvly78AkrF712tjeSzUnNYis2FkdP4
+ SPGZ5L/a0M2vPKA9Q0QppXKvMDj/uxbCuEf4MJz3VHNDywrgZN7GOd3tvXTPGQ+yGeLL
+ Dxa0GyA1l7c8jkqzBBR3x0qLzaglndY3EpCd2L7bCVRuudRIu6vUVADWnFZOnF1AuYSt
+ MPyA==
+X-Gm-Message-State: ABy/qLaGDWfSn5YAg0CJE5zK2haUzu/lLu8qR6n4TIKxQFwWzddiYt0Z
+ 1QuymHjsfWXTB0ILHZvRiu67yCRp/lsBowV5dFHSrw==
+X-Google-Smtp-Source: APBJJlE6bOFcMrDYHotDjjyVRGfibX1jiHOTiv6+AS9UYSyUYmmStTtWuApeRoQ7f68QE1VxqslMmilkQjoV+LX8x1k=
+X-Received: by 2002:a05:6402:702:b0:522:ae79:3ede with SMTP id
+ w2-20020a056402070200b00522ae793edemr2618952edx.11.1690905674975; Tue, 01 Aug
+ 2023 09:01:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42e.google.com
+References: <20230523100508.32564-1-qianfanguijin@163.com>
+ <20230523100508.32564-2-qianfanguijin@163.com>
+ <41e71eae-72ad-410d-9cd8-cc495c06dac4@roeck-us.net>
+ <CAFEAcA8aEQWAap36CtHMrEkFQUPnDCH7=-X5+TE2GJ-qzm3Y9w@mail.gmail.com>
+ <2044dc69-93de-d855-fe44-ee6f3ab3576b@roeck-us.net>
+ <CAFEAcA8vtJNwbxBreDMFB6q-Z=G5FiOcWzAAz+F69A4-Er_4EA@mail.gmail.com>
+ <a51c71c5-4c5e-8723-76f1-2cc9410f601b@roeck-us.net>
+ <01087628-44c0-2b15-61bc-8677b7d1b459@roeck-us.net>
+In-Reply-To: <01087628-44c0-2b15-61bc-8677b7d1b459@roeck-us.net>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 1 Aug 2023 17:01:03 +0100
+Message-ID: <CAFEAcA_mRY3bULpX0Qst--8XkDP9DYJqFbRBPgEpvEB1QnDr_A@mail.gmail.com>
+Subject: Re: [PATCH v5 01/11] hw: arm: Add bananapi M2-Ultra and allwinner-r40
+ support
+To: Guenter Roeck <linux@roeck-us.net>
+Cc: qianfanguijin@163.com, qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
+ Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
+ Beniamino Galvani <b.galvani@gmail.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Niek Linnenbank <nieklinnenbank@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x530.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,34 +96,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The arguments for deposit64 are (value, start, length, fieldval); this
-appears to have thought they were (value, fieldval, start,
-length). Reorder the parameters to match the actual function.
+On Sat, 24 Jun 2023 at 16:02, Guenter Roeck <linux@roeck-us.net> wrote:
+>
+> On 6/24/23 07:23, Guenter Roeck wrote:
+> > On 6/24/23 03:40, Peter Maydell wrote:
+> >> On Fri, 23 Jun 2023 at 20:33, Guenter Roeck <linux@roeck-us.net> wrote:
+> >>>
+> >>> On 6/23/23 10:44, Peter Maydell wrote:
+> >>>> On Sat, 17 Jun 2023 at 17:29, Guenter Roeck <linux@roeck-us.net> wrote:
+> >>>>> Main problem is that the SD card gets instantiated randomly to
+> >>>>> mmc0, mmc1, or mmc2, making it all but impossible to specify a
+> >>>>> root file system device. The non-instantiated cards are always
+> >>>>> reported as non-removable, including mmc0. Example:
+> >>>>>
+> >>>>> mmc0: Failed to initialize a non-removable card
+> >>>>
+> >>>> Do you mean that QEMU randomly connects the SD card to
+> >>>> a different MMC controller each time, or that Linux is
+> >>>> randomly assigning mmc0 to a different MMC controller each
+> >>>> time ?
+> >>>>
+> >>>
+> >>> Good question. Given the workaround (fix ?) I suggested is
+> >>> in the devicetree file, I would assume it is the latter. I suspect
+> >>> that Linux assigns drive names based on hardware detection order,
+> >>> and that this is not deterministic for some reason. It is odd
+> >>> because I have never experienced that with any other emulation.
+> >>
+> >> Yeah, I don't really understand why it would be non-deterministic.
+> >> But it does make it sound like the right thing is for the
+> >> device tree file to explicitly say which MMC controller is
+> >> which -- presumably you might get unlucky with the timing
+> >> on real hardware too.
+> >>
+> >
+> > Agreed, only someone with real hardware would have to confirm
+> > that this is the case.
+> >
+>
+> Actually, the reason is quite simple. In the Linux kernel:
+>
+> static struct platform_driver sunxi_mmc_driver = {
+>          .driver = {
+>                  .name   = "sunxi-mmc",
+>                  .probe_type = PROBE_PREFER_ASYNCHRONOUS,
+>                                ^^^^^^^^^^^^^^^^^^^^^^^^^
+>                  .of_match_table = sunxi_mmc_of_match,
+>                  .pm = &sunxi_mmc_pm_ops,
+>          },
+>          .probe          = sunxi_mmc_probe,
+>          .remove         = sunxi_mmc_remove,
+> };
+>
+> All mmc devices instantiate at the same time, thus the
+> device name association is random. If I drop the probe_type
+> assignment, it becomes deterministic.
+>
+> On top of that, Linux does know which drives are removable
+> from the devicetree file. However, since probe order is
+> random, the assignment of the one removable drive to device
+> names is random. Sometimes mmc0 shows up as removable,
+> sometimes it is mmc1 or mmc2.
+>
+> So my conclusion is that qemu isn't doing anything wrong,
+> it is all happening in the Linux kernel.
 
-Cc: qemu-stable@nongnu.org
-Fixes: 950272506d ("target/m68k: Use semihosting/syscalls.h")
-Reported-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
-Same fix for m68k as Keith Packard just sent for nios2
----
- target/m68k/m68k-semi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Hi Guenter -- do you know if this "random MMC controller"
+issue has been fixed in Linux ? If so, we might be able
+to update our test case image to avoid the slightly ugly
+"root=b300" workaround at some point.
 
-diff --git a/target/m68k/m68k-semi.c b/target/m68k/m68k-semi.c
-index 88ad9ba8144..239f6e44e90 100644
---- a/target/m68k/m68k-semi.c
-+++ b/target/m68k/m68k-semi.c
-@@ -166,7 +166,7 @@ void do_m68k_semihosting(CPUM68KState *env, int nr)
-         GET_ARG64(2);
-         GET_ARG64(3);
-         semihost_sys_lseek(cs, m68k_semi_u64_cb, arg0,
--                           deposit64(arg2, arg1, 32, 32), arg3);
-+                           deposit64(arg2, 32, 32, arg1), arg3);
-         break;
- 
-     case HOSTED_RENAME:
--- 
-2.34.1
-
+thanks
+-- PMM
 
