@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8DF576B46A
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 14:07:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54D2876B4D6
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 14:34:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQo9g-0005Dt-9U; Tue, 01 Aug 2023 08:07:12 -0400
+	id 1qQoZE-0007tT-9F; Tue, 01 Aug 2023 08:33:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qQo9b-000596-Jd
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 08:07:09 -0400
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qQo9a-000811-0N
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 08:07:07 -0400
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-522b77956d2so4122486a12.3
- for <qemu-devel@nongnu.org>; Tue, 01 Aug 2023 05:07:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690891624; x=1691496424;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=M850cRbkeF12K78EW7Ri9GvUclJuEdDeipPXj8dJI/Y=;
- b=vubYbVcYDZAHE0GcWRQ186LRGZBZcNel04B6t/CE+ENCRnTfYxXubS28kBkWHE9Hiv
- RJ8U5FU67Qp7oJ/x3mvf6u6F0KjRKR6mF5V133w/V/WQGykVrjtkWkokzpipUjllGbxd
- LEVq3ZnIxMyhu1z7HUmqBkocWr927bmlQyq1uzHcNdlKfUlR0nAQ9N4PXTyuvyWYaaCM
- QDwyB99r7kbXKS15uyOa+kziZ9sepuNjjkf/OqUQ49au5LmYteYrc2ZtzQlhzrsc0I/4
- 1a8Q4UOaVD/K8lmO/zYxOBMheLX+cz3GMejK3XwqZvDxMwF3ssGMaRV3hztZg6DrwXxF
- MAHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690891624; x=1691496424;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=M850cRbkeF12K78EW7Ri9GvUclJuEdDeipPXj8dJI/Y=;
- b=A1pqs/tvYrLt87FmdBr1qM1A8lu7KrBmM74RCtuctwyy2HdKAw59ZJupttxAP9ozwU
- gkG0m8ljM1ql19maArS6EKCduPhrqwCr0hCHYDFM4MS1l+S2XQvWnAhmOg+FEMIy6KoO
- fz2LWVsfZwZBlFdxr+l5smDQfmCZrV2eMmh2bPsysWZ2Bb0H+hwt+vQqsbrpfEP95KW8
- QObrKQI3HLPdo41ysf9jtAdadF2ZfVosxu/NApC8vY+2gnoDkgGdQ8UzAankW/JRmj0I
- da6KtPUDoiNVoTsGdTxB0NlLFWhD7F1KcE/OElTxy3vEuqO7NKZiCdEhqSuqMgxHMO9w
- 4Heg==
-X-Gm-Message-State: ABy/qLbwsC0oE+Ge1jFcbwnf7Z917HQdQp8pwbBW9+UjZ/ogIEXIXFJY
- Zu8z8t6VDvOEa+vuwONHlmZxseBFnY/bhVijivMxKg==
-X-Google-Smtp-Source: APBJJlHSCIfPRrjnpLldzGN3L4cDdDJsXUoaL+ay25lZHc+/zSGwqYhP+abQSKin/kc1vpvH+AbbN9Wl1GQS7Ebqyyo=
-X-Received: by 2002:aa7:d699:0:b0:521:62a2:d36d with SMTP id
- d25-20020aa7d699000000b0052162a2d36dmr2297680edr.18.1690891624319; Tue, 01
- Aug 2023 05:07:04 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qQoZ5-0007t9-BH
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 08:33:27 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qQoZ3-0002LU-Aq
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 08:33:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1690893203;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=EjJ//tCmHa56bEE24EXXwaiKjDje+AcnAEZIq1SqYbE=;
+ b=ZySP8osl0Wulw7D57rSkXPuMuMxB360NgQgMY0faFngrTKJVg+zeYSCjQBwGDxZdo9Z4bV
+ c/sEKSTObVVahmg62NfptHXj7bibo966lEw/6qvWY97ZPF1As1h+JlQ9e5sv+aeSG09k/d
+ XllyUZ433tDRoUvpSGNKs0O9rQyyV8U=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-435-LIBMuWPBPky3eufa9E2SzA-1; Tue, 01 Aug 2023 08:33:20 -0400
+X-MC-Unique: LIBMuWPBPky3eufa9E2SzA-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B2BE6800962;
+ Tue,  1 Aug 2023 12:33:19 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.193.50])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 4186E40D283A;
+ Tue,  1 Aug 2023 12:33:19 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 0D11621E692A; Tue,  1 Aug 2023 14:33:18 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Yong Huang <yong.huang@smartx.com>
+Cc: qemu-devel@nongnu.org,  Juan Quintela <quintela@redhat.com>,  Eric Blake
+ <eblake@redhat.com>,  Peter Xu <peterx@redhat.com>,  Leonardo Bras
+ <leobras@redhat.com>
+Subject: Re: [PATCH QEMU 1/2] qapi: Reformat and craft the migration doc
+ comments
+References: <169040075240.21656.5651891935411754498-1@git.sr.ht>
+ <87y1j0lblv.fsf@pond.sub.org>
+ <CAK9dgmaWfHyPDKneJVEo2TDehZ9PX0a-YLSp2x+Z=kYeJohmOQ@mail.gmail.com>
+Date: Tue, 01 Aug 2023 14:33:18 +0200
+In-Reply-To: <CAK9dgmaWfHyPDKneJVEo2TDehZ9PX0a-YLSp2x+Z=kYeJohmOQ@mail.gmail.com>
+ (Yong Huang's message of "Fri, 28 Jul 2023 17:11:38 +0800")
+Message-ID: <87o7jr0woh.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-References: <20230731235245.295513-1-keithp@keithp.com>
-In-Reply-To: <20230731235245.295513-1-keithp@keithp.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 1 Aug 2023 13:06:53 +0100
-Message-ID: <CAFEAcA8Q_qjJV55v0M4LwuK-2tuM4DaBVsmP5vAVogt8Hq98vg@mail.gmail.com>
-Subject: Re: [PATCH] target/nios2: Fix semihost lseek offset computation
-To: Keith Packard <keithp@keithp.com>
-Cc: qemu-devel@nongnu.org, Chris Wulff <crwulff@gmail.com>,
- Marek Vasut <marex@denx.de>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52a.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,35 +86,166 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 1 Aug 2023 at 00:53, Keith Packard via <qemu-devel@nongnu.org> wrote:
->
-> The arguments for deposit64 are (value, start, length, fieldval); this
-> appears to have thought they were (value, fieldval, start,
-> length). Reorder the parameters to match the actual function.
->
-> Signed-off-by: Keith Packard <keithp@keithp.com>
-> ---
->  target/nios2/nios2-semi.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/target/nios2/nios2-semi.c b/target/nios2/nios2-semi.c
-> index ffd1f095f6..fc1df1dfeb 100644
-> --- a/target/nios2/nios2-semi.c
-> +++ b/target/nios2/nios2-semi.c
-> @@ -170,7 +170,7 @@ void do_nios2_semihosting(CPUNios2State *env)
->          GET_ARG64(2);
->          GET_ARG64(3);
->          semihost_sys_lseek(cs, nios2_semi_u64_cb, arg0,
-> -                           deposit64(arg2, arg1, 32, 32), arg3);
-> +                           deposit64(arg2, 32, 32, arg1), arg3);
->          break;
->
->      case HOSTED_RENAME:
+Yong Huang <yong.huang@smartx.com> writes:
 
-Fixes: d1e23cbaa403b2d ("target/nios2: Use semihosting/syscalls.h")
-Cc: qemu-stable@nongnu.org
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+> On Fri, Jul 28, 2023 at 3:49=E2=80=AFPM Markus Armbruster <armbru@redhat.=
+com> wrote:
+>
+>> ~hyman <hyman@git.sr.ht> writes:
+>>
+>> > From: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
+>> >
+>> > Reformat migration doc comments to conform to current conventions
+>> > as commit a937b6aa739 (qapi: Reformat doc comments to conform to
+>> > current conventions).
+>> >
+>> > Also, craft the dirty-limit capability comment.
+>>
+>> Split into two patches?
+>>
+> Ok.
+>
+>>
+>> > Signed-off-by: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
+>> > ---
+>> >  qapi/migration.json | 66 +++++++++++++++++++++------------------------
+>> >  1 file changed, 31 insertions(+), 35 deletions(-)
+>> >
+>> > diff --git a/qapi/migration.json b/qapi/migration.json
+>> > index 6b49593d2f..5d5649c885 100644
+>> > --- a/qapi/migration.json
+>> > +++ b/qapi/migration.json
+>> > @@ -258,17 +258,17 @@
+>> >  #     blocked.  Present and non-empty when migration is blocked.
+>> >  #     (since 6.0)
+>> >  #
+>> > -# @dirty-limit-throttle-time-per-round: Maximum throttle time (inmicr=
+oseconds) of virtual
+>> > -#                                       CPUs each dirty ring fullroun=
+d, which shows how
+>> > -#                                       MigrationCapability dirty-lim=
+itaffects the guest
+>> > -#                                       during live migration. (since=
+8.1)
+>> > -#
+>> > -# @dirty-limit-ring-full-time: Estimated average dirty ring full time=
+(in microseconds)
+>> > -#                              each dirty ring full round, note thatt=
+he value equals
+>> > -#                              dirty ring memory size divided byavera=
+ge dirty page rate
+>> > -#                              of virtual CPU, which can be used toob=
+serve the average
+>> > -#                              memory load of virtual CPU indirectly.=
+Note that zero
+>> > -#                              means guest doesn't dirty memory (sinc=
+e8.1)
+>> > +# @dirty-limit-throttle-time-per-round: Maximum throttle time
+>> > +#     (in microseconds) of virtual CPUs each dirty ring full round,
+>> > +#     which shows how MigrationCapability dirty-limit affects the
+>>
+>> Perhaps "for each ... round"?
+>>
+>> Remind me, what's a "dirty ring full round"?
+>>
+> Every time the x86 PML buffer is filled with gpa, hardware throws an
+> exception and
+> guest exits to kvm, then to qemu. Qemu will handle the exception with
+> reaping the
+> dirty ring and get the dirty page info, then enter the kvm, empty the PML
+> buffer and
+> enter guests again, i call this "dirty ring full round", but it seems not
+> straightforward,
+> please help me describe that,  thanks.
 
-thanks
--- PMM
+"x86 PML" is page modification logging, right?
+
+>> > +#     guest during live migration.  (Since 8.1)
+>> > +#
+>> > +# @dirty-limit-ring-full-time: Estimated average dirty ring full
+>> > +#     time (in microseconds) each dirty ring full round. The value
+>>
+>> Likewise.
+>>
+>> > +#     equals dirty ring memory size divided by average dirty page
+>>
+>> "the dirty ring memory size divided by the average ..."
+>>
+>> > +#     rate of the virtual CPU, which can be used to observe the
+>> > +#     average memory load of the virtual CPU indirectly. Note that
+>> > +#     zero means guest doesn't dirty memory.  (Since 8.1)
+>>
+>> Two spaces between sentences for consistency.
+>>
+>> >  #
+>> >  # Since: 0.14
+>> >  ##
+>> > @@ -519,15 +519,11 @@
+>> >  #     are present.  'return-path' capability must be enabled to use
+>> >  #     it.  (since 8.1)
+>> >  #
+>> > -# @dirty-limit: If enabled, migration will use the dirty-limit algo to
+>> > -#               throttle down guest instead of auto-converge algo.
+>> > -#               Throttle algo only works when vCPU's dirtyrate greater
+>> > -#               than 'vcpu-dirty-limit', read processes in guest os
+>> > -#               aren't penalized any more, so this algo can improve
+>> > -#               performance of vCPU during live migration. This is an
+>> > -#               optional performance feature and should not affect the
+>> > -#               correctness of the existing auto-converge algo.
+>> > -#               (since 8.1)
+>> > +# @dirty-limit: If enabled, migration will throttle vCPUs as needed to
+>> > +#     keep their dirty page rate within @vcpu-dirty-limit.  This can
+>> > +#     improve responsiveness of large guests during live migration,
+>> > +#     and can result in more stable read performance.  Requires KVM
+>> > +#     with accelerator property "dirty-ring-size" set.  (Since 8.1)
+>> >  #
+>> >  # Features:
+>> >  #
+>> > @@ -822,17 +818,17 @@
+>> >  #     Nodes are mapped to their block device name if there is one, and
+>> >  #     to their node name otherwise.  (Since 5.2)
+>> >  #
+>> > -# @x-vcpu-dirty-limit-period: Periodic time (in milliseconds) of dirt=
+ylimit during
+>> > -#                             live migration. Should be in the range =
+1to 1000ms,
+>> > -#                             defaults to 1000ms. (Since 8.1)
+>> > +# @x-vcpu-dirty-limit-period: Periodic time (in milliseconds) of dirty
+>> > +#     limit during  live migration. Should be in the range 1 to 1000m=
+s,
+>>
+>> Single space in "during live", and two space between sentences, please.
+>>
+>> > +#     defaults to 1000ms.  (Since 8.1)
+>>
+>> I dislike that we mix milli- and microseconds.  Too late to fix, I'm
+>> afraid.
+>>
+>> Remind me, what't the "periodic time of dirty limit during live
+>> migration"?
+>>
+> It is the period to calculate the dirty page rate for each vCPU.
+> So Qemu will use it to compare with the dirty-limit value.
+> If the period is too short, cpu overhead is increasing and if
+> it is too long, the result may not be precise. So we make it
+> configurable.
+
+The limited migration knowledge I have wasn't enough to review the doc
+part of your QAPI schema patch with reasonable effort and within a
+reasonable time.  You had to answer a lot of fairly basic questions.
+Thanks for your patience.
+
+Perhaps I should've given up and left the docs to the migration
+maintainers.
+
+I believe what I've been missing is an overview of the dirty limit
+algorithm to throttle guests being live-migrated.
+
+Could we have that in docs/devel/migration.rst?
+
+Apropos migration.rst: not a peep on compression.  Juan, Peter,
+Leonardo, should it be covered there?
+
+[...]
+
 
