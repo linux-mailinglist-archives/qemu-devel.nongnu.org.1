@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95E7D76BFB0
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 23:56:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2527F76BFAC
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 23:56:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQxKt-00044D-S2; Tue, 01 Aug 2023 17:55:23 -0400
+	id 1qQxKv-00048M-B9; Tue, 01 Aug 2023 17:55:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qQxKf-00040T-9S
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 17:55:13 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qQxKp-00043A-EO
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 17:55:21 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qQxKa-0004rA-0t
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 17:55:07 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-31759e6a4a1so5487383f8f.3
- for <qemu-devel@nongnu.org>; Tue, 01 Aug 2023 14:55:03 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qQxKh-00051Y-Us
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 17:55:18 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-3fe24b794e5so19789575e9.1
+ for <qemu-devel@nongnu.org>; Tue, 01 Aug 2023 14:55:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690926902; x=1691531702;
+ d=linaro.org; s=google; t=1690926907; x=1691531707;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ALlzvSCMcoLc+e3yixiSCFGQuR+9t3b/espKpIxx4ew=;
- b=uYbf0s9WN0ipyLKflCDoHxPmIntche6P/fpIS7B/wGnmbOo++Z7kyh4BnVvQB78V7Q
- ZhmTDGjcr0HDAWvaInHE/odx7BMzR+Drye0HAahwY9aUVDtflezTj0YOkT3rKi+NFJaK
- Yzd4zFLzSaYCZ5Eo1d+f51DfQXUFD112Lql6tQgL9/MyvZGmIrSnOe6lylsWRd1kfFEx
- ItwDHoIiMDeYsSDRdkcpVl8kXqyCr4gXoCkkXaad2e/DosYW/raJyonVfw9fQivywD0j
- GrbZDkOohWfrQBDPK59VM2wg26Xng41gJ1hEozaBfnnfHw157vAgTLAV7Ga8LDl1xELd
- Tx/g==
+ bh=QVfBl55livYW0yWtqiDTvD5GbwIpzCrNuWoNY+Gm1TE=;
+ b=H7NPrUp+ldHLolZzwK7aXYphSZ6Mxy8yEXqm4h3NzocqcMiNrsbhfnhdzfVBpeXcOj
+ LCcHTsaO3E8lA1QNiea5j3d4DNSI24YwyqCMmMnIxftyTI9HJNYlROW7ewxSB43pleVK
+ EJl3CukD2jem/Qsn+cVhkro1zJWSTvFXwKHrkmo4RGDwx/9QlhJNHb5Ft9MOpX8Q4zy/
+ qwE/OrJiM0VSoMNRipqZkvC6xuAtUODAx8EA+IgUNbhOajoPgBbCqGv+X2TS2rFZJMs+
+ GNz0jbEi/TcnpkP4bGGvak4JaTPZWCjLMDuiVxm+JiIxdrCLKsPV/EJD6Lv6lR41evgb
+ y6AA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690926902; x=1691531702;
+ d=1e100.net; s=20221208; t=1690926907; x=1691531707;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ALlzvSCMcoLc+e3yixiSCFGQuR+9t3b/espKpIxx4ew=;
- b=Q22q3ps4jpMoqqpCZ7ypp/NlvtT8ArGrg757nW0k/ulC5nfPusLgkvgL7pohsC3J60
- R/vNbNQawHcHuaTHTpUDt6kdStLLf2dieQwUrodMsoj64XBxY84BI69zWUOjKkYEvY8l
- 3RXnVbfgCOqOflX0WI+I3qkAFB+i2mDfSFFJKv8Zl/bspaDLUN4Gg5yVn7zVRWcRTjbz
- u5p6T8xEXzn8XBELX5QYzNsyFdqYlQHcyxpcmR3/n6ztBBeydM5qhQVzNHu4hl4jg1Tw
- Ekd8udQjcc98LoHVExhvJgyUTQ6JrX+6NeXYXiSRw2UPcNKiO70tHKOetTeAhhtQb73f
- t7uA==
-X-Gm-Message-State: ABy/qLYw6wv84GZc0JDFgMP/k5Hjb6fvjrWEs6IolFf0kwybSk5xH60E
- tjElVI8b2+5VbBxTmT66OdjfqJYFUQ7Us7CpPWY=
-X-Google-Smtp-Source: APBJJlHKADm8ENjuvNI1UFXHVMTyXCt1mISNtFkmMAMGCpaV7JDDQKMPBxraXx9mWbMt2d/TwnVvOA==
-X-Received: by 2002:adf:ef42:0:b0:317:5b5f:2328 with SMTP id
- c2-20020adfef42000000b003175b5f2328mr3157781wrp.24.1690926901746; 
- Tue, 01 Aug 2023 14:55:01 -0700 (PDT)
+ bh=QVfBl55livYW0yWtqiDTvD5GbwIpzCrNuWoNY+Gm1TE=;
+ b=NmTsEePpoGc9FLcwCIJbUTOeoS+j9gxIAdkgjSS6pVPbCkclZ7TzPEZ97Yjslj0ViJ
+ +HjJpSNG91m731M1Lo+7tBbGfo1YZJTDnB8rweJCaWbsRcl3BnQZXxeLEKZIGpXl7XhN
+ jYUFd78qLJawdIcPAbX4utBLs9NU4r3kR00zrk+4cFRaIMfog/USCc3MztjWPGRIqBzd
+ g6dKwVytuiqDGJIs4etKHN7XjpmbtPBNxqBvCh8X23icKQjALPYVvprnmcE5JN9k59I7
+ 9loU5jvro3IrJMKoXJUMemxZuMnEKekQetHcfy/8ebr2UwZbNMH+u2omXsjL6TWBcV59
+ qFCA==
+X-Gm-Message-State: ABy/qLbaGEnyZdjpiqKw/+i3VHn8za5VTH9Klpcq//sfMxAaMLEq2mxM
+ TbJJyANkap1+VdknatNs8uJHYphN8hihuEo2RwQ=
+X-Google-Smtp-Source: APBJJlFo0eo4a24dS5Z1ME1x8hQV1kKZ/FB/f/h/3Uo62+JYduIfXs5bsd0P5OgMytxjzgLkyXyCVQ==
+X-Received: by 2002:a05:6000:1084:b0:317:39e3:7c68 with SMTP id
+ y4-20020a056000108400b0031739e37c68mr2874160wrw.18.1690926907801; 
+ Tue, 01 Aug 2023 14:55:07 -0700 (PDT)
 Received: from localhost.localdomain ([176.176.174.59])
  by smtp.gmail.com with ESMTPSA id
- z15-20020a05600c114f00b003fbb5506e54sm14800593wmz.29.2023.08.01.14.55.00
+ y1-20020adfd081000000b003179d5aee63sm9039908wrh.91.2023.08.01.14.55.06
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 01 Aug 2023 14:55:01 -0700 (PDT)
+ Tue, 01 Aug 2023 14:55:07 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, qemu-s390x@nongnu.org, Stefan Weil <sw@weilnetz.de>,
- Peter Maydell <peter.maydell@linaro.org>,
+Cc: qemu-block@nongnu.org, qemu-s390x@nongnu.org,
+ Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Juan Quintela <quintela@redhat.com>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 06/10] misc: Fix some typos in documentation and comments
-Date: Tue,  1 Aug 2023 23:54:17 +0200
-Message-Id: <20230801215421.60133-7-philmd@linaro.org>
+Subject: [PULL 07/10] tests/migration: Add -fno-stack-protector
+Date: Tue,  1 Aug 2023 23:54:18 +0200
+Message-Id: <20230801215421.60133-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230801215421.60133-1-philmd@linaro.org>
 References: <20230801215421.60133-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,109 +93,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Stefan Weil <sw@weilnetz.de>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-Signed-off-by: Stefan Weil <sw@weilnetz.de>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20230730180329.851576-1-sw@weilnetz.de>
+A build of GCC 13.2 will have stack protector enabled by default if it
+was configured with --enable-default-ssp option. For such a compiler,
+it is necessary to explicitly disable stack protector when linking
+without standard libraries.
+
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Reviewed-by: Juan Quintela <quintela@redhat.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-Id: <20230731091042.139159-2-akihiko.odaki@daynix.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- docs/about/deprecated.rst    | 2 +-
- docs/devel/qom.rst           | 2 +-
- docs/system/devices/nvme.rst | 2 +-
- include/exec/memory.h        | 2 +-
- hw/core/loader.c             | 4 ++--
- ui/vnc-enc-tight.c           | 2 +-
- 6 files changed, 7 insertions(+), 7 deletions(-)
+ tests/migration/s390x/Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index 1c35f55666..92a2bafd2b 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -369,7 +369,7 @@ mapping permissions et al by using its 'mapped' security model option.
- Nowadays it would make sense to reimplement the ``proxy`` backend by using
- QEMU's ``vhost`` feature, which would eliminate the high latency costs under
- which the 9p ``proxy`` backend currently suffers. However as of to date nobody
--has indicated plans for such kind of reimplemention unfortunately.
-+has indicated plans for such kind of reimplementation unfortunately.
+diff --git a/tests/migration/s390x/Makefile b/tests/migration/s390x/Makefile
+index 6393c3e5b9..6671de2efc 100644
+--- a/tests/migration/s390x/Makefile
++++ b/tests/migration/s390x/Makefile
+@@ -6,8 +6,8 @@ all: a-b-bios.h
+ fwdir=../../../pc-bios/s390-ccw
  
+ CFLAGS+=-ffreestanding -fno-delete-null-pointer-checks -fPIE -Os \
+-	-msoft-float -march=z900 -fno-asynchronous-unwind-tables -Wl,-pie \
+-	-Wl,--build-id=none -nostdlib
++	-msoft-float -march=z900 -fno-asynchronous-unwind-tables \
++	-fno-stack-protector -Wl,-pie -Wl,--build-id=none -nostdlib
  
- Block device options
-diff --git a/docs/devel/qom.rst b/docs/devel/qom.rst
-index 0b506426d7..9918fac7f2 100644
---- a/docs/devel/qom.rst
-+++ b/docs/devel/qom.rst
-@@ -30,7 +30,7 @@ user configuration.
- Creating a QOM class
- ====================
- 
--A simple minimal device implementation may look something like bellow:
-+A simple minimal device implementation may look something like below:
- 
- .. code-block:: c
-    :caption: Creating a minimal type
-diff --git a/docs/system/devices/nvme.rst b/docs/system/devices/nvme.rst
-index a8bb8d729c..2a3af268f7 100644
---- a/docs/system/devices/nvme.rst
-+++ b/docs/system/devices/nvme.rst
-@@ -232,7 +232,7 @@ parameters:
-   Set the number of Reclaim Groups.
- 
- ``fdp.nruh`` (default: ``0``)
--  Set the number of Reclaim Unit Handles. This is a mandatory paramater and
-+  Set the number of Reclaim Unit Handles. This is a mandatory parameter and
-   must be non-zero.
- 
- ``fdp.runs`` (default: ``96M``)
-diff --git a/include/exec/memory.h b/include/exec/memory.h
-index 7f5c11a0cc..68284428f8 100644
---- a/include/exec/memory.h
-+++ b/include/exec/memory.h
-@@ -942,7 +942,7 @@ struct MemoryListener {
-      *
-      * @listener: The #MemoryListener.
-      * @last_stage: The last stage to synchronize the log during migration.
--     * The caller should gurantee that the synchronization with true for
-+     * The caller should guarantee that the synchronization with true for
-      * @last_stage is triggered for once after all VCPUs have been stopped.
-      */
-     void (*log_sync_global)(MemoryListener *listener, bool last_stage);
-diff --git a/hw/core/loader.c b/hw/core/loader.c
-index 8b7fd9e9e5..4dd5a71fb7 100644
---- a/hw/core/loader.c
-+++ b/hw/core/loader.c
-@@ -863,7 +863,7 @@ ssize_t load_image_gzipped(const char *filename, hwaddr addr, uint64_t max_sz)
- 
- /*
-  * The Linux header magic number for a EFI PE/COFF
-- * image targetting an unspecified architecture.
-+ * image targeting an unspecified architecture.
-  */
- #define EFI_PE_LINUX_MAGIC        "\xcd\x23\x82\x81"
- 
-@@ -1492,7 +1492,7 @@ RomGap rom_find_largest_gap_between(hwaddr base, size_t size)
-         if (rom->mr || rom->fw_file) {
-             continue;
-         }
--        /* ignore anything finishing bellow base */
-+        /* ignore anything finishing below base */
-         if (rom->addr + rom->romsize <= base) {
-             continue;
-         }
-diff --git a/ui/vnc-enc-tight.c b/ui/vnc-enc-tight.c
-index 09200d71b8..ee853dcfcb 100644
---- a/ui/vnc-enc-tight.c
-+++ b/ui/vnc-enc-tight.c
-@@ -77,7 +77,7 @@ static int tight_send_framebuffer_update(VncState *vs, int x, int y,
- 
- #ifdef CONFIG_VNC_JPEG
- static const struct {
--    double jpeg_freq_min;       /* Don't send JPEG if the freq is bellow */
-+    double jpeg_freq_min;       /* Don't send JPEG if the freq is below */
-     double jpeg_freq_threshold; /* Always send JPEG if the freq is above */
-     int jpeg_idx;               /* Allow indexed JPEG */
-     int jpeg_full;              /* Allow full color JPEG */
+ a-b-bios.h: s390x.elf
+ 	echo "$$__note" > header.tmp
 -- 
 2.38.1
 
