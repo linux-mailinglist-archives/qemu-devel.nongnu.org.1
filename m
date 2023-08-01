@@ -2,45 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7270576B56C
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 15:05:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BEB6976B572
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 15:05:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQp3F-00077T-Sj; Tue, 01 Aug 2023 09:04:37 -0400
+	id 1qQp2z-0006ke-GT; Tue, 01 Aug 2023 09:04:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qQp2z-0006oc-QE
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 09:04:23 -0400
+ id 1qQp2t-0006gL-LY
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 09:04:15 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qQp2w-0006q5-Sa
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 09:04:21 -0400
+ id 1qQp2r-0006qL-Sw
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 09:04:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690895050;
+ s=mimecast20190719; t=1690895052;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=wYx69p2m9Q22Ebd2Ip6Igi0A06sWeQAa/v6I/y++mg8=;
- b=aU3JsMR9gWpp3BGZ7/iT0o8T26VKR1dB73uvsq3NMKCh0vokbKVfN43zZHYtjCH85GYzSH
- 7F5uqRKUA4EcE/6tf49irLXWYyzTh9owLJoSHoTTR9XJGlPIv1no58bj6X0/rw4+cBn2+9
- H43A2eok9pHl8VMrwBANjAB7vkUuOh4=
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=fkrC9xx/iOOdNJzYzj+RdPgJsAuMdIqXJYlmNbYsnz4=;
+ b=NZ3f99DgQuJXfTSlhcliZ8GeqHDUeDoMAA3kZELIlQDoyMoA0iNuJVrlojCfEVzJtbAHyR
+ +podrKZlsep3+oTmJC2lpmC4x2UwVlSc3uyi8V/Brrm7n7p5Q5mWXJ5cDYMGEnyCIYF354
+ fgFcqc91kdnWo6yLlDmA+rfpFlR5lc4=
 Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-487-6b7sVZNLMuKryosNPG2Q3Q-1; Tue, 01 Aug 2023 09:04:06 -0400
-X-MC-Unique: 6b7sVZNLMuKryosNPG2Q3Q-1
+ us-mta-263-s5v47pY6Naein9qAIY4bOw-1; Tue, 01 Aug 2023 09:04:08 -0400
+X-MC-Unique: s5v47pY6Naein9qAIY4bOw-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
  [10.11.54.7])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 339B41C09040;
- Tue,  1 Aug 2023 13:04:06 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A29D63806737;
+ Tue,  1 Aug 2023 13:04:07 +0000 (UTC)
 Received: from localhost.localdomain.com (unknown [10.42.28.93])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 0BC45140E952;
- Tue,  1 Aug 2023 13:04:04 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 625F01454143;
+ Tue,  1 Aug 2023 13:04:06 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -50,11 +51,13 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Yonggang Luo <luoyonggang@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 0/8] gitlab: speed up msys windows jobs with GCC
-Date: Tue,  1 Aug 2023 14:03:55 +0100
-Message-ID: <20230801130403.164060-1-berrange@redhat.com>
+Subject: [PATCH 1/8] gitlab: remove duplication between msys jobs
+Date: Tue,  1 Aug 2023 14:03:56 +0100
+Message-ID: <20230801130403.164060-2-berrange@redhat.com>
+In-Reply-To: <20230801130403.164060-1-berrange@redhat.com>
+References: <20230801130403.164060-1-berrange@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
@@ -82,50 +85,166 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is an alternative and/or complementary to Thomas' proposal
-to use CLang with msys:
+Although they share a common parent, the two msys jobs still have
+massive duplication in their script definitions that can easily be
+collapsed.
 
-  https://lists.gnu.org/archive/html/qemu-devel/2023-07/msg05402.html
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+---
+ .gitlab-ci.d/windows.yml | 132 +++++++++++++++------------------------
+ 1 file changed, 49 insertions(+), 83 deletions(-)
 
-First of all, the current msys installer we're using is over 12
-months out of date. Thus after running the install, pacman then
-replaces most of what we've just installed with new downloaded
-content. Using the most update installer cuts 3+1/2 minutes off
-the msys install time - 7 minutes becomes 3+1/2.
-
-Secondly, QEMU defaults to compiling with -O2 and this is more
-computationally expensive for GCC. Switching to -O0 drops the
-build time from 60 minutes down to 45 minutes.
-
-Thirdly, including debug symbols also has an overhead, and turning
-that off reduces time still further down to 38 minutes.
-
-IOW, between all three changes, we can cut approx 25-26 minutes
-off the job execution time, bringing it nicely within the job
-timeout.
-
-The actually phase of installing the mingw deps still accounts
-for about 10 minutes and has not been optimized.
-
-Possibly the same trick of -O0 and skipping -g would also help
-the clang alternative Thomas' proposed. If so, that could be
-enough to let us enable more features / targets during the
-msys build.
-
-Daniel P. Berrangé (8):
-  gitlab: remove duplication between msys jobs
-  gitlab: print timestamps during windows msys jobs
-  gitlab: always use updated msys installer
-  gitlab: drop $CI_PROJECT_DIR from cache path
-  gitlab: always populate cache for windows msys jobs
-  configure: support passthrough of -Dxxx args to meson
-  gitlab: disable optimization and debug symbols in msys build
-  gitlab: disable FF_SCRIPT_SECTIONS on msys jobs
-
- .gitlab-ci.d/windows.yml | 174 +++++++++++++++++++--------------------
- configure                |   5 ++
- 2 files changed, 92 insertions(+), 87 deletions(-)
-
+diff --git a/.gitlab-ci.d/windows.yml b/.gitlab-ci.d/windows.yml
+index f889a468b5..f086540e40 100644
+--- a/.gitlab-ci.d/windows.yml
++++ b/.gitlab-ci.d/windows.yml
+@@ -35,97 +35,63 @@
+   - .\msys64\usr\bin\bash -lc 'pacman --noconfirm -Syuu'  # Core update
+   - .\msys64\usr\bin\bash -lc 'pacman --noconfirm -Syuu'  # Normal update
+   - taskkill /F /FI "MODULES eq msys-2.0.dll"
+-
+-msys2-64bit:
+-  extends: .shared_msys2_builder
+   script:
+   - .\msys64\usr\bin\bash -lc "pacman -Sy --noconfirm --needed
+       bison diffutils flex
+       git grep make sed
+-      mingw-w64-x86_64-capstone
+-      mingw-w64-x86_64-curl
+-      mingw-w64-x86_64-cyrus-sasl
+-      mingw-w64-x86_64-dtc
+-      mingw-w64-x86_64-gcc
+-      mingw-w64-x86_64-glib2
+-      mingw-w64-x86_64-gnutls
+-      mingw-w64-x86_64-gtk3
+-      mingw-w64-x86_64-libgcrypt
+-      mingw-w64-x86_64-libjpeg-turbo
+-      mingw-w64-x86_64-libnfs
+-      mingw-w64-x86_64-libpng
+-      mingw-w64-x86_64-libssh
+-      mingw-w64-x86_64-libtasn1
+-      mingw-w64-x86_64-libusb
+-      mingw-w64-x86_64-lzo2
+-      mingw-w64-x86_64-nettle
+-      mingw-w64-x86_64-ninja
+-      mingw-w64-x86_64-pixman
+-      mingw-w64-x86_64-pkgconf
+-      mingw-w64-x86_64-python
+-      mingw-w64-x86_64-SDL2
+-      mingw-w64-x86_64-SDL2_image
+-      mingw-w64-x86_64-snappy
+-      mingw-w64-x86_64-spice
+-      mingw-w64-x86_64-usbredir
+-      mingw-w64-x86_64-zstd "
++      $MINGW_TARGET-capstone
++      $MINGW_TARGET-curl
++      $MINGW_TARGET-cyrus-sasl
++      $MINGW_TARGET-dtc
++      $MINGW_TARGET-gcc
++      $MINGW_TARGET-glib2
++      $MINGW_TARGET-gnutls
++      $MINGW_TARGET-gtk3
++      $MINGW_TARGET-libgcrypt
++      $MINGW_TARGET-libjpeg-turbo
++      $MINGW_TARGET-libnfs
++      $MINGW_TARGET-libpng
++      $MINGW_TARGET-libssh
++      $MINGW_TARGET-libtasn1
++      $MINGW_TARGET-libusb
++      $MINGW_TARGET-lzo2
++      $MINGW_TARGET-nettle
++      $MINGW_TARGET-ninja
++      $MINGW_TARGET-pixman
++      $MINGW_TARGET-pkgconf
++      $MINGW_TARGET-python
++      $MINGW_TARGET-SDL2
++      $MINGW_TARGET-SDL2_image
++      $MINGW_TARGET-snappy
++      $MINGW_TARGET-spice
++      $MINGW_TARGET-usbredir
++      $MINGW_TARGET-zstd "
+   - $env:CHERE_INVOKING = 'yes'  # Preserve the current working directory
+-  - $env:MSYSTEM = 'MINGW64'     # Start a 64-bit MinGW environment
+   - $env:MSYS = 'winsymlinks:native' # Enable native Windows symlink
+   - mkdir build
+   - cd build
+-  # Note: do not remove "--without-default-devices"!
+-  # commit 9f8e6cad65a6 ("gitlab-ci: Speed up the msys2-64bit job by using --without-default-devices"
+-  # changed to compile QEMU with the --without-default-devices switch
+-  # for the msys2 64-bit job, due to the build could not complete within
+-  # the project timeout.
+-  - ..\msys64\usr\bin\bash -lc '../configure --target-list=x86_64-softmmu
+-      --without-default-devices --enable-fdt=system'
+-  - ..\msys64\usr\bin\bash -lc 'make'
+-  # qTests don't run successfully with "--without-default-devices",
+-  # so let's exclude the qtests from CI for now.
+-  - ..\msys64\usr\bin\bash -lc 'make check MTESTARGS=\"--no-suite qtest\" || { cat meson-logs/testlog.txt; exit 1; } ;'
++  - ..\msys64\usr\bin\bash -lc "../configure --enable-fdt=system $CONFIGURE_ARGS"
++  - ..\msys64\usr\bin\bash -lc "make"
++  - ..\msys64\usr\bin\bash -lc "make check MTESTARGS='$TEST_ARGS' || { cat meson-logs/testlog.txt; exit 1; } ;"
++
++msys2-64bit:
++  extends: .shared_msys2_builder
++  variables:
++    MINGW_TARGET: mingw-w64-x86_64
++    MSYSTEM: MINGW64
++    # do not remove "--without-default-devices"!
++    # commit 9f8e6cad65a6 ("gitlab-ci: Speed up the msys2-64bit job by using --without-default-devices"
++    # changed to compile QEMU with the --without-default-devices switch
++    # for the msys2 64-bit job, due to the build could not complete within
++    CONFIGURE_ARGS:  --target-list=x86_64-softmmu --without-default-devices
++    # qTests don't run successfully with "--without-default-devices",
++    # so let's exclude the qtests from CI for now.
++    TEST_ARGS: --no-suite qtest
+ 
+ msys2-32bit:
+   extends: .shared_msys2_builder
+-  script:
+-  - .\msys64\usr\bin\bash -lc "pacman -Sy --noconfirm --needed
+-      bison diffutils flex
+-      git grep make sed
+-      mingw-w64-i686-capstone
+-      mingw-w64-i686-curl
+-      mingw-w64-i686-cyrus-sasl
+-      mingw-w64-i686-dtc
+-      mingw-w64-i686-gcc
+-      mingw-w64-i686-glib2
+-      mingw-w64-i686-gnutls
+-      mingw-w64-i686-gtk3
+-      mingw-w64-i686-libgcrypt
+-      mingw-w64-i686-libjpeg-turbo
+-      mingw-w64-i686-libnfs
+-      mingw-w64-i686-libpng
+-      mingw-w64-i686-libssh
+-      mingw-w64-i686-libtasn1
+-      mingw-w64-i686-libusb
+-      mingw-w64-i686-lzo2
+-      mingw-w64-i686-nettle
+-      mingw-w64-i686-ninja
+-      mingw-w64-i686-pixman
+-      mingw-w64-i686-pkgconf
+-      mingw-w64-i686-python
+-      mingw-w64-i686-SDL2
+-      mingw-w64-i686-SDL2_image
+-      mingw-w64-i686-snappy
+-      mingw-w64-i686-spice
+-      mingw-w64-i686-usbredir
+-      mingw-w64-i686-zstd "
+-  - $env:CHERE_INVOKING = 'yes'  # Preserve the current working directory
+-  - $env:MSYSTEM = 'MINGW32'     # Start a 32-bit MinGW environment
+-  - $env:MSYS = 'winsymlinks:native' # Enable native Windows symlink
+-  - mkdir build
+-  - cd build
+-  - ..\msys64\usr\bin\bash -lc '../configure --target-list=ppc64-softmmu
+-                                --enable-fdt=system'
+-  - ..\msys64\usr\bin\bash -lc 'make'
+-  - ..\msys64\usr\bin\bash -lc 'make check MTESTARGS=\"--no-suite qtest\" ||
+-                                { cat meson-logs/testlog.txt; exit 1; }'
++  variables:
++    MINGW_TARGET: mingw-w64-i686
++    MSYSTEM: MINGW32
++    CONFIGURE_ARGS:  --target-list=ppc64-softmmu
++    TEST_ARGS: --no-suite qtest
 -- 
 2.41.0
 
