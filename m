@@ -2,79 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCDEE76A628
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 03:18:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 212ED76A68D
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 03:47:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQe1F-0001cm-Ud; Mon, 31 Jul 2023 21:17:49 -0400
+	id 1qQeSW-0000JW-Ez; Mon, 31 Jul 2023 21:46:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gurchetansingh@chromium.org>)
- id 1qQe1E-0001cd-Lw
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 21:17:48 -0400
-Received: from mail-ot1-x329.google.com ([2607:f8b0:4864:20::329])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <gurchetansingh@chromium.org>)
- id 1qQe1C-0003K5-QR
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 21:17:48 -0400
-Received: by mail-ot1-x329.google.com with SMTP id
- 46e09a7af769-6b9d68a7abaso3922132a34.3
- for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 18:17:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=chromium.org; s=google; t=1690852665; x=1691457465;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=yWoWjO74TGFbJFWuRN7PtgQZicNmirMY+BnV95/WW3M=;
- b=mN81Gr15F67YHPY7+VbotpoeqhbB67Ihwow7T4Rd0A0UDOLcTyEl8Ufx6zH8NZbUbA
- qWho7WHpVzo2Il/dIjAZqddvFT3NM/oqnKJamhvW0Rk9clljoCz1F0D1cMqx0YNHJQjY
- VGxyOctxXBTEPEYuS1tY89BvfwSoYd0uNMgO8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690852665; x=1691457465;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=yWoWjO74TGFbJFWuRN7PtgQZicNmirMY+BnV95/WW3M=;
- b=CH7pnc9UQq+peeTmuU3rzPJ92FVtASwohFZKOfBKrGvTUHKbqbGV53LVElA8VaDqUg
- 6Ci2g5g3hclJvLAQHEtAHmX4ek1OPIQOegqm2+DDMdc71UGabD1hSpXpWpW20d6D/jAK
- pF3pcpqpLTWO8EtXPn4ZASd09bk6uRrogI6oPzlSszHKP+IXMRQcB6tpGtZUNf5g/eX+
- y5106OUaW6DLErEwvKQB1vlABEat5ZAHI6hzq38xLbvvC2e1G34T3rtMqAvdptjMkF1A
- 4dWbiB6WECLpQT0g/e3q/xbGWIk1ZdHyqDiAR+95C91x/01gjbAvdOApl5j+k+A9hdWN
- pjFg==
-X-Gm-Message-State: ABy/qLbDHtlY14Jl2mBiwDOf/ex+Hmh6/DdMnDCskBzQjbnh/aLdRSHp
- g8g5Oec2WgimWeP4oE0O6/5Mlkbxe0cvwJBIA+s=
-X-Google-Smtp-Source: APBJJlHYd8OQhr9yqOZJYLh4BH/NZpt4gf7vSSuieXpLcR9IhfeW1ztdQZ+8EBQnvylw60aMmM5F9g==
-X-Received: by 2002:a05:6808:4044:b0:3a4:35bb:edae with SMTP id
- cz4-20020a056808404400b003a435bbedaemr10196811oib.29.1690852664925; 
- Mon, 31 Jul 2023 18:17:44 -0700 (PDT)
-Received: from gurchetansingh0.mtv.corp.google.com
- ([2620:15c:a7:2:cb47:8a0d:6476:3e7b])
- by smtp.gmail.com with ESMTPSA id
- v20-20020a17090a899400b00260a5ecd273sm6657722pjn.1.2023.07.31.18.17.43
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 31 Jul 2023 18:17:43 -0700 (PDT)
-From: Gurchetan Singh <gurchetansingh@chromium.org>
-To: qemu-devel@nongnu.org
-Cc: kraxel@redhat.com, marcandre.lureau@redhat.com, akihiko.odaki@gmail.com,
- dmitry.osipenko@collabora.com, ray.huang@amd.com, alex.bennee@linaro.org,
- shentey@gmail.com, hi@alyssa.is
-Subject: [PATCH v2 9/9] docs/system: add basic virtio-gpu documentation
-Date: Mon, 31 Jul 2023 18:17:23 -0700
-Message-Id: <20230801011723.627-10-gurchetansingh@chromium.org>
-X-Mailer: git-send-email 2.31.0
-In-Reply-To: <20230801011723.627-1-gurchetansingh@chromium.org>
-References: <20230801011723.627-1-gurchetansingh@chromium.org>
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1qQeSR-0000IL-JH
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 21:45:55 -0400
+Received: from [134.134.136.65] (helo=mgamail.intel.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1qQeSP-000892-EM
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 21:45:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1690854353; x=1722390353;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=q3HqSAdiGDjuRHnjIkqW8UXAdbng499ewzU4TwytHbE=;
+ b=fLxi81hS8lurF0rU90tNQFqyJXmxNilUIi8NrAQ+INVTDPwS0j1th1XX
+ qorA+ELlD29UgOk9p8yB31KJxH2I/jXhsyl+1bZAN6hUfj4Dq6dAMKGTN
+ apA3a3wKU87xB/Q9nwuEUAwITiFnXSlzb2XV7JzpH6j+kkAEQyGF/bvtc
+ U4cZz4tUgWJO0LpAFNa9HD440XCZqmk7ABR3StvblPCI7o1PgyTUbvR/x
+ ducJIHMDP7lpph59wUvStgGgdT87Wac90MVqHEeCtOLGAaT6uSk5CgwzO
+ qr/VAQD7XWsXUS8BbGdjAlu+EJG0BDprfRfWtlyW0qJfo+lrY3CtRhXlr g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10788"; a="372798284"
+X-IronPort-AV: E=Sophos;i="6.01,246,1684825200"; d="scan'208";a="372798284"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+ by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Jul 2023 18:45:49 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10788"; a="798465973"
+X-IronPort-AV: E=Sophos;i="6.01,246,1684825200"; d="scan'208";a="798465973"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.6.77])
+ ([10.93.6.77])
+ by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Jul 2023 18:45:44 -0700
+Message-ID: <9b3a3e88-21f4-bfd2-a9c3-60a25832e698@intel.com>
+Date: Tue, 1 Aug 2023 09:45:41 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.13.0
+Subject: Re: [RFC PATCH 00/19] QEMU gmem implemention
+Content-Language: en-US
+To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Sean Christopherson <seanjc@google.com>, David Hildenbrand
+ <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Marcelo Tosatti <mtosatti@redhat.com>, Markus Armbruster
+ <armbru@redhat.com>, Eric Blake <eblake@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Peter Xu <peterx@redhat.com>, Chao Peng <chao.p.peng@linux.intel.com>,
+ Michael Roth <michael.roth@amd.com>, isaku.yamahata@gmail.com,
+ qemu-devel@nongnu.org, kvm@vger.kernel.org
+References: <20230731162201.271114-1-xiaoyao.li@intel.com>
+ <ZMfmkCQImgsinE6T@redhat.com>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <ZMfmkCQImgsinE6T@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::329;
- envelope-from=gurchetansingh@chromium.org; helo=mail-ot1-x329.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 134.134.136.65 (failed)
+Received-SPF: pass client-ip=134.134.136.65; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -36
+X-Spam_score: -3.7
+X-Spam_bar: ---
+X-Spam_report: (-3.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.001, NICE_REPLY_A=-0.101,
+ RCVD_IN_DNSWL_MED=-2.3, RDNS_NONE=0.793, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -91,137 +94,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This adds basic documentation for virtio-gpu.
+On 8/1/2023 12:51 AM, Daniel P. Berrangé wrote:
+> On Mon, Jul 31, 2023 at 12:21:42PM -0400, Xiaoyao Li wrote:
+>> This is the first RFC version of enabling KVM gmem[1] as the backend for
+>> private memory of KVM_X86_PROTECTED_VM.
+>>
+>> It adds the support to create a specific KVM_X86_PROTECTED_VM type VM,
+>> and introduces 'private' property for memory backend. When the vm type
+>> is KVM_X86_PROTECTED_VM and memory backend has private enabled as below,
+>> it will call KVM gmem ioctl to allocate private memory for the backend.
+>>
+>>      $qemu -object memory-backend-ram,id=mem0,size=1G,private=on \
+>>            -machine q35,kvm-type=sw-protected-vm,memory-backend=mem0 \
+>> 	  ...
+>>
+>> Unfortunately this patch series fails the boot of OVMF at very early
+>> stage due to triple fault because KVM doesn't support emulate string IO
+>> to private memory. We leave it as an open to be discussed.
+>>
+>> There are following design opens that need to be discussed:
+>>
+>> 1. how to determine the vm type?
+>>
+>>     a. like this series, specify the vm type via machine property
+>>        'kvm-type'
+>>     b. check the memory backend, if any backend has 'private' property
+>>        set, the vm-type is set to KVM_X86_PROTECTED_VM.
+>>
+>> 2. whether 'private' property is needed if we choose 1.b as design
+>>
+>>     with 1.b, QEMU can decide whether the memory region needs to be
+>>     private (allocates gmem fd for it) or not, on its own.
+>>
+>> 3. What is KVM_X86_SW_PROTECTED_VM going to look like? What's the
+>>     purose of it and what's the requirement on it. I think it's the
+>>     questions for KVM folks than QEMU folks.
+>>
+>> Any other idea/open/question is welcomed.
+>>
+>>
+>> Beside, TDX QEMU implemetation is based on this series to provide
+>> private gmem for TD private memory, which can be found at [2].
+>> And it can work corresponding KVM [3] to boot TDX guest.
+> 
+> We already have a general purpose configuration mechanism for
+> confidential guests.  The -machine argument has a property
+> confidential-guest-support=$OBJECT-ID, for pointing to an
+> object that implements the TYPE_CONFIDENTIAL_GUEST_SUPPORT
+> interface in QEMU. This is implemented with SEV, PPC PEF
+> mode, and s390 protvirt.
+> 
+> I would expect TDX to follow this same design ie
+> 
+>      qemu-system-x86_64 \
+>        -object tdx-guest,id=tdx0,..... \
+>        -machine q35,confidential-guest-support=tdx0 \
+>        ...
+> 
+> and not require inventing the new 'kvm-type' attribute at least.
 
-Suggested-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Signed-off-by: Gurchetan Singh <gurchetansingh@chromium.org>
+yes.
 
----
-v2: - Incorporated suggestions by Akihiko Odaki
-    - Listed the currently supported capset_names (Bernard)
+TDX is initialized exactly as the above.
 
- docs/system/device-emulation.rst   |  1 +
- docs/system/devices/virtio-gpu.rst | 98 ++++++++++++++++++++++++++++++
- 2 files changed, 99 insertions(+)
- create mode 100644 docs/system/devices/virtio-gpu.rst
+This RFC series introduces the 'kvm-type' for KVM_X86_SW_PROTECTED_VM. 
+It's my fault that forgot to list the option of introducing 
+sw_protected_vm object with CONFIDENTIAL_GUEST_SUPPORT interface.
+Thanks for Isaku to raise it 
+https://lore.kernel.org/qemu-devel/20230731171041.GB1807130@ls.amr.corp.intel.com/
 
-diff --git a/docs/system/device-emulation.rst b/docs/system/device-emulation.rst
-index 4491c4cbf7..1167f3a9f2 100644
---- a/docs/system/device-emulation.rst
-+++ b/docs/system/device-emulation.rst
-@@ -91,6 +91,7 @@ Emulated Devices
-    devices/nvme.rst
-    devices/usb.rst
-    devices/vhost-user.rst
-+   devices/virtio-gpu.rst
-    devices/virtio-pmem.rst
-    devices/vhost-user-rng.rst
-    devices/canokey.rst
-diff --git a/docs/system/devices/virtio-gpu.rst b/docs/system/devices/virtio-gpu.rst
-new file mode 100644
-index 0000000000..f359584033
---- /dev/null
-+++ b/docs/system/devices/virtio-gpu.rst
-@@ -0,0 +1,98 @@
-+..
-+   SPDX-License-Identifier: GPL-2.0
-+
-+virtio-gpu
-+==========
-+
-+This document explains the setup and usage of the virtio-gpu device.
-+The virtio-gpu device paravirtualizes the GPU and display controller.
-+
-+Linux kernel support
-+--------------------
-+
-+virtio-gpu requires a guest Linux kernel built with the
-+``CONFIG_DRM_VIRTIO_GPU`` option.
-+
-+QEMU virtio-gpu variants
-+------------------------
-+
-+QEMU provides a 2D virtio-gpu backend, and two accelerated backends:
-+virglrenderer ('gl' device label) and rutabaga_gfx ('rutabaga' device
-+label).  There is a vhost-user backend that runs the graphics stack in
-+a separate process for improved isolation.
-+
-+Theses backends can be further classified into VGA and non-VGA variants.
-+The VGA ones are prefixed with virtio-vga or vhost-user-vga while the
-+non-VGA ones are prefixed with virtio-gpu or vhost-user-gpu.
-+
-+The VGA ones always use PCI interface, but for the non-VGA ones, you can
-+further pick simple MMIO or PCI. For MMIO, you can suffix the device
-+name with -device though vhost-user-gpu apparently does not support
-+MMIO. For PCI, you can suffix it with -pci. Without these suffixes, the
-+platform default will be chosen.  The syntax of  available combinations
-+is listed below.
-+
-+ * ``virtio-vga[-BACKEND]``
-+ * ``virtio-gpu[-BACKEND][-INTERFACE]``
-+ * ``vhost-user-vga``
-+ * ``vhost-user-pci``
-+
-+This document uses the PCI variant in examples.
-+
-+virtio-gpu 2d
-+-------------
-+
-+The default 2D backend only performs 2D operations. The guest needs to
-+employ a software renderer for 3D graphics.
-+
-+Typically, the software renderer is provided by `Mesa`_ or `SwiftShader`_.
-+Mesa's implementations (LLVMpipe, Lavapipe and virgl below) work out of box
-+on typical modern Linux distributions.
-+
-+.. parsed-literal::
-+    -device virtio-gpu-pci
-+
-+.. _Mesa: https://www.mesa3d.org/
-+.. _SwiftShader: https://github.com/google/swiftshader
-+
-+virtio-gpu virglrenderer
-+------------------------
-+
-+When using virgl accelerated graphics mode, OpenGL API calls are translated
-+into an intermediate representation (see `Gallium3D`_). The intermediate
-+representation is communicated to the host and the `virglrenderer`_ library
-+on the host translates the intermediate representation back to OpenGL API
-+calls.
-+
-+.. parsed-literal::
-+    -device virtio-gpu-gl-pci
-+
-+.. _Gallium3D: https://www.freedesktop.org/wiki/Software/gallium/
-+.. _virglrenderer: https://gitlab.freedesktop.org/virgl/virglrenderer/
-+
-+virtio-gpu rutabaga
-+-------------------
-+
-+virtio-gpu can also leverage `rutabaga_gfx`_ to provide `gfxstream`_ rendering
-+and `Wayland display passthrough`_.  With the gfxstream rendering mode, GLES
-+and Vulkan calls are forwarded directly to the host with minimal modification.
-+
-+The crosvm book provides directions on how to build a `gfxstream-enabled
-+rutabaga`_ and launch a `guest Wayland compositor`_.
-+
-+This device does require host blob support (``hostmem`` field below), but not
-+all capsets (``capset_names`` below) have to enabled when starting the device.
-+
-+The currently supported ``capset_names`` are ``gfxstream-vulkan`` and
-+``cross-domain`` on Linux guests.  For Android guests, ``gfxstream-gles`` is
-+also supported.
-+
-+.. parsed-literal::
-+    -device virtio-gpu-rutabaga-pci,capset_names=gfxstream-vulkan:cross-domain,\\
-+      hostmem=8G,wayland_socket_path="$XDG_RUNTIME_DIR/$WAYLAND_DISPLAY"
-+
-+.. _rutabaga_gfx: https://github.com/google/crosvm/blob/main/rutabaga_gfx/ffi/src/include/rutabaga_gfx_ffi.h
-+.. _gfxstream: https://android.googlesource.com/platform/hardware/google/gfxstream/
-+.. _Wayland display passthrough: https://www.youtube.com/watch?v=OZJiHMtIQ2M
-+.. _gfxstream-enabled rutabaga: https://crosvm.dev/book/appendix/rutabaga_gfx.html
-+.. _guest Wayland compositor: https://crosvm.dev/book/devices/wayland.html
--- 
-2.41.0.585.gd2178a4bd4-goog
+we can specify KVM_X86_SW_PROTECTED_VM this way:
+
+qemu  \
+   -object sw-protected,id=swp0,... \
+   -machine confidential-guest-support=swp0 \
+   ...
+
+> For the memory backend though, I'm not so sure - possibly that
+> might be something that still wants an extra property to identify
+> the type of memory to allocate, since we use memory-backend-ram
+> for a variety of use cases.  Or it could be an entirely new object
+> type such as "memory-backend-gmem"
+
+What I want to discuss is whether providing the interface to users to 
+allow them configuring which memory is/can be private. For example, QEMU 
+can do it internally. If users wants a confidential guest, QEMU 
+allocates private gmem for normal RAM automatically.
+
 
 
