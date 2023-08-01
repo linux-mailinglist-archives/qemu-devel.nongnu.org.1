@@ -2,83 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A36976B21C
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 12:45:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C394D76B455
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 14:04:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQmrD-00046o-UJ; Tue, 01 Aug 2023 06:44:03 -0400
+	id 1qQo5p-0007Nv-Jq; Tue, 01 Aug 2023 08:03:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qQmrA-00046e-Ir
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 06:44:00 -0400
-Received: from mout.gmx.net ([212.227.17.21])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qQo5h-0007Nc-Rc
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 08:03:05 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qQmr8-00064b-4I
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 06:44:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1690886633; x=1691491433; i=deller@gmx.de;
- bh=7gHNAqSjXsOHXE+ksPVZKcVZaySbuEMvcdQar3kWjGE=;
- h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
- b=UzM3HDMrbS4dadIJdnzqYUaOXUmbEhUM8kma+cKMKdr6bv6yFKZ0Uz8brxSyHHrUEJL+r3e
- utd8RVmnDte9scHi8bgCKZHJy1gXrXhQRUqm46LxH5YyA+aNjLy0sPa2ylHRmiLr768+lOEzO
- mW4GQr1Oq0UUGES5odwPcPpT0XKgEkkv1W93PK/yQwykGKTu+Tom72ZTwx54rYMXi1cxq9riS
- 1rXstTxJmffFYJ0OgRwqMjiORYjqqwZ0kUZyOo9i0Lq8vPiiqjfHudAflY3I50JadImoyPXSk
- sMD14YIxwf490AqzDaNU2C089iTjZ+n/aqjp9eV1f+DGdIoHe5Rw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([94.134.150.247]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MS3il-1qGWDy0utv-00TRks; Tue, 01
- Aug 2023 12:43:53 +0200
-Message-ID: <915e346e-fc91-5098-0f72-520f63a7e99a@gmx.de>
-Date: Tue, 1 Aug 2023 12:43:50 +0200
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qQo5f-00076m-75
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 08:03:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1690891381;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=1/QchisxrKi3bQEZQgacy8ScnR3A9D+zsdafodyi1gU=;
+ b=F1itARALQDDUt5RFgiTDOYW19bta8TT7OOKkehfKug16qhsJMKQGWVOBJ98GClETYJ0hJZ
+ VpOsLJGaWyf7xh1oafp6JvmBUABl680x9XMxITPzlRfKMMW8yl4bE5u3Gb4PdITNbVWDX+
+ EHfKBKtH0tcQFMMDnqaGgDIi6IGyFKk=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-148-D17KcuW_Mqu4ZI6fpHw_cw-1; Tue, 01 Aug 2023 08:02:59 -0400
+X-MC-Unique: D17KcuW_Mqu4ZI6fpHw_cw-1
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-63cfe46bbb6so62885426d6.2
+ for <qemu-devel@nongnu.org>; Tue, 01 Aug 2023 05:02:59 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1690891379; x=1691496179;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=1/QchisxrKi3bQEZQgacy8ScnR3A9D+zsdafodyi1gU=;
+ b=eY4TSU5klM8a0caKuiSt6m7HRaJci+lCVZVmGDsbU/a9eLHIytGGjvGQ2T+iEfBEgR
+ KGJwtAvsG8D2yHA5uSeSRhddJ6vLS7qBAhag6rsp1kl1324yXR+ox5HGZj96LEIZihP4
+ V+vx+yGnWK0/4s78dgDcbx7NG45I7PApn7aBKsRNbNGF6wfxRy7WemNA0q2T2878GkIG
+ gp+B5y3pieRZQWpwwlxivIsdexLqEKL4T8Ttkt5D1pMATe9yskDicxh4JI016wdUkKuS
+ vWdElP7KAmL/sLhgIVZ2CldL6Po38pzgTwEnqKUEHZz3ZtDFTTSKgC8nKY76SL14YNOW
+ ovEg==
+X-Gm-Message-State: ABy/qLY+/kXPlkyVGMFgjdaTar3BbKjEppE+6LNDUW+S0qMz+Gbc3hTN
+ K3nwF0AEuwoO3VseuAkGxrtMc4+3zOmN6VJ39vQGCdiTsCAkMjotRknz4/H+kL9mFbQq5+5LQ+/
+ IhkSJYElyj0GQsGc=
+X-Received: by 2002:a0c:b389:0:b0:636:d181:46ec with SMTP id
+ t9-20020a0cb389000000b00636d18146ecmr11276565qve.32.1690891378750; 
+ Tue, 01 Aug 2023 05:02:58 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlFqBke1INEaR9HeeezNmaN8lZ+gmeEJsHBrXaWxsnyrBCzbRxGhVKy8cEDmC4RoCuyfUFsYcA==
+X-Received: by 2002:a0c:b389:0:b0:636:d181:46ec with SMTP id
+ t9-20020a0cb389000000b00636d18146ecmr11276524qve.32.1690891378131; 
+ Tue, 01 Aug 2023 05:02:58 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ by smtp.gmail.com with ESMTPSA id
+ l6-20020a0cac06000000b0063d33bea5cdsm4575996qvb.92.2023.08.01.05.02.56
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 01 Aug 2023 05:02:57 -0700 (PDT)
+Message-ID: <977f0fae-5dca-c56c-e740-739e2a984a7e@redhat.com>
+Date: Tue, 1 Aug 2023 14:02:54 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH 0/5] linux-user: brk/mmap fixes
+Subject: Re: [PATCH for-8.2 v2 5/6] vfio/migration: Add P2P support for VFIO
+ migration
 Content-Language: en-US
-To: Joel Stanley <joel@jms.id.au>
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>, Michael Tokarev
- <mjt@tls.msk.ru>, qemu-devel@nongnu.org, Laurent Vivier <laurent@vivier.eu>
-References: <20230731080317.112658-1-akihiko.odaki@daynix.com>
- <3088d223-64fd-9aab-3c08-000f0924607c@tls.msk.ru>
- <CACPK8XfcOkn281JZNYc7+AhDAxP_N9__G4Snxtx=ZhXgVChXgg@mail.gmail.com>
- <0643c953-bfa8-45a9-5b07-714bc18c03a6@daynix.com>
- <57d9980d-b881-b16e-844a-e651d6d09de7@gmx.de>
- <c3ed33f0-998d-5386-1880-22436af149b7@gmx.de>
- <def4abbf-ec8a-7986-1831-d9c839acff8c@gmx.de>
- <CACPK8XfXMU=YyvkPTHFV6n_THkDPKfRmjYt_Ps7KJrxV9Srjbg@mail.gmail.com>
-From: Helge Deller <deller@gmx.de>
-In-Reply-To: <CACPK8XfXMU=YyvkPTHFV6n_THkDPKfRmjYt_Ps7KJrxV9Srjbg@mail.gmail.com>
+To: Avihai Horon <avihaih@nvidia.com>, qemu-devel@nongnu.org
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Joao Martins
+ <joao.m.martins@oracle.com>, Yishai Hadas <yishaih@nvidia.com>,
+ Jason Gunthorpe <jgg@nvidia.com>, Maor Gottlieb <maorg@nvidia.com>,
+ Kirti Wankhede <kwankhede@nvidia.com>, Tarun Gupta <targupta@nvidia.com>
+References: <20230731102521.15335-1-avihaih@nvidia.com>
+ <20230731102521.15335-6-avihaih@nvidia.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <20230731102521.15335-6-avihaih@nvidia.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:X8yNUYAP+XRxJTNNZLsTGFsTqdGuY+qOQRNqwJN3K9tuyCb93I2
- 82SGbPYaquNLlbEzKqvlc4xpWzLkfmgU9nrwfvrnMM9NrQKsyCsyJPf83PXEPP+CRh0qiaT
- CMm++X6DStYpoFUztHIgo+HBVXUJUp66ldwZQXKUXJKlHMeMLoQHvCnSZNZh4Accn6ovXol
- poLAXdnJ36ffLvHFfGkNw==
-UI-OutboundReport: notjunk:1;M01:P0:dZS7vGbQuZw=;gAhrCDYPKnTWofvAYvNcrIWCwm0
- sPD+a/XXTVl3+Pswu5sNzTykgx6jK1hSt+L5giBuXx8f+OjuBm6/iEmjyqXLrfwJC1bbXY1gh
- viXUyczSIR5+Wivk3upVXTE6fYWf20/1HKXki/bL6aHstmM8cB4rpSQuc85pjQj6wzS8FgLHc
- by88cC3fDm2JSR+q14R752Ohbv1wdkHGHt7q5Z5uLrKxWhmXUstfNVdaBhXgHHQIr7T7gxZZ2
- WvJ0QDKi6kPqBRl2Ti6DuL6PSy9hPabgQhyiepYRKU37gKm76ZWVaAglRtEykFqz2BQU545rK
- Z9ePzhphQKBWeCMZ8Bw5fBv1Qy9FGSINOwcIQabbSKVWzobtMPVI/M2cW2nb+PfgfyNFGppmh
- WZLqFh+AQwXAhQfM4/QSanYt0T4KXhhNxU0SrZ/NQtwYEFi3Cp6e/GHEGU25TJSvXe+4L0Kjr
- /lhGIgAhrCFAlbHa9MT2j6D2PHJKcFLaTVA2rLSnwQhuB+6ahZdp2T4Owqs1BOGQfvmWKBs1T
- RPjDGdx9z4CcbmyJUZYIN3yUfKjWNO5AYggvUSoz7ChOJpEw2Ej/BWyCp0eO6c3HWGyL2Ezp9
- Wg1mS9wj1oNmfJ+xm9Sxcy0NUO+zuwT0Ea7wwAG/Sgsdzb53lQUiFR1jsKGjpPJmHwLEh7OZq
- WYfXWRD8e1EwrmdWFeb4cI8D/YBvzfcVh1SKX+AB3ul3LphRVBvnAdCqEIxRXcAq2AALahTzx
- ryB9GUlCK27bzNjtEzaFGblPyCFcXq7fj+2ZD0LNjxKFPHrLSBnSQcld3ygyNhJGp9wvRckBn
- MsT6UCH0w9inZomGuMRcN/MOd4b4q8w+uFRq8v9zCiHsELuPWBrKlszaSatD58TDe7+G2jpc/
- OIThw6/f8wpEgA63pKdt9EhGL/6y5U1ZJ1uGQGMS8uAAE0/PxenT+/pYboS5lSKGrJXzdIxDx
- v0luAUJJKzXJ9hwZVXrSbOTV6ZA=
-Received-SPF: pass client-ip=212.227.17.21; envelope-from=deller@gmx.de;
- helo=mout.gmx.net
-X-Spam_score_int: -28
-X-Spam_score: -2.9
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- NICE_REPLY_A=-0.092, RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.092, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,251 +107,272 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/1/23 06:49, Joel Stanley wrote:
-> On Mon, 31 Jul 2023 at 18:24, Helge Deller <deller@gmx.de> wrote:
->> As suggested, I've based my patches on top of yours and the tree can be
->> pulled from:
->> git pull https://github.com/hdeller/qemu-hppa/   brk-fixes-akihiko-2
->>
->> My patches are neccessary to fix an arm-static testcase:
->>          /usr/bin/qemu-arm-static ./fstype
->>
->> Let's try this patch series...
->
-> The armhf static binary works with expected output.
+On 7/31/23 12:25, Avihai Horon wrote:
+> VFIO migration uAPI defines an optional intermediate P2P quiescent
+> state. While in the P2P quiescent state, P2P DMA transactions cannot be
+> initiated by the device, but the device can respond to incoming ones.
+> Additionally, all outstanding P2P transactions are guaranteed to have
+> been completed by the time the device enters this state.
+> 
+> The purpose of this state is to support migration of multiple devices
+> that might do P2P transactions between themselves.
+> 
+> Add support for P2P migration by transitioning all the devices to the
+> P2P quiescent state before stopping or starting the devices. Use the new
+> VMChangeStateHandler prepare_cb to achieve that behavior.
+> 
+> This will allow migration of multiple VFIO devices if all of them
+> support P2P migration.
+> 
+> Signed-off-by: Avihai Horon <avihaih@nvidia.com>
+> ---
+>   docs/devel/vfio-migration.rst | 93 +++++++++++++++++++++--------------
+>   hw/vfio/common.c              |  6 ++-
+>   hw/vfio/migration.c           | 47 ++++++++++++++++--
+>   hw/vfio/trace-events          |  1 +
+>   4 files changed, 106 insertions(+), 41 deletions(-)
+> 
+> diff --git a/docs/devel/vfio-migration.rst b/docs/devel/vfio-migration.rst
+> index b433cb5bb2..605fe60e96 100644
+> --- a/docs/devel/vfio-migration.rst
+> +++ b/docs/devel/vfio-migration.rst
+> @@ -23,9 +23,21 @@ and recommends that the initial bytes are sent and loaded in the destination
+>   before stopping the source VM. Enabling this migration capability will
+>   guarantee that and thus, can potentially reduce downtime even further.
+>   
+> -Note that currently VFIO migration is supported only for a single device. This
+> -is due to VFIO migration's lack of P2P support. However, P2P support is planned
+> -to be added later on.
+> +To support migration of multiple devices that might do P2P transactions between
+> +themselves, VFIO migration uAPI defines an intermediate P2P quiescent state.
+> +While in the P2P quiescent state, P2P DMA transactions cannot be initiated by
+> +the device, but the device can respond to incoming ones. Additionally, all
+> +outstanding P2P transactions are guaranteed to have been completed by the time
+> +the device enters this state.
+> +
+> +All the devices that support P2P migration are first transitioned to the P2P
+> +quiescent state and only then are they stopped or started. This makes migration
+> +safe P2P-wise, since starting and stopping the devices is not done atomically
+> +for all the devices together.
+> +
+> +Thus, multiple VFIO devices migration is allowed only if all the devices
+> +support P2P migration. Single VFIO device migration is allowed regardless of
+> +P2P migration support.
+>   
+>   A detailed description of the UAPI for VFIO device migration can be found in
+>   the comment for the ``vfio_device_mig_state`` structure in the header file
+> @@ -132,54 +144,63 @@ will be blocked.
+>   Flow of state changes during Live migration
+>   ===========================================
+>   
+> -Below is the flow of state change during live migration.
+> +Below is the state change flow during live migration for a VFIO device that
+> +supports both precopy and P2P migration. The flow for devices that don't
+> +support it is similar, except that the relevant states for precopy and P2P are
+> +skipped.
+>   The values in the parentheses represent the VM state, the migration state, and
+>   the VFIO device state, respectively.
+> -The text in the square brackets represents the flow if the VFIO device supports
+> -pre-copy.
+>   
+>   Live migration save path
+>   ------------------------
+>   
+>   ::
+>   
+> -                        QEMU normal running state
+> -                        (RUNNING, _NONE, _RUNNING)
+> -                                  |
+> +                           QEMU normal running state
+> +                           (RUNNING, _NONE, _RUNNING)
+> +                                      |
+>                        migrate_init spawns migration_thread
+> -                Migration thread then calls each device's .save_setup()
+> -                  (RUNNING, _SETUP, _RUNNING [_PRE_COPY])
+> -                                  |
+> -                  (RUNNING, _ACTIVE, _RUNNING [_PRE_COPY])
+> -      If device is active, get pending_bytes by .state_pending_{estimate,exact}()
+> -          If total pending_bytes >= threshold_size, call .save_live_iterate()
+> -                  [Data of VFIO device for pre-copy phase is copied]
+> -        Iterate till total pending bytes converge and are less than threshold
+> -                                  |
+> -  On migration completion, vCPU stops and calls .save_live_complete_precopy for
+> -  each active device. The VFIO device is then transitioned into _STOP_COPY state
+> -                  (FINISH_MIGRATE, _DEVICE, _STOP_COPY)
+> -                                  |
+> -     For the VFIO device, iterate in .save_live_complete_precopy until
+> -                         pending data is 0
+> -                   (FINISH_MIGRATE, _DEVICE, _STOP)
+> -                                  |
+> -                 (FINISH_MIGRATE, _COMPLETED, _STOP)
+> -             Migraton thread schedules cleanup bottom half and exits
+> +            Migration thread then calls each device's .save_setup()
+> +                          (RUNNING, _SETUP, _PRE_COPY)
+> +                                      |
+> +                         (RUNNING, _ACTIVE, _PRE_COPY)
+> +  If device is active, get pending_bytes by .state_pending_{estimate,exact}()
+> +       If total pending_bytes >= threshold_size, call .save_live_iterate()
+> +                Data of VFIO device for pre-copy phase is copied
+> +      Iterate till total pending bytes converge and are less than threshold
+> +                                      |
+> +       On migration completion, the vCPUs and the VFIO device are stopped
+> +              The VFIO device is first put in P2P quiescent state
+> +                    (FINISH_MIGRATE, _ACTIVE, _PRE_COPY_P2P)
+> +                                      |
+> +                Then the VFIO device is put in _STOP_COPY state
+> +                     (FINISH_MIGRATE, _ACTIVE, _STOP_COPY)
+> +         .save_live_complete_precopy() is called for each active device
+> +      For the VFIO device, iterate in .save_live_complete_precopy() until
+> +                               pending data is 0
+> +                                      |
+> +                     (POSTMIGRATE, _COMPLETED, _STOP_COPY)
+> +            Migraton thread schedules cleanup bottom half and exits
+> +                                      |
+> +                           .save_cleanup() is called
+> +                        (POSTMIGRATE, _COMPLETED, _STOP)
+>   
+>   Live migration resume path
+>   --------------------------
+>   
+>   ::
+>   
+> -              Incoming migration calls .load_setup for each device
+> -                       (RESTORE_VM, _ACTIVE, _STOP)
+> -                                 |
+> -       For each device, .load_state is called for that device section data
+> -                       (RESTORE_VM, _ACTIVE, _RESUMING)
+> -                                 |
+> -    At the end, .load_cleanup is called for each device and vCPUs are started
+> -                       (RUNNING, _NONE, _RUNNING)
+> +             Incoming migration calls .load_setup() for each device
+> +                          (RESTORE_VM, _ACTIVE, _STOP)
+> +                                      |
+> +     For each device, .load_state() is called for that device section data
+> +                        (RESTORE_VM, _ACTIVE, _RESUMING)
+> +                                      |
+> +  At the end, .load_cleanup() is called for each device and vCPUs are started
+> +              The VFIO device is first put in P2P quiescent state
+> +                        (RUNNING, _ACTIVE, _RUNNING_P2P)
+> +                                      |
+> +                           (RUNNING, _NONE, _RUNNING)
+>   
+>   Postcopy
+>   ========
+> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+> index 16cf79a76c..7c3d636025 100644
+> --- a/hw/vfio/common.c
+> +++ b/hw/vfio/common.c
+> @@ -441,14 +441,16 @@ bool vfio_device_state_is_running(VFIODevice *vbasedev)
+>   {
+>       VFIOMigration *migration = vbasedev->migration;
+>   
+> -    return migration->device_state == VFIO_DEVICE_STATE_RUNNING;
+> +    return migration->device_state == VFIO_DEVICE_STATE_RUNNING ||
+> +           migration->device_state == VFIO_DEVICE_STATE_RUNNING_P2P;
+>   }
+>   
+>   bool vfio_device_state_is_precopy(VFIODevice *vbasedev)
+>   {
+>       VFIOMigration *migration = vbasedev->migration;
+>   
+> -    return migration->device_state == VFIO_DEVICE_STATE_PRE_COPY;
+> +    return migration->device_state == VFIO_DEVICE_STATE_PRE_COPY ||
+> +           migration->device_state == VFIO_DEVICE_STATE_PRE_COPY_P2P;
+>   }
+>   
+>   static bool vfio_devices_all_dirty_tracking(VFIOContainer *container)
+> diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
+> index 48f9c23cbe..05b1dac2ed 100644
+> --- a/hw/vfio/migration.c
+> +++ b/hw/vfio/migration.c
+> @@ -71,8 +71,12 @@ static const char *mig_state_to_str(enum vfio_device_mig_state state)
+>           return "STOP_COPY";
+>       case VFIO_DEVICE_STATE_RESUMING:
+>           return "RESUMING";
+> +    case VFIO_DEVICE_STATE_RUNNING_P2P:
+> +        return "RUNNING_P2P";
+>       case VFIO_DEVICE_STATE_PRE_COPY:
+>           return "PRE_COPY";
+> +    case VFIO_DEVICE_STATE_PRE_COPY_P2P:
+> +        return "PRE_COPY_P2P";
+>       default:
+>           return "UNKNOWN STATE";
+>       }
+> @@ -652,6 +656,43 @@ static const SaveVMHandlers savevm_vfio_handlers = {
+>   
+>   /* ---------------------------------------------------------------------- */
+>   
+> +static void vfio_vmstate_change_prepare(void *opaque, bool running,
+> +                                        RunState state)
+> +{
+> +    VFIODevice *vbasedev = opaque;
+> +    VFIOMigration *migration = vbasedev->migration;
+> +    enum vfio_device_mig_state new_state;
+> +    int ret;
+> +
+> +    if (!(migration->mig_flags & VFIO_MIGRATION_P2P)) {
+> +        return;
+> +    }
+> +
+> +    new_state = migration->device_state == VFIO_DEVICE_STATE_PRE_COPY ?
+> +                    VFIO_DEVICE_STATE_PRE_COPY_P2P :
+> +                    VFIO_DEVICE_STATE_RUNNING_P2P;
+> +
+> +    /*
+> +     * If setting the device in new_state fails, the device should be reset.
+> +     * To do so, use ERROR state as a recover state.
+> +     */
+> +    ret = vfio_migration_set_state(vbasedev, new_state,
+> +                                   VFIO_DEVICE_STATE_ERROR);
+> +    if (ret) {
+> +        /*
+> +         * Migration should be aborted in this case, but vm_state_notify()
+> +         * currently does not support reporting failures.
+> +         */
+> +        if (migrate_get_current()->to_dst_file) {
+> +            qemu_file_set_error(migrate_get_current()->to_dst_file, ret);
+> +        }
+> +    }
+> +
+> +    trace_vfio_vmstate_change_prepare(vbasedev->name, running,
+> +                                      RunState_str(state),
+> +                                      mig_state_to_str(new_state));
+> +}
+> +
+>   static void vfio_vmstate_change(void *opaque, bool running, RunState state)
+>   {
+>       VFIODevice *vbasedev = opaque;
+> @@ -798,9 +839,9 @@ static int vfio_migration_init(VFIODevice *vbasedev)
+>       register_savevm_live(id, VMSTATE_INSTANCE_ID_ANY, 1, &savevm_vfio_handlers,
+>                            vbasedev);
+>   
+> -    migration->vm_state = qdev_add_vm_change_state_handler(vbasedev->dev,
+> -                                                           vfio_vmstate_change,
+> -                                                           vbasedev);
+> +    migration->vm_state = qdev_add_vm_change_state_handler_full(
+> +        vbasedev->dev, vfio_vmstate_change, vfio_vmstate_change_prepare,
+> +        vbasedev);
 
-Good!
 
-> The arm static binary causes qemu to segfault:
+We could also avoid registering the prepare handler if !VFIO_MIGRATION_P2P.
 
-I can't reproduce here.
-I tried it in an arm64 chroot which provided the cross-compiler and worked=
- for me:
+Thanks,
 
-(arm64-chroot)root@p100:/# uname -a
-Linux p100 6.4.6-200.fc38.x86_64 #1 SMP PREEMPT_DYNAMIC Mon Jul 24 20:51:1=
-2 UTC 2023 aarch64 GNU/Linux
-(arm64-chroot)root@p100:/# arm-linux-gnueabi-gcc-13 -o hello hello.c -stat=
-ic
-(arm64-chroot)root@p100:/# file hello
-hello: ELF 32-bit LSB executable, ARM, EABI5 version 1 (SYSV), statically =
-linked, BuildID[sha1]=3Dfa0f7cd6e1779fa8cd76c6e5d3123900ceefa952, for GNU/=
-Linux 3.2.0, not stripped
-(arm64-chroot)root@p100:/# ./hello
-Hello, World!
+C.
 
-Maybe you can send me your binary (and the needed klibc*so)?
-Btw, I tested a whole bunch of platforms too, see below...
 
-Helge
 
-> $ gdb -quiet --args ./build/qemu-arm -d guest_errors,page,strace ~/hello
-> Reading symbols from ./build/qemu-arm...
-> (gdb) r
-> Starting program: build/qemu-arm -d guest_errors,page,strace
-> /home/joel/hello
-> Using host libthread_db library "/lib/powerpc64le-linux-gnu/libthread_db=
-.so.1".
-> [New Thread 0x7ffff762ece0 (LWP 118359)]
-> host mmap_min_addr=3D0x10000
-> pgb_find_hole: base @ 140420000 for 4294967296 bytes
-> pgb_static: base @ 140420000 for 4294967295 bytes
-> pgb_reserved_va: base @ 0x140420000 for 4294967296 bytes
-> Locating guest address space @ 0x140420000
-> page layout changed following mmap
-> start    end      size     prot
-> 00010000-00090000 00080000 ---
-> 00090000-0009b000 0000b000 ---
-> ffff0000-00000000 00010000 r-x
-> page layout changed following mmap
-> start    end      size     prot
-> 00010000-00090000 00080000 r-x
-> 00090000-0009b000 0000b000 ---
-> ffff0000-00000000 00010000 r-x
-> page layout changed following mmap
-> start    end      size     prot
-> 00010000-00090000 00080000 r-x
-> 00090000-000a0000 00010000 rw-
-> ffff0000-00000000 00010000 r-x
-> page layout changed following mmap
-> start    end      size     prot
-> 00010000-00090000 00080000 r-x
-> 00090000-000a0000 00010000 rw-
-> e0000000-e0810000 00810000 rw-
-> ffff0000-00000000 00010000 r-x
-> page layout changed following mmap
-> start    end      size     prot
-> 00010000-00090000 00080000 r-x
-> 00090000-000a0000 00010000 rw-
-> e0000000-e0010000 00010000 ---
-> e0010000-e0811000 00801000 rw-
-> ffff0000-00000000 00010000 r-x
-> guest_base  0x140420000
-> page layout changed following binary load
-> start    end      size     prot
-> 00010000-00090000 00080000 r-x
-> 00090000-000a0000 00010000 rw-
-> e0000000-e0010000 00010000 ---
-> e0010000-e0810000 00800000 rw-
-> e0810000-e0811000 00001000 r-x
-> ffff0000-00000000 00010000 r-x
-> start_brk   0x00000000
-> end_code    0x00084f7c
-> start_code  0x00010000
-> start_data  0x00095098
-> end_data    0x00098394
-> start_stack 0xe080f410
-> brk         0x0009b000
-> entry       0x00010418
-> argv_start  0xe080f414
-> env_start   0xe080f41c
-> auxv_start  0xe080f4a0
-> 118357 brk(NULL) =3D 0x0009b000
-> 118357 brk(0x0009b8fc) =3D 0x0009b000
->
-> Thread 1 "qemu-arm" received signal SIGSEGV, Segmentation fault.
-> 0x00007fffeed9bb74 in code_gen_buffer ()
-> (gdb)
-> (gdb) bt
-> #0  0x00007fffeed9bb74 in code_gen_buffer ()
-> #1  0x0000000100169e3c in cpu_tb_exec (cpu=3Dcpu@entry=3D0x1003d4aa0,
->      itb=3Ditb@entry=3D0x7fffeed9ba60 <code_gen_buffer+47512>,
-> tb_exit=3Dtb_exit@entry=3D0x7fffffffe50c)
->      at ../accel/tcg/cpu-exec.c:457
-> #2  0x000000010016a564 in cpu_loop_exec_tb (tb_exit=3D0x7fffffffe50c,
-> last_tb=3D<synthetic pointer>,
->      pc=3D<optimised out>, tb=3D0x7fffeed9ba60 <code_gen_buffer+47512>,
-> cpu=3D<optimised out>)
->      at ../accel/tcg/cpu-exec.c:919
-> #3  cpu_exec_loop (cpu=3Dcpu@entry=3D0x1003d4aa0, sc=3D<optimised out>) =
-at
-> ../accel/tcg/cpu-exec.c:1040
-> #4  0x000000010016aa0c in cpu_exec_setjmp (cpu=3Dcpu@entry=3D0x1003d4aa0=
-,
-> sc=3D<optimised out>)
->      at ../accel/tcg/cpu-exec.c:1057
-> #5  0x000000010016b0d0 in cpu_exec (cpu=3D0x1003d4aa0) at
-> ../accel/tcg/cpu-exec.c:1083
-> #6  0x000000010004d780 in cpu_loop (env=3D0x1003d4fb0) at
-> ../linux-user/arm/cpu_loop.c:323
-> #7  0x0000000100047534 in main (argc=3D<optimised out>,
-> argv=3D0x7ffffffff178, envp=3D<optimised out>)
->      at ../linux-user/main.c:975
->
-> I tested 74a22a175c4340a01f6f860f72307093e3307681.
+>       migration->migration_state.notify = vfio_migration_state_notifier;
+>       add_migration_state_change_notifier(&migration->migration_state);
+>   
+> diff --git a/hw/vfio/trace-events b/hw/vfio/trace-events
+> index ee7509e68e..329736a738 100644
+> --- a/hw/vfio/trace-events
+> +++ b/hw/vfio/trace-events
+> @@ -167,3 +167,4 @@ vfio_save_setup(const char *name, uint64_t data_buffer_size) " (%s) data buffer
+>   vfio_state_pending_estimate(const char *name, uint64_t precopy, uint64_t postcopy, uint64_t precopy_init_size, uint64_t precopy_dirty_size) " (%s) precopy 0x%"PRIx64" postcopy 0x%"PRIx64" precopy initial size 0x%"PRIx64" precopy dirty size 0x%"PRIx64
+>   vfio_state_pending_exact(const char *name, uint64_t precopy, uint64_t postcopy, uint64_t stopcopy_size, uint64_t precopy_init_size, uint64_t precopy_dirty_size) " (%s) precopy 0x%"PRIx64" postcopy 0x%"PRIx64" stopcopy size 0x%"PRIx64" precopy initial size 0x%"PRIx64" precopy dirty size 0x%"PRIx64
+>   vfio_vmstate_change(const char *name, int running, const char *reason, const char *dev_state) " (%s) running %d reason %s device state %s"
+> +vfio_vmstate_change_prepare(const char *name, int running, const char *reason, const char *dev_state) " (%s) running %d reason %s device state %s"
 
-Those I did tested sucessfully (static binary):
-
-alpha-chroot:
-Linux p100 6.4.6-200.fc38.x86_64 #1 SMP PREEMPT_DYNAMIC Mon Jul 24 20:51:1=
-2 UTC 2023 alpha GNU/Linux
-/hello: ELF 64-bit LSB executable, Alpha (unofficial), version 1 (SYSV), s=
-tatically linked, BuildID[sha1]=3D5bf21139aa3937121e8843b062619de8e53d035a=
-, for GNU/Linux 3.2.0, not stripped
-Hello, World!
-
-arm64-chroot:
-Linux p100 6.4.6-200.fc38.x86_64 #1 SMP PREEMPT_DYNAMIC Mon Jul 24 20:51:1=
-2 UTC 2023 aarch64 GNU/Linux
-/hello: ELF 64-bit LSB executable, ARM aarch64, version 1 (GNU/Linux), sta=
-tically linked, BuildID[sha1]=3D201827af1ffdef4fc2afa404047c6d1a41e4825e, =
-for GNU/Linux 3.7.0, not stripped
-Hello, World!
-
-armel-chroot:
-Linux p100 6.4.6-200.fc38.x86_64 #1 SMP PREEMPT_DYNAMIC Mon Jul 24 20:51:1=
-2 UTC 2023 armv7l GNU/Linux
-/hello: ELF 32-bit LSB executable, ARM, EABI5 version 1 (SYSV), statically=
- linked, BuildID[sha1]=3D6e6a52f60037690052b2e54e750a56543ed9d7a0, for GNU=
-/Linux 3.2.0, not stripped
-Hello, World!
-
-armhf-chroot:
-Linux p100 6.4.6-200.fc38.x86_64 #1 SMP PREEMPT_DYNAMIC Mon Jul 24 20:51:1=
-2 UTC 2023 armv7l GNU/Linux
-/hello: ELF 32-bit LSB executable, ARM, EABI5 version 1 (GNU/Linux), stati=
-cally linked, BuildID[sha1]=3D842df9fd0bf910f6a00c19d61435387efa591390, fo=
-r GNU/Linux 3.2.0, not stripped
-Hello, World!
-
-hppa-chroot:
-Linux p100 6.4.6-200.fc38.x86_64 #1 SMP PREEMPT_DYNAMIC Mon Jul 24 20:51:1=
-2 UTC 2023 parisc GNU/Linux
-/hello: ELF 32-bit MSB executable, PA-RISC, 1.1 version 1 (GNU/Linux), sta=
-tically linked, BuildID[sha1]=3D03d4b299b31d30b5920e9fdcfccce071b77e4447, =
-for GNU/Linux 3.2.0, not stripped
-Hello, World!
-
-m68k-chroot:
-Linux p100 6.4.6-200.fc38.x86_64 #1 SMP PREEMPT_DYNAMIC Mon Jul 24 20:51:1=
-2 UTC 2023 m68k GNU/Linux
-/hello: ELF 32-bit MSB executable, Motorola m68k, 68020, version 1 (SYSV),=
- statically linked, BuildID[sha1]=3Dc01101b8ae6a6a0161a08b6ac24821b28daa5b=
-73, for GNU/Linux 3.2.0, not stripped
-Hello, World!
-
-mips64el-chroot:
-Linux p100 6.4.6-200.fc38.x86_64 #1 SMP PREEMPT_DYNAMIC Mon Jul 24 20:51:1=
-2 UTC 2023 mips64 GNU/Linux
-/hello: ELF 64-bit LSB executable, MIPS, MIPS64 rel2 version 1 (SYSV), sta=
-tically linked, BuildID[sha1]=3D0c50fc29be7ef781cdfb4ec4c47b4e350cab218b, =
-for GNU/Linux 3.2.0, not stripped
-Hello, World!
-
-mipsel-chroot:
-Linux p100 6.4.6-200.fc38.x86_64 #1 SMP PREEMPT_DYNAMIC Mon Jul 24 20:51:1=
-2 UTC 2023 mips GNU/Linux
-/hello: ELF 32-bit LSB executable, MIPS, MIPS32 rel2 version 1 (SYSV), sta=
-tically linked, BuildID[sha1]=3De0db11bbc59070f5fefb4355d73df76791e96c29, =
-for GNU/Linux 3.2.0, not stripped
-Hello, World!
-
-powerpc-chroot:
-Linux p100 6.4.6-200.fc38.x86_64 #1 SMP PREEMPT_DYNAMIC Mon Jul 24 20:51:1=
-2 UTC 2023 ppc GNU/Linux
-/hello: ELF 32-bit MSB executable, PowerPC or cisco 4500, version 1 (SYSV)=
-, statically linked, BuildID[sha1]=3D4fe85ef8ebd86eb383ccf4fd741ce224143da=
-2b2, for GNU/Linux 3.2.0, not stripped
-Hello, World!
-
-ppc64-chroot:
-Linux p100 6.4.6-200.fc38.x86_64 #1 SMP PREEMPT_DYNAMIC Mon Jul 24 20:51:1=
-2 UTC 2023 ppc64 GNU/Linux
-/hello: ELF 64-bit MSB executable, 64-bit PowerPC or cisco 7500, Power ELF=
- V1 ABI, version 1 (GNU/Linux), statically linked, BuildID[sha1]=3Dc3bb5c4=
-d94b2096f70261bf0ab1f3fc93813df8f, for GNU/Linux 3.2.0, not stripped
-Hello, World!
-
-ppc64el-chroot:
-Linux p100 6.4.6-200.fc38.x86_64 #1 SMP PREEMPT_DYNAMIC Mon Jul 24 20:51:1=
-2 UTC 2023 ppc64le GNU/Linux
-/hello: ELF 64-bit LSB executable, 64-bit PowerPC or cisco 7500, OpenPOWER=
- ELF V2 ABI, version 1 (GNU/Linux), statically linked, BuildID[sha1]=3D645=
-abb5dcd9075d826d539675258fa5f9c7bc777, for GNU/Linux 3.10.0, not stripped
-Hello, World!
-
-s390x-chroot:
-Linux p100 6.4.6-200.fc38.x86_64 #1 SMP PREEMPT_DYNAMIC Mon Jul 24 20:51:1=
-2 UTC 2023 s390x GNU/Linux
-/hello: ELF 64-bit MSB executable, IBM S/390, version 1 (GNU/Linux), stati=
-cally linked, BuildID[sha1]=3Df512d5ac759962ab66ae947d1308c8ceedef8fd3, fo=
-r GNU/Linux 3.2.0, not stripped
-Hello, World!
-
-sh4-chroot:
-Linux p100 6.4.6-200.fc38.x86_64 #1 SMP PREEMPT_DYNAMIC Mon Jul 24 20:51:1=
-2 UTC 2023 sh4 GNU/Linux
-/hello: ELF 32-bit LSB executable, Renesas SH, version 1 (SYSV), staticall=
-y linked, BuildID[sha1]=3D4cf38c7f67b5d7dc7a93c6ab513aaf0d2d21c4fc, for GN=
-U/Linux 3.2.0, not stripped
-Hello, World!
-
-sparc64-chroot:
-Linux p100 6.4.6-200.fc38.x86_64 #1 SMP PREEMPT_DYNAMIC Mon Jul 24 20:51:1=
-2 UTC 2023 sparc64 GNU/Linux
-/hello: ELF 64-bit MSB executable, SPARC V9, Sun UltraSPARC1 Extensions Re=
-quired, relaxed memory ordering, version 1 (GNU/Linux), statically linked,=
- BuildID[sha1]=3D36f02b1b3acc94f61dff6dc26205f82314c899e0, for GNU/Linux 3=
-.2.0, not stripped
-Hello, World!
 
