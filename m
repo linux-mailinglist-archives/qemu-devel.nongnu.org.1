@@ -2,32 +2,32 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 435F776C0DC
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Aug 2023 01:28:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5084676C0E0
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Aug 2023 01:29:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQymV-0001MM-Cb; Tue, 01 Aug 2023 19:27:59 -0400
+	id 1qQymU-0001KC-UZ; Tue, 01 Aug 2023 19:27:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qQymS-0001JO-KZ
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 19:27:56 -0400
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qQymT-0001Jl-Jx
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 19:27:57 -0400
 Received: from mout.gmx.net ([212.227.17.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qQymP-000786-7M
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 19:27:56 -0400
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qQymP-000789-Hk
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 19:27:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
  s=s31663417; t=1690932468; x=1691537268; i=deller@gmx.de;
- bh=lAN249IyTXdxU+qyf5qo5ihznd6eja0cEzaQkKzVRDg=;
+ bh=1NFU1YviBFmyuIZFHJbwVvbCDXdoRmikoWBij4USGWU=;
  h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:References;
- b=N7CJn+/jqJi/7qHQRoViMk25d2ZE8WR/PNI3x2dR79Fwq/G1/baWMhZSYvbuceKbuXIWFKu
- 5qY+DgGBjN3mxRMYks1azhn99zhtMXUq4LBrSvmvNmbCWygAp8uOWUgi16G+xtfyGq8yiaSXD
- bAkffJ8wk/TYKQ1nBIs5EbdsDqwmgLe8GseAFzJkhjOBa3nW6AlKujUXeWh6W2HzruGqTpQev
- 0OaFvAgK+R1AwirksN5mRhbfmqswDEYE2W+FMjLU6CHMbsSo11HngVY+7FGj4eqGECFNxmIiX
- 5M/P5kNJBEIVcNDSKnYa+4q6QLAtQwp+1CF/x7qz/UzzRUlwTrEA==
+ b=j5UauReCePrF8CNZOgGaTc20I5qvp0stItKyuu5q3fzNBRzplgXrBHvq3YY3J8Ex/07kAkB
+ G2GT9ifd/V0ZZcqLXrH7MtAr1yblEFzipB/Mjapr0qslauKo0rkATqcjtuTQNnzo2EGBssOvu
+ 41vqzGki/eYOS3s+X2kz8YBwfy3QfY7N7KcCIwZ/oQbA+KyB4sJjqNS8e0yBggL5E+19xPF+L
+ +46ETnoOx5m3ZP8PIaLV2Wh5IMqqB3rg7Y6t0fEGBV8IiVzIhLhYqx2sJLMdCKPYM4BR66b59
+ oYyRJDGcnI0fifcJocvUv2GvkhZagH582Oi2UNY2O54C1HT39GYw==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from p100.fritz.box ([94.134.150.247]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MCKFu-1qaMhK2Gf4-009RlI; Wed, 02
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MlNp7-1pz6jp3IIX-00lnaJ; Wed, 02
  Aug 2023 01:27:48 +0200
 From: Helge Deller <deller@gmx.de>
 To: qemu-devel@nongnu.org
@@ -35,34 +35,33 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini <pbonzini@redhat.com>,
  Joel Stanley <joel@jms.id.au>, Akihiko Odaki <akihiko.odaki@daynix.com>,
  Helge Deller <deller@gmx.de>
-Subject: [PATCH v6 7/8] linux-user: Optimize memory layout for static and
- dynamic executables
-Date: Wed,  2 Aug 2023 01:27:44 +0200
-Message-ID: <20230801232745.4125-8-deller@gmx.de>
+Subject: [PATCH v6 8/8] linux-user: Load pie executables at upper memory
+Date: Wed,  2 Aug 2023 01:27:45 +0200
+Message-ID: <20230801232745.4125-9-deller@gmx.de>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230801232745.4125-1-deller@gmx.de>
 References: <20230801232745.4125-1-deller@gmx.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:wHB8943utChrnrZuINliwuivkUPx+xinjcGdb6oRRoDh4B10PkV
- H3nAVCjTXtm5nJ1MV0MNOr/GnP1euQFfxvw+bNEF0HzSuRQnJ6obLkC8YBOcojuOYUQinQD
- +kzpcyR46wvHi+p3FQC6PU6PPdFhK8UFLELWC9Br+BB0M6zyD4eisJSdNV3EShwRuZR0UEJ
- qDI/bro7//3WyKa/Pskdw==
-UI-OutboundReport: notjunk:1;M01:P0:kK2wHqQeajU=;x9uVhfPvK5WHWhvDx24BVvQgc2M
- DxSQlbp46+Bis6N4IfRm+D0EZaDUMMkP6XxPhHJs6ZeS8zqIOhZxHcRzMIGOQIWFp47h5Q6XO
- hmPmbqHgPLr+DIXXdB56anNptFZ/mqoMsdrMHHvj4sIrtf325vLdWz5G6whoZRcPGvJ3A7429
- 2FYm52CY1+M+GRlTY44Gtkl2tQr9DbgFnL5v6TyJ0y4I4swh5SjmHpDyiOaTmB5UbxNv0pNVm
- yrMW+szHBeeirXnhYCscD+bXSY/Orl7PY6SCpGOCrJmYlaIzJIxMADbRctxjbMv3obbmujkWn
- wWs6LjpgkE/DHQ0KzDSd6AysAkkgsJ3snAVwucoQpiOUgK962rTid57R3lFVTaW3cHFcebeS1
- 7oqgQpbAgJZ78gPwqi5141cXQssxSpYmn4ML/3ymPZ/JFs7l7rLaCFSgu3/IuNZLZal3gKzfq
- iKGXmEUZAOmgKWXH1BvOqb3uPEkSyBMSYMrciRsjCXV/ZITiQk8iDkZc1XQTBxGuiuoWEXdQu
- Xb0u5Asza/PdcwOuXUjMyTqCP4Uja06p6fLyuKolYtmssmoFt7k3rwuse3KnmbwLOmM11D5SU
- yimOxFTIJyuOKxHx05EeJnJdhZVPh3fdg+KQ/bSe/J/F9MDgD1ptjEtfSOUnswQgqNNYFUQ4+
- CTziegnA+qdcrKYsUYpn4Z5QRgJBM7+huf4avv0vvcTJ6ZiZ7DjXmpxrxmN3P2K0yCPaYRjNG
- /YCZ4m+ohCDHxjywihpxJxQl3P9ckpwnnwwRDENZOKCX6DdxwrgmTirIiP5h5ZW6f21Gj004W
- 2r3Lw0EVbrCqR065prPVd/dueMHywk3yIysY+Co6MUw+nogZFDerHwYZerCxbuUYru2D1mytM
- m/7QNy5o1S+YNlbR9tqKgIS//5J1m+rWlLfDNaqoSnTuL3sOXh2EOBe+9cIXK/M1vNMYw2XQg
- 3Ce6FOcZZWL2aeR6d7tRosvxbNI=
+X-Provags-ID: V03:K1:oEQ5BeGs/zGeiLDZaQX8yqdaTWWxFnfr0OOnvq7UesuMOR4zFRG
+ z7oIHmEImpS4XbJsknsP6i7If35YaqG/wOcUFfd6hmFNp6JSx1pIsPuXtMgMJfrvB5ClByi
+ QgPgsAnJwpro6tVQlA9vw2u3N+dX3oq7RuX0dbvd6VcCatXGRlkCljPGTRV6fyLPf1QlDz5
+ nF/zI0mHVyC81e0qNDuVQ==
+UI-OutboundReport: notjunk:1;M01:P0:7lqx3j3ha7Y=;ckoRRyF7pI3lCAqntnczbHSBAFf
+ kuOlInHr8aHWWo2Qu6XCJkgDTGJBUXNbm4jt8omLyY6vTJKZOEF8BCyJVRYp7/KFGclX+tvnU
+ rYqvSKYbJBYwSP6G7gJ0K5ToYBIT2qg7MUltRvQGJFWSC+bhXdN98YsdfDhU+nhodgXvPXcC7
+ uwDywuKMr4svMO/TTmaUwZp6uB0/aC5wmk8PExKb1GiHTk1I2U/zkK0qsmOd9gQhOe5yM7xZT
+ dS1F0SX/lxq3dimeFJ9COw0aJNMty+hIuOdFw5jpKmjkuvcQdW6QUgrLtqpyd8K5k9bryxiqV
+ 0wNStTZPFFY8AUUbc8rGmvdTqiKe82eM3ckcyxHP4cNfXxJQklhZ9FosobtfOloGQXgaUys/K
+ p3ce4wQHv34qUg78eTfcZ5/Knnz8zCoOGsYeRlygclU0Rs8gm1IBPf/x8f8FB3ryNbPgGzct9
+ d3GJVqldyLfD4lZPKa2yX+iUCItLHoXkgOeDH2i4NStn2krAL0QAIr0/dBrTMUjRSJbbLNOkh
+ zH3Zk4V0G2NkiWzdYfK7VYap+LeVbfasSZjX0C+ABwX19sL4kYn5OCHDSgK8p61cFICl9xyb+
+ Iilth4BiwxLyNxb9lmzaEyJzXDYPmYsPvV7EMeuaGGxO17cQUh3CxojlnAO2ErPFiAPaXjN4t
+ RHWqTHaF2/DJ3sydfOr8j+Phyx1a1QpjxWJyu9nJ0QIAcpvbyPYdfBWhtPaJKJPTolH1Amvsl
+ +6ijIaoQ3xHAQ/XbO15mJ/b0DHOXU+7Ls2uKSY9sXmNxgWrtU1DqSE99rQb8TWAVgJsuvb3+p
+ Op+87husWM0Rqc9HnIR4mpITJDw5xXoW2r67GtJDymRXkuOfqdwlasbea1qTJrGUlZ3awUGZC
+ 5dj+kHIlJXdJo7yYQGG4IHEeQrrOKknDqBQLZHpX+peTX2wMPGm26yzOpLNbbxiUstTweGMF/
+ 9jf3cnoYvkAEqMP7sCLkiq/A17g=
 Received-SPF: pass client-ip=212.227.17.21; envelope-from=deller@gmx.de;
  helo=mout.gmx.net
 X-Spam_score_int: -27
@@ -87,191 +86,155 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reorganize the guest memory layout to get as much memory as possible for
-heap for the guest application.
+Fix the elf loader to calculate a valid TASK_UNMAPPED_BASE address for all
+32-bit architectures, based on the GUEST_ADDR_MAX constant.
 
-This patch optimizes the memory layout by loading pie executables
-into lower memory and shared libs into higher memory (at
-TASK_UNMAPPED_BASE). This leaves a bigger memory area usable for heap
-space which will be located directly after the executable.
-Up to now, pie executable and shared libs were loaded directly behind
-each other in the area at TASK_UNMAPPED_BASE, which leaves very little
-space for heap.
+Additionally modify the elf loader to load dynamic pie executables at
+around:
+~ 0x5500000000  for 64-bit guest binaries on 64-bit host,
+- 0x00300000    for 32-bit guest binaries on 64-bit host, and
+- 0x00000000    for 32-bit guest binaries on 32-bit host.
 
-I tested this patchset with chroots of alpha, arm, armel, arm64, hppa, m68=
-k,
-mips64el, mipsel, powerpc, ppc64, ppc64el, s390x, sh4 and sparc64 on a x86=
--64
-host, and with a static armhf binary (which fails to run without this patc=
-h).
-
-This patch temporarily breaks the Thread Sanitizer (TSan) application
-which expects specific boundary definitions for memory mappings on
-different platforms [1], see commit aab613fb9597 ("linux-user: Update
-TASK_UNMAPPED_BASE for aarch64") for aarch64. The follow-up patch fixes it
-again.
-
-[1] https://github.com/llvm/llvm-project/blob/master/compiler-rt/lib/tsan/=
-rtl/tsan_platform.h
+With this patch the Thread Sanitizer (TSan) application will work again,
+as in commit aab613fb9597 ("linux-user: Update TASK_UNMAPPED_BASE for
+aarch64").
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 =2D--
- linux-user/elfload.c | 55 +++++++++++++-------------------------------
- linux-user/mmap.c    |  8 ++++---
- 2 files changed, 21 insertions(+), 42 deletions(-)
+ linux-user/elfload.c |  6 ++++--
+ linux-user/loader.h  | 12 ++++++++++++
+ linux-user/mmap.c    | 35 ++++++++++++++++++-----------------
+ 3 files changed, 34 insertions(+), 19 deletions(-)
 
 diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 2aee2298ec..47a118e430 100644
+index 47a118e430..8f5a79b537 100644
 =2D-- a/linux-user/elfload.c
 +++ b/linux-user/elfload.c
-@@ -3023,6 +3023,7 @@ static void load_elf_image(const char *image_name, i=
+@@ -3021,6 +3021,7 @@ static void load_elf_image(const char *image_name, i=
 nt image_fd,
+     struct elfhdr *ehdr =3D (struct elfhdr *)bprm_buf;
+     struct elf_phdr *phdr;
      abi_ulong load_addr, load_bias, loaddr, hiaddr, error;
++    unsigned long load_offset =3D 0;
      int i, retval, prot_exec;
      Error *err =3D NULL;
-+    bool is_main_executable;
-
-     /* First of all, some simple consistency checks */
-     if (!elf_check_ident(ehdr)) {
-@@ -3106,28 +3107,8 @@ static void load_elf_image(const char *image_name, =
-int image_fd,
-         }
-     }
-
--    if (pinterp_name !=3D NULL) {
--        /*
--         * This is the main executable.
--         *
--         * Reserve extra space for brk.
--         * We hold on to this space while placing the interpreter
--         * and the stack, lest they be placed immediately after
--         * the data segment and block allocation from the brk.
--         *
--         * 16MB is chosen as "large enough" without being so large as
--         * to allow the result to not fit with a 32-bit guest on a
--         * 32-bit host. However some 64 bit guests (e.g. s390x)
--         * attempt to place their heap further ahead and currently
--         * nothing stops them smashing into QEMUs address space.
--         */
--#if TARGET_LONG_BITS =3D=3D 64
--        info->reserve_brk =3D 32 * MiB;
--#else
--        info->reserve_brk =3D 16 * MiB;
--#endif
--        hiaddr +=3D info->reserve_brk;
--
-+    is_main_executable =3D (pinterp_name !=3D NULL);
-+    if (is_main_executable) {
-         if (ehdr->e_type =3D=3D ET_EXEC) {
-             /*
-              * Make sure that the low address does not conflict with
-@@ -3136,7 +3117,7 @@ static void load_elf_image(const char *image_name, i=
+     bool is_main_executable;
+@@ -3121,6 +3122,7 @@ static void load_elf_image(const char *image_name, i=
 nt image_fd,
-             probe_guest_base(image_name, loaddr, hiaddr);
-         } else {
-             /*
--             * The binary is dynamic, but we still need to
-+             * The binary is dynamic (pie-executabe), but we still need t=
-o
               * select guest_base.  In this case we pass a size.
               */
              probe_guest_base(image_name, 0, hiaddr - loaddr);
-@@ -3159,7 +3140,7 @@ static void load_elf_image(const char *image_name, i=
++            load_offset =3D TASK_UNMAPPED_BASE_PIE;
+         }
+     }
+
+@@ -3138,7 +3140,7 @@ static void load_elf_image(const char *image_name, i=
 nt image_fd,
+      * In both cases, we will overwrite pages in this range with mappings
+      * from the executable.
       */
-     load_addr =3D target_mmap(loaddr, (size_t)hiaddr - loaddr + 1, PROT_N=
+-    load_addr =3D target_mmap(loaddr, (size_t)hiaddr - loaddr + 1, PROT_N=
 ONE,
++    load_addr =3D target_mmap(loaddr + load_offset, (size_t)hiaddr - load=
+dr + 1, PROT_NONE,
                              MAP_PRIVATE | MAP_ANON | MAP_NORESERVE |
--                            (ehdr->e_type =3D=3D ET_EXEC ? MAP_FIXED : 0)=
-,
-+                            (is_main_executable ? MAP_FIXED : 0),
+                             (is_main_executable ? MAP_FIXED : 0),
                              -1, 0);
-     if (load_addr =3D=3D -1) {
-         goto exit_mmap;
-@@ -3194,7 +3175,8 @@ static void load_elf_image(const char *image_name, i=
+@@ -3176,7 +3178,7 @@ static void load_elf_image(const char *image_name, i=
 nt image_fd,
-     info->end_code =3D 0;
      info->start_data =3D -1;
      info->end_data =3D 0;
--    info->brk =3D 0;
-+    /* possible start for brk is behind all sections of this ELF file. */
-+    info->brk =3D TARGET_PAGE_ALIGN(hiaddr);
+     /* possible start for brk is behind all sections of this ELF file. */
+-    info->brk =3D TARGET_PAGE_ALIGN(hiaddr);
++    info->brk =3D TARGET_PAGE_ALIGN(load_offset + hiaddr);
      info->elf_flags =3D ehdr->e_flags;
 
      prot_exec =3D PROT_EXEC;
-@@ -3288,9 +3270,6 @@ static void load_elf_image(const char *image_name, i=
-nt image_fd,
-                     info->end_data =3D vaddr_ef;
-                 }
-             }
--            if (vaddr_em > info->brk) {
--                info->brk =3D vaddr_em;
--            }
- #ifdef TARGET_MIPS
-         } else if (eppnt->p_type =3D=3D PT_MIPS_ABIFLAGS) {
-             Mips_elf_abiflags_v0 abiflags;
-@@ -3618,6 +3597,15 @@ int load_elf_binary(struct linux_binprm *bprm, stru=
-ct image_info *info)
+diff --git a/linux-user/loader.h b/linux-user/loader.h
+index 59cbeacf24..3bbfc108eb 100644
+=2D-- a/linux-user/loader.h
++++ b/linux-user/loader.h
+@@ -18,6 +18,18 @@
+ #ifndef LINUX_USER_LOADER_H
+ #define LINUX_USER_LOADER_H
 
-     if (elf_interpreter) {
-         load_elf_interp(elf_interpreter, &interp_info, bprm->buf);
-+        /*
-+	 * Use brk address of interpreter if it was loaded above the
-+	 * executable and leaves less than 16 MB for heap.
-+	 * This happens e.g. with static binaries on armhf.
-+         */
-+        if (interp_info.brk > info->brk &&
-+            interp_info.load_bias - info->brk < 16 * MiB)  {
-+            info->brk =3D interp_info.brk;
-+        }
-
-         /* If the program interpreter is one of these two, then assume
-            an iBCS2 image.  Otherwise assume a native linux image.  */
-@@ -3672,17 +3660,6 @@ int load_elf_binary(struct linux_binprm *bprm, stru=
-ct image_info *info)
-     bprm->core_dump =3D &elf_core_dump;
- #endif
-
--    /*
--     * If we reserved extra space for brk, release it now.
--     * The implementation of do_brk in syscalls.c expects to be able
--     * to mmap pages in this space.
--     */
--    if (info->reserve_brk) {
--        abi_ulong start_brk =3D TARGET_PAGE_ALIGN(info->brk);
--        abi_ulong end_brk =3D TARGET_PAGE_ALIGN(info->brk + info->reserve=
-_brk);
--        target_munmap(start_brk, end_brk - start_brk);
--    }
--
-     return 0;
- }
-
++/* where to map binaries? */
++#if HOST_LONG_BITS =3D=3D 64 && TARGET_ABI_BITS =3D=3D 64
++# define TASK_UNMAPPED_BASE_PIE 0x5500000000
++# define TASK_UNMAPPED_BASE	0x7000000000
++#elif HOST_LONG_BITS =3D=3D 64 && TARGET_ABI_BITS =3D=3D 32
++# define TASK_UNMAPPED_BASE_PIE	0x00300000
++# define TASK_UNMAPPED_BASE	(GUEST_ADDR_MAX - 0x20000000 + 1)
++#else /* HOST_LONG_BITS =3D=3D 32 && TARGET_ABI_BITS =3D=3D 32 */
++# define TASK_UNMAPPED_BASE_PIE	0x00000000
++# define TASK_UNMAPPED_BASE	0x40000000
++#endif
++
+ /*
+  * Read a good amount of data initially, to hopefully get all the
+  * program headers loaded.
 diff --git a/linux-user/mmap.c b/linux-user/mmap.c
-index 2f26cbaf5d..c624feead0 100644
+index c624feead0..3441198e21 100644
 =2D-- a/linux-user/mmap.c
 +++ b/linux-user/mmap.c
-@@ -299,14 +299,16 @@ static bool mmap_frag(abi_ulong real_start, abi_ulon=
-g start, abi_ulong last,
- #ifdef TARGET_AARCH64
- # define TASK_UNMAPPED_BASE  0x5500000000
- #else
--# define TASK_UNMAPPED_BASE  (1ul << 38)
-+# define TASK_UNMAPPED_BASE  0x4000000000
- #endif
--#else
-+#elif HOST_LONG_BITS =3D=3D 64 && TARGET_ABI_BITS =3D=3D 32
- #ifdef TARGET_HPPA
- # define TASK_UNMAPPED_BASE  0xfa000000
- #else
--# define TASK_UNMAPPED_BASE  0x40000000
-+# define TASK_UNMAPPED_BASE  0xe0000000
- #endif
-+#else /* HOST_LONG_BITS =3D=3D 32 && TARGET_ABI_BITS =3D=3D 32 */
-+# define TASK_UNMAPPED_BASE  0x40000000
- #endif
- abi_ulong mmap_next_start =3D TASK_UNMAPPED_BASE;
+@@ -23,6 +23,7 @@
+ #include "user-internals.h"
+ #include "user-mmap.h"
+ #include "target_mman.h"
++#include "loader.h"
 
+ static pthread_mutex_t mmap_mutex =3D PTHREAD_MUTEX_INITIALIZER;
+ static __thread int mmap_lock_count;
+@@ -295,23 +296,6 @@ static bool mmap_frag(abi_ulong real_start, abi_ulong=
+ start, abi_ulong last,
+     return true;
+ }
+
+-#if HOST_LONG_BITS =3D=3D 64 && TARGET_ABI_BITS =3D=3D 64
+-#ifdef TARGET_AARCH64
+-# define TASK_UNMAPPED_BASE  0x5500000000
+-#else
+-# define TASK_UNMAPPED_BASE  0x4000000000
+-#endif
+-#elif HOST_LONG_BITS =3D=3D 64 && TARGET_ABI_BITS =3D=3D 32
+-#ifdef TARGET_HPPA
+-# define TASK_UNMAPPED_BASE  0xfa000000
+-#else
+-# define TASK_UNMAPPED_BASE  0xe0000000
+-#endif
+-#else /* HOST_LONG_BITS =3D=3D 32 && TARGET_ABI_BITS =3D=3D 32 */
+-# define TASK_UNMAPPED_BASE  0x40000000
+-#endif
+-abi_ulong mmap_next_start =3D TASK_UNMAPPED_BASE;
+-
+ unsigned long last_brk;
+
+ /*
+@@ -344,6 +328,23 @@ abi_ulong mmap_find_vma(abi_ulong start, abi_ulong si=
+ze, abi_ulong align)
+     abi_ulong addr;
+     int wrapped, repeat;
+
++    static abi_ulong mmap_next_start;
++
++    /* initialize mmap_next_start if necessary */
++    if (!mmap_next_start) {
++        mmap_next_start =3D TASK_UNMAPPED_BASE;
++
++        /* do sanity checks on guest memory layout */
++        if (mmap_next_start >=3D GUEST_ADDR_MAX) {
++            mmap_next_start =3D GUEST_ADDR_MAX - 0x1000000000 + 1;
++        }
++
++        if (TASK_UNMAPPED_BASE_PIE >=3D mmap_next_start) {
++            fprintf(stderr, "Memory too small for PIE executables.\n");
++            exit(EXIT_FAILURE);
++        }
++    }
++
+     align =3D MAX(align, qemu_host_page_size);
+
+     /* If 'start' =3D=3D 0, then a default start address is used. */
 =2D-
 2.41.0
 
