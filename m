@@ -2,88 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4937276B9FA
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 18:53:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27A2976BA05
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 18:54:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQsbP-0001IQ-Qu; Tue, 01 Aug 2023 12:52:07 -0400
+	id 1qQsci-00024z-4C; Tue, 01 Aug 2023 12:53:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cfontana@suse.de>) id 1qQsbO-0001II-Fr
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 12:52:06 -0400
-Received: from smtp-out2.suse.de ([195.135.220.29])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <cfontana@suse.de>) id 1qQsbN-0003VN-1R
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 12:52:06 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id B75021FD8F;
- Tue,  1 Aug 2023 16:52:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1690908723; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qQscg-00024m-9Z
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 12:53:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qQsce-0003hB-KR
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 12:53:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1690908803;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=nav+JSW2TNYV1rgTqTHuoBEFYLmex+BMzpCI3MejTQs=;
- b=rlVBQjXjKvwkBJ66iOMLo4RmerdkyWbhrM6yJ4OR31v9Y5GqdqpHGRs3eeThO9laqxDKB/
- lPaYzCqecXvKAUUv9xOwSMxIHx5Nfo6fDEKjetcmhYgYU3qVZbviy5vQFaz0NgohaXDw/y
- q4EL+RzK5s4GWKeg4/KspZJeMtRTxS8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1690908723;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=nav+JSW2TNYV1rgTqTHuoBEFYLmex+BMzpCI3MejTQs=;
- b=njC0VdBIIogGIdhnPdK6VJi1Is/8iOynnela/pDkmE4L3vlzo2NEVZJNTGCQfYy/Hz0jqi
- /g2y4IDQFPyYSnBg==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id C777E139BD;
- Tue,  1 Aug 2023 16:52:02 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id RqhhLjI4yWT+LgAAMHmgww
- (envelope-from <cfontana@suse.de>); Tue, 01 Aug 2023 16:52:02 +0000
-Message-ID: <835a9d0c-4e3a-d2b6-6392-a17f583f0842@suse.de>
-Date: Tue, 1 Aug 2023 18:52:02 +0200
+ bh=X0zM0CSfrI9V/h3q/hDOZ57T9Q8t/7s2ZxcJntYjHlQ=;
+ b=TVQ+OCLiRfNt7FVEeB+qtfp9BbS60oW3soPR5Ty2sVO0V5kAruXDPJ7eWsZCM0+4as1vcm
+ qiFHlB4BqDfClzTY3yaSfiVjzmTNZ1KvqKkOk0d8E6vBZt/MToufA1UEazSalb45n+eoD7
+ JasLZHi+Tms4JUfr4KcmDjg3RUCma+U=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-641-dJh66iWtN5G_MVfWg_UTeA-1; Tue, 01 Aug 2023 12:53:22 -0400
+X-MC-Unique: dJh66iWtN5G_MVfWg_UTeA-1
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-76ca010274dso55781585a.0
+ for <qemu-devel@nongnu.org>; Tue, 01 Aug 2023 09:53:22 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1690908786; x=1691513586;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=X0zM0CSfrI9V/h3q/hDOZ57T9Q8t/7s2ZxcJntYjHlQ=;
+ b=Xtog5DfGM2NGKCGo1XaPdnnCsBGuP7fwHhZEVpzos0hON/w3ibrPyub8LSxXkBCKeD
+ GAnyuB9fqNkVQnh+jN8uNH0nznwFxGpHw8DnhF2hnqoaRs9ZNlAesrmMqjnuNmw2qwwG
+ 5eC+Wvv4SbYxB8qeo3vKclXBZk0rngZp70qKMTPKfhVQxtG2/HPDMMMKfZ+Vyi/U3dF5
+ 10Bm3MDT2+WqNiSLWP34WAW2qBOXFzb7qicRH+sjahhUngUAfb+JWWkdnBqgphY7fZ7Q
+ 4BTY0Fz/vXLI0aGKp0nHEfyGs4x2tkNYX/Sw/eSBSXOP7pzDDUclJRLUwcq+BPfJVc1j
+ 3eZg==
+X-Gm-Message-State: ABy/qLaTxEXtH/v+X8M+yVYifPgS7E5JgYaLGqY73HuvrU0Sk2HS9uCD
+ 5JTHIiIdvhbqqfDH878WUY79alPiY8zYIIScK/S5DUXkYruEwHdO0/cFzT3+5N6snvOBMgR9Rox
+ x6RElAS12m8VQhp0=
+X-Received: by 2002:a05:620a:bd5:b0:76a:f689:dff2 with SMTP id
+ s21-20020a05620a0bd500b0076af689dff2mr11218541qki.7.1690908786261; 
+ Tue, 01 Aug 2023 09:53:06 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlEbApwVFn+52TccpYXpLK12hqNe5cuLUWCzokF8ZGMkYWfFSXvUvhY20sYX4hCIasSav5s8tA==
+X-Received: by 2002:a05:620a:bd5:b0:76a:f689:dff2 with SMTP id
+ s21-20020a05620a0bd500b0076af689dff2mr11218527qki.7.1690908785940; 
+ Tue, 01 Aug 2023 09:53:05 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ b4-20020a05620a118400b0076c71c1d2f5sm3609147qkk.34.2023.08.01.09.53.05
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 01 Aug 2023 09:53:05 -0700 (PDT)
+Date: Tue, 1 Aug 2023 12:53:03 -0400
+From: Peter Xu <peterx@redhat.com>
+To: gudkov.andrei@huawei.com
+Cc: qemu-devel@nongnu.org, quintela@redhat.com, leobras@redhat.com,
+ eblake@redhat.com, armbru@redhat.com, Yong Huang <huangy81@chinatelecom.cn>
+Subject: Re: [PATCH] migration/calc-dirty-rate: millisecond precision period
+Message-ID: <ZMk4bxl+JhDFcYLS@x1n>
+References: <8571da37847f9bb39b84e62ef4998e68ef3c10d1.1688028297.git.gudkov.andrei@huawei.com>
+ <ZKcUv1Ge/RVBHJKT@x1n>
+ <ZK1NOmUVc/eUivhV@DESKTOP-0LHM7NF.china.huawei.com>
+ <ZLWRtU3sXDreCFxO@x1n>
+ <ZMfKhYPyeO74BJoP@DESKTOP-0LHM7NF.china.huawei.com>
+ <ZMgUQGN+fOiSE5qE@x1n>
+ <ZMkc4YTUNU3gcOwB@DESKTOP-0LHM7NF.china.huawei.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.4.0
-Subject: Re: [RFC PATCH 04/19] memory: Introduce memory_region_can_be_private()
-Content-Language: en-US
-From: Claudio Fontana <cfontana@suse.de>
-To: Xiaoyao Li <xiaoyao.li@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Sean Christopherson <seanjc@google.com>, David Hildenbrand
- <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Marcelo Tosatti <mtosatti@redhat.com>
-Cc: Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>,
- =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Peter Xu <peterx@redhat.com>, Chao Peng <chao.p.peng@linux.intel.com>,
- Michael Roth <michael.roth@amd.com>, isaku.yamahata@gmail.com,
- qemu-devel@nongnu.org, kvm@vger.kernel.org
-References: <20230731162201.271114-1-xiaoyao.li@intel.com>
- <20230731162201.271114-5-xiaoyao.li@intel.com>
- <3a14456d-244c-ce8f-9d1c-8bcdb75de81c@suse.de>
-In-Reply-To: <3a14456d-244c-ce8f-9d1c-8bcdb75de81c@suse.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=195.135.220.29; envelope-from=cfontana@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.092,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <ZMkc4YTUNU3gcOwB@DESKTOP-0LHM7NF.china.huawei.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,82 +103,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/1/23 18:48, Claudio Fontana wrote:
-> On 7/31/23 18:21, Xiaoyao Li wrote:
->> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
->> ---
->>  include/exec/memory.h | 9 +++++++++
->>  softmmu/memory.c      | 5 +++++
->>  2 files changed, 14 insertions(+)
->>
->> diff --git a/include/exec/memory.h b/include/exec/memory.h
->> index 61e31c7b9874..e119d3ce1a1d 100644
->> --- a/include/exec/memory.h
->> +++ b/include/exec/memory.h
->> @@ -1679,6 +1679,15 @@ static inline bool memory_region_is_romd(MemoryRegion *mr)
->>   */
->>  bool memory_region_is_protected(MemoryRegion *mr);
->>  
->> +/**
->> + * memory_region_can_be_private: check whether a memory region can be private
+On Tue, Aug 01, 2023 at 05:55:29PM +0300, gudkov.andrei@huawei.com wrote:
+> Hmmm, such underestimation looks strange to me. I am willing to test
+> page-sampling and see whether its quality can be improved. Do you have
+> any specific suggestions on the application to use as a workload?
+
+I could have had a wrong impression here, sorry.
+
+I played again with the page sampling approach, and that's actually pretty
+decent..
+
+I had that impression probably based on the fact that by default we chose 2
+pages out of 1000-ish (consider workloads having 100-ish memory updates
+where no sample page falls into it), and I do remember in some cases of my
+test setups quite some time ago, it shows totally wrong numbers. But maybe
+I had a wrong test, or wrong memory.
+
+Now thinking about it, for random/seq on not so small memory ranges, that
+seems to all work.  For very small ones spread over it goes to the random
+case.
+
 > 
-> The name of the function is not particularly informative,
+> If it turns out that page-sampling is not an option, then performance
+> impact of the dirty-bitmap must be improved somehow. Maybe it makes
+> sense to split memory into 4GiB chunks and measure dirty page rate
+> independently for each of the chunks (without enabling page
+> protections for memory outside of the currently processed chunk).
+> But the downsides are that 1) total measurement time will increase
+> proportionally by number of chunks 2) dirty page rate will be
+> overestimated.
 > 
->> + *
->> + * Returns %true if a memory region's ram_block has valid gmem fd assigned.
-> 
-> but in your comment you describe more accurately what it does, why not make it the function name?
-> 
-> bool memory_region_has_valid_gmem_fd()
+> But actually I am still hoping on page sampling. Since my goal is to
+> roughly predict what can be migrated and what cannot be, I would prefer
+> to keep predictor as lite as possible, even at the cost of
+> (overestimation) error.
 
-
-btw can a memory region have an invalid gmem_fd ?
-
-If an invalid gmem_fd is just used to mark whether gmem_fd is present or not,
-
-we could make it just:
-
-bool memory_region_has_gmem_fd()
-
+Yes I also hope that works as you said.
 
 Thanks,
 
-C
-
-> 
->> + *
->> + * @mr: the memory region being queried
->> + */
->> +bool memory_region_can_be_private(MemoryRegion *mr);
-> 
-> 
-> bool memory_region_has_valid_gmem_fd()
-> 
-> 
-> Thanks,
-> 
-> C
-> 
->> +
->>  /**
->>   * memory_region_get_iommu: check whether a memory region is an iommu
->>   *
->> diff --git a/softmmu/memory.c b/softmmu/memory.c
->> index 4f8f8c0a02e6..336c76ede660 100644
->> --- a/softmmu/memory.c
->> +++ b/softmmu/memory.c
->> @@ -1855,6 +1855,11 @@ bool memory_region_is_protected(MemoryRegion *mr)
->>      return mr->ram && (mr->ram_block->flags & RAM_PROTECTED);
->>  }
->>  
->> +bool memory_region_can_be_private(MemoryRegion *mr)
->> +{
->> +    return mr->ram_block && mr->ram_block->gmem_fd >= 0;
->> +}
->> +
->>  uint8_t memory_region_get_dirty_log_mask(MemoryRegion *mr)
->>  {
->>      uint8_t mask = mr->dirty_log_mask;
-> 
+-- 
+Peter Xu
 
 
