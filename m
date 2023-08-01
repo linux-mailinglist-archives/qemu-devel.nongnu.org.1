@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 067E276B567
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 15:04:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5562176B56D
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 15:05:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQp3B-000734-0L; Tue, 01 Aug 2023 09:04:33 -0400
+	id 1qQp38-0006zl-FM; Tue, 01 Aug 2023 09:04:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qQp2z-0006od-R6
+ id 1qQp30-0006og-Ei
  for qemu-devel@nongnu.org; Tue, 01 Aug 2023 09:04:23 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qQp2x-0006sJ-Qx
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 09:04:21 -0400
+ id 1qQp2y-0006sS-R5
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 09:04:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690895059;
+ s=mimecast20190719; t=1690895060;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=VaPpotiDEr2u5vrNAUiIHZ+omszdVEBQFXJghnOUOiE=;
- b=Ej7bq0CLtPIXvqX+MHFArnDMqMZCJRaKsNX/ik/eHYLQ7QcIYZjAdqTpraO8Cx0XPHOxCx
- dXxxKfzMVLO63BlGwaUSGZYqAhePQCKgPV+SULGpBxVi79FfH0SFn1lgRsDc7mu9IxFJ1d
- wAnmEs4WtbCqr06wOAyQZZSBM2gtn4c=
+ bh=5+gFISa6XF05vAwxpWiccQtfBsw7tx3racl50JGXmHk=;
+ b=QxDl8TWiJqnmfnF7exmOyFp0XLbI/x7K8zQF5HYcZxUHMKxparrPsGp1nnHHC3HeWpBk+R
+ 6WtZOZvYbJSk/teUrf0SX/OyVT2+Ink3M/WMtJs9UxfiC3QIQbPhjXaajeajfKiUymk2im
+ y/4qqbTz02WKm9sw1iQZ2e1JO7tSlF8=
 Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-461-AAj6vkctNPCNVIbTgsqe8g-1; Tue, 01 Aug 2023 09:04:15 -0400
-X-MC-Unique: AAj6vkctNPCNVIbTgsqe8g-1
+ us-mta-619-F-VkR0NTNmuIABpIJMV6tw-1; Tue, 01 Aug 2023 09:04:17 -0400
+X-MC-Unique: F-VkR0NTNmuIABpIJMV6tw-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
  [10.11.54.7])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 713AE1C09043;
- Tue,  1 Aug 2023 13:04:15 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C812F1C09043;
+ Tue,  1 Aug 2023 13:04:16 +0000 (UTC)
 Received: from localhost.localdomain.com (unknown [10.42.28.93])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 39760140E952;
- Tue,  1 Aug 2023 13:04:14 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id A35561454148;
+ Tue,  1 Aug 2023 13:04:15 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -51,9 +51,10 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Yonggang Luo <luoyonggang@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 6/8] configure: support passthrough of -Dxxx args to meson
-Date: Tue,  1 Aug 2023 14:04:01 +0100
-Message-ID: <20230801130403.164060-7-berrange@redhat.com>
+Subject: [PATCH 7/8] gitlab: disable optimization and debug symbols in msys
+ build
+Date: Tue,  1 Aug 2023 14:04:02 +0100
+Message-ID: <20230801130403.164060-8-berrange@redhat.com>
 In-Reply-To: <20230801130403.164060-1-berrange@redhat.com>
 References: <20230801130403.164060-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -85,37 +86,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This can be useful for setting some meson global options, such as the
-optimization level or debug state.xs
+Building at -O2, adds 33% to the build time, over -O2. IOW a build that
+takes 45 minutes at -O0, takes 60 minutes at -O2. Turning off debug
+symbols drops it further, down to 38 minutes.
+
+IOW, a "-O2 -g" build is 58% slower than a "-O0" build on msys in the
+gitlab CI windows shared runners.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- configure | 5 +++++
- 1 file changed, 5 insertions(+)
+ .gitlab-ci.d/windows.yml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/configure b/configure
-index 26ec5e4f54..9fe3718b77 100755
---- a/configure
-+++ b/configure
-@@ -757,6 +757,9 @@ for opt do
-   # everything else has the same name in configure and meson
-   --*) meson_option_parse "$opt" "$optarg"
-   ;;
-+  # Pass through -Dxxxx options to meson
-+  -D*) meson_options="$meson_options $opt"
-+  ;;
-   esac
- done
- 
-@@ -887,6 +890,8 @@ cat << EOF
-   pie             Position Independent Executables
-   debug-tcg       TCG debugging (default is disabled)
- 
-+  -Dmesonoptname=val      passthrough option to meson unmodified
-+
- NOTE: The object files are built at the place where configure is launched
- EOF
- exit 0
+diff --git a/.gitlab-ci.d/windows.yml b/.gitlab-ci.d/windows.yml
+index 34109a80f2..552e3b751d 100644
+--- a/.gitlab-ci.d/windows.yml
++++ b/.gitlab-ci.d/windows.yml
+@@ -113,7 +113,7 @@ msys2-64bit:
+     # commit 9f8e6cad65a6 ("gitlab-ci: Speed up the msys2-64bit job by using --without-default-devices"
+     # changed to compile QEMU with the --without-default-devices switch
+     # for the msys2 64-bit job, due to the build could not complete within
+-    CONFIGURE_ARGS:  --target-list=x86_64-softmmu --without-default-devices
++    CONFIGURE_ARGS:  --target-list=x86_64-softmmu --without-default-devices -Ddebug=false -Doptimization=0
+     # qTests don't run successfully with "--without-default-devices",
+     # so let's exclude the qtests from CI for now.
+     TEST_ARGS: --no-suite qtest
+@@ -123,5 +123,5 @@ msys2-32bit:
+   variables:
+     MINGW_TARGET: mingw-w64-i686
+     MSYSTEM: MINGW32
+-    CONFIGURE_ARGS:  --target-list=ppc64-softmmu
++    CONFIGURE_ARGS:  --target-list=ppc64-softmmu -Ddebug=false -Doptimization=0
+     TEST_ARGS: --no-suite qtest
 -- 
 2.41.0
 
