@@ -2,84 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6412076A7C7
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 06:10:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B205076A807
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 06:51:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQggf-0002lo-1C; Tue, 01 Aug 2023 00:08:45 -0400
+	id 1qQhKf-0005Mf-DN; Tue, 01 Aug 2023 00:50:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qQggc-0002lY-Ta
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 00:08:42 -0400
-Received: from mail-ot1-x32a.google.com ([2607:f8b0:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
+ id 1qQhKY-0005M0-Fj
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 00:49:59 -0400
+Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qQggZ-0003M1-QP
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 00:08:42 -0400
-Received: by mail-ot1-x32a.google.com with SMTP id
- 46e09a7af769-6b9c57c4d12so4024148a34.1
- for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 21:08:35 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
+ id 1qQhKT-0004Iz-KX
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 00:49:56 -0400
+Received: by mail-ej1-x62f.google.com with SMTP id
+ a640c23a62f3a-99bc9e3cbf1so1098373266b.0
+ for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 21:49:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690862914; x=1691467714;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :to:from:subject:user-agent:mime-version:date:message-id:from:to:cc
- :subject:date:message-id:reply-to;
- bh=TVlWiuuQI2vY/QG7vl8SXKFZphOwd7VrNaadqDbeQBU=;
- b=lEMMWIKAI5vHgbJ70hOj3rhA/fJ/W8rSc2pGflq9qaPFDWLqeP8Hb7tbNSMpuKhoJy
- b4r6GG9fqY4/be/Cuxoq3afwAMI395JyiknnIZjvhq5o0AZL5qHqVcer+AWbGseVM30w
- 2RP/ugOhfpG9wl6RQEJ8JJJxoPYCku/lhbSdQCZTlvl5fXGgx4g3N8en5fPkzf/rnnUI
- WotOpZvtIp2+RlB+ZujBwhNliq2gXX5tIobgKjtQ0h6qx1YexMyQJ4P8K7pFl/gRXix2
- dV8F2C8ubnxT65XTaBo59EOXaX1+P2ndLsIN3IU9JZvB56wcQPJ+UdAykHpdBQUZlXTM
- qHow==
+ d=jms.id.au; s=google; t=1690865392; x=1691470192;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=chTFYEDDQ85UPffKdJe07epF9+RuO0CfjAe87/TD2oo=;
+ b=J/FN+8o+WnHPpo9GTNdhuiSeo6MyZQVKsZ8G/+JLElBTWBH8+ORsj80V6JK5n4kn95
+ e6MjWHgHSEzdQGIJh3zTXNjUVu0Uu/WNZMHsdS8vKAP4zPXQjre7TZMYqb+7mPDYXEIX
+ O/J/QBc0Zwp9H8K6MuLGwVRTJdtVW9WBfXz/o=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690862914; x=1691467714;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :to:from:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=TVlWiuuQI2vY/QG7vl8SXKFZphOwd7VrNaadqDbeQBU=;
- b=Q5qeTuZGh5Usu9Huox6BPt4jtl+2pvTK7QaWA4nzc1s56Xwn0ZZH9pjVHVG0IKm8k3
- FbRLq88zQ9UTfMapehugQifOw7ioI7LHaPk//z3bEXH3bqyNAYhqEdEWXN5TA0QLjSA2
- Cblcdsjh46DR8tsX21iSBqBCHWGOKpMPqiglepxnz8X9n2RP9LdwtFyz9qMVjB+PyIhn
- OaBzxHnVIrHov3sZgVn1MYltwVctDL7AhGelNIvQ9P9P2JQEmgmuZ3FzA60Rky4ecExA
- YKiSSDgekUQiFiAnCZh579SpVRNPmalR8/Pml49dg4N1S2bPFi9UvNS6BGEBVfnEktyB
- baSw==
-X-Gm-Message-State: ABy/qLbQekK8/FfM4318uMqX8HYlBvenNaNiQMkaCcNKJ1YciBKLdVfm
- 6C6xwIc65j2E/78LnamrmKnvFKxcyKSkd5+IfBY=
-X-Google-Smtp-Source: APBJJlG6IaMS7D4CvWtAE9RKuP/oKogAp5vvKvJ4Xx2lJcQR1v3smgP68JdcLBZSeoxfXbM//pwkUA==
-X-Received: by 2002:a9d:6c45:0:b0:6b7:57aa:45cc with SMTP id
- g5-20020a9d6c45000000b006b757aa45ccmr11214631otq.15.1690862913801; 
- Mon, 31 Jul 2023 21:08:33 -0700 (PDT)
-Received: from ?IPV6:2602:47:d490:6901:6de4:1334:c47c:65d8?
- ([2602:47:d490:6901:6de4:1334:c47c:65d8])
- by smtp.gmail.com with ESMTPSA id
- m25-20020a637119000000b0056456fff676sm1913459pgc.66.2023.07.31.21.08.33
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 31 Jul 2023 21:08:33 -0700 (PDT)
-Message-ID: <03ea7892-37d3-c922-64b6-ed7a4f9911d1@linaro.org>
-Date: Mon, 31 Jul 2023 21:08:30 -0700
+ d=1e100.net; s=20221208; t=1690865392; x=1691470192;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=chTFYEDDQ85UPffKdJe07epF9+RuO0CfjAe87/TD2oo=;
+ b=alQouugU+9uu5IwYRxdIrSCqjteePIzIBS1OeRfto8TYlzrKGwQ5Uq29ogOZ8Aqt6R
+ Ec7Uvzr56KWFxXli+U2G9fO6SkLpo2n+kQ27+lr3hQguhXkihlFIc1TteyQYlZ8f48vM
+ 2UMHJsBn6I0C1dKvkfphUKmKhu9fgWzfZcFfysAuxHrKxQRx9x6ceMtSv9Vxkko96ioQ
+ p+F3+fbwxftalKQ81Pj09yE9X93EQEhcRV3Cu9YOTodUMQNVbKAqDv+/Uje7RnJ5lwey
+ Ma+HcCU5MFloLwii9tvlTyOK5sR7nJuCTUVYE0/QxuPyvy0PSlErQWCAviFuYPsJOC58
+ 0MZw==
+X-Gm-Message-State: ABy/qLbg9eyJolpznS3NsqspBMSF5Yy1t9B9+GQYRtp3EUeUbkifqpTN
+ E4Jhpyw4oMy7NTLJWrFEHeVo/2qAXHxpgbK1Gq4=
+X-Google-Smtp-Source: APBJJlGA56359u3E3ybq5yDIBLV4mOXPI1KVKu70MpTrNU711Ah952LV6mtFJuIB03kj3XhYBdtTn1MDqQ0dA76BY4M=
+X-Received: by 2002:a17:907:a079:b0:993:f611:7c97 with SMTP id
+ ia25-20020a170907a07900b00993f6117c97mr1987591ejc.33.1690865391828; Mon, 31
+ Jul 2023 21:49:51 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PULL 00/10] tcg patch queue for rc2
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-References: <20230731210211.137353-1-richard.henderson@linaro.org>
-Content-Language: en-US
-In-Reply-To: <20230731210211.137353-1-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32a;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32a.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.101,
+References: <20230731080317.112658-1-akihiko.odaki@daynix.com>
+ <3088d223-64fd-9aab-3c08-000f0924607c@tls.msk.ru>
+ <CACPK8XfcOkn281JZNYc7+AhDAxP_N9__G4Snxtx=ZhXgVChXgg@mail.gmail.com>
+ <0643c953-bfa8-45a9-5b07-714bc18c03a6@daynix.com>
+ <57d9980d-b881-b16e-844a-e651d6d09de7@gmx.de>
+ <c3ed33f0-998d-5386-1880-22436af149b7@gmx.de>
+ <def4abbf-ec8a-7986-1831-d9c839acff8c@gmx.de>
+In-Reply-To: <def4abbf-ec8a-7986-1831-d9c839acff8c@gmx.de>
+From: Joel Stanley <joel@jms.id.au>
+Date: Tue, 1 Aug 2023 04:49:39 +0000
+Message-ID: <CACPK8XfXMU=YyvkPTHFV6n_THkDPKfRmjYt_Ps7KJrxV9Srjbg@mail.gmail.com>
+Subject: Re: [PATCH 0/5] linux-user: brk/mmap fixes
+To: Helge Deller <deller@gmx.de>
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>, Michael Tokarev <mjt@tls.msk.ru>,
+ qemu-devel@nongnu.org, Laurent Vivier <laurent@vivier.eu>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
+ envelope-from=joel.stan@gmail.com; helo=mail-ej1-x62f.google.com
+X-Spam_score_int: -14
+X-Spam_score: -1.5
+X-Spam_bar: -
+X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.25,
+ FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,58 +89,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/31/23 14:02, Richard Henderson wrote:
-> The following changes since commit 234320cd0573f286b5f5c95ee6d757cf003999e7:
-> 
->    Merge tag 'pull-target-arm-20230731' of https://git.linaro.org/people/pmaydell/qemu-arm into staging (2023-07-31 08:33:44 -0700)
-> 
-> are available in the Git repository at:
-> 
->    https://gitlab.com/rth7680/qemu.git tags/pull-tcg-20230731
-> 
-> for you to fetch changes up to 8b94ec53f367db7adcc9b59c483ce3e6c7bc3740:
-> 
->    target/s390x: Move trans_exc_code update to do_program_interrupt (2023-07-31 12:19:13 -0700)
-> 
-> ----------------------------------------------------------------
-> util/interval-tree: Access left/right/parent atomically
-> accel/tcg: Clear gen_tb on buffer overflow
-> bsd-user: Specify host page alignment if none specified
-> bsd-user: Allocate guest virtual address space
-> target/ppc: Disable goto_tb with architectural singlestep
-> target/s390x: Move trans_exc_code update to do_program_interrupt
-> 
-> ----------------------------------------------------------------
-> Helge Deller (1):
->        linux-user/armeb: Fix __kernel_cmpxchg() for armeb
-> 
-> Richard Henderson (8):
->        util/interval-tree: Use qatomic_read for left/right while searching
->        util/interval-tree: Use qatomic_set_mb in rb_link_node
->        util/interval-tree: Introduce pc_parent
->        util/interval-tree: Use qatomic_read/set for rb_parent_color
->        accel/tcg: Clear tcg_ctx->gen_tb on buffer overflow
->        bsd-user: Allocate guest virtual address space
->        target/ppc: Disable goto_tb with architectural singlestep
->        target/s390x: Move trans_exc_code update to do_program_interrupt
-> 
-> Warner Losh (1):
->        bsd-user: Specify host page alignment if none specified
+On Mon, 31 Jul 2023 at 18:24, Helge Deller <deller@gmx.de> wrote:
 
-Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
+> > I re-read the thread again. As it seems Joel already tried the latest
+> > version from me? Sadly I can't test myself on ppc64le (static binary
+> > needs klibc-PupSAGgtpafMlSLXOLgje1kXFo8.so in /usr/lib which I can't
+> > install on a debian porterbox).
+> >
+> > I still believe we need to track host and target brk page, but I'll give
+> > your patch a try.
+>
+> As suggested, I've based my patches on top of yours and the tree can be
+> pulled from:
+> git pull https://github.com/hdeller/qemu-hppa/   brk-fixes-akihiko-2
+>
+> My patches are neccessary to fix an arm-static testcase:
+>         /usr/bin/qemu-arm-static ./fstype
+>
+> Let's try this patch series...
 
+The armhf static binary works with expected output.
 
-r~
+The arm static binary causes qemu to segfault:
 
+$ gdb -quiet --args ./build/qemu-arm -d guest_errors,page,strace ~/hello
+Reading symbols from ./build/qemu-arm...
+(gdb) r
+Starting program: build/qemu-arm -d guest_errors,page,strace
+/home/joel/hello
+Using host libthread_db library "/lib/powerpc64le-linux-gnu/libthread_db.so.1".
+[New Thread 0x7ffff762ece0 (LWP 118359)]
+host mmap_min_addr=0x10000
+pgb_find_hole: base @ 140420000 for 4294967296 bytes
+pgb_static: base @ 140420000 for 4294967295 bytes
+pgb_reserved_va: base @ 0x140420000 for 4294967296 bytes
+Locating guest address space @ 0x140420000
+page layout changed following mmap
+start    end      size     prot
+00010000-00090000 00080000 ---
+00090000-0009b000 0000b000 ---
+ffff0000-00000000 00010000 r-x
+page layout changed following mmap
+start    end      size     prot
+00010000-00090000 00080000 r-x
+00090000-0009b000 0000b000 ---
+ffff0000-00000000 00010000 r-x
+page layout changed following mmap
+start    end      size     prot
+00010000-00090000 00080000 r-x
+00090000-000a0000 00010000 rw-
+ffff0000-00000000 00010000 r-x
+page layout changed following mmap
+start    end      size     prot
+00010000-00090000 00080000 r-x
+00090000-000a0000 00010000 rw-
+e0000000-e0810000 00810000 rw-
+ffff0000-00000000 00010000 r-x
+page layout changed following mmap
+start    end      size     prot
+00010000-00090000 00080000 r-x
+00090000-000a0000 00010000 rw-
+e0000000-e0010000 00010000 ---
+e0010000-e0811000 00801000 rw-
+ffff0000-00000000 00010000 r-x
+guest_base  0x140420000
+page layout changed following binary load
+start    end      size     prot
+00010000-00090000 00080000 r-x
+00090000-000a0000 00010000 rw-
+e0000000-e0010000 00010000 ---
+e0010000-e0810000 00800000 rw-
+e0810000-e0811000 00001000 r-x
+ffff0000-00000000 00010000 r-x
+start_brk   0x00000000
+end_code    0x00084f7c
+start_code  0x00010000
+start_data  0x00095098
+end_data    0x00098394
+start_stack 0xe080f410
+brk         0x0009b000
+entry       0x00010418
+argv_start  0xe080f414
+env_start   0xe080f41c
+auxv_start  0xe080f4a0
+118357 brk(NULL) = 0x0009b000
+118357 brk(0x0009b8fc) = 0x0009b000
 
-> 
->   accel/tcg/translate-all.c      |  1 +
->   bsd-user/main.c                | 48 ++++++++++++++++++++++---
->   bsd-user/mmap.c                |  3 +-
->   linux-user/arm/cpu_loop.c      |  9 +++--
->   target/ppc/translate.c         |  3 ++
->   target/s390x/tcg/excp_helper.c | 40 ++++++++++++++-------
->   util/interval-tree.c           | 79 +++++++++++++++++++++++++-----------------
->   7 files changed, 132 insertions(+), 51 deletions(-)
+Thread 1 "qemu-arm" received signal SIGSEGV, Segmentation fault.
+0x00007fffeed9bb74 in code_gen_buffer ()
+(gdb)
+(gdb) bt
+#0  0x00007fffeed9bb74 in code_gen_buffer ()
+#1  0x0000000100169e3c in cpu_tb_exec (cpu=cpu@entry=0x1003d4aa0,
+    itb=itb@entry=0x7fffeed9ba60 <code_gen_buffer+47512>,
+tb_exit=tb_exit@entry=0x7fffffffe50c)
+    at ../accel/tcg/cpu-exec.c:457
+#2  0x000000010016a564 in cpu_loop_exec_tb (tb_exit=0x7fffffffe50c,
+last_tb=<synthetic pointer>,
+    pc=<optimised out>, tb=0x7fffeed9ba60 <code_gen_buffer+47512>,
+cpu=<optimised out>)
+    at ../accel/tcg/cpu-exec.c:919
+#3  cpu_exec_loop (cpu=cpu@entry=0x1003d4aa0, sc=<optimised out>) at
+../accel/tcg/cpu-exec.c:1040
+#4  0x000000010016aa0c in cpu_exec_setjmp (cpu=cpu@entry=0x1003d4aa0,
+sc=<optimised out>)
+    at ../accel/tcg/cpu-exec.c:1057
+#5  0x000000010016b0d0 in cpu_exec (cpu=0x1003d4aa0) at
+../accel/tcg/cpu-exec.c:1083
+#6  0x000000010004d780 in cpu_loop (env=0x1003d4fb0) at
+../linux-user/arm/cpu_loop.c:323
+#7  0x0000000100047534 in main (argc=<optimised out>,
+argv=0x7ffffffff178, envp=<optimised out>)
+    at ../linux-user/main.c:975
 
+I tested 74a22a175c4340a01f6f860f72307093e3307681.
 
