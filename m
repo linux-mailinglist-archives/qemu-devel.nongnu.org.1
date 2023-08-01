@@ -2,58 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E4F576B818
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 16:56:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B17E76B81D
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 16:58:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQqn3-0003Vf-Cz; Tue, 01 Aug 2023 10:56:01 -0400
+	id 1qQqov-0004c7-7T; Tue, 01 Aug 2023 10:57:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gudkov.andrei@huawei.com>)
- id 1qQqmx-0003O4-4K
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 10:55:55 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qQqot-0004bs-Df
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 10:57:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gudkov.andrei@huawei.com>)
- id 1qQqmu-0000nD-98
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 10:55:54 -0400
-Received: from lhrpeml500004.china.huawei.com (unknown [172.18.147.206])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RFdPH43bWz6J6sw;
- Tue,  1 Aug 2023 22:52:19 +0800 (CST)
-Received: from localhost (10.199.58.101) by lhrpeml500004.china.huawei.com
- (7.191.163.9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Tue, 1 Aug
- 2023 15:55:34 +0100
-Date: Tue, 1 Aug 2023 17:55:29 +0300
-To: Peter Xu <peterx@redhat.com>
-CC: <qemu-devel@nongnu.org>, <quintela@redhat.com>, <leobras@redhat.com>,
- <eblake@redhat.com>, <armbru@redhat.com>, Yong Huang
- <huangy81@chinatelecom.cn>
-Subject: Re: [PATCH] migration/calc-dirty-rate: millisecond precision period
-Message-ID: <ZMkc4YTUNU3gcOwB@DESKTOP-0LHM7NF.china.huawei.com>
-References: <8571da37847f9bb39b84e62ef4998e68ef3c10d1.1688028297.git.gudkov.andrei@huawei.com>
- <ZKcUv1Ge/RVBHJKT@x1n>
- <ZK1NOmUVc/eUivhV@DESKTOP-0LHM7NF.china.huawei.com>
- <ZLWRtU3sXDreCFxO@x1n>
- <ZMfKhYPyeO74BJoP@DESKTOP-0LHM7NF.china.huawei.com>
- <ZMgUQGN+fOiSE5qE@x1n>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qQqor-0001jH-KH
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 10:57:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1690901872;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=56ag8D23N3D5V0yxKxxXalTgQPrSfiJDhLX6VgqQOGE=;
+ b=UdcNf6PtJ8gRp2pg7h/OKRLvBVCSAEelv+g2ZdyU+9zolTPAYYN/g1lveuqOD3vfQk0+Es
+ v98LMDFaPxgA/Bnvanh2asVP/vJ+BhF7URI2r9VS/QmldH0bey+SKuSHW+twk2j6+QPhQl
+ wl7VaDjzQozPEqvBbF2nFkDDQmomI+A=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-61-RoTO5reeNJaZMOmI1rknFQ-1; Tue, 01 Aug 2023 10:57:48 -0400
+X-MC-Unique: RoTO5reeNJaZMOmI1rknFQ-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D87FA881B26;
+ Tue,  1 Aug 2023 14:57:46 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.93])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 9CDB540C2063;
+ Tue,  1 Aug 2023 14:57:44 +0000 (UTC)
+Date: Tue, 1 Aug 2023 15:57:42 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Sean Christopherson <seanjc@google.com>,
+ David Hildenbrand <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Marcelo Tosatti <mtosatti@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peter Xu <peterx@redhat.com>, Chao Peng <chao.p.peng@linux.intel.com>,
+ Michael Roth <michael.roth@amd.com>, isaku.yamahata@gmail.com,
+ qemu-devel@nongnu.org, kvm@vger.kernel.org
+Subject: Re: [RFC PATCH 08/19] HostMem: Add private property to indicate to
+ use kvm gmem
+Message-ID: <ZMkdZkQipZUIUicN@redhat.com>
+References: <20230731162201.271114-1-xiaoyao.li@intel.com>
+ <20230731162201.271114-9-xiaoyao.li@intel.com>
+ <87o7js808y.fsf@pond.sub.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <ZMgUQGN+fOiSE5qE@x1n>
-X-Originating-IP: [10.199.58.101]
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- lhrpeml500004.china.huawei.com (7.191.163.9)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=gudkov.andrei@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+In-Reply-To: <87o7js808y.fsf@pond.sub.org>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -66,186 +89,46 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  <gudkov.andrei@huawei.com>
-From: gudkov.andrei--- via <qemu-devel@nongnu.org>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jul 31, 2023 at 04:06:24PM -0400, Peter Xu wrote:
-> Hi, Andrei,
+On Mon, Jul 31, 2023 at 07:22:05PM +0200, Markus Armbruster wrote:
+> Xiaoyao Li <xiaoyao.li@intel.com> writes:
 > 
-> On Mon, Jul 31, 2023 at 05:51:49PM +0300, gudkov.andrei@huawei.com wrote:
-> > On Mon, Jul 17, 2023 at 03:08:37PM -0400, Peter Xu wrote:
-> > > On Tue, Jul 11, 2023 at 03:38:18PM +0300, gudkov.andrei@huawei.com wrote:
-> > > > On Thu, Jul 06, 2023 at 03:23:43PM -0400, Peter Xu wrote:
-> > > > > On Thu, Jun 29, 2023 at 11:59:03AM +0300, Andrei Gudkov wrote:
-> > > > > > Introduces alternative argument calc-time-ms, which is the
-> > > > > > the same as calc-time but accepts millisecond value.
-> > > > > > Millisecond precision allows to make predictions whether
-> > > > > > migration will succeed or not. To do this, calculate dirty
-> > > > > > rate with calc-time-ms set to max allowed downtime, convert
-> > > > > > measured rate into volume of dirtied memory, and divide by
-> > > > > > network throughput. If the value is lower than max allowed
-> > > > > > downtime, then migration will converge.
-> > > > > > 
-> > > > > > Measurement results for single thread randomly writing to
-> > > > > > a 24GiB region:
-> > > > > > +--------------+--------------------+
-> > > > > > | calc-time-ms | dirty-rate (MiB/s) |
-> > > > > > +--------------+--------------------+
-> > > > > > |          100 |               1880 |
-> > > > > > |          200 |               1340 |
-> > > > > > |          300 |               1120 |
-> > > > > > |          400 |               1030 |
-> > > > > > |          500 |                868 |
-> > > > > > |          750 |                720 |
-> > > > > > |         1000 |                636 |
-> > > > > > |         1500 |                498 |
-> > > > > > |         2000 |                423 |
-> > > > > > +--------------+--------------------+
-> > > > > 
-> > > > > Do you mean the dirty workload is constant?  Why it differs so much with
-> > > > > different calc-time-ms?
-> > > > 
-> > > > Workload is as constant as it could be. But the naming is misleading.
-> > > > What is named "dirty-rate" in fact is not "rate" at all.
-> > > > calc-dirty-rate measures number of *uniquely* dirtied pages, i.e. each
-> > > > page can contribute to the counter only once during measurement period.
-> > > > That's why the values are decreasing. Consider also ad infinitum argument:
-> > > > since VM has fixed number of pages and each page can be dirtied only once,
-> > > > dirty-rate=number-of-dirtied-pages/calc-time -> 0 as calc-time -> inf.
-> > > > It would make more sense to report number as "dirty-volume" --
-> > > > without dividing it by calc-time.
-> > > > 
-> > > > Note that number of *uniquely* dirtied pages in given amount of time is
-> > > > exactly what we need for doing migration-related predictions. There is
-> > > > no error here.
-> > > 
-> > > Is calc-time-ms the duration of the measurement?
-> > > 
-> > > Taking the 1st line as example, 1880MB/s * 0.1s = 188MB.
-> > > For the 2nd line, 1340MB/s * 0.2s = 268MB.
-> > > Even for the longest duration of 2s, that's 846MB in total.
-> > > 
-> > > The range is 24GB.  In this case, most of the pages should only be written
-> > > once even if random for all these test durations, right?
-> > > 
-> > 
-> > Yes, I messed with load generator.
-> > The effective memory region was much smaller than 24GiB.
-> > I performed more testing (after fixing load generator),
-> > now with different memory sizes and different modes.
-> > 
-> > +--------------+-----------------------------------------------+
-> > | calc-time-ms |                dirty rate MiB/s               |
-> > |              +----------------+---------------+--------------+
-> > |              | theoretical    | page-sampling | dirty-bitmap |
-> > |              | (at 3M wr/sec) |               |              |
-> > +--------------+----------------+---------------+--------------+
-> > |                             1GiB                             |
-> > +--------------+----------------+---------------+--------------+
-> > |          100 |           6996 |          7100 |         3192 |
-> > |          200 |           4606 |          4660 |         2655 |
-> > |          300 |           3305 |          3280 |         2371 |
-> > |          400 |           2534 |          2525 |         2154 |
-> > |          500 |           2041 |          2044 |         1871 |
-> > |          750 |           1365 |          1341 |         1358 |
-> > |         1000 |           1024 |          1052 |         1025 |
-> > |         1500 |            683 |           678 |          684 |
-> > |         2000 |            512 |           507 |          513 |
-> > +--------------+----------------+---------------+--------------+
-> > |                             4GiB                             |
-> > +--------------+----------------+---------------+--------------+
-> > |          100 |          10232 |          8880 |         4070 |
-> > |          200 |           8954 |          8049 |         3195 |
-> > |          300 |           7889 |          7193 |         2881 |
-> > |          400 |           6996 |          6530 |         2700 |
-> > |          500 |           6245 |          5772 |         2312 |
-> > |          750 |           4829 |          4586 |         2465 |
-> > |         1000 |           3865 |          3780 |         2178 |
-> > |         1500 |           2694 |          2633 |         2004 |
-> > |         2000 |           2041 |          2031 |         1789 |
-> > +--------------+----------------+---------------+--------------+
-> > |                             24GiB                            |
-> > +--------------+----------------+---------------+--------------+
-> > |          100 |          11495 |          8640 |         5597 |
-> > |          200 |          11226 |          8616 |         3527 |
-> > |          300 |          10965 |          8386 |         2355 |
-> > |          400 |          10713 |          8370 |         2179 |
-> > |          500 |          10469 |          8196 |         2098 |
-> > |          750 |           9890 |          7885 |         2556 |
-> > |         1000 |           9354 |          7506 |         2084 |
-> > |         1500 |           8397 |          6944 |         2075 |
-> > |         2000 |           7574 |          6402 |         2062 |
-> > +--------------+----------------+---------------+--------------+
-> > 
-> > Theoretical values are computed according to the following formula:
-> > size * (1 - (1-(4096/size))^(time*wps)) / (time * 2^20),
+> > From: Isaku Yamahata <isaku.yamahata@intel.com>
+> >
+> > Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
+> > Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 > 
-> Thanks for more testings and the statistics.
+> [...]
 > 
-> I had a feeling that this formula may or may not be accurate, but that's
-> less of an issue here.
+> > diff --git a/qapi/qom.json b/qapi/qom.json
+> > index 7f92ea43e8e1..e0b2044e3d20 100644
+> > --- a/qapi/qom.json
+> > +++ b/qapi/qom.json
+> > @@ -605,6 +605,9 @@
+> >  # @reserve: if true, reserve swap space (or huge pages) if applicable
+> >  #     (default: true) (since 6.1)
+> >  #
+> > +# @private: if true, use KVM gmem private memory
+> > +#           (default: false) (since 8.1)
+> > +#
 > 
-> > where size is in bytes, time is in seconds, and wps is number of
-> > writes per second (I measured approximately 3000000 on my system).
-> > 
-> > Theoretical values and values obtained with page-sampling are
-> > approximately close (<=25%). Dirty-bitmap values are much lower,
-> > likely because the majority of writes cause page faults. Even though
-> > dirty-bitmap logic is closer to what is happening during live
-> > migration, I still favor page sampling because the latter doesn't
-> > impact the performance of VM too much.
+> Please format like
 > 
-> Do you really use page samplings in production?  I don't remember I
-> mentioned it anywhere before, but it will provide very wrong number when
-> the memory updates has a locality, afaik.  For example, when 4G VM only has
-> 1G actively updated, the result can be 25% of reality iiuc, seeing that the
-> rest 3G didn't even change.  It works only well with very distributed
-> memory updates.
-> 
+>    # @private: if true, use KVM gmem private memory (default: false)
+>    #     (since 8.1)
 
-Hmmm, such underestimation looks strange to me. I am willing to test
-page-sampling and see whether its quality can be improved. Do you have
-any specific suggestions on the application to use as a workload?
+Also QEMU 8.1.0 is in freeze right now, so there's no chance
+of these patches making 8.1.0. IOW, use "since 8.2" as the
+next release you might achieve merge for.
 
-If it turns out that page-sampling is not an option, then performance
-impact of the dirty-bitmap must be improved somehow. Maybe it makes
-sense to split memory into 4GiB chunks and measure dirty page rate
-independently for each of the chunks (without enabling page
-protections for memory outside of the currently processed chunk).
-But the downsides are that 1) total measurement time will increase
-proportionally by number of chunks 2) dirty page rate will be
-overestimated.
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
-But actually I am still hoping on page sampling. Since my goal is to
-roughly predict what can be migrated and what cannot be, I would prefer
-to keep predictor as lite as possible, even at the cost of
-(overestimation) error.
-
-> > 
-> > Whether calc-time < 1sec is meaningful or not depends on the size
-> > of memory region with active writes.
-> > 1. If we have big VM and writes are evenly spread over the whole
-> >    address space, then almost all writes will go into unique pages.
-> >    In this case number of dirty pages will grow approximately
-> >    linearly with time for small calc-time values.
-> > 2. But if memory region with active writes is small enough, then many
-> >    writes will go to the same page, and the number of dirty pages
-> >    will grow sublinearly even for small calc-time values. Note that
-> >    the second scenario can happen even VM RAM is big. For example,
-> >    imagine 128GiB VM with in-memory database that is used for reading.
-> >    Although VM size is big, the memory region with active writes is
-> >    just the application stack.
-> 
-> No issue here to support small calc-time.  I think as long as it'll be
-> worthwhile in any use case I'd be fine with it (rather than working for all
-> use cases).  Not a super high bar to maintain the change.
-> 
-> I copied Yong too, he just volunteered to look after the dirtyrate stuff.
-> 
-> Thanks,
-> 
-> -- 
-> Peter Xu
 
