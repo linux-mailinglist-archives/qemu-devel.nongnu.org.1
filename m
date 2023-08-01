@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7808C76B955
+	by mail.lfdr.de (Postfix) with ESMTPS id 73BA976B954
 	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 18:05:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQrqm-0001hx-6i; Tue, 01 Aug 2023 12:03:56 -0400
+	id 1qQrqn-0001qf-6L; Tue, 01 Aug 2023 12:03:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1qQrqd-0001Rg-V8
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 12:03:49 -0400
+ id 1qQrqg-0001WE-Ia
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 12:03:51 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1qQrqc-0005A9-Ht
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 12:03:47 -0400
+ id 1qQrqe-0005BK-US
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 12:03:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690905824;
+ s=mimecast20190719; t=1690905828;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=RrVmqGVyCP1CPTJBHML95V4Gsgpeo1SRnEgQv8e8fwE=;
- b=WXXxx2avAS+QcmtiVPS1jLyL/5zDm6MKhG7P4j4KDnbsexmC3OMXbIa1TcFOKOJOe6Q+7D
- +EIjGd3DVfX8Kf4YqumTNxSEUvc9dEfD0qpScwmxiLpPkIk2c+5JqFCNnc67+FFss0qWih
- g1NXrJzy27K7Uh6agxK9Gvb/r/8AQ3w=
+ bh=e8287JZxFoKQYSGJDbSuajwiLjtWsxVc7SmfZQR3i98=;
+ b=Fuf2xa2raLWESOZimGzmUvVEpchImDfwQfmhyDpUp6V9MNhXFQWSuMpoqQiRGRhgFIMPc7
+ iuKQVl2u+u+5Okm7oIEWxCvv2U+KeKftWlPuwYlfJ9QtxRh11bSE7RLPuFRScSBZVCVDpT
+ IBIMJpBT5er+SJWr1ubIdeFFq3P/ym4=
 Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
  [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-180-ITYDWcD9O1CkRvZK1e-dEQ-1; Tue, 01 Aug 2023 12:03:41 -0400
-X-MC-Unique: ITYDWcD9O1CkRvZK1e-dEQ-1
+ us-mta-552-SPBHbtrBPgKOhTiyNs0dTQ-1; Tue, 01 Aug 2023 12:03:46 -0400
+X-MC-Unique: SPBHbtrBPgKOhTiyNs0dTQ-1
 Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-317a0d22311so1456850f8f.0
- for <qemu-devel@nongnu.org>; Tue, 01 Aug 2023 09:03:41 -0700 (PDT)
+ ffacd0b85a97d-31775a8546fso3617833f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 01 Aug 2023 09:03:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690905820; x=1691510620;
+ d=1e100.net; s=20221208; t=1690905825; x=1691510625;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=RrVmqGVyCP1CPTJBHML95V4Gsgpeo1SRnEgQv8e8fwE=;
- b=bOEqljiErMwMPZaosamxn7lbyL12rlgYav8HIcYWd95HIYUKtOfpr0Pafc1KWb8FfA
- 7crW87Y3Huo61/ocPgHZkuQEB/Lp3DCNbCkbQmP0xbwBO4BDGXKRXtnN6NubUMY1U4hO
- 6mH2j6krqbZJx/CVRydBdr5BZyTVc9zjsXT2GNoB/4atkuey0t2H/fO8kOcBP+qXVW7B
- MBCqGHx/VsJA88B6wmsY50L8D/cx0NSalu68KvsE2Dm23MqR9QxOKDD7SOv3C+2K4CUa
- KnhpolwnrbWyVwixk882JM8ZK3HhB9C5Zh15xJQq/OSfUx5gqHuPByzzzzU8M1UmhCGV
- bd9Q==
-X-Gm-Message-State: ABy/qLbQ/YhoPXpf715fDX1svqY6vdeDFLuKePIdPMRxHyKtf9u3hKg0
- CVO0iVs+6nu82rvQxYlrenUOIIRP/01dka31f/HEIAxYvp6o+Wgp0WkmpK3pUNSRzwXUXtnETyi
- CCFK8fEcazbpMEvHEEtf8dO7Zb4wid5VFG2ytDSvNLuu+UyiCW3MtmqvWW0z55O6d4+aIPJ8OmZ
- o=
-X-Received: by 2002:adf:ee52:0:b0:317:57f0:fae with SMTP id
- w18-20020adfee52000000b0031757f00faemr2762912wro.63.1690905820018; 
- Tue, 01 Aug 2023 09:03:40 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHz1xUYMFW0RnkpMhsVBCeDxq9bj11RthHaQMlfH+gafDbpmeI/EYok9nTlLxuvMD97KByqYw==
-X-Received: by 2002:adf:ee52:0:b0:317:57f0:fae with SMTP id
- w18-20020adfee52000000b0031757f00faemr2762886wro.63.1690905819653; 
- Tue, 01 Aug 2023 09:03:39 -0700 (PDT)
+ bh=e8287JZxFoKQYSGJDbSuajwiLjtWsxVc7SmfZQR3i98=;
+ b=SrEZjIbi+0uh3lGBGBbKouxOozIpDz9YTmU9M+8sN2Y4xTBHMzwutwePujajBPK8kZ
+ aOOeYjGNF9G+wBg7aO/5GqPPQqeRgL5Yrqfdd/edhlV6jB4oXaYbrgNpes9NJma/Hodm
+ 40FFEiQjzk84lwVfMSXvxnnQFZ5DeSZawvKUjffwQy8HT/vjYowaftIjXamRxtJhB9Dr
+ YbJwM4JXpLyX/FiwF8JESsy825vPxqpyljRVen/eivIhHqelJ7BtKJprcYtQMdrZkFEl
+ OT5HOr8dO8b/qo5VxK7T9WYRdAabMHTmtq2Kt3l+N8FYVpjlCTkf/65Jh0nlhKv5prti
+ cFAg==
+X-Gm-Message-State: ABy/qLZbX0TNkycZGPXwoifZSmtu5h3YYRd3qCjnw/+YkJtUMj6YQy/Q
+ zJvGUWrhgz6Btf6vclI7gHZipIfajGSr0vXFpnSECnA0695Rw0Jrpu4Hc/9f89gIBGiJPQWQCvt
+ 9mJ4y1bzdfsi1RtqMOc1dqMp1rAYIXBkmHIEml+kJsWN0bWReMPD4LeTbq7MfmyqwmD+65MhgiT
+ Y=
+X-Received: by 2002:adf:ecc8:0:b0:314:336e:d4d8 with SMTP id
+ s8-20020adfecc8000000b00314336ed4d8mr2981954wro.8.1690905825350; 
+ Tue, 01 Aug 2023 09:03:45 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlGR4eJpjWsyQgVBlBg3kNCqcMAnpXI5eMr020YCQd9JT1DlDHWmNGP+rSJJHWUiwO7+pTj+cg==
+X-Received: by 2002:adf:ecc8:0:b0:314:336e:d4d8 with SMTP id
+ s8-20020adfecc8000000b00314336ed4d8mr2981916wro.8.1690905824600; 
+ Tue, 01 Aug 2023 09:03:44 -0700 (PDT)
 Received: from step1.. (host-82-57-51-214.retail.telecomitalia.it.
  [82.57.51.214]) by smtp.gmail.com with ESMTPSA id
- f11-20020adff58b000000b003143aa0ca8asm16400418wro.13.2023.08.01.09.03.38
+ o10-20020a056000010a00b00317b063590fsm1728460wrx.55.2023.08.01.09.03.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 01 Aug 2023 09:03:38 -0700 (PDT)
+ Tue, 01 Aug 2023 09:03:43 -0700 (PDT)
 From: Stefano Garzarella <sgarzare@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
  Stefan Hajnoczi <stefanha@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
  Stefano Garzarella <sgarzare@redhat.com>
-Subject: [PATCH 1/2] block/blkio: close the fd when blkio_connect() fails
-Date: Tue,  1 Aug 2023 18:03:31 +0200
-Message-ID: <20230801160332.122564-2-sgarzare@redhat.com>
+Subject: [PATCH 2/2] block/blkio: add more comments on the fd passing handling
+Date: Tue,  1 Aug 2023 18:03:32 +0200
+Message-ID: <20230801160332.122564-3-sgarzare@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230801160332.122564-1-sgarzare@redhat.com>
 References: <20230801160332.122564-1-sgarzare@redhat.com>
@@ -103,43 +103,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-libblkio drivers take ownership of `fd` only after a successful
-blkio_connect(), so if it fails, we are still the owners.
+As Hanna pointed out, it is not clear in the code why qemu_open()
+can fail, and why blkio_set_int("fd") is not enough to discover
+the `fd` property support.
 
-Fixes: cad2ccc395 ("block/blkio: use qemu_open() to support fd passing for virtio-blk")
+Let's fix them by adding more details in the code comments.
+
 Suggested-by: Hanna Czenczek <hreitz@redhat.com>
 Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
 ---
- block/blkio.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ block/blkio.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
 diff --git a/block/blkio.c b/block/blkio.c
-index 8e7ce42c79..2d53a865e7 100644
+index 2d53a865e7..848b8189d0 100644
 --- a/block/blkio.c
 +++ b/block/blkio.c
-@@ -739,6 +739,7 @@ static int blkio_virtio_blk_connect(BlockDriverState *bs, QDict *options,
-      * directly setting `path`.
+@@ -713,6 +713,12 @@ static int blkio_virtio_blk_connect(BlockDriverState *bs, QDict *options,
+          */
+         fd = qemu_open(path, O_RDWR, NULL);
+         if (fd < 0) {
++            /*
++             * qemu_open() can fail if the user specifies a path that is not
++             * a file or device, for example in the case of Unix Domain Socket
++             * for the virtio-blk-vhost-user driver. In such cases let's have
++             * libblkio open the path directly.
++             */
+             fd_supported = false;
+         } else {
+             ret = blkio_set_int(s->blkio, "fd", fd);
+@@ -734,9 +740,12 @@ static int blkio_virtio_blk_connect(BlockDriverState *bs, QDict *options,
+ 
+     ret = blkio_connect(s->blkio);
+     /*
+-     * If the libblkio driver doesn't support the `fd` property, blkio_connect()
+-     * will fail with -EINVAL. So let's try calling blkio_connect() again by
+-     * directly setting `path`.
++     * Before https://gitlab.com/libblkio/libblkio/-/merge_requests/208
++     * (libblkio <= v1.3.0), setting the `fd` property is not enough to check
++     * whether the driver supports the `fd` property or not. In that case,
++     * blkio_connect() will fail with -EINVAL.
++     * So let's try calling blkio_connect() again by directly setting `path`
++     * to cover this scenario.
       */
      if (fd_supported && ret == -EINVAL) {
-+        fd_supported = false;
-         qemu_close(fd);
- 
-         /*
-@@ -763,6 +764,14 @@ static int blkio_virtio_blk_connect(BlockDriverState *bs, QDict *options,
-     }
- 
-     if (ret < 0) {
-+        if (fd_supported) {
-+            /*
-+             * libblkio drivers take ownership of `fd` only after a successful
-+             * blkio_connect(), so if it fails, we are still the owners.
-+             */
-+            qemu_close(fd);
-+        }
-+
-         error_setg_errno(errp, -ret, "blkio_connect failed: %s",
-                          blkio_get_error_msg());
-         return ret;
+         fd_supported = false;
 -- 
 2.41.0
 
