@@ -2,85 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F3AD76BAD6
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 19:10:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34CA476BAD8
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 19:11:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQssS-0006fm-14; Tue, 01 Aug 2023 13:09:44 -0400
+	id 1qQsst-0006jb-K7; Tue, 01 Aug 2023 13:10:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qQssI-0006fR-Jz
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 13:09:34 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qQssE-0004Cs-WD
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 13:09:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690909767;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ (Exim 4.90_1) (envelope-from <cfontana@suse.de>) id 1qQsss-0006jR-16
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 13:10:10 -0400
+Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <cfontana@suse.de>) id 1qQssp-0004RZ-0B
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 13:10:09 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 320391FD96;
+ Tue,  1 Aug 2023 17:10:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1690909805; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=7TYdUQSbsMdQlXtHfoM5M3lYMBKRaXC7t6qTUsDgJ84=;
- b=A1S7Pn+52ECq5EszXFpCY0D1mz/MVto4Z1YeQrfpqIQBHD8SICdbJp5t2b1YRi5X2IpFu+
- xXsoQbfeHE3mTicVecxVeQt0eMiJELN6u/2Gqa9Gg771F6L8eKEX90GXV6PlYF9Wr52xTr
- S+sn2q7kgm4pe4XVqjYKbkL9FjYyzns=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-426--ys7HvB1NkWh1H4lSg9l_g-1; Tue, 01 Aug 2023 13:09:25 -0400
-X-MC-Unique: -ys7HvB1NkWh1H4lSg9l_g-1
-Received: by mail-qk1-f197.google.com with SMTP id
- af79cd13be357-76c8e07cbe9so102935385a.1
- for <qemu-devel@nongnu.org>; Tue, 01 Aug 2023 10:09:25 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690909765; x=1691514565;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=7TYdUQSbsMdQlXtHfoM5M3lYMBKRaXC7t6qTUsDgJ84=;
- b=MDEn2m/YTWpPf7A5zj0ntVSfJDMgrr1YG5qNuKj3bv5luRcHdEh4kvKaeouQBzMTq6
- jSpyMHQsYFyR8n570DEVdM8e5LLUnrZdQyyNInTms1fO3bh8EbUo00UpBpKvGHwVHB/w
- hea4cjfFEKgE3Guhg/2yJOSCU6fy3ddqu3gBTAEXTBXWN02N1i4o4DeIT/yzmCzaQdst
- wyoEdMrZHlmnPqRGfgNuQ8Gnf20ehbBWWp2j1saqsa3KNusFncxNxzeXzne1twD7QvOr
- d5e+LJ1pMf4X/RFPp31Zw3mOyBfpfmd6nCiG57IIwEeSL2Khns8nS1KFUnu9p+Rs2wPW
- 1WTw==
-X-Gm-Message-State: ABy/qLY0/FvtYH7+9USqXbjYJxz72kZW1Mde2SpefuaKXHcB7TkqNjbK
- bJd23+9XtpneOcfTRcvgKpxLNuPBdI9la6WsJdod4YnhNiXQqk0QD2SZMfoK9MBVwe8Mhj5fxWx
- +dmwQ/oTe8EnrpAU=
-X-Received: by 2002:a05:620a:2a05:b0:76c:c782:de60 with SMTP id
- o5-20020a05620a2a0500b0076cc782de60mr2061860qkp.4.1690909765135; 
- Tue, 01 Aug 2023 10:09:25 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHvAPKlX6rFjJPNAYdOVKtEd2UYKnjJ6suC2euGTiq8NWnPWXgkyVwwOaiPDjVFk7B60+Zqxw==
-X-Received: by 2002:a05:620a:2a05:b0:76c:c782:de60 with SMTP id
- o5-20020a05620a2a0500b0076cc782de60mr2061839qkp.4.1690909764826; 
- Tue, 01 Aug 2023 10:09:24 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- 27-20020a05620a079b00b00767da9b6ae9sm4283810qka.11.2023.08.01.10.09.24
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 01 Aug 2023 10:09:24 -0700 (PDT)
-Date: Tue, 1 Aug 2023 13:09:22 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Andrei Gudkov <gudkov.andrei@huawei.com>
-Cc: qemu-devel@nongnu.org, quintela@redhat.com, leobras@redhat.com,
- eblake@redhat.com, armbru@redhat.com
-Subject: Re: [PATCH] migration/calc-dirty-rate: millisecond precision period
-Message-ID: <ZMk8QmJ1fjghgwXD@x1n>
-References: <8571da37847f9bb39b84e62ef4998e68ef3c10d1.1688028297.git.gudkov.andrei@huawei.com>
+ bh=7yNtEU9Zy261xZ3vbDMsFc4F01pjUVwn8FOxPvflC1M=;
+ b=Mf4d+sBvRKqIg568KLnPQ2TyBgZnMcfDI6RGk2vMe9CLL1FxlmrgPCDQ7Ny6uPxpbOEynF
+ gZeZoPCY/aBUWM2TqThqy2yhDXc5LBv7r6KKp/1Qbum//gOKrDQoHRctiTPwl+CyhOkBf2
+ zaTTEedxE2pMpeJ59F5IQzbWJS4Idq4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1690909805;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=7yNtEU9Zy261xZ3vbDMsFc4F01pjUVwn8FOxPvflC1M=;
+ b=JUNrVyj/c5+JwcV5TPYCc2zRvuTT/6H93+FhagCdmes0CXsfLscM+DoevRXfLe+LQGFH58
+ YYSmQgsfrtnVIpCA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 57149139BD;
+ Tue,  1 Aug 2023 17:10:04 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id Z7ZjE2w8yWSENwAAMHmgww
+ (envelope-from <cfontana@suse.de>); Tue, 01 Aug 2023 17:10:04 +0000
+Message-ID: <abf251ad-12d5-fb05-d3af-5a6ecbf56bb4@suse.de>
+Date: Tue, 1 Aug 2023 19:10:03 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <8571da37847f9bb39b84e62ef4998e68ef3c10d1.1688028297.git.gudkov.andrei@huawei.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.0
+Subject: Re: [RFC PATCH 05/19] kvm: Enable KVM_SET_USER_MEMORY_REGION2 for
+ memslot
+Content-Language: en-US
+To: Xiaoyao Li <xiaoyao.li@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Sean Christopherson <seanjc@google.com>, David Hildenbrand
+ <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Marcelo Tosatti <mtosatti@redhat.com>
+Cc: Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Peter Xu <peterx@redhat.com>, Chao Peng <chao.p.peng@linux.intel.com>,
+ Michael Roth <michael.roth@amd.com>, isaku.yamahata@gmail.com,
+ qemu-devel@nongnu.org, kvm@vger.kernel.org
+References: <20230731162201.271114-1-xiaoyao.li@intel.com>
+ <20230731162201.271114-6-xiaoyao.li@intel.com>
+From: Claudio Fontana <cfontana@suse.de>
+In-Reply-To: <20230731162201.271114-6-xiaoyao.li@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2001:67c:2178:6::1d;
+ envelope-from=cfontana@suse.de; helo=smtp-out2.suse.de
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.092,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,45 +100,160 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jun 29, 2023 at 11:59:03AM +0300, Andrei Gudkov wrote:
-> Introduces alternative argument calc-time-ms, which is the
-> the same as calc-time but accepts millisecond value.
-> Millisecond precision allows to make predictions whether
-> migration will succeed or not. To do this, calculate dirty
-> rate with calc-time-ms set to max allowed downtime, convert
-> measured rate into volume of dirtied memory, and divide by
-> network throughput. If the value is lower than max allowed
-> downtime, then migration will converge.
+On 7/31/23 18:21, Xiaoyao Li wrote:
+> From: Chao Peng <chao.p.peng@linux.intel.com>
 > 
-> Measurement results for single thread randomly writing to
-> a 24GiB region:
-> +--------------+--------------------+
-> | calc-time-ms | dirty-rate (MiB/s) |
-> +--------------+--------------------+
-> |          100 |               1880 |
-> |          200 |               1340 |
-> |          300 |               1120 |
-> |          400 |               1030 |
-> |          500 |                868 |
-> |          750 |                720 |
-> |         1000 |                636 |
-> |         1500 |                498 |
-> |         2000 |                423 |
-> +--------------+--------------------+
+> Switch to KVM_SET_USER_MEMORY_REGION2 when supported by KVM.
 > 
-> Signed-off-by: Andrei Gudkov <gudkov.andrei@huawei.com>
+> With KVM_SET_USER_MEMORY_REGION2, QEMU can set up memory region that
+> backen'ed both by hva-based shared memory and gmem fd based private
+> memory.
+> 
+> Signed-off-by: Chao Peng <chao.p.peng@linux.intel.com>
+> Codeveloped-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> ---
+>  accel/kvm/kvm-all.c      | 57 +++++++++++++++++++++++++++++++++-------
+>  accel/kvm/trace-events   |  2 +-
+>  include/sysemu/kvm_int.h |  2 ++
+>  3 files changed, 51 insertions(+), 10 deletions(-)
+> 
+> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+> index d8eee405de24..7b1818334ba7 100644
+> --- a/accel/kvm/kvm-all.c
+> +++ b/accel/kvm/kvm-all.c
+> @@ -288,35 +288,68 @@ int kvm_physical_memory_addr_from_host(KVMState *s, void *ram,
+>  static int kvm_set_user_memory_region(KVMMemoryListener *kml, KVMSlot *slot, bool new)
+>  {
+>      KVMState *s = kvm_state;
+> -    struct kvm_userspace_memory_region mem;
+> +    struct kvm_userspace_memory_region2 mem;
+> +    static int cap_user_memory2 = -1;
+>      int ret;
+>  
+> +    if (cap_user_memory2 == -1) {
+> +        cap_user_memory2 = kvm_check_extension(s, KVM_CAP_USER_MEMORY2);
+> +    }
+> +
+> +    if (!cap_user_memory2 && slot->fd >= 0) {
+> +        error_report("%s, KVM doesn't support gmem!", __func__);
+> +        exit(1);
+> +    }
 
-Andrei, do you plan to enhance the commit message and data in a repost?  I
-assume you may want to have your data points updated after the discussion,
-and it won't need to be in a rush as it will only land 8.2.
+We handle this special error case here,
+while the existing callers of kvm_set_user_memory_region handle the other error cases in different places.
 
-The patch itself looks fine to me:
+Not that the rest of kvm-all does an excellent job at error handling, but maybe we can avoid compounding on the issue.
 
-Acked-by: Peter Xu <peterx@redhat.com>
+> +
+>      mem.slot = slot->slot | (kml->as_id << 16);
+>      mem.guest_phys_addr = slot->start_addr;
+>      mem.userspace_addr = (unsigned long)slot->ram;
+>      mem.flags = slot->flags;
+> +    mem.gmem_fd = slot->fd;
+> +    mem.gmem_offset = slot->ofs;
+>  
+> -    if (slot->memory_size && !new && (mem.flags ^ slot->old_flags) & KVM_MEM_READONLY) {
+> +    if (slot->memory_size && !new && (slot->flags ^ slot->old_flags) & KVM_MEM_READONLY) {
 
-Thanks,
+Why the change if mem.flags == slot->flags ?
 
--- 
-Peter Xu
+>          /* Set the slot size to 0 before setting the slot to the desired
+>           * value. This is needed based on KVM commit 75d61fbc. */
+>          mem.memory_size = 0;
+> -        ret = kvm_vm_ioctl(s, KVM_SET_USER_MEMORY_REGION, &mem);
+> +
+> +        if (cap_user_memory2) {
+> +            ret = kvm_vm_ioctl(s, KVM_SET_USER_MEMORY_REGION2, &mem);
+> +        } else {
+> +            ret = kvm_vm_ioctl(s, KVM_SET_USER_MEMORY_REGION, &mem);
+> +	    }
+>          if (ret < 0) {
+>              goto err;
+>          }
+>      }
+>      mem.memory_size = slot->memory_size;
+> -    ret = kvm_vm_ioctl(s, KVM_SET_USER_MEMORY_REGION, &mem);
+> +    if (cap_user_memory2) {
+> +        ret = kvm_vm_ioctl(s, KVM_SET_USER_MEMORY_REGION2, &mem);
+> +    } else {
+> +        ret = kvm_vm_ioctl(s, KVM_SET_USER_MEMORY_REGION, &mem);
+> +    }
+>      slot->old_flags = mem.flags;
+>  err:
+>      trace_kvm_set_user_memory(mem.slot >> 16, (uint16_t)mem.slot, mem.flags,
+>                                mem.guest_phys_addr, mem.memory_size,
+> -                              mem.userspace_addr, ret);
+> +                              mem.userspace_addr, mem.gmem_fd,
+> +			      mem.gmem_offset, ret);
+>      if (ret < 0) {
+> -        error_report("%s: KVM_SET_USER_MEMORY_REGION failed, slot=%d,"
+> -                     " start=0x%" PRIx64 ", size=0x%" PRIx64 ": %s",
+> -                     __func__, mem.slot, slot->start_addr,
+> -                     (uint64_t)mem.memory_size, strerror(errno));
+> +        if (cap_user_memory2) {
+> +                error_report("%s: KVM_SET_USER_MEMORY_REGION2 failed, slot=%d,"
+> +                        " start=0x%" PRIx64 ", size=0x%" PRIx64 ","
+> +                        " flags=0x%" PRIx32 ","
+> +                        " gmem_fd=%" PRId32 ", gmem_offset=0x%" PRIx64 ": %s",
+> +                        __func__, mem.slot, slot->start_addr,
+> +                (uint64_t)mem.memory_size, mem.flags,
+> +                        mem.gmem_fd, (uint64_t)mem.gmem_offset,
+> +                        strerror(errno));
+> +        } else {
+> +                error_report("%s: KVM_SET_USER_MEMORY_REGION failed, slot=%d,"
+> +                            " start=0x%" PRIx64 ", size=0x%" PRIx64 ": %s",
+> +                __func__, mem.slot, slot->start_addr,
+> +                (uint64_t)mem.memory_size, strerror(errno));
+> +        }
+>      }
+>      return ret;
+>  }
+> @@ -472,6 +505,9 @@ static int kvm_mem_flags(MemoryRegion *mr)
+>      if (readonly && kvm_readonly_mem_allowed) {
+>          flags |= KVM_MEM_READONLY;
+>      }
+> +    if (memory_region_can_be_private(mr)) {
+> +        flags |= KVM_MEM_PRIVATE;
+> +    }
+>      return flags;
+>  }
+>  
+> @@ -1402,6 +1438,9 @@ static void kvm_set_phys_mem(KVMMemoryListener *kml,
+>          mem->ram_start_offset = ram_start_offset;
+>          mem->ram = ram;
+>          mem->flags = kvm_mem_flags(mr);
+> +        mem->fd = mr->ram_block->gmem_fd;
+> +        mem->ofs = (uint8_t*)ram - mr->ram_block->host;
+> +
+>          kvm_slot_init_dirty_bitmap(mem);
+>          err = kvm_set_user_memory_region(kml, mem, true);
+>          if (err) {
+> diff --git a/accel/kvm/trace-events b/accel/kvm/trace-events
+> index 14ebfa1b991c..80694683acea 100644
+> --- a/accel/kvm/trace-events
+> +++ b/accel/kvm/trace-events
+> @@ -15,7 +15,7 @@ kvm_irqchip_update_msi_route(int virq) "Updating MSI route virq=%d"
+>  kvm_irqchip_release_virq(int virq) "virq %d"
+>  kvm_set_ioeventfd_mmio(int fd, uint64_t addr, uint32_t val, bool assign, uint32_t size, bool datamatch) "fd: %d @0x%" PRIx64 " val=0x%x assign: %d size: %d match: %d"
+>  kvm_set_ioeventfd_pio(int fd, uint16_t addr, uint32_t val, bool assign, uint32_t size, bool datamatch) "fd: %d @0x%x val=0x%x assign: %d size: %d match: %d"
+> -kvm_set_user_memory(uint16_t as, uint16_t slot, uint32_t flags, uint64_t guest_phys_addr, uint64_t memory_size, uint64_t userspace_addr, int ret) "AddrSpace#%d Slot#%d flags=0x%x gpa=0x%"PRIx64 " size=0x%"PRIx64 " ua=0x%"PRIx64 " ret=%d"
+> +kvm_set_user_memory(uint16_t as, uint16_t slot, uint32_t flags, uint64_t guest_phys_addr, uint64_t memory_size, uint64_t userspace_addr, uint32_t fd, uint64_t fd_offset, int ret) "AddrSpace#%d Slot#%d flags=0x%x gpa=0x%"PRIx64 " size=0x%"PRIx64 " ua=0x%"PRIx64 " gmem_fd=%d" " gmem_fd_offset=0x%" PRIx64 " ret=%d"
+>  kvm_clear_dirty_log(uint32_t slot, uint64_t start, uint32_t size) "slot#%"PRId32" start 0x%"PRIx64" size 0x%"PRIx32
+>  kvm_resample_fd_notify(int gsi) "gsi %d"
+>  kvm_dirty_ring_full(int id) "vcpu %d"
+> diff --git a/include/sysemu/kvm_int.h b/include/sysemu/kvm_int.h
+> index 511b42bde5c4..48220c0793ac 100644
+> --- a/include/sysemu/kvm_int.h
+> +++ b/include/sysemu/kvm_int.h
+> @@ -30,6 +30,8 @@ typedef struct KVMSlot
+>      int as_id;
+>      /* Cache of the offset in ram address space */
+>      ram_addr_t ram_start_offset;
+> +    int fd;
+> +    hwaddr ofs;
+>  } KVMSlot;
+>  
+>  typedef struct KVMMemoryUpdate {
 
 
