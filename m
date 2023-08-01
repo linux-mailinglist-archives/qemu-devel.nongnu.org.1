@@ -2,32 +2,32 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B35BE76C0DF
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Aug 2023 01:29:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A995676C0DD
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Aug 2023 01:29:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQymU-0001Jj-2F; Tue, 01 Aug 2023 19:27:58 -0400
+	id 1qQymU-0001K6-LE; Tue, 01 Aug 2023 19:27:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qQymS-0001Ii-54
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qQymS-0001Im-8C
  for qemu-devel@nongnu.org; Tue, 01 Aug 2023 19:27:56 -0400
-Received: from mout.gmx.net ([212.227.17.21])
+Received: from mout.gmx.net ([212.227.17.22])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qQymO-00077t-TX
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qQymP-00077u-0T
  for qemu-devel@nongnu.org; Tue, 01 Aug 2023 19:27:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
  s=s31663417; t=1690932467; x=1691537267; i=deller@gmx.de;
- bh=dNLgHG2agLIXgxeCp0C/7+fkMs1PEdZE6CSSHjmy6d0=;
+ bh=N0Dlhp9SfJjPZs7/6Px6gA2M4iFsr6qxZXp6AFGyc34=;
  h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:References;
- b=RLojQbWby4qWMuYp/OpV5DD3LQu6GnNyHhqXusJNLnfKqToqE30nokbaTs9flKHWjRcnl05
- LqLPYri6ktKWUgLhefHfPsQZf/cm60Kp5YL+ObxyDUvEnzJV7IBkI++33HXZQO6Vv6lI4eDxX
- 4IA4JiiG6vc8YuHBKu1Jm4JvWm1bup7d4MhMdg19LUKk6nJqH/iidZ9Buc2WEt7bILp1F4zun
- 4To+H94Tt9wPUY0yecbr5MFK1LvdWG3fKEYGIuxRngznQG7uzxHcSSUYArmuF3moAyCgC2zqY
- CQiWZMUytGJcxWAtsh5udVkI7a3trHtnLIIgYWhkIeVFCEeWOC+A==
+ b=ae2GvHY+wc+d5DW1xyLJfYeC4bMWpFF4zpZCDuY1L6e57LY80RFSpvdA2uu3l1p9MxxO0cL
+ Ke3p0a7DgI2u7nmQ27/O8ilv32Z9xoDRt6UodpDX4prWDficF2GKsEacJwzNxpCaWTrJFaZz7
+ 4LSsa3fgua12L1lSphZqIeQWk/NJdUUr8GD+Mql9Geql6RCxMTt2WnwdwcRyxz63xIy7SXQr1
+ F7U/y5B+fcNgs2NWqQPC9BOMbOpXIi5spkXLxrwQT9FXyNjE65wSjtVXUZbRf7Mkof1KmUFtK
+ RJlY/HmVLFeolsFXDDqsuKI22b18wOqi9XrzwR0uWb8+o3OnDQ4Q==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from p100.fritz.box ([94.134.150.247]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MxDou-1pcIvr0Eq8-00xZJK; Wed, 02
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1N5mGB-1plPrs1Emh-0179wv; Wed, 02
  Aug 2023 01:27:47 +0200
 From: Helge Deller <deller@gmx.de>
 To: qemu-devel@nongnu.org
@@ -35,42 +35,43 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini <pbonzini@redhat.com>,
  Joel Stanley <joel@jms.id.au>, Akihiko Odaki <akihiko.odaki@daynix.com>,
  Helge Deller <deller@gmx.de>
-Subject: [PATCH v6 1/8] linux-user: Unset MAP_FIXED_NOREPLACE for host
-Date: Wed,  2 Aug 2023 01:27:38 +0200
-Message-ID: <20230801232745.4125-2-deller@gmx.de>
+Subject: [PATCH v6 2/8] linux-user: Do not call get_errno() in do_brk()
+Date: Wed,  2 Aug 2023 01:27:39 +0200
+Message-ID: <20230801232745.4125-3-deller@gmx.de>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230801232745.4125-1-deller@gmx.de>
 References: <20230801232745.4125-1-deller@gmx.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:B3tlJFMshtiM2Poswf1l5+h72Tn/39nTePXhwLZ1K7DWjHtB9t4
- ss+UfiYeoRbyApOMTnkTi8/w5NMxJmK8e/MdWFUxGc6ipHpgsHF5EPXpbb+Wf9KHVw1RP+O
- oVL6bKCCvGwsQRzfXUaQZR5zcW6roqruY1hq0eVUY5mrJCZRJpD0XoFkjeshX0aJMQwVQQv
- tVRg7VW4gn92bicRHMPWA==
-UI-OutboundReport: notjunk:1;M01:P0:/36yxsE/tso=;mt90+x41U2D6EVVh0VO6Dna8tps
- eiI+Z3pn8nEnpTc4e9a2QG2kMR26VLCHY4/kDcqdvydUSuqSSyO7iSj2gLiAiex1eIayZm5xh
- cWAESoDe4QaisltZBYngzU/m3JSLRpYlZgJnGnYVSmL6YzjqBgactHB0x5rHzquRe9RpAKVas
- OJzj0pdcoianZkw6y8PqwXr3U8apOk9X6nhiCYwvnQXX4g7wrTdKmwpVvBDzYisaVDzaNuVoC
- pMFqlj0n+rjr8qePbqomGp5UfesIIn68/oXkY+aRzAlZmzZyh9nDHNt7G7dR//fcjPHzK1FQi
- VcmbXJ8nupIO5ohDPBqn/gMWSoSRPcqrCD06O9oIHdvY/mdJlDXnuNQWNvWK/d4XNdtIm72YZ
- Tc9vm87wzHcVgLpi5r1Wm/LKpPhSBQKdS6YY+WxDCk1wpWr4s5fgxF1LCU79/IqrPXQxRp7Qc
- 0qOCAtMUKO7d6OcH2lMxSg7hZGFEcUd2L9X1BPFd2usK5PJQncsZoNLHEXXL2+6G1VzGwFAd4
- Kt9hfqiYrqPIDVCZV6Szh3CngRANgCy+Kow5I1fysg+acQjrlQ4iTvGFhLAQpLeGiWg5ersjr
- BAIoXLwLGvPmqnNoX/tLfjtay6pvxwwwJhqmuVy8Q3Py0SYOztkDHSlpCwfgCUYoch/b4Eyx6
- R/ylUrckFvH8+i3q1rtscmFmsSkXxPQuUofw1hlQgTKnO4eBa2i/Ojq4ki5qU4sgT6Nwkb26k
- wCvDb4WvZBLxJTvLmozKLhitgTDmk2rNWYQdpXnULMnt9Fnt2yAbrlvN0maZJKkfVAajLFNPR
- YALzT7Q7lQphxwATX5yE7Lsub3pWKl9om7zpABqAr5r6RTsoEkFPfbuYBKrpcBQFPzOOI3rg+
- 656EePfTi/EzNYoheXDy6TWrrySiKQJ+qYGqqisSga4478/VZOOaa3XG6ZSnIS7xs/1owPiiY
- oKpm1HMfUXFrX6/mGGr0BbE8/Xw=
-Received-SPF: pass client-ip=212.227.17.21; envelope-from=deller@gmx.de;
+X-Provags-ID: V03:K1:TmUFxzVccsPk1UUJ2K+MD5sAUSAzgEXo8tLUBGR2FYcGWfFhPK9
+ giW/X8ohG8VXEZQzMSTwK/VQpbdX+uwZ9FBLBTGwfdGPgnWeWbJ+LIpM6zclNDCIB0X30rK
+ fnPy8ywWu6U34YTTN0oulZoWtIiemJ8Yibw1Yb+RJ8C99tvbhWBFD9FPYZafkA4MsgVJOBa
+ ZXtFRjbCCB1n7c9ULFuKA==
+UI-OutboundReport: notjunk:1;M01:P0:2CFNa0EdhMA=;rp4y4vDVstcfqiOUZoWJFcA9N/I
+ gqBJzdtpRtk5cDCCJQxVlIx3kPgslCixFWPCx1E7OtjhKJTd3NLRiGnDRQCN6KlVU2YWeyMvK
+ skyYMKLfdfnpdjQ/bT7IwNjY8Q5G6m5fIbOD2SflvD54k1F9dXUkwGPAxSQc4z4FmBSmeVXax
+ Z4LRrlwXCLYQkMWxkfRS5rw/jMAoooyPW4uYnaebjrX8Syrz4B1+VPt1Q/FSWwIkLnwLkBMv8
+ aNq2unxHda9HPc5qv4mjythJ7gCIJkBzvNZod7I79yWoSMvPDz6hIXiy6ZM6mrwepi33ey56G
+ fFP0An5Wzgeohdv1T0ukyg1eD0yIcz5bo642iBWDQwZBgqf4sAhpJLpuxINPqG0yeExS9Q65J
+ rRooX3/k5SAuCcCGDEFm60hhXbeg70myo8QSVx4iP0ol1m75qhDxqcSHlZjQUGtFeJJANhNtA
+ gkUO41cg+sQ48L1BJm+ypPzFJTFwGPY4lblnvWSQzELB7hXHrSxH7XKlAniOaQFUb46YivXsa
+ BnuiDz7SUF8y0/0g2439JnYWVj8BRluVPZsfdl06i1+xpT1ty+DVGUfV0d+UnpmeZ+r+JC0qo
+ JG1O/rHz/rGLKADfhcTbTiF1qLm3PJQOpUIXIUMVOpVMKjQ8utuIt+BUREJXFknKkBxKHyrc+
+ 47vTafTIDOGFGDdt8KVRBOA1qpled2bNZbVEeDpT2mVLeAq/JZ0oj592+kGQbJwWDmRrYxa+b
+ AEk816+FttGxnq0rfHNkqX/yAEobFCROs+zE8hfzOljNPABcXqANk0uyPUpSoAR+z5MFvbG3P
+ aLLjSkIbQpsG3dz8GS3s/Jx+ovYII+GIn0dt4Gz5VqhN3CPS9LjXA8fnGXDiP/lyAYqZJvzya
+ IxAKjvYaEmm4GbUUVbZ6ijZi3sTYyB/XVuT/poTO3YwzchpKzl1fZMWeyqF7c+CEj4bnDeFLf
+ gCGOnuGwVG0r7yaxncT5vdPLqOQ=
+Received-SPF: pass client-ip=212.227.17.22; envelope-from=deller@gmx.de;
  helo=mout.gmx.net
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
 X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,30 +89,34 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-Passing MAP_FIXED_NOREPLACE to host will fail if the virtual
-address space is reserved with mmap. Replace it with MAP_FIXED.
+Later the returned value is compared with -1, and negated errno is not
+expected.
 
+Fixes: 00faf08c95 ("linux-user: Don't use MAP_FIXED in do_brk()")
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 Reviewed-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Helge Deller <deller@gmx.de>
 =2D--
- linux-user/mmap.c | 2 ++
- 1 file changed, 2 insertions(+)
+ linux-user/syscall.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/linux-user/mmap.c b/linux-user/mmap.c
-index a5dfb56545..2f26cbaf5d 100644
-=2D-- a/linux-user/mmap.c
-+++ b/linux-user/mmap.c
-@@ -610,6 +610,8 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, i=
-nt target_prot,
-             goto fail;
-         }
-
-+        flags =3D (flags & ~MAP_FIXED_NOREPLACE) | MAP_FIXED;
-+
-         /*
-          * worst case: we cannot map the file because the offset is not
-          * aligned, so we read it
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index 95727a816a..b9d2ec02f9 100644
+=2D-- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -862,9 +862,9 @@ abi_long do_brk(abi_ulong brk_val)
+      */
+     if (new_host_brk_page > brk_page) {
+         new_alloc_size =3D new_host_brk_page - brk_page;
+-        mapped_addr =3D get_errno(target_mmap(brk_page, new_alloc_size,
+-                                        PROT_READ|PROT_WRITE,
+-                                        MAP_ANON|MAP_PRIVATE, 0, 0));
++        mapped_addr =3D target_mmap(brk_page, new_alloc_size,
++                                  PROT_READ|PROT_WRITE,
++                                  MAP_ANON|MAP_PRIVATE, 0, 0);
+     } else {
+         new_alloc_size =3D 0;
+         mapped_addr =3D brk_page;
 =2D-
 2.41.0
 
