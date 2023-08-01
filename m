@@ -2,72 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C50F376BB97
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 19:48:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F42176BB99
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 19:48:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQtSX-00016v-Tm; Tue, 01 Aug 2023 13:47:01 -0400
+	id 1qQtTs-0002RN-Dq; Tue, 01 Aug 2023 13:48:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qQtSV-00016O-9P
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 13:46:59 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qQtST-00075t-Pw
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 13:46:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690912016;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=BL0ARjJ+eQs4h4J0geGkfpYZpOtvMOsNh41wGouGR3w=;
- b=UT9Yd83R4ZqMx1ZdxBkEtReiYWXKLNHj9bmi7CbcHkvGI+xlYej829Gx/Sc9HFLH9sx+M+
- Q2F8bTxeBhZtlc1hRi4wy3rmM/fGce54ZhWbYePhFwcwdTaYfm0XPT15QsH2YA075nKFVM
- 0nFHAX9EdV1nCOGduGDhmBFszALvsjs=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-687-eAJN1MDpM4-3O8KI8DfhZg-1; Tue, 01 Aug 2023 13:46:53 -0400
-X-MC-Unique: eAJN1MDpM4-3O8KI8DfhZg-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4DE3E3C0C496;
- Tue,  1 Aug 2023 17:46:53 +0000 (UTC)
-Received: from localhost.localdomain.com (unknown [10.42.28.93])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 61952401E63;
- Tue,  1 Aug 2023 17:46:52 +0000 (UTC)
-From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- qemu-stable@nongnu.org,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@gmail.com>,
- Mauro Matteo Cascella <mcascell@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>, jiangyegen <jiangyegen@huawei.com>
-Subject: [PULL 1/1] io: remove io watch if TLS channel is closed during
- handshake
-Date: Tue,  1 Aug 2023 18:46:50 +0100
-Message-ID: <20230801174650.177924-2-berrange@redhat.com>
-In-Reply-To: <20230801174650.177924-1-berrange@redhat.com>
-References: <20230801174650.177924-1-berrange@redhat.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qQtTq-0002R4-DN
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 13:48:22 -0400
+Received: from mail-pg1-x52c.google.com ([2607:f8b0:4864:20::52c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qQtTo-00088J-OT
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 13:48:22 -0400
+Received: by mail-pg1-x52c.google.com with SMTP id
+ 41be03b00d2f7-55c993e26ffso3574989a12.0
+ for <qemu-devel@nongnu.org>; Tue, 01 Aug 2023 10:48:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1690912099; x=1691516899;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=hsgOkWCRTm5lQaWsfZXawKAwxbMKcBlF2bf9QWr0xPk=;
+ b=TTNh1CKT7TZHEJkT32+1DG61dN4k4ohZA9DlOPzWfBxZMub9dVfK2EOexcyIkC2GHj
+ ki4e7v/wl2o0hVz9aQUxj/lNmxXq39osMOBFIczMApL7yG2riou3Yu7Kr/uNOJsolFHi
+ K44w3eD3tuaRdYmVlllOVL3UvKnSrF7m8jDlJnuRb7Kp730Y0wyyhX/l/gQbGFNwvloj
+ iJ7VlWnmPRtDh4jVeo+CUmQBu+EpWhMarOzRBDQJ2rDOFj4j/9ym9KkOCXYZxfpQjz6k
+ H6adbYGWuLjDC6D7TWxqRVkHZyqvTfG0j+n0Wy9h/lJvVHxbctziiZ5o6FGZlom0AWTs
+ aK9g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1690912099; x=1691516899;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=hsgOkWCRTm5lQaWsfZXawKAwxbMKcBlF2bf9QWr0xPk=;
+ b=NFqfpRrCzqCeTMQANUdmbqZE9rUEBQXOsrL1WzyoKsRBUldcBHzLyTZIxy3JKvGosW
+ aute/eHhUn8yrxVmLjxgadVmCee3AMRlFK9krRyvH/9bCKaimPeefzgIczLHetyNIfUg
+ JLNq049iY64k2SRkPn/HSxbFDt58i6JTPCW7TUtOv5+ys+X+Fvvls1cygSfQuj7W9k/P
+ ljRNPcQ0IcjM1J/b5I94f4iHB5mu6yYrOqYB09F15pX8WS/hbr/Az48CeaGeYoriXGGt
+ YoCr+B5WlArE7CJvTCuzBCbSao3dba3c7CgWRLFTcgw+IDdJXmSS4N80lbvRPHW3z1y/
+ ParA==
+X-Gm-Message-State: ABy/qLbpz8uNLju0L2PCdIDWdVtuibzccO2zXzC4BQJ5KtgsFWcxPA75
+ 1D0WbVtnyowMXyZVM2/1w9lKOg==
+X-Google-Smtp-Source: APBJJlEZOi+dol4q4aaZZNoLzGMyAnPjcqo4W7EgzhYZe2mpt6bqwjwOkeGV2GcVuk0uIVk54dcKLQ==
+X-Received: by 2002:a17:90b:8d2:b0:267:75ce:f6d9 with SMTP id
+ ds18-20020a17090b08d200b0026775cef6d9mr10837596pjb.3.1690912098689; 
+ Tue, 01 Aug 2023 10:48:18 -0700 (PDT)
+Received: from ?IPV6:2602:47:d490:6901:67b4:35b2:87e2:dccc?
+ ([2602:47:d490:6901:67b4:35b2:87e2:dccc])
+ by smtp.gmail.com with ESMTPSA id
+ m6-20020a17090a414600b0025dc5749b4csm3228141pjg.21.2023.08.01.10.48.18
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 01 Aug 2023 10:48:18 -0700 (PDT)
+Message-ID: <7b04e968-0c9f-a118-1ae8-c0cbba3ea562@linaro.org>
+Date: Tue, 1 Aug 2023 10:48:16 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PULL 0/5] Misc fixes, for thread-pool, xen, and xen-emulate
+To: Anthony PERARD <anthony.perard@citrix.com>, qemu-devel@nongnu.org
+References: <20230801094038.11026-1-anthony.perard@citrix.com>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230801094038.11026-1-anthony.perard@citrix.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52c.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.092,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -84,79 +94,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The TLS handshake make take some time to complete, during which time an
-I/O watch might be registered with the main loop. If the owner of the
-I/O channel invokes qio_channel_close() while the handshake is waiting
-to continue the I/O watch must be removed. Failing to remove it will
-later trigger the completion callback which the owner is not expecting
-to receive. In the case of the VNC server, this results in a SEGV as
-vnc_disconnect_start() tries to shutdown a client connection that is
-already gone / NULL.
+On 8/1/23 02:40, Anthony PERARD via wrote:
+> The following changes since commit 802341823f1720511dd5cf53ae40285f7978c61b:
+> 
+>    Merge tag 'pull-tcg-20230731' ofhttps://gitlab.com/rth7680/qemu  into staging (2023-07-31 14:02:51 -0700)
+> 
+> are available in the Git repository at:
+> 
+>    https://xenbits.xen.org/git-http/people/aperard/qemu-dm.git  tags/pull-xen-20230801
+> 
+> for you to fetch changes up to 856ca10f9ce1fcffeab18546b36a64f79017c905:
+> 
+>    xen-platform: do full PCI reset during unplug of IDE devices (2023-08-01 10:22:33 +0100)
+> 
+> ----------------------------------------------------------------
+> Misc fixes, for thread-pool, xen, and xen-emulate
+> 
+> * fix an access to `request_cond` QemuCond in thread-pool
+> * fix issue with PCI devices when unplugging IDE devices in Xen guest
+> * several fixes for issues pointed out by Coverity
 
-CVE-2023-3354
-Reported-by: jiangyegen <jiangyegen@huawei.com>
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
----
- include/io/channel-tls.h |  1 +
- io/channel-tls.c         | 18 ++++++++++++------
- 2 files changed, 13 insertions(+), 6 deletions(-)
+Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
 
-diff --git a/include/io/channel-tls.h b/include/io/channel-tls.h
-index 5672479e9e..26c67f17e2 100644
---- a/include/io/channel-tls.h
-+++ b/include/io/channel-tls.h
-@@ -48,6 +48,7 @@ struct QIOChannelTLS {
-     QIOChannel *master;
-     QCryptoTLSSession *session;
-     QIOChannelShutdown shutdown;
-+    guint hs_ioc_tag;
- };
- 
- /**
-diff --git a/io/channel-tls.c b/io/channel-tls.c
-index 9805dd0a3f..847d5297c3 100644
---- a/io/channel-tls.c
-+++ b/io/channel-tls.c
-@@ -198,12 +198,13 @@ static void qio_channel_tls_handshake_task(QIOChannelTLS *ioc,
-         }
- 
-         trace_qio_channel_tls_handshake_pending(ioc, status);
--        qio_channel_add_watch_full(ioc->master,
--                                   condition,
--                                   qio_channel_tls_handshake_io,
--                                   data,
--                                   NULL,
--                                   context);
-+        ioc->hs_ioc_tag =
-+            qio_channel_add_watch_full(ioc->master,
-+                                       condition,
-+                                       qio_channel_tls_handshake_io,
-+                                       data,
-+                                       NULL,
-+                                       context);
-     }
- }
- 
-@@ -218,6 +219,7 @@ static gboolean qio_channel_tls_handshake_io(QIOChannel *ioc,
-     QIOChannelTLS *tioc = QIO_CHANNEL_TLS(
-         qio_task_get_source(task));
- 
-+    tioc->hs_ioc_tag = 0;
-     g_free(data);
-     qio_channel_tls_handshake_task(tioc, task, context);
- 
-@@ -378,6 +380,10 @@ static int qio_channel_tls_close(QIOChannel *ioc,
- {
-     QIOChannelTLS *tioc = QIO_CHANNEL_TLS(ioc);
- 
-+    if (tioc->hs_ioc_tag) {
-+        g_clear_handle_id(&tioc->hs_ioc_tag, g_source_remove);
-+    }
-+
-     return qio_channel_close(tioc->master, errp);
- }
- 
--- 
-2.41.0
+
+r~
 
 
