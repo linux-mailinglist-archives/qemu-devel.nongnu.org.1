@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41D5C76AEDA
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 11:42:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57B1376AED6
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 11:42:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQlsD-0003A6-CY; Tue, 01 Aug 2023 05:41:01 -0400
+	id 1qQlt1-000418-SV; Tue, 01 Aug 2023 05:41:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <prvs=570bccec8=anthony.perard@citrix.com>)
- id 1qQls8-000390-KZ
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 05:40:56 -0400
-Received: from esa3.hc3370-68.iphmx.com ([216.71.145.155])
+ id 1qQlsm-0003uc-Mh
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 05:41:37 -0400
+Received: from esa4.hc3370-68.iphmx.com ([216.71.155.144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <prvs=570bccec8=anthony.perard@citrix.com>)
- id 1qQls5-0005BW-T9
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 05:40:55 -0400
+ id 1qQlsk-0005G3-Su
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 05:41:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
- d=citrix.com; s=securemail; t=1690882853;
+ d=citrix.com; s=securemail; t=1690882894;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=RMnHk4oHNHgKLRqUgkxXuacyu+rVLju3q0tzvXy0Muc=;
- b=hsmKLbIOKMyDyT5taWAldeOcOpQXvufpg0Qd4jmzeRiDhcsQHXV2CBCW
- lIS9goneIXhgrSYde2Y60xNfPWrGk4BG+gYU/Bmk2ff/0kEKc1he9JJ51
- pN/QOLVDNI0vcEtuSOCNH8asDV++PHBoVHI7q9rxEt1cmw3U74LXQh/w2 g=;
-Authentication-Results: esa3.hc3370-68.iphmx.com;
+ bh=pMXoBWEjc1Ssgp4CnHdd/893qbjR4KzHJhnhynp7eic=;
+ b=Znlq6/slRJKKYDgR3hKwyrquQb0OdY6dKqFKZwggqgyyRM1YZcod1CF0
+ AZPc/wfN9kXjoK6nDfz8Ky3P2DlIlGNR19VdBQ/uoqcFE/kk63bxR/y1f
+ QRl9pj+4+210iGHBmvL5UAH3zhqz3RQ+f+jCCqPDZS4V9cSAmoOVGsFh9 0=;
+Authentication-Results: esa4.hc3370-68.iphmx.com;
  dkim=none (message not signed) header.i=none
 X-SBRS: 4.0
-X-MesageID: 118110419
-X-Ironport-Server: esa3.hc3370-68.iphmx.com
+X-MesageID: 120729031
+X-Ironport-Server: esa4.hc3370-68.iphmx.com
 X-Remote-IP: 162.221.156.123
 X-Policy: $RELAYED
-IronPort-Data: A9a23:6SG836+6T+O9vLjVNAFhDrUD9H6TJUtcMsCJ2f8bNWPcYEJGY0x3n
- WAWXmHVPvyLa2OmeN4na9+x8hwD65XWnd9mQFdp/Ck8E34SpcT7XtnIdU2Y0wF+jCHgZBk+s
- 5hBMImowOQcFCK0SsKFa+C5xZVE/fjUAOG6UKicYXoZqTZMEE8JkQhkl/MynrlmiN24BxLlk
- d7pqojUNUTNNwRcawr40Ird7ks21BjOkGlA5AdmOqsS5AS2e0Q9V/rzG4ngdxMUfaEMdgKKb
- 76r5K20+Grf4yAsBruN+losWhRXKlJ6FVHmZkt+A8BOsDAbzsAB+v9T2M4nQVVWk120c+VZk
- 72hg3ASpTABZcUgkMxFO/VR/roX0aduoNcrKlDn2SCfItGvn9IBDJyCAWlvVbD09NqbDklF8
- f8fODcIKSm8oN6q8JySG7Friv8KeZyD0IM34hmMzBncBPciB5vCX7/L9ZlT2zJYasJmRKiEI
- ZBDMHw2MUqGOkcUUrsUIMtWcOOAj3/jczpeuRSNqLA++WT7xw1tyrn9dtHSf7RmQO0MxxbB/
- zqapjWR7hcyBcG7kTCV1jGVt8DKtC/DZoIMJrGI6as/6LGU7jNKU0BHPbehmtGgh0ujHt5SN
- UEQ0iwpq6c06QqsVNaVdwW1vHOe+BsVStZdF+kS7ACLw7DTpQGDCQA5oiVpMYJ88pVsHHpzi
- wHPxomybdByjFGLYXmZ9bCEqjb1ABcyEXMySwZVFQwJ2PC29enfkSnzosZf/L+d14OkQWGvn
- GrT9EDSlJ1I05dVivzTEUTvxmv1+8OXFlNdChD/BDrN0+9vWGKyi2VEA3D/5O0IEouWR0LpU
- JMsy5nHt7Bm4X1geUWwrAQx8FKBvazt3MX02wIHInXY323FF4SfVY5R+ipiA0xiL9wJfzTkC
- GeK51IJtMUDYCT2MfUoC25UNyjN5fGxfekJq9iONoYeCnSPXFHvEN5Sib64gDm2zRlEfVAXM
- paHa8e8ZUv2+ow+pAdas9w1iOdxrghnnDO7eHwO50j/uVZoTCLPGOht3ZrnRrxR0Z5oVy2Po
- 4oGbZbblE8GOAA8CwGOmbMuwZkxBSBTLfjLRwZ/KoZv/iIO9LkdNsLs
-IronPort-HdrOrdr: A9a23:qhG0Ba0/+1g0AStBNjd1KwqjBLQkLtp133Aq2lEZdPRUGvb2qy
- nIpoV86faUskd3ZJhOo7G90cW7LE80sKQFg7X5Xo3SODUO2lHJEGgK1+KLqFfd8m/Fh4tgPM
- 9bAtFD4bbLY2SS4/yX3ODBKadC/OW6
-X-Talos-CUID: 9a23:bOs7p2H0N0dRsVSKqmJs8E0TCscgNUTi60vME2GRWD5uRIa8HAo=
-X-Talos-MUID: 9a23:9/NO9QmOLsaXnjXzDpN+dnpTKeMw6bSKS3k8vpAvt/G6NTJCNweC2WE=
-X-IronPort-AV: E=Sophos;i="6.01,246,1684814400"; d="scan'208";a="118110419"
+IronPort-Data: A9a23:MFkXyq3jcqQvm7VZpfbD5b5xkn2cJEfYwER7XKvMYLTBsI5bp2AEn
+ GYZWjyFM6qLMzD8fd1+YYSx9hxU78fUytYxSARvpC1hF35El5HIVI+TRqvS04F+DeWYFR46s
+ J9OAjXkBJppJpMJjk71atANlVEliefTAOK6ULWeUsxIbVcMYD87jh5+kPIOjIdtgNyoayuAo
+ tq3qMDEULOf82cc3lk8teTb8XuDgNyo4GlD5gNlPKgQ1LPjvyJ94Kw3dPnZw0TQGuG4LsbiL
+ 87fwbew+H/u/htFIrtJRZ6iLyXm6paLVeS/oiI+t5qK23CulQRrukoPD9IOaF8/ttm8t4sZJ
+ OOhF3CHYVxB0qXkwIzxWvTDes10FfUuFLTveRBTvSEPpqFvnrSFL/hGVSkL0YMkFulfDk5D7
+ tA+BAk3QQmj29mswa2GS/t+r5F2RCXrFNt3VnBIyDjYCbAtQIzZQrWM7thdtNsyrpkQR7CEP
+ ZNfMGcxKk2aOHWjOX9OYH46tO6umnn4dSwesF+PrLA7y2PS0BZwwP7mN9+9ltmiHJ8NwRzJ/
+ jmfl4j/KkkWG8zO9mGFyG29q972oQrrAtwwMKLto5aGh3XMnzdOWXX6T2CTuPS8lwuyVsxSL
+ 2QS/Swhq7V081akJvH6WxS2iHeJphAYVpxcHoUHBBqlk/SOpVzDXy5dE2AHMYZ93CMredA0/
+ lCmksjFIxBWipKMaS6m7LaLkDKgKwFAeAfuehQ4oRs5D8jL+d9i1kKQEYw6SMZZnfWuR2iun
+ mniQDwWwuxK0JVVj/jTEUXv2WrEm3TfcuIiCuw7tEqB5xgxWoOqbpfABbPzvacZd9bxorVsU
+ RE5dymiAAMmV8vleNSlGrllIV1Qz6/t3MfgqVBuBYI90D+m5mSue4tdiBknehYxYpxUJWC1P
+ BWM0e+02HO0FCL7BZKbnqrrU5h6pUQePYqNug/ogipmPcEqKV7vENBGbk+MxWH9+HXAYolmU
+ ap3hf2EVC5AYYw+lWreegvo+eNzrszI7T+JFM+TItXO+eb2WUN5vp9fYAfXNL1os/ndyOgXm
+ v4GX/a3J9xkeLWWSkHqHUQ7dw9iwaQTbXwul/FqSw==
+IronPort-HdrOrdr: A9a23:fIZWAKy0OrCHcz6I7c9XKrPwT71zdoMgy1knxilNoH1uEvBw8v
+ rEoB1173LJYVoqMk3I+urgBED/exzhHPdOiOEs1NyZMDUO1lHHEL1f
+X-Talos-CUID: 9a23:COlktG1pHY1H+bjQbiS9wrxfFe8oaVH74E7qDFaYVV1zSaKoSE2C0fYx
+X-Talos-MUID: 9a23:ySpnxQm036nYpbuCuHMkdno6OOh4spv1CHoSgLg3gvWtJXYuGROC2WE=
+X-IronPort-AV: E=Sophos;i="6.01,246,1684814400"; d="scan'208";a="120729031"
 To: <qemu-devel@nongnu.org>
-CC: Peter Maydell <peter.maydell@linaro.org>, Anthony PERARD
- <anthony.perard@citrix.com>
-Subject: [PULL 4/5] xen: Don't pass MemoryListener around by value
-Date: Tue, 1 Aug 2023 10:40:37 +0100
-Message-ID: <20230801094038.11026-5-anthony.perard@citrix.com>
+CC: Olaf Hering <olaf@aepfle.de>, Anthony PERARD <anthony.perard@citrix.com>
+Subject: [PULL 5/5] xen-platform: do full PCI reset during unplug of IDE
+ devices
+Date: Tue, 1 Aug 2023 10:40:38 +0100
+Message-ID: <20230801094038.11026-6-anthony.perard@citrix.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230801094038.11026-1-anthony.perard@citrix.com>
 References: <20230801094038.11026-1-anthony.perard@citrix.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=216.71.145.155;
+Content-Type: text/plain
+Received-SPF: pass client-ip=216.71.155.144;
  envelope-from=prvs=570bccec8=anthony.perard@citrix.com;
- helo=esa3.hc3370-68.iphmx.com
+ helo=esa4.hc3370-68.iphmx.com
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -96,116 +95,82 @@ From:  Anthony PERARD via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Olaf Hering <olaf@aepfle.de>
 
-Coverity points out (CID 1513106, 1513107) that MemoryListener is a
-192 byte struct which we are passing around by value.  Switch to
-passing a const pointer into xen_register_ioreq() and then to
-xen_do_ioreq_register().  We can also make the file-scope
-MemoryListener variables const, since nothing changes them.
+The IDE unplug function needs to reset the entire PCI device, to make
+sure all state is initialized to defaults. This is done by calling
+pci_device_reset, which resets not only the chip specific registers, but
+also all PCI state. This fixes "unplug" in a Xen HVM domU with the
+modular legacy xenlinux PV drivers.
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Acked-by: Anthony PERARD <anthony.perard@citrix.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20230718101057.1110979-1-peter.maydell@linaro.org>
+Commit ee358e919e38 ("hw/ide/piix: Convert reset handler to
+DeviceReset") changed the way how the the disks are unplugged. Prior
+this commit the PCI device remained unchanged. After this change,
+piix_ide_reset is exercised after the "unplug" command, which was not
+the case prior that commit. This function resets the command register.
+As a result the ata_piix driver inside the domU will see a disabled PCI
+device. The generic PCI code will reenable the PCI device. On the qemu
+side, this runs pci_default_write_config/pci_update_mappings. Here a
+changed address is returned by pci_bar_address, this is the address
+which was truncated in piix_ide_reset. In case of a Xen HVM domU, the
+address changes from 0xc120 to 0xc100. This truncation was a bug in
+piix_ide_reset, which was fixed in commit 230dfd9257 ("hw/ide/piix:
+properly initialize the BMIBA register"). If pci_xen_ide_unplug had used
+pci_device_reset, the PCI registers would have been properly reset, and
+commit ee358e919e38 would have not introduced a regression for this
+specific domU environment.
+
+While the unplug is supposed to hide the IDE disks, the changed BMIBA
+address broke the UHCI device. In case the domU has an USB tablet
+configured, to recive absolute pointer coordinates for the GUI, it will
+cause a hang during device discovery of the partly discovered USB hid
+device. Reading the USBSTS word size register will fail. The access ends
+up in the QEMU piix-bmdma device, instead of the expected uhci device.
+Here a byte size request is expected, and a value of ~0 is returned. As
+a result the UCHI driver sees an error state in the register, and turns
+off the UHCI controller.
+
+Signed-off-by: Olaf Hering <olaf@aepfle.de>
+Reviewed-by: Paul Durrant <paul@xen.org>
+Message-Id: <20230720072950.20198-1-olaf@aepfle.de>
 Signed-off-by: Anthony PERARD <anthony.perard@citrix.com>
 ---
- hw/arm/xen_arm.c                | 4 ++--
- hw/i386/xen/xen-hvm.c           | 4 ++--
- hw/xen/xen-hvm-common.c         | 8 ++++----
- include/hw/xen/xen-hvm-common.h | 2 +-
- 4 files changed, 9 insertions(+), 9 deletions(-)
+ hw/i386/xen/xen_platform.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/hw/arm/xen_arm.c b/hw/arm/xen_arm.c
-index 044093fec7..1d3e6d481a 100644
---- a/hw/arm/xen_arm.c
-+++ b/hw/arm/xen_arm.c
-@@ -37,7 +37,7 @@
- #define TYPE_XEN_ARM  MACHINE_TYPE_NAME("xenpvh")
- OBJECT_DECLARE_SIMPLE_TYPE(XenArmState, XEN_ARM)
- 
--static MemoryListener xen_memory_listener = {
-+static const MemoryListener xen_memory_listener = {
-     .region_add = xen_region_add,
-     .region_del = xen_region_del,
-     .log_start = NULL,
-@@ -108,7 +108,7 @@ static void xen_arm_init(MachineState *machine)
- 
-     xam->state =  g_new0(XenIOState, 1);
- 
--    xen_register_ioreq(xam->state, machine->smp.cpus, xen_memory_listener);
-+    xen_register_ioreq(xam->state, machine->smp.cpus, &xen_memory_listener);
- 
- #ifdef CONFIG_TPM
-     if (xam->cfg.tpm_base_addr) {
-diff --git a/hw/i386/xen/xen-hvm.c b/hw/i386/xen/xen-hvm.c
-index 3da5a2b23f..f42621e674 100644
---- a/hw/i386/xen/xen-hvm.c
-+++ b/hw/i386/xen/xen-hvm.c
-@@ -458,7 +458,7 @@ static void xen_log_global_stop(MemoryListener *listener)
-     xen_in_migration = false;
- }
- 
--static MemoryListener xen_memory_listener = {
-+static const MemoryListener xen_memory_listener = {
-     .name = "xen-memory",
-     .region_add = xen_region_add,
-     .region_del = xen_region_del,
-@@ -582,7 +582,7 @@ void xen_hvm_init_pc(PCMachineState *pcms, MemoryRegion **ram_memory)
- 
-     state = g_new0(XenIOState, 1);
- 
--    xen_register_ioreq(state, max_cpus, xen_memory_listener);
-+    xen_register_ioreq(state, max_cpus, &xen_memory_listener);
- 
-     QLIST_INIT(&xen_physmap);
-     xen_read_physmap(state);
-diff --git a/hw/xen/xen-hvm-common.c b/hw/xen/xen-hvm-common.c
-index 886c3ee944..565dc39c8f 100644
---- a/hw/xen/xen-hvm-common.c
-+++ b/hw/xen/xen-hvm-common.c
-@@ -765,8 +765,8 @@ void xen_shutdown_fatal_error(const char *fmt, ...)
- }
- 
- static void xen_do_ioreq_register(XenIOState *state,
--                                           unsigned int max_cpus,
--                                           MemoryListener xen_memory_listener)
-+                                  unsigned int max_cpus,
-+                                  const MemoryListener *xen_memory_listener)
+diff --git a/hw/i386/xen/xen_platform.c b/hw/i386/xen/xen_platform.c
+index 57f1d742c1..17457ff3de 100644
+--- a/hw/i386/xen/xen_platform.c
++++ b/hw/i386/xen/xen_platform.c
+@@ -164,8 +164,9 @@ static void pci_unplug_nics(PCIBus *bus)
+  *
+  * [1] https://xenbits.xen.org/gitweb/?p=xen.git;a=blob;f=docs/misc/hvm-emulated-unplug.pandoc
+  */
+-static void pci_xen_ide_unplug(DeviceState *dev, bool aux)
++static void pci_xen_ide_unplug(PCIDevice *d, bool aux)
  {
-     int i, rc;
- 
-@@ -824,7 +824,7 @@ static void xen_do_ioreq_register(XenIOState *state,
- 
-     qemu_add_vm_change_state_handler(xen_hvm_change_state_handler, state);
- 
--    state->memory_listener = xen_memory_listener;
-+    state->memory_listener = *xen_memory_listener;
-     memory_listener_register(&state->memory_listener, &address_space_memory);
- 
-     state->io_listener = xen_io_listener;
-@@ -842,7 +842,7 @@ static void xen_do_ioreq_register(XenIOState *state,
++    DeviceState *dev = DEVICE(d);
+     PCIIDEState *pci_ide;
+     int i;
+     IDEDevice *idedev;
+@@ -195,7 +196,7 @@ static void pci_xen_ide_unplug(DeviceState *dev, bool aux)
+             blk_unref(blk);
+         }
+     }
+-    device_cold_reset(dev);
++    pci_device_reset(d);
  }
  
- void xen_register_ioreq(XenIOState *state, unsigned int max_cpus,
--                        MemoryListener xen_memory_listener)
-+                        const MemoryListener *xen_memory_listener)
- {
-     int rc;
+ static void unplug_disks(PCIBus *b, PCIDevice *d, void *opaque)
+@@ -210,7 +211,7 @@ static void unplug_disks(PCIBus *b, PCIDevice *d, void *opaque)
  
-diff --git a/include/hw/xen/xen-hvm-common.h b/include/hw/xen/xen-hvm-common.h
-index f9559e2885..4e9904f1a6 100644
---- a/include/hw/xen/xen-hvm-common.h
-+++ b/include/hw/xen/xen-hvm-common.h
-@@ -93,7 +93,7 @@ void xen_device_unrealize(DeviceListener *listener, DeviceState *dev);
+     switch (pci_get_word(d->config + PCI_CLASS_DEVICE)) {
+     case PCI_CLASS_STORAGE_IDE:
+-        pci_xen_ide_unplug(DEVICE(d), aux);
++        pci_xen_ide_unplug(d, aux);
+         break;
  
- void xen_hvm_change_state_handler(void *opaque, bool running, RunState rstate);
- void xen_register_ioreq(XenIOState *state, unsigned int max_cpus,
--                        MemoryListener xen_memory_listener);
-+                        const MemoryListener *xen_memory_listener);
- 
- void cpu_ioreq_pio(ioreq_t *req);
- #endif /* HW_XEN_HVM_COMMON_H */
+     case PCI_CLASS_STORAGE_SCSI:
 -- 
 Anthony PERARD
 
