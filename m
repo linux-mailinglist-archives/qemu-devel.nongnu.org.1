@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A024276BFB1
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 23:56:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5160076BFAA
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 23:56:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQxKI-0003rL-7Z; Tue, 01 Aug 2023 17:54:46 -0400
+	id 1qQxKL-0003s6-6h; Tue, 01 Aug 2023 17:54:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qQxKF-0003pO-Ou
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 17:54:43 -0400
-Received: from mail-lf1-x135.google.com ([2a00:1450:4864:20::135])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qQxKJ-0003rj-GU
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 17:54:47 -0400
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qQxKC-0004lq-Hu
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 17:54:42 -0400
-Received: by mail-lf1-x135.google.com with SMTP id
- 2adb3069b0e04-4fe1b00fce2so8798628e87.3
- for <qemu-devel@nongnu.org>; Tue, 01 Aug 2023 14:54:39 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qQxKH-0004nM-E1
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 17:54:46 -0400
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-316feb137a7so6290440f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 01 Aug 2023 14:54:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690926878; x=1691531678;
+ d=linaro.org; s=google; t=1690926884; x=1691531684;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=tug+CECb4KNzufWe9Ppj5URciL2axuWNKJ5vUVPsbBc=;
- b=ylerMqvBqypNgpbhaMDxfmwF4Oovx7GZVkkI5MSrWZpB8DT38C8V550zY/fPIUXzES
- An27tPi/XmjezkwXX9CSj3w/c/TXW1UEZYMfB8I9B+9p4p6jpCkapocfIECy836Pp8mK
- WGa5r3/+s3QflqRq1D5oltytBVhxIhcwxx9HgOMRI2DujTfkOkoTAQUb+jPt+jwXSXCG
- R2/OGTVFWk6CiUaZkNR10SRT2BZUka5sw2MyvWKhE21Vg2VOZcQujquF5PH6S2yS7W23
- pX1tp69UOyv9wJMTEUJPUHNwtMhC8K5CgFK13zaY+WUn48EzPWQBrNHMAYQd6c76aKfS
- v7aA==
+ bh=t+Ia2IW7W0o2NfDvv7wb0werH1oj3pCGRYKiA4thOho=;
+ b=mjl49F/dE4gTtMfYJljruuqsJE3gVhRP6+acpgpCEERYeJyuBI5zOHIjdYseaLdmft
+ WJuXvtjyNjaJJukwF+TL2Q79rSHb/QGEAo9RweH3AmGpVocyLzqq2Oyy5/tVJp/Rf84s
+ vOGm8HMb2XKFHr56z5K7WZ5dzgIvz48bZFyCaVmmOOGhsy4Q+4uWqzSJ4hGvU7yWHrBM
+ jbq8bE5k2D1BvGwPqDz2/u17nTBpZOIgYB4F1ElS6QQbLnurV7xD1J8ZqYBH06v5hW9q
+ ywMUHxhGc3DoztPwk5oUYIFx0aSpU7XeHiTqIhzFPbDmVA0nOvlM/O1XydU6b4dkRSTC
+ focg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690926878; x=1691531678;
+ d=1e100.net; s=20221208; t=1690926884; x=1691531684;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tug+CECb4KNzufWe9Ppj5URciL2axuWNKJ5vUVPsbBc=;
- b=ftezxlr6cA/yLY2tq5jfXPObp40ougbJXwBXZObsVuFQ7urlaVt/KtSHucPG72PoVF
- so/H3b+QEgWCvxvgKOcv8hTEe5Rp7c0TB3SWDURO6qGCCnY51o6XJOqju11lk56J+0Es
- P93c03Uj7Zt3jbUhG1cUsNRVg1yemBsNQ9b8rhQeEkP0SuD8t/1t0cB309IPEDAOSVUu
- 8RJtNrarMDvJxGY8Ty79DP+CQKsL5ZhPoDiLxOn/CVxzzN10HVi/gC+pmiTM0imjLpOL
- As1PECHjfeL5QweEZCDmmm5n0wjkLYO3m59BA9Fwrnpzei2MU76sLY0tUPeqX3F0ULBE
- l9XA==
-X-Gm-Message-State: ABy/qLY+xFdnV6kkfqkqd8xYnu2PK3xJk7I5NUyWZ5zIuy87OglQAISX
- 0DXdW8jqvUx3z713Rcf3Ai06LN8uBO8PLH/rdQk=
-X-Google-Smtp-Source: APBJJlGiw1TbmWnbRDDuRPpCqyhP5V/xUsF2fEt4GgzrWdVJArNPx7JrJtrRFTtj0Y2V3OJLRyOlFw==
-X-Received: by 2002:a05:6512:3d0c:b0:4fb:73ce:8e7d with SMTP id
- d12-20020a0565123d0c00b004fb73ce8e7dmr4581447lfv.15.1690926877903; 
- Tue, 01 Aug 2023 14:54:37 -0700 (PDT)
+ bh=t+Ia2IW7W0o2NfDvv7wb0werH1oj3pCGRYKiA4thOho=;
+ b=UcrElQt21Stk17E/hqH0AN78MXncvVL9YUDhEht8MOtYWgsI1Hyw5VidtypKBEcg6U
+ 3S8RXqkJlxg99EBZIy12K6thibDxUMbfPtDo3GWdmca2YaDsMNdYjopMDG3zUAE4gmGn
+ KpVVOV1K/d26SxSLHPwjhyT4Z9SJOF7tz3xg+/46hZ62QBelj3jMENlMf5kM7y0Gz8ET
+ 8vlDaoldKc944frh/rRv3Kic9zOYINdu+fqWRnpzGDtIrguNpqJSNoxg9T4nVLTRdxcP
+ ladvHN5VHTD2yQ5A++ns5GXZDH6Wu8l7yjHY/zM2CRitncpgsdNPySFaPuh+N/iZ8a1Z
+ HOAg==
+X-Gm-Message-State: ABy/qLZhGO1PYedurjPWT+koF5Jps/9EhvjGh7/Q3oMv/FLvX2keDMIl
+ nz9zVbSKTdbVJT91ZhM6SuDFn86MZY/16YsWgnU=
+X-Google-Smtp-Source: APBJJlHAKX2/RZ5gEOgeTER35FeHxbDWYqJ98uMOfI+x8Ag7mjxuKd4a4l3rUZv6H5RvGaXtoTu1Qg==
+X-Received: by 2002:adf:d4cc:0:b0:317:6513:da7c with SMTP id
+ w12-20020adfd4cc000000b003176513da7cmr3119817wrk.18.1690926883691; 
+ Tue, 01 Aug 2023 14:54:43 -0700 (PDT)
 Received: from localhost.localdomain ([176.176.174.59])
  by smtp.gmail.com with ESMTPSA id
- x4-20020a1c7c04000000b003fc06169abdsm25112wmc.2.2023.08.01.14.54.36
+ bf10-20020a0560001cca00b0031432f1528csm17143007wrb.45.2023.08.01.14.54.42
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 01 Aug 2023 14:54:37 -0700 (PDT)
+ Tue, 01 Aug 2023 14:54:43 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, qemu-s390x@nongnu.org,
  David Woodhouse <dwmw@amazon.co.uk>, Paul Durrant <paul@xen.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 02/10] i386/xen: consistent locking around Xen singleshot timers
-Date: Tue,  1 Aug 2023 23:54:13 +0200
-Message-Id: <20230801215421.60133-3-philmd@linaro.org>
+Subject: [PULL 03/10] hw/xen: prevent guest from binding loopback event
+ channel to itself
+Date: Tue,  1 Aug 2023 23:54:14 +0200
+Message-Id: <20230801215421.60133-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230801215421.60133-1-philmd@linaro.org>
 References: <20230801215421.60133-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::135;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x135.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,156 +95,40 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-Coverity points out (CID 1507534, 1507968) that we sometimes access
-env->xen_singleshot_timer_ns under the protection of
-env->xen_timers_lock and sometimes not.
-
-This isn't always an issue. There are two modes for the timers; if the
-kernel supports the EVTCHN_SEND capability then it handles all the timer
-hypercalls and delivery internally, and all we use the field for is to
-get/set the timer as part of the vCPU state via an ioctl(). If the
-kernel doesn't have that support, then we do all the emulation within
-qemu, and *those* are the code paths where we actually care about the
-locking.
-
-But it doesn't hurt to be a little bit more consistent and avoid having
-to explain *why* it's OK.
+Fuzzing showed that a guest could bind an interdomain port to itself, by
+guessing the next port to be allocated and putting that as the 'remote'
+port number. By chance, that works because the newly-allocated port has
+type EVTCHNSTAT_unbound. It shouldn't.
 
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 Reviewed-by: Paul Durrant <paul@xen.org>
-Message-Id: <20230801175747.145906-3-dwmw2@infradead.org>
+Message-Id: <20230801175747.145906-4-dwmw2@infradead.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/i386/kvm/xen-emu.c | 37 +++++++++++++++++++++++++++----------
- 1 file changed, 27 insertions(+), 10 deletions(-)
+ hw/i386/kvm/xen_evtchn.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/target/i386/kvm/xen-emu.c b/target/i386/kvm/xen-emu.c
-index d7c7eb8d9c..a8146115f0 100644
---- a/target/i386/kvm/xen-emu.c
-+++ b/target/i386/kvm/xen-emu.c
-@@ -43,6 +43,7 @@
+diff --git a/hw/i386/kvm/xen_evtchn.c b/hw/i386/kvm/xen_evtchn.c
+index 0e9c108614..a731738411 100644
+--- a/hw/i386/kvm/xen_evtchn.c
++++ b/hw/i386/kvm/xen_evtchn.c
+@@ -1408,8 +1408,15 @@ int xen_evtchn_bind_interdomain_op(struct evtchn_bind_interdomain *interdomain)
+         XenEvtchnPort *rp = &s->port_table[interdomain->remote_port];
+         XenEvtchnPort *lp = &s->port_table[interdomain->local_port];
  
- static void xen_vcpu_singleshot_timer_event(void *opaque);
- static void xen_vcpu_periodic_timer_event(void *opaque);
-+static int vcpuop_stop_singleshot_timer(CPUState *cs);
- 
- #ifdef TARGET_X86_64
- #define hypercall_compat32(longmode) (!(longmode))
-@@ -466,6 +467,7 @@ void kvm_xen_inject_vcpu_callback_vector(uint32_t vcpu_id, int type)
-     }
- }
- 
-+/* Must always be called with xen_timers_lock held */
- static int kvm_xen_set_vcpu_timer(CPUState *cs)
- {
-     X86CPU *cpu = X86_CPU(cs);
-@@ -483,6 +485,7 @@ static int kvm_xen_set_vcpu_timer(CPUState *cs)
- 
- static void do_set_vcpu_timer_virq(CPUState *cs, run_on_cpu_data data)
- {
-+    QEMU_LOCK_GUARD(&X86_CPU(cs)->env.xen_timers_lock);
-     kvm_xen_set_vcpu_timer(cs);
- }
- 
-@@ -545,7 +548,6 @@ static void do_vcpu_soft_reset(CPUState *cs, run_on_cpu_data data)
-     env->xen_vcpu_time_info_gpa = INVALID_GPA;
-     env->xen_vcpu_runstate_gpa = INVALID_GPA;
-     env->xen_vcpu_callback_vector = 0;
--    env->xen_singleshot_timer_ns = 0;
-     memset(env->xen_virq, 0, sizeof(env->xen_virq));
- 
-     set_vcpu_info(cs, INVALID_GPA);
-@@ -555,8 +557,13 @@ static void do_vcpu_soft_reset(CPUState *cs, run_on_cpu_data data)
-                           INVALID_GPA);
-     if (kvm_xen_has_cap(EVTCHN_SEND)) {
-         kvm_xen_set_vcpu_callback_vector(cs);
-+
-+        QEMU_LOCK_GUARD(&X86_CPU(cs)->env.xen_timers_lock);
-+        env->xen_singleshot_timer_ns = 0;
-         kvm_xen_set_vcpu_timer(cs);
--    }
-+    } else {
-+        vcpuop_stop_singleshot_timer(cs);
-+    };
- 
- }
- 
-@@ -1059,6 +1066,10 @@ static int vcpuop_stop_periodic_timer(CPUState *target)
-     return 0;
- }
- 
-+/*
-+ * Userspace handling of timer, for older kernels.
-+ * Must always be called with xen_timers_lock held.
-+ */
- static int do_set_singleshot_timer(CPUState *cs, uint64_t timeout_abs,
-                                    bool future, bool linux_wa)
- {
-@@ -1086,12 +1097,8 @@ static int do_set_singleshot_timer(CPUState *cs, uint64_t timeout_abs,
-         timeout_abs = now + delta;
-     }
- 
--    qemu_mutex_lock(&env->xen_timers_lock);
--
-     timer_mod_ns(env->xen_singleshot_timer, qemu_now + delta);
-     env->xen_singleshot_timer_ns = now + delta;
--
--    qemu_mutex_unlock(&env->xen_timers_lock);
-     return 0;
- }
- 
-@@ -1115,6 +1122,7 @@ static int vcpuop_set_singleshot_timer(CPUState *cs, uint64_t arg)
-         return -EFAULT;
-     }
- 
-+    QEMU_LOCK_GUARD(&X86_CPU(cs)->env.xen_timers_lock);
-     return do_set_singleshot_timer(cs, sst.timeout_abs_ns,
-                                    !!(sst.flags & VCPU_SSHOTTMR_future),
-                                    false);
-@@ -1141,6 +1149,7 @@ static bool kvm_xen_hcall_set_timer_op(struct kvm_xen_exit *exit, X86CPU *cpu,
-     if (unlikely(timeout == 0)) {
-         err = vcpuop_stop_singleshot_timer(CPU(cpu));
-     } else {
-+        QEMU_LOCK_GUARD(&X86_CPU(cpu)->env.xen_timers_lock);
-         err = do_set_singleshot_timer(CPU(cpu), timeout, false, true);
-     }
-     exit->u.hcall.result = err;
-@@ -1826,6 +1835,7 @@ int kvm_put_xen_state(CPUState *cs)
-          * If the kernel has EVTCHN_SEND support then it handles timers too,
-          * so the timer will be restored by kvm_xen_set_vcpu_timer() below.
-          */
-+        QEMU_LOCK_GUARD(&env->xen_timers_lock);
-         if (env->xen_singleshot_timer_ns) {
-             ret = do_set_singleshot_timer(cs, env->xen_singleshot_timer_ns,
-                                     false, false);
-@@ -1844,10 +1854,8 @@ int kvm_put_xen_state(CPUState *cs)
-     }
- 
-     if (env->xen_virq[VIRQ_TIMER]) {
--        ret = kvm_xen_set_vcpu_timer(cs);
--        if (ret < 0) {
--            return ret;
--        }
-+        do_set_vcpu_timer_virq(cs,
-+                               RUN_ON_CPU_HOST_INT(env->xen_virq[VIRQ_TIMER]));
-     }
-     return 0;
- }
-@@ -1896,6 +1904,15 @@ int kvm_get_xen_state(CPUState *cs)
-         if (ret < 0) {
-             return ret;
-         }
-+
+-        if (rp->type == EVTCHNSTAT_unbound && rp->type_val == 0) {
+-            /* It's a match! */
 +        /*
-+         * This locking is fairly pointless, and is here to appease Coverity.
-+         * There is an unavoidable race condition if a different vCPU sets a
-+         * timer for this vCPU after the value has been read out. But that's
-+         * OK in practice because *all* the vCPUs need to be stopped before
-+         * we set about migrating their state.
++         * The 'remote' port for loopback must be an unbound port allocated for
++         * communication with the local domain (as indicated by rp->type_val
++         * being zero, not PORT_INFO_TYPEVAL_REMOTE_QEMU), and must *not* be
++         * the port that was just allocated for the local end.
 +         */
-+        QEMU_LOCK_GUARD(&X86_CPU(cs)->env.xen_timers_lock);
-         env->xen_singleshot_timer_ns = va.u.timer.expires_ns;
-     }
++        if (interdomain->local_port != interdomain->remote_port &&
++            rp->type == EVTCHNSTAT_unbound && rp->type_val == 0) {
++
+             rp->type = EVTCHNSTAT_interdomain;
+             rp->type_val = interdomain->local_port;
  
 -- 
 2.38.1
