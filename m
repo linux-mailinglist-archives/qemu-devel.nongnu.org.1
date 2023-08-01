@@ -2,72 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7FA976B586
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 15:10:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE86076B5BC
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 15:25:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQp8F-0004qF-K5; Tue, 01 Aug 2023 09:09:47 -0400
+	id 1qQpLz-0000wd-Q9; Tue, 01 Aug 2023 09:23:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qQp88-0004o2-Ki
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 09:09:40 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qQp86-0001Zx-E8
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 09:09:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690895376;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=E9hojDlcuOG0yxGnmcei6lekUN8Vo3o8JSLdfI32ORI=;
- b=V+j7PQYflrNl5jH00tg5Bgpljgj9pjLt/l+cJeVaWs0hCRsjDj7RgaiCuRt1pLGAJkpN3B
- 0TIT+Upy8Y/2hCVUeGidyHrevLH/x/UjWGlK7vVyCdTMlTjMzoQpKzIMHz8YCAZOuEZn2F
- ZUnzyJ8PfigO9/tU1hsIIGjjk5mh61M=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-495-pKBJM39_P2y9rQujRZI-yw-1; Tue, 01 Aug 2023 09:09:33 -0400
-X-MC-Unique: pKBJM39_P2y9rQujRZI-yw-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 87B77857FF8;
- Tue,  1 Aug 2023 13:09:32 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.193.50])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 472B7F7855;
- Tue,  1 Aug 2023 13:09:32 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 2CCB821E692A; Tue,  1 Aug 2023 15:09:31 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Dinah Baum <dinahbaum123@gmail.com>
-Cc: qemu-devel@nongnu.org,  Eric Blake <eblake@redhat.com>,  Eduardo Habkost
- <eduardo@habkost.net>,  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Yanan Wang
- <wangyanan55@huawei.com>
-Subject: Re: [PATCH v3 1/3] qapi: Moved architecture agnostic data types to
- `machine`
-References: <20230730064057.357598-1-dinahbaum123@gmail.com>
- <20230730064057.357598-2-dinahbaum123@gmail.com>
-Date: Tue, 01 Aug 2023 15:09:31 +0200
-In-Reply-To: <20230730064057.357598-2-dinahbaum123@gmail.com> (Dinah Baum's
- message of "Sun, 30 Jul 2023 02:40:55 -0400")
-Message-ID: <87r0omzz78.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qQpLy-0000wV-QS
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 09:23:58 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qQpLx-0005V3-6D
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 09:23:58 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-3fbc77e76abso52193265e9.1
+ for <qemu-devel@nongnu.org>; Tue, 01 Aug 2023 06:23:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1690896235; x=1691501035;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=EPIo81mAT5oT0Nih6AHDW0cgsYR1ogCHDnh6OKn5pzo=;
+ b=S0V9OEOHeNC2LPFhBwKwgxTKsv92AxZi7Wqp5L2c3uexjp93RAQqx9h3HobxWsuMB4
+ FAPnKbIFKtUKxf+kglCrNMHDCd2kBVGmeCB3x+JL/3N/QAxZrem3+3CugcesdGt3++8p
+ 5xNAZ8akrxt8i95xFc3D1wb+1LHMUSGmwDbKCQLjsLNzf3hrmrfzMXI93YvjuYgJFqHt
+ 5RIiY2Xn+wFyxH9ZATnEz/oP5fXKAlmkdYuJ1yLuDYkFkm6ugAh1Vj9a0wKi6getNlPC
+ ueMdYsMlXZs9ewLXEFl4v0Rj770c+vh/Wn6shXVgOH96qQSVww81pEJrb9SSDjylbISu
+ nQQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1690896235; x=1691501035;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=EPIo81mAT5oT0Nih6AHDW0cgsYR1ogCHDnh6OKn5pzo=;
+ b=cq0cFTv36HWJ8VQYjtGJ5C27Gdsc55JMcC3IF8TDwnTqSJlRwRMZ9UOIpaxG5a3BDQ
+ QQcCpqNVL0vLjV1dJq8sIjL0MGCh3SVS7QwV2CZAr7zFwZqr+qzopsfVJutiDkHDA+vD
+ kISr2QXgxydy9OqnhYzn7hCsUHsfcuS2TjPszFH7er2VCk00KbjfB5G87hVfTA6wdCSZ
+ sNxmXvQwEtDNaHUg16XWhobFvzt6zZvgwDqqgF8BXhkd+OaQRP227XUyTQlTYbE2z5ZZ
+ uCEmBJJBDbnlMeFmvX6KqdsyRqD4wNVpUfJYE0zVltwWXwg2Axb0ciBR0f/h5kloYb2e
+ 7N7w==
+X-Gm-Message-State: ABy/qLbtxqwP/E1swwotroKHlMXsxukHjikz7xoauMwiHDAQtYAd5eTn
+ lnuWo8sxS0jNiym66bhEX1bYpQ==
+X-Google-Smtp-Source: APBJJlEKCvM/JM4ltCnz9uaIKZog6D0qAT+Cp6uvBQP0JR9EdrOXYfLpftUeraDHEgQggeQhQXGotg==
+X-Received: by 2002:a05:600c:22da:b0:3fc:e00:5282 with SMTP id
+ 26-20020a05600c22da00b003fc0e005282mr2385368wmg.0.1690896234836; 
+ Tue, 01 Aug 2023 06:23:54 -0700 (PDT)
+Received: from [192.168.69.115] ([176.176.174.59])
+ by smtp.gmail.com with ESMTPSA id
+ z8-20020adfec88000000b0031773a8e5c4sm16072375wrn.37.2023.08.01.06.23.53
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 01 Aug 2023 06:23:54 -0700 (PDT)
+Message-ID: <d5fac15f-3ab9-42d4-ad39-95c500c4417a@linaro.org>
+Date: Tue, 1 Aug 2023 15:23:52 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.13.0
+Subject: Re: [PATCH] target/nios2: Fix semihost lseek offset computation
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>, Keith Packard <keithp@keithp.com>
+Cc: qemu-devel@nongnu.org, Chris Wulff <crwulff@gmail.com>,
+ Marek Vasut <marex@denx.de>, Richard Henderson
+ <richard.henderson@linaro.org>, Laurent Vivier <laurent@vivier.eu>
+References: <20230731235245.295513-1-keithp@keithp.com>
+ <CAFEAcA8Q_qjJV55v0M4LwuK-2tuM4DaBVsmP5vAVogt8Hq98vg@mail.gmail.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <CAFEAcA8Q_qjJV55v0M4LwuK-2tuM4DaBVsmP5vAVogt8Hq98vg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.092,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -84,193 +95,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Dinah Baum <dinahbaum123@gmail.com> writes:
+On 1/8/23 14:06, Peter Maydell wrote:
+> On Tue, 1 Aug 2023 at 00:53, Keith Packard via <qemu-devel@nongnu.org> wrote:
+>>
+>> The arguments for deposit64 are (value, start, length, fieldval); this
+>> appears to have thought they were (value, fieldval, start,
+>> length). Reorder the parameters to match the actual function.
+>>
+>> Signed-off-by: Keith Packard <keithp@keithp.com>
+>> ---
+>>   target/nios2/nios2-semi.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/target/nios2/nios2-semi.c b/target/nios2/nios2-semi.c
+>> index ffd1f095f6..fc1df1dfeb 100644
+>> --- a/target/nios2/nios2-semi.c
+>> +++ b/target/nios2/nios2-semi.c
+>> @@ -170,7 +170,7 @@ void do_nios2_semihosting(CPUNios2State *env)
+>>           GET_ARG64(2);
+>>           GET_ARG64(3);
+>>           semihost_sys_lseek(cs, nios2_semi_u64_cb, arg0,
+>> -                           deposit64(arg2, arg1, 32, 32), arg3);
+>> +                           deposit64(arg2, 32, 32, arg1), arg3);
+>>           break;
+>>
+>>       case HOSTED_RENAME:
+> 
+> Fixes: d1e23cbaa403b2d ("target/nios2: Use semihosting/syscalls.h")
+> Cc: qemu-stable@nongnu.org
+> Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
-> Signed-off-by: Dinah Baum <dinahbaum123@gmail.com>
-> ---
->  qapi/machine-target.json | 78 +---------------------------------------
->  qapi/machine.json        | 77 +++++++++++++++++++++++++++++++++++++++
->  2 files changed, 78 insertions(+), 77 deletions(-)
->
-> diff --git a/qapi/machine-target.json b/qapi/machine-target.json
-> index f0a6b72414..3ee2f7ca6b 100644
-> --- a/qapi/machine-target.json
-> +++ b/qapi/machine-target.json
-> @@ -4,83 +4,7 @@
->  # This work is licensed under the terms of the GNU GPL, version 2 or later.
->  # See the COPYING file in the top-level directory.
->  
-> -##
-> -# @CpuModelInfo:
-> -#
-> -# Virtual CPU model.
-> -#
-> -# A CPU model consists of the name of a CPU definition, to which delta
-> -# changes are applied (e.g. features added/removed). Most magic values
-> -# that an architecture might require should be hidden behind the name.
-> -# However, if required, architectures can expose relevant properties.
-> -#
-> -# @name: the name of the CPU definition the model is based on
-> -#
-> -# @props: a dictionary of QOM properties to be applied
-> -#
-> -# Since: 2.8
-> -##
-> -{ 'struct': 'CpuModelInfo',
-> -  'data': { 'name': 'str',
-> -            '*props': 'any' } }
-> -
-> -##
-> -# @CpuModelExpansionType:
-> -#
-> -# An enumeration of CPU model expansion types.
-> -#
-> -# @static: Expand to a static CPU model, a combination of a static
-> -#     base model name and property delta changes.  As the static base
-> -#     model will never change, the expanded CPU model will be the
-> -#     same, independent of QEMU version, machine type, machine
-> -#     options, and accelerator options.  Therefore, the resulting
-> -#     model can be used by tooling without having to specify a
-> -#     compatibility machine - e.g. when displaying the "host" model.
-> -#     The @static CPU models are migration-safe.
-> -#
-> -# @full: Expand all properties.  The produced model is not guaranteed
-> -#     to be migration-safe, but allows tooling to get an insight and
-> -#     work with model details.
-> -#
-> -# Note: When a non-migration-safe CPU model is expanded in static
-> -#     mode, some features enabled by the CPU model may be omitted,
-> -#     because they can't be implemented by a static CPU model
-> -#     definition (e.g. cache info passthrough and PMU passthrough in
-> -#     x86). If you need an accurate representation of the features
-> -#     enabled by a non-migration-safe CPU model, use @full.  If you
-> -#     need a static representation that will keep ABI compatibility
-> -#     even when changing QEMU version or machine-type, use @static
-> -#     (but keep in mind that some features may be omitted).
-> -#
-> -# Since: 2.8
-> -##
-> -{ 'enum': 'CpuModelExpansionType',
-> -  'data': [ 'static', 'full' ] }
-> -
-> -##
-> -# @CpuModelCompareResult:
-> -#
-> -# An enumeration of CPU model comparison results.  The result is
-> -# usually calculated using e.g. CPU features or CPU generations.
-> -#
-> -# @incompatible: If model A is incompatible to model B, model A is not
-> -#     guaranteed to run where model B runs and the other way around.
-> -#
-> -# @identical: If model A is identical to model B, model A is
-> -#     guaranteed to run where model B runs and the other way around.
-> -#
-> -# @superset: If model A is a superset of model B, model B is
-> -#     guaranteed to run where model A runs.  There are no guarantees
-> -#     about the other way.
-> -#
-> -# @subset: If model A is a subset of model B, model A is guaranteed to
-> -#     run where model B runs.  There are no guarantees about the other
-> -#     way.
-> -#
-> -# Since: 2.8
-> -##
-> -{ 'enum': 'CpuModelCompareResult',
-> -  'data': [ 'incompatible', 'identical', 'superset', 'subset' ] }
-> +{ 'include': 'machine.json' }
->  
->  ##
->  # @CpuModelBaselineInfo:
-> diff --git a/qapi/machine.json b/qapi/machine.json
-> index a08b6576ca..192c781310 100644
-> --- a/qapi/machine.json
-> +++ b/qapi/machine.json
-> @@ -1691,3 +1691,80 @@
->  { 'command': 'dumpdtb',
->    'data': { 'filename': 'str' },
->    'if': 'CONFIG_FDT' }
-> +
-> +##
-> +# @CpuModelInfo:
-> +#
-> +# Virtual CPU model.
-> +#
-> +# A CPU model consists of the name of a CPU definition, to which delta
-> +# changes are applied (e.g. features added/removed). Most magic values
-> +# that an architecture might require should be hidden behind the name.
-> +# However, if required, architectures can expose relevant properties.
-> +#
-> +# @name: the name of the CPU definition the model is based on
-> +#
-> +# @props: a dictionary of QOM properties to be applied
-> +#
-> +# Since: 2.8
-> +##
-> +{ 'struct': 'CpuModelInfo',
-> +  'data': { 'name': 'str', '*props': 'any' } }
-> +
-> +##
-> +# @CpuModelExpansionType:
-> +#
-> +# An enumeration of CPU model expansion types.
-> +#
-> +# @static: Expand to a static CPU model, a combination of a static
-> +#     base model name and property delta changes.  As the static base
-> +#     model will never change, the expanded CPU model will be the
-> +#     same, independent of QEMU version, machine type, machine
-> +#     options, and accelerator options.  Therefore, the resulting
-> +#     model can be used by tooling without having to specify a
-> +#     compatibility machine - e.g. when displaying the "host" model.
-> +#     The @static CPU models are migration-safe.
-> +#
-> +# @full: Expand all properties.  The produced model is not guaranteed
-> +#     to be migration-safe, but allows tooling to get an insight and
-> +#     work with model details.
-> +#
-> +# Note: When a non-migration-safe CPU model is expanded in static
-> +#     mode, some features enabled by the CPU model may be omitted,
-> +#     because they can't be implemented by a static CPU model
-> +#     definition (e.g. cache info passthrough and PMU passthrough in
-> +#     x86). If you need an accurate representation of the features
-> +#     enabled by a non-migration-safe CPU model, use @full.  If you
-> +#     need a static representation that will keep ABI compatibility
-> +#     even when changing QEMU version or machine-type, use @static
-> +#     (but keep in mind that some features may be omitted).
-> +#
-> +# Since: 2.8
-> +##
-> +{ 'enum': 'CpuModelExpansionType',
-> +  'data': [ 'static', 'full' ] }
-> +
-> +##
-> +# @CpuModelCompareResult:
-> +#
-> +# An enumeration of CPU model comparison results.  The result is
-> +# usually calculated using e.g.  CPU features or CPU generations.
+Commit 950272506d ("target/m68k: Use semihosting/syscalls.h") has the
+same issue.
 
-Single space after e.g., please.
-
-> +#
-> +# @incompatible: If model A is incompatible to model B, model A is not
-> +#     guaranteed to run where model B runs and the other way around.
-> +#
-> +# @identical: If model A is identical to model B, model A is
-> +#     guaranteed to run where model B runs and the other way around.
-> +#
-> +# @superset: If model A is a superset of model B, model B is
-> +#     guaranteed to run where model A runs.  There are no guarantees
-> +#     about the other way.
-> +#
-> +# @subset: If model A is a subset of model B, model A is guaranteed to
-> +#     run where model B runs.  There are no guarantees about the other
-> +#     way.
-> +#
-> +# Since: 2.8
-> +##
-> +{ 'enum': 'CpuModelCompareResult',
-> +  'data': [ 'incompatible', 'identical', 'superset', 'subset' ] }
-
-With that
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
