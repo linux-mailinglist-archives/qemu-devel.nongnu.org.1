@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37A4776BFA9
+	by mail.lfdr.de (Postfix) with ESMTPS id 272FF76BFA8
 	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 23:56:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQxKw-00049g-6u; Tue, 01 Aug 2023 17:55:26 -0400
+	id 1qQxKw-0004AZ-KI; Tue, 01 Aug 2023 17:55:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qQxKt-000451-H9
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qQxKt-000450-HB
  for qemu-devel@nongnu.org; Tue, 01 Aug 2023 17:55:23 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qQxKp-000525-79
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 17:55:21 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-3178dd771ceso4635814f8f.2
- for <qemu-devel@nongnu.org>; Tue, 01 Aug 2023 14:55:14 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qQxKr-00053H-5Y
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 17:55:22 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-3128fcd58f3so6272329f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 01 Aug 2023 14:55:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690926913; x=1691531713;
+ d=linaro.org; s=google; t=1690926919; x=1691531719;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=pxy5Yn/JsCpPFvBWg/TvifCvOz534Lkl3K0+WTl0qy8=;
- b=j2ZO/9RSPZ4OW5Fnn0l+NMxpcJ6rqKi3/cfLXUT85R9nUgrkxzmEGedDM6YLIXl2Mf
- 4j3zT0dOOJQjcuDYSMekPo+m6URA4im+/czDpES+KZQTpQ0gCUZuAF7zvEN6SwJ+oBWU
- 7NVaX6k3D1IGYsN0c/vS9scTQPJtplO8JYNrbNBetWsZ09YGuUyYzc4Br5uDOqSuwIbe
- v+33poJHrqN/JkQljwSa/g17Bw8I6qlA/7DMTFDx6ZpO9GmBtJW1a/Y3PdnfbgRA6vWg
- qA5KCqMQcpg58SgOkQv6VCyjBwk5i6XXgGBGh9/eLdjmxKkBg7qSo3pVIipJbsC38HJj
- AaTg==
+ bh=bh9naHn4NiF5F3e/lau9gZRCmWW1W7JeWXsrB/buMi8=;
+ b=UogiiheJHAADm4UMrPE/AyrskvVO4HQVa5uOSEEmpS/FMuNlQ53n6euV3Fo1ISe2kO
+ dG0f8cOQpJre7fbWRaQsJYSB4huiZDadgUnHbiAefaZMvgGFdKNxSiFNTb5wddJQ/DYw
+ /CuqmGov2rV4bCiUZe79+YtybcrnpmIZJrryyLIlEDOxNuW157izUua0O51vKRYqHWfV
+ P4tUCgtSev9aTBCtyU29/qNn4OHdwDDbh3yszQNdb31ifZriF5lpEI21jdUZIdqYdSaA
+ x/4exdMXDCkQLJ3De3Egz7g3wFwij0hK6+DADUU2Rf4NarwcRyFXosMJX5Q2Dk8bqJl7
+ IjkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690926913; x=1691531713;
+ d=1e100.net; s=20221208; t=1690926919; x=1691531719;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pxy5Yn/JsCpPFvBWg/TvifCvOz534Lkl3K0+WTl0qy8=;
- b=Toewt5tcrlX0VGXwd9kA7VdihyGcxigm5iEhlm1cbjRHhX9BcTo6dAUT8/5DEqqbVP
- H7GTEHVC7Ez/hpv3xw2SGTsMR4f07wHa5dkClXWpJwmEgklRvIXkvNLYrAxBA557W1KK
- lYG3GEtXvh4pJJa2YdGTCcpgQoz0PDZlELq8AUZ3tbluF9x0SLwC607tVN0yExUN/1TE
- lfjchv4UW6+tZ4+jlcI46N5OfLDf4WrdnzbUHXKbNS4OwQxef5/LP7UUO2GBR4jEh+B0
- GIWzuWSw/CYIJqlT/apvcFtQp7f+wayCYNgqQ10OvOuXb6gUZ8Fx5riZ1SVlgbteisU2
- xfjg==
-X-Gm-Message-State: ABy/qLbA2nea1Om06DzifO88sxT0oZYiDoXVYrNp9MMQcQk6RuIrKPHf
- lmYWVsDxCMzdOKuRrAat+5HS+Yh0n/HmXo5Ag30=
-X-Google-Smtp-Source: APBJJlHNBNyKI1rn1bOjtvZ/jSwLbfQRuDFZpNXF9K+ebYpX1aTNF9PP1TSJlSf0ADn8TyzALhevJg==
-X-Received: by 2002:a5d:608a:0:b0:313:e8b6:1699 with SMTP id
- w10-20020a5d608a000000b00313e8b61699mr3328575wrt.55.1690926913384; 
- Tue, 01 Aug 2023 14:55:13 -0700 (PDT)
+ bh=bh9naHn4NiF5F3e/lau9gZRCmWW1W7JeWXsrB/buMi8=;
+ b=LtbUFHOZf56zTy+jSlJd2qBx/yx0QeyHKhDTG3pG+wl6Ae6bM2SyZio105kLmFacqM
+ NI4avhzl9EXzg3TFHDT4FvLSP1Rkz5nWRKw4St6mRvrnzmqomiGyhZkGJl84O1iwzfAj
+ zeWu/M28cCqCXWpVYlsE1kPug1/WcV/+ydYcZrEsRz7Bx3Eg5qYJI2jPW/G/90j7wK8D
+ K4LBEHz5IIVsLE2+5LbtZ777zzbx/anHT7YeD8fzb3LxRIPzpCAQathNnIy2fvrGZmgV
+ 7ZNpnxnMPOiFbtHXMMhtMCpyCAUTz2P8FKaWShuJhR9kYPsQt6uV/Sm14P4Udi+8gcQn
+ oyOQ==
+X-Gm-Message-State: ABy/qLYqN7N6SbWK0MwyGnk5vsG1odne0NbIk1OkFY5cLHAeRckSAjGp
+ NIyHrUgduQpCgzCMHPSzzQ4D/i+qs4DVrg9b3VE=
+X-Google-Smtp-Source: APBJJlGpkB7qqlQchlMMZf32N0QIXxecUMS1ycAovzoHJ7nvFljvfnphYZIljhiTsWeQh5D4KsenlQ==
+X-Received: by 2002:adf:fd8b:0:b0:314:3ca0:c8c2 with SMTP id
+ d11-20020adffd8b000000b003143ca0c8c2mr3466166wrr.11.1690926919468; 
+ Tue, 01 Aug 2023 14:55:19 -0700 (PDT)
 Received: from localhost.localdomain ([176.176.174.59])
  by smtp.gmail.com with ESMTPSA id
- r8-20020adfe688000000b0031434c08bb7sm17004764wrm.105.2023.08.01.14.55.12
+ y18-20020adff152000000b0031784ac0babsm15896468wro.28.2023.08.01.14.55.18
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 01 Aug 2023 14:55:13 -0700 (PDT)
+ Tue, 01 Aug 2023 14:55:19 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, qemu-s390x@nongnu.org,
  Keith Packard <keithp@keithp.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 08/10] target/nios2: Pass semihosting arg to exit
-Date: Tue,  1 Aug 2023 23:54:19 +0200
-Message-Id: <20230801215421.60133-9-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: [PULL 09/10] target/nios2: Fix semihost lseek offset computation
+Date: Tue,  1 Aug 2023 23:54:20 +0200
+Message-Id: <20230801215421.60133-10-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230801215421.60133-1-philmd@linaro.org>
 References: <20230801215421.60133-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,32 +95,33 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Keith Packard <keithp@keithp.com>
 
-Instead of using R_ARG0 (the semihost function number), use R_ARG1
-(the provided exit status).
+The arguments for deposit64 are (value, start, length, fieldval); this
+appears to have thought they were (value, fieldval, start,
+length). Reorder the parameters to match the actual function.
 
 Signed-off-by: Keith Packard <keithp@keithp.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Fixes: d1e23cbaa403b2d ("target/nios2: Use semihosting/syscalls.h")
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-Id: <20230801152245.332749-1-keithp@keithp.com>
+Message-Id: <20230731235245.295513-1-keithp@keithp.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/nios2/nios2-semi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ target/nios2/nios2-semi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/target/nios2/nios2-semi.c b/target/nios2/nios2-semi.c
-index 3738774976..f3b7aee4f1 100644
+index f3b7aee4f1..9d0241c758 100644
 --- a/target/nios2/nios2-semi.c
 +++ b/target/nios2/nios2-semi.c
-@@ -133,8 +133,8 @@ void do_nios2_semihosting(CPUNios2State *env)
-     args = env->regs[R_ARG1];
-     switch (nr) {
-     case HOSTED_EXIT:
--        gdb_exit(env->regs[R_ARG0]);
--        exit(env->regs[R_ARG0]);
-+        gdb_exit(env->regs[R_ARG1]);
-+        exit(env->regs[R_ARG1]);
+@@ -169,7 +169,7 @@ void do_nios2_semihosting(CPUNios2State *env)
+         GET_ARG64(2);
+         GET_ARG64(3);
+         semihost_sys_lseek(cs, nios2_semi_u64_cb, arg0,
+-                           deposit64(arg2, arg1, 32, 32), arg3);
++                           deposit64(arg2, 32, 32, arg1), arg3);
+         break;
  
-     case HOSTED_OPEN:
-         GET_ARG(0);
+     case HOSTED_RENAME:
 -- 
 2.38.1
 
