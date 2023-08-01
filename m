@@ -2,70 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7B5776B8F5
+	by mail.lfdr.de (Postfix) with ESMTPS id DB87076B8F4
 	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 17:46:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQrYd-0001R1-9I; Tue, 01 Aug 2023 11:45:11 -0400
+	id 1qQrYy-0001jY-SK; Tue, 01 Aug 2023 11:45:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qQrYQ-0001JZ-Rf
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 11:45:00 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ id 1qQrYr-0001h3-7d
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 11:45:25 -0400
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qQrYN-0003kO-UJ
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 11:44:58 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-3174aac120aso5357983f8f.2
- for <qemu-devel@nongnu.org>; Tue, 01 Aug 2023 08:44:55 -0700 (PDT)
+ id 1qQrYp-00042z-DY
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 11:45:25 -0400
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-3178dd81ac4so4314303f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 01 Aug 2023 08:45:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690904693; x=1691509493;
+ d=linaro.org; s=google; t=1690904721; x=1691509521;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=iIRxuOKcFciFwq9ZheHm9rMS67KZcThQh2psN+QTh3o=;
- b=bSkSe8ujoVoBAyEYZp3Y+p257HYUSSRPde2NMCW14NTmsrrG00HT/HJV2mR0PLefmU
- XuGE3TnYYHiRcKJHPGIu5UtBNG1w2usdJANl3OruJv7ZUdURTAaUWy8Qe86cKsklKuea
- +Ag3M8kqdZQtFeyg4inNXoCrZriOJfClmNg5z+B6FFc11pDEhUvqjER+0BYD/CxEYe3G
- zb2PF/Ga+LvR692mYuMjCJJr+1h6t5hcYTXrVHOmk8/Y2HVog94O3WgtyEeNncvjd85y
- V5iZgLRXoW77wlFz75GAcTpn18JqNA7VkpQQ9ld0+Aeqrc/cdrwmSaN6A2qlU9KHzwh+
- SXnQ==
+ bh=f0+coTLzDrNM167uzJa6E+m7LPT8bGvKfu02ozqr8PA=;
+ b=S67VyW/5FImcd5YByTwxj6oPF3BARzyghoE0YeL7UPDFC6lPwnCPvy8Bx9ZynDYPM0
+ V5HXTsvOICOotS4wqseYr8abqV8A0CWQlqJv2KAT7nn/ZYPuxt0m5cdq5jbiexjGOA45
+ SnNbWOTYrNJbs7cXJjwt7dLa5NsKeFNFxJNM6Fe1rl+sdmV4Wi8mIV/bDZ2PQgaC6Dmr
+ np5uJYX/qXRWZwU9JKwtB0lGmzEGHWhRkAWhypaAVZ51JxBSCMkMqg/PRS0k0ZdFtY9r
+ UiYSShKBLSNVHzRqzMjNiKtOhHVpokXcEIV/0dskTuUY3zUJoUXTY26bwAW13r806dO8
+ jH9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690904693; x=1691509493;
+ d=1e100.net; s=20221208; t=1690904721; x=1691509521;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=iIRxuOKcFciFwq9ZheHm9rMS67KZcThQh2psN+QTh3o=;
- b=c3wPtD4vGGISJsXqQjYv1ma9sVWthzaT457k4SYfrIYDYOaGgTlJGrPF0gT9O9D3Kl
- kx8x4ny5nqm87eYQRBCys8ddI6MQ6HXMUqtREFfR8tS7tXP7cWy1OYkj+c0rAqzCYWNK
- OYtlEap0/Z2jaI5aJqBMJHVgwPGnZxHZyCa9rpnr0za0BzO2FiViRbKWeRtxWxj/3y2k
- ht0TcBI0ItU7vWALihOFYV9L62QuMGP96JSZ5fVi6ZgtLx1qJOkFuNw7S7FKK7pBcMWA
- +bHQoq4SaEf0MaGCxBTbxLwim2/IF/eUPPqm0kqEeB+TdaB7f03Ni4SwNHZVfevGZ96o
- ziQA==
-X-Gm-Message-State: ABy/qLaJw/tRwNacCCr5dp9l6XHFago2y7D4TIZd4pyR0+MSjquT7lwE
- LjgflEvoUPvfEPRbKJCM90JiC4VxkfYkj8irE5U=
-X-Google-Smtp-Source: APBJJlGFBd+PysvC4NoI7m3GN+C41tN6yVacmW3teI6jzSLLx9GMIlYUj3vz0F2/89xpOSrcEMRjAg==
-X-Received: by 2002:a5d:4fcd:0:b0:30f:af19:81f3 with SMTP id
- h13-20020a5d4fcd000000b0030faf1981f3mr2566249wrw.41.1690904693088; 
- Tue, 01 Aug 2023 08:44:53 -0700 (PDT)
+ bh=f0+coTLzDrNM167uzJa6E+m7LPT8bGvKfu02ozqr8PA=;
+ b=I+yD8KtZLdfd86p23av6WSlZ61wpua+2bBziR4cut0hkeHU2lOec+srx2jFNIBLpcN
+ 1663e9U1AYllbKBOZSVTU1gmm089SVcMwntC9IQACNE1Z4ygNlJhCUqeCHZx9UDyf8C8
+ 9RqugVxwHtmXcS8DGMEhyt/XQu5ueQR4buoF9vBNgh4sD6GRu/sofD0XbqzXdUjy20CR
+ cxKrtKJ7nre2HcPv7PpSFikrsmOZ+McqMPlna2qpLLUh84fQJHpvopr7f8Ge0zoBQuD0
+ p7m2o8wFD74lSraNZlSxeTjrNKs2fGudGmWEQNxoXMN4QZU59IurhBYeTb5wbvPhskiy
+ QgoA==
+X-Gm-Message-State: ABy/qLbiMGQmTmEJ9mgvLtY7YwLMraH7C8A3L7i5VuU35Nk+ZDDhAl23
+ 6AFWpQcdxil4LpUYX3bLgK+H7F3jdd0mHjrAfHQ=
+X-Google-Smtp-Source: APBJJlHnFr8CWySk2SFnaM+E99csADtjcDPOONeJD8tGjfhm1JNLDzH6/jbFNldrrtxJ3nrrkiI9bQ==
+X-Received: by 2002:adf:d84a:0:b0:317:61d8:3c7e with SMTP id
+ k10-20020adfd84a000000b0031761d83c7emr2647688wrl.26.1690904720992; 
+ Tue, 01 Aug 2023 08:45:20 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- k8-20020a056000004800b003141a3c4353sm16526883wrx.30.2023.08.01.08.44.52
+ s6-20020a5d6a86000000b003142ea7a661sm16368050wru.21.2023.08.01.08.45.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 01 Aug 2023 08:44:52 -0700 (PDT)
+ Tue, 01 Aug 2023 08:45:20 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Laurent Vivier <laurent@vivier.eu>
-Subject: [PATCH] target/m68k: Add URL to semihosting spec
-Date: Tue,  1 Aug 2023 16:44:51 +0100
-Message-Id: <20230801154451.3505492-1-peter.maydell@linaro.org>
+Cc: Laurent Vivier <laurent@vivier.eu>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Keith Packard <keithp@keithp.com>
+Subject: [PATCH for-8.1] target/m68k: Fix semihost lseek offset computation
+Date: Tue,  1 Aug 2023 16:45:19 +0100
+Message-Id: <20230801154519.3505531-1-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -88,30 +91,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The spec for m68k semihosting is documented in the libgloss
-sources. Add a comment with the URL for it, as we already
-have for nios2 semihosting.
+The arguments for deposit64 are (value, start, length, fieldval); this
+appears to have thought they were (value, fieldval, start,
+length). Reorder the parameters to match the actual function.
 
+Cc: qemu-stable@nongnu.org
+Fixes: 950272506d ("target/m68k: Use semihosting/syscalls.h")
+Reported-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/m68k/m68k-semi.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Same fix for m68k as Keith Packard just sent for nios2
+---
+ target/m68k/m68k-semi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/target/m68k/m68k-semi.c b/target/m68k/m68k-semi.c
-index 239f6e44e90..80cd8d70dbb 100644
+index 88ad9ba8144..239f6e44e90 100644
 --- a/target/m68k/m68k-semi.c
 +++ b/target/m68k/m68k-semi.c
-@@ -15,6 +15,10 @@
-  *
-  *  You should have received a copy of the GNU General Public License
-  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
-+ *
-+ *  The semihosting protocol implemented here is described in the
-+ *  libgloss sources:
-+ *  https://sourceware.org/git/?p=newlib-cygwin.git;a=blob;f=libgloss/m68k/m68k-semi.txt;hb=HEAD
-  */
+@@ -166,7 +166,7 @@ void do_m68k_semihosting(CPUM68KState *env, int nr)
+         GET_ARG64(2);
+         GET_ARG64(3);
+         semihost_sys_lseek(cs, m68k_semi_u64_cb, arg0,
+-                           deposit64(arg2, arg1, 32, 32), arg3);
++                           deposit64(arg2, 32, 32, arg1), arg3);
+         break;
  
- #include "qemu/osdep.h"
+     case HOSTED_RENAME:
 -- 
 2.34.1
 
