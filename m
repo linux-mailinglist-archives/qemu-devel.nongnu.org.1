@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74AEE76B1F1
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 12:34:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C865E76B1E9
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 12:34:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQmgN-00083R-Vx; Tue, 01 Aug 2023 06:32:52 -0400
+	id 1qQmgP-000843-HY; Tue, 01 Aug 2023 06:32:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1qQmgM-000835-4z
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 06:32:50 -0400
+ id 1qQmgO-00083t-9F
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 06:32:52 -0400
 Received: from [192.55.52.88] (helo=mgamail.intel.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1qQmgK-00032u-Jg
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 06:32:49 -0400
+ id 1qQmgM-00032u-J9
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 06:32:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1690885968; x=1722421968;
+ t=1690885970; x=1722421970;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=ValD5rw4W/5+rSHqva4+O2Bv0cXdnGtQ4tc6zhCFpBI=;
- b=nWR5d/kVMVUHP0EIaTEjHLb2I7YyGdWoxSle1Gveq+PXvWCXQxYf5UCz
- m1z32LHlpPJvT3V4gzZY4sbjMeq6X3hmYJywJ9vSte2pRwXne5hy05sl0
- Ue2FTySsB/VVhWDZTcG/e6Z+mgR9ZZ7PFRA923DK89Y7M5jm8a6RiO5or
- 6yXKWpQxMGCNA2Xomm+St1pz2Nd+nv2fx8mdSH5ciaxZPqF7OIR5oYda/
- X69311Chc2yR/z5f2YAU+yRd1tApfkwOiayb0BdVVTm2lfUbjYY5YkRRq
- V4qpDO9LqvEMII6rjkz7qlPjLumYFsv9nxHnc83u00HUXX5IILprz7l8x w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10788"; a="400211046"
-X-IronPort-AV: E=Sophos;i="6.01,246,1684825200"; d="scan'208";a="400211046"
+ bh=79Ftd53nq2U2l6sa4S0yiht7Zx8i6hIdkp6FoTHO65U=;
+ b=hI4Q3fG4r+MTBSxr3L/EJWnC9f/6acSnnJTu+djZHRZleKslTHhKRQGA
+ ljoEC1ZrFrwLLiMJaglXMOuawa01yb/Z32by8NgvoVHsQkk0jURoow90o
+ jKEUySfWKAu19j+zsBZ1WYeqG+ERvwHL6HM/9DWUtDK+rC82un7AlKOen
+ 4MDfvHrANlYX5Ks/b/+VJrnGHLaYpLsR8qjv4RYQR3PlzSiTgv/0MEEUQ
+ Nn0Edg6p3rmWUL37U/0OgZaowTMMc0coSGtsMUPMl0FE74v5U70b7YUFN
+ vJEkCkOJZe8/2jL/gsudR5gcuZPGhNp0Yb4QLH0BX+oK+JzHDyMD7kQu1 Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10788"; a="400211072"
+X-IronPort-AV: E=Sophos;i="6.01,246,1684825200"; d="scan'208";a="400211072"
 Received: from fmsmga007.fm.intel.com ([10.253.24.52])
  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Aug 2023 03:25:17 -0700
+ 01 Aug 2023 03:25:20 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10788"; a="731932031"
-X-IronPort-AV: E=Sophos;i="6.01,246,1684825200"; d="scan'208";a="731932031"
+X-IronPort-AV: E=McAfee;i="6600,9927,10788"; a="731932048"
+X-IronPort-AV: E=Sophos;i="6.01,246,1684825200"; d="scan'208";a="731932048"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.28])
- by fmsmga007.fm.intel.com with ESMTP; 01 Aug 2023 03:25:14 -0700
+ by fmsmga007.fm.intel.com with ESMTP; 01 Aug 2023 03:25:17 -0700
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
@@ -51,10 +51,10 @@ To: Eduardo Habkost <eduardo@habkost.net>,
 Cc: qemu-devel@nongnu.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
  Xiaoyao Li <xiaoyao.li@intel.com>, Babu Moger <babu.moger@amd.com>,
  Zhao Liu <zhao1.liu@intel.com>, Robert Hoo <robert.hu@linux.intel.com>
-Subject: [PATCH v3 04/17] i386/cpu: Fix i/d-cache topology to core level for
- Intel CPU
-Date: Tue,  1 Aug 2023 18:35:14 +0800
-Message-Id: <20230801103527.397756-5-zhao1.liu@linux.intel.com>
+Subject: [PATCH v3 05/17] i386/cpu: Use APIC ID offset to encode cache topo in
+ CPUID[4]
+Date: Tue,  1 Aug 2023 18:35:15 +0800
+Message-Id: <20230801103527.397756-6-zhao1.liu@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230801103527.397756-1-zhao1.liu@linux.intel.com>
 References: <20230801103527.397756-1-zhao1.liu@linux.intel.com>
@@ -88,60 +88,128 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-For i-cache and d-cache, the maximum IDs for CPUs sharing cache (
-CPUID.04H.00H:EAX[bits 25:14] and CPUID.04H.01H:EAX[bits 25:14]) are
-both 0, and this means i-cache and d-cache are shared in the SMT level.
-This is correct if there's single thread per core, but is wrong for the
-hyper threading case (one core contains multiple threads) since the
-i-cache and d-cache are shared in the core level other than SMT level.
+Refer to the fixes of cache_info_passthrough ([1], [2]) and SDM, the
+CPUID.04H:EAX[bits 25:14] and CPUID.04H:EAX[bits 31:26] should use the
+nearest power-of-2 integer.
 
-For AMD CPU, commit 8f4202fb1080 ("i386: Populate AMD Processor Cache
-Information for cpuid 0x8000001D") has already introduced i/d cache
-topology as core level by default.
+The nearest power-of-2 integer can be caculated by pow2ceil() or by
+using APIC ID offset (like L3 topology using 1 << die_offset [3]).
 
-Therefore, in order to be compatible with both multi-threaded and
-single-threaded situations, we should set i-cache and d-cache be shared
-at the core level by default.
+But in fact, CPUID.04H:EAX[bits 25:14] and CPUID.04H:EAX[bits 31:26]
+are associated with APIC ID. For example, in linux kernel, the field
+"num_threads_sharing" (Bits 25 - 14) is parsed with APIC ID. And for
+another example, on Alder Lake P, the CPUID.04H:EAX[bits 31:26] is not
+matched with actual core numbers and it's caculated by:
+"(1 << (pkg_offset - core_offset)) - 1".
 
-This fix changes the default i/d cache topology from per-thread to
-per-core. Potentially, this change in L1 cache topology may affect the
-performance of the VM if the user does not specifically specify the
-topology or bind the vCPU. However, the way to achieve optimal
-performance should be to create a reasonable topology and set the
-appropriate vCPU affinity without relying on QEMU's default topology
-structure.
+Therefore the offset of APIC ID should be preferred to caculate nearest
+power-of-2 integer for CPUID.04H:EAX[bits 25:14] and CPUID.04H:EAX[bits
+31:26]:
+1. d/i cache is shared in a core, 1 << core_offset should be used
+   instand of "cs->nr_threads" in encode_cache_cpuid4() for
+   CPUID.04H.00H:EAX[bits 25:14] and CPUID.04H.01H:EAX[bits 25:14].
+2. L2 cache is supposed to be shared in a core as for now, thereby
+   1 << core_offset should also be used instand of "cs->nr_threads" in
+   encode_cache_cpuid4() for CPUID.04H.02H:EAX[bits 25:14].
+3. Similarly, the value for CPUID.04H:EAX[bits 31:26] should also be
+   replaced by the offsets upper SMT level in APIC ID.
+
+In addition, use APIC ID offset to replace "pow2ceil()" for
+cache_info_passthrough case.
+
+[1]: efb3934adf9e ("x86: cpu: make sure number of addressable IDs for processor cores meets the spec")
+[2]: d7caf13b5fcf ("x86: cpu: fixup number of addressable IDs for logical processors sharing cache")
+[3]: d65af288a84d ("i386: Update new x86_apicid parsing rules with die_offset support")
 
 Fixes: 7e3482f82480 ("i386: Helpers to encode cache information consistently")
 Suggested-by: Robert Hoo <robert.hu@linux.intel.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
 Changes since v1:
- * Split this fix from the patch named "i386/cpu: Fix number of
-   addressable IDs in CPUID.04H".
- * Add the explanation of the impact on performance. (Xiaoyao)
+ * Use APIC ID offset to replace "pow2ceil()" for cache_info_passthrough
+   case. (Yanan)
+ * Split the L1 cache fix into a separate patch.
+ * Rename the title of this patch (the original is "i386/cpu: Fix number
+   of addressable IDs in CPUID.04H").
 ---
- target/i386/cpu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ target/i386/cpu.c | 30 +++++++++++++++++++++++-------
+ 1 file changed, 23 insertions(+), 7 deletions(-)
 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 50613cd04612..b439a05244ee 100644
+index b439a05244ee..c80613bfcded 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -6104,12 +6104,12 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+@@ -6005,7 +6005,6 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+ {
+     X86CPU *cpu = env_archcpu(env);
+     CPUState *cs = env_cpu(env);
+-    uint32_t die_offset;
+     uint32_t limit;
+     uint32_t signature[3];
+     X86CPUTopoInfo topo_info;
+@@ -6089,39 +6088,56 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+                 int host_vcpus_per_cache = 1 + ((*eax & 0x3FFC000) >> 14);
+                 int vcpus_per_socket = cs->nr_cores * cs->nr_threads;
+                 if (cs->nr_cores > 1) {
++                    int addressable_cores_offset =
++                                                apicid_pkg_offset(&topo_info) -
++                                                apicid_core_offset(&topo_info);
++
+                     *eax &= ~0xFC000000;
+-                    *eax |= (pow2ceil(cs->nr_cores) - 1) << 26;
++                    *eax |= (1 << addressable_cores_offset - 1) << 26;
+                 }
+                 if (host_vcpus_per_cache > vcpus_per_socket) {
++                    int pkg_offset = apicid_pkg_offset(&topo_info);
++
+                     *eax &= ~0x3FFC000;
+-                    *eax |= (pow2ceil(vcpus_per_socket) - 1) << 14;
++                    *eax |= (1 << pkg_offset - 1) << 14;
+                 }
+             }
+         } else if (cpu->vendor_cpuid_only && IS_AMD_CPU(env)) {
+             *eax = *ebx = *ecx = *edx = 0;
+         } else {
+             *eax = 0;
++            int addressable_cores_offset = apicid_pkg_offset(&topo_info) -
++                                           apicid_core_offset(&topo_info);
++            int core_offset, die_offset;
++
              switch (count) {
              case 0: /* L1 dcache info */
++                core_offset = apicid_core_offset(&topo_info);
                  encode_cache_cpuid4(env->cache_info_cpuid4.l1d_cache,
--                                    1, cs->nr_cores,
-+                                    cs->nr_threads, cs->nr_cores,
+-                                    cs->nr_threads, cs->nr_cores,
++                                    (1 << core_offset),
++                                    (1 << addressable_cores_offset),
                                      eax, ebx, ecx, edx);
                  break;
              case 1: /* L1 icache info */
++                core_offset = apicid_core_offset(&topo_info);
                  encode_cache_cpuid4(env->cache_info_cpuid4.l1i_cache,
--                                    1, cs->nr_cores,
-+                                    cs->nr_threads, cs->nr_cores,
+-                                    cs->nr_threads, cs->nr_cores,
++                                    (1 << core_offset),
++                                    (1 << addressable_cores_offset),
                                      eax, ebx, ecx, edx);
                  break;
              case 2: /* L2 cache info */
++                core_offset = apicid_core_offset(&topo_info);
+                 encode_cache_cpuid4(env->cache_info_cpuid4.l2_cache,
+-                                    cs->nr_threads, cs->nr_cores,
++                                    (1 << core_offset),
++                                    (1 << addressable_cores_offset),
+                                     eax, ebx, ecx, edx);
+                 break;
+             case 3: /* L3 cache info */
+                 die_offset = apicid_die_offset(&topo_info);
+                 if (cpu->enable_l3_cache) {
+                     encode_cache_cpuid4(env->cache_info_cpuid4.l3_cache,
+-                                        (1 << die_offset), cs->nr_cores,
++                                        (1 << die_offset),
++                                        (1 << addressable_cores_offset),
+                                         eax, ebx, ecx, edx);
+                     break;
+                 }
 -- 
 2.34.1
 
