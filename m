@@ -2,84 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D353176BC94
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 20:38:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50C5076BC96
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 20:39:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQuF6-00032N-Uc; Tue, 01 Aug 2023 14:37:13 -0400
+	id 1qQuGM-0004Ac-DJ; Tue, 01 Aug 2023 14:38:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qQuF5-00032F-It
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 14:37:11 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qQuG3-0003ka-BK
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 14:38:12 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qQuF3-0004Sl-UW
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 14:37:11 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qQuG1-0004eG-7r
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 14:38:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690915027;
+ s=mimecast20190719; t=1690915087;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=1S14usRbSJqM19qfXveu8r0Di5wpneaJTb8ucv/HGOo=;
- b=dCqF7HLIejJW8l+sFRulV6XjYygoU9l4+7MT/Z+sgyi+P8P3QNO+ctCQ0UzwQR4E4UvdZH
- gr8Mvng6AitX2kGAMfz1bOSA5Ab1DTfkNQ8LQvMdxXjmCkVZDCa3acMeNoxkyek6jFXigU
- PX1VJc0gBNFJ0UoYrqMzj0l8dix2NT8=
-Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com
- [209.85.167.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=q487sGxE9e1RUOn7GjtdkAgY1g/TQgIUN1tD0edAsxQ=;
+ b=Gqv5ZpmFVcw8seje9YoaTmBGljM4dZbwYXRBkPPKzZSA/CQCGbExUWpAkzq1xEacDSTjn0
+ 5JpgF7a0UhWdFuvn4rVwD95EB06rFkbFLWsS0yhQIcxV9CkSTUciC/W+si2SQlJdOt8dPj
+ sUSZLuq2HYtpgPbNpdMOYxN/9mFNhkg=
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
+ [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-574-RbfblOfSOq-RxIkSD5AdNQ-1; Tue, 01 Aug 2023 14:37:04 -0400
-X-MC-Unique: RbfblOfSOq-RxIkSD5AdNQ-1
-Received: by mail-oi1-f199.google.com with SMTP id
- 5614622812f47-3a3a70425b4so10354336b6e.3
- for <qemu-devel@nongnu.org>; Tue, 01 Aug 2023 11:37:04 -0700 (PDT)
+ us-mta-622-Vk1adGYFO_qco9aUSBJQ_Q-1; Tue, 01 Aug 2023 14:38:06 -0400
+X-MC-Unique: Vk1adGYFO_qco9aUSBJQ_Q-1
+Received: by mail-qt1-f198.google.com with SMTP id
+ d75a77b69052e-40fb76bd50aso20886671cf.0
+ for <qemu-devel@nongnu.org>; Tue, 01 Aug 2023 11:38:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690915024; x=1691519824;
+ d=1e100.net; s=20221208; t=1690915085; x=1691519885;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=1S14usRbSJqM19qfXveu8r0Di5wpneaJTb8ucv/HGOo=;
- b=eDVk6eVskazfaxESRBseq6NvMt3WjcmpTvemIKlI7rGFVOaPjERKf+yR6OKurfpU8O
- UaE78gd4HBbHyBCimNX5CgjFeC7z1qkWPRmh4AORZa8CB9PyX9pYqXnbhzmvixueQ7yM
- gQ6pSkd63LaWOYdJX3OueC3CeQwo5PrSBvgT2BDtJvfybwnTsXLQGjoCytOyx611vdrC
- 2/9RsWVtYCYgUfl+gB3SoyZUXJt3D0FqZYI1DLmRowZfI+fBZQG5FKj+Ytnt9vSX/18P
- 9VzNLeEROw/s2obErOorOIIHxZbYQVy0sTi5BT2NexMt/BuarOX+GQxb+PDTvUJt77Ik
- cWoQ==
-X-Gm-Message-State: ABy/qLYqlNjKfBkz5gIY1AqCH/sQ1GyXslJ7uk7bbg35XjuyuuBxU8Kx
- GVNzlu9SKhyRLTPTCAi4pX0+3mqg1bpG1zjXBCyI6e1fX7IUtKdvqjJtfAtVyg3Gu8Kpyz1X+5L
- HYFEG2Kc14aObw/w=
-X-Received: by 2002:a05:6358:27a4:b0:139:65ca:5d6 with SMTP id
- l36-20020a05635827a400b0013965ca05d6mr5291988rwb.25.1690915023770; 
- Tue, 01 Aug 2023 11:37:03 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlE8w4vvL2k9AhJLNN4+LzKOu/936upUkOP4qYHuswm3aKsG5Tvw5iGfdlbzJCac+GuSffJbiA==
-X-Received: by 2002:a05:6358:27a4:b0:139:65ca:5d6 with SMTP id
- l36-20020a05635827a400b0013965ca05d6mr5291968rwb.25.1690915023437; 
- Tue, 01 Aug 2023 11:37:03 -0700 (PDT)
+ bh=q487sGxE9e1RUOn7GjtdkAgY1g/TQgIUN1tD0edAsxQ=;
+ b=XjFXzNkmPotuclOnGK7kWVQOcWLfKWNymt/u6bDfPqwHPY3yRhM9vrOIz2iwawFX15
+ k2J9qqeZYCBB5JMF9goybZCQPzAvs5Yuej2Fvtxl4LRaPzqkbXR0i4wEkwFLDShJxLLN
+ gxjVTYI6xx35nQ0ycVRUiZP+xmVk3OgujPeZVRgdw7uC93YswDRSd1iz4DivxEzxIbcM
+ dN1QCt39ZgU+JLkXKxwAHiAcbvc8WOTVFT5QQzVuUl9jlzlX63xBGRzH2oCVbINsnT9z
+ JBG2g7vrAcojZesv/w6FMeBXAihvSgWHRDOf00VMSnnlR4fkO9bjp41gtCqAj74E88a/
+ z9QA==
+X-Gm-Message-State: ABy/qLYbeNM2E0kRha0PlZS7US1Anxy+sdSlUbCE82A+EpVhMVfkhkpw
+ 7qG0vERmXoWrfefTqv0kvMpi+jqUm7jMxo8agqsFREIv/cctQIoFIZX+d3a0CGsdOugDA8iX3g5
+ XP4yYch14ZvBJ3YU=
+X-Received: by 2002:ac8:7d90:0:b0:403:a1d4:18d3 with SMTP id
+ c16-20020ac87d90000000b00403a1d418d3mr12963549qtd.68.1690915085571; 
+ Tue, 01 Aug 2023 11:38:05 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlEp7Zb5fnjOTlDFilp4E3gjBQsmP0dx4P53k2beSXY2TJFm7VK7kclRR2beeehmnBXCYQQxCg==
+X-Received: by 2002:ac8:7d90:0:b0:403:a1d4:18d3 with SMTP id
+ c16-20020ac87d90000000b00403a1d418d3mr12963537qtd.68.1690915085321; 
+ Tue, 01 Aug 2023 11:38:05 -0700 (PDT)
 Received: from [192.168.8.105] (tmo-081-137.customers.d1-online.com.
  [80.187.81.137]) by smtp.gmail.com with ESMTPSA id
- q6-20020a0ce206000000b0061a68b5a8c4sm4842402qvl.134.2023.08.01.11.37.00
+ bv20-20020a05622a0a1400b004036ec58b11sm4565099qtb.84.2023.08.01.11.38.03
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 01 Aug 2023 11:37:03 -0700 (PDT)
-Message-ID: <0d86bcdc-2419-c823-30e7-fa35d73256df@redhat.com>
-Date: Tue, 1 Aug 2023 20:36:58 +0200
+ Tue, 01 Aug 2023 11:38:04 -0700 (PDT)
+Message-ID: <7965d358-b29d-433c-a5b4-6c6900cb8538@redhat.com>
+Date: Tue, 1 Aug 2023 20:38:02 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH 1/8] gitlab: remove duplication between msys jobs
+Subject: Re: [PATCH 2/8] gitlab: print timestamps during windows msys jobs
 Content-Language: en-US
 To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
  qemu-devel@nongnu.org
 Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
  Beraldo Leal <bleal@redhat.com>, =?UTF-8?Q?Alex_Benn=c3=a9e?=
  <alex.bennee@linaro.org>, Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Yonggang Luo <luoyonggang@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Stefan Weil <sw@weilnetz.de>, =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?=
- <marcandre.lureau@redhat.com>
+ Yonggang Luo <luoyonggang@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>
 References: <20230801130403.164060-1-berrange@redhat.com>
- <20230801130403.164060-2-berrange@redhat.com>
+ <20230801130403.164060-3-berrange@redhat.com>
 From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <20230801130403.164060-2-berrange@redhat.com>
+In-Reply-To: <20230801130403.164060-3-berrange@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
@@ -108,20 +106,59 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 01/08/2023 15.03, Daniel P. Berrangé wrote:
-> Although they share a common parent, the two msys jobs still have
-> massive duplication in their script definitions that can easily be
-> collapsed.
+> It is hard to get visibility into where time is consumed in our Windows
+> msys jobs. Adding a few log console messages with the timestamp will
+> aid in our debugging.
 > 
 > Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 > ---
->   .gitlab-ci.d/windows.yml | 132 +++++++++++++++------------------------
->   1 file changed, 49 insertions(+), 83 deletions(-)
-
-As I discovered in the recent days, this is also quite helpful in case we 
-ever want to switch to Clang, since we need to change the prefix of the 
-packages there. And it's still easy to have distinct packages with some few 
-lines of codes changes, as I tried it out in my Clang patch. So this patch 
-now sounds fine to me:
+>   .gitlab-ci.d/windows.yml | 5 +++++
+>   1 file changed, 5 insertions(+)
+> 
+> diff --git a/.gitlab-ci.d/windows.yml b/.gitlab-ci.d/windows.yml
+> index f086540e40..831b080d12 100644
+> --- a/.gitlab-ci.d/windows.yml
+> +++ b/.gitlab-ci.d/windows.yml
+> @@ -19,6 +19,7 @@
+>       reports:
+>         junit: "build/meson-logs/testlog.junit.xml"
+>     before_script:
+> +  - Write-Output "Acquiring msys2.exe installer at $(Get-Date -Format u)"
+>     - If ( !(Test-Path -Path msys64\var\cache ) ) {
+>         mkdir msys64\var\cache
+>       }
+> @@ -27,6 +28,7 @@
+>         "https://github.com/msys2/msys2-installer/releases/download/2022-06-03/msys2-base-x86_64-20220603.sfx.exe"
+>         -outfile "msys64\var\cache\msys2.exe"
+>       }
+> +  - Write-Output "Invoking msys2.exe installer at $(Get-Date -Format u)"
+>     - msys64\var\cache\msys2.exe -y
+>     - ((Get-Content -path .\msys64\etc\\post-install\\07-pacman-key.post -Raw)
+>         -replace '--refresh-keys', '--version') |
+> @@ -36,6 +38,7 @@
+>     - .\msys64\usr\bin\bash -lc 'pacman --noconfirm -Syuu'  # Normal update
+>     - taskkill /F /FI "MODULES eq msys-2.0.dll"
+>     script:
+> +  - Write-Output "Installing mingw packages at $(Get-Date -Format u)"
+>     - .\msys64\usr\bin\bash -lc "pacman -Sy --noconfirm --needed
+>         bison diffutils flex
+>         git grep make sed
+> @@ -66,6 +69,7 @@
+>         $MINGW_TARGET-spice
+>         $MINGW_TARGET-usbredir
+>         $MINGW_TARGET-zstd "
+> +  - Write-Output "Running build at $(Get-Date -Format u)"
+>     - $env:CHERE_INVOKING = 'yes'  # Preserve the current working directory
+>     - $env:MSYS = 'winsymlinks:native' # Enable native Windows symlink
+>     - mkdir build
+> @@ -73,6 +77,7 @@
+>     - ..\msys64\usr\bin\bash -lc "../configure --enable-fdt=system $CONFIGURE_ARGS"
+>     - ..\msys64\usr\bin\bash -lc "make"
+>     - ..\msys64\usr\bin\bash -lc "make check MTESTARGS='$TEST_ARGS' || { cat meson-logs/testlog.txt; exit 1; } ;"
+> +  - Write-Output "Finished build at $(Get-Date -Format u)"
+>   
+>   msys2-64bit:
+>     extends: .shared_msys2_builder
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 
