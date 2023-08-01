@@ -2,69 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E41FB76A86F
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 07:45:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0ED276A8AC
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 08:07:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQiB6-00086k-KL; Tue, 01 Aug 2023 01:44:16 -0400
+	id 1qQiVz-0001fh-Qu; Tue, 01 Aug 2023 02:05:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhouzongmin@kylinos.cn>)
- id 1qQiB2-00086b-Mc
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 01:44:12 -0400
-Received: from mailgw.kylinos.cn ([124.126.103.232])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qQiVv-0001bS-Qj
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 02:05:48 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhouzongmin@kylinos.cn>)
- id 1qQiAy-0002MP-7Z
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 01:44:12 -0400
-X-UUID: 6c5fb43ac7a24b9f9e6d7d9fd52e8099-20230801
-X-CID-O-RULE: Release_Ham
-X-CID-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.28, REQID:a4c30252-fe9c-4595-b79a-928a2036971e, IP:5,
- U
- RL:0,TC:0,Content:0,EDM:0,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
- N:release,TS:-10
-X-CID-INFO: VERSION:1.1.28, REQID:a4c30252-fe9c-4595-b79a-928a2036971e, IP:5,
- URL
- :0,TC:0,Content:0,EDM:0,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
- release,TS:-10
-X-CID-META: VersionHash:176cd25, CLOUDID:a5828cd2-cd77-4e67-bbfd-aa4eaace762f,
- B
- ulkID:2308011343411OO2RWS6,BulkQuantity:0,Recheck:0,SF:24|17|19|44|38|102,
- TC:nil,Content:0,EDM:-3,IP:-2,URL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
- ,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_FSI
-X-UUID: 6c5fb43ac7a24b9f9e6d7d9fd52e8099-20230801
-X-User: zhouzongmin@kylinos.cn
-Received: from thinkpadx13gen2i.. [(111.48.58.12)] by mailgw
- (envelope-from <zhouzongmin@kylinos.cn>)
- (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
- with ESMTP id 324090297; Tue, 01 Aug 2023 13:43:38 +0800
-From: Zongmin Zhou <zhouzongmin@kylinos.cn>
-To: pbonzini@redhat.com, richard.henderson@linaro.org, eduardo@habkost.net,
- mst@redhat.com, marcel.apfelbaum@gmail.com
-Cc: qemu-devel@nongnu.org,
-	Zongmin Zhou <zhouzongmin@kylinos.cn>
-Subject: [RESEND PATCH] hw/i386/vmmouse:add relative packet flag for button
- status
-Date: Tue,  1 Aug 2023 13:43:34 +0800
-Message-Id: <20230801054334.1034300-1-zhouzongmin@kylinos.cn>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230413081526.2229916-1-zhouzongmin@kylinos.cn>
-References: <20230413081526.2229916-1-zhouzongmin@kylinos.cn>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qQiVu-0004oD-0s
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 02:05:47 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 8F3851728C;
+ Tue,  1 Aug 2023 09:05:55 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 61A321A60D;
+ Tue,  1 Aug 2023 09:05:41 +0300 (MSK)
+Message-ID: <e27791ac-4c32-a511-4605-8d0dcca5e0a7@tls.msk.ru>
+Date: Tue, 1 Aug 2023 09:05:41 +0300
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PULL 08/10] target/ppc: Disable goto_tb with architectural
+ singlestep
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+References: <20230731210211.137353-1-richard.henderson@linaro.org>
+ <20230731210211.137353-9-richard.henderson@linaro.org>
+From: Michael Tokarev <mjt@tls.msk.ru>
+In-Reply-To: <20230731210211.137353-9-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=124.126.103.232;
- envelope-from=zhouzongmin@kylinos.cn; helo=mailgw.kylinos.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- UNPARSEABLE_RELAY=0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -69
+X-Spam_score: -7.0
+X-Spam_bar: -------
+X-Spam_report: (-7.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.101,
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,60 +62,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The buttons value use macros instead of direct numbers.
+01.08.2023 00:02, Richard Henderson wrote:
+> The change to use translator_use_goto_tb went too far, as the
+> CF_SINGLE_STEP flag managed by the translator only handles
+> gdb single stepping and not the architectural single stepping
+> modeled in DisasContext.singlestep_enabled.
+> 
+> Fixes: 6e9cc373ec5 ("target/ppc: Use translator_use_goto_tb")
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1795
+> Reviewed-by: Cédric Le Goater <clg@kaod.org>
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   target/ppc/translate.c | 3 +++
+>   1 file changed, 3 insertions(+)
+> 
+> diff --git a/target/ppc/translate.c b/target/ppc/translate.c
+> index e6a0709066..74796ec7ba 100644
+> --- a/target/ppc/translate.c
+> +++ b/target/ppc/translate.c
+> @@ -4175,6 +4175,9 @@ static void pmu_count_insns(DisasContext *ctx)
+>   
+>   static inline bool use_goto_tb(DisasContext *ctx, target_ulong dest)
+>   {
+> +    if (unlikely(ctx->singlestep_enabled)) {
+> +        return false;
+> +    }
+>       return translator_use_goto_tb(&ctx->base, dest);
+>   }
 
-If request relative mode, have to add this for
-guest vmmouse driver to judge this is a relative packet.
-otherwise,vmmouse driver will not match
-the condition 'status & VMMOUSE_RELATIVE_PACKET',
-and can't report events on the correct(relative) input device,
-result to relative mode unuseful.
+This smells like a -stable material too. Please let me know if it is not.
 
-Signed-off-by: Zongmin Zhou<zhouzongmin@kylinos.cn>
----
- hw/i386/vmmouse.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+Thanks,
 
-diff --git a/hw/i386/vmmouse.c b/hw/i386/vmmouse.c
-index a56c185f15..6cd624bd09 100644
---- a/hw/i386/vmmouse.c
-+++ b/hw/i386/vmmouse.c
-@@ -44,6 +44,12 @@
- 
- #define VMMOUSE_VERSION		0x3442554a
- 
-+#define VMMOUSE_RELATIVE_PACKET    0x00010000
-+
-+#define VMMOUSE_LEFT_BUTTON        0x20
-+#define VMMOUSE_RIGHT_BUTTON       0x10
-+#define VMMOUSE_MIDDLE_BUTTON      0x08
-+
- #ifdef DEBUG_VMMOUSE
- #define DPRINTF(fmt, ...) printf(fmt, ## __VA_ARGS__)
- #else
-@@ -103,15 +109,18 @@ static void vmmouse_mouse_event(void *opaque, int x, int y, int dz, int buttons_
-             x, y, dz, buttons_state);
- 
-     if ((buttons_state & MOUSE_EVENT_LBUTTON))
--        buttons |= 0x20;
-+        buttons |= VMMOUSE_LEFT_BUTTON;
-     if ((buttons_state & MOUSE_EVENT_RBUTTON))
--        buttons |= 0x10;
-+        buttons |= VMMOUSE_RIGHT_BUTTON;
-     if ((buttons_state & MOUSE_EVENT_MBUTTON))
--        buttons |= 0x08;
-+        buttons |= VMMOUSE_MIDDLE_BUTTON;
- 
-     if (s->absolute) {
-         x <<= 1;
-         y <<= 1;
-+    } else{
-+        /* add for guest vmmouse driver to judge this is a relative packet. */
-+        buttons |= VMMOUSE_RELATIVE_PACKET;
-     }
- 
-     s->queue[s->nb_queue++] = buttons;
--- 
-2.34.1
+/mjt
 
 
