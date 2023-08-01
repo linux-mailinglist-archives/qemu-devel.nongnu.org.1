@@ -2,73 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C50E76BCB4
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 20:43:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 192E776BCB0
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 20:43:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQuKL-0002Ym-EJ; Tue, 01 Aug 2023 14:42:37 -0400
+	id 1qQuKN-0002bC-19; Tue, 01 Aug 2023 14:42:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qQuKB-0002Vj-DX
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 14:42:28 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ id 1qQuKC-0002Vs-4s
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 14:42:31 -0400
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qQuK9-0008BR-0d
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 14:42:26 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1b8b4749013so47536615ad.2
- for <qemu-devel@nongnu.org>; Tue, 01 Aug 2023 11:42:23 -0700 (PDT)
+ id 1qQuK9-0008Bj-DE
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 14:42:27 -0400
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-1bbc2e1c6b2so38857325ad.3
+ for <qemu-devel@nongnu.org>; Tue, 01 Aug 2023 11:42:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690915343; x=1691520143;
+ d=linaro.org; s=google; t=1690915344; x=1691520144;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=GzpgU1UxAIReBoSrAXaDZGeNL1XIMo9Amk3ScSiPQdQ=;
- b=qK931mW2UtVw5JljT7JEsU0lKcUsiea5oUoMN9CjHnxcg9sgn6+TxkLUlr+7pklb9/
- 4JZUxKIQi2HD5WmTfl0SElNhm8LuyG+wriHB+Z38ENRGDBeT1oC0391917rUrzlud7s3
- XTGtPEgr9X+U+EVwax59w8TrdNIf6UW98DjrrWDG+3gc4KGSqMl7UCWwygOqFU7bSzbk
- ZB+4K93UNlPFxxcCg2v+NKjdJzXexDtC4OdUDB+bDc7HMx7H9MSwP+e0DIFNrwclyprW
- GeDQXkGvq4y9yLKP42xhAmBNQh26XasLQdxuZ3ynAUP8Bzd6QPaFOWRYhWEpXdDUKDLk
- m9dg==
+ :reply-to; bh=caWHNBRwc8hhmLqj84zcOndTTjMCqt0SmTztB0Xo6vE=;
+ b=ZByVdyRMCbwSl+JgyDNfAAIX7j4d1OvhWYw/buN/Xq3WLBdoHTBnM3TgP8qWmCHe/E
+ VaBZaRH4ZwwguBjipqaFeqHL2KZ9/W2BRuL3Mrb09PwsxW/FBxlm6ViKCcVyPaNWC7XZ
+ PM1BfHBSR0AU2Ka5HP5QP3iNIt3S4exyIV04bglB/D8ful40LhUxKJlhBlOP7W67/8Zo
+ u0te1/taqi+SiYG/oY5RFyQgcFXjSZ/jPteGtdV2Ryk5IlzUGqKrZk75SSbBI0B5w3cZ
+ bifunnW7YHc0LlfLiyYctG51yyTybyapgDBjeiluryuKKfLsB+x7BUznev0e3C2bOsWl
+ 4ZhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690915343; x=1691520143;
+ d=1e100.net; s=20221208; t=1690915344; x=1691520144;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=GzpgU1UxAIReBoSrAXaDZGeNL1XIMo9Amk3ScSiPQdQ=;
- b=gXFOUGwlNQhldBzvm0SW9WWqpTN/4TaiguaTsFcHh1fNip/YlwYjOAcxTMvr7jQF9Y
- B1sx0pnRDa4FE8NkEI8Gw0dZFnGdNflBH/RXmEgy55Kcq791VCVPi/9mpc49hfi0AV1h
- NNw/OzGrNhOe29186qoAj3PUXEE1ZThBcBPIcf9De1hCnEUCVH3vmf5hkr0UqtTcL/17
- y/35XLHAt2MkUThQcfWWowjuMiPVd8cmZUyyUzBdY+8fN5cMqD1+k14C/NLTCu5I01B+
- ECiIXPf+vg5u2x9PMIHqrQHC/jZDmSMZRvo1lZnsOn3ImeiYRr7gw3gHIiguZFq3LjBI
- Ow6Q==
-X-Gm-Message-State: ABy/qLa8gHdmJdEEqwZbG8Gh1YPmyibamT8U9xTuzjH4JEm2IO2HPIqw
- Wdf9vPepCIFA1fnAVDKQdy9TcpgRb2m3qy4lJz4=
-X-Google-Smtp-Source: APBJJlFOcinqJ9Ohs9yrT70qlu9ipzWfDU/DjQhGZzC1IpOBCYcmdG9QwHU7JA7QDXyTa8Lnfc3ySA==
-X-Received: by 2002:a17:902:820c:b0:1b8:4b87:20dc with SMTP id
- x12-20020a170902820c00b001b84b8720dcmr12972509pln.37.1690915343003; 
+ bh=caWHNBRwc8hhmLqj84zcOndTTjMCqt0SmTztB0Xo6vE=;
+ b=DE38m0augQGHoG0ILXfakZwi+GMBWaHFl5mt7Ej24GKOhiGduVjvvz/mAjBE1W64Zz
+ ieT47BU75KEKYEKQcJ7ehifNwvLc3R8k5coWloFc0i4hR92boS3ABwfMofGMliYwESOX
+ No1wKzClj49D/zFF7jo+rkgFFLzzjGdmqANCGue8331NxxLLXfYso1VaGEmAd/nWechV
+ NX2kjXzw6Bg+hs5w1gwhNYQL2d8K6aPBfTxZRT018/6uBHY8tbMMjcNXoqEsgHQipTF6
+ ZrM3V9j2C/GLbZlxFc7n5SlGJs2m3ILoQ4VrnKJ/nCf4PaUciMpkZJ+8mePIAmPWrV71
+ BKpg==
+X-Gm-Message-State: ABy/qLZT5qp2gj2iZmNo/WB6NM0l8lDAwdpKYQU4dSoGHWfuvZ+QC7VY
+ lMkqOIxYKuoWDc1vaNISGg/uI5BHm3LLmmNQh5E=
+X-Google-Smtp-Source: APBJJlE3LX1wyL9lKWbhvTMwltoqXyQhY/+me+BjCWl4xkepMoHtOJWiLuPnE2h3XIT1e5u+xSYmlg==
+X-Received: by 2002:a17:902:e841:b0:1bb:ee1b:3cdf with SMTP id
+ t1-20020a170902e84100b001bbee1b3cdfmr13310650plg.67.1690915343770; 
  Tue, 01 Aug 2023 11:42:23 -0700 (PDT)
 Received: from stoup.. ([2602:47:d490:6901:67b4:35b2:87e2:dccc])
  by smtp.gmail.com with ESMTPSA id
- jn13-20020a170903050d00b001b80ed7b66fsm10797037plb.94.2023.08.01.11.42.22
+ jn13-20020a170903050d00b001b80ed7b66fsm10797037plb.94.2023.08.01.11.42.23
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 01 Aug 2023 11:42:22 -0700 (PDT)
+ Tue, 01 Aug 2023 11:42:23 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 1/3] accel/tcg: Adjust parameters and locking with do_{ld,
- st}_mmio_*
-Date: Tue,  1 Aug 2023 11:42:18 -0700
-Message-Id: <20230801184220.75224-2-richard.henderson@linaro.org>
+Subject: [PATCH 2/3] accel/tcg: Issue wider aligned i/o in do_{ld,st}_mmio_*
+Date: Tue,  1 Aug 2023 11:42:19 -0700
+Message-Id: <20230801184220.75224-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230801184220.75224-1-richard.henderson@linaro.org>
 References: <20230801184220.75224-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,144 +90,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Replace MMULookupPageData* with CPUTLBEntryFull, addr, size.
-Move QEMU_IOTHREAD_LOCK_GUARD to the caller.
-
-This simplifies the usage from do_ld16_beN and do_st16_leN, where
-we weren't locking the entire operation, and required hoop jumping
-for passing addr and size.
+If the address and size are aligned, send larger chunks
+to the memory subsystem.  This will be required to make
+more use of these helpers.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/cputlb.c | 65 +++++++++++++++++++++++-----------------------
- 1 file changed, 32 insertions(+), 33 deletions(-)
+ accel/tcg/cputlb.c | 76 +++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 69 insertions(+), 7 deletions(-)
 
 diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index ba44501a7c..d28606b93e 100644
+index d28606b93e..c3e1fdbf37 100644
 --- a/accel/tcg/cputlb.c
 +++ b/accel/tcg/cputlb.c
-@@ -2066,24 +2066,21 @@ static void *atomic_mmu_lookup(CPUArchState *env, vaddr addr, MemOpIdx oi,
- /**
-  * do_ld_mmio_beN:
-  * @env: cpu context
-- * @p: translation parameters
-+ * @full: page parameters
-  * @ret_be: accumulated data
-+ * @addr: virtual address
-+ * @size: number of bytes
-  * @mmu_idx: virtual address context
-  * @ra: return address into tcg generated code, or 0
-  *
-- * Load @p->size bytes from @p->addr, which is memory-mapped i/o.
-+ * Load @size bytes from @addr, which is memory-mapped i/o.
-  * The bytes are concatenated in big-endian order with @ret_be.
-  */
--static uint64_t do_ld_mmio_beN(CPUArchState *env, MMULookupPageData *p,
--                               uint64_t ret_be, int mmu_idx,
--                               MMUAccessType type, uintptr_t ra)
-+static uint64_t do_ld_mmio_beN(CPUArchState *env, CPUTLBEntryFull *full,
-+                               uint64_t ret_be, vaddr addr, int size,
-+                               int mmu_idx, MMUAccessType type, uintptr_t ra)
+@@ -2080,10 +2080,40 @@ static uint64_t do_ld_mmio_beN(CPUArchState *env, CPUTLBEntryFull *full,
+                                uint64_t ret_be, vaddr addr, int size,
+                                int mmu_idx, MMUAccessType type, uintptr_t ra)
  {
--    CPUTLBEntryFull *full = p->full;
--    vaddr addr = p->addr;
--    int i, size = p->size;
--
--    QEMU_IOTHREAD_LOCK_GUARD();
--    for (i = 0; i < size; i++) {
-+    for (int i = 0; i < size; i++) {
-         uint8_t x = io_readx(env, full, mmu_idx, addr + i, ra, type, MO_UB);
-         ret_be = (ret_be << 8) | x;
-     }
-@@ -2232,7 +2229,9 @@ static uint64_t do_ld_beN(CPUArchState *env, MMULookupPageData *p,
-     unsigned tmp, half_size;
+-    for (int i = 0; i < size; i++) {
+-        uint8_t x = io_readx(env, full, mmu_idx, addr + i, ra, type, MO_UB);
+-        ret_be = (ret_be << 8) | x;
+-    }
++    uint64_t t;
++
++    tcg_debug_assert(size > 0 && size <= 8);
++    do {
++        /* Read aligned pieces up to 8 bytes. */
++        switch ((size | (int)addr) & 7) {
++        case 1:
++        case 3:
++        case 5:
++        case 7:
++            t = io_readx(env, full, mmu_idx, addr, ra, type, MO_UB);
++            ret_be = (ret_be << 8) | t;
++            size -= 1;
++            addr += 1;
++            break;
++        case 2:
++        case 6:
++            t = io_readx(env, full, mmu_idx, addr, ra, type, MO_BEUW);
++            ret_be = (ret_be << 16) | t;
++            size -= 2;
++            addr += 2;
++            break;
++        case 4:
++            t = io_readx(env, full, mmu_idx, addr, ra, type, MO_BEUL);
++            ret_be = (ret_be << 32) | t;
++            size -= 4;
++            addr += 4;
++            break;
++        case 0:
++            return io_readx(env, full, mmu_idx, addr, ra, type, MO_BEUQ);
++        default:
++            qemu_build_not_reached();
++        }
++    } while (size);
+     return ret_be;
+ }
  
-     if (unlikely(p->flags & TLB_MMIO)) {
--        return do_ld_mmio_beN(env, p, ret_be, mmu_idx, type, ra);
-+        QEMU_IOTHREAD_LOCK_GUARD();
-+        return do_ld_mmio_beN(env, p->full, ret_be, p->addr, p->size,
-+                              mmu_idx, type, ra);
-     }
- 
-     /*
-@@ -2281,11 +2280,11 @@ static Int128 do_ld16_beN(CPUArchState *env, MMULookupPageData *p,
-     MemOp atom;
- 
-     if (unlikely(p->flags & TLB_MMIO)) {
--        p->size = size - 8;
--        a = do_ld_mmio_beN(env, p, a, mmu_idx, MMU_DATA_LOAD, ra);
--        p->addr += p->size;
--        p->size = 8;
--        b = do_ld_mmio_beN(env, p, 0, mmu_idx, MMU_DATA_LOAD, ra);
-+        QEMU_IOTHREAD_LOCK_GUARD();
-+        a = do_ld_mmio_beN(env, p->full, a, p->addr, size - 8,
-+                           mmu_idx, MMU_DATA_LOAD, ra);
-+        b = do_ld_mmio_beN(env, p->full, 0, p->addr + 8, 8,
-+                           mmu_idx, MMU_DATA_LOAD, ra);
-         return int128_make128(b, a);
-     }
- 
-@@ -2664,24 +2663,22 @@ Int128 cpu_ld16_mmu(CPUArchState *env, abi_ptr addr,
- /**
-  * do_st_mmio_leN:
-  * @env: cpu context
-- * @p: translation parameters
-+ * @full: page parameters
-  * @val_le: data to store
-+ * @addr: virtual address
-+ * @size: number of bytes
-  * @mmu_idx: virtual address context
-  * @ra: return address into tcg generated code, or 0
-  *
-- * Store @p->size bytes at @p->addr, which is memory-mapped i/o.
-+ * Store @size bytes at @addr, which is memory-mapped i/o.
-  * The bytes to store are extracted in little-endian order from @val_le;
-  * return the bytes of @val_le beyond @p->size that have not been stored.
-  */
--static uint64_t do_st_mmio_leN(CPUArchState *env, MMULookupPageData *p,
--                               uint64_t val_le, int mmu_idx, uintptr_t ra)
-+static uint64_t do_st_mmio_leN(CPUArchState *env, CPUTLBEntryFull *full,
-+                               uint64_t val_le, vaddr addr, int size,
-+                               int mmu_idx, uintptr_t ra)
+@@ -2678,9 +2708,41 @@ static uint64_t do_st_mmio_leN(CPUArchState *env, CPUTLBEntryFull *full,
+                                uint64_t val_le, vaddr addr, int size,
+                                int mmu_idx, uintptr_t ra)
  {
--    CPUTLBEntryFull *full = p->full;
--    vaddr addr = p->addr;
--    int i, size = p->size;
--
--    QEMU_IOTHREAD_LOCK_GUARD();
--    for (i = 0; i < size; i++, val_le >>= 8) {
-+    for (int i = 0; i < size; i++, val_le >>= 8) {
-         io_writex(env, full, mmu_idx, val_le, addr + i, ra, MO_UB);
-     }
+-    for (int i = 0; i < size; i++, val_le >>= 8) {
+-        io_writex(env, full, mmu_idx, val_le, addr + i, ra, MO_UB);
+-    }
++    tcg_debug_assert(size > 0 && size <= 8);
++
++    do {
++        /* Store aligned pieces up to 8 bytes. */
++        switch ((size | (int)addr) & 7) {
++        case 1:
++        case 3:
++        case 5:
++        case 7:
++            io_writex(env, full, mmu_idx, val_le, addr, ra, MO_UB);
++            val_le >>= 8;
++            size -= 1;
++            addr += 1;
++            break;
++        case 2:
++        case 6:
++            io_writex(env, full, mmu_idx, val_le, addr, ra, MO_LEUW);
++            val_le >>= 16;
++            size -= 2;
++            addr += 2;
++            break;
++        case 4:
++            io_writex(env, full, mmu_idx, val_le, addr, ra, MO_LEUL);
++            val_le >>= 32;
++            size -= 4;
++            addr += 4;
++            break;
++        case 0:
++            io_writex(env, full, mmu_idx, val_le, addr, ra, MO_LEUQ);
++            return 0;
++        default:
++            qemu_build_not_reached();
++        }
++    } while (size);
++
      return val_le;
-@@ -2698,7 +2695,9 @@ static uint64_t do_st_leN(CPUArchState *env, MMULookupPageData *p,
-     unsigned tmp, half_size;
+ }
  
-     if (unlikely(p->flags & TLB_MMIO)) {
--        return do_st_mmio_leN(env, p, val_le, mmu_idx, ra);
-+        QEMU_IOTHREAD_LOCK_GUARD();
-+        return do_st_mmio_leN(env, p->full, val_le, p->addr,
-+                              p->size, mmu_idx, ra);
-     } else if (unlikely(p->flags & TLB_DISCARD_WRITE)) {
-         return val_le >> (p->size * 8);
-     }
-@@ -2751,11 +2750,11 @@ static uint64_t do_st16_leN(CPUArchState *env, MMULookupPageData *p,
-     MemOp atom;
- 
-     if (unlikely(p->flags & TLB_MMIO)) {
--        p->size = 8;
--        do_st_mmio_leN(env, p, int128_getlo(val_le), mmu_idx, ra);
--        p->size = size - 8;
--        p->addr += 8;
--        return do_st_mmio_leN(env, p, int128_gethi(val_le), mmu_idx, ra);
-+        QEMU_IOTHREAD_LOCK_GUARD();
-+        do_st_mmio_leN(env, p->full, int128_getlo(val_le),
-+                       p->addr, 8, mmu_idx, ra);
-+        return do_st_mmio_leN(env, p->full, int128_gethi(val_le),
-+                              p->addr + 8, size - 8, mmu_idx, ra);
-     } else if (unlikely(p->flags & TLB_DISCARD_WRITE)) {
-         return int128_gethi(val_le) >> ((size - 8) * 8);
-     }
 -- 
 2.34.1
 
