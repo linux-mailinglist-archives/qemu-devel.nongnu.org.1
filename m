@@ -2,77 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D1C476B9B5
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 18:35:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7722B76B9E8
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 18:50:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQsJU-0007vc-R6; Tue, 01 Aug 2023 12:33:36 -0400
+	id 1qQsYC-0000Uq-I1; Tue, 01 Aug 2023 12:48:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qQsJN-0007Tg-40
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 12:33:30 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qQsJK-0003Yc-T9
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 12:33:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690907604;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ (Exim 4.90_1) (envelope-from <cfontana@suse.de>) id 1qQsYA-0000UR-Jg
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 12:48:46 -0400
+Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <cfontana@suse.de>) id 1qQsY9-0002p4-1U
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 12:48:46 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 193821F37F;
+ Tue,  1 Aug 2023 16:48:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1690908522; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=2LFFHMZCPpFrHj9GHUN3Fmk401Wjxwu92uWmwSv+p1U=;
- b=fEkmPkYDrOuMQZMjxGnKFYAvjs+LWG6T0Xi7I5oD72f42bOwcpK9kJajfBAMb5VooxpfrI
- c+pK4cpFnlmFxQb+RzTzJvR2CvLG2fQ85Rc3OUT7KRJgKe+uI0QGnW3dGxD9oXT6PdXkct
- +zm+KgSbaVQV6NS3QrQmTmY86u4Ms7o=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-83-zD2m4YLeOs6aNcMYonJGSg-1; Tue, 01 Aug 2023 12:33:21 -0400
-X-MC-Unique: zD2m4YLeOs6aNcMYonJGSg-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-3fbb34f7224so40172975e9.2
- for <qemu-devel@nongnu.org>; Tue, 01 Aug 2023 09:33:21 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690907600; x=1691512400;
- h=content-transfer-encoding:in-reply-to:subject:organization:from
- :references:cc:to:content-language:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=2LFFHMZCPpFrHj9GHUN3Fmk401Wjxwu92uWmwSv+p1U=;
- b=b0IThrdtn0TKk5/M7G73w7d27v+vgzti4uRGnOub67z7vJ+S9vRMZbKqN1b0BUER/M
- pMWzVI/2XUvhX825j6yLx+c/mc05ukajnZ0aWXQw7LnJValQPT8AML1sB7vUGAlU8/hm
- hy4QQBw4h5Uf94jl6oTwmcMqDSJ5EHQlAX0OnaKaHrAejAWb/IRwI8jordymo8jTusSQ
- VJXUY6u0BlpUrkXyVhVbBOL1J3gpZ6Lg15j23PwC1+soLMbVyir7M8WcwIf0Jo3CyH5k
- qYbrReLyyObF/uZeV31rHk1H1u74+BDH9T3ww0rokZewhoxBgqPsqTC8CaZaHnvWrbfr
- vLpA==
-X-Gm-Message-State: ABy/qLbWy1aIZnis+3SodNc5nGkq1srptskyDRor65cZEBat0vGPK3bz
- W6lm9Qcw8prmOZwk9mSzFCjXtO0RicXMJWdSlB9XLmO35nmv9T9HsgL0TzhCzgFWtK2fxqpHSd/
- 57c9LW3V+0qb8zFI=
-X-Received: by 2002:a7b:ce07:0:b0:3fb:d1db:545b with SMTP id
- m7-20020a7bce07000000b003fbd1db545bmr2900130wmc.20.1690907600552; 
- Tue, 01 Aug 2023 09:33:20 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHSbUqrv1Zne7pCMT8HI7XTC9rr5ni1gbnrW3jfHSN9SjJ2jRf6Ff96/2UP1i0YrsVgDMUo4g==
-X-Received: by 2002:a7b:ce07:0:b0:3fb:d1db:545b with SMTP id
- m7-20020a7bce07000000b003fbd1db545bmr2900100wmc.20.1690907600047; 
- Tue, 01 Aug 2023 09:33:20 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c705:d100:871b:ec55:67d:5247?
- (p200300cbc705d100871bec55067d5247.dip0.t-ipconnect.de.
- [2003:cb:c705:d100:871b:ec55:67d:5247])
- by smtp.gmail.com with ESMTPSA id
- cs5-20020a056000088500b0031435731dfasm16773081wrb.35.2023.08.01.09.33.18
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 01 Aug 2023 09:33:19 -0700 (PDT)
-Message-ID: <65e55994-620d-f3c7-2f1f-dd69dd915ff5@redhat.com>
-Date: Tue, 1 Aug 2023 18:33:18 +0200
+ bh=lWB4OxoNL4zke6nToTfy8HwF+ManI7/k360H2pA3+rM=;
+ b=RtZ6LKUrTc/pokJ7IK0o+vtt4UPHiqifpf2zfO4PMTtmrYhrCG4m3QF+XdUXfwrlQtN7j0
+ 9na5LKY4eOELxxMXSCZ8PgHh+F7QeVHvPkzbYtFR0UOhXY9raKOlJVjKxeJgYaVUkNay/I
+ PVfG5ED6EC5Gi2bSyjOQ+/ttrNwYfro=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1690908522;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=lWB4OxoNL4zke6nToTfy8HwF+ManI7/k360H2pA3+rM=;
+ b=osUs2P7H/5oypgGThiIpIKUJyWEn+9LrkEncOBd24uCThVsRSdGyujyvnvrJbLeaUhyo7x
+ KOOfupL81o/OZODA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 422FC13919;
+ Tue,  1 Aug 2023 16:48:41 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id Rb2xDWk3yWRsLQAAMHmgww
+ (envelope-from <cfontana@suse.de>); Tue, 01 Aug 2023 16:48:41 +0000
+Message-ID: <3a14456d-244c-ce8f-9d1c-8bcdb75de81c@suse.de>
+Date: Tue, 1 Aug 2023 18:48:40 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.0
+Subject: Re: [RFC PATCH 04/19] memory: Introduce memory_region_can_be_private()
 Content-Language: en-US
 To: Xiaoyao Li <xiaoyao.li@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Sean Christopherson <seanjc@google.com>, Igor Mammedov
- <imammedo@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Sean Christopherson <seanjc@google.com>, David Hildenbrand
+ <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Marcelo Tosatti <mtosatti@redhat.com>
@@ -83,22 +70,19 @@ Cc: Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>,
  Michael Roth <michael.roth@amd.com>, isaku.yamahata@gmail.com,
  qemu-devel@nongnu.org, kvm@vger.kernel.org
 References: <20230731162201.271114-1-xiaoyao.li@intel.com>
- <20230731162201.271114-4-xiaoyao.li@intel.com>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-Subject: Re: [RFC PATCH 03/19] RAMBlock: Support KVM gmemory
-In-Reply-To: <20230731162201.271114-4-xiaoyao.li@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ <20230731162201.271114-5-xiaoyao.li@intel.com>
+From: Claudio Fontana <cfontana@suse.de>
+In-Reply-To: <20230731162201.271114-5-xiaoyao.li@intel.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.092, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2001:67c:2178:6::1d;
+ envelope-from=cfontana@suse.de; helo=smtp-out2.suse.de
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.092,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -115,27 +99,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 31.07.23 18:21, Xiaoyao Li wrote:
-> From: Chao Peng <chao.p.peng@linux.intel.com>
-> 
-> Add KVM gmem support to RAMBlock so we can have both normal
-> hva based memory and gmem fd based memory in one RAMBlock.
-> 
-> The gmem part is represented by the gmem_fd.
-> 
-> Signed-off-by: Chao Peng <chao.p.peng@linux.intel.com>
+On 7/31/23 18:21, Xiaoyao Li wrote:
 > Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> ---
+>  include/exec/memory.h | 9 +++++++++
+>  softmmu/memory.c      | 5 +++++
+>  2 files changed, 14 insertions(+)
+> 
+> diff --git a/include/exec/memory.h b/include/exec/memory.h
+> index 61e31c7b9874..e119d3ce1a1d 100644
+> --- a/include/exec/memory.h
+> +++ b/include/exec/memory.h
+> @@ -1679,6 +1679,15 @@ static inline bool memory_region_is_romd(MemoryRegion *mr)
+>   */
+>  bool memory_region_is_protected(MemoryRegion *mr);
+>  
+> +/**
+> + * memory_region_can_be_private: check whether a memory region can be private
 
-So, *someone* creates a RAMBlock in QEMU.
+The name of the function is not particularly informative,
 
-Who'll squeeze a gmem_fd in there? When? How?
+> + *
+> + * Returns %true if a memory region's ram_block has valid gmem fd assigned.
 
-Shouldn't we create the RAM memory region / RAMBlock already with the 
-gmem_fd, and set that when initializing these things?
+but in your comment you describe more accurately what it does, why not make it the function name?
 
--- 
-Cheers,
+bool memory_region_has_valid_gmem_fd()
 
-David / dhildenb
+> + *
+> + * @mr: the memory region being queried
+> + */
+> +bool memory_region_can_be_private(MemoryRegion *mr);
+
+
+bool memory_region_has_valid_gmem_fd()
+
+
+Thanks,
+
+C
+
+> +
+>  /**
+>   * memory_region_get_iommu: check whether a memory region is an iommu
+>   *
+> diff --git a/softmmu/memory.c b/softmmu/memory.c
+> index 4f8f8c0a02e6..336c76ede660 100644
+> --- a/softmmu/memory.c
+> +++ b/softmmu/memory.c
+> @@ -1855,6 +1855,11 @@ bool memory_region_is_protected(MemoryRegion *mr)
+>      return mr->ram && (mr->ram_block->flags & RAM_PROTECTED);
+>  }
+>  
+> +bool memory_region_can_be_private(MemoryRegion *mr)
+> +{
+> +    return mr->ram_block && mr->ram_block->gmem_fd >= 0;
+> +}
+> +
+>  uint8_t memory_region_get_dirty_log_mask(MemoryRegion *mr)
+>  {
+>      uint8_t mask = mr->dirty_log_mask;
 
 
