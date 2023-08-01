@@ -2,78 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B205076A807
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 06:51:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E41FB76A86F
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 07:45:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQhKf-0005Mf-DN; Tue, 01 Aug 2023 00:50:05 -0400
+	id 1qQiB6-00086k-KL; Tue, 01 Aug 2023 01:44:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1qQhKY-0005M0-Fj
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 00:49:59 -0400
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1qQhKT-0004Iz-KX
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 00:49:56 -0400
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-99bc9e3cbf1so1098373266b.0
- for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 21:49:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=jms.id.au; s=google; t=1690865392; x=1691470192;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=chTFYEDDQ85UPffKdJe07epF9+RuO0CfjAe87/TD2oo=;
- b=J/FN+8o+WnHPpo9GTNdhuiSeo6MyZQVKsZ8G/+JLElBTWBH8+ORsj80V6JK5n4kn95
- e6MjWHgHSEzdQGIJh3zTXNjUVu0Uu/WNZMHsdS8vKAP4zPXQjre7TZMYqb+7mPDYXEIX
- O/J/QBc0Zwp9H8K6MuLGwVRTJdtVW9WBfXz/o=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690865392; x=1691470192;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=chTFYEDDQ85UPffKdJe07epF9+RuO0CfjAe87/TD2oo=;
- b=alQouugU+9uu5IwYRxdIrSCqjteePIzIBS1OeRfto8TYlzrKGwQ5Uq29ogOZ8Aqt6R
- Ec7Uvzr56KWFxXli+U2G9fO6SkLpo2n+kQ27+lr3hQguhXkihlFIc1TteyQYlZ8f48vM
- 2UMHJsBn6I0C1dKvkfphUKmKhu9fgWzfZcFfysAuxHrKxQRx9x6ceMtSv9Vxkko96ioQ
- p+F3+fbwxftalKQ81Pj09yE9X93EQEhcRV3Cu9YOTodUMQNVbKAqDv+/Uje7RnJ5lwey
- Ma+HcCU5MFloLwii9tvlTyOK5sR7nJuCTUVYE0/QxuPyvy0PSlErQWCAviFuYPsJOC58
- 0MZw==
-X-Gm-Message-State: ABy/qLbg9eyJolpznS3NsqspBMSF5Yy1t9B9+GQYRtp3EUeUbkifqpTN
- E4Jhpyw4oMy7NTLJWrFEHeVo/2qAXHxpgbK1Gq4=
-X-Google-Smtp-Source: APBJJlGA56359u3E3ybq5yDIBLV4mOXPI1KVKu70MpTrNU711Ah952LV6mtFJuIB03kj3XhYBdtTn1MDqQ0dA76BY4M=
-X-Received: by 2002:a17:907:a079:b0:993:f611:7c97 with SMTP id
- ia25-20020a170907a07900b00993f6117c97mr1987591ejc.33.1690865391828; Mon, 31
- Jul 2023 21:49:51 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <zhouzongmin@kylinos.cn>)
+ id 1qQiB2-00086b-Mc
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 01:44:12 -0400
+Received: from mailgw.kylinos.cn ([124.126.103.232])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhouzongmin@kylinos.cn>)
+ id 1qQiAy-0002MP-7Z
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 01:44:12 -0400
+X-UUID: 6c5fb43ac7a24b9f9e6d7d9fd52e8099-20230801
+X-CID-O-RULE: Release_Ham
+X-CID-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.28, REQID:a4c30252-fe9c-4595-b79a-928a2036971e, IP:5,
+ U
+ RL:0,TC:0,Content:0,EDM:0,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+ N:release,TS:-10
+X-CID-INFO: VERSION:1.1.28, REQID:a4c30252-fe9c-4595-b79a-928a2036971e, IP:5,
+ URL
+ :0,TC:0,Content:0,EDM:0,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+ release,TS:-10
+X-CID-META: VersionHash:176cd25, CLOUDID:a5828cd2-cd77-4e67-bbfd-aa4eaace762f,
+ B
+ ulkID:2308011343411OO2RWS6,BulkQuantity:0,Recheck:0,SF:24|17|19|44|38|102,
+ TC:nil,Content:0,EDM:-3,IP:-2,URL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0
+ ,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_FSI
+X-UUID: 6c5fb43ac7a24b9f9e6d7d9fd52e8099-20230801
+X-User: zhouzongmin@kylinos.cn
+Received: from thinkpadx13gen2i.. [(111.48.58.12)] by mailgw
+ (envelope-from <zhouzongmin@kylinos.cn>)
+ (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+ with ESMTP id 324090297; Tue, 01 Aug 2023 13:43:38 +0800
+From: Zongmin Zhou <zhouzongmin@kylinos.cn>
+To: pbonzini@redhat.com, richard.henderson@linaro.org, eduardo@habkost.net,
+ mst@redhat.com, marcel.apfelbaum@gmail.com
+Cc: qemu-devel@nongnu.org,
+	Zongmin Zhou <zhouzongmin@kylinos.cn>
+Subject: [RESEND PATCH] hw/i386/vmmouse:add relative packet flag for button
+ status
+Date: Tue,  1 Aug 2023 13:43:34 +0800
+Message-Id: <20230801054334.1034300-1-zhouzongmin@kylinos.cn>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230413081526.2229916-1-zhouzongmin@kylinos.cn>
+References: <20230413081526.2229916-1-zhouzongmin@kylinos.cn>
 MIME-Version: 1.0
-References: <20230731080317.112658-1-akihiko.odaki@daynix.com>
- <3088d223-64fd-9aab-3c08-000f0924607c@tls.msk.ru>
- <CACPK8XfcOkn281JZNYc7+AhDAxP_N9__G4Snxtx=ZhXgVChXgg@mail.gmail.com>
- <0643c953-bfa8-45a9-5b07-714bc18c03a6@daynix.com>
- <57d9980d-b881-b16e-844a-e651d6d09de7@gmx.de>
- <c3ed33f0-998d-5386-1880-22436af149b7@gmx.de>
- <def4abbf-ec8a-7986-1831-d9c839acff8c@gmx.de>
-In-Reply-To: <def4abbf-ec8a-7986-1831-d9c839acff8c@gmx.de>
-From: Joel Stanley <joel@jms.id.au>
-Date: Tue, 1 Aug 2023 04:49:39 +0000
-Message-ID: <CACPK8XfXMU=YyvkPTHFV6n_THkDPKfRmjYt_Ps7KJrxV9Srjbg@mail.gmail.com>
-Subject: Re: [PATCH 0/5] linux-user: brk/mmap fixes
-To: Helge Deller <deller@gmx.de>
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>, Michael Tokarev <mjt@tls.msk.ru>,
- qemu-devel@nongnu.org, Laurent Vivier <laurent@vivier.eu>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=joel.stan@gmail.com; helo=mail-ej1-x62f.google.com
-X-Spam_score_int: -14
-X-Spam_score: -1.5
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=124.126.103.232;
+ envelope-from=zhouzongmin@kylinos.cn; helo=mailgw.kylinos.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.25,
- FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ UNPARSEABLE_RELAY=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,118 +80,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 31 Jul 2023 at 18:24, Helge Deller <deller@gmx.de> wrote:
+The buttons value use macros instead of direct numbers.
 
-> > I re-read the thread again. As it seems Joel already tried the latest
-> > version from me? Sadly I can't test myself on ppc64le (static binary
-> > needs klibc-PupSAGgtpafMlSLXOLgje1kXFo8.so in /usr/lib which I can't
-> > install on a debian porterbox).
-> >
-> > I still believe we need to track host and target brk page, but I'll give
-> > your patch a try.
->
-> As suggested, I've based my patches on top of yours and the tree can be
-> pulled from:
-> git pull https://github.com/hdeller/qemu-hppa/   brk-fixes-akihiko-2
->
-> My patches are neccessary to fix an arm-static testcase:
->         /usr/bin/qemu-arm-static ./fstype
->
-> Let's try this patch series...
+If request relative mode, have to add this for
+guest vmmouse driver to judge this is a relative packet.
+otherwise,vmmouse driver will not match
+the condition 'status & VMMOUSE_RELATIVE_PACKET',
+and can't report events on the correct(relative) input device,
+result to relative mode unuseful.
 
-The armhf static binary works with expected output.
+Signed-off-by: Zongmin Zhou<zhouzongmin@kylinos.cn>
+---
+ hw/i386/vmmouse.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-The arm static binary causes qemu to segfault:
+diff --git a/hw/i386/vmmouse.c b/hw/i386/vmmouse.c
+index a56c185f15..6cd624bd09 100644
+--- a/hw/i386/vmmouse.c
++++ b/hw/i386/vmmouse.c
+@@ -44,6 +44,12 @@
+ 
+ #define VMMOUSE_VERSION		0x3442554a
+ 
++#define VMMOUSE_RELATIVE_PACKET    0x00010000
++
++#define VMMOUSE_LEFT_BUTTON        0x20
++#define VMMOUSE_RIGHT_BUTTON       0x10
++#define VMMOUSE_MIDDLE_BUTTON      0x08
++
+ #ifdef DEBUG_VMMOUSE
+ #define DPRINTF(fmt, ...) printf(fmt, ## __VA_ARGS__)
+ #else
+@@ -103,15 +109,18 @@ static void vmmouse_mouse_event(void *opaque, int x, int y, int dz, int buttons_
+             x, y, dz, buttons_state);
+ 
+     if ((buttons_state & MOUSE_EVENT_LBUTTON))
+-        buttons |= 0x20;
++        buttons |= VMMOUSE_LEFT_BUTTON;
+     if ((buttons_state & MOUSE_EVENT_RBUTTON))
+-        buttons |= 0x10;
++        buttons |= VMMOUSE_RIGHT_BUTTON;
+     if ((buttons_state & MOUSE_EVENT_MBUTTON))
+-        buttons |= 0x08;
++        buttons |= VMMOUSE_MIDDLE_BUTTON;
+ 
+     if (s->absolute) {
+         x <<= 1;
+         y <<= 1;
++    } else{
++        /* add for guest vmmouse driver to judge this is a relative packet. */
++        buttons |= VMMOUSE_RELATIVE_PACKET;
+     }
+ 
+     s->queue[s->nb_queue++] = buttons;
+-- 
+2.34.1
 
-$ gdb -quiet --args ./build/qemu-arm -d guest_errors,page,strace ~/hello
-Reading symbols from ./build/qemu-arm...
-(gdb) r
-Starting program: build/qemu-arm -d guest_errors,page,strace
-/home/joel/hello
-Using host libthread_db library "/lib/powerpc64le-linux-gnu/libthread_db.so.1".
-[New Thread 0x7ffff762ece0 (LWP 118359)]
-host mmap_min_addr=0x10000
-pgb_find_hole: base @ 140420000 for 4294967296 bytes
-pgb_static: base @ 140420000 for 4294967295 bytes
-pgb_reserved_va: base @ 0x140420000 for 4294967296 bytes
-Locating guest address space @ 0x140420000
-page layout changed following mmap
-start    end      size     prot
-00010000-00090000 00080000 ---
-00090000-0009b000 0000b000 ---
-ffff0000-00000000 00010000 r-x
-page layout changed following mmap
-start    end      size     prot
-00010000-00090000 00080000 r-x
-00090000-0009b000 0000b000 ---
-ffff0000-00000000 00010000 r-x
-page layout changed following mmap
-start    end      size     prot
-00010000-00090000 00080000 r-x
-00090000-000a0000 00010000 rw-
-ffff0000-00000000 00010000 r-x
-page layout changed following mmap
-start    end      size     prot
-00010000-00090000 00080000 r-x
-00090000-000a0000 00010000 rw-
-e0000000-e0810000 00810000 rw-
-ffff0000-00000000 00010000 r-x
-page layout changed following mmap
-start    end      size     prot
-00010000-00090000 00080000 r-x
-00090000-000a0000 00010000 rw-
-e0000000-e0010000 00010000 ---
-e0010000-e0811000 00801000 rw-
-ffff0000-00000000 00010000 r-x
-guest_base  0x140420000
-page layout changed following binary load
-start    end      size     prot
-00010000-00090000 00080000 r-x
-00090000-000a0000 00010000 rw-
-e0000000-e0010000 00010000 ---
-e0010000-e0810000 00800000 rw-
-e0810000-e0811000 00001000 r-x
-ffff0000-00000000 00010000 r-x
-start_brk   0x00000000
-end_code    0x00084f7c
-start_code  0x00010000
-start_data  0x00095098
-end_data    0x00098394
-start_stack 0xe080f410
-brk         0x0009b000
-entry       0x00010418
-argv_start  0xe080f414
-env_start   0xe080f41c
-auxv_start  0xe080f4a0
-118357 brk(NULL) = 0x0009b000
-118357 brk(0x0009b8fc) = 0x0009b000
-
-Thread 1 "qemu-arm" received signal SIGSEGV, Segmentation fault.
-0x00007fffeed9bb74 in code_gen_buffer ()
-(gdb)
-(gdb) bt
-#0  0x00007fffeed9bb74 in code_gen_buffer ()
-#1  0x0000000100169e3c in cpu_tb_exec (cpu=cpu@entry=0x1003d4aa0,
-    itb=itb@entry=0x7fffeed9ba60 <code_gen_buffer+47512>,
-tb_exit=tb_exit@entry=0x7fffffffe50c)
-    at ../accel/tcg/cpu-exec.c:457
-#2  0x000000010016a564 in cpu_loop_exec_tb (tb_exit=0x7fffffffe50c,
-last_tb=<synthetic pointer>,
-    pc=<optimised out>, tb=0x7fffeed9ba60 <code_gen_buffer+47512>,
-cpu=<optimised out>)
-    at ../accel/tcg/cpu-exec.c:919
-#3  cpu_exec_loop (cpu=cpu@entry=0x1003d4aa0, sc=<optimised out>) at
-../accel/tcg/cpu-exec.c:1040
-#4  0x000000010016aa0c in cpu_exec_setjmp (cpu=cpu@entry=0x1003d4aa0,
-sc=<optimised out>)
-    at ../accel/tcg/cpu-exec.c:1057
-#5  0x000000010016b0d0 in cpu_exec (cpu=0x1003d4aa0) at
-../accel/tcg/cpu-exec.c:1083
-#6  0x000000010004d780 in cpu_loop (env=0x1003d4fb0) at
-../linux-user/arm/cpu_loop.c:323
-#7  0x0000000100047534 in main (argc=<optimised out>,
-argv=0x7ffffffff178, envp=<optimised out>)
-    at ../linux-user/main.c:975
-
-I tested 74a22a175c4340a01f6f860f72307093e3307681.
 
