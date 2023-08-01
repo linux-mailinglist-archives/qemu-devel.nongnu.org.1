@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED28176BEED
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 23:04:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C20B76BEFE
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 23:11:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQwWa-000570-IJ; Tue, 01 Aug 2023 17:03:24 -0400
+	id 1qQwcR-00080U-SU; Tue, 01 Aug 2023 17:09:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qQwWX-00056n-JW
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 17:03:21 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qQwcQ-00080J-BX
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 17:09:26 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qQwWW-0007SF-2V
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 17:03:21 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-3fe1d462762so25668595e9.0
- for <qemu-devel@nongnu.org>; Tue, 01 Aug 2023 14:03:19 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qQwcO-0005OF-QT
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 17:09:26 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-3fe110de46dso40065595e9.1
+ for <qemu-devel@nongnu.org>; Tue, 01 Aug 2023 14:09:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690923797; x=1691528597;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=linaro.org; s=google; t=1690924163; x=1691528963;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=AeiuAKt3nJIVaz6X1CzTv/pto7tzOJ16lysTN5v1bYE=;
- b=ur4jruQfsYHhQNinaZomMyIN4xzxkfN6+RsMXtN1KsTw0m/MbOrTSjQmss0hvspvzn
- IkBV2FZe4q2nwkYc6RD8IlzQ01dSxrp6zj+qo+OSvLvRdnbgqnx6NFI8cCGoxv50Fbin
- q8FuyFJIaomteiScZ6CzO/dS0f8dkwWEDw/XRxAcKCLGcsUDhevgv4RISfF5aZy1rnJx
- MQODB2bNjWef6q0WUUZyqTU1D3Q1RjSo48dqVDYFVLuu2Q/OwlH9VTL8melHfcTOHmhS
- 4aZA+rxVHIIye5tjtT0LvDgcMpQKpFsnkHAHOX/lKpsWNY2zUjFG55wb0IKkxh7xa9mo
- 1xYQ==
+ bh=MjzssSP93YPtxzBEAuT8h1ekerGoZ8+bhrlr6qJAWNA=;
+ b=gmipbj0FkxO4t4Jj8UDcY7H9n/9d9co1Vn7UJhDjt6SQE5kuLqbJXyDS5kwoWiBMgT
+ vmjbpSFJDkO1r7RjsxhME7hgIHwOoCkTS1ehTO2eQQzf2AAquRNhw1/11KUkx2n38QPy
+ /WAfaUJHGyiLEs8ryNJK/WhVpR6Ysp54AuKN6HaCkkcYtgx2a7KYwC41FwE5P12H6M8k
+ cIQYoQBAcUtXiGV1n6vDn7AQzBuAOAofInF1B7L+ewd3s3ewXGOjzeye/g3U+/L9OqjK
+ D+aTkf3Z8hQ381KEUW+5TNQnwLBBo3BTuRG02RzK3M0zn2n0unNhpiVhR2C/8lF8kPeI
+ cKOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690923797; x=1691528597;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20221208; t=1690924163; x=1691528963;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=AeiuAKt3nJIVaz6X1CzTv/pto7tzOJ16lysTN5v1bYE=;
- b=W1f2vbgk9M5+/wDhIlk5nVyxrBt+BDB2+Y1Z2byVD51OLX7z/zrE9e6jDyXeg8Bw0I
- i+wPicKQS5K8cVwlHjRzgYDlUflAUlhg/OCi0EPeCPtfm8rDmzucHVeEjYCE5kDUW11g
- iCdPlR44esd+oA5kPqYpl7yPvoijFa/VvwlT3ONC3IZjDyEm1ZMsWx6hwiEq1UcJhC4g
- X1X9oNjLKDISupKz/Yt4qlcv6cu9ell5WmIsF+KL5mSTzkeF0sIxXasm8SwvBvsnDQCv
- eSp0GhCD4bKp+68H1160k8LLidbgDsrck9iqpFRz27TLpuVHm5PoUmNxq4Y/kIcbcaZR
- Iv7w==
-X-Gm-Message-State: ABy/qLbboVOGW5JNeNOMJ2abEknd6m0UUPAqC8KnuA4aLs1LZoCe/4/+
- nUPsJ0gh3nr7skWyaqgL3Sxzaw==
-X-Google-Smtp-Source: APBJJlHf9hPRLr0nRfAHFho2H/wxn0Wu5dqP62oSSZF0X8k5x0+3vxUTFH6mko8/5b/15eG8wcCPeQ==
-X-Received: by 2002:adf:f681:0:b0:313:ef08:c83b with SMTP id
- v1-20020adff681000000b00313ef08c83bmr3067871wrp.56.1690923796951; 
- Tue, 01 Aug 2023 14:03:16 -0700 (PDT)
+ bh=MjzssSP93YPtxzBEAuT8h1ekerGoZ8+bhrlr6qJAWNA=;
+ b=YNOkyWYrvQ1QNRyv5+qyIQ/BoEv6d2vUFudLbk6H6H8Hg7isS3DUDnmpc2WiB1gSTq
+ ZJsN2DOIn8rAMax1vngrNmoKOZUFRF5wZtX0D4Y7nfXEtSLvjUa3q0NnH+t2KSJwLI8b
+ WSDQ2bSWeQyC5pu0riansBSihDC5NJVFlCsMN44ZV+iNQzgtim7PtrAk6yRal0E2dgnr
+ HtW6g4xWz8R3xvgM3BYJrfuZ9hDGF+AtBH9hWOK7j4YK4GTQ9qI+bQ+narnzPyuMgVJO
+ 8OZbHeeAP2i/KS3KniLeZv9fC/POAlJMF6YHRrJ8+O35/GBoxEwBdiAwF1nU9pMkNadF
+ 6Etw==
+X-Gm-Message-State: ABy/qLaPwDP9ajELSnbGLuKgV3MGYv0oaet3IFoBLen0wV8p7mnZtrBG
+ RmZI24jD5P6SvY7FmBU4u4EOa2SkWtWIWT9wTP8=
+X-Google-Smtp-Source: APBJJlHBykCaRSlz5VIJ2HcHGqy/mvB9ZnB5ogCfZCM+kaWDNLSOJuWqFcBdvsLtPpAXjk1AM6uOlw==
+X-Received: by 2002:a05:600c:2346:b0:3fc:e00:5275 with SMTP id
+ 6-20020a05600c234600b003fc0e005275mr3249461wmq.2.1690924162928; 
+ Tue, 01 Aug 2023 14:09:22 -0700 (PDT)
 Received: from [192.168.69.115] ([176.176.174.59])
  by smtp.gmail.com with ESMTPSA id
- w10-20020a5d4b4a000000b003176c6e87b1sm16693823wrs.81.2023.08.01.14.03.15
+ z7-20020a5d4407000000b0031766e99429sm16934847wrq.115.2023.08.01.14.09.21
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 01 Aug 2023 14:03:16 -0700 (PDT)
-Message-ID: <892a9975-1901-862d-4766-bd76fbb5d7cc@linaro.org>
-Date: Tue, 1 Aug 2023 23:03:14 +0200
+ Tue, 01 Aug 2023 14:09:22 -0700 (PDT)
+Message-ID: <06b6bf37-5ce9-41a8-eb7b-34f3b2fa92db@linaro.org>
+Date: Tue, 1 Aug 2023 23:09:19 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.13.0
-Subject: Re: [PATCH 0/3] hw/ufs: fix compilation warnings
+Subject: Re: [PATCH 1/3] accel/tcg: Adjust parameters and locking with do_{ld, 
+ st}_mmio_*
 Content-Language: en-US
-To: Mike Maslenkin <mike.maslenkin@gmail.com>
-Cc: qemu-devel@nongnu.org, jeuk20.kim@samsung.com, stefanha@redhat.com
-References: <20230727233405.35937-1-mike.maslenkin@gmail.com>
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20230801184220.75224-1-richard.henderson@linaro.org>
+ <20230801184220.75224-2-richard.henderson@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230727233405.35937-1-mike.maslenkin@gmail.com>
+In-Reply-To: <20230801184220.75224-2-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -92,17 +93,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Mike,
+Hi Richard,
 
-On 28/7/23 01:34, Mike Maslenkin wrote:
-> This patchset contains a trivial compilation fixes for UFS support
-> applied to block-next tree.
+On 1/8/23 20:42, Richard Henderson wrote:
+> Replace MMULookupPageData* with CPUTLBEntryFull, addr, size.
+> Move QEMU_IOTHREAD_LOCK_GUARD to the caller.
+> 
+> This simplifies the usage from do_ld16_beN and do_st16_leN, where
+> we weren't locking the entire operation, and required hoop jumping
+> for passing addr and size.
+> 
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   accel/tcg/cputlb.c | 65 +++++++++++++++++++++++-----------------------
+>   1 file changed, 32 insertions(+), 33 deletions(-)
+> 
+> diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
+> index ba44501a7c..d28606b93e 100644
+> --- a/accel/tcg/cputlb.c
+> +++ b/accel/tcg/cputlb.c
+> @@ -2066,24 +2066,21 @@ static void *atomic_mmu_lookup(CPUArchState *env, vaddr addr, MemOpIdx oi,
+>   /**
+>    * do_ld_mmio_beN:
+>    * @env: cpu context
+> - * @p: translation parameters
+> + * @full: page parameters
+>    * @ret_be: accumulated data
+> + * @addr: virtual address
+> + * @size: number of bytes
+>    * @mmu_idx: virtual address context
+>    * @ra: return address into tcg generated code, or 0
+>    *
+> - * Load @p->size bytes from @p->addr, which is memory-mapped i/o.
+> + * Load @size bytes from @addr, which is memory-mapped i/o.
+>    * The bytes are concatenated in big-endian order with @ret_be.
 
-Since the series isn't merged, it would be clearer to send
-a v9 of "hw/ufs: Add Universal Flash Storage (UFS) support"
-with the fixes squashed in (there is still time).
+Do you mind adding:
 
-Regards,
+      * Called with iothread lock held.
 
-Phil.
+here and in do_st_mmio_leN()?
+
+Otherwise:
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+>    */
+
 
