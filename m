@@ -2,81 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57B1376AED6
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 11:42:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20B3876B1DD
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 12:32:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQlt1-000418-SV; Tue, 01 Aug 2023 05:41:52 -0400
+	id 1qQmg3-0007x9-0K; Tue, 01 Aug 2023 06:32:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <prvs=570bccec8=anthony.perard@citrix.com>)
- id 1qQlsm-0003uc-Mh
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 05:41:37 -0400
-Received: from esa4.hc3370-68.iphmx.com ([216.71.155.144])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1qQmg1-0007x1-Kb
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 06:32:29 -0400
+Received: from [192.55.52.88] (helo=mgamail.intel.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <prvs=570bccec8=anthony.perard@citrix.com>)
- id 1qQlsk-0005G3-Su
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 05:41:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
- d=citrix.com; s=securemail; t=1690882894;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=pMXoBWEjc1Ssgp4CnHdd/893qbjR4KzHJhnhynp7eic=;
- b=Znlq6/slRJKKYDgR3hKwyrquQb0OdY6dKqFKZwggqgyyRM1YZcod1CF0
- AZPc/wfN9kXjoK6nDfz8Ky3P2DlIlGNR19VdBQ/uoqcFE/kk63bxR/y1f
- QRl9pj+4+210iGHBmvL5UAH3zhqz3RQ+f+jCCqPDZS4V9cSAmoOVGsFh9 0=;
-Authentication-Results: esa4.hc3370-68.iphmx.com;
- dkim=none (message not signed) header.i=none
-X-SBRS: 4.0
-X-MesageID: 120729031
-X-Ironport-Server: esa4.hc3370-68.iphmx.com
-X-Remote-IP: 162.221.156.123
-X-Policy: $RELAYED
-IronPort-Data: A9a23:MFkXyq3jcqQvm7VZpfbD5b5xkn2cJEfYwER7XKvMYLTBsI5bp2AEn
- GYZWjyFM6qLMzD8fd1+YYSx9hxU78fUytYxSARvpC1hF35El5HIVI+TRqvS04F+DeWYFR46s
- J9OAjXkBJppJpMJjk71atANlVEliefTAOK6ULWeUsxIbVcMYD87jh5+kPIOjIdtgNyoayuAo
- tq3qMDEULOf82cc3lk8teTb8XuDgNyo4GlD5gNlPKgQ1LPjvyJ94Kw3dPnZw0TQGuG4LsbiL
- 87fwbew+H/u/htFIrtJRZ6iLyXm6paLVeS/oiI+t5qK23CulQRrukoPD9IOaF8/ttm8t4sZJ
- OOhF3CHYVxB0qXkwIzxWvTDes10FfUuFLTveRBTvSEPpqFvnrSFL/hGVSkL0YMkFulfDk5D7
- tA+BAk3QQmj29mswa2GS/t+r5F2RCXrFNt3VnBIyDjYCbAtQIzZQrWM7thdtNsyrpkQR7CEP
- ZNfMGcxKk2aOHWjOX9OYH46tO6umnn4dSwesF+PrLA7y2PS0BZwwP7mN9+9ltmiHJ8NwRzJ/
- jmfl4j/KkkWG8zO9mGFyG29q972oQrrAtwwMKLto5aGh3XMnzdOWXX6T2CTuPS8lwuyVsxSL
- 2QS/Swhq7V081akJvH6WxS2iHeJphAYVpxcHoUHBBqlk/SOpVzDXy5dE2AHMYZ93CMredA0/
- lCmksjFIxBWipKMaS6m7LaLkDKgKwFAeAfuehQ4oRs5D8jL+d9i1kKQEYw6SMZZnfWuR2iun
- mniQDwWwuxK0JVVj/jTEUXv2WrEm3TfcuIiCuw7tEqB5xgxWoOqbpfABbPzvacZd9bxorVsU
- RE5dymiAAMmV8vleNSlGrllIV1Qz6/t3MfgqVBuBYI90D+m5mSue4tdiBknehYxYpxUJWC1P
- BWM0e+02HO0FCL7BZKbnqrrU5h6pUQePYqNug/ogipmPcEqKV7vENBGbk+MxWH9+HXAYolmU
- ap3hf2EVC5AYYw+lWreegvo+eNzrszI7T+JFM+TItXO+eb2WUN5vp9fYAfXNL1os/ndyOgXm
- v4GX/a3J9xkeLWWSkHqHUQ7dw9iwaQTbXwul/FqSw==
-IronPort-HdrOrdr: A9a23:fIZWAKy0OrCHcz6I7c9XKrPwT71zdoMgy1knxilNoH1uEvBw8v
- rEoB1173LJYVoqMk3I+urgBED/exzhHPdOiOEs1NyZMDUO1lHHEL1f
-X-Talos-CUID: 9a23:COlktG1pHY1H+bjQbiS9wrxfFe8oaVH74E7qDFaYVV1zSaKoSE2C0fYx
-X-Talos-MUID: 9a23:ySpnxQm036nYpbuCuHMkdno6OOh4spv1CHoSgLg3gvWtJXYuGROC2WE=
-X-IronPort-AV: E=Sophos;i="6.01,246,1684814400"; d="scan'208";a="120729031"
-To: <qemu-devel@nongnu.org>
-CC: Olaf Hering <olaf@aepfle.de>, Anthony PERARD <anthony.perard@citrix.com>
-Subject: [PULL 5/5] xen-platform: do full PCI reset during unplug of IDE
- devices
-Date: Tue, 1 Aug 2023 10:40:38 +0100
-Message-ID: <20230801094038.11026-6-anthony.perard@citrix.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230801094038.11026-1-anthony.perard@citrix.com>
-References: <20230801094038.11026-1-anthony.perard@citrix.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1qQmfz-0002Cy-CI
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 06:32:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1690885947; x=1722421947;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=NFjtfvliL6hQVdmeN2aEsPW/8xpedb/pgZeJOPfys1w=;
+ b=ZWPZd7uMjzvc11x43MxsT2EAHJoRjSTsF4D2nynAuPyh80SjAELYjI9K
+ XoddCGoJzCQjLxuCDC39hI5AqvFclRVXWAG/b7qh8/iJP/OGICXRUYOQU
+ J9Qo1Q+hcjWgINk1TiSuPqFDW8LFp6ZaOnWWYsSIUNz3VA0GG20oohRmW
+ DDWjCVyc/aznqPsSeeFH7s90EGkExtafD7TrNb8wHf+iqd3VpDycWO+Iu
+ TisDacKPgidtrV1I7OJbN+nFeDJchgStxMEsw2BwbfjTS8KIvUyo1Zqp/
+ W242LbeGXuhzKmv8h45YoyqbSlmk8C+NbYxiOSlt5s/3XoBTO2i8MVIc4 A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10788"; a="400210975"
+X-IronPort-AV: E=Sophos;i="6.01,246,1684825200"; d="scan'208";a="400210975"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+ by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Aug 2023 03:25:04 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10788"; a="731931924"
+X-IronPort-AV: E=Sophos;i="6.01,246,1684825200"; d="scan'208";a="731931924"
+Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.28])
+ by fmsmga007.fm.intel.com with ESMTP; 01 Aug 2023 03:25:01 -0700
+From: Zhao Liu <zhao1.liu@linux.intel.com>
+To: Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Xiaoyao Li <xiaoyao.li@intel.com>, Babu Moger <babu.moger@amd.com>,
+ Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH v3 00/17] Support smp.clusters for x86
+Date: Tue,  1 Aug 2023 18:35:10 +0800
+Message-Id: <20230801103527.397756-1-zhao1.liu@linux.intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Received-SPF: pass client-ip=216.71.155.144;
- envelope-from=prvs=570bccec8=anthony.perard@citrix.com;
- helo=esa4.hc3370-68.iphmx.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 192.55.52.88 (failed)
+Received-SPF: none client-ip=192.55.52.88;
+ envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -34
+X-Spam_score: -3.5
+X-Spam_bar: ---
+X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01, RDNS_NONE=0.793,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -90,88 +81,243 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Anthony PERARD <anthony.perard@citrix.com>
-From:  Anthony PERARD via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Olaf Hering <olaf@aepfle.de>
+From: Zhao Liu <zhao1.liu@intel.com>
 
-The IDE unplug function needs to reset the entire PCI device, to make
-sure all state is initialized to defaults. This is done by calling
-pci_device_reset, which resets not only the chip specific registers, but
-also all PCI state. This fixes "unplug" in a Xen HVM domU with the
-modular legacy xenlinux PV drivers.
+Hi list,
 
-Commit ee358e919e38 ("hw/ide/piix: Convert reset handler to
-DeviceReset") changed the way how the the disks are unplugged. Prior
-this commit the PCI device remained unchanged. After this change,
-piix_ide_reset is exercised after the "unplug" command, which was not
-the case prior that commit. This function resets the command register.
-As a result the ata_piix driver inside the domU will see a disabled PCI
-device. The generic PCI code will reenable the PCI device. On the qemu
-side, this runs pci_default_write_config/pci_update_mappings. Here a
-changed address is returned by pci_bar_address, this is the address
-which was truncated in piix_ide_reset. In case of a Xen HVM domU, the
-address changes from 0xc120 to 0xc100. This truncation was a bug in
-piix_ide_reset, which was fixed in commit 230dfd9257 ("hw/ide/piix:
-properly initialize the BMIBA register"). If pci_xen_ide_unplug had used
-pci_device_reset, the PCI registers would have been properly reset, and
-commit ee358e919e38 would have not introduced a regression for this
-specific domU environment.
+This is the our v3 patch series, rebased on the master branch at the
+commit 234320cd0573 ("Merge tag 'pull-target-arm-20230731' of https:
+//git.linaro.org/people/pmaydell/qemu-arm into staging").
 
-While the unplug is supposed to hide the IDE disks, the changed BMIBA
-address broke the UHCI device. In case the domU has an USB tablet
-configured, to recive absolute pointer coordinates for the GUI, it will
-cause a hang during device discovery of the partly discovered USB hid
-device. Reading the USBSTS word size register will fail. The access ends
-up in the QEMU piix-bmdma device, instead of the expected uhci device.
-Here a byte size request is expected, and a value of ~0 is returned. As
-a result the UCHI driver sees an error state in the register, and turns
-off the UHCI controller.
+Comparing with v2 [1], v3 mainly adds "Tested-by", "Reviewed-by" and
+"ACKed-by" (for PC related patchies) tags and minor code changes (Pls
+see changelog).
 
-Signed-off-by: Olaf Hering <olaf@aepfle.de>
-Reviewed-by: Paul Durrant <paul@xen.org>
-Message-Id: <20230720072950.20198-1-olaf@aepfle.de>
-Signed-off-by: Anthony PERARD <anthony.perard@citrix.com>
+
+# Introduction
+
+This series add the cluster support for x86 PC machine, which allows
+x86 can use smp.clusters to configure x86 modlue level CPU topology.
+
+And since the compatibility issue (see section: ## Why not share L2
+cache in cluster directly), this series also introduce a new command
+to adjust the x86 L2 cache topology.
+
+Welcome your comments!
+
+
+# Backgroud
+
+The "clusters" parameter in "smp" is introduced by ARM [2], but x86
+hasn't supported it.
+
+At present, x86 defaults L2 cache is shared in one core, but this is
+not enough. There're some platforms that multiple cores share the
+same L2 cache, e.g., Alder Lake-P shares L2 cache for one module of
+Atom cores [3], that is, every four Atom cores shares one L2 cache.
+Therefore, we need the new CPU topology level (cluster/module).
+
+Another reason is for hybrid architecture. cluster support not only
+provides another level of topology definition in x86, but would aslo
+provide required code change for future our hybrid topology support.
+
+
+# Overview
+
+## Introduction of module level for x86
+
+"cluster" in smp is the CPU topology level which is between "core" and
+die.
+
+For x86, the "cluster" in smp is corresponding to the module level [4],
+which is above the core level. So use the "module" other than "cluster"
+in x86 code.
+
+And please note that x86 already has a cpu topology level also named
+"cluster" [4], this level is at the upper level of the package. Here,
+the cluster in x86 cpu topology is completely different from the
+"clusters" as the smp parameter. After the module level is introduced,
+the cluster as the smp parameter will actually refer to the module level
+of x86.
+
+
+## Why not share L2 cache in cluster directly
+
+Though "clusters" was introduced to help define L2 cache topology
+[2], using cluster to define x86's L2 cache topology will cause the
+compatibility problem:
+
+Currently, x86 defaults that the L2 cache is shared in one core, which
+actually implies a default setting "cores per L2 cache is 1" and
+therefore implicitly defaults to having as many L2 caches as cores.
+
+For example (i386 PC machine):
+-smp 16,sockets=2,dies=2,cores=2,threads=2,maxcpus=16 (*)
+
+Considering the topology of the L2 cache, this (*) implicitly means "1
+core per L2 cache" and "2 L2 caches per die".
+
+If we use cluster to configure L2 cache topology with the new default
+setting "clusters per L2 cache is 1", the above semantics will change
+to "2 cores per cluster" and "1 cluster per L2 cache", that is, "2
+cores per L2 cache".
+
+So the same command (*) will cause changes in the L2 cache topology,
+further affecting the performance of the virtual machine.
+
+Therefore, x86 should only treat cluster as a cpu topology level and
+avoid using it to change L2 cache by default for compatibility.
+
+
+## module level in CPUID
+
+Currently, we don't expose module level in CPUID.1FH because currently
+linux (v6.2-rc6) doesn't support module level. And exposing module and
+die levels at the same time in CPUID.1FH will cause linux to calculate
+wrong die_id. The module level should be exposed until the real machine
+has the module level in CPUID.1FH.
+
+We can configure CPUID.04H.02H (L2 cache topology) with module level by
+a new command:
+
+        "-cpu,x-l2-cache-topo=cluster"
+
+More information about this command, please see the section: "## New
+property: x-l2-cache-topo".
+
+
+## New cache topology info in CPUCacheInfo
+
+Currently, by default, the cache topology is encoded as:
+1. i/d cache is shared in one core.
+2. L2 cache is shared in one core.
+3. L3 cache is shared in one die.
+
+This default general setting has caused a misunderstanding, that is, the
+cache topology is completely equated with a specific cpu topology, such
+as the connection between L2 cache and core level, and the connection
+between L3 cache and die level.
+
+In fact, the settings of these topologies depend on the specific
+platform and are not static. For example, on Alder Lake-P, every
+four Atom cores share the same L2 cache [2].
+
+Thus, in this patch set, we explicitly define the corresponding cache
+topology for different cpu models and this has two benefits:
+1. Easy to expand to new CPU models in the future, which has different
+   cache topology.
+2. It can easily support custom cache topology by some command (e.g.,
+   x-l2-cache-topo).
+
+
+## New property: x-l2-cache-topo
+
+The property l2-cache-topo will be used to change the L2 cache topology
+in CPUID.04H.
+
+Now it allows user to set the L2 cache is shared in core level or
+cluster level.
+
+If user passes "-cpu x-l2-cache-topo=[core|cluster]" then older L2 cache
+topology will be overrided by the new topology setting.
+
+Since CPUID.04H is used by intel cpus, this property is available on
+intel cpus as for now.
+
+When necessary, it can be extended to CPUID[0x8000001D] for amd cpus.
+
+
+# Patch description
+
+patch 1-2 Cleanups about coding style and test name.
+
+patch 3-4,15 Fixes about x86 topology, intel l1 cache topology and amd
+             cache topology encoding.
+
+patch 5-6 Cleanups about topology related CPUID encoding and QEMU
+          topology variables.
+
+patch 7-12 Add the module as the new CPU topology level in x86, and it
+           is corresponding to the cluster level in generic code.
+
+patch 13,14,16 Add cache topology infomation in cache models.
+
+patch 17 Introduce a new command to configure L2 cache topology.
+
+
+[1]: https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg07179.html
+[2]: https://patchew.org/QEMU/20211228092221.21068-1-wangyanan55@huawei.com/
+[3]: https://www.intel.com/content/www/us/en/products/platforms/details/alder-lake-p.html
+[4]: SDM, vol.3, ch.9, 9.9.1 Hierarchical Mapping of Shared Resources.
+
+Best Regards,
+Zhao
+
 ---
- hw/i386/xen/xen_platform.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+Changelog:
 
-diff --git a/hw/i386/xen/xen_platform.c b/hw/i386/xen/xen_platform.c
-index 57f1d742c1..17457ff3de 100644
---- a/hw/i386/xen/xen_platform.c
-+++ b/hw/i386/xen/xen_platform.c
-@@ -164,8 +164,9 @@ static void pci_unplug_nics(PCIBus *bus)
-  *
-  * [1] https://xenbits.xen.org/gitweb/?p=xen.git;a=blob;f=docs/misc/hvm-emulated-unplug.pandoc
-  */
--static void pci_xen_ide_unplug(DeviceState *dev, bool aux)
-+static void pci_xen_ide_unplug(PCIDevice *d, bool aux)
- {
-+    DeviceState *dev = DEVICE(d);
-     PCIIDEState *pci_ide;
-     int i;
-     IDEDevice *idedev;
-@@ -195,7 +196,7 @@ static void pci_xen_ide_unplug(DeviceState *dev, bool aux)
-             blk_unref(blk);
-         }
-     }
--    device_cold_reset(dev);
-+    pci_device_reset(d);
- }
- 
- static void unplug_disks(PCIBus *b, PCIDevice *d, void *opaque)
-@@ -210,7 +211,7 @@ static void unplug_disks(PCIBus *b, PCIDevice *d, void *opaque)
- 
-     switch (pci_get_word(d->config + PCI_CLASS_DEVICE)) {
-     case PCI_CLASS_STORAGE_IDE:
--        pci_xen_ide_unplug(DEVICE(d), aux);
-+        pci_xen_ide_unplug(d, aux);
-         break;
- 
-     case PCI_CLASS_STORAGE_SCSI:
+Changes since v2:
+ * Add "Tested-by", "Reviewed-by" and "ACKed-by" tags.
+ * Use newly added wrapped helper to get cores per socket in
+   qemu_init_vcpu().
+
+Changes since v1:
+ * Reordered patches. (Yanan)
+ * Deprecated the patch to fix comment of machine_parse_smp_config().
+   (Yanan)
+ * Rename test-x86-cpuid.c to test-x86-topo.c. (Yanan)
+ * Split the intel's l1 cache topology fix into a new separate patch.
+   (Yanan)
+ * Combined module_id and APIC ID for module level support into one
+   patch. (Yanan)
+ * Make cache_into_passthrough case of cpuid 0x04 leaf in
+ * cpu_x86_cpuid() use max_processor_ids_for_cache() and
+   max_core_ids_in_package() to encode CPUID[4]. (Yanan)
+ * Add the prefix "CPU_TOPO_LEVEL_*" for CPU topology level names.
+   (Yanan)
+ * Rename the "INVALID" level to "CPU_TOPO_LEVEL_UNKNOW". (Yanan)
+
+---
+Zhao Liu (10):
+  i386: Fix comment style in topology.h
+  tests: Rename test-x86-cpuid.c to test-x86-topo.c
+  i386/cpu: Fix i/d-cache topology to core level for Intel CPU
+  i386/cpu: Use APIC ID offset to encode cache topo in CPUID[4]
+  i386/cpu: Consolidate the use of topo_info in cpu_x86_cpuid()
+  i386: Add cache topology info in CPUCacheInfo
+  i386: Use CPUCacheInfo.share_level to encode CPUID[4]
+  i386: Fix NumSharingCache for CPUID[0x8000001D].EAX[bits 25:14]
+  i386: Use CPUCacheInfo.share_level to encode
+    CPUID[0x8000001D].EAX[bits 25:14]
+  i386: Add new property to control L2 cache topo in CPUID.04H
+
+Zhuocheng Ding (7):
+  softmmu: Fix CPUSTATE.nr_cores' calculation
+  i386: Introduce module-level cpu topology to CPUX86State
+  i386: Support modules_per_die in X86CPUTopoInfo
+  i386: Support module_id in X86CPUTopoIDs
+  i386/cpu: Introduce cluster-id to X86CPU
+  tests: Add test case of APIC ID for module level parsing
+  hw/i386/pc: Support smp.clusters for x86 PC machine
+
+ MAINTAINERS                                   |   2 +-
+ hw/i386/pc.c                                  |   1 +
+ hw/i386/x86.c                                 |  49 +++++-
+ include/hw/core/cpu.h                         |   2 +-
+ include/hw/i386/topology.h                    |  68 +++++---
+ qemu-options.hx                               |  10 +-
+ softmmu/cpus.c                                |   2 +-
+ target/i386/cpu.c                             | 158 ++++++++++++++----
+ target/i386/cpu.h                             |  25 +++
+ tests/unit/meson.build                        |   4 +-
+ .../{test-x86-cpuid.c => test-x86-topo.c}     |  58 ++++---
+ 11 files changed, 280 insertions(+), 99 deletions(-)
+ rename tests/unit/{test-x86-cpuid.c => test-x86-topo.c} (73%)
+
 -- 
-Anthony PERARD
+2.34.1
 
 
