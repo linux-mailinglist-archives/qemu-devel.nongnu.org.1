@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7838A76B1E0
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 12:33:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9872576B1CA
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 12:30:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQmg5-00080t-O4; Tue, 01 Aug 2023 06:32:33 -0400
+	id 1qQmcV-0006QG-T6; Tue, 01 Aug 2023 06:28:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1qQmg3-00080J-TA
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 06:32:31 -0400
+ id 1qQmcQ-0006Q1-O8
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 06:28:48 -0400
 Received: from [192.55.52.88] (helo=mgamail.intel.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1qQmg1-0002Cy-UH
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 06:32:31 -0400
+ id 1qQmcO-0007o7-Dc
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 06:28:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1690885949; x=1722421949;
+ t=1690885724; x=1722421724;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=1NRuIDlGO7uPFBN38ffRjwuoPxpKblB5uTvtR3cBprc=;
- b=Vmk7iVdnrgDoLV5ajwKqIiwK4AzTv2iAD1nZ0086o1LuisgOuXtiOQoA
- 7D7PIaBetaQYPXk2vOz9VCI+F3yu7z+GobR29MhRSomNUM9DAuPsmiVtq
- AgAKGjItUnBrRVUQizidhJOgDw1Jj4q7hTv/03wJCL1oROhaaU2nQXceC
- bWyxGJUM8F1NPJURYnd3OSDH+VIkSfY/LXQevlgq5m7xJRcyGQxBf1Iu8
- liU+YTWN5Z84tiEFHdYTalGUZfCVbhwTl6Xp2U1V7WpYeHCutmo2oJ1zm
- SWJ8tacpBEqtu+bEO066R7/01iUdcKLvWcVp5ci9CuGomdektd39TqXt2 w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10788"; a="400210986"
-X-IronPort-AV: E=Sophos;i="6.01,246,1684825200"; d="scan'208";a="400210986"
+ bh=Z+mdOZXjQo1hcyz/6tnqhmhLg3bg9A2tiTCWLtsuoH0=;
+ b=fko4jSLNJzoWm4V/zqyCzF9Hj4MpkAsmfj7Bhv2ctDX1TUaTucyssOU/
+ ctSOLhy6sTDjI/CJ+Q9Hm9QH9ipZJG8VHMksDh7MxQa2tEjUL2mq4Q9/n
+ AVTF/EDrDu/VyfW2j7T6ZYnQC9M81ndEJZAjvR2mMGcZtokmoToYMzhVm
+ P7WdvpcnH3s3lavS+xu+f2UKyM2yOlmPBoIxVZ7PzvtV1EOFUpcIh+pBU
+ HEZ91gXIOCJgqWSzDdKxcDKekVc2uTTTmEQs3ZrWFEbPtPhEPPHVCiY3/
+ OTdKhRcyyPOw6A2yKLX/8N/s2ZZED7C4cm/cN//eUozLR+OjoFgawjCFb A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10788"; a="400211000"
+X-IronPort-AV: E=Sophos;i="6.01,246,1684825200"; d="scan'208";a="400211000"
 Received: from fmsmga007.fm.intel.com ([10.253.24.52])
  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Aug 2023 03:25:07 -0700
+ 01 Aug 2023 03:25:11 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10788"; a="731931984"
-X-IronPort-AV: E=Sophos;i="6.01,246,1684825200"; d="scan'208";a="731931984"
+X-IronPort-AV: E=McAfee;i="6600,9927,10788"; a="731931998"
+X-IronPort-AV: E=Sophos;i="6.01,246,1684825200"; d="scan'208";a="731931998"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.28])
- by fmsmga007.fm.intel.com with ESMTP; 01 Aug 2023 03:25:04 -0700
+ by fmsmga007.fm.intel.com with ESMTP; 01 Aug 2023 03:25:07 -0700
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
@@ -50,10 +50,10 @@ To: Eduardo Habkost <eduardo@habkost.net>,
  Paolo Bonzini <pbonzini@redhat.com>
 Cc: qemu-devel@nongnu.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
  Xiaoyao Li <xiaoyao.li@intel.com>, Babu Moger <babu.moger@amd.com>,
- Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v3 01/17] i386: Fix comment style in topology.h
-Date: Tue,  1 Aug 2023 18:35:11 +0800
-Message-Id: <20230801103527.397756-2-zhao1.liu@linux.intel.com>
+ Zhao Liu <zhao1.liu@intel.com>, Yongwei Ma <yongwei.ma@intel.com>
+Subject: [PATCH v3 02/17] tests: Rename test-x86-cpuid.c to test-x86-topo.c
+Date: Tue,  1 Aug 2023 18:35:12 +0800
+Message-Id: <20230801103527.397756-3-zhao1.liu@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230801103527.397756-1-zhao1.liu@linux.intel.com>
 References: <20230801103527.397756-1-zhao1.liu@linux.intel.com>
@@ -88,127 +88,66 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-For function comments in this file, keep the comment style consistent
-with other places.
+In fact, this unit tests APIC ID other than CPUID.
+Rename to test-x86-topo.c to make its name more in line with its
+actual content.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+Tested-by: Yongwei Ma <yongwei.ma@intel.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org
-Reviewed-by: Yanan Wang <wangyanan55@huawei.com>
 Acked-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/hw/i386/topology.h | 33 +++++++++++++++++----------------
- 1 file changed, 17 insertions(+), 16 deletions(-)
+Changes since v1:
+ * Rename test-x86-apicid.c to test-x86-topo.c. (Yanan)
+---
+ MAINTAINERS                                      | 2 +-
+ tests/unit/meson.build                           | 4 ++--
+ tests/unit/{test-x86-cpuid.c => test-x86-topo.c} | 2 +-
+ 3 files changed, 4 insertions(+), 4 deletions(-)
+ rename tests/unit/{test-x86-cpuid.c => test-x86-topo.c} (99%)
 
-diff --git a/include/hw/i386/topology.h b/include/hw/i386/topology.h
-index 81573f6cfde0..5a19679f618b 100644
---- a/include/hw/i386/topology.h
-+++ b/include/hw/i386/topology.h
-@@ -24,7 +24,8 @@
- #ifndef HW_I386_TOPOLOGY_H
- #define HW_I386_TOPOLOGY_H
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 12e59b6b27de..51ba3d593e90 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1719,7 +1719,7 @@ F: include/hw/southbridge/ich9.h
+ F: include/hw/southbridge/piix.h
+ F: hw/isa/apm.c
+ F: include/hw/isa/apm.h
+-F: tests/unit/test-x86-cpuid.c
++F: tests/unit/test-x86-topo.c
+ F: tests/qtest/test-x86-cpuid-compat.c
  
--/* This file implements the APIC-ID-based CPU topology enumeration logic,
-+/*
-+ * This file implements the APIC-ID-based CPU topology enumeration logic,
-  * documented at the following document:
-  *   Intel® 64 Architecture Processor Topology Enumeration
-  *   http://software.intel.com/en-us/articles/intel-64-architecture-processor-topology-enumeration/
-@@ -41,7 +42,8 @@
- 
- #include "qemu/bitops.h"
- 
--/* APIC IDs can be 32-bit, but beware: APIC IDs > 255 require x2APIC support
-+/*
-+ * APIC IDs can be 32-bit, but beware: APIC IDs > 255 require x2APIC support
-  */
- typedef uint32_t apic_id_t;
- 
-@@ -58,8 +60,7 @@ typedef struct X86CPUTopoInfo {
-     unsigned threads_per_core;
- } X86CPUTopoInfo;
- 
--/* Return the bit width needed for 'count' IDs
-- */
-+/* Return the bit width needed for 'count' IDs */
- static unsigned apicid_bitwidth_for_count(unsigned count)
- {
-     g_assert(count >= 1);
-@@ -67,15 +68,13 @@ static unsigned apicid_bitwidth_for_count(unsigned count)
-     return count ? 32 - clz32(count) : 0;
- }
- 
--/* Bit width of the SMT_ID (thread ID) field on the APIC ID
-- */
-+/* Bit width of the SMT_ID (thread ID) field on the APIC ID */
- static inline unsigned apicid_smt_width(X86CPUTopoInfo *topo_info)
- {
-     return apicid_bitwidth_for_count(topo_info->threads_per_core);
- }
- 
--/* Bit width of the Core_ID field
-- */
-+/* Bit width of the Core_ID field */
- static inline unsigned apicid_core_width(X86CPUTopoInfo *topo_info)
- {
-     return apicid_bitwidth_for_count(topo_info->cores_per_die);
-@@ -87,8 +86,7 @@ static inline unsigned apicid_die_width(X86CPUTopoInfo *topo_info)
-     return apicid_bitwidth_for_count(topo_info->dies_per_pkg);
- }
- 
--/* Bit offset of the Core_ID field
-- */
-+/* Bit offset of the Core_ID field */
- static inline unsigned apicid_core_offset(X86CPUTopoInfo *topo_info)
- {
-     return apicid_smt_width(topo_info);
-@@ -100,14 +98,14 @@ static inline unsigned apicid_die_offset(X86CPUTopoInfo *topo_info)
-     return apicid_core_offset(topo_info) + apicid_core_width(topo_info);
- }
- 
--/* Bit offset of the Pkg_ID (socket ID) field
-- */
-+/* Bit offset of the Pkg_ID (socket ID) field */
- static inline unsigned apicid_pkg_offset(X86CPUTopoInfo *topo_info)
- {
-     return apicid_die_offset(topo_info) + apicid_die_width(topo_info);
- }
- 
--/* Make APIC ID for the CPU based on Pkg_ID, Core_ID, SMT_ID
-+/*
-+ * Make APIC ID for the CPU based on Pkg_ID, Core_ID, SMT_ID
+ PC Chipset
+diff --git a/tests/unit/meson.build b/tests/unit/meson.build
+index 93977cc32d2b..39b5d0007c69 100644
+--- a/tests/unit/meson.build
++++ b/tests/unit/meson.build
+@@ -21,8 +21,8 @@ tests = {
+   'test-opts-visitor': [testqapi],
+   'test-visitor-serialization': [testqapi],
+   'test-bitmap': [],
+-  # all code tested by test-x86-cpuid is inside topology.h
+-  'test-x86-cpuid': [],
++  # all code tested by test-x86-topo is inside topology.h
++  'test-x86-topo': [],
+   'test-cutils': [],
+   'test-div128': [],
+   'test-shift128': [],
+diff --git a/tests/unit/test-x86-cpuid.c b/tests/unit/test-x86-topo.c
+similarity index 99%
+rename from tests/unit/test-x86-cpuid.c
+rename to tests/unit/test-x86-topo.c
+index bfabc0403a1a..2b104f86d7c2 100644
+--- a/tests/unit/test-x86-cpuid.c
++++ b/tests/unit/test-x86-topo.c
+@@ -1,5 +1,5 @@
+ /*
+- *  Test code for x86 CPUID and Topology functions
++ *  Test code for x86 APIC ID and Topology functions
   *
-  * The caller must make sure core_id < nr_cores and smt_id < nr_threads.
-  */
-@@ -120,7 +118,8 @@ static inline apic_id_t x86_apicid_from_topo_ids(X86CPUTopoInfo *topo_info,
-            topo_ids->smt_id;
- }
- 
--/* Calculate thread/core/package IDs for a specific topology,
-+/*
-+ * Calculate thread/core/package IDs for a specific topology,
-  * based on (contiguous) CPU index
-  */
- static inline void x86_topo_ids_from_idx(X86CPUTopoInfo *topo_info,
-@@ -137,7 +136,8 @@ static inline void x86_topo_ids_from_idx(X86CPUTopoInfo *topo_info,
-     topo_ids->smt_id = cpu_index % nr_threads;
- }
- 
--/* Calculate thread/core/package IDs for a specific topology,
-+/*
-+ * Calculate thread/core/package IDs for a specific topology,
-  * based on APIC ID
-  */
- static inline void x86_topo_ids_from_apicid(apic_id_t apicid,
-@@ -155,7 +155,8 @@ static inline void x86_topo_ids_from_apicid(apic_id_t apicid,
-     topo_ids->pkg_id = apicid >> apicid_pkg_offset(topo_info);
- }
- 
--/* Make APIC ID for the CPU 'cpu_index'
-+/*
-+ * Make APIC ID for the CPU 'cpu_index'
+  *  Copyright (c) 2012 Red Hat Inc.
   *
-  * 'cpu_index' is a sequential, contiguous ID for the CPU.
-  */
 -- 
 2.34.1
 
