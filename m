@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17BDE76A62F
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 03:19:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69F9176A62C
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 03:18:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQe1C-0001bc-Ls; Mon, 31 Jul 2023 21:17:46 -0400
+	id 1qQe1F-0001ch-7w; Mon, 31 Jul 2023 21:17:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gurchetansingh@chromium.org>)
- id 1qQe1A-0001bD-T3
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 21:17:44 -0400
-Received: from mail-pj1-x1031.google.com ([2607:f8b0:4864:20::1031])
+ id 1qQe1C-0001bj-O7
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 21:17:46 -0400
+Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <gurchetansingh@chromium.org>)
- id 1qQe18-0003Im-Ng
- for qemu-devel@nongnu.org; Mon, 31 Jul 2023 21:17:44 -0400
-Received: by mail-pj1-x1031.google.com with SMTP id
- 98e67ed59e1d1-267fc1d776eso2973213a91.2
- for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 18:17:42 -0700 (PDT)
+ id 1qQe1B-0003JW-0O
+ for qemu-devel@nongnu.org; Mon, 31 Jul 2023 21:17:46 -0400
+Received: by mail-pg1-x533.google.com with SMTP id
+ 41be03b00d2f7-56433b1b0e0so1819892a12.0
+ for <qemu-devel@nongnu.org>; Mon, 31 Jul 2023 18:17:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=chromium.org; s=google; t=1690852661; x=1691457461;
+ d=chromium.org; s=google; t=1690852663; x=1691457463;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=YuEb+6f7FmoR6RBCOdj2GRfaU1b++dbBjgDXqKfp+V4=;
- b=PYpd0ToJ7PZRyEQHZu53NTJDMwJl1rCFx+Ssob07QrMh62Tm9ql6ikRAy9P0JKrZpE
- e+jDBxRPUfgfIrMZj0zT0ACHp3E107/xXe5J99L8J+pav/mJkKxlcZ3f2rd36wq0DG5J
- ZPqlQAWEImK5nRnsFvgCREB49uPf6aqLCs1gI=
+ bh=DAVgWdTilquWm9lumcCgsSQ970Uhlm41t4kZLCx7xGo=;
+ b=RQ6EA2FuAMr1NlYPpwfnSPcN/Y3m7jwH1TppYfjybhUhl+NvlYfmwLyPpiSO9CSfNN
+ 3P0150NYI+H1x6sKyIWLDzwyCso3HnxWbLp6nLgdiib+qmtxFSsq1aEPwBvQPq1aladQ
+ SXFsbbWhga5r0bYpyvDKFlylCKsuZnthlNONM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690852661; x=1691457461;
+ d=1e100.net; s=20221208; t=1690852663; x=1691457463;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YuEb+6f7FmoR6RBCOdj2GRfaU1b++dbBjgDXqKfp+V4=;
- b=Fk168lMPXBSqcu+elyosbhtWOPy0tttL/y2MGRoY5n6W877Dp1QV2oFDxGw1UJFTYm
- nesyX09HEs6jQOSY1mxmbSPGN/CwAWgRGpY0FcjoIpfOq3YRsM4vTv8W2M13Ehn9BRg+
- 3i6zDpcHRCeCHSWxSqpgiksRqnI8dLDkF4QXdQLftfoiRSYI76ZUgjmzTlYOdWZ9+cEk
- 8EQxw3Y6PPfd13wkl1fvPYfGkHiAEy7yWWM/jTFqwxvjtt0OoVwAbcHY0DjhtRCIvmav
- js11rI3GTr0VbNe7lOHspJAhTobAN6A9itg4em5A+083osbcxOECSUPjVQwpCdoIvKv4
- jq0Q==
-X-Gm-Message-State: ABy/qLZ/HsJFhPr7oaVlqBtKcFMRW2UrI8JhoukVm5Wf/OhXhCcLnTME
- 5bErw64qvECHc+agj4iQmTGdrnbC9hYHzU1XdfA=
-X-Google-Smtp-Source: APBJJlHJlPZdNEgkeu5/0e/Ut1JnYz8wQ3ft/SeT3um1hRCCE1T/E6zWLLr9cESq/WpvkyBu91vZJw==
-X-Received: by 2002:a17:90a:8905:b0:268:6e77:2024 with SMTP id
- u5-20020a17090a890500b002686e772024mr9318914pjn.22.1690852660825; 
- Mon, 31 Jul 2023 18:17:40 -0700 (PDT)
+ bh=DAVgWdTilquWm9lumcCgsSQ970Uhlm41t4kZLCx7xGo=;
+ b=QcxptoK9Ww/BxnI8WhhjLkhfjVGnIfOhEDY36y2jLkf93udP2fd6UotuawDARD8io1
+ Ow/gKn+lqpjyIf+HyksLnwDEe2L9AZzkAspJEHIYj3G+j3aEwtqhCfxvF5CWn7fW9Yqn
+ bSu0tXQNMk+qG29fKDZg3flqjWAfhr2IP90TAA8SlVUgxk7XuuXjY28lY/YSEPi/Nv1e
+ 5ImWQXp9/myllxjp5vBMaP8G2l1FdydmZg7sE4YsZw70uJbgBgE42yPYATSR8Csohrtp
+ J7+JbZTtaw4oFB/Y4gXJVgQMmupwFREgQg7RlpfMnJ+3TZahz8PmwdLUf9dz3hM3g3/h
+ YQTQ==
+X-Gm-Message-State: ABy/qLa4Cpy23mV9fF1DmkAu9DjJF2237tB6QH7CrwogUoZw9nsHqpRv
+ vryPfP/pNeFwOh/0YX4bLj6JJqGLtKaMJ/izJ/c=
+X-Google-Smtp-Source: APBJJlHoF2oG7yHV7qYiPCGSnaEqIFd1RXG/OA8MQSbJdfQOL2Ggms22vPhtrwUexyFpspPCyTjqjQ==
+X-Received: by 2002:a17:90b:1116:b0:25c:8b5e:814 with SMTP id
+ gi22-20020a17090b111600b0025c8b5e0814mr10330315pjb.44.1690852663111; 
+ Mon, 31 Jul 2023 18:17:43 -0700 (PDT)
 Received: from gurchetansingh0.mtv.corp.google.com
  ([2620:15c:a7:2:cb47:8a0d:6476:3e7b])
  by smtp.gmail.com with ESMTPSA id
- v20-20020a17090a899400b00260a5ecd273sm6657722pjn.1.2023.07.31.18.17.39
+ v20-20020a17090a899400b00260a5ecd273sm6657722pjn.1.2023.07.31.18.17.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 31 Jul 2023 18:17:40 -0700 (PDT)
+ Mon, 31 Jul 2023 18:17:41 -0700 (PDT)
 From: Gurchetan Singh <gurchetansingh@chromium.org>
 To: qemu-devel@nongnu.org
 Cc: kraxel@redhat.com, marcandre.lureau@redhat.com, akihiko.odaki@gmail.com,
  dmitry.osipenko@collabora.com, ray.huang@amd.com, alex.bennee@linaro.org,
  shentey@gmail.com, hi@alyssa.is
-Subject: [PATCH v2 7/9] gfxstream + rutabaga: meson support
-Date: Mon, 31 Jul 2023 18:17:21 -0700
-Message-Id: <20230801011723.627-8-gurchetansingh@chromium.org>
+Subject: [PATCH v2 8/9] gfxstream + rutabaga: enable rutabaga
+Date: Mon, 31 Jul 2023 18:17:22 -0700
+Message-Id: <20230801011723.627-9-gurchetansingh@chromium.org>
 X-Mailer: git-send-email 2.31.0
 In-Reply-To: <20230801011723.627-1-gurchetansingh@chromium.org>
 References: <20230801011723.627-1-gurchetansingh@chromium.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1031;
- envelope-from=gurchetansingh@chromium.org; helo=mail-pj1-x1031.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::533;
+ envelope-from=gurchetansingh@chromium.org; helo=mail-pg1-x533.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,124 +91,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-- Add meson detection of rutabaga_gfx
-- Build virtio-gpu-rutabaga.c + associated vga/pci files when
-  present
+This change enables rutabaga to receive virtio-gpu-3d hypercalls
+when it is active.
 
 Signed-off-by: Gurchetan Singh <gurchetansingh@chromium.org>
 ---
- hw/display/meson.build        | 22 ++++++++++++++++++++++
- meson.build                   |  7 +++++++
- meson_options.txt             |  2 ++
- scripts/meson-buildoptions.sh |  3 +++
- 4 files changed, 34 insertions(+)
+ hw/display/virtio-gpu-base.c | 3 ++-
+ hw/display/virtio-gpu.c      | 5 +++--
+ softmmu/qdev-monitor.c       | 3 +++
+ softmmu/vl.c                 | 1 +
+ 4 files changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/hw/display/meson.build b/hw/display/meson.build
-index 413ba4ab24..10e41e4eef 100644
---- a/hw/display/meson.build
-+++ b/hw/display/meson.build
-@@ -79,6 +79,13 @@ if config_all_devices.has_key('CONFIG_VIRTIO_GPU')
-                          if_true: [files('virtio-gpu-gl.c', 'virtio-gpu-virgl.c'), pixman, virgl])
-     hw_display_modules += {'virtio-gpu-gl': virtio_gpu_gl_ss}
-   endif
-+
-+  if rutabaga.found()
-+    virtio_gpu_rutabaga_ss = ss.source_set()
-+    virtio_gpu_rutabaga_ss.add(when: ['CONFIG_VIRTIO_GPU', rutabaga],
-+                         if_true: [files('virtio-gpu-rutabaga.c'), pixman])
-+    hw_display_modules += {'virtio-gpu-rutabaga': virtio_gpu_rutabaga_ss}
-+  endif
- endif
+diff --git a/hw/display/virtio-gpu-base.c b/hw/display/virtio-gpu-base.c
+index 9628e03f93..3e822fc514 100644
+--- a/hw/display/virtio-gpu-base.c
++++ b/hw/display/virtio-gpu-base.c
+@@ -223,7 +223,8 @@ virtio_gpu_base_get_features(VirtIODevice *vdev, uint64_t features,
+ {
+     VirtIOGPUBase *g = VIRTIO_GPU_BASE(vdev);
  
- if config_all_devices.has_key('CONFIG_VIRTIO_PCI')
-@@ -95,6 +102,12 @@ if config_all_devices.has_key('CONFIG_VIRTIO_PCI')
-                              if_true: [files('virtio-gpu-pci-gl.c'), pixman])
-     hw_display_modules += {'virtio-gpu-pci-gl': virtio_gpu_pci_gl_ss}
-   endif
-+  if rutabaga.found()
-+    virtio_gpu_pci_rutabaga_ss = ss.source_set()
-+    virtio_gpu_pci_rutabaga_ss.add(when: ['CONFIG_VIRTIO_GPU', 'CONFIG_VIRTIO_PCI', rutabaga],
-+                       if_true: [files('virtio-gpu-pci-rutabaga.c'), pixman])
-+    hw_display_modules += {'virtio-gpu-pci-rutabaga': virtio_gpu_pci_rutabaga_ss}
-+  endif
- endif
+-    if (virtio_gpu_virgl_enabled(g->conf)) {
++    if (virtio_gpu_virgl_enabled(g->conf) ||
++        virtio_gpu_rutabaga_enabled(g->conf)) {
+         features |= (1 << VIRTIO_GPU_F_VIRGL);
+     }
+     if (virtio_gpu_edid_enabled(g->conf)) {
+diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
+index 6d19205e00..138a01d00e 100644
+--- a/hw/display/virtio-gpu.c
++++ b/hw/display/virtio-gpu.c
+@@ -1358,8 +1358,9 @@ void virtio_gpu_device_realize(DeviceState *qdev, Error **errp)
+     VirtIOGPU *g = VIRTIO_GPU(qdev);
  
- if config_all_devices.has_key('CONFIG_VIRTIO_VGA')
-@@ -113,6 +126,15 @@ if config_all_devices.has_key('CONFIG_VIRTIO_VGA')
-   virtio_vga_gl_ss.add(when: 'CONFIG_ACPI', if_true: files('acpi-vga.c'),
-                                             if_false: files('acpi-vga-stub.c'))
-   hw_display_modules += {'virtio-vga-gl': virtio_vga_gl_ss}
-+
-+  if rutabaga.found()
-+    virtio_vga_rutabaga_ss = ss.source_set()
-+    virtio_vga_rutabaga_ss.add(when: ['CONFIG_VIRTIO_VGA', rutabaga],
-+                         if_true: [files('virtio-vga-rutabaga.c'), pixman])
-+    virtio_vga_rutabaga_ss.add(when: 'CONFIG_ACPI', if_true: files('acpi-vga.c'),
-+                                                   if_false: files('acpi-vga-stub.c'))
-+    hw_display_modules += {'virtio-vga-rutabaga': virtio_vga_rutabaga_ss}
-+  endif
- endif
+     if (virtio_gpu_blob_enabled(g->parent_obj.conf)) {
+-        if (!virtio_gpu_have_udmabuf()) {
+-            error_setg(errp, "cannot enable blob resources without udmabuf");
++        if (!virtio_gpu_have_udmabuf() &&
++            !virtio_gpu_rutabaga_enabled(g->parent_obj.conf)) {
++            error_setg(errp, "need udmabuf or rutabaga for blob resources");
+             return;
+         }
  
- system_ss.add(when: 'CONFIG_OMAP', if_true: files('omap_lcdc.c'))
-diff --git a/meson.build b/meson.build
-index 98e68ef0b1..293f388e53 100644
---- a/meson.build
-+++ b/meson.build
-@@ -1069,6 +1069,12 @@ if not get_option('virglrenderer').auto() or have_system or have_vhost_user_gpu
-                                        dependencies: virgl))
-   endif
- endif
-+rutabaga = not_found
-+if not get_option('rutabaga_gfx').auto() or have_system or have_vhost_user_gpu
-+  rutabaga = dependency('rutabaga_gfx_ffi',
-+                         method: 'pkg-config',
-+                         required: get_option('rutabaga_gfx'))
-+endif
- blkio = not_found
- if not get_option('blkio').auto() or have_block
-   blkio = dependency('blkio',
-@@ -4272,6 +4278,7 @@ summary_info += {'libtasn1':          tasn1}
- summary_info += {'PAM':               pam}
- summary_info += {'iconv support':     iconv}
- summary_info += {'virgl support':     virgl}
-+summary_info += {'rutabaga support':  rutabaga}
- summary_info += {'blkio support':     blkio}
- summary_info += {'curl support':      curl}
- summary_info += {'Multipath support': mpathpersist}
-diff --git a/meson_options.txt b/meson_options.txt
-index aaea5ddd77..dea3bf7d9c 100644
---- a/meson_options.txt
-+++ b/meson_options.txt
-@@ -224,6 +224,8 @@ option('vmnet', type : 'feature', value : 'auto',
-        description: 'vmnet.framework network backend support')
- option('virglrenderer', type : 'feature', value : 'auto',
-        description: 'virgl rendering support')
-+option('rutabaga_gfx', type : 'feature', value : 'auto',
-+       description: 'rutabaga_gfx support')
- option('png', type : 'feature', value : 'auto',
-        description: 'PNG support with libpng')
- option('vnc', type : 'feature', value : 'auto',
-diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
-index 9da3fe299b..9a95b4f782 100644
---- a/scripts/meson-buildoptions.sh
-+++ b/scripts/meson-buildoptions.sh
-@@ -154,6 +154,7 @@ meson_options_help() {
-   printf "%s\n" '  rbd             Ceph block device driver'
-   printf "%s\n" '  rdma            Enable RDMA-based migration'
-   printf "%s\n" '  replication     replication support'
-+  printf "%s\n" '  rutabaga-gfx    rutabaga_gfx support'
-   printf "%s\n" '  sdl             SDL user interface'
-   printf "%s\n" '  sdl-image       SDL Image support for icons'
-   printf "%s\n" '  seccomp         seccomp support'
-@@ -419,6 +420,8 @@ _meson_option_parse() {
-     --disable-replication) printf "%s" -Dreplication=disabled ;;
-     --enable-rng-none) printf "%s" -Drng_none=true ;;
-     --disable-rng-none) printf "%s" -Drng_none=false ;;
-+    --enable-rutabaga-gfx) printf "%s" -Drutabaga_gfx=enabled ;;
-+    --disable-rutabaga-gfx) printf "%s" -Drutabaga_gfx=disabled ;;
-     --enable-safe-stack) printf "%s" -Dsafe_stack=true ;;
-     --disable-safe-stack) printf "%s" -Dsafe_stack=false ;;
-     --enable-sanitizers) printf "%s" -Dsanitizers=true ;;
+diff --git a/softmmu/qdev-monitor.c b/softmmu/qdev-monitor.c
+index 74f4e41338..246f0b051d 100644
+--- a/softmmu/qdev-monitor.c
++++ b/softmmu/qdev-monitor.c
+@@ -86,6 +86,9 @@ static const QDevAlias qdev_alias_table[] = {
+     { "virtio-gpu-pci", "virtio-gpu", QEMU_ARCH_VIRTIO_PCI },
+     { "virtio-gpu-gl-device", "virtio-gpu-gl", QEMU_ARCH_VIRTIO_MMIO },
+     { "virtio-gpu-gl-pci", "virtio-gpu-gl", QEMU_ARCH_VIRTIO_PCI },
++    { "virtio-gpu-rutabaga-device", "virtio-gpu-rutabaga",
++       QEMU_ARCH_VIRTIO_MMIO },
++    { "virtio-gpu-rutabaga-pci", "virtio-gpu-rutabaga", QEMU_ARCH_VIRTIO_PCI },
+     { "virtio-input-host-device", "virtio-input-host", QEMU_ARCH_VIRTIO_MMIO },
+     { "virtio-input-host-ccw", "virtio-input-host", QEMU_ARCH_VIRTIO_CCW },
+     { "virtio-input-host-pci", "virtio-input-host", QEMU_ARCH_VIRTIO_PCI },
+diff --git a/softmmu/vl.c b/softmmu/vl.c
+index b0b96f67fa..2f98eefdf3 100644
+--- a/softmmu/vl.c
++++ b/softmmu/vl.c
+@@ -216,6 +216,7 @@ static struct {
+     { .driver = "ati-vga",              .flag = &default_vga       },
+     { .driver = "vhost-user-vga",       .flag = &default_vga       },
+     { .driver = "virtio-vga-gl",        .flag = &default_vga       },
++    { .driver = "virtio-vga-rutabaga",  .flag = &default_vga       },
+ };
+ 
+ static QemuOptsList qemu_rtc_opts = {
 -- 
 2.41.0.585.gd2178a4bd4-goog
 
