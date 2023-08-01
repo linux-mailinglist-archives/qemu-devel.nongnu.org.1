@@ -2,94 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0124A76BF0A
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 23:12:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74D7676BF0E
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 23:13:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQwel-0000sw-EH; Tue, 01 Aug 2023 17:11:51 -0400
+	id 1qQwfz-0001Yi-IH; Tue, 01 Aug 2023 17:13:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1qQwei-0000r9-Vv
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 17:11:49 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1qQweh-00069h-3l
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 17:11:48 -0400
-Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 371L9DnH009727; Tue, 1 Aug 2023 21:11:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=wM2LStXAhSBqao9CJS/YQSxw0LsW4U229m9MlvCXPRo=;
- b=QgP9b6WCcUb58rQSGANDzI6UjGUnHKMDlpRCAwu1lgY3WA4++eURqyfvH35sFDWKh5nY
- oDsLs5bhybIcTfu/nzbRD23nLlBPtLXYZ0vJJjZA+I/k/RB6b68WP91QYDA5ORaYwEha
- dy0nlYX7O1G/6qpRdStT0/nVqoKVkbu2Nf8TKQ4H3nSywXJAEgwP/Lf7ef3X8pCPrxjc
- Nl4OyyuOFkJXZFXpiQs35V4z4jPwnUEnSSrEhlrViwqpQzgEalES0etEIaIDRYNcOxmB
- f9Vgq0WRTImHMlWgiUvC7aIIhQF531i6DttpXeL5kKxJCiqDdmZLikWfwEL0GhBplRLD 0A== 
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s791wh37t-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 01 Aug 2023 21:11:42 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 371JFalJ017127; Tue, 1 Aug 2023 21:11:41 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3s5fajpsax-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 01 Aug 2023 21:11:41 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
- [10.20.54.105])
- by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 371LBdpp43843840
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 1 Aug 2023 21:11:39 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6D4572004E;
- Tue,  1 Aug 2023 21:11:39 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0A0522004B;
- Tue,  1 Aug 2023 21:11:39 +0000 (GMT)
-Received: from [9.179.21.93] (unknown [9.179.21.93])
- by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Tue,  1 Aug 2023 21:11:38 +0000 (GMT)
-Message-ID: <922a658a278cf241e7ca0f49b2249c7d5a6871b6.camel@linux.ibm.com>
-Subject: Re: [PATCH] gdbstub: use 0 ("any process") on packets with no PID
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>,
- qemu-devel@nongnu.org
-Cc: alex.bennee@linaro.org, bcain@quicinc.com, Philippe
- =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Date: Tue, 01 Aug 2023 23:11:38 +0200
-In-Reply-To: <78a3b06f6ab90a7ff8e73ae14a996eb27ec76c85.1690904195.git.quic_mathbern@quicinc.com>
-References: <78a3b06f6ab90a7ff8e73ae14a996eb27ec76c85.1690904195.git.quic_mathbern@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qQwfx-0001YK-75
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 17:13:05 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qQwfv-0006Oa-HX
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 17:13:04 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-3fbc77e76abso56577555e9.1
+ for <qemu-devel@nongnu.org>; Tue, 01 Aug 2023 14:13:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1690924380; x=1691529180;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Up9ny0NeBwyvDkJBV4rWgEf+8Gso+u5gq5kAv/Vn6nA=;
+ b=h83m0ty0z9LNckc6dDfKHx1JDxHsZxFeo2Y+KSFLQxtB8tKWG+Jv8o4+3NVI0z7iwD
+ Lpregm6d+5vPqh12Db/A2kcww3ptcGSktMhjGdcZ+LaSdU/l7uBn0WpNjSg/NOZHez0q
+ 9/E1pL8Mg3s+Mcim/6e0vTBeiKZRv9y3vVUmYj1JqCSj/WoOyuf99OFXj+31GhGjQiVr
+ iggXh64QIbUouiVJexLSBdXi4eSVRiNu5Ie0uPya76uWmf1/G3OseLfPBCYLLQxxpi4N
+ h2s6wq2q3yU7c85MFHry4ywkjxXyA6/36kUtftmXRRUmRk+JIVUiMeh2FVMIx3Ijqe6N
+ GlAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1690924380; x=1691529180;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Up9ny0NeBwyvDkJBV4rWgEf+8Gso+u5gq5kAv/Vn6nA=;
+ b=NFJN7E7cVREgMEuLJlcAbMwiAJ+o4A7655zeZTtqaweViDpMmMGTCqTJrXTsZCsG6X
+ X+3zrKxWdlClsCN9a6ybmrKHVDDk17/+HQ8SUNKj3NJKYo52DaD6OTvxrkWVBvs90U7B
+ jEuBW10gwau3fG9NiL+7VPkbO80K1jM1jLGN+yzn8lYYshT4qT4ijUt/Kr2Cxwx3KlP1
+ 6wr+0tqvZVXwt2efQyv4RHxIDQ/vMBNQ4mhSFZN+mlqfHnHpc/JJodXfc7LyRqsPiCXS
+ mwQrvKMbXmKAPx2jLY+Hc8qaO0jbsYHZZ5s7oP35rz2clz81nFa6wH3kl0GMge/nSr6a
+ 22NQ==
+X-Gm-Message-State: ABy/qLYETTByKwTzPx01UrI/f8u/v25v48UB2IINZ40X25/KJLf2ZIRR
+ E26DxzR65ZOcL0Vk4bW9RLRHXg==
+X-Google-Smtp-Source: APBJJlHQLOhTeIs+bQYSngxugGMKr1lOxtHAoRz1abe0tPgYL7wKdp2BGUgvAirhCOiIfBEJbgFvmw==
+X-Received: by 2002:a05:6000:1371:b0:317:5e22:3ed4 with SMTP id
+ q17-20020a056000137100b003175e223ed4mr3203235wrz.49.1690924380686; 
+ Tue, 01 Aug 2023 14:13:00 -0700 (PDT)
+Received: from [192.168.69.115] ([176.176.174.59])
+ by smtp.gmail.com with ESMTPSA id
+ g18-20020a5d5552000000b003142439c7bcsm16967164wrw.80.2023.08.01.14.12.59
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 01 Aug 2023 14:13:00 -0700 (PDT)
+Message-ID: <1672bc32-8b3a-d543-1e51-56139430de70@linaro.org>
+Date: Tue, 1 Aug 2023 23:12:58 +0200
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 1u4YE25UP6dDSzwUByDWNh_KMEA11nk3
-X-Proofpoint-ORIG-GUID: 1u4YE25UP6dDSzwUByDWNh_KMEA11nk3
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-08-01_19,2023-08-01_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- suspectscore=0 clxscore=1011 mlxlogscore=841 spamscore=0 mlxscore=0
- bulkscore=0 adultscore=0 phishscore=0 malwarescore=0 lowpriorityscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2308010188
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.13.0
+Subject: Re: [PATCH 2/3] accel/tcg: Issue wider aligned i/o in
+ do_{ld,st}_mmio_*
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20230801184220.75224-1-richard.henderson@linaro.org>
+ <20230801184220.75224-3-richard.henderson@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230801184220.75224-3-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.092,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -106,37 +93,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 2023-08-01 at 12:37 -0300, Matheus Tavares Bernardino wrote:
-> Previously, qemu-user would always report PID 1 to GDB. This was
-> changed
-> at dc14a7a6e9 (gdbstub: Report the actual qemu-user pid, 2023-06-30),
-> but read_thread_id() still considers GDB packets with "no PID" as
-> "PID
-> 1", which is not the qemu-user PID. Fix that by parsing "no PID" as
-> "0",
-> which the GDB Remote Protocol defines as "any process".
->=20
-> Note that this should have no effect for system emulation as, in this
-> case, gdb_create_default_process() will assign PID 1 for the first
-> process and that is what the gdbstub uses for GDB requests with no
-> PID,
-> or PID 0.
->=20
-> This issue was found with hexagon-lldb, which sends a "Hq" packet
-> with
-> only the thread-id, but no process-id, leading to the invalid usage
-> of
-> "PID 1" by qemu-hexagon and a subsequent "E22" reply.
-
-Did you mean "Hg"?
-
-> Signed-off-by: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
+On 1/8/23 20:42, Richard Henderson wrote:
+> If the address and size are aligned, send larger chunks
+> to the memory subsystem.  This will be required to make
+> more use of these helpers.
+> 
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
-> =C2=A0gdbstub/gdbstub.c | 2 +-
-> =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
+>   accel/tcg/cputlb.c | 76 +++++++++++++++++++++++++++++++++++++++++-----
+>   1 file changed, 69 insertions(+), 7 deletions(-)
 
-The change looks good to me.
-Thanks for looking into this and sorry for the breakage.
+Super nice!
 
-Acked-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
 
