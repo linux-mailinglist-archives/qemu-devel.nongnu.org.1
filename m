@@ -2,89 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D07B476BE45
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 22:06:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B79DC76BEE9
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 23:02:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQvcd-0004D5-GH; Tue, 01 Aug 2023 16:05:35 -0400
+	id 1qQwUP-0003xa-HH; Tue, 01 Aug 2023 17:01:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qQvcZ-0004AP-GV
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 16:05:31 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <dinahbaum123@gmail.com>)
+ id 1qQwUK-0003xK-8V
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 17:01:04 -0400
+Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qQvcX-0004hH-Vi
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 16:05:31 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-3fe1e1142caso28659085e9.0
- for <qemu-devel@nongnu.org>; Tue, 01 Aug 2023 13:05:29 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dinahbaum123@gmail.com>)
+ id 1qQwUI-00061R-Il
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 17:01:04 -0400
+Received: by mail-ej1-x634.google.com with SMTP id
+ a640c23a62f3a-99bf8e5ab39so610984466b.2
+ for <qemu-devel@nongnu.org>; Tue, 01 Aug 2023 14:01:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690920328; x=1691525128;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=nm2DIExF222orN1LklzMO5fRN1UmXYnKx40VOzdDNo8=;
- b=vM7vh/rziCnm37Nx2pR4d1GSOXq0aWik65M8VNqSLp3DY2PN1xDaYXQyc1XCn7Ynw6
- ICB8nd/Vt5jhavEuW2deZAHHDaImbBJeZJRQk4UzhkUJdMGrcAAdLg1Ocq5cGR8UeGEL
- rxw0FhQWtdoWlzgFYPCFa6BctcdR7r1RDwrLzVSj2AReKDhFIpjLcOYJT4Q6810b68aL
- kbp3DuH5LXQkmzemCafO6YSLjaK6tvs4un8Ny+N3QiyPpURVu6bGq80oPkw6yWDfpO4Q
- UgDDAvH+aE71/7F5RwRfz8mvx77iNGPkvy/OcWK58syJazDynyTwSSTPoINkIMGDp0Er
- SyLA==
+ d=gmail.com; s=20221208; t=1690923661; x=1691528461;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=HJtXdT7hIp3lXx7+QiAylX8LbLwsVXxGwQjohTc1MAI=;
+ b=FJGmaQ2/Cg3WolJuI8X4oCEikfgZpGqpeNerXf3nOdpU4RLVbg/JVVRl8eIOj/0fra
+ y/UylDUB5mzNZAg73fB/bJwXTKMw1R+z1e1jC6kLGM6xrG0jzU7Kj1Vl8XayS5gXSjdj
+ 3pfe2cVq5YRk943VrqlrT+ZFCjbZV1GgiFrnmbZlNGm0VvRHZuScRsulQ9RWMjOE16t8
+ U9N2vk09WCV2Yk1nBVONIXg+EHR2loHqTJi7XP7/heeETVFjMl8vWDg7d8Aq0utSvgFH
+ QeMqDhijDLAEb/UhiGG97u4GktH8Uuvr6qfFZ7CBAsJ+vQVyTnQnqjh7Xg77l7fhant9
+ eyNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690920328; x=1691525128;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=nm2DIExF222orN1LklzMO5fRN1UmXYnKx40VOzdDNo8=;
- b=U77XnOQl3IA/tOBCUWW6fq8En0j4N4jnF8kR8XS/SjSUfbNAEqXfgKZDeXhJjqxy5C
- HBRuATRZWqh+kSetPQreXm5Su5IbGLAgH9+MeFOyX8LekmfnaW8bk1rmlrPxWRY1xBR2
- Ljas9gTAbev5B51LAd33JDE2+VH/WYJgZq9S9OcjYxhaZgjp4/X/7o2M+nNruBgLcz14
- E/SzgPMO7XZvm0vuThQsPIRUwIO2DUG+aLDUNQ4W1pApBrND0kpeb63y9dsudoJ1o3Cg
- 0BeKl5cBF0uLucGr27LAazuetE0tJ/yyOV64rJhaxPfvWjfnO1A7DCKJqlQ+eGxZjra3
- BcYg==
-X-Gm-Message-State: ABy/qLZNSoMZT0SzvRPlpFRcy20JRkOJVhlrCb5NOaUsydscJ/Tgxvcp
- r0uu16lJjOSuxoOvbVlIHy4rWA==
-X-Google-Smtp-Source: APBJJlEFUatF4/jXsTJiEDJRs9QGOlkROpT9qemL41PDPqXhcNCzsrNIVLIuJH8wkWuStsb5damwdQ==
-X-Received: by 2002:a05:600c:2198:b0:3fe:e1e:5041 with SMTP id
- e24-20020a05600c219800b003fe0e1e5041mr3184030wme.32.1690920328274; 
- Tue, 01 Aug 2023 13:05:28 -0700 (PDT)
-Received: from [192.168.69.115] ([176.176.174.59])
- by smtp.gmail.com with ESMTPSA id
- s21-20020a1cf215000000b003fc00892c13sm14503558wmc.35.2023.08.01.13.05.26
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 01 Aug 2023 13:05:27 -0700 (PDT)
-Message-ID: <4bc9c439-4648-07f7-dd70-92828e006e5f@linaro.org>
-Date: Tue, 1 Aug 2023 22:05:25 +0200
+ d=1e100.net; s=20221208; t=1690923661; x=1691528461;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=HJtXdT7hIp3lXx7+QiAylX8LbLwsVXxGwQjohTc1MAI=;
+ b=Q2h6Z8qSHCWpzRDXdT3+eahY+dQnzUU5ujdMJgjLtp6xFQZb+CAbgdX6jOUV+kFlJU
+ SSzuk8Zq9lrrwRhF3swikY3lMOEMZdcj4h6fWh6IKVvEgVF2B9MD3CStKxtqz7yv9BbO
+ wN/B9jI0Q0UlOYN+knOURYWQkKvM2wb2JbQ6e3tXoPQcPSwfF8afFqSgmfrG/0SImqBh
+ RLRPZOG8cryHZ0NWNKD2nHvdNHO415O52PM2zWCQ00oKuu1MRopj6S4PzTh+/qOhEj+t
+ Hn+7BUK1EjrER7DpoOIfrzz/V4H0GjxfCenCwBFpCcFBjghcxlYREa7yDARVcH69AyEq
+ lVfA==
+X-Gm-Message-State: ABy/qLaXM29bewCRaIBGsRtJofYkfXSEk71UrCikCdx4Y22Zioc+CMgo
+ 1lQrOpXjyjuw6D5nbYh4JDKSfigQnID3Ay2AeY8=
+X-Google-Smtp-Source: APBJJlEzw5DBymxQY0l8U7rEukzHquxzmlQf8JCC7IyvINz7VoyKzSd0MWApqTP2IpXAlXLwrT0tO3Zop/7XY4HYLWs=
+X-Received: by 2002:a17:907:a073:b0:978:928:3b99 with SMTP id
+ ia19-20020a170907a07300b0097809283b99mr3357777ejc.46.1690923660581; Tue, 01
+ Aug 2023 14:01:00 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.13.0
-Subject: Re: [PATCH] gdbstub: Fix client Ctrl-C handling
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>, Joel Stanley <joel@jms.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>, alex.bennee@linaro.org,
- Matheus Tavares Bernardino <quic_mathbern@quicinc.com>,
- fbarrat@linux.ibm.com, qemu-devel@nongnu.org, qemu-stable@nongnu.org
-References: <20230711085903.304496-1-npiggin@gmail.com>
- <a18e346fc0e38f1014f5484e0b1ef27a7bc8cb41.1689073223.git.quic_mathbern@quicinc.com>
- <CTZTUVQXKUGA.11SSOS1KIFLZK@wheely>
- <CACPK8Xf-fa4qKZpgg4FvMkgzwbqgP1rh4=qLmv12N1JFcBn3Cg@mail.gmail.com>
- <CUFEQY5EGPAK.BFTBD2ZPJV5A@wheely>
- <CACPK8XdTVArJCVh0UaSe2mwY2FtO3zpMepkqPfkDy7zAmc16jQ@mail.gmail.com>
- <CAFEAcA-oB2U=eTzRqdHJVw2DZWPEnR_tS3M_+=yiF5GHtv_3tw@mail.gmail.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <CAFEAcA-oB2U=eTzRqdHJVw2DZWPEnR_tS3M_+=yiF5GHtv_3tw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.092,
+References: <20230730064057.357598-1-dinahbaum123@gmail.com>
+ <20230730064057.357598-4-dinahbaum123@gmail.com> <87tttix39v.fsf@pond.sub.org>
+In-Reply-To: <87tttix39v.fsf@pond.sub.org>
+From: Dinah B <dinahbaum123@gmail.com>
+Date: Tue, 1 Aug 2023 17:00:49 -0400
+Message-ID: <CAH50XRepiYcR9_e0AtuwTk1Nn34TXvZ87F5VVWg3aSx8BRJHPg@mail.gmail.com>
+Subject: Re: [PATCH v3 3/3] cpu, softmmu/vl.c: Change parsing of -cpu argument
+ to allow -cpu cpu,
+ help to print options for the CPU type similar to how the
+ '-device' option works.
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, Eduardo Habkost <eduardo@habkost.net>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Yanan Wang <wangyanan55@huawei.com>, Paolo Bonzini <pbonzini@redhat.com>
+Content-Type: multipart/alternative; boundary="000000000000219d990601e2d84f"
+Received-SPF: pass client-ip=2a00:1450:4864:20::634;
+ envelope-from=dinahbaum123@gmail.com; helo=mail-ej1-x634.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,31 +92,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 31/7/23 15:59, Peter Maydell wrote:
-> On Mon, 31 Jul 2023 at 07:59, Joel Stanley <joel@jms.id.au> wrote:
->>
->> On Sun, 30 Jul 2023 at 09:43, Nicholas Piggin <npiggin@gmail.com> wrote:
->>>
->>> On Wed Jul 26, 2023 at 4:35 PM AEST, Joel Stanley wrote:
->>>> On Wed, 12 Jul 2023 at 02:12, Nicholas Piggin <npiggin@gmail.com> wrote:
+--000000000000219d990601e2d84f
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+Thanks, I will fix this. I somehow didn't catch that you had replied to the
+old one.
 
->>>> I was taking a look at -rc1 and it looks like this hasn't made it in.
->>>> Is it something we want to propose including?
->>>>
->>>> As a user of qemu I'd vote for it to go in.
->>>
->>> I think it should, gdb is hardly usable without it.
->>
->> I think I hit this issue when debugging u-boot in the aspeed arm
->> machines. Your patch fixed things:
->>
->> Tested-by: Joel Stanley <joel@jms.id.au>
->>
->> Alex, Philippe, can we get this queued for 8.1?
-> 
-> I'm doing a pullreq today anyway, so I can grab it.
+-Dinah
 
-Thank you Peter!
+On Tue, Aug 1, 2023 at 10:10=E2=80=AFAM Markus Armbruster <armbru@redhat.co=
+m> wrote:
 
+> Dinah Baum <dinahbaum123@gmail.com> writes:
+>
+> > Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1480
+> > Signed-off-by: Dinah Baum <dinahbaum123@gmail.com>
+> >
+> > Signed-off-by: Dinah Baum <dinahbaum123@gmail.com>
+>
+> Looks basically the same as v2, which means my review still applies.
+>
+> Message-ID: <878rdbfww1.fsf@pond.sub.org>
+> https://lists.nongnu.org/archive/html/qemu-devel/2023-05/msg06699.html
+>
+> If you need further assistance, just ask.
+>
+>
+
+--000000000000219d990601e2d84f
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>Thanks, I will fix this. I somehow didn&#39;t catch t=
+hat you had replied to the old one.<br></div><div><br></div><div>-Dinah</di=
+v></div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr=
+">On Tue, Aug 1, 2023 at 10:10=E2=80=AFAM Markus Armbruster &lt;<a href=3D"=
+mailto:armbru@redhat.com">armbru@redhat.com</a>&gt; wrote:<br></div><blockq=
+uote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1p=
+x solid rgb(204,204,204);padding-left:1ex">Dinah Baum &lt;<a href=3D"mailto=
+:dinahbaum123@gmail.com" target=3D"_blank">dinahbaum123@gmail.com</a>&gt; w=
+rites:<br>
+<br>
+&gt; Resolves: <a href=3D"https://gitlab.com/qemu-project/qemu/-/issues/148=
+0" rel=3D"noreferrer" target=3D"_blank">https://gitlab.com/qemu-project/qem=
+u/-/issues/1480</a><br>
+&gt; Signed-off-by: Dinah Baum &lt;<a href=3D"mailto:dinahbaum123@gmail.com=
+" target=3D"_blank">dinahbaum123@gmail.com</a>&gt;<br>
+&gt;<br>
+&gt; Signed-off-by: Dinah Baum &lt;<a href=3D"mailto:dinahbaum123@gmail.com=
+" target=3D"_blank">dinahbaum123@gmail.com</a>&gt;<br>
+<br>
+Looks basically the same as v2, which means my review still applies.<br>
+<br>
+Message-ID: &lt;<a href=3D"mailto:878rdbfww1.fsf@pond.sub.org" target=3D"_b=
+lank">878rdbfww1.fsf@pond.sub.org</a>&gt;<br>
+<a href=3D"https://lists.nongnu.org/archive/html/qemu-devel/2023-05/msg0669=
+9.html" rel=3D"noreferrer" target=3D"_blank">https://lists.nongnu.org/archi=
+ve/html/qemu-devel/2023-05/msg06699.html</a><br>
+<br>
+If you need further assistance, just ask.<br>
+<br>
+</blockquote></div>
+
+--000000000000219d990601e2d84f--
 
