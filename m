@@ -2,71 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 352E176BBD6
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 19:59:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D16076BC3F
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 20:22:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQtdJ-0005FU-Jo; Tue, 01 Aug 2023 13:58:09 -0400
+	id 1qQtzo-0007j9-9d; Tue, 01 Aug 2023 14:21:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <BATV+0bb5590960a200a619e8+7282+infradead.org+dwmw2@desiato.srs.infradead.org>)
- id 1qQtdG-0005Ei-85
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 13:58:06 -0400
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <BATV+0bb5590960a200a619e8+7282+infradead.org+dwmw2@desiato.srs.infradead.org>)
- id 1qQtdE-0003DN-1Q
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 13:58:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
- MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
- Reply-To:Content-Type:Content-ID:Content-Description;
- bh=rfKodFpuUvMf8xRxS1F9RNhEDLvbGFAcnQWQWwOY7tc=; b=d0gSji5iVq/dhOJJq3mlDgWSEF
- W5CC2OZsHD5r1nN/ukFweI2QrtYfk2hzeZjq/QRMRjjgKAK7cAUf8KHvrZFUSWWqui9CyVhnYQESN
- bPy6J3vGoLulgVnlgFHsGq+x/AKzbGDYb34LdIga8k+r4wWjewLB1xKdyFel0oaIdUTeXKCIvBy32
- G5+y5hUkXxR8myGfDLsB+dVjhpibxSdZ62cJYUmt5KVjfBF1zYWGSiVPYyV8CeslqdPDHNgmGh9WB
- hJM/lm4ffbZXEte6WV8JatCGMRK0IsSMHRXZhHI/vQGiXbplfwvNtkOb7cKh79jLZYyyKyZ+mIwBQ
- IoOo+dzA==;
-Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
- by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
- id 1qQtd2-00EpEM-0s; Tue, 01 Aug 2023 17:57:52 +0000
-Received: from dwoodhou by i7.infradead.org with local (Exim 4.96 #2 (Red Hat
- Linux)) id 1qQtcz-000bxm-1j; Tue, 01 Aug 2023 18:57:49 +0100
-From: David Woodhouse <dwmw2@infradead.org>
-To: qemu-devel@nongnu.org
-Cc: Paul Durrant <paul@xen.org>, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, kvm@vger.kernel.org,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Anthony PERARD <anthony.perard@citrix.com>,
- David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PATCH for-8.1 3/3] hw/xen: prevent guest from binding loopback event
- channel to itself
-Date: Tue,  1 Aug 2023 18:57:47 +0100
-Message-Id: <20230801175747.145906-4-dwmw2@infradead.org>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230801175747.145906-1-dwmw2@infradead.org>
-References: <20230801175747.145906-1-dwmw2@infradead.org>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qQtzm-0007ix-Jz
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 14:21:22 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qQtzl-0007vi-21
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 14:21:22 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-317980c4236so2627651f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 01 Aug 2023 11:21:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1690914079; x=1691518879;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=ERdLtJOz6svg7m6GuulUZNgnkkO1m7bhck7+F+11TAk=;
+ b=ePN8kSt43s7OBsMaoZShA9HkOReaXCXQDyuS3MpiIAe8vjq06iSoPAr9K/FwxyDC69
+ y626AlI2woJ0BpdZvKawvegKm+fIKO0f4LUrqAkcseZTVJxT3RYoDhsvbyrT8jZ+xN0u
+ MXvqKy9lvf6hj9UgaSXJllnnqjSf05RR7oI5B/IwQI3tr+kveNOTkEQtluQO5jROdHn7
+ iAQWLv5S4ntg4wPu7HI3J3gzj/vieAxsKWrluY4VF+iefCemf/SjNC8RNhPmO+HOfl8M
+ 1e1VtkKDAOO4Je2m5aYhwNhufMZ6EIHmFeN5W1cKaULPqnv9ngjK5485+E39eOhCa34I
+ t8pA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1690914079; x=1691518879;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ERdLtJOz6svg7m6GuulUZNgnkkO1m7bhck7+F+11TAk=;
+ b=T5ygyS+ClNIhKHWlUrbWuQQRpFrnhGX7BOtX/+cth6YUY2PJh+swpwFSfGa+/ScXrC
+ IVRDVG+hhPaZUvHjgt0xfUx33L8FJNrGmhtakHLTDyeHqeS6ldakohWx/exx8cCDOTVE
+ Msq6u/bx94+jdJ8Cx+IgEajI6A/wMkVw+KWAs3TWZM3tVO3+7BHx40+JZ19/UjThTmUx
+ 9MsBWPqcQndS/4yLQkbGYX5DY1buy2Tk+qZTPuy+s4mF5hWBcC2vheNEtmfHy2inZZ0y
+ YQA2sDTWk+/b+LXj1FyzCQbdujX65mDQ5fnZJJHevfhcpgtnDrHZyB8KIKlUJyfV/WJn
+ qPtw==
+X-Gm-Message-State: ABy/qLb7oMGb3nLGHwdqwc5Mvbp+HhK1DAWMBFJTYeTcvvJwNpgVYNw0
+ Q6mckr5ZekFPbwSsBCtp/yJbew==
+X-Google-Smtp-Source: APBJJlHm0Ujhlci13al9yCU4Mlz0i4Wq61jdaUxNgDWNI27I/Pgs9XqmhAeN5D1ZjWVxCcuGqbig4g==
+X-Received: by 2002:a5d:43c3:0:b0:317:7255:6ca1 with SMTP id
+ v3-20020a5d43c3000000b0031772556ca1mr3032062wrr.31.1690914079272; 
+ Tue, 01 Aug 2023 11:21:19 -0700 (PDT)
+Received: from [192.168.69.115] ([176.176.174.59])
+ by smtp.gmail.com with ESMTPSA id
+ n5-20020a5d6b85000000b0031455482d1fsm2931142wrx.47.2023.08.01.11.21.18
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 01 Aug 2023 11:21:18 -0700 (PDT)
+Message-ID: <839e0cca-346d-f472-294b-955c5f1518d3@linaro.org>
+Date: Tue, 1 Aug 2023 20:21:16 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.13.0
+Subject: Re: [PATCH for-8.1] target/m68k: Fix semihost lseek offset computation
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+Cc: Laurent Vivier <laurent@vivier.eu>, Keith Packard <keithp@keithp.com>
+References: <20230801154519.3505531-1-peter.maydell@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230801154519.3505531-1-peter.maydell@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
- desiato.infradead.org. See http://www.infradead.org/rpr.html
-Received-SPF: none client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05;
- envelope-from=BATV+0bb5590960a200a619e8+7282+infradead.org+dwmw2@desiato.srs.infradead.org;
- helo=desiato.infradead.org
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.092,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -83,42 +92,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+On 1/8/23 17:45, Peter Maydell wrote:
+> The arguments for deposit64 are (value, start, length, fieldval); this
+> appears to have thought they were (value, fieldval, start,
+> length). Reorder the parameters to match the actual function.
+> 
+> Cc: qemu-stable@nongnu.org
+> Fixes: 950272506d ("target/m68k: Use semihosting/syscalls.h")
+> Reported-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
+> Same fix for m68k as Keith Packard just sent for nios2
+> ---
+>   target/m68k/m68k-semi.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/target/m68k/m68k-semi.c b/target/m68k/m68k-semi.c
+> index 88ad9ba8144..239f6e44e90 100644
+> --- a/target/m68k/m68k-semi.c
+> +++ b/target/m68k/m68k-semi.c
+> @@ -166,7 +166,7 @@ void do_m68k_semihosting(CPUM68KState *env, int nr)
+>           GET_ARG64(2);
+>           GET_ARG64(3);
+>           semihost_sys_lseek(cs, m68k_semi_u64_cb, arg0,
+> -                           deposit64(arg2, arg1, 32, 32), arg3);
+> +                           deposit64(arg2, 32, 32, arg1), arg3);
+>           break;
+>   
+>       case HOSTED_RENAME:
 
-Fuzzing showed that a guest could bind an interdomain port to itself, by
-guessing the next port to be allocated and putting that as the 'remote'
-port number. By chance, that works because the newly-allocated port has
-type EVTCHNSTAT_unbound. It shouldn't.
+Thanks for writing the fix!
 
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Reviewed-by: Paul Durrant <paul@xen.org>
----
- hw/i386/kvm/xen_evtchn.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
-
-diff --git a/hw/i386/kvm/xen_evtchn.c b/hw/i386/kvm/xen_evtchn.c
-index 0e9c108614..a731738411 100644
---- a/hw/i386/kvm/xen_evtchn.c
-+++ b/hw/i386/kvm/xen_evtchn.c
-@@ -1408,8 +1408,15 @@ int xen_evtchn_bind_interdomain_op(struct evtchn_bind_interdomain *interdomain)
-         XenEvtchnPort *rp = &s->port_table[interdomain->remote_port];
-         XenEvtchnPort *lp = &s->port_table[interdomain->local_port];
- 
--        if (rp->type == EVTCHNSTAT_unbound && rp->type_val == 0) {
--            /* It's a match! */
-+        /*
-+         * The 'remote' port for loopback must be an unbound port allocated for
-+         * communication with the local domain (as indicated by rp->type_val
-+         * being zero, not PORT_INFO_TYPEVAL_REMOTE_QEMU), and must *not* be
-+         * the port that was just allocated for the local end.
-+         */
-+        if (interdomain->local_port != interdomain->remote_port &&
-+            rp->type == EVTCHNSTAT_unbound && rp->type_val == 0) {
-+
-             rp->type = EVTCHNSTAT_interdomain;
-             rp->type_val = interdomain->local_port;
- 
--- 
-2.40.1
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
