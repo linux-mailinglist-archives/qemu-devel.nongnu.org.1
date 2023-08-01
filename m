@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20E2B76BCC7
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 20:45:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F383976BCE1
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 20:47:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQuMf-0006OR-4o; Tue, 01 Aug 2023 14:45:02 -0400
+	id 1qQuOh-0008A9-W1; Tue, 01 Aug 2023 14:47:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qQuMP-0006It-Bp
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 14:44:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qQuOf-00089j-TP
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 14:47:05 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qQuMN-0004rV-N7
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 14:44:44 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qQuOe-0005av-D4
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 14:47:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690915483;
+ s=mimecast20190719; t=1690915623;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=LwyIshTTu7fbc7pQgv8XqQ0FdMjqxpoYtdBJ8S6BlXY=;
- b=RaJaKcVxYDjb+6XeBSJrjWa1mpqOedbsJt8xMmt3jUpp/+Y4D3IG16N48hy79FKQzwRAm3
- 9g98e/v8b7q8Xn6rKmqfccOwBq1gQgXDf5Wr6B0c8oFx3gooSDn+g6Qqw/u6iW1jIAy4NK
- dt+dTPJ1YvZEQfxL1/epNekEYRXafCM=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=JY8YIi0xe9P1p7dCxbLkQERCzKBkud8a8PAf0AQ0W6M=;
+ b=YfwMXgRkA9luc5eemfJbhk2hddbz3OZIGj4EXf06QCLFY+/NN/+enurNmVGYk9Um10bEoQ
+ xwK0lCPdlZG+zJEpoDIH2YM801QsfcmRj2RktyAAFHdKp0YIsf97LhhlkY44v06z5kC0jU
+ W4rE/eIWABgvyfo2LPUsDgp4djhO5P4=
+Received: from mail-oo1-f69.google.com (mail-oo1-f69.google.com
+ [209.85.161.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-306-Z2VuYHujP9KZBObE-SE52g-1; Tue, 01 Aug 2023 14:44:41 -0400
-X-MC-Unique: Z2VuYHujP9KZBObE-SE52g-1
-Received: by mail-qt1-f198.google.com with SMTP id
- d75a77b69052e-403ad49c647so61315771cf.1
- for <qemu-devel@nongnu.org>; Tue, 01 Aug 2023 11:44:41 -0700 (PDT)
+ us-mta-345-FLkwZWaGPGinUqpUqn8TMA-1; Tue, 01 Aug 2023 14:47:01 -0400
+X-MC-Unique: FLkwZWaGPGinUqpUqn8TMA-1
+Received: by mail-oo1-f69.google.com with SMTP id
+ 006d021491bc7-56cd299ba92so3241307eaf.1
+ for <qemu-devel@nongnu.org>; Tue, 01 Aug 2023 11:47:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690915481; x=1691520281;
+ d=1e100.net; s=20221208; t=1690915620; x=1691520420;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=LwyIshTTu7fbc7pQgv8XqQ0FdMjqxpoYtdBJ8S6BlXY=;
- b=O5rLNP8F29MQoyDhamhJ/+D3D+wcAjPYuDtNjwXjg0p/77C5XQ7dZ3d2WmfwlRRRtF
- doKt8IECtm6ZCZ4g/iktxHDXh12hPpHvJWy0vxVkF/KfCuwULGcDUuSKTWOdYReZKl5b
- fdZtDyUp/OFDsfzjGVkWlRUkcvXg52INBBwo1Us/gP2e45OWItOY1+1ZOGLeoJ3M+xFM
- I8ity8N8+HOiMsGjHnUSyMfNhVzVetmicBwnvAM2ZiHM0tvyWBWryQt4qFr8mGFB+MKg
- l8FTFnTnS/BCsFSSDmuJ6NQDFOjtkc/08JVXmood+LiYELaqOfTF7svl4RJ7gSB4J0Fz
- ZReQ==
-X-Gm-Message-State: ABy/qLYKa6NeWfjtqvsIn4ylX7Jv7tEGIXFHWqWUj4bZ7vNsKRpHMUIH
- 2ZpyY/8rLRjPa8N6jZEAEXQTc9EiXP73uAA+Y39xbvQerk1ZgCCM2JAmQxArWRPQcMRHaOMY379
- hzdbn5eBgmYviNSc=
-X-Received: by 2002:a05:622a:11cd:b0:40f:c547:c6a1 with SMTP id
- n13-20020a05622a11cd00b0040fc547c6a1mr6104086qtk.5.1690915481008; 
- Tue, 01 Aug 2023 11:44:41 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlGeiQjZOnYxqoa6NKxFIZHtbn1F1tuRFZl49iGD8h5+XtObhCwc53FkbKzowO87pom79FDXSA==
-X-Received: by 2002:a05:622a:11cd:b0:40f:c547:c6a1 with SMTP id
- n13-20020a05622a11cd00b0040fc547c6a1mr6104075qtk.5.1690915480790; 
- Tue, 01 Aug 2023 11:44:40 -0700 (PDT)
+ bh=JY8YIi0xe9P1p7dCxbLkQERCzKBkud8a8PAf0AQ0W6M=;
+ b=cqqM9NZ3QxN8U0yGOM/Ruoiq6QN/nBiCN0vs2RHJQnI6mvd/dMN4xooDbjNVSniLeR
+ toc6GpKGRrUA1VIPzcRZ+PWvyJ2qgmq+oo58XF+4+t1pF5e+5+h/Tyw2/4iQ0My8FnSC
+ VQ8YRmZ3hEcAlv4Nqnq+cbwrbGLLSQegoHjeI4WLWhS+bB7JDIorr6i9onVuaSk2R8Ws
+ MWXzhLbagwQJkZIB69DgJecFlrgjHPuyf5OUz6cqmRLsv8moImhyJYYBhlGv24Marp0Y
+ rOglLJvh+cq07EaE7aj3ZEgDsW4NrDWBnvEuk2VXNaHFjHQC53Pu+2CQclFtDNdfPFaX
+ lW3Q==
+X-Gm-Message-State: ABy/qLbZXkb1HXZ0PaeWRtd3NNb+nTROBErZrLMOniHDnC0zH39S2OTm
+ aOp2wfhEL9uzmdER/vPNW4yLx+J7pJIp1nwcQDH4MaUwhIg20fxDoMgoFyw8fhhRygCsTqt60dC
+ 2HCzabtMtLKecqcM=
+X-Received: by 2002:a05:6358:339e:b0:139:d5b9:87d3 with SMTP id
+ i30-20020a056358339e00b00139d5b987d3mr4459016rwd.5.1690915620649; 
+ Tue, 01 Aug 2023 11:47:00 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlHfIdPYbCOnPfObaIfjU/zTVtv6hqvt/8KCj5/AUBZh9RFotHGMQRSarNmtMIoMXRL4UAE5pw==
+X-Received: by 2002:a05:6358:339e:b0:139:d5b9:87d3 with SMTP id
+ i30-20020a056358339e00b00139d5b987d3mr4458999rwd.5.1690915620369; 
+ Tue, 01 Aug 2023 11:47:00 -0700 (PDT)
 Received: from [192.168.8.105] (tmo-081-137.customers.d1-online.com.
  [80.187.81.137]) by smtp.gmail.com with ESMTPSA id
- r2-20020ac83b42000000b00403c1a19a2bsm4658589qtf.92.2023.08.01.11.44.38
+ t7-20020a0cb387000000b0063d412a6154sm4602686qve.133.2023.08.01.11.46.58
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 01 Aug 2023 11:44:40 -0700 (PDT)
-Message-ID: <4ac62a63-1873-6c04-7f46-32c479b5ea6a@redhat.com>
-Date: Tue, 1 Aug 2023 20:44:37 +0200
+ Tue, 01 Aug 2023 11:46:59 -0700 (PDT)
+Message-ID: <0489066f-83b5-4d15-e8bf-c1cc600f11f7@redhat.com>
+Date: Tue, 1 Aug 2023 20:46:56 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH 8/8] gitlab: disable FF_SCRIPT_SECTIONS on msys jobs
+Subject: Re: [PATCH 0/8] gitlab: speed up msys windows jobs with GCC
 Content-Language: en-US
 To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
  qemu-devel@nongnu.org
@@ -75,12 +75,11 @@ Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
  <alex.bennee@linaro.org>, Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Yonggang Luo <luoyonggang@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>
 References: <20230801130403.164060-1-berrange@redhat.com>
- <20230801130403.164060-9-berrange@redhat.com>
 From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <20230801130403.164060-9-berrange@redhat.com>
+In-Reply-To: <20230801130403.164060-1-berrange@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -105,37 +104,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 01/08/2023 15.04, Daniel P. Berrangé wrote:
-> The FF_SCRIPT_SECTIONS=1 variable should ordinarily cause output from
-> each line of the job script to be presented in a collapsible section
-> with execution time listed.
+On 01/08/2023 15.03, Daniel P. Berrangé wrote:
+> This is an alternative and/or complementary to Thomas' proposal
+> to use CLang with msys:
 > 
-> While it works on Linux shared runners, when used with Windows runners
-> with PowerShell, this option does not create any sections, and actually
-> causes echo'ing of commands to be disabled, making it even worse to
-> debug the jobs.
+>    https://lists.gnu.org/archive/html/qemu-devel/2023-07/msg05402.html
 > 
-> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-> ---
->   .gitlab-ci.d/windows.yml | 4 ++++
->   1 file changed, 4 insertions(+)
+> First of all, the current msys installer we're using is over 12
+> months out of date. Thus after running the install, pacman then
+> replaces most of what we've just installed with new downloaded
+> content. Using the most update installer cuts 3+1/2 minutes off
+> the msys install time - 7 minutes becomes 3+1/2.
 > 
-> diff --git a/.gitlab-ci.d/windows.yml b/.gitlab-ci.d/windows.yml
-> index 552e3b751d..cd7622a761 100644
-> --- a/.gitlab-ci.d/windows.yml
-> +++ b/.gitlab-ci.d/windows.yml
-> @@ -12,6 +12,10 @@
->     needs: []
->     stage: build
->     timeout: 80m
-> +  variables:
-> +    # This feature doesn't (currently) work with PowerShell, it stops
-> +    # the echo'ing of commands being run and doesn't show any timing
-> +    FF_SCRIPT_SECTIONS: 0
->     artifacts:
->       name: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG"
->       expire_in: 7 days
+> Secondly, QEMU defaults to compiling with -O2 and this is more
+> computationally expensive for GCC. Switching to -O0 drops the
+> build time from 60 minutes down to 45 minutes.
+> 
+> Thirdly, including debug symbols also has an overhead, and turning
+> that off reduces time still further down to 38 minutes.
+> 
+> IOW, between all three changes, we can cut approx 25-26 minutes
+> off the job execution time, bringing it nicely within the job
+> timeout.
+> 
+> The actually phase of installing the mingw deps still accounts
+> for about 10 minutes and has not been optimized.
+> 
+> Possibly the same trick of -O0 and skipping -g would also help
+> the clang alternative Thomas' proposed. If so, that could be
+> enough to let us enable more features / targets during the
+> msys build.
 
-Acked-by: Thomas Huth <thuth@redhat.com>
+I really like the idea! And I guess my idea with Clang needs some more work 
+'til it is acceptable, so let's go with your idea for now to fix the timeout 
+problem in the CI ... we can still optimize later with Clang in case we 
+found a good solution for that ms_struct problem...
+
+  Thomas
+
 
 
