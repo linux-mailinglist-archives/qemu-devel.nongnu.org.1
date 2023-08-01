@@ -2,81 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5062376B5DC
-	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 15:30:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A21A76B5EB
+	for <lists+qemu-devel@lfdr.de>; Tue,  1 Aug 2023 15:33:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qQpS1-0003qZ-9F; Tue, 01 Aug 2023 09:30:13 -0400
+	id 1qQpVA-00051a-Jm; Tue, 01 Aug 2023 09:33:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qQpS0-0003qR-7t
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 09:30:12 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qQpV8-00051F-Vq
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 09:33:26 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qQpRy-0000cs-KN
- for qemu-devel@nongnu.org; Tue, 01 Aug 2023 09:30:12 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-3fb4146e8deso62579425e9.0
- for <qemu-devel@nongnu.org>; Tue, 01 Aug 2023 06:30:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qQpV7-0001IZ-02
+ for qemu-devel@nongnu.org; Tue, 01 Aug 2023 09:33:26 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-3fe1a17f983so24039625e9.3
+ for <qemu-devel@nongnu.org>; Tue, 01 Aug 2023 06:33:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690896609; x=1691501409;
+ d=linaro.org; s=google; t=1690896797; x=1691501597;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=JC2u60wzi9vj+wnSHCqPdEyN62BIn6iea1uGAVjZXYI=;
- b=OSSxDoD+XNBJiT1lVE7id3E3BZ+FH3MCFF1vQxB4kiez5rCLyzKzfGuKz2NfkvcRYO
- 7E5OmHSv//e/NQtPGCK0AAzU4jY7+3Ksfxho67QLWxUBFNYbLIxgQyUfE5KAYx7U6U0F
- 1XlnKPaCSsCoHQYDz9ITenIbLEZDa9LyxpJH4sz5//XmGPPTDSZPVupc+EjzPaZv7PUL
- GQLYbhHkBi0JbI6v2EK4kaFPhYM6hFi4ENWXFUNZGT0yN4Zk+cjxC2ThJD6LYkg7dARz
- WgISU01k8bwdhMiIkJlxv81x6jkWWV4tKPDSd2YOOs33gVY92PdcmPaTq11RXRBmOC3m
- 0YqA==
+ bh=sCAq8iCMq3AgaS8QJXLrEnfDEuGyUVO5RxWII8VYXEU=;
+ b=n4oHl9+6sm7qlpyQ+9uikHSEt6S4MN3wVFvITKlY6H4KWiHjti7zVi5s6GTqcUIYpc
+ U1eGlP9PQBM/F/puqaj86XHJZhw0Wjtqxs8RbPHAgYsPIsuwBvHn8ulP0VhhnOgcQzUE
+ ipYYserqK0lB+UsRNmSO3koxrn9y+q2N3CfsGvepIuezVB3Os0LURR7lBP8Ok20ETpgm
+ y8YW66lNVkKhpvjCPPzvj3b33lgKtRoNrJCRYYcOgKuxxiS7WEsFD+0UtcUYZTAZCv/K
+ pPRf4LbGYkcmRdKC+RSoWwE2B5imeJVZcZdIqQEzcKVAwUUBc8S4SWwZ2/jsi7+Hll2S
+ jm+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690896609; x=1691501409;
+ d=1e100.net; s=20221208; t=1690896797; x=1691501597;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=JC2u60wzi9vj+wnSHCqPdEyN62BIn6iea1uGAVjZXYI=;
- b=Jf+coytbW1hF09gYPCo4+E5qJSzKxJVkkhI+yRHYE3fomIuf3WpY/b/Jxi2qMdEN2+
- 7UWF/uAAss3eDLbF8CnsIwO+/YfMZ+Lb/eWwKkcajLP1pQ4Pu6Femszw0WlG5WsR96IG
- AxCiiXEKoDE/Rc8EeHSbBOXadx+BQDyPBIEkhsPKGjd7AYtM0oiv74CkiVCbSZiUoK9n
- L5OUss1fmRIGLpW7kyYy5y0+D5fauWCl9kaWSIdsw0YxRxij73bdgE8sLIkdcF13ni2k
- Bdf/kv8Ap5IVYGkL8rrzxV4L73JBXjRK8YsXRrmwzLlu8T25JDNxOkOXFzXWJJvC3m4A
- hQVw==
-X-Gm-Message-State: ABy/qLaCbyFKZCTb1Cb2jJTnBBCItAB40PBHxaP7Mv0BhVYv936v/46x
- dOuC/m9ChYqTrw9t0MesksK2rA==
-X-Google-Smtp-Source: APBJJlHcxy6y5WRVfpELJrFbkdOfrCpPXZfJBv7Cv1Bp6Ls0CtAhlimtbdWihMg9X/b79A+9Ibl2qQ==
-X-Received: by 2002:a05:600c:2048:b0:3fe:2bb1:11ba with SMTP id
- p8-20020a05600c204800b003fe2bb111bamr994449wmg.27.1690896608742; 
- Tue, 01 Aug 2023 06:30:08 -0700 (PDT)
+ bh=sCAq8iCMq3AgaS8QJXLrEnfDEuGyUVO5RxWII8VYXEU=;
+ b=Skvhk3LkTeXM/VBnsfG0mfcvLeMtt45NdQy0RFjpxi/+weRIRabEuWJd49oLLP/yca
+ /ll1dGAMSwZylxeqsIt+mynuW/L4BO/zdlW+Sozklc2ScI+kfIVJdzgRLgD6Jx2hSGcH
+ JC8zi5ZaTOKVCKRclu6hORqKwzNM+rG/USqd8DzeaLQPALvO7YeBAYCyh/mNgg2ZXUgS
+ nLH6nNX7L2ZiSUNhs4VZgNKOBLRTCrA+EIf8J4aC3VA7+rxLpthkWFvwSAePWDtpe4QL
+ o+Q1jc/qydeuUcuCu6S/n2tPZK11V2vJlYsD5XuKzNyYBEFDhaNWeVwWix1dUaoXgwMK
+ JaQw==
+X-Gm-Message-State: ABy/qLZ4gQLIJBQk9WgEarePCzDgw21a3RN9r0INHXePfb/anFW/cKOZ
+ ma7sLXk5Ja4OBAnhGa3f1sM22A==
+X-Google-Smtp-Source: APBJJlENsEbfR/co73PqEVmS4NfYWAhAq9URweSyXzwocAQ5ZFx6lVfPw78RkAdfvEJ+B35APXu2Yg==
+X-Received: by 2002:a05:600c:2287:b0:3fb:b008:1ff6 with SMTP id
+ 7-20020a05600c228700b003fbb0081ff6mr2429844wmf.0.1690896797272; 
+ Tue, 01 Aug 2023 06:33:17 -0700 (PDT)
 Received: from [192.168.69.115] ([176.176.174.59])
  by smtp.gmail.com with ESMTPSA id
- f9-20020a7bc8c9000000b003fa96fe2bd9sm16817367wml.22.2023.08.01.06.30.07
+ f2-20020a7bc8c2000000b003fbc9b9699dsm14131162wml.45.2023.08.01.06.33.15
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 01 Aug 2023 06:30:08 -0700 (PDT)
-Message-ID: <10295d2b-cace-07c6-0b2b-f8122d8efe98@linaro.org>
-Date: Tue, 1 Aug 2023 15:30:06 +0200
+ Tue, 01 Aug 2023 06:33:16 -0700 (PDT)
+Message-ID: <74d75da0-3a0a-2c15-43f4-6915ab1677cb@linaro.org>
+Date: Tue, 1 Aug 2023 15:33:14 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.13.0
-Subject: Re: [RFC PATCH 6/6] gitlab-ci.d/windows: Use Clang for compiling in
- the 64-bit MSYS2 job
+Subject: Re: [PATCH 1/2] vmmouse: replace DPRINTF with tracing
 Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>
-Cc: Stefan Weil <sw@weilnetz.de>, Yonggang Luo <luoyonggang@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>
-References: <20230728142748.305341-1-thuth@redhat.com>
- <20230728142748.305341-7-thuth@redhat.com>
- <62b923c2-5c22-44c5-99cd-95351fd200db@linaro.org>
- <a45f5f3a-2139-da7b-0323-a32fa69f1788@redhat.com>
+To: marcandre.lureau@redhat.com, qemu-devel@nongnu.org
+Cc: zhouzongmin@kylinos.cn, Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+References: <20230801093928.309361-1-marcandre.lureau@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <a45f5f3a-2139-da7b-0323-a32fa69f1788@redhat.com>
+In-Reply-To: <20230801093928.309361-1-marcandre.lureau@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -99,40 +95,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 31/7/23 16:43, Thomas Huth wrote:
-> On 31/07/2023 16.23, Philippe Mathieu-Daudé wrote:
->> On 28/7/23 16:27, Thomas Huth wrote:
->>> We are struggeling with timeouts in the 64-bit MSYS2 job. Clang seems
->>> to be a little bit faster, so let's use this compiler now instead.
->>>
->>> There is a problem with compiling the spice headers with Clang, though,
->>> so we can only test this in the 32-bit builds with GCC now. And we have
->>> to disable dbus-display - otherwise the compilation aborts in the CI.
->>>
->>> Signed-off-by: Thomas Huth <thuth@redhat.com>
->>> ---
->>>   .gitlab-ci.d/windows.yml | 14 ++++++++------
->>>   1 file changed, 8 insertions(+), 6 deletions(-)
-
-
->>> @@ -77,13 +76,15 @@
->>>   msys2-64bit:
->>>     extends: .shared_msys2_builder
->>>     variables:
->>> -    MINGW_TARGET: mingw-w64-x86_64
->>> -    MSYSTEM: MINGW64
->>> +    MINGW_TARGET: mingw-w64-clang-x86_64
->>> +    MSYSTEM: CLANG64
->>
->> OK to use Clang, but I'm tempted to keep the GCC job in manual mode...
+On 1/8/23 11:39, marcandre.lureau@redhat.com wrote:
+> From: Marc-André Lureau <marcandre.lureau@redhat.com>
 > 
-> Why? We still have the 32-bit job with GCC, and the MinGW cross-compiler 
-> job with GCC, so that's already quite a bit of coverage, isn't it?
+> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+> ---
+>   hw/i386/vmmouse.c    | 29 ++++++++++++++---------------
+>   hw/i386/trace-events | 10 ++++++++++
+>   2 files changed, 24 insertions(+), 15 deletions(-)
 
-OK we are good then :)
 
-Thanks,
+>   static uint32_t vmmouse_get_status(VMMouseState *s)
+>   {
+> -    DPRINTF("vmmouse_get_status()\n");
+> +    trace_vmmouse_get_status();
 
-Phil.
+Isn't it useful to log the status here? Anyhow:
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+> +
+>       return (s->status << 16) | s->nb_queue;
+>   }
 
 
