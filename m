@@ -2,106 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B82DB76CFD0
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Aug 2023 16:15:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D6F776CFF1
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Aug 2023 16:24:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRCco-0003zQ-2N; Wed, 02 Aug 2023 10:14:54 -0400
+	id 1qRCkq-0008Bk-22; Wed, 02 Aug 2023 10:23:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qRCcX-0003o5-35
- for qemu-devel@nongnu.org; Wed, 02 Aug 2023 10:14:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qRCcV-00005N-Ct
- for qemu-devel@nongnu.org; Wed, 02 Aug 2023 10:14:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690985674;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=0pWRRzjhSSkGcC+rU+LOHToBtc9IeE5pNfkjeHK/DFY=;
- b=LXiHt5sex6G/QzHZkJfrPgVv1GI0u81GR2tCXLmz6R2wj4j8xPlSgcp2755oLSXbtKYTPl
- SUrnfcu7/LmZpCGqiCD0QArsdSRLi24pOCIlp9BkE4AyMPZG8JRCeB/dZEpAWA6zPXE3Jx
- pA9zPdhgEFTVCeP+sPDZm6iIgFU9p0U=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-231-m2lyB0yHP-iZzj-Sq4VnQA-1; Wed, 02 Aug 2023 10:14:33 -0400
-X-MC-Unique: m2lyB0yHP-iZzj-Sq4VnQA-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-31775a8546fso4200641f8f.3
- for <qemu-devel@nongnu.org>; Wed, 02 Aug 2023 07:14:33 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qRCkh-0008AG-Ra; Wed, 02 Aug 2023 10:23:03 -0400
+Received: from mail-ua1-x936.google.com ([2607:f8b0:4864:20::936])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qRCke-0007Qx-0H; Wed, 02 Aug 2023 10:23:03 -0400
+Received: by mail-ua1-x936.google.com with SMTP id
+ a1e0cc1a2514c-79aa01cc971so1478164241.0; 
+ Wed, 02 Aug 2023 07:22:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1690986168; x=1691590968;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=3s66DiSXIS1EOtq4NU0z0FuHIHj3ygj4PeUcghO14/8=;
+ b=rDBc5UdTkevJBNALYD/Qwm5KlrdUwCmuP9m95m/sZOFx2lmQHVDheJEiRjAvBQNo6h
+ pKP0LD2i2o8A5Dv9TDc9sTvXkZe6d9GUcTTmvOmlQ3/nQ75PlLjRyLNqH8cD8++7FhWW
+ AzabZTQ3veLjmQtPHXEJfk38PkBlNCVNLM/1+A9xjcxBzl0UMC/MMn4gJXOZkzAHI35w
+ 31oQYpANiDPKHx72ms4yklFazlCwTcXqaXx/iOJc4Nez+AFbnQJKmn5C4DouW/tCyfUq
+ ldbP11boYNakTCLz0T36AsRTxrmGAmLuzRthE9A7+ihxrCTh6o5pNZ2dW3UXaZ7RSilJ
+ 8hLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690985672; x=1691590472;
- h=content-transfer-encoding:in-reply-to:subject:organization:from
- :references:cc:to:content-language:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=0pWRRzjhSSkGcC+rU+LOHToBtc9IeE5pNfkjeHK/DFY=;
- b=bLm6LUA/LKUB65iTIMZe3L4Jnylyld0HDa5DGjPEhaOulgzBYfn0mUonhzf/I7WQsN
- 9+67f6RPRDew1uDvgLe/adjzoi5AIXeHfBjz7JWhi7r/jiRXUMjq357jb1tQEcja2Djj
- 13NymFAjBZjx3Dp4OFWLRlFiW5JZSVgI1jL0dzTEft4sUv8n5PbyBsxkbBeQNPhbspAE
- MXCtGP7XsXoyCULBx/cnAogEtJN59tTC7D/Lnezn3gbTYGioq9W+OZNC1EDx3ZPS8ZoE
- hTsQtWHWkbWQCx5Mpr1Lvd8uRitJZMGej2MJFavOIFPxC3r5OlAWpFfOcOdixp92atzD
- HYYg==
-X-Gm-Message-State: ABy/qLaWrj6/a+3qEj8EBVgFpx23R1SKFnJqPzJi+wcHE9BkTb4gxnMI
- jnVoSKjHw2br5PJuNYOFGmgJM4ZdMiMh8Z5BqWV5NQ8OIWZZC0t4KVLLkYmHBlQS1Z4TCnaf+1L
- xOZau3AQ6YNu7FhQ=
-X-Received: by 2002:a5d:4572:0:b0:317:6639:852d with SMTP id
- a18-20020a5d4572000000b003176639852dmr5063720wrc.43.1690985672434; 
- Wed, 02 Aug 2023 07:14:32 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlE8UMI9LjEyKhH2GPvXA6mnI73VXxZyXz27zjP3IAExZ1GtjBfqs4WqPMc2T6ZInymIYZ8Uag==
-X-Received: by 2002:a5d:4572:0:b0:317:6639:852d with SMTP id
- a18-20020a5d4572000000b003176639852dmr5063698wrc.43.1690985672008; 
- Wed, 02 Aug 2023 07:14:32 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c70b:e00:b8a4:8613:1529:1caf?
- (p200300cbc70b0e00b8a4861315291caf.dip0.t-ipconnect.de.
- [2003:cb:c70b:e00:b8a4:8613:1529:1caf])
- by smtp.gmail.com with ESMTPSA id
- a10-20020a5d508a000000b0031773e3cf46sm19183969wrt.61.2023.08.02.07.14.30
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 02 Aug 2023 07:14:31 -0700 (PDT)
-Message-ID: <a154c33d-b24d-b713-0dc0-027d54f2340f@redhat.com>
-Date: Wed, 2 Aug 2023 16:14:29 +0200
+ d=1e100.net; s=20221208; t=1690986168; x=1691590968;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=3s66DiSXIS1EOtq4NU0z0FuHIHj3ygj4PeUcghO14/8=;
+ b=DQ/1o0dHrb+G1lXBJN49j0g58XdJlK5i1Mw40K+xP4eHQzBIlWhq/Jv7P/Ma+F+MLz
+ 93PTSh0LT5FP5xUjOI8r+Wb5ocuQR3dqHiItU8spJbQ6D45PiEBaj18TxhFK5N/xXhF/
+ hAhgLclW00NjkKsxXrLA7nx2GU8ztgx+lWsFm9iMQjmSIUE5NU7kWQ8lqIL/r+4W9Aq+
+ F3lLDm/hXif6S6hys+8iIxU56pY8pH5BoU9IBXfNFg5g4Z5RAE8IcY+nkvW5Y1PD+g8H
+ Zl8jVxS3Xq0Eic8R2Db0dDSfu+VDVh9iGkbjVQ45owHy3Z0s7Rz6raHQdhvJ3//YqxWp
+ zWYQ==
+X-Gm-Message-State: ABy/qLZjFzXnGd3M7vOF9C/e8CFQNhbPEeQTeBbbrVVTTqZJ1UPQqaLg
+ qnmhZ5B9yYMhgImfKA81RtcHyhbj4niEtV7myfg=
+X-Google-Smtp-Source: APBJJlHvhFR4mvWL0lGH4Gkf+sArCyBkE3bjHeXIJL1gCFDyckkMC6OyhW2AJps7jltA6VE/ndUnyL3qRwBIY49I1Ys=
+X-Received: by 2002:a1f:5f97:0:b0:481:521f:b704 with SMTP id
+ t145-20020a1f5f97000000b00481521fb704mr5403034vkb.9.1690986167823; Wed, 02
+ Aug 2023 07:22:47 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Content-Language: en-US
-To: Xiaoyao Li <xiaoyao.li@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Sean Christopherson <seanjc@google.com>, Igor Mammedov
- <imammedo@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+References: <20230711165917.2629866-1-max.chou@sifive.com>
+ <20230711165917.2629866-4-max.chou@sifive.com>
+In-Reply-To: <20230711165917.2629866-4-max.chou@sifive.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Wed, 2 Aug 2023 10:22:21 -0400
+Message-ID: <CAKmqyKMj3f8VQtueddJRUcBBH7cPgLJFw4Db6i0O=Er9sWYmBQ@mail.gmail.com>
+Subject: Re: [PATCH v8 03/15] target/riscv: Remove redundant "cpu_vl == 0"
+ checks
+To: Max Chou <max.chou@sifive.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, dbarboza@ventanamicro.com, 
+ Nazar Kazakov <nazar.kazakov@codethink.co.uk>,
+ Weiwei Li <liweiwei@iscas.ac.cn>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, 
+ Bin Meng <bin.meng@windriver.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
  Richard Henderson <richard.henderson@linaro.org>,
- Marcelo Tosatti <mtosatti@redhat.com>
-Cc: Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>,
- =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Peter Xu <peterx@redhat.com>, Chao Peng <chao.p.peng@linux.intel.com>,
- Michael Roth <michael.roth@amd.com>, isaku.yamahata@gmail.com,
- qemu-devel@nongnu.org, kvm@vger.kernel.org
-References: <20230731162201.271114-1-xiaoyao.li@intel.com>
- <20230731162201.271114-9-xiaoyao.li@intel.com>
- <f8e40f1a-729b-f520-299a-4132e371be61@redhat.com>
- <2addfff0-88bf-59aa-f2f3-8129366a006d@intel.com>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-Subject: Re: [RFC PATCH 08/19] HostMem: Add private property to indicate to
- use kvm gmem
-In-Reply-To: <2addfff0-88bf-59aa-f2f3-8129366a006d@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.102, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ Junqiang Wang <wangjunqiang@iscas.ac.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::936;
+ envelope-from=alistair23@gmail.com; helo=mail-ua1-x936.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -118,114 +93,295 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 02.08.23 10:03, Xiaoyao Li wrote:
-> On 8/2/2023 1:21 AM, David Hildenbrand wrote:
->> On 31.07.23 18:21, Xiaoyao Li wrote:
->>> From: Isaku Yamahata <isaku.yamahata@intel.com>
->>>
->>> Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
->>> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
->>> ---
->>>    backends/hostmem.c       | 18 ++++++++++++++++++
->>>    include/sysemu/hostmem.h |  2 +-
->>>    qapi/qom.json            |  4 ++++
->>>    3 files changed, 23 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/backends/hostmem.c b/backends/hostmem.c
->>> index 747e7838c031..dbdbb0aafd45 100644
->>> --- a/backends/hostmem.c
->>> +++ b/backends/hostmem.c
->>> @@ -461,6 +461,20 @@ static void
->>> host_memory_backend_set_reserve(Object *o, bool value, Error **errp)
->>>        }
->>>        backend->reserve = value;
->>>    }
->>> +
->>> +static bool host_memory_backend_get_private(Object *o, Error **errp)
->>> +{
->>> +    HostMemoryBackend *backend = MEMORY_BACKEND(o);
->>> +
->>> +    return backend->private;
->>> +}
->>> +
->>> +static void host_memory_backend_set_private(Object *o, bool value,
->>> Error **errp)
->>> +{
->>> +    HostMemoryBackend *backend = MEMORY_BACKEND(o);
->>> +
->>> +    backend->private = value;
->>> +}
->>>    #endif /* CONFIG_LINUX */
->>>    static bool
->>> @@ -541,6 +555,10 @@ host_memory_backend_class_init(ObjectClass *oc,
->>> void *data)
->>>            host_memory_backend_get_reserve,
->>> host_memory_backend_set_reserve);
->>>        object_class_property_set_description(oc, "reserve",
->>>            "Reserve swap space (or huge pages) if applicable");
->>> +    object_class_property_add_bool(oc, "private",
->>> +        host_memory_backend_get_private,
->>> host_memory_backend_set_private);
->>> +    object_class_property_set_description(oc, "private",
->>> +        "Use KVM gmem private memory");
->>>    #endif /* CONFIG_LINUX */
->>>        /*
->>>         * Do not delete/rename option. This option must be considered
->>> stable
->>> diff --git a/include/sysemu/hostmem.h b/include/sysemu/hostmem.h
->>> index 39326f1d4f9c..d88970395618 100644
->>> --- a/include/sysemu/hostmem.h
->>> +++ b/include/sysemu/hostmem.h
->>> @@ -65,7 +65,7 @@ struct HostMemoryBackend {
->>>        /* protected */
->>>        uint64_t size;
->>>        bool merge, dump, use_canonical_path;
->>> -    bool prealloc, is_mapped, share, reserve;
->>> +    bool prealloc, is_mapped, share, reserve, private;
->>>        uint32_t prealloc_threads;
->>>        ThreadContext *prealloc_context;
->>>        DECLARE_BITMAP(host_nodes, MAX_NODES + 1);
->>> diff --git a/qapi/qom.json b/qapi/qom.json
->>> index 7f92ea43e8e1..e0b2044e3d20 100644
->>> --- a/qapi/qom.json
->>> +++ b/qapi/qom.json
->>> @@ -605,6 +605,9 @@
->>>    # @reserve: if true, reserve swap space (or huge pages) if applicable
->>>    #     (default: true) (since 6.1)
->>>    #
->>> +# @private: if true, use KVM gmem private memory
->>> +#           (default: false) (since 8.1)
->>> +#
->>
->> But that's not what any of this does.
->>
->> This patch only adds a property and doesn't even explain what it intends
->> to achieve with that.
->>
->> How will it be used from a user? What will it affect internally? What
->> will it modify in regards of the memory backend?
-> 
-> How it will be used is in the next patch, patch 09.
-> 
-> for kvm_x86_sw_protected_vm type VM, it will allocate private gmem with
-> KVM ioctl if the memory backend has property "private" on.
+On Tue, Jul 11, 2023 at 1:00=E2=80=AFPM Max Chou <max.chou@sifive.com> wrot=
+e:
+>
+> From: Nazar Kazakov <nazar.kazakov@codethink.co.uk>
+>
+> Remove the redundant "vl =3D=3D 0" check which is already included within=
+ the  vstart >=3D vl check, when vl =3D=3D 0.
+>
+> Signed-off-by: Nazar Kazakov <nazar.kazakov@codethink.co.uk>
+> Reviewed-by: Weiwei Li <liweiwei@iscas.ac.cn>
+> Signed-off-by: Max Chou <max.chou@sifive.com>
 
-It feels wired up the wrong way.
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
 
-When creating/initializing the memory backend, we should also take care 
-of allocating the gmem_fd, for example, by doing some gmem allocation 
-callback, ideally *internally* creating the RAM memory region / RAMBlock.
+Alistair
 
-And we should fail if that is impossible (gmem does not apply to the VM) 
-or creating the gmem_fd failed for other reason.
-
-Like passing a RAM_GMEM flag to memory_region_init_ram_flags_nomigrate() 
-in ram_backend_memory_alloc(), to then handle it internally, failing if 
-there is an error.
-
--- 
-Cheers,
-
-David / dhildenb
-
+> ---
+>  target/riscv/insn_trans/trans_rvv.c.inc | 31 +------------------------
+>  1 file changed, 1 insertion(+), 30 deletions(-)
+>
+> diff --git a/target/riscv/insn_trans/trans_rvv.c.inc b/target/riscv/insn_=
+trans/trans_rvv.c.inc
+> index 4a8e62a8bef..7e194aae34a 100644
+> --- a/target/riscv/insn_trans/trans_rvv.c.inc
+> +++ b/target/riscv/insn_trans/trans_rvv.c.inc
+> @@ -617,7 +617,6 @@ static bool ldst_us_trans(uint32_t vd, uint32_t rs1, =
+uint32_t data,
+>      TCGv_i32 desc;
+>
+>      TCGLabel *over =3D gen_new_label();
+> -    tcg_gen_brcondi_tl(TCG_COND_EQ, cpu_vl, 0, over);
+>      tcg_gen_brcond_tl(TCG_COND_GEU, cpu_vstart, cpu_vl, over);
+>
+>      dest =3D tcg_temp_new_ptr();
+> @@ -786,7 +785,6 @@ static bool ldst_stride_trans(uint32_t vd, uint32_t r=
+s1, uint32_t rs2,
+>      TCGv_i32 desc;
+>
+>      TCGLabel *over =3D gen_new_label();
+> -    tcg_gen_brcondi_tl(TCG_COND_EQ, cpu_vl, 0, over);
+>      tcg_gen_brcond_tl(TCG_COND_GEU, cpu_vstart, cpu_vl, over);
+>
+>      dest =3D tcg_temp_new_ptr();
+> @@ -893,7 +891,6 @@ static bool ldst_index_trans(uint32_t vd, uint32_t rs=
+1, uint32_t vs2,
+>      TCGv_i32 desc;
+>
+>      TCGLabel *over =3D gen_new_label();
+> -    tcg_gen_brcondi_tl(TCG_COND_EQ, cpu_vl, 0, over);
+>      tcg_gen_brcond_tl(TCG_COND_GEU, cpu_vstart, cpu_vl, over);
+>
+>      dest =3D tcg_temp_new_ptr();
+> @@ -1034,7 +1031,6 @@ static bool ldff_trans(uint32_t vd, uint32_t rs1, u=
+int32_t data,
+>      TCGv_i32 desc;
+>
+>      TCGLabel *over =3D gen_new_label();
+> -    tcg_gen_brcondi_tl(TCG_COND_EQ, cpu_vl, 0, over);
+>      tcg_gen_brcond_tl(TCG_COND_GEU, cpu_vstart, cpu_vl, over);
+>
+>      dest =3D tcg_temp_new_ptr();
+> @@ -1191,7 +1187,6 @@ do_opivv_gvec(DisasContext *s, arg_rmrr *a, GVecGen=
+3Fn *gvec_fn,
+>          return false;
+>      }
+>
+> -    tcg_gen_brcondi_tl(TCG_COND_EQ, cpu_vl, 0, over);
+>      tcg_gen_brcond_tl(TCG_COND_GEU, cpu_vstart, cpu_vl, over);
+>
+>      if (a->vm && s->vl_eq_vlmax && !(s->vta && s->lmul < 0)) {
+> @@ -1241,7 +1236,6 @@ static bool opivx_trans(uint32_t vd, uint32_t rs1, =
+uint32_t vs2, uint32_t vm,
+>      uint32_t data =3D 0;
+>
+>      TCGLabel *over =3D gen_new_label();
+> -    tcg_gen_brcondi_tl(TCG_COND_EQ, cpu_vl, 0, over);
+>      tcg_gen_brcond_tl(TCG_COND_GEU, cpu_vstart, cpu_vl, over);
+>
+>      dest =3D tcg_temp_new_ptr();
+> @@ -1405,7 +1399,6 @@ static bool opivi_trans(uint32_t vd, uint32_t imm, =
+uint32_t vs2, uint32_t vm,
+>      uint32_t data =3D 0;
+>
+>      TCGLabel *over =3D gen_new_label();
+> -    tcg_gen_brcondi_tl(TCG_COND_EQ, cpu_vl, 0, over);
+>      tcg_gen_brcond_tl(TCG_COND_GEU, cpu_vstart, cpu_vl, over);
+>
+>      dest =3D tcg_temp_new_ptr();
+> @@ -1492,7 +1485,6 @@ static bool do_opivv_widen(DisasContext *s, arg_rmr=
+r *a,
+>      if (checkfn(s, a)) {
+>          uint32_t data =3D 0;
+>          TCGLabel *over =3D gen_new_label();
+> -        tcg_gen_brcondi_tl(TCG_COND_EQ, cpu_vl, 0, over);
+>          tcg_gen_brcond_tl(TCG_COND_GEU, cpu_vstart, cpu_vl, over);
+>
+>          data =3D FIELD_DP32(data, VDATA, VM, a->vm);
+> @@ -1575,7 +1567,6 @@ static bool do_opiwv_widen(DisasContext *s, arg_rmr=
+r *a,
+>      if (opiwv_widen_check(s, a)) {
+>          uint32_t data =3D 0;
+>          TCGLabel *over =3D gen_new_label();
+> -        tcg_gen_brcondi_tl(TCG_COND_EQ, cpu_vl, 0, over);
+>          tcg_gen_brcond_tl(TCG_COND_GEU, cpu_vstart, cpu_vl, over);
+>
+>          data =3D FIELD_DP32(data, VDATA, VM, a->vm);
+> @@ -1648,7 +1639,6 @@ static bool opivv_trans(uint32_t vd, uint32_t vs1, =
+uint32_t vs2, uint32_t vm,
+>  {
+>      uint32_t data =3D 0;
+>      TCGLabel *over =3D gen_new_label();
+> -    tcg_gen_brcondi_tl(TCG_COND_EQ, cpu_vl, 0, over);
+>      tcg_gen_brcond_tl(TCG_COND_GEU, cpu_vstart, cpu_vl, over);
+>
+>      data =3D FIELD_DP32(data, VDATA, VM, vm);
+> @@ -1842,7 +1832,6 @@ static bool trans_##NAME(DisasContext *s, arg_rmrr =
+*a)             \
+>              gen_helper_##NAME##_w,                                 \
+>          };                                                         \
+>          TCGLabel *over =3D gen_new_label();                          \
+> -        tcg_gen_brcondi_tl(TCG_COND_EQ, cpu_vl, 0, over);          \
+>          tcg_gen_brcond_tl(TCG_COND_GEU, cpu_vstart, cpu_vl, over); \
+>                                                                     \
+>          data =3D FIELD_DP32(data, VDATA, VM, a->vm);                 \
+> @@ -2054,7 +2043,6 @@ static bool trans_vmv_v_v(DisasContext *s, arg_vmv_=
+v_v *a)
+>                  gen_helper_vmv_v_v_w, gen_helper_vmv_v_v_d,
+>              };
+>              TCGLabel *over =3D gen_new_label();
+> -            tcg_gen_brcondi_tl(TCG_COND_EQ, cpu_vl, 0, over);
+>              tcg_gen_brcond_tl(TCG_COND_GEU, cpu_vstart, cpu_vl, over);
+>
+>              tcg_gen_gvec_2_ptr(vreg_ofs(s, a->rd), vreg_ofs(s, a->rs1),
+> @@ -2078,7 +2066,6 @@ static bool trans_vmv_v_x(DisasContext *s, arg_vmv_=
+v_x *a)
+>          vext_check_ss(s, a->rd, 0, 1)) {
+>          TCGv s1;
+>          TCGLabel *over =3D gen_new_label();
+> -        tcg_gen_brcondi_tl(TCG_COND_EQ, cpu_vl, 0, over);
+>          tcg_gen_brcond_tl(TCG_COND_GEU, cpu_vstart, cpu_vl, over);
+>
+>          s1 =3D get_gpr(s, a->rs1, EXT_SIGN);
+> @@ -2140,7 +2127,6 @@ static bool trans_vmv_v_i(DisasContext *s, arg_vmv_=
+v_i *a)
+>                  gen_helper_vmv_v_x_w, gen_helper_vmv_v_x_d,
+>              };
+>              TCGLabel *over =3D gen_new_label();
+> -            tcg_gen_brcondi_tl(TCG_COND_EQ, cpu_vl, 0, over);
+>              tcg_gen_brcond_tl(TCG_COND_GEU, cpu_vstart, cpu_vl, over);
+>
+>              s1 =3D tcg_constant_i64(simm);
+> @@ -2288,7 +2274,6 @@ static bool trans_##NAME(DisasContext *s, arg_rmrr =
+*a)             \
+>          };                                                         \
+>          TCGLabel *over =3D gen_new_label();                          \
+>          gen_set_rm(s, RISCV_FRM_DYN);                              \
+> -        tcg_gen_brcondi_tl(TCG_COND_EQ, cpu_vl, 0, over);          \
+>          tcg_gen_brcond_tl(TCG_COND_GEU, cpu_vstart, cpu_vl, over); \
+>                                                                     \
+>          data =3D FIELD_DP32(data, VDATA, VM, a->vm);                 \
+> @@ -2323,7 +2308,6 @@ static bool opfvf_trans(uint32_t vd, uint32_t rs1, =
+uint32_t vs2,
+>      TCGv_i64 t1;
+>
+>      TCGLabel *over =3D gen_new_label();
+> -    tcg_gen_brcondi_tl(TCG_COND_EQ, cpu_vl, 0, over);
+>      tcg_gen_brcond_tl(TCG_COND_GEU, cpu_vstart, cpu_vl, over);
+>
+>      dest =3D tcg_temp_new_ptr();
+> @@ -2408,7 +2392,6 @@ static bool trans_##NAME(DisasContext *s, arg_rmrr =
+*a)           \
+>          };                                                       \
+>          TCGLabel *over =3D gen_new_label();                        \
+>          gen_set_rm(s, RISCV_FRM_DYN);                            \
+> -        tcg_gen_brcondi_tl(TCG_COND_EQ, cpu_vl, 0, over);        \
+>          tcg_gen_brcond_tl(TCG_COND_GEU, cpu_vstart, cpu_vl, over);\
+>                                                                   \
+>          data =3D FIELD_DP32(data, VDATA, VM, a->vm);               \
+> @@ -2483,7 +2466,6 @@ static bool trans_##NAME(DisasContext *s, arg_rmrr =
+*a)             \
+>          };                                                         \
+>          TCGLabel *over =3D gen_new_label();                          \
+>          gen_set_rm(s, RISCV_FRM_DYN);                              \
+> -        tcg_gen_brcondi_tl(TCG_COND_EQ, cpu_vl, 0, over);          \
+>          tcg_gen_brcond_tl(TCG_COND_GEU, cpu_vstart, cpu_vl, over); \
+>                                                                     \
+>          data =3D FIELD_DP32(data, VDATA, VM, a->vm);                 \
+> @@ -2601,7 +2583,6 @@ static bool do_opfv(DisasContext *s, arg_rmr *a,
+>          uint32_t data =3D 0;
+>          TCGLabel *over =3D gen_new_label();
+>          gen_set_rm_chkfrm(s, rm);
+> -        tcg_gen_brcondi_tl(TCG_COND_EQ, cpu_vl, 0, over);
+>          tcg_gen_brcond_tl(TCG_COND_GEU, cpu_vstart, cpu_vl, over);
+>
+>          data =3D FIELD_DP32(data, VDATA, VM, a->vm);
+> @@ -2713,7 +2694,6 @@ static bool trans_vfmv_v_f(DisasContext *s, arg_vfm=
+v_v_f *a)
+>                  gen_helper_vmv_v_x_d,
+>              };
+>              TCGLabel *over =3D gen_new_label();
+> -            tcg_gen_brcondi_tl(TCG_COND_EQ, cpu_vl, 0, over);
+>              tcg_gen_brcond_tl(TCG_COND_GEU, cpu_vstart, cpu_vl, over);
+>
+>              t1 =3D tcg_temp_new_i64();
+> @@ -2792,7 +2772,6 @@ static bool trans_##NAME(DisasContext *s, arg_rmr *=
+a)              \
+>          };                                                         \
+>          TCGLabel *over =3D gen_new_label();                          \
+>          gen_set_rm_chkfrm(s, FRM);                                 \
+> -        tcg_gen_brcondi_tl(TCG_COND_EQ, cpu_vl, 0, over);          \
+>          tcg_gen_brcond_tl(TCG_COND_GEU, cpu_vstart, cpu_vl, over); \
+>                                                                     \
+>          data =3D FIELD_DP32(data, VDATA, VM, a->vm);                 \
+> @@ -2844,7 +2823,6 @@ static bool trans_##NAME(DisasContext *s, arg_rmr *=
+a)              \
+>          };                                                         \
+>          TCGLabel *over =3D gen_new_label();                          \
+>          gen_set_rm(s, RISCV_FRM_DYN);                              \
+> -        tcg_gen_brcondi_tl(TCG_COND_EQ, cpu_vl, 0, over);          \
+>          tcg_gen_brcond_tl(TCG_COND_GEU, cpu_vstart, cpu_vl, over); \
+>                                                                     \
+>          data =3D FIELD_DP32(data, VDATA, VM, a->vm);                 \
+> @@ -2912,7 +2890,6 @@ static bool trans_##NAME(DisasContext *s, arg_rmr *=
+a)              \
+>          };                                                         \
+>          TCGLabel *over =3D gen_new_label();                          \
+>          gen_set_rm_chkfrm(s, FRM);                                 \
+> -        tcg_gen_brcondi_tl(TCG_COND_EQ, cpu_vl, 0, over);          \
+>          tcg_gen_brcond_tl(TCG_COND_GEU, cpu_vstart, cpu_vl, over); \
+>                                                                     \
+>          data =3D FIELD_DP32(data, VDATA, VM, a->vm);                 \
+> @@ -2962,7 +2939,6 @@ static bool trans_##NAME(DisasContext *s, arg_rmr *=
+a)              \
+>          };                                                         \
+>          TCGLabel *over =3D gen_new_label();                          \
+>          gen_set_rm_chkfrm(s, FRM);                                 \
+> -        tcg_gen_brcondi_tl(TCG_COND_EQ, cpu_vl, 0, over);          \
+>          tcg_gen_brcond_tl(TCG_COND_GEU, cpu_vstart, cpu_vl, over); \
+>                                                                     \
+>          data =3D FIELD_DP32(data, VDATA, VM, a->vm);                 \
+> @@ -3053,7 +3029,6 @@ static bool trans_##NAME(DisasContext *s, arg_r *a)=
+                \
+>          uint32_t data =3D 0;                                         \
+>          gen_helper_gvec_4_ptr *fn =3D gen_helper_##NAME;             \
+>          TCGLabel *over =3D gen_new_label();                          \
+> -        tcg_gen_brcondi_tl(TCG_COND_EQ, cpu_vl, 0, over);          \
+>          tcg_gen_brcond_tl(TCG_COND_GEU, cpu_vstart, cpu_vl, over); \
+>                                                                     \
+>          data =3D FIELD_DP32(data, VDATA, LMUL, s->lmul);             \
+> @@ -3224,7 +3199,6 @@ static bool trans_vid_v(DisasContext *s, arg_vid_v =
+*a)
+>          require_vm(a->vm, a->rd)) {
+>          uint32_t data =3D 0;
+>          TCGLabel *over =3D gen_new_label();
+> -        tcg_gen_brcondi_tl(TCG_COND_EQ, cpu_vl, 0, over);
+>          tcg_gen_brcond_tl(TCG_COND_GEU, cpu_vstart, cpu_vl, over);
+>
+>          data =3D FIELD_DP32(data, VDATA, VM, a->vm);
+> @@ -3411,7 +3385,6 @@ static bool trans_vmv_s_x(DisasContext *s, arg_vmv_=
+s_x *a)
+>          TCGv s1;
+>          TCGLabel *over =3D gen_new_label();
+>
+> -        tcg_gen_brcondi_tl(TCG_COND_EQ, cpu_vl, 0, over);
+>          tcg_gen_brcond_tl(TCG_COND_GEU, cpu_vstart, cpu_vl, over);
+>
+>          t1 =3D tcg_temp_new_i64();
+> @@ -3468,8 +3441,7 @@ static bool trans_vfmv_s_f(DisasContext *s, arg_vfm=
+v_s_f *a)
+>          TCGv_i64 t1;
+>          TCGLabel *over =3D gen_new_label();
+>
+> -        /* if vl =3D=3D 0 or vstart >=3D vl, skip vector register write =
+back */
+> -        tcg_gen_brcondi_tl(TCG_COND_EQ, cpu_vl, 0, over);
+> +        /* if vstart >=3D vl, skip vector register write back */
+>          tcg_gen_brcond_tl(TCG_COND_GEU, cpu_vstart, cpu_vl, over);
+>
+>          /* NaN-box f[rs1] */
+> @@ -3720,7 +3692,6 @@ static bool int_ext_op(DisasContext *s, arg_rmr *a,=
+ uint8_t seq)
+>      uint32_t data =3D 0;
+>      gen_helper_gvec_3_ptr *fn;
+>      TCGLabel *over =3D gen_new_label();
+> -    tcg_gen_brcondi_tl(TCG_COND_EQ, cpu_vl, 0, over);
+>      tcg_gen_brcond_tl(TCG_COND_GEU, cpu_vstart, cpu_vl, over);
+>
+>      static gen_helper_gvec_3_ptr * const fns[6][4] =3D {
+> --
+> 2.34.1
+>
 
