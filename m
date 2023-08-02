@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68B8F76C732
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DBB076C730
 	for <lists+qemu-devel@lfdr.de>; Wed,  2 Aug 2023 09:42:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qR6TW-0005Xd-Nx; Wed, 02 Aug 2023 03:40:54 -0400
+	id 1qR6TV-0005X2-4c; Wed, 02 Aug 2023 03:40:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qR6TR-0005WC-SR
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qR6TR-0005WB-SK
  for qemu-devel@nongnu.org; Wed, 02 Aug 2023 03:40:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qR6TP-000245-0l
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qR6TP-000241-C9
  for qemu-devel@nongnu.org; Wed, 02 Aug 2023 03:40:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1690962046;
@@ -22,40 +22,42 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=WHGIBvyI71pEDYrYkMQvIXEfHIvs3P71kefmtbODzU8=;
- b=DWDddkk3qPxRln5fYw16SO0S2ugW4KmTx9flrB1ESlWGTxTWHyB4sN/Ed1YCKWo/K2ewSe
- RRFW6Y64i+Q3SaGnB6QXW9vy2zwZ5prmvBrgZCWW+Y2WC5CTHxYrVwDDfjlZADmXsrV+WT
- Wf0k+Zhr/uSR9aPIR5XlCpCR07USKGU=
+ bh=yr0Dx2kFg+v8eOxf6HeNS5jOdDpS9MMRAQEAlHDvYNM=;
+ b=QfEbyx+5iey27az5MtS2MjeOGMoVHWlkhmhL0JY4n4l1PLEbg7KMexgfh6D31cl8b0tHyP
+ 01KyNE3ObGl+QNwV33yKFa6qdONzg450ZE9pGzQuoQJVYRRVK5AW4vHLbiHQ6Mm6O34TO8
+ HmIFELweQXLmF1SxbIR0o2jnRU8T6xE=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-686-ak5Ssox8MoWOeS2cheIo9g-1; Wed, 02 Aug 2023 03:40:43 -0400
-X-MC-Unique: ak5Ssox8MoWOeS2cheIo9g-1
+ us-mta-621-RcuxCIgIOveix2XWep9HZw-1; Wed, 02 Aug 2023 03:40:43 -0400
+X-MC-Unique: RcuxCIgIOveix2XWep9HZw-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
  [10.11.54.7])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D6E3A803FDF;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D792D81D9EC;
  Wed,  2 Aug 2023 07:40:42 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.193.50])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id AA15F1401C2E;
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id AA2DD1454143;
  Wed,  2 Aug 2023 07:40:42 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 9B80221E6930; Wed,  2 Aug 2023 09:40:41 +0200 (CEST)
+ id 9DEB321E6936; Wed,  2 Aug 2023 09:40:41 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org,
- =?UTF-8?q?Hyman=20Huang=28=E9=BB=84=E5=8B=87=29?= <yong.huang@smartx.com>
-Subject: [PULL 2/3] qapi: Craft the dirty-limit capability comment
-Date: Wed,  2 Aug 2023 09:40:40 +0200
-Message-ID: <20230802074041.418954-3-armbru@redhat.com>
+ =?UTF-8?q?Hyman=20Huang=28=E9=BB=84=E5=8B=87=29?= <yong.huang@smartx.com>,
+ Peter Xu <peterx@redhat.com>
+Subject: [PULL 3/3] MAINTAINERS: Add section "Migration dirty limit and dirty
+ page rate"
+Date: Wed,  2 Aug 2023 09:40:41 +0200
+Message-ID: <20230802074041.418954-4-armbru@redhat.com>
 In-Reply-To: <20230802074041.418954-1-armbru@redhat.com>
 References: <20230802074041.418954-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -82,38 +84,46 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Hyman Huang(黄勇) <yong.huang@smartx.com>
 
+I've built interests in dirty limit and dirty page rate
+features and also have been working on projects related
+to this subsystem.
+
+Add a section to the MAINTAINERS file for migration
+dirty limit and dirty page rate.
+
+Add myself as a maintainer for this subsystem so that I
+can help to improve the dirty limit algorithm and review
+the patches about dirty page rate.
+
 Signed-off-by: Hyman Huang(黄勇) <yong.huang@smartx.com>
-Message-ID: <169073570563.19893.2928364761104733482-2@git.sr.ht>
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
+Acked-by: Peter Xu <peterx@redhat.com>
+Message-ID: <169073570563.19893.2928364761104733482-3@git.sr.ht>
+Acked-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- qapi/migration.json | 13 +++++--------
- 1 file changed, 5 insertions(+), 8 deletions(-)
+ MAINTAINERS | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/qapi/migration.json b/qapi/migration.json
-index dffa60fd91..8843e74b59 100644
---- a/qapi/migration.json
-+++ b/qapi/migration.json
-@@ -519,14 +519,11 @@
- #     are present.  'return-path' capability must be enabled to use
- #     it.  (since 8.1)
- #
--# @dirty-limit: If enabled, migration will use the dirty-limit
--#     algorithim to throttle down guest instead of auto-converge
--#     algorithim. Throttle algorithim only works when vCPU's dirtyrate
--#     greater than 'vcpu-dirty-limit', read processes in guest os
--#     aren't penalized any more, so this algorithim can improve
--#     performance of vCPU during live migration. This is an optional
--#     performance feature and should not affect the correctness of the
--#     existing auto-converge algorithim.  (Since 8.1)
-+# @dirty-limit: If enabled, migration will throttle vCPUs as needed to
-+#     keep their dirty page rate within @vcpu-dirty-limit.  This can
-+#     improve responsiveness of large guests during live migration,
-+#     and can result in more stable read performance.  Requires KVM
-+#     with accelerator property "dirty-ring-size" set.  (Since 8.1)
- #
- # Features:
- #
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 12e59b6b27..6111b6b4d9 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3209,6 +3209,15 @@ F: qapi/migration.json
+ F: tests/migration/
+ F: util/userfaultfd.c
+ 
++Migration dirty limit and dirty page rate
++M: Hyman Huang <yong.huang@smartx.com>
++S: Maintained
++F: softmmu/dirtylimit.c
++F: include/sysemu/dirtylimit.h
++F: migration/dirtyrate.c
++F: migration/dirtyrate.h
++F: include/sysemu/dirtyrate.h
++
+ D-Bus
+ M: Marc-André Lureau <marcandre.lureau@redhat.com>
+ S: Maintained
 -- 
 2.41.0
 
