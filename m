@@ -2,74 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DE6B76C839
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Aug 2023 10:16:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 136EE76C83B
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Aug 2023 10:17:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qR729-0001HW-PY; Wed, 02 Aug 2023 04:16:41 -0400
+	id 1qR72A-0001Lm-CQ; Wed, 02 Aug 2023 04:16:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qR726-0000xv-W9
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@gmail.com>)
+ id 1qR727-0000zy-2L
  for qemu-devel@nongnu.org; Wed, 02 Aug 2023 04:16:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qR725-0006XI-0s
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@gmail.com>)
+ id 1qR725-0006XK-1H
  for qemu-devel@nongnu.org; Wed, 02 Aug 2023 04:16:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690964195;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=rKKG8Hjl0G8JZSyEDbTleDCllGmaKVn7mYPvBwuzKgs=;
- b=Dj1cDM5h+08hHwuILwhV/wtLZ0ll9KGwVtpQqIYFUeJnYyN9LJjnb2HUZ2cOQ31/gq4+Rw
- BKX9VXz1mdCTEMits61ZE+EfoTm559OLGxejGWc9JQF2RROy9cRdgD/pcg2wXneS1CcGpt
- VAvWmOL+s8xgB5AiGCgHdE2Mn538Omk=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-696-7W5qzLw6MUetb3vBF8S-RQ-1; Wed, 02 Aug 2023 04:16:32 -0400
-X-MC-Unique: 7W5qzLw6MUetb3vBF8S-RQ-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E345686D01D;
- Wed,  2 Aug 2023 08:16:31 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.125])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id DC08D1121325;
- Wed,  2 Aug 2023 08:16:30 +0000 (UTC)
-Date: Wed, 2 Aug 2023 09:16:28 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Helge Deller <deller@gmx.de>
-Cc: qemu-devel@nongnu.org, Laurent Vivier <laurent@vivier.eu>,
- Peter Maydell <peter.maydell@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>, qemu-arm@nongnu.org
-Subject: Re: [PATCH v2 1/3] linux-user: Fix openat() emulation to correctly
- detect accesses to /proc
-Message-ID: <ZMoQ3N2VShyR73fR@redhat.com>
-References: <20230801230842.414421-1-deller@gmx.de>
- <20230801230842.414421-2-deller@gmx.de>
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1bbd03cb7c1so41769225ad.3
+ for <qemu-devel@nongnu.org>; Wed, 02 Aug 2023 01:16:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1690964195; x=1691568995;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=+Jr7yZBKyIpdAKujHGVloZ3C6r8NRdtLFLWY29dPTWQ=;
+ b=F1mcnGQCQa5yVFXex9t8ilgzXzh4XpsTHjgL34ExlWLLixRFnIeWIm8i7QwxUNFJq5
+ a40e7xe4aXT9SV8vcadxCqwhY6D5Nggkx492pTjvNPb+VMMft77ZlXr4xX/hGNDC9eBm
+ /d3Qr5A1uTbJ2STOy6T/KfzUVR8oAJTlb6egjVp9qbLKlUb3svqlaAQl0cEk51K+VoFG
+ V819xSt7+qtNdKcujLgPGFOS5oTnxPN9gRGuDQ+5FULf6A8JTlZ2YmyveGY7rM3MrPN9
+ B2AmvA4FvmjkhyigY2qb/I5RMLqfrl00hCWYrgaCWfP5CvlPmcWceKm6GJyAVNKI/Tt+
+ sJHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1690964195; x=1691568995;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=+Jr7yZBKyIpdAKujHGVloZ3C6r8NRdtLFLWY29dPTWQ=;
+ b=ZFSl7HH25mFdiFTm2Uej7GD7A97ksRaDvD3uoKw4lY6U5w6VT5n00jYMUZKKtP4DEW
+ dFC3KvTTcaabzzawwG0MzJ6r2lS4I2q00Sb9EGd2ijwKhDEiEJvzjM2oKFjFiO2r6nnf
+ HPTzjGdYcLQ7cNgQdtJiKQ5TVCmFCFk8MITVAbu0qiGUsJq3wN6II8aXLQYivhkJPLmp
+ 54nRBZ32ljNLE3LdLe3PdlkZV3ZhtOBTdqtkJrBU+gMMKPEq3JaEwBJSbgr7kD3Qd9Ni
+ iu/4B/ZHtp1PZM+XW/jCz9ucfUUL4HY4W2u1weQUQIKhMh52e+fs+2X7c8gZrvm1uosT
+ S49w==
+X-Gm-Message-State: ABy/qLbAGbaattx1KyQI+4ZRh15Jv2swfyTyew+N6SwpdJnbeaPzad59
+ s5oUbrZulTnGKKqhk88PzAg=
+X-Google-Smtp-Source: APBJJlFUwyLTkQBkIvEYQBU8lKESREAT7FqJRiCsfKuMvET6dQqftQwk+iumReLW2XPzxCjFYfozWA==
+X-Received: by 2002:a17:90a:6848:b0:268:96e:31e1 with SMTP id
+ e8-20020a17090a684800b00268096e31e1mr10829521pjm.49.1690964195033; 
+ Wed, 02 Aug 2023 01:16:35 -0700 (PDT)
+Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
+ ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
+ by smtp.gmail.com with ESMTPSA id
+ iw3-20020a170903044300b001b9dadf8bd2sm11776722plb.190.2023.08.02.01.16.33
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 02 Aug 2023 01:16:34 -0700 (PDT)
+Message-ID: <d205f5a6-c7ec-c8a2-74f6-901dac1774e4@gmail.com>
+Date: Wed, 2 Aug 2023 17:16:31 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230801230842.414421-2-deller@gmx.de>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] contrib/plugins: add meson build file
+Content-Language: en-US
+To: Anton Kochkov <anton.kochkov@proton.me>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Alexandre Iooss <erdnaxe@crans.org>, Mahmoud Mandour <ma.mandourr@gmail.com>
+References: <20230628162451.147419-1-anton.kochkov@proton.me>
+ <20230628162451.147419-2-anton.kochkov@proton.me>
+From: Akihiko Odaki <akihiko.odaki@gmail.com>
+In-Reply-To: <20230628162451.147419-2-anton.kochkov@proton.me>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=akihiko.odaki@gmail.com; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -83,46 +93,82 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 02, 2023 at 01:08:40AM +0200, Helge Deller wrote:
-> In qemu we catch accesses to files like /proc/cpuinfo or /proc/net/route
-> and return to the guest contents which would be visible on a real system
-> (instead what the host would show).
+Thanks for letting me know this on GitLab.
+
+On 2023/06/29 1:26, Anton Kochkov wrote:
+> Add crossplatform Meson file to build TCG plugins since
+> the Makefile makes wrong assumptions about it being used only
+> on Linux. Tested on Linux and macOS.
 > 
-> This patch fixes a bug, where for example the accesses
->     cat /proc////cpuinfo
-> or
->     cd /proc && cat cpuinfo
-> will not be recognized by qemu and where qemu will wrongly show
-> the contents of the host's /proc/cpuinfo file.
-> 
-> Signed-off-by: Helge Deller <deller@gmx.de>
-> 
-> --
-> v3:
-> - use g_autofree on returned value from realpath
-> 
-> v2:
-> - use g_autofree instead of pathname on stack
->   Daniel P. Berrangé requested to not put buffers on stack.
->   Using g_autofree keeps code much cleaner than using
->   extended semantics of realpath(), unless I can use g_autofree
->   on malloced area from realpath().
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1710
+> Signed-off-by: Anton Kochkov <anton.kochkov@proton.me>
 > ---
->  linux-user/syscall.c | 13 ++++++++++++-
->  1 file changed, 12 insertions(+), 1 deletion(-)
+>   contrib/plugins/meson.build       | 31 +++++++++++++++++++++++++++++++
+>   contrib/plugins/meson_options.txt |  1 +
+>   2 files changed, 32 insertions(+)
+>   create mode 100644 contrib/plugins/meson.build
+>   create mode 100644 contrib/plugins/meson_options.txt
+> 
+> diff --git a/contrib/plugins/meson.build b/contrib/plugins/meson.build
+> new file mode 100644
+> index 0000000000..72c4167461
+> --- /dev/null
+> +++ b/contrib/plugins/meson.build
+> @@ -0,0 +1,31 @@
+> +project('qemu-plugins', 'c', meson_version: '>=0.50.0')
+> +
+> +qemu_src = get_option('qemu_path')
+> +if qemu_src == ''
+> +  qemu_src = '../..'
+> +endif
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+The default value should be provided in meson_options.txt.
 
+> +
+> +qemu_include = qemu_src + '/include/qemu'
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+I think the following is more idiomatic:
+qemu_include = qemu_src / 'include/qemu'
 
+Regards,
+Akihiko Odaki
+
+> +incdir = include_directories(qemu_include)
+> +
+> +plugins = [
+> +  'execlog',
+> +  'hotblocks',
+> +  'hotpages',
+> +  'howvec',
+> +  'lockstep',
+> +  'hwprofile',
+> +  'cache',
+> +  'drcov',
+> +]
+> +
+> +th = dependency('threads', required: true)
+> +glib = dependency('glib-2.0', required: true)
+> +
+> +foreach p: plugins
+> +  library(p, p + '.c',
+> +    include_directories: incdir,
+> +    dependencies: [th, glib],
+> +    override_options: ['b_lundef=false']
+> +  )
+> +endforeach
+> diff --git a/contrib/plugins/meson_options.txt b/contrib/plugins/meson_options.txt
+> new file mode 100644
+> index 0000000000..2d76cda496
+> --- /dev/null
+> +++ b/contrib/plugins/meson_options.txt
+> @@ -0,0 +1 @@
+> +option('qemu_path', type : 'string', value : '', description : 'Full path to the QEMU sources to build plugins for')
+> --
+> 2.41.0
+> 
+> 
+> 
 
