@@ -2,78 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EA8576D185
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A4A376D183
 	for <lists+qemu-devel@lfdr.de>; Wed,  2 Aug 2023 17:15:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRDYq-00042J-8e; Wed, 02 Aug 2023 11:14:52 -0400
+	id 1qRDYz-0004Sv-CM; Wed, 02 Aug 2023 11:15:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qRDYm-0003yN-3S
- for qemu-devel@nongnu.org; Wed, 02 Aug 2023 11:14:48 -0400
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ id 1qRDYv-0004K8-Ol
+ for qemu-devel@nongnu.org; Wed, 02 Aug 2023 11:14:59 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qRDYk-0002dU-DJ
- for qemu-devel@nongnu.org; Wed, 02 Aug 2023 11:14:47 -0400
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-686f25d045cso4814958b3a.0
- for <qemu-devel@nongnu.org>; Wed, 02 Aug 2023 08:14:46 -0700 (PDT)
+ id 1qRDYu-0002ek-5X
+ for qemu-devel@nongnu.org; Wed, 02 Aug 2023 11:14:57 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-68706d67ed9so4442845b3a.2
+ for <qemu-devel@nongnu.org>; Wed, 02 Aug 2023 08:14:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690989285; x=1691594085;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=linaro.org; s=google; t=1690989295; x=1691594095;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=kGaoQ8WcrcEdpC3FWMnLqFA0oYu2Ng04akJN4jkrEvk=;
- b=jQo1y5XFAaTeHxzptbXZyqmtNe1ch5wtpoHqdfBa+RZL33FtsCLmdSJtQrwx/tdoAY
- 12RumCL0ssFHpXL9ho3HqVUudSL0oetfrTgZdqKi+QmRFeW0STlImc6z6+9KrQGv5m4o
- Z9EEZeja2w6E3FYLflXb/04nB4g9med0QndpyBK2zwwo+eDt0b3agxbG8l8ziymfGhO5
- vY2IzB12bkO3YPkrQwT0UnzppBWM0lxWSGjP7/yDp7hO+M3Wvc7RaAWlPmy+EEMIfEHi
- VvWkbtttmqQqVeSjJCtDOlOp1e3F4FVYFcPENWtsODf1Qfbi0NFZB6rOADIjf0Niz0QH
- +fZQ==
+ bh=yku5/UH3J78smNTKsX1sCZg3Glu9jchN05Op9s5aYbI=;
+ b=xd6uWrweb/2kTcE6zc2T4XJU2PZF22TMVHe2NKzi+Y13z8W3offf75+xw4vFBmSznc
+ QSEuHepWrEwL0WlUreKb+WitF9OWtrVA+bG53dW+WGU1NKS8BUYloBb+/1RY1ohR9n4n
+ bwqC7sIGSh+SjEF5B4Of0D9DtiT6/uvuSnEwrAJ6cmcC793j8jKfznvzNCMg9L7Morlh
+ WBPNjYf7Jy7+FEoMNwEfMlxwh8/cmX4pALaF4jpQJ8eu5JfvgLIFqd3U7ij8V/RFHE7a
+ sBjVsiMN9FPSDsjs/zjF9JLSh5lrGSPuAfibCh3VdxOUUC9TrIpPi+l8xPwwk7/5PiZJ
+ 4dOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690989285; x=1691594085;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20221208; t=1690989295; x=1691594095;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=kGaoQ8WcrcEdpC3FWMnLqFA0oYu2Ng04akJN4jkrEvk=;
- b=OFwPal8Lw1LtUE2Y5l/aAl8vcYY4OIT7T7ZopyqQysfD1bvMV0GwnERaX/JM/2G7mn
- I8thTBTkVn7u7rZa+jjO751YVQ1XEAiscIH3qhZfHiSEUDRupWnZAjaRUAdx7E8/WLbK
- 6PqZY+Qugtu4LiegKkvCK6+0N97vDYP5SF61lH936vq5wMFDILv1D7bPHXI0VeWKNxky
- 69bmtFOZwJx3vMo3ygeAVoAE6p4HqOnnR93EQxpqaLMcqKbu718ktp7Im1DD83V3qwZS
- iJrq+3nfPcB+m+JZLqHXjuNqSev7GdDG0I1Jpo4yrdOWlIpFcYVWSAg2v+CO1roaW3WC
- V+2g==
-X-Gm-Message-State: ABy/qLa+OMTk2J5twq9ab8nR0m0XSOYfeiPNe2imJnQnvudRKg0OCisV
- sulrBmEGJgcKDZBWgQkXS/2hig==
-X-Google-Smtp-Source: APBJJlEXco7V1LFMaxtvxxio01r+otxlD0U1FkExHREG3p5YbYRCb/EGJRdZ+YGB8I3pell8zOUZFQ==
-X-Received: by 2002:a05:6a00:2d23:b0:66d:514c:cb33 with SMTP id
- fa35-20020a056a002d2300b0066d514ccb33mr18456125pfb.6.1690989285091; 
- Wed, 02 Aug 2023 08:14:45 -0700 (PDT)
+ bh=yku5/UH3J78smNTKsX1sCZg3Glu9jchN05Op9s5aYbI=;
+ b=cCVz5bIcu2EU7gv6Kx/gmMdcVxL1MWCt8oDmZhXkUo5EYV0+0JXKPl2153qEN7CcxE
+ NGLaKGpcmzq60L0M3lcWf8iKtFfvGGkNXTYTTuJPWIXHnRM7VxqAM98TzzLlj0QaiR5D
+ oi0SppP75chSz8taQDEvB+286APhQX3xysdyaGIxKFCgBUiZVjHwsaqF5U2ZDliPCwWg
+ f8RLIid7163BS8SAvwNfQMWMmhsdDkyr9Fu/rtMVAeodxPmRnTxpftwxO4N5upaRSRPG
+ Kccmii6g2+bVs10KjaRQww5c8dnEXK8hxc/5Xos2vuuHoGL2hZpEioxwHmQGYURf1ErZ
+ mtlQ==
+X-Gm-Message-State: ABy/qLZGMG6Q470p71ONR608VtzhPLC7s3m6uswnw6IDG9i5C7pzd05z
+ Hvg68k6kKgKiRG3zoZ9iYeyf7zDZP7lY7OLhLWY=
+X-Google-Smtp-Source: APBJJlGGlM0kVPpfhRDCAttLT2IQ7gncwyjxBXpkP/5Ir3u1lDoB6as3oWJiTvNSimIgYleVvuXaAA==
+X-Received: by 2002:a05:6a00:1ad3:b0:687:1184:5420 with SMTP id
+ f19-20020a056a001ad300b0068711845420mr17604632pfv.0.1690989295057; 
+ Wed, 02 Aug 2023 08:14:55 -0700 (PDT)
 Received: from ?IPV6:2602:47:d490:6901:b659:bbad:1a22:7ef9?
  ([2602:47:d490:6901:b659:bbad:1a22:7ef9])
  by smtp.gmail.com with ESMTPSA id
- g7-20020aa78187000000b006828ee9fa69sm2478186pfi.206.2023.08.02.08.14.44
+ k12-20020aa790cc000000b00682c1db7551sm9048593pfk.49.2023.08.02.08.14.54
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 02 Aug 2023 08:14:44 -0700 (PDT)
-Message-ID: <fa9791b4-0a5b-5e74-28a8-7cb31309036b@linaro.org>
-Date: Wed, 2 Aug 2023 08:14:42 -0700
+ Wed, 02 Aug 2023 08:14:54 -0700 (PDT)
+Message-ID: <04862d4b-d998-e557-d740-3ae863eb97c3@linaro.org>
+Date: Wed, 2 Aug 2023 08:14:52 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PULL 00/10] Misc fixes for 2023-08-01
+Subject: Re: [PULL 0/3] QAPI patches patches for 2023-08-02
 Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, qemu-s390x@nongnu.org
-References: <20230801215421.60133-1-philmd@linaro.org>
+To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
+References: <20230802074041.418954-1-armbru@redhat.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230801215421.60133-1-philmd@linaro.org>
+In-Reply-To: <20230802074041.418954-1-armbru@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -96,27 +94,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/1/23 14:54, Philippe Mathieu-Daudé wrote:
-> The following changes since commit 802341823f1720511dd5cf53ae40285f7978c61b:
+On 8/2/23 00:40, Markus Armbruster wrote:
+> The following changes since commit 38a6de80b917b2a822cff0e38d83563ab401c890:
 > 
->    Merge tag 'pull-tcg-20230731' ofhttps://gitlab.com/rth7680/qemu  into staging (2023-07-31 14:02:51 -0700)
+>    Merge tag 'pull-xen-20230801' ofhttps://xenbits.xen.org/git-http/people/aperard/qemu-dm  into staging (2023-08-01 07:27:31 -0700)
 > 
 > are available in the Git repository at:
 > 
->    https://github.com/philmd/qemu.git  tags/misc-fixes-20230801
+>    https://repo.or.cz/qemu/armbru.git  tags/pull-qapi-2023-08-02
 > 
-> for you to fetch changes up to 8caaae7319a5f7ca449900c0e6bfcaed78fa3ae2:
+> for you to fetch changes up to 2b3edd95186dc505f21d823119cdd0dfb23b3ee0:
 > 
->    target/m68k: Fix semihost lseek offset computation (2023-08-01 23:52:23 +0200)
+>    MAINTAINERS: Add section "Migration dirty limit and dirty page rate" (2023-08-02 09:33:38 +0200)
 > 
 > ----------------------------------------------------------------
-> Misc patches queue
+> QAPI patches patches for 2023-08-02
 > 
-> xen: Fix issues reported by fuzzer / Coverity
-> misc: Fix some typos in documentation and comments
-> ui/dbus: Build fixes for Clang/win32/!opengl
-> linux-user: Semihosting fixes on m68k/nios2
-> tests/migration: Disable stack protector when linking without stdlib
+> ----------------------------------------------------------------
+> The patches affect only documentation.  Generated code does not change.
 
 Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
 
