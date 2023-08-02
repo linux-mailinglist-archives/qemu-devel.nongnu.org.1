@@ -2,42 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2AC176D932
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Aug 2023 23:09:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5338776D946
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Aug 2023 23:13:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRJ5C-00043y-E5; Wed, 02 Aug 2023 17:08:38 -0400
+	id 1qRJ93-0008Or-3b; Wed, 02 Aug 2023 17:12:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jcd@tribudubois.net>)
- id 1qRJ5A-00041w-BI; Wed, 02 Aug 2023 17:08:36 -0400
-Received: from relay9-d.mail.gandi.net ([2001:4b98:dc4:8::229])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jcd@tribudubois.net>)
- id 1qRJ58-0007PM-2C; Wed, 02 Aug 2023 17:08:36 -0400
-Received: by mail.gandi.net (Postfix) with ESMTPSA id AD5AAFF803;
- Wed,  2 Aug 2023 21:08:31 +0000 (UTC)
-From: Jean-Christophe Dubois <jcd@tribudubois.net>
-To: qemu-arm@nongnu.org
-Cc: Jean-Christophe Dubois <jcd@tribudubois.net>,
-	qemu-devel@nongnu.org
-Subject: [PATCH v3 5/5] Add i.MX7 SRC device implementation
-Date: Wed,  2 Aug 2023 23:08:08 +0200
-Message-Id: <0f53f1ec92eebc4cfa7acd6b170a9d1f6ef754b1.1691010283.git.jcd@tribudubois.net>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <cover.1691010283.git.jcd@tribudubois.net>
-References: <cover.1691010283.git.jcd@tribudubois.net>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qRJ8v-0008OT-Qc
+ for qemu-devel@nongnu.org; Wed, 02 Aug 2023 17:12:30 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qRJ8t-00017P-DD
+ for qemu-devel@nongnu.org; Wed, 02 Aug 2023 17:12:29 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-3fe2bc2702cso3250495e9.1
+ for <qemu-devel@nongnu.org>; Wed, 02 Aug 2023 14:12:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1691010745; x=1691615545;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=+IEn78ekGxFk1VW1GXfwQ8nYIpU1d5CTL8bBZiz8rxs=;
+ b=QvC5D9+05UM6oF6FOKZ1sJ7jDR1eM0hdqYZq/1hUPMDNplwRBwRZRyrj0VlN+SY2UP
+ VKPVBVSFbVWxDc5vXApvtwifbzOqR8QRKaqySI5QfT3uqGMsaDo2WuVvkWIAnoq7iDry
+ 77ZJtsZMF77BHgqJlVh8pifN/5+ihdExP7HvGhXA2AVeMAUx0Qyh0Olr44ty9HpaPSSe
+ 4AcCb1iRXGUDDnRfZUeu2njhKzZgS5/SyVBSmmFFFtLlhQHZ6kZHeuVjgR1/2A70OkeG
+ qRp+FR7aPTgxnvDeMqrpfUktdPY6i264a2jMFxMR3VEuF0CScHItYHkoerYH1M8VrYhm
+ 9R4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1691010745; x=1691615545;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=+IEn78ekGxFk1VW1GXfwQ8nYIpU1d5CTL8bBZiz8rxs=;
+ b=HuEQ4YEcIxp7nFDnMEhl/nNwU22wJ985qljfBH0l3/f3yUZOTuvog+2wD+zRqrO3UT
+ ZekEQQTEBD7LyfnlYQPAh+baP3nphkNJLlWqupdkhLkyoctpFKI2e02OvcWDd+Is43Ex
+ 9WdNq0cHm95jdZMWrSZFv82ZzSz7QSSxAIA4LMaNUoj/IG963snpLI2fD1F6o2mpyA+Z
+ kmEmzChOwiW4rVO9mifJu/Hztgye15INgNX3IY6Xx4/PilHO/Zud6Bp+1JldKz9azV3E
+ 2lvKqFJZAm38y37vmbjfoD5mDXA0QlQPwrtpRR12MA0isR1af30WwiErlqjtdodq2Hyt
+ Up5A==
+X-Gm-Message-State: ABy/qLYmG5czwryt6+6kzwx+xkUCPYqNrwPauajzMPRZUwCpHGJOwpkQ
+ pkcd+FJC0wL+w+OOD8EaJQUASA==
+X-Google-Smtp-Source: APBJJlGRpNNwrNc9OTu+ciO653HYxiP0KjqN2MWRcL6tlNvZe5midDyroLTgEaDWk7RU67CdRQzKeg==
+X-Received: by 2002:a7b:c3d2:0:b0:3fa:934c:8356 with SMTP id
+ t18-20020a7bc3d2000000b003fa934c8356mr5670674wmj.10.1691010745407; 
+ Wed, 02 Aug 2023 14:12:25 -0700 (PDT)
+Received: from [192.168.69.115] ([176.176.158.229])
+ by smtp.gmail.com with ESMTPSA id
+ m14-20020adffa0e000000b003177e9b2e64sm19779407wrr.90.2023.08.02.14.12.23
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 02 Aug 2023 14:12:24 -0700 (PDT)
+Message-ID: <433babe5-a99b-d46e-dd09-e6649af60383@linaro.org>
+Date: Wed, 2 Aug 2023 23:12:22 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.13.0
+Subject: Re: [PATCH 4/6] hw/i386/intel_iommu: Fix index calculation in
+ vtd_interrupt_remap_msi()
+Content-Language: en-US
+To: Thomas Huth <thuth@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Peter Xu <peterx@redhat.com>
+Cc: Jason Wang <jasowang@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
+ =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>
+References: <20230802135723.178083-1-thuth@redhat.com>
+ <20230802135723.178083-5-thuth@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230802135723.178083-5-thuth@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-GND-Sasl: jcd@tribudubois.net
-Received-SPF: pass client-ip=2001:4b98:dc4:8::229;
- envelope-from=jcd@tribudubois.net; helo=relay9-d.mail.gandi.net
-X-Spam_score_int: -25
-X-Spam_score: -2.6
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_LOW=-0.7,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.102,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -54,460 +98,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The SRC device is normaly used to start the secondary CPU.
+On 2/8/23 15:57, Thomas Huth wrote:
+> The values in "addr" are populated locally in this function in host
+> endian byte order, so we must not swap the index_l field here.
+> 
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
+>   hw/i386/intel_iommu.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 
-When running Linux directly, Qemu is emulating a PSCI interface that UBOOT
-is installing at boot time and therefore the fact that the SRC device is
-unimplemented is hidden as Qemu respond directly to PSCI requets without
-using the SRC device.
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-But if you try to run a more bare metal application (maybe uboot itself),
-then it is not possible to start the secondary CPU as the SRC is an
-unimplemented device.
-
-This patch adds the ability to start the secondary CPU through the SRC
-device so that you can use this feature in bare metal application.
-
-Signed-off-by: Jean-Christophe Dubois <jcd@tribudubois.net>
----
- hw/arm/fsl-imx7.c          |   8 +-
- hw/misc/imx7_src.c         | 276 +++++++++++++++++++++++++++++++++++++
- hw/misc/meson.build        |   1 +
- hw/misc/trace-events       |   4 +
- include/hw/arm/fsl-imx7.h  |   2 +
- include/hw/misc/imx7_src.h |  66 +++++++++
- 6 files changed, 356 insertions(+), 1 deletion(-)
- create mode 100644 hw/misc/imx7_src.c
- create mode 100644 include/hw/misc/imx7_src.h
-
-diff --git a/hw/arm/fsl-imx7.c b/hw/arm/fsl-imx7.c
-index 7ca105fd24..e7fe4f808e 100644
---- a/hw/arm/fsl-imx7.c
-+++ b/hw/arm/fsl-imx7.c
-@@ -82,6 +82,11 @@ static void fsl_imx7_init(Object *obj)
-      */
-     object_initialize_child(obj, "gpcv2", &s->gpcv2, TYPE_IMX_GPCV2);
- 
-+    /*
-+     * SRC
-+     */
-+    object_initialize_child(obj, "src", &s->src, TYPE_IMX7_SRC);
-+
-     /*
-      * ECSPIs
-      */
-@@ -490,7 +495,8 @@ static void fsl_imx7_realize(DeviceState *dev, Error **errp)
-     /*
-      * SRC
-      */
--    create_unimplemented_device("src", FSL_IMX7_SRC_ADDR, FSL_IMX7_SRC_SIZE);
-+    sysbus_realize(SYS_BUS_DEVICE(&s->src), &error_abort);
-+    sysbus_mmio_map(SYS_BUS_DEVICE(&s->src), 0, FSL_IMX7_SRC_ADDR);
- 
-     /*
-      * Watchdogs
-diff --git a/hw/misc/imx7_src.c b/hw/misc/imx7_src.c
-new file mode 100644
-index 0000000000..983251e86f
---- /dev/null
-+++ b/hw/misc/imx7_src.c
-@@ -0,0 +1,276 @@
-+/*
-+ * IMX7 System Reset Controller
-+ *
-+ * Copyright (c) 2023 Jean-Christophe Dubois <jcd@tribudubois.net>
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or later.
-+ * See the COPYING file in the top-level directory.
-+ *
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "hw/misc/imx7_src.h"
-+#include "migration/vmstate.h"
-+#include "qemu/bitops.h"
-+#include "qemu/log.h"
-+#include "qemu/main-loop.h"
-+#include "qemu/module.h"
-+#include "target/arm/arm-powerctl.h"
-+#include "hw/core/cpu.h"
-+#include "hw/registerfields.h"
-+
-+#include "trace.h"
-+
-+static const char *imx7_src_reg_name(uint32_t reg)
-+{
-+    static char unknown[20];
-+
-+    switch (reg) {
-+    case SRC_SCR:
-+        return "SRC_SCR";
-+    case SRC_A7RCR0:
-+        return "SRC_A7RCR0";
-+    case SRC_A7RCR1:
-+        return "SRC_A7RCR1";
-+    case SRC_M4RCR:
-+        return "SRC_M4RCR";
-+    case SRC_ERCR:
-+        return "SRC_ERCR";
-+    case SRC_HSICPHY_RCR:
-+        return "SRC_HSICPHY_RCR";
-+    case SRC_USBOPHY1_RCR:
-+        return "SRC_USBOPHY1_RCR";
-+    case SRC_USBOPHY2_RCR:
-+        return "SRC_USBOPHY2_RCR";
-+    case SRC_PCIEPHY_RCR:
-+        return "SRC_PCIEPHY_RCR";
-+    case SRC_SBMR1:
-+        return "SRC_SBMR1";
-+    case SRC_SRSR:
-+        return "SRC_SRSR";
-+    case SRC_SISR:
-+        return "SRC_SISR";
-+    case SRC_SIMR:
-+        return "SRC_SIMR";
-+    case SRC_SBMR2:
-+        return "SRC_SBMR2";
-+    case SRC_GPR1:
-+        return "SRC_GPR1";
-+    case SRC_GPR2:
-+        return "SRC_GPR2";
-+    case SRC_GPR3:
-+        return "SRC_GPR3";
-+    case SRC_GPR4:
-+        return "SRC_GPR4";
-+    case SRC_GPR5:
-+        return "SRC_GPR5";
-+    case SRC_GPR6:
-+        return "SRC_GPR6";
-+    case SRC_GPR7:
-+        return "SRC_GPR7";
-+    case SRC_GPR8:
-+        return "SRC_GPR8";
-+    case SRC_GPR9:
-+        return "SRC_GPR9";
-+    case SRC_GPR10:
-+        return "SRC_GPR10";
-+    default:
-+        sprintf(unknown, "%u ?", reg);
-+        return unknown;
-+    }
-+}
-+
-+static const VMStateDescription vmstate_imx7_src = {
-+    .name = TYPE_IMX7_SRC,
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .fields = (VMStateField[]) {
-+        VMSTATE_UINT32_ARRAY(regs, IMX7SRCState, SRC_MAX),
-+        VMSTATE_END_OF_LIST()
-+    },
-+};
-+
-+static void imx7_src_reset(DeviceState *dev)
-+{
-+    IMX7SRCState *s = IMX7_SRC(dev);
-+
-+    memset(s->regs, 0, sizeof(s->regs));
-+
-+    /* Set reset values */
-+    s->regs[SRC_SCR] = 0xA0;
-+    s->regs[SRC_SRSR] = 0x1;
-+    s->regs[SRC_SIMR] = 0x1F;
-+}
-+
-+static uint64_t imx7_src_read(void *opaque, hwaddr offset, unsigned size)
-+{
-+    uint32_t value = 0;
-+    IMX7SRCState *s = (IMX7SRCState *)opaque;
-+    uint32_t index = offset >> 2;
-+
-+    if (index < SRC_MAX) {
-+        value = s->regs[index];
-+    } else {
-+        qemu_log_mask(LOG_GUEST_ERROR, "[%s]%s: Bad register at offset 0x%"
-+                      HWADDR_PRIx "\n", TYPE_IMX7_SRC, __func__, offset);
-+    }
-+
-+    trace_imx7_src_read(imx7_src_reg_name(index), value);
-+
-+    return value;
-+}
-+
-+
-+/*
-+ * The reset is asynchronous so we need to defer clearing the reset
-+ * bit until the work is completed.
-+ */
-+
-+struct SRCSCRResetInfo {
-+    IMX7SRCState *s;
-+    uint32_t reset_bit;
-+};
-+
-+static void imx7_clear_reset_bit(CPUState *cpu, run_on_cpu_data data)
-+{
-+    struct SRCSCRResetInfo *ri = data.host_ptr;
-+    IMX7SRCState *s = ri->s;
-+
-+    assert(qemu_mutex_iothread_locked());
-+
-+    s->regs[SRC_A7RCR0] = deposit32(s->regs[SRC_A7RCR0], ri->reset_bit, 1, 0);
-+
-+    trace_imx7_src_write(imx7_src_reg_name(SRC_A7RCR0), s->regs[SRC_A7RCR0]);
-+
-+    g_free(ri);
-+}
-+
-+static void imx7_defer_clear_reset_bit(uint32_t cpuid,
-+                                       IMX7SRCState *s,
-+                                       uint32_t reset_shift)
-+{
-+    struct SRCSCRResetInfo *ri;
-+    CPUState *cpu = arm_get_cpu_by_id(cpuid);
-+
-+    if (!cpu) {
-+        return;
-+    }
-+
-+    ri = g_new(struct SRCSCRResetInfo, 1);
-+    ri->s = s;
-+    ri->reset_bit = reset_shift;
-+
-+    async_run_on_cpu(cpu, imx7_clear_reset_bit, RUN_ON_CPU_HOST_PTR(ri));
-+}
-+
-+
-+static void imx7_src_write(void *opaque, hwaddr offset, uint64_t value,
-+                           unsigned size)
-+{
-+    IMX7SRCState *s = (IMX7SRCState *)opaque;
-+    uint32_t index = offset >> 2;
-+    long unsigned int change_mask;
-+    uint32_t current_value = value;
-+
-+    if (index >= SRC_MAX) {
-+        qemu_log_mask(LOG_GUEST_ERROR, "[%s]%s: Bad register at offset 0x%"
-+                      HWADDR_PRIx "\n", TYPE_IMX7_SRC, __func__, offset);
-+        return;
-+    }
-+
-+    trace_imx7_src_write(imx7_src_reg_name(SRC_A7RCR0), s->regs[SRC_A7RCR0]);
-+
-+    change_mask = s->regs[index] ^ (uint32_t)current_value;
-+
-+    switch (index) {
-+    case SRC_A7RCR0:
-+        if (FIELD_EX32(change_mask, CORE0, RST)) {
-+            arm_reset_cpu(0);
-+            imx7_defer_clear_reset_bit(0, s, R_CORE0_RST_SHIFT);
-+        }
-+        if (FIELD_EX32(change_mask, CORE1, RST)) {
-+            arm_reset_cpu(1);
-+            imx7_defer_clear_reset_bit(1, s, R_CORE1_RST_SHIFT);
-+        }
-+        s->regs[index] = current_value;
-+        break;
-+    case SRC_A7RCR1:
-+        /*
-+         * On real hardware when the system reset controller starts a
-+         * secondary CPU it runs through some boot ROM code which reads
-+         * the SRC_GPRX registers controlling the start address and branches
-+         * to it.
-+         * Here we are taking a short cut and branching directly to the
-+         * requested address (we don't want to run the boot ROM code inside
-+         * QEMU)
-+         */
-+        if (FIELD_EX32(change_mask, CORE1, ENABLE)) {
-+            if (FIELD_EX32(current_value, CORE1, ENABLE)) {
-+                /* CORE 1 is brought up */
-+                arm_set_cpu_on(1, s->regs[SRC_GPR3], s->regs[SRC_GPR4],
-+                               3, false);
-+            } else {
-+                /* CORE 1 is shut down */
-+                arm_set_cpu_off(1);
-+            }
-+            /* We clear the reset bits as the processor changed state */
-+            imx7_defer_clear_reset_bit(1, s, R_CORE1_RST_SHIFT);
-+            clear_bit(R_CORE1_RST_SHIFT, &change_mask);
-+        }
-+        s->regs[index] = current_value;
-+        break;
-+    default:
-+        s->regs[index] = current_value;
-+        break;
-+    }
-+}
-+
-+static const struct MemoryRegionOps imx7_src_ops = {
-+    .read = imx7_src_read,
-+    .write = imx7_src_write,
-+    .endianness = DEVICE_NATIVE_ENDIAN,
-+    .valid = {
-+        /*
-+         * Our device would not work correctly if the guest was doing
-+         * unaligned access. This might not be a limitation on the real
-+         * device but in practice there is no reason for a guest to access
-+         * this device unaligned.
-+         */
-+        .min_access_size = 4,
-+        .max_access_size = 4,
-+        .unaligned = false,
-+    },
-+};
-+
-+static void imx7_src_realize(DeviceState *dev, Error **errp)
-+{
-+    IMX7SRCState *s = IMX7_SRC(dev);
-+
-+    memory_region_init_io(&s->iomem, OBJECT(dev), &imx7_src_ops, s,
-+                          TYPE_IMX7_SRC, 0x1000);
-+    sysbus_init_mmio(SYS_BUS_DEVICE(dev), &s->iomem);
-+}
-+
-+static void imx7_src_class_init(ObjectClass *klass, void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(klass);
-+
-+    dc->realize = imx7_src_realize;
-+    dc->reset = imx7_src_reset;
-+    dc->vmsd = &vmstate_imx7_src;
-+    dc->desc = "i.MX6 System Reset Controller";
-+}
-+
-+static const TypeInfo imx7_src_info = {
-+    .name          = TYPE_IMX7_SRC,
-+    .parent        = TYPE_SYS_BUS_DEVICE,
-+    .instance_size = sizeof(IMX7SRCState),
-+    .class_init    = imx7_src_class_init,
-+};
-+
-+static void imx7_src_register_types(void)
-+{
-+    type_register_static(&imx7_src_info);
-+}
-+
-+type_init(imx7_src_register_types)
-diff --git a/hw/misc/meson.build b/hw/misc/meson.build
-index 892f8b91c5..d9a370c1de 100644
---- a/hw/misc/meson.build
-+++ b/hw/misc/meson.build
-@@ -60,6 +60,7 @@ system_ss.add(when: 'CONFIG_IMX', if_true: files(
-   'imx6_src.c',
-   'imx6ul_ccm.c',
-   'imx7_ccm.c',
-+  'imx7_src.c',
-   'imx7_gpr.c',
-   'imx7_snvs.c',
-   'imx_ccm.c',
-diff --git a/hw/misc/trace-events b/hw/misc/trace-events
-index 4d1a0e17af..e8b2be14c0 100644
---- a/hw/misc/trace-events
-+++ b/hw/misc/trace-events
-@@ -199,6 +199,10 @@ ccm_clock_freq(uint32_t clock, uint32_t freq) "(Clock = %d) = %d"
- ccm_read_reg(const char *reg_name, uint32_t value) "reg[%s] <= 0x%" PRIx32
- ccm_write_reg(const char *reg_name, uint32_t value) "reg[%s] => 0x%" PRIx32
- 
-+# imx7_src.c
-+imx7_src_read(const char *reg_name, uint32_t value) "reg[%s] => 0x%" PRIx32
-+imx7_src_write(const char *reg_name, uint32_t value) "reg[%s] <= 0x%" PRIx32
-+
- # iotkit-sysinfo.c
- iotkit_sysinfo_read(uint64_t offset, uint64_t data, unsigned size) "IoTKit SysInfo read: offset 0x%" PRIx64 " data 0x%" PRIx64 " size %u"
- iotkit_sysinfo_write(uint64_t offset, uint64_t data, unsigned size) "IoTKit SysInfo write: offset 0x%" PRIx64 " data 0x%" PRIx64 " size %u"
-diff --git a/include/hw/arm/fsl-imx7.h b/include/hw/arm/fsl-imx7.h
-index 629c385987..1f11f39750 100644
---- a/include/hw/arm/fsl-imx7.h
-+++ b/include/hw/arm/fsl-imx7.h
-@@ -25,6 +25,7 @@
- #include "hw/misc/imx7_ccm.h"
- #include "hw/misc/imx7_snvs.h"
- #include "hw/misc/imx7_gpr.h"
-+#include "hw/misc/imx7_src.h"
- #include "hw/watchdog/wdt_imx2.h"
- #include "hw/gpio/imx_gpio.h"
- #include "hw/char/imx_serial.h"
-@@ -74,6 +75,7 @@ struct FslIMX7State {
-     IMX7CCMState       ccm;
-     IMX7AnalogState    analog;
-     IMX7SNVSState      snvs;
-+    IMX7SRCState       src;
-     IMXGPCv2State      gpcv2;
-     IMXSPIState        spi[FSL_IMX7_NUM_ECSPIS];
-     IMXI2CState        i2c[FSL_IMX7_NUM_I2CS];
-diff --git a/include/hw/misc/imx7_src.h b/include/hw/misc/imx7_src.h
-new file mode 100644
-index 0000000000..b4b97dcb1c
---- /dev/null
-+++ b/include/hw/misc/imx7_src.h
-@@ -0,0 +1,66 @@
-+/*
-+ * IMX7 System Reset Controller
-+ *
-+ * Copyright (C) 2023 Jean-Christophe Dubois <jcd@tribudubois.net>
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or later.
-+ * See the COPYING file in the top-level directory.
-+ */
-+
-+#ifndef IMX7_SRC_H
-+#define IMX7_SRC_H
-+
-+#include "hw/sysbus.h"
-+#include "qemu/bitops.h"
-+#include "qom/object.h"
-+
-+#define SRC_SCR 0
-+#define SRC_A7RCR0 1
-+#define SRC_A7RCR1 2
-+#define SRC_M4RCR 3
-+#define SRC_ERCR 5
-+#define SRC_HSICPHY_RCR 7
-+#define SRC_USBOPHY1_RCR 8
-+#define SRC_USBOPHY2_RCR 9
-+#define SRC_MPIPHY_RCR 10
-+#define SRC_PCIEPHY_RCR 11
-+#define SRC_SBMR1 22
-+#define SRC_SRSR 23
-+#define SRC_SISR 26
-+#define SRC_SIMR 27
-+#define SRC_SBMR2 28
-+#define SRC_GPR1 29
-+#define SRC_GPR2 30
-+#define SRC_GPR3 31
-+#define SRC_GPR4 32
-+#define SRC_GPR5 33
-+#define SRC_GPR6 34
-+#define SRC_GPR7 35
-+#define SRC_GPR8 36
-+#define SRC_GPR9 37
-+#define SRC_GPR10 38
-+#define SRC_MAX 39
-+
-+/* SRC_A7SCR1 */
-+#define R_CORE1_ENABLE_SHIFT     1
-+#define R_CORE1_ENABLE_LENGTH    1
-+/* SRC_A7SCR0 */
-+#define R_CORE1_RST_SHIFT        5
-+#define R_CORE1_RST_LENGTH       1
-+#define R_CORE0_RST_SHIFT        4
-+#define R_CORE0_RST_LENGTH       1
-+
-+#define TYPE_IMX7_SRC "imx7.src"
-+OBJECT_DECLARE_SIMPLE_TYPE(IMX7SRCState, IMX7_SRC)
-+
-+struct IMX7SRCState {
-+    /* <private> */
-+    SysBusDevice parent_obj;
-+
-+    /* <public> */
-+    MemoryRegion iomem;
-+
-+    uint32_t regs[SRC_MAX];
-+};
-+
-+#endif /* IMX7_SRC_H */
--- 
-2.34.1
 
 
