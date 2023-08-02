@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC49276C8B7
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Aug 2023 10:51:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B59676C8B2
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Aug 2023 10:50:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qR7Yr-0004uq-38; Wed, 02 Aug 2023 04:50:29 -0400
+	id 1qR7Yx-0005EQ-EQ; Wed, 02 Aug 2023 04:50:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qR7Yj-0004kc-74
- for qemu-devel@nongnu.org; Wed, 02 Aug 2023 04:50:22 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ id 1qR7Yu-00057E-JP
+ for qemu-devel@nongnu.org; Wed, 02 Aug 2023 04:50:32 -0400
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qR7Yg-0000dG-C3
- for qemu-devel@nongnu.org; Wed, 02 Aug 2023 04:50:20 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-686b9920362so4714452b3a.1
- for <qemu-devel@nongnu.org>; Wed, 02 Aug 2023 01:50:17 -0700 (PDT)
+ id 1qR7Yq-0000jS-17
+ for qemu-devel@nongnu.org; Wed, 02 Aug 2023 04:50:31 -0400
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-686b9964ae2so4595411b3a.3
+ for <qemu-devel@nongnu.org>; Wed, 02 Aug 2023 01:50:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1690966217; x=1691571017;
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1690966227; x=1691571027;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3o76KcQlFp/MuUPscQNwseGhYtySE7hW349U50r8SMs=;
- b=n64321uiEYqMxpwq+YPMHlejbTIDDAtsGHUU9HQt/tRzKERlAQH5pAl3jyaN9mBtxo
- NZpbwZr5VzWAk+NOAsFMWztzHWEcqh6omALyQrV/a2PIzPQM6yS5vADVB6tbr7LrPWj8
- gdPuiDzSODq7YCzU/Tzi2aydzbnUKWWidoPGNBx+U5kGC+5aE9NtNB6KUQ9470TCLUan
- vRhdz18glsozpm3n6zS+1lAAM/m9Zc/z7+nDcSmQGSLCvdfHIUSXCwR2WD5gws7GH8KX
- 266iQ6ybkPE9LPUJNNWKRojbPN7oZguGzooZYUYsiwZjmw0CzGSepZFEZAcseNqCwexB
- MQyw==
+ bh=kNR+2DDMQySc8psqEDhnZbBav2KTV36MZCBGyLQQO2o=;
+ b=K3R00I0tgQEZb0otU0GHIAVYlvmecLUiB5W39EKRq4ECqfoqWkNTjCmG4zKtIpZoZh
+ VfsG4KPhxENtsIe86jub6NeeRolk5LB9TLjyihIYhW2P65+56Ba8/TwltgAnhLzyA9P9
+ xGPX7FvX9WUGwemYyrLWJhYPYDCKVkw0qSWaTesj1zHl1Pj4HFb3cgPWnF7Pgwpl5s8K
+ NpyqMiYzhBMrobxSmC6uVYD4aF/1h/joNnykcji0hmsweV4k7Fz+ZeyYelN6HWkAxkC+
+ 9ZegLOJACRjnrPK/TVG0NmwyITi3ttLvQ3relVP1Erynux1YurQ01HCinx6WEZzUfsF5
+ +MtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690966217; x=1691571017;
+ d=1e100.net; s=20221208; t=1690966227; x=1691571027;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3o76KcQlFp/MuUPscQNwseGhYtySE7hW349U50r8SMs=;
- b=CZOerlS8XDN1VD7NW7rViddpCoLCGaMNVdqed/oDDbM0h0ZSgDXY6OAKhZlE335C4E
- FlHWeqlbUwygv7tfRH4OFzkQDN1JU0Dv+OaJrFbUb9VuR/hNrPUhVEL3Y/QwTn4mOsB2
- Sk0nTb9aEPfe3MHun1I4wtNqoqG1LSwML3TZDVg2jY0OpjD9kOy9P2OE0A2XlvR7MqeT
- DaMsr0LFEMs80FKskL4Xx0pzfH+45FIGdsLhVZCHauRu+sqPBuIeslhZVB1kpWKOI1HY
- ed/JF19nCpcWt2ayp5t++jXrZLfXvLpdmjOH7i8SXuLJvdOYeHX9xJWTc0o99ZaaVQpY
- I/Og==
-X-Gm-Message-State: ABy/qLYkBSStCb2QrsLBLCqnpsdGsfbApjJYN6/M4839jWnnSKOMaBYL
- ScSYOTYMtP9D3C/Ul7p+lAkuEw==
-X-Google-Smtp-Source: APBJJlEvPSLRRm2xJjIsvRMcJDpt21CYiEG6/gmSf1umI+nX8s8y9EC2IUL3JXw3sPALcyMOgzSphQ==
-X-Received: by 2002:a05:6a21:7185:b0:137:2f8c:fab0 with SMTP id
- wq5-20020a056a21718500b001372f8cfab0mr14147444pzb.49.1690966217220; 
- Wed, 02 Aug 2023 01:50:17 -0700 (PDT)
+ bh=kNR+2DDMQySc8psqEDhnZbBav2KTV36MZCBGyLQQO2o=;
+ b=YKiUE+RgZYYBTbsH6ANAUgGYiOZkYkeLkPlKBY9JIW9uHxg2e3W6gCSSwoLq4PaEER
+ Im5uLorHEavLrrieRSHFxJW4y/eE3CJ4WUHGer0ued+wfA+aitXZYYkFLmN9/0ekR0K5
+ E29SRHseJQzVJzdnyM+TBkuv+z3E0QmMwG0EwgwEyF1WRfHtdvqijsEAR2Ddu384129H
+ JX8PfF43C07elOxf1J3BJovyvnKBZAvKAiupkPUWf5CbvqWiGMw91GHUp+AfhvIkUf0o
+ DV9E8RzHwbTrvfuFA6X1HBL76FCMyPAX1A6KwJViWax4/EFgDv+ybvZlMtX00GVDR9zv
+ Ed/w==
+X-Gm-Message-State: ABy/qLbVwl6Cyxl5w6wgc8pI/HcJk0uZQs+Bl1L1OpQ1tmPUZ4jC7zSm
+ mH0sjMZba69zMI9LhnMJYiq3Rg==
+X-Google-Smtp-Source: APBJJlFGHdzb68i9hkzSc4thw9evgdTiFF4LBhOLeZ9K59RBAH4Gv68G5UXefQweRnrCHWCvkNy+Sw==
+X-Received: by 2002:a05:6a20:840b:b0:137:514a:9835 with SMTP id
+ c11-20020a056a20840b00b00137514a9835mr18011045pzd.9.1690966226760; 
+ Wed, 02 Aug 2023 01:50:26 -0700 (PDT)
 Received: from alarm.flets-east.jp ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
  by smtp.gmail.com with ESMTPSA id
- j22-20020aa79296000000b00659b8313d08sm10592860pfa.78.2023.08.02.01.50.07
+ j22-20020aa79296000000b00659b8313d08sm10592860pfa.78.2023.08.02.01.50.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 02 Aug 2023 01:50:16 -0700 (PDT)
+ Wed, 02 Aug 2023 01:50:26 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 To: 
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -96,16 +96,16 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  qemu-arm@nongnu.org, qemu-ppc@nongnu.org, qemu-riscv@nongnu.org,
  qemu-s390x@nongnu.org, Anton Kochkov <anton.kochkov@proton.me>,
  Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v2 23/24] plugins: Support C++
-Date: Wed,  2 Aug 2023 17:46:11 +0900
-Message-ID: <20230802084614.23619-24-akihiko.odaki@daynix.com>
+Subject: [PATCH v2 24/24] contrib/plugins: Add cc plugin
+Date: Wed,  2 Aug 2023 17:46:12 +0900
+Message-ID: <20230802084614.23619-25-akihiko.odaki@daynix.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230802084614.23619-1-akihiko.odaki@daynix.com>
 References: <20230802084614.23619-1-akihiko.odaki@daynix.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::435;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x435.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x42c.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -128,33 +128,131 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Make qemu-plugin.h consumable for C++ platform.
+This demonstrates how to write a plugin in C++.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- include/qemu/qemu-plugin.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ docs/devel/tcg-plugins.rst |  8 ++++++++
+ configure                  | 15 ++++++++++++---
+ contrib/plugins/Makefile   |  5 +++++
+ contrib/plugins/cc.cc      | 17 +++++++++++++++++
+ tests/tcg/Makefile.target  |  3 +++
+ 5 files changed, 45 insertions(+), 3 deletions(-)
+ create mode 100644 contrib/plugins/cc.cc
 
-diff --git a/include/qemu/qemu-plugin.h b/include/qemu/qemu-plugin.h
-index 214b12bfd6..8637e3d8cf 100644
---- a/include/qemu/qemu-plugin.h
-+++ b/include/qemu/qemu-plugin.h
-@@ -16,6 +16,8 @@
- #include <stdbool.h>
- #include <stddef.h>
+diff --git a/docs/devel/tcg-plugins.rst b/docs/devel/tcg-plugins.rst
+index c9f8b27590..0a11f8036c 100644
+--- a/docs/devel/tcg-plugins.rst
++++ b/docs/devel/tcg-plugins.rst
+@@ -584,6 +584,14 @@ The plugin has a number of arguments, all of them are optional:
+   configuration arguments implies ``l2=on``.
+   (default: N = 2097152 (2MB), B = 64, A = 16)
  
-+G_BEGIN_DECLS
++- contrib/plugins/cc.cc
 +
- /*
-  * For best performance, build the plugin with -fvisibility=hidden so that
-  * QEMU_PLUGIN_LOCAL is implicit. Then, just mark qemu_plugin_install with
-@@ -723,4 +725,6 @@ qemu_plugin_get_register_files(unsigned int vcpu_index, int *size);
-  */
- int qemu_plugin_read_register(GByteArray *buf, int reg);
++cc plugin demonstrates how to write a plugin in C++. It simply outputs
++"hello, world" to the plugin log::
++
++  $ qemu-system-arm $(QEMU_ARGS) \
++    -plugin ./contrib/plugins/libcc.so -d plugin
++
+ API
+ ---
  
-+G_END_DECLS
+diff --git a/configure b/configure
+index 26ec5e4f54..0065b0dfe0 100755
+--- a/configure
++++ b/configure
+@@ -293,10 +293,18 @@ else
+   cc="${CC-${cross_prefix}gcc}"
+ fi
+ 
+-if test -z "${CXX}${cross_prefix}"; then
+-  cxx="c++"
++if test -n "${CXX+x}"; then
++  cxx="$CXX"
+ else
+-  cxx="${CXX-${cross_prefix}g++}"
++  if test -n "${cross_prefix}"; then
++    cxx="${cross_prefix}g++"
++  else
++    cxx="c++"
++  fi
 +
- #endif /* QEMU_QEMU_PLUGIN_H */
++  if ! has "$cxx"; then
++    cxx=
++  fi
+ fi
+ 
+ # Preferred ObjC compiler:
+@@ -1702,6 +1710,7 @@ echo "MESON=$meson" >> $config_host_mak
+ echo "NINJA=$ninja" >> $config_host_mak
+ echo "PKG_CONFIG=${pkg_config}" >> $config_host_mak
+ echo "CC=$cc" >> $config_host_mak
++echo "CXX=$cxx" >> $config_host_mak
+ echo "EXESUF=$EXESUF" >> $config_host_mak
+ 
+ # use included Linux headers
+diff --git a/contrib/plugins/Makefile b/contrib/plugins/Makefile
+index b2b9db9f51..93d86b3d07 100644
+--- a/contrib/plugins/Makefile
++++ b/contrib/plugins/Makefile
+@@ -21,6 +21,9 @@ NAMES += lockstep
+ NAMES += hwprofile
+ NAMES += cache
+ NAMES += drcov
++ifneq ($(CXX),)
++NAMES += cc
++endif
+ 
+ SONAMES := $(addsuffix .so,$(addprefix lib,$(NAMES)))
+ 
+@@ -31,6 +34,8 @@ CFLAGS += -fPIC -Wall
+ CFLAGS += $(if $(CONFIG_DEBUG_TCG), -ggdb -O0)
+ CFLAGS += -I$(SRC_PATH)/include/qemu
+ 
++CXXFLAGS := $(CFLAGS)
++
+ all: $(SONAMES)
+ 
+ %.o: %.c
+diff --git a/contrib/plugins/cc.cc b/contrib/plugins/cc.cc
+new file mode 100644
+index 0000000000..83a5528db0
+--- /dev/null
++++ b/contrib/plugins/cc.cc
+@@ -0,0 +1,17 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++
++#include <qemu-plugin.h>
++
++extern "C" {
++
++QEMU_PLUGIN_EXPORT int qemu_plugin_version = QEMU_PLUGIN_VERSION;
++
++QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
++                                           const qemu_info_t *info, int argc,
++                                           char **argv)
++{
++    qemu_plugin_outs("hello, world\n");
++    return 0;
++}
++
++};
+diff --git a/tests/tcg/Makefile.target b/tests/tcg/Makefile.target
+index 462289f47c..3d7837d3b8 100644
+--- a/tests/tcg/Makefile.target
++++ b/tests/tcg/Makefile.target
+@@ -149,6 +149,9 @@ PLUGIN_SRC=$(SRC_PATH)/tests/plugin
+ PLUGIN_LIB=../../plugin
+ VPATH+=$(PLUGIN_LIB)
+ PLUGINS=$(patsubst %.c, lib%.so, $(notdir $(wildcard $(PLUGIN_SRC)/*.c)))
++ifneq ($(CXX),)
++PLUGINS+=$(patsubst %.cc, lib%.so, $(notdir $(wildcard $(PLUGIN_SRC)/*.cc)))
++endif
+ 
+ # We need to ensure expand the run-plugin-TEST-with-PLUGIN
+ # pre-requistes manually here as we can't use stems to handle it. We
 -- 
 2.41.0
 
