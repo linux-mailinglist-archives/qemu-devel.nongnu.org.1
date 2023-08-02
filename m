@@ -2,95 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A60E76DB04
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 00:53:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BC3676DB08
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 00:56:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRKic-0004hI-A8; Wed, 02 Aug 2023 18:53:26 -0400
+	id 1qRKkr-0006lp-Ly; Wed, 02 Aug 2023 18:55:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <isaku.yamahata@gmail.com>)
- id 1qRKia-0004eI-HW
- for qemu-devel@nongnu.org; Wed, 02 Aug 2023 18:53:24 -0400
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <isaku.yamahata@gmail.com>)
- id 1qRKiY-0003hv-ML
- for qemu-devel@nongnu.org; Wed, 02 Aug 2023 18:53:24 -0400
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-1bc02bd4eafso3626625ad.1
- for <qemu-devel@nongnu.org>; Wed, 02 Aug 2023 15:53:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1691016801; x=1691621601;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date:from:to
- :cc:subject:date:message-id:reply-to;
- bh=+rWczut5E+c7+k9ca3L6xWg9snmsSn9OBlNNsSEH6Y4=;
- b=MIlrxKBHC0TNDZsfAeLiVDU4zHyn67wCDnYvBy7zfmtLny8BbGZO0y5b/KYbfy5V3J
- XJf+z7EAd7DXeNGHU+MXrr12bAqG+Xu+lKQ2Ker8z53PXOUksp4ZR4QGJG4sPzuHlaT9
- tZr1XaEI+PdtlDnpHwYm5F2jeQdUwXgqm3zSxLJPf0bZzVacUDl7VtWokGgV6/y77VwQ
- 4kQFyIzbf/I49qdHsJlLii2JyBVUrUSrgluivMZqxLXVpIAyoUwNl+P8937emXDVfR1M
- 3edI/npOTpAxvLd2K6zcHWfXSAaEpvoRIovuv1ENJMP/i/QLXkYbUPxlz4b41KV+3FVR
- eHxw==
+ (Exim 4.90_1) (envelope-from <leiyang@redhat.com>)
+ id 1qRKkq-0006lg-7L
+ for qemu-devel@nongnu.org; Wed, 02 Aug 2023 18:55:44 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <leiyang@redhat.com>)
+ id 1qRKko-0004Oo-Cz
+ for qemu-devel@nongnu.org; Wed, 02 Aug 2023 18:55:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1691016940;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=O6bDyJAzi64yzjQteKBSmqGxvVyLdUeoQCUHYBLkYBA=;
+ b=E+GfzmjNnhS9o63bgokHPdef+p4f9tCkU0aYYzmsWhaa7cHSW/jcGTFUAtQ09HvUfsnXca
+ TG9uyWRxXVZrfT+ZusKuKDmwaDWAUWbjEzwpU5P2QgIIgQIcw1hj7BXWAoKUJxjDuQTd+Q
+ Q6qUVFTjj9uj8kL351LeM+OLawuF6Mk=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-45-uw0md-DKNZSEFqAUSFbWyw-1; Wed, 02 Aug 2023 18:55:39 -0400
+X-MC-Unique: uw0md-DKNZSEFqAUSFbWyw-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-522c1b1e7bbso145807a12.1
+ for <qemu-devel@nongnu.org>; Wed, 02 Aug 2023 15:55:39 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691016801; x=1691621601;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=+rWczut5E+c7+k9ca3L6xWg9snmsSn9OBlNNsSEH6Y4=;
- b=VSmrsFcPLB4mNZFQz7n6zTw5ev/jf35FZXaCHkUMGeNkX4y0V++gve9tVm/qJR7es5
- rYRbv/cYESgm86Nld4H5lFOHSjGoWOPislnXT06pA1bdJ6maRTASoCzph6ve9gUpP8Eb
- q/1j3aTFS2meA9Ks0LHgUmkjE/hOKV4dYkSiMbbsMqxo3EZvJv+5KHyc2A9KAMUwHPd7
- X/TAs7Ipcjk+H5hLoYpIiz7VlhcFz8Oly9F8gfYU4jwE4kUfN9NbFt7YY894GVKdwwzP
- Wzk4TuJ8Xw+/7QsBpT78u4L1PzhG6hUXCRkkv+25KMMLEQhlzlVghCVBBK643zZNWd/c
- pNbA==
-X-Gm-Message-State: ABy/qLZ+jeTxxSJYpy8fIs2gG3EdAnY72U4YafzslcNyZF6itJ3wYc+L
- mp8Zp72uWZMPdTiKMxPpHw0=
-X-Google-Smtp-Source: APBJJlFWJWv7Q/ttPBQ+d4tEcYgX+BEoNN8e2Kkay8S7mNyJkvLSzVCdME6KV6v8TRydMaqFNn/MNQ==
-X-Received: by 2002:a17:902:8697:b0:1b5:219a:cbbd with SMTP id
- g23-20020a170902869700b001b5219acbbdmr13697862plo.3.1691016800740; 
- Wed, 02 Aug 2023 15:53:20 -0700 (PDT)
-Received: from localhost ([192.55.55.51]) by smtp.gmail.com with ESMTPSA id
- w5-20020a1709029a8500b001b03cda6389sm12938265plp.10.2023.08.02.15.53.19
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 02 Aug 2023 15:53:20 -0700 (PDT)
-Date: Wed, 2 Aug 2023 15:53:18 -0700
-From: Isaku Yamahata <isaku.yamahata@gmail.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Sean Christopherson <seanjc@google.com>,
- Igor Mammedov <imammedo@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>,
- Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Xu <peterx@redhat.com>, Chao Peng <chao.p.peng@linux.intel.com>,
- Michael Roth <michael.roth@amd.com>, isaku.yamahata@gmail.com,
- qemu-devel@nongnu.org, kvm@vger.kernel.org
-Subject: Re: [RFC PATCH 08/19] HostMem: Add private property to indicate to
- use kvm gmem
-Message-ID: <20230802225318.GE1807130@ls.amr.corp.intel.com>
-References: <20230731162201.271114-1-xiaoyao.li@intel.com>
- <20230731162201.271114-9-xiaoyao.li@intel.com>
- <f8e40f1a-729b-f520-299a-4132e371be61@redhat.com>
- <2addfff0-88bf-59aa-f2f3-8129366a006d@intel.com>
- <a154c33d-b24d-b713-0dc0-027d54f2340f@redhat.com>
+ d=1e100.net; s=20221208; t=1691016938; x=1691621738;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=O6bDyJAzi64yzjQteKBSmqGxvVyLdUeoQCUHYBLkYBA=;
+ b=EMtt5P0J80yfYrPt/8/v9ltpSPuVhw+G9FRKhzWyG1HszL5+Q6K57hkjvsO9l1vMtz
+ fZA9vig05xK9A34vziJhbX8j+2z/X1pLJYfXWegnNEmxv2duUSNQjbsxcmoXZ8CyeN5d
+ vmIQFDNyFSuVFN9lf/esQYLA8rX/Gzrplv4XEZ++OWuVJMgxJimKSmWBkt31iA42PvnM
+ O4y0+JSLZQve2QmT8wJ5qlTgDJZ79de+TFvgTQ9ikRw8VteCzz7Cqut5Zg2Z5FEw03PD
+ Y14nV4v6xASO7S+1EJPB2kAxVpPnx1LsNwPTEGRG0GE9dWgxoFpypUs+18AvCkju/eq5
+ Ef0w==
+X-Gm-Message-State: ABy/qLaBho3NGI7dt3qISRvFVA0aSm6bSB9g4JsMj1io90E5DYoy4fmb
+ zxFfwyC2/W7dOsZkySCvXcUIFXllzdRTwios5ApEPjYjzIANCopKNWBD3jNcdDohcP7TrzZdbgV
+ ir4QWGDfLaGUyaML9d3nSVex6Sn+rhtI=
+X-Received: by 2002:aa7:d3d8:0:b0:522:37fc:71fb with SMTP id
+ o24-20020aa7d3d8000000b0052237fc71fbmr6054215edr.37.1691016938296; 
+ Wed, 02 Aug 2023 15:55:38 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlHgmQKQQhUM4Sph53bRNCEx1SYMT7m8WdMbnU+Mm5hpiHWq0sp9fuvoraopp84YG83EdbHQgFCLe+lUuEalSK8=
+X-Received: by 2002:aa7:d3d8:0:b0:522:37fc:71fb with SMTP id
+ o24-20020aa7d3d8000000b0052237fc71fbmr6054210edr.37.1691016938060; Wed, 02
+ Aug 2023 15:55:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <a154c33d-b24d-b713-0dc0-027d54f2340f@redhat.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=isaku.yamahata@gmail.com; helo=mail-pl1-x62a.google.com
+References: <cover.1690106284.git.yin31149@gmail.com>
+In-Reply-To: <cover.1690106284.git.yin31149@gmail.com>
+From: Lei Yang <leiyang@redhat.com>
+Date: Thu, 3 Aug 2023 06:55:01 +0800
+Message-ID: <CAPpAL=w-vKty0F9j5hTN4i1s_S1KLNU9spn2D+vNZZ2NV1L-6g@mail.gmail.com>
+Subject: Re: [PATCH v3 0/4] Vhost-vdpa Shadow Virtqueue VLAN support
+To: Hawkins Jiawei <yin31149@gmail.com>
+Cc: jasowang@redhat.com, mst@redhat.com, eperezma@redhat.com, 
+ qemu-devel@nongnu.org, 18801353760@163.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=leiyang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -107,125 +95,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 02, 2023 at 04:14:29PM +0200,
-David Hildenbrand <david@redhat.com> wrote:
+QE tested v3 of this series using the test steps provided by Hawkins
+and everything works fine.
 
-> On 02.08.23 10:03, Xiaoyao Li wrote:
-> > On 8/2/2023 1:21 AM, David Hildenbrand wrote:
-> > > On 31.07.23 18:21, Xiaoyao Li wrote:
-> > > > From: Isaku Yamahata <isaku.yamahata@intel.com>
-> > > > 
-> > > > Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
-> > > > Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> > > > ---
-> > > >    backends/hostmem.c       | 18 ++++++++++++++++++
-> > > >    include/sysemu/hostmem.h |  2 +-
-> > > >    qapi/qom.json            |  4 ++++
-> > > >    3 files changed, 23 insertions(+), 1 deletion(-)
-> > > > 
-> > > > diff --git a/backends/hostmem.c b/backends/hostmem.c
-> > > > index 747e7838c031..dbdbb0aafd45 100644
-> > > > --- a/backends/hostmem.c
-> > > > +++ b/backends/hostmem.c
-> > > > @@ -461,6 +461,20 @@ static void
-> > > > host_memory_backend_set_reserve(Object *o, bool value, Error **errp)
-> > > >        }
-> > > >        backend->reserve = value;
-> > > >    }
-> > > > +
-> > > > +static bool host_memory_backend_get_private(Object *o, Error **errp)
-> > > > +{
-> > > > +    HostMemoryBackend *backend = MEMORY_BACKEND(o);
-> > > > +
-> > > > +    return backend->private;
-> > > > +}
-> > > > +
-> > > > +static void host_memory_backend_set_private(Object *o, bool value,
-> > > > Error **errp)
-> > > > +{
-> > > > +    HostMemoryBackend *backend = MEMORY_BACKEND(o);
-> > > > +
-> > > > +    backend->private = value;
-> > > > +}
-> > > >    #endif /* CONFIG_LINUX */
-> > > >    static bool
-> > > > @@ -541,6 +555,10 @@ host_memory_backend_class_init(ObjectClass *oc,
-> > > > void *data)
-> > > >            host_memory_backend_get_reserve,
-> > > > host_memory_backend_set_reserve);
-> > > >        object_class_property_set_description(oc, "reserve",
-> > > >            "Reserve swap space (or huge pages) if applicable");
-> > > > +    object_class_property_add_bool(oc, "private",
-> > > > +        host_memory_backend_get_private,
-> > > > host_memory_backend_set_private);
-> > > > +    object_class_property_set_description(oc, "private",
-> > > > +        "Use KVM gmem private memory");
-> > > >    #endif /* CONFIG_LINUX */
-> > > >        /*
-> > > >         * Do not delete/rename option. This option must be considered
-> > > > stable
-> > > > diff --git a/include/sysemu/hostmem.h b/include/sysemu/hostmem.h
-> > > > index 39326f1d4f9c..d88970395618 100644
-> > > > --- a/include/sysemu/hostmem.h
-> > > > +++ b/include/sysemu/hostmem.h
-> > > > @@ -65,7 +65,7 @@ struct HostMemoryBackend {
-> > > >        /* protected */
-> > > >        uint64_t size;
-> > > >        bool merge, dump, use_canonical_path;
-> > > > -    bool prealloc, is_mapped, share, reserve;
-> > > > +    bool prealloc, is_mapped, share, reserve, private;
-> > > >        uint32_t prealloc_threads;
-> > > >        ThreadContext *prealloc_context;
-> > > >        DECLARE_BITMAP(host_nodes, MAX_NODES + 1);
-> > > > diff --git a/qapi/qom.json b/qapi/qom.json
-> > > > index 7f92ea43e8e1..e0b2044e3d20 100644
-> > > > --- a/qapi/qom.json
-> > > > +++ b/qapi/qom.json
-> > > > @@ -605,6 +605,9 @@
-> > > >    # @reserve: if true, reserve swap space (or huge pages) if applicable
-> > > >    #     (default: true) (since 6.1)
-> > > >    #
-> > > > +# @private: if true, use KVM gmem private memory
-> > > > +#           (default: false) (since 8.1)
-> > > > +#
-> > > 
-> > > But that's not what any of this does.
-> > > 
-> > > This patch only adds a property and doesn't even explain what it intends
-> > > to achieve with that.
-> > > 
-> > > How will it be used from a user? What will it affect internally? What
-> > > will it modify in regards of the memory backend?
-> > 
-> > How it will be used is in the next patch, patch 09.
-> > 
-> > for kvm_x86_sw_protected_vm type VM, it will allocate private gmem with
-> > KVM ioctl if the memory backend has property "private" on.
-> 
-> It feels wired up the wrong way.
-> 
-> When creating/initializing the memory backend, we should also take care of
-> allocating the gmem_fd, for example, by doing some gmem allocation callback,
-> ideally *internally* creating the RAM memory region / RAMBlock.
-> 
-> And we should fail if that is impossible (gmem does not apply to the VM) or
-> creating the gmem_fd failed for other reason.
-> 
-> Like passing a RAM_GMEM flag to memory_region_init_ram_flags_nomigrate() in
-> ram_backend_memory_alloc(), to then handle it internally, failing if there
-> is an error.
+Tested-by: Lei Yang <leiyang@redhat.com>
 
-KVM gmem is tied to VM. not before creating VM. We have to delay of the
-allocation of kvm gmem until VM initialization.
+On Sun, Jul 23, 2023 at 8:10=E2=80=AFPM Hawkins Jiawei <yin31149@gmail.com>=
+ wrote:
+>
+> This series enables shadowed CVQ to intercept VLAN commands
+> through shadowed CVQ, update the virtio NIC device model
+> so qemu send it in a migration, and the restore of that
+> VLAN state in the destination.
+>
+> ChangeLog
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D
+> v3:
+>  - remove the extra "From" line in patch 1
+> "virtio-net: do not reset vlan filtering at set_features"
+>
+> v2: https://lore.kernel.org/all/cover.1690100802.git.yin31149@gmail.com/
+>  - remove the extra line pointed out by Eugenio in patch 3
+> "vdpa: Restore vlan filtering state"
+>
+> v1: https://lore.kernel.org/all/cover.1689690854.git.yin31149@gmail.com/
+>  - based on patch "[PATCH 0/3] Vhost-vdpa Shadow Virtqueue VLAN support"
+> at https://lists.gnu.org/archive/html/qemu-devel/2022-09/msg01016.html
+>  - move `MAX_VLAN` macro to include/hw/virtio/virtio-net.h
+> instead of net/vhost-vdpa.c
+>  - fix conflicts with the master branch
+>
+>
+> TestStep
+> =3D=3D=3D=3D=3D=3D=3D=3D
+> 1. test the migration using vp-vdpa device
+>   - For L0 guest, boot QEMU with two virtio-net-pci net device with
+> `ctrl_vq`, `ctrl_vlan` features on, command line like:
+>       -device virtio-net-pci,disable-legacy=3Don,disable-modern=3Doff,
+> iommu_platform=3Don,mq=3Don,ctrl_vq=3Don,guest_announce=3Doff,
+> indirect_desc=3Doff,queue_reset=3Doff,ctrl_vlan=3Don,...
+>
+>   - For L1 guest, apply the patch series and compile the source code,
+> start QEMU with two vdpa device with svq mode on, enable the `ctrl_vq`,
+> `ctrl_vlan` features on, command line like:
+>       -netdev type=3Dvhost-vdpa,x-svq=3Dtrue,...
+>       -device virtio-net-pci,mq=3Don,guest_announce=3Doff,ctrl_vq=3Don,
+> ctrl_vlan=3Don,...
+>
+>   - For L2 source guest, run the following bash command:
+> ```bash
+> #!/bin/sh
+>
+> for idx in {1..4094}
+> do
+>   ip link add link eth0 name vlan$idx type vlan id $idx
+> done
+> ```
+>
+>   - gdb attaches the L2 dest VM and break at the
+> vhost_vdpa_net_load_single_vlan(), and execute the following
+> gdbscript
+> ```gdbscript
+> ignore 1 4094
+> c
+> ```
+>
+>   - Execute the live migration in L2 source monitor
+>
+>   - Result
+>     * with this series, gdb can hit the breakpoint and continue
+> the executing without triggering any error or warning.
+>
+> Eugenio P=C3=A9rez (1):
+>   virtio-net: do not reset vlan filtering at set_features
+>
+> Hawkins Jiawei (3):
+>   virtio-net: Expose MAX_VLAN
+>   vdpa: Restore vlan filtering state
+>   vdpa: Allow VIRTIO_NET_F_CTRL_VLAN in SVQ
+>
+>  hw/net/virtio-net.c            |  6 +----
+>  include/hw/virtio/virtio-net.h |  6 +++++
+>  net/vhost-vdpa.c               | 49 ++++++++++++++++++++++++++++++++++
+>  3 files changed, 56 insertions(+), 5 deletions(-)
+>
+> --
+> 2.25.1
+>
+>
 
-Hmm, one options is to move gmem_fd from RAMBlock to KVMSlot.  Handle the
-allocation of KVM gmem (issuing KVM gmem ioctl) there. i.e. in
-kvm_set_phys_mem() or kvm_region_add() (or whatever functions of KVM memory
-listener).  Maybe we can drop ram_block_convert_range() and can have KVM
-specific logic instead.
-
-We still need a way for user to specify which guest memory region is subject
-to KVM gmem, though.
--- 
-Isaku Yamahata <isaku.yamahata@gmail.com>
 
