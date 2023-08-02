@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4F3A76C8B5
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Aug 2023 10:51:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE93F76C8A9
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Aug 2023 10:49:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qR7XK-0004cD-QZ; Wed, 02 Aug 2023 04:48:54 -0400
+	id 1qR7XV-0005U2-3d; Wed, 02 Aug 2023 04:49:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qR7XJ-0004SE-1W
- for qemu-devel@nongnu.org; Wed, 02 Aug 2023 04:48:53 -0400
-Received: from mail-oi1-x229.google.com ([2607:f8b0:4864:20::229])
+ id 1qR7XT-0005NO-2u
+ for qemu-devel@nongnu.org; Wed, 02 Aug 2023 04:49:03 -0400
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qR7XH-0006d0-Cp
- for qemu-devel@nongnu.org; Wed, 02 Aug 2023 04:48:52 -0400
-Received: by mail-oi1-x229.google.com with SMTP id
- 5614622812f47-3a751d2e6ecso1084330b6e.0
- for <qemu-devel@nongnu.org>; Wed, 02 Aug 2023 01:48:51 -0700 (PDT)
+ id 1qR7XR-0007BI-3J
+ for qemu-devel@nongnu.org; Wed, 02 Aug 2023 04:49:02 -0400
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-686f1240a22so6002108b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 02 Aug 2023 01:49:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1690966130; x=1691570930;
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1690966140; x=1691570940;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3mXpG7RfRm8JlpAYSZCkqg1BzSErUQp+Pq7CWqY/JwI=;
- b=CrhfxksF1NFb0q2nze9v1c26xeVhGQQ7irYxosnuSWwpGACUwn+ENg9cUk7h5knF2Q
- +reg8hFWf8jzXgTzWoUi7QDnxmx1ktcUWQBBoKGGRuu5dGBUb5/fGVRkkJSTTqMH7yQr
- i/j1JQSY+hAzf9/cks/CVHHdqGyBfvhE9kJNZeHsczMigBf/mrudwbBG3YPmJOLd1VkJ
- PszOFPiqrCdexxBb2lWsu8sUfeVSXSryU/j4PdQ8Y6JFz6VghghuMGwQCliwxK1LJjv+
- 4J5mGX9Aee12hdwLHLOipxjGAUxCiksDVhnbgPkMvAI09N756FiIRGNVDDGohQ2Uoids
- yiLw==
+ bh=KlLyNz2EVMU9S4fs/o4J37H6wtwszDT/+6W4fMi8NHI=;
+ b=I9d6y7L17EfUytj96v5S19LRy/CQ6SU7inX25mzQgjzhAp3moNUahFdWKqDTfyCdyy
+ 43GZoxBHpqNnOIXlM7HwGjkd0OU1vhETOpiODnPgGPH2nkPYJ6T26MvEv6C4RO/vsqNc
+ 5cZnK+USTMsY378w3rI6O9vS83dagBxbUAuE8a2xbEUt1fIZ5lwPtsACFg5d6O1sM/em
+ BswCKAhGOGYnxijAapdXIcH2m9CGemD0JyaXMzL49YY9rlFNrq7FLPO795hpPZ9nKE47
+ IGSkEguuouMLkg7NcrgC621AMvlm6CxrUvM5wChmVk8EKxdW+MswD34au3Vf/j8VSCj4
+ 9kiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690966130; x=1691570930;
+ d=1e100.net; s=20221208; t=1690966140; x=1691570940;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3mXpG7RfRm8JlpAYSZCkqg1BzSErUQp+Pq7CWqY/JwI=;
- b=GZpmpSG1bj66c6gB7s3DXuyRGTASV6eNBFP/FgnzRb4b7RQitptZ8KwpIRxk70z3gS
- wkZH7CXBI7hWBAj9LafbGjN2dTdOHwzdPTcdg0jwnXbsyUqycnhLSLLCTARYawSC4PW/
- 4XwbBGCv0leov7fYpLzhP98+brkEupB9q8WsvWcAdfBmHoD896unjS5uun9LLLxkF1N9
- 2oJSqbzOWxpLEWxLXw4UUosSOFpjn1oq5hJioJ/W+n6WmqNutOenLhquAhxsfkQ/Q9Oy
- yUFzkbAIB4M7Yl8UhIjvWOElc1mISmnAsP9ZxWue07FmWnYn/tu/vK8SrfsnHraqxz1I
- OMGw==
-X-Gm-Message-State: ABy/qLakl8IUrHoGQQ4DGBz0TeOO6d8W2JE9D5Rd6A7P00sI3d+cXpge
- Nf5VypaAvxPcPnm4xk6fdQ+U5w==
-X-Google-Smtp-Source: APBJJlER6reQfJykuZwjPtzbzzona963n6JmU7xtwhUp5XPbBq9g91pdWRQFRo9OIB6cc9JjfzMZDg==
-X-Received: by 2002:aca:f14:0:b0:3a7:8f7:62ee with SMTP id
- 20-20020aca0f14000000b003a708f762eemr12789666oip.12.1690966129957; 
- Wed, 02 Aug 2023 01:48:49 -0700 (PDT)
+ bh=KlLyNz2EVMU9S4fs/o4J37H6wtwszDT/+6W4fMi8NHI=;
+ b=HDqn/meb7NXzPWN+CSnYIxf8pFkMar4mK7+UvaFZfbT1hIpJYVAWXN6hSp+eaPsut+
+ xoCsc4LYSfJZwRlwyqjIWBbxJwFaCQJydhjK9alUUdFXgxIpeExVGtPvdNQYDrVpcIMO
+ nVyz6dHvAPS/FvCg0ps0JE29Jr9MOp6brof9gvRxMFMUqGgBb9WClVsDBaY5MvfcAZaW
+ azskzEk0a+pcx3hBffdkE4ejCxkAnCw7ZumLzFeJuNcImRhMSJ7Cjxr5AHY54KRf7OuV
+ nD+IW2JjvqBDNPgsncXseNPYC5is/pP8tzKpYof9r0NsM49wfTXAz+6y3FgYYs3lyu0b
+ bE/g==
+X-Gm-Message-State: ABy/qLZF7zhSMUMjcpt7e0YQ7ql0STy8TY5nJNY5u4n9zFGAVXedxAgG
+ NmS1ekblBES4aonb88DItt9RGg==
+X-Google-Smtp-Source: APBJJlHA8kBTXnSW5YBX55gXyLrdeEM777duI6lt/h359/3N7WEXi+2k5C8a3eQTg+fSHu3N0eflgA==
+X-Received: by 2002:a05:6a21:3b4a:b0:135:4527:efe4 with SMTP id
+ zy10-20020a056a213b4a00b001354527efe4mr16329600pzb.10.1690966140004; 
+ Wed, 02 Aug 2023 01:49:00 -0700 (PDT)
 Received: from alarm.flets-east.jp ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
  by smtp.gmail.com with ESMTPSA id
- j22-20020aa79296000000b00659b8313d08sm10592860pfa.78.2023.08.02.01.48.40
+ j22-20020aa79296000000b00659b8313d08sm10592860pfa.78.2023.08.02.01.48.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 02 Aug 2023 01:48:49 -0700 (PDT)
+ Wed, 02 Aug 2023 01:48:59 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 To: 
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -96,17 +96,16 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  qemu-arm@nongnu.org, qemu-ppc@nongnu.org, qemu-riscv@nongnu.org,
  qemu-s390x@nongnu.org, Anton Kochkov <anton.kochkov@proton.me>,
  Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v2 14/24] gdbstub: Add members to identify registers to
- GDBFeature
-Date: Wed,  2 Aug 2023 17:46:02 +0900
-Message-ID: <20230802084614.23619-15-akihiko.odaki@daynix.com>
+Subject: [PATCH v2 15/24] target/arm: Fill new members of GDBFeature
+Date: Wed,  2 Aug 2023 17:46:03 +0900
+Message-ID: <20230802084614.23619-16-akihiko.odaki@daynix.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230802084614.23619-1-akihiko.odaki@daynix.com>
 References: <20230802084614.23619-1-akihiko.odaki@daynix.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::229;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-oi1-x229.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::432;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x432.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -129,67 +128,216 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 These members will be used to help plugins to identify registers.
-The added members in instances of GDBFeature dynamically generated by
-CPUs will be filled in later changes.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- include/exec/gdbstub.h  |  2 ++
- scripts/feature_to_c.py | 14 +++++++++++++-
- 2 files changed, 15 insertions(+), 1 deletion(-)
+ target/arm/gdbstub.c   | 46 +++++++++++++++++++++++++++---------------
+ target/arm/gdbstub64.c | 42 +++++++++++++++++++++++++-------------
+ 2 files changed, 58 insertions(+), 30 deletions(-)
 
-diff --git a/include/exec/gdbstub.h b/include/exec/gdbstub.h
-index d6d1c1d5c9..da4b9173a9 100644
---- a/include/exec/gdbstub.h
-+++ b/include/exec/gdbstub.h
-@@ -13,6 +13,8 @@
- typedef struct GDBFeature {
-     const char *xmlname;
-     const char *xml;
-+    const char *name;
-+    const char * const *regs;
-     int num_regs;
- } GDBFeature;
+diff --git a/target/arm/gdbstub.c b/target/arm/gdbstub.c
+index 100a6eed15..56d24028f6 100644
+--- a/target/arm/gdbstub.c
++++ b/target/arm/gdbstub.c
+@@ -270,6 +270,7 @@ static void arm_gen_one_feature_sysreg(GString *s,
+     g_string_append_printf(s, " regnum=\"%d\"", regnum);
+     g_string_append_printf(s, " group=\"cp_regs\"/>");
+     dyn_feature->data.cpregs.keys[dyn_feature->desc.num_regs] = ri_key;
++    ((const char **)dyn_feature->desc.regs)[dyn_feature->desc.num_regs] = ri->name;
+     dyn_feature->desc.num_regs++;
+ }
  
-diff --git a/scripts/feature_to_c.py b/scripts/feature_to_c.py
-index e04d6b2df7..807af0e685 100755
---- a/scripts/feature_to_c.py
-+++ b/scripts/feature_to_c.py
-@@ -50,7 +50,9 @@ def writeliteral(indent, bytes):
-         sys.stderr.write(f'unexpected start tag: {element.tag}\n')
-         exit(1)
+@@ -316,6 +317,8 @@ static GDBFeature *arm_gen_dynamic_sysreg_feature(CPUState *cs, int base_reg)
+     DynamicGDBFeatureInfo *dyn_feature = &cpu->dyn_sysreg_feature;
+     gsize num_regs = g_hash_table_size(cpu->cp_regs);
  
-+    feature_name = element.attrib['name']
-     regnum = 0
-+    regnames = []
-     regnums = []
-     tags = ['feature']
-     for event, element in events:
-@@ -67,6 +69,7 @@ def writeliteral(indent, bytes):
-                 if 'regnum' in element.attrib:
-                     regnum = int(element.attrib['regnum'])
++    dyn_feature->desc.name = "org.qemu.gdb.arm.sys.regs";
++    dyn_feature->desc.regs = g_new(const char *, num_regs);
+     dyn_feature->desc.num_regs = 0;
+     dyn_feature->data.cpregs.keys = g_new(uint32_t, num_regs);
+     g_string_printf(s, "<?xml version=\"1.0\"?>");
+@@ -418,30 +421,34 @@ static int arm_gdb_set_m_systemreg(CPUARMState *env, uint8_t *buf, int reg)
+ }
  
-+                regnames.append(element.attrib['name'])
-                 regnums.append(regnum)
-                 regnum += 1
+ static GDBFeature *arm_gen_dynamic_m_systemreg_feature(CPUState *cs,
+-                                                       int orig_base_reg)
++                                                       int base_reg)
+ {
+     ARMCPU *cpu = ARM_CPU(cs);
+     CPUARMState *env = &cpu->env;
+     GString *s = g_string_new(NULL);
+-    int base_reg = orig_base_reg;
+-    int i;
++    const char **regs = g_new(const char *, ARRAY_SIZE(m_sysreg_def));
++    int i = 0;
++    int j;
  
-@@ -85,6 +88,15 @@ def writeliteral(indent, bytes):
-     writeliteral(8, bytes(os.path.basename(input), 'utf-8'))
-     sys.stdout.write(',\n')
-     writeliteral(8, read)
--    sys.stdout.write(f',\n        {num_regs},\n    }},\n')
-+    sys.stdout.write(',\n')
-+    writeliteral(8, bytes(feature_name, 'utf-8'))
-+    sys.stdout.write(',\n        (const char * const []) {\n')
+     g_string_printf(s, "<?xml version=\"1.0\"?>");
+     g_string_append_printf(s, "<!DOCTYPE target SYSTEM \"gdb-target.dtd\">");
+     g_string_append_printf(s, "<feature name=\"org.gnu.gdb.arm.m-system\">\n");
+ 
+-    for (i = 0; i < ARRAY_SIZE(m_sysreg_def); i++) {
+-        if (arm_feature(env, m_sysreg_def[i].feature)) {
++    for (j = 0; j < ARRAY_SIZE(m_sysreg_def); j++) {
++        if (arm_feature(env, m_sysreg_def[j].feature)) {
++            regs[i] = m_sysreg_def[j].name;
+             g_string_append_printf(s,
+                 "<reg name=\"%s\" bitsize=\"32\" regnum=\"%d\"/>\n",
+-                m_sysreg_def[i].name, base_reg++);
++                m_sysreg_def[j].name, base_reg + i++);
+         }
+     }
+ 
+     g_string_append_printf(s, "</feature>");
++    cpu->dyn_m_systemreg_feature.desc.name = "org.gnu.gdb.arm.m-system";
+     cpu->dyn_m_systemreg_feature.desc.xmlname = "arm-m-system.xml";
+     cpu->dyn_m_systemreg_feature.desc.xml = g_string_free(s, false);
+-    cpu->dyn_m_systemreg_feature.desc.num_regs = base_reg - orig_base_reg;
++    cpu->dyn_m_systemreg_feature.desc.regs = regs;
++    cpu->dyn_m_systemreg_feature.desc.num_regs = i;
+ 
+     return &cpu->dyn_m_systemreg_feature.desc;
+ }
+@@ -462,30 +469,37 @@ static int arm_gdb_set_m_secextreg(CPUARMState *env, uint8_t *buf, int reg)
+ }
+ 
+ static GDBFeature *arm_gen_dynamic_m_secextreg_feature(CPUState *cs,
+-                                                       int orig_base_reg)
++                                                       int base_reg)
+ {
+     ARMCPU *cpu = ARM_CPU(cs);
+     GString *s = g_string_new(NULL);
+-    int base_reg = orig_base_reg;
+-    int i;
++    const char **regs = g_new(const char *, ARRAY_SIZE(m_sysreg_def) * 2);
++    int i = 0;
++    int j;
+ 
+     g_string_printf(s, "<?xml version=\"1.0\"?>");
+     g_string_append_printf(s, "<!DOCTYPE target SYSTEM \"gdb-target.dtd\">");
+     g_string_append_printf(s, "<feature name=\"org.gnu.gdb.arm.secext\">\n");
+ 
+-    for (i = 0; i < ARRAY_SIZE(m_sysreg_def); i++) {
++    for (j = 0; j < ARRAY_SIZE(m_sysreg_def); j++) {
++        regs[i] = g_strconcat(m_sysreg_def[j].name, "_ns", NULL);
+         g_string_append_printf(s,
+-            "<reg name=\"%s_ns\" bitsize=\"32\" regnum=\"%d\"/>\n",
+-            m_sysreg_def[i].name, base_reg++);
++            "<reg name=\"%s\" bitsize=\"32\" regnum=\"%d\"/>\n",
++            regs[i], base_reg + i);
++        i++;
++        regs[i] = g_strconcat(m_sysreg_def[j].name, "_s", NULL);
+         g_string_append_printf(s,
+-            "<reg name=\"%s_s\" bitsize=\"32\" regnum=\"%d\"/>\n",
+-            m_sysreg_def[i].name, base_reg++);
++            "<reg name=\"%s\" bitsize=\"32\" regnum=\"%d\"/>\n",
++            regs[i], base_reg + i);
++        i++;
+     }
+ 
+     g_string_append_printf(s, "</feature>");
++    cpu->dyn_m_secextreg_feature.desc.name = "org.gnu.gdb.arm.secext";
+     cpu->dyn_m_secextreg_feature.desc.xmlname = "arm-m-secext.xml";
+     cpu->dyn_m_secextreg_feature.desc.xml = g_string_free(s, false);
+-    cpu->dyn_m_secextreg_feature.desc.num_regs = base_reg - orig_base_reg;
++    cpu->dyn_m_secextreg_feature.desc.regs = regs;
++    cpu->dyn_m_secextreg_feature.desc.num_regs = i;
+ 
+     return &cpu->dyn_m_secextreg_feature.desc;
+ }
+diff --git a/target/arm/gdbstub64.c b/target/arm/gdbstub64.c
+index 20483ef9bc..c5ed7c0aa3 100644
+--- a/target/arm/gdbstub64.c
++++ b/target/arm/gdbstub64.c
+@@ -316,15 +316,21 @@ static void output_vector_union_type(GString *s, int reg_width,
+     g_string_append(s, "</union>");
+ }
+ 
+-GDBFeature *arm_gen_dynamic_svereg_feature(CPUState *cs, int orig_base_reg)
++GDBFeature *arm_gen_dynamic_svereg_feature(CPUState *cs, int base_reg)
+ {
+     ARMCPU *cpu = ARM_CPU(cs);
+     GString *s = g_string_new(NULL);
+     DynamicGDBFeatureInfo *info = &cpu->dyn_svereg_feature;
++    const char **regs;
+     int reg_width = cpu->sve_max_vq * 128;
+     int pred_width = cpu->sve_max_vq * 16;
+-    int base_reg = orig_base_reg;
+-    int i;
++    int i = 0;
++    int j;
 +
-+    for index, regname in enumerate(regnames):
-+        sys.stdout.write(f'            [{regnums[index] - base_reg}] =\n')
-+        writeliteral(16, bytes(regname, 'utf-8'))
-+        sys.stdout.write(',\n')
-+
-+    sys.stdout.write(f'        }},\n        {num_regs},\n    }},\n')
++    info->desc.name = "org.gnu.gdb.aarch64.sve";
++    info->desc.num_regs = 32 + 16 + 4;
++    regs = g_new(const char *, info->desc.num_regs);
++    info->desc.regs = regs;
  
- sys.stdout.write('    { NULL }\n};\n')
+     g_string_printf(s, "<?xml version=\"1.0\"?>");
+     g_string_append_printf(s, "<!DOCTYPE target SYSTEM \"gdb-target.dtd\">");
+@@ -339,44 +345,52 @@ GDBFeature *arm_gen_dynamic_svereg_feature(CPUState *cs, int orig_base_reg)
+                            pred_width / 8);
+ 
+     /* Define the vector registers. */
+-    for (i = 0; i < 32; i++) {
++    for (j = 0; j < 32; j++) {
++        regs[i] = g_strdup_printf("z%d", j);
+         g_string_append_printf(s,
+-                               "<reg name=\"z%d\" bitsize=\"%d\""
++                               "<reg name=\"%s\" bitsize=\"%d\""
+                                " regnum=\"%d\" type=\"svev\"/>",
+-                               i, reg_width, base_reg++);
++                               regs[i], reg_width, base_reg + i);
++        i++;
+     }
+ 
+     /* fpscr & status registers */
++    regs[i] = "fpsr";
+     g_string_append_printf(s, "<reg name=\"fpsr\" bitsize=\"32\""
+                            " regnum=\"%d\" group=\"float\""
+-                           " type=\"int\"/>", base_reg++);
++                           " type=\"int\"/>", base_reg + i++);
++    regs[i] = "fpcr";
+     g_string_append_printf(s, "<reg name=\"fpcr\" bitsize=\"32\""
+                            " regnum=\"%d\" group=\"float\""
+-                           " type=\"int\"/>", base_reg++);
++                           " type=\"int\"/>", base_reg + i++);
+ 
+     /* Define the predicate registers. */
+-    for (i = 0; i < 16; i++) {
++    for (j = 0; j < 16; j++) {
++        regs[i] = g_strdup_printf("p%d", j);
+         g_string_append_printf(s,
+-                               "<reg name=\"p%d\" bitsize=\"%d\""
++                               "<reg name=\"%s\" bitsize=\"%d\""
+                                " regnum=\"%d\" type=\"svep\"/>",
+-                               i, pred_width, base_reg++);
++                               regs[i], pred_width, base_reg + i);
++        i++;
+     }
++    regs[i] = "ffr";
+     g_string_append_printf(s,
+                            "<reg name=\"ffr\" bitsize=\"%d\""
+                            " regnum=\"%d\" group=\"vector\""
+                            " type=\"svep\"/>",
+-                           pred_width, base_reg++);
++                           pred_width, base_reg + i++);
+ 
+     /* Define the vector length pseudo-register. */
++    regs[i] = "vg";
+     g_string_append_printf(s,
+                            "<reg name=\"vg\" bitsize=\"64\""
+                            " regnum=\"%d\" type=\"int\"/>",
+-                           base_reg++);
++                           base_reg + i++);
+ 
+     g_string_append_printf(s, "</feature>");
+ 
+     info->desc.xmlname = "sve-registers.xml";
+     info->desc.xml = g_string_free(s, false);
+-    info->desc.num_regs = base_reg - orig_base_reg;
++    assert(info->desc.num_regs == i);
+     return &info->desc;
+ }
 -- 
 2.41.0
 
