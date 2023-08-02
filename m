@@ -2,64 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5406776D94A
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Aug 2023 23:14:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 306EF76D94F
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Aug 2023 23:17:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRJAP-0001cY-S3; Wed, 02 Aug 2023 17:14:01 -0400
+	id 1qRJCr-00034N-Af; Wed, 02 Aug 2023 17:16:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qRJAN-0001bx-PT
- for qemu-devel@nongnu.org; Wed, 02 Aug 2023 17:13:59 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qRJCp-00033K-Dh
+ for qemu-devel@nongnu.org; Wed, 02 Aug 2023 17:16:31 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qRJAM-0001Kg-8h
- for qemu-devel@nongnu.org; Wed, 02 Aug 2023 17:13:59 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-3fe110de3b6so1871945e9.1
- for <qemu-devel@nongnu.org>; Wed, 02 Aug 2023 14:13:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qRJCn-0003BA-Rn
+ for qemu-devel@nongnu.org; Wed, 02 Aug 2023 17:16:31 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-31427ddd3fbso254384f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 02 Aug 2023 14:16:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691010836; x=1691615636;
+ d=linaro.org; s=google; t=1691010988; x=1691615788;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=AxJDJe9ilR9VVQikCffdfZe2WFJOOgB/KGplmGu7K5U=;
- b=oIu0x7PH4KSCDw0CuCtv0L/COVQUkAgahnb5pT6e+SbrsElA8XHJ/YudJ9PCQii8oy
- qgsso7JyeUGEnMZ8AbLvxv9ysSpuqZ5vg+cQ/iSPj8uxqnh1g6MnnKdWpmesWGEz3Dyg
- FlVk4W/HYcziS7GfOl3nVjBeDqxuy1oqppPXN0PAdslR1qolxKJuh+LQ88iYa7lMYgnF
- NhGShcwShU6cTgMb/+8zCiBEuoYm0I5KLL8GYXeUDIIZDJAlkYjPymwxVE50x8wrishh
- 4AjrVpn4eNX+BiVO0KoA0WW8dF2F+6Nx5oj9jRnEdRqAzJh1+Zsc2VauTi+pZ+0wrCZj
- KDbQ==
+ bh=DWOOT9KwsP+cYX9+/EIsuHGmQPEQXG0TqA2IY36m8mo=;
+ b=VQ6klePfl5UShTHshcCxVlqXxBhlePXMJu8rAqkPNZvT9tnHpY7DRM4P0473e4sPQl
+ tU+4gXm+JojcoRAKuEJ/QQpzKL0wI2N4k3q0Cd5Seqxf/Qz6+6DjXlHzYrTGbJVkHyfB
+ xITVic6CzcAgcQDPYU9MVVz9NBZ3kE4okcjjxRrv5kjbH5DUhVI5GYLtadkDITyt4KCG
+ xhiWOBcjfaetWi1abhIme9j/rBInaAzi8JcegrOFBmgJK3DCDc2mzN0SMOUlwANT0emM
+ MdBB1DpqRdEc99l0Hq8n4lqcTtrdsMX1isAkyzVYZn3nQxZDGYxDIpddlGbp1glLju7+
+ PXNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691010836; x=1691615636;
+ d=1e100.net; s=20221208; t=1691010988; x=1691615788;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=AxJDJe9ilR9VVQikCffdfZe2WFJOOgB/KGplmGu7K5U=;
- b=J2m0/762TZu2ng/5mVkk1xQ04GI69xpxJCkEb7wIUyXyGoyyagrHHWOBoKNhm7UJOe
- u5I2Fi/h5MWClq9IiXXZnmKS6EoplP//EZ2KWO0WkIyIIRm1CtoHOD1gax5jgs+OtEk0
- gnni2331DXXTSTQ4vk3QkwKMoegkiT/yfs8lVZvw3llhIYw85CYLwN3yRTA6fgYl4att
- 0Bwt95MGzoMtJqEUWQKT6OXcOF8RWQvxu7b0uzcwgIbbN79kafsJ+/qAM0URCSNq8hzl
- Us74Jahj/GHF6sdG5pknsrdTDIG9yG+RRTZZUJ1Noo5v+jq53e76XMfkd7fi1wySHymi
- 4UAA==
-X-Gm-Message-State: ABy/qLbQ5SB4H5NWr6gG1yRUSBgpuLYskMPv/8PjVqSky79VMXdB8EIa
- bSeFb0cy7LCIMziIL04TU64fVQ==
-X-Google-Smtp-Source: APBJJlHxKgERAO7KcP//oNIoOp4goMGYcFR5kQgcnP2gEaGsv4TLeZE/8JgFSKHLY0Sm+xT8e1588w==
-X-Received: by 2002:adf:e546:0:b0:317:6570:afec with SMTP id
- z6-20020adfe546000000b003176570afecmr5975542wrm.3.1691010836612; 
- Wed, 02 Aug 2023 14:13:56 -0700 (PDT)
+ bh=DWOOT9KwsP+cYX9+/EIsuHGmQPEQXG0TqA2IY36m8mo=;
+ b=EV/8AYyf2K6QPYbKyFw3EtNTm3ABr/C/1Xxy9s0ZQUaCKeiLrJmjUxJT8dKxT5avG5
+ GeJ2a03IPFOTbrYMwjz3RSYQewrpkPv77utDT+Ivz0Jyoifyr5mZ5zzvSYVuSMjxEKT6
+ rJpB5PogICSgKr7HCO00yT1uEx4BQsfZVtTdUc3EC7y5gI7RJ8sQZHNfu0n0w58jn253
+ I+V09kYTPzS8T+P7fO+HZfwgt0ZJcoV5PGjbqSrExo8/J6OoZPgkVj6rKIR+N8JWMHz5
+ HWX+1lVnh22MpXWKHrQkia3fJ0rIWqfZLTauxZuvUQoBwN4Ztg1u0gDy3p5yMPfcrEHz
+ zajg==
+X-Gm-Message-State: ABy/qLZz0RMo+GhJyEi/adO960q5CacUPcW/Aox5S8FBJlpx6kmTqlqh
+ NcvnmoXetrhO/DCm4rJqbvHqvg==
+X-Google-Smtp-Source: APBJJlHO7TFS1qA8xmWO22eX7aIwo0zi/G63cGyMPLPEXQ+qD+HHOZX0T+WY5AN9PpsmQ43MfncxJw==
+X-Received: by 2002:adf:facc:0:b0:317:7081:9a6a with SMTP id
+ a12-20020adffacc000000b0031770819a6amr5598694wrs.24.1691010988200; 
+ Wed, 02 Aug 2023 14:16:28 -0700 (PDT)
 Received: from [192.168.69.115] ([176.176.158.229])
  by smtp.gmail.com with ESMTPSA id
- 17-20020a05600c249100b003fe26bf65e7sm2575167wms.13.2023.08.02.14.13.55
+ n7-20020adffe07000000b0031274a184d5sm19981891wrr.109.2023.08.02.14.16.26
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 02 Aug 2023 14:13:56 -0700 (PDT)
-Message-ID: <6cbfa624-6690-b2c6-4946-c1e44733a595@linaro.org>
-Date: Wed, 2 Aug 2023 23:13:53 +0200
+ Wed, 02 Aug 2023 14:16:27 -0700 (PDT)
+Message-ID: <b19594b1-5dea-e633-4b9b-ff06f538141f@linaro.org>
+Date: Wed, 2 Aug 2023 23:16:25 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.13.0
-Subject: Re: [PATCH 1/6] hw/i386/intel_iommu: Fix trivial endianness problems
+Subject: Re: [PATCH 3/6] hw/i386/intel_iommu: Fix struct VTDInvDescIEC on big
+ endian hosts
 Content-Language: en-US
 To: Thomas Huth <thuth@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  Peter Xu <peterx@redhat.com>
@@ -68,13 +69,13 @@ Cc: Jason Wang <jasowang@redhat.com>,
  =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?= <berrange@redhat.com>,
  qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>
 References: <20230802135723.178083-1-thuth@redhat.com>
- <20230802135723.178083-2-thuth@redhat.com>
+ <20230802135723.178083-4-thuth@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230802135723.178083-2-thuth@redhat.com>
+In-Reply-To: <20230802135723.178083-4-thuth@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -98,20 +99,15 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 2/8/23 15:57, Thomas Huth wrote:
-> After reading the guest memory with dma_memory_read(), we have
-> to make sure that we byteswap the little endian data to the host's
-> byte order.
+> On big endian hosts, we need to reverse the bitfield order in the
+> struct VTDInvDescIEC, just like it is already done for the other
+> bitfields in the various structs of the intel-iommu device.
 > 
 > Signed-off-by: Thomas Huth <thuth@redhat.com>
 > ---
->   hw/i386/intel_iommu.c | 5 +++++
->   1 file changed, 5 insertions(+)
+>   hw/i386/intel_iommu_internal.h | 9 +++++++++
+>   1 file changed, 9 insertions(+)
 
-Maybe worth adding a comment in "hw/i386/intel_iommu.h"
-around VTDPASIDEntry::val mentioning little endianness.
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
-
-
+Isn't it a bit hacky? Bitfields can be accessed in a portable
+way using the deposit/extract API, right?
 
