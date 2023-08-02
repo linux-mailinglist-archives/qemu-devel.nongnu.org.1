@@ -2,69 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 882E876D390
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Aug 2023 18:20:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F13B76D38C
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Aug 2023 18:20:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qREZN-00063O-II; Wed, 02 Aug 2023 12:19:29 -0400
+	id 1qREZI-00061h-U9; Wed, 02 Aug 2023 12:19:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <keithp@keithp.com>) id 1qREZK-00062O-UZ
- for qemu-devel@nongnu.org; Wed, 02 Aug 2023 12:19:26 -0400
-Received: from home.keithp.com ([63.227.221.253] helo=elaine.keithp.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <keithp@keithp.com>) id 1qREZH-0006Fi-Kj
- for qemu-devel@nongnu.org; Wed, 02 Aug 2023 12:19:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=keithp.com; s=mail;
- t=1690993160; bh=3o4KTXUsdRZ10iRrqw3JujvQ853pCrOkKE3TdB5CjFM=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=wO4vkd1pvV3L3lEgr29TxiAppmcf0kcySj3QH/1r8v9Ikpfolkd5gHpEfl+zIS/Mv
- C8WfjlOvwBps2+v2j+TqdrPVsPiGXLlhTey6VqrpdDQup+53/Kb+Z7Ng1JIRpRe9Gj
- 54LAHLiWV+gEvT3GPg/ak8XlT9ztHhyEtU438ckbc+k6oA7pHYGUMdmBz4ixWQjybI
- LbKiMkgDDPvSboPcelmJx7QXMxky2/XKUJL4Eq1Er/wCAl+AUiN19sHfAi0hDul7E4
- yFD9qICyrWIt19VgP5yX2Ifj62dUnyG3HfFA0IyG+bEFgPm+7IVCspSSX1gz49scQ+
- fOt0nyByt7EaQ==
-Received: from localhost (localhost [127.0.0.1])
- by elaine.keithp.com (Postfix) with ESMTP id F0F9F3F21CDB;
- Wed,  2 Aug 2023 09:19:20 -0700 (PDT)
-X-Virus-Scanned: Debian amavis at keithp.com
-Received: from elaine.keithp.com ([127.0.0.1])
- by localhost (elaine.keithp.com [127.0.0.1]) (amavis, port 10024) with LMTP
- id PEK-f0SzJfPB; Wed,  2 Aug 2023 09:19:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=keithp.com; s=mail;
- t=1690993158; bh=3o4KTXUsdRZ10iRrqw3JujvQ853pCrOkKE3TdB5CjFM=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=Hk2y0ChPyWgDAZ5CsWtYwgyBFiG21Hr5c7XufiGKIWMdNO9ldjcZH4LlbuNMyzj6d
- 3b3aveDY+evPolev5DDPjjDKwpJ+W7z9vBs2zZFc5dd0zUV+uM7ri1h78C9P73dRPg
- aFyp8eZrApz3i9GfoCnpojz1oAPVyxQ0toD66z7+tdRNNfjxH5AvGLlrxn+/RpCKh4
- +iZ6Rc6+O4+XX87bWZECLG7y3SjQc2fieOcEIj3w+7H3cX+NQv4SebXhXQ/pW8xpxD
- D0dGXNnStZlfxKHl6xhoXH0+LBoZA7t3ymfmtwNaDOAO2jqC68wGNP2K51/43fdW8q
- En9HAOa1/xxJg==
-Received: from keithp.com (koto.keithp.com [192.168.11.2])
- by elaine.keithp.com (Postfix) with ESMTPSA id DCE963F21D80;
- Wed,  2 Aug 2023 09:19:18 -0700 (PDT)
-Received: by keithp.com (Postfix, from userid 1000)
- id 793291E601ED; Wed,  2 Aug 2023 09:19:18 -0700 (PDT)
-To: qemu-devel@nongnu.org
-Cc: Laurent Vivier <laurent@vivier.eu>,
-	Keith Packard <keithp@keithp.com>
-Subject: [PATCH 3/3] target/m68k: Support semihosting on non-ColdFire targets
-Date: Wed,  2 Aug 2023 09:19:14 -0700
-Message-Id: <20230802161914.395443-4-keithp@keithp.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230802161914.395443-1-keithp@keithp.com>
-References: <20230802161914.395443-1-keithp@keithp.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qREZG-0005zx-KA
+ for qemu-devel@nongnu.org; Wed, 02 Aug 2023 12:19:22 -0400
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qREZE-0006FY-W8
+ for qemu-devel@nongnu.org; Wed, 02 Aug 2023 12:19:22 -0400
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-686efa1804eso5095705b3a.3
+ for <qemu-devel@nongnu.org>; Wed, 02 Aug 2023 09:19:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1690993159; x=1691597959;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=peuTUS9+aXbOI6j0pF5LLZZcpRshqVzDfOU4aXpzAMM=;
+ b=w0oHPZjj18bbrAJjFV5JhDF+IugkUsMozOCdtEg/SKCN0/vqRSQX+UaCyFl9/Qqn4B
+ Crg2Y29TYNVYNdx9iKQ8VmJa3GpomKwpkBID0nFgrBBvoCd2SmyURNz+g4SqjeeKnKID
+ cY27+9NWzws11iQUQr/t4aU4lPBbXeizKz0pLgWqwIj6sZAs2uMeXFCXyU5Fh3FdUWPA
+ TSFTFGm/TH75fnMdC/zP2mpBq6DY649qFjvQ0fSsm1/qL0okUMLSXKxxR9DrQkDpN5e9
+ alqRtBrDaneFY5kSfXDEB6OZGSs6rbk4BNmZLZGc1A6Y6r3IwmUh6a3n/2JeAxfSEKVq
+ CMGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1690993159; x=1691597959;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=peuTUS9+aXbOI6j0pF5LLZZcpRshqVzDfOU4aXpzAMM=;
+ b=cx16cjs/LeCQRY1BQ7YRLyvDQrmWMtOY6DLFsDjVBu33XQQWqfzlICrCI2frbkzVee
+ 0VgHmD1//T0O1s6+Z+ykZ/UCmhUY3ffWZ1veRbrtY3R2VtwECYCkohlO4PYIdxfjyqXj
+ FBGk+3Hp25GW+CY/xJpnRcyeDnhAz/O6Gh2gECXzW1JKM8qATCKMigpQGGcJIXUC3WQ7
+ mfiCJiWlfbOieIBlyMM3MLHPJGheqG0ZdkgcfDJ5mIkxYMCa1YMoWCkn/VkXgwnzFfYR
+ 2ltBTMGSyuOIKoC/6QTr1W17njf4capx9ol+TtdggsowVuXkBWcSIm9+VUmW3f4zslkL
+ iFxA==
+X-Gm-Message-State: ABy/qLbZCNloeE1BBSmlr6TWKOwb9Z7I1dDWDatFzRrUKRKWJKVARVIp
+ e7+q4D1EDurz07MeJF9yJ7ZpyQ==
+X-Google-Smtp-Source: APBJJlGK2yqQJOVpiYHFXXAt7hXEtzChcBOhZC+Y4AeeVFt4EWPbjwNhy4uqz5OuGgbsHBZYGf5BRw==
+X-Received: by 2002:a05:6a00:2e26:b0:64d:5b4b:8429 with SMTP id
+ fc38-20020a056a002e2600b0064d5b4b8429mr18089838pfb.18.1690993159386; 
+ Wed, 02 Aug 2023 09:19:19 -0700 (PDT)
+Received: from ?IPV6:2602:47:d490:6901:b659:bbad:1a22:7ef9?
+ ([2602:47:d490:6901:b659:bbad:1a22:7ef9])
+ by smtp.gmail.com with ESMTPSA id
+ x5-20020a62fb05000000b0068782960099sm125959pfm.22.2023.08.02.09.19.18
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 02 Aug 2023 09:19:18 -0700 (PDT)
+Message-ID: <a463f0d5-18a3-24bc-0e50-4a4b84cccf55@linaro.org>
+Date: Wed, 2 Aug 2023 09:19:17 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=63.227.221.253; envelope-from=keithp@keithp.com;
- helo=elaine.keithp.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] gdbstub: use 0 ("any process") on packets with no PID
+Content-Language: en-US
+To: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>, iii@linux.ibm.com
+Cc: alex.bennee@linaro.org, bcain@quicinc.com, philmd@linaro.org,
+ qemu-devel@nongnu.org
+References: <922a658a278cf241e7ca0f49b2249c7d5a6871b6.camel@linux.ibm.com>
+ <781bf772bf3575e3fcd8ad26141e7c1d42a6a999.1690974182.git.quic_mathbern@quicinc.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <781bf772bf3575e3fcd8ad26141e7c1d42a6a999.1690974182.git.quic_mathbern@quicinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.102,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,83 +94,41 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Keith Packard <keithp@keithp.com>
-From:  Keith Packard via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-According to the m68k semihosting spec:
+On 8/2/23 04:04, Matheus Tavares Bernardino wrote:
+> Ilya Leoshkevich <iii@linux.ibm.com> wrote:
+>>
+>> On Tue, 2023-08-01 at 12:37 -0300, Matheus Tavares Bernardino wrote:
+>>> Previously, qemu-user would always report PID 1 to GDB. This was
+>>> changed
+>>> at dc14a7a6e9 (gdbstub: Report the actual qemu-user pid, 2023-06-30),
+>>> but read_thread_id() still considers GDB packets with "no PID" as
+>>> "PID
+>>> 1", which is not the qemu-user PID. Fix that by parsing "no PID" as
+>>> "0",
+>>> which the GDB Remote Protocol defines as "any process".
+>>>
+>>> Note that this should have no effect for system emulation as, in this
+>>> case, gdb_create_default_process() will assign PID 1 for the first
+>>> process and that is what the gdbstub uses for GDB requests with no
+>>> PID,
+>>> or PID 0.
+>>>
+>>> This issue was found with hexagon-lldb, which sends a "Hq" packet
+>>> with
+>>> only the thread-id, but no process-id, leading to the invalid usage
+>>> of
+>>> "PID 1" by qemu-hexagon and a subsequent "E22" reply.
+>>
+>> Did you mean "Hg"?
+> 
+> Oops, that's right, thanks.
+> 
 
-"The instruction used to trigger a semihosting request depends on the
- m68k processor variant.  On ColdFire, "halt" is used; on other processors
- (which don't implement "halt"), "bkpt #0" may be used."
+Queued to tcg-next, with the typo fixed.
 
-Add support for non-CodeFire processors by matching BKPT #0
-instructions. When semihosting is disabled, convert those
-back to illegal op exceptions.
 
-Signed-off-by: Keith Packard <keithp@keithp.com>
----
- target/m68k/cpu.h       |  1 +
- target/m68k/op_helper.c | 16 ++++++++++++++++
- target/m68k/translate.c |  4 ++++
- 3 files changed, 21 insertions(+)
-
-diff --git a/target/m68k/cpu.h b/target/m68k/cpu.h
-index cf70282717..b741c50a8f 100644
---- a/target/m68k/cpu.h
-+++ b/target/m68k/cpu.h
-@@ -67,6 +67,7 @@
- 
- #define EXCP_RTE            0x100
- #define EXCP_HALT_INSN      0x101
-+#define EXCP_BKPT_INSN      0x102
- 
- #define M68K_DTTR0   0
- #define M68K_DTTR1   1
-diff --git a/target/m68k/op_helper.c b/target/m68k/op_helper.c
-index 1ce850bbc5..2d89db6dde 100644
---- a/target/m68k/op_helper.c
-+++ b/target/m68k/op_helper.c
-@@ -295,6 +295,22 @@ static void m68k_interrupt_all(CPUM68KState *env, int is_hw)
-             /* Return from an exception.  */
-             m68k_rte(env);
-             return;
-+        case EXCP_BKPT_INSN:
-+            if (semihosting_enabled((env->sr & SR_S) == 0)
-+                    && (env->pc & 3) == 0
-+                    && cpu_lduw_code(env, env->pc - 4) == 0x4e71
-+                    && cpu_ldl_code(env, env->pc) == 0x4e7bf000) {
-+                env->pc += 4;
-+                do_m68k_semihosting(env, env->dregs[0]);
-+                return;
-+            }
-+            /*
-+             * When semihosting is not enabled, translate this back to
-+             * an illegal op exception.
-+             */
-+            cs->exception_index = EXCP_ILLEGAL;
-+            env->pc += 2;
-+            break;
-         }
-     }
- 
-diff --git a/target/m68k/translate.c b/target/m68k/translate.c
-index e07161d76f..d037c57453 100644
---- a/target/m68k/translate.c
-+++ b/target/m68k/translate.c
-@@ -2640,6 +2640,10 @@ DISAS_INSN(bkpt)
- #if defined(CONFIG_USER_ONLY)
-     gen_exception(s, s->base.pc_next, EXCP_DEBUG);
- #else
-+    if ((insn & 7) == 0) {
-+        gen_exception(s, s->pc, EXCP_BKPT_INSN);
-+        return;
-+    }
-     gen_exception(s, s->base.pc_next, EXCP_ILLEGAL);
- #endif
- }
--- 
-2.40.1
-
+r~
 
