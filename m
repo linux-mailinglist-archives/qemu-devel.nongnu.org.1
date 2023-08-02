@@ -2,93 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C76276CA35
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Aug 2023 12:00:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C500776CA8D
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Aug 2023 12:14:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qR8co-0006G0-Qy; Wed, 02 Aug 2023 05:58:38 -0400
+	id 1qR8qV-00026o-KO; Wed, 02 Aug 2023 06:12:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qR8cl-0006FB-Sv
- for qemu-devel@nongnu.org; Wed, 02 Aug 2023 05:58:36 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qR8ck-0004tK-7d
- for qemu-devel@nongnu.org; Wed, 02 Aug 2023 05:58:35 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1bbf8cb694aso36706225ad.3
- for <qemu-devel@nongnu.org>; Wed, 02 Aug 2023 02:58:33 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <prvs=5716a841a=graf@amazon.de>)
+ id 1qR8qR-00026d-T1
+ for qemu-devel@nongnu.org; Wed, 02 Aug 2023 06:12:43 -0400
+Received: from smtp-fw-33001.amazon.com ([207.171.190.10])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <prvs=5716a841a=graf@amazon.de>)
+ id 1qR8qM-0008Jc-5l
+ for qemu-devel@nongnu.org; Wed, 02 Aug 2023 06:12:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1690970313; x=1691575113;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=0eXML+MI0NmEs9/LL/RFACVn99K4LLrC2IPfOeZQfpQ=;
- b=Siyp13u9vNgdpSOwPrV8vTd8Xi7TZl9MHxqzFqr1ZEH3Az0/Cd/tA9i6RgoNjNpheB
- Z2rNkoYKQEoVJ2azkRgtpnsvGu17fwnj1MGoUMVmMb4patLGWWH2D1nT4DWp/+RoRTQO
- xY0c0BikfS8o3EFvHA8vUPiCspmXE9HUwxomNKEN3RV0aPd6RuN995aLH+jbRREzgz33
- Swl2dhAwMJrlu3ixvE5cMRhQgmVf2An1x6OXaNbgOKfwxvK2jn3DVplQXy/Tvs/o4ddz
- CoBCGlzywYvIF/9vEFMa9y4fEwgb8xCuqzKrlAFf9SkZhXNqukwKTrQLgqIRuJsNnvfi
- r6mw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690970313; x=1691575113;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=0eXML+MI0NmEs9/LL/RFACVn99K4LLrC2IPfOeZQfpQ=;
- b=AK3JwI8rt+1KB9hC37oLOjEbPPyOY0K5G8JhNiv/DcsR/t23hQCJ8LgKF6UNICqAXc
- /KNDn+ar091pPECbiwfdV9xAKzu7jyiX2ujsLzyAje4AKuvcIUr/xErRK+33D5Wl8sxM
- 0MWjL8NzMCi+ma5rI2pqvTQjGNtewor9KfQSy0TMP8VKTvVJFuGZzgFiybf37JnRn4R6
- RlHWoVd87PX5wGFQNVGd+AYWfJ9JPme/GuGIiwRTtPfCiZD3eKqaQKRj0G8XZvVfy6Dq
- uyDi7pbGkKLVJrIiSk0cr8xhczXuycUnKsHkDt1aNJEQDfZzh77gERm0jYV2GHIdst6E
- UlvA==
-X-Gm-Message-State: ABy/qLZjpLJVlVKIZO+p/aoT52Hc50/qQF9XANrI8DBlqgGkmbeNZTYR
- 6SwDKNuq7nfagzVh+gINh4DSxg==
-X-Google-Smtp-Source: APBJJlH7pBGrGM9pJ74CBXAsKAlnmnPOFVAtTJm/+HTAc+tUpHCKrHMEj8qjFwTWn6ue9zhR2OZV4A==
-X-Received: by 2002:a17:902:c20c:b0:1b8:adc:7c3d with SMTP id
- 12-20020a170902c20c00b001b80adc7c3dmr15686917pll.40.1690970312782; 
- Wed, 02 Aug 2023 02:58:32 -0700 (PDT)
-Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
- ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
- by smtp.gmail.com with ESMTPSA id
- p16-20020a170902e75000b001b9cb27e07dsm12015956plf.45.2023.08.02.02.58.30
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 02 Aug 2023 02:58:32 -0700 (PDT)
-Message-ID: <bb3d5dea-5c64-862b-b3b1-6d18c9fba5b4@daynix.com>
-Date: Wed, 2 Aug 2023 18:58:29 +0900
+ d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+ t=1690971158; x=1722507158;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=DxUGgJSgmjRQXQyo0AMq9yRzPrxaMyPZCrwUVjb3/o0=;
+ b=r1ZnLju8rU/oqxcbnLWZ3a8QH9Ppro/BetFfGE99NjDU5OgqXb9gKlXG
+ FwlE7xSKrS6P8ibSRF/rb/2tC/lEvwyNjIKq1la4DxDJLhwt0bg9cY+iq
+ NiIRpvdsn8N8GeKzaKc+OyOrUMmZMLFsk+nFPrTPsT+j86NjosdPoRkfP w=;
+X-IronPort-AV: E=Sophos;i="6.01,248,1684800000"; d="scan'208";a="298253568"
+Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO
+ email-inbound-relay-iad-1a-m6i4x-54a853e6.us-east-1.amazon.com) ([10.43.8.6])
+ by smtp-border-fw-33001.sea14.amazon.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Aug 2023 10:12:21 +0000
+Received: from EX19MTAUWC002.ant.amazon.com
+ (iad12-ws-svc-p26-lb9-vlan3.iad.amazon.com [10.40.163.38])
+ by email-inbound-relay-iad-1a-m6i4x-54a853e6.us-east-1.amazon.com (Postfix)
+ with ESMTPS id 413D046D0B; Wed,  2 Aug 2023 10:12:18 +0000 (UTC)
+Received: from EX19D020UWC004.ant.amazon.com (10.13.138.149) by
+ EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.30; Wed, 2 Aug 2023 10:12:17 +0000
+Received: from [0.0.0.0] (10.253.83.51) by EX19D020UWC004.ant.amazon.com
+ (10.13.138.149) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.30; Wed, 2 Aug
+ 2023 10:12:16 +0000
+Message-ID: <53228bc7-64e0-1120-494a-1926fb2d716a@amazon.com>
+Date: Wed, 2 Aug 2023 12:12:14 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 8/8] linux-user: Load pie executables at upper memory
-To: Helge Deller <deller@gmx.de>, qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini <pbonzini@redhat.com>,
- Joel Stanley <joel@jms.id.au>
-References: <20230801232745.4125-1-deller@gmx.de>
- <20230801232745.4125-9-deller@gmx.de>
- <6126807c-2390-27d9-315d-de67c31a8f60@daynix.com>
- <c1e68eb1-6d26-22fd-8c51-c1ba1e472187@gmx.de>
- <6f73b04e-7c85-0dfb-c3cc-7a43b4663593@daynix.com>
- <69247c58-52c4-65c2-8d08-c553adda0d9d@gmx.de>
+Subject: Re: hvf: Invalid ISV on data abort
 Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <69247c58-52c4-65c2-8d08-c553adda0d9d@gmx.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::631;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x631.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+To: Antonio Caggiano <quic_acaggian@quicinc.com>, <qemu-devel@nongnu.org>
+CC: Mark Burton <quic_mburton@quicinc.com>
+References: <0c8d712b-a890-26fb-cdee-88e686243ae7@quicinc.com>
+From: Alexander Graf <graf@amazon.com>
+In-Reply-To: <0c8d712b-a890-26fb-cdee-88e686243ae7@quicinc.com>
+X-Originating-IP: [10.253.83.51]
+X-ClientProxiedBy: EX19D038UWC001.ant.amazon.com (10.13.139.213) To
+ EX19D020UWC004.ant.amazon.com (10.13.138.149)
+Precedence: Bulk
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Transfer-Encoding: base64
+Received-SPF: pass client-ip=207.171.190.10;
+ envelope-from=prvs=5716a841a=graf@amazon.de; helo=smtp-fw-33001.amazon.com
+X-Spam_score_int: -40
+X-Spam_score: -4.1
+X-Spam_bar: ----
+X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
-Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -100,39 +85,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/08/02 18:34, Helge Deller wrote:
-> On 8/2/23 10:44, Akihiko Odaki wrote:
->> On 2023/08/02 17:42, Helge Deller wrote:
->>> On 8/2/23 09:49, Akihiko Odaki wrote:
->>>> On 2023/08/02 8:27, Helge Deller wrote:
->>>>> Fix the elf loader to calculate a valid TASK_UNMAPPED_BASE address 
->>>>> for all
->>>>> 32-bit architectures, based on the GUEST_ADDR_MAX constant.
->>>>>
->>>>> Additionally modify the elf loader to load dynamic pie executables at
->>>>> around:
->>>>> ~ 0x5500000000  for 64-bit guest binaries on 64-bit host,
->>>>> - 0x00300000    for 32-bit guest binaries on 64-bit host, and
->>>>> - 0x00000000    for 32-bit guest binaries on 32-bit host.
->>>>
->>>> Why do you change guest addresses depending on the host?
->>>
->>> The addresses are guest-addresses.
->>> A 32-bit guest PIE can't be loaded at e.g. 0x5500000000,
->>> while a 64-bit guest PIE needs to be loaded at 0x5500000000.
->>
->> I mean, why do you use address 0x00000000 for 32-bit guest binaries on 
->> 32-bit host while you use address 0x00300000 on 64-bit host?
-> 
-> To keep the memory pressure for the 32-bit qemu binary minimal.
-> On 64-bit host we have the full 32-bit address space for the guest.
-> 
-> Helge
-> 
+SGkgQW50b25pbywKCk9uIDAyLjA4LjIzIDExOjQzLCBBbnRvbmlvIENhZ2dpYW5vIHdyb3RlOgo+
+Cj4gSGkgdGhlcmUsCj4KPiBJIGFtIHRyeWluZyB0byBicmluZyB1cCBhIGd1ZXN0IG9uIEhWRiwg
+d2hpY2ggYXQgYSBjZXJ0YWluIHBvaW50IGlzCj4gdHJ5aW5nIHRvIHdyaXRlIHRvIGFuIGFyZWEg
+b2YgbW1pbyBzcGFjZSBhbmQgaXQgdHJpZ2dlcnMgYSBkYXRhIGFib3J0Cj4gd2hlcmUgSVNWPTAg
+KHRyYW5zbGF0aW9uIGZhdWx0IGxldmVsIDIpLgo+Cj4gSSB3b25kZXIgd2hhdCBjb3VsZCBjYXVz
+ZSBpdCBhbmQgaG93IHRvIHJlY292ZXIuCgoKUUVNVSdzIEhWRiBpbXBsZW1lbnRhdGlvbiAtIGxp
+a2UgS1ZNIC0gb25seSBzdXBwb3J0cyBNTUlPIGFjY2Vzc2VzIGZyb20gCmhhcmR3YXJlIGRlY29k
+ZWQsICJzaW1wbGUiIGxvYWQvc3RvcmUgaW5zdHJ1Y3Rpb25zLiBJdCB3aWxsIG9ubHkgZXhlY3V0
+ZSAKZ3Vlc3QgT1NzIHRoYXQgYXJlIGF3YXJlIG9mIHRoYXQgbGltaXRhdGlvbiBhbmQgbGltaXQg
+TU1JTyBhY2Nlc3NlcyB0byAKdGhhdCBzZXQgb2YgaW5zdHJ1Y3Rpb25zLCBzdWNoIGFzIExpbnV4
+LgoKSWYgeW91IHNlZSB0aGlzIGVmZmVjdCB3aXRoIGFuIGVubGlnaHRlbmVkIE9TLCB5b3UgYXJl
+IG1vc3QgbGlrZWx5IApleHBvc2luZyBtZW1vcnkgdGhhdCB0aGUgZ3Vlc3QgZXhwZWN0cyB0byBi
+ZSByZXByZXNlbnRlZCBhcyBSQU0gYXMgTU1JTy4KCgpUaGFua3MsCgpBbGV4CgoKCgoKQW1hem9u
+IERldmVsb3BtZW50IENlbnRlciBHZXJtYW55IEdtYkgKS3JhdXNlbnN0ci4gMzgKMTAxMTcgQmVy
+bGluCkdlc2NoYWVmdHNmdWVocnVuZzogQ2hyaXN0aWFuIFNjaGxhZWdlciwgSm9uYXRoYW4gV2Vp
+c3MKRWluZ2V0cmFnZW4gYW0gQW10c2dlcmljaHQgQ2hhcmxvdHRlbmJ1cmcgdW50ZXIgSFJCIDE0
+OTE3MyBCClNpdHo6IEJlcmxpbgpVc3QtSUQ6IERFIDI4OSAyMzcgODc5CgoK
 
-That makes sense. I'm worried that using 0x00000000 may break NULL 
-checks on the guest though.
-
-Regards,
-Akihiko Odaki
 
