@@ -2,80 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4142776D184
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EA8576D185
 	for <lists+qemu-devel@lfdr.de>; Wed,  2 Aug 2023 17:15:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRDYi-0003nq-Gm; Wed, 02 Aug 2023 11:14:44 -0400
+	id 1qRDYq-00042J-8e; Wed, 02 Aug 2023 11:14:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qRDYa-0003mr-Bs
- for qemu-devel@nongnu.org; Wed, 02 Aug 2023 11:14:38 -0400
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ id 1qRDYm-0003yN-3S
+ for qemu-devel@nongnu.org; Wed, 02 Aug 2023 11:14:48 -0400
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qRDYY-0002c8-BT
- for qemu-devel@nongnu.org; Wed, 02 Aug 2023 11:14:36 -0400
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-686e0213c0bso4908376b3a.1
- for <qemu-devel@nongnu.org>; Wed, 02 Aug 2023 08:14:33 -0700 (PDT)
+ id 1qRDYk-0002dU-DJ
+ for qemu-devel@nongnu.org; Wed, 02 Aug 2023 11:14:47 -0400
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-686f25d045cso4814958b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 02 Aug 2023 08:14:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690989272; x=1691594072;
+ d=linaro.org; s=google; t=1690989285; x=1691594085;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=hjiqjFM/jcTjxoUBPm1tC5JjsNU//ssKlTYPwy3r5Vg=;
- b=mzyNfwRqGoaMo1O42sAbxedRLjS1Q+izi6rfEJvVM2zR5utnRM2HhKadR+hmg/NP0i
- uilOzSnITmyIIeBygX1//ieeh5k7UngVQrpdtVJFWTOyfph5HNPYPfIbRw9vIKTqgarW
- CvazLuSTHDKgC1bGTMtEWMG6yX8u9shVdt0J+PPt3dZmHIZG7OrmFoODCdqVc02cuamw
- i4WpYnOzNN0YeeeDiDE3w6kY6NP+rxbFfd+VtrUQ77Vh5UDbQvWD8HKi+67QqfTIJn0p
- newYjD/P8VX9O8Ar80CiTNAaWKCaDHxZK7y10vwnoDyV/3nhuZ95xLtkkBywZQvOsXCe
- ouIg==
+ bh=kGaoQ8WcrcEdpC3FWMnLqFA0oYu2Ng04akJN4jkrEvk=;
+ b=jQo1y5XFAaTeHxzptbXZyqmtNe1ch5wtpoHqdfBa+RZL33FtsCLmdSJtQrwx/tdoAY
+ 12RumCL0ssFHpXL9ho3HqVUudSL0oetfrTgZdqKi+QmRFeW0STlImc6z6+9KrQGv5m4o
+ Z9EEZeja2w6E3FYLflXb/04nB4g9med0QndpyBK2zwwo+eDt0b3agxbG8l8ziymfGhO5
+ vY2IzB12bkO3YPkrQwT0UnzppBWM0lxWSGjP7/yDp7hO+M3Wvc7RaAWlPmy+EEMIfEHi
+ VvWkbtttmqQqVeSjJCtDOlOp1e3F4FVYFcPENWtsODf1Qfbi0NFZB6rOADIjf0Niz0QH
+ +fZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690989272; x=1691594072;
+ d=1e100.net; s=20221208; t=1690989285; x=1691594085;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=hjiqjFM/jcTjxoUBPm1tC5JjsNU//ssKlTYPwy3r5Vg=;
- b=Jf8QtizVHepqLtLcZZIS0gH+b9Auhkgl7V8iEDV1aYU4vQBNIyc8E8ProdxtB7YwC4
- UKpRYY23zmgPcexgrP1Ldy8Kk+uAynNTKsACvLskmC1C4Ydf4331+dpYU6wr0JrQOu+y
- njbrfGyP2uNlowsOgqoQn29n4bhGrRQVCJj7MbANRU6I7BkxoIEQVjFu7md5J+irfcQh
- NCOJkAe0xjCtz3m57FTKmyCxW0uS8XIsxwjxgh19adZnS5nj/4SA5kOkUtnJuOUgHRl6
- L3fBm9hacHW76jkHAUs+4OC4z2sE9s7YRYNFtrt77qMalUWZL0c92yelaBr6f8xG+LgV
- XQnA==
-X-Gm-Message-State: ABy/qLbbqBvbO9vwlVEW++cxZV5tQvJU4oxawkkh8jaz8MKbkFmQLUvI
- Rd3X//5Bfj9MB7TTqqisUSq3sg==
-X-Google-Smtp-Source: APBJJlGD1vPnbM86JskqLZ4uEtRn0qQnrkV7BfOWb5XTdYvQS1RqTDekx6/VTgXvaG6Z23mt8PSkwg==
-X-Received: by 2002:a05:6a20:6a28:b0:13c:9317:ad78 with SMTP id
- p40-20020a056a206a2800b0013c9317ad78mr16643379pzk.46.1690989272219; 
- Wed, 02 Aug 2023 08:14:32 -0700 (PDT)
+ bh=kGaoQ8WcrcEdpC3FWMnLqFA0oYu2Ng04akJN4jkrEvk=;
+ b=OFwPal8Lw1LtUE2Y5l/aAl8vcYY4OIT7T7ZopyqQysfD1bvMV0GwnERaX/JM/2G7mn
+ I8thTBTkVn7u7rZa+jjO751YVQ1XEAiscIH3qhZfHiSEUDRupWnZAjaRUAdx7E8/WLbK
+ 6PqZY+Qugtu4LiegKkvCK6+0N97vDYP5SF61lH936vq5wMFDILv1D7bPHXI0VeWKNxky
+ 69bmtFOZwJx3vMo3ygeAVoAE6p4HqOnnR93EQxpqaLMcqKbu718ktp7Im1DD83V3qwZS
+ iJrq+3nfPcB+m+JZLqHXjuNqSev7GdDG0I1Jpo4yrdOWlIpFcYVWSAg2v+CO1roaW3WC
+ V+2g==
+X-Gm-Message-State: ABy/qLa+OMTk2J5twq9ab8nR0m0XSOYfeiPNe2imJnQnvudRKg0OCisV
+ sulrBmEGJgcKDZBWgQkXS/2hig==
+X-Google-Smtp-Source: APBJJlEXco7V1LFMaxtvxxio01r+otxlD0U1FkExHREG3p5YbYRCb/EGJRdZ+YGB8I3pell8zOUZFQ==
+X-Received: by 2002:a05:6a00:2d23:b0:66d:514c:cb33 with SMTP id
+ fa35-20020a056a002d2300b0066d514ccb33mr18456125pfb.6.1690989285091; 
+ Wed, 02 Aug 2023 08:14:45 -0700 (PDT)
 Received: from ?IPV6:2602:47:d490:6901:b659:bbad:1a22:7ef9?
  ([2602:47:d490:6901:b659:bbad:1a22:7ef9])
  by smtp.gmail.com with ESMTPSA id
- y5-20020aa78545000000b00686be6e0f36sm11216376pfn.60.2023.08.02.08.14.31
+ g7-20020aa78187000000b006828ee9fa69sm2478186pfi.206.2023.08.02.08.14.44
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 02 Aug 2023 08:14:31 -0700 (PDT)
-Message-ID: <0ebdeb87-6b86-85ad-b068-ca8df7b76989@linaro.org>
-Date: Wed, 2 Aug 2023 08:14:29 -0700
+ Wed, 02 Aug 2023 08:14:44 -0700 (PDT)
+Message-ID: <fa9791b4-0a5b-5e74-28a8-7cb31309036b@linaro.org>
+Date: Wed, 2 Aug 2023 08:14:42 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PULL 0/1 for 8.1] TLS crash fix
+Subject: Re: [PULL 00/10] Misc fixes for 2023-08-01
 Content-Language: en-US
-To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?=
- <marcandre.lureau@gmail.com>, Mauro Matteo Cascella <mcascell@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-References: <20230801174650.177924-1-berrange@redhat.com>
+Cc: qemu-block@nongnu.org, qemu-s390x@nongnu.org
+References: <20230801215421.60133-1-philmd@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230801174650.177924-1-berrange@redhat.com>
+In-Reply-To: <20230801215421.60133-1-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -98,21 +96,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/1/23 10:46, Daniel P. Berrangé wrote:
+On 8/1/23 14:54, Philippe Mathieu-Daudé wrote:
 > The following changes since commit 802341823f1720511dd5cf53ae40285f7978c61b:
 > 
 >    Merge tag 'pull-tcg-20230731' ofhttps://gitlab.com/rth7680/qemu  into staging (2023-07-31 14:02:51 -0700)
 > 
 > are available in the Git repository at:
 > 
->    https://gitlab.com/berrange/qemu  tags/io-tls-hs-crash-pull-request
+>    https://github.com/philmd/qemu.git  tags/misc-fixes-20230801
 > 
-> for you to fetch changes up to 10be627d2b5ec2d6b3dce045144aa739eef678b4:
+> for you to fetch changes up to 8caaae7319a5f7ca449900c0e6bfcaed78fa3ae2:
 > 
->    io: remove io watch if TLS channel is closed during handshake (2023-08-01 18:45:27 +0100)
+>    target/m68k: Fix semihost lseek offset computation (2023-08-01 23:52:23 +0200)
 > 
 > ----------------------------------------------------------------
-> Fix crash during early close of TLS channel
+> Misc patches queue
+> 
+> xen: Fix issues reported by fuzzer / Coverity
+> misc: Fix some typos in documentation and comments
+> ui/dbus: Build fixes for Clang/win32/!opengl
+> linux-user: Semihosting fixes on m68k/nios2
+> tests/migration: Disable stack protector when linking without stdlib
 
 Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
 
