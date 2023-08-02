@@ -2,64 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AE4976C97B
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Aug 2023 11:30:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4848E76C98A
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Aug 2023 11:35:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qR89v-0001kh-BU; Wed, 02 Aug 2023 05:28:47 -0400
+	id 1qR8Fv-0005jt-BF; Wed, 02 Aug 2023 05:34:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qR89t-0001fF-GD
- for qemu-devel@nongnu.org; Wed, 02 Aug 2023 05:28:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qR8Ft-0005jg-9M
+ for qemu-devel@nongnu.org; Wed, 02 Aug 2023 05:34:57 -0400
+Received: from mout.gmx.net ([212.227.15.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qR89r-0001Ur-Pa
- for qemu-devel@nongnu.org; Wed, 02 Aug 2023 05:28:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690968522;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=qp0I8Mq2UmQQnUcgjrid3l8HRykFuudzEVVkqv05p/0=;
- b=Ib5mBGzqLHIHLpyz7D19xZ2qCT+YkW8d8hbxHYfNMqPpalmL05SFeDzS9K3fHXWmY5ADnk
- Xb9O8vEfEAJ8+TIi8g57wm9VhqHROKvHlcyIq/vAH2EvXFcv4Q1w/GBh/8D+f9ub+Qlp9Q
- uwb/6kj8i+TmxKjsHMG/xEgg4iKw+gY=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-364-6ffQvTSWNR-U6zRdURao0g-1; Wed, 02 Aug 2023 05:28:41 -0400
-X-MC-Unique: 6ffQvTSWNR-U6zRdURao0g-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6D21888D541;
- Wed,  2 Aug 2023 09:28:40 +0000 (UTC)
-Received: from thuth.com (dhcp-192-205.str.redhat.com [10.33.192.205])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 77A9C1121325;
- Wed,  2 Aug 2023 09:28:39 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>,
-	Peter Xu <peterx@redhat.com>
-Cc: Jason Wang <jasowang@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH] hw/i386/intel_iommu: Fix endianness problems related to
- VTD_IR_TableEntry
-Date: Wed,  2 Aug 2023 11:28:37 +0200
-Message-Id: <20230802092837.153689-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qR8Fr-0004i2-LJ
+ for qemu-devel@nongnu.org; Wed, 02 Aug 2023 05:34:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
+ s=s31663417; t=1690968889; x=1691573689; i=deller@gmx.de;
+ bh=tdgs4KW+xkbZJbGwQY7aQabzJnhlfj3zKjPHnL8Nmqo=;
+ h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+ b=F99IeZsmoCIp3n9Klpzh9lXYm1m9nV3R3LK9so29uQkVMZdi9+z09tal7Z9qRrripKf5UF9
+ f88fdal+ZZLwIUoyYILgKRwieEZPvpiBmMJGN/1z9FAf0TSCxpNwrkR71ui+JuyVTLU1blCza
+ drzLlZOlYDocc9CL3cestwqoQq3OhVXbY/UfP7FTz44tkMZPrlwGK2Qd4QegQi4xnBqFjurVX
+ azclLTPX9etiDXhrCmUj0tZMX3VqXa3ugUgMqTHqIyJKSWNf4Afkzh/C5Es2ck180tKZB2rsW
+ Z9gyZUDLKL8Samu5u8yjAflnR4bh7Jxz06PsfOkBhJ3t2xS+8xWw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.60] ([94.134.146.69]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1M1Hdw-1qOOA73FG6-002oA5; Wed, 02
+ Aug 2023 11:34:49 +0200
+Message-ID: <69247c58-52c4-65c2-8d08-c553adda0d9d@gmx.de>
+Date: Wed, 2 Aug 2023 11:34:43 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v6 8/8] linux-user: Load pie executables at upper memory
+Content-Language: en-US
+To: Akihiko Odaki <akihiko.odaki@daynix.com>, qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini <pbonzini@redhat.com>,
+ Joel Stanley <joel@jms.id.au>
+References: <20230801232745.4125-1-deller@gmx.de>
+ <20230801232745.4125-9-deller@gmx.de>
+ <6126807c-2390-27d9-315d-de67c31a8f60@daynix.com>
+ <c1e68eb1-6d26-22fd-8c51-c1ba1e472187@gmx.de>
+ <6f73b04e-7c85-0dfb-c3cc-7a43b4663593@daynix.com>
+From: Helge Deller <deller@gmx.de>
+In-Reply-To: <6f73b04e-7c85-0dfb-c3cc-7a43b4663593@daynix.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:4sdAVNYuHNeDKi/2H157HOVH3ARSnMqWTGmRyaLi36NvfscAdYP
+ JzcrqS0iK/fMNFwDhIM+hyRD39ef3ApKleBSufWzWdzJZ97YzLK6/3zjhJVm5ASW04zQ8Ar
+ 9trR+XNd0SEfXoEpNPsfQSRCzKWHpjWM4kJjfK12691ETDvjfLXft4wm2u75eh6MyWrZJ0X
+ yxmgJTmkrtI0oUDz53MOA==
+UI-OutboundReport: notjunk:1;M01:P0:tjSQbtzsAQM=;/GjugZ5Or2f/jVBLJO7NrZi+c6B
+ 5ZHh0qctQomhNbdKslUgHQldDKx0EhDrpQMc6wOyzcYDvG1UvY9UMF4oen5dqU9MCXkN/sjWh
+ aDjCO7ejGzj0Xc+A1FlPTIDJdGx03iQ92DkAQKxfqTjH/vD98CgWhnQOXBWkj+1atUzdZWTUs
+ 2PNAhoUzcMsjk3PZGdCjN4K8i3r61GLufDM4z6irJRXd5t8u22uDsjECK/6KIGjPaAG3ZOt6Y
+ 7m2rHVT3P7OMt1q8KI7nargzOc1V2uoWLZvrRgs8QnKkSDf9XqSbWgp82TJ+V5o/eAfXAtBoS
+ 6RrMHRQSvmRyNppxVwNuaLNFDyQhFA2zdr2xSaSim2sCR14dlidNHnhovbMJcs4WP95ijfsZk
+ 7pCBDyLEjv1IEdtgjaejVsLABhq6b72pmJnd09kC/iPT/DtmgjdW2uNWM+6fjOaSKufYs41Wk
+ S8I9q/eptPoY7pVZZdacRMiFlfPc+OYhAmVCx+Vcgyk7OOOurHPwwf/ZLCCjP5xL3xdFCTz2C
+ xS6E8MalhYYEtB4pa/39xgIW2NSpDHKr7owJRDmRO9WgU7bCnl9nK7bnANr+3iKRmc8E0v6R6
+ hYtmcpECVYZq2HYSgcssUTNBZ3adm1QvaPrwDPDo9BIDLSkzRGDphKHMWqZD2cqVwP577NTo0
+ riyM9duV4HOL8vRSyk5PgA+oIq7POErSXwflhboIMNW2WYEz3gecHt8YwuI0Jxj1lWmFIveri
+ csMRjytoaMl+xkqZ+r9NhqQ3Nj38jmOa4pSuWZP9MiSUvz9n6yMX0565G9WIxJJd2lZilxuVw
+ IRNFh0qLLsSB1cvBoqdEB/Rz6YyjLRiXO+qs0GA3QxnuFEKleuaLFYjaLxiPpWAdf5rFfgNdS
+ VXEFUmCGYWmxSUCMUfcBoy+P+kIwoJyCbljz1j57xKZLosXFhdTYwgKoHeDLwfqMhLZIWpFxf
+ dCrMkqprhw5PufEzd3leSikeFbc=
+Received-SPF: pass client-ip=212.227.15.18; envelope-from=deller@gmx.de;
+ helo=mout.gmx.net
+X-Spam_score_int: -28
+X-Spam_score: -2.9
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ NICE_REPLY_A=-0.092, RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -77,152 +93,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The code already tries to do some endianness handling here, but
-currently fails badly:
-- While it already swaps the data when logging errors / tracing, it fails
-  to byteswap the value before e.g. accessing entry->irte.present
-- entry->irte.source_id is swapped with le32_to_cpu(), though this is
-  a 16-bit value
-- The whole union is apparently supposed to be swapped via the 64-bit
-  data[2] array, but the struct is a mixture between 32 bit values
-  (the first 8 bytes) and 64 bit values (the second 8 bytes), so this
-  cannot work as expected.
+On 8/2/23 10:44, Akihiko Odaki wrote:
+> On 2023/08/02 17:42, Helge Deller wrote:
+>> On 8/2/23 09:49, Akihiko Odaki wrote:
+>>> On 2023/08/02 8:27, Helge Deller wrote:
+>>>> Fix the elf loader to calculate a valid TASK_UNMAPPED_BASE address fo=
+r all
+>>>> 32-bit architectures, based on the GUEST_ADDR_MAX constant.
+>>>>
+>>>> Additionally modify the elf loader to load dynamic pie executables at
+>>>> around:
+>>>> ~ 0x5500000000=C2=A0 for 64-bit guest binaries on 64-bit host,
+>>>> - 0x00300000=C2=A0=C2=A0=C2=A0 for 32-bit guest binaries on 64-bit ho=
+st, and
+>>>> - 0x00000000=C2=A0=C2=A0=C2=A0 for 32-bit guest binaries on 32-bit ho=
+st.
+>>>
+>>> Why do you change guest addresses depending on the host?
+>>
+>> The addresses are guest-addresses.
+>> A 32-bit guest PIE can't be loaded at e.g. 0x5500000000,
+>> while a 64-bit guest PIE needs to be loaded at 0x5500000000.
+>
+> I mean, why do you use address 0x00000000 for 32-bit guest binaries on 3=
+2-bit host while you use address 0x00300000 on 64-bit host?
 
-Fix it by converting the struct to two proper 64-bit bitfields, and
-by swapping the values only once for everybody right after reading
-the data from memory.
+To keep the memory pressure for the 32-bit qemu binary minimal.
+On 64-bit host we have the full 32-bit address space for the guest.
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- Note: There are more endianness issues in the code, I haven't figured
-       out all of them yet, Linux fails to boot in the guest when I use
-       this device on a s390x host. But I wanted to publish this patch
-       now already since this should also fix the "issue" with the Clang
-       ms_struct packing that we recently discussed on the mailing list.
-
- include/hw/i386/intel_iommu.h | 50 ++++++++++++++++++-----------------
- hw/i386/intel_iommu.c         | 16 +++++------
- 2 files changed, 34 insertions(+), 32 deletions(-)
-
-diff --git a/include/hw/i386/intel_iommu.h b/include/hw/i386/intel_iommu.h
-index 89dcbc5e1e..7fa0a695c8 100644
---- a/include/hw/i386/intel_iommu.h
-+++ b/include/hw/i386/intel_iommu.h
-@@ -178,37 +178,39 @@ enum {
- union VTD_IR_TableEntry {
-     struct {
- #if HOST_BIG_ENDIAN
--        uint32_t __reserved_1:8;     /* Reserved 1 */
--        uint32_t vector:8;           /* Interrupt Vector */
--        uint32_t irte_mode:1;        /* IRTE Mode */
--        uint32_t __reserved_0:3;     /* Reserved 0 */
--        uint32_t __avail:4;          /* Available spaces for software */
--        uint32_t delivery_mode:3;    /* Delivery Mode */
--        uint32_t trigger_mode:1;     /* Trigger Mode */
--        uint32_t redir_hint:1;       /* Redirection Hint */
--        uint32_t dest_mode:1;        /* Destination Mode */
--        uint32_t fault_disable:1;    /* Fault Processing Disable */
--        uint32_t present:1;          /* Whether entry present/available */
-+        uint64_t dest_id:32;         /* Destination ID */
-+        uint64_t __reserved_1:8;     /* Reserved 1 */
-+        uint64_t vector:8;           /* Interrupt Vector */
-+        uint64_t irte_mode:1;        /* IRTE Mode */
-+        uint64_t __reserved_0:3;     /* Reserved 0 */
-+        uint64_t __avail:4;          /* Available spaces for software */
-+        uint64_t delivery_mode:3;    /* Delivery Mode */
-+        uint64_t trigger_mode:1;     /* Trigger Mode */
-+        uint64_t redir_hint:1;       /* Redirection Hint */
-+        uint64_t dest_mode:1;        /* Destination Mode */
-+        uint64_t fault_disable:1;    /* Fault Processing Disable */
-+        uint64_t present:1;          /* Whether entry present/available */
- #else
--        uint32_t present:1;          /* Whether entry present/available */
--        uint32_t fault_disable:1;    /* Fault Processing Disable */
--        uint32_t dest_mode:1;        /* Destination Mode */
--        uint32_t redir_hint:1;       /* Redirection Hint */
--        uint32_t trigger_mode:1;     /* Trigger Mode */
--        uint32_t delivery_mode:3;    /* Delivery Mode */
--        uint32_t __avail:4;          /* Available spaces for software */
--        uint32_t __reserved_0:3;     /* Reserved 0 */
--        uint32_t irte_mode:1;        /* IRTE Mode */
--        uint32_t vector:8;           /* Interrupt Vector */
--        uint32_t __reserved_1:8;     /* Reserved 1 */
-+        uint64_t present:1;          /* Whether entry present/available */
-+        uint64_t fault_disable:1;    /* Fault Processing Disable */
-+        uint64_t dest_mode:1;        /* Destination Mode */
-+        uint64_t redir_hint:1;       /* Redirection Hint */
-+        uint64_t trigger_mode:1;     /* Trigger Mode */
-+        uint64_t delivery_mode:3;    /* Delivery Mode */
-+        uint64_t __avail:4;          /* Available spaces for software */
-+        uint64_t __reserved_0:3;     /* Reserved 0 */
-+        uint64_t irte_mode:1;        /* IRTE Mode */
-+        uint64_t vector:8;           /* Interrupt Vector */
-+        uint64_t __reserved_1:8;     /* Reserved 1 */
-+        uint64_t dest_id:32;         /* Destination ID */
- #endif
--        uint32_t dest_id;            /* Destination ID */
--        uint16_t source_id;          /* Source-ID */
- #if HOST_BIG_ENDIAN
-         uint64_t __reserved_2:44;    /* Reserved 2 */
-         uint64_t sid_vtype:2;        /* Source-ID Validation Type */
-         uint64_t sid_q:2;            /* Source-ID Qualifier */
-+        uint64_t source_id:16;       /* Source-ID */
- #else
-+        uint64_t source_id:16;       /* Source-ID */
-         uint64_t sid_q:2;            /* Source-ID Qualifier */
-         uint64_t sid_vtype:2;        /* Source-ID Validation Type */
-         uint64_t __reserved_2:44;    /* Reserved 2 */
-diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index b9b629d1b1..3ca71df369 100644
---- a/hw/i386/intel_iommu.c
-+++ b/hw/i386/intel_iommu.c
-@@ -3328,14 +3328,15 @@ static int vtd_irte_get(IntelIOMMUState *iommu, uint16_t index,
-         return -VTD_FR_IR_ROOT_INVAL;
-     }
- 
--    trace_vtd_ir_irte_get(index, le64_to_cpu(entry->data[1]),
--                          le64_to_cpu(entry->data[0]));
-+    entry->data[0] = le64_to_cpu(entry->data[0]);
-+    entry->data[1] = le64_to_cpu(entry->data[1]);
-+
-+    trace_vtd_ir_irte_get(index, entry->data[1], entry->data[0]);
- 
-     if (!entry->irte.present) {
-         error_report_once("%s: detected non-present IRTE "
-                           "(index=%u, high=0x%" PRIx64 ", low=0x%" PRIx64 ")",
--                          __func__, index, le64_to_cpu(entry->data[1]),
--                          le64_to_cpu(entry->data[0]));
-+                          __func__, index, entry->data[1], entry->data[0]);
-         return -VTD_FR_IR_ENTRY_P;
-     }
- 
-@@ -3343,14 +3344,13 @@ static int vtd_irte_get(IntelIOMMUState *iommu, uint16_t index,
-         entry->irte.__reserved_2) {
-         error_report_once("%s: detected non-zero reserved IRTE "
-                           "(index=%u, high=0x%" PRIx64 ", low=0x%" PRIx64 ")",
--                          __func__, index, le64_to_cpu(entry->data[1]),
--                          le64_to_cpu(entry->data[0]));
-+                          __func__, index, entry->data[1], entry->data[0]);
-         return -VTD_FR_IR_IRTE_RSVD;
-     }
- 
-     if (sid != X86_IOMMU_SID_INVALID) {
-         /* Validate IRTE SID */
--        source_id = le32_to_cpu(entry->irte.source_id);
-+        source_id = entry->irte.source_id;
-         switch (entry->irte.sid_vtype) {
-         case VTD_SVT_NONE:
-             break;
-@@ -3404,7 +3404,7 @@ static int vtd_remap_irq_get(IntelIOMMUState *iommu, uint16_t index,
-     irq->trigger_mode = irte.irte.trigger_mode;
-     irq->vector = irte.irte.vector;
-     irq->delivery_mode = irte.irte.delivery_mode;
--    irq->dest = le32_to_cpu(irte.irte.dest_id);
-+    irq->dest = irte.irte.dest_id;
-     if (!iommu->intr_eime) {
- #define  VTD_IR_APIC_DEST_MASK         (0xff00ULL)
- #define  VTD_IR_APIC_DEST_SHIFT        (8)
--- 
-2.39.3
+Helge
 
 
