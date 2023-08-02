@@ -2,83 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8480576CF5B
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Aug 2023 15:58:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9122976CF6C
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Aug 2023 16:03:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRCMi-0006Ww-1d; Wed, 02 Aug 2023 09:58:16 -0400
+	id 1qRCQx-0004fv-RG; Wed, 02 Aug 2023 10:02:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1qRCMf-0006VQ-Li
- for qemu-devel@nongnu.org; Wed, 02 Aug 2023 09:58:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qRCQt-0004fH-DZ
+ for qemu-devel@nongnu.org; Wed, 02 Aug 2023 10:02:35 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1qRCMe-00077F-7T
- for qemu-devel@nongnu.org; Wed, 02 Aug 2023 09:58:13 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qRCQp-00089z-00
+ for qemu-devel@nongnu.org; Wed, 02 Aug 2023 10:02:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690984691;
+ s=mimecast20190719; t=1690984950;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=WsF1KUw3/B+TbqvlEU0qBBTT+ycqIN8J69iFP4GRjLY=;
- b=fRVI0jiRta0r7OxYvNoK1dDZ/G64pgvou6xQWLdHgA/e1ptD418NZ5OADMaKXKpWz/BKbd
- XRUBQZggtP1/LJrLRV/7z0znM990je4pN2k2M/Xe5BLo6C2z7GWAzPSQRD92cqg1R4960S
- LwYlIADpUgt5hZOtWU0uhJhR8mUvAbU=
+ bh=RKIPztBQtpHAo8YN6W0nHdp3hJqPfL7BeFcNopspSms=;
+ b=QkX1FCGoniv1394iJVj4NDM0JSS3UBgM3Trql+YVXRWZ2DjuP6HV8ckw92zXBeuUdajf6L
+ +ml0ezNmTBSU5Wecss0l3Uo7YdkdYwVod0cFmQBZR2JiG0DjzDkRpZ6Uhl76clh1IKX9w4
+ evw6aTZP3rUSjbXT1LVn+miPs+jVrr4=
 Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
  [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-605-p-T_LCpRNWqLNInxj2jBXw-1; Wed, 02 Aug 2023 09:58:10 -0400
-X-MC-Unique: p-T_LCpRNWqLNInxj2jBXw-1
+ us-mta-558-1edohgpBN-u36pDYboypDA-1; Wed, 02 Aug 2023 10:02:23 -0400
+X-MC-Unique: 1edohgpBN-u36pDYboypDA-1
 Received: by mail-qv1-f69.google.com with SMTP id
- 6a1803df08f44-63d245b67abso82659276d6.3
- for <qemu-devel@nongnu.org>; Wed, 02 Aug 2023 06:58:10 -0700 (PDT)
+ 6a1803df08f44-63d2b88325bso14320066d6.1
+ for <qemu-devel@nongnu.org>; Wed, 02 Aug 2023 07:02:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690984689; x=1691589489;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=WsF1KUw3/B+TbqvlEU0qBBTT+ycqIN8J69iFP4GRjLY=;
- b=ZU641Dmoxa23o6VBxOXZWuL882itGLqLbtPSwyjuZAQlLMZWmDcm/cX06ol6zwwDI7
- 9xgoCK+d1/o/FoO9ZgSo8aSxpGLNLVOBnXtdzxsNdjY+MsHALoVGkfj33TTxG5r68jhA
- PIunkiD4EKCt/+UDXKVe7/BnQsQxofTGWDTGJcFqXLKgllYlugWsxoJPyMmFgwXayq6K
- KdFO7OTF+/UaAZUWiOolB5ThZNSdUulTm76ScvDaLIJnUGwIuGXqriW0+eUw4LpVgem0
- H5sn2rB7Yt2G60dr/ns4h34nDYeJVMLVyyEASno0u28GPSMyptlRY1VJjI3zOtyUJrKJ
- +VGQ==
-X-Gm-Message-State: ABy/qLYHkM+6ELbRLVx0uBrNTynT7VzhTYsiM1KZMirQX7Qnz8kgdUDq
- 8qsHPhpWwEsm+gdSogZ27E0+bmiL+223EpPtqHv1MTP++5MFrqEO0koC8C/BUR3hPh18SmmIVWN
- yhXVAB6GX+noEuQI=
-X-Received: by 2002:a0c:a9db:0:b0:634:d868:f0d5 with SMTP id
- c27-20020a0ca9db000000b00634d868f0d5mr17048810qvb.9.1690984689584; 
- Wed, 02 Aug 2023 06:58:09 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHAQnCdY0tI1OYPZvhYC3md636SlRUicG386mKKY36XYF+biY71i0d8FXFHIgVzzsU2pS/jUw==
-X-Received: by 2002:a0c:a9db:0:b0:634:d868:f0d5 with SMTP id
- c27-20020a0ca9db000000b00634d868f0d5mr17048799qvb.9.1690984689349; 
- Wed, 02 Aug 2023 06:58:09 -0700 (PDT)
-Received: from sgarzare-redhat (host-82-57-51-214.retail.telecomitalia.it.
- [82.57.51.214]) by smtp.gmail.com with ESMTPSA id
- c14-20020a0ca9ce000000b0063d038df3f3sm5575978qvb.52.2023.08.02.06.58.08
+ d=1e100.net; s=20221208; t=1690984939; x=1691589739;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=RKIPztBQtpHAo8YN6W0nHdp3hJqPfL7BeFcNopspSms=;
+ b=h8tADBHccfI2BPLq0PXOlIT7coRrdDdpVaYh8gZVT7iiFc/6sq34tQY1RUmOolQRYr
+ EMwNDu8WaiZ6uP3Y3fOOW684Bn+pGj+5xihOmY5d/ZJuSKxcrtuMqf1wcUXzs3dcmqvn
+ m0+SPGaMJSbFf/gWNJ9UlJqbnDQk0+JC3yPcPeLpgU/xnZO+iu3XoxifUlEVahsU4RO5
+ vv9AULqu5Ey5saO99eUSYCj1fZjCmRnD7bT++mXpcO4tg03JwMu4trLtz50/UrfLIxlR
+ j7EMaPO1WDxU/T5AaIVLHR/m1Tj6Dhb9r+6bkQvBnW5H7Gw/1dzfAw2VbuoeN9oFzMvk
+ w3mQ==
+X-Gm-Message-State: ABy/qLakNQJrG3pycfu1fuyrOY7Tchi6B+cd+D/Llf1IWYPPiFDJLvXy
+ 86mooWJ3hQkJaLrABO7+NoyuwbnIdONNIKdamEi3NDhHswR1nk4UQfCWUGLxr0/ERW2iOcKjk86
+ 6TbiWsjEQwpiaR3A=
+X-Received: by 2002:a05:6214:c8d:b0:63c:7427:e7e9 with SMTP id
+ r13-20020a0562140c8d00b0063c7427e7e9mr16429301qvr.6.1690984939037; 
+ Wed, 02 Aug 2023 07:02:19 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlFMej31nes8klme36+iD0DCFpTCAWq7UkLqrxjJJZBZLV/4VcaZi9K+yQtbCgiwBemqFi9t5A==
+X-Received: by 2002:a05:6214:c8d:b0:63c:7427:e7e9 with SMTP id
+ r13-20020a0562140c8d00b0063c7427e7e9mr16429235qvr.6.1690984937953; 
+ Wed, 02 Aug 2023 07:02:17 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ p18-20020a0cf552000000b0063cf4d0d564sm5499320qvm.107.2023.08.02.07.02.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 02 Aug 2023 06:58:08 -0700 (PDT)
-Date: Wed, 2 Aug 2023 15:58:05 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Hanna Czenczek <hreitz@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, 
- Kevin Wolf <kwolf@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>
-Subject: Re: [PATCH 1/2] block/blkio: close the fd when blkio_connect() fails
-Message-ID: <2ifpkjvlfgtw33sbzegfxgxaqt3pdyvirszvx4p3szfpdifkwr@yejndm46za5y>
-References: <20230801160332.122564-1-sgarzare@redhat.com>
- <20230801160332.122564-2-sgarzare@redhat.com>
- <00d6b251-a33a-96d4-f5fc-92558fb3f261@redhat.com>
+ Wed, 02 Aug 2023 07:02:17 -0700 (PDT)
+Date: Wed, 2 Aug 2023 10:02:16 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
+ Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>
+Subject: Re: [PATCH] hw/i386/intel_iommu: Fix endianness problems related to
+ VTD_IR_TableEntry
+Message-ID: <ZMph6J8reFmxOpit@x1n>
+References: <20230802092837.153689-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <00d6b251-a33a-96d4-f5fc-92558fb3f261@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=sgarzare@redhat.com;
+In-Reply-To: <20230802092837.153689-1-thuth@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -103,70 +99,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 02, 2023 at 01:15:40PM +0200, Hanna Czenczek wrote:
->On 01.08.23 18:03, Stefano Garzarella wrote:
->>libblkio drivers take ownership of `fd` only after a successful
->>blkio_connect(), so if it fails, we are still the owners.
->>
->>Fixes: cad2ccc395 ("block/blkio: use qemu_open() to support fd passing for virtio-blk")
->>Suggested-by: Hanna Czenczek <hreitz@redhat.com>
->>Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
->>---
->>  block/blkio.c | 9 +++++++++
->>  1 file changed, 9 insertions(+)
->
->Works, so:
->
->Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
->
->
->But personally, instead of having `fd_supported` track whether we have 
->a valid FD or not, I’d find it more intuitive to track ownership 
->through the `fd` variable itself, i.e. initialize it to -1, and set it 
->-1 when ownership is transferred, and then close it once we don’t need 
->it anymore, but failed to transfer ownership to blkio.  The elaborate 
->way would be something like
->
->...
->-int fd, ret;
->+int fd = -1;
->+int ret;
->...
-> ret = blkio_connect(s->blkio);
->+if (!ret) {
->+    /* If we had an FD, libblkio now has ownership of it */
->+    fd = -1;
->+}
->+if (fd >= 0) {
->+    /* We still have FD ownership, but no longer need it, so close it */
->+    qemu_close(fd);
->+    fd = -1;
->+}
-> /*
->  * [...]
->  */
-> if (fd_supported && ret == -EINVAL) {
->-    qemu_close(fd);
->-
->...
->
->
->Or the shorter less-verbose version would be:
->
->...
->-int fd, ret;
->+int fd = -1;
->+int ret;
->...
-> ret = blkio_connect(s->blkio);
->+if (fd >= 0 && ret < 0) {
->+    /* Failed to give the FD to libblkio, close it */
->+    qemu_close(fd);
->+}
+On Wed, Aug 02, 2023 at 11:28:37AM +0200, Thomas Huth wrote:
+>  #if HOST_BIG_ENDIAN
+> -        uint32_t __reserved_1:8;     /* Reserved 1 */
+> -        uint32_t vector:8;           /* Interrupt Vector */
+> -        uint32_t irte_mode:1;        /* IRTE Mode */
+> -        uint32_t __reserved_0:3;     /* Reserved 0 */
+> -        uint32_t __avail:4;          /* Available spaces for software */
+> -        uint32_t delivery_mode:3;    /* Delivery Mode */
+> -        uint32_t trigger_mode:1;     /* Trigger Mode */
+> -        uint32_t redir_hint:1;       /* Redirection Hint */
+> -        uint32_t dest_mode:1;        /* Destination Mode */
+> -        uint32_t fault_disable:1;    /* Fault Processing Disable */
+> -        uint32_t present:1;          /* Whether entry present/available */
+> +        uint64_t dest_id:32;         /* Destination ID */
+> +        uint64_t __reserved_1:8;     /* Reserved 1 */
+> +        uint64_t vector:8;           /* Interrupt Vector */
+> +        uint64_t irte_mode:1;        /* IRTE Mode */
+> +        uint64_t __reserved_0:3;     /* Reserved 0 */
+> +        uint64_t __avail:4;          /* Available spaces for software */
+> +        uint64_t delivery_mode:3;    /* Delivery Mode */
+> +        uint64_t trigger_mode:1;     /* Trigger Mode */
+> +        uint64_t redir_hint:1;       /* Redirection Hint */
+> +        uint64_t dest_mode:1;        /* Destination Mode */
+> +        uint64_t fault_disable:1;    /* Fault Processing Disable */
+> +        uint64_t present:1;          /* Whether entry present/available */
+>  #else
+> -        uint32_t present:1;          /* Whether entry present/available */
+> -        uint32_t fault_disable:1;    /* Fault Processing Disable */
+> -        uint32_t dest_mode:1;        /* Destination Mode */
+> -        uint32_t redir_hint:1;       /* Redirection Hint */
+> -        uint32_t trigger_mode:1;     /* Trigger Mode */
+> -        uint32_t delivery_mode:3;    /* Delivery Mode */
+> -        uint32_t __avail:4;          /* Available spaces for software */
+> -        uint32_t __reserved_0:3;     /* Reserved 0 */
+> -        uint32_t irte_mode:1;        /* IRTE Mode */
+> -        uint32_t vector:8;           /* Interrupt Vector */
+> -        uint32_t __reserved_1:8;     /* Reserved 1 */
+> +        uint64_t present:1;          /* Whether entry present/available */
+> +        uint64_t fault_disable:1;    /* Fault Processing Disable */
+> +        uint64_t dest_mode:1;        /* Destination Mode */
+> +        uint64_t redir_hint:1;       /* Redirection Hint */
+> +        uint64_t trigger_mode:1;     /* Trigger Mode */
+> +        uint64_t delivery_mode:3;    /* Delivery Mode */
+> +        uint64_t __avail:4;          /* Available spaces for software */
+> +        uint64_t __reserved_0:3;     /* Reserved 0 */
+> +        uint64_t irte_mode:1;        /* IRTE Mode */
+> +        uint64_t vector:8;           /* Interrupt Vector */
+> +        uint64_t __reserved_1:8;     /* Reserved 1 */
+> +        uint64_t dest_id:32;         /* Destination ID */
+>  #endif
+> -        uint32_t dest_id;            /* Destination ID */
+> -        uint16_t source_id;          /* Source-ID */
+>  #if HOST_BIG_ENDIAN
+>          uint64_t __reserved_2:44;    /* Reserved 2 */
+>          uint64_t sid_vtype:2;        /* Source-ID Validation Type */
+>          uint64_t sid_q:2;            /* Source-ID Qualifier */
+> +        uint64_t source_id:16;       /* Source-ID */
+>  #else
+> +        uint64_t source_id:16;       /* Source-ID */
+>          uint64_t sid_q:2;            /* Source-ID Qualifier */
+>          uint64_t sid_vtype:2;        /* Source-ID Validation Type */
+>          uint64_t __reserved_2:44;    /* Reserved 2 */
 
-I like this, I'll do it in v2!
+A quick comment before a repost: we can merge the two HOST_BIG_ENDIAN
+blocks into one now?
 
 Thanks,
-Stefano
+
+-- 
+Peter Xu
 
 
