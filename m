@@ -2,75 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 543E676CEC8
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Aug 2023 15:33:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA00376CEDF
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Aug 2023 15:35:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRBwk-00051c-GD; Wed, 02 Aug 2023 09:31:26 -0400
+	id 1qRC0Y-0006ne-4e; Wed, 02 Aug 2023 09:35:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qRBwe-0004qy-V6; Wed, 02 Aug 2023 09:31:21 -0400
-Received: from mail-ua1-x92a.google.com ([2607:f8b0:4864:20::92a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qRBwb-0004QB-6x; Wed, 02 Aug 2023 09:31:20 -0400
-Received: by mail-ua1-x92a.google.com with SMTP id
- a1e0cc1a2514c-794c5f5ae8aso1989392241.3; 
- Wed, 02 Aug 2023 06:31:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1690983075; x=1691587875;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=9L+IzsoZgeW5BtYhZQ89vGV+bGlfFK2cXQti+uCTHuc=;
- b=PRv05f4X/K2jouEDlesLaRU2dbioWk2ROtx7BzxzsoGSvKPZvyz8dn5XJWvNrf3pY6
- UHcWJzFr1Rb1lb2mliXGeyEbk8ZNJISZ0znADPj+BZOzYbFKydZtq5hxf69opi76iRWC
- qjalgEm2kwQWITrcM0/A6hTgV0HgS3CQa2vzJ+qujzhF8nAlpekI1n2X41g9f/PHoLrL
- inZLf8bxYA4Bld4nDg7MQs7+D1Me8Ufcrtz5HKeEQHJejI3MXXy9WS1jZycHF2yhWZSi
- lIMO7JLNLSnXnBvOh/o3cl9aphZCKkIuOVdD7Nu9vjmXSsuziO8LIYVsWvnnxb7DRPpg
- 3fqQ==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qRC0U-0006nA-QH
+ for qemu-devel@nongnu.org; Wed, 02 Aug 2023 09:35:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qRC0T-00023Z-5u
+ for qemu-devel@nongnu.org; Wed, 02 Aug 2023 09:35:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1690983316;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=NyTmqo22j7nsn3+iNT4PUGw/AD9nrAyjz6mkz0fWlkA=;
+ b=MtuypVg80M1S2bxN9Vmno5wOydahb4xRFmMZPCAG+QnbVr8iFAcPI7Aq03d6Ls3VlbJXTb
+ CsHjxRbRWLa8LmfbRlzWP4RQ/qwe01MT6GiWI6zrheVRslZOeFq34ZFDioUoepA8+6MyUt
+ SrGWxdF5X2sQwVTPzSjaS6wz8T9YJXk=
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
+ [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-210-V6FXC37JPEG5P7DULej9CQ-1; Wed, 02 Aug 2023 09:35:14 -0400
+X-MC-Unique: V6FXC37JPEG5P7DULej9CQ-1
+Received: by mail-qt1-f198.google.com with SMTP id
+ d75a77b69052e-403b134421cso7687881cf.0
+ for <qemu-devel@nongnu.org>; Wed, 02 Aug 2023 06:35:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690983075; x=1691587875;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=9L+IzsoZgeW5BtYhZQ89vGV+bGlfFK2cXQti+uCTHuc=;
- b=FfIUgNAC9cjZ/pq3j+rue8TWAoNH8uCzINYeb1KskAxRDMUDLrrHbS0fD5nM2WxdVN
- /sjq3olOMqD7jwfkTVpcUu9ZIRl3lfXXegk3L5OGazlWQgh2iL+/yPpSQ0uryXxapjdB
- bJAQ/DdEQs8PLAzHgrZd1EE1sNemL+490oTiRxJopLCuxC0iKlZLz+/nmyT5BeNGv8d9
- L+6yNfyy6vWFfxNvkj9O9vzifTZWYSynpsNqU5rwkMtahbYqq49qR66d9sAAWPgi1N+O
- gujbhFeIo+n/qMO+SyetgayZnWCOwoTih67LGkd4aOmN/+dmlFLnnXMzu/sGYMG2M9AJ
- vUCQ==
-X-Gm-Message-State: ABy/qLaK6qKyD3iy9an7CCdJKZJTdJraTwQHQsT5IfGg6HN7HU8FbQrJ
- P62PNyq1XyB53neCR4jj44s0XJGSkEhXpsCVo6o=
-X-Google-Smtp-Source: APBJJlEtynJQP/3Y0FpUv+2YPzmBbipeHWgcEblROw6xlGcyJfDlQ9cjEGdj1s+NQoZNAvi4ywZ7iCMxPfHpvdGQEvM=
-X-Received: by 2002:a67:f3d1:0:b0:443:8b27:6dac with SMTP id
- j17-20020a67f3d1000000b004438b276dacmr4202486vsn.9.1690983075006; Wed, 02 Aug
- 2023 06:31:15 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1690983314; x=1691588114;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :cc:to:from:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=NyTmqo22j7nsn3+iNT4PUGw/AD9nrAyjz6mkz0fWlkA=;
+ b=ZIYWYivxAbNPP7JRwQBOLzuSCrgu+Xk/8yejY7x2Zfrmj0llq6rGT20pvh3m6PjwGU
+ uchOxl4EREi64TBE4mHyZ0oneYmTr3f1obUKkOy7unWeKoy2H/g36IEUKOEtE23qWxwN
+ AzWhNtENpnMF9AGkRPj7ZwfN25piie1E/0LA72rDOALyx7hypck9oVfSrKdUvoQiB4rd
+ UNDzxoEYuVBybTn5In2CEJvkZEnnHEjAQ0Y3iMCufiiRpa2nI/ZPOroy72Svapuy7NTS
+ afmPOF03vVE6u5b10F0vfotNvAlOw8+Qy3mgnBTv5EUbReg407+Q9Ed5tTfZ2V4r79Hp
+ B/tg==
+X-Gm-Message-State: ABy/qLb0sr5ZWoaOC2sTMZBy3iek7KUzbPE/HBOb33o8lo3pTeZISWHZ
+ kAxhJlsH9v0E1HqbTDXzbkE6+TWgnFbTQ5TW4r3dNyCU2mLz+PEJ6n0ZZSKFoaTiqUBrjZRfHiv
+ oa0TAkXlBWBvdwp4=
+X-Received: by 2002:a05:622a:120e:b0:403:9fd0:d43e with SMTP id
+ y14-20020a05622a120e00b004039fd0d43emr20884923qtx.21.1690983314315; 
+ Wed, 02 Aug 2023 06:35:14 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlGnJbO4PlQvZPB7ulCXXPDz5PhSu4n5QgRF0EtGhr96hOhH2xqbDMC+hySRkpKpGQKjxp289A==
+X-Received: by 2002:a05:622a:120e:b0:403:9fd0:d43e with SMTP id
+ y14-20020a05622a120e00b004039fd0d43emr20884900qtx.21.1690983314065; 
+ Wed, 02 Aug 2023 06:35:14 -0700 (PDT)
+Received: from [192.168.0.3] (ip-109-43-178-230.web.vodafone.de.
+ [109.43.178.230]) by smtp.gmail.com with ESMTPSA id
+ q11-20020ac8450b000000b00403af2cf825sm5332573qtn.34.2023.08.02.06.35.12
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 02 Aug 2023 06:35:13 -0700 (PDT)
+Message-ID: <bf39003f-b7a6-582f-8c99-6395f482ea1a@redhat.com>
+Date: Wed, 2 Aug 2023 15:35:10 +0200
 MIME-Version: 1.0
-References: <20230729031618.821-1-zhiwei_liu@linux.alibaba.com>
-In-Reply-To: <20230729031618.821-1-zhiwei_liu@linux.alibaba.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Wed, 2 Aug 2023 09:30:49 -0400
-Message-ID: <CAKmqyKPFFZR4pSnwDunzTKhEMtWH4BzmZ9Jrw0NsyyszYA1KDQ@mail.gmail.com>
-Subject: Re: [PATCH] target/riscv: Fix page_check_range use in fault-only-first
-To: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-Cc: qemu-devel@nongnu.org, Alistair.Francis@wdc.com, palmer@dabbelt.com, 
- bin.meng@windriver.com, liweiwei@iscas.ac.cn, dbarboza@ventanamicro.com, 
- qemu-riscv@nongnu.org, richard.henderson@linaro.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::92a;
- envelope-from=alistair23@gmail.com; helo=mail-ua1-x92a.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] hw/i386/intel_iommu: Fix endianness problems related to
+ VTD_IR_TableEntry
+From: Thomas Huth <thuth@redhat.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>, Peter Xu <peterx@redhat.com>
+Cc: Jason Wang <jasowang@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
+ =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?= <berrange@redhat.com>
+References: <20230802092837.153689-1-thuth@redhat.com>
+Content-Language: en-US
+In-Reply-To: <20230802092837.153689-1-thuth@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.102, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -87,42 +103,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jul 28, 2023 at 11:34=E2=80=AFPM LIU Zhiwei
-<zhiwei_liu@linux.alibaba.com> wrote:
->
-> Commit bef6f008b98(accel/tcg: Return bool from page_check_range) converts
-> integer return value to bool type. However, it wrongly converted the use
-> of the API in riscv fault-only-first, where page_check_range < =3D 0, sho=
-uld
-> be converted to !page_check_range.
->
-> Signed-off-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-
-Thanks!
-
-Applied to riscv-to-apply.next
-
-Alistair
-
+On 02/08/2023 11.28, Thomas Huth wrote:
+> The code already tries to do some endianness handling here, but
+> currently fails badly:
+> - While it already swaps the data when logging errors / tracing, it fails
+>    to byteswap the value before e.g. accessing entry->irte.present
+> - entry->irte.source_id is swapped with le32_to_cpu(), though this is
+>    a 16-bit value
+> - The whole union is apparently supposed to be swapped via the 64-bit
+>    data[2] array, but the struct is a mixture between 32 bit values
+>    (the first 8 bytes) and 64 bit values (the second 8 bytes), so this
+>    cannot work as expected.
+> 
+> Fix it by converting the struct to two proper 64-bit bitfields, and
+> by swapping the values only once for everybody right after reading
+> the data from memory.
+> 
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
 > ---
->  target/riscv/vector_helper.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
-> index 4d06754826..a059ef3900 100644
-> --- a/target/riscv/vector_helper.c
-> +++ b/target/riscv/vector_helper.c
-> @@ -583,7 +583,7 @@ vext_ldff(void *vd, void *v0, target_ulong base,
->                                           cpu_mmu_index(env, false));
->                  if (host) {
->  #ifdef CONFIG_USER_ONLY
-> -                    if (page_check_range(addr, offset, PAGE_READ)) {
-> +                    if (!page_check_range(addr, offset, PAGE_READ)) {
->                          vl =3D i;
->                          goto ProbeSuccess;
->                      }
-> --
-> 2.17.1
->
->
+>   Note: There are more endianness issues in the code, I haven't figured
+>         out all of them yet, Linux fails to boot in the guest when I use
+>         this device on a s390x host. But I wanted to publish this patch
+>         now already since this should also fix the "issue" with the Clang
+>         ms_struct packing that we recently discussed on the mailing list.
+
+I just found the all remaining issues (I hope). I can now run a Linux guest 
+with -device intel-iommu and it works without crashing now. I'll send out 
+the patches shorty, after cleaning them up a little bit.
+
+  Thomas
+
+
 
