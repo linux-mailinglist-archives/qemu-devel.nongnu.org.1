@@ -2,88 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 260E976D135
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Aug 2023 17:13:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4142776D184
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Aug 2023 17:15:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRDWT-0002it-I5; Wed, 02 Aug 2023 11:12:25 -0400
+	id 1qRDYi-0003nq-Gm; Wed, 02 Aug 2023 11:14:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qRDWR-0002ib-JR
- for qemu-devel@nongnu.org; Wed, 02 Aug 2023 11:12:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qRDWQ-0001bZ-01
- for qemu-devel@nongnu.org; Wed, 02 Aug 2023 11:12:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690989140;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=/0VpReZM2wEqXO0R/dtaGn98WZzYOyXQU+W3KVkwbJQ=;
- b=QQpE9CgnFa7wbzbwVtJzb32CImxddsVmWK8oLdMldw7V61gUhwM1vkc09LhKv5nzKY7L9+
- xL3e5YNXy03cRruiscIsLhjQ7xYjBg4AN9IBJzfAdOzsn8yTEHadACfVa32UP/2pvz6AxO
- xABuizXK9OSRy4gZ6yeD3rMwyUVhk8Y=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-125-L4upE4ucOKimeT8XQ04u6w-1; Wed, 02 Aug 2023 11:12:18 -0400
-X-MC-Unique: L4upE4ucOKimeT8XQ04u6w-1
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-76cb292df12so81726385a.0
- for <qemu-devel@nongnu.org>; Wed, 02 Aug 2023 08:12:18 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qRDYa-0003mr-Bs
+ for qemu-devel@nongnu.org; Wed, 02 Aug 2023 11:14:38 -0400
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qRDYY-0002c8-BT
+ for qemu-devel@nongnu.org; Wed, 02 Aug 2023 11:14:36 -0400
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-686e0213c0bso4908376b3a.1
+ for <qemu-devel@nongnu.org>; Wed, 02 Aug 2023 08:14:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1690989272; x=1691594072;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=hjiqjFM/jcTjxoUBPm1tC5JjsNU//ssKlTYPwy3r5Vg=;
+ b=mzyNfwRqGoaMo1O42sAbxedRLjS1Q+izi6rfEJvVM2zR5utnRM2HhKadR+hmg/NP0i
+ uilOzSnITmyIIeBygX1//ieeh5k7UngVQrpdtVJFWTOyfph5HNPYPfIbRw9vIKTqgarW
+ CvazLuSTHDKgC1bGTMtEWMG6yX8u9shVdt0J+PPt3dZmHIZG7OrmFoODCdqVc02cuamw
+ i4WpYnOzNN0YeeeDiDE3w6kY6NP+rxbFfd+VtrUQ77Vh5UDbQvWD8HKi+67QqfTIJn0p
+ newYjD/P8VX9O8Ar80CiTNAaWKCaDHxZK7y10vwnoDyV/3nhuZ95xLtkkBywZQvOsXCe
+ ouIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690989137; x=1691593937;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=/0VpReZM2wEqXO0R/dtaGn98WZzYOyXQU+W3KVkwbJQ=;
- b=Pv6AzUImnzXw+VrTDhAzvV6opnoyGO3/ZUtD9BWN3Zep+cCPll+wq2LG42MF+lYbWi
- JEzlmEE6jxW/xQubEIyv6WqbescvHSahuPa13lPfKEfepuvTP8XHWkxZhprAeXg7+Zxe
- TXTtF4FsZ7rPqLDhDU2BqFfhhe0dEOtGsu/7UF23nfedX8L2lCIk8XZkD3Qk8zaNjg2X
- aoNZjNWufwL5KnXd1npFbPy2GmKNyEJlu3FAsds6Y3CjkRBB0wEGk28fgSLXzAiY78kM
- tJZakV7AfLsObZUyyJABcEAcAPL3hVrsXgL8e6aE+AIvvi7lo7vmzRjvmz3Ll3f980C2
- v3VA==
-X-Gm-Message-State: ABy/qLYJL7KtvjbbrPwxlthF3rFAbD4ekUhtk6tuhfAT2AbfAr0d9NSy
- gnIcodkq9ziVWICr7BHcetLHrpQ+QObqrXijS/2wrb06jsg4NQbYbxv5xD167vePAGYKB/dv7UB
- 3XuWMX0+LKjIwKho=
-X-Received: by 2002:a05:620a:1987:b0:76c:a9eb:90bf with SMTP id
- bm7-20020a05620a198700b0076ca9eb90bfmr12483120qkb.3.1690989137703; 
- Wed, 02 Aug 2023 08:12:17 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlFX5Anv3EMJNG6CxGXMMPrPrx/HT4EhDmWFjo219x0Me+0ghu986l9OOEJKWq3pnx1Ah4qUtA==
-X-Received: by 2002:a05:620a:1987:b0:76c:a9eb:90bf with SMTP id
- bm7-20020a05620a198700b0076ca9eb90bfmr12483100qkb.3.1690989137422; 
- Wed, 02 Aug 2023 08:12:17 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- a16-20020a05620a125000b00767502e8601sm5088281qkl.35.2023.08.02.08.12.16
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 02 Aug 2023 08:12:16 -0700 (PDT)
-Date: Wed, 2 Aug 2023 11:12:15 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
- Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-Subject: Re: [PATCH] hw/i386/intel_iommu: Fix endianness problems related to
- VTD_IR_TableEntry
-Message-ID: <ZMpyT87CzeKTKfn7@x1n>
-References: <20230802092837.153689-1-thuth@redhat.com> <ZMph6J8reFmxOpit@x1n>
- <231556af-02cd-a243-acdb-78cec6fd24a2@redhat.com>
+ d=1e100.net; s=20221208; t=1690989272; x=1691594072;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=hjiqjFM/jcTjxoUBPm1tC5JjsNU//ssKlTYPwy3r5Vg=;
+ b=Jf8QtizVHepqLtLcZZIS0gH+b9Auhkgl7V8iEDV1aYU4vQBNIyc8E8ProdxtB7YwC4
+ UKpRYY23zmgPcexgrP1Ldy8Kk+uAynNTKsACvLskmC1C4Ydf4331+dpYU6wr0JrQOu+y
+ njbrfGyP2uNlowsOgqoQn29n4bhGrRQVCJj7MbANRU6I7BkxoIEQVjFu7md5J+irfcQh
+ NCOJkAe0xjCtz3m57FTKmyCxW0uS8XIsxwjxgh19adZnS5nj/4SA5kOkUtnJuOUgHRl6
+ L3fBm9hacHW76jkHAUs+4OC4z2sE9s7YRYNFtrt77qMalUWZL0c92yelaBr6f8xG+LgV
+ XQnA==
+X-Gm-Message-State: ABy/qLbbqBvbO9vwlVEW++cxZV5tQvJU4oxawkkh8jaz8MKbkFmQLUvI
+ Rd3X//5Bfj9MB7TTqqisUSq3sg==
+X-Google-Smtp-Source: APBJJlGD1vPnbM86JskqLZ4uEtRn0qQnrkV7BfOWb5XTdYvQS1RqTDekx6/VTgXvaG6Z23mt8PSkwg==
+X-Received: by 2002:a05:6a20:6a28:b0:13c:9317:ad78 with SMTP id
+ p40-20020a056a206a2800b0013c9317ad78mr16643379pzk.46.1690989272219; 
+ Wed, 02 Aug 2023 08:14:32 -0700 (PDT)
+Received: from ?IPV6:2602:47:d490:6901:b659:bbad:1a22:7ef9?
+ ([2602:47:d490:6901:b659:bbad:1a22:7ef9])
+ by smtp.gmail.com with ESMTPSA id
+ y5-20020aa78545000000b00686be6e0f36sm11216376pfn.60.2023.08.02.08.14.31
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 02 Aug 2023 08:14:31 -0700 (PDT)
+Message-ID: <0ebdeb87-6b86-85ad-b068-ca8df7b76989@linaro.org>
+Date: Wed, 2 Aug 2023 08:14:29 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <231556af-02cd-a243-acdb-78cec6fd24a2@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PULL 0/1 for 8.1] TLS crash fix
+Content-Language: en-US
+To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org, =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?=
+ <marcandre.lureau@gmail.com>, Mauro Matteo Cascella <mcascell@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+References: <20230801174650.177924-1-berrange@redhat.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230801174650.177924-1-berrange@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42a.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.102,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,88 +98,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 02, 2023 at 04:14:01PM +0200, Thomas Huth wrote:
-> On 02/08/2023 16.02, Peter Xu wrote:
-> > On Wed, Aug 02, 2023 at 11:28:37AM +0200, Thomas Huth wrote:
-> > >   #if HOST_BIG_ENDIAN
-> > > -        uint32_t __reserved_1:8;     /* Reserved 1 */
-> > > -        uint32_t vector:8;           /* Interrupt Vector */
-> > > -        uint32_t irte_mode:1;        /* IRTE Mode */
-> > > -        uint32_t __reserved_0:3;     /* Reserved 0 */
-> > > -        uint32_t __avail:4;          /* Available spaces for software */
-> > > -        uint32_t delivery_mode:3;    /* Delivery Mode */
-> > > -        uint32_t trigger_mode:1;     /* Trigger Mode */
-> > > -        uint32_t redir_hint:1;       /* Redirection Hint */
-> > > -        uint32_t dest_mode:1;        /* Destination Mode */
-> > > -        uint32_t fault_disable:1;    /* Fault Processing Disable */
-> > > -        uint32_t present:1;          /* Whether entry present/available */
-> > > +        uint64_t dest_id:32;         /* Destination ID */
-> > > +        uint64_t __reserved_1:8;     /* Reserved 1 */
-> > > +        uint64_t vector:8;           /* Interrupt Vector */
-> > > +        uint64_t irte_mode:1;        /* IRTE Mode */
-> > > +        uint64_t __reserved_0:3;     /* Reserved 0 */
-> > > +        uint64_t __avail:4;          /* Available spaces for software */
-> > > +        uint64_t delivery_mode:3;    /* Delivery Mode */
-> > > +        uint64_t trigger_mode:1;     /* Trigger Mode */
-> > > +        uint64_t redir_hint:1;       /* Redirection Hint */
-> > > +        uint64_t dest_mode:1;        /* Destination Mode */
-> > > +        uint64_t fault_disable:1;    /* Fault Processing Disable */
-> > > +        uint64_t present:1;          /* Whether entry present/available */
-> > >   #else
-> > > -        uint32_t present:1;          /* Whether entry present/available */
-> > > -        uint32_t fault_disable:1;    /* Fault Processing Disable */
-> > > -        uint32_t dest_mode:1;        /* Destination Mode */
-> > > -        uint32_t redir_hint:1;       /* Redirection Hint */
-> > > -        uint32_t trigger_mode:1;     /* Trigger Mode */
-> > > -        uint32_t delivery_mode:3;    /* Delivery Mode */
-> > > -        uint32_t __avail:4;          /* Available spaces for software */
-> > > -        uint32_t __reserved_0:3;     /* Reserved 0 */
-> > > -        uint32_t irte_mode:1;        /* IRTE Mode */
-> > > -        uint32_t vector:8;           /* Interrupt Vector */
-> > > -        uint32_t __reserved_1:8;     /* Reserved 1 */
-> > > +        uint64_t present:1;          /* Whether entry present/available */
-> > > +        uint64_t fault_disable:1;    /* Fault Processing Disable */
-> > > +        uint64_t dest_mode:1;        /* Destination Mode */
-> > > +        uint64_t redir_hint:1;       /* Redirection Hint */
-> > > +        uint64_t trigger_mode:1;     /* Trigger Mode */
-> > > +        uint64_t delivery_mode:3;    /* Delivery Mode */
-> > > +        uint64_t __avail:4;          /* Available spaces for software */
-> > > +        uint64_t __reserved_0:3;     /* Reserved 0 */
-> > > +        uint64_t irte_mode:1;        /* IRTE Mode */
-> > > +        uint64_t vector:8;           /* Interrupt Vector */
-> > > +        uint64_t __reserved_1:8;     /* Reserved 1 */
-> > > +        uint64_t dest_id:32;         /* Destination ID */
-> > >   #endif
-> > > -        uint32_t dest_id;            /* Destination ID */
-> > > -        uint16_t source_id;          /* Source-ID */
-> > >   #if HOST_BIG_ENDIAN
-> > >           uint64_t __reserved_2:44;    /* Reserved 2 */
-> > >           uint64_t sid_vtype:2;        /* Source-ID Validation Type */
-> > >           uint64_t sid_q:2;            /* Source-ID Qualifier */
-> > > +        uint64_t source_id:16;       /* Source-ID */
-> > >   #else
-> > > +        uint64_t source_id:16;       /* Source-ID */
-> > >           uint64_t sid_q:2;            /* Source-ID Qualifier */
-> > >           uint64_t sid_vtype:2;        /* Source-ID Validation Type */
-> > >           uint64_t __reserved_2:44;    /* Reserved 2 */
-> > 
-> > A quick comment before a repost: we can merge the two HOST_BIG_ENDIAN
-> > blocks into one now?
+On 8/1/23 10:46, Daniel P. Berrangé wrote:
+> The following changes since commit 802341823f1720511dd5cf53ae40285f7978c61b:
 > 
-> We could, and I also considered it while working on this. But I think it
-> would rather decrease the readability of this code. These are two separete
-> 64-bit fields, and you might want to compare the big endian version of a
-> bitfield to the little endian version next to it. If we merge, it looks
-> rather like one big 128-bitfield if you don't look carefully enough, and
-> comparision gets worse. So I'd prefer to keep them separate.
+>    Merge tag 'pull-tcg-20230731' ofhttps://gitlab.com/rth7680/qemu  into staging (2023-07-31 14:02:51 -0700)
+> 
+> are available in the Git repository at:
+> 
+>    https://gitlab.com/berrange/qemu  tags/io-tls-hs-crash-pull-request
+> 
+> for you to fetch changes up to 10be627d2b5ec2d6b3dce045144aa739eef678b4:
+> 
+>    io: remove io watch if TLS channel is closed during handshake (2023-08-01 18:45:27 +0100)
+> 
+> ----------------------------------------------------------------
+> Fix crash during early close of TLS channel
 
-We can have a comment for each uint64_t at the top, IMHO better than having
-two continuous block having the same "#ifdef" which is OTOH confusing.
+Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
 
-Not a huge deal - I saw that the new version is already there.  I'll read
-first.  Thanks a lot for fixing these problems.
 
--- 
-Peter Xu
+r~
 
 
