@@ -2,81 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB64E76C894
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Aug 2023 10:44:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6D7376C896
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Aug 2023 10:47:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qR7Sr-0004ey-7y; Wed, 02 Aug 2023 04:44:17 -0400
+	id 1qR7VD-0005lW-4U; Wed, 02 Aug 2023 04:46:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qR7Sp-0004dr-Ml
- for qemu-devel@nongnu.org; Wed, 02 Aug 2023 04:44:15 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ id 1qR7VB-0005lC-AB
+ for qemu-devel@nongnu.org; Wed, 02 Aug 2023 04:46:41 -0400
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qR7Sn-0004g9-Dp
- for qemu-devel@nongnu.org; Wed, 02 Aug 2023 04:44:15 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-1bb9e6c2a90so52211045ad.1
- for <qemu-devel@nongnu.org>; Wed, 02 Aug 2023 01:44:13 -0700 (PDT)
+ id 1qR7V9-0005Nx-Az
+ for qemu-devel@nongnu.org; Wed, 02 Aug 2023 04:46:41 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-6877eb31261so10070b3a.1
+ for <qemu-devel@nongnu.org>; Wed, 02 Aug 2023 01:46:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1690965852; x=1691570652;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=s0SzmlBXtFQO0nRfUmQ/X7m786JjVxpL29DonCamCyA=;
- b=n7jDHg/9H+L181g/1Kj0syBv4rwzYmIPPXyONgkGr+oXfwXBs4bLZX2HYpZQ8qTtx1
- /RdVGS/kH9d1tloFWxMNolfbbNQaSXA792iymgaJ4xOxt0UfK7yUY+o8kLqiXsK15Myo
- EUA7P9Wm9YQgokmTrHiEOuSkeGZLgM7kw3ayYEzlL3fNptW5Y4goW8YkAZWKu24XybsO
- aH71WQ+y9Jd5LHXTIx4tVJtUJyeztu7AYxEbQ5EvHoEKQJ4DaJ9uPlmZqeZrvcw2xQ3A
- p4KGbbaUTSypZjbgmjOAGsJArGyyea0JjZMSQbhHgF6NyR6fxw9G3vMKuGbBkfNEKy39
- nI1Q==
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1690965998; x=1691570798;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=hZOMuO3rhFRWQN0XLBRdhTTdxZDt1LzSnd4CLS3vr3w=;
+ b=A8q2HByuW5srAU7i1rcsWieYkLXuX7hCOlNugUHyw/n0ZepSb4NaYWmI8BDn4u0BH1
+ gRJbtrZo4MRQjy4hqGEXGPeoLK9kUV5W9Yyvmm8eiPzR8jWqLcWgvGWrQGYfdRMgpYfB
+ xJS6iFaO8g/RcT3rJrAwnVQT2Vs2Pm6VIxVImA8ErjPekfqFSWekmJy8jUIiOaaVTTId
+ I/rHblno7BiUyEk8AgBlF1n4DQLAYgFt9hdq4TPMYYnD06AYfhAeF9bii8Qy5ESeTReP
+ PdcOFhr2E+H+/VH92gr7DRK68YiB9tpTS7u9o4U99RlGBtaMmw8ZGv5zxSrEd0co977l
+ 7FNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690965852; x=1691570652;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=s0SzmlBXtFQO0nRfUmQ/X7m786JjVxpL29DonCamCyA=;
- b=G1YXmZ0fMXesCQCYfpWu4zwHm7mGK5L4Zt6AM1s8+FRuVijddRjAsTZnIlb0+9TIS3
- IOG4ql/c/imQCfAsNTH10TFuQhcZCj6bxHEIL3iHOgWT0DIR5QWYuAsc70FOoddSZDTY
- x1yvL19ZRCt5GrcOTi07Wb2NRfrsNRb3mIE+qwx2adLKT9WAdlHtD2w5EhKmFqcK1q52
- rG/Ro8f05jihOTmd4I0gdnDfA+jYWGIqYKUuVgFYVR1b4l6TntrIs0d32a/1rHMeLh5p
- 1mRuPreFi+jEfFnPwoCALexJBn7IeO3GzrjXHuWDWABFj5py3gTRTjxJ/lf5P/jzhqWA
- dtNw==
-X-Gm-Message-State: ABy/qLYtimIX5iK2ivVUjISzdGiRcfLcz3QDz40FLnBQgXhdBARQSky3
- 7UuEspiHcC0eBNSV8CGXPR8E1A==
-X-Google-Smtp-Source: APBJJlELvHxT8YizPEfWFdhugtgNRUAGnuvqS4A/JVvuh2RrVQB4lQlOY4+PzlfNjG1/pNGl1Vk3KA==
-X-Received: by 2002:a17:903:18f:b0:1b8:10a:d925 with SMTP id
- z15-20020a170903018f00b001b8010ad925mr17689303plg.5.1690965851923; 
- Wed, 02 Aug 2023 01:44:11 -0700 (PDT)
-Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
- ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
+ d=1e100.net; s=20221208; t=1690965998; x=1691570798;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=hZOMuO3rhFRWQN0XLBRdhTTdxZDt1LzSnd4CLS3vr3w=;
+ b=ckSkjpHBAtT7bNtUi3aknmK5C3XcMZQKmtaeHozyeeC38PcRUY6W4R8LE5MkWoFoWK
+ R4sJ7zS7S8PCA9plXZNQus4+/pKv7cjgbv58dTWCoF+dUqCZnunUSOzhrMJGs+vsYzoS
+ 4iA6rA47fpB6KXVIJh/KniAjAf7ldgvSGwArqKzowQ1oRok9a9boavj6L8yupeLwDvFt
+ 3nride4on4o3chErbZ+izaG96JxxQudbSNR3kd5Z4mzNKS76xW7FadhqbuHcf2ZaohVs
+ yDrg/H2d6L38nkGIrmW+7bKcygXzQW8jZKfOXWNaz6Ssd0kJe/So7plsGGwoaI7M7w9P
+ TRsA==
+X-Gm-Message-State: ABy/qLZWzztxmsoAKkqRo92gmKeNdxJpniFJqdo/cAei+x77h/Psp9QG
+ Jvj/2R/T7Rj2HuyYIKYXJhebwg==
+X-Google-Smtp-Source: APBJJlFi9Q9SFTPgm/rIiS6+HzOSG57M2ioiVuiuH1ZPp7jBzIwfQSvSQABez7mEqW30Ykp93KUeSQ==
+X-Received: by 2002:a05:6a21:71c1:b0:13d:f217:d318 with SMTP id
+ ay1-20020a056a2171c100b0013df217d318mr7519878pzc.49.1690965997824; 
+ Wed, 02 Aug 2023 01:46:37 -0700 (PDT)
+Received: from alarm.flets-east.jp ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
  by smtp.gmail.com with ESMTPSA id
- p9-20020a170902a40900b001bbaf09ce15sm11765570plq.152.2023.08.02.01.44.10
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 02 Aug 2023 01:44:11 -0700 (PDT)
-Message-ID: <6f73b04e-7c85-0dfb-c3cc-7a43b4663593@daynix.com>
-Date: Wed, 2 Aug 2023 17:44:09 +0900
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 8/8] linux-user: Load pie executables at upper memory
-Content-Language: en-US
-To: Helge Deller <deller@gmx.de>, qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini <pbonzini@redhat.com>,
- Joel Stanley <joel@jms.id.au>
-References: <20230801232745.4125-1-deller@gmx.de>
- <20230801232745.4125-9-deller@gmx.de>
- <6126807c-2390-27d9-315d-de67c31a8f60@daynix.com>
- <c1e68eb1-6d26-22fd-8c51-c1ba1e472187@gmx.de>
+ j22-20020aa79296000000b00659b8313d08sm10592860pfa.78.2023.08.02.01.46.28
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 02 Aug 2023 01:46:37 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <c1e68eb1-6d26-22fd-8c51-c1ba1e472187@gmx.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: 
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Michael Rolnik <mrolnik@gmail.com>,
+ "Edgar E . Iglesias" <edgar.iglesias@gmail.com>,
+ Brian Cain <bcain@quicinc.com>, Song Gao <gaosong@loongson.cn>,
+ Xiaojuan Yang <yangxiaojuan@loongson.cn>,
+ Laurent Vivier <laurent@vivier.eu>, Aurelien Jarno <aurelien@aurel32.net>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ Chris Wulff <crwulff@gmail.com>, Marek Vasut <marex@denx.de>,
+ Stafford Horne <shorne@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Artyom Tarasenko <atar4qemu@gmail.com>,
+ Bastian Koppelmann <kbastian@mail.uni-paderborn.de>,
+ Max Filippov <jcmvbkbc@gmail.com>, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org, qemu-ppc@nongnu.org, qemu-riscv@nongnu.org,
+ qemu-s390x@nongnu.org, Anton Kochkov <anton.kochkov@proton.me>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH v2 00/24] plugins: Allow to read registers
+Date: Wed,  2 Aug 2023 17:45:48 +0900
+Message-ID: <20230802084614.23619-1-akihiko.odaki@daynix.com>
+X-Mailer: git-send-email 2.41.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::632;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x632.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x42f.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -98,180 +125,163 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/08/02 17:42, Helge Deller wrote:
-> On 8/2/23 09:49, Akihiko Odaki wrote:
->> On 2023/08/02 8:27, Helge Deller wrote:
->>> Fix the elf loader to calculate a valid TASK_UNMAPPED_BASE address 
->>> for all
->>> 32-bit architectures, based on the GUEST_ADDR_MAX constant.
->>>
->>> Additionally modify the elf loader to load dynamic pie executables at
->>> around:
->>> ~ 0x5500000000  for 64-bit guest binaries on 64-bit host,
->>> - 0x00300000    for 32-bit guest binaries on 64-bit host, and
->>> - 0x00000000    for 32-bit guest binaries on 32-bit host.
->>
->> Why do you change guest addresses depending on the host?
-> 
-> The addresses are guest-addresses.
-> A 32-bit guest PIE can't be loaded at e.g. 0x5500000000,
-> while a 64-bit guest PIE needs to be loaded at 0x5500000000.
+I and other people in the University of Tokyo, where I research processor
+design, found TCG plugins are very useful for processor design exploration.
 
-I mean, why do you use address 0x00000000 for 32-bit guest binaries on 
-32-bit host while you use address 0x00300000 on 64-bit host?
+The feature we find missing is the capability to read registers from
+plugins. In this series, I propose to add such a capability by reusing
+gdbstub code.
 
-> 
->>> With this patch the Thread Sanitizer (TSan) application will work again,
->>> as in commit aab613fb9597 ("linux-user: Update TASK_UNMAPPED_BASE for
->>> aarch64").
->>>
->>> Signed-off-by: Helge Deller <deller@gmx.de>
->>> ---
->>>   linux-user/elfload.c |  6 ++++--
->>>   linux-user/loader.h  | 12 ++++++++++++
->>>   linux-user/mmap.c    | 35 ++++++++++++++++++-----------------
->>>   3 files changed, 34 insertions(+), 19 deletions(-)
->>>
->>> diff --git a/linux-user/elfload.c b/linux-user/elfload.c
->>> index 47a118e430..8f5a79b537 100644
->>> --- a/linux-user/elfload.c
->>> +++ b/linux-user/elfload.c
->>> @@ -3021,6 +3021,7 @@ static void load_elf_image(const char 
->>> *image_name, int image_fd,
->>>       struct elfhdr *ehdr = (struct elfhdr *)bprm_buf;
->>>       struct elf_phdr *phdr;
->>>       abi_ulong load_addr, load_bias, loaddr, hiaddr, error;
->>> +    unsigned long load_offset = 0;
->>>       int i, retval, prot_exec;
->>>       Error *err = NULL;
->>>       bool is_main_executable;
->>> @@ -3121,6 +3122,7 @@ static void load_elf_image(const char 
->>> *image_name, int image_fd,
->>>                * select guest_base.  In this case we pass a size.
->>>                */
->>>               probe_guest_base(image_name, 0, hiaddr - loaddr);
->>> +            load_offset = TASK_UNMAPPED_BASE_PIE;
->>>           }
->>>       }
->>>
->>> @@ -3138,7 +3140,7 @@ static void load_elf_image(const char 
->>> *image_name, int image_fd,
->>>        * In both cases, we will overwrite pages in this range with 
->>> mappings
->>>        * from the executable.
->>>        */
->>> -    load_addr = target_mmap(loaddr, (size_t)hiaddr - loaddr + 1, 
->>> PROT_NONE,
->>> +    load_addr = target_mmap(loaddr + load_offset, (size_t)hiaddr - 
->>> loaddr + 1, PROT_NONE,
->>>                               MAP_PRIVATE | MAP_ANON | MAP_NORESERVE |
->>>                               (is_main_executable ? MAP_FIXED : 0),
->>>                               -1, 0);
->>> @@ -3176,7 +3178,7 @@ static void load_elf_image(const char 
->>> *image_name, int image_fd,
->>>       info->start_data = -1;
->>>       info->end_data = 0;
->>>       /* possible start for brk is behind all sections of this ELF 
->>> file. */
->>> -    info->brk = TARGET_PAGE_ALIGN(hiaddr);
->>> +    info->brk = TARGET_PAGE_ALIGN(load_offset + hiaddr);
->>>       info->elf_flags = ehdr->e_flags;
->>>
->>>       prot_exec = PROT_EXEC;
->>> diff --git a/linux-user/loader.h b/linux-user/loader.h
->>> index 59cbeacf24..3bbfc108eb 100644
->>> --- a/linux-user/loader.h
->>> +++ b/linux-user/loader.h
->>> @@ -18,6 +18,18 @@
->>>   #ifndef LINUX_USER_LOADER_H
->>>   #define LINUX_USER_LOADER_H
->>>
->>> +/* where to map binaries? */
->>> +#if HOST_LONG_BITS == 64 && TARGET_ABI_BITS == 64
->>> +# define TASK_UNMAPPED_BASE_PIE 0x5500000000
->>> +# define TASK_UNMAPPED_BASE    0x7000000000
->>> +#elif HOST_LONG_BITS == 64 && TARGET_ABI_BITS == 32
->>> +# define TASK_UNMAPPED_BASE_PIE    0x00300000
->>> +# define TASK_UNMAPPED_BASE    (GUEST_ADDR_MAX - 0x20000000 + 1)
->>> +#else /* HOST_LONG_BITS == 32 && TARGET_ABI_BITS == 32 */
->>> +# define TASK_UNMAPPED_BASE_PIE    0x00000000
->>> +# define TASK_UNMAPPED_BASE    0x40000000
->>> +#endif
->>> +
->>>   /*
->>>    * Read a good amount of data initially, to hopefully get all the
->>>    * program headers loaded.
->>> diff --git a/linux-user/mmap.c b/linux-user/mmap.c
->>> index c624feead0..3441198e21 100644
->>> --- a/linux-user/mmap.c
->>> +++ b/linux-user/mmap.c
->>> @@ -23,6 +23,7 @@
->>>   #include "user-internals.h"
->>>   #include "user-mmap.h"
->>>   #include "target_mman.h"
->>> +#include "loader.h"
->>>
->>>   static pthread_mutex_t mmap_mutex = PTHREAD_MUTEX_INITIALIZER;
->>>   static __thread int mmap_lock_count;
->>> @@ -295,23 +296,6 @@ static bool mmap_frag(abi_ulong real_start, 
->>> abi_ulong start, abi_ulong last,
->>>       return true;
->>>   }
->>>
->>> -#if HOST_LONG_BITS == 64 && TARGET_ABI_BITS == 64
->>> -#ifdef TARGET_AARCH64
->>> -# define TASK_UNMAPPED_BASE  0x5500000000
->>> -#else
->>> -# define TASK_UNMAPPED_BASE  0x4000000000
->>> -#endif
->>> -#elif HOST_LONG_BITS == 64 && TARGET_ABI_BITS == 32
->>> -#ifdef TARGET_HPPA
->>> -# define TASK_UNMAPPED_BASE  0xfa000000
->>> -#else
->>> -# define TASK_UNMAPPED_BASE  0xe0000000
->>> -#endif
->>> -#else /* HOST_LONG_BITS == 32 && TARGET_ABI_BITS == 32 */
->>> -# define TASK_UNMAPPED_BASE  0x40000000
->>> -#endif
->>> -abi_ulong mmap_next_start = TASK_UNMAPPED_BASE;
->>> -
->>>   unsigned long last_brk;
->>>
->>>   /*
->>> @@ -344,6 +328,23 @@ abi_ulong mmap_find_vma(abi_ulong start, 
->>> abi_ulong size, abi_ulong align)
->>>       abi_ulong addr;
->>>       int wrapped, repeat;
->>>
->>> +    static abi_ulong mmap_next_start;
->>> +
->>> +    /* initialize mmap_next_start if necessary */
->>> +    if (!mmap_next_start) {
->>> +        mmap_next_start = TASK_UNMAPPED_BASE;
->>> +
->>> +        /* do sanity checks on guest memory layout */
->>> +        if (mmap_next_start >= GUEST_ADDR_MAX) {
->>> +            mmap_next_start = GUEST_ADDR_MAX - 0x1000000000 + 1;
->>
->> What if GUEST_ADDR_MAX < 0x1000000000?
-> 
-> this check affects 64-bit executables only where GUEST_ADDR_MAX is bigger
-> than that number. But I agree it's not directly visible from the code.
-> 32-bit ones are taken care of where TASK_UNMAPPED_BASE is defined.
-> 
->> I think you can just return a hard error when mmap_next_start >= 
->> GUEST_ADDR_MAX.
-> 
-> Can't happen, but I will rewrite it.
-> 
->>> +        }
->>> +
->>> +        if (TASK_UNMAPPED_BASE_PIE >= mmap_next_start) {
->>> +            fprintf(stderr, "Memory too small for PIE executables.\n");
->>
->> Perhaps it's better to use error_report() for new code.
-> 
-> Ok.
-> 
-> Helge
+The reuse of gdbstub code ensures the long-term stability of the TCG plugin
+interface for register access without incurring a burden to maintain yet
+another interface for register access.
+
+This process to add TCG plugin involves four major changes. The first one
+is to add GDBFeature structure that represents a GDB feature, which usually
+includes registers. GDBFeature can be generated from static XML files or
+dynamically generated by architecture-specific code. In fact, this is a
+refactoring independent of the feature this series adds, and potentially
+it's benefitial even without the plugin feature. The plugin feature will
+utilize this new structure to describe registers exposed to plugins.
+
+The second one is to make gdb_read_register/gdb_write_register usable
+outside of gdbstub context.
+
+The third one is to actually make registers readable for plugins.
+
+The last one is to allow to implement a QEMU plugin in C++. A plugin that
+I'll describe later is written in C++.
+
+The below is a summary of patches:
+Patch 01 fixes a bug in execlog plugin.
+Patch [02, 13] introduces GDBFeature.
+Patch [14, 17] adds information useful for plugins to GDBFeature.
+Patch [18, 20] makes registers readable outside of gdbstub context.
+Patch [21, 22] adds the feature to read registers from plugins.
+Patch [23, 24] makes it possible to write plugins in C++.
+
+The execlog plugin will have new options to demonstrate the new feature.
+I also have a plugin that uses this new feature to generate execution traces for
+Sniper processor simulator, which is available at:
+https://github.com/shioya-lab/sniper/tree/akihikodaki/bb
+
+V1 -> V2:
+  Added SPDX-License-Identifier: GPL-2.0-or-later (Philippe Mathieu-Daudé)
+  Split long lines. (Philippe Mathieu-Daudé)
+  Renamed gdb_features to gdb_static_features (Philippe Mathieu-Daudé)
+  Dropped RFC.
+
+Akihiko Odaki (24):
+  contrib/plugins: Use GRWLock in execlog
+  gdbstub: Introduce GDBFeature structure
+  gdbstub: Add num_regs member to GDBFeature
+  gdbstub: Introduce gdb_find_static_feature()
+  target/arm: Move the reference to arm-core.xml
+  hw/core/cpu: Replace gdb_core_xml_file with gdb_core_feature
+  target/arm: Use GDBFeature for dynamic XML
+  target/ppc: Use GDBFeature for dynamic XML
+  target/riscv: Use GDBFeature for dynamic XML
+  gdbstub: Use GDBFeature for gdb_register_coprocessor
+  gdbstub: Use GDBFeature for GDBRegisterState
+  gdbstub: Simplify XML lookup
+  hw/core/cpu: Remove gdb_get_dynamic_xml member
+  gdbstub: Add members to identify registers to GDBFeature
+  target/arm: Fill new members of GDBFeature
+  target/ppc: Fill new members of GDBFeature
+  target/riscv: Fill new members of GDBFeature
+  hw/core/cpu: Add a parameter to gdb_read_register/gdb_write_register
+  gdbstub: Hide gdb_has_xml
+  gdbstub: Expose functions to read registers
+  plugins: Allow to read registers
+  contrib/plugins: Allow to log registers
+  plugins: Support C++
+  contrib/plugins: Add cc plugin
+
+ MAINTAINERS                   |   2 +-
+ docs/devel/tcg-plugins.rst    |  18 +++-
+ configure                     |  15 ++-
+ meson.build                   |   2 +-
+ gdbstub/internals.h           |   8 ++
+ include/exec/gdbstub.h        |  30 +++---
+ include/hw/core/cpu.h         |  15 ++-
+ include/qemu/qemu-plugin.h    |  69 +++++++++++++-
+ target/alpha/cpu.h            |   6 +-
+ target/arm/cpu.h              |  37 ++++----
+ target/arm/internals.h        |   2 +-
+ target/avr/cpu.h              |   6 +-
+ target/cris/cpu.h             |   9 +-
+ target/hexagon/internal.h     |   6 +-
+ target/hppa/cpu.h             |   6 +-
+ target/i386/cpu.h             |   6 +-
+ target/loongarch/internals.h  |   6 +-
+ target/m68k/cpu.h             |   6 +-
+ target/microblaze/cpu.h       |   6 +-
+ target/mips/internal.h        |   6 +-
+ target/openrisc/cpu.h         |   6 +-
+ target/ppc/cpu-qom.h          |   3 +-
+ target/ppc/cpu.h              |  15 +--
+ target/riscv/cpu.h            |  10 +-
+ target/rx/cpu.h               |   6 +-
+ target/s390x/cpu.h            |   2 -
+ target/s390x/s390x-internal.h |   6 +-
+ target/sh4/cpu.h              |   6 +-
+ target/sparc/cpu.h            |   6 +-
+ target/tricore/cpu.h          |   6 +-
+ target/xtensa/cpu.h           |   6 +-
+ contrib/plugins/execlog.c     | 140 ++++++++++++++++++++-------
+ cpu.c                         |  11 ---
+ gdbstub/gdbstub.c             | 100 ++++++++++++--------
+ hw/core/cpu-common.c          |  16 +++-
+ plugins/api.c                 |  40 ++++++++
+ stubs/gdbstub.c               |   6 +-
+ target/alpha/gdbstub.c        |   6 +-
+ target/arm/cpu.c              |   6 +-
+ target/arm/cpu64.c            |   4 +-
+ target/arm/gdbstub.c          | 172 ++++++++++++++++++----------------
+ target/arm/gdbstub64.c        |  55 +++++++----
+ target/arm/tcg/cpu32.c        |   3 +-
+ target/avr/cpu.c              |   4 +-
+ target/avr/gdbstub.c          |   6 +-
+ target/cris/gdbstub.c         |   9 +-
+ target/hexagon/cpu.c          |   5 +-
+ target/hexagon/gdbstub.c      |   6 +-
+ target/hppa/gdbstub.c         |   6 +-
+ target/i386/cpu.c             |   7 +-
+ target/i386/gdbstub.c         |  10 +-
+ target/loongarch/cpu.c        |   4 +-
+ target/loongarch/gdbstub.c    |   8 +-
+ target/m68k/cpu.c             |   7 +-
+ target/m68k/gdbstub.c         |   6 +-
+ target/m68k/helper.c          |   6 +-
+ target/microblaze/cpu.c       |   9 +-
+ target/microblaze/gdbstub.c   |   6 +-
+ target/mips/gdbstub.c         |   6 +-
+ target/nios2/cpu.c            |   6 +-
+ target/openrisc/gdbstub.c     |   6 +-
+ target/ppc/cpu_init.c         |   9 +-
+ target/ppc/gdbstub.c          |  62 ++++++------
+ target/riscv/cpu.c            |  21 +----
+ target/riscv/gdbstub.c        |  68 +++++++++-----
+ target/rx/cpu.c               |   4 +-
+ target/rx/gdbstub.c           |   6 +-
+ target/s390x/cpu.c            |   4 +-
+ target/s390x/gdbstub.c        |  34 +++----
+ target/sh4/gdbstub.c          |   6 +-
+ target/sparc/gdbstub.c        |   6 +-
+ target/tricore/gdbstub.c      |   6 +-
+ target/xtensa/gdbstub.c       |   6 +-
+ contrib/plugins/Makefile      |   5 +
+ contrib/plugins/cc.cc         |  17 ++++
+ plugins/qemu-plugins.symbols  |   2 +
+ scripts/feature_to_c.py       | 102 ++++++++++++++++++++
+ scripts/feature_to_c.sh       |  69 --------------
+ tests/tcg/Makefile.target     |   3 +
+ 79 files changed, 910 insertions(+), 529 deletions(-)
+ create mode 100644 contrib/plugins/cc.cc
+ create mode 100755 scripts/feature_to_c.py
+ delete mode 100644 scripts/feature_to_c.sh
+
+-- 
+2.41.0
+
 
