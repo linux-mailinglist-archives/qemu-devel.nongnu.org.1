@@ -2,83 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BC3676DB08
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 00:56:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C99776DB28
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 01:01:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRKkr-0006lp-Ly; Wed, 02 Aug 2023 18:55:45 -0400
+	id 1qRKpa-0008H7-R4; Wed, 02 Aug 2023 19:00:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <leiyang@redhat.com>)
- id 1qRKkq-0006lg-7L
- for qemu-devel@nongnu.org; Wed, 02 Aug 2023 18:55:44 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <leiyang@redhat.com>)
- id 1qRKko-0004Oo-Cz
- for qemu-devel@nongnu.org; Wed, 02 Aug 2023 18:55:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691016940;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=O6bDyJAzi64yzjQteKBSmqGxvVyLdUeoQCUHYBLkYBA=;
- b=E+GfzmjNnhS9o63bgokHPdef+p4f9tCkU0aYYzmsWhaa7cHSW/jcGTFUAtQ09HvUfsnXca
- TG9uyWRxXVZrfT+ZusKuKDmwaDWAUWbjEzwpU5P2QgIIgQIcw1hj7BXWAoKUJxjDuQTd+Q
- Q6qUVFTjj9uj8kL351LeM+OLawuF6Mk=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-45-uw0md-DKNZSEFqAUSFbWyw-1; Wed, 02 Aug 2023 18:55:39 -0400
-X-MC-Unique: uw0md-DKNZSEFqAUSFbWyw-1
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-522c1b1e7bbso145807a12.1
- for <qemu-devel@nongnu.org>; Wed, 02 Aug 2023 15:55:39 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <isaku.yamahata@gmail.com>)
+ id 1qRKpX-0008BS-Qs
+ for qemu-devel@nongnu.org; Wed, 02 Aug 2023 19:00:37 -0400
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <isaku.yamahata@gmail.com>)
+ id 1qRKpV-0000hV-SB
+ for qemu-devel@nongnu.org; Wed, 02 Aug 2023 19:00:35 -0400
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-686d8c8fc65so265640b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 02 Aug 2023 16:00:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1691017232; x=1691622032;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=WJnNH7WPlbwS2WClazkQnfqZCkMxIFmtb2LvCA2s5hY=;
+ b=PRZiS5O8wBcvvUzqrOvMaeZ5T5OZh46aUekP+3vLtexyWIPeY3PMmAXL1qammA5ns3
+ ef4yQcyLaDxmyAFlxciDobRB7RXjrBgBHl5JamD0X18Sghu+7oVi9KZkcniq+QNJqvHO
+ mem/xL+Ir845sbxCDDk47TYrwXQz/FVGhC/xrcGogaXPzgmKu+65IIVs0GsL/3LhA3wa
+ PYCzFCmQP66Fugr/Zg5N1mgkBeATJPb56JLNu8tLT4GLS0nScwfLKZAGsCLEehAZOvmW
+ Q3+kpyL3DA2XBjkGXljrZXUXUpPsgXkKE+bHlttcLS7ofJrU7VXfpBgJZNWrZlNDe0eg
+ F0sw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691016938; x=1691621738;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=O6bDyJAzi64yzjQteKBSmqGxvVyLdUeoQCUHYBLkYBA=;
- b=EMtt5P0J80yfYrPt/8/v9ltpSPuVhw+G9FRKhzWyG1HszL5+Q6K57hkjvsO9l1vMtz
- fZA9vig05xK9A34vziJhbX8j+2z/X1pLJYfXWegnNEmxv2duUSNQjbsxcmoXZ8CyeN5d
- vmIQFDNyFSuVFN9lf/esQYLA8rX/Gzrplv4XEZ++OWuVJMgxJimKSmWBkt31iA42PvnM
- O4y0+JSLZQve2QmT8wJ5qlTgDJZ79de+TFvgTQ9ikRw8VteCzz7Cqut5Zg2Z5FEw03PD
- Y14nV4v6xASO7S+1EJPB2kAxVpPnx1LsNwPTEGRG0GE9dWgxoFpypUs+18AvCkju/eq5
- Ef0w==
-X-Gm-Message-State: ABy/qLaBho3NGI7dt3qISRvFVA0aSm6bSB9g4JsMj1io90E5DYoy4fmb
- zxFfwyC2/W7dOsZkySCvXcUIFXllzdRTwios5ApEPjYjzIANCopKNWBD3jNcdDohcP7TrzZdbgV
- ir4QWGDfLaGUyaML9d3nSVex6Sn+rhtI=
-X-Received: by 2002:aa7:d3d8:0:b0:522:37fc:71fb with SMTP id
- o24-20020aa7d3d8000000b0052237fc71fbmr6054215edr.37.1691016938296; 
- Wed, 02 Aug 2023 15:55:38 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHgmQKQQhUM4Sph53bRNCEx1SYMT7m8WdMbnU+Mm5hpiHWq0sp9fuvoraopp84YG83EdbHQgFCLe+lUuEalSK8=
-X-Received: by 2002:aa7:d3d8:0:b0:522:37fc:71fb with SMTP id
- o24-20020aa7d3d8000000b0052237fc71fbmr6054210edr.37.1691016938060; Wed, 02
- Aug 2023 15:55:38 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1691017232; x=1691622032;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=WJnNH7WPlbwS2WClazkQnfqZCkMxIFmtb2LvCA2s5hY=;
+ b=G15T+xPz0wZykK/elsju0ze2eOAFFa2y19uo8O3NoZhexZEKHQ0rLy65p1xeV0V46I
+ puOR0LpschGkA4dWVEpzwLo6AWnUJAfCgk7Qhz6+KhTz91jgHpvPL3X0Udh37Bl+6wav
+ 8SnLxUAip3zlIL2wm2gIMEvlKBz1z9oj9k3vEIAZXGs4E8UUEKiI2HOvXbCIZeU3OWAj
+ 5WAjCk8MhEn6ZbfZqqPRHnszf1vqVCplpC0zVsgsfbO5cNu8v7qWM69Run7wGMtG3Mf8
+ zMlgME6RQcqpVbDDFp61NAhG6j0f5mHCbVpi5U/FzkV1hPL0v3ggyGtREyjMzBTMqLG+
+ RSAQ==
+X-Gm-Message-State: ABy/qLbe7sIMGo8P5/15N6V/oA+U1T0qZN6z9HsJpRuPncomLcucbZo/
+ HaOae5HnkHPkolV9lZoF1D0=
+X-Google-Smtp-Source: APBJJlHayr7+GgVEbAQkj1il9BK+TyTIl/mdfB4GgsJzblb3tZ5qdjU+FPXKHwje4fqyzjGJDBDQBg==
+X-Received: by 2002:a05:6a00:16c1:b0:67e:e019:3a28 with SMTP id
+ l1-20020a056a0016c100b0067ee0193a28mr18795785pfc.16.1691017232330; 
+ Wed, 02 Aug 2023 16:00:32 -0700 (PDT)
+Received: from localhost ([192.55.55.51]) by smtp.gmail.com with ESMTPSA id
+ g3-20020aa78743000000b0068725ff9befsm7372004pfo.207.2023.08.02.16.00.31
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 02 Aug 2023 16:00:31 -0700 (PDT)
+Date: Wed, 2 Aug 2023 16:00:30 -0700
+From: Isaku Yamahata <isaku.yamahata@gmail.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Sean Christopherson <seanjc@google.com>,
+ David Hildenbrand <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Marcelo Tosatti <mtosatti@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peter Xu <peterx@redhat.com>, Chao Peng <chao.p.peng@linux.intel.com>,
+ Michael Roth <michael.roth@amd.com>, isaku.yamahata@gmail.com,
+ qemu-devel@nongnu.org, kvm@vger.kernel.org
+Subject: Re: [RFC PATCH 06/19] i386/pc: Drop pc_machine_kvm_type()
+Message-ID: <20230802230030.GF1807130@ls.amr.corp.intel.com>
+References: <20230731162201.271114-1-xiaoyao.li@intel.com>
+ <20230731162201.271114-7-xiaoyao.li@intel.com>
 MIME-Version: 1.0
-References: <cover.1690106284.git.yin31149@gmail.com>
-In-Reply-To: <cover.1690106284.git.yin31149@gmail.com>
-From: Lei Yang <leiyang@redhat.com>
-Date: Thu, 3 Aug 2023 06:55:01 +0800
-Message-ID: <CAPpAL=w-vKty0F9j5hTN4i1s_S1KLNU9spn2D+vNZZ2NV1L-6g@mail.gmail.com>
-Subject: Re: [PATCH v3 0/4] Vhost-vdpa Shadow Virtqueue VLAN support
-To: Hawkins Jiawei <yin31149@gmail.com>
-Cc: jasowang@redhat.com, mst@redhat.com, eperezma@redhat.com, 
- qemu-devel@nongnu.org, 18801353760@163.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=leiyang@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230731162201.271114-7-xiaoyao.li@intel.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=isaku.yamahata@gmail.com; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,93 +102,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-QE tested v3 of this series using the test steps provided by Hawkins
-and everything works fine.
+On Mon, Jul 31, 2023 at 12:21:48PM -0400,
+Xiaoyao Li <xiaoyao.li@intel.com> wrote:
 
-Tested-by: Lei Yang <leiyang@redhat.com>
+> pc_machine_kvm_type() was introduced by commit e21be724eaf5 ("i386/xen:
+> add pc_machine_kvm_type to initialize XEN_EMULATE mode") to do Xen
+> specific initialization by utilizing kvm_type method.
+> 
+> commit eeedfe6c6316 ("hw/xen: Simplify emulated Xen platform init")
+> moves the Xen specific initialization to pc_basic_device_init().
+> 
+> There is no need to keep the PC specific kvm_type() implementation
+> anymore. On the other hand, later patch will implement kvm_type()
+> method for all x86/i386 machines to support KVM_X86_SW_PROTECTED_VM.
+> 
+> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> ---
+>  hw/i386/pc.c         | 5 -----
+>  include/hw/i386/pc.h | 3 ---
+>  2 files changed, 8 deletions(-)
+> 
+> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+> index 3109d5e0e035..abeadd903827 100644
+> --- a/hw/i386/pc.c
+> +++ b/hw/i386/pc.c
+> @@ -1794,11 +1794,6 @@ static void pc_machine_initfn(Object *obj)
+>      cxl_machine_init(obj, &pcms->cxl_devices_state);
+>  }
+>  
+> -int pc_machine_kvm_type(MachineState *machine, const char *kvm_type)
+> -{
+> -    return 0;
+> -}
+> -
+>  static void pc_machine_reset(MachineState *machine, ShutdownCause reason)
+>  {
+>      CPUState *cs;
+> diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
+> index d54e8b1101e4..c98d628a76f3 100644
+> --- a/include/hw/i386/pc.h
+> +++ b/include/hw/i386/pc.h
+> @@ -296,15 +296,12 @@ extern const size_t pc_compat_1_5_len;
+>  extern GlobalProperty pc_compat_1_4[];
+>  extern const size_t pc_compat_1_4_len;
+>  
+> -int pc_machine_kvm_type(MachineState *machine, const char *vm_type);
+> -
+>  #define DEFINE_PC_MACHINE(suffix, namestr, initfn, optsfn) \
+>      static void pc_machine_##suffix##_class_init(ObjectClass *oc, void *data) \
+>      { \
+>          MachineClass *mc = MACHINE_CLASS(oc); \
+>          optsfn(mc); \
+>          mc->init = initfn; \
+> -        mc->kvm_type = pc_machine_kvm_type; \
+>      } \
+>      static const TypeInfo pc_machine_type_##suffix = { \
+>          .name       = namestr TYPE_MACHINE_SUFFIX, \
+> -- 
+> 2.34.1
+> 
 
-On Sun, Jul 23, 2023 at 8:10=E2=80=AFPM Hawkins Jiawei <yin31149@gmail.com>=
- wrote:
->
-> This series enables shadowed CVQ to intercept VLAN commands
-> through shadowed CVQ, update the virtio NIC device model
-> so qemu send it in a migration, and the restore of that
-> VLAN state in the destination.
->
-> ChangeLog
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D
-> v3:
->  - remove the extra "From" line in patch 1
-> "virtio-net: do not reset vlan filtering at set_features"
->
-> v2: https://lore.kernel.org/all/cover.1690100802.git.yin31149@gmail.com/
->  - remove the extra line pointed out by Eugenio in patch 3
-> "vdpa: Restore vlan filtering state"
->
-> v1: https://lore.kernel.org/all/cover.1689690854.git.yin31149@gmail.com/
->  - based on patch "[PATCH 0/3] Vhost-vdpa Shadow Virtqueue VLAN support"
-> at https://lists.gnu.org/archive/html/qemu-devel/2022-09/msg01016.html
->  - move `MAX_VLAN` macro to include/hw/virtio/virtio-net.h
-> instead of net/vhost-vdpa.c
->  - fix conflicts with the master branch
->
->
-> TestStep
-> =3D=3D=3D=3D=3D=3D=3D=3D
-> 1. test the migration using vp-vdpa device
->   - For L0 guest, boot QEMU with two virtio-net-pci net device with
-> `ctrl_vq`, `ctrl_vlan` features on, command line like:
->       -device virtio-net-pci,disable-legacy=3Don,disable-modern=3Doff,
-> iommu_platform=3Don,mq=3Don,ctrl_vq=3Don,guest_announce=3Doff,
-> indirect_desc=3Doff,queue_reset=3Doff,ctrl_vlan=3Don,...
->
->   - For L1 guest, apply the patch series and compile the source code,
-> start QEMU with two vdpa device with svq mode on, enable the `ctrl_vq`,
-> `ctrl_vlan` features on, command line like:
->       -netdev type=3Dvhost-vdpa,x-svq=3Dtrue,...
->       -device virtio-net-pci,mq=3Don,guest_announce=3Doff,ctrl_vq=3Don,
-> ctrl_vlan=3Don,...
->
->   - For L2 source guest, run the following bash command:
-> ```bash
-> #!/bin/sh
->
-> for idx in {1..4094}
-> do
->   ip link add link eth0 name vlan$idx type vlan id $idx
-> done
-> ```
->
->   - gdb attaches the L2 dest VM and break at the
-> vhost_vdpa_net_load_single_vlan(), and execute the following
-> gdbscript
-> ```gdbscript
-> ignore 1 4094
-> c
-> ```
->
->   - Execute the live migration in L2 source monitor
->
->   - Result
->     * with this series, gdb can hit the breakpoint and continue
-> the executing without triggering any error or warning.
->
-> Eugenio P=C3=A9rez (1):
->   virtio-net: do not reset vlan filtering at set_features
->
-> Hawkins Jiawei (3):
->   virtio-net: Expose MAX_VLAN
->   vdpa: Restore vlan filtering state
->   vdpa: Allow VIRTIO_NET_F_CTRL_VLAN in SVQ
->
->  hw/net/virtio-net.c            |  6 +----
->  include/hw/virtio/virtio-net.h |  6 +++++
->  net/vhost-vdpa.c               | 49 ++++++++++++++++++++++++++++++++++
->  3 files changed, 56 insertions(+), 5 deletions(-)
->
-> --
-> 2.25.1
->
->
+It seems strange for MachineClass to have kvm_type(). Probably AccelClass.
+(struct KVMAccelClass?)
 
+Anyway this is independent clean up.
+
+Reviewed-by: Isaku Yamahata <isaku.yamahata@intel.com>
+-- 
+Isaku Yamahata <isaku.yamahata@gmail.com>
 
