@@ -2,81 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4159D76CD80
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Aug 2023 14:49:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59E0776CDFD
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Aug 2023 15:10:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRBI3-0005y4-6P; Wed, 02 Aug 2023 08:49:23 -0400
+	id 1qRBbB-0006Zl-3e; Wed, 02 Aug 2023 09:09:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
- id 1qRBI0-0005vo-PQ
- for qemu-devel@nongnu.org; Wed, 02 Aug 2023 08:49:20 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
- id 1qRBHy-0001uz-Rk
- for qemu-devel@nongnu.org; Wed, 02 Aug 2023 08:49:20 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-3179ed1dfbbso3360226f8f.1
- for <qemu-devel@nongnu.org>; Wed, 02 Aug 2023 05:49:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1690980556; x=1691585356; 
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=rqRK90FQlpUq5FFVIJ9r0kLO6CGSKsy3LdjgO9tyOyE=;
- b=jvNc/hV+EBALMH2Uz8rb2a3YN+IYDFQpQ5hn3hcwCCLopeZBDEnwVpi/lMND1/7hm+
- lylEOjqHXN3SXxBb6CpK18XvpTkHDry5yOnbar3Nz4Ghq8dyLazcA9X+Fe+S3k8K0r+h
- ysw/7mjk0p1Ka6CtUOx22nI/1+WuKVdgyLwEgui1S2OE+OfcPGSTXuLQ/paeEizkAcZm
- p4kpyMl/iHzpUZjfsIHTIPhsbfoTDaHiV/lNdt498Jgej/YE0uL8PBueavKvGmVTyqDN
- qq45wAfEaNSOUazsFR/sGPtbCAgen99Cv2rVB6nn57Cy/FFAvvCJdTfDo4si1/5cp3T5
- JXbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690980556; x=1691585356;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=rqRK90FQlpUq5FFVIJ9r0kLO6CGSKsy3LdjgO9tyOyE=;
- b=PbJGsD2UqZEV9HgUvrYgHlerjS0DQwZyuuwfmM6p5zn1LcIsypTu5eBsDVlR3F5t4t
- 5YJOUrqb6YiO9ZyJpElXFhOUW0G3QrZ2vEzE6EWgkZQFGMtpLo/X4u66W7BDwHSss1dO
- V8c/DmqUM3RnrpvbQ01AHOiA7WF0ikgCCZ2CsxWt3F0iiypD4FvMPC23m6HyhfE2CeZ6
- mMp4mMrd1gvPPqwxd1LDefcJTxFW2MxFOfCavC5ohEW42IzO4vhFdYu/we/fUfNRbY/w
- UuRT/2z97iCs9o3gmzGFxdkCCSREDb7CZqGvVV0IUxSOVfdXymnbQN7klq379FXxNb6Z
- 5yHg==
-X-Gm-Message-State: ABy/qLakEWemp8oDVtXeI28tSKt0gCUX+vxi3PwksvTTgUlLh5dxmrz/
- SGMFAx1phAUY+fTAcmfAyb1rsfWV+kf214GBw8o=
-X-Google-Smtp-Source: APBJJlHcUCn0dPGRvBXhsnpWNgpLL3JdVGN3i34XLM+G1ImV6yQV8iTamKznoIV5l+MUDIFcBgt2Pw==
-X-Received: by 2002:a5d:50d0:0:b0:317:3c89:7f03 with SMTP id
- f16-20020a5d50d0000000b003173c897f03mr5194854wrt.5.1690980556449; 
- Wed, 02 Aug 2023 05:49:16 -0700 (PDT)
-Received: from rockhopper.ba.rivosinc.com (214.11.169.217.in-addr.arpa.
- [217.169.11.214]) by smtp.gmail.com with ESMTPSA id
- x7-20020adff647000000b00317731a6e07sm18944519wrp.62.2023.08.02.05.49.15
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 02 Aug 2023 05:49:16 -0700 (PDT)
-From: Rob Bradford <rbradford@rivosinc.com>
-To: qemu-devel@nongnu.org
-Cc: Rob Bradford <rbradford@rivosinc.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- qemu-riscv@nongnu.org (open list:RISC-V TCG CPUs)
-Subject: [PATCH] target/riscv: Implement WARL behaviour for
- mcountinhibit/mcounteren
-Date: Wed,  2 Aug 2023 13:49:06 +0100
-Message-ID: <20230802124906.24197-1-rbradford@rivosinc.com>
-X-Mailer: git-send-email 2.41.0
+ (Exim 4.90_1) (envelope-from <m.tyutin@yadro.com>)
+ id 1qRBb6-0006ZT-T9
+ for qemu-devel@nongnu.org; Wed, 02 Aug 2023 09:09:05 -0400
+Received: from mta-04.yadro.com ([89.207.88.248])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <m.tyutin@yadro.com>)
+ id 1qRBb4-0000fz-E5
+ for qemu-devel@nongnu.org; Wed, 02 Aug 2023 09:09:04 -0400
+DKIM-Filter: OpenDKIM Filter v2.11.0 mta-04.yadro.com 03E50C0002
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yadro.com; s=mta-04;
+ t=1690981735; bh=xPcbQgoR4FQvFF3PPLjN1g2SbYf4kSwQ5pp9Q/52uk4=;
+ h=Message-ID:Date:MIME-Version:From:Subject:To:Content-Type:From;
+ b=DC+B1sbAo5PbFmhxh54ZQ4eBHbZ2qNZjjALVEmY4m3fsy/jv4+ZZUOUU7lcQAvN30
+ gE3CWTwfklqoxKKj9x1UQAi9qGyyZLDbgsrAnjLh0RkYPgR7a0+IlbH2uCwDvVws6j
+ /q7khZ1wK6j5+f7wlpzcyl6hUL3Qkz8j5CzWqZDy1L8pmAwzd5BmWQuUh/qL0Ip0mb
+ 3rZo0inPCRImqwLxZvZ+eQNa/LohVlru5Ax+u3Zjw4QoRZ+qs/uSvWTxS7CvnEDiTR
+ /aIHEK0LcphDuQ1MWLpe+hqcnXeVpBC2FEYysoonEQj4OH+Ntw69fFbziMq4VlFVnD
+ akWQDz/0lTCfw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yadro.com; s=mta-03;
+ t=1690981735; bh=xPcbQgoR4FQvFF3PPLjN1g2SbYf4kSwQ5pp9Q/52uk4=;
+ h=Message-ID:Date:MIME-Version:From:Subject:To:Content-Type:From;
+ b=mPf5UT0qwKv9QYxcDrvt4BTqhfpn8YYGH8EgutRCOic1WrASnYdNkuh3u8yEuuKhe
+ a062qDNb/ruFkkWGXn79dtRnScBIKx1+Z0ecjoNVYg/OicgEynkydN0hnLlVoX21cs
+ EAONIL+26hHNsvOKQ3DX6/oEnpK5uTndnJkLfGldbClZ1zrI8ZFasZU5ppqEDO3xEX
+ l7FwWbOHRMIR7hd2xb5jVu9rmIhd3LqbxLZkQyUsUNiAL6GTRK42i1ZEh0LUAIS3YE
+ y+PxX/Mhhuyu0iNk7UIg3l0099aUM0aNF8a1k9/syfYuAiwL2nZoIos3EUjTLmofJ6
+ K63UavZWu17Nw==
+Message-ID: <bf8ae2fd-158a-57b6-6270-2e56b6506421@yadro.com>
+Date: Wed, 2 Aug 2023 16:08:53 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=rbradford@rivosinc.com; helo=mail-wr1-x436.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+From: Mikhail Tyutin <m.tyutin@yadro.com>
+Subject: [PATCH] Fix SEGFAULT on getting physical address of MMIO region.
+Content-Language: ru
+To: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+CC: <d.solovev@yadro.com>, <richard.henderson@linaro.org>,
+ <pbonzini@redhat.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: T-EXCH-10.corp.yadro.com (172.17.11.60) To
+ T-EXCH-08.corp.yadro.com (172.17.11.58)
+Received-SPF: pass client-ip=89.207.88.248; envelope-from=m.tyutin@yadro.com;
+ helo=mta-04.yadro.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,51 +75,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These are WARL fields - zero out the bits for unavailable counters and
-special case the TM bit in mcountinhibit which is hardwired to zero.
-This patch achieves this by modifying the value written so that any use
-of the field will see the correctly masked bits.
+The fix is to clear TLB_INVALID_MASK bit in tlb_addr, as it happens in other places e.g. load_helper().
 
-Tested by modifying OpenSBI to write max value to these CSRs and upon
-subsequent read the appropriate number of bits for number of PMUs is
-enabled and the TM bit is zero in mcountinhibit.
-
-Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
+Signed-off-by: Dmitriy Solovev <d.solovev@yadro.com>
+Signed-off-by: Mikhail Tyutin <m.tyutin@yadro.com>
 ---
- target/riscv/csr.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+  accel/tcg/cputlb.c | 2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index ea7585329e..495ff6a9c2 100644
---- a/target/riscv/csr.c
-+++ b/target/riscv/csr.c
-@@ -1834,8 +1834,11 @@ static RISCVException write_mcountinhibit(CPURISCVState *env, int csrno,
- {
-     int cidx;
-     PMUCTRState *counter;
-+    RISCVCPU *cpu = env_archcpu(env);
- 
--    env->mcountinhibit = val;
-+    /* WARL register - disable unavailable counters; TM bit is always 0 */
-+    env->mcountinhibit =
-+        val & (cpu->pmu_avail_ctrs | COUNTEREN_CY | COUNTEREN_IR);
- 
-     /* Check if any other counter is also monitoring cycles/instructions */
-     for (cidx = 0; cidx < RV_MAX_MHPMCOUNTERS; cidx++) {
-@@ -1858,7 +1861,11 @@ static RISCVException read_mcounteren(CPURISCVState *env, int csrno,
- static RISCVException write_mcounteren(CPURISCVState *env, int csrno,
-                                        target_ulong val)
- {
--    env->mcounteren = val;
-+    RISCVCPU *cpu = env_archcpu(env);
-+
-+    /* WARL register - disable unavailable counters */
-+    env->mcounteren = val & (cpu->pmu_avail_ctrs | COUNTEREN_CY | COUNTEREN_TM |
-+                             COUNTEREN_IR);
-     return RISCV_EXCP_NONE;
- }
- 
+diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
+index ba44501a7c..900dfc1079 100644
+--- a/accel/tcg/cputlb.c
++++ b/accel/tcg/cputlb.c
+@@ -1735,7 +1735,7 @@ bool tlb_plugin_lookup(CPUState *cpu, vaddr addr, int mmu_idx,
+      uintptr_t index = tlb_index(env, mmu_idx, addr);
+      uint64_t tlb_addr = is_store ? tlb_addr_write(tlbe) : tlbe->addr_read;
+  
+-    if (likely(tlb_hit(tlb_addr, addr))) {
++    if (likely(tlb_hit(tlb_addr & ~TLB_INVALID_MASK, addr))) {
+          /* We must have an iotlb entry for MMIO */
+          if (tlb_addr & TLB_MMIO) {
+              CPUTLBEntryFull *full;
 -- 
-2.41.0
+2.34.1
 
 
