@@ -2,77 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B46876D662
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Aug 2023 20:03:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAF0876D6A8
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Aug 2023 20:17:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRGA3-0008Hx-59; Wed, 02 Aug 2023 14:01:31 -0400
+	id 1qRGNX-0002cp-Fk; Wed, 02 Aug 2023 14:15:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qRG9r-0008HF-SO
- for qemu-devel@nongnu.org; Wed, 02 Aug 2023 14:01:19 -0400
-Received: from mail-ot1-x32a.google.com ([2607:f8b0:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qRGNU-0002cE-DL
+ for qemu-devel@nongnu.org; Wed, 02 Aug 2023 14:15:20 -0400
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qRG9o-0003yE-RY
- for qemu-devel@nongnu.org; Wed, 02 Aug 2023 14:01:15 -0400
-Received: by mail-ot1-x32a.google.com with SMTP id
- 46e09a7af769-6b9e478e122so122562a34.1
- for <qemu-devel@nongnu.org>; Wed, 02 Aug 2023 11:01:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qRGNS-00028Z-Q2
+ for qemu-devel@nongnu.org; Wed, 02 Aug 2023 14:15:20 -0400
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-1bb893e6365so1117365ad.2
+ for <qemu-devel@nongnu.org>; Wed, 02 Aug 2023 11:15:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1690999268; x=1691604068;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=ZbCdS8/CIvr20XcpwDEnPJ9tjc+DYre0UOSVutoJ5Lk=;
- b=EBu0DJ43oTwVWvq6W4vDPfUYRgN5Mw8ZVyNlvdtelslyOf7tAM8fgJbT1z5QP6WQh8
- y8vhpd2toLKXOs82YQh4/bx7uNmN+eY6ZwU8EAVSv8T906jGcy05w5d4s6IhNcpBPxlC
- KzU6Dpv0/fR6SAxcu04v0vhTjROQ+9KFHkwokU1WSIY9zL+5HkrPjMU0hMDWQATlRQUB
- 3aH3SMFbNOrgdla59nH2TDHfM5V+YAaah/nbyAdu1SrO9Jrlm94WXGUID5GoEFMv/5a1
- JJAPx1sy0mMBfoGXcL3a17FbjyLt5Zz5Tx8Df2su/0CA1fIduCaNc0LCgMl908GNxfDq
- n35w==
+ d=linaro.org; s=google; t=1691000116; x=1691604916;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=3wOR0kQWOcIzlKyOpLj9KPr1CfNwBQ3Dgeld4x3FsTs=;
+ b=boMO9HO2gilTBhniKMQjkj5snZIWQI+5o3am7qjbuRRQkuyPKCn9KqD+XC1qQqtm3P
+ GBEr9jwfZFa8WNMrAeFUT5q9jnI4rF7xY5LdDJhwykw/SwPzRRhW4GXXX3O1Io7+7xKN
+ WA9yAHw7SOaCsDjNx56v9rOAyhowwWxm5+SK7VAlqGWB1XrdWDL2hTaarFErJjbNWq0D
+ rTvE/Bqlv0/jObj58XaCg1MXyFvXX4LEwIQb9HBcwLZYBbV2dfxQv1YOonPQccSoZeFs
+ cTJDgkOvyMwRr13LMHKbxbok9XSS7e0GQOp+96dO2fxnJ02GPUfjPt3kkefeguvUeFHT
+ ANtg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690999268; x=1691604068;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=ZbCdS8/CIvr20XcpwDEnPJ9tjc+DYre0UOSVutoJ5Lk=;
- b=lIYEDlj3xrkrVLARqDB0PIye48BazNIX8jWzwTu6V1OstwSze/HThcey7M1NTTlWwQ
- 9bmvzbPWw8VTMVuqEChbfRBA2S+B5mGwzO8SqX0pQQ9XjrNiQ/Ui+V5pEZKqNoVoFYDb
- 2T1mRfM+gt2Xi4vYbcHSNc7ZrnOayM3vMsm3bH6fU3vfwc/Xlu3Oh+TWwdN0mQtnPBzd
- SAnZYC/FoCBlvt8X1FriFuFHesP136Ib7m3QshpiJeLtSqyCmTeTPJr0lwnCP7t92SVA
- FpwbIsJbZCcdbIYRNi1ea4mt9Wp2AzBJwnYLEkLozuyezVwJhb9qWZn1sKxieMBWWbiR
- M8lQ==
-X-Gm-Message-State: ABy/qLYyUf6WHSWbZRBINLw75RNpSceHCtYwWgzEI2agsRIzFNZjxlNI
- 74sIBAfsBSiAVB3uIzWDarECeDXylwJalc/SXc0kTA==
-X-Google-Smtp-Source: APBJJlGgCQaaPj9xU2opLgitpkONCyQ3dKVYPoPYnWrlJcdP22LddhRbf728v6E1jeu/GFmidYeiXw==
-X-Received: by 2002:a9d:7554:0:b0:6b7:52ce:ff38 with SMTP id
- b20-20020a9d7554000000b006b752ceff38mr15540841otl.16.1690999268117; 
- Wed, 02 Aug 2023 11:01:08 -0700 (PDT)
-Received: from grind.. ([187.11.154.63]) by smtp.gmail.com with ESMTPSA id
- b23-20020a056830105700b006b8c6eb962esm6149906otp.52.2023.08.02.11.01.05
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 02 Aug 2023 11:01:07 -0700 (PDT)
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH] target/riscv/kvm.c: fix mvendorid size in
- vcpu_set_machine_ids()
-Date: Wed,  2 Aug 2023 15:00:58 -0300
-Message-ID: <20230802180058.281385-1-dbarboza@ventanamicro.com>
-X-Mailer: git-send-email 2.41.0
+ d=1e100.net; s=20221208; t=1691000116; x=1691604916;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=3wOR0kQWOcIzlKyOpLj9KPr1CfNwBQ3Dgeld4x3FsTs=;
+ b=VM39xTXkDNM+b2Y0N1rbENrWDeUmE4BvvoHx5NiNqGJ6YqfO9sCRPB6WyL2rxEGk/G
+ yWNmClznVpMqe3NDg2Z5X3vvpEgcHa/irmIUMxPSSMqrhuFw8cELlcd596YehSsK9Uo3
+ CgjOuVi/B+XiAVd0QABVMrPzr5U4OHjFqd9Tlf0QL4J/xa6VTwS5j/moRgZaP6TDQZkB
+ 076ZBhshQakGzvqo7jUknuqSaZcJ7Xdj3B/2QG8wleSUMXb/jICO6MEULLyn6//23mje
+ KXVXYel9KlUeHZ6IDx7i5L7tMN8zUMIGuxgGonvt8JHi9ZdsjxfoUCgwhiWloaBTXQr1
+ op8g==
+X-Gm-Message-State: ABy/qLZZCe+N9bZDMDApTDoa2alQcIV5UxDDI2A/wRhUpkPyc7rPWNHn
+ vywBpjVIvnUhzwu8LXdRx+wDXw==
+X-Google-Smtp-Source: APBJJlGomX+/MPLnVu8cNW2LOJYL0mWfqbaM/hS1pUQUmVpU7LovZWUAhR0qANJiXHQFaTK3Bx4XwQ==
+X-Received: by 2002:a17:903:32ce:b0:1b6:79e3:636d with SMTP id
+ i14-20020a17090332ce00b001b679e3636dmr19458885plr.58.1691000116511; 
+ Wed, 02 Aug 2023 11:15:16 -0700 (PDT)
+Received: from ?IPV6:2602:47:d490:6901:b659:bbad:1a22:7ef9?
+ ([2602:47:d490:6901:b659:bbad:1a22:7ef9])
+ by smtp.gmail.com with ESMTPSA id
+ y23-20020a17090264d700b001a6d4ea7301sm12896145pli.251.2023.08.02.11.15.15
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 02 Aug 2023 11:15:16 -0700 (PDT)
+Message-ID: <52cb992d-90b5-e28c-8184-6f3637f2459e@linaro.org>
+Date: Wed, 2 Aug 2023 11:15:14 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32a;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-ot1-x32a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v2 2/3] linux-user: Emulate /proc/cpuinfo on aarch64 and
+ arm
+Content-Language: en-US
+To: Helge Deller <deller@gmx.de>, qemu-devel@nongnu.org
+Cc: Laurent Vivier <laurent@vivier.eu>,
+ Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?= <berrange@redhat.com>
+References: <20230801230842.414421-1-deller@gmx.de>
+ <20230801230842.414421-3-deller@gmx.de>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230801230842.414421-3-deller@gmx.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.102,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -90,78 +99,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-cpu->cfg.mvendorid is a 32 bit field and kvm_set_one_reg() always write
-a target_ulong val, i.e. a 64 bit field in a 64 bit host.
+On 8/1/23 16:08, Helge Deller wrote:
+> +#if defined(TARGET_AARCH64) || defined(TARGET_ARM)
+> +static int open_cpuinfo(CPUArchState *cpu_env, int fd)
+> +{
+> +    const int is64 = TARGET_ABI_BITS == 64;
+> +    ARMCPU *cpu = ARM_CPU(thread_cpu);
+> +    uint64_t midr = cpu->midr;
+> +    const int rev  = (midr & 0xf);
+> +    const int arch = is64 ? 8 : 7;
 
-Given that we're passing a pointer to the mvendorid field, the reg is
-reading 64 bits starting from mvendorid and going 32 bits in the next
-field, marchid. Here's an example:
+The 32-bit arch is not automatically v7: -cpu max is v8 and -cpu ti925t is v4.
 
-$ ./qemu-system-riscv64 -machine virt,accel=kvm -m 2G -smp 1 \
-   -cpu rv64,marchid=0xab,mvendorid=0xcd,mimpid=0xef(...)
+You need an if ladder for this:
 
-(inside the guest)
- # cat /proc/cpuinfo
-processor	: 0
-hart		: 0
-isa		: rv64imafdc_zicbom_zicboz_zihintpause_zbb_sstc
-mmu		: sv57
-mvendorid	: 0xab000000cd
-marchid		: 0xab
-mimpid		: 0xef
-
-'mvendorid' was written as a combination of 0xab (the value from the
-adjacent field, marchid) and its intended value 0xcd.
-
-Fix it by assigning cpu->cfg.mvendorid to a target_ulong var 'reg' and
-use it as input for kvm_set_one_reg(). Here's the result with this patch
-applied and using the same QEMU command line:
-
- # cat /proc/cpuinfo
-processor	: 0
-hart		: 0
-isa		: rv64imafdc_zicbom_zicboz_zihintpause_zbb_sstc
-mmu		: sv57
-mvendorid	: 0xcd
-marchid		: 0xab
-mimpid		: 0xef
-
-This bug affects only the generic (rv64) CPUs when running with KVM in a
-64 bit env since the 'host' CPU does not allow the machine IDs to be
-changed via command line.
-
-Fixes: 1fb5a622f7 ("target/riscv: handle mvendorid/marchid/mimpid for KVM CPUs")
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
----
- target/riscv/kvm.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
-
-diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
-index 9d8a8982f9..b1fd2233c0 100644
---- a/target/riscv/kvm.c
-+++ b/target/riscv/kvm.c
-@@ -852,12 +852,19 @@ void kvm_arch_init_irq_routing(KVMState *s)
- static int kvm_vcpu_set_machine_ids(RISCVCPU *cpu, CPUState *cs)
- {
-     CPURISCVState *env = &cpu->env;
-+    target_ulong reg;
-     uint64_t id;
-     int ret;
- 
-     id = kvm_riscv_reg_id(env, KVM_REG_RISCV_CONFIG,
-                           KVM_REG_RISCV_CONFIG_REG(mvendorid));
--    ret = kvm_set_one_reg(cs, id, &cpu->cfg.mvendorid);
-+    /*
-+     * cfg.mvendorid is an uint32 but a target_ulong will
-+     * be written. Assign it to a target_ulong var to avoid
-+     * writing pieces of other cpu->cfg fields in the reg.
-+     */
-+    reg = cpu->cfg.mvendorid;
-+    ret = kvm_set_one_reg(cs, id, &reg);
-     if (ret != 0) {
-         return ret;
+     if (arm_feature(&cpu->env, ARM_FEATURE_V8)) {
+         arch = 8;
+     } else if (arm_feature(&cpu->env, ARM_FEATURE_V7)) {
+         arch = 7;
+     } else if (arm_feature(&cpu->env, ARM_FEATURE_V6)) {
+         arch = 6;
+     } else if (arm_feature(&cpu->env, ARM_FEATURE_V5)) {
+         arch = 5;
+     } else {
+         arch = 4;
      }
--- 
-2.41.0
 
+Also,
+
+     ref = FIELD_EX64(cpu->midr, MIDR_EL1, REVISION);
+
+etc, instead of masking by hand.
+
+> +        dprintf(fd, "model name\t: ARMv%d Processor rev %d (%s%c)\n",
+> +            arch, rev, is64 ? "v8" : "armv7",
+
+Will need adjustment.
+
+> +#if TARGET_BIG_ENDIAN
+> +            'b'
+> +#else
+> +            'l'
+> +#endif
+
+Don't need an ifdef: (TARGET_BIG_ENDIAN ? 'b' : 'l').
+
+> +        dprintf(fd, "CPU implementer\t: %#02x\n", (int)(midr >> 24) & 0xff);
+> +        dprintf(fd, "CPU architecture: %d\n",     arch);
+> +        dprintf(fd, "CPU variant\t: %#x\n",       (int)(midr >> 20) & 0xf );
+> +        dprintf(fd, "CPU part\t: %#03x\n",        (int)(midr >> 4) & 0xfff);
+> +        dprintf(fd, "CPU revision\t: %d\n\n",     rev);
+> +    }
+
+FIELD_EX64(midr, MIDR_EL1, ...)
+
+Though I have some memory of these fields changing across arch versions.
+You might need to extract them earlier, within the if ladder.
+
+
+r~
 
