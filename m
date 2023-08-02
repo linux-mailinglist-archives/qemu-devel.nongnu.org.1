@@ -2,85 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59DFE76C76C
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Aug 2023 09:51:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4598E76C7E5
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Aug 2023 10:05:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qR6cG-0002oj-8v; Wed, 02 Aug 2023 03:49:56 -0400
+	id 1qR6pc-0001kO-53; Wed, 02 Aug 2023 04:03:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qR6cE-0002nw-8v
- for qemu-devel@nongnu.org; Wed, 02 Aug 2023 03:49:54 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qR6cC-0008Qk-7u
- for qemu-devel@nongnu.org; Wed, 02 Aug 2023 03:49:54 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-1bc34b32785so1896205ad.3
- for <qemu-devel@nongnu.org>; Wed, 02 Aug 2023 00:49:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1690962591; x=1691567391;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=FC/IqXqLAMtSpIR3kn0P3CAh5iOFM86gxzwQRpTi+4Q=;
- b=U1wK9LldyV/xpiidDF5BkOctNMqnE71lgvLh/Gn4oj2nXCxATH67Aoberqgnwvas5u
- G6niU3HC1C1IqMrWEW07WH5WVuMeOLYnv/7mhsUfEEbZUcRs6Dy95d37fe7hD+QaQRCL
- 8l3tdoVg4RSY4MGXkGrnRfCtgMqoxVnOZ5QfJB3+Ene0927EY/hFYjPAdnm0wmDYhE36
- NET9dT8MEuZybXZiU3w3AD6Xf83Ah5cmlqA9MjnJoWwi2/hTLqtcxkM3SPhaLyYk4zQ9
- P7RiAQLBUjoK3muq9CS8H/i412DLsyfPafuQA13oBnI0GyfuStzvY+4YtU6NRhSk0lcs
- iFFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690962591; x=1691567391;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=FC/IqXqLAMtSpIR3kn0P3CAh5iOFM86gxzwQRpTi+4Q=;
- b=BpUEhsecz20q57xa1UlEm7XheAE0oPAXLKSJV2kakWrnEZ48Vw5CkyAaekgnaAVgmz
- 3vomoLiYwhfPTG6l8rGX3igs7Wf1/hfddQHc6IqwCLYsRXMI1yW1osaLUCfXc7E4BZ4R
- nHdQq/zCPJXvRzMAt/V4k8zch7mLDL9f1YNdt+wQ0yR5hNDhj4Tf2lZllmRIVhfrRzfA
- EW+o8aGgjAJAklrGItcJJEPJBZ/H+lI8du5nIXSKXUAlzysW8w2hVD0xQrPjAyY/rASE
- ZKESwqDpcnhrePcqi8VxwOgr1aifXIkydEBUZeot6Ya4WFT1xD+uB9M5ih4cYL5JgQdH
- QFpg==
-X-Gm-Message-State: ABy/qLZaHR4GbZWeC6eED6EvYuVmy0UkX6YNYQnBoWfFDP2c/X65nog1
- Uk4wQsqZyG+UdN6bQ72znbvEJw==
-X-Google-Smtp-Source: APBJJlHbCDWFJxMjEVZFYVB96eNbKBtx74mOt6s+cdf5xE7B1ZrHh2yePZeIvfRSv6ltYANSAVLYMA==
-X-Received: by 2002:a17:902:bc88:b0:1b9:f7f4:5687 with SMTP id
- bb8-20020a170902bc8800b001b9f7f45687mr11112145plb.24.1690962590762; 
- Wed, 02 Aug 2023 00:49:50 -0700 (PDT)
-Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
- ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
- by smtp.gmail.com with ESMTPSA id
- i5-20020a170902eb4500b001ae0a4b1d3fsm11704336pli.153.2023.08.02.00.49.48
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 02 Aug 2023 00:49:50 -0700 (PDT)
-Message-ID: <6126807c-2390-27d9-315d-de67c31a8f60@daynix.com>
-Date: Wed, 2 Aug 2023 16:49:47 +0900
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1qR6pa-0001kA-1J
+ for qemu-devel@nongnu.org; Wed, 02 Aug 2023 04:03:42 -0400
+Received: from [192.55.52.120] (helo=mgamail.intel.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1qR6pY-0007bi-3q
+ for qemu-devel@nongnu.org; Wed, 02 Aug 2023 04:03:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1690963420; x=1722499420;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=83fW9XZQKMG666lu8RCXFlJ6rej8OW3/lE+RD9JXFks=;
+ b=RmhSGquAVZ+aRWlJOGp8r3acJMOR31kIKyPmQafDTol+rKAZsG2IBv1I
+ bwfn5Um0E/kf/Hq6wPWPiQwPVBfTl7u0r31Nmpp99ttYYYyEETlvcWnWx
+ /ngphmfXxDFSTBD0QlaGgHt44iXEDebsKmvs4PxjyytMkMwmFSLZy+UPH
+ 2PdPkToFRITBfMNB812m3LP27AhlYuWv6kgZMsLPeC74yqOHdnejj6C9p
+ j7DV1wCFHJ740TeOgbxG4+c6BRESFkj7vKRpyoVJevRJZNqK7QdsSRFpW
+ wo+YgsEB2g5wZBFPLJ5hp7r84twEPBm5AnRILrEkb7yGIS/oN7Xvxgbvi Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10789"; a="368411435"
+X-IronPort-AV: E=Sophos;i="6.01,248,1684825200"; d="scan'208";a="368411435"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+ by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Aug 2023 01:03:35 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10789"; a="732288530"
+X-IronPort-AV: E=Sophos;i="6.01,248,1684825200"; d="scan'208";a="732288530"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.6.77])
+ ([10.93.6.77])
+ by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Aug 2023 01:03:30 -0700
+Message-ID: <2addfff0-88bf-59aa-f2f3-8129366a006d@intel.com>
+Date: Wed, 2 Aug 2023 16:03:27 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 8/8] linux-user: Load pie executables at upper memory
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.13.0
+Subject: Re: [RFC PATCH 08/19] HostMem: Add private property to indicate to
+ use kvm gmem
 Content-Language: en-US
-To: Helge Deller <deller@gmx.de>, qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini <pbonzini@redhat.com>,
- Joel Stanley <joel@jms.id.au>
-References: <20230801232745.4125-1-deller@gmx.de>
- <20230801232745.4125-9-deller@gmx.de>
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <20230801232745.4125-9-deller@gmx.de>
+To: David Hildenbrand <david@redhat.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>,
+ Igor Mammedov <imammedo@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Marcelo Tosatti <mtosatti@redhat.com>
+Cc: Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Peter Xu <peterx@redhat.com>, Chao Peng <chao.p.peng@linux.intel.com>,
+ Michael Roth <michael.roth@amd.com>, isaku.yamahata@gmail.com,
+ qemu-devel@nongnu.org, kvm@vger.kernel.org
+References: <20230731162201.271114-1-xiaoyao.li@intel.com>
+ <20230731162201.271114-9-xiaoyao.li@intel.com>
+ <f8e40f1a-729b-f520-299a-4132e371be61@redhat.com>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <f8e40f1a-729b-f520-299a-4132e371be61@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::629;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x629.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 192.55.52.120 (failed)
+Received-SPF: pass client-ip=192.55.52.120; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -36
+X-Spam_score: -3.7
+X-Spam_bar: ---
+X-Spam_report: (-3.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.001, NICE_REPLY_A=-0.092,
+ RCVD_IN_DNSWL_MED=-2.3, RDNS_NONE=0.793, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,159 +95,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/08/02 8:27, Helge Deller wrote:
-> Fix the elf loader to calculate a valid TASK_UNMAPPED_BASE address for all
-> 32-bit architectures, based on the GUEST_ADDR_MAX constant.
+On 8/2/2023 1:21 AM, David Hildenbrand wrote:
+> On 31.07.23 18:21, Xiaoyao Li wrote:
+>> From: Isaku Yamahata <isaku.yamahata@intel.com>
+>>
+>> Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
+>> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+>> ---
+>>   backends/hostmem.c       | 18 ++++++++++++++++++
+>>   include/sysemu/hostmem.h |  2 +-
+>>   qapi/qom.json            |  4 ++++
+>>   3 files changed, 23 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/backends/hostmem.c b/backends/hostmem.c
+>> index 747e7838c031..dbdbb0aafd45 100644
+>> --- a/backends/hostmem.c
+>> +++ b/backends/hostmem.c
+>> @@ -461,6 +461,20 @@ static void 
+>> host_memory_backend_set_reserve(Object *o, bool value, Error **errp)
+>>       }
+>>       backend->reserve = value;
+>>   }
+>> +
+>> +static bool host_memory_backend_get_private(Object *o, Error **errp)
+>> +{
+>> +    HostMemoryBackend *backend = MEMORY_BACKEND(o);
+>> +
+>> +    return backend->private;
+>> +}
+>> +
+>> +static void host_memory_backend_set_private(Object *o, bool value, 
+>> Error **errp)
+>> +{
+>> +    HostMemoryBackend *backend = MEMORY_BACKEND(o);
+>> +
+>> +    backend->private = value;
+>> +}
+>>   #endif /* CONFIG_LINUX */
+>>   static bool
+>> @@ -541,6 +555,10 @@ host_memory_backend_class_init(ObjectClass *oc, 
+>> void *data)
+>>           host_memory_backend_get_reserve, 
+>> host_memory_backend_set_reserve);
+>>       object_class_property_set_description(oc, "reserve",
+>>           "Reserve swap space (or huge pages) if applicable");
+>> +    object_class_property_add_bool(oc, "private",
+>> +        host_memory_backend_get_private, 
+>> host_memory_backend_set_private);
+>> +    object_class_property_set_description(oc, "private",
+>> +        "Use KVM gmem private memory");
+>>   #endif /* CONFIG_LINUX */
+>>       /*
+>>        * Do not delete/rename option. This option must be considered 
+>> stable
+>> diff --git a/include/sysemu/hostmem.h b/include/sysemu/hostmem.h
+>> index 39326f1d4f9c..d88970395618 100644
+>> --- a/include/sysemu/hostmem.h
+>> +++ b/include/sysemu/hostmem.h
+>> @@ -65,7 +65,7 @@ struct HostMemoryBackend {
+>>       /* protected */
+>>       uint64_t size;
+>>       bool merge, dump, use_canonical_path;
+>> -    bool prealloc, is_mapped, share, reserve;
+>> +    bool prealloc, is_mapped, share, reserve, private;
+>>       uint32_t prealloc_threads;
+>>       ThreadContext *prealloc_context;
+>>       DECLARE_BITMAP(host_nodes, MAX_NODES + 1);
+>> diff --git a/qapi/qom.json b/qapi/qom.json
+>> index 7f92ea43e8e1..e0b2044e3d20 100644
+>> --- a/qapi/qom.json
+>> +++ b/qapi/qom.json
+>> @@ -605,6 +605,9 @@
+>>   # @reserve: if true, reserve swap space (or huge pages) if applicable
+>>   #     (default: true) (since 6.1)
+>>   #
+>> +# @private: if true, use KVM gmem private memory
+>> +#           (default: false) (since 8.1)
+>> +#
 > 
-> Additionally modify the elf loader to load dynamic pie executables at
-> around:
-> ~ 0x5500000000  for 64-bit guest binaries on 64-bit host,
-> - 0x00300000    for 32-bit guest binaries on 64-bit host, and
-> - 0x00000000    for 32-bit guest binaries on 32-bit host.
+> But that's not what any of this does.
+> 
+> This patch only adds a property and doesn't even explain what it intends 
+> to achieve with that.
+> 
+> How will it be used from a user? What will it affect internally? What 
+> will it modify in regards of the memory backend?
 
-Why do you change guest addresses depending on the host?
+How it will be used is in the next patch, patch 09.
 
-> 
-> With this patch the Thread Sanitizer (TSan) application will work again,
-> as in commit aab613fb9597 ("linux-user: Update TASK_UNMAPPED_BASE for
-> aarch64").
-> 
-> Signed-off-by: Helge Deller <deller@gmx.de>
-> ---
->   linux-user/elfload.c |  6 ++++--
->   linux-user/loader.h  | 12 ++++++++++++
->   linux-user/mmap.c    | 35 ++++++++++++++++++-----------------
->   3 files changed, 34 insertions(+), 19 deletions(-)
-> 
-> diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-> index 47a118e430..8f5a79b537 100644
-> --- a/linux-user/elfload.c
-> +++ b/linux-user/elfload.c
-> @@ -3021,6 +3021,7 @@ static void load_elf_image(const char *image_name, int image_fd,
->       struct elfhdr *ehdr = (struct elfhdr *)bprm_buf;
->       struct elf_phdr *phdr;
->       abi_ulong load_addr, load_bias, loaddr, hiaddr, error;
-> +    unsigned long load_offset = 0;
->       int i, retval, prot_exec;
->       Error *err = NULL;
->       bool is_main_executable;
-> @@ -3121,6 +3122,7 @@ static void load_elf_image(const char *image_name, int image_fd,
->                * select guest_base.  In this case we pass a size.
->                */
->               probe_guest_base(image_name, 0, hiaddr - loaddr);
-> +            load_offset = TASK_UNMAPPED_BASE_PIE;
->           }
->       }
-> 
-> @@ -3138,7 +3140,7 @@ static void load_elf_image(const char *image_name, int image_fd,
->        * In both cases, we will overwrite pages in this range with mappings
->        * from the executable.
->        */
-> -    load_addr = target_mmap(loaddr, (size_t)hiaddr - loaddr + 1, PROT_NONE,
-> +    load_addr = target_mmap(loaddr + load_offset, (size_t)hiaddr - loaddr + 1, PROT_NONE,
->                               MAP_PRIVATE | MAP_ANON | MAP_NORESERVE |
->                               (is_main_executable ? MAP_FIXED : 0),
->                               -1, 0);
-> @@ -3176,7 +3178,7 @@ static void load_elf_image(const char *image_name, int image_fd,
->       info->start_data = -1;
->       info->end_data = 0;
->       /* possible start for brk is behind all sections of this ELF file. */
-> -    info->brk = TARGET_PAGE_ALIGN(hiaddr);
-> +    info->brk = TARGET_PAGE_ALIGN(load_offset + hiaddr);
->       info->elf_flags = ehdr->e_flags;
-> 
->       prot_exec = PROT_EXEC;
-> diff --git a/linux-user/loader.h b/linux-user/loader.h
-> index 59cbeacf24..3bbfc108eb 100644
-> --- a/linux-user/loader.h
-> +++ b/linux-user/loader.h
-> @@ -18,6 +18,18 @@
->   #ifndef LINUX_USER_LOADER_H
->   #define LINUX_USER_LOADER_H
-> 
-> +/* where to map binaries? */
-> +#if HOST_LONG_BITS == 64 && TARGET_ABI_BITS == 64
-> +# define TASK_UNMAPPED_BASE_PIE 0x5500000000
-> +# define TASK_UNMAPPED_BASE	0x7000000000
-> +#elif HOST_LONG_BITS == 64 && TARGET_ABI_BITS == 32
-> +# define TASK_UNMAPPED_BASE_PIE	0x00300000
-> +# define TASK_UNMAPPED_BASE	(GUEST_ADDR_MAX - 0x20000000 + 1)
-> +#else /* HOST_LONG_BITS == 32 && TARGET_ABI_BITS == 32 */
-> +# define TASK_UNMAPPED_BASE_PIE	0x00000000
-> +# define TASK_UNMAPPED_BASE	0x40000000
-> +#endif
-> +
->   /*
->    * Read a good amount of data initially, to hopefully get all the
->    * program headers loaded.
-> diff --git a/linux-user/mmap.c b/linux-user/mmap.c
-> index c624feead0..3441198e21 100644
-> --- a/linux-user/mmap.c
-> +++ b/linux-user/mmap.c
-> @@ -23,6 +23,7 @@
->   #include "user-internals.h"
->   #include "user-mmap.h"
->   #include "target_mman.h"
-> +#include "loader.h"
-> 
->   static pthread_mutex_t mmap_mutex = PTHREAD_MUTEX_INITIALIZER;
->   static __thread int mmap_lock_count;
-> @@ -295,23 +296,6 @@ static bool mmap_frag(abi_ulong real_start, abi_ulong start, abi_ulong last,
->       return true;
->   }
-> 
-> -#if HOST_LONG_BITS == 64 && TARGET_ABI_BITS == 64
-> -#ifdef TARGET_AARCH64
-> -# define TASK_UNMAPPED_BASE  0x5500000000
-> -#else
-> -# define TASK_UNMAPPED_BASE  0x4000000000
-> -#endif
-> -#elif HOST_LONG_BITS == 64 && TARGET_ABI_BITS == 32
-> -#ifdef TARGET_HPPA
-> -# define TASK_UNMAPPED_BASE  0xfa000000
-> -#else
-> -# define TASK_UNMAPPED_BASE  0xe0000000
-> -#endif
-> -#else /* HOST_LONG_BITS == 32 && TARGET_ABI_BITS == 32 */
-> -# define TASK_UNMAPPED_BASE  0x40000000
-> -#endif
-> -abi_ulong mmap_next_start = TASK_UNMAPPED_BASE;
-> -
->   unsigned long last_brk;
-> 
->   /*
-> @@ -344,6 +328,23 @@ abi_ulong mmap_find_vma(abi_ulong start, abi_ulong size, abi_ulong align)
->       abi_ulong addr;
->       int wrapped, repeat;
-> 
-> +    static abi_ulong mmap_next_start;
-> +
-> +    /* initialize mmap_next_start if necessary */
-> +    if (!mmap_next_start) {
-> +        mmap_next_start = TASK_UNMAPPED_BASE;
-> +
-> +        /* do sanity checks on guest memory layout */
-> +        if (mmap_next_start >= GUEST_ADDR_MAX) {
-> +            mmap_next_start = GUEST_ADDR_MAX - 0x1000000000 + 1;
+for kvm_x86_sw_protected_vm type VM, it will allocate private gmem with 
+KVM ioctl if the memory backend has property "private" on.
 
-What if GUEST_ADDR_MAX < 0x1000000000? I think you can just return a 
-hard error when mmap_next_start >= GUEST_ADDR_MAX.
+> That all should go into the surprisingly empty patch description.
 
-> +        }
-> +
-> +        if (TASK_UNMAPPED_BASE_PIE >= mmap_next_start) {
-> +            fprintf(stderr, "Memory too small for PIE executables.\n");
+I'm sorry. I admit the empty commit message is really bad.
 
-Perhaps it's better to use error_report() for new code.
 
-> +            exit(EXIT_FAILURE);
-> +        }
-> +    }
-> +
->       align = MAX(align, qemu_host_page_size);
-> 
->       /* If 'start' == 0, then a default start address is used. */
-> --
-> 2.41.0
-> 
+
 
