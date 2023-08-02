@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B66E476C55E
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Aug 2023 08:39:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD1F076C61C
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Aug 2023 09:10:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qR5Us-0003jv-Oe; Wed, 02 Aug 2023 02:38:14 -0400
+	id 1qR5yk-0005e8-Rq; Wed, 02 Aug 2023 03:09:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@gmail.com>)
- id 1qR5Ul-0003c6-4I
- for qemu-devel@nongnu.org; Wed, 02 Aug 2023 02:38:11 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ id 1qR5yi-0005dj-F1
+ for qemu-devel@nongnu.org; Wed, 02 Aug 2023 03:09:04 -0400
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@gmail.com>)
- id 1qR5Uh-0002yu-Ot
- for qemu-devel@nongnu.org; Wed, 02 Aug 2023 02:38:06 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1bbd2761f1bso54393125ad.2
- for <qemu-devel@nongnu.org>; Tue, 01 Aug 2023 23:38:02 -0700 (PDT)
+ id 1qR5yg-0007fk-FO
+ for qemu-devel@nongnu.org; Wed, 02 Aug 2023 03:09:04 -0400
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-686ba29ccb1so418416b3a.1
+ for <qemu-devel@nongnu.org>; Wed, 02 Aug 2023 00:09:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1690958281; x=1691563081;
+ d=gmail.com; s=20221208; t=1690960140; x=1691564940;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=H9qg/H4NOwahvnvgifKNTsOrR4APlPnkSjhCbbTz/oU=;
- b=ilSQiRmN5/UlkIi+vdYcZkkqYWd/kVb88/6xn1TrnSUvwaxC3BTqVrPBOVm7UKkgUk
- OLwh3cNS9BqtUl6r3iBihCbb5M8CYyxn1xAE0EDnp8tZLlU8Kt9lJCmKPVkZJv76fqsb
- o+r6fHgJEEkOgAXxUlMCSpplTfSkcCz3UcCHCqUYHzO/6vDuZiVU3YpxfddQIy/TVBAk
- 47Ls/y5NLoO27IdkocWfVWwfqwN4LGKoJPuFOj5HfpDKPwEKwVZSTZkySklp5Mzptd7+
- O9sV4OkunbSD+MlJeq5GgjlnF/eE51JKUb/9DcsM0YbKbOqXiJaGFieHeKSXj25fg2zQ
- r27w==
+ bh=EZYJiA6oCVrCZ8+IqWAcDYRDEobTVPdWGSTrkamXnBI=;
+ b=LwGoZIBAh0R33/kAaf1WHGOGyuYR+//rHlRmGWGooLjmC05a+W6Lj2mzA97ok0wz5s
+ LpZKgNbYLKn74riD1QNlnU/gSnHj7uO/11EBu0AUPrtA7aP2sAf23TK+Viyq0E8wTiGp
+ 439DmJnp/O+18kkiHQcjtDm7qyQ1gLCTqr7U2Vwlcar1ZF//5FIzoHuim+GybfDVA1fU
+ oiKlq1lYl0Yof/oHE9FtLkiUB5ki+1btzapjUGJp2Db3p6Tpb5vY3k9yHGY/oRe5KbJ/
+ 5nnPv8zEjmlpnFImMe4B5bwWWMiUOsSsfKLfREuwzOlgBj+RCbYGY73Q/+NgbRCMtoPr
+ yXOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690958281; x=1691563081;
+ d=1e100.net; s=20221208; t=1690960140; x=1691564940;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=H9qg/H4NOwahvnvgifKNTsOrR4APlPnkSjhCbbTz/oU=;
- b=bFIaI1hTsBoUTl9Xn9+QMjvxumigVOdN1DQbwjWFEzygwwnbDZsaozeeF5IJ1hySRq
- LBVq9Q8hQZ9X7HDq7MR8g9yYn7WFKC4NAM4XXwAwhp/QFMcGHbLUzqgQwoRrPRgDeV+o
- I0L6132rdWSFLDnYSEckeu2jZLXML8cxkoSip2i7miAeQIKXEEDjMGqE86Q/dqNz9825
- 0jn8kxkSSw6YpmANbnmAOvCWTerBha1dLjBDh6kb1/UZeEdCEs89ueB2YDcuN0W/pANu
- pZW1jZ5cKxf3YzanQoXV126OTzm5LvyK8ynKgPcTRF1r/D3nfrX1TdnRMkdquMT0u135
- Bqaw==
-X-Gm-Message-State: ABy/qLY9RPB579f9eolBCcdjNqfZ8fSTsZrhiPlqDzGgk6sLMYCsuAHr
- 4RGOwOmcOXc2+gcvMX/vPH8=
-X-Google-Smtp-Source: APBJJlG3Z1rt/aoDn9jKBxOiWxwIasIFjkz9Gy3HXT7Ug5oIsecpXa7tOs5xRF1DBiTPksfrkIg7vg==
-X-Received: by 2002:a17:902:9b94:b0:1b8:b5f8:c485 with SMTP id
- y20-20020a1709029b9400b001b8b5f8c485mr14001749plp.50.1690958281472; 
- Tue, 01 Aug 2023 23:38:01 -0700 (PDT)
+ bh=EZYJiA6oCVrCZ8+IqWAcDYRDEobTVPdWGSTrkamXnBI=;
+ b=GVVeS65O+p/6lJXimXX2Ic/H8IY/Ce6EqTHO2oe/gkLTzN1rlxEuV/FCQRg42fBeZX
+ GweKn7RGgsrn/fEBvP9/+WxEuThTYW4vtARsCePz/wWEAPgApOd8riFEqbjXeYVwF7Z6
+ rV3/31n1r/Cy906apSKmvztT7syG4nrhmXudILteHtWg/UTKSUlwmOog/2HbFLH4AwDs
+ 2+QBigzyCfm/IzdOwECJtR97XDTadgAZbDZedAsFir80xLWR6L9OOk5Rq3Xo5QzlUONo
+ MaXxoLm0s1pg/S70romJSDmdxhFA/DZ7m98f7c9yIaPTqxESeDJnaIh8cLwoQtZcUT+s
+ fwAw==
+X-Gm-Message-State: ABy/qLZjj1S8fHt8w2/FHZH3rGPNRZMP7yDowUvESGfW0CYOrHhhlngL
+ 54ztvKBjcIC29tTmj3995ds=
+X-Google-Smtp-Source: APBJJlEhm12fdabqvQzIfDJedYAWp5jp4Cu566lJJpMoCVHWDyCEtohcg23hu8bOetg85MDLJ4ABIA==
+X-Received: by 2002:a05:6a20:8e12:b0:13e:90aa:8c8b with SMTP id
+ y18-20020a056a208e1200b0013e90aa8c8bmr4884516pzj.4.1690960139982; 
+ Wed, 02 Aug 2023 00:08:59 -0700 (PDT)
 Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
  ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
  by smtp.gmail.com with ESMTPSA id
- w5-20020a1709029a8500b001b03cda6389sm11545338plp.10.2023.08.01.23.37.59
+ z10-20020aa791ca000000b006877b0b31c2sm259730pfa.147.2023.08.02.00.08.57
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 01 Aug 2023 23:38:01 -0700 (PDT)
-Message-ID: <90b57a8f-e117-b95e-66c1-41c6c93a91f9@gmail.com>
-Date: Wed, 2 Aug 2023 15:37:58 +0900
+ Wed, 02 Aug 2023 00:08:59 -0700 (PDT)
+Message-ID: <e47e638e-d27b-7848-14e6-62d5c71ef20a@gmail.com>
+Date: Wed, 2 Aug 2023 16:08:56 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 9/9] docs/system: add basic virtio-gpu documentation
+Subject: Re: [PATCH v2 0/9] gfxstream + rutabaga_gfx
 Content-Language: en-US
 To: Gurchetan Singh <gurchetansingh@chromium.org>, qemu-devel@nongnu.org
 Cc: kraxel@redhat.com, marcandre.lureau@redhat.com,
  dmitry.osipenko@collabora.com, ray.huang@amd.com, alex.bennee@linaro.org,
  shentey@gmail.com, hi@alyssa.is
 References: <20230801011723.627-1-gurchetansingh@chromium.org>
- <20230801011723.627-10-gurchetansingh@chromium.org>
 From: Akihiko Odaki <akihiko.odaki@gmail.com>
-In-Reply-To: <20230801011723.627-10-gurchetansingh@chromium.org>
+In-Reply-To: <20230801011723.627-1-gurchetansingh@chromium.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=akihiko.odaki@gmail.com; helo=mail-pl1-x62e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=akihiko.odaki@gmail.com; helo=mail-pf1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,156 +97,113 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 2023/08/01 10:17, Gurchetan Singh wrote:
-> This adds basic documentation for virtio-gpu.
+> Latest iteration of rutabaga_gfx + gfxstream patches.  Previous versions
+> available here:
 > 
-> Suggested-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> Signed-off-by: Gurchetan Singh <gurchetansingh@chromium.org>
+> https://patchew.org/QEMU/20230711025649.708-1-gurchetansingh@chromium.org/
 > 
-> ---
-> v2: - Incorporated suggestions by Akihiko Odaki
->      - Listed the currently supported capset_names (Bernard)
+> https://patchew.org/QEMU/20230421011223.718-1-gurchetansingh@chromium.org/
 > 
->   docs/system/device-emulation.rst   |  1 +
->   docs/system/devices/virtio-gpu.rst | 98 ++++++++++++++++++++++++++++++
->   2 files changed, 99 insertions(+)
+> Changes since v1:
+> - New error callback hooked into QEMU error's handlers
+> - Incorporated review feedback
+> - goldfish-opengl repo is now gone: new unified repo for guest and host
+> 
+> How to build both rutabaga and gfxstream guest/host libs:
+> 
+> https://crosvm.dev/book/appendix/rutabaga_gfx.html
+
+It's nice to see a documentation for this. The below are some comments:
+
+Why not install dependencies in one command?
+sudo apt install libdrm libglm-dev libstb-dev
+
+The cmake command for AEMU is broken into two lines but the newline 
+character between them are not escaped. It should be one line or the 
+newline should be escaped.
+
+It also gives a warning:
+CMake Warning:
+   Ignoring extra path from command line:
+
+    "../"
+
+And it's probably better to have a dedicated build directory. /build is 
+in .gitignore so you may:
+cmake -DAEMU_COMMON_GEN_PKGCONFIG=ON \
+       -DAEMU_COMMON_BUILD_CONFIG=gfxstream \
+       -DENABLE_VKCEREAL_TESTS=OFF -B build
+
+It's also better to use the following commands to build and install it 
+just in case the system has a different backend (like Ninja):
+cmake --build build -j
+sudo cmake --install build
+
+The build directory of gfxstream may be named just "build" so that you 
+can blindly copy the command on Arm64 or whatever and to ignore it with 
+.gitignore.
+
+You may build and install it with the following command:
+meson install -C build
+No need for separate build command and sudo. Meson takes care of that.
+
+The documentation has one command for building and installing Rutabaga, 
+but that may cause a problem. For example, you may have rustup 
+configured for a normal user but not for the superuser. Perhaps it's 
+better not to have "build" as a dependency of "install" and have two 
+commands for each of the steps:
+make
+sudo make install
+
+> 
+> Branch containing this patch series:
+> 
+> https://gitlab.freedesktop.org/gurchetansingh/qemu-gfxstream/-/commits/qemu-gfxstream-v2
+> 
+> Next steps:
+>   - Will add a v0.1.2 release "commit" after this patch series is fully
+>     reviewed, but before it's merged
+> 
+> Antonio Caggiano (2):
+>    virtio-gpu: CONTEXT_INIT feature
+>    virtio-gpu: blob prep
+> 
+> Dr. David Alan Gilbert (1):
+>    virtio: Add shared memory capability
+> 
+> Gerd Hoffmann (1):
+>    virtio-gpu: hostmem
+> 
+> Gurchetan Singh (5):
+>    gfxstream + rutabaga prep: added need defintions, fields, and options
+>    gfxstream + rutabaga: add initial support for gfxstream
+>    gfxstream + rutabaga: meson support
+>    gfxstream + rutabaga: enable rutabaga
+>    docs/system: add basic virtio-gpu documentation
+> 
+>   docs/system/device-emulation.rst     |    1 +
+>   docs/system/devices/virtio-gpu.rst   |   98 +++
+>   hw/display/meson.build               |   22 +
+>   hw/display/virtio-gpu-base.c         |    6 +-
+>   hw/display/virtio-gpu-pci-rutabaga.c |   48 ++
+>   hw/display/virtio-gpu-pci.c          |   14 +
+>   hw/display/virtio-gpu-rutabaga.c     | 1077 ++++++++++++++++++++++++++
+>   hw/display/virtio-gpu.c              |   17 +-
+>   hw/display/virtio-vga-rutabaga.c     |   52 ++
+>   hw/display/virtio-vga.c              |   33 +-
+>   hw/virtio/virtio-pci.c               |   18 +
+>   include/hw/virtio/virtio-gpu-bswap.h |   18 +
+>   include/hw/virtio/virtio-gpu.h       |   41 +
+>   include/hw/virtio/virtio-pci.h       |    4 +
+>   meson.build                          |    7 +
+>   meson_options.txt                    |    2 +
+>   scripts/meson-buildoptions.sh        |    3 +
+>   softmmu/qdev-monitor.c               |    3 +
+>   softmmu/vl.c                         |    1 +
+>   19 files changed, 1445 insertions(+), 20 deletions(-)
 >   create mode 100644 docs/system/devices/virtio-gpu.rst
+>   create mode 100644 hw/display/virtio-gpu-pci-rutabaga.c
+>   create mode 100644 hw/display/virtio-gpu-rutabaga.c
+>   create mode 100644 hw/display/virtio-vga-rutabaga.c
 > 
-> diff --git a/docs/system/device-emulation.rst b/docs/system/device-emulation.rst
-> index 4491c4cbf7..1167f3a9f2 100644
-> --- a/docs/system/device-emulation.rst
-> +++ b/docs/system/device-emulation.rst
-> @@ -91,6 +91,7 @@ Emulated Devices
->      devices/nvme.rst
->      devices/usb.rst
->      devices/vhost-user.rst
-> +   devices/virtio-gpu.rst
->      devices/virtio-pmem.rst
->      devices/vhost-user-rng.rst
->      devices/canokey.rst
-> diff --git a/docs/system/devices/virtio-gpu.rst b/docs/system/devices/virtio-gpu.rst
-> new file mode 100644
-> index 0000000000..f359584033
-> --- /dev/null
-> +++ b/docs/system/devices/virtio-gpu.rst
-> @@ -0,0 +1,98 @@
-> +..
-> +   SPDX-License-Identifier: GPL-2.0
-> +
-> +virtio-gpu
-> +==========
-> +
-> +This document explains the setup and usage of the virtio-gpu device.
-> +The virtio-gpu device paravirtualizes the GPU and display controller.
-> +
-> +Linux kernel support
-> +--------------------
-> +
-> +virtio-gpu requires a guest Linux kernel built with the
-> +``CONFIG_DRM_VIRTIO_GPU`` option.
-> +
-> +QEMU virtio-gpu variants
-> +------------------------
-> +
-> +QEMU provides a 2D virtio-gpu backend, and two accelerated backends:
-> +virglrenderer ('gl' device label) and rutabaga_gfx ('rutabaga' device
-> +label).  There is a vhost-user backend that runs the graphics stack in
-> +a separate process for improved isolation.
-> +
-> +Theses backends can be further classified into VGA and non-VGA variants.
-
-It's a bit unsound wording. virglrenderer and rutabaga_gfx are certainly 
-backends, but "VGA" is not; it describes an interface exposed to the guest
-
-> +The VGA ones are prefixed with virtio-vga or vhost-user-vga while the
-> +non-VGA ones are prefixed with virtio-gpu or vhost-user-gpu.
-> +
-> +The VGA ones always use PCI interface, but for the non-VGA ones, you can
-> +further pick simple MMIO or PCI. For MMIO, you can suffix the device
-> +name with -device though vhost-user-gpu apparently does not support
-
-You don't need the word "apparently" in the documentation.
-
-> +MMIO. For PCI, you can suffix it with -pci. Without these suffixes, the
-> +platform default will be chosen.  The syntax of  available combinations
-
-Duplicate whitespaces between "of" and "available".
-
-> +is listed below.
-> +
-> + * ``virtio-vga[-BACKEND]``
-> + * ``virtio-gpu[-BACKEND][-INTERFACE]``
-> + * ``vhost-user-vga``
-> + * ``vhost-user-pci``
-
-Probably this list should come first.
-
-> +
-> +This document uses the PCI variant in examples.
-> +
-> +virtio-gpu 2d
-> +-------------
-> +
-> +The default 2D backend only performs 2D operations. The guest needs to
-> +employ a software renderer for 3D graphics.
-> +
-> +Typically, the software renderer is provided by `Mesa`_ or `SwiftShader`_.
-> +Mesa's implementations (LLVMpipe, Lavapipe and virgl below) work out of box
-> +on typical modern Linux distributions.
-> +
-> +.. parsed-literal::
-> +    -device virtio-gpu-pci
-> +
-> +.. _Mesa: https://www.mesa3d.org/
-> +.. _SwiftShader: https://github.com/google/swiftshader
-> +
-> +virtio-gpu virglrenderer
-> +------------------------
-> +
-> +When using virgl accelerated graphics mode, OpenGL API calls are translated
-> +into an intermediate representation (see `Gallium3D`_). The intermediate
-
-Add "on the guest" to the first sentence for clarification.
-
-> +representation is communicated to the host and the `virglrenderer`_ library
-> +on the host translates the intermediate representation back to OpenGL API
-> +calls.
-> +
-> +.. parsed-literal::
-> +    -device virtio-gpu-gl-pci
-> +
-> +.. _Gallium3D: https://www.freedesktop.org/wiki/Software/gallium/
-> +.. _virglrenderer: https://gitlab.freedesktop.org/virgl/virglrenderer/
-> +
-> +virtio-gpu rutabaga
-> +-------------------
-> +
-> +virtio-gpu can also leverage `rutabaga_gfx`_ to provide `gfxstream`_ rendering
-> +and `Wayland display passthrough`_.  With the gfxstream rendering mode, GLES
-> +and Vulkan calls are forwarded directly to the host with minimal modification.
-
-Nitpick: remove "directly". We already say "with minimal modification".
-
-> +
-> +The crosvm book provides directions on how to build a `gfxstream-enabled
-> +rutabaga`_ and launch a `guest Wayland compositor`_.
-
-It should be clarified it's not a conventional compositor but it's a proxy.
-
-> +
-> +This device does require host blob support (``hostmem`` field below), but not
-> +all capsets (``capset_names`` below) have to enabled when starting the device.
-> +
-> +The currently supported ``capset_names`` are ``gfxstream-vulkan`` and
-> +``cross-domain`` on Linux guests.  For Android guests, ``gfxstream-gles`` is
-> +also supported.
-> +
-> +.. parsed-literal::
-> +    -device virtio-gpu-rutabaga-pci,capset_names=gfxstream-vulkan:cross-domain,\\
-> +      hostmem=8G,wayland_socket_path="$XDG_RUNTIME_DIR/$WAYLAND_DISPLAY"
-> +
-> +.. _rutabaga_gfx: https://github.com/google/crosvm/blob/main/rutabaga_gfx/ffi/src/include/rutabaga_gfx_ffi.h
-> +.. _gfxstream: https://android.googlesource.com/platform/hardware/google/gfxstream/
-> +.. _Wayland display passthrough: https://www.youtube.com/watch?v=OZJiHMtIQ2M
-> +.. _gfxstream-enabled rutabaga: https://crosvm.dev/book/appendix/rutabaga_gfx.html
-> +.. _guest Wayland compositor: https://crosvm.dev/book/devices/wayland.html
 
