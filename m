@@ -2,78 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C500776CA8D
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Aug 2023 12:14:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0537376CAFC
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Aug 2023 12:37:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qR8qV-00026o-KO; Wed, 02 Aug 2023 06:12:47 -0400
+	id 1qR9Ct-00027T-LX; Wed, 02 Aug 2023 06:35:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <prvs=5716a841a=graf@amazon.de>)
- id 1qR8qR-00026d-T1
- for qemu-devel@nongnu.org; Wed, 02 Aug 2023 06:12:43 -0400
-Received: from smtp-fw-33001.amazon.com ([207.171.190.10])
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qR9Cr-00026x-JP
+ for qemu-devel@nongnu.org; Wed, 02 Aug 2023 06:35:53 -0400
+Received: from mout.gmx.net ([212.227.15.19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <prvs=5716a841a=graf@amazon.de>)
- id 1qR8qM-0008Jc-5l
- for qemu-devel@nongnu.org; Wed, 02 Aug 2023 06:12:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
- t=1690971158; x=1722507158;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=DxUGgJSgmjRQXQyo0AMq9yRzPrxaMyPZCrwUVjb3/o0=;
- b=r1ZnLju8rU/oqxcbnLWZ3a8QH9Ppro/BetFfGE99NjDU5OgqXb9gKlXG
- FwlE7xSKrS6P8ibSRF/rb/2tC/lEvwyNjIKq1la4DxDJLhwt0bg9cY+iq
- NiIRpvdsn8N8GeKzaKc+OyOrUMmZMLFsk+nFPrTPsT+j86NjosdPoRkfP w=;
-X-IronPort-AV: E=Sophos;i="6.01,248,1684800000"; d="scan'208";a="298253568"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO
- email-inbound-relay-iad-1a-m6i4x-54a853e6.us-east-1.amazon.com) ([10.43.8.6])
- by smtp-border-fw-33001.sea14.amazon.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Aug 2023 10:12:21 +0000
-Received: from EX19MTAUWC002.ant.amazon.com
- (iad12-ws-svc-p26-lb9-vlan3.iad.amazon.com [10.40.163.38])
- by email-inbound-relay-iad-1a-m6i4x-54a853e6.us-east-1.amazon.com (Postfix)
- with ESMTPS id 413D046D0B; Wed,  2 Aug 2023 10:12:18 +0000 (UTC)
-Received: from EX19D020UWC004.ant.amazon.com (10.13.138.149) by
- EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.30; Wed, 2 Aug 2023 10:12:17 +0000
-Received: from [0.0.0.0] (10.253.83.51) by EX19D020UWC004.ant.amazon.com
- (10.13.138.149) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.30; Wed, 2 Aug
- 2023 10:12:16 +0000
-Message-ID: <53228bc7-64e0-1120-494a-1926fb2d716a@amazon.com>
-Date: Wed, 2 Aug 2023 12:12:14 +0200
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qR9Cp-0004YC-RD
+ for qemu-devel@nongnu.org; Wed, 02 Aug 2023 06:35:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
+ s=s31663417; t=1690972545; x=1691577345; i=deller@gmx.de;
+ bh=WwLtvyuOJLlUdlHdN5jJaI3FN88JOZ6iUWfOaM84jWM=;
+ h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+ b=Y0oQT3gt4pkuimKZaEHtpaidQtUiZsNruQlqclen/w0JhDjSebNPP1boNu2IzpytJA+Ex7z
+ 77zUl+L6cJtkeUryAPShz9p94Fv7lOeSBujuWv5/Pi0g+h4ei0LnKIGOmN7yxtSoZiFQdhb+Y
+ AeMYJD/Kbj3YF84cmq2Gi5E4a6mBZeUpuJ9rbtSarFE83+gTkAo85I8Os9aQDJFIblU7wvunD
+ aWOhGERxmr5Pdh0ziEr84HXu8oolVPJ/L5BkfC3pNDqJKV7kjzmJIi795NvskVhxfgPDb/Z+v
+ 0A8JY/aPwNKqi7vjEw+eeBAwAjIc7UIHTl0TDzu3Pamjolu+HHgg==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.60] ([94.134.146.69]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1M6lpM-1qTtZH3KG6-008Ld2; Wed, 02
+ Aug 2023 12:35:45 +0200
+Message-ID: <cd2f661a-19bc-d6af-24f8-954ec7b68f13@gmx.de>
+Date: Wed, 2 Aug 2023 12:35:44 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: hvf: Invalid ISV on data abort
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v6 8/8] linux-user: Load pie executables at upper memory
 Content-Language: en-US
-To: Antonio Caggiano <quic_acaggian@quicinc.com>, <qemu-devel@nongnu.org>
-CC: Mark Burton <quic_mburton@quicinc.com>
-References: <0c8d712b-a890-26fb-cdee-88e686243ae7@quicinc.com>
-From: Alexander Graf <graf@amazon.com>
-In-Reply-To: <0c8d712b-a890-26fb-cdee-88e686243ae7@quicinc.com>
-X-Originating-IP: [10.253.83.51]
-X-ClientProxiedBy: EX19D038UWC001.ant.amazon.com (10.13.139.213) To
- EX19D020UWC004.ant.amazon.com (10.13.138.149)
-Precedence: Bulk
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Transfer-Encoding: base64
-Received-SPF: pass client-ip=207.171.190.10;
- envelope-from=prvs=5716a841a=graf@amazon.de; helo=smtp-fw-33001.amazon.com
-X-Spam_score_int: -40
-X-Spam_score: -4.1
-X-Spam_bar: ----
-X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+To: Akihiko Odaki <akihiko.odaki@daynix.com>, qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini <pbonzini@redhat.com>,
+ Joel Stanley <joel@jms.id.au>
+References: <20230801232745.4125-1-deller@gmx.de>
+ <20230801232745.4125-9-deller@gmx.de>
+ <6126807c-2390-27d9-315d-de67c31a8f60@daynix.com>
+ <c1e68eb1-6d26-22fd-8c51-c1ba1e472187@gmx.de>
+ <6f73b04e-7c85-0dfb-c3cc-7a43b4663593@daynix.com>
+ <69247c58-52c4-65c2-8d08-c553adda0d9d@gmx.de>
+ <bb3d5dea-5c64-862b-b3b1-6d18c9fba5b4@daynix.com>
+From: Helge Deller <deller@gmx.de>
+In-Reply-To: <bb3d5dea-5c64-862b-b3b1-6d18c9fba5b4@daynix.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:gB8JquA/nl5brfacYIyZBlS1ubqDAgoYgWbFZ4a8YjetpIaUpr3
+ JHAbiDMNKWqGRn0/NUFz7f2h0WIOCQwYudwQ9fu6G2RCRRz35JJb3+Jo1Rc73W+zWNqUYyq
+ O4+8mLcJKRXwpI6j5Jgfvybnq8CW5h+qkBaMiRliy7j3r+4pX0V4CXBAwRC656Sr3TKy/xA
+ GSkkQJ04OhXaNduplpaXw==
+UI-OutboundReport: notjunk:1;M01:P0:kCs98fp2OPQ=;E1h+hnnV7kePP2UdHHQymkEY6OJ
+ WlHyFF6wBn5r5TnPZi6gUxXO6nMwVz1h0nFPNpgyo1VfiuCDVhJUSKR/SqR3k2v0sDd3innAA
+ xLe3H89+AxZofSnffyEh2YiGoZvnLNdl/Sx4ripdCMdjIMFlJ5j/enSBg+YbTwt9cUsSYqHcD
+ qFPxsHEQdKFUx1Mdur69qY/dZOSKMteVSo02m3snfs0W4J1d0+VHypO71Xpn/zDkEdTEDkut+
+ fYIzXUDgmZpttI3BS4TnYZtG6s663U5YRFRRI5HpbrDk5Y5sUi1CJcXRRSIUxIrhDdkVU5rsz
+ Xmj2/ZKGdosdD6Lk/dbjfsERHhlP97D0K9ftmuu0muAFIIbtoy/t7A+Qgt+zvKRct1PGo3mnR
+ DpFMAko93nJyy55IwJ2Lk50qLD1+KQ+B7ZVcDQDL7bXRU/AQvmIOIjVPLezlglK9Fw5BGvTDu
+ 2oVzkm/Ww8bGOW4BD9WgkUAHF/DpJHKHol+veBLEPl69KcEgjm0KtQXNiUtdlK53RURfQRwpq
+ drG02I4dk4A2B87mwfvnA1vNTMmVSi2ZK6nrikCxP39rG3DP6QEhQKDxMOnd29jdeebMWOZpJ
+ 9+IK4wyE6OnZfCJMtyqhcA303UA/DK+SsD/0hpBI71/rxPCLzIfPZk3BslorhsrEiG9lzencM
+ pZvMCOdKwXh0od4TAWbUG8Vck2lBlPudrJstCR9dC3EvOQDgboVEKueL5Nepj1k4oDNi2RYme
+ yi4IiIZPLG2dkmvCqZQWzB34XFaXk0Qb94QxF2fQ7Koe4MJeOP0GXwZSGybj2vHHoJAkZBBNl
+ HHQwIAjSL8VJVynKDPoudswFQoUP723OiFh6i5MT4hBbNBnZjx6t/ZSFRdcWKjUr2aUXmVyra
+ 2k6hc3vHHwwL/GtA0ZZwc+6mp0g29fjWjSsSsr+2Irkdl6ojSRv1cn8k1U4jbaXSiX6a3In+x
+ QqmHt7NVD4euDHTaWeOFuEDaHrA=
+Received-SPF: pass client-ip=212.227.15.19; envelope-from=deller@gmx.de;
+ helo=mout.gmx.net
+X-Spam_score_int: -28
+X-Spam_score: -2.9
+X-Spam_bar: --
+X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ NICE_REPLY_A=-0.092, RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -85,22 +95,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-SGkgQW50b25pbywKCk9uIDAyLjA4LjIzIDExOjQzLCBBbnRvbmlvIENhZ2dpYW5vIHdyb3RlOgo+
-Cj4gSGkgdGhlcmUsCj4KPiBJIGFtIHRyeWluZyB0byBicmluZyB1cCBhIGd1ZXN0IG9uIEhWRiwg
-d2hpY2ggYXQgYSBjZXJ0YWluIHBvaW50IGlzCj4gdHJ5aW5nIHRvIHdyaXRlIHRvIGFuIGFyZWEg
-b2YgbW1pbyBzcGFjZSBhbmQgaXQgdHJpZ2dlcnMgYSBkYXRhIGFib3J0Cj4gd2hlcmUgSVNWPTAg
-KHRyYW5zbGF0aW9uIGZhdWx0IGxldmVsIDIpLgo+Cj4gSSB3b25kZXIgd2hhdCBjb3VsZCBjYXVz
-ZSBpdCBhbmQgaG93IHRvIHJlY292ZXIuCgoKUUVNVSdzIEhWRiBpbXBsZW1lbnRhdGlvbiAtIGxp
-a2UgS1ZNIC0gb25seSBzdXBwb3J0cyBNTUlPIGFjY2Vzc2VzIGZyb20gCmhhcmR3YXJlIGRlY29k
-ZWQsICJzaW1wbGUiIGxvYWQvc3RvcmUgaW5zdHJ1Y3Rpb25zLiBJdCB3aWxsIG9ubHkgZXhlY3V0
-ZSAKZ3Vlc3QgT1NzIHRoYXQgYXJlIGF3YXJlIG9mIHRoYXQgbGltaXRhdGlvbiBhbmQgbGltaXQg
-TU1JTyBhY2Nlc3NlcyB0byAKdGhhdCBzZXQgb2YgaW5zdHJ1Y3Rpb25zLCBzdWNoIGFzIExpbnV4
-LgoKSWYgeW91IHNlZSB0aGlzIGVmZmVjdCB3aXRoIGFuIGVubGlnaHRlbmVkIE9TLCB5b3UgYXJl
-IG1vc3QgbGlrZWx5IApleHBvc2luZyBtZW1vcnkgdGhhdCB0aGUgZ3Vlc3QgZXhwZWN0cyB0byBi
-ZSByZXByZXNlbnRlZCBhcyBSQU0gYXMgTU1JTy4KCgpUaGFua3MsCgpBbGV4CgoKCgoKQW1hem9u
-IERldmVsb3BtZW50IENlbnRlciBHZXJtYW55IEdtYkgKS3JhdXNlbnN0ci4gMzgKMTAxMTcgQmVy
-bGluCkdlc2NoYWVmdHNmdWVocnVuZzogQ2hyaXN0aWFuIFNjaGxhZWdlciwgSm9uYXRoYW4gV2Vp
-c3MKRWluZ2V0cmFnZW4gYW0gQW10c2dlcmljaHQgQ2hhcmxvdHRlbmJ1cmcgdW50ZXIgSFJCIDE0
-OTE3MyBCClNpdHo6IEJlcmxpbgpVc3QtSUQ6IERFIDI4OSAyMzcgODc5CgoK
+On 8/2/23 11:58, Akihiko Odaki wrote:
+> On 2023/08/02 18:34, Helge Deller wrote:
+>> On 8/2/23 10:44, Akihiko Odaki wrote:
+>>> On 2023/08/02 17:42, Helge Deller wrote:
+>>>> On 8/2/23 09:49, Akihiko Odaki wrote:
+>>>>> On 2023/08/02 8:27, Helge Deller wrote:
+>>>>>> Fix the elf loader to calculate a valid TASK_UNMAPPED_BASE address =
+for all
+>>>>>> 32-bit architectures, based on the GUEST_ADDR_MAX constant.
+>>>>>>
+>>>>>> Additionally modify the elf loader to load dynamic pie executables =
+at
+>>>>>> around:
+>>>>>> ~ 0x5500000000=C2=A0 for 64-bit guest binaries on 64-bit host,
+>>>>>> - 0x00300000=C2=A0=C2=A0=C2=A0 for 32-bit guest binaries on 64-bit =
+host, and
+>>>>>> - 0x00000000=C2=A0=C2=A0=C2=A0 for 32-bit guest binaries on 32-bit =
+host.
+>>>>>
+>>>>> Why do you change guest addresses depending on the host?
+>>>>
+>>>> The addresses are guest-addresses.
+>>>> A 32-bit guest PIE can't be loaded at e.g. 0x5500000000,
+>>>> while a 64-bit guest PIE needs to be loaded at 0x5500000000.
+>>>
+>>> I mean, why do you use address 0x00000000 for 32-bit guest binaries on=
+ 32-bit host while you use address 0x00300000 on 64-bit host?
+>>
+>> To keep the memory pressure for the 32-bit qemu binary minimal.
+>> On 64-bit host we have the full 32-bit address space for the guest.
+>>
+>> Helge
+>>
+>
+> That makes sense. I'm worried that using 0x00000000 may break NULL check=
+s on the guest though.
 
+probably not, because 0 means to search any free space.
+It's not fixed, it will be searched from there.
+
+Helge
 
