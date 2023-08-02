@@ -2,94 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EC8376CC3E
-	for <lists+qemu-devel@lfdr.de>; Wed,  2 Aug 2023 14:04:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BFB4976CCA9
+	for <lists+qemu-devel@lfdr.de>; Wed,  2 Aug 2023 14:29:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRAYf-00013W-4p; Wed, 02 Aug 2023 08:02:29 -0400
+	id 1qRAx7-0004uD-Ut; Wed, 02 Aug 2023 08:27:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qRAYd-000138-0W
- for qemu-devel@nongnu.org; Wed, 02 Aug 2023 08:02:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qRAYb-0008Lc-Er
- for qemu-devel@nongnu.org; Wed, 02 Aug 2023 08:02:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690977744;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=SwjZ2ap/KtkUtuv6alaaB3AOvZOGyhokq+MW9/KtxHA=;
- b=MeJB+G2QXnoKnq3HOaJFXH0iMwOtm1aj3ZGvJPjsmpN7Jk75emZIVCEk/FrD27VTd0voqB
- Zs0Mx5fZlhzklTPHGwZqUCkX4UFeeg+zvzdiPaKYJqbXM056WrXTNhpCMSKoP7Et7o45js
- OASHuohpYh0vsrsCpP7HZ5rwNAYbFAw=
-Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
- [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-35-bNKbkyitNbyb-kNSKUgfSA-1; Wed, 02 Aug 2023 08:02:22 -0400
-X-MC-Unique: bNKbkyitNbyb-kNSKUgfSA-1
-Received: by mail-lf1-f71.google.com with SMTP id
- 2adb3069b0e04-4f76712f950so6188393e87.0
- for <qemu-devel@nongnu.org>; Wed, 02 Aug 2023 05:02:21 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qRAx5-0004t2-0A
+ for qemu-devel@nongnu.org; Wed, 02 Aug 2023 08:27:43 -0400
+Received: from mail-qt1-x830.google.com ([2607:f8b0:4864:20::830])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qRAx3-0007QI-5Q
+ for qemu-devel@nongnu.org; Wed, 02 Aug 2023 08:27:42 -0400
+Received: by mail-qt1-x830.google.com with SMTP id
+ d75a77b69052e-4039f7e1d3aso51184571cf.0
+ for <qemu-devel@nongnu.org>; Wed, 02 Aug 2023 05:27:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1690979259; x=1691584059;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ev3l6QsdRMxq9883MBRrMfEflcGk33UoNzvVCeuKLaw=;
+ b=cb9j5WJOvhMJPYHYE6BQ4FEqq/jmcrNBOnSxP+TVVKukZqHd5W0LiOPBmEg9kzvPE3
+ eFdX7VoIYkwp6+wxCI0KWnzrpm+G8I0IGeknEQaK9IrLCcEKTRGku6iuUFlILz4HeVMg
+ bjohW+3a/4uG978kvjKAm63hpntpzrFrA4I9h0GCIwE7RzCblitnbU81HxrImnIE8D21
+ v8QsoPUVmIeTlSmYXSDcm4jch6GeMeiXZ2UuGpY2xzBW4B/1M8beNVgyT23LNP3vSbZh
+ JJIp24bQo6OKbvSW54GQlyU2nXqXgxdXF23gSjH7FoO/h11wFedqcCQwkCRPVeb2xetG
+ vUWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690977740; x=1691582540;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=SwjZ2ap/KtkUtuv6alaaB3AOvZOGyhokq+MW9/KtxHA=;
- b=UUtGq0SfMhyNAKf3KZ8s5JMMm5zVF3v722zFuFy+8AKQi3rq3jCvwCpFzawzp0bj/A
- nzYw5MYHQ4mwEmUlAF2YcrzLqAiCVWDw1thUIhmo4Xym/uqcGvEKrjhWQBgOqh4fmi2X
- jzF2Gl+gNAU0PJm8Ofx0hq7xvyGXplpAFCueCUBdDWyefm2ATemaKBHNuzEwFSJPr4S6
- LE3rv3s7Xx6pQnPBQSKxPsl7pT+FJCHqKXxL4oyI7T9XTb6Fepph6KPqFb/iXZUBfYlx
- cqwew13Ewe+MfUvcGTWM4geQNDzW5+ZySD2/FBlYos+N9QN31YnUnXBU7+/DOc9jWPO/
- uuPA==
-X-Gm-Message-State: ABy/qLYt+m80GehD7xUecq8c/Xq2vFJ857AcaHkKkrr781iZYGlkl5/G
- 9YYZM1gpHw7gSBFt6hDIgWkn6EQqFYwXM9MZIl9hNmK39fCyFV7rn8IPu7wqOGL1xpf1yH5VEHZ
- LKFkj5P+mpCDEUIM=
-X-Received: by 2002:ac2:5f74:0:b0:4fb:fe00:49c2 with SMTP id
- c20-20020ac25f74000000b004fbfe0049c2mr3888799lfc.32.1690977740717; 
- Wed, 02 Aug 2023 05:02:20 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHkuaB3UnssBGFQeSCthjGI7iDcdhvW79EDZ1xkb0Ubh3Y4YnDGBg5U1cIOXbE0EYcoAX9Kvw==
-X-Received: by 2002:ac2:5f74:0:b0:4fb:fe00:49c2 with SMTP id
- c20-20020ac25f74000000b004fbfe0049c2mr3888778lfc.32.1690977740385; 
- Wed, 02 Aug 2023 05:02:20 -0700 (PDT)
-Received: from ?IPV6:2003:cf:d71a:f311:3075:1f38:7e25:e17a?
- (p200300cfd71af31130751f387e25e17a.dip0.t-ipconnect.de.
- [2003:cf:d71a:f311:3075:1f38:7e25:e17a])
- by smtp.gmail.com with ESMTPSA id
- t25-20020a1709066bd900b00977c7566ccbsm8912108ejs.164.2023.08.02.05.02.19
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 02 Aug 2023 05:02:19 -0700 (PDT)
-Message-ID: <7465bcb8-ec1c-92af-54e6-1f4ccec91f5b@redhat.com>
-Date: Wed, 2 Aug 2023 14:02:18 +0200
+ d=1e100.net; s=20221208; t=1690979259; x=1691584059;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=ev3l6QsdRMxq9883MBRrMfEflcGk33UoNzvVCeuKLaw=;
+ b=RaI/XrVtYSf97AHs9qx3ursNBP8rCcio6eqeqRr9TdEFTgCT8jXVOByFMzIjt0any5
+ g9etrpIZybbRMpv/rfyk/GyO6f8WBzlDpxGx6SelK6a1bXWXSXBAalVyDZzCMrqgO9LH
+ 6VDaNxTo7EfK+oCZwb159dNmOeCpCpQADQlSa7mkrzTy4MxN6Oputi8nQUJ/MoMvEDps
+ SGeyMpuSUnIHloKilPKcJCirQWMZ7V8bqBZat6i6kzbPrVyLaT2FAu7XE2a1uWgQfQeE
+ G1iFeq78Ylza8+hwYa2rihTIvTtgbgLffE4unqXractAoS5NShGUKgXG1Nj3ZCA+iqA8
+ KLgg==
+X-Gm-Message-State: ABy/qLakRw+TGH6JQCpm1YCpUkAMt7nJIjppD/KKtUgfoqastM9qP0EN
+ j8rs8UWj0RgbqO0LgclI2P3/C1wwzv2MkW5e/ljCCPe32/mqsw==
+X-Google-Smtp-Source: APBJJlFR6nTGR2Cn3buiLtPtYaCOrMsskxk2FVeibblTJzOA2JOBrKGUG0n9oLDoL1G1Us0sn+hmISrekIeBUJiLoBc=
+X-Received: by 2002:a05:622a:13d4:b0:403:b252:96ea with SMTP id
+ p20-20020a05622a13d400b00403b25296eamr19693661qtk.21.1690979259630; Wed, 02
+ Aug 2023 05:27:39 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 2/2] block/blkio: add more comments on the fd passing
- handling
-Content-Language: en-US
-To: Stefano Garzarella <sgarzare@redhat.com>, qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>
-References: <20230801160332.122564-1-sgarzare@redhat.com>
- <20230801160332.122564-3-sgarzare@redhat.com>
-From: Hanna Czenczek <hreitz@redhat.com>
-In-Reply-To: <20230801160332.122564-3-sgarzare@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <20230726173929.690601-1-marcandre.lureau@redhat.com>
+In-Reply-To: <20230726173929.690601-1-marcandre.lureau@redhat.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Wed, 2 Aug 2023 16:27:28 +0400
+Message-ID: <CAJ+F1C+V3bZEPgm0yQtMKY-Qr0n_qC60TDYGL65b441ELy7qvA@mail.gmail.com>
+Subject: Re: [PATCH 0/2] virtio-gpu: reset gfx resources in main thread
+To: qemu-devel@nongnu.org, Dongwon Kim <dongwon.kim@intel.com>
+Cc: Gerd Hoffmann <kraxel@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::830;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x830.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.102, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,21 +86,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 01.08.23 18:03, Stefano Garzarella wrote:
-> As Hanna pointed out, it is not clear in the code why qemu_open()
-> can fail, and why blkio_set_int("fd") is not enough to discover
-> the `fd` property support.
+Hi Kim
+
+Could you review those patches? I would like them for 8.1 and somewhat
+fix your commit 0d0be87659b ("virtio-gpu: replace the surface with
+null surface when resetting").
+
+thanks
+
+
+On Wed, Jul 26, 2023 at 10:53=E2=80=AFPM <marcandre.lureau@redhat.com> wrot=
+e:
 >
-> Let's fix them by adding more details in the code comments.
+> From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
 >
-> Suggested-by: Hanna Czenczek <hreitz@redhat.com>
-> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-> ---
->   block/blkio.c | 15 ++++++++++++---
->   1 file changed, 12 insertions(+), 3 deletions(-)
+> Hi,
+>
+> See the second patch for details.
+> thanks
+>
+> Marc-Andr=C3=A9 Lureau (2):
+>   virtio-gpu: free BHs, by implementing unrealize
+>   virtio-gpu: reset gfx resources in main thread
+>
+>  include/hw/virtio/virtio-gpu.h |  4 +++
+>  hw/display/virtio-gpu-base.c   |  2 +-
+>  hw/display/virtio-gpu.c        | 48 +++++++++++++++++++++++++++++-----
+>  3 files changed, 46 insertions(+), 8 deletions(-)
+>
+> --
+> 2.41.0
+>
+>
 
-Thanks!
 
-Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
-
+--
+Marc-Andr=C3=A9 Lureau
 
