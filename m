@@ -2,79 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D456C76F59F
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 00:22:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC0FC76F5AC
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 00:23:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRggn-0004Hd-LP; Thu, 03 Aug 2023 18:21:01 -0400
+	id 1qRggp-0004KI-Vb; Thu, 03 Aug 2023 18:21:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qRggk-0004GH-IJ
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 18:20:58 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qRggn-0004IM-5f
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 18:21:01 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qRggj-0000Ox-27
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 18:20:58 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qRggl-0000Pc-H4
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 18:21:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691101256;
+ s=mimecast20190719; t=1691101258;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=4GzWS5FnIrPDtn2Htg+CctKW805+xbLzE7TTNfE7rtM=;
- b=etWVgu4FvwNQohfgR/SjIToCMx74In6g7spmo14TGye5XOolOz81cRBUBrYH8gyybvDMmM
- /JoXAJ6ldM8kdFwmY5utgFFl5Z1PahNgPItP6osiO7uQUInwkpoRHjpWI2xVtbd3s5+Hu1
- S9m1/99laHQhucN44uHwLOzIOoWEAdU=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=1h7+g+N6hbLN5/8qfmJxQmtr/si4n71Og3ybh5W/K5c=;
+ b=fUbJKwkIcKjOCzsaRPfHAhIvPPfOI/A+U0vhX1DboWY0tbwYepNv3blezLtXBTqh2c/LL+
+ kZbtGN+qvWxAwiB3pQcbCzIYIgwk7wvFjt5fBgdBMl7bfKHzZlGEuDgGM5/U4zlnLvef9a
+ RWyg9G6CLP2WrsQD6x4fn2rdgN5EKv0=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-648-hHztSPF9MAqT-PLREt3HQA-1; Thu, 03 Aug 2023 18:20:53 -0400
-X-MC-Unique: hHztSPF9MAqT-PLREt3HQA-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-99c01c680beso86834766b.2
- for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 15:20:53 -0700 (PDT)
+ us-mta-646-PDwwZdAgOrKCTatdTa6UFg-1; Thu, 03 Aug 2023 18:20:57 -0400
+X-MC-Unique: PDwwZdAgOrKCTatdTa6UFg-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-5230e9ef0e6so814880a12.0
+ for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 15:20:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691101252; x=1691706052;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=4GzWS5FnIrPDtn2Htg+CctKW805+xbLzE7TTNfE7rtM=;
- b=Sb1pbeNeim8UxQbe6ccl7/DjQw4SfPImDOO2+bzBSkskBO2+MSrtk3TKZKX0no8Gvr
- dKTJUrxt96xI+WZ8MAT25NGS7Aul+Ad74YFM6bpd9DVqdNL2vYfYAObZVD0KK/NdkjlQ
- peSB22+TDMQAmgRqrDErhGE9ByWK6wpzRLwvWmRDjp+xefrdM1njc16dRMtNtR8KISvJ
- eCJY73JKQlvnRGZ3EU4ePf2UjXaWfFK294LXbo+kW514jEckQnGTkTq2mZcFQGs/ypYT
- ehswl2FtYi6AiiWUN6JZosFVAIZ8DXSmFGEf527i4ej8Q8/lfuiRb+yAAyzrHa43M8sU
- XyzA==
-X-Gm-Message-State: ABy/qLYXN01yGJD8v/EBczzBzLh5i5RXoE//LW0VT30XvBYoBQjkzeKd
- jA+IFMKv+jgC6y6sl4UIhFUVHJ7gSvmGXbftKQJqIAn3h6ctkZvlaBjTz01Omrp8Q/PrMcEOl3d
- +EBUqzeEIo19vf/Iv3OGiGbLgeocs/fuh7xrt0Ao7KiMhxlF0Cdc6s1iot6TPJ3o95MYF
-X-Received: by 2002:a17:906:ef8f:b0:99b:6c47:1145 with SMTP id
- ze15-20020a170906ef8f00b0099b6c471145mr8307713ejb.32.1691101252023; 
- Thu, 03 Aug 2023 15:20:52 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlGC2RbUh9hRPRFq5l7zep3nZyUxHGMUk6SX+DZSt2/JVgixKXWM7+eJABYxA2CGOuveYyGFkg==
-X-Received: by 2002:a17:906:ef8f:b0:99b:6c47:1145 with SMTP id
- ze15-20020a170906ef8f00b0099b6c471145mr8307703ejb.32.1691101251772; 
- Thu, 03 Aug 2023 15:20:51 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1691101256; x=1691706056;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=1h7+g+N6hbLN5/8qfmJxQmtr/si4n71Og3ybh5W/K5c=;
+ b=hZhB7w0CZ/SMm5HbVrAKdE0Oyvt0nM9BQynzMvkvdQdOxAG5G6IhKeOi136hah5QWx
+ z+2UEI3kRBVxi+W/frlumQEE+aaBgZmvqycG7ahFKWKzgbxxxNFRPa8O1EkO+6QI6bKz
+ BTeMLeChdNxNjKClU672Ay3R5kcbelzp0IOJ7vgGVce7+dfjI4R+1egKDiCkd4yRnLXm
+ Pt+qisyO1J48RHD9uh3nBrDoRSDRvVL/tPOiUz/0HBnjMM4QOVWsp/4pyODPQtOJbdAi
+ g4wU/mVyI5/K4Y4AcnQRtmi5iOkANFzBnT+P3kUQ6WCEc8V8Qb3IHQ3g499a+fOasaZ3
+ +ttg==
+X-Gm-Message-State: AOJu0YzHa+AjtIsXUdl4Ty8L9TJrenn0cogFHUTD3kuy3ZSAxFewMm8L
+ +A3GIi4Vbs9O8WJ4tJnveI0Zsyv/iaWKx42B4csal0Qy36bSbHuNdu3kDlb8j5FToVqXGq9ihsR
+ GgpZXp0as43KRitr1tkq3yrL7/LoNamXIZHhWUuCldM2TP1nbn6auBs7xvgzcbMaMnKdn
+X-Received: by 2002:aa7:db5a:0:b0:522:3ef1:b1d with SMTP id
+ n26-20020aa7db5a000000b005223ef10b1dmr84303edt.6.1691101256061; 
+ Thu, 03 Aug 2023 15:20:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEGOnkIAj/f8xCwB3pt2aL5a10Fxkf8ZpmWBLD111I1CEC6z7o1h7USZr3UF8tNOYt1frBB2A==
+X-Received: by 2002:aa7:db5a:0:b0:522:3ef1:b1d with SMTP id
+ n26-20020aa7db5a000000b005223ef10b1dmr84291edt.6.1691101255808; 
+ Thu, 03 Aug 2023 15:20:55 -0700 (PDT)
 Received: from redhat.com ([2.52.12.104]) by smtp.gmail.com with ESMTPSA id
- a1-20020a1709063a4100b0099275c59bc9sm379916ejf.33.2023.08.03.15.20.49
+ d14-20020aa7d5ce000000b00522b7c5d53esm358083eds.54.2023.08.03.15.20.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 03 Aug 2023 15:20:51 -0700 (PDT)
-Date: Thu, 3 Aug 2023 18:20:48 -0400
+ Thu, 03 Aug 2023 15:20:55 -0700 (PDT)
+Date: Thu, 3 Aug 2023 18:20:52 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 02/22] hw/pci-bridge/cxl_upstream.c: Use g_new0() in
- build_cdat_table()
-Message-ID: <503d86dd66625b4bed9484bca71db1678c730dc9.1691101215.git.mst@redhat.com>
+ Eric Auger <eric.auger@redhat.com>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>
+Subject: [PULL 03/22] virtio-iommu: Standardize granule extraction and
+ formatting
+Message-ID: <1084feddc6a677cdfdde56936bfb97cf32cc4dee.1691101215.git.mst@redhat.com>
 References: <cover.1691101215.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1691101215.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
@@ -103,53 +100,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Eric Auger <eric.auger@redhat.com>
 
-In build_cdat_table() we do:
- *cdat_table = g_malloc0(sizeof(*cdat_table) * CXL_USP_CDAT_NUM_ENTRIES);
-This is wrong because:
- - cdat_table has type CDATSubHeader ***
- - so *cdat_table has type CDATSubHeader **
- - so the array we're allocating here should be items of type CDATSubHeader *
- - but we pass sizeof(*cdat_table), which is sizeof(CDATSubHeader **),
-   implying that we're allocating an array of CDATSubHeader **
+At several locations we compute the granule from the config
+page_size_mask using ctz() and then format it in traces using
+BIT(). As the page_size_mask is 64b we should use ctz64 and
+BIT_ULL() for formatting. We failed to be consistent.
 
-It happens that sizeof(CDATSubHeader **) == sizeof(CDATSubHeader *)
-so nothing blows up, but this should be sizeof(**cdat_table).
+Note the page_size_mask is garanteed to be non null. The spec
+mandates the device to set at least one bit, so ctz64 cannot
+return 64. This is garanteed by the fact the device
+initializes the page_size_mask to qemu_target_page_mask()
+and then the page_size_mask is further constrained by
+virtio_iommu_set_page_size_mask() callback which can't
+result in a new mask being null. So if Coverity complains
+round those ctz64/BIT_ULL with CID 1517772 this is a false
+positive
 
-Avoid this excessively hard-to-understand code by using
-g_new0() instead, which will do the type checking for us.
-While we're here, we can drop the useless check against failure,
-as g_malloc0() and g_new0() never fail.
-
-This fixes Coverity issue CID 1508120.
-
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Message-Id: <20230718101327.1111374-1-peter.maydell@linaro.org>
+Signed-off-by: Eric Auger <eric.auger@redhat.com>
+Fixes: 94df5b2180 ("virtio-iommu: Fix 64kB host page size VFIO device assignment")
+Message-Id: <20230718182136.40096-1-eric.auger@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
 ---
- hw/pci-bridge/cxl_upstream.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ hw/virtio/virtio-iommu.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/hw/pci-bridge/cxl_upstream.c b/hw/pci-bridge/cxl_upstream.c
-index ef47e5d625..9159f48a8c 100644
---- a/hw/pci-bridge/cxl_upstream.c
-+++ b/hw/pci-bridge/cxl_upstream.c
-@@ -274,10 +274,7 @@ static int build_cdat_table(CDATSubHeader ***cdat_table, void *priv)
-         };
+diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
+index 4dcf1d5c62..be51635895 100644
+--- a/hw/virtio/virtio-iommu.c
++++ b/hw/virtio/virtio-iommu.c
+@@ -854,17 +854,19 @@ static IOMMUTLBEntry virtio_iommu_translate(IOMMUMemoryRegion *mr, hwaddr addr,
+     VirtIOIOMMUEndpoint *ep;
+     uint32_t sid, flags;
+     bool bypass_allowed;
++    int granule;
+     bool found;
+     int i;
+ 
+     interval.low = addr;
+     interval.high = addr + 1;
++    granule = ctz64(s->config.page_size_mask);
+ 
+     IOMMUTLBEntry entry = {
+         .target_as = &address_space_memory,
+         .iova = addr,
+         .translated_addr = addr,
+-        .addr_mask = (1 << ctz32(s->config.page_size_mask)) - 1,
++        .addr_mask = BIT_ULL(granule) - 1,
+         .perm = IOMMU_NONE,
+     };
+ 
+@@ -1117,7 +1119,7 @@ static int virtio_iommu_set_page_size_mask(IOMMUMemoryRegion *mr,
+     if (s->granule_frozen) {
+         int cur_granule = ctz64(cur_mask);
+ 
+-        if (!(BIT(cur_granule) & new_mask)) {
++        if (!(BIT_ULL(cur_granule) & new_mask)) {
+             error_setg(errp, "virtio-iommu %s does not support frozen granule 0x%llx",
+                        mr->parent_obj.name, BIT_ULL(cur_granule));
+             return -1;
+@@ -1163,7 +1165,7 @@ static void virtio_iommu_freeze_granule(Notifier *notifier, void *data)
      }
+     s->granule_frozen = true;
+     granule = ctz64(s->config.page_size_mask);
+-    trace_virtio_iommu_freeze_granule(BIT(granule));
++    trace_virtio_iommu_freeze_granule(BIT_ULL(granule));
+ }
  
--    *cdat_table = g_malloc0(sizeof(*cdat_table) * CXL_USP_CDAT_NUM_ENTRIES);
--    if (!*cdat_table) {
--        return -ENOMEM;
--    }
-+    *cdat_table = g_new0(CDATSubHeader *, CXL_USP_CDAT_NUM_ENTRIES);
- 
-     /* Header always at start of structure */
-     (*cdat_table)[CXL_USP_CDAT_SSLBIS_LAT] = g_steal_pointer(&sslbis_latency);
+ static void virtio_iommu_device_realize(DeviceState *dev, Error **errp)
 -- 
 MST
 
