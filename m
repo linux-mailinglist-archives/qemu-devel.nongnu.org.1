@@ -2,90 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3EC276F5A7
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 00:22:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FAD576F5C7
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 00:36:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRghz-0006ND-M0; Thu, 03 Aug 2023 18:22:16 -0400
+	id 1qRgub-0008V1-E2; Thu, 03 Aug 2023 18:35:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qRghq-00067E-Rq
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 18:22:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qRguS-0008T2-Ub
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 18:35:08 -0400
+Received: from mout.gmx.net ([212.227.15.19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qRghp-0000d8-9w
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 18:22:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691101324;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=CAtiw9pOJqz+4/AtNB9psY6BRMakFeABmSxYufoyBfw=;
- b=LEWP93vpX9t3E55EHVo2Bb2kkcqyKCKxXAXikGOhFvwlClHboND4bN2UOXiZPGco0/w/XK
- ML22oJd2jFovl1l9rTzZv3DQPHXyn5mp9RPojkBdeVxbFdoD82WwNwfJuLjTLkhmLjf+wN
- hYKWtM3rrGKonK6zEW+wUXmUtmwXu84=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-172-bQ1bp6rKPJ6oM5i9BmLFCg-1; Thu, 03 Aug 2023 18:22:03 -0400
-X-MC-Unique: bQ1bp6rKPJ6oM5i9BmLFCg-1
-Received: by mail-lf1-f72.google.com with SMTP id
- 2adb3069b0e04-4fb87c48aceso1548585e87.3
- for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 15:22:03 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691101321; x=1691706121;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=CAtiw9pOJqz+4/AtNB9psY6BRMakFeABmSxYufoyBfw=;
- b=jMMJNRF4/wvKPu7PybWdzpfd0vSbGuwII7LtGY8Vv0YRI1yuPaM/PmS69D5ia7D4Bw
- vsSChZtJpgrpwHQTkEzJDvvf+4rKanmPs81p/Vu0t3XOMn5htoh7/pkx4XzjSGwdl0hj
- LjPOYz31DKBBmHOTdjXgpkQwka02gSkLIIauPOqsIBHBl/IrrqPYF/ZpHKTMdgWWx13L
- GfydXAMH0CznYWRwIiB0zgNhPQnLoBee6CaHTAs3vueKvHone+C1OaD8KrTwrYleMF/6
- CMZ4M8zYWEljjMd0U3EcV9YVeTpBqfK55Qr17IJf1BCUf7KfbklhbSt+iZ6aRF0pEr2E
- W94Q==
-X-Gm-Message-State: ABy/qLaT8hDfG8DUfKi+ddZMH+54g9qxSw7yP0wjp+X33esIfmzG17lU
- +6bNBl7As61eyiis8vSoHYBu90E0ylKPitt48K4VOj8LUPev9+GcbmipsnLzvrYGGJ4nfYNud7E
- jzPFhQ8yFUJtGqk+in2AuETZ93J3Ya+xFRIN6YiFQvFgGCVvAB56jGMWXngp+OevuhFwX
-X-Received: by 2002:a19:921a:0:b0:4fd:fafd:1ed4 with SMTP id
- u26-20020a19921a000000b004fdfafd1ed4mr6935218lfd.2.1691101321687; 
- Thu, 03 Aug 2023 15:22:01 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlEB46lCbnx/anJD76gv6lYMucYEdx1EEI0uTWFKKsXxEElAUP8TWhybI3AJ4fXUyHgvI5fbSw==
-X-Received: by 2002:a19:921a:0:b0:4fd:fafd:1ed4 with SMTP id
- u26-20020a19921a000000b004fdfafd1ed4mr6935204lfd.2.1691101321289; 
- Thu, 03 Aug 2023 15:22:01 -0700 (PDT)
-Received: from redhat.com ([2.52.12.104]) by smtp.gmail.com with ESMTPSA id
- d19-20020aa7d693000000b0051ded17b30bsm362300edr.40.2023.08.03.15.21.59
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 03 Aug 2023 15:22:00 -0700 (PDT)
-Date: Thu, 3 Aug 2023 18:21:57 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- zhenwei pi <pizhenwei@bytedance.com>, Gonglei <arei.gonglei@huawei.com>,
- Mauro Matteo Cascella <mcascell@redhat.com>,
- Xiao Lei <nop.leixiao@gmail.com>, Yongkang Jia <kangel@zju.edu.cn>,
- Yiming Tao <taoym@zju.edu.cn>
-Subject: [PULL 22/22] cryptodev: Handle unexpected request to avoid crash
-Message-ID: <15b11a1da6a4b7c6b8bb37883f52b544dee2b8fd.1691101215.git.mst@redhat.com>
-References: <cover.1691101215.git.mst@redhat.com>
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qRguP-00060j-MB
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 18:35:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
+ s=s31663417; t=1691102103; x=1691706903; i=deller@gmx.de;
+ bh=8HW1rq0e/YlgtuWlgImvRBKG69TEI7l4p5a/YC8ZO50=;
+ h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+ b=g+4GkoTxLb3BfL5GtgAdPU3936zjvADOySougQK7xH1srdImSeWzgQjE3lGyw18JTRYQ2Fi
+ 76tKJ+qvHoblgUdF5On/R0cePQqE4NhvSrjohJ2W6/tPnxAuLPBbxUX9sAJ0iP14kRtOIvBrv
+ sx1zrS3dkqblRfEvMlYrd8gBM1X7r2ex5MPKOrxEttuoz+x6H/Ra+tHoi5WMR8ulaSODbvA+D
+ nqZT2GmoLj8WhAzUH0iAl/iq9Ghp6NckYYQdgTv56IOLFBkr/Jd5sDcttnAnaj8c435X94qh+
+ iGYHUrsP4Ix+NACJiY3zFbNNeXk9Xd3OnXYi31p389SLmlQfNBkg==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from p100.fritz.box ([94.134.147.53]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MtfNl-1pYcNk03BP-00v4mb; Fri, 04
+ Aug 2023 00:35:03 +0200
+From: Helge Deller <deller@gmx.de>
+To: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+Cc: Helge Deller <deller@gmx.de>
+Subject: [PULL 0/1] Hppa linux user speedup patches
+Date: Fri,  4 Aug 2023 00:35:01 +0200
+Message-ID: <20230803223502.653223-1-deller@gmx.de>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1691101215.git.mst@redhat.com>
-X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
-X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:lqyf2+ANAcjfgt64n6jZsmGt/jrC+PIQRAxpTGoFEQ9G3j6vp+M
+ QF6trKyCwcHK073LMo7pU7DofC3ZCzYtHSBp/Wby17dW4WbSzFRrZ+L5gQWk8hr/SvRiBdd
+ ZsGy+CmbSlN/2lHcfUj9hnLhiX4XLdz8x2TbIDvIYdaYEIaHByjuMp3SXAleW6bLoVO7CmU
+ vjJ6TW30UwIcFDNwpJ6iw==
+UI-OutboundReport: notjunk:1;M01:P0:IZs7LmQ/3uU=;Se4k4y/EMohYlvSoJBruHlXZjsx
+ XW3fQlsWS7JkzYDOTD01dsATAz5FSrZ4uz+wPpeYoG845C6aWvWb4WMqiI5kKUd2w0crFah7C
+ iRBo9rJ14vounv/MDdYDC1GoZr0vLpcA749ElfuHlYa4Y7dOk7O2So9jGGoX6+ZaCOBCQJ/cM
+ fYv2YwVZcQQsTLxBqPe9IeYHwiC3YNa6oV6n6/g7F/6R9iBg2iajdZPYS/a/jNtqszLjr5CUK
+ s25E+0nuf2cYpRuntSxARsVIhsOAu4VtI4MzRyjgzChz/uX7nvOKjj7rOxwsFyhHiGDsFLztJ
+ JLiVnLr/Ng1oa4GKROl2faun3JnV6nIBi4HYDhmqDLEsTIaIzDQZuU9dVWG2hLZePp09CQ9W9
+ fm7Ox08tq3eNCqEusPSwzyZfIOnI3TfOK4lmAQZYLVPxlZHUU9sGJ4sRsAP+BM4lCVdj7N88Q
+ WN5K/RfJZ7a/ROg5K7l9LNqdMCm0FD010x8CT6Ch/EP3RY5VSfGeEuP8OeBzNdj07IQJNzSIb
+ W+sWdr871yVweUl/UJ/eyr8JF5siQAwsO3emnjeBdwIRQ0KPmOio8J1VuDmSZ8t/6Nk1wMv8B
+ S5H7o67vstgpPGB5d20iDrqnpTEPJ4/Exb3mOKveNUXjpHzYzOr7uXxJdAaEq29KpaD0pCJ7M
+ Apx1o8qWHZXicyXyqKhnTrJk5E22WKPzQi+fu2Z0kxup3nmBAZkXrbOzcpDmo6fILU3dpS0t4
+ t46raeMW4Ft4/Qwh/CLRKx8tcnaWPql5p3IO8Dy7yorkiP4ogt7MDVbadnUDFgIzZ0lZH6IZ9
+ /f7JIqNEkrswRWuFXITZITTTocR3Nj35+MusAMWlEfq0H7GGTjgg/Wffyn2iNFK3dnKNznaji
+ b6nsQ8Pk8zaQ+n+9UHHrz/DZG2jyBVJFxVY9cT4xydbovnKq1ptC3sMGq5p2QzSqx/inJbWz1
+ HMmByQ==
+Received-SPF: pass client-ip=212.227.15.19; envelope-from=deller@gmx.de;
+ helo=mout.gmx.net
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,57 +83,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: zhenwei pi <pizhenwei@bytedance.com>
+The following changes since commit 9ba37026fcf6b7f3f096c0cca3e1e7307802486=
+b:
 
-Generally guest side should discover which services the device is
-able to offer, then do requests on device.
+  Update version for v8.1.0-rc2 release (2023-08-02 08:22:45 -0700)
 
-However it's also possible to break this rule in a guest. Handle
-unexpected request here to avoid NULL pointer dereference.
+are available in the Git repository at:
 
-Fixes: e7a775fd ('cryptodev: Account statistics')
-Cc: Gonglei <arei.gonglei@huawei.com>
-Cc: Mauro Matteo Cascella <mcascell@redhat.com>
-Cc: Xiao Lei <nop.leixiao@gmail.com>
-Cc: Yongkang Jia <kangel@zju.edu.cn>
-Reported-by: Yiming Tao <taoym@zju.edu.cn>
-Signed-off-by: zhenwei pi <pizhenwei@bytedance.com>
-Message-Id: <20230803024314.29962-3-pizhenwei@bytedance.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
----
- backends/cryptodev.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+  https://github.com/hdeller/qemu-hppa.git tags/hppa-linux-user-speedup-pu=
+ll-request
 
-diff --git a/backends/cryptodev.c b/backends/cryptodev.c
-index 7d29517843..4d183f7237 100644
---- a/backends/cryptodev.c
-+++ b/backends/cryptodev.c
-@@ -191,6 +191,11 @@ static int cryptodev_backend_account(CryptoDevBackend *backend,
-     if (algtype == QCRYPTODEV_BACKEND_ALG_ASYM) {
-         CryptoDevBackendAsymOpInfo *asym_op_info = op_info->u.asym_op_info;
-         len = asym_op_info->src_len;
-+
-+        if (unlikely(!backend->asym_stat)) {
-+            error_report("cryptodev: Unexpected asym operation");
-+            return -VIRTIO_CRYPTO_NOTSUPP;
-+        }
-         switch (op_info->op_code) {
-         case VIRTIO_CRYPTO_AKCIPHER_ENCRYPT:
-             CryptodevAsymStatIncEncrypt(backend, len);
-@@ -210,6 +215,11 @@ static int cryptodev_backend_account(CryptoDevBackend *backend,
-     } else if (algtype == QCRYPTODEV_BACKEND_ALG_SYM) {
-         CryptoDevBackendSymOpInfo *sym_op_info = op_info->u.sym_op_info;
-         len = sym_op_info->src_len;
-+
-+        if (unlikely(!backend->sym_stat)) {
-+            error_report("cryptodev: Unexpected sym operation");
-+            return -VIRTIO_CRYPTO_NOTSUPP;
-+        }
-         switch (op_info->op_code) {
-         case VIRTIO_CRYPTO_CIPHER_ENCRYPT:
-             CryptodevSymStatIncEncrypt(backend, len);
--- 
-MST
+for you to fetch changes up to f8c0fd9804f435a20c3baa4c0c77ba9a02af24ef:
+
+  target/hppa: Move iaoq registers and thus reduce generated code size (20=
+23-08-04 00:02:56 +0200)
+
+=2D---------------------------------------------------------------
+Generated code size reduction with linux-user for hppa
+
+Would you please consider pulling this trivial fix, which reduces
+the generated code on x86 by ~3% when running linux-user with
+the hppa target?
+
+Thanks,
+Helge
+
+=2D---------------------------------------------------------------
+
+Helge Deller (1):
+  target/hppa: Move iaoq registers and thus reduce generated code size
+
+ target/hppa/cpu.h | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+=2D-
+2.41.0
 
 
