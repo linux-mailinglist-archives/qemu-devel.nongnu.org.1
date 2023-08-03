@@ -2,68 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9D5776EF81
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 18:32:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75F5476EF93
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 18:34:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRbEs-00028D-0o; Thu, 03 Aug 2023 12:31:50 -0400
+	id 1qRbHL-00073u-6S; Thu, 03 Aug 2023 12:34:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qRbEn-00020K-7w
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 12:31:45 -0400
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1qRbHJ-00073d-L8
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 12:34:21 -0400
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qRbEl-0004z1-HW
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 12:31:44 -0400
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-52164adea19so1459927a12.1
- for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 09:31:40 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1qRbHI-0005ig-4K
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 12:34:21 -0400
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-3128fcd58f3so1091434f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 09:34:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691080299; x=1691685099;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=8ML4c12rEx1eZW5TZLSmBhtPzewN8g7REXOd4fE7o8Y=;
- b=Rz5nBSiAzbBus3cJF9UAHmrqvQSf41WNfxdQX3Hvex/OA+NTezCzk6DkGmVnF1Q4N4
- wet9iswzKF581gNq+ZnZ9kmDK2jusp3JIL3iE9tTBg5jAA5J3eIyEhbf5t9XBw5ID6Ys
- ZZS9O7AZlKLlGuYOaqlR9nX5fN7QLbc8kArGvlaIJpusI0MFPOJ/EKBjcfLVGrDu3VxX
- Yamk1QAYYb5A1LESAjDM2CzqH/ZoC0w7GPoY/TToJyj8ubDMnLQiylGkqssrlf3ZckDq
- 4bWgYKGLO5WVvFhqqSq0MCcl4OWd5nLaH2WDHV0ObJBRC7vMLCMOzHtg/7xGsO5KRWfe
- F6yw==
+ d=linaro.org; s=google; t=1691080458; x=1691685258;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=OrJ6TQSeD7pJmQ3ZkasHR+d6aa5x8sVjbluCB6q7jks=;
+ b=Olf2XJmmj+HORg+DeZm5YTUCpFkcy8NSl80WGAl7O6AgK5zpk1no+QTdfMuD5X6KgB
+ d5Q32Y/OAVYpjSm2Me+Wv/xgMAx6a1Q9BYx+OL/ypYTzNdnqbw/8TxooaUsUhcuJjLZC
+ 7jxinG5/2HhVvQYBZ2ksp7fHWY3vlr19ByDeGAWpcjqH6euEUMAJoIIWXDd5Q4rblsX5
+ KC1OrxdIYUkTuT6QdnpngO2qUgm0//O0ks9mk9X3HtAQFL4jguUEm0aBhWFstR+iRv/A
+ RI+YMqtiLM+krP9HELgKLXerWt6RIjfaLVhYU8buQDaa3wX0y3e2nCJibWA2hm9khXSI
+ XRuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691080299; x=1691685099;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=8ML4c12rEx1eZW5TZLSmBhtPzewN8g7REXOd4fE7o8Y=;
- b=HcaVo/xYBjJHzWP/e084/xkc4sOpbkpCco6AwBugMRWmApNKo2KxRjHBpsy9RHdCqI
- /T3h/RdhGSBqDsDPhwC9XfRBtj/zx/AWYi+F1nppe7Nke8i0f+z4QdI8Xk8NGWHNKMXi
- +bmZlHC3hYo149aspfZ0OAN35mhz1wPFpw0RxtmEdY15HTkFHaasVxSz/P5P1x24D0EX
- dr8ejJzakFa0auVcS+TvVeRuHH03HFFE77+USs96qtZpLh/5Re+29Rkptaf7/d21t4Ni
- L7Aivoio51FD/cJpgMxfsHkZPzufS/B0QmnW+ewbK5r32Yf5pgEmZGrl6gFHwfii4mXV
- Fe7w==
-X-Gm-Message-State: ABy/qLZZyG2ll3mSL3HFJQhWtA9E74ow3mgKrMljjnqyjteCpik0EZ4h
- D4qMfroZKbU/XzY5sGC0XkXSst0UPxpl+dN9Tuu7bw==
-X-Google-Smtp-Source: APBJJlGP6/NbHPMQ73kdh+jb2r67+6nMZlZzAO2Gc//9K2n2uhDsKFRVgXfX5rUdKZx73jzdAknl84VjDpIDIs1l24Q=
-X-Received: by 2002:aa7:cd74:0:b0:521:9d92:5863 with SMTP id
- ca20-20020aa7cd74000000b005219d925863mr6323146edb.42.1691080298772; Thu, 03
- Aug 2023 09:31:38 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1691080458; x=1691685258;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=OrJ6TQSeD7pJmQ3ZkasHR+d6aa5x8sVjbluCB6q7jks=;
+ b=I7Xibk791oRoCKayk+KiyjQpeuLePS04fpD06KM6N1UyalTZ/FDwXeFSHfanVUIEFx
+ j0NQG/Hb+Q9wIQRvZIQTg/4v1x806+n8uVKPltCW/AuV00c4oMmFE99QY4ajTKZMcWHx
+ 1ZdIYZihIvNr20/JTYmMWh66nzhaMJGWKTF94s+F0zZXBZZPpARiY0imJ9lRlST+LARK
+ tWkuRed5xYaPdMiB3uBdJjIL9egXUh20/Vm1cmcpCjxM1kD/rFl3Dckz8dRkLOTXgj6R
+ MW+zQdRj60sVFOKMvX/P+Gm+cnnnbKOFxbC+1doWjU0A8nnNWtM0gyhLutlzzeHqiWQe
+ KMDQ==
+X-Gm-Message-State: ABy/qLa1HWWtTpbJDfY5TwytKGbHe/YSPdLRdI7v8DegsDFhD6Tfn7mf
+ 3aF2ZM9IDII8L2auiD6dAvHxm4g/MBQ8fu55rHAeDw==
+X-Google-Smtp-Source: APBJJlHhlgKtRSR0g7MVlD3jJp3ppLCxROhTWqGdaNe+RXYk89sBMsOuFgBGdxJ6QWNYme6Yfv2feQ==
+X-Received: by 2002:a5d:4e0a:0:b0:317:5747:b955 with SMTP id
+ p10-20020a5d4e0a000000b003175747b955mr8100565wrt.17.1691080457865; 
+ Thu, 03 Aug 2023 09:34:17 -0700 (PDT)
+Received: from meli.delivery (75.53-176-91.adsl-dyn.isp.belgacom.be.
+ [91.176.53.75]) by smtp.gmail.com with ESMTPSA id
+ r15-20020adff70f000000b0031763fd36c4sm250498wrp.104.2023.08.03.09.34.17
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Thu, 03 Aug 2023 09:34:17 -0700 (PDT)
+Date: Thu, 03 Aug 2023 19:32:19 +0300
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+To: qemu-devel@nongnu.org, Jonah Palmer <jonah.palmer@oracle.com>
+Cc: philmd@linaro.org, laurent@vivier.eu, mst@redhat.com,
+ boris.ostrovsky@oracle.com, alex.bennee@linaro.org, viresh.kumar@linaro.org,
+ armbru@redhat.com, pbonzini@redhat.com, berrange@redhat.com,
+ eduardo@habkost.net
+Subject: Re: [PATCH v3 3/3] vhost-user: move VhostUserProtocolFeature
+ definition to header file
+User-Agent: meli 0.7.3
+References: <20230803145500.2108691-1-jonah.palmer@oracle.com>
+ <20230803145500.2108691-4-jonah.palmer@oracle.com>
+In-Reply-To: <20230803145500.2108691-4-jonah.palmer@oracle.com>
+Message-ID: <ytq14.zkqygy78kdyo@linaro.org>
 MIME-Version: 1.0
-References: <20230726132512.149618-1-sergey.kambalin@auriga.com>
- <20230726132512.149618-5-sergey.kambalin@auriga.com>
-In-Reply-To: <20230726132512.149618-5-sergey.kambalin@auriga.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 3 Aug 2023 17:31:27 +0100
-Message-ID: <CAFEAcA8h3Kv1oSOeidufLAjjmDanp-nR=YJRutejNWOXTS8u8Q@mail.gmail.com>
-Subject: Re: [PATCH 04/44] Introduce BCM2838 SoC
-To: Sergey Kambalin <serg.oker@gmail.com>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
- Sergey Kambalin <sergey.kambalin@auriga.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52f.google.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8; format=flowed
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -86,58 +97,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 26 Jul 2023 at 14:52, Sergey Kambalin <serg.oker@gmail.com> wrote:
+On Thu, 03 Aug 2023 17:55, Jonah Palmer <jonah.palmer@oracle.com> wrote:
+>Move the definition of VhostUserProtocolFeature to
+>include/hw/virtio/vhost-user.h.
 >
-> Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
-> ---
->  hw/arm/bcm2838.c                     | 110 +++++++++++++++++++++++++++
->  hw/arm/bcm2838_peripherals.c         |  72 ++++++++++++++++++
->  hw/arm/meson.build                   |   2 +
->  include/hw/arm/bcm2838.h             |  26 +++++++
->  include/hw/arm/bcm2838_peripherals.h |  36 +++++++++
->  5 files changed, 246 insertions(+)
->  create mode 100644 hw/arm/bcm2838.c
->  create mode 100644 hw/arm/bcm2838_peripherals.c
->  create mode 100644 include/hw/arm/bcm2838.h
->  create mode 100644 include/hw/arm/bcm2838_peripherals.h
+>Remove previous definitions in hw/scsi/vhost-user-scsi.c,
+>hw/virtio/vhost-user.c, and hw/virtio/virtio-qmp.c.
 >
-> diff --git a/hw/arm/bcm2838.c b/hw/arm/bcm2838.c
-> new file mode 100644
-> index 0000000000..dd650c8148
-> --- /dev/null
-> +++ b/hw/arm/bcm2838.c
-> @@ -0,0 +1,110 @@
-> +/*
-> + * BCM2838 SoC emulation
-> + *
-> + * Copyright (C) 2022 Ovchinnikov Vitalii <vitalii.ovchinnikov@auriga.com>
-> + *
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + */
-> +
-> +#include "qemu/osdep.h"
-> +#include "qapi/error.h"
-> +#include "qemu/module.h"
-> +#include "hw/arm/raspi_platform.h"
-> +#include "hw/sysbus.h"
-> +#include "hw/arm/bcm2838.h"
-> +#include "trace.h"
-> +
-> +struct BCM2838Class {
-> +    /*< private >*/
-> +    BCM283XBaseClass parent_class;
-> +    /*< public >*/
-> +    hwaddr peri_low_base; /* Lower peripheral base address seen by the CPU */
-> +    hwaddr gic_base; /* GIC base address inside ARM local peripherals region */
+>Previously there were 3 separate definitions of this over 3 different
+>files. Now only 1 definition of this will be present for these 3 files.
+>
+>Signed-off-by: Jonah Palmer <jonah.palmer@oracle.com>
 
-Are these actually variable across different BCM2838 versions?
-If not, don't bother making them configurable like this, just
-have a #define of the address values and use it directly.
-The BCM283[567] code only does this for peri_base and
-ctrl_base so it can have one class that handles all three SoCs.
-
-> +};
-
-thanks
--- PMM
+Reviewed-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 
