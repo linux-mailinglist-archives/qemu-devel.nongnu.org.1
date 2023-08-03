@@ -2,56 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 854DB76E6CE
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 13:28:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37CD776E6D5
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 13:28:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRWD9-0006I8-SU; Thu, 03 Aug 2023 07:09:43 -0400
+	id 1qRWDA-0006IC-A8; Thu, 03 Aug 2023 07:09:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qRWD8-0006Hr-7x
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qRWD8-0006Hu-Bc
  for qemu-devel@nongnu.org; Thu, 03 Aug 2023 07:09:42 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qRWD6-0007Tr-LW
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 07:09:41 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qRWD6-0007Ts-Sb
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 07:09:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1691060979;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=unJQVZgvKTpVRTo+OXvkX2eRgN6hq+QGkZVelyVDa7Y=;
- b=VkvFW8bgL4QAKJNX0yEjPiDwCccRPBeH3YcfoB2Ju26T4eJ/Pb/T9kEaL87ixOclwzSGAF
- J5NGEtvLrk9oJvfBPf0ev5u0VRcbUq+9J0gMPkmPo4pg8XdDGiIvX86MUNhHPx/xzH0n/X
- QJ4VIaN1Pm6ENrS45rxlf2+biCX8Kps=
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=qSgU7k/fIPM9D3DOBU4spkNNiKTyTh4BloR1y60KR1c=;
+ b=JB04WE/NyJ7Y/L3fydLswXwrBGgoQ+SuCOBtVKkqXQiD/8unEkmzjM5D3B/Kn7cE+u8cdy
+ WMIQUqU/pB5TnSZafu2xtC7+KMzRLFB5HPgRly66dfvVejs7UARlvDXQYSqZNomYr5gcYx
+ CgN2ebldeDwF2j09fS1maNMPK3U1/uo=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-681-k7YPQ7mVOjif4a6EWsFWYg-1; Thu, 03 Aug 2023 07:09:36 -0400
-X-MC-Unique: k7YPQ7mVOjif4a6EWsFWYg-1
+ us-mta-688-rGbpDFNbN_OTmu8elDFb1A-1; Thu, 03 Aug 2023 07:09:38 -0400
+X-MC-Unique: rGbpDFNbN_OTmu8elDFb1A-1
 Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
  [10.11.54.3])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2242F88D120;
- Thu,  3 Aug 2023 11:09:36 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 547C5185A795;
+ Thu,  3 Aug 2023 11:09:37 +0000 (UTC)
 Received: from thuth.com (unknown [10.45.226.89])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 2567D112132D;
- Thu,  3 Aug 2023 11:09:34 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 681B8112132D;
+ Thu,  3 Aug 2023 11:09:36 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 0/9] Fixes for 8.1-rc3
-Date: Thu,  3 Aug 2023 13:09:23 +0200
-Message-Id: <20230803110932.341091-1-thuth@redhat.com>
+Subject: [PULL 1/9] util/oslib-win32: Fix compiling with Clang from MSYS2
+Date: Thu,  3 Aug 2023 13:09:24 +0200
+Message-Id: <20230803110932.341091-2-thuth@redhat.com>
+In-Reply-To: <20230803110932.341091-1-thuth@redhat.com>
+References: <20230803110932.341091-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -76,39 +79,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit fb695ae3fdfe34ce7bf2eaa4595d48ca809c8841:
+Clang complains:
 
-  Merge tag 'pull-qapi-2023-08-02' of https://repo.or.cz/qemu/armbru into staging (2023-08-02 06:51:53 -0700)
+../util/oslib-win32.c:483:56: error: omitting the parameter name in a
+ function definition is a C2x extension [-Werror,-Wc2x-extensions]
+win32_close_exception_handler(struct _EXCEPTION_RECORD*,
+                                                       ^
+Fix it by adding parameter names.
 
-are available in the Git repository at:
+Message-Id: <20230728142748.305341-4-thuth@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ util/oslib-win32.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-  https://gitlab.com/thuth/qemu.git tags/pull-request-2023-08-03
-
-for you to fetch changes up to f54ba56dad0e9cea275e9802915a293f1a8c7d22:
-
-  gitlab: disable FF_SCRIPT_SECTIONS on msys jobs (2023-08-03 13:04:48 +0200)
-
-----------------------------------------------------------------
-* Fix timeout problems in the MSYS Gitlab CI jobs
-* Fix a problem when compiling with Clang on Windows
-
-----------------------------------------------------------------
-Daniel P. Berrangé (8):
-      gitlab: remove duplication between msys jobs
-      gitlab: print timestamps during windows msys jobs
-      gitlab: always use updated msys installer
-      gitlab: drop $CI_PROJECT_DIR from cache path
-      gitlab: always populate cache for windows msys jobs
-      configure: support passthrough of -Dxxx args to meson
-      gitlab: disable optimization and debug symbols in msys build
-      gitlab: disable FF_SCRIPT_SECTIONS on msys jobs
-
-Thomas Huth (1):
-      util/oslib-win32: Fix compiling with Clang from MSYS2
-
- configure                |   4 ++
- util/oslib-win32.c       |   5 +-
- .gitlab-ci.d/windows.yml | 174 +++++++++++++++++++++++------------------------
- 3 files changed, 94 insertions(+), 89 deletions(-)
+diff --git a/util/oslib-win32.c b/util/oslib-win32.c
+index 429542face..19a0ea7fbe 100644
+--- a/util/oslib-win32.c
++++ b/util/oslib-win32.c
+@@ -480,8 +480,9 @@ int qemu_bind_wrap(int sockfd, const struct sockaddr *addr,
+ }
+ 
+ EXCEPTION_DISPOSITION
+-win32_close_exception_handler(struct _EXCEPTION_RECORD*,
+-                              void*, struct _CONTEXT*, void*)
++win32_close_exception_handler(struct _EXCEPTION_RECORD *exception_record,
++                              void *registration, struct _CONTEXT *context,
++                              void *dispatcher)
+ {
+     return EXCEPTION_EXECUTE_HANDLER;
+ }
+-- 
+2.39.3
 
 
