@@ -2,77 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0662E76F4C8
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 23:46:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 866E676F59A
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 00:22:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRg82-0003t1-Ua; Thu, 03 Aug 2023 17:45:06 -0400
+	id 1qRggf-0004Cs-J4; Thu, 03 Aug 2023 18:20:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>)
- id 1qRg81-0003sn-7Z; Thu, 03 Aug 2023 17:45:05 -0400
-Received: from mout.gmx.net ([212.227.17.21])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qRggc-0004Ci-4Z
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 18:20:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>)
- id 1qRg7y-0001Gs-8O; Thu, 03 Aug 2023 17:45:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1691099091; x=1691703891; i=deller@gmx.de;
- bh=/02ufWd4kJoEc7JJHuyZDWsKtIMBSraIfCOSIvVAJPc=;
- h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:References;
- b=C9WbPzkx96QAAhRajMhO/EgKwCU5Q1c0TI1f22HU4v6b2kgSbN7oJlBpTnM1iE36A+973+K
- M2X+UFmR0ATIux0K9K887i4VTY5/472/KwDiJl/HS4TiuIV7XEhrP6gsxEPUKI10LYliN6ynA
- c8mYNlA3gY6p4z/wdnAkUFb/U5QgTzKdB04e5BLmIgbt+T3bG+NUDEX+3avTNnJC0s6jzdeKK
- P/JqcPUaN7FpGuUi4GVUsNrJN/hsOu2mUuqdjOUzvZrDfT05BMTQMPP2d2UdRFICr16hQS4aM
- 4BrHDeKSF/JpxTRQQ9/5mwavxqGyvqe7/WozcHJrvKEhX+XMkzTg==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from p100.fritz.box ([94.134.147.53]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MnJlc-1q0LbD1Bxs-00jGDt; Thu, 03
- Aug 2023 23:44:51 +0200
-From: Helge Deller <deller@gmx.de>
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qRgga-0000Nm-Bh
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 18:20:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1691101247;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+ bh=thm/fnhI6kskNWZ5PLl/mTfNzXktl6SUV8xaAs/11Lw=;
+ b=hV0LK1mRqRTlYvvyj3fEUdIXF0wtLdNnpN2FRZ1WvpIISOvI7gWmSTWppGYUrXpoqnjjow
+ TDkvCECqguPsYteCLyvy4BIpo1ajgN+vFFjEu39J06i7jsqUUDjH059E2FIxIUvUwNIEHT
+ v0vUkyqOkLHEEmJ/Wi0x/nsT7rXAPwE=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-64-Ejy35XOpO1m8pr1XLMEC4g-1; Thu, 03 Aug 2023 18:20:46 -0400
+X-MC-Unique: Ejy35XOpO1m8pr1XLMEC4g-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-993c24f3246so182035166b.1
+ for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 15:20:45 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1691101244; x=1691706044;
+ h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=thm/fnhI6kskNWZ5PLl/mTfNzXktl6SUV8xaAs/11Lw=;
+ b=Y73w+p+TiEuzD7jEQnXcEzYVX9QB6ESCVg18A5OU33WEMOqgdNu37zKfbAwNm0j8VI
+ 36gQ4wdXeuXhEYriVP46sstQZzIQd9719MkEtIcQdlSyb5Rhcs6rlIt8xnOdJoqRAM2o
+ T+JFwK3+bNDtIBmN+WWFNgeY6jzYPst6StTZQr6KYVDmfskTZSnoybES0DXEvZuHbjxd
+ 38NvXQZnmsh8oHh4i0F8LsecSFp4hnJxup1LnCswzIHhl3q4/qfcMbPATk9I2HewW8yw
+ SSgYjIpnRs+5GlrMNkyeula/EJeqOGMp9wa/tKuuDNZi/Mw0jxgSzfMQKzGz7NVbcZFR
+ ew7Q==
+X-Gm-Message-State: AOJu0YyWncuTgfOQnQA+depQFeMN3P8qp+RAHamI/4sf1bYy3sCLFSrW
+ tGAiG/6U1aQW6BMYOat70bXTTm6Zp7Fpc0vmPgeBsFLFNWC93VfQ/3QLKxwBXEoORY+Rrq5zJV3
+ CnrsPG2gnolc8af+WLyFmhbq7qzR7rckvBdwJAxLsGvoSU7+nMAu9ZP72wvKQyAerUAxw
+X-Received: by 2002:a17:906:519c:b0:98f:8481:24b3 with SMTP id
+ y28-20020a170906519c00b0098f848124b3mr55351ejk.37.1691101244491; 
+ Thu, 03 Aug 2023 15:20:44 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHPC8TN0Xjeio7w1ksk8wTK3nuUmTTbgUdGW8POqg/C/e9Wf2ChNU7Ad5/cD7KXHsD3ASC0/A==
+X-Received: by 2002:a17:906:519c:b0:98f:8481:24b3 with SMTP id
+ y28-20020a170906519c00b0098f848124b3mr55335ejk.37.1691101244164; 
+ Thu, 03 Aug 2023 15:20:44 -0700 (PDT)
+Received: from redhat.com ([2.52.12.104]) by smtp.gmail.com with ESMTPSA id
+ gw1-20020a170906f14100b0099b8234a9fesm380988ejb.1.2023.08.03.15.20.42
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 03 Aug 2023 15:20:43 -0700 (PDT)
+Date: Thu, 3 Aug 2023 18:20:40 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Laurent Vivier <laurent@vivier.eu>,
- Peter Maydell <peter.maydell@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Helge Deller <deller@gmx.de>, Michael Cree <mcree@orcon.net.nz>
-Subject: [PATCH v4 3/3] linux-user: Emulate /proc/cpuinfo for Alpha
-Date: Thu,  3 Aug 2023 23:44:49 +0200
-Message-ID: <20230803214450.647040-4-deller@gmx.de>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230803214450.647040-1-deller@gmx.de>
-References: <20230803214450.647040-1-deller@gmx.de>
+Cc: Peter Maydell <peter.maydell@linaro.org>
+Subject: [PULL 00/22] pc,pci,virtio,crypto: bugfixes
+Message-ID: <cover.1691101215.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:QS5FUNJmVRwQhUXSAdGoGAtQszlnLdkshwjiRZoAmkagIH3tdrA
- x2NBwsRtxKWGDIGJGkOVYtvApN4O91lDOl0YKa7NyOpKD2ejHbP0C3ZyjPugrMXPWygPMEl
- b/Chj/Q/zsGEJxJVrvWH26EJ25lh601ObDB29+T2xtoaa1gouGzoyfEC5wHmlAW2p5fUGCD
- 8bIXYHvdTME6/AIMFaSsA==
-UI-OutboundReport: notjunk:1;M01:P0:RPwYYEAgkIY=;UvBbEzdgYu8O+bHQENtIh5q8WCE
- H6vGHN9z5APgMCprWrORQ0XC8pwqQbLpymRc0pLhqVdZZbzlXj/1xH6YFkS1ULvj/XDp/zgxK
- LJTSxDWNunUezGKNeGcSYImt/tU0nnWor51PLpb00i+XQPBuPSW1LW3aAg3hGU8js+4fKUFa1
- n2dN8V+UQMCoetdaO+mDN9adzQTdUEe+zCwfYzjCN/P31UJWQmTZx2Wk+kbzq8mDEuGdO8E07
- veqYLSX6Tm+H+2eQPyp4SFWAPS3VBmUW+sjij/b183KipFE++Rjn4eGnLcFuApH6+q6jK1bPm
- lIlBb8LxuVYRpN2dP+2e0bQSLqijhRdCr4Yy4aEHtRJMbq4Gi6BioM865gDCeIdoYZ6ubZIjD
- P+Hu1RFBmF++v/Ko6Bi6jVDRu4AlZwtZHFuVbKBwv3WV9Ts4guVvhg2N1pWKjACYAFyv+vn+K
- oQpkrQvewyMCTx7UTKB0/XkFv14oIDVhTaBoc91UL8mhL8m9X269cuDFoHrriMH8lfkKKjI9g
- FoLhI9Mv6myITfwcKakKB9MdK2Ao5PDZ6IRkGce3ZDTtmL6LzSh+D6v9II9JN3XSL2/9oyTap
- xsGCLGQ0E1adcwBqVo/ZWpsDULDoviQa/+4Uv+61E2GxKBl7F4XqUtEo7VlLArghKeeM0fnvx
- eSCO9LvcJVtIM/pODhB5Uiw/DBeq2NwZfUl6j0uZeGyvVLKqiRXJNPpuP+4uaN44OPsBy8JVT
- khLKZHXZLybEU2CVbEvNxrb9JluqhQfY7X9vlUSFUSY3MYhoX+HcDglEANRVA9ncQBYiAyRQR
- 6lAVkdgCe8lsa9Poit9Ot8uieHnht26HMxerhq5uNJCXN7RQGoiSoPFws6/cINt/ducvoL3JH
- XTOgXEq9NU9EbH9/caSiVJN0VvR0rnZC9OdP8aUnZvkDwS/d+EWzFUiXuT1Ovo4idW1bVYiuH
- OU21/Q==
-Received-SPF: pass client-ip=212.227.17.21; envelope-from=deller@gmx.de;
- helo=mout.gmx.net
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
+X-Mutt-Fcc: =sent
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,136 +93,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add emulation for /proc/cpuinfo for the alpha architecture.
+The following changes since commit c167c80b463768e04a22fbe37ba6c53a4a08e41e:
 
-alpha output example:
+  Merge tag 'pull-request-2023-08-03' of https://gitlab.com/thuth/qemu into staging (2023-08-03 07:37:17 -0700)
 
-(alpha-chroot)root@p100:/# cat /proc/cpuinfo
-cpu                     : Alpha
-cpu model               : ev67
-cpu variation           : 7
-cpu revision            : 0
-cpu serial number       : JA00000000
-system type             : QEMU
-system variation        : QEMU_v8.0.92
-system revision         : 0
-system serial number    : AY00000000
-cycle frequency [Hz]    : 250000000
-timer frequency [Hz]    : 250.00
-page size [bytes]       : 8192
-phys. address bits      : 44
-max. addr. space #      : 255
-BogoMIPS                : 2500.00
-platform string         : AlphaServer QEMU user-mode VM
-cpus detected           : 8
-cpus active             : 4
-cpu active mask         : 0000000000000095
-L1 Icache               : n/a
-L1 Dcache               : n/a
-L2 cache                : n/a
-L3 cache                : n/a
+are available in the Git repository at:
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: Michael Cree <mcree@orcon.net.nz>
+  https://git.kernel.org/pub/scm/virt/kvm/mst/qemu.git tags/for_upstream
 
-v3:
-- use PRIx64 instead of casting to long long
-v2:
-- revised platform string and system variation output
-- show cpus detected/active/active mask based on
-  current physical machine configuration
-=2D--
- linux-user/syscall.c | 56 ++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 54 insertions(+), 2 deletions(-)
+for you to fetch changes up to 15b11a1da6a4b7c6b8bb37883f52b544dee2b8fd:
 
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 6328d7f434..aa470c465d 100644
-=2D-- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -8324,7 +8324,7 @@ void target_exception_dump(CPUArchState *env, const =
-char *fmt, int code)
- #if HOST_BIG_ENDIAN !=3D TARGET_BIG_ENDIAN || \
-     defined(TARGET_SPARC) || defined(TARGET_M68K) || defined(TARGET_HPPA)=
- || \
-     defined(TARGET_RISCV) || defined(TARGET_S390X) || defined(TARGET_ARM)=
- || \
--    defined(TARGET_AARCH64)
-+    defined(TARGET_AARCH64) || defined(TARGET_ALPHA)
- static int is_proc(const char *filename, const char *entry)
- {
-     return strcmp(filename, entry) =3D=3D 0;
-@@ -8376,6 +8376,57 @@ static int open_net_route(CPUArchState *cpu_env, in=
-t fd)
- }
- #endif
+  cryptodev: Handle unexpected request to avoid crash (2023-08-03 16:16:17 -0400)
 
-+#if defined(TARGET_ALPHA)
-+static int open_cpuinfo(CPUArchState *cpu_env, int fd)
-+{
-+    int max_cpus =3D sysconf(_SC_NPROCESSORS_CONF);
-+    int num_cpus =3D sysconf(_SC_NPROCESSORS_ONLN);
-+    uint64_t cpu_mask;
-+    char model[32];
-+    char *p;
-+    AlphaCPU *cpu =3D env_archcpu(cpu_env);
-+    CPUAlphaState *env =3D &cpu->env;
-+
-+    g_strlcpy(model, object_class_get_name(
-+                        OBJECT_CLASS(CPU_GET_CLASS(env_cpu(cpu_env)))),
-+              sizeof(model));
-+    p =3D strchr(model, '-');
-+    if (p) {
-+        *p =3D '\0';
-+    }
-+    if (sched_getaffinity(getpid(), sizeof(cpu_mask),
-+                          (cpu_set_t *) &cpu_mask) < 0) {
-+        cpu_mask =3D (1ULL << num_cpus) - 1;
-+    }
-+
-+    dprintf(fd, "cpu\t\t\t: Alpha\n");
-+    dprintf(fd, "cpu model\t\t: %s\n", model);
-+    dprintf(fd, "cpu variation\t\t: %d\n", env->implver + 5);
-+    dprintf(fd, "cpu revision\t\t: 0\n");
-+    dprintf(fd, "cpu serial number\t: JA00000000\n");
-+    dprintf(fd, "system type\t\t: QEMU\n");
-+    dprintf(fd, "system variation\t: QEMU_v%s\n", QEMU_VERSION);
-+    dprintf(fd, "system revision\t\t: 0\n");
-+    dprintf(fd, "system serial number\t: AY00000000\n");
-+    dprintf(fd, "cycle frequency [Hz]\t: 250000000\n");
-+    dprintf(fd, "timer frequency [Hz]\t: 250.00\n");
-+    dprintf(fd, "page size [bytes]\t: %d\n", TARGET_PAGE_SIZE);
-+    dprintf(fd, "phys. address bits\t: %d\n", TARGET_PHYS_ADDR_SPACE_BITS=
-);
-+    dprintf(fd, "max. addr. space #\t: 255\n");
-+    dprintf(fd, "BogoMIPS\t\t: 2500.00\n");
-+    dprintf(fd, "platform string\t\t: AlphaServer QEMU user-mode VM\n");
-+    dprintf(fd, "cpus detected\t\t: %d\n", max_cpus);
-+    dprintf(fd, "cpus active\t\t: %d\n", num_cpus);
-+    dprintf(fd, "cpu active mask\t\t: %016"PRIx64"\n", cpu_mask);
-+    dprintf(fd, "L1 Icache\t\t: n/a\n");
-+    dprintf(fd, "L1 Dcache\t\t: n/a\n");
-+    dprintf(fd, "L2 cache\t\t: n/a\n");
-+    dprintf(fd, "L3 cache\t\t: n/a\n");
-+    return 0;
-+}
-+#endif
-+
-+
- #if defined(TARGET_SPARC)
- static int open_cpuinfo(CPUArchState *cpu_env, int fd)
- {
-@@ -8633,7 +8684,8 @@ int do_guest_openat(CPUArchState *cpu_env, int dirfd=
-, const char *fname,
- #endif
- #if defined(TARGET_SPARC) || defined(TARGET_HPPA) || \
-     defined(TARGET_RISCV) || defined(TARGET_S390X) || \
--    defined(TARGET_ARM)   || defined(TARGET_AARCH64)
-+    defined(TARGET_ARM)   || defined(TARGET_AARCH64) || \
-+    defined(TARGET_ALPHA)
-         { "/proc/cpuinfo", open_cpuinfo, is_proc },
- #endif
- #if defined(TARGET_M68K)
-=2D-
-2.41.0
+----------------------------------------------------------------
+pc,pci,virtio,crypto: bugfixes
+
+fixes all over the place.
+
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+
+----------------------------------------------------------------
+David Edmondson (1):
+      hw/virtio: qmp: add RING_RESET to 'info virtio-status'
+
+Eric Auger (2):
+      hw/virtio-iommu: Fix potential OOB access in virtio_iommu_handle_command()
+      virtio-iommu: Standardize granule extraction and formatting
+
+Hanna Czenczek (1):
+      virtio: Fix packed virtqueue used_idx mask
+
+Igor Mammedov (6):
+      tests: acpi: x86: whitelist expected blobs
+      x86: acpi: workaround Windows not handling name references in Package properly
+      tests: acpi: x86: update expected blobs
+      tests: acpi: whitelist expected blobs
+      acpi: x86: remove _ADR on host bridges
+      tests: acpi: update expected blobs
+
+Li Feng (1):
+      vhost: fix the fd leak
+
+Milan Zamazal (1):
+      hw/virtio: Add a protection against duplicate vu_scmi_stop calls
+
+Peter Maydell (1):
+      hw/pci-bridge/cxl_upstream.c: Use g_new0() in build_cdat_table()
+
+Thomas Huth (6):
+      hw/i386/intel_iommu: Fix trivial endianness problems
+      hw/i386/intel_iommu: Fix endianness problems related to VTD_IR_TableEntry
+      hw/i386/intel_iommu: Fix struct VTDInvDescIEC on big endian hosts
+      hw/i386/intel_iommu: Fix index calculation in vtd_interrupt_remap_msi()
+      hw/i386/x86-iommu: Fix endianness issue in x86_iommu_irq_to_msi_message()
+      include/hw/i386/x86-iommu: Fix struct X86IOMMU_MSIMessage for big endian hosts
+
+Yuri Benditovich (1):
+      pci: do not respond config requests after PCI device eject
+
+Zhenwei Pi (2):
+      virtio-crypto: verify src&dst buffer length for sym request
+      cryptodev: Handle unexpected request to avoid crash
+
+ hw/i386/intel_iommu_internal.h                |   9 +++++
+ include/hw/i386/intel_iommu.h                 |  50 +++++++++++++-------------
+ include/hw/i386/x86-iommu.h                   |  50 +++++++++++++-------------
+ include/hw/virtio/vhost-user-scmi.h           |   1 +
+ backends/cryptodev.c                          |  10 ++++++
+ hw/i386/acpi-build.c                          |  11 +++---
+ hw/i386/intel_iommu.c                         |  23 +++++++-----
+ hw/i386/x86-iommu.c                           |   2 +-
+ hw/pci-bridge/cxl_upstream.c                  |   5 +--
+ hw/pci/pci_host.c                             |  15 ++++++--
+ hw/virtio/vhost-user-scmi.c                   |   7 ++++
+ hw/virtio/vhost.c                             |   2 ++
+ hw/virtio/virtio-crypto.c                     |   5 +++
+ hw/virtio/virtio-iommu.c                      |  12 ++++---
+ hw/virtio/virtio-qmp.c                        |   2 ++
+ hw/virtio/virtio.c                            |   2 +-
+ tests/data/acpi/pc/DSDT                       | Bin 6488 -> 6830 bytes
+ tests/data/acpi/pc/DSDT.acpierst              | Bin 6411 -> 6741 bytes
+ tests/data/acpi/pc/DSDT.acpihmat              | Bin 7813 -> 8155 bytes
+ tests/data/acpi/pc/DSDT.bridge                | Bin 12615 -> 13701 bytes
+ tests/data/acpi/pc/DSDT.cphp                  | Bin 6952 -> 7294 bytes
+ tests/data/acpi/pc/DSDT.dimmpxm               | Bin 8142 -> 8484 bytes
+ tests/data/acpi/pc/DSDT.hpbridge              | Bin 6451 -> 6781 bytes
+ tests/data/acpi/pc/DSDT.hpbrroot              | Bin 3343 -> 3337 bytes
+ tests/data/acpi/pc/DSDT.ipmikcs               | Bin 6560 -> 6902 bytes
+ tests/data/acpi/pc/DSDT.memhp                 | Bin 7847 -> 8189 bytes
+ tests/data/acpi/pc/DSDT.nohpet                | Bin 6346 -> 6688 bytes
+ tests/data/acpi/pc/DSDT.numamem               | Bin 6494 -> 6836 bytes
+ tests/data/acpi/pc/DSDT.roothp                | Bin 9873 -> 10623 bytes
+ tests/data/acpi/q35/DSDT                      | Bin 8361 -> 8355 bytes
+ tests/data/acpi/q35/DSDT.acpierst             | Bin 8378 -> 8372 bytes
+ tests/data/acpi/q35/DSDT.acpihmat             | Bin 9686 -> 9680 bytes
+ tests/data/acpi/q35/DSDT.acpihmat-noinitiator | Bin 8640 -> 8634 bytes
+ tests/data/acpi/q35/DSDT.applesmc             | Bin 8407 -> 8401 bytes
+ tests/data/acpi/q35/DSDT.bridge               | Bin 11590 -> 11968 bytes
+ tests/data/acpi/q35/DSDT.core-count2          | Bin 32501 -> 32495 bytes
+ tests/data/acpi/q35/DSDT.cphp                 | Bin 8825 -> 8819 bytes
+ tests/data/acpi/q35/DSDT.cxl                  | Bin 9673 -> 9655 bytes
+ tests/data/acpi/q35/DSDT.dimmpxm              | Bin 10015 -> 10009 bytes
+ tests/data/acpi/q35/DSDT.ipmibt               | Bin 8436 -> 8430 bytes
+ tests/data/acpi/q35/DSDT.ipmismbus            | Bin 8449 -> 8443 bytes
+ tests/data/acpi/q35/DSDT.ivrs                 | Bin 8378 -> 8372 bytes
+ tests/data/acpi/q35/DSDT.memhp                | Bin 9720 -> 9714 bytes
+ tests/data/acpi/q35/DSDT.mmio64               | Bin 9491 -> 9485 bytes
+ tests/data/acpi/q35/DSDT.multi-bridge         | Bin 12770 -> 13208 bytes
+ tests/data/acpi/q35/DSDT.noacpihp             | Bin 8241 -> 8235 bytes
+ tests/data/acpi/q35/DSDT.nohpet               | Bin 8219 -> 8213 bytes
+ tests/data/acpi/q35/DSDT.numamem              | Bin 8367 -> 8361 bytes
+ tests/data/acpi/q35/DSDT.pvpanic-isa          | Bin 8462 -> 8456 bytes
+ tests/data/acpi/q35/DSDT.tis.tpm12            | Bin 8967 -> 8961 bytes
+ tests/data/acpi/q35/DSDT.tis.tpm2             | Bin 8993 -> 8987 bytes
+ tests/data/acpi/q35/DSDT.viot                 | Bin 9470 -> 9464 bytes
+ tests/data/acpi/q35/DSDT.xapic                | Bin 35724 -> 35718 bytes
+ 53 files changed, 132 insertions(+), 74 deletions(-)
 
 
