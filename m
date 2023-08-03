@@ -2,97 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55B9D76E5E1
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 12:47:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D754676E618
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 13:00:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRVqf-0006l4-Ce; Thu, 03 Aug 2023 06:46:29 -0400
+	id 1qRW35-0006kq-Hm; Thu, 03 Aug 2023 06:59:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qRVqd-0006i8-6m
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 06:46:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <m.tyutin@yadro.com>)
+ id 1qRW32-0006XZ-W9
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 06:59:17 -0400
+Received: from mta-04.yadro.com ([89.207.88.248])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qRVqa-0003OG-OW
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 06:46:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691059583;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=0IRncGgZritQX9csnT8j8c3HMEsg3ev6mBGYAsXfFZE=;
- b=NDzE5Y7IOkqdpd/gfKoYu1m78vO3Mo/hCq6h8QLSduMQoLfrDF0uVIWcIjjDgKFUFIBmjZ
- ZIaEUKecNkIjs2psFLee9jzFX1wqF80VGsokR26km83os8++F+zrr8ixG4S9yJ8Oum//ut
- EemiuaiW+/yQMj+DHO4pK+7CDhV96Kw=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-157-r_q2rg3aOSGBIi3xNhhrOw-1; Thu, 03 Aug 2023 06:46:20 -0400
-X-MC-Unique: r_q2rg3aOSGBIi3xNhhrOw-1
-Received: by mail-qt1-f200.google.com with SMTP id
- d75a77b69052e-406c0193f36so8515781cf.3
- for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 03:46:20 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691059580; x=1691664380;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=0IRncGgZritQX9csnT8j8c3HMEsg3ev6mBGYAsXfFZE=;
- b=hvU9q4huKvinQMJZgKJ9PhjRT23kUbVZO/CsxLajbSpQwOMese50IML0UNpEiZGtlI
- u9/zTeiNVM3060EZYppKopcUvoGxvYU9cxtGJS3Espzx+agU7ocT6nruZNJXYWyUTxPt
- MfqU9W7/kyV5I8VcU2CqAVzN2fQssyzHH0SKMOi+/bmM5d6HdD2WV4zT3+tfHbMctaH+
- naNv/ezNiPeIu6HbDKKgSosFVpqzZcbNJRr77dLmp4+qEvvp5Fg7oLWI0XiPGmiZbQ7i
- VlkGNJYCOw9sGmMdrSj1/cHIGYokY0fL6OZPuzUgD0q7Jhg2b6FZAq/EPubmlO95NmZF
- 9IFQ==
-X-Gm-Message-State: ABy/qLb4Lz30dhMvyxG8WtKYNOA1ifEu8A8uIFO/EPigQI5AsxXyZ9Ff
- D6LoR1Ukb15WfDRvF7olaYUzAqv8T+QyRexN5r9c0pHvkxkb8njR6s1N5EkuWJm7YHvYpFo51+Y
- D7YX/1+l5uqOqXVc=
-X-Received: by 2002:ac8:5992:0:b0:40f:5510:d74d with SMTP id
- e18-20020ac85992000000b0040f5510d74dmr13092293qte.13.1691059579980; 
- Thu, 03 Aug 2023 03:46:19 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlFFkA4NBEzkxKxdNwgXffpJ4qs/7KSaIeo/99fFHybPY4VnOcR/g0rqgekzBGMGmpkOKpnjvA==
-X-Received: by 2002:ac8:5992:0:b0:40f:5510:d74d with SMTP id
- e18-20020ac85992000000b0040f5510d74dmr13092273qte.13.1691059579709; 
- Thu, 03 Aug 2023 03:46:19 -0700 (PDT)
-Received: from [192.168.0.3] (ip-109-43-179-99.web.vodafone.de.
- [109.43.179.99]) by smtp.gmail.com with ESMTPSA id
- b16-20020ac844d0000000b00406b11a54b8sm6089227qto.7.2023.08.03.03.46.17
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 03 Aug 2023 03:46:19 -0700 (PDT)
-Message-ID: <be8ba7f5-418f-607f-fefb-860a66efe1b4@redhat.com>
-Date: Thu, 3 Aug 2023 12:46:16 +0200
+ (Exim 4.90_1) (envelope-from <m.tyutin@yadro.com>)
+ id 1qRW30-0002OH-5W
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 06:59:16 -0400
+DKIM-Filter: OpenDKIM Filter v2.11.0 mta-04.yadro.com 2CCBAC0003
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yadro.com; s=mta-04;
+ t=1691060350; bh=6M9XNZqC6+PwpcxI1EL+AQwcwoslHx9KXxpKEm8R1IE=;
+ h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
+ b=W24BtGcCL535opZvmamOPvtUxxNQwnFyOx4noWwMtRdfCtP6pPssKhx0TlSb/De95
+ J3kRNMOguVW1kk+mMxHQECL+PdVL3Yg/yxu3WIoqeXHO1LAjn4iy+gsoOPsPVbB4xa
+ B1I8584lBEo+/4Lp1R+SBM2p8AZM9OnSwVZRrpOEMvY5ok+oN+054bEsQyQuAP4v+Z
+ idiPNHC7trqmqLaaqRq+Drmi/cBE2dfX4jPsS++R40SAhvsXU2yyRCrwO2WwQhqECI
+ 7SR1/FjwCcjLjm/I4ZEStUnzmY67NnCZcfcdPFm6GOnvIATzuvQUn7sGyoUb9ZVTgJ
+ F0LTY4UUrTpvQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yadro.com; s=mta-03;
+ t=1691060350; bh=6M9XNZqC6+PwpcxI1EL+AQwcwoslHx9KXxpKEm8R1IE=;
+ h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
+ b=RuICXRyB/rNFgRbjxV2FvtFlSurGLl0Lh5fxdz4vY0zEliGZWTsGaxuhfzZH20Vgp
+ 6yO19p77fTunbgwUX7yVxB4MwlXgCz5iH0m+XADUdgyuwgJvAwrC6GWHe9NAV8zjet
+ 3DuwQDUD32jQFZyIzkHRuZZUylZ8wZ/5aIDTMfkp6kuVB5OgmKFsHm0DXETfSD4EFb
+ KTLFP5xPi79eAstFL41X9F2npda6E7E06kd9YoRWCvEKfmVEmu6zbOYiLlTD8xHixY
+ iiD/QlKQn+/7wHzvpDVDPqZiGJezSvLxCA7o7ngtv/FyYFb+MUZFCQw4lU1AwtOXTC
+ h82T8PfQ+TZDA==
+From: Mikhail Tyutin <m.tyutin@yadro.com>
+To: <qemu-devel@nongnu.org>
+CC: <richard.henderson@linaro.org>, <pbonzini@redhat.com>,
+ <alex.bennee@linaro.org>, Mikhail Tyutin <m.tyutin@yadro.com>, Dmitriy
+ Solovev <d.solovev@yadro.com>
+Subject: [PATCH v2] Fix SEGFAULT on getting physical address of MMIO region.
+Date: Thu, 3 Aug 2023 13:58:30 +0300
+Message-ID: <20230803105830.8722-1-m.tyutin@yadro.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] hw/virtio: Add a protection against duplicate
- vu_scmi_stop calls
-Content-Language: en-US
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Milan Zamazal <mzamazal@redhat.com>, qemu-devel@nongnu.org,
- Fabiano Rosas <farosas@suse.de>, Peter Maydell <peter.maydell@linaro.org>,
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
-References: <20230720101037.2161450-1-mzamazal@redhat.com>
- <87edl2sr34.fsf@suse.de> <87o7josisk.fsf@redhat.com>
- <c06a5138-170e-d696-38f1-3060ea164932@redhat.com>
- <20230803054946-mutt-send-email-mst@kernel.org>
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <20230803054946-mutt-send-email-mst@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: T-EXCH-06.corp.yadro.com (172.17.10.110) To
+ T-EXCH-08.corp.yadro.com (172.17.11.58)
+Received-SPF: pass client-ip=89.207.88.248; envelope-from=m.tyutin@yadro.com;
+ helo=mta-04.yadro.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.102, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,70 +74,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 03/08/2023 11.50, Michael S. Tsirkin wrote:
-> On Thu, Aug 03, 2023 at 09:38:20AM +0200, Thomas Huth wrote:
->> On 03/08/2023 09.10, Milan Zamazal wrote:
->>> Fabiano Rosas <farosas@suse.de> writes:
->>>
->>>> Milan Zamazal <mzamazal@redhat.com> writes:
->>>>
->>>>> The QEMU CI fails in virtio-scmi test occasionally.  As reported by
->>>>> Thomas Huth, this happens most likely when the system is loaded and it
->>>>> fails with the following error:
->>>>>
->>>>>     qemu-system-aarch64: ../../devel/qemu/hw/pci/msix.c:659:
->>>>>     msix_unset_vector_notifiers: Assertion
->>>>> `dev->msix_vector_use_notifier && dev->msix_vector_release_notifier'
->>>>> failed.
->>>>>     ../../devel/qemu/tests/qtest/libqtest.c:200: kill_qemu() detected
->>>>> QEMU death from signal 6 (Aborted) (core dumped)
->>>>>
->>>>> As discovered by Fabiano Rosas, the cause is a duplicate invocation of
->>>>> msix_unset_vector_notifiers via duplicate vu_scmi_stop calls:
->>>>>
->>>>>     msix_unset_vector_notifiers
->>>>>     virtio_pci_set_guest_notifiers
->>>>>     vu_scmi_stop
->>>>>     vu_scmi_disconnect
->>>>>     ...
->>>>>     qemu_chr_write_buffer
->>>>>
->>>>>     msix_unset_vector_notifiers
->>>>>     virtio_pci_set_guest_notifiers
->>>>>     vu_scmi_stop
->>>>>     vu_scmi_set_status
->>>>>     ...
->>>>>     qemu_cleanup
->>>>>
->>>>> While vu_scmi_stop calls are protected by vhost_dev_is_started()
->>>>> check, it's apparently not enough.  vhost-user-blk and vhost-user-gpio
->>>>> use an extra protection, see f5b22d06fb (vhost: recheck dev state in
->>>>> the vhost_migration_log routine) for the motivation.  Let's use the
->>>>> same in vhost-user-scmi, which fixes the failure above.
->>>>>
->>>>> Fixes: a5dab090e142 ("hw/virtio: Add boilerplate for vhost-user-scmi device")
->>>>> Signed-off-by: Milan Zamazal <mzamazal@redhat.com>
->>>>
->>>> Reviewed-by: Fabiano Rosas <farosas@suse.de>
->>>
->>> Please note that this bug fix should IMO definitely go to 8.1, to not
->>> have a bug in vhost-user-scmi and to not have broken tests.  Any chance
->>> to get it merged?
->>
->> If nobody else is planning a pull request with this patch included, I can
->> take it for my next PR (since it is fixing the CI, I just saw another
->> failure here:
->> https://gitlab.com/qemu-project/qemu/-/jobs/4790457938#L4784 )
->>
->>   Thomas
->>
-> 
-> I picked it up but if you like I can drop it.
+Apply save_iotlb_data() to io_readx() as well as to io_writex().
 
-I think it better fits into your tree, so if you plan a PR before the next 
-RC, then please go ahead. I'll drop it from my branch again.
+Signed-off-by: Dmitriy Solovev <d.solovev@yadro.com>
+Signed-off-by: Mikhail Tyutin <m.tyutin@yadro.com>
+---
+ accel/tcg/cputlb.c | 36 +++++++++++++++++++++---------------
+ 1 file changed, 21 insertions(+), 15 deletions(-)
 
-  Thomas
-
+diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
+index ba44501a7c..addce3be38 100644
+--- a/accel/tcg/cputlb.c
++++ b/accel/tcg/cputlb.c
+@@ -1363,6 +1363,21 @@ static inline void cpu_transaction_failed(CPUState *cpu, hwaddr physaddr,
+     }
+ }
+ 
++/*
++ * Save a potentially trashed CPUTLBEntryFull for later lookup by plugin.
++ * This is read by tlb_plugin_lookup if the fulltlb entry doesn't match
++ * because of the side effect of io_writex changing memory layout.
++ */
++static void save_iotlb_data(CPUState *cs, MemoryRegionSection *section,
++                            hwaddr mr_offset)
++{
++#ifdef CONFIG_PLUGIN
++    SavedIOTLB *saved = &cs->saved_iotlb;
++    saved->section = section;
++    saved->mr_offset = mr_offset;
++#endif
++}
++
+ static uint64_t io_readx(CPUArchState *env, CPUTLBEntryFull *full,
+                          int mmu_idx, vaddr addr, uintptr_t retaddr,
+                          MMUAccessType access_type, MemOp op)
+@@ -1382,6 +1397,12 @@ static uint64_t io_readx(CPUArchState *env, CPUTLBEntryFull *full,
+         cpu_io_recompile(cpu, retaddr);
+     }
+ 
++    /*
++     * The memory_region_dispatch may trigger a flush/resize
++     * so for plugins we save the iotlb_data just in case.
++     */
++    save_iotlb_data(cpu, section, mr_offset);
++
+     {
+         QEMU_IOTHREAD_LOCK_GUARD();
+         r = memory_region_dispatch_read(mr, mr_offset, &val, op, full->attrs);
+@@ -1398,21 +1419,6 @@ static uint64_t io_readx(CPUArchState *env, CPUTLBEntryFull *full,
+     return val;
+ }
+ 
+-/*
+- * Save a potentially trashed CPUTLBEntryFull for later lookup by plugin.
+- * This is read by tlb_plugin_lookup if the fulltlb entry doesn't match
+- * because of the side effect of io_writex changing memory layout.
+- */
+-static void save_iotlb_data(CPUState *cs, MemoryRegionSection *section,
+-                            hwaddr mr_offset)
+-{
+-#ifdef CONFIG_PLUGIN
+-    SavedIOTLB *saved = &cs->saved_iotlb;
+-    saved->section = section;
+-    saved->mr_offset = mr_offset;
+-#endif
+-}
+-
+ static void io_writex(CPUArchState *env, CPUTLBEntryFull *full,
+                       int mmu_idx, uint64_t val, vaddr addr,
+                       uintptr_t retaddr, MemOp op)
+-- 
+2.34.1
 
 
