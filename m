@@ -2,48 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D80B76F431
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 22:48:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AA4676F437
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 22:49:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRfER-0006k7-0t; Thu, 03 Aug 2023 16:47:39 -0400
+	id 1qRfF3-0007YB-IC; Thu, 03 Aug 2023 16:48:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jcd@tribudubois.net>)
- id 1qRfEP-0006jl-3t; Thu, 03 Aug 2023 16:47:37 -0400
-Received: from relay1-d.mail.gandi.net ([217.70.183.193])
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>)
+ id 1qRfEz-0007V6-RQ; Thu, 03 Aug 2023 16:48:13 -0400
+Received: from mout.gmx.net ([212.227.17.20])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jcd@tribudubois.net>)
- id 1qRfEN-0002N8-8s; Thu, 03 Aug 2023 16:47:36 -0400
-Received: by mail.gandi.net (Postfix) with ESMTPSA id D8E79240002;
- Thu,  3 Aug 2023 20:47:29 +0000 (UTC)
-Message-ID: <a60506b6-5033-4c42-0592-c673cc01f7de@tribudubois.net>
-Date: Thu, 3 Aug 2023 22:47:29 +0200
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>)
+ id 1qRfEw-0002ST-UU; Thu, 03 Aug 2023 16:48:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
+ s=s31663417; t=1691095684; x=1691700484; i=deller@gmx.de;
+ bh=ac1ukUecfoycAeGhk8cQXbAiIoP0bHzwZ9wJgg2qbh8=;
+ h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+ b=ZHQy3I2vTJltPS+stKKtNWoek/7S9dxf+On9DpajJwwuR0BihMWizA7ya+59fucGGDHy+E6
+ EqhXW72ikbYuLLd8bBhKLU+5zkt00+iafyne89TwaCm6H1Ki3TvAHG1jvDnXw+ERzI9GtxE7B
+ BjpTG3Uk9LZQaGhCTwYEFbFAZrE98QmmLM/ddIOix4dbgH8FBBWg+tS2foEWiX0SfpvHLQKTv
+ h50axvZ3otZtjkuZinkMAroYFCsPnYb71/4a8jRUvCIRiJnq0DqGRhjQPpyXAvvV5B9NqsiiD
+ MwJnFICz5aFS2alQQZ4jwHUuIJTv3Y43W7HC78/4xghhkma0f7EA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from p100.fritz.box ([94.134.147.53]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1N17YY-1piGQo0wSw-012ZOd; Thu, 03
+ Aug 2023 22:48:04 +0200
+From: Helge Deller <deller@gmx.de>
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ qemu-arm@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ Laurent Vivier <laurent@vivier.eu>, Helge Deller <deller@gmx.de>
+Subject: [PATCH v3 0/3] linux-user: /proc/cpuinfo fix and content emulation
+ for arm
+Date: Thu,  3 Aug 2023 22:48:00 +0200
+Message-ID: <20230803204803.639733-1-deller@gmx.de>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v3 1/5] Refactor i.MX6UL processor code
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
- Jean-Christophe Dubois <jcd@tribudubois.net>
-References: <cover.1691010283.git.jcd@tribudubois.net>
- <649a1160b36c58ea89daf02a11b12f2dff164fee.1691010283.git.jcd@tribudubois.net>
- <14c9fd15-6925-79e4-3120-87e302de0e1c@linaro.org>
-From: Jean-Christophe DUBOIS <jcd@tribudubois.net>
-In-Reply-To: <14c9fd15-6925-79e4-3120-87e302de0e1c@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: jcd@tribudubois.net
-Received-SPF: pass client-ip=217.70.183.193; envelope-from=jcd@tribudubois.net;
- helo=relay1-d.mail.gandi.net
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:akHn+ewWj2nmY1N4aet0ampghAfRugoANN2sLRCTr16he26c6Ht
+ p81Xqzn/uSbvwOxOJkkG7z1kk8wuBqKQXR90pUvBXL/jgDwOCTZjVxZvKEb/N3q9frbgZEY
+ epDiGQGMi+YF0/ZAJw72xfl5TCu1iex9m4LJSg+KWfQ4nz4k/rYhrpyISaT8m34JvyYd6mO
+ oTEtcinMxYUukW0+6BqtQ==
+UI-OutboundReport: notjunk:1;M01:P0:B+lS3QFiGGg=;ujurlXdhBCc+8WcADqlrecO+d6D
+ uXRt7UNUWiM8b5XgriBwxINeA22n0h8tFaZtsQa3P8IcYB2eUNEU0edL5p8HGhFa21DnMEh2r
+ OEtNI7zDfOirRF7Gq5qKsBhFHuWb96dPKbDYU7T2IYCbZnshc6LK1Iag00nd/aNuobX+BT9wV
+ hBgi0aWh4PGaCLwGSUrlB0K/sbzvXAraOKMc+g25r420ig7T8wYoHqhKGvxiURJNIOpsS7WnK
+ NeeIj+ouuWk/GeyEZPcSQ3XS2fruBSVs7J6XAtAu8Da4Ep1fAkaVU2GXsbZwDaneEKZxeDxA3
+ fbtXaSNrAVwERm0SrLDSVdbxa5ZjH/P2DG6GPBWHHVADIaBTxMWPWgK586AhNyXwAfHievx4J
+ UYlk5ksTmUOwHBeeFglLjWTN9b1IcdBpom76DSHXC6TNJ0ODtdHwGz2a5EbYEEgIMwXh9F4Ih
+ BhoyzKw5DFEnnHetvAhXppnR9A6780ohr5XFzEu/6cAPS1sPPWnOUyAycSviAiYjKdHh74oWD
+ Q8azS3PS0+aCI/uOFvnOxaRcT71rAaRrLQzzk5uRdfuT1KuY+P5n1PZkpgoBLxQ1b+jUuLKtI
+ yg9Bu889GdzM+mlIW+4dHKsSTUEeoTfZFvLe6jVdsqO1+U8zdOeQlN9KH3EWlggMFlPJE/cDY
+ P8Sn5TpYlC4F2Rhlste0QbIhAYCTZkQVs8U8or3O5iFvomZiKyRPaTBXaA9+SPBXy+cRZv8dS
+ gAuSnKovAZ4vfrr92Ux6HWjbsd2qLWt93oR/pL3HKZEdAV68kX3Rqyf9ov8yT8n9fB57h588y
+ VGwXl0bdyPAjVUkRSWtXQsJXHeO+miB/WYW6fLHaAL4F7VjeZEWT0OJx25dbskoplWuWEiI5m
+ NH1hFhfmCX9hWtS2Mg8tQ5DPrp/krhRgHR997rYscHnSOvO///O7QixGu12XctQ/VOMpeo36g
+ Bt55sfgsYMcaZ0LSrpf7iCF//mM=
+Received-SPF: pass client-ip=212.227.17.20; envelope-from=deller@gmx.de;
+ helo=mout.gmx.net
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.091,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -60,95 +86,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Le 02/08/2023 à 23:32, Philippe Mathieu-Daudé a écrit :
-> Hi Jean-Christophe,
->
-> On 2/8/23 23:08, Jean-Christophe Dubois wrote:
->> * Add Addr and size definition for all i.MX6UL devices in i.MX6UL 
->> header file.
->
-> I'm OK with your patch, but some addr/size are added, while other
-> are changed. It is hard to review. Having one patch for changes
-> and another for additions would help review.
+- One fix for correctly detecting /proc/cpuinfo access
+- A new /proc/cpuinfo output for arm/arm64.
+- A new /proc/cpuinfo output for Alpha
 
-I tried to set addresses and sizes following the order set for devices 
-in the i.MX6UL reference manual. I found it easier to follow then (and 
-make reasonably sure I didn't miss some).
+Helge Deller (3):
+  linux-user: Fix openat() emulation to correctly detect accesses to
+    /proc
+  linux-user: Emulate /proc/cpuinfo on aarch64 and arm
+  linux-user: Emulate /proc/cpuinfo for Alpha
 
-I certainly understand that the reorder is annoying for the review. I 
-can try to do as you intended but I am not sure the reorder review would 
-be really easier.
+ linux-user/elfload.c | 130 +++++++++++++++++++++++++++++++++++++--
+ linux-user/loader.h  |   6 +-
+ linux-user/syscall.c | 141 ++++++++++++++++++++++++++++++++++++++++++-
+ 3 files changed, 269 insertions(+), 8 deletions(-)
 
->
->> * Use those newly defined named constants whenever possible.
->> * Standardize the way we init a familly of unimplemented devices
->>    - SAI
->>    - PWM (add missing PWM instances)
->>    - CAN
->> * Add/rework few comments
->>
->> Signed-off-by: Jean-Christophe Dubois <jcd@tribudubois.net>
->> ---
->>   hw/arm/fsl-imx6ul.c         | 149 +++++++++++++++++++++++------------
->>   include/hw/arm/fsl-imx6ul.h | 150 +++++++++++++++++++++++++++++++++---
->>   2 files changed, 240 insertions(+), 59 deletions(-)
->
->
->> diff --git a/include/hw/arm/fsl-imx6ul.h b/include/hw/arm/fsl-imx6ul.h
->> index 9ee15ae38d..5d381740ef 100644
->> --- a/include/hw/arm/fsl-imx6ul.h
->> +++ b/include/hw/arm/fsl-imx6ul.h
->
-> For example here:
->
->> +    FSL_IMX6UL_SNVS_HP_SIZE         = (4 * KiB),
->> +
->>       FSL_IMX6UL_USBPHY2_ADDR         = 0x020CA000,
->> -    FSL_IMX6UL_USBPHY2_SIZE         = (4 * 1024),
->
->> -    FSL_IMX6UL_USBPHY1_SIZE         = (4 * 1024),
->> +    FSL_IMX6UL_USBPHYn_SIZE         = 0x100,
->
-> Don't we also need:
-
-Well, I did not modify the i.MX USB PHY file by itself. It is a fact 
-that the last i.MX USB PHY register is at 0x80 offset and a 0x1000 
-memory region for the device is certainly oversized even if the 
-processor memory map is actually provisioning a 0x1000 address space 
-between distinct USB PHY devices.  My intent in lowering the device 
-register region size as close to the real size as possible was that in 
-case a device was not "implemented" in Qemu we could just map it as an 
-unimplemented device (allowing dummy access to the register range) but 
-get some kind of platform "bus error" if the software was trying to 
-access some "registers" in the upper part of the memory region (as you 
-would on the real hardware?).
-
-So 0x1000 is not wrong per se as the USB phy device implementation code 
-is logging the illegal access when software is doing access over 0x80 
-offset. This would just not trigger a processor hardware access fault 
-(when it could/should?).
-
->
-> -- >8 --
-> --- a/hw/usb/imx-usb-phy.c
-> +++ b/hw/usb/imx-usb-phy.c
-> @@ -210,7 +210,7 @@ static void imx_usbphy_realize(DeviceState *dev, 
-> Error **errp)
->      IMXUSBPHYState *s = IMX_USBPHY(dev);
->
->      memory_region_init_io(&s->iomem, OBJECT(s), &imx_usbphy_ops, s,
-> -                          "imx-usbphy", 0x1000);
-> +                          "imx-usbphy", 0x100);
->      sysbus_init_mmio(SYS_BUS_DEVICE(s), &s->iomem);
->  }
->
-> ---
->
-> ?
->
-> Thanks,
->
-> Phil.
-
+=2D-
+2.41.0
 
 
