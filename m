@@ -2,70 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17AE776EB2B
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 15:49:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97CB976EB2E
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 15:50:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRYgz-0006uF-R3; Thu, 03 Aug 2023 09:48:41 -0400
+	id 1qRYiD-0007Yb-Iu; Thu, 03 Aug 2023 09:49:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qRYgx-0006tc-Su
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 09:48:39 -0400
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ id 1qRYiB-0007YH-Qx
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 09:49:55 -0400
+Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qRYgw-00063p-2R
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 09:48:39 -0400
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-51e429e1eabso1237306a12.2
- for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 06:48:37 -0700 (PDT)
+ id 1qRYiA-0006MB-4z
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 09:49:55 -0400
+Received: by mail-lf1-x12c.google.com with SMTP id
+ 2adb3069b0e04-4fe1c285690so1672536e87.3
+ for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 06:49:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691070516; x=1691675316;
+ d=linaro.org; s=google; t=1691070592; x=1691675392;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=7cXQKAoQ9gPtilfvSShJ+uw1HrqysYKaRs9JKUWogBw=;
- b=mVvDmcbMbmzO7+eBqsXivCM2eemcFsALBHbiaBaKjatDu3mgde5ki0TFmN23xfN0fh
- fTEyytIAA97stDq7XiQz6KDDzqe4ntI9KlOG2UqEkH3opB0n1E4NdGShm22xxKU2jSUQ
- q6sWKSDH6HDMrvoENR0skkWUFzRiNtRpqvIdeqyYv3rkNwKrwpSTAZ5VqdS8ylZeHJcZ
- kQaL6o6PeoHUBtvmjMmkU+8KBWPzq9sljSpqSa0/hW5DMtCRTkyYTHSIoMiJKGj+6i9f
- 5vnS8hhAxVDOgGVQNFRwp0rkKVh9GYGpFLp7scX9IQb1AJsyN03cxER0R4upwe2X9lGZ
- dSjw==
+ bh=JwcHRpfpGdnWuxd2TDocBf6Vl+DXlwY57nbEN6moOi4=;
+ b=LG7+l8+O5u4OldZj3SYCdyCliQbEV1bX5HYE/IzswHPkvsQUfMy3UPGTxgbmxAZU1n
+ TWKLawVSWU9D0aCFIfsozWu/GCm84UMEseyH79HixFVAut6NTlqdIDeZKmRH7rwf0crj
+ z83otPrwpvbsoWajp52dDotMMkC0TxdfBq5j/OFij02qEcGJR8YUYXcIHMu8XpYGw0DY
+ F4sQmgz/TZCTibac7QxQ1aueUDu6dagvm3iIT2mdMIy+QPM+qu9ybNj1uTCAIU5a64Jv
+ qA205AJOCNXoOnTSY0Mdpg/My10mFXai/ocbzDmbhi3PpE3KoVSXZ6d5Lb/C1J/UM8/g
+ v9gg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691070516; x=1691675316;
+ d=1e100.net; s=20221208; t=1691070592; x=1691675392;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=7cXQKAoQ9gPtilfvSShJ+uw1HrqysYKaRs9JKUWogBw=;
- b=PRw3gAyYYucDMN20aXCN49l60paAnbEYDk3cxOUmoeLFHk/C989us+/v7+Plq47wNg
- Vl0ComoWMJRhE2P6IMkbXDVNF/FcPfrDqwegNOPnDNrx34ij/If3JBRmCxi4eXQvk7Qp
- lVJZVzPrPZZpD+6Vr3pRM3GE0wOSOgRH0ZwRHN0oyHfZ9Sd9ZLeeEkpiI/yWgSiexL3x
- xzaaVipUkOJbyqbCk6A4RlpdTmkAjrXXU3tQmYUnkVx4FCJ/qoEBp/BTvMAYuQpoLYt0
- D3O5kKl+K9JmfngQNO4ovt1TXDd3tqAbsDMc44a3QoIOJP6KImwbHHizFc4zaayIe38u
- Vggw==
-X-Gm-Message-State: ABy/qLZPApVO7WyGkxT7DGfh/CEb97K7QVSw7lAQI9TMMPWp2v3KH/IW
- GYQ7oxdFFuQTgkuOAT5/SjuqJfMicLUHB6ppgtHs+g==
-X-Google-Smtp-Source: APBJJlFRh9SLWmLx/OJul1yweq+C0/kV7Jzc2G/6xRZxVnHu/bmBqc7zjtn04lvKj0cJr5D9ZfFlx7CP8BDNZt0oI7c=
-X-Received: by 2002:a05:6402:2d8:b0:51e:52bd:68c8 with SMTP id
- b24-20020a05640202d800b0051e52bd68c8mr7742995edx.14.1691070516239; Thu, 03
- Aug 2023 06:48:36 -0700 (PDT)
+ bh=JwcHRpfpGdnWuxd2TDocBf6Vl+DXlwY57nbEN6moOi4=;
+ b=flWM7D4QEGRXpTBh1PPDiFyXqq/JrXyx6mIguE1iFlrWJMdgkTSr0qk4N6cIIx/8jM
+ aNFLqSgMCpdnY5IagxxoHe7h6KD96sQvgcSPiXmHyxAeYtzAWdWFTVAYfzCNPpbE5Q99
+ Dj1Vu7OtBPJoGj5jVrN2GU92BC7sYGrJtKk3SvcgxDqBGhyeX76oQGld2IqwWGzpQ0Nb
+ nNw2XlzDfG5w3+OE9P3UJgVn/UPGlQFhqR4F5zTD1ahf+Dr1CvYT4dlZCITEO0xLGZiF
+ UXLYU5c3c+3wwruwRrrseh8cELlUP6344KHJDKj2TVcsnnwOS1Bz4htKb2rwPPyBBCZs
+ yDGw==
+X-Gm-Message-State: ABy/qLbOAPoKRk7wPZZyr40k1KmIMZNJCZG9tbtxeOSXZokGp+fGWmpN
+ 4o4Ri2CUYZPw64HcFJzij+AXMGrqTp81RQ7ib17QXA==
+X-Google-Smtp-Source: APBJJlHOTlAYw6JAJw8bK4giWYlMHa3VaoNSU2LhRsDkrf+EzkqIou0SKJ15DOxB3aE6lLWd7DaOLE1/pSxFkUHOKM8=
+X-Received: by 2002:a19:6418:0:b0:4f8:6e6e:4100 with SMTP id
+ y24-20020a196418000000b004f86e6e4100mr6889740lfb.52.1691070592099; Thu, 03
+ Aug 2023 06:49:52 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230710140249.56324-1-francisco.iglesias@amd.com>
- <20230710140249.56324-4-francisco.iglesias@amd.com>
-In-Reply-To: <20230710140249.56324-4-francisco.iglesias@amd.com>
+ <20230710140249.56324-5-francisco.iglesias@amd.com>
+In-Reply-To: <20230710140249.56324-5-francisco.iglesias@amd.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 3 Aug 2023 14:48:25 +0100
-Message-ID: <CAFEAcA9Qpeh4anC64FBDdqry=H4-sNTZpRfuwqog51LnADtiCQ@mail.gmail.com>
-Subject: Re: [PATCH v1 3/8] hw/misc/xlnx-versal-cfu: Introduce a model of
- Xilinx Versal CFU_FDRO
+Date: Thu, 3 Aug 2023 14:49:41 +0100
+Message-ID: <CAFEAcA_djJndhBL6MvY7BJymYEo_cLx+WrjYpwEz5ayq4d9pjw@mail.gmail.com>
+Subject: Re: [PATCH v1 4/8] hw/misc/xlnx-versal-cfu: Introduce a model of
+ Xilinx Versal's CFU_SFR
 To: Francisco Iglesias <francisco.iglesias@amd.com>
 Cc: qemu-devel@nongnu.org, frasse.iglesias@gmail.com, alistair@alistair23.me, 
  edgar.iglesias@gmail.com, fkonrad@amd.com, sai.pavan.boddu@amd.com, 
  tong.ho@amd.com, vikram.garhwal@amd.com
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x534.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,147 +91,51 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On Mon, 10 Jul 2023 at 15:03, Francisco Iglesias
 <francisco.iglesias@amd.com> wrote:
 >
-> Introduce a model of Xilinx Versal's Configuration Frame Unit's data out
-> port (CFU_FDRO).
+> Introduce a model of Xilinx Versal's Configuration Frame Unit's Single
+> Frame Read port (CFU_SFR).
 >
 > Signed-off-by: Francisco Iglesias <francisco.iglesias@amd.com>
 > ---
->  hw/misc/xlnx-versal-cfu.c         | 105 ++++++++++++++++++++++++++++++
->  include/hw/misc/xlnx-versal-cfu.h |  11 ++++
->  2 files changed, 116 insertions(+)
->
-> diff --git a/hw/misc/xlnx-versal-cfu.c b/hw/misc/xlnx-versal-cfu.c
-> index cbd17d2351..528090ef1b 100644
-> --- a/hw/misc/xlnx-versal-cfu.c
-> +++ b/hw/misc/xlnx-versal-cfu.c
-> @@ -257,6 +257,26 @@ static void cfu_stream_write(void *opaque, hwaddr addr, uint64_t value,
->      }
->  }
->
-> +static uint64_t cfu_fdro_read(void *opaque, hwaddr addr, unsigned size)
-> +{
-> +    XlnxVersalCFUFDRO *s = XLNX_VERSAL_CFU_FDRO(opaque);
-> +    uint64_t ret = 0;
-> +
-> +    if (s->fdro_data->len) {
-> +        ret = g_array_index(s->fdro_data, uint32_t, 0);
-> +        g_array_remove_index(s->fdro_data, 0);
+>  hw/misc/xlnx-versal-cfu.c         | 88 +++++++++++++++++++++++++++++++
+>  include/hw/misc/xlnx-versal-cfu.h | 15 ++++++
+>  2 files changed, 103 insertions(+)
 
-This is pretty expensive because everything in the GArray
-after element 0 must be copied downwards. Are you sure you
-don't want a different data structure ?
-
-What actually is this, and what are the operations we want
-to do on it ?
-
-> +    }
-> +
-> +    return ret;
-> +}
-> +
-> +static void cfu_fdro_write(void *opaque, hwaddr addr, uint64_t value,
-> +                           unsigned size)
+> +static void cfu_sfr_init(Object *obj)
 > +{
-> +    qemu_log_mask(LOG_GUEST_ERROR, "%s: Unsupported write from addr=%"
-> +                  HWADDR_PRIx "\n", __func__, addr);
-> +}
-> +
->  static const MemoryRegionOps cfu_stream_ops = {
->      .read = cfu_stream_read,
->      .write = cfu_stream_write,
-> @@ -267,6 +287,16 @@ static const MemoryRegionOps cfu_stream_ops = {
->      },
->  };
->
-> +static const MemoryRegionOps cfu_fdro_ops = {
-> +    .read = cfu_fdro_read,
-> +    .write = cfu_fdro_write,
-> +    .endianness = DEVICE_LITTLE_ENDIAN,
-> +    .valid = {
-> +        .min_access_size = 4,
-> +        .max_access_size = 4,
-> +    },
-> +};
-> +
->  static void cfu_apb_init(Object *obj)
->  {
->      XlnxVersalCFUAPB *s = XLNX_VERSAL_CFU_APB(obj);
-> @@ -298,6 +328,24 @@ static void cfu_apb_init(Object *obj)
->      sysbus_init_irq(sbd, &s->irq_cfu_imr);
->  }
->
-> +static void cfu_fdro_init(Object *obj)
-> +{
-> +    XlnxVersalCFUFDRO *s = XLNX_VERSAL_CFU_FDRO(obj);
+> +    XlnxVersalCFUSFR *s = XLNX_VERSAL_CFU_SFR(obj);
 > +    SysBusDevice *sbd = SYS_BUS_DEVICE(obj);
 > +
-> +    memory_region_init_io(&s->iomem_fdro, obj, &cfu_fdro_ops, s,
-> +                          TYPE_XLNX_VERSAL_CFU_FDRO, KEYHOLE_STREAM_4K);
-> +    sysbus_init_mmio(sbd, &s->iomem_fdro);
-> +    s->fdro_data = g_array_new(FALSE, FALSE, sizeof(uint32_t));
+> +    memory_region_init_io(&s->iomem_sfr, obj, &cfu_sfr_ops, s,
+> +                          TYPE_XLNX_VERSAL_CFU_SFR, KEYHOLE_STREAM_4K);
+> +    sysbus_init_mmio(sbd, &s->iomem_sfr);
 > +}
 > +
-> +static void cfu_fdro_cfi_transfer_packet(XlnxCfiIf *cfi_if, XlnxCfiPacket *pkt)
-> +{
-> +    XlnxVersalCFUFDRO *s = XLNX_VERSAL_CFU_FDRO(cfi_if);
+>  static void cfu_fdro_init(Object *obj)
+>  {
+>      XlnxVersalCFUFDRO *s = XLNX_VERSAL_CFU_FDRO(obj);
+> @@ -380,6 +435,12 @@ static Property cfu_props[] = {
+>          DEFINE_PROP_END_OF_LIST(),
+>  };
+>
+> +static Property cfu_sfr_props[] = {
+> +        DEFINE_PROP_LINK("cfu", XlnxVersalCFUSFR, cfg.cfu,
+> +                         TYPE_XLNX_VERSAL_CFU_APB, XlnxVersalCFUAPB *),
+> +        DEFINE_PROP_END_OF_LIST(),
+> +};
 > +
-> +    g_array_append_vals(s->fdro_data, &pkt->data[0], 4);
-> +}
-> +
->  static Property cfu_props[] = {
->          DEFINE_PROP_LINK("cframe0", XlnxVersalCFUAPB, cfg.cframe[0],
->                           TYPE_XLNX_CFI_IF, XlnxCfiIf *),
-> @@ -344,6 +392,41 @@ static const VMStateDescription vmstate_cfu_apb = {
+>  static const VMStateDescription vmstate_cfu_apb = {
+>      .name = TYPE_XLNX_VERSAL_CFU_APB,
+>      .version_id = 1,
+> @@ -427,6 +488,16 @@ static const VMStateDescription vmstate_cfu_fdro = {
 >      }
 >  };
 >
-> +static int cfdro_reg_pre_save(void *opaque)
-> +{
-> +    XlnxVersalCFUFDRO *s = XLNX_VERSAL_CFU_FDRO(opaque);
-> +
-> +    if (s->fdro_data->len) {
-> +        s->ro_data = (uint32_t *) s->fdro_data->data;
-> +        s->ro_dlen = s->fdro_data->len;
-> +    }
-
-I think we need to initialise ro_data and ro_dlen in
-the else case here as well. Otherwise they might have old
-stale stuff in them that then goes into the migration stream.
-
-> +
-> +    return 0;
-> +}
-> +
-> +static int cfdro_reg_post_load(void *opaque, int version_id)
-> +{
-> +    XlnxVersalCFUFDRO *s = XLNX_VERSAL_CFU_FDRO(opaque);
-> +
-> +    if (s->ro_dlen) {
-> +        g_array_append_vals(s->fdro_data, s->ro_data, s->ro_dlen);
-> +    }
-> +    return 0;
-> +}
-> +
-> +static const VMStateDescription vmstate_cfu_fdro = {
-> +    .name = TYPE_XLNX_VERSAL_CFU_FDRO,
+> +static const VMStateDescription vmstate_cfu_sfr = {
+> +    .name = TYPE_XLNX_VERSAL_CFU_SFR,
 > +    .version_id = 1,
 > +    .minimum_version_id = 1,
-> +    .pre_save = cfdro_reg_pre_save,
-> +    .post_load = cfdro_reg_post_load,
 > +    .fields = (VMStateField[]) {
-> +        VMSTATE_VARRAY_UINT32_ALLOC(ro_data, XlnxVersalCFUFDRO, ro_dlen,
-> +                                    0, vmstate_info_uint32, uint32_t),
-
-This kind of _ALLOC vmstate will cause the migration core
-code to g_malloc() you a buffer for the data. We don't
-free that anywhere (and if we have a subsequent vmsave
-then we will overwrite the ro-data pointer, and leak the
-memory).
-
-It might be better to avoid the GArray and just directly
-work with a g_malloc()'d buffer of our own, to fit better
-with how the _ALLOC vmstate wants to work.
-
+> +        VMSTATE_UINT32_ARRAY(wfifo, XlnxVersalCFUSFR, 4),
 > +        VMSTATE_END_OF_LIST(),
 > +    }
 > +};
@@ -239,20 +143,20 @@ with how the _ALLOC vmstate wants to work.
 >  static void cfu_apb_class_init(ObjectClass *klass, void *data)
 >  {
 >      DeviceClass *dc = DEVICE_CLASS(klass);
-> @@ -353,6 +436,15 @@ static void cfu_apb_class_init(ObjectClass *klass, void *data)
->      device_class_set_props(dc, cfu_props);
+> @@ -445,6 +516,14 @@ static void cfu_fdro_class_init(ObjectClass *klass, void *data)
+>      xcic->cfi_transfer_packet = cfu_fdro_cfi_transfer_packet;
 >  }
 >
-> +static void cfu_fdro_class_init(ObjectClass *klass, void *data)
+> +static void cfu_sfr_class_init(ObjectClass *klass, void *data)
 > +{
 > +    DeviceClass *dc = DEVICE_CLASS(klass);
-> +    XlnxCfiIfClass *xcic = XLNX_CFI_IF_CLASS(klass);
 > +
-> +    dc->vmsd = &vmstate_cfu_fdro;
-> +    xcic->cfi_transfer_packet = cfu_fdro_cfi_transfer_packet;
-> +}
+> +    device_class_set_props(dc, cfu_sfr_props);
+> +    dc->vmsd = &vmstate_cfu_sfr;
 
-Missing reset method ?
+Missing reset again ?
+
+> +}
 
 thanks
 -- PMM
