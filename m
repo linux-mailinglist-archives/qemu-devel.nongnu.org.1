@@ -2,74 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15EC076EC2C
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 16:18:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BC8176ECEB
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 16:43:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRZ99-0004IV-91; Thu, 03 Aug 2023 10:17:47 -0400
+	id 1qRZWu-0008Vx-1S; Thu, 03 Aug 2023 10:42:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1qRZ8u-0003z8-3c
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 10:17:33 -0400
-Received: from mail-lj1-x232.google.com ([2a00:1450:4864:20::232])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qRZWl-0008VG-Nk
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 10:42:12 -0400
+Received: from mail-oi1-x233.google.com ([2607:f8b0:4864:20::233])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1qRZ8r-0002pY-FZ
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 10:17:31 -0400
-Received: by mail-lj1-x232.google.com with SMTP id
- 38308e7fff4ca-2b9cbaee7a9so15963471fa.0
- for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 07:17:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qRZWj-0005xD-AV
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 10:42:11 -0400
+Received: by mail-oi1-x233.google.com with SMTP id
+ 5614622812f47-3a734b8a27fso649026b6e.1
+ for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 07:42:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=jms.id.au; s=google; t=1691072246; x=1691677046;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=OccaV2iCroXm800b878fiRj0SFuQRuhY1XzDYEHNXxI=;
- b=YBXk+DZaqFTGgAu/G+dQWESb3IR0iMmTCshWYksTNETS+mKp13tYHfqHPSLxiGzLzJ
- rp2dAJqmqL3oYrrcMid0xfRRUJSqrfLroJC0kfySYTB7kLkqOA9gE3p6zhKXyjdTBY6P
- ZmY3KPhBBHKnkWV1PRZVYaRGE2CsxLSkuwtUo=
+ d=ventanamicro.com; s=google; t=1691073728; x=1691678528;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=K49iSYn5Duy2+itGeTtPLhzPb0sx7kGRYTiYoEIeH00=;
+ b=H/tsQIz4h24gchAv2juXU390CUVEiolABI1VZb2oaFkJRFo1jGnAK+UK9lIVttqJIo
+ T6hCF3zuJTf7So0gEbAkj5sppB8no31G+z2AAY/DG0qMsNdAXdctxFKzb1+r+o6GniP7
+ 5qV9n16KM//A8JDisyF5oJF6GssWlzwWdq5Ca2knkJlXfKAFdmtMHMVubWpqGdXrqJjI
+ icc+8kIV6DuZ7qumNTG+lyroB1Izm8JnoE1af94lD/zv/UdjbNMl4yQDzjL5lY6rl7Zw
+ aWM3yfPtWpJbQGEb0W+wH19NA9oj37gBxme7yctAKubf5ST+yqvY6uTMmLp7VLNtSBgo
+ hAuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691072246; x=1691677046;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=OccaV2iCroXm800b878fiRj0SFuQRuhY1XzDYEHNXxI=;
- b=NmhGbgAfN5TuizRy2F26Ry48JHGUS5l+t//MrRdZVd7nDI0RLBtfLGjRQhbzDXK4FJ
- 9PsQSXPrzz1PIF/WWAJx3gIpGlPs2pKEB2cMN9b8Huz2ooC073INElUA1nHCTY7Bg83n
- Q0OeBJ+ZxmbOlSbIcuDNMwVGCEfk4vPkPgiMc6eo0N/jF48CXXMbU3dH0wteE+PG9R05
- 9tsH0EM0dYknk9V2WN82bB/NIotEzbIwTQ8gLtzKKKr9P4JNvAYpZc6+r9EctOIbMInI
- SsiWRENfE/dgTiqTWicr19V+/NnMwhgeDRqFgW5uX5LZcUOOrEiEC1zqF6rk5UgOV1ca
- revA==
-X-Gm-Message-State: ABy/qLYPy4MVR8G+seOtZ5lkAsnB/+tkxpNALUBcykBbhM6xGEfxn8hy
- wETVWGSesKSuEcvCI6bMu/w/fK4ybCHlBdrjObmBTwPF
-X-Google-Smtp-Source: APBJJlHOiodaxew3TdhvohQ46f0K2vQybS2quJwearwsNkkSD/h2qheHteci8paEofSeqrmPXTxD41DoHtz4A5zMiH8=
-X-Received: by 2002:a05:651c:232:b0:2b9:d28c:9c30 with SMTP id
- z18-20020a05651c023200b002b9d28c9c30mr7401296ljn.44.1691072246173; Thu, 03
- Aug 2023 07:17:26 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1691073728; x=1691678528;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=K49iSYn5Duy2+itGeTtPLhzPb0sx7kGRYTiYoEIeH00=;
+ b=RUSybAPH5hwZWnwmpYEjw3PFUQxh7aHGomSaCz2P4pOVhCe34sFkndiaAJOu9x002G
+ I1JGrl1G8OVWOl+KnuGUOfT3/LpkRiqSHtu2ESz/J8aMghWOiRMbRyCAydEn+7nwrGzt
+ YiDsZy/RQaAiXCxf/b03jPXpTMWPb2gWu3iobBZh/jsC09N3hvuaxMOV60d1IvHrxsAP
+ tvtVxvpl7pMSiGYWXVLcnL8J6arv9wMyMy/gSubEb1RKOHMCJm5e0fsoWm/rzDnCeQvz
+ 1K7lLYhd7krctZ2K7e3cuXRVx3ayQH5AEO+wBtNilNS9xZ0Og6U2ef+p4EhcqqpqpE0W
+ G7hw==
+X-Gm-Message-State: ABy/qLYuKDHDZFMGcyuZwsAQBBZOeNIwlHoxJChEj1DlPD6htHwbhNgl
+ uDZmEMvHFMRHmM/51wMelnXG1g==
+X-Google-Smtp-Source: APBJJlGLEhA5mldHtPl6v83pgHE5ZDqy7/9fN20BiP7qeEoSWgIAVPa1IkZX7bTvsrsR7cGherWQ8w==
+X-Received: by 2002:a05:6808:300f:b0:3a1:de61:d414 with SMTP id
+ ay15-20020a056808300f00b003a1de61d414mr20784691oib.51.1691073727744; 
+ Thu, 03 Aug 2023 07:42:07 -0700 (PDT)
+Received: from [192.168.68.108] ([187.11.154.63])
+ by smtp.gmail.com with ESMTPSA id
+ bx32-20020a0568081b2000b003a76b1b2862sm571461oib.16.2023.08.03.07.42.05
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 03 Aug 2023 07:42:07 -0700 (PDT)
+Message-ID: <cfb8653b-ddc8-b4a9-9792-73ef84ee925e@ventanamicro.com>
+Date: Thu, 3 Aug 2023 11:42:03 -0300
 MIME-Version: 1.0
-References: <20230803015302.407219-1-richard.henderson@linaro.org>
- <CACPK8XfNiGiprxYd-J+E-oFqPsRVPfQa7+e5hX8DFw0OudT85A@mail.gmail.com>
- <cd9b0651-475d-1b11-d648-594b52d48bd1@gmx.de>
-In-Reply-To: <cd9b0651-475d-1b11-d648-594b52d48bd1@gmx.de>
-From: Joel Stanley <joel@jms.id.au>
-Date: Thu, 3 Aug 2023 14:17:14 +0000
-Message-ID: <CACPK8XcdO4KpBfUZmxLNRLLcAOfM9D39be=m4O72kO0+_GiuQQ@mail.gmail.com>
-Subject: Re: [PATCH v7 00/14] linux-user: brk fixes
-To: Helge Deller <deller@gmx.de>
-Cc: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
- laurent@vivier.eu, akihiko.odaki@daynix.com
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::232;
- envelope-from=joel.stan@gmail.com; helo=mail-lj1-x232.google.com
-X-Spam_score_int: -14
-X-Spam_score: -1.5
-X-Spam_bar: -
-X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.249,
- FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] linux-user/elfload: Set V in ELF_HWCAP for RISC-V
+Content-Language: en-US
+To: Nathan Egge <negge@xiph.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>
+Cc: Weiwei Li <liweiwei@iscas.ac.cn>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-riscv@nongnu.org,
+ qemu-devel@nongnu.org
+References: <20230803131424.40744-1-negge@xiph.org>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20230803131424.40744-1-negge@xiph.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::233;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-oi1-x233.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,27 +98,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 3 Aug 2023 at 13:55, Helge Deller <deller@gmx.de> wrote:
-> > 143551 brk(NULL) = 0x0009b000
-> > 143551 brk(0x0009b8fc) = 0x0009b000
->
-> I think the problem is the brk with 9b000 here.
-> It's not 64k aligned (=pages size of your ppc64le).
->
-> Please try with this patch on top of Richard's series:
->
-> > @@ -3229,7 +3208,8 @@ static void load_elf_image(const char *image_name, int image_fd,
-> >       info->end_code = 0;
-> >       info->start_data = -1;
-> >       info->end_data = 0;
-> > -    info->brk = .....
-> change that to become:
->      info->brk = HOST_PAGE_ALIGN(hiaddr);
 
-That stopped the crashing, and the binaries seem to run fine. I tested
-on two hosts: ppc64le (64K) and arm64 (16K).
 
-Cheers,
+On 8/3/23 10:14, Nathan Egge wrote:
+> From: "Nathan Egge" <negge@xiph.org>
+> 
+> Set V bit for hwcap if misa is set.
+> 
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1793
+> Signed-off-by: Nathan Egge <negge@xiph.org>
+> ---
 
-Joel
+Tested with the example program described in the bug:
+
+===========
+#include <sys/auxv.h>
+#include <stdio.h>
+
+#define ISA_V_HWCAP (1 << ('v' - 'a'))
+
+void main() {
+   unsigned long hw_cap = getauxval(AT_HWCAP);
+   printf("RVV %s\n", hw_cap & ISA_V_HWCAP ? "detected" : "not found");
+}
+===========
+
+$ ./qemu-riscv64 -cpu rv64,vext_spec=v1.0,v=true,vlen=128 -B 0x100000 ./a.out
+RVV detected
+$ ./qemu-riscv64 -cpu rv64,vext_spec=v1.0,vlen=128 -B 0x100000 ./a.out
+RVV not found
+
+
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Tested-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+
+
+Looks like 8.1 material to me. Thanks,
+
+
+Daniel
+
+>   linux-user/elfload.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+> index 861ec07abc..a299ba7300 100644
+> --- a/linux-user/elfload.c
+> +++ b/linux-user/elfload.c
+> @@ -1710,7 +1710,8 @@ static uint32_t get_elf_hwcap(void)
+>   #define MISA_BIT(EXT) (1 << (EXT - 'A'))
+>       RISCVCPU *cpu = RISCV_CPU(thread_cpu);
+>       uint32_t mask = MISA_BIT('I') | MISA_BIT('M') | MISA_BIT('A')
+> -                    | MISA_BIT('F') | MISA_BIT('D') | MISA_BIT('C');
+> +                    | MISA_BIT('F') | MISA_BIT('D') | MISA_BIT('C')
+> +                    | MISA_BIT('V');
+>   
+>       return cpu->env.misa_ext & mask;
+>   #undef MISA_BIT
 
