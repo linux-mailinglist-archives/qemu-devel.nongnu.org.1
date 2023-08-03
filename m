@@ -2,85 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1263176DF58
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 06:18:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF8C376DF77
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 06:44:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRPlf-0006uV-Jw; Thu, 03 Aug 2023 00:16:55 -0400
+	id 1qRQAt-0002h9-Sf; Thu, 03 Aug 2023 00:42:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1qRPld-0006uE-Tu
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 00:16:53 -0400
-Received: from mail-oi1-x234.google.com ([2607:f8b0:4864:20::234])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1qRPlb-00005E-1u
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 00:16:53 -0400
-Received: by mail-oi1-x234.google.com with SMTP id
- 5614622812f47-3a74d759bfcso392812b6e.1
- for <qemu-devel@nongnu.org>; Wed, 02 Aug 2023 21:16:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1691036207; x=1691641007;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=IoxhNX4gbtgGPpGZZxwZsgwFIH4+/dp5oUN5r9FD1E0=;
- b=kdojOvCNhAsNc7r/WAsGsLCpVuhqsne+48zamG1n1ls+bjVR3GG7SqXdptoJpBpRTq
- bSTAZezlPpmBGEzih7IAL20pQHpArGo/WowpzavIO0+8abRxgLyJCycU0SEz0+fyPtoJ
- Q2uYU6TkuZA/dmLmMx36L1CxxfvyFHUsaK8Kz0Ar2dMNLzP9pE1qrip3wW4LMH1jVUN8
- M74wXL6DLh3SOZyba/Cy2I0dAvYpw2szQu2dB2h3zNnJZFkOuD9f/4Ym5eQi/USnB00r
- Noi3uUvpntIlGJw1uPlK536gc8Fkpg7EvkbEPnm4iJw7DJqW2pa3nNfydEzWiu1XY5Og
- AFLw==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qRQAr-0002gv-MK
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 00:42:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qRQAp-0006pT-RQ
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 00:42:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1691037775;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=FQXKDg18JCYlxjQ1cLjbp+15UYaGbdekzXID4P+dfF8=;
+ b=I5RDPJf60pm84eJgVGWQOinnG4S3krp4q9o/KLPQKqgGO1Pya2KHsamSXzXnhR2RJHtSoW
+ kpzZHfXlVXM43prrUM1+56QYtQDvvTHt/VvGlGxj4hvrPA8tdFdbNwVnAadKGCoxO8BXjW
+ Lh97tdyw5/eGdItR5geBtI2UeS1WPOs=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-121-ll7PztUiOYygo2gZVnKT8w-1; Thu, 03 Aug 2023 00:42:53 -0400
+X-MC-Unique: ll7PztUiOYygo2gZVnKT8w-1
+Received: by mail-qv1-f71.google.com with SMTP id
+ 6a1803df08f44-63cd05c0415so6038406d6.1
+ for <qemu-devel@nongnu.org>; Wed, 02 Aug 2023 21:42:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691036207; x=1691641007;
+ d=1e100.net; s=20221208; t=1691037758; x=1691642558;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=IoxhNX4gbtgGPpGZZxwZsgwFIH4+/dp5oUN5r9FD1E0=;
- b=i2nXJ+2vHlEe08RhdnNyMgVVwCg00Nvox9FFOyvJVFCO8mULuLFws1LMC+ET5m6MCP
- 272NunlPsCDQ0I5SNYzujkpOR3vbLk5Es4h862PFYqg9ZmiuSH2moY0SUUAT3j4ENZ+K
- WJCEJRYXD2CqI6TefBWBAlKhAkfnmbnjzoC65t1dMGDfhLOyiF+ZgUlivrxanuXtCVbH
- CCyjRHuQd2+R5NS3zBQB5lxovFa/iB4W5GL1jsxxNzbIUSeePBD7dhWirTPnDYU2bk82
- 1vBBCFx73FRnib7Z/efdccXeMbyfB1tChz/2CP7hgPZ/inZas4wE9+mVy4iOcMVqZKYu
- 5Hdw==
-X-Gm-Message-State: ABy/qLaet6v2stcQbmtQxfidScCsZfkBPagmCN5AYT2TIvK2IdYn3x9C
- fTFSCQ5I6t6iLKTObptXZduqnQ==
-X-Google-Smtp-Source: APBJJlE3nu3QLl1uEGVoClu0lXpwx0nKsYqNUV80DWuKnaF6jQINmQ7Bhi0kbE9K3Ea2yPNT69Jecw==
-X-Received: by 2002:a05:6358:9895:b0:134:de8b:17f0 with SMTP id
- q21-20020a056358989500b00134de8b17f0mr9110099rwa.19.1691036207608; 
- Wed, 02 Aug 2023 21:16:47 -0700 (PDT)
-Received: from [10.11.0.74] (125-228-20-175.hinet-ip.hinet.net.
- [125.228.20.175]) by smtp.gmail.com with ESMTPSA id
- u10-20020aa7838a000000b006870814361bsm10448916pfm.114.2023.08.02.21.16.46
+ bh=FQXKDg18JCYlxjQ1cLjbp+15UYaGbdekzXID4P+dfF8=;
+ b=AAeBMtdIuDoo0069v4qSxSgYTHZWhJR6iNrgAnlReeNYrwSdXJEh0gGXu9t89VxjI1
+ ZE6iL42vaTobZmC7v1Hs8AMcJzF8aal/dRAm3Z757WQvr5Ybrrd6X3nCdnA3PJnR3kVY
+ WcLmh4L2w9S6bbspF23El41x9+z7i8vtLS8Dv2v78BOZoYjl5aUHmyk9u84qqm8XScoU
+ XU2X/R38J2tnmRDjKrsPm+2z4QHMaRvhlOJxvA89BpvLaSeadeWYaSpVEqV0+kbMnXv0
+ IwgGoX4DBpaStRez9krrRUSl/He7OK1ENRlh9fSpDJeQHYV/z191hEuFwugU4bI7ouem
+ Yx3A==
+X-Gm-Message-State: ABy/qLZoyfEPh2mljXv9L6qzI4qcRUl+kEH9BaXZwrCUG5NNQyn9LerL
+ boVg8kOtd0vgq7v9Qjr7KmEyUunnJ0UJnXWJbgveeiUyIbVM2wipzcqInz55l5HCNdCY7GlU6Ls
+ INZXAJPca2PsUcEk=
+X-Received: by 2002:a05:6214:16d0:b0:63d:eef:c3f6 with SMTP id
+ d16-20020a05621416d000b0063d0eefc3f6mr18456133qvz.38.1691037757959; 
+ Wed, 02 Aug 2023 21:42:37 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlEl3xmCAtbjixcvr70IqM53Eqmlxv1ooZ/H/jdj3dhvWhcJ1aVz7JHQQuNPSoxPlPU/uxHIuQ==
+X-Received: by 2002:a05:6214:16d0:b0:63d:eef:c3f6 with SMTP id
+ d16-20020a05621416d000b0063d0eefc3f6mr18456126qvz.38.1691037757695; 
+ Wed, 02 Aug 2023 21:42:37 -0700 (PDT)
+Received: from [192.168.8.105] (tmo-081-137.customers.d1-online.com.
+ [80.187.81.137]) by smtp.gmail.com with ESMTPSA id
+ x12-20020a0ce0cc000000b006263c531f61sm5999521qvk.24.2023.08.02.21.42.35
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 02 Aug 2023 21:16:47 -0700 (PDT)
-Message-ID: <ad20c2b0-9c1e-f1aa-1a5d-e5ea5df9b03e@sifive.com>
-Date: Thu, 3 Aug 2023 12:16:44 +0800
+ Wed, 02 Aug 2023 21:42:37 -0700 (PDT)
+Message-ID: <044ceb14-e5cc-6d78-deaf-254dc3d1e170@redhat.com>
+Date: Thu, 3 Aug 2023 06:42:33 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.13.0
-Subject: Re: [PATCH v8 00/15] Add RISC-V vector cryptographic instruction set
- support
-To: Alistair Francis <alistair23@gmail.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, dbarboza@ventanamicro.com
-References: <20230711165917.2629866-1-max.chou@sifive.com>
- <CAKmqyKNpg=DMbidwRbR5La2GrETTfR--zKBGGgJ-eirRmCywBA@mail.gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] Fixed incorrect LLONG alignment for openrisc and cris
+To: Luca Bonissi <qemu@bonslack.org>, Laurent Vivier <laurent@vivier.eu>
+Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>, Stafford Horne <shorne@gmail.com>,
+ Jia Liu <proljc@gmail.com>, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ QEMU Trivial <qemu-trivial@nongnu.org>
+References: <8cca5c06-4df8-b7d4-4aee-f52f956437f8@bonslack.org>
 Content-Language: en-US
-From: Max Chou <max.chou@sifive.com>
-In-Reply-To: <CAKmqyKNpg=DMbidwRbR5La2GrETTfR--zKBGGgJ-eirRmCywBA@mail.gmail.com>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <8cca5c06-4df8-b7d4-4aee-f52f956437f8@bonslack.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::234;
- envelope-from=max.chou@sifive.com; helo=mail-oi1-x234.google.com
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.102,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.102, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,175 +103,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/8/2 10:54 PM, Alistair Francis wrote:
+On 03/08/2023 02.29, Luca Bonissi wrote:
+> From: Luca Bonissi <qemu@bonslack.org>
+> Date: Thu, 3 Aug 2023 02:15:57 +0200
+> Subject: [PATCH] Fixed incorrect LLONG alignment for openrisc and cris
+> 
+> OpenRISC (or1k) has long long alignment to 4 bytes, but currently not
+> defined in abitypes.h. This lead to incorrect packing of /epoll_event/
+> structure and eventually infinite loop while waiting for file
+> descriptor[s] event[s].
+> 
+> Fixed also CRIS alignments (1 byte for all types).
+> 
+> Signed-off-by: Luca Bonissi <qemu@bonslack.org>
+> ---
+>   include/exec/user/abitypes.h | 8 ++++++++
+>   1 file changed, 8 insertions(+)
+> 
+> diff --git a/include/exec/user/abitypes.h b/include/exec/user/abitypes.h
+> index 6191ce9f74..6178453d94 100644
+> --- a/include/exec/user/abitypes.h
+> +++ b/include/exec/user/abitypes.h
+> @@ -15,8 +15,16 @@
+>   #define ABI_LLONG_ALIGNMENT 2
+>   #endif
+> 
+> +#ifdef TARGET_CRIS
+> +#define ABI_SHORT_ALIGNMENT 1
+> +#define ABI_INT_ALIGNMENT 1
+> +#define ABI_LONG_ALIGNMENT 1
+> +#define ABI_LLONG_ALIGNMENT 1
+> +#endif
+> +
+>   #if (defined(TARGET_I386) && !defined(TARGET_X86_64)) \
+>       || defined(TARGET_SH4) \
+> +    || defined(TARGET_OPENRISC) \
+>       || defined(TARGET_MICROBLAZE) \
+>       || defined(TARGET_NIOS2)
+>   #define ABI_LLONG_ALIGNMENT 4
 
-> On Tue, Jul 11, 2023 at 12:59 PM Max Chou <max.chou@sifive.com> wrote:
->> This patchset provides an implementation for Zvbb, Zvbc, Zvkned, Zvknh,
->> Zvksh, Zvkg, and Zvksed of the draft RISC-V vector cryptography
->> extensions as per the v20230620 version of the specification(1)(168e7b4).
->> This is an update to the patchset submitted to qemu-devel on
->> Wed, 12 Jul 2023 00:31:21 +0800
->>
->> v2:
->>
->>      Squashed commits into one commit per extension with separate
->>      commits for each refactoring.
->>      Unified trans_rvzvk*.c.inc files into one trans_rvvk.c.inc.
->>      Style fixes in insn32.decode and other files.
->>      Added macros for EGS values in translation functions.
->>      Updated from v20230303 to v20230407 of the spec:
->>          Zvkb has been split into Zvbb and Zvbc.
->>          vbrev, vclz, vctz, vcpop and vwsll have been added to Zvbb.
->>
->> v3:
->>
->>      New patch 03/19 removes redundant “cpu_vl == 0” checks from
->>      trans_rvv.c.inc.
->>      Introduction of new tcg ops has been factored out of patch 11/19
->>      and into 09/19.
->>          These ops are now added to non riscv-specific files.
->>
->> v4:
->>
->>      New patch 08/17 fixes the tcg_gen_gvec_andcs temporary variable
->>      issue.
->>      Patch 09/17 fixes imm mode for vror.vi.
->>      Rebased to riscv-to-apply.next branch (de395bb):
->>          Replace vstart constraint checking by TCG op.
->>      Verified by code examples provided by vector crypto spec repository
->>      (riscv-crypto).
->>
->> v5:
->>
->>      Imported aes-round.h for Zvkned extension.
->>          Rebased to 20230620110758.787479-1-richard.henderson@linaro.org
->>      Exposed the properties of v4 patch 17/17 to the patches that the
->>      extension was added.
->>      Removed v4 patch 08/17 that is queued to tcg-next.
->>
->> v6:
->>
->>      Resent the same content becaue v5 was splitted by broken
->>      git-send-mail
->>
->> v7:
->>
->>      Fixed endian issues
->>      Replace the TCG ops of vstart & vl EGS checking by helper function
->>      Changed the SEW selection of vsha2c[hl].vv to TCG translation
->>
->> v8:
->>
->>      Rebased to the riscv-to-apply.next branch
->>      Fixed cross win32 build issue
->>      Removed redundent swap in AES key expanding (vaeskf1 & vaeskf2)
->>
->>
->> As v20230620 is a frozen version, we are not expecting any significant
->> changes to the specification or this patch series.
->>
->> Please note that the Zvkt data-independent execution latency extension
->> (and all extensions including it) has not been implemented, and we
->> would recommend not using these patches in an environment where timing
->> attacks are an issue.
->>
->> Work performed by Dickon, Lawrence, Nazar, Kiran, and William from
->> Codethink sponsored by SiFive, as well as Max Chou and Frank Chang
->> from SiFive.
->>
->>      https://github.com/riscv/riscv-crypto/releases
->>
->> Thanks to those who have already reviewed:
->>
->>      Daniel Henrique Barboza dbarboza@ventanamicro.com
->>          [PATCH v4 09/17] target/riscv: Add Zvbb ISA extension support
->>          [PATCH v4 10/17] target/riscv: Add Zvkned ISA extension support
->>          [PATCH v4 11/17] target/riscv: Add Zvknh ISA extension support
->>          [PATCH v4 12/17] target/riscv: Add Zvksh ISA extension support
->>          [PATCH v4 13/17] target/riscv: Add Zvkg ISA extension support
->>      Weiwei Li liweiwei@iscas.ac.cn
->>          [PATCH v3 01/19] target/riscv: Refactor some of the generic vector functionality
->>          [PATCH v3 02/19] target/riscv: Refactor vector-vector translation macro
->>          [PATCH v3 03/19] target/riscv: Remove redundant "cpu_vl == 0" checks
->>          [PATCH v3 05/19] target/riscv: Move vector translation checks
->>          [PATCH v3 06/19] target/riscv: Refactor translation of vector-widening instruction
->>          [PATCH v3 07/19] target/riscv: Refactor some of the generic vector functionality
->>          [PATCH v3 19/19] target/riscv: Expose Zvk* and Zvb[b, c] cpu properties
->>      Richard Henderson richard.henderson@linaro.org
->>          [PATCH v2 02/17] target/riscv: Refactor vector-vector translation macro
->>          [PATCH v2 04/17] target/riscv: Move vector translation checks
->>          [PATCH v2 05/17] target/riscv: Refactor translation of vector-widening instruction
->>          [PATCH v2 07/17] qemu/bitops.h: Limit rotate amounts
->>          [PATCH v2 08/17] qemu/host-utils.h: Add clz and ctz functions for lower-bit integers
->>          [PATCH v2 14/17] crypto: Create sm4_subword
->>      Alistair Francis alistair.francis@wdc.com
->>          [PATCH v2 02/17] target/riscv: Refactor vector-vector translation macro
->>      Philipp Tomsich philipp.tomsich@vrull.eu
->>          Various v1 reviews
->>      Christoph Müllner christoph.muellner@vrull.eu
->>          Various v1 reviews
->>
->> Dickon Hood (2):
->>    target/riscv: Refactor translation of vector-widening instruction
->>    target/riscv: Add Zvbb ISA extension support
->>
->> Kiran Ostrolenk (4):
->>    target/riscv: Refactor some of the generic vector functionality
->>    target/riscv: Refactor vector-vector translation macro
->>    target/riscv: Refactor some of the generic vector functionality
->>    target/riscv: Add Zvknh ISA extension support
->>
->> Lawrence Hunter (2):
->>    target/riscv: Add Zvbc ISA extension support
->>    target/riscv: Add Zvksh ISA extension support
->>
->> Max Chou (3):
->>    crypto: Create sm4_subword
->>    crypto: Add SM4 constant parameter CK
->>    target/riscv: Add Zvksed ISA extension support
->>
->> Nazar Kazakov (4):
->>    target/riscv: Remove redundant "cpu_vl == 0" checks
->>    target/riscv: Move vector translation checks
->>    target/riscv: Add Zvkned ISA extension support
->>    target/riscv: Add Zvkg ISA extension support
-> Thanks!
->
-> Applied to riscv-to-apply.next
->
-> Alistair
-Thanks!
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1770
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
-We will send another patch set after the vector cryptographic spec is 
-ratified for the corresponding update (e.g. remove the `x-` prefix from 
-the cpu options, etc.).
-And with the disassembler support and the `Zvkt` & other shorthand 
-extensions support.
-
-Max
->
->>   crypto/sm4.c                             |  10 +
->>   include/crypto/sm4.h                     |   9 +
->>   target/arm/tcg/crypto_helper.c           |  10 +-
->>   target/riscv/cpu.c                       |  37 +
->>   target/riscv/cpu_cfg.h                   |   8 +
->>   target/riscv/helper.h                    |  98 +++
->>   target/riscv/insn32.decode               |  58 ++
->>   target/riscv/insn_trans/trans_rvv.c.inc  | 171 ++--
->>   target/riscv/insn_trans/trans_rvvk.c.inc | 606 ++++++++++++++
->>   target/riscv/meson.build                 |   4 +-
->>   target/riscv/translate.c                 |   1 +
->>   target/riscv/vcrypto_helper.c            | 970 +++++++++++++++++++++++
->>   target/riscv/vector_helper.c             | 243 +-----
->>   target/riscv/vector_internals.c          |  81 ++
->>   target/riscv/vector_internals.h          | 228 ++++++
->>   15 files changed, 2179 insertions(+), 355 deletions(-)
->>   create mode 100644 target/riscv/insn_trans/trans_rvvk.c.inc
->>   create mode 100644 target/riscv/vcrypto_helper.c
->>   create mode 100644 target/riscv/vector_internals.c
->>   create mode 100644 target/riscv/vector_internals.h
->>
->> --
->> 2.34.1
->>
 
