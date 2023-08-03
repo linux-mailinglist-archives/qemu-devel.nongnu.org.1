@@ -2,81 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EE6476E463
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 11:31:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE00276E4DB
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 11:47:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRUeN-0005Wv-JB; Thu, 03 Aug 2023 05:29:43 -0400
+	id 1qRUsq-0004T9-Nm; Thu, 03 Aug 2023 05:44:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qRUeL-0005Wf-Q0
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 05:29:41 -0400
-Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qRUeK-0005FO-7s
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 05:29:41 -0400
-Received: by mail-ej1-x636.google.com with SMTP id
- a640c23a62f3a-99c136ee106so104068466b.1
- for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 02:29:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1691054978; x=1691659778;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=rlrE5XJ09/9REigZYxsyn6zKBhJpaEz0mtorTQki3T0=;
- b=lV9N+gPdPUUhV3xLFoY+haHJSKqCDbLhTLMI9BFgN1+uDR8ySZ8zG0niLKqjcqsLM5
- mnHwVm7+aSUJYIOnKTNEIaKXcUxrzLoK2DK9Ht/anVAFzbdnmDbwNs6p8qpg4mS0J4gu
- m06f7prUv6MNFh4hLMTScilX2ZtVjWIhbxd2jI/5tFhy322SV+MIdNb/Vn8awB3p4jSS
- 9sduhcOqYPIXBPao+dFKilGX0zJseP+5PVWwODuW0YPZ2LoRufqhROrVZNmrE09jECHu
- KHQR+C5CSh0lKe9c5yDzizwBAX/zcmNtbF9Lj+Q/ZlR4OSWJdficev9x6yKgJAUriv3B
- vdNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691054978; x=1691659778;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=rlrE5XJ09/9REigZYxsyn6zKBhJpaEz0mtorTQki3T0=;
- b=aPbLbC8lGIgY3c1RA9jGfnq4s32jIikUQfR8xPm10s5NnJ/OG6vOYf1RQcFFDGGKSO
- VtsmrrQPhWVmrBX65XuGzT32AakY2Gh6ehc7X6OZt1LRaSKif5toiIkgAV2g6XPQ8o2D
- Rnfunn7Cfn69OI/cd4+K6UtIcFCo8z7CfL7X/CKKXj46BPVslTdGpv8PXVEKyAOO35T2
- 6WQeBGplC2u2hvkrVo1pXFwaHispcBNmlgFVLuzhVx7MvzMXSRIQRc3VmwOwi2ZOVDk2
- DTXGrjOZpx0jMpbn1+VJjHNJpRfjKdeQzEng3+JhBlDlegos58+LB7KTZdTeRs1bAsyR
- Ez/w==
-X-Gm-Message-State: ABy/qLabJKw9O1jiFs/jZ9aWdLSYJW45mKh2G8fmMRkHDgCJVtF087oC
- c6T7Ju5V1O+/56UF9T90usoxucytfjEne3rmgfEoag==
-X-Google-Smtp-Source: APBJJlEDJE2zyoxWF7faMxf2DP8aTobs0O0bRZdmJE3qAkYiEAds2ny5iLYkvkd9GJvMsuOXLXP3dw==
-X-Received: by 2002:a17:906:9bdb:b0:982:79fa:4532 with SMTP id
- de27-20020a1709069bdb00b0098279fa4532mr7432730ejc.53.1691054978408; 
- Thu, 03 Aug 2023 02:29:38 -0700 (PDT)
-Received: from localhost (212-5-140-29.ip.btc-net.bg. [212.5.140.29])
- by smtp.gmail.com with ESMTPSA id
- f25-20020a170906085900b00991d54db2acsm10212251ejd.44.2023.08.03.02.29.37
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 03 Aug 2023 02:29:38 -0700 (PDT)
-Date: Thu, 3 Aug 2023 12:29:34 +0300
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com
-Subject: Re: [PATCH] target/riscv/kvm.c: fix mvendorid size in
- vcpu_set_machine_ids()
-Message-ID: <20230803-3d2b378004c77196efc74f09@orel>
-References: <20230802180058.281385-1-dbarboza@ventanamicro.com>
+ (Exim 4.90_1) (envelope-from <its@irrelevant.dk>) id 1qRUso-0004QL-NG
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 05:44:38 -0400
+Received: from wout1-smtp.messagingengine.com ([64.147.123.24])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <its@irrelevant.dk>) id 1qRUsm-0006jf-ON
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 05:44:38 -0400
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+ by mailout.west.internal (Postfix) with ESMTP id 718C53200927;
+ Thu,  3 Aug 2023 05:44:33 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+ by compute5.internal (MEProxy); Thu, 03 Aug 2023 05:44:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
+ h=cc:cc:content-type:content-type:date:date:from:from
+ :in-reply-to:in-reply-to:message-id:mime-version:references
+ :reply-to:sender:subject:subject:to:to; s=fm2; t=1691055872; x=
+ 1691142272; bh=ABGF4TTn0eyxqG4AbTh5VrUO2+VcO89Eu6hhnEt7zLw=; b=S
+ HAHUqdaGpSzRHDQ87Ct5BmR5Emlgss/5jCmLfeTBYw+H5CJ4XxyfB1brv46k12Qy
+ 5LmrjmSiZQOK1wKty4DkOrliuqtSDF9szLIV4MWuxjrC+ilFJWgmr7Pa9o1wR7Y8
+ u/cod0PoO71mJKa2NSXfjqQLqNy2G+y0BmZ9BK13cZRaN3Y9hZL+XQDd/9LK7vEE
+ 46k6xl3YyBGzPuOMkjUBfYOPo9/Mw9mBZ4EE+Qg1mUS5nuXhojRBFBC5Yq2BR59e
+ 0qFeo4R2H2WGsORANDbAewedsYsXsOQ8zPKs9lQXBcL2+cXKZJE+2sruorgnu8mh
+ QnUYWGG2Ap3iFwbicYdOQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-type:content-type:date:date
+ :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+ :message-id:mime-version:references:reply-to:sender:subject
+ :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+ :x-sasl-enc; s=fm3; t=1691055872; x=1691142272; bh=ABGF4TTn0eyxq
+ G4AbTh5VrUO2+VcO89Eu6hhnEt7zLw=; b=cyjQ+0a4LxeX7YMIHurI7nl1FZXyF
+ h7SaGUylgtElV4ZtXZwPNVZW/m6YU/9J0NfSSsTPZh/bxWKLwJvPQ/H3Cu8kVnN9
+ c7ZOddXkxUFrFicprw+eJ2uslWvfaODEEoxhhWs926tXy+01aJ+DHDHZXIsSzmL8
+ J7ML4vDKX5TWR0q6WEOdfkj9KJ1Oh2B8C5wS/vKEpAv21xX6UXWxR4yBVbJKI5bA
+ NyTnE51LiD8k0sg04EkuSdS1aX4ITqOZneoPPg5yJp7Ti9rnn+EfYzqHLQQ9aCmo
+ PKgK3GZchzBUpQwQs1ugLTvGW+H87OV/ddYWkL01aNNJ7oGl9PumI1KuQ==
+X-ME-Sender: <xms:AHfLZAw8gjSI2kIjj4gDIVAEAa8SFdZXDNwR2Q8p0FMdamzD1YWslw>
+ <xme:AHfLZER1bGgaFLEDjnsAwEMWrhKB5ajQFTzbzl94DSQTWLUS-tAVQb_ry1ZPd55gA
+ 0L3XHudJ1RTgCM9V1k>
+X-ME-Received: <xmr:AHfLZCVemfF6mLQxtSZ4F5unkEp9xsqmAT_WlLY8sH6xWw9eCkMG5Q_gy9MY5SOa8ss>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrkedvgddukecutefuodetggdotefrodftvf
+ curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+ uegrihhlohhuthemuceftddtnecunecujfgurhepfffhvfevuffkfhggtggujgesghdtre
+ ertddtjeenucfhrhhomhepmfhlrghushculfgvnhhsvghnuceoihhtshesihhrrhgvlhgv
+ vhgrnhhtrdgukheqnecuggftrfgrthhtvghrnhepjefgjeefffdvuefhieefhffggfeule
+ ehudekveejvedtuddugeeigeetffffjeevnecuvehluhhsthgvrhfuihiivgeptdenucfr
+ rghrrghmpehmrghilhhfrhhomhepihhtshesihhrrhgvlhgvvhgrnhhtrdgukh
+X-ME-Proxy: <xmx:AHfLZOi_4c0DKEsxwqVUOrCi8GmeYOh4GgweJkriZnmjaROke4SP2A>
+ <xmx:AHfLZCDqrNGt1iD_Pt0yukR8g3vsHCnXOKY5IcwOGB25maMMgT0oKg>
+ <xmx:AHfLZPILX7fP0IofaDwnJbqTp6k18A2A9CzUhfBgybNrHXYvzYM_gg>
+ <xmx:AHfLZG5Eoj1VMtrnr4tUJN1tpWKJtv8cB_RVSB01xl6kKjmaj8n70Q>
+Feedback-ID: idc91472f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 3 Aug 2023 05:44:30 -0400 (EDT)
+Date: Thu, 3 Aug 2023 11:44:28 +0200
+From: Klaus Jensen <its@irrelevant.dk>
+To: Ashutosh Sharma <ashutosh.dandora4@gmail.com>
+Cc: qemu-devel@nongnu.org, peterx@redhat.com, k.jensen@samsung.com,
+ philmd@linaro.org, armbru@redhat.com, mst@redhat.com,
+ lukasz.gieryk@linux.intel.com, alex.williamson@redhat.com,
+ helgaas@kernel.org, afaria@redhat.com
+Subject: Re: Format type of qemu NVMe virtual drive reverted back to its
+ default (512 bytes block size) after performing hot plugout/plugin operation
+ on that drive.
+Message-ID: <ZMt2_L5_f24IsRO7@cormorant.local>
+References: <CADOvtemuUgp322fE6xYrzVp_RNU_jpqOfzd-12ES-jpPoDvBaA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="BTPQIWbb4Cm5Td9d"
 Content-Disposition: inline
-In-Reply-To: <20230802180058.281385-1-dbarboza@ventanamicro.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::636;
- envelope-from=ajones@ventanamicro.com; helo=mail-ej1-x636.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+In-Reply-To: <CADOvtemuUgp322fE6xYrzVp_RNU_jpqOfzd-12ES-jpPoDvBaA@mail.gmail.com>
+Received-SPF: pass client-ip=64.147.123.24; envelope-from=its@irrelevant.dk;
+ helo=wout1-smtp.messagingengine.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,102 +104,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 02, 2023 at 03:00:58PM -0300, Daniel Henrique Barboza wrote:
-> cpu->cfg.mvendorid is a 32 bit field and kvm_set_one_reg() always write
-> a target_ulong val, i.e. a 64 bit field in a 64 bit host.
-> 
-> Given that we're passing a pointer to the mvendorid field, the reg is
-> reading 64 bits starting from mvendorid and going 32 bits in the next
-> field, marchid. Here's an example:
-> 
-> $ ./qemu-system-riscv64 -machine virt,accel=kvm -m 2G -smp 1 \
->    -cpu rv64,marchid=0xab,mvendorid=0xcd,mimpid=0xef(...)
-> 
-> (inside the guest)
->  # cat /proc/cpuinfo
-> processor	: 0
-> hart		: 0
-> isa		: rv64imafdc_zicbom_zicboz_zihintpause_zbb_sstc
-> mmu		: sv57
-> mvendorid	: 0xab000000cd
-> marchid		: 0xab
-> mimpid		: 0xef
-> 
-> 'mvendorid' was written as a combination of 0xab (the value from the
-> adjacent field, marchid) and its intended value 0xcd.
-> 
-> Fix it by assigning cpu->cfg.mvendorid to a target_ulong var 'reg' and
-> use it as input for kvm_set_one_reg(). Here's the result with this patch
-> applied and using the same QEMU command line:
-> 
->  # cat /proc/cpuinfo
-> processor	: 0
-> hart		: 0
-> isa		: rv64imafdc_zicbom_zicboz_zihintpause_zbb_sstc
-> mmu		: sv57
-> mvendorid	: 0xcd
-> marchid		: 0xab
-> mimpid		: 0xef
-> 
-> This bug affects only the generic (rv64) CPUs when running with KVM in a
-> 64 bit env since the 'host' CPU does not allow the machine IDs to be
-> changed via command line.
-> 
-> Fixes: 1fb5a622f7 ("target/riscv: handle mvendorid/marchid/mimpid for KVM CPUs")
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> ---
->  target/riscv/kvm.c | 9 ++++++++-
->  1 file changed, 8 insertions(+), 1 deletion(-)
-> 
-> diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
-> index 9d8a8982f9..b1fd2233c0 100644
-> --- a/target/riscv/kvm.c
-> +++ b/target/riscv/kvm.c
-> @@ -852,12 +852,19 @@ void kvm_arch_init_irq_routing(KVMState *s)
->  static int kvm_vcpu_set_machine_ids(RISCVCPU *cpu, CPUState *cs)
->  {
->      CPURISCVState *env = &cpu->env;
-> +    target_ulong reg;
 
-We can use the type of cfg since KVM just gets an address and uses the
-KVM register type to determine the size. So here,
+--BTPQIWbb4Cm5Td9d
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
- uint32_t reg = cpu->cfg.mvendorid;
+On Jul 25 16:53, Ashutosh Sharma wrote:
+> Hi,
+>=20
+> I have a virtual system created using qemu 7.2. In that system, I
+> attached/hot plugged a virtual NVMe drive. This drive had a default
+> block size of 512 bytes.
+>=20
+> admin@node-3:~$ sudo nvme list
+> Node                  SN                   Model
+>              Namespace Usage                      Format           FW
+> Rev
+> --------------------- --------------------
+> ---------------------------------------- ---------
+> -------------------------- ---------------- --------
+> /dev/nvme0n1          ashudev-6f34a1cf_13  QEMU NVMe Ctrl
+>              1          34.36  GB /  34.36  GB    512   B +  0 B
+> 7.1.92
+>=20
+> After that, I formatted this drive with 4k block size and it formatted
+> successfully.
+>=20
+> admin@node-3:~$ sudo nvme format /dev/nvme0n1 -f --lbaf 4
+> Success formatting namespace:1
+> admin@node-3:~$
+> admin@node-3:~$ sudo nvme list
+> Node                  SN                   Model
+>              Namespace Usage                      Format           FW
+> Rev
+> --------------------- --------------------
+> ---------------------------------------- ---------
+> -------------------------- ---------------- --------
+> /dev/nvme0n1          ashudev-6f34a1cf_13  QEMU NVMe Ctrl
+>              1          34.36  GB /  34.36  GB      4 KiB +  0 B
+> 7.1.92
+>=20
+> Then, I just performed the hot plugout and then plugin operation on
+> that drive using qmp.execute's device_del and device_add cmd
+> respectively.
+>=20
+> But, after that, the default block size of that drive reverted to 512 byt=
+es.
+>=20
+> admin@node-3:~$ sudo nvme list
+> Node                  SN                   Model
+>              Namespace Usage                      Format           FW
+> Rev
+> --------------------- --------------------
+> ---------------------------------------- ---------
+> -------------------------- ---------------- --------
+> /dev/nvme0n1          ashudev-6f34a1cf_13  QEMU NVMe Ctrl
+>              1          34.36  GB /  34.36  GB    512   B +  0 B
+> 7.1.92
+>=20
+> So, I just wanted to know why the NVMe format type reverted back to
+> 512 bytes, as I just performed the hot plugout/plugin operations only.
+> Drive's block size (format type) should not be changed upon
+> removal/insertion, right ? or am I missing something ?
+>=20
+> Regards,
+> Ashutosh
+>=20
 
-and then...
+The nvme device (or namespaces) does not have any persistent state. The
+only way to specify boot-to-boot configuration is through device
+parameters. In other words, if you reformat to 4k, then you need to
+change logical_block_size on the device/namespace upon reboot.
 
->      uint64_t id;
->      int ret;
->  
->      id = kvm_riscv_reg_id(env, KVM_REG_RISCV_CONFIG,
->                            KVM_REG_RISCV_CONFIG_REG(mvendorid));
-> -    ret = kvm_set_one_reg(cs, id, &cpu->cfg.mvendorid);
-> +    /*
-> +     * cfg.mvendorid is an uint32 but a target_ulong will
-> +     * be written. Assign it to a target_ulong var to avoid
-> +     * writing pieces of other cpu->cfg fields in the reg.
-> +     */
+The format command mostly exists for testing purposes.
 
-...we don't need this comment since we're not doing anything special.
+I guess it's a caveat we should be more clear about in the
+documentation.
 
-> +    reg = cpu->cfg.mvendorid;
-> +    ret = kvm_set_one_reg(cs, id, &reg);
->      if (ret != 0) {
->          return ret;
->      }
-> -- 
-> 2.41.0
->
+--BTPQIWbb4Cm5Td9d
+Content-Type: application/pgp-signature; name="signature.asc"
 
-We should audit and fix all uses of &cpu->cfg.* with KVM ioctls. We can
-also consider introducing wrappers like
+-----BEGIN PGP SIGNATURE-----
 
-#define kvm_set_one_reg_safe(cs, id, addr)	\
-({						\
-	typeof(*(addr)) _addr = *(addr);	\
-	kvm_set_one_reg(cs, id, &_addr)		\
-})
+iQEzBAEBCgAdFiEEUigzqnXi3OaiR2bATeGvMW1PDekFAmTLdvwACgkQTeGvMW1P
+DekF8gf7B+GaALK3GTH2sTwiEkeT4e3jMM1wTyKm2HiozNz4gGoHnQNj+nSCpy0H
+dhRwsnTuVeG6tOKMWa+8qp84tuJ/izAgagbYBvpmCiMgbly2uQgXU2vctA799J+j
+nm1r5nkZyUM500BHrHThtDeS6lRGnIVlFOBnKf0uWtdgXO13ncvicdI6LqjzL2fq
+vi21vc8KCI1zCJCxbiexIUEDiJpKMpd5e0MtTnIdmPQ8wzz7ToiISAyNaG1KqkNy
+WbNdZYpoGcGvbr1bGGrvKAZbRjVlarqyt2+rDwUy/F2kypGX9iWSli/F1ccmwHkZ
+QdsnA2ZM6bYNEZ0tBhEESAajQ8pbtw==
+=EPcT
+-----END PGP SIGNATURE-----
 
-Thanks,
-drew
+--BTPQIWbb4Cm5Td9d--
 
