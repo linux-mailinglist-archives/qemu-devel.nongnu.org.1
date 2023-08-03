@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CCBB76ED4A
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 16:56:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5869676ED4C
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 16:56:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRZjS-0006ya-Hl; Thu, 03 Aug 2023 10:55:18 -0400
+	id 1qRZjU-00070A-6x; Thu, 03 Aug 2023 10:55:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
- id 1qRZjP-0006xm-GW
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 10:55:15 -0400
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ id 1qRZjS-0006yc-48
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 10:55:18 -0400
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
- id 1qRZjN-0002wQ-CF
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 10:55:15 -0400
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+ id 1qRZjP-0002wq-8U
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 10:55:17 -0400
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 373CgF9s011672; Thu, 3 Aug 2023 14:55:10 GMT
+ 373CghSb007731; Thu, 3 Aug 2023 14:55:11 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
  subject : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=corp-2023-03-30;
- bh=QfAQIzckd90mfRBy7zszKrf/clkjuHZXKMtOqR87NDM=;
- b=uEf4cxCKLmRqA+mpnRyr5yFEzw1FvGVmUFmBmyzifC2MVjF82JEe7yD73ulqRYsYKQhG
- UCjQgFIPyo+J9tbdR9qjlrGE+qGtyU8mpiztt0iDXSh6Washgq1SvhZ6dMHxrehO/paF
- w6xI5YG+bsOR7Agm4AWQgjWb9fqhPjvJcPWmfbivZqIaaAAYvUJBE++uEldjiIfvOWQN
- Niva0+/zp6In7A6Olc7/I/5h6FUesui9rOR6XqviMspvH2eRcso0z5zQkicLpNLfGMhM
- weGsWVmBKbEjms3H9QcQ2zvoY5oScyOmsJtDrZMGdQJT8A/6+bm/pIm/ZZGp9wUZdZxd 2A== 
+ bh=tEDrH7ON6rd0pZkfg1Y8K1zQmuNfn4h/SCqtfReKfyY=;
+ b=0LtXGu2TETJrhG00Ww/A++X8oVZlL0mlFNFSXmB1aS8lEUL7nN22y+85NCnZAnzbJV/x
+ eR8EvbF4ozst8UVaJsJQ1Sj8aPkSueQolCsb2X9E2abIAhs+ydLOGcpNeTpF4s+5/hWI
+ KiwrzPJft82peXw7MOZ9VkAARKJHnP1+0pLy47/3tBl0ZyE88mRkXWxiWGcQtiFHpBpF
+ hTnJ0IxEqsL4YWDZqMFm4rw4Mbgrm4ztunz6jCE3W1z6NaUnVnXMe8bnkb+68E8qtFEf
+ F6X1ldk8K/BmGIbn+AelRwpFH58u+b9ULx/HUvTSX0osIiPaE9v7M8Ze/d7h678Ft9sC lg== 
 Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3s79vbuus7-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3s4uav1sdd-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 03 Aug 2023 14:55:09 +0000
+ Thu, 03 Aug 2023 14:55:11 +0000
 Received: from pps.filterd
  (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 373DeABp015645; Thu, 3 Aug 2023 14:55:08 GMT
+ with ESMTP id 373DxDIa015661; Thu, 3 Aug 2023 14:55:10 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 3s4s79r6db-1
+ 3s4s79r6f3-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 03 Aug 2023 14:55:08 +0000
+ Thu, 03 Aug 2023 14:55:10 +0000
 Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 373Et4ot035404;
- Thu, 3 Aug 2023 14:55:08 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 373Et4ov035404;
+ Thu, 3 Aug 2023 14:55:09 GMT
 Received: from jonah-ol8.us.oracle.com (dhcp-10-65-173-197.vpn.oracle.com
  [10.65.173.197])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
- 3s4s79r659-3; Thu, 03 Aug 2023 14:55:08 +0000
+ 3s4s79r659-4; Thu, 03 Aug 2023 14:55:09 +0000
 From: Jonah Palmer <jonah.palmer@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: philmd@linaro.org, laurent@vivier.eu, mst@redhat.com,
  boris.ostrovsky@oracle.com, alex.bennee@linaro.org,
  viresh.kumar@linaro.org, armbru@redhat.com, pbonzini@redhat.com,
  berrange@redhat.com, eduardo@habkost.net
-Subject: [PATCH v3 2/3] qmp: update virtio feature maps,
- vhost-user-gpio introspection
-Date: Thu,  3 Aug 2023 10:54:59 -0400
-Message-Id: <20230803145500.2108691-3-jonah.palmer@oracle.com>
+Subject: [PATCH v3 3/3] vhost-user: move VhostUserProtocolFeature definition
+ to header file
+Date: Thu,  3 Aug 2023 10:55:00 -0400
+Message-Id: <20230803145500.2108691-4-jonah.palmer@oracle.com>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20230803145500.2108691-1-jonah.palmer@oracle.com>
 References: <20230803145500.2108691-1-jonah.palmer@oracle.com>
@@ -76,10 +76,10 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
  adultscore=0 bulkscore=0 suspectscore=0 spamscore=0 mlxscore=0
  phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2306200000 definitions=main-2308030134
-X-Proofpoint-GUID: dMVlQ9g4BHYUehST7ztnrLlmezExKkar
-X-Proofpoint-ORIG-GUID: dMVlQ9g4BHYUehST7ztnrLlmezExKkar
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=jonah.palmer@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Proofpoint-ORIG-GUID: Pvp_zYCwmM5DG50vP6o67GI94m15Kqrc
+X-Proofpoint-GUID: Pvp_zYCwmM5DG50vP6o67GI94m15Kqrc
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=jonah.palmer@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
@@ -103,168 +103,142 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add new virtio transport feature to transport feature map:
- - VIRTIO_F_RING_RESET
+Move the definition of VhostUserProtocolFeature to
+include/hw/virtio/vhost-user.h.
 
-Add new vhost-user protocol feature to vhost-user protocol feature map
-and enumeration:
- - VHOST_USER_PROTOCOL_F_STATUS
+Remove previous definitions in hw/scsi/vhost-user-scsi.c,
+hw/virtio/vhost-user.c, and hw/virtio/virtio-qmp.c.
 
-Add new virtio device features for several virtio devices to their
-respective feature mappings:
-
-virtio-blk:
- - VIRTIO_BLK_F_SECURE_ERASE
-
-virtio-net:
- - VIRTIO_NET_F_NOTF_COAL
- - VIRTIO_NET_F_GUEST_USO4
- - VIRTIO_NET_F_GUEST_USO6
- - VIRTIO_NET_F_HOST_USO
-
-virtio/vhost-user-gpio:
- - VIRTIO_GPIO_F_IRQ
- - VHOST_F_LOG_ALL
- - VHOST_USER_F_PROTOCOL_FEATURES
-
-Add support for introspection on vhost-user-gpio devices.
+Previously there were 3 separate definitions of this over 3 different
+files. Now only 1 definition of this will be present for these 3 files.
 
 Signed-off-by: Jonah Palmer <jonah.palmer@oracle.com>
 ---
- hw/virtio/vhost-user-gpio.c |  7 +++++++
- hw/virtio/virtio-qmp.c      | 38 ++++++++++++++++++++++++++++++++++++-
- 2 files changed, 44 insertions(+), 1 deletion(-)
+ hw/scsi/vhost-user-scsi.c      |  4 ----
+ hw/virtio/vhost-user.c         | 21 ---------------------
+ hw/virtio/virtio-qmp.c         | 22 +---------------------
+ include/hw/virtio/vhost-user.h | 21 +++++++++++++++++++++
+ 4 files changed, 22 insertions(+), 46 deletions(-)
 
-diff --git a/hw/virtio/vhost-user-gpio.c b/hw/virtio/vhost-user-gpio.c
-index 3b013f2d0f..3d7fae3984 100644
---- a/hw/virtio/vhost-user-gpio.c
-+++ b/hw/virtio/vhost-user-gpio.c
-@@ -205,6 +205,12 @@ static void vu_gpio_guest_notifier_mask(VirtIODevice *vdev, int idx, bool mask)
-     vhost_virtqueue_mask(&gpio->vhost_dev, vdev, idx, mask);
- }
+diff --git a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c
+index ee99b19e7a..df6b66cc1a 100644
+--- a/hw/scsi/vhost-user-scsi.c
++++ b/hw/scsi/vhost-user-scsi.c
+@@ -39,10 +39,6 @@ static const int user_feature_bits[] = {
+     VHOST_INVALID_FEATURE_BIT
+ };
  
-+static struct vhost_dev *vu_gpio_get_vhost(VirtIODevice *vdev)
-+{
-+    VHostUserGPIO *gpio = VHOST_USER_GPIO(vdev);
-+    return &gpio->vhost_dev;
-+}
-+
- static void do_vhost_user_cleanup(VirtIODevice *vdev, VHostUserGPIO *gpio)
+-enum VhostUserProtocolFeature {
+-    VHOST_USER_PROTOCOL_F_RESET_DEVICE = 13,
+-};
+-
+ static void vhost_user_scsi_set_status(VirtIODevice *vdev, uint8_t status)
  {
-     virtio_delete_queue(gpio->command_vq);
-@@ -413,6 +419,7 @@ static void vu_gpio_class_init(ObjectClass *klass, void *data)
-     vdc->get_config = vu_gpio_get_config;
-     vdc->set_status = vu_gpio_set_status;
-     vdc->guest_notifier_mask = vu_gpio_guest_notifier_mask;
-+    vdc->get_vhost = vu_gpio_get_vhost;
- }
+     VHostUserSCSI *s = (VHostUserSCSI *)vdev;
+diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
+index 8dcf049d42..a096335921 100644
+--- a/hw/virtio/vhost-user.c
++++ b/hw/virtio/vhost-user.c
+@@ -56,27 +56,6 @@
+  */
+ #define VHOST_USER_MAX_CONFIG_SIZE 256
  
- static const TypeInfo vu_gpio_info = {
+-enum VhostUserProtocolFeature {
+-    VHOST_USER_PROTOCOL_F_MQ = 0,
+-    VHOST_USER_PROTOCOL_F_LOG_SHMFD = 1,
+-    VHOST_USER_PROTOCOL_F_RARP = 2,
+-    VHOST_USER_PROTOCOL_F_REPLY_ACK = 3,
+-    VHOST_USER_PROTOCOL_F_NET_MTU = 4,
+-    VHOST_USER_PROTOCOL_F_BACKEND_REQ = 5,
+-    VHOST_USER_PROTOCOL_F_CROSS_ENDIAN = 6,
+-    VHOST_USER_PROTOCOL_F_CRYPTO_SESSION = 7,
+-    VHOST_USER_PROTOCOL_F_PAGEFAULT = 8,
+-    VHOST_USER_PROTOCOL_F_CONFIG = 9,
+-    VHOST_USER_PROTOCOL_F_BACKEND_SEND_FD = 10,
+-    VHOST_USER_PROTOCOL_F_HOST_NOTIFIER = 11,
+-    VHOST_USER_PROTOCOL_F_INFLIGHT_SHMFD = 12,
+-    VHOST_USER_PROTOCOL_F_RESET_DEVICE = 13,
+-    /* Feature 14 reserved for VHOST_USER_PROTOCOL_F_INBAND_NOTIFICATIONS. */
+-    VHOST_USER_PROTOCOL_F_CONFIGURE_MEM_SLOTS = 15,
+-    VHOST_USER_PROTOCOL_F_STATUS = 16,
+-    VHOST_USER_PROTOCOL_F_MAX
+-};
+-
+ #define VHOST_USER_PROTOCOL_FEATURE_MASK ((1 << VHOST_USER_PROTOCOL_F_MAX) - 1)
+ 
+ typedef enum VhostUserRequest {
 diff --git a/hw/virtio/virtio-qmp.c b/hw/virtio/virtio-qmp.c
-index baec351c4f..a38b49af8a 100644
+index a38b49af8a..69880fe7c5 100644
 --- a/hw/virtio/virtio-qmp.c
 +++ b/hw/virtio/virtio-qmp.c
-@@ -30,6 +30,7 @@
- #include "standard-headers/linux/virtio_iommu.h"
- #include "standard-headers/linux/virtio_mem.h"
- #include "standard-headers/linux/virtio_vsock.h"
-+#include "standard-headers/linux/virtio_gpio.h"
+@@ -17,6 +17,7 @@
+ #include "qapi/qapi-commands-qom.h"
+ #include "qapi/qmp/qobject.h"
+ #include "qapi/qmp/qjson.h"
++#include "hw/virtio/vhost-user.h"
  
- #include CONFIG_DEVICES
+ #include "standard-headers/linux/virtio_ids.h"
+ #include "standard-headers/linux/vhost_types.h"
+@@ -37,27 +38,6 @@
+ #define FEATURE_ENTRY(name, desc) (qmp_virtio_feature_map_t) \
+     { .virtio_bit = name, .feature_desc = desc }
  
-@@ -53,6 +54,7 @@ enum VhostUserProtocolFeature {
-     VHOST_USER_PROTOCOL_F_RESET_DEVICE = 13,
-     VHOST_USER_PROTOCOL_F_INBAND_NOTIFICATIONS = 14,
-     VHOST_USER_PROTOCOL_F_CONFIGURE_MEM_SLOTS = 15,
+-enum VhostUserProtocolFeature {
+-    VHOST_USER_PROTOCOL_F_MQ = 0,
+-    VHOST_USER_PROTOCOL_F_LOG_SHMFD = 1,
+-    VHOST_USER_PROTOCOL_F_RARP = 2,
+-    VHOST_USER_PROTOCOL_F_REPLY_ACK = 3,
+-    VHOST_USER_PROTOCOL_F_NET_MTU = 4,
+-    VHOST_USER_PROTOCOL_F_BACKEND_REQ = 5,
+-    VHOST_USER_PROTOCOL_F_CROSS_ENDIAN = 6,
+-    VHOST_USER_PROTOCOL_F_CRYPTO_SESSION = 7,
+-    VHOST_USER_PROTOCOL_F_PAGEFAULT = 8,
+-    VHOST_USER_PROTOCOL_F_CONFIG = 9,
+-    VHOST_USER_PROTOCOL_F_BACKEND_SEND_FD = 10,
+-    VHOST_USER_PROTOCOL_F_HOST_NOTIFIER = 11,
+-    VHOST_USER_PROTOCOL_F_INFLIGHT_SHMFD = 12,
+-    VHOST_USER_PROTOCOL_F_RESET_DEVICE = 13,
+-    VHOST_USER_PROTOCOL_F_INBAND_NOTIFICATIONS = 14,
+-    VHOST_USER_PROTOCOL_F_CONFIGURE_MEM_SLOTS = 15,
+-    VHOST_USER_PROTOCOL_F_STATUS = 16,
+-    VHOST_USER_PROTOCOL_F_MAX
+-};
+-
+ /* Virtio transport features mapping */
+ static const qmp_virtio_feature_map_t virtio_transport_map[] = {
+     /* Virtio device transport features */
+diff --git a/include/hw/virtio/vhost-user.h b/include/hw/virtio/vhost-user.h
+index 191216a74f..80e2b4a463 100644
+--- a/include/hw/virtio/vhost-user.h
++++ b/include/hw/virtio/vhost-user.h
+@@ -11,6 +11,27 @@
+ #include "chardev/char-fe.h"
+ #include "hw/virtio/virtio.h"
+ 
++enum VhostUserProtocolFeature {
++    VHOST_USER_PROTOCOL_F_MQ = 0,
++    VHOST_USER_PROTOCOL_F_LOG_SHMFD = 1,
++    VHOST_USER_PROTOCOL_F_RARP = 2,
++    VHOST_USER_PROTOCOL_F_REPLY_ACK = 3,
++    VHOST_USER_PROTOCOL_F_NET_MTU = 4,
++    VHOST_USER_PROTOCOL_F_BACKEND_REQ = 5,
++    VHOST_USER_PROTOCOL_F_CROSS_ENDIAN = 6,
++    VHOST_USER_PROTOCOL_F_CRYPTO_SESSION = 7,
++    VHOST_USER_PROTOCOL_F_PAGEFAULT = 8,
++    VHOST_USER_PROTOCOL_F_CONFIG = 9,
++    VHOST_USER_PROTOCOL_F_BACKEND_SEND_FD = 10,
++    VHOST_USER_PROTOCOL_F_HOST_NOTIFIER = 11,
++    VHOST_USER_PROTOCOL_F_INFLIGHT_SHMFD = 12,
++    VHOST_USER_PROTOCOL_F_RESET_DEVICE = 13,
++    VHOST_USER_PROTOCOL_F_INBAND_NOTIFICATIONS = 14,
++    VHOST_USER_PROTOCOL_F_CONFIGURE_MEM_SLOTS = 15,
 +    VHOST_USER_PROTOCOL_F_STATUS = 16,
-     VHOST_USER_PROTOCOL_F_MAX
- };
- 
-@@ -79,6 +81,8 @@ static const qmp_virtio_feature_map_t virtio_transport_map[] = {
-             "VIRTIO_F_ORDER_PLATFORM: Memory accesses ordered by platform"),
-     FEATURE_ENTRY(VIRTIO_F_SR_IOV, \
-             "VIRTIO_F_SR_IOV: Device supports single root I/O virtualization"),
-+    FEATURE_ENTRY(VIRTIO_F_RING_RESET, \
-+            "VIRTIO_F_RING_RESET: Driver can reset individual VQs"),
-     /* Virtio ring transport features */
-     FEATURE_ENTRY(VIRTIO_RING_F_INDIRECT_DESC, \
-             "VIRTIO_RING_F_INDIRECT_DESC: Indirect descriptors supported"),
-@@ -134,6 +138,9 @@ static const qmp_virtio_feature_map_t vhost_user_protocol_map[] = {
-     FEATURE_ENTRY(VHOST_USER_PROTOCOL_F_CONFIGURE_MEM_SLOTS, \
-             "VHOST_USER_PROTOCOL_F_CONFIGURE_MEM_SLOTS: Configuration for "
-             "memory slots supported"),
-+    FEATURE_ENTRY(VHOST_USER_PROTOCOL_F_STATUS, \
-+            "VHOST_USER_PROTOCOL_F_STATUS: Querying and notifying back-end "
-+            "device status supported"),
-     { -1, "" }
- };
- 
-@@ -176,6 +183,8 @@ static const qmp_virtio_feature_map_t virtio_blk_feature_map[] = {
-             "VIRTIO_BLK_F_DISCARD: Discard command supported"),
-     FEATURE_ENTRY(VIRTIO_BLK_F_WRITE_ZEROES, \
-             "VIRTIO_BLK_F_WRITE_ZEROES: Write zeroes command supported"),
-+    FEATURE_ENTRY(VIRTIO_BLK_F_SECURE_ERASE, \
-+            "VIRTIO_BLK_F_SECURE_ERASE: Secure erase supported"),
-     FEATURE_ENTRY(VIRTIO_BLK_F_ZONED, \
-             "VIRTIO_BLK_F_ZONED: Zoned block devices"),
- #ifndef VIRTIO_BLK_NO_LEGACY
-@@ -299,6 +308,14 @@ static const qmp_virtio_feature_map_t virtio_net_feature_map[] = {
-     FEATURE_ENTRY(VIRTIO_NET_F_CTRL_MAC_ADDR, \
-             "VIRTIO_NET_F_CTRL_MAC_ADDR: MAC address set through control "
-             "channel"),
-+    FEATURE_ENTRY(VIRTIO_NET_F_NOTF_COAL, \
-+            "VIRTIO_NET_F_NOTF_COAL: Device supports coalescing notifications"),
-+    FEATURE_ENTRY(VIRTIO_NET_F_GUEST_USO4, \
-+            "VIRTIO_NET_F_GUEST_USO4: Driver can receive USOv4"),
-+    FEATURE_ENTRY(VIRTIO_NET_F_GUEST_USO6, \
-+            "VIRTIO_NET_F_GUEST_USO4: Driver can receive USOv6"),
-+    FEATURE_ENTRY(VIRTIO_NET_F_HOST_USO, \
-+            "VIRTIO_NET_F_HOST_USO: Device can receive USO"),
-     FEATURE_ENTRY(VIRTIO_NET_F_HASH_REPORT, \
-             "VIRTIO_NET_F_HASH_REPORT: Hash reporting supported"),
-     FEATURE_ENTRY(VIRTIO_NET_F_RSS, \
-@@ -469,6 +486,20 @@ static const qmp_virtio_feature_map_t virtio_rng_feature_map[] = {
- };
- #endif
- 
-+/* virtio/vhost-gpio features mapping */
-+#ifdef CONFIG_VHOST_USER_GPIO
-+static const qmp_virtio_feature_map_t virtio_gpio_feature_map[] = {
-+    FEATURE_ENTRY(VIRTIO_GPIO_F_IRQ, \
-+            "VIRTIO_GPIO_F_IRQ: Device supports interrupts on GPIO lines"),
-+    FEATURE_ENTRY(VHOST_F_LOG_ALL, \
-+            "VHOST_F_LOG_ALL: Logging write descriptors supported"),
-+    FEATURE_ENTRY(VHOST_USER_F_PROTOCOL_FEATURES, \
-+            "VHOST_USER_F_PROTOCOL_FEATURES: Vhost-user protocol features "
-+            "negotiation supported"),
-+    { -1, "" }
++    VHOST_USER_PROTOCOL_F_MAX
 +};
-+#endif
 +
- #define CONVERT_FEATURES(type, map, is_status, bitmap)   \
-     ({                                                   \
-         type *list = NULL;                               \
-@@ -625,6 +656,12 @@ VirtioDeviceFeatures *qmp_decode_features(uint16_t device_id, uint64_t bitmap)
-         features->dev_features =
-             CONVERT_FEATURES(strList, virtio_rng_feature_map, 0, bitmap);
-         break;
-+#endif
-+#ifdef CONFIG_VHOST_USER_GPIO
-+    case VIRTIO_ID_GPIO:
-+        features->dev_features =
-+            CONVERT_FEATURES(strList, virtio_gpio_feature_map, 0, bitmap);
-+        break;
- #endif
-     /* No features */
-     case VIRTIO_ID_9P:
-@@ -651,7 +688,6 @@ VirtioDeviceFeatures *qmp_decode_features(uint16_t device_id, uint64_t bitmap)
-     case VIRTIO_ID_DMABUF:
-     case VIRTIO_ID_PARAM_SERV:
-     case VIRTIO_ID_AUDIO_POLICY:
--    case VIRTIO_ID_GPIO:
-         break;
-     default:
-         g_assert_not_reached();
+ /**
+  * VhostUserHostNotifier - notifier information for one queue
+  * @rcu: rcu_head for cleanup
 -- 
 2.39.3
 
