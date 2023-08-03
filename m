@@ -2,72 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F7CB76F5A1
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 00:22:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B862F76F59E
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 00:22:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRggs-0004L1-97; Thu, 03 Aug 2023 18:21:06 -0400
+	id 1qRggv-0004Ld-S8; Thu, 03 Aug 2023 18:21:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qRggr-0004Kr-3j
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 18:21:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qRggu-0004LT-Oe
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 18:21:08 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qRggp-0000QC-Iz
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 18:21:04 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qRggt-0000Qh-Af
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 18:21:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691101262;
+ s=mimecast20190719; t=1691101266;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=rfS68BxaotrRZ6rq9fMIsPSxLCjq1HfC2TQN4nwt15g=;
- b=Qz2mLB02OiiyHQT7qplrXSVk8PkDDiblVUNFx2OxnmXXaqwOgObKliT6viQB7ZhExTFgz9
- SXft6r+VRuG3JQaeX057/CVzjgWUUPch+dTJ0wzbftuxkvybMqnzhSE6kQ3Mc9kH7PLrmJ
- 5nBgm0YFnD0Bn4flLsi+s6MjJQza4xs=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=/oU8V7VIrt8Ft51zkm09tFOBYRYyclp6SwII5cbUjg0=;
+ b=Vc+OHjoknEycNElPg+L59VjVZARhhAP+Gnixfu50lMQKBko9p/Sc5ehH0PcFCBpmZAm6ob
+ zKij32/RTO+5PL1kHCNp4v5GM37ShZPEvBMLUWv22etYXJIBZ5Duru4FKBHiy269yOqcSl
+ dyc0n2vMMiHf2OHWGZdb1+F8xiiGh4k=
+Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
+ [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-693-l022SgsJOymDqsLYBePAdA-1; Thu, 03 Aug 2023 18:21:01 -0400
-X-MC-Unique: l022SgsJOymDqsLYBePAdA-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-993d5006993so97066066b.3
- for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 15:21:01 -0700 (PDT)
+ us-mta-122-JBjHdKr0M7uNn99xvsXCiw-1; Thu, 03 Aug 2023 18:21:05 -0400
+X-MC-Unique: JBjHdKr0M7uNn99xvsXCiw-1
+Received: by mail-lj1-f200.google.com with SMTP id
+ 38308e7fff4ca-2b710c5677eso16121051fa.0
+ for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 15:21:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691101260; x=1691706060;
+ d=1e100.net; s=20221208; t=1691101263; x=1691706063;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=rfS68BxaotrRZ6rq9fMIsPSxLCjq1HfC2TQN4nwt15g=;
- b=l1T0T6W3hnyJ/NO++V/UkylyAyQ22bg/ahP9o7JT4TDQCvQfIeTqT5R5/UHKbs9vC0
- 3Uyzac9RRfwy6osLt0xY3dUMJEVCUn6VEHijnLJHatv/EjWkMEjxOiInlSCqsfTPIEUp
- 83wzJBzFHd6coDZj8TmJCiKacCN8U2cyQ1kaDi2W3KrfOIj5/WwvE/wNbHQ30WjTTcMG
- eSVX6MaK06kamtIZ9O6HmPZrMSVPjM5HtXtailuIcJeDMTol+G2CgfKQRqo8+cJkbpim
- FtHItCo4NgBFBBjIbm9AL33lZzuASEWq7PRB6EuKb14ABWXS2DxLSUaxPZckkgLwbdpg
- Lr8w==
-X-Gm-Message-State: ABy/qLYLfMQJSo2jQzLU3jUl5vTbBCeUSaxj9akhJJqcj/nY8ANyEsY6
- CRH7EghS7WXqDx0BvKrqu6m29CkNAV+G8hRzp0+AMRmLyfwkHJ1dZQmb3DG9mNhCsTsEFFimFat
- ofpPH0fEyBTRnyDbVYlknlrExk3iWohbP9xT02eeqwKCT+fJ7y5U+Tt56O6KB3ldhR60g
-X-Received: by 2002:a17:906:8a70:b0:994:577:f9df with SMTP id
- hy16-20020a1709068a7000b009940577f9dfmr8483818ejc.4.1691101259944; 
- Thu, 03 Aug 2023 15:20:59 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlFHKJo8+OY6qZOtbj9t2tTRVK/UhmqS/lHjZS1T2Xd2ffRkczTgIezPwHOD3t1FG1eTjPNXDg==
-X-Received: by 2002:a17:906:8a70:b0:994:577:f9df with SMTP id
- hy16-20020a1709068a7000b009940577f9dfmr8483805ejc.4.1691101259606; 
- Thu, 03 Aug 2023 15:20:59 -0700 (PDT)
+ bh=/oU8V7VIrt8Ft51zkm09tFOBYRYyclp6SwII5cbUjg0=;
+ b=LlzOd1u/OX9zuMB9ECqlYrVMpA00yYKjIEEmmq2uLOdEh4gZY3pc278pxMrYNC8P5u
+ xk3qY4IQd9luSnMnj5hUPHTKb9tXjdDPZ67kZlBVGQMkwUtMET0tfpU7bOm7uvU4hGKT
+ rPwgGcKhY/6AXjrNr2g+EFbSFPAKjXkXPYmTAqYGBxnUh63Ei/79wpCg7Og5aS9uSE7w
+ 3NIuqwDmX+ISijVQNPzCodq902tlywznidGMzXCTN6FK4pM+hnuFoFKzofImMKDGrRyu
+ 7yuLVLvvj5ggYVTsW4VB4OqgTfL8Lqo6EiSuX97rqD2Uq1crzHEzccl+jwNd6gEaRL2B
+ k+Zg==
+X-Gm-Message-State: AOJu0Yzq4S6Uouv8JuHODjBWo7MEeu9gBP59yFVzczoSvARo8BEo7CSd
+ 6WZinriH44dc/jH/8eWhac2jE1dIIH300NTs0+40VZ4LWTEEf+gYri6dAG9VE3uxpvjyrG5fcSV
+ uP/xjm4y9cXtifGxPyAG3jERyLaA9sOBEQvsCiQjSR1QHbGjjniLWRbfbRM4tD8c9t1Hx
+X-Received: by 2002:a2e:9bc5:0:b0:2b9:ce86:b4e7 with SMTP id
+ w5-20020a2e9bc5000000b002b9ce86b4e7mr76817ljj.28.1691101263477; 
+ Thu, 03 Aug 2023 15:21:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHJ0GMrCGj8Ye2UXnfkf6KRL0JZEMtBiz2y1cEvbkwhe+BHeHhZdFObJ2mgkvyT5PdHFHRmbQ==
+X-Received: by 2002:a2e:9bc5:0:b0:2b9:ce86:b4e7 with SMTP id
+ w5-20020a2e9bc5000000b002b9ce86b4e7mr76801ljj.28.1691101263075; 
+ Thu, 03 Aug 2023 15:21:03 -0700 (PDT)
 Received: from redhat.com ([2.52.12.104]) by smtp.gmail.com with ESMTPSA id
- v1-20020a17090606c100b0099293cdbc98sm375723ejb.145.2023.08.03.15.20.57
+ t6-20020a1709060c4600b0099bcb44493fsm376088ejf.147.2023.08.03.15.21.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 03 Aug 2023 15:20:59 -0700 (PDT)
-Date: Thu, 3 Aug 2023 18:20:56 -0400
+ Thu, 03 Aug 2023 15:21:02 -0700 (PDT)
+Date: Thu, 3 Aug 2023 18:20:59 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Milan Zamazal <mzamazal@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Fabiano Rosas <farosas@suse.de>
-Subject: [PULL 04/22] hw/virtio: Add a protection against duplicate
- vu_scmi_stop calls
-Message-ID: <63a3520e29a1a68d8610315b049ccb5840fe22e9.1691101215.git.mst@redhat.com>
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
+Subject: [PULL 05/22] tests: acpi: x86: whitelist expected blobs
+Message-ID: <45d9d318c8d435cbe2d465f61e6975885d2242ca.1691101215.git.mst@redhat.com>
 References: <cover.1691101215.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -75,7 +73,7 @@ Content-Disposition: inline
 In-Reply-To: <cover.1691101215.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -100,88 +98,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Milan Zamazal <mzamazal@redhat.com>
+From: Igor Mammedov <imammedo@redhat.com>
 
-The QEMU CI fails in virtio-scmi test occasionally.  As reported by
-Thomas Huth, this happens most likely when the system is loaded and it
-fails with the following error:
-
-  qemu-system-aarch64: ../../devel/qemu/hw/pci/msix.c:659:
-  msix_unset_vector_notifiers: Assertion `dev->msix_vector_use_notifier && dev->msix_vector_release_notifier' failed.
-  ../../devel/qemu/tests/qtest/libqtest.c:200: kill_qemu() detected QEMU death from signal 6 (Aborted) (core dumped)
-
-As discovered by Fabiano Rosas, the cause is a duplicate invocation of
-msix_unset_vector_notifiers via duplicate vu_scmi_stop calls:
-
-  msix_unset_vector_notifiers
-  virtio_pci_set_guest_notifiers
-  vu_scmi_stop
-  vu_scmi_disconnect
-  ...
-  qemu_chr_write_buffer
-
-  msix_unset_vector_notifiers
-  virtio_pci_set_guest_notifiers
-  vu_scmi_stop
-  vu_scmi_set_status
-  ...
-  qemu_cleanup
-
-While vu_scmi_stop calls are protected by vhost_dev_is_started()
-check, it's apparently not enough.  vhost-user-blk and vhost-user-gpio
-use an extra protection, see f5b22d06fb (vhost: recheck dev state in
-the vhost_migration_log routine) for the motivation.  Let's use the
-same in vhost-user-scmi, which fixes the failure above.
-
-Fixes: a5dab090e142 ("hw/virtio: Add boilerplate for vhost-user-scmi device")
-Signed-off-by: Milan Zamazal <mzamazal@redhat.com>
-Message-Id: <20230720101037.2161450-1-mzamazal@redhat.com>
+Signed-off-by: Igor Mammedov <imammedo@redhat.com>
+Message-Id: <20230720133858.1974024-2-imammedo@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Tested-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
 ---
- include/hw/virtio/vhost-user-scmi.h | 1 +
- hw/virtio/vhost-user-scmi.c         | 7 +++++++
- 2 files changed, 8 insertions(+)
+ tests/qtest/bios-tables-test-allowed-diff.h | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/include/hw/virtio/vhost-user-scmi.h b/include/hw/virtio/vhost-user-scmi.h
-index 6175a74ebd..c90db77dd5 100644
---- a/include/hw/virtio/vhost-user-scmi.h
-+++ b/include/hw/virtio/vhost-user-scmi.h
-@@ -25,6 +25,7 @@ struct VHostUserSCMI {
-     VirtQueue *cmd_vq;
-     VirtQueue *event_vq;
-     bool connected;
-+    bool started_vu;
- };
- 
- #endif /* _QEMU_VHOST_USER_SCMI_H */
-diff --git a/hw/virtio/vhost-user-scmi.c b/hw/virtio/vhost-user-scmi.c
-index d386fb2df9..918bb7dcf7 100644
---- a/hw/virtio/vhost-user-scmi.c
-+++ b/hw/virtio/vhost-user-scmi.c
-@@ -63,6 +63,7 @@ static int vu_scmi_start(VirtIODevice *vdev)
-         error_report("Error starting vhost-user-scmi: %d", ret);
-         goto err_guest_notifiers;
-     }
-+    scmi->started_vu = true;
- 
-     /*
-      * guest_notifier_mask/pending not used yet, so just unmask
-@@ -90,6 +91,12 @@ static void vu_scmi_stop(VirtIODevice *vdev)
-     struct vhost_dev *vhost_dev = &scmi->vhost_dev;
-     int ret;
- 
-+    /* vhost_dev_is_started() check in the callers is not fully reliable. */
-+    if (!scmi->started_vu) {
-+        return;
-+    }
-+    scmi->started_vu = false;
-+
-     if (!k->set_guest_notifiers) {
-         return;
-     }
+diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+index dfb8523c8b..1983fa596b 100644
+--- a/tests/qtest/bios-tables-test-allowed-diff.h
++++ b/tests/qtest/bios-tables-test-allowed-diff.h
+@@ -1 +1,15 @@
+ /* List of comma-separated changed AML files to ignore */
++"tests/data/acpi/pc/DSDT",
++"tests/data/acpi/pc/DSDT.acpierst",
++"tests/data/acpi/pc/DSDT.acpihmat",
++"tests/data/acpi/pc/DSDT.bridge",
++"tests/data/acpi/pc/DSDT.cphp",
++"tests/data/acpi/pc/DSDT.dimmpxm",
++"tests/data/acpi/pc/DSDT.hpbridge",
++"tests/data/acpi/pc/DSDT.ipmikcs",
++"tests/data/acpi/pc/DSDT.memhp",
++"tests/data/acpi/pc/DSDT.nohpet",
++"tests/data/acpi/pc/DSDT.numamem",
++"tests/data/acpi/pc/DSDT.roothp",
++"tests/data/acpi/q35/DSDT.bridge",
++"tests/data/acpi/q35/DSDT.multi-bridge",
 -- 
 MST
 
