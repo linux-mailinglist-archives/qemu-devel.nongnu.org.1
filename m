@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29C0C76DE6B
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 04:44:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFB0A76DE69
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 04:44:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qROJM-0004L2-K4; Wed, 02 Aug 2023 22:43:36 -0400
+	id 1qROJO-0004Le-Io; Wed, 02 Aug 2023 22:43:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pizhenwei@bytedance.com>)
- id 1qROJD-0004IP-PZ
- for qemu-devel@nongnu.org; Wed, 02 Aug 2023 22:43:28 -0400
-Received: from mail-oi1-x235.google.com ([2607:f8b0:4864:20::235])
+ id 1qROJG-0004J3-Fw
+ for qemu-devel@nongnu.org; Wed, 02 Aug 2023 22:43:32 -0400
+Received: from mail-oi1-x236.google.com ([2607:f8b0:4864:20::236])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pizhenwei@bytedance.com>)
- id 1qROJC-0007eG-AL
- for qemu-devel@nongnu.org; Wed, 02 Aug 2023 22:43:27 -0400
-Received: by mail-oi1-x235.google.com with SMTP id
- 5614622812f47-3a751d2e6ecso365946b6e.0
- for <qemu-devel@nongnu.org>; Wed, 02 Aug 2023 19:43:25 -0700 (PDT)
+ id 1qROJE-0007fU-UY
+ for qemu-devel@nongnu.org; Wed, 02 Aug 2023 22:43:30 -0400
+Received: by mail-oi1-x236.google.com with SMTP id
+ 5614622812f47-3a5abb5e2aeso347560b6e.0
+ for <qemu-devel@nongnu.org>; Wed, 02 Aug 2023 19:43:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1691030604; x=1691635404;
+ d=bytedance.com; s=google; t=1691030608; x=1691635408;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=fKpdoxEEVb/l2HWGC4KXDy5cd06NGqkqX5eOsehHBMI=;
- b=jTHDhr7wpWqn44c2jGpuSMtU/HfcLIMlPjuOiRrvIIoUihTrzBKWqUDVME4PKEi6kB
- hv9b/VjK9fos3iLx0C1pZlq4penXyLsmPtfRGB1FWPZkqlA9Z6LzIbjWtjfwQS/QzuBp
- 3KeXIx+MfCMNPv6KiiqLcf8T1xmsLpUGqeBmhaOuGpGLkG3fB0Mfv80IvttoZPB2/rVY
- nr3Jp8nATihGAcfJK8puPlCuYFfD+eOs+d5G9wzX+o45Wiq2I0DvA9GkRJtlXppLAQCt
- 9LjMJleZAEQwprWVwDABo/c14cukXLbzZRvyVk5nAAvqZNfKjnH58BktEHHjcC1L5ZnX
- cf/w==
+ bh=XrpIl5UtYIp6iXkXqOMiDIf+kxP/ULcxq/ivSj9Y9sU=;
+ b=a0Vhew1vGyPoe/mmUSCcwMUdAKIft51HrAa0YzlNluObIaijr1qMpTS6seT7DwSyZx
+ RBdnTy8tsagrUE/1ejWHjNxztDy2XhigSXSv00c50Ka0X/RThg2gr755CjY1N7WThHx6
+ orWUBjCwxoRke+CINTRYyEjW3Cm5q3ogHGIs8idOkpleog1wRKjVonndxeYzUbIQashj
+ eybZ4Pqfu0FYFpm9FZi+tWHfz71c08woblWvMTiMvi1bEjAs5BGUMRVLAlaXustt3HBK
+ /5dZS3tKUaO3LyEcunUX50Ki5MjP9wnuy9RrU13YXfqt6NKkBJnuYLNCW9TDa5R8bspz
+ Q91g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691030604; x=1691635404;
+ d=1e100.net; s=20221208; t=1691030608; x=1691635408;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=fKpdoxEEVb/l2HWGC4KXDy5cd06NGqkqX5eOsehHBMI=;
- b=JEJcfh75xExwaB30nkcnfDLKSGpyxM1UyfUZ9gaw/+laInYY+DL9EhUvFt4UULtXBD
- qTBrhS8E3AWm+HV1xyylqrtNU8acqfWZHFX5eObOKBcIJQOJE3eX/KMnGakSICHrFIoh
- IVWpAdbqMXn4JdevGasm/1IIFOGSRL2T+rPMtXx3AyZbaeA80y+hvQZEabbXpgU1mczx
- vQNSmEMiPSfjN59/dxMmyqbjGM3gf5l8TrzprUW2tVeoKPP3Q/+pUCecBaKNhE5RcT1J
- /0Sj3+EFhd2NZxCcDJUKk6oCHDOKm5XNbwnrACWpD/ZU3sJdHXjdIbHrZHtrWRRCCvN5
- OhWw==
-X-Gm-Message-State: ABy/qLbTZvGhWhqzOLQXzxZ0KC6zfbRuBfeZg73PsaYWq61Bt1smddwC
- +UsZjRNwKG+uh5QeUS2/uV2L/w==
-X-Google-Smtp-Source: APBJJlHIbpjlN/7zZs/b8ai7Cbq5R0Pre5MZdOucG9aJaelakTaqzaCiCpNo2DotmAj1gmhy+gz0Rg==
-X-Received: by 2002:a54:4e94:0:b0:3a7:30cb:c092 with SMTP id
- c20-20020a544e94000000b003a730cbc092mr11386128oiy.48.1691030604540; 
- Wed, 02 Aug 2023 19:43:24 -0700 (PDT)
+ bh=XrpIl5UtYIp6iXkXqOMiDIf+kxP/ULcxq/ivSj9Y9sU=;
+ b=Y70CG7+d52e5LJGO380+Hd/KbhYF1zA32s/BNZjRIhdXvfgiX1S5XoV2/MG5eCvVV6
+ 5DvlZjgCqPBzIvDr1vm/MRM6+f0n/Jqu7eQG4xQHikk7povNncOr4BpXR8ru8M/InXFi
+ mzQPbQpmxJSWNoNaoue4eOGytK2p1BuPP6nsZ7gxHNzmR/xBfAC+2Avj6guvtNB/+naC
+ a03J7ymeo+JWJUps3k6zrb7b1WPezqnSr0G9V5oYLLc5N72OyXjqJcKzT9JBVBdodKes
+ 9LV7yicDDLshGIB9e/E/ZQsOWtoO9583PGocGEnEb25wrPgycGJV3rviTWTAgB9SfnGN
+ hCmg==
+X-Gm-Message-State: ABy/qLZ+vlC78NjFbZ8taU8rcCopyMTKWWmZ4VHQzaI5u/GrM+A/qacb
+ HrPYg6Szp6VS3BsESC2+18N9WA==
+X-Google-Smtp-Source: APBJJlFX/tur/RgdEkTN1w6iCChCPs7EPqNC5tOnw5hR+XBisoUdLrHvQmAWkOha5r0Exv3GPqVOyA==
+X-Received: by 2002:a05:6808:4cf:b0:3a7:3ab9:e589 with SMTP id
+ a15-20020a05680804cf00b003a73ab9e589mr9677747oie.35.1691030607745; 
+ Wed, 02 Aug 2023 19:43:27 -0700 (PDT)
 Received: from libai.bytedance.net ([61.213.176.7])
  by smtp.gmail.com with ESMTPSA id
- j22-20020aa78016000000b006862b2a6b0dsm12090578pfi.15.2023.08.02.19.43.21
+ j22-20020aa78016000000b006862b2a6b0dsm12090578pfi.15.2023.08.02.19.43.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 02 Aug 2023 19:43:24 -0700 (PDT)
+ Wed, 02 Aug 2023 19:43:27 -0700 (PDT)
 From: zhenwei pi <pizhenwei@bytedance.com>
 To: mst@redhat.com,
 	arei.gonglei@huawei.com
 Cc: qemu-devel@nongnu.org, taoym@zju.edu.cn, kangel@zju.edu.cn,
  nop.leixiao@gmail.com, mcascell@redhat.com,
  zhenwei pi <pizhenwei@bytedance.com>
-Subject: [PATCH 1/2] virtio-crypto: verify src&dst buffer length for sym
- request
-Date: Thu,  3 Aug 2023 10:43:13 +0800
-Message-Id: <20230803024314.29962-2-pizhenwei@bytedance.com>
+Subject: [PATCH 2/2] cryptodev: Handle unexpected request to avoid crash
+Date: Thu,  3 Aug 2023 10:43:14 +0800
+Message-Id: <20230803024314.29962-3-pizhenwei@bytedance.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230803024314.29962-1-pizhenwei@bytedance.com>
 References: <20230803024314.29962-1-pizhenwei@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::235;
- envelope-from=pizhenwei@bytedance.com; helo=mail-oi1-x235.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::236;
+ envelope-from=pizhenwei@bytedance.com; helo=mail-oi1-x236.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,40 +94,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For symmetric algorithms, the length of ciphertext must be as same
-as the plaintext.
-The missing verification of the src_len and the dst_len in
-virtio_crypto_sym_op_helper() may lead buffer overflow/divulged.
+Generally guest side should discover which services the device is
+able to offer, then do requests on device.
 
-This patch is originally written by Yiming Tao for QEMU-SECURITY,
-resend it(a few changes of error message) in qemu-devel.
+However it's also possible to break this rule in a guest. Handle
+unexpected request here to avoid NULL pointer dereference.
 
-Fixes: CVE-2023-3180
-Fixes: 04b9b37edda("virtio-crypto: add data queue processing handler")
+Fixes: e7a775fd ('cryptodev: Account statistics')
 Cc: Gonglei <arei.gonglei@huawei.com>
 Cc: Mauro Matteo Cascella <mcascell@redhat.com>
-Cc: Yiming Tao <taoym@zju.edu.cn>
+Cc: Xiao Lei <nop.leixiao@gmail.com>
+Cc: Yongkang Jia <kangel@zju.edu.cn>
+Reported-by: Yiming Tao <taoym@zju.edu.cn>
 Signed-off-by: zhenwei pi <pizhenwei@bytedance.com>
 ---
- hw/virtio/virtio-crypto.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ backends/cryptodev.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/hw/virtio/virtio-crypto.c b/hw/virtio/virtio-crypto.c
-index 44faf5a522..13aec771e1 100644
---- a/hw/virtio/virtio-crypto.c
-+++ b/hw/virtio/virtio-crypto.c
-@@ -634,6 +634,11 @@ virtio_crypto_sym_op_helper(VirtIODevice *vdev,
-         return NULL;
-     }
- 
-+    if (unlikely(src_len != dst_len)) {
-+        virtio_error(vdev, "sym request src len is different from dst len");
-+        return NULL;
-+    }
+diff --git a/backends/cryptodev.c b/backends/cryptodev.c
+index 7d29517843..4d183f7237 100644
+--- a/backends/cryptodev.c
++++ b/backends/cryptodev.c
+@@ -191,6 +191,11 @@ static int cryptodev_backend_account(CryptoDevBackend *backend,
+     if (algtype == QCRYPTODEV_BACKEND_ALG_ASYM) {
+         CryptoDevBackendAsymOpInfo *asym_op_info = op_info->u.asym_op_info;
+         len = asym_op_info->src_len;
 +
-     max_len = (uint64_t)iv_len + aad_len + src_len + dst_len + hash_result_len;
-     if (unlikely(max_len > vcrypto->conf.max_size)) {
-         virtio_error(vdev, "virtio-crypto too big length");
++        if (unlikely(!backend->asym_stat)) {
++            error_report("cryptodev: Unexpected asym operation");
++            return -VIRTIO_CRYPTO_NOTSUPP;
++        }
+         switch (op_info->op_code) {
+         case VIRTIO_CRYPTO_AKCIPHER_ENCRYPT:
+             CryptodevAsymStatIncEncrypt(backend, len);
+@@ -210,6 +215,11 @@ static int cryptodev_backend_account(CryptoDevBackend *backend,
+     } else if (algtype == QCRYPTODEV_BACKEND_ALG_SYM) {
+         CryptoDevBackendSymOpInfo *sym_op_info = op_info->u.sym_op_info;
+         len = sym_op_info->src_len;
++
++        if (unlikely(!backend->sym_stat)) {
++            error_report("cryptodev: Unexpected sym operation");
++            return -VIRTIO_CRYPTO_NOTSUPP;
++        }
+         switch (op_info->op_code) {
+         case VIRTIO_CRYPTO_CIPHER_ENCRYPT:
+             CryptodevSymStatIncEncrypt(backend, len);
 -- 
 2.34.1
 
