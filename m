@@ -2,70 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A820076F5AF
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 00:23:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0544C76F5A4
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 00:22:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRgh6-0004Nt-9g; Thu, 03 Aug 2023 18:21:20 -0400
+	id 1qRghC-0004OV-2u; Thu, 03 Aug 2023 18:21:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qRgh4-0004NO-QX
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 18:21:18 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qRgh9-0004OM-Jo
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 18:21:23 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qRgh3-0000Rz-5c
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 18:21:18 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qRgh7-0000Tu-Uk
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 18:21:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691101276;
+ s=mimecast20190719; t=1691101281;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=ifjgxfMBV4xR+8ddwA/Qkk5UE1d3vleT1b8VgxEZlsk=;
- b=Z4kzw6fiqHX9jpoOUkWhs0YFAKM4aHe4OohZYjy2fcbOBEsEtg+w4aB+j9JXtz4HmIChoc
- 1RABjyjlKn1usl4PAlrHn+ZjG4nad6zBGe/WYqz2Eec8MOH2trx1ySCTPqfKj1ZobrOI12
- xU4Z9NEbersKNIT44HQdgXKUHdEkoKU=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=mjcsuokqTESzikmNpnCXKmAhKUIJbTsj91hBriUgUdE=;
+ b=eqrtWkOl5W4RzEeoP5tLSsWlbhAhQ4YpGwmYoCd16TkykFfm1DsYLhGBo+M51WI7/XxtzJ
+ MAf4cXKY5a/QP5CR7e5h2iUeppzgmSTHONDirN6AAEydJRzQ4c3VVigMuQy3kMFR59SU9X
+ etWVAAQE18y6JKJTKtahsOpCQH7TwGM=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-421-_jWLPzabPvyK0SHz800DiA-1; Thu, 03 Aug 2023 18:21:14 -0400
-X-MC-Unique: _jWLPzabPvyK0SHz800DiA-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-94a34a0b75eso92202966b.1
- for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 15:21:14 -0700 (PDT)
+ us-mta-169-MF4FFNWnM7eUFMXtDGzVgA-1; Thu, 03 Aug 2023 18:21:19 -0400
+X-MC-Unique: MF4FFNWnM7eUFMXtDGzVgA-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-98df34aa83aso298137466b.1
+ for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 15:21:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691101273; x=1691706073;
+ d=1e100.net; s=20221208; t=1691101276; x=1691706076;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ifjgxfMBV4xR+8ddwA/Qkk5UE1d3vleT1b8VgxEZlsk=;
- b=CiWtrNNOBRW9XUbPdQI/fqvfd8eJQQyO1cHzAytp5JVIyDALW7qmOevGKp0lvOncm5
- XmJTSltyfBy1clj4XF23gE85wbdJYO7hcZuxrCm+M2sCYiVtb52WErEcKdMk69BPYnmM
- I3Z9u5o1ek0ZwGDC7fS5/fuZ1uUlYG6mXR2RcRP7HmFlVAt4HD4E3nudvEue1I74TYl/
- nzouY0rPdxX3Bvtnh6Q/ubKBOmRQU+vpgSJAfGv+6Dki20o9Usm+c6GhTQZq9PokY2So
- mFefSjQ3vFMNOnlhSZxFx6+DO1vzf04bZCfl0s7jrObM7ACYWw1hyS6swZRWA5G5hxT1
- 7j+Q==
-X-Gm-Message-State: ABy/qLanp0s95v5/jpTFyRrSHvNfi4IIWvssiV6vJycPMY4l3/C4xuE3
- OM92VqSPdjcNq1rRdyuzP6i2Ta3fn1r0r5GMhjz5NXEC871q+VuAM//JWPc4m1We8nFReRpl9IY
- yGh7DocKAUPHWI++xDn+ZMNDm7lRnZGG2sQoupKJhZ3a11XLQm8/9nasNMq3HjZdR3OPC
-X-Received: by 2002:a17:906:3f18:b0:99b:f925:2f6c with SMTP id
- c24-20020a1709063f1800b0099bf9252f6cmr7882936ejj.39.1691101273305; 
- Thu, 03 Aug 2023 15:21:13 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlE166Xo9jwcEL8BKiiktq7nlByWUENjjLpSxFjkAohdUOgfoGqFUEsxfGj86wUsE4/awu5TdQ==
-X-Received: by 2002:a17:906:3f18:b0:99b:f925:2f6c with SMTP id
- c24-20020a1709063f1800b0099bf9252f6cmr7882928ejj.39.1691101273101; 
- Thu, 03 Aug 2023 15:21:13 -0700 (PDT)
+ bh=mjcsuokqTESzikmNpnCXKmAhKUIJbTsj91hBriUgUdE=;
+ b=ask7xVsSmJwD5dbXNFKgG7Dd80+UyfBuMecScZKfSUonUWQ9bApGTSD6ugU2vUVN6v
+ NEVaUeWlisTNJgFyyMXX9Ov31O6j3D3bUYFIrTgm8PsW0bqxj0C8/AHMxOtMJ6fEHl7q
+ szAVBH2j29dbwX0kUApHdzGhoATHWWypeGcNTpWwcJUAYMwZ8qlRtyEcgtjDDWIPA050
+ 85Cc7Ri6pfrwOC+AGiRkkr6OL5tLMFDCxvkMJjYi0yfwzlSHNz0w1nuUVUCtlVEqJL79
+ Cd2foffDG0Cx4VtSDpkh1g7ujU+/9V5vVasd/74kieUgwKQqE23Tg4FvrCltEz907MMs
+ /8BQ==
+X-Gm-Message-State: AOJu0Yw4UwxzMDMuKGE0X/yZWEN+qjGrpPeFx85XBhymQdXvFw6FAXgI
+ sDYax5uZ8PewrgrqfdrddrACf6oVJVxdmUq8SaTWhYzNoGJacAw5lbPfQGusCzgLuxLnANylh33
+ AUvmvhhAkjGEATgALpCYlFWVTbdZQK8oxO3gAKNBrL/6pnkRutQtu7LEWzjgnUq7EWSPU
+X-Received: by 2002:a17:907:a050:b0:993:eee4:e704 with SMTP id
+ gz16-20020a170907a05000b00993eee4e704mr48699ejc.38.1691101276711; 
+ Thu, 03 Aug 2023 15:21:16 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGoyjCKdSBnYYl92MqJLhlxCenLiMYpsjQrN8lRCkZ4UeD3bZItyp8MqvjpEinwU56gQ0IV7g==
+X-Received: by 2002:a17:907:a050:b0:993:eee4:e704 with SMTP id
+ gz16-20020a170907a05000b00993eee4e704mr48684ejc.38.1691101276522; 
+ Thu, 03 Aug 2023 15:21:16 -0700 (PDT)
 Received: from redhat.com ([2.52.12.104]) by smtp.gmail.com with ESMTPSA id
- d7-20020a170906c20700b009929d998abcsm368400ejz.209.2023.08.03.15.21.11
+ ce21-20020a170906b25500b009920e9a3a73sm374105ejb.115.2023.08.03.15.21.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 03 Aug 2023 15:21:12 -0700 (PDT)
-Date: Thu, 3 Aug 2023 18:21:10 -0400
+ Thu, 03 Aug 2023 15:21:15 -0700 (PDT)
+Date: Thu, 3 Aug 2023 18:21:13 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
-Subject: [PULL 08/22] tests: acpi: whitelist expected blobs
-Message-ID: <d3dc64f34d6b0567ae99fbfe80ed3c094991194b.1691101215.git.mst@redhat.com>
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PULL 09/22] acpi: x86: remove _ADR on host bridges
+Message-ID: <5ce869f788b0b8d82693212366d5637d9f3206c9.1691101215.git.mst@redhat.com>
 References: <cover.1691101215.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -100,57 +104,57 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Igor Mammedov <imammedo@redhat.com>
 
+ACPI spec (since 2.0a) says
+"
+A device object must contain either an _HID object or
+an _ADR object, but can contain both.
+"
+
+_ADR is used when device is attached to an ennumerable bus,
+however hostbridge is not and uses dedicated _HID for
+discovery, drop _ADR field.
+
+It doesn't seem that having _ADR has a negative effects
+OSes manage to tolerate that, but there is no point of
+having it there. (only pc/q35 has it hostbridge description,
+while others (microvm/arm) don't)
+
 Signed-off-by: Igor Mammedov <imammedo@redhat.com>
-Message-Id: <20230720133858.1974024-5-imammedo@redhat.com>
+Message-Id: <20230720133858.1974024-6-imammedo@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- tests/qtest/bios-tables-test-allowed-diff.h | 37 +++++++++++++++++++++
- 1 file changed, 37 insertions(+)
+ hw/i386/acpi-build.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
-index dfb8523c8b..8911b10650 100644
---- a/tests/qtest/bios-tables-test-allowed-diff.h
-+++ b/tests/qtest/bios-tables-test-allowed-diff.h
-@@ -1 +1,38 @@
- /* List of comma-separated changed AML files to ignore */
-+"tests/data/acpi/pc/DSDT",
-+"tests/data/acpi/pc/DSDT.acpierst",
-+"tests/data/acpi/pc/DSDT.acpihmat",
-+"tests/data/acpi/pc/DSDT.bridge",
-+"tests/data/acpi/pc/DSDT.cphp",
-+"tests/data/acpi/pc/DSDT.dimmpxm",
-+"tests/data/acpi/pc/DSDT.hpbridge",
-+"tests/data/acpi/pc/DSDT.hpbrroot",
-+"tests/data/acpi/pc/DSDT.ipmikcs",
-+"tests/data/acpi/pc/DSDT.memhp",
-+"tests/data/acpi/pc/DSDT.nohpet",
-+"tests/data/acpi/pc/DSDT.numamem",
-+"tests/data/acpi/pc/DSDT.roothp",
-+"tests/data/acpi/q35/DSDT",
-+"tests/data/acpi/q35/DSDT.acpierst",
-+"tests/data/acpi/q35/DSDT.acpihmat",
-+"tests/data/acpi/q35/DSDT.acpihmat-noinitiator",
-+"tests/data/acpi/q35/DSDT.applesmc",
-+"tests/data/acpi/q35/DSDT.bridge",
-+"tests/data/acpi/q35/DSDT.core-count2",
-+"tests/data/acpi/q35/DSDT.cphp",
-+"tests/data/acpi/q35/DSDT.cxl",
-+"tests/data/acpi/q35/DSDT.dimmpxm",
-+"tests/data/acpi/q35/DSDT.ipmibt",
-+"tests/data/acpi/q35/DSDT.ipmismbus",
-+"tests/data/acpi/q35/DSDT.ivrs",
-+"tests/data/acpi/q35/DSDT.memhp",
-+"tests/data/acpi/q35/DSDT.mmio64",
-+"tests/data/acpi/q35/DSDT.multi-bridge",
-+"tests/data/acpi/q35/DSDT.noacpihp",
-+"tests/data/acpi/q35/DSDT.nohpet",
-+"tests/data/acpi/q35/DSDT.numamem",
-+"tests/data/acpi/q35/DSDT.pvpanic-isa",
-+"tests/data/acpi/q35/DSDT.tis.tpm12",
-+"tests/data/acpi/q35/DSDT.tis.tpm2",
-+"tests/data/acpi/q35/DSDT.viot",
-+"tests/data/acpi/q35/DSDT.xapic",
+diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
+index 19d268ff59..bb12b0ad43 100644
+--- a/hw/i386/acpi-build.c
++++ b/hw/i386/acpi-build.c
+@@ -1464,7 +1464,6 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
+         sb_scope = aml_scope("_SB");
+         dev = aml_device("PCI0");
+         aml_append(dev, aml_name_decl("_HID", aml_eisaid("PNP0A03")));
+-        aml_append(dev, aml_name_decl("_ADR", aml_int(0)));
+         aml_append(dev, aml_name_decl("_UID", aml_int(pcmc->pci_root_uid)));
+         aml_append(dev, aml_pci_edsm());
+         aml_append(sb_scope, dev);
+@@ -1479,7 +1478,6 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
+         dev = aml_device("PCI0");
+         aml_append(dev, aml_name_decl("_HID", aml_eisaid("PNP0A08")));
+         aml_append(dev, aml_name_decl("_CID", aml_eisaid("PNP0A03")));
+-        aml_append(dev, aml_name_decl("_ADR", aml_int(0)));
+         aml_append(dev, aml_name_decl("_UID", aml_int(pcmc->pci_root_uid)));
+         aml_append(dev, build_q35_osc_method(!pm->pcihp_bridge_en));
+         aml_append(dev, aml_pci_edsm());
+@@ -1593,7 +1591,6 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
+                 aml_append(pkg, aml_eisaid("PNP0A08"));
+                 aml_append(pkg, aml_eisaid("PNP0A03"));
+                 aml_append(dev, aml_name_decl("_CID", pkg));
+-                aml_append(dev, aml_name_decl("_ADR", aml_int(0)));
+                 build_cxl_osc_method(dev);
+             } else if (pci_bus_is_express(bus)) {
+                 aml_append(dev, aml_name_decl("_HID", aml_eisaid("PNP0A08")));
 -- 
 MST
 
