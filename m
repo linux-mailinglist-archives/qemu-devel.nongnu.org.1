@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9BC176F5A2
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 00:22:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6229476F5A0
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 00:22:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRghW-0004UQ-AZ; Thu, 03 Aug 2023 18:21:46 -0400
+	id 1qRgha-0004t0-0c; Thu, 03 Aug 2023 18:21:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qRghV-0004U3-3J
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 18:21:45 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qRghY-0004gu-1O
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 18:21:48 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qRghT-0000YW-8w
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 18:21:44 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qRghW-0000ZC-CZ
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 18:21:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691101302;
+ s=mimecast20190719; t=1691101305;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=aDw+xuFXwgPlXVT00FhXsKo7gpeTtfswMTTY64LM71Q=;
- b=RztnKXn3isATuRbxeSCUkZ23bDISrLSkwm5mcIiIWNYwO7BB/+TtdDxlAfYyabvOkjA22Z
- +6jm8TQzNNAK1CHSoGUarof4mZJ6JoCVZ7bruhcHpLGb3NM9O3WPjnhiY5G8gVYFDOJXJX
- +MCYglhDA9IPyvos9B2qgtoN1lLjVl0=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=laQg5kxWKJ7/tyTA7x0YuEWfZWimTpJ1rnaPQY0+oxM=;
+ b=UNV19sX3EHJQJZSCLSx7TuAsNd7nlKeGSpia2uREVNuY3XWKFKibFygJY/b77+2y/NIuBp
+ rLSpuqUq686LuuwLnT4MhyuKrrCQlA+KomTKWE0ShAPmxuzh2P2NlgV4+LmnCGvgijsxlZ
+ B8jPG5u3fPIxhAlHAMqPKJU199NreIw=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-691-UJSc9T_OPJeHKzjjUr885Q-1; Thu, 03 Aug 2023 18:21:41 -0400
-X-MC-Unique: UJSc9T_OPJeHKzjjUr885Q-1
-Received: by mail-ed1-f71.google.com with SMTP id
- 4fb4d7f45d1cf-522abbc863fso960869a12.0
- for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 15:21:41 -0700 (PDT)
+ us-mta-449-0CeY6DWkO2Ga3WAjZ06Urg-1; Thu, 03 Aug 2023 18:21:44 -0400
+X-MC-Unique: 0CeY6DWkO2Ga3WAjZ06Urg-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-99beea69484so93778466b.0
+ for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 15:21:44 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691101300; x=1691706100;
+ d=1e100.net; s=20221208; t=1691101303; x=1691706103;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=aDw+xuFXwgPlXVT00FhXsKo7gpeTtfswMTTY64LM71Q=;
- b=AYXt1vS6SkF9ROI9FWfdaEva2GgZZZhhKi/MlTBecIikSdpgo+jP66pWoTStwJEnnr
- 554oeS3kP7NEXNtZmth68CcsJrUMZciT+Ui53NhSu5DENeNGaGx3Kw1tdRDK2S4PtU/O
- bbmQyIC4eWw5EPjTgDqw3Mplco5dDu4qDfaVFh8yL5WGFS8jUeKBxl+0a4GTWy1W3qdU
- XRB2MWvb6Et4BvkESVaLn6omTSk/TINk0QQgOQpsb8XiTlsT2xUEzp4VReZ7jPv4w1r5
- kVJTs2af3LliTomtfNR22ekJMgInCChtSgFxZ6EiEmgGii84b89QvvLgCNUor7U0StqO
- R86g==
-X-Gm-Message-State: AOJu0YzZEmgQQAXQMIylL4NHQKpM+WyXYpQ+3Oop4G32tdeigqjMLkg0
- XrUj3WRjgDiEqLKsHLFnGckKPOO+BJXHwZcGU6mY+m+nIbuFJ/8KH6Zq2MK4ly4TYcpS1jMiLF2
- 1gwff2MmJ7yJSi9KVyb7ZcaaHs7fzJWLYSOHhKEvtZ3w5k1L1R9XSRDKyBDW/rCK+F3s5
-X-Received: by 2002:aa7:dc12:0:b0:522:cb97:f198 with SMTP id
- b18-20020aa7dc12000000b00522cb97f198mr77406edu.38.1691101299995; 
- Thu, 03 Aug 2023 15:21:39 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHXo4iTsPyeaMetia1z6TwV2wS9TAA2HLeQaJQ1gSmg5J46O5RkbikDfGT1A3ihVrOwJdo2dQ==
-X-Received: by 2002:aa7:dc12:0:b0:522:cb97:f198 with SMTP id
- b18-20020aa7dc12000000b00522cb97f198mr77393edu.38.1691101299785; 
- Thu, 03 Aug 2023 15:21:39 -0700 (PDT)
+ bh=laQg5kxWKJ7/tyTA7x0YuEWfZWimTpJ1rnaPQY0+oxM=;
+ b=V+4T3ApxW7u1it0ymwn1Q/GWOHLy9XsQW7WMn42omDEzLQ5a/+o0SloU+TAJZYJUwb
+ cJu9+i4dWNQNtzk0nG+2e/ShAkyOJUV84q9E2Fk9D5JL8JiON91vD0bFNMMWPRemg3N4
+ gz8AzcYvkO8Q4NB63yHzZenvA0IEZvTRHoKLFsR7RX3IhUfVZZPb9ry+r7bAcsGu2X3f
+ X108UPNrbjNPEkLne5lVZ1r7GGHooRtkCKNuX/pWxcK7CxcdfH70XzZBvM2gxEAnGJZ4
+ XEinH/Nq1j6Pdmzha3x6LpzckUTq3TIy0EL/yfcA3hmCGnqg6Pgu9+0Nl08OWJ2vbplL
+ El7A==
+X-Gm-Message-State: AOJu0Yw/bhLHKwwzq1o/BlYUpmFUzYLm8aq65TjBpxCku1/Am0heJy/L
+ aTva9I3wljdVkiIWg6VWr/RJXpfuc7aDJTNlvqec71heGXPSnEeiESf92Nxm37wtO35co/5O0Ux
+ Qf5enhiPsiXUQ1nbyh2UsSEO7El07c+AdAfFF7UulQubSlh+h89/I11lzGKi9ehBCnVgf
+X-Received: by 2002:a17:906:7695:b0:99b:cb78:8537 with SMTP id
+ o21-20020a170906769500b0099bcb788537mr2049ejm.11.1691101303431; 
+ Thu, 03 Aug 2023 15:21:43 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFqZeOSwK2HKRzlXdOxtU8LE5LYBkC9Fv48Aob8xHfdKI/+ZM+UtF2PQ/ShsGY8+PeUyOTApg==
+X-Received: by 2002:a17:906:7695:b0:99b:cb78:8537 with SMTP id
+ o21-20020a170906769500b0099bcb788537mr2037ejm.11.1691101303262; 
+ Thu, 03 Aug 2023 15:21:43 -0700 (PDT)
 Received: from redhat.com ([2.52.12.104]) by smtp.gmail.com with ESMTPSA id
- p12-20020aa7d30c000000b00522ce914f51sm348389edq.67.2023.08.03.15.21.37
+ z25-20020a170906271900b0099b4d86fbccsm376818ejc.141.2023.08.03.15.21.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 03 Aug 2023 15:21:39 -0700 (PDT)
-Date: Thu, 3 Aug 2023 18:21:36 -0400
+ Thu, 03 Aug 2023 15:21:42 -0700 (PDT)
+Date: Thu, 3 Aug 2023 18:21:39 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -68,9 +68,9 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 16/22] hw/i386/intel_iommu: Fix endianness problems related to
- VTD_IR_TableEntry
-Message-ID: <642ba89672279fbdd14016a90da239c85e845d18.1691101215.git.mst@redhat.com>
+Subject: [PULL 17/22] hw/i386/intel_iommu: Fix struct VTDInvDescIEC on big
+ endian hosts
+Message-ID: <4572b22cf9ba432fa3955686853c706a1821bbc7.1691101215.git.mst@redhat.com>
 References: <cover.1691101215.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -105,149 +105,45 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-The code already tries to do some endianness handling here, but
-currently fails badly:
-- While it already swaps the data when logging errors / tracing, it fails
-  to byteswap the value before e.g. accessing entry->irte.present
-- entry->irte.source_id is swapped with le32_to_cpu(), though this is
-  a 16-bit value
-- The whole union is apparently supposed to be swapped via the 64-bit
-  data[2] array, but the struct is a mixture between 32 bit values
-  (the first 8 bytes) and 64 bit values (the second 8 bytes), so this
-  cannot work as expected.
-
-Fix it by converting the struct to two proper 64-bit bitfields, and
-by swapping the values only once for everybody right after reading
-the data from memory.
+On big endian hosts, we need to reverse the bitfield order in the
+struct VTDInvDescIEC, just like it is already done for the other
+bitfields in the various structs of the intel-iommu device.
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20230802135723.178083-3-thuth@redhat.com>
+Message-Id: <20230802135723.178083-4-thuth@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Reviewed-by: Peter Xu <peterx@redhat.com>
 ---
- include/hw/i386/intel_iommu.h | 50 ++++++++++++++++++-----------------
- hw/i386/intel_iommu.c         | 16 +++++------
- 2 files changed, 34 insertions(+), 32 deletions(-)
+ hw/i386/intel_iommu_internal.h | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/include/hw/i386/intel_iommu.h b/include/hw/i386/intel_iommu.h
-index 89dcbc5e1e..7fa0a695c8 100644
---- a/include/hw/i386/intel_iommu.h
-+++ b/include/hw/i386/intel_iommu.h
-@@ -178,37 +178,39 @@ enum {
- union VTD_IR_TableEntry {
-     struct {
- #if HOST_BIG_ENDIAN
--        uint32_t __reserved_1:8;     /* Reserved 1 */
--        uint32_t vector:8;           /* Interrupt Vector */
--        uint32_t irte_mode:1;        /* IRTE Mode */
--        uint32_t __reserved_0:3;     /* Reserved 0 */
--        uint32_t __avail:4;          /* Available spaces for software */
--        uint32_t delivery_mode:3;    /* Delivery Mode */
--        uint32_t trigger_mode:1;     /* Trigger Mode */
--        uint32_t redir_hint:1;       /* Redirection Hint */
--        uint32_t dest_mode:1;        /* Destination Mode */
--        uint32_t fault_disable:1;    /* Fault Processing Disable */
--        uint32_t present:1;          /* Whether entry present/available */
-+        uint64_t dest_id:32;         /* Destination ID */
-+        uint64_t __reserved_1:8;     /* Reserved 1 */
-+        uint64_t vector:8;           /* Interrupt Vector */
-+        uint64_t irte_mode:1;        /* IRTE Mode */
-+        uint64_t __reserved_0:3;     /* Reserved 0 */
-+        uint64_t __avail:4;          /* Available spaces for software */
-+        uint64_t delivery_mode:3;    /* Delivery Mode */
-+        uint64_t trigger_mode:1;     /* Trigger Mode */
-+        uint64_t redir_hint:1;       /* Redirection Hint */
-+        uint64_t dest_mode:1;        /* Destination Mode */
-+        uint64_t fault_disable:1;    /* Fault Processing Disable */
-+        uint64_t present:1;          /* Whether entry present/available */
- #else
--        uint32_t present:1;          /* Whether entry present/available */
--        uint32_t fault_disable:1;    /* Fault Processing Disable */
--        uint32_t dest_mode:1;        /* Destination Mode */
--        uint32_t redir_hint:1;       /* Redirection Hint */
--        uint32_t trigger_mode:1;     /* Trigger Mode */
--        uint32_t delivery_mode:3;    /* Delivery Mode */
--        uint32_t __avail:4;          /* Available spaces for software */
--        uint32_t __reserved_0:3;     /* Reserved 0 */
--        uint32_t irte_mode:1;        /* IRTE Mode */
--        uint32_t vector:8;           /* Interrupt Vector */
--        uint32_t __reserved_1:8;     /* Reserved 1 */
-+        uint64_t present:1;          /* Whether entry present/available */
-+        uint64_t fault_disable:1;    /* Fault Processing Disable */
-+        uint64_t dest_mode:1;        /* Destination Mode */
-+        uint64_t redir_hint:1;       /* Redirection Hint */
-+        uint64_t trigger_mode:1;     /* Trigger Mode */
-+        uint64_t delivery_mode:3;    /* Delivery Mode */
-+        uint64_t __avail:4;          /* Available spaces for software */
-+        uint64_t __reserved_0:3;     /* Reserved 0 */
-+        uint64_t irte_mode:1;        /* IRTE Mode */
-+        uint64_t vector:8;           /* Interrupt Vector */
-+        uint64_t __reserved_1:8;     /* Reserved 1 */
-+        uint64_t dest_id:32;         /* Destination ID */
- #endif
--        uint32_t dest_id;            /* Destination ID */
--        uint16_t source_id;          /* Source-ID */
- #if HOST_BIG_ENDIAN
-         uint64_t __reserved_2:44;    /* Reserved 2 */
-         uint64_t sid_vtype:2;        /* Source-ID Validation Type */
-         uint64_t sid_q:2;            /* Source-ID Qualifier */
-+        uint64_t source_id:16;       /* Source-ID */
- #else
-+        uint64_t source_id:16;       /* Source-ID */
-         uint64_t sid_q:2;            /* Source-ID Qualifier */
-         uint64_t sid_vtype:2;        /* Source-ID Validation Type */
-         uint64_t __reserved_2:44;    /* Reserved 2 */
-diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index 13fcde8e91..4028e32701 100644
---- a/hw/i386/intel_iommu.c
-+++ b/hw/i386/intel_iommu.c
-@@ -3328,14 +3328,15 @@ static int vtd_irte_get(IntelIOMMUState *iommu, uint16_t index,
-         return -VTD_FR_IR_ROOT_INVAL;
-     }
+diff --git a/hw/i386/intel_iommu_internal.h b/hw/i386/intel_iommu_internal.h
+index 2e61eec2f5..e1450c5cfe 100644
+--- a/hw/i386/intel_iommu_internal.h
++++ b/hw/i386/intel_iommu_internal.h
+@@ -321,12 +321,21 @@ typedef enum VTDFaultReason {
  
--    trace_vtd_ir_irte_get(index, le64_to_cpu(entry->data[1]),
--                          le64_to_cpu(entry->data[0]));
-+    entry->data[0] = le64_to_cpu(entry->data[0]);
-+    entry->data[1] = le64_to_cpu(entry->data[1]);
-+
-+    trace_vtd_ir_irte_get(index, entry->data[1], entry->data[0]);
+ /* Interrupt Entry Cache Invalidation Descriptor: VT-d 6.5.2.7. */
+ struct VTDInvDescIEC {
++#if HOST_BIG_ENDIAN
++    uint64_t reserved_2:16;
++    uint64_t index:16;          /* Start index to invalidate */
++    uint64_t index_mask:5;      /* 2^N for continuous int invalidation */
++    uint64_t resved_1:22;
++    uint64_t granularity:1;     /* If set, it's global IR invalidation */
++    uint64_t type:4;            /* Should always be 0x4 */
++#else
+     uint32_t type:4;            /* Should always be 0x4 */
+     uint32_t granularity:1;     /* If set, it's global IR invalidation */
+     uint32_t resved_1:22;
+     uint32_t index_mask:5;      /* 2^N for continuous int invalidation */
+     uint32_t index:16;          /* Start index to invalidate */
+     uint32_t reserved_2:16;
++#endif
+ };
+ typedef struct VTDInvDescIEC VTDInvDescIEC;
  
-     if (!entry->irte.present) {
-         error_report_once("%s: detected non-present IRTE "
-                           "(index=%u, high=0x%" PRIx64 ", low=0x%" PRIx64 ")",
--                          __func__, index, le64_to_cpu(entry->data[1]),
--                          le64_to_cpu(entry->data[0]));
-+                          __func__, index, entry->data[1], entry->data[0]);
-         return -VTD_FR_IR_ENTRY_P;
-     }
- 
-@@ -3343,14 +3344,13 @@ static int vtd_irte_get(IntelIOMMUState *iommu, uint16_t index,
-         entry->irte.__reserved_2) {
-         error_report_once("%s: detected non-zero reserved IRTE "
-                           "(index=%u, high=0x%" PRIx64 ", low=0x%" PRIx64 ")",
--                          __func__, index, le64_to_cpu(entry->data[1]),
--                          le64_to_cpu(entry->data[0]));
-+                          __func__, index, entry->data[1], entry->data[0]);
-         return -VTD_FR_IR_IRTE_RSVD;
-     }
- 
-     if (sid != X86_IOMMU_SID_INVALID) {
-         /* Validate IRTE SID */
--        source_id = le32_to_cpu(entry->irte.source_id);
-+        source_id = entry->irte.source_id;
-         switch (entry->irte.sid_vtype) {
-         case VTD_SVT_NONE:
-             break;
-@@ -3404,7 +3404,7 @@ static int vtd_remap_irq_get(IntelIOMMUState *iommu, uint16_t index,
-     irq->trigger_mode = irte.irte.trigger_mode;
-     irq->vector = irte.irte.vector;
-     irq->delivery_mode = irte.irte.delivery_mode;
--    irq->dest = le32_to_cpu(irte.irte.dest_id);
-+    irq->dest = irte.irte.dest_id;
-     if (!iommu->intr_eime) {
- #define  VTD_IR_APIC_DEST_MASK         (0xff00ULL)
- #define  VTD_IR_APIC_DEST_SHIFT        (8)
 -- 
 MST
 
