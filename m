@@ -2,76 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D94EB76EBBB
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 16:04:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4F3176EC2A
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 16:17:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRYw7-000887-GU; Thu, 03 Aug 2023 10:04:19 -0400
+	id 1qRZ80-0003fj-Md; Thu, 03 Aug 2023 10:16:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qRYw6-00087q-4G
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 10:04:18 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qRYw4-0006rp-Ev
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 10:04:17 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-31765792c7cso924704f8f.0
- for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 07:04:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691071454; x=1691676254;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=3xeG9kMMEr3zdzw1Jah6ZFg1Wl+lPpIWtYdOFFyuow8=;
- b=rErXynN/OO06CN2uMtMAXKyd9NUpf+hnPtLzO8W09rIgEOKrp7C2IM23H2++EuI896
- Ozd5iXFFgh60rLoHNO6Agq5d2ub9PghuxpbEsGaeawtYBNIJL611LDs3kdnqIsdyfnmQ
- mhmwGwF36z5zS5JJ0F0FbK4r3Febs/Ddx+qXZdO0wpOQfC1rUNGHIbNFPowvKCemyCfC
- 35/r1TvvMg6j54l5M4JUtGls2UmO6ffGKDMntMPUeeBQ6yw/XxuMYLP9BvelMF9OhJib
- lnqDj409xNqAXzB3Q1uH0QIKLbnx4ldMNuLYqxuK+vi8Kb5priVNpzacVX1q+16ZUx0v
- r0XQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691071454; x=1691676254;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=3xeG9kMMEr3zdzw1Jah6ZFg1Wl+lPpIWtYdOFFyuow8=;
- b=XoXFA/hxdMR6UOWryOt6TdIfalnLnBBSTAvHO0jzCa3wCf0QVfGzYJANWY8T+ek6g/
- yr64qg4A/8WNsVjVt2Qa7KgM7VzA+7BOSfl7IFdZEjcPxU5mbXyk0wtF+CT4ebQd27ye
- m9C5aiXby0HZQEtwS8SEmP28BFDgH+eugMEJlnl7CpYBDOrH/AjN13eq4eWRzlZlaIti
- t5S7asqOIkVFetv+t9fYyuamJ6RdsDjn0m4D9mZwz/5Q4PX0jNHzDH3Oj68ZJOn/zykr
- pQMOUk5Ne1yXtycePS6vyZsc4Zwli12NJwTtCWnj/RrP/3H7Xkn2NRbrEl1oF1lXrOvE
- qaVQ==
-X-Gm-Message-State: ABy/qLZO//dan1lpBd3DFBjUXg/ivNM14v6JBMnAi6dH609c+8twCTnp
- GihJ+AbUtp54sQAiA0E0LBr7wP3/WIpLbJdkfElK0AAO1zm9lHBG
-X-Google-Smtp-Source: APBJJlH2G1R/+vWQ8Ez/5A93Z0yEAsdWX1ngD9NebVSW/7dtDqUjIFa/wBP51+DKtUFoHsbAJNsG1e2Js3ElYI0MwT4=
-X-Received: by 2002:adf:f0c4:0:b0:313:ef24:6feb with SMTP id
- x4-20020adff0c4000000b00313ef246febmr6705752wro.3.1691071454387; Thu, 03 Aug
- 2023 07:04:14 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qRZ7y-0003dx-I6
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 10:16:34 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qRZ7w-00026D-Nn
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 10:16:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1691072191;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=/7qde2mqi3X/6eC5SmCusqRy437w+I6rsqxi7rAT03I=;
+ b=KQhgQ3i5QsDU9wUUnHUMylQRAn/1rQTn7q+OCPEaOqU1+FG4taRqndL/2+G50vvGuhfg+U
+ BDnk4pzRHKIcoc39xDL3INjhcwhVL7hzrvmLLtRcoqIj9hHpyHrIMMOR/8XeS6jmyC366l
+ iC/BJN9fIquClHNbK0AFSyb5waxHuIE=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-692-3UXhYLrQNLOzzv8WNbWdKg-1; Thu, 03 Aug 2023 10:16:27 -0400
+X-MC-Unique: 3UXhYLrQNLOzzv8WNbWdKg-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EA347858F1E;
+ Thu,  3 Aug 2023 14:16:26 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.105])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id CBC21200B680;
+ Thu,  3 Aug 2023 14:16:25 +0000 (UTC)
+Date: Thu, 3 Aug 2023 15:16:23 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Andrew Melnychenko <andrew@daynix.com>
+Cc: jasowang@redhat.com, mst@redhat.com, armbru@redhat.com,
+ eblake@redhat.com, qemu-devel@nongnu.org,
+ yuri.benditovich@daynix.com, yan@daynix.com
+Subject: Re: [PATCH v5 4/5] qmp: Added new command to retrieve eBPF blob.
+Message-ID: <ZMu2t/egT5giMXk4@redhat.com>
+References: <20230802204125.33688-1-andrew@daynix.com>
+ <20230802204125.33688-5-andrew@daynix.com>
 MIME-Version: 1.0
-References: <20230710140249.56324-1-francisco.iglesias@amd.com>
- <20230710140249.56324-7-francisco.iglesias@amd.com>
-In-Reply-To: <20230710140249.56324-7-francisco.iglesias@amd.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 3 Aug 2023 15:04:03 +0100
-Message-ID: <CAFEAcA9OGCPm1F3AvcAJs33YBrMisi0AubJQANZKjWxSQw6+hw@mail.gmail.com>
-Subject: Re: [PATCH v1 6/8] hw/misc: Introduce a model of Xilinx Versal's
- CFRAME_BCAST_REG
-To: Francisco Iglesias <francisco.iglesias@amd.com>
-Cc: qemu-devel@nongnu.org, frasse.iglesias@gmail.com, alistair@alistair23.me, 
- edgar.iglesias@gmail.com, fkonrad@amd.com, sai.pavan.boddu@amd.com, 
- tong.ho@amd.com, vikram.garhwal@amd.com
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x432.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230802204125.33688-5-andrew@daynix.com>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,96 +79,94 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 10 Jul 2023 at 15:03, Francisco Iglesias
-<francisco.iglesias@amd.com> wrote:
->
-> Introduce a model of Xilinx Versal's Configuration Frame broadcast
-> controller (CFRAME_BCAST_REG).
->
-> Signed-off-by: Francisco Iglesias <francisco.iglesias@amd.com>
+On Wed, Aug 02, 2023 at 11:41:22PM +0300, Andrew Melnychenko wrote:
+> Now, the binary objects may be retrieved by id.
+> It would require for future qmp commands that may require specific
+> eBPF blob.
+> 
+> Added command "request-ebpf". This command returns
+> eBPF program encoded base64. The program taken from the
+> skeleton and essentially is an ELF object that can be
+> loaded in the future with libbpf.
+> 
+> The reason to use the command to provide the eBPF object
+> instead of a separate artifact was to avoid issues related
+> to finding the eBPF itself. eBPF object is an ELF binary
+> that contains the eBPF program and eBPF map description(BTF).
+> Overall, eBPF object should contain the program and enough
+> metadata to create/load eBPF with libbpf. As the eBPF
+> maps/program should correspond to QEMU, the eBPF can't
+> be used from different QEMU build.
+> 
+> The first solution was a helper that comes with QEMU
+> and loads appropriate eBPF objects. And the issue is
+> to find a proper helper if the system has several
+> different QEMUs installed and/or built from the source,
+> which helpers may not be compatible.
+> 
+> Another issue is QEMU updating while there is a running
+> QEMU instance. With an updated helper, it may not be
+> possible to hotplug virtio-net device to the already
+> running QEMU. Overall, requesting the eBPF object from
+> QEMU itself solves possible failures with acceptable effort.
+> 
+> Links:
+> [PATCH 3/5] qmp: Added the helper stamp check.
+> https://lore.kernel.org/all/20230219162100.174318-4-andrew@daynix.com/
+> 
+> Signed-off-by: Andrew Melnychenko <andrew@daynix.com>
 > ---
->  hw/misc/xlnx-versal-cframe-reg.c         | 173 +++++++++++++++++++++++
->  include/hw/misc/xlnx-versal-cframe-reg.h |  17 +++
->  2 files changed, 190 insertions(+)
+>  ebpf/ebpf.c           | 70 +++++++++++++++++++++++++++++++++++++++++++
+>  ebpf/ebpf.h           | 31 +++++++++++++++++++
+>  ebpf/ebpf_rss.c       |  6 ++++
+>  ebpf/meson.build      |  2 +-
+>  qapi/ebpf.json        | 57 +++++++++++++++++++++++++++++++++++
+>  qapi/meson.build      |  1 +
+>  qapi/qapi-schema.json |  1 +
+>  7 files changed, 167 insertions(+), 1 deletion(-)
+>  create mode 100644 ebpf/ebpf.c
+>  create mode 100644 ebpf/ebpf.h
+>  create mode 100644 qapi/ebpf.json
 
-Missing reset again.
+> diff --git a/qapi/ebpf.json b/qapi/ebpf.json
+> new file mode 100644
+> index 00000000000..40851f8c177
+> --- /dev/null
+> +++ b/qapi/ebpf.json
+> @@ -0,0 +1,57 @@
+> +# -*- Mode: Python -*-
+> +# vim: filetype=python
+> +#
+> +# This work is licensed under the terms of the GNU GPL, version 2 or later.
+> +# See the COPYING file in the top-level directory.
+> +
+> +##
+> +# = eBPF Objects
+> +##
+> +
+> +{ 'include': 'common.json' }
+> +
+> +##
+> +# @EbpfObject:
+> +#
+> +# Structure that holds eBPF ELF object encoded in base64.
+> +#
+> +# Since: 8.3
 
-> +static uint64_t cframes_bcast_reg_read(void *opaque, hwaddr addr, unsigned size)
-> +{
-> +    qemu_log_mask(LOG_GUEST_ERROR, "%s: Unsupported read from addr=%"
-> +                  HWADDR_PRIx "\n", __func__, addr);
-> +    return 0;
-> +}
-> +
-> +static void cframes_bcast_reg_write(void *opaque, hwaddr addr, uint64_t value,
-> +                      unsigned size)
-> +{
-> +    XlnxVersalCFrameBcastReg *s = XLNX_VERSAL_CFRAME_BCAST_REG(opaque);
-> +    unsigned int idx;
-> +
-> +    /* 4 32bit words. */
-> +    idx = (addr >> 2) & 3;
-> +
-> +    s->wfifo[idx] = value;
-> +
-> +    /* Writing to the top word triggers the transmit onto CFI. */
-> +    if (idx == 3) {
-> +        uint32_t reg_addr = extract32(addr, 4, 6);
-> +        XlnxCfiPacket pkt = {
-> +            .reg_addr = reg_addr,
-> +            .data[0] = s->wfifo[0],
-> +            .data[1] = s->wfifo[1],
-> +            .data[2] = s->wfifo[2],
-> +            .data[3] = s->wfifo[3]
-> +        };
-> +
-> +        for (int i = 0; i < ARRAY_SIZE(s->cfg.cframe); i++) {
-> +            if (s->cfg.cframe[i]) {
-> +                xlnx_cfi_transfer_packet(s->cfg.cframe[i], &pkt);
-> +            }
-> +        }
-> +
-> +        memset(s->wfifo, 0, 4 * sizeof(uint32_t));
-> +    }
-> +}
+We're just releasing 8.1, so next will be 8.2
 
-> +static void cframes_bcast_fdri_write(void *opaque, hwaddr addr, uint64_t value,
-> +                      unsigned size)
-> +{
-> +    XlnxVersalCFrameBcastReg *s = XLNX_VERSAL_CFRAME_BCAST_REG(opaque);
-> +    unsigned int idx;
-> +
-> +    /* 4 32bit words. */
-> +    idx = (addr >> 2) & 3;
-> +
-> +    s->wfifo[idx] = value;
-> +
-> +    /* Writing to the top word triggers the transmit onto CFI. */
-> +    if (idx == 3) {
-> +        XlnxCfiPacket pkt = {
-> +            .reg_addr = CFRAME_FDRI,
-> +            .data[0] = s->wfifo[0],
-> +            .data[1] = s->wfifo[1],
-> +            .data[2] = s->wfifo[2],
-> +            .data[3] = s->wfifo[3]
-> +        };
-> +
-> +        for (int i = 0; i < ARRAY_SIZE(s->cfg.cframe); i++) {
-> +            if (s->cfg.cframe[i]) {
-> +                xlnx_cfi_transfer_packet(s->cfg.cframe[i], &pkt);
-> +            }
-> +        }
-> +
-> +        memset(s->wfifo, 0, 4 * sizeof(uint32_t));
-> +    }
-> +}
+There will never be any 8.3 because we reset to next major
+version in the first release of each year.
 
-I feel like I've seen this code structure in several patches:
-opportunity to share code ?
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
-thanks
--- PMM
 
