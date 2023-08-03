@@ -2,76 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA6D876F59B
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 00:22:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D456C76F59F
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 00:22:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRggi-0004Ev-DI; Thu, 03 Aug 2023 18:20:56 -0400
+	id 1qRggn-0004Hd-LP; Thu, 03 Aug 2023 18:21:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qRggf-0004Dp-V8
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 18:20:54 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qRggk-0004GH-IJ
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 18:20:58 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qRggd-0000O9-Oi
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 18:20:53 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qRggj-0000Ox-27
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 18:20:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691101251;
+ s=mimecast20190719; t=1691101256;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=5BZ5eZ81+5jW0TNORG8mc8ZgUr+TZWKsdfQFMi6wlRY=;
- b=i3/JK53SUXv9tlhYgv2sMAhB+V2u3IngVKuW0uAi9UMjSlCTbkK+fUeaihaMGmcTwxWYVU
- h3PCRCTPlKG+llxOCbtS/BL2VAmL7mMfkGXpJ2KDRh5gZBDbPWVgGLQISpPi58ZPsL6FC7
- BB7uUe8wmipPF1DWtX8jyYFYojA8Tus=
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
- [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=4GzWS5FnIrPDtn2Htg+CctKW805+xbLzE7TTNfE7rtM=;
+ b=etWVgu4FvwNQohfgR/SjIToCMx74In6g7spmo14TGye5XOolOz81cRBUBrYH8gyybvDMmM
+ /JoXAJ6ldM8kdFwmY5utgFFl5Z1PahNgPItP6osiO7uQUInwkpoRHjpWI2xVtbd3s5+Hu1
+ S9m1/99laHQhucN44uHwLOzIOoWEAdU=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-364-I1Csau2WMKqwPoR7JMP4bQ-1; Thu, 03 Aug 2023 18:20:49 -0400
-X-MC-Unique: I1Csau2WMKqwPoR7JMP4bQ-1
-Received: by mail-lj1-f199.google.com with SMTP id
- 38308e7fff4ca-2b9ba3d6191so13708221fa.2
- for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 15:20:49 -0700 (PDT)
+ us-mta-648-hHztSPF9MAqT-PLREt3HQA-1; Thu, 03 Aug 2023 18:20:53 -0400
+X-MC-Unique: hHztSPF9MAqT-PLREt3HQA-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-99c01c680beso86834766b.2
+ for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 15:20:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691101248; x=1691706048;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=5BZ5eZ81+5jW0TNORG8mc8ZgUr+TZWKsdfQFMi6wlRY=;
- b=I8An6Gyo1P/RyidgQXkdWCU4tIlL1TcKZXWqrudI3o3QbeD9D49OZ8QcuR7zCQVC3H
- p9+vXvmFOaA8Go7D0FFHzxEZbvXH0uAlaK0BYW+xKuagux8P76a6rPB/lKwy0WhGRSnE
- YXaF4djxk//VMXAm8b5Cymri78/YO8ESkxPgwRYwksZsBfMg0pzBEPUFMCNgLk5nr5OZ
- /E2DT2zwkFrCsIhU3dY8NtPFiwZuWM8hXhyxTVCEVZxDkL/2oj4ur1iie2gUEE/UnDzW
- jeOxd23nzzWzRP+PwJmBrmlj8H7AGnhpq3YvIMySNF3hxt0KxihCP17rniQXxLGwW6E9
- 8gaA==
-X-Gm-Message-State: AOJu0YwOZhdJmoGDQErQtr5aJ95FdbXmmFU2X+rmFb5+Fxl76ki/kdjv
- NlJ/M0zXDSgaODyb2/RUO5ntAOai/Ixvrcb2Un7ubEm2zNaVd5yVvVDJTylm9LJWEV+bSsOX944
- sHzo1NlLBA47TSYZy61Bmq/1gtzP/A3db1gI1OwKk2BwowNsgg0sTl6EFFOlBU4cmV053
-X-Received: by 2002:a2e:984f:0:b0:2b9:ac48:d7f5 with SMTP id
- e15-20020a2e984f000000b002b9ac48d7f5mr79596ljj.39.1691101248026; 
- Thu, 03 Aug 2023 15:20:48 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHk99xMKZrgQzE3mczdZ/06KdsBKfhhBnfKkt5f39GNqnogOZNDZJOeaRVqOcaAcw5hBS0gWQ==
-X-Received: by 2002:a2e:984f:0:b0:2b9:ac48:d7f5 with SMTP id
- e15-20020a2e984f000000b002b9ac48d7f5mr79578ljj.39.1691101247521; 
- Thu, 03 Aug 2023 15:20:47 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1691101252; x=1691706052;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=4GzWS5FnIrPDtn2Htg+CctKW805+xbLzE7TTNfE7rtM=;
+ b=Sb1pbeNeim8UxQbe6ccl7/DjQw4SfPImDOO2+bzBSkskBO2+MSrtk3TKZKX0no8Gvr
+ dKTJUrxt96xI+WZ8MAT25NGS7Aul+Ad74YFM6bpd9DVqdNL2vYfYAObZVD0KK/NdkjlQ
+ peSB22+TDMQAmgRqrDErhGE9ByWK6wpzRLwvWmRDjp+xefrdM1njc16dRMtNtR8KISvJ
+ eCJY73JKQlvnRGZ3EU4ePf2UjXaWfFK294LXbo+kW514jEckQnGTkTq2mZcFQGs/ypYT
+ ehswl2FtYi6AiiWUN6JZosFVAIZ8DXSmFGEf527i4ej8Q8/lfuiRb+yAAyzrHa43M8sU
+ XyzA==
+X-Gm-Message-State: ABy/qLYXN01yGJD8v/EBczzBzLh5i5RXoE//LW0VT30XvBYoBQjkzeKd
+ jA+IFMKv+jgC6y6sl4UIhFUVHJ7gSvmGXbftKQJqIAn3h6ctkZvlaBjTz01Omrp8Q/PrMcEOl3d
+ +EBUqzeEIo19vf/Iv3OGiGbLgeocs/fuh7xrt0Ao7KiMhxlF0Cdc6s1iot6TPJ3o95MYF
+X-Received: by 2002:a17:906:ef8f:b0:99b:6c47:1145 with SMTP id
+ ze15-20020a170906ef8f00b0099b6c471145mr8307713ejb.32.1691101252023; 
+ Thu, 03 Aug 2023 15:20:52 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlGC2RbUh9hRPRFq5l7zep3nZyUxHGMUk6SX+DZSt2/JVgixKXWM7+eJABYxA2CGOuveYyGFkg==
+X-Received: by 2002:a17:906:ef8f:b0:99b:6c47:1145 with SMTP id
+ ze15-20020a170906ef8f00b0099b6c471145mr8307703ejb.32.1691101251772; 
+ Thu, 03 Aug 2023 15:20:51 -0700 (PDT)
 Received: from redhat.com ([2.52.12.104]) by smtp.gmail.com with ESMTPSA id
- s15-20020a170906284f00b00992e265495csm367642ejc.212.2023.08.03.15.20.45
+ a1-20020a1709063a4100b0099275c59bc9sm379916ejf.33.2023.08.03.15.20.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 03 Aug 2023 15:20:46 -0700 (PDT)
-Date: Thu, 3 Aug 2023 18:20:44 -0400
+ Thu, 03 Aug 2023 15:20:51 -0700 (PDT)
+Date: Thu, 3 Aug 2023 18:20:48 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Eric Auger <eric.auger@redhat.com>,
- Mauro Matteo Cascella <mcascell@redhat.com>, qemu-stable@nongnu.org
-Subject: [PULL 01/22] hw/virtio-iommu: Fix potential OOB access in
- virtio_iommu_handle_command()
-Message-ID: <cf2f89edf36a59183166ae8721a8d7ab5cd286bd.1691101215.git.mst@redhat.com>
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PULL 02/22] hw/pci-bridge/cxl_upstream.c: Use g_new0() in
+ build_cdat_table()
+Message-ID: <503d86dd66625b4bed9484bca71db1678c730dc9.1691101215.git.mst@redhat.com>
 References: <cover.1691101215.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1691101215.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
@@ -100,50 +103,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Eric Auger <eric.auger@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-In the virtio_iommu_handle_command() when a PROBE request is handled,
-output_size takes a value greater than the tail size and on a subsequent
-iteration we can get a stack out-of-band access. Initialize the
-output_size on each iteration.
+In build_cdat_table() we do:
+ *cdat_table = g_malloc0(sizeof(*cdat_table) * CXL_USP_CDAT_NUM_ENTRIES);
+This is wrong because:
+ - cdat_table has type CDATSubHeader ***
+ - so *cdat_table has type CDATSubHeader **
+ - so the array we're allocating here should be items of type CDATSubHeader *
+ - but we pass sizeof(*cdat_table), which is sizeof(CDATSubHeader **),
+   implying that we're allocating an array of CDATSubHeader **
 
-The issue was found with ASAN. Credits to:
-Yiming Tao(Zhejiang University)
-Gaoning Pan(Zhejiang University)
+It happens that sizeof(CDATSubHeader **) == sizeof(CDATSubHeader *)
+so nothing blows up, but this should be sizeof(**cdat_table).
 
-Fixes: 1733eebb9e7 ("virtio-iommu: Implement RESV_MEM probe request")
-Signed-off-by: Eric Auger <eric.auger@redhat.com>
-Reported-by: Mauro Matteo Cascella <mcascell@redhat.com>
-Cc: qemu-stable@nongnu.org
+Avoid this excessively hard-to-understand code by using
+g_new0() instead, which will do the type checking for us.
+While we're here, we can drop the useless check against failure,
+as g_malloc0() and g_new0() never fail.
 
-Message-Id: <20230717162126.11693-1-eric.auger@redhat.com>
+This fixes Coverity issue CID 1508120.
+
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Message-Id: <20230718101327.1111374-1-peter.maydell@linaro.org>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- hw/virtio/virtio-iommu.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ hw/pci-bridge/cxl_upstream.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
-index 201127c488..4dcf1d5c62 100644
---- a/hw/virtio/virtio-iommu.c
-+++ b/hw/virtio/virtio-iommu.c
-@@ -728,13 +728,15 @@ static void virtio_iommu_handle_command(VirtIODevice *vdev, VirtQueue *vq)
-     VirtIOIOMMU *s = VIRTIO_IOMMU(vdev);
-     struct virtio_iommu_req_head head;
-     struct virtio_iommu_req_tail tail = {};
--    size_t output_size = sizeof(tail), sz;
-     VirtQueueElement *elem;
-     unsigned int iov_cnt;
-     struct iovec *iov;
-     void *buf = NULL;
-+    size_t sz;
+diff --git a/hw/pci-bridge/cxl_upstream.c b/hw/pci-bridge/cxl_upstream.c
+index ef47e5d625..9159f48a8c 100644
+--- a/hw/pci-bridge/cxl_upstream.c
++++ b/hw/pci-bridge/cxl_upstream.c
+@@ -274,10 +274,7 @@ static int build_cdat_table(CDATSubHeader ***cdat_table, void *priv)
+         };
+     }
  
-     for (;;) {
-+        size_t output_size = sizeof(tail);
-+
-         elem = virtqueue_pop(vq, sizeof(VirtQueueElement));
-         if (!elem) {
-             return;
+-    *cdat_table = g_malloc0(sizeof(*cdat_table) * CXL_USP_CDAT_NUM_ENTRIES);
+-    if (!*cdat_table) {
+-        return -ENOMEM;
+-    }
++    *cdat_table = g_new0(CDATSubHeader *, CXL_USP_CDAT_NUM_ENTRIES);
+ 
+     /* Header always at start of structure */
+     (*cdat_table)[CXL_USP_CDAT_SSLBIS_LAT] = g_steal_pointer(&sslbis_latency);
 -- 
 MST
 
