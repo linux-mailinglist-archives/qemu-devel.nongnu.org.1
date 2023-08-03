@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8050876EFBB
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 18:40:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7146B76F091
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 19:26:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRbMj-0008AW-S0; Thu, 03 Aug 2023 12:39:57 -0400
+	id 1qRc4V-0007Nw-R8; Thu, 03 Aug 2023 13:25:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qRbMh-0008A5-AX
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 12:39:55 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ id 1qRc4T-0007Mz-Vz
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 13:25:10 -0400
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qRbMf-0000pm-R6
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 12:39:55 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-31765792c7cso1074677f8f.0
- for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 09:39:53 -0700 (PDT)
+ id 1qRc4R-0003tU-W5
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 13:25:09 -0400
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-31765792c7cso1113904f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 10:25:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691080792; x=1691685592;
+ d=linaro.org; s=google; t=1691083504; x=1691688304;
  h=content-transfer-encoding:mime-version:message-id:in-reply-to
  :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
  :date:message-id:reply-to;
- bh=pNJKNj8S/Xrr7Zv5tSl+mZVNrOUpmm1VQOeQBe887YY=;
- b=bBuUn69yXjaqSYUEDBT90Rcj2uX8eKyyXCv2igUFa0GEDvgCvvsJ8blT2kOG50kzeD
- LOMValWiFEUWOAgvxqKYw59H2qcxghJRwuaZvBF5FiuLHux0v3LOGP+qetorz0ils1Jy
- SgNQceYHdhkWA/Vl92j0MzjsX35w+HqYK/aE8Ayh/9cLWAL8Ggk4OLsmyqemlv5kcJhJ
- MerlJXkxb61u8YfIa1boYot9TrFQ57Y1AG7vFtddCZ4U12pVEdKTk3E3QVDseIqYYC4k
- jgEm4Z6ysWiSfgHl1TAEgOKtDA3/EKBqizdT7aIPY2ZCV5NwJDHtFiH8WdTyuLzdOuHn
- gCag==
+ bh=Px0+HSG7M6lRLouq1rKBHmkgjnntHIwpVNsUQFwfEuY=;
+ b=QzTS1AOTvKp3t6hIdhah6O2cHoR14g+ap+lvQlhyq+MRE549gZ0jj7lblFFCTvcJN4
+ w2TUFPTPzzfXtbJNbWDbaBEKBOs/mkMT6haj/jbHfPL0W2ofPDDivF77bXCyoZFy5Cy2
+ c8gY655qu1nM+zVXYpc2UpF+JkhE05zG2A7LKeaXbmkVp54u8bt/stcO5Xq61w58JQ2x
+ xrW9SRzl2BCPz3lv2LQt6STvueZFDX2+D9NfrrTP76lm/ctTKdaTJp9qgvXRZNlVEE1O
+ 3DpEQOdCXTCzedZFt1nBDyhdLrW13vwPn47YRFBRNM0cs9L/JMO9mTEXu/QaPfzz8rVZ
+ poCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691080792; x=1691685592;
+ d=1e100.net; s=20221208; t=1691083504; x=1691688304;
  h=content-transfer-encoding:mime-version:message-id:in-reply-to
  :references:user-agent:subject:cc:to:from:date:x-gm-message-state
  :from:to:cc:subject:date:message-id:reply-to;
- bh=pNJKNj8S/Xrr7Zv5tSl+mZVNrOUpmm1VQOeQBe887YY=;
- b=MEvSvQnaQShiFnyLzpeAVKHYk79hujvE27fOUnXi4KC36FnX+LTKYttbKThXohONYm
- 8B68hEFaHl5r7mTwuNyEYf41KMui0vJWj9HV/laqEh2+h8nBEPrJJ+O9YjSzz81yA/2R
- a8S78TtRYCN9k6cNWhzXk1niBjtcOvckZ2ZDFsaNKCR8ZipE+0PFu9R+byAkCSs1/fQd
- 5qBnwSXPSLc2Htgu66Tl9q/Q/K0EpjfRbSlKqZ0L6kpaMuKfhtC2oKnWVgEf0cTkKWfw
- uk6qgTOnvI2P1oQNCQhhrnIf7uJOaC6ibZyRbUH4WQflChlbZ8Y8aROeujo4lugP5ZDA
- 736g==
-X-Gm-Message-State: ABy/qLa8TAeiMKK0Q4IHrCYbsyJiFSCet+ZId4MtbQW4tOI3AUEYQT7l
- SDR/CV5pYIXF492kcjwfICOHsG+NVgvL/8KJ6E71Dg==
-X-Google-Smtp-Source: APBJJlGC+wHr53XhHChB+adEQWIYcLlDHefmfyNCGvxBTlAjxRvSwG88UKlgHg/0Z9COZ7fJDnOWeg==
-X-Received: by 2002:adf:dec2:0:b0:317:5cf6:ab4e with SMTP id
- i2-20020adfdec2000000b003175cf6ab4emr7613138wrn.62.1691080791758; 
- Thu, 03 Aug 2023 09:39:51 -0700 (PDT)
+ bh=Px0+HSG7M6lRLouq1rKBHmkgjnntHIwpVNsUQFwfEuY=;
+ b=ioAGdHv/ZI3dEJkBaEeaK3RCohKqhq5Pzimya66LUEE6paVy1S0Ztt1oEkA7cKvh4r
+ Ggl+CrD1iLrsywh0YsF8wNbjWTAMm0GbJNXEJXenEG+E/YhspWJWm9zvjmmEV9I8Vvb5
+ /Y/nkUl1s5WJfhywKSHiiv6dRoK3YaiVcD00it6VQus29eP390ZPvNYTKXgOiMhwmRJi
+ j8qbAMSOLoVdCsLyrXFxOBTme3XAvG8eVrsu2yd4aQEqiiCzfZf2nS8QvU6acNJs01UP
+ YmrhaDl0pKed0GiTNehJjtiC721cLrsZv5YyaNWobdIzrb2BLkJb9KZZLZ9l+bplZ5p+
+ 78vw==
+X-Gm-Message-State: ABy/qLZbzE79T+5oaYKR+iLuZGlXbdfz+SkCbFXngtIGfsffmJlzcGwa
+ 8zlOn0PLYJJ8tcxo4gJ7CnWGo5n/VjReBXe0j9Whng==
+X-Google-Smtp-Source: APBJJlG5oze8YAvCvxnJl/ldaymO5YHPrn4abeLPot0H/pe7BpOg46Qhyd1eL4bJZLrPlify6ENl2w==
+X-Received: by 2002:a05:6000:109:b0:314:4a15:e557 with SMTP id
+ o9-20020a056000010900b003144a15e557mr8204614wrx.5.1691083504624; 
+ Thu, 03 Aug 2023 10:25:04 -0700 (PDT)
 Received: from meli.delivery (75.53-176-91.adsl-dyn.isp.belgacom.be.
  [91.176.53.75]) by smtp.gmail.com with ESMTPSA id
- n4-20020a5d4204000000b0030ae499da59sm255314wrq.111.2023.08.03.09.39.51
+ e3-20020a5d5943000000b00317ac0642b0sm372669wri.27.2023.08.03.10.25.04
  (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Thu, 03 Aug 2023 09:39:51 -0700 (PDT)
-Date: Thu, 03 Aug 2023 19:38:59 +0300
+ Thu, 03 Aug 2023 10:25:04 -0700 (PDT)
+Date: Thu, 03 Aug 2023 19:40:46 +0300
 From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org, Jonah Palmer <jonah.palmer@oracle.com>
 Cc: philmd@linaro.org, laurent@vivier.eu, mst@redhat.com,
  boris.ostrovsky@oracle.com, alex.bennee@linaro.org, viresh.kumar@linaro.org,
  armbru@redhat.com, pbonzini@redhat.com, berrange@redhat.com,
  eduardo@habkost.net
-Subject: Re: [PATCH v3 2/3] qmp: update virtio feature maps,
- vhost-user-gpio introspection
+Subject: Re: [PATCH v3 1/3] qmp: remove virtio_list, search QOM tree instead
 User-Agent: meli 0.7.3
 References: <20230803145500.2108691-1-jonah.palmer@oracle.com>
- <20230803145500.2108691-3-jonah.palmer@oracle.com>
-In-Reply-To: <20230803145500.2108691-3-jonah.palmer@oracle.com>
-Message-ID: <ytqae.mub3s2ovpjom@linaro.org>
+ <20230803145500.2108691-2-jonah.palmer@oracle.com>
+In-Reply-To: <20230803145500.2108691-2-jonah.palmer@oracle.com>
+Message-ID: <ytsdr.hu96pu2zioj@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset=utf-8; format=flowed
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,33 +97,76 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On Thu, 03 Aug 2023 17:54, Jonah Palmer <jonah.palmer@oracle.com> wrote:
->Add new virtio transport feature to transport feature map:
-> - VIRTIO_F_RING_RESET
->
->Add new vhost-user protocol feature to vhost-user protocol feature map
->and enumeration:
-> - VHOST_USER_PROTOCOL_F_STATUS
->
->Add new virtio device features for several virtio devices to their
->respective feature mappings:
->
->virtio-blk:
-> - VIRTIO_BLK_F_SECURE_ERASE
->
->virtio-net:
-> - VIRTIO_NET_F_NOTF_COAL
-> - VIRTIO_NET_F_GUEST_USO4
-> - VIRTIO_NET_F_GUEST_USO6
-> - VIRTIO_NET_F_HOST_USO
->
->virtio/vhost-user-gpio:
-> - VIRTIO_GPIO_F_IRQ
-> - VHOST_F_LOG_ALL
-> - VHOST_USER_F_PROTOCOL_FEATURES
->
->Add support for introspection on vhost-user-gpio devices.
->
->Signed-off-by: Jonah Palmer <jonah.palmer@oracle.com>
+>-VirtioInfoList *qmp_x_query_virtio(Error **errp)
+>+static int query_dev_child(Object *child, void *opaque)
+> {
+>-    VirtioInfoList *list = NULL;
+>-    VirtioInfo *node;
+>-    VirtIODevice *vdev;
+>+    VirtioInfoList **vdevs = opaque;
+>+    Object *dev = object_dynamic_cast(child, TYPE_VIRTIO_DEVICE);
+>+    if (dev != NULL && DEVICE(dev)->realized) {
+>+        VirtIODevice *vdev = VIRTIO_DEVICE(dev);
+>+
+>+        VirtioInfo *info = g_new(VirtioInfo, 1);
+>+
+>+        /* Get canonical path of device */
+>+        gchar *path = object_get_canonical_path(dev);
 
-Reviewed-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
+(You can use g_autofree char * here)
+
+>+
+>+        info->path = g_strdup(path);
+>+        info->name = g_strdup(vdev->name);
+>+        QAPI_LIST_PREPEND(*vdevs, info);
+> 
+>-    QTAILQ_FOREACH(vdev, &virtio_list, next) {
+>-        DeviceState *dev = DEVICE(vdev);
+>-        Error *err = NULL;
+>-        QObject *obj = qmp_qom_get(dev->canonical_path, "realized", &err);
+>-
+>-        if (err == NULL) {
+>-            GString *is_realized = qobject_to_json_pretty(obj, true);
+>-            /* virtio device is NOT realized, remove it from list */
+>-            if (!strncmp(is_realized->str, "false", 4)) {
+>-                QTAILQ_REMOVE(&virtio_list, vdev, next);
+>-            } else {
+>-                node = g_new(VirtioInfo, 1);
+>-                node->path = g_strdup(dev->canonical_path);
+>-                node->name = g_strdup(vdev->name);
+>-                QAPI_LIST_PREPEND(list, node);
+>-            }
+>-           g_string_free(is_realized, true);
+>-        }
+>-        qobject_unref(obj);
+>+        g_free(path);
+>+    } else {
+>+        object_unref(dev);
+>     }
+
+The object_unref should not happen only in the else branch, no? Though 
+it's not clear to me where the ref count was previously incremented.
+
+>+    object_child_foreach_recursive(object_get_root(), query_dev_child, 
+>&vdevs);
+>+    if (vdevs == NULL) {
+>+        error_setg(errp, "No virtio devices found");
+>+        return NULL;
+
+(No need for early return here)
+
+>     }
+>-    return NULL;
+>+    return vdevs;
+>+}
+>+
+>+VirtIODevice *qmp_find_virtio_device(const char *path)
+>+{
+>+    /* Verify the canonical path is a realized virtio device */
+>+    Object *dev = object_dynamic_cast(object_resolve_path(path, NULL),
+>+                                      TYPE_VIRTIO_DEVICE);
+>+    if (!dev || !DEVICE(dev)->realized) {
+>+        object_unref(dev);
+
+Same as before with object refs
 
