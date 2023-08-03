@@ -2,71 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4F3176EC2A
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 16:17:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15EC076EC2C
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 16:18:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRZ80-0003fj-Md; Thu, 03 Aug 2023 10:16:36 -0400
+	id 1qRZ99-0004IV-91; Thu, 03 Aug 2023 10:17:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qRZ7y-0003dx-I6
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 10:16:34 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qRZ7w-00026D-Nn
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 10:16:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691072191;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=/7qde2mqi3X/6eC5SmCusqRy437w+I6rsqxi7rAT03I=;
- b=KQhgQ3i5QsDU9wUUnHUMylQRAn/1rQTn7q+OCPEaOqU1+FG4taRqndL/2+G50vvGuhfg+U
- BDnk4pzRHKIcoc39xDL3INjhcwhVL7hzrvmLLtRcoqIj9hHpyHrIMMOR/8XeS6jmyC366l
- iC/BJN9fIquClHNbK0AFSyb5waxHuIE=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-692-3UXhYLrQNLOzzv8WNbWdKg-1; Thu, 03 Aug 2023 10:16:27 -0400
-X-MC-Unique: 3UXhYLrQNLOzzv8WNbWdKg-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EA347858F1E;
- Thu,  3 Aug 2023 14:16:26 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.105])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id CBC21200B680;
- Thu,  3 Aug 2023 14:16:25 +0000 (UTC)
-Date: Thu, 3 Aug 2023 15:16:23 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Andrew Melnychenko <andrew@daynix.com>
-Cc: jasowang@redhat.com, mst@redhat.com, armbru@redhat.com,
- eblake@redhat.com, qemu-devel@nongnu.org,
- yuri.benditovich@daynix.com, yan@daynix.com
-Subject: Re: [PATCH v5 4/5] qmp: Added new command to retrieve eBPF blob.
-Message-ID: <ZMu2t/egT5giMXk4@redhat.com>
-References: <20230802204125.33688-1-andrew@daynix.com>
- <20230802204125.33688-5-andrew@daynix.com>
+ (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
+ id 1qRZ8u-0003z8-3c
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 10:17:33 -0400
+Received: from mail-lj1-x232.google.com ([2a00:1450:4864:20::232])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
+ id 1qRZ8r-0002pY-FZ
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 10:17:31 -0400
+Received: by mail-lj1-x232.google.com with SMTP id
+ 38308e7fff4ca-2b9cbaee7a9so15963471fa.0
+ for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 07:17:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=jms.id.au; s=google; t=1691072246; x=1691677046;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=OccaV2iCroXm800b878fiRj0SFuQRuhY1XzDYEHNXxI=;
+ b=YBXk+DZaqFTGgAu/G+dQWESb3IR0iMmTCshWYksTNETS+mKp13tYHfqHPSLxiGzLzJ
+ rp2dAJqmqL3oYrrcMid0xfRRUJSqrfLroJC0kfySYTB7kLkqOA9gE3p6zhKXyjdTBY6P
+ ZmY3KPhBBHKnkWV1PRZVYaRGE2CsxLSkuwtUo=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1691072246; x=1691677046;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=OccaV2iCroXm800b878fiRj0SFuQRuhY1XzDYEHNXxI=;
+ b=NmhGbgAfN5TuizRy2F26Ry48JHGUS5l+t//MrRdZVd7nDI0RLBtfLGjRQhbzDXK4FJ
+ 9PsQSXPrzz1PIF/WWAJx3gIpGlPs2pKEB2cMN9b8Huz2ooC073INElUA1nHCTY7Bg83n
+ Q0OeBJ+ZxmbOlSbIcuDNMwVGCEfk4vPkPgiMc6eo0N/jF48CXXMbU3dH0wteE+PG9R05
+ 9tsH0EM0dYknk9V2WN82bB/NIotEzbIwTQ8gLtzKKKr9P4JNvAYpZc6+r9EctOIbMInI
+ SsiWRENfE/dgTiqTWicr19V+/NnMwhgeDRqFgW5uX5LZcUOOrEiEC1zqF6rk5UgOV1ca
+ revA==
+X-Gm-Message-State: ABy/qLYPy4MVR8G+seOtZ5lkAsnB/+tkxpNALUBcykBbhM6xGEfxn8hy
+ wETVWGSesKSuEcvCI6bMu/w/fK4ybCHlBdrjObmBTwPF
+X-Google-Smtp-Source: APBJJlHOiodaxew3TdhvohQ46f0K2vQybS2quJwearwsNkkSD/h2qheHteci8paEofSeqrmPXTxD41DoHtz4A5zMiH8=
+X-Received: by 2002:a05:651c:232:b0:2b9:d28c:9c30 with SMTP id
+ z18-20020a05651c023200b002b9d28c9c30mr7401296ljn.44.1691072246173; Thu, 03
+ Aug 2023 07:17:26 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230802204125.33688-5-andrew@daynix.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <20230803015302.407219-1-richard.henderson@linaro.org>
+ <CACPK8XfNiGiprxYd-J+E-oFqPsRVPfQa7+e5hX8DFw0OudT85A@mail.gmail.com>
+ <cd9b0651-475d-1b11-d648-594b52d48bd1@gmx.de>
+In-Reply-To: <cd9b0651-475d-1b11-d648-594b52d48bd1@gmx.de>
+From: Joel Stanley <joel@jms.id.au>
+Date: Thu, 3 Aug 2023 14:17:14 +0000
+Message-ID: <CACPK8XcdO4KpBfUZmxLNRLLcAOfM9D39be=m4O72kO0+_GiuQQ@mail.gmail.com>
+Subject: Re: [PATCH v7 00/14] linux-user: brk fixes
+To: Helge Deller <deller@gmx.de>
+Cc: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
+ laurent@vivier.eu, akihiko.odaki@daynix.com
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::232;
+ envelope-from=joel.stan@gmail.com; helo=mail-lj1-x232.google.com
+X-Spam_score_int: -14
+X-Spam_score: -1.5
+X-Spam_bar: -
+X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.249,
+ FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,94 +82,30 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 02, 2023 at 11:41:22PM +0300, Andrew Melnychenko wrote:
-> Now, the binary objects may be retrieved by id.
-> It would require for future qmp commands that may require specific
-> eBPF blob.
-> 
-> Added command "request-ebpf". This command returns
-> eBPF program encoded base64. The program taken from the
-> skeleton and essentially is an ELF object that can be
-> loaded in the future with libbpf.
-> 
-> The reason to use the command to provide the eBPF object
-> instead of a separate artifact was to avoid issues related
-> to finding the eBPF itself. eBPF object is an ELF binary
-> that contains the eBPF program and eBPF map description(BTF).
-> Overall, eBPF object should contain the program and enough
-> metadata to create/load eBPF with libbpf. As the eBPF
-> maps/program should correspond to QEMU, the eBPF can't
-> be used from different QEMU build.
-> 
-> The first solution was a helper that comes with QEMU
-> and loads appropriate eBPF objects. And the issue is
-> to find a proper helper if the system has several
-> different QEMUs installed and/or built from the source,
-> which helpers may not be compatible.
-> 
-> Another issue is QEMU updating while there is a running
-> QEMU instance. With an updated helper, it may not be
-> possible to hotplug virtio-net device to the already
-> running QEMU. Overall, requesting the eBPF object from
-> QEMU itself solves possible failures with acceptable effort.
-> 
-> Links:
-> [PATCH 3/5] qmp: Added the helper stamp check.
-> https://lore.kernel.org/all/20230219162100.174318-4-andrew@daynix.com/
-> 
-> Signed-off-by: Andrew Melnychenko <andrew@daynix.com>
-> ---
->  ebpf/ebpf.c           | 70 +++++++++++++++++++++++++++++++++++++++++++
->  ebpf/ebpf.h           | 31 +++++++++++++++++++
->  ebpf/ebpf_rss.c       |  6 ++++
->  ebpf/meson.build      |  2 +-
->  qapi/ebpf.json        | 57 +++++++++++++++++++++++++++++++++++
->  qapi/meson.build      |  1 +
->  qapi/qapi-schema.json |  1 +
->  7 files changed, 167 insertions(+), 1 deletion(-)
->  create mode 100644 ebpf/ebpf.c
->  create mode 100644 ebpf/ebpf.h
->  create mode 100644 qapi/ebpf.json
+On Thu, 3 Aug 2023 at 13:55, Helge Deller <deller@gmx.de> wrote:
+> > 143551 brk(NULL) = 0x0009b000
+> > 143551 brk(0x0009b8fc) = 0x0009b000
+>
+> I think the problem is the brk with 9b000 here.
+> It's not 64k aligned (=pages size of your ppc64le).
+>
+> Please try with this patch on top of Richard's series:
+>
+> > @@ -3229,7 +3208,8 @@ static void load_elf_image(const char *image_name, int image_fd,
+> >       info->end_code = 0;
+> >       info->start_data = -1;
+> >       info->end_data = 0;
+> > -    info->brk = .....
+> change that to become:
+>      info->brk = HOST_PAGE_ALIGN(hiaddr);
 
-> diff --git a/qapi/ebpf.json b/qapi/ebpf.json
-> new file mode 100644
-> index 00000000000..40851f8c177
-> --- /dev/null
-> +++ b/qapi/ebpf.json
-> @@ -0,0 +1,57 @@
-> +# -*- Mode: Python -*-
-> +# vim: filetype=python
-> +#
-> +# This work is licensed under the terms of the GNU GPL, version 2 or later.
-> +# See the COPYING file in the top-level directory.
-> +
-> +##
-> +# = eBPF Objects
-> +##
-> +
-> +{ 'include': 'common.json' }
-> +
-> +##
-> +# @EbpfObject:
-> +#
-> +# Structure that holds eBPF ELF object encoded in base64.
-> +#
-> +# Since: 8.3
+That stopped the crashing, and the binaries seem to run fine. I tested
+on two hosts: ppc64le (64K) and arm64 (16K).
 
-We're just releasing 8.1, so next will be 8.2
+Cheers,
 
-There will never be any 8.3 because we reset to next major
-version in the first release of each year.
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+Joel
 
