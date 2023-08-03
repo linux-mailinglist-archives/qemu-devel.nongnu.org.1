@@ -2,75 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 326DB76F360
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 21:25:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DE8376F384
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 21:38:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRdv9-0006we-8k; Thu, 03 Aug 2023 15:23:39 -0400
+	id 1qRe7w-00036Z-9Z; Thu, 03 Aug 2023 15:36:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
- id 1qRdv7-0006wM-Jz
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 15:23:37 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qRe7u-000367-99
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 15:36:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
- id 1qRdv5-0007bg-T6
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 15:23:37 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qRe7s-00056e-EZ
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 15:36:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691090613;
+ s=mimecast20190719; t=1691091407;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=or0t88r4PbJdpXbrWHWXweK+AAswnVkxq1Jtckh9sTM=;
- b=Zy53pfat3TYn+PLyDS8aLAb+TAqjKSaqEy01MWcckRontTxUYoVBw6LU2xw8Zw4uHZkS2j
- 0JHhSvvrObFCDZ32A2TfiUQhgxxqOPL/xQDwIR4MLV8KuD5k+jo1wmXiDD8zQaUBULpH5t
- O93O5Dba1KrcMpUmQZx1C+/Wy/5yiBo=
-Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
- [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=JaM2CDekX7tdkxIIMGOM4GxifmZH6XfI8qdJdXy4Emc=;
+ b=YlF1tecMX6mqc6FdzRIMhVE/VgBdpUyTu/T2CJzz7Nos/1v24SDpxpuP3Me1IliqUlcRPG
+ F3sNYujnkMRdg83w4/gU6dDBeXQ3CNvArJbkKPy5duasPYwZ3Zmqrgn4erXQ2LlIZhpljj
+ L8afmAP0Xxh80oClza49zvfWxcZUgM4=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-651-Lq7szy4XNdGNNLM4V50DTA-1; Thu, 03 Aug 2023 15:23:31 -0400
-X-MC-Unique: Lq7szy4XNdGNNLM4V50DTA-1
-Received: by mail-lj1-f198.google.com with SMTP id
- 38308e7fff4ca-2ba0f27a4c9so11700811fa.1
- for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 12:23:31 -0700 (PDT)
+ us-mta-472-A3eMfC6VMJqFmDDjGR-DwQ-1; Thu, 03 Aug 2023 15:36:45 -0400
+X-MC-Unique: A3eMfC6VMJqFmDDjGR-DwQ-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-99c20561244so85469966b.0
+ for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 12:36:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691090610; x=1691695410;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=or0t88r4PbJdpXbrWHWXweK+AAswnVkxq1Jtckh9sTM=;
- b=WEniQiuM2vQRhInJpP3bJB/+ocV6eu5pNxFMmtE2z60v1S2Zwr0CDZ9pX2bGs4e6RX
- e/nagOVZLHUVPLTWl/G14o5vQzKgx3xOgBDoN5bmZ2ceNOhXi6OKfdFJZ0v+dJQ0Enik
- J98yFPMa2trWbZKeXg1Pm6/O3Nj2lj/OxPbSkqLCy4qgPsP2qsIgMzvBTLFGL6IL/XIJ
- 9EfUCxaeO6GJvbuwp/GfOi+Zvfks2sE7JDC72S1SvZU/or9/XiHmcGaNZnooUllnnzub
- 2JZl9zCnm9XVSV0l+JpaqmWpGicbFtRJJyPhDJzbAI5bhH0QcpKBE2Ql8jJk2IdrRHzo
- MzMw==
-X-Gm-Message-State: ABy/qLZFv2FWz1Qdj2EDI6aztzV9shln5r8ytjec8B0MfwbPiT4xOuQz
- i71SVQcWzDgwG0GJNKZC5qTMsE++tSrueFBH+kPF5+Pnb37c0VAaQ/xTVZ6mDrnwsyfur/DMNpT
- t3Yhu65WmvL1oCPMxCLOJhWoG45RTjHs=
-X-Received: by 2002:a05:6512:224a:b0:4f3:93d6:f969 with SMTP id
- i10-20020a056512224a00b004f393d6f969mr8139716lfu.59.1691090609913; 
- Thu, 03 Aug 2023 12:23:29 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlFxwiH9JPOq1qL7BeRaJCTHeFdFla9xk8JeQ6cz7zo6sFoH6QrqqvhNGqMw+78XME7NfRYv9jmb+hLSMKkVKew=
-X-Received: by 2002:a05:6512:224a:b0:4f3:93d6:f969 with SMTP id
- i10-20020a056512224a00b004f393d6f969mr8139709lfu.59.1691090609509; Thu, 03
- Aug 2023 12:23:29 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1691091404; x=1691696204;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=JaM2CDekX7tdkxIIMGOM4GxifmZH6XfI8qdJdXy4Emc=;
+ b=GS6RnBMDxVUip+dtx7wKe1mhYX2nF3xeregk/i9dwyL//VJx48oaeMGKBTnajv3xPW
+ a4NIMypfcIpovd2aUIqT/TVQUe32obKYJDDy+9252eGKdJjmAmJp8DSBzQPHnQz/3HP+
+ rCDYOomIm4yiWM5Ts4x8jqcBEoZ6U0Vphpc/x2owBLjPBODWcY+nkxOtx3FRygUk446w
+ jAui5AP94HK7i+tAPe4ZobT7EFtF+FE6tcANIwW6oXZozdbHAWS8zKtpzScP0FIdxVFX
+ aJZv82ze72vXlIb/1uhJcz278nFxQarTxlQKpT8o3R8mbNvabvKZiEFj0Aq+vuVH9gHT
+ YIqA==
+X-Gm-Message-State: ABy/qLZwW6mxocY6Gyd+G531NGzo+k+bZxcJdVHMSMhuGfffLXx3T2aJ
+ wYStrFJGC6LqWcQasFHz4bJfv/n13Qw5U9G/L3bUZh4KXdYrD6cHRT3BVFvF7n5QSzqadtv8OVQ
+ khevFujTiKyGJjfU=
+X-Received: by 2002:a17:906:77d6:b0:992:b3a3:81f4 with SMTP id
+ m22-20020a17090677d600b00992b3a381f4mr9131273ejn.50.1691091404790; 
+ Thu, 03 Aug 2023 12:36:44 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlGPEj08V4XwXXh5+DIjq4HXBT41s5h92+drG5N8xG37H1lGZX4hB1UKmwWfjc9F+ehi2d0ihg==
+X-Received: by 2002:a17:906:77d6:b0:992:b3a3:81f4 with SMTP id
+ m22-20020a17090677d600b00992b3a381f4mr9131260ejn.50.1691091404480; 
+ Thu, 03 Aug 2023 12:36:44 -0700 (PDT)
+Received: from redhat.com ([2.52.12.104]) by smtp.gmail.com with ESMTPSA id
+ j27-20020a170906255b00b0099297782aa9sm224103ejb.49.2023.08.03.12.36.42
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 03 Aug 2023 12:36:43 -0700 (PDT)
+Date: Thu, 3 Aug 2023 15:36:39 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Fam Zheng <fam@euphon.net>, Thomas Huth <thuth@redhat.com>,
+ qemu-stable@nongnu.org, Mark Kanda <mark.kanda@oracle.com>
+Subject: Re: [PATCH] Revert "virtio-scsi: Send "REPORTED LUNS CHANGED" sense
+ data upon disk hotplug events"
+Message-ID: <20230803153628-mutt-send-email-mst@kernel.org>
+References: <20230705071523.15496-1-sgarzare@redhat.com>
 MIME-Version: 1.0
-References: <mailman.213.1690396551.25301.qemu-devel@nongnu.org>
- <75578ecf-4aed-7201-ca83-83e2dd523403@intel.com>
-In-Reply-To: <75578ecf-4aed-7201-ca83-83e2dd523403@intel.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
-Date: Thu, 3 Aug 2023 23:23:18 +0400
-Message-ID: <CAMxuvawZtfb1zzGoUGXr=L4UVkv1HAranxKz0T=iu_Q5tiZdKQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2] virtio-gpu: reset gfx resources in main thread
-To: 20230726173929.690601-3-marcandre.lureau@redhat.com
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mlureau@redhat.com;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230705071523.15496-1-sgarzare@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -95,154 +98,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
+On Wed, Jul 05, 2023 at 09:15:23AM +0200, Stefano Garzarella wrote:
+> This reverts commit 8cc5583abe6419e7faaebc9fbd109f34f4c850f2.
+> 
+> That commit causes several problems in Linux as described in the BZ.
+> In particular, after a while, other devices on the bus are no longer
+> usable even if those devices are not affected by the hotunplug.
+> This may be a problem in Linux, but we have not been able to identify
+> it so far. So better to revert this patch until we find a solution.
+> 
+> Also, Oracle, which initially proposed this patch for a problem with
+> Solaris, seems to have already reversed it downstream:
+>     https://linux.oracle.com/errata/ELSA-2023-12065.html
+> 
+> Suggested-by: Thomas Huth <thuth@redhat.com>
+> Buglink: https://bugzilla.redhat.com/show_bug.cgi?id=2176702
+> Cc: qemu-stable@nongnu.org
+> Cc: Mark Kanda <mark.kanda@oracle.com>
+> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
 
-On Thu, Aug 3, 2023 at 10:23=E2=80=AFPM Kim, Dongwon <dongwon.kim@intel.com=
-> wrote:
->
-> Looking good. By the way, what does 'BH' stand for?
->
+OK guys we are reverting this?
 
-BH: bottom-half, it's a kind of delayed callback.
-
-> Acked-by: Dongwon Kim <dongwon.kim@intel.com>
-
-thanks
-
->
-> From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
->
-> Calling OpenGL from different threads can have bad consequences if not
-> carefully reviewed. It's not generally supported. In my case, I was
-> debugging a crash in glDeleteTextures from OPENGL32.DLL, where I asked
-> qemu for gl=3Des, and thus ANGLE implementation was expected. libepoxy di=
-d
-> resolution of the global pointer for glGenTexture to the GLES version
-> from the main thread. But it resolved glDeleteTextures to the GL
-> version, because it was done from a different thread without correct
-> context. Oops.
->
-> Let's stick to the main thread for GL calls by using a BH.
->
-> Note: I didn't use atomics for reset_finished check, assuming the BQL
-> will provide enough of sync, but I might be wrong.
->
-> Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
 > ---
->   include/hw/virtio/virtio-gpu.h |  3 +++
->   hw/display/virtio-gpu.c        | 38 +++++++++++++++++++++++++++-------
->   2 files changed, 34 insertions(+), 7 deletions(-)
->
-> diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gp=
-u.h
-> index 05bee09e1a..390c4642b8 100644
-> --- a/include/hw/virtio/virtio-gpu.h
-> +++ b/include/hw/virtio/virtio-gpu.h
-> @@ -169,6 +169,9 @@ struct VirtIOGPU {
->
->       QEMUBH *ctrl_bh;
->       QEMUBH *cursor_bh;
-> +    QEMUBH *reset_bh;
-> +    QemuCond reset_cond;
-> +    bool reset_finished;
->
->       QTAILQ_HEAD(, virtio_gpu_simple_resource) reslist;
->       QTAILQ_HEAD(, virtio_gpu_ctrl_command) cmdq;
-> diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
-> index b1f5d392bb..bbd5c6561a 100644
-> --- a/hw/display/virtio-gpu.c
-> +++ b/hw/display/virtio-gpu.c
-> @@ -14,6 +14,7 @@
->   #include "qemu/osdep.h"
->   #include "qemu/units.h"
->   #include "qemu/iov.h"
-> +#include "sysemu/cpus.h"
->   #include "ui/console.h"
->   #include "trace.h"
->   #include "sysemu/dma.h"
-> @@ -41,6 +42,7 @@ virtio_gpu_find_check_resource(VirtIOGPU *g, uint32_t r=
-esource_id,
->
->   static void virtio_gpu_cleanup_mapping(VirtIOGPU *g,
->                                          struct virtio_gpu_simple_resourc=
-e *res);
-> +static void virtio_gpu_reset_bh(void *opaque);
->
->   void virtio_gpu_update_cursor_data(VirtIOGPU *g,
->                                      struct virtio_gpu_scanout *s,
-> @@ -1387,6 +1389,8 @@ void virtio_gpu_device_realize(DeviceState *qdev, E=
-rror **errp)
->                                        &qdev->mem_reentrancy_guard);
->       g->cursor_bh =3D qemu_bh_new_guarded(virtio_gpu_cursor_bh, g,
->                                          &qdev->mem_reentrancy_guard);
-> +    g->reset_bh =3D qemu_bh_new(virtio_gpu_reset_bh, g);
-> +    qemu_cond_init(&g->reset_cond);
->       QTAILQ_INIT(&g->reslist);
->       QTAILQ_INIT(&g->cmdq);
->       QTAILQ_INIT(&g->fenceq);
-> @@ -1398,20 +1402,44 @@ static void virtio_gpu_device_unrealize(DeviceSta=
-te *qdev)
->
->       g_clear_pointer(&g->ctrl_bh, qemu_bh_delete);
->       g_clear_pointer(&g->cursor_bh, qemu_bh_delete);
-> +    g_clear_pointer(&g->reset_bh, qemu_bh_delete);
-> +    qemu_cond_destroy(&g->reset_cond);
->       virtio_gpu_base_device_unrealize(qdev);
->   }
->
-> -void virtio_gpu_reset(VirtIODevice *vdev)
-> +static void virtio_gpu_reset_bh(void *opaque)
->   {
-> -    VirtIOGPU *g =3D VIRTIO_GPU(vdev);
-> +    VirtIOGPU *g =3D VIRTIO_GPU(opaque);
->       struct virtio_gpu_simple_resource *res, *tmp;
-> -    struct virtio_gpu_ctrl_command *cmd;
->       int i =3D 0;
->
->       QTAILQ_FOREACH_SAFE(res, &g->reslist, next, tmp) {
->           virtio_gpu_resource_destroy(g, res);
->       }
->
-> +    for (i =3D 0; i < g->parent_obj.conf.max_outputs; i++) {
-> +        dpy_gfx_replace_surface(g->parent_obj.scanout[i].con, NULL);
-> +    }
-> +
-> +    g->reset_finished =3D true;
-> +    qemu_cond_signal(&g->reset_cond);
-> +}
-> +
-> +void virtio_gpu_reset(VirtIODevice *vdev)
-> +{
-> +    VirtIOGPU *g =3D VIRTIO_GPU(vdev);
-> +    struct virtio_gpu_ctrl_command *cmd;
-> +
-> +    if (qemu_in_vcpu_thread()) {
-> +        g->reset_finished =3D false;
-> +        qemu_bh_schedule(g->reset_bh);
-> +        while (!g->reset_finished) {
-> +            qemu_cond_wait_iothread(&g->reset_cond);
-> +        }
-> +    } else {
-> +        virtio_gpu_reset_bh(g);
-> +    }
-> +
->       while (!QTAILQ_EMPTY(&g->cmdq)) {
->           cmd =3D QTAILQ_FIRST(&g->cmdq);
->           QTAILQ_REMOVE(&g->cmdq, cmd, next);
-> @@ -1425,10 +1453,6 @@ void virtio_gpu_reset(VirtIODevice *vdev)
->           g_free(cmd);
->       }
->
-> -    for (i =3D 0; i < g->parent_obj.conf.max_outputs; i++) {
-> -        dpy_gfx_replace_surface(g->parent_obj.scanout[i].con, NULL);
+>  include/hw/scsi/scsi.h |  1 -
+>  hw/scsi/scsi-bus.c     | 18 ------------------
+>  hw/scsi/virtio-scsi.c  |  2 --
+>  3 files changed, 21 deletions(-)
+> 
+> diff --git a/include/hw/scsi/scsi.h b/include/hw/scsi/scsi.h
+> index e2bb1a2fbf..7c8adf10b1 100644
+> --- a/include/hw/scsi/scsi.h
+> +++ b/include/hw/scsi/scsi.h
+> @@ -198,7 +198,6 @@ SCSIDevice *scsi_bus_legacy_add_drive(SCSIBus *bus, BlockBackend *blk,
+>                                        BlockdevOnError rerror,
+>                                        BlockdevOnError werror,
+>                                        const char *serial, Error **errp);
+> -void scsi_bus_set_ua(SCSIBus *bus, SCSISense sense);
+>  void scsi_bus_legacy_handle_cmdline(SCSIBus *bus);
+>  
+>  SCSIRequest *scsi_req_alloc(const SCSIReqOps *reqops, SCSIDevice *d,
+> diff --git a/hw/scsi/scsi-bus.c b/hw/scsi/scsi-bus.c
+> index f80f4cb4fc..42a915f8b7 100644
+> --- a/hw/scsi/scsi-bus.c
+> +++ b/hw/scsi/scsi-bus.c
+> @@ -1617,24 +1617,6 @@ static int scsi_ua_precedence(SCSISense sense)
+>      return (sense.asc << 8) | sense.ascq;
+>  }
+>  
+> -void scsi_bus_set_ua(SCSIBus *bus, SCSISense sense)
+> -{
+> -    int prec1, prec2;
+> -    if (sense.key != UNIT_ATTENTION) {
+> -        return;
 > -    }
 > -
->       virtio_gpu_base_reset(VIRTIO_GPU_BASE(vdev));
->   }
->
-> --
+> -    /*
+> -     * Override a pre-existing unit attention condition, except for a more
+> -     * important reset condition.
+> -     */
+> -    prec1 = scsi_ua_precedence(bus->unit_attention);
+> -    prec2 = scsi_ua_precedence(sense);
+> -    if (prec2 < prec1) {
+> -        bus->unit_attention = sense;
+> -    }
+> -}
+> -
+>  void scsi_device_set_ua(SCSIDevice *sdev, SCSISense sense)
+>  {
+>      int prec1, prec2;
+> diff --git a/hw/scsi/virtio-scsi.c b/hw/scsi/virtio-scsi.c
+> index 45b95ea070..1f56607100 100644
+> --- a/hw/scsi/virtio-scsi.c
+> +++ b/hw/scsi/virtio-scsi.c
+> @@ -1080,7 +1080,6 @@ static void virtio_scsi_hotplug(HotplugHandler *hotplug_dev, DeviceState *dev,
+>  
+>          virtio_scsi_acquire(s);
+>          virtio_scsi_push_event(s, &info);
+> -        scsi_bus_set_ua(&s->bus, SENSE_CODE(REPORTED_LUNS_CHANGED));
+>          virtio_scsi_release(s);
+>      }
+>  }
+> @@ -1112,7 +1111,6 @@ static void virtio_scsi_hotunplug(HotplugHandler *hotplug_dev, DeviceState *dev,
+>      if (virtio_vdev_has_feature(vdev, VIRTIO_SCSI_F_HOTPLUG)) {
+>          virtio_scsi_acquire(s);
+>          virtio_scsi_push_event(s, &info);
+> -        scsi_bus_set_ua(&s->bus, SENSE_CODE(REPORTED_LUNS_CHANGED));
+>          virtio_scsi_release(s);
+>      }
+>  }
+> -- 
 > 2.41.0
->
->
 
 
