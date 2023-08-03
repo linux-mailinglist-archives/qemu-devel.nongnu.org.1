@@ -2,84 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C18F976E7DB
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 14:07:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0A8B76E908
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 15:02:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRX5e-0003GH-Qd; Thu, 03 Aug 2023 08:06:02 -0400
+	id 1qRXxH-0005dr-Vu; Thu, 03 Aug 2023 09:01:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qRX5Z-0003Fm-Io
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 08:05:57 -0400
-Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qRX5U-0005DW-3J
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 08:05:56 -0400
-Received: by mail-ej1-x629.google.com with SMTP id
- a640c23a62f3a-99c3d3c3db9so118829566b.3
- for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 05:05:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1691064349; x=1691669149;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=YwIlha3HCMy7iomm1OfAZlRHQZbr0jGdo3/nVrhg/qs=;
- b=jwbCkAypA+P1efmNzKFHXft3fA+CIYpDTgmaQS6Xeu0QN/yOZbkofhi8v9NSkX8uCp
- yRJha4rxII9X5QhWnuyIvAZmaRju4xrNoROXD8caEJQVscIefxcIR7kQ5c3p1H16SZEI
- bfaI3hKssepJ838wHQFvPwZPXy+k3P5xCe+IUHrLsVX/YxTu+RHPuKkWJe4WtrtCtuzN
- 2OsoBhOE4U2nQ5VaGht5W0g/3RhqT0pgWLR2oedZsSZzfnweMMrA9s9AI2UX/BXQfBhQ
- kM0G67Vik0oRLAZ32GfiiUGZaPvAjERR5te6oBJgoCAkVE1xPhgThaNjYQjFGB6Jytqe
- xS4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691064349; x=1691669149;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=YwIlha3HCMy7iomm1OfAZlRHQZbr0jGdo3/nVrhg/qs=;
- b=eBhmaYyPTB5RyewjU7R8aLkD5XjkuXo1+2MRzWv5ISxFDsAYBR8/4VgPlPLySuW3ky
- mtTKDj7xwdpDPXgfImmeUz8lkqGUvwtVQ2A2kvePYSOXw8z1MwZB7f8+86x1d9nOgOlY
- 0LxdGNbMUosxQX8Pc7PLS/xPuy9+3qDI/dG2wV8jdfelC6DH6BxnW5XvrKSW4/JAUhRe
- KzugbzvR0JYYtj4HgM1XteSdBVL4HLb059L+NF/F/eoDQIHbo7nfKwC5dy7Ha5CL6k1e
- OrDFIdginoFCC79eA1Sfcoeoppi+A2n/siXrGb0OfsA8wJxErCTi+Pl+ZnT+osNiBgCB
- 3DYg==
-X-Gm-Message-State: ABy/qLYOQhSkkh8JisJ+e2VMsnRFVNZ4VPz70FhxMZNJ5WzNJqPmpWBR
- yDRGVKvZF3tg7XtA269kXENkDw==
-X-Google-Smtp-Source: APBJJlHQK79reWSArhmRR/cmJuLzY/ynsrPCMBI/PGqA7KozNzdsX6glNxkfj2N5Vauqe2FPNq0IgA==
-X-Received: by 2002:a17:907:7743:b0:99b:65fa:e309 with SMTP id
- kx3-20020a170907774300b0099b65fae309mr6844475ejc.74.1691064348209; 
- Thu, 03 Aug 2023 05:05:48 -0700 (PDT)
-Received: from localhost (212-5-140-29.ip.btc-net.bg. [212.5.140.29])
- by smtp.gmail.com with ESMTPSA id
- x20-20020a1709065ad400b00988be3c1d87sm10420363ejs.116.2023.08.03.05.05.47
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 03 Aug 2023 05:05:47 -0700 (PDT)
-Date: Thu, 3 Aug 2023 15:05:46 +0300
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com
-Subject: Re: [PATCH] target/riscv/kvm.c: fix mvendorid size in
- vcpu_set_machine_ids()
-Message-ID: <20230803-70bedcfb60cb5b2efb87cedc@orel>
-References: <20230802180058.281385-1-dbarboza@ventanamicro.com>
- <20230803-3d2b378004c77196efc74f09@orel>
- <d9659727-2ba4-370c-32ac-9f5ade5bea60@ventanamicro.com>
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qRXwz-0005a2-No
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 09:01:14 -0400
+Received: from mout.gmx.net ([212.227.17.20])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qRXwt-0000PW-Em
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 09:01:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
+ s=s31663417; t=1691067656; x=1691672456; i=deller@gmx.de;
+ bh=OM0D0vH0S/8w2HJ248/jgun29ld1eyyO0w5kvgvxxVA=;
+ h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+ b=VRIiDx8FdgqQh8AZuHrcTEsru7hutDsA2uon9t25hQ+48JDu8uhJUrmhWruFVCfPCA3u8hI
+ O91YkLKFKDmbohrHa7QDqa7Qw+C9DwGHTu3t+OssJXU+rS8kO3MNerbEVVJAA8DtA1Or/BEfq
+ SdS8zvT5GP9voiuuJMVwIpi2zzeEvdlb0uYlmsMqmuAbHHaIbToV+Cxg/LYyWLtzMPPap/obo
+ ZdT41ruURUDxcGnhK5EWUiLKCKwHuLhgAl5kaCLTIaj0X+8Pfj/pKRu+4oLKqYTe/b7SmP6KJ
+ 7RBoudvJuN55LiYzF69vxb+bHp3PqM35p37DB4Fsh/Xoa5ZcPv9w==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.60] ([94.134.147.53]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MKbkC-1q8vAK39cC-00L1OO; Thu, 03
+ Aug 2023 15:00:56 +0200
+Message-ID: <e859158c-ab10-8fb3-0841-e4d50213f354@gmx.de>
+Date: Thu, 3 Aug 2023 15:00:54 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d9659727-2ba4-370c-32ac-9f5ade5bea60@ventanamicro.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::629;
- envelope-from=ajones@ventanamicro.com; helo=mail-ej1-x629.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v7 13/14] linux-user: Adjust initial brk when interpreter
+ is close to executable
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: laurent@vivier.eu, akihiko.odaki@daynix.com, joel@jms.id.au
+References: <20230803015302.407219-1-richard.henderson@linaro.org>
+ <20230803015302.407219-14-richard.henderson@linaro.org>
+From: Helge Deller <deller@gmx.de>
+In-Reply-To: <20230803015302.407219-14-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:SKXk574h0zy8oIJdhIJuXjx05CJ36WhOUiHqZZ/iH4kRVVBZtQL
+ F97TqUSPrUoKMnnoEm/zI1NIdaZXoJYM8wxlj/zbc/MLVqVp27houzAlIIvY1pFEm5IG8OC
+ aSlL6STiDpulVuTF4zXHifRA4FKgFz19hqsZcR8XneNfiFpO0k1CztL1xYJA4rDVEk35E84
+ og1SQhjC7FGFmmbHtGThg==
+UI-OutboundReport: notjunk:1;M01:P0:Y37tyJ/AhgM=;GrtlAJgij1p4YTTXwZwOQFu6vGq
+ sh6v9FwZ1n9Rd82mtc5C3yPVCJBP5VziJ76eLniZ6vAs7UBnkr1bHBGQxhFGGJDM7YHx9rZtO
+ gZEHAiec9aCWJnZiwzqXDx4rQ30awlnHwkPjRjaKzvDz62EICupaZXh+kPGHbuRYNcPfefwSx
+ dwD+b6OLyF+G+V9Vmkra4k+wK9bJDM7kXU603ufAu6u3yqtXxJle7X3f520RRCkZbyIXClXmt
+ CHeoNVYb7oeBmMHXWTn78Y9qXyEDmKmXxv1o4lib4JYxTWsP3kI5KcDrx1I9TdOXedENFqdM2
+ +M3p/1281TWqXZhykftkIkPuBkvwPgy/Fynmt9gFGWta1xrAYFJfWD8mWJJA7WByLJOhIZTOg
+ fwNQ5aFGLQwbVyuV+CFqb1APRBHmbLx4+OXmtI5i9sD+/phiHw7lI7JExUIlvoIXF8Y5Exnk9
+ +XicVV61QucLYLNrGGK1ohfLxIi+GEyn++VmdzvPfZrG/w5njIDWe2C8hlzSpjq6HmtaJ0OnX
+ CfWkcQSzd+yqbCa2Ax6O6uF0u3mrzmPcmgRYZmUpS6EhMm5tYVh05h1p7dEVp6xRuRqDIuJcO
+ 8v03MM4lJjyoha7WexomcfW8KrGJJMpjw/r6X50JBPkno0nrZsxI3Nc1fdPJPRzBfh1ptjRBk
+ DsBjzRmXtixQyEUd/w1xHtMvFKf68xklNKNHeyWvDQiLsSD37X6ygD0x5hp4SNMYz56f94oE/
+ 4OGxkynBu+oEXsyIiquh7A2BMiExjH0Dla8bLMarwaatfPrFbXJfhTAjv57MYagseqnXY1WXG
+ /ulK4kClU+flmO3qcCP4Te4Tww1uZIwRfVRUJG/c1X+oMWJKxL6UXbT0pbVZkQnSgE1EMTGEh
+ KNjs2ZbShDzmEJfyqqCywQx7f3IBblrIHGFUMR3k06iMtF+8FJ+x163+IMpAHZflShQlvJotp
+ 5t2h5GI7KWpJ5U/bjHaUFzRvyYU=
+Received-SPF: pass client-ip=212.227.17.20; envelope-from=deller@gmx.de;
+ helo=mout.gmx.net
+X-Spam_score_int: -28
+X-Spam_score: -2.9
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ NICE_REPLY_A=-0.091, RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,154 +88,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Aug 03, 2023 at 08:36:57AM -0300, Daniel Henrique Barboza wrote:
-> 
-> 
-> On 8/3/23 06:29, Andrew Jones wrote:
-> > On Wed, Aug 02, 2023 at 03:00:58PM -0300, Daniel Henrique Barboza wrote:
-> > > cpu->cfg.mvendorid is a 32 bit field and kvm_set_one_reg() always write
-> > > a target_ulong val, i.e. a 64 bit field in a 64 bit host.
-> > > 
-> > > Given that we're passing a pointer to the mvendorid field, the reg is
-> > > reading 64 bits starting from mvendorid and going 32 bits in the next
-> > > field, marchid. Here's an example:
-> > > 
-> > > $ ./qemu-system-riscv64 -machine virt,accel=kvm -m 2G -smp 1 \
-> > >     -cpu rv64,marchid=0xab,mvendorid=0xcd,mimpid=0xef(...)
-> > > 
-> > > (inside the guest)
-> > >   # cat /proc/cpuinfo
-> > > processor	: 0
-> > > hart		: 0
-> > > isa		: rv64imafdc_zicbom_zicboz_zihintpause_zbb_sstc
-> > > mmu		: sv57
-> > > mvendorid	: 0xab000000cd
-> > > marchid		: 0xab
-> > > mimpid		: 0xef
-> > > 
-> > > 'mvendorid' was written as a combination of 0xab (the value from the
-> > > adjacent field, marchid) and its intended value 0xcd.
-> > > 
-> > > Fix it by assigning cpu->cfg.mvendorid to a target_ulong var 'reg' and
-> > > use it as input for kvm_set_one_reg(). Here's the result with this patch
-> > > applied and using the same QEMU command line:
-> > > 
-> > >   # cat /proc/cpuinfo
-> > > processor	: 0
-> > > hart		: 0
-> > > isa		: rv64imafdc_zicbom_zicboz_zihintpause_zbb_sstc
-> > > mmu		: sv57
-> > > mvendorid	: 0xcd
-> > > marchid		: 0xab
-> > > mimpid		: 0xef
-> > > 
-> > > This bug affects only the generic (rv64) CPUs when running with KVM in a
-> > > 64 bit env since the 'host' CPU does not allow the machine IDs to be
-> > > changed via command line.
-> > > 
-> > > Fixes: 1fb5a622f7 ("target/riscv: handle mvendorid/marchid/mimpid for KVM CPUs")
-> > > Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> > > ---
-> > >   target/riscv/kvm.c | 9 ++++++++-
-> > >   1 file changed, 8 insertions(+), 1 deletion(-)
-> > > 
-> > > diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
-> > > index 9d8a8982f9..b1fd2233c0 100644
-> > > --- a/target/riscv/kvm.c
-> > > +++ b/target/riscv/kvm.c
-> > > @@ -852,12 +852,19 @@ void kvm_arch_init_irq_routing(KVMState *s)
-> > >   static int kvm_vcpu_set_machine_ids(RISCVCPU *cpu, CPUState *cs)
-> > >   {
-> > >       CPURISCVState *env = &cpu->env;
-> > > +    target_ulong reg;
-> > 
-> > We can use the type of cfg since KVM just gets an address and uses the
-> > KVM register type to determine the size. So here,
-> > 
-> >   uint32_t reg = cpu->cfg.mvendorid;
-> > 
-> > and then...
-> > 
-> > >       uint64_t id;
-> > >       int ret;
-> > >       id = kvm_riscv_reg_id(env, KVM_REG_RISCV_CONFIG,
-> > >                             KVM_REG_RISCV_CONFIG_REG(mvendorid));
-> > > -    ret = kvm_set_one_reg(cs, id, &cpu->cfg.mvendorid);
-> > > +    /*
-> > > +     * cfg.mvendorid is an uint32 but a target_ulong will
-> > > +     * be written. Assign it to a target_ulong var to avoid
-> > > +     * writing pieces of other cpu->cfg fields in the reg.
-> > > +     */
-> > 
-> > ...we don't need this comment since we're not doing anything special.
-> 
-> I tried it out and it doesn't seem to work. Here's the result:
-> 
-> / # cat /proc/cpuinfo
-> processor	: 0
-> hart		: 0
-> isa		: rv64imafdc_zicbom_zicboz_zihintpause_zbb_sstc
-> mmu		: sv57
-> mvendorid	: 0xaaaaaa000000cd
-> marchid		: 0xab
-> mimpid		: 0xef
-> 
-> 
-> The issue here is that the kernel considers 'mvendorid' as an unsigned long (or
-> what QEMU calls target_ulong). kvm_set_one_reg() will write an unsigned long
-> regardless of the uint32_t typing of 'reg', meaning that it'll end up writing
-> 32 bits of uninitialized stuff from the stack.
+Hi Richard,
 
-Indeed, I managed to reverse the problem in my head. We need to to worry
-about KVM's notion of the type, not QEMU's. I feel like we still need some
-sort of helper, but one that takes the type of the KVM register into
-account. KVM_REG_RISCV_CONFIG registers are KVM ulongs, which may be
-different than QEMU's ulongs, if we ever supported 32-bit userspace on
-64-bit kernels. Also, not all KVM register types are ulong, some are
-explicitly u32s and others u64s. I see kvm_riscv_reg_id() is used to try
-and get the right KVM reg size set, but it's broken for RISCV_FP_F_REG(),
-since those are all u32s, even when KVM has 64-bit ulong (I guess nobody
-is testing get/set-one-reg with F registers using that helper, otherwise
-we'd be getting EINVAL from KVM). And KVM_REG_RISCV_FP_D_REG(fcsr) is also
-broken and RISCV_TIMER_REG() looks broken with 32-bit KVM, since it should
-always be u64. I guess all that stuff needs an audit.
+Thanks for putting this all together!
+I'll test asap.
 
-So, I think we need a helper that has a switch on the KVM register type
-and provides the right sized buffer for each case.
+I haven't checked yet, but Akihiko did send a revised v2 patch
+series, while my v6 series included his older v1 patches.
+We should consider his latest series...
 
-Thanks,
-drew
+One other thing below....
 
+On 8/3/23 03:53, Richard Henderson wrote:
+> From: Helge Deller <deller@gmx.de>
+>
+> While we attempt to load a ET_DYN executable far away from
+> TASK_UNMAPPED_BASE, we are not completely in control of the
+> address space layout.  If the interpreter lands close to
+> the executable, leaving insufficient heap space, move brk.
+>
+> Signed-off-by: Helge Deller <deller@gmx.de>
+> [rth: Re-order after ELF_ET_DYN_BASE patch so that we do not
+>   "temporarily break" tsan, and also to minimize the changes required.
+>   Remove image_info.reserve_brk as unused.]
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   linux-user/qemu.h    |  1 -
+>   linux-user/elfload.c | 51 +++++++++++++-------------------------------
+>   2 files changed, 15 insertions(+), 37 deletions(-)
+>...
+> @@ -3229,7 +3208,8 @@ static void load_elf_image(const char *image_name,=
+ int image_fd,
+>       info->end_code =3D 0;
+>       info->start_data =3D -1;
+>       info->end_data =3D 0;
+> -    info->brk =3D 0;
+> +    /* Usual start for brk is after all sections of the main executable=
+. */
+> +    info->brk =3D TARGET_PAGE_ALIGN(hiaddr);
 
-> 
-> target_ulong seems that the right choice here. We could perhaps work with
-> uint64_t (other parts of the code does that) but target_ulong is nicer with
-> 32-bit setups.
-> 
-> 
-> Thanks,
-> 
-> Daniel
-> 
-> > 
-> > > +    reg = cpu->cfg.mvendorid;
-> > > +    ret = kvm_set_one_reg(cs, id, &reg);
-> > >       if (ret != 0) {
-> > >           return ret;
-> > >       }
-> > > -- 
-> > > 2.41.0
-> > > 
-> > 
-> > We should audit and fix all uses of &cpu->cfg.* with KVM ioctls. We can
-> > also consider introducing wrappers like
-> > 
-> > #define kvm_set_one_reg_safe(cs, id, addr)	\
-> > ({						\
-> > 	typeof(*(addr)) _addr = *(addr);	\
-> > 	kvm_set_one_reg(cs, id, &_addr)		\
-> > })
-> > 
-> > Thanks,
-> > drew
+This is from my original patch, and is probably wrong.
+I think this needs to be:
+     info->brk =3D HOST_PAGE_ALIGN(hiaddr);
+
+The brk page needs to be aligned to the host page size variable (which
+is always >=3D target page size).
+The page will be mapped +rw (on host), so may need the distance to code/sh=
+ared
+libs below it, and for that distance target-alignment may not be sufficien=
+t.
+
+I think this fixes the problem which joel faced with armel static binary
+on ppc64le.
+
+Helge
 
