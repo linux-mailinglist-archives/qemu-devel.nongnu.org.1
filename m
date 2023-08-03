@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DADB76EEBA
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 17:54:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A2CE76EEBB
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 17:54:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRaeB-0004T1-06; Thu, 03 Aug 2023 11:53:55 -0400
+	id 1qRaeB-0004TD-H8; Thu, 03 Aug 2023 11:53:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qRae9-0004Sf-5P
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qRae9-0004Sg-6P
  for qemu-devel@nongnu.org; Thu, 03 Aug 2023 11:53:53 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qRae6-00040L-R3
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qRae7-00040Q-1i
  for qemu-devel@nongnu.org; Thu, 03 Aug 2023 11:53:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1691078030;
@@ -22,45 +22,45 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=X3m5H2oFcIwGjkMMwsUf9REVOz7PT+Z4cqrMgkaNtcg=;
- b=dm43/bn2v+UgSrI+11UJWrLCaoRw9syNDgDx3S21U/g374J2JQbFVEmKJAdd8Ds8rSRss4
- YoaR6oiVfq3fYAlDDNZNZc90YvKhdLL5sSMiT1PzS1WpzQDuWj/LCZ5YIGthTHFKC8VzcX
- IujdRwHfa/t2rSGb2BNAaX7UQ10OjY0=
-Received: from mail-vk1-f198.google.com (mail-vk1-f198.google.com
- [209.85.221.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=bYbv66Vz5I38ebPTHoaaJYIihP24Q9RqOl6FK48I1hM=;
+ b=F6BBJbhnOBauPusuOhgCcFNlyDgvFM0DzoDNU6PTF864eHPWbp2DUH3o/7LJZuwq0kVXzF
+ 96+N0qGqce/BDqzjuCld/sqisoW7f4Q5daWZHVf/W1ww+Zf9gPxZEFje2fwqt7N/3OCGYi
+ t4s0foxoOqTM74II7xPpN8GPvG/Q/b8=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-261-I1X9KfG4P76OvaQOT8yKdw-1; Thu, 03 Aug 2023 11:53:48 -0400
-X-MC-Unique: I1X9KfG4P76OvaQOT8yKdw-1
-Received: by mail-vk1-f198.google.com with SMTP id
- 71dfb90a1353d-4865ca8678dso18082e0c.1
- for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 08:53:48 -0700 (PDT)
+ us-mta-203-p-vfs2VHPiKrkwO8A26otA-1; Thu, 03 Aug 2023 11:53:49 -0400
+X-MC-Unique: p-vfs2VHPiKrkwO8A26otA-1
+Received: by mail-qt1-f200.google.com with SMTP id
+ d75a77b69052e-40559875dd1so1845081cf.1
+ for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 08:53:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691078028; x=1691682828;
+ d=1e100.net; s=20221208; t=1691078029; x=1691682829;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=X3m5H2oFcIwGjkMMwsUf9REVOz7PT+Z4cqrMgkaNtcg=;
- b=YfDhb+6FVefygrON4UKzBaACr/rKlbNHs9NGjZHJ03v4yFyifdAAFKx6j9RY9wwvT/
- 6OFuWOYH0Z8L0rbB7+9eh3QqQav0oPJYNiSshzF8Iyz20M26YSw19jkMsMiMaKFScBh8
- mz6qMD7YhTd7IhqlrcSuTNua8rtfEGk3rwPRBXjtoC/wrv3WALiOteFh0MAa9iFGT2pG
- OBDJvPrrwZpSjQqhD7IDTwSdO5T0i++M6bO1YnDENvPdif5Uvf5peXjIBgffYfYSZVcc
- AP3Tq7r7OZOsm7iieCTjYfGhS4z7OsTWehLU4iVHyDNl2kH8uL2dqJ7NO4aXH/W/TU0/
- GT9Q==
-X-Gm-Message-State: ABy/qLZzFCaOcClKlKoP5s2ia2d+426OuGzzbZun6jmXwxODEDTzXhD5
- BA5BUeCctv1sy1yRw2Ku8XuDJabDmXIzACFbKOTcCdgiFLw5y8crz/lHO4wtWhtOvwGS/cIxVL4
- XmdeS2Yijm1p6Sv+Vk/Uvsxoil2JyWf4XLMA0aKe4mAMhFPgIixAPLT8S/88ybr9MXYJLwmYZ
-X-Received: by 2002:a1f:b210:0:b0:47e:9d33:6da1 with SMTP id
- b16-20020a1fb210000000b0047e9d336da1mr7753516vkf.0.1691078027683; 
- Thu, 03 Aug 2023 08:53:47 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlGOuR3aYHe67wXvccaaoDN+ohEllN1r168XeJArwpcdYQWoQhVPztWieR9AabzICKKFVkuXXg==
-X-Received: by 2002:a1f:b210:0:b0:47e:9d33:6da1 with SMTP id
- b16-20020a1fb210000000b0047e9d336da1mr7753485vkf.0.1691078026988; 
- Thu, 03 Aug 2023 08:53:46 -0700 (PDT)
+ bh=bYbv66Vz5I38ebPTHoaaJYIihP24Q9RqOl6FK48I1hM=;
+ b=Nz5nYYSSv/vKT8SAieP/Li2ugDcY00eKrkXLIQeiwJkzWwnbdd33RS9k2q2jo4m7As
+ PqCnNpZGjrJMhN/kbETEMAuC7l6KCJS2AFADfI8kctlRLmp4Qe+8xC1x1TyQhETQbPHX
+ lrcvukvdZeSvO/y7Loq5FjP4OkE6WueatBwX51XRJTMqyRiEZuwUXaeOsGBL5QKXQyGu
+ 2dqAMs/n/TMItrQuUJ4xeGD/JnA7/orEdXkBNbygp0f98Nz8HNCWzHYg3mbyFWB0WxLB
+ tALLCNOS52r8uSSsCdWzusSdPJidspM+QRgBy2q8eY93DhjDRFsf0fQgwbj7PzbdJ+by
+ viPQ==
+X-Gm-Message-State: ABy/qLY6JWW7STYAYjLtKOqJB3WxQiQhwg9uuBErMVoAED7O+kcOoO3V
+ sYNb4nNFytChVBkfJNigGalhBOx9UQyWnbxrEQj0/DLHlQbQGgzIr2okndvAmoXdR4CAaPayhRz
+ Sg9V2i0gov9sMLjbcdKJGMVcYVGRODrKD9vfbQfD+3sHVw5wlj8iWtqN+bfk0c0P48Nj+0P6j
+X-Received: by 2002:ac8:4e4c:0:b0:40c:3f64:b57b with SMTP id
+ e12-20020ac84e4c000000b0040c3f64b57bmr20793139qtw.5.1691078028644; 
+ Thu, 03 Aug 2023 08:53:48 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlF/HkwF+5PdALyHW8Sw8Iqc0NVWLb/kaJAcnBDAAwyJpz/8ki3xIkI/SN4nCnT8V6amTxstsg==
+X-Received: by 2002:ac8:4e4c:0:b0:40c:3f64:b57b with SMTP id
+ e12-20020ac84e4c000000b0040c3f64b57bmr20793102qtw.5.1691078028161; 
+ Thu, 03 Aug 2023 08:53:48 -0700 (PDT)
 Received: from x1n.. (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
  [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- iw2-20020a05622a6f8200b00403f5873f5esm23682qtb.24.2023.08.03.08.53.45
+ iw2-20020a05622a6f8200b00403f5873f5esm23682qtb.24.2023.08.03.08.53.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 03 Aug 2023 08:53:46 -0700 (PDT)
+ Thu, 03 Aug 2023 08:53:47 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhiyi Guo <zhguo@redhat.com>, peterx@redhat.com,
@@ -69,10 +69,10 @@ Cc: Zhiyi Guo <zhguo@redhat.com>, peterx@redhat.com,
  Leonardo Bras Soares Passos <lsoaresp@redhat.com>,
  Fabiano Rosas <farosas@suse.de>, Juan Quintela <quintela@redhat.com>,
  Eric Blake <eblake@redhat.com>, Chensheng Dong <chdong@redhat.com>
-Subject: [PATCH for-8.2 v2 1/2] qapi/migration: Deduplicate migration
- parameter field comments
-Date: Thu,  3 Aug 2023 11:53:43 -0400
-Message-ID: <20230803155344.11450-2-peterx@redhat.com>
+Subject: [PATCH for-8.2 v2 2/2] migration: Allow user to specify migration
+ switchover bandwidth
+Date: Thu,  3 Aug 2023 11:53:44 -0400
+Message-ID: <20230803155344.11450-3-peterx@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230803155344.11450-1-peterx@redhat.com>
 References: <20230803155344.11450-1-peterx@redhat.com>
@@ -103,355 +103,310 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We used to have three objects that have always the same list of parameters
-and comments are always duplicated:
+Migration bandwidth is a very important value to live migration.  It's
+because it's one of the major factors that we'll make decision on when to
+switchover to destination in a precopy process.
 
-  - @MigrationParameter
-  - @MigrationParameters
-  - @MigrateSetParameters
+This value is currently estimated by QEMU during the whole live migration
+process by monitoring how fast we were sending the data.  This can be the
+most accurate bandwidth if in the ideal world, where we're always feeding
+unlimited data to the migration channel, and then it'll be limited to the
+bandwidth that is available.
 
-Before we can deduplicate the code, it's fairly straightforward to
-deduplicate the comments first, so for each time we add a new migration
-parameter we don't need to copy the same paragraphs three times.
+However in reality it may be very different, e.g., over a 10Gbps network we
+can see query-migrate showing migration bandwidth of only a few tens of
+MB/s just because there are plenty of other things the migration thread
+might be doing.  For example, the migration thread can be busy scanning
+zero pages, or it can be fetching dirty bitmap from other external dirty
+sources (like vhost or KVM).  It means we may not be pushing data as much
+as possible to migration channel, so the bandwidth estimated from "how many
+data we sent in the channel" can be dramatically inaccurate sometimes,
+e.g., that a few tens of MB/s even if 10Gbps available, and then the
+decision to switchover will be further affected by this.
 
-Make the @MigrationParameter the major source of truth, while leaving the
-rest two to reference to it.
+The migration may not even converge at all with the downtime specified,
+with that wrong estimation of bandwidth.
 
-We do have a slight problem in the man/html pages generated, that for the
-latter two objects we'll get a list of Members but with all of them saying
-"Not documented":
+The issue is QEMU itself may not be able to avoid those uncertainties on
+measuing the real "available migration bandwidth".  At least not something
+I can think of so far.
 
-   Members
-       announce-initial: int (optional)
-              Not documented
+One way to fix this is when the user is fully aware of the available
+bandwidth, then we can allow the user to help providing an accurate value.
 
-       announce-max: int (optional)
-              Not documented
+For example, if the user has a dedicated channel of 10Gbps for migration
+for this specific VM, the user can specify this bandwidth so QEMU can
+always do the calculation based on this fact, trusting the user as long as
+specified.
 
-       announce-rounds: int (optional)
-              Not documented
+A new parameter "max-switchover-bandwidth" is introduced just for this. So
+when the user specified this parameter, instead of trusting the estimated
+value from QEMU itself (based on the QEMUFile send speed), let's trust the
+user more by using this value to decide when to switchover, assuming that
+we'll have such bandwidth available then.
 
-       [...]
+When the user wants to have migration only use 5Gbps out of that 10Gbps,
+one can set max-bandwidth to 5Gbps, along with max-switchover-bandwidth to
+5Gbps so it'll never use over 5Gbps too (so the user can have the rest
+5Gbps for other things).  So it can be useful even if the network is not
+dedicated, but as long as the user can know a solid value.
 
-Even though we'll have a reference there telling the reader to jump over to
-read the @MigrationParameter sections instead, for example:
+This can resolve issues like "unconvergence migration" which is caused by
+hilarious low "migration bandwidth" detected for whatever reason.
 
-   MigrationParameters (Object)
-
-       The object structure to represent a list of migration parameters.
-       The optional members aren't actually optional.  For detailed
-       explanation for each of the field, please refer to the documentation
-       of MigrationParameter.
-
-So hopefully that's not too bad.. and we can leave it for later to make it
-even better.
-
+Reported-by: Zhiyi Guo <zhguo@redhat.com>
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- qapi/migration.json | 283 ++------------------------------------------
- 1 file changed, 7 insertions(+), 276 deletions(-)
+ qapi/migration.json            | 14 +++++++++++++-
+ migration/migration.h          |  2 +-
+ migration/options.h            |  1 +
+ migration/migration-hmp-cmds.c | 14 ++++++++++++++
+ migration/migration.c          | 19 +++++++++++++++----
+ migration/options.c            | 28 ++++++++++++++++++++++++++++
+ migration/trace-events         |  2 +-
+ 7 files changed, 73 insertions(+), 7 deletions(-)
 
 diff --git a/qapi/migration.json b/qapi/migration.json
-index 8843e74b59..bb798f87a5 100644
+index bb798f87a5..6a04fb7d36 100644
 --- a/qapi/migration.json
 +++ b/qapi/migration.json
-@@ -854,142 +854,9 @@
- ##
- # @MigrateSetParameters:
+@@ -759,6 +759,16 @@
+ # @max-bandwidth: to set maximum speed for migration.  maximum speed
+ #     in bytes per second.  (Since 2.8)
  #
--# @announce-initial: Initial delay (in milliseconds) before sending
--#     the first announce (Since 4.0)
--#
--# @announce-max: Maximum delay (in milliseconds) between packets in
--#     the announcement (Since 4.0)
--#
--# @announce-rounds: Number of self-announce packets sent after
--#     migration (Since 4.0)
--#
--# @announce-step: Increase in delay (in milliseconds) between
--#     subsequent packets in the announcement (Since 4.0)
--#
--# @compress-level: compression level
--#
--# @compress-threads: compression thread count
--#
--# @compress-wait-thread: Controls behavior when all compression
--#     threads are currently busy.  If true (default), wait for a free
--#     compression thread to become available; otherwise, send the page
--#     uncompressed.  (Since 3.1)
--#
--# @decompress-threads: decompression thread count
--#
--# @throttle-trigger-threshold: The ratio of bytes_dirty_period and
--#     bytes_xfer_period to trigger throttling.  It is expressed as
--#     percentage.  The default value is 50. (Since 5.0)
--#
--# @cpu-throttle-initial: Initial percentage of time guest cpus are
--#     throttled when migration auto-converge is activated.  The
--#     default value is 20. (Since 2.7)
--#
--# @cpu-throttle-increment: throttle percentage increase each time
--#     auto-converge detects that migration is not making progress.
--#     The default value is 10. (Since 2.7)
--#
--# @cpu-throttle-tailslow: Make CPU throttling slower at tail stage At
--#     the tail stage of throttling, the Guest is very sensitive to CPU
--#     percentage while the @cpu-throttle -increment is excessive
--#     usually at tail stage.  If this parameter is true, we will
--#     compute the ideal CPU percentage used by the Guest, which may
--#     exactly make the dirty rate match the dirty rate threshold.
--#     Then we will choose a smaller throttle increment between the one
--#     specified by @cpu-throttle-increment and the one generated by
--#     ideal CPU percentage.  Therefore, it is compatible to
--#     traditional throttling, meanwhile the throttle increment won't
--#     be excessive at tail stage.  The default value is false.  (Since
--#     5.1)
--#
--# @tls-creds: ID of the 'tls-creds' object that provides credentials
--#     for establishing a TLS connection over the migration data
--#     channel.  On the outgoing side of the migration, the credentials
--#     must be for a 'client' endpoint, while for the incoming side the
--#     credentials must be for a 'server' endpoint.  Setting this to a
--#     non-empty string enables TLS for all migrations.  An empty
--#     string means that QEMU will use plain text mode for migration,
--#     rather than TLS (Since 2.9) Previously (since 2.7), this was
--#     reported by omitting tls-creds instead.
--#
--# @tls-hostname: hostname of the target host for the migration.  This
--#     is required when using x509 based TLS credentials and the
--#     migration URI does not already include a hostname.  For example
--#     if using fd: or exec: based migration, the hostname must be
--#     provided so that the server's x509 certificate identity can be
--#     validated.  (Since 2.7) An empty string means that QEMU will use
--#     the hostname associated with the migration URI, if any.  (Since
--#     2.9) Previously (since 2.7), this was reported by omitting
--#     tls-hostname instead.
--#
--# @max-bandwidth: to set maximum speed for migration.  maximum speed
--#     in bytes per second.  (Since 2.8)
--#
--# @downtime-limit: set maximum tolerated downtime for migration.
--#     maximum downtime in milliseconds (Since 2.8)
--#
--# @x-checkpoint-delay: the delay time between two COLO checkpoints.
--#     (Since 2.8)
--#
--# @block-incremental: Affects how much storage is migrated when the
--#     block migration capability is enabled.  When false, the entire
--#     storage backing chain is migrated into a flattened image at the
--#     destination; when true, only the active qcow2 layer is migrated
--#     and the destination must already have access to the same backing
--#     chain as was used on the source.  (since 2.10)
--#
--# @multifd-channels: Number of channels used to migrate data in
--#     parallel.  This is the same number that the number of sockets
--#     used for migration.  The default value is 2 (since 4.0)
--#
--# @xbzrle-cache-size: cache size to be used by XBZRLE migration.  It
--#     needs to be a multiple of the target page size and a power of 2
--#     (Since 2.11)
--#
--# @max-postcopy-bandwidth: Background transfer bandwidth during
--#     postcopy.  Defaults to 0 (unlimited).  In bytes per second.
--#     (Since 3.0)
--#
--# @max-cpu-throttle: maximum cpu throttle percentage.  The default
--#     value is 99. (Since 3.1)
--#
--# @multifd-compression: Which compression method to use.  Defaults to
--#     none.  (Since 5.0)
--#
--# @multifd-zlib-level: Set the compression level to be used in live
--#     migration, the compression level is an integer between 0 and 9,
--#     where 0 means no compression, 1 means the best compression
--#     speed, and 9 means best compression ratio which will consume
--#     more CPU. Defaults to 1. (Since 5.0)
--#
--# @multifd-zstd-level: Set the compression level to be used in live
--#     migration, the compression level is an integer between 0 and 20,
--#     where 0 means no compression, 1 means the best compression
--#     speed, and 20 means best compression ratio which will consume
--#     more CPU. Defaults to 1. (Since 5.0)
--#
--# @block-bitmap-mapping: Maps block nodes and bitmaps on them to
--#     aliases for the purpose of dirty bitmap migration.  Such aliases
--#     may for example be the corresponding names on the opposite site.
--#     The mapping must be one-to-one, but not necessarily complete: On
--#     the source, unmapped bitmaps and all bitmaps on unmapped nodes
--#     will be ignored.  On the destination, encountering an unmapped
--#     alias in the incoming migration stream will result in a report,
--#     and all further bitmap migration data will then be discarded.
--#     Note that the destination does not know about bitmaps it does
--#     not receive, so there is no limitation or requirement regarding
--#     the number of bitmaps received, or how they are named, or on
--#     which nodes they are placed.  By default (when this parameter
--#     has never been set), bitmap names are mapped to themselves.
--#     Nodes are mapped to their block device name if there is one, and
--#     to their node name otherwise.  (Since 5.2)
--#
--# @x-vcpu-dirty-limit-period: Periodic time (in milliseconds) of dirty
--#     limit during live migration.  Should be in the range 1 to 1000ms.
--#     Defaults to 1000ms.  (Since 8.1)
--#
--# @vcpu-dirty-limit: Dirtyrate limit (MB/s) during live migration.
--#     Defaults to 1.  (Since 8.1)
-+# Object structure to set migration parameters.  For detailed
-+# explanation of each of the field, please refer to the documentation
-+# of @MigrationParameter.
++# @max-switchover-bandwidth: to set available bandwidth for migration.
++#     By default, this value is zero, means the user is not aware of
++#     the available bandwidth that can be used by QEMU migration, so
++#     QEMU will estimate the bandwidth automatically.  This can be set
++#     when the estimated value is not accurate, while the user is able
++#     to guarantee such bandwidth is available for migration purpose
++#     during the migration procedure.  When specified correctly, this
++#     can make the switchover decision much more accurate, which will
++#     also be based on the max downtime specified.  (Since 8.2)
++#
+ # @downtime-limit: set maximum tolerated downtime for migration.
+ #     maximum downtime in milliseconds (Since 2.8)
  #
- # Features:
- #
-@@ -1053,146 +920,10 @@
- ##
- # @MigrationParameters:
- #
--# The optional members aren't actually optional.
--#
--# @announce-initial: Initial delay (in milliseconds) before sending
--#     the first announce (Since 4.0)
--#
--# @announce-max: Maximum delay (in milliseconds) between packets in
--#     the announcement (Since 4.0)
--#
--# @announce-rounds: Number of self-announce packets sent after
--#     migration (Since 4.0)
--#
--# @announce-step: Increase in delay (in milliseconds) between
--#     subsequent packets in the announcement (Since 4.0)
--#
--# @compress-level: compression level
--#
--# @compress-threads: compression thread count
--#
--# @compress-wait-thread: Controls behavior when all compression
--#     threads are currently busy.  If true (default), wait for a free
--#     compression thread to become available; otherwise, send the page
--#     uncompressed.  (Since 3.1)
--#
--# @decompress-threads: decompression thread count
--#
--# @throttle-trigger-threshold: The ratio of bytes_dirty_period and
--#     bytes_xfer_period to trigger throttling.  It is expressed as
--#     percentage.  The default value is 50. (Since 5.0)
--#
--# @cpu-throttle-initial: Initial percentage of time guest cpus are
--#     throttled when migration auto-converge is activated.  (Since
--#     2.7)
--#
--# @cpu-throttle-increment: throttle percentage increase each time
--#     auto-converge detects that migration is not making progress.
--#     (Since 2.7)
--#
--# @cpu-throttle-tailslow: Make CPU throttling slower at tail stage At
--#     the tail stage of throttling, the Guest is very sensitive to CPU
--#     percentage while the @cpu-throttle -increment is excessive
--#     usually at tail stage.  If this parameter is true, we will
--#     compute the ideal CPU percentage used by the Guest, which may
--#     exactly make the dirty rate match the dirty rate threshold.
--#     Then we will choose a smaller throttle increment between the one
--#     specified by @cpu-throttle-increment and the one generated by
--#     ideal CPU percentage.  Therefore, it is compatible to
--#     traditional throttling, meanwhile the throttle increment won't
--#     be excessive at tail stage.  The default value is false.  (Since
--#     5.1)
--#
--# @tls-creds: ID of the 'tls-creds' object that provides credentials
--#     for establishing a TLS connection over the migration data
--#     channel.  On the outgoing side of the migration, the credentials
--#     must be for a 'client' endpoint, while for the incoming side the
--#     credentials must be for a 'server' endpoint.  An empty string
--#     means that QEMU will use plain text mode for migration, rather
--#     than TLS (Since 2.7) Note: 2.8 reports this by omitting
--#     tls-creds instead.
--#
--# @tls-hostname: hostname of the target host for the migration.  This
--#     is required when using x509 based TLS credentials and the
--#     migration URI does not already include a hostname.  For example
--#     if using fd: or exec: based migration, the hostname must be
--#     provided so that the server's x509 certificate identity can be
--#     validated.  (Since 2.7) An empty string means that QEMU will use
--#     the hostname associated with the migration URI, if any.  (Since
--#     2.9) Note: 2.8 reports this by omitting tls-hostname instead.
--#
--# @tls-authz: ID of the 'authz' object subclass that provides access
--#     control checking of the TLS x509 certificate distinguished name.
--#     (Since 4.0)
--#
--# @max-bandwidth: to set maximum speed for migration.  maximum speed
--#     in bytes per second.  (Since 2.8)
--#
--# @downtime-limit: set maximum tolerated downtime for migration.
--#     maximum downtime in milliseconds (Since 2.8)
--#
--# @x-checkpoint-delay: the delay time between two COLO checkpoints.
--#     (Since 2.8)
--#
--# @block-incremental: Affects how much storage is migrated when the
--#     block migration capability is enabled.  When false, the entire
--#     storage backing chain is migrated into a flattened image at the
--#     destination; when true, only the active qcow2 layer is migrated
--#     and the destination must already have access to the same backing
--#     chain as was used on the source.  (since 2.10)
--#
--# @multifd-channels: Number of channels used to migrate data in
--#     parallel.  This is the same number that the number of sockets
--#     used for migration.  The default value is 2 (since 4.0)
--#
--# @xbzrle-cache-size: cache size to be used by XBZRLE migration.  It
--#     needs to be a multiple of the target page size and a power of 2
--#     (Since 2.11)
--#
--# @max-postcopy-bandwidth: Background transfer bandwidth during
--#     postcopy.  Defaults to 0 (unlimited).  In bytes per second.
--#     (Since 3.0)
--#
--# @max-cpu-throttle: maximum cpu throttle percentage.  Defaults to 99.
--#     (Since 3.1)
--#
--# @multifd-compression: Which compression method to use.  Defaults to
--#     none.  (Since 5.0)
--#
--# @multifd-zlib-level: Set the compression level to be used in live
--#     migration, the compression level is an integer between 0 and 9,
--#     where 0 means no compression, 1 means the best compression
--#     speed, and 9 means best compression ratio which will consume
--#     more CPU. Defaults to 1. (Since 5.0)
--#
--# @multifd-zstd-level: Set the compression level to be used in live
--#     migration, the compression level is an integer between 0 and 20,
--#     where 0 means no compression, 1 means the best compression
--#     speed, and 20 means best compression ratio which will consume
--#     more CPU. Defaults to 1. (Since 5.0)
--#
--# @block-bitmap-mapping: Maps block nodes and bitmaps on them to
--#     aliases for the purpose of dirty bitmap migration.  Such aliases
--#     may for example be the corresponding names on the opposite site.
--#     The mapping must be one-to-one, but not necessarily complete: On
--#     the source, unmapped bitmaps and all bitmaps on unmapped nodes
--#     will be ignored.  On the destination, encountering an unmapped
--#     alias in the incoming migration stream will result in a report,
--#     and all further bitmap migration data will then be discarded.
--#     Note that the destination does not know about bitmaps it does
--#     not receive, so there is no limitation or requirement regarding
--#     the number of bitmaps received, or how they are named, or on
--#     which nodes they are placed.  By default (when this parameter
--#     has never been set), bitmap names are mapped to themselves.
--#     Nodes are mapped to their block device name if there is one, and
--#     to their node name otherwise.  (Since 5.2)
--#
--# @x-vcpu-dirty-limit-period: Periodic time (in milliseconds) of dirty
--#     limit during live migration.  Should be in the range 1 to 1000ms.
--#     Defaults to 1000ms.  (Since 8.1)
--#
--# @vcpu-dirty-limit: Dirtyrate limit (MB/s) during live migration.
--#     Defaults to 1.  (Since 8.1)
-+# The object structure to represent a list of migration parameters.
-+# The optional members aren't actually optional.  For detailed
-+# explanation for each of the field, please refer to the documentation
-+# of @MigrationParameter.
- #
- # Features:
- #
+@@ -840,7 +850,7 @@
+            'cpu-throttle-initial', 'cpu-throttle-increment',
+            'cpu-throttle-tailslow',
+            'tls-creds', 'tls-hostname', 'tls-authz', 'max-bandwidth',
+-           'downtime-limit',
++           'max-switchover-bandwidth', 'downtime-limit',
+            { 'name': 'x-checkpoint-delay', 'features': [ 'unstable' ] },
+            'block-incremental',
+            'multifd-channels',
+@@ -885,6 +895,7 @@
+             '*tls-hostname': 'StrOrNull',
+             '*tls-authz': 'StrOrNull',
+             '*max-bandwidth': 'size',
++            '*max-switchover-bandwidth': 'size',
+             '*downtime-limit': 'uint64',
+             '*x-checkpoint-delay': { 'type': 'uint32',
+                                      'features': [ 'unstable' ] },
+@@ -949,6 +960,7 @@
+             '*tls-hostname': 'str',
+             '*tls-authz': 'str',
+             '*max-bandwidth': 'size',
++            '*max-switchover-bandwidth': 'size',
+             '*downtime-limit': 'uint64',
+             '*x-checkpoint-delay': { 'type': 'uint32',
+                                      'features': [ 'unstable' ] },
+diff --git a/migration/migration.h b/migration/migration.h
+index 6eea18db36..f18cee27f7 100644
+--- a/migration/migration.h
++++ b/migration/migration.h
+@@ -283,7 +283,7 @@ struct MigrationState {
+     /*
+      * The final stage happens when the remaining data is smaller than
+      * this threshold; it's calculated from the requested downtime and
+-     * measured bandwidth
++     * measured bandwidth, or max-switchover-bandwidth if specified.
+      */
+     int64_t threshold_size;
+ 
+diff --git a/migration/options.h b/migration/options.h
+index 045e2a41a2..a510ca94c9 100644
+--- a/migration/options.h
++++ b/migration/options.h
+@@ -80,6 +80,7 @@ int migrate_decompress_threads(void);
+ uint64_t migrate_downtime_limit(void);
+ uint8_t migrate_max_cpu_throttle(void);
+ uint64_t migrate_max_bandwidth(void);
++uint64_t migrate_max_switchover_bandwidth(void);
+ uint64_t migrate_max_postcopy_bandwidth(void);
+ int migrate_multifd_channels(void);
+ MultiFDCompression migrate_multifd_compression(void);
+diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
+index c115ef2d23..d7572d4c0a 100644
+--- a/migration/migration-hmp-cmds.c
++++ b/migration/migration-hmp-cmds.c
+@@ -321,6 +321,10 @@ void hmp_info_migrate_parameters(Monitor *mon, const QDict *qdict)
+         monitor_printf(mon, "%s: %" PRIu64 " bytes/second\n",
+             MigrationParameter_str(MIGRATION_PARAMETER_MAX_BANDWIDTH),
+             params->max_bandwidth);
++        assert(params->has_max_switchover_bandwidth);
++        monitor_printf(mon, "%s: %" PRIu64 " bytes/second\n",
++            MigrationParameter_str(MIGRATION_PARAMETER_MAX_SWITCHOVER_BANDWIDTH),
++            params->max_switchover_bandwidth);
+         assert(params->has_downtime_limit);
+         monitor_printf(mon, "%s: %" PRIu64 " ms\n",
+             MigrationParameter_str(MIGRATION_PARAMETER_DOWNTIME_LIMIT),
+@@ -574,6 +578,16 @@ void hmp_migrate_set_parameter(Monitor *mon, const QDict *qdict)
+         }
+         p->max_bandwidth = valuebw;
+         break;
++    case MIGRATION_PARAMETER_MAX_SWITCHOVER_BANDWIDTH:
++        p->has_max_switchover_bandwidth = true;
++        ret = qemu_strtosz_MiB(valuestr, NULL, &valuebw);
++        if (ret < 0 || valuebw > INT64_MAX
++            || (size_t)valuebw != valuebw) {
++            error_setg(&err, "Invalid size %s", valuestr);
++            break;
++        }
++        p->max_switchover_bandwidth = valuebw;
++        break;
+     case MIGRATION_PARAMETER_DOWNTIME_LIMIT:
+         p->has_downtime_limit = true;
+         visit_type_size(v, param, &p->downtime_limit, &err);
+diff --git a/migration/migration.c b/migration/migration.c
+index 5528acb65e..8493e3ca49 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -2684,7 +2684,7 @@ static void migration_update_counters(MigrationState *s,
+ {
+     uint64_t transferred, transferred_pages, time_spent;
+     uint64_t current_bytes; /* bytes transferred since the beginning */
+-    double bandwidth;
++    double bandwidth, avail_bw;
+ 
+     if (current_time < s->iteration_start_time + BUFFER_DELAY) {
+         return;
+@@ -2694,7 +2694,17 @@ static void migration_update_counters(MigrationState *s,
+     transferred = current_bytes - s->iteration_initial_bytes;
+     time_spent = current_time - s->iteration_start_time;
+     bandwidth = (double)transferred / time_spent;
+-    s->threshold_size = bandwidth * migrate_downtime_limit();
++    if (migrate_max_switchover_bandwidth()) {
++        /*
++         * If the user specified an available bandwidth, let's trust the
++         * user so that can be more accurate than what we estimated.
++         */
++        avail_bw = migrate_max_switchover_bandwidth();
++    } else {
++        /* If the user doesn't specify bandwidth, we use the estimated */
++        avail_bw = bandwidth;
++    }
++    s->threshold_size = avail_bw * migrate_downtime_limit();
+ 
+     s->mbps = (((double) transferred * 8.0) /
+                ((double) time_spent / 1000.0)) / 1000.0 / 1000.0;
+@@ -2711,7 +2721,7 @@ static void migration_update_counters(MigrationState *s,
+     if (stat64_get(&mig_stats.dirty_pages_rate) &&
+         transferred > 10000) {
+         s->expected_downtime =
+-            stat64_get(&mig_stats.dirty_bytes_last_sync) / bandwidth;
++            stat64_get(&mig_stats.dirty_bytes_last_sync) / avail_bw;
+     }
+ 
+     migration_rate_reset(s->to_dst_file);
+@@ -2719,7 +2729,8 @@ static void migration_update_counters(MigrationState *s,
+     update_iteration_initial_status(s);
+ 
+     trace_migrate_transferred(transferred, time_spent,
+-                              bandwidth, s->threshold_size);
++                              bandwidth, migrate_max_switchover_bandwidth(),
++                              s->threshold_size);
+ }
+ 
+ static bool migration_can_switchover(MigrationState *s)
+diff --git a/migration/options.c b/migration/options.c
+index 1d1e1321b0..19d87ab812 100644
+--- a/migration/options.c
++++ b/migration/options.c
+@@ -125,6 +125,8 @@ Property migration_properties[] = {
+                       parameters.cpu_throttle_tailslow, false),
+     DEFINE_PROP_SIZE("x-max-bandwidth", MigrationState,
+                       parameters.max_bandwidth, MAX_THROTTLE),
++    DEFINE_PROP_SIZE("max-switchover-bandwidth", MigrationState,
++                      parameters.max_switchover_bandwidth, 0),
+     DEFINE_PROP_UINT64("x-downtime-limit", MigrationState,
+                       parameters.downtime_limit,
+                       DEFAULT_MIGRATE_SET_DOWNTIME),
+@@ -780,6 +782,13 @@ uint64_t migrate_max_bandwidth(void)
+     return s->parameters.max_bandwidth;
+ }
+ 
++uint64_t migrate_max_switchover_bandwidth(void)
++{
++    MigrationState *s = migrate_get_current();
++
++    return s->parameters.max_switchover_bandwidth;
++}
++
+ uint64_t migrate_max_postcopy_bandwidth(void)
+ {
+     MigrationState *s = migrate_get_current();
+@@ -917,6 +926,8 @@ MigrationParameters *qmp_query_migrate_parameters(Error **errp)
+                                  s->parameters.tls_authz : "");
+     params->has_max_bandwidth = true;
+     params->max_bandwidth = s->parameters.max_bandwidth;
++    params->has_max_switchover_bandwidth = true;
++    params->max_switchover_bandwidth = s->parameters.max_switchover_bandwidth;
+     params->has_downtime_limit = true;
+     params->downtime_limit = s->parameters.downtime_limit;
+     params->has_x_checkpoint_delay = true;
+@@ -1056,6 +1067,15 @@ bool migrate_params_check(MigrationParameters *params, Error **errp)
+         return false;
+     }
+ 
++    if (params->has_max_switchover_bandwidth &&
++        (params->max_switchover_bandwidth > SIZE_MAX)) {
++        error_setg(errp, QERR_INVALID_PARAMETER_VALUE,
++                   "max_switchover_bandwidth",
++                   "an integer in the range of 0 to "stringify(SIZE_MAX)
++                   " bytes/second");
++        return false;
++    }
++
+     if (params->has_downtime_limit &&
+         (params->downtime_limit > MAX_MIGRATE_DOWNTIME)) {
+         error_setg(errp, QERR_INVALID_PARAMETER_VALUE,
+@@ -1225,6 +1245,10 @@ static void migrate_params_test_apply(MigrateSetParameters *params,
+         dest->max_bandwidth = params->max_bandwidth;
+     }
+ 
++    if (params->has_max_switchover_bandwidth) {
++        dest->max_switchover_bandwidth = params->max_switchover_bandwidth;
++    }
++
+     if (params->has_downtime_limit) {
+         dest->downtime_limit = params->downtime_limit;
+     }
+@@ -1341,6 +1365,10 @@ static void migrate_params_apply(MigrateSetParameters *params, Error **errp)
+         }
+     }
+ 
++    if (params->has_max_switchover_bandwidth) {
++        s->parameters.max_switchover_bandwidth = params->max_switchover_bandwidth;
++    }
++
+     if (params->has_downtime_limit) {
+         s->parameters.downtime_limit = params->downtime_limit;
+     }
+diff --git a/migration/trace-events b/migration/trace-events
+index 4666f19325..1296b8db5b 100644
+--- a/migration/trace-events
++++ b/migration/trace-events
+@@ -185,7 +185,7 @@ source_return_path_thread_shut(uint32_t val) "0x%x"
+ source_return_path_thread_resume_ack(uint32_t v) "%"PRIu32
+ source_return_path_thread_switchover_acked(void) ""
+ migration_thread_low_pending(uint64_t pending) "%" PRIu64
+-migrate_transferred(uint64_t transferred, uint64_t time_spent, uint64_t bandwidth, uint64_t size) "transferred %" PRIu64 " time_spent %" PRIu64 " bandwidth %" PRIu64 " max_size %" PRId64
++migrate_transferred(uint64_t transferred, uint64_t time_spent, uint64_t bandwidth, uint64_t avail_bw, uint64_t size) "transferred %" PRIu64 " time_spent %" PRIu64 " bandwidth %" PRIu64 " avail_bw %" PRIu64 " max_size %" PRId64
+ process_incoming_migration_co_end(int ret, int ps) "ret=%d postcopy-state=%d"
+ process_incoming_migration_co_postcopy_end_main(void) ""
+ postcopy_preempt_enabled(bool value) "%d"
 -- 
 2.41.0
 
