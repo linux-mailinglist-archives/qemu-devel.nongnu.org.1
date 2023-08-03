@@ -2,94 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06B8676E203
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 09:39:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9C1F76E321
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 10:30:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRSum-0004dx-PW; Thu, 03 Aug 2023 03:38:32 -0400
+	id 1qRThD-0005sd-T7; Thu, 03 Aug 2023 04:28:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qRSuk-0004dl-KR
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 03:38:30 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1qRThB-0005rw-CO
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 04:28:33 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qRSug-00024i-QG
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 03:38:28 -0400
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1qRTh9-0007q9-Ta
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 04:28:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691048305;
+ s=mimecast20190719; t=1691051310;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Up3GJOekf2QKB4eJASc6Wmp9m2ZqQpdIfQ3Z3DPm3/I=;
- b=QLtksjgJyvSmgMlnHFsYWP0y81om0KixzmhjorjqkRx3ZjWrdBe4ZhzrJURg5Ibi+rhmxp
- QaT0pWJE5sjmwbQkqvSZGGTT1HT9fKU9WNC7QuddUF8qX2Mc5T0atbV6Wu++FfJHVEBrSi
- /4CGzAJwWYo8Jlo/DumA84N5xbeRS6c=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding;
+ bh=gZxSudJPYbtRgl19NOy+MCJkSqqPqpxD3Ld6h48gfgM=;
+ b=c4qWTEK4r44Ta6lKRQ+viWxWq9xlEY5LclzJR4sIGc9CWrTlB2R0TwZGj/R/qoYFiVOvif
+ GNNYsbOi/Gb9h1cIWTC79Sggio3uciLs16jOnZo/O5wytE3uDH4I5JtOr8DM61FJf2hR5E
+ Y7JOn8dxy0LRjDnpVjC1MGvtwoxkWNQ=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-111-0Y7W4AOiNdGftp73NbIvgQ-1; Thu, 03 Aug 2023 03:38:23 -0400
-X-MC-Unique: 0Y7W4AOiNdGftp73NbIvgQ-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-99bca0b9234so41762966b.2
- for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 00:38:23 -0700 (PDT)
+ us-mta-68-5cFHXD-_NViHzn5HwtdslQ-1; Thu, 03 Aug 2023 04:28:29 -0400
+X-MC-Unique: 5cFHXD-_NViHzn5HwtdslQ-1
+Received: by mail-lf1-f69.google.com with SMTP id
+ 2adb3069b0e04-4fe356c71d6so717001e87.1
+ for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 01:28:29 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691048302; x=1691653102;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Up3GJOekf2QKB4eJASc6Wmp9m2ZqQpdIfQ3Z3DPm3/I=;
- b=UOoZt9cuaV6ZDkgwMslv1nydfbzB0xLQJpqIqTv3CfOzU8Rj46JDJskExL1L2ZSfO7
- YNoq2UEIW6tK3Gnw9vIKV4GMP55hFSjpwI+jEz/AIp/GbVeV8F3YieoIOWyH3qFyjgG8
- adIsaUBx6dkrigOat/TG1sCXjgBz84mNs8ypesGUJu9blXJIhtnHcymGWx8JQWuMyPSE
- OatfYhDb+43WvlfpB/k9R/8SjAEMq4Lj5Sk0RPND+9QDnzOabykl6K7OA6eJtexSzMae
- K8MjS71qid9M4+5fQV1g9hSY4MG03hxhyo14tDvcMlLsSa4mekLbQwBWdqiaUmZm4UAh
- D/oQ==
-X-Gm-Message-State: ABy/qLYia3/5t0hevVG8lEl8/ngVGbk5AWuv+hbYECkfHrPOilmVdaZV
- 4qqg9TgDvV43cggrZuUEV0Kmlp0OFgelDiK2CiVK4oVNE0/0bJL/3VWXupCQR1u1yUNrjVDSvcg
- HHTt9gt6TTiQ6vKE=
-X-Received: by 2002:a17:906:51cc:b0:993:f540:5bb1 with SMTP id
- v12-20020a17090651cc00b00993f5405bb1mr6327853ejk.41.1691048302501; 
- Thu, 03 Aug 2023 00:38:22 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlEPKiFpJolemnwSiwSa7FGu8aV9dE/CbJvacl244gNcXwMqjlfuuth2eampD6eXFIDTIGkrfw==
-X-Received: by 2002:a17:906:51cc:b0:993:f540:5bb1 with SMTP id
- v12-20020a17090651cc00b00993f5405bb1mr6327842ejk.41.1691048302203; 
- Thu, 03 Aug 2023 00:38:22 -0700 (PDT)
-Received: from [192.168.0.3] (ip-109-43-179-99.web.vodafone.de.
- [109.43.179.99]) by smtp.gmail.com with ESMTPSA id
- kt7-20020a170906aac700b0099ba3438554sm10084622ejb.191.2023.08.03.00.38.21
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 03 Aug 2023 00:38:21 -0700 (PDT)
-Message-ID: <c06a5138-170e-d696-38f1-3060ea164932@redhat.com>
-Date: Thu, 3 Aug 2023 09:38:20 +0200
+ d=1e100.net; s=20221208; t=1691051307; x=1691656107;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=gZxSudJPYbtRgl19NOy+MCJkSqqPqpxD3Ld6h48gfgM=;
+ b=S9vVza+RceqVPDO6EJjS84Ykzjn4Wk3D/RzBDG8Suu9Ca7aDQaoG9jUtGJYUP/B2IJ
+ +bEh/kYyc0cmlOWUR0+ceIkejQHKKbljIx6P3L+6xwN8Yn0lmb15d9lo54yTzUZykd4R
+ 8fHzifU/f2M6VamY7o6j0QM038aiHRZZ4mjdciFYtnzXeP1XRgqS5SrFG2LFxZMi2qbh
+ Xu8EQZ5Pck/8/TVk35Jsoxwkz3FRARplMmFNRR9u7vGhOgzYhR8zTFyqEw/hwPeThR36
+ aDcbgNHkcrsEucNS/Vhvdm7sJnK2OSIueud6jL6d2FMQCyGKmen69MRByiR4lW+e2pRf
+ TeXA==
+X-Gm-Message-State: ABy/qLYI6RUBzrIq4NpgN0p5fnCaQ+SLlrBk29i9TPPuppfzxvsbuB4a
+ 1SiQI2aJUxMOn0D4Dr7FapAz9vcPtJBeliIOU6WH1/tpgvP7EPm4lOFCfO/cTOaK7Lqorh4Wclk
+ MsUj/ZmE5uvN8z8wENoqW1dVnV7/9Z8rGiD+h5mDKZmo5a2qvVhN43UY5MJVBm5g3m3o4RIUihk
+ E=
+X-Received: by 2002:ac2:504d:0:b0:4fe:82c:5c8a with SMTP id
+ a13-20020ac2504d000000b004fe082c5c8amr5506244lfm.58.1691051307576; 
+ Thu, 03 Aug 2023 01:28:27 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlGcyAyjIaiuJKdLtbRMgEBj3eDY6p1kQPQxNnMm2UrQ3G/LXmrqFjx5hmMyI9hu3EeJqIBIwA==
+X-Received: by 2002:ac2:504d:0:b0:4fe:82c:5c8a with SMTP id
+ a13-20020ac2504d000000b004fe082c5c8amr5506221lfm.58.1691051307206; 
+ Thu, 03 Aug 2023 01:28:27 -0700 (PDT)
+Received: from step1.home (host-82-57-51-214.retail.telecomitalia.it.
+ [82.57.51.214]) by smtp.gmail.com with ESMTPSA id
+ ci18-20020a170906c35200b0099bd682f317sm10090124ejb.206.2023.08.03.01.28.26
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 03 Aug 2023 01:28:26 -0700 (PDT)
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Hanna Reitz <hreitz@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ qemu-block@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>
+Subject: [PATCH v2 0/2] block/blkio: fix fd leak and add more comments for the
+ fd passing
+Date: Thu,  3 Aug 2023 10:28:23 +0200
+Message-ID: <20230803082825.25293-1-sgarzare@redhat.com>
+X-Mailer: git-send-email 2.41.0
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] hw/virtio: Add a protection against duplicate
- vu_scmi_stop calls
-Content-Language: en-US
-To: Milan Zamazal <mzamazal@redhat.com>, qemu-devel@nongnu.org
-Cc: Fabiano Rosas <farosas@suse.de>, "Michael S. Tsirkin" <mst@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Laurent Vivier
- <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
-References: <20230720101037.2161450-1-mzamazal@redhat.com>
- <87edl2sr34.fsf@suse.de> <87o7josisk.fsf@redhat.com>
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <87o7josisk.fsf@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=sgarzare@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.102, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -106,60 +101,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 03/08/2023 09.10, Milan Zamazal wrote:
-> Fabiano Rosas <farosas@suse.de> writes:
-> 
->> Milan Zamazal <mzamazal@redhat.com> writes:
->>
->>> The QEMU CI fails in virtio-scmi test occasionally.  As reported by
->>> Thomas Huth, this happens most likely when the system is loaded and it
->>> fails with the following error:
->>>
->>>    qemu-system-aarch64: ../../devel/qemu/hw/pci/msix.c:659:
->>>    msix_unset_vector_notifiers: Assertion
->>> `dev->msix_vector_use_notifier && dev->msix_vector_release_notifier'
->>> failed.
->>>    ../../devel/qemu/tests/qtest/libqtest.c:200: kill_qemu() detected
->>> QEMU death from signal 6 (Aborted) (core dumped)
->>>
->>> As discovered by Fabiano Rosas, the cause is a duplicate invocation of
->>> msix_unset_vector_notifiers via duplicate vu_scmi_stop calls:
->>>
->>>    msix_unset_vector_notifiers
->>>    virtio_pci_set_guest_notifiers
->>>    vu_scmi_stop
->>>    vu_scmi_disconnect
->>>    ...
->>>    qemu_chr_write_buffer
->>>
->>>    msix_unset_vector_notifiers
->>>    virtio_pci_set_guest_notifiers
->>>    vu_scmi_stop
->>>    vu_scmi_set_status
->>>    ...
->>>    qemu_cleanup
->>>
->>> While vu_scmi_stop calls are protected by vhost_dev_is_started()
->>> check, it's apparently not enough.  vhost-user-blk and vhost-user-gpio
->>> use an extra protection, see f5b22d06fb (vhost: recheck dev state in
->>> the vhost_migration_log routine) for the motivation.  Let's use the
->>> same in vhost-user-scmi, which fixes the failure above.
->>>
->>> Fixes: a5dab090e142 ("hw/virtio: Add boilerplate for vhost-user-scmi device")
->>> Signed-off-by: Milan Zamazal <mzamazal@redhat.com>
->>
->> Reviewed-by: Fabiano Rosas <farosas@suse.de>
-> 
-> Please note that this bug fix should IMO definitely go to 8.1, to not
-> have a bug in vhost-user-scmi and to not have broken tests.  Any chance
-> to get it merged?
+Hanna discovered an fd leak in the error path, and a few comments to
+improve in the code.
 
-If nobody else is planning a pull request with this patch included, I can 
-take it for my next PR (since it is fixing the CI, I just saw another 
-failure here:
-https://gitlab.com/qemu-project/qemu/-/jobs/4790457938#L4784 )
+v2:
+  - avoid to use `fd_supported` to track a valid fd [Hanna]
 
-  Thomas
+v1: https://lore.kernel.org/qemu-devel/20230801160332.122564-1-sgarzare@redhat.com/
 
+Stefano Garzarella (2):
+  block/blkio: close the fd when blkio_connect() fails
+  block/blkio: add more comments on the fd passing handling
+
+ block/blkio.c | 26 ++++++++++++++++++++------
+ 1 file changed, 20 insertions(+), 6 deletions(-)
+
+-- 
+2.41.0
 
 
