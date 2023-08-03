@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DE8376F384
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 21:38:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14FE576F3AD
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 21:52:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRe7w-00036Z-9Z; Thu, 03 Aug 2023 15:36:52 -0400
+	id 1qReLV-0008OW-MG; Thu, 03 Aug 2023 15:50:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qRe7u-000367-99
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 15:36:50 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qReLU-0008OO-5w
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 15:50:52 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qRe7s-00056e-EZ
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 15:36:50 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qReLS-00036K-M9
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 15:50:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691091407;
+ s=mimecast20190719; t=1691092249;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=JaM2CDekX7tdkxIIMGOM4GxifmZH6XfI8qdJdXy4Emc=;
- b=YlF1tecMX6mqc6FdzRIMhVE/VgBdpUyTu/T2CJzz7Nos/1v24SDpxpuP3Me1IliqUlcRPG
- F3sNYujnkMRdg83w4/gU6dDBeXQ3CNvArJbkKPy5duasPYwZ3Zmqrgn4erXQ2LlIZhpljj
- L8afmAP0Xxh80oClza49zvfWxcZUgM4=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=u9kUw/B0mtdv9pmq2m073k5N+yIRPfyZjUYK3LTIG74=;
+ b=DqJT/IuEB6EDmiN14B4lXRM4b3M1uhWRzRFFcdI5tjsP3+YN1Qf2bkK2PdbyXBFRevByVK
+ KIjwozgYl4Z6xUi7NdxMhS1QLjlZ5CzvwuG8RwC1Z0KhG5klrnFXr/YR2TiSXkv9xGK4oK
+ nsmkwozKbR4SEEkNYN1fVy54Yh7dZ5o=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-472-A3eMfC6VMJqFmDDjGR-DwQ-1; Thu, 03 Aug 2023 15:36:45 -0400
-X-MC-Unique: A3eMfC6VMJqFmDDjGR-DwQ-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-99c20561244so85469966b.0
- for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 12:36:45 -0700 (PDT)
+ us-mta-556-doQOKBh_OWO7AkhfKRy4cg-1; Thu, 03 Aug 2023 15:50:48 -0400
+X-MC-Unique: doQOKBh_OWO7AkhfKRy4cg-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-3fe2a5ced6dso8404285e9.2
+ for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 12:50:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691091404; x=1691696204;
+ d=1e100.net; s=20221208; t=1691092247; x=1691697047;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=JaM2CDekX7tdkxIIMGOM4GxifmZH6XfI8qdJdXy4Emc=;
- b=GS6RnBMDxVUip+dtx7wKe1mhYX2nF3xeregk/i9dwyL//VJx48oaeMGKBTnajv3xPW
- a4NIMypfcIpovd2aUIqT/TVQUe32obKYJDDy+9252eGKdJjmAmJp8DSBzQPHnQz/3HP+
- rCDYOomIm4yiWM5Ts4x8jqcBEoZ6U0Vphpc/x2owBLjPBODWcY+nkxOtx3FRygUk446w
- jAui5AP94HK7i+tAPe4ZobT7EFtF+FE6tcANIwW6oXZozdbHAWS8zKtpzScP0FIdxVFX
- aJZv82ze72vXlIb/1uhJcz278nFxQarTxlQKpT8o3R8mbNvabvKZiEFj0Aq+vuVH9gHT
- YIqA==
-X-Gm-Message-State: ABy/qLZwW6mxocY6Gyd+G531NGzo+k+bZxcJdVHMSMhuGfffLXx3T2aJ
- wYStrFJGC6LqWcQasFHz4bJfv/n13Qw5U9G/L3bUZh4KXdYrD6cHRT3BVFvF7n5QSzqadtv8OVQ
- khevFujTiKyGJjfU=
-X-Received: by 2002:a17:906:77d6:b0:992:b3a3:81f4 with SMTP id
- m22-20020a17090677d600b00992b3a381f4mr9131273ejn.50.1691091404790; 
- Thu, 03 Aug 2023 12:36:44 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlGPEj08V4XwXXh5+DIjq4HXBT41s5h92+drG5N8xG37H1lGZX4hB1UKmwWfjc9F+ehi2d0ihg==
-X-Received: by 2002:a17:906:77d6:b0:992:b3a3:81f4 with SMTP id
- m22-20020a17090677d600b00992b3a381f4mr9131260ejn.50.1691091404480; 
- Thu, 03 Aug 2023 12:36:44 -0700 (PDT)
+ bh=u9kUw/B0mtdv9pmq2m073k5N+yIRPfyZjUYK3LTIG74=;
+ b=VLuTDIzuZ47+x1e1ezIu909exh5vUSOYNJcZNhPoVunMcEnfZGxAHCQ6T5iATtcnE4
+ 1KD9BxtsZKt0FjJ/qlOgaUDXCJMOlbbSg8FTsT+DYSccr3Mw0QSZTeriOXqzfiq4OT2k
+ XXhVw6PaJzts6YQAq8LVvSSJBvDet+Us8tS7fuR6ajQLP5qtpqbG2aGahr3rwGkOXNGY
+ TgCC2o9uWRly90m8328lCj6EVt5IntqYAgW2TpqVlkvWX0wYdxka/KJc3DG7jTvKOwuf
+ JBHxTgHBxzOHqhsU4viQczWUam0CJrR6mTp9cG8+fmeltRmC6PpKJVzuy5bVkmIlPczR
+ YTAg==
+X-Gm-Message-State: ABy/qLZANOpliF0JKAh8MDweEBkmE9bR/PxCiLInSqIthAF03INh0mbk
+ PPTrAAAn11iMzjPTcbHBZ4mBcvVL3zmmKxKyq4nDoYtAuNkfeC/SB4gnSvgID556OoGthpVEV+U
+ 9y790LwtgmC69sSk=
+X-Received: by 2002:a5d:464c:0:b0:313:f1c8:a968 with SMTP id
+ j12-20020a5d464c000000b00313f1c8a968mr8545148wrs.2.1691092247071; 
+ Thu, 03 Aug 2023 12:50:47 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlFwtqIOS0y/KvOzZlGhcL/XY5pSagRNfOnuGTonzbKyr0CJVNTb4e8XPtS6ytVYAiM52sWfZQ==
+X-Received: by 2002:a5d:464c:0:b0:313:f1c8:a968 with SMTP id
+ j12-20020a5d464c000000b00313f1c8a968mr8545136wrs.2.1691092246724; 
+ Thu, 03 Aug 2023 12:50:46 -0700 (PDT)
 Received: from redhat.com ([2.52.12.104]) by smtp.gmail.com with ESMTPSA id
- j27-20020a170906255b00b0099297782aa9sm224103ejb.49.2023.08.03.12.36.42
+ k14-20020adfd84e000000b003177e9b2e64sm618670wrl.90.2023.08.03.12.50.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 03 Aug 2023 12:36:43 -0700 (PDT)
-Date: Thu, 3 Aug 2023 15:36:39 -0400
+ Thu, 03 Aug 2023 12:50:46 -0700 (PDT)
+Date: Thu, 3 Aug 2023 15:50:42 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Fam Zheng <fam@euphon.net>, Thomas Huth <thuth@redhat.com>,
- qemu-stable@nongnu.org, Mark Kanda <mark.kanda@oracle.com>
-Subject: Re: [PATCH] Revert "virtio-scsi: Send "REPORTED LUNS CHANGED" sense
- data upon disk hotplug events"
-Message-ID: <20230803153628-mutt-send-email-mst@kernel.org>
-References: <20230705071523.15496-1-sgarzare@redhat.com>
+To: Jonah Palmer <jonah.palmer@oracle.com>
+Cc: qemu-devel@nongnu.org, philmd@linaro.org, laurent@vivier.eu,
+ boris.ostrovsky@oracle.com, alex.bennee@linaro.org,
+ viresh.kumar@linaro.org, armbru@redhat.com, pbonzini@redhat.com,
+ berrange@redhat.com, eduardo@habkost.net
+Subject: Re: [PATCH v3 0/3] qmp,vhost-user: Remove virtio_list & update
+ virtio introspection
+Message-ID: <20230803155022-mutt-send-email-mst@kernel.org>
+References: <20230803145500.2108691-1-jonah.palmer@oracle.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230705071523.15496-1-sgarzare@redhat.com>
+In-Reply-To: <20230803145500.2108691-1-jonah.palmer@oracle.com>
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -98,95 +99,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jul 05, 2023 at 09:15:23AM +0200, Stefano Garzarella wrote:
-> This reverts commit 8cc5583abe6419e7faaebc9fbd109f34f4c850f2.
+On Thu, Aug 03, 2023 at 10:54:57AM -0400, Jonah Palmer wrote:
+> These patches update a few things related to virtio introspection via.
+> QMP/HMP commands.
 > 
-> That commit causes several problems in Linux as described in the BZ.
-> In particular, after a while, other devices on the bus are no longer
-> usable even if those devices are not affected by the hotunplug.
-> This may be a problem in Linux, but we have not been able to identify
-> it so far. So better to revert this patch until we find a solution.
+> 1. Remove 'virtio_list' and instead query the QOM composition tree to
+> find any active & realized virtio devices.
 > 
-> Also, Oracle, which initially proposed this patch for a problem with
-> Solaris, seems to have already reversed it downstream:
->     https://linux.oracle.com/errata/ELSA-2023-12065.html
+> The 'virtio_list' was duplicating information about virtio devices that
+> was already available in the QOM composition tree, so there was no need
+> to keep this list.
 > 
-> Suggested-by: Thomas Huth <thuth@redhat.com>
-> Buglink: https://bugzilla.redhat.com/show_bug.cgi?id=2176702
-> Cc: qemu-stable@nongnu.org
-> Cc: Mark Kanda <mark.kanda@oracle.com>
-> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+> 2. Add new transport, protocol, and device features as well as support
+> to introspect vhost-user-gpio devices.
+> 
+> Vhost-user-gpio previously had no support for introspection. Support for
+> introspecting its vhost-user device is now available in these patches.
+> 
+> 3. Move VhostUserProtocolFeature definition to its corresponding header
+> file (vhost-user.h). Cleanup previous definitions in other files.
+> 
+> VhostUserProtocolFeature was being defined in 3 separate files. Instead
+> of 3 separate definitions, use one instead and add it to the
+> vhost-user.h header file.
+> 
+> New virtio transport feature:
+> -----------------------------
+>  - VIRTIO_F_RING_RESET
+> 
+> New vhost-user protocol feature:
+> --------------------------------
+>  - VHOST_USER_PROTOCOL_F_STATUS
+> 
+> New virtio device features:
+> ---------------------------
+> virtio-blk:
+>  - VIRTIO_BLK_F_SECURE_ERASE
+> 
+> virtio-net:
+>  - VIRTIO_NET_F_NOTF_COAL
+>  - VIRTIO_NET_F_GUEST_USO4
+>  - VIRTIO_NET_F_GUEST_USO6
+>  - VIRTIO_NET_F_HOST_USO
+> 
+> virtio/vhost-user-gpio:
+>  - VIRTIO_GPIO_F_IRQ
+>  - VHOST_F_LOG_ALL
+>  - VHOST_USER_F_PROTOCOL_FEATURES
 
-OK guys we are reverting this?
+VHOST_F_LOG_ALL likely does not make sense.
 
-> ---
->  include/hw/scsi/scsi.h |  1 -
->  hw/scsi/scsi-bus.c     | 18 ------------------
->  hw/scsi/virtio-scsi.c  |  2 --
->  3 files changed, 21 deletions(-)
+> v3: use recursion and type casting to find realized virtio devices
+>     remove virtio scmi & bluetooth feature mappings
+>     revert virtio scmi & bluetooth case changes in qmp_decode_features
+>     change config define for VIRTIO_GPIO to CONFIG_VHOST_USER_GPIO
+>     move VhostUserProtocolFeature definition to header file
 > 
-> diff --git a/include/hw/scsi/scsi.h b/include/hw/scsi/scsi.h
-> index e2bb1a2fbf..7c8adf10b1 100644
-> --- a/include/hw/scsi/scsi.h
-> +++ b/include/hw/scsi/scsi.h
-> @@ -198,7 +198,6 @@ SCSIDevice *scsi_bus_legacy_add_drive(SCSIBus *bus, BlockBackend *blk,
->                                        BlockdevOnError rerror,
->                                        BlockdevOnError werror,
->                                        const char *serial, Error **errp);
-> -void scsi_bus_set_ua(SCSIBus *bus, SCSISense sense);
->  void scsi_bus_legacy_handle_cmdline(SCSIBus *bus);
->  
->  SCSIRequest *scsi_req_alloc(const SCSIReqOps *reqops, SCSIDevice *d,
-> diff --git a/hw/scsi/scsi-bus.c b/hw/scsi/scsi-bus.c
-> index f80f4cb4fc..42a915f8b7 100644
-> --- a/hw/scsi/scsi-bus.c
-> +++ b/hw/scsi/scsi-bus.c
-> @@ -1617,24 +1617,6 @@ static int scsi_ua_precedence(SCSISense sense)
->      return (sense.asc << 8) | sense.ascq;
->  }
->  
-> -void scsi_bus_set_ua(SCSIBus *bus, SCSISense sense)
-> -{
-> -    int prec1, prec2;
-> -    if (sense.key != UNIT_ATTENTION) {
-> -        return;
-> -    }
-> -
-> -    /*
-> -     * Override a pre-existing unit attention condition, except for a more
-> -     * important reset condition.
-> -     */
-> -    prec1 = scsi_ua_precedence(bus->unit_attention);
-> -    prec2 = scsi_ua_precedence(sense);
-> -    if (prec2 < prec1) {
-> -        bus->unit_attention = sense;
-> -    }
-> -}
-> -
->  void scsi_device_set_ua(SCSIDevice *sdev, SCSISense sense)
->  {
->      int prec1, prec2;
-> diff --git a/hw/scsi/virtio-scsi.c b/hw/scsi/virtio-scsi.c
-> index 45b95ea070..1f56607100 100644
-> --- a/hw/scsi/virtio-scsi.c
-> +++ b/hw/scsi/virtio-scsi.c
-> @@ -1080,7 +1080,6 @@ static void virtio_scsi_hotplug(HotplugHandler *hotplug_dev, DeviceState *dev,
->  
->          virtio_scsi_acquire(s);
->          virtio_scsi_push_event(s, &info);
-> -        scsi_bus_set_ua(&s->bus, SENSE_CODE(REPORTED_LUNS_CHANGED));
->          virtio_scsi_release(s);
->      }
->  }
-> @@ -1112,7 +1111,6 @@ static void virtio_scsi_hotunplug(HotplugHandler *hotplug_dev, DeviceState *dev,
->      if (virtio_vdev_has_feature(vdev, VIRTIO_SCSI_F_HOTPLUG)) {
->          virtio_scsi_acquire(s);
->          virtio_scsi_push_event(s, &info);
-> -        scsi_bus_set_ua(&s->bus, SENSE_CODE(REPORTED_LUNS_CHANGED));
->          virtio_scsi_release(s);
->      }
->  }
+> v2: verify virtio devices via. 'TYPE_VIRTIO_DEVICES'
+>     verify path is a virtio device before checking if it's realized
+>     remove 'VIRTIO_BLK_F_ZONED' update (already exists)
+>     add cover letter
+> 
+> Jonah Palmer (3):
+>   qmp: remove virtio_list, search QOM tree instead
+>   qmp: update virtio feature maps, vhost-user-gpio introspection
+>   vhost-user: move VhostUserProtocolFeature definition to header file
+> 
+>  hw/scsi/vhost-user-scsi.c      |   4 -
+>  hw/virtio/vhost-user-gpio.c    |   7 ++
+>  hw/virtio/vhost-user.c         |  21 -----
+>  hw/virtio/virtio-qmp.c         | 154 ++++++++++++++++-----------------
+>  hw/virtio/virtio-qmp.h         |   7 --
+>  hw/virtio/virtio.c             |   6 --
+>  include/hw/virtio/vhost-user.h |  21 +++++
+>  7 files changed, 105 insertions(+), 115 deletions(-)
+> 
 > -- 
-> 2.41.0
+> 2.39.3
 
 
