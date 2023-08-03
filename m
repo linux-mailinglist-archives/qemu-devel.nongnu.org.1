@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75F5476EF93
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 18:34:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8050876EFBB
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 18:40:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRbHL-00073u-6S; Thu, 03 Aug 2023 12:34:23 -0400
+	id 1qRbMj-0008AW-S0; Thu, 03 Aug 2023 12:39:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qRbHJ-00073d-L8
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 12:34:21 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ id 1qRbMh-0008A5-AX
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 12:39:55 -0400
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qRbHI-0005ig-4K
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 12:34:21 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-3128fcd58f3so1091434f8f.1
- for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 09:34:19 -0700 (PDT)
+ id 1qRbMf-0000pm-R6
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 12:39:55 -0400
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-31765792c7cso1074677f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 09:39:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691080458; x=1691685258;
+ d=linaro.org; s=google; t=1691080792; x=1691685592;
  h=content-transfer-encoding:mime-version:message-id:in-reply-to
  :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
  :date:message-id:reply-to;
- bh=OrJ6TQSeD7pJmQ3ZkasHR+d6aa5x8sVjbluCB6q7jks=;
- b=Olf2XJmmj+HORg+DeZm5YTUCpFkcy8NSl80WGAl7O6AgK5zpk1no+QTdfMuD5X6KgB
- d5Q32Y/OAVYpjSm2Me+Wv/xgMAx6a1Q9BYx+OL/ypYTzNdnqbw/8TxooaUsUhcuJjLZC
- 7jxinG5/2HhVvQYBZ2ksp7fHWY3vlr19ByDeGAWpcjqH6euEUMAJoIIWXDd5Q4rblsX5
- KC1OrxdIYUkTuT6QdnpngO2qUgm0//O0ks9mk9X3HtAQFL4jguUEm0aBhWFstR+iRv/A
- RI+YMqtiLM+krP9HELgKLXerWt6RIjfaLVhYU8buQDaa3wX0y3e2nCJibWA2hm9khXSI
- XRuQ==
+ bh=pNJKNj8S/Xrr7Zv5tSl+mZVNrOUpmm1VQOeQBe887YY=;
+ b=bBuUn69yXjaqSYUEDBT90Rcj2uX8eKyyXCv2igUFa0GEDvgCvvsJ8blT2kOG50kzeD
+ LOMValWiFEUWOAgvxqKYw59H2qcxghJRwuaZvBF5FiuLHux0v3LOGP+qetorz0ils1Jy
+ SgNQceYHdhkWA/Vl92j0MzjsX35w+HqYK/aE8Ayh/9cLWAL8Ggk4OLsmyqemlv5kcJhJ
+ MerlJXkxb61u8YfIa1boYot9TrFQ57Y1AG7vFtddCZ4U12pVEdKTk3E3QVDseIqYYC4k
+ jgEm4Z6ysWiSfgHl1TAEgOKtDA3/EKBqizdT7aIPY2ZCV5NwJDHtFiH8WdTyuLzdOuHn
+ gCag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691080458; x=1691685258;
+ d=1e100.net; s=20221208; t=1691080792; x=1691685592;
  h=content-transfer-encoding:mime-version:message-id:in-reply-to
  :references:user-agent:subject:cc:to:from:date:x-gm-message-state
  :from:to:cc:subject:date:message-id:reply-to;
- bh=OrJ6TQSeD7pJmQ3ZkasHR+d6aa5x8sVjbluCB6q7jks=;
- b=I7Xibk791oRoCKayk+KiyjQpeuLePS04fpD06KM6N1UyalTZ/FDwXeFSHfanVUIEFx
- j0NQG/Hb+Q9wIQRvZIQTg/4v1x806+n8uVKPltCW/AuV00c4oMmFE99QY4ajTKZMcWHx
- 1ZdIYZihIvNr20/JTYmMWh66nzhaMJGWKTF94s+F0zZXBZZPpARiY0imJ9lRlST+LARK
- tWkuRed5xYaPdMiB3uBdJjIL9egXUh20/Vm1cmcpCjxM1kD/rFl3Dckz8dRkLOTXgj6R
- MW+zQdRj60sVFOKMvX/P+Gm+cnnnbKOFxbC+1doWjU0A8nnNWtM0gyhLutlzzeHqiWQe
- KMDQ==
-X-Gm-Message-State: ABy/qLa1HWWtTpbJDfY5TwytKGbHe/YSPdLRdI7v8DegsDFhD6Tfn7mf
- 3aF2ZM9IDII8L2auiD6dAvHxm4g/MBQ8fu55rHAeDw==
-X-Google-Smtp-Source: APBJJlHhlgKtRSR0g7MVlD3jJp3ppLCxROhTWqGdaNe+RXYk89sBMsOuFgBGdxJ6QWNYme6Yfv2feQ==
-X-Received: by 2002:a5d:4e0a:0:b0:317:5747:b955 with SMTP id
- p10-20020a5d4e0a000000b003175747b955mr8100565wrt.17.1691080457865; 
- Thu, 03 Aug 2023 09:34:17 -0700 (PDT)
+ bh=pNJKNj8S/Xrr7Zv5tSl+mZVNrOUpmm1VQOeQBe887YY=;
+ b=MEvSvQnaQShiFnyLzpeAVKHYk79hujvE27fOUnXi4KC36FnX+LTKYttbKThXohONYm
+ 8B68hEFaHl5r7mTwuNyEYf41KMui0vJWj9HV/laqEh2+h8nBEPrJJ+O9YjSzz81yA/2R
+ a8S78TtRYCN9k6cNWhzXk1niBjtcOvckZ2ZDFsaNKCR8ZipE+0PFu9R+byAkCSs1/fQd
+ 5qBnwSXPSLc2Htgu66Tl9q/Q/K0EpjfRbSlKqZ0L6kpaMuKfhtC2oKnWVgEf0cTkKWfw
+ uk6qgTOnvI2P1oQNCQhhrnIf7uJOaC6ibZyRbUH4WQflChlbZ8Y8aROeujo4lugP5ZDA
+ 736g==
+X-Gm-Message-State: ABy/qLa8TAeiMKK0Q4IHrCYbsyJiFSCet+ZId4MtbQW4tOI3AUEYQT7l
+ SDR/CV5pYIXF492kcjwfICOHsG+NVgvL/8KJ6E71Dg==
+X-Google-Smtp-Source: APBJJlGC+wHr53XhHChB+adEQWIYcLlDHefmfyNCGvxBTlAjxRvSwG88UKlgHg/0Z9COZ7fJDnOWeg==
+X-Received: by 2002:adf:dec2:0:b0:317:5cf6:ab4e with SMTP id
+ i2-20020adfdec2000000b003175cf6ab4emr7613138wrn.62.1691080791758; 
+ Thu, 03 Aug 2023 09:39:51 -0700 (PDT)
 Received: from meli.delivery (75.53-176-91.adsl-dyn.isp.belgacom.be.
  [91.176.53.75]) by smtp.gmail.com with ESMTPSA id
- r15-20020adff70f000000b0031763fd36c4sm250498wrp.104.2023.08.03.09.34.17
+ n4-20020a5d4204000000b0030ae499da59sm255314wrq.111.2023.08.03.09.39.51
  (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Thu, 03 Aug 2023 09:34:17 -0700 (PDT)
-Date: Thu, 03 Aug 2023 19:32:19 +0300
+ Thu, 03 Aug 2023 09:39:51 -0700 (PDT)
+Date: Thu, 03 Aug 2023 19:38:59 +0300
 From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org, Jonah Palmer <jonah.palmer@oracle.com>
 Cc: philmd@linaro.org, laurent@vivier.eu, mst@redhat.com,
  boris.ostrovsky@oracle.com, alex.bennee@linaro.org, viresh.kumar@linaro.org,
  armbru@redhat.com, pbonzini@redhat.com, berrange@redhat.com,
  eduardo@habkost.net
-Subject: Re: [PATCH v3 3/3] vhost-user: move VhostUserProtocolFeature
- definition to header file
+Subject: Re: [PATCH v3 2/3] qmp: update virtio feature maps,
+ vhost-user-gpio introspection
 User-Agent: meli 0.7.3
 References: <20230803145500.2108691-1-jonah.palmer@oracle.com>
- <20230803145500.2108691-4-jonah.palmer@oracle.com>
-In-Reply-To: <20230803145500.2108691-4-jonah.palmer@oracle.com>
-Message-ID: <ytq14.zkqygy78kdyo@linaro.org>
+ <20230803145500.2108691-3-jonah.palmer@oracle.com>
+In-Reply-To: <20230803145500.2108691-3-jonah.palmer@oracle.com>
+Message-ID: <ytqae.mub3s2ovpjom@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset=utf-8; format=flowed
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,15 +97,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 03 Aug 2023 17:55, Jonah Palmer <jonah.palmer@oracle.com> wrote:
->Move the definition of VhostUserProtocolFeature to
->include/hw/virtio/vhost-user.h.
+On Thu, 03 Aug 2023 17:54, Jonah Palmer <jonah.palmer@oracle.com> wrote:
+>Add new virtio transport feature to transport feature map:
+> - VIRTIO_F_RING_RESET
 >
->Remove previous definitions in hw/scsi/vhost-user-scsi.c,
->hw/virtio/vhost-user.c, and hw/virtio/virtio-qmp.c.
+>Add new vhost-user protocol feature to vhost-user protocol feature map
+>and enumeration:
+> - VHOST_USER_PROTOCOL_F_STATUS
 >
->Previously there were 3 separate definitions of this over 3 different
->files. Now only 1 definition of this will be present for these 3 files.
+>Add new virtio device features for several virtio devices to their
+>respective feature mappings:
+>
+>virtio-blk:
+> - VIRTIO_BLK_F_SECURE_ERASE
+>
+>virtio-net:
+> - VIRTIO_NET_F_NOTF_COAL
+> - VIRTIO_NET_F_GUEST_USO4
+> - VIRTIO_NET_F_GUEST_USO6
+> - VIRTIO_NET_F_HOST_USO
+>
+>virtio/vhost-user-gpio:
+> - VIRTIO_GPIO_F_IRQ
+> - VHOST_F_LOG_ALL
+> - VHOST_USER_F_PROTOCOL_FEATURES
+>
+>Add support for introspection on vhost-user-gpio devices.
 >
 >Signed-off-by: Jonah Palmer <jonah.palmer@oracle.com>
 
