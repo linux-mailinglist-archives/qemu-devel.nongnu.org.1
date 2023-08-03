@@ -2,87 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD64776F481
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 23:12:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 237AA76F49C
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 23:28:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRfcO-00021e-FD; Thu, 03 Aug 2023 17:12:24 -0400
+	id 1qRfqc-0005bc-ON; Thu, 03 Aug 2023 17:27:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qRfcM-000213-F6
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 17:12:22 -0400
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qRfcL-0005Rx-04
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 17:12:22 -0400
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-1bc1c1c68e2so9967205ad.3
- for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 14:12:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691097139; x=1691701939;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=As+ERIUrD0IaW7ogbeDfd68h0VQGRppMM3xAQTCouVU=;
- b=owLgXUvT851bfNzas+GMjl2Psxw96fTc5Nh5tRiFS+jCI2JlixdKyjLx0SOE9R4eRH
- LmHHnSn7HbFLa6C1JzqkUP2xj7Q5nJkV+VgwWnw26wt/VmVT5NLP+z08mGFIiiJyI+9W
- fr41+Gao5VqvxAUAgqXqHaDhJC5y4O83832jnnxlt7MtRjXwXkzk5OecaQANn4yH+eQW
- 5PGT7j2TQp7SzdFhKZJu00V6l1o1D2W2b6FOLTbtNFPTJOBrw7tIgqSou892aFDHBn/T
- LGOFW84VkdCtYTIe3AErXEBxv6i5/aSYMByZCVdgGlttvp1B76aBmVLcg1g1p0WP9FPW
- x97w==
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1qRfqa-0005Y8-Sx
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 17:27:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1qRfqZ-0002RN-2M
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 17:27:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1691098021;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=dmimAJVIDox/WwTs6Q8PIL+BZOXo483HsvUL+2/WTWk=;
+ b=f9av3PRB4T8TSxwoD3pH8uwv0ZrLJV3MI30Zye+rRgCj0hdnu5YC1M5pdXjD88BAIA7rw4
+ r3dyHcTEjaProSESKSrrzQ85B9y2q3u+rYibF2aiWj3LLEpNr65nYuS3UWdTOuuhDM41F4
+ Q5By7qUErrDXG8umYOkS0jtwCQuLuuY=
+Received: from mail-yw1-f199.google.com (mail-yw1-f199.google.com
+ [209.85.128.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-367-BiZwkmQGMlyjofjmRBpyew-1; Thu, 03 Aug 2023 17:27:00 -0400
+X-MC-Unique: BiZwkmQGMlyjofjmRBpyew-1
+Received: by mail-yw1-f199.google.com with SMTP id
+ 00721157ae682-583a89cccf6so15331607b3.1
+ for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 14:27:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691097139; x=1691701939;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=As+ERIUrD0IaW7ogbeDfd68h0VQGRppMM3xAQTCouVU=;
- b=dBTK8T17uSRvjUOeRJ0UyLZkEuTRWOJL4dqmnR1sdVKXY/Qlk2dSFRVh+aATuRTIeO
- XToJUMHDHosc59Lq7a+sxQJIWsFtH6Gd6YaK1fo9UZ2xTVFB3y3vPtjQte5VE5wTN90F
- Nwn71deY1snCavCfL42KOdchvuvsUizF9XfobaCIicNAulLmn8MVAKjEOkT7aIeu44o+
- vPQIomkCrl1eIaJcyqlcIPEeaVj88VjxxEBxN88UPKIwG8bmuIR3gfCjsPFNPfXN+PLM
- W7N5tLk4M+94x8wtFI20m1T9/1+C/aRWAHUA87jkW/CXBSjgOX/vA2TujPah2b6TuOLh
- qfEw==
-X-Gm-Message-State: AOJu0YyeE94CA3Qby4x4dctBQPEsW1Ud/2bqEPVuwqGGIhbiCCu09bAR
- OlEF5STsx+XFyPKVSD6dBTtakA==
-X-Google-Smtp-Source: AGHT+IGTkM2yJAEafYHNzzLrwoIthCSOr+vDaUmMlTESs/r4Eg/nIVl62DSwwBtIKEXAv4+yeD7olQ==
-X-Received: by 2002:a17:902:a50e:b0:1bc:4adb:ed with SMTP id
- s14-20020a170902a50e00b001bc4adb00edmr704158plq.38.1691097139470; 
- Thu, 03 Aug 2023 14:12:19 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.144.105])
- by smtp.gmail.com with ESMTPSA id
- c13-20020a170902d48d00b001b801044466sm296724plg.114.2023.08.03.14.12.18
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 03 Aug 2023 14:12:19 -0700 (PDT)
-Message-ID: <5621a3cb-21a9-a830-4117-3e65b589384c@linaro.org>
-Date: Thu, 3 Aug 2023 14:12:17 -0700
+ d=1e100.net; s=20221208; t=1691098020; x=1691702820;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=dmimAJVIDox/WwTs6Q8PIL+BZOXo483HsvUL+2/WTWk=;
+ b=ho00VatLgGBQa2eJcWtdFky1Fr+9Kl5kXdTK792btWMUJ61n6083IyAZBKqTLY5R1h
+ pOh33iQtOXFjUjyzRNkygbk+BKLzjJDYlp/hC1E6QOkxqq4lgsKgyuzP4kwPFwqCRZEl
+ mtSPI6UOPZRwePKVHpxOO8rvGAuGJn8T1Cn3smeM9ft0uQ+AYyySE8OvAn+J/KyqwAZc
+ RUz/e1LRuW7qHAYPfuS/Ad4p6kg9t7MKBxSkFJ6am3zGQqw6nYHSyVakV7D9SQswG8w6
+ y/c1iVev8wv+gPdpoccy35GN0f5TLRiqL1au+XdSv99+NWllbOa03Y+AKwzFgLAaL0dE
+ cNCg==
+X-Gm-Message-State: ABy/qLbARl1LbgJW9oxxvGWfomKVDNkApDveksXzvRIBCUynxfTuCMup
+ CrbseKklNgYTtDov/j/rzL0CdzFgSCnyo3ZWQDUqNzqfM0JQDK63VlBq8cIDo8BCKob+BDE7L52
+ N53/xaYsK2fE2sd+JAdFvbL59cNSdJSE=
+X-Received: by 2002:a81:a141:0:b0:57a:2e83:4daf with SMTP id
+ y62-20020a81a141000000b0057a2e834dafmr18954514ywg.32.1691098019835; 
+ Thu, 03 Aug 2023 14:26:59 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlFwJOgLORoiAO33KDwPFlueR4KsWhQGMzq/Cqrxj61FIy670KgNhsr1RtWw92MQRJSFATprjTx3seKSd6z8mNs=
+X-Received: by 2002:a81:a141:0:b0:57a:2e83:4daf with SMTP id
+ y62-20020a81a141000000b0057a2e834dafmr18954504ywg.32.1691098019615; Thu, 03
+ Aug 2023 14:26:59 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v3 3/3] linux-user: Emulate /proc/cpuinfo for Alpha
-Content-Language: en-US
-To: Helge Deller <deller@gmx.de>, qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- qemu-arm@nongnu.org, Laurent Vivier <laurent@vivier.eu>,
- Michael Cree <mcree@orcon.net.nz>
-References: <20230803204803.639733-1-deller@gmx.de>
- <20230803204803.639733-4-deller@gmx.de>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230803204803.639733-4-deller@gmx.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <20230705071523.15496-1-sgarzare@redhat.com>
+ <20230803160101-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20230803160101-mutt-send-email-mst@kernel.org>
+From: Stefano Garzarella <sgarzare@redhat.com>
+Date: Thu, 3 Aug 2023 23:26:47 +0200
+Message-ID: <CAGxU2F7jiz++0GBO=BEXo7z9AP5vS7xCm_GKHi=8nA6THSzURA@mail.gmail.com>
+Subject: Re: [PATCH] Revert "virtio-scsi: Send "REPORTED LUNS CHANGED" sense
+ data upon disk hotplug events"
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Fam Zheng <fam@euphon.net>, 
+ Thomas Huth <thuth@redhat.com>, qemu-stable@nongnu.org, 
+ Mark Kanda <mark.kanda@oracle.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=sgarzare@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,11 +99,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/3/23 13:48, Helge Deller wrote:
-> +    dprintf(fd, "cpu active mask\t\t: %016llx\n", (unsigned long long) cpu_mask);
+Hi Michael,
 
-PRIx64 better than using long long.
+On Thu, Aug 3, 2023 at 10:02=E2=80=AFPM Michael S. Tsirkin <mst@redhat.com>=
+ wrote:
+>
+> On Wed, Jul 05, 2023 at 09:15:23AM +0200, Stefano Garzarella wrote:
+> > This reverts commit 8cc5583abe6419e7faaebc9fbd109f34f4c850f2.
+> >
+> > That commit causes several problems in Linux as described in the BZ.
+> > In particular, after a while, other devices on the bus are no longer
+> > usable even if those devices are not affected by the hotunplug.
+> > This may be a problem in Linux, but we have not been able to identify
+> > it so far. So better to revert this patch until we find a solution.
+> >
+> > Also, Oracle, which initially proposed this patch for a problem with
+> > Solaris, seems to have already reversed it downstream:
+> >     https://linux.oracle.com/errata/ELSA-2023-12065.html
+> >
+> > Suggested-by: Thomas Huth <thuth@redhat.com>
+> > Buglink: https://bugzilla.redhat.com/show_bug.cgi?id=3D2176702
+> > Cc: qemu-stable@nongnu.org
+> > Cc: Mark Kanda <mark.kanda@oracle.com>
+> > Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+>
+> scsi maintainers, what should be done about this patch?
+> we don't want a regression in the release ...
+> revert for now and think what's the right thing to do is
+> after the release?
 
+We found the issue and fixed it in this release with commit 9472083e64
+("scsi: fetch unit attention when creating the request").
 
-r~
+So we don't need to revert it anymore.
+
+Thanks,
+Stefano
+
 
