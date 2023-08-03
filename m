@@ -2,70 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4345076F59C
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 00:22:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB8EA76F5A5
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 00:22:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRghJ-0004Q8-7g; Thu, 03 Aug 2023 18:21:33 -0400
+	id 1qRghL-0004QH-GI; Thu, 03 Aug 2023 18:21:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qRghG-0004Pg-Ts
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 18:21:30 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qRghJ-0004Q9-UP
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 18:21:33 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qRghF-0000Va-CT
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 18:21:30 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qRghI-0000W9-9W
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 18:21:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691101288;
+ s=mimecast20190719; t=1691101291;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=HIYdHtiBYjd2FsFQPPoQ8yirjasX+58jJpzdJ4zKBQE=;
- b=MKxtd5E3TfxLrKvkSa2oYu3/v+2wX+1pFK0hRkOVeq20CH3HinFpEgNGhm00Bk/hyHU3c3
- OpsNs8njt0LNXxXcVrBfTMbpjFAHHdxkNuBoQFsExEmdkF3he3tVOMjyA0CQX7FE81ovM9
- HP71y7KW5Uf5QbkY6Vq8qJYJtuBsbSw=
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
- [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=6g7+lXqfDr0/pfU4duCWQ/Wn2r290XtxIMj1iKGKlcg=;
+ b=QVVQ92beyqGFsHBxBbrSYeAicaYWhGS3ywPCq3uGJjB5l94r5tutvbqL3Md4Voe0H7nMtF
+ EN3pOVpo+PILP7lF8uU6Vr7ywzX673sKWL/3zlDHij8+7pEEsU42gQhwyYz9BtTOay5Q17
+ eGefpQW2f+NSQ6ytgnW8mYw2SQ6sbEA=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-155-SrI1rp7XMD-ZEJa5hzKvdA-1; Thu, 03 Aug 2023 18:21:27 -0400
-X-MC-Unique: SrI1rp7XMD-ZEJa5hzKvdA-1
-Received: by mail-lj1-f199.google.com with SMTP id
- 38308e7fff4ca-2b9fa64dba8so13893561fa.0
- for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 15:21:27 -0700 (PDT)
+ us-mta-203--DJ4FrcENBWFm2Tel11N8g-1; Thu, 03 Aug 2023 18:21:30 -0400
+X-MC-Unique: -DJ4FrcENBWFm2Tel11N8g-1
+Received: by mail-ed1-f69.google.com with SMTP id
+ 4fb4d7f45d1cf-51bef8bb689so3138221a12.1
+ for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 15:21:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691101286; x=1691706086;
+ d=1e100.net; s=20221208; t=1691101289; x=1691706089;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=HIYdHtiBYjd2FsFQPPoQ8yirjasX+58jJpzdJ4zKBQE=;
- b=h2SyebTqpHUHgSQdoCp+qrIV3RfMAjwHxZPlj4yNr0PALJd4brjgdIHGaS94nbCmMm
- 2UUfNrYvIphYZKwFyENo2VeqAhXcf+kZExN0+GoU48ChJuggW4PSfC15pZTuCGjZhZLP
- p2dnYc4N0gdwNaJNjLHQDX2gRhWtBZgZ9iVOfNRrjgkbF9n+6mZIdWpJIsQO3VfTwI41
- zHJWezb2tOZJb8HFBDq8FRCzJneu0UoECDM4vlBT15QSRW1gFx/2TfxpNr4QSVrI6OPK
- PvjsFJAnBuwWClZ2WUFJc9jjtbJNj0nKSYnANx0wGqyrkNbVobgxIaSg1EwegNaVdrE3
- 1J0g==
-X-Gm-Message-State: AOJu0YzAxKh2cE2Q69JO5SwSvi5pPZ8mxNTnS2c8sOsdzNkVfMJSLomv
- H+HrmkFyr1Th3xVH6zRN3BdOY+zDXQRU/zhS3WTDJyH4/lIaei9qov3oSNEgPh1Oa7MPsbMyhhu
- WejkVlpO8ovplo70qVx0htOZiANpaLLGmW1C9jARQ6rHCm6aq7zXV/kMhL7gCXaiJaDjO
-X-Received: by 2002:a2e:b617:0:b0:2b9:ea6b:64f with SMTP id
- r23-20020a2eb617000000b002b9ea6b064fmr76580ljn.37.1691101285795; 
- Thu, 03 Aug 2023 15:21:25 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHbmUQ7fU5RzQxo3+v1YjTtMVJK6sQAUiDC/ZJeGk9zFe0eSWKZtC2QkHHygyaEr/LvfbsNjg==
-X-Received: by 2002:a2e:b617:0:b0:2b9:ea6b:64f with SMTP id
- r23-20020a2eb617000000b002b9ea6b064fmr76569ljn.37.1691101285504; 
- Thu, 03 Aug 2023 15:21:25 -0700 (PDT)
+ bh=6g7+lXqfDr0/pfU4duCWQ/Wn2r290XtxIMj1iKGKlcg=;
+ b=X5UH3jGk+Brvnju7Psdt2wdxYlAFvU+6dIKX7kwlZkKKvmHCQ0UDiRo8YAkvo9cQ6M
+ Dff4yMBqxL6ZF9OsPutvhqq/jbP+H6oQAJXiueL5dznz0qtZ+TcHPDV85XNHtPAGW4d1
+ OswjBDvEBswoWrNjiHXx+H+QW4bKgdVUz4DvLi+YMHmjvkEGm1APcr7niu84nm4H72w0
+ CxUapE/Xc1g+V3zeaLzqCxlwxmfczV5hjgxjfIq0g47lg8nhDvsgqkd3BPbW/Db26oon
+ nROjyAQMnqzIGmlmW/ss+N+jCVMGejXB2DbDZr92nk+yRhbzDGANy/2CvcQztPxP7IPc
+ mxxA==
+X-Gm-Message-State: AOJu0Yy3AYdurARDVILhlFg9KPWZ+EgtZoTdb7CvjT/ucQyVvmkC8Fn5
+ vLtoU0VET23N5vf4s7/sxBGrA7QwfpG9Rb1mxWXJzWPuy/HkRp1lC3iMqOajV4odbkxMG8PEsMj
+ QBaRyBztjhYD8ps4aXKaHIY72L1+VbJoKA5bjRNoEcpC3zAM2CUl2ySCh8n3YwK2Bcta+
+X-Received: by 2002:a05:6402:42cb:b0:522:aad4:aae0 with SMTP id
+ i11-20020a05640242cb00b00522aad4aae0mr52763edc.3.1691101289030; 
+ Thu, 03 Aug 2023 15:21:29 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGEBCb6m5wy78ttOOPndlAwBSVtcMAi2wTyHTxsrbOeyjpvvRSb1OYQn69OfdMKgzGMCEF/pA==
+X-Received: by 2002:a05:6402:42cb:b0:522:aad4:aae0 with SMTP id
+ i11-20020a05640242cb00b00522aad4aae0mr52753edc.3.1691101288823; 
+ Thu, 03 Aug 2023 15:21:28 -0700 (PDT)
 Received: from redhat.com ([2.52.12.104]) by smtp.gmail.com with ESMTPSA id
- re8-20020a170906d8c800b00992076f4a01sm369306ejb.190.2023.08.03.15.21.24
+ u4-20020a05640207c400b0051d9ee1c9d3sm352621edy.84.2023.08.03.15.21.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 03 Aug 2023 15:21:25 -0700 (PDT)
-Date: Thu, 3 Aug 2023 18:21:22 -0400
+ Thu, 03 Aug 2023 15:21:28 -0700 (PDT)
+Date: Thu, 3 Aug 2023 18:21:26 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Hanna Czenczek <hreitz@redhat.com>, German Maglione <gmaglione@redhat.com>
-Subject: [PULL 12/22] virtio: Fix packed virtqueue used_idx mask
-Message-ID: <c92f4fcafa14890524945073b494937e97112677.1691101215.git.mst@redhat.com>
+ Yuri Benditovich <yuri.benditovich@daynix.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PULL 13/22] pci: do not respond config requests after PCI device
+ eject
+Message-ID: <348e354417b64c484877354ee7cc66f29fa6c7df.1691101215.git.mst@redhat.com>
 References: <cover.1691101215.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -98,54 +100,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Hanna Czenczek <hreitz@redhat.com>
+From: Yuri Benditovich <yuri.benditovich@daynix.com>
 
-virtio_queue_packed_set_last_avail_idx() is used by vhost devices to set
-the internal queue indices to what has been reported by the vhost
-back-end through GET_VRING_BASE.  For packed virtqueues, this
-32-bit value is expected to contain both the device's internal avail and
-used indices, as well as their respective wrap counters.
+Fixes: https://bugzilla.redhat.com/show_bug.cgi?id=2224964
 
-To get the used index, we shift the 32-bit value right by 16, and then
-apply a mask of 0x7ffff.  That seems to be a typo, because it should be
-0x7fff; first of all, the virtio specification says that the maximum
-queue size for packed virt queues is 2^15, so the indices cannot exceed
-2^15 - 1 anyway, making 0x7fff the correct mask.  Second, the mask
-clearly is wrong from context, too, given that (A) `idx & 0x70000` must
-be 0 at this point (`idx` is 32 bit and was shifted to the right by 16
-already), (B) `idx & 0x8000` is the used_wrap_counter, so should not be
-part of the used index, and (C) `vq->used_idx` is a `uint16_t`, so
-cannot fit the 0x70000 part of the mask anyway.
+In migration with VF failover, Windows guest and ACPI hot
+unplug we do not need to satisfy config requests, otherwise
+the guest immediately detects the device and brings up its
+driver. Many network VF's are stuck on the guest PCI bus after
+the migration.
 
-This most likely never produced any guest-visible bugs, though, because
-for a vhost device, qemu will probably not evaluate the used index
-outside of virtio_queue_packed_get_last_avail_idx(), where we
-reconstruct the 32-bit value from avail and used indices and their wrap
-counters again.  There, it does not matter whether the highest bit of
-the used_idx is the used index wrap counter, because we put the wrap
-counter exactly in that position anyway.
-
-Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
-Message-Id: <20230721134945.26967-1-hreitz@redhat.com>
+Signed-off-by: Yuri Benditovich <yuri.benditovich@daynix.com>
+Message-Id: <20230728084049.191454-1-yuri.benditovich@daynix.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: German Maglione <gmaglione@redhat.com>
 ---
- hw/virtio/virtio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/pci/pci_host.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-index 295a603e58..309038fd46 100644
---- a/hw/virtio/virtio.c
-+++ b/hw/virtio/virtio.c
-@@ -3321,7 +3321,7 @@ static void virtio_queue_packed_set_last_avail_idx(VirtIODevice *vdev,
-     vq->last_avail_wrap_counter =
-         vq->shadow_avail_wrap_counter = !!(idx & 0x8000);
-     idx >>= 16;
--    vq->used_idx = idx & 0x7ffff;
-+    vq->used_idx = idx & 0x7fff;
-     vq->used_wrap_counter = !!(idx & 0x8000);
+diff --git a/hw/pci/pci_host.c b/hw/pci/pci_host.c
+index 7af8afdcbe..a18aa0a8d4 100644
+--- a/hw/pci/pci_host.c
++++ b/hw/pci/pci_host.c
+@@ -62,6 +62,17 @@ static void pci_adjust_config_limit(PCIBus *bus, uint32_t *limit)
+     }
  }
+ 
++static bool is_pci_dev_ejected(PCIDevice *pci_dev)
++{
++    /*
++     * device unplug was requested and the guest acked it,
++     * so we stop responding config accesses even if the
++     * device is not deleted (failover flow)
++     */
++    return pci_dev && pci_dev->partially_hotplugged &&
++           !pci_dev->qdev.pending_deleted_event;
++}
++
+ void pci_host_config_write_common(PCIDevice *pci_dev, uint32_t addr,
+                                   uint32_t limit, uint32_t val, uint32_t len)
+ {
+@@ -75,7 +86,7 @@ void pci_host_config_write_common(PCIDevice *pci_dev, uint32_t addr,
+      * allowing direct removal of unexposed functions.
+      */
+     if ((pci_dev->qdev.hotplugged && !pci_get_function_0(pci_dev)) ||
+-        !pci_dev->has_power) {
++        !pci_dev->has_power || is_pci_dev_ejected(pci_dev)) {
+         return;
+     }
+ 
+@@ -100,7 +111,7 @@ uint32_t pci_host_config_read_common(PCIDevice *pci_dev, uint32_t addr,
+      * allowing direct removal of unexposed functions.
+      */
+     if ((pci_dev->qdev.hotplugged && !pci_get_function_0(pci_dev)) ||
+-        !pci_dev->has_power) {
++        !pci_dev->has_power || is_pci_dev_ejected(pci_dev)) {
+         return ~0x0;
+     }
  
 -- 
 MST
