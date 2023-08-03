@@ -2,66 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03DD376E53C
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 12:08:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41A2976E53E
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 12:08:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRVEK-0006K2-Mh; Thu, 03 Aug 2023 06:06:52 -0400
+	id 1qRVFT-0006tu-0b; Thu, 03 Aug 2023 06:08:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qRVEI-0006Jm-PQ
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 06:06:50 -0400
-Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ id 1qRVFR-0006rh-9A
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 06:08:01 -0400
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qRVEH-00014p-AX
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 06:06:50 -0400
-Received: by mail-ed1-x536.google.com with SMTP id
- 4fb4d7f45d1cf-523108efb36so265462a12.1
- for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 03:06:48 -0700 (PDT)
+ id 1qRVFP-0001Oo-BI
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 06:08:01 -0400
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-51e429e1eabso935948a12.2
+ for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 03:07:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691057207; x=1691662007;
+ d=linaro.org; s=google; t=1691057275; x=1691662075;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=EeGHumsL6RKRv70AOHucMcqH2IfRT3xwXR3Wp90QxTo=;
- b=VEMZwdo8mSurR8BfudVdWrqMF22ongLGJgwukxYm1FSm9uSM4zBhov9NR648fYr1pK
- HE8o1xcpTutAUbAB02fz+gSmZAIKbvO1kLdJqH3ASn+fplG0muvDgK8dA0nK4hfi65Rv
- amCj0xZajiVoUEK7tNqF/nxAtmyhiN+8HMNzSQhfk2LMUiFEl0PW5bYBHVB5A5Tzc9gt
- 3uuvCvwVJ91YS7p3YeUjYzrfxXIZ8NnD9GioCYbc4lzmGl7ZtChMyahKLb7kHt/I5Gt3
- tqkyvpIaJHoNpfD3uP1IFuGicHY99uiL7hKBFAYfWSIY0TlRSOIIjUK8RZM7fjfZXKTz
- HePA==
+ bh=j6Zt6dN7WJWyJZYFJYo7kxdI/caHk1ItpdryInktWnI=;
+ b=aaoWNCxrHQWfy+kGE0AihJ666mMgkXCipKd0W7haZjtuajeRFssItGmPoYH97LewDR
+ LYLWc7bzbQpOF5xdn755WQHV8zq72lMSrtOcQBn+ci1qaJ0/user0elouzQISbv+ShwC
+ fse9aJfvUkMLfZQmKZLN5906d0R3GUe0oetAK68iS/c//xLgsxM4G8QYRTGvoxoAs7Zv
+ LOY/OhP+etdALneJBVx1Plev0yPxP+EJ1sU+1njRW+peGTVGu5LXIjUol46ZtHibCXXo
+ 0ZoJTQKDVAQrYmIuI37TbirUlvGIP1r9PLNKsMTcldZx8TLncIrRcuOVvEGbUNXKmTCg
+ 8/IQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691057207; x=1691662007;
+ d=1e100.net; s=20221208; t=1691057275; x=1691662075;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=EeGHumsL6RKRv70AOHucMcqH2IfRT3xwXR3Wp90QxTo=;
- b=KeWXBtmcqtuRMo1Dq5GJqbKpCqJnA1G+LKuFwsHJNezQYT5oy8ka/4XiNj+AMb9yKW
- f0INgBUtn1PxLq3uerCiG/TGUoeLXEoAmLIa4cZkq3vcwt29sGsSyAT4j0t8EixnBowZ
- 4+x+E76HkUAkpYei0SmGgtAjjlu6GKPwaK4S7I5JofMA/TwkZvTy6yPGdEukGF4NQcog
- XxIb4I/jiBymVm7NEWGITWDUo1ICCVxmelg4vaMFRHDrIA8ievoITuTdq1QzuKWmXP6/
- UzL6VAj9I7U9wn6j3g3tzO1G+z6o09y3o2IxgBaHvGKjDwrC/apr10+ggvdm7Jk01JrU
- TSNA==
-X-Gm-Message-State: ABy/qLY61Z8x+SfpJzqDsUZocL8G90NL3yluEh7nUzYWTQ7TSoK13agv
- nR2sdFlxoko9Nx2Q0P0gX+3zoBZ17SmmCDPEWvuRmQ==
-X-Google-Smtp-Source: APBJJlE7+zYrMk3avilbrfbRq4sP/fAj1EK/edXBA2z4nEN5I4cZ9l+ymVp4Q7vqjFRpP3hZpcEimNlk9AKSjix46dc=
-X-Received: by 2002:aa7:d702:0:b0:51e:d4b:3c9d with SMTP id
- t2-20020aa7d702000000b0051e0d4b3c9dmr7791887edq.23.1691057207351; Thu, 03 Aug
- 2023 03:06:47 -0700 (PDT)
+ bh=j6Zt6dN7WJWyJZYFJYo7kxdI/caHk1ItpdryInktWnI=;
+ b=RU+3FQq2NTcPmfIxV2dDgnSEzdZhko0aTF98uYiFTydbkh1f0PbX6dze1No+w/0Ytr
+ rciTMzArcUSKPzg/zxFSI35LrjJK66L+lHzmAeUqVpHxhhiEZMfo1z3GEk5R3wnR7B5L
+ gAcjPcX3STigF5aqrbvhMBHj6pm39O2GUxen8y+IsIlyNtw7Se1+uJHgXvBSaj9gm9jH
+ XHqBsbFlLQ61C0o2ZqZj2/j7fZejNRHM46o/PWrmcF41oEorrNxuhPNi60Ld2YMTF5rq
+ 7mMByucgOfo0A7z1H+bRt5BQRCl16FvKRQJbKn0GuklNs50mjHwX17Fl5Wd7solcHl5O
+ 97wA==
+X-Gm-Message-State: ABy/qLZXcl3HrjRO+yCyStsfzlqBzLteKgqYbRhJKxit23pHh5+rjTHZ
+ R5ThESGF5+CuzLhU2ivakhKNTE2KAka+4DN+YvyQ52jSe4XuNBQS
+X-Google-Smtp-Source: APBJJlHVPmkwIdDW+EvLBYxlwwbWFkHRMzYlAcvruxyT6ShxV0soGGJrWtiHwiwMM/73sdNYL/qkTsnwCF9TD3Vu44s=
+X-Received: by 2002:aa7:d507:0:b0:522:3d36:ff26 with SMTP id
+ y7-20020aa7d507000000b005223d36ff26mr7329492edq.38.1691057275625; Thu, 03 Aug
+ 2023 03:07:55 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230802161914.395443-1-keithp@keithp.com>
-In-Reply-To: <20230802161914.395443-1-keithp@keithp.com>
+ <20230802161914.395443-2-keithp@keithp.com>
+In-Reply-To: <20230802161914.395443-2-keithp@keithp.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 3 Aug 2023 11:06:36 +0100
-Message-ID: <CAFEAcA_OjEUctUkmmotx=SnvMFAPFSP32Lo5nh1VWODyDqb3Kg@mail.gmail.com>
-Subject: Re: [PATCH 0/3] target/m68k: Fix a few semihosting bugs
+Date: Thu, 3 Aug 2023 11:07:44 +0100
+Message-ID: <CAFEAcA_LEOOLQ0C1Pj0aw0Tt_0hSyhdirg51TUxYvWugMoRKVA@mail.gmail.com>
+Subject: Re: [PATCH 1/3] target/m68k: Pass semihosting arg to exit
 To: Keith Packard <keithp@keithp.com>
 Cc: qemu-devel@nongnu.org, Laurent Vivier <laurent@vivier.eu>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::536;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x536.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -86,17 +87,31 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On Wed, 2 Aug 2023 at 17:20, Keith Packard via <qemu-devel@nongnu.org> wrote:
 >
-> The first two patches mirror similar patches I recently sent for nios2.
+> Instead of using d0 (the semihost function number), use d1 (the
+> provide exit status).
 >
->  1. Use correct parameter for EXIT (d1 instead of d0)
->  2. Fix use of deposit64 in LSEEK (argument order was incorrect)
+> Signed-off-by: Keith Packard <keithp@keithp.com>
+> ---
+>  target/m68k/m68k-semi.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 >
-> The second patch has also been submitted by Peter Maydell, it's
-> included here because it was required to get things working.
+> diff --git a/target/m68k/m68k-semi.c b/target/m68k/m68k-semi.c
+> index 88ad9ba814..12235759c7 100644
+> --- a/target/m68k/m68k-semi.c
+> +++ b/target/m68k/m68k-semi.c
+> @@ -130,8 +130,8 @@ void do_m68k_semihosting(CPUM68KState *env, int nr)
+>      args = env->dregs[1];
+>      switch (nr) {
+>      case HOSTED_EXIT:
+> -        gdb_exit(env->dregs[0]);
+> -        exit(env->dregs[0]);
+> +        gdb_exit(env->dregs[1]);
+> +        exit(env->dregs[1]);
 
-The usual way we do that is that you include my patch in your
-series, and add your signed-off-by line (indicating it has
-come via you).
+I looked at this code but didn't spot the bug, because I
+got confused by the 'args = env->dregs[1]' line above somehow.
+
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
 thanks
 -- PMM
