@@ -2,52 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8425976E733
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 13:44:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B5BF76E7A0
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 14:03:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRWDD-0006JF-C1; Thu, 03 Aug 2023 07:09:47 -0400
+	id 1qRWDF-0006LH-Qf; Thu, 03 Aug 2023 07:09:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qRWDC-0006J1-C1
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 07:09:46 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qRWDD-0006Kf-Ae
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 07:09:47 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qRWDA-0007UP-2u
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 07:09:46 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qRWDB-0007UW-9l
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 07:09:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691060983;
+ s=mimecast20190719; t=1691060984;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=hxmWjnQbntHbtZ0Tb3hBjX5MT1Xg0hv3Qa1qyzobr9M=;
- b=OPlRBQVK2QkcDmKuOyANCY6pn9YP1UOulKwYpl5KtL6WAbi5Kp4fDC+WxxRp/DReilX8NO
- 8LCEPnPLgyNB17hR9Q+KJK89C/skOnnhjrzJnN7dzUNL/H7v8dTxNqj92hcsOb7kgxIfyu
- Xm13gmaudU9T9R+q8rW9eapo6G5dNXU=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-137-IgSpyXJOO2iC0hHMRdbd9A-1; Thu, 03 Aug 2023 07:09:40 -0400
-X-MC-Unique: IgSpyXJOO2iC0hHMRdbd9A-1
+ bh=lCRIRcbDFRFNFxEXw2YhOhdhIiknWUHswC46GhMp6zw=;
+ b=DzH3Xf042LG5r/Q88p9d3nvE9QRJQ0LRiQcwlHqMJGebQ3BTIB5PzNrKfHnmUGgZcG4TZB
+ qKfvd0haPpFs5vWQyFISveOdAv+xXyBvn1y8JQUyBBNwjBdi0yAiTikS8nF89Tc8UHuqQs
+ HU9LdVgt1bABEbGlRfgDDGkd+gH8DoM=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-343-m_jDE7syM5qrHngIultLjw-1; Thu, 03 Aug 2023 07:09:41 -0400
+X-MC-Unique: m_jDE7syM5qrHngIultLjw-1
 Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
  [10.11.54.3])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B9D33856F66;
- Thu,  3 Aug 2023 11:09:39 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E1C813C10146;
+ Thu,  3 Aug 2023 11:09:40 +0000 (UTC)
 Received: from thuth.com (unknown [10.45.226.89])
- by smtp.corp.redhat.com (Postfix) with ESMTP id CE7FC112132E;
- Thu,  3 Aug 2023 11:09:38 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 095701121325;
+ Thu,  3 Aug 2023 11:09:39 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 3/9] gitlab: print timestamps during windows msys jobs
-Date: Thu,  3 Aug 2023 13:09:26 +0200
-Message-Id: <20230803110932.341091-4-thuth@redhat.com>
+Subject: [PULL 4/9] gitlab: always use updated msys installer
+Date: Thu,  3 Aug 2023 13:09:27 +0200
+Message-Id: <20230803110932.341091-5-thuth@redhat.com>
 In-Reply-To: <20230803110932.341091-1-thuth@redhat.com>
 References: <20230803110932.341091-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -81,62 +81,72 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
-It is hard to get visibility into where time is consumed in our Windows
-msys jobs. Adding a few log console messages with the timestamp will
-aid in our debugging.
+We current reference an msys installer binary from mid-2022, which means
+after installation, it immediately has to re-download a bunch of newer
+content. This wastes precious CI time.
+
+The msys project publishes an installer binary with a fixed URL that
+always references the latest content. We cache the downloads in gitlab
+though and so once downloaded we would never re-fetch the installer
+leading back to the same problem.
+
+To deal with this we also fetch the pgp signature for the installer
+on every run, and compare that to the previously cached signature. If
+the signature changes, we re-download the full installer.
+
+This ensures we always have the latest installer for msys, while also
+maximising use of the gitlab cache.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20230801130403.164060-3-berrange@redhat.com>
+Message-Id: <20230801130403.164060-4-berrange@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- .gitlab-ci.d/windows.yml | 5 +++++
- 1 file changed, 5 insertions(+)
+ .gitlab-ci.d/windows.yml | 30 +++++++++++++++++++++++++++---
+ 1 file changed, 27 insertions(+), 3 deletions(-)
 
 diff --git a/.gitlab-ci.d/windows.yml b/.gitlab-ci.d/windows.yml
-index f086540e40..831b080d12 100644
+index 831b080d12..0bc04ad068 100644
 --- a/.gitlab-ci.d/windows.yml
 +++ b/.gitlab-ci.d/windows.yml
-@@ -19,6 +19,7 @@
-     reports:
-       junit: "build/meson-logs/testlog.junit.xml"
-   before_script:
-+  - Write-Output "Acquiring msys2.exe installer at $(Get-Date -Format u)"
+@@ -23,10 +23,34 @@
    - If ( !(Test-Path -Path msys64\var\cache ) ) {
        mkdir msys64\var\cache
      }
-@@ -27,6 +28,7 @@
-       "https://github.com/msys2/msys2-installer/releases/download/2022-06-03/msys2-base-x86_64-20220603.sfx.exe"
-       -outfile "msys64\var\cache\msys2.exe"
+-  - If ( !(Test-Path -Path msys64\var\cache\msys2.exe ) ) {
++  - Invoke-WebRequest
++    "https://repo.msys2.org/distrib/msys2-x86_64-latest.sfx.exe.sig"
++    -outfile "msys2.exe.sig"
++  - if ( Test-Path -Path msys64\var\cache\msys2.exe.sig ) {
++      Write-Output "Cached installer sig" ;
++      if ( ((Get-FileHash msys2.exe.sig).Hash -ne (Get-FileHash msys64\var\cache\msys2.exe.sig).Hash) ) {
++        Write-Output "Mis-matched installer sig, new installer download required" ;
++        Remove-Item -Path msys64\var\cache\msys2.exe.sig ;
++        if ( Test-Path -Path msys64\var\cache\msys2.exe ) {
++          Remove-Item -Path msys64\var\cache\msys2.exe
++        }
++      } else {
++        Write-Output "Matched installer sig, cached installer still valid"
++      }
++    } else {
++      Write-Output "No cached installer sig, new installer download required" ;
++      if ( Test-Path -Path msys64\var\cache\msys2.exe ) {
++        Remove-Item -Path msys64\var\cache\msys2.exe
++      }
++    }
++  - if ( !(Test-Path -Path msys64\var\cache\msys2.exe ) ) {
++      Write-Output "Fetching latest installer" ;
+       Invoke-WebRequest
+-      "https://github.com/msys2/msys2-installer/releases/download/2022-06-03/msys2-base-x86_64-20220603.sfx.exe"
+-      -outfile "msys64\var\cache\msys2.exe"
++      "https://repo.msys2.org/distrib/msys2-x86_64-latest.sfx.exe"
++      -outfile "msys64\var\cache\msys2.exe" ;
++      Copy-Item -Path msys2.exe.sig -Destination msys64\var\cache\msys2.exe.sig
++    } else {
++      Write-Output "Using cached installer"
      }
-+  - Write-Output "Invoking msys2.exe installer at $(Get-Date -Format u)"
+   - Write-Output "Invoking msys2.exe installer at $(Get-Date -Format u)"
    - msys64\var\cache\msys2.exe -y
-   - ((Get-Content -path .\msys64\etc\\post-install\\07-pacman-key.post -Raw)
-       -replace '--refresh-keys', '--version') |
-@@ -36,6 +38,7 @@
-   - .\msys64\usr\bin\bash -lc 'pacman --noconfirm -Syuu'  # Normal update
-   - taskkill /F /FI "MODULES eq msys-2.0.dll"
-   script:
-+  - Write-Output "Installing mingw packages at $(Get-Date -Format u)"
-   - .\msys64\usr\bin\bash -lc "pacman -Sy --noconfirm --needed
-       bison diffutils flex
-       git grep make sed
-@@ -66,6 +69,7 @@
-       $MINGW_TARGET-spice
-       $MINGW_TARGET-usbredir
-       $MINGW_TARGET-zstd "
-+  - Write-Output "Running build at $(Get-Date -Format u)"
-   - $env:CHERE_INVOKING = 'yes'  # Preserve the current working directory
-   - $env:MSYS = 'winsymlinks:native' # Enable native Windows symlink
-   - mkdir build
-@@ -73,6 +77,7 @@
-   - ..\msys64\usr\bin\bash -lc "../configure --enable-fdt=system $CONFIGURE_ARGS"
-   - ..\msys64\usr\bin\bash -lc "make"
-   - ..\msys64\usr\bin\bash -lc "make check MTESTARGS='$TEST_ARGS' || { cat meson-logs/testlog.txt; exit 1; } ;"
-+  - Write-Output "Finished build at $(Get-Date -Format u)"
- 
- msys2-64bit:
-   extends: .shared_msys2_builder
 -- 
 2.39.3
 
