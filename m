@@ -2,76 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 540E376EBB5
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 16:02:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B40BA76EBB9
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 16:03:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRYtg-0003yW-JK; Thu, 03 Aug 2023 10:01:48 -0400
+	id 1qRYv4-0007L1-51; Thu, 03 Aug 2023 10:03:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qRYte-0003rQ-U8
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 10:01:46 -0400
-Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qRYtY-0006GP-9j
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 10:01:46 -0400
-Received: by mail-lf1-x12a.google.com with SMTP id
- 2adb3069b0e04-4fe28e4671dso1813636e87.0
- for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 07:01:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691071297; x=1691676097;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=5X7700hdHct6vaxJzK5A0soZ22RG3fOPU9zJGZNj07A=;
- b=GAnkYi8w3+oTtV3NT/84m7HuIVKi1kbPu3J/SE60Yg44GQXu/IU7WMyfniNPSvoNYB
- fep1a6ZGtCMxD4bq2sWlXVX4VLO7CDkwvzPS219MT/KPKfzIxgsZBw40ha8lo6QPN59g
- gNTJI6u6z6sNrJ+NYXJU91b9bkkW64XvaEjp99uB9lkHAW9u0J4bJP4B5wMLl7NALMZe
- 7heBv8VOHCYJ/MLeJ6JfhB+rFN0/XkMRJLuTswoh2yWBYKJAlrCxtMQqyewfbgvAeVAr
- 6CWnXEChUeX2B4nEyCZioTYeDShGkSP0L2uRlYrbPPDmuj2uAhw8UNqc7XF702vL2tkh
- 7ZOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691071297; x=1691676097;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=5X7700hdHct6vaxJzK5A0soZ22RG3fOPU9zJGZNj07A=;
- b=K59wDRa4IFm8yoQyEPpPo+1rXtUQnCKqkNrjpwFw4/MziAwwrI3u5NjYt4CJ5j9k2y
- 4rQcd2k4xirdQRhoRSzE9zIfkJxaC42Mj2NHo4Cu5i8618CIduI12FcOJULcIJBFKOCz
- fymHRHUQkn34UCuUzF72G8zVoCCX5isEyBvjrHdSnRYYxFaywcF3bOQp4e0ASfZizs8Z
- UVmWG6xPvvOpvpkMhoh8i84r8+NyE2d05wKrw8Lw5G/c9t1g16MSR0YRRFdqtd6u1/YV
- a6pHu+nRKYyu7JCkDFM+qKtnaMN9Uj7iG8aIrUh1j55ifwGVq/YUV9I5v/mSnet3qe1t
- F+gQ==
-X-Gm-Message-State: ABy/qLbYRmh4mehvoNDhh/Uv10oet16MAOr0I3k443ltHFAXtBaMPRkR
- +hs8CqVmL2DXiGA5fshx/bdps5MpgAoQm57MBkuIGQ==
-X-Google-Smtp-Source: APBJJlGiIO2Pu7bOS7Nr21/n9jjnkgHgo7Wo/EDjq37OLTsYTToC3R0PB4RxCVwnoI4+ucdu6OOKxH3ZNfznRZfhmAg=
-X-Received: by 2002:ac2:5931:0:b0:4fe:af6:5e5 with SMTP id
- v17-20020ac25931000000b004fe0af605e5mr6912814lfi.23.1691071296676; 
- Thu, 03 Aug 2023 07:01:36 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <ardb@kernel.org>) id 1qRYus-0007BA-M9
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 10:03:04 -0400
+Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ardb@kernel.org>) id 1qRYuq-0006gi-QW
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 10:03:02 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 638C461D85
+ for <qemu-devel@nongnu.org>; Thu,  3 Aug 2023 14:02:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C85ADC433C7
+ for <qemu-devel@nongnu.org>; Thu,  3 Aug 2023 14:02:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1691071378;
+ bh=R2hfi/oO5wt4RqXSmSmELSVqNTI6UY4ryC1JnqkctrE=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=ewzLbU9tu2WhXepyoIVl1rxYQq98lV3nKMmnipLXfn5x7GAWzbDTmsk5Px09irg3w
+ NxGSgm2h4MJ1tJWTXCDqbkBEVgTJSJWUBX1+kypOQbjD0+VS7lZlyiv6qKezuds2JF
+ NlMsnUEY3ns+Tm/M2YBNPuvf/jTgXLCHUNRAAQsmWIiHt1a8pZhx/agmHmhplMBQI0
+ rzA0tz9y4BkTjnf9/WYi95auOH40QeoNh9xfjnhj4J9pZ034LFnbGIJeI6SORXn9Ax
+ SzajIm9RWebhV6ICWP409dFUrdeD80erOEpYzLWtpFIL2jM8hgXCdoAPq1abPr0TjQ
+ yAyK8IsHl477Q==
+Received: by mail-lf1-f41.google.com with SMTP id
+ 2adb3069b0e04-4fe10f0f4d1so1836970e87.0
+ for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 07:02:58 -0700 (PDT)
+X-Gm-Message-State: ABy/qLbbSMAHSoM8wZ83Oh9yzdTH0y3xr8LielOUsrKkaaxEj1Kr8d2D
+ QrHGkBRQr8o2RDW5IdpbY/leocI5ZEmibWRl+E8=
+X-Google-Smtp-Source: APBJJlF+r+xcP60CSxO78np4R1OusKCNw3vbByC48zSW3Pev+ESKl/JbhIWPutnmlenNu1FnoocOGLrphJkFq8V9130=
+X-Received: by 2002:ac2:43b1:0:b0:4fe:3e89:fcae with SMTP id
+ t17-20020ac243b1000000b004fe3e89fcaemr6742720lfl.24.1691071376765; Thu, 03
+ Aug 2023 07:02:56 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230710140249.56324-1-francisco.iglesias@amd.com>
- <20230710140249.56324-6-francisco.iglesias@amd.com>
-In-Reply-To: <20230710140249.56324-6-francisco.iglesias@amd.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 3 Aug 2023 15:01:25 +0100
-Message-ID: <CAFEAcA8pVmfhrWQM7EjOjRrrY8rwOdXU65+rjcmnT_=LdK372Q@mail.gmail.com>
-Subject: Re: [PATCH v1 5/8] hw/misc: Introduce a model of Xilinx Versal's
- CFRAME_REG
-To: Francisco Iglesias <francisco.iglesias@amd.com>
-Cc: qemu-devel@nongnu.org, frasse.iglesias@gmail.com, alistair@alistair23.me, 
- edgar.iglesias@gmail.com, fkonrad@amd.com, sai.pavan.boddu@amd.com, 
- tong.ho@amd.com, vikram.garhwal@amd.com
+References: <20230713211435.13505-1-richard.henderson@linaro.org>
+In-Reply-To: <20230713211435.13505-1-richard.henderson@linaro.org>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Thu, 3 Aug 2023 16:02:45 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXHKXeH6JvEqwvJQcpL1kje0rJbx9-WkAgDBiUzr78VMYA@mail.gmail.com>
+Message-ID: <CAMj1kXHKXeH6JvEqwvJQcpL1kje0rJbx9-WkAgDBiUzr78VMYA@mail.gmail.com>
+Subject: Re: [RFC PATCH for-8.2 00/18] crypto: Provide clmul.h and host accel
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, berrange@redhat.com
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::12a;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2604:1380:4641:c500::1;
+ envelope-from=ardb@kernel.org; helo=dfw.source.kernel.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -88,172 +78,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 10 Jul 2023 at 15:03, Francisco Iglesias
-<francisco.iglesias@amd.com> wrote:
+On Thu, 13 Jul 2023 at 23:14, Richard Henderson
+<richard.henderson@linaro.org> wrote:
 >
-> Introduce a model of Xilinx Versal's Configuration Frame controller
-> (CFRAME_REG).
+> Inspired by Ard Biesheuvel's RFC patches [1] for accelerating
+> carry-less multiply under emulation.
 >
-> Signed-off-by: Francisco Iglesias <francisco.iglesias@amd.com>
-> ---
->  MAINTAINERS                              |   2 +
->  hw/misc/meson.build                      |   1 +
->  hw/misc/xlnx-versal-cframe-reg.c         | 714 +++++++++++++++++++++++
->  include/hw/misc/xlnx-versal-cframe-reg.h | 288 +++++++++
->  4 files changed, 1005 insertions(+)
->  create mode 100644 hw/misc/xlnx-versal-cframe-reg.c
->  create mode 100644 include/hw/misc/xlnx-versal-cframe-reg.h
+> This is less polished than the AES patch set:
 >
+> (1) Should I split HAVE_CLMUL_ACCEL into per-width HAVE_CLMUL{N}_ACCEL?
+>     The "_generic" and "_accel" split is different from aes-round.h
+>     because of the difference in support for different widths, and it
+>     means that each host accel has more boilerplate.
+>
+> (2) Should I bother trying to accelerate anything other than 64x64->128?
 
+That is the only compelling use case afaict.
 
-
-> +#define KEYHOLE_STREAM_4K 0x1000
-
-You could define this as (4 * KiB) which would then be more
-clearly 4K.
-
-> +
-> +#define MAX_BLOCKTYPE 6
-> +#define MAX_BLOCKTYPE_FRAMES 0xFFFFF
-> +
-> +enum {
-> +    CFRAME_CMD_WCFG = 1,
-> +    CFRAME_CMD_ROWON = 2,
-> +    CFRAME_CMD_ROWOFF = 3,
-> +    CFRAME_CMD_RCFG = 4,
-> +    CFRAME_CMD_DLPARK = 5
-
-minor style nit -- leaving the trailing ',' on the last
-item in an enum or similar means that the next person
-to add another entry doesn't have to edit the previous
-line to put the comma in.
-
-> +};
-
-> +static void cfrm_fdri_post_write(RegisterInfo *reg, uint64_t val)
-> +{
-> +    XlnxVersalCFrameReg *s = XLNX_VERSAL_CFRAME_REG(reg->opaque);
-> +
-> +    if (s->row_configured && s->rowon && s->wcfg) {
-> +        XlnxCFrame *new_f = &s->new_f;
-> +
-> +        new_f->data[new_f->idx++] = s->regs[R_FDRI0];
-> +        new_f->data[new_f->idx++] = s->regs[R_FDRI1];
-> +        new_f->data[new_f->idx++] = s->regs[R_FDRI2];
-> +        new_f->data[new_f->idx++] = s->regs[R_FDRI3];
-> +
-> +        assert(new_f->idx <= FRAME_NUM_WORDS);
-
-We should assert that we're not overrunning the array
-*before* we write the data, not afterwards.
-
-More generally, this kind of "we have a data array and
-an index into it and we store stuff in at the index"
-is prime territory for bugs resulting in array overruns.
-If there's a way to write it that makes it clear that
-that can't happen (esp. abstracting out what the operations
-on the data structure are, documenting the invariants, etc)
-then we should take it.
-
-> +
-> +        if (new_f->idx == FRAME_NUM_WORDS) {
-> +            XlnxCFrame *cur_f;
-> +
-> +            /* Include block type and frame address */
-> +            new_f->addr = extract32(s->regs[R_FAR0], 0, 23);
-> +
-> +            cur_f = cframes_get_frame(s, new_f->addr);
-> +
-> +            if (cur_f) {
-> +                /* Overwrite current frame */
-> +                cur_f[0] = new_f[0];
-> +            } else {
-> +                g_array_append_val(s->cframes, new_f[0]);
-> +            }
-> +
-> +            cframe_incr_far(s);
-> +
-> +            /* Clear out new_f */
-> +            memset(new_f, 0, sizeof(*new_f));
-> +        }
-> +    }
-> +}
-
-> +static int cframes_reg_pre_save(void *opaque)
-> +{
-> +    XlnxVersalCFrameReg *s = XLNX_VERSAL_CFRAME_REG(opaque);
-> +
-> +    if (s->cframes->len) {
-> +        s->cf_data = (uint32_t *) s->cframes->data;
-> +        s->cf_dlen = s->cframes->len * g_array_get_element_size(s->cframes) / 4;
-> +    }
-> +    return 0;
-> +}
-> +
-> +static int cframes_reg_post_load(void *opaque, int version_id)
-> +{
-> +    XlnxVersalCFrameReg *s = XLNX_VERSAL_CFRAME_REG(opaque);
-> +
-> +    if (s->cf_dlen) {
-> +        uint32_t num_frames = s->cf_dlen /
-> +                              (g_array_get_element_size(s->cframes) / 4);
-> +        g_array_append_vals(s->cframes, s->cf_data, num_frames);
-> +    }
-> +    return 0;
-> +}
-
-Same remarks here about handling of GArray vs VMSTATE ALLOC.
-
-(Or we could implement a VMSTATE macro/support for GArrays,
-I guess. That would arguably be neater.)
-
-> +
-> +static const VMStateDescription vmstate_cframe_reg = {
-> +    .name = TYPE_XLNX_VERSAL_CFRAME_REG,
-> +    .version_id = 1,
-> +    .minimum_version_id = 1,
-> +    .pre_save = cframes_reg_pre_save,
-> +    .post_load = cframes_reg_post_load,
-> +    .fields = (VMStateField[]) {
-> +        VMSTATE_UINT32_ARRAY(wfifo, XlnxVersalCFrameReg, 4),
-> +        VMSTATE_UINT32_ARRAY(regs, XlnxVersalCFrameReg, CFRAME_REG_R_MAX),
-> +        VMSTATE_BOOL(rowon, XlnxVersalCFrameReg),
-> +        VMSTATE_BOOL(wcfg, XlnxVersalCFrameReg),
-> +        VMSTATE_BOOL(rcfg, XlnxVersalCFrameReg),
-> +        VMSTATE_VARRAY_UINT32_ALLOC(cf_data, XlnxVersalCFrameReg, cf_dlen,
-> +                                    0, vmstate_info_uint32, uint32_t),
-> +        VMSTATE_END_OF_LIST(),
-> +    }
-> +};
-> +
-> +static Property cframe_regs_props[] = {
-> +    /* Kept for backwards compatibility */
-
-Backwards compatibility with who? This is the first implementation
-of this as far as upstream is concerned...
-
-> +    DEFINE_PROP_LINK("cfu", XlnxVersalCFrameReg, cfg.cfu_fdro,
-> +                     TYPE_XLNX_CFI_IF, XlnxCfiIf *),
-> +    DEFINE_PROP_LINK("cfu-fdro", XlnxVersalCFrameReg, cfg.cfu_fdro,
-> +                     TYPE_XLNX_CFI_IF, XlnxCfiIf *),
-> +    DEFINE_PROP_UINT32("blktype0-frames", XlnxVersalCFrameReg,
-> +                       cfg.blktype_num_frames[0], 0),
-> +    DEFINE_PROP_UINT32("blktype1-frames", XlnxVersalCFrameReg,
-> +                       cfg.blktype_num_frames[1], 0),
-> +    DEFINE_PROP_UINT32("blktype2-frames", XlnxVersalCFrameReg,
-> +                       cfg.blktype_num_frames[2], 0),
-> +    DEFINE_PROP_UINT32("blktype3-frames", XlnxVersalCFrameReg,
-> +                       cfg.blktype_num_frames[3], 0),
-> +    DEFINE_PROP_UINT32("blktype4-frames", XlnxVersalCFrameReg,
-> +                       cfg.blktype_num_frames[4], 0),
-> +    DEFINE_PROP_UINT32("blktype5-frames", XlnxVersalCFrameReg,
-> +                       cfg.blktype_num_frames[5], 0),
-> +    DEFINE_PROP_UINT32("blktype6-frames", XlnxVersalCFrameReg,
-> +                       cfg.blktype_num_frames[6], 0),
-> +    DEFINE_PROP_END_OF_LIST(),
-> +};
-> +
-
-thanks
--- PMM
+>     That seems to be the one that GSM really wants anyway.  I'd keep all
+>     of the sizes implemented generically, since that centralizes the 3
+>     target implementations.
+>
+> (3) The use of Int128 isn't fantastic -- better would be a vector type,
+>     though that has its own special problems for ppc64le (see the
+>     endianness hoops within aes-round.h).  Perhaps leave things in
+>     env memory, like I was mostly able to do with AES?
+>
+> (4) No guest test case(s).
+>
+>
+> r~
+>
+>
+> [1] https://patchew.org/QEMU/20230601123332.3297404-1-ardb@kernel.org/
+>
+> Richard Henderson (18):
+>   crypto: Add generic 8-bit carry-less multiply routines
+>   target/arm: Use clmul_8* routines
+>   target/s390x: Use clmul_8* routines
+>   target/ppc: Use clmul_8* routines
+>   crypto: Add generic 16-bit carry-less multiply routines
+>   target/arm: Use clmul_16* routines
+>   target/s390x: Use clmul_16* routines
+>   target/ppc: Use clmul_16* routines
+>   crypto: Add generic 32-bit carry-less multiply routines
+>   target/arm: Use clmul_32* routines
+>   target/s390x: Use clmul_32* routines
+>   target/ppc: Use clmul_32* routines
+>   crypto: Add generic 64-bit carry-less multiply routine
+>   target/arm: Use clmul_64
+>   target/s390x: Use clmul_64
+>   target/ppc: Use clmul_64
+>   host/include/i386: Implement clmul.h
+>   host/include/aarch64: Implement clmul.h
+>
+>  host/include/aarch64/host/cpuinfo.h      |   1 +
+>  host/include/aarch64/host/crypto/clmul.h | 230 +++++++++++++++++++++++
+>  host/include/generic/host/crypto/clmul.h |  28 +++
+>  host/include/i386/host/cpuinfo.h         |   1 +
+>  host/include/i386/host/crypto/clmul.h    | 187 ++++++++++++++++++
+>  host/include/x86_64/host/crypto/clmul.h  |   1 +
+>  include/crypto/clmul.h                   | 123 ++++++++++++
+>  target/arm/tcg/vec_internal.h            |  11 --
+>  crypto/clmul.c                           | 163 ++++++++++++++++
+>  target/arm/tcg/mve_helper.c              |  16 +-
+>  target/arm/tcg/vec_helper.c              | 112 ++---------
+>  target/ppc/int_helper.c                  |  63 +++----
+>  target/s390x/tcg/vec_int_helper.c        | 175 +++++++----------
+>  util/cpuinfo-aarch64.c                   |   4 +-
+>  util/cpuinfo-i386.c                      |   1 +
+>  crypto/meson.build                       |   9 +-
+>  16 files changed, 865 insertions(+), 260 deletions(-)
+>  create mode 100644 host/include/aarch64/host/crypto/clmul.h
+>  create mode 100644 host/include/generic/host/crypto/clmul.h
+>  create mode 100644 host/include/i386/host/crypto/clmul.h
+>  create mode 100644 host/include/x86_64/host/crypto/clmul.h
+>  create mode 100644 include/crypto/clmul.h
+>  create mode 100644 crypto/clmul.c
+>
+> --
+> 2.34.1
+>
 
