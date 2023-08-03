@@ -2,64 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7369A76EE77
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 17:44:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C699D76EE9F
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 17:49:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRaTz-00074r-OQ; Thu, 03 Aug 2023 11:43:23 -0400
+	id 1qRaZ9-0000F1-70; Thu, 03 Aug 2023 11:48:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <logoerthiner1@163.com>)
- id 1qRaTx-00073f-F0
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 11:43:21 -0400
-Received: from m13139.mail.163.com ([220.181.13.139])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <logoerthiner1@163.com>) id 1qRaTt-0006Rn-DL
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 11:43:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
- s=s110527; h=Date:From:Subject:Content-Type:MIME-Version:
- Message-ID; bh=lXDJrcBoE8lliCScoew1Tyic8fdVqjD/BMEtSqZh8Wo=; b=o
- QhOSFsu48HAbD5JlyuSjeGLvmSMZy0BJKRFyCMOmxWITVxhcKowqPZbyA8y/38JI
- 39ivNRYt0NAWLLIAkq2Ij8sJgWQo5/5xmeM5Jj7iBqw4wGOcjhXvZFnDSuYs0zgX
- u0+5oHiCPq6DCaAlfWoVln/WnV/BT/ZgNf57L3Ov7I=
-Received: from logoerthiner1$163.com ( [183.242.254.172] ) by
- ajax-webmail-wmsvr139 (Coremail) ; Thu, 3 Aug 2023 23:43:03 +0800 (CST)
-X-Originating-IP: [183.242.254.172]
-Date: Thu, 3 Aug 2023 23:43:03 +0800 (CST)
-From: ThinerLogoer  <logoerthiner1@163.com>
-To: "David Hildenbrand" <david@redhat.com>, qemu-devel@nongnu.org
-Cc: imammedo@redhat.com
-Subject: Ping: Re: [PATCH v2] softmmu/physmem: try opening file readonly
- before failure in file_ram_open
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT5.0.14 build 20230109(dcb5de15)
- Copyright (c) 2002-2023 www.mailtech.cn 163com
-In-Reply-To: <e2e82f40-2691-b947-bf06-bea0ded99eae@redhat.com>
-References: <20230726145912.88545-1-logoerthiner1@163.com>
- <183e16a8-55c3-7550-a9ff-21f31f65d0e5@redhat.com>
- <6bdbce7f.3e8e.18997f05e47.Coremail.logoerthiner1@163.com>
- <e908495c-252c-745c-036b-1b19778435d9@redhat.com>
- <615091df.3495.1899b089fc8.Coremail.logoerthiner1@163.com>
- <e2e82f40-2691-b947-bf06-bea0ded99eae@redhat.com>
-X-NTES-SC: AL_QuySA/ycuEsj5SSRZ+kXnk4Shuc2XMu4u/gu34JTP5E0uyvuyjo4eV9iNmLq7eSKEyyBkDiUXyN27MlHRKhAe48eyRmBGwrXPN+xY++w2tH/
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=GBK
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qRaZ4-0000Er-Uj
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 11:48:38 -0400
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qRaZ3-0002IN-2r
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 11:48:38 -0400
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-5230df1ce4fso1253947a12.1
+ for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 08:48:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1691077715; x=1691682515;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=oejRUpYx72UgLnW62FCu4THu1bceCcihCNNC2+sRW6c=;
+ b=p69jfSb+A0CUVWPbRzCzxoBVlJU4KViRyouw52FKwADDxjf5DTtH4NjHJMx466KJQF
+ bxpgmQLiVXo5f2q/NEVWPIe01HK8C00PkW+CryhooqXxsOqhZKUI9bFuOZXRiweCc4QV
+ U67csSTMUhz674tdmlZGgqPR/IMLKSPNLvF89k8ClE9IP8ud9C9Ozq5xVluFzB3ald+v
+ fe/6kej8t+ZHDu+83hXRQwQqcWS3VwnBAfSdisrtMy/1nlME8AfUip2IFwIGZMfYC4L3
+ 9qFHO17G/1VQa3J7MCOXI+nSS3CszpSIsawbhStqxfFcztF9fGw+HdlNs6SJ2kVO65E6
+ Z3kA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1691077715; x=1691682515;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=oejRUpYx72UgLnW62FCu4THu1bceCcihCNNC2+sRW6c=;
+ b=R8LqPauisvXKTMCZnOUkpGSgZGWLrMusj0TNtWwxdB5ntsdesINDf+ePEooIu9vyEK
+ Ec9C+P7QcZhLn7TPKbZlAXdgyyeju3ymlkoMa1FkTgrqMneYaEalcniz08tKdn+1wh/+
+ HoWhNG9GNu3qsW0PCdKXTrsSUiFlVHrWkG2z3yDO6HLEj+aCaarT1CrgW/gTyEVz5QkB
+ s6UMXcOMELZGwqK0ItiW/XuU/nZ1TUh6eiQEymo9Bk70jRZe4KZ6yx3frgyrlOCcci3i
+ T0VZIljJ4FIb4tBkRPMB7yuoMgcc5NCLxQtTweFHgPKMb/Rj6+dDtqkshIULdZCuGpEl
+ BmPw==
+X-Gm-Message-State: ABy/qLb6/YgbhI9Kt10nEGBs6Vp/YunSDzhhucMov7xX1YqDYqQ+zlPG
+ TqzfmOiXcq9dHJUQiDoGxy+2PJoj8TVxGZIuPdGJfA==
+X-Google-Smtp-Source: APBJJlGlNuBKl11MZnZSvuo2Vwx+HBVeK7s+ive+mU6oIeLaB7NiRsfQQfw26h/yNVilwAhO2ARAkkRGx7FG0YscS00=
+X-Received: by 2002:a05:6402:1859:b0:51b:c714:a2a1 with SMTP id
+ v25-20020a056402185900b0051bc714a2a1mr8777155edy.7.1691077715479; Thu, 03 Aug
+ 2023 08:48:35 -0700 (PDT)
 MIME-Version: 1.0
-Message-ID: <358ce6fd.7806.189bc111547.Coremail.logoerthiner1@163.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID: i8GowADH3TgHy8tkVOMNAA--.2133W
-X-CM-SenderInfo: 5orj0vpuwkx0thurqiywtou0bp/xtbBZhm7nlaEEacWtQACsf
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
-Received-SPF: pass client-ip=220.181.13.139;
- envelope-from=logoerthiner1@163.com; helo=m13139.mail.163.com
-X-Spam_score_int: -14
-X-Spam_score: -1.5
-X-Spam_bar: -
-X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+References: <20230726132512.149618-1-sergey.kambalin@auriga.com>
+ <20230726132512.149618-2-sergey.kambalin@auriga.com>
+In-Reply-To: <20230726132512.149618-2-sergey.kambalin@auriga.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 3 Aug 2023 16:48:24 +0100
+Message-ID: <CAFEAcA9Q6N38ScEj26EYBCQH9PYrQjOgxQ3iNYNbZ5HArceYcA@mail.gmail.com>
+Subject: Re: [PATCH 01/44] Split out common part of BCM283X classes
+To: Sergey Kambalin <serg.oker@gmail.com>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
+ Sergey Kambalin <sergey.kambalin@auriga.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -75,11 +86,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-QXQgMjAyMy0wNy0yOCAxODo0NToyMCwgIkRhdmlkIEhpbGRlbmJyYW5kIiA8ZGF2aWRAcmVkaGF0
-LmNvbT4gd3JvdGU6Cj4KPgo+V2hhdGV2ZXIgeW91IHByZWZlciEgSWYgSSByZXNlbmQgdGhlIHBh
-dGNoLCBJIHdvdWxkIGtlZXAgeW91IHRoZSBhdXRob3IgCj5hbmQgb25seSBhZGQgbXkgQ28tYXV0
-aG9yZWQtYnk6IFNpZ25lZC1vZmYtYnk6Lgo+Cj5KdXN0IGxldCBtZSBrbm93Lgo+CgpIZWxsbywK
-Ckkgd29uZGVyIHdoZXRoZXIgeW91IGhhdmUgcGxhbm5lZCB0byByZXN1Ym1pdCB0aGUgY3VycmVu
-dCBwYXRjaCBhbnl0aW1lIHNvb24sIG9yIGlzIGl0IGFscmVhZHkKaW5zaWRlIHRoZSBwYXRjaCBx
-dWV1ZT8KCi0tLQoKUmVnYXJkcywKCmxvZ29lcnRoaW5lcg==
+On Wed, 26 Jul 2023 at 14:43, Sergey Kambalin <serg.oker@gmail.com> wrote:
+>
+> Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
+> ---
+>  hw/arm/bcm2836.c         | 102 ++++++++++++++++++++++-----------------
+>  hw/arm/raspi.c           |   2 +-
+>  include/hw/arm/bcm2836.h |  26 +++++++++-
+>  3 files changed, 83 insertions(+), 47 deletions(-)
+
+> @@ -230,11 +238,17 @@ static const TypeInfo bcm283x_types[] = {
+>  #endif
+>      }, {
+>          .name           = TYPE_BCM283X,
+> -        .parent         = TYPE_DEVICE,
+> +        .parent         = TYPE_BCM283X_BASE,
+>          .instance_size  = sizeof(BCM283XState),
+> -        .instance_init  = bcm2836_init,
+> -        .class_size     = sizeof(BCM283XClass),
+> -        .class_init     = bcm283x_class_init,
+> +        .instance_init  = bcm283x_init,
+> +        .abstract       = true,
+> +    }, {
+> +        .name           = TYPE_BCM283X_BASE,
+> +        .parent         = TYPE_DEVICE,
+> +        .instance_size  = sizeof(BCM283XBaseState),
+> +        .instance_init  = bcm283x_base_init,
+> +        .class_size     = sizeof(BCM283XBaseClass),
+> +        .class_init     = bcm283x_base_class_init,
+>          .abstract       = true,
+>      }
+>  };
+> diff --git a/hw/arm/raspi.c b/hw/arm/raspi.c
+> +
+> +struct BCM283XBaseClass {
+> +    /*< private >*/
+> +    DeviceClass parent_class;
+> +    /*< public >*/
+> +    const char *name;
+> +    const char *cpu_type;
+> +    unsigned core_count;
+> +    hwaddr peri_base; /* Peripheral base address seen by the CPU */
+> +    hwaddr ctrl_base; /* Interrupt controller and mailboxes etc. */
+> +    int clusterid;
+> +};
+> +
+> +struct BCM283XState {
+> +    /*< private >*/
+> +    BCM283XBaseState parent_obj;
+> +    /*< public >*/
+>      BCM2835PeripheralState peripherals;
+>  };
+>
+
+This gives us a slightly odd class hierarchy where we have
+two "common between bcmxxxx SoCs" types:
+
+   TYPE_BCM283X_BASE --> TYPE_BCM283X --> TYPE_BCM2835
+                     |                |-> TYPE_BCM2836
+                     |                \-> TYPE_BCM2837
+                     \-> TYPE_BCM2838
+
+The only thing TYPE_BCM283X seems to be doing here that
+TYPE_BCM283X_BASE is not is handling the BCM2835PeripheralState
+object. Would it be clearer to keep the existing
+class hierarchy where everything inherits from
+TYPE_BCM283X, and accept a little code duplication for
+the 3 subclasses that use the same BCM2835PeripheralState?
+I'm not sure...
+
+thanks
+-- PMM
 
