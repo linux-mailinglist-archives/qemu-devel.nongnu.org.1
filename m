@@ -2,52 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99D0276E6E1
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 13:31:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B2C776E6DE
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 13:30:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRWDI-0006MF-1u; Thu, 03 Aug 2023 07:09:52 -0400
+	id 1qRWDI-0006MJ-Bq; Thu, 03 Aug 2023 07:09:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qRWDE-0006Ky-5G
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 07:09:48 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qRWDG-0006Ll-Vu
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 07:09:51 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qRWDC-0007Uw-MM
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 07:09:47 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qRWDF-0007Va-II
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 07:09:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691060985;
+ s=mimecast20190719; t=1691060989;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=eIjFcagzuZXCjZZe93OeTz3Sh4OUvChvkrunTTPMsgw=;
- b=BVdIOhrhbqRQBC3AzF6Cvp4tC9H8EM5FZqdT0YVfRH0HJweHA5fQBtVKfexoTBVtVKsT6Z
- OrXVk3jpgBnzowRJ3YID0yv9xieLXrmkmC29sq85QunifFPCqRz/ZyDM7X/NMg2bw/Bxdx
- P0vH37e0Xh1rJyXjFBX7FV9Y1xQpPiQ=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-90-DjHyUDAXMXOzfzllxY5qfg-1; Thu, 03 Aug 2023 07:09:42 -0400
-X-MC-Unique: DjHyUDAXMXOzfzllxY5qfg-1
+ bh=uDDlr5uhtulU/26Sq8Ctvv9HuDQwyf/Hm/DJQ9imAX4=;
+ b=JRQ/MOgo4FB7J257do3HrYaSsbupby3exBJ6aIImNI1lQPl4occpt4VIdcIgG9igy3DiVC
+ Z6/XdnjNFcYs1eZe6bP9kg+vD54vlWS4IYpfScy1fVq828ZyGJuSRwT8+DhLymXaa7t2du
+ 1Cn3W1LgJKpYBSiGlIM754QcmiPvXVg=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-624-qfYTjgnWP5icfhgRkGp-4g-1; Thu, 03 Aug 2023 07:09:43 -0400
+X-MC-Unique: qfYTjgnWP5icfhgRkGp-4g-1
 Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
  [10.11.54.3])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 25E872A5957C;
- Thu,  3 Aug 2023 11:09:42 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5FED7104458D;
+ Thu,  3 Aug 2023 11:09:43 +0000 (UTC)
 Received: from thuth.com (unknown [10.45.226.89])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 391071121325;
- Thu,  3 Aug 2023 11:09:41 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 6E2941121325;
+ Thu,  3 Aug 2023 11:09:42 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 5/9] gitlab: drop $CI_PROJECT_DIR from cache path
-Date: Thu,  3 Aug 2023 13:09:28 +0200
-Message-Id: <20230803110932.341091-6-thuth@redhat.com>
+Subject: [PULL 6/9] gitlab: always populate cache for windows msys jobs
+Date: Thu,  3 Aug 2023 13:09:29 +0200
+Message-Id: <20230803110932.341091-7-thuth@redhat.com>
 In-Reply-To: <20230803110932.341091-1-thuth@redhat.com>
 References: <20230803110932.341091-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -81,28 +81,27 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
-The gitlab cache is limited to only handle content within the
-$CI_PROJECT_DIR hierarchy, and as such relative paths are always
-implicitly relative to $CI_PROJECT_DIR.
+The cache is used to hold the msys installer. Even if the build phase
+fails, we should still populate the cache as the installer will be
+valid for next time.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20230801130403.164060-5-berrange@redhat.com>
+Message-Id: <20230801130403.164060-6-berrange@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- .gitlab-ci.d/windows.yml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .gitlab-ci.d/windows.yml | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/.gitlab-ci.d/windows.yml b/.gitlab-ci.d/windows.yml
-index 0bc04ad068..6454880cb7 100644
+index 6454880cb7..34109a80f2 100644
 --- a/.gitlab-ci.d/windows.yml
 +++ b/.gitlab-ci.d/windows.yml
-@@ -7,7 +7,7 @@
-   cache:
+@@ -8,6 +8,7 @@
      key: "${CI_JOB_NAME}-cache"
      paths:
--      - ${CI_PROJECT_DIR}/msys64/var/cache
-+      - msys64/var/cache
+       - msys64/var/cache
++    when: always
    needs: []
    stage: build
    timeout: 80m
