@@ -2,93 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E71E76EB33
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 15:51:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0283776EB3A
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 15:52:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRYjH-0008Df-9t; Thu, 03 Aug 2023 09:51:03 -0400
+	id 1qRYkn-0001cT-9F; Thu, 03 Aug 2023 09:52:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qRYjE-0008DO-NS
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 09:51:01 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qRYjC-0006oW-Nu
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 09:50:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691070656;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=t153WUlaEGgf6UKOwh/n6dejBFO9Qo5GSEPIg06B5uE=;
- b=WlaAme0Gwlr9tUdj1V3zkxQjWIbtTtVJCqsjSAxRlQXptn8NPG+7yA0v5st6I49usZPIiY
- y5mGjjFkmav/akdNTT4BnbHaEXGtH8uB7xRusYh2AQmj198u7EhAieLRIYXbYn/iHPnPxZ
- KqN7RgPw2/1B4Wpto6CLwiLENn2dGpQ=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-157-C9u2EpfVMeav7b22Hv2OZQ-1; Thu, 03 Aug 2023 09:50:55 -0400
-X-MC-Unique: C9u2EpfVMeav7b22Hv2OZQ-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-99c0bd2ca23so104802966b.2
- for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 06:50:55 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qRYkl-0001cL-Tt
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 09:52:35 -0400
+Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qRYkj-00078Y-V6
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 09:52:35 -0400
+Received: by mail-lf1-x12e.google.com with SMTP id
+ 2adb3069b0e04-4fe389d6f19so1692716e87.3
+ for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 06:52:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1691070752; x=1691675552;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=q1YinNI0ycGmRMReUgdcoUUlAiQnN+zuipToNS4Yuq0=;
+ b=qhfNeV/wN7CjowfWhUr/6m3lQpJpzalsYXBAU3PIF91vI71AltVp5pl+v3/KGqRTe8
+ eLMLE5ZGmsDVNJfErncBhF4VcROKzHA/2FNtn4sglHJ8bARM/P7ajrqqzhY71OomGXiQ
+ cwMuG73q7kUOdfS4+f+tl6i3QDh/rmi9kMvO0v8uYLFlohSpslmBGY9d/QQlqIVokQGg
+ Yuigz8AuTMCR/keaWIm4V8PXe9/GckjNjL3Uk7rD6VJLaNY5xbIeinjj3CcaxXUH9Ca9
+ ETBnsw/z5hVWfWI6BEO34CwAGF6Z3XYJhw63rHjbIL24sz8XZCL0svhNNYznMDEfJFtN
+ Yz7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691070654; x=1691675454;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=t153WUlaEGgf6UKOwh/n6dejBFO9Qo5GSEPIg06B5uE=;
- b=URLRMlLDMGReulGu/7n2j44EtTldMo1pSd9A6/PYroutzJ1d5OYU8o6gxcKjgGBRdj
- 1O0dPEGe6FDz5+HMBlZiSdJqqXYloqqsmdFULCh+0YX31KvlFB5D/kUGw6VLr1zn9w2f
- mUCzhHOrkR7uv52GWX9KD2FWo8D46SXnv5dyUbiMO33e6auIUx1jFYFgqOjJFONN4M2B
- IT85B/iMK84plLFiyS8j5J2t8YrYj9u9H7nnh83YvSghkvneyhYPVCjoNeBJQqFKA8rG
- 0Q/3stf99kPq7aKasLtmHGIw6l+2h+MKRWa9ajVeSHmKNHc0POcJ5cC6jgVasjs/Xwkj
- oX+w==
-X-Gm-Message-State: ABy/qLakIIQOqZTQ1yHRoiGnlUjxHbashvNRzvQQAhpy8wUlR2ejWdog
- ZKVqtfgAv41Py4/+b3Aurjwz31rdr05kkGCQdLHFafiN2pAGLBYz4G3Zh4wBJ/TCiflXxDVnUSD
- Rop1rePCHe9AtCs0=
-X-Received: by 2002:a17:906:8466:b0:994:539d:f97f with SMTP id
- hx6-20020a170906846600b00994539df97fmr7329088ejc.37.1691070654692; 
- Thu, 03 Aug 2023 06:50:54 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlErbcprKBmchHIh+2MK9cx7dlwxJ3Vs5udcXKbiXbwCF+kDhQCJP1mH7uxa7flsEfG9IM0ZKg==
-X-Received: by 2002:a17:906:8466:b0:994:539d:f97f with SMTP id
- hx6-20020a170906846600b00994539df97fmr7329076ejc.37.1691070654418; 
- Thu, 03 Aug 2023 06:50:54 -0700 (PDT)
-Received: from ?IPV6:2003:cf:d71a:f311:3075:1f38:7e25:e17a?
- (p200300cfd71af31130751f387e25e17a.dip0.t-ipconnect.de.
- [2003:cf:d71a:f311:3075:1f38:7e25:e17a])
- by smtp.gmail.com with ESMTPSA id
- o13-20020a1709061b0d00b0099bcb44493fsm10681215ejg.147.2023.08.03.06.50.53
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 03 Aug 2023 06:50:53 -0700 (PDT)
-Message-ID: <87c4b435-01cc-870a-b805-d65ac924e06d@redhat.com>
-Date: Thu, 3 Aug 2023 15:50:53 +0200
+ d=1e100.net; s=20221208; t=1691070752; x=1691675552;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=q1YinNI0ycGmRMReUgdcoUUlAiQnN+zuipToNS4Yuq0=;
+ b=icBxDbxri0iMKsejeegw8pDku5zmROtdX1GtHpnX1buO1E7VnSPpEOlp8utMSxH2G3
+ Ydcir0lU25cu1YY3Nm4iqAwtrhgYeFP2pcXgKG3mDdA9yd/HUnrTr8wtncLGQOEXpUSD
+ y9tmL/s1rMv6ECLY3eCatV8d2bG2vrdoiUePOQn+cGWTdo94mMsTkMFAS4TsRnFpPrON
+ zybh0h5JKhHIwMHC2szoAr8ipV1lwdCaFj2bA4/1Xj4v0FFQWgEEBBr6fmvYwquGkdRT
+ HBz4SKzzPAMdJ/ZwYwrjSaxl0m2y60N2u0brjJOfMQDcULmeyD11ItO0eY8hXDV4cb1V
+ myNA==
+X-Gm-Message-State: ABy/qLYFFnywp4V3H8lhhoqS86QxN9+Nz3l20YG6zuH83lEs6gKHM94Q
+ OVzXPdJSyUB4Q20vg7P4+SoLwuqQZvoG+SFJr3a4rg==
+X-Google-Smtp-Source: APBJJlF0D3T+HYXmVetGWb2s9/Ndq6KwPl3W7X+RL9DequKgpkj9tLntrIf23XV4QqiMQru9v6rMogXfE1sK7qpos48=
+X-Received: by 2002:a05:6512:3293:b0:4fd:fc3e:722c with SMTP id
+ p19-20020a056512329300b004fdfc3e722cmr7120483lfe.58.1691070751691; Thu, 03
+ Aug 2023 06:52:31 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2 1/2] block/blkio: close the fd when blkio_connect()
- fails
-Content-Language: en-US
-To: Stefano Garzarella <sgarzare@redhat.com>, qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-block@nongnu.org,
- Kevin Wolf <kwolf@redhat.com>
-References: <20230803082825.25293-1-sgarzare@redhat.com>
- <20230803082825.25293-2-sgarzare@redhat.com>
-From: Hanna Czenczek <hreitz@redhat.com>
-In-Reply-To: <20230803082825.25293-2-sgarzare@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <20230710140249.56324-1-francisco.iglesias@amd.com>
+ <20230710140249.56324-9-francisco.iglesias@amd.com>
+In-Reply-To: <20230710140249.56324-9-francisco.iglesias@amd.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 3 Aug 2023 14:52:20 +0100
+Message-ID: <CAFEAcA-p0JdLsK9Y3By4fhfHvL7=FWopQKjSE4ON6NTfXcr_pA@mail.gmail.com>
+Subject: Re: [PATCH v1 8/8] hw/arm/versal: Connect the CFRAME_REG and
+ CFRAME_BCAST_REG
+To: Francisco Iglesias <francisco.iglesias@amd.com>
+Cc: qemu-devel@nongnu.org, frasse.iglesias@gmail.com, alistair@alistair23.me, 
+ edgar.iglesias@gmail.com, fkonrad@amd.com, sai.pavan.boddu@amd.com, 
+ tong.ho@amd.com, vikram.garhwal@amd.com
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.091, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,24 +88,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 03.08.23 10:28, Stefano Garzarella wrote:
-> libblkio drivers take ownership of `fd` only after a successful
-> blkio_connect(), so if it fails, we are still the owners.
+On Mon, 10 Jul 2023 at 15:03, Francisco Iglesias
+<francisco.iglesias@amd.com> wrote:
 >
-> Fixes: cad2ccc395 ("block/blkio: use qemu_open() to support fd passing for virtio-blk")
-> Suggested-by: Hanna Czenczek <hreitz@redhat.com>
-> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-> ---
+> Connect the Configuration Frame controller (CFRAME_REG) and the
+> Configuration Frame broadcast controller (CFRAME_BCAST_REG) to the
+> Versal machine.
 >
-> Notes:
->      v2:
->      - avoid to use `fd_supported` to track a valid fd [Hanna]
->
->   block/blkio.c | 11 ++++++++---
->   1 file changed, 8 insertions(+), 3 deletions(-)
+> Signed-off-by: Francisco Iglesias <francisco.iglesias@amd.com>
 
-Thanks!
+> +    /* CFRAME REG */
+> +    for (i = 0; i < ARRAY_SIZE(s->pmc.cframe); i++) {
+> +        char *name = g_strdup_printf("cframe%d", i);
+> +
+> +        object_initialize_child(OBJECT(s), name, &s->pmc.cframe[i],
+> +                                TYPE_XLNX_VERSAL_CFRAME_REG);
+[...]
 
-Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
+> +        g_free(name);
 
+g_autofree is nicer than this kind of explicit free, I think
+(here and below)
+> +    }
+
+Otherwise
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+
+thanks
+-- PMM
 
