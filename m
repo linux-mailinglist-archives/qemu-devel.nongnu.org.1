@@ -2,83 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14B5876EF4C
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 18:23:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14EBB76EF7F
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 18:31:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRb5P-0007D9-T1; Thu, 03 Aug 2023 12:22:03 -0400
+	id 1qRbCz-0004lB-F6; Thu, 03 Aug 2023 12:29:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qRb5N-0007CF-6C
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 12:22:01 -0400
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qRb5L-0000Ub-4P
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 12:22:00 -0400
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-686ba29ccb1so803095b3a.1
- for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 09:21:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691079717; x=1691684517;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=p+ujLplyfnerRqkgD47m9pq/1FjJ3XwTIi2q2Snz4IE=;
- b=Fm7BPaF+1A78dBCCD2ZJyHg0NoBoh35CkWH+24REjdIzuDxccyj42C81sQfKb92ckr
- G/aW8DPeceO0yKZDxjjl1Out5X9UMk+gZ/XzroFmNYrB/9x2jHQPFXs5l5kfZr7du2YN
- 0/QWwt6frIKTNEOqweTstE/YV2+MWYKlXliEj8/UfIlfYls9hbywd5gjDlvSVpHZjOQX
- B0E+B6hWTZC2N2ZSrzRld5+4EgaprnwY/itfjy9baxcZgepheYgLc1YetMCtU58tP7SL
- eHaBondzL8N0B6TRmofBlzR1cP0PAUE08HznhUqakdCZD5XpKYxBxAVIt3vEffj0wcGB
- s42g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691079717; x=1691684517;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=p+ujLplyfnerRqkgD47m9pq/1FjJ3XwTIi2q2Snz4IE=;
- b=Z90XrLDw/Ou1V0JzguVNWDbAhPiUbq4fynbcVY7XixUWTuyzFQ0oEvRxsq+E3/E2+y
- 2lKu5/UUJjGfy2JHCBsHD71Ylt4FQQTClcKiPP4oweC1hMDcN3lsIpoq1z42tKY8KapJ
- eIWA4euyNBc77YAy1bJg65u45OCOC/tybDgskQBPv610jZ9T4QHyd9HjjSVaJPMWHSBs
- D/2+zOVMhqRp9PsqStCoTEoEdHivpYONo7PVUtx1MUOqNWCTv+JDUFWH5DmEMiq0oex+
- DzxvasFHhiUBOjPiAXK/Ykczaq9RGn8IO2lEfNhLXQvo/uYu1qaznIHefY5hzpiAV6Sf
- O5UA==
-X-Gm-Message-State: ABy/qLbyWrgt9BBpKGlVhETHmFClaVazFbYVP5B/Kjk0U9Yv7edvwWNu
- C0F3Jp8s5K85IQ1y4ekJtlhJmg==
-X-Google-Smtp-Source: APBJJlFPuJGuTooNcKteHQ8gEjQSq3ZACdon1IeXKHCJMXdXa0mbNDgYRNZk6jGDdVRyikrMFars6g==
-X-Received: by 2002:a05:6a20:7349:b0:13f:13cb:bc50 with SMTP id
- v9-20020a056a20734900b0013f13cbbc50mr5966988pzc.25.1691079717353; 
- Thu, 03 Aug 2023 09:21:57 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.144.105])
- by smtp.gmail.com with ESMTPSA id
- h14-20020aa786ce000000b006875df47743sm51772pfo.156.2023.08.03.09.21.56
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 03 Aug 2023 09:21:56 -0700 (PDT)
-Message-ID: <104e8420-cfc0-96a9-dc62-36a95c30485b@linaro.org>
-Date: Thu, 3 Aug 2023 09:21:54 -0700
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qRbCx-0004gp-La
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 12:29:51 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qRbCv-0004PW-WC
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 12:29:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1691080189;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=TcbmFnILSdagiB7v8cAtN4EWcuyxcYon0uEMHzgwv/E=;
+ b=L3JmITBt60gYcneabZAPGxh/pv69YgSrRnrvoNkLu7uQjlB1EyWzPa4N8L+c8yxgPh5xy6
+ UmwDBvZ9C2fYmjL/cDCwgDJtool4syelNxfWibee7T/pjaMBct4GTd6K6d3bLPdQdOIJ4w
+ 4OShsuHb2PVOeYevVoUIcS8nNCKPxlQ=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-684-lEb0iJ_qNLOI34cv_SxdVQ-1; Thu, 03 Aug 2023 12:29:45 -0400
+X-MC-Unique: lEb0iJ_qNLOI34cv_SxdVQ-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 84C65185A793;
+ Thu,  3 Aug 2023 16:29:45 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.105])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 570BBC5796C;
+ Thu,  3 Aug 2023 16:29:44 +0000 (UTC)
+Date: Thu, 3 Aug 2023 17:29:42 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+ Stefan Weil <sw@weilnetz.de>, Yonggang Luo <luoyonggang@gmail.com>
+Subject: Re: [RFC PATCH 5/6] include/qemu/compiler: Fix problem with
+ gcc_struct and Clang
+Message-ID: <ZMvV9h6AtxeuR4Kn@redhat.com>
+References: <20230728142748.305341-1-thuth@redhat.com>
+ <20230728142748.305341-6-thuth@redhat.com>
+ <CAFEAcA9PuwSzaWXJYrF9PTs8Yz9oG6_sUY=p7S5rnx6NiS1HeQ@mail.gmail.com>
+ <6ca265d4-0dad-3725-1cd5-84da685bc63a@redhat.com>
+ <ZMd/pdT5DmPxtjYW@redhat.com>
+ <925f0feb-b3c1-685e-1261-243963f232f6@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PULL 0/9] Fixes for 8.1-rc3
-Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?= <berrange@redhat.com>
-References: <20230803110932.341091-1-thuth@redhat.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230803110932.341091-1-thuth@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x432.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <925f0feb-b3c1-685e-1261-243963f232f6@redhat.com>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,31 +87,69 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/3/23 04:09, Thomas Huth wrote:
-> The following changes since commit fb695ae3fdfe34ce7bf2eaa4595d48ca809c8841:
+On Mon, Jul 31, 2023 at 02:04:42PM +0200, Thomas Huth wrote:
+> On 31/07/2023 11.32, Daniel P. Berrangé wrote:
+> > On Mon, Jul 31, 2023 at 11:10:58AM +0200, Thomas Huth wrote:
+> ...
+> > > Or do you see another possibility how we could fix that timeout problem in
+> > > the 64-bit MSYS2 job? Still switching to clang, but compiling with
+> > > --extra-cflags="-Wno-unknown-attributes" maybe?
+> > 
+> > I was surprised to see that we're not using ccache in gitlab CI. It wouldn't
+> > help the from-clean compile time, but thereafter it ought to help. I'm doing
+> > some tests with that to see the impact.
 > 
->    Merge tag 'pull-qapi-2023-08-02' of https://repo.or.cz/qemu/armbru into staging (2023-08-02 06:51:53 -0700)
+> I tried that two years ago, but the results were rather disappointing:
 > 
-> are available in the Git repository at:
+>  https://lists.nongnu.org/archive/html/qemu-devel/2021-04/msg02189.html
 > 
->    https://gitlab.com/thuth/qemu.git tags/pull-request-2023-08-03
-> 
-> for you to fetch changes up to f54ba56dad0e9cea275e9802915a293f1a8c7d22:
-> 
->    gitlab: disable FF_SCRIPT_SECTIONS on msys jobs (2023-08-03 13:04:48 +0200)
-> 
-> ----------------------------------------------------------------
-> * Fix timeout problems in the MSYS Gitlab CI jobs
-> * Fix a problem when compiling with Clang on Windows
+> ... but that was only with the Linux runners. Maybe it helps with the MSYS
+> runners?
 
-Nice: msys2-64bit finished in 63 minutes.
+I've done some tests over the last few days and my results are
+rather different.  The speed up is *spectacular* if the hit rate
+is high.
 
-Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
+eg, consider you are retriggering broadly the same pipeline over &
+over with iterations of your patches. eg 99% of the QEMU code
+probably doesn't change as you're just re-trying to fix some edge
+case in 1 file, and thus you'll get near 100% hit rate.
 
+With such a case I see:
 
-r~
+The msys64 job can complete in 24 minutes, instead of 50-60 minutes
+
+The build-system-fedora job can complete in 6 minutes instead of 20
+minutes
+
+The build-user-hexagon job can cmplete in 3 minutes instead of 6
+
+Basically a 50% cut in time on all compile jobs I've looked at
+so far.
+
+NB, these are both shared runners, since the pipeline is in my
+fork. I've no idea what the impact will be on the Azure private
+runners for upstream.
+
+Given the CI limitations these days, such a speedup is massively
+beneficial for our contributors though.
+
+The downside is storage for the cache. In theory gitlab has defined
+a quota for storage per account. In practice they are still yet to
+enforce that. If they do ever enforce it, we're likely doomed as
+our container images alone will exceed it several times over, let
+alone leave room for build logs, job caches, artifacts, etc. While
+storage quota isn't enforced though, we might as well use ccache.
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
