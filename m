@@ -2,81 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B163076F59D
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 00:22:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4345076F59C
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 00:22:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRghF-0004PN-UZ; Thu, 03 Aug 2023 18:21:29 -0400
+	id 1qRghJ-0004Q8-7g; Thu, 03 Aug 2023 18:21:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qRghE-0004PE-9u
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 18:21:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qRghG-0004Pg-Ts
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 18:21:30 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qRghC-0000VA-QP
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 18:21:28 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qRghF-0000Va-CT
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 18:21:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691101286;
+ s=mimecast20190719; t=1691101288;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=7p2D4s0LesrJ/eATvXaVZ3Ta+r1WEUNem6KlZDsO1yk=;
- b=A4YD2KoyVSDRO/CqvmOMjxI6M79HVVfmbXcZah5hDsV+eF3IQQC94muJhXVPSXg0fJKbgD
- rJ05WX6xxMl3xCrNSVJNfiHZdqJy9hMkDb9yFNiprUvz2A3BcCCxCz9/hvvtO7cOm4Chwe
- 1xR1lQWfkAXsm+pquc2gK2dwp5K3caM=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=HIYdHtiBYjd2FsFQPPoQ8yirjasX+58jJpzdJ4zKBQE=;
+ b=MKxtd5E3TfxLrKvkSa2oYu3/v+2wX+1pFK0hRkOVeq20CH3HinFpEgNGhm00Bk/hyHU3c3
+ OpsNs8njt0LNXxXcVrBfTMbpjFAHHdxkNuBoQFsExEmdkF3he3tVOMjyA0CQX7FE81ovM9
+ HP71y7KW5Uf5QbkY6Vq8qJYJtuBsbSw=
+Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
+ [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-240-oKHp57rbM76gn2gjYJj-Ow-1; Thu, 03 Aug 2023 18:21:24 -0400
-X-MC-Unique: oKHp57rbM76gn2gjYJj-Ow-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-99388334de6so131899666b.0
- for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 15:21:24 -0700 (PDT)
+ us-mta-155-SrI1rp7XMD-ZEJa5hzKvdA-1; Thu, 03 Aug 2023 18:21:27 -0400
+X-MC-Unique: SrI1rp7XMD-ZEJa5hzKvdA-1
+Received: by mail-lj1-f199.google.com with SMTP id
+ 38308e7fff4ca-2b9fa64dba8so13893561fa.0
+ for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 15:21:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691101283; x=1691706083;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=7p2D4s0LesrJ/eATvXaVZ3Ta+r1WEUNem6KlZDsO1yk=;
- b=kqsd1p6yth1cHhBGv2CB5c35KsIDlLBzfvDco5d+7EyXiTYexuBiW1YE123LBCOJfg
- zmqUdNr7VfnGEjz6PPjYYOefPq4Bjm4OusPQ8epGNIorkRqj06FMFEIfjxE73Hluxqqp
- jELhKUvML6gm9I/fU/SQXot18+jrrerwcxK+QMG1ML4b41MX08hVl8YKuCrNQ+sJDc61
- 3N/IjeYZ8PoYNtL2SAOTYz9/xIkyKoSgKPxXtJ9GCwdqxxxENvj2Yd3vDuVdpDC+TDvA
- Vagszkd+nK1RLctX4Y2Pw21xQKhPDAV/HR6DfHZMbwcLdTxAsCCjTAYt1Mh2YXCp4/KZ
- NWZw==
-X-Gm-Message-State: ABy/qLalH3d/b+BnE7lSqzomtFAbJlX30Rx9pDkZqsQ1gR1lx9aHZjmf
- +XVnNQkw72EKO2iSyP2CuLmybUNMWFQPfmECDA3v4XT0VjMTCDQW1aZOIZT6k1SQq9fsnJGIXDD
- Fq1qtysVxcaTZXvwBTugus2svB0RLzcUn83CfvZU/ui+NOna7L+sXf7TuM9AELiCPbEze
-X-Received: by 2002:a17:906:74cb:b0:994:8e9:67fe with SMTP id
- z11-20020a17090674cb00b0099408e967femr7990821ejl.35.1691101282866; 
- Thu, 03 Aug 2023 15:21:22 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHZWRVBC/4OthngQqFpzmDJa5NmB/lZ7UdnyoBRfTJ9RfXXeJNysTJucplaIfYsV2ZD/r72Cw==
-X-Received: by 2002:a17:906:74cb:b0:994:8e9:67fe with SMTP id
- z11-20020a17090674cb00b0099408e967femr7990812ejl.35.1691101282677; 
- Thu, 03 Aug 2023 15:21:22 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1691101286; x=1691706086;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=HIYdHtiBYjd2FsFQPPoQ8yirjasX+58jJpzdJ4zKBQE=;
+ b=h2SyebTqpHUHgSQdoCp+qrIV3RfMAjwHxZPlj4yNr0PALJd4brjgdIHGaS94nbCmMm
+ 2UUfNrYvIphYZKwFyENo2VeqAhXcf+kZExN0+GoU48ChJuggW4PSfC15pZTuCGjZhZLP
+ p2dnYc4N0gdwNaJNjLHQDX2gRhWtBZgZ9iVOfNRrjgkbF9n+6mZIdWpJIsQO3VfTwI41
+ zHJWezb2tOZJb8HFBDq8FRCzJneu0UoECDM4vlBT15QSRW1gFx/2TfxpNr4QSVrI6OPK
+ PvjsFJAnBuwWClZ2WUFJc9jjtbJNj0nKSYnANx0wGqyrkNbVobgxIaSg1EwegNaVdrE3
+ 1J0g==
+X-Gm-Message-State: AOJu0YzAxKh2cE2Q69JO5SwSvi5pPZ8mxNTnS2c8sOsdzNkVfMJSLomv
+ H+HrmkFyr1Th3xVH6zRN3BdOY+zDXQRU/zhS3WTDJyH4/lIaei9qov3oSNEgPh1Oa7MPsbMyhhu
+ WejkVlpO8ovplo70qVx0htOZiANpaLLGmW1C9jARQ6rHCm6aq7zXV/kMhL7gCXaiJaDjO
+X-Received: by 2002:a2e:b617:0:b0:2b9:ea6b:64f with SMTP id
+ r23-20020a2eb617000000b002b9ea6b064fmr76580ljn.37.1691101285795; 
+ Thu, 03 Aug 2023 15:21:25 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHbmUQ7fU5RzQxo3+v1YjTtMVJK6sQAUiDC/ZJeGk9zFe0eSWKZtC2QkHHygyaEr/LvfbsNjg==
+X-Received: by 2002:a2e:b617:0:b0:2b9:ea6b:64f with SMTP id
+ r23-20020a2eb617000000b002b9ea6b064fmr76569ljn.37.1691101285504; 
+ Thu, 03 Aug 2023 15:21:25 -0700 (PDT)
 Received: from redhat.com ([2.52.12.104]) by smtp.gmail.com with ESMTPSA id
- la1-20020a170906ad8100b0099b5a71b0bfsm375530ejb.94.2023.08.03.15.21.21
+ re8-20020a170906d8c800b00992076f4a01sm369306ejb.190.2023.08.03.15.21.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 03 Aug 2023 15:21:22 -0700 (PDT)
-Date: Thu, 3 Aug 2023 18:21:19 -0400
+ Thu, 03 Aug 2023 15:21:25 -0700 (PDT)
+Date: Thu, 3 Aug 2023 18:21:22 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- David Edmondson <david.edmondson@oracle.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 11/22] hw/virtio: qmp: add RING_RESET to 'info virtio-status'
-Message-ID: <92f04221379ae5e35f6474c2afed2eb02d552df3.1691101215.git.mst@redhat.com>
+ Hanna Czenczek <hreitz@redhat.com>, German Maglione <gmaglione@redhat.com>
+Subject: [PULL 12/22] virtio: Fix packed virtqueue used_idx mask
+Message-ID: <c92f4fcafa14890524945073b494937e97112677.1691101215.git.mst@redhat.com>
 References: <cover.1691101215.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1691101215.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -101,30 +98,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: David Edmondson <david.edmondson@oracle.com>
+From: Hanna Czenczek <hreitz@redhat.com>
 
-Signed-off-by: David Edmondson <david.edmondson@oracle.com>
-Message-Id: <20230721072820.75797-1-david.edmondson@oracle.com>
+virtio_queue_packed_set_last_avail_idx() is used by vhost devices to set
+the internal queue indices to what has been reported by the vhost
+back-end through GET_VRING_BASE.  For packed virtqueues, this
+32-bit value is expected to contain both the device's internal avail and
+used indices, as well as their respective wrap counters.
+
+To get the used index, we shift the 32-bit value right by 16, and then
+apply a mask of 0x7ffff.  That seems to be a typo, because it should be
+0x7fff; first of all, the virtio specification says that the maximum
+queue size for packed virt queues is 2^15, so the indices cannot exceed
+2^15 - 1 anyway, making 0x7fff the correct mask.  Second, the mask
+clearly is wrong from context, too, given that (A) `idx & 0x70000` must
+be 0 at this point (`idx` is 32 bit and was shifted to the right by 16
+already), (B) `idx & 0x8000` is the used_wrap_counter, so should not be
+part of the used index, and (C) `vq->used_idx` is a `uint16_t`, so
+cannot fit the 0x70000 part of the mask anyway.
+
+This most likely never produced any guest-visible bugs, though, because
+for a vhost device, qemu will probably not evaluate the used index
+outside of virtio_queue_packed_get_last_avail_idx(), where we
+reconstruct the 32-bit value from avail and used indices and their wrap
+counters again.  There, it does not matter whether the highest bit of
+the used_idx is the used index wrap counter, because we put the wrap
+counter exactly in that position anyway.
+
+Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
+Message-Id: <20230721134945.26967-1-hreitz@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: German Maglione <gmaglione@redhat.com>
 ---
- hw/virtio/virtio-qmp.c | 2 ++
- 1 file changed, 2 insertions(+)
+ hw/virtio/virtio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/virtio/virtio-qmp.c b/hw/virtio/virtio-qmp.c
-index 3d32dbec8d..7515b0947b 100644
---- a/hw/virtio/virtio-qmp.c
-+++ b/hw/virtio/virtio-qmp.c
-@@ -79,6 +79,8 @@ static const qmp_virtio_feature_map_t virtio_transport_map[] = {
-             "VIRTIO_F_ORDER_PLATFORM: Memory accesses ordered by platform"),
-     FEATURE_ENTRY(VIRTIO_F_SR_IOV, \
-             "VIRTIO_F_SR_IOV: Device supports single root I/O virtualization"),
-+    FEATURE_ENTRY(VIRTIO_F_RING_RESET, \
-+            "VIRTIO_F_RING_RESET: Driver can reset a queue individually"),
-     /* Virtio ring transport features */
-     FEATURE_ENTRY(VIRTIO_RING_F_INDIRECT_DESC, \
-             "VIRTIO_RING_F_INDIRECT_DESC: Indirect descriptors supported"),
+diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
+index 295a603e58..309038fd46 100644
+--- a/hw/virtio/virtio.c
++++ b/hw/virtio/virtio.c
+@@ -3321,7 +3321,7 @@ static void virtio_queue_packed_set_last_avail_idx(VirtIODevice *vdev,
+     vq->last_avail_wrap_counter =
+         vq->shadow_avail_wrap_counter = !!(idx & 0x8000);
+     idx >>= 16;
+-    vq->used_idx = idx & 0x7ffff;
++    vq->used_idx = idx & 0x7fff;
+     vq->used_wrap_counter = !!(idx & 0x8000);
+ }
+ 
 -- 
 MST
 
