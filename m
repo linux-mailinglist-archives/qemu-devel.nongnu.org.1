@@ -2,80 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFE1576ED96
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 17:07:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF3D776EDB3
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 17:13:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRZv2-0002EO-7J; Thu, 03 Aug 2023 11:07:16 -0400
+	id 1qRZzC-0004Eb-O3; Thu, 03 Aug 2023 11:11:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qRZv0-0002E3-1Y
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 11:07:14 -0400
-Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qRZzA-0004Dw-CY
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 11:11:32 -0400
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qRZux-0000zV-MZ
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 11:07:13 -0400
-Received: by mail-ej1-x629.google.com with SMTP id
- a640c23a62f3a-99c1c66876aso152194566b.2
- for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 08:07:11 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qRZz8-0004lp-MQ
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 11:11:32 -0400
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-1bbf8cb694aso9361495ad.3
+ for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 08:11:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1691075230; x=1691680030;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=0cXqoXIy279gLDVv4Hu2uIWuvxfqgmNM+vlX3uwmTYg=;
- b=EvEcWq7FGO7y/CdqlCH5R5s5ulG9F1EOd96zBTvlrWD5ptYBx5BpMz3OPqulHgsBkt
- 6l+b4WDdgcO/mMTvdcXNoJoxMv7AaZj/nAkD+2SHVzXoP911G9mMjXoT50QNSiB/Z8aI
- UA/MMaanpfVrJCTvMnzGDFWU3U3ndi8Tcm+8lY04g8NVW1mXuHP/mk0GZMOY2K1GY73L
- nT74vXpLCGJT5LE6tZFadHBA0PG1enkTMDNohqlSgJMNqQrrgcpWJdwQy7dyzea42cW3
- fETYqM+EeyL1Vv2wfFZF2L5LSNmnw2zP6K9NjVy3GhlQI93nf71SZyTgHQFe+eS2grGW
- 1U9w==
+ d=linaro.org; s=google; t=1691075489; x=1691680289;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=qZxFFZOYVtKRu1/Yw3Pm1idsjCTVK+AKFFxJXeqtqt0=;
+ b=WyxETsLA685Y/L3YhYxoFzchNbcAiLY08YGi6pUk7dfxHwgLlQOZNI7r89bJjCjQPU
+ kLuTnKskkqxiBryyFHYbpTMP3C17YNA7j0DcqljiDZzj/uuRrSvjeTRf1yN2eQrYnEhe
+ Mcxz2q+hTZmYqEwqGaQPdjeliYmU6gsSZr3gWLzDlFOZWTeq1FdkSMSqoQ3wc/m/1AE9
+ uNne2dOTXcCfZmHLMVHBkeQwNrOjjjFCnoyjVdk/UpQCA1uAuPa/guLu1qaUHayp9oUJ
+ R5oVGwvsdw8iGJFNns1xN8pP75z3R0vQi9L/dTCTcwWDsj9VH1U1qhqjhxXAouFPlTab
+ bvlw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691075230; x=1691680030;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=0cXqoXIy279gLDVv4Hu2uIWuvxfqgmNM+vlX3uwmTYg=;
- b=Q6MgRG+7de8GLiumbIxDz4TA83jVhhxM/7KeoXmRbk4Fz6pViFHo1F0iSnH6ducaTG
- QFlxIUkBHbNMH7xDwDE9QtKO95lhIywIo+bdIMFPZtCDc2S1eqLDOx0K8B1t7WE4c9R1
- i1hfC4Ot15bTr3bw6Mhl3hX3yvg+RjQE/xSjkLrS1CchTKIC8M1ARVszvgWDU/cVfS5X
- rZDfvekgpS0bS2Ltr6o6j6BoWRo9PCi49BPL9Zxu2I0G0HxbeO37tE3EhHFlbQMa3rZP
- QfXmrwNAIr/w405Y1X6rouSxzHQA5TrXDof0gG4z2RgTquBCRTfc0WQyeSsWXixhoj5p
- hanw==
-X-Gm-Message-State: ABy/qLaPR/oNU45PkehCfL5fBAe3js+hi/kuicLW+AB34RVQi3/8Vg3Y
- sQdmyE0Zl5Zr5+myXFQzmCH+SQ==
-X-Google-Smtp-Source: APBJJlFTAHbB95dodXdKQBYoly991uJL6pbvvv1ndLPuexQ4sDgt5D/p5Pj4sphIomeKoLzIMOWb4A==
-X-Received: by 2002:a17:906:cc58:b0:991:d05c:f065 with SMTP id
- mm24-20020a170906cc5800b00991d05cf065mr7981368ejb.52.1691075229503; 
- Thu, 03 Aug 2023 08:07:09 -0700 (PDT)
-Received: from localhost (212-5-140-29.ip.btc-net.bg. [212.5.140.29])
+ d=1e100.net; s=20221208; t=1691075489; x=1691680289;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=qZxFFZOYVtKRu1/Yw3Pm1idsjCTVK+AKFFxJXeqtqt0=;
+ b=FdfpfLQLUmgRucwpeYXR9Ux2AE/eYANctjBHHiG5iq+R0A6VrzV32qZnNjfMlZLLWc
+ W4y+mBzWi1/pof8lFXo+U9rdpcAAEWOVBhnke3WB7XnVYUGx9GEEv/HlbEfXNKpqZKYP
+ d3WfCpNYJ4T0VwGeQuL8GGY1Ax/BxPqU/tLd/fqdWErh0O5s/1j0cSEcB4IvN7BkyGY5
+ LvwCMzQHsrLCqS0YbJz8GZikCMXbnouQ8DqCGq8mkSOvmt9RIIy5HDeHnaaaaTacuinj
+ jOzMLXFgHrlWdHxFTWKarnMvOrW9E7u5UiUS5YNMkdMQC7v7Q4ksyTUlYw0y1SYdgv0g
+ HLOg==
+X-Gm-Message-State: ABy/qLY6RfOYVR7+d/WtfhJ+H7a0HoSaEER8uZpbZ+CR5NuBxtmko/iH
+ sub0g4M4GGSthOTKHszsVlevpyFJsRtR0+n26Ps=
+X-Google-Smtp-Source: APBJJlGAtkuJgjzXgd+n5KMJjr8+0aJ8LGQpn3/dtpBY2hVINzBp3BRVGNN99Oi/TmZLbF0aZQzmQg==
+X-Received: by 2002:a17:902:9a06:b0:1bb:edd5:4644 with SMTP id
+ v6-20020a1709029a0600b001bbedd54644mr16705266plp.68.1691075489095; 
+ Thu, 03 Aug 2023 08:11:29 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.144.105])
  by smtp.gmail.com with ESMTPSA id
- cw25-20020a170906c79900b0098d2d219649sm10684737ejb.174.2023.08.03.08.07.07
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 03 Aug 2023 08:07:09 -0700 (PDT)
-Date: Thu, 3 Aug 2023 18:07:03 +0300
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Fei Wu <fei2.wu@intel.com>
-Cc: palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com, 
- liweiwei@iscas.ac.cn, dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com, 
- qemu-riscv@nongnu.org, qemu-devel@nongnu.org, 
- Andrei Warkentin <andrei.warkentin@intel.com>
-Subject: Re: [PATCH] hw/riscv: split RAM into low and high memory
-Message-ID: <20230803-3855259bbabb934c247c5607@orel>
-References: <20230731015317.1026996-1-fei2.wu@intel.com>
+ f9-20020a17090274c900b001bc445e249asm1397527plt.124.2023.08.03.08.11.28
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 03 Aug 2023 08:11:28 -0700 (PDT)
+Message-ID: <3b08c3df-3237-284d-564f-5f14a515d59e@linaro.org>
+Date: Thu, 3 Aug 2023 08:11:26 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230731015317.1026996-1-fei2.wu@intel.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::629;
- envelope-from=ajones@ventanamicro.com; helo=mail-ej1-x629.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v7 00/14] linux-user: brk fixes
+Content-Language: en-US
+To: Helge Deller <deller@gmx.de>, Joel Stanley <joel@jms.id.au>,
+ Laurent Vivier <laurent@vivier.eu>, qemu-devel@nongnu.org
+Cc: akihiko.odaki@daynix.com
+References: <20230803015302.407219-1-richard.henderson@linaro.org>
+ <CACPK8XfNiGiprxYd-J+E-oFqPsRVPfQa7+e5hX8DFw0OudT85A@mail.gmail.com>
+ <cd9b0651-475d-1b11-d648-594b52d48bd1@gmx.de>
+ <CACPK8XcdO4KpBfUZmxLNRLLcAOfM9D39be=m4O72kO0+_GiuQQ@mail.gmail.com>
+ <ZMvBTMpi9jDVWDiP@p100>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <ZMvBTMpi9jDVWDiP@p100>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -93,26 +99,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jul 31, 2023 at 09:53:17AM +0800, Fei Wu wrote:
-> riscv virt platform's memory started at 0x80000000 and
-> straddled the 4GiB boundary. Curiously enough, this choice
-> of a memory layout will prevent from launching a VM with
-> a bit more than 2000MiB and PCIe pass-thru on an x86 host, due
-> to identity mapping requirements for the MSI doorbell on x86,
-> and these (APIC/IOAPIC) live right below 4GiB.
+On 8/3/23 08:01, Helge Deller wrote:
+> * Joel Stanley <joel@jms.id.au>:
+>> On Thu, 3 Aug 2023 at 13:55, Helge Deller <deller@gmx.de> wrote:
+>>>> 143551 brk(NULL) = 0x0009b000
+>>>> 143551 brk(0x0009b8fc) = 0x0009b000
+>>>
+>>> I think the problem is the brk with 9b000 here.
+>>> It's not 64k aligned (=pages size of your ppc64le).
+>>>
+>>> Please try with this patch on top of Richard's series:
+>>>
+>>>> @@ -3229,7 +3208,8 @@ static void load_elf_image(const char *image_name, int image_fd,
+>>>>        info->end_code = 0;
+>>>>        info->start_data = -1;
+>>>>        info->end_data = 0;
+>>>> -    info->brk = .....
+>>> change that to become:
+>>>       info->brk = HOST_PAGE_ALIGN(hiaddr);
+>>
+>> That stopped the crashing, and the binaries seem to run fine. I tested
+>> on two hosts: ppc64le (64K) and arm64 (16K).
 > 
-> So just split the RAM range into two portions:
-> - 1 GiB range from 0x80000000 to 0xc0000000.
-> - The remainder at 0x100000000
+> Great!
 > 
-> ...leaving a hole between the ranges.
+> That made re-read Akihiko's patch:
+> ----
+> Author: Akihiko Odaki <akihiko.odaki@daynix.com>
+>      linux-user: Do not align brk with host page size
+> 
+>      do_brk() minimizes calls into target_mmap() by aligning the address
+>      with host page size, which is potentially larger than the target page
+>      size. However, the current implementation of this optimization has two
+>      bugs:
+> 
+>      - The start of brk is rounded up with the host page size while brk
+>        advertises an address aligned with the target page size as the
+>        beginning of brk. This makes the beginning of brk unmapped.
+> ----
+> this patch has wrong assumptions.
+> 
+> The start of brk always needs to be host page aligned.
 
-Can you elaborate on the use case? Maybe provide details of the host
-system and the QEMU command line? I'm wondering why we didn't have
-any problems with the arm virt machine type. Has nobody tried this
-use case with that? Is the use case something valid for riscv, but
-not arm?
 
-Thanks,
-drew
+There is a bunch of code in target_mmap that attempts to manage adjacent guest pages that 
+fall into the same host page.  Akihiko's patch assumes that code actually works.  Which I 
+think is entirely reasonable.
+
+You can't move brk up like this either (without other adjustments to the binary mapping), 
+since that will leave a hole in the guest address space, which can get filled with 
+something else later, which will definitely cause problems.
+
+
+r~
 
