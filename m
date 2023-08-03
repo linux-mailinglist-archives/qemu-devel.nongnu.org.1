@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D247176DDA4
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 03:54:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A99776DDB1
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 03:55:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRNWd-0000gN-4j; Wed, 02 Aug 2023 21:53:15 -0400
+	id 1qRNWe-0000hB-Ar; Wed, 02 Aug 2023 21:53:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qRNWa-0000fD-Tg
- for qemu-devel@nongnu.org; Wed, 02 Aug 2023 21:53:12 -0400
-Received: from mail-oi1-x234.google.com ([2607:f8b0:4864:20::234])
+ id 1qRNWc-0000fr-47
+ for qemu-devel@nongnu.org; Wed, 02 Aug 2023 21:53:14 -0400
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qRNWZ-0000lq-Cf
- for qemu-devel@nongnu.org; Wed, 02 Aug 2023 21:53:12 -0400
-Received: by mail-oi1-x234.google.com with SMTP id
- 5614622812f47-3a3373211a1so325196b6e.0
- for <qemu-devel@nongnu.org>; Wed, 02 Aug 2023 18:53:10 -0700 (PDT)
+ id 1qRNWa-0000mE-JR
+ for qemu-devel@nongnu.org; Wed, 02 Aug 2023 21:53:13 -0400
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-686be28e1a8so312763b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 02 Aug 2023 18:53:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691027590; x=1691632390;
+ d=linaro.org; s=google; t=1691027591; x=1691632391;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=S4pOOuQWmq0xrR9pkY2S2VlYgAJ/fJTzo6NDmQNEUSw=;
- b=paj9PCtabNua4Z7mbz2qjg1N20UIQkHljBfsF+nI96n+IXbzIm3j6XzPQJWrQ6S26z
- BpIDq+4m5xcb1HEeppERSG/80azNbA5FYnRyD0ehdvFbSRu92IfGD9TrW4Iudgmyo0Ar
- v+x0TXl16I5aI2xlHIczWmg1argyVipdNXaxmXlgMl/sSH35Xlta7BDWLjeFAy/uBm9T
- dGxCK7xxFOzP/syw7zvXgQh4ZrWRLLnb1MGyIjZOzqnsc8CMCFFflTKmWwDVGu3ktjue
- jpeNiFwzSd8LkyDF0F/wasrHKY2KVEWJc0Co1mdg/dyrMCVl5T8WDIV1xwuzg5DLub6P
- 9SNQ==
+ bh=XZm1OFwkD4B8Sj8o40TKDrmNFRuwUs1Ie6LEvKqa7G4=;
+ b=QjOBdNPw59KVzwvVESUSqAtAEJY+f2XN7nDsw0p00A1mdtaG5npTrnCNALq6hXtvL4
+ 3NM5QSgPkP/XOr4N44Glun5KrGgncc0/zXOYiYITpYCV/mUCcEiZbyxiUSoKMg9atB0t
+ 2EIyL94PfxhpFP4Q6SD86MPwFdlxVUQVacq3XI5Y+mZCpG45AmBv5BmZinMIuDQJaEDQ
+ S+8CUh+QoXdwpS/AVxLZDwGRw8r/YB0fpn0Boorb9zOjl/mNuh6ygJ52rXSXsPy3s3QZ
+ TRiXumLr+3ePBtgUj5szmQiN0D4AZqnEK6HnvmDSwe7xZC+a0fjwxD2vajF/LrDo1T8d
+ KFMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691027590; x=1691632390;
+ d=1e100.net; s=20221208; t=1691027591; x=1691632391;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=S4pOOuQWmq0xrR9pkY2S2VlYgAJ/fJTzo6NDmQNEUSw=;
- b=WxDHWZZk8qnUDJHJvToCLR7rDunEZYdhs2wV6pTaqbV7B1EtlLFvBx6udriOiDlbwS
- 4+W/QMLmpsrTSCy2XAo5RaAuqwM6dtjXnITLztF1CClts35/cNbW1YC4qNXA7KF4aVnS
- caOKSTNuDQPJiv3cXCIfiqdjL3j3zwGXZL/36TX9zqrP1OMp9z2WuPoyN74raA5z9GqE
- Hgja3q88WR7AoX6Mf0O6bVd6hUVg1yayBYKQTd/FHz3JkyS573I1YaXEYLvsIxDXhRf4
- vsVCvHTkC8PXS3KUEt70XnuohPgPafbI0uu6g/3pC49Rdxu2TbGLYTOezZAdtFWBYbBz
- Fx5g==
-X-Gm-Message-State: ABy/qLapMyf89sO/nkgOW35Gj4Jbqf1l0GdLrvzs8dnxdlh7NjAmBJyB
- d+L75maXROYYbZmgHho0lOYBDtV7ZHjotIdN1pk=
-X-Google-Smtp-Source: APBJJlHV6mgELKGF8gGAhcP6/j8kRc/yMEUOPeiwX1GTV0r4HjHyhmn1cjJkRuEljlt2cWAtB+1dNQ==
-X-Received: by 2002:a05:6358:7212:b0:135:4003:7849 with SMTP id
- h18-20020a056358721200b0013540037849mr11639993rwa.4.1691027590186; 
+ bh=XZm1OFwkD4B8Sj8o40TKDrmNFRuwUs1Ie6LEvKqa7G4=;
+ b=DED1s+xt7bJzYqEEQ+WndlmLTVNiINkqHR0u/Cg5HSZFN2wpG2uPzP7YiaETNbnWJs
+ WYqH+sRZ1hp07qYzP2c3HDbP+kccMoE5hDQ9eliB9BALz1+pgh8lE260xZhPyY5VUjuB
+ mIvH/3UxZKnk5H6owMCZTx3DLs9gXgcnG6VUW2sqLqhEbyjlj6gazQjlXPl+zFqzx8Sm
+ Eq5g9L4MSfZKu2mLqadxB7M3eU2xmKhgUrN1kPc8pSPFg7Peb8cYpEv8exrMd+FXO+Kc
+ qzsb5OuW+H8UL59D9jJ/TCa7fy5wAWr3ftdw4g32A0LHcPfzFXDn8T9JMTdoN/koyR7a
+ XVHw==
+X-Gm-Message-State: ABy/qLaZXM25Rgk7vNKf1bKhJRkmuZ9WHVLLj+1VkNRy9V+si6RlmS9b
+ qdJi2ktpPmvPjv3JvBfFIY15oZ5Fo+qP9g87Kyk=
+X-Google-Smtp-Source: APBJJlHmElRa3ZYqa7wPJ4o6ymeDF7/XyAFwZ57T1pvx6DFftVauRcBdR0plyaVfUEuL4k0WgkYMzg==
+X-Received: by 2002:a05:6a20:1615:b0:137:53d1:3e2 with SMTP id
+ l21-20020a056a20161500b0013753d103e2mr19745119pzj.41.1691027590892; 
  Wed, 02 Aug 2023 18:53:10 -0700 (PDT)
 Received: from stoup.. ([2602:47:d490:6901:b659:bbad:1a22:7ef9])
  by smtp.gmail.com with ESMTPSA id
- s25-20020a63a319000000b005649cee408fsm157123pge.0.2023.08.02.18.53.09
+ s25-20020a63a319000000b005649cee408fsm157123pge.0.2023.08.02.18.53.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 02 Aug 2023 18:53:09 -0700 (PDT)
+ Wed, 02 Aug 2023 18:53:10 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: deller@gmx.de, laurent@vivier.eu, akihiko.odaki@daynix.com, joel@jms.id.au
-Subject: [PATCH v7 07/14] linux-user: Remove last_brk
-Date: Wed,  2 Aug 2023 18:52:55 -0700
-Message-Id: <20230803015302.407219-8-richard.henderson@linaro.org>
+Subject: [PATCH v7 08/14] bsd-user: Remove last_brk
+Date: Wed,  2 Aug 2023 18:52:56 -0700
+Message-Id: <20230803015302.407219-9-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230803015302.407219-1-richard.henderson@linaro.org>
 References: <20230803015302.407219-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::234;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x234.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,35 +95,35 @@ This variable is unused.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/user-mmap.h | 1 -
- linux-user/mmap.c      | 2 --
+ bsd-user/qemu.h | 1 -
+ bsd-user/mmap.c | 2 --
  2 files changed, 3 deletions(-)
 
-diff --git a/linux-user/user-mmap.h b/linux-user/user-mmap.h
-index 3fc986f92f..7265c2c116 100644
---- a/linux-user/user-mmap.h
-+++ b/linux-user/user-mmap.h
-@@ -26,7 +26,6 @@ abi_long target_mremap(abi_ulong old_addr, abi_ulong old_size,
+diff --git a/bsd-user/qemu.h b/bsd-user/qemu.h
+index edf9602f9b..8f2d6a3c78 100644
+--- a/bsd-user/qemu.h
++++ b/bsd-user/qemu.h
+@@ -232,7 +232,6 @@ abi_long target_mremap(abi_ulong old_addr, abi_ulong old_size,
                         abi_ulong new_size, unsigned long flags,
                         abi_ulong new_addr);
- abi_long target_madvise(abi_ulong start, abi_ulong len_in, int advice);
+ int target_msync(abi_ulong start, abi_ulong len, int flags);
 -extern unsigned long last_brk;
  extern abi_ulong mmap_next_start;
- abi_ulong mmap_find_vma(abi_ulong, abi_ulong, abi_ulong);
- void mmap_fork_start(void);
-diff --git a/linux-user/mmap.c b/linux-user/mmap.c
-index 90b3ef2140..eb04fab8ab 100644
---- a/linux-user/mmap.c
-+++ b/linux-user/mmap.c
-@@ -314,8 +314,6 @@ static bool mmap_frag(abi_ulong real_start, abi_ulong start, abi_ulong last,
+ abi_ulong mmap_find_vma(abi_ulong start, abi_ulong size);
+ void TSA_NO_TSA mmap_fork_start(void);
+diff --git a/bsd-user/mmap.c b/bsd-user/mmap.c
+index b62a69bd07..8e148a2ea3 100644
+--- a/bsd-user/mmap.c
++++ b/bsd-user/mmap.c
+@@ -214,8 +214,6 @@ static int mmap_frag(abi_ulong real_start,
  #endif
  abi_ulong mmap_next_start = TASK_UNMAPPED_BASE;
  
 -unsigned long last_brk;
 -
  /*
-  * Subroutine of mmap_find_vma, used when we have pre-allocated
-  * a chunk of guest address space.
+  * Subroutine of mmap_find_vma, used when we have pre-allocated a chunk of guest
+  * address space.
 -- 
 2.34.1
 
