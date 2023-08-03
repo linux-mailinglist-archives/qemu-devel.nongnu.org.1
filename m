@@ -2,153 +2,157 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2E7676F172
-	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 20:07:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDFB376F1C9
+	for <lists+qemu-devel@lfdr.de>; Thu,  3 Aug 2023 20:24:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRciU-0004Y1-88; Thu, 03 Aug 2023 14:06:30 -0400
+	id 1qRcyn-0004lc-B3; Thu, 03 Aug 2023 14:23:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
- id 1qRciS-0004XY-2f
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 14:06:28 -0400
-Received: from mgamail.intel.com ([192.55.52.120])
+ id 1qRcyi-0004kJ-LF
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 14:23:19 -0400
+Received: from mgamail.intel.com ([192.55.52.136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
- id 1qRciQ-0002mK-3C
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 14:06:27 -0400
+ id 1qRcyg-0004ZK-Ie
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 14:23:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1691085986; x=1722621986;
+ t=1691086994; x=1722622994;
  h=message-id:date:subject:to:references:reply-to:from:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=TBJTLDuV4+Rv59a1U6dmMgxOs9RLAHWCJ7MKCBk25GA=;
- b=Q8tDzZMHbrd6bu5ib1orViYNRsfySsFWb33NjxxNEDGR55VD3G2LEifD
- oBCEo+RMH+bEGGWUzRTQ3NuGH8hBvokuhTZilIOMvancoII04Ro12v6PQ
- Tgay9iH2ltSvNhqJFm7qh5vaYu/Q94DqmHs+4icxcdNdLGpwWQHdx5+WO
- WMgUDrXEFh+r/C9HuLa6drBL9w9mGfelj4LZPigZI4QTXDPzVRXpTpbd5
- 0wvHE+nQNRscZboliDdTlcfOXlcUluytg6prZSN3hsiX6aOENuGgHLzvI
- O06jA6rxc4O7hBe521jxbDSWEDN0L8MRZCiuOhlzrY0QAvzg9JrLZcrFR Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10791"; a="368858460"
-X-IronPort-AV: E=Sophos;i="6.01,252,1684825200"; d="scan'208";a="368858460"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
- by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Aug 2023 11:06:22 -0700
+ bh=nwIz18Fb6aYx9ywnCJvIyjS+t4GeLpQtWoUD5t3Gj4s=;
+ b=OiiDVURjJsA+yMAS++jMwC8mtICWRP9tKQExsT1oE+ww1wkl3202gAOk
+ Pg2npuB6443W6hE3dNf3MesjoB0+ObT33uT44Uex92zCg/JvaZB4csz2q
+ C52v1bkn7TKEjLstXDXv57b/WzzzU/FccslUlMs99odT52P+tJcA0Ib/F
+ 3G+4+tJvwSCF7oQxZzA+JhGp+HLXjSvZGuuC3kg+gW6trIgnd8isLyw/l
+ 9LT+LvZ7av2ITuH1BV9S05mJARcoBnDEtwxbXV5eUImjqYXOu5W5Fq53g
+ lRAlHjYf1BrfFRjU+TIGcx8Jg9Lu+2HQ00SSREqxS87Pf17SovnLPh1/l g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10791"; a="349554172"
+X-IronPort-AV: E=Sophos;i="6.01,252,1684825200"; d="scan'208";a="349554172"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+ by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Aug 2023 11:23:12 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10791"; a="976207933"
-X-IronPort-AV: E=Sophos;i="6.01,252,1684825200"; d="scan'208";a="976207933"
-Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
- by fmsmga006.fm.intel.com with ESMTP; 03 Aug 2023 11:06:20 -0700
-Received: from fmsmsx601.amr.corp.intel.com (10.18.126.81) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.01,202,1684825200"; d="scan'208";a="873052897"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+ by fmsmga001.fm.intel.com with ESMTP; 03 Aug 2023 11:23:14 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Thu, 3 Aug 2023 11:06:18 -0700
-Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+ 15.1.2507.27; Thu, 3 Aug 2023 11:23:11 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27 via Frontend Transport; Thu, 3 Aug 2023 11:06:18 -0700
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.170)
- by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
+ 15.1.2507.27; Thu, 3 Aug 2023 11:23:11 -0700
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27 via Frontend Transport; Thu, 3 Aug 2023 11:23:11 -0700
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com (104.47.56.47) by
+ edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.27; Thu, 3 Aug 2023 11:06:18 -0700
+ 15.1.2507.27; Thu, 3 Aug 2023 11:23:11 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=aE9BLrrvp57xVrYgwDPwXR3ABZHnyvKGEjpxEF255zeV+MN4wxvEnFsJz3LbbNWdHYBoN3rjLR6bd7HLCUw/AQAsWIpMt0H5b/cnbcj5uJF2EL3MEJd1H5p6HL7dP5XMpT4AJ5DN7gyjMYs+j23GPHiV22Z7b61pHuF8Gkc1kP9yiNdjadRLPUQqgBBeV4m/jxS02lazUmKvYyUlw1tUPSv4RRyH/zvvt62tb8qimh7PKe274tyz9okPO01gkX6hBIg02JIwP6368m7F6PRB1QWinR+Wa0heu3+QCRNuHfz4BHzeYMYI5BwpP71oalORNs1pFk2Grel+iMbD865UTw==
+ b=cstyRDk0VW/DayjL29WQqryUSOXg7DOaXxr4SmrRAfuE9wHfGlWIXfCxhVWD35jJPUDycQXNuTvpIHBvK0SsqDpGjj6jDiiATOKWlfsfjlN4bNX2tn/15WW15xR4S1rsa9dHZxEkQ40vjnPbWJns86YBKVq4+7xZwqbqDjf+KkC9LmDOu0ReXtfVU5azsoL9cI0kkQR/5EurGWgXRKffk0jchFIECPfD05zzhs3hRKLWXhwt2BHbkjsvLb9EWRKqJmf25GE7YpGOIFPm3Mi6/XU3uH/DmzVvYIP2AyOeJe9YeiljUpPrSyS8gA7OD8SW5PUYLz9yOEfkCihNlpkDdQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=iH5KDbILskcLKtN3H2T29I/SNUCC/XaEI4viqCIex1k=;
- b=c8Dy9i7WJAwYr81uCaVlGqmO2E7l46j5OZqevbnQeOGSinkhirGzuJlvwrRBrdKY0HlciGV0QJ468V1G2AWbqzPPM6MwCvOJug1HztBIXgXiRp9Ik+hsiy//F0qssgh6WOh1mesIUcEDiJW02Lhvyiuq07x1Bh9K6ew3Yd9Mao52RAj1qEn9SAx0cK7xFV+8brDjyx21PuDR1UMZ5x9e98jtRepK3UYhJxxB8YeOYM6B91lniGmlQrcWWLr7ZH5RC4vM2YCO0bhJBv+p1vhR7zJtR4Xt5d+rbuG02ujqxAAGNDO3Rl/ZCLeRt0nz1F9ji4cHsxQbvWZTxyylJf3XDg==
+ bh=9/R152g/jEt7eWf4lxUyO6Es7U+tSGAKYdNBE+K/s/8=;
+ b=a+ziQPLJXfHxGx+clJvLJzHhkvUv6fIs1vJc7u7d5zIADxGvEZzQZgBDws/VauEvqmhQ9hdSd7BDdug79z4/YJd5BStE4Kel+YUM4ts6mWdsFmBDegujhISmKLayCGbJHFIk3REQrb5UzQJLqvPNUyqvEK71uW1C2h/Bh394wAj9/RFtYCoZBr089Xnt2hqmQ7YJ019NrYslmifjU/bqB64xiVs+kVbffpJgxJ7EYKhmzy+nRms5puSuJFCuQE2nDq8IzFJBe+BVxvR+SVTLKvIP8Qc26ESYl62SIzNDAv90c0u3rcb4tDGKoJ0MnNlYTAK9rRVIUOsS6ZEbs0EN5g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from PH8PR11MB6879.namprd11.prod.outlook.com (2603:10b6:510:229::22)
- by SN7PR11MB6924.namprd11.prod.outlook.com (2603:10b6:806:2ab::9)
+ by SA0PR11MB4527.namprd11.prod.outlook.com (2603:10b6:806:72::17)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6631.43; Thu, 3 Aug
- 2023 18:06:16 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6652.20; Thu, 3 Aug
+ 2023 18:23:08 +0000
 Received: from PH8PR11MB6879.namprd11.prod.outlook.com
  ([fe80::e12e:7690:e251:1aa5]) by PH8PR11MB6879.namprd11.prod.outlook.com
  ([fe80::e12e:7690:e251:1aa5%3]) with mapi id 15.20.6631.046; Thu, 3 Aug 2023
- 18:06:16 +0000
-Message-ID: <619692a0-8277-045b-dbee-5f2900150b32@intel.com>
-Date: Thu, 3 Aug 2023 11:06:14 -0700
+ 18:23:08 +0000
+Message-ID: <75578ecf-4aed-7201-ca83-83e2dd523403@intel.com>
+Date: Thu, 3 Aug 2023 11:23:06 -0700
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
  Thunderbird/102.14.0
-Subject: Re: [PATCH 1/2] virtio-gpu: free BHs, by implementing unrealize
+Subject: Re: [PATCH 2/2] virtio-gpu: reset gfx resources in main thread
 Content-Language: en-US
-To: <qemu-devel@nongnu.org>
+To: <qemu-devel@nongnu.org>, =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?=
+ <marcandre.lureau@redhat.com>
 References: <mailman.213.1690396551.25301.qemu-devel@nongnu.org>
 From: "Kim, Dongwon" <dongwon.kim@intel.com>
 In-Reply-To: <mailman.213.1690396551.25301.qemu-devel@nongnu.org>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: BYAPR05CA0098.namprd05.prod.outlook.com
- (2603:10b6:a03:e0::39) To PH8PR11MB6879.namprd11.prod.outlook.com
+X-ClientProxiedBy: BY5PR16CA0013.namprd16.prod.outlook.com
+ (2603:10b6:a03:1a0::26) To PH8PR11MB6879.namprd11.prod.outlook.com
  (2603:10b6:510:229::22)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB6879:EE_|SN7PR11MB6924:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9074248f-95e1-453a-882f-08db944c54ca
+X-MS-TrafficTypeDiagnostic: PH8PR11MB6879:EE_|SA0PR11MB4527:EE_
+X-MS-Office365-Filtering-Correlation-Id: a6f6fda1-a6c9-47f4-2187-08db944eaf9e
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: un8XfRYLJwftjKzXKR2jRs7PqeE4ytewJyvV7CcUDpzSXPKzFwd+Ux2O1QKiA5BD76uAiVLuxJmvMQTnKiIBBaouqTFlBRmHoF47Dt+zZQ/S4wUvu0gYsIxXrfshiPUovACZ8+6lV+sazBEz2GFzGRTe1Y1MEmBxJsUhYj7MH+oqc6V7EgbwBahltXLmsyORr+qUW8juSq0K8hyGd8CeUCgMVIUiKQMGR74ZJpvg4W7HoydalpHpQyCaqj4NcDwiVaGJBlRIaCYIvkYNOApZEYaBAY+iAk/VYWPxKHcz0mVo8cK+etxeUs6VipZ4zEBcFSz/aI3iLhm95dHTIB4dnlmj0b/Ld1kqx2lxD7Ef+yI5LurGfRaNJVPXaVTINTSk425XRTlO+FGQSOzfRBCzV//KGZQI8MHT89MhcGbyszXeK89hD7fhIir61n9o4Z+YKgnm+5oz/BQWOhh9c7aQ9Cr71kvaqo+JWl4heV5kDbKbiz1HLViXRFYdB5LBdXD4lrzLQ/LlFJCYebx1t5lJyKhdb96QTdbmJ8c6c0/b8xgZNTTkbx5segbFwE+7EjvcV+ENhCZMSQyUna0AaYYEaV4Cu/iBZt1yKaGsV3h3bdlyksPvXOZQwrzyeZc20ZSMMMEmfkvQ1p0KDWAkf8lzug==
+X-Microsoft-Antispam-Message-Info: lFKrTuQTVg7P5W94bkLIxvCpTzqM912gHlK+NyC93KRlqwkFhRtVJpV2U9YhzeqJg0SiHjWMtawIxaleDkVGsYVTLJrUTsFEBymYk/7bojPy1fnn3nUgNYnjzMXpJWOzKHLmPTZL4PxtfHewbY0XIw13yO9E30Zf/XBZFd+ZLk3pmDFC6wWaySBQ4yO7wZqxy8mhg3YjiZ9+UISSj6TH44GskCufjWUnyO+i+zeHz9S7HobQdJoxujC61icKKAd1Ma9Ed2WRCXurFia1GChtDLMlo83uU+EwLgAc8YNJDeEBaPY7cW0c2W+jB9FVQ9nCvU/GBcJePlrO1s/vOTV4o4M8wtsgKTduGk0x4KNcqudUuTfmXIni7IJdDQuFxctS4ukHe+oOrARvLZeYeaFO9zO+3mtwiGkDo03gHwTuUymBa/NDVVtup8NgzzDUsZrLN70U+X2BeiKjvB+ybeWLlGtzQqHdYgcUPYJcHILfUSAWQizsH43OMZ7n77jDsubyo3t9xPIMWt/qoQ6foN/7YxVLl1wtp+QqWdWG/2zmlQop4D35MR8QrEZ+5Kk++iI0pa/DtjowDyXIqgqQjb1h0rKP1TTJ3A/LklkTtHWOtezdRwrqKIgtAFOQaj3pIv45F9YvrMubzsTe/dHkmfbnSA==
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:PH8PR11MB6879.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(376002)(396003)(136003)(39860400002)(346002)(366004)(451199021)(31696002)(66476007)(86362001)(38100700002)(316002)(8936002)(8676002)(6916009)(31686004)(5660300002)(41300700001)(66946007)(66556008)(82960400001)(478600001)(2906002)(36756003)(6512007)(6486002)(6506007)(83380400001)(26005)(186003)(2616005)(45980500001)(43740500002);
+ SFS:(13230028)(376002)(39860400002)(346002)(136003)(366004)(396003)(451199021)(2616005)(6506007)(186003)(83380400001)(26005)(8676002)(66476007)(316002)(66556008)(2906002)(66946007)(5660300002)(6916009)(8936002)(41300700001)(6486002)(6512007)(478600001)(82960400001)(38100700002)(31696002)(36756003)(86362001)(31686004)(45980500001)(43740500002);
  DIR:OUT; SFP:1102; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZTVGekRkR1RRTWpPOVRxR2tpeUpmQW03RWhyV0ZnaWVCcUp4UklzL3BKNmx0?=
- =?utf-8?B?MmhFamtYc0ptV3lhWDJjd1hReVFwSi9PbnFOb29lNUpLQndQdmpidVE0Nzg2?=
- =?utf-8?B?d1IvQ2NXT1l6VCtHbGZHRXE5M2owcHV2a1hld2JjYVBDWHcyRlo2L2VadlIr?=
- =?utf-8?B?NWhjV0VYTVZXNk9TV1lXL0p0TTZZRytrTWxaVFF5SWZITDZMOXE4bERKWDQ3?=
- =?utf-8?B?c3NQMHFQdXpMNnJ6SExLSFVPaFNoKzNETmV3TVlMeHJCTE0ycGw4eFlxbm9D?=
- =?utf-8?B?ZlBYby9wKzZzbzRmZ2JqVVV1NDM1TlkrOXRwMEpGSG40WDRWWUgwaGhoV0xp?=
- =?utf-8?B?WE02ZTFwMG1nS1lkNjNZTEJRL0x3NUs2TWN0bWVvMDhNeklWRUdsVmtJaFor?=
- =?utf-8?B?ODlDZVhlMVZTSDNrZmdaSWRSYnhJdzUzVFdZS1NoK0xnbjc4dXRpLzJvTDZT?=
- =?utf-8?B?MXBpbDJQbExYVGM1SDV0RnBrZFA0UXU5N3lXczFBd2xoWjFMMlM1T0RtdDJp?=
- =?utf-8?B?bFZRa2NrMVlxaXM1WERTUHRHY0craWNBcVQwMUNJdEpFblZwdERJTk9FUUhR?=
- =?utf-8?B?bTZvb0hZQkIvWno4R3N3MnFLenQ5NWlRR0tBbHIwSDVwVXVNeUlUTVIvNHdQ?=
- =?utf-8?B?RkxrdGM3VUdYaWVKQzJ0d1F0ZmsrdUoyQm1XbDYyTkNNRzVwSXlUeVBjR3dE?=
- =?utf-8?B?dU1WM3FOYmRWSFBOc1RzSHFIZ002RWM0N1p4aXJIRmpubno1SkxHM1hTN0NO?=
- =?utf-8?B?Rlg1a1JRUDVkN2w3N0E2VGhtd0MrT2tuQnowdTBkbFFIT1FZSUVTKzZvRXI1?=
- =?utf-8?B?V1BoMnNockVGeVp3SDNRL2Fhb090SXhXZFdvZG50d2ZKd3VJTVMzZG1TNnJP?=
- =?utf-8?B?a1EwK2RMREhPb0JhZ0RQSTllNHEyc3cxRWJ4VW81Z09CSEtpbVpFcnR2R3Bu?=
- =?utf-8?B?QkRXajg0SmVQYkEwVCtQZEwyVWh2UG1aaWF2ODV5a29zeTloMkFkdTI1bVZq?=
- =?utf-8?B?OUFiU3MxcVlzY3NwN3JudFNramRseEcxd2JTd0ZwY0JWUkZnNnBPd3hXelp3?=
- =?utf-8?B?a3B4Ni91Q2cwS0lFVUdiWDQ1bE5OSFYva1lZd3l0Mjk5SmtkYllacSt1M1NG?=
- =?utf-8?B?d0lFY1hjNWhFYmNwa1NWZFBoallFaDUrUTdlbnRpVCt3REtvc25pWlU0a0px?=
- =?utf-8?B?VkIvRkthRmlLcjVlS0lrTEFIOWphbmpYeVBoMmZjMlROMForVU5HN2VlK1hL?=
- =?utf-8?B?U09md0FXWGxMYnFtUU13amVXdmkxQ1YwNFN1cXJsbmtlMFFXNXB3ajdLVTBu?=
- =?utf-8?B?RmY2dmdCV0RkYW0rRmdwMEluNGtOR280Mi95eHZOYjhwMDR4L0l1MTd2OXFq?=
- =?utf-8?B?KzU4cnZYMENMWnNGSGRneGw5cWpZZnlEQXhOZXpuSW9JOWYraHRYL2F2RC9C?=
- =?utf-8?B?OFBMUlZFQzloVlhHZ2pZdThkNnVjTTFOY2FmTjd6b2lZR2h4TThyVDZ5RUQv?=
- =?utf-8?B?M3d0OG5hUHJNZXk3QzIyUlQ3R1ZvbHorQmpRVVZIM0pRYU9SOFpqYnd2QUNM?=
- =?utf-8?B?L2JOT1F2Q1hrM0dTVGVEbk15VlhFbmtueEJzMVdGVUh0VGZYRlVrVDlOWFZI?=
- =?utf-8?B?SG05WEVUd1JkWERzZU1VY0ZYQXpHWU1IRzgyc0dRZzJVRzN1U1hDdDRTRnMy?=
- =?utf-8?B?OEZ1N2lwTjRWUjdYK1FqYlh0TkhiZ3UzTHdGellORDNIMmdhTDNLenhJKzEv?=
- =?utf-8?B?WUdHa2lvQVBSeG91Y1lNSGh3RGRUeVd3WDBJdTJScElRRzA4QWtaTlc1REtu?=
- =?utf-8?B?T2hjemMrRktNbE0yK2czK1N6TVdJWVpkVWZGOVM5TTQ0UTh2azFKcjBjL0sz?=
- =?utf-8?B?Y0FPbGZlN0NLNkJLUlpxSnNpdWloVWZHQTZBRzhQcUJDMDVZTmtrSnFBb0xi?=
- =?utf-8?B?MG9ZSXJwWC9CK3Q2ZndpRkdGSWZMWGJxbSttMlQ3eDA0MzFFWEpvaXhEdjdL?=
- =?utf-8?B?TGZmY0xIRU1DNlVyT28yUjFpVkVHYlZ4cys4RXdLUldIVlk1bUdpeDQ5WnZ4?=
- =?utf-8?B?bWtoK1JHc2t2V1lkeitMN0FHb25lalBZU1dQQVo5T1hKbTVQNzJvdFY4RzlI?=
- =?utf-8?B?c2w2ei81dUZkVm11QXRxVmtROXlRUG52YWZOeFF5RTQwUEJHMk81S21pd1k1?=
- =?utf-8?B?Q0E9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9074248f-95e1-453a-882f-08db944c54ca
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?cTBWSmlDeXhFaVF0SkhQK3Z1WXFSaHVjZk94MDB3a0tVVzVFZkFabU5TeDkz?=
+ =?utf-8?B?RVBhbDkzYUlOZ01KSGZNNktOMWRTd0dUZlBGOXhVSy9nVk9GRVlWK3NtQlRp?=
+ =?utf-8?B?OUEvbDkrU3VnNWFTYVBzdXY3M054b01PbW1rSEZNNWR1VWl2ZTFGQUR3WXlX?=
+ =?utf-8?B?dGxhVEhOK3Z6UTZlbHpodkxBV2lyT3VjbUZDa1dRRENydEhLOERoejdxM0Zy?=
+ =?utf-8?B?a3dHMElnQklDZXlKUXAreUdDZ0FLQ0VscTM1RTNlZ1gyM1dnWldpME81dDEy?=
+ =?utf-8?B?bG15UXkyYjRDL0pTWkdqcFBSVWplSDRVUlgrZmlyZUJZUjFid1pqRVhYb0Mv?=
+ =?utf-8?B?eXQ1TjNpQTR6L1hDMFd6cENRaER4RnRDdHd2MGRMMUFYUE16Z3ppTUFqQnRC?=
+ =?utf-8?B?bE9iZnpQWGNac25zQW1zVU5pTHprWE1TUzVHTXRHcmZ3MFoyOFlGYXpLbDE4?=
+ =?utf-8?B?MndYdjRLMTkyelI5c1lIZk4xRmh2MHQ3TXlaL055bU5DZXppeGxhbWpIWXU4?=
+ =?utf-8?B?R0hhbk10cEgzMkY4RmhkdlBwRTM4YW9PSmt3WDhQUFdnZ2dmQUlNVEJRQ3JQ?=
+ =?utf-8?B?MHQ2a2ViSUZseGlHQ1R2NWFrMjdMWitxSVYwS0h3THJDSnE2RVZ5UkR1MXA0?=
+ =?utf-8?B?dEp4VkxueC9tNDg4SG9vK3VHa05iTFI0Y05ONjB4OVBUQk41dCtvVkdONkIy?=
+ =?utf-8?B?WFhZTEFDVjJIVWlKR3dtdmhZdHZPY2xrN2RaOHc5VW1BOHBqTWUrT1ROZEdu?=
+ =?utf-8?B?bFNuUTNYWWZaUjltRlNPUHJYdDh3T1E2VGRkdjFNNDJmRHpyTEtGVDlSMlBO?=
+ =?utf-8?B?Vm1wczA0Z1ZkUVlLNjR2YjNRb3R0MEs5NXZBQUJoS3UrbFdkVEY1TWFOREty?=
+ =?utf-8?B?eHg3YVVvNHRaWXN0WHhlVUJPVmZ6Rmx4aFQ5blRIYTBpUFVJVzZ6V3o2NDRN?=
+ =?utf-8?B?OGZRN3BReTZCZGY0NUxsOXRoT2pPanBwZlRHNkFncWVQR0hod2FHUTRPVk9K?=
+ =?utf-8?B?cWtjSkxzSmFqTGhycEc4VEFqeXVtQXpCTVFlMjhxU1o1Vm5zUGhHdDZIemE3?=
+ =?utf-8?B?b01lWmpwNzBGd0kvbHZkWlN5cnBpWmpzWEFhcUJYRU5haW1SbEx2eFJrZVpo?=
+ =?utf-8?B?MnpWOGZqQzlSeXdTejk0UytCYXlYY1h4dWdEaWpGNXZjbXVUOXZoL0pRNDFE?=
+ =?utf-8?B?MmxXcFd6bG56T2RlclNyYlNxMFJBYTczaEwxQk0wZnlXQmg0bkI3a1hqb0Iv?=
+ =?utf-8?B?bjBIZ3pHdC91SEpoR0pJWmw2OWVNc2puNFRzNmlNcUtwQ0RZV1ZaWElHZ3E1?=
+ =?utf-8?B?U2J0Qm1HeHdxM3Q1cFFYajlieCtNRHVYMWljbVQ3RFRYb3Z6ZldwOVJJNjBT?=
+ =?utf-8?B?aUh4YnhwRCsrbXozTVk4ZTYweGpMaUVSbjhBeCs2MEhYU0RvKzdURE1McVlo?=
+ =?utf-8?B?NWVmNWYvZk5ZRnBUSUVnNmlGL2c0UGNBOWJ2V3ZlNGpOY1E2MDdUclVHenQv?=
+ =?utf-8?B?R3ordmR0RTZPYVpwais1a2JzZmdXMzk1ZUhhWVprR0pDTVhCREsrTUsxT016?=
+ =?utf-8?B?WmJRbFJjaHRqK1NMQ0M5b0hVY1JQV0d0OUp3M255R1d3RDBiMm1Da1dqaFlD?=
+ =?utf-8?B?K3hZVkh2VGtLSnNtRlZDTlVEQmx4RlRNbU5mMXhwVUNkc2E3THEwYkFONGli?=
+ =?utf-8?B?bzNJUWF4QXlCTEhPVzBTVlFlN3MrNVpWY3B0VEp0L1R6d1BhN05RV2lSb2xr?=
+ =?utf-8?B?TXBxR1p2dmtNUkpoOVB1SDR3eFJRdENSVHhNR2wySkR3azRUWGtESnZnU1hL?=
+ =?utf-8?B?eHR6SWtacksrMlpwamwvaEoveXNwNUthVUR4VXdpallWTW55YU5aTGNNSmhX?=
+ =?utf-8?B?Smt4cUMxSUhuMGdPNUozMVNjckI5RU9JZEx2NmJLTyt2c3ZTdFVCUkpVamFQ?=
+ =?utf-8?B?UDVXTnY0T0s1bHh0Z1pGVXJJY1g1Y3JnRnJnOE1WYVMvUmNjZDA3Mk4yc0Y2?=
+ =?utf-8?B?ekhoeFZEaXhlSktsbHJlUVFXR1dUbWFPNldhaFlsbWFLS2szYlZ6UVhSS0R4?=
+ =?utf-8?B?Yk93T1BLeFZmUHB4SUE2WjN6eHViUEFsQ01oYnFOL3l2UkRZVnA4K2lDNnl1?=
+ =?utf-8?B?amlNTk8vSFgvWXJFNXVHS1N5QU5CK0ZIbG53dGVoWlhGQUdUTjZxM0Vkb0Yv?=
+ =?utf-8?B?M3c9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: a6f6fda1-a6c9-47f4-2187-08db944eaf9e
 X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB6879.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Aug 2023 18:06:16.5183 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Aug 2023 18:23:07.9244 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Rc1c6pdY9lPmYruQ8vI9Qj3x5bTrekCKeZW7YgyDhAfQL9Qfh8+judYa0Mz0kLKh5K09/WDqzA+q4Pm/xvwzYg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB6924
+X-MS-Exchange-CrossTenant-UserPrincipalName: f9udsqj4VkxA5klhj3a9Ri/cu4YRnCZmS+aOPEIyN7SH2shp9fZYVIpYf4OnUbMhrKE/QzYdNPUyK1LXqJKmmg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR11MB4527
 X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=192.55.52.120; envelope-from=dongwon.kim@intel.com;
+Received-SPF: pass client-ip=192.55.52.136; envelope-from=dongwon.kim@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -44
 X-Spam_score: -4.5
@@ -169,50 +173,140 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: 20230726173929.690601-2-marcandre.lureau@redhat.com
+Reply-To: 20230726173929.690601-3-marcandre.lureau@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Acked-by: Dongwon Kim <dongwon.kim@intel.com> From: Marc-André Lureau 
-<marcandre.lureau@redhat.com> Signed-off-by: Marc-André Lureau 
-<marcandre.lureau@redhat.com> ---  include/hw/virtio/virtio-gpu.h |  1 + 
-  hw/display/virtio-gpu-base.c   |  2 +-  hw/display/virtio-gpu.c        
-| 10 ++++++++++  3 files changed, 12 insertions(+), 1 deletion(-) diff 
---git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h 
-index 7ea8ae2bee..05bee09e1a 100644 --- a/include/hw/virtio/virtio-gpu.h 
-+++ b/include/hw/virtio/virtio-gpu.h @@ -238,6 +238,7 @@ bool 
-virtio_gpu_base_device_realize(DeviceState *qdev, 
-                                      VirtIOHandleOutput ctrl_cb, 
-                                      VirtIOHandleOutput cursor_cb, 
-                                      Error **errp); +void 
-virtio_gpu_base_device_unrealize(DeviceState *qdev);  void 
-virtio_gpu_base_reset(VirtIOGPUBase *g);  void 
-virtio_gpu_base_fill_display_info(VirtIOGPUBase *g, 
-                          struct virtio_gpu_resp_display_info 
-*dpy_info); diff --git a/hw/display/virtio-gpu-base.c 
-b/hw/display/virtio-gpu-base.c index 7ab7d08d0a..ca1fb7b16f 100644 --- 
-a/hw/display/virtio-gpu-base.c +++ b/hw/display/virtio-gpu-base.c @@ 
--244,7 +244,7 @@ virtio_gpu_base_set_features(VirtIODevice *vdev, 
-uint64_t features)      trace_virtio_gpu_features(((features & virgl) == 
-virgl));  } -static void +void 
-  virtio_gpu_base_device_unrealize(DeviceState *qdev)  {      
-VirtIOGPUBase *g = VIRTIO_GPU_BASE(qdev); diff --git 
-a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c index 
-e8603d78ca..b1f5d392bb 100644 --- a/hw/display/virtio-gpu.c +++ 
-b/hw/display/virtio-gpu.c @@ -1392,6 +1392,15 @@ void 
-virtio_gpu_device_realize(DeviceState *qdev, Error **errp)      
-QTAILQ_INIT(&g->fenceq);  } +static void 
-virtio_gpu_device_unrealize(DeviceState *qdev) +{ +    VirtIOGPU *g = 
-VIRTIO_GPU(qdev); + +    g_clear_pointer(&g->ctrl_bh, qemu_bh_delete); 
-+    g_clear_pointer(&g->cursor_bh, qemu_bh_delete); +    
-virtio_gpu_base_device_unrealize(qdev); +} +  void 
-virtio_gpu_reset(VirtIODevice *vdev)  {      VirtIOGPU *g = 
-VIRTIO_GPU(vdev); @@ -1492,6 +1501,7 @@ static void 
-virtio_gpu_class_init(ObjectClass *klass, void *data)      
-vgbc->gl_flushed = virtio_gpu_handle_gl_flushed;      vdc->realize = 
-virtio_gpu_device_realize; +    vdc->unrealize = 
-virtio_gpu_device_unrealize;      vdc->reset = virtio_gpu_reset;      
-vdc->get_config = virtio_gpu_get_config;      vdc->set_config = 
-virtio_gpu_set_config; -- 2.41.0
+Looking good. By the way, what does 'BH' stand for?
+
+Acked-by: Dongwon Kim <dongwon.kim@intel.com>
+
+From: Marc-André Lureau <marcandre.lureau@redhat.com>
+
+Calling OpenGL from different threads can have bad consequences if not
+carefully reviewed. It's not generally supported. In my case, I was
+debugging a crash in glDeleteTextures from OPENGL32.DLL, where I asked
+qemu for gl=es, and thus ANGLE implementation was expected. libepoxy did
+resolution of the global pointer for glGenTexture to the GLES version
+from the main thread. But it resolved glDeleteTextures to the GL
+version, because it was done from a different thread without correct
+context. Oops.
+
+Let's stick to the main thread for GL calls by using a BH.
+
+Note: I didn't use atomics for reset_finished check, assuming the BQL
+will provide enough of sync, but I might be wrong.
+
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+---
+  include/hw/virtio/virtio-gpu.h |  3 +++
+  hw/display/virtio-gpu.c        | 38 +++++++++++++++++++++++++++-------
+  2 files changed, 34 insertions(+), 7 deletions(-)
+
+diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
+index 05bee09e1a..390c4642b8 100644
+--- a/include/hw/virtio/virtio-gpu.h
++++ b/include/hw/virtio/virtio-gpu.h
+@@ -169,6 +169,9 @@ struct VirtIOGPU {
+  
+      QEMUBH *ctrl_bh;
+      QEMUBH *cursor_bh;
++    QEMUBH *reset_bh;
++    QemuCond reset_cond;
++    bool reset_finished;
+  
+      QTAILQ_HEAD(, virtio_gpu_simple_resource) reslist;
+      QTAILQ_HEAD(, virtio_gpu_ctrl_command) cmdq;
+diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
+index b1f5d392bb..bbd5c6561a 100644
+--- a/hw/display/virtio-gpu.c
++++ b/hw/display/virtio-gpu.c
+@@ -14,6 +14,7 @@
+  #include "qemu/osdep.h"
+  #include "qemu/units.h"
+  #include "qemu/iov.h"
++#include "sysemu/cpus.h"
+  #include "ui/console.h"
+  #include "trace.h"
+  #include "sysemu/dma.h"
+@@ -41,6 +42,7 @@ virtio_gpu_find_check_resource(VirtIOGPU *g, uint32_t resource_id,
+  
+  static void virtio_gpu_cleanup_mapping(VirtIOGPU *g,
+                                         struct virtio_gpu_simple_resource *res);
++static void virtio_gpu_reset_bh(void *opaque);
+  
+  void virtio_gpu_update_cursor_data(VirtIOGPU *g,
+                                     struct virtio_gpu_scanout *s,
+@@ -1387,6 +1389,8 @@ void virtio_gpu_device_realize(DeviceState *qdev, Error **errp)
+                                       &qdev->mem_reentrancy_guard);
+      g->cursor_bh = qemu_bh_new_guarded(virtio_gpu_cursor_bh, g,
+                                         &qdev->mem_reentrancy_guard);
++    g->reset_bh = qemu_bh_new(virtio_gpu_reset_bh, g);
++    qemu_cond_init(&g->reset_cond);
+      QTAILQ_INIT(&g->reslist);
+      QTAILQ_INIT(&g->cmdq);
+      QTAILQ_INIT(&g->fenceq);
+@@ -1398,20 +1402,44 @@ static void virtio_gpu_device_unrealize(DeviceState *qdev)
+  
+      g_clear_pointer(&g->ctrl_bh, qemu_bh_delete);
+      g_clear_pointer(&g->cursor_bh, qemu_bh_delete);
++    g_clear_pointer(&g->reset_bh, qemu_bh_delete);
++    qemu_cond_destroy(&g->reset_cond);
+      virtio_gpu_base_device_unrealize(qdev);
+  }
+  
+-void virtio_gpu_reset(VirtIODevice *vdev)
++static void virtio_gpu_reset_bh(void *opaque)
+  {
+-    VirtIOGPU *g = VIRTIO_GPU(vdev);
++    VirtIOGPU *g = VIRTIO_GPU(opaque);
+      struct virtio_gpu_simple_resource *res, *tmp;
+-    struct virtio_gpu_ctrl_command *cmd;
+      int i = 0;
+  
+      QTAILQ_FOREACH_SAFE(res, &g->reslist, next, tmp) {
+          virtio_gpu_resource_destroy(g, res);
+      }
+  
++    for (i = 0; i < g->parent_obj.conf.max_outputs; i++) {
++        dpy_gfx_replace_surface(g->parent_obj.scanout[i].con, NULL);
++    }
++
++    g->reset_finished = true;
++    qemu_cond_signal(&g->reset_cond);
++}
++
++void virtio_gpu_reset(VirtIODevice *vdev)
++{
++    VirtIOGPU *g = VIRTIO_GPU(vdev);
++    struct virtio_gpu_ctrl_command *cmd;
++
++    if (qemu_in_vcpu_thread()) {
++        g->reset_finished = false;
++        qemu_bh_schedule(g->reset_bh);
++        while (!g->reset_finished) {
++            qemu_cond_wait_iothread(&g->reset_cond);
++        }
++    } else {
++        virtio_gpu_reset_bh(g);
++    }
++
+      while (!QTAILQ_EMPTY(&g->cmdq)) {
+          cmd = QTAILQ_FIRST(&g->cmdq);
+          QTAILQ_REMOVE(&g->cmdq, cmd, next);
+@@ -1425,10 +1453,6 @@ void virtio_gpu_reset(VirtIODevice *vdev)
+          g_free(cmd);
+      }
+  
+-    for (i = 0; i < g->parent_obj.conf.max_outputs; i++) {
+-        dpy_gfx_replace_surface(g->parent_obj.scanout[i].con, NULL);
+-    }
+-
+      virtio_gpu_base_reset(VIRTIO_GPU_BASE(vdev));
+  }
+  
+-- 
+2.41.0
+
 
 
