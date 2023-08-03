@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3854876F5B0
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 00:23:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2613276F5A6
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 00:22:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRghp-000603-Jz; Thu, 03 Aug 2023 18:22:07 -0400
+	id 1qRghs-00067Z-2u; Thu, 03 Aug 2023 18:22:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qRghi-0005y3-W0
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 18:21:59 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qRghm-00060u-V5
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 18:22:03 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qRghh-0000bW-CW
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 18:21:58 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qRghk-0000cE-OY
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 18:22:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691101316;
+ s=mimecast20190719; t=1691101320;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=7JJGQmIG8/D9w2B8AamYYdIjwo2ZvijCQld71KYHtag=;
- b=S3yNJbEv3Mg867df1sDAvomfQgUwcc7/AULCslkOqhM6WRWNQVXqLOw6Yg43aB6FZm2yKl
- +tUcWfyiEhr2K0Z3Memv8YMCRM2wHs7aViDUTUiKH3fgDvKDdt3xwQ/PC/78zWjI4QOn3v
- +TzOQESspR4J5KBS88ZCRdChRvIfVDM=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=jCTXF+0lbl62gsI88fAfOsRF/xYzDCyMeNpegzpcFFI=;
+ b=P9HEp3MT2JfAHb23a5A4XDyJ8c75Yw3LJX56ljCWhniOLpaSD2O6C+xlorELpMakAEGxyV
+ GL+Xm6D+sHYuUgH0P7ldKy0dRdzoQkUlGzqtwegZXOFNZnbqfZVqjLPY9VruAtiLh1XOE3
+ Wt8MvWitFnvGiLFSbRBteP0+zSURY4I=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-301-Xs1YYjYCMk-Z6N9xHVPCyg-1; Thu, 03 Aug 2023 18:21:55 -0400
-X-MC-Unique: Xs1YYjYCMk-Z6N9xHVPCyg-1
-Received: by mail-ed1-f70.google.com with SMTP id
- 4fb4d7f45d1cf-51bef8bb689so3138457a12.1
- for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 15:21:55 -0700 (PDT)
+ us-mta-425-L94ddGMHOf2FJjBQiVGjug-1; Thu, 03 Aug 2023 18:21:59 -0400
+X-MC-Unique: L94ddGMHOf2FJjBQiVGjug-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-99bfe6a531bso131000666b.1
+ for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 15:21:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691101314; x=1691706114;
+ d=1e100.net; s=20221208; t=1691101317; x=1691706117;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7JJGQmIG8/D9w2B8AamYYdIjwo2ZvijCQld71KYHtag=;
- b=VIZsydCPL1NdCTiZJWNwn/IWOiMozdWpim66X38XehECDT1D8XwKdnUW1ntldwHBx6
- ca8bfW/iXt03pZViI3aMTT3YG+uWlgpXXXHRArQ+zuKzgtEetpmISRy30aFcV6OORWno
- /RJOascvL6y6k1bAEKTh6VPeeFj8qZqcpDiY3FE0ZhtnZq4LxARWme4Q4kSmfrmbpDRA
- xyObIUeOKDDPQKd9XD3i+/StrYioJ9FTr4ZVQXqKvT42/WiE2nrt6Zp82oo+12Y7u+fQ
- 1S7KqUR+gFXgz/IJJ0yojI77Q4FQO2ymoRF58ut8LhAppx24Tq7dWnYd4YBf4A4r8KKk
- D91g==
-X-Gm-Message-State: AOJu0Yya173Icm6xTTwO+JXtroP5+z4FFdV74zfo5X7yNeKdwlUkI+aH
- jsdN10HRpkeq9c2F+JvBiAvW0Z6Yax9VsjFO7AWgj8KiDduw+lSelIz5AWNYUbHIIiBfuNe42sd
- XsxD+w22tEdRiOAJlF3WRw8Ja9TZ6N+f+VJgri8aYLRXzF81y8ZC72HZSZ1nsJv8U2XPn
-X-Received: by 2002:a17:907:720a:b0:978:8979:c66c with SMTP id
- dr10-20020a170907720a00b009788979c66cmr64178ejc.18.1691101313889; 
- Thu, 03 Aug 2023 15:21:53 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGVej7J65taYSwtsHM9Uoy9QqmtUBQjxJ/WJ6soD3dxApuLDuGeocbMON3t9scMHQPJLKucgA==
-X-Received: by 2002:a17:907:720a:b0:978:8979:c66c with SMTP id
- dr10-20020a170907720a00b009788979c66cmr64163ejc.18.1691101313640; 
- Thu, 03 Aug 2023 15:21:53 -0700 (PDT)
+ bh=jCTXF+0lbl62gsI88fAfOsRF/xYzDCyMeNpegzpcFFI=;
+ b=SBcqA/4WGTepiORn+m14GKf32IFRb0w3OYBndxdX0+4egvD8FkMuhoBWPvs2dTNkoe
+ AEvWqBbNMv+PBW99m6aRzkiCPQ7b4hTSyBWrXfR3mvuf6zB9ZOOPrZsKCJLKfw2pbeXG
+ 2wilwHbs6A9ayPm6jX2Q6CE9ueckQIYDVw8HMVejEZmDnscqrIMTlhg8FwpV8KC+UwFy
+ O7IMfCO14Hun92fC/Qj0ehmCM2mVYiHiEQl8JHi+uNBdbAuUH2SaXSMWWk1/CNET1t9m
+ wI7TrRSVVgSddngrpsTjooNqKohzahxAuA2SGpKPM9VZO/qGvwS3MV/r4Wa7bp0dFP+j
+ OSDA==
+X-Gm-Message-State: ABy/qLbqMuaFc85dcgxgplcrno5/sARDlRl7EfzyxHCm+tdak4fXlUxc
+ IcHRwrDVZhLlHV1GUQDDvQALVneiJKsp/LCb9MhkuQwUVou8PVy/O2d1ODNYCdlObcjZfkHO431
+ GwgHBKH6o+vKq4PJxM8XZPty3osYjB9zVS85Eymia0178K62qEk8AsQFzPGuOXsW6+jb1
+X-Received: by 2002:a17:907:7710:b0:99b:f50b:d7d5 with SMTP id
+ kw16-20020a170907771000b0099bf50bd7d5mr8377023ejc.44.1691101317506; 
+ Thu, 03 Aug 2023 15:21:57 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlFmL+JMoTuDZVaB5J91GZ325tj9Dj5HOpixZz7DGkr+eEDuNJzbU50rveyARl8BJqWeCMF3tw==
+X-Received: by 2002:a17:907:7710:b0:99b:f50b:d7d5 with SMTP id
+ kw16-20020a170907771000b0099bf50bd7d5mr8377004ejc.44.1691101317215; 
+ Thu, 03 Aug 2023 15:21:57 -0700 (PDT)
 Received: from redhat.com ([2.52.12.104]) by smtp.gmail.com with ESMTPSA id
- lg12-20020a170906f88c00b00992ca779f42sm375300ejb.97.2023.08.03.15.21.52
+ q18-20020a1709064c9200b009875a6d28b0sm379345eju.51.2023.08.03.15.21.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 03 Aug 2023 15:21:53 -0700 (PDT)
-Date: Thu, 3 Aug 2023 18:21:50 -0400
+ Thu, 03 Aug 2023 15:21:56 -0700 (PDT)
+Date: Thu, 3 Aug 2023 18:21:53 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Peter Xu <peterx@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 20/22] include/hw/i386/x86-iommu: Fix struct
- X86IOMMU_MSIMessage for big endian hosts
-Message-ID: <e1e56c07d1fa24aa37a7e89e6633768fc8ea8705.1691101215.git.mst@redhat.com>
+ zhenwei pi <pizhenwei@bytedance.com>, Gonglei <arei.gonglei@huawei.com>,
+ Mauro Matteo Cascella <mcascell@redhat.com>, Yiming Tao <taoym@zju.edu.cn>
+Subject: [PULL 21/22] virtio-crypto: verify src&dst buffer length for sym
+ request
+Message-ID: <9d38a8434721a6479fe03fb5afb150ca793d3980.1691101215.git.mst@redhat.com>
 References: <cover.1691101215.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -100,99 +100,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+From: zhenwei pi <pizhenwei@bytedance.com>
 
-The first bitfield here is supposed to be used as a 64-bit equivalent
-to the "uint64_t msi_addr" in the union. To make this work correctly
-on big endian hosts, too, the __addr_hi field has to be part of the
-bitfield, and the the bitfield members must be declared with "uint64_t"
-instead of "uint32_t" - otherwise the values are placed in the wrong
-bytes on big endian hosts.
+For symmetric algorithms, the length of ciphertext must be as same
+as the plaintext.
+The missing verification of the src_len and the dst_len in
+virtio_crypto_sym_op_helper() may lead buffer overflow/divulged.
 
-Same applies to the 32-bit "msi_data" field: __resved1 must be part
-of the bitfield, and the members must be declared with "uint32_t"
-instead of "uint16_t".
+This patch is originally written by Yiming Tao for QEMU-SECURITY,
+resend it(a few changes of error message) in qemu-devel.
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20230802135723.178083-7-thuth@redhat.com>
+Fixes: CVE-2023-3180
+Fixes: 04b9b37edda("virtio-crypto: add data queue processing handler")
+Cc: Gonglei <arei.gonglei@huawei.com>
+Cc: Mauro Matteo Cascella <mcascell@redhat.com>
+Cc: Yiming Tao <taoym@zju.edu.cn>
+Signed-off-by: zhenwei pi <pizhenwei@bytedance.com>
+Message-Id: <20230803024314.29962-2-pizhenwei@bytedance.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Peter Xu <peterx@redhat.com>
 ---
- include/hw/i386/x86-iommu.h | 50 +++++++++++++++++++------------------
- 1 file changed, 26 insertions(+), 24 deletions(-)
+ hw/virtio/virtio-crypto.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/include/hw/i386/x86-iommu.h b/include/hw/i386/x86-iommu.h
-index 8d8d53b18b..bfd21649d0 100644
---- a/include/hw/i386/x86-iommu.h
-+++ b/include/hw/i386/x86-iommu.h
-@@ -87,40 +87,42 @@ struct X86IOMMU_MSIMessage {
-     union {
-         struct {
- #if HOST_BIG_ENDIAN
--            uint32_t __addr_head:12; /* 0xfee */
--            uint32_t dest:8;
--            uint32_t __reserved:8;
--            uint32_t redir_hint:1;
--            uint32_t dest_mode:1;
--            uint32_t __not_used:2;
-+            uint64_t __addr_hi:32;
-+            uint64_t __addr_head:12; /* 0xfee */
-+            uint64_t dest:8;
-+            uint64_t __reserved:8;
-+            uint64_t redir_hint:1;
-+            uint64_t dest_mode:1;
-+            uint64_t __not_used:2;
- #else
--            uint32_t __not_used:2;
--            uint32_t dest_mode:1;
--            uint32_t redir_hint:1;
--            uint32_t __reserved:8;
--            uint32_t dest:8;
--            uint32_t __addr_head:12; /* 0xfee */
-+            uint64_t __not_used:2;
-+            uint64_t dest_mode:1;
-+            uint64_t redir_hint:1;
-+            uint64_t __reserved:8;
-+            uint64_t dest:8;
-+            uint64_t __addr_head:12; /* 0xfee */
-+            uint64_t __addr_hi:32;
- #endif
--            uint32_t __addr_hi;
-         } QEMU_PACKED;
-         uint64_t msi_addr;
-     };
-     union {
-         struct {
- #if HOST_BIG_ENDIAN
--            uint16_t trigger_mode:1;
--            uint16_t level:1;
--            uint16_t __resved:3;
--            uint16_t delivery_mode:3;
--            uint16_t vector:8;
-+            uint32_t __resved1:16;
-+            uint32_t trigger_mode:1;
-+            uint32_t level:1;
-+            uint32_t __resved:3;
-+            uint32_t delivery_mode:3;
-+            uint32_t vector:8;
- #else
--            uint16_t vector:8;
--            uint16_t delivery_mode:3;
--            uint16_t __resved:3;
--            uint16_t level:1;
--            uint16_t trigger_mode:1;
-+            uint32_t vector:8;
-+            uint32_t delivery_mode:3;
-+            uint32_t __resved:3;
-+            uint32_t level:1;
-+            uint32_t trigger_mode:1;
-+            uint32_t __resved1:16;
- #endif
--            uint16_t __resved1;
-         } QEMU_PACKED;
-         uint32_t msi_data;
-     };
+diff --git a/hw/virtio/virtio-crypto.c b/hw/virtio/virtio-crypto.c
+index 44faf5a522..13aec771e1 100644
+--- a/hw/virtio/virtio-crypto.c
++++ b/hw/virtio/virtio-crypto.c
+@@ -634,6 +634,11 @@ virtio_crypto_sym_op_helper(VirtIODevice *vdev,
+         return NULL;
+     }
+ 
++    if (unlikely(src_len != dst_len)) {
++        virtio_error(vdev, "sym request src len is different from dst len");
++        return NULL;
++    }
++
+     max_len = (uint64_t)iv_len + aad_len + src_len + dst_len + hash_result_len;
+     if (unlikely(max_len > vcrypto->conf.max_size)) {
+         virtio_error(vdev, "virtio-crypto too big length");
 -- 
 MST
 
