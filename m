@@ -2,77 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A578D76FE69
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 12:26:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54F1276FE96
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 12:34:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRs0D-0007OG-RQ; Fri, 04 Aug 2023 06:25:49 -0400
+	id 1qRs7V-0001pO-FW; Fri, 04 Aug 2023 06:33:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qRs0C-0007O1-OD
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 06:25:48 -0400
-Received: from mout.gmx.net ([212.227.17.22])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qRs0B-0000vW-5P
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 06:25:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1691144743; x=1691749543; i=deller@gmx.de;
- bh=1iYZzpHvC/QSjPwpK0fKeBUmk172shF1PJTDotckjU8=;
- h=X-UI-Sender-Class:Date:From:To:Cc:Subject:References:In-Reply-To;
- b=KuvI9t7f/ygt2J55G4B3oe3cFfAOuogVaT3RWkxyXutKP4fLtjK63ksj3s050XBMOwaJmv8
- lrOmt1GCuCboqMZKlZsWY/2hGoh00TX57jpGMY5rDD43pQ6dWqHGT6NoliMBhFYLt8xx3vfSz
- WYV2MAALzl55jBoXE9erkF2iRAT4+dwnJDWL/UsrWA+sbdqD+4XSAjKuBOjoprilyklb6lbTf
- 6XqFJ51OAylPKSVh9XfB1iXLLbQFdagm+42cdAu+iPGqn2osC8W/jHgL8HMb0SjFqk+tdZKQp
- Ydte4JIqPzS2njjxStKBKk2b5CGOc5rNRvaOi2yzjElVB2o/uFXg==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from p100 ([94.134.152.187]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MnakX-1q0Y7e0hzp-00jcNG; Fri, 04
- Aug 2023 12:25:43 +0200
-Date: Fri, 4 Aug 2023 12:25:41 +0200
-From: Helge Deller <deller@gmx.de>
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, joel@jms.id.au, akihiko.odaki@daynix.com,
- laurent@vivier.eu, deller@gmx.de
-Subject: Re: [PATCH v8 17/17] linux-user: Use zero_bss for PT_LOAD with no
- file contents too
-Message-ID: <ZMzSJVlqME18GpL7@p100>
-References: <20230804014517.6361-1-richard.henderson@linaro.org>
- <20230804014517.6361-18-richard.henderson@linaro.org>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qRs7T-0001oa-GT
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 06:33:19 -0400
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qRs7S-0002oa-0w
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 06:33:19 -0400
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-522c9d388d2so2367901a12.3
+ for <qemu-devel@nongnu.org>; Fri, 04 Aug 2023 03:33:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1691145196; x=1691749996;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=1cjtnCd/iunW6iSmFX0+e9mYEXC91R32d9+KKXZ8Sdw=;
+ b=OUKHGHyP+SHTzoRV1VmfTidHRtQimf2EXOM9LKH1tXfKQt7LMJBli3Zs60ZEnU8G3G
+ jAfss4MBbsDvcnydmpOiDB1OMBQK41N6Z/0x6WE3REtuGbknJhxKbNxwDKsnr7PLl633
+ w6uGpI8A7cpzlU8U7dTO1JP9R2/65qKfQ6IsrU99t1Yt1cEoecYD0GYUKag60I5gx3Jo
+ tV7V/l3EcagqQMURAc42sMe8xtwxiKKDvBVbLsSlp7y1bmKEVI/EiQ0eSHn5Hm8Xu280
+ Y/bLy5d2/GocRE+yqDPTa2H183pRnI0jWCCuxuEGPD9sZpllzqU0KMJRFQ0gieyctw5h
+ oI2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1691145196; x=1691749996;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=1cjtnCd/iunW6iSmFX0+e9mYEXC91R32d9+KKXZ8Sdw=;
+ b=guKrZZJt3/Bearf6ItcxPFJc1PoGiz/CYu5AZ7k0tuWx++hSptfjZl6f7m9x3mBr9/
+ NBy0IJElkcY6WpCbDcdIIKGMYVdHukO9aShLP1S58gWzJGyj4+sPfaVkdfV1tUvQVK/f
+ Iwi8FDA5fVckAzK6ou0y8iVyqsFZnsUZSqvXY3lvO6TAqDe396SoBWBdcqyz3yuTg43w
+ 3/G0G0f8zoiLUMfVkpAYfu3bu4LY2fKVzt55zbvj8XzMGvMB2caq0eROfv0m6eXkUdU9
+ n7mkiagtnMeu5HentZsIHVoD1KzoGmhNHyzEFVyJ+36JaDbAe9eg+P0YFP9CiOkBrcJG
+ CuAA==
+X-Gm-Message-State: AOJu0YwTeKfKcwQ2ZmSsKmok1HZVUgLBwLHnykm21MD7P52fyjTuxXrg
+ PIpuRkE4iykvQwb4wHjaPVseGRABjGaDQqm2lx9qYw==
+X-Google-Smtp-Source: AGHT+IHxclcQQaMSpsh2PBC1a0XwR/Y578SMpe09plUA9o/Q59c1a+Ru1XTtM+QrwUuh81aoMTDcwNR7T1iL9GS/cBU=
+X-Received: by 2002:a05:6402:44d:b0:522:2aba:bc3b with SMTP id
+ p13-20020a056402044d00b005222ababc3bmr1172508edw.28.1691145195816; Fri, 04
+ Aug 2023 03:33:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230804014517.6361-18-richard.henderson@linaro.org>
-X-Provags-ID: V03:K1:oYM0u5pASl1knaXesN/9oCvS1BrGrC7hXmwCh5Ly73Y2pwMEjZF
- +PilMkSrAdtgFd9KXqVAUbz5ky1v+cmoe5OGBK+F6tjQkQWbiRAThIAjj2QzEsTQ9W/24Tz
- Y2rN2Ih8jtNY6Zvlocs0XFAY3Re4xv8O7msHYLXjaUzUt5NZWm3T4OfK+O2c/k2F0ZGIg+x
- gzPWX2HyRmZCQPGUnwljA==
-UI-OutboundReport: notjunk:1;M01:P0:GiFLCgyG9h4=;ltYDfnGbNmgRneJ8vRViOxbsUEK
- mFvyOlLhUPlQjp0c+yKvmaQd1NwpkI2o0kPALKIhwuF5uwqkxT/Dyde5U64R3qcR3t+90MNbH
- QXYXwYadqfGJfuEyh6gXqKXdUGEdJkxHfArSk9TnXjZJnZdNnwjYdyuus3ItlrMnR6oT5AxnQ
- b4JO9TUYhBnbHDXgDgo8rjviNc1JjGyBn6Z+doKqY/qQJ2gF7zWtsfo0BmdfOSZRCfJ2zfa9w
- uH3VbUecBliD8U9oP787OZTWzdsGtNg8MwNSN8fCiwTbN9j5h4ZG8FnONS/CTZX6Y5kKRvMPY
- vwhHZQtFPKBN9EqJeX/rD42UQn3+SN+fenDV5CTkSgmVh3YDdM0AT7mZUZxwi3CGENVFCjaaD
- 4WOCYqVT4vVdnUuTbceelr0HPb47MvQdKedfny+9nSgNu/Yvm9F9e2A6bq9BpF/iD/8ek5ymh
- K+Sf3aZzr1IgmGqPKmVQIy4gdQwIxJYhoFKtvxfhG+FBO+buTNvUwCPrnkxwE5RTRoNKiu4tv
- KlvKcTs4ZyvNzfqvVv8J6cX987Kz+PAiQMbQDUjdkuZv8Jcf7u3VLRrgJLYZoA9GLtznTeyQ3
- /Pc5RIPGuj0cWe/u1NCigxa3XFOliY5d9+TWnbh1RzFh3eQh8wstuj6PtLT2Icn503O4yDAGP
- L8wqJwRNr5Ina+vRtirQmh4gOroGKdFxbmx4wcw04NOHZLvPiZA1AvMLprJl+92rTdFbBl8Vx
- QYXN8+xJaizkBhiX4Ycwtl4VnbRTMsFc/zMmbSoU3K4cInW0LFjffRZ3hEXe+TfAOI4vFrjvH
- +2e8ppdvM0SlMySsB554GKY5dc4K9g5CIzCDYWA0Z/bFoBhDZqfzvA6uwGl6LX6d3DkhvXsQe
- 5mOpCJSSY8NAQwiu8C+ZWE/Z/FqZiTutBE3sEkAodUl/D2i+0LQFdh8cSMqce9buYvuhCdgGM
- HYpzqAFYRlRAxLy8kGQjdr/Dfd8=
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=212.227.17.22; envelope-from=deller@gmx.de;
- helo=mout.gmx.net
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+References: <20230726132512.149618-1-sergey.kambalin@auriga.com>
+ <20230726132512.149618-4-sergey.kambalin@auriga.com>
+In-Reply-To: <20230726132512.149618-4-sergey.kambalin@auriga.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 4 Aug 2023 11:33:04 +0100
+Message-ID: <CAFEAcA8f_Z1LTbqfS89GKsXZbe8WX5f-5t+TChPZqfMnVK2O6A@mail.gmail.com>
+Subject: Re: [PATCH 03/44] Split out raspi machine common part
+To: Sergey Kambalin <serg.oker@gmail.com>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
+ Sergey Kambalin <sergey.kambalin@auriga.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,12 +86,12 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-* Richard Henderson <richard.henderson@linaro.org>:
-> If p_filesz =3D=3D 0, then vaddr_ef =3D=3D vaddr.  We can reuse the
-> code in zero_bss rather than incompletely duplicating it in
-> load_elf_image.
+On Wed, 26 Jul 2023 at 14:32, Sergey Kambalin <serg.oker@gmail.com> wrote:
 >
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
 
-Reviewed-by: Helge Deller <deller@gmx.de>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+
+thanks
+-- PMM
 
