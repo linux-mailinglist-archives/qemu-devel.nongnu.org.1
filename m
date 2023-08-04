@@ -2,52 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A49D776F92E
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 06:57:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA5D276F96D
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 07:11:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRmrP-0005ig-CY; Fri, 04 Aug 2023 00:56:23 -0400
+	id 1qRn52-0002ko-4y; Fri, 04 Aug 2023 01:10:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qRmrM-0005iT-V6
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 00:56:21 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qRmrL-0006IA-8U
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 00:56:20 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 10FE217DED;
- Fri,  4 Aug 2023 07:56:34 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id A82721B54A;
- Fri,  4 Aug 2023 07:56:14 +0300 (MSK)
-Message-ID: <ed488413-7279-243d-0964-34a4a224c5ca@tls.msk.ru>
-Date: Fri, 4 Aug 2023 07:56:14 +0300
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qRn4e-0002TE-2f
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 01:10:05 -0400
+Received: from mail-oo1-xc2a.google.com ([2607:f8b0:4864:20::c2a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qRn4b-0002Ol-FG
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 01:10:03 -0400
+Received: by mail-oo1-xc2a.google.com with SMTP id
+ 006d021491bc7-56c74961e0cso1126873eaf.3
+ for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 22:09:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1691125798; x=1691730598;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=lXXLYCcEYDB3udwQQn3lRXfkwjB9UVvStICx80M5oTk=;
+ b=mvFPG5ekkW0KQGdjYs/wuYoYApPg9Z1lq0BwnHF3dAJFR4rJGiQoCzYD5lIh/eudmo
+ 08QL10QiQftQrBRFSQJM4Pc0UJ+B39bX6Tjr/dFhQO5W+upuO43ILSVp0C6D2o/wMauM
+ o0UeZT9DI86IC1pYSehJktZxR27f+Ugl5DZCfI2+ACHFITBtcK7gVRCd/jXxX2pUBZxh
+ mxScjlVa8Po1z7MFhxUmzKL4Jle3xo/BeyaefR+1215bEG3ftcGdiA8Ul566bCBMZ5jK
+ 4ysWf2Uv6UhL3gzLLfTG7Pl/vu9sQJrNzIQiNP222ROi3dLL7YlQHb1UVeohEjgyTdOj
+ 4+jw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1691125798; x=1691730598;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=lXXLYCcEYDB3udwQQn3lRXfkwjB9UVvStICx80M5oTk=;
+ b=bpfPxr76vmHMRD7fmyTgO5OWFc/bbAlaLogHsrNMTl4W9hNAZWUr7VjX/Z7JOd18NH
+ qphUBab+WKsQOovz8LiTsswGterKpfBh3khHZEaXHpFhLCqJ++fi5jWSJcneB8bqFVXR
+ FEVG30MRk5EEjmI/foWmBnf32gZ/TkUnQP3qd8Xfl7GItvFppfGCMHJWkf1KHMz8lr9Z
+ +50JaIS2z6YVsaSrw7WXpKwynRct82supwbOe5mk/xOT0pwgY6ahDZAMTkXzfzTAfnqq
+ NchzVJOg1xIhDukNrmulGYmGeAFtfNQX3LOSnv2dOqHtjhx4C00t8v655/Ys7etMdpqL
+ Vpuw==
+X-Gm-Message-State: AOJu0YzvHHLBo/+aoXSlwO863/h4xF8P0uyC1WylyH2WnnEZl2F8PW6M
+ mzHz3wUWLbtUVMgLJCvxJhg49g==
+X-Google-Smtp-Source: AGHT+IEJ3zuSg+bjSmO4YVq3M012nC5Kh0ZA11SO2eWBIqqyrjRl9DY7IXb1Jk6vmsezlgYPlZM2Mw==
+X-Received: by 2002:a05:6358:c2a:b0:139:bf71:f608 with SMTP id
+ f42-20020a0563580c2a00b00139bf71f608mr871106rwj.14.1691125798317; 
+ Thu, 03 Aug 2023 22:09:58 -0700 (PDT)
+Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
+ ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
+ by smtp.gmail.com with ESMTPSA id
+ 206-20020a6300d7000000b0056471d2ae8fsm595129pga.90.2023.08.03.22.09.56
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 03 Aug 2023 22:09:57 -0700 (PDT)
+Message-ID: <e420f461-f61f-24b9-515d-8e5b055c331e@daynix.com>
+Date: Fri, 4 Aug 2023 14:09:55 +0900
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.1
-Subject: Re: [PULL 14/22] vhost: fix the fd leak
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 07/17] linux-user: Remove last_brk
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: joel@jms.id.au, laurent@vivier.eu, deller@gmx.de
+References: <20230804014517.6361-1-richard.henderson@linaro.org>
+ <20230804014517.6361-8-richard.henderson@linaro.org>
 Content-Language: en-US
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: "Michael S. Tsirkin" <mst@redhat.com>, qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, Li Feng <fengli@smartx.com>,
- Raphael Norwitz <raphael.norwitz@nutanix.com>,
- Fiona Ebner <f.ebner@proxmox.com>
-References: <cover.1691101215.git.mst@redhat.com>
- <18f2971ce403008d5e1c2875b483c9d1778143dc.1691101215.git.mst@redhat.com>
- <2a9c577f-1159-d205-8379-9e364171d79b@tls.msk.ru>
-In-Reply-To: <2a9c577f-1159-d205-8379-9e364171d79b@tls.msk.ru>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <20230804014517.6361-8-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -69
-X-Spam_score: -7.0
-X-Spam_bar: -------
-X-Spam_report: (-7.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.091,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: none client-ip=2607:f8b0:4864:20::c2a;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-oo1-xc2a.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,11 +94,10 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-04.08.2023 07:36, Michael Tokarev wrote:
-> This smells like a stable-8.0 material. Please let me know if it is not.
+On 2023/08/04 10:45, Richard Henderson wrote:
+> This variable is unused.
+> 
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
-Ah, it is, Cc'd -stable already. N/m, picked this one up.
-
-/mjt
-
+Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 
