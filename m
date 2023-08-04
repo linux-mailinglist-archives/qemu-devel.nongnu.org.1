@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7919F7708CE
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 21:18:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF1AF7708CB
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 21:18:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qS0IQ-0000NJ-73; Fri, 04 Aug 2023 15:17:10 -0400
+	id 1qS0IS-0000OR-1y; Fri, 04 Aug 2023 15:17:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qS0IM-0000Ls-V3; Fri, 04 Aug 2023 15:17:06 -0400
+ id 1qS0IP-0000No-H2; Fri, 04 Aug 2023 15:17:09 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qS0IL-0006wh-Af; Fri, 04 Aug 2023 15:17:06 -0400
+ id 1qS0IO-0006xN-0S; Fri, 04 Aug 2023 15:17:09 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 3020F18459;
+ by isrv.corpit.ru (Postfix) with ESMTP id 659FE1845A;
  Fri,  4 Aug 2023 22:17:11 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 90BEC1B89C;
+ by tsrv.corpit.ru (Postfix) with SMTP id EA7741B89D;
  Fri,  4 Aug 2023 22:16:50 +0300 (MSK)
-Received: (nullmailer pid 1875708 invoked by uid 1000);
+Received: (nullmailer pid 1875711 invoked by uid 1000);
  Fri, 04 Aug 2023 19:16:49 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.4 39/63] target/arm: Special case M-profile in
- debug_helper.c code
-Date: Fri,  4 Aug 2023 22:16:22 +0300
-Message-Id: <20230804191647.1875608-8-mjt@tls.msk.ru>
+Subject: [Stable-8.0.4 40/63] target/arm: Avoid writing to constant TCGv in
+ trans_CSEL()
+Date: Fri,  4 Aug 2023 22:16:23 +0300
+Message-Id: <20230804191647.1875608-9-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.4-20230804221634@cover.tls.msk.ru>
 References: <qemu-stable-8.0.4-20230804221634@cover.tls.msk.ru>
@@ -62,72 +62,75 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Maydell <peter.maydell@linaro.org>
 
-A lot of the code called from helper_exception_bkpt_insn() is written
-assuming A-profile, but we will also call this helper on M-profile
-CPUs when they execute a BKPT insn.  This used to work by accident,
-but recent changes mean that we will hit an assert when some of this
-code calls down into lower level functions that end up calling
-arm_security_space_below_el3(), arm_el_is_aa64(), and other functions
-that now explicitly assert that the guest CPU is not M-profile.
+In commit 0b188ea05acb5 we changed the implementation of
+trans_CSEL() to use tcg_constant_i32(). However, this change
+was incorrect, because the implementation of the function
+sets up the TCGv_i32 rn and rm to be either zero or else
+a TCG temp created in load_reg(), and these TCG temps are
+then in both cases written to by the emitted TCG ops.
+The result is that we hit a TCG assertion:
 
-Handle M-profile directly to avoid the assertions:
- * in arm_debug_target_el(), M-profile debug exceptions always
-   go to EL1
- * in arm_debug_exception_fsr(), M-profile always uses the short
-   format FSR (compare commit d7fe699be54b2, though in this case
-   the code in arm_v7m_cpu_do_interrupt() does not need to
-   look at the FSR value at all)
+qemu-system-arm: ../../tcg/tcg.c:4455: tcg_reg_alloc_mov: Assertion `!temp_readonly(ots)' failed.
+
+(or on a non-debug build, just produce a garbage result)
+
+Adjust the code so that rn and rm are always writeable
+temporaries whether the instruction is using the special
+case "0" or a normal register as input.
 
 Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1775
+Fixes: 0b188ea05acb5 ("target/arm: Use tcg_constant in trans_CSEL")
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20230721143239.1753066-1-peter.maydell@linaro.org
-(cherry picked from commit 5d78893f39caf94c8587141e2219b57a7d63dd5c)
+Message-id: 20230727103906.2641264-1-peter.maydell@linaro.org
+(cherry picked from commit 2b0d656ab6484cae7f174e194215a6d50343ecd2)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/arm/debug_helper.c b/target/arm/debug_helper.c
-index dfc8b2a1a5..0cbc8171d5 100644
---- a/target/arm/debug_helper.c
-+++ b/target/arm/debug_helper.c
-@@ -21,6 +21,10 @@ static int arm_debug_target_el(CPUARMState *env)
-     bool secure = arm_is_secure(env);
-     bool route_to_el2 = false;
- 
-+    if (arm_feature(env, ARM_FEATURE_M)) {
-+        return 1;
-+    }
-+
-     if (arm_is_el2_enabled(env)) {
-         route_to_el2 = env->cp15.hcr_el2 & HCR_TGE ||
-                        env->cp15.mdcr_el2 & MDCR_TDE;
-@@ -434,18 +438,20 @@ static uint32_t arm_debug_exception_fsr(CPUARMState *env)
+diff --git a/target/arm/tcg/translate.c b/target/arm/tcg/translate.c
+index 7468476724..1e4d94e58a 100644
+--- a/target/arm/tcg/translate.c
++++ b/target/arm/tcg/translate.c
+@@ -8814,7 +8814,7 @@ static bool trans_IT(DisasContext *s, arg_IT *a)
+ /* v8.1M CSEL/CSINC/CSNEG/CSINV */
+ static bool trans_CSEL(DisasContext *s, arg_CSEL *a)
  {
-     ARMMMUFaultInfo fi = { .type = ARMFault_Debug };
-     int target_el = arm_debug_target_el(env);
--    bool using_lpae = false;
-+    bool using_lpae;
+-    TCGv_i32 rn, rm, zero;
++    TCGv_i32 rn, rm;
+     DisasCompare c;
  
--    if (target_el == 2 || arm_el_is_aa64(env, target_el)) {
-+    if (arm_feature(env, ARM_FEATURE_M)) {
-+        using_lpae = false;
-+    } else if (target_el == 2 || arm_el_is_aa64(env, target_el)) {
-         using_lpae = true;
-     } else if (arm_feature(env, ARM_FEATURE_PMSA) &&
-                arm_feature(env, ARM_FEATURE_V8)) {
-         using_lpae = true;
-+    } else if (arm_feature(env, ARM_FEATURE_LPAE) &&
-+               (env->cp15.tcr_el[target_el] & TTBCR_EAE)) {
-+        using_lpae = true;
-     } else {
--        if (arm_feature(env, ARM_FEATURE_LPAE) &&
--            (env->cp15.tcr_el[target_el] & TTBCR_EAE)) {
--            using_lpae = true;
--        }
-+        using_lpae = false;
+     if (!arm_dc_feature(s, ARM_FEATURE_V8_1M)) {
+@@ -8832,16 +8832,17 @@ static bool trans_CSEL(DisasContext *s, arg_CSEL *a)
      }
  
-     if (using_lpae) {
+     /* In this insn input reg fields of 0b1111 mean "zero", not "PC" */
+-    zero = tcg_constant_i32(0);
++    rn = tcg_temp_new_i32();
++    rm = tcg_temp_new_i32();
+     if (a->rn == 15) {
+-        rn = zero;
++        tcg_gen_movi_i32(rn, 0);
+     } else {
+-        rn = load_reg(s, a->rn);
++        load_reg_var(s, rn, a->rn);
+     }
+     if (a->rm == 15) {
+-        rm = zero;
++        tcg_gen_movi_i32(rm, 0);
+     } else {
+-        rm = load_reg(s, a->rm);
++        load_reg_var(s, rm, a->rm);
+     }
+ 
+     switch (a->op) {
+@@ -8861,7 +8862,7 @@ static bool trans_CSEL(DisasContext *s, arg_CSEL *a)
+     }
+ 
+     arm_test_cc(&c, a->fcond);
+-    tcg_gen_movcond_i32(c.cond, rn, c.value, zero, rn, rm);
++    tcg_gen_movcond_i32(c.cond, rn, c.value, tcg_constant_i32(0), rn, rm);
+ 
+     store_reg(s, a->rd, rn);
+     return true;
 -- 
 2.39.2
 
