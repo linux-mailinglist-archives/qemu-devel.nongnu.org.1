@@ -2,75 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C884B77075B
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 19:56:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84034770774
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 20:06:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRz1O-0004Vs-Kg; Fri, 04 Aug 2023 13:55:30 -0400
+	id 1qRzAT-0002pl-J2; Fri, 04 Aug 2023 14:04:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qRz1M-0004V1-D9
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 13:55:28 -0400
-Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qRz1K-0004yc-LO
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 13:55:28 -0400
-Received: by mail-lf1-x12b.google.com with SMTP id
- 2adb3069b0e04-4fe21e7f3d1so4113674e87.3
- for <qemu-devel@nongnu.org>; Fri, 04 Aug 2023 10:55:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691171725; x=1691776525;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=qpSkj9Wt2GgvEGZFPe+U/mpLX6PkdwpuMMae8lgDl6Q=;
- b=p/bxFx4ltoiazj82R8NEKkF1F37bgiMDqC0nbd1aW1JuFWW2wTA3QFxzhAj5SLdwz1
- g55DArupcB6M+ePyqHfBlQ2afqxkDsrpSdHlSc+m4cI/FQ1jWgE+Zavd59clNISz64iX
- gwuyZnsDVZu5QmKJnrAmeVXOj0uTg82UFM3qK20PP1v0jXvTQPcceIryMSgTvIpOMQgz
- IKoz51JUeNj+NLdOZQ6AKtDjn4EG5jTs2FjWEYx3vzTxsQZPGY+rkDw4wtYdjXi6jhZ4
- VFVgmuQBaHGEMueSmTN42t1Vux2NENuQUO6UybP1RCoAbQGlhrfYoaDrr9WpGrT97dRP
- bXTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691171725; x=1691776525;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=qpSkj9Wt2GgvEGZFPe+U/mpLX6PkdwpuMMae8lgDl6Q=;
- b=eZJLVfN10cALoIguFQaTews8VEIXlLzhrESYwHFnq9SwrxWzA2ixa8C1i7YAbs6lVS
- 1i7YzuBr6b8EIYcj3I7LP4OlZx+iN+q9r4ZwkXS+cAhOx9zbtKxISfmeK4Be6KMm1nYs
- EWTQ+I47OMScPuNkfqyILr6o04FcBUaT0SqqM6sPPZq3EMlieeoJRzzhpVSdcE32YNty
- rN+0ud9DVFugvaSqWudqTBCQOwaZoRr5JhAXxQpW/bfDk1MQd/kLGthhmgLMaaN4R2rz
- fPhuIA73iFtRldMjUoIslFNhjBNvEADDOLW/exZ56IoUs+cidmpad0tX1/DqGuQnk/XN
- mFLg==
-X-Gm-Message-State: AOJu0YzgOhMCqZhUHK+SlUkLmq8qY22reP/SPUCZYipWTkde0KaFhZ8b
- 7CWxYsTLrU0cwcEbkACYkXMy5MxzWtmUZzHQhIYMkA==
-X-Google-Smtp-Source: AGHT+IG7yXdODXRRg2sXu9kV+D4VXsMdIYfct27DLOcds3iQ7dg9VqDB6Ct3sqnJJ3oYMI7xjmi8CJYQgIvWVfRTewI=
-X-Received: by 2002:a05:6512:4c5:b0:4fe:ca4:7cd3 with SMTP id
- w5-20020a05651204c500b004fe0ca47cd3mr1640898lfq.23.1691171724151; Fri, 04 Aug
- 2023 10:55:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qRzAM-0002is-Pk
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 14:04:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qRzAK-0008Gi-Ud
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 14:04:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1691172284;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Sw64/Tm68nJcHRXcy2dd0qXaCnP0J47c0cDXAKTYNAg=;
+ b=F+p/y9fBPdDLzXQYO4TGND7HLnwfgC6nSGzsHQoEgbjIH6FwTC5gNVhJVzip4uewffKAX7
+ fwmhGcuXYsHAebWfY23OxgMss+PvtaX2TVbORThQxBxrEvH1wMe3JrZ6h+ULOX6pp96wML
+ Ii1MFugOzrlJkVGvQfbWNz0YvIAz2rU=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-526-19UV-2VUOtORirexaqOl4w-1; Fri, 04 Aug 2023 14:04:40 -0400
+X-MC-Unique: 19UV-2VUOtORirexaqOl4w-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7A585857FF8;
+ Fri,  4 Aug 2023 18:04:40 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.193.50])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 054E940282C;
+ Fri,  4 Aug 2023 18:04:39 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 9F6B921E692A; Fri,  4 Aug 2023 20:04:38 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Andrei Gudkov <gudkov.andrei@huawei.com>
+Cc: <qemu-devel@nongnu.org>,  <yong.huang@smartx.com>,
+ <quintela@redhat.com>,  <peterx@redhat.com>,  <leobras@redhat.com>,
+ <eblake@redhat.com>
+Subject: Re: [PATCH v2] migration/calc-dirty-rate: millisecond-granularity
+ period
+References: <8ddb0d40d143f77aab8f602bd494e01e5fa01614.1691161009.git.gudkov.andrei@huawei.com>
+Date: Fri, 04 Aug 2023 20:04:38 +0200
+In-Reply-To: <8ddb0d40d143f77aab8f602bd494e01e5fa01614.1691161009.git.gudkov.andrei@huawei.com>
+ (Andrei Gudkov's message of "Fri, 4 Aug 2023 18:03:27 +0300")
+Message-ID: <87fs4y3cqx.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-References: <20230802170157.401491-1-jean-philippe@linaro.org>
- <20230802170157.401491-3-jean-philippe@linaro.org>
-In-Reply-To: <20230802170157.401491-3-jean-philippe@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 4 Aug 2023 18:55:13 +0100
-Message-ID: <CAFEAcA_PwcBQYQqwJHpoQQoQ-FmdDzeYpcmASpD=piBscTrX=Q@mail.gmail.com>
-Subject: Re: [PATCH v2 2/6] target/arm/helper: Fix tlbmask and tlbbits for
- TLBI VAE2*
-To: Jean-Philippe Brucker <jean-philippe@linaro.org>
-Cc: richard.henderson@linaro.org, qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12b.google.com
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,27 +81,133 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 2 Aug 2023 at 18:02, Jean-Philippe Brucker
-<jean-philippe@linaro.org> wrote:
+Andrei Gudkov <gudkov.andrei@huawei.com> writes:
+
+> Introduces alternative argument calc-time-ms, which is the
+> the same as calc-time but accepts millisecond value.
+> Millisecond granularity allows to make predictions whether
+> migration will succeed or not. To do this, calculate dirty
+> rate with calc-time-ms set to max allowed downtime, convert
+> measured rate into volume of dirtied memory, and divide by
+> network throughput. If the value is lower than max allowed
+> downtime, then migration will converge.
 >
-> When HCR_EL2.E2H is enabled, TLB entries are formed using the EL2&0
-> translation regime, instead of the EL2 translation regime. The TLB VAE2*
-> instructions invalidate the regime that corresponds to the current value
-> of HCR_EL2.E2H.
+> Measurement results for single thread randomly writing to
+> a 1/4/24GiB memory region:
 >
-> At the moment we only invalidate the EL2 translation regime. This causes
-> problems with RMM, which issues TLBI VAE2IS instructions with
-> HCR_EL2.E2H enabled. Update vae2_tlbmask() to take HCR_EL2.E2H into
-> account.
+> +--------------+-----------------------------------------------+
+> | calc-time-ms |                dirty rate MiB/s               |
+> |              +----------------+---------------+--------------+
+> |              | theoretical    | page-sampling | dirty-bitmap |
+> |              | (at 3M wr/sec) |               |              |
+> +--------------+----------------+---------------+--------------+
+> |                             1GiB                             |
+> +--------------+----------------+---------------+--------------+
+> |          100 |           6996 |          7100 |         3192 |
+> |          200 |           4606 |          4660 |         2655 |
+> |          300 |           3305 |          3280 |         2371 |
+> |          400 |           2534 |          2525 |         2154 |
+> |          500 |           2041 |          2044 |         1871 |
+> |          750 |           1365 |          1341 |         1358 |
+> |         1000 |           1024 |          1052 |         1025 |
+> |         1500 |            683 |           678 |          684 |
+> |         2000 |            512 |           507 |          513 |
+> +--------------+----------------+---------------+--------------+
+> |                             4GiB                             |
+> +--------------+----------------+---------------+--------------+
+> |          100 |          10232 |          8880 |         4070 |
+> |          200 |           8954 |          8049 |         3195 |
+> |          300 |           7889 |          7193 |         2881 |
+> |          400 |           6996 |          6530 |         2700 |
+> |          500 |           6245 |          5772 |         2312 |
+> |          750 |           4829 |          4586 |         2465 |
+> |         1000 |           3865 |          3780 |         2178 |
+> |         1500 |           2694 |          2633 |         2004 |
+> |         2000 |           2041 |          2031 |         1789 |
+> +--------------+----------------+---------------+--------------+
+> |                             24GiB                            |
+> +--------------+----------------+---------------+--------------+
+> |          100 |          11495 |          8640 |         5597 |
+> |          200 |          11226 |          8616 |         3527 |
+> |          300 |          10965 |          8386 |         2355 |
+> |          400 |          10713 |          8370 |         2179 |
+> |          500 |          10469 |          8196 |         2098 |
+> |          750 |           9890 |          7885 |         2556 |
+> |         1000 |           9354 |          7506 |         2084 |
+> |         1500 |           8397 |          6944 |         2075 |
+> |         2000 |           7574 |          6402 |         2062 |
+> +--------------+----------------+---------------+--------------+
 >
-> Add vae2_tlbbits() as well, since the top-byte-ignore configuration is
-> different between the EL2&0 and EL2 regime.
+> Theoretical values are computed according to the following formula:
+> size * (1 - (1-(4096/size))^(time*wps)) / (time * 2^20),
+> where size is in bytes, time is in seconds, and wps is number of
+> writes per second.
 >
-> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> Signed-off-by: Andrei Gudkov <gudkov.andrei@huawei.com>
 > ---
+>  qapi/migration.json   | 14 ++++++--
+>  migration/dirtyrate.h | 12 ++++---
+>  migration/dirtyrate.c | 81 +++++++++++++++++++++++++------------------
+>  3 files changed, 67 insertions(+), 40 deletions(-)
+>
+> diff --git a/qapi/migration.json b/qapi/migration.json
+> index 8843e74b59..82493d6a57 100644
+> --- a/qapi/migration.json
+> +++ b/qapi/migration.json
+> @@ -1849,7 +1849,11 @@
+>  # @start-time: start time in units of second for calculation
+>  #
+>  # @calc-time: time period for which dirty page rate was measured
+> -#     (in seconds)
+> +#     (rounded down to seconds).
+> +#
+> +# @calc-time-ms: actual time period for which dirty page rate was
+> +#     measured (in milliseconds).  Value may be larger than requested
+> +#     time period due to measurement overhead.
+>  #
+>  # @sample-pages: number of sampled pages per GiB of guest memory.
+>  #     Valid only in page-sampling mode (Since 6.1)
+> @@ -1866,6 +1870,7 @@
+>             'status': 'DirtyRateStatus',
+>             'start-time': 'int64',
+>             'calc-time': 'int64',
+> +           'calc-time-ms': 'int64',
+>             'sample-pages': 'uint64',
+>             'mode': 'DirtyRateMeasureMode',
+>             '*vcpu-dirty-rate': [ 'DirtyRateVcpu' ] } }
+> @@ -1908,6 +1913,10 @@
+>  #     dirty during @calc-time period, further writes to this page will
+>  #     not increase dirty page rate anymore.
+>  #
+> +# @calc-time-ms: the same as @calc-time but in milliseconds.  These
+> +#    two arguments are mutually exclusive.  Exactly one of them must
+> +#    be specified. (Since 8.1)
+> +#
+>  # @sample-pages: number of sampled pages per each GiB of guest memory.
+>  #     Default value is 512.  For 4KiB guest pages this corresponds to
+>  #     sampling ratio of 0.2%.  This argument is used only in page
+> @@ -1925,7 +1934,8 @@
+>  #                                                 'sample-pages': 512} }
+>  # <- { "return": {} }
+>  ##
+> -{ 'command': 'calc-dirty-rate', 'data': {'calc-time': 'int64',
+> +{ 'command': 'calc-dirty-rate', 'data': {'*calc-time': 'int64',
+> +                                         '*calc-time-ms': 'int64',
+>                                           '*sample-pages': 'int',
+>                                           '*mode': 'DirtyRateMeasureMode'} }
+>  
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Having both @calc-time and @calc-time-ms is ugly.
 
-thanks
--- PMM
+Can we deprecate @calc-time?
+
+I don't like the name @calc-time-ms.  We don't put units in names
+elsewhere.
+
+Differently ugly: new member containing the fractional part, i.e. time
+in seconds = calc-time + fractional-part / 1000.  With a better name, of
+course.
+
+[...]
+
 
