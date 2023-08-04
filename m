@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 742AB76F71F
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 03:47:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8727876F72A
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 03:47:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRjt0-0002jz-9u; Thu, 03 Aug 2023 21:45:50 -0400
+	id 1qRjsv-0002ge-Fx; Thu, 03 Aug 2023 21:45:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qRjsk-0002d6-Nz
+ id 1qRjsk-0002d4-NS
  for qemu-devel@nongnu.org; Thu, 03 Aug 2023 21:45:38 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qRjsg-0005AV-6M
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 21:45:33 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-686ba29ccb1so1099303b3a.1
+ id 1qRjsg-0005AM-6U
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 21:45:31 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-686bea20652so1482059b3a.1
  for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 18:45:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691113526; x=1691718326;
+ d=linaro.org; s=google; t=1691113527; x=1691718327;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=8gh7c1XytnUMSd/SWhDW0HpjsmcYKJxURTFPb3cRSho=;
- b=dEy/NgVCqwS7fxbbKODzpRHgZ6GnRCKjjel+GvBm8J+BjYUxHV5jrnBPu0DoU1qwUJ
- DF9RaLJJ7jbnyWVDZ9Cev92gXQrIw8aSTy4yyn664AlVjdfwLqLFpV022T2YHWFCft8z
- bHadccaeWa7ddBCYrb6RMMKXhvSSuq3ToNEZFRGWb0tw64B9TavDRdbRUp3c/OKYUYPx
- n+sxZ19gUuS/6bAKvnX/YeQJZM66h7rGFV0C71D/huA3Q/CmvsfpIlxtXxw8EL1HwsHr
- xvshZaKNxVcTGD4rfnpoE++AOQ6+ugFKoJfNLSi8uTS6GKyMe4a+BU8gW9MP8kZuHRPH
- IEQg==
+ bh=FxH9JelEzWgR3VpEL1pKK9zkkgodDw/Fd0rqiGsNBAw=;
+ b=neI4/4mvMMR0VnMfQV0bAnJSbvlGD+LsbynocbJ03KmUnK2t3ydsOfZwYkqLUzhR0N
+ lEPD3XzPUpVAaeIePwDi1AuQh3PXEUUGnUo8blipjwM4h2XM6gZPAuIKVjGWuNmzm4U1
+ bLZtawp/gktRad9YLFzNGPLs0d91r+1hfAgNiDw525wWCIWccWGM4o7MS7sKeRePS4n+
+ IBJy0CrYkA4RxLVL0yjaXXjiECXMSDBKzcDZVVz4ivdklZZI8IG5gnu1WqZWWyu+CTE6
+ GE0o7o3VoZjnkmVPRcZtL9Noea/I/XpwqM3bUnxL8YJZJzHQRAxgMotHHr2JoHGeOZL5
+ MofA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691113526; x=1691718326;
+ d=1e100.net; s=20221208; t=1691113527; x=1691718327;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8gh7c1XytnUMSd/SWhDW0HpjsmcYKJxURTFPb3cRSho=;
- b=G8QZFn9x9xxDh0+ColBdTnMj3qbwyxYGekD2WOJbDDLRlmS6EtQXVDQdJfkqzsTHjd
- jp9nCoAjRU49RPZxTRgxZ/IkjG32uddGC90dyQ1aUmBTg42UnZHIA0DBkQEXPiS7JJqZ
- 9gh/e3juTMGd+COODsZsEFkUOVFre0ktPjdjcrIplNRLeBqDE7V3Xg8w66IDpFNrAE4/
- FyOkql+DD3whsDAFoE7qghOUSGBw/0SoBFUVe8qNZlL0EePynUZisaLkQ11g+uTbMV9C
- q5iruGEU5vRuqf/6n4IUDyVzUQ4ZuMarQBpFoGOTxhLHRtCcogCMcSbT3uQDtjm2dpJ/
- AR8A==
-X-Gm-Message-State: AOJu0Yxmk3neTHTXI6g85e89ZDAwqmUQlGKWK9LRr2eDOSXdbfrosdXX
- icynz5C+yqzstbMFtTgDkkOR6c/URXoLJI7C+y4=
-X-Google-Smtp-Source: AGHT+IGDOP1H5waA2EwdPIoEvLo97LV2KikxoVelXbflj8icZfjXr5a+txycpmxWBSFoCBEUVoHRnQ==
-X-Received: by 2002:a05:6a21:6d8e:b0:130:a400:1d65 with SMTP id
- wl14-20020a056a216d8e00b00130a4001d65mr612907pzb.14.1691113526502; 
- Thu, 03 Aug 2023 18:45:26 -0700 (PDT)
+ bh=FxH9JelEzWgR3VpEL1pKK9zkkgodDw/Fd0rqiGsNBAw=;
+ b=GGDWEtAukcOUuRuosfuKvfw+oRvam9wRKZQpFHiiFbpz1MedS7Uq0E1Qf31iF6rgmB
+ 7GOD/VNLK6q+BRSjM2/OwgB0k5Z05J3xZAP4lHtwDi+kSNMITXS7iAE/Zk/cUWerDGEd
+ 8YPqBPd88McWtXkBCl6yyO8SpRIuAmhbTFLZ5KqkS5yamguchU8qf4gGCx886jgNFt42
+ G1KIY3LwQykec3SNvbraMoKqRL03YEQoejA24RvfNa/cpz9s++R3XYXeHuEcPIwHlVMB
+ NbwiGAUkKst7XaGo0pAZD+ohK/lo6NODyzs97qOIBtvDaSYw7Mi1sPr3vH0A7XoR6UEi
+ ALJA==
+X-Gm-Message-State: AOJu0YwxUSX6Fjhqc8+INfTRDwP0sn3Jhf1HV34I37CFx6/O4d/D49Kq
+ RmoMT2ZePvLtoQdR//e5LjCKQTYMHtS9WEAfRtY=
+X-Google-Smtp-Source: AGHT+IGLwzNiAO/hoJx0cFbfO3SbuNerJ6Sh1KqVhAYZGbSwvURRgop6JiS3BxE+xjyXU9cpuRTd3w==
+X-Received: by 2002:a05:6a21:7795:b0:126:a80d:4960 with SMTP id
+ bd21-20020a056a21779500b00126a80d4960mr316688pzc.30.1691113527293; 
+ Thu, 03 Aug 2023 18:45:27 -0700 (PDT)
 Received: from stoup.. ([2602:47:d490:6901:9d52:4fe8:10ce:5c3])
  by smtp.gmail.com with ESMTPSA id
- c5-20020aa78c05000000b0066f37665a63sm456138pfd.73.2023.08.03.18.45.25
+ c5-20020aa78c05000000b0066f37665a63sm456138pfd.73.2023.08.03.18.45.26
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 03 Aug 2023 18:45:26 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: joel@jms.id.au, akihiko.odaki@daynix.com, laurent@vivier.eu, deller@gmx.de
-Subject: [PATCH v8 10/17] linux-user: Define ELF_ET_DYN_BASE in
- $guest/target_mman.h
-Date: Thu,  3 Aug 2023 18:45:10 -0700
-Message-Id: <20230804014517.6361-11-richard.henderson@linaro.org>
+Subject: [PATCH v8 11/17] linux-user: Use MAP_FIXED_NOREPLACE for initial
+ image mmap
+Date: Thu,  3 Aug 2023 18:45:11 -0700
+Message-Id: <20230804014517.6361-12-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230804014517.6361-1-richard.henderson@linaro.org>
 References: <20230804014517.6361-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,359 +92,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Copy each guest kernel's default value, then bound it
-against reserved_va or the host address space.
+Use this as extra protection for the guest mapping over
+any qemu host mappings.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/aarch64/target_mman.h     |  3 +++
- linux-user/alpha/target_mman.h       |  3 +++
- linux-user/arm/target_mman.h         |  3 +++
- linux-user/cris/target_mman.h        |  3 +++
- linux-user/hexagon/target_mman.h     |  3 +++
- linux-user/hppa/target_mman.h        |  3 +++
- linux-user/i386/target_mman.h        |  3 +++
- linux-user/loongarch64/target_mman.h |  3 +++
- linux-user/m68k/target_mman.h        |  2 ++
- linux-user/microblaze/target_mman.h  |  3 +++
- linux-user/mips/target_mman.h        |  3 +++
- linux-user/nios2/target_mman.h       |  3 +++
- linux-user/openrisc/target_mman.h    |  3 +++
- linux-user/ppc/target_mman.h         |  7 +++++++
- linux-user/riscv/target_mman.h       |  3 +++
- linux-user/s390x/target_mman.h       | 10 ++++++++++
- linux-user/sh4/target_mman.h         |  3 +++
- linux-user/sparc/target_mman.h       | 11 +++++++++++
- linux-user/user-mmap.h               |  1 +
- linux-user/x86_64/target_mman.h      |  3 +++
- linux-user/xtensa/target_mman.h      |  4 ++++
- linux-user/main.c                    | 15 +++++++++++++++
- linux-user/mmap.c                    |  1 +
- 23 files changed, 96 insertions(+)
+ linux-user/elfload.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/linux-user/aarch64/target_mman.h b/linux-user/aarch64/target_mman.h
-index 4d3eecfb26..69ec5d5739 100644
---- a/linux-user/aarch64/target_mman.h
-+++ b/linux-user/aarch64/target_mman.h
-@@ -14,6 +14,9 @@
-  */
- #define TASK_UNMAPPED_BASE      (1ull << (48 - 2))
- 
-+/* arch/arm64/include/asm/elf.h */
-+#define ELF_ET_DYN_BASE         TARGET_PAGE_ALIGN((1ull << 48) / 3 * 2)
-+
- #include "../generic/target_mman.h"
- 
- #endif
-diff --git a/linux-user/alpha/target_mman.h b/linux-user/alpha/target_mman.h
-index c90b493711..8edfe2b88c 100644
---- a/linux-user/alpha/target_mman.h
-+++ b/linux-user/alpha/target_mman.h
-@@ -28,6 +28,9 @@
-  */
- #define TASK_UNMAPPED_BASE      0x20000000000ull
- 
-+/* arch/alpha/include/asm/elf.h */
-+#define ELF_ET_DYN_BASE         (TASK_UNMAPPED_BASE + 0x1000000)
-+
- #include "../generic/target_mman.h"
- 
- #endif
-diff --git a/linux-user/arm/target_mman.h b/linux-user/arm/target_mman.h
-index 76275b2c7e..51005da869 100644
---- a/linux-user/arm/target_mman.h
-+++ b/linux-user/arm/target_mman.h
-@@ -6,4 +6,7 @@
-  */
- #define TASK_UNMAPPED_BASE   0x40000000
- 
-+/* arch/arm/include/asm/elf.h */
-+#define ELF_ET_DYN_BASE      0x00400000
-+
- #include "../generic/target_mman.h"
-diff --git a/linux-user/cris/target_mman.h b/linux-user/cris/target_mman.h
-index 9df7b1eda5..9ace8ac292 100644
---- a/linux-user/cris/target_mman.h
-+++ b/linux-user/cris/target_mman.h
-@@ -7,4 +7,7 @@
-  */
- #define TASK_UNMAPPED_BASE TARGET_PAGE_ALIGN(0xb0000000 / 3)
- 
-+/* arch/cris/include/uapi/asm/elf.h */
-+#define ELF_ET_DYN_BASE    (TASK_UNMAPPED_BASE * 2)
-+
- #include "../generic/target_mman.h"
-diff --git a/linux-user/hexagon/target_mman.h b/linux-user/hexagon/target_mman.h
-index c5ae336e07..e6b5e2ca36 100644
---- a/linux-user/hexagon/target_mman.h
-+++ b/linux-user/hexagon/target_mman.h
-@@ -8,4 +8,7 @@
-  */
- #define TASK_UNMAPPED_BASE   0x40000000
- 
-+/* arch/hexagon/include/asm/elf.h */
-+#define ELF_ET_DYN_BASE      0x08000000
-+
- #include "../generic/target_mman.h"
-diff --git a/linux-user/hppa/target_mman.h b/linux-user/hppa/target_mman.h
-index 6459e7dbdd..ccda46e842 100644
---- a/linux-user/hppa/target_mman.h
-+++ b/linux-user/hppa/target_mman.h
-@@ -27,6 +27,9 @@
- /* arch/parisc/include/asm/processor.h: DEFAULT_MAP_BASE32 */
- #define TASK_UNMAPPED_BASE      0x40000000
- 
-+/* arch/parisc/include/asm/elf.h */
-+#define ELF_ET_DYN_BASE         (TASK_UNMAPPED_BASE + 0x01000000)
-+
- #include "../generic/target_mman.h"
- 
- #endif
-diff --git a/linux-user/i386/target_mman.h b/linux-user/i386/target_mman.h
-index cc3382007f..e3b8e1eaa6 100644
---- a/linux-user/i386/target_mman.h
-+++ b/linux-user/i386/target_mman.h
-@@ -11,4 +11,7 @@
-  */
- #define TASK_UNMAPPED_BASE    0x40000000
- 
-+/* arch/x86/include/asm/elf.h */
-+#define ELF_ET_DYN_BASE       0x00400000
-+
- #include "../generic/target_mman.h"
-diff --git a/linux-user/loongarch64/target_mman.h b/linux-user/loongarch64/target_mman.h
-index d70e44d44c..8c2a3d5596 100644
---- a/linux-user/loongarch64/target_mman.h
-+++ b/linux-user/loongarch64/target_mman.h
-@@ -6,4 +6,7 @@
- #define TASK_UNMAPPED_BASE \
-     TARGET_PAGE_ALIGN((1ull << TARGET_VIRT_ADDR_SPACE_BITS) / 3)
- 
-+/* arch/loongarch/include/asm/elf.h */
-+#define ELF_ET_DYN_BASE       (TASK_UNMAPPED_BASE * 2)
-+
- #include "../generic/target_mman.h"
-diff --git a/linux-user/m68k/target_mman.h b/linux-user/m68k/target_mman.h
-index d3eceb663b..20cfe750c5 100644
---- a/linux-user/m68k/target_mman.h
-+++ b/linux-user/m68k/target_mman.h
-@@ -1,4 +1,6 @@
- /* arch/m68k/include/asm/processor.h */
- #define TASK_UNMAPPED_BASE      0xC0000000
-+/* arch/m68k/include/asm/elf.h */
-+#define ELF_ET_DYN_BASE         0xD0000000
- 
- #include "../generic/target_mman.h"
-diff --git a/linux-user/microblaze/target_mman.h b/linux-user/microblaze/target_mman.h
-index ffee869db4..6b3dd54f89 100644
---- a/linux-user/microblaze/target_mman.h
-+++ b/linux-user/microblaze/target_mman.h
-@@ -6,4 +6,7 @@
-  */
- #define TASK_UNMAPPED_BASE      0x48000000
- 
-+/* arch/microblaze/include/uapi/asm/elf.h */
-+#define ELF_ET_DYN_BASE         0x08000000
-+
- #include "../generic/target_mman.h"
-diff --git a/linux-user/mips/target_mman.h b/linux-user/mips/target_mman.h
-index fe1eec2d0b..b84fe1e8a8 100644
---- a/linux-user/mips/target_mman.h
-+++ b/linux-user/mips/target_mman.h
-@@ -21,6 +21,9 @@
- #define TASK_UNMAPPED_BASE \
-     TARGET_PAGE_ALIGN((1ull << TARGET_VIRT_ADDR_SPACE_BITS) / 3)
- 
-+/* arch/mips/include/asm/elf.h */
-+#define ELF_ET_DYN_BASE       (TASK_UNMAPPED_BASE * 2)
-+
- #include "../generic/target_mman.h"
- 
- #endif
-diff --git a/linux-user/nios2/target_mman.h b/linux-user/nios2/target_mman.h
-index ce18f4f871..ab16ad4f03 100644
---- a/linux-user/nios2/target_mman.h
-+++ b/linux-user/nios2/target_mman.h
-@@ -5,4 +5,7 @@
-  */
- #define TASK_UNMAPPED_BASE    TARGET_PAGE_ALIGN(0x7FFF0000 / 3)
- 
-+/* arch/nios2/include/asm/elf.h */
-+#define ELF_ET_DYN_BASE       0xD0000000
-+
- #include "../generic/target_mman.h"
-diff --git a/linux-user/openrisc/target_mman.h b/linux-user/openrisc/target_mman.h
-index f1aaad809d..243c1d5f26 100644
---- a/linux-user/openrisc/target_mman.h
-+++ b/linux-user/openrisc/target_mman.h
-@@ -5,4 +5,7 @@
-  */
- #define TASK_UNMAPPED_BASE      0x30000000
- 
-+/* arch/openrisc/include/asm/elf.h */
-+#define ELF_ET_DYN_BASE         0x08000000
-+
- #include "../generic/target_mman.h"
-diff --git a/linux-user/ppc/target_mman.h b/linux-user/ppc/target_mman.h
-index 04f99c6077..646d1ccae7 100644
---- a/linux-user/ppc/target_mman.h
-+++ b/linux-user/ppc/target_mman.h
-@@ -17,6 +17,13 @@
- #define TASK_UNMAPPED_BASE      0x40000000
- #endif
- 
-+/* arch/powerpc/include/asm/elf.h */
-+#ifdef TARGET_PPC64
-+#define ELF_ET_DYN_BASE         0x100000000ull
-+#else
-+#define ELF_ET_DYN_BASE         0x000400000
-+#endif
-+
- #include "../generic/target_mman.h"
- 
- #endif
-diff --git a/linux-user/riscv/target_mman.h b/linux-user/riscv/target_mman.h
-index 0f06dadbd4..3049bcc67d 100644
---- a/linux-user/riscv/target_mman.h
-+++ b/linux-user/riscv/target_mman.h
-@@ -5,4 +5,7 @@
- #define TASK_UNMAPPED_BASE \
-     TARGET_PAGE_ALIGN((1ull << (TARGET_VIRT_ADDR_SPACE_BITS - 1)) / 3)
- 
-+/* arch/riscv/include/asm/elf.h */
-+#define ELF_ET_DYN_BASE       (TASK_UNMAPPED_BASE * 2)
-+
- #include "../generic/target_mman.h"
-diff --git a/linux-user/s390x/target_mman.h b/linux-user/s390x/target_mman.h
-index 40d149b329..c82435e381 100644
---- a/linux-user/s390x/target_mman.h
-+++ b/linux-user/s390x/target_mman.h
-@@ -8,4 +8,14 @@
-  */
- #define TASK_UNMAPPED_BASE      (1ull << 41)
- 
-+/*
-+ * arch/s390/include/asm/elf.h:
-+ * ELF_ET_DYN_BASE              (STACK_TOP / 3 * 2) & ~((1UL << 32) - 1)
-+ *
-+ * arch/s390/include/asm/processor.h:
-+ * STACK_TOP                    VDSO_LIMIT - VDSO_SIZE - PAGE_SIZE
-+ * VDSO_LIMIT                   _REGION2_SIZE
-+ */
-+#define ELF_ET_DYN_BASE         (((1ull << 42) / 3 * 2) & ~0xffffffffull)
-+
- #include "../generic/target_mman.h"
-diff --git a/linux-user/sh4/target_mman.h b/linux-user/sh4/target_mman.h
-index bbbc223398..dd9016081e 100644
---- a/linux-user/sh4/target_mman.h
-+++ b/linux-user/sh4/target_mman.h
-@@ -2,4 +2,7 @@
- #define TASK_UNMAPPED_BASE \
-     TARGET_PAGE_ALIGN((1u << TARGET_VIRT_ADDR_SPACE_BITS) / 3)
- 
-+/* arch/sh/include/asm/elf.h */
-+#define ELF_ET_DYN_BASE       (TASK_UNMAPPED_BASE * 2)
-+
- #include "../generic/target_mman.h"
-diff --git a/linux-user/sparc/target_mman.h b/linux-user/sparc/target_mman.h
-index 692ebf9dd7..696ca73fe4 100644
---- a/linux-user/sparc/target_mman.h
-+++ b/linux-user/sparc/target_mman.h
-@@ -19,6 +19,17 @@
- #define TASK_UNMAPPED_BASE      (1ull << (TARGET_VIRT_ADDR_SPACE_BITS - 2))
- #endif
- 
-+/*
-+ * arch/sparc/include/asm/elf_64.h
-+ * Except that COMPAT_ELF_ET_DYN_BASE exactly matches TASK_UNMAPPED_BASE,
-+ * so move it up a bit.
-+ */
-+#ifdef TARGET_ABI32
-+#define ELF_ET_DYN_BASE         0x78000000
-+#else
-+#define ELF_ET_DYN_BASE         0x0000010000000000ull
-+#endif
-+
- #include "../generic/target_mman.h"
- 
- #endif
-diff --git a/linux-user/user-mmap.h b/linux-user/user-mmap.h
-index bae49059e0..5dd48a458d 100644
---- a/linux-user/user-mmap.h
-+++ b/linux-user/user-mmap.h
-@@ -20,6 +20,7 @@
- 
- extern abi_ulong task_unmapped_base;
- extern abi_ulong mmap_next_start;
-+extern abi_ulong elf_et_dyn_base;
- 
- int target_mprotect(abi_ulong start, abi_ulong len, int prot);
- abi_long target_mmap(abi_ulong start, abi_ulong len, int prot,
-diff --git a/linux-user/x86_64/target_mman.h b/linux-user/x86_64/target_mman.h
-index f9ff652b37..48fbf20b42 100644
---- a/linux-user/x86_64/target_mman.h
-+++ b/linux-user/x86_64/target_mman.h
-@@ -10,4 +10,7 @@
- #define TASK_UNMAPPED_BASE \
-     TARGET_PAGE_ALIGN((1ull << TARGET_VIRT_ADDR_SPACE_BITS) / 3)
- 
-+/* arch/x86/include/asm/elf.h */
-+#define ELF_ET_DYN_BASE       (TASK_UNMAPPED_BASE * 2)
-+
- #include "../generic/target_mman.h"
-diff --git a/linux-user/xtensa/target_mman.h b/linux-user/xtensa/target_mman.h
-index c4f671adb7..8fa6337a97 100644
---- a/linux-user/xtensa/target_mman.h
-+++ b/linux-user/xtensa/target_mman.h
-@@ -20,6 +20,10 @@
-  */
- #define TASK_UNMAPPED_BASE      (1u << (TARGET_VIRT_ADDR_SPACE_BITS - 1))
- 
-+/* arch/xtensa/include/asm/elf.h */
-+#define ELF_ET_DYN_BASE \
-+    TARGET_PAGE_ALIGN((1u << TARGET_VIRT_ADDR_SPACE_BITS) / 3)
-+
- #include "../generic/target_mman.h"
- 
- #endif
-diff --git a/linux-user/main.c b/linux-user/main.c
-index 52809c260a..e089123cfa 100644
---- a/linux-user/main.c
-+++ b/linux-user/main.c
-@@ -839,6 +839,21 @@ int main(int argc, char **argv, char **envp)
-     }
-     mmap_next_start = task_unmapped_base;
- 
-+    /* Similarly for elf_et_dyn_base. */
-+    if (reserved_va) {
-+        if (ELF_ET_DYN_BASE < reserved_va) {
-+            elf_et_dyn_base = ELF_ET_DYN_BASE;
-+        } else {
-+            /* The most common default formula is TASK_SIZE / 3 * 2. */
-+            task_unmapped_base = TARGET_PAGE_ALIGN(reserved_va / 3) * 2;
-+        }
-+    } else if (ELF_ET_DYN_BASE < UINTPTR_MAX) {
-+        elf_et_dyn_base = ELF_ET_DYN_BASE;
-+    } else {
-+        /* 32-bit host: pick something medium size. */
-+        task_unmapped_base = 0x18000000;
-+    }
-+
-     {
-         Error *err = NULL;
-         if (seed_optarg != NULL) {
-diff --git a/linux-user/mmap.c b/linux-user/mmap.c
-index 84436d45c8..949c4090f3 100644
---- a/linux-user/mmap.c
-+++ b/linux-user/mmap.c
-@@ -301,6 +301,7 @@ static bool mmap_frag(abi_ulong real_start, abi_ulong start, abi_ulong last,
- 
- abi_ulong task_unmapped_base;
- abi_ulong mmap_next_start;
-+abi_ulong elf_et_dyn_base;
- 
- /*
-  * Subroutine of mmap_find_vma, used when we have pre-allocated
+diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+index 2aee2298ec..0c64aad8a5 100644
+--- a/linux-user/elfload.c
++++ b/linux-user/elfload.c
+@@ -3146,8 +3146,11 @@ static void load_elf_image(const char *image_name, int image_fd,
+     /*
+      * Reserve address space for all of this.
+      *
+-     * In the case of ET_EXEC, we supply MAP_FIXED so that we get
+-     * exactly the address range that is required.
++     * In the case of ET_EXEC, we supply MAP_FIXED_NOREPLACE so that we get
++     * exactly the address range that is required.  Without reserved_va,
++     * the guest address space is not isolated.  We have attempted to avoid
++     * conflict with the host program itself via probe_guest_base, but using
++     * MAP_FIXED_NOREPLACE instead of MAP_FIXED provides an extra check.
+      *
+      * Otherwise this is ET_DYN, and we are searching for a location
+      * that can hold the memory space required.  If the image is
+@@ -3159,7 +3162,7 @@ static void load_elf_image(const char *image_name, int image_fd,
+      */
+     load_addr = target_mmap(loaddr, (size_t)hiaddr - loaddr + 1, PROT_NONE,
+                             MAP_PRIVATE | MAP_ANON | MAP_NORESERVE |
+-                            (ehdr->e_type == ET_EXEC ? MAP_FIXED : 0),
++                            (ehdr->e_type == ET_EXEC ? MAP_FIXED_NOREPLACE : 0),
+                             -1, 0);
+     if (load_addr == -1) {
+         goto exit_mmap;
 -- 
 2.34.1
 
