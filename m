@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02A05770BBA
-	for <lists+qemu-devel@lfdr.de>; Sat,  5 Aug 2023 00:05:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19AF2770BBC
+	for <lists+qemu-devel@lfdr.de>; Sat,  5 Aug 2023 00:06:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qS2rQ-00058p-Vh; Fri, 04 Aug 2023 18:01:29 -0400
+	id 1qS2rO-00053s-66; Fri, 04 Aug 2023 18:01:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qS2qp-0004jD-C4
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 18:00:52 -0400
-Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
+ id 1qS2qs-0004lP-05
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 18:00:54 -0400
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qS2qn-0001uU-PV
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 18:00:51 -0400
-Received: by mail-pj1-x1030.google.com with SMTP id
- 98e67ed59e1d1-26928c430b2so612948a91.0
- for <qemu-devel@nongnu.org>; Fri, 04 Aug 2023 15:00:49 -0700 (PDT)
+ id 1qS2qq-0001vR-DF
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 18:00:53 -0400
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-1bbd2761f1bso22050105ad.2
+ for <qemu-devel@nongnu.org>; Fri, 04 Aug 2023 15:00:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691186448; x=1691791248;
+ d=linaro.org; s=google; t=1691186451; x=1691791251;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=gDTWs7pBzjEM4yDIiLCCxRn3NjvKLf/PjlJHIm+hkqo=;
- b=mFbhnmTOb9ortZswDG+WagB9Agyol7SfS4pfZuQXSuaMrwSpR2swynWQcxlIQm0oaB
- aqip3iqhxos7VSf+GYw2dK1Q/osOCMWBEu0BwF9uMnd+ymwE/FShs28LAcH4pGWRwgXe
- 59A7MTDJaDG+zW0f2kBLPxNlvxJBovi5nE6dHHqSs9w13oNn5OgF58mXQWZboFpznlZt
- K9wT2cFUGYCaehKBDUtHlFvxmRv2peCZHXrt/yKUoTBIgSCwdQbXYUqaOndl6Awz+/X1
- pZxuP/ic3TNwR90ckP7URy1YNRvQyg7UkzyOjreeTQclEd+PwK0i0x4XmJ32Eo1d9b4Z
- F/RQ==
+ bh=0VLnmjiDjAi6Gl+LJx+pmU5KrGv5xMTSD4fN49XrjM0=;
+ b=iM8rStISP/kbHq5bgwFjLPgHYhwXqvoj/tKh+lukRLdQVI4NobFYK1dooL1XW8H2GH
+ F8IQ/cI9cxS256vFZcEvOPnSjol36O7pcvTrUUwyozUHzcusLaTjTipXNIBPzN6w71xz
+ yNE+TRyHHkk5Xh95pJ+vezSGxlME/JiiopdZruJLxDIq3jzUo0tQlsjWzs3XcvLXe8wM
+ u0rayxXCCZBiIQDKpjTsbaqHkf1Z8BPtVqbDqmbLRFEI8ZqNv0ypAdEr3xmh+fFHh6cU
+ G7zRn2l6HRy8bS4QDGVPjyt8qIK6aZhwmN5X8+taQ+4a80yVQJbxyiAoXaySbjI/Shpg
+ DmYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691186448; x=1691791248;
+ d=1e100.net; s=20221208; t=1691186451; x=1691791251;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gDTWs7pBzjEM4yDIiLCCxRn3NjvKLf/PjlJHIm+hkqo=;
- b=kCTAlsoUg04saBi6CZV2pn2vDSdfznDQ++f2gE4zewRAltTMNE63PJwKhvT8cQHj0A
- H1DAuLyhIzdB8ltf8P2oVhmRpw6vGb2osy5tbzouLcTpzB+vEi3/parxGn70Rl9t8uRF
- SdluXVTix5CdbRXr8LH+YckDwEa/ygJOx+TjlNrvOnzAdEWGI+R3oNRkatF1ht5wcRjM
- B6vAcesKgCy8k7oyZTvjnH0QLHl1YHH3EM6Fz687c0rMIUoWw/XoFbuQkIoiSwm0mb0q
- c9nyuiNQf9YkI5SWS6dP0B57ksfo/ESLeNX1+J4xWocQekmOUJ2iZC2hwMUZptJWEq/h
- qVZQ==
-X-Gm-Message-State: AOJu0YygKGC8bjY2LMyztKYmg7sQq/pp5Ae13CbaW8kk9BMs7Zrq5/6N
- FxUJZzHHGxHt3QvHpx0YgcWdyRO18c7N1OQ2b1o=
-X-Google-Smtp-Source: AGHT+IH9GPZG4uLgHn43hLBSpt0pabwu+ogSSJoAj/GOPZjekO+DSSlYgIrz5qp1QfxOqmoL/8gurw==
-X-Received: by 2002:a17:90a:c8:b0:25e:bac2:314c with SMTP id
- v8-20020a17090a00c800b0025ebac2314cmr2611176pjd.23.1691186448452; 
- Fri, 04 Aug 2023 15:00:48 -0700 (PDT)
+ bh=0VLnmjiDjAi6Gl+LJx+pmU5KrGv5xMTSD4fN49XrjM0=;
+ b=iEX3R1zl+K0IvNnjQj/b9uhBEY2dIlBrPK3aaRYI2ofP3Gc+W93Z5VuDgyDuU95+Ul
+ ZnwodqHgon8QT4XijBw4SyxrBoui6PiPQc0U2CeVcD4/H3m4Ni3/7xIPVSdHH0CrCd3m
+ nby07O41jlIyJDuc91/weO+b2h8rpyBBbv+2TwhP0sWdUNtdFj/26IghatJvDPdpTfK2
+ 3u6H+TDPXBcUmYm6+nJStEODQ4Cnxmabt2DohbNWFQQKAMtE1RSkobfgbROOjjNOhAH3
+ MerfG0oVp4Fz8Tk6cpdrdvQJqi8XqSw+gYGis4pnLwh0HDKeptki5EAQcRthz7a+ngJy
+ Z0Qg==
+X-Gm-Message-State: AOJu0Yzs4GLuLSL40VYHX9a0Kv3jT7nO29o8bWiC9+AgCW99r/NtcUiv
+ qqAZOLlfL6ynLsDnsNFygZ7mCzIxGwWrOgW3oXM=
+X-Google-Smtp-Source: AGHT+IEdKeW9CxGO6oXuvsVm4vXphXd05qaAt+vnDgNcw6eUdOkaGKxKGXxzBRcRvrfZOCexu7IChA==
+X-Received: by 2002:a17:902:ec8c:b0:1bb:edd5:4644 with SMTP id
+ x12-20020a170902ec8c00b001bbedd54644mr3450857plg.68.1691186450989; 
+ Fri, 04 Aug 2023 15:00:50 -0700 (PDT)
 Received: from stoup.. ([2602:47:d490:6901:1eed:f77f:f320:8b14])
  by smtp.gmail.com with ESMTPSA id
- u1-20020a17090282c100b001bbf7fd354csm2185568plz.213.2023.08.04.15.00.47
+ u1-20020a17090282c100b001bbf7fd354csm2185568plz.213.2023.08.04.15.00.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 04 Aug 2023 15:00:47 -0700 (PDT)
+ Fri, 04 Aug 2023 15:00:50 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Helge Deller <deller@gmx.de>,
 	Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v9 17/24] linux-user: Use elf_et_dyn_base for ET_DYN with
- interpreter
-Date: Fri,  4 Aug 2023 15:00:25 -0700
-Message-Id: <20230804220032.295411-18-richard.henderson@linaro.org>
+Subject: [PATCH v9 20/24] linux-user: Do not adjust image mapping for host
+ page size
+Date: Fri,  4 Aug 2023 15:00:28 -0700
+Message-Id: <20230804220032.295411-21-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230804220032.295411-1-richard.henderson@linaro.org>
 References: <20230804220032.295411-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1030.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,81 +93,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Follow the lead of the linux kernel in fs/binfmt_elf.c,
-in which an ET_DYN executable which uses an interpreter
-(usually a PIE executable) is loaded away from where the
-interpreter itself will be loaded.
+Remove TARGET_ELF_EXEC_PAGESIZE, and 3 other TARGET_ELF_PAGE* macros
+based off of that.  Rely on target_mmap to handle guest vs host page
+size mismatch.
 
 Tested-by: Helge Deller <deller@gmx.de>
 Reviewed-by: Helge Deller <deller@gmx.de>
 Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/elfload.c | 27 +++++++++++++++++++++++++--
- 1 file changed, 25 insertions(+), 2 deletions(-)
+ linux-user/elfload.c | 17 ++++-------------
+ 1 file changed, 4 insertions(+), 13 deletions(-)
 
 diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 0c64aad8a5..a3aa08a13e 100644
+index fa0c9ace8e..e853a4ab33 100644
 --- a/linux-user/elfload.c
 +++ b/linux-user/elfload.c
-@@ -3106,6 +3106,8 @@ static void load_elf_image(const char *image_name, int image_fd,
-         }
-     }
+@@ -1959,15 +1959,6 @@ struct exec
+ #define ZMAGIC 0413
+ #define QMAGIC 0314
  
-+    load_addr = loaddr;
-+
-     if (pinterp_name != NULL) {
-         /*
-          * This is the main executable.
-@@ -3135,11 +3137,32 @@ static void load_elf_image(const char *image_name, int image_fd,
-              */
-             probe_guest_base(image_name, loaddr, hiaddr);
-         } else {
-+            abi_ulong align;
-+
-             /*
-              * The binary is dynamic, but we still need to
-              * select guest_base.  In this case we pass a size.
-              */
-             probe_guest_base(image_name, 0, hiaddr - loaddr);
-+
-+            /*
-+             * Avoid collision with the loader by providing a different
-+             * default load address.
-+             */
-+            load_addr += elf_et_dyn_base;
-+
-+            /*
-+             * TODO: Better support for mmap alignment is desirable.
-+             * Since we do not have complete control over the guest
-+             * address space, we prefer the kernel to choose some address
-+             * rather than force the use of LOAD_ADDR via MAP_FIXED.
-+             * But without MAP_FIXED we cannot guarantee alignment,
-+             * only suggest it.
-+             */
-+            align = pow2ceil(info->alignment);
-+            if (align) {
-+                load_addr &= -align;
-+            }
-         }
-     }
+-/* Necessary parameters */
+-#define TARGET_ELF_EXEC_PAGESIZE \
+-        (((eppnt->p_align & ~qemu_host_page_mask) != 0) ? \
+-         TARGET_PAGE_SIZE : MAX(qemu_host_page_size, TARGET_PAGE_SIZE))
+-#define TARGET_ELF_PAGELENGTH(_v) ROUND_UP((_v), TARGET_ELF_EXEC_PAGESIZE)
+-#define TARGET_ELF_PAGESTART(_v) ((_v) & \
+-                                 ~(abi_ulong)(TARGET_ELF_EXEC_PAGESIZE-1))
+-#define TARGET_ELF_PAGEOFFSET(_v) ((_v) & (TARGET_ELF_EXEC_PAGESIZE-1))
+-
+ #define DLINFO_ITEMS 16
  
-@@ -3154,13 +3177,13 @@ static void load_elf_image(const char *image_name, int image_fd,
-      *
-      * Otherwise this is ET_DYN, and we are searching for a location
-      * that can hold the memory space required.  If the image is
--     * pre-linked, LOADDR will be non-zero, and the kernel should
-+     * pre-linked, LOAD_ADDR will be non-zero, and the kernel should
-      * honor that address if it happens to be free.
-      *
-      * In both cases, we will overwrite pages in this range with mappings
-      * from the executable.
-      */
--    load_addr = target_mmap(loaddr, (size_t)hiaddr - loaddr + 1, PROT_NONE,
-+    load_addr = target_mmap(load_addr, (size_t)hiaddr - loaddr + 1, PROT_NONE,
-                             MAP_PRIVATE | MAP_ANON | MAP_NORESERVE |
-                             (ehdr->e_type == ET_EXEC ? MAP_FIXED_NOREPLACE : 0),
-                             -1, 0);
+ static inline void memcpy_fromfs(void * to, const void * from, unsigned long n)
+@@ -3240,8 +3231,8 @@ static void load_elf_image(const char *image_name, int image_fd,
+             }
+ 
+             vaddr = load_bias + eppnt->p_vaddr;
+-            vaddr_po = TARGET_ELF_PAGEOFFSET(vaddr);
+-            vaddr_ps = TARGET_ELF_PAGESTART(vaddr);
++            vaddr_po = vaddr & ~TARGET_PAGE_MASK;
++            vaddr_ps = vaddr & TARGET_PAGE_MASK;
+ 
+             vaddr_ef = vaddr + eppnt->p_filesz;
+             vaddr_em = vaddr + eppnt->p_memsz;
+@@ -3251,7 +3242,7 @@ static void load_elf_image(const char *image_name, int image_fd,
+              * but no backing file segment.
+              */
+             if (eppnt->p_filesz != 0) {
+-                vaddr_len = TARGET_ELF_PAGELENGTH(eppnt->p_filesz + vaddr_po);
++                vaddr_len = eppnt->p_filesz + vaddr_po;
+                 error = target_mmap(vaddr_ps, vaddr_len, elf_prot,
+                                     MAP_PRIVATE | MAP_FIXED,
+                                     image_fd, eppnt->p_offset - vaddr_po);
+@@ -3267,7 +3258,7 @@ static void load_elf_image(const char *image_name, int image_fd,
+                     zero_bss(vaddr_ef, vaddr_em, elf_prot);
+                 }
+             } else if (eppnt->p_memsz != 0) {
+-                vaddr_len = TARGET_ELF_PAGELENGTH(eppnt->p_memsz + vaddr_po);
++                vaddr_len = eppnt->p_memsz + vaddr_po;
+                 error = target_mmap(vaddr_ps, vaddr_len, elf_prot,
+                                     MAP_PRIVATE | MAP_FIXED | MAP_ANONYMOUS,
+                                     -1, 0);
 -- 
 2.34.1
 
