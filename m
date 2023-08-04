@@ -2,86 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB044770581
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 18:03:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BA3E7705B1
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 18:16:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRxFq-0004yD-89; Fri, 04 Aug 2023 12:02:18 -0400
+	id 1qRxRv-0000zs-Bz; Fri, 04 Aug 2023 12:14:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qRxFl-0004o6-79
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 12:02:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qRxRt-0000zg-Jg
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 12:14:45 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qRxFi-000521-3q
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 12:02:12 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qRxRs-0008RR-0d
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 12:14:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691164928;
+ s=mimecast20190719; t=1691165682;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=KuAZzR22LYMZIllsctLkD+OgAK4Bo2lpgWaVMrJJC1o=;
- b=dDNb5z1v20ff52I0wUFnnDsy/6pqFv7qh0/A9GQ2ri+TMgiHTX0lXIEPhZ3cei75s293qM
- rdEbXIQvLURcolbmHW30+LbWrBE3xwJIOwD7xg6TDCmXFnWJQCIwQaLA81WOfqwmoASIp7
- mngrs/uOnwDxXSnJEaRIDhqzQX4pguY=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=GB0oqXsDQiRhHvQJ0tjMic2Yw0h9vQ6Xi7iWybkHFmY=;
+ b=ZLzrDYeDN3zEfcEjXAOllLJ0uPyRixMTrEW1GeQBKbpkhe57uVoJthCHodHtTXnJBi4/id
+ 8u4riiA645CaG6Zha2KuQkdveqj0CtBOlMMtBAPEdXN/P4LKHYDF+HDlouc4Nrno/CejLi
+ qsdvgRGKOCwflSBSQYIbRmtk/U/7fBo=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-41-G3va52bVPYmh7CKIGvrmRw-1; Fri, 04 Aug 2023 12:02:07 -0400
-X-MC-Unique: G3va52bVPYmh7CKIGvrmRw-1
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-63d2b88325bso4599046d6.1
- for <qemu-devel@nongnu.org>; Fri, 04 Aug 2023 09:02:07 -0700 (PDT)
+ us-mta-154-SNroY7R4PHmLNR2HlHxCQQ-1; Fri, 04 Aug 2023 12:14:41 -0400
+X-MC-Unique: SNroY7R4PHmLNR2HlHxCQQ-1
+Received: by mail-qt1-f197.google.com with SMTP id
+ d75a77b69052e-4059b5c3dd0so5403991cf.0
+ for <qemu-devel@nongnu.org>; Fri, 04 Aug 2023 09:14:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691164926; x=1691769726;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=KuAZzR22LYMZIllsctLkD+OgAK4Bo2lpgWaVMrJJC1o=;
- b=HE7RQVBt96PQ+YUpXXUOAJIePbsxIo1+hGMMjifmGijCzXbk3X8+GYe1WNDrzvh0uv
- Q4ukFqx9dK+HZ7GxTXJt6/YCZUuuDCA83KLfV3V2I+i9kiHBUORJe0RRfK0U3eOtzyUw
- f6pC18BhuCsEV5kv0p1ATVwWimjyL6JkvZzGKPMIeNvFFU5HEQkaoxHkd4sYk2nXRX3m
- 0lBxSamw9NLkt2Aig15K8tqf9gOri7n56G06TeBDzXtKULKK8KFOYCbamwQLVUouN7oh
- gkhEezyBMctlZ9hgyFKUdrsZpRpAml57bra6jXIyMngz1UZWQbCq7XYh2DXp0Ccxpe/M
- oaGg==
-X-Gm-Message-State: ABy/qLbHANHngbmOlzaCvQY4IQFFwNQy69Juza7oimpTEbc1YwsUnzwg
- vbEm8AG7bHWGOwvJv2wceHUYfxb4rE1NA5nZMpwaG7K78iPzYRuPnUSa9dn264rmw93fWQkaKeX
- Y0XnwFzGSypLQfKQ=
-X-Received: by 2002:a05:6214:410d:b0:62b:6c6f:b3e3 with SMTP id
- kc13-20020a056214410d00b0062b6c6fb3e3mr23516912qvb.3.1691164925931; 
- Fri, 04 Aug 2023 09:02:05 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHnEQJnI9G43Aze32KHTr9dQDl6D3zVJi8Ow9NkF//HhJHWHUANiVUbIlYNY7zAMsnfE9zYwQ==
-X-Received: by 2002:a05:6214:410d:b0:62b:6c6f:b3e3 with SMTP id
- kc13-20020a056214410d00b0062b6c6fb3e3mr23516889qvb.3.1691164925623; 
- Fri, 04 Aug 2023 09:02:05 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1691165680; x=1691770480;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=GB0oqXsDQiRhHvQJ0tjMic2Yw0h9vQ6Xi7iWybkHFmY=;
+ b=lkYzgilmNQKJeTod6VJpVYvPG6KvfgnhAITDCTrVFwr0pby1Gqdm3CasBSdtEatpYe
+ CAMvScWkZnt6bshmpdqwYj3w0ASTUzmecBh8PO6HOuc52NB8G8KpxYVsa2Q8wfh7hhv5
+ D85XNnbW4Lua9PCXrpmDvmEvn25KupyNZLKLzoFx27CvL8aQquXMdiHoITqbFVVGlbU9
+ FJmFvuCeDjnyF6Hw9g6gC4Zj6WoIUAzVtb+NjT5rWxk1J8n82GQr3SxZ7VP3ZnRrE6uY
+ H0IVUoG2bpYt6eCru/fTdDanwSpYQV0yP/Cs0Cj0w1JIXaEp8gxg4Ya4rbmfLPJ25vkB
+ svlA==
+X-Gm-Message-State: ABy/qLZAp8ggUfsgH4bKM9DBV1EG7ch5hiCuN7Af7EkoxzP7CgDLHccV
+ J0GoWFwxQv547PYVwodxe5tdvVsI82qQkRYu7y/h6BBnxTshGpOHjeHHmw8zRZLa9XBQXQCN9uP
+ kG11fT1ROEAplMX0=
+X-Received: by 2002:a05:622a:1828:b0:3f6:a8e2:127b with SMTP id
+ t40-20020a05622a182800b003f6a8e2127bmr24027241qtc.5.1691165680560; 
+ Fri, 04 Aug 2023 09:14:40 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlExDbJbBDDs3WLniRHOAoAlHnL6Ho1CQpicseHrfI7vkvEoP7AxBU39ADcmd4vXcspc5htKWA==
+X-Received: by 2002:a05:622a:1828:b0:3f6:a8e2:127b with SMTP id
+ t40-20020a05622a182800b003f6a8e2127bmr24027223qtc.5.1691165680257; 
+ Fri, 04 Aug 2023 09:14:40 -0700 (PDT)
 Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
  [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- i28-20020a0cab5c000000b0063cf49c35f1sm773315qvb.35.2023.08.04.09.01.56
+ a27-20020ac84d9b000000b00403c1a19a2bsm742911qtw.92.2023.08.04.09.14.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 04 Aug 2023 09:01:56 -0700 (PDT)
-Date: Fri, 4 Aug 2023 12:01:54 -0400
+ Fri, 04 Aug 2023 09:14:39 -0700 (PDT)
+Date: Fri, 4 Aug 2023 12:14:36 -0400
 From: Peter Xu <peterx@redhat.com>
-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-Cc: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org,
- Zhiyi Guo <zhguo@redhat.com>,
- Leonardo Bras Soares Passos <lsoaresp@redhat.com>,
- Fabiano Rosas <farosas@suse.de>,
- Juan Quintela <quintela@redhat.com>, Eric Blake <eblake@redhat.com>,
- Chensheng Dong <chdong@redhat.com>
-Subject: Re: [PATCH for-8.2 v2 1/2] qapi/migration: Deduplicate migration
- parameter field comments
-Message-ID: <ZM0g8iNXzv9LRo+w@x1n>
-References: <20230803155344.11450-1-peterx@redhat.com>
- <20230803155344.11450-2-peterx@redhat.com>
- <87jzub8016.fsf@pond.sub.org> <ZM0EK3A/rnDPImXz@redhat.com>
+To: Andrei Gudkov <gudkov.andrei@huawei.com>
+Cc: qemu-devel@nongnu.org, yong.huang@smartx.com, quintela@redhat.com,
+ leobras@redhat.com, eblake@redhat.com, armbru@redhat.com
+Subject: Re: [PATCH v2] migration/calc-dirty-rate: millisecond-granularity
+ period
+Message-ID: <ZM0j7I98y/cSP9bd@x1n>
+References: <8ddb0d40d143f77aab8f602bd494e01e5fa01614.1691161009.git.gudkov.andrei@huawei.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZM0EK3A/rnDPImXz@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+In-Reply-To: <8ddb0d40d143f77aab8f602bd494e01e5fa01614.1691161009.git.gudkov.andrei@huawei.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -105,109 +97,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Aug 04, 2023 at 02:59:07PM +0100, Daniel P. Berrangé wrote:
-> On Fri, Aug 04, 2023 at 02:28:05PM +0200, Markus Armbruster wrote:
-> > Peter Xu <peterx@redhat.com> writes:
-> > 
-> > > We used to have three objects that have always the same list of parameters
-> > 
-> > We have!
-> > 
-> > > and comments are always duplicated:
-> > >
-> > >   - @MigrationParameter
-> > >   - @MigrationParameters
-> > >   - @MigrateSetParameters
-> > >
-> > > Before we can deduplicate the code, it's fairly straightforward to
-> > > deduplicate the comments first, so for each time we add a new migration
-> > > parameter we don't need to copy the same paragraphs three times.
-> > 
-> > De-duplicating the code would be nice, but we haven't done so in years,
-> > which suggests it's hard enough not to be worth the trouble.
+On Fri, Aug 04, 2023 at 06:03:27PM +0300, Andrei Gudkov wrote:
+> Introduces alternative argument calc-time-ms, which is the
+> the same as calc-time but accepts millisecond value.
+> Millisecond granularity allows to make predictions whether
+> migration will succeed or not. To do this, calculate dirty
+> rate with calc-time-ms set to max allowed downtime, convert
+> measured rate into volume of dirtied memory, and divide by
+> network throughput. If the value is lower than max allowed
+> downtime, then migration will converge.
 > 
-> The "MigrationParameter" enumeration isn't actually used in
-> QMP at all.
+> Measurement results for single thread randomly writing to
+> a 1/4/24GiB memory region:
 > 
-> It is only used in HMP for hmp_migrate_set_parameter and
-> hmp_info_migrate_parameters. So it is questionable documenting
-> that enum in the QMP reference docs at all.
+> +--------------+-----------------------------------------------+
+> | calc-time-ms |                dirty rate MiB/s               |
+> |              +----------------+---------------+--------------+
+> |              | theoretical    | page-sampling | dirty-bitmap |
+> |              | (at 3M wr/sec) |               |              |
+> +--------------+----------------+---------------+--------------+
+> |                             1GiB                             |
+> +--------------+----------------+---------------+--------------+
+> |          100 |           6996 |          7100 |         3192 |
+> |          200 |           4606 |          4660 |         2655 |
+> |          300 |           3305 |          3280 |         2371 |
+> |          400 |           2534 |          2525 |         2154 |
+> |          500 |           2041 |          2044 |         1871 |
+> |          750 |           1365 |          1341 |         1358 |
+> |         1000 |           1024 |          1052 |         1025 |
+> |         1500 |            683 |           678 |          684 |
+> |         2000 |            512 |           507 |          513 |
+> +--------------+----------------+---------------+--------------+
+> |                             4GiB                             |
+> +--------------+----------------+---------------+--------------+
+> |          100 |          10232 |          8880 |         4070 |
+> |          200 |           8954 |          8049 |         3195 |
+> |          300 |           7889 |          7193 |         2881 |
+> |          400 |           6996 |          6530 |         2700 |
+> |          500 |           6245 |          5772 |         2312 |
+> |          750 |           4829 |          4586 |         2465 |
+> |         1000 |           3865 |          3780 |         2178 |
+> |         1500 |           2694 |          2633 |         2004 |
+> |         2000 |           2041 |          2031 |         1789 |
+> +--------------+----------------+---------------+--------------+
+> |                             24GiB                            |
+> +--------------+----------------+---------------+--------------+
+> |          100 |          11495 |          8640 |         5597 |
+> |          200 |          11226 |          8616 |         3527 |
+> |          300 |          10965 |          8386 |         2355 |
+> |          400 |          10713 |          8370 |         2179 |
+> |          500 |          10469 |          8196 |         2098 |
+> |          750 |           9890 |          7885 |         2556 |
+> |         1000 |           9354 |          7506 |         2084 |
+> |         1500 |           8397 |          6944 |         2075 |
+> |         2000 |           7574 |          6402 |         2062 |
+> +--------------+----------------+---------------+--------------+
 > 
-> 1c1
-> < { 'struct': 'MigrationParameters',
-> ---
-> > { 'struct': 'MigrateSetParameters',
-> 14,16c14,16
-> <             '*tls-creds': 'str',
-> <             '*tls-hostname': 'str',
-> <             '*tls-authz': 'str',
-> ---
-> >             '*tls-creds': 'StrOrNull',
-> >             '*tls-hostname': 'StrOrNull',
-> >             '*tls-authz': 'StrOrNull',
+> Theoretical values are computed according to the following formula:
+> size * (1 - (1-(4096/size))^(time*wps)) / (time * 2^20),
+> where size is in bytes, time is in seconds, and wps is number of
+> writes per second.
 > 
-> Is it not valid to use StrOrNull in both cases and thus
-> delete the duplication here ?
+> Signed-off-by: Andrei Gudkov <gudkov.andrei@huawei.com>
 
-I tested removing MigrateSetParameters by replacing it with
-MigrationParameters and it looks all fine here... I manually tested qmp/hmp
-on set/query parameters, and qtests are all happy.
-
-The only thing I see that may affect it is we used to logically allow
-taking things like '"tls-authz": null' in the json input, but now we won't
-allow that because we'll be asking for a string type only.
-
-Since we have query-qmp-schema I suppose we're all fine, because logically
-the mgmt app (libvirt?) will still query that to understand the protocol,
-so now we'll have (response of query-qmp-schema):
-
-        {
-            "arg-type": "144",
-            "meta-type": "command",
-            "name": "migrate-set-parameters",
-            "ret-type": "0"
-        },
-
-Where 144 can start to point to MigrationParameters, rather than
-MigrateSetParameters.
-
-Ok, then what if the mgmt app doesn't care and just used "null" in tls-*
-fields when setting?  Funnily I tried it and actually anything that does
-migrate-set-parameters with a "null" passed over to tls-* fields will
-already crash qemu...
-
-./migration/options.c:1333: migrate_params_apply: Assertion `params->tls_authz->type == QTYPE_QSTRING' failed.
-
-#0  0x00007f72f4b2a844 in __pthread_kill_implementation () at /lib64/libc.so.6
-#1  0x00007f72f4ad9abe in raise () at /lib64/libc.so.6
-#2  0x00007f72f4ac287f in abort () at /lib64/libc.so.6
-#3  0x00007f72f4ac279b in _nl_load_domain.cold () at /lib64/libc.so.6
-#4  0x00007f72f4ad2147 in  () at /lib64/libc.so.6
-#5  0x00005573308740e6 in migrate_params_apply (params=0x7ffc74fd09d0, errp=0x7ffc74fd0998) at ../migration/options.c:1333
-#6  0x0000557330874591 in qmp_migrate_set_parameters (params=0x7ffc74fd09d0, errp=0x7ffc74fd0998) at ../migration/options.c:1433
-#7  0x0000557330cb9132 in qmp_marshal_migrate_set_parameters (args=0x7f72e00036d0, ret=0x7f72f133cd98, errp=0x7f72f133cd90) at qapi/qapi-commands-migration.c:214
-#8  0x0000557330d07fab in do_qmp_dispatch_bh (opaque=0x7f72f133ce30) at ../qapi/qmp-dispatch.c:128
-#9  0x0000557330d33bbb in aio_bh_call (bh=0x5573337d7920) at ../util/async.c:169
-#10 0x0000557330d33cd8 in aio_bh_poll (ctx=0x55733356e7d0) at ../util/async.c:216
-#11 0x0000557330d17a19 in aio_dispatch (ctx=0x55733356e7d0) at ../util/aio-posix.c:423
-#12 0x0000557330d34117 in aio_ctx_dispatch (source=0x55733356e7d0, callback=0x0, user_data=0x0) at ../util/async.c:358
-#13 0x00007f72f5a8848c in g_main_context_dispatch () at /lib64/libglib-2.0.so.0
-#14 0x0000557330d358d4 in glib_pollfds_poll () at ../util/main-loop.c:290
-#15 0x0000557330d35951 in os_host_main_loop_wait (timeout=0) at ../util/main-loop.c:313
-#16 0x0000557330d35a5f in main_loop_wait (nonblocking=0) at ../util/main-loop.c:592
-#17 0x000055733083aee0 in qemu_main_loop () at ../softmmu/runstate.c:732
-#18 0x0000557330b0921b in qemu_default_main () at ../softmmu/main.c:37
-#19 0x0000557330b09251 in main (argc=35, argv=0x7ffc74fd0ec8) at ../softmmu/main.c:48
-
-Then I suppose it means all mgmt apps are not using "null" anyway, and it
-makes more sense to me to just remove MigrateSetParameters (by replacing it
-with MigrationParameters).
-
-Then if we can also replace MigrationParameter enum with an internal enum
-(alongside with a _str[] array for it) it seems we're all fine to dedup the
-3 objects into 1 in qapi schema.
-
-Thanks,
+Acked-by: Peter Xu <peterx@redhat.com>
 
 -- 
 Peter Xu
