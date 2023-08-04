@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84AA776FE4B
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 12:19:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD9FD76FE4C
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 12:19:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRrsi-0002gU-4D; Fri, 04 Aug 2023 06:18:04 -0400
+	id 1qRrtW-0002ty-Ta; Fri, 04 Aug 2023 06:18:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qRrse-0002gL-6x
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 06:18:00 -0400
-Received: from mout.gmx.net ([212.227.15.15])
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qRrtU-0002tO-By
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 06:18:52 -0400
+Received: from mout.gmx.net ([212.227.15.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qRrsc-0003y6-Eo
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 06:17:59 -0400
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qRrtS-00046b-T3
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 06:18:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1691144274; x=1691749074; i=deller@gmx.de;
- bh=RCIzYwwujuJL6Tbhq+H1QIzyGSmoIcM8zvSTFldKRMQ=;
+ s=s31663417; t=1691144328; x=1691749128; i=deller@gmx.de;
+ bh=CPZYEetpVxVI2MQ4UhIGDYCOhiqzQIZ42q06HHrDTsk=;
  h=X-UI-Sender-Class:Date:From:To:Cc:Subject:References:In-Reply-To;
- b=Rp5gfayiA35/Neksqmp2TjffoL/R8S/JmB7X+A+BA385wxN2CfzHeo45S1E1Eqn7EzNCKXE
- iS3kdsZtI3IWDLKgYdCP8a/v/4a2itHETqwsPXbz2+Wseqo+oiFFVAr62FbkvzvziFdoFGpCg
- 3WS7/cPRewyNVIChDmsYoBtb3qOvJTYXgwdVpdmDIf2loLHN3eKwA7njP3QBL/sbJIDT9cqDw
- kh37IY8cD4GxgdKN+mRjM/eU6cfFhJk7OgE17P/U4qT2pIwEI/T+FPSQmZOrDGdRAnhxp3Waz
- Gq6mYcwO1rwaMq45lNN5Qo33yf9+iGx3xzZpiX2z0ge4xsmGfhxw==
+ b=BX2dNVQFCSQD4vAiILEAfzj/wkufkdamGIOaKoFJ/V7GeFfNVLNG2ut/aaGwxQgLFYgH5Xy
+ D60mV8+wH8tGR43NO+5e12BZd+bK7gLQPhkACQSvzs/r+3bz40PbnjHRxOfEVhTDR3aH3qgOn
+ wwRNFlzlzlGdWu/g5LSBgvX91yNaDCfUjS9Kc422HXmJL1XlQyDaET381Drwa6PdixxMg6Po3
+ CM4U/hIy8H8pbWBVrZZybbDbcPy00BDiFEMW0M9fwPOTvPNg4HCfsXOXIwGayh1twJhw/VTph
+ 9v4iQQQW5QyzD5Jz6A4XqHZU9jopG8CpH56ac6a+11f6d+tGNpCg==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from p100 ([94.134.152.187]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MEm2D-1qdimn2nV5-00GM2o; Fri, 04
- Aug 2023 12:17:54 +0200
-Date: Fri, 4 Aug 2023 12:17:52 +0200
+Received: from p100 ([94.134.152.187]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MMXUD-1q9vvs44xD-00JYOt; Fri, 04
+ Aug 2023 12:18:48 +0200
+Date: Fri, 4 Aug 2023 12:18:46 +0200
 From: Helge Deller <deller@gmx.de>
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-devel@nongnu.org, joel@jms.id.au, akihiko.odaki@daynix.com,
  laurent@vivier.eu, deller@gmx.de
-Subject: Re: [PATCH v8 09/17] linux-user: Define TASK_UNMAPPED_BASE in
- $guest/target_mman.h
-Message-ID: <ZMzQUIwArpkWw+71@p100>
+Subject: Re: [PATCH v8 11/17] linux-user: Use MAP_FIXED_NOREPLACE for initial
+ image mmap
+Message-ID: <ZMzQhmyMkFp4n2F/@p100>
 References: <20230804014517.6361-1-richard.henderson@linaro.org>
- <20230804014517.6361-10-richard.henderson@linaro.org>
+ <20230804014517.6361-12-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230804014517.6361-10-richard.henderson@linaro.org>
-X-Provags-ID: V03:K1:Lou1X9U4sLeg5GrnWV9st1e3aHelfUjr3FSXegO9UL6QUgEWXkM
- urgwjaOTCaN39tJxZqRSpBUoEXCx25srrWSFxg//vge3XQXw4GEM5ZJB/QR/ENASd9BKJnw
- YVfNZ3kSHsEoBu+629Mu1dMZ6BQZEhkIqFCY1k7sIcLfC4IJ5gdkcq2OFB5tP0BKLrvmH+X
- B9IRWydBRvaT2Sb4DT1gA==
-UI-OutboundReport: notjunk:1;M01:P0:pvPzJ4QJ6zU=;LOyllbmQeA46ZC4SrdL9+xSbkpl
- W1Oh18n2xpyKCiIX925Dif/LhqrDOvC+JBGf5EZtMyvOhh57dqTx5wjr8m3AEOGz3wNXTkMhD
- uKR6FGbY/FgF6uH6qaH9kbUSf/ti6KVV4Wdl1L1eCIxfEeMEY2mrN9wms9Sv+ydbadYT65oIr
- wRnXmUyyvBcwj28CK5qWXHc9qZ81cU3BY9uNFkNY7/U2Ulu8ZSBWMJs9TPXPoG3wX/C+MZK6M
- vb85obxILbEb1vSvvRhG0JntOZC8OsYQ2fBm2DwJRuVlXIhGZuMFz2/BCIkZZCQ8cP2rkw2Gp
- J9cz6xrqybybkzAzypwB14vUJ82i3BTX1QBJdKQ/22uiF8ac4XXSVFdYnVwz+6tq/VtrUqWkx
- 12XzJirVJ5+O+mWNlV3qxRCR3rajc/20m4ZIy5sUoOkORHTOHPFK9ik0LLrNlhSzBeM0k/tly
- 6TwEgxOsC/XeGj8Co4dhTauw1VSBE3ja2wyJj03bCwAijctzMv9ICrlfGbHAO6I5N6hBKj1IA
- 4nXCI0pyNfiqDS5F5aVhdHk3+GSY91SMsRG8KkBlMHcab0IqaYsbmEB6P4gBGeGG6IoA1ZBNk
- PoKlAhbbZUHOs5UyEkg4CPadpn9FQpcFXmtpRmu0soMH7KrvQerlGf3oaLt1Q2+xbKN8D4QWb
- sG3aAqBJ57K6cwWpK6Ky001ZCDg81Nq53bIXWwjeKva9X0hQj1azmK0VFE6ozo6UfvclRYu6l
- 2UaYVL6Iwzd0+vZEVHDyBKxzNHqxFr0Q8WEDRax9nPG2Xp9gKsL8w89EkE2+jkztWCAG10CcS
- zus7N1lVYZftPAOAGJw1/wsQJ1WvS/ec2lRcaTXo1feDn6RIqVEVVZEAseJ2Vzaz7Hg0EQ1iB
- SeHLIjt+PtXPG8rxL9OYVFbVYc+J3x2lDGfw/7dvjCOAS6UZEQblV3NTQ6g8pM2neWjxzq8hu
- FavfOiAQEfRqpneLBcsyazF9QWA=
+In-Reply-To: <20230804014517.6361-12-richard.henderson@linaro.org>
+X-Provags-ID: V03:K1:D8T6C+ZbYqKqX+sL7eI/7y7DOT+ISwWAjq12JF6IhfwNU3c94L7
+ wdgqOXPUHfvzs7W74pawR1hhIbaR2OnuUVZhyqAQjBNUCiJ98FrS20BpHLdLpwIt9uwY9Xf
+ Uu14uiD1J2qwLfebO4tSGHHC25n0a/Ky98Ue96gCDsmp/VDVI10ufW5cxjlgqR5XpXLVG23
+ 8uHS5OEWF6lJID2071SeQ==
+UI-OutboundReport: notjunk:1;M01:P0:ml5RDfLzks4=;xGk+qy9m4lPK5knqD3tv9RpKrKH
+ ycKyw/FMto0fjpoe6SjNqr3iCRgrPELIEnz6SZovoM6a8A9ReIVxt77SMYqgcz9KcLhuId+Q5
+ m1DsbyIpbCK/Czuke3Cm2Qdfz3w2r4D/b5cQP57gejnLiZTm0N4XbYxxOkJGt+MyBkKFwlv6u
+ BBOZey8TtyOySADUmySlORzAfJJ0D0OP/a8iV996zEbGhjsM96S6ntx8b+Ss0l26ciyOGyND4
+ muhdJZHRBh7O+jMDhx62K6RBYkl/e+5OYBXYFMy2Kf5Q11JIJrYL2d4WY4SwpQhmmPH9zBigR
+ tf+wMUv1tCXhWsXUgTGKYNOKWVhkx7ZhCeVuIsrrdErHmXuxl+GeDhTnGjuHqH6bzX0JFhnyp
+ WsMPhjRSqF6b/JgaATjj5tSO3ys88ATnsaCvR2UF0gnV2De3mblyzatsHOrb1CsXSsITG+abr
+ eSH8vbOznq+xMmTt9EyFrBekgnTxZ8FpzHDZdWRgtZOwi7464c+aciIrrT41Z1E4nX/u+UPH8
+ t6i2Xkm7FAsG9Os9WLClgZ9ZERh74VFpFola/mjaaZpAbvZD7JsleIFcZ4LKrE3NN8aI2unwQ
+ yCi/5lji2xOUgUlk6DZTAcENev0KQ1G6mnr5J2XREq4Ut5Ys7IkCyQev4Kklbdhc8+Gu+4h7G
+ NbwNmrGuxqXBWrZ6fPLZX+gZclnvEkiahv9aN+YzHGk5B5yxcF2vP/2veTba8zRIoZWmb5s+6
+ KSX87CnObvwkMhrmHNpO6yGvMK5t6Ha9u7zeqFGFy/4tz7KNNb0jZycTrUtVPip9+pl4Hz2F3
+ fY/icA+eTx7oB3Nytk2jvLVW6DxnvXe+8cwF7wA6zsU2g451Rdb8Mm2pihy5xJOmzq93HzVw1
+ Qvf8tm6jA4SSsPg/eobY3uybXwq39jmi6pinBr3nRKgoWvNS5cAtFUGFYC6ALgILrwd7Vqa4a
+ w7BWvZTxj4Acr+OsSlCZquPEPI8=
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=212.227.15.15; envelope-from=deller@gmx.de;
+Received-SPF: pass client-ip=212.227.15.18; envelope-from=deller@gmx.de;
  helo=mout.gmx.net
 X-Spam_score_int: -27
 X-Spam_score: -2.8
@@ -88,8 +88,8 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 * Richard Henderson <richard.henderson@linaro.org>:
-> Provide default values that are as close as possible to the
-> values used by the guest's kernel.
+> Use this as extra protection for the guest mapping over
+> any qemu host mappings.
 >
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
