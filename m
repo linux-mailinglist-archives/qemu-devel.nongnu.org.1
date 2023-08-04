@@ -2,74 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4424770202
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 15:40:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B319A77020F
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 15:42:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRv1t-0002NQ-IJ; Fri, 04 Aug 2023 09:39:45 -0400
+	id 1qRv3k-0003eJ-5f; Fri, 04 Aug 2023 09:41:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qRv1q-0002Mo-4V
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 09:39:42 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qRv1i-0001v6-He
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 09:39:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691156362;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=qFiwBAeM/ffqHiVVGuLOSQ7USRY7Ej9FOzAzPadXqus=;
- b=C3PJDGXAC7IvWFZ9d9GLvyj0kWcot8wobgHZ3hnmfmq9UmeEtb17OSYtAXbfIXWV534ZYx
- KFuJ0KroUIgEmbwCL28Tldkfv3qzK2U3wpyU7NFggBPOmUPYQwvCOkXbVRibvBfE24O5pJ
- NIMV0QGDwV+3xEtXPx67aFCPQnib764=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-345-jA2LgF7mPXS4Hi9eZNbGDw-1; Fri, 04 Aug 2023 09:39:21 -0400
-X-MC-Unique: jA2LgF7mPXS4Hi9eZNbGDw-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6233883505A;
- Fri,  4 Aug 2023 13:39:19 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.105])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id D4C6E40C2078;
- Fri,  4 Aug 2023 13:39:17 +0000 (UTC)
-Date: Fri, 4 Aug 2023 14:39:15 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Peter Xu <peterx@redhat.com>
-Cc: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org,
- Leonardo Bras Soares Passos <lsoaresp@redhat.com>,
- Eric Blake <eblake@redhat.com>, Juan Quintela <quintela@redhat.com>,
- Chensheng Dong <chdong@redhat.com>, Zhiyi Guo <zhguo@redhat.com>,
- Fabiano Rosas <farosas@suse.de>
-Subject: Re: [PATCH] migration: Allow user to specify migration available
- bandwidth
-Message-ID: <ZMz/g+qU7vzXx6aP@redhat.com>
-References: <20230724170755.1114519-1-peterx@redhat.com>
- <87351cfdrq.fsf@pond.sub.org> <ZL/7XtiEFWEprQhD@x1n>
- <87o7jz8a6o.fsf@pond.sub.org> <ZME33z8vFL0fRGYV@x1n>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qRv3h-0003dN-NZ
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 09:41:37 -0400
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qRv3g-0002Vh-68
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 09:41:37 -0400
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1bb893e6365so14754975ad.2
+ for <qemu-devel@nongnu.org>; Fri, 04 Aug 2023 06:41:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1691156494; x=1691761294;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=DrlQwcI5vmCwNcVN4ouThYvJTY5NWvd1qxQVHO8HESU=;
+ b=Bd7FppI0dLvNoWsEohtHeT2lMhq2lOSNZn2s+RV4aJAL0leOqsmQbYnYs9ysKswx9o
+ 3HCemCzJcSXPf36It9K7pcPGLya6KqO9yRm64PWQaIZX7H8TMSbDBbneZQnTkxRa2U/b
+ Cxc/faKrmCEAMOf1GAbN2zs0EUjQbB1DY3/rTy+QEoRdk/fI53XlG2SXT8tWebfAS74M
+ gqzmznujJb8E0lJTehv17eu1IyR3B17qQL7kWpfzDbDRQC+6fEhbXJDjTE7WDVzm/4IR
+ sgJRcsn9ZxTP5PXlgjKW+EcUUGSHxTrCB1mv8RsCuVmQxLGjewMqI4x79tD2JC2nhOV7
+ gRjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1691156494; x=1691761294;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=DrlQwcI5vmCwNcVN4ouThYvJTY5NWvd1qxQVHO8HESU=;
+ b=aChUh1q5vnIGQqVMbdPVb6sUM4rYjH0KOw7XgD8HE8bV8KU+RPJVETwIX+yusZPjMh
+ BCGan194bBQauIZpsvqBdZSXMBrUhvZCg1qfS32E7dOpv/roxUX1s7nO8MtfaursURe6
+ 5yH2QPL2k1UG4CCayCbUafT4KebdMQLTtD9XTTTqU5/n6B2vtO6prsAektKXBIz3hVhE
+ bVQ6jPOyJBAOtBFs28T/Ib5nuMSf3FOR0GO0z5hRGwWz3dtPGL4a8f6dY3+E2b2etHLM
+ 4/lUmNb+2MWl5VXKfQrXBzlJ/R08T42w+Y7CM2tVTdCnipEwN+JzYwBHd8KnjRJYk0vo
+ /UNw==
+X-Gm-Message-State: AOJu0YyDnj+udRiY9eGIoe0gSoqCQjuT/WXzBoBFAV/p4rNTzO+DYnE8
+ ZcEvNsiNVB3PlVLDGt7B6Jsjfw==
+X-Google-Smtp-Source: AGHT+IE/5BTbfyu9D5PoL+BpL5x98+9FYJZf5Ll4Bgg19tC4vnPVWov1dWk6vKEyaqKX978/w5br/A==
+X-Received: by 2002:a17:902:e849:b0:1bb:bc6d:45a with SMTP id
+ t9-20020a170902e84900b001bbbc6d045amr1761316plg.28.1691156494543; 
+ Fri, 04 Aug 2023 06:41:34 -0700 (PDT)
+Received: from ?IPV6:2602:47:d490:6901:1eed:f77f:f320:8b14?
+ ([2602:47:d490:6901:1eed:f77f:f320:8b14])
+ by smtp.gmail.com with ESMTPSA id
+ a4-20020a170902ecc400b001b8b4730355sm1754714plh.287.2023.08.04.06.41.33
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 04 Aug 2023 06:41:34 -0700 (PDT)
+Message-ID: <04b4edc5-f24d-3d33-970a-172e889d9c02@linaro.org>
+Date: Fri, 4 Aug 2023 06:41:31 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <ZME33z8vFL0fRGYV@x1n>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PULL 02/10] util/interval-tree: Use qatomic_set_mb in
+ rb_link_node
+Content-Language: en-US
+To: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>
+References: <20230731210211.137353-1-richard.henderson@linaro.org>
+ <20230731210211.137353-3-richard.henderson@linaro.org>
+ <8854030f-73ea-b92b-2ee4-c219acfbe1c3@tls.msk.ru>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <8854030f-73ea-b92b-2ee4-c219acfbe1c3@tls.msk.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.093,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,105 +95,53 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jul 26, 2023 at 11:12:31AM -0400, Peter Xu wrote:
-> On Wed, Jul 26, 2023 at 08:21:35AM +0200, Markus Armbruster wrote:
-> > Peter Xu <peterx@redhat.com> writes:
-> > 
-> > > Hi, Markus,
-> > >
-> > > On Tue, Jul 25, 2023 at 01:10:01PM +0200, Markus Armbruster wrote:
-> > 
-> > [...]
-> > 
-> > >> For better or worse, we duplicate full documentation between
-> > >> MigrationParameter, MigrateSetParameters, and MigrationParameters.  This
-> > >> would be the first instance where we reference instead.  I'm not opposed
-> > >> to use references, but if we do, I want them used consistently.
-> > >
-> > > We discussed this over the other "switchover" parameter, but that patchset
-> > > just stranded..
-> > >
-> > > Perhaps I just provide a pre-requisite patch to remove all the comments in
-> > > MigrateSetParameters and MigrationParameters, letting them all point to
-> > > MigrationParameter?
-> > 
-> > Simplifies maintaining the doc commments.  But how does it affect the
-> > documentation generated from it?  Better, neutral, or worse?
+On 8/4/23 02:02, Michael Tokarev wrote:
+> 01.08.2023 00:02, Richard Henderson wrote:
+>> Ensure that the stores to rb_left and rb_right are complete before
+>> inserting the new node into the tree.  Otherwise a concurrent reader
+>> could see garbage in the new leaf.
+>>
+>> Cc: qemu-stable@nongnu.org
+>> Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>> ---
+>>   util/interval-tree.c | 6 +++++-
+>>   1 file changed, 5 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/util/interval-tree.c b/util/interval-tree.c
+>> index 5a0ad21b2d..759562db7d 100644
+>> --- a/util/interval-tree.c
+>> +++ b/util/interval-tree.c
+>> @@ -128,7 +128,11 @@ static inline void rb_link_node(RBNode *node, RBNode *parent, 
+>> RBNode **rb_link)
+>>       node->rb_parent_color = (uintptr_t)parent;
+>>       node->rb_left = node->rb_right = NULL;
+>> -    qatomic_set(rb_link, node);
+>> +    /*
+>> +     * Ensure that node is initialized before insertion,
+>> +     * as viewed by a concurrent search.
+>> +     */
+>> +    qatomic_set_mb(rb_link, node);
 > 
-> Probably somewhere neutral.  There are definitely benefits, shorter
->
-> man/html page in total, and avoid accidentally different docs over the same
-> fields.  E.g., we sometimes have different wordings for different objects:
+> FWIW, there's no qatomic_set_mb() in 8.0 and before, so this can not be
+> directly applied to stable-8.0.  This commit is missing in 8.0 before
+> qatomic_set_mb() can be used:
 > 
->        max-cpu-throttle
->               maximum cpu throttle percentage.  Defaults to 99.  (Since 3.1)
+> commit 06831001ac8949b0801e0d20c347d97339769a20
+> Author: Paolo Bonzini <pbonzini@redhat.com>
+> Date:   Fri Mar 3 14:37:51 2023 +0100
 > 
->        max-cpu-throttle: int (optional)
->               maximum cpu throttle percentage.  The default value is 99. (Since 3.1)
+>      atomics: eliminate mb_read/mb_set
 > 
-> This one is fine, but it's just very easy to leak in something that shows
-> differently.  It's good to provide coherent documentation for the same
-> fields over all three objects.
+> I don't think it's a good idea to back-port this commit to stable-8.0.
+> 
+> How do you think we can solve this for 8.0?
 
-Do we have any actual problems though where the difference in
-docs is actively harmful ? I agree there's a possbility of the
-duplication being problematic, but unless its actually the
-case in reality, it is merely a theoretical downside.
+The function is called qatomic_mb_set instead of qatomic_set_mb in stable-8.0.
 
-IMHO for someone consuming the docs, this patch is worse, not neutral.
 
-> 
-> When looking at qemu-qmp-ref.7, it can be like this when we can invite the
-> reader to read the other section (assuming we only keep MigrationParameter
-> to keep the documentations):
-> 
->    MigrationParameters (Object)
-> 
->        The object structure to represent a list of migration parameters.
->        The optional members aren't actually optional.  For detailed
->        explanation for each of the field, please refer to the documentation
->        of MigrationParameter.
-> 
-> But the problem is we always will generate the Members entry, where now
-> it'll all filled up with "Not documented"..
-> 
->    Members
->        announce-initial: int (optional)
->               Not documented
-> 
->        announce-max: int (optional)
->               Not documented
-> 
->        announce-rounds: int (optional)
->               Not documented
-> 
->        [...]
-> 
-> I think maybe it's better we just list the members without showing "Not
-> documented" every time for the other two objects.  Not sure whether it's an
-> easy way to fix it, or is it a major issue.
-> 
-> For developers, dedup the comment should always be a win, afaict.
-
-IMHO that's optimizing for the wrong people and isn't a measurable
-win anyway. Someone adding a new parameter can just cut+paste the
-same docs string in the three places. It is a cost, but it is a
-small one time cost, where having "not documented" is a ongoing
-cost for consumers of our API.
-
-I don't think the burden on QEMU maintainers adding new migration
-parameters is significant enough to justify ripping out our existing
-docs.
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+r~
 
