@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19AF2770BBC
-	for <lists+qemu-devel@lfdr.de>; Sat,  5 Aug 2023 00:06:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E615770BBF
+	for <lists+qemu-devel@lfdr.de>; Sat,  5 Aug 2023 00:07:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qS2rO-00053s-66; Fri, 04 Aug 2023 18:01:26 -0400
+	id 1qS2rO-00053v-QN; Fri, 04 Aug 2023 18:01:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qS2qs-0004lP-05
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 18:00:54 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ id 1qS2qs-0004mI-Qg
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 18:00:55 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qS2qq-0001vR-DF
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 18:00:53 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-1bbd2761f1bso22050105ad.2
+ id 1qS2qr-0001vX-4N
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 18:00:54 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-1bb2468257fso18112725ad.0
  for <qemu-devel@nongnu.org>; Fri, 04 Aug 2023 15:00:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691186451; x=1691791251;
+ d=linaro.org; s=google; t=1691186452; x=1691791252;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0VLnmjiDjAi6Gl+LJx+pmU5KrGv5xMTSD4fN49XrjM0=;
- b=iM8rStISP/kbHq5bgwFjLPgHYhwXqvoj/tKh+lukRLdQVI4NobFYK1dooL1XW8H2GH
- F8IQ/cI9cxS256vFZcEvOPnSjol36O7pcvTrUUwyozUHzcusLaTjTipXNIBPzN6w71xz
- yNE+TRyHHkk5Xh95pJ+vezSGxlME/JiiopdZruJLxDIq3jzUo0tQlsjWzs3XcvLXe8wM
- u0rayxXCCZBiIQDKpjTsbaqHkf1Z8BPtVqbDqmbLRFEI8ZqNv0ypAdEr3xmh+fFHh6cU
- G7zRn2l6HRy8bS4QDGVPjyt8qIK6aZhwmN5X8+taQ+4a80yVQJbxyiAoXaySbjI/Shpg
- DmYA==
+ bh=DQhgJn+xuWrfht0tZgQrit41wBeRtDQVHgOUdbJWgEM=;
+ b=gmsp8c2GoRKN3FQWE/T+jUBYHzwWW5Cs3lkXAiQEBnaYIbWGzgDjMzexZ8lYVwCrQ8
+ GPlDgTnS6AKx85oa9px2YGs6oNkOPR3a4ISIJ637XPt5htOtcppM1yoM0U33ABPT57S7
+ N5pACJAc5Yr2Cz+gYNGTYpFsiFWI5LlSLZlFOU2DYz3mQhbX8VMuRcRafBXdIa2XRGNg
+ E26viS+ZXARzz6vIJ0awUii8HACplyiqzUe9gbPIppQtRA/K+HNVX2u6rHsM8iUjFm09
+ 1ywX+FVetvRKQiNJgUJx2MPOJe998aVvy+OtHWtlpUvV7M1TzXIsYqrHw1ztKtjmHJwp
+ hZsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691186451; x=1691791251;
+ d=1e100.net; s=20221208; t=1691186452; x=1691791252;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0VLnmjiDjAi6Gl+LJx+pmU5KrGv5xMTSD4fN49XrjM0=;
- b=iEX3R1zl+K0IvNnjQj/b9uhBEY2dIlBrPK3aaRYI2ofP3Gc+W93Z5VuDgyDuU95+Ul
- ZnwodqHgon8QT4XijBw4SyxrBoui6PiPQc0U2CeVcD4/H3m4Ni3/7xIPVSdHH0CrCd3m
- nby07O41jlIyJDuc91/weO+b2h8rpyBBbv+2TwhP0sWdUNtdFj/26IghatJvDPdpTfK2
- 3u6H+TDPXBcUmYm6+nJStEODQ4Cnxmabt2DohbNWFQQKAMtE1RSkobfgbROOjjNOhAH3
- MerfG0oVp4Fz8Tk6cpdrdvQJqi8XqSw+gYGis4pnLwh0HDKeptki5EAQcRthz7a+ngJy
- Z0Qg==
-X-Gm-Message-State: AOJu0Yzs4GLuLSL40VYHX9a0Kv3jT7nO29o8bWiC9+AgCW99r/NtcUiv
- qqAZOLlfL6ynLsDnsNFygZ7mCzIxGwWrOgW3oXM=
-X-Google-Smtp-Source: AGHT+IEdKeW9CxGO6oXuvsVm4vXphXd05qaAt+vnDgNcw6eUdOkaGKxKGXxzBRcRvrfZOCexu7IChA==
-X-Received: by 2002:a17:902:ec8c:b0:1bb:edd5:4644 with SMTP id
- x12-20020a170902ec8c00b001bbedd54644mr3450857plg.68.1691186450989; 
- Fri, 04 Aug 2023 15:00:50 -0700 (PDT)
+ bh=DQhgJn+xuWrfht0tZgQrit41wBeRtDQVHgOUdbJWgEM=;
+ b=QWMjdLdR4TO0Vk4y3VuBa8m7IX12jw8a2KCeFCSoV12uz+pwZxEpfLYQdinbCS6/74
+ 8g0ibbLVPYD1t8fqUCPtHI7QLaj5gBqYEyu4dpUnlC9OVcEeT5Sj+QDnUKtu/pnT7bND
+ +B7HOTEb+KGJBVFXqMTZpckKz0XkYvHrwv7jtNQI2KPcHuADbKB8b6PRD9MRparuxYqE
+ iUphtDeFzdQFBQIDajVlPtg92qT8gY/9mizDFrslcFfLghL0b2JLwBUp415SGaK2VYdt
+ bYO+1mD+Q82JZyn7IRkqBQ69Z275/U51M3GtU/86AwHwSbMFROMvjsuC7JDX+FT568wQ
+ aAew==
+X-Gm-Message-State: AOJu0Yzt0jKuiFuimQUCakPkhlLrorAUQUP3V6lhO8JiOW3ygmsc0cCo
+ I0EtXLNQYZrH1FWdAZ+dV00lUumBN4oJjU8/+r8=
+X-Google-Smtp-Source: AGHT+IEgGeZKTgLBqE9Si7q3hVtoVuh0G46dcv5xK/nVwQzB9fIxSYpH5SeG8MZYR3wEDsiHMt9OEg==
+X-Received: by 2002:a17:902:bb8b:b0:1b9:d2fc:ba9f with SMTP id
+ m11-20020a170902bb8b00b001b9d2fcba9fmr2751404pls.11.1691186451762; 
+ Fri, 04 Aug 2023 15:00:51 -0700 (PDT)
 Received: from stoup.. ([2602:47:d490:6901:1eed:f77f:f320:8b14])
  by smtp.gmail.com with ESMTPSA id
- u1-20020a17090282c100b001bbf7fd354csm2185568plz.213.2023.08.04.15.00.50
+ u1-20020a17090282c100b001bbf7fd354csm2185568plz.213.2023.08.04.15.00.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 04 Aug 2023 15:00:50 -0700 (PDT)
+ Fri, 04 Aug 2023 15:00:51 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Helge Deller <deller@gmx.de>,
 	Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v9 20/24] linux-user: Do not adjust image mapping for host
- page size
-Date: Fri,  4 Aug 2023 15:00:28 -0700
-Message-Id: <20230804220032.295411-21-richard.henderson@linaro.org>
+Subject: [PATCH v9 21/24] linux-user: Do not adjust zero_bss for host page size
+Date: Fri,  4 Aug 2023 15:00:29 -0700
+Message-Id: <20230804220032.295411-22-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230804220032.295411-1-richard.henderson@linaro.org>
 References: <20230804220032.295411-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,67 +92,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Remove TARGET_ELF_EXEC_PAGESIZE, and 3 other TARGET_ELF_PAGE* macros
-based off of that.  Rely on target_mmap to handle guest vs host page
-size mismatch.
+Rely on target_mmap to handle guest vs host page size mismatch.
 
 Tested-by: Helge Deller <deller@gmx.de>
 Reviewed-by: Helge Deller <deller@gmx.de>
 Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/elfload.c | 17 ++++-------------
- 1 file changed, 4 insertions(+), 13 deletions(-)
+ linux-user/elfload.c | 54 +++++++++++++++++++-------------------------
+ 1 file changed, 23 insertions(+), 31 deletions(-)
 
 diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index fa0c9ace8e..e853a4ab33 100644
+index e853a4ab33..66ab617bd1 100644
 --- a/linux-user/elfload.c
 +++ b/linux-user/elfload.c
-@@ -1959,15 +1959,6 @@ struct exec
- #define ZMAGIC 0413
- #define QMAGIC 0314
+@@ -2212,44 +2212,36 @@ static abi_ulong setup_arg_pages(struct linux_binprm *bprm,
  
--/* Necessary parameters */
--#define TARGET_ELF_EXEC_PAGESIZE \
--        (((eppnt->p_align & ~qemu_host_page_mask) != 0) ? \
--         TARGET_PAGE_SIZE : MAX(qemu_host_page_size, TARGET_PAGE_SIZE))
--#define TARGET_ELF_PAGELENGTH(_v) ROUND_UP((_v), TARGET_ELF_EXEC_PAGESIZE)
--#define TARGET_ELF_PAGESTART(_v) ((_v) & \
--                                 ~(abi_ulong)(TARGET_ELF_EXEC_PAGESIZE-1))
--#define TARGET_ELF_PAGEOFFSET(_v) ((_v) & (TARGET_ELF_EXEC_PAGESIZE-1))
+ /* Map and zero the bss.  We need to explicitly zero any fractional pages
+    after the data section (i.e. bss).  */
+-static void zero_bss(abi_ulong elf_bss, abi_ulong last_bss, int prot)
++static void zero_bss(abi_ulong start_bss, abi_ulong end_bss, int prot)
+ {
+-    uintptr_t host_start, host_map_start, host_end;
++    abi_ulong align_bss;
+ 
+-    last_bss = TARGET_PAGE_ALIGN(last_bss);
++    align_bss = TARGET_PAGE_ALIGN(start_bss);
++    end_bss = TARGET_PAGE_ALIGN(end_bss);
+ 
+-    /* ??? There is confusion between qemu_real_host_page_size and
+-       qemu_host_page_size here and elsewhere in target_mmap, which
+-       may lead to the end of the data section mapping from the file
+-       not being mapped.  At least there was an explicit test and
+-       comment for that here, suggesting that "the file size must
+-       be known".  The comment probably pre-dates the introduction
+-       of the fstat system call in target_mmap which does in fact
+-       find out the size.  What isn't clear is if the workaround
+-       here is still actually needed.  For now, continue with it,
+-       but merge it with the "normal" mmap that would allocate the bss.  */
++    if (start_bss < align_bss) {
++        int flags = page_get_flags(start_bss);
+ 
+-    host_start = (uintptr_t) g2h_untagged(elf_bss);
+-    host_end = (uintptr_t) g2h_untagged(last_bss);
+-    host_map_start = REAL_HOST_PAGE_ALIGN(host_start);
 -
- #define DLINFO_ITEMS 16
+-    if (host_map_start < host_end) {
+-        void *p = mmap((void *)host_map_start, host_end - host_map_start,
+-                       prot, MAP_FIXED | MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+-        if (p == MAP_FAILED) {
+-            perror("cannot mmap brk");
+-            exit(-1);
++        if (!(flags & PAGE_VALID)) {
++            /* Map the start of the bss. */
++            align_bss -= TARGET_PAGE_SIZE;
++        } else if (flags & PAGE_WRITE) {
++            /* The page is already mapped writable. */
++            memset(g2h_untagged(start_bss), 0, align_bss - start_bss);
++        } else {
++            /* Read-only zeros? */
++            g_assert_not_reached();
+         }
+     }
  
- static inline void memcpy_fromfs(void * to, const void * from, unsigned long n)
-@@ -3240,8 +3231,8 @@ static void load_elf_image(const char *image_name, int image_fd,
-             }
+-    /* Ensure that the bss page(s) are valid */
+-    if ((page_get_flags(last_bss-1) & prot) != prot) {
+-        page_set_flags(elf_bss & TARGET_PAGE_MASK, last_bss - 1,
+-                       prot | PAGE_VALID);
+-    }
+-
+-    if (host_start < host_map_start) {
+-        memset((void *)host_start, 0, host_map_start - host_start);
++    if (align_bss < end_bss) {
++        abi_long err = target_mmap(align_bss, end_bss - align_bss, prot,
++                                   MAP_FIXED | MAP_PRIVATE | MAP_ANONYMOUS,
++                                   -1, 0);
++        if (err == -1) {
++            perror("cannot mmap brk");
++            exit(-1);
++        }
+     }
+ }
  
-             vaddr = load_bias + eppnt->p_vaddr;
--            vaddr_po = TARGET_ELF_PAGEOFFSET(vaddr);
--            vaddr_ps = TARGET_ELF_PAGESTART(vaddr);
-+            vaddr_po = vaddr & ~TARGET_PAGE_MASK;
-+            vaddr_ps = vaddr & TARGET_PAGE_MASK;
- 
-             vaddr_ef = vaddr + eppnt->p_filesz;
-             vaddr_em = vaddr + eppnt->p_memsz;
-@@ -3251,7 +3242,7 @@ static void load_elf_image(const char *image_name, int image_fd,
-              * but no backing file segment.
-              */
-             if (eppnt->p_filesz != 0) {
--                vaddr_len = TARGET_ELF_PAGELENGTH(eppnt->p_filesz + vaddr_po);
-+                vaddr_len = eppnt->p_filesz + vaddr_po;
-                 error = target_mmap(vaddr_ps, vaddr_len, elf_prot,
-                                     MAP_PRIVATE | MAP_FIXED,
-                                     image_fd, eppnt->p_offset - vaddr_po);
-@@ -3267,7 +3258,7 @@ static void load_elf_image(const char *image_name, int image_fd,
-                     zero_bss(vaddr_ef, vaddr_em, elf_prot);
-                 }
-             } else if (eppnt->p_memsz != 0) {
--                vaddr_len = TARGET_ELF_PAGELENGTH(eppnt->p_memsz + vaddr_po);
-+                vaddr_len = eppnt->p_memsz + vaddr_po;
-                 error = target_mmap(vaddr_ps, vaddr_len, elf_prot,
-                                     MAP_PRIVATE | MAP_FIXED | MAP_ANONYMOUS,
-                                     -1, 0);
 -- 
 2.34.1
 
