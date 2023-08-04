@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B548377083C
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 20:55:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 049F9770849
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 20:56:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRzwN-0002KL-48; Fri, 04 Aug 2023 14:54:24 -0400
+	id 1qRzwX-0002Ln-Um; Fri, 04 Aug 2023 14:54:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qRzwH-0002Jr-S2; Fri, 04 Aug 2023 14:54:18 -0400
+ id 1qRzwK-0002KQ-EP; Fri, 04 Aug 2023 14:54:20 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qRzwG-00089L-6o; Fri, 04 Aug 2023 14:54:17 -0400
+ id 1qRzwI-00089t-WB; Fri, 04 Aug 2023 14:54:20 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 1904D1840D;
+ by isrv.corpit.ru (Postfix) with ESMTP id 496571840E;
  Fri,  4 Aug 2023 21:54:19 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 6560D1B884;
+ by tsrv.corpit.ru (Postfix) with SMTP id D96261B885;
  Fri,  4 Aug 2023 21:53:58 +0300 (MSK)
-Received: (nullmailer pid 1874221 invoked by uid 1000);
+Received: (nullmailer pid 1874224 invoked by uid 1000);
  Fri, 04 Aug 2023 18:53:56 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- jiangyegen <jiangyegen@huawei.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.5 23/36] io: remove io watch if TLS channel is closed
- during handshake
-Date: Fri,  4 Aug 2023 21:53:36 +0300
-Message-Id: <20230804185350.1874133-10-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Keith Packard <keithp@keithp.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.5 24/36] target/nios2: Pass semihosting arg to exit
+Date: Fri,  4 Aug 2023 21:53:37 +0300
+Message-Id: <20230804185350.1874133-11-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.5-20230804215319@cover.tls.msk.ru>
 References: <qemu-stable-7.2.5-20230804215319@cover.tls.msk.ru>
@@ -61,78 +61,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel P. Berrangé <berrange@redhat.com>
+From: Keith Packard <keithp@keithp.com>
 
-The TLS handshake make take some time to complete, during which time an
-I/O watch might be registered with the main loop. If the owner of the
-I/O channel invokes qio_channel_close() while the handshake is waiting
-to continue the I/O watch must be removed. Failing to remove it will
-later trigger the completion callback which the owner is not expecting
-to receive. In the case of the VNC server, this results in a SEGV as
-vnc_disconnect_start() tries to shutdown a client connection that is
-already gone / NULL.
+Instead of using R_ARG0 (the semihost function number), use R_ARG1
+(the provided exit status).
 
-CVE-2023-3354
-Reported-by: jiangyegen <jiangyegen@huawei.com>
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-(cherry picked from commit 10be627d2b5ec2d6b3dce045144aa739eef678b4)
+Signed-off-by: Keith Packard <keithp@keithp.com>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Message-Id: <20230801152245.332749-1-keithp@keithp.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+(cherry picked from commit c11d5bdae79a8edaf00dfcb2e49c064a50c67671)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/include/io/channel-tls.h b/include/io/channel-tls.h
-index 5672479e9e..26c67f17e2 100644
---- a/include/io/channel-tls.h
-+++ b/include/io/channel-tls.h
-@@ -48,6 +48,7 @@ struct QIOChannelTLS {
-     QIOChannel *master;
-     QCryptoTLSSession *session;
-     QIOChannelShutdown shutdown;
-+    guint hs_ioc_tag;
- };
+diff --git a/target/nios2/nios2-semi.c b/target/nios2/nios2-semi.c
+index f76e8588c5..29ac27035e 100644
+--- a/target/nios2/nios2-semi.c
++++ b/target/nios2/nios2-semi.c
+@@ -132,8 +132,8 @@ void do_nios2_semihosting(CPUNios2State *env)
+     args = env->regs[R_ARG1];
+     switch (nr) {
+     case HOSTED_EXIT:
+-        gdb_exit(env->regs[R_ARG0]);
+-        exit(env->regs[R_ARG0]);
++        gdb_exit(env->regs[R_ARG1]);
++        exit(env->regs[R_ARG1]);
  
- /**
-diff --git a/io/channel-tls.c b/io/channel-tls.c
-index 4ce08ccc28..a91efb57f3 100644
---- a/io/channel-tls.c
-+++ b/io/channel-tls.c
-@@ -198,12 +198,13 @@ static void qio_channel_tls_handshake_task(QIOChannelTLS *ioc,
-         }
- 
-         trace_qio_channel_tls_handshake_pending(ioc, status);
--        qio_channel_add_watch_full(ioc->master,
--                                   condition,
--                                   qio_channel_tls_handshake_io,
--                                   data,
--                                   NULL,
--                                   context);
-+        ioc->hs_ioc_tag =
-+            qio_channel_add_watch_full(ioc->master,
-+                                       condition,
-+                                       qio_channel_tls_handshake_io,
-+                                       data,
-+                                       NULL,
-+                                       context);
-     }
- }
- 
-@@ -218,6 +219,7 @@ static gboolean qio_channel_tls_handshake_io(QIOChannel *ioc,
-     QIOChannelTLS *tioc = QIO_CHANNEL_TLS(
-         qio_task_get_source(task));
- 
-+    tioc->hs_ioc_tag = 0;
-     g_free(data);
-     qio_channel_tls_handshake_task(tioc, task, context);
- 
-@@ -377,6 +379,10 @@ static int qio_channel_tls_close(QIOChannel *ioc,
- {
-     QIOChannelTLS *tioc = QIO_CHANNEL_TLS(ioc);
- 
-+    if (tioc->hs_ioc_tag) {
-+        g_clear_handle_id(&tioc->hs_ioc_tag, g_source_remove);
-+    }
-+
-     return qio_channel_close(tioc->master, errp);
- }
- 
+     case HOSTED_OPEN:
+         GET_ARG(0);
 -- 
 2.39.2
 
