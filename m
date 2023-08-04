@@ -2,35 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F02CB770858
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 20:58:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9A9A770848
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 20:56:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRzwI-0002J3-Uk; Fri, 04 Aug 2023 14:54:19 -0400
+	id 1qRzwQ-0002LL-Gy; Fri, 04 Aug 2023 14:54:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qRzwE-0002Hh-RU; Fri, 04 Aug 2023 14:54:14 -0400
+ id 1qRzwH-0002Jq-Kj; Fri, 04 Aug 2023 14:54:18 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qRzwD-00088a-5S; Fri, 04 Aug 2023 14:54:14 -0400
+ id 1qRzwF-00089D-Vx; Fri, 04 Aug 2023 14:54:17 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 6DDBA1840B;
+ by isrv.corpit.ru (Postfix) with ESMTP id 992DD1840C;
  Fri,  4 Aug 2023 21:54:18 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id E9D0C1B882;
- Fri,  4 Aug 2023 21:53:57 +0300 (MSK)
-Received: (nullmailer pid 1874215 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 3AE021B883;
+ Fri,  4 Aug 2023 21:53:58 +0300 (MSK)
+Received: (nullmailer pid 1874218 invoked by uid 1000);
  Fri, 04 Aug 2023 18:53:56 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Anthony PERARD <anthony.perard@citrix.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.5 21/36] thread-pool: signal "request_cond" while locked
-Date: Fri,  4 Aug 2023 21:53:34 +0300
-Message-Id: <20230804185350.1874133-8-mjt@tls.msk.ru>
+ Peter Maydell <peter.maydell@linaro.org>, Paul Durrant <paul@xen.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.5 22/36] xen-block: Avoid leaks on new error path
+Date: Fri,  4 Aug 2023 21:53:35 +0300
+Message-Id: <20230804185350.1874133-9-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.5-20230804215319@cover.tls.msk.ru>
 References: <qemu-stable-7.2.5-20230804215319@cover.tls.msk.ru>
@@ -60,54 +61,75 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Anthony PERARD <anthony.perard@citrix.com>
 
-thread_pool_free() might have been called on the `pool`, which would
-be a reason for worker_thread() to quit. In this case,
-`pool->request_cond` is been destroyed.
+Commit 189829399070 ("xen-block: Use specific blockdev driver")
+introduced a new error path, without taking care of allocated
+resources.
 
-If worker_thread() didn't managed to signal `request_cond` before it
-been destroyed by thread_pool_free(), we got:
-    util/qemu-thread-posix.c:198: qemu_cond_signal: Assertion `cond->initialized' failed.
+So only allocate the qdicts after the error check, and free both
+`filename` and `driver` when we are about to return and thus taking
+care of both success and error path.
 
-One backtrace:
-    __GI___assert_fail (assertion=0x55555614abcb "cond->initialized", file=0x55555614ab88 "util/qemu-thread-posix.c", line=198,
-	function=0x55555614ad80 <__PRETTY_FUNCTION__.17104> "qemu_cond_signal") at assert.c:101
-    qemu_cond_signal (cond=0x7fffb800db30) at util/qemu-thread-posix.c:198
-    worker_thread (opaque=0x7fffb800dab0) at util/thread-pool.c:129
-    qemu_thread_start (args=0x7fffb8000b20) at util/qemu-thread-posix.c:505
-    start_thread (arg=<optimized out>) at pthread_create.c:486
+Coverity only spotted the leak of qdicts (*_layer variables).
 
-Reported here:
-    https://lore.kernel.org/all/ZJwoK50FcnTSfFZ8@MacBook-Air-de-Roger.local/T/#u
-
-To avoid issue, keep lock while sending a signal to `request_cond`.
-
-Fixes: 900fa208f506 ("thread-pool: replace semaphore with condition variable")
+Reported-by: Peter Maydell <peter.maydell@linaro.org>
+Fixes: Coverity CID 1508722, 1398649
+Fixes: 189829399070 ("xen-block: Use specific blockdev driver")
 Signed-off-by: Anthony PERARD <anthony.perard@citrix.com>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-Message-Id: <20230714152720.5077-1-anthony.perard@citrix.com>
+Reviewed-by: Paul Durrant <paul@xen.org>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Message-Id: <20230704171819.42564-1-anthony.perard@citrix.com>
 Signed-off-by: Anthony PERARD <anthony.perard@citrix.com>
-(cherry picked from commit f4f71363fcdb1092ff64d2bba6f9af39570c2f2b)
+(cherry picked from commit aa36243514a777f76c8b8a19b1f8a71f27ec6c78)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/util/thread-pool.c b/util/thread-pool.c
-index 31113b5860..39accc9ebe 100644
---- a/util/thread-pool.c
-+++ b/util/thread-pool.c
-@@ -120,13 +120,13 @@ static void *worker_thread(void *opaque)
+diff --git a/hw/block/xen-block.c b/hw/block/xen-block.c
+index 345b284d70..5e45a8b729 100644
+--- a/hw/block/xen-block.c
++++ b/hw/block/xen-block.c
+@@ -759,14 +759,15 @@ static XenBlockDrive *xen_block_drive_create(const char *id,
+     drive = g_new0(XenBlockDrive, 1);
+     drive->id = g_strdup(id);
  
-     pool->cur_threads--;
-     qemu_cond_signal(&pool->worker_stopped);
--    qemu_mutex_unlock(&pool->lock);
+-    file_layer = qdict_new();
+-    driver_layer = qdict_new();
+-
+     rc = stat(filename, &st);
+     if (rc) {
+         error_setg_errno(errp, errno, "Could not stat file '%s'", filename);
+         goto done;
+     }
++
++    file_layer = qdict_new();
++    driver_layer = qdict_new();
++
+     if (S_ISBLK(st.st_mode)) {
+         qdict_put_str(file_layer, "driver", "host_device");
+     } else {
+@@ -774,7 +775,6 @@ static XenBlockDrive *xen_block_drive_create(const char *id,
+     }
  
-     /*
-      * Wake up another thread, in case we got a wakeup but decided
-      * to exit due to pool->cur_threads > pool->max_threads.
-      */
-     qemu_cond_signal(&pool->request_cond);
-+    qemu_mutex_unlock(&pool->lock);
-     return NULL;
- }
+     qdict_put_str(file_layer, "filename", filename);
+-    g_free(filename);
  
+     if (mode && *mode != 'w') {
+         qdict_put_bool(file_layer, "read-only", true);
+@@ -809,7 +809,6 @@ static XenBlockDrive *xen_block_drive_create(const char *id,
+     qdict_put_str(file_layer, "locking", "off");
+ 
+     qdict_put_str(driver_layer, "driver", driver);
+-    g_free(driver);
+ 
+     qdict_put(driver_layer, "file", file_layer);
+ 
+@@ -820,6 +819,8 @@ static XenBlockDrive *xen_block_drive_create(const char *id,
+     qobject_unref(driver_layer);
+ 
+ done:
++    g_free(filename);
++    g_free(driver);
+     if (*errp) {
+         xen_block_drive_destroy(drive, NULL);
+         return NULL;
 -- 
 2.39.2
 
