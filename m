@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06EBB76F71C
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 03:47:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1793876F721
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 03:47:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRjsv-0002gn-Kw; Thu, 03 Aug 2023 21:45:45 -0400
+	id 1qRjsz-0002jk-4P; Thu, 03 Aug 2023 21:45:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qRjsY-0002cb-LR
+ id 1qRjsZ-0002cc-PO
  for qemu-devel@nongnu.org; Thu, 03 Aug 2023 21:45:30 -0400
-Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
+Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qRjsW-00056i-Rd
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 21:45:22 -0400
-Received: by mail-pg1-x52f.google.com with SMTP id
- 41be03b00d2f7-564b6276941so353181a12.3
- for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 18:45:20 -0700 (PDT)
+ id 1qRjsX-000570-Fd
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 21:45:23 -0400
+Received: by mail-pf1-x42e.google.com with SMTP id
+ d2e1a72fcca58-686fc0d3c92so1164024b3a.0
+ for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 18:45:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691113519; x=1691718319;
+ d=linaro.org; s=google; t=1691113520; x=1691718320;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=rcpamkfhLDMnz/NSh+jJyfv46fJPLLdBfB4ohxEUnGI=;
- b=w/CFoL3fiGS+wcGcDzl1NFRwUN99aU+rTAbbef7rHt2IfcrWgiwdfmLtRNBAWXOeTd
- p9aPXsj8R8kBcNhnYdu+LnrLJ9DTaW72ruso0Ijc2/MgQFuL7A8hdBy2+dLXCxQJ8ymj
- AdldVj3kV9dbOUkrM+DiWpMcDHLcufVaqKlTMxOj1pQqVNKH+teb7hDMAKAzs4DuscBZ
- VWmol1d2RRgxZ5o/ehSESlk+J8/jaJzv6ASFUUA12Uk9p8lTY0oqw/1ugJpX3tehX/se
- 6oXPUQ6sJY29c9DIPijN38BMDcM/oOFP8IZYPjgJYoFJJ1ypl2zMtVg1HRcNubdZc/j9
- ZdBw==
+ bh=/eOGiWVqZ8Y4POmSjtXETDABSVmvc7JlojTPUk6j1vw=;
+ b=kvL3PYYCNqPm2kdtbooz9RzzOkPGr5fnNUK05uskyW30BoIPIRc0KjNoY/I/l6vIsZ
+ +8z7v/QcuomaO3/jGb8LiKkhXwId6j5GmHVZjIEPpktD6Jx8YB9xZ2d+bNj5PfSNysw5
+ 25LeZeBdPRnjIsmTTFbH+VjPknyB+u33dxS51ORqY7AxzXxHAOlo3V5dm5PI7w9KB499
+ 9702KVBD7hTvjrCqDp8he3ienJXCMJ9x7GNgsibtsNXsk6RH1FhEE669o/4LBbXFVMPZ
+ y6hG6UMd6wkgrWJVdkMRfy66h6aNE+Wbgw/L3z3G/RNR8HfUNa3X76eoVmtBTs2jJL9k
+ k8og==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691113519; x=1691718319;
+ d=1e100.net; s=20221208; t=1691113520; x=1691718320;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rcpamkfhLDMnz/NSh+jJyfv46fJPLLdBfB4ohxEUnGI=;
- b=gpOpuX1m9/K0wP6ZqpiBOk7QoMqZw5dfF0hE7/FX6ez2wM1LTrpl4cNdsGcnAkyD6h
- J5vh1zLJ0yEnOBhM9HF6/0GF1OlRIi13uquzEAsDnbDgqYIrxFs7405+NqlHaJGyX1Ix
- q1WyPN+MXYgPk8wSEEoktll1Rsopt+stgnpDL9MwP6YVRkyfe0EfhZRDQoZoftgCrALR
- S1osiTGtTRt3O1pSX83PyqtSg5ZRaEg4QDYJPMIOIOV/iYdEi1UkiRH5JNVXvzG4kr92
- 6FJDLI2+pMYKaoSQnmg2O4vIsJqwr6oFHznGdrL8dhagj84w41Fkz0XqDL8U+7WIB9dX
- OZMw==
-X-Gm-Message-State: AOJu0Yx85lgOSYnn+283yc3gfv0TJt9RiQMQRGM+f0oH0koyWMqaVIpG
- ihSkb8gE/ZukmbZp8iUKJ2mtrnMLtbzCtryrOFU=
-X-Google-Smtp-Source: AGHT+IFsWXR3YY+DjvEqnImeEXjR8oMIJ4ILVxQi2QFWOyh/I9Uh+EGICfaZMKE6D5DVaFYxrL7z2Q==
-X-Received: by 2002:a05:6a20:7495:b0:130:f6bc:9146 with SMTP id
- p21-20020a056a20749500b00130f6bc9146mr408826pzd.14.1691113519344; 
- Thu, 03 Aug 2023 18:45:19 -0700 (PDT)
+ bh=/eOGiWVqZ8Y4POmSjtXETDABSVmvc7JlojTPUk6j1vw=;
+ b=QTbSapqu89jF/mr2DtE9+0uWK2y11gNlaADLw4UpnYs06gM9fIoGD7NObJpMbEi/68
+ MFsmWkdhWSt4IZHw3io2QL7YSKMj86BVChsOxFCin/Z+5f+yHugmih8KuDwKm+jfrTeS
+ E0Vy9AjyhDunsL/6ZqnIOaQudJqbtBDOtX0J34VSq+0aY2BnC+qzur4AkVCY81VBkDo7
+ aqRr47Vfznlp/cJqkvMUWOgallg+KVO/RHC85/6eGwNp7osFautUay2qDg0XViqQk5MT
+ BnREJu3+0KNz9n4k+xy6t+jGo07LejkBHyL/CYTuU9C+m8wA0TpXmxDRsB3mTPcLqM1K
+ l46A==
+X-Gm-Message-State: AOJu0YzfwDDqTDMPtidj1iiG7bHJ6UHo9QAHdGx7NErFUtQMwkHy2euv
+ azY93Pt5hrNkRU8O8+DQfRrWGeCsX8RwKx5lEmw=
+X-Google-Smtp-Source: AGHT+IExQzT0L0jL+SQfu2V9MZCJz9pWZHMdLVcBsHVucllxQVBfHSNDBFwVMUalrEOJXYnDG2zlgA==
+X-Received: by 2002:a05:6a21:4889:b0:137:9622:17d0 with SMTP id
+ av9-20020a056a21488900b00137962217d0mr231190pzc.58.1691113520189; 
+ Thu, 03 Aug 2023 18:45:20 -0700 (PDT)
 Received: from stoup.. ([2602:47:d490:6901:9d52:4fe8:10ce:5c3])
  by smtp.gmail.com with ESMTPSA id
- c5-20020aa78c05000000b0066f37665a63sm456138pfd.73.2023.08.03.18.45.18
+ c5-20020aa78c05000000b0066f37665a63sm456138pfd.73.2023.08.03.18.45.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 03 Aug 2023 18:45:19 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: joel@jms.id.au, akihiko.odaki@daynix.com, laurent@vivier.eu, deller@gmx.de
-Subject: [PATCH v8 01/17] linux-user: Unset MAP_FIXED_NOREPLACE for host
-Date: Thu,  3 Aug 2023 18:45:01 -0700
-Message-Id: <20230804014517.6361-2-richard.henderson@linaro.org>
+Subject: [PATCH v8 02/17] linux-user: Fix MAP_FIXED_NOREPLACE on old kernels
+Date: Thu,  3 Aug 2023 18:45:02 -0700
+Message-Id: <20230804014517.6361-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230804014517.6361-1-richard.henderson@linaro.org>
 References: <20230804014517.6361-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,54 +94,69 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-Passing MAP_FIXED_NOREPLACE to host will fail for reserved_va because
-the address space is reserved with mmap.  Replace it with MAP_FIXED
-in that case.
+The man page states:
+> Note that older kernels which do not recognize the MAP_FIXED_NOREPLACE
+> flag will typically (upon detecting a collision with a preexisting
+> mapping) fall back to a “non-MAP_FIXED” type of behavior: they will
+> return an address that is different from the requested address.
+> Therefore, backward-compatible software should check the returned
+> address against the requested address.
+https://man7.org/linux/man-pages/man2/mmap.2.html
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-Id: <20230802071754.14876-2-akihiko.odaki@daynix.com>
-[rth: Expand inline commentary.]
+Message-Id: <20230802071754.14876-3-akihiko.odaki@daynix.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/mmap.c | 25 ++++++++++++++++++++-----
- 1 file changed, 20 insertions(+), 5 deletions(-)
+ linux-user/mmap.c | 22 +++++++++++++++++-----
+ 1 file changed, 17 insertions(+), 5 deletions(-)
 
 diff --git a/linux-user/mmap.c b/linux-user/mmap.c
-index a5dfb56545..a11c630a7b 100644
+index a11c630a7b..90b3ef2140 100644
 --- a/linux-user/mmap.c
 +++ b/linux-user/mmap.c
-@@ -603,11 +603,26 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
-             goto fail;
-         }
- 
--        /* Validate that the chosen range is empty. */
--        if ((flags & MAP_FIXED_NOREPLACE)
--            && !page_check_range_empty(start, last)) {
--            errno = EEXIST;
--            goto fail;
-+        if (flags & MAP_FIXED_NOREPLACE) {
-+            /* Validate that the chosen range is empty. */
-+            if (!page_check_range_empty(start, last)) {
+@@ -263,7 +263,11 @@ static bool mmap_frag(abi_ulong real_start, abi_ulong start, abi_ulong last,
+         void *p = mmap(host_start, qemu_host_page_size,
+                        target_to_host_prot(prot),
+                        flags | MAP_ANONYMOUS, -1, 0);
+-        if (p == MAP_FAILED) {
++        if (p != host_start) {
++            if (p != MAP_FAILED) {
++                munmap(p, qemu_host_page_size);
 +                errno = EEXIST;
-+                goto fail;
 +            }
-+
-+            /*
-+             * With reserved_va, the entire address space is mmaped in the
-+             * host to ensure it isn't accidentally used for something else.
-+             * We have just checked that the guest address is not mapped
-+             * within the guest, but need to replace the host reservation.
-+             *
-+             * Without reserved_va, despite the guest address check above,
-+             * keep MAP_FIXED_NOREPLACE so that the guest does not overwrite
-+             * any host address mappings.
-+             */
-+            if (reserved_va) {
-+                flags = (flags & ~MAP_FIXED_NOREPLACE) | MAP_FIXED;
-+            }
+             return false;
          }
+         prot_old = prot;
+@@ -687,17 +691,25 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
  
-         /*
+         /* map the middle (easier) */
+         if (real_start < real_last) {
+-            void *p;
++            void *p, *want_p;
+             off_t offset1;
++            size_t len1;
+ 
+             if (flags & MAP_ANONYMOUS) {
+                 offset1 = 0;
+             } else {
+                 offset1 = offset + real_start - start;
+             }
+-            p = mmap(g2h_untagged(real_start), real_last - real_start + 1,
+-                     target_to_host_prot(target_prot), flags, fd, offset1);
+-            if (p == MAP_FAILED) {
++            len1 = real_last - real_start + 1;
++            want_p = g2h_untagged(real_start);
++
++            p = mmap(want_p, len1, target_to_host_prot(target_prot),
++                     flags, fd, offset1);
++            if (p != want_p) {
++                if (p != MAP_FAILED) {
++                    munmap(p, len1);
++                    errno = EEXIST;
++                }
+                 goto fail;
+             }
+             passthrough_start = real_start;
 -- 
 2.34.1
 
