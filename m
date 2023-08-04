@@ -2,72 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB49D7704C6
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 17:32:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B3657704C5
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 17:32:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRwlA-0006Ot-1M; Fri, 04 Aug 2023 11:30:36 -0400
+	id 1qRwlP-0006Yo-QD; Fri, 04 Aug 2023 11:30:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qRwl2-0006Ja-9K; Fri, 04 Aug 2023 11:30:28 -0400
-Received: from mail-oa1-x36.google.com ([2001:4860:4864:20::36])
+ id 1qRwl4-0006LF-Q2; Fri, 04 Aug 2023 11:30:30 -0400
+Received: from mail-oo1-xc32.google.com ([2607:f8b0:4864:20::c32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qRwl0-0004Qb-Tz; Fri, 04 Aug 2023 11:30:28 -0400
-Received: by mail-oa1-x36.google.com with SMTP id
- 586e51a60fabf-1bb75afeee3so1671266fac.0; 
- Fri, 04 Aug 2023 08:30:26 -0700 (PDT)
+ id 1qRwl3-0004SX-2X; Fri, 04 Aug 2023 11:30:30 -0400
+Received: by mail-oo1-xc32.google.com with SMTP id
+ 006d021491bc7-56ccdb2c7bbso1481126eaf.1; 
+ Fri, 04 Aug 2023 08:30:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1691163025; x=1691767825;
+ d=gmail.com; s=20221208; t=1691163027; x=1691767827;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=BAqK6QWaeNrKvf7OH3VDv+9xR6Z10k+UDV3PubsDTA0=;
- b=HOZHtybnY3cDgbU/UlSdpDPFOiyz8uApBIYp9YdLM3jTO1s1h56AiMN2G/3NtxW1B7
- H5VgrCInf68NmOPMqhI7IjZE/7yOBwCwvgzUytcca4Vy8xr1hFSiigvXNtTYd1LdxDcv
- z+oDSewbhNkTykxZmx8lqox1RX2Y24NOcUGoyxrhp4sKpfp6MU7EpPfCsdOutEhGsBDE
- MhTCmzQ3QXasf2S3PJvCicD+5FfxmhqbxIsHQxOEfMtjVT4v3hYpf3ken+tpJmwCBNI8
- H6kGX5C552d2TH8E1brPjvsLRWDbpqzR7vY+fRAJ6aHizab6mJV9ktQUi1YYpW9LYBL+
- F2Gw==
+ bh=UCtpTXO6E/fFLMU1sjLPkFfWe5afgv3Y6x6eh4rRv5o=;
+ b=RvuQZz8uE+o/fC8SHuuqIpjOS2NBx+TIf64nKRYsppRHkKqaXrWZVTfO2FJ/d4l99E
+ 7LsGlU6U5OWyIdiEnYZKQ3LnUzYzGS/TNzilUzAagmdCpgYmDTQlmaBpVVcWqHHvkbSu
+ ULRBDrUiFnD49TG3wmbywTV5mdQlaxE+/QoLtKI5mRiUkgJKHBvokQv3CUeHhNaHwpVN
+ H6VqwRqdysX0b+TuoIDxJN7fdcSqU2mdNQXldmB5os5TdxV00njSPtNLo5hGuu5NoGHH
+ PVDqjbIxDhFkpG/W/fg08NhhTMHbFdTG76yAhPlv/WbrrkBCqUO0DEQhFP7ppw1cLvX4
+ CJmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691163025; x=1691767825;
+ d=1e100.net; s=20221208; t=1691163027; x=1691767827;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BAqK6QWaeNrKvf7OH3VDv+9xR6Z10k+UDV3PubsDTA0=;
- b=LIIWfzm8kLdBO20OAsge5iG49uADe+AN6pNFu4c9VjtrWeALsuTorp4sQi1aLczUn2
- q+qiO+9n7rXHNj/CTxheNQS/trnojq/2SJEWGcK9iVHtJJRxh6iEzN0bjaodD6C79PN9
- 0KtTzG3zLHGaDjFz74xJs2sTdB9ZfkbmtvXofvGgpQbO1xTUzWYmM1qvqrzy3cfPnewF
- CpkU+p7wbp33haPx/rD/0bIMCjkMUX1xy4hwUg9S8GNhuDRrUCRgGIhUjsPI2ExGX5Pq
- DkflKNyhO89QqSOFzAUXvh1qbWXHHGiZsP6dohOQb5Datqm5E8NQQiCp6/oZW/T8dbdy
- tDBg==
-X-Gm-Message-State: AOJu0YxDvJHs37Zl2GubyCynDFxhPe5+yJCC0cspMznLSasPugDVhGva
- 87oeupfjv7jHkeQTvIyEchZRVe85MII=
-X-Google-Smtp-Source: AGHT+IHGXTuwByLLrqbdjvQQu9J+PExLuBUoVycbmjrDJhdG/oiEosehz2SLmLFm16sFTafC35wG0w==
-X-Received: by 2002:a05:6870:e0d4:b0:1b4:7411:df6e with SMTP id
- a20-20020a056870e0d400b001b47411df6emr2352574oab.15.1691163024913; 
- Fri, 04 Aug 2023 08:30:24 -0700 (PDT)
+ bh=UCtpTXO6E/fFLMU1sjLPkFfWe5afgv3Y6x6eh4rRv5o=;
+ b=RF4E7JLp1cMuGKfSKk2dc7Az3EHzLK6itkrtkcWrZJXaPj1phIrB1zdNWbO+sE5X+Y
+ BPklG1pM/o1JGkUMBwe2Cpdc1ZqBm2mIDbvfebdBrzApSWPJyGu6O/DuXgAW8eeBg3nl
+ CqnaNDyEJ8n8G4KARKuHKw+52WtB/pSoPix6kkSfvyMnNBdohyWD1swgVp4hnQ8Bc+gy
+ iI5seWgehdIDYtw6LehLr88KArcwcesUcVhz8mVqGufROrcwiMy1FIqkAgLlLHjO5kKn
+ 9/7UowCJR4eYbcRwvlxGaAUCP/+i1H2WAY2RMEeDXf3wWcSU90d2bfWzEoCAKnfYznf3
+ HMtQ==
+X-Gm-Message-State: AOJu0YyniBNiQgvQ+WJu3+fVyJ/QpIgUc8cSMtLeR8no5hOY3iJ47tqo
+ vUQiiCeuXtJBGvHSI+vxc9jV0ZTScxc=
+X-Google-Smtp-Source: AGHT+IFEMj8wJBb+k3eIVRxh7+sIRLOX8+7Pea3WVGKmxhRHo0l28nZynjvaGcqyEmLZT9QLE8FiWg==
+X-Received: by 2002:a4a:6202:0:b0:56c:a841:610d with SMTP id
+ x2-20020a4a6202000000b0056ca841610dmr2372921ooc.9.1691163027349; 
+ Fri, 04 Aug 2023 08:30:27 -0700 (PDT)
 Received: from grind.. ([177.197.108.190]) by smtp.gmail.com with ESMTPSA id
- q4-20020a4a4b04000000b00560b1febfdfsm1115761ooa.10.2023.08.04.08.30.22
+ q4-20020a4a4b04000000b00560b1febfdfsm1115761ooa.10.2023.08.04.08.30.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 04 Aug 2023 08:30:24 -0700 (PDT)
+ Fri, 04 Aug 2023 08:30:27 -0700 (PDT)
 From: Daniel Henrique Barboza <danielhb413@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, danielhb413@gmail.com, peter.maydell@linaro.org,
- richard.henderson@linaro.org, BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PULL 4/7] ppc/pegasos2: Fix reg property of 64 bit BARs in device
- tree
-Date: Fri,  4 Aug 2023 12:29:52 -0300
-Message-ID: <20230804152955.22316-5-danielhb413@gmail.com>
+ richard.henderson@linaro.org, Nicholas Piggin <npiggin@gmail.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+Subject: [PULL 5/7] target/ppc: Implement ASDR register for ISA v3.0 for HPT
+Date: Fri,  4 Aug 2023 12:29:53 -0300
+Message-ID: <20230804152955.22316-6-danielhb413@gmail.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230804152955.22316-1-danielhb413@gmail.com>
 References: <20230804152955.22316-1-danielhb413@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::36;
- envelope-from=danielhb413@gmail.com; helo=mail-oa1-x36.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c32;
+ envelope-from=danielhb413@gmail.com; helo=mail-oo1-xc32.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -91,36 +92,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: BALATON Zoltan <balaton@eik.bme.hu>
+From: Nicholas Piggin <npiggin@gmail.com>
 
-The board firmware handles this correctly following the Open Firmware
-standard which we missed. This fixes 64 bit BARs when using VOF.
+The ASDR register was introduced in ISA v3.0. It has not been
+implemented for HPT. With HPT, ASDR is the format of the slbmte RS
+operand (containing VSID), which matches the ppc_slb_t field.
 
-Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-Reviewed-by: Daniel Henrique Barboza <danielhb413@gmail.com>
-Message-ID: <20230721221320.1311E7456AB@zero.eik.bme.hu>
+Fixes: 3367c62f522b ("target/ppc: Support for POWER9 native hash")
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
+Message-ID: <20230726182230.433945-2-npiggin@gmail.com>
 Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
 ---
- hw/ppc/pegasos2.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ target/ppc/mmu-hash64.c | 27 ++++++++++++++++-----------
+ 1 file changed, 16 insertions(+), 11 deletions(-)
 
-diff --git a/hw/ppc/pegasos2.c b/hw/ppc/pegasos2.c
-index 6475acfbed..075367d94d 100644
---- a/hw/ppc/pegasos2.c
-+++ b/hw/ppc/pegasos2.c
-@@ -781,7 +781,11 @@ static void add_pci_device(PCIBus *bus, PCIDevice *d, void *opaque)
-         if (d->io_regions[i].type & PCI_BASE_ADDRESS_SPACE_IO) {
-             cells[j] |= cpu_to_be32(1 << 24);
-         } else {
--            cells[j] |= cpu_to_be32(2 << 24);
-+            if (d->io_regions[i].type & PCI_BASE_ADDRESS_MEM_TYPE_64) {
-+                cells[j] |= cpu_to_be32(3 << 24);
-+            } else {
-+                cells[j] |= cpu_to_be32(2 << 24);
-+            }
-             if (d->io_regions[i].type & PCI_BASE_ADDRESS_MEM_PREFETCH) {
-                 cells[j] |= cpu_to_be32(4 << 28);
+diff --git a/target/ppc/mmu-hash64.c b/target/ppc/mmu-hash64.c
+index 900f906990..a0c90df3ce 100644
+--- a/target/ppc/mmu-hash64.c
++++ b/target/ppc/mmu-hash64.c
+@@ -770,7 +770,8 @@ static bool ppc_hash64_use_vrma(CPUPPCState *env)
+     }
+ }
+ 
+-static void ppc_hash64_set_isi(CPUState *cs, int mmu_idx, uint64_t error_code)
++static void ppc_hash64_set_isi(CPUState *cs, int mmu_idx, uint64_t slb_vsid,
++                               uint64_t error_code)
+ {
+     CPUPPCState *env = &POWERPC_CPU(cs)->env;
+     bool vpm;
+@@ -782,13 +783,15 @@ static void ppc_hash64_set_isi(CPUState *cs, int mmu_idx, uint64_t error_code)
+     }
+     if (vpm && !mmuidx_hv(mmu_idx)) {
+         cs->exception_index = POWERPC_EXCP_HISI;
++        env->spr[SPR_ASDR] = slb_vsid;
+     } else {
+         cs->exception_index = POWERPC_EXCP_ISI;
+     }
+     env->error_code = error_code;
+ }
+ 
+-static void ppc_hash64_set_dsi(CPUState *cs, int mmu_idx, uint64_t dar, uint64_t dsisr)
++static void ppc_hash64_set_dsi(CPUState *cs, int mmu_idx, uint64_t slb_vsid,
++                               uint64_t dar, uint64_t dsisr)
+ {
+     CPUPPCState *env = &POWERPC_CPU(cs)->env;
+     bool vpm;
+@@ -802,6 +805,7 @@ static void ppc_hash64_set_dsi(CPUState *cs, int mmu_idx, uint64_t dar, uint64_t
+         cs->exception_index = POWERPC_EXCP_HDSI;
+         env->spr[SPR_HDAR] = dar;
+         env->spr[SPR_HDSISR] = dsisr;
++        env->spr[SPR_ASDR] = slb_vsid;
+     } else {
+         cs->exception_index = POWERPC_EXCP_DSI;
+         env->spr[SPR_DAR] = dar;
+@@ -963,13 +967,13 @@ bool ppc_hash64_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
+                 }
+                 switch (access_type) {
+                 case MMU_INST_FETCH:
+-                    ppc_hash64_set_isi(cs, mmu_idx, SRR1_PROTFAULT);
++                    ppc_hash64_set_isi(cs, mmu_idx, 0, SRR1_PROTFAULT);
+                     break;
+                 case MMU_DATA_LOAD:
+-                    ppc_hash64_set_dsi(cs, mmu_idx, eaddr, DSISR_PROTFAULT);
++                    ppc_hash64_set_dsi(cs, mmu_idx, 0, eaddr, DSISR_PROTFAULT);
+                     break;
+                 case MMU_DATA_STORE:
+-                    ppc_hash64_set_dsi(cs, mmu_idx, eaddr,
++                    ppc_hash64_set_dsi(cs, mmu_idx, 0, eaddr,
+                                        DSISR_PROTFAULT | DSISR_ISSTORE);
+                     break;
+                 default:
+@@ -1022,7 +1026,7 @@ bool ppc_hash64_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
+     /* 3. Check for segment level no-execute violation */
+     if (access_type == MMU_INST_FETCH && (slb->vsid & SLB_VSID_N)) {
+         if (guest_visible) {
+-            ppc_hash64_set_isi(cs, mmu_idx, SRR1_NOEXEC_GUARD);
++            ppc_hash64_set_isi(cs, mmu_idx, slb->vsid, SRR1_NOEXEC_GUARD);
+         }
+         return false;
+     }
+@@ -1035,13 +1039,14 @@ bool ppc_hash64_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
+         }
+         switch (access_type) {
+         case MMU_INST_FETCH:
+-            ppc_hash64_set_isi(cs, mmu_idx, SRR1_NOPTE);
++            ppc_hash64_set_isi(cs, mmu_idx, slb->vsid, SRR1_NOPTE);
+             break;
+         case MMU_DATA_LOAD:
+-            ppc_hash64_set_dsi(cs, mmu_idx, eaddr, DSISR_NOPTE);
++            ppc_hash64_set_dsi(cs, mmu_idx, slb->vsid, eaddr, DSISR_NOPTE);
+             break;
+         case MMU_DATA_STORE:
+-            ppc_hash64_set_dsi(cs, mmu_idx, eaddr, DSISR_NOPTE | DSISR_ISSTORE);
++            ppc_hash64_set_dsi(cs, mmu_idx, slb->vsid, eaddr,
++                               DSISR_NOPTE | DSISR_ISSTORE);
+             break;
+         default:
+             g_assert_not_reached();
+@@ -1075,7 +1080,7 @@ bool ppc_hash64_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
+             if (PAGE_EXEC & ~amr_prot) {
+                 srr1 |= SRR1_IAMR; /* Access violates virt pg class key prot */
              }
+-            ppc_hash64_set_isi(cs, mmu_idx, srr1);
++            ppc_hash64_set_isi(cs, mmu_idx, slb->vsid, srr1);
+         } else {
+             int dsisr = 0;
+             if (need_prot & ~pp_prot) {
+@@ -1087,7 +1092,7 @@ bool ppc_hash64_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
+             if (need_prot & ~amr_prot) {
+                 dsisr |= DSISR_AMR;
+             }
+-            ppc_hash64_set_dsi(cs, mmu_idx, eaddr, dsisr);
++            ppc_hash64_set_dsi(cs, mmu_idx, slb->vsid, eaddr, dsisr);
+         }
+         return false;
+     }
 -- 
 2.41.0
 
