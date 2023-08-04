@@ -2,38 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5970C7708CD
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 21:18:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DAF47708D3
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 21:18:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qS0IE-0000Gm-9L; Fri, 04 Aug 2023 15:16:58 -0400
+	id 1qS0IJ-0000Jt-56; Fri, 04 Aug 2023 15:17:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qS0IB-0000GD-I2; Fri, 04 Aug 2023 15:16:55 -0400
+ id 1qS0IG-0000I7-4p; Fri, 04 Aug 2023 15:17:00 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qS0I9-0006sc-Nd; Fri, 04 Aug 2023 15:16:55 -0400
+ id 1qS0IE-0006tY-Av; Fri, 04 Aug 2023 15:16:59 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C312318453;
+ by isrv.corpit.ru (Postfix) with ESMTP id ED56918454;
  Fri,  4 Aug 2023 22:17:09 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 4F1A91B896;
+ by tsrv.corpit.ru (Postfix) with SMTP id 833EA1B897;
  Fri,  4 Aug 2023 22:16:49 +0300 (MSK)
-Received: (nullmailer pid 1875690 invoked by uid 1000);
+Received: (nullmailer pid 1875693 invoked by uid 1000);
  Fri, 04 Aug 2023 19:16:49 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, "Denis V. Lunev" <den@openvz.org>,
- Eric Blake <eblake@redhat.com>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.4 25/63] qemu-nbd: regression with arguments passing into
- nbd_client_thread()
-Date: Fri,  4 Aug 2023 22:16:16 +0300
-Message-Id: <20230804191647.1875608-2-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ Song Gao <gaosong@loongson.cn>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.0.4 34/63] target/loongarch: Fix the CSRRD CPUID
+ instruction on big endian hosts
+Date: Fri,  4 Aug 2023 22:16:17 +0300
+Message-Id: <20230804191647.1875608-3-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.4-20230804221634@cover.tls.msk.ru>
 References: <qemu-stable-8.0.4-20230804221634@cover.tls.msk.ru>
@@ -61,58 +59,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "Denis V. Lunev" <den@openvz.org>
+From: Thomas Huth <thuth@redhat.com>
 
-Unfortunately
-    commit 03b67621445d601c9cdc7dfe25812e9f19b81488
-    (8.0:  feb0814b3b48e75b336ad72eb303f9d579c94083)
-    Author: Denis V. Lunev <den@openvz.org>
-    Date:   Mon Jul 17 16:55:40 2023 +0200
-    qemu-nbd: pass structure into nbd_client_thread instead of plain char*
-has introduced a regression. struct NbdClientOpts resides on stack inside
-'if' block. This specifically means that this stack space could be reused
-once the execution will leave that block of the code.
+The test in tests/avocado/machine_loongarch.py is currently failing
+on big endian hosts like s390x. By comparing the traces between running
+the QEMU_EFI.fd bios on a s390x and on a x86 host, it's quickly obvious
+that the CSRRD instruction for the CPUID is behaving differently. And
+indeed: The code currently does a long read (i.e. 64 bit) from the
+address that points to the CPUState->cpu_index field (with tcg_gen_ld_tl()
+in the trans_csrrd() function). But this cpu_index field is only an "int"
+(i.e. 32 bit). While this dirty pointer magic works on little endian hosts,
+it of course fails on big endian hosts. Fix it by using a proper helper
+function instead.
 
-This means that parameters passed into nbd_client_thread could be
-overwritten at any moment.
-
-The patch moves the data to the namespace of main() function effectively
-preserving it for the whole process lifetime.
-
-Signed-off-by: Denis V. Lunev <den@openvz.org>
-CC: Eric Blake <eblake@redhat.com>
-CC: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-CC: <qemu-stable@nongnu.org>
-Reviewed-by: Eric Blake <eblake@redhat.com>
-Message-ID: <20230727105828.324314-1-den@openvz.org>
-Signed-off-by: Eric Blake <eblake@redhat.com>
-(cherry picked from commit e5b815b0defcc3617f473ba70c3e675ef0ee69c2)
+Message-Id: <20230720175307.854460-1-thuth@redhat.com>
+Reviewed-by: Song Gao <gaosong@loongson.cn>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+(cherry picked from commit c34ad459926f6c600a55fe6782a27edfa405d60b)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(Mjt: add reference to feb0814b3b48e75b336ad72eb303f9d579c94083 for 8.0 branch)
 
-diff --git a/qemu-nbd.c b/qemu-nbd.c
-index e64f45f767..1039809e9c 100644
---- a/qemu-nbd.c
-+++ b/qemu-nbd.c
-@@ -584,6 +584,9 @@ int main(int argc, char **argv)
-     const char *pid_file_name = NULL;
-     const char *selinux_label = NULL;
-     BlockExportOptions *export_opts;
-+#if HAVE_NBD_DEVICE
-+    struct NbdClientOpts opts;
-+#endif
+diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
+index e11c875188..4bf453e002 100644
+--- a/target/loongarch/cpu.h
++++ b/target/loongarch/cpu.h
+@@ -319,6 +319,7 @@ typedef struct CPUArchState {
+     uint64_t CSR_DBG;
+     uint64_t CSR_DERA;
+     uint64_t CSR_DSAVE;
++    uint64_t CSR_CPUID;
  
- #ifdef CONFIG_POSIX
-     os_setup_early_signal_handling();
-@@ -1120,7 +1123,7 @@ int main(int argc, char **argv)
-     if (device) {
- #if HAVE_NBD_DEVICE
-         int ret;
--        struct NbdClientOpts opts = {
-+        opts = (struct NbdClientOpts) {
-             .device = device,
-             .fork_process = fork_process,
-         };
+ #ifndef CONFIG_USER_ONLY
+     LoongArchTLB  tlb[LOONGARCH_TLB_MAX];
+diff --git a/target/loongarch/csr_helper.c b/target/loongarch/csr_helper.c
+index 7e02787895..b778e6952d 100644
+--- a/target/loongarch/csr_helper.c
++++ b/target/loongarch/csr_helper.c
+@@ -36,6 +36,15 @@ target_ulong helper_csrrd_pgd(CPULoongArchState *env)
+     return v;
+ }
+ 
++target_ulong helper_csrrd_cpuid(CPULoongArchState *env)
++{
++    LoongArchCPU *lac = env_archcpu(env);
++
++    env->CSR_CPUID = CPU(lac)->cpu_index;
++
++    return env->CSR_CPUID;
++}
++
+ target_ulong helper_csrrd_tval(CPULoongArchState *env)
+ {
+     LoongArchCPU *cpu = env_archcpu(env);
+diff --git a/target/loongarch/helper.h b/target/loongarch/helper.h
+index 9c01823a26..f47b0f2d05 100644
+--- a/target/loongarch/helper.h
++++ b/target/loongarch/helper.h
+@@ -98,6 +98,7 @@ DEF_HELPER_1(rdtime_d, i64, env)
+ #ifndef CONFIG_USER_ONLY
+ /* CSRs helper */
+ DEF_HELPER_1(csrrd_pgd, i64, env)
++DEF_HELPER_1(csrrd_cpuid, i64, env)
+ DEF_HELPER_1(csrrd_tval, i64, env)
+ DEF_HELPER_2(csrwr_estat, i64, env, tl)
+ DEF_HELPER_2(csrwr_asid, i64, env, tl)
+diff --git a/target/loongarch/insn_trans/trans_privileged.c.inc b/target/loongarch/insn_trans/trans_privileged.c.inc
+index 5a04352b01..71d7f37717 100644
+--- a/target/loongarch/insn_trans/trans_privileged.c.inc
++++ b/target/loongarch/insn_trans/trans_privileged.c.inc
+@@ -99,13 +99,7 @@ static const CSRInfo csr_info[] = {
+     CSR_OFF(PWCH),
+     CSR_OFF(STLBPS),
+     CSR_OFF(RVACFG),
+-    [LOONGARCH_CSR_CPUID] = {
+-        .offset = (int)offsetof(CPUState, cpu_index)
+-                  - (int)offsetof(LoongArchCPU, env),
+-        .flags = CSRFL_READONLY,
+-        .readfn = NULL,
+-        .writefn = NULL
+-    },
++    CSR_OFF_FUNCS(CPUID, CSRFL_READONLY, gen_helper_csrrd_cpuid, NULL),
+     CSR_OFF_FLAGS(PRCFG1, CSRFL_READONLY),
+     CSR_OFF_FLAGS(PRCFG2, CSRFL_READONLY),
+     CSR_OFF_FLAGS(PRCFG3, CSRFL_READONLY),
 -- 
 2.39.2
 
