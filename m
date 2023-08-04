@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98E597708E4
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 21:20:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6379E7708D6
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 21:19:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qS0Jp-00022l-5p; Fri, 04 Aug 2023 15:18:37 -0400
+	id 1qS0JY-0001Lw-1o; Fri, 04 Aug 2023 15:18:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qS0JF-0001FC-Uk; Fri, 04 Aug 2023 15:18:03 -0400
+ id 1qS0JI-0001GT-7q; Fri, 04 Aug 2023 15:18:06 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qS0JE-00071k-07; Fri, 04 Aug 2023 15:18:01 -0400
+ id 1qS0JG-000743-OK; Fri, 04 Aug 2023 15:18:03 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 7202D18462;
+ by isrv.corpit.ru (Postfix) with ESMTP id A251018463;
  Fri,  4 Aug 2023 22:17:13 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 0B1E31B8A5;
+ by tsrv.corpit.ru (Postfix) with SMTP id 37DBC1B8A6;
  Fri,  4 Aug 2023 22:16:53 +0300 (MSK)
-Received: (nullmailer pid 1875735 invoked by uid 1000);
+Received: (nullmailer pid 1875738 invoked by uid 1000);
  Fri, 04 Aug 2023 19:16:49 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, David Woodhouse <dwmw@amazon.co.uk>,
+Cc: qemu-stable@nongnu.org, Keith Packard <keithp@keithp.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.4 48/63] hw/xen: fix off-by-one in xen_evtchn_set_gsi()
-Date: Fri,  4 Aug 2023 22:16:31 +0300
-Message-Id: <20230804191647.1875608-17-mjt@tls.msk.ru>
+Subject: [Stable-8.0.4 49/63] target/nios2: Pass semihosting arg to exit
+Date: Fri,  4 Aug 2023 22:16:32 +0300
+Message-Id: <20230804191647.1875608-18-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.4-20230804221634@cover.tls.msk.ru>
 References: <qemu-stable-8.0.4-20230804221634@cover.tls.msk.ru>
@@ -61,44 +61,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+From: Keith Packard <keithp@keithp.com>
 
-Coverity points out (CID 1508128) a bounds checking error. We need to check
-for gsi >= IOAPIC_NUM_PINS, not just greater-than.
+Instead of using R_ARG0 (the semihost function number), use R_ARG1
+(the provided exit status).
 
-Also fix up an assert() that has the same problem, that Coverity didn't see.
-
-Fixes: 4f81baa33ed6 ("hw/xen: Support GSI mapping to PIRQ")
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Signed-off-by: Keith Packard <keithp@keithp.com>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20230801175747.145906-2-dwmw2@infradead.org>
+Message-Id: <20230801152245.332749-1-keithp@keithp.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-(cherry picked from commit cf885b19579646d6a085470658bc83432d6786d2)
+(cherry picked from commit c11d5bdae79a8edaf00dfcb2e49c064a50c67671)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/i386/kvm/xen_evtchn.c b/hw/i386/kvm/xen_evtchn.c
-index 3048329474..8c86c91a9e 100644
---- a/hw/i386/kvm/xen_evtchn.c
-+++ b/hw/i386/kvm/xen_evtchn.c
-@@ -1587,7 +1587,7 @@ static int allocate_pirq(XenEvtchnState *s, int type, int gsi)
-  found:
-     pirq_inuse_word(s, pirq) |= pirq_inuse_bit(pirq);
-     if (gsi >= 0) {
--        assert(gsi <= IOAPIC_NUM_PINS);
-+        assert(gsi < IOAPIC_NUM_PINS);
-         s->gsi_pirq[gsi] = pirq;
-     }
-     s->pirq[pirq].gsi = gsi;
-@@ -1601,7 +1601,7 @@ bool xen_evtchn_set_gsi(int gsi, int level)
+diff --git a/target/nios2/nios2-semi.c b/target/nios2/nios2-semi.c
+index 3738774976..f3b7aee4f1 100644
+--- a/target/nios2/nios2-semi.c
++++ b/target/nios2/nios2-semi.c
+@@ -133,8 +133,8 @@ void do_nios2_semihosting(CPUNios2State *env)
+     args = env->regs[R_ARG1];
+     switch (nr) {
+     case HOSTED_EXIT:
+-        gdb_exit(env->regs[R_ARG0]);
+-        exit(env->regs[R_ARG0]);
++        gdb_exit(env->regs[R_ARG1]);
++        exit(env->regs[R_ARG1]);
  
-     assert(qemu_mutex_iothread_locked());
- 
--    if (!s || gsi < 0 || gsi > IOAPIC_NUM_PINS) {
-+    if (!s || gsi < 0 || gsi >= IOAPIC_NUM_PINS) {
-         return false;
-     }
- 
+     case HOSTED_OPEN:
+         GET_ARG(0);
 -- 
 2.39.2
 
