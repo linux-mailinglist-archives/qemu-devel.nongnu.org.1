@@ -2,127 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D28D6770641
+	by mail.lfdr.de (Postfix) with ESMTPS id C6DCE770640
 	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 18:47:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRxwx-0000wL-BB; Fri, 04 Aug 2023 12:46:52 -0400
+	id 1qRxwf-0000pH-Kj; Fri, 04 Aug 2023 12:46:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gregory.price@memverge.com>)
- id 1qRxwq-0000uC-OW
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 12:46:45 -0400
-Received: from mail-dm6nam12on2079.outbound.protection.outlook.com
- ([40.107.243.79] helo=NAM12-DM6-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qRxwZ-0000oz-23
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 12:46:27 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gregory.price@memverge.com>)
- id 1qRxwo-00024G-KT
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 12:46:44 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Dtf1p+6/Z5xANPCpsLe72JCubfVNkRTqxAb7Lvpt0hFQQ8wNXO8Nyhm63iJSR1t9axgl6cxFT5n9kCzOp/sNB7j4cjkoMnKt0dIAJ33nvw1vAp+2FIEQ4DzhgvBPJta11SEs6QW3NWEZTZIeAXzN027QRT6J88kPL1Z/oPimtJzXrdkX6c9pbub0qt4fC+82v5Hx6ffoUh/y+vvO1cQenaEi2c4rQidxDZ62a956DfXFQjYiOuQUBAI1ritDZfOc6o/xd9CVkQfNrkWgvuCtLw2evPDtirBHXS3AMqSBKpU2jfGsXehGNrUkJPCXu7UzUtDvWTMjWRRNUXl2yB+qwQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YKqOWo/deKUHHtKe+tveTaWLRJoX2tc/N10v6a1x2R0=;
- b=S86iZsaA6MnR2m9ceidaIddOEDHnG2ROstY1Pygj/9AaUQ5+Cu5Z28Kn1xlwGG3CXIfegzwCnHX2/gnsr7WJxSEOyInRN4D9EXMm94EOknOWRiJa11/BWhPpqzOzyidDipRZio5KclW5o2HC14KrcNKdw8iUdmZci4rnQE1KovjOsBvngn1J80IGu/mAPQSaxi3MGoR8GGijjzz9XcEqCa/q6OCugmsG4IKIzkcUJhmnznWrpp6bG1quFtt54UKxQZq+O8bOcNFL3wKPnZBPTxvmcoWdDBKD6kbeHfWJJbA8oDfKaJ2cRH7ztpiNPyCT4bLL1iSHPyUeMtcJPKJEsQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=memverge.com; dmarc=pass action=none header.from=memverge.com;
- dkim=pass header.d=memverge.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=memverge.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YKqOWo/deKUHHtKe+tveTaWLRJoX2tc/N10v6a1x2R0=;
- b=I42JmKLqrfend91+whLxwjfxsA8Nswz/SPOlrEDCaEE1R1aNj1sqpM37RTQdJdrfXY5EWhB0Xy4BuEfK3lVdNUKeBXI4HWUT36fE5mISHrHeo4xcn0rJ0zKoVdTa2xMfMJU6XE3KYFp6N7z+b0p5+aPZNUXE3kgvlsp9UGrauvs=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=memverge.com;
-Received: from SJ0PR17MB5512.namprd17.prod.outlook.com (2603:10b6:a03:394::19)
- by PH0PR17MB6532.namprd17.prod.outlook.com (2603:10b6:510:2a2::19)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6631.47; Fri, 4 Aug
- 2023 16:41:36 +0000
-Received: from SJ0PR17MB5512.namprd17.prod.outlook.com
- ([fe80::28b3:ad85:6a11:3872]) by SJ0PR17MB5512.namprd17.prod.outlook.com
- ([fe80::28b3:ad85:6a11:3872%6]) with mapi id 15.20.6652.020; Fri, 4 Aug 2023
- 16:41:35 +0000
-Date: Fri, 4 Aug 2023 12:41:26 -0400
-From: Gregory Price <gregory.price@memverge.com>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Gregory Price <gourry.memverge@gmail.com>, qemu-devel@nongnu.org,
- linux-cxl@vger.kernel.org, junhee.ryu@sk.com, kwangjin.ko@sk.com
-Subject: Re: [PATCH 2/4] cxl/mailbox: interface to add CCI commands to an
- existing CCI
-Message-ID: <ZM0qNhbVxsSEs7nQ@memverge.com>
-References: <20230721163505.1910-1-gregory.price@memverge.com>
- <20230721163505.1910-3-gregory.price@memverge.com>
- <20230804161414.00006eaa@huawei.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230804161414.00006eaa@huawei.com>
-X-ClientProxiedBy: BYAPR01CA0027.prod.exchangelabs.com (2603:10b6:a02:80::40)
- To SJ0PR17MB5512.namprd17.prod.outlook.com
- (2603:10b6:a03:394::19)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qRxwW-00022y-Dy
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 12:46:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1691167583;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=K5uF9RV3tgerh1IiCs5M+i/JpsH6sclkZBRoHieGJ2c=;
+ b=GLVJXu9FfPlmL857PHqMuySmykqAb5fn0nzFapxTSRShEbVMJlUaKhxWXLO2ZLHxObey0R
+ /zwxrAVFAE0vPs3sWj7ZYjwE75wLM/VILGOCOQhoJ8ZKxsAfLkaFrYJLhoOEqPrbkzNoNb
+ soLNkC86NM3hQw4dnlJofNLAX9hkUEA=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-213-2DoJr5LpOXWI4t5TolOPgw-1; Fri, 04 Aug 2023 12:46:21 -0400
+X-MC-Unique: 2DoJr5LpOXWI4t5TolOPgw-1
+Received: by mail-qv1-f71.google.com with SMTP id
+ 6a1803df08f44-63d2b88325bso4679626d6.1
+ for <qemu-devel@nongnu.org>; Fri, 04 Aug 2023 09:46:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1691167581; x=1691772381;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=K5uF9RV3tgerh1IiCs5M+i/JpsH6sclkZBRoHieGJ2c=;
+ b=lE6L+5SiynwASF1srVmkuGaghnx7IjoRTUkeywe+WWE3oNhsCikJMAQxIjFFO4dKHf
+ YZRyaywmkhUgSAzi8xLA3RmN8b2T04gEmWRsViOlaG0l03KqRtrxuNLC696Xgk75SGau
+ wK1vvmrkZkH8NE9QGJ7Nt//B8752mm97GWr0qcahTAF3g95QP/s+7FHD+3JDu56YXBqP
+ Zg0V9ALIaYKQ+RTEgf0/TjJwZSRSwl3U5JMRQKKum48KJ8FyIx+lKiRdbtGJmMVu/s6h
+ IN9EWvvtmOjp284IUkRWTp59FJeED+HdzBV9SpQQdTMIHZj3qJA2VG8czHxX++Jeh3mX
+ 79DQ==
+X-Gm-Message-State: ABy/qLZPe5beqTwQ/qDkAKoWev3UommfK1wrDfGNzV3a7MI5rMrqxqj6
+ iosY+mVGTPcfoYyGhCkXvfP9Pp8byO6NSeHbSWaSQ3m+9oilYxspOGaZSjcEid6VMeIkc/P1w9I
+ XFCvTEUO1Z9/CnkY=
+X-Received: by 2002:a05:6214:c8d:b0:63c:7427:e7e9 with SMTP id
+ r13-20020a0562140c8d00b0063c7427e7e9mr23685563qvr.6.1691167581228; 
+ Fri, 04 Aug 2023 09:46:21 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlHz8OsV6gq7vLKfn4BfR2491o/U2akcQYTYMSEjWddi3NUEfjN2KzoQU3dWHqeVE20YGOnyPQ==
+X-Received: by 2002:a05:6214:c8d:b0:63c:7427:e7e9 with SMTP id
+ r13-20020a0562140c8d00b0063c7427e7e9mr23685549qvr.6.1691167580927; 
+ Fri, 04 Aug 2023 09:46:20 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ b4-20020a0cc984000000b00637615a1f33sm783913qvk.20.2023.08.04.09.46.19
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 04 Aug 2023 09:46:20 -0700 (PDT)
+Date: Fri, 4 Aug 2023 12:46:18 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+Cc: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org,
+ Zhiyi Guo <zhguo@redhat.com>,
+ Leonardo Bras Soares Passos <lsoaresp@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>,
+ Juan Quintela <quintela@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Chensheng Dong <chdong@redhat.com>
+Subject: Re: [PATCH for-8.2 v2 1/2] qapi/migration: Deduplicate migration
+ parameter field comments
+Message-ID: <ZM0rWiHF8voqOdyp@x1n>
+References: <20230803155344.11450-1-peterx@redhat.com>
+ <20230803155344.11450-2-peterx@redhat.com>
+ <87jzub8016.fsf@pond.sub.org> <ZM0EK3A/rnDPImXz@redhat.com>
+ <ZM0g8iNXzv9LRo+w@x1n> <ZM0nX8qt1T3aZgNK@redhat.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ0PR17MB5512:EE_|PH0PR17MB6532:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7594983a-d35f-4687-dc59-08db9509a99d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 8rktlwGLFmdl3VCYqTAoBZ4RMLqXa5ydYVnIlu1kQTkaUSbuuF/KY/GjESuqOGT8iPlikJ25DSd2AbM2LrMp1QzJaEwONVdHOle4N50pYC8NEjddcvHVvBOtX0RP61q5V93gI5p/lZKN5cNmQHKKb0vsaK7/kXOqc5mQHMAA9zFngfnbytzbKRfGSGCrNT8EvJwhbPYBXqAtAMPNJSHweVdiPmWcvQxj0QAxgdX3CxpDTn9zZMNarOjugd9Es9Mlse6Vi4aSjbifcXlC8U+Oop/boeV5ET/LE65cvSjOe9v94bEAhi9eQ2GfbCS72nY+TnMPIiosGkUCtrvGJ9XBhhcR3Mk+bZLwpOqKebFQ/R8AYwIW3+Dz1CiDd98O3gNJ6Cs75UT6/S/0IXkYORkBXUB4gipZXrr5v5JPMHRbii3+aaj+ohUnnAINc3Vq8fmjCMDbzy9dwvsnaEzBcT8R/lUlsEyKAfZJqujQSCIATkc/x/2zL57cJI4XRWyY3pQvqjyPxr/Flcakpr+GBsUn3vfF8ICkfUusKOEqMk/Ohxs=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ0PR17MB5512.namprd17.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(366004)(396003)(376002)(39830400003)(346002)(136003)(1800799003)(186006)(451199021)(8936002)(2616005)(8676002)(26005)(83380400001)(6506007)(53546011)(4326008)(66556008)(2906002)(66946007)(6916009)(5660300002)(66476007)(316002)(44832011)(15650500001)(6486002)(6666004)(966005)(6512007)(478600001)(38100700002)(36756003)(86362001)(41300700001);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?LZGV8MEIueTJ83g+4kBCWTodmiibQUAd1jHxOrdoS5o1VpGOkTKp1xHAADwx?=
- =?us-ascii?Q?UAHWKl3CZlEG2NZ9D2saLEGzE6m3GHtE/3H1WW4E/0tbBppQHYl2ZyG+YU0A?=
- =?us-ascii?Q?7MAyEPGx74luNBkmDWmi2mDAkUZ8OO0XmAm5uFqPAUiZOLIjZolCjKxPPUjj?=
- =?us-ascii?Q?myYvcQw6E8RzYJXg79BLptAtmp6nTFuASMdoM+LEKcbu/+E6z/4mRxc9TnJ6?=
- =?us-ascii?Q?Wh26vl7K80stAvEuF749Lv0dzi9nXitqUspzZhV78zIigWLRR7obFvrrXVM/?=
- =?us-ascii?Q?KwEI+I65yHkznBhSL1K/UZSaggMVq9eWHh8mhsR66t2prZ8T8eO6fEQre3Aq?=
- =?us-ascii?Q?kam8kVsmL1MesKpePvrZ7zK+KYtC/STtlZ8nTVCW9RBj9ISjLR5NifafOK+C?=
- =?us-ascii?Q?2Sm2q7IdzRVguSi/Q6KKAgqHM0UoH8B2aBHzMzau6Iw4BzQisiOBwHgEAJC2?=
- =?us-ascii?Q?UUqk4oeoosvxBEf3xeQOTKTRtyHHwbo7rj5cum/zRzkq/CfVj5ngkqx3GwO1?=
- =?us-ascii?Q?h7IjKAHri9IjZSKlSxLd8Qgs0wQRZWYjXFdqcDcEuRdEljIErRFe9t1AS5N4?=
- =?us-ascii?Q?FCKDsO2GmKifqiYQU5taoOAeuZA+TL9FrCBYskY/6NVy3js13wl8id8qP3+T?=
- =?us-ascii?Q?F1ERTYml+NToAtvdBivemRsotAXUmFsqC+QPxpAejXFCfc5nW81h6v7tQDKP?=
- =?us-ascii?Q?xZokhypCET4jGC0dpzzrdBJY8FrkSvRocShateCkTiKBx4UifBc3TUCU+5MM?=
- =?us-ascii?Q?YWoqJza/xMAFVP1LC8bR3Dsx1fXqkIIWGuubNUTFiB+4mMHKPNgoA1JlGoO4?=
- =?us-ascii?Q?9uZLUX0T8AiI/I0dYUPK0bBE2DZhuE0lbygr0ZrWdM05odBLepC7X2avHuqc?=
- =?us-ascii?Q?jkcW5rDI6UQyEWL5HQcjBPdmUZqcPNHsfY0bFsoQVJk0Aul42Y287i2ur04x?=
- =?us-ascii?Q?uphfp2jH1QLQBI0mX3FrHWQWHJc96X7dZ2hvFGdGQqLus31JSEhJTUZgRg8b?=
- =?us-ascii?Q?47YNxx0TZIeFobeBWNpsm3ZDjvmLP1GgKFu9JD1ep+ikSLh0G9M9vPXpD3k0?=
- =?us-ascii?Q?wAAfSEcPOPuRHQhSe4Zc9rewIOSO+Sn/EnVDvResd3GmvQOP1+kgG0XJKI7j?=
- =?us-ascii?Q?gxXGCMDEkk0r503nhrTnGkBzn10uix9i/5C9yc72WIrrz+xHIW+X2Hjjgg9V?=
- =?us-ascii?Q?gQ8LTVwwjI4e3iX1u8Nqb1JhxBbl0/emilLLXLbC9lZYc1yW3wgKe0OTobGR?=
- =?us-ascii?Q?eiwOaXFBFSBjL3oSObHsignZPGs+x/xQWPtcGkorJt2L9WduhmVxKC9uShQX?=
- =?us-ascii?Q?b0MpIDvvLzDdVK6a1OIo4Z8HpnQnPRFrMazFbHchxHJnZfaycUJ8gSVvqM5s?=
- =?us-ascii?Q?tZukuVU6P1Z0bCFLxoH84xKNPjGaF7zFFaLGuPwTmzyNROVLcyj1y5wlslUK?=
- =?us-ascii?Q?4csAtg/yorESwvFm9gUfq6WA/lq5ZBg5ci0r4msOQJUZjzAG5aHkFE/pPXDE?=
- =?us-ascii?Q?+BbvWz1hTK6ckPQc6sdm6GRAnBUXD0czYbsYdwYczmd9Ym9f7xy3bCqV15KX?=
- =?us-ascii?Q?JGXEJAg35W/28sN0HfJYA2xHu2Xs6LHb1OjF7sjaR9HyiqGVvu8irmgZuCKq?=
- =?us-ascii?Q?Jg=3D=3D?=
-X-OriginatorOrg: memverge.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7594983a-d35f-4687-dc59-08db9509a99d
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR17MB5512.namprd17.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Aug 2023 16:41:35.5689 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 5c90cb59-37e7-4c81-9c07-00473d5fb682
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 13VJcCDcttuQm9jJxfyw7KucNXuiKSOfKwi7zrGxhlE8oValv/5xTZUjbZqHozeD0AvtcWjSwxoGh4MPhJZwiu+RYEKXbOTkxSEvq3gkKwI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR17MB6532
-Received-SPF: none client-ip=40.107.243.79;
- envelope-from=gregory.price@memverge.com;
- helo=NAM12-DM6-obe.outbound.protection.outlook.com
-X-Spam_score_int: -10
-X-Spam_score: -1.1
-X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FORGED_SPF_HELO=1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
- SPF_NONE=0.001 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZM0nX8qt1T3aZgNK@redhat.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -138,200 +106,125 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Aug 04, 2023 at 04:14:14PM +0100, Jonathan Cameron wrote:
-> On Fri, 21 Jul 2023 12:35:06 -0400
-> Gregory Price <gourry.memverge@gmail.com> wrote:
-> 
-> > This enables wrapper devices to customize the base device's CCI
-> > (for example, with custom commands outside the specification)
-> > without the need to change the base device.
+On Fri, Aug 04, 2023 at 05:29:19PM +0100, Daniel P. Berrangé wrote:
+> On Fri, Aug 04, 2023 at 12:01:54PM -0400, Peter Xu wrote:
+> > On Fri, Aug 04, 2023 at 02:59:07PM +0100, Daniel P. Berrangé wrote:
+> > > On Fri, Aug 04, 2023 at 02:28:05PM +0200, Markus Armbruster wrote:
+> > > > Peter Xu <peterx@redhat.com> writes:
+> > > > 
+> > > > > We used to have three objects that have always the same list of parameters
+> > > > 
+> > > > We have!
+> > > > 
+> > > > > and comments are always duplicated:
+> > > > >
+> > > > >   - @MigrationParameter
+> > > > >   - @MigrationParameters
+> > > > >   - @MigrateSetParameters
+> > > > >
+> > > > > Before we can deduplicate the code, it's fairly straightforward to
+> > > > > deduplicate the comments first, so for each time we add a new migration
+> > > > > parameter we don't need to copy the same paragraphs three times.
+> > > > 
+> > > > De-duplicating the code would be nice, but we haven't done so in years,
+> > > > which suggests it's hard enough not to be worth the trouble.
+> > > 
+> > > The "MigrationParameter" enumeration isn't actually used in
+> > > QMP at all.
+> > > 
+> > > It is only used in HMP for hmp_migrate_set_parameter and
+> > > hmp_info_migrate_parameters. So it is questionable documenting
+> > > that enum in the QMP reference docs at all.
+> > > 
+> > > 1c1
+> > > < { 'struct': 'MigrationParameters',
+> > > ---
+> > > > { 'struct': 'MigrateSetParameters',
+> > > 14,16c14,16
+> > > <             '*tls-creds': 'str',
+> > > <             '*tls-hostname': 'str',
+> > > <             '*tls-authz': 'str',
+> > > ---
+> > > >             '*tls-creds': 'StrOrNull',
+> > > >             '*tls-hostname': 'StrOrNull',
+> > > >             '*tls-authz': 'StrOrNull',
+> > > 
+> > > Is it not valid to use StrOrNull in both cases and thus
+> > > delete the duplication here ?
 > > 
-> > The also enabled the base device to dispatch those commands without
-> > requiring additional driver support.
+> > I tested removing MigrateSetParameters by replacing it with
+> > MigrationParameters and it looks all fine here... I manually tested qmp/hmp
+> > on set/query parameters, and qtests are all happy.
+> 
+> I meant the other way around, such we would be using 'StrOrNull'
+> in all scenarios.
+
+Yes, that should also work and even without worrying on nulls.  I just took
+a random one replacing the other.
+
+> 
 > > 
-> > Signed-off-by: Gregory Price <gregory.price@memverge.com>
-> > ---
-> >  hw/cxl/cxl-mailbox-utils.c  | 19 +++++++++++++++++++
-> >  include/hw/cxl/cxl_device.h |  2 ++
-> >  2 files changed, 21 insertions(+)
+> > The only thing I see that may affect it is we used to logically allow
+> > taking things like '"tls-authz": null' in the json input, but now we won't
+> > allow that because we'll be asking for a string type only.
 > > 
-> > diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-> > index ddee3f1718..cad0cd0adb 100644
-> > --- a/hw/cxl/cxl-mailbox-utils.c
-> > +++ b/hw/cxl/cxl-mailbox-utils.c
-> > @@ -1383,6 +1383,25 @@ static void cxl_copy_cci_commands(CXLCCI *cci, const struct cxl_cmd (*cxl_cmds)[
-> >      }
-> >  }
-> >  
-> > +void cxl_add_cci_commands(CXLCCI *cci, const struct cxl_cmd (*cxl_cmd_set)[256], size_t payload_max)
-> > +{
-> > +    cci->payload_max = payload_max > cci->payload_max ? payload_max : cci->payload_max;
-> > +    for (int set = 0; set < 256; set++) {
-> > +        for (int cmd = 0; cmd < 256; cmd++) {
-> > +            if (cxl_cmd_set[set][cmd].handler) {
-> > +                const struct cxl_cmd *c = &cxl_cmd_set[set][cmd];
-> > +                cci->cxl_cmd_set[set][cmd] = *c;
-> Don't interleave definitions and code.
+> > Since we have query-qmp-schema I suppose we're all fine, because logically
+> > the mgmt app (libvirt?) will still query that to understand the protocol,
+> > so now we'll have (response of query-qmp-schema):
+> > 
+> >         {
+> >             "arg-type": "144",
+> >             "meta-type": "command",
+> >             "name": "migrate-set-parameters",
+> >             "ret-type": "0"
+> >         },
+> > 
+> > Where 144 can start to point to MigrationParameters, rather than
+> > MigrateSetParameters.
+> > 
+> > Ok, then what if the mgmt app doesn't care and just used "null" in tls-*
+> > fields when setting?  Funnily I tried it and actually anything that does
+> > migrate-set-parameters with a "null" passed over to tls-* fields will
+> > already crash qemu...
+> > 
+> > ./migration/options.c:1333: migrate_params_apply: Assertion `params->tls_authz->type == QTYPE_QSTRING' failed.
+> > 
+> > #0  0x00007f72f4b2a844 in __pthread_kill_implementation () at /lib64/libc.so.6
+> > #1  0x00007f72f4ad9abe in raise () at /lib64/libc.so.6
+> > #2  0x00007f72f4ac287f in abort () at /lib64/libc.so.6
+> > #3  0x00007f72f4ac279b in _nl_load_domain.cold () at /lib64/libc.so.6
+> > #4  0x00007f72f4ad2147 in  () at /lib64/libc.so.6
+> > #5  0x00005573308740e6 in migrate_params_apply (params=0x7ffc74fd09d0, errp=0x7ffc74fd0998) at ../migration/options.c:1333
+> > #6  0x0000557330874591 in qmp_migrate_set_parameters (params=0x7ffc74fd09d0, errp=0x7ffc74fd0998) at ../migration/options.c:1433
+> > #7  0x0000557330cb9132 in qmp_marshal_migrate_set_parameters (args=0x7f72e00036d0, ret=0x7f72f133cd98, errp=0x7f72f133cd90) at qapi/qapi-commands-migration.c:214
+> > #8  0x0000557330d07fab in do_qmp_dispatch_bh (opaque=0x7f72f133ce30) at ../qapi/qmp-dispatch.c:128
+> > #9  0x0000557330d33bbb in aio_bh_call (bh=0x5573337d7920) at ../util/async.c:169
+> > #10 0x0000557330d33cd8 in aio_bh_poll (ctx=0x55733356e7d0) at ../util/async.c:216
+> > #11 0x0000557330d17a19 in aio_dispatch (ctx=0x55733356e7d0) at ../util/aio-posix.c:423
+> > #12 0x0000557330d34117 in aio_ctx_dispatch (source=0x55733356e7d0, callback=0x0, user_data=0x0) at ../util/async.c:358
+> > #13 0x00007f72f5a8848c in g_main_context_dispatch () at /lib64/libglib-2.0.so.0
+> > #14 0x0000557330d358d4 in glib_pollfds_poll () at ../util/main-loop.c:290
+> > #15 0x0000557330d35951 in os_host_main_loop_wait (timeout=0) at ../util/main-loop.c:313
+> > #16 0x0000557330d35a5f in main_loop_wait (nonblocking=0) at ../util/main-loop.c:592
+> > #17 0x000055733083aee0 in qemu_main_loop () at ../softmmu/runstate.c:732
+> > #18 0x0000557330b0921b in qemu_default_main () at ../softmmu/main.c:37
+> > #19 0x0000557330b09251 in main (argc=35, argv=0x7ffc74fd0ec8) at ../softmmu/main.c:48
+> > 
+> > Then I suppose it means all mgmt apps are not using "null" anyway, and it
+> > makes more sense to me to just remove MigrateSetParameters (by replacing it
+> > with MigrationParameters).
 > 
-> > +                struct cel_log *log =
-> > +                    &cci->cel_log[cci->cel_size];
-> > +
-> > +                log->opcode = (set << 8) | cmd;
-> > +                log->effect = c->effect;
-> > +                cci->cel_size++;
-> 
-> So my gut feeling on this is based on the large amount of overlapping code.  I might queue it
-> as it stands, but I'd like to see this refactored.
-> 
-> 1) Single copy routine used in all places that copie in any new entries to cci->cxl_cmd_set[][]
-> 2) A single cel_log builder function to be called in normal path and after an update. Just rebuild
-> the whole thing rather than trying to append to it I think.
-> 
-> Something like (so far untested but I'll poke it with Fan's code in a few mins)
-> 
-> However this is all proving rather costly in space so maybe we need a better
-> representation for the sparse nature of cxl comamnds - a job for another day.
+> It shouldn't be crashing,  because qmp_migrate_set_parameters()
+> is turning 'null' into  "", which means the assert ought to
+> never fire. Did you have a local modiification that caused
+> this crash perhaps ?
 
-I'd certainly considered the issue of space, but it seemed better to
-blow up the size in one commit and then come back around and change the
-structure out from under the work this unblocks.  What we save in space
-we sacrifice in complexity, but the structure seems simple enough that a
-change shouldn't take a ton of scrutiny to get right.
+I think it just got overlooked when introducing tls-authz to not have added
+that special code in qmp_migrate_set_parameters(), the other two are fine.
 
-One downside of the approach here is what happens when there's an
-overlap and custom devices build up over time.  As in - if i steal the
-0xFF command group for my custom emulated MHMLD DCD Everything Super Device,
-what happens if the spec finally comes around to defining 0xFF as a real
-command set?
+Thanks,
 
-tl;dr: Should the copy function error on overlap detections?
+-- 
+Peter Xu
 
-Quick read-back through the spec, I don't see explicit carve-outs for
-reserved command regions for custom sets, might be worth a discussion.
-
-For now it shouldn't be an issue.
-
-> 
-> 
-> From 8ab48adfb2b481be0702b84a0d172a4f142b0df6 Mon Sep 17 00:00:00 2001
-> From: Gregory Price <gourry.memverge@gmail.com>
-> Date: Fri, 21 Jul 2023 12:35:06 -0400
-> Subject: [PATCH] cxl/mailbox: interface to add CCI commands to an existing CCI
-> 
-> This enables wrapper devices to customize the base device's CCI
-> (for example, with custom commands outside the specification)
-> without the need to change the base device.
-> 
-> The also enabled the base device to dispatch those commands without
-> requiring additional driver support.
-> 
-> Signed-off-by: Gregory Price <gregory.price@memverge.com>
-> Link: https://lore.kernel.org/r/20230721163505.1910-3-gregory.price@memverge.com
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> 
-> --
-> Heavily edited by Jonathan Cameron to increase code reuse
-> ---
->  include/hw/cxl/cxl_device.h |  2 ++
->  hw/cxl/cxl-mailbox-utils.c  | 21 +++++++++++++++++++--
->  2 files changed, 21 insertions(+), 2 deletions(-)
-> 
-> diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
-> index 0c9254dff9..2a3050fbad 100644
-> --- a/include/hw/cxl/cxl_device.h
-> +++ b/include/hw/cxl/cxl_device.h
-> @@ -297,6 +297,8 @@ void cxl_initialize_mailbox_t3(CXLCCI *cci, DeviceState *d, size_t payload_max);
->  void cxl_initialize_mailbox_swcci(CXLCCI *cci, DeviceState *intf,
->                                    DeviceState *d, size_t payload_max);
->  void cxl_init_cci(CXLCCI *cci, size_t payload_max);
-> +void cxl_add_cci_commands(CXLCCI *cci, const struct cxl_cmd (*cxl_cmd_set)[256],
-> +                          size_t payload_max);
->  int cxl_process_cci_message(CXLCCI *cci, uint8_t set, uint8_t cmd,
->                              size_t len_in, uint8_t *pl_in,
->                              size_t *len_out, uint8_t *pl_out,
-> diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-> index 37703f254f..852e5a046b 100644
-> --- a/hw/cxl/cxl-mailbox-utils.c
-> +++ b/hw/cxl/cxl-mailbox-utils.c
-> @@ -1353,9 +1353,9 @@ static void bg_timercb(void *opaque)
->      }
->  }
->  
-> -void cxl_init_cci(CXLCCI *cci, size_t payload_max)
-> +static void cxl_rebuild_cel(CXLCCI *cci)
->  {
-> -    cci->payload_max = payload_max;
-> +    cci->cel_size = 0; /* Reset for a fresh build */
->      for (int set = 0; set < 256; set++) {
->          for (int cmd = 0; cmd < 256; cmd++) {
->              if (cci->cxl_cmd_set[set][cmd].handler) {
-> @@ -1369,6 +1369,13 @@ void cxl_init_cci(CXLCCI *cci, size_t payload_max)
->              }
->          }
->      }
-> +}
-> +
-> +void cxl_init_cci(CXLCCI *cci, size_t payload_max)
-> +{
-> +    cci->payload_max = payload_max;
-> +    cxl_rebuild_cel(cci);
-> +
->      cci->bg.complete_pct = 0;
->      cci->bg.starttime = 0;
->      cci->bg.runtime = 0;
-> @@ -1387,10 +1394,19 @@ static void cxl_copy_cci_commands(CXLCCI *cci, const struct cxl_cmd (*cxl_cmds)[
->      }
->  }
->  
-> +void cxl_add_cci_commands(CXLCCI *cci, const struct cxl_cmd (*cxl_cmd_set)[256],
-> +                                 size_t payload_max)
-> +{
-> +    cci->payload_max = payload_max > cci->payload_max ? payload_max : cci->payload_max;
-> +    cxl_copy_cci_commands(cci, cxl_cmd_set);
-> +    cxl_rebuild_cel(cci);
-> +}
-> +
->  void cxl_initialize_mailbox_swcci(CXLCCI *cci, DeviceState *intf,
->                                    DeviceState *d, size_t payload_max)
->  {
->      cxl_copy_cci_commands(cci, cxl_cmd_set_sw);
-> +    cxl_rebuild_cel(cci);
->      cci->d = d;
->      cci->intf = intf;
->      cxl_init_cci(cci, payload_max);
-> @@ -1399,6 +1415,7 @@ void cxl_initialize_mailbox_swcci(CXLCCI *cci, DeviceState *intf,
->  void cxl_initialize_mailbox_t3(CXLCCI *cci, DeviceState *d, size_t payload_max)
->  {
->      cxl_copy_cci_commands(cci, cxl_cmd_set);
-> +    cxl_rebuild_cel(cci);
->      cci->d = d;
->  
->      /* No separation for PCI MB as protocol handled in PCI device */
-> -- 
-> 2.39.2
-> 
-> 
-> 
-> > +            }
-> > +        }
-> > +    }
-> > +}
-> > +
-> >  void cxl_initialize_mailbox_swcci(CXLCCI *cci, DeviceState *intf, DeviceState *d, size_t payload_max)
-> >  {
-> >      cxl_copy_cci_commands(cci, cxl_cmd_set_sw);
-> > diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
-> > index 9a3c8b2dfa..abc8405cc5 100644
-> > --- a/include/hw/cxl/cxl_device.h
-> > +++ b/include/hw/cxl/cxl_device.h
-> > @@ -297,6 +297,8 @@ void cxl_initialize_mailbox_t3(CXLCCI *cci, DeviceState *d, size_t payload_max);
-> >  void cxl_initialize_mailbox_swcci(CXLCCI *cci, DeviceState *intf,
-> >                                    DeviceState *d, size_t payload_max);
-> >  void cxl_init_cci(CXLCCI *cci, size_t payload_max);
-> > +void cxl_add_cci_commands(CXLCCI *cci, const struct cxl_cmd (*cxl_cmd_set)[256],
-> > +                          size_t payload_max);
-> >  int cxl_process_cci_message(CXLCCI *cci, uint8_t set, uint8_t cmd,
-> >                              size_t len_in, uint8_t *pl_in,
-> >                              size_t *len_out, uint8_t *pl_out,
-> 
 
