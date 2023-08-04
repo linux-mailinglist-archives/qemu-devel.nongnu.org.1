@@ -2,91 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A431770C88
+	by mail.lfdr.de (Postfix) with ESMTPS id 80C9E770C89
 	for <lists+qemu-devel@lfdr.de>; Sat,  5 Aug 2023 01:57:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qS4es-0005FC-2q; Fri, 04 Aug 2023 19:56:38 -0400
+	id 1qS4et-0005GB-Ly; Fri, 04 Aug 2023 19:56:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1qS4eq-0005El-7l; Fri, 04 Aug 2023 19:56:36 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ id 1qS4eq-0005Ek-4b; Fri, 04 Aug 2023 19:56:36 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1qS4eo-0005F5-Ji; Fri, 04 Aug 2023 19:56:36 -0400
-Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
+ id 1qS4eo-0005F7-BT; Fri, 04 Aug 2023 19:56:35 -0400
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 374Np8xN026179; Fri, 4 Aug 2023 23:56:31 GMT
+ 374NXuYE001407; Fri, 4 Aug 2023 23:56:32 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=lgGWK/soqqpvaQUbK0IIrqmfFyOAsfCZXgeY2MSMRkM=;
- b=LwkB6A+ovsI50fOLanz0Lxm+tJPfZuq9GtDtw2NgElB+71f/ZexkzgqArQnSnRomaBxq
- nRJD79b4WP+pDelRQLT12EvjHGwFgvHhEP6X09/5xFb4QFXSMdJHfsuvyhOfWrvFq9uA
- iljLYHr7otH4bPHRhXMOx6NL6CGXVSrzerMj1kFLCspq9gj3seK4EoV/DaRJlgCJzTg1
- 7u9RaSXbfRg/5T4/s7KNI8yEhLMqHUL6JoS/VJELFlh37AZ4j9amgKPmt4RUBRfXEDOc
- sakU6bbRZEwuSG7TuHsFl+rj72gkCQ7jdq2yTFVsNyJ8lGbtpoJvJAsKwSm9234RrNZC Gg== 
+ : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=LNpWPCezO5e56c/NMr/8umV009uLN4F8E982N5g3p/w=;
+ b=fs4ckzGOa2NMPJ1Qjb13zCJMAYWwda7We2MISh75u8L7wsayCm/FuUM8b/VD5qpQewwg
+ bD8VO+aF1oFjkE9OFtqyYYBXH4YP8J470y/wkHHSQN7dkVyRuVukq1uHRG4QoB2IRfiY
+ oVkX2LIZg4X1OSVxgB3f7jyXyvfPP11/dX+QVUhtnxo4ecvTsIVjpgyv5Sg9hD5uNGLE
+ hwOpaVFmVHGkQNbMzdTng3ni9Xd8JS/QGcwClc6CL5z3LfcGqIkL1qaxHMIIojVfQRxQ
+ mj5ykn96Wmn8IBQyRgJGW9PNXPUNps7nLHM/D5KMlJZ7OxqXTD5gSFp/DuaG1kFo2oOy +Q== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s9ayygbd6-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s9b448cfw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 04 Aug 2023 23:56:32 +0000
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 374NkfbI011084;
+ Fri, 4 Aug 2023 23:56:31 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s9b448cfu-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Fri, 04 Aug 2023 23:56:31 +0000
-Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 374NlWeg017482;
- Fri, 4 Aug 2023 23:56:30 GMT
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s9ayygbcv-1
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 374MfRwf021546; Fri, 4 Aug 2023 23:56:31 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3s8kmcj1ps-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 04 Aug 2023 23:56:30 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 374MbxEN023558; Fri, 4 Aug 2023 23:56:29 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3s8km9t19u-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 04 Aug 2023 23:56:29 +0000
+ Fri, 04 Aug 2023 23:56:31 +0000
 Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
  [10.20.54.103])
- by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 374NuRuR43057860
+ by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 374NuTLE42861232
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 4 Aug 2023 23:56:27 GMT
+ Fri, 4 Aug 2023 23:56:29 GMT
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6E65C20040;
- Fri,  4 Aug 2023 23:56:27 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 69C5A20043;
+ Fri,  4 Aug 2023 23:56:29 +0000 (GMT)
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D21A32004B;
- Fri,  4 Aug 2023 23:56:26 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id E0DBE20040;
+ Fri,  4 Aug 2023 23:56:28 +0000 (GMT)
 Received: from heavy.boeblingen.de.ibm.com (unknown [9.179.4.122])
  by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Fri,  4 Aug 2023 23:56:26 +0000 (GMT)
+ Fri,  4 Aug 2023 23:56:28 +0000 (GMT)
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 To: Richard Henderson <richard.henderson@linaro.org>,
  David Hildenbrand <david@redhat.com>, Thomas Huth <thuth@redhat.com>
 Cc: qemu-devel@nongnu.org, qemu-s390x@nongnu.org,
- Ilya Leoshkevich <iii@linux.ibm.com>, qemu-stable@nongnu.org
-Subject: [PATCH 1/2] target/s390x: Fix VSTL with a large length
-Date: Sat,  5 Aug 2023 01:55:33 +0200
-Message-ID: <20230804235624.263260-1-iii@linux.ibm.com>
+ Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PATCH 2/2] tests/tcg/s390x: Test VSTL
+Date: Sat,  5 Aug 2023 01:55:34 +0200
+Message-ID: <20230804235624.263260-2-iii@linux.ibm.com>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230804235624.263260-1-iii@linux.ibm.com>
+References: <20230804235624.263260-1-iii@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: heEwG6BSZ_drKvFXY4UbQRVN38EzxDKI
-X-Proofpoint-ORIG-GUID: kqFWAc4K7pmH0w9rRBwYesJ8BIUhF3n-
+X-Proofpoint-GUID: -dXnsg8nVpO_5jQaq0GDBcnXk7pYYr-X
+X-Proofpoint-ORIG-GUID: ezuUsKyDXzSNKD6Q9PEfUT6UweW6gdEd
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
  definitions=2023-08-04_21,2023-08-03_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- lowpriorityscore=0 phishscore=0 malwarescore=0 mlxscore=0
- priorityscore=1501 clxscore=1015 bulkscore=0 spamscore=0 mlxlogscore=999
- adultscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2306200000 definitions=main-2308040213
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
+ impostorscore=0 phishscore=0
+ clxscore=1015 malwarescore=0 spamscore=0 bulkscore=0 priorityscore=1501
+ adultscore=0 mlxscore=0 lowpriorityscore=0 mlxlogscore=814 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2306200000
+ definitions=main-2308040213
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -19
 X-Spam_score: -2.0
 X-Spam_bar: --
@@ -109,29 +112,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The length is always truncated to 16 bytes. Do not probe more than
-that.
+Add a small test to prevent regressions.
 
-Cc: qemu-stable@nongnu.org
-Fixes: 0e0a5b49ad58 ("s390x/tcg: Implement VECTOR STORE WITH LENGTH")
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 ---
- target/s390x/tcg/vec_helper.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/tcg/s390x/Makefile.target |  1 +
+ tests/tcg/s390x/vstl.c          | 37 +++++++++++++++++++++++++++++++++
+ 2 files changed, 38 insertions(+)
+ create mode 100644 tests/tcg/s390x/vstl.c
 
-diff --git a/target/s390x/tcg/vec_helper.c b/target/s390x/tcg/vec_helper.c
-index 48d86722b2d..dafc4c3582c 100644
---- a/target/s390x/tcg/vec_helper.c
-+++ b/target/s390x/tcg/vec_helper.c
-@@ -193,7 +193,7 @@ void HELPER(vstl)(CPUS390XState *env, const void *v1, uint64_t addr,
-                   uint64_t bytes)
- {
-     /* Probe write access before actually modifying memory */
--    probe_write_access(env, addr, bytes, GETPC());
-+    probe_write_access(env, addr, MIN(bytes, 16), GETPC());
+diff --git a/tests/tcg/s390x/Makefile.target b/tests/tcg/s390x/Makefile.target
+index 649c1e520e6..e3e22c6f7e3 100644
+--- a/tests/tcg/s390x/Makefile.target
++++ b/tests/tcg/s390x/Makefile.target
+@@ -60,6 +60,7 @@ Z13_TESTS=vistr
+ Z13_TESTS+=lcbb
+ Z13_TESTS+=locfhr
+ Z13_TESTS+=vcksm
++Z13_TESTS+=vstl
+ $(Z13_TESTS): CFLAGS+=-march=z13 -O2
+ TESTS+=$(Z13_TESTS)
  
-     if (likely(bytes >= 16)) {
-         cpu_stq_data_ra(env, addr, s390_vec_read_element64(v1, 0), GETPC());
+diff --git a/tests/tcg/s390x/vstl.c b/tests/tcg/s390x/vstl.c
+new file mode 100644
+index 00000000000..bece952c7ee
+--- /dev/null
++++ b/tests/tcg/s390x/vstl.c
+@@ -0,0 +1,37 @@
++/*
++ * Test the VSTL instruction.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++#include <assert.h>
++#include <stdlib.h>
++#include "vx.h"
++
++static inline void vstl(S390Vector *v1, void *db2, size_t r3)
++{
++    asm("vstl %[v1],%[r3],%[db2]"
++        : [db2] "=Q" (*(char *)db2)
++        : [v1] "v" (v1->v), [r3] "r" (r3)
++        : "memory");
++}
++
++int main(void)
++{
++    uint64_t buf[3] = {0x1122334455667788ULL, 0x99aabbccddeeffULL,
++                       0x5a5a5a5a5a5a5a5aULL};
++    S390Vector v = {.d[0] = 0x1234567887654321ULL,
++                    .d[1] = 0x9abcdef00fedcba9ULL};
++
++    vstl(&v, buf, 0);
++    assert(buf[0] == 0x1222334455667788ULL);
++
++    vstl(&v, buf, 1);
++    assert(buf[0] == 0x1234334455667788ULL);
++
++    vstl(&v, buf, -1);
++    assert(buf[0] == 0x1234567887654321ULL);
++    assert(buf[1] == 0x9abcdef00fedcba9ULL);
++    assert(buf[2] == 0x5a5a5a5a5a5a5a5aULL);
++
++    return EXIT_SUCCESS;
++}
 -- 
 2.41.0
 
