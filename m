@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81395770BA7
-	for <lists+qemu-devel@lfdr.de>; Sat,  5 Aug 2023 00:03:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84F14770BB6
+	for <lists+qemu-devel@lfdr.de>; Sat,  5 Aug 2023 00:04:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qS2rN-00050m-HJ; Fri, 04 Aug 2023 18:01:25 -0400
+	id 1qS2rP-00054R-Lg; Fri, 04 Aug 2023 18:01:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qS2qv-0004mb-A6
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 18:00:57 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1qS2qx-0004mx-Ba
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 18:00:59 -0400
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qS2qs-0001vy-IB
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 18:00:55 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1bbd2761f1bso22050295ad.2
- for <qemu-devel@nongnu.org>; Fri, 04 Aug 2023 15:00:54 -0700 (PDT)
+ id 1qS2qv-0001wK-2A
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 18:00:59 -0400
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-1bbf8cb61aeso18851105ad.2
+ for <qemu-devel@nongnu.org>; Fri, 04 Aug 2023 15:00:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691186453; x=1691791253;
+ d=linaro.org; s=google; t=1691186454; x=1691791254;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=lfYi3zP2whYYhdilrdAtUwTS+wOZ/T9TUKhhh0JmADM=;
- b=yrIm1u+shFtPbvtO7Z8qFba5AnaVPrhLqDDO8MuFiRiP1N4ytR2QTouJSYsEvGZbAU
- 2kzJR7kBvcNYzzikQ7rYDE0B8NPBSLmnJ96zGNqs60MvRmAG90G/Rd/CRjXQEGGMY3UU
- ybQ+RqTFCsqZALGq2mJMLMLRrW+9z2YxsrEP+248gVamGBda7BYVPUGi6LIZ2ir9Ca8p
- 7nqaoMbL2TXo95/td/IjVkJpaXAbhNTfiA/6rpPf9KOJo+cUHW/f2pYx84NSZNZHkxTM
- 0NwSF8tnD+GiysZjSD1TSMmWsx8y8oT75mg6vlNseQ+BkzOigzRq/fh8LQozJwDMjnUq
- Y2Bg==
+ bh=33FWwcFvaizWH4t629x3Vf1EkBPMJLEp9WeUHM35B6g=;
+ b=n2P9/gib7RFga7fGmkdai246rrDfCSpYy88tyBEHZeh9vgWCf9wV5Lkd4k91znDhbK
+ Ly2OrFHrpNjNUx9qMZRcsRj+nk+Eeb1/wDvSaaPzSnWrgV3tUPP6eo3Xj0Z3XCAIqAra
+ dZz8ftO9uKPiYSIuAZfukfyOaYhNHfZDDKtfex5go0b+lobCs92KilpePOkTMhCSg8q0
+ iXOV0R9Bf3VGPQzI6a3CctlrhX12VxWOKZnhk58vOHcFU6xBbrN/hXgIiDSbEZN80uCT
+ fmnUjb5H95COcT25J5xAhBjbwiKeRhA15gSWzFxoCGBYnflt/aEDqTRWSxOH5UKwuiqF
+ Se+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691186453; x=1691791253;
+ d=1e100.net; s=20221208; t=1691186454; x=1691791254;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lfYi3zP2whYYhdilrdAtUwTS+wOZ/T9TUKhhh0JmADM=;
- b=HQrRIWsyoWbFeJX2VF0wi5WpGDjI11wy5JnAh4fqTDwgdAD5gdECIuXSzfUUbHU52J
- CraNW+94pCj71Qp3NiEztTUUT47UH5sEmf5yixKJL+UqeMoYYnZUdCAN0tNjPhKmD2DN
- 6OUiRW8/1SrR1FGwfaZ7XhKFPHE33ZcYY2arnw7oskxYlgCv93HPev+mEwXhhF6E17zg
- WmEas8tTf1smW/8W1NbzheBUBsBrYEN6ojG8lCzGAf0MoEej22f1OS/wrftJnE3UZ87O
- DDrFvkC2PdNITm3+cvbQl+IaBixQ9JgjKSkwQotC1xBb2pL8SvMb3bJf+xNEfTYjGm6/
- LSvQ==
-X-Gm-Message-State: AOJu0YwG81DvE+QUTg5IXAdTCSx7hmJYE1xHWcpBWcFhtE5TGUGe/NCQ
- EgDS6U8g5ljBDUnrH5oLI1xACd2JZ/N3vKlue9I=
-X-Google-Smtp-Source: AGHT+IGMooYLZtoFe1uhKLnWrJiGfCTE4/tLyAykw/BYiAo6bJWGYl00tEA3LdKy7Lt9edl4mjAFPQ==
-X-Received: by 2002:a17:902:e804:b0:1b9:e091:8037 with SMTP id
- u4-20020a170902e80400b001b9e0918037mr3727329plg.30.1691186453371; 
- Fri, 04 Aug 2023 15:00:53 -0700 (PDT)
+ bh=33FWwcFvaizWH4t629x3Vf1EkBPMJLEp9WeUHM35B6g=;
+ b=GBuVBkk/Osi4WguuJI4S5GCNMbKKUTtvwbYYakKehFosnswWUeWs7UYAt8sEP37BCq
+ GtcVLu4bJf7bjWCc1VVcDBXK/uaIJV7LeLyF8Sq3Dx8XkV/ja7XFCLw4wEgV8pWcjU6s
+ YPy5XUopDWwreLQBMzBr19fB/ieh6aNDMJl0Lb71Syt2HfDu+ei83oWG1S6mNBj8KqDs
+ yl8SYopHLQwaXqYIRLHj7hxRbdfP7IPZ9oHKnJnDcLfA67KaiYLSlLtWO3KheFc/frI9
+ Nm0JKWuuKm7Lk/3nQCHoCaR7jLGdNNAmC1EZ/yWxHYCXmuzsJ8AiDmg63BP9gVnJk5f7
+ Ls7w==
+X-Gm-Message-State: AOJu0YwyjP4QIx3waNg/YBxbHYHrVFPCeLpuPn/ZNOGiOzkyRPyklUjQ
+ exwyP+rM/OQeuHGKSnuxYxBaHKSg9ljSi4wOofE=
+X-Google-Smtp-Source: AGHT+IGcWin8c2lUmCbJVcUQ+PTXDvnThAV0oGDhFUEyYh4ktAu3oBpXLn0x5+JVHDVG4abDX3Przw==
+X-Received: by 2002:a17:902:ce8c:b0:1b9:e913:b585 with SMTP id
+ f12-20020a170902ce8c00b001b9e913b585mr2556383plg.13.1691186454267; 
+ Fri, 04 Aug 2023 15:00:54 -0700 (PDT)
 Received: from stoup.. ([2602:47:d490:6901:1eed:f77f:f320:8b14])
  by smtp.gmail.com with ESMTPSA id
- u1-20020a17090282c100b001bbf7fd354csm2185568plz.213.2023.08.04.15.00.52
+ u1-20020a17090282c100b001bbf7fd354csm2185568plz.213.2023.08.04.15.00.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 04 Aug 2023 15:00:52 -0700 (PDT)
+ Fri, 04 Aug 2023 15:00:53 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Mikhail Tyutin <m.tyutin@yadro.com>, Dmitriy Solovev <d.solovev@yadro.com>
-Subject: [PATCH v9 23/24] accel/tcg: Call save_iotlb_data from io_readx as
- well.
-Date: Fri,  4 Aug 2023 15:00:31 -0700
-Message-Id: <20230804220032.295411-24-richard.henderson@linaro.org>
+Cc: Nathan Egge <negge@xiph.org>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH v9 24/24] linux-user/elfload: Set V in ELF_HWCAP for RISC-V
+Date: Fri,  4 Aug 2023 15:00:32 -0700
+Message-Id: <20230804220032.295411-25-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230804220032.295411-1-richard.henderson@linaro.org>
 References: <20230804220032.295411-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,82 +92,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Mikhail Tyutin <m.tyutin@yadro.com>
+From: Nathan Egge <negge@xiph.org>
 
-Apply save_iotlb_data() to io_readx() as well as to io_writex().
-This fixes SEGFAULT on qemu_plugin_hwaddr_phys_addr() call plugins
-for addresses inside of MMIO region.
+Set V bit for hwcap if misa is set.
 
-Signed-off-by: Dmitriy Solovev <d.solovev@yadro.com>
-Signed-off-by: Mikhail Tyutin <m.tyutin@yadro.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20230804110903.19968-1-m.tyutin@yadro.com>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1793
+Signed-off-by: Nathan Egge <negge@xiph.org>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Tested-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Message-Id: <20230803131424.40744-1-negge@xiph.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/cputlb.c | 36 +++++++++++++++++++++---------------
- 1 file changed, 21 insertions(+), 15 deletions(-)
+ linux-user/elfload.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index 4b1bfaa53d..d68fa6867c 100644
---- a/accel/tcg/cputlb.c
-+++ b/accel/tcg/cputlb.c
-@@ -1363,6 +1363,21 @@ static inline void cpu_transaction_failed(CPUState *cpu, hwaddr physaddr,
-     }
- }
+diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+index 51591a1d94..c9e176a9f6 100644
+--- a/linux-user/elfload.c
++++ b/linux-user/elfload.c
+@@ -1710,7 +1710,8 @@ static uint32_t get_elf_hwcap(void)
+ #define MISA_BIT(EXT) (1 << (EXT - 'A'))
+     RISCVCPU *cpu = RISCV_CPU(thread_cpu);
+     uint32_t mask = MISA_BIT('I') | MISA_BIT('M') | MISA_BIT('A')
+-                    | MISA_BIT('F') | MISA_BIT('D') | MISA_BIT('C');
++                    | MISA_BIT('F') | MISA_BIT('D') | MISA_BIT('C')
++                    | MISA_BIT('V');
  
-+/*
-+ * Save a potentially trashed CPUTLBEntryFull for later lookup by plugin.
-+ * This is read by tlb_plugin_lookup if the fulltlb entry doesn't match
-+ * because of the side effect of io_writex changing memory layout.
-+ */
-+static void save_iotlb_data(CPUState *cs, MemoryRegionSection *section,
-+                            hwaddr mr_offset)
-+{
-+#ifdef CONFIG_PLUGIN
-+    SavedIOTLB *saved = &cs->saved_iotlb;
-+    saved->section = section;
-+    saved->mr_offset = mr_offset;
-+#endif
-+}
-+
- static uint64_t io_readx(CPUArchState *env, CPUTLBEntryFull *full,
-                          int mmu_idx, vaddr addr, uintptr_t retaddr,
-                          MMUAccessType access_type, MemOp op)
-@@ -1382,6 +1397,12 @@ static uint64_t io_readx(CPUArchState *env, CPUTLBEntryFull *full,
-         cpu_io_recompile(cpu, retaddr);
-     }
- 
-+    /*
-+     * The memory_region_dispatch may trigger a flush/resize
-+     * so for plugins we save the iotlb_data just in case.
-+     */
-+    save_iotlb_data(cpu, section, mr_offset);
-+
-     {
-         QEMU_IOTHREAD_LOCK_GUARD();
-         r = memory_region_dispatch_read(mr, mr_offset, &val, op, full->attrs);
-@@ -1398,21 +1419,6 @@ static uint64_t io_readx(CPUArchState *env, CPUTLBEntryFull *full,
-     return val;
- }
- 
--/*
-- * Save a potentially trashed CPUTLBEntryFull for later lookup by plugin.
-- * This is read by tlb_plugin_lookup if the fulltlb entry doesn't match
-- * because of the side effect of io_writex changing memory layout.
-- */
--static void save_iotlb_data(CPUState *cs, MemoryRegionSection *section,
--                            hwaddr mr_offset)
--{
--#ifdef CONFIG_PLUGIN
--    SavedIOTLB *saved = &cs->saved_iotlb;
--    saved->section = section;
--    saved->mr_offset = mr_offset;
--#endif
--}
--
- static void io_writex(CPUArchState *env, CPUTLBEntryFull *full,
-                       int mmu_idx, uint64_t val, vaddr addr,
-                       uintptr_t retaddr, MemOp op)
+     return cpu->env.misa_ext & mask;
+ #undef MISA_BIT
 -- 
 2.34.1
 
