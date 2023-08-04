@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F31376F726
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 03:47:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32CFF76F71E
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 03:47:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRjsu-0002gc-C9; Thu, 03 Aug 2023 21:45:44 -0400
+	id 1qRjsw-0002hx-Kk; Thu, 03 Aug 2023 21:45:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qRjsg-0002cu-E3
+ id 1qRjsg-0002cv-Ef
  for qemu-devel@nongnu.org; Thu, 03 Aug 2023 21:45:38 -0400
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qRjsc-00059e-4K
+ id 1qRjsc-00059m-Gi
  for qemu-devel@nongnu.org; Thu, 03 Aug 2023 21:45:28 -0400
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-686ed1d2594so1418022b3a.2
- for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 18:45:25 -0700 (PDT)
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-686f94328a4so1114192b3a.0
+ for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 18:45:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691113524; x=1691718324;
+ d=linaro.org; s=google; t=1691113525; x=1691718325;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=S4pOOuQWmq0xrR9pkY2S2VlYgAJ/fJTzo6NDmQNEUSw=;
- b=xSyIUOh+RoJWrDmmPodBqLoqx556ANRBFz+nXQdmCxz/lT1UWXv3vVAGdVe7/EFDx1
- wiAlw+hs9gYZOmmRAO8TsPQnapiPF0CRlQ7qEuitVZa3EaPvQyW+7qRKxqnzqDAuWI8m
- ErH3r4RybOmwCI5fFPnDGPQ2H82c4exx8GcaO573w8MxNuxuCCgJywAibAPdU9n95Q04
- 9n+oc9SSv9aRh5IHiZLX+C39sYOFcf4Jmh8pyr8q2x5MUhvZmx9+cShNaMOCrTyoxa/H
- 3E3aq/1BkPHnt7l/QmJ0fpVygReT/cPhrwbf3kAjNCZDoR2vdqReIfiv+fTMXhSJqMtj
- styA==
+ bh=ajXblRNOLmGzYCRdBPDfu5XFCjkZKrMYV7fUiMfyjRU=;
+ b=cFlRFObxx0RS+dEMOrfkxSuaIZUEISaYT+OQlLG2Cl9GiXEsl0YE7Tftyj1Jiel3Gw
+ F2ex/5ZE6bd9OERcGgjY1YYLcMS/RhNQiq1cBiAf6wik6FsQqxWp+SsY1yRmLcMf02sJ
+ zRdkfEBNcvceLWZdXxXZPdllQd3BvDcvXEbgyoDkPEvJugLh23ev7ODuZ5XvX4Bhopiu
+ clETY9Jc8aCye8oEKlS7mZR9Ft0odbrV/lzWWvMfuF4fGrn0sq5gbJoP1+JMv0C10ZUK
+ sIlcohCRSccWRMwrfRFpZMnwZx3TwznoOecYEYy1AAMKUYufr2xRJDS8Y/AdDc152g76
+ oKXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691113524; x=1691718324;
+ d=1e100.net; s=20221208; t=1691113525; x=1691718325;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=S4pOOuQWmq0xrR9pkY2S2VlYgAJ/fJTzo6NDmQNEUSw=;
- b=leVwbRIMJ+JL7Njdmuf+ULX/fl71KivrRp2yfbQpphN71t7qVj52sI/bo2DbhtmOA7
- 1v7PjjVtY/09f5Ymyhg22iL4B0JrMpyqj9L789SUa9HdfLkOPAeUKppo8i70lCadneoh
- OluRvtMvKB/bAahAXkU5qQL+7bVK4KVy+0ySTLenzM0F4zt5ImeOGKoWEi4mkmVZy2np
- 5sAzzpjg9UEIx1AcUxBKHjnfnDbmscLlDBcODwGGxjBBYV+sKMr0V9Jf4RyAmNcGSJoa
- 0svgp4g3QcWowwrdHlYF+xvIiW8Jbs6B5vBX9s1POhPRGxKrpJ6HmcipEyCOwLtkxzLp
- sqEA==
-X-Gm-Message-State: AOJu0Yy3LDiUS7JzSjhh0+W8CGpcdpvfNljNtr0ejvP1NFYji+kqDCCK
- gCoIlQ6vr9ajL62NoPi7URromx6XmYMQggoAXUQ=
-X-Google-Smtp-Source: AGHT+IHUfTmHwCl45it4nhu+bBTkE4fiRHaZbz791RbF/65mxB3LM4EDXzGpT/7SEmgJR63t/tcafA==
-X-Received: by 2002:a05:6a00:23d6:b0:67a:b045:e290 with SMTP id
- g22-20020a056a0023d600b0067ab045e290mr554874pfc.4.1691113524043; 
+ bh=ajXblRNOLmGzYCRdBPDfu5XFCjkZKrMYV7fUiMfyjRU=;
+ b=IxOXF+Gs/SgJZ/sTQMp39DjkgSLHI5YUfA6xFlruaRw+v7zsedywtZAaRGScHKuc/B
+ IJ2kvV7x7N0oxy0yVcpe5a3aEPrSy3GKeLPSW5Vp3/7jdmelqD4bjbhWjjxam7DiEBZU
+ w4usfTH+D/WvLmdpRslbhvEF6J0Vu4gqCxbWrl44Q+yPj3o25pM4317hSxrDgE/P+j2U
+ dIAua4uWCEOYrQVV37kM+dp/GaaHbsxiffRds9cmZ1S8IDrr1m9RvyafCmojK0oKCLMw
+ iwPIMm9VogMWyNaPIYecbkVp3/HINTyMRMDugsRFheEes6oiZi8OYtu6sqn8yyJbOmZR
+ hIBQ==
+X-Gm-Message-State: AOJu0YxOzRG1p5U6HnQo7nQR6sop7Lu0JTNU4fjsV4rMYjRTxzqoHuuz
+ T2d/c2Ae09ecUO1bKi2apWHpQfwg8sQODt+/eyc=
+X-Google-Smtp-Source: AGHT+IFWfv+3toKdr+E6jSmurbvrWH95pHhtAxqdooe3dawqB/mxhv2d+opG8L2tz+mcb6lD4+Qkww==
+X-Received: by 2002:a05:6a00:2d0c:b0:666:c1ab:d6e5 with SMTP id
+ fa12-20020a056a002d0c00b00666c1abd6e5mr541447pfb.16.1691113524823; 
  Thu, 03 Aug 2023 18:45:24 -0700 (PDT)
 Received: from stoup.. ([2602:47:d490:6901:9d52:4fe8:10ce:5c3])
  by smtp.gmail.com with ESMTPSA id
- c5-20020aa78c05000000b0066f37665a63sm456138pfd.73.2023.08.03.18.45.23
+ c5-20020aa78c05000000b0066f37665a63sm456138pfd.73.2023.08.03.18.45.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 03 Aug 2023 18:45:23 -0700 (PDT)
+ Thu, 03 Aug 2023 18:45:24 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: joel@jms.id.au, akihiko.odaki@daynix.com, laurent@vivier.eu, deller@gmx.de
-Subject: [PATCH v8 07/17] linux-user: Remove last_brk
-Date: Thu,  3 Aug 2023 18:45:07 -0700
-Message-Id: <20230804014517.6361-8-richard.henderson@linaro.org>
+Subject: [PATCH v8 08/17] linux-user: Adjust task_unmapped_base for reserved_va
+Date: Thu,  3 Aug 2023 18:45:08 -0700
+Message-Id: <20230804014517.6361-9-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230804014517.6361-1-richard.henderson@linaro.org>
 References: <20230804014517.6361-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,39 +91,117 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This variable is unused.
+Ensure that the chosen values for mmap_next_start and
+task_unmapped_base are within the guest address space.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/user-mmap.h | 1 -
- linux-user/mmap.c      | 2 --
- 2 files changed, 3 deletions(-)
+ linux-user/user-mmap.h | 18 +++++++++++++++++-
+ linux-user/main.c      | 18 ++++++++++++++++++
+ linux-user/mmap.c      | 18 +++---------------
+ 3 files changed, 38 insertions(+), 16 deletions(-)
 
 diff --git a/linux-user/user-mmap.h b/linux-user/user-mmap.h
-index 3fc986f92f..7265c2c116 100644
+index 7265c2c116..fd456e024e 100644
 --- a/linux-user/user-mmap.h
 +++ b/linux-user/user-mmap.h
-@@ -26,7 +26,6 @@ abi_long target_mremap(abi_ulong old_addr, abi_ulong old_size,
+@@ -18,6 +18,23 @@
+ #ifndef LINUX_USER_USER_MMAP_H
+ #define LINUX_USER_USER_MMAP_H
+ 
++#if HOST_LONG_BITS == 64 && TARGET_ABI_BITS == 64
++#ifdef TARGET_AARCH64
++# define TASK_UNMAPPED_BASE  0x5500000000
++#else
++# define TASK_UNMAPPED_BASE  (1ul << 38)
++#endif
++#else
++#ifdef TARGET_HPPA
++# define TASK_UNMAPPED_BASE  0xfa000000
++#else
++# define TASK_UNMAPPED_BASE  0x40000000
++#endif
++#endif
++
++extern abi_ulong task_unmapped_base;
++extern abi_ulong mmap_next_start;
++
+ int target_mprotect(abi_ulong start, abi_ulong len, int prot);
+ abi_long target_mmap(abi_ulong start, abi_ulong len, int prot,
+                      int flags, int fd, off_t offset);
+@@ -26,7 +43,6 @@ abi_long target_mremap(abi_ulong old_addr, abi_ulong old_size,
                         abi_ulong new_size, unsigned long flags,
                         abi_ulong new_addr);
  abi_long target_madvise(abi_ulong start, abi_ulong len_in, int advice);
--extern unsigned long last_brk;
- extern abi_ulong mmap_next_start;
+-extern abi_ulong mmap_next_start;
  abi_ulong mmap_find_vma(abi_ulong, abi_ulong, abi_ulong);
  void mmap_fork_start(void);
+ void mmap_fork_end(int child);
+diff --git a/linux-user/main.c b/linux-user/main.c
+index dba67ffa36..52809c260a 100644
+--- a/linux-user/main.c
++++ b/linux-user/main.c
+@@ -821,6 +821,24 @@ int main(int argc, char **argv, char **envp)
+         reserved_va = max_reserved_va;
+     }
+ 
++    /*
++     * Select an initial value for task_unmapped_base that is in range.
++     */
++    if (reserved_va) {
++        if (TASK_UNMAPPED_BASE < reserved_va) {
++            task_unmapped_base = TASK_UNMAPPED_BASE;
++        } else {
++            /* The most common default formula is TASK_SIZE / 3. */
++            task_unmapped_base = TARGET_PAGE_ALIGN(reserved_va / 3);
++        }
++    } else if (TASK_UNMAPPED_BASE < UINTPTR_MAX) {
++        task_unmapped_base = TASK_UNMAPPED_BASE;
++    } else {
++        /* 32-bit host: pick something medium size. */
++        task_unmapped_base = 0x10000000;
++    }
++    mmap_next_start = task_unmapped_base;
++
+     {
+         Error *err = NULL;
+         if (seed_optarg != NULL) {
 diff --git a/linux-user/mmap.c b/linux-user/mmap.c
-index 90b3ef2140..eb04fab8ab 100644
+index eb04fab8ab..84436d45c8 100644
 --- a/linux-user/mmap.c
 +++ b/linux-user/mmap.c
-@@ -314,8 +314,6 @@ static bool mmap_frag(abi_ulong real_start, abi_ulong start, abi_ulong last,
- #endif
- abi_ulong mmap_next_start = TASK_UNMAPPED_BASE;
+@@ -299,20 +299,8 @@ static bool mmap_frag(abi_ulong real_start, abi_ulong start, abi_ulong last,
+     return true;
+ }
  
--unsigned long last_brk;
--
+-#if HOST_LONG_BITS == 64 && TARGET_ABI_BITS == 64
+-#ifdef TARGET_AARCH64
+-# define TASK_UNMAPPED_BASE  0x5500000000
+-#else
+-# define TASK_UNMAPPED_BASE  (1ul << 38)
+-#endif
+-#else
+-#ifdef TARGET_HPPA
+-# define TASK_UNMAPPED_BASE  0xfa000000
+-#else
+-# define TASK_UNMAPPED_BASE  0x40000000
+-#endif
+-#endif
+-abi_ulong mmap_next_start = TASK_UNMAPPED_BASE;
++abi_ulong task_unmapped_base;
++abi_ulong mmap_next_start;
+ 
  /*
   * Subroutine of mmap_find_vma, used when we have pre-allocated
-  * a chunk of guest address space.
+@@ -391,7 +379,7 @@ abi_ulong mmap_find_vma(abi_ulong start, abi_ulong size, abi_ulong align)
+ 
+             if ((addr & (align - 1)) == 0) {
+                 /* Success.  */
+-                if (start == mmap_next_start && addr >= TASK_UNMAPPED_BASE) {
++                if (start == mmap_next_start && addr >= task_unmapped_base) {
+                     mmap_next_start = addr + size;
+                 }
+                 return addr;
 -- 
 2.34.1
 
