@@ -2,64 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DE3676FD56
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 11:32:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6905976FD8B
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 11:39:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRr9R-0004Fz-7j; Fri, 04 Aug 2023 05:31:17 -0400
+	id 1qRrGV-0005Xk-VN; Fri, 04 Aug 2023 05:38:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wei.w.wang@intel.com>)
- id 1qRr9J-0004Fo-3u
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 05:31:09 -0400
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1qRrGR-0005XX-E6
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 05:38:32 -0400
 Received: from mgamail.intel.com ([192.55.52.93])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wei.w.wang@intel.com>)
- id 1qRr9D-00061C-AG
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 05:31:08 -0400
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1qRrGO-000120-Kj
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 05:38:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1691141463; x=1722677463;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=cKTpz5Tdbw6w2Gchfvbbj8ujbALk1nwwa7KAH13Ts/I=;
- b=brQDUxr9xQZt7VzRQEoRuSMVX01TClcUCF7ux3+P0xhYTPDHszKeaeSY
- 2tqSddpf7KVSRjPmMEuemS1FY/pGWljL7JSiBoRneSHosQQ/8K1i+HZzr
- chl4Do0HnT46G8qdvdR6JoUvfSwFHl8xeBo6R9zqTfxOTiTZy6etGVkQd
- kOj2KMPVjOoMdjJ/ggY6pJAdkJnNPJntvo13iOmA02sfUd/zhvgp2oAGO
- 6pps2fYRjb7CnYxtZWwSpIm1Y+BiIJmEv9cfXhWzA3T0SlbJB4wxZOmTm
- rGxaYOj8BQteOr+HrfCfSD2kXrAAljM00RIo0nPE3GgyyKYy9wqnbZR4H g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10791"; a="367573115"
-X-IronPort-AV: E=Sophos;i="6.01,254,1684825200"; d="scan'208";a="367573115"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
+ t=1691141908; x=1722677908;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=yMUhvytIr0yCxjMGYRtPm2Ou7KSLVr6d4gnD1Di/A6s=;
+ b=cvVcKTT7rPsamf6W+++tls67YcpXH/Q8Lrh4KnkhTKF9xLOFruFIeop/
+ fyWYaIAwdsPz0NcRLN5PcfWANjfVyh3FRQ2HjixQjHg6aAfkjPV+m3eNc
+ aS7rko05fsVGJ33L8dMo8THwohA8Q83Hgbiy9InBoCUMkgS4MMsGx8XP7
+ muIxK1XWdLNkEtxVh+KVT4edl5YClT+1xCJsuaL8/zOavxU2EsbdRaBtW
+ /uElKzfazLZV0mvEEtWqVaDLJ/el+UzDjJxo0dw8nFi5Y6UaTDRcr43CE
+ sbKjkt5U1lfHbLYTtThUNTCSBbGLVNeNguvXu8zXjhKZbbLXH76YWkKm6 A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10791"; a="367574654"
+X-IronPort-AV: E=Sophos;i="6.01,254,1684825200"; d="scan'208";a="367574654"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Aug 2023 02:30:58 -0700
+ 04 Aug 2023 02:37:59 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10791"; a="903836927"
-X-IronPort-AV: E=Sophos;i="6.01,254,1684825200"; d="scan'208";a="903836927"
-Received: from tdx-lm.sh.intel.com ([10.239.53.27])
- by orsmga005.jf.intel.com with ESMTP; 04 Aug 2023 02:30:56 -0700
-From: Wei Wang <wei.w.wang@intel.com>
-To: peterx@redhat.com,
-	quintela@redhat.com,
-	isaku.yamahata@gmail.com
-Cc: qemu-devel@nongnu.org,
-	Wei Wang <wei.w.wang@intel.com>
-Subject: [PATCH v2] migration: refactor migration_completion
-Date: Fri,  4 Aug 2023 17:30:53 +0800
-Message-Id: <20230804093053.5037-1-wei.w.wang@intel.com>
-X-Mailer: git-send-email 2.27.0
+X-IronPort-AV: E=McAfee;i="6600,9927,10791"; a="733193539"
+X-IronPort-AV: E=Sophos;i="6.01,254,1684825200"; d="scan'208";a="733193539"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.28])
+ by fmsmga007.fm.intel.com with ESMTP; 04 Aug 2023 02:37:56 -0700
+Date: Fri, 4 Aug 2023 17:48:24 +0800
+From: Zhao Liu <zhao1.liu@linux.intel.com>
+To: "Moger, Babu" <babu.moger@amd.com>
+Cc: Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
+ Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Xiaoyao Li <xiaoyao.li@intel.com>, Zhao Liu <zhao1.liu@intel.com>
+Subject: Re: [PATCH v3 14/17] i386: Use CPUCacheInfo.share_level to encode
+ CPUID[4]
+Message-ID: <ZMzJaElw/T5caQU+@liuzhao-OptiPlex-7080>
+References: <20230801103527.397756-1-zhao1.liu@linux.intel.com>
+ <20230801103527.397756-15-zhao1.liu@linux.intel.com>
+ <19ba8210-3e11-a36f-3b26-52cbe40042b1@amd.com>
+ <3f7510f2-20f3-93df-72b3-01cfa687f554@amd.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.55.52.93; envelope-from=wei.w.wang@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3f7510f2-20f3-93df-72b3-01cfa687f554@amd.com>
+Received-SPF: none client-ip=192.55.52.93;
+ envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -42
+X-Spam_score: -4.3
 X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -76,258 +88,367 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Current migration_completion function is a bit long. Refactor the long
-implementation into different subfunctions:
-- migration_completion_precopy: completion code related to precopy
-- migration_completion_postcopy: completion code related to postcopy
-- close_return_path_on_source: rp thread related cleanup on migration
-completion. It is named to match with open_return_path_on_source.
+Hi Babu,
 
-This improves readability and is easier for future updates (e.g. add new
-subfunctions when completion code related to new features are needed). No
-functional changes intended.
+On Thu, Aug 03, 2023 at 11:41:40AM -0500, Moger, Babu wrote:
+> Date: Thu, 3 Aug 2023 11:41:40 -0500
+> From: "Moger, Babu" <babu.moger@amd.com>
+> Subject: Re: [PATCH v3 14/17] i386: Use CPUCacheInfo.share_level to encode
+>  CPUID[4]
+> 
+> Hi Zhao,
+> 
+> On 8/2/23 18:49, Moger, Babu wrote:
+> > Hi Zhao,
+> > 
+> > Hitting this error after this patch.
+> > 
+> > ERROR:../target/i386/cpu.c:257:max_processor_ids_for_cache: code should
+> > not be reached
+> > Bail out! ERROR:../target/i386/cpu.c:257:max_processor_ids_for_cache: code
+> > should not be reached
+> > Aborted (core dumped)
+> > 
+> > Looks like share_level for all the caches for AMD is not initialized.
 
-Signed-off-by: Wei Wang <wei.w.wang@intel.com>
----
-Changelog:
-- Merge await_return_path_close_on_source into
-  close_return_path_on_source as the later basically just calls the
-  previous;
-- make migration_completion_postcopy "void" as it doesn't return a
-  value.
+I missed these change when I rebase. Sorry for that.
 
- migration/migration.c | 174 ++++++++++++++++++++++++------------------
- 1 file changed, 98 insertions(+), 76 deletions(-)
+BTW, could I ask a question? From a previous discussion[1], I understand
+that the cache info is used to show the correct cache information in
+new machine. And from [2], the wrong cache info may cause "compatibility
+issues".
 
-diff --git a/migration/migration.c b/migration/migration.c
-index 5528acb65e..f1c55d1148 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -2048,9 +2048,13 @@ static int open_return_path_on_source(MigrationState *ms,
-     return 0;
- }
- 
--/* Returns 0 if the RP was ok, otherwise there was an error on the RP */
--static int await_return_path_close_on_source(MigrationState *ms)
-+static int close_return_path_on_source(MigrationState *ms)
- {
-+    if (!ms->rp_state.rp_thread_created) {
-+        return 0;
-+    }
-+    trace_migration_return_path_end_before();
-+
-     /*
-      * If this is a normal exit then the destination will send a SHUT and the
-      * rp_thread will exit, however if there's an error we need to cause
-@@ -2068,6 +2072,8 @@ static int await_return_path_close_on_source(MigrationState *ms)
-     qemu_thread_join(&ms->rp_state.rp_thread);
-     ms->rp_state.rp_thread_created = false;
-     trace_await_return_path_close_on_source_close();
-+
-+    trace_migration_return_path_end_after(ms->rp_state.error);
-     return ms->rp_state.error;
- }
- 
-@@ -2301,66 +2307,107 @@ static int migration_maybe_pause(MigrationState *s,
-     return s->state == new_state ? 0 : -EINVAL;
- }
- 
--/**
-- * migration_completion: Used by migration_thread when there's not much left.
-- *   The caller 'breaks' the loop when this returns.
-- *
-- * @s: Current migration state
-- */
--static void migration_completion(MigrationState *s)
-+static int migration_completion_precopy(MigrationState *s,
-+                                        int *current_active_state)
- {
-     int ret;
--    int current_active_state = s->state;
- 
--    if (s->state == MIGRATION_STATUS_ACTIVE) {
--        qemu_mutex_lock_iothread();
--        s->downtime_start = qemu_clock_get_ms(QEMU_CLOCK_REALTIME);
--        qemu_system_wakeup_request(QEMU_WAKEUP_REASON_OTHER, NULL);
-+    qemu_mutex_lock_iothread();
-+    s->downtime_start = qemu_clock_get_ms(QEMU_CLOCK_REALTIME);
-+    qemu_system_wakeup_request(QEMU_WAKEUP_REASON_OTHER, NULL);
- 
--        s->vm_old_state = runstate_get();
--        global_state_store();
-+    s->vm_old_state = runstate_get();
-+    global_state_store();
- 
--        ret = vm_stop_force_state(RUN_STATE_FINISH_MIGRATE);
--        trace_migration_completion_vm_stop(ret);
--        if (ret >= 0) {
--            ret = migration_maybe_pause(s, &current_active_state,
--                                        MIGRATION_STATUS_DEVICE);
--        }
--        if (ret >= 0) {
--            /*
--             * Inactivate disks except in COLO, and track that we
--             * have done so in order to remember to reactivate
--             * them if migration fails or is cancelled.
--             */
--            s->block_inactive = !migrate_colo();
--            migration_rate_set(RATE_LIMIT_DISABLED);
--            ret = qemu_savevm_state_complete_precopy(s->to_dst_file, false,
--                                                     s->block_inactive);
--        }
-+    ret = vm_stop_force_state(RUN_STATE_FINISH_MIGRATE);
-+    trace_migration_completion_vm_stop(ret);
-+    if (ret < 0) {
-+        goto out_unlock;
-+    }
- 
--        qemu_mutex_unlock_iothread();
-+    ret = migration_maybe_pause(s, current_active_state,
-+                                MIGRATION_STATUS_DEVICE);
-+    if (ret < 0) {
-+        goto out_unlock;
-+    }
- 
--        if (ret < 0) {
--            goto fail;
--        }
--    } else if (s->state == MIGRATION_STATUS_POSTCOPY_ACTIVE) {
--        trace_migration_completion_postcopy_end();
-+    /*
-+     * Inactivate disks except in COLO, and track that we have done so in order
-+     * to remember to reactivate them if migration fails or is cancelled.
-+     */
-+    s->block_inactive = !migrate_colo();
-+    migration_rate_set(RATE_LIMIT_DISABLED);
-+    ret = qemu_savevm_state_complete_precopy(s->to_dst_file, false,
-+                                             s->block_inactive);
-+out_unlock:
-+    qemu_mutex_unlock_iothread();
-+    return ret;
-+}
- 
--        qemu_mutex_lock_iothread();
--        qemu_savevm_state_complete_postcopy(s->to_dst_file);
--        qemu_mutex_unlock_iothread();
-+static void migration_completion_postcopy(MigrationState *s)
-+{
-+    trace_migration_completion_postcopy_end();
- 
-+    qemu_mutex_lock_iothread();
-+    qemu_savevm_state_complete_postcopy(s->to_dst_file);
-+    qemu_mutex_unlock_iothread();
-+
-+    /*
-+     * Shutdown the postcopy fast path thread.  This is only needed when dest
-+     * QEMU binary is old (7.1/7.2).  QEMU 8.0+ doesn't need this.
-+     */
-+    if (migrate_postcopy_preempt() && s->preempt_pre_7_2) {
-+        postcopy_preempt_shutdown_file(s);
-+    }
-+
-+    trace_migration_completion_postcopy_end_after_complete();
-+}
-+
-+static void migration_completion_failed(MigrationState *s,
-+                                        int current_active_state)
-+{
-+    if (s->block_inactive && (s->state == MIGRATION_STATUS_ACTIVE ||
-+                              s->state == MIGRATION_STATUS_DEVICE)) {
-         /*
--         * Shutdown the postcopy fast path thread.  This is only needed
--         * when dest QEMU binary is old (7.1/7.2).  QEMU 8.0+ doesn't need
--         * this.
-+         * If not doing postcopy, vm_start() will be called: let's
-+         * regain control on images.
-          */
--        if (migrate_postcopy_preempt() && s->preempt_pre_7_2) {
--            postcopy_preempt_shutdown_file(s);
-+        Error *local_err = NULL;
-+
-+        qemu_mutex_lock_iothread();
-+        bdrv_activate_all(&local_err);
-+        if (local_err) {
-+            error_report_err(local_err);
-+        } else {
-+            s->block_inactive = false;
-         }
-+        qemu_mutex_unlock_iothread();
-+    }
- 
--        trace_migration_completion_postcopy_end_after_complete();
-+    migrate_set_state(&s->state, current_active_state,
-+                      MIGRATION_STATUS_FAILED);
-+}
-+
-+/**
-+ * migration_completion: Used by migration_thread when there's not much left.
-+ *   The caller 'breaks' the loop when this returns.
-+ *
-+ * @s: Current migration state
-+ */
-+static void migration_completion(MigrationState *s)
-+{
-+    int ret = 0;
-+    int current_active_state = s->state;
-+
-+    if (s->state == MIGRATION_STATUS_ACTIVE) {
-+        ret = migration_completion_precopy(s, &current_active_state);
-+    } else if (s->state == MIGRATION_STATUS_POSTCOPY_ACTIVE) {
-+        migration_completion_postcopy(s);
-     } else {
-+        ret = -1;
-+    }
-+
-+    if (ret < 0) {
-         goto fail;
-     }
- 
-@@ -2370,14 +2417,8 @@ static void migration_completion(MigrationState *s)
-      * it will wait for the destination to send it's status in
-      * a SHUT command).
-      */
--    if (s->rp_state.rp_thread_created) {
--        int rp_error;
--        trace_migration_return_path_end_before();
--        rp_error = await_return_path_close_on_source(s);
--        trace_migration_return_path_end_after(rp_error);
--        if (rp_error) {
--            goto fail;
--        }
-+    if (close_return_path_on_source(s) < 0) {
-+        goto fail;
-     }
- 
-     if (qemu_file_get_error(s->to_dst_file)) {
-@@ -2397,26 +2438,7 @@ static void migration_completion(MigrationState *s)
-     return;
- 
- fail:
--    if (s->block_inactive && (s->state == MIGRATION_STATUS_ACTIVE ||
--                              s->state == MIGRATION_STATUS_DEVICE)) {
--        /*
--         * If not doing postcopy, vm_start() will be called: let's
--         * regain control on images.
--         */
--        Error *local_err = NULL;
--
--        qemu_mutex_lock_iothread();
--        bdrv_activate_all(&local_err);
--        if (local_err) {
--            error_report_err(local_err);
--        } else {
--            s->block_inactive = false;
--        }
--        qemu_mutex_unlock_iothread();
--    }
--
--    migrate_set_state(&s->state, current_active_state,
--                      MIGRATION_STATUS_FAILED);
-+    migration_completion_failed(s, current_active_state);
- }
- 
- /**
--- 
-2.27.0
+Is this "compatibility issues" AMD specific? I'm not sure if Intel should
+update the cache info like that. thanks!
 
+[1]: https://patchwork.kernel.org/project/kvm/patch/CY4PR12MB1768A3CBE42AAFB03CB1081E95AA0@CY4PR12MB1768.namprd12.prod.outlook.com/
+[2]: https://lore.kernel.org/qemu-devel/20180510204148.11687-1-babu.moger@amd.com/
+
+> 
+> The following patch fixes the problem.
+> 
+> ======================================================
+> 
+> 
+> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> index f4c48e19fa..976a2755d8 100644
+> --- a/target/i386/cpu.c
+> +++ b/target/i386/cpu.c
+> @@ -528,6 +528,7 @@ static CPUCacheInfo legacy_l2_cache_cpuid2 = {
+>      .size = 2 * MiB,
+>      .line_size = 64,
+>      .associativity = 8,
+> +    .share_level = CPU_TOPO_LEVEL_CORE,
+
+This "legacy_l2_cache_cpuid2" is not used to encode cache topology.
+I should explicitly set this default topo level as CPU_TOPO_LEVEL_UNKNOW.
+
+>  };
+> 
+> 
+> @@ -1904,6 +1905,7 @@ static CPUCaches epyc_v4_cache_info = {
+>          .lines_per_tag = 1,
+>          .self_init = 1,
+>          .no_invd_sharing = true,
+> +        .share_level = CPU_TOPO_LEVEL_CORE,
+>      },
+>      .l1i_cache = &(CPUCacheInfo) {
+>          .type = INSTRUCTION_CACHE,
+> @@ -1916,6 +1918,7 @@ static CPUCaches epyc_v4_cache_info = {
+>          .lines_per_tag = 1,
+>          .self_init = 1,
+>          .no_invd_sharing = true,
+> +        .share_level = CPU_TOPO_LEVEL_CORE,
+>      },
+>      .l2_cache = &(CPUCacheInfo) {
+>          .type = UNIFIED_CACHE,
+> @@ -1926,6 +1929,7 @@ static CPUCaches epyc_v4_cache_info = {
+>          .partitions = 1,
+>          .sets = 1024,
+>          .lines_per_tag = 1,
+> +        .share_level = CPU_TOPO_LEVEL_CORE,
+>      },
+>      .l3_cache = &(CPUCacheInfo) {
+>          .type = UNIFIED_CACHE,
+> @@ -1939,6 +1943,7 @@ static CPUCaches epyc_v4_cache_info = {
+>          .self_init = true,
+>          .inclusive = true,
+>          .complex_indexing = false,
+> +        .share_level = CPU_TOPO_LEVEL_DIE,
+>      },
+>  };
+> 
+> @@ -2008,6 +2013,7 @@ static const CPUCaches epyc_rome_v3_cache_info = {
+>          .lines_per_tag = 1,
+>          .self_init = 1,
+>          .no_invd_sharing = true,
+> +        .share_level = CPU_TOPO_LEVEL_CORE,
+>      },
+>      .l1i_cache = &(CPUCacheInfo) {
+>          .type = INSTRUCTION_CACHE,
+> @@ -2020,6 +2026,7 @@ static const CPUCaches epyc_rome_v3_cache_info = {
+>          .lines_per_tag = 1,
+>          .self_init = 1,
+>          .no_invd_sharing = true,
+> +        .share_level = CPU_TOPO_LEVEL_CORE,
+>      },
+>      .l2_cache = &(CPUCacheInfo) {
+>          .type = UNIFIED_CACHE,
+> @@ -2030,6 +2037,7 @@ static const CPUCaches epyc_rome_v3_cache_info = {
+>          .partitions = 1,
+>          .sets = 1024,
+>          .lines_per_tag = 1,
+> +        .share_level = CPU_TOPO_LEVEL_CORE,
+>      },
+>      .l3_cache = &(CPUCacheInfo) {
+>          .type = UNIFIED_CACHE,
+> @@ -2043,6 +2051,7 @@ static const CPUCaches epyc_rome_v3_cache_info = {
+>          .self_init = true,
+>          .inclusive = true,
+>          .complex_indexing = false,
+> +        .share_level = CPU_TOPO_LEVEL_DIE,
+>      },
+>  };
+> 
+> @@ -2112,6 +2121,7 @@ static const CPUCaches epyc_milan_v2_cache_info = {
+>          .lines_per_tag = 1,
+>          .self_init = 1,
+>          .no_invd_sharing = true,
+> +        .share_level = CPU_TOPO_LEVEL_CORE,
+>      },
+>      .l1i_cache = &(CPUCacheInfo) {
+>          .type = INSTRUCTION_CACHE,
+> @@ -2124,6 +2134,7 @@ static const CPUCaches epyc_milan_v2_cache_info = {
+>          .lines_per_tag = 1,
+>          .self_init = 1,
+>          .no_invd_sharing = true,
+> +        .share_level = CPU_TOPO_LEVEL_CORE,
+>      },
+>      .l2_cache = &(CPUCacheInfo) {
+>          .type = UNIFIED_CACHE,
+> @@ -2134,6 +2145,7 @@ static const CPUCaches epyc_milan_v2_cache_info = {
+>          .partitions = 1,
+>          .sets = 1024,
+>          .lines_per_tag = 1,
+> +        .share_level = CPU_TOPO_LEVEL_CORE,
+>      },
+>      .l3_cache = &(CPUCacheInfo) {
+>          .type = UNIFIED_CACHE,
+> @@ -2147,6 +2159,7 @@ static const CPUCaches epyc_milan_v2_cache_info = {
+>          .self_init = true,
+>          .inclusive = true,
+>          .complex_indexing = false,
+> +        .share_level = CPU_TOPO_LEVEL_DIE,
+>      },
+>  };
+> 
+> @@ -2162,6 +2175,7 @@ static const CPUCaches epyc_genoa_cache_info = {
+>          .lines_per_tag = 1,
+>          .self_init = 1,
+>          .no_invd_sharing = true,
+> +        .share_level = CPU_TOPO_LEVEL_CORE,
+>      },
+>      .l1i_cache = &(CPUCacheInfo) {
+>          .type = INSTRUCTION_CACHE,
+> @@ -2174,6 +2188,7 @@ static const CPUCaches epyc_genoa_cache_info = {
+>          .lines_per_tag = 1,
+>          .self_init = 1,
+>          .no_invd_sharing = true,
+> +        .share_level = CPU_TOPO_LEVEL_CORE,
+>      },
+>      .l2_cache = &(CPUCacheInfo) {
+>          .type = UNIFIED_CACHE,
+> @@ -2184,6 +2199,7 @@ static const CPUCaches epyc_genoa_cache_info = {
+>          .partitions = 1,
+>          .sets = 2048,
+>          .lines_per_tag = 1,
+> +        .share_level = CPU_TOPO_LEVEL_CORE,
+>      },
+>      .l3_cache = &(CPUCacheInfo) {
+>          .type = UNIFIED_CACHE,
+> @@ -2197,6 +2213,7 @@ static const CPUCaches epyc_genoa_cache_info = {
+>          .self_init = true,
+>          .inclusive = true,
+>          .complex_indexing = false,
+> +        .share_level = CPU_TOPO_LEVEL_DIE,
+>      },
+>  };
+> 
+> 
+> =========================================================================
+
+
+Look good to me except legacy_l2_cache_cpuid2, thanks very much!
+I'll add this in next version.
+
+-Zhao
+
+> 
+> Thanks
+> Babu
+> > 
+> > On 8/1/23 05:35, Zhao Liu wrote:
+> >> From: Zhao Liu <zhao1.liu@intel.com>
+> >>
+> >> CPUID[4].EAX[bits 25:14] is used to represent the cache topology for
+> >> intel CPUs.
+> >>
+> >> After cache models have topology information, we can use
+> >> CPUCacheInfo.share_level to decide which topology level to be encoded
+> >> into CPUID[4].EAX[bits 25:14].
+> >>
+> >> And since maximum_processor_id (original "num_apic_ids") is parsed
+> >> based on cpu topology levels, which are verified when parsing smp, it's
+> >> no need to check this value by "assert(num_apic_ids > 0)" again, so
+> >> remove this assert.
+> >>
+> >> Additionally, wrap the encoding of CPUID[4].EAX[bits 31:26] into a
+> >> helper to make the code cleaner.
+> >>
+> >> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> >> ---
+> >> Changes since v1:
+> >>  * Use "enum CPUTopoLevel share_level" as the parameter in
+> >>    max_processor_ids_for_cache().
+> >>  * Make cache_into_passthrough case also use
+> >>    max_processor_ids_for_cache() and max_core_ids_in_package() to
+> >>    encode CPUID[4]. (Yanan)
+> >>  * Rename the title of this patch (the original is "i386: Use
+> >>    CPUCacheInfo.share_level to encode CPUID[4].EAX[bits 25:14]").
+> >> ---
+> >>  target/i386/cpu.c | 70 +++++++++++++++++++++++++++++------------------
+> >>  1 file changed, 43 insertions(+), 27 deletions(-)
+> >>
+> >> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> >> index 55aba4889628..c9897c0fe91a 100644
+> >> --- a/target/i386/cpu.c
+> >> +++ b/target/i386/cpu.c
+> >> @@ -234,22 +234,53 @@ static uint8_t cpuid2_cache_descriptor(CPUCacheInfo *cache)
+> >>                         ((t) == UNIFIED_CACHE) ? CACHE_TYPE_UNIFIED : \
+> >>                         0 /* Invalid value */)
+> >>  
+> >> +static uint32_t max_processor_ids_for_cache(X86CPUTopoInfo *topo_info,
+> >> +                                            enum CPUTopoLevel share_level)
+> >> +{
+> >> +    uint32_t num_ids = 0;
+> >> +
+> >> +    switch (share_level) {
+> >> +    case CPU_TOPO_LEVEL_CORE:
+> >> +        num_ids = 1 << apicid_core_offset(topo_info);
+> >> +        break;
+> >> +    case CPU_TOPO_LEVEL_DIE:
+> >> +        num_ids = 1 << apicid_die_offset(topo_info);
+> >> +        break;
+> >> +    case CPU_TOPO_LEVEL_PACKAGE:
+> >> +        num_ids = 1 << apicid_pkg_offset(topo_info);
+> >> +        break;
+> >> +    default:
+> >> +        /*
+> >> +         * Currently there is no use case for SMT and MODULE, so use
+> >> +         * assert directly to facilitate debugging.
+> >> +         */
+> >> +        g_assert_not_reached();
+> >> +    }
+> >> +
+> >> +    return num_ids - 1;
+> >> +}
+> >> +
+> >> +static uint32_t max_core_ids_in_package(X86CPUTopoInfo *topo_info)
+> >> +{
+> >> +    uint32_t num_cores = 1 << (apicid_pkg_offset(topo_info) -
+> >> +                               apicid_core_offset(topo_info));
+> >> +    return num_cores - 1;
+> >> +}
+> >>  
+> >>  /* Encode cache info for CPUID[4] */
+> >>  static void encode_cache_cpuid4(CPUCacheInfo *cache,
+> >> -                                int num_apic_ids, int num_cores,
+> >> +                                X86CPUTopoInfo *topo_info,
+> >>                                  uint32_t *eax, uint32_t *ebx,
+> >>                                  uint32_t *ecx, uint32_t *edx)
+> >>  {
+> >>      assert(cache->size == cache->line_size * cache->associativity *
+> >>                            cache->partitions * cache->sets);
+> >>  
+> >> -    assert(num_apic_ids > 0);
+> >>      *eax = CACHE_TYPE(cache->type) |
+> >>             CACHE_LEVEL(cache->level) |
+> >>             (cache->self_init ? CACHE_SELF_INIT_LEVEL : 0) |
+> >> -           ((num_cores - 1) << 26) |
+> >> -           ((num_apic_ids - 1) << 14);
+> >> +           (max_core_ids_in_package(topo_info) << 26) |
+> >> +           (max_processor_ids_for_cache(topo_info, cache->share_level) << 14);
+> >>  
+> >>      assert(cache->line_size > 0);
+> >>      assert(cache->partitions > 0);
+> >> @@ -6116,56 +6147,41 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+> >>                  int host_vcpus_per_cache = 1 + ((*eax & 0x3FFC000) >> 14);
+> >>  
+> >>                  if (cores_per_pkg > 1) {
+> >> -                    int addressable_cores_offset =
+> >> -                                                apicid_pkg_offset(&topo_info) -
+> >> -                                                apicid_core_offset(&topo_info);
+> >> -
+> >>                      *eax &= ~0xFC000000;
+> >> -                    *eax |= (1 << addressable_cores_offset - 1) << 26;
+> >> +                    *eax |= max_core_ids_in_package(&topo_info) << 26;
+> >>                  }
+> >>                  if (host_vcpus_per_cache > cpus_per_pkg) {
+> >> -                    int pkg_offset = apicid_pkg_offset(&topo_info);
+> >> -
+> >>                      *eax &= ~0x3FFC000;
+> >> -                    *eax |= (1 << pkg_offset - 1) << 14;
+> >> +                    *eax |=
+> >> +                        max_processor_ids_for_cache(&topo_info,
+> >> +                                                CPU_TOPO_LEVEL_PACKAGE) << 14;
+> >>                  }
+> >>              }
+> >>          } else if (cpu->vendor_cpuid_only && IS_AMD_CPU(env)) {
+> >>              *eax = *ebx = *ecx = *edx = 0;
+> >>          } else {
+> >>              *eax = 0;
+> >> -            int addressable_cores_offset = apicid_pkg_offset(&topo_info) -
+> >> -                                           apicid_core_offset(&topo_info);
+> >> -            int core_offset, die_offset;
+> >>  
+> >>              switch (count) {
+> >>              case 0: /* L1 dcache info */
+> >> -                core_offset = apicid_core_offset(&topo_info);
+> >>                  encode_cache_cpuid4(env->cache_info_cpuid4.l1d_cache,
+> >> -                                    (1 << core_offset),
+> >> -                                    (1 << addressable_cores_offset),
+> >> +                                    &topo_info,
+> >>                                      eax, ebx, ecx, edx);
+> >>                  break;
+> >>              case 1: /* L1 icache info */
+> >> -                core_offset = apicid_core_offset(&topo_info);
+> >>                  encode_cache_cpuid4(env->cache_info_cpuid4.l1i_cache,
+> >> -                                    (1 << core_offset),
+> >> -                                    (1 << addressable_cores_offset),
+> >> +                                    &topo_info,
+> >>                                      eax, ebx, ecx, edx);
+> >>                  break;
+> >>              case 2: /* L2 cache info */
+> >> -                core_offset = apicid_core_offset(&topo_info);
+> >>                  encode_cache_cpuid4(env->cache_info_cpuid4.l2_cache,
+> >> -                                    (1 << core_offset),
+> >> -                                    (1 << addressable_cores_offset),
+> >> +                                    &topo_info,
+> >>                                      eax, ebx, ecx, edx);
+> >>                  break;
+> >>              case 3: /* L3 cache info */
+> >> -                die_offset = apicid_die_offset(&topo_info);
+> >>                  if (cpu->enable_l3_cache) {
+> >>                      encode_cache_cpuid4(env->cache_info_cpuid4.l3_cache,
+> >> -                                        (1 << die_offset),
+> >> -                                        (1 << addressable_cores_offset),
+> >> +                                        &topo_info,
+> >>                                          eax, ebx, ecx, edx);
+> >>                      break;
+> >>                  }
+> > 
+> 
+> -- 
+> Thanks
+> Babu Moger
 
