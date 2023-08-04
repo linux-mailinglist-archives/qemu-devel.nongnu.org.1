@@ -2,36 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCD8F77085A
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 20:58:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F02CB770858
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 20:58:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRzwH-0002It-Cl; Fri, 04 Aug 2023 14:54:17 -0400
+	id 1qRzwI-0002J3-Uk; Fri, 04 Aug 2023 14:54:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qRzwE-0002HV-HW; Fri, 04 Aug 2023 14:54:14 -0400
+ id 1qRzwE-0002Hh-RU; Fri, 04 Aug 2023 14:54:14 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qRzwC-00088T-R1; Fri, 04 Aug 2023 14:54:14 -0400
+ id 1qRzwD-00088a-5S; Fri, 04 Aug 2023 14:54:14 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 2851B1840A;
+ by isrv.corpit.ru (Postfix) with ESMTP id 6DDBA1840B;
  Fri,  4 Aug 2023 21:54:18 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id BDB161B881;
+ by tsrv.corpit.ru (Postfix) with SMTP id E9D0C1B882;
  Fri,  4 Aug 2023 21:53:57 +0300 (MSK)
-Received: (nullmailer pid 1874212 invoked by uid 1000);
+Received: (nullmailer pid 1874215 invoked by uid 1000);
  Fri, 04 Aug 2023 18:53:56 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Konstantin Kostiuk <kkostiuk@redhat.com>,
- Yan Vugenfirer <yvugenfi@redhat.com>, Brian Wiltse <brian.wiltse@live.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.5 20/36] qga/win32: Use rundll for VSS installation
-Date: Fri,  4 Aug 2023 21:53:33 +0300
-Message-Id: <20230804185350.1874133-7-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Anthony PERARD <anthony.perard@citrix.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.5 21/36] thread-pool: signal "request_cond" while locked
+Date: Fri,  4 Aug 2023 21:53:34 +0300
+Message-Id: <20230804185350.1874133-8-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.5-20230804215319@cover.tls.msk.ru>
 References: <qemu-stable-7.2.5-20230804215319@cover.tls.msk.ru>
@@ -59,96 +58,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Konstantin Kostiuk <kkostiuk@redhat.com>
+From: Anthony PERARD <anthony.perard@citrix.com>
 
-The custom action uses cmd.exe to run VSS Service installation
-and removal which causes an interactive command shell to spawn.
-This shell can be used to execute any commands as a SYSTEM user.
-Even if call qemu-ga.exe directly the interactive command shell
-will be spawned as qemu-ga.exe is a console application and used
-by users from the console as well as a service.
+thread_pool_free() might have been called on the `pool`, which would
+be a reason for worker_thread() to quit. In this case,
+`pool->request_cond` is been destroyed.
 
-As VSS Service runs from DLL which contains the installer and
-uninstaller code, it can be run directly by rundll32.exe without
-any interactive command shell.
+If worker_thread() didn't managed to signal `request_cond` before it
+been destroyed by thread_pool_free(), we got:
+    util/qemu-thread-posix.c:198: qemu_cond_signal: Assertion `cond->initialized' failed.
 
-Add specific entry points for rundll which is just a wrapper
-for COMRegister/COMUnregister functions with proper arguments.
+One backtrace:
+    __GI___assert_fail (assertion=0x55555614abcb "cond->initialized", file=0x55555614ab88 "util/qemu-thread-posix.c", line=198,
+	function=0x55555614ad80 <__PRETTY_FUNCTION__.17104> "qemu_cond_signal") at assert.c:101
+    qemu_cond_signal (cond=0x7fffb800db30) at util/qemu-thread-posix.c:198
+    worker_thread (opaque=0x7fffb800dab0) at util/thread-pool.c:129
+    qemu_thread_start (args=0x7fffb8000b20) at util/qemu-thread-posix.c:505
+    start_thread (arg=<optimized out>) at pthread_create.c:486
 
-resolves: https://bugzilla.redhat.com/show_bug.cgi?id=2167423
-fixes: CVE-2023-0664 (part 2 of 2)
+Reported here:
+    https://lore.kernel.org/all/ZJwoK50FcnTSfFZ8@MacBook-Air-de-Roger.local/T/#u
 
-Signed-off-by: Konstantin Kostiuk <kkostiuk@redhat.com>
-Reviewed-by: Yan Vugenfirer <yvugenfi@redhat.com>
-Reported-by: Brian Wiltse <brian.wiltse@live.com>
-(cherry picked from commit 07ce178a2b0768eb9e712bb5ad0cf6dc7fcf0158)
+To avoid issue, keep lock while sending a signal to `request_cond`.
+
+Fixes: 900fa208f506 ("thread-pool: replace semaphore with condition variable")
+Signed-off-by: Anthony PERARD <anthony.perard@citrix.com>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Message-Id: <20230714152720.5077-1-anthony.perard@citrix.com>
+Signed-off-by: Anthony PERARD <anthony.perard@citrix.com>
+(cherry picked from commit f4f71363fcdb1092ff64d2bba6f9af39570c2f2b)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/qga/installer/qemu-ga.wxs b/qga/installer/qemu-ga.wxs
-index 3442383627..949ba07fd2 100644
---- a/qga/installer/qemu-ga.wxs
-+++ b/qga/installer/qemu-ga.wxs
-@@ -116,22 +116,22 @@
-       </Directory>
-     </Directory>
+diff --git a/util/thread-pool.c b/util/thread-pool.c
+index 31113b5860..39accc9ebe 100644
+--- a/util/thread-pool.c
++++ b/util/thread-pool.c
+@@ -120,13 +120,13 @@ static void *worker_thread(void *opaque)
  
--    <Property Id="cmd" Value="cmd.exe"/>
-+    <Property Id="rundll" Value="rundll32.exe"/>
-     <Property Id="REINSTALLMODE" Value="amus"/>
+     pool->cur_threads--;
+     qemu_cond_signal(&pool->worker_stopped);
+-    qemu_mutex_unlock(&pool->lock);
  
-     <?ifdef var.InstallVss?>
-     <CustomAction Id="RegisterCom"
--              ExeCommand='/c "[qemu_ga_directory]qemu-ga.exe" -s vss-install'
-+              ExeCommand='"[qemu_ga_directory]qga-vss.dll",DLLCOMRegister'
-               Execute="deferred"
--              Property="cmd"
-+              Property="rundll"
-               Impersonate="no"
-               Return="check"
-               >
-     </CustomAction>
-     <CustomAction Id="UnRegisterCom"
--              ExeCommand='/c "[qemu_ga_directory]qemu-ga.exe" -s vss-uninstall'
-+              ExeCommand='"[qemu_ga_directory]qga-vss.dll",DLLCOMUnregister'
-               Execute="deferred"
--              Property="cmd"
-+              Property="rundll"
-               Impersonate="no"
-               Return="check"
-               >
-diff --git a/qga/vss-win32/install.cpp b/qga/vss-win32/install.cpp
-index b8087e5baa..ff93b08a9e 100644
---- a/qga/vss-win32/install.cpp
-+++ b/qga/vss-win32/install.cpp
-@@ -357,6 +357,15 @@ out:
-     return hr;
+     /*
+      * Wake up another thread, in case we got a wakeup but decided
+      * to exit due to pool->cur_threads > pool->max_threads.
+      */
+     qemu_cond_signal(&pool->request_cond);
++    qemu_mutex_unlock(&pool->lock);
+     return NULL;
  }
  
-+STDAPI_(void) CALLBACK DLLCOMRegister(HWND, HINSTANCE, LPSTR, int)
-+{
-+    COMRegister();
-+}
-+
-+STDAPI_(void) CALLBACK DLLCOMUnregister(HWND, HINSTANCE, LPSTR, int)
-+{
-+    COMUnregister();
-+}
- 
- static BOOL CreateRegistryKey(LPCTSTR key, LPCTSTR value, LPCTSTR data)
- {
-diff --git a/qga/vss-win32/qga-vss.def b/qga/vss-win32/qga-vss.def
-index 927782c31b..ee97a81427 100644
---- a/qga/vss-win32/qga-vss.def
-+++ b/qga/vss-win32/qga-vss.def
-@@ -1,6 +1,8 @@
- LIBRARY      "QGA-PROVIDER.DLL"
- 
- EXPORTS
-+	DLLCOMRegister
-+	DLLCOMUnregister
- 	COMRegister		PRIVATE
- 	COMUnregister		PRIVATE
- 	DllCanUnloadNow		PRIVATE
 -- 
 2.39.2
 
