@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D423770380
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 16:49:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E236770386
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 16:50:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRw6g-0004Ap-Vv; Fri, 04 Aug 2023 10:48:47 -0400
+	id 1qRw7r-00054T-Bo; Fri, 04 Aug 2023 10:49:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qRw6c-00043R-Ei
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 10:48:42 -0400
-Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
+ id 1qRw7p-00053j-3q
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 10:49:57 -0400
+Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qRw6Y-0008U5-RQ
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 10:48:42 -0400
-Received: by mail-lf1-x12d.google.com with SMTP id
- 2adb3069b0e04-4fe0c566788so3747116e87.0
- for <qemu-devel@nongnu.org>; Fri, 04 Aug 2023 07:48:38 -0700 (PDT)
+ id 1qRw7n-0000A8-Gb
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 10:49:56 -0400
+Received: by mail-ed1-x52c.google.com with SMTP id
+ 4fb4d7f45d1cf-52256241c66so4714158a12.1
+ for <qemu-devel@nongnu.org>; Fri, 04 Aug 2023 07:49:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691160517; x=1691765317;
+ d=linaro.org; s=google; t=1691160594; x=1691765394;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=cAWVLc1K7QecAiVqR3cpuGD9GUuVRHI5lMpSMKQ7RN8=;
- b=ppF9fNMDzNj18Vrjz7lQ62hQFvjbVm2dbhpSSi3RHARJhQNmZgr7Ix4FOZZrPslLbD
- BgH70yyESW2QKlgsBAwLJUSOrdVFRflWDgOlqmQYNdeUdX+AZ8Jn11EN7EISbAksAHju
- q43D4i5HJoAHs/fRJdcC5lsno+0hDh3XlheuR3cJbUHx4o9qlQ8z76EB2lt/zbAH2thO
- 7r078jW84xH3kxKgCctmgKszSU664v0gi81Swgos7OVLf1Jj92INIu7RMCMXPjwE6d60
- IWuF3Tg237CIpD83aHawWe9ZdonLcee203oWtymA0svVRzJFqUE/vNL9qOV8lUuHhXTv
- 4xAA==
+ bh=CJw5zTZopm9LRZgtC/TcDyRAU1zu3Pa4NugWYHkRy6I=;
+ b=dXijyc82jJBbVcTQl3FEDbM7oNKsTepzAmsZdGgehx2nKI0TecoZuAjB7N9OX2XY3x
+ goiRZU286PdadGbuP8+STYkxD8TEvhOMIK8PFXnAzXXXrzRJ5hugqD27Ig5AvUzMgADs
+ IRaj/RMT5PjYhaLDumRtqPqHte1FGypMrKNVgm+PBbcsiEr8BgxA1LwNArZoA4U9SMam
+ 2VCf0T2GKyDsSo2ZNHry3Df4xbCGQLaBvRqB55VV4HQhNtou4c8T0BAjGQhv5Gkd8wX1
+ vxRDU3kRvlm5NOKnhgwYediL16vxZWIe/yEZNkyh8Wsa3x4B8NTB4MbhtyW95z34vSRq
+ 968A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691160517; x=1691765317;
+ d=1e100.net; s=20221208; t=1691160594; x=1691765394;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=cAWVLc1K7QecAiVqR3cpuGD9GUuVRHI5lMpSMKQ7RN8=;
- b=gyf+mD2Vlx6Pmou6e2LbVGpvSBVogWxzkhQXo2lvlm4GPDtW0/pIi8PvJcsYcBFHkc
- 1H8qG7UWjpavKZPSEPncyP85uHmDegizK94x0SNMYiU4XYfyEuyQFSE5ZMCm4pa9IpU4
- 4hMnB+sQX1xjXdi5JaG9I4EPemnz008qSgba+8o6b16qfiXmkAjXMJfsSBOI/BPZmgMo
- OjXotxDZQKm90UXv86xv19SrAo0nJxee78Mxy1nGe1DGN93cC8G6ryYNPCw3/ffqkWrY
- y5V/jey1wgFSqg7G29UOUxckQ+hCuopntP5Ba5iqnKUWoLGZtBEVZNco6wUdT4QF80Kh
- nRXQ==
-X-Gm-Message-State: AOJu0YzGJPbTWcgWpbHk1CUZGGuFvp82PTuhA34FSEvdjxihc2WzPkaC
- fkb9jX3JUy8OG/rM3OK70Qjvg6dgzwsN2ZQTwBP56w==
-X-Google-Smtp-Source: AGHT+IGJB3Y+FRQS/1xOozDYWHTrZwv8W0KkqDqFySGQPWmVIGmxZRnmGVlgjxEup4mECxbcC8a9q5x1xsmCzb2Jpdg=
-X-Received: by 2002:ac2:592c:0:b0:4fd:fef7:95a5 with SMTP id
- v12-20020ac2592c000000b004fdfef795a5mr1384894lfi.11.1691160517057; Fri, 04
- Aug 2023 07:48:37 -0700 (PDT)
+ bh=CJw5zTZopm9LRZgtC/TcDyRAU1zu3Pa4NugWYHkRy6I=;
+ b=XKX+l+gGiKSaHV5TaLAhkXy5x3fqLDL0JdU4f/Xm8WLMd8R66n/3zb7AwxrCPOZlhk
+ NuNZkKMCpmHf77z2K2oPccT6Hu11znXkJE3xW8RxMpfFFIIoMdf/k/ZhrMHUrxGUqG5z
+ 2qUxsDvu2NXar22qvenvEKA1VDw9j2ARW0sHNcGUBhZfPN6LPGuvGeYUWYL1UnvXTpch
+ DVbyCVKCE582ck28UdvBSTpDPCA0VasuPczEU9Ts/9FVYM/QzzxZEI3KEv7MuDVw/s3N
+ Jpsa8JOESyShHFv8WjdaeLZVduTRd4AZcc3zyCcLEjWvG3li3MYccCaq8h+4M0c3jEZR
+ BT2Q==
+X-Gm-Message-State: AOJu0Yz/jS+Z7AFY3baYvWkxQ2n/rtpQnEL1DFhUZNxxJ+963+Ce8BFI
+ mpqax7MRddo2Pi58mSyY0r+HStchKmeK/p07F+U8Qw==
+X-Google-Smtp-Source: AGHT+IF2Fko32RxHeacW7YfX+WD7rWRlLxb5NSNFMOexwEr1gPJA60/HYWd5F/jn/6wzUeM+1LWBo+eAeN0iQPsdslY=
+X-Received: by 2002:a50:fe99:0:b0:51d:f0fd:bc80 with SMTP id
+ d25-20020a50fe99000000b0051df0fdbc80mr2275296edt.17.1691160593920; Fri, 04
+ Aug 2023 07:49:53 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230726132512.149618-1-sergey.kambalin@auriga.com>
- <20230726132512.149618-24-sergey.kambalin@auriga.com>
-In-Reply-To: <20230726132512.149618-24-sergey.kambalin@auriga.com>
+ <20230726132512.149618-33-sergey.kambalin@auriga.com>
+In-Reply-To: <20230726132512.149618-33-sergey.kambalin@auriga.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 4 Aug 2023 15:48:26 +0100
-Message-ID: <CAFEAcA9EXd2r+r1BPH=VpDwJ=nf1Szhg1Lm18B7S5BPsbtgfOg@mail.gmail.com>
-Subject: Re: [PATCH 23/44] Add GENET register structs. Part 1
+Date: Fri, 4 Aug 2023 15:49:42 +0100
+Message-ID: <CAFEAcA8n1_vuuVcSt4EFzadAhcgfRnXg5UAyatRp_yh2Cxt-GQ@mail.gmail.com>
+Subject: Re: [PATCH 32/44] Enable BCM2838 GENET controller
 To: Sergey Kambalin <serg.oker@gmail.com>
 Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
  Sergey Kambalin <sergey.kambalin@auriga.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,45 +86,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 26 Jul 2023 at 14:44, Sergey Kambalin <serg.oker@gmail.com> wrote:
+On Wed, 26 Jul 2023 at 15:10, Sergey Kambalin <serg.oker@gmail.com> wrote:
 >
 > Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
 > ---
->  include/hw/net/bcm2838_genet.h | 125 ++++++++++++++++++++++++++++++++-
->  1 file changed, 124 insertions(+), 1 deletion(-)
->
-> diff --git a/include/hw/net/bcm2838_genet.h b/include/hw/net/bcm2838_genet.h
-> index f62b24fa2f..89b45eb39f 100644
-> --- a/include/hw/net/bcm2838_genet.h
-> +++ b/include/hw/net/bcm2838_genet.h
-> @@ -18,8 +18,131 @@ OBJECT_DECLARE_SIMPLE_TYPE(BCM2838GenetState, BCM2838_GENET)
->  #define BCM2838_GENET_REV_MAJOR         6
->  #define BCM2838_GENET_REV_MINOR         0
->
-> +typedef union {
-> +    uint32_t value;
-> +    struct {
-> +        uint32_t gphy_rev:16;
-> +        uint32_t minor_rev:4;
-> +        uint32_t reserved_20_23:4;
-> +        uint32_t major_rev:4;
-> +        uint32_t reserved_28_31:4;
-> +    } fields;
+>  hw/arm/bcm2838_peripherals.c         | 16 ++++++++++++++++
+>  hw/arm/raspi4b.c                     | 17 -----------------
+>  include/hw/arm/bcm2838_peripherals.h |  2 ++
+>  3 files changed, 18 insertions(+), 17 deletions(-)
 
-Don't try to use bitfields to represent guest register layout
-or in-memory data, please -- it's not portable or endian safe.
-
-> +} BCM2838GenetSysRevCtrl;
-
-> +typedef struct {
-> +    BCM2838GenetSysRevCtrl rev_ctrl;
-> +    uint32_t port_ctrl;
-> +    uint32_t rbuf_flush_ctrl;
-> +    uint32_t tbuf_flush_ctrl;
-> +    uint8_t reserved_0x10[0x30];
-> +} __attribute__((__packed__)) BCM2838GenetRegsSys;
-
-Better not to use packed structs for that either.
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
 thanks
 -- PMM
