@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D0A476F988
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 07:25:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D14EE76F98A
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 07:26:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRnIe-0006rN-Sy; Fri, 04 Aug 2023 01:24:33 -0400
+	id 1qRnKG-0007Yh-Q9; Fri, 04 Aug 2023 01:26:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qRnIU-0006p6-OR
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 01:24:25 -0400
-Received: from mail-oi1-x22e.google.com ([2607:f8b0:4864:20::22e])
+ id 1qRnKD-0007YW-UN
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 01:26:09 -0400
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qRnIT-0001bv-7C
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 01:24:22 -0400
-Received: by mail-oi1-x22e.google.com with SMTP id
- 5614622812f47-3a741f46fadso1329193b6e.0
- for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 22:24:20 -0700 (PDT)
+ id 1qRnKA-0002Oz-S2
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 01:26:08 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-686f8614ce5so1593124b3a.3
+ for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 22:26:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1691126659; x=1691731459;
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1691126764; x=1691731564;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=ulANK/Raa2yHkL0nTj8LyiH0Jhs9skQSzKSJpK/fciY=;
- b=LNRa08nB3re6j9dGKCcwD7vaanjCh4fUEdGwhWG+0Nf7f7H8BgDPW/+0tALdIdPBt5
- csuwkpwC0XRkM/DuoVtF3n3uZTVUsAYrivF0mnxeEwBAZ6f5+2bOM/lCHRg2xKXO78qF
- C2l3V7jQVR/kCyX0TRYwW4RKp7IrTnRITB2laQjuOxDJlq4ucFkLYYgZ/pulYFJixqwQ
- kTQvw/Z/Z3j13O+25qi/qFcZVhfwXlzb4uCyABVMVs91dXrQjUTJvj4sci4NFSYdNNV0
- 4Ok9v8spNI2YjFQdEZ5y5FHijhWYK6D81aXMMIyjXrHp3Ka218LAX/Pd/irfeDJXAV2F
- cbgQ==
+ bh=NyuV8A4740CQUMlzJkLcg0GyTJF1n2ZgiAciACg9RrA=;
+ b=UM3Hf+Fyn+H8HcUyHqOqSwGmCJAUISDycTFYWuWO60iO8nZA+uHVcnawaZvCp8Amus
+ xc68dywcq959k/TSuZfpk1+xOFDdjykejvzdMlYmsBpCp7JVqpKollwxP4FwjT9jBB5W
+ DNu3DFK8tKtORXtQTDbjQ7a/R/K6E7cIZ1aU+Gx4YsHN36S7uTanYlnnXVDXFiAZaehm
+ AU1LtcgES2LuQsCV+1wlB1dBYH+FxupXV/xjUWkRp6cO3iq8l43x+sQEgQxCZLOaFAzk
+ Z1HPEaInTaXeskfjOb48yZ7LcfgPWJb0O2x15vqg8VAYpS3XrWCPkfYcPmHAob81VgBc
+ Wfjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691126659; x=1691731459;
+ d=1e100.net; s=20221208; t=1691126764; x=1691731564;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ulANK/Raa2yHkL0nTj8LyiH0Jhs9skQSzKSJpK/fciY=;
- b=g6Moj9ybwOWdeLq+BfzaKMRvqjl3R/Ra2qi3+U7HD2LwfrzLWmHFU5J/08XpT/oKdO
- gFeJ1Y54CaqXp6BhepxGQo3p846DKxNqmTxZWRhXplRzxxz+Y5YNbsCDp/6nUi6dj8Tj
- 9XAEkU8NTejp/Uwd9pXO/fxNBtZGJDwZxeyo6/l7DnbDPlEagGDt4E5E84hzrzlibcmY
- Lyh5egPEzCCMTDJVGy8gR5EIbgcgW0/CE3EHEPj/kTKNcp0Lj/ROS4RWjqN4p3DJy+4j
- IDnYggniW5e0LTj3RDmC6EFE2OuWpsmT6ixcRrJEwfkqpUOMkDPZ7zdQdWN/OLdeyu07
- J7bA==
-X-Gm-Message-State: AOJu0YyI32tkYecPAvj8+UWA8xaGK7psFu5uSZyXpckBAgEAzRIlR9tT
- /B7mc5vNOd2XHy7XhCK73CK6IQ==
-X-Google-Smtp-Source: AGHT+IGIl7mFvkVGpSgyZRyqdCgYap2P0RXRbRzniAwge8n5pBgE/b6Hvd1fKUXCWEzFwaBJ1rEpqg==
-X-Received: by 2002:a05:6808:199f:b0:3a2:62f3:c2d0 with SMTP id
- bj31-20020a056808199f00b003a262f3c2d0mr1186873oib.24.1691126659665; 
- Thu, 03 Aug 2023 22:24:19 -0700 (PDT)
+ bh=NyuV8A4740CQUMlzJkLcg0GyTJF1n2ZgiAciACg9RrA=;
+ b=KImVR7EL4nzeiQrNYsgF6fYz0cPERQJdtndqRHyDwcB7gEyoufyqB7F8ES+SbB6Z/c
+ knl1yOCsroQf1S0oaeDoArevioUV33Y9kiwWYZh4Yk53QO+blbLLfvgcftoKyNSmpYLP
+ JCFS8P9GJXkm448kfVGZoYE0ktB7UZp1h3GX5bKOzh4+YGgBya3Q/U7NRwgpWmmUXWe9
+ uUNjByhntZqlHcUIJY4AHeawsSTb+4SqEi2iP8H+YNeit0dY5tYQQxbJX0ReP2S46WTe
+ KjSybezQxRVG6QGBGhEk0AwGSWDvSgD9l6Ve2S/+0n4C0VALE/lIC0zoM3ef5S+nWsFr
+ d41Q==
+X-Gm-Message-State: AOJu0YwbW7PL87dlzLOlIUa01qzYT97GWD7zBu50cFHZFD9fusCpfw2I
+ yc85MI3/HxjvQ15Wp2YaMkaZRA==
+X-Google-Smtp-Source: AGHT+IFnzAqp8mJohn3y4zsOu6UFweY2hqSqIf3JSua0yYV5TwPDVFQ9YsxenT2iy81U/GaOVpoZRg==
+X-Received: by 2002:a05:6a20:1453:b0:13d:b8ed:a5b8 with SMTP id
+ a19-20020a056a20145300b0013db8eda5b8mr858615pzi.12.1691126764161; 
+ Thu, 03 Aug 2023 22:26:04 -0700 (PDT)
 Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
  ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
  by smtp.gmail.com with ESMTPSA id
- fm21-20020a056a002f9500b0068709861cb6sm701633pfb.137.2023.08.03.22.24.18
+ jh21-20020a170903329500b001b8c3c7b102sm764864plb.127.2023.08.03.22.26.02
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 03 Aug 2023 22:24:19 -0700 (PDT)
-Message-ID: <37254a2c-a96b-81c8-2d33-92aee77bae19@daynix.com>
-Date: Fri, 4 Aug 2023 14:24:17 +0900
+ Thu, 03 Aug 2023 22:26:03 -0700 (PDT)
+Message-ID: <d04fd2de-4295-5fba-347b-ea16aea206b5@daynix.com>
+Date: Fri, 4 Aug 2023 14:26:01 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 12/17] linux-user: Use elf_et_dyn_base for ET_DYN with
- interpreter
+Subject: Re: [PATCH v8 13/17] linux-user: Adjust initial brk when interpreter
+ is close to executable
 Content-Language: en-US
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 Cc: joel@jms.id.au, laurent@vivier.eu, deller@gmx.de
 References: <20230804014517.6361-1-richard.henderson@linaro.org>
- <20230804014517.6361-13-richard.henderson@linaro.org>
+ <20230804014517.6361-14-richard.henderson@linaro.org>
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <20230804014517.6361-13-richard.henderson@linaro.org>
+In-Reply-To: <20230804014517.6361-14-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::22e;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-oi1-x22e.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x42f.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -96,11 +96,17 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 2023/08/04 10:45, Richard Henderson wrote:
-> Follow the lead of the linux kernel in fs/binfmt_elf.c,
-> in which an ET_DYN executable which uses an interpreter
-> (usually a PIE executable) is loaded away from where the
-> interpreter itself will be loaded.
+> From: Helge Deller <deller@gmx.de>
 > 
+> While we attempt to load a ET_DYN executable far away from
+> TASK_UNMAPPED_BASE, we are not completely in control of the
+> address space layout.  If the interpreter lands close to
+> the executable, leaving insufficient heap space, move brk.
+> 
+> Signed-off-by: Helge Deller <deller@gmx.de>
+> [rth: Re-order after ELF_ET_DYN_BASE patch so that we do not
+>   "temporarily break" tsan, and also to minimize the changes required.
+>   Remove image_info.reserve_brk as unused.]
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
 Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
