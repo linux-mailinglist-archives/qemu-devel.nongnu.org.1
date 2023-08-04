@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 264327708D5
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 21:18:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98E597708E4
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 21:20:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qS0JW-0001KQ-17; Fri, 04 Aug 2023 15:18:18 -0400
+	id 1qS0Jp-00022l-5p; Fri, 04 Aug 2023 15:18:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qS0JE-000150-LD; Fri, 04 Aug 2023 15:18:01 -0400
+ id 1qS0JF-0001FC-Uk; Fri, 04 Aug 2023 15:18:03 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qS0JB-00071K-Jq; Fri, 04 Aug 2023 15:17:58 -0400
+ id 1qS0JE-00071k-07; Fri, 04 Aug 2023 15:18:01 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 44C0918461;
+ by isrv.corpit.ru (Postfix) with ESMTP id 7202D18462;
  Fri,  4 Aug 2023 22:17:13 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id A304F1B8A4;
- Fri,  4 Aug 2023 22:16:52 +0300 (MSK)
-Received: (nullmailer pid 1875732 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 0B1E31B8A5;
+ Fri,  4 Aug 2023 22:16:53 +0300 (MSK)
+Received: (nullmailer pid 1875735 invoked by uid 1000);
  Fri, 04 Aug 2023 19:16:49 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- jiangyegen <jiangyegen@huawei.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.4 47/63] io: remove io watch if TLS channel is closed
- during handshake
-Date: Fri,  4 Aug 2023 22:16:30 +0300
-Message-Id: <20230804191647.1875608-16-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, David Woodhouse <dwmw@amazon.co.uk>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.0.4 48/63] hw/xen: fix off-by-one in xen_evtchn_set_gsi()
+Date: Fri,  4 Aug 2023 22:16:31 +0300
+Message-Id: <20230804191647.1875608-17-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.4-20230804221634@cover.tls.msk.ru>
 References: <qemu-stable-8.0.4-20230804221634@cover.tls.msk.ru>
@@ -61,77 +61,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel P. Berrangé <berrange@redhat.com>
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-The TLS handshake make take some time to complete, during which time an
-I/O watch might be registered with the main loop. If the owner of the
-I/O channel invokes qio_channel_close() while the handshake is waiting
-to continue the I/O watch must be removed. Failing to remove it will
-later trigger the completion callback which the owner is not expecting
-to receive. In the case of the VNC server, this results in a SEGV as
-vnc_disconnect_start() tries to shutdown a client connection that is
-already gone / NULL.
+Coverity points out (CID 1508128) a bounds checking error. We need to check
+for gsi >= IOAPIC_NUM_PINS, not just greater-than.
 
-CVE-2023-3354
-Reported-by: jiangyegen <jiangyegen@huawei.com>
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-(cherry picked from commit 10be627d2b5ec2d6b3dce045144aa739eef678b4)
+Also fix up an assert() that has the same problem, that Coverity didn't see.
+
+Fixes: 4f81baa33ed6 ("hw/xen: Support GSI mapping to PIRQ")
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-Id: <20230801175747.145906-2-dwmw2@infradead.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+(cherry picked from commit cf885b19579646d6a085470658bc83432d6786d2)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/include/io/channel-tls.h b/include/io/channel-tls.h
-index 5672479e9e..26c67f17e2 100644
---- a/include/io/channel-tls.h
-+++ b/include/io/channel-tls.h
-@@ -48,6 +48,7 @@ struct QIOChannelTLS {
-     QIOChannel *master;
-     QCryptoTLSSession *session;
-     QIOChannelShutdown shutdown;
-+    guint hs_ioc_tag;
- };
- 
- /**
-diff --git a/io/channel-tls.c b/io/channel-tls.c
-index 9805dd0a3f..847d5297c3 100644
---- a/io/channel-tls.c
-+++ b/io/channel-tls.c
-@@ -198,12 +198,13 @@ static void qio_channel_tls_handshake_task(QIOChannelTLS *ioc,
-         }
- 
-         trace_qio_channel_tls_handshake_pending(ioc, status);
--        qio_channel_add_watch_full(ioc->master,
--                                   condition,
--                                   qio_channel_tls_handshake_io,
--                                   data,
--                                   NULL,
--                                   context);
-+        ioc->hs_ioc_tag =
-+            qio_channel_add_watch_full(ioc->master,
-+                                       condition,
-+                                       qio_channel_tls_handshake_io,
-+                                       data,
-+                                       NULL,
-+                                       context);
+diff --git a/hw/i386/kvm/xen_evtchn.c b/hw/i386/kvm/xen_evtchn.c
+index 3048329474..8c86c91a9e 100644
+--- a/hw/i386/kvm/xen_evtchn.c
++++ b/hw/i386/kvm/xen_evtchn.c
+@@ -1587,7 +1587,7 @@ static int allocate_pirq(XenEvtchnState *s, int type, int gsi)
+  found:
+     pirq_inuse_word(s, pirq) |= pirq_inuse_bit(pirq);
+     if (gsi >= 0) {
+-        assert(gsi <= IOAPIC_NUM_PINS);
++        assert(gsi < IOAPIC_NUM_PINS);
+         s->gsi_pirq[gsi] = pirq;
      }
- }
+     s->pirq[pirq].gsi = gsi;
+@@ -1601,7 +1601,7 @@ bool xen_evtchn_set_gsi(int gsi, int level)
  
-@@ -218,6 +219,7 @@ static gboolean qio_channel_tls_handshake_io(QIOChannel *ioc,
-     QIOChannelTLS *tioc = QIO_CHANNEL_TLS(
-         qio_task_get_source(task));
+     assert(qemu_mutex_iothread_locked());
  
-+    tioc->hs_ioc_tag = 0;
-     g_free(data);
-     qio_channel_tls_handshake_task(tioc, task, context);
- 
-@@ -378,6 +380,10 @@ static int qio_channel_tls_close(QIOChannel *ioc,
- {
-     QIOChannelTLS *tioc = QIO_CHANNEL_TLS(ioc);
- 
-+    if (tioc->hs_ioc_tag) {
-+        g_clear_handle_id(&tioc->hs_ioc_tag, g_source_remove);
-+    }
-+
-     return qio_channel_close(tioc->master, errp);
- }
+-    if (!s || gsi < 0 || gsi > IOAPIC_NUM_PINS) {
++    if (!s || gsi < 0 || gsi >= IOAPIC_NUM_PINS) {
+         return false;
+     }
  
 -- 
 2.39.2
