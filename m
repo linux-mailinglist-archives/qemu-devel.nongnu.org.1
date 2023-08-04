@@ -2,95 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A58AD770280
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 16:03:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7F65770427
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 17:14:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRvOW-0007wp-E7; Fri, 04 Aug 2023 10:03:08 -0400
+	id 1qRwUp-0007WH-8g; Fri, 04 Aug 2023 11:13:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qRvOT-0007wg-UT
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 10:03:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qRvOS-0002Bv-7a
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 10:03:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691157783;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=gjHKSuPyhP4QtUg/mwQc1AA/Vu54gzHUzlikctJLOVk=;
- b=RzGG3ohKrhP6E6O2zpG2CDCq5A1XZgkfy9kf7Ps072PvouEGqcZOboeY+Bg4Slo+RcDDqj
- fq2uJDyi9pZe/fGhpaYkyNuPdyHWTEqZ7NpKpgTordmq3WPqc5Ua2FM1ZXYyzozBnE3jO8
- WAfnsMwf6EKRry6i01AJPW6U9UvjVsM=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-311-Ndk12_MpOWiVy9tsUcqiWA-1; Fri, 04 Aug 2023 10:02:57 -0400
-X-MC-Unique: Ndk12_MpOWiVy9tsUcqiWA-1
-Received: by mail-qv1-f69.google.com with SMTP id
- 6a1803df08f44-637948b24bdso4650606d6.1
- for <qemu-devel@nongnu.org>; Fri, 04 Aug 2023 07:02:56 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691157776; x=1691762576;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=gjHKSuPyhP4QtUg/mwQc1AA/Vu54gzHUzlikctJLOVk=;
- b=gZoeC5SGIDhXK3x31FNhyvkayZsiCAT2PKwAXX+dM3ul8Bwh0b9tVhJ593GiIxsHsl
- KkUaRyIRgslTR4SlS/OkhqW/MSZbj2FXtRU6DvmtjfIBUUlE+k21BftocmB2wd4TwsO9
- wTx+fYovmUS0IjFalHBaBOJDLMKFMLlyT2BKmSAEZloEhznAKHMJBf8UEHD30JijrcsA
- ZVkEVz+xIOeQr0HZWwvKcV/lOiAY7QLroETcsN+cYKHTeEsMPboD/7vW2+d2slrH0WTh
- 7/AW+JT9Q8nGp4M6S4vucB4u9rV4Zce6ZiX/af04NjKjCoKL06VVhEXlFZR5EtlA4Rj/
- 0TGA==
-X-Gm-Message-State: ABy/qLa5XYCZVM3d3Lvw9oBTlTNc605U1Xj5fOoLX3ibsawAER1HTS/s
- rIjWS9r+N1zKPWYprP0G5y1Lp8nLz1Gr2SajG+LNPKwvJcMAfGUtgHXR0RkLIK9uQufoGQY3CjQ
- Ep38dfrAWTlD9KoE=
-X-Received: by 2002:a05:6214:5017:b0:63c:fd2d:6ff1 with SMTP id
- jo23-20020a056214501700b0063cfd2d6ff1mr23586606qvb.1.1691157776132; 
- Fri, 04 Aug 2023 07:02:56 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlF1EkqD3U8yGjD0BFqqhNpsxAxPEE/7Sc0UsnPFMveWCAM7PbNQ04yiy7YUk0ufu5dAjYdyGA==
-X-Received: by 2002:a05:6214:5017:b0:63c:fd2d:6ff1 with SMTP id
- jo23-20020a056214501700b0063cfd2d6ff1mr23586568qvb.1.1691157775814; 
- Fri, 04 Aug 2023 07:02:55 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- r4-20020a0ce284000000b00634daee6ecbsm678566qvl.113.2023.08.04.07.02.54
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 04 Aug 2023 07:02:55 -0700 (PDT)
-Date: Fri, 4 Aug 2023 10:02:54 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-Cc: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org,
- Leonardo Bras Soares Passos <lsoaresp@redhat.com>,
- Eric Blake <eblake@redhat.com>, Juan Quintela <quintela@redhat.com>,
- Chensheng Dong <chdong@redhat.com>, Zhiyi Guo <zhguo@redhat.com>,
- Fabiano Rosas <farosas@suse.de>
-Subject: Re: [PATCH] migration: Allow user to specify migration available
- bandwidth
-Message-ID: <ZM0FDgndvbhrhMa0@x1n>
-References: <20230724170755.1114519-1-peterx@redhat.com>
- <87351cfdrq.fsf@pond.sub.org> <ZL/7XtiEFWEprQhD@x1n>
- <87o7jz8a6o.fsf@pond.sub.org> <ZME33z8vFL0fRGYV@x1n>
- <ZMz/g+qU7vzXx6aP@redhat.com>
+ (Exim 4.90_1) (envelope-from <francisyuu@B-L8MBMD6R-2342.local>)
+ id 1qRpv4-00069V-Cy; Fri, 04 Aug 2023 04:12:22 -0400
+Received: from [2401:b180:8000:2:9109:19ec:a055:9652]
+ (helo=B-L8MBMD6R-2342.local) by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <francisyuu@B-L8MBMD6R-2342.local>)
+ id 1qRpv1-0002sj-3F; Fri, 04 Aug 2023 04:12:22 -0400
+Received: by B-L8MBMD6R-2342.local (Postfix, from userid 502)
+ id A63C7343C41; Fri,  4 Aug 2023 15:50:54 +0800 (CST)
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?=E4=BA=8E=E8=88=AA?= <1339236493@qq.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Peter Maydell <peter.maydell@linaro.org>, Andrew Jeffery <andrew@aj.id.au>,
+ Joel Stanley <joel@jms.id.au>, qemu-arm@nongnu.org (open list:ASPEED BMCs)
+Subject: [PATCH] Aspeed: i2c: Fixed Tx and Rx error in BUFF Mode
+Date: Fri,  4 Aug 2023 15:50:42 +0800
+Message-Id: <20230804075042.51204-1-1339236493@qq.com>
+X-Mailer: git-send-email 2.39.2 (Apple Git-143)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZMz/g+qU7vzXx6aP@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Host-Lookup-Failed: Reverse DNS lookup failed for
+ 2401:b180:8000:2:9109:19ec:a055:9652 (failed)
+Received-SPF: none client-ip=2401:b180:8000:2:9109:19ec:a055:9652;
+ envelope-from=francisyuu@B-L8MBMD6R-2342.local; helo=B-L8MBMD6R-2342.local
+X-Spam_score_int: -5
+X-Spam_score: -0.6
+X-Spam_bar: /
+X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9,
+ FREEMAIL_FORGED_FROMDOMAIN=0.249, FREEMAIL_FROM=0.001,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, NO_DNS_FOR_FROM=0.001, RDNS_NONE=0.793,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001, SPOOFED_FREEMAIL=0.001,
+ SPOOFED_FREEMAIL_NO_RDNS=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Fri, 04 Aug 2023 11:13:41 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,120 +56,114 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  =?UTF-8?q?=E4=BA=8E=E8=88=AA?= <1339236493@qq.com>
+From:  =?UTF-8?q?=E4=BA=8E=E8=88=AA?= via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Aug 04, 2023 at 02:39:15PM +0100, Daniel P. Berrangé wrote:
-> On Wed, Jul 26, 2023 at 11:12:31AM -0400, Peter Xu wrote:
-> > On Wed, Jul 26, 2023 at 08:21:35AM +0200, Markus Armbruster wrote:
-> > > Peter Xu <peterx@redhat.com> writes:
-> > > 
-> > > > Hi, Markus,
-> > > >
-> > > > On Tue, Jul 25, 2023 at 01:10:01PM +0200, Markus Armbruster wrote:
-> > > 
-> > > [...]
-> > > 
-> > > >> For better or worse, we duplicate full documentation between
-> > > >> MigrationParameter, MigrateSetParameters, and MigrationParameters.  This
-> > > >> would be the first instance where we reference instead.  I'm not opposed
-> > > >> to use references, but if we do, I want them used consistently.
-> > > >
-> > > > We discussed this over the other "switchover" parameter, but that patchset
-> > > > just stranded..
-> > > >
-> > > > Perhaps I just provide a pre-requisite patch to remove all the comments in
-> > > > MigrateSetParameters and MigrationParameters, letting them all point to
-> > > > MigrationParameter?
-> > > 
-> > > Simplifies maintaining the doc commments.  But how does it affect the
-> > > documentation generated from it?  Better, neutral, or worse?
-> > 
-> > Probably somewhere neutral.  There are definitely benefits, shorter
-> >
-> > man/html page in total, and avoid accidentally different docs over the same
-> > fields.  E.g., we sometimes have different wordings for different objects:
-> > 
-> >        max-cpu-throttle
-> >               maximum cpu throttle percentage.  Defaults to 99.  (Since 3.1)
-> > 
-> >        max-cpu-throttle: int (optional)
-> >               maximum cpu throttle percentage.  The default value is 99. (Since 3.1)
-> > 
-> > This one is fine, but it's just very easy to leak in something that shows
-> > differently.  It's good to provide coherent documentation for the same
-> > fields over all three objects.
-> 
-> Do we have any actual problems though where the difference in
-> docs is actively harmful ? I agree there's a possbility of the
-> duplication being problematic, but unless its actually the
-> case in reality, it is merely a theoretical downside.
-> 
-> IMHO for someone consuming the docs, this patch is worse, not neutral.
+1. Fixed inconsistency between the bit field definition in register
+I2CD_POOL_CTRL and the ast2600 datasheet
+2. Fixed issue of confusing RXSIZE and RXCOUNT, as well as forgetting
+to add one to TXCOUNT and RXSIZE in buff mode
+3. Fixed issue with TXBUF transmission start position error in buff mode
+4. Added support for the BUFFER ORGANIZATION option in reg I2CC_POOL_CTRL
+After adding these changes, QEMU can support driver code:
+https://github.com/AspeedTech-BMC/linux/blob/aspeed-master-v5.15
+/drivers/i2c/busses/i2c-ast2600.c
 
-I agree.
+Signed-off-by:于航<1339236493@qq.com>
+---
+ hw/i2c/aspeed_i2c.c         | 21 ++++++---------------
+ include/hw/i2c/aspeed_i2c.h |  5 +++--
+ 2 files changed, 9 insertions(+), 17 deletions(-)
 
-> 
-> > 
-> > When looking at qemu-qmp-ref.7, it can be like this when we can invite the
-> > reader to read the other section (assuming we only keep MigrationParameter
-> > to keep the documentations):
-> > 
-> >    MigrationParameters (Object)
-> > 
-> >        The object structure to represent a list of migration parameters.
-> >        The optional members aren't actually optional.  For detailed
-> >        explanation for each of the field, please refer to the documentation
-> >        of MigrationParameter.
-> > 
-> > But the problem is we always will generate the Members entry, where now
-> > it'll all filled up with "Not documented"..
-> > 
-> >    Members
-> >        announce-initial: int (optional)
-> >               Not documented
-> > 
-> >        announce-max: int (optional)
-> >               Not documented
-> > 
-> >        announce-rounds: int (optional)
-> >               Not documented
-> > 
-> >        [...]
-> > 
-> > I think maybe it's better we just list the members without showing "Not
-> > documented" every time for the other two objects.  Not sure whether it's an
-> > easy way to fix it, or is it a major issue.
-> > 
-> > For developers, dedup the comment should always be a win, afaict.
-> 
-> IMHO that's optimizing for the wrong people and isn't a measurable
-> win anyway. Someone adding a new parameter can just cut+paste the
-> same docs string in the three places. It is a cost, but it is a
-> small one time cost, where having "not documented" is a ongoing
-> cost for consumers of our API.
-> 
-> I don't think the burden on QEMU maintainers adding new migration
-> parameters is significant enough to justify ripping out our existing
-> docs.
-
-I had that strong feeling mostly because I'm a migration developer and
-migration reviewer, so I suffer on both sides. :) I was trying to stand out
-for either any future author/reviewer from that pov, but I think indeed the
-ultimate consumer is the reader.
-
-Fundamentally to solve the problem, maybe we must dedup the objects rather
-than the documents only?  I'll try to dig a bit more in this area next week
-if I have time, any link for previous context would be welcomed (or obvious
-reason that we just won't be able to do that; I only know that at least
-shouldn't be trivial to resolve).
-
-For this one - Markus, let me know what do you think, or I'll simply repost
-v3 with the duplications (when needed, probably later not sooner).
-
-Thanks,
-
+diff --git a/hw/i2c/aspeed_i2c.c b/hw/i2c/aspeed_i2c.c
+index 1f071a3811..0e380d0bba 100644
+--- a/hw/i2c/aspeed_i2c.c
++++ b/hw/i2c/aspeed_i2c.c
+@@ -236,7 +236,7 @@ static int aspeed_i2c_bus_send(AspeedI2CBus *bus, uint8_t pool_start)
+     uint32_t reg_byte_buf = aspeed_i2c_bus_byte_buf_offset(bus);
+     uint32_t reg_dma_len = aspeed_i2c_bus_dma_len_offset(bus);
+     int pool_tx_count = SHARED_ARRAY_FIELD_EX32(bus->regs, reg_pool_ctrl,
+-                                                TX_COUNT);
++                                                TX_COUNT)+1;
+ 
+     if (SHARED_ARRAY_FIELD_EX32(bus->regs, reg_cmd, TX_BUFF_EN)) {
+         for (i = pool_start; i < pool_tx_count; i++) {
+@@ -293,10 +293,12 @@ static void aspeed_i2c_bus_recv(AspeedI2CBus *bus)
+     uint32_t reg_dma_len = aspeed_i2c_bus_dma_len_offset(bus);
+     uint32_t reg_dma_addr = aspeed_i2c_bus_dma_addr_offset(bus);
+     int pool_rx_count = SHARED_ARRAY_FIELD_EX32(bus->regs, reg_pool_ctrl,
+-                                                RX_COUNT);
++                                                RX_SIZE)+1;
+ 
+     if (SHARED_ARRAY_FIELD_EX32(bus->regs, reg_cmd, RX_BUFF_EN)) {
+-        uint8_t *pool_base = aic->bus_pool_base(bus);
++        uint8_t *pool_base ;
++        if(ARRAY_FIELD_EX32(bus->regs,I2CC_POOL_CTRL,BUF_ORGANIZATION))pool_base=aic->bus_pool_base(bus)+16;
++        else pool_base= aic->bus_pool_base(bus);
+ 
+         for (i = 0; i < pool_rx_count; i++) {
+             pool_base[i] = i2c_recv(bus->bus);
+@@ -418,7 +420,7 @@ static void aspeed_i2c_bus_cmd_dump(AspeedI2CBus *bus)
+     uint32_t reg_intr_sts = aspeed_i2c_bus_intr_sts_offset(bus);
+     uint32_t reg_dma_len = aspeed_i2c_bus_dma_len_offset(bus);
+     if (SHARED_ARRAY_FIELD_EX32(bus->regs, reg_cmd, RX_BUFF_EN)) {
+-        count = SHARED_ARRAY_FIELD_EX32(bus->regs, reg_pool_ctrl, TX_COUNT);
++        count = SHARED_ARRAY_FIELD_EX32(bus->regs, reg_pool_ctrl, TX_COUNT)+1;
+     } else if (SHARED_ARRAY_FIELD_EX32(bus->regs, reg_cmd, RX_DMA_EN)) {
+         count = bus->regs[reg_dma_len];
+     } else { /* BYTE mode */
+@@ -449,7 +451,6 @@ static void aspeed_i2c_bus_handle_cmd(AspeedI2CBus *bus, uint64_t value)
+     uint8_t pool_start = 0;
+     uint32_t reg_intr_sts = aspeed_i2c_bus_intr_sts_offset(bus);
+     uint32_t reg_cmd = aspeed_i2c_bus_cmd_offset(bus);
+-    uint32_t reg_pool_ctrl = aspeed_i2c_bus_pool_ctrl_offset(bus);
+     uint32_t reg_dma_len = aspeed_i2c_bus_dma_len_offset(bus);
+ 
+     if (!aspeed_i2c_check_sram(bus)) {
+@@ -489,16 +490,6 @@ static void aspeed_i2c_bus_handle_cmd(AspeedI2CBus *bus, uint64_t value)
+          * else needs to be sent in this sequence.
+          */
+         if (SHARED_ARRAY_FIELD_EX32(bus->regs, reg_cmd, TX_BUFF_EN)) {
+-            if (SHARED_ARRAY_FIELD_EX32(bus->regs, reg_pool_ctrl, TX_COUNT)
+-                == 1) {
+-                SHARED_ARRAY_FIELD_DP32(bus->regs, reg_cmd, M_TX_CMD, 0);
+-            } else {
+-                /*
+-                 * Increase the start index in the TX pool buffer to
+-                 * skip the address byte.
+-                 */
+-                pool_start++;
+-            }
+         } else if (SHARED_ARRAY_FIELD_EX32(bus->regs, reg_cmd, TX_DMA_EN)) {
+             if (bus->regs[reg_dma_len] == 0) {
+                 SHARED_ARRAY_FIELD_DP32(bus->regs, reg_cmd, M_TX_CMD, 0);
+diff --git a/include/hw/i2c/aspeed_i2c.h b/include/hw/i2c/aspeed_i2c.h
+index 51c944efea..88b144a599 100644
+--- a/include/hw/i2c/aspeed_i2c.h
++++ b/include/hw/i2c/aspeed_i2c.h
+@@ -139,9 +139,9 @@ REG32(I2CD_CMD, 0x14) /* I2CD Command/Status */
+ REG32(I2CD_DEV_ADDR, 0x18) /* Slave Device Address */
+     SHARED_FIELD(SLAVE_DEV_ADDR1, 0, 7)
+ REG32(I2CD_POOL_CTRL, 0x1C) /* Pool Buffer Control */
+-    SHARED_FIELD(RX_COUNT, 24, 5)
++    SHARED_FIELD(RX_COUNT, 24, 6)
+     SHARED_FIELD(RX_SIZE, 16, 5)
+-    SHARED_FIELD(TX_COUNT, 9, 5)
++    SHARED_FIELD(TX_COUNT, 8, 5)
+     FIELD(I2CD_POOL_CTRL, OFFSET, 2, 6) /* AST2400 */
+ REG32(I2CD_BYTE_BUF, 0x20) /* Transmit/Receive Byte Buffer */
+     SHARED_FIELD(RX_BUF, 8, 8)
+@@ -162,6 +162,7 @@ REG32(I2CC_MS_TXRX_BYTE_BUF, 0x08)
+     /* 15:0  shared with I2CD_BYTE_BUF[15:0] */
+ REG32(I2CC_POOL_CTRL, 0x0c)
+     /* 31:0 shared with I2CD_POOL_CTRL[31:0] */
++    FIELD(I2CC_POOL_CTRL, BUF_ORGANIZATION, 0, 1) /* AST2600 */
+ REG32(I2CM_INTR_CTRL, 0x10)
+ REG32(I2CM_INTR_STS, 0x14)
+     FIELD(I2CM_INTR_STS, PKT_STATE, 28, 4)
 -- 
-Peter Xu
+2.39.2 (Apple Git-143)
 
 
