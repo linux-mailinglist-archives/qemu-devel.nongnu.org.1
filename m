@@ -2,38 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7308277085F
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 20:59:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A313477085E
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 20:59:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRzwA-0002F1-QU; Fri, 04 Aug 2023 14:54:10 -0400
+	id 1qRzw7-0002DV-R2; Fri, 04 Aug 2023 14:54:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qRzw7-0002EW-UI; Fri, 04 Aug 2023 14:54:07 -0400
+ id 1qRzw4-0002D6-Lm; Fri, 04 Aug 2023 14:54:04 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qRzw6-00086k-19; Fri, 04 Aug 2023 14:54:07 -0400
+ id 1qRzw3-00084a-08; Fri, 04 Aug 2023 14:54:04 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 73AD718406;
- Fri,  4 Aug 2023 21:54:17 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id F05A718404;
+ Fri,  4 Aug 2023 21:54:16 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 5432A1B87B;
+ by tsrv.corpit.ru (Postfix) with SMTP id 778621B87C;
  Fri,  4 Aug 2023 21:53:56 +0300 (MSK)
-Received: (nullmailer pid 1874193 invoked by uid 1000);
+Received: (nullmailer pid 1874197 invoked by uid 1000);
  Fri, 04 Aug 2023 18:53:56 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, "Denis V. Lunev" <den@openvz.org>,
- Eric Blake <eblake@redhat.com>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.5 05/36] qemu-nbd: regression with arguments passing into
- nbd_client_thread()
-Date: Fri,  4 Aug 2023 21:53:27 +0300
-Message-Id: <20230804185350.1874133-1-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Viktor Prutyanov <viktor@daynix.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.5 13/36] virtio-pci: add handling of PCI ATS and
+ Device-TLB enable/disable
+Date: Fri,  4 Aug 2023 21:53:28 +0300
+Message-Id: <20230804185350.1874133-2-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.5-20230804215319@cover.tls.msk.ru>
 References: <qemu-stable-7.2.5-20230804215319@cover.tls.msk.ru>
@@ -61,58 +59,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "Denis V. Lunev" <den@openvz.org>
+From: Viktor Prutyanov <viktor@daynix.com>
 
-Unfortunately
-    commit 03b67621445d601c9cdc7dfe25812e9f19b81488
-    (7.2:  6e216d21b56a7545a05080a370b5ca7491fecfb3)
-    Author: Denis V. Lunev <den@openvz.org>
-    Date:   Mon Jul 17 16:55:40 2023 +0200
-    qemu-nbd: pass structure into nbd_client_thread instead of plain char*
-has introduced a regression. struct NbdClientOpts resides on stack inside
-'if' block. This specifically means that this stack space could be reused
-once the execution will leave that block of the code.
+According to PCIe Address Translation Services specification 5.1.3.,
+ATS Control Register has Enable bit to enable/disable ATS. Guest may
+enable/disable PCI ATS and, accordingly, Device-TLB for the VirtIO PCI
+device. So, raise/lower a flag and call a trigger function to pass this
+event to a device implementation.
 
-This means that parameters passed into nbd_client_thread could be
-overwritten at any moment.
-
-The patch moves the data to the namespace of main() function effectively
-preserving it for the whole process lifetime.
-
-Signed-off-by: Denis V. Lunev <den@openvz.org>
-CC: Eric Blake <eblake@redhat.com>
-CC: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-CC: <qemu-stable@nongnu.org>
-Reviewed-by: Eric Blake <eblake@redhat.com>
-Message-ID: <20230727105828.324314-1-den@openvz.org>
-Signed-off-by: Eric Blake <eblake@redhat.com>
-(cherry picked from commit e5b815b0defcc3617f473ba70c3e675ef0ee69c2)
+Signed-off-by: Viktor Prutyanov <viktor@daynix.com>
+Message-Id: <20230512135122.70403-2-viktor@daynix.com>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+(cherry picked from commit 206e91d143301414df2deb48a411e402414ba6db)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(Mjt: add reference to 6e216d21b56a7545a05080a370b5ca7491fecfb3 for 7.2 branch)
+(Mjt: include/hw/virtio/virtio.h: skip extra struct field added in 8.0)
 
-diff --git a/qemu-nbd.c b/qemu-nbd.c
-index bcdb74ff13..f71f5125d8 100644
---- a/qemu-nbd.c
-+++ b/qemu-nbd.c
-@@ -584,6 +584,9 @@ int main(int argc, char **argv)
-     const char *pid_file_name = NULL;
-     const char *selinux_label = NULL;
-     BlockExportOptions *export_opts;
-+#if HAVE_NBD_DEVICE
-+    struct NbdClientOpts opts;
-+#endif
+diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
+index a1c9dfa7bb..67e771c373 100644
+--- a/hw/virtio/virtio-pci.c
++++ b/hw/virtio/virtio-pci.c
+@@ -631,6 +631,38 @@ virtio_address_space_read(VirtIOPCIProxy *proxy, hwaddr addr,
+     }
+ }
  
- #ifdef CONFIG_POSIX
-     os_setup_early_signal_handling();
-@@ -1122,7 +1125,7 @@ int main(int argc, char **argv)
-     if (device) {
- #if HAVE_NBD_DEVICE
-         int ret;
--        struct NbdClientOpts opts = {
-+        opts = (struct NbdClientOpts) {
-             .device = device,
-             .fork_process = fork_process,
-         };
++static void virtio_pci_ats_ctrl_trigger(PCIDevice *pci_dev, bool enable)
++{
++    VirtIOPCIProxy *proxy = VIRTIO_PCI(pci_dev);
++    VirtIODevice *vdev = virtio_bus_get_device(&proxy->bus);
++    VirtioDeviceClass *k = VIRTIO_DEVICE_GET_CLASS(vdev);
++
++    vdev->device_iotlb_enabled = enable;
++
++    if (k->toggle_device_iotlb) {
++        k->toggle_device_iotlb(vdev);
++    }
++}
++
++static void pcie_ats_config_write(PCIDevice *dev, uint32_t address,
++                                  uint32_t val, int len)
++{
++    uint32_t off;
++    uint16_t ats_cap = dev->exp.ats_cap;
++
++    if (!ats_cap || address < ats_cap) {
++        return;
++    }
++    off = address - ats_cap;
++    if (off >= PCI_EXT_CAP_ATS_SIZEOF) {
++        return;
++    }
++
++    if (range_covers_byte(off, len, PCI_ATS_CTRL + 1)) {
++        virtio_pci_ats_ctrl_trigger(dev, !!(val & PCI_ATS_CTRL_ENABLE));
++    }
++}
++
+ static void virtio_write_config(PCIDevice *pci_dev, uint32_t address,
+                                 uint32_t val, int len)
+ {
+@@ -644,6 +676,10 @@ static void virtio_write_config(PCIDevice *pci_dev, uint32_t address,
+         pcie_cap_flr_write_config(pci_dev, address, val, len);
+     }
+ 
++    if (proxy->flags & VIRTIO_PCI_FLAG_ATS) {
++        pcie_ats_config_write(pci_dev, address, val, len);
++    }
++
+     if (range_covers_byte(address, len, PCI_COMMAND)) {
+         if (!(pci_dev->config[PCI_COMMAND] & PCI_COMMAND_MASTER)) {
+             virtio_set_disabled(vdev, true);
+diff --git a/include/hw/virtio/virtio.h b/include/hw/virtio/virtio.h
+index acfd4df125..96a56430a6 100644
+--- a/include/hw/virtio/virtio.h
++++ b/include/hw/virtio/virtio.h
+@@ -135,6 +135,7 @@ struct VirtIODevice
+     AddressSpace *dma_as;
+     QLIST_HEAD(, VirtQueue) *vector_queues;
+     QTAILQ_ENTRY(VirtIODevice) next;
++    bool device_iotlb_enabled;
+ };
+ 
+ struct VirtioDeviceClass {
+@@ -192,6 +193,7 @@ struct VirtioDeviceClass {
+     const VMStateDescription *vmsd;
+     bool (*primary_unplug_pending)(void *opaque);
+     struct vhost_dev *(*get_vhost)(VirtIODevice *vdev);
++    void (*toggle_device_iotlb)(VirtIODevice *vdev);
+ };
+ 
+ void virtio_instance_init_common(Object *proxy_obj, void *data,
 -- 
 2.39.2
 
