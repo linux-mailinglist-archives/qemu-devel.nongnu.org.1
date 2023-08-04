@@ -2,91 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8C59770C82
-	for <lists+qemu-devel@lfdr.de>; Sat,  5 Aug 2023 01:46:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A431770C88
+	for <lists+qemu-devel@lfdr.de>; Sat,  5 Aug 2023 01:57:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qS4V8-0006tQ-4u; Fri, 04 Aug 2023 19:46:34 -0400
+	id 1qS4es-0005FC-2q; Fri, 04 Aug 2023 19:56:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1qS4V5-0006p7-I4; Fri, 04 Aug 2023 19:46:31 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ id 1qS4eq-0005El-7l; Fri, 04 Aug 2023 19:56:36 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1qS4V4-0001tV-1T; Fri, 04 Aug 2023 19:46:31 -0400
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ id 1qS4eo-0005F5-Ji; Fri, 04 Aug 2023 19:56:36 -0400
+Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 374NfqDd023837; Fri, 4 Aug 2023 23:46:28 GMT
+ 374Np8xN026179; Fri, 4 Aug 2023 23:56:31 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=Hlas0zByuLd1iii36kDV7t2z/JF2zagbLOvfi1p3ySQ=;
- b=NSRHyasgSFv5UpIsK5BK4NmYmZsh65NB/otFUNCFrgwMhbYq6hQ/YtioOSWOuU7ho6ho
- DNSqDgGFh6Z8NzP2/rREYri6/fOqZAx5ev/EMHj7XyAbemp9a6pLW8lUbEEoS+3IuRlf
- 6HCaAu/Q8v97Z/HGRCQAkrtGP1DFSi176r6e5NuS3G0ZfdafLuYjLCTnEXGK2PtY6SDV
- 6L1kPWh/XzPOS+SbZynbPCMt4YDrDydAwsbzCNQPURX6cc9cD+2P6dIFD6IY54SPBU4s
- LaOr/+IM810XSG6jezVWI2GgG2p73OoyWmc81TI7aNXlfxf8QgrFbDYOvT5pc8KYjZBr +A== 
+ bh=lgGWK/soqqpvaQUbK0IIrqmfFyOAsfCZXgeY2MSMRkM=;
+ b=LwkB6A+ovsI50fOLanz0Lxm+tJPfZuq9GtDtw2NgElB+71f/ZexkzgqArQnSnRomaBxq
+ nRJD79b4WP+pDelRQLT12EvjHGwFgvHhEP6X09/5xFb4QFXSMdJHfsuvyhOfWrvFq9uA
+ iljLYHr7otH4bPHRhXMOx6NL6CGXVSrzerMj1kFLCspq9gj3seK4EoV/DaRJlgCJzTg1
+ 7u9RaSXbfRg/5T4/s7KNI8yEhLMqHUL6JoS/VJELFlh37AZ4j9amgKPmt4RUBRfXEDOc
+ sakU6bbRZEwuSG7TuHsFl+rj72gkCQ7jdq2yTFVsNyJ8lGbtpoJvJAsKwSm9234RrNZC Gg== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s9b0105f7-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s9ayygbd6-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 04 Aug 2023 23:46:27 +0000
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 374Ni59c029348;
- Fri, 4 Aug 2023 23:46:27 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s9b0105ey-1
+ Fri, 04 Aug 2023 23:56:31 +0000
+Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 374NlWeg017482;
+ Fri, 4 Aug 2023 23:56:30 GMT
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s9ayygbcv-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 04 Aug 2023 23:46:27 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 374N1dPO027802; Fri, 4 Aug 2023 23:46:26 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3s8kp31yhv-1
+ Fri, 04 Aug 2023 23:56:30 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 374MbxEN023558; Fri, 4 Aug 2023 23:56:29 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3s8km9t19u-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 04 Aug 2023 23:46:26 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
- [10.20.54.104])
- by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 374NkOUK4129324
+ Fri, 04 Aug 2023 23:56:29 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
+ [10.20.54.103])
+ by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 374NuRuR43057860
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 4 Aug 2023 23:46:24 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6813820049;
- Fri,  4 Aug 2023 23:46:24 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CFE6820040;
- Fri,  4 Aug 2023 23:46:23 +0000 (GMT)
+ Fri, 4 Aug 2023 23:56:27 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6E65C20040;
+ Fri,  4 Aug 2023 23:56:27 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D21A32004B;
+ Fri,  4 Aug 2023 23:56:26 +0000 (GMT)
 Received: from heavy.boeblingen.de.ibm.com (unknown [9.179.4.122])
- by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Fri,  4 Aug 2023 23:46:23 +0000 (GMT)
+ by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Fri,  4 Aug 2023 23:56:26 +0000 (GMT)
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 To: Richard Henderson <richard.henderson@linaro.org>,
  David Hildenbrand <david@redhat.com>, Thomas Huth <thuth@redhat.com>
 Cc: qemu-devel@nongnu.org, qemu-s390x@nongnu.org,
  Ilya Leoshkevich <iii@linux.ibm.com>, qemu-stable@nongnu.org
-Subject: [PATCH] target/s390x: Check reserved bits of VFMIN/VFMAX's M5
-Date: Sat,  5 Aug 2023 01:46:10 +0200
-Message-ID: <20230804234621.252522-1-iii@linux.ibm.com>
+Subject: [PATCH 1/2] target/s390x: Fix VSTL with a large length
+Date: Sat,  5 Aug 2023 01:55:33 +0200
+Message-ID: <20230804235624.263260-1-iii@linux.ibm.com>
 X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: OE9M2ZKvrvqCZyy4lQitNx-lXFNvv7SQ
-X-Proofpoint-ORIG-GUID: LYLV7RhsDfSsyFHPS2g3jb2R8BAGkI5K
+X-Proofpoint-GUID: heEwG6BSZ_drKvFXY4UbQRVN38EzxDKI
+X-Proofpoint-ORIG-GUID: kqFWAc4K7pmH0w9rRBwYesJ8BIUhF3n-
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
  definitions=2023-08-04_21,2023-08-03_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 phishscore=0
- mlxlogscore=871 suspectscore=0 impostorscore=0 mlxscore=0 bulkscore=0
- lowpriorityscore=0 priorityscore=1501 adultscore=0 spamscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2308040213
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
+ impostorscore=0
+ lowpriorityscore=0 phishscore=0 malwarescore=0 mlxscore=0
+ priorityscore=1501 clxscore=1015 bulkscore=0 spamscore=0 mlxlogscore=999
+ adultscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2306200000 definitions=main-2308040213
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -19
 X-Spam_score: -2.0
 X-Spam_bar: --
@@ -109,29 +109,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-VFMIN and VFMAX should raise a specification exceptions when bits 1-3
-of M5 are set.
+The length is always truncated to 16 bytes. Do not probe more than
+that.
 
 Cc: qemu-stable@nongnu.org
-Fixes: da4807527f3b ("s390x/tcg: Implement VECTOR FP (MAXIMUM|MINIMUM)")
+Fixes: 0e0a5b49ad58 ("s390x/tcg: Implement VECTOR STORE WITH LENGTH")
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 ---
- target/s390x/tcg/translate_vx.c.inc | 2 +-
+ target/s390x/tcg/vec_helper.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/s390x/tcg/translate_vx.c.inc b/target/s390x/tcg/translate_vx.c.inc
-index f8df121d3d3..b5d07d5ec53 100644
---- a/target/s390x/tcg/translate_vx.c.inc
-+++ b/target/s390x/tcg/translate_vx.c.inc
-@@ -3047,7 +3047,7 @@ static DisasJumpType op_vfmax(DisasContext *s, DisasOps *o)
-     const uint8_t m5 = get_field(s, m5);
-     gen_helper_gvec_3_ptr *fn;
+diff --git a/target/s390x/tcg/vec_helper.c b/target/s390x/tcg/vec_helper.c
+index 48d86722b2d..dafc4c3582c 100644
+--- a/target/s390x/tcg/vec_helper.c
++++ b/target/s390x/tcg/vec_helper.c
+@@ -193,7 +193,7 @@ void HELPER(vstl)(CPUS390XState *env, const void *v1, uint64_t addr,
+                   uint64_t bytes)
+ {
+     /* Probe write access before actually modifying memory */
+-    probe_write_access(env, addr, bytes, GETPC());
++    probe_write_access(env, addr, MIN(bytes, 16), GETPC());
  
--    if (m6 == 5 || m6 == 6 || m6 == 7 || m6 >= 13) {
-+    if (m6 == 5 || m6 == 6 || m6 == 7 || m6 >= 13 || (m5 & 7)) {
-         gen_program_exception(s, PGM_SPECIFICATION);
-         return DISAS_NORETURN;
-     }
+     if (likely(bytes >= 16)) {
+         cpu_stq_data_ra(env, addr, s390_vec_read_element64(v1, 0), GETPC());
 -- 
 2.41.0
 
