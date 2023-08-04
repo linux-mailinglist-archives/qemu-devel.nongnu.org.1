@@ -2,40 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A313477085E
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 20:59:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB78077083D
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 20:55:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRzw7-0002DV-R2; Fri, 04 Aug 2023 14:54:07 -0400
+	id 1qRzw9-0002F0-TE; Fri, 04 Aug 2023 14:54:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qRzw4-0002D6-Lm; Fri, 04 Aug 2023 14:54:04 -0400
+ id 1qRzw4-0002D7-M9; Fri, 04 Aug 2023 14:54:04 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qRzw3-00084a-08; Fri, 04 Aug 2023 14:54:04 -0400
+ id 1qRzw2-00084g-Ly; Fri, 04 Aug 2023 14:54:04 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id F05A718404;
- Fri,  4 Aug 2023 21:54:16 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 5882818405;
+ Fri,  4 Aug 2023 21:54:17 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 778621B87C;
+ by tsrv.corpit.ru (Postfix) with SMTP id B21301B87D;
  Fri,  4 Aug 2023 21:53:56 +0300 (MSK)
-Received: (nullmailer pid 1874197 invoked by uid 1000);
+Received: (nullmailer pid 1874200 invoked by uid 1000);
  Fri, 04 Aug 2023 18:53:56 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Viktor Prutyanov <viktor@daynix.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.5 13/36] virtio-pci: add handling of PCI ATS and
- Device-TLB enable/disable
-Date: Fri,  4 Aug 2023 21:53:28 +0300
-Message-Id: <20230804185350.1874133-2-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Eric Auger <eric.auger@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.5 16/36] hw/arm/smmu: Handle big-endian hosts correctly
+Date: Fri,  4 Aug 2023 21:53:29 +0300
+Message-Id: <20230804185350.1874133-3-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.5-20230804215319@cover.tls.msk.ru>
 References: <qemu-stable-7.2.5-20230804215319@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -59,96 +61,150 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Viktor Prutyanov <viktor@daynix.com>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-According to PCIe Address Translation Services specification 5.1.3.,
-ATS Control Register has Enable bit to enable/disable ATS. Guest may
-enable/disable PCI ATS and, accordingly, Device-TLB for the VirtIO PCI
-device. So, raise/lower a flag and call a trigger function to pass this
-event to a device implementation.
+The implementation of the SMMUv3 has multiple places where it reads a
+data structure from the guest and directly operates on it without
+doing a guest-to-host endianness conversion.  Since all SMMU data
+structures are little-endian, this means that the SMMU doesn't work
+on a big-endian host.  In particular, this causes the Avocado test
+  machine_aarch64_virt.py:Aarch64VirtMachine.test_alpine_virt_tcg_gic_max
+to fail on an s390x host.
 
-Signed-off-by: Viktor Prutyanov <viktor@daynix.com>
-Message-Id: <20230512135122.70403-2-viktor@daynix.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit 206e91d143301414df2deb48a411e402414ba6db)
+Add appropriate byte-swapping on reads and writes of guest in-memory
+data structures so that the device works correctly on big-endian
+hosts.
+
+As part of this we constrain queue_read() to operate only on Cmd
+structs and queue_write() on Evt structs, because in practice these
+are the only data structures the two functions are used with, and we
+need to know what the data structure is to be able to byte-swap its
+parts correctly.
+
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Tested-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Message-id: 20230717132641.764660-1-peter.maydell@linaro.org
+Cc: qemu-stable@nongnu.org
+(cherry picked from commit c6445544d4cea2628fbad3bad09f3d3a03c749d3)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(Mjt: include/hw/virtio/virtio.h: skip extra struct field added in 8.0)
 
-diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
-index a1c9dfa7bb..67e771c373 100644
---- a/hw/virtio/virtio-pci.c
-+++ b/hw/virtio/virtio-pci.c
-@@ -631,6 +631,38 @@ virtio_address_space_read(VirtIOPCIProxy *proxy, hwaddr addr,
-     }
+diff --git a/hw/arm/smmu-common.c b/hw/arm/smmu-common.c
+index e09b9c13b7..bbca3a8db3 100644
+--- a/hw/arm/smmu-common.c
++++ b/hw/arm/smmu-common.c
+@@ -193,8 +193,7 @@ static int get_pte(dma_addr_t baseaddr, uint32_t index, uint64_t *pte,
+     dma_addr_t addr = baseaddr + index * sizeof(*pte);
+ 
+     /* TODO: guarantee 64-bit single-copy atomicity */
+-    ret = dma_memory_read(&address_space_memory, addr, pte, sizeof(*pte),
+-                          MEMTXATTRS_UNSPECIFIED);
++    ret = ldq_le_dma(&address_space_memory, addr, pte, MEMTXATTRS_UNSPECIFIED);
+ 
+     if (ret != MEMTX_OK) {
+         info->type = SMMU_PTW_ERR_WALK_EABT;
+diff --git a/hw/arm/smmuv3.c b/hw/arm/smmuv3.c
+index daa80e9c7b..ce7091ff8e 100644
+--- a/hw/arm/smmuv3.c
++++ b/hw/arm/smmuv3.c
+@@ -98,20 +98,34 @@ static void smmuv3_write_gerrorn(SMMUv3State *s, uint32_t new_gerrorn)
+     trace_smmuv3_write_gerrorn(toggled & pending, s->gerrorn);
  }
  
-+static void virtio_pci_ats_ctrl_trigger(PCIDevice *pci_dev, bool enable)
-+{
-+    VirtIOPCIProxy *proxy = VIRTIO_PCI(pci_dev);
-+    VirtIODevice *vdev = virtio_bus_get_device(&proxy->bus);
-+    VirtioDeviceClass *k = VIRTIO_DEVICE_GET_CLASS(vdev);
-+
-+    vdev->device_iotlb_enabled = enable;
-+
-+    if (k->toggle_device_iotlb) {
-+        k->toggle_device_iotlb(vdev);
-+    }
-+}
-+
-+static void pcie_ats_config_write(PCIDevice *dev, uint32_t address,
-+                                  uint32_t val, int len)
-+{
-+    uint32_t off;
-+    uint16_t ats_cap = dev->exp.ats_cap;
-+
-+    if (!ats_cap || address < ats_cap) {
-+        return;
-+    }
-+    off = address - ats_cap;
-+    if (off >= PCI_EXT_CAP_ATS_SIZEOF) {
-+        return;
-+    }
-+
-+    if (range_covers_byte(off, len, PCI_ATS_CTRL + 1)) {
-+        virtio_pci_ats_ctrl_trigger(dev, !!(val & PCI_ATS_CTRL_ENABLE));
-+    }
-+}
-+
- static void virtio_write_config(PCIDevice *pci_dev, uint32_t address,
-                                 uint32_t val, int len)
+-static inline MemTxResult queue_read(SMMUQueue *q, void *data)
++static inline MemTxResult queue_read(SMMUQueue *q, Cmd *cmd)
  {
-@@ -644,6 +676,10 @@ static void virtio_write_config(PCIDevice *pci_dev, uint32_t address,
-         pcie_cap_flr_write_config(pci_dev, address, val, len);
-     }
+     dma_addr_t addr = Q_CONS_ENTRY(q);
++    MemTxResult ret;
++    int i;
  
-+    if (proxy->flags & VIRTIO_PCI_FLAG_ATS) {
-+        pcie_ats_config_write(pci_dev, address, val, len);
+-    return dma_memory_read(&address_space_memory, addr, data, q->entry_size,
+-                           MEMTXATTRS_UNSPECIFIED);
++    ret = dma_memory_read(&address_space_memory, addr, cmd, sizeof(Cmd),
++                          MEMTXATTRS_UNSPECIFIED);
++    if (ret != MEMTX_OK) {
++        return ret;
 +    }
-+
-     if (range_covers_byte(address, len, PCI_COMMAND)) {
-         if (!(pci_dev->config[PCI_COMMAND] & PCI_COMMAND_MASTER)) {
-             virtio_set_disabled(vdev, true);
-diff --git a/include/hw/virtio/virtio.h b/include/hw/virtio/virtio.h
-index acfd4df125..96a56430a6 100644
---- a/include/hw/virtio/virtio.h
-+++ b/include/hw/virtio/virtio.h
-@@ -135,6 +135,7 @@ struct VirtIODevice
-     AddressSpace *dma_as;
-     QLIST_HEAD(, VirtQueue) *vector_queues;
-     QTAILQ_ENTRY(VirtIODevice) next;
-+    bool device_iotlb_enabled;
- };
++    for (i = 0; i < ARRAY_SIZE(cmd->word); i++) {
++        le32_to_cpus(&cmd->word[i]);
++    }
++    return ret;
+ }
  
- struct VirtioDeviceClass {
-@@ -192,6 +193,7 @@ struct VirtioDeviceClass {
-     const VMStateDescription *vmsd;
-     bool (*primary_unplug_pending)(void *opaque);
-     struct vhost_dev *(*get_vhost)(VirtIODevice *vdev);
-+    void (*toggle_device_iotlb)(VirtIODevice *vdev);
- };
+-static MemTxResult queue_write(SMMUQueue *q, void *data)
++static MemTxResult queue_write(SMMUQueue *q, Evt *evt_in)
+ {
+     dma_addr_t addr = Q_PROD_ENTRY(q);
+     MemTxResult ret;
++    Evt evt = *evt_in;
++    int i;
  
- void virtio_instance_init_common(Object *proxy_obj, void *data,
+-    ret = dma_memory_write(&address_space_memory, addr, data, q->entry_size,
++    for (i = 0; i < ARRAY_SIZE(evt.word); i++) {
++        cpu_to_le32s(&evt.word[i]);
++    }
++    ret = dma_memory_write(&address_space_memory, addr, &evt, sizeof(Evt),
+                            MEMTXATTRS_UNSPECIFIED);
+     if (ret != MEMTX_OK) {
+         return ret;
+@@ -290,7 +304,7 @@ static void smmuv3_init_regs(SMMUv3State *s)
+ static int smmu_get_ste(SMMUv3State *s, dma_addr_t addr, STE *buf,
+                         SMMUEventInfo *event)
+ {
+-    int ret;
++    int ret, i;
+ 
+     trace_smmuv3_get_ste(addr);
+     /* TODO: guarantee 64-bit single-copy atomicity */
+@@ -303,6 +317,9 @@ static int smmu_get_ste(SMMUv3State *s, dma_addr_t addr, STE *buf,
+         event->u.f_ste_fetch.addr = addr;
+         return -EINVAL;
+     }
++    for (i = 0; i < ARRAY_SIZE(buf->word); i++) {
++        le32_to_cpus(&buf->word[i]);
++    }
+     return 0;
+ 
+ }
+@@ -312,7 +329,7 @@ static int smmu_get_cd(SMMUv3State *s, STE *ste, uint32_t ssid,
+                        CD *buf, SMMUEventInfo *event)
+ {
+     dma_addr_t addr = STE_CTXPTR(ste);
+-    int ret;
++    int ret, i;
+ 
+     trace_smmuv3_get_cd(addr);
+     /* TODO: guarantee 64-bit single-copy atomicity */
+@@ -325,6 +342,9 @@ static int smmu_get_cd(SMMUv3State *s, STE *ste, uint32_t ssid,
+         event->u.f_ste_fetch.addr = addr;
+         return -EINVAL;
+     }
++    for (i = 0; i < ARRAY_SIZE(buf->word); i++) {
++        le32_to_cpus(&buf->word[i]);
++    }
+     return 0;
+ }
+ 
+@@ -406,7 +426,7 @@ static int smmu_find_ste(SMMUv3State *s, uint32_t sid, STE *ste,
+         return -EINVAL;
+     }
+     if (s->features & SMMU_FEATURE_2LVL_STE) {
+-        int l1_ste_offset, l2_ste_offset, max_l2_ste, span;
++        int l1_ste_offset, l2_ste_offset, max_l2_ste, span, i;
+         dma_addr_t l1ptr, l2ptr;
+         STEDesc l1std;
+ 
+@@ -430,6 +450,9 @@ static int smmu_find_ste(SMMUv3State *s, uint32_t sid, STE *ste,
+             event->u.f_ste_fetch.addr = l1ptr;
+             return -EINVAL;
+         }
++        for (i = 0; i < ARRAY_SIZE(l1std.word); i++) {
++            le32_to_cpus(&l1std.word[i]);
++        }
+ 
+         span = L1STD_SPAN(&l1std);
+ 
 -- 
 2.39.2
 
