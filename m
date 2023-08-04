@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29D027708D0
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 21:18:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61D457708D2
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 21:18:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qS0IS-0000OZ-Aj; Fri, 04 Aug 2023 15:17:12 -0400
+	id 1qS0IU-0000Pu-Iw; Fri, 04 Aug 2023 15:17:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qS0IP-0000Nw-VJ; Fri, 04 Aug 2023 15:17:10 -0400
+ id 1qS0IS-0000PH-EM; Fri, 04 Aug 2023 15:17:12 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qS0IO-0006xV-CZ; Fri, 04 Aug 2023 15:17:09 -0400
+ id 1qS0IR-0006xt-0H; Fri, 04 Aug 2023 15:17:12 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id AACE81845B;
+ by isrv.corpit.ru (Postfix) with ESMTP id DBA821845C;
  Fri,  4 Aug 2023 22:17:11 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 2BA031B89E;
+ by tsrv.corpit.ru (Postfix) with SMTP id 709CC1B89F;
  Fri,  4 Aug 2023 22:16:51 +0300 (MSK)
-Received: (nullmailer pid 1875714 invoked by uid 1000);
+Received: (nullmailer pid 1875717 invoked by uid 1000);
  Fri, 04 Aug 2023 19:16:49 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.4 41/63] util/interval-tree: Use qatomic_read for
- left/right while searching
-Date: Fri,  4 Aug 2023 22:16:24 +0300
-Message-Id: <20230804191647.1875608-10-mjt@tls.msk.ru>
+Subject: [Stable-8.0.4 42/63] util/interval-tree: Use qatomic_set_mb in
+ rb_link_node
+Date: Fri,  4 Aug 2023 22:16:25 +0300
+Message-Id: <20230804191647.1875608-11-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.4-20230804221634@cover.tls.msk.ru>
 References: <qemu-stable-8.0.4-20230804221634@cover.tls.msk.ru>
@@ -61,63 +61,34 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-Fixes a race condition (generally without optimization) in which
-the subtree is re-read after the protecting if condition.
+Ensure that the stores to rb_left and rb_right are complete before
+inserting the new node into the tree.  Otherwise a concurrent reader
+could see garbage in the new leaf.
 
 Cc: qemu-stable@nongnu.org
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-(cherry picked from commit 055b86e0f0b4325117055d8d31c49011258f4af3)
+(cherry picked from commit 4c8baa02d36379507afd17bdea87aabe0aa32ed3)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+(Mjt: s/qatomic_set_mb/qatomic_mb_set/ for 8.0 - it was renamed later)
 
 diff --git a/util/interval-tree.c b/util/interval-tree.c
-index 4c0baf108f..5a0ad21b2d 100644
+index 5a0ad21b2d..2000cd2935 100644
 --- a/util/interval-tree.c
 +++ b/util/interval-tree.c
-@@ -745,8 +745,9 @@ static IntervalTreeNode *interval_tree_subtree_search(IntervalTreeNode *node,
-          * Loop invariant: start <= node->subtree_last
-          * (Cond2 is satisfied by one of the subtree nodes)
-          */
--        if (node->rb.rb_left) {
--            IntervalTreeNode *left = rb_to_itree(node->rb.rb_left);
-+        RBNode *tmp = qatomic_read(&node->rb.rb_left);
-+        if (tmp) {
-+            IntervalTreeNode *left = rb_to_itree(tmp);
+@@ -128,7 +128,11 @@ static inline void rb_link_node(RBNode *node, RBNode *parent, RBNode **rb_link)
+     node->rb_parent_color = (uintptr_t)parent;
+     node->rb_left = node->rb_right = NULL;
  
-             if (start <= left->subtree_last) {
-                 /*
-@@ -765,8 +766,9 @@ static IntervalTreeNode *interval_tree_subtree_search(IntervalTreeNode *node,
-             if (start <= node->last) {     /* Cond2 */
-                 return node; /* node is leftmost match */
-             }
--            if (node->rb.rb_right) {
--                node = rb_to_itree(node->rb.rb_right);
-+            tmp = qatomic_read(&node->rb.rb_right);
-+            if (tmp) {
-+                node = rb_to_itree(tmp);
-                 if (start <= node->subtree_last) {
-                     continue;
-                 }
-@@ -814,8 +816,9 @@ IntervalTreeNode *interval_tree_iter_first(IntervalTreeRoot *root,
- IntervalTreeNode *interval_tree_iter_next(IntervalTreeNode *node,
-                                           uint64_t start, uint64_t last)
- {
--    RBNode *rb = node->rb.rb_right, *prev;
-+    RBNode *rb, *prev;
+-    qatomic_set(rb_link, node);
++    /*
++     * Ensure that node is initialized before insertion,
++     * as viewed by a concurrent search.
++     */
++    qatomic_mb_set(rb_link, node);
+ }
  
-+    rb = qatomic_read(&node->rb.rb_right);
-     while (true) {
-         /*
-          * Loop invariants:
-@@ -840,7 +843,7 @@ IntervalTreeNode *interval_tree_iter_next(IntervalTreeNode *node,
-             }
-             prev = &node->rb;
-             node = rb_to_itree(rb);
--            rb = node->rb.rb_right;
-+            rb = qatomic_read(&node->rb.rb_right);
-         } while (prev == rb);
- 
-         /* Check if the node intersects [start;last] */
+ static RBNode *rb_next(RBNode *node)
 -- 
 2.39.2
 
