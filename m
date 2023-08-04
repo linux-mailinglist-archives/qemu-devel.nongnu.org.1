@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54F1276FE96
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 12:34:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B8C376FF03
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 12:52:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRs7V-0001pO-FW; Fri, 04 Aug 2023 06:33:21 -0400
+	id 1qRsOI-0006fz-8W; Fri, 04 Aug 2023 06:50:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qRs7T-0001oa-GT
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 06:33:19 -0400
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ id 1qRsOD-0006dd-2e
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 06:50:37 -0400
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qRs7S-0002oa-0w
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 06:33:19 -0400
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-522c9d388d2so2367901a12.3
- for <qemu-devel@nongnu.org>; Fri, 04 Aug 2023 03:33:17 -0700 (PDT)
+ id 1qRsOB-0000lC-Jq
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 06:50:36 -0400
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-52229f084beso2553660a12.2
+ for <qemu-devel@nongnu.org>; Fri, 04 Aug 2023 03:50:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691145196; x=1691749996;
+ d=linaro.org; s=google; t=1691146234; x=1691751034;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=1cjtnCd/iunW6iSmFX0+e9mYEXC91R32d9+KKXZ8Sdw=;
- b=OUKHGHyP+SHTzoRV1VmfTidHRtQimf2EXOM9LKH1tXfKQt7LMJBli3Zs60ZEnU8G3G
- jAfss4MBbsDvcnydmpOiDB1OMBQK41N6Z/0x6WE3REtuGbknJhxKbNxwDKsnr7PLl633
- w6uGpI8A7cpzlU8U7dTO1JP9R2/65qKfQ6IsrU99t1Yt1cEoecYD0GYUKag60I5gx3Jo
- tV7V/l3EcagqQMURAc42sMe8xtwxiKKDvBVbLsSlp7y1bmKEVI/EiQ0eSHn5Hm8Xu280
- Y/bLy5d2/GocRE+yqDPTa2H183pRnI0jWCCuxuEGPD9sZpllzqU0KMJRFQ0gieyctw5h
- oI2Q==
+ bh=CBte90KkZE5akt8HAMxjmTRMK5nngpTSTOeX7Qep2eI=;
+ b=uuHp4LVpapRvZ3ntfxgISF01/QFw/eRrLtCduYv7DrGyO7vUajnQ972zcZnV9SWquv
+ 4JmzCP1DptYAwZ4lhhqbGCs/DJA+WRWUAfSXKvVD0LNfPCzAwT3e8c2n+Hn+Sm434vjX
+ aXLRuVEzJbh35MGoaU6B86QbQ3mOzfyvdQpJuFlf3UKij2RtCvPNyj5KVjuXge9bvrUg
+ GvHGlED2fs+yT6lC88+ZYBcwwyQLzcx57Rnibkn3BfPW7qRwTbdXiIkxvkx4qgVwFVzy
+ b8Dv10Bizbur0v19VzU95yYGS6bl72vkRU7nmqsSHV/C65SOqCi57Gi5veyqY7MP/t8t
+ qV0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691145196; x=1691749996;
+ d=1e100.net; s=20221208; t=1691146234; x=1691751034;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=1cjtnCd/iunW6iSmFX0+e9mYEXC91R32d9+KKXZ8Sdw=;
- b=guKrZZJt3/Bearf6ItcxPFJc1PoGiz/CYu5AZ7k0tuWx++hSptfjZl6f7m9x3mBr9/
- NBy0IJElkcY6WpCbDcdIIKGMYVdHukO9aShLP1S58gWzJGyj4+sPfaVkdfV1tUvQVK/f
- Iwi8FDA5fVckAzK6ou0y8iVyqsFZnsUZSqvXY3lvO6TAqDe396SoBWBdcqyz3yuTg43w
- 3/G0G0f8zoiLUMfVkpAYfu3bu4LY2fKVzt55zbvj8XzMGvMB2caq0eROfv0m6eXkUdU9
- n7mkiagtnMeu5HentZsIHVoD1KzoGmhNHyzEFVyJ+36JaDbAe9eg+P0YFP9CiOkBrcJG
- CuAA==
-X-Gm-Message-State: AOJu0YwTeKfKcwQ2ZmSsKmok1HZVUgLBwLHnykm21MD7P52fyjTuxXrg
- PIpuRkE4iykvQwb4wHjaPVseGRABjGaDQqm2lx9qYw==
-X-Google-Smtp-Source: AGHT+IHxclcQQaMSpsh2PBC1a0XwR/Y578SMpe09plUA9o/Q59c1a+Ru1XTtM+QrwUuh81aoMTDcwNR7T1iL9GS/cBU=
-X-Received: by 2002:a05:6402:44d:b0:522:2aba:bc3b with SMTP id
- p13-20020a056402044d00b005222ababc3bmr1172508edw.28.1691145195816; Fri, 04
- Aug 2023 03:33:15 -0700 (PDT)
+ bh=CBte90KkZE5akt8HAMxjmTRMK5nngpTSTOeX7Qep2eI=;
+ b=MKqqt3mkXsc2VFehRpCRL23dL/AnbfHX2VIgqEISndIuUXrVhk88LflcQBMvvR34Sr
+ NJzayICHjZC1gToc0Wylm1tFnfwUvEiQ3Wt6jTZW19Gm9zorsZhI2ACvmt5v5jYhCUKC
+ 4HGeiASnrwkEH886V38RtyTGcFC4WxXs5OoWKQaXRrJP+lblsAgZ3EPn0HH4+bSXEuwx
+ vBHNIPhvCswtQnURruxgamTKxCAKNiiZig2jj8eZgAlIZRNCkGQa5UKxmjpaft8BxUkI
+ 5EOR4ZRjfplrkgBnl0kXBmPmgLO0D8sG3Dhfm30ILzvELiezc8irF1z+0j/z546lWBKt
+ 1mIQ==
+X-Gm-Message-State: AOJu0YyHEWHOXjlFLQzS7T5EcrIqnSqQ+EW3rLMr7wllDyUyXs17eeza
+ M5F4duPvwKGR/FgX2huxnCc4jWDzkR4Y8jkioHJlLg==
+X-Google-Smtp-Source: AGHT+IHYltIM1xS2jxniC0FMhAFo+DvbdALpKvb352Z6QfBKnY8UL/sp3PFM5A/xgu9IVyEUowTWLDM6WYLETDnktws=
+X-Received: by 2002:aa7:c7cf:0:b0:522:2ba9:6fce with SMTP id
+ o15-20020aa7c7cf000000b005222ba96fcemr1407505eds.8.1691146233891; Fri, 04 Aug
+ 2023 03:50:33 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230726132512.149618-1-sergey.kambalin@auriga.com>
- <20230726132512.149618-4-sergey.kambalin@auriga.com>
-In-Reply-To: <20230726132512.149618-4-sergey.kambalin@auriga.com>
+ <20230726132512.149618-6-sergey.kambalin@auriga.com>
+In-Reply-To: <20230726132512.149618-6-sergey.kambalin@auriga.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 4 Aug 2023 11:33:04 +0100
-Message-ID: <CAFEAcA8f_Z1LTbqfS89GKsXZbe8WX5f-5t+TChPZqfMnVK2O6A@mail.gmail.com>
-Subject: Re: [PATCH 03/44] Split out raspi machine common part
+Date: Fri, 4 Aug 2023 11:50:22 +0100
+Message-ID: <CAFEAcA9pw9_EY_muZLvsD5mzp0oK-ootvTxhkumBZWvTxkw6Rw@mail.gmail.com>
+Subject: Re: [PATCH 05/44] Add GIC-400 to BCM2838 SoC
 To: Sergey Kambalin <serg.oker@gmail.com>
 Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
  Sergey Kambalin <sergey.kambalin@auriga.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x531.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -86,10 +86,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 26 Jul 2023 at 14:32, Sergey Kambalin <serg.oker@gmail.com> wrote:
+On Wed, 26 Jul 2023 at 15:37, Sergey Kambalin <serg.oker@gmail.com> wrote:
 >
 > Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
+> ---
+>  hw/arm/bcm2838.c                     | 167 +++++++++++++++++++++++++++
+>  hw/arm/trace-events                  |   2 +
+>  include/hw/arm/bcm2838.h             |   2 +
+>  include/hw/arm/bcm2838_peripherals.h |  39 +++++++
+>  4 files changed, 210 insertions(+)
+>
+> diff --git a/hw/arm/bcm2838.c b/hw/arm/bcm2838.c
+> index dd650c8148..c687f38a39 100644
+> --- a/hw/arm/bcm2838.c
+> +++ b/hw/arm/bcm2838.c
+> @@ -22,8 +22,36 @@ struct BCM2838Class {
+>      hwaddr gic_base; /* GIC base address inside ARM local peripherals region */
+>  };
+>
+> +#define GIC400_MAINTAINANCE_IRQ      9
 
+"MAINTENANCE"
+
+> diff --git a/include/hw/arm/bcm2838_peripherals.h b/include/hw/arm/bcm2838_peripherals.h
+> index 8214003baf..0aed6f1bec 100644
+> --- a/include/hw/arm/bcm2838_peripherals.h
+> +++ b/include/hw/arm/bcm2838_peripherals.h
+> @@ -11,6 +11,41 @@
+>
+>  #include "hw/arm/bcm2835_peripherals.h"
+>
+> +#define GENET_OFFSET            0x1580000
+
+I'm guessing this #define ought to be in a later patch.
+
+Otherwise:
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
 thanks
