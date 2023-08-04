@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B6DE770BBB
+	by mail.lfdr.de (Postfix) with ESMTPS id 02A05770BBA
 	for <lists+qemu-devel@lfdr.de>; Sat,  5 Aug 2023 00:05:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qS2rN-0004xC-6c; Fri, 04 Aug 2023 18:01:25 -0400
+	id 1qS2rQ-00058p-Vh; Fri, 04 Aug 2023 18:01:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qS2qm-0004bA-Fu
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 18:00:49 -0400
-Received: from mail-ot1-x32c.google.com ([2607:f8b0:4864:20::32c])
+ id 1qS2qp-0004jD-C4
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 18:00:52 -0400
+Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qS2qk-0001tE-PE
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 18:00:48 -0400
-Received: by mail-ot1-x32c.google.com with SMTP id
- 46e09a7af769-6bb140cd5a5so2226704a34.3
- for <qemu-devel@nongnu.org>; Fri, 04 Aug 2023 15:00:45 -0700 (PDT)
+ id 1qS2qn-0001uU-PV
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 18:00:51 -0400
+Received: by mail-pj1-x1030.google.com with SMTP id
+ 98e67ed59e1d1-26928c430b2so612948a91.0
+ for <qemu-devel@nongnu.org>; Fri, 04 Aug 2023 15:00:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691186445; x=1691791245;
+ d=linaro.org; s=google; t=1691186448; x=1691791248;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=esXvpi4eaSEXYu7hbvu9VsTfQefHdQqF7XtT9IOgTiM=;
- b=u218Qan5vcum+Rfw9vu5O76K4IUwz2kiqi9s99Ejp0bDKGmtDJ0iw7MOAqWRzrGGty
- QF9IeL9KwqAV2LTYojVBOJZzrH5l84NttRQ5MGlsQUf1dAGcVwyaet8CoyCenyD1xTB7
- tt+27SDUWs1IMis+P44keNwWtBE/1OE6hSejUisNudwhCzfoL5UE1EdXzfIF6AU28hIG
- XgcL0xAiPU7gNtn67Se5jNFtjtwwDNuwyEsXb3BbMvqS3KDgLVNbFwz1naJZbvcqcz6j
- yTPcICv3y37dBnfxkpX1yBOKqpzAAM5VvW7dsSTix8yvZobgEka2UBM8z71v/H95+Ipq
- GO7Q==
+ bh=gDTWs7pBzjEM4yDIiLCCxRn3NjvKLf/PjlJHIm+hkqo=;
+ b=mFbhnmTOb9ortZswDG+WagB9Agyol7SfS4pfZuQXSuaMrwSpR2swynWQcxlIQm0oaB
+ aqip3iqhxos7VSf+GYw2dK1Q/osOCMWBEu0BwF9uMnd+ymwE/FShs28LAcH4pGWRwgXe
+ 59A7MTDJaDG+zW0f2kBLPxNlvxJBovi5nE6dHHqSs9w13oNn5OgF58mXQWZboFpznlZt
+ K9wT2cFUGYCaehKBDUtHlFvxmRv2peCZHXrt/yKUoTBIgSCwdQbXYUqaOndl6Awz+/X1
+ pZxuP/ic3TNwR90ckP7URy1YNRvQyg7UkzyOjreeTQclEd+PwK0i0x4XmJ32Eo1d9b4Z
+ F/RQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691186445; x=1691791245;
+ d=1e100.net; s=20221208; t=1691186448; x=1691791248;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=esXvpi4eaSEXYu7hbvu9VsTfQefHdQqF7XtT9IOgTiM=;
- b=EQYGtVXaxOVHRfHlbZgbAWGsT7yW18qYuvbt250UxdZ7U4aH5Gs0Bhtl++mp+t07o0
- usD1RZhd6vdonuLjCWrJ0RGVauMYrSM+S5I60IGS/LygXFdhZqUDxn8BTo3NOTM/lmkI
- RXZLRtRVdjkIMlzZ+nwSUwn0jtIy7lQvmO1F/tr15XjHu4qXQ45UVGZBbnCRb8/k0wil
- FCS0xEZyVTLeCTq4PaeOOmP2gUfEv8/Jl7KiICnufiQRsf0cNav8xQGWzvuVl/TKMReV
- 79do1AkvHs2aYdJSusk9OGcDK3SYPDFRY6y6LbAGAP1SLbvnp62mgOqH9SKebd82JfyX
- 8aLQ==
-X-Gm-Message-State: AOJu0YzJo3PUtqW5MJXIlHcY+6DcFEVhyLUSjOqTJUWLhtc2fEVE8F30
- cUwx7DabsNTykEf8bUXM0od67twzAZx3kppsFBE=
-X-Google-Smtp-Source: AGHT+IEfa8G0NoJQT7i13XtjrcsU/OJ9JyT4yBXVlmWDltnUuDAo+g9wiLEh1T16DZ2FKE9KqOw34w==
-X-Received: by 2002:a05:6870:8a14:b0:1bb:75af:37b5 with SMTP id
- p20-20020a0568708a1400b001bb75af37b5mr3244079oaq.10.1691186444897; 
- Fri, 04 Aug 2023 15:00:44 -0700 (PDT)
+ bh=gDTWs7pBzjEM4yDIiLCCxRn3NjvKLf/PjlJHIm+hkqo=;
+ b=kCTAlsoUg04saBi6CZV2pn2vDSdfznDQ++f2gE4zewRAltTMNE63PJwKhvT8cQHj0A
+ H1DAuLyhIzdB8ltf8P2oVhmRpw6vGb2osy5tbzouLcTpzB+vEi3/parxGn70Rl9t8uRF
+ SdluXVTix5CdbRXr8LH+YckDwEa/ygJOx+TjlNrvOnzAdEWGI+R3oNRkatF1ht5wcRjM
+ B6vAcesKgCy8k7oyZTvjnH0QLHl1YHH3EM6Fz687c0rMIUoWw/XoFbuQkIoiSwm0mb0q
+ c9nyuiNQf9YkI5SWS6dP0B57ksfo/ESLeNX1+J4xWocQekmOUJ2iZC2hwMUZptJWEq/h
+ qVZQ==
+X-Gm-Message-State: AOJu0YygKGC8bjY2LMyztKYmg7sQq/pp5Ae13CbaW8kk9BMs7Zrq5/6N
+ FxUJZzHHGxHt3QvHpx0YgcWdyRO18c7N1OQ2b1o=
+X-Google-Smtp-Source: AGHT+IH9GPZG4uLgHn43hLBSpt0pabwu+ogSSJoAj/GOPZjekO+DSSlYgIrz5qp1QfxOqmoL/8gurw==
+X-Received: by 2002:a17:90a:c8:b0:25e:bac2:314c with SMTP id
+ v8-20020a17090a00c800b0025ebac2314cmr2611176pjd.23.1691186448452; 
+ Fri, 04 Aug 2023 15:00:48 -0700 (PDT)
 Received: from stoup.. ([2602:47:d490:6901:1eed:f77f:f320:8b14])
  by smtp.gmail.com with ESMTPSA id
- u1-20020a17090282c100b001bbf7fd354csm2185568plz.213.2023.08.04.15.00.44
+ u1-20020a17090282c100b001bbf7fd354csm2185568plz.213.2023.08.04.15.00.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 04 Aug 2023 15:00:44 -0700 (PDT)
+ Fri, 04 Aug 2023 15:00:47 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Helge Deller <deller@gmx.de>,
 	Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v9 13/24] linux-user: Adjust task_unmapped_base for reserved_va
-Date: Fri,  4 Aug 2023 15:00:21 -0700
-Message-Id: <20230804220032.295411-14-richard.henderson@linaro.org>
+Subject: [PATCH v9 17/24] linux-user: Use elf_et_dyn_base for ET_DYN with
+ interpreter
+Date: Fri,  4 Aug 2023 15:00:25 -0700
+Message-Id: <20230804220032.295411-18-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230804220032.295411-1-richard.henderson@linaro.org>
 References: <20230804220032.295411-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32c;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1030.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,129 +93,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Ensure that the chosen values for mmap_next_start and
-task_unmapped_base are within the guest address space.
+Follow the lead of the linux kernel in fs/binfmt_elf.c,
+in which an ET_DYN executable which uses an interpreter
+(usually a PIE executable) is loaded away from where the
+interpreter itself will be loaded.
 
 Tested-by: Helge Deller <deller@gmx.de>
+Reviewed-by: Helge Deller <deller@gmx.de>
 Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/user-mmap.h | 18 +++++++++++++++++-
- linux-user/main.c      | 28 ++++++++++++++++++++++++++++
- linux-user/mmap.c      | 18 +++---------------
- 3 files changed, 48 insertions(+), 16 deletions(-)
+ linux-user/elfload.c | 27 +++++++++++++++++++++++++--
+ 1 file changed, 25 insertions(+), 2 deletions(-)
 
-diff --git a/linux-user/user-mmap.h b/linux-user/user-mmap.h
-index 7265c2c116..fd456e024e 100644
---- a/linux-user/user-mmap.h
-+++ b/linux-user/user-mmap.h
-@@ -18,6 +18,23 @@
- #ifndef LINUX_USER_USER_MMAP_H
- #define LINUX_USER_USER_MMAP_H
- 
-+#if HOST_LONG_BITS == 64 && TARGET_ABI_BITS == 64
-+#ifdef TARGET_AARCH64
-+# define TASK_UNMAPPED_BASE  0x5500000000
-+#else
-+# define TASK_UNMAPPED_BASE  (1ul << 38)
-+#endif
-+#else
-+#ifdef TARGET_HPPA
-+# define TASK_UNMAPPED_BASE  0xfa000000
-+#else
-+# define TASK_UNMAPPED_BASE  0x40000000
-+#endif
-+#endif
-+
-+extern abi_ulong task_unmapped_base;
-+extern abi_ulong mmap_next_start;
-+
- int target_mprotect(abi_ulong start, abi_ulong len, int prot);
- abi_long target_mmap(abi_ulong start, abi_ulong len, int prot,
-                      int flags, int fd, off_t offset);
-@@ -26,7 +43,6 @@ abi_long target_mremap(abi_ulong old_addr, abi_ulong old_size,
-                        abi_ulong new_size, unsigned long flags,
-                        abi_ulong new_addr);
- abi_long target_madvise(abi_ulong start, abi_ulong len_in, int advice);
--extern abi_ulong mmap_next_start;
- abi_ulong mmap_find_vma(abi_ulong, abi_ulong, abi_ulong);
- void mmap_fork_start(void);
- void mmap_fork_end(int child);
-diff --git a/linux-user/main.c b/linux-user/main.c
-index dba67ffa36..7ba7039988 100644
---- a/linux-user/main.c
-+++ b/linux-user/main.c
-@@ -821,6 +821,34 @@ int main(int argc, char **argv, char **envp)
-         reserved_va = max_reserved_va;
+diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+index 0c64aad8a5..a3aa08a13e 100644
+--- a/linux-user/elfload.c
++++ b/linux-user/elfload.c
+@@ -3106,6 +3106,8 @@ static void load_elf_image(const char *image_name, int image_fd,
+         }
      }
  
-+    /*
-+     * Temporarily disable
-+     *   "comparison is always false due to limited range of data type"
-+     * due to comparison between (possible) uint64_t and uintptr_t.
-+     */
-+#pragma GCC diagnostic push
-+#pragma GCC diagnostic ignored "-Wtype-limits"
++    load_addr = loaddr;
 +
-+    /*
-+     * Select an initial value for task_unmapped_base that is in range.
-+     */
-+    if (reserved_va) {
-+        if (TASK_UNMAPPED_BASE < reserved_va) {
-+            task_unmapped_base = TASK_UNMAPPED_BASE;
-+        } else {
-+            /* The most common default formula is TASK_SIZE / 3. */
-+            task_unmapped_base = TARGET_PAGE_ALIGN(reserved_va / 3);
-+        }
-+    } else if (TASK_UNMAPPED_BASE < UINTPTR_MAX) {
-+        task_unmapped_base = TASK_UNMAPPED_BASE;
-+    } else {
-+        /* 32-bit host: pick something medium size. */
-+        task_unmapped_base = 0x10000000;
-+    }
-+    mmap_next_start = task_unmapped_base;
+     if (pinterp_name != NULL) {
+         /*
+          * This is the main executable.
+@@ -3135,11 +3137,32 @@ static void load_elf_image(const char *image_name, int image_fd,
+              */
+             probe_guest_base(image_name, loaddr, hiaddr);
+         } else {
++            abi_ulong align;
 +
-+#pragma GCC diagnostic pop
+             /*
+              * The binary is dynamic, but we still need to
+              * select guest_base.  In this case we pass a size.
+              */
+             probe_guest_base(image_name, 0, hiaddr - loaddr);
 +
-     {
-         Error *err = NULL;
-         if (seed_optarg != NULL) {
-diff --git a/linux-user/mmap.c b/linux-user/mmap.c
-index eb04fab8ab..84436d45c8 100644
---- a/linux-user/mmap.c
-+++ b/linux-user/mmap.c
-@@ -299,20 +299,8 @@ static bool mmap_frag(abi_ulong real_start, abi_ulong start, abi_ulong last,
-     return true;
- }
++            /*
++             * Avoid collision with the loader by providing a different
++             * default load address.
++             */
++            load_addr += elf_et_dyn_base;
++
++            /*
++             * TODO: Better support for mmap alignment is desirable.
++             * Since we do not have complete control over the guest
++             * address space, we prefer the kernel to choose some address
++             * rather than force the use of LOAD_ADDR via MAP_FIXED.
++             * But without MAP_FIXED we cannot guarantee alignment,
++             * only suggest it.
++             */
++            align = pow2ceil(info->alignment);
++            if (align) {
++                load_addr &= -align;
++            }
+         }
+     }
  
--#if HOST_LONG_BITS == 64 && TARGET_ABI_BITS == 64
--#ifdef TARGET_AARCH64
--# define TASK_UNMAPPED_BASE  0x5500000000
--#else
--# define TASK_UNMAPPED_BASE  (1ul << 38)
--#endif
--#else
--#ifdef TARGET_HPPA
--# define TASK_UNMAPPED_BASE  0xfa000000
--#else
--# define TASK_UNMAPPED_BASE  0x40000000
--#endif
--#endif
--abi_ulong mmap_next_start = TASK_UNMAPPED_BASE;
-+abi_ulong task_unmapped_base;
-+abi_ulong mmap_next_start;
- 
- /*
-  * Subroutine of mmap_find_vma, used when we have pre-allocated
-@@ -391,7 +379,7 @@ abi_ulong mmap_find_vma(abi_ulong start, abi_ulong size, abi_ulong align)
- 
-             if ((addr & (align - 1)) == 0) {
-                 /* Success.  */
--                if (start == mmap_next_start && addr >= TASK_UNMAPPED_BASE) {
-+                if (start == mmap_next_start && addr >= task_unmapped_base) {
-                     mmap_next_start = addr + size;
-                 }
-                 return addr;
+@@ -3154,13 +3177,13 @@ static void load_elf_image(const char *image_name, int image_fd,
+      *
+      * Otherwise this is ET_DYN, and we are searching for a location
+      * that can hold the memory space required.  If the image is
+-     * pre-linked, LOADDR will be non-zero, and the kernel should
++     * pre-linked, LOAD_ADDR will be non-zero, and the kernel should
+      * honor that address if it happens to be free.
+      *
+      * In both cases, we will overwrite pages in this range with mappings
+      * from the executable.
+      */
+-    load_addr = target_mmap(loaddr, (size_t)hiaddr - loaddr + 1, PROT_NONE,
++    load_addr = target_mmap(load_addr, (size_t)hiaddr - loaddr + 1, PROT_NONE,
+                             MAP_PRIVATE | MAP_ANON | MAP_NORESERVE |
+                             (ehdr->e_type == ET_EXEC ? MAP_FIXED_NOREPLACE : 0),
+                             -1, 0);
 -- 
 2.34.1
 
