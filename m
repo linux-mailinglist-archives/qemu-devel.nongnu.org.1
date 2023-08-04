@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ECAC76FBAB
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 10:08:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7822876FBBC
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 10:11:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRpr0-00037p-31; Fri, 04 Aug 2023 04:08:10 -0400
+	id 1qRptm-0005QP-VX; Fri, 04 Aug 2023 04:11:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1qRpqw-00031U-Q5
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 04:08:07 -0400
-Received: from mgamail.intel.com ([192.55.52.88])
+ id 1qRptj-0005QE-Ci
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 04:11:00 -0400
+Received: from mgamail.intel.com ([134.134.136.126])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1qRpqu-0001Se-Q8
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 04:08:06 -0400
+ id 1qRptg-0002bx-3k
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 04:10:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1691136484; x=1722672484;
+ t=1691136656; x=1722672656;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=o3rW56g7RfPZKGhUOzyEHy2PbaFY9RtYPHmk5hwPaDE=;
- b=fNaGrojrXnAkmhzaTiYtjB4aObsZ19Yz/T8JIdA5h7XXK+AAkO3Wy1IR
- 3KXyRU4ySxeaDV1PSuF1Fuq5nA5dM6UcqKrwLDtmS4yuofJi7lJDSaVTT
- sidkxekkKTJqCutOYtQ8JGEWRj+yIpP6hjpGEkHuDv7V0pr2Y5klw1I/U
- yVcs8uqXhHqemOlCfy6SuBHcnHNHqUcL2y421L6RNJ7nPSwdR4d9kuR+G
- rqw2EDwfJRsBpYa0xm5mUWyfIN27EUrqya14U6T7KEWbMiRQU7K++TFYF
- MwcFRUoVc4K2RdMYZbUizsJOT5mGD+NXZMjw5O1TO3ESrk0naGergLSEJ Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10791"; a="401053938"
-X-IronPort-AV: E=Sophos;i="6.01,254,1684825200"; d="scan'208";a="401053938"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
- by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Aug 2023 01:06:27 -0700
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=mGbAFbwdE6srelvPUShTMt4mxKxYBGfYgecCxGjVIKQ=;
+ b=hLhT4dPOSGpsWJdYFsXzQOInATSrCyMAIT3NWQGTcW/GqiRCsRrcF0ET
+ aubeYxzqSyL2EAzhdcj1tfZgdd304wcXSzkv+r6oxvYnHFNfg6C4dBASf
+ FcXsQW3/mluiqzzdNyFU/VuAoPrFn10vKniiCAQSavf3Rh+i9Mqihq35w
+ kvhdQWm3mcePiA7NRKNibw3Q3bLxkRz04JRkxyiEiflWcBh90sNC0j11l
+ fUBn7dorz1idwmuPWGkXcmPNA4iIFGNjWha0vtD4sQIpItQTmfIpF9xrs
+ H9Uby9ozM5zsLT0dpEbpTsBoraNz5Iu2UqyXn0fDcuMNCD5lDxKAeQRJt Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10791"; a="355035190"
+X-IronPort-AV: E=Sophos;i="6.01,254,1684825200"; d="scan'208";a="355035190"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+ by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Aug 2023 01:10:49 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10791"; a="723553384"
-X-IronPort-AV: E=Sophos;i="6.01,254,1684825200"; d="scan'208";a="723553384"
+X-IronPort-AV: E=McAfee;i="6600,9927,10791"; a="795303632"
+X-IronPort-AV: E=Sophos;i="6.01,254,1684825200"; d="scan'208";a="795303632"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.28])
- by orsmga007.jf.intel.com with ESMTP; 04 Aug 2023 01:06:23 -0700
-Date: Fri, 4 Aug 2023 16:16:51 +0800
+ by fmsmga008.fm.intel.com with ESMTP; 04 Aug 2023 01:10:45 -0700
+Date: Fri, 4 Aug 2023 16:21:12 +0800
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: "Moger, Babu" <babu.moger@amd.com>
 Cc: Eduardo Habkost <eduardo@habkost.net>,
@@ -53,25 +53,27 @@ Cc: Eduardo Habkost <eduardo@habkost.net>,
  Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
  Zhenyu Wang <zhenyu.z.wang@intel.com>,
  Xiaoyao Li <xiaoyao.li@intel.com>, Zhao Liu <zhao1.liu@intel.com>,
- Zhuocheng Ding <zhuocheng.ding@intel.com>
-Subject: Re: [PATCH v3 03/17] softmmu: Fix CPUSTATE.nr_cores' calculation
-Message-ID: <ZMyz82EjuASaFsxg@liuzhao-OptiPlex-7080>
+ Robert Hoo <robert.hu@linux.intel.com>
+Subject: Re: [PATCH v3 05/17] i386/cpu: Use APIC ID offset to encode cache
+ topo in CPUID[4]
+Message-ID: <ZMy0+GIm2jw/NMY7@liuzhao-OptiPlex-7080>
 References: <20230801103527.397756-1-zhao1.liu@linux.intel.com>
- <20230801103527.397756-4-zhao1.liu@linux.intel.com>
- <275a4850-2d70-4a6e-a72e-5c3fd20f98ba@amd.com>
+ <20230801103527.397756-6-zhao1.liu@linux.intel.com>
+ <39c38442-cabf-985c-6125-5d0b3583de58@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=gb2312
 Content-Disposition: inline
-In-Reply-To: <275a4850-2d70-4a6e-a72e-5c3fd20f98ba@amd.com>
-Received-SPF: none client-ip=192.55.52.88;
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <39c38442-cabf-985c-6125-5d0b3583de58@amd.com>
+Received-SPF: none client-ip=134.134.136.126;
  envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_score_int: 4
+X-Spam_score: 0.4
+X-Spam_bar: /
+X-Spam_report: (0.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1,
+ MIME_CHARSET_FARAWAY=2.45, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,204 +91,169 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Hi Babu,
 
-On Wed, Aug 02, 2023 at 10:25:58AM -0500, Moger, Babu wrote:
-> Date: Wed, 2 Aug 2023 10:25:58 -0500
+On Wed, Aug 02, 2023 at 10:41:17AM -0500, Moger, Babu wrote:
+> Date: Wed, 2 Aug 2023 10:41:17 -0500
 > From: "Moger, Babu" <babu.moger@amd.com>
-> Subject: Re: [PATCH v3 03/17] softmmu: Fix CPUSTATE.nr_cores' calculation
+> Subject: Re: [PATCH v3 05/17] i386/cpu: Use APIC ID offset to encode cache
+>  topo in CPUID[4]
 > 
 > Hi Zhao,
 > 
 > On 8/1/23 05:35, Zhao Liu wrote:
-> > From: Zhuocheng Ding <zhuocheng.ding@intel.com>
+> > From: Zhao Liu <zhao1.liu@intel.com>
 > > 
-> > From CPUState.nr_cores' comment, it represents "number of cores within
-> > this CPU package".
+> > Refer to the fixes of cache_info_passthrough ([1], [2]) and SDM, the
+> > CPUID.04H:EAX[bits 25:14] and CPUID.04H:EAX[bits 31:26] should use the
+> > nearest power-of-2 integer.
 > > 
-> > After 003f230e37d7 ("machine: Tweak the order of topology members in
-> > struct CpuTopology"), the meaning of smp.cores changed to "the number of
-> > cores in one die", but this commit missed to change CPUState.nr_cores'
-> > caculation, so that CPUState.nr_cores became wrong and now it
-> > misses to consider numbers of clusters and dies.
+> > The nearest power-of-2 integer can be caculated by pow2ceil() or by
+> > using APIC ID offset (like L3 topology using 1 << die_offset [3]).
 > > 
-> > At present, only i386 is using CPUState.nr_cores.
+> > But in fact, CPUID.04H:EAX[bits 25:14] and CPUID.04H:EAX[bits 31:26]
+> > are associated with APIC ID. For example, in linux kernel, the field
+> > "num_threads_sharing" (Bits 25 - 14) is parsed with APIC ID. And for
+> > another example, on Alder Lake P, the CPUID.04H:EAX[bits 31:26] is not
+> > matched with actual core numbers and it's caculated by:
+> > "(1 << (pkg_offset - core_offset)) - 1".
 > > 
-> > But as for i386, which supports die level, the uses of CPUState.nr_cores
-> > are very confusing:
+> > Therefore the offset of APIC ID should be preferred to caculate nearest
+> > power-of-2 integer for CPUID.04H:EAX[bits 25:14] and CPUID.04H:EAX[bits
+> > 31:26]:
+> > 1. d/i cache is shared in a core, 1 << core_offset should be used
+> >    instand of "cs->nr_threads" in encode_cache_cpuid4() for
+> >    CPUID.04H.00H:EAX[bits 25:14] and CPUID.04H.01H:EAX[bits 25:14].
+> > 2. L2 cache is supposed to be shared in a core as for now, thereby
+> >    1 << core_offset should also be used instand of "cs->nr_threads" in
+> >    encode_cache_cpuid4() for CPUID.04H.02H:EAX[bits 25:14].
+> > 3. Similarly, the value for CPUID.04H:EAX[bits 31:26] should also be
+> >    replaced by the offsets upper SMT level in APIC ID.
 > > 
-> > Early uses are based on the meaning of "cores per package" (before die
-> > is introduced into i386), and later uses are based on "cores per die"
-> > (after die's introduction).
+> > In addition, use APIC ID offset to replace "pow2ceil()" for
+> > cache_info_passthrough case.
 > > 
-> > This difference is due to that commit a94e1428991f ("target/i386: Add
-> > CPUID.1F generation support for multi-dies PCMachine") misunderstood
-> > that CPUState.nr_cores means "cores per die" when caculated
-> > CPUID.1FH.01H:EBX. After that, the changes in i386 all followed this
-> > wrong understanding.
+> > [1]: efb3934adf9e ("x86: cpu: make sure number of addressable IDs for processor cores meets the spec")
+> > [2]: d7caf13b5fcf ("x86: cpu: fixup number of addressable IDs for logical processors sharing cache")
+> > [3]: d65af288a84d ("i386: Update new x86_apicid parsing rules with die_offset support")
 > > 
-> > With the influence of 003f230e37d7 and a94e1428991f, for i386 currently
-> > the result of CPUState.nr_cores is "cores per die", thus the original
-> > uses of CPUState.cores based on the meaning of "cores per package" are
-> > wrong when mutiple dies exist:
-> > 1. In cpu_x86_cpuid() of target/i386/cpu.c, CPUID.01H:EBX[bits 23:16] is
-> >    incorrect because it expects "cpus per package" but now the
-> >    result is "cpus per die".
-> > 2. In cpu_x86_cpuid() of target/i386/cpu.c, for all leaves of CPUID.04H:
-> >    EAX[bits 31:26] is incorrect because they expect "cpus per package"
-> >    but now the result is "cpus per die". The error not only impacts the
-> >    EAX caculation in cache_info_passthrough case, but also impacts other
-> >    cases of setting cache topology for Intel CPU according to cpu
-> >    topology (specifically, the incoming parameter "num_cores" expects
-> >    "cores per package" in encode_cache_cpuid4()).
-> > 3. In cpu_x86_cpuid() of target/i386/cpu.c, CPUID.0BH.01H:EBX[bits
-> >    15:00] is incorrect because the EBX of 0BH.01H (core level) expects
-> >    "cpus per package", which may be different with 1FH.01H (The reason
-> >    is 1FH can support more levels. For QEMU, 1FH also supports die,
-> >    1FH.01H:EBX[bits 15:00] expects "cpus per die").
-> > 4. In cpu_x86_cpuid() of target/i386/cpu.c, when CPUID.80000001H is
-> >    caculated, here "cpus per package" is expected to be checked, but in
-> >    fact, now it checks "cpus per die". Though "cpus per die" also works
-> >    for this code logic, this isn't consistent with AMD's APM.
-> > 5. In cpu_x86_cpuid() of target/i386/cpu.c, CPUID.80000008H:ECX expects
-> >    "cpus per package" but it obtains "cpus per die".
-> > 6. In simulate_rdmsr() of target/i386/hvf/x86_emu.c, in
-> >    kvm_rdmsr_core_thread_count() of target/i386/kvm/kvm.c, and in
-> >    helper_rdmsr() of target/i386/tcg/sysemu/misc_helper.c,
-> >    MSR_CORE_THREAD_COUNT expects "cpus per package" and "cores per
-> >    package", but in these functions, it obtains "cpus per die" and
-> >    "cores per die".
-> > 
-> > On the other hand, these uses are correct now (they are added in/after
-> > a94e1428991f):
-> > 1. In cpu_x86_cpuid() of target/i386/cpu.c, topo_info.cores_per_die
-> >    meets the actual meaning of CPUState.nr_cores ("cores per die").
-> > 2. In cpu_x86_cpuid() of target/i386/cpu.c, vcpus_per_socket (in CPUID.
-> >    04H's caculation) considers number of dies, so it's correct.
-> > 3. In cpu_x86_cpuid() of target/i386/cpu.c, CPUID.1FH.01H:EBX[bits
-> >    15:00] needs "cpus per die" and it gets the correct result, and
-> >    CPUID.1FH.02H:EBX[bits 15:00] gets correct "cpus per package".
-> > 
-> > When CPUState.nr_cores is correctly changed to "cores per package" again
-> > , the above errors will be fixed without extra work, but the "currently"
-> > correct cases will go wrong and need special handling to pass correct
-> > "cpus/cores per die" they want.
-> > 
-> > Thus in this patch, we fix CPUState.nr_cores' caculation to fit the
-> 
-> s/Thus in this patch, we fix CPUState.nr_cores' caculation/Fix
-> CPUState.nr_cores' calculation/
-
-Thanks!
-
-> 
-> 
-> Describe your changes in imperative mood also spell check.
-
-Thanks for your suggestion!
-
--Zhao
-
-> 
-> 
-> > original meaning "cores per package", as well as changing calculation of
-> > topo_info.cores_per_die, vcpus_per_socket and CPUID.1FH.
-> > 
-> > In addition, in the nr_threads' comment, specify it represents the
-> > number of threads in the "core" to avoid confusion, and also add comment
-> > for nr_dies in CPUX86State.
-> > 
-> > Fixes: a94e1428991f ("target/i386: Add CPUID.1F generation support for multi-dies PCMachine")
-> > Fixes: 003f230e37d7 ("machine: Tweak the order of topology members in struct CpuTopology")
-> > Signed-off-by: Zhuocheng Ding <zhuocheng.ding@intel.com>
-> > Co-developed-by: Zhao Liu <zhao1.liu@intel.com>
+> > Fixes: 7e3482f82480 ("i386: Helpers to encode cache information consistently")
+> > Suggested-by: Robert Hoo <robert.hu@linux.intel.com>
 > > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 > > ---
-> > Changes since v2:
-> >  * Use wrapped helper to get cores per socket in qemu_init_vcpu().
 > > Changes since v1:
-> >  * Add comment for nr_dies in CPUX86State. (Yanan)
+> >  * Use APIC ID offset to replace "pow2ceil()" for cache_info_passthrough
+> >    case. (Yanan)
+> >  * Split the L1 cache fix into a separate patch.
+> >  * Rename the title of this patch (the original is "i386/cpu: Fix number
+> >    of addressable IDs in CPUID.04H").
 > > ---
-> >  include/hw/core/cpu.h | 2 +-
-> >  softmmu/cpus.c        | 2 +-
-> >  target/i386/cpu.c     | 9 ++++-----
-> >  target/i386/cpu.h     | 1 +
-> >  4 files changed, 7 insertions(+), 7 deletions(-)
+> >  target/i386/cpu.c | 30 +++++++++++++++++++++++-------
+> >  1 file changed, 23 insertions(+), 7 deletions(-)
 > > 
-> > diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-> > index fdcbe8735258..57f4d50ace72 100644
-> > --- a/include/hw/core/cpu.h
-> > +++ b/include/hw/core/cpu.h
-> > @@ -277,7 +277,7 @@ struct qemu_work_item;
-> >   *   See TranslationBlock::TCG CF_CLUSTER_MASK.
-> >   * @tcg_cflags: Pre-computed cflags for this cpu.
-> >   * @nr_cores: Number of cores within this CPU package.
-> > - * @nr_threads: Number of threads within this CPU.
-> > + * @nr_threads: Number of threads within this CPU core.
-> >   * @running: #true if CPU is currently running (lockless).
-> >   * @has_waiter: #true if a CPU is currently waiting for the cpu_exec_end;
-> >   * valid under cpu_list_lock.
-> > diff --git a/softmmu/cpus.c b/softmmu/cpus.c
-> > index fed20ffb5dd2..984558d7b245 100644
-> > --- a/softmmu/cpus.c
-> > +++ b/softmmu/cpus.c
-> > @@ -630,7 +630,7 @@ void qemu_init_vcpu(CPUState *cpu)
-> >  {
-> >      MachineState *ms = MACHINE(qdev_get_machine());
-> >  
-> > -    cpu->nr_cores = ms->smp.cores;
-> > +    cpu->nr_cores = machine_topo_get_cores_per_socket(ms);
-> >      cpu->nr_threads =  ms->smp.threads;
-> >      cpu->stopped = true;
-> >      cpu->random_seed = qemu_guest_random_seed_thread_part1();
 > > diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> > index 97ad229d8ba3..50613cd04612 100644
+> > index b439a05244ee..c80613bfcded 100644
 > > --- a/target/i386/cpu.c
 > > +++ b/target/i386/cpu.c
-> > @@ -6011,7 +6011,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+> > @@ -6005,7 +6005,6 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+> >  {
+> >      X86CPU *cpu = env_archcpu(env);
+> >      CPUState *cs = env_cpu(env);
+> > -    uint32_t die_offset;
+> >      uint32_t limit;
+> >      uint32_t signature[3];
 > >      X86CPUTopoInfo topo_info;
-> >  
-> >      topo_info.dies_per_pkg = env->nr_dies;
-> > -    topo_info.cores_per_die = cs->nr_cores;
-> > +    topo_info.cores_per_die = cs->nr_cores / env->nr_dies;
-> >      topo_info.threads_per_core = cs->nr_threads;
-> >  
-> >      /* Calculate & apply limits for different index ranges */
-> > @@ -6087,8 +6087,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-> >               */
-> >              if (*eax & 31) {
+> > @@ -6089,39 +6088,56 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
 > >                  int host_vcpus_per_cache = 1 + ((*eax & 0x3FFC000) >> 14);
-> > -                int vcpus_per_socket = env->nr_dies * cs->nr_cores *
-> > -                                       cs->nr_threads;
-> > +                int vcpus_per_socket = cs->nr_cores * cs->nr_threads;
+> >                  int vcpus_per_socket = cs->nr_cores * cs->nr_threads;
 > >                  if (cs->nr_cores > 1) {
+> > +                    int addressable_cores_offset =
+> > +                                                apicid_pkg_offset(&topo_info) -
+> > +                                                apicid_core_offset(&topo_info);
+> > +
 > >                      *eax &= ~0xFC000000;
-> >                      *eax |= (pow2ceil(cs->nr_cores) - 1) << 26;
-> > @@ -6266,12 +6265,12 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-> >              break;
-> >          case 1:
-> >              *eax = apicid_die_offset(&topo_info);
-> > -            *ebx = cs->nr_cores * cs->nr_threads;
-> > +            *ebx = topo_info.cores_per_die * topo_info.threads_per_core;
-> >              *ecx |= CPUID_TOPOLOGY_LEVEL_CORE;
-> >              break;
-> >          case 2:
-> >              *eax = apicid_pkg_offset(&topo_info);
-> > -            *ebx = env->nr_dies * cs->nr_cores * cs->nr_threads;
-> > +            *ebx = cs->nr_cores * cs->nr_threads;
-> >              *ecx |= CPUID_TOPOLOGY_LEVEL_DIE;
-> >              break;
-> >          default:
-> > diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-> > index e0771a10433b..7638128d59cc 100644
-> > --- a/target/i386/cpu.h
-> > +++ b/target/i386/cpu.h
-> > @@ -1878,6 +1878,7 @@ typedef struct CPUArchState {
-> >  
-> >      TPRAccess tpr_access_type;
-> >  
-> > +    /* Number of dies within this CPU package. */
-> >      unsigned nr_dies;
-> >  } CPUX86State;
-> >  
+> > -                    *eax |= (pow2ceil(cs->nr_cores) - 1) << 26;
+> > +                    *eax |= (1 << addressable_cores_offset - 1) << 26;
+> >                  }
+> >                  if (host_vcpus_per_cache > vcpus_per_socket) {
+> > +                    int pkg_offset = apicid_pkg_offset(&topo_info);
+> > +
+> >                      *eax &= ~0x3FFC000;
+> > -                    *eax |= (pow2ceil(vcpus_per_socket) - 1) << 14;
+> > +                    *eax |= (1 << pkg_offset - 1) << 14;
+> >                  }
+> >              }
+> 
+> I hit this compile error with this patch.
+> 
+> [1/18] Generating qemu-version.h with a custom command (wrapped by meson
+> to capture output)
+> [2/4] Compiling C object libqemu-x86_64-softmmu.fa.p/target_i386_cpu.c.o
+> FAILED: libqemu-x86_64-softmmu.fa.p/target_i386_cpu.c.o
+> ..
+> ..
+> softmmu.fa.p/target_i386_cpu.c.o -c ../target/i386/cpu.c
+> ../target/i386/cpu.c: In function ¡®cpu_x86_cpuid¡¯:
+> ../target/i386/cpu.c:6096:60: error: suggest parentheses around ¡®-¡¯ inside
+> ¡®<<¡¯ [-Werror=parentheses]
+>  6096 |                     *eax |= (1 << addressable_cores_offset - 1) << 26;
+>       |                                   ~~~~~~~~~~~~~~~~~~~~~~~~~^~~
+> ../target/i386/cpu.c:6102:46: error: suggest parentheses around ¡®-¡¯ inside
+> ¡®<<¡¯ [-Werror=parentheses]
+>  6102 |                     *eax |= (1 << pkg_offset - 1) << 14;
+>       |                                   ~~~~~~~~~~~^~~
+> cc1: all warnings being treated as errors
+> 
+> Please fix this.
+
+Thanks for your test! Sorry I may miss this warning. I'll fix this.
+
+Thanks,
+Zhao
+
+> 
+> 
+> >          } else if (cpu->vendor_cpuid_only && IS_AMD_CPU(env)) {
+> >              *eax = *ebx = *ecx = *edx = 0;
+> >          } else {
+> >              *eax = 0;
+> > +            int addressable_cores_offset = apicid_pkg_offset(&topo_info) -
+> > +                                           apicid_core_offset(&topo_info);
+> > +            int core_offset, die_offset;
+> > +
+> >              switch (count) {
+> >              case 0: /* L1 dcache info */
+> > +                core_offset = apicid_core_offset(&topo_info);
+> >                  encode_cache_cpuid4(env->cache_info_cpuid4.l1d_cache,
+> > -                                    cs->nr_threads, cs->nr_cores,
+> > +                                    (1 << core_offset),
+> > +                                    (1 << addressable_cores_offset),
+> >                                      eax, ebx, ecx, edx);
+> >                  break;
+> >              case 1: /* L1 icache info */
+> > +                core_offset = apicid_core_offset(&topo_info);
+> >                  encode_cache_cpuid4(env->cache_info_cpuid4.l1i_cache,
+> > -                                    cs->nr_threads, cs->nr_cores,
+> > +                                    (1 << core_offset),
+> > +                                    (1 << addressable_cores_offset),
+> >                                      eax, ebx, ecx, edx);
+> >                  break;
+> >              case 2: /* L2 cache info */
+> > +                core_offset = apicid_core_offset(&topo_info);
+> >                  encode_cache_cpuid4(env->cache_info_cpuid4.l2_cache,
+> > -                                    cs->nr_threads, cs->nr_cores,
+> > +                                    (1 << core_offset),
+> > +                                    (1 << addressable_cores_offset),
+> >                                      eax, ebx, ecx, edx);
+> >                  break;
+> >              case 3: /* L3 cache info */
+> >                  die_offset = apicid_die_offset(&topo_info);
+> >                  if (cpu->enable_l3_cache) {
+> >                      encode_cache_cpuid4(env->cache_info_cpuid4.l3_cache,
+> > -                                        (1 << die_offset), cs->nr_cores,
+> > +                                        (1 << die_offset),
+> > +                                        (1 << addressable_cores_offset),
+> >                                          eax, ebx, ecx, edx);
+> >                      break;
+> >                  }
 > 
 > -- 
 > Thanks
