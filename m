@@ -2,42 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F10077708CF
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 21:18:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7919F7708CE
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 21:18:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qS0IO-0000Mk-OL; Fri, 04 Aug 2023 15:17:08 -0400
+	id 1qS0IQ-0000NJ-73; Fri, 04 Aug 2023 15:17:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qS0IM-0000Ld-Ik; Fri, 04 Aug 2023 15:17:06 -0400
+ id 1qS0IM-0000Ls-V3; Fri, 04 Aug 2023 15:17:06 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qS0IK-0006wK-Vm; Fri, 04 Aug 2023 15:17:06 -0400
+ id 1qS0IL-0006wh-Af; Fri, 04 Aug 2023 15:17:06 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id CB57618458;
- Fri,  4 Aug 2023 22:17:10 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 3020F18459;
+ Fri,  4 Aug 2023 22:17:11 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 5F1AB1B89B;
+ by tsrv.corpit.ru (Postfix) with SMTP id 90BEC1B89C;
  Fri,  4 Aug 2023 22:16:50 +0300 (MSK)
-Received: (nullmailer pid 1875705 invoked by uid 1000);
+Received: (nullmailer pid 1875708 invoked by uid 1000);
  Fri, 04 Aug 2023 19:16:49 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Eric Auger <eric.auger@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.4 38/63] hw/arm/smmu: Handle big-endian hosts correctly
-Date: Fri,  4 Aug 2023 22:16:21 +0300
-Message-Id: <20230804191647.1875608-7-mjt@tls.msk.ru>
+ Richard Henderson <richard.henderson@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.0.4 39/63] target/arm: Special case M-profile in
+ debug_helper.c code
+Date: Fri,  4 Aug 2023 22:16:22 +0300
+Message-Id: <20230804191647.1875608-8-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.4-20230804221634@cover.tls.msk.ru>
 References: <qemu-stable-8.0.4-20230804221634@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -63,148 +62,72 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Maydell <peter.maydell@linaro.org>
 
-The implementation of the SMMUv3 has multiple places where it reads a
-data structure from the guest and directly operates on it without
-doing a guest-to-host endianness conversion.  Since all SMMU data
-structures are little-endian, this means that the SMMU doesn't work
-on a big-endian host.  In particular, this causes the Avocado test
-  machine_aarch64_virt.py:Aarch64VirtMachine.test_alpine_virt_tcg_gic_max
-to fail on an s390x host.
+A lot of the code called from helper_exception_bkpt_insn() is written
+assuming A-profile, but we will also call this helper on M-profile
+CPUs when they execute a BKPT insn.  This used to work by accident,
+but recent changes mean that we will hit an assert when some of this
+code calls down into lower level functions that end up calling
+arm_security_space_below_el3(), arm_el_is_aa64(), and other functions
+that now explicitly assert that the guest CPU is not M-profile.
 
-Add appropriate byte-swapping on reads and writes of guest in-memory
-data structures so that the device works correctly on big-endian
-hosts.
+Handle M-profile directly to avoid the assertions:
+ * in arm_debug_target_el(), M-profile debug exceptions always
+   go to EL1
+ * in arm_debug_exception_fsr(), M-profile always uses the short
+   format FSR (compare commit d7fe699be54b2, though in this case
+   the code in arm_v7m_cpu_do_interrupt() does not need to
+   look at the FSR value at all)
 
-As part of this we constrain queue_read() to operate only on Cmd
-structs and queue_write() on Evt structs, because in practice these
-are the only data structures the two functions are used with, and we
-need to know what the data structure is to be able to byte-swap its
-parts correctly.
-
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Tested-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Message-id: 20230717132641.764660-1-peter.maydell@linaro.org
 Cc: qemu-stable@nongnu.org
-(cherry picked from commit c6445544d4cea2628fbad3bad09f3d3a03c749d3)
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1775
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20230721143239.1753066-1-peter.maydell@linaro.org
+(cherry picked from commit 5d78893f39caf94c8587141e2219b57a7d63dd5c)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/arm/smmu-common.c b/hw/arm/smmu-common.c
-index e7f1c1f219..daa02ce798 100644
---- a/hw/arm/smmu-common.c
-+++ b/hw/arm/smmu-common.c
-@@ -192,8 +192,7 @@ static int get_pte(dma_addr_t baseaddr, uint32_t index, uint64_t *pte,
-     dma_addr_t addr = baseaddr + index * sizeof(*pte);
+diff --git a/target/arm/debug_helper.c b/target/arm/debug_helper.c
+index dfc8b2a1a5..0cbc8171d5 100644
+--- a/target/arm/debug_helper.c
++++ b/target/arm/debug_helper.c
+@@ -21,6 +21,10 @@ static int arm_debug_target_el(CPUARMState *env)
+     bool secure = arm_is_secure(env);
+     bool route_to_el2 = false;
  
-     /* TODO: guarantee 64-bit single-copy atomicity */
--    ret = dma_memory_read(&address_space_memory, addr, pte, sizeof(*pte),
--                          MEMTXATTRS_UNSPECIFIED);
-+    ret = ldq_le_dma(&address_space_memory, addr, pte, MEMTXATTRS_UNSPECIFIED);
- 
-     if (ret != MEMTX_OK) {
-         info->type = SMMU_PTW_ERR_WALK_EABT;
-diff --git a/hw/arm/smmuv3.c b/hw/arm/smmuv3.c
-index 270c80b665..cfb56725a6 100644
---- a/hw/arm/smmuv3.c
-+++ b/hw/arm/smmuv3.c
-@@ -98,20 +98,34 @@ static void smmuv3_write_gerrorn(SMMUv3State *s, uint32_t new_gerrorn)
-     trace_smmuv3_write_gerrorn(toggled & pending, s->gerrorn);
- }
- 
--static inline MemTxResult queue_read(SMMUQueue *q, void *data)
-+static inline MemTxResult queue_read(SMMUQueue *q, Cmd *cmd)
- {
-     dma_addr_t addr = Q_CONS_ENTRY(q);
-+    MemTxResult ret;
-+    int i;
- 
--    return dma_memory_read(&address_space_memory, addr, data, q->entry_size,
--                           MEMTXATTRS_UNSPECIFIED);
-+    ret = dma_memory_read(&address_space_memory, addr, cmd, sizeof(Cmd),
-+                          MEMTXATTRS_UNSPECIFIED);
-+    if (ret != MEMTX_OK) {
-+        return ret;
++    if (arm_feature(env, ARM_FEATURE_M)) {
++        return 1;
 +    }
-+    for (i = 0; i < ARRAY_SIZE(cmd->word); i++) {
-+        le32_to_cpus(&cmd->word[i]);
-+    }
-+    return ret;
- }
- 
--static MemTxResult queue_write(SMMUQueue *q, void *data)
-+static MemTxResult queue_write(SMMUQueue *q, Evt *evt_in)
++
+     if (arm_is_el2_enabled(env)) {
+         route_to_el2 = env->cp15.hcr_el2 & HCR_TGE ||
+                        env->cp15.mdcr_el2 & MDCR_TDE;
+@@ -434,18 +438,20 @@ static uint32_t arm_debug_exception_fsr(CPUARMState *env)
  {
-     dma_addr_t addr = Q_PROD_ENTRY(q);
-     MemTxResult ret;
-+    Evt evt = *evt_in;
-+    int i;
+     ARMMMUFaultInfo fi = { .type = ARMFault_Debug };
+     int target_el = arm_debug_target_el(env);
+-    bool using_lpae = false;
++    bool using_lpae;
  
--    ret = dma_memory_write(&address_space_memory, addr, data, q->entry_size,
-+    for (i = 0; i < ARRAY_SIZE(evt.word); i++) {
-+        cpu_to_le32s(&evt.word[i]);
-+    }
-+    ret = dma_memory_write(&address_space_memory, addr, &evt, sizeof(Evt),
-                            MEMTXATTRS_UNSPECIFIED);
-     if (ret != MEMTX_OK) {
-         return ret;
-@@ -291,7 +305,7 @@ static void smmuv3_init_regs(SMMUv3State *s)
- static int smmu_get_ste(SMMUv3State *s, dma_addr_t addr, STE *buf,
-                         SMMUEventInfo *event)
- {
--    int ret;
-+    int ret, i;
- 
-     trace_smmuv3_get_ste(addr);
-     /* TODO: guarantee 64-bit single-copy atomicity */
-@@ -304,6 +318,9 @@ static int smmu_get_ste(SMMUv3State *s, dma_addr_t addr, STE *buf,
-         event->u.f_ste_fetch.addr = addr;
-         return -EINVAL;
+-    if (target_el == 2 || arm_el_is_aa64(env, target_el)) {
++    if (arm_feature(env, ARM_FEATURE_M)) {
++        using_lpae = false;
++    } else if (target_el == 2 || arm_el_is_aa64(env, target_el)) {
+         using_lpae = true;
+     } else if (arm_feature(env, ARM_FEATURE_PMSA) &&
+                arm_feature(env, ARM_FEATURE_V8)) {
+         using_lpae = true;
++    } else if (arm_feature(env, ARM_FEATURE_LPAE) &&
++               (env->cp15.tcr_el[target_el] & TTBCR_EAE)) {
++        using_lpae = true;
+     } else {
+-        if (arm_feature(env, ARM_FEATURE_LPAE) &&
+-            (env->cp15.tcr_el[target_el] & TTBCR_EAE)) {
+-            using_lpae = true;
+-        }
++        using_lpae = false;
      }
-+    for (i = 0; i < ARRAY_SIZE(buf->word); i++) {
-+        le32_to_cpus(&buf->word[i]);
-+    }
-     return 0;
  
- }
-@@ -313,7 +330,7 @@ static int smmu_get_cd(SMMUv3State *s, STE *ste, uint32_t ssid,
-                        CD *buf, SMMUEventInfo *event)
- {
-     dma_addr_t addr = STE_CTXPTR(ste);
--    int ret;
-+    int ret, i;
- 
-     trace_smmuv3_get_cd(addr);
-     /* TODO: guarantee 64-bit single-copy atomicity */
-@@ -326,6 +343,9 @@ static int smmu_get_cd(SMMUv3State *s, STE *ste, uint32_t ssid,
-         event->u.f_ste_fetch.addr = addr;
-         return -EINVAL;
-     }
-+    for (i = 0; i < ARRAY_SIZE(buf->word); i++) {
-+        le32_to_cpus(&buf->word[i]);
-+    }
-     return 0;
- }
- 
-@@ -407,7 +427,7 @@ static int smmu_find_ste(SMMUv3State *s, uint32_t sid, STE *ste,
-         return -EINVAL;
-     }
-     if (s->features & SMMU_FEATURE_2LVL_STE) {
--        int l1_ste_offset, l2_ste_offset, max_l2_ste, span;
-+        int l1_ste_offset, l2_ste_offset, max_l2_ste, span, i;
-         dma_addr_t l1ptr, l2ptr;
-         STEDesc l1std;
- 
-@@ -431,6 +451,9 @@ static int smmu_find_ste(SMMUv3State *s, uint32_t sid, STE *ste,
-             event->u.f_ste_fetch.addr = l1ptr;
-             return -EINVAL;
-         }
-+        for (i = 0; i < ARRAY_SIZE(l1std.word); i++) {
-+            le32_to_cpus(&l1std.word[i]);
-+        }
- 
-         span = L1STD_SPAN(&l1std);
- 
+     if (using_lpae) {
 -- 
 2.39.2
 
