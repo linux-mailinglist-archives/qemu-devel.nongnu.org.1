@@ -2,85 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49E81770923
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 21:37:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 650A0770A56
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 23:04:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qS0c3-0002th-SW; Fri, 04 Aug 2023 15:37:27 -0400
+	id 1qS1xo-00028o-2f; Fri, 04 Aug 2023 17:04:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qS0bw-0002sX-63
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 15:37:20 -0400
-Received: from mail-oi1-x229.google.com ([2607:f8b0:4864:20::229])
+ (Exim 4.90_1) (envelope-from <jim.cromie@gmail.com>)
+ id 1qS02y-00046R-0s
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 15:01:12 -0400
+Received: from mail-il1-x12b.google.com ([2607:f8b0:4864:20::12b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qS0bs-0005Eq-68
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 15:37:18 -0400
-Received: by mail-oi1-x229.google.com with SMTP id
- 5614622812f47-3a3fbfb616dso1800369b6e.3
- for <qemu-devel@nongnu.org>; Fri, 04 Aug 2023 12:37:14 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <jim.cromie@gmail.com>)
+ id 1qS02v-0001RR-2t
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 15:01:11 -0400
+Received: by mail-il1-x12b.google.com with SMTP id
+ e9e14a558f8ab-3492c49c649so8666645ab.3
+ for <qemu-devel@nongnu.org>; Fri, 04 Aug 2023 12:01:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691177833; x=1691782633;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=RkWw1sVHSLAkYM2E19JazQnGKXNRqm0SBAsZJUnqiW8=;
- b=digaXDJx2AMZ+foXbQBwdioAhGH8V+h+5jqRhFTV4H07MoH/kWWXpVujgCOK1QRUNI
- 4gtjTj7yC3wJaGIUeXmiZZ+bYypcWKL2jMnOaIxoRrN9KYjD6PqaImDippnDsGfdMkzH
- j5+xwQdfjAuZ666hh6Squ/4Qun39cQLl1RbqDOuvWVXcYgnCIfyMxoLdZNJ3QLLjxxpX
- H8A10JsiJZd70ouQovQwAArIBn/dUgnMadZqaQ/h0uwgbq7Z4ZvjKKMsRDur+lfDJF+0
- ZZqv6eVvsVgWzprhnqqRFtJ+SAAXEI1ZHFH8uov+EZLwt4zG9AktWrTu9dw8EfUyG538
- ufzA==
+ d=gmail.com; s=20221208; t=1691175666; x=1691780466;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=zFpch+8P3tV3H5HfrDlQXc1T5jeaQVV8OZf/WDGUGCc=;
+ b=EKjMW6KLlXqiudELoM4kboJ+S9E4avUoi+6m6Sf/Z3oHXQzoECAr/rhB700UOuUuiv
+ l/921Om6qJG8XngSkCBHqMg5GHkLHbXzIv3PUjAsd2fKklIXo21/N3eBHqzWQMxdrDW/
+ fSUMDHZJ75xGO5L5UwJOpbSn9ofuh1Dv/79KH5SlKH3PeiKxsJLRMP8rexGbHkOopkea
+ Vy/5vQoSmWJSbTgXeuhm5KzxcMEIJ2AiBEv/AbuPwfbf6bq4tJ3yZ21vEl6cnmso1TQw
+ BYvfaDVFJaXW2FFW4WNiGOca8Q1hVdwmf+fF7CarfqzGzYy0zrAFhMugbiasYEa/6hI0
+ L3aA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691177833; x=1691782633;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=RkWw1sVHSLAkYM2E19JazQnGKXNRqm0SBAsZJUnqiW8=;
- b=kiGFItcgXqxCk8dSkd1InHqU4mo8xEdhtkuoeeI8m/lshKrL/0+VpXnH4ujR8TpIG0
- +GYWjvPmhA1Ymuh2LSiU8B2BKPjm+EQTjnL5XISLSPlqiS5aTJSqlhJYGTvyG4zwSuTq
- 5iU6wHXR1x0Q/kWVo33jRwZQhV1xyXFnewq0PgSrNq+gTwA55RqYYIb2oyDFg3LdiPA6
- D19781iVJIQJaUpwwxuWpdiu6VNbDG/lGNyYP1uMtvNVQtubAPebd7Jve/1gKV5y8pWk
- xDY5aP5HUKYfAKb0TxgEGGrYvQ0q7rhYMryJQBZzmgMuw8pvm3YWrKanKL4vNF9xUEoj
- 8kqA==
-X-Gm-Message-State: AOJu0YznZQVUacgkkpwCt34b/W8I+uhuVVeR8xvQmKaVj3Z2xfHrRUwr
- JtvXTZPVSG3cPUsqPh5qyWdCEQ==
-X-Google-Smtp-Source: AGHT+IENqTzNKThxtuMa5J6SszRe7lafZZrZKzO4Divu6unEkADBJtXxn9vmP98lLZcb6Vyd3sIBHQ==
-X-Received: by 2002:a54:478c:0:b0:3a4:17cd:dd31 with SMTP id
- o12-20020a54478c000000b003a417cddd31mr3194305oic.14.1691177833584; 
- Fri, 04 Aug 2023 12:37:13 -0700 (PDT)
-Received: from ?IPV6:2602:47:d490:6901:1eed:f77f:f320:8b14?
- ([2602:47:d490:6901:1eed:f77f:f320:8b14])
- by smtp.gmail.com with ESMTPSA id
- 15-20020a17090a0ccf00b00263c6b44dd8sm4804401pjt.15.2023.08.04.12.37.12
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 04 Aug 2023 12:37:13 -0700 (PDT)
-Message-ID: <9f0e6e6c-2ba6-ef89-8b60-8e245cf39b08@linaro.org>
-Date: Fri, 4 Aug 2023 12:37:11 -0700
+ d=1e100.net; s=20221208; t=1691175666; x=1691780466;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=zFpch+8P3tV3H5HfrDlQXc1T5jeaQVV8OZf/WDGUGCc=;
+ b=LA9Sezd0ryNuE93Mq8meiJpeO+T2RC5sT+Fy0SZR63opwGOH7YCr7XbdOggxKWDL1c
+ ENTz++EBlDCHGYpyuaiRCozxCr93+3ZtETjYSRx+oGWOOaMIlsaLnXYdOe2Gc/PfqLtT
+ deX+kfDkrPHEnpDGz96xQwCDns+A53Mz9CaROzXO36lfWXCmRlwEyFiHi+hsF0aKCLzr
+ CBWEkWf0n1ga5eVz42kFUb/SVOUyOqKkyAYG2uBAD7SORihd4e3KOA9sdypPfYXRqtf3
+ BKPs3/hnAVyyqS3HENQqWxJLwc64Dr1SFspwsmrRblMCVZs8lCfdF6bn1ANxvKKwHVqu
+ KtiQ==
+X-Gm-Message-State: AOJu0Ywgr/OmY9hbquNmwhnaz/jc4LF0kFWzoed+JD+TjtFqDYKuvofn
+ I4QWsF8lvv/WvJ1fl3ozGUkhFkBn8vj6zw==
+X-Google-Smtp-Source: AGHT+IHpb1Q4xU6qbK+YnfGS+qE+Q16JDY7S2YlRKf0CPzv6ytDTCqa//vu/JrVqo26KB96O0I3lmw==
+X-Received: by 2002:a92:cdaf:0:b0:348:d0e5:dbc8 with SMTP id
+ g15-20020a92cdaf000000b00348d0e5dbc8mr4191817ild.31.1691175666120; 
+ Fri, 04 Aug 2023 12:01:06 -0700 (PDT)
+Received: from frodo.. (c-73-78-62-130.hsd1.co.comcast.net. [73.78.62.130])
+ by smtp.googlemail.com with ESMTPSA id
+ c16-20020a92d3d0000000b00342093347d8sm814048ilh.76.2023.08.04.12.01.04
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 04 Aug 2023 12:01:05 -0700 (PDT)
+From: Jim Cromie <jim.cromie@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: Jim Cromie <jim.cromie@gmail.com>
+Subject: [PATCH] print memory in MB units in initrd-too-large errmsg
+Date: Fri,  4 Aug 2023 13:01:01 -0600
+Message-ID: <20230804190101.759753-1-jim.cromie@gmail.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PULL 0/7] ppc queue
-Content-Language: en-US
-To: Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, peter.maydell@linaro.org
-References: <20230804152955.22316-1-danielhb413@gmail.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230804152955.22316-1-danielhb413@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::229;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x229.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::12b;
+ envelope-from=jim.cromie@gmail.com; helo=mail-il1-x12b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.093,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Fri, 04 Aug 2023 17:03:56 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,28 +89,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/4/23 08:29, Daniel Henrique Barboza wrote:
-> The following changes since commit c26d005e62f4fd177dae0cd70c24cb96761edebc:
-> 
->    Merge tag 'hppa-linux-user-speedup-pull-request' ofhttps://github.com/hdeller/qemu-hppa  into staging (2023-08-03 18:49:45 -0700)
-> 
-> are available in the Git repository at:
-> 
->    https://gitlab.com/danielhb/qemu.git  tags/pull-ppc-20230804
-> 
-> for you to fetch changes up to 0e2a3ec36885f6d79a96230f582d4455878c6373:
-> 
->    target/ppc: Fix VRMA page size for ISA v3.0 (2023-08-04 12:22:03 -0300)
-> 
-> ----------------------------------------------------------------
-> ppc patch queue for 2023-08-04:
-> 
-> This queue contains target/ppc register and VRMA fixes for 8.1. pegasos2
-> fixes are also included.
+Change 2 error messages to display sizes in MB, not bytes.
 
-Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
+qemu: initrd is too large, cannot support this. (max: 2047 MB, need 5833 MB)
 
+Also, distinguish 2 sites by adding "it" and "this" respectively.
+This tells a careful reader that the error above is from the 2nd size
+check.
 
-r~
+With MB displayed, I have to ask: is it coincidence that max == 2048-1 ?
+
+Signed-off-by: Jim Cromie <jim.cromie@gmail.com>
+---
+ hw/i386/x86.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/hw/i386/x86.c b/hw/i386/x86.c
+index a88a126123..0677fe2fd1 100644
+--- a/hw/i386/x86.c
++++ b/hw/i386/x86.c
+@@ -878,9 +878,9 @@ void x86_load_linux(X86MachineState *x86ms,
+                 initrd_size = g_mapped_file_get_length(mapped_file);
+                 initrd_max = x86ms->below_4g_mem_size - acpi_data_size - 1;
+                 if (initrd_size >= initrd_max) {
+-                    fprintf(stderr, "qemu: initrd is too large, cannot support."
+-                            "(max: %"PRIu32", need %"PRId64")\n",
+-                            initrd_max, (uint64_t)initrd_size);
++                    fprintf(stderr, "qemu: initrd is too large, cannot support it. "
++                            "(max: %"PRIu32" MB, need %"PRId64" MB)\n",
++                            initrd_max>>20, (uint64_t)initrd_size>>20);
+                     exit(1);
+                 }
+ 
+@@ -1023,9 +1023,9 @@ void x86_load_linux(X86MachineState *x86ms,
+         initrd_data = g_mapped_file_get_contents(mapped_file);
+         initrd_size = g_mapped_file_get_length(mapped_file);
+         if (initrd_size >= initrd_max) {
+-            fprintf(stderr, "qemu: initrd is too large, cannot support."
+-                    "(max: %"PRIu32", need %"PRId64")\n",
+-                    initrd_max, (uint64_t)initrd_size);
++            fprintf(stderr, "qemu: initrd is too large, cannot support this. "
++                    "(max: %"PRIu32" MB, need %"PRId64" MB)\n",
++                    initrd_max>>20, (uint64_t)initrd_size>>20);
+             exit(1);
+         }
+ 
+-- 
+2.41.0
 
 
