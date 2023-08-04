@@ -2,27 +2,27 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBF007708EA
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 21:21:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C60487708EB
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 21:21:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qS0Kd-0000hK-S3; Fri, 04 Aug 2023 15:19:27 -0400
+	id 1qS0Kd-0000YG-Ch; Fri, 04 Aug 2023 15:19:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qS0Kb-0000Ww-Ba; Fri, 04 Aug 2023 15:19:25 -0400
+ id 1qS0Ka-0000WC-3f; Fri, 04 Aug 2023 15:19:24 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qS0KY-0007Fd-Tn; Fri, 04 Aug 2023 15:19:25 -0400
+ id 1qS0KY-0007Ie-Kf; Fri, 04 Aug 2023 15:19:23 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 654921846F;
+ by isrv.corpit.ru (Postfix) with ESMTP id A88FB18470;
  Fri,  4 Aug 2023 22:17:16 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id D150B1B8B2;
- Fri,  4 Aug 2023 22:16:55 +0300 (MSK)
-Received: (nullmailer pid 1875775 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 2B76D1B8B3;
+ Fri,  4 Aug 2023 22:16:56 +0300 (MSK)
+Received: (nullmailer pid 1875778 invoked by uid 1000);
  Fri, 04 Aug 2023 19:16:49 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
@@ -30,10 +30,10 @@ Cc: qemu-stable@nongnu.org, Thomas Huth <thuth@redhat.com>,
  "Michael S . Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Peter Xu <peterx@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.4 61/63] hw/i386/intel_iommu: Fix index calculation in
- vtd_interrupt_remap_msi()
-Date: Fri,  4 Aug 2023 22:16:44 +0300
-Message-Id: <20230804191647.1875608-30-mjt@tls.msk.ru>
+Subject: [Stable-8.0.4 62/63] hw/i386/x86-iommu: Fix endianness issue in
+ x86_iommu_irq_to_msi_message()
+Date: Fri,  4 Aug 2023 22:16:45 +0300
+Message-Id: <20230804191647.1875608-31-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.4-20230804221634@cover.tls.msk.ru>
 References: <qemu-stable-8.0.4-20230804221634@cover.tls.msk.ru>
@@ -64,31 +64,31 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-The values in "addr" are populated locally in this function in host
-endian byte order, so we must not swap the index_l field here.
+The values in "msg" are assembled in host endian byte order (the other
+field are also not swapped), so we must not swap the __addr_head here.
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20230802135723.178083-5-thuth@redhat.com>
+Message-Id: <20230802135723.178083-6-thuth@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Peter Xu <peterx@redhat.com>
-(cherry picked from commit fcd8027423300b201b37842b88393dc5c6c8ee9e)
+(cherry picked from commit 37cf5cecb039a063c0abe3b51ae30f969e73aa84)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index 03becd6384..9e6ce71454 100644
---- a/hw/i386/intel_iommu.c
-+++ b/hw/i386/intel_iommu.c
-@@ -3458,7 +3458,7 @@ static int vtd_interrupt_remap_msi(IntelIOMMUState *iommu,
-         goto out;
-     }
+diff --git a/hw/i386/x86-iommu.c b/hw/i386/x86-iommu.c
+index 01d11325a6..726e9e1d16 100644
+--- a/hw/i386/x86-iommu.c
++++ b/hw/i386/x86-iommu.c
+@@ -63,7 +63,7 @@ void x86_iommu_irq_to_msi_message(X86IOMMUIrq *irq, MSIMessage *msg_out)
+     msg.redir_hint = irq->redir_hint;
+     msg.dest = irq->dest;
+     msg.__addr_hi = irq->dest & 0xffffff00;
+-    msg.__addr_head = cpu_to_le32(0xfee);
++    msg.__addr_head = 0xfee;
+     /* Keep this from original MSI address bits */
+     msg.__not_used = irq->msi_addr_last_bits;
  
--    index = addr.addr.index_h << 15 | le16_to_cpu(addr.addr.index_l);
-+    index = addr.addr.index_h << 15 | addr.addr.index_l;
- 
- #define  VTD_IR_MSI_DATA_SUBHANDLE       (0x0000ffff)
- #define  VTD_IR_MSI_DATA_RESERVED        (0xffff0000)
 -- 
 2.39.2
 
