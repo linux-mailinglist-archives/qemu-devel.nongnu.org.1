@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 049F9770849
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 20:56:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ACA2770855
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 20:57:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRzwX-0002Ln-Um; Fri, 04 Aug 2023 14:54:34 -0400
+	id 1qRzwj-0002Op-Nh; Fri, 04 Aug 2023 14:54:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qRzwK-0002KQ-EP; Fri, 04 Aug 2023 14:54:20 -0400
+ id 1qRzwe-0002Nq-M0; Fri, 04 Aug 2023 14:54:40 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qRzwI-00089t-WB; Fri, 04 Aug 2023 14:54:20 -0400
+ id 1qRzwd-00089y-8t; Fri, 04 Aug 2023 14:54:40 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 496571840E;
+ by isrv.corpit.ru (Postfix) with ESMTP id 703181840F;
  Fri,  4 Aug 2023 21:54:19 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id D96261B885;
- Fri,  4 Aug 2023 21:53:58 +0300 (MSK)
-Received: (nullmailer pid 1874224 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 16FB31B886;
+ Fri,  4 Aug 2023 21:53:59 +0300 (MSK)
+Received: (nullmailer pid 1874227 invoked by uid 1000);
  Fri, 04 Aug 2023 18:53:56 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Keith Packard <keithp@keithp.com>,
- Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.5 24/36] target/nios2: Pass semihosting arg to exit
-Date: Fri,  4 Aug 2023 21:53:37 +0300
-Message-Id: <20230804185350.1874133-11-mjt@tls.msk.ru>
+ Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.5 25/36] target/nios2: Fix semihost lseek offset
+ computation
+Date: Fri,  4 Aug 2023 21:53:38 +0300
+Message-Id: <20230804185350.1874133-12-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.5-20230804215319@cover.tls.msk.ru>
 References: <qemu-stable-7.2.5-20230804215319@cover.tls.msk.ru>
@@ -63,31 +63,32 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Keith Packard <keithp@keithp.com>
 
-Instead of using R_ARG0 (the semihost function number), use R_ARG1
-(the provided exit status).
+The arguments for deposit64 are (value, start, length, fieldval); this
+appears to have thought they were (value, fieldval, start,
+length). Reorder the parameters to match the actual function.
 
 Signed-off-by: Keith Packard <keithp@keithp.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Fixes: d1e23cbaa403b2d ("target/nios2: Use semihosting/syscalls.h")
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-Id: <20230801152245.332749-1-keithp@keithp.com>
+Message-Id: <20230731235245.295513-1-keithp@keithp.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-(cherry picked from commit c11d5bdae79a8edaf00dfcb2e49c064a50c67671)
+(cherry picked from commit 71e2dd6aa1bdbac19c661638a4ae91816002ac9e)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/target/nios2/nios2-semi.c b/target/nios2/nios2-semi.c
-index f76e8588c5..29ac27035e 100644
+index 29ac27035e..19a7d0e763 100644
 --- a/target/nios2/nios2-semi.c
 +++ b/target/nios2/nios2-semi.c
-@@ -132,8 +132,8 @@ void do_nios2_semihosting(CPUNios2State *env)
-     args = env->regs[R_ARG1];
-     switch (nr) {
-     case HOSTED_EXIT:
--        gdb_exit(env->regs[R_ARG0]);
--        exit(env->regs[R_ARG0]);
-+        gdb_exit(env->regs[R_ARG1]);
-+        exit(env->regs[R_ARG1]);
+@@ -168,7 +168,7 @@ void do_nios2_semihosting(CPUNios2State *env)
+         GET_ARG64(2);
+         GET_ARG64(3);
+         semihost_sys_lseek(cs, nios2_semi_u64_cb, arg0,
+-                           deposit64(arg2, arg1, 32, 32), arg3);
++                           deposit64(arg2, 32, 32, arg1), arg3);
+         break;
  
-     case HOSTED_OPEN:
-         GET_ARG(0);
+     case HOSTED_RENAME:
 -- 
 2.39.2
 
