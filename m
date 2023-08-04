@@ -2,40 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E3E47708DB
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 21:19:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 264327708D5
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 21:18:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qS0Iu-0000cN-Mg; Fri, 04 Aug 2023 15:17:40 -0400
+	id 1qS0JW-0001KQ-17; Fri, 04 Aug 2023 15:18:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qS0Is-0000bo-I5; Fri, 04 Aug 2023 15:17:38 -0400
+ id 1qS0JE-000150-LD; Fri, 04 Aug 2023 15:18:01 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qS0Iq-00071B-Vo; Fri, 04 Aug 2023 15:17:38 -0400
+ id 1qS0JB-00071K-Jq; Fri, 04 Aug 2023 15:17:58 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id DDC9618460;
- Fri,  4 Aug 2023 22:17:12 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 44C0918461;
+ Fri,  4 Aug 2023 22:17:13 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 6C0331B8A3;
+ by tsrv.corpit.ru (Postfix) with SMTP id A304F1B8A4;
  Fri,  4 Aug 2023 22:16:52 +0300 (MSK)
-Received: (nullmailer pid 1875729 invoked by uid 1000);
+Received: (nullmailer pid 1875732 invoked by uid 1000);
  Fri, 04 Aug 2023 19:16:49 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Anthony PERARD <anthony.perard@citrix.com>,
- Peter Maydell <peter.maydell@linaro.org>, Paul Durrant <paul@xen.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.4 46/63] xen-block: Avoid leaks on new error path
-Date: Fri,  4 Aug 2023 22:16:29 +0300
-Message-Id: <20230804191647.1875608-15-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ jiangyegen <jiangyegen@huawei.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.0.4 47/63] io: remove io watch if TLS channel is closed
+ during handshake
+Date: Fri,  4 Aug 2023 22:16:30 +0300
+Message-Id: <20230804191647.1875608-16-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.4-20230804221634@cover.tls.msk.ru>
 References: <qemu-stable-8.0.4-20230804221634@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -59,77 +61,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Anthony PERARD <anthony.perard@citrix.com>
+From: Daniel P. Berrangé <berrange@redhat.com>
 
-Commit 189829399070 ("xen-block: Use specific blockdev driver")
-introduced a new error path, without taking care of allocated
-resources.
+The TLS handshake make take some time to complete, during which time an
+I/O watch might be registered with the main loop. If the owner of the
+I/O channel invokes qio_channel_close() while the handshake is waiting
+to continue the I/O watch must be removed. Failing to remove it will
+later trigger the completion callback which the owner is not expecting
+to receive. In the case of the VNC server, this results in a SEGV as
+vnc_disconnect_start() tries to shutdown a client connection that is
+already gone / NULL.
 
-So only allocate the qdicts after the error check, and free both
-`filename` and `driver` when we are about to return and thus taking
-care of both success and error path.
-
-Coverity only spotted the leak of qdicts (*_layer variables).
-
-Reported-by: Peter Maydell <peter.maydell@linaro.org>
-Fixes: Coverity CID 1508722, 1398649
-Fixes: 189829399070 ("xen-block: Use specific blockdev driver")
-Signed-off-by: Anthony PERARD <anthony.perard@citrix.com>
-Reviewed-by: Paul Durrant <paul@xen.org>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-Id: <20230704171819.42564-1-anthony.perard@citrix.com>
-Signed-off-by: Anthony PERARD <anthony.perard@citrix.com>
-(cherry picked from commit aa36243514a777f76c8b8a19b1f8a71f27ec6c78)
+CVE-2023-3354
+Reported-by: jiangyegen <jiangyegen@huawei.com>
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+(cherry picked from commit 10be627d2b5ec2d6b3dce045144aa739eef678b4)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/block/xen-block.c b/hw/block/xen-block.c
-index f5a744589d..6ccb8a4a32 100644
---- a/hw/block/xen-block.c
-+++ b/hw/block/xen-block.c
-@@ -763,14 +763,15 @@ static XenBlockDrive *xen_block_drive_create(const char *id,
-     drive = g_new0(XenBlockDrive, 1);
-     drive->id = g_strdup(id);
+diff --git a/include/io/channel-tls.h b/include/io/channel-tls.h
+index 5672479e9e..26c67f17e2 100644
+--- a/include/io/channel-tls.h
++++ b/include/io/channel-tls.h
+@@ -48,6 +48,7 @@ struct QIOChannelTLS {
+     QIOChannel *master;
+     QCryptoTLSSession *session;
+     QIOChannelShutdown shutdown;
++    guint hs_ioc_tag;
+ };
  
--    file_layer = qdict_new();
--    driver_layer = qdict_new();
--
-     rc = stat(filename, &st);
-     if (rc) {
-         error_setg_errno(errp, errno, "Could not stat file '%s'", filename);
-         goto done;
+ /**
+diff --git a/io/channel-tls.c b/io/channel-tls.c
+index 9805dd0a3f..847d5297c3 100644
+--- a/io/channel-tls.c
++++ b/io/channel-tls.c
+@@ -198,12 +198,13 @@ static void qio_channel_tls_handshake_task(QIOChannelTLS *ioc,
+         }
+ 
+         trace_qio_channel_tls_handshake_pending(ioc, status);
+-        qio_channel_add_watch_full(ioc->master,
+-                                   condition,
+-                                   qio_channel_tls_handshake_io,
+-                                   data,
+-                                   NULL,
+-                                   context);
++        ioc->hs_ioc_tag =
++            qio_channel_add_watch_full(ioc->master,
++                                       condition,
++                                       qio_channel_tls_handshake_io,
++                                       data,
++                                       NULL,
++                                       context);
      }
+ }
+ 
+@@ -218,6 +219,7 @@ static gboolean qio_channel_tls_handshake_io(QIOChannel *ioc,
+     QIOChannelTLS *tioc = QIO_CHANNEL_TLS(
+         qio_task_get_source(task));
+ 
++    tioc->hs_ioc_tag = 0;
+     g_free(data);
+     qio_channel_tls_handshake_task(tioc, task, context);
+ 
+@@ -378,6 +380,10 @@ static int qio_channel_tls_close(QIOChannel *ioc,
+ {
+     QIOChannelTLS *tioc = QIO_CHANNEL_TLS(ioc);
+ 
++    if (tioc->hs_ioc_tag) {
++        g_clear_handle_id(&tioc->hs_ioc_tag, g_source_remove);
++    }
 +
-+    file_layer = qdict_new();
-+    driver_layer = qdict_new();
-+
-     if (S_ISBLK(st.st_mode)) {
-         qdict_put_str(file_layer, "driver", "host_device");
-     } else {
-@@ -778,7 +779,6 @@ static XenBlockDrive *xen_block_drive_create(const char *id,
-     }
+     return qio_channel_close(tioc->master, errp);
+ }
  
-     qdict_put_str(file_layer, "filename", filename);
--    g_free(filename);
- 
-     if (mode && *mode != 'w') {
-         qdict_put_bool(file_layer, "read-only", true);
-@@ -813,7 +813,6 @@ static XenBlockDrive *xen_block_drive_create(const char *id,
-     qdict_put_str(file_layer, "locking", "off");
- 
-     qdict_put_str(driver_layer, "driver", driver);
--    g_free(driver);
- 
-     qdict_put(driver_layer, "file", file_layer);
- 
-@@ -824,6 +823,8 @@ static XenBlockDrive *xen_block_drive_create(const char *id,
-     qobject_unref(driver_layer);
- 
- done:
-+    g_free(filename);
-+    g_free(driver);
-     if (*errp) {
-         xen_block_drive_destroy(drive, NULL);
-         return NULL;
 -- 
 2.39.2
 
