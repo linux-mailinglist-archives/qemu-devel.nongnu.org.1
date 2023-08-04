@@ -2,69 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F52E7704B3
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 17:30:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E83BD7704B6
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 17:31:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRwl1-0006D2-3y; Fri, 04 Aug 2023 11:30:28 -0400
+	id 1qRwl1-0006Dl-4D; Fri, 04 Aug 2023 11:30:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qRwkv-0006Au-9y; Fri, 04 Aug 2023 11:30:21 -0400
-Received: from mail-ot1-x332.google.com ([2607:f8b0:4864:20::332])
+ id 1qRwkv-0006CZ-OH; Fri, 04 Aug 2023 11:30:21 -0400
+Received: from mail-oa1-x34.google.com ([2001:4860:4864:20::34])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qRwkt-0004LY-OZ; Fri, 04 Aug 2023 11:30:21 -0400
-Received: by mail-ot1-x332.google.com with SMTP id
- 46e09a7af769-6bcd4b5ebbaso769078a34.1; 
- Fri, 04 Aug 2023 08:30:16 -0700 (PDT)
+ id 1qRwku-0004MJ-6v; Fri, 04 Aug 2023 11:30:21 -0400
+Received: by mail-oa1-x34.google.com with SMTP id
+ 586e51a60fabf-1bbaa549bcbso1652298fac.3; 
+ Fri, 04 Aug 2023 08:30:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1691163015; x=1691767815;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=cjiyicEk3Y9Yrss7LlYTwAlVsgSRcEm72ZZwgwcPRyE=;
- b=K1Cdaus6mPlwFMGjqvjuWEiYXrr/Ds4+quEvd0e/9kmfaJf9TIbV+kIY8wn1HTljYy
- HSgnSwdYv/WjKLbIHKvbSeBam/yYhKHp18l6v+Iaq0r8gOua0emyeK8yD07jxFi1ryil
- Z5iZftqexB1DgYbPanZ93sKJvFfJfH8PTKhgkskDTfA5LaLejUN+R/loYX2j9fWi3Vmh
- +KhdBzYImoMPm14oOYY7pSlYLtH8fanK0XdCjr9D/JLYAecth/kknTDt2oPzgy5zDW5e
- qQDQPw7RCKQRyBnndLnfvNz0CESB7c7gwYaQmtf8sYL89ftcR3VBmw9F6jh3DQoQULpl
- CWNQ==
+ d=gmail.com; s=20221208; t=1691163018; x=1691767818;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Rk0ufMi3dk4kgrpp1bd4RIeLfZAozZ6yw2JFgmfTZA8=;
+ b=JSSyHIMrHARa0qJo4H34TTLe+jAHDuOSf/RjraGz51jFoTVsInERVCfZKNE0k8Ssmx
+ SkyGD1Rh03JhakLsU0K09+qD2cTm8R3i1nUtSGL9uG3RvEMfUqZ17V0hBF+83uTmfREr
+ RBtmKS1FR3tWDSl8UDq23Y3fsQgkda6w03FN6yBsor1e2VPegFTE42wdZRWy1h603FZ/
+ ykfGdUP1HsgWd7OahAV45LdJq5CQVE/qZE6HRk3JYCMakp0iF18oZ/UPQNKGlz6S1JR8
+ tL0Y2Pk9iaDrNaWsjBUEneNSgLf/GJ89lBxEhrs+ZGaJ6Cct7vyVkD8Q2YBjTSWwuxkK
+ Cmhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691163015; x=1691767815;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=cjiyicEk3Y9Yrss7LlYTwAlVsgSRcEm72ZZwgwcPRyE=;
- b=e+VKJQ3k+3haKYL+sNZBYOWwL/Za7d6bm4xaJhAJRUFkZRsehxXi8KPaZoqp3nq3ML
- +BrzbCqDC4EdTnLT3bFwCtImYPZ7L3Q7PPoBReXIzZZnMR7qEALjBMiPKiox8oW7Vnil
- 6udeuB2XZ3D4AeMiEsoJG4f4mnqsXuamfTDhr4lqmfWjUl/Z+6MpoYlteIK4HaeWe9uC
- YagArqVqCTDG3FvCD2kY4WUlhgKpLTZQR9BnCgUr81VQw723ZtxU6W/KoLiRhM7lT7lx
- V9c+tt+PawUpJQj9R+C/JL9rLhbq0/0gbxfI5Z3dAEKRtilaffHLv9deBb5t+MrfC3J0
- C1Sg==
-X-Gm-Message-State: AOJu0YwuOw/2yvqQyzkmXhlHV1gJmLv0X0rppOAUSdGJhsF+5/gP2CwJ
- yUx2fIXwC99pvHGXy3a2MmHImrt+t6Y=
-X-Google-Smtp-Source: AGHT+IFoIUnMN5ounnN29KTuuJc5+KCFRiULMvggSFOM4saq0KKCAyEoQkMuUSlCjEB654coPi801A==
-X-Received: by 2002:a05:6870:8089:b0:1be:fdae:601b with SMTP id
- q9-20020a056870808900b001befdae601bmr2981089oab.52.1691163015717; 
- Fri, 04 Aug 2023 08:30:15 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1691163018; x=1691767818;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Rk0ufMi3dk4kgrpp1bd4RIeLfZAozZ6yw2JFgmfTZA8=;
+ b=PzEwd4vcIRKtcVMwAqTdUS5/KtFheiUzc9mAcuEWnHrv5HiO1ZIjuzk3faB8eOjWQU
+ gy/SPvHD+edizrtLkgXbe9ERCTB9RUdwjgljP4rzZ5MCE6YdsRvlONOF52EnV++zEIEP
+ kkQOEWXz4t2D7NSDzvzJ+tqDhWQiMrtPjZXNm6R0azPTPjIzPMTPCeQzzCuvAPPTzRo6
+ QvVnvGONaEgm4kMp4C0swR0DCp4EVbayfC71wQqu+JLoedSLQPGcpd1r5dH+7/SplzbI
+ RtQ3/rLsMe/DxaqytP3JASNmoVTbWdpYOi3YHY1pBWGfViQSoToPLYGeLdBOjY1liFVY
+ QtAg==
+X-Gm-Message-State: AOJu0YxuNfaA6fL+WrhsDmOqi8WgX1NDXlP6GkN2jCsJlKdqR//krCNh
+ ThvNSvCI5rsQq8GxaSvPBj798ORNp+M=
+X-Google-Smtp-Source: AGHT+IE2U90/MbOuDtdthMIXToy5323jqJvUVXCkcFk3uSBPvDGqS29ZnhPn/6ycCU4Fa9ML+TCj7w==
+X-Received: by 2002:a05:6870:2050:b0:1be:deef:748a with SMTP id
+ l16-20020a056870205000b001bedeef748amr2900012oad.50.1691163018153; 
+ Fri, 04 Aug 2023 08:30:18 -0700 (PDT)
 Received: from grind.. ([177.197.108.190]) by smtp.gmail.com with ESMTPSA id
- q4-20020a4a4b04000000b00560b1febfdfsm1115761ooa.10.2023.08.04.08.30.13
+ q4-20020a4a4b04000000b00560b1febfdfsm1115761ooa.10.2023.08.04.08.30.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 04 Aug 2023 08:30:15 -0700 (PDT)
+ Fri, 04 Aug 2023 08:30:17 -0700 (PDT)
 From: Daniel Henrique Barboza <danielhb413@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, danielhb413@gmail.com, peter.maydell@linaro.org,
- richard.henderson@linaro.org
-Subject: [PULL 0/7] ppc queue
-Date: Fri,  4 Aug 2023 12:29:48 -0300
-Message-ID: <20230804152955.22316-1-danielhb413@gmail.com>
+ richard.henderson@linaro.org, BALATON Zoltan <balaton@eik.bme.hu>
+Subject: [PULL 1/7] ppc/pegasos2: Fix reset state of USB functions
+Date: Fri,  4 Aug 2023 12:29:49 -0300
+Message-ID: <20230804152955.22316-2-danielhb413@gmail.com>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230804152955.22316-1-danielhb413@gmail.com>
+References: <20230804152955.22316-1-danielhb413@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::332;
- envelope-from=danielhb413@gmail.com; helo=mail-ot1-x332.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::34;
+ envelope-from=danielhb413@gmail.com; helo=mail-oa1-x34.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -88,39 +90,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit c26d005e62f4fd177dae0cd70c24cb96761edebc:
+From: BALATON Zoltan <balaton@eik.bme.hu>
 
-  Merge tag 'hppa-linux-user-speedup-pull-request' of https://github.com/hdeller/qemu-hppa into staging (2023-08-03 18:49:45 -0700)
+The original non-free board firmware sets the command register of the
+USB functions to 7 and some guests rely on this for working USB. Match
+what the board firmware does when using VOF instead.
 
-are available in the Git repository at:
+Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+Reviewed-by: Daniel Henrique Barboza <danielhb413@gmail.com>
+Message-ID: <06a2b864431425f23d1f2b5abf0c027819ac11c6.1689725688.git.balaton@eik.bme.hu>
+Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
+---
+ hw/ppc/pegasos2.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-  https://gitlab.com/danielhb/qemu.git tags/pull-ppc-20230804
+diff --git a/hw/ppc/pegasos2.c b/hw/ppc/pegasos2.c
+index 4447bbe8ec..4a2ab35f19 100644
+--- a/hw/ppc/pegasos2.c
++++ b/hw/ppc/pegasos2.c
+@@ -324,9 +324,13 @@ static void pegasos2_machine_reset(MachineState *machine, ShutdownCause reason)
+ 
+     pegasos2_pci_config_write(pm, 1, (PCI_DEVFN(12, 2) << 8) |
+                               PCI_INTERRUPT_LINE, 2, 0x409);
++    pegasos2_pci_config_write(pm, 1, (PCI_DEVFN(12, 2) << 8) |
++                              PCI_COMMAND, 2, 0x7);
+ 
+     pegasos2_pci_config_write(pm, 1, (PCI_DEVFN(12, 3) << 8) |
+                               PCI_INTERRUPT_LINE, 2, 0x409);
++    pegasos2_pci_config_write(pm, 1, (PCI_DEVFN(12, 3) << 8) |
++                              PCI_COMMAND, 2, 0x7);
+ 
+     pegasos2_pci_config_write(pm, 1, (PCI_DEVFN(12, 4) << 8) |
+                               PCI_INTERRUPT_LINE, 2, 0x9);
+-- 
+2.41.0
 
-for you to fetch changes up to 0e2a3ec36885f6d79a96230f582d4455878c6373:
-
-  target/ppc: Fix VRMA page size for ISA v3.0 (2023-08-04 12:22:03 -0300)
-
-----------------------------------------------------------------
-ppc patch queue for 2023-08-04:
-
-This queue contains target/ppc register and VRMA fixes for 8.1. pegasos2
-fixes are also included.
-
-----------------------------------------------------------------
-BALATON Zoltan (4):
-      ppc/pegasos2: Fix reset state of USB functions
-      ppc/pegasos2: Fix reg property of ROM BARs
-      ppc/pegasos2: Fix naming of device tree nodes
-      ppc/pegasos2: Fix reg property of 64 bit BARs in device tree
-
-Nicholas Piggin (3):
-      target/ppc: Implement ASDR register for ISA v3.0 for HPT
-      target/ppc: Fix pending HDEC when entering PM state
-      target/ppc: Fix VRMA page size for ISA v3.0
-
- hw/ppc/pegasos2.c        | 24 ++++++++++++++--
- target/ppc/excp_helper.c |  6 ++++
- target/ppc/mmu-hash64.c  | 72 ++++++++++++++++++++++++++++++++++++------------
- target/ppc/mmu-hash64.h  |  5 ++++
- 4 files changed, 88 insertions(+), 19 deletions(-)
 
