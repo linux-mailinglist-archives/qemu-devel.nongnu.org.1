@@ -2,76 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57CF076FBC1
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 10:14:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03CC776FC62
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 10:48:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRpwE-0006GP-1N; Fri, 04 Aug 2023 04:13:34 -0400
+	id 1qRqSY-0006XB-Ga; Fri, 04 Aug 2023 04:46:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1qRpwC-0006GF-Hm
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 04:13:32 -0400
-Received: from mgamail.intel.com ([192.55.52.88])
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qRqSX-0006Wz-4h
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 04:46:57 -0400
+Received: from mout.gmx.net ([212.227.17.20])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1qRpwA-0003PD-IL
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 04:13:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1691136810; x=1722672810;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=aangjT9AAuLzr3taMjaBp8tQSVQaBgPCmOPsCfcW2E4=;
- b=bk7xjb7WulaqLin7VEy1gTzq09mAkld2AjuHqbR7esZWbIasEy015MF/
- Yv31bYd2l2LvLGO7GWSgoYvH4DGEbjE4y8iqK1g+G+FjzsHr5S/qtS1wf
- 0ekvlqDDap5DOju0GKiFGp49m24MPQiUQV2uNivV+uNHg5ZXeHF4LE7Vy
- M802EJzAlhgoYMS8khLTf8+0nUIVx6fvjaNSZ8d0LHx13PIDDzaH67Fnf
- MCB8ynZTR0LNz39TV5CZ3ZwjNO6H7BNw9dJppoOLRHqu8/A+qu5WAdftr
- KdOysH+qLpPxFjkhbh/+bQQp/bB15ybL/iCBOBU2h9ZW06QnWLlzIVVJj g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10791"; a="401055677"
-X-IronPort-AV: E=Sophos;i="6.01,254,1684825200"; d="scan'208";a="401055677"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
- by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Aug 2023 01:12:44 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.01,202,1684825200"; d="scan'208";a="873280764"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.28])
- by fmsmga001.fm.intel.com with ESMTP; 04 Aug 2023 01:12:43 -0700
-Date: Fri, 4 Aug 2023 16:23:09 +0800
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: "Moger, Babu" <babu.moger@amd.com>
-Cc: Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
- Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Xiaoyao Li <xiaoyao.li@intel.com>, Zhao Liu <zhao1.liu@intel.com>,
- Robert Hoo <robert.hu@linux.intel.com>
-Subject: Re: [PATCH v3 06/17] i386/cpu: Consolidate the use of topo_info in
- cpu_x86_cpuid()
-Message-ID: <ZMy1bcxc9prSUcIS@liuzhao-OptiPlex-7080>
-References: <20230801103527.397756-1-zhao1.liu@linux.intel.com>
- <20230801103527.397756-7-zhao1.liu@linux.intel.com>
- <c0307538-e1cc-f675-8c5e-1973f40fdaaa@amd.com>
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qRqSU-0000Hk-VC
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 04:46:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
+ s=s31663417; t=1691138812; x=1691743612; i=deller@gmx.de;
+ bh=W4IpvJIxMRKVuZixXKDGMafBU5hIBdSYbG4FigxE6Lw=;
+ h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+ b=kAtpPCa7MaZstLkzhX/5r454qUQuGfnlS8Pv1EPtPndlmfIGxcFVM+N/9HS0jcmtgIj/ar1
+ 1naWTxJQ5rDVtXfXmI7TswtzExkMl3W/iwe974bn7AKA1y/9I24UNgqnS0pFHYBUAex7iA+Ez
+ mbZLlxL+Ru766YJw+tpiK/PNqXmDjGeuotftIMzkAC6peaEodEfX7kHvkL/OMVyzocBdtoicc
+ QajIkoLQwsx7eSngIMrFyGi4Q6zi04HlRWSdJQncVGLEbHQ7sDJFB26zElqBdEoiPZ5SY74K7
+ Rm7vQZ/zXjVHHOFOd/2L4culPn5SG1aQIMEH5MWyoO/syQYd+Dig==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from p100.fritz.box ([94.134.152.187]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MuDbx-1pXx0z1l4X-00ubLH; Fri, 04
+ Aug 2023 10:46:52 +0200
+From: Helge Deller <deller@gmx.de>
+To: qemu-devel@nongnu.org,
+	Richard Henderson <richard.henderson@linaro.org>
+Cc: Helge Deller <deller@gmx.de>
+Subject: [PATCH] linux-user: Show heap address in /proc/pid/maps
+Date: Fri,  4 Aug 2023 10:46:45 +0200
+Message-ID: <20230804084645.36077-1-deller@gmx.de>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c0307538-e1cc-f675-8c5e-1973f40fdaaa@amd.com>
-Received-SPF: none client-ip=192.55.52.88;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:Fun48LZ2kjlRGMvUWML9+Y5T5RuKBAC8cYl1YaUR8ssQSvJnLzN
+ AInsDT2CyarPG3Ckp97n9b0ui28UM7rjJikfct2zpmZZ0olhhLv+MXffoatFKV9U6kqkcHC
+ pHbVtLvz24R4gqNGUMtpagBe2Sv2+swryGuLAGbHqW5gWr2Fu2vQ/c4SP+lr8GwQtze7dkh
+ 6ePKskLV+ihbpzqN/enPQ==
+UI-OutboundReport: notjunk:1;M01:P0:DgHNV1xD0KY=;kFf+vUz/0EIZlC/mKR3Y9XLL04k
+ aE/cQe4omqbceWA0rG5zSFZ6FwxBiJNUFCOZo58SXmxRdqhlgYxXJwN2d1cfZ+VpVsqKO9N6Q
+ C7cCCHT1R19FpyjA72CMbf/XsgH2e7DYgeFJyirqi40M6Dtcnv8/hIbmwnFpBojETnaDj79Cr
+ QJjdVcGfcH46+SN2ChLbKOmh7WsSC5XlOTDmD84UeL7oG9Rx96z/NYOiZgBAVep8cr34XC+tD
+ +y5HNqdfATGnj2NKtioQn1J4d3IUSdOElCWDIZSlfCd/dNSKsoO0r4a2eK4vxkSgq5Hb0IerB
+ kKJ1OazdwpoS73JbH0wvIrAIyVl79zJCuvRsnL6c1dJ+BZQ7AcmlwLE8EKY6auWkPda61MZ4z
+ t6IRPXt10URGDiYz8muhVZRdj1/4Xr8ylr83IMoYYyCYFyA9wMOeQdfGnwFHAB+3zjlAC2oWD
+ MqVjcRB9X9bdKbsG61cC/lIlGdrGZS1Uykxd8kEtK16RgMmUnA8bycJS/OxaHmAUry/JBQ4VI
+ 3ne37+3bVknNmYDUVz7JerOy9421r68OnanV9lrk5fCsHDF/BzB0ZG3nZR64NE0qgjUHRUnSn
+ 9rUO+SHGrUpwHIFXr8CA2eTy+/KlgtEAtVDP25mUGeRRkL7DjF48Kadf/b/e36TjVFisPMo0R
+ 66QbTCkPKfrlpShCYpZgFaDYnMb0MwJ290Ox2W2dq7GVaTIoTJ9zH/0R9vNkqhD+BmbcCae5D
+ apf4ZIwsC++nn/uZUE4GRaPVaODGVvWTT/0gmY7nQntxzTqu9IVzZmGHMhMgq8jPTliWOWsPP
+ Pb4uus8kUGf+tfgAQq2m5zouI3H33j+6uezatSoeLNULLcpZjutdvdKLc3qOumrmmgg/F41QV
+ NyCwFAdmZlQ+UV78cRogmmzfv9NOyTSpodzVDtccCrbRPJyp5/UGj1+RSgZa3b/apNazwYzWP
+ CRhsCITIZsU/Y5h87Yl9Ne8NmQo=
+Received-SPF: pass client-ip=212.227.17.20; envelope-from=deller@gmx.de;
+ helo=mout.gmx.net
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,179 +82,136 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Babu,
+Show the memory location of the heap in the /proc/pid/maps file inside
+the guest. Store the heap address in ts->heap_base, which requires to
+make that variable accessible for all guest architectures, not just
+architectures for semihosted binaries (arm, m68k, riscv).
 
-On Wed, Aug 02, 2023 at 11:31:46AM -0500, Moger, Babu wrote:
-> Date: Wed, 2 Aug 2023 11:31:46 -0500
-> From: "Moger, Babu" <babu.moger@amd.com>
-> Subject: Re: [PATCH v3 06/17] i386/cpu: Consolidate the use of topo_info in
->  cpu_x86_cpuid()
-> 
-> Hi Zhao,
-> 
-> On 8/1/23 05:35, Zhao Liu wrote:
-> > From: Zhao Liu <zhao1.liu@intel.com>
-> > 
-> > In cpu_x86_cpuid(), there are many variables in representing the cpu
-> > topology, e.g., topo_info, cs->nr_cores/cs->nr_threads.
-> > 
-> > Since the names of cs->nr_cores/cs->nr_threads does not accurately
-> > represent its meaning, the use of cs->nr_cores/cs->nr_threads is prone
-> > to confusion and mistakes.
-> > 
-> > And the structure X86CPUTopoInfo names its memebers clearly, thus the
-> 
-> s/memebers/members/
+Show 32- and 64-bit pointers with 8 digits and leading zeros (%08x/%08lx).
+For 64-bit we could use %16lx, but we mimic the Linux kernel, which shows
+even 64-bit addresses with %08lx.
 
-Thanks! I'll be more careful with my spelling.
+Example:
 
--Zhao
+user@machine:/# uname -a
+Linux paq 5.15.88+ #47 SMP Sun Jan 15 12:53:11 CET 2023 aarch64 GNU/Linux
 
+user@machine:/# cat /proc/self/maps
+Linux p100 6.4.4-200.fc38.x86_64 #1 SMP PREEMPT_DYNAMIC Wed Jul 19 16:32:4=
+9 UTC 2023 aarch64 GNU/Linux
+5500000000-5500009000 r-xp 00000000 fd:00 570430                         /=
+usr/bin/cat
+5500009000-550001f000 ---p 00000000 00:00 0
+550001f000-5500020000 r--p 0000f000 fd:00 570430                         /=
+usr/bin/cat
+5500020000-5500021000 rw-p 00010000 fd:00 570430                         /=
+usr/bin/cat
+5500021000-5500042000 rw-p 00000000 00:00 0                              [=
+heap]
+7000000000-7000001000 ---p 00000000 00:00 0
+7000001000-7000801000 rw-p 00000000 00:00 0                              [=
+stack]
+7000801000-7000827000 r-xp 00000000 fd:00 571555                         /=
+usr/lib/aarch64-linux-gnu/ld-linux-aarch64.so.1
+7000827000-700083f000 ---p 00000000 00:00 0
+700083f000-7000841000 r--p 0002e000 fd:00 571555                         /=
+usr/lib/aarch64-linux-gnu/ld-linux-aarch64.so.1
+7000841000-7000843000 rw-p 00030000 fd:00 571555                         /=
+usr/lib/aarch64-linux-gnu/ld-linux-aarch64.so.1
+7000843000-7000844000 r-xp 00000000 00:00 0
+7000844000-7000846000 rw-p 00000000 00:00 0
+7000850000-70009d7000 r-xp 00000000 fd:00 571558                         /=
+usr/lib/aarch64-linux-gnu/libc.so.6
+70009d7000-70009ed000 ---p 00187000 fd:00 571558                         /=
+usr/lib/aarch64-linux-gnu/libc.so.6
+70009ed000-70009f0000 r--p 0018d000 fd:00 571558                         /=
+usr/lib/aarch64-linux-gnu/libc.so.6
+70009f0000-70009f2000 rw-p 00190000 fd:00 571558                         /=
+usr/lib/aarch64-linux-gnu/libc.so.6
 
-> Thanks
-> Babu
-> 
-> > variable "topo_info" should be preferred.
-> > 
-> > In addition, in cpu_x86_cpuid(), to uniformly use the topology variable,
-> > replace env->dies with topo_info.dies_per_pkg as well.
-> > 
-> > Suggested-by: Robert Hoo <robert.hu@linux.intel.com>
-> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-> > ---
-> > Changes since v1:
-> >  * Extract cores_per_socket from the code block and use it as a local
-> >    variable for cpu_x86_cpuid(). (Yanan)
-> >  * Remove vcpus_per_socket variable and use cpus_per_pkg directly.
-> >    (Yanan)
-> >  * Replace env->dies with topo_info.dies_per_pkg in cpu_x86_cpuid().
-> > ---
-> >  target/i386/cpu.c | 31 ++++++++++++++++++-------------
-> >  1 file changed, 18 insertions(+), 13 deletions(-)
-> > 
-> > diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> > index c80613bfcded..fc50bf98c60e 100644
-> > --- a/target/i386/cpu.c
-> > +++ b/target/i386/cpu.c
-> > @@ -6008,11 +6008,16 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-> >      uint32_t limit;
-> >      uint32_t signature[3];
-> >      X86CPUTopoInfo topo_info;
-> > +    uint32_t cores_per_pkg;
-> > +    uint32_t cpus_per_pkg;
-> >  
-> >      topo_info.dies_per_pkg = env->nr_dies;
-> >      topo_info.cores_per_die = cs->nr_cores / env->nr_dies;
-> >      topo_info.threads_per_core = cs->nr_threads;
-> >  
-> > +    cores_per_pkg = topo_info.cores_per_die * topo_info.dies_per_pkg;
-> > +    cpus_per_pkg = cores_per_pkg * topo_info.threads_per_core;
-> > +
-> >      /* Calculate & apply limits for different index ranges */
-> >      if (index >= 0xC0000000) {
-> >          limit = env->cpuid_xlevel2;
-> > @@ -6048,8 +6053,8 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-> >              *ecx |= CPUID_EXT_OSXSAVE;
-> >          }
-> >          *edx = env->features[FEAT_1_EDX];
-> > -        if (cs->nr_cores * cs->nr_threads > 1) {
-> > -            *ebx |= (cs->nr_cores * cs->nr_threads) << 16;
-> > +        if (cpus_per_pkg > 1) {
-> > +            *ebx |= cpus_per_pkg << 16;
-> >              *edx |= CPUID_HT;
-> >          }
-> >          if (!cpu->enable_pmu) {
-> > @@ -6086,8 +6091,8 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-> >               */
-> >              if (*eax & 31) {
-> >                  int host_vcpus_per_cache = 1 + ((*eax & 0x3FFC000) >> 14);
-> > -                int vcpus_per_socket = cs->nr_cores * cs->nr_threads;
-> > -                if (cs->nr_cores > 1) {
-> > +
-> > +                if (cores_per_pkg > 1) {
-> >                      int addressable_cores_offset =
-> >                                                  apicid_pkg_offset(&topo_info) -
-> >                                                  apicid_core_offset(&topo_info);
-> > @@ -6095,7 +6100,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-> >                      *eax &= ~0xFC000000;
-> >                      *eax |= (1 << addressable_cores_offset - 1) << 26;
-> >                  }
-> > -                if (host_vcpus_per_cache > vcpus_per_socket) {
-> > +                if (host_vcpus_per_cache > cpus_per_pkg) {
-> >                      int pkg_offset = apicid_pkg_offset(&topo_info);
-> >  
-> >                      *eax &= ~0x3FFC000;
-> > @@ -6240,12 +6245,12 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-> >          switch (count) {
-> >          case 0:
-> >              *eax = apicid_core_offset(&topo_info);
-> > -            *ebx = cs->nr_threads;
-> > +            *ebx = topo_info.threads_per_core;
-> >              *ecx |= CPUID_TOPOLOGY_LEVEL_SMT;
-> >              break;
-> >          case 1:
-> >              *eax = apicid_pkg_offset(&topo_info);
-> > -            *ebx = cs->nr_cores * cs->nr_threads;
-> > +            *ebx = cpus_per_pkg;
-> >              *ecx |= CPUID_TOPOLOGY_LEVEL_CORE;
-> >              break;
-> >          default:
-> > @@ -6266,7 +6271,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-> >          break;
-> >      case 0x1F:
-> >          /* V2 Extended Topology Enumeration Leaf */
-> > -        if (env->nr_dies < 2) {
-> > +        if (topo_info.dies_per_pkg < 2) {
-> >              *eax = *ebx = *ecx = *edx = 0;
-> >              break;
-> >          }
-> > @@ -6276,7 +6281,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-> >          switch (count) {
-> >          case 0:
-> >              *eax = apicid_core_offset(&topo_info);
-> > -            *ebx = cs->nr_threads;
-> > +            *ebx = topo_info.threads_per_core;
-> >              *ecx |= CPUID_TOPOLOGY_LEVEL_SMT;
-> >              break;
-> >          case 1:
-> > @@ -6286,7 +6291,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-> >              break;
-> >          case 2:
-> >              *eax = apicid_pkg_offset(&topo_info);
-> > -            *ebx = cs->nr_cores * cs->nr_threads;
-> > +            *ebx = cpus_per_pkg;
-> >              *ecx |= CPUID_TOPOLOGY_LEVEL_DIE;
-> >              break;
-> >          default:
-> > @@ -6511,7 +6516,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-> >           * discards multiple thread information if it is set.
-> >           * So don't set it here for Intel to make Linux guests happy.
-> >           */
-> > -        if (cs->nr_cores * cs->nr_threads > 1) {
-> > +        if (cpus_per_pkg > 1) {
-> >              if (env->cpuid_vendor1 != CPUID_VENDOR_INTEL_1 ||
-> >                  env->cpuid_vendor2 != CPUID_VENDOR_INTEL_2 ||
-> >                  env->cpuid_vendor3 != CPUID_VENDOR_INTEL_3) {
-> > @@ -6577,7 +6582,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-> >               *eax |= (cpu_x86_virtual_addr_width(env) << 8);
-> >          }
-> >          *ebx = env->features[FEAT_8000_0008_EBX];
-> > -        if (cs->nr_cores * cs->nr_threads > 1) {
-> > +        if (cpus_per_pkg > 1) {
-> >              /*
-> >               * Bits 15:12 is "The number of bits in the initial
-> >               * Core::X86::Apic::ApicId[ApicId] value that indicate
-> > @@ -6585,7 +6590,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-> >               * Bits 7:0 is "The number of threads in the package is NC+1"
-> >               */
-> >              *ecx = (apicid_pkg_offset(&topo_info) << 12) |
-> > -                   ((cs->nr_cores * cs->nr_threads) - 1);
-> > +                   (cpus_per_pkg - 1);
-> >          } else {
-> >              *ecx = 0;
-> >          }
-> 
-> -- 
-> Thanks
-> Babu Moger
+Signed-off-by: Helge Deller <deller@gmx.de>
+=2D--
+ include/exec/cpu_ldst.h | 4 ++--
+ linux-user/main.c       | 1 +
+ linux-user/qemu.h       | 4 ++--
+ linux-user/syscall.c    | 8 ++++++--
+ 4 files changed, 11 insertions(+), 6 deletions(-)
+
+diff --git a/include/exec/cpu_ldst.h b/include/exec/cpu_ldst.h
+index 645476f0e5..f1e6f31e88 100644
+=2D-- a/include/exec/cpu_ldst.h
++++ b/include/exec/cpu_ldst.h
+@@ -72,10 +72,10 @@
+  */
+ #if TARGET_VIRT_ADDR_SPACE_BITS <=3D 32
+ typedef uint32_t abi_ptr;
+-#define TARGET_ABI_FMT_ptr "%x"
++#define TARGET_ABI_FMT_ptr "%08x"
+ #else
+ typedef uint64_t abi_ptr;
+-#define TARGET_ABI_FMT_ptr "%"PRIx64
++#define TARGET_ABI_FMT_ptr "%08"PRIx64
+ #endif
+
+ #ifndef TARGET_TAGGED_ADDRESSES
+diff --git a/linux-user/main.c b/linux-user/main.c
+index 51ee8649e2..c1838f5d4f 100644
+=2D-- a/linux-user/main.c
++++ b/linux-user/main.c
+@@ -986,6 +986,7 @@ int main(int argc, char **argv, char **envp)
+        the real value of GUEST_BASE into account.  */
+     tcg_prologue_init(tcg_ctx);
+
++    ts->heap_base =3D info->brk;
+     target_cpu_copy_regs(env, regs);
+
+     if (gdbstub) {
+diff --git a/linux-user/qemu.h b/linux-user/qemu.h
+index 4f8b55e2fb..6d08453124 100644
+=2D-- a/linux-user/qemu.h
++++ b/linux-user/qemu.h
+@@ -119,11 +119,11 @@ typedef struct TaskState {
+ #ifdef TARGET_M68K
+     abi_ulong tp_value;
+ #endif
+-#if defined(TARGET_ARM) || defined(TARGET_M68K) || defined(TARGET_RISCV)
++
+     /* Extra fields for semihosted binaries.  */
+     abi_ulong heap_base;
+     abi_ulong heap_limit;
+-#endif
++
+     abi_ulong stack_base;
+     int used; /* non zero if used */
+     struct image_info *info;
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index 7c2c2f6e2f..beba1c9cde 100644
+=2D-- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -8090,14 +8090,18 @@ static int open_self_maps_1(CPUArchState *cpu_env,=
+ int fd, bool smaps)
+                 continue;
+             }
+
++            path =3D e->path;
++
++            if (ts->heap_base && h2g(min) =3D=3D ts->heap_base) {
++                path =3D "[heap]";
++            }
++
+ #ifdef TARGET_HPPA
+             if (h2g(max) =3D=3D ts->info->stack_limit) {
+ #else
+             if (h2g(min) =3D=3D ts->info->stack_limit) {
+ #endif
+                 path =3D "[stack]";
+-            } else {
+-                path =3D e->path;
+             }
+
+             count =3D dprintf(fd, TARGET_ABI_FMT_ptr "-" TARGET_ABI_FMT_p=
+tr
+=2D-
+2.41.0
+
 
