@@ -2,60 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 947B576FC88
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 10:50:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FB4A76FC9E
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 10:52:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRqVo-0007PE-6s; Fri, 04 Aug 2023 04:50:20 -0400
+	id 1qRqWw-0008AR-Q7; Fri, 04 Aug 2023 04:51:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pavel.dovgalyuk@ispras.ru>)
- id 1qRqVl-0007Of-JS; Fri, 04 Aug 2023 04:50:17 -0400
-Received: from mail.ispras.ru ([83.149.199.84])
- by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pavel.dovgalyuk@ispras.ru>)
- id 1qRqVj-0000of-I8; Fri, 04 Aug 2023 04:50:17 -0400
-Received: from [192.168.8.108] (unknown [188.162.65.112])
- by mail.ispras.ru (Postfix) with ESMTPSA id C2C5B40AC4FE;
- Fri,  4 Aug 2023 08:50:08 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru C2C5B40AC4FE
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
- s=default; t=1691139009;
- bh=xBcehmfetCcr0ZqPlI/OEOfSB1eQzV/c0mW79T1FTMA=;
- h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
- b=EI3iKaIn8zNWTcfHow+wdMrA3uvF0+9FdJ17GglZAXGGxV5EI7UZIYMVg2RDylBW5
- bCLTwic+611CHWsfIr1yrlT9MwYdHFSnA64JsvTLA5SNuX1WpXqzP0Bj/13Dk+QAZ6
- thRAHI7litNqs7wAWVAAa2X+QBPRG8jiPDW3+HNc=
-Message-ID: <3be75aa3-780d-2d4d-a68c-1f8d1d000ee8@ispras.ru>
-Date: Fri, 4 Aug 2023 11:50:08 +0300
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qRqWv-0008AI-2z
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 04:51:29 -0400
+Received: from mout.gmx.net ([212.227.17.21])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qRqWt-00012o-6t
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 04:51:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
+ s=s31663417; t=1691139083; x=1691743883; i=deller@gmx.de;
+ bh=6m6khCm3irI+WCvf+b8CogoNyKjGyJ6pY5c09PKql54=;
+ h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+ b=jH/9+mvk66eF47YxmGSIns5bxvSDIgvJdR9Y2nN8wFFPCCYVRqzWSkn3cSCxsfMUTaJz8e/
+ Gs7t0QGV6z9pIkc7QQC4f3zHKB0yjVuPT9TE1Bmb5n0l8iAt2i4ZYJRHUeQdzM8Anh4b6bmd3
+ n5YnXAuEgX8EZFljNJzPkfhbsnQfWhmPkcuAnVb/AbMtLncQm4hIaLrH1V/dGIz5U5HkOVv4y
+ H/U/TwQenXYfLwzPhkCMY/g1pl98wbKb9gFRxMRGM/Qya/eHKx3CsasRWmQmHr95ZnVx204Bs
+ z4dAncbWvabM2bs/BD2FLtG784vLuHbMBx/Yo+deiX8aLrm8fAdA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.60] ([94.134.152.187]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MOiDX-1qCDMC1Yad-00Q9jc; Fri, 04
+ Aug 2023 10:51:23 +0200
+Message-ID: <70683fce-6d98-803b-178f-2db89b6203ae@gmx.de>
+Date: Fri, 4 Aug 2023 10:51:21 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH 4/7] spapr: Fix record-replay machine reset consuming too
- many events
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v8 07/17] linux-user: Remove last_brk
 Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>
-Cc: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-ppc@nongnu.org,
- qemu-devel@nongnu.org
-References: <20230726183532.434380-1-npiggin@gmail.com>
- <20230726183532.434380-5-npiggin@gmail.com>
-From: Pavel Dovgalyuk <pavel.dovgalyuk@ispras.ru>
-In-Reply-To: <20230726183532.434380-5-npiggin@gmail.com>
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: joel@jms.id.au, akihiko.odaki@daynix.com, laurent@vivier.eu
+References: <20230804014517.6361-1-richard.henderson@linaro.org>
+ <20230804014517.6361-8-richard.henderson@linaro.org>
+From: Helge Deller <deller@gmx.de>
+In-Reply-To: <20230804014517.6361-8-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=83.149.199.84;
- envelope-from=pavel.dovgalyuk@ispras.ru; helo=mail.ispras.ru
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:w8ih5zGxebAI0py7yrmHrvA0vQbJblzVG+Dq+aAvBU3Pa5+CKxO
+ DvXmHlja2+/+2qOF+Nz74Vkyk7/8/ggbMTwwQEf134ZZfCApa6p9FBInATLInRZBWbOlCmu
+ ajnwzWUKU1JfYaZZbD30Cr00oDoeSn2W/A8QxaK2iVvW6r+93h685r9dDwJSh7WpOmZSivj
+ ns7tGCg5vV9iuMcyK7Z9w==
+UI-OutboundReport: notjunk:1;M01:P0:3RQs2xQ0af4=;9B7HW/K+6ojbSa8Ne5vpDjn5tNA
+ GsozAiOe4NyWFmmv807Av85uvpEkxnoIOECkHhhSBbhdnlxuGAYoTqLIeASZGf9R0h+wlI5TH
+ 0lUerNSBay9dtGqfR29H4dfqoiazPCTnWFDKwhdkHT4UU56w959FAn9oLQnfT3iPHUQiEXWJc
+ 8Xks4z96/szokbbdNyepNuol+GiDXmcPe1GVjA+fuBWA07sqE6RY+NS50W8MmqXm6eAJd3sSt
+ V5BH6BUB9Bt4HAFOxL48JK5UJPfgEojGHaO3GV/BAtNSSC0zR+WSiIAELkEvclzDmai7bSbPZ
+ daKtTFVL8M+6i7DdYxfTSaQ9WUIo8YTzobM18LD4KAi3nlcg4+wytmO8/CMaDFrTtFekDGh+p
+ eNaaqSga9k5HvxqX7T0GQJzMgKDsPYGWCSZcNOTtvLQ0aAnsK5YO1H5X0YCvfxn3SxQD2Teh0
+ Ocy0Bnb07Z2MiOUEtBlT84e+HEkghqhaBtfyrhtMQXi8ro4QU3KgP0BGDNpTJfbQQPQPwDoHB
+ 8P+4R0PrvnGJebPKrIC4PN9av+tG4TFwp+I974T1t8+gtQ3OiLT6jxhsULipW/dt+4HPeqmZp
+ 00X5wCEn2HZwJZxEfuJSBdEI2/X7uGp5sgbmIi95/QeCEcKHMiLDl66UxMoGF3piaQgPna7da
+ Bzq02cavMeBmTttaRezUrLaZCC+hBFrx1htWDE73OJuEyiL4f1A9L0WdW00kuMg7Ahu/OVYEb
+ FJEL8XaZ3txL1yoNmb8FMwfosW5IeCSZnUKCiJt0E0NVFA9bAMRzcsRpCJhxnbVaHbn+Ae7rl
+ Z6onxqhIwqhsNiMlnkQ067kOx+WNs3ChbT/W+Zl7kag76XShcv0bmwBGWU8vROHvQNY0Q3X9a
+ ZoEUWPwYLh07ryzfvzh6d4QOAgZl6yblRQZ0hvCNplEkByCXGPJRx06rpcKJ20RSa7+eagtuj
+ /UQP4rTiHL2mx0+XS5XXgzpaZ4o=
+Received-SPF: pass client-ip=212.227.17.21; envelope-from=deller@gmx.de;
+ helo=mout.gmx.net
+X-Spam_score_int: -28
+X-Spam_score: -2.9
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ NICE_REPLY_A=-0.091, RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -73,74 +88,11 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-BTW, there is a function qemu_register_reset_nosnapshotload that can be 
-used in similar cases.
-Can you just use it without changing the code of the reset handler?
+On 8/4/23 03:45, Richard Henderson wrote:
+> This variable is unused.
+>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
-On 26.07.2023 21:35, Nicholas Piggin wrote:
-> spapr_machine_reset gets a random number to populate the device-tree
-> rng seed with. When loading a snapshot for record-replay, the machine
-> is reset again, and that tries to consume the random event record
-> again, crashing due to inconsistent record
-> 
-> Fix this by saving the seed to populate the device tree with, and
-> skipping the rng on snapshot load.
-> 
-> Cc: Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->   hw/ppc/spapr.c         | 12 +++++++++---
->   include/hw/ppc/spapr.h |  1 +
->   2 files changed, 10 insertions(+), 3 deletions(-)
-> 
-> diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-> index 7d84244f03..ecfbdb0030 100644
-> --- a/hw/ppc/spapr.c
-> +++ b/hw/ppc/spapr.c
-> @@ -1022,7 +1022,6 @@ static void spapr_dt_chosen(SpaprMachineState *spapr, void *fdt, bool reset)
->   {
->       MachineState *machine = MACHINE(spapr);
->       SpaprMachineClass *smc = SPAPR_MACHINE_GET_CLASS(machine);
-> -    uint8_t rng_seed[32];
->       int chosen;
->   
->       _FDT(chosen = fdt_add_subnode(fdt, 0, "chosen"));
-> @@ -1100,8 +1099,7 @@ static void spapr_dt_chosen(SpaprMachineState *spapr, void *fdt, bool reset)
->           spapr_dt_ov5_platform_support(spapr, fdt, chosen);
->       }
->   
-> -    qemu_guest_getrandom_nofail(rng_seed, sizeof(rng_seed));
-> -    _FDT(fdt_setprop(fdt, chosen, "rng-seed", rng_seed, sizeof(rng_seed)));
-> +    _FDT(fdt_setprop(fdt, chosen, "rng-seed", spapr->fdt_rng_seed, 32));
->   
->       _FDT(spapr_dt_ovec(fdt, chosen, spapr->ov5_cas, "ibm,architecture-vec-5"));
->   }
-> @@ -1654,6 +1652,14 @@ static void spapr_machine_reset(MachineState *machine, ShutdownCause reason)
->       void *fdt;
->       int rc;
->   
-> +    if (reason != SHUTDOWN_CAUSE_SNAPSHOT_LOAD) {
-> +        /*
-> +         * Record-replay snapshot load must not consume random, this was
-> +         * already replayed from initial machine reset.
-> +         */
-> +        qemu_guest_getrandom_nofail(spapr->fdt_rng_seed, 32);
-> +    }
-> +
->       pef_kvm_reset(machine->cgs, &error_fatal);
->       spapr_caps_apply(spapr);
->   
-> diff --git a/include/hw/ppc/spapr.h b/include/hw/ppc/spapr.h
-> index f47e8419a5..f4bd204d86 100644
-> --- a/include/hw/ppc/spapr.h
-> +++ b/include/hw/ppc/spapr.h
-> @@ -204,6 +204,7 @@ struct SpaprMachineState {
->       uint32_t fdt_size;
->       uint32_t fdt_initial_size;
->       void *fdt_blob;
-> +    uint8_t fdt_rng_seed[32];
->       long kernel_size;
->       bool kernel_le;
->       uint64_t kernel_addr;
+Reviewed-by: Helge Deller <deller@gmx.de>
 
 
