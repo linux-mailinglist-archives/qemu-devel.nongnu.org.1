@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7AC977003F
+	by mail.lfdr.de (Postfix) with ESMTPS id CDB0B77003E
 	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 14:29:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRtuf-0007eM-An; Fri, 04 Aug 2023 08:28:13 -0400
+	id 1qRtvE-0007j6-0I; Fri, 04 Aug 2023 08:28:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qRtud-0007e6-7U
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 08:28:11 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qRtub-00007l-Cn
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 08:28:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691152088;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=caE4SJTwXuMaa4UUTn6HXpvG2AdNDUdYGUY6ofWiP18=;
- b=F2qfnc2QtbZA1V9a/5cE9OgjKoZ6q7hqo+SeGXwSZMlPwYGImNh64l6z/9SfN+LRsTq42E
- +XRp0XhgxjXUyJ1aXxquXoVKQ6RXX7Ws83Q7Bx6aez2v221ub/lVGdKADII4w+XRwv9Gly
- KwB9P1KbrxNIHiUh7KDgGNtDfaViCA8=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-156-A7opHvkEO-uYV2J7UylIpA-1; Fri, 04 Aug 2023 08:28:06 -0400
-X-MC-Unique: A7opHvkEO-uYV2J7UylIpA-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5701F3C0FCA7;
- Fri,  4 Aug 2023 12:28:06 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.193.50])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 355332166B26;
- Fri,  4 Aug 2023 12:28:06 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 2C28821E692A; Fri,  4 Aug 2023 14:28:05 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org,  Zhiyi Guo <zhguo@redhat.com>,  Daniel P .
- =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Leonardo Bras Soares
- Passos
- <lsoaresp@redhat.com>,  Fabiano Rosas <farosas@suse.de>,  Juan Quintela
- <quintela@redhat.com>,  Eric Blake <eblake@redhat.com>,  Chensheng Dong
- <chdong@redhat.com>
-Subject: Re: [PATCH for-8.2 v2 1/2] qapi/migration: Deduplicate migration
- parameter field comments
-References: <20230803155344.11450-1-peterx@redhat.com>
- <20230803155344.11450-2-peterx@redhat.com>
-Date: Fri, 04 Aug 2023 14:28:05 +0200
-In-Reply-To: <20230803155344.11450-2-peterx@redhat.com> (Peter Xu's message of
- "Thu, 3 Aug 2023 11:53:43 -0400")
-Message-ID: <87jzub8016.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qRtv5-0007gC-23
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 08:28:39 -0400
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qRtv3-0000AF-KU
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 08:28:38 -0400
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-5231410ab27so1543401a12.0
+ for <qemu-devel@nongnu.org>; Fri, 04 Aug 2023 05:28:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1691152116; x=1691756916;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=W7NJ2+ZXxG4vhrKwON6hV2Du6fNtD944ipIhEt2qeaw=;
+ b=m/fI0B9lwxFwbDfwV6jTLre8Yc9EIu2udrddSRw4mFtfuds82Xj8LMXxV63fIRmRRC
+ HOL2AbnXZIX3hFAcLEzRB8aXli76EIzi9vlp5yaG4g2H4jgNwUZRsAZfTD5FFjvWwPMV
+ IltRMaMS/ZjHP6tJL3q1wlMpMypvKDvct5ikPS+mE57sxy/wbRwS6rN6ubt3DXUEqT5O
+ KKcYvOhqpsLWw0pYxDzkIByBlKQyxosT5MWlHFBUPr4AVpQv34RCPjsjHjNLf13sk0sw
+ UXeJ/aqHyOZf69IzXkm3wIMdLyrL9HZ46xmPSacC6tev+ppZev5CP25slc3V43+pdYCG
+ hyFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1691152116; x=1691756916;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=W7NJ2+ZXxG4vhrKwON6hV2Du6fNtD944ipIhEt2qeaw=;
+ b=Zr5K8/yNdKeuE04kcSDnGqQEIqGyhEB9g5jc8DKREOr1k3bwp9vGhOqnKpN4kAKotL
+ Ub8S4i2bPQb9k9CKp2xVX+xO6bpm6/iOfdwPCS15lCUZsPo+awRHnAbpCo+OIyN5xyPu
+ QUFu1bqoMVgWmOjBKnrKK7onw88jgxzV4XXBbj4BMXS/ssl7JFzFyeylq/0KL0Hpb2Xq
+ l4DO9WFwk+zWKUVJUhpWzKjv3ZuqWdYrkO5LVd7E35p6Oenez1G3uodEIDDS1vu2JNL/
+ nX7imTgKOUQW/9/FAyCtsfEBQjUQIXJTrWuoX2TIjHrpuA4oTuj7XYzP2qrleLmdNiIg
+ lVMw==
+X-Gm-Message-State: AOJu0YyXZpwTn4mtSVuxsWjKz8vouHFjSysSOdLv+zdyBKyjZzBr5gIE
+ ctKm3HT1Y3ayONAtvqDFNUB7X3KZ/N0sdBidGx1gag==
+X-Google-Smtp-Source: AGHT+IF36uz6Efo6jP5WVzoUkpl01/WHGTm4nyat5aYHmCtm3kM/2rWOBnJEzN+FDUR+xddb6a6YSV+y3Zsed6q9h4k=
+X-Received: by 2002:aa7:ce04:0:b0:523:df1:ba1b with SMTP id
+ d4-20020aa7ce04000000b005230df1ba1bmr1495940edv.37.1691152115855; Fri, 04 Aug
+ 2023 05:28:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20230726132512.149618-1-sergey.kambalin@auriga.com>
+ <20230726132512.149618-9-sergey.kambalin@auriga.com>
+In-Reply-To: <20230726132512.149618-9-sergey.kambalin@auriga.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 4 Aug 2023 13:28:24 +0100
+Message-ID: <CAFEAcA8r6-vUqNftz3KXU9GMazkd=rSuq_STJLYxpBHRD369TQ@mail.gmail.com>
+Subject: Re: [PATCH 08/44] Connect SD controller to BCM2838 GPIO
+To: Sergey Kambalin <serg.oker@gmail.com>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
+ Sergey Kambalin <sergey.kambalin@auriga.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,74 +86,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
-
-> We used to have three objects that have always the same list of parameters
-
-We have!
-
-> and comments are always duplicated:
+On Wed, 26 Jul 2023 at 15:00, Sergey Kambalin <serg.oker@gmail.com> wrote:
 >
->   - @MigrationParameter
->   - @MigrationParameters
->   - @MigrateSetParameters
->
-> Before we can deduplicate the code, it's fairly straightforward to
-> deduplicate the comments first, so for each time we add a new migration
-> parameter we don't need to copy the same paragraphs three times.
+> Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
+> ---
+>  hw/gpio/bcm2838_gpio.c         | 52 +++++++++++++++++++++++++++++++++-
+>  include/hw/gpio/bcm2838_gpio.h |  6 ++++
+>  2 files changed, 57 insertions(+), 1 deletion(-)
 
-De-duplicating the code would be nice, but we haven't done so in years,
-which suggests it's hard enough not to be worth the trouble.
+Looking at the last three patches, the code for this
+device seems very very similar to the existing
+bcm2835_gpio device. What exactly are the differences?
+It looks like maybe just the number of powerup/down
+registers -- could we share the same device model and
+give it a new property for "number of PUP_PDN regs" to
+avoid duplicating 300+ lines of code ? Or are there
+other differences I've missed?
 
-De-duplicating the documentation is certainly easier.
-
-Is that what you're trying to say?
-
-Our discussion pros and cons that is happening in review of v1 should be
-captured in the commit message, right here.
-
-> Make the @MigrationParameter the major source of truth, while leaving the
-> rest two to reference to it.
-
-Any particular reason for picking this one?
-
-> We do have a slight problem in the man/html pages generated, that for the
-> latter two objects we'll get a list of Members but with all of them saying
-> "Not documented":
->
->    Members
->        announce-initial: int (optional)
->               Not documented
->
->        announce-max: int (optional)
->               Not documented
->
->        announce-rounds: int (optional)
->               Not documented
->
->        [...]
->
-> Even though we'll have a reference there telling the reader to jump over to
-> read the @MigrationParameter sections instead, for example:
->
->    MigrationParameters (Object)
->
->        The object structure to represent a list of migration parameters.
->        The optional members aren't actually optional.  For detailed
->        explanation for each of the field, please refer to the documentation
->        of MigrationParameter.
->
-> So hopefully that's not too bad.. and we can leave it for later to make it
-> even better.
-
-It's plenty bad, I'm afraid.  It comes out as a short paragraph "don't
-look here, look there", followed by screenfuls claiming "not
-documented."  Embarrassing.  Worse, *misleading*, because the short
-paragraph is easy to miss.
-
-Also discussed in review of v1.  Let's continue there, to avoid
-splitting the thread.
-
-> Signed-off-by: Peter Xu <peterx@redhat.com>
-
+thanks
+-- PMM
 
