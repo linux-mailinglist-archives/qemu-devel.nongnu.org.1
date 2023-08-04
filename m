@@ -2,38 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 631B47708D1
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 21:18:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 960AD7708F1
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 21:21:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qS0Ip-0000ZY-6J; Fri, 04 Aug 2023 15:17:35 -0400
+	id 1qS0Ir-0000aV-HX; Fri, 04 Aug 2023 15:17:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qS0Im-0000YL-V2; Fri, 04 Aug 2023 15:17:32 -0400
+ id 1qS0Ip-0000aA-K5; Fri, 04 Aug 2023 15:17:35 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qS0Il-0006y2-BX; Fri, 04 Aug 2023 15:17:32 -0400
+ id 1qS0In-0006yS-Ro; Fri, 04 Aug 2023 15:17:35 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 1680C1845D;
+ by isrv.corpit.ru (Postfix) with ESMTP id 46F781845E;
  Fri,  4 Aug 2023 22:17:12 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id A10A71B8A0;
+ by tsrv.corpit.ru (Postfix) with SMTP id D04E51B8A1;
  Fri,  4 Aug 2023 22:16:51 +0300 (MSK)
-Received: (nullmailer pid 1875720 invoked by uid 1000);
+Received: (nullmailer pid 1875723 invoked by uid 1000);
  Fri, 04 Aug 2023 19:16:49 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+Cc: qemu-stable@nongnu.org, Helge Deller <deller@gmx.de>,
+ "Markus F.X.J. Oberhumer" <markus@oberhumer.com>,
+ John Reiser <jreiser@BitWagon.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.4 43/63] target/ppc: Disable goto_tb with architectural
- singlestep
-Date: Fri,  4 Aug 2023 22:16:26 +0300
-Message-Id: <20230804191647.1875608-12-mjt@tls.msk.ru>
+Subject: [Stable-8.0.4 44/63] linux-user/armeb: Fix __kernel_cmpxchg() for
+ armeb
+Date: Fri,  4 Aug 2023 22:16:27 +0300
+Message-Id: <20230804191647.1875608-13-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.4-20230804221634@cover.tls.msk.ru>
 References: <qemu-stable-8.0.4-20230804221634@cover.tls.msk.ru>
@@ -62,35 +64,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+From: Helge Deller <deller@gmx.de>
 
-The change to use translator_use_goto_tb went too far, as the
-CF_SINGLE_STEP flag managed by the translator only handles
-gdb single stepping and not the architectural single stepping
-modeled in DisasContext.singlestep_enabled.
+Commit 7f4f0d9ea870 ("linux-user/arm: Implement __kernel_cmpxchg with host
+atomics") switched to use qatomic_cmpxchg() to swap a word with the memory
+content, but missed to endianess-swap the oldval and newval values when
+emulating an armeb CPU, which expects words to be stored in big endian in
+the guest memory.
 
-Fixes: 6e9cc373ec5 ("target/ppc: Use translator_use_goto_tb")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1795
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
+The bug can be verified with qemu >= v7.0 on any little-endian host, when
+starting the armeb binary of the upx program, which just hangs without
+this patch.
+
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Helge Deller <deller@gmx.de>
+Reported-by: "Markus F.X.J. Oberhumer" <markus@oberhumer.com>
+Reported-by: John Reiser <jreiser@BitWagon.com>
+Closes: https://github.com/upx/upx/issues/687
+Message-Id: <ZMQVnqY+F+5sTNFd@p100>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-(cherry picked from commit 2e718e665706d5fcc3e3501bda26f277f055ed85)
+(cherry picked from commit 38dd78c41eaf08b490c9e7ec68fc508bbaa5cb1d)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-index 49a6b91842..26222e9078 100644
---- a/target/ppc/translate.c
-+++ b/target/ppc/translate.c
-@@ -4132,6 +4132,9 @@ static void pmu_count_insns(DisasContext *ctx)
- 
- static inline bool use_goto_tb(DisasContext *ctx, target_ulong dest)
+diff --git a/linux-user/arm/cpu_loop.c b/linux-user/arm/cpu_loop.c
+index a992423257..b404117ff3 100644
+--- a/linux-user/arm/cpu_loop.c
++++ b/linux-user/arm/cpu_loop.c
+@@ -117,8 +117,9 @@ static void arm_kernel_cmpxchg32_helper(CPUARMState *env)
  {
-+    if (unlikely(ctx->singlestep_enabled)) {
-+        return false;
-+    }
-     return translator_use_goto_tb(&ctx->base, dest);
- }
+     uint32_t oldval, newval, val, addr, cpsr, *host_addr;
  
+-    oldval = env->regs[0];
+-    newval = env->regs[1];
++    /* Swap if host != guest endianness, for the host cmpxchg below */
++    oldval = tswap32(env->regs[0]);
++    newval = tswap32(env->regs[1]);
+     addr = env->regs[2];
+ 
+     mmap_lock();
+@@ -174,6 +175,10 @@ static void arm_kernel_cmpxchg64_helper(CPUARMState *env)
+         return;
+     }
+ 
++    /* Swap if host != guest endianness, for the host cmpxchg below */
++    oldval = tswap64(oldval);
++    newval = tswap64(newval);
++
+ #ifdef CONFIG_ATOMIC64
+     val = qatomic_cmpxchg__nocheck(host_addr, oldval, newval);
+     cpsr = (val == oldval) * CPSR_C;
 -- 
 2.39.2
 
