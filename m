@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAB62770BA5
-	for <lists+qemu-devel@lfdr.de>; Sat,  5 Aug 2023 00:02:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A238770BA9
+	for <lists+qemu-devel@lfdr.de>; Sat,  5 Aug 2023 00:03:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qS2r4-0004mf-G5; Fri, 04 Aug 2023 18:01:06 -0400
+	id 1qS2r2-0004mJ-UY; Fri, 04 Aug 2023 18:01:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qS2qi-0004X5-HX
+ id 1qS2qi-0004X7-Jm
  for qemu-devel@nongnu.org; Fri, 04 Aug 2023 18:00:46 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qS2qe-0001hv-9F
+ id 1qS2qe-0001iT-Ah
  for qemu-devel@nongnu.org; Fri, 04 Aug 2023 18:00:43 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-6874d1c8610so1992198b3a.0
- for <qemu-devel@nongnu.org>; Fri, 04 Aug 2023 15:00:38 -0700 (PDT)
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1bbbbb77b38so17986585ad.3
+ for <qemu-devel@nongnu.org>; Fri, 04 Aug 2023 15:00:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691186437; x=1691791237;
+ d=linaro.org; s=google; t=1691186438; x=1691791238;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=PGTKa1g9aGwPuG4tk4crlE1qhIW/f2V62gcPYilpvuU=;
- b=s9cAvl0v4H4zwkHp1GZ77ZUqutqZYy1YF9LPPySv8NJK1+jttVkJxaKyoWghoOrhE5
- N45bFSSOu3VJ4goYkIdbm/T3D/lasAS4AwZ+YBXzoBLbV9/9RpGGsQTAeu64H65VOGrk
- 5B1+ZlEpelpnHdmObccylzhTtu9d7RpNxGsHcazfbxR4Q5vpXjF+yd7aK5GyuqyAWGbT
- XgfWAK16jY06hwp8CO/r6bHlaV4ZokQpSVyT9f4hGV4lu1fZEn49hqa4+2LRSSlkQfM/
- lopJvU3opo2NWuw8cVB/LgA22PdtDjqmg5ikr5TW9ftHMLrmC94sVCTF/MTV9FSGZgUh
- TeEw==
+ bh=9hdHwW/RvIed/+EnufWmWBI5tRDE8abmk2/NQyBO25E=;
+ b=lPDpZoBFwd0pLT/ijWF4GExWIzzB5G6tlz9fOgyieetGdhbrzZJM220qT4NbH3+Obk
+ zu/osbsoi6Bz7seTmP0dtq09gPESHJMVYZFPXscNFIL2GfvPNBukMXHmM8E9GOxt0+aT
+ 7ssJUP+57sy4DcMlws03DFg3Vv9mBMwE6cmCadLkiOeHdgkQr4Kh3KB3YLEX2gY5oGM+
+ AVS6MFij5YQSlvHaHzGQVJrHydN/JHgDy4F3olTDbWA+1luxZ2hgY0JxMFTgl5blpcgg
+ RolIm++nbjCnnfs9+tUeCCCF9gG/jL1TTJJCAsjsE3VUiZiFtvMu37nwa2FEjDORdYhO
+ dKKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691186437; x=1691791237;
+ d=1e100.net; s=20221208; t=1691186438; x=1691791238;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PGTKa1g9aGwPuG4tk4crlE1qhIW/f2V62gcPYilpvuU=;
- b=S4PsaJ9T0q01esMDTOaUjajFfvc7RxYRdB33MUUosep0Crnz+LCh2GGclTTZG5HEES
- proDXhivkkDIFa6yEf+zHSCvIJDfmsvzDo/gc0lPusA26NYTLlFBRatYhDUoIEH5vddc
- ONQGp6EwSustdn7VM8ZW2DD3EcZ/F3rp0OEnEoD9Mt/Gf6aJmy8hOzItIbegcMY50VM5
- h+BJznyhnWY/Q/7ZbEedWjskEvn28ysV8duCLL2yIga6zUa7ufeIAHUU8RX2k6S8w59H
- wdlxGgbjpHovGG8RM0H2Pf7m551xlysnunwcdWmweGwLxMvECAnaGgiz9/Z0axYBbfig
- HpnA==
-X-Gm-Message-State: AOJu0YwCbJc67VSO++Hlum653H5KOXfpl8JPPT6OBf+b6hiCgsyoV4+B
- ICXUlFsNZFgdVrzqLHH++bd8SQ2EO0r3Qq/9xj0=
-X-Google-Smtp-Source: AGHT+IGybyUU1dJU0XPYU0BYXNuf1Sl9Qc2NvYjRHbge/8qmYWCuS8uEl7wSJ9JSbyTsIrQ0Qu+3xQ==
-X-Received: by 2002:a05:6a21:3b49:b0:140:2805:6cc8 with SMTP id
- zy9-20020a056a213b4900b0014028056cc8mr1277625pzb.27.1691186437430; 
- Fri, 04 Aug 2023 15:00:37 -0700 (PDT)
+ bh=9hdHwW/RvIed/+EnufWmWBI5tRDE8abmk2/NQyBO25E=;
+ b=Dkor0HK9iuSJDL59Qo5LPYcLgDzUE2/SWCJJoTzMXBExYzcVf6NyYTaa9R/CkR3C97
+ 4/ai2ETCzn20ryviCAw89Fgslu1B6SM4ajf3EhgJuBe7CT7mq0TX7+OH2MiQHmL6k29S
+ dsudzcQpqoYiTrr1RgaidEQtDfnM6YgL4dvoQ0yaZqnJZE01Kco41yzhS5DyYDbDD6v5
+ MXos9deFCsz/tLRUKlCLYR+JUkW1VWF2nNYeaHiNKyr0vE4NnX3WrtSBFF8urRGxcVZu
+ d8m6HVrQxr1JpqXM2YWoyWm/hsE94CtHF2hLPkDuPOXDI0l1YQlmCQ3Q44loWzzZ9Yge
+ JDmw==
+X-Gm-Message-State: AOJu0YwtiezEaJLJs+N/MAghS3ys1zh9l8a+uZ7IwqU0Y8d8/ZD3vFIN
+ tl6yvPu0u5VmSuk3oHhyOPtECMsRtVYFAjWcz/s=
+X-Google-Smtp-Source: AGHT+IFOMrzsnhd5ExEMKYhqpqfxzD+C6ZJAO1zVWurWbodAgOeRpZJHDAneCI0njWyBGZZmecUs6g==
+X-Received: by 2002:a17:903:1cc:b0:1b3:d4ed:8306 with SMTP id
+ e12-20020a17090301cc00b001b3d4ed8306mr2507041plh.19.1691186438190; 
+ Fri, 04 Aug 2023 15:00:38 -0700 (PDT)
 Received: from stoup.. ([2602:47:d490:6901:1eed:f77f:f320:8b14])
  by smtp.gmail.com with ESMTPSA id
- u1-20020a17090282c100b001bbf7fd354csm2185568plz.213.2023.08.04.15.00.36
+ u1-20020a17090282c100b001bbf7fd354csm2185568plz.213.2023.08.04.15.00.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 04 Aug 2023 15:00:37 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH v9 04/24] gdbstub: use 0 ("any process") on packets with no PID
-Date: Fri,  4 Aug 2023 15:00:12 -0700
-Message-Id: <20230804220032.295411-5-richard.henderson@linaro.org>
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH v9 05/24] linux-user: Unset MAP_FIXED_NOREPLACE for host
+Date: Fri,  4 Aug 2023 15:00:13 -0700
+Message-Id: <20230804220032.295411-6-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230804220032.295411-1-richard.henderson@linaro.org>
 References: <20230804220032.295411-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,45 +91,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-Previously, qemu-user would always report PID 1 to GDB. This was changed
-at dc14a7a6e9 (gdbstub: Report the actual qemu-user pid, 2023-06-30),
-but read_thread_id() still considers GDB packets with "no PID" as "PID
-1", which is not the qemu-user PID. Fix that by parsing "no PID" as "0",
-which the GDB Remote Protocol defines as "any process".
+Passing MAP_FIXED_NOREPLACE to host will fail for reserved_va because
+the address space is reserved with mmap.  Replace it with MAP_FIXED
+in that case.
 
-Note that this should have no effect for system emulation as, in this
-case, gdb_create_default_process() will assign PID 1 for the first
-process and that is what the gdbstub uses for GDB requests with no PID,
-or PID 0.
-
-This issue was found with hexagon-lldb, which sends a "Hg" packet with
-only the thread-id, but no process-id, leading to the invalid usage of
-"PID 1" by qemu-hexagon and a subsequent "E22" reply.
-
-Signed-off-by: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
-Acked-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Message-Id: <78a3b06f6ab90a7ff8e73ae14a996eb27ec76c85.1690904195.git.quic_mathbern@quicinc.com>
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Message-Id: <20230802071754.14876-2-akihiko.odaki@daynix.com>
+[rth: Expand inline commentary.]
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- gdbstub/gdbstub.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ linux-user/mmap.c | 25 ++++++++++++++++++++-----
+ 1 file changed, 20 insertions(+), 5 deletions(-)
 
-diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
-index ce8b42eb15..e74ecc78cc 100644
---- a/gdbstub/gdbstub.c
-+++ b/gdbstub/gdbstub.c
-@@ -537,7 +537,7 @@ static GDBThreadIdKind read_thread_id(const char *buf, const char **end_buf,
-         /* Skip '.' */
-         buf++;
-     } else {
--        p = 1;
-+        p = 0;
-     }
+diff --git a/linux-user/mmap.c b/linux-user/mmap.c
+index a5dfb56545..a11c630a7b 100644
+--- a/linux-user/mmap.c
++++ b/linux-user/mmap.c
+@@ -603,11 +603,26 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
+             goto fail;
+         }
  
-     ret = qemu_strtoul(buf, &buf, 16, &t);
+-        /* Validate that the chosen range is empty. */
+-        if ((flags & MAP_FIXED_NOREPLACE)
+-            && !page_check_range_empty(start, last)) {
+-            errno = EEXIST;
+-            goto fail;
++        if (flags & MAP_FIXED_NOREPLACE) {
++            /* Validate that the chosen range is empty. */
++            if (!page_check_range_empty(start, last)) {
++                errno = EEXIST;
++                goto fail;
++            }
++
++            /*
++             * With reserved_va, the entire address space is mmaped in the
++             * host to ensure it isn't accidentally used for something else.
++             * We have just checked that the guest address is not mapped
++             * within the guest, but need to replace the host reservation.
++             *
++             * Without reserved_va, despite the guest address check above,
++             * keep MAP_FIXED_NOREPLACE so that the guest does not overwrite
++             * any host address mappings.
++             */
++            if (reserved_va) {
++                flags = (flags & ~MAP_FIXED_NOREPLACE) | MAP_FIXED;
++            }
+         }
+ 
+         /*
 -- 
 2.34.1
 
