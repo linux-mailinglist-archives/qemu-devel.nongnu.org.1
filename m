@@ -2,43 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E69A077085B
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 20:58:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A302A77084D
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 20:56:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRzxt-0005kY-93; Fri, 04 Aug 2023 14:55:57 -0400
+	id 1qRzyB-0006Fo-TE; Fri, 04 Aug 2023 14:56:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qRzxY-0005Zd-K6; Fri, 04 Aug 2023 14:55:36 -0400
+ id 1qRzxb-0005lj-Mx; Fri, 04 Aug 2023 14:55:39 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qRzxX-0008UV-2L; Fri, 04 Aug 2023 14:55:36 -0400
+ id 1qRzxZ-0000BI-S1; Fri, 04 Aug 2023 14:55:39 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id BD95D18419;
- Fri,  4 Aug 2023 21:54:21 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 2195A1841A;
+ Fri,  4 Aug 2023 21:54:22 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 5D2D41B890;
+ by tsrv.corpit.ru (Postfix) with SMTP id 8A7EA1B891;
  Fri,  4 Aug 2023 21:54:01 +0300 (MSK)
-Received: (nullmailer pid 1874257 invoked by uid 1000);
+Received: (nullmailer pid 1874260 invoked by uid 1000);
  Fri, 04 Aug 2023 18:53:56 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Thomas Huth <thuth@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Xu <peterx@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.5 35/36] hw/i386/x86-iommu: Fix endianness issue in
- x86_iommu_irq_to_msi_message()
-Date: Fri,  4 Aug 2023 21:53:48 +0300
-Message-Id: <20230804185350.1874133-22-mjt@tls.msk.ru>
+ "Michael S . Tsirkin" <mst@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.5 36/36] include/hw/i386/x86-iommu: Fix struct
+ X86IOMMU_MSIMessage for big endian hosts
+Date: Fri,  4 Aug 2023 21:53:49 +0300
+Message-Id: <20230804185350.1874133-23-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.5-20230804215319@cover.tls.msk.ru>
 References: <qemu-stable-7.2.5-20230804215319@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -64,31 +62,96 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-The values in "msg" are assembled in host endian byte order (the other
-field are also not swapped), so we must not swap the __addr_head here.
+The first bitfield here is supposed to be used as a 64-bit equivalent
+to the "uint64_t msi_addr" in the union. To make this work correctly
+on big endian hosts, too, the __addr_hi field has to be part of the
+bitfield, and the the bitfield members must be declared with "uint64_t"
+instead of "uint32_t" - otherwise the values are placed in the wrong
+bytes on big endian hosts.
+
+Same applies to the 32-bit "msi_data" field: __resved1 must be part
+of the bitfield, and the members must be declared with "uint32_t"
+instead of "uint16_t".
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20230802135723.178083-6-thuth@redhat.com>
+Message-Id: <20230802135723.178083-7-thuth@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Peter Xu <peterx@redhat.com>
-(cherry picked from commit 37cf5cecb039a063c0abe3b51ae30f969e73aa84)
+(cherry picked from commit e1e56c07d1fa24aa37a7e89e6633768fc8ea8705)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/i386/x86-iommu.c b/hw/i386/x86-iommu.c
-index 01d11325a6..726e9e1d16 100644
---- a/hw/i386/x86-iommu.c
-+++ b/hw/i386/x86-iommu.c
-@@ -63,7 +63,7 @@ void x86_iommu_irq_to_msi_message(X86IOMMUIrq *irq, MSIMessage *msg_out)
-     msg.redir_hint = irq->redir_hint;
-     msg.dest = irq->dest;
-     msg.__addr_hi = irq->dest & 0xffffff00;
--    msg.__addr_head = cpu_to_le32(0xfee);
-+    msg.__addr_head = 0xfee;
-     /* Keep this from original MSI address bits */
-     msg.__not_used = irq->msi_addr_last_bits;
- 
+diff --git a/include/hw/i386/x86-iommu.h b/include/hw/i386/x86-iommu.h
+index 7637edb430..02dc2fe9ee 100644
+--- a/include/hw/i386/x86-iommu.h
++++ b/include/hw/i386/x86-iommu.h
+@@ -88,40 +88,42 @@ struct X86IOMMU_MSIMessage {
+     union {
+         struct {
+ #if HOST_BIG_ENDIAN
+-            uint32_t __addr_head:12; /* 0xfee */
+-            uint32_t dest:8;
+-            uint32_t __reserved:8;
+-            uint32_t redir_hint:1;
+-            uint32_t dest_mode:1;
+-            uint32_t __not_used:2;
++            uint64_t __addr_hi:32;
++            uint64_t __addr_head:12; /* 0xfee */
++            uint64_t dest:8;
++            uint64_t __reserved:8;
++            uint64_t redir_hint:1;
++            uint64_t dest_mode:1;
++            uint64_t __not_used:2;
+ #else
+-            uint32_t __not_used:2;
+-            uint32_t dest_mode:1;
+-            uint32_t redir_hint:1;
+-            uint32_t __reserved:8;
+-            uint32_t dest:8;
+-            uint32_t __addr_head:12; /* 0xfee */
++            uint64_t __not_used:2;
++            uint64_t dest_mode:1;
++            uint64_t redir_hint:1;
++            uint64_t __reserved:8;
++            uint64_t dest:8;
++            uint64_t __addr_head:12; /* 0xfee */
++            uint64_t __addr_hi:32;
+ #endif
+-            uint32_t __addr_hi;
+         } QEMU_PACKED;
+         uint64_t msi_addr;
+     };
+     union {
+         struct {
+ #if HOST_BIG_ENDIAN
+-            uint16_t trigger_mode:1;
+-            uint16_t level:1;
+-            uint16_t __resved:3;
+-            uint16_t delivery_mode:3;
+-            uint16_t vector:8;
++            uint32_t __resved1:16;
++            uint32_t trigger_mode:1;
++            uint32_t level:1;
++            uint32_t __resved:3;
++            uint32_t delivery_mode:3;
++            uint32_t vector:8;
+ #else
+-            uint16_t vector:8;
+-            uint16_t delivery_mode:3;
+-            uint16_t __resved:3;
+-            uint16_t level:1;
+-            uint16_t trigger_mode:1;
++            uint32_t vector:8;
++            uint32_t delivery_mode:3;
++            uint32_t __resved:3;
++            uint32_t level:1;
++            uint32_t trigger_mode:1;
++            uint32_t __resved1:16;
+ #endif
+-            uint16_t __resved1;
+         } QEMU_PACKED;
+         uint32_t msi_data;
+     };
 -- 
 2.39.2
 
