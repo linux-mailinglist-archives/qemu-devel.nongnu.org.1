@@ -2,78 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 489F176F98F
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 07:29:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F27BD76F994
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 07:34:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRnMu-0001Uz-7x; Fri, 04 Aug 2023 01:28:56 -0400
+	id 1qRnR5-0003rV-7d; Fri, 04 Aug 2023 01:33:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qRnMp-0001Uj-Q6
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 01:28:51 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qRnQl-0003bq-Px
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 01:32:56 -0400
+Received: from mail-pf1-x444.google.com ([2607:f8b0:4864:20::444])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qRnMo-0002zh-9P
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 01:28:51 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-1bc34b32785so12235675ad.3
- for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 22:28:49 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qRnQi-0003R1-CE
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 01:32:55 -0400
+Received: by mail-pf1-x444.google.com with SMTP id
+ d2e1a72fcca58-68783b2e40bso1208577b3a.3
+ for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 22:30:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1691126928; x=1691731728;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=o/jDagpIwCbKuaxqyzG6Q+FKbbAR/vTSYH+PUW5wHH8=;
- b=LU83CHWdTV1fLQGsUoAVQQYxoN7iRnp3SzQsre+MTWvw4L8qEDcezPFGqN2yTWtYKC
- c8gOSuylyoReTO6yHcvWVbbQINHuEa3dzs8JxIHgpEtQmWQ1Oml03O6v99NVTniKIcEU
- 2oMuQ/U0lM0Yd37qDkMUbvVAQ9HjsberrHs7KJWGod/Jti8ncMrJQObac7bCVv4L+pWB
- enuWskyj7jzhau5mUsMsqxnEoIc+9A1KI7028OZyA7HJXaUKMocrlog/IqBTIJVFM3Iu
- rLLvKuZTQKKCVF7ZoUHNebY4ZYInJUHZIFczgEOgp6vrk2X0UNZWOfvld1i9M2+StsR5
- 0W5Q==
+ d=smartx-com.20221208.gappssmtp.com; s=20221208; t=1691127034; x=1691731834;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Jblu3MFy0QuuzfePW91QPVX7n7VNb5R0HB9GnUG+UVE=;
+ b=ZwIb/U2u+0MrLw5eJCq8CEOzrlvNRgLQuk8jkZtTh6KBDiJrxi/r8+LBgfXfN5jAZS
+ R8KjURc2sB91csaNT6p/3qEfOJNQ9fh0tKPDAazkmphKXSnbFimBa3IvQ9SEqq6Hv48T
+ KLV70VFogqKfRIGmGdGAFaFAVY4MhKnNmKFN4EV3uT4O0vDZRI9A/Kjmacs8Hjvt/jFn
+ iHH3d4khJ55Wd1XgvLKgRUFCGUr0RwTd2noevav1Y/vT7WQrZ5Vq0B6WJZdOISKNHx+a
+ cw24goughA1qpnoZXaLJk5YjQYfyUsyNP6Yc2YZE8RfL5oiYV/fo6VXawX9O3KxVm38R
+ JkNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691126928; x=1691731728;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=o/jDagpIwCbKuaxqyzG6Q+FKbbAR/vTSYH+PUW5wHH8=;
- b=jaPOrR1pwFTMTzhEvbRDqz22lO/reqiP1ZWeQgYFHWbHDq/8MqB4hGYnIWmJBK85Vb
- hPqZlz+oAKul9hF1by0K6u7j6orWYwh+5lHWZQ6I9z32O7lmP7qVB8AVHDIouewbsZDd
- IQgQCXAuBVwbE0JHTVzjr7IZKsfQPsg7OywPB0UqKFWF8ZnvrGBgTIqK7ORFxGRnEFnc
- W6jHk8QvL6r+FWksq3hwCSEhttyek5b0je7UVL84zoBrLqfZqodL+AzQlEKMFn/ENeoL
- 1LWiqMUfsZTb61FFOBFc+KI7FQB2zHlDhEexn1FTaYhlfOh1fqQvPGWYpJ9xXNWSifrG
- xumg==
-X-Gm-Message-State: AOJu0Yx1xUZ3OAMc135y70ND0OmrPbYcPk+u1Meo/i3FQuYMCRrCJS3s
- K1UGRu4oFSVH0UKWCFw/ELfd2Y7dw28MQjI34/k=
-X-Google-Smtp-Source: AGHT+IGzAD63j+nyK0QwoJ+uta2FDL5Ez+lXAsotPZqV/3UbdFRGj214sz5KD17tTrZz2RbTO5tSBg==
-X-Received: by 2002:a17:902:a70f:b0:1bc:4171:67e3 with SMTP id
- w15-20020a170902a70f00b001bc417167e3mr632811plq.31.1691126928269; 
- Thu, 03 Aug 2023 22:28:48 -0700 (PDT)
-Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
- ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
+ d=1e100.net; s=20221208; t=1691127034; x=1691731834;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Jblu3MFy0QuuzfePW91QPVX7n7VNb5R0HB9GnUG+UVE=;
+ b=OPkqQlN8aAG1xkdBKhwinAGe+LSSQB9NU7Iri+PS/x1LRYhp0GU4b5ftFsKr2w+0T5
+ 2W24b5fGJhSfuolL+MZSCbOu81c7zBY1jgqAHc7m+c+kaNo4zr5jQYRnaVmhtN/V0Qkz
+ Orrgk17sznjqgtN/8xhBdfD1fxeC2naTE3bv0bEsUZVwmYUKkhisSBTDDloRFhjR9T2i
+ JYfZTrqIRQ4oe82m+076O0Xg2ZFYRrZeyLGblDLKCOLaA7OZbgXiZfwl/Dg4J5UhCR6Q
+ +dKI7B0bKD2C75dR1OqXGGZ63fp7TJNz2okbPUUyyDcesTEgE7pE/TNLf321CV7P2uAg
+ YuXw==
+X-Gm-Message-State: AOJu0YwQDVBHv4FM9OBb5BHNBkeeLbE0SbR5N3nnhbmxzPS+aYcALYGL
+ b+D9DSQlgOt8w2OXdS6p+KZIWw==
+X-Google-Smtp-Source: AGHT+IH6lCfpZlNrvNrOSxMNLxTjgcj9IgBSD4sgCiawjk+P39vM+eg27Ch43TxT4/4HMAf+8mkPKA==
+X-Received: by 2002:a05:6a21:9984:b0:13c:a02a:97f6 with SMTP id
+ ve4-20020a056a21998400b0013ca02a97f6mr663393pzb.22.1691127033552; 
+ Thu, 03 Aug 2023 22:30:33 -0700 (PDT)
+Received: from bogon.gitgo.cc ([47.75.78.161])
  by smtp.gmail.com with ESMTPSA id
- jh21-20020a170903329500b001b8c3c7b102sm764864plb.127.2023.08.03.22.28.46
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 03 Aug 2023 22:28:47 -0700 (PDT)
-Message-ID: <a975e11f-662a-da2a-fa2a-12531405185d@daynix.com>
-Date: Fri, 4 Aug 2023 14:28:46 +0900
+ p7-20020a170902bd0700b001bc2831e1a8sm781183pls.80.2023.08.03.22.30.31
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 03 Aug 2023 22:30:33 -0700 (PDT)
+From: Li Feng <fengli@smartx.com>
+To: Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Raphael Norwitz <raphael.norwitz@nutanix.com>,
+ qemu-devel@nongnu.org (open list:All patches CC here)
+Cc: Li Feng <fengli@smartx.com>
+Subject: [PATCH 0/2] Fix vhost reconnect issues
+Date: Fri,  4 Aug 2023 13:29:46 +0800
+Message-ID: <20230804052954.2918915-1-fengli@smartx.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 15/17] linux-user: Do not adjust image mapping for host
- page size
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: joel@jms.id.au, laurent@vivier.eu, deller@gmx.de
-References: <20230804014517.6361-1-richard.henderson@linaro.org>
- <20230804014517.6361-16-richard.henderson@linaro.org>
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <20230804014517.6361-16-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::62d;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62d.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::444;
+ envelope-from=fengli@smartx.com; helo=mail-pf1-x444.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -95,12 +88,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/08/04 10:45, Richard Henderson wrote:
-> Remove TARGET_ELF_EXEC_PAGESIZE, and 3 other TARGET_ELF_PAGE* macros
-> based off of that.  Rely on target_mmap to handle guest vs host page
-> size mismatch.
-> 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+The patchset fixes the regression issue of vhost reconnect.
+It's a serious bug that the vhost-user will lose the reconnect forever.
 
-Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+The 2nd patch enhances the error handle of vhost-user-scsi.
+
+This patchset's parent commit is:
+https://lore.kernel.org/all/20230731121018.2856310-1-fengli@smartx.com/
+
+Li Feng (2):
+  vhost-user: fix lost reconnect
+  vhost: Add Error parameter to vhost_scsi_common_start()
+
+ hw/scsi/vhost-scsi-common.c           | 17 ++++++++++-------
+ hw/scsi/vhost-scsi.c                  |  5 +++--
+ hw/scsi/vhost-user-scsi.c             | 14 ++++++++------
+ hw/virtio/vhost-user.c                | 10 +---------
+ include/hw/virtio/vhost-scsi-common.h |  2 +-
+ 5 files changed, 23 insertions(+), 25 deletions(-)
+
+-- 
+2.41.0
+
 
