@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D97CB7708DE
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 21:19:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67E947708D7
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 21:19:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qS0Jl-0001fL-3R; Fri, 04 Aug 2023 15:18:33 -0400
+	id 1qS0Jj-0001cw-KJ; Fri, 04 Aug 2023 15:18:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qS0JJ-0001GW-A5; Fri, 04 Aug 2023 15:18:06 -0400
+ id 1qS0JM-0001JZ-Vc; Fri, 04 Aug 2023 15:18:10 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qS0JH-00075e-9X; Fri, 04 Aug 2023 15:18:04 -0400
+ id 1qS0JJ-00076P-Lz; Fri, 04 Aug 2023 15:18:07 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id CDB3B18464;
- Fri,  4 Aug 2023 22:17:13 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 1049118465;
+ Fri,  4 Aug 2023 22:17:14 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 688BD1B8A7;
+ by tsrv.corpit.ru (Postfix) with SMTP id 93B711B8A8;
  Fri,  4 Aug 2023 22:16:53 +0300 (MSK)
-Received: (nullmailer pid 1875741 invoked by uid 1000);
+Received: (nullmailer pid 1875744 invoked by uid 1000);
  Fri, 04 Aug 2023 19:16:49 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Keith Packard <keithp@keithp.com>,
+Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.4 50/63] target/nios2: Fix semihost lseek offset
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.0.4 51/63] target/m68k: Fix semihost lseek offset
  computation
-Date: Fri,  4 Aug 2023 22:16:33 +0300
-Message-Id: <20230804191647.1875608-19-mjt@tls.msk.ru>
+Date: Fri,  4 Aug 2023 22:16:34 +0300
+Message-Id: <20230804191647.1875608-20-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.4-20230804221634@cover.tls.msk.ru>
 References: <qemu-stable-8.0.4-20230804221634@cover.tls.msk.ru>
@@ -61,29 +61,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Keith Packard <keithp@keithp.com>
+From: Peter Maydell <peter.maydell@linaro.org>
 
 The arguments for deposit64 are (value, start, length, fieldval); this
 appears to have thought they were (value, fieldval, start,
 length). Reorder the parameters to match the actual function.
 
-Signed-off-by: Keith Packard <keithp@keithp.com>
+Cc: qemu-stable@nongnu.org
+Fixes: 950272506d ("target/m68k: Use semihosting/syscalls.h")
+Reported-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Fixes: d1e23cbaa403b2d ("target/nios2: Use semihosting/syscalls.h")
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-Id: <20230731235245.295513-1-keithp@keithp.com>
+Message-Id: <20230801154519.3505531-1-peter.maydell@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-(cherry picked from commit 71e2dd6aa1bdbac19c661638a4ae91816002ac9e)
+(cherry picked from commit 8caaae7319a5f7ca449900c0e6bfcaed78fa3ae2)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/nios2/nios2-semi.c b/target/nios2/nios2-semi.c
-index f3b7aee4f1..9d0241c758 100644
---- a/target/nios2/nios2-semi.c
-+++ b/target/nios2/nios2-semi.c
-@@ -169,7 +169,7 @@ void do_nios2_semihosting(CPUNios2State *env)
+diff --git a/target/m68k/m68k-semi.c b/target/m68k/m68k-semi.c
+index 88ad9ba814..239f6e44e9 100644
+--- a/target/m68k/m68k-semi.c
++++ b/target/m68k/m68k-semi.c
+@@ -166,7 +166,7 @@ void do_m68k_semihosting(CPUM68KState *env, int nr)
          GET_ARG64(2);
          GET_ARG64(3);
-         semihost_sys_lseek(cs, nios2_semi_u64_cb, arg0,
+         semihost_sys_lseek(cs, m68k_semi_u64_cb, arg0,
 -                           deposit64(arg2, arg1, 32, 32), arg3);
 +                           deposit64(arg2, 32, 32, arg1), arg3);
          break;
