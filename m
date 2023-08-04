@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77495770000
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 14:13:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18855770020
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 14:23:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRtgJ-0000f8-2D; Fri, 04 Aug 2023 08:13:23 -0400
+	id 1qRtoA-00029S-LE; Fri, 04 Aug 2023 08:21:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qRtgG-0000bT-8E
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 08:13:20 -0400
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
+ id 1qRto6-00028m-0W
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 08:21:27 -0400
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qRtgE-0003vQ-Df
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 08:13:19 -0400
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-522c9d388d2so2487795a12.3
- for <qemu-devel@nongnu.org>; Fri, 04 Aug 2023 05:13:18 -0700 (PDT)
+ id 1qRto3-0007ER-Kd
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 08:21:25 -0400
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-52222562f1eso2658744a12.3
+ for <qemu-devel@nongnu.org>; Fri, 04 Aug 2023 05:21:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691151197; x=1691755997;
+ d=linaro.org; s=google; t=1691151681; x=1691756481;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=oP6Nv/sWOF7ZKHuQERNU0H3pM8N2LUjQWlVQj7efbV0=;
- b=KU0YAg8KfSJc9VaiF0NMiDu43sMOBsVp7AyiqOJUSxfCPkufmsnQjMLYVQ9BSTvWBv
- LiR7sCzwj4riQfwLTBinf/JpGfgxJsLZMsvz6bpJT5jHJe4uh9eMjlRQZRIUGMbc9aFN
- AuRJaZbjny5C2dM3KJU5gqp/0xUJ/27244QuX50L2TYrC2O+Mm8sEYydkWGw8KNx5oXp
- s4ZEZvctq51DLAUmknnpjlaKBox2vo3kRoOKipwNwvRXtwXOimy8KCzz9Uu1ZXcJ6gDK
- nKf97mOraF+CSI7zN1TL65TA8Xre9varf9JWgx2285K/WUaJRX9LIgEHkpnR2AUqQvgQ
- dgFw==
+ bh=b+2RejFsW7GG6XTrNt7Ulg3EG3QtR6PZwEeBRFn3KA8=;
+ b=SoAq+dWT8Grsg/BbNxWbIKubtxsPzJJpINbrHCWDD3HM9IQsoM0HoD/t5DE+MTiFXF
+ OxqlKwbpVKnMTCxU6lJQF1lDM6GG2ScQwaSTTRrRHirmTHaVEQx8OhPyI5U1uba76jg6
+ DOtqnw5qR4Vdk5ezxZaiP5wJB1rePy8yCx9g3ruXYPgowNaN3Ep0Lihn6KPeeG8+88gz
+ qpjKxEvUiUYZgQE9vknJ8eZpFeXx6bnCKzMF97BzJ04MeUfNqKVcgs+fN1frayn3SXIk
+ 7yYit2HALwFRSar/m2CQn+JtZ7nDvsOH8TnaaSEUKS1pYZBo4EB1YeWZLZpAAlkVcbY0
+ sIxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691151197; x=1691755997;
+ d=1e100.net; s=20221208; t=1691151681; x=1691756481;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=oP6Nv/sWOF7ZKHuQERNU0H3pM8N2LUjQWlVQj7efbV0=;
- b=TafVb+6I8woZKDtQq/+fph2j+DX0wwpLuaUUXCE+pNs2+xtvvbOlmJZYmpeiU57af8
- uWj2g1rg+vjr0uPGhLK0c2fLANfL2LkW/rbHN5E021qf1Z+gFZwpCarFK8CpLxSDx4i9
- KzZA6r9aVZHudG6sjclZN5CPgLJyJmWLihW6g4ai69vvGpzBFvBEX4MiP6KsUTjw/VE0
- DOab4YLZpxhSkra8rOmXP8sqLVd39z+9HXRynWL+L6rB8/yepQeiH3DQ0tAVq3hjmAz8
- 4qmU524whD8fPL8FIAUfpWoncHFNNou0LZMQrqDaN8D8orpR0FzV8F0Y9r9QdgWZFGVD
- c38A==
-X-Gm-Message-State: AOJu0Yx3w/t+3WmimIBxii68dxZFH06rXJ8Hfr9t8EM53wA70wXKbE/R
- 8QgQEnIXC/JOAhluYITkJo8WPdG9N60twuQiilcLtQ==
-X-Google-Smtp-Source: AGHT+IEhMSZDygLH88medWSr4ZgTPDAG9LRAtzuf7thFap8fdhfwtDDt6RWe4sKVgAhVXpte2L0Y4E6Nph42thwkTe4=
-X-Received: by 2002:a50:fe8c:0:b0:522:472c:cc36 with SMTP id
- d12-20020a50fe8c000000b00522472ccc36mr1261764edt.4.1691151196867; Fri, 04 Aug
- 2023 05:13:16 -0700 (PDT)
+ bh=b+2RejFsW7GG6XTrNt7Ulg3EG3QtR6PZwEeBRFn3KA8=;
+ b=RvLmRuuAO0aYAhausQGTi36B3Kx+MNCW1OqR/OjjbhiTv0U4udIjNwDLUGl4/rnzUS
+ JD09wkshEmYJkjka2J/9MIGOFPz0XPyXr12BPvAV/qH3kPHGO1sf2Zd1VxpIbKT8Tl9v
+ nSSxozog/113mUxNPexgSkG7Pv/Zhg4F3vV5uExRTf6W9hmD3t2TXZXwPaxc8c7YWq/4
+ D+QHGtFnVAztUx6RliTRFRjT3KrXz1/wJrdi5EWbO8ZKqgl7FjAYcwUa61YMvHZtQhO1
+ cUeqNjtuJufqApC0+SYHts0pHrG7kpHjR+sSJjMHCszLHi6XU5nqjmrjIlyiZRjdrdAU
+ wHkQ==
+X-Gm-Message-State: AOJu0YwDAm+R4y1SfwYHJjNE3ICWqjnb0PoTNfA1QXtky3YR1oOzjRVY
+ BqBaryKbe0SFw7+E/NBsVd1F5ah74+xxMBXsjInWMA==
+X-Google-Smtp-Source: AGHT+IHoIGoj6QcXS//cQbmbsFESF6WvDe+rFuowy6xWErcvkAYl2CSso3hjXhTI7JcAp9YvqR0Fwvcm3zyzbdYRmxw=
+X-Received: by 2002:a05:6402:282:b0:51e:1af0:3a90 with SMTP id
+ l2-20020a056402028200b0051e1af03a90mr1367114edv.37.1691151681471; Fri, 04 Aug
+ 2023 05:21:21 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230726132512.149618-1-sergey.kambalin@auriga.com>
-In-Reply-To: <20230726132512.149618-1-sergey.kambalin@auriga.com>
+ <20230726132512.149618-8-sergey.kambalin@auriga.com>
+In-Reply-To: <20230726132512.149618-8-sergey.kambalin@auriga.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 4 Aug 2023 13:13:05 +0100
-Message-ID: <CAFEAcA_xyq3KjKVkrbtGktbS5OySZU2Q-gh_qqzv_iqnnDbQqQ@mail.gmail.com>
-Subject: Re: [PATCH 00/44] Raspberry Pi 4B machine
+Date: Fri, 4 Aug 2023 13:21:10 +0100
+Message-ID: <CAFEAcA9bj7U2LQFCPGDMB9p66ODhUH2SSnDKmSJ+y_i--7zgHw@mail.gmail.com>
+Subject: Re: [PATCH 07/44] Implement BCM2838 GPIO functionality
 To: Sergey Kambalin <serg.oker@gmail.com>
 Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
  Sergey Kambalin <sergey.kambalin@auriga.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,38 +86,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 26 Jul 2023 at 14:56, Sergey Kambalin <serg.oker@gmail.com> wrote:
+On Wed, 26 Jul 2023 at 14:51, Sergey Kambalin <serg.oker@gmail.com> wrote:
 >
-> Introducing Raspberry Pi 4B model.
-> It contains new BCM2838 SoC, PCIE subsystem,
-> RNG200, Thermal sensor and Genet network controller.
->
-> It can work with recent linux kernels 6.x.x.
-> Two avocado tests was added to check that.
->
-> Unit tests has been made as read/write operations
-> via mailbox properties.
->
-> Genet integration test is under development.
->
-> Every single commit
-> 1) builds without errors
-> 2) passes regression tests
-> 3) passes style check*
-> *the only exception is bcm2838-mbox-property-test.c file
-> containing heavy macros usage which cause a lot of
-> false-positives of checkpatch.pl.
->
-> I did my best to keep the commits less than 200 changes,
-> but had to make some of them a bit more in order to
-> keep their integrity.
+> Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
+> ---
+>  hw/gpio/bcm2838_gpio.c | 197 ++++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 193 insertions(+), 4 deletions(-)
 
-Thanks for doing this -- I really like the way the split
-has turned out, and the overall structure of the patchseries
-is good. I'm going through the patches individually
-(which will probably take me into next week to finish)
-but I'm not seeing anything major, just some smaller
-issues.
 
+>  static void bcm2838_gpio_reset(DeviceState *dev)
+>  {
+>      BCM2838GpioState *s = BCM2838_GPIO(dev);
+>
+> +    int i;
+> +    for (i = 0; i < 6; i++) {
+> +        gpfsel_set(s, i, 0);
+> +    }
+
+This is a rather inefficient way to do
+   memset(s->fsel, 0, sizeof(s->fsel));
+
+
+Otherwise
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+
+thanks
 -- PMM
 
