@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4F9A7708E0
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 21:19:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B3887708D4
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 21:18:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qS0K9-0004yE-GO; Fri, 04 Aug 2023 15:18:57 -0400
+	id 1qS0Jt-0002qN-Ng; Fri, 04 Aug 2023 15:18:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qS0K7-0004rX-2b; Fri, 04 Aug 2023 15:18:55 -0400
+ id 1qS0Jn-000292-3W; Fri, 04 Aug 2023 15:18:35 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qS0K5-00079d-GH; Fri, 04 Aug 2023 15:18:54 -0400
+ id 1qS0Jl-00079e-EA; Fri, 04 Aug 2023 15:18:34 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id D354718469;
- Fri,  4 Aug 2023 22:17:14 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 11A3D1846A;
+ Fri,  4 Aug 2023 22:17:15 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 68FB81B8AC;
+ by tsrv.corpit.ru (Postfix) with SMTP id 99A921B8AD;
  Fri,  4 Aug 2023 22:16:54 +0300 (MSK)
-Received: (nullmailer pid 1875756 invoked by uid 1000);
+Received: (nullmailer pid 1875759 invoked by uid 1000);
  Fri, 04 Aug 2023 19:16:49 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, zhenwei pi <pizhenwei@bytedance.com>,
- Gonglei <arei.gonglei@huawei.com>, Mauro Matteo Cascella <mcascell@redhat.com>,
- Xiao Lei <nop.leixiao@gmail.com>, Yongkang Jia <kangel@zju.edu.cn>,
- Yiming Tao <taoym@zju.edu.cn>, "Michael S . Tsirkin" <mst@redhat.com>,
+Cc: qemu-stable@nongnu.org, Helge Deller <deller@gmx.de>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.4 55/63] cryptodev: Handle unexpected request to avoid
- crash
-Date: Fri,  4 Aug 2023 22:16:38 +0300
-Message-Id: <20230804191647.1875608-24-mjt@tls.msk.ru>
+Subject: [Stable-8.0.4 56/63] target/hppa: Move iaoq registers and thus reduce
+ generated code size
+Date: Fri,  4 Aug 2023 22:16:39 +0300
+Message-Id: <20230804191647.1875608-25-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.4-20230804221634@cover.tls.msk.ru>
 References: <qemu-stable-8.0.4-20230804221634@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -62,55 +62,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: zhenwei pi <pizhenwei@bytedance.com>
+From: Helge Deller <deller@gmx.de>
 
-Generally guest side should discover which services the device is
-able to offer, then do requests on device.
+On hppa the Instruction Address Offset Queue (IAOQ) registers specifies
+the next to-be-executed instructions addresses. Each generated TB writes those
+registers at least once, so those registers are used heavily in generated
+code.
 
-However it's also possible to break this rule in a guest. Handle
-unexpected request here to avoid NULL pointer dereference.
+Looking at the generated assembly, for a x86-64 host this code
+to write the address $0x7ffe826f into iaoq_f is generated:
+0x7f73e8000184:  c7 85 d4 01 00 00 6f 82  movl     $0x7ffe826f, 0x1d4(%rbp)
+0x7f73e800018c:  fe 7f
+0x7f73e800018e:  c7 85 d8 01 00 00 73 82  movl     $0x7ffe8273, 0x1d8(%rbp)
+0x7f73e8000196:  fe 7f
 
-Fixes: e7a775fd ('cryptodev: Account statistics')
-Cc: Gonglei <arei.gonglei@huawei.com>
-Cc: Mauro Matteo Cascella <mcascell@redhat.com>
-Cc: Xiao Lei <nop.leixiao@gmail.com>
-Cc: Yongkang Jia <kangel@zju.edu.cn>
-Reported-by: Yiming Tao <taoym@zju.edu.cn>
-Signed-off-by: zhenwei pi <pizhenwei@bytedance.com>
-Message-Id: <20230803024314.29962-3-pizhenwei@bytedance.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit 15b11a1da6a4b7c6b8bb37883f52b544dee2b8fd)
+With the trivial change, by moving the variables iaoq_f and iaoq_b to
+the top of struct CPUArchState, the offset to %rbp is reduced (from
+0x1d4 to 0), which allows the x86-64 tcg to generate 3 bytes less of
+generated code per move instruction:
+0x7fc1e800018c:  c7 45 00 6f 82 fe 7f     movl     $0x7ffe826f, (%rbp)
+0x7fc1e8000193:  c7 45 04 73 82 fe 7f     movl     $0x7ffe8273, 4(%rbp)
+
+Overall this is a reduction of generated code (not a reduction of
+number of instructions).
+A test run with checks the generated code size by running "/bin/ls"
+with qemu-user shows that the code size shrinks from 1616767 to 1569273
+bytes, which is ~97% of the former size.
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: qemu-stable@nongnu.org
+(cherry picked from commit f8c0fd9804f435a20c3baa4c0c77ba9a02af24ef)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/backends/cryptodev.c b/backends/cryptodev.c
-index 94ca393cee..d3fe92d8c0 100644
---- a/backends/cryptodev.c
-+++ b/backends/cryptodev.c
-@@ -191,6 +191,11 @@ static int cryptodev_backend_account(CryptoDevBackend *backend,
-     if (algtype == QCRYPTODEV_BACKEND_ALG_ASYM) {
-         CryptoDevBackendAsymOpInfo *asym_op_info = op_info->u.asym_op_info;
-         len = asym_op_info->src_len;
+diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
+index b595ef25a9..c7659e5b0d 100644
+--- a/target/hppa/cpu.h
++++ b/target/hppa/cpu.h
+@@ -168,6 +168,9 @@ typedef struct {
+ } hppa_tlb_entry;
+ 
+ typedef struct CPUArchState {
++    target_ureg iaoq_f;      /* front */
++    target_ureg iaoq_b;      /* back, aka next instruction */
 +
-+        if (unlikely(!backend->asym_stat)) {
-+            error_report("cryptodev: Unexpected asym operation");
-+            return -VIRTIO_CRYPTO_NOTSUPP;
-+        }
-         switch (op_info->op_code) {
-         case VIRTIO_CRYPTO_AKCIPHER_ENCRYPT:
-             CryptodevAsymStatIncEncrypt(backend, len);
-@@ -210,6 +215,11 @@ static int cryptodev_backend_account(CryptoDevBackend *backend,
-     } else if (algtype == QCRYPTODEV_BACKEND_ALG_SYM) {
-         CryptoDevBackendSymOpInfo *sym_op_info = op_info->u.sym_op_info;
-         len = sym_op_info->src_len;
-+
-+        if (unlikely(!backend->sym_stat)) {
-+            error_report("cryptodev: Unexpected sym operation");
-+            return -VIRTIO_CRYPTO_NOTSUPP;
-+        }
-         switch (op_info->op_code) {
-         case VIRTIO_CRYPTO_CIPHER_ENCRYPT:
-             CryptodevSymStatIncEncrypt(backend, len);
+     target_ureg gr[32];
+     uint64_t fr[32];
+     uint64_t sr[8];          /* stored shifted into place for gva */
+@@ -186,8 +189,6 @@ typedef struct CPUArchState {
+     target_ureg psw_cb;      /* in least significant bit of next nibble */
+     target_ureg psw_cb_msb;  /* boolean */
+ 
+-    target_ureg iaoq_f;      /* front */
+-    target_ureg iaoq_b;      /* back, aka next instruction */
+     uint64_t iasq_f;
+     uint64_t iasq_b;
+ 
 -- 
 2.39.2
 
