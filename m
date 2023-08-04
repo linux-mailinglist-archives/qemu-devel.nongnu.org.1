@@ -2,42 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1B89770847
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 20:56:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EEAF1770857
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 20:58:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRzwt-0002fe-K0; Fri, 04 Aug 2023 14:54:55 -0400
+	id 1qRzx8-00039i-Jt; Fri, 04 Aug 2023 14:55:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qRzwk-0002Py-FH; Fri, 04 Aug 2023 14:54:46 -0400
+ id 1qRzx5-00031d-Bz; Fri, 04 Aug 2023 14:55:07 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qRzwj-0008DR-0c; Fri, 04 Aug 2023 14:54:46 -0400
+ id 1qRzx3-0008Dc-Na; Fri, 04 Aug 2023 14:55:07 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 1D0D618412;
+ by isrv.corpit.ru (Postfix) with ESMTP id 743D918413;
  Fri,  4 Aug 2023 21:54:20 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id AC44E1B889;
+ by tsrv.corpit.ru (Postfix) with SMTP id DDBA71B88A;
  Fri,  4 Aug 2023 21:53:59 +0300 (MSK)
-Received: (nullmailer pid 1874236 invoked by uid 1000);
+Received: (nullmailer pid 1874239 invoked by uid 1000);
  Fri, 04 Aug 2023 18:53:56 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, zhenwei pi <pizhenwei@bytedance.com>,
- Gonglei <arei.gonglei@huawei.com>, Mauro Matteo Cascella <mcascell@redhat.com>,
- Yiming Tao <taoym@zju.edu.cn>, "Michael S . Tsirkin" <mst@redhat.com>,
+Cc: qemu-stable@nongnu.org, Helge Deller <deller@gmx.de>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.5 28/36] virtio-crypto: verify src&dst buffer length for
- sym request
-Date: Fri,  4 Aug 2023 21:53:41 +0300
-Message-Id: <20230804185350.1874133-15-mjt@tls.msk.ru>
+Subject: [Stable-7.2.5 29/36] target/hppa: Move iaoq registers and thus reduce
+ generated code size
+Date: Fri,  4 Aug 2023 21:53:42 +0300
+Message-Id: <20230804185350.1874133-16-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.5-20230804215319@cover.tls.msk.ru>
 References: <qemu-stable-7.2.5-20230804215319@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -61,44 +62,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: zhenwei pi <pizhenwei@bytedance.com>
+From: Helge Deller <deller@gmx.de>
 
-For symmetric algorithms, the length of ciphertext must be as same
-as the plaintext.
-The missing verification of the src_len and the dst_len in
-virtio_crypto_sym_op_helper() may lead buffer overflow/divulged.
+On hppa the Instruction Address Offset Queue (IAOQ) registers specifies
+the next to-be-executed instructions addresses. Each generated TB writes those
+registers at least once, so those registers are used heavily in generated
+code.
 
-This patch is originally written by Yiming Tao for QEMU-SECURITY,
-resend it(a few changes of error message) in qemu-devel.
+Looking at the generated assembly, for a x86-64 host this code
+to write the address $0x7ffe826f into iaoq_f is generated:
+0x7f73e8000184:  c7 85 d4 01 00 00 6f 82  movl     $0x7ffe826f, 0x1d4(%rbp)
+0x7f73e800018c:  fe 7f
+0x7f73e800018e:  c7 85 d8 01 00 00 73 82  movl     $0x7ffe8273, 0x1d8(%rbp)
+0x7f73e8000196:  fe 7f
 
-Fixes: CVE-2023-3180
-Fixes: 04b9b37edda("virtio-crypto: add data queue processing handler")
-Cc: Gonglei <arei.gonglei@huawei.com>
-Cc: Mauro Matteo Cascella <mcascell@redhat.com>
-Cc: Yiming Tao <taoym@zju.edu.cn>
-Signed-off-by: zhenwei pi <pizhenwei@bytedance.com>
-Message-Id: <20230803024314.29962-2-pizhenwei@bytedance.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit 9d38a8434721a6479fe03fb5afb150ca793d3980)
+With the trivial change, by moving the variables iaoq_f and iaoq_b to
+the top of struct CPUArchState, the offset to %rbp is reduced (from
+0x1d4 to 0), which allows the x86-64 tcg to generate 3 bytes less of
+generated code per move instruction:
+0x7fc1e800018c:  c7 45 00 6f 82 fe 7f     movl     $0x7ffe826f, (%rbp)
+0x7fc1e8000193:  c7 45 04 73 82 fe 7f     movl     $0x7ffe8273, 4(%rbp)
+
+Overall this is a reduction of generated code (not a reduction of
+number of instructions).
+A test run with checks the generated code size by running "/bin/ls"
+with qemu-user shows that the code size shrinks from 1616767 to 1569273
+bytes, which is ~97% of the former size.
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: qemu-stable@nongnu.org
+(cherry picked from commit f8c0fd9804f435a20c3baa4c0c77ba9a02af24ef)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/virtio/virtio-crypto.c b/hw/virtio/virtio-crypto.c
-index a6dbdd32da..406b4e5fd0 100644
---- a/hw/virtio/virtio-crypto.c
-+++ b/hw/virtio/virtio-crypto.c
-@@ -635,6 +635,11 @@ virtio_crypto_sym_op_helper(VirtIODevice *vdev,
-         return NULL;
-     }
+diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
+index 6f3b6beecf..6f441f159b 100644
+--- a/target/hppa/cpu.h
++++ b/target/hppa/cpu.h
+@@ -168,6 +168,9 @@ typedef struct {
+ } hppa_tlb_entry;
  
-+    if (unlikely(src_len != dst_len)) {
-+        virtio_error(vdev, "sym request src len is different from dst len");
-+        return NULL;
-+    }
+ typedef struct CPUArchState {
++    target_ureg iaoq_f;      /* front */
++    target_ureg iaoq_b;      /* back, aka next instruction */
 +
-     max_len = (uint64_t)iv_len + aad_len + src_len + dst_len + hash_result_len;
-     if (unlikely(max_len > vcrypto->conf.max_size)) {
-         virtio_error(vdev, "virtio-crypto too big length");
+     target_ureg gr[32];
+     uint64_t fr[32];
+     uint64_t sr[8];          /* stored shifted into place for gva */
+@@ -186,8 +189,6 @@ typedef struct CPUArchState {
+     target_ureg psw_cb;      /* in least significant bit of next nibble */
+     target_ureg psw_cb_msb;  /* boolean */
+ 
+-    target_ureg iaoq_f;      /* front */
+-    target_ureg iaoq_b;      /* back, aka next instruction */
+     uint64_t iasq_f;
+     uint64_t iasq_b;
+ 
 -- 
 2.39.2
 
