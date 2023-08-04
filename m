@@ -2,84 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBE7877043F
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 17:20:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6C3B77047B
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 17:26:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRwak-0001lp-Ki; Fri, 04 Aug 2023 11:19:50 -0400
+	id 1qRwfs-0002w4-IJ; Fri, 04 Aug 2023 11:25:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qRwaj-0001lH-2l; Fri, 04 Aug 2023 11:19:49 -0400
-Received: from mail-ot1-x32f.google.com ([2607:f8b0:4864:20::32f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qRwah-0000gj-F2; Fri, 04 Aug 2023 11:19:48 -0400
-Received: by mail-ot1-x32f.google.com with SMTP id
- 46e09a7af769-6b9a2416b1cso1879339a34.2; 
- Fri, 04 Aug 2023 08:19:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1691162386; x=1691767186;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=1t2a6sgIHWW8hupP+O18og/A7bCSfliCH63ZE7ZE2dk=;
- b=g/y3aRr3gmzO0OLL2WC6krqAk2zs/xeVFUIvqTS9/ZmXssiRtnAOXk61CI9dzdDaZY
- pNJ58EMmdVW3PolRDbSFGJ+AdmwPXdrppaloca71+DiA1FfyEgjCXEWynZq+PR3fvX8j
- hIKVpYHP2GwfCpuhYHfdlIFOuV+RyswxXEJpVAksdVULDryqjJr6JKM0tljREjYeg4yA
- Oa8xSszsjGySPK4Xl56OzsBtgxlYAMn1MqMwp91qSdNmRkDn2m2MKC0ESZgge56hzbk1
- n101gVvADfH6Xr/KsYBODYBqW5cauCFKUKPm29YZIjRv0rdnyB9LpCyMwF63FhnFJAgU
- GdXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691162386; x=1691767186;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=1t2a6sgIHWW8hupP+O18og/A7bCSfliCH63ZE7ZE2dk=;
- b=Pjc5woe4VT/dm4a9Bp9rZDROofmnlEVyoxTH/KqONb7+doQAuHk5WQ4LwbXn3FVlIM
- FVPuuFZxqFIiGNgm6CP35JepZq+cbDTt4yMb9cINBgogBqPQY2odbZbTGbJlZ5h5Zqsk
- dKrvpMKsZLoA2Dl6Uk0j0m/V5SNn0d8cFP3YLLUgacwQAcGoalcfGIb6ZcHYLblIpg6Z
- MEx3+T4m2TF6H3M9HwBvpw5ecJlLwU5JTKfYSfqyhXvdGrXwyIDKQHWf85k1VB/E9Kv5
- 66i5BBMtLiH4Bxs7Zk0WqN8dpV6K943HaLC7KRudiAYo5/YnHEAAWmo4CvtwFU0EAWtv
- UF9g==
-X-Gm-Message-State: AOJu0YwCyG9iELbaRKUNK+8iKYyQlzGwbjRaLeDeuyRSLoXor/UrI4Zj
- 1T7lGo5+QQUjtpGFNdz36xY=
-X-Google-Smtp-Source: AGHT+IElSjuFR53syKZNzbFpcxAOpr6B9HhAp/HpK2rU2ahb4QwSizsN0Jzg9RlB3EUd4fW0Xhqx0A==
-X-Received: by 2002:a05:6830:1d98:b0:6b9:465c:d22c with SMTP id
- y24-20020a0568301d9800b006b9465cd22cmr1909036oti.8.1691162385702; 
- Fri, 04 Aug 2023 08:19:45 -0700 (PDT)
-Received: from [192.168.68.108] ([177.197.108.190])
- by smtp.gmail.com with ESMTPSA id
- q12-20020a9d7c8c000000b006b466ed0484sm1206195otn.67.2023.08.04.08.19.43
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 04 Aug 2023 08:19:45 -0700 (PDT)
-Message-ID: <2490fea8-b9aa-82fd-6595-322da867b326@gmail.com>
-Date: Fri, 4 Aug 2023 12:19:42 -0300
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qRwfq-0002vu-2b
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 11:25:06 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qRwfm-00037r-Fk
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 11:25:05 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.206])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RHTvZ0jjFz6J67F;
+ Fri,  4 Aug 2023 23:21:30 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Fri, 4 Aug
+ 2023 16:24:55 +0100
+Date: Fri, 4 Aug 2023 16:24:54 +0100
+To: Fan Ni <fan.ni@samsung.com>
+CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
+ "gregory.price@memverge.com" <gregory.price@memverge.com>,
+ "hchkuo@avery-design.com.tw" <hchkuo@avery-design.com.tw>,
+ "cbrowy@avery-design.com" <cbrowy@avery-design.com>, "ira.weiny@intel.com"
+ <ira.weiny@intel.com>, "dan.j.williams@intel.com" <dan.j.williams@intel.com>, 
+ Adam Manzanares <a.manzanares@samsung.com>, "dave@stgolabs.net"
+ <dave@stgolabs.net>, "nmtadam.samsung@gmail.com" <nmtadam.samsung@gmail.com>, 
+ "nifan@outlook.com" <nifan@outlook.com>
+Subject: Re: [Qemu PATCH v2 2/9] hw/cxl/cxl-mailbox-utils: Add dynamic
+ capacity region representative and mailbox command support
+Message-ID: <20230804162454.000052ae@Huawei.com>
+In-Reply-To: <20230725183939.2741025-3-fan.ni@samsung.com>
+References: <20230725183939.2741025-1-fan.ni@samsung.com>
+ <CGME20230725183956uscas1p296403063c710f4b546d4fec7650915c4@uscas1p2.samsung.com>
+ <20230725183939.2741025-3-fan.ni@samsung.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2] target/ppc: Fix VRMA page size for ISA v3.0
-Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>
-Cc: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org,
- qemu-devel@nongnu.org
-References: <20230730111842.39292-1-npiggin@gmail.com>
-From: Daniel Henrique Barboza <danielhb413@gmail.com>
-In-Reply-To: <20230730111842.39292-1-npiggin@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32f;
- envelope-from=danielhb413@gmail.com; helo=mail-ot1-x32f.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, NICE_REPLY_A=-0.093,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,127 +72,234 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Queued in gitlab.com/danielhb/qemu/tree/ppc-next. Thanks,
+On Tue, 25 Jul 2023 18:39:55 +0000
+Fan Ni <fan.ni@samsung.com> wrote:
 
+> From: Fan Ni <nifan@outlook.com>
+You should fix the author on these to match the SoB
 
-Daniel
+git commit --amend --author="Fan Ni <fan.ni@samsung.com>" fixes them.
 
-On 7/30/23 08:18, Nicholas Piggin wrote:
-> Until v2.07s, the VRMA page size (L||LP) was encoded in LPCR[VRMASD].
-> In v3.0 that moved to the partition table PS field.
+I'm trying to pick these up for my tree as I review them (where they aren't
+invasive).  So I'll fix this stuff whilst doing so.
+
+I'm applying on top of the mailbox rework.  Whilst some of that
+may take a while to land I think we can move the generalization code
+forwards fairly soon and that changes the command functions etc to not
+assume as much.
+
 > 
-> The powernv machine can now run KVM HPT guests on POWER9/10 CPUs with
-> this fix and the patch to add ASDR.
+> Per cxl spec 3.0, add dynamic capacity region representative based on
+> Table 8-126 and extend the cxl type3 device definition to include dc region
+> information. Also, based on info in 8.2.9.8.9.1, add 'Get Dynamic Capacity
+> Configuration' mailbox support.
 > 
-> Fixes: 3367c62f522b ("target/ppc: Support for POWER9 native hash")
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> Signed-off-by: Fan Ni <fan.ni@samsung.com>
 > ---
-> Since v1:
-> - Added llp variable to avoid calling get_vrma_llp twice [Cedric].
-> - Added some bit defines for architected fields and values [Cedric].
+>  hw/cxl/cxl-mailbox-utils.c  | 72 +++++++++++++++++++++++++++++++++++++
+>  hw/mem/cxl_type3.c          |  6 ++++
+>  include/hw/cxl/cxl_device.h | 17 +++++++++
+>  3 files changed, 95 insertions(+)
 > 
-> Patches 1,3 from the previously posted series, let's defer 4-6
-> decrementer fixes until after 8.1, so this is the last remaining
-> one from the series.
-> 
-> Thanks,
-> Nick
-> 
->   target/ppc/mmu-hash64.c | 45 +++++++++++++++++++++++++++++++++++------
->   target/ppc/mmu-hash64.h |  5 +++++
->   2 files changed, 44 insertions(+), 6 deletions(-)
-> 
-> diff --git a/target/ppc/mmu-hash64.c b/target/ppc/mmu-hash64.c
-> index a0c90df3ce..d645c0bb94 100644
-> --- a/target/ppc/mmu-hash64.c
-> +++ b/target/ppc/mmu-hash64.c
-> @@ -874,12 +874,46 @@ static target_ulong rmls_limit(PowerPCCPU *cpu)
->       return rma_sizes[rmls];
->   }
->   
-> -static int build_vrma_slbe(PowerPCCPU *cpu, ppc_slb_t *slb)
-> +/* Return the LLP in SLB_VSID format */
-> +static uint64_t get_vrma_llp(PowerPCCPU *cpu)
->   {
->       CPUPPCState *env = &cpu->env;
-> -    target_ulong lpcr = env->spr[SPR_LPCR];
-> -    uint32_t vrmasd = (lpcr & LPCR_VRMASD) >> LPCR_VRMASD_SHIFT;
-> -    target_ulong vsid = SLB_VSID_VRMA | ((vrmasd << 4) & SLB_VSID_LLP_MASK);
-> +    uint64_t llp;
+> diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
+> index b013e30314..0fe9f3eb5d 100644
+> --- a/hw/cxl/cxl-mailbox-utils.c
+> +++ b/hw/cxl/cxl-mailbox-utils.c
+> @@ -81,6 +81,8 @@ enum {
+>          #define GET_POISON_LIST        0x0
+>          #define INJECT_POISON          0x1
+>          #define CLEAR_POISON           0x2
+> +    DCD_CONFIG  = 0x48, /*r3.0: 8.2.9.8.9*/
+
+I'd not document the section here (As otherwise this list will get very messy).
+
+> +        #define GET_DC_CONFIG          0x0
+>      PHYSICAL_SWITCH = 0x51
+>          #define IDENTIFY_SWITCH_DEVICE      0x0
+>  };
+> @@ -939,6 +941,71 @@ static CXLRetCode cmd_media_clear_poison(struct cxl_cmd *cmd,
+>      return CXL_MBOX_SUCCESS;
+>  }
+>  
+> +/*
+> + * cxl spec 3.0: 8.2.9.8.9.1
+> + * Get Dynamic Capacity Configuration
+
+Here is a good place for documentation.  I'm trying to slowly standardize these
+references though (might do a blanket fixup if I get time next week).
+My current preference is:
+
+ * CXL r3.0 section 8.2.9.8.9.1: Get Dynamic Capacity Configuration
+ * (Opcode 4800h)
+
+Long winded but should avoid us being forced to update this for CXL.next when
+it's released (and it becomes hard to get old specs)
+
+> + **/
+> +static CXLRetCode cmd_dcd_get_dyn_cap_config(struct cxl_cmd *cmd,
+> +        CXLDeviceState *cxl_dstate,
+> +        uint16_t *len)
+> +{
+> +    struct get_dyn_cap_config_in_pl {
+> +        uint8_t region_cnt;
+> +        uint8_t start_region_id;
+> +    } QEMU_PACKED;
 > +
-> +    if (env->mmu_model == POWERPC_MMU_3_00) {
-> +        ppc_v3_pate_t pate;
-> +        uint64_t ps, l, lp;
+> +    struct get_dyn_cap_config_out_pl {
+> +        uint8_t num_regions;
+> +        uint8_t rsvd1[7];
+> +        struct {
+> +            uint64_t base;
+> +            uint64_t decode_len;
+> +            uint64_t region_len;
+> +            uint64_t block_size;
+> +            uint32_t dsmadhandle;
+> +            uint8_t flags;
+> +            uint8_t rsvd2[3];
+> +        } QEMU_PACKED records[];
+> +    } QEMU_PACKED;
 > +
-> +        /*
-> +         * ISA v3.0 removes the LPCR[VRMASD] field and puts the VRMA base
-> +         * page size (L||LP equivalent) in the PS field in the HPT partition
-> +         * table entry.
-> +         */
-> +        if (!ppc64_v3_get_pate(cpu, cpu->env.spr[SPR_LPIDR], &pate)) {
-> +            error_report("Bad VRMA with no partition table entry");
-> +            return 0;
-> +        }
-> +        ps = PATE0_GET_PS(pate.dw0);
-> +        /* PS has L||LP in 3 consecutive bits, put them into SLB LLP format */
-> +        l = (ps >> 2) & 0x1;
-> +        lp = ps & 0x3;
-> +        llp = (l << SLB_VSID_L_SHIFT) | (lp << SLB_VSID_LP_SHIFT);
+> +    struct get_dyn_cap_config_in_pl *in = (void *)cmd->payload;
+> +    struct get_dyn_cap_config_out_pl *out = (void *)cmd->payload;
+
+I've reworked this stuff to take into account the changes in the cci
+reworking patch set. Changes the parameter etc but not too hard to 
+rebase this.
+
+> +    struct CXLType3Dev *ct3d = container_of(cxl_dstate, CXLType3Dev,
+> +            cxl_dstate);
+> +    uint16_t record_count = 0, i;
+> +    uint16_t out_pl_len;
+> +    uint8_t start_region_id = in->start_region_id;
 > +
-> +    } else {
-> +        uint64_t lpcr = env->spr[SPR_LPCR];
-> +        target_ulong vrmasd = (lpcr & LPCR_VRMASD) >> LPCR_VRMASD_SHIFT;
-> +
-> +        /* VRMASD LLP matches SLB format, just shift and mask it */
-> +        llp = (vrmasd << SLB_VSID_LP_SHIFT) & SLB_VSID_LLP_MASK;
+> +    if (start_region_id >= ct3d->dc.num_regions) {
+> +        return CXL_MBOX_INVALID_INPUT;
 > +    }
 > +
-> +    return llp;
+> +    record_count = MIN(ct3d->dc.num_regions - in->start_region_id,
+> +            in->region_cnt);
+> +
+> +    out_pl_len = sizeof(*out) + record_count * sizeof(out->records[0]);
+> +    assert(out_pl_len <= CXL_MAILBOX_MAX_PAYLOAD_SIZE);
+> +
+> +    memset(out, 0, out_pl_len);
+> +    out->num_regions = record_count;
+> +    for (i = 0; i < record_count; i++) {
+> +        stq_le_p(&out->records[i].base,
+> +                ct3d->dc.regions[start_region_id + i].base);
+> +        stq_le_p(&out->records[i].decode_len,
+> +                ct3d->dc.regions[start_region_id + i].decode_len);
+> +        stq_le_p(&out->records[i].region_len,
+> +                ct3d->dc.regions[start_region_id + i].len);
+> +        stq_le_p(&out->records[i].block_size,
+> +                ct3d->dc.regions[start_region_id + i].block_size);
+> +        stl_le_p(&out->records[i].dsmadhandle,
+> +                ct3d->dc.regions[start_region_id + i].dsmadhandle);
+> +        out->records[i].flags = ct3d->dc.regions[start_region_id + i].flags;
+> +    }
+> +
+> +    *len = out_pl_len;
+> +    return CXL_MBOX_SUCCESS;
 > +}
 > +
-> +static int build_vrma_slbe(PowerPCCPU *cpu, ppc_slb_t *slb)
-> +{
-> +    uint64_t llp = get_vrma_llp(cpu);
-> +    target_ulong vsid = SLB_VSID_VRMA | llp;
->       int i;
->   
->       for (i = 0; i < PPC_PAGE_SIZES_MAX_SZ; i++) {
-> @@ -897,8 +931,7 @@ static int build_vrma_slbe(PowerPCCPU *cpu, ppc_slb_t *slb)
->           }
->       }
->   
-> -    error_report("Bad page size encoding in LPCR[VRMASD]; LPCR=0x"
-> -                 TARGET_FMT_lx, lpcr);
-> +    error_report("Bad VRMA page size encoding 0x" TARGET_FMT_lx, llp);
->   
->       return -1;
->   }
-> diff --git a/target/ppc/mmu-hash64.h b/target/ppc/mmu-hash64.h
-> index 1496955d38..de653fcae5 100644
-> --- a/target/ppc/mmu-hash64.h
-> +++ b/target/ppc/mmu-hash64.h
-> @@ -41,8 +41,10 @@ void ppc_hash64_finalize(PowerPCCPU *cpu);
->   #define SLB_VSID_KP             0x0000000000000400ULL
->   #define SLB_VSID_N              0x0000000000000200ULL /* no-execute */
->   #define SLB_VSID_L              0x0000000000000100ULL
-> +#define SLB_VSID_L_SHIFT        PPC_BIT_NR(55)
->   #define SLB_VSID_C              0x0000000000000080ULL /* class */
->   #define SLB_VSID_LP             0x0000000000000030ULL
-> +#define SLB_VSID_LP_SHIFT       PPC_BIT_NR(59)
->   #define SLB_VSID_ATTR           0x0000000000000FFFULL
->   #define SLB_VSID_LLP_MASK       (SLB_VSID_L | SLB_VSID_LP)
->   #define SLB_VSID_4K             0x0000000000000000ULL
-> @@ -58,6 +60,9 @@ void ppc_hash64_finalize(PowerPCCPU *cpu);
->   #define SDR_64_HTABSIZE        0x000000000000001FULL
->   
->   #define PATE0_HTABORG           0x0FFFFFFFFFFC0000ULL
-> +#define PATE0_PS                PPC_BITMASK(56, 58)
-> +#define PATE0_GET_PS(dw0)       (((dw0) & PATE0_PS) >> PPC_BIT_NR(58))
+>  #define IMMEDIATE_CONFIG_CHANGE (1 << 1)
+>  #define IMMEDIATE_DATA_CHANGE (1 << 2)
+>  #define IMMEDIATE_POLICY_CHANGE (1 << 3)
+> @@ -977,6 +1044,8 @@ static struct cxl_cmd cxl_cmd_set[256][256] = {
+>          cmd_media_inject_poison, 8, 0 },
+>      [MEDIA_AND_POISON][CLEAR_POISON] = { "MEDIA_AND_POISON_CLEAR_POISON",
+>          cmd_media_clear_poison, 72, 0 },
+> +    [DCD_CONFIG][GET_DC_CONFIG] = { "DCD_GET_DC_CONFIG",
+> +        cmd_dcd_get_dyn_cap_config, 2, 0 },
+>  };
+>  
+>  static struct cxl_cmd cxl_cmd_set_sw[256][256] = {
+> @@ -1164,6 +1233,9 @@ void cxl_initialize_mailbox(CXLDeviceState *cxl_dstate, bool switch_cci)
+>      }
+>      for (int set = 0; set < 256; set++) {
+>          for (int cmd = 0; cmd < 256; cmd++) {
+> +            if (!cxl_dstate->is_dcd && set == DCD_CONFIG) {
+> +                continue;
+> +            }
+Hmm. This doesn't work any more as at the level of this function we now have
+a cci rather that the device state.
+
+I've tried dropping in a version of Gregory's dynamic command registration
+so we only register the DCD commands if we have enabled them.
+
+>              if (cxl_dstate->cxl_cmd_set[set][cmd].handler) {
+>                  struct cxl_cmd *c = &cxl_dstate->cxl_cmd_set[set][cmd];
+>                  struct cel_log *log =
+> diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
+> index 862107c5ef..4d68824dfe 100644
+> --- a/hw/mem/cxl_type3.c
+> +++ b/hw/mem/cxl_type3.c
+> @@ -1046,6 +1046,12 @@ static void ct3d_reset(DeviceState *dev)
+>      uint32_t *reg_state = ct3d->cxl_cstate.crb.cache_mem_registers;
+>      uint32_t *write_msk = ct3d->cxl_cstate.crb.cache_mem_regs_write_mask;
+>  
+> +    if (ct3d->dc.num_regions) {
+> +        ct3d->cxl_dstate.is_dcd = true;
+> +    } else {
+> +        ct3d->cxl_dstate.is_dcd = false;
+> +    }
 > +
->   #define HPTES_PER_GROUP         8
->   #define HASH_PTE_SIZE_64        16
->   #define HASH_PTEG_SIZE_64       (HASH_PTE_SIZE_64 * HPTES_PER_GROUP)
+>      cxl_component_register_init_common(reg_state, write_msk, CXL2_TYPE3_DEVICE);
+>      cxl_device_register_init_common(&ct3d->cxl_dstate);
+>  }
+> diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
+> index cd7f28dba8..dae39da438 100644
+> --- a/include/hw/cxl/cxl_device.h
+> +++ b/include/hw/cxl/cxl_device.h
+> @@ -212,6 +212,7 @@ typedef struct cxl_device_state {
+>      uint64_t mem_size;
+>      uint64_t pmem_size;
+>      uint64_t vmem_size;
+> +    bool is_dcd;
+>  
+>      struct cxl_cmd (*cxl_cmd_set)[256];
+>      CPMUState cpmu[CXL_NUM_CPMU_INSTANCES];
+> @@ -382,6 +383,17 @@ typedef struct CXLPoison {
+>  typedef QLIST_HEAD(, CXLPoison) CXLPoisonList;
+>  #define CXL_POISON_LIST_LIMIT 256
+>  
+> +#define DCD_MAX_REGION_NUM 8
+> +
+> +typedef struct CXLDCD_Region {
+> +    uint64_t base;
+> +    uint64_t decode_len; /* in multiples of 256MB */
+> +    uint64_t len;
+> +    uint64_t block_size;
+> +    uint32_t dsmadhandle;
+> +    uint8_t flags;
+> +} CXLDCD_Region;
+
+whilst we aren't always strictly inline with QEMU naming conventions
+to match local style at least we should have CXLDCDRegion
+
+> +
+>  struct CXLType3Dev {
+>      /* Private */
+>      PCIDevice parent_obj;
+> @@ -413,6 +425,11 @@ struct CXLType3Dev {
+>      unsigned int poison_list_cnt;
+>      bool poison_list_overflowed;
+>      uint64_t poison_list_overflow_ts;
+> +
+> +    struct dynamic_capacity {
+> +        uint8_t num_regions; /* 0-8 regions */
+> +        struct CXLDCD_Region regions[DCD_MAX_REGION_NUM];
+Typedef above, so
+	   CXLDCDRegion regions[...]
+
+> +    } dc;
+>  };
+>  
+>  #define TYPE_CXL_TYPE3 "cxl-type3"
+
 
