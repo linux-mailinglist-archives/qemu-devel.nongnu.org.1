@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB2BF770BA4
-	for <lists+qemu-devel@lfdr.de>; Sat,  5 Aug 2023 00:02:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78AD2770B9D
+	for <lists+qemu-devel@lfdr.de>; Sat,  5 Aug 2023 00:02:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qS2rO-00053t-Hp; Fri, 04 Aug 2023 18:01:26 -0400
+	id 1qS2rM-0004t1-2h; Fri, 04 Aug 2023 18:01:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qS2qq-0004jI-FL
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 18:00:52 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1qS2qr-0004kW-1w
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 18:00:53 -0400
+Received: from mail-pj1-x1036.google.com ([2607:f8b0:4864:20::1036])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qS2qo-0001ut-Nv
+ id 1qS2qp-0001uz-Ar
  for qemu-devel@nongnu.org; Fri, 04 Aug 2023 18:00:52 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1b8b4748fe4so18865885ad.1
+Received: by mail-pj1-x1036.google.com with SMTP id
+ 98e67ed59e1d1-2682e33509bso1722994a91.1
  for <qemu-devel@nongnu.org>; Fri, 04 Aug 2023 15:00:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691186449; x=1691791249;
+ d=linaro.org; s=google; t=1691186450; x=1691791250;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LEtd4K5hRnVc6hrl39zIoY3R0ensohNvKsrzBxsSkfw=;
- b=V2odV32CCUGvjYsqvFcVwvYXnDB71UZs6vy9o1S4G11aaFP4nF5h3rl35xZJ/qnMpU
- RXrrsFeyewEj2AUT1aE0ew0U4cg0CaZQ87xttli1sX+LK1GMkU2fNm6hJYsG2fezChky
- /MVDeGqKHMCS8PQ6+Idb4D/ycH4z8wni9Fdx4ap4N4P145EDSMsBPYOX30c4DyOa9RzF
- uHuByzIE+2eAkKkjc5T+4NAikFxSRpjJHVRET9Z4zkAsfuoWI0ruztg8TUZpiHUk4dwP
- q411fqjLkViMvcGT65bOb7gmHuNgGgJnZpiHSGmuTOc9kH1JCtF9BUER89wmjkpSMwp1
- szww==
+ bh=4+a1ntD1nPZIq5/3BuYdNWBqjL6H8GnZs4Nnik5eIQQ=;
+ b=Xqv/SKUuQXPpsV5T23HQVOtPeceJm3UQP7aCM79PY6XuknhLpqMJYz+7E3pCTR8XHC
+ tBk11FplI1128MKzc3p+DwAYdTYTlk8z/RuqXLO5+WzKoiNCAwINS3M+NkVr07EwbS9v
+ rIpbXSoAOrN5b7nkQqp0Upw0wD277HfWuaGc+1WGIk4jWV3t/q6UTrQTz43Oe7pjtMjS
+ rsZA27ctS2ePmBH9imqEKBcNIbFVgw5vXh1wl8Nvch0INb9qOzEOEasacZ4AAopvq9eh
+ XO/HufO3LUvIucwyRKWRnxF34pQJSkYMEl8Udw1l0gEbflygf9plFc9Hm9TphlTvfLA5
+ 6Jog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691186449; x=1691791249;
+ d=1e100.net; s=20221208; t=1691186450; x=1691791250;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LEtd4K5hRnVc6hrl39zIoY3R0ensohNvKsrzBxsSkfw=;
- b=imok3u/lt9G0zzSkWVhspwhJ57pzy2yja2uW8X6NHPkPeeRUc2UlVERUSq8MU14PGk
- S7yituQhxd+5bBcQkjdnkACeFBZ0A8qVaq8IzQ3ygXB/6lVan61NTmPrvhofonXAjzbm
- SnODaDrKr8w15zbkh+tUz/qSlkbjBDLVMCTq2WPW+TavP1V8jzljb3phzKz6Tb5zqA+i
- oLvCLhm/8GwghY86iu+5fB5bM6DVxlz0tZ09jzQpWFyGRnLo8hdMgWSVgnTYhkwEQfZl
- t4xpCTnMkKE7kpDwVQ8O3tsn73gm6K3EvpSSTxCphtpy4yN28roYUW6RKuqU8ozgbQw4
- jp8Q==
-X-Gm-Message-State: AOJu0YyAOancidT5+4M0dM2wF/7LT4WMRckg2k+PI+vesYHFkLwqsBVD
- W+Nsbfgmpyu6XcwceJEFSGrhkTVTUg0TN62Fw2E=
-X-Google-Smtp-Source: AGHT+IEqH+c2S4v1kbi36OKG+dxb63Dmy2qMSJItGI3OOIpDdiPaI53Td0n3O00rukGhSdM1VoPESw==
-X-Received: by 2002:a17:902:ecc5:b0:1b0:307c:e6fe with SMTP id
- a5-20020a170902ecc500b001b0307ce6femr3110738plh.10.1691186449265; 
- Fri, 04 Aug 2023 15:00:49 -0700 (PDT)
+ bh=4+a1ntD1nPZIq5/3BuYdNWBqjL6H8GnZs4Nnik5eIQQ=;
+ b=ke/M1qd9cUyJUg5q0OQ7yd2HXCToCQYpiCItRF4cHQECBC8uynUJslW7neWplxKYRe
+ t5FPkmpDQSw/KUOHowwmCOMt22txLpJ+rw8IsM+7PeCSLJBab4xuryll5JW64+iRSdai
+ 5f3/FYwgM3ljpaQTDrkVwOwDoSw1U/50Mex54YcLJbtAc9tO2o07yMQZ/YQ6SDCtjYlq
+ 1No0t+i3MnxxKNERU5nD44lb6piaub2tW+S61KqGrfpxez+1+vftcspYESR7q0FpYDpt
+ FtB9IjoueT8etS6Diz/WLCiXb+wHvCEGWpgxEX+ISS+zpc1QhX2k9gF4lkZ49upjixgp
+ Y/yg==
+X-Gm-Message-State: AOJu0YwV2Q32jTe8Ev0QfKOOiAQHYd+fWeMrVb+zP7nTWt2VsStsaPBK
+ apa3bOSCasVTQEqQRBDD6luqGBt6aP57GqwQpQc=
+X-Google-Smtp-Source: AGHT+IEp/KuIVCpxq54vXOKFMG6PONDj7Upeh9HJfu/CzdOQSVNZrynHaLPKfaAmEAW4Ed8A96/MWA==
+X-Received: by 2002:a17:90a:408d:b0:268:13c4:b800 with SMTP id
+ l13-20020a17090a408d00b0026813c4b800mr2830057pjg.21.1691186450173; 
+ Fri, 04 Aug 2023 15:00:50 -0700 (PDT)
 Received: from stoup.. ([2602:47:d490:6901:1eed:f77f:f320:8b14])
  by smtp.gmail.com with ESMTPSA id
- u1-20020a17090282c100b001bbf7fd354csm2185568plz.213.2023.08.04.15.00.48
+ u1-20020a17090282c100b001bbf7fd354csm2185568plz.213.2023.08.04.15.00.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 04 Aug 2023 15:00:48 -0700 (PDT)
+ Fri, 04 Aug 2023 15:00:49 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Helge Deller <deller@gmx.de>,
 	Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v9 18/24] linux-user: Adjust initial brk when interpreter is
- close to executable
-Date: Fri,  4 Aug 2023 15:00:26 -0700
-Message-Id: <20230804220032.295411-19-richard.henderson@linaro.org>
+Subject: [PATCH v9 19/24] linux-user: Properly set image_info.brk in flatload
+Date: Fri,  4 Aug 2023 15:00:27 -0700
+Message-Id: <20230804220032.295411-20-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230804220032.295411-1-richard.henderson@linaro.org>
 References: <20230804220032.295411-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1036;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1036.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,127 +92,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Helge Deller <deller@gmx.de>
-
-While we attempt to load a ET_DYN executable far away from
-TASK_UNMAPPED_BASE, we are not completely in control of the
-address space layout.  If the interpreter lands close to
-the executable, leaving insufficient heap space, move brk.
+The heap starts at "brk" not "start_brk".  With this fixed,
+image_info.start_brk is unused and may be removed.
 
 Tested-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Helge Deller <deller@gmx.de>
-[rth: Re-order after ELF_ET_DYN_BASE patch so that we do not
- "temporarily break" tsan, and also to minimize the changes required.
- Remove image_info.reserve_brk as unused.]
+Reviewed-by: Helge Deller <deller@gmx.de>
 Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/qemu.h    |  1 -
- linux-user/elfload.c | 51 +++++++++++++-------------------------------
- 2 files changed, 15 insertions(+), 37 deletions(-)
+ linux-user/qemu.h     | 1 -
+ linux-user/flatload.c | 2 +-
+ linux-user/main.c     | 2 --
+ 3 files changed, 1 insertion(+), 4 deletions(-)
 
 diff --git a/linux-user/qemu.h b/linux-user/qemu.h
-index 802794db63..4b0c9da0dc 100644
+index 4b0c9da0dc..4f8b55e2fb 100644
 --- a/linux-user/qemu.h
 +++ b/linux-user/qemu.h
-@@ -31,7 +31,6 @@ struct image_info {
+@@ -29,7 +29,6 @@ struct image_info {
+         abi_ulong       end_code;
+         abi_ulong       start_data;
          abi_ulong       end_data;
-         abi_ulong       start_brk;
+-        abi_ulong       start_brk;
          abi_ulong       brk;
--        abi_ulong       reserve_brk;
          abi_ulong       start_mmap;
          abi_ulong       start_stack;
-         abi_ulong       stack_limit;
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index a3aa08a13e..fa0c9ace8e 100644
---- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -3109,27 +3109,6 @@ static void load_elf_image(const char *image_name, int image_fd,
-     load_addr = loaddr;
+diff --git a/linux-user/flatload.c b/linux-user/flatload.c
+index 5efec2630e..8f5e9f489b 100644
+--- a/linux-user/flatload.c
++++ b/linux-user/flatload.c
+@@ -811,7 +811,7 @@ int load_flt_binary(struct linux_binprm *bprm, struct image_info *info)
+     info->end_code = libinfo[0].start_code + libinfo[0].text_len;
+     info->start_data = libinfo[0].start_data;
+     info->end_data = libinfo[0].end_data;
+-    info->start_brk = libinfo[0].start_brk;
++    info->brk = libinfo[0].start_brk;
+     info->start_stack = sp;
+     info->stack_limit = libinfo[0].start_brk;
+     info->entry = start_addr;
+diff --git a/linux-user/main.c b/linux-user/main.c
+index cb5e80612b..96be354897 100644
+--- a/linux-user/main.c
++++ b/linux-user/main.c
+@@ -963,8 +963,6 @@ int main(int argc, char **argv, char **envp)
+             fprintf(f, "page layout changed following binary load\n");
+             page_dump(f);
  
-     if (pinterp_name != NULL) {
--        /*
--         * This is the main executable.
--         *
--         * Reserve extra space for brk.
--         * We hold on to this space while placing the interpreter
--         * and the stack, lest they be placed immediately after
--         * the data segment and block allocation from the brk.
--         *
--         * 16MB is chosen as "large enough" without being so large as
--         * to allow the result to not fit with a 32-bit guest on a
--         * 32-bit host. However some 64 bit guests (e.g. s390x)
--         * attempt to place their heap further ahead and currently
--         * nothing stops them smashing into QEMUs address space.
--         */
--#if TARGET_LONG_BITS == 64
--        info->reserve_brk = 32 * MiB;
--#else
--        info->reserve_brk = 16 * MiB;
--#endif
--        hiaddr += info->reserve_brk;
--
-         if (ehdr->e_type == ET_EXEC) {
-             /*
-              * Make sure that the low address does not conflict with
-@@ -3220,7 +3199,8 @@ static void load_elf_image(const char *image_name, int image_fd,
-     info->end_code = 0;
-     info->start_data = -1;
-     info->end_data = 0;
--    info->brk = 0;
-+    /* Usual start for brk is after all sections of the main executable. */
-+    info->brk = TARGET_PAGE_ALIGN(hiaddr);
-     info->elf_flags = ehdr->e_flags;
- 
-     prot_exec = PROT_EXEC;
-@@ -3314,9 +3294,6 @@ static void load_elf_image(const char *image_name, int image_fd,
-                     info->end_data = vaddr_ef;
-                 }
-             }
--            if (vaddr_em > info->brk) {
--                info->brk = vaddr_em;
--            }
- #ifdef TARGET_MIPS
-         } else if (eppnt->p_type == PT_MIPS_ABIFLAGS) {
-             Mips_elf_abiflags_v0 abiflags;
-@@ -3645,6 +3622,19 @@ int load_elf_binary(struct linux_binprm *bprm, struct image_info *info)
-     if (elf_interpreter) {
-         load_elf_interp(elf_interpreter, &interp_info, bprm->buf);
- 
-+        /*
-+         * While unusual because of ELF_ET_DYN_BASE, if we are unlucky
-+         * with the mappings the interpreter can be loaded above but
-+         * near the main executable, which can leave very little room
-+         * for the heap.
-+         * If the current brk has less than 16MB, use the end of the
-+         * interpreter.
-+         */
-+        if (interp_info.brk > info->brk &&
-+            interp_info.load_bias - info->brk < 16 * MiB)  {
-+            info->brk = interp_info.brk;
-+        }
-+
-         /* If the program interpreter is one of these two, then assume
-            an iBCS2 image.  Otherwise assume a native linux image.  */
- 
-@@ -3698,17 +3688,6 @@ int load_elf_binary(struct linux_binprm *bprm, struct image_info *info)
-     bprm->core_dump = &elf_core_dump;
- #endif
- 
--    /*
--     * If we reserved extra space for brk, release it now.
--     * The implementation of do_brk in syscalls.c expects to be able
--     * to mmap pages in this space.
--     */
--    if (info->reserve_brk) {
--        abi_ulong start_brk = TARGET_PAGE_ALIGN(info->brk);
--        abi_ulong end_brk = TARGET_PAGE_ALIGN(info->brk + info->reserve_brk);
--        target_munmap(start_brk, end_brk - start_brk);
--    }
--
-     return 0;
- }
- 
+-            fprintf(f, "start_brk   0x" TARGET_ABI_FMT_lx "\n",
+-                    info->start_brk);
+             fprintf(f, "end_code    0x" TARGET_ABI_FMT_lx "\n",
+                     info->end_code);
+             fprintf(f, "start_code  0x" TARGET_ABI_FMT_lx "\n",
 -- 
 2.34.1
 
