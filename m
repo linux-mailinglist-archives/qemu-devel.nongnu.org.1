@@ -2,52 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55B907703E3
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 17:05:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CEBC77040B
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 17:09:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRwLR-0000Ie-W0; Fri, 04 Aug 2023 11:04:02 -0400
+	id 1qRwQ5-0001lV-A0; Fri, 04 Aug 2023 11:08:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gudkov.andrei@huawei.com>)
- id 1qRwLP-0000IL-QE
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 11:03:59 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gudkov.andrei@huawei.com>)
- id 1qRwLN-0004xQ-Gm
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 11:03:59 -0400
-Received: from lhrpeml500004.china.huawei.com (unknown [172.18.147.206])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RHTQp2BPqz67LyQ;
- Fri,  4 Aug 2023 23:00:02 +0800 (CST)
-Received: from DESKTOP-0LHM7NF.huawei.com (10.199.58.101) by
- lhrpeml500004.china.huawei.com (7.191.163.9) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Fri, 4 Aug 2023 16:03:39 +0100
-To: <qemu-devel@nongnu.org>
-CC: <yong.huang@smartx.com>, <quintela@redhat.com>, <peterx@redhat.com>,
- <leobras@redhat.com>, <eblake@redhat.com>, <armbru@redhat.com>, Andrei Gudkov
- <gudkov.andrei@huawei.com>
-Subject: [PATCH v2] migration/calc-dirty-rate: millisecond-granularity period
-Date: Fri, 4 Aug 2023 18:03:27 +0300
-Message-ID: <8ddb0d40d143f77aab8f602bd494e01e5fa01614.1691161009.git.gudkov.andrei@huawei.com>
-X-Mailer: git-send-email 2.30.2
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qRwQ3-0001l9-Mk
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 11:08:47 -0400
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qRwQ1-00060t-9H
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 11:08:47 -0400
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-51e2a6a3768so2796913a12.0
+ for <qemu-devel@nongnu.org>; Fri, 04 Aug 2023 08:08:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1691161723; x=1691766523;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=PSIudIEBCIZ1jyWuudsIo2x6qf9/8HsT8NqufiyED7A=;
+ b=gPdNvch6Ax39li7dyprI3R5YptFG15bWhhdWBrORRp0RnomWPadtIpYf9GXqZKUL/c
+ myhIdriZB3tGcgGjZIgmNNJ8uF9psenO3M2w/XRKdyyoBv98vyBW+qZ63NiS6wPdyfbS
+ 2PXtI4oJu5ioavMdE7+Mux1YU551BwSZvP4lE4CWUhdesxKaAHosjnMo3yCtzcq5Eqz+
+ taBw6piqq0GpP2zmMX7LutYshWZwpDVdxME9q0FpbFmxUGfPR7xgIx6S8dCvd40/LT0b
+ 0o+45VYA+eCnHpjqeBIG4HUCwb7bh+h3U4qld9SIFt7dJpHw4Exh0IPHMkB3sExVKthA
+ 95Qg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1691161723; x=1691766523;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=PSIudIEBCIZ1jyWuudsIo2x6qf9/8HsT8NqufiyED7A=;
+ b=Mys5KbxOxdEED6TgIzFw4iwFXMr6gPwM+ByEjnJhOGUEfTLA08M+FC1vlRVrT2Y+Fd
+ U2rMfhYQ4ezOu3Zy+Y9YjH3JBqqTclRnRrhzJn7Ul/r1rVn4r19Mh2z36HTyrq+4MSvD
+ 7R95O3rOMNBHGHlNTWMsNxXLk9QlNaLnYdEUlbPwfK1RK3B3u3DPRhWID+aMWNFmlDH8
+ DTHXOvTdx5wS6cvAuoW9Q5r7vVBeP082vkPy99OTwLY1ZYIpXM0Iz5X/o/kRL5hFfrXV
+ bLsky6U1rCFiWvorLP85ETZYL/1GQ/+DK+VVlZMXfYmUOUVq5yBhz7bY/cuNZq99LrHa
+ 3utw==
+X-Gm-Message-State: AOJu0YymgHVxeVM8ED5uiHmgBOx9JtiX6PteyiU/bRghKnRtP/i6BxoI
+ vEeEg5zK7U9qiuZlPRxMz2vBdedshVnYRbrXzrSLGw==
+X-Google-Smtp-Source: AGHT+IF+rLrsGxTwTumRfmOxrZhcz0VJ8RBiwTRB2FituLajDSyycpw+jgccKAiEXlOya2b4iZAK7Civ32udNcY9diA=
+X-Received: by 2002:aa7:cfc6:0:b0:51d:95f2:ee76 with SMTP id
+ r6-20020aa7cfc6000000b0051d95f2ee76mr1445463edy.27.1691161722929; Fri, 04 Aug
+ 2023 08:08:42 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.199.58.101]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- lhrpeml500004.china.huawei.com (7.191.163.9)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=gudkov.andrei@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20230726132512.149618-1-sergey.kambalin@auriga.com>
+ <20230726132512.149618-44-sergey.kambalin@auriga.com>
+In-Reply-To: <20230726132512.149618-44-sergey.kambalin@auriga.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 4 Aug 2023 16:08:31 +0100
+Message-ID: <CAFEAcA_-gHqH_te9qLDDvFHKwLPg=3=-kYxraT8ddrkxTJfQKw@mail.gmail.com>
+Subject: Re: [PATCH 43/44] Add missed BCM2835 properties
+To: Sergey Kambalin <serg.oker@gmail.com>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
+ Sergey Kambalin <sergey.kambalin@auriga.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -60,365 +83,99 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Andrei Gudkov <gudkov.andrei@huawei.com>
-From:  Andrei Gudkov via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Introduces alternative argument calc-time-ms, which is the
-the same as calc-time but accepts millisecond value.
-Millisecond granularity allows to make predictions whether
-migration will succeed or not. To do this, calculate dirty
-rate with calc-time-ms set to max allowed downtime, convert
-measured rate into volume of dirtied memory, and divide by
-network throughput. If the value is lower than max allowed
-downtime, then migration will converge.
+On Wed, 26 Jul 2023 at 15:24, Sergey Kambalin <serg.oker@gmail.com> wrote:
+>
+> Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
+> ---
+>  hw/misc/bcm2835_property.c            | 170 ++++++++++++++++++++++++++
+>  include/hw/misc/raspberrypi-fw-defs.h |  11 ++
+>  2 files changed, 181 insertions(+)
+>
+> diff --git a/hw/misc/bcm2835_property.c b/hw/misc/bcm2835_property.c
+> index 4ed9faa54a..7d2d6e518d 100644
+> --- a/hw/misc/bcm2835_property.c
+> +++ b/hw/misc/bcm2835_property.c
+> @@ -19,6 +19,31 @@
+>  #include "trace.h"
+>  #include "hw/arm/raspi_platform.h"
+>
+> +#define RPI_EXP_GPIO_BASE       128
+> +#define VC4_GPIO_EXPANDER_COUNT 8
+> +#define VCHI_BUSADDR_SIZE       sizeof(uint32_t)
+> +
+> +struct vc4_display_settings_t {
+> +    uint32_t display_num;
+> +    uint32_t width;
+> +    uint32_t height;
+> +    uint32_t depth;
+> +    uint16_t pitch;
+> +    uint32_t virtual_width;
+> +    uint32_t virtual_height;
+> +    uint16_t virtual_width_offset;
+> +    uint32_t virtual_height_offset;
+> +    unsigned long fb_bus_address;
 
-Measurement results for single thread randomly writing to
-a 1/4/24GiB memory region:
+'long' type in a packed struct ? Sounds fishy...
+'long' type for any kind of address is also generally
+not the correct type.
 
-+--------------+-----------------------------------------------+
-| calc-time-ms |                dirty rate MiB/s               |
-|              +----------------+---------------+--------------+
-|              | theoretical    | page-sampling | dirty-bitmap |
-|              | (at 3M wr/sec) |               |              |
-+--------------+----------------+---------------+--------------+
-|                             1GiB                             |
-+--------------+----------------+---------------+--------------+
-|          100 |           6996 |          7100 |         3192 |
-|          200 |           4606 |          4660 |         2655 |
-|          300 |           3305 |          3280 |         2371 |
-|          400 |           2534 |          2525 |         2154 |
-|          500 |           2041 |          2044 |         1871 |
-|          750 |           1365 |          1341 |         1358 |
-|         1000 |           1024 |          1052 |         1025 |
-|         1500 |            683 |           678 |          684 |
-|         2000 |            512 |           507 |          513 |
-+--------------+----------------+---------------+--------------+
-|                             4GiB                             |
-+--------------+----------------+---------------+--------------+
-|          100 |          10232 |          8880 |         4070 |
-|          200 |           8954 |          8049 |         3195 |
-|          300 |           7889 |          7193 |         2881 |
-|          400 |           6996 |          6530 |         2700 |
-|          500 |           6245 |          5772 |         2312 |
-|          750 |           4829 |          4586 |         2465 |
-|         1000 |           3865 |          3780 |         2178 |
-|         1500 |           2694 |          2633 |         2004 |
-|         2000 |           2041 |          2031 |         1789 |
-+--------------+----------------+---------------+--------------+
-|                             24GiB                            |
-+--------------+----------------+---------------+--------------+
-|          100 |          11495 |          8640 |         5597 |
-|          200 |          11226 |          8616 |         3527 |
-|          300 |          10965 |          8386 |         2355 |
-|          400 |          10713 |          8370 |         2179 |
-|          500 |          10469 |          8196 |         2098 |
-|          750 |           9890 |          7885 |         2556 |
-|         1000 |           9354 |          7506 |         2084 |
-|         1500 |           8397 |          6944 |         2075 |
-|         2000 |           7574 |          6402 |         2062 |
-+--------------+----------------+---------------+--------------+
+> +} QEMU_PACKED;
+> +
+> +struct vc4_gpio_expander_t {
+> +    uint32_t direction;
+> +    uint32_t polarity;
+> +    uint32_t term_en;
+> +    uint32_t term_pull_up;
+> +    uint32_t state;
+> +} vc4_gpio_expander[VC4_GPIO_EXPANDER_COUNT];
 
-Theoretical values are computed according to the following formula:
-size * (1 - (1-(4096/size))^(time*wps)) / (time * 2^20),
-where size is in bytes, time is in seconds, and wps is number of
-writes per second.
+What is this state doing here ? It looks like the property is
+supposed to be changing the handling of GPIOs, but in that case
+we should wire the properties through to a gpio device, not
+just keep hold of the values written here. Simpler would be
+to ignore writes if we don't care to implement it properly.
+Otherwise the state needs to live in some device and be handled
+on vmsave, reset, etc.
 
-Signed-off-by: Andrei Gudkov <gudkov.andrei@huawei.com>
----
- qapi/migration.json   | 14 ++++++--
- migration/dirtyrate.h | 12 ++++---
- migration/dirtyrate.c | 81 +++++++++++++++++++++++++------------------
- 3 files changed, 67 insertions(+), 40 deletions(-)
+> +
+>  /* https://github.com/raspberrypi/firmware/wiki/Mailbox-property-interface */
 
-diff --git a/qapi/migration.json b/qapi/migration.json
-index 8843e74b59..82493d6a57 100644
---- a/qapi/migration.json
-+++ b/qapi/migration.json
-@@ -1849,7 +1849,11 @@
- # @start-time: start time in units of second for calculation
- #
- # @calc-time: time period for which dirty page rate was measured
--#     (in seconds)
-+#     (rounded down to seconds).
-+#
-+# @calc-time-ms: actual time period for which dirty page rate was
-+#     measured (in milliseconds).  Value may be larger than requested
-+#     time period due to measurement overhead.
- #
- # @sample-pages: number of sampled pages per GiB of guest memory.
- #     Valid only in page-sampling mode (Since 6.1)
-@@ -1866,6 +1870,7 @@
-            'status': 'DirtyRateStatus',
-            'start-time': 'int64',
-            'calc-time': 'int64',
-+           'calc-time-ms': 'int64',
-            'sample-pages': 'uint64',
-            'mode': 'DirtyRateMeasureMode',
-            '*vcpu-dirty-rate': [ 'DirtyRateVcpu' ] } }
-@@ -1908,6 +1913,10 @@
- #     dirty during @calc-time period, further writes to this page will
- #     not increase dirty page rate anymore.
- #
-+# @calc-time-ms: the same as @calc-time but in milliseconds.  These
-+#    two arguments are mutually exclusive.  Exactly one of them must
-+#    be specified. (Since 8.1)
-+#
- # @sample-pages: number of sampled pages per each GiB of guest memory.
- #     Default value is 512.  For 4KiB guest pages this corresponds to
- #     sampling ratio of 0.2%.  This argument is used only in page
-@@ -1925,7 +1934,8 @@
- #                                                 'sample-pages': 512} }
- # <- { "return": {} }
- ##
--{ 'command': 'calc-dirty-rate', 'data': {'calc-time': 'int64',
-+{ 'command': 'calc-dirty-rate', 'data': {'*calc-time': 'int64',
-+                                         '*calc-time-ms': 'int64',
-                                          '*sample-pages': 'int',
-                                          '*mode': 'DirtyRateMeasureMode'} }
- 
-diff --git a/migration/dirtyrate.h b/migration/dirtyrate.h
-index 594a5c0bb6..869c060941 100644
---- a/migration/dirtyrate.h
-+++ b/migration/dirtyrate.h
-@@ -31,10 +31,12 @@
- #define MIN_RAMBLOCK_SIZE                         128
- 
- /*
-- * Take 1s as minimum time for calculation duration
-+ * Allowed range for dirty page rate calculation (in milliseconds).
-+ * Lower limit relates to the smallest realistic downtime it
-+ * makes sense to impose on migration.
-  */
--#define MIN_FETCH_DIRTYRATE_TIME_SEC              1
--#define MAX_FETCH_DIRTYRATE_TIME_SEC              60
-+#define MIN_CALC_TIME_MS                          50
-+#define MAX_CALC_TIME_MS                       60000
- 
- /*
-  * Take 1/16 pages in 1G as the maxmum sample page count
-@@ -44,7 +46,7 @@
- 
- struct DirtyRateConfig {
-     uint64_t sample_pages_per_gigabytes; /* sample pages per GB */
--    int64_t sample_period_seconds; /* time duration between two sampling */
-+    int64_t calc_time_ms; /* desired calculation time (in milliseconds) */
-     DirtyRateMeasureMode mode; /* mode of dirtyrate measurement */
- };
- 
-@@ -73,7 +75,7 @@ typedef struct SampleVMStat {
- struct DirtyRateStat {
-     int64_t dirty_rate; /* dirty rate in MB/s */
-     int64_t start_time; /* calculation start time in units of second */
--    int64_t calc_time; /* time duration of two sampling in units of second */
-+    int64_t calc_time_ms; /* actual calculation time (in milliseconds) */
-     uint64_t sample_pages; /* sample pages per GB */
-     union {
-         SampleVMStat page_sampling;
-diff --git a/migration/dirtyrate.c b/migration/dirtyrate.c
-index 84f1b0fb20..90fb336329 100644
---- a/migration/dirtyrate.c
-+++ b/migration/dirtyrate.c
-@@ -57,6 +57,8 @@ static int64_t dirty_stat_wait(int64_t msec, int64_t initial_time)
-         msec = current_time - initial_time;
-     } else {
-         g_usleep((msec + initial_time - current_time) * 1000);
-+        /* g_usleep may overshoot */
-+        msec = qemu_clock_get_ms(QEMU_CLOCK_REALTIME) - initial_time;
-     }
- 
-     return msec;
-@@ -77,9 +79,12 @@ static int64_t do_calculate_dirtyrate(DirtyPageRecord dirty_pages,
- {
-     uint64_t increased_dirty_pages =
-         dirty_pages.end_pages - dirty_pages.start_pages;
--    uint64_t memory_size_MiB = qemu_target_pages_to_MiB(increased_dirty_pages);
--
--    return memory_size_MiB * 1000 / calc_time_ms;
-+    /*
-+     * multiply by 1000ms/s _before_ converting down to megabytes
-+     * to avoid losing precision
-+     */
-+    return qemu_target_pages_to_MiB(increased_dirty_pages * 1000) /
-+        calc_time_ms;
- }
- 
- void global_dirty_log_change(unsigned int flag, bool start)
-@@ -183,10 +188,9 @@ retry:
-     return duration;
- }
- 
--static bool is_sample_period_valid(int64_t sec)
-+static bool is_calc_time_valid(int64_t msec)
- {
--    if (sec < MIN_FETCH_DIRTYRATE_TIME_SEC ||
--        sec > MAX_FETCH_DIRTYRATE_TIME_SEC) {
-+    if ((msec < MIN_CALC_TIME_MS) || (msec > MAX_CALC_TIME_MS)) {
-         return false;
-     }
- 
-@@ -219,7 +223,8 @@ static struct DirtyRateInfo *query_dirty_rate_info(void)
- 
-     info->status = CalculatingState;
-     info->start_time = DirtyStat.start_time;
--    info->calc_time = DirtyStat.calc_time;
-+    info->calc_time_ms = DirtyStat.calc_time_ms;
-+    info->calc_time = DirtyStat.calc_time_ms / 1000;
-     info->sample_pages = DirtyStat.sample_pages;
-     info->mode = dirtyrate_mode;
- 
-@@ -258,7 +263,7 @@ static void init_dirtyrate_stat(int64_t start_time,
- {
-     DirtyStat.dirty_rate = -1;
-     DirtyStat.start_time = start_time;
--    DirtyStat.calc_time = config.sample_period_seconds;
-+    DirtyStat.calc_time_ms = config.calc_time_ms;
-     DirtyStat.sample_pages = config.sample_pages_per_gigabytes;
- 
-     switch (config.mode) {
-@@ -568,7 +573,6 @@ static inline void dirtyrate_manual_reset_protect(void)
- 
- static void calculate_dirtyrate_dirty_bitmap(struct DirtyRateConfig config)
- {
--    int64_t msec = 0;
-     int64_t start_time;
-     DirtyPageRecord dirty_pages;
- 
-@@ -596,9 +600,7 @@ static void calculate_dirtyrate_dirty_bitmap(struct DirtyRateConfig config)
-     start_time = qemu_clock_get_ms(QEMU_CLOCK_REALTIME);
-     DirtyStat.start_time = start_time / 1000;
- 
--    msec = config.sample_period_seconds * 1000;
--    msec = dirty_stat_wait(msec, start_time);
--    DirtyStat.calc_time = msec / 1000;
-+    DirtyStat.calc_time_ms = dirty_stat_wait(config.calc_time_ms, start_time);
- 
-     /*
-      * do two things.
-@@ -609,12 +611,12 @@ static void calculate_dirtyrate_dirty_bitmap(struct DirtyRateConfig config)
- 
-     record_dirtypages_bitmap(&dirty_pages, false);
- 
--    DirtyStat.dirty_rate = do_calculate_dirtyrate(dirty_pages, msec);
-+    DirtyStat.dirty_rate = do_calculate_dirtyrate(dirty_pages,
-+                                                  DirtyStat.calc_time_ms);
- }
- 
- static void calculate_dirtyrate_dirty_ring(struct DirtyRateConfig config)
- {
--    int64_t duration;
-     uint64_t dirtyrate = 0;
-     uint64_t dirtyrate_sum = 0;
-     int i = 0;
-@@ -625,12 +627,10 @@ static void calculate_dirtyrate_dirty_ring(struct DirtyRateConfig config)
-     DirtyStat.start_time = qemu_clock_get_ms(QEMU_CLOCK_REALTIME) / 1000;
- 
-     /* calculate vcpu dirtyrate */
--    duration = vcpu_calculate_dirtyrate(config.sample_period_seconds * 1000,
--                                        &DirtyStat.dirty_ring,
--                                        GLOBAL_DIRTY_DIRTY_RATE,
--                                        true);
--
--    DirtyStat.calc_time = duration / 1000;
-+    DirtyStat.calc_time_ms = vcpu_calculate_dirtyrate(config.calc_time_ms,
-+                                                      &DirtyStat.dirty_ring,
-+                                                      GLOBAL_DIRTY_DIRTY_RATE,
-+                                                      true);
- 
-     /* calculate vm dirtyrate */
-     for (i = 0; i < DirtyStat.dirty_ring.nvcpu; i++) {
-@@ -646,7 +646,6 @@ static void calculate_dirtyrate_sample_vm(struct DirtyRateConfig config)
- {
-     struct RamblockDirtyInfo *block_dinfo = NULL;
-     int block_count = 0;
--    int64_t msec = 0;
-     int64_t initial_time;
- 
-     rcu_read_lock();
-@@ -656,17 +655,16 @@ static void calculate_dirtyrate_sample_vm(struct DirtyRateConfig config)
-     }
-     rcu_read_unlock();
- 
--    msec = config.sample_period_seconds * 1000;
--    msec = dirty_stat_wait(msec, initial_time);
-+    DirtyStat.calc_time_ms = dirty_stat_wait(config.calc_time_ms,
-+                                             initial_time);
-     DirtyStat.start_time = initial_time / 1000;
--    DirtyStat.calc_time = msec / 1000;
- 
-     rcu_read_lock();
-     if (!compare_page_hash_info(block_dinfo, block_count)) {
-         goto out;
-     }
- 
--    update_dirtyrate(msec);
-+    update_dirtyrate(DirtyStat.calc_time_ms);
- 
- out:
-     rcu_read_unlock();
-@@ -711,7 +709,10 @@ void *get_dirtyrate_thread(void *arg)
-     return NULL;
- }
- 
--void qmp_calc_dirty_rate(int64_t calc_time,
-+void qmp_calc_dirty_rate(bool has_calc_time,
-+                         int64_t calc_time,
-+                         bool has_calc_time_ms,
-+                         int64_t calc_time_ms,
-                          bool has_sample_pages,
-                          int64_t sample_pages,
-                          bool has_mode,
-@@ -731,10 +732,21 @@ void qmp_calc_dirty_rate(int64_t calc_time,
-         return;
-     }
- 
--    if (!is_sample_period_valid(calc_time)) {
--        error_setg(errp, "calc-time is out of range[%d, %d].",
--                         MIN_FETCH_DIRTYRATE_TIME_SEC,
--                         MAX_FETCH_DIRTYRATE_TIME_SEC);
-+    if ((int)has_calc_time + (int)has_calc_time_ms != 1) {
-+        error_setg(errp, "Exactly one of calc-time and calc-time-ms must"
-+                         " be specified");
-+        return;
-+    }
-+    if (has_calc_time) {
-+        /*
-+         * The worst thing that can happen due to overflow is that
-+         * invalid value will become valid.
-+         */
-+        calc_time_ms = calc_time * 1000;
-+    }
-+    if (!is_calc_time_valid(calc_time_ms)) {
-+        error_setg(errp, "Calculation time is out of range[%dms, %dms].",
-+                         MIN_CALC_TIME_MS, MAX_CALC_TIME_MS);
-         return;
-     }
- 
-@@ -781,7 +793,7 @@ void qmp_calc_dirty_rate(int64_t calc_time,
-         return;
-     }
- 
--    config.sample_period_seconds = calc_time;
-+    config.calc_time_ms = calc_time_ms;
-     config.sample_pages_per_gigabytes = sample_pages;
-     config.mode = mode;
- 
-@@ -867,8 +879,11 @@ void hmp_calc_dirty_rate(Monitor *mon, const QDict *qdict)
-         mode = DIRTY_RATE_MEASURE_MODE_DIRTY_RING;
-     }
- 
--    qmp_calc_dirty_rate(sec, has_sample_pages, sample_pages, true,
--                        mode, &err);
-+    qmp_calc_dirty_rate(true, sec, /* calc_time */
-+                        false, 0, /* calc_time_ms */
-+                        has_sample_pages, sample_pages,
-+                        true, mode,
-+                        &err);
-     if (err) {
-         hmp_handle_error(mon, err);
-         return;
--- 
-2.30.2
+> +        case RPI_FWREQ_FRAMEBUFFER_GET_DISPLAY_SETTINGS:
 
+What's this one doing? 0x00040014 isn't documented in the URL above.
+
+> +            stl_le_phys(&s->dma_as, value + 12, 0); /* display_num */
+> +            stl_le_phys(&s->dma_as, value + 16, 800); /* width */
+> +            stl_le_phys(&s->dma_as, value + 20, 600); /* height */
+> +            stl_le_phys(&s->dma_as, value + 24, 32); /* depth */
+> +            stl_le_phys(&s->dma_as, value + 28, 32); /* pitch */
+> +            stl_le_phys(&s->dma_as, value + 30, 0); /* virtual_width */
+> +            stl_le_phys(&s->dma_as, value + 34, 0); /* virtual_height */
+> +            stl_le_phys(&s->dma_as, value + 38, 0); /* virtual_width_offset */
+> +            stl_le_phys(&s->dma_as, value + 40, 0); /* virtual_height_offset */
+> +            stl_le_phys(&s->dma_as, value + 44, 0); /* fb_bus_address low */
+> +            stl_le_phys(&s->dma_as, value + 48, 0); /* fb_bus_address hi */
+> +            resplen = sizeof(struct vc4_display_settings_t);
+> +            break;
+
+Shouldn't this return the same values as the existing
+RPI_FWREQ_FRAMEBUFFER_GET_PHYSICAL_WIDTH_HEIGHT etc etc properties,
+rather than hardcoded constant values ?
+> +
+> +        case RPI_FWREQ_FRAMEBUFFER_SET_PITCH:
+> +            resplen = 0;
+> +            break;
+
+What is setting the pitch supposed to do? At the moment we
+assume it's a fixed value depending on the xres, xres_virtual
+and bpp (see bcm2835_fb_get_pitch()), so if the guest can
+arbitrarily set it then we need to change something in our
+display device model. Failing that we should maybe LOG_UNIMP
+any attempt by the guest to set it.
+
+thanks
+-- PMM
 
