@@ -2,33 +2,32 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7F65770427
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 17:14:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5741F770428
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 17:14:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRwUp-0007WH-8g; Fri, 04 Aug 2023 11:13:43 -0400
+	id 1qRwUs-0007Wv-8p; Fri, 04 Aug 2023 11:13:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <francisyuu@B-L8MBMD6R-2342.local>)
- id 1qRpv4-00069V-Cy; Fri, 04 Aug 2023 04:12:22 -0400
+ id 1qRpv4-00069U-Cu; Fri, 04 Aug 2023 04:12:22 -0400
 Received: from [2401:b180:8000:2:9109:19ec:a055:9652]
  (helo=B-L8MBMD6R-2342.local) by eggs.gnu.org with esmtp (Exim 4.90_1)
  (envelope-from <francisyuu@B-L8MBMD6R-2342.local>)
- id 1qRpv1-0002sj-3F; Fri, 04 Aug 2023 04:12:22 -0400
+ id 1qRpv1-0002sm-0M; Fri, 04 Aug 2023 04:12:22 -0400
 Received: by B-L8MBMD6R-2342.local (Postfix, from userid 502)
- id A63C7343C41; Fri,  4 Aug 2023 15:50:54 +0800 (CST)
+ id 452233446D1; Fri,  4 Aug 2023 16:12:13 +0800 (CST)
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?=E4=BA=8E=E8=88=AA?= <1339236493@qq.com>,
+Cc: Hang Yu <1339236493@qq.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Peter Maydell <peter.maydell@linaro.org>, Andrew Jeffery <andrew@aj.id.au>,
  Joel Stanley <joel@jms.id.au>, qemu-arm@nongnu.org (open list:ASPEED BMCs)
 Subject: [PATCH] Aspeed: i2c: Fixed Tx and Rx error in BUFF Mode
-Date: Fri,  4 Aug 2023 15:50:42 +0800
-Message-Id: <20230804075042.51204-1-1339236493@qq.com>
+Date: Fri,  4 Aug 2023 16:11:42 +0800
+Message-Id: <20230804081142.52539-1-1339236493@qq.com>
 X-Mailer: git-send-email 2.39.2 (Apple Git-143)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Host-Lookup-Failed: Reverse DNS lookup failed for
  2401:b180:8000:2:9109:19ec:a055:9652 (failed)
@@ -56,8 +55,8 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  =?UTF-8?q?=E4=BA=8E=E8=88=AA?= <1339236493@qq.com>
-From:  =?UTF-8?q?=E4=BA=8E=E8=88=AA?= via <qemu-devel@nongnu.org>
+Reply-to:  Hang Yu <1339236493@qq.com>
+From:  Hang Yu via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
@@ -71,7 +70,7 @@ After adding these changes, QEMU can support driver code:
 https://github.com/AspeedTech-BMC/linux/blob/aspeed-master-v5.15
 /drivers/i2c/busses/i2c-ast2600.c
 
-Signed-off-by:于航<1339236493@qq.com>
+Signed-off-by: Hang Yu <1339236493@qq.com>
 ---
  hw/i2c/aspeed_i2c.c         | 21 ++++++---------------
  include/hw/i2c/aspeed_i2c.h |  5 +++--
