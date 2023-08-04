@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D7A976F986
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 07:23:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D0A476F988
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 07:25:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRnGY-000677-OX; Fri, 04 Aug 2023 01:22:22 -0400
+	id 1qRnIe-0006rN-Sy; Fri, 04 Aug 2023 01:24:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qRnGW-00063T-7O
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 01:22:20 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ id 1qRnIU-0006p6-OR
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 01:24:25 -0400
+Received: from mail-oi1-x22e.google.com ([2607:f8b0:4864:20::22e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qRnGU-00019Y-Hx
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 01:22:19 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-1bc3d94d40fso14453205ad.3
- for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 22:22:18 -0700 (PDT)
+ id 1qRnIT-0001bv-7C
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 01:24:22 -0400
+Received: by mail-oi1-x22e.google.com with SMTP id
+ 5614622812f47-3a741f46fadso1329193b6e.0
+ for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 22:24:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1691126536; x=1691731336;
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1691126659; x=1691731459;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=vhp0NmCdf0YHvlNJY/KHs73gky5aBO9brfuE5XjAnAY=;
- b=yo2Odq284o57hpHZSzJ+nSHUsyNVlgLM5ijNGeXHW3014p27R/AI1xj5R9cv1FwkfF
- 3wZWhwhJFNLzoDlICny7dNPTIpP7uGlOhu2RES3o8Bjudyh9S8f8SCcGzpjkIMiTzckx
- j+kKMhW3kYzQyc90vZi1aJwp6NV9PESj+aDYugqbCaBI0PlTqZMzXKmey3hRAzZkvKMD
- ENxFqQaMcm2eBDBWaqYPlv0AEkq73MfjdmY6hvxP6d3pVYj6MZan0AZE45L2DwjpBEQZ
- TscGz2j3ELx356n7Dty2xcawC6Gv08caq3DY8fMAjN4GgLXTkINSlhc8Ljg6j3AZVJ3p
- 41hw==
+ bh=ulANK/Raa2yHkL0nTj8LyiH0Jhs9skQSzKSJpK/fciY=;
+ b=LNRa08nB3re6j9dGKCcwD7vaanjCh4fUEdGwhWG+0Nf7f7H8BgDPW/+0tALdIdPBt5
+ csuwkpwC0XRkM/DuoVtF3n3uZTVUsAYrivF0mnxeEwBAZ6f5+2bOM/lCHRg2xKXO78qF
+ C2l3V7jQVR/kCyX0TRYwW4RKp7IrTnRITB2laQjuOxDJlq4ucFkLYYgZ/pulYFJixqwQ
+ kTQvw/Z/Z3j13O+25qi/qFcZVhfwXlzb4uCyABVMVs91dXrQjUTJvj4sci4NFSYdNNV0
+ 4Ok9v8spNI2YjFQdEZ5y5FHijhWYK6D81aXMMIyjXrHp3Ka218LAX/Pd/irfeDJXAV2F
+ cbgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691126536; x=1691731336;
+ d=1e100.net; s=20221208; t=1691126659; x=1691731459;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=vhp0NmCdf0YHvlNJY/KHs73gky5aBO9brfuE5XjAnAY=;
- b=GfP9ScGD6FqqqMd5+iNTZ18nXFrki1WMtF5oDZY4WSzL2oXEI3BuKSedMZTvJ0L7Q9
- 4uQnIIBX79V7MvDXGJIFQbikSIIQ/3uDb8EBUsDgx+4NjmJJTwtcO6utrblDCyedh+2f
- AUId41U0cKudtbwyo9+vC0H2cvpQUHgSrLPQAwApx0u8W/E0INzSTZEJb9Rp6QL8HJQi
- I5whrbDXQDd+NBntRllmci/o2elIigcw1R++X6oJZuGY7tHk9Cjgs67RkwksfJr1DKTn
- eVypzdWOgRT+xL2XdogJt+4vVIeqHNvGiifo+7h8mNnt1r7+a2NFApc+9DQV6iJ9+Y3t
- fr7Q==
-X-Gm-Message-State: AOJu0YwEJUMum7YUpZnXsSGrf8/RsOSw1RqfzTs0m7niUm/c/NMbiJ1H
- 6ouOQdg7019HtJ8pzyxdS1Mw84f/SSRlQlqmBQw=
-X-Google-Smtp-Source: AGHT+IGX2EROc2l9b6wvZtvGh4JTaSFlFL+6DTC5UpKgJNj/CVYcS4BcZAl96yE4QrsbFuIJ5lG/Xw==
-X-Received: by 2002:a17:902:ea09:b0:1bb:7b6c:983a with SMTP id
- s9-20020a170902ea0900b001bb7b6c983amr828317plg.59.1691126535813; 
- Thu, 03 Aug 2023 22:22:15 -0700 (PDT)
+ bh=ulANK/Raa2yHkL0nTj8LyiH0Jhs9skQSzKSJpK/fciY=;
+ b=g6Moj9ybwOWdeLq+BfzaKMRvqjl3R/Ra2qi3+U7HD2LwfrzLWmHFU5J/08XpT/oKdO
+ gFeJ1Y54CaqXp6BhepxGQo3p846DKxNqmTxZWRhXplRzxxz+Y5YNbsCDp/6nUi6dj8Tj
+ 9XAEkU8NTejp/Uwd9pXO/fxNBtZGJDwZxeyo6/l7DnbDPlEagGDt4E5E84hzrzlibcmY
+ Lyh5egPEzCCMTDJVGy8gR5EIbgcgW0/CE3EHEPj/kTKNcp0Lj/ROS4RWjqN4p3DJy+4j
+ IDnYggniW5e0LTj3RDmC6EFE2OuWpsmT6ixcRrJEwfkqpUOMkDPZ7zdQdWN/OLdeyu07
+ J7bA==
+X-Gm-Message-State: AOJu0YyI32tkYecPAvj8+UWA8xaGK7psFu5uSZyXpckBAgEAzRIlR9tT
+ /B7mc5vNOd2XHy7XhCK73CK6IQ==
+X-Google-Smtp-Source: AGHT+IGIl7mFvkVGpSgyZRyqdCgYap2P0RXRbRzniAwge8n5pBgE/b6Hvd1fKUXCWEzFwaBJ1rEpqg==
+X-Received: by 2002:a05:6808:199f:b0:3a2:62f3:c2d0 with SMTP id
+ bj31-20020a056808199f00b003a262f3c2d0mr1186873oib.24.1691126659665; 
+ Thu, 03 Aug 2023 22:24:19 -0700 (PDT)
 Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
  ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
  by smtp.gmail.com with ESMTPSA id
- jk21-20020a170903331500b001bbb7d8fff2sm763579plb.116.2023.08.03.22.22.14
+ fm21-20020a056a002f9500b0068709861cb6sm701633pfb.137.2023.08.03.22.24.18
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 03 Aug 2023 22:22:15 -0700 (PDT)
-Message-ID: <c0faaada-b286-9ee4-4b5b-daa5e6083822@daynix.com>
-Date: Fri, 4 Aug 2023 14:22:14 +0900
+ Thu, 03 Aug 2023 22:24:19 -0700 (PDT)
+Message-ID: <37254a2c-a96b-81c8-2d33-92aee77bae19@daynix.com>
+Date: Fri, 4 Aug 2023 14:24:17 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 11/17] linux-user: Use MAP_FIXED_NOREPLACE for initial
- image mmap
+Subject: Re: [PATCH v8 12/17] linux-user: Use elf_et_dyn_base for ET_DYN with
+ interpreter
 Content-Language: en-US
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 Cc: joel@jms.id.au, laurent@vivier.eu, deller@gmx.de
 References: <20230804014517.6361-1-richard.henderson@linaro.org>
- <20230804014517.6361-12-richard.henderson@linaro.org>
+ <20230804014517.6361-13-richard.henderson@linaro.org>
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <20230804014517.6361-12-richard.henderson@linaro.org>
+In-Reply-To: <20230804014517.6361-13-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::635;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x635.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::22e;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-oi1-x22e.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -96,8 +96,10 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 2023/08/04 10:45, Richard Henderson wrote:
-> Use this as extra protection for the guest mapping over
-> any qemu host mappings.
+> Follow the lead of the linux kernel in fs/binfmt_elf.c,
+> in which an ET_DYN executable which uses an interpreter
+> (usually a PIE executable) is loaded away from where the
+> interpreter itself will be loaded.
 > 
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
