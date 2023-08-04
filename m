@@ -2,40 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61D457708D2
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 21:18:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 631B47708D1
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 21:18:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qS0IU-0000Pu-Iw; Fri, 04 Aug 2023 15:17:14 -0400
+	id 1qS0Ip-0000ZY-6J; Fri, 04 Aug 2023 15:17:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qS0IS-0000PH-EM; Fri, 04 Aug 2023 15:17:12 -0400
+ id 1qS0Im-0000YL-V2; Fri, 04 Aug 2023 15:17:32 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qS0IR-0006xt-0H; Fri, 04 Aug 2023 15:17:12 -0400
+ id 1qS0Il-0006y2-BX; Fri, 04 Aug 2023 15:17:32 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id DBA821845C;
- Fri,  4 Aug 2023 22:17:11 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 1680C1845D;
+ Fri,  4 Aug 2023 22:17:12 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 709CC1B89F;
+ by tsrv.corpit.ru (Postfix) with SMTP id A10A71B8A0;
  Fri,  4 Aug 2023 22:16:51 +0300 (MSK)
-Received: (nullmailer pid 1875717 invoked by uid 1000);
+Received: (nullmailer pid 1875720 invoked by uid 1000);
  Fri, 04 Aug 2023 19:16:49 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.4 42/63] util/interval-tree: Use qatomic_set_mb in
- rb_link_node
-Date: Fri,  4 Aug 2023 22:16:25 +0300
-Message-Id: <20230804191647.1875608-11-mjt@tls.msk.ru>
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.0.4 43/63] target/ppc: Disable goto_tb with architectural
+ singlestep
+Date: Fri,  4 Aug 2023 22:16:26 +0300
+Message-Id: <20230804191647.1875608-12-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.4-20230804221634@cover.tls.msk.ru>
 References: <qemu-stable-8.0.4-20230804221634@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -61,34 +64,33 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-Ensure that the stores to rb_left and rb_right are complete before
-inserting the new node into the tree.  Otherwise a concurrent reader
-could see garbage in the new leaf.
+The change to use translator_use_goto_tb went too far, as the
+CF_SINGLE_STEP flag managed by the translator only handles
+gdb single stepping and not the architectural single stepping
+modeled in DisasContext.singlestep_enabled.
 
-Cc: qemu-stable@nongnu.org
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Fixes: 6e9cc373ec5 ("target/ppc: Use translator_use_goto_tb")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1795
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-(cherry picked from commit 4c8baa02d36379507afd17bdea87aabe0aa32ed3)
+(cherry picked from commit 2e718e665706d5fcc3e3501bda26f277f055ed85)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(Mjt: s/qatomic_set_mb/qatomic_mb_set/ for 8.0 - it was renamed later)
 
-diff --git a/util/interval-tree.c b/util/interval-tree.c
-index 5a0ad21b2d..2000cd2935 100644
---- a/util/interval-tree.c
-+++ b/util/interval-tree.c
-@@ -128,7 +128,11 @@ static inline void rb_link_node(RBNode *node, RBNode *parent, RBNode **rb_link)
-     node->rb_parent_color = (uintptr_t)parent;
-     node->rb_left = node->rb_right = NULL;
+diff --git a/target/ppc/translate.c b/target/ppc/translate.c
+index 49a6b91842..26222e9078 100644
+--- a/target/ppc/translate.c
++++ b/target/ppc/translate.c
+@@ -4132,6 +4132,9 @@ static void pmu_count_insns(DisasContext *ctx)
  
--    qatomic_set(rb_link, node);
-+    /*
-+     * Ensure that node is initialized before insertion,
-+     * as viewed by a concurrent search.
-+     */
-+    qatomic_mb_set(rb_link, node);
+ static inline bool use_goto_tb(DisasContext *ctx, target_ulong dest)
+ {
++    if (unlikely(ctx->singlestep_enabled)) {
++        return false;
++    }
+     return translator_use_goto_tb(&ctx->base, dest);
  }
  
- static RBNode *rb_next(RBNode *node)
 -- 
 2.39.2
 
