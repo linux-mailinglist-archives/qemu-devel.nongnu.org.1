@@ -2,137 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BC3C77078C
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 20:08:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97614770791
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 20:08:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRzDj-0006X6-2i; Fri, 04 Aug 2023 14:08:15 -0400
+	id 1qRzDm-0006Y6-PN; Fri, 04 Aug 2023 14:08:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gregory.price@memverge.com>)
- id 1qRzDg-0006Wo-Uq
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 14:08:12 -0400
-Received: from mail-mw2nam10on20608.outbound.protection.outlook.com
- ([2a01:111:f400:7e89::608]
- helo=NAM10-MW2-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gregory.price@memverge.com>)
- id 1qRzDf-00010A-7o
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 14:08:12 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=bd+IXgEWF0BY6AiKDuOB55L0dl6mPtubokO+JQDTqldTvQZmTmuLxbUYI55PkTQUuJX13+grR9Hpa9w1DPJBJhb12WQuAVw8GzxT+UUAewYXsnBIh4y1ZirVbmvSwHBMlgQHkLUdiXJ/5DA3ZStPMTxZiTO1ya59dHCxe9g9OAgRosAIm1b1f2ZDmZRrTPkOpODDe5tl/IE/xZ3Kd+XCybQjw/dnUUnGNC4y6Er83Ydcua1qEegNKq9ZWr2rOvoC9HQX2jNcHFv7rhcV002JWW6G88/VRkHZBOLFO9X0956V8ErXlejX284T8cE8V3TOujlYH4bnc1hIMahNq5GKKA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=424i07vjtmK/mEVisWXFR0HRWSgY1E4IRFnFAmqONeA=;
- b=KGeBE/ssg4aH9IFQbJttyIAaPhQNt6RBqGSPXzy0/QAGVvQD4QKsuT3bJHZxApHIgAoQ3GWZa6hsWcoZ3r/5iNipL9MWo0AWlag1ilUE1sQnEBTJTo4fCp9xF2fa43EcZ/HwRdZRNpU71hbsVBFMmv+wdQuo6nAyO11DrBiDD/tmP1gSEQ246g/hMjFh0TUPUE25fTQXV1YkpaylCYcd5maW1OqjQwCVaxlO0My6NVXTsrgWq6ADhpXuE0lQMqxGZxFVr/oFPmIPZqZ29eeD10r51i3hNZlRIxPgJxPyRF26iKNVIGoGN+U0TDW7xhZcnzoqELuTBuk9/Vi0/7aYrw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=memverge.com; dmarc=pass action=none header.from=memverge.com;
- dkim=pass header.d=memverge.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=memverge.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=424i07vjtmK/mEVisWXFR0HRWSgY1E4IRFnFAmqONeA=;
- b=gS+RtwUDux+yDqdsUZGO1gQGYLoy8q74/65Vkg0FaK0yAfvX+vxxqrWEat0DhkRarhU4jJYH+/833yHZPS22bn5LkSeO8ngc4LFXHAPfRjHGC/7X4mKf7R5lhAbZc+PaF16QjhUb56jk3DB0BEaQplTyzxMQN2Wy93v8vjRpjJg=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=memverge.com;
-Received: from SJ0PR17MB5512.namprd17.prod.outlook.com (2603:10b6:a03:394::19)
- by PH0PR17MB5755.namprd17.prod.outlook.com (2603:10b6:510:112::12)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6652.20; Fri, 4 Aug
- 2023 18:08:04 +0000
-Received: from SJ0PR17MB5512.namprd17.prod.outlook.com
- ([fe80::28b3:ad85:6a11:3872]) by SJ0PR17MB5512.namprd17.prod.outlook.com
- ([fe80::28b3:ad85:6a11:3872%6]) with mapi id 15.20.6652.020; Fri, 4 Aug 2023
- 18:08:04 +0000
-Date: Fri, 4 Aug 2023 14:07:55 -0400
-From: Gregory Price <gregory.price@memverge.com>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Fan Ni <fan.ni@samsung.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
- "hchkuo@avery-design.com.tw" <hchkuo@avery-design.com.tw>,
- "cbrowy@avery-design.com" <cbrowy@avery-design.com>,
- "ira.weiny@intel.com" <ira.weiny@intel.com>,
- "dan.j.williams@intel.com" <dan.j.williams@intel.com>,
- Adam Manzanares <a.manzanares@samsung.com>,
- "dave@stgolabs.net" <dave@stgolabs.net>,
- "nmtadam.samsung@gmail.com" <nmtadam.samsung@gmail.com>,
- "nifan@outlook.com" <nifan@outlook.com>
-Subject: Re: [Qemu PATCH v2 5/9] hw/mem/cxl_type3: Add host backend and
- address space handling for DC regions
-Message-ID: <ZM0+ewZtknlOrGMl@memverge.com>
-References: <20230725183939.2741025-1-fan.ni@samsung.com>
- <CGME20230725183957uscas1p1eeb8e8eccc6c00b460d183027642374b@uscas1p1.samsung.com>
- <20230725183939.2741025-6-fan.ni@samsung.com>
- <20230804173623.00007707@Huawei.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230804173623.00007707@Huawei.com>
-X-ClientProxiedBy: SJ0PR13CA0166.namprd13.prod.outlook.com
- (2603:10b6:a03:2c7::21) To SJ0PR17MB5512.namprd17.prod.outlook.com
- (2603:10b6:a03:394::19)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qRzDl-0006Xi-Ap
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 14:08:17 -0400
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qRzDj-00010h-B0
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 14:08:17 -0400
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-52256241c66so5110632a12.1
+ for <qemu-devel@nongnu.org>; Fri, 04 Aug 2023 11:08:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1691172493; x=1691777293;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=g2TFQc0kLQiX84NeC5kg50/Pv9dqPY/kGIzFvDbzhIo=;
+ b=xse3vzbQMKXJMD4Sla4NAbKxr3f15uFXmaSJd6/UXzA9l4kSfJax/EW0hl2WDCFmht
+ mSFwURz9U/pGIlS1odoNUh9iYQL8IEoKuH54ZAbSlwKGeX5mumZruEDieU0eKN/5N9A8
+ Ub00jpa9VWxIgr0J/Eq2ILmwsJLXxu6WcmT12qfjfCX+5vrk3Q3i4ed3iVdn+0wF7tCQ
+ BekZhbrOSlqTAcAZNipO6LWWrtxtIkioggDdHQU6wQmTLHl/snw03y6dbyOmYuJ7hFNT
+ HZteNTyUQHIBMbUWUZ40uh0c2peEas4oqERdxSLuTc/omU1esQExmkqRTseHrSpeZAwj
+ Bi2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1691172493; x=1691777293;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=g2TFQc0kLQiX84NeC5kg50/Pv9dqPY/kGIzFvDbzhIo=;
+ b=PSD1OnPNIXNVWq4+SfRM4p1JUq/ZmsYbWGZOyqQIYgugXHnvwf9ODA6EwF5m4TjvXP
+ r48fTG50xG5kSp+CFYnvTxGCUd1tbCiDTNVaz203FtsBkvZ5u0hTnX/YK9tkUUuHA1EO
+ UgAYRgu6i7LM2MhunXif90fGxmnwtgIwDjgJAf0Uon1/XqsUlRR9tAQZG04d7sluPSYA
+ EE7qSX1JA+IykE8ewM9aOAHD7SjaSectuno5k0UARbu7Q3W0xgngY2oRaZOCZQuiQQ1g
+ FMNVVqR3HtdzJDKdIxIAZz4FFHWqZyydcEamsyXm/UFUvhmKX4A/qBEfjlfivOGrJNHE
+ kGzg==
+X-Gm-Message-State: AOJu0YztzRmrADMavS+CuDij6Jr78gSg7udoddMRrjO58H0DKGJqftaf
+ 9JV5B7SBSM1ukvjAvXhN4UjPVDPw0X5iE9VaN28Ghw==
+X-Google-Smtp-Source: AGHT+IEKPNbooud2RCnWqbkX5ar0+X2/n5jrf52lo5DVDYcBxhoIESDVCifKl/yay/Q7sgi8CCjx33oOEpTQ5fcUgAI=
+X-Received: by 2002:a05:6402:387:b0:522:2b23:b5ea with SMTP id
+ o7-20020a056402038700b005222b23b5eamr489794edv.9.1691172493466; Fri, 04 Aug
+ 2023 11:08:13 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ0PR17MB5512:EE_|PH0PR17MB5755:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7a772df8-18c2-45b0-412c-08db9515bef9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: wUZZCcp89U7QlxJ8dcmy3+atc/OlFtxdW445N0zcVX/yxcd5bdBO+UWPFMdT2yJVsEPW6ha9mHVPA3Qka+sTceRJU5axnk2CIE8yA6OJCyqvvjmiD1zVDDsVIcn/9mOKVT1g/mH469E7icHZlFdCC3E9mZ2qngbF9Yiv+up8Wr3+xRJOOua6osl57FV7awlLbXv8fAB0Ej9DlO6rUXlLc4OMOUHGuot3l4v0EZ9xtYh3BzyJmwBe4Z/f2BrIID08+43jt4VgpA0Ja9+AkC4qI3uI7flq5AoAckUqS0lnfyaBQhUkqruFoAIXBCSifMAxtiwyVRlM5fj9vbRP0FtHsTNVloVx7TsaqImDiMYf8gSCIU+QNrUcfPb0TT0ekq1aLDN8haNtaiPFdxpq59sdhBcIw7K4gzdOuZWZqJfgc1xtLGv2CpEupT4DuINsTe22CIe4ZrxRHBVxT3q9HEI/QfcHNXhErhybx6gaDf3ecJy5HyncQf+wXGvme5GOEdg4xr1P3LDyfaLfhq42ck8vy+nYk01JGK7BZ9zViYLQvyj9LtI8vYc6LQH20WFHwINr2hA+OF19YYSWPlsr8AFTBtx+z16aXykxCrS/KOxnfq0=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ0PR17MB5512.namprd17.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(376002)(346002)(366004)(396003)(136003)(39830400003)(451199021)(1800799003)(186006)(45080400002)(478600001)(86362001)(36756003)(6486002)(6512007)(6666004)(316002)(8936002)(8676002)(41300700001)(5660300002)(6916009)(4326008)(66556008)(44832011)(66476007)(83380400001)(7416002)(54906003)(2906002)(38100700002)(66946007)(6506007)(26005)(2616005)(67856001);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?DVLeacuQr2AomBcB6uwjb2lMbXk/2mYSObaMsdnOGZo5nI+FCt5Mx7P6RBqY?=
- =?us-ascii?Q?VKKrjMQugu0un2lAGwva2zeAnRuQBsUKEJzH6n7JweVUOGvVmUVnG1zBMK/V?=
- =?us-ascii?Q?nwxlgOOOtFIWXv+nFiYPY0HxSIjziEIvN1+uRPE8oIatWBhtyrTyM1eJPLMn?=
- =?us-ascii?Q?ndb/WlhmWhpcjtp3hKxJO+Fs7gQDMW1AqLZ8AjuqKefwYuDbL6aSG12kePBc?=
- =?us-ascii?Q?kOBWZNAyRnI8h61NA2D4eMVbo3M97hynTzuEdRJbHHbkEcFoPixXxoGk38hd?=
- =?us-ascii?Q?pnF/BrdRDn/HxZWieKRN5cJLXxgsVp1Y9WyFXPHBVR2YNnZfLH5NhjHLAziA?=
- =?us-ascii?Q?o07n9JMSuXVPqrMfpO5NJ+rjqwezoLkGScrg6BwgZs/OQjv1MmKc9ZZmGLUq?=
- =?us-ascii?Q?Riwo6MppmygdjyaUUtOigW2ulHT0g6ChUnIxK09GoBB/QwuQP+ogosoMHhDS?=
- =?us-ascii?Q?DDyeCBMrP9TzjCRN5rNdZQvISzTvktN2PA3a6QbtRkQv4XwluKoYDz0HgXav?=
- =?us-ascii?Q?Ndw6PzpZm2pc6eqzkqML4oNYDKchNpU89xvbxCUY+YXicFECw2pfVwdkxcED?=
- =?us-ascii?Q?xfApXLA52/lJmjNFKmj6OnLjbeBwYrILB3tJ9HZ+CHy/fkiYs89BkVPKXJM8?=
- =?us-ascii?Q?Llg/Ngy6d+XgD+38sc0saOzKBOzZyN66eFCN48ztwXCG0bz9LdCeQlqDuBbl?=
- =?us-ascii?Q?5cOKp693zmxe10bgTK8Cu3V2uR3xRjuTIr1xv9OKmKVHDwvQizzz90YNIWhh?=
- =?us-ascii?Q?EEfHzPBzwhnywMjM61+Lyo/ZQ1dp/EFskbPYWXdv4vxZlVzChUaQipFGk5Eb?=
- =?us-ascii?Q?uwnLS9z+aWh2viz+gR255cW/hiVSkYiYsGRNThzmsSNLEtSOLOxLnVKrUYYT?=
- =?us-ascii?Q?Ujr/BL3W4xuPZY36BkiTwtymwGM04HSx4kdT+ob2OtTXdguBvLMEyR5ghhx/?=
- =?us-ascii?Q?HIR7Owz3/Z7vhP7xF3BeFFwJIc51dR2i5OXHQNQMLSR7j1/Y8VghDboIylLW?=
- =?us-ascii?Q?DLRLSVuOdX17NX69A0+IfjwWijo8KTyA6B7okrnIvboag/TYTlbxqfHaGe2L?=
- =?us-ascii?Q?/XRhbJ0attgj44882uDCbY+5u2wbWjx5VmI+DX8nFyQvMd2bHLXA2iIf8R5R?=
- =?us-ascii?Q?GOG2Tya0giNM5eJQHBIIarn8cgzHw1hJZiAigvt280PW8OmALUf1XLMl2dvV?=
- =?us-ascii?Q?dvhhJ6/E90aclbmXPndktuppTrnIMOvOFnt98kCRM88y/QqwKdkRJ8MieWbI?=
- =?us-ascii?Q?tojoFSPBzPHv9KsqZz4TLHT1BBQfJZYyI3TKfpxMQmTupvwm0FH26Wu72iY0?=
- =?us-ascii?Q?lZcMt6RRw9fhtAI/tCQYCnkFm4wPc4Q9WnYWi7txopmbqGYHJITiE9s6rkim?=
- =?us-ascii?Q?W/CPsNeIU5/s9gn12PKmxD8YglDVrg6GJ7LL9e7FmR9dh9h7tJQTtJpgaWKb?=
- =?us-ascii?Q?BVlFRp2ysyd+0HU+Ua4ns8KbYwslm9lIObc7BF6QUPTm5qgbZHUfs9a7fcNX?=
- =?us-ascii?Q?GJZM0VzQpPYZj0lylVZRiNyQE1BCbGEcirpdYY6kvYC5kyF8GKsI0C1zHYEj?=
- =?us-ascii?Q?qu+x8c1H76uJFMukpdS/JOw9E4ZK1SL3mZm2DrzvLjr7TT6lZXdg+WimDLYi?=
- =?us-ascii?Q?ZQ=3D=3D?=
-X-OriginatorOrg: memverge.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7a772df8-18c2-45b0-412c-08db9515bef9
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR17MB5512.namprd17.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Aug 2023 18:08:03.6390 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 5c90cb59-37e7-4c81-9c07-00473d5fb682
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: cj2nxqda2eNaQi7Zgy7Ctl2QERnayKIgYJIclLssK7RijvOF+bwCOYAlVBk8IQz7LBAI31Rd+9Qe5hKayKQSoYi+vdTuPdJKv31RAETqgVY=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR17MB5755
-Received-SPF: none client-ip=2a01:111:f400:7e89::608;
- envelope-from=gregory.price@memverge.com;
- helo=NAM10-MW2-obe.outbound.protection.outlook.com
-X-Spam_score_int: -10
-X-Spam_score: -1.1
-X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FORGED_SPF_HELO=1,
- SPF_HELO_PASS=-0.001, SPF_NONE=0.001 autolearn=no autolearn_force=no
+References: <20230802170157.401491-1-jean-philippe@linaro.org>
+ <20230802170157.401491-6-jean-philippe@linaro.org>
+In-Reply-To: <20230802170157.401491-6-jean-philippe@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 4 Aug 2023 19:08:02 +0100
+Message-ID: <CAFEAcA-0p2UhURwgLRnUxSK8ktFsULsHz5x3pu+h80VOPBrZvQ@mail.gmail.com>
+Subject: Re: [PATCH v2 5/6] target/arm/helper: Check SCR_EL3.{NSE, NS} encoding
+ for AT instructions
+To: Jean-Philippe Brucker <jean-philippe@linaro.org>
+Cc: richard.henderson@linaro.org, qemu-arm@nongnu.org, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -148,59 +86,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Aug 04, 2023 at 05:36:23PM +0100, Jonathan Cameron wrote:
-> On Tue, 25 Jul 2023 18:39:56 +0000
-> Fan Ni <fan.ni@samsung.com> wrote:
-> 
-> > From: Fan Ni <nifan@outlook.com>
-> > 
-> > Add (file/memory backed) host backend, all the dynamic capacity regions
-> > will share a single, large enough host backend. Set up address space for
-> > DC regions to support read/write operations to dynamic capacity for DCD.
-> > 
-> > With the change, following supports are added:
-> > 1. add a new property to type3 device "nonvolatile-dc-memdev" to point to host
-> >    memory backend for dynamic capacity;
-> > 2. add namespace for dynamic capacity for read/write support;
-> > 3. create cdat entries for each dynamic capacity region;
-> > 4. fix dvsec range registers to include DC regions.
-> > 
-> > Signed-off-by: Fan Ni <fan.ni@samsung.com>
-> Hi Fan,
-> 
-> I'm not sure if we want to do all regions backed by one memory backend
-> or one backend each.  It will become complex when some are shared
-> (e.g. what Gregory is working on).
+On Wed, 2 Aug 2023 at 18:02, Jean-Philippe Brucker
+<jean-philippe@linaro.org> wrote:
+>
+> The AT instruction is UNDEFINED if the {NSE,NS} configuration is
+> invalid. Add a function to check this on all AT instructions that apply
+> to an EL lower than 3.
+>
+> Suggested-by: Peter Maydell <peter.maydell@linaro.org>
+> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> ---
+>  target/arm/helper.c | 36 +++++++++++++++++++++++++-----------
+>  1 file changed, 25 insertions(+), 11 deletions(-)
+>
+> diff --git a/target/arm/helper.c b/target/arm/helper.c
+> index fbb03c364b..77dd80ad28 100644
+> --- a/target/arm/helper.c
+> +++ b/target/arm/helper.c
+> @@ -3616,6 +3616,20 @@ static void ats1h_write(CPUARMState *env, const ARMCPRegInfo *ri,
+>  #endif /* CONFIG_TCG */
+>  }
+>
+> +static CPAccessResult at_e012_access(CPUARMState *env, const ARMCPRegInfo *ri,
+> +                                     bool isread)
+> +{
+> +    /*
+> +     * R_NYXTL: instruction is UNDEFINED if it applies to an Exception level
+> +     * lower than EL3 and the combination SCR_EL3.{NSE,NS} is reserved.
+> +     */
+> +    if (cpu_isar_feature(aa64_rme, env_archcpu(env)) &&
+> +        (env->cp15.scr_el3 & (SCR_NSE | SCR_NS)) == SCR_NSE) {
+> +        return CP_ACCESS_TRAP;
+> +    }
 
-I thought about this briefly when i implemented the original volatile
-support due to the potential for partitioning. We landed on, iirc, 
-2 backends (1 for volatile, 1 for non-volatile).
+The AArch64.AT() pseudocode and the text in the individual
+AT insn descriptions ("When FEAT_RME is implemented, if the Effective
+value of SCR_EL3.{NSE, NS} is a reserved value, this instruction is
+UNDEFINED at EL3") say that this check needs an "arm_current_el(env) == 3"
+condition too.
 
-The reality, though, is the driver (presently) does not have a good way
-to create more than 1 dax per memdev, and in practice with real devices
-we see that this just tends to be the case: 1 dax per device.  So unless
-that's going to change, ever having more than 1 backend will just be
-unused complexity.
+> +    return CP_ACCESS_OK;
+> +}
+> +
+>  static CPAccessResult at_s1e2_access(CPUARMState *env, const ARMCPRegInfo *ri,
+>                                       bool isread)
+>  {
 
-To me, this is a good example of "maybe piling everything into the core
-ct3d is going to get ugly fast".  Maybe it would be better to do
-something similar to the CCI interface and allow for overriding the
-other functions as well.
-
-just a thought.  I apologize for not engaging with the DCD patch set,
-conferences have been keeping me busier than expected.  I plan on
-putting it through the grinder this month.
-
-> 
-> A few questions inline.  In particular there are subtle changes to
-> existing handling that are either bug fixes (in which case they need
-> to be sent first) or bugs / have no effect and shouldn't be in here.
-> 
-> 
-> > ---
-> >  hw/cxl/cxl-mailbox-utils.c  |  19 +++-
-> >  hw/mem/cxl_type3.c          | 203 +++++++++++++++++++++++++++++-------
-> >  include/hw/cxl/cxl_device.h |   4 +
-> >  3 files changed, 185 insertions(+), 41 deletions(-)
-> > 
+thanks
+-- PMM
 
