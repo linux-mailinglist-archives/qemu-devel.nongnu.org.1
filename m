@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DAF47708D3
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 21:18:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C32C7708E9
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 21:21:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qS0IJ-0000Jt-56; Fri, 04 Aug 2023 15:17:03 -0400
+	id 1qS0IH-0000If-U7; Fri, 04 Aug 2023 15:17:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qS0IG-0000I7-4p; Fri, 04 Aug 2023 15:17:00 -0400
+ id 1qS0IG-0000I8-4v; Fri, 04 Aug 2023 15:17:00 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qS0IE-0006tY-Av; Fri, 04 Aug 2023 15:16:59 -0400
+ id 1qS0IE-0006tc-At; Fri, 04 Aug 2023 15:16:59 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id ED56918454;
- Fri,  4 Aug 2023 22:17:09 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 2CF5318455;
+ Fri,  4 Aug 2023 22:17:10 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 833EA1B897;
+ by tsrv.corpit.ru (Postfix) with SMTP id B16751B898;
  Fri,  4 Aug 2023 22:16:49 +0300 (MSK)
-Received: (nullmailer pid 1875693 invoked by uid 1000);
+Received: (nullmailer pid 1875696 invoked by uid 1000);
  Fri, 04 Aug 2023 19:16:49 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Thomas Huth <thuth@redhat.com>,
- Song Gao <gaosong@loongson.cn>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.4 34/63] target/loongarch: Fix the CSRRD CPUID
- instruction on big endian hosts
-Date: Fri,  4 Aug 2023 22:16:17 +0300
-Message-Id: <20230804191647.1875608-3-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Viktor Prutyanov <viktor@daynix.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.0.4 35/63] virtio-pci: add handling of PCI ATS and
+ Device-TLB enable/disable
+Date: Fri,  4 Aug 2023 22:16:18 +0300
+Message-Id: <20230804191647.1875608-4-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.4-20230804221634@cover.tls.msk.ru>
 References: <qemu-stable-8.0.4-20230804221634@cover.tls.msk.ru>
@@ -59,88 +59,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+From: Viktor Prutyanov <viktor@daynix.com>
 
-The test in tests/avocado/machine_loongarch.py is currently failing
-on big endian hosts like s390x. By comparing the traces between running
-the QEMU_EFI.fd bios on a s390x and on a x86 host, it's quickly obvious
-that the CSRRD instruction for the CPUID is behaving differently. And
-indeed: The code currently does a long read (i.e. 64 bit) from the
-address that points to the CPUState->cpu_index field (with tcg_gen_ld_tl()
-in the trans_csrrd() function). But this cpu_index field is only an "int"
-(i.e. 32 bit). While this dirty pointer magic works on little endian hosts,
-it of course fails on big endian hosts. Fix it by using a proper helper
-function instead.
+According to PCIe Address Translation Services specification 5.1.3.,
+ATS Control Register has Enable bit to enable/disable ATS. Guest may
+enable/disable PCI ATS and, accordingly, Device-TLB for the VirtIO PCI
+device. So, raise/lower a flag and call a trigger function to pass this
+event to a device implementation.
 
-Message-Id: <20230720175307.854460-1-thuth@redhat.com>
-Reviewed-by: Song Gao <gaosong@loongson.cn>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-(cherry picked from commit c34ad459926f6c600a55fe6782a27edfa405d60b)
+Signed-off-by: Viktor Prutyanov <viktor@daynix.com>
+Message-Id: <20230512135122.70403-2-viktor@daynix.com>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+(cherry picked from commit 206e91d143301414df2deb48a411e402414ba6db)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
-index e11c875188..4bf453e002 100644
---- a/target/loongarch/cpu.h
-+++ b/target/loongarch/cpu.h
-@@ -319,6 +319,7 @@ typedef struct CPUArchState {
-     uint64_t CSR_DBG;
-     uint64_t CSR_DERA;
-     uint64_t CSR_DSAVE;
-+    uint64_t CSR_CPUID;
- 
- #ifndef CONFIG_USER_ONLY
-     LoongArchTLB  tlb[LOONGARCH_TLB_MAX];
-diff --git a/target/loongarch/csr_helper.c b/target/loongarch/csr_helper.c
-index 7e02787895..b778e6952d 100644
---- a/target/loongarch/csr_helper.c
-+++ b/target/loongarch/csr_helper.c
-@@ -36,6 +36,15 @@ target_ulong helper_csrrd_pgd(CPULoongArchState *env)
-     return v;
+diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
+index 247325c193..798eba9d6e 100644
+--- a/hw/virtio/virtio-pci.c
++++ b/hw/virtio/virtio-pci.c
+@@ -716,6 +716,38 @@ virtio_address_space_read(VirtIOPCIProxy *proxy, hwaddr addr,
+     }
  }
  
-+target_ulong helper_csrrd_cpuid(CPULoongArchState *env)
++static void virtio_pci_ats_ctrl_trigger(PCIDevice *pci_dev, bool enable)
 +{
-+    LoongArchCPU *lac = env_archcpu(env);
++    VirtIOPCIProxy *proxy = VIRTIO_PCI(pci_dev);
++    VirtIODevice *vdev = virtio_bus_get_device(&proxy->bus);
++    VirtioDeviceClass *k = VIRTIO_DEVICE_GET_CLASS(vdev);
 +
-+    env->CSR_CPUID = CPU(lac)->cpu_index;
++    vdev->device_iotlb_enabled = enable;
 +
-+    return env->CSR_CPUID;
++    if (k->toggle_device_iotlb) {
++        k->toggle_device_iotlb(vdev);
++    }
 +}
 +
- target_ulong helper_csrrd_tval(CPULoongArchState *env)
++static void pcie_ats_config_write(PCIDevice *dev, uint32_t address,
++                                  uint32_t val, int len)
++{
++    uint32_t off;
++    uint16_t ats_cap = dev->exp.ats_cap;
++
++    if (!ats_cap || address < ats_cap) {
++        return;
++    }
++    off = address - ats_cap;
++    if (off >= PCI_EXT_CAP_ATS_SIZEOF) {
++        return;
++    }
++
++    if (range_covers_byte(off, len, PCI_ATS_CTRL + 1)) {
++        virtio_pci_ats_ctrl_trigger(dev, !!(val & PCI_ATS_CTRL_ENABLE));
++    }
++}
++
+ static void virtio_write_config(PCIDevice *pci_dev, uint32_t address,
+                                 uint32_t val, int len)
  {
-     LoongArchCPU *cpu = env_archcpu(env);
-diff --git a/target/loongarch/helper.h b/target/loongarch/helper.h
-index 9c01823a26..f47b0f2d05 100644
---- a/target/loongarch/helper.h
-+++ b/target/loongarch/helper.h
-@@ -98,6 +98,7 @@ DEF_HELPER_1(rdtime_d, i64, env)
- #ifndef CONFIG_USER_ONLY
- /* CSRs helper */
- DEF_HELPER_1(csrrd_pgd, i64, env)
-+DEF_HELPER_1(csrrd_cpuid, i64, env)
- DEF_HELPER_1(csrrd_tval, i64, env)
- DEF_HELPER_2(csrwr_estat, i64, env, tl)
- DEF_HELPER_2(csrwr_asid, i64, env, tl)
-diff --git a/target/loongarch/insn_trans/trans_privileged.c.inc b/target/loongarch/insn_trans/trans_privileged.c.inc
-index 5a04352b01..71d7f37717 100644
---- a/target/loongarch/insn_trans/trans_privileged.c.inc
-+++ b/target/loongarch/insn_trans/trans_privileged.c.inc
-@@ -99,13 +99,7 @@ static const CSRInfo csr_info[] = {
-     CSR_OFF(PWCH),
-     CSR_OFF(STLBPS),
-     CSR_OFF(RVACFG),
--    [LOONGARCH_CSR_CPUID] = {
--        .offset = (int)offsetof(CPUState, cpu_index)
--                  - (int)offsetof(LoongArchCPU, env),
--        .flags = CSRFL_READONLY,
--        .readfn = NULL,
--        .writefn = NULL
--    },
-+    CSR_OFF_FUNCS(CPUID, CSRFL_READONLY, gen_helper_csrrd_cpuid, NULL),
-     CSR_OFF_FLAGS(PRCFG1, CSRFL_READONLY),
-     CSR_OFF_FLAGS(PRCFG2, CSRFL_READONLY),
-     CSR_OFF_FLAGS(PRCFG3, CSRFL_READONLY),
+@@ -729,6 +761,10 @@ static void virtio_write_config(PCIDevice *pci_dev, uint32_t address,
+         pcie_cap_flr_write_config(pci_dev, address, val, len);
+     }
+ 
++    if (proxy->flags & VIRTIO_PCI_FLAG_ATS) {
++        pcie_ats_config_write(pci_dev, address, val, len);
++    }
++
+     if (range_covers_byte(address, len, PCI_COMMAND)) {
+         if (!(pci_dev->config[PCI_COMMAND] & PCI_COMMAND_MASTER)) {
+             virtio_set_disabled(vdev, true);
+diff --git a/include/hw/virtio/virtio.h b/include/hw/virtio/virtio.h
+index f236e94ca6..bd3092a1ab 100644
+--- a/include/hw/virtio/virtio.h
++++ b/include/hw/virtio/virtio.h
+@@ -155,6 +155,7 @@ struct VirtIODevice
+     QLIST_HEAD(, VirtQueue) *vector_queues;
+     QTAILQ_ENTRY(VirtIODevice) next;
+     EventNotifier config_notifier;
++    bool device_iotlb_enabled;
+ };
+ 
+ struct VirtioDeviceClass {
+@@ -212,6 +213,7 @@ struct VirtioDeviceClass {
+     const VMStateDescription *vmsd;
+     bool (*primary_unplug_pending)(void *opaque);
+     struct vhost_dev *(*get_vhost)(VirtIODevice *vdev);
++    void (*toggle_device_iotlb)(VirtIODevice *vdev);
+ };
+ 
+ void virtio_instance_init_common(Object *proxy_obj, void *data,
 -- 
 2.39.2
 
