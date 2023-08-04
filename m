@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CE357700D5
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 15:09:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3C747700D6
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 15:10:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRuYT-0002JW-1q; Fri, 04 Aug 2023 09:09:21 -0400
+	id 1qRuZ3-00033a-3M; Fri, 04 Aug 2023 09:09:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qRuYP-0002Iv-I0
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 09:09:17 -0400
-Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
+ id 1qRuZ0-00033H-SV
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 09:09:54 -0400
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qRuYN-0001NM-R4
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 09:09:17 -0400
-Received: by mail-lf1-x130.google.com with SMTP id
- 2adb3069b0e04-4fe28f92d8eso3534526e87.1
- for <qemu-devel@nongnu.org>; Fri, 04 Aug 2023 06:09:15 -0700 (PDT)
+ id 1qRuYz-0001cB-Cp
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 09:09:54 -0400
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-52229f084beso2746639a12.2
+ for <qemu-devel@nongnu.org>; Fri, 04 Aug 2023 06:09:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691154553; x=1691759353;
+ d=linaro.org; s=google; t=1691154591; x=1691759391;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=m1J4aXhtd2ojg8Ya2HLoFacJp/rnIMMlcEtzHdoHPNM=;
- b=VQeHJGTijHnuPadwdDf+Pq9POqOBsjxtx85aq6RYzEJlsmLDrQkpsPA/ZuCFkngSdT
- 4cuYJqIXBMjgKUOyYnafE8Ys1tX50Gj+PEXeNlAEecFINoPn4fZzwnbj8VA6t2w3poVA
- 6WzxcEunZWbxwRiSN3TSwUKAGDtOzyKprIpXBNoKFMHLqo2i9iNKibL+HDtOEEl86uSl
- GvKhtzmK43zkEr7eCOSvLoFOAf98XBtFuM1PsAvYrNABjJ8UXIgfWd+gn4awkbHByS1p
- fghRhPX4AJ+7gfXKshFoBZFTKLuXRIrJHgEYc3v+Ty2vCqW5HUaQeYhQmZsYSo2T9rGK
- yumw==
+ bh=eWRjkaQpfj3muYkoWY0i/hu3KgPiRrUqVi3x8R2RCQ8=;
+ b=iobysSxBW1NGcNudi5pZRfL5+JxsO0NKKfdO+ev0hr9Jc+T3Ldlgl7nshOLCsI67RI
+ PtIEsyM2EoXjM85sak2db5+xlAoCxrdQGk2ffDZDTMnrjCMacsGONxefo3sRMENVQ1nU
+ 48UDNZK0WNqT4mBIl3ohONMlVr4F8SjHfJV2Z61xOf44TI8NSBZZk7QSk3a+uz5Qrq8y
+ 4Kvg/ZHT0XZswRDY8AHSjemGsYXnpNLcJEdxSYPHMTlJCqP5lLleW7ltYa9PfVXjj4bq
+ 2BueJC8A+LSdcBPb1gk8qlV6s9sZvib/pQbryWBG7/h4Q00jkeZioYGbpwOrOM6lnQb1
+ fuqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691154553; x=1691759353;
+ d=1e100.net; s=20221208; t=1691154592; x=1691759392;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=m1J4aXhtd2ojg8Ya2HLoFacJp/rnIMMlcEtzHdoHPNM=;
- b=LUwZEFoDKlSYTTj8kOcKPQ+nE8k+54WN9daPXRvvnxUVxBbPrkgtZR1tPahgVftzuJ
- BQliVP4MyxE5Ri2C1QBPiYQcUV4Iwom0E+4NjQu5wO9nua3dm+4fbLb4/gahJZ3jl3zr
- 7kYcmgVWfXxRHIcC/9/HmOoXXU+ann9MKl5vxsPkHeA/0VmuLLriSqcVfnSliD63bbzX
- DWWrYC6VQWf3iBwCjt+xZ/g0MwL3U6BH0W8ajJ+yj2ox2Qivxh9O7kLDSmEXM0M1WKqV
- XH9tKVd6ygaeIe7YKtQWBcql1cK3IDdXVOpU4xRJ6HqdU8+ruLZ4mnTrijeV7KIruM7C
- P9Tw==
-X-Gm-Message-State: AOJu0YyHMfYP0UJiXytWqNHGieHnKG/HQq4Zm7KFs+4sPuWwGwM1Lsy8
- d8DeCFr41FmxfIL6pIyOvVvFU8sh7pnlSC4aiA4Nyg==
-X-Google-Smtp-Source: AGHT+IG3EYGynNxSbkdniq6PECGNfydP8i+a4Msca+2E5nfSMJpMFaP3yVgB0N6kjI0fXJYjoj8521SKioKMSsuyXWU=
-X-Received: by 2002:ac2:5058:0:b0:4f9:596d:c803 with SMTP id
- a24-20020ac25058000000b004f9596dc803mr1305957lfm.53.1691154553208; Fri, 04
- Aug 2023 06:09:13 -0700 (PDT)
+ bh=eWRjkaQpfj3muYkoWY0i/hu3KgPiRrUqVi3x8R2RCQ8=;
+ b=HLJB1p7VzsUrtZMFqAkz37Gx1ObVkHk8bVCtRHC30jhDfDqSZMgnGwCaNIweotcIn8
+ +r97cKw9Ew3YqqeChhLOsUILpBbwi4Su8rBW3kXB0hgQBDakqLfMrwBJh0CRTRjy8neT
+ YsU/Q7xWiKVRyFl6D7LBIrgE6LrZ04DdLzVa/5s6KTKC4vzD/o7SWwhm6FkgIQ+Krkxb
+ h2e4FqDIBH29BAbSAVjJk4oH80Njio2YWwyxAwqaOovvqQ0ZSahjnrca1rJmK1UIF6fh
+ FSFMn7gtShcFTs8WFGsqpC20eYQJWMP+vnbStoWz+ftmR8Gvdx4qC5QG1XBrMVXUaTWP
+ IqFw==
+X-Gm-Message-State: AOJu0YzoeOULio9qDR8yZx3QtHRB+9thKbgVH4z1sboo89vVjgkrDUce
+ lk1CXbBLSLlQF+Vlu3I8QehE7eCB0O6Al2STr1TpaQ==
+X-Google-Smtp-Source: AGHT+IE8frX0OKOLq3HiH2cs9Kkdr9Rh7VouWtRNc39OvHHIY2ajahccig0UtR5OUAhulPIoBZO5cOmjg85q9xCjnfI=
+X-Received: by 2002:a05:6402:546:b0:522:d6f4:c0e9 with SMTP id
+ i6-20020a056402054600b00522d6f4c0e9mr1715303edx.38.1691154591806; Fri, 04 Aug
+ 2023 06:09:51 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230726132512.149618-1-sergey.kambalin@auriga.com>
- <20230726132512.149618-16-sergey.kambalin@auriga.com>
-In-Reply-To: <20230726132512.149618-16-sergey.kambalin@auriga.com>
+ <20230726132512.149618-17-sergey.kambalin@auriga.com>
+In-Reply-To: <20230726132512.149618-17-sergey.kambalin@auriga.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 4 Aug 2023 14:09:02 +0100
-Message-ID: <CAFEAcA9Pab8pOf+B0=pfvUTHx5u8akdj7RNQSgggkMrtptfLCA@mail.gmail.com>
-Subject: Re: [PATCH 15/44] Add BCM2838 PCIE host
+Date: Fri, 4 Aug 2023 14:09:40 +0100
+Message-ID: <CAFEAcA9H+2utOc+phJ5S+pBB=dCYjzoFy9-5+9pBU0zt98kCVg@mail.gmail.com>
+Subject: Re: [PATCH 16/44] Enable BCM2838 PCIE
 To: Sergey Kambalin <serg.oker@gmail.com>
 Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
  Sergey Kambalin <sergey.kambalin@auriga.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::130;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x130.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -86,49 +86,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 26 Jul 2023 at 14:46, Sergey Kambalin <serg.oker@gmail.com> wrote:
+On Wed, 26 Jul 2023 at 14:45, Sergey Kambalin <serg.oker@gmail.com> wrote:
 >
 > Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
 > ---
->  hw/arm/bcm2838_pcie.c         | 232 +++++++++++++++++++++++++++++++++-
->  include/hw/arm/bcm2838_pcie.h |  23 ++++
->  2 files changed, 253 insertions(+), 2 deletions(-)
+>  hw/arm/bcm2838_peripherals.c         | 25 +++++++++++++++++++++++++
+>  hw/arm/meson.build                   |  7 ++++---
+>  hw/arm/raspi4b.c                     |  1 -
+>  include/hw/arm/bcm2838_peripherals.h |  3 +++
+>  4 files changed, 32 insertions(+), 4 deletions(-)
+>
 
-> +    /*
-> +     * The MemoryRegions io_mmio and io_ioport that we pass to
-> +     * pci_register_root_bus() are not the same as the MemoryRegions
-> +     * io_mmio_window and io_ioport_window that we expose as SysBus MRs.
-> +     * The difference is in the behavior of accesses to addresses where no PCI
-> +     * device has been mapped.
-> +     *
-> +     * io_mmio and io_ioport are the underlying PCI view of the PCI address
-> +     * space, and when a PCI device does a bus master access to a bad address
-> +     * this is reported back to it as a transaction failure.
-> +     *
-> +     * io_mmio_window and io_ioport_window implement "unmapped addresses read as
-> +     * -1 and ignore writes"; this is a traditional x86 PC behavior, which is
-> +     * not mandated properly by the PCI spec but expected by the majority of
-> +     * PCI-using guest software, including Linux.
-> +     *
-> +     * We implement it in the PCIe host controller, by providing the *_window
-> +     * MRs, which are containers with io ops that implement the 'background'
-> +     * behavior and which hold the real PCI MRs as sub-regions.
-> +     */
-
-This comment has been copied from gpex.c, which is an implementation
-of a "generic" PCIE controller. Since it's generic, QEMU gets to
-decide its behaviour, and since we started with one behaviour and
-then changed to a different one we need to provide the property
-so that old versioned machine types get the old behaviour.
-
-For the raspi4 PCIe controller, we don't get to decide -- the hardware
-will behave in a particular way for accesses to addresses where no PCI
-device has been mapped, and we need to follow that.
-
-You should find out whether accesses to unmapped addresses should
-cause PCI transaction failures, or read-as-minus-one, and implement
-only that behaviour. You don't need to provide a property selecting
-between the two.
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
 thanks
 -- PMM
