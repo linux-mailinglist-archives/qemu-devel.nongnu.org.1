@@ -2,38 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5740F7708DC
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 21:19:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4F9A7708E0
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 21:19:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qS0Js-0002Zb-Cc; Fri, 04 Aug 2023 15:18:40 -0400
+	id 1qS0K9-0004yE-GO; Fri, 04 Aug 2023 15:18:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qS0Jk-000224-1e; Fri, 04 Aug 2023 15:18:33 -0400
+ id 1qS0K7-0004rX-2b; Fri, 04 Aug 2023 15:18:55 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qS0Jh-000792-RC; Fri, 04 Aug 2023 15:18:31 -0400
+ id 1qS0K5-00079d-GH; Fri, 04 Aug 2023 15:18:54 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id A2D5B18468;
+ by isrv.corpit.ru (Postfix) with ESMTP id D354718469;
  Fri,  4 Aug 2023 22:17:14 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 2F76D1B8AB;
+ by tsrv.corpit.ru (Postfix) with SMTP id 68FB81B8AC;
  Fri,  4 Aug 2023 22:16:54 +0300 (MSK)
-Received: (nullmailer pid 1875753 invoked by uid 1000);
+Received: (nullmailer pid 1875756 invoked by uid 1000);
  Fri, 04 Aug 2023 19:16:49 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, zhenwei pi <pizhenwei@bytedance.com>,
  Gonglei <arei.gonglei@huawei.com>, Mauro Matteo Cascella <mcascell@redhat.com>,
+ Xiao Lei <nop.leixiao@gmail.com>, Yongkang Jia <kangel@zju.edu.cn>,
  Yiming Tao <taoym@zju.edu.cn>, "Michael S . Tsirkin" <mst@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.4 54/63] virtio-crypto: verify src&dst buffer length for
- sym request
-Date: Fri,  4 Aug 2023 22:16:37 +0300
-Message-Id: <20230804191647.1875608-23-mjt@tls.msk.ru>
+Subject: [Stable-8.0.4 55/63] cryptodev: Handle unexpected request to avoid
+ crash
+Date: Fri,  4 Aug 2023 22:16:38 +0300
+Message-Id: <20230804191647.1875608-24-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.4-20230804221634@cover.tls.msk.ru>
 References: <qemu-stable-8.0.4-20230804221634@cover.tls.msk.ru>
@@ -63,42 +64,53 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: zhenwei pi <pizhenwei@bytedance.com>
 
-For symmetric algorithms, the length of ciphertext must be as same
-as the plaintext.
-The missing verification of the src_len and the dst_len in
-virtio_crypto_sym_op_helper() may lead buffer overflow/divulged.
+Generally guest side should discover which services the device is
+able to offer, then do requests on device.
 
-This patch is originally written by Yiming Tao for QEMU-SECURITY,
-resend it(a few changes of error message) in qemu-devel.
+However it's also possible to break this rule in a guest. Handle
+unexpected request here to avoid NULL pointer dereference.
 
-Fixes: CVE-2023-3180
-Fixes: 04b9b37edda("virtio-crypto: add data queue processing handler")
+Fixes: e7a775fd ('cryptodev: Account statistics')
 Cc: Gonglei <arei.gonglei@huawei.com>
 Cc: Mauro Matteo Cascella <mcascell@redhat.com>
-Cc: Yiming Tao <taoym@zju.edu.cn>
+Cc: Xiao Lei <nop.leixiao@gmail.com>
+Cc: Yongkang Jia <kangel@zju.edu.cn>
+Reported-by: Yiming Tao <taoym@zju.edu.cn>
 Signed-off-by: zhenwei pi <pizhenwei@bytedance.com>
-Message-Id: <20230803024314.29962-2-pizhenwei@bytedance.com>
+Message-Id: <20230803024314.29962-3-pizhenwei@bytedance.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit 9d38a8434721a6479fe03fb5afb150ca793d3980)
+(cherry picked from commit 15b11a1da6a4b7c6b8bb37883f52b544dee2b8fd)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/virtio/virtio-crypto.c b/hw/virtio/virtio-crypto.c
-index a1d122b9aa..ccaa704530 100644
---- a/hw/virtio/virtio-crypto.c
-+++ b/hw/virtio/virtio-crypto.c
-@@ -635,6 +635,11 @@ virtio_crypto_sym_op_helper(VirtIODevice *vdev,
-         return NULL;
-     }
- 
-+    if (unlikely(src_len != dst_len)) {
-+        virtio_error(vdev, "sym request src len is different from dst len");
-+        return NULL;
-+    }
+diff --git a/backends/cryptodev.c b/backends/cryptodev.c
+index 94ca393cee..d3fe92d8c0 100644
+--- a/backends/cryptodev.c
++++ b/backends/cryptodev.c
+@@ -191,6 +191,11 @@ static int cryptodev_backend_account(CryptoDevBackend *backend,
+     if (algtype == QCRYPTODEV_BACKEND_ALG_ASYM) {
+         CryptoDevBackendAsymOpInfo *asym_op_info = op_info->u.asym_op_info;
+         len = asym_op_info->src_len;
 +
-     max_len = (uint64_t)iv_len + aad_len + src_len + dst_len + hash_result_len;
-     if (unlikely(max_len > vcrypto->conf.max_size)) {
-         virtio_error(vdev, "virtio-crypto too big length");
++        if (unlikely(!backend->asym_stat)) {
++            error_report("cryptodev: Unexpected asym operation");
++            return -VIRTIO_CRYPTO_NOTSUPP;
++        }
+         switch (op_info->op_code) {
+         case VIRTIO_CRYPTO_AKCIPHER_ENCRYPT:
+             CryptodevAsymStatIncEncrypt(backend, len);
+@@ -210,6 +215,11 @@ static int cryptodev_backend_account(CryptoDevBackend *backend,
+     } else if (algtype == QCRYPTODEV_BACKEND_ALG_SYM) {
+         CryptoDevBackendSymOpInfo *sym_op_info = op_info->u.sym_op_info;
+         len = sym_op_info->src_len;
++
++        if (unlikely(!backend->sym_stat)) {
++            error_report("cryptodev: Unexpected sym operation");
++            return -VIRTIO_CRYPTO_NOTSUPP;
++        }
+         switch (op_info->op_code) {
+         case VIRTIO_CRYPTO_CIPHER_ENCRYPT:
+             CryptodevSymStatIncEncrypt(backend, len);
 -- 
 2.39.2
 
