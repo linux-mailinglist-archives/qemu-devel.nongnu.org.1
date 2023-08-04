@@ -2,81 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A42AF76F728
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 03:47:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42CE976F729
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 03:47:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRjsw-0002iE-T1; Thu, 03 Aug 2023 21:45:46 -0400
+	id 1qRjur-0000BF-3b; Thu, 03 Aug 2023 21:47:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qRjsn-0002dF-62
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 21:45:38 -0400
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+ id 1qRjuo-00086W-7b
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 21:47:42 -0400
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qRjsk-0005Bq-FC
- for qemu-devel@nongnu.org; Thu, 03 Aug 2023 21:45:36 -0400
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-686efa1804eso1152687b3a.3
- for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 18:45:33 -0700 (PDT)
+ id 1qRjul-0005rk-PO
+ for qemu-devel@nongnu.org; Thu, 03 Aug 2023 21:47:41 -0400
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-6873a30d02eso1143971b3a.3
+ for <qemu-devel@nongnu.org>; Thu, 03 Aug 2023 18:47:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691113532; x=1691718332;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=IRkEwFCl346jg7Z07dyeTmyC7RNqDmLWj3eYDwe5avk=;
- b=uzAWbFQxcONuMkzKWaiuUmH/7ekp96n/cDLcA4CSHQ9wLFOuAxMYRMzMnle9lGHItt
- 4HPUEBZnmAWkp2/YWxBhFC43xvQxSBN0d8WAp0B7nOtVfrT+Z3q6gAeepEuergoVaPiu
- HGBym0ebEqK3SzJebQsgQdSAa9n0EfG5QpwfFDjyaP4jjQ+xmq1MfIn9TyiP15YTSQ7p
- rl+dedNVu7ZI4PFQLC2Vt7G8qZ+PbwvIWyW5mxRv2koHObtPlVI9xGid3GmMSBN0idqj
- hJYJruO1mPSdVp/jDz3QpIgnZ2w18KOlENSKmQdx0M0lcWQO0Mmiku4oP5Cub9Y+W2Pe
- 1OHg==
+ d=linaro.org; s=google; t=1691113658; x=1691718458;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=J+Um/oeg585mI4S5/+in6uYCkFJfRIXsPy1YVX1IJbY=;
+ b=xCWUWjYbfb7updAzKDWqZX6+diRQApo81zWaGUUpcR8fcXjqxDafRkrI/mHFAfIniz
+ e+hBjwWbr1W7h+HDtWOr1cSczodxXTINLm0UkBtUTzfSj+spKfeX3Dc3QIiIadkH/dEV
+ uB1Q72NH5t0upWKEiWyVOcoDH14gQg/RqWqkR1DdzfSuU8QamDsoagz02DdyoFcQA92/
+ SWONrCJANVeFl1PTSTGTn3dhbwyodvRfBb1/I+i6IXnoqUohWVw0B+EpDVs+IdsZds9x
+ FwkCY+8U4HwPaLeT00mk2dNJBY/nnbOkrePMqoaCRmFILypVG8zx659HehQTDw6we3kS
+ 5cHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691113532; x=1691718332;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=IRkEwFCl346jg7Z07dyeTmyC7RNqDmLWj3eYDwe5avk=;
- b=gDnNvTS2m6LdN5GDbSIhLe0EHeXM6loi3bY/2HLys+rqCto+7MVfTeev5/DIQBdv/w
- w0ukThwA6uwvec9+OZY2HhRDxV0G7/bxwr7kdvkpi7hHMYXqE3rXiKlVDmoZnxVVHLrL
- FZCm0dt0xYr3qn63n2yI42rlrA3/+hOfuCUgJfQN1rLlOT6oeL5Wn9u0f9ADXeilmkMC
- mfYlXdEaA6p5HzW7LkCZP0261CebXoGU4v7jmY7taMpau/xb5HQSqjfmcvFdC6T5vBKR
- 5UjKJTplKVkbQGnJvbwbLNnkwrch8I0evFfwg5NeiQgxPLKR3sjgb7G2KQ9u6Zqdtjsf
- RocQ==
-X-Gm-Message-State: AOJu0YzbK2tt1ZPPFKYXEbnm8n2dqgLq9DCvlMkqYJd7pDEB6b+dMWFo
- hfulX18LOjshP3SHP1BzHgU49TMoy3o6fL3fQrA=
-X-Google-Smtp-Source: AGHT+IEfzLehh2AWWHaLGDoZ9VqabpUVF0Exlfq2pDDMY8H+iU4/1eDjznNNQguKMtUdEeZD7mUixg==
-X-Received: by 2002:a05:6a21:7906:b0:135:2f12:7662 with SMTP id
- bg6-20020a056a21790600b001352f127662mr291638pzc.33.1691113532696; 
- Thu, 03 Aug 2023 18:45:32 -0700 (PDT)
-Received: from stoup.. ([2602:47:d490:6901:9d52:4fe8:10ce:5c3])
+ d=1e100.net; s=20221208; t=1691113658; x=1691718458;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=J+Um/oeg585mI4S5/+in6uYCkFJfRIXsPy1YVX1IJbY=;
+ b=elnkQgmZXB1VPisJq6wHkbrhPYtyLgWZF6tpUHwmPyN4OS9eDn6s1vA+eV1aZIb/QF
+ Jx5B+cuMVJh0rFNwU1KZD+Ns7cGfY4RNHSjyT/WbAvFzRIDvXS3aK7zgWpLRWh1an1SI
+ 7HBzdmhvP8E6+mZ/AUK4F0+fxR+frJ7GRI9FyQr9UdFsShn9XM/2hLEoGUg0P7cktr5g
+ EAD5o4121d7g7wJrJ61FCx/0BMUDF860aJxKLqzpuvBLyqbn0FWZJYZmt8l6eoHWTbq6
+ juV643S0LtmBFdTJtUj9HQEeOcah7AFfmSJjLrvTVB/76ga4ZOdhBm9QNKEZxi5TUQZL
+ x5mw==
+X-Gm-Message-State: AOJu0YzCF22OkaBW5hro9PPWl/tG4XEkdFGyOYGG8CarjoC2ec8yi+hT
+ LSFfy+HrBIqCozsUMC6rxfbgEw==
+X-Google-Smtp-Source: AGHT+IGdgLabtn2Mer2wPhPArggvIRdQ13LB0jXTb1bK2kGY2o898UYil+siq13H+8Jatd7ckh7rKA==
+X-Received: by 2002:a05:6a20:3259:b0:13d:c70d:de62 with SMTP id
+ hm25-20020a056a20325900b0013dc70dde62mr279415pzc.22.1691113658322; 
+ Thu, 03 Aug 2023 18:47:38 -0700 (PDT)
+Received: from ?IPV6:2602:47:d490:6901:9d52:4fe8:10ce:5c3?
+ ([2602:47:d490:6901:9d52:4fe8:10ce:5c3])
  by smtp.gmail.com with ESMTPSA id
- c5-20020aa78c05000000b0066f37665a63sm456138pfd.73.2023.08.03.18.45.32
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 03 Aug 2023 18:45:32 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: joel@jms.id.au, akihiko.odaki@daynix.com, laurent@vivier.eu, deller@gmx.de
-Subject: [PATCH v8 17/17] linux-user: Use zero_bss for PT_LOAD with no file
- contents too
-Date: Thu,  3 Aug 2023 18:45:17 -0700
-Message-Id: <20230804014517.6361-18-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230804014517.6361-1-richard.henderson@linaro.org>
-References: <20230804014517.6361-1-richard.henderson@linaro.org>
+ u6-20020a62ed06000000b006833bcc95b0sm451988pfh.115.2023.08.03.18.47.37
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 03 Aug 2023 18:47:37 -0700 (PDT)
+Message-ID: <cbe28c2b-47f9-9bb0-32b3-03645d746062@linaro.org>
+Date: Thu, 3 Aug 2023 18:47:36 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PULL for-8.1 0/2] Block patches
+To: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org
+Cc: Kevin Wolf <kwolf@redhat.com>, Fam Zheng <fam@euphon.net>,
+ Hanna Reitz <hreitz@redhat.com>, qemu-block@nongnu.org,
+ Richard Henderson <rth@twiddle.net>
+References: <20230803155545.2349984-1-stefanha@redhat.com>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230803155545.2349984-1-stefanha@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,66 +97,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If p_filesz == 0, then vaddr_ef == vaddr.  We can reuse the
-code in zero_bss rather than incompletely duplicating it in
-load_elf_image.
+On 8/3/23 08:55, Stefan Hajnoczi wrote:
+> The following changes since commit 9ba37026fcf6b7f3f096c0cca3e1e7307802486b:
+> 
+>    Update version for v8.1.0-rc2 release (2023-08-02 08:22:45 -0700)
+> 
+> are available in the Git repository at:
+> 
+>    https://gitlab.com/stefanha/qemu.git  tags/block-pull-request
+> 
+> for you to fetch changes up to 9b06d0d076271d76e5384d767ef94a676f0a9efd:
+> 
+>    block/blkio: add more comments on the fd passing handling (2023-08-03 11:28:43 -0400)
+> 
+> ----------------------------------------------------------------
+> Pull request
+> 
+> Fix for an fd leak in the blkio block driver.
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- linux-user/elfload.c | 27 +++++++--------------------
- 1 file changed, 7 insertions(+), 20 deletions(-)
+Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
 
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 66ab617bd1..51591a1d94 100644
---- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -3209,7 +3209,7 @@ static void load_elf_image(const char *image_name, int image_fd,
-     for (i = 0; i < ehdr->e_phnum; i++) {
-         struct elf_phdr *eppnt = phdr + i;
-         if (eppnt->p_type == PT_LOAD) {
--            abi_ulong vaddr, vaddr_po, vaddr_ps, vaddr_ef, vaddr_em, vaddr_len;
-+            abi_ulong vaddr, vaddr_po, vaddr_ps, vaddr_ef, vaddr_em;
-             int elf_prot = 0;
- 
-             if (eppnt->p_flags & PF_R) {
-@@ -3234,30 +3234,17 @@ static void load_elf_image(const char *image_name, int image_fd,
-              * but no backing file segment.
-              */
-             if (eppnt->p_filesz != 0) {
--                vaddr_len = eppnt->p_filesz + vaddr_po;
--                error = target_mmap(vaddr_ps, vaddr_len, elf_prot,
--                                    MAP_PRIVATE | MAP_FIXED,
-+                error = target_mmap(vaddr_ps, eppnt->p_filesz + vaddr_po,
-+                                    elf_prot, MAP_PRIVATE | MAP_FIXED,
-                                     image_fd, eppnt->p_offset - vaddr_po);
--
-                 if (error == -1) {
-                     goto exit_mmap;
-                 }
-+            }
- 
--                /*
--                 * If the load segment requests extra zeros (e.g. bss), map it.
--                 */
--                if (eppnt->p_filesz < eppnt->p_memsz) {
--                    zero_bss(vaddr_ef, vaddr_em, elf_prot);
--                }
--            } else if (eppnt->p_memsz != 0) {
--                vaddr_len = eppnt->p_memsz + vaddr_po;
--                error = target_mmap(vaddr_ps, vaddr_len, elf_prot,
--                                    MAP_PRIVATE | MAP_FIXED | MAP_ANONYMOUS,
--                                    -1, 0);
--
--                if (error == -1) {
--                    goto exit_mmap;
--                }
-+            /* If the load segment requests extra zeros (e.g. bss), map it. */
-+            if (vaddr_ef < vaddr_em) {
-+                zero_bss(vaddr_ef, vaddr_em, elf_prot);
-             }
- 
-             /* Find the full program boundaries.  */
--- 
-2.34.1
+
+r~
 
 
