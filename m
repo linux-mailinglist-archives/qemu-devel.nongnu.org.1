@@ -2,55 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D953770429
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 17:14:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBE7877043F
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 17:20:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRwVU-0000GT-Tm; Fri, 04 Aug 2023 11:14:24 -0400
+	id 1qRwak-0001lp-Ki; Fri, 04 Aug 2023 11:19:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qRwVS-0000Fk-8T
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 11:14:22 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qRwVP-0007Pr-J6
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 11:14:22 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.207])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RHTfx6tjbz67R01;
- Fri,  4 Aug 2023 23:10:33 +0800 (CST)
-Received: from localhost (10.122.247.231) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Fri, 4 Aug
- 2023 16:14:15 +0100
-Date: Fri, 4 Aug 2023 16:14:14 +0100
-To: Gregory Price <gourry.memverge@gmail.com>
-CC: <qemu-devel@nongnu.org>, <linux-cxl@vger.kernel.org>, <junhee.ryu@sk.com>, 
- <kwangjin.ko@sk.com>, Gregory Price <gregory.price@memverge.com>
-Subject: Re: [PATCH 2/4] cxl/mailbox: interface to add CCI commands to an
- existing CCI
-Message-ID: <20230804161414.00006eaa@huawei.com>
-In-Reply-To: <20230721163505.1910-3-gregory.price@memverge.com>
-References: <20230721163505.1910-1-gregory.price@memverge.com>
- <20230721163505.1910-3-gregory.price@memverge.com>
-Organization: Huawei Technologies R&D (UK) Ltd.
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
+ id 1qRwaj-0001lH-2l; Fri, 04 Aug 2023 11:19:49 -0400
+Received: from mail-ot1-x32f.google.com ([2607:f8b0:4864:20::32f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
+ id 1qRwah-0000gj-F2; Fri, 04 Aug 2023 11:19:48 -0400
+Received: by mail-ot1-x32f.google.com with SMTP id
+ 46e09a7af769-6b9a2416b1cso1879339a34.2; 
+ Fri, 04 Aug 2023 08:19:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1691162386; x=1691767186;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=1t2a6sgIHWW8hupP+O18og/A7bCSfliCH63ZE7ZE2dk=;
+ b=g/y3aRr3gmzO0OLL2WC6krqAk2zs/xeVFUIvqTS9/ZmXssiRtnAOXk61CI9dzdDaZY
+ pNJ58EMmdVW3PolRDbSFGJ+AdmwPXdrppaloca71+DiA1FfyEgjCXEWynZq+PR3fvX8j
+ hIKVpYHP2GwfCpuhYHfdlIFOuV+RyswxXEJpVAksdVULDryqjJr6JKM0tljREjYeg4yA
+ Oa8xSszsjGySPK4Xl56OzsBtgxlYAMn1MqMwp91qSdNmRkDn2m2MKC0ESZgge56hzbk1
+ n101gVvADfH6Xr/KsYBODYBqW5cauCFKUKPm29YZIjRv0rdnyB9LpCyMwF63FhnFJAgU
+ GdXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1691162386; x=1691767186;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=1t2a6sgIHWW8hupP+O18og/A7bCSfliCH63ZE7ZE2dk=;
+ b=Pjc5woe4VT/dm4a9Bp9rZDROofmnlEVyoxTH/KqONb7+doQAuHk5WQ4LwbXn3FVlIM
+ FVPuuFZxqFIiGNgm6CP35JepZq+cbDTt4yMb9cINBgogBqPQY2odbZbTGbJlZ5h5Zqsk
+ dKrvpMKsZLoA2Dl6Uk0j0m/V5SNn0d8cFP3YLLUgacwQAcGoalcfGIb6ZcHYLblIpg6Z
+ MEx3+T4m2TF6H3M9HwBvpw5ecJlLwU5JTKfYSfqyhXvdGrXwyIDKQHWf85k1VB/E9Kv5
+ 66i5BBMtLiH4Bxs7Zk0WqN8dpV6K943HaLC7KRudiAYo5/YnHEAAWmo4CvtwFU0EAWtv
+ UF9g==
+X-Gm-Message-State: AOJu0YwCyG9iELbaRKUNK+8iKYyQlzGwbjRaLeDeuyRSLoXor/UrI4Zj
+ 1T7lGo5+QQUjtpGFNdz36xY=
+X-Google-Smtp-Source: AGHT+IElSjuFR53syKZNzbFpcxAOpr6B9HhAp/HpK2rU2ahb4QwSizsN0Jzg9RlB3EUd4fW0Xhqx0A==
+X-Received: by 2002:a05:6830:1d98:b0:6b9:465c:d22c with SMTP id
+ y24-20020a0568301d9800b006b9465cd22cmr1909036oti.8.1691162385702; 
+ Fri, 04 Aug 2023 08:19:45 -0700 (PDT)
+Received: from [192.168.68.108] ([177.197.108.190])
+ by smtp.gmail.com with ESMTPSA id
+ q12-20020a9d7c8c000000b006b466ed0484sm1206195otn.67.2023.08.04.08.19.43
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 04 Aug 2023 08:19:45 -0700 (PDT)
+Message-ID: <2490fea8-b9aa-82fd-6595-322da867b326@gmail.com>
+Date: Fri, 4 Aug 2023 12:19:42 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: quoted-printable
-X-Originating-IP: [10.122.247.231]
-X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v2] target/ppc: Fix VRMA page size for ISA v3.0
+Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>
+Cc: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org,
+ qemu-devel@nongnu.org
+References: <20230730111842.39292-1-npiggin@gmail.com>
+From: Daniel Henrique Barboza <danielhb413@gmail.com>
+In-Reply-To: <20230730111842.39292-1-npiggin@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32f;
+ envelope-from=danielhb413@gmail.com; helo=mail-ot1-x32f.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, NICE_REPLY_A=-0.093,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -64,204 +93,127 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 21 Jul 2023 12:35:06 -0400
-Gregory Price <gourry.memverge@gmail.com> wrote:
+Queued in gitlab.com/danielhb/qemu/tree/ppc-next. Thanks,
 
-> This enables wrapper devices to customize the base device's CCI
-> (for example, with custom commands outside the specification)
-> without the need to change the base device.
->=20
-> The also enabled the base device to dispatch those commands without
-> requiring additional driver support.
->=20
-> Signed-off-by: Gregory Price <gregory.price@memverge.com>
+
+Daniel
+
+On 7/30/23 08:18, Nicholas Piggin wrote:
+> Until v2.07s, the VRMA page size (L||LP) was encoded in LPCR[VRMASD].
+> In v3.0 that moved to the partition table PS field.
+> 
+> The powernv machine can now run KVM HPT guests on POWER9/10 CPUs with
+> this fix and the patch to add ASDR.
+> 
+> Fixes: 3367c62f522b ("target/ppc: Support for POWER9 native hash")
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->  hw/cxl/cxl-mailbox-utils.c  | 19 +++++++++++++++++++
->  include/hw/cxl/cxl_device.h |  2 ++
->  2 files changed, 21 insertions(+)
->=20
-> diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-> index ddee3f1718..cad0cd0adb 100644
-> --- a/hw/cxl/cxl-mailbox-utils.c
-> +++ b/hw/cxl/cxl-mailbox-utils.c
-> @@ -1383,6 +1383,25 @@ static void cxl_copy_cci_commands(CXLCCI *cci, con=
-st struct cxl_cmd (*cxl_cmds)[
->      }
->  }
-> =20
-> +void cxl_add_cci_commands(CXLCCI *cci, const struct cxl_cmd (*cxl_cmd_se=
-t)[256], size_t payload_max)
-> +{
-> +    cci->payload_max =3D payload_max > cci->payload_max ? payload_max : =
-cci->payload_max;
-> +    for (int set =3D 0; set < 256; set++) {
-> +        for (int cmd =3D 0; cmd < 256; cmd++) {
-> +            if (cxl_cmd_set[set][cmd].handler) {
-> +                const struct cxl_cmd *c =3D &cxl_cmd_set[set][cmd];
-> +                cci->cxl_cmd_set[set][cmd] =3D *c;
-Don't interleave definitions and code.
-
-> +                struct cel_log *log =3D
-> +                    &cci->cel_log[cci->cel_size];
+> Since v1:
+> - Added llp variable to avoid calling get_vrma_llp twice [Cedric].
+> - Added some bit defines for architected fields and values [Cedric].
+> 
+> Patches 1,3 from the previously posted series, let's defer 4-6
+> decrementer fixes until after 8.1, so this is the last remaining
+> one from the series.
+> 
+> Thanks,
+> Nick
+> 
+>   target/ppc/mmu-hash64.c | 45 +++++++++++++++++++++++++++++++++++------
+>   target/ppc/mmu-hash64.h |  5 +++++
+>   2 files changed, 44 insertions(+), 6 deletions(-)
+> 
+> diff --git a/target/ppc/mmu-hash64.c b/target/ppc/mmu-hash64.c
+> index a0c90df3ce..d645c0bb94 100644
+> --- a/target/ppc/mmu-hash64.c
+> +++ b/target/ppc/mmu-hash64.c
+> @@ -874,12 +874,46 @@ static target_ulong rmls_limit(PowerPCCPU *cpu)
+>       return rma_sizes[rmls];
+>   }
+>   
+> -static int build_vrma_slbe(PowerPCCPU *cpu, ppc_slb_t *slb)
+> +/* Return the LLP in SLB_VSID format */
+> +static uint64_t get_vrma_llp(PowerPCCPU *cpu)
+>   {
+>       CPUPPCState *env = &cpu->env;
+> -    target_ulong lpcr = env->spr[SPR_LPCR];
+> -    uint32_t vrmasd = (lpcr & LPCR_VRMASD) >> LPCR_VRMASD_SHIFT;
+> -    target_ulong vsid = SLB_VSID_VRMA | ((vrmasd << 4) & SLB_VSID_LLP_MASK);
+> +    uint64_t llp;
 > +
-> +                log->opcode =3D (set << 8) | cmd;
-> +                log->effect =3D c->effect;
-> +                cci->cel_size++;
-
-So my gut feeling on this is based on the large amount of overlapping code.=
-  I might queue it
-as it stands, but I'd like to see this refactored.
-
-1) Single copy routine used in all places that copie in any new entries to =
-cci->cxl_cmd_set[][]
-2) A single cel_log builder function to be called in normal path and after =
-an update. Just rebuild
-the whole thing rather than trying to append to it I think.
-
-Something like (so far untested but I'll poke it with Fan's code in a few m=
-ins)
-
-However this is all proving rather costly in space so maybe we need a better
-representation for the sparse nature of cxl comamnds - a job for another da=
-y.
-
-
-=46rom 8ab48adfb2b481be0702b84a0d172a4f142b0df6 Mon Sep 17 00:00:00 2001
-From: Gregory Price <gourry.memverge@gmail.com>
-Date: Fri, 21 Jul 2023 12:35:06 -0400
-Subject: [PATCH] cxl/mailbox: interface to add CCI commands to an existing =
-CCI
-
-This enables wrapper devices to customize the base device's CCI
-(for example, with custom commands outside the specification)
-without the need to change the base device.
-
-The also enabled the base device to dispatch those commands without
-requiring additional driver support.
-
-Signed-off-by: Gregory Price <gregory.price@memverge.com>
-Link: https://lore.kernel.org/r/20230721163505.1910-3-gregory.price@memverg=
-e.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
---
-Heavily edited by Jonathan Cameron to increase code reuse
----
- include/hw/cxl/cxl_device.h |  2 ++
- hw/cxl/cxl-mailbox-utils.c  | 21 +++++++++++++++++++--
- 2 files changed, 21 insertions(+), 2 deletions(-)
-
-diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
-index 0c9254dff9..2a3050fbad 100644
---- a/include/hw/cxl/cxl_device.h
-+++ b/include/hw/cxl/cxl_device.h
-@@ -297,6 +297,8 @@ void cxl_initialize_mailbox_t3(CXLCCI *cci, DeviceState=
- *d, size_t payload_max);
- void cxl_initialize_mailbox_swcci(CXLCCI *cci, DeviceState *intf,
-                                   DeviceState *d, size_t payload_max);
- void cxl_init_cci(CXLCCI *cci, size_t payload_max);
-+void cxl_add_cci_commands(CXLCCI *cci, const struct cxl_cmd (*cxl_cmd_set)=
-[256],
-+                          size_t payload_max);
- int cxl_process_cci_message(CXLCCI *cci, uint8_t set, uint8_t cmd,
-                             size_t len_in, uint8_t *pl_in,
-                             size_t *len_out, uint8_t *pl_out,
-diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-index 37703f254f..852e5a046b 100644
---- a/hw/cxl/cxl-mailbox-utils.c
-+++ b/hw/cxl/cxl-mailbox-utils.c
-@@ -1353,9 +1353,9 @@ static void bg_timercb(void *opaque)
-     }
- }
-=20
--void cxl_init_cci(CXLCCI *cci, size_t payload_max)
-+static void cxl_rebuild_cel(CXLCCI *cci)
- {
--    cci->payload_max =3D payload_max;
-+    cci->cel_size =3D 0; /* Reset for a fresh build */
-     for (int set =3D 0; set < 256; set++) {
-         for (int cmd =3D 0; cmd < 256; cmd++) {
-             if (cci->cxl_cmd_set[set][cmd].handler) {
-@@ -1369,6 +1369,13 @@ void cxl_init_cci(CXLCCI *cci, size_t payload_max)
-             }
-         }
-     }
-+}
-+
-+void cxl_init_cci(CXLCCI *cci, size_t payload_max)
-+{
-+    cci->payload_max =3D payload_max;
-+    cxl_rebuild_cel(cci);
-+
-     cci->bg.complete_pct =3D 0;
-     cci->bg.starttime =3D 0;
-     cci->bg.runtime =3D 0;
-@@ -1387,10 +1394,19 @@ static void cxl_copy_cci_commands(CXLCCI *cci, cons=
-t struct cxl_cmd (*cxl_cmds)[
-     }
- }
-=20
-+void cxl_add_cci_commands(CXLCCI *cci, const struct cxl_cmd (*cxl_cmd_set)=
-[256],
-+                                 size_t payload_max)
-+{
-+    cci->payload_max =3D payload_max > cci->payload_max ? payload_max : cc=
-i->payload_max;
-+    cxl_copy_cci_commands(cci, cxl_cmd_set);
-+    cxl_rebuild_cel(cci);
-+}
-+
- void cxl_initialize_mailbox_swcci(CXLCCI *cci, DeviceState *intf,
-                                   DeviceState *d, size_t payload_max)
- {
-     cxl_copy_cci_commands(cci, cxl_cmd_set_sw);
-+    cxl_rebuild_cel(cci);
-     cci->d =3D d;
-     cci->intf =3D intf;
-     cxl_init_cci(cci, payload_max);
-@@ -1399,6 +1415,7 @@ void cxl_initialize_mailbox_swcci(CXLCCI *cci, Device=
-State *intf,
- void cxl_initialize_mailbox_t3(CXLCCI *cci, DeviceState *d, size_t payload=
-_max)
- {
-     cxl_copy_cci_commands(cci, cxl_cmd_set);
-+    cxl_rebuild_cel(cci);
-     cci->d =3D d;
-=20
-     /* No separation for PCI MB as protocol handled in PCI device */
---=20
-2.39.2
-
-
-
-> +            }
+> +    if (env->mmu_model == POWERPC_MMU_3_00) {
+> +        ppc_v3_pate_t pate;
+> +        uint64_t ps, l, lp;
+> +
+> +        /*
+> +         * ISA v3.0 removes the LPCR[VRMASD] field and puts the VRMA base
+> +         * page size (L||LP equivalent) in the PS field in the HPT partition
+> +         * table entry.
+> +         */
+> +        if (!ppc64_v3_get_pate(cpu, cpu->env.spr[SPR_LPIDR], &pate)) {
+> +            error_report("Bad VRMA with no partition table entry");
+> +            return 0;
 > +        }
+> +        ps = PATE0_GET_PS(pate.dw0);
+> +        /* PS has L||LP in 3 consecutive bits, put them into SLB LLP format */
+> +        l = (ps >> 2) & 0x1;
+> +        lp = ps & 0x3;
+> +        llp = (l << SLB_VSID_L_SHIFT) | (lp << SLB_VSID_LP_SHIFT);
+> +
+> +    } else {
+> +        uint64_t lpcr = env->spr[SPR_LPCR];
+> +        target_ulong vrmasd = (lpcr & LPCR_VRMASD) >> LPCR_VRMASD_SHIFT;
+> +
+> +        /* VRMASD LLP matches SLB format, just shift and mask it */
+> +        llp = (vrmasd << SLB_VSID_LP_SHIFT) & SLB_VSID_LLP_MASK;
 > +    }
+> +
+> +    return llp;
 > +}
 > +
->  void cxl_initialize_mailbox_swcci(CXLCCI *cci, DeviceState *intf, Device=
-State *d, size_t payload_max)
->  {
->      cxl_copy_cci_commands(cci, cxl_cmd_set_sw);
-> diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
-> index 9a3c8b2dfa..abc8405cc5 100644
-> --- a/include/hw/cxl/cxl_device.h
-> +++ b/include/hw/cxl/cxl_device.h
-> @@ -297,6 +297,8 @@ void cxl_initialize_mailbox_t3(CXLCCI *cci, DeviceSta=
-te *d, size_t payload_max);
->  void cxl_initialize_mailbox_swcci(CXLCCI *cci, DeviceState *intf,
->                                    DeviceState *d, size_t payload_max);
->  void cxl_init_cci(CXLCCI *cci, size_t payload_max);
-> +void cxl_add_cci_commands(CXLCCI *cci, const struct cxl_cmd (*cxl_cmd_se=
-t)[256],
-> +                          size_t payload_max);
->  int cxl_process_cci_message(CXLCCI *cci, uint8_t set, uint8_t cmd,
->                              size_t len_in, uint8_t *pl_in,
->                              size_t *len_out, uint8_t *pl_out,
-
+> +static int build_vrma_slbe(PowerPCCPU *cpu, ppc_slb_t *slb)
+> +{
+> +    uint64_t llp = get_vrma_llp(cpu);
+> +    target_ulong vsid = SLB_VSID_VRMA | llp;
+>       int i;
+>   
+>       for (i = 0; i < PPC_PAGE_SIZES_MAX_SZ; i++) {
+> @@ -897,8 +931,7 @@ static int build_vrma_slbe(PowerPCCPU *cpu, ppc_slb_t *slb)
+>           }
+>       }
+>   
+> -    error_report("Bad page size encoding in LPCR[VRMASD]; LPCR=0x"
+> -                 TARGET_FMT_lx, lpcr);
+> +    error_report("Bad VRMA page size encoding 0x" TARGET_FMT_lx, llp);
+>   
+>       return -1;
+>   }
+> diff --git a/target/ppc/mmu-hash64.h b/target/ppc/mmu-hash64.h
+> index 1496955d38..de653fcae5 100644
+> --- a/target/ppc/mmu-hash64.h
+> +++ b/target/ppc/mmu-hash64.h
+> @@ -41,8 +41,10 @@ void ppc_hash64_finalize(PowerPCCPU *cpu);
+>   #define SLB_VSID_KP             0x0000000000000400ULL
+>   #define SLB_VSID_N              0x0000000000000200ULL /* no-execute */
+>   #define SLB_VSID_L              0x0000000000000100ULL
+> +#define SLB_VSID_L_SHIFT        PPC_BIT_NR(55)
+>   #define SLB_VSID_C              0x0000000000000080ULL /* class */
+>   #define SLB_VSID_LP             0x0000000000000030ULL
+> +#define SLB_VSID_LP_SHIFT       PPC_BIT_NR(59)
+>   #define SLB_VSID_ATTR           0x0000000000000FFFULL
+>   #define SLB_VSID_LLP_MASK       (SLB_VSID_L | SLB_VSID_LP)
+>   #define SLB_VSID_4K             0x0000000000000000ULL
+> @@ -58,6 +60,9 @@ void ppc_hash64_finalize(PowerPCCPU *cpu);
+>   #define SDR_64_HTABSIZE        0x000000000000001FULL
+>   
+>   #define PATE0_HTABORG           0x0FFFFFFFFFFC0000ULL
+> +#define PATE0_PS                PPC_BITMASK(56, 58)
+> +#define PATE0_GET_PS(dw0)       (((dw0) & PATE0_PS) >> PPC_BIT_NR(58))
+> +
+>   #define HPTES_PER_GROUP         8
+>   #define HASH_PTE_SIZE_64        16
+>   #define HASH_PTEG_SIZE_64       (HASH_PTE_SIZE_64 * HPTES_PER_GROUP)
 
