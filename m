@@ -2,80 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF9EE770648
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 18:49:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 000E0770711
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 19:28:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRxz5-0002EJ-Qw; Fri, 04 Aug 2023 12:49:03 -0400
+	id 1qRyZt-0007vi-Us; Fri, 04 Aug 2023 13:27:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qRxz3-0002Du-Ri
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 12:49:01 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qRxz1-0002Lv-73
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 12:49:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691167737;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=xLZXt42ZAGR33DuIeKJxvT2e5ry2gLq66maS3Dn7lNk=;
- b=eXDWr3yKxzrhpg/8UUa+aY+qZU75CB2xH1hMUnTEvvG5dv1hwU505HF9HQGl2sLUd7hBv6
- eVr9pnjQL9y/GUGxqj0VYNHjFDyUoXogggCBOEudvvHzZeoYz5P2NfdmqahLyG031g5yEs
- wujE4W/jrq7IeV0ZpP9Y7cCvXdE+DCA=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-564-qaIgD861OVS4ZX14O8hh7Q-1; Fri, 04 Aug 2023 12:48:53 -0400
-X-MC-Unique: qaIgD861OVS4ZX14O8hh7Q-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4A7CA104458E;
- Fri,  4 Aug 2023 16:48:53 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.105])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 10DC340D2839;
- Fri,  4 Aug 2023 16:48:51 +0000 (UTC)
-Date: Fri, 4 Aug 2023 17:48:49 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Peter Xu <peterx@redhat.com>
-Cc: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org,
- Zhiyi Guo <zhguo@redhat.com>,
- Leonardo Bras Soares Passos <lsoaresp@redhat.com>,
- Fabiano Rosas <farosas@suse.de>,
- Juan Quintela <quintela@redhat.com>, Eric Blake <eblake@redhat.com>,
- Chensheng Dong <chdong@redhat.com>
-Subject: Re: [PATCH for-8.2 v2 1/2] qapi/migration: Deduplicate migration
- parameter field comments
-Message-ID: <ZM0r8VoF8w5vGw7p@redhat.com>
-References: <20230803155344.11450-1-peterx@redhat.com>
- <20230803155344.11450-2-peterx@redhat.com>
- <87jzub8016.fsf@pond.sub.org> <ZM0EK3A/rnDPImXz@redhat.com>
- <ZM0g8iNXzv9LRo+w@x1n> <ZM0nX8qt1T3aZgNK@redhat.com>
- <ZM0rWiHF8voqOdyp@x1n>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qRyZs-0007vY-Aj
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 13:27:04 -0400
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qRyZq-0004QF-PG
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 13:27:04 -0400
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-5221c6a2d3dso2992596a12.3
+ for <qemu-devel@nongnu.org>; Fri, 04 Aug 2023 10:27:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1691170021; x=1691774821;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=t0nTOeFqnFzKnRnAXx88oyJs4DA0yn0GoPkWdFMCgC4=;
+ b=NnbURue9QVpbCAE6+MyqLRHPNIAYc3jnsxxUWAn1hNTR523mEqOhomdRB+QV5vKg8y
+ hWAD+Kl6pcZGFnJuUzufsnFqHcwCqyaUncLztoFqyY6AiGMsGj/kv3MbJmSmOcqDqt8r
+ dMdS6/gGEwb/uFNviF5mrNqoFe242pm/PuCccQsoSiBsmHqUqrkuqSMYmbsiF/JlYo8G
+ eCG6hW5uyrWN/NVJz5eo9amz5pU25QNonY9L9aJ/vwjeAbLoFdedeO0LaNMpCoQDH+3K
+ LhdIxvwpQMDXFlnDGVx3oEUmv+D0kfmT06YDxPqxup6HARxJghQsVHCEBsHJSjLxife/
+ Accg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1691170021; x=1691774821;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=t0nTOeFqnFzKnRnAXx88oyJs4DA0yn0GoPkWdFMCgC4=;
+ b=ahCWYsGCdBaB1sojDpP0oKudESzKKpcZpI37auJa7hgQEvflHKndPTjoNLEBeiDgsv
+ /yvSaf49aWW35fXupzIe7a9XVP9ORcuz+33SQYZYJnayyPA/44d1dwt7aCE2tMuBEC9T
+ s27nJJrUejq1SffcdRcLMn5xFO21Pn6ID/W2yEvd0kXrJ+OIQdj1TRHDZOl+zXcJ/2at
+ c+cL9rACDY9FCTlw5hLyE3K1O5bBYRHcRQvOXP1MPStjxN6z4aEQJQjDxlf4HwVPHtLK
+ n/UOv7MkVtXAhd0fFRH/qH2UJ3Wl+O+3WvgTI6+2PWafx8ClzhQc5msNbso30VP1Iykv
+ TlCg==
+X-Gm-Message-State: AOJu0YykKDil2DQbWmp5zD485JYXo+nYNZLu6IKDhf/CBDZ6ChpR9En7
+ vMM+gYThf8pWHRCRGpld1Qa1Qg5/8xzsqEZaS3UMUw==
+X-Google-Smtp-Source: AGHT+IGGWvPwHXlthmbhmT9sSh+Oh6pYUSZ5Z0MssLXkPyAueXQTUFZUTTOC03AofxhRHW5idyqmiSmCxgL2o0+a2hQ=
+X-Received: by 2002:aa7:c383:0:b0:522:219b:ce05 with SMTP id
+ k3-20020aa7c383000000b00522219bce05mr2343717edq.7.1691170021093; Fri, 04 Aug
+ 2023 10:27:01 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZM0rWiHF8voqOdyp@x1n>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20230727073134.134102-1-akihiko.odaki@daynix.com>
+ <20230727073134.134102-2-akihiko.odaki@daynix.com>
+In-Reply-To: <20230727073134.134102-2-akihiko.odaki@daynix.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 4 Aug 2023 18:26:49 +0100
+Message-ID: <CAFEAcA_26e2G_qLA8DEcv74MADgquhiVkWEZkh_wL0+JxAf91Q@mail.gmail.com>
+Subject: Re: [PATCH v5 1/6] kvm: Introduce kvm_arch_get_default_type hook
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, kvm@vger.kernel.org, 
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x529.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,134 +84,52 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Aug 04, 2023 at 12:46:18PM -0400, Peter Xu wrote:
-> On Fri, Aug 04, 2023 at 05:29:19PM +0100, Daniel P. Berrangé wrote:
-> > On Fri, Aug 04, 2023 at 12:01:54PM -0400, Peter Xu wrote:
-> > > On Fri, Aug 04, 2023 at 02:59:07PM +0100, Daniel P. Berrangé wrote:
-> > > > On Fri, Aug 04, 2023 at 02:28:05PM +0200, Markus Armbruster wrote:
-> > > > > Peter Xu <peterx@redhat.com> writes:
-> > > > > 
-> > > > > > We used to have three objects that have always the same list of parameters
-> > > > > 
-> > > > > We have!
-> > > > > 
-> > > > > > and comments are always duplicated:
-> > > > > >
-> > > > > >   - @MigrationParameter
-> > > > > >   - @MigrationParameters
-> > > > > >   - @MigrateSetParameters
-> > > > > >
-> > > > > > Before we can deduplicate the code, it's fairly straightforward to
-> > > > > > deduplicate the comments first, so for each time we add a new migration
-> > > > > > parameter we don't need to copy the same paragraphs three times.
-> > > > > 
-> > > > > De-duplicating the code would be nice, but we haven't done so in years,
-> > > > > which suggests it's hard enough not to be worth the trouble.
-> > > > 
-> > > > The "MigrationParameter" enumeration isn't actually used in
-> > > > QMP at all.
-> > > > 
-> > > > It is only used in HMP for hmp_migrate_set_parameter and
-> > > > hmp_info_migrate_parameters. So it is questionable documenting
-> > > > that enum in the QMP reference docs at all.
-> > > > 
-> > > > 1c1
-> > > > < { 'struct': 'MigrationParameters',
-> > > > ---
-> > > > > { 'struct': 'MigrateSetParameters',
-> > > > 14,16c14,16
-> > > > <             '*tls-creds': 'str',
-> > > > <             '*tls-hostname': 'str',
-> > > > <             '*tls-authz': 'str',
-> > > > ---
-> > > > >             '*tls-creds': 'StrOrNull',
-> > > > >             '*tls-hostname': 'StrOrNull',
-> > > > >             '*tls-authz': 'StrOrNull',
-> > > > 
-> > > > Is it not valid to use StrOrNull in both cases and thus
-> > > > delete the duplication here ?
-> > > 
-> > > I tested removing MigrateSetParameters by replacing it with
-> > > MigrationParameters and it looks all fine here... I manually tested qmp/hmp
-> > > on set/query parameters, and qtests are all happy.
-> > 
-> > I meant the other way around, such we would be using 'StrOrNull'
-> > in all scenarios.
-> 
-> Yes, that should also work and even without worrying on nulls.  I just took
-> a random one replacing the other.
-> 
-> > 
-> > > 
-> > > The only thing I see that may affect it is we used to logically allow
-> > > taking things like '"tls-authz": null' in the json input, but now we won't
-> > > allow that because we'll be asking for a string type only.
-> > > 
-> > > Since we have query-qmp-schema I suppose we're all fine, because logically
-> > > the mgmt app (libvirt?) will still query that to understand the protocol,
-> > > so now we'll have (response of query-qmp-schema):
-> > > 
-> > >         {
-> > >             "arg-type": "144",
-> > >             "meta-type": "command",
-> > >             "name": "migrate-set-parameters",
-> > >             "ret-type": "0"
-> > >         },
-> > > 
-> > > Where 144 can start to point to MigrationParameters, rather than
-> > > MigrateSetParameters.
-> > > 
-> > > Ok, then what if the mgmt app doesn't care and just used "null" in tls-*
-> > > fields when setting?  Funnily I tried it and actually anything that does
-> > > migrate-set-parameters with a "null" passed over to tls-* fields will
-> > > already crash qemu...
-> > > 
-> > > ./migration/options.c:1333: migrate_params_apply: Assertion `params->tls_authz->type == QTYPE_QSTRING' failed.
-> > > 
-> > > #0  0x00007f72f4b2a844 in __pthread_kill_implementation () at /lib64/libc.so.6
-> > > #1  0x00007f72f4ad9abe in raise () at /lib64/libc.so.6
-> > > #2  0x00007f72f4ac287f in abort () at /lib64/libc.so.6
-> > > #3  0x00007f72f4ac279b in _nl_load_domain.cold () at /lib64/libc.so.6
-> > > #4  0x00007f72f4ad2147 in  () at /lib64/libc.so.6
-> > > #5  0x00005573308740e6 in migrate_params_apply (params=0x7ffc74fd09d0, errp=0x7ffc74fd0998) at ../migration/options.c:1333
-> > > #6  0x0000557330874591 in qmp_migrate_set_parameters (params=0x7ffc74fd09d0, errp=0x7ffc74fd0998) at ../migration/options.c:1433
-> > > #7  0x0000557330cb9132 in qmp_marshal_migrate_set_parameters (args=0x7f72e00036d0, ret=0x7f72f133cd98, errp=0x7f72f133cd90) at qapi/qapi-commands-migration.c:214
-> > > #8  0x0000557330d07fab in do_qmp_dispatch_bh (opaque=0x7f72f133ce30) at ../qapi/qmp-dispatch.c:128
-> > > #9  0x0000557330d33bbb in aio_bh_call (bh=0x5573337d7920) at ../util/async.c:169
-> > > #10 0x0000557330d33cd8 in aio_bh_poll (ctx=0x55733356e7d0) at ../util/async.c:216
-> > > #11 0x0000557330d17a19 in aio_dispatch (ctx=0x55733356e7d0) at ../util/aio-posix.c:423
-> > > #12 0x0000557330d34117 in aio_ctx_dispatch (source=0x55733356e7d0, callback=0x0, user_data=0x0) at ../util/async.c:358
-> > > #13 0x00007f72f5a8848c in g_main_context_dispatch () at /lib64/libglib-2.0.so.0
-> > > #14 0x0000557330d358d4 in glib_pollfds_poll () at ../util/main-loop.c:290
-> > > #15 0x0000557330d35951 in os_host_main_loop_wait (timeout=0) at ../util/main-loop.c:313
-> > > #16 0x0000557330d35a5f in main_loop_wait (nonblocking=0) at ../util/main-loop.c:592
-> > > #17 0x000055733083aee0 in qemu_main_loop () at ../softmmu/runstate.c:732
-> > > #18 0x0000557330b0921b in qemu_default_main () at ../softmmu/main.c:37
-> > > #19 0x0000557330b09251 in main (argc=35, argv=0x7ffc74fd0ec8) at ../softmmu/main.c:48
-> > > 
-> > > Then I suppose it means all mgmt apps are not using "null" anyway, and it
-> > > makes more sense to me to just remove MigrateSetParameters (by replacing it
-> > > with MigrationParameters).
-> > 
-> > It shouldn't be crashing,  because qmp_migrate_set_parameters()
-> > is turning 'null' into  "", which means the assert ought to
-> > never fire. Did you have a local modiification that caused
-> > this crash perhaps ?
-> 
-> I think it just got overlooked when introducing tls-authz to not have added
-> that special code in qmp_migrate_set_parameters(), the other two are fine.
+On Thu, 27 Jul 2023 at 08:31, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
+>
+> kvm_arch_get_default_type() returns the default KVM type. This hook is
+> particularly useful to derive a KVM type that is valid for "none"
+> machine model, which is used by libvirt to probe the availability of
+> KVM.
+>
+> For MIPS, the existing mips_kvm_type() is reused. This function ensures
+> the availability of VZ which is mandatory to use KVM on the current
+> QEMU.
+>
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> ---
+>  include/sysemu/kvm.h     | 2 ++
+>  target/mips/kvm_mips.h   | 9 ---------
+>  accel/kvm/kvm-all.c      | 4 +++-
+>  hw/mips/loongson3_virt.c | 2 --
+>  target/arm/kvm.c         | 5 +++++
+>  target/i386/kvm/kvm.c    | 5 +++++
+>  target/mips/kvm.c        | 2 +-
+>  target/ppc/kvm.c         | 5 +++++
+>  target/riscv/kvm.c       | 5 +++++
+>  target/s390x/kvm/kvm.c   | 5 +++++
+>  10 files changed, 31 insertions(+), 13 deletions(-)
+>
+> diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
+> index 115f0cca79..ccaf55caf7 100644
+> --- a/include/sysemu/kvm.h
+> +++ b/include/sysemu/kvm.h
+> @@ -369,6 +369,8 @@ int kvm_arch_get_registers(CPUState *cpu);
+>
+>  int kvm_arch_put_registers(CPUState *cpu, int level);
+>
+> +int kvm_arch_get_default_type(MachineState *ms);
+> +
 
-Oh right yes, pre-existing bug.
+New global functions should have a doc comment that explains
+what they do, what their API is, etc. For instance, is
+this allowed to return an error, and if so, how ?
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Otherwise
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
+thanks
+-- PMM
 
