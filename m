@@ -2,45 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80AE4770844
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 20:55:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCD8F77085A
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 20:58:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qRzwE-0002HP-J3; Fri, 04 Aug 2023 14:54:14 -0400
+	id 1qRzwH-0002It-Cl; Fri, 04 Aug 2023 14:54:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qRzwB-0002GB-NF; Fri, 04 Aug 2023 14:54:11 -0400
+ id 1qRzwE-0002HV-HW; Fri, 04 Aug 2023 14:54:14 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qRzw9-00087a-Kd; Fri, 04 Aug 2023 14:54:11 -0400
+ id 1qRzwC-00088T-R1; Fri, 04 Aug 2023 14:54:14 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id F09A518409;
- Fri,  4 Aug 2023 21:54:17 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 2851B1840A;
+ Fri,  4 Aug 2023 21:54:18 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 8253C1B880;
+ by tsrv.corpit.ru (Postfix) with SMTP id BDB161B881;
  Fri,  4 Aug 2023 21:53:57 +0300 (MSK)
-Received: (nullmailer pid 1874209 invoked by uid 1000);
+Received: (nullmailer pid 1874212 invoked by uid 1000);
  Fri, 04 Aug 2023 18:53:56 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Helge Deller <deller@gmx.de>,
- "Markus F.X.J. Oberhumer" <markus@oberhumer.com>,
- John Reiser <jreiser@BitWagon.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
+Cc: qemu-stable@nongnu.org, Konstantin Kostiuk <kkostiuk@redhat.com>,
+ Yan Vugenfirer <yvugenfi@redhat.com>, Brian Wiltse <brian.wiltse@live.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.5 19/36] linux-user/armeb: Fix __kernel_cmpxchg() for
- armeb
-Date: Fri,  4 Aug 2023 21:53:32 +0300
-Message-Id: <20230804185350.1874133-6-mjt@tls.msk.ru>
+Subject: [Stable-7.2.5 20/36] qga/win32: Use rundll for VSS installation
+Date: Fri,  4 Aug 2023 21:53:33 +0300
+Message-Id: <20230804185350.1874133-7-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.5-20230804215319@cover.tls.msk.ru>
 References: <qemu-stable-7.2.5-20230804215319@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -64,57 +59,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Helge Deller <deller@gmx.de>
+From: Konstantin Kostiuk <kkostiuk@redhat.com>
 
-Commit 7f4f0d9ea870 ("linux-user/arm: Implement __kernel_cmpxchg with host
-atomics") switched to use qatomic_cmpxchg() to swap a word with the memory
-content, but missed to endianess-swap the oldval and newval values when
-emulating an armeb CPU, which expects words to be stored in big endian in
-the guest memory.
+The custom action uses cmd.exe to run VSS Service installation
+and removal which causes an interactive command shell to spawn.
+This shell can be used to execute any commands as a SYSTEM user.
+Even if call qemu-ga.exe directly the interactive command shell
+will be spawned as qemu-ga.exe is a console application and used
+by users from the console as well as a service.
 
-The bug can be verified with qemu >= v7.0 on any little-endian host, when
-starting the armeb binary of the upx program, which just hangs without
-this patch.
+As VSS Service runs from DLL which contains the installer and
+uninstaller code, it can be run directly by rundll32.exe without
+any interactive command shell.
 
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Helge Deller <deller@gmx.de>
-Reported-by: "Markus F.X.J. Oberhumer" <markus@oberhumer.com>
-Reported-by: John Reiser <jreiser@BitWagon.com>
-Closes: https://github.com/upx/upx/issues/687
-Message-Id: <ZMQVnqY+F+5sTNFd@p100>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-(cherry picked from commit 38dd78c41eaf08b490c9e7ec68fc508bbaa5cb1d)
+Add specific entry points for rundll which is just a wrapper
+for COMRegister/COMUnregister functions with proper arguments.
+
+resolves: https://bugzilla.redhat.com/show_bug.cgi?id=2167423
+fixes: CVE-2023-0664 (part 2 of 2)
+
+Signed-off-by: Konstantin Kostiuk <kkostiuk@redhat.com>
+Reviewed-by: Yan Vugenfirer <yvugenfi@redhat.com>
+Reported-by: Brian Wiltse <brian.wiltse@live.com>
+(cherry picked from commit 07ce178a2b0768eb9e712bb5ad0cf6dc7fcf0158)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/linux-user/arm/cpu_loop.c b/linux-user/arm/cpu_loop.c
-index c0790f3246..85804c367a 100644
---- a/linux-user/arm/cpu_loop.c
-+++ b/linux-user/arm/cpu_loop.c
-@@ -117,8 +117,9 @@ static void arm_kernel_cmpxchg32_helper(CPUARMState *env)
- {
-     uint32_t oldval, newval, val, addr, cpsr, *host_addr;
+diff --git a/qga/installer/qemu-ga.wxs b/qga/installer/qemu-ga.wxs
+index 3442383627..949ba07fd2 100644
+--- a/qga/installer/qemu-ga.wxs
++++ b/qga/installer/qemu-ga.wxs
+@@ -116,22 +116,22 @@
+       </Directory>
+     </Directory>
  
--    oldval = env->regs[0];
--    newval = env->regs[1];
-+    /* Swap if host != guest endianness, for the host cmpxchg below */
-+    oldval = tswap32(env->regs[0]);
-+    newval = tswap32(env->regs[1]);
-     addr = env->regs[2];
+-    <Property Id="cmd" Value="cmd.exe"/>
++    <Property Id="rundll" Value="rundll32.exe"/>
+     <Property Id="REINSTALLMODE" Value="amus"/>
  
-     mmap_lock();
-@@ -174,6 +175,10 @@ static void arm_kernel_cmpxchg64_helper(CPUARMState *env)
-         return;
-     }
+     <?ifdef var.InstallVss?>
+     <CustomAction Id="RegisterCom"
+-              ExeCommand='/c "[qemu_ga_directory]qemu-ga.exe" -s vss-install'
++              ExeCommand='"[qemu_ga_directory]qga-vss.dll",DLLCOMRegister'
+               Execute="deferred"
+-              Property="cmd"
++              Property="rundll"
+               Impersonate="no"
+               Return="check"
+               >
+     </CustomAction>
+     <CustomAction Id="UnRegisterCom"
+-              ExeCommand='/c "[qemu_ga_directory]qemu-ga.exe" -s vss-uninstall'
++              ExeCommand='"[qemu_ga_directory]qga-vss.dll",DLLCOMUnregister'
+               Execute="deferred"
+-              Property="cmd"
++              Property="rundll"
+               Impersonate="no"
+               Return="check"
+               >
+diff --git a/qga/vss-win32/install.cpp b/qga/vss-win32/install.cpp
+index b8087e5baa..ff93b08a9e 100644
+--- a/qga/vss-win32/install.cpp
++++ b/qga/vss-win32/install.cpp
+@@ -357,6 +357,15 @@ out:
+     return hr;
+ }
  
-+    /* Swap if host != guest endianness, for the host cmpxchg below */
-+    oldval = tswap64(oldval);
-+    newval = tswap64(newval);
++STDAPI_(void) CALLBACK DLLCOMRegister(HWND, HINSTANCE, LPSTR, int)
++{
++    COMRegister();
++}
 +
- #ifdef CONFIG_ATOMIC64
-     val = qatomic_cmpxchg__nocheck(host_addr, oldval, newval);
-     cpsr = (val == oldval) * CPSR_C;
++STDAPI_(void) CALLBACK DLLCOMUnregister(HWND, HINSTANCE, LPSTR, int)
++{
++    COMUnregister();
++}
+ 
+ static BOOL CreateRegistryKey(LPCTSTR key, LPCTSTR value, LPCTSTR data)
+ {
+diff --git a/qga/vss-win32/qga-vss.def b/qga/vss-win32/qga-vss.def
+index 927782c31b..ee97a81427 100644
+--- a/qga/vss-win32/qga-vss.def
++++ b/qga/vss-win32/qga-vss.def
+@@ -1,6 +1,8 @@
+ LIBRARY      "QGA-PROVIDER.DLL"
+ 
+ EXPORTS
++	DLLCOMRegister
++	DLLCOMUnregister
+ 	COMRegister		PRIVATE
+ 	COMUnregister		PRIVATE
+ 	DllCanUnloadNow		PRIVATE
 -- 
 2.39.2
 
