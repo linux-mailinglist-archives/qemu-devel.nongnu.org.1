@@ -2,59 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0E2F77090F
-	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 21:29:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63D72770921
+	for <lists+qemu-devel@lfdr.de>; Fri,  4 Aug 2023 21:37:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qS0TR-00069Y-8f; Fri, 04 Aug 2023 15:28:33 -0400
+	id 1qS0ay-0001v9-P9; Fri, 04 Aug 2023 15:36:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qS0TJ-00067y-BR
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 15:28:26 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qS0av-0001uL-3N
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 15:36:17 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qS0TH-00020X-Ef
- for qemu-devel@nongnu.org; Fri, 04 Aug 2023 15:28:24 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qS0at-0004Wz-Aq
+ for qemu-devel@nongnu.org; Fri, 04 Aug 2023 15:36:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691177302;
+ s=mimecast20190719; t=1691177773;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=mVzSAslNpyKHZV6te6N0KKjdVcq8oQTiBHnnYxR4diA=;
- b=UmqIIjKushPoVNrDZ8kMgPdVQW2l+XVZ+DB01YprW7CY6DJiW9BRzRTk3MU7nY3HkXBkQC
- NRCWDu9taC7R/izQdla66DeHhQR4oA0rq3l/oPLYR1zt8Ghm3A92SNEbfRzBF4DEcIvVi6
- j5o/1YpRdf+PaKqWspJD8Kz//TOu5bE=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-696-TFp390avNGCKYqnmZUc9qQ-1; Fri, 04 Aug 2023 15:28:19 -0400
-X-MC-Unique: TFp390avNGCKYqnmZUc9qQ-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
+ bh=Wp+Yx/rF5YAgGgpkdhESOh9AON3CIDMcyQTnzDcRVxI=;
+ b=UbqhhIL+RPofWATLRh4kD7mM0F57i2cncPYsTt9uAEI5tna8DTkrRJT3VY+myM2w7m8FhQ
+ 8k2YL9vhAAcYyp1klpyrDuRVlF2g1QhrXMFfIr0Zi1dMobco5M0CbKxhw77F2Xscv0k+6u
+ PulaSNbtq2KjtOyUotpl5MZgRR0JB4w=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-300-r5YXNpafPJeQ76W-DBZvAQ-1; Fri, 04 Aug 2023 15:36:11 -0400
+X-MC-Unique: r5YXNpafPJeQ76W-DBZvAQ-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C13DB185A78F;
- Fri,  4 Aug 2023 19:28:18 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 036B62808B23;
+ Fri,  4 Aug 2023 19:36:10 +0000 (UTC)
 Received: from redhat.com (unknown [10.2.16.48])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id B872D1121325;
- Fri,  4 Aug 2023 19:28:17 +0000 (UTC)
-Date: Fri, 4 Aug 2023 14:28:15 -0500
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id F275A492CA6;
+ Fri,  4 Aug 2023 19:36:08 +0000 (UTC)
+Date: Fri, 4 Aug 2023 14:36:07 -0500
 From: Eric Blake <eblake@redhat.com>
 To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, libguestfs@redhat.com
-Subject: Re: [PATCH v4 15/24] nbd/server: Prepare to send extended header
- replies
-Message-ID: <ihi2p477ztmxttpcr4u5kajb3xbc777yqjzwumlzvrhiuub62m@bhtdkgqftdcg>
+Subject: Re: [PATCH v4 16/24] nbd/server: Support 64-bit block status
+Message-ID: <g2kaumiey7rwho4p6awywn4aikyjmdelmiyexqmqfa3634se54@34nc5ekwvtki>
 References: <20230608135653.2918540-1-eblake@redhat.com>
- <20230608135653.2918540-16-eblake@redhat.com>
- <90f29beb-c032-b057-733e-b272ccb8deb0@yandex-team.ru>
+ <20230608135653.2918540-17-eblake@redhat.com>
+ <26b732b9-c1e5-a032-6139-a01ac1fbd2bd@yandex-team.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <90f29beb-c032-b057-733e-b272ccb8deb0@yandex-team.ru>
+In-Reply-To: <26b732b9-c1e5-a032-6139-a01ac1fbd2bd@yandex-team.ru>
 User-Agent: NeoMutt/20230517
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -79,71 +78,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jun 16, 2023 at 09:48:18PM +0300, Vladimir Sementsov-Ogievskiy wrote:
+On Tue, Jun 27, 2023 at 04:23:49PM +0300, Vladimir Sementsov-Ogievskiy wrote:
 > On 08.06.23 16:56, Eric Blake wrote:
-> > Although extended mode is not yet enabled, once we do turn it on, we
-> > need to reply with extended headers to all messages.  Update the low
-> > level entry points necessary so that all other callers automatically
-> > get the right header based on the current mode.
+> > The NBD spec states that if the client negotiates extended headers,
+> > the server must avoid NBD_REPLY_TYPE_BLOCK_STATUS and instead use
+> > NBD_REPLY_TYPE_BLOCK_STATUS_EXT which supports 64-bit lengths, even if
+> > the reply does not need more than 32 bits.  As of this patch,
+> > client->mode is still never NBD_MODE_EXTENDED, so the code added here
+> > does not take effect until the next patch enables negotiation.
 > > 
-> > Signed-off-by: Eric Blake <eblake@redhat.com>
-> > ---
+> > For now, all metacontexts that we know how to export never populate
+> > more than 32 bits of information, so we don't have to worry about
+> > NBD_REP_ERR_EXT_HEADER_REQD or filtering during handshake, and we
+> > always send all zeroes for the upper 32 bits of status during
+> > NBD_CMD_BLOCK_STATUS.
 > > 
-> > v4: new patch, split out from v3 9/14
-> > ---
-> >   nbd/server.c | 30 ++++++++++++++++++++++--------
-> >   1 file changed, 22 insertions(+), 8 deletions(-)
+> > Note that we previously had some interesting size-juggling on call
+> > chains, such as:
 > > 
-> > diff --git a/nbd/server.c b/nbd/server.c
-> > index 119ac765f09..84c848a31d3 100644
-> > --- a/nbd/server.c
-> > +++ b/nbd/server.c
-> > @@ -1947,8 +1947,6 @@ static inline void set_be_chunk(NBDClient *client, struct iovec *iov,
-> >                                   size_t niov, uint16_t flags, uint16_t type,
-> >                                   NBDRequest *request)
+> > nbd_co_send_block_status(uint32_t length)
+> > -> blockstatus_to_extents(uint32_t bytes)
+> >    -> bdrv_block_status_above(bytes, &uint64_t num)
+> >    -> nbd_extent_array_add(uint64_t num)
+> >      -> store num in 32-bit length
+> > 
+> > But we were lucky that it never overflowed: bdrv_block_status_above
+> > never sets num larger than bytes, and we had previously been capping
+> > 'bytes' at 32 bits (since the protocol does not allow sending a larger
+> > request without extended headers).  This patch adds some assertions
+> > that ensure we continue to avoid overflowing 32 bits for a narrow
+> 
+> 
+> [..]
+> 
+> > @@ -2162,19 +2187,23 @@ static void nbd_extent_array_convert_to_be(NBDExtentArray *ea)
+> >    * would result in an incorrect range reported to the client)
+> >    */
+> >   static int nbd_extent_array_add(NBDExtentArray *ea,
+> > -                                uint32_t length, uint32_t flags)
+> > +                                uint64_t length, uint32_t flags)
 > >   {
-> > -    /* TODO - handle structured vs. extended replies */
-> > -    NBDStructuredReplyChunk *chunk = iov->iov_base;
-> >       size_t i, length = 0;
+> >       assert(ea->can_add);
 > > 
-> >       for (i = 1; i < niov; i++) {
-> > @@ -1956,12 +1954,26 @@ static inline void set_be_chunk(NBDClient *client, struct iovec *iov,
+> >       if (!length) {
+> >           return 0;
 > >       }
-> >       assert(length <= NBD_MAX_BUFFER_SIZE + sizeof(NBDStructuredReadData));
+> > +    if (!ea->extended) {
+> > +        assert(length <= UINT32_MAX);
+> > +    }
 > > 
-> > -    iov[0].iov_len = sizeof(*chunk);
-> > -    stl_be_p(&chunk->magic, NBD_STRUCTURED_REPLY_MAGIC);
-> > -    stw_be_p(&chunk->flags, flags);
-> > -    stw_be_p(&chunk->type, type);
-> > -    stq_be_p(&chunk->cookie, request->cookie);
-> > -    stl_be_p(&chunk->length, length);
-> > +    if (client->mode >= NBD_MODE_EXTENDED) {
-> > +        NBDExtendedReplyChunk *chunk = iov->iov_base;
-> > +
-> > +        iov->iov_len = sizeof(*chunk);
+> >       /* Extend previous extent if flags are the same */
+> >       if (ea->count > 0 && flags == ea->extents[ea->count - 1].flags) {
+> > -        uint64_t sum = (uint64_t)length + ea->extents[ea->count - 1].length;
+> > +        uint64_t sum = length + ea->extents[ea->count - 1].length;
+> > 
+> > -        if (sum <= UINT32_MAX) {
+> > +        assert(sum >= length);
+> > +        if (sum <= UINT32_MAX || ea->extended) {
 > 
-> I'd prefer to keep iov[0].iov_len notation, to stress that iov is an array
+> that "if" and uint64_t sum was to avoid overflow. I think, we can't just assert, instead include the check into if:
 > 
-> anyway:
+> if (sum >= length && (sum <= UINT32_MAX || ea->extended) {
+
+Why?  The assertion is stating that there was no overflow, because we
+are in control of ea->extents[ea->count - 1].length (it came from
+local code performing block status, and our block layer guarantees
+that no block status returns more than 2^63 bytes because we don't
+support images larger than off_t).  At best, all I need is a comment
+why the assertion is valid.
+
+> 
+>  ...
+> 
+> }
+> 
+> with this:
 > Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-
-I can make that change, and keep your R-b.
-
 > 
-> > +        stl_be_p(&chunk->magic, NBD_EXTENDED_REPLY_MAGIC);
-> > +        stw_be_p(&chunk->flags, flags);
-> > +        stw_be_p(&chunk->type, type);
-> > +        stq_be_p(&chunk->cookie, request->cookie);
+> -- 
+> Best regards,
+> Vladimir
 > 
-> Hm. Not about this patch:
-> 
-> we now moved to simple cookies. And it seems that actually, 64bit is too much for number of request.
-
-You're right that it's more than qemu cared about.  But there may be
-other implementations that really do store a 64-bit pointer as their
-opaque cookie, for ease of reverse-lookup on which command the
-server's reply corresponds to, so I don't see it changing any time
-soon in the NBD protocol.
 
 -- 
 Eric Blake, Principal Software Engineer
