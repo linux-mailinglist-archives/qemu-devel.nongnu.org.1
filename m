@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DC18770E99
-	for <lists+qemu-devel@lfdr.de>; Sat,  5 Aug 2023 09:56:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E7F4770E9C
+	for <lists+qemu-devel@lfdr.de>; Sat,  5 Aug 2023 09:59:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qSC8y-0002o8-LX; Sat, 05 Aug 2023 03:56:12 -0400
+	id 1qSCBk-00044p-9X; Sat, 05 Aug 2023 03:59:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qSC8x-0002nT-Fz
- for qemu-devel@nongnu.org; Sat, 05 Aug 2023 03:56:11 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qSCBi-00044W-6J
+ for qemu-devel@nongnu.org; Sat, 05 Aug 2023 03:59:02 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qSC8v-00064Y-GG
- for qemu-devel@nongnu.org; Sat, 05 Aug 2023 03:56:11 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qSCBg-0006hB-Qb
+ for qemu-devel@nongnu.org; Sat, 05 Aug 2023 03:59:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691222168;
+ s=mimecast20190719; t=1691222340;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=nj/QNVs2e0A/Tts8D8emA3uz4RAjSxgvrUMDfyFYX2A=;
- b=cnxTIptd+9V1OIr6AbNgYez2D2SlzzQErCZPtrNgoyTLJRpkJ2Ytx0Kle7KYTYZkL3p/Jq
- E0KYcCGNVnLaOYC8W9BhRiGDbrsYibGRHWRuylJVZMir7RoPirU8xS9KYlnj41S38+dyHb
- EEY+jp9Dxw6t28S7Xd1c5rFJq2JtuPM=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=u732zGm+ucnwGOVOgo4q5rn9BiyQXeIlgn2PnbixNAI=;
+ b=C4RuS4zn8EYCbwv5nHblSrMtli4X3s3lZAVYaVfJZgWR/8phHtUmPaNrrwXtDuYQw53d/G
+ SR+OWq7qnQeJdcZVm1cZ1n/XRUs/6gIQOO1SkX/UhiHFt2/R16gf4DOpv6RfBNSxGEPEhV
+ T8UaM3YXr0jOSXBbOTdU8q9xJN9OJs0=
+Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
+ [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-599-K1xBWerOO5id8wbQ46qbLA-1; Sat, 05 Aug 2023 03:56:05 -0400
-X-MC-Unique: K1xBWerOO5id8wbQ46qbLA-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-317d5b38194so523087f8f.0
- for <qemu-devel@nongnu.org>; Sat, 05 Aug 2023 00:56:05 -0700 (PDT)
+ us-mta-519-PVzIdn8MMQeIYEl7I0iP-g-1; Sat, 05 Aug 2023 03:58:56 -0400
+X-MC-Unique: PVzIdn8MMQeIYEl7I0iP-g-1
+Received: by mail-lj1-f200.google.com with SMTP id
+ 38308e7fff4ca-2b9c5cba6d1so29612681fa.1
+ for <qemu-devel@nongnu.org>; Sat, 05 Aug 2023 00:58:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691222164; x=1691826964;
- h=content-transfer-encoding:in-reply-to:organization:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=nj/QNVs2e0A/Tts8D8emA3uz4RAjSxgvrUMDfyFYX2A=;
- b=QHJlBcaomr/ytAsPvXK19J1m87S3IPndMtnuzkHS4BheTo0/hW+Mqr6lU8tY/EoR40
- VPhtJRklAejNL+XJOoMp4Ol9bIO/BejU1hGINeY/GSFl5k8jstbbgnFMuX/8A9F2rpTk
- JOR0gPv5+h/J0lsUFHfs8SyxZ5BOuJ1czW2B/RoIIpgxqj0qPfBTvV2I05vfSiN7vStG
- ULqkD7rfV5yT/8OpFwH3gQk1LFoCEjSY5JGly/711h4LumBR/kqQwBPKzifUgkOhK2Fe
- cRE2MhiiMVyG/Z5rE5Td07uQhC4u+JA29gVPBc54d9t2kYO1npBWFOQo12ApiTYIwYYx
- T9AA==
-X-Gm-Message-State: AOJu0YyjYu7GmVkTiGLDsvCVvTInALntL5R41zltvY+CsrNVFsoB8Ryg
- 1e0p0pVFD61Eid4QgsFUnq6dgHI0zmITVT5Otw1UHlGEd/ZLrTwKmpBRZZ2Nzv70YCdz0OJmcFn
- 2k1JBy3ogRN/P2tw=
-X-Received: by 2002:a5d:620f:0:b0:315:acbc:cab6 with SMTP id
- y15-20020a5d620f000000b00315acbccab6mr1150294wru.16.1691222164464; 
- Sat, 05 Aug 2023 00:56:04 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGmJ/wHWlrs1kNMjln51vYAAiMqWGaqHj5nQ/tnjSChK6VFVTjMHXsvkMZyfOLx4y4xyGF3YQ==
-X-Received: by 2002:a5d:620f:0:b0:315:acbc:cab6 with SMTP id
- y15-20020a5d620f000000b00315acbccab6mr1150271wru.16.1691222163918; 
- Sat, 05 Aug 2023 00:56:03 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1691222335; x=1691827135;
+ h=content-transfer-encoding:in-reply-to:organization:from:references
+ :cc:to:content-language:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=u732zGm+ucnwGOVOgo4q5rn9BiyQXeIlgn2PnbixNAI=;
+ b=ZG3ocwUu/9ytEaYqiVpLcuJPxmGdMHkVzlbhkX2Apo/elz1+0R03Cbiwil02fKJjAC
+ sqXffionF0hqHQl2yey4njh9BtK/BIT6Er86XzYF0ep7uNTRsc8+LG9mVi/HeUlkvuWo
+ xtvHN4+zzl1yBJWEHinZeC6iakYK3Rq2SsBnPAvHCxGyp5/PrB3BjJsQfTvgDhAKj+A3
+ Xyt4shnDhEsaxVXMKARp78oQi6ne60QaPaWTelMkrkPBojr/UaPiA9t/t95RKAW184RY
+ OOe4vylHLu5icGfRxSbFoc5uNJOZIVVnu/PAbVWiTYdDSN73UR+a195XOqH9CTd2xLCA
+ FInQ==
+X-Gm-Message-State: AOJu0Yz9uKMqp++n5CaPOdZKvGwsicpmrrDT5VGLXpn7EYlmgmJtmhlR
+ 01J16JSeAqHg/1gkeQC1PvN96pQgEVQ7gixG8Esn4dCCu1VysLHpx4Er7jI8nnSC1swZeebgajJ
+ DvMVPFvL3862HreU=
+X-Received: by 2002:a2e:3815:0:b0:2b5:7a87:a85a with SMTP id
+ f21-20020a2e3815000000b002b57a87a85amr2731179lja.13.1691222335213; 
+ Sat, 05 Aug 2023 00:58:55 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGcvAbppJcrAhpdsLMjDfT4u+k7QZRYbVcqjRMwluT2vx7lkpLCgraoC8u0J8UqASJuDf+P/g==
+X-Received: by 2002:a2e:3815:0:b0:2b5:7a87:a85a with SMTP id
+ f21-20020a2e3815000000b002b57a87a85amr2731172lja.13.1691222334828; 
+ Sat, 05 Aug 2023 00:58:54 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f2d:8e00:a20e:59bc:3c13:4806?
  (p200300d82f2d8e00a20e59bc3c134806.dip0.t-ipconnect.de.
  [2003:d8:2f2d:8e00:a20e:59bc:3c13:4806])
  by smtp.gmail.com with ESMTPSA id
- n4-20020a5d4204000000b003143867d2ebsm4459045wrq.63.2023.08.05.00.56.02
+ s22-20020a7bc396000000b003fc0505be19sm4276942wmj.37.2023.08.05.00.58.53
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 05 Aug 2023 00:56:03 -0700 (PDT)
-Message-ID: <63c3447f-83d2-1b04-7975-e00bf478b718@redhat.com>
-Date: Sat, 5 Aug 2023 09:56:01 +0200
+ Sat, 05 Aug 2023 00:58:54 -0700 (PDT)
+Message-ID: <368c9db2-e930-fb4e-193d-8a8156db072b@redhat.com>
+Date: Sat, 5 Aug 2023 09:58:53 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH] target/s390x: Check reserved bits of VFMIN/VFMAX's M5
+Subject: Re: [PATCH 1/2] target/s390x: Fix VSTL with a large length
+Content-Language: en-US
 To: Ilya Leoshkevich <iii@linux.ibm.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Thomas Huth <thuth@redhat.com>
 Cc: qemu-devel@nongnu.org, qemu-s390x@nongnu.org, qemu-stable@nongnu.org
-References: <20230804234621.252522-1-iii@linux.ibm.com>
-Content-Language: en-US
+References: <20230804235624.263260-1-iii@linux.ibm.com>
 From: David Hildenbrand <david@redhat.com>
 Organization: Red Hat
-In-Reply-To: <20230804234621.252522-1-iii@linux.ibm.com>
+In-Reply-To: <20230804235624.263260-1-iii@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
@@ -106,30 +106,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 05.08.23 01:46, Ilya Leoshkevich wrote:
-> VFMIN and VFMAX should raise a specification exceptions when bits 1-3
-> of M5 are set.
+On 05.08.23 01:55, Ilya Leoshkevich wrote:
+> The length is always truncated to 16 bytes. Do not probe more than
+> that.
 > 
 > Cc: qemu-stable@nongnu.org
-> Fixes: da4807527f3b ("s390x/tcg: Implement VECTOR FP (MAXIMUM|MINIMUM)")
+> Fixes: 0e0a5b49ad58 ("s390x/tcg: Implement VECTOR STORE WITH LENGTH")
 > Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 > ---
->   target/s390x/tcg/translate_vx.c.inc | 2 +-
+>   target/s390x/tcg/vec_helper.c | 2 +-
 >   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/target/s390x/tcg/translate_vx.c.inc b/target/s390x/tcg/translate_vx.c.inc
-> index f8df121d3d3..b5d07d5ec53 100644
-> --- a/target/s390x/tcg/translate_vx.c.inc
-> +++ b/target/s390x/tcg/translate_vx.c.inc
-> @@ -3047,7 +3047,7 @@ static DisasJumpType op_vfmax(DisasContext *s, DisasOps *o)
->       const uint8_t m5 = get_field(s, m5);
->       gen_helper_gvec_3_ptr *fn;
+> diff --git a/target/s390x/tcg/vec_helper.c b/target/s390x/tcg/vec_helper.c
+> index 48d86722b2d..dafc4c3582c 100644
+> --- a/target/s390x/tcg/vec_helper.c
+> +++ b/target/s390x/tcg/vec_helper.c
+> @@ -193,7 +193,7 @@ void HELPER(vstl)(CPUS390XState *env, const void *v1, uint64_t addr,
+>                     uint64_t bytes)
+>   {
+>       /* Probe write access before actually modifying memory */
+> -    probe_write_access(env, addr, bytes, GETPC());
+> +    probe_write_access(env, addr, MIN(bytes, 16), GETPC());
 >   
-> -    if (m6 == 5 || m6 == 6 || m6 == 7 || m6 >= 13) {
-> +    if (m6 == 5 || m6 == 6 || m6 == 7 || m6 >= 13 || (m5 & 7)) {
->           gen_program_exception(s, PGM_SPECIFICATION);
->           return DISAS_NORETURN;
->       }
+>       if (likely(bytes >= 16)) {
+>           cpu_stq_data_ra(env, addr, s390_vec_read_element64(v1, 0), GETPC());
 
 Reviewed-by: David Hildenbrand <david@redhat.com>
 
