@@ -2,28 +2,28 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9697771011
-	for <lists+qemu-devel@lfdr.de>; Sat,  5 Aug 2023 16:05:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DB2E771012
+	for <lists+qemu-devel@lfdr.de>; Sat,  5 Aug 2023 16:11:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qSHuJ-0005pg-Dz; Sat, 05 Aug 2023 10:05:27 -0400
+	id 1qSHz0-0007tn-FM; Sat, 05 Aug 2023 10:10:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qSHuH-0005pW-N2
- for qemu-devel@nongnu.org; Sat, 05 Aug 2023 10:05:25 -0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qSHyy-0007tL-5v
+ for qemu-devel@nongnu.org; Sat, 05 Aug 2023 10:10:16 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qSHuF-0003oD-Ek
- for qemu-devel@nongnu.org; Sat, 05 Aug 2023 10:05:25 -0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qSHyw-0004nv-N2
+ for qemu-devel@nongnu.org; Sat, 05 Aug 2023 10:10:15 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id DB882185EF;
- Sat,  5 Aug 2023 17:05:41 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id EFA81185F2;
+ Sat,  5 Aug 2023 17:10:34 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 21B321BA0E;
- Sat,  5 Aug 2023 17:05:20 +0300 (MSK)
-Message-ID: <5024f65c-cc56-cb2b-00ac-c4f3071fb95e@tls.msk.ru>
-Date: Sat, 5 Aug 2023 17:05:20 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id 3C05C1BA11;
+ Sat,  5 Aug 2023 17:10:13 +0300 (MSK)
+Message-ID: <351cb92d-1f50-d0f9-ee3d-b32e5a4aeade@tls.msk.ru>
+Date: Sat, 5 Aug 2023 17:10:13 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.1
@@ -38,7 +38,7 @@ References: <20230804220032.295411-1-richard.henderson@linaro.org>
 From: Michael Tokarev <mjt@tls.msk.ru>
 In-Reply-To: <b60a5670-17c8-f25d-fd56-e0970fe4017f@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
 X-Spam_score_int: -69
@@ -62,28 +62,12 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-05.08.2023 17:01, Richard Henderson wrote:
+Please excuse me for jijacking this thread. I was sure it is something
+relevant to the issues we were dealing with, - since I remember qemu-aarch64
+segfaulting with intermediate patches in this area.
 
->> Since it was kinda trivial to bisect, I just did. And here's the
->> result:
->>
->> commit 59b6b42cd3446862567637f3a7ab31d69c9bef51
->> Author: Richard Henderson <richard.henderson@linaro.org>
->> Date:   Tue Jun 6 10:19:39 2023 +0100
->>
->>      target/arm: Enable FEAT_LSE2 for -cpu max
->>
->> Reverting this patch on top of current master makes old linuxes
->> to work again.
-> 
-> What is your host?  That's probably the only relevant thing.
-
-It's running on amd64 machine (AMD Ryzen 7 PRO 5750G), current debian
-bookworm, kernel 6.1.0-10-amd64 (for qemu-user-static only architecture
-and the kernel matters, I guess).
-
-I noticed this while trying to reproduce
-  https://gitlab.com/qemu-project/qemu/-/issues/1763
+For this aarch64-user segfault, my guess is that older software isn't
+prepared for -cpu max.
 
 /mjt
 
