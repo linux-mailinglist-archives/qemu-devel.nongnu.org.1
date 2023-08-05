@@ -2,46 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07180770E92
-	for <lists+qemu-devel@lfdr.de>; Sat,  5 Aug 2023 09:52:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F3EE770E10
+	for <lists+qemu-devel@lfdr.de>; Sat,  5 Aug 2023 08:17:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qSC3s-0007tS-RK; Sat, 05 Aug 2023 03:50:56 -0400
+	id 1qSAZg-0000Aa-MY; Sat, 05 Aug 2023 02:15:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1qSC3p-0007sH-1p
- for qemu-devel@nongnu.org; Sat, 05 Aug 2023 03:50:53 -0400
-Received: from mail-b.sr.ht ([173.195.146.151])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qSAZT-00009F-Oo; Sat, 05 Aug 2023 02:15:27 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1qSC3n-0005DE-CU
- for qemu-devel@nongnu.org; Sat, 05 Aug 2023 03:50:52 -0400
-Authentication-Results: mail-b.sr.ht; dkim=none 
-Received: from git.sr.ht (unknown [173.195.146.142])
- by mail-b.sr.ht (Postfix) with ESMTPSA id F2D7111EF45;
- Sat,  5 Aug 2023 07:50:49 +0000 (UTC)
-From: ~hyman <hyman@git.sr.ht>
-Date: Sat, 05 Aug 2023 10:38:11 +0800
-Subject: [PATCH QEMU 2/3] virtio-blk-pci: introduce auto-num-queues property
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qSAZR-0004Nr-Pb; Sat, 05 Aug 2023 02:15:27 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 0E5F31857E;
+ Sat,  5 Aug 2023 09:15:42 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id C3B411B93E;
+ Sat,  5 Aug 2023 09:15:20 +0300 (MSK)
+Message-ID: <86a640b2-a9f8-5b62-349c-c0927c2a013b@tls.msk.ru>
+Date: Sat, 5 Aug 2023 09:15:20 +0300
 MIME-Version: 1.0
-Message-ID: <169122184935.7839.16786323109706183366-2@git.sr.ht>
-X-Mailer: git.sr.ht
-In-Reply-To: <169122184935.7839.16786323109706183366-0@git.sr.ht>
-To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Raphael Norwitz <raphael.norwitz@nutanix.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=173.195.146.151; envelope-from=outgoing@sr.ht;
- helo=mail-b.sr.ht
-X-Spam_score_int: -2
-X-Spam_score: -0.3
-X-Spam_bar: /
-X-Spam_report: (-0.3 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_03_06=1.592,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.1
+Subject: Re: [PATCH v3 0/3] vdpa: Return -EIO if device ack is VIRTIO_NET_ERR
+Content-Language: en-US
+To: Hawkins Jiawei <yin31149@gmail.com>, jasowang@redhat.com, mst@redhat.com, 
+ eperezma@redhat.com
+Cc: qemu-stable@nongnu.org, qemu-devel@nongnu.org, 18801353760@163.com
+References: <cover.1688438055.git.yin31149@gmail.com>
+From: Michael Tokarev <mjt@tls.msk.ru>
+In-Reply-To: <cover.1688438055.git.yin31149@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -69
+X-Spam_score: -7.0
+X-Spam_bar: -------
+X-Spam_report: (-7.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.093,
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -54,90 +57,64 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: ~hyman <yong.huang@smartx.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
+04.07.2023 06:34, Hawkins Jiawei wrote:
+> According to VirtIO standard, "The class, command and
+> command-specific-data are set by the driver,
+> and the device sets the ack byte.
+> There is little it can do except issue a diagnostic
+> if ack is not VIRTIO_NET_OK."
+> 
+> Therefore, QEMU should stop sending the queued SVQ commands and
+> cancel the device startup if the device's ack is not VIRTIO_NET_OK.
+> 
+> Yet the problem is that, vhost_vdpa_net_load_x() returns 1 based on
+> `*s->status != VIRTIO_NET_OK` when the device's ack is VIRTIO_NET_ERR.
+> As a result, net->nc->info->load() also returns 1, this makes
+> vhost_net_start_one() incorrectly assume the device state is
+> successfully loaded by vhost_vdpa_net_load() and return 0, instead of
+> goto `fail` label to cancel the device startup, as vhost_net_start_one()
+> only cancels the device startup when net->nc->info->load() returns a
+> negative value.
+> 
+> This patchset fixes this problem by returning -EIO when the device's
+> ack is not VIRTIO_NET_OK.
+> 
+> Changelog
+> =========
+> v3:
+>   - split the fixes suggested by Eugenio
+>   - return -EIO suggested by Michael
+> 
+> v2: https://lore.kernel.org/all/69010e9ebb5e3729aef595ed92840f43e48e53e5.1687875592.git.yin31149@gmail.com/
+>   - fix the same bug in vhost_vdpa_net_load_offloads()
+> 
+> v1: https://lore.kernel.org/all/cover.1686746406.git.yin31149@gmail.com/
+> 
+> Hawkins Jiawei (3):
+>    vdpa: Return -EIO if device ack is VIRTIO_NET_ERR in _load_mac()
+>    vdpa: Return -EIO if device ack is VIRTIO_NET_ERR in _load_mq()
+>    vdpa: Return -EIO if device ack is VIRTIO_NET_ERR in _load_offloads()
 
-Commit "9445e1e15 virtio-blk-pci: default num_queues to -smp N"
-implment sizing the number of virtio-blk-pci request virtqueues
-to match the number of vCPUs automatically. Which improves IO
-preformance remarkably.
+Hi!
 
-To enable this feature for the existing VMs, the cloud platform
-may migrate VMs from the source hypervisor (num_queues is set to
-1 by default) to the destination hypervisor (num_queues is set to
--smp N) lively. The different num-queues for virtio-blk-pci
-devices between the=C2=A0source side and the destination side will
-result in migration failure due to loading vmstate incorrectly
-on the destination side.
+I don't remember why, but this patch series is marked as "check later" in
+my qemu-stable-to-apply email folder.  Does it make sense to back-port this
+series to stable-8.0?
 
-To provide a smooth upgrade solution, introduce the
-auto-num-queues property for the virtio-blk-pci device. This
-allows upper APPs, e.g., libvirt, to recognize the hypervisor's
-capability of allocating the virtqueues automatically by probing
-the virtio-blk-pci.auto-num-queues property. Basing on which,
-upper APPs can ensure to allocate the same num-queues on the
-destination side in case of migration failure.
+6f34807116 vdpa: Return -EIO if device ack is VIRTIO_NET_ERR in _load_offloads()
+f45fd95ec9 vdpa: Return -EIO if device ack is VIRTIO_NET_ERR in _load_mq()
+b479bc3c9d vdpa: Return -EIO if device ack is VIRTIO_NET_ERR in _load_mac()
 
-Signed-off-by: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
----
- hw/block/virtio-blk.c          | 1 +
- hw/virtio/virtio-blk-pci.c     | 9 ++++++++-
- include/hw/virtio/virtio-blk.h | 5 +++++
- 3 files changed, 14 insertions(+), 1 deletion(-)
+Patch 6f34807116 also needs
 
-diff --git a/hw/block/virtio-blk.c b/hw/block/virtio-blk.c
-index 39e7f23fab..9e498ca64a 100644
---- a/hw/block/virtio-blk.c
-+++ b/hw/block/virtio-blk.c
-@@ -1716,6 +1716,7 @@ static Property virtio_blk_properties[] =3D {
- #endif
-     DEFINE_PROP_BIT("request-merging", VirtIOBlock, conf.request_merging, 0,
-                     true),
-+    DEFINE_PROP_BOOL("auto-num-queues", VirtIOBlock, auto_num_queues, true),
-     DEFINE_PROP_UINT16("num-queues", VirtIOBlock, conf.num_queues,
-                        VIRTIO_BLK_AUTO_NUM_QUEUES),
-     DEFINE_PROP_UINT16("queue-size", VirtIOBlock, conf.queue_size, 256),
-diff --git a/hw/virtio/virtio-blk-pci.c b/hw/virtio/virtio-blk-pci.c
-index 9743bee965..4b6b4c4933 100644
---- a/hw/virtio/virtio-blk-pci.c
-+++ b/hw/virtio/virtio-blk-pci.c
-@@ -54,7 +54,14 @@ static void virtio_blk_pci_realize(VirtIOPCIProxy *vpci_de=
-v, Error **errp)
-     VirtIOBlkConf *conf =3D &dev->vdev.conf;
-=20
-     if (conf->num_queues =3D=3D VIRTIO_BLK_AUTO_NUM_QUEUES) {
--        conf->num_queues =3D virtio_pci_optimal_num_queues(0);
-+        /*
-+         * Allocate virtqueues automatically only if auto_num_queues
-+         * property set true.
-+         */
-+        if (dev->vdev.auto_num_queues)
-+            conf->num_queues =3D virtio_pci_optimal_num_queues(0);
-+        else
-+            conf->num_queues =3D 1;
-     }
-=20
-     if (vpci_dev->nvectors =3D=3D DEV_NVECTORS_UNSPECIFIED) {
-diff --git a/include/hw/virtio/virtio-blk.h b/include/hw/virtio/virtio-blk.h
-index dafec432ce..dab6d7c70c 100644
---- a/include/hw/virtio/virtio-blk.h
-+++ b/include/hw/virtio/virtio-blk.h
-@@ -65,6 +65,11 @@ struct VirtIOBlock {
-     uint64_t host_features;
-     size_t config_size;
-     BlockRAMRegistrar blk_ram_registrar;
-+    /*
-+     * Set to true if virtqueues allow to be allocated to
-+     * match the number of virtual CPUs automatically.
-+     */
-+    bool auto_num_queues;
- };
-=20
- typedef struct VirtIOBlockReq {
---=20
-2.38.5
+b58d3686a0 vdpa: Add vhost_vdpa_net_load_offloads()
 
+for 8.0.
+
+Thanks,
+
+/mjt
 
