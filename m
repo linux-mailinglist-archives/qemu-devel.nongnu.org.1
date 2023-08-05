@@ -2,85 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE017776EF2
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 06:13:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD5EC7770EE
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 09:08:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTx1K-0004Af-JK; Thu, 10 Aug 2023 00:11:34 -0400
+	id 1qTzlM-0005Ox-Nt; Thu, 10 Aug 2023 03:07:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTx17-0004AA-8c
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 00:11:23 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTx15-0006l6-OB
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 00:11:21 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1bd99c7b3e2so2772565ad.3
- for <qemu-devel@nongnu.org>; Wed, 09 Aug 2023 21:11:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691640678; x=1692245478;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=zg1JHm/9miEGOdGkVJFDsHjJYtAiCkEEYl51auw6z6w=;
- b=FoBbovVBmo/k048fr0dPFg5Yyb3izt5g1eY36p4pPJ/Al9NwYQVGmHiRVtClCgky4Q
- seM3d65xnf0SUr4ydhDMW3F3yBOHBClvwhxy7O0GveakJyFLLuE2oMvNcigJnn5zZ5VC
- V9uANQfmaa4t/KdY5OkREOkej74eyk1SSmd63Gx9QWVsFFmPHFP6vQSZKVHQFusc1lV9
- bu4zLL2HeZN1D49Fbfw6yB9ZxNcyGSObmql/E63Lln36AWVZ9/RNb8nl5j47+bVwj4F+
- Q6mBeh/bfIkyxPsnLqAkzkmrHHujQQ2rSIpvBNdmU501HoD3FldzNdd2HB1oDWC0g8+O
- RPBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691640678; x=1692245478;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=zg1JHm/9miEGOdGkVJFDsHjJYtAiCkEEYl51auw6z6w=;
- b=XIDKyisVqLKPUp8TvoYw0GOj63BysqUcR9p4bfsimyxphmFzxCrypFTl8d4Of1A4TB
- IsrAPd1pmGseWAV+TqFHOx2Ir84QC2vM+F7LNdN62o0nmoV0SIIgQGzhBOfhMzKqBBHT
- Vwa880YOtUAik7cw4Qiecr8HaloCOjRWr9CyFyY7gUCzX6+iN2JRmbj/2+AkLdKo8PtV
- TxiKF+Y+Bya5vBxHTJSRFtYabLMSMOwDQhEEtTELHRbUiWKJIpya+a14xdZmpmtOOxco
- kbTodSUO9BKoBebO4K29OSNY3wBnNhIpZ+cJMFkML7sQqfILc03S8h/ItASn5bjjElHq
- 69yQ==
-X-Gm-Message-State: AOJu0YxK11MQApjoqZazGeUVNlXxRdReaSQCL4BuCPZxMYQT1ug1ru2k
- EXBugut8wtT+TaCpFkhjPM5OHIwXMp9VbjgvlcQ=
-X-Google-Smtp-Source: AGHT+IHkkyeeA0UO+UtPfnevbcFpWKccNKoLWACPCtAo+J7so6cs4YSPlSZ6FerqcfJKYLLrsdERyQ==
-X-Received: by 2002:a17:902:e5c8:b0:1b8:3590:358a with SMTP id
- u8-20020a170902e5c800b001b83590358amr1212937plf.19.1691640677571; 
- Wed, 09 Aug 2023 21:11:17 -0700 (PDT)
-Received: from ?IPV6:2602:47:d483:7301:6bf0:9674:6ac4:f74c?
- ([2602:47:d483:7301:6bf0:9674:6ac4:f74c])
- by smtp.gmail.com with ESMTPSA id
- c13-20020a170902c1cd00b001bba1188c8esm404557plc.271.2023.08.09.21.11.16
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 09 Aug 2023 21:11:16 -0700 (PDT)
-Message-ID: <9ac45ec4-3011-abb0-305e-a5c266a41100@linaro.org>
-Date: Wed, 9 Aug 2023 21:11:15 -0700
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1qTzlK-0005OA-V7
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 03:07:14 -0400
+Received: from mail-b.sr.ht ([173.195.146.151])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1qTzlI-0004oJ-02
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 03:07:14 -0400
+Authentication-Results: mail-b.sr.ht; dkim=none 
+Received: from git.sr.ht (unknown [173.195.146.142])
+ by mail-b.sr.ht (Postfix) with ESMTPSA id 6917311EF74;
+ Thu, 10 Aug 2023 07:07:10 +0000 (UTC)
+From: ~hyman <hyman@git.sr.ht>
+Date: Sat, 05 Aug 2023 08:39:56 +0800
+Subject: [PATCH QEMU v2 3/3] vhost-user-blk-pci: introduce auto-num-queues
+ property
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 5/5] target/arm: Implement cortex-a710
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org
-References: <20230810023548.412310-1-richard.henderson@linaro.org>
- <20230810023548.412310-6-richard.henderson@linaro.org>
-In-Reply-To: <20230810023548.412310-6-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
-X-Spam_score_int: -61
-X-Spam_score: -6.2
-X-Spam_bar: ------
-X-Spam_report: (-6.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-4.14,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Message-ID: <169165122958.4096.6557269987206106594-3@git.sr.ht>
+X-Mailer: git.sr.ht
+In-Reply-To: <169165122958.4096.6557269987206106594-0@git.sr.ht>
+To: qemu-devel <qemu-devel@nongnu.org>
+Cc: Raphael Norwitz <raphael.norwitz@nutanix.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
+ yong.huang@smartx.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=173.195.146.151; envelope-from=outgoing@sr.ht;
+ helo=mail-b.sr.ht
+X-Spam_score_int: 15
+X-Spam_score: 1.5
+X-Spam_bar: +
+X-Spam_report: (1.5 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_96_XX=3.405,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,21 +55,91 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: ~hyman <yong.huang@smartx.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/9/23 19:35, Richard Henderson wrote:
-> +static const ARMCPRegInfo cortex_a710_cp_reginfo[] = {
-> +    /* TODO: trapped by HCR_EL2.TIDCP */
-> +    { .name = "CPUACTLR4_EL1", .state = ARM_CP_STATE_AA64,
-> +      .opc0 = 3, .opc1 = 0, .crn = 15, .crm = 1, .opc2 = 3,
-> +      .access = PL1_RW, .type = ARM_CP_CONST, .resetvalue = 0 },
-> +    { .name = "CPUECTLR2_EL1", .state = ARM_CP_STATE_AA64,
-> +      .opc0 = 3, .opc1 = 0, .crn = 15, .crm = 1, .opc2 = 5,
-> +      .access = PL1_RW, .type = ARM_CP_CONST, .resetvalue = 0 },
+From: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
 
-Oops, duplicate CPUECTLR2_EL1.
+Commit "a4eef0711b vhost-user-blk-pci: default num_queues to -smp N"
+implment sizing the number of vhost-user-blk-pci request virtqueues
+to match the number of vCPUs automatically. Which improves IO
+preformance remarkably.
 
+To enable this feature for the existing VMs, the cloud platform
+may migrate VMs from the source hypervisor (num_queues is set to
+1 by default) to the destination hypervisor (num_queues is set to
+-smp N) lively. The different num-queues for vhost-user-blk-pci
+devices between the=C2=A0source side and the destination side will
+result in migration failure due to loading vmstate incorrectly
+on the destination side.
 
-r~
+To provide a smooth upgrade solution, introduce the
+auto-num-queues property for the vhost-user-blk-pci device. This
+allows upper APPs, e.g., libvirt, to recognize the hypervisor's
+capability of allocating the virtqueues automatically by probing
+the vhost-user-blk-pci.auto-num-queues property. Basing on which,
+upper APPs can ensure to allocate the same num-queues on the
+destination side in case of migration failure.
+
+Signed-off-by: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
+---
+ hw/block/vhost-user-blk.c          | 1 +
+ hw/virtio/vhost-user-blk-pci.c     | 9 ++++++++-
+ include/hw/virtio/vhost-user-blk.h | 5 +++++
+ 3 files changed, 14 insertions(+), 1 deletion(-)
+
+diff --git a/hw/block/vhost-user-blk.c b/hw/block/vhost-user-blk.c
+index eecf3f7a81..34e23b1727 100644
+--- a/hw/block/vhost-user-blk.c
++++ b/hw/block/vhost-user-blk.c
+@@ -566,6 +566,7 @@ static const VMStateDescription vmstate_vhost_user_blk =
+=3D {
+=20
+ static Property vhost_user_blk_properties[] =3D {
+     DEFINE_PROP_CHR("chardev", VHostUserBlk, chardev),
++    DEFINE_PROP_BOOL("auto-num-queues", VHostUserBlk, auto_num_queues, true),
+     DEFINE_PROP_UINT16("num-queues", VHostUserBlk, num_queues,
+                        VHOST_USER_BLK_AUTO_NUM_QUEUES),
+     DEFINE_PROP_UINT32("queue-size", VHostUserBlk, queue_size, 128),
+diff --git a/hw/virtio/vhost-user-blk-pci.c b/hw/virtio/vhost-user-blk-pci.c
+index eef8641a98..f7776e928a 100644
+--- a/hw/virtio/vhost-user-blk-pci.c
++++ b/hw/virtio/vhost-user-blk-pci.c
+@@ -56,7 +56,14 @@ static void vhost_user_blk_pci_realize(VirtIOPCIProxy *vpc=
+i_dev, Error **errp)
+     DeviceState *vdev =3D DEVICE(&dev->vdev);
+=20
+     if (dev->vdev.num_queues =3D=3D VHOST_USER_BLK_AUTO_NUM_QUEUES) {
+-        dev->vdev.num_queues =3D virtio_pci_optimal_num_queues(0);
++        /*
++         * Allocate virtqueues automatically only if auto_num_queues
++         * property set true.
++         */
++        if (dev->vdev.auto_num_queues)
++            dev->vdev.num_queues =3D virtio_pci_optimal_num_queues(0);
++        else
++            dev->vdev.num_queues =3D 1;
+     }
+=20
+     if (vpci_dev->nvectors =3D=3D DEV_NVECTORS_UNSPECIFIED) {
+diff --git a/include/hw/virtio/vhost-user-blk.h b/include/hw/virtio/vhost-use=
+r-blk.h
+index ea085ee1ed..e6f0515bc6 100644
+--- a/include/hw/virtio/vhost-user-blk.h
++++ b/include/hw/virtio/vhost-user-blk.h
+@@ -50,6 +50,11 @@ struct VHostUserBlk {
+     bool connected;
+     /* vhost_user_blk_start/vhost_user_blk_stop */
+     bool started_vu;
++    /*
++     * Set to true if virtqueues allow to be allocated to
++     * match the number of virtual CPUs automatically.
++     */
++    bool auto_num_queues;
+ };
+=20
+ #endif
+--=20
+2.38.5
 
