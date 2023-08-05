@@ -2,83 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DB4277112F
-	for <lists+qemu-devel@lfdr.de>; Sat,  5 Aug 2023 19:59:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C20D9771137
+	for <lists+qemu-devel@lfdr.de>; Sat,  5 Aug 2023 20:02:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qSLXt-0000Ji-2g; Sat, 05 Aug 2023 13:58:33 -0400
+	id 1qSLbZ-0003LI-8K; Sat, 05 Aug 2023 14:02:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qSLXq-0000JK-Mg
- for qemu-devel@nongnu.org; Sat, 05 Aug 2023 13:58:30 -0400
-Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
+ id 1qSLbX-0003L2-2M
+ for qemu-devel@nongnu.org; Sat, 05 Aug 2023 14:02:19 -0400
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qSLXn-0004OP-U0
- for qemu-devel@nongnu.org; Sat, 05 Aug 2023 13:58:30 -0400
-Received: by mail-pg1-x536.google.com with SMTP id
- 41be03b00d2f7-564ef63a010so21821a12.0
- for <qemu-devel@nongnu.org>; Sat, 05 Aug 2023 10:58:27 -0700 (PDT)
+ id 1qSLbV-0005P4-KY
+ for qemu-devel@nongnu.org; Sat, 05 Aug 2023 14:02:18 -0400
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-1bbff6b2679so20733615ad.1
+ for <qemu-devel@nongnu.org>; Sat, 05 Aug 2023 11:02:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691258306; x=1691863106;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=8y/eHBmxVsLmGma2dyR9Q5dtplTXJNr7OgFVvcQ9v3s=;
- b=EYUJp0VR/XpPfl7AYXcf5panqYnaHxw5D93xswSQh/YV7SHzNQeCAXJOL2wMRGMMUg
- otK4+ql98tZ3PXR3OTDuTNPimgisNGlE19mytequFrfZUj2OzkyY2qALVeB/8KXLJPOR
- 7DID46LWOfFFMa84pdmJ79LADMUg4NDlc1IQK2vmYy9v6XeZ8jGKb0viq2zHL52nPhrX
- +97f3YfAy/lvTZphhVwNcMV2Txe0Y0MRhlkm7n3XYxX+b9Om17jxUMiIn4f3jGGMPWP9
- ABfYjMPN+aGcx55MgmzDvT+uft97Ooses+fR8e63xGoM7ySjju5JeR39mqnaVFBtS4gr
- 5Mlg==
+ d=linaro.org; s=google; t=1691258536; x=1691863336;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=buMc4K6aeffRxJXdJ+e4JvuZbDjWEPA2iWMmDyRBluQ=;
+ b=AOwG1i+e6pK/ODQgM6IW2L9nU1/v28Oqc46yl5y/kMOPz90VpHj6Mi4WnKk5fbRDCP
+ of6Vq6nhPsMCLw9sLyJVcGp0FkrPB8S0AOkhAesFBYvo9XPuSCrfGSt1A/oiiO+iJd+6
+ od4WYlA+VnytYiLx1k9pZp348/HmDdP5FNy3vGdeuKhB0RGxdHmTWRNNDdE9v5SwRcc2
+ HwloKHfnxnmB72ExqggXpIH+baYagQ8ITBg6h6eeSfzOwlzaSRxkB5fWhlN/k8dbOeyH
+ 5vfYj0afLws+zTm6Y6PZN+5Oh1jTM8KY/eK08IltSBdeuKTb38i/3Wwl7o9OVzj5hGpw
+ E+hw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691258306; x=1691863106;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=8y/eHBmxVsLmGma2dyR9Q5dtplTXJNr7OgFVvcQ9v3s=;
- b=jEXKG3cTTBxA+wFny9BoGBHPQAu/PwgeQBaQ4s1ElLDr8wBaeaw1jz0tjesW/k2JWq
- ZO4ULkk5Vavz/9ZL57XVyh+VVZDk/530lFaKi4K3AsHCURedjYA9oek88VZrOWwnAVZE
- AACSpYnI6ZDXoRoGxs2S4DlPZ1lHK3kPtlKz3No2R1LTcG7KOA6xN3lQLKokebuIcdgW
- MYzpL2/1tPtMJTKoTBS9sdbixhqW44LhtZ3iJTA3NJ8Jul85BWPf9h8GHGvPOGauJwO8
- pZvQ0TfM1nonahc74fMuzXHecxZe0+6J94phi9U+d8HLpjGrFYd+rDk5JJY1N9RVJp+H
- 9kDQ==
-X-Gm-Message-State: AOJu0Yy5zQQQNPTwd+C7DIQWu54jiPJrCFE9Chmy7A/TW1KtVnxd/AtJ
- tel7dnYMWhA+wjVPewQrm7SJWXO8oB6jXoQboWw=
-X-Google-Smtp-Source: AGHT+IGbvddJ5iaCg8zWcoE9Qbx4tHrdo0Jgl6YE1REPCdqAY4X4tDpdeHzpYMnN0qb31xUBQQZmjQ==
-X-Received: by 2002:a17:90a:d348:b0:267:f1d7:ed68 with SMTP id
- i8-20020a17090ad34800b00267f1d7ed68mr3713644pjx.14.1691258305838; 
- Sat, 05 Aug 2023 10:58:25 -0700 (PDT)
-Received: from ?IPV6:2602:47:d490:6901:9454:a46f:1c22:a7c6?
- ([2602:47:d490:6901:9454:a46f:1c22:a7c6])
+ d=1e100.net; s=20221208; t=1691258536; x=1691863336;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=buMc4K6aeffRxJXdJ+e4JvuZbDjWEPA2iWMmDyRBluQ=;
+ b=fok32xMAmZQUgk0EQI5+RIB2b/4I9QAqldBWoewfKSCGNnmW9Vvv4nJiucPHMrmxBF
+ 2i+L6BkvrG923UXsJoLRG1zeXMasJipI3atXEyycZQ+pRvY49d6/E8q6w1TjXMoj5q9i
+ NJWVXDMAbOomQgkOyaHdRUQ9HzhpGi0uRqUJgMB+is8B9Zqj47IxTJJTV//qN3zj4Ycz
+ YY3RFd7+8CmOry2sXvTOilSZjyHd+cUWg5j4LYNUyPaMb9C0NgaRX12ZJIO1/7tty4un
+ 6mLoo77+SHZaEc6fasHVF6htPaJqoB81bYmANa/kG3foLX3lVFsBXUbexRAWdVi+8W8D
+ 5rLQ==
+X-Gm-Message-State: AOJu0YzFpIPpYJ6sTAJd9b9vffQOXbSxtBltjhCK+iSH4TAOy9urekP4
+ CxQp/5+b7kljSQYJhF5YPrbgGi44DvyqFTr4zgs=
+X-Google-Smtp-Source: AGHT+IE6EUYjvXVExtIrm9/ssO9XaYUw2lup5GTi1BXY+JLoQbmonqXcNMFq/YkehefacMCVAKXVbQ==
+X-Received: by 2002:a17:903:1107:b0:1b8:b3f9:58e5 with SMTP id
+ n7-20020a170903110700b001b8b3f958e5mr4327757plh.38.1691258535990; 
+ Sat, 05 Aug 2023 11:02:15 -0700 (PDT)
+Received: from stoup.. ([2602:47:d490:6901:9454:a46f:1c22:a7c6])
  by smtp.gmail.com with ESMTPSA id
- em5-20020a17090b014500b002680b2d2ab6sm5942129pjb.19.2023.08.05.10.58.24
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 05 Aug 2023 10:58:25 -0700 (PDT)
-Message-ID: <e4c887b7-a055-3b30-8d41-0e8be0bc5d30@linaro.org>
-Date: Sat, 5 Aug 2023 10:58:23 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [RFC][PATCH] Reduce generated code by 3% by increasing MMU indices
-Content-Language: en-US
-To: Helge Deller <deller@gmx.de>
-Cc: qemu-devel@nongnu.org
-References: <ZM59CkNZg5n4WXO3@p100>
- <53a2d13f-b508-0dba-5f0a-1b158372d1a4@linaro.org> <ZM6KOBfqFLumgpwm@p100>
+ a7-20020a170902ecc700b001bba7aab822sm3796815plh.5.2023.08.05.11.02.15
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 05 Aug 2023 11:02:15 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <ZM6KOBfqFLumgpwm@p100>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x536.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+To: qemu-devel@nongnu.org
+Subject: [PATCH] configure: Fix linux-user host detection for riscv64
+Date: Sat,  5 Aug 2023 11:02:14 -0700
+Message-Id: <20230805180214.57198-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -96,51 +87,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/5/23 10:43, Helge Deller wrote:
->> If there were a way to change no more than two lines of code, that would be
->> fine.  But otherwise I don't see this as being worth making the rest of the
->> code base any more complex.
-> 
-> Ok. What about that 6-line patch below for x86?
-> It's trivial and all what's needed for x86.
-> Btw, any index which is >= 9 will use the shorter code sequence.
-> 
-> Helge
-> 
-> diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-> index e0771a1043..3e71e666db 100644
-> --- a/target/i386/cpu.h
-> +++ b/target/i386/cpu.h
-> @@ -2251,11 +2251,11 @@ uint64_t cpu_get_tsc(CPUX86State *env);
->   #define cpu_list x86_cpu_list
-> 
->   /* MMU modes definitions */
-> -#define MMU_KSMAP_IDX   0
-> -#define MMU_USER_IDX    1
-> -#define MMU_KNOSMAP_IDX 2
-> -#define MMU_NESTED_IDX  3
-> -#define MMU_PHYS_IDX    4
-> +#define MMU_KSMAP_IDX   11
-> +#define MMU_USER_IDX    12
-> +#define MMU_KNOSMAP_IDX 13
-> +#define MMU_NESTED_IDX  14
-> +#define MMU_PHYS_IDX    15
+Mirror the host_arch variable from meson.build, so that we
+probe for the correct linux-user/include/host/ directory.
 
-No.  The small patch would need to apply to all guests.
+Fixes: e3e477c3bca0 ("configure: Fix cross-building for RISCV host")
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ configure | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-Perhaps something to handle indexing of CPUTLBDescFast, e.g.
+diff --git a/configure b/configure
+index afb25fd558..98dc78280e 100755
+--- a/configure
++++ b/configure
+@@ -469,6 +469,13 @@ else
+   echo "WARNING: unrecognized host CPU, proceeding with 'uname -m' output '$cpu'"
+ fi
+ 
++case "$cpu" in
++  riscv*)
++    host_arch=riscv ;;
++  *)
++    host_arch="$cpu" ;;
++esac
++
+ # Normalise host CPU name and set multilib cflags.  The canonicalization
+ # isn't really necessary, because the architectures that we check for
+ # should not hit the 'uname -m' case, but better safe than sorry.
+@@ -803,7 +810,7 @@ default_target_list=""
+ mak_wilds=""
+ 
+ if [ "$linux_user" != no ]; then
+-    if [ "$targetos" = linux ] && [ -d "$source_path/linux-user/include/host/$cpu" ]; then
++    if [ "$targetos" = linux ] && [ -d "$source_path/linux-user/include/host/$host_arch" ]; then
+         linux_user=yes
+     elif [ "$linux_user" = yes ]; then
+         error_exit "linux-user not supported on this architecture"
+-- 
+2.34.1
 
-static inline CPUTLBDescFast cputlb_fast(CPUTLB *tlb, unsigned idx)
-{
-     return &tlb->f[NB_MMU_MODES - 1 - idx];
-}
-
-There's already tlb_mask_table_ofs, which handles all tcg backends; you just need to 
-adjust that and cputlb.c.
-
-Introduce cputlb_fast with normal indexing in one patch, and then the second patch to 
-invert the indexing may well be exactly two lines.  :-)
-
-
-r~
 
