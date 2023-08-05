@@ -2,29 +2,29 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDB84770E90
-	for <lists+qemu-devel@lfdr.de>; Sat,  5 Aug 2023 09:52:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07180770E92
+	for <lists+qemu-devel@lfdr.de>; Sat,  5 Aug 2023 09:52:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qSC3t-0007tU-5C; Sat, 05 Aug 2023 03:50:57 -0400
+	id 1qSC3s-0007tS-RK; Sat, 05 Aug 2023 03:50:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1qSC3p-0007sJ-5c
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1qSC3p-0007sH-1p
  for qemu-devel@nongnu.org; Sat, 05 Aug 2023 03:50:53 -0400
 Received: from mail-b.sr.ht ([173.195.146.151])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1qSC3n-0005DC-C5
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1qSC3n-0005DE-CU
  for qemu-devel@nongnu.org; Sat, 05 Aug 2023 03:50:52 -0400
 Authentication-Results: mail-b.sr.ht; dkim=none 
 Received: from git.sr.ht (unknown [173.195.146.142])
- by mail-b.sr.ht (Postfix) with ESMTPSA id C1DAB11EF2F;
+ by mail-b.sr.ht (Postfix) with ESMTPSA id F2D7111EF45;
  Sat,  5 Aug 2023 07:50:49 +0000 (UTC)
 From: ~hyman <hyman@git.sr.ht>
-Date: Sat, 05 Aug 2023 10:33:21 +0800
-Subject: [PATCH QEMU 1/3] virtio-scsi-pci: introduce auto-num-queues property
+Date: Sat, 05 Aug 2023 10:38:11 +0800
+Subject: [PATCH QEMU 2/3] virtio-blk-pci: introduce auto-num-queues property
 MIME-Version: 1.0
-Message-ID: <169122184935.7839.16786323109706183366-1@git.sr.ht>
+Message-ID: <169122184935.7839.16786323109706183366-2@git.sr.ht>
 X-Mailer: git.sr.ht
 In-Reply-To: <169122184935.7839.16786323109706183366-0@git.sr.ht>
 To: qemu-devel@nongnu.org
@@ -60,158 +60,75 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
 
-Commit "6a55882284 virtio-scsi-pci: default num_queues to -smp N"
-implment sizing the number of virtio-scsi-pci request virtqueues
+Commit "9445e1e15 virtio-blk-pci: default num_queues to -smp N"
+implment sizing the number of virtio-blk-pci request virtqueues
 to match the number of vCPUs automatically. Which improves IO
 preformance remarkably.
 
 To enable this feature for the existing VMs, the cloud platform
 may migrate VMs from the source hypervisor (num_queues is set to
 1 by default) to the destination hypervisor (num_queues is set to
--smp N) lively. The different num-queues for virtio-scsi-pci
+-smp N) lively. The different num-queues for virtio-blk-pci
 devices between the=C2=A0source side and the destination side will
 result in migration failure due to loading vmstate incorrectly
 on the destination side.
 
 To provide a smooth upgrade solution, introduce the
-auto-num-queues property for the virtio-scsi-pci device. This
+auto-num-queues property for the virtio-blk-pci device. This
 allows upper APPs, e.g., libvirt, to recognize the hypervisor's
 capability of allocating the virtqueues automatically by probing
-the virtio-scsi-pci.auto-num-queues property. Basing on which,
+the virtio-blk-pci.auto-num-queues property. Basing on which,
 upper APPs can ensure to allocate the same num-queues on the
 destination side in case of migration failure.
 
 Signed-off-by: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
 ---
- hw/scsi/vhost-scsi.c            |  2 ++
- hw/scsi/vhost-user-scsi.c       |  2 ++
- hw/scsi/virtio-scsi.c           |  2 ++
- hw/virtio/vhost-scsi-pci.c      | 11 +++++++++--
- hw/virtio/vhost-user-scsi-pci.c | 11 +++++++++--
- hw/virtio/virtio-scsi-pci.c     | 11 +++++++++--
- include/hw/virtio/virtio-scsi.h |  5 +++++
- 7 files changed, 38 insertions(+), 6 deletions(-)
+ hw/block/virtio-blk.c          | 1 +
+ hw/virtio/virtio-blk-pci.c     | 9 ++++++++-
+ include/hw/virtio/virtio-blk.h | 5 +++++
+ 3 files changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/hw/scsi/vhost-scsi.c b/hw/scsi/vhost-scsi.c
-index 443f67daa4..78a8929c49 100644
---- a/hw/scsi/vhost-scsi.c
-+++ b/hw/scsi/vhost-scsi.c
-@@ -284,6 +284,8 @@ static Property vhost_scsi_properties[] =3D {
-     DEFINE_PROP_STRING("vhostfd", VirtIOSCSICommon, conf.vhostfd),
-     DEFINE_PROP_STRING("wwpn", VirtIOSCSICommon, conf.wwpn),
-     DEFINE_PROP_UINT32("boot_tpgt", VirtIOSCSICommon, conf.boot_tpgt, 0),
-+    DEFINE_PROP_BOOL("auto_num_queues", VirtIOSCSICommon, auto_num_queues,
-+                     true),
-     DEFINE_PROP_UINT32("num_queues", VirtIOSCSICommon, conf.num_queues,
-                        VIRTIO_SCSI_AUTO_NUM_QUEUES),
-     DEFINE_PROP_UINT32("virtqueue_size", VirtIOSCSICommon, conf.virtqueue_si=
-ze,
-diff --git a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c
-index ee99b19e7a..1b837f370a 100644
---- a/hw/scsi/vhost-user-scsi.c
-+++ b/hw/scsi/vhost-user-scsi.c
-@@ -161,6 +161,8 @@ static void vhost_user_scsi_unrealize(DeviceState *dev)
- static Property vhost_user_scsi_properties[] =3D {
-     DEFINE_PROP_CHR("chardev", VirtIOSCSICommon, conf.chardev),
-     DEFINE_PROP_UINT32("boot_tpgt", VirtIOSCSICommon, conf.boot_tpgt, 0),
-+    DEFINE_PROP_BOOL("auto_num_queues", VirtIOSCSICommon, auto_num_queues,
-+                     true),
-     DEFINE_PROP_UINT32("num_queues", VirtIOSCSICommon, conf.num_queues,
-                        VIRTIO_SCSI_AUTO_NUM_QUEUES),
-     DEFINE_PROP_UINT32("virtqueue_size", VirtIOSCSICommon, conf.virtqueue_si=
-ze,
-diff --git a/hw/scsi/virtio-scsi.c b/hw/scsi/virtio-scsi.c
-index 45b95ea070..2ec13032aa 100644
---- a/hw/scsi/virtio-scsi.c
-+++ b/hw/scsi/virtio-scsi.c
-@@ -1279,6 +1279,8 @@ static void virtio_scsi_device_unrealize(DeviceState *d=
-ev)
- }
-=20
- static Property virtio_scsi_properties[] =3D {
-+    DEFINE_PROP_BOOL("auto_num_queues", VirtIOSCSI, parent_obj.auto_num_queu=
-es,
-+                     true),
-     DEFINE_PROP_UINT32("num_queues", VirtIOSCSI, parent_obj.conf.num_queues,
-                        VIRTIO_SCSI_AUTO_NUM_QUEUES),
-     DEFINE_PROP_UINT32("virtqueue_size", VirtIOSCSI,
-diff --git a/hw/virtio/vhost-scsi-pci.c b/hw/virtio/vhost-scsi-pci.c
-index 08980bc23b..927c155278 100644
---- a/hw/virtio/vhost-scsi-pci.c
-+++ b/hw/virtio/vhost-scsi-pci.c
-@@ -51,8 +51,15 @@ static void vhost_scsi_pci_realize(VirtIOPCIProxy *vpci_de=
+diff --git a/hw/block/virtio-blk.c b/hw/block/virtio-blk.c
+index 39e7f23fab..9e498ca64a 100644
+--- a/hw/block/virtio-blk.c
++++ b/hw/block/virtio-blk.c
+@@ -1716,6 +1716,7 @@ static Property virtio_blk_properties[] =3D {
+ #endif
+     DEFINE_PROP_BIT("request-merging", VirtIOBlock, conf.request_merging, 0,
+                     true),
++    DEFINE_PROP_BOOL("auto-num-queues", VirtIOBlock, auto_num_queues, true),
+     DEFINE_PROP_UINT16("num-queues", VirtIOBlock, conf.num_queues,
+                        VIRTIO_BLK_AUTO_NUM_QUEUES),
+     DEFINE_PROP_UINT16("queue-size", VirtIOBlock, conf.queue_size, 256),
+diff --git a/hw/virtio/virtio-blk-pci.c b/hw/virtio/virtio-blk-pci.c
+index 9743bee965..4b6b4c4933 100644
+--- a/hw/virtio/virtio-blk-pci.c
++++ b/hw/virtio/virtio-blk-pci.c
+@@ -54,7 +54,14 @@ static void virtio_blk_pci_realize(VirtIOPCIProxy *vpci_de=
 v, Error **errp)
-     VirtIOSCSIConf *conf =3D &dev->vdev.parent_obj.parent_obj.conf;
+     VirtIOBlkConf *conf =3D &dev->vdev.conf;
 =20
-     if (conf->num_queues =3D=3D VIRTIO_SCSI_AUTO_NUM_QUEUES) {
--        conf->num_queues =3D
--            virtio_pci_optimal_num_queues(VIRTIO_SCSI_VQ_NUM_FIXED);
+     if (conf->num_queues =3D=3D VIRTIO_BLK_AUTO_NUM_QUEUES) {
+-        conf->num_queues =3D virtio_pci_optimal_num_queues(0);
 +        /*
 +         * Allocate virtqueues automatically only if auto_num_queues
 +         * property set true.
 +         */
-+        if (dev->vdev.parent_obj.parent_obj.auto_num_queues)
-+            conf->num_queues =3D
-+                virtio_pci_optimal_num_queues(VIRTIO_SCSI_VQ_NUM_FIXED);
++        if (dev->vdev.auto_num_queues)
++            conf->num_queues =3D virtio_pci_optimal_num_queues(0);
 +        else
 +            conf->num_queues =3D 1;
      }
 =20
      if (vpci_dev->nvectors =3D=3D DEV_NVECTORS_UNSPECIFIED) {
-diff --git a/hw/virtio/vhost-user-scsi-pci.c b/hw/virtio/vhost-user-scsi-pci.c
-index 75882e3cf9..9c521a7f93 100644
---- a/hw/virtio/vhost-user-scsi-pci.c
-+++ b/hw/virtio/vhost-user-scsi-pci.c
-@@ -57,8 +57,15 @@ static void vhost_user_scsi_pci_realize(VirtIOPCIProxy *vp=
-ci_dev, Error **errp)
-     VirtIOSCSIConf *conf =3D &dev->vdev.parent_obj.parent_obj.conf;
-=20
-     if (conf->num_queues =3D=3D VIRTIO_SCSI_AUTO_NUM_QUEUES) {
--        conf->num_queues =3D
--            virtio_pci_optimal_num_queues(VIRTIO_SCSI_VQ_NUM_FIXED);
-+        /*
-+         * Allocate virtqueues automatically only if auto_num_queues
-+         * property set true.
-+         */
-+        if (dev->vdev.parent_obj.parent_obj.auto_num_queues)
-+            conf->num_queues =3D
-+                virtio_pci_optimal_num_queues(VIRTIO_SCSI_VQ_NUM_FIXED);
-+        else
-+            conf->num_queues =3D 1;
-     }
-=20
-     if (vpci_dev->nvectors =3D=3D DEV_NVECTORS_UNSPECIFIED) {
-diff --git a/hw/virtio/virtio-scsi-pci.c b/hw/virtio/virtio-scsi-pci.c
-index e8e3442f38..7551857f90 100644
---- a/hw/virtio/virtio-scsi-pci.c
-+++ b/hw/virtio/virtio-scsi-pci.c
-@@ -52,8 +52,15 @@ static void virtio_scsi_pci_realize(VirtIOPCIProxy *vpci_d=
-ev, Error **errp)
-     char *bus_name;
-=20
-     if (conf->num_queues =3D=3D VIRTIO_SCSI_AUTO_NUM_QUEUES) {
--        conf->num_queues =3D
--            virtio_pci_optimal_num_queues(VIRTIO_SCSI_VQ_NUM_FIXED);
-+        /*
-+         * Allocate virtqueues automatically only if auto_num_queues
-+         * property set true.
-+         */
-+        if (dev->vdev.parent_obj.auto_num_queues)
-+            conf->num_queues =3D
-+                virtio_pci_optimal_num_queues(VIRTIO_SCSI_VQ_NUM_FIXED);
-+        else
-+            conf->num_queues =3D 1;
-     }
-=20
-     if (vpci_dev->nvectors =3D=3D DEV_NVECTORS_UNSPECIFIED) {
-diff --git a/include/hw/virtio/virtio-scsi.h b/include/hw/virtio/virtio-scsi.h
-index 779568ab5d..2660bbad22 100644
---- a/include/hw/virtio/virtio-scsi.h
-+++ b/include/hw/virtio/virtio-scsi.h
-@@ -72,6 +72,11 @@ struct VirtIOSCSICommon {
-     VirtQueue *ctrl_vq;
-     VirtQueue *event_vq;
-     VirtQueue **cmd_vqs;
+diff --git a/include/hw/virtio/virtio-blk.h b/include/hw/virtio/virtio-blk.h
+index dafec432ce..dab6d7c70c 100644
+--- a/include/hw/virtio/virtio-blk.h
++++ b/include/hw/virtio/virtio-blk.h
+@@ -65,6 +65,11 @@ struct VirtIOBlock {
+     uint64_t host_features;
+     size_t config_size;
+     BlockRAMRegistrar blk_ram_registrar;
 +    /*
 +     * Set to true if virtqueues allow to be allocated to
 +     * match the number of virtual CPUs automatically.
@@ -219,7 +136,7 @@ index 779568ab5d..2660bbad22 100644
 +    bool auto_num_queues;
  };
 =20
- struct VirtIOSCSIReq;
+ typedef struct VirtIOBlockReq {
 --=20
 2.38.5
 
