@@ -2,73 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E1A177111A
-	for <lists+qemu-devel@lfdr.de>; Sat,  5 Aug 2023 19:44:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DB4277112F
+	for <lists+qemu-devel@lfdr.de>; Sat,  5 Aug 2023 19:59:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qSLJJ-0003Nt-AW; Sat, 05 Aug 2023 13:43:29 -0400
+	id 1qSLXt-0000Ji-2g; Sat, 05 Aug 2023 13:58:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qSLJH-0003Ng-8S
- for qemu-devel@nongnu.org; Sat, 05 Aug 2023 13:43:27 -0400
-Received: from mout.gmx.net ([212.227.15.19])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qSLJF-0000yn-IB
- for qemu-devel@nongnu.org; Sat, 05 Aug 2023 13:43:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1691257401; x=1691862201; i=deller@gmx.de;
- bh=pRiLm6CGY3HVYw+4R0+WU314iO0FUL0kOH2ciq9Ne+s=;
- h=X-UI-Sender-Class:Date:From:To:Cc:Subject:References:In-Reply-To;
- b=Dsr5/zhVKc4qopg2Oo184PUSGY9Hx3AdaWa1m4PpkNOSVZT3jat/fAXWdYXEeVsNKCfqPpv
- cJM0SW/ocLW2eSiYygL/3lEHKYRi47QG4pVZHUOsWu2+644xtu2DJdkxqX4aXw4cNpS+rrMnL
- Drkqyv7fwbe7mRfe4/lC4Vu77VULSp6D2gu2hUjo3lk1l8Sv/3iK5LHVmGhLnoxuPPpFT07QW
- 5zIMFrk1ioC4lLDyr8EKWsOMRUlYLAdc6Es/8RZduwgWDuecE1M+w77xAflfrJC6Nk8g5GjWT
- hUoP1utPu1BthE4OEBiLC0Kv5upcvvF6nM3X00HmmbLBtB9vewng==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from p100 ([94.134.145.133]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MHXBj-1qfrxI3eJF-00DU3z; Sat, 05
- Aug 2023 19:43:21 +0200
-Date: Sat, 5 Aug 2023 19:43:20 +0200
-From: Helge Deller <deller@gmx.de>
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: Helge Deller <deller@gmx.de>, qemu-devel@nongnu.org
-Subject: Re: [RFC][PATCH] Reduce generated code by 3% by increasing MMU indices
-Message-ID: <ZM6KOBfqFLumgpwm@p100>
-References: <ZM59CkNZg5n4WXO3@p100>
- <53a2d13f-b508-0dba-5f0a-1b158372d1a4@linaro.org>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qSLXq-0000JK-Mg
+ for qemu-devel@nongnu.org; Sat, 05 Aug 2023 13:58:30 -0400
+Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qSLXn-0004OP-U0
+ for qemu-devel@nongnu.org; Sat, 05 Aug 2023 13:58:30 -0400
+Received: by mail-pg1-x536.google.com with SMTP id
+ 41be03b00d2f7-564ef63a010so21821a12.0
+ for <qemu-devel@nongnu.org>; Sat, 05 Aug 2023 10:58:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1691258306; x=1691863106;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=8y/eHBmxVsLmGma2dyR9Q5dtplTXJNr7OgFVvcQ9v3s=;
+ b=EYUJp0VR/XpPfl7AYXcf5panqYnaHxw5D93xswSQh/YV7SHzNQeCAXJOL2wMRGMMUg
+ otK4+ql98tZ3PXR3OTDuTNPimgisNGlE19mytequFrfZUj2OzkyY2qALVeB/8KXLJPOR
+ 7DID46LWOfFFMa84pdmJ79LADMUg4NDlc1IQK2vmYy9v6XeZ8jGKb0viq2zHL52nPhrX
+ +97f3YfAy/lvTZphhVwNcMV2Txe0Y0MRhlkm7n3XYxX+b9Om17jxUMiIn4f3jGGMPWP9
+ ABfYjMPN+aGcx55MgmzDvT+uft97Ooses+fR8e63xGoM7ySjju5JeR39mqnaVFBtS4gr
+ 5Mlg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1691258306; x=1691863106;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=8y/eHBmxVsLmGma2dyR9Q5dtplTXJNr7OgFVvcQ9v3s=;
+ b=jEXKG3cTTBxA+wFny9BoGBHPQAu/PwgeQBaQ4s1ElLDr8wBaeaw1jz0tjesW/k2JWq
+ ZO4ULkk5Vavz/9ZL57XVyh+VVZDk/530lFaKi4K3AsHCURedjYA9oek88VZrOWwnAVZE
+ AACSpYnI6ZDXoRoGxs2S4DlPZ1lHK3kPtlKz3No2R1LTcG7KOA6xN3lQLKokebuIcdgW
+ MYzpL2/1tPtMJTKoTBS9sdbixhqW44LhtZ3iJTA3NJ8Jul85BWPf9h8GHGvPOGauJwO8
+ pZvQ0TfM1nonahc74fMuzXHecxZe0+6J94phi9U+d8HLpjGrFYd+rDk5JJY1N9RVJp+H
+ 9kDQ==
+X-Gm-Message-State: AOJu0Yy5zQQQNPTwd+C7DIQWu54jiPJrCFE9Chmy7A/TW1KtVnxd/AtJ
+ tel7dnYMWhA+wjVPewQrm7SJWXO8oB6jXoQboWw=
+X-Google-Smtp-Source: AGHT+IGbvddJ5iaCg8zWcoE9Qbx4tHrdo0Jgl6YE1REPCdqAY4X4tDpdeHzpYMnN0qb31xUBQQZmjQ==
+X-Received: by 2002:a17:90a:d348:b0:267:f1d7:ed68 with SMTP id
+ i8-20020a17090ad34800b00267f1d7ed68mr3713644pjx.14.1691258305838; 
+ Sat, 05 Aug 2023 10:58:25 -0700 (PDT)
+Received: from ?IPV6:2602:47:d490:6901:9454:a46f:1c22:a7c6?
+ ([2602:47:d490:6901:9454:a46f:1c22:a7c6])
+ by smtp.gmail.com with ESMTPSA id
+ em5-20020a17090b014500b002680b2d2ab6sm5942129pjb.19.2023.08.05.10.58.24
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sat, 05 Aug 2023 10:58:25 -0700 (PDT)
+Message-ID: <e4c887b7-a055-3b30-8d41-0e8be0bc5d30@linaro.org>
+Date: Sat, 5 Aug 2023 10:58:23 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <53a2d13f-b508-0dba-5f0a-1b158372d1a4@linaro.org>
-X-Provags-ID: V03:K1:HLJRRXBBLsxb5LbwS82/udupfdiY3//DdBE378rlUsGpvTyNBdu
- QH+yTUw1nHD6gLa7U+h2Lv2CxSO/U2oAca5Fy/Ee9DVV3CXYCZgMXfRWepp2/1hTyvg/mii
- g10nDPf+mECmDoySI2x0VpAan2/N141SYogwu/5MphfhjiLe+nOVvmpJ9SoGAKecrYUkwRP
- ihuvfjOM7sHvhwVxk1SLw==
-UI-OutboundReport: notjunk:1;M01:P0:gejHHyqhcLk=;m95HG4/MGWDOT2RDeuG3esIcnA8
- uDkyibh1QVrB2IXzibAwHzDxSH7J6rLvhbigNtcO3LgAixlhFZGWskQJ64OFfqP1I7O8McOhL
- ewdEj8CwWRfRFqMMMDWrvhgfwntxdgdxptqNlrbMcMyLUFAUGNtmJhtXM0biFN6aQvTRyy0Gt
- ZORRF1aBDenr/bNdmjKUtXkXfS0WUrB9cbz1527rBEPUJtjP+77jl+jHsCBU28zWPxZkzqx+3
- Jgji2BKnouAkH54V4t5mT5bW6T2FNkDQTJNqLLFOTskRJLpm/0GE/91AfReVSbAClh6r4J1gj
- r6HHeAJjLuQPjDSXOV8iDhONXAl5dEUxBTnLbaMEKfHNu14D+9pSW6gJw/gcinN0eGmErbbwp
- jz68d1B+HjTSjkGFDdry1CS3KqXgkXM3TBsiVKx/crrLyud6OAP+XdkpR2cSj5vt/QFpfuAjW
- dWIaHfu8pyRIYuJPS1Z4hwLCjHyh7XR4lYqqnPXOQ3fUV7El6GhcSaQ2qLmMIxm+PomeEK1lb
- wVZGb6aK1ol8uImAhXHbD0sw/8ND5wgrmEFB6EjoMbLDEVVlNU1s/ats9aKtScKNU9GcrwdTU
- 3A0/YMYZ1IkIUQHUo1RADCWXGmheUeUqZQH5mshHxJ6YQ1kLt0OldAcNORs/bwXlTPvFczJR4
- 036gYdqNtyHMt7x7eFzP+rWPi1cuKSmQfFgrs8v3rDoh8fIS/dEIwVPrhQpbD9fA3Qdj1QDtO
- xkt/aSThpR+4b6kpSriGonVC68MohKjexOQMYuq1J7+J8t3O/WMI/Pur5ZuVUv/wgG7Oq/1au
- QzukOw63+buoORZNA87QWhkHlrRyfSzyjq8xOMKv3J7NTxcGLOLENrb+4HNDqaxO8frBtYFr1
- 0su85gGktCwPjwbiyNuBxydC2VFyZME9yXIGebDz+gjtORrJvgObD5kFjlob6GITadioF3/t1
- 4GV+iQ==
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=212.227.15.19; envelope-from=deller@gmx.de;
- helo=mout.gmx.net
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [RFC][PATCH] Reduce generated code by 3% by increasing MMU indices
+Content-Language: en-US
+To: Helge Deller <deller@gmx.de>
+Cc: qemu-devel@nongnu.org
+References: <ZM59CkNZg5n4WXO3@p100>
+ <53a2d13f-b508-0dba-5f0a-1b158372d1a4@linaro.org> <ZM6KOBfqFLumgpwm@p100>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <ZM6KOBfqFLumgpwm@p100>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x536.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,59 +96,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-* Richard Henderson <richard.henderson@linaro.org>:
-> On 8/5/23 09:47, Helge Deller wrote:
-> > Do we want to enable such an performance optimization?
-> > If so, I see two possibilities:
-> >
-> > a) Re-define NB_MMU_MODES per target
->
-> No, we've just gotten rid of per target definitions of NB_MMU_MODES, on =
-the
-> way to being able to support multiple targets simultaneously.
+On 8/5/23 10:43, Helge Deller wrote:
+>> If there were a way to change no more than two lines of code, that would be
+>> fine.  But otherwise I don't see this as being worth making the rest of the
+>> code base any more complex.
+> 
+> Ok. What about that 6-line patch below for x86?
+> It's trivial and all what's needed for x86.
+> Btw, any index which is >= 9 will use the shorter code sequence.
+> 
+> Helge
+> 
+> diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+> index e0771a1043..3e71e666db 100644
+> --- a/target/i386/cpu.h
+> +++ b/target/i386/cpu.h
+> @@ -2251,11 +2251,11 @@ uint64_t cpu_get_tsc(CPUX86State *env);
+>   #define cpu_list x86_cpu_list
+> 
+>   /* MMU modes definitions */
+> -#define MMU_KSMAP_IDX   0
+> -#define MMU_USER_IDX    1
+> -#define MMU_KNOSMAP_IDX 2
+> -#define MMU_NESTED_IDX  3
+> -#define MMU_PHYS_IDX    4
+> +#define MMU_KSMAP_IDX   11
+> +#define MMU_USER_IDX    12
+> +#define MMU_KNOSMAP_IDX 13
+> +#define MMU_NESTED_IDX  14
+> +#define MMU_PHYS_IDX    15
 
-Ok, I assume that answer :-)
+No.  The small patch would need to apply to all guests.
 
-> This only affects x86, and for only 6 bytes per memory access.  While sa=
-ving
-> code size is a nice goal, I sincerely doubt you can measure any performa=
-nce
-> difference.
+Perhaps something to handle indexing of CPUTLBDescFast, e.g.
 
-Maybe. I don't know. I'm sure the gain is small, but the patch is small
-too.
+static inline CPUTLBDescFast cputlb_fast(CPUTLB *tlb, unsigned idx)
+{
+     return &tlb->f[NB_MMU_MODES - 1 - idx];
+}
 
-> If there were a way to change no more than two lines of code, that would=
- be
-> fine.  But otherwise I don't see this as being worth making the rest of =
-the
-> code base any more complex.
+There's already tlb_mask_table_ofs, which handles all tcg backends; you just need to 
+adjust that and cputlb.c.
 
-Ok. What about that 6-line patch below for x86?
-It's trivial and all what's needed for x86.
-Btw, any index which is >=3D 9 will use the shorter code sequence.
+Introduce cputlb_fast with normal indexing in one patch, and then the second patch to 
+invert the indexing may well be exactly two lines.  :-)
 
-Helge
 
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index e0771a1043..3e71e666db 100644
-=2D-- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -2251,11 +2251,11 @@ uint64_t cpu_get_tsc(CPUX86State *env);
- #define cpu_list x86_cpu_list
-
- /* MMU modes definitions */
--#define MMU_KSMAP_IDX   0
--#define MMU_USER_IDX    1
--#define MMU_KNOSMAP_IDX 2
--#define MMU_NESTED_IDX  3
--#define MMU_PHYS_IDX    4
-+#define MMU_KSMAP_IDX   11
-+#define MMU_USER_IDX    12
-+#define MMU_KNOSMAP_IDX 13
-+#define MMU_NESTED_IDX  14
-+#define MMU_PHYS_IDX    15
-
- static inline int cpu_mmu_index(CPUX86State *env, bool ifetch)
- {
+r~
 
