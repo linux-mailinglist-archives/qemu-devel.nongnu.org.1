@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B65397710F8
-	for <lists+qemu-devel@lfdr.de>; Sat,  5 Aug 2023 19:31:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88312771119
+	for <lists+qemu-devel@lfdr.de>; Sat,  5 Aug 2023 19:44:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qSL5b-0003BK-FI; Sat, 05 Aug 2023 13:29:19 -0400
+	id 1qSLIw-0003LJ-HY; Sat, 05 Aug 2023 13:43:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qSL5Z-0003BC-TH
- for qemu-devel@nongnu.org; Sat, 05 Aug 2023 13:29:17 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ id 1qSLIu-0003L5-Eq
+ for qemu-devel@nongnu.org; Sat, 05 Aug 2023 13:43:04 -0400
+Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qSL5Y-0006tK-Dc
- for qemu-devel@nongnu.org; Sat, 05 Aug 2023 13:29:17 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1bb775625e2so21566865ad.1
- for <qemu-devel@nongnu.org>; Sat, 05 Aug 2023 10:29:15 -0700 (PDT)
+ id 1qSLIs-0000vA-RV
+ for qemu-devel@nongnu.org; Sat, 05 Aug 2023 13:43:04 -0400
+Received: by mail-pg1-x532.google.com with SMTP id
+ 41be03b00d2f7-5646f8ac115so1844200a12.2
+ for <qemu-devel@nongnu.org>; Sat, 05 Aug 2023 10:43:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691256554; x=1691861354;
+ d=linaro.org; s=google; t=1691257381; x=1691862181;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=VFQucMGcxUiQRYAptZpESCMqZla5qf5HYotHrpDtrWE=;
- b=R3/o9f07TzlOcuLNmC+LliaRo2sFQ1LmN+pz6sUTvuKuXp+tkRhjmT18EGXF+mKihI
- 0neRPCN4YM+seXyvosPluPN8+sW5NNqhadgIicCj+/pUMH0QEj0VHG26tKGeLEObRTow
- BG/BMyJDpOqjO1Fmrm5J0545A95iEBm/vKYiCA58rA1fECp57WL8KdO3DSM5wATZBxIg
- 9u3tFGrx0ZqC4QoFJoAnpwJCblLqq0x6pEq8/MLNCW2eiIZjRwoo1G0ZLEAEKJ6VnOIV
- 69GcNN/Mbehsx4JBKlJCxL8yi7MRCjWUUOOnUEP/7jIlHf0D/4Ob6Oy48Wi4Gq4+lO0I
- ftyw==
+ bh=4C/XfVA0L5whV04YMYnQZ3hJqVZQgJqXP06rMiiVB8U=;
+ b=YkG6Q7i6Qq81Vsi8RkvAzQM/yLp0RUZZRTHsbbhB9tapZUVXyFF+daUKkXuR+5dtez
+ UlH5/Lgsahaz4uvAo9PdlNm7HT1Pcu2r9CiWbXWiFRCzkw8pfl5bX4xpFrqwZWoAQd//
+ BF+oZmp2cIejnp9AUCsiF1gvs5N+8K7iAZ1iKUj2eeqzYDiUGtyijLhS5LBihEYVc8tM
+ IbxJ/L/Uposb1DRd0o4YiAsE5eGPZG7YoVba5YfhQCrOPkCnFvyuh+3Mv51CDc9EIJYs
+ fcAr0+L1oWx3WEyST9HAxcMVUm8ZS7jTjtCF7eMfi3GmpxtyLKkVpNJCrpa+bIu69D9T
+ tYtg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691256554; x=1691861354;
+ d=1e100.net; s=20221208; t=1691257381; x=1691862181;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=VFQucMGcxUiQRYAptZpESCMqZla5qf5HYotHrpDtrWE=;
- b=KUglgxcrsXQrCv0vt9j3e4vMPL6WC2SVEngAdGBxlXOnXAKXznF6YSuxIWLwycl8Mf
- DxS2mJOfEMOVK+EiwI3OfQ8FwZEuTmR+K+7EFDNCHpIT5LYfZuK05h2sCUPZKZGWAHTx
- ZCj6xFTcTuClBerBVSMIJti9VUc5CIN1kjXa+UZi5GBAdH/W6OqAWa9EEql6rHIVLiOt
- 16ZK3sOcyINTMWjSKgQ+k7ClWG/CgbOCBCswz/YUdwklPbme+43v2owVbRqCXUkAItJG
- F6a8RRbU8f3DKBCVIjs+jRy+OnvGPzlTwXcBIwxBX5vypMgbZY6UHZzz5cYeqLok8qqT
- nF3w==
-X-Gm-Message-State: AOJu0YyyM1zijLTzDqJhFJdIqVW0A5HOrlRayf78UikPceMbdd0Rt7Uf
- vugvLpQ3WEnIYW9wLyIPKa6Tvg==
-X-Google-Smtp-Source: AGHT+IHymBJRoc80Eu/bkgfUz9v3dOpw1o3+6LJL/8Ko+I5Nm7bFGd4I6ISS0DPo6OYXVVh1fJYwZg==
-X-Received: by 2002:a17:902:a3c8:b0:1b8:8702:1e7c with SMTP id
- q8-20020a170902a3c800b001b887021e7cmr2979654plb.33.1691256554564; 
- Sat, 05 Aug 2023 10:29:14 -0700 (PDT)
+ bh=4C/XfVA0L5whV04YMYnQZ3hJqVZQgJqXP06rMiiVB8U=;
+ b=YawJ0/DSIqBXysnu3PuZxOjS0bzu/H64G1btpzkYQK9C6Td9aKcCxDNU6up+JHug/s
+ AROeKxxaD/68q2UW6o/PpgOVTQi7OS53jzjCDSkWx8q6Pqe62M7OPiHSznc0A7JavmoQ
+ V7u/qCfCegM6OVy3awwzsMusRWlP/i+3Zeu64tSCxld6Yv3UTGkGq0/gTnEuot7z9z8J
+ Tv4bXHQgYg8JqcKzf6/l2Kb8cZzdFN6PE4l3m+3sB3mSnQGJ3mclG2qZRXTKrLBGwqjv
+ 80qFtb4EdZXg8FIMQYCBjyjWuKPQ6z2NrVE6ZYdZvquEUMXCfrwHjy1twT+3YxouvBPX
+ ckpw==
+X-Gm-Message-State: AOJu0YzL7tFtJoZn6OEOIWVPkiwg5e0rKa6OjJRSUxQntffsCo9rJBF4
+ lR4qn/uzc+inlrSEByjdfxx35g==
+X-Google-Smtp-Source: AGHT+IHq47mWF3Cg4bCXhTIfVvmQVbDcJEmU3OYUTRTV86LzX+SCCyasiXH6lPoj1B+FlOcMOGLvMw==
+X-Received: by 2002:a17:90b:ed4:b0:262:df91:cdce with SMTP id
+ gz20-20020a17090b0ed400b00262df91cdcemr3608334pjb.23.1691257380721; 
+ Sat, 05 Aug 2023 10:43:00 -0700 (PDT)
 Received: from ?IPV6:2602:47:d490:6901:9454:a46f:1c22:a7c6?
  ([2602:47:d490:6901:9454:a46f:1c22:a7c6])
  by smtp.gmail.com with ESMTPSA id
- w29-20020a63935d000000b0055bf13811f5sm2627789pgm.15.2023.08.05.10.29.13
+ 30-20020a17090a005e00b0025023726fc4sm6462913pjb.26.2023.08.05.10.42.59
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 05 Aug 2023 10:29:14 -0700 (PDT)
-Message-ID: <53a2d13f-b508-0dba-5f0a-1b158372d1a4@linaro.org>
-Date: Sat, 5 Aug 2023 10:29:12 -0700
+ Sat, 05 Aug 2023 10:43:00 -0700 (PDT)
+Message-ID: <a607f987-b6cf-47ef-f483-05748c573431@linaro.org>
+Date: Sat, 5 Aug 2023 10:42:58 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [RFC][PATCH] Reduce generated code by 3% by increasing MMU indices
+Subject: Re: [PULL 0/2] Fixes for x86 TCG and CirrusCI
 Content-Language: en-US
-To: Helge Deller <deller@gmx.de>, qemu-devel@nongnu.org
-References: <ZM59CkNZg5n4WXO3@p100>
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+References: <20230804200715.430592-1-pbonzini@redhat.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <ZM59CkNZg5n4WXO3@p100>
+In-Reply-To: <20230804200715.430592-1-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::532;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x532.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -94,21 +94,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/5/23 09:47, Helge Deller wrote:
-> Do we want to enable such an performance optimization?
-> If so, I see two possibilities:
+On 8/4/23 13:07, Paolo Bonzini wrote:
+> The following changes since commit c26d005e62f4fd177dae0cd70c24cb96761edebc:
 > 
-> a) Re-define NB_MMU_MODES per target
+>    Merge tag 'hppa-linux-user-speedup-pull-request' ofhttps://github.com/hdeller/qemu-hppa  into staging (2023-08-03 18:49:45 -0700)
+> 
+> are available in the Git repository at:
+> 
+>    https://gitlab.com/bonzini/qemu.git  tags/for-upstream
+> 
+> for you to fetch changes up to d9ab1f1f4d79683b2db00b0995fa65530c535972:
+> 
+>    ci: install meson in CirrusCI KVM build environment (2023-08-04 13:56:17 +0200)
+> 
+> ----------------------------------------------------------------
+> * fix VM build jobs on CirrusCI
+> * fix MMX instructions clobbering x87 state before raising #NM
 
-No, we've just gotten rid of per target definitions of NB_MMU_MODES, on the way to being 
-able to support multiple targets simultaneously.
-
-This only affects x86, and for only 6 bytes per memory access.  While saving code size is 
-a nice goal, I sincerely doubt you can measure any performance difference.
-
-If there were a way to change no more than two lines of code, that would be fine.  But 
-otherwise I don't see this as being worth making the rest of the code base any more complex.
+Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
 
 
 r~
+
 
