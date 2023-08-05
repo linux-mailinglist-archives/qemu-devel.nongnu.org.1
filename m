@@ -2,41 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAE8B770FB9
-	for <lists+qemu-devel@lfdr.de>; Sat,  5 Aug 2023 14:53:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4793D770FEC
+	for <lists+qemu-devel@lfdr.de>; Sat,  5 Aug 2023 15:29:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qSGlE-0006Mt-Jx; Sat, 05 Aug 2023 08:52:00 -0400
+	id 1qSHKO-0004l4-KG; Sat, 05 Aug 2023 09:28:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <negge@xiph.org>) id 1qSGlC-0006MV-Gy
- for qemu-devel@nongnu.org; Sat, 05 Aug 2023 08:51:58 -0400
-Received: from mailfish.xiph.osuosl.org ([140.211.166.35]
- helo=mailfish.xiph.org) by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <negge@xiph.org>) id 1qSGlA-0006a4-5y
- for qemu-devel@nongnu.org; Sat, 05 Aug 2023 08:51:58 -0400
-Received: from localhost.localdomain (c-24-126-94-29.hsd1.wv.comcast.net
- [24.126.94.29])
- by mailfish.xiph.org (Postfix) with ESMTPSA id 92B3D9F8A1;
- Sat,  5 Aug 2023 12:51:51 +0000 (UTC)
-From: Nathan Egge <negge@xiph.org>
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>, Helge Deller <deller@gmx.de>,
- qemu-devel@nongnu.org, "Nathan Egge" <negge@xiph.org>
-Subject: [PATCH] Fix scripts/checkpatch.py style failures.
-Date: Sat,  5 Aug 2023 08:51:24 -0400
-Message-Id: <20230805125124.42482-1-negge@xiph.org>
-X-Mailer: git-send-email 2.35.1
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qSHKM-0004kl-2Z
+ for qemu-devel@nongnu.org; Sat, 05 Aug 2023 09:28:18 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qSHKK-0004s7-1H
+ for qemu-devel@nongnu.org; Sat, 05 Aug 2023 09:28:17 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 46E28185E2;
+ Sat,  5 Aug 2023 16:28:30 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 8AC9B1BA09;
+ Sat,  5 Aug 2023 16:28:08 +0300 (MSK)
+Message-ID: <7390dbf4-169f-5d79-da94-ebc0986f1580@tls.msk.ru>
+Date: Sat, 5 Aug 2023 16:28:08 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=140.211.166.35; envelope-from=negge@xiph.org;
- helo=mailfish.xiph.org
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.1
+Subject: Re: [PATCH v9 for-8.1 00/24] linux-user + tcg patch queue
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20230804220032.295411-1-richard.henderson@linaro.org>
+From: Michael Tokarev <mjt@tls.msk.ru>
+Cc: Helge Deller <deller@gmx.de>, Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <20230804220032.295411-1-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -69
+X-Spam_score: -7.0
+X-Spam_bar: -------
+X-Spam_report: (-7.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.089,
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -52,40 +59,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "Nathan Egge" <negge@xiph.org>
+05.08.2023 01:00, Richard Henderson wrpte:
+> Supercedes: 20230804014517.6361-1-richard.henderson@linaro.org
+> ("[PATCH for-8.1 v8 00/17] linux-user: brk fixes")
+> 
+> Changes for linux-user brk v9:
+>    Recover some changes that should have been in v8, had I
+>    generated the patches from the correct tree:
+>      - bsd-user: Remove last_brk
+>      - Fix typos in patch 15 ("Define ELF_ET_DYN_BASE...")
+>      - Disable -Werror=type-limits in patch 13
+>        ("linux-user: Adjust task_unmapped_base")
 
-Signed-off-by: Nathan Egge <negge@xiph.org>
----
- linux-user/syscall.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+FWIW.
 
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 95727a816a..38ab2201e2 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -863,8 +863,8 @@ abi_long do_brk(abi_ulong brk_val)
-     if (new_host_brk_page > brk_page) {
-         new_alloc_size = new_host_brk_page - brk_page;
-         mapped_addr = get_errno(target_mmap(brk_page, new_alloc_size,
--                                        PROT_READ|PROT_WRITE,
--                                        MAP_ANON|MAP_PRIVATE, 0, 0));
-+                                        PROT_READ | PROT_WRITE,
-+                                        MAP_ANON | MAP_PRIVATE, 0, 0));
-     } else {
-         new_alloc_size = 0;
-         mapped_addr = brk_page;
-@@ -6128,8 +6128,8 @@ static abi_long write_ldt(CPUX86State *env,
-     if (!ldt_table) {
-         env->ldt.base = target_mmap(0,
-                                     TARGET_LDT_ENTRIES * TARGET_LDT_ENTRY_SIZE,
--                                    PROT_READ|PROT_WRITE,
--                                    MAP_ANONYMOUS|MAP_PRIVATE, -1, 0);
-+                                    PROT_READ | PROT_WRITE,
-+                                    MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
-         if (env->ldt.base == -1)
-             return -TARGET_ENOMEM;
-         memset(g2h_untagged(env->ldt.base), 0,
--- 
-2.35.1
+qemu-8.1 rc, with or without this patch set, does not work in
+old aarch64 environment at all. F.e. ubuntu xenial or debian
+jessie, like this:
 
+# chroot /tmp/jessie-arm64/
+qemu: uncaught target signal 11 (Segmentation fault) - core dumped
+Segmentation fault
+
+dash works, but bash or ls gives such sigsegv.
+
+$ gdb qemu-aarch64 /tmp/jessie-arm64/core
+GNU gdb (Debian 13.1-3) 13.1
+...
+[New LWP 2021520]
+[New LWP 2021522]
+
+warning: Section `.reg-xstate/2021520' in core file too small.
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+Core was generated by `/tmp/qemu-aarch64 /bin/ls'.
+Program terminated with signal SIGSEGV, Segmentation fault.
+
+warning: Section `.reg-xstate/2021520' in core file too small.
+#0  0x00007fa931538c31 in sigsuspend ()
+[Current thread is 1 (Thread 0x5555573144c0 (LWP 2021520))]
+warning: File "/build/qemu/test/.gdbinit" auto-loading has been declined by your `auto-load safe-path' set to "$debugdir:$datadir/auto-load".
+To enable execution of this file add
+	add-auto-load-safe-path /build/qemu/test/.gdbinit
+line to your configuration file "/home/mjt/.config/gdb/gdbinit".
+To completely disable this security protection add
+	set auto-load safe-path /
+line to your configuration file "/home/mjt/.config/gdb/gdbinit".
+For more information about this security protection see the
+"Auto-loading safe path" section in the GDB manual.  E.g., run from the shell:
+	info "(gdb)Auto-loading safe path"
+(gdb) bt
+#0  0x00007fa931538c31 in sigsuspend ()
+#1  0x00007fa93136f670 in dump_core_and_abort (cpu_env=cpu_env@entry=0x555557328800, target_sig=target_sig@entry=11) at ../linux-user/signal.c:747
+#2  0x00007fa93136f9f5 in handle_pending_signal (cpu_env=0x555557328800, sig=11, k=0x555557390d80) at ../linux-user/signal.c:1068
+#3  0x00007fa9313716b5 in process_pending_signals (cpu_env=cpu_env@entry=0x555557328800) at ../linux-user/signal.c:1143
+#4  0x00007fa93118f09a in cpu_loop (env=env@entry=0x555557328800) at ../linux-user/aarch64/cpu_loop.c:179
+#5  0x00007fa93118a498 in main (argc=<optimized out>, argv=0x7ffea05e15d8, envp=<optimized out>) at ../linux-user/main.c:1014
+(gdb) frame 2
+#2  0x00007fa93136f9f5 in handle_pending_signal (cpu_env=0x555557328800, sig=11, k=0x555557390d80) at ../linux-user/signal.c:1068
+1068	        dump_core_and_abort(cpu_env, sig);
+(gdb) frame 3
+#3  0x00007fa9313716b5 in process_pending_signals (cpu_env=cpu_env@entry=0x555557328800) at ../linux-user/signal.c:1143
+1143	            handle_pending_signal(cpu_env, sig, &ts->sync_signal);
+(gdb) l
+1138	                || sigact_table[sig - 1]._sa_handler == TARGET_SIG_IGN) {
+1139	                sigdelset(&ts->signal_mask, target_to_host_signal_table[sig]);
+1140	                sigact_table[sig - 1]._sa_handler = TARGET_SIG_DFL;
+1141	            }
+1142	
+1143	            handle_pending_signal(cpu_env, sig, &ts->sync_signal);
+1144	        }
+1145	
+1146	        for (sig = 1; sig <= TARGET_NSIG; sig++) {
+1147	            blocked_set = ts->in_sigsuspend ?
+(gdb)
+
+
+Is it worth to bisect?
+
+/mjt
 
