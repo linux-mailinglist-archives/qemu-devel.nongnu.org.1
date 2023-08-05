@@ -2,27 +2,27 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FC077711D8
-	for <lists+qemu-devel@lfdr.de>; Sat,  5 Aug 2023 21:40:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 703B87711DC
+	for <lists+qemu-devel@lfdr.de>; Sat,  5 Aug 2023 21:40:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qSN6p-00012e-Jf; Sat, 05 Aug 2023 15:38:43 -0400
+	id 1qSN6q-000138-7J; Sat, 05 Aug 2023 15:38:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qSN6m-00011o-G4; Sat, 05 Aug 2023 15:38:40 -0400
+ id 1qSN6n-00012I-Ob; Sat, 05 Aug 2023 15:38:41 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qSN6k-0007Fh-K2; Sat, 05 Aug 2023 15:38:40 -0400
+ id 1qSN6l-0007Fp-3A; Sat, 05 Aug 2023 15:38:41 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 3287918644;
+ by isrv.corpit.ru (Postfix) with ESMTP id 56E0118645;
  Sat,  5 Aug 2023 22:38:35 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id E5BCC1BA3C;
- Sat,  5 Aug 2023 22:38:12 +0300 (MSK)
-Received: (nullmailer pid 69536 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 315221BA3D;
+ Sat,  5 Aug 2023 22:38:13 +0300 (MSK)
+Received: (nullmailer pid 69539 invoked by uid 1000);
  Sat, 05 Aug 2023 19:38:11 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
@@ -30,10 +30,10 @@ Cc: qemu-stable@nongnu.org, Nicholas Piggin <npiggin@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.5 41/44] target/ppc: Implement ASDR register for ISA v3.0
- for HPT
-Date: Sat,  5 Aug 2023 22:38:04 +0300
-Message-Id: <20230805193811.69490-5-mjt@tls.msk.ru>
+Subject: [Stable-7.2.5 42/44] target/ppc: Fix pending HDEC when entering PM
+ state
+Date: Sat,  5 Aug 2023 22:38:05 +0300
+Message-Id: <20230805193811.69490-6-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.5-20230805210608@cover.tls.msk.ru>
 References: <qemu-stable-7.2.5-20230805210608@cover.tls.msk.ru>
@@ -64,119 +64,37 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Nicholas Piggin <npiggin@gmail.com>
 
-The ASDR register was introduced in ISA v3.0. It has not been
-implemented for HPT. With HPT, ASDR is the format of the slbmte RS
-operand (containing VSID), which matches the ppc_slb_t field.
+HDEC is defined to not wake from PM state. There is a check in the HDEC
+timer to avoid setting the interrupt if we are in a PM state, but no
+check on PM entry to lower HDEC if it already fired. This can cause a
+HDECR wake up and  QEMU abort with unsupported exception in Power Save
+mode.
 
-Fixes: 3367c62f522b ("target/ppc: Support for POWER9 native hash")
+Fixes: 4b236b621bf ("ppc: Initial HDEC support")
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 Reviewed-by: Cédric Le Goater <clg@kaod.org>
-Message-ID: <20230726182230.433945-2-npiggin@gmail.com>
+Message-ID: <20230726182230.433945-4-npiggin@gmail.com>
 Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
-(cherry picked from commit 9201af096962a1967ce5d0b270ed16ae4edd3db6)
+(cherry picked from commit 9915dac4847f3cc5ffd36e4c374a4eec83fe09b5)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/ppc/mmu-hash64.c b/target/ppc/mmu-hash64.c
-index b9b31fd276..2d8ed461c3 100644
---- a/target/ppc/mmu-hash64.c
-+++ b/target/ppc/mmu-hash64.c
-@@ -770,7 +770,8 @@ static bool ppc_hash64_use_vrma(CPUPPCState *env)
-     }
- }
+diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
+index 6cf88f635a..839d95c1eb 100644
+--- a/target/ppc/excp_helper.c
++++ b/target/ppc/excp_helper.c
+@@ -2645,6 +2645,12 @@ void helper_pminsn(CPUPPCState *env, uint32_t insn)
+     env->resume_as_sreset = (insn != PPC_PM_STOP) ||
+         (env->spr[SPR_PSSCR] & PSSCR_EC);
  
--static void ppc_hash64_set_isi(CPUState *cs, int mmu_idx, uint64_t error_code)
-+static void ppc_hash64_set_isi(CPUState *cs, int mmu_idx, uint64_t slb_vsid,
-+                               uint64_t error_code)
- {
-     CPUPPCState *env = &POWERPC_CPU(cs)->env;
-     bool vpm;
-@@ -782,13 +783,15 @@ static void ppc_hash64_set_isi(CPUState *cs, int mmu_idx, uint64_t error_code)
-     }
-     if (vpm && !mmuidx_hv(mmu_idx)) {
-         cs->exception_index = POWERPC_EXCP_HISI;
-+        env->spr[SPR_ASDR] = slb_vsid;
-     } else {
-         cs->exception_index = POWERPC_EXCP_ISI;
-     }
-     env->error_code = error_code;
++    /* HDECR is not to wake from PM state, it may have already fired */
++    if (env->resume_as_sreset) {
++        PowerPCCPU *cpu = env_archcpu(env);
++        ppc_set_irq(cpu, PPC_INTERRUPT_HDECR, 0);
++    }
++
+     ppc_maybe_interrupt(env);
  }
- 
--static void ppc_hash64_set_dsi(CPUState *cs, int mmu_idx, uint64_t dar, uint64_t dsisr)
-+static void ppc_hash64_set_dsi(CPUState *cs, int mmu_idx, uint64_t slb_vsid,
-+                               uint64_t dar, uint64_t dsisr)
- {
-     CPUPPCState *env = &POWERPC_CPU(cs)->env;
-     bool vpm;
-@@ -802,6 +805,7 @@ static void ppc_hash64_set_dsi(CPUState *cs, int mmu_idx, uint64_t dar, uint64_t
-         cs->exception_index = POWERPC_EXCP_HDSI;
-         env->spr[SPR_HDAR] = dar;
-         env->spr[SPR_HDSISR] = dsisr;
-+        env->spr[SPR_ASDR] = slb_vsid;
-     } else {
-         cs->exception_index = POWERPC_EXCP_DSI;
-         env->spr[SPR_DAR] = dar;
-@@ -963,13 +967,13 @@ bool ppc_hash64_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
-                 }
-                 switch (access_type) {
-                 case MMU_INST_FETCH:
--                    ppc_hash64_set_isi(cs, mmu_idx, SRR1_PROTFAULT);
-+                    ppc_hash64_set_isi(cs, mmu_idx, 0, SRR1_PROTFAULT);
-                     break;
-                 case MMU_DATA_LOAD:
--                    ppc_hash64_set_dsi(cs, mmu_idx, eaddr, DSISR_PROTFAULT);
-+                    ppc_hash64_set_dsi(cs, mmu_idx, 0, eaddr, DSISR_PROTFAULT);
-                     break;
-                 case MMU_DATA_STORE:
--                    ppc_hash64_set_dsi(cs, mmu_idx, eaddr,
-+                    ppc_hash64_set_dsi(cs, mmu_idx, 0, eaddr,
-                                        DSISR_PROTFAULT | DSISR_ISSTORE);
-                     break;
-                 default:
-@@ -1022,7 +1026,7 @@ bool ppc_hash64_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
-     /* 3. Check for segment level no-execute violation */
-     if (access_type == MMU_INST_FETCH && (slb->vsid & SLB_VSID_N)) {
-         if (guest_visible) {
--            ppc_hash64_set_isi(cs, mmu_idx, SRR1_NOEXEC_GUARD);
-+            ppc_hash64_set_isi(cs, mmu_idx, slb->vsid, SRR1_NOEXEC_GUARD);
-         }
-         return false;
-     }
-@@ -1035,13 +1039,14 @@ bool ppc_hash64_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
-         }
-         switch (access_type) {
-         case MMU_INST_FETCH:
--            ppc_hash64_set_isi(cs, mmu_idx, SRR1_NOPTE);
-+            ppc_hash64_set_isi(cs, mmu_idx, slb->vsid, SRR1_NOPTE);
-             break;
-         case MMU_DATA_LOAD:
--            ppc_hash64_set_dsi(cs, mmu_idx, eaddr, DSISR_NOPTE);
-+            ppc_hash64_set_dsi(cs, mmu_idx, slb->vsid, eaddr, DSISR_NOPTE);
-             break;
-         case MMU_DATA_STORE:
--            ppc_hash64_set_dsi(cs, mmu_idx, eaddr, DSISR_NOPTE | DSISR_ISSTORE);
-+            ppc_hash64_set_dsi(cs, mmu_idx, slb->vsid, eaddr,
-+                               DSISR_NOPTE | DSISR_ISSTORE);
-             break;
-         default:
-             g_assert_not_reached();
-@@ -1075,7 +1080,7 @@ bool ppc_hash64_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
-             if (PAGE_EXEC & ~amr_prot) {
-                 srr1 |= SRR1_IAMR; /* Access violates virt pg class key prot */
-             }
--            ppc_hash64_set_isi(cs, mmu_idx, srr1);
-+            ppc_hash64_set_isi(cs, mmu_idx, slb->vsid, srr1);
-         } else {
-             int dsisr = 0;
-             if (need_prot & ~pp_prot) {
-@@ -1087,7 +1092,7 @@ bool ppc_hash64_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
-             if (need_prot & ~amr_prot) {
-                 dsisr |= DSISR_AMR;
-             }
--            ppc_hash64_set_dsi(cs, mmu_idx, eaddr, dsisr);
-+            ppc_hash64_set_dsi(cs, mmu_idx, slb->vsid, eaddr, dsisr);
-         }
-         return false;
-     }
+ #endif /* defined(TARGET_PPC64) */
 -- 
 2.39.2
 
