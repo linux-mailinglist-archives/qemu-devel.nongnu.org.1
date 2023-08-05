@@ -2,27 +2,27 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC3367711D4
+	by mail.lfdr.de (Postfix) with ESMTPS id C94FC7711D3
 	for <lists+qemu-devel@lfdr.de>; Sat,  5 Aug 2023 21:40:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qSN6m-000118-Dj; Sat, 05 Aug 2023 15:38:40 -0400
+	id 1qSN6o-000124-ET; Sat, 05 Aug 2023 15:38:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qSN6j-00010d-8o; Sat, 05 Aug 2023 15:38:37 -0400
+ id 1qSN6j-00010n-Lf; Sat, 05 Aug 2023 15:38:37 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qSN6h-0007FH-J4; Sat, 05 Aug 2023 15:38:37 -0400
+ id 1qSN6i-0007FO-2P; Sat, 05 Aug 2023 15:38:37 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id B0BFF18642;
+ by isrv.corpit.ru (Postfix) with ESMTP id E634B18643;
  Sat,  5 Aug 2023 22:38:34 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 728151BA3A;
+ by tsrv.corpit.ru (Postfix) with SMTP id AF3D21BA3B;
  Sat,  5 Aug 2023 22:38:12 +0300 (MSK)
-Received: (nullmailer pid 69530 invoked by uid 1000);
+Received: (nullmailer pid 69533 invoked by uid 1000);
  Sat, 05 Aug 2023 19:38:11 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
@@ -31,10 +31,10 @@ Cc: qemu-stable@nongnu.org, Hawkins Jiawei <yin31149@gmail.com>,
  =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
  Lei Yang <leiyang@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.5 39/44] vdpa: Return -EIO if device ack is
- VIRTIO_NET_ERR in _load_mac()
-Date: Sat,  5 Aug 2023 22:38:02 +0300
-Message-Id: <20230805193811.69490-3-mjt@tls.msk.ru>
+Subject: [Stable-7.2.5 40/44] vdpa: Return -EIO if device ack is
+ VIRTIO_NET_ERR in _load_mq()
+Date: Sat,  5 Aug 2023 22:38:03 +0300
+Message-Id: <20230805193811.69490-4-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.5-20230805210608@cover.tls.msk.ru>
 References: <qemu-stable-7.2.5-20230805210608@cover.tls.msk.ru>
@@ -74,7 +74,7 @@ if ack is not VIRTIO_NET_OK."
 Therefore, QEMU should stop sending the queued SVQ commands and
 cancel the device startup if the device's ack is not VIRTIO_NET_OK.
 
-Yet the problem is that, vhost_vdpa_net_load_mac() returns 1 based on
+Yet the problem is that, vhost_vdpa_net_load_mq() returns 1 based on
 `*s->status != VIRTIO_NET_OK` when the device's ack is VIRTIO_NET_ERR.
 As a result, net->nc->info->load() also returns 1, this makes
 vhost_net_start_one() incorrectly assume the device state is
@@ -86,33 +86,34 @@ negative value.
 This patch fixes this problem by returning -EIO when the device's
 ack is not VIRTIO_NET_OK.
 
-Fixes: f73c0c43ac ("vdpa: extract vhost_vdpa_net_load_mac from vhost_vdpa_net_load")
+Fixes: f64c7cda69 ("vdpa: Add vhost_vdpa_net_load_mq")
 Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
 Acked-by: Jason Wang <jasowang@redhat.com>
 Acked-by: Eugenio Pérez <eperezma@redhat.com>
-Message-Id: <a21731518644abbd0c495c5b7960527c5911f80d.1688438055.git.yin31149@gmail.com>
+Message-Id: <ec515ebb0b4f56368751b9e318e245a5d994fa72.1688438055.git.yin31149@gmail.com>
 Tested-by: Lei Yang <leiyang@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit b479bc3c9d5e473553137641fd31069c251f0d6e)
+(cherry picked from commit f45fd95ec9e8104f6af801c734375029dda0f542)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index 3a6cbc47bb..2c3a9e138f 100644
+index 2c3a9e138f..1b1a27de02 100644
 --- a/net/vhost-vdpa.c
 +++ b/net/vhost-vdpa.c
-@@ -403,8 +403,9 @@ static int vhost_vdpa_net_load_mac(VhostVDPAState *s, const VirtIONet *n)
-         if (unlikely(dev_written < 0)) {
-             return dev_written;
-         }
--
--        return *s->status != VIRTIO_NET_OK;
-+        if (*s->status != VIRTIO_NET_OK) {
-+            return -EIO;
-+        }
+@@ -429,8 +429,11 @@ static int vhost_vdpa_net_load_mq(VhostVDPAState *s,
+     if (unlikely(dev_written < 0)) {
+         return dev_written;
      }
++    if (*s->status != VIRTIO_NET_OK) {
++        return -EIO;
++    }
  
-     return 0;
+-    return *s->status != VIRTIO_NET_OK;
++    return 0;
+ }
+ 
+ static int vhost_vdpa_net_load(NetClientState *nc)
 -- 
 2.39.2
 
