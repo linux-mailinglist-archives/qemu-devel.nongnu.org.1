@@ -2,70 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 834E9770E7A
-	for <lists+qemu-devel@lfdr.de>; Sat,  5 Aug 2023 09:36:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36584770E93
+	for <lists+qemu-devel@lfdr.de>; Sat,  5 Aug 2023 09:52:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qSBoq-0001KT-1r; Sat, 05 Aug 2023 03:35:24 -0400
+	id 1qSC3r-0007sv-1A; Sat, 05 Aug 2023 03:50:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qSBoT-0001JG-Fd
- for qemu-devel@nongnu.org; Sat, 05 Aug 2023 03:35:01 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1qSC3p-0007sN-7H
+ for qemu-devel@nongnu.org; Sat, 05 Aug 2023 03:50:53 -0400
+Received: from mail-b.sr.ht ([173.195.146.151])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qSBoR-0002V2-CP
- for qemu-devel@nongnu.org; Sat, 05 Aug 2023 03:35:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691220897;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=VD6tq5DuG6W+iDFtI+olY4gS9Pn1x22DVbWf/45qlNI=;
- b=SizoeByo8XO9aWmC6kGGiepOGzgPos9O7LRrdd7ws81G4a9EqEjoeV3A/SKiEVYofsOYJB
- +S4tiuWaad2cCpVYIAaDcatff8nA6Q+NjDhnbeQI6BPoUPSgHkxgJ8uOryMVG9c4PTkRXb
- b/0T/LSBu2gHm2/2QN+fOLsmtC7aVRo=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-428-5SFArG8KPDyOgXBlznDihg-1; Sat, 05 Aug 2023 03:34:55 -0400
-X-MC-Unique: 5SFArG8KPDyOgXBlznDihg-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DB52E88D196;
- Sat,  5 Aug 2023 07:34:54 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.193.50])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 8816C4021B9;
- Sat,  5 Aug 2023 07:34:54 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 61DE321E692A; Sat,  5 Aug 2023 09:34:53 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Andrew Melnychenko <andrew@daynix.com>
-Cc: jasowang@redhat.com,  mst@redhat.com,  armbru@redhat.com,
- eblake@redhat.com,  berrange@redhat.com,  qemu-devel@nongnu.org,
- yuri.benditovich@daynix.com,  yan@daynix.com
-Subject: Re: [PATCH v5 4/5] qmp: Added new command to retrieve eBPF blob.
-References: <20230802204125.33688-1-andrew@daynix.com>
- <20230802204125.33688-5-andrew@daynix.com>
-Date: Sat, 05 Aug 2023 09:34:53 +0200
-In-Reply-To: <20230802204125.33688-5-andrew@daynix.com> (Andrew Melnychenko's
- message of "Wed, 2 Aug 2023 23:41:22 +0300")
-Message-ID: <87sf8yx7qa.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1qSC3n-0005DB-B6
+ for qemu-devel@nongnu.org; Sat, 05 Aug 2023 03:50:52 -0400
+Authentication-Results: mail-b.sr.ht; dkim=none 
+Received: from git.sr.ht (unknown [173.195.146.142])
+ by mail-b.sr.ht (Postfix) with ESMTPSA id 959EE11EE06;
+ Sat,  5 Aug 2023 07:50:49 +0000 (UTC)
+From: ~hyman <hyman@git.sr.ht>
+Date: Sat, 05 Aug 2023 07:50:49 +0000
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Subject: [PATCH QEMU 0/3] provide a smooth upgrade solution for multi-queues
+ disk
+Message-ID: <169122184935.7839.16786323109706183366-0@git.sr.ht>
+X-Mailer: git.sr.ht
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Raphael Norwitz <raphael.norwitz@nutanix.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=173.195.146.151; envelope-from=outgoing@sr.ht;
+ helo=mail-b.sr.ht
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,245 +54,72 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: ~hyman <yong.huang@smartx.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Andrew Melnychenko <andrew@daynix.com> writes:
+A 1:1 virtqueue:vCPU mapping implementation for virtio-*-pci disk
+introduced since qemu >=3D 5.2.0, which improves IO performance
+remarkably. To enjoy this feature for exiting running VMs without
+service interruption, the common solution is to migrate VMs from the
+lower version of the hypervisor to the upgraded hypervisor, then wait
+for the next cold reboot of the VM to enable this feature. That's the
+way "discard" and "write-zeroes" features work.
 
-> Now, the binary objects may be retrieved by id.
-> It would require for future qmp commands that may require specific
-> eBPF blob.
->
-> Added command "request-ebpf". This command returns
-> eBPF program encoded base64. The program taken from the
-> skeleton and essentially is an ELF object that can be
-> loaded in the future with libbpf.
->
-> The reason to use the command to provide the eBPF object
-> instead of a separate artifact was to avoid issues related
-> to finding the eBPF itself. eBPF object is an ELF binary
-> that contains the eBPF program and eBPF map description(BTF).
-> Overall, eBPF object should contain the program and enough
-> metadata to create/load eBPF with libbpf. As the eBPF
-> maps/program should correspond to QEMU, the eBPF can't
-> be used from different QEMU build.
->
-> The first solution was a helper that comes with QEMU
-> and loads appropriate eBPF objects. And the issue is
-> to find a proper helper if the system has several
-> different QEMUs installed and/or built from the source,
-> which helpers may not be compatible.
->
-> Another issue is QEMU updating while there is a running
-> QEMU instance. With an updated helper, it may not be
-> possible to hotplug virtio-net device to the already
-> running QEMU. Overall, requesting the eBPF object from
-> QEMU itself solves possible failures with acceptable effort.
->
-> Links:
-> [PATCH 3/5] qmp: Added the helper stamp check.
-> https://lore.kernel.org/all/20230219162100.174318-4-andrew@daynix.com/
->
-> Signed-off-by: Andrew Melnychenko <andrew@daynix.com>
-> ---
+As to multi-queues disk allocation automatically, it's a little
+different because the destination will allocate queues to match the
+number of vCPUs automatically by default in the case of live migration,
+and the VMs on the source side remain 1 queue by default, which results
+in migration failure due to loading disk VMState incorrectly on the
+destination side. This issue requires Qemu to provide a hint that shows
+multi-queues disk allocation is automatically supported, and this allows
+upper APPs, e.g., libvirt, to recognize the hypervisor's capability of
+this. And upper APPs can ensure to allocate the same num-queues on the
+destination side in case of migration failure.
 
-[...]
+To fix the issue, we introduce the auto-num-queues property for
+virtio-*-pci as a solution, which would be probed by APPs, e.g., libvirt
+by querying the device properties of QEMU. When launching live
+migration, libvirt will send the auto-num-queues property as a migration
+cookie to the destination, and thus the destination knows if the source
+side supports auto-num-queues. If not, the destination would switch off
+by building the command line with "auto-num-queues=3Doff" when preparing
+the incoming VM process. The following patches of libvirt show how it
+roughly works:
+https://github.com/newfriday/libvirt/commit/ce2bae2e1a6821afeb80756dc01f3680f=
+525e506
+https://github.com/newfriday/libvirt/commit/f546972b009458c88148fe079544db7e9=
+e1f43c3
+https://github.com/newfriday/libvirt/commit/5ee19c8646fdb4d87ab8b93f287c20925=
+268ce83
 
-> diff --git a/qapi/ebpf.json b/qapi/ebpf.json
-> new file mode 100644
-> index 00000000000..40851f8c177
-> --- /dev/null
-> +++ b/qapi/ebpf.json
-> @@ -0,0 +1,57 @@
-> +# -*- Mode: Python -*-
-> +# vim: filetype=python
-> +#
-> +# This work is licensed under the terms of the GNU GPL, version 2 or later.
-> +# See the COPYING file in the top-level directory.
-> +
-> +##
-> +# = eBPF Objects
-> +##
-> +
-> +{ 'include': 'common.json' }
+The smooth upgrade solution requires the introduction of the auto-num-
+queues property on the QEMU side, which is what the patch set does. I'm
+hoping for comments about the series.
 
-This looks superfluous.
+Please review, thanks.
+Yong
 
-> +
-> +##
-> +# @EbpfObject:
-> +#
-> +# Structure that holds eBPF ELF object encoded in base64.
-> +#
-> +# Since: 8.3
+Hyman Huang(=E9=BB=84=E5=8B=87) (3):
+  virtio-scsi-pci: introduce auto-num-queues property
+  virtio-blk-pci: introduce auto-num-queues property
+  vhost-user-blk-pci: introduce auto-num-queues property
 
-8.2
+ hw/block/vhost-user-blk.c          |  1 +
+ hw/block/virtio-blk.c              |  1 +
+ hw/scsi/vhost-scsi.c               |  2 ++
+ hw/scsi/vhost-user-scsi.c          |  2 ++
+ hw/scsi/virtio-scsi.c              |  2 ++
+ hw/virtio/vhost-scsi-pci.c         | 11 +++++++++--
+ hw/virtio/vhost-user-blk-pci.c     |  9 ++++++++-
+ hw/virtio/vhost-user-scsi-pci.c    | 11 +++++++++--
+ hw/virtio/virtio-blk-pci.c         |  9 ++++++++-
+ hw/virtio/virtio-scsi-pci.c        | 11 +++++++++--
+ include/hw/virtio/vhost-user-blk.h |  5 +++++
+ include/hw/virtio/virtio-blk.h     |  5 +++++
+ include/hw/virtio/virtio-scsi.h    |  5 +++++
+ 13 files changed, 66 insertions(+), 8 deletions(-)
 
-More of the same below, not noting it again.
-
-> +#
-> +##
-
-You're not documenting member @object.  Leaving a member undocumented
-should be a hard error.  It isn't only because we have hundreds of
-instances to fix.
-
-Generated documentation looks like
-
-    "EbpfObject" (Object)
-    ---------------------
-
-    Structure that holds eBPF ELF object encoded in base64.
-
-
-    Members
-    ~~~~~~~
-
-    "object": "string"
-       Not documented
-
-    [...]
-
-This isn't what you want :)
-
-Better:
-
-   ##
-   # @EbpfObject:
-   #
-   # An eBPF ELF object.
-   #
-   # @object: the eBPF object encoded in base64
-   #
-   # Since: 8.2
-   ##
-
-> +{ 'struct': 'EbpfObject',
-> +  'data': {'object': 'str'},
-> +  'if': 'CONFIG_EBPF' }
-> +
-> +##
-> +# @EbpfProgramID:
-> +#
-> +# The eBPF programs that can be gotten with request-ebpf.
-> +#
-> +# @rss: Receive side scaling, technology that allows steering traffic
-> +# between queues by calculation hash. Users may set up indirection table
-> +# and hash/packet types configurations. Used with virtio-net.
-
-Please format like
-
-   # @rss: Receive side scaling, technology that allows steering traffic
-   #     between queues by calculation hash.  Users may set up
-   #     indirection table and hash/packet types configurations.  Used
-   #     with virtio-net.
-
-to blend in with recent commit a937b6aa739 (qapi: Reformat doc comments
-to conform to current conventions).
-
-> +#
-> +# Since: 8.3
-> +##
-> +{ 'enum': 'EbpfProgramID',
-> +  'if': 'CONFIG_EBPF',
-> +  'data': [ { 'name': 'rss' } ] }
-> +
-> +##
-> +# @request-ebpf:
-> +#
-> +# Returns eBPF object that can be loaded with libbpf.
-> +# Management applications (g.e. libvirt) may load it and pass file
-> +# descriptors to QEMU. Which allows running QEMU without BPF capabilities.
-> +# It's crucial that eBPF program/map is compatible with QEMU, so it's
-> +# provided through QMP.
-> +#
-> +# Returns: RSS eBPF object encoded in base64.
-
-What does "RSS" mean?
-
-> +#
-> +# Since: 8.3
-> +#
-> +##
-
-You're not documenting argument @id.
-
-Generated documentation looks like
-
-    "request-ebpf" (Command)
-    ------------------------
-
-    Returns eBPF object that can be loaded with libbpf. Management
-    applications (g.e. libvirt) may load it and pass file descriptors to
-    QEMU. Which allows running QEMU without BPF capabilities. It's crucial
-    that eBPF program/map is compatible with QEMU, so it's provided
-    through QMP.
-
-
-    Arguments
-    ~~~~~~~~~
-
-    "id": "EbpfProgramID"
-       Not documented
-
-
-    Returns
-    ~~~~~~~
-
-    RSS eBPF object encoded in base64.
-    [...]
-
-Here's my try:
-
-    ##
-    # @request-ebpf:
-    #
-    # Retrieve an eBPF object that can be loaded with libbpf.  Management
-    # applications (g.e. libvirt) may load it and pass file descriptors to
-    # QEMU, so they can run running QEMU without BPF capabilities.
-    #
-    # @id: The ID of the program to return.
-    #
-    # Returns: RSS eBPF object encoded in base64.
-    #
-    # Since: 8.3
-    ##
-
-I omitted the "It's crucial" part, because I feel rationale doesn't
-belong here.  The commit message still has us covered.
-
-> +{ 'command': 'request-ebpf',
-> +  'data': { 'id': 'EbpfProgramID' },
-> +  'returns': 'EbpfObject',
-> +  'if': 'CONFIG_EBPF' }
-
-Terminology: you use "eBPF program" and "eBPF object".  What's the
-difference?  If there's none, use only one term, please.  To me,
-"program" feels more clear.
-
-> diff --git a/qapi/meson.build b/qapi/meson.build
-> index 60a668b3432..90047dae1c8 100644
-> --- a/qapi/meson.build
-> +++ b/qapi/meson.build
-> @@ -33,6 +33,7 @@ qapi_all_modules = [
->    'crypto',
->    'cxl',
->    'dump',
-> +  'ebpf',
->    'error',
->    'introspect',
->    'job',
-> diff --git a/qapi/qapi-schema.json b/qapi/qapi-schema.json
-> index 6594afba312..2c82a49baec 100644
-> --- a/qapi/qapi-schema.json
-> +++ b/qapi/qapi-schema.json
-> @@ -53,6 +53,7 @@
->  { 'include': 'char.json' }
->  { 'include': 'dump.json' }
->  { 'include': 'net.json' }
-> +{ 'include': 'ebpf.json' }
->  { 'include': 'rdma.json' }
->  { 'include': 'rocker.json' }
->  { 'include': 'tpm.json' }
-
+--=20
+2.38.5
 
