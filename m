@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 108C67714F4
-	for <lists+qemu-devel@lfdr.de>; Sun,  6 Aug 2023 14:20:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55F937714F2
+	for <lists+qemu-devel@lfdr.de>; Sun,  6 Aug 2023 14:20:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qScht-0000N1-MM; Sun, 06 Aug 2023 08:18:01 -0400
+	id 1qSchs-0000Lz-Iq; Sun, 06 Aug 2023 08:18:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qScha-0000GT-FK
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qScha-0000GZ-Jk
  for qemu-devel@nongnu.org; Sun, 06 Aug 2023 08:17:42 -0400
 Received: from mout.gmx.net ([212.227.15.19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qSchV-0001o0-33
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qSchV-0001o5-5F
  for qemu-devel@nongnu.org; Sun, 06 Aug 2023 08:17:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
  s=s31663417; t=1691324255; x=1691929055; i=deller@gmx.de;
- bh=n/huR/PDfIZmE2vJlsMRDdZqS2ZoTWD5gTvGV/Fer4Q=;
+ bh=DYKNn38KjnEDUEwlcK6bqWAeJvviAzR2xTLFiKiKkMg=;
  h=X-UI-Sender-Class:From:To:Subject:Date:In-Reply-To:References;
- b=qIxPTp3dnhmLzq81U7I2/VoLAB0DjL/zQDBlONyx0oWYER/QrwRTd+VteY5J0dwm0Y0sjQK
- VVM8u1DQ0Q+s/YlyBJ3phspsd89viKs4hgzY99FF+YAU9k/0TRi0tdLgN/IeJ6zWeNYSte6bz
- eRQjRqVwfs8qD/OH2cWmE3oXsXeZaPUFDwXKnGJjBZ5NPcqPqaVT/6FUkmqyaaTwcIS5htD50
- WN0Dwgsjbjqf5YY6lalMSP0oJs8i/n/s0WkfTUn3wg3IYSDZ3vNplqlFfrcz79UTlh7M3Oa+u
- AOR+Aukt7MRY1x88yKSxje6dMgHwrryZnUysaL9a95EZTlnfFf0w==
+ b=OwsZFdmO1bYz9+m5ckTHCUBN+ZlMmbpk+l8xq1JBUUdrHefH7rdh2tueIHXK/QH1+LC6WK0
+ rlBcD0xQOivvDO/1aEMOKrvlSrfixKk+9E3IP8qr3zccsUHrl8RykJ58nui4SE4VBiMvKyZuw
+ 3CytNOFt2fq6HbQdDuNQwFcJqVojxJJ5umNaOgLmdmwTYQPmGYlGkRozB1xxdIM1MO+8im4eS
+ 8cQ8q/iBLUUuujS4sXj3wpRklBjt8OM7Vqvo9bDttvuizFZSwOpFvZlcieHc9S/XASMY8Pf3z
+ XmJdXD1gOZ7eGbj6urV1aweEvRA7019X6/u0zfKrpk7aOrk22jMQ==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from p100.fritz.box ([94.134.152.250]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1N4hzZ-1piexU0yOd-011ith; Sun, 06
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MKsnP-1q7VJK1XzB-00LCL1; Sun, 06
  Aug 2023 14:17:35 +0200
 From: Helge Deller <deller@gmx.de>
 To: Richard Henderson <richard.henderson@linaro.org>,
 	qemu-devel@nongnu.org
-Subject: [PATCH v2 20/23] target/rx: Use MMU_INDEX() helper
-Date: Sun,  6 Aug 2023 14:17:29 +0200
-Message-ID: <20230806121732.91853-21-deller@gmx.de>
+Subject: [PATCH v2 21/23] target/sh4: Use MMU_INDEX() helper
+Date: Sun,  6 Aug 2023 14:17:30 +0200
+Message-ID: <20230806121732.91853-22-deller@gmx.de>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230806121732.91853-1-deller@gmx.de>
 References: <20230806121732.91853-1-deller@gmx.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:COSfa20NP1dtSuIOAPxncWi+KEEmauA6Gabq63z2eiwZGeskQhW
- uwQGGs3Nc6ssIB130zxb3rC6FIvTqT2XZDvvyMLRRv0lktI5nOjuvBDgdPjDXx2dcDtaITY
- BUWdSvONkth5kQWm929/xNixTBHFNlBNVG/hFzYtSVtihEfm7H7tlrbWVA7F3SAAMr/URIi
- o86RFwfSvvQmWM+dA11gA==
-UI-OutboundReport: notjunk:1;M01:P0:8s6YZDn5zo0=;6kHfIY8QPaRaSjUV5Sc1BG3Lnay
- bm9OvnEf2ZLiEwkft2nTu6TbBr+ylvVi9X8MvmldDbERTNnPWCTkyCfR8Hv3BMR79d2rN2u7+
- Mv7lL5hRjMNAlbc3c7ZplV4UVJCt1wD+WZaG/UhHj6cRrAPiEF3AqCc0EgVI5t0UQMq/lo5Ar
- FJJNOVdVV72dlXWGkw3HcVQlV8Vko05pJV7g6EMu8Z5zfWRsTjSUs05RR8R20x2bvxaeuUuHK
- Or8sRcn0tw2oWWwZOQCLF+8dI4AKHoG4ywOHcA9AXSIxvlV4XGBlGksFBvN1geCLSUoOmRP9S
- C4zBeTzT0dPhwlI5sK4xI+70lHnX0QMtgGy9pcqSoZUkL072FUPRj8xLbfzaVLfgRiW4JbCFV
- iiyxYyZXGj8cbUKnJwnNNhcol6oQ7IxpSzhS6JqOOcVOAZL/ZNXzp1tXiA0kv7FjzUsxfLrx5
- qJyjwedBTeHQMbKQK5pmEJK2I4xSK/0ZGTjsRukVuY1KhN7levFsEbQlW5cxXSc0cnK8pAQF6
- c1fUP/M+ziylYrkOSzLrbEn9UzllZrw5NsB9/SbParLBKcs25zcLwyRNMEq6RZYuVwV5ONNrq
- IW9Yo3rXikHW/95qUKl9ncsU3RPKelNhiEaugnKrJeZ3CABCMIp0/oKdpq31oD/IWhrONALes
- ycWRUVf085AJV1EyQE5UExV+R/vy48rstwW2k5Lw20C3SWy1JyTQHMUL5akNQnOa0bHC+6u+b
- DkFuwHkw0tOn4A0OH7/IT6hiu+o8Wpzg8+j8nZpKZLKBbMov6jv0CI0mlcCGrLM30vM5I0fJN
- 28i9IAUhs5Xkc0hFK0VACeI6b+9ulsN2eJxHNLDv4r+afoR6kiahghuiVVquE4AzfdszKr2c9
- yVS6dsjGF6auodFrdSLaQAuNVJDdt//oPGAc8f2RtBlz3+70W+gLzTeO4u+miVqV4UKL68qqW
- XHidsG67h/SRSqRuHuLkmewlkv8=
+X-Provags-ID: V03:K1:I1wJECXjR5x2Uj/l2S12HrbaOfyIwawyBIYvPpvnRhDqpnEyq17
+ la02nkH6NKhAsuWFYt1oyLcAmCtT9OpGpUWcAK6Ei7je9OyacC+uUtil7ZYH6/884PV20UG
+ bkpHeyfjVmPa9KpYLIgTVf4ZdlxAkVYjyLboQjPJji+mxuV715/Ki59nSPjFPkScBD2hCSr
+ 6XWJjF5i4axWItDvHJG5Q==
+UI-OutboundReport: notjunk:1;M01:P0:2hleSz/vmas=;IQHtd2JG/YscWlAFxCqrKNoAWMI
+ 2ypTAiAokIavNzKgBcqwWf8oLWB6UnaSWQulK1HwED/cBUMtoGHR0k82uzINiK9NGNMcDRPX0
+ zzkEXJGOYpMaWwgF+8SkjkymCirUTDibJRJzwVNvYrv7QWx834g2lcr7DsXkRmYNelSue40qp
+ lSVgz+FpuaHOWtslhdy96avZhP6sFyds5+EStZxIc1YxSOChaMPXbpljx5ebGq0cEFrNIo6MA
+ lPXsB/Oizck8mSH6H88RxD2HAAo7mQV/tlwc85WGJu7LAoGXBrFkm1TsTwtHXch+dM61alM6R
+ BLtA/X7btc/1OWRiUPglVf55edUKfvvgT1R/vy9BMsygs3CA1wMH9RPXwmZ3RZADI6Inur+kq
+ 1X858gCETjoqyeBW54McX1LmDVytMobRb3stZKAsfjO91al+bMUGijuWLNjt3pqWtPHePft7q
+ Km4WQjA/fWYPAL/YmSMTbgtlRsdwgJjVmviHz3E0QUGH4iNmFgpkMLwVzqghAkKEeAPJte9cj
+ lD8B84/Zqb9PzEW3578mZhPsJZtux/2y5TXJL05vvHfGfrkTQBaqgACXwoGFY6yn7aXeUwbZO
+ sPTjQcVEU3dndYx2LbAHIh3E+AxVJbgnIASsqvlV/eTM85Z3x7WswZJrueAX8IFg7vCAeRNtY
+ DDFpEN/GqCkDMwBIP9/pZw2PxCMMb/mHIB1r73ALB52XsoBii03NlEbTYXE7g411+G7P3wmeZ
+ FjhqdhlT1iX5zKgBn5yuHcdHsUdWUKoY/UGN/fDVfnvwjNRSxaBXPcBU+S4nKfglM95j1AbLg
+ naEW7yCSPG8bQp2LYrO0XC4BhOWJtC/dUexExvn//SR5JESC3AjG3SZPuY1jn6a93tWr+CWME
+ XSg+WjjiosE2BTvqQdtwKc2Z6MQGjCZoOdvgYHXlIPLD9JPzPDm3Iw9TN9eiHas7DReoQm6Y8
+ gGbJRQ==
 Received-SPF: pass client-ip=212.227.15.19; envelope-from=deller@gmx.de;
  helo=mout.gmx.net
 X-Spam_score_int: -27
@@ -89,23 +89,34 @@ then to optimize the tcg code generation.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 =2D--
- target/rx/cpu.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/sh4/cpu.h | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/target/rx/cpu.h b/target/rx/cpu.h
-index 7f03ffcfed..bb19a456d3 100644
-=2D-- a/target/rx/cpu.h
-+++ b/target/rx/cpu.h
-@@ -154,7 +154,7 @@ static inline void cpu_get_tb_cpu_state(CPURXState *en=
-v, vaddr *pc,
+diff --git a/target/sh4/cpu.h b/target/sh4/cpu.h
+index 1399d3840f..9adb1bb893 100644
+=2D-- a/target/sh4/cpu.h
++++ b/target/sh4/cpu.h
+@@ -260,15 +260,16 @@ void cpu_load_tlb(CPUSH4State * env);
+ #define cpu_list sh4_cpu_list
 
- static inline int cpu_mmu_index(CPURXState *env, bool ifetch)
+ /* MMU modes definitions */
+-#define MMU_USER_IDX 1
++#define MMU_KERNEL_IDX  MMU_INDEX(0)
++#define MMU_USER_IDX    MMU_INDEX(1)
+ static inline int cpu_mmu_index (CPUSH4State *env, bool ifetch)
  {
--    return 0;
-+    return MMU_INDEX(0);
+     /* The instruction in a RTE delay slot is fetched in privileged
+        mode, but executed in user mode.  */
+     if (ifetch && (env->flags & TB_FLAG_DELAY_SLOT_RTE)) {
+-        return 0;
++        return MMU_KERNEL_IDX;
+     } else {
+-        return (env->sr & (1u << SR_MD)) =3D=3D 0 ? 1 : 0;
++        return (env->sr & (1u << SR_MD)) =3D=3D 0 ? MMU_USER_IDX : MMU_KE=
+RNEL_IDX;
+     }
  }
 
- static inline uint32_t rx_cpu_pack_psw(CPURXState *env)
 =2D-
 2.41.0
 
