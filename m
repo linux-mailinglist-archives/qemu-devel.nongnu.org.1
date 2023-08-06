@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87742771367
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E291771368
 	for <lists+qemu-devel@lfdr.de>; Sun,  6 Aug 2023 05:38:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qSUa7-0003eY-P3; Sat, 05 Aug 2023 23:37:27 -0400
+	id 1qSUa9-0003fJ-FL; Sat, 05 Aug 2023 23:37:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qSUa5-0003dj-Rr
- for qemu-devel@nongnu.org; Sat, 05 Aug 2023 23:37:25 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ id 1qSUa6-0003eA-V6
+ for qemu-devel@nongnu.org; Sat, 05 Aug 2023 23:37:26 -0400
+Received: from mail-pj1-x1033.google.com ([2607:f8b0:4864:20::1033])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qSUa4-0007Xa-7n
- for qemu-devel@nongnu.org; Sat, 05 Aug 2023 23:37:25 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-686ea67195dso2458964b3a.2
- for <qemu-devel@nongnu.org>; Sat, 05 Aug 2023 20:37:23 -0700 (PDT)
+ id 1qSUa5-0007Xr-DG
+ for qemu-devel@nongnu.org; Sat, 05 Aug 2023 23:37:26 -0400
+Received: by mail-pj1-x1033.google.com with SMTP id
+ 98e67ed59e1d1-26814e27a9eso1685285a91.0
+ for <qemu-devel@nongnu.org>; Sat, 05 Aug 2023 20:37:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691293043; x=1691897843;
+ d=linaro.org; s=google; t=1691293044; x=1691897844;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=U8M/sECGKblXQECxwhiXY/mNUP2fHciHERdH2OiT8nA=;
- b=YhRjrWagjbp13SDviaVcq4SUcJqN8fFgf1kOTYRE5xGpALC0SXlo4yKQhBZT4RwFhd
- vPuXFP/fLW0Od+P3O7xl0j+H/OD0k5QaFEHqWjsfTxdBuPmx5MDfS6m89RgZ70/Emvza
- jrxbhtQaaRsXqia8xXY/ai24XnVOMHfDWM53mDmcws8obe15lffBBp5TgBp0s2wpyRit
- JWOPuFL1yZXe0yctgcRjswZUbYOKsdkgnvugCUKi7lQveUV83nOt04+w+eIagYiPxlXo
- YXSbMTXQBg2MlryX+UGwpJhPYRS40bJAsbiOkOngTAnIDqm6GtEm3CQM6R4n9g+6fTsX
- nvAg==
+ bh=VNYrY2Waoll+LErzR9Xgbts1EKTxuONltL+p3Yeklu4=;
+ b=jvuBu+oiUXsexECcMGF/DL7Brf2aPF5l5SKDbNubqQx1A+QuXsL9YqVlp8ZqA2btjg
+ gjDgS1wn0zR5aldc9ZVe41bvut3dSMIXe7Y30RbA1qQ+Wy8aYvujYmyUDfqubSdouKLf
+ /8W6et5Ln6QOLgyhIl3xQjm2vvVXnYiNepcu25Nr2++tBwW4Lk67skKCWzj/OKMpr3IU
+ vALUNIKHrpaL7a1DCEa/Pb1/NSblNF50F0ZOdskKVYJA6R17wtyLj54+OC+WI9MS1oKx
+ SqK3VdBLuA6NX+py1Fv5E42sUFEpDTVSXRRwuw2qXDBOL/4uCaf5pkWxyvUmaOxqXeLQ
+ IOuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691293043; x=1691897843;
+ d=1e100.net; s=20221208; t=1691293044; x=1691897844;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=U8M/sECGKblXQECxwhiXY/mNUP2fHciHERdH2OiT8nA=;
- b=fi5BmKlbNCrd/AAWJLgTJVOLJ/jMD5xpHj/ljuyWykla7RkAdN4JKDn1sg5gDNeisN
- 8OK41czmgFtFXRUThlExUg+oBUSjPqwV0gIKh2Ar9YdrroxNFxaa+H8G2IBzL6GPJedX
- gf4SNsadkTWDOg/9EuqzJYwx4zTRwYpBZA+KCs6fEHE5/T4XLCxI+SXhAPzrXFmY2caR
- LIK/QdZF8/10AdUw/Z/Vl7p0fXenraV2U6Vq+tGqxh05UlIbkiv/0XiACAmnEhW74l6M
- dPeYAgwN+czME238tSX7aUflipUQgWHNl0CJLfITvDiizBO+KXEXZwHUdmmPk+0+hWDR
- 7f2g==
-X-Gm-Message-State: AOJu0Yw5Z4hPWquzQYwnYrdAxjuf2RYIRUlHTp5d6qhLmuaCh0gTeKNh
- 2nW7YJf8Mak/om/7tke0/iQ8Mp5FZSV3KgJmhps=
-X-Google-Smtp-Source: AGHT+IEcVvz/QQf1HsxJAMkAA4SK992SrhyNjQyKk0WHgmlU5YjGBwhzbsnm+RY750+LRyRZC/DoKQ==
-X-Received: by 2002:a17:903:2587:b0:1b8:b564:b531 with SMTP id
- jb7-20020a170903258700b001b8b564b531mr5870990plb.60.1691293042786; 
- Sat, 05 Aug 2023 20:37:22 -0700 (PDT)
+ bh=VNYrY2Waoll+LErzR9Xgbts1EKTxuONltL+p3Yeklu4=;
+ b=FLoEE9H+kdH80HFkLoAc+6Q4z21SrVhWQ7ioV1anRkd30ezA8k9Nxj7KqDgUo6x12N
+ wzCPrrIvi+4IVEpQ3l8jpgFxvxrZKyV5vECC2KEkcaf5OEcJ1//b/k01nk0HkIrvZNwF
+ rGCnGniQY1qBpdzanPrCqY3R7FvhqtHXSvXWp0tp+6v6pX1adHOtd5j8dTQaZk5MuOY5
+ R9dAkPqLogxOYU21HSIKaFXJIfSHGSTpB54ecqfmKf3g+ZLEXo6FKUUD6mNyTewOuCil
+ ilYc44kjU8EICZ8TizQ1KNPpJVqxmEa2EBpmAX0k/45ek0YXha0YrDbGc5tlWscQbbRp
+ WJAQ==
+X-Gm-Message-State: AOJu0YwuTUjBu7Ap5/1XxoLGub5kxIH1cNV1TU1S2z0Y+tu3efB3RQCu
+ RMa7Lf5sxboYPqcCuHsYjeO3HqqC79okxfvL6iI=
+X-Google-Smtp-Source: AGHT+IHoZZRsCRVfqMthXl9skZoxp+CFbRUeonxt2D5x/N2gvomcNo5sDJf9+JmGlUpA09gnRILPpg==
+X-Received: by 2002:a17:90a:6c45:b0:263:fccf:8f6 with SMTP id
+ x63-20020a17090a6c4500b00263fccf08f6mr4044567pjj.14.1691293043858; 
+ Sat, 05 Aug 2023 20:37:23 -0700 (PDT)
 Received: from stoup.. ([2602:47:d490:6901:9454:a46f:1c22:a7c6])
  by smtp.gmail.com with ESMTPSA id
- a5-20020a17090a740500b00262e604724dsm6306451pjg.50.2023.08.05.20.37.22
+ a5-20020a17090a740500b00262e604724dsm6306451pjg.50.2023.08.05.20.37.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 05 Aug 2023 20:37:22 -0700 (PDT)
+ Sat, 05 Aug 2023 20:37:23 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PULL 08/24] linux-user: Use MAP_FIXED_NOREPLACE for do_brk()
-Date: Sat,  5 Aug 2023 20:36:59 -0700
-Message-Id: <20230806033715.244648-9-richard.henderson@linaro.org>
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
+	Helge Deller <deller@gmx.de>
+Subject: [PULL 09/24] linux-user: Do nothing if too small brk is specified
+Date: Sat,  5 Aug 2023 20:37:00 -0700
+Message-Id: <20230806033715.244648-10-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230806033715.244648-1-richard.henderson@linaro.org>
 References: <20230806033715.244648-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1033;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1033.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,56 +94,40 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-MAP_FIXED_NOREPLACE can ensure the mapped address is fixed without
-concerning that the new mapping overwrites something else.
+Linux 6.4.7 does nothing when a value smaller than the initial brk is
+specified.
 
+Fixes: 86f04735ac ("linux-user: Fix brk() to release pages")
+Reviewed-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-Id: <20230802071754.14876-5-akihiko.odaki@daynix.com>
-[rth: Pass -1 as fd for MAP_ANON]
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20230802071754.14876-6-akihiko.odaki@daynix.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/syscall.c | 17 +++--------------
- 1 file changed, 3 insertions(+), 14 deletions(-)
+ linux-user/syscall.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index b9d2ec02f9..f64024273f 100644
+index f64024273f..e1436a3962 100644
 --- a/linux-user/syscall.c
 +++ b/linux-user/syscall.c
-@@ -854,17 +854,12 @@ abi_long do_brk(abi_ulong brk_val)
+@@ -820,14 +820,14 @@ abi_long do_brk(abi_ulong brk_val)
+ 
+     /* brk pointers are always untagged */
+ 
+-    /* return old brk value if brk_val unchanged or zero */
+-    if (!brk_val || brk_val == target_brk) {
++    /* return old brk value if brk_val unchanged */
++    if (brk_val == target_brk) {
          return target_brk;
      }
  
--    /* We need to allocate more memory after the brk... Note that
--     * we don't use MAP_FIXED because that will map over the top of
--     * any existing mapping (like the one with the host libc or qemu
--     * itself); instead we treat "mapped but at wrong address" as
--     * a failure and unmap again.
--     */
-     if (new_host_brk_page > brk_page) {
-         new_alloc_size = new_host_brk_page - brk_page;
-         mapped_addr = target_mmap(brk_page, new_alloc_size,
--                                  PROT_READ|PROT_WRITE,
--                                  MAP_ANON|MAP_PRIVATE, 0, 0);
-+                                  PROT_READ | PROT_WRITE,
-+                                  MAP_FIXED_NOREPLACE | MAP_ANON | MAP_PRIVATE,
-+                                  -1, 0);
-     } else {
-         new_alloc_size = 0;
-         mapped_addr = brk_page;
-@@ -883,12 +878,6 @@ abi_long do_brk(abi_ulong brk_val)
-         target_brk = brk_val;
-         brk_page = new_host_brk_page;
-         return target_brk;
--    } else if (mapped_addr != -1) {
--        /* Mapped but at wrong address, meaning there wasn't actually
--         * enough space for this brk.
--         */
--        target_munmap(mapped_addr, new_alloc_size);
--        mapped_addr = -1;
+     /* do not allow to shrink below initial brk value */
+     if (brk_val < initial_target_brk) {
+-        brk_val = initial_target_brk;
++        return target_brk;
      }
  
- #if defined(TARGET_ALPHA)
+     new_brk = TARGET_PAGE_ALIGN(brk_val);
 -- 
 2.34.1
 
