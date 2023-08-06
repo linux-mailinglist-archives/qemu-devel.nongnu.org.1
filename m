@@ -2,89 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 800DE7715AF
-	for <lists+qemu-devel@lfdr.de>; Sun,  6 Aug 2023 16:42:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3029D7715B0
+	for <lists+qemu-devel@lfdr.de>; Sun,  6 Aug 2023 16:43:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qSeww-00082A-9t; Sun, 06 Aug 2023 10:41:42 -0400
+	id 1qSey8-0000RZ-0V; Sun, 06 Aug 2023 10:42:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qSewu-00081v-Lb
- for qemu-devel@nongnu.org; Sun, 06 Aug 2023 10:41:40 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qSews-00031e-Nz
- for qemu-devel@nongnu.org; Sun, 06 Aug 2023 10:41:40 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-686fc0d3c92so2438278b3a.0
- for <qemu-devel@nongnu.org>; Sun, 06 Aug 2023 07:41:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691332897; x=1691937697;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=T+0O69Ci6r8kxsB+4DOghZXaog4XZB6uAxv+uMSnHSY=;
- b=wLuCKlIR87UfPIg1Rud9K8pQD6ptt8IYNvGgqbnANGe5jUccfmbb32V2zzYMZ6SHG7
- oKHl5Cmlu60vcYTbxBG3WPkFXOXdMY9VGT7JjWu54hYaavB6amq55OyHaMgbeqxKSviX
- m6dFgZRhAsqrO/DngEb67s5pBHH/JlzfUx4+27/o1nQYlIPJSr5XVrb4i5BAdYh6MEnY
- fdEgr8jBWKUt3sZcbpkjDJRiCQCTAYXtC7p6qauq1cVWI7V7utM5CptJDCPWfyUNgtll
- KobG+1rNtmygNPf5Rf4WZUIBAN4R9B8LoGtGvq0BYFV+Z+2ESJjLQHC4Xgu388j5wn/c
- pkvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691332897; x=1691937697;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=T+0O69Ci6r8kxsB+4DOghZXaog4XZB6uAxv+uMSnHSY=;
- b=eeTskwGjVZ7jA0k/WTWydJOLIKDX4zMMC14iZboXpxgt/JOyD+sScJsEKdBjt4xz+P
- Y/xw+SUI5iNtzIqY/M0PUb8DAhZ7h3aMXh6YfGZp+qohpv2G2nldh/BP75HByR/kG7Bz
- LZD0T7Aa2ltX+7+4E2rVKK3wfLH4yhs/69ijAwkRksGBmIc755a3GGVTldvPh2BOdYWy
- QwfRmz480jc/GMp79mAELtbanzsQYRyASuMbJtTJlwbtLmzBt0FAH+Dmn8UsCqwiLvbt
- 6O5r+4HySYAh9LN2q+fKvxrvjN9/h8U5zTW4s+jh9s58eI3yZLSiI0gkLN2Zh4PvDzc3
- Zklw==
-X-Gm-Message-State: AOJu0YzOPapZw8VNEMcdXaqId4VbjxtoCUjGDHIc13yztXJbAFNL0cdI
- LwJSO+P46AoGlGwScNfGXBreJNAisCc9WSXkFlQ=
-X-Google-Smtp-Source: AGHT+IHLIrdEMgSEYlqDiHzeX0idh0ouEAkmN8R95YCh9o2fd2yf7CXUNLeQKoiTyz4TQb21gMqnEA==
-X-Received: by 2002:a05:6a00:c87:b0:687:2f80:86d5 with SMTP id
- a7-20020a056a000c8700b006872f8086d5mr6757818pfv.13.1691332897283; 
- Sun, 06 Aug 2023 07:41:37 -0700 (PDT)
-Received: from ?IPV6:2602:47:d490:6901:e72:57bd:c5e4:990c?
- ([2602:47:d490:6901:e72:57bd:c5e4:990c])
- by smtp.gmail.com with ESMTPSA id
- bn10-20020a056a00324a00b00687a4b66697sm2698737pfb.16.2023.08.06.07.41.36
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 06 Aug 2023 07:41:36 -0700 (PDT)
-Message-ID: <c5c5f247-6b2d-36e1-c144-53c4a99ad5cc@linaro.org>
-Date: Sun, 6 Aug 2023 07:41:34 -0700
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qSey5-0000PC-B2
+ for qemu-devel@nongnu.org; Sun, 06 Aug 2023 10:42:53 -0400
+Received: from mout.gmx.net ([212.227.17.22])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qSey3-0003AS-CF
+ for qemu-devel@nongnu.org; Sun, 06 Aug 2023 10:42:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
+ s=s31663417; t=1691332968; x=1691937768; i=deller@gmx.de;
+ bh=bmH6qGCxZjjwsRZy3QOkI0k7S9f9VQhu09YRb3Gw/g8=;
+ h=X-UI-Sender-Class:Date:Subject:To:References:From:In-Reply-To;
+ b=EDDfDxYnD0tzTcL05qi45DarUoM0GFbLJUkOAzasLca8Ouqbxo0H582qA6qHEHSSVY8xwaG
+ RyHtzAWkdwMTDrxLjDZ+Wg1o89du0lTK6XfhLYn/T7/AupJnszIRshWbq1+BHs3vAmZMjsxGM
+ YNn6B/zhyRFJha6ceAwy9mt0mqmaOLKHoKxSYJ0XygMG5YJsJRmeDGGfZjT5H4UzP7xW9vAOX
+ Il9layfr8ZruJylR/0wODyR6p6nbO4ukf28oCvtjqnGpGDthakqVEtQ2ucBsjBFKab15A6IaI
+ hHTLshVokJxSq35UEY+aq4pyrFGvho/AKW9HCTzpkXfySM3GlLvQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.60] ([94.134.152.250]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MMofc-1qA29c1e2m-00IpoG; Sun, 06
+ Aug 2023 16:42:48 +0200
+Message-ID: <700520df-f9d7-09a7-ded5-155eacbd11c6@gmx.de>
+Date: Sun, 6 Aug 2023 16:42:47 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH 1/3] target/loongarch: Introduce loongarch32-softmmu target
+Subject: Re: [PATCH v2 10/23] target/riscv: Use MMU_INDEX() helper
 Content-Language: en-US
-To: Jiajie Chen <c@jia.je>, qemu-devel@nongnu.org
-Cc: Xiaojuan Yang <yangxiaojuan@loongson.cn>, Song Gao <gaosong@loongson.cn>, 
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>, Paolo Bonzini <pbonzini@redhat.com>
-References: <20230806141357.1756714-1-c@jia.je>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230806141357.1756714-1-c@jia.je>
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20230806121732.91853-1-deller@gmx.de>
+ <20230806121732.91853-11-deller@gmx.de>
+ <dd180646-6c55-bfa6-0660-55eb5fa85917@linaro.org>
+From: Helge Deller <deller@gmx.de>
+In-Reply-To: <dd180646-6c55-bfa6-0660-55eb5fa85917@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x436.google.com
-X-Spam_score_int: -61
-X-Spam_score: -6.2
-X-Spam_bar: ------
-X-Spam_report: (-6.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-4.139,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:7/0Knq9l0Rvi3EnJHv6m8I/SJoQnhdlTVfVlsiPH3j2zuav9G9k
+ zKdlvof6HbQGX806SHOdKIoY/QNyu+Y3qiRiAmvPAklJL4EnCr3hedGSuRyuWcQSBmRppLj
+ 7jY9azb3oiqK9q/gZf3zC6443ZJXTAeDyDjz8uKruj+e/wBTwCsCG68sXDwdsYahvGRNQyb
+ 3WZSYhQXYLdii5W1BoTLw==
+UI-OutboundReport: notjunk:1;M01:P0:u4nTEy+paxw=;J0CGLWLnquZLVwI/+Xdo/V43imG
+ 9QGV3VNRrT89lB+A3tz3pg+VbBO8IzIOGnoKvdE2w490oASeZ4tlx/dgpEB+5ouOu2r+H1Hch
+ 6xomYkT9lsSvms6+nMYFlQs7x167HDKTjNfjVLSFms/icXWujxL8GTINk2GapwvV9HvA0FSTf
+ o/yZ9zF3096nB7FFMnv6+anvtAgI0gNfsu6tXw9Yp09lyl2MA13BATL3ckcv6LlW8DkfU+HRY
+ 9F3Z75aMiQDcim7zMP6g7vNwTCv5wK0gI6YnFWj5C+tMd91iq97ShDe+3s5kKuBLVi/a+lRje
+ aw8RNowEeWPRfqMmLZYm6h7VcLya/Lvayw7r4rlKahRsY7WUl5Rj0MXTSareYbYUZnLyqn1vd
+ WONBo05LVo+i0P8jfDX9UgW09ca7G0YrYWWmBMSTjJHQU18A/CeXTvZDfEZ9JGUmAzyI+HWOA
+ Nbl42jkKH0hlzt0bknYBbYx2aFKqH+IRriPKWLRqwL6G08lJrRhtnsuAMnwGYEONeYnU0hBwh
+ VEMecvIKyc9wz/J3YDOqtrr5sRr34JS1qq0cd6SNh80q9EY6mdyi/YAuu5UHcJ0W2Xm7W1+U6
+ vNHkCIZRF5b2y+Gj8wcdQF+IvVGuYBKq6T8cjgTHiL4rBU66QXJE4kXtGJT8kjs8i6HBa8vEM
+ ziyf8JTFwhAEHhsmOhQdE+Q9KCkM7rjLWLEVhh2WFfHviWzfnSvTyPBfDWwftRL6lJmr0e33h
+ 3hmnh6dt1Y4c5YT5+M+C+uDfvIq8sYR8rbHrf5ZNuBE7C2RAc61kUEfACA0sbjt6lMvx+8wUV
+ Szg5AyKIMGDxfv7iWiPGZ1Y0Nlo0wBHYJyFgBCtt/LpCyhXBUjh0G+U8iF+3Miu+SlPtSmnh1
+ qm+OP6LSIT20e0M9hN1ZyyeALZel/8dQfFN7+U8OfB8lcCWTNjK5Mn8QqtU+Or59ohQLZEhf8
+ GQtGIH/Zm7QME0yjsKws3ZIbAbc=
+Received-SPF: pass client-ip=212.227.17.22; envelope-from=deller@gmx.de;
+ helo=mout.gmx.net
+X-Spam_score_int: -69
+X-Spam_score: -7.0
+X-Spam_bar: -------
+X-Spam_report: (-7.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ NICE_REPLY_A=-4.139, RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=-0.01,
+ RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,19 +88,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/6/23 07:13, Jiajie Chen wrote:
-> This commit introduces new loongarch32-softmmu target. Compared to
-> loongarch64-softmmu, the new target is different at least in:
-> 
-> - GPRs and CSRs are 32-bits wide, but FPRs are still 64-bits wide
-> - LA32 lacks some 64-bit-only instructions
-> - CSR.DMW0-3 introduces PSEG
+On 8/6/23 16:30, Richard Henderson wrote:
+> On 8/6/23 05:17, Helge Deller wrote:
+>> Use the new MMU_INDEX() helper to specify the index of the CPUTLB which
+>> should be used.=C2=A0 Additionally, in a follow-up patch this helper al=
+lows
+>> then to optimize the tcg code generation.
+>>
+>> Signed-off-by: Helge Deller <deller@gmx.de>
+>> ---
+>> =C2=A0 target/riscv/cpu.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 4=
+ ++--
+>> =C2=A0 target/riscv/cpu_helper.c | 2 +-
+>> =C2=A0 2 files changed, 3 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+>> index 6ea22e0eea..6aba1df64a 100644
+>> --- a/target/riscv/cpu.h
+>> +++ b/target/riscv/cpu.h
+>> @@ -88,7 +88,7 @@ typedef enum {
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 EXT_STATUS_DIRTY,
+>> =C2=A0 } RISCVExtStatus;
+>>
+>> -#define MMU_USER_IDX 3
+>> +#define MMU_USER_IDX MMU_INDEX(3)
+>>
+>> =C2=A0 #define MAX_RISCV_PMPS (16)
+>>
+>> @@ -446,7 +446,7 @@ void riscv_cpu_list(void);
+>> =C2=A0 void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **er=
+rp);
+>>
+>> =C2=A0 #define cpu_list riscv_cpu_list
+>> -#define cpu_mmu_index riscv_cpu_mmu_index
+>> +#define cpu_mmu_index(e,i)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 MMU_INDEX(ris=
+cv_cpu_mmu_index(e,i))
+>>
+>> =C2=A0 #ifndef CONFIG_USER_ONLY
+>> =C2=A0 void riscv_cpu_do_transaction_failed(CPUState *cs, hwaddr physad=
+dr,
+>> diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
+>> index 9f611d89bb..a8e6950217 100644
+>> --- a/target/riscv/cpu_helper.c
+>> +++ b/target/riscv/cpu_helper.c
+>> @@ -107,7 +107,7 @@ void cpu_get_tb_cpu_state(CPURISCVState *env, vaddr=
+ *pc,
+>> =C2=A0 #else
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 flags =3D FIELD_DP32(flags, TB_FLAGS, PR=
+IV, env->priv);
+>>
+>> -=C2=A0=C2=A0=C2=A0 flags |=3D cpu_mmu_index(env, 0);
+>> +=C2=A0=C2=A0=C2=A0 flags |=3D riscv_cpu_mmu_index(env, 0);
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 fs =3D get_field(env->mstatus, MSTATUS_F=
+S);
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 vs =3D get_field(env->mstatus, MSTATUS_V=
+S);
+>
+> This is the sort of non-obvious changes that I hoped to avoid by restric=
+ting all changes to accel/tcg/cputlb.c.
 
-Let us not create a new executable if we can avoid it.
-We can run 32-bit cpus from qemu-system-{x86_64,ppc64,aarch64}.
+True.
+And, since I've found some other missing pieces now too (e.g. in hppa)
+I'm currently tempted to fully agree with you, that handling this
+in accel/tcg/cputlb.c only is the better (and cleaner) solution.
 
-In any case, the patch is much too large and must be split.
+I'll try you approach.
 
-
-r~
+Helge
 
