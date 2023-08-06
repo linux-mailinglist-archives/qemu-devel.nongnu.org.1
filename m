@@ -2,77 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3029D7715B0
-	for <lists+qemu-devel@lfdr.de>; Sun,  6 Aug 2023 16:43:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AAF617715F9
+	for <lists+qemu-devel@lfdr.de>; Sun,  6 Aug 2023 17:51:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qSey8-0000RZ-0V; Sun, 06 Aug 2023 10:42:56 -0400
+	id 1qSg0z-0006ZW-OX; Sun, 06 Aug 2023 11:49:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qSey5-0000PC-B2
- for qemu-devel@nongnu.org; Sun, 06 Aug 2023 10:42:53 -0400
-Received: from mout.gmx.net ([212.227.17.22])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qSg0x-0006Z8-6X
+ for qemu-devel@nongnu.org; Sun, 06 Aug 2023 11:49:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qSey3-0003AS-CF
- for qemu-devel@nongnu.org; Sun, 06 Aug 2023 10:42:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1691332968; x=1691937768; i=deller@gmx.de;
- bh=bmH6qGCxZjjwsRZy3QOkI0k7S9f9VQhu09YRb3Gw/g8=;
- h=X-UI-Sender-Class:Date:Subject:To:References:From:In-Reply-To;
- b=EDDfDxYnD0tzTcL05qi45DarUoM0GFbLJUkOAzasLca8Ouqbxo0H582qA6qHEHSSVY8xwaG
- RyHtzAWkdwMTDrxLjDZ+Wg1o89du0lTK6XfhLYn/T7/AupJnszIRshWbq1+BHs3vAmZMjsxGM
- YNn6B/zhyRFJha6ceAwy9mt0mqmaOLKHoKxSYJ0XygMG5YJsJRmeDGGfZjT5H4UzP7xW9vAOX
- Il9layfr8ZruJylR/0wODyR6p6nbO4ukf28oCvtjqnGpGDthakqVEtQ2ucBsjBFKab15A6IaI
- hHTLshVokJxSq35UEY+aq4pyrFGvho/AKW9HCTzpkXfySM3GlLvQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([94.134.152.250]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MMofc-1qA29c1e2m-00IpoG; Sun, 06
- Aug 2023 16:42:48 +0200
-Message-ID: <700520df-f9d7-09a7-ded5-155eacbd11c6@gmx.de>
-Date: Sun, 6 Aug 2023 16:42:47 +0200
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qSg0u-0001d8-TP
+ for qemu-devel@nongnu.org; Sun, 06 Aug 2023 11:49:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1691336991;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=oKXD2+mT9Sz3oJE472UpZI0H5jNCJ7zK8UDeJlASWGc=;
+ b=Rw45AaJ41Id31zxw7ddcEKGA5cTL9hMSPavj0o0nw5P4At9oDy+WgeF3UgupLti0J7/A/A
+ kPHKOgKz/nMQt/H8VJjZTvr60xBJDDtLkdUvkvehq2HLmzMFnr0pQD3eaaGTXNR/ers4rY
+ 2VDZDUFBGVWpoHitOgSu1Qrzf+f7Wik=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-47-uF4o4k-HNBWHg0mpfntUQg-1; Sun, 06 Aug 2023 11:49:49 -0400
+X-MC-Unique: uF4o4k-HNBWHg0mpfntUQg-1
+Received: by mail-qt1-f197.google.com with SMTP id
+ d75a77b69052e-40fd6d83c21so9584661cf.1
+ for <qemu-devel@nongnu.org>; Sun, 06 Aug 2023 08:49:49 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1691336989; x=1691941789;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=oKXD2+mT9Sz3oJE472UpZI0H5jNCJ7zK8UDeJlASWGc=;
+ b=Z3W4Ns1DnTnWpK0Ml67x61X9ILlVexzFKJ/WY82rL/gK1LuUErbw1yfx3h/Cf4zvLe
+ IWbvkOywrp3Dwh+vMSrLEByja7BDcLnrYtgzuA6AIiQ68/UpgBI6iNz/YhlGC7hiRyi/
+ 3bhSUosNGlrm7i/IPIUA3Pl1RBNd8vhMJ8Zv+4T6FsA+2wFvm31xIxxf8FU9oYskRrdc
+ /avLSEw1JHWzsl15RW6P3pEaEBbmSYu5dy9IiwvDZy/2oWuwa+PhCR3kouSpvOpHJdAZ
+ HmTtSMm28EUpLeBVyVnmIEE2HDRgu3fp1ANmBbh4ZC7Mz/cAjPYpYM08TOlVnczwB57C
+ R82A==
+X-Gm-Message-State: ABy/qLbb2012Fh7XI1C0wvpE7GKrArQLhgTMG6DHWjD6acLk6sp/4koW
+ TvY8T9v1tbIS0mSgPvbwbvU+CeDZEbRLUzUfVeIiUVtiZ4TJ1T5wh7ABvjEx4dy8s6tyUhSbr7T
+ 18iU5b+eQuiRDDYE=
+X-Received: by 2002:a05:622a:1a1b:b0:40f:dcda:ea10 with SMTP id
+ f27-20020a05622a1a1b00b0040fdcdaea10mr18322890qtb.3.1691336988978; 
+ Sun, 06 Aug 2023 08:49:48 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlGqVYIeWDDYuOc66SsD+AIkhz8mEsW2oYL6AHPRfYYYnpYxzV2sLcraDzGcwAuGr003NChO3g==
+X-Received: by 2002:a05:622a:1a1b:b0:40f:dcda:ea10 with SMTP id
+ f27-20020a05622a1a1b00b0040fdcdaea10mr18322866qtb.3.1691336988597; 
+ Sun, 06 Aug 2023 08:49:48 -0700 (PDT)
+Received: from xz-m1.local
+ (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com. [99.254.144.39])
+ by smtp.gmail.com with ESMTPSA id
+ iy3-20020a05622a700300b004069782c943sm2026503qtb.40.2023.08.06.08.49.47
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 06 Aug 2023 08:49:48 -0700 (PDT)
+Date: Sun, 6 Aug 2023 11:49:46 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
+ qemu-devel@nongnu.org, Zhiyi Guo <zhguo@redhat.com>,
+ Leonardo Bras Soares Passos <lsoaresp@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>,
+ Juan Quintela <quintela@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Chensheng Dong <chdong@redhat.com>
+Subject: Re: [PATCH for-8.2 v2 1/2] qapi/migration: Deduplicate migration
+ parameter field comments
+Message-ID: <ZM/BGoSiDutVUoTF@xz-m1.local>
+References: <20230803155344.11450-1-peterx@redhat.com>
+ <20230803155344.11450-2-peterx@redhat.com>
+ <87jzub8016.fsf@pond.sub.org> <ZM0EK3A/rnDPImXz@redhat.com>
+ <ZM0g8iNXzv9LRo+w@x1n> <ZM0nX8qt1T3aZgNK@redhat.com>
+ <ZM0rWiHF8voqOdyp@x1n> <ZM0r8VoF8w5vGw7p@redhat.com>
+ <ZM1nXbjxWx9jvbjz@x1n> <87zg35x60f.fsf@pond.sub.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2 10/23] target/riscv: Use MMU_INDEX() helper
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20230806121732.91853-1-deller@gmx.de>
- <20230806121732.91853-11-deller@gmx.de>
- <dd180646-6c55-bfa6-0660-55eb5fa85917@linaro.org>
-From: Helge Deller <deller@gmx.de>
-In-Reply-To: <dd180646-6c55-bfa6-0660-55eb5fa85917@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:7/0Knq9l0Rvi3EnJHv6m8I/SJoQnhdlTVfVlsiPH3j2zuav9G9k
- zKdlvof6HbQGX806SHOdKIoY/QNyu+Y3qiRiAmvPAklJL4EnCr3hedGSuRyuWcQSBmRppLj
- 7jY9azb3oiqK9q/gZf3zC6443ZJXTAeDyDjz8uKruj+e/wBTwCsCG68sXDwdsYahvGRNQyb
- 3WZSYhQXYLdii5W1BoTLw==
-UI-OutboundReport: notjunk:1;M01:P0:u4nTEy+paxw=;J0CGLWLnquZLVwI/+Xdo/V43imG
- 9QGV3VNRrT89lB+A3tz3pg+VbBO8IzIOGnoKvdE2w490oASeZ4tlx/dgpEB+5ouOu2r+H1Hch
- 6xomYkT9lsSvms6+nMYFlQs7x167HDKTjNfjVLSFms/icXWujxL8GTINk2GapwvV9HvA0FSTf
- o/yZ9zF3096nB7FFMnv6+anvtAgI0gNfsu6tXw9Yp09lyl2MA13BATL3ckcv6LlW8DkfU+HRY
- 9F3Z75aMiQDcim7zMP6g7vNwTCv5wK0gI6YnFWj5C+tMd91iq97ShDe+3s5kKuBLVi/a+lRje
- aw8RNowEeWPRfqMmLZYm6h7VcLya/Lvayw7r4rlKahRsY7WUl5Rj0MXTSareYbYUZnLyqn1vd
- WONBo05LVo+i0P8jfDX9UgW09ca7G0YrYWWmBMSTjJHQU18A/CeXTvZDfEZ9JGUmAzyI+HWOA
- Nbl42jkKH0hlzt0bknYBbYx2aFKqH+IRriPKWLRqwL6G08lJrRhtnsuAMnwGYEONeYnU0hBwh
- VEMecvIKyc9wz/J3YDOqtrr5sRr34JS1qq0cd6SNh80q9EY6mdyi/YAuu5UHcJ0W2Xm7W1+U6
- vNHkCIZRF5b2y+Gj8wcdQF+IvVGuYBKq6T8cjgTHiL4rBU66QXJE4kXtGJT8kjs8i6HBa8vEM
- ziyf8JTFwhAEHhsmOhQdE+Q9KCkM7rjLWLEVhh2WFfHviWzfnSvTyPBfDWwftRL6lJmr0e33h
- 3hmnh6dt1Y4c5YT5+M+C+uDfvIq8sYR8rbHrf5ZNuBE7C2RAc61kUEfACA0sbjt6lMvx+8wUV
- Szg5AyKIMGDxfv7iWiPGZ1Y0Nlo0wBHYJyFgBCtt/LpCyhXBUjh0G+U8iF+3Miu+SlPtSmnh1
- qm+OP6LSIT20e0M9hN1ZyyeALZel/8dQfFN7+U8OfB8lcCWTNjK5Mn8QqtU+Or59ohQLZEhf8
- GQtGIH/Zm7QME0yjsKws3ZIbAbc=
-Received-SPF: pass client-ip=212.227.17.22; envelope-from=deller@gmx.de;
- helo=mout.gmx.net
-X-Spam_score_int: -69
-X-Spam_score: -7.0
-X-Spam_bar: -------
-X-Spam_report: (-7.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- NICE_REPLY_A=-4.139, RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=-0.01,
- RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87zg35x60f.fsf@pond.sub.org>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,71 +109,205 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/6/23 16:30, Richard Henderson wrote:
-> On 8/6/23 05:17, Helge Deller wrote:
->> Use the new MMU_INDEX() helper to specify the index of the CPUTLB which
->> should be used.=C2=A0 Additionally, in a follow-up patch this helper al=
-lows
->> then to optimize the tcg code generation.
->>
->> Signed-off-by: Helge Deller <deller@gmx.de>
->> ---
->> =C2=A0 target/riscv/cpu.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 4=
- ++--
->> =C2=A0 target/riscv/cpu_helper.c | 2 +-
->> =C2=A0 2 files changed, 3 insertions(+), 3 deletions(-)
->>
->> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
->> index 6ea22e0eea..6aba1df64a 100644
->> --- a/target/riscv/cpu.h
->> +++ b/target/riscv/cpu.h
->> @@ -88,7 +88,7 @@ typedef enum {
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 EXT_STATUS_DIRTY,
->> =C2=A0 } RISCVExtStatus;
->>
->> -#define MMU_USER_IDX 3
->> +#define MMU_USER_IDX MMU_INDEX(3)
->>
->> =C2=A0 #define MAX_RISCV_PMPS (16)
->>
->> @@ -446,7 +446,7 @@ void riscv_cpu_list(void);
->> =C2=A0 void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **er=
-rp);
->>
->> =C2=A0 #define cpu_list riscv_cpu_list
->> -#define cpu_mmu_index riscv_cpu_mmu_index
->> +#define cpu_mmu_index(e,i)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 MMU_INDEX(ris=
-cv_cpu_mmu_index(e,i))
->>
->> =C2=A0 #ifndef CONFIG_USER_ONLY
->> =C2=A0 void riscv_cpu_do_transaction_failed(CPUState *cs, hwaddr physad=
-dr,
->> diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
->> index 9f611d89bb..a8e6950217 100644
->> --- a/target/riscv/cpu_helper.c
->> +++ b/target/riscv/cpu_helper.c
->> @@ -107,7 +107,7 @@ void cpu_get_tb_cpu_state(CPURISCVState *env, vaddr=
- *pc,
->> =C2=A0 #else
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 flags =3D FIELD_DP32(flags, TB_FLAGS, PR=
-IV, env->priv);
->>
->> -=C2=A0=C2=A0=C2=A0 flags |=3D cpu_mmu_index(env, 0);
->> +=C2=A0=C2=A0=C2=A0 flags |=3D riscv_cpu_mmu_index(env, 0);
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 fs =3D get_field(env->mstatus, MSTATUS_F=
-S);
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 vs =3D get_field(env->mstatus, MSTATUS_V=
-S);
->
-> This is the sort of non-obvious changes that I hoped to avoid by restric=
-ting all changes to accel/tcg/cputlb.c.
+On Sat, Aug 05, 2023 at 10:12:00AM +0200, Markus Armbruster wrote:
+> Peter Xu <peterx@redhat.com> writes:
+> 
+> > On Fri, Aug 04, 2023 at 05:48:49PM +0100, Daniel P. Berrangé wrote:
+> >> On Fri, Aug 04, 2023 at 12:46:18PM -0400, Peter Xu wrote:
+> >> > On Fri, Aug 04, 2023 at 05:29:19PM +0100, Daniel P. Berrangé wrote:
+> >> > > On Fri, Aug 04, 2023 at 12:01:54PM -0400, Peter Xu wrote:
+> >> > > > On Fri, Aug 04, 2023 at 02:59:07PM +0100, Daniel P. Berrangé wrote:
+> >> > > > > On Fri, Aug 04, 2023 at 02:28:05PM +0200, Markus Armbruster wrote:
+> >> > > > > > Peter Xu <peterx@redhat.com> writes:
+> >> > > > > > 
+> >> > > > > > > We used to have three objects that have always the same list of parameters
+> >> > > > > > 
+> >> > > > > > We have!
+> >> > > > > > 
+> >> > > > > > > and comments are always duplicated:
+> >> > > > > > >
+> >> > > > > > >   - @MigrationParameter
+> >> > > > > > >   - @MigrationParameters
+> >> > > > > > >   - @MigrateSetParameters
+> >> > > > > > >
+> >> > > > > > > Before we can deduplicate the code, it's fairly straightforward to
+> >> > > > > > > deduplicate the comments first, so for each time we add a new migration
+> >> > > > > > > parameter we don't need to copy the same paragraphs three times.
+> >> > > > > > 
+> >> > > > > > De-duplicating the code would be nice, but we haven't done so in years,
+> >> > > > > > which suggests it's hard enough not to be worth the trouble.
+> >> > > > > 
+> >> > > > > The "MigrationParameter" enumeration isn't actually used in
+> >> > > > > QMP at all.
+> >> > > > > 
+> >> > > > > It is only used in HMP for hmp_migrate_set_parameter and
+> >> > > > > hmp_info_migrate_parameters. So it is questionable documenting
+> >> > > > > that enum in the QMP reference docs at all.
+> >> > > > > 
+> >> > > > > 1c1
+> >> > > > > < { 'struct': 'MigrationParameters',
+> >> > > > > ---
+> >> > > > > > { 'struct': 'MigrateSetParameters',
+> >> > > > > 14,16c14,16
+> >> > > > > <             '*tls-creds': 'str',
+> >> > > > > <             '*tls-hostname': 'str',
+> >> > > > > <             '*tls-authz': 'str',
+> >> > > > > ---
+> >> > > > > >             '*tls-creds': 'StrOrNull',
+> >> > > > > >             '*tls-hostname': 'StrOrNull',
+> >> > > > > >             '*tls-authz': 'StrOrNull',
+> >> > > > > 
+> >> > > > > Is it not valid to use StrOrNull in both cases and thus
+> >> > > > > delete the duplication here ?
+> >> > > > 
+> >> > > > I tested removing MigrateSetParameters by replacing it with
+> >> > > > MigrationParameters and it looks all fine here... I manually tested qmp/hmp
+> >> > > > on set/query parameters, and qtests are all happy.
+> >> > > 
+> >> > > I meant the other way around, such we would be using 'StrOrNull'
+> >> > > in all scenarios.
+> >> > 
+> >> > Yes, that should also work and even without worrying on nulls.  I just took
+> >> > a random one replacing the other.
+> >> > 
+> >> > > 
+> >> > > > 
+> >> > > > The only thing I see that may affect it is we used to logically allow
+> >> > > > taking things like '"tls-authz": null' in the json input, but now we won't
+> >> > > > allow that because we'll be asking for a string type only.
+> >> > > > 
+> >> > > > Since we have query-qmp-schema I suppose we're all fine, because logically
+> >> > > > the mgmt app (libvirt?) will still query that to understand the protocol,
+> >> > > > so now we'll have (response of query-qmp-schema):
+> >> > > > 
+> >> > > >         {
+> >> > > >             "arg-type": "144",
+> >> > > >             "meta-type": "command",
+> >> > > >             "name": "migrate-set-parameters",
+> >> > > >             "ret-type": "0"
+> >> > > >         },
+> >> > > > 
+> >> > > > Where 144 can start to point to MigrationParameters, rather than
+> >> > > > MigrateSetParameters.
+> >> > > > 
+> >> > > > Ok, then what if the mgmt app doesn't care and just used "null" in tls-*
+> >> > > > fields when setting?  Funnily I tried it and actually anything that does
+> >> > > > migrate-set-parameters with a "null" passed over to tls-* fields will
+> >> > > > already crash qemu...
+> >> > > > 
+> >> > > > ./migration/options.c:1333: migrate_params_apply: Assertion `params->tls_authz->type == QTYPE_QSTRING' failed.
+> >> > > > 
+> >> > > > #0  0x00007f72f4b2a844 in __pthread_kill_implementation () at /lib64/libc.so.6
+> >> > > > #1  0x00007f72f4ad9abe in raise () at /lib64/libc.so.6
+> >> > > > #2  0x00007f72f4ac287f in abort () at /lib64/libc.so.6
+> >> > > > #3  0x00007f72f4ac279b in _nl_load_domain.cold () at /lib64/libc.so.6
+> >> > > > #4  0x00007f72f4ad2147 in  () at /lib64/libc.so.6
+> >> > > > #5  0x00005573308740e6 in migrate_params_apply (params=0x7ffc74fd09d0, errp=0x7ffc74fd0998) at ../migration/options.c:1333
+> >> > > > #6  0x0000557330874591 in qmp_migrate_set_parameters (params=0x7ffc74fd09d0, errp=0x7ffc74fd0998) at ../migration/options.c:1433
+> >> > > > #7  0x0000557330cb9132 in qmp_marshal_migrate_set_parameters (args=0x7f72e00036d0, ret=0x7f72f133cd98, errp=0x7f72f133cd90) at qapi/qapi-commands-migration.c:214
+> >> > > > #8  0x0000557330d07fab in do_qmp_dispatch_bh (opaque=0x7f72f133ce30) at ../qapi/qmp-dispatch.c:128
+> >> > > > #9  0x0000557330d33bbb in aio_bh_call (bh=0x5573337d7920) at ../util/async.c:169
+> >> > > > #10 0x0000557330d33cd8 in aio_bh_poll (ctx=0x55733356e7d0) at ../util/async.c:216
+> >> > > > #11 0x0000557330d17a19 in aio_dispatch (ctx=0x55733356e7d0) at ../util/aio-posix.c:423
+> >> > > > #12 0x0000557330d34117 in aio_ctx_dispatch (source=0x55733356e7d0, callback=0x0, user_data=0x0) at ../util/async.c:358
+> >> > > > #13 0x00007f72f5a8848c in g_main_context_dispatch () at /lib64/libglib-2.0.so.0
+> >> > > > #14 0x0000557330d358d4 in glib_pollfds_poll () at ../util/main-loop.c:290
+> >> > > > #15 0x0000557330d35951 in os_host_main_loop_wait (timeout=0) at ../util/main-loop.c:313
+> >> > > > #16 0x0000557330d35a5f in main_loop_wait (nonblocking=0) at ../util/main-loop.c:592
+> >> > > > #17 0x000055733083aee0 in qemu_main_loop () at ../softmmu/runstate.c:732
+> >> > > > #18 0x0000557330b0921b in qemu_default_main () at ../softmmu/main.c:37
+> >> > > > #19 0x0000557330b09251 in main (argc=35, argv=0x7ffc74fd0ec8) at ../softmmu/main.c:48
+> >> > > > 
+> >> > > > Then I suppose it means all mgmt apps are not using "null" anyway, and it
+> >> > > > makes more sense to me to just remove MigrateSetParameters (by replacing it
+> >> > > > with MigrationParameters).
+> >> > > 
+> >> > > It shouldn't be crashing,  because qmp_migrate_set_parameters()
+> >> > > is turning 'null' into  "", which means the assert ought to
+> >> > > never fire. Did you have a local modiification that caused
+> >> > > this crash perhaps ?
+> >> > 
+> >> > I think it just got overlooked when introducing tls-authz to not have added
+> >> > that special code in qmp_migrate_set_parameters(), the other two are fine.
+> >> 
+> >> Oh right yes, pre-existing bug.
+> >
+> > So do we really care about "null" in any form over "" (empty str) here for
+> > tls-* parameters?
+> 
+> In my opinion, the use of "" was a design mistake.  Here's my argument:
+> 
+> commit 01fa55982692fb51a16049b63b571651a1053989
+> Author: Markus Armbruster <armbru@redhat.com>
+> Date:   Tue Jul 18 14:42:04 2017 +0200
+> 
+>     migration: Use JSON null instead of "" to reset parameter to default
+>     
+>     migrate-set-parameters sets migration parameters according to is
+>     arguments like this:
+>     
+>     * Present means "set the parameter to this value"
+>     
+>     * Absent means "leave the parameter unchanged"
+>     
+>     * Except for parameters tls_creds and tls_hostname, "" means "reset
+>       the parameter to its default value
+>     
+>     The first two are perfectly normal: presence of the parameter makes
+>     the command do something.
+>     
+>     The third one overloads the parameter with a second meaning.  The
+>     overloading is *implicit*, i.e. it's not visible in the types.  Works
+>     here, because "" is neither a valid TLS credentials ID, nor a valid
+>     host name.
+>     
+>     Pressing argument values the schema accepts, but are semantically
+>     invalid, into service to mean "reset to default" is not general, as
+>     suitable invalid values need not exist.  I also find it ugly.
+>     
+>     To clean this up, we could add a separate flag argument to ask for
+>     "reset to default", or add a distinct value to @tls_creds and
+>     @tls_hostname.  This commit implements the latter: add JSON null to
+>     the values of @tls_creds and @tls_hostname, deprecate "".
+>     
+>     Because we're so close to the 2.10 freeze, implement it in the
+>     stupidest way possible: have qmp_migrate_set_parameters() rewrite null
+>     to "" before anything else can see the null.  The proper way to do it
+>     would be rewriting "" to null, but that requires fixing up code to
+>     work with null.  Add TODO comments for that.
+>     
+>     Signed-off-by: Markus Armbruster <armbru@redhat.com>
+>     Reviewed-by: Daniel P. Berrange <berrange@redhat.com>
+>     Reviewed-by: Eric Blake <eblake@redhat.com>
 
-True.
-And, since I've found some other missing pieces now too (e.g. in hppa)
-I'm currently tempted to fully agree with you, that handling this
-in accel/tcg/cputlb.c only is the better (and cleaner) solution.
+I see.  Personally I think as long as the interface is 100% clear I'll be
+all fine (say, no possible misuse of "").  But keeping StrOrNull may
+definitely be cleaner I guess.
 
-I'll try you approach.
+> 
+> > To fix this tls-authz bug we can add one more QTYPE_QNULL to QTYPE_QSTRING
+> > convertion, but I'd rather just use "str" for all tls* fields and remove
+> > the other two instead, if "null" is not important to anyone.
+> 
+> "Important" sounds too much like absolutes :)
+> 
+> I think we have a tradeoff here.  If perpetuating the unclean and ugly
+> use of "" is what it takes to de-triplicate migration parameters, we may
+> decide to accept that.
 
-Helge
+I don't think it's a must.  As Dan raised, we can convert str -> StrOrNull
+for MigrationParameters. I assume it won't affect query-migrate-parameters
+anyway OTOH.
+
+I assume it means there's nothing yet obvious that we overlooked on the
+whole idea.  Let me propose the formal patchset early next week.  It'll be
+mostly the patch I attached but just add those extra logics for StrOrNull,
+so the diffstat might be less attractive but hopefully still good enough to
+be accepted.
+
+Thanks,
+
+-- 
+Peter Xu
+
 
