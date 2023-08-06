@@ -2,75 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A4A8771365
-	for <lists+qemu-devel@lfdr.de>; Sun,  6 Aug 2023 05:38:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E19B77136F
+	for <lists+qemu-devel@lfdr.de>; Sun,  6 Aug 2023 05:39:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qSUaJ-0003kX-Kr; Sat, 05 Aug 2023 23:37:39 -0400
+	id 1qSUaL-0003lD-K7; Sat, 05 Aug 2023 23:37:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qSUaH-0003jV-Bq
- for qemu-devel@nongnu.org; Sat, 05 Aug 2023 23:37:37 -0400
-Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
+ id 1qSUaI-0003jw-6L
+ for qemu-devel@nongnu.org; Sat, 05 Aug 2023 23:37:38 -0400
+Received: from mail-pj1-x102b.google.com ([2607:f8b0:4864:20::102b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qSUaF-0007bH-QC
+ id 1qSUaG-0007bV-IW
  for qemu-devel@nongnu.org; Sat, 05 Aug 2023 23:37:37 -0400
-Received: by mail-pj1-x1030.google.com with SMTP id
- 98e67ed59e1d1-26929bf95b6so889962a91.3
- for <qemu-devel@nongnu.org>; Sat, 05 Aug 2023 20:37:35 -0700 (PDT)
+Received: by mail-pj1-x102b.google.com with SMTP id
+ 98e67ed59e1d1-268128a0105so2263148a91.3
+ for <qemu-devel@nongnu.org>; Sat, 05 Aug 2023 20:37:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691293054; x=1691897854;
+ d=linaro.org; s=google; t=1691293055; x=1691897855;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=BwFHtt7Rthrgzaq+94z3/B+V/hUuIkoTCUpTmlGBJ3w=;
- b=b+Oj/fWOmU6XclRjmkD9QCPkfx6YoxidC4pen8HXCKgUDA3wBm7jGrl/l3PEmTHOxR
- VPm6stK1NMkT90cjPSzrR4CaxTHQYT6CCgYImtjDoLTdCQ+W0YcOFysVOXwZRP4ajrOt
- qNDvIYSLchcHOfxJ7BD7LOxAD8XzuzJuVjKH+dYUXFoZMI7k4Rh3GQJo6mdCZMXuFowF
- 7eXoike4cHo9rL2mRqCaSyb6SNgJPuxq2XC44VvDPvit+2THJK4rwUhiq+NaPVjmmJ2D
- lRekUIlJgujn3fQsNJ8aaMWzbxN6SbDtQEe15ZuCKc+4UA5usnIoFmy3ftrLrFl7HBMX
- hEag==
+ bh=lfYi3zP2whYYhdilrdAtUwTS+wOZ/T9TUKhhh0JmADM=;
+ b=HdyPok+35A++RKX3yC0PF7hseKukkof6kahARC9kKVXK6WUkzluMycTr6fDE6K576c
+ RyDl2kfcDH1jczDplg9no9tNPr3DQd+VtOZ0lTq9cY26+0XScCm9Up/jqInUx5NuFhAR
+ 7J7fmuh6TenmTm0ovFOXlg+GedT9ykcf5XYnPmglTX/92k8eWcvQyR1nAcOvUYEzUoE0
+ 9mTI2q+jZ2IxA0GYEVOvI5NzM+mPPvFqGIlfF7IBG4DRAKrTTvKd2bukUGq+dFKFPCVj
+ X25jz99cXiGyvhH49eS+F7qdYXHRrP9J7W8NPAYNr1fpvOmojayb51YsgyFhPMLmPf0N
+ SoAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691293054; x=1691897854;
+ d=1e100.net; s=20221208; t=1691293055; x=1691897855;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BwFHtt7Rthrgzaq+94z3/B+V/hUuIkoTCUpTmlGBJ3w=;
- b=LVyK4s04gTPa95via1Uzql+Ivj81ai3OTVeMYk407yTci9N6fIQoDsYI+JjTRnzw0E
- SKsFkyCnjAAZ13wkN+o3BMgcooD+NFt+Iv0vriCjrhYNkjIDM81DGb5sHfuHFKhSMxJT
- FBqY2saThnU4RSwDGkvp/AoCVFTc5UMQikdUAnz5iP1CBdYcQdbEjDpo6zi9pHTDJfhd
- lmhOzt40uEcaVK7eCNbrAcTFsCTEy0OuZjqRcfT4fDoQRAZCk+4Mp3P9GyftUo2oT+GO
- MHk7rWFvPolCJiPyRBj2fxX7nf3OFG/5U31oRQ9sukuL/DD/YxdRVZzp29hPDAj8Akda
- WpXQ==
-X-Gm-Message-State: AOJu0YwXshqlc8m01LvF6dGXjbUpZITr3UVIOeJ3Zs9kaQrCtvdzV41N
- /QLLwL0Eg/GO+k3UMcr6Yb6JdjXpKN/LoD+gFDw=
-X-Google-Smtp-Source: AGHT+IHgviyhY7yKlNqxRmE6WwaO940upDCOvY40mXX30Yu8EEf4aMClzfdU0xfZVUS9bSW1cX4Vmw==
-X-Received: by 2002:a17:90a:3d0a:b0:263:129e:80ac with SMTP id
- h10-20020a17090a3d0a00b00263129e80acmr4602846pjc.38.1691293054615; 
- Sat, 05 Aug 2023 20:37:34 -0700 (PDT)
+ bh=lfYi3zP2whYYhdilrdAtUwTS+wOZ/T9TUKhhh0JmADM=;
+ b=WYV1ywJ/jRoZWX4eCP7aNPtS2lYxREECz7TZLxmjlNF2qWKVqjjyaXmI/42YDXHAy4
+ UsPkvxHfCx5pAWVK0+wDsKByOFvky+X60jzX4zytAQTejTJrsdKY3zr1JHMEhNRN4Hsi
+ d488dYLSirPkX1cfJU7Axhh5cfDFadnIgdFOiAoESMi+LRQ7pFOWkOZRTUdLVCszkWhM
+ EdnSr3NM1/XIA4G+mnOSzGYAK0dF7pTtqZihW+ZAsSY48NdgEiANC/Sn0D9kPQqCNp5C
+ /ajlzYsrFa5+wxIXgWvzAyGZhqdmaT1JwpzUmz/Q5VccWQ7UeyQfL4ELu+wYjvSLq/Zo
+ bPYQ==
+X-Gm-Message-State: AOJu0YzEe5l3MCBe/EeS/P/AWW7Xjv7gU2dLmR6JFKxrN/+59HC1GlNR
+ c/VwlkcFqWQME3yHjmC83tgojt9pbxQDH5TE+ng=
+X-Google-Smtp-Source: AGHT+IH182JTUkKRcUvMXSljjWXCUWyGprfHlN1TemklAIg9o1gErngHU56+SVYttp9MIPZeSqRj2g==
+X-Received: by 2002:a17:90a:eb07:b0:267:a859:dfef with SMTP id
+ j7-20020a17090aeb0700b00267a859dfefmr5281440pjz.27.1691293055326; 
+ Sat, 05 Aug 2023 20:37:35 -0700 (PDT)
 Received: from stoup.. ([2602:47:d490:6901:9454:a46f:1c22:a7c6])
  by smtp.gmail.com with ESMTPSA id
- a5-20020a17090a740500b00262e604724dsm6306451pjg.50.2023.08.05.20.37.33
+ a5-20020a17090a740500b00262e604724dsm6306451pjg.50.2023.08.05.20.37.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Sat, 05 Aug 2023 20:37:34 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Helge Deller <deller@gmx.de>,
-	Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PULL 22/24] linux-user: Use zero_bss for PT_LOAD with no file
- contents too
-Date: Sat,  5 Aug 2023 20:37:13 -0700
-Message-Id: <20230806033715.244648-23-richard.henderson@linaro.org>
+Cc: Mikhail Tyutin <m.tyutin@yadro.com>, Dmitriy Solovev <d.solovev@yadro.com>
+Subject: [PULL 23/24] accel/tcg: Call save_iotlb_data from io_readx as well.
+Date: Sat,  5 Aug 2023 20:37:14 -0700
+Message-Id: <20230806033715.244648-24-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230806033715.244648-1-richard.henderson@linaro.org>
 References: <20230806033715.244648-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1030.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,68 +91,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If p_filesz == 0, then vaddr_ef == vaddr.  We can reuse the
-code in zero_bss rather than incompletely duplicating it in
-load_elf_image.
+From: Mikhail Tyutin <m.tyutin@yadro.com>
 
-Tested-by: Helge Deller <deller@gmx.de>
-Reviewed-by: Helge Deller <deller@gmx.de>
-Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Apply save_iotlb_data() to io_readx() as well as to io_writex().
+This fixes SEGFAULT on qemu_plugin_hwaddr_phys_addr() call plugins
+for addresses inside of MMIO region.
+
+Signed-off-by: Dmitriy Solovev <d.solovev@yadro.com>
+Signed-off-by: Mikhail Tyutin <m.tyutin@yadro.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20230804110903.19968-1-m.tyutin@yadro.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/elfload.c | 27 +++++++--------------------
- 1 file changed, 7 insertions(+), 20 deletions(-)
+ accel/tcg/cputlb.c | 36 +++++++++++++++++++++---------------
+ 1 file changed, 21 insertions(+), 15 deletions(-)
 
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 66ab617bd1..51591a1d94 100644
---- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -3209,7 +3209,7 @@ static void load_elf_image(const char *image_name, int image_fd,
-     for (i = 0; i < ehdr->e_phnum; i++) {
-         struct elf_phdr *eppnt = phdr + i;
-         if (eppnt->p_type == PT_LOAD) {
--            abi_ulong vaddr, vaddr_po, vaddr_ps, vaddr_ef, vaddr_em, vaddr_len;
-+            abi_ulong vaddr, vaddr_po, vaddr_ps, vaddr_ef, vaddr_em;
-             int elf_prot = 0;
+diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
+index 4b1bfaa53d..d68fa6867c 100644
+--- a/accel/tcg/cputlb.c
++++ b/accel/tcg/cputlb.c
+@@ -1363,6 +1363,21 @@ static inline void cpu_transaction_failed(CPUState *cpu, hwaddr physaddr,
+     }
+ }
  
-             if (eppnt->p_flags & PF_R) {
-@@ -3234,30 +3234,17 @@ static void load_elf_image(const char *image_name, int image_fd,
-              * but no backing file segment.
-              */
-             if (eppnt->p_filesz != 0) {
--                vaddr_len = eppnt->p_filesz + vaddr_po;
--                error = target_mmap(vaddr_ps, vaddr_len, elf_prot,
--                                    MAP_PRIVATE | MAP_FIXED,
-+                error = target_mmap(vaddr_ps, eppnt->p_filesz + vaddr_po,
-+                                    elf_prot, MAP_PRIVATE | MAP_FIXED,
-                                     image_fd, eppnt->p_offset - vaddr_po);
++/*
++ * Save a potentially trashed CPUTLBEntryFull for later lookup by plugin.
++ * This is read by tlb_plugin_lookup if the fulltlb entry doesn't match
++ * because of the side effect of io_writex changing memory layout.
++ */
++static void save_iotlb_data(CPUState *cs, MemoryRegionSection *section,
++                            hwaddr mr_offset)
++{
++#ifdef CONFIG_PLUGIN
++    SavedIOTLB *saved = &cs->saved_iotlb;
++    saved->section = section;
++    saved->mr_offset = mr_offset;
++#endif
++}
++
+ static uint64_t io_readx(CPUArchState *env, CPUTLBEntryFull *full,
+                          int mmu_idx, vaddr addr, uintptr_t retaddr,
+                          MMUAccessType access_type, MemOp op)
+@@ -1382,6 +1397,12 @@ static uint64_t io_readx(CPUArchState *env, CPUTLBEntryFull *full,
+         cpu_io_recompile(cpu, retaddr);
+     }
+ 
++    /*
++     * The memory_region_dispatch may trigger a flush/resize
++     * so for plugins we save the iotlb_data just in case.
++     */
++    save_iotlb_data(cpu, section, mr_offset);
++
+     {
+         QEMU_IOTHREAD_LOCK_GUARD();
+         r = memory_region_dispatch_read(mr, mr_offset, &val, op, full->attrs);
+@@ -1398,21 +1419,6 @@ static uint64_t io_readx(CPUArchState *env, CPUTLBEntryFull *full,
+     return val;
+ }
+ 
+-/*
+- * Save a potentially trashed CPUTLBEntryFull for later lookup by plugin.
+- * This is read by tlb_plugin_lookup if the fulltlb entry doesn't match
+- * because of the side effect of io_writex changing memory layout.
+- */
+-static void save_iotlb_data(CPUState *cs, MemoryRegionSection *section,
+-                            hwaddr mr_offset)
+-{
+-#ifdef CONFIG_PLUGIN
+-    SavedIOTLB *saved = &cs->saved_iotlb;
+-    saved->section = section;
+-    saved->mr_offset = mr_offset;
+-#endif
+-}
 -
-                 if (error == -1) {
-                     goto exit_mmap;
-                 }
-+            }
- 
--                /*
--                 * If the load segment requests extra zeros (e.g. bss), map it.
--                 */
--                if (eppnt->p_filesz < eppnt->p_memsz) {
--                    zero_bss(vaddr_ef, vaddr_em, elf_prot);
--                }
--            } else if (eppnt->p_memsz != 0) {
--                vaddr_len = eppnt->p_memsz + vaddr_po;
--                error = target_mmap(vaddr_ps, vaddr_len, elf_prot,
--                                    MAP_PRIVATE | MAP_FIXED | MAP_ANONYMOUS,
--                                    -1, 0);
--
--                if (error == -1) {
--                    goto exit_mmap;
--                }
-+            /* If the load segment requests extra zeros (e.g. bss), map it. */
-+            if (vaddr_ef < vaddr_em) {
-+                zero_bss(vaddr_ef, vaddr_em, elf_prot);
-             }
- 
-             /* Find the full program boundaries.  */
+ static void io_writex(CPUArchState *env, CPUTLBEntryFull *full,
+                       int mmu_idx, uint64_t val, vaddr addr,
+                       uintptr_t retaddr, MemOp op)
 -- 
 2.34.1
 
