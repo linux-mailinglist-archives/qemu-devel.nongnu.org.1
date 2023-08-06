@@ -2,70 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1CD877136A
+	by mail.lfdr.de (Postfix) with ESMTPS id DD25B77136B
 	for <lists+qemu-devel@lfdr.de>; Sun,  6 Aug 2023 05:39:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qSUa1-0003ZR-CE; Sat, 05 Aug 2023 23:37:21 -0400
+	id 1qSUa2-0003bM-Vq; Sat, 05 Aug 2023 23:37:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qSUZz-0003Z7-Vv
+ id 1qSUa0-0003ZH-8I
  for qemu-devel@nongnu.org; Sat, 05 Aug 2023 23:37:20 -0400
-Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
+Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qSUZy-0007VY-47
- for qemu-devel@nongnu.org; Sat, 05 Aug 2023 23:37:19 -0400
-Received: by mail-pj1-x1030.google.com with SMTP id
- 98e67ed59e1d1-2680f27b52dso1967327a91.0
- for <qemu-devel@nongnu.org>; Sat, 05 Aug 2023 20:37:17 -0700 (PDT)
+ id 1qSUZy-0007Vj-DU
+ for qemu-devel@nongnu.org; Sat, 05 Aug 2023 23:37:20 -0400
+Received: by mail-pj1-x1035.google.com with SMTP id
+ 98e67ed59e1d1-268b3ddc894so1826196a91.1
+ for <qemu-devel@nongnu.org>; Sat, 05 Aug 2023 20:37:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691293036; x=1691897836;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=A86bE9TvpuNQjNQpbQTHQeJJYeQauzA3gx8pUe2972A=;
- b=pdLbNe4aI3k380F6raOv81qVhXHUB5pM8dsMioHBZ1EwcTn+2WbiX/tUgprRQIbEDL
- YizvYf2pWmFXh/XduNZ7FwSrqryHbjJiZIansMZRTfh1upRbwJYLO9YkWFVj+BRqOY+/
- VbtQmBE8uenhZ5szti3NWCj6fAaAiu383OZlFWglecpj5gZ3l7FjXuBzV0NN0mKdGn4t
- Cf+mLDapdlzNHKPtAGBpeAzg49k4cX8+ZGdM+76OklwOTDG6Cdedq5seAeJcGXn0VAxM
- JHjeK+nlwGvyJja17Thv79+7flT3TJaaZP0O+7tC5bWRl48RghgZ2W/gX8mjn7Soaa1v
- 7/pA==
+ d=linaro.org; s=google; t=1691293037; x=1691897837;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=jsOBWOFossCHszj7zLjYTuH7ZUTZ9Rn/iuADRRkhtM4=;
+ b=T4bIw9fD15LKS8IexBua3eZvM+LY9cFpmyNIxEuywgC+i4SMsp57LlYHJAeE2qUuY2
+ IyLSeOfEfTEv7WxweZsMU1DNnBo71Bz+e+Z9Qm15Hw7RArLX+TzSpdrl8IkmL6JiyhsL
+ Qum3jwLLWp8YU7u6xabL2rIMYiwpsXlVmZMOiK1NbEwobdCVP1Hs4FWSji+GtSRj6dQi
+ /wlqNph1m/iIibr7R8H2mzEMFzaiSTWNWt4NCMuQPntkJmpWM7SWB/Ce72mzcS0S231z
+ bvsoRAoFyVVq1motBEkTwMnRSn1jhSj3dclKTh51QxLy8bv+uN9kG2GHxbF9B2fyu72r
+ JYFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691293036; x=1691897836;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=A86bE9TvpuNQjNQpbQTHQeJJYeQauzA3gx8pUe2972A=;
- b=h7ueTqknmhAvJEqriOgZOWNGD7/CikwhmsEFHwdYj8w0oOW4q3/+lpFmnF2v1IaVAb
- VAjhnbjSLNe5xcH7DeZOniSSovBXk84SzbcCp/V4eVQKpt5msZV/ynbAI3zhFncsdokJ
- 0vLYIv7gJsrQrXloE27pTHcdI5BGNyf2vZOapSU6Sn24UdFrHGxbygPyb0FvQ4sL6LZZ
- pgUpUrLyl72cub4yQVmRyVmK8eqKSmcFOeKgvIohgiAQ0aAWb/WYzIYC4fbmp38fGF2q
- SwsLKH4m/qj47V6W4sDU0dllkE6tZ2LdZn4IpgKG/0ko8rJafxBCY4FH53TessAHGc8Y
- 4WFA==
-X-Gm-Message-State: AOJu0YzjJbV1JgMBU+0TKDZSXacX0c/OgTBEet2n8cL8Coh3WPMqk4nl
- YVceNdhTQsXEdPhtbQ0pRamt8j9JjABhb/inmc8=
-X-Google-Smtp-Source: AGHT+IHt6fUw5x41qmR9QgYmxOsVSnZbtlmxSwGNfMhvIr0P/oTlp+iwuL5hINGHiwRDo92zMC3UXg==
-X-Received: by 2002:a17:90a:7087:b0:268:d716:4b62 with SMTP id
- g7-20020a17090a708700b00268d7164b62mr5517483pjk.0.1691293036163; 
+ d=1e100.net; s=20221208; t=1691293037; x=1691897837;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=jsOBWOFossCHszj7zLjYTuH7ZUTZ9Rn/iuADRRkhtM4=;
+ b=X/M3zCXba+bj8prgZekp9lIoNdAZkRtOZwPqiTBhzV4dsLGflwClWOOJXZnF+HwT9Z
+ TROkUMk1bLGrf3gOiM0VdnEsnHlzjmZ9TTm8SnODvEr3igFOjATXb+EIaIyFDnhsO69O
+ vpbZIy6PjDrdebgOQ0eRhoYIl4cAdRtEApYVaZD064v9jkYg0QEL/E0Mtjm2ta8CECel
+ b6qXkgxkgJOmqgYu3O+8dbwLeYN/V+A2XqTAId3npyhaKclro3dnsv8QX+N9xKEOjc9G
+ fkwOL5Kn/yVj2Fv/y4XYD42InAgdUheiXlmbHzM8DapWcDHq5886fM2+Fm3tkEzDLiwH
+ XpVQ==
+X-Gm-Message-State: AOJu0YyMmoUXQ+7PjZUoecT5fmcYw4xTv3sgIjkY7erDXwctkrKCdCaM
+ UOfkH2Qa23pkqNFVPqaKV7Aqhs0a8K7bvBBKPE4=
+X-Google-Smtp-Source: AGHT+IFuND4AP6QjywiurQ6GITt0s2mrDhFY+8h3sMb5scKGG0dcaKy/dEHf6om2WHdT+zjy2IBSAw==
+X-Received: by 2002:a17:90a:38e2:b0:268:557e:1848 with SMTP id
+ x89-20020a17090a38e200b00268557e1848mr4245970pjb.2.1691293036982; 
  Sat, 05 Aug 2023 20:37:16 -0700 (PDT)
 Received: from stoup.. ([2602:47:d490:6901:9454:a46f:1c22:a7c6])
  by smtp.gmail.com with ESMTPSA id
- a5-20020a17090a740500b00262e604724dsm6306451pjg.50.2023.08.05.20.37.15
- for <qemu-devel@nongnu.org>
+ a5-20020a17090a740500b00262e604724dsm6306451pjg.50.2023.08.05.20.37.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 05 Aug 2023 20:37:15 -0700 (PDT)
+ Sat, 05 Aug 2023 20:37:16 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 00/24] tcg + linux-user queue for 8.1-rc3
-Date: Sat,  5 Aug 2023 20:36:51 -0700
-Message-Id: <20230806033715.244648-1-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 01/24] accel/tcg: Adjust parameters and locking with do_{ld,
+ st}_mmio_*
+Date: Sat,  5 Aug 2023 20:36:52 -0700
+Message-Id: <20230806033715.244648-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230806033715.244648-1-richard.henderson@linaro.org>
+References: <20230806033715.244648-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1030.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1035.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -88,97 +93,148 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 6db03ccc7f4ca33c99debaac290066f4500a2dfb:
+Replace MMULookupPageData* with CPUTLBEntryFull, addr, size.
+Move QEMU_IOTHREAD_LOCK_GUARD to the caller.
 
-  Merge tag 'for-upstream' of https://gitlab.com/bonzini/qemu into staging (2023-08-04 14:47:00 -0700)
+This simplifies the usage from do_ld16_beN and do_st16_leN, where
+we weren't locking the entire operation, and required hoop jumping
+for passing addr and size.
 
-are available in the Git repository at:
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ accel/tcg/cputlb.c | 67 +++++++++++++++++++++++-----------------------
+ 1 file changed, 34 insertions(+), 33 deletions(-)
 
-  https://gitlab.com/rth7680/qemu.git tags/pull-tcg-20230805
+diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
+index ba44501a7c..23386ecfde 100644
+--- a/accel/tcg/cputlb.c
++++ b/accel/tcg/cputlb.c
+@@ -2066,24 +2066,22 @@ static void *atomic_mmu_lookup(CPUArchState *env, vaddr addr, MemOpIdx oi,
+ /**
+  * do_ld_mmio_beN:
+  * @env: cpu context
+- * @p: translation parameters
++ * @full: page parameters
+  * @ret_be: accumulated data
++ * @addr: virtual address
++ * @size: number of bytes
+  * @mmu_idx: virtual address context
+  * @ra: return address into tcg generated code, or 0
++ * Context: iothread lock held
+  *
+- * Load @p->size bytes from @p->addr, which is memory-mapped i/o.
++ * Load @size bytes from @addr, which is memory-mapped i/o.
+  * The bytes are concatenated in big-endian order with @ret_be.
+  */
+-static uint64_t do_ld_mmio_beN(CPUArchState *env, MMULookupPageData *p,
+-                               uint64_t ret_be, int mmu_idx,
+-                               MMUAccessType type, uintptr_t ra)
++static uint64_t do_ld_mmio_beN(CPUArchState *env, CPUTLBEntryFull *full,
++                               uint64_t ret_be, vaddr addr, int size,
++                               int mmu_idx, MMUAccessType type, uintptr_t ra)
+ {
+-    CPUTLBEntryFull *full = p->full;
+-    vaddr addr = p->addr;
+-    int i, size = p->size;
+-
+-    QEMU_IOTHREAD_LOCK_GUARD();
+-    for (i = 0; i < size; i++) {
++    for (int i = 0; i < size; i++) {
+         uint8_t x = io_readx(env, full, mmu_idx, addr + i, ra, type, MO_UB);
+         ret_be = (ret_be << 8) | x;
+     }
+@@ -2232,7 +2230,9 @@ static uint64_t do_ld_beN(CPUArchState *env, MMULookupPageData *p,
+     unsigned tmp, half_size;
+ 
+     if (unlikely(p->flags & TLB_MMIO)) {
+-        return do_ld_mmio_beN(env, p, ret_be, mmu_idx, type, ra);
++        QEMU_IOTHREAD_LOCK_GUARD();
++        return do_ld_mmio_beN(env, p->full, ret_be, p->addr, p->size,
++                              mmu_idx, type, ra);
+     }
+ 
+     /*
+@@ -2281,11 +2281,11 @@ static Int128 do_ld16_beN(CPUArchState *env, MMULookupPageData *p,
+     MemOp atom;
+ 
+     if (unlikely(p->flags & TLB_MMIO)) {
+-        p->size = size - 8;
+-        a = do_ld_mmio_beN(env, p, a, mmu_idx, MMU_DATA_LOAD, ra);
+-        p->addr += p->size;
+-        p->size = 8;
+-        b = do_ld_mmio_beN(env, p, 0, mmu_idx, MMU_DATA_LOAD, ra);
++        QEMU_IOTHREAD_LOCK_GUARD();
++        a = do_ld_mmio_beN(env, p->full, a, p->addr, size - 8,
++                           mmu_idx, MMU_DATA_LOAD, ra);
++        b = do_ld_mmio_beN(env, p->full, 0, p->addr + 8, 8,
++                           mmu_idx, MMU_DATA_LOAD, ra);
+         return int128_make128(b, a);
+     }
+ 
+@@ -2664,24 +2664,23 @@ Int128 cpu_ld16_mmu(CPUArchState *env, abi_ptr addr,
+ /**
+  * do_st_mmio_leN:
+  * @env: cpu context
+- * @p: translation parameters
++ * @full: page parameters
+  * @val_le: data to store
++ * @addr: virtual address
++ * @size: number of bytes
+  * @mmu_idx: virtual address context
+  * @ra: return address into tcg generated code, or 0
++ * Context: iothread lock held
+  *
+- * Store @p->size bytes at @p->addr, which is memory-mapped i/o.
++ * Store @size bytes at @addr, which is memory-mapped i/o.
+  * The bytes to store are extracted in little-endian order from @val_le;
+  * return the bytes of @val_le beyond @p->size that have not been stored.
+  */
+-static uint64_t do_st_mmio_leN(CPUArchState *env, MMULookupPageData *p,
+-                               uint64_t val_le, int mmu_idx, uintptr_t ra)
++static uint64_t do_st_mmio_leN(CPUArchState *env, CPUTLBEntryFull *full,
++                               uint64_t val_le, vaddr addr, int size,
++                               int mmu_idx, uintptr_t ra)
+ {
+-    CPUTLBEntryFull *full = p->full;
+-    vaddr addr = p->addr;
+-    int i, size = p->size;
+-
+-    QEMU_IOTHREAD_LOCK_GUARD();
+-    for (i = 0; i < size; i++, val_le >>= 8) {
++    for (int i = 0; i < size; i++, val_le >>= 8) {
+         io_writex(env, full, mmu_idx, val_le, addr + i, ra, MO_UB);
+     }
+     return val_le;
+@@ -2698,7 +2697,9 @@ static uint64_t do_st_leN(CPUArchState *env, MMULookupPageData *p,
+     unsigned tmp, half_size;
+ 
+     if (unlikely(p->flags & TLB_MMIO)) {
+-        return do_st_mmio_leN(env, p, val_le, mmu_idx, ra);
++        QEMU_IOTHREAD_LOCK_GUARD();
++        return do_st_mmio_leN(env, p->full, val_le, p->addr,
++                              p->size, mmu_idx, ra);
+     } else if (unlikely(p->flags & TLB_DISCARD_WRITE)) {
+         return val_le >> (p->size * 8);
+     }
+@@ -2751,11 +2752,11 @@ static uint64_t do_st16_leN(CPUArchState *env, MMULookupPageData *p,
+     MemOp atom;
+ 
+     if (unlikely(p->flags & TLB_MMIO)) {
+-        p->size = 8;
+-        do_st_mmio_leN(env, p, int128_getlo(val_le), mmu_idx, ra);
+-        p->size = size - 8;
+-        p->addr += 8;
+-        return do_st_mmio_leN(env, p, int128_gethi(val_le), mmu_idx, ra);
++        QEMU_IOTHREAD_LOCK_GUARD();
++        do_st_mmio_leN(env, p->full, int128_getlo(val_le),
++                       p->addr, 8, mmu_idx, ra);
++        return do_st_mmio_leN(env, p->full, int128_gethi(val_le),
++                              p->addr + 8, size - 8, mmu_idx, ra);
+     } else if (unlikely(p->flags & TLB_DISCARD_WRITE)) {
+         return int128_gethi(val_le) >> ((size - 8) * 8);
+     }
+-- 
+2.34.1
 
-for you to fetch changes up to 843246699425adfb6b81f927c16c9c6249b51e1d:
-
-  linux-user/elfload: Set V in ELF_HWCAP for RISC-V (2023-08-05 18:17:20 +0000)
-
-----------------------------------------------------------------
-accel/tcg: Do not issue misaligned i/o
-accel/tcg: Call save_iotlb_data from io_readx
-gdbstub: use 0 ("any process") on packets with no PID
-linux-user: Fixes for MAP_FIXED_NOREPLACE
-linux-user: Fixes for brk
-linux-user: Adjust task_unmapped_base for reserved_va
-linux-user: Use ELF_ET_DYN_BASE for ET_DYN with interpreter
-linux-user: Remove host != guest page size workarounds in brk and image load
-linux-user: Set V in ELF_HWCAP for RISC-V
-*-user: Remove last_brk as unused
-
-----------------------------------------------------------------
-Akihiko Odaki (6):
-      linux-user: Unset MAP_FIXED_NOREPLACE for host
-      linux-user: Fix MAP_FIXED_NOREPLACE on old kernels
-      linux-user: Do not call get_errno() in do_brk()
-      linux-user: Use MAP_FIXED_NOREPLACE for do_brk()
-      linux-user: Do nothing if too small brk is specified
-      linux-user: Do not align brk with host page size
-
-Helge Deller (1):
-      linux-user: Adjust initial brk when interpreter is close to executable
-
-Matheus Tavares Bernardino (1):
-      gdbstub: use 0 ("any process") on packets with no PID
-
-Mikhail Tyutin (1):
-      accel/tcg: Call save_iotlb_data from io_readx as well.
-
-Nathan Egge (1):
-      linux-user/elfload: Set V in ELF_HWCAP for RISC-V
-
-Richard Henderson (14):
-      accel/tcg: Adjust parameters and locking with do_{ld,st}_mmio_*
-      accel/tcg: Issue wider aligned i/o in do_{ld,st}_mmio_*
-      accel/tcg: Do not issue misaligned i/o
-      linux-user: Remove last_brk
-      bsd-user: Remove last_brk
-      linux-user: Adjust task_unmapped_base for reserved_va
-      linux-user: Define TASK_UNMAPPED_BASE in $guest/target_mman.h
-      linux-user: Define ELF_ET_DYN_BASE in $guest/target_mman.h
-      linux-user: Use MAP_FIXED_NOREPLACE for initial image mmap
-      linux-user: Use elf_et_dyn_base for ET_DYN with interpreter
-      linux-user: Properly set image_info.brk in flatload
-      linux-user: Do not adjust image mapping for host page size
-      linux-user: Do not adjust zero_bss for host page size
-      linux-user: Use zero_bss for PT_LOAD with no file contents too
-
- bsd-user/qemu.h                      |   1 -
- linux-user/aarch64/target_mman.h     |  13 ++
- linux-user/alpha/target_mman.h       |  11 ++
- linux-user/arm/target_mman.h         |  11 ++
- linux-user/cris/target_mman.h        |  12 ++
- linux-user/hexagon/target_mman.h     |  13 ++
- linux-user/hppa/target_mman.h        |   6 +
- linux-user/i386/target_mman.h        |  16 ++
- linux-user/loongarch64/target_mman.h |  11 ++
- linux-user/m68k/target_mman.h        |   5 +
- linux-user/microblaze/target_mman.h  |  11 ++
- linux-user/mips/target_mman.h        |  10 ++
- linux-user/nios2/target_mman.h       |  10 ++
- linux-user/openrisc/target_mman.h    |  10 ++
- linux-user/ppc/target_mman.h         |  20 +++
- linux-user/qemu.h                    |   2 -
- linux-user/riscv/target_mman.h       |  10 ++
- linux-user/s390x/target_mman.h       |  20 +++
- linux-user/sh4/target_mman.h         |   7 +
- linux-user/sparc/target_mman.h       |  25 +++
- linux-user/user-mmap.h               |   6 +-
- linux-user/x86_64/target_mman.h      |  15 ++
- linux-user/xtensa/target_mman.h      |  10 ++
- accel/tcg/cputlb.c                   | 289 +++++++++++++++++++++++------------
- bsd-user/mmap.c                      |   2 -
- gdbstub/gdbstub.c                    |   2 +-
- linux-user/elfload.c                 | 184 ++++++++++------------
- linux-user/flatload.c                |   2 +-
- linux-user/main.c                    |  45 +++++-
- linux-user/mmap.c                    |  68 +++++----
- linux-user/syscall.c                 |  69 ++-------
- 31 files changed, 622 insertions(+), 294 deletions(-)
 
