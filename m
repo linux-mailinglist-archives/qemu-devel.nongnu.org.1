@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93C9A7715A3
-	for <lists+qemu-devel@lfdr.de>; Sun,  6 Aug 2023 16:31:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 456947715A4
+	for <lists+qemu-devel@lfdr.de>; Sun,  6 Aug 2023 16:32:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qSem8-0003t0-C4; Sun, 06 Aug 2023 10:30:32 -0400
+	id 1qSenc-00052p-1m; Sun, 06 Aug 2023 10:32:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qSem6-0003s1-37
- for qemu-devel@nongnu.org; Sun, 06 Aug 2023 10:30:30 -0400
+ id 1qSenZ-00051w-VB
+ for qemu-devel@nongnu.org; Sun, 06 Aug 2023 10:32:01 -0400
 Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qSem4-0000iM-H6
- for qemu-devel@nongnu.org; Sun, 06 Aug 2023 10:30:29 -0400
+ id 1qSenY-0001Ad-EJ
+ for qemu-devel@nongnu.org; Sun, 06 Aug 2023 10:32:01 -0400
 Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-686d8c8fc65so2486468b3a.0
- for <qemu-devel@nongnu.org>; Sun, 06 Aug 2023 07:30:27 -0700 (PDT)
+ d2e1a72fcca58-686b9920362so2421073b3a.1
+ for <qemu-devel@nongnu.org>; Sun, 06 Aug 2023 07:32:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691332227; x=1691937027;
+ d=linaro.org; s=google; t=1691332319; x=1691937119;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=KJXBywa9QqZqHdjZi81UDJjrXbV3eRENJBvklU2i59s=;
- b=eE6DeOn+GhJsTvE/5lbbixqoM6OCdPt3h9VII4PxalzObOo3+vusoXicIAA9kesb0M
- c+e0DhrFZXCxWDBzJljlo+O8VN4elbudhN93/gfp8pSprOoYrc8ZOhHXjv4SOyDq1OD1
- e0V3k49RbwFy4A4+OEpP+IpCGgavtTmPCaf3EyJvsuRdOgfOyN2+SCQG/p5QG+vXh1Zq
- 0xZbIBwwgkxVmn7cCtdKQLUTuidv85yl/MPhb2eZwHxAHQD2jOs3RVULTKN5rd3l5mhr
- C8OgbTCIJvMIKLlF74cw9yNyQBKC3zUEj776MMjMVegQFT7BoSu7+WekkkYWDlvRcrYr
- NP7Q==
+ bh=vWYOQs0dwgze/P9y7KCiOFGmgEivOl58I5wqpH4/zgg=;
+ b=ssSjHemZ21CP2zmLmKSAj5fwfF7bw/wU5jVmG63RNolJ0NGJHHhCxNkjt139owtbim
+ 5UI0pNyBHhlfVaXQpSXRaEE2vbwcxu1JuCtwUnN5ck5TeS4DziwWjiHqWd0/oN152QPI
+ FAsYWTivnPozTysbaRmu3YFn4QmKk/s5p5zfqafjzhBgIgOwBTb8bv8Q3mZY4L1Rj9X2
+ OI2gUQS8NiC1rU14iTNY7AVIKgei0zD52XZywdlTHjjA1ApuEJRjjMnzNpw6PdKLQiFN
+ TDhvS3qC68fULw6QHKd8XaiwShcsWejjaMSd1vVOe3NStkzuO6fZYjkLxveD54aVQspX
+ IyrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691332227; x=1691937027;
+ d=1e100.net; s=20221208; t=1691332319; x=1691937119;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=KJXBywa9QqZqHdjZi81UDJjrXbV3eRENJBvklU2i59s=;
- b=CDipB0voJw2+hNdllt2byCekeFgcqPRo6MfDJz06YSwPYshawJ1gYG4/YGy2FJ09hI
- mSXT+rgz3Z6hH0zOhUZDfAt9JrMlQ4qhYuKvgBt5VOnprQcSQ4dTv8SE+xqCn9BR3eXz
- 40qM7m5tUYXQ3Yx95OPzysRrLnoOovBzvePQ2ZBU8gdv/A+37km8qvir7UWwiXU8fVqA
- 0ZhXZBwmaTjzkOtVaUqpN27Lq8COnoqiGUMH+Nvd8Pt8bpz29tw5ZK0+DyAumdungkEL
- oLBl83rAG2NSyoyVkA2MADLbjniftLq5iImTT+n6Xp6EKKQsuWPHpGw3cBeVHh5h+Xr4
- D5SQ==
-X-Gm-Message-State: AOJu0YyaE6SWQYbuPi/yb19tNvl1mp/4Sp47OCYXryUByraO/h+jyaR2
- zXyNBwAQKUet5NO52wfLLbMb3A==
-X-Google-Smtp-Source: AGHT+IH33brjlk0k1ID9KuJCcnf2xrTs+FsE1An1N+FUngArVLY3tpmJS7CMcaTpjxcNG/tSke8Zkg==
-X-Received: by 2002:a05:6a20:5513:b0:140:b178:9b36 with SMTP id
- ko19-20020a056a20551300b00140b1789b36mr2280927pzb.48.1691332226770; 
- Sun, 06 Aug 2023 07:30:26 -0700 (PDT)
+ bh=vWYOQs0dwgze/P9y7KCiOFGmgEivOl58I5wqpH4/zgg=;
+ b=epcz5YuDhKR2emNU3VBLwzR/6nsH/B9Dyu4gxpXhdZqcNNUkIo34lHuUQRpW9RlBcl
+ +OwqpPSCYoKA7yBUR8EMiHTcoL6jXs707UVSb8XigJLj0mJqiueoinMCVWcYd3TiRY7P
+ G5+r3x1t0af0RC+7vMRZsUu6p82MxeG3FKncdP8O5x5I4hMuNGop0AQkbIb0PwJoHoyy
+ F+bIi7TwY5GHwO4KYsGTlpM1+fLyWwKLgkJn6UkS6jGMiWs4+PI2jCot1CzwDhqAc3xp
+ 1gDVbT47iZwxg7W7n50QXPujmW6q7bDkjpozupm3QPEbG9fwPTSIM3Pnam8jONCZmJnb
+ empA==
+X-Gm-Message-State: AOJu0YxItyppKx8+Yh0k2cdJdI3V2zlamtXsGFz3sE5yydjouN010zmw
+ q3O62OlxYFrJMCgpUwmeFbRAsacFAVSuMdqjW9Q=
+X-Google-Smtp-Source: AGHT+IEbTwAfiBCWiUcrCNOJbN9iTYADyGzx7z65RG4lVNB6+3aWwmqUN7oHV/gQeusZm+KjyApAqA==
+X-Received: by 2002:a05:6a21:3d85:b0:13e:fe55:b99f with SMTP id
+ bj5-20020a056a213d8500b0013efe55b99fmr5434381pzc.56.1691332319222; 
+ Sun, 06 Aug 2023 07:31:59 -0700 (PDT)
 Received: from ?IPV6:2602:47:d490:6901:e72:57bd:c5e4:990c?
  ([2602:47:d490:6901:e72:57bd:c5e4:990c])
  by smtp.gmail.com with ESMTPSA id
- e16-20020aa78c50000000b0067ab572c72fsm4507915pfd.84.2023.08.06.07.30.25
+ q24-20020a637518000000b0050f85ef50d1sm3756208pgc.26.2023.08.06.07.31.58
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 06 Aug 2023 07:30:26 -0700 (PDT)
-Message-ID: <dd180646-6c55-bfa6-0660-55eb5fa85917@linaro.org>
-Date: Sun, 6 Aug 2023 07:30:24 -0700
+ Sun, 06 Aug 2023 07:31:58 -0700 (PDT)
+Message-ID: <a93cc9b3-35ab-5386-9518-8f5023f71206@linaro.org>
+Date: Sun, 6 Aug 2023 07:31:57 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH v2 10/23] target/riscv: Use MMU_INDEX() helper
+Subject: Re: [PATCH v2 14/23] target/arm: Use MMU_INDEX() helper
 Content-Language: en-US
 To: Helge Deller <deller@gmx.de>, qemu-devel@nongnu.org
 References: <20230806121732.91853-1-deller@gmx.de>
- <20230806121732.91853-11-deller@gmx.de>
+ <20230806121732.91853-15-deller@gmx.de>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230806121732.91853-11-deller@gmx.de>
+In-Reply-To: <20230806121732.91853-15-deller@gmx.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
@@ -102,47 +102,31 @@ On 8/6/23 05:17, Helge Deller wrote:
 > 
 > Signed-off-by: Helge Deller <deller@gmx.de>
 > ---
->   target/riscv/cpu.h        | 4 ++--
->   target/riscv/cpu_helper.c | 2 +-
->   2 files changed, 3 insertions(+), 3 deletions(-)
+>   target/arm/cpu.h | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-> index 6ea22e0eea..6aba1df64a 100644
-> --- a/target/riscv/cpu.h
-> +++ b/target/riscv/cpu.h
-> @@ -88,7 +88,7 @@ typedef enum {
->       EXT_STATUS_DIRTY,
->   } RISCVExtStatus;
+> diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+> index 88e5accda6..16e18fb22a 100644
+> --- a/target/arm/cpu.h
+> +++ b/target/arm/cpu.h
+> @@ -2930,7 +2930,7 @@ typedef enum ARMMMUIdxBit {
 > 
-> -#define MMU_USER_IDX 3
-> +#define MMU_USER_IDX MMU_INDEX(3)
+>   #undef TO_CORE_BIT
 > 
->   #define MAX_RISCV_PMPS (16)
+> -#define MMU_USER_IDX 0
+> +#define MMU_USER_IDX MMU_INDEX(0)
 > 
-> @@ -446,7 +446,7 @@ void riscv_cpu_list(void);
->   void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp);
-> 
->   #define cpu_list riscv_cpu_list
-> -#define cpu_mmu_index riscv_cpu_mmu_index
-> +#define cpu_mmu_index(e,i)      MMU_INDEX(riscv_cpu_mmu_index(e,i))
-> 
->   #ifndef CONFIG_USER_ONLY
->   void riscv_cpu_do_transaction_failed(CPUState *cs, hwaddr physaddr,
-> diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-> index 9f611d89bb..a8e6950217 100644
-> --- a/target/riscv/cpu_helper.c
-> +++ b/target/riscv/cpu_helper.c
-> @@ -107,7 +107,7 @@ void cpu_get_tb_cpu_state(CPURISCVState *env, vaddr *pc,
->   #else
->       flags = FIELD_DP32(flags, TB_FLAGS, PRIV, env->priv);
-> 
-> -    flags |= cpu_mmu_index(env, 0);
-> +    flags |= riscv_cpu_mmu_index(env, 0);
->       fs = get_field(env->mstatus, MSTATUS_FS);
->       vs = get_field(env->mstatus, MSTATUS_VS);
+>   /* Indexes used when registering address spaces with cpu_address_space_init */
+>   typedef enum ARMASIdx {
+> @@ -3166,7 +3166,7 @@ FIELD(TBFLAG_A64, NAA, 30, 1)
+>    */
+>   static inline int cpu_mmu_index(CPUARMState *env, bool ifetch)
+>   {
+> -    return EX_TBFLAG_ANY(env->hflags, MMUIDX);
+> +    return MMU_INDEX(EX_TBFLAG_ANY(env->hflags, MMUIDX));
+>   }
 
-This is the sort of non-obvious changes that I hoped to avoid by restricting all changes 
-to accel/tcg/cputlb.c.
+This cannot possibly work, since you've not changed any of the real mmu idx (ARMMMUIdx).
 
 
 r~
