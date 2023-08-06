@@ -2,64 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34F2D7714F1
-	for <lists+qemu-devel@lfdr.de>; Sun,  6 Aug 2023 14:20:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AE547714EA
+	for <lists+qemu-devel@lfdr.de>; Sun,  6 Aug 2023 14:19:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qSchs-0000LV-95; Sun, 06 Aug 2023 08:18:00 -0400
+	id 1qScht-0000N2-NO; Sun, 06 Aug 2023 08:18:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qSchb-0000H1-8y
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qSchb-0000H3-FG
  for qemu-devel@nongnu.org; Sun, 06 Aug 2023 08:17:43 -0400
-Received: from mout.gmx.net ([212.227.15.19])
+Received: from mout.gmx.net ([212.227.15.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qSchV-0001o8-8q
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qSchV-0001oC-ET
  for qemu-devel@nongnu.org; Sun, 06 Aug 2023 08:17:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
  s=s31663417; t=1691324255; x=1691929055; i=deller@gmx.de;
- bh=woNxUkQ9IJtCMZI7LjFWB0Pz+7giVXBRlYTwrlmAgvI=;
+ bh=fLd9qhuZ16Xfpz7XDgXc4X9dd5C7qDtNCbmyF5+3VJ0=;
  h=X-UI-Sender-Class:From:To:Subject:Date:In-Reply-To:References;
- b=OGOafRbrbqoiOdYdgJwvTLxvYpNyJYmChUlXLzmU2lqUurveraVTBWmgyfGfvLJpWQ1Od58
- m8usdjFptnzRijOxa2uj/Yk6psDOsm1qUM1ULS3y71G+x+HCuxQanE93hspn2qfdS6G6ODaP3
- 8yhq7iEVbKLABkqsFDO+GDxPkkhI+PMbvsoVIsWRxHQ/RwQkYeWQyrSKM3zRCFXxBM3+zCWtQ
- NwyicuivV9DM7CAt9IEc5q2VCpH+aBQP3/viTIr9eUCHUHAIp87sUum714NPoWt+V4m0KrtQo
- q0AthFQgjk12sWmWzXGVrRAtl9KH0LO4EqZSWdvkPFWnGcISCt6g==
+ b=k7xXN+5t692GB70s/soLNU3vwBQv620GCgY5rOfBWmFbfJgI+ws1Dy7kV7D+B58b1/hC+Zi
+ RkBu8gtKU3DjQ9G8vLYQa1bs2pRHSY6eaIWGU7wqyx4fs2Yzq1w1UYm8ZLR+Ell7I/XgAI/GD
+ szf5W3ITeho6mCOWqtS1htRGks7OB8Ufm1WOCRmDNOhbn8D7XxRkuSeMgZQWteRE6XN07DWTv
+ zPWrVNjMONv8uJVcJyHRzqh+CBa4+Dw5HVko0lORGMIdaXYtaxI0kIaD6uAkpxFzq4ISwHRQV
+ fUvERYaAk8A1SHL3JNd2Lh/n7dflYw/xV40zGfK4nAJqh3pxiThQ==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from p100.fritz.box ([94.134.152.250]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MNKhs-1qCkVB1tQw-00OkR6; Sun, 06
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MnaoZ-1q0k4g2Ctp-00je59; Sun, 06
  Aug 2023 14:17:35 +0200
 From: Helge Deller <deller@gmx.de>
 To: Richard Henderson <richard.henderson@linaro.org>,
 	qemu-devel@nongnu.org
-Subject: [PATCH v2 22/23] target/tricore: Use MMU_INDEX() helper
-Date: Sun,  6 Aug 2023 14:17:31 +0200
-Message-ID: <20230806121732.91853-23-deller@gmx.de>
+Subject: [PATCH v2 23/23] cpu-defs.h: Reduce generated code size by inverting
+ MMU_INDEX()
+Date: Sun,  6 Aug 2023 14:17:32 +0200
+Message-ID: <20230806121732.91853-24-deller@gmx.de>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230806121732.91853-1-deller@gmx.de>
 References: <20230806121732.91853-1-deller@gmx.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Qmua3fd5SjSlSaUe8qQmkAonWj2AT/+oDI3jy3OVM+VTMUnWwIs
- ZxS1KF8mqnYSQmbk/r5Ad9vEqZcB+1OxqdvgeWOf+Iu6N09rfgWW0vB4kwjJGg1gajWI3/z
- S/Rb7+wlOwqd74BX48UvPTAMIcTcKvRlE+FyDpwT/NqmoeRuQJxjyanxAxBkn55g+hUN0ZR
- IqCT//97Vg4e8BjIn9HCQ==
-UI-OutboundReport: notjunk:1;M01:P0:30qOVr4YxkQ=;iX3VuXpsYKQ6On21dZUERGly3fz
- I45YUEBWJUudTtE1LtiaiaDKi5hH6DhBaPbbVPAf10gszroCEqhQW6s204h+Hs+K+1AVeKT1g
- lbaZ4WDxji9OQ3rekmm9ibZHafFQPpvKodGw3zAZpHHyGhzeRQRJs7i3fbVaNmO/0Nwsdb/Q5
- k99FUlDzl1CK2W2zV7WCzScuJz3Fq13yRSifrU1DbghaVF2oii1bIBFwEuPPvIte9Tg38fuax
- 3/0I3g2+MBCNu4f6+U9u99mMDzza/ka75q23J35yucHXycGUs9eBW4p3YJR8ghuFUqe28pzFi
- sbbNGk7RX2cL9nxSCXDGdbVy7VjwUmV7Gf1Qb87OrXbKmey6ynqtquhH6Oq8Ej84NfDWPCLir
- 0IQa5vXn3txm56+cEwVJo12p4tIHd+3XkCEmnMP4HhCm5jIf1eszfXwQ+Sd6Vmg79oe3WfH2E
- uMkwtU0mLuUO23hspIPpJGh9bGC9WS55bop8qKlXEIfQM0dEgmguYjpz8EldJQ7oPtxPsB+gs
- +64lPm/2+tYk3JOHPabqm6n1ukYJqNhc0EQ2OPfWEfjYxswSNWmszWM9Br3ysdAd+2+fILo3o
- OLRh352QgagzZd2X4UAAJJMHn9b0ORv7wpmj9Sh1jwEfwAOGXUWmnWoPnfXZ+Bqxhzbr/5aPe
- Men+SNigQOH30HwtbgrPQ44vf4gfWxiR6oWz6SGPxHvuB8BJiBp19KY5LYfd8anKTNHbnNdUp
- bFN9udxb8UCcpNl2WlD+Z5J0hZw2VU4C14FJL+VjkaCyGQmYzRUbuawh1P8MNW26XYf84h5WS
- XvEhz20/h8WKsQZ8tz2reUAp6c2w4NvIJ1nivblB+0vvo+kn0gPJ+GeAVoQNTYxXlCjf0i8b0
- fcKaw0nic7B2JZgHh3/bx50cuzDGySB2xNAlDf0FShwveaIzVJKBY6wUZyzp+Aa7kp1wHi/LT
- f/4JLwnHhm8z69YylJp/yLDhfXU=
-Received-SPF: pass client-ip=212.227.15.19; envelope-from=deller@gmx.de;
+X-Provags-ID: V03:K1:Wylww5uZ2DkhLu7o42ZpBE48eepwyxOApgwgs54YI+HZZ50LAjZ
+ DbiTGl0FrhPgzJGst16gZOp78OqdAhGQmjT2d9MLyFRW23gptXvj2HFcwLRXKCqO6reYI5U
+ fdwH8luNTgZkMP94LAHdxWutnHrmObXu1gwSSOEWHrekj8XZYMyq2TqxDhwBuT1oCyuLtS3
+ 57RQOtskPNdCQdEdvfINg==
+UI-OutboundReport: notjunk:1;M01:P0:AQQwiDFzcYU=;6NBmFMxVCPgonZQQQK6vd1taRNd
+ RvjDOVHfvbkO5HLwsxrk1hFtffJRgkCNa6nUORJ6Of5db3LptP2TkplJx43Eqo7M9rEC6h1qd
+ 6ijElRS5N+FcTU19eVcEn9dDIIRcVgYhKl3J1YL0rU6NYMmb4xGphRf/i01QxFlDo9zibDnul
+ Rjf68XrxF9ZHym5QJaZx7M9jtfcHl7jH0bbLINsI+iIUh98+KAJUJhuHXciclfB3teV+NPKmu
+ D91yMYev3soCg+RmD858SkInY+1mDql8aLN6N94hiSn85CTGU6HKpazpFsqiWB3x1ikAC7CSm
+ p8JgrEeTdN2qRrzVtBm3aau4bJg3HuUrOOL7UQbxo1IDImVF7KPuqImmmFrNQZI59E/HDddWy
+ cEae5ymu+0oDLzvqs5yKz5AXlWuiWV5uhnvQi7WpJ3o1QGt0YfJhJmOxpYEWjs+uvs9xtlpoa
+ jbSas7kYLmHnWpVhEB1/DZCMWixBE1ZIvhYNHYzAMMlUBglDt4qy9Cvsc3HnE36uUuIFAeyfi
+ 8ZChdoP9HOo3Y3IDEvU0SJqbuEhNIy7gymJW4lENjDkIgIJK49M5buuwjsrSNjcOMWHCHYW1d
+ sVNScZziq2rN45xXXs5XmgiU3pGwA62ZRPBbL9iK4+gjEDNq7iJQlm1pPKx/UdCD2BSN90koC
+ TqOGpZm86PsnpUNVUUWtr1k/i4UYDC1MQu6tABE1MFX+OXxWDtA+MLxnAvLZpI0ImDntFKb8X
+ UJzRRMbfcxfgqcMWo7wVJuGAkJXFul3pu7UEYL6dqe/MwcpP2sA1h0wDKtEWIiztnprp7GIPY
+ YIAq8BUvkayzAPnbdty0pexNNYYw0JEvvm5AfWjZ6S6zViX2bfhUKtqDVSDnbyM3lR1kDkWpA
+ mU8oJDe+zK09EQpR9yRNRWwLzlrBlOl9+hxL3eQlfBcLNzINrEZjwbvdl7X2hArWgRvkntMRv
+ uGnO/4XWN/YGQGi+MemhvRtsvw4=
+Received-SPF: pass client-ip=212.227.15.15; envelope-from=deller@gmx.de;
  helo=mout.gmx.net
 X-Spam_score_int: -27
 X-Spam_score: -2.8
@@ -83,38 +84,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use the new MMU_INDEX() helper to specify the index of the CPUTLB which
-should be used.  Additionally, in a follow-up patch this helper allows
-then to optimize the tcg code generation.
+The MMU is placed within CPUNegativeOffsetState, which means the
+smallest negative offsets are at the end of the struct (see comment for
+struct CPUTLB).
+
+But in target/cpu.h usually MMU indexes in the range 0-8 are used, which
+means that the negative offsets are bigger than if MMU indexes 9-15
+would have been used.
+
+This patch inverts the given MMU index, so that the MMU indices now
+count down from (MMU_USER_IDX-1) to 0 and thus the tcg will see smaller
+negative offsets.
+
+When looking at the generated code, for every memory-access in the guest
+the x86-64 tcg generated up to now:
+
+IN:
+0x000ebdf5:  8b 04 24               movl     (%esp), %eax
+
+OUT:
+...
+0x003619:  48 23 bd 10 ff ff ff     andq     -0xf0(%rbp), %rdi
+0x003620:  48 03 bd 18 ff ff ff     addq     -0xe8(%rbp), %rdi
+...
+
+With the smaller negative offset it will now instead generate:
+
+OUT:
+...
+0x003499:  48 23 7d c0              andq     -0x40(%rbp), %rdi
+0x00349d:  48 03 7d c8              addq     -0x38(%rbp), %rdi
+
+So, every memory acces in the guest now saves 6 bytes (=3D2 * 3)
+of instruction code in the fast path.
+
+Overall, this patch reduces the generated instruction size by ~3%
+and may improve overall performance.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 =2D--
- target/tricore/cpu.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/exec/cpu-defs.h | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/target/tricore/cpu.h b/target/tricore/cpu.h
-index 3708405be8..6c8ba27737 100644
-=2D-- a/target/tricore/cpu.h
-+++ b/target/tricore/cpu.h
-@@ -366,7 +366,7 @@ int tricore_cpu_gdb_write_register(CPUState *cs, uint8=
-_t *mem_buf, int n);
+diff --git a/include/exec/cpu-defs.h b/include/exec/cpu-defs.h
+index 07bcdd38b2..7ba0481bc4 100644
+=2D-- a/include/exec/cpu-defs.h
++++ b/include/exec/cpu-defs.h
+@@ -62,8 +62,13 @@
 
- void fpu_set_state(CPUTriCoreState *env);
+ /*
+  * MMU_INDEX() helper to specify MMU index.
++ *
++ * Inverse the number here to count downwards from NB_MMU_MODES-1 to 0.  =
+Since
++ * the MMU is placed within CPUNegativeOffsetState, this makes the negati=
+ve
++ * offsets smaller for which the tcg backend will generate shorter instru=
+ction
++ * sequencies to access the MMU.
+  */
+-#define MMU_INDEX(n)    (n)
++#define MMU_INDEX(n)    (NB_MMU_MODES - 1 - (n))
 
--#define MMU_USER_IDX 2
-+#define MMU_USER_IDX MMU_INDEX(2)
-
- void tricore_cpu_list(void);
-
-@@ -374,7 +374,7 @@ void tricore_cpu_list(void);
-
- static inline int cpu_mmu_index(CPUTriCoreState *env, bool ifetch)
- {
--    return 0;
-+    return MMU_INDEX(0);
- }
-
- #include "exec/cpu-all.h"
+ #if defined(CONFIG_SOFTMMU) && defined(CONFIG_TCG)
+ #include "exec/tlb-common.h"
 =2D-
 2.41.0
 
