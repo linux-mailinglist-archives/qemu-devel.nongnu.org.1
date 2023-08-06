@@ -2,72 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AE547714EA
-	for <lists+qemu-devel@lfdr.de>; Sun,  6 Aug 2023 14:19:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96FE077151B
+	for <lists+qemu-devel@lfdr.de>; Sun,  6 Aug 2023 14:55:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qScht-0000N2-NO; Sun, 06 Aug 2023 08:18:01 -0400
+	id 1qSdGz-00039i-34; Sun, 06 Aug 2023 08:54:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qSchb-0000H3-FG
- for qemu-devel@nongnu.org; Sun, 06 Aug 2023 08:17:43 -0400
-Received: from mout.gmx.net ([212.227.15.15])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qSchV-0001oC-ET
- for qemu-devel@nongnu.org; Sun, 06 Aug 2023 08:17:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1691324255; x=1691929055; i=deller@gmx.de;
- bh=fLd9qhuZ16Xfpz7XDgXc4X9dd5C7qDtNCbmyF5+3VJ0=;
- h=X-UI-Sender-Class:From:To:Subject:Date:In-Reply-To:References;
- b=k7xXN+5t692GB70s/soLNU3vwBQv620GCgY5rOfBWmFbfJgI+ws1Dy7kV7D+B58b1/hC+Zi
- RkBu8gtKU3DjQ9G8vLYQa1bs2pRHSY6eaIWGU7wqyx4fs2Yzq1w1UYm8ZLR+Ell7I/XgAI/GD
- szf5W3ITeho6mCOWqtS1htRGks7OB8Ufm1WOCRmDNOhbn8D7XxRkuSeMgZQWteRE6XN07DWTv
- zPWrVNjMONv8uJVcJyHRzqh+CBa4+Dw5HVko0lORGMIdaXYtaxI0kIaD6uAkpxFzq4ISwHRQV
- fUvERYaAk8A1SHL3JNd2Lh/n7dflYw/xV40zGfK4nAJqh3pxiThQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from p100.fritz.box ([94.134.152.250]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MnaoZ-1q0k4g2Ctp-00je59; Sun, 06
- Aug 2023 14:17:35 +0200
-From: Helge Deller <deller@gmx.de>
-To: Richard Henderson <richard.henderson@linaro.org>,
-	qemu-devel@nongnu.org
-Subject: [PATCH v2 23/23] cpu-defs.h: Reduce generated code size by inverting
- MMU_INDEX()
-Date: Sun,  6 Aug 2023 14:17:32 +0200
-Message-ID: <20230806121732.91853-24-deller@gmx.de>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230806121732.91853-1-deller@gmx.de>
-References: <20230806121732.91853-1-deller@gmx.de>
+ (Exim 4.90_1) (envelope-from <cfontana@suse.de>)
+ id 1qSdGt-00039O-Iy; Sun, 06 Aug 2023 08:54:11 -0400
+Received: from smtp-out2.suse.de ([195.135.220.29])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <cfontana@suse.de>)
+ id 1qSdGr-0004lM-BI; Sun, 06 Aug 2023 08:54:11 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 0237E1F385;
+ Sun,  6 Aug 2023 12:54:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1691326447; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=UYD+CsuZLqnMUjFIYeavYj8daBme12JaHFvRrx0v0V0=;
+ b=cYEAHhTBjDqMx5c1t6oBVRtpI24DAvxk09TVTnG1jTu3s9gpPMaMWljSjqqduFbBgKCa63
+ RaWMTrWTYlNovKOfzX+d2bkiI427sa+OGiW6joiZkr5hiE8aiH27bCLGpDMzTqv6AYtFkh
+ TbpB875rsjfoP3S88zLU/u+fAEZI7gg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1691326447;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=UYD+CsuZLqnMUjFIYeavYj8daBme12JaHFvRrx0v0V0=;
+ b=bsqS887hCg7TYRzbTH6LfqcbfpsT/VnyJoI88SXDGsUwkjMH16ngks9opWpd11/o34iGK9
+ PDZ5Gbu5z7o/B/AA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id A4198139C4;
+ Sun,  6 Aug 2023 12:54:06 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id b4gyJu6Xz2TXWQAAMHmgww
+ (envelope-from <cfontana@suse.de>); Sun, 06 Aug 2023 12:54:06 +0000
+Message-ID: <70056113-b72b-7194-0948-3857dfdfb900@suse.de>
+Date: Sun, 6 Aug 2023 14:54:06 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Wylww5uZ2DkhLu7o42ZpBE48eepwyxOApgwgs54YI+HZZ50LAjZ
- DbiTGl0FrhPgzJGst16gZOp78OqdAhGQmjT2d9MLyFRW23gptXvj2HFcwLRXKCqO6reYI5U
- fdwH8luNTgZkMP94LAHdxWutnHrmObXu1gwSSOEWHrekj8XZYMyq2TqxDhwBuT1oCyuLtS3
- 57RQOtskPNdCQdEdvfINg==
-UI-OutboundReport: notjunk:1;M01:P0:AQQwiDFzcYU=;6NBmFMxVCPgonZQQQK6vd1taRNd
- RvjDOVHfvbkO5HLwsxrk1hFtffJRgkCNa6nUORJ6Of5db3LptP2TkplJx43Eqo7M9rEC6h1qd
- 6ijElRS5N+FcTU19eVcEn9dDIIRcVgYhKl3J1YL0rU6NYMmb4xGphRf/i01QxFlDo9zibDnul
- Rjf68XrxF9ZHym5QJaZx7M9jtfcHl7jH0bbLINsI+iIUh98+KAJUJhuHXciclfB3teV+NPKmu
- D91yMYev3soCg+RmD858SkInY+1mDql8aLN6N94hiSn85CTGU6HKpazpFsqiWB3x1ikAC7CSm
- p8JgrEeTdN2qRrzVtBm3aau4bJg3HuUrOOL7UQbxo1IDImVF7KPuqImmmFrNQZI59E/HDddWy
- cEae5ymu+0oDLzvqs5yKz5AXlWuiWV5uhnvQi7WpJ3o1QGt0YfJhJmOxpYEWjs+uvs9xtlpoa
- jbSas7kYLmHnWpVhEB1/DZCMWixBE1ZIvhYNHYzAMMlUBglDt4qy9Cvsc3HnE36uUuIFAeyfi
- 8ZChdoP9HOo3Y3IDEvU0SJqbuEhNIy7gymJW4lENjDkIgIJK49M5buuwjsrSNjcOMWHCHYW1d
- sVNScZziq2rN45xXXs5XmgiU3pGwA62ZRPBbL9iK4+gjEDNq7iJQlm1pPKx/UdCD2BSN90koC
- TqOGpZm86PsnpUNVUUWtr1k/i4UYDC1MQu6tABE1MFX+OXxWDtA+MLxnAvLZpI0ImDntFKb8X
- UJzRRMbfcxfgqcMWo7wVJuGAkJXFul3pu7UEYL6dqe/MwcpP2sA1h0wDKtEWIiztnprp7GIPY
- YIAq8BUvkayzAPnbdty0pexNNYYw0JEvvm5AfWjZ6S6zViX2bfhUKtqDVSDnbyM3lR1kDkWpA
- mU8oJDe+zK09EQpR9yRNRWwLzlrBlOl9+hxL3eQlfBcLNzINrEZjwbvdl7X2hArWgRvkntMRv
- uGnO/4XWN/YGQGi+MemhvRtsvw4=
-Received-SPF: pass client-ip=212.227.15.15; envelope-from=deller@gmx.de;
- helo=mout.gmx.net
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.0
+Subject: Re: [PATCH 2/3] target/s390x: Fix the "ignored match" case in VSTRS
+Content-Language: en-US
+To: Ilya Leoshkevich <iii@linux.ibm.com>, Laurent Vivier <laurent@vivier.eu>, 
+ Richard Henderson <richard.henderson@linaro.org>,
+ David Hildenbrand <david@redhat.com>, Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-s390x@nongnu.org, qemu-stable@nongnu.org
+References: <20230804233748.218935-1-iii@linux.ibm.com>
+ <20230804233748.218935-3-iii@linux.ibm.com>
+From: Claudio Fontana <cfontana@suse.de>
+In-Reply-To: <20230804233748.218935-3-iii@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=195.135.220.29; envelope-from=cfontana@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -84
+X-Spam_score: -8.5
+X-Spam_bar: --------
+X-Spam_report: (-8.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-4.139,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -84,71 +90,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The MMU is placed within CPUNegativeOffsetState, which means the
-smallest negative offsets are at the end of the struct (see comment for
-struct CPUTLB).
+On 8/5/23 01:03, Ilya Leoshkevich wrote:
+> Currently the emulation of VSTRS recognizes partial matches in presence
+> of \0 in the haystack, which, according to PoP, is not correct:
+> 
+>     If the ZS flag is one and a zero byte was detected
+>     in the second operand, then there can not be a
+>     partial match ...
+> 
+> Add a check for this. While at it, fold a number of explicitly handled
+> special cases into the generic logic.
+> 
+> Cc: qemu-stable@nongnu.org
+> Reported-by: Claudio Fontana <cfontana@suse.de>
+> Closes: https://lists.gnu.org/archive/html/qemu-devel/2023-08/msg00633.html
+> Fixes: 1d706f314191 ("target/s390x: vxeh2: vector string search")
+> Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 
-But in target/cpu.h usually MMU indexes in the range 0-8 are used, which
-means that the negative offsets are bigger than if MMU indexes 9-15
-would have been used.
+verified that it fixes the problem I encountered,
 
-This patch inverts the given MMU index, so that the MMU indices now
-count down from (MMU_USER_IDX-1) to 0 and thus the tcg will see smaller
-negative offsets.
+Tested-by: Claudio Fontana <cfontana@suse.de>
 
-When looking at the generated code, for every memory-access in the guest
-the x86-64 tcg generated up to now:
-
-IN:
-0x000ebdf5:  8b 04 24               movl     (%esp), %eax
-
-OUT:
-...
-0x003619:  48 23 bd 10 ff ff ff     andq     -0xf0(%rbp), %rdi
-0x003620:  48 03 bd 18 ff ff ff     addq     -0xe8(%rbp), %rdi
-...
-
-With the smaller negative offset it will now instead generate:
-
-OUT:
-...
-0x003499:  48 23 7d c0              andq     -0x40(%rbp), %rdi
-0x00349d:  48 03 7d c8              addq     -0x38(%rbp), %rdi
-
-So, every memory acces in the guest now saves 6 bytes (=3D2 * 3)
-of instruction code in the fast path.
-
-Overall, this patch reduces the generated instruction size by ~3%
-and may improve overall performance.
-
-Signed-off-by: Helge Deller <deller@gmx.de>
-=2D--
- include/exec/cpu-defs.h | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/include/exec/cpu-defs.h b/include/exec/cpu-defs.h
-index 07bcdd38b2..7ba0481bc4 100644
-=2D-- a/include/exec/cpu-defs.h
-+++ b/include/exec/cpu-defs.h
-@@ -62,8 +62,13 @@
-
- /*
-  * MMU_INDEX() helper to specify MMU index.
-+ *
-+ * Inverse the number here to count downwards from NB_MMU_MODES-1 to 0.  =
-Since
-+ * the MMU is placed within CPUNegativeOffsetState, this makes the negati=
-ve
-+ * offsets smaller for which the tcg backend will generate shorter instru=
-ction
-+ * sequencies to access the MMU.
-  */
--#define MMU_INDEX(n)    (n)
-+#define MMU_INDEX(n)    (NB_MMU_MODES - 1 - (n))
-
- #if defined(CONFIG_SOFTMMU) && defined(CONFIG_TCG)
- #include "exec/tlb-common.h"
-=2D-
-2.41.0
+> ---
+>  target/s390x/tcg/vec_string_helper.c | 54 +++++++++-------------------
+>  1 file changed, 17 insertions(+), 37 deletions(-)
+> 
+> diff --git a/target/s390x/tcg/vec_string_helper.c b/target/s390x/tcg/vec_string_helper.c
+> index 9b85becdfbf..a19f429768f 100644
+> --- a/target/s390x/tcg/vec_string_helper.c
+> +++ b/target/s390x/tcg/vec_string_helper.c
+> @@ -474,9 +474,9 @@ DEF_VSTRC_CC_RT_HELPER(32)
+>  static int vstrs(S390Vector *v1, const S390Vector *v2, const S390Vector *v3,
+>                   const S390Vector *v4, uint8_t es, bool zs)
+>  {
+> -    int substr_elen, substr_0, str_elen, i, j, k, cc;
+> +    int substr_elen, i, j, k, cc;
+>      int nelem = 16 >> es;
+> -    bool eos = false;
+> +    int str_leftmost_0;
+>  
+>      substr_elen = s390_vec_read_element8(v4, 7) >> es;
+>  
+> @@ -498,47 +498,20 @@ static int vstrs(S390Vector *v1, const S390Vector *v2, const S390Vector *v3,
+>      }
+>  
+>      /* If ZS, look for eos in the searched string. */
+> +    str_leftmost_0 = nelem;
+>      if (zs) {
+>          for (k = 0; k < nelem; k++) {
+>              if (s390_vec_read_element(v2, k, es) == 0) {
+> -                eos = true;
+> +                str_leftmost_0 = k;
+>                  break;
+>              }
+>          }
+> -        str_elen = k;
+> -    } else {
+> -        str_elen = nelem;
+>      }
+>  
+> -    substr_0 = s390_vec_read_element(v3, 0, es);
+> -
+> -    for (k = 0; ; k++) {
+> -        for (; k < str_elen; k++) {
+> -            if (s390_vec_read_element(v2, k, es) == substr_0) {
+> -                break;
+> -            }
+> -        }
+> -
+> -        /* If we reached the end of the string, no match. */
+> -        if (k == str_elen) {
+> -            cc = eos; /* no match (with or without zero char) */
+> -            goto done;
+> -        }
+> -
+> -        /* If the substring is only one char, match. */
+> -        if (substr_elen == 1) {
+> -            cc = 2; /* full match */
+> -            goto done;
+> -        }
+> -
+> -        /* If the match begins at the last char, we have a partial match. */
+> -        if (k == str_elen - 1) {
+> -            cc = 3; /* partial match */
+> -            goto done;
+> -        }
+> -
+> +    cc = str_leftmost_0 == nelem ? 0 : 1;  /* No match. */
+> +    for (k = 0; k < nelem; k++) {
+>          i = MIN(nelem, k + substr_elen);
+> -        for (j = k + 1; j < i; j++) {
+> +        for (j = k; j < i; j++) {
+>              uint32_t e2 = s390_vec_read_element(v2, j, es);
+>              uint32_t e3 = s390_vec_read_element(v3, j - k, es);
+>              if (e2 != e3) {
+> @@ -546,9 +519,16 @@ static int vstrs(S390Vector *v1, const S390Vector *v2, const S390Vector *v3,
+>              }
+>          }
+>          if (j == i) {
+> -            /* Matched up until "end". */
+> -            cc = i - k == substr_elen ? 2 : 3; /* full or partial match */
+> -            goto done;
+> +            /* All elements matched. */
+> +            if (k > str_leftmost_0) {
+> +                cc = 1;  /* Ignored match. */
+> +                k = nelem;
+> +            } else if (i - k == substr_elen) {
+> +                cc = 2;  /* Full match. */
+> +            } else {
+> +                cc = 3;  /* Partial match. */
+> +            }
+> +            break;
+>          }
+>      }
+>  
 
 
