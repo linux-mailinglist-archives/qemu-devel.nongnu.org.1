@@ -2,73 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 456947715A4
-	for <lists+qemu-devel@lfdr.de>; Sun,  6 Aug 2023 16:32:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 800DE7715AF
+	for <lists+qemu-devel@lfdr.de>; Sun,  6 Aug 2023 16:42:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qSenc-00052p-1m; Sun, 06 Aug 2023 10:32:04 -0400
+	id 1qSeww-00082A-9t; Sun, 06 Aug 2023 10:41:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qSenZ-00051w-VB
- for qemu-devel@nongnu.org; Sun, 06 Aug 2023 10:32:01 -0400
+ id 1qSewu-00081v-Lb
+ for qemu-devel@nongnu.org; Sun, 06 Aug 2023 10:41:40 -0400
 Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qSenY-0001Ad-EJ
- for qemu-devel@nongnu.org; Sun, 06 Aug 2023 10:32:01 -0400
+ id 1qSews-00031e-Nz
+ for qemu-devel@nongnu.org; Sun, 06 Aug 2023 10:41:40 -0400
 Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-686b9920362so2421073b3a.1
- for <qemu-devel@nongnu.org>; Sun, 06 Aug 2023 07:32:00 -0700 (PDT)
+ d2e1a72fcca58-686fc0d3c92so2438278b3a.0
+ for <qemu-devel@nongnu.org>; Sun, 06 Aug 2023 07:41:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691332319; x=1691937119;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=linaro.org; s=google; t=1691332897; x=1691937697;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=vWYOQs0dwgze/P9y7KCiOFGmgEivOl58I5wqpH4/zgg=;
- b=ssSjHemZ21CP2zmLmKSAj5fwfF7bw/wU5jVmG63RNolJ0NGJHHhCxNkjt139owtbim
- 5UI0pNyBHhlfVaXQpSXRaEE2vbwcxu1JuCtwUnN5ck5TeS4DziwWjiHqWd0/oN152QPI
- FAsYWTivnPozTysbaRmu3YFn4QmKk/s5p5zfqafjzhBgIgOwBTb8bv8Q3mZY4L1Rj9X2
- OI2gUQS8NiC1rU14iTNY7AVIKgei0zD52XZywdlTHjjA1ApuEJRjjMnzNpw6PdKLQiFN
- TDhvS3qC68fULw6QHKd8XaiwShcsWejjaMSd1vVOe3NStkzuO6fZYjkLxveD54aVQspX
- IyrA==
+ bh=T+0O69Ci6r8kxsB+4DOghZXaog4XZB6uAxv+uMSnHSY=;
+ b=wLuCKlIR87UfPIg1Rud9K8pQD6ptt8IYNvGgqbnANGe5jUccfmbb32V2zzYMZ6SHG7
+ oKHl5Cmlu60vcYTbxBG3WPkFXOXdMY9VGT7JjWu54hYaavB6amq55OyHaMgbeqxKSviX
+ m6dFgZRhAsqrO/DngEb67s5pBHH/JlzfUx4+27/o1nQYlIPJSr5XVrb4i5BAdYh6MEnY
+ fdEgr8jBWKUt3sZcbpkjDJRiCQCTAYXtC7p6qauq1cVWI7V7utM5CptJDCPWfyUNgtll
+ KobG+1rNtmygNPf5Rf4WZUIBAN4R9B8LoGtGvq0BYFV+Z+2ESJjLQHC4Xgu388j5wn/c
+ pkvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691332319; x=1691937119;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=1e100.net; s=20221208; t=1691332897; x=1691937697;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=vWYOQs0dwgze/P9y7KCiOFGmgEivOl58I5wqpH4/zgg=;
- b=epcz5YuDhKR2emNU3VBLwzR/6nsH/B9Dyu4gxpXhdZqcNNUkIo34lHuUQRpW9RlBcl
- +OwqpPSCYoKA7yBUR8EMiHTcoL6jXs707UVSb8XigJLj0mJqiueoinMCVWcYd3TiRY7P
- G5+r3x1t0af0RC+7vMRZsUu6p82MxeG3FKncdP8O5x5I4hMuNGop0AQkbIb0PwJoHoyy
- F+bIi7TwY5GHwO4KYsGTlpM1+fLyWwKLgkJn6UkS6jGMiWs4+PI2jCot1CzwDhqAc3xp
- 1gDVbT47iZwxg7W7n50QXPujmW6q7bDkjpozupm3QPEbG9fwPTSIM3Pnam8jONCZmJnb
- empA==
-X-Gm-Message-State: AOJu0YxItyppKx8+Yh0k2cdJdI3V2zlamtXsGFz3sE5yydjouN010zmw
- q3O62OlxYFrJMCgpUwmeFbRAsacFAVSuMdqjW9Q=
-X-Google-Smtp-Source: AGHT+IEbTwAfiBCWiUcrCNOJbN9iTYADyGzx7z65RG4lVNB6+3aWwmqUN7oHV/gQeusZm+KjyApAqA==
-X-Received: by 2002:a05:6a21:3d85:b0:13e:fe55:b99f with SMTP id
- bj5-20020a056a213d8500b0013efe55b99fmr5434381pzc.56.1691332319222; 
- Sun, 06 Aug 2023 07:31:59 -0700 (PDT)
+ bh=T+0O69Ci6r8kxsB+4DOghZXaog4XZB6uAxv+uMSnHSY=;
+ b=eeTskwGjVZ7jA0k/WTWydJOLIKDX4zMMC14iZboXpxgt/JOyD+sScJsEKdBjt4xz+P
+ Y/xw+SUI5iNtzIqY/M0PUb8DAhZ7h3aMXh6YfGZp+qohpv2G2nldh/BP75HByR/kG7Bz
+ LZD0T7Aa2ltX+7+4E2rVKK3wfLH4yhs/69ijAwkRksGBmIc755a3GGVTldvPh2BOdYWy
+ QwfRmz480jc/GMp79mAELtbanzsQYRyASuMbJtTJlwbtLmzBt0FAH+Dmn8UsCqwiLvbt
+ 6O5r+4HySYAh9LN2q+fKvxrvjN9/h8U5zTW4s+jh9s58eI3yZLSiI0gkLN2Zh4PvDzc3
+ Zklw==
+X-Gm-Message-State: AOJu0YzOPapZw8VNEMcdXaqId4VbjxtoCUjGDHIc13yztXJbAFNL0cdI
+ LwJSO+P46AoGlGwScNfGXBreJNAisCc9WSXkFlQ=
+X-Google-Smtp-Source: AGHT+IHLIrdEMgSEYlqDiHzeX0idh0ouEAkmN8R95YCh9o2fd2yf7CXUNLeQKoiTyz4TQb21gMqnEA==
+X-Received: by 2002:a05:6a00:c87:b0:687:2f80:86d5 with SMTP id
+ a7-20020a056a000c8700b006872f8086d5mr6757818pfv.13.1691332897283; 
+ Sun, 06 Aug 2023 07:41:37 -0700 (PDT)
 Received: from ?IPV6:2602:47:d490:6901:e72:57bd:c5e4:990c?
  ([2602:47:d490:6901:e72:57bd:c5e4:990c])
  by smtp.gmail.com with ESMTPSA id
- q24-20020a637518000000b0050f85ef50d1sm3756208pgc.26.2023.08.06.07.31.58
+ bn10-20020a056a00324a00b00687a4b66697sm2698737pfb.16.2023.08.06.07.41.36
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 06 Aug 2023 07:31:58 -0700 (PDT)
-Message-ID: <a93cc9b3-35ab-5386-9518-8f5023f71206@linaro.org>
-Date: Sun, 6 Aug 2023 07:31:57 -0700
+ Sun, 06 Aug 2023 07:41:36 -0700 (PDT)
+Message-ID: <c5c5f247-6b2d-36e1-c144-53c4a99ad5cc@linaro.org>
+Date: Sun, 6 Aug 2023 07:41:34 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH v2 14/23] target/arm: Use MMU_INDEX() helper
+Subject: Re: [PATCH 1/3] target/loongarch: Introduce loongarch32-softmmu target
 Content-Language: en-US
-To: Helge Deller <deller@gmx.de>, qemu-devel@nongnu.org
-References: <20230806121732.91853-1-deller@gmx.de>
- <20230806121732.91853-15-deller@gmx.de>
+To: Jiajie Chen <c@jia.je>, qemu-devel@nongnu.org
+Cc: Xiaojuan Yang <yangxiaojuan@loongson.cn>, Song Gao <gaosong@loongson.cn>, 
+ =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>, Paolo Bonzini <pbonzini@redhat.com>
+References: <20230806141357.1756714-1-c@jia.je>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230806121732.91853-15-deller@gmx.de>
+In-Reply-To: <20230806141357.1756714-1-c@jia.je>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
@@ -95,40 +101,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/6/23 05:17, Helge Deller wrote:
-> Use the new MMU_INDEX() helper to specify the index of the CPUTLB which
-> should be used.  Additionally, in a follow-up patch this helper allows
-> then to optimize the tcg code generation.
+On 8/6/23 07:13, Jiajie Chen wrote:
+> This commit introduces new loongarch32-softmmu target. Compared to
+> loongarch64-softmmu, the new target is different at least in:
 > 
-> Signed-off-by: Helge Deller <deller@gmx.de>
-> ---
->   target/arm/cpu.h | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-> index 88e5accda6..16e18fb22a 100644
-> --- a/target/arm/cpu.h
-> +++ b/target/arm/cpu.h
-> @@ -2930,7 +2930,7 @@ typedef enum ARMMMUIdxBit {
-> 
->   #undef TO_CORE_BIT
-> 
-> -#define MMU_USER_IDX 0
-> +#define MMU_USER_IDX MMU_INDEX(0)
-> 
->   /* Indexes used when registering address spaces with cpu_address_space_init */
->   typedef enum ARMASIdx {
-> @@ -3166,7 +3166,7 @@ FIELD(TBFLAG_A64, NAA, 30, 1)
->    */
->   static inline int cpu_mmu_index(CPUARMState *env, bool ifetch)
->   {
-> -    return EX_TBFLAG_ANY(env->hflags, MMUIDX);
-> +    return MMU_INDEX(EX_TBFLAG_ANY(env->hflags, MMUIDX));
->   }
+> - GPRs and CSRs are 32-bits wide, but FPRs are still 64-bits wide
+> - LA32 lacks some 64-bit-only instructions
+> - CSR.DMW0-3 introduces PSEG
 
-This cannot possibly work, since you've not changed any of the real mmu idx (ARMMMUIdx).
+Let us not create a new executable if we can avoid it.
+We can run 32-bit cpus from qemu-system-{x86_64,ppc64,aarch64}.
+
+In any case, the patch is much too large and must be split.
 
 
 r~
-
 
