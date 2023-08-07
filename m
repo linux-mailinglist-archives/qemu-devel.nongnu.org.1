@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E084771D8B
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 11:52:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDE2F771D5F
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 11:48:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qSwqm-0001kZ-04; Mon, 07 Aug 2023 05:48:32 -0400
+	id 1qSwqi-0001cI-S8; Mon, 07 Aug 2023 05:48:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qSwqb-0001Nu-1V
+ id 1qSwqb-0001OK-LT
  for qemu-devel@nongnu.org; Mon, 07 Aug 2023 05:48:21 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qSwqW-0003N8-Mv
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 05:48:18 -0400
+ id 1qSwqY-0003Na-QV
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 05:48:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691401696;
+ s=mimecast20190719; t=1691401697;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=9D2kwUXcWHuqKCZpSeVBwl7AeE4LL/xDIP2bwX4TNM4=;
- b=Q0c4NqqnuoqFF7xWqp5k0g3lVcx0DGQ2/5yMQnAusVChSA20g/kk56uxknNbQAPO08Zs61
- iMbgbNaKQPXzZEFz3vFY/Q84hLP9mKOSfXLPckh5Ly3CXYtbMaBotH/WZTSS86sKiom6Ht
- 1tC8FnrjUUc4N/SBn76OM9Or2WYTIRk=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Zkk2LjmI/HFHL6lFuM9lrbndUs9UU/AhpRhRIBVdFB0=;
+ b=gRmY1fdE7z7dn3HEoQO7Ea7LuWpXoRc+xyi+IZ5y2Q8cALJk7sSGoHGDauiJuOZ40rp8g4
+ aLGkBT1Cph5jl1uxGIswXZd5OnVK61KG7vQSzQQ93cPFPwTsLhxfEj9LSoczTT6uVAN1GU
+ 1orksPPlyihn2Jv/orjS41m6hps4cDY=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-481-zeW0-wrjOyK0XVUOrXu6sA-1; Mon, 07 Aug 2023 05:48:14 -0400
-X-MC-Unique: zeW0-wrjOyK0XVUOrXu6sA-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-3fe13f529f5so26377565e9.1
- for <qemu-devel@nongnu.org>; Mon, 07 Aug 2023 02:48:14 -0700 (PDT)
+ us-mta-615-xGLUWQP9Nl6Xg-UmYczsiw-1; Mon, 07 Aug 2023 05:48:16 -0400
+X-MC-Unique: xGLUWQP9Nl6Xg-UmYczsiw-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-317a0d22311so2454869f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 07 Aug 2023 02:48:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691401692; x=1692006492;
+ d=1e100.net; s=20221208; t=1691401694; x=1692006494;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9D2kwUXcWHuqKCZpSeVBwl7AeE4LL/xDIP2bwX4TNM4=;
- b=chgfmfip4PjwgG13nw521a3R0BFVXmaZh8VCR660NWZru1uSU4WDTKemwf7HL5vP0u
- DyzeBtRjePKjd3bR8VBFSUxiXahIx5/Ibok3FNflwCXe9IaSP4IFH9jI5Gv1znF1851G
- fE6nHD/DIv/5tw51pA4nwRt253bDIDEOh/unEaYGCmZL1N4zkCmUtY0xnKVano1uvnnG
- dnLEyn0KROJEBnipZs5uWvVfwP9NIfojOUkR6LNicbZaajZXtho7WCH3CoLCcaHve7cF
- 1nyejZEg15tSYEP7oy4wM+MITOr4aOc4yDG43lkQn0428uHBt6cUFpBNWOkRSfbnyYw0
- dbWA==
-X-Gm-Message-State: AOJu0YyDgXBZxoJ5EPlU/1ODAZFHdfwdo6iuhhDr9pKE8y2Iu3QGxrBD
- BoZ0Ecd/RnjwBXZqDFEjo745ZEIMsCXf/WoiVHnuK3/grW0qOI37SZhT8ElDbS9fMfgYaBc1Rw/
- SF2bkQoYJGBBg6dWX+2SF6hp9gF4mgPEUMmIz+wVlYLHXzz8an63xuE5TbulQQXlln/mkJj5vF7
- w=
-X-Received: by 2002:a1c:7706:0:b0:3f8:fc96:6bfd with SMTP id
- t6-20020a1c7706000000b003f8fc966bfdmr7206483wmi.17.1691401692719; 
- Mon, 07 Aug 2023 02:48:12 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHjfpGAwAJnghiEky8peXAymVJTQsO2qN/GcF8RPLMdpySp1/GyTm4yX8wQvf0siVB84ugX/w==
-X-Received: by 2002:a1c:7706:0:b0:3f8:fc96:6bfd with SMTP id
- t6-20020a1c7706000000b003f8fc966bfdmr7206470wmi.17.1691401692421; 
- Mon, 07 Aug 2023 02:48:12 -0700 (PDT)
+ bh=Zkk2LjmI/HFHL6lFuM9lrbndUs9UU/AhpRhRIBVdFB0=;
+ b=HOV0dzilSlpAVaHnd4I+2jMRhTX9wSgsOHp61d9jwPpZt4/GSaQ55XgwZ1/H3EyeOZ
+ 6yS2Gi1UkRm8RghnLocKsV3gbVvKnDgXIui+tkB9GOPCeSbdwahzIakASqr8gztS7AzQ
+ OZtxFtLnLt2/rAUeLbLu3CzZ2J3Z/omTCRjD7XjRCcOQ2E5PsBprBw4zEt6+Q6roddJi
+ VTGsnynUP4Es2/fSxdST4JjSwNEATB99IYOqdWY9KJ5gbxE0ZcJ1h2Btik+0YQLJLfSo
+ wk/8kJ7wbLgn96zkONfRzv1BrarN9kCQ9CFZ7zsSZLsjX0ATIxPz6tCIG9sTocF/DN1w
+ Nc5g==
+X-Gm-Message-State: AOJu0Yx90VY7MFNKlQWGe2XyKHNjsXFIqy77mQHxOL4r5xH3eT+Gro/H
+ i6dk8739kYHdnQJOWzoieWrzoRcRMzsVH91EjagI+ILxgq3vKKPN4FL741g3u9N0NMhVGsDaKrV
+ PccuxkrhalyrUj2w6+GEC9zaW1P8iNRwzu0d+sQFxr/cDkVTlI9CdQidI44nSfWeAZtfCYXNPOg
+ 8=
+X-Received: by 2002:a5d:56ca:0:b0:317:6cd2:b90c with SMTP id
+ m10-20020a5d56ca000000b003176cd2b90cmr6449350wrw.13.1691401694377; 
+ Mon, 07 Aug 2023 02:48:14 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE/Gff1YpzKFWH7TqtP1f8HG1nLhHt/2m9Kykb4GZSWiB6L0Gk7xkLZeeXT2pWN4c8NVQjRMQ==
+X-Received: by 2002:a5d:56ca:0:b0:317:6cd2:b90c with SMTP id
+ m10-20020a5d56ca000000b003176cd2b90cmr6449336wrw.13.1691401694061; 
+ Mon, 07 Aug 2023 02:48:14 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e])
  by smtp.gmail.com with ESMTPSA id
- n20-20020a7bcbd4000000b003fe557829ccsm5658528wmi.28.2023.08.07.02.48.11
+ k18-20020a5d66d2000000b0031417fd473csm10050398wrw.78.2023.08.07.02.48.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 07 Aug 2023 02:48:11 -0700 (PDT)
+ Mon, 07 Aug 2023 02:48:13 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org,
 	philmd@linaro.org
-Subject: [PATCH 1/3] configure: fix detection for x32 linux-user
-Date: Mon,  7 Aug 2023 11:48:05 +0200
-Message-ID: <20230807094807.471646-2-pbonzini@redhat.com>
+Subject: [PATCH 2/3] linux-user: cleanup unused linux-user/include/host
+ directories
+Date: Mon,  7 Aug 2023 11:48:06 +0200
+Message-ID: <20230807094807.471646-3-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230807094807.471646-1-pbonzini@redhat.com>
 References: <20230807094807.471646-1-pbonzini@redhat.com>
@@ -101,37 +102,224 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-x32 uses the same signal handling fragments as x86_64, since host_arch
-is set to x86_64 when Meson runs.  Remove the unnecessary forwarder and
-set the host_arch variable properly in configure.
+Alpha and 31-bit s390 lack the assembly fragment to handle signals
+occurring at the same time as system calls, so they cannot run
+linux-user emulation anymore.  Drop the host-signal.h files for
+them.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- configure                                 | 2 ++
- linux-user/include/host/x32/host-signal.h | 1 -
- 2 files changed, 2 insertions(+), 1 deletion(-)
- delete mode 100644 linux-user/include/host/x32/host-signal.h
+ linux-user/include/host/alpha/host-signal.h |  55 --------
+ linux-user/include/host/s390/host-signal.h  | 138 --------------------
+ 2 files changed, 193 deletions(-)
+ delete mode 100644 linux-user/include/host/alpha/host-signal.h
+ delete mode 100644 linux-user/include/host/s390/host-signal.h
 
-diff --git a/configure b/configure
-index 98dc78280e6..484d38d81f4 100755
---- a/configure
-+++ b/configure
-@@ -472,6 +472,8 @@ fi
- case "$cpu" in
-   riscv*)
-     host_arch=riscv ;;
-+  x32)
-+    host_arch=x86_64 ;;
-   *)
-     host_arch="$cpu" ;;
- esac
-diff --git a/linux-user/include/host/x32/host-signal.h b/linux-user/include/host/x32/host-signal.h
+diff --git a/linux-user/include/host/alpha/host-signal.h b/linux-user/include/host/alpha/host-signal.h
 deleted file mode 100644
-index 26800591d3b..00000000000
---- a/linux-user/include/host/x32/host-signal.h
+index 4f9e2abc4b0..00000000000
+--- a/linux-user/include/host/alpha/host-signal.h
 +++ /dev/null
-@@ -1 +0,0 @@
--#include "../x86_64/host-signal.h"
+@@ -1,55 +0,0 @@
+-/*
+- * host-signal.h: signal info dependent on the host architecture
+- *
+- * Copyright (c) 2003-2005 Fabrice Bellard
+- * Copyright (c) 2021 Linaro Limited
+- *
+- * This work is licensed under the terms of the GNU LGPL, version 2.1 or later.
+- * See the COPYING file in the top-level directory.
+- */
+-
+-#ifndef ALPHA_HOST_SIGNAL_H
+-#define ALPHA_HOST_SIGNAL_H
+-
+-/* The third argument to a SA_SIGINFO handler is ucontext_t. */
+-typedef ucontext_t host_sigcontext;
+-
+-static inline uintptr_t host_signal_pc(host_sigcontext *uc)
+-{
+-    return uc->uc_mcontext.sc_pc;
+-}
+-
+-static inline void host_signal_set_pc(host_sigcontext *uc, uintptr_t pc)
+-{
+-    uc->uc_mcontext.sc_pc = pc;
+-}
+-
+-static inline void *host_signal_mask(host_sigcontext *uc)
+-{
+-    return &uc->uc_sigmask;
+-}
+-
+-static inline bool host_signal_write(siginfo_t *info, host_sigcontext *uc)
+-{
+-    uint32_t *pc = (uint32_t *)host_signal_pc(uc);
+-    uint32_t insn = *pc;
+-
+-    /* XXX: need kernel patch to get write flag faster */
+-    switch (insn >> 26) {
+-    case 0x0d: /* stw */
+-    case 0x0e: /* stb */
+-    case 0x0f: /* stq_u */
+-    case 0x24: /* stf */
+-    case 0x25: /* stg */
+-    case 0x26: /* sts */
+-    case 0x27: /* stt */
+-    case 0x2c: /* stl */
+-    case 0x2d: /* stq */
+-    case 0x2e: /* stl_c */
+-    case 0x2f: /* stq_c */
+-        return true;
+-    }
+-    return false;
+-}
+-
+-#endif
+diff --git a/linux-user/include/host/s390/host-signal.h b/linux-user/include/host/s390/host-signal.h
+deleted file mode 100644
+index e6d3ec26dc7..00000000000
+--- a/linux-user/include/host/s390/host-signal.h
++++ /dev/null
+@@ -1,138 +0,0 @@
+-/*
+- * host-signal.h: signal info dependent on the host architecture
+- *
+- * Copyright (c) 2003-2005 Fabrice Bellard
+- * Copyright (c) 2021 Linaro Limited
+- *
+- * This work is licensed under the terms of the GNU LGPL, version 2.1 or later.
+- * See the COPYING file in the top-level directory.
+- */
+-
+-#ifndef S390_HOST_SIGNAL_H
+-#define S390_HOST_SIGNAL_H
+-
+-/* The third argument to a SA_SIGINFO handler is ucontext_t. */
+-typedef ucontext_t host_sigcontext;
+-
+-static inline uintptr_t host_signal_pc(host_sigcontext *uc)
+-{
+-    return uc->uc_mcontext.psw.addr;
+-}
+-
+-static inline void host_signal_set_pc(host_sigcontext *uc, uintptr_t pc)
+-{
+-    uc->uc_mcontext.psw.addr = pc;
+-}
+-
+-static inline void *host_signal_mask(host_sigcontext *uc)
+-{
+-    return &uc->uc_sigmask;
+-}
+-
+-static inline bool host_signal_write(siginfo_t *info, host_sigcontext *uc)
+-{
+-    uint16_t *pinsn = (uint16_t *)host_signal_pc(uc);
+-
+-    /*
+-     * ??? On linux, the non-rt signal handler has 4 (!) arguments instead
+-     * of the normal 2 arguments.  The 4th argument contains the "Translation-
+-     * Exception Identification for DAT Exceptions" from the hardware (aka
+-     * "int_parm_long"), which does in fact contain the is_write value.
+-     * The rt signal handler, as far as I can tell, does not give this value
+-     * at all.  Not that we could get to it from here even if it were.
+-     * So fall back to parsing instructions.  Treat read-modify-write ones as
+-     * writes, which is not fully correct, but for tracking self-modifying code
+-     * this is better than treating them as reads.  Checking si_addr page flags
+-     * might be a viable improvement, albeit a racy one.
+-     */
+-    /* ??? This is not even close to complete.  */
+-    switch (pinsn[0] >> 8) {
+-    case 0x50: /* ST */
+-    case 0x42: /* STC */
+-    case 0x40: /* STH */
+-    case 0x44: /* EX */
+-    case 0xba: /* CS */
+-    case 0xbb: /* CDS */
+-        return true;
+-    case 0xc4: /* RIL format insns */
+-        switch (pinsn[0] & 0xf) {
+-        case 0xf: /* STRL */
+-        case 0xb: /* STGRL */
+-        case 0x7: /* STHRL */
+-            return true;
+-        }
+-        break;
+-    case 0xc6: /* RIL-b format insns */
+-        switch (pinsn[0] & 0xf) {
+-        case 0x0: /* EXRL */
+-            return true;
+-        }
+-        break;
+-    case 0xc8: /* SSF format insns */
+-        switch (pinsn[0] & 0xf) {
+-        case 0x2: /* CSST */
+-            return true;
+-        }
+-        break;
+-    case 0xe3: /* RXY format insns */
+-        switch (pinsn[2] & 0xff) {
+-        case 0x50: /* STY */
+-        case 0x24: /* STG */
+-        case 0x72: /* STCY */
+-        case 0x70: /* STHY */
+-        case 0x8e: /* STPQ */
+-        case 0x3f: /* STRVH */
+-        case 0x3e: /* STRV */
+-        case 0x2f: /* STRVG */
+-            return true;
+-        }
+-        break;
+-    case 0xe6:
+-        switch (pinsn[2] & 0xff) {
+-        case 0x09: /* VSTEBRH */
+-        case 0x0a: /* VSTEBRG */
+-        case 0x0b: /* VSTEBRF */
+-        case 0x0e: /* VSTBR */
+-        case 0x0f: /* VSTER */
+-        case 0x3f: /* VSTRLR */
+-            return true;
+-        }
+-        break;
+-    case 0xe7:
+-        switch (pinsn[2] & 0xff) {
+-        case 0x08: /* VSTEB */
+-        case 0x09: /* VSTEH */
+-        case 0x0a: /* VSTEG */
+-        case 0x0b: /* VSTEF */
+-        case 0x0e: /* VST */
+-        case 0x1a: /* VSCEG */
+-        case 0x1b: /* VSCEF */
+-        case 0x3e: /* VSTM */
+-        case 0x3f: /* VSTL */
+-            return true;
+-        }
+-        break;
+-    case 0xeb: /* RSY format insns */
+-        switch (pinsn[2] & 0xff) {
+-        case 0x14: /* CSY */
+-        case 0x30: /* CSG */
+-        case 0x31: /* CDSY */
+-        case 0x3e: /* CDSG */
+-        case 0xe4: /* LANG */
+-        case 0xe6: /* LAOG */
+-        case 0xe7: /* LAXG */
+-        case 0xe8: /* LAAG */
+-        case 0xea: /* LAALG */
+-        case 0xf4: /* LAN */
+-        case 0xf6: /* LAO */
+-        case 0xf7: /* LAX */
+-        case 0xfa: /* LAAL */
+-        case 0xf8: /* LAA */
+-            return true;
+-        }
+-        break;
+-    }
+-    return false;
+-}
+-
+-#endif
 -- 
 2.41.0
 
