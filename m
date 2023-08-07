@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C065B7729EF
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 17:58:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FEAA7729F0
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 17:58:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qT2c3-0006Ge-FL; Mon, 07 Aug 2023 11:57:43 -0400
+	id 1qT2c4-0006Jp-J5; Mon, 07 Aug 2023 11:57:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qT2bp-0005zS-DB
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qT2bp-0005zT-DE
  for qemu-devel@nongnu.org; Mon, 07 Aug 2023 11:57:29 -0400
 Received: from rev.ng ([5.9.113.41])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qT2bn-0002Wy-Ho
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qT2bm-0002XK-49
  for qemu-devel@nongnu.org; Mon, 07 Aug 2023 11:57:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
@@ -22,18 +22,19 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive;
- bh=gHTecPgJ14x7e8LIUlvRegCwlAeLqBLD6O9agg6L7lY=; b=v6Q+IOic1Yna67k2tuzCAEuR0a
- duCWagKKOmohrJevxeEtGQ6PSWMWqhHtmfZudJ/7wXCPNWfWyMbq1ahx2oMtNtH0LPzH8u2tWz6ZB
- ur2fk8mmVzZSwpqhN+Dv5brtJHM5Lk7WdM1MOKLpivXD3Mqh2hP8gE+zF+G1PV/7l9zE=;
+ bh=Ot/tnnd4GUjcD2ax/eQ0Hy97cPVurBBGZtpYwOZROS0=; b=gR4bD9EUP/hKKb2IfimAEWU3zM
+ gS8hjdgcnpQhzmZnGq5iBTSlRJA8z2xznIIIvRofWKcqHTeCMYVFBv2Pgd+D1JbtbSklO+v9A6F3m
+ XwDq+HF3Zv46QarYH649d2FcAYFTFL2x+MLir/8qo01dRhfbF5Pb8tAT2pqnamVk8QU0=;
 To: qemu-devel@nongnu.org
 Cc: ale@rev.ng, richard.henderson@linaro.org, pbonzini@redhat.com,
  philmd@linaro.org, agraf@csgraf.de, dirty@apple.com, rbolshakov@ddn.com,
  anielhb413@gmail.com, pasic@linux.ibm.com, borntraeger@linux.ibm.com,
  palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
  ysato@users.sourceforge.jp, peter.maydell@linaro.org
-Subject: [PATCH v2 2/9] accel/hvf: Widen pc/saved_insn for hvf_sw_breakpoint
-Date: Mon,  7 Aug 2023 17:56:59 +0200
-Message-ID: <20230807155706.9580-3-anjo@rev.ng>
+Subject: [PATCH v2 3/9] target: Use vaddr for
+ kvm_arch_[insert|remove]_hw_breakpoint
+Date: Mon,  7 Aug 2023 17:57:00 +0200
+Message-ID: <20230807155706.9580-4-anjo@rev.ng>
 In-Reply-To: <20230807155706.9580-1-anjo@rev.ng>
 References: <20230807155706.9580-1-anjo@rev.ng>
 MIME-Version: 1.0
@@ -62,75 +63,153 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Widens the pc and saved_insn fields of hvf_sw_breakpoint from
-target_ulong to vaddr. Other hvf_* functions accessing hvf_sw_breakpoint
-are also widened to match.
+Changes the signature of the target-defined functions for
+inserting/removing kvm hw breakpoints. The address and length arguments
+are now of vaddr type, which both matches the type used internally in
+accel/kvm/kvm-all.c and makes the api target-agnostic.
 
 Signed-off-by: Anton Johansson <anjo@rev.ng>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/sysemu/hvf.h      | 6 +++---
- accel/hvf/hvf-accel-ops.c | 4 ++--
- accel/hvf/hvf-all.c       | 2 +-
- 3 files changed, 6 insertions(+), 6 deletions(-)
+ include/sysemu/kvm.h   |  6 ++----
+ target/arm/kvm64.c     |  6 ++----
+ target/i386/kvm/kvm.c  |  8 +++-----
+ target/ppc/kvm.c       | 13 ++++++-------
+ target/s390x/kvm/kvm.c |  6 ++----
+ 5 files changed, 15 insertions(+), 24 deletions(-)
 
-diff --git a/include/sysemu/hvf.h b/include/sysemu/hvf.h
-index 70549b9158..4cbae87ced 100644
---- a/include/sysemu/hvf.h
-+++ b/include/sysemu/hvf.h
-@@ -39,14 +39,14 @@ DECLARE_INSTANCE_CHECKER(HVFState, HVF_STATE,
+diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
+index 5670306dbf..19d87b20e8 100644
+--- a/include/sysemu/kvm.h
++++ b/include/sysemu/kvm.h
+@@ -426,10 +426,8 @@ int kvm_arch_insert_sw_breakpoint(CPUState *cpu,
+                                   struct kvm_sw_breakpoint *bp);
+ int kvm_arch_remove_sw_breakpoint(CPUState *cpu,
+                                   struct kvm_sw_breakpoint *bp);
+-int kvm_arch_insert_hw_breakpoint(target_ulong addr,
+-                                  target_ulong len, int type);
+-int kvm_arch_remove_hw_breakpoint(target_ulong addr,
+-                                  target_ulong len, int type);
++int kvm_arch_insert_hw_breakpoint(vaddr addr, vaddr len, int type);
++int kvm_arch_remove_hw_breakpoint(vaddr addr, vaddr len, int type);
+ void kvm_arch_remove_all_hw_breakpoints(void);
  
- #ifdef NEED_CPU_H
- struct hvf_sw_breakpoint {
--    target_ulong pc;
--    target_ulong saved_insn;
-+    vaddr pc;
-+    vaddr saved_insn;
-     int use_count;
-     QTAILQ_ENTRY(hvf_sw_breakpoint) entry;
- };
- 
- struct hvf_sw_breakpoint *hvf_find_sw_breakpoint(CPUState *cpu,
--                                                 target_ulong pc);
-+                                                 vaddr pc);
- int hvf_sw_breakpoints_active(CPUState *cpu);
- 
- int hvf_arch_insert_sw_breakpoint(CPUState *cpu, struct hvf_sw_breakpoint *bp);
-diff --git a/accel/hvf/hvf-accel-ops.c b/accel/hvf/hvf-accel-ops.c
-index a44cf1c144..3c94c79747 100644
---- a/accel/hvf/hvf-accel-ops.c
-+++ b/accel/hvf/hvf-accel-ops.c
-@@ -474,7 +474,7 @@ static void hvf_start_vcpu_thread(CPUState *cpu)
-                        cpu, QEMU_THREAD_JOINABLE);
+ void kvm_arch_update_guest_debug(CPUState *cpu, struct kvm_guest_debug *dbg);
+diff --git a/target/arm/kvm64.c b/target/arm/kvm64.c
+index 94bbd9661f..4d904a1d11 100644
+--- a/target/arm/kvm64.c
++++ b/target/arm/kvm64.c
+@@ -49,8 +49,7 @@ void kvm_arm_init_debug(KVMState *s)
+     return;
  }
  
--static int hvf_insert_breakpoint(CPUState *cpu, int type, hwaddr addr, hwaddr len)
-+static int hvf_insert_breakpoint(CPUState *cpu, int type, vaddr addr, vaddr len)
+-int kvm_arch_insert_hw_breakpoint(target_ulong addr,
+-                                  target_ulong len, int type)
++int kvm_arch_insert_hw_breakpoint(vaddr addr, vaddr len, int type)
  {
-     struct hvf_sw_breakpoint *bp;
-     int err;
-@@ -512,7 +512,7 @@ static int hvf_insert_breakpoint(CPUState *cpu, int type, hwaddr addr, hwaddr le
+     switch (type) {
+     case GDB_BREAKPOINT_HW:
+@@ -65,8 +64,7 @@ int kvm_arch_insert_hw_breakpoint(target_ulong addr,
+     }
+ }
+ 
+-int kvm_arch_remove_hw_breakpoint(target_ulong addr,
+-                                  target_ulong len, int type)
++int kvm_arch_remove_hw_breakpoint(vaddr addr, vaddr len, int type)
+ {
+     switch (type) {
+     case GDB_BREAKPOINT_HW:
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index ebfaf3d24c..295228cafb 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -4995,7 +4995,7 @@ MemTxAttrs kvm_arch_post_run(CPUState *cpu, struct kvm_run *run)
+         kvm_rate_limit_on_bus_lock();
+     }
+ 
+-#ifdef CONFIG_XEN_EMU    
++#ifdef CONFIG_XEN_EMU
+     /*
+      * If the callback is asserted as a GSI (or PCI INTx) then check if
+      * vcpu_info->evtchn_upcall_pending has been cleared, and deassert
+@@ -5156,8 +5156,7 @@ static int find_hw_breakpoint(target_ulong addr, int len, int type)
+     return -1;
+ }
+ 
+-int kvm_arch_insert_hw_breakpoint(target_ulong addr,
+-                                  target_ulong len, int type)
++int kvm_arch_insert_hw_breakpoint(vaddr addr, vaddr len, int type)
+ {
+     switch (type) {
+     case GDB_BREAKPOINT_HW:
+@@ -5197,8 +5196,7 @@ int kvm_arch_insert_hw_breakpoint(target_ulong addr,
      return 0;
  }
  
--static int hvf_remove_breakpoint(CPUState *cpu, int type, hwaddr addr, hwaddr len)
-+static int hvf_remove_breakpoint(CPUState *cpu, int type, vaddr addr, vaddr len)
+-int kvm_arch_remove_hw_breakpoint(target_ulong addr,
+-                                  target_ulong len, int type)
++int kvm_arch_remove_hw_breakpoint(vaddr addr, vaddr len, int type)
  {
-     struct hvf_sw_breakpoint *bp;
-     int err;
-diff --git a/accel/hvf/hvf-all.c b/accel/hvf/hvf-all.c
-index 4920787af6..db05b81be5 100644
---- a/accel/hvf/hvf-all.c
-+++ b/accel/hvf/hvf-all.c
-@@ -51,7 +51,7 @@ void assert_hvf_ok(hv_return_t ret)
-     abort();
+     int n;
+ 
+diff --git a/target/ppc/kvm.c b/target/ppc/kvm.c
+index a8a935e267..91e73620d3 100644
+--- a/target/ppc/kvm.c
++++ b/target/ppc/kvm.c
+@@ -1444,15 +1444,15 @@ static int find_hw_watchpoint(target_ulong addr, int *flag)
+     return -1;
  }
  
--struct hvf_sw_breakpoint *hvf_find_sw_breakpoint(CPUState *cpu, target_ulong pc)
-+struct hvf_sw_breakpoint *hvf_find_sw_breakpoint(CPUState *cpu, vaddr pc)
+-int kvm_arch_insert_hw_breakpoint(target_ulong addr,
+-                                  target_ulong len, int type)
++int kvm_arch_insert_hw_breakpoint(vaddr addr, vaddr len, int type)
  {
-     struct hvf_sw_breakpoint *bp;
+-    if ((nb_hw_breakpoint + nb_hw_watchpoint) >= ARRAY_SIZE(hw_debug_points)) {
++    const unsigned breakpoint_index = nb_hw_breakpoint + nb_hw_watchpoint;
++    if (breakpoint_index >= ARRAY_SIZE(hw_debug_points)) {
+         return -ENOBUFS;
+     }
  
+-    hw_debug_points[nb_hw_breakpoint + nb_hw_watchpoint].addr = addr;
+-    hw_debug_points[nb_hw_breakpoint + nb_hw_watchpoint].type = type;
++    hw_debug_points[breakpoint_index].addr = addr;
++    hw_debug_points[breakpoint_index].type = type;
+ 
+     switch (type) {
+     case GDB_BREAKPOINT_HW:
+@@ -1488,8 +1488,7 @@ int kvm_arch_insert_hw_breakpoint(target_ulong addr,
+     return 0;
+ }
+ 
+-int kvm_arch_remove_hw_breakpoint(target_ulong addr,
+-                                  target_ulong len, int type)
++int kvm_arch_remove_hw_breakpoint(vaddr addr, vaddr len, int type)
+ {
+     int n;
+ 
+diff --git a/target/s390x/kvm/kvm.c b/target/s390x/kvm/kvm.c
+index a9e5880349..1b240fc8de 100644
+--- a/target/s390x/kvm/kvm.c
++++ b/target/s390x/kvm/kvm.c
+@@ -995,8 +995,7 @@ static int insert_hw_breakpoint(target_ulong addr, int len, int type)
+     return 0;
+ }
+ 
+-int kvm_arch_insert_hw_breakpoint(target_ulong addr,
+-                                  target_ulong len, int type)
++int kvm_arch_insert_hw_breakpoint(vaddr addr, vaddr len, int type)
+ {
+     switch (type) {
+     case GDB_BREAKPOINT_HW:
+@@ -1014,8 +1013,7 @@ int kvm_arch_insert_hw_breakpoint(target_ulong addr,
+     return insert_hw_breakpoint(addr, len, type);
+ }
+ 
+-int kvm_arch_remove_hw_breakpoint(target_ulong addr,
+-                                  target_ulong len, int type)
++int kvm_arch_remove_hw_breakpoint(vaddr addr, vaddr len, int type)
+ {
+     int size;
+     struct kvm_hw_breakpoint *bp = find_hw_breakpoint(addr, len, type);
 -- 
 2.41.0
 
