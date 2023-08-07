@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 364287730A1
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 22:48:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85E6B7730A2
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 22:48:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qT78p-000586-OL; Mon, 07 Aug 2023 16:47:51 -0400
+	id 1qT790-0005Lc-DM; Mon, 07 Aug 2023 16:48:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qT78m-00057v-4C
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 16:47:48 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1qT78u-0005IZ-Vm
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 16:47:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qT78k-0006gr-Ir
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 16:47:47 -0400
+ id 1qT78t-0006hz-7q
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 16:47:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691441265;
+ s=mimecast20190719; t=1691441274;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=xD27uz9lwEBIgcuTs4tdsM5dnZ8LU2gTNw6lVv+7ZdA=;
- b=I+0KAxTBaCvcM9AmfxIcRGUmfUNnS2e25lEZdCNI1ooLn/TD8e5zXS10H/mmgnYqqrgqHA
- oRcvdfpCQM7ydPSBrsdTAbfHCqa4IxKkE9Dw2kv01G0drZok055v7WcvYswZrL9OuuprJ7
- NZSYr52YxXNG1aMzZ2yfkqGaTV/xOu4=
+ bh=rsm/L74A5zo+k+IhFT6hYdMP2C4/39xIKWiR3NcA1Dc=;
+ b=gGTM+31hTdc7G09GqSYS6qC88LqZoiok+P5dsNQH9KBLlSDCqQmHAQliw+RPUOjxMTtpEg
+ RskWp5rBzIol7G6pKKmul9D2sWH7S1sJGxKSuIUeBZzM5OlPvw7cgZg0UBwASyqr4RWU6d
+ nZ0GSlPv+NuTw25WNp3ymjtKWrqXGHo=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-643-CPpGrhwePgypIAGB56hIfg-1; Mon, 07 Aug 2023 16:47:41 -0400
-X-MC-Unique: CPpGrhwePgypIAGB56hIfg-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
+ us-mta-244-UUm_1RxVPxSWgSnd9DPIIg-1; Mon, 07 Aug 2023 16:47:48 -0400
+X-MC-Unique: UUm_1RxVPxSWgSnd9DPIIg-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 25354185A791;
- Mon,  7 Aug 2023 20:47:41 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BB7EA800159;
+ Mon,  7 Aug 2023 20:47:47 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.34])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 9347E1759C;
- Mon,  7 Aug 2023 20:47:38 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 3B79840C2076;
+ Mon,  7 Aug 2023 20:47:45 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Eduardo Habkost <eduardo@habkost.net>,
@@ -49,17 +49,18 @@ Cc: Eduardo Habkost <eduardo@habkost.net>,
  Gerd Hoffmann <kraxel@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL 3/6] virtio-gpu: reset gfx resources in main thread
-Date: Tue,  8 Aug 2023 00:47:14 +0400
-Message-ID: <20230807204717.2483983-4-marcandre.lureau@redhat.com>
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Dongli Zhang <dongli.zhang@oracle.com>, Joe Jin <joe.jin@oracle.com>
+Subject: [PULL 4/6] dump: kdump-zlib data pages not dumped with pvtime/aarch64
+Date: Tue,  8 Aug 2023 00:47:15 +0400
+Message-ID: <20230807204717.2483983-5-marcandre.lureau@redhat.com>
 In-Reply-To: <20230807204717.2483983-1-marcandre.lureau@redhat.com>
 References: <20230807204717.2483983-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -84,132 +85,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marc-André Lureau <marcandre.lureau@redhat.com>
+From: Dongli Zhang <dongli.zhang@oracle.com>
 
-Calling OpenGL from different threads can have bad consequences if not
-carefully reviewed. It's not generally supported. In my case, I was
-debugging a crash in glDeleteTextures from OPENGL32.DLL, where I asked
-qemu for gl=es, and thus ANGLE implementation was expected. libepoxy did
-resolution of the global pointer for glGenTexture to the GLES version
-from the main thread. But it resolved glDeleteTextures to the GL
-version, because it was done from a different thread without correct
-context. Oops.
+The kdump-zlib data pages are not dumped from aarch64 host when the
+'pvtime' is involved, that is, when the block->target_end is not aligned to
+page_size. In the below example, it is expected to dump two blocks.
 
-Let's stick to the main thread for GL calls by using a BH.
+(qemu) info mtree -f
+... ...
+  00000000090a0000-00000000090a0fff (prio 0, ram): pvtime KVM
+... ...
+  0000000040000000-00000001bfffffff (prio 0, ram): mach-virt.ram KVM
+... ...
 
-Note: I didn't use atomics for reset_finished check, assuming the BQL
-will provide enough of sync, but I might be wrong.
+However, there is an issue with get_next_page() so that the pages for
+"mach-virt.ram" will not be dumped.
 
-Acked-by: Dongwon Kim <dongwon.kim@intel.com>
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-Id: <20230726173929.690601-3-marcandre.lureau@redhat.com>
+At line 1296, although we have reached at the end of the 'pvtime' block,
+since it is not aligned to the page_size (e.g., 0x10000), it will not break
+at line 1298.
+
+1255 static bool get_next_page(GuestPhysBlock **blockptr, uint64_t *pfnptr,
+1256                           uint8_t **bufptr, DumpState *s)
+... ...
+1294             memcpy(buf + addr % page_size, hbuf, n);
+1295             addr += n;
+1296             if (addr % page_size == 0) {
+1297                 /* we filled up the page */
+1298                 break;
+1299             }
+
+As a result, get_next_page() will continue to the next
+block ("mach-virt.ram"). Finally, when get_next_page() returns to the
+caller:
+
+- 'pfnptr' is referring to the 'pvtime'
+- but 'blockptr' is referring to the "mach-virt.ram"
+
+When get_next_page() is called the next time, "*pfnptr += 1" still refers
+to the prior 'pvtime'. It will exit immediately because it is out of the
+range of the current "mach-virt.ram".
+
+The fix is to break when it is time to come to the next block, so that both
+'pfnptr' and 'blockptr' refer to the same block.
+
+Fixes: 94d788408d2d ("dump: fix kdump to work over non-aligned blocks")
+Cc: Joe Jin <joe.jin@oracle.com>
+Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
+Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Message-ID: <20230713055819.30497-1-dongli.zhang@oracle.com>
 ---
- include/hw/virtio/virtio-gpu.h |  3 +++
- hw/display/virtio-gpu.c        | 38 +++++++++++++++++++++++++++-------
- 2 files changed, 34 insertions(+), 7 deletions(-)
+ dump/dump.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
-index 05bee09e1a..390c4642b8 100644
---- a/include/hw/virtio/virtio-gpu.h
-+++ b/include/hw/virtio/virtio-gpu.h
-@@ -169,6 +169,9 @@ struct VirtIOGPU {
+diff --git a/dump/dump.c b/dump/dump.c
+index 1f1a6edcab..d4ef713cd0 100644
+--- a/dump/dump.c
++++ b/dump/dump.c
+@@ -1293,8 +1293,8 @@ static bool get_next_page(GuestPhysBlock **blockptr, uint64_t *pfnptr,
  
-     QEMUBH *ctrl_bh;
-     QEMUBH *cursor_bh;
-+    QEMUBH *reset_bh;
-+    QemuCond reset_cond;
-+    bool reset_finished;
- 
-     QTAILQ_HEAD(, virtio_gpu_simple_resource) reslist;
-     QTAILQ_HEAD(, virtio_gpu_ctrl_command) cmdq;
-diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
-index b1f5d392bb..bbd5c6561a 100644
---- a/hw/display/virtio-gpu.c
-+++ b/hw/display/virtio-gpu.c
-@@ -14,6 +14,7 @@
- #include "qemu/osdep.h"
- #include "qemu/units.h"
- #include "qemu/iov.h"
-+#include "sysemu/cpus.h"
- #include "ui/console.h"
- #include "trace.h"
- #include "sysemu/dma.h"
-@@ -41,6 +42,7 @@ virtio_gpu_find_check_resource(VirtIOGPU *g, uint32_t resource_id,
- 
- static void virtio_gpu_cleanup_mapping(VirtIOGPU *g,
-                                        struct virtio_gpu_simple_resource *res);
-+static void virtio_gpu_reset_bh(void *opaque);
- 
- void virtio_gpu_update_cursor_data(VirtIOGPU *g,
-                                    struct virtio_gpu_scanout *s,
-@@ -1387,6 +1389,8 @@ void virtio_gpu_device_realize(DeviceState *qdev, Error **errp)
-                                      &qdev->mem_reentrancy_guard);
-     g->cursor_bh = qemu_bh_new_guarded(virtio_gpu_cursor_bh, g,
-                                        &qdev->mem_reentrancy_guard);
-+    g->reset_bh = qemu_bh_new(virtio_gpu_reset_bh, g);
-+    qemu_cond_init(&g->reset_cond);
-     QTAILQ_INIT(&g->reslist);
-     QTAILQ_INIT(&g->cmdq);
-     QTAILQ_INIT(&g->fenceq);
-@@ -1398,20 +1402,44 @@ static void virtio_gpu_device_unrealize(DeviceState *qdev)
- 
-     g_clear_pointer(&g->ctrl_bh, qemu_bh_delete);
-     g_clear_pointer(&g->cursor_bh, qemu_bh_delete);
-+    g_clear_pointer(&g->reset_bh, qemu_bh_delete);
-+    qemu_cond_destroy(&g->reset_cond);
-     virtio_gpu_base_device_unrealize(qdev);
- }
- 
--void virtio_gpu_reset(VirtIODevice *vdev)
-+static void virtio_gpu_reset_bh(void *opaque)
- {
--    VirtIOGPU *g = VIRTIO_GPU(vdev);
-+    VirtIOGPU *g = VIRTIO_GPU(opaque);
-     struct virtio_gpu_simple_resource *res, *tmp;
--    struct virtio_gpu_ctrl_command *cmd;
-     int i = 0;
- 
-     QTAILQ_FOREACH_SAFE(res, &g->reslist, next, tmp) {
-         virtio_gpu_resource_destroy(g, res);
-     }
- 
-+    for (i = 0; i < g->parent_obj.conf.max_outputs; i++) {
-+        dpy_gfx_replace_surface(g->parent_obj.scanout[i].con, NULL);
-+    }
-+
-+    g->reset_finished = true;
-+    qemu_cond_signal(&g->reset_cond);
-+}
-+
-+void virtio_gpu_reset(VirtIODevice *vdev)
-+{
-+    VirtIOGPU *g = VIRTIO_GPU(vdev);
-+    struct virtio_gpu_ctrl_command *cmd;
-+
-+    if (qemu_in_vcpu_thread()) {
-+        g->reset_finished = false;
-+        qemu_bh_schedule(g->reset_bh);
-+        while (!g->reset_finished) {
-+            qemu_cond_wait_iothread(&g->reset_cond);
-+        }
-+    } else {
-+        virtio_gpu_reset_bh(g);
-+    }
-+
-     while (!QTAILQ_EMPTY(&g->cmdq)) {
-         cmd = QTAILQ_FIRST(&g->cmdq);
-         QTAILQ_REMOVE(&g->cmdq, cmd, next);
-@@ -1425,10 +1453,6 @@ void virtio_gpu_reset(VirtIODevice *vdev)
-         g_free(cmd);
-     }
- 
--    for (i = 0; i < g->parent_obj.conf.max_outputs; i++) {
--        dpy_gfx_replace_surface(g->parent_obj.scanout[i].con, NULL);
--    }
--
-     virtio_gpu_base_reset(VIRTIO_GPU_BASE(vdev));
- }
- 
+             memcpy(buf + addr % page_size, hbuf, n);
+             addr += n;
+-            if (addr % page_size == 0) {
+-                /* we filled up the page */
++            if (addr % page_size == 0 || addr >= block->target_end) {
++                /* we filled up the page or the current block is finished */
+                 break;
+             }
+         } else {
 -- 
 2.41.0
 
