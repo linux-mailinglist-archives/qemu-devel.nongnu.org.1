@@ -2,54 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCAA2772E82
+	by mail.lfdr.de (Postfix) with ESMTPS id D37A3772E83
 	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 21:08:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qT5Zz-0003hy-Pa; Mon, 07 Aug 2023 15:07:47 -0400
+	id 1qT5a3-0003j8-04; Mon, 07 Aug 2023 15:07:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qT5Zx-0003hc-DN
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 15:07:45 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qT5Zz-0003i8-JN
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 15:07:47 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qT5Zv-0005lv-RU
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 15:07:45 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qT5Zy-0005oG-26
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 15:07:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691435262;
+ s=mimecast20190719; t=1691435265;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=cQUkGOkw0a7RTsG8Adl5Vcf3uPH0r/lnSYN2Bdt6Lwg=;
- b=Q3BZpsn4aJhUUa3zTYeri7Rq8FPkcMDIaRI3L+52nJJw+5tgI9WHb3H4wX/QP44p/2ma6L
- 9aqFSF4X7mKepsl0dllUIBQRJKAKhYxer3n95ySXWVDru3QphDw/yPTeGt6tm/mTklrAqt
- yOhbcFbZD2Q9nrMEU2Z1VbXPGgY42eo=
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ahHtgE5Le4Ql7CB4JIAfDzkB520q7jcsgBSrxoiy7SM=;
+ b=KIheJiKNoYzET/hPlBpbNteSVdRjBJ9AIMkNThXFokNolLLFNPr68LMoDSlUAXcuu0Aqn0
+ ziiUlcS+hMLAi0I2WNtDJRMH4/3DiQBYw+t6TNZNHEByHS/N1iiZYwBl22Q9AorjcG5U1Y
+ TSb/NariquM6/glVlOpL3xcXmOO9mOQ=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-592-yk3SVu85Nb62pJC2v0bSLA-1; Mon, 07 Aug 2023 15:07:39 -0400
-X-MC-Unique: yk3SVu85Nb62pJC2v0bSLA-1
+ us-mta-622-kZM7mED7NPGphC6nxgIQpg-1; Mon, 07 Aug 2023 15:07:41 -0400
+X-MC-Unique: kZM7mED7NPGphC6nxgIQpg-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
  [10.11.54.10])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0F26680CC40;
- Mon,  7 Aug 2023 19:07:39 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E4C6385CCE5;
+ Mon,  7 Aug 2023 19:07:40 +0000 (UTC)
 Received: from t14s.redhat.com (unknown [10.39.192.170])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 95239403166;
- Mon,  7 Aug 2023 19:07:37 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 4AD994021B9;
+ Mon,  7 Aug 2023 19:07:39 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Peter Xu <peterx@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
  Thiner Logoer <logoerthiner1@163.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v1 0/3] softmmu/physmem: file_ram_open() readonly improvements
-Date: Mon,  7 Aug 2023 21:07:31 +0200
-Message-ID: <20230807190736.572665-1-david@redhat.com>
+Subject: [PATCH v1 1/3] softmmu/physmem: fallback to opening guest RAM file as
+ readonly in a MAP_PRIVATE mapping
+Date: Mon,  7 Aug 2023 21:07:32 +0200
+Message-ID: <20230807190736.572665-2-david@redhat.com>
+In-Reply-To: <20230807190736.572665-1-david@redhat.com>
+References: <20230807190736.572665-1-david@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
@@ -76,38 +79,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Patch #1 is the result of the discussion of:
-    "[PATCH v2] softmmu/physmem: try opening file readonly before failure
-     in file_ram_open" [1]
+From: Thiner Logoer <logoerthiner1@163.com>
 
-Instead of handling it inside file_ram_open(), handle it in the caller
-and only fallback to readonly in a MAP_PRIVATE mapping.
+Users may specify
+* "-mem-path" or
+* "-object memory-backend-file,share=off,readonly=off"
+and expect such COW (MAP_PRIVATE) mappings to work, even if the user
+does not have write permissions to open the file.
 
-Patch #2 refuses to create readonly files instead of creating a new file
-and opening it writable. Patch #3 no longer returns
-directories from file_ram_open(), resulting in a better error message when
-trying to open a readonly file but specifying a directory.
+For now, we would always fail in that case, always requiring file write
+permissions. Let's detect when that failure happens and fallback to opening
+the file readonly.
 
-[1] https://lkml.kernel.org/r/20230726145912.88545-1-logoerthiner1@163.com
+Warn the user, since there are other use cases where we want the file to
+be mapped writable: ftruncate() and fallocate() will fail if the file
+was not opened with write permissions.
 
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Igor Mammedov <imammedo@redhat.com>
-Cc: Thiner Logoer <logoerthiner1@163.com>
-Cc: "Philippe Mathieu-Daudé" <philmd@linaro.org>
+Signed-off-by: Thiner Logoer <logoerthiner1@163.com>
+Co-developed-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: David Hildenbrand <david@redhat.com>
+---
+ softmmu/physmem.c | 26 ++++++++++++++++++--------
+ 1 file changed, 18 insertions(+), 8 deletions(-)
 
-David Hildenbrand (2):
-  softmmu/physmem: fail creation of new files in file_ram_open() with
-    readonly=true
-  softmmu/physmem: never return directories from file_ram_open()
-
-Thiner Logoer (1):
-  softmmu/physmem: fallback to opening guest RAM file as readonly in a
-    MAP_PRIVATE mapping
-
- softmmu/physmem.c | 52 +++++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 44 insertions(+), 8 deletions(-)
-
+diff --git a/softmmu/physmem.c b/softmmu/physmem.c
+index 3df73542e1..d1ae694b20 100644
+--- a/softmmu/physmem.c
++++ b/softmmu/physmem.c
+@@ -1289,8 +1289,7 @@ static int64_t get_file_align(int fd)
+ static int file_ram_open(const char *path,
+                          const char *region_name,
+                          bool readonly,
+-                         bool *created,
+-                         Error **errp)
++                         bool *created)
+ {
+     char *filename;
+     char *sanitized_name;
+@@ -1334,10 +1333,7 @@ static int file_ram_open(const char *path,
+             g_free(filename);
+         }
+         if (errno != EEXIST && errno != EINTR) {
+-            error_setg_errno(errp, errno,
+-                             "can't open backing store %s for guest RAM",
+-                             path);
+-            return -1;
++            return -errno;
+         }
+         /*
+          * Try again on EINTR and EEXIST.  The latter happens when
+@@ -1946,9 +1942,23 @@ RAMBlock *qemu_ram_alloc_from_file(ram_addr_t size, MemoryRegion *mr,
+     bool created;
+     RAMBlock *block;
+ 
+-    fd = file_ram_open(mem_path, memory_region_name(mr), readonly, &created,
+-                       errp);
++    fd = file_ram_open(mem_path, memory_region_name(mr), readonly, &created);
++    if (fd == -EACCES && !(ram_flags & RAM_SHARED) && !readonly) {
++        /*
++         * We can have a writable MAP_PRIVATE mapping of a readonly file.
++         * However, some operations like ftruncate() or fallocate() might fail
++         * later, let's warn the user.
++         */
++        fd = file_ram_open(mem_path, memory_region_name(mr), true, &created);
++        if (fd >= 0) {
++            warn_report("backing store %s for guest RAM (MAP_PRIVATE) opened"
++                        " readonly because the file is not writable", mem_path);
++        }
++    }
+     if (fd < 0) {
++        error_setg_errno(errp, -fd,
++                         "can't open backing store %s for guest RAM",
++                         mem_path);
+         return NULL;
+     }
+ 
 -- 
 2.41.0
 
