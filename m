@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E091772B42
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 18:41:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 313DF772B26
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 18:38:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qT3EW-0007JI-Ic; Mon, 07 Aug 2023 12:37:28 -0400
+	id 1qT3Ea-0007Yv-Ks; Mon, 07 Aug 2023 12:37:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qT3EN-00076H-El
+ id 1qT3EO-00076J-GD
  for qemu-devel@nongnu.org; Mon, 07 Aug 2023 12:37:22 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qT3EL-0002i8-Sj
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 12:37:19 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-1b9c5e07c1bso42277755ad.2
- for <qemu-devel@nongnu.org>; Mon, 07 Aug 2023 09:37:17 -0700 (PDT)
+ id 1qT3EM-0002iJ-NP
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 12:37:20 -0400
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-1bbf8cb694aso40640755ad.3
+ for <qemu-devel@nongnu.org>; Mon, 07 Aug 2023 09:37:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691426236; x=1692031036;
+ d=linaro.org; s=google; t=1691426237; x=1692031037;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LDhuT++xsqj01ETEWaKWE9ZYg7Hhe6sUk2NPXqCd0Zs=;
- b=n5zy/PhrTWy23L1oOIUnWS3oJprsmY065QGpA6tsdpW52JiRhhFYVFMZjyjUGt3qYY
- dvT4rvHyGK4zf7n5CLupovHy4sXDiLhepcpla6/cG5NsClwbHT1bYgzQGjSK4gedw8a4
- ueYvOG2XpIEZmehlu47t7pDkwiLeaJxLhGMnrY9fKN1C3K/UsDsBnWhVITz0oJeMZhrM
- uSX8RGODefpcG73TowuV83wnZ7t5y9qLriWuiPnR58Njg1VwJmTEfNbHN5cDMx1cP8OS
- mDY07idypRUIqK6ogu2OtRbhEq5H3Lu1L5PuvMO1nzf4Ls/PI0ixsbuIzCJVpA+oaOAI
- XHMg==
+ bh=37Oa1Q6Q3bF0gL9Um9Xifn0V/D4ohTtQq5asniTUIIY=;
+ b=GCKh8Cay5DJtgXhZ5sxRPiapN3ly1+VFPoH4828ht5vYjyDxgaj7/svl6v958AtbtL
+ xA4aHW7bQyqg6E76O6+n1d+qc9bYRZNcuplLnEFlxklqCpKYrMrbD49PjzvzCStSCU4f
+ c7Tqpkphb3jvlKxUTveOxzpGw4LtAZ1bV/9Qa3bAA2sWAgrdNa71lgLpU/jfTHiESNMr
+ +XqVUMbfcPKRqkDNCF3jkEyx9gTySEx91Xb5+jCpk+Gt42EqsnsWEJPos8dMX+OgDrve
+ 1X3x0sMyqKpkYcOcwbCYJaX1wPl3k1RB2qsK9OJb9eJ+FbsZEK+8gA1fnEYKAgTC1Voa
+ JwTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691426236; x=1692031036;
+ d=1e100.net; s=20221208; t=1691426237; x=1692031037;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LDhuT++xsqj01ETEWaKWE9ZYg7Hhe6sUk2NPXqCd0Zs=;
- b=bBFsjioUinWt5MUPQdaDX3tzBJd1xA+zzq7Nv7aCexPrC+P6L1tbmZ2faNLCHAVwXb
- Nr5tAauPTY7W+2oDtLqQs5t4Hv/TYCc45l8GEUNnDOJofI6ZZ+83CXhd/bvhkOvJEFLL
- rbFz9JqxkCBlKqlqSeu3vRTmp4Uwj6oc7wODHy1BteQ1fM1o3wzj6kGccTAetd4tmoiR
- oFwt4rqAehpEDr26k2uVBMlLxQLALoC21oGLVlu2aVBStE+XWJWx+b/tBeumCZ1M70+B
- oBbd7hjeKHAEZfC3/RmtnHzCBVj6ZJDG8QxEDdWVEov2GjIbyehO5CWM1vJyEtJSdhAI
- w30A==
-X-Gm-Message-State: AOJu0YyNiaEoeL5QC9ST2YpmaOO1OswXr2QB65p6O+2gQU7IBd6iaMak
- 0hq7OfCpUVuL3HWdk0ubWWWq/5pbFA8w6nE5XKU=
-X-Google-Smtp-Source: AGHT+IE8oOogRSkCK3NkJEnZlvw5H/UH4+A+pk/QD11PDJ03AeOOc6usZboIVur0jDVWUD3flYWoqQ==
-X-Received: by 2002:a17:902:6bc9:b0:1bb:ed01:2d03 with SMTP id
- m9-20020a1709026bc900b001bbed012d03mr9511445plt.50.1691426236511; 
- Mon, 07 Aug 2023 09:37:16 -0700 (PDT)
+ bh=37Oa1Q6Q3bF0gL9Um9Xifn0V/D4ohTtQq5asniTUIIY=;
+ b=DVq+3sHACpgPpfCs2Dj8pwTUenAvM6M/gKM/3fpHJnwuyF/a1bmQ9ECyp3q0LMhUVv
+ YwsE5JtKKCRns2sjdt6syyBaGKbUtE1dzWdhN06n6EQDikS8S/P1r71Xm5STk91LMW1n
+ CPEKFqF6P/GrpFkWwPY+pnYJL4EiVAdkt+HngIFGVh418doww9j2QUcJVEwHaBmo+5Ro
+ zvsvo7F2Tz+G89Nen9v2IYTm+SAIfvHheohFvA+Xmxg9hdlm9y4Flfe4emnZv4zVWWcc
+ Vj8J8YCtlz6gqNH3rF+JigR09mWW38E3a6rDlmCjApZko1icDNqSrtVsvWf3+E31/y/p
+ 2jfQ==
+X-Gm-Message-State: AOJu0Yw0RU0gqNyHFvqGXy8uLzf3OA+jP9zCj22iyeNQbZeEN7SezLq8
+ nK7WEU2/KMRGWBRUxw3Q0/26HLL5J6zgGci2Lcc=
+X-Google-Smtp-Source: AGHT+IGkHKdo+Is/br6rKfETposGU4axBth0BVSSrPBJ0FYACOPR5n1CIriTNQ3UHGwAABiEKyAckg==
+X-Received: by 2002:a17:902:d3c5:b0:1aa:d971:4623 with SMTP id
+ w5-20020a170902d3c500b001aad9714623mr9888148plb.38.1691426237352; 
+ Mon, 07 Aug 2023 09:37:17 -0700 (PDT)
 Received: from stoup.. ([2602:47:d490:6901:e306:567a:e0a1:341])
  by smtp.gmail.com with ESMTPSA id
- l6-20020a170902d34600b001b9df8f14d7sm7119837plk.267.2023.08.07.09.37.15
+ l6-20020a170902d34600b001b9df8f14d7sm7119837plk.267.2023.08.07.09.37.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 07 Aug 2023 09:37:16 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com, philmd@linaro.org, laurent@vivier.eu, deller@gmx.de
-Subject: [PATCH for-8.1 v10 11/14] linux-user: Remove duplicate CPU_LOG_PAGE
- from probe_guest_base
-Date: Mon,  7 Aug 2023 09:37:02 -0700
-Message-Id: <20230807163705.9848-12-richard.henderson@linaro.org>
+Subject: [PATCH for-8.1 v10 12/14] linux-user: Consolidate guest bounds check
+ in probe_guest_base
+Date: Mon,  7 Aug 2023 09:37:03 -0700
+Message-Id: <20230807163705.9848-13-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230807163705.9848-1-richard.henderson@linaro.org>
 References: <20230807163705.9848-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,72 +92,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The proper logging for probe_guest_base is in the main function.
-There is no need to duplicate that in the subroutines.
+The three sets of checks are identical, logically.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/elfload.c | 19 -------------------
- 1 file changed, 19 deletions(-)
+ linux-user/elfload.c | 50 +++++++++++++++-----------------------------
+ 1 file changed, 17 insertions(+), 33 deletions(-)
 
 diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index f497286abe..400af4a4c0 100644
+index 400af4a4c0..484ab7131a 100644
 --- a/linux-user/elfload.c
 +++ b/linux-user/elfload.c
-@@ -2562,9 +2562,6 @@ static void pgb_have_guest_base(const char *image_name, abi_ulong guest_loaddr,
-     if (test != addr) {
-         pgb_fail_in_use(image_name);
-     }
--    qemu_log_mask(CPU_LOG_PAGE,
--                  "%s: base @ %p for %" PRIu64 " bytes\n",
--                  __func__, addr, (uint64_t)guest_hiaddr - guest_loaddr + 1);
- }
- 
- /**
-@@ -2607,9 +2604,6 @@ static uintptr_t pgd_find_hole_fallback(uintptr_t guest_size, uintptr_t brk,
-             if (mmap_start != MAP_FAILED) {
-                 munmap(mmap_start, guest_size);
-                 if (mmap_start == (void *) align_start) {
--                    qemu_log_mask(CPU_LOG_PAGE,
--                                  "%s: base @ %p for %" PRIdPTR" bytes\n",
--                                  __func__, mmap_start + offset, guest_size);
-                     return (uintptr_t) mmap_start + offset;
-                 }
-             }
-@@ -2691,13 +2685,6 @@ static uintptr_t pgb_find_hole(uintptr_t guest_loaddr, uintptr_t guest_size,
-         }
-     }
-     free_self_maps(maps);
--
--    if (ret != -1) {
--        qemu_log_mask(CPU_LOG_PAGE, "%s: base @ %" PRIxPTR
--                      " for %" PRIuPTR " bytes\n",
--                      __func__, ret, guest_size);
--    }
--
-     return ret;
- }
- 
-@@ -2749,9 +2736,6 @@ static void pgb_static(const char *image_name, abi_ulong orig_loaddr,
-     }
- 
-     guest_base = addr;
--
--    qemu_log_mask(CPU_LOG_PAGE, "%s: base @ %"PRIxPTR" for %" PRIuPTR" bytes\n",
--                  __func__, addr, hiaddr - loaddr);
- }
- 
- static void pgb_dynamic(const char *image_name, long align)
-@@ -2809,9 +2793,6 @@ static void pgb_reserved_va(const char *image_name, abi_ulong guest_loaddr,
-                      reserved_va + 1, test, strerror(errno));
+@@ -2527,25 +2527,6 @@ static void pgb_have_guest_base(const char *image_name, abi_ulong guest_loaddr,
          exit(EXIT_FAILURE);
      }
--
--    qemu_log_mask(CPU_LOG_PAGE, "%s: base @ %p for %lu bytes\n",
--                  __func__, addr, reserved_va + 1);
- }
  
- void probe_guest_base(const char *image_name, abi_ulong guest_loaddr,
+-    /* Sanity check the guest binary. */
+-    if (reserved_va) {
+-        if (guest_hiaddr > reserved_va) {
+-            error_report("%s: requires more than reserved virtual "
+-                         "address space (0x%" PRIx64 " > 0x%lx)",
+-                         image_name, (uint64_t)guest_hiaddr, reserved_va);
+-            exit(EXIT_FAILURE);
+-        }
+-    } else {
+-#if HOST_LONG_BITS < TARGET_ABI_BITS
+-        if ((guest_hiaddr - guest_base) > ~(uintptr_t)0) {
+-            error_report("%s: requires more virtual address space "
+-                         "than the host can provide (0x%" PRIx64 ")",
+-                         image_name, (uint64_t)guest_hiaddr + 1 - guest_base);
+-            exit(EXIT_FAILURE);
+-        }
+-#endif
+-    }
+-
+     /*
+      * Expand the allocation to the entire reserved_va.
+      * Exclude the mmap_min_addr hole.
+@@ -2696,13 +2677,6 @@ static void pgb_static(const char *image_name, abi_ulong orig_loaddr,
+     uintptr_t offset = 0;
+     uintptr_t addr;
+ 
+-    if (hiaddr != orig_hiaddr) {
+-        error_report("%s: requires virtual address space that the "
+-                     "host cannot provide (0x%" PRIx64 ")",
+-                     image_name, (uint64_t)orig_hiaddr + 1);
+-        exit(EXIT_FAILURE);
+-    }
+-
+     loaddr &= -align;
+     if (HI_COMMPAGE) {
+         /*
+@@ -2768,13 +2742,6 @@ static void pgb_reserved_va(const char *image_name, abi_ulong guest_loaddr,
+     int flags = MAP_ANONYMOUS | MAP_PRIVATE | MAP_NORESERVE;
+     void *addr, *test;
+ 
+-    if (guest_hiaddr > reserved_va) {
+-        error_report("%s: requires more than reserved virtual "
+-                     "address space (0x%" PRIx64 " > 0x%lx)",
+-                     image_name, (uint64_t)guest_hiaddr, reserved_va);
+-        exit(EXIT_FAILURE);
+-    }
+-
+     /* Widen the "image" to the entire reserved address space. */
+     pgb_static(image_name, 0, reserved_va, align);
+ 
+@@ -2801,6 +2768,23 @@ void probe_guest_base(const char *image_name, abi_ulong guest_loaddr,
+     /* In order to use host shmat, we must be able to honor SHMLBA.  */
+     uintptr_t align = MAX(SHMLBA, qemu_host_page_size);
+ 
++    /* Sanity check the guest binary. */
++    if (reserved_va) {
++        if (guest_hiaddr > reserved_va) {
++            error_report("%s: requires more than reserved virtual "
++                         "address space (0x%" PRIx64 " > 0x%lx)",
++                         image_name, (uint64_t)guest_hiaddr, reserved_va);
++            exit(EXIT_FAILURE);
++        }
++    } else {
++        if (guest_hiaddr != (uintptr_t)guest_hiaddr) {
++            error_report("%s: requires more virtual address space "
++                         "than the host can provide (0x%" PRIx64 ")",
++                         image_name, (uint64_t)guest_hiaddr + 1);
++            exit(EXIT_FAILURE);
++        }
++    }
++
+     if (have_guest_base) {
+         pgb_have_guest_base(image_name, guest_loaddr, guest_hiaddr, align);
+     } else if (reserved_va) {
 -- 
 2.34.1
 
