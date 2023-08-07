@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27C457718E0
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 05:53:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 663677718E1
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 05:54:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qSrHM-00086I-Qe; Sun, 06 Aug 2023 23:51:37 -0400
+	id 1qSrJB-0000XW-SC; Sun, 06 Aug 2023 23:53:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jniethe5@gmail.com>)
- id 1qSrHC-00085j-6B; Sun, 06 Aug 2023 23:51:28 -0400
-Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
+ id 1qSrJ7-0000Wl-JW; Sun, 06 Aug 2023 23:53:25 -0400
+Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <jniethe5@gmail.com>)
- id 1qSrH6-00006d-OI; Sun, 06 Aug 2023 23:51:23 -0400
-Received: by mail-ej1-x634.google.com with SMTP id
- a640c23a62f3a-99c3c8adb27so592721666b.1; 
- Sun, 06 Aug 2023 20:51:16 -0700 (PDT)
+ id 1qSrJ4-0000ew-Bx; Sun, 06 Aug 2023 23:53:24 -0400
+Received: by mail-ej1-x62c.google.com with SMTP id
+ a640c23a62f3a-99c10ba30afso1092929166b.1; 
+ Sun, 06 Aug 2023 20:53:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1691380275; x=1691985075;
+ d=gmail.com; s=20221208; t=1691380400; x=1691985200;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=68jrWU+aHnXsAmZxRab/iiQRo7M5MHzhGLdtQ5ULTkI=;
- b=J3g41fN/t2ydJi+4jcg0F6wMxXWDjeI6wJyB1srOWotSG16s1fKpkoubbowCG04bUl
- txIHAyoVdh4YoCry9AV3PbLJ13lWqHp1Hqk9zkGt/H2miUnzJv8oFRTyNkQcN41HQSR+
- K8Zms1+0xqFvZojh+8Mic9fBwDzZvBjarBJ/2nUTevcburF5JMsXU1/bG4bdIiWVYCaY
- 6V8FpBIoQ9gkVBBoA9U473AyJH68Ip5/CLC6LbfwLK+IwmVs30EWvkm5oMGv/Tzpt6hL
- MkdfXv/kdpmpckXWrSIzTXiph5Ryd2GWhmNi8FPCIVKQm4mJN9Gt7iDG8h4C+IuDicLL
- eAQQ==
+ bh=6mB+gGctjVx336ubslyWLT6GSJEW4XW9GhpUCyShDlM=;
+ b=KlBqZOIidNsgbxMVv9BgTqjT1gYcq0FBIpLV7Aood7UWclJMSzR9RixfB5ICNEKPQo
+ Xw7IvE46EE0XueBVWNfLvX0YKzC2mTr6i1+4czGTI28JgguJrKiIHf866A8tDH4GRKDp
+ hVN756ypQxg1+zWH8TitSt0TXZiwIbs2P2LbWYrjkRYlyvj8XNxcVVqPdqub2zEd4JEh
+ lLMKQcgMIb8ZvqAdHyusYnudSisM/vbplWpDszvUnUHKjAK1A/hdqsXVombhgO+MRJ7S
+ PKU7jL7FBflNfwQn07nrAUKew8JQIMDic6SfDeXlgEUfv02f7hQrPEVXWanSjoo7Vliu
+ jddw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691380275; x=1691985075;
+ d=1e100.net; s=20221208; t=1691380400; x=1691985200;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=68jrWU+aHnXsAmZxRab/iiQRo7M5MHzhGLdtQ5ULTkI=;
- b=DQTq9LqnFmh0Z40RSAq17x3xxKehcF1FbJWi+Zb316Q3I6ye97NPsB6/ark4CcFm9U
- nDkyhMRfdZbYaOPY2ulobzcUsoOvH2E+3sNxIHNMMpzgZI5Wi9n5fcHnXCH440/CrWn4
- 8hWbgqjnFmPfY+n3Vy7m2allXM1YrdMRguwV5o+iNdYqKHGKfmaf43oX1evw8Rpj+tB2
- untXOalumKZCFAro9TzyklAaTHvqPYlbKjuA29aaDCPqFPXRizHkoYeBmI6YNYM4llWA
- HosC/nDEBklRFtZ1EE6Zi+9Mxrwullsy7sBTqpcUS8rBJQJebO04Kk6CKN4X+yNTWQCX
- Kodg==
-X-Gm-Message-State: AOJu0YwtGnTLuQSzc983c7SvWbEW02NQAUDV0Cz6/PnXlL8+DVBBr62k
- bw6M+9iTmKkyDTuCYPJAmYhY3ifmYi3EEiaxW/c=
-X-Google-Smtp-Source: AGHT+IHEuwIfOUN2Zp4USjSaxgXIm9SJEbOEfcKgi5Ss8F8JjxBy4U+3ldJqJwMpIkrjBtpMKvgNFDE1rpoyr3NhGKM=
-X-Received: by 2002:a17:906:d8:b0:99b:ca5d:1466 with SMTP id
- 24-20020a17090600d800b0099bca5d1466mr8432180eji.66.1691380275180; Sun, 06 Aug
- 2023 20:51:15 -0700 (PDT)
+ bh=6mB+gGctjVx336ubslyWLT6GSJEW4XW9GhpUCyShDlM=;
+ b=MQpZQEIrNvQ+x0QpB8O67dhQuUBwi95mBMetNY6SdrFK5x9S90OAxGBclQz0Bl16MQ
+ iSw0sqelTmYx9sOQu1ySdsV0LM8/79JP3pXfQmpxKAfSir3nr1tnXApky+5KAh+TmhyT
+ 0RfHrnbr8WD0b7KWdA3l5dLeVba2tmYIc1nNzCgw19sgrA9CQ3acd2PdyWadZ7Y9pufI
+ 4LXdJkRql2DOz05l+p68gwWiKtX91F0nEYEkkQZhCU6gmdQaod7l0RAH+yifSVV4aAgl
+ tigxXgb6LhbqXeB5SuDNe76YW2h8gYDZhsEwRNI58XR8JVH+HI61ur8SpjqYukZsZlw3
+ L/kw==
+X-Gm-Message-State: AOJu0YxjYaaAQBrWss3p4fqvdmFCMECJBdGSiNbc3flkuxVk8TW9Rkxl
+ zIZLAcY7XgC57X8ClNzNcj+GapUcaF0f5e08rdqE/SbtZZk=
+X-Google-Smtp-Source: AGHT+IFGO9NtiJS0XdiCMivGEGieya2bWif6NSF+/ib02HxZx9n7484Uv1UholQ50Bk5t+2rJGA+tt0vVdOulruZ8FQ=
+X-Received: by 2002:a17:907:7638:b0:997:e9a3:9c4f with SMTP id
+ jy24-20020a170907763800b00997e9a39c4fmr6226756ejc.30.1691380400307; Sun, 06
+ Aug 2023 20:53:20 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230804213355.294443-1-richard.henderson@linaro.org>
- <20230804213355.294443-4-richard.henderson@linaro.org>
-In-Reply-To: <20230804213355.294443-4-richard.henderson@linaro.org>
+ <20230804213355.294443-3-richard.henderson@linaro.org>
+In-Reply-To: <20230804213355.294443-3-richard.henderson@linaro.org>
 From: Jordan Niethe <jniethe5@gmail.com>
-Date: Mon, 7 Aug 2023 13:51:03 +1000
-Message-ID: <CACzsE9pwF2p6y+4BWhPQdq7aD9yV2YsEfeqUROtWPbUnmQ=J8g@mail.gmail.com>
-Subject: Re: [PATCH 3/7] tcg/ppc: Use prefixed instructions in tcg_out_mem_long
+Date: Mon, 7 Aug 2023 13:53:09 +1000
+Message-ID: <CACzsE9r1w2TQ9-587g7CCZOzjE2bsnQch6Xe3LC6binDEkB1jQ@mail.gmail.com>
+Subject: Re: [PATCH 2/7] tcg/ppc: Use PADDI in tcg_out_movi
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, bgray@linux.ibm.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::634;
- envelope-from=jniethe5@gmail.com; helo=mail-ej1-x634.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
+ envelope-from=jniethe5@gmail.com; helo=mail-ej1-x62c.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -89,50 +89,43 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On Sat, Aug 5, 2023 at 7:33=E2=80=AFAM Richard Henderson
 <richard.henderson@linaro.org> wrote:
 >
-> When the offset is out of range of the non-prefixed insn, but
-> fits the 34-bit immediate of the prefixed insn, use that.
+> PADDI can load 34-bit immediates and 34-bit pc-relative addresses.
 >
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->  tcg/ppc/tcg-target.c.inc | 66 ++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 66 insertions(+)
+>  tcg/ppc/tcg-target.c.inc | 47 ++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 47 insertions(+)
 >
 > diff --git a/tcg/ppc/tcg-target.c.inc b/tcg/ppc/tcg-target.c.inc
-> index 7fa2a2500b..d41c499b7d 100644
+> index 642d0fd128..7fa2a2500b 100644
 > --- a/tcg/ppc/tcg-target.c.inc
 > +++ b/tcg/ppc/tcg-target.c.inc
-> @@ -323,6 +323,15 @@ static bool tcg_target_const_match(int64_t val, TCGT=
-ype type, int ct)
->  #define STDX   XO31(149)
->  #define STQ    XO62(  2)
->
-> +#define PLWA   OPCD( 41)
-> +#define PLD    OPCD( 57)
-> +#define PLXSD  OPCD( 42)
-> +#define PLXV   OPCD(25 * 2 + 1)  /* force tx=3D1 */
-> +
-> +#define PSTD   OPCD( 61)
-> +#define PSTXSD OPCD( 46)
-> +#define PSTXV  OPCD(27 * 2 + 1)  /* force tx=3D1 */
-
-PSTXV calls it sx not tx
-
-
-> +
->  #define ADDIC  OPCD( 12)
->  #define ADDI   OPCD( 14)
->  #define ADDIS  OPCD( 15)
-> @@ -720,6 +729,20 @@ static void tcg_out_prefix_align(TCGContext *s)
->      }
+> @@ -707,6 +707,33 @@ static bool patch_reloc(tcg_insn_unit *code_ptr, int=
+ type,
+>      return true;
 >  }
 >
-> +/* Output Type 00 Prefix - 8-Byte Load/Store Form (8LS:D) */
-> +static void tcg_out_8ls_d(TCGContext *s, tcg_insn_unit opc, unsigned rt,
+> +/* Ensure that the prefixed instruction does not cross a 64-byte boundar=
+y. */
+> +static bool tcg_out_need_prefix_align(TCGContext *s)
+> +{
+> +    return ((uintptr_t)s->code_ptr & 0x3f) =3D=3D 0x3c;
+> +}
+> +
+> +static void tcg_out_prefix_align(TCGContext *s)
+> +{
+> +    if (tcg_out_need_prefix_align(s)) {
+> +        tcg_out32(s, NOP);
+> +    }
+> +}
+> +
+> +/* Output Type 10 Prefix - Modified Load/Store Form (MLS:D) */
+> +static void tcg_out_mls_d(TCGContext *s, tcg_insn_unit opc, unsigned rt,
 > +                          unsigned ra, tcg_target_long imm, bool r)
 > +{
 > +    tcg_insn_unit p, i;
 > +
-> +    p =3D OPCD(1) | (r << 20) | ((imm >> 16) & 0x3ffff);
+> +    p =3D OPCD(1) | (2 << 24) | (r << 20) | ((imm >> 16) & 0x3ffff);
 > +    i =3D opc | TAI(rt, ra, imm);
 > +
 > +    tcg_out_prefix_align(s);
@@ -140,60 +133,43 @@ PSTXV calls it sx not tx
 > +    tcg_out32(s, i);
 > +}
 > +
->  /* Output Type 10 Prefix - Modified Load/Store Form (MLS:D) */
->  static void tcg_out_mls_d(TCGContext *s, tcg_insn_unit opc, unsigned rt,
->                            unsigned ra, tcg_target_long imm, bool r)
-> @@ -1364,6 +1387,49 @@ static void tcg_out_mem_long(TCGContext *s, int op=
-i, int opx, TCGReg rt,
->          break;
+>  static void tcg_out_mem_long(TCGContext *s, int opi, int opx, TCGReg rt,
+>                               TCGReg base, tcg_target_long offset);
+>
+> @@ -992,6 +1019,26 @@ static void tcg_out_movi_int(TCGContext *s, TCGType=
+ type, TCGReg ret,
+>          return;
 >      }
 >
-> +    /* For unaligned or large offsets, use the prefixed form. */
-> +    if (have_isa_3_10
-> +        && (offset !=3D (int16_t)offset || (offset & align))
-> +        && offset =3D=3D sextract64(offset, 0, 34)) {
-> +        /*
-> +         * Note that the MLS:D insns retain their un-prefixed opcode,
-> +         * while the 8LS:D insns use a different opcode space.
-> +         */
-> +        switch (opi) {
-> +        case LBZ:
-> +        case LHZ:
-> +        case LHA:
-> +        case LWZ:
-> +        case STB:
-> +        case STH:
-> +        case STW:
-> +        case ADDI:
-> +            tcg_out_mls_d(s, opi, rt, base, offset, 0);
+> +    /*
+> +     * Load values up to 34 bits, and pc-relative addresses,
+> +     * with one prefixed insn.
+> +     */
+> +    if (have_isa_3_10) {
+> +        if (arg =3D=3D sextract64(arg, 0, 34)) {
+> +            /* pli ret,value =3D paddi ret,0,value,0 */
+> +            tcg_out_mls_d(s, ADDI, ret, 0, arg, 0);
 > +            return;
-> +        case LWA:
-> +            tcg_out_8ls_d(s, PLWA, rt, base, offset, 0);
-> +            return;
-> +        case LD:
-> +            tcg_out_8ls_d(s, PLD, rt, base, offset, 0);
-> +            return;
-> +        case STD:
-> +            tcg_out_8ls_d(s, PSTD, rt, base, offset, 0);
-> +            return;
-> +        case LXSD:
-> +            tcg_out_8ls_d(s, PLXSD, rt & 31, base, offset, 0);
-> +            return;
-> +        case STXSD:
-> +            tcg_out_8ls_d(s, PSTXSD, rt & 31, base, offset, 0);
-> +            return;
-> +        case LXV:
-> +            tcg_out_8ls_d(s, PLXV, rt & 31, base, offset, 0);
-> +            return;
-> +        case STXV:
-> +            tcg_out_8ls_d(s, PSTXV, rt & 31, base, offset, 0);
+> +        }
+> +
+> +        tmp =3D tcg_out_need_prefix_align(s) * 4;
+
+tcg_out_need_prefix_align() returns a bool, optionally might prefer
+
+tmp =3D tcg_out_need_prefix_align(s) ? 4 : 0;
+
+
+> +        tmp =3D tcg_pcrel_diff(s, (void *)arg) - tmp;
+> +        if (tmp =3D=3D sextract64(tmp, 0, 34)) {
+> +            /* pla ret,value =3D paddi ret,0,value,1 */
+> +            tcg_out_mls_d(s, ADDI, ret, 0, tmp, 1);
 > +            return;
 > +        }
 > +    }
 > +
->      /* For unaligned, or very large offsets, use the indexed form.  */
->      if (offset & align || offset !=3D (int32_t)offset || opi =3D=3D 0) {
->          if (rs =3D=3D base) {
+>      /* Load 32-bit immediates with two insns.  Note that we've already
+>         eliminated bare ADDIS, so we know both insns are required.  */
+>      if (TCG_TARGET_REG_BITS =3D=3D 32 || arg =3D=3D (int32_t)arg) {
 > --
 > 2.34.1
 >
