@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A43EE771C83
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 10:44:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FA2C771C89
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 10:46:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qSvq7-0006aC-FM; Mon, 07 Aug 2023 04:43:47 -0400
+	id 1qSvro-0007bF-82; Mon, 07 Aug 2023 04:45:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1qSvq5-0006Vu-OD
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 04:43:45 -0400
-Received: from mgamail.intel.com ([134.134.136.100])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1qSvq2-0006U6-M5
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 04:43:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1691397822; x=1722933822;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=Vo7MZ5pJHUUmxghQ2yTjCli6Xe7FMaDCESOufDE1kWg=;
- b=g8uJQYMW1GzLgu9B0EXBHdKv7kE70GeqvuS+ePGa0dsAPIRnmxkaisI0
- FIIymoLPWggiloJ+d7s0bhA9muje3WREICBNPOvNSGX62OynUfys55Tf3
- krVIDABYSYxv2qsI1crC7lD2hfsqzS+kjF2VD5Pcw3oWcUiPbbDpEH02M
- UALpRYDaofobmPBYC/wyKntOJOFJy5tCa/tEBzoIOGCbkgPuvd+v6hcgV
- aQJEU3NJJu6MMC8Hv0MalqePM2Tt+DSIAa3T4AKoKiJX3RLA1aYG04mso
- PAbZbSzub5+P4XI29UxhCfQl28cyUH1TMTal+uS2bDTuB9fI7pWbKPSbY w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10794"; a="436824232"
-X-IronPort-AV: E=Sophos;i="6.01,261,1684825200"; d="scan'208";a="436824232"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
- by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Aug 2023 01:43:38 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10794"; a="800869141"
-X-IronPort-AV: E=Sophos;i="6.01,261,1684825200"; d="scan'208";a="800869141"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.16.81])
- ([10.93.16.81])
- by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Aug 2023 01:43:35 -0700
-Message-ID: <7d3d2630-4ac4-8875-8c6f-054000462755@intel.com>
-Date: Mon, 7 Aug 2023 16:43:32 +0800
+ (Exim 4.90_1) (envelope-from <cfontana@suse.de>)
+ id 1qSvrW-0007aa-V4; Mon, 07 Aug 2023 04:45:20 -0400
+Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <cfontana@suse.de>)
+ id 1qSvrU-0006xt-7P; Mon, 07 Aug 2023 04:45:14 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 955B01F460;
+ Mon,  7 Aug 2023 08:45:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1691397909; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=q2+3qo1l0C9Z4Y/ZyycWAk9hTc9ROyGMbqeclUM7FT4=;
+ b=Vo4N8GmOEFeikDqVNAl9HRtG3ceWCT1+uEa15WWaToePu/1FojL4wkn63ORBxMMmxXk8Tz
+ 7NEYyRfZ2Kvx8ZRfaJCJSJ2YHnbKhASC3MIXlizsfuEsyKik8T5Yzu7M5y877o90tRKKbC
+ 6Ppl0MJWRDBZF58S2UGcgiLGeki+t1Y=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1691397909;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=q2+3qo1l0C9Z4Y/ZyycWAk9hTc9ROyGMbqeclUM7FT4=;
+ b=edRJ22XYp9aRYkM+7fflXWfAwu3lO3VwsZcdGpeXb2KP44yl2XxcjhKJKAxL8c/5GxgZ14
+ sNdPe+9QWNv1DPCA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 0A21713910;
+ Mon,  7 Aug 2023 08:45:08 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id +blzOxSv0GQVDQAAMHmgww
+ (envelope-from <cfontana@suse.de>); Mon, 07 Aug 2023 08:45:08 +0000
+Message-ID: <4592ba8d-1d6a-a589-0a40-d585caf70904@suse.de>
+Date: Mon, 7 Aug 2023 10:45:08 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Firefox/102.0 Thunderbird/102.14.0
-Subject: Re: [PATCH v3 03/17] softmmu: Fix CPUSTATE.nr_cores' calculation
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.0
+Subject: Re: [PATCH 3/3] tests/tcg/s390x: Test VSTRS
 Content-Language: en-US
-To: Zhao Liu <zhao1.liu@linux.intel.com>
-Cc: Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, "Michael S . Tsirkin" <mst@redhat.com>,
+To: Ilya Leoshkevich <iii@linux.ibm.com>, Laurent Vivier <laurent@vivier.eu>, 
  Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
- Zhenyu Wang <zhenyu.z.wang@intel.com>, Babu Moger <babu.moger@amd.com>,
- Zhao Liu <zhao1.liu@intel.com>, Zhuocheng Ding <zhuocheng.ding@intel.com>
-References: <20230801103527.397756-1-zhao1.liu@linux.intel.com>
- <20230801103527.397756-4-zhao1.liu@linux.intel.com>
- <17d46d49-844c-60ed-56cc-0e671564948a@intel.com>
- <ZNCi6uNsVB1F39XD@liuzhao-OptiPlex-7080>
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <ZNCi6uNsVB1F39XD@liuzhao-OptiPlex-7080>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=134.134.136.100;
- envelope-from=xiaoyao.li@intel.com; helo=mgamail.intel.com
+ David Hildenbrand <david@redhat.com>, Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-s390x@nongnu.org
+References: <20230804233748.218935-1-iii@linux.ibm.com>
+ <20230804233748.218935-4-iii@linux.ibm.com>
+ <85745fff-825c-0084-00ff-9875fe1a6f5a@suse.de>
+ <9ef4a41fddc9c27bef7dab401c85eb79c42b7fe5.camel@linux.ibm.com>
+From: Claudio Fontana <cfontana@suse.de>
+In-Reply-To: <9ef4a41fddc9c27bef7dab401c85eb79c42b7fe5.camel@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2001:67c:2178:6::1d;
+ envelope-from=cfontana@suse.de; helo=smtp-out2.suse.de
 X-Spam_score_int: -84
 X-Spam_score: -8.5
 X-Spam_bar: --------
-X-Spam_report: (-8.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.001, NICE_REPLY_A=-4.139,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-8.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-4.139,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -91,78 +92,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/7/2023 3:53 PM, Zhao Liu wrote:
->>> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
->>> index 97ad229d8ba3..50613cd04612 100644
->>> --- a/target/i386/cpu.c
->>> +++ b/target/i386/cpu.c
->>> @@ -6011,7 +6011,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
->>>        X86CPUTopoInfo topo_info;
->>>        topo_info.dies_per_pkg = env->nr_dies;
->>> -    topo_info.cores_per_die = cs->nr_cores;
->>> +    topo_info.cores_per_die = cs->nr_cores / env->nr_dies;
->> This and below things make me think that, it looks ugly that @nr_dies is
->> added separately in struct CPUArchState for i386 because CPUState only has
->> @nr_cores and nr_threads. Further, for i386, it defines a specific struct
->> X86CPUTopoInfo to contain topology info when setting up CPUID. To me, struct
->> X86CPUTopoInfo is redundant as struct CpuTopology.
+On 8/7/23 10:08, Ilya Leoshkevich wrote:
+> On Sun, 2023-08-06 at 13:05 +0200, Claudio Fontana wrote:
+>> On 8/5/23 01:03, Ilya Leoshkevich wrote:
+>>> Add a small test to prevent regressions.
+>>>
+>>> Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+>>> ---
+>>>  tests/tcg/s390x/Makefile.target |  1 +
+>>>  tests/tcg/s390x/vxeh2_vstrs.c   | 88
+>>> +++++++++++++++++++++++++++++++++
+>>>  2 files changed, 89 insertions(+)
+>>>  create mode 100644 tests/tcg/s390x/vxeh2_vstrs.c
+>>>
+>>> diff --git a/tests/tcg/s390x/Makefile.target
+>>> b/tests/tcg/s390x/Makefile.target
+>>> index 1fc98099070..8ba36e5985b 100644
+>>> --- a/tests/tcg/s390x/Makefile.target
+>>> +++ b/tests/tcg/s390x/Makefile.target
+>>> @@ -73,6 +73,7 @@ ifneq ($(CROSS_CC_HAS_Z15),)
+>>>  Z15_TESTS=vxeh2_vs
+>>>  Z15_TESTS+=vxeh2_vcvt
+>>>  Z15_TESTS+=vxeh2_vlstr
+>>> +Z15_TESTS+=vxeh2_vstrs
+>>>  $(Z15_TESTS): CFLAGS+=-march=z15 -O2
+>>>  TESTS+=$(Z15_TESTS)
+>>>  endif
+>>> diff --git a/tests/tcg/s390x/vxeh2_vstrs.c
+>>> b/tests/tcg/s390x/vxeh2_vstrs.c
+>>> new file mode 100644
+>>> index 00000000000..313ec1d728f
+>>> --- /dev/null
+>>> +++ b/tests/tcg/s390x/vxeh2_vstrs.c
+>>> @@ -0,0 +1,88 @@
+>>> +/*
+>>> + * Test the VSTRS instruction.
+>>> + *
+>>> + * SPDX-License-Identifier: GPL-2.0-or-later
+>>> + */
+>>> +#include <assert.h>
+>>> +#include <stdint.h>
+>>> +#include <stdio.h>
+>>> +#include <stdlib.h>
+>>> +#include "vx.h"
+>>> +
+>>> +static inline __attribute__((__always_inline__)) int
+>>> +vstrs(S390Vector *v1, const S390Vector *v2, const S390Vector *v3,
+>>> +      const S390Vector *v4, const uint8_t m5, const uint8_t m6)
+>>> +{
+>>> +    int cc;
+>>> +
+>>> +    asm("vstrs %[v1],%[v2],%[v3],%[v4],%[m5],%[m6]\n"
+>>> +        "ipm %[cc]"
+>>> +        : [v1] "=v" (v1->v)
+>>> +        , [cc] "=r" (cc)
+>>> +        : [v2] "v" (v2->v)
+>>> +        , [v3] "v" (v3->v)
+>>> +        , [v4] "v" (v4->v)
+>>> +        , [m5] "i" (m5)
+>>> +        , [m6]  "i" (m6)
+>>> +        : "cc");
+>>> +
+>>> +    return (cc >> 28) & 3;
+>> Following the POp, I am puzzled by the use of an "int" to contain the
+>> register result of the IPM instruction, should it not be a 64bit
+>> variable?
+>> bits 0-31 are left unchanged / are uninteresting, is that enough to
+>> avoid having to use a properly sized variable?
+> 
+> The compiler understands that if the type is int, then the asm block
+> will not touch the upper 32 bits of the register that's assigned to it.
+> This observation is used not only in the QEMU tests, but also all over
+> arch/s390 in the Linux kernel.
+
+Thank you,
+
+Claudio
+
 >>
->> maybe we can carry a struct CpuTopology in CPUState, so that we can drop
->> @nr_threads, @nr_cores in CPUState for all ARCHes, and @nr_dies in struct
->> CPUArchState for i386. As well, topo_info can be dropped here.
-> Yeah, I agree. We think the same way, as did in [1].
+>> I see that this is done elsewhere in the tests (sometimes a 64bit
+>> variable is used, sometimes just 'int'), so I assume it's probably
+>> fine.
+>>
+>> Otherwise lgtm,
+>>
+>> Claudio
 > 
-> About X86CPUTopoInfo, it's still necessary to keep to help encode
-> APICID. 
-
-typedef struct X86CPUTopoInfo {
-     unsigned dies_per_pkg;
-     unsigned cores_per_die;
-     unsigned threads_per_core;
-} X86CPUTopoInfo;
-
-/**
-  * CpuTopology:
-  * @cpus: the number of present logical processors on the machine
-  * @sockets: the number of sockets on the machine
-  * @dies: the number of dies in one socket
-  * @clusters: the number of clusters in one die
-  * @cores: the number of cores in one cluster
-  * @threads: the number of threads in one core
-  * @max_cpus: the maximum number of logical processors on the machine
-  */
-typedef struct CpuTopology {
-     unsigned int cpus;
-     unsigned int sockets;
-     unsigned int dies;
-     unsigned int clusters;
-     unsigned int cores;
-     unsigned int threads;
-     unsigned int max_cpus;
-} CpuTopology;
-
-I think 'struct X86CPUTopoInfo' is just a subset of 'struct CpuTopology'
-
-IIUC, currently the value of X86CPUTopoInfo::dies_per_pkg should equal 
-with CpuTopology::dies, and the same for cores_per_die and threads_per_core.
-
-So it's OK to keep an copy of 'struct CpuTopology' in CPUState and drop 
-'struct X86CPUTopoInfo'
-
-> For hybrid topology case, the APICID is likely discontinuous,
-> and the width of each CPU level in APICID depends on the maximum number
-> of elements in this level. So I also proposed to rename it to
-> X86ApicidTopoInfo [2] and count the maximum number of elements in each
-> CPU level.
-
-Do you mean, for example, for hybrid topology, 
-X86CPUTopoInfo::dies_per_pkg != CpuTopology::dies? Or after rename
-X86CPUTopoInfo::max_dies != CpuTopology::dies?
-
-> [2]:https://mail.gnu.org/archive/html/qemu-devel/2023-02/msg03237.html
-> 
-> Thanks,
-> Zhao
+> [...]
+>>
 > 
 
 
