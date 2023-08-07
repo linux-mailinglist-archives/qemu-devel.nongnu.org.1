@@ -2,74 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63CAE772798
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 16:24:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E60D777280A
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 16:41:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qT18c-0005Ok-Ms; Mon, 07 Aug 2023 10:23:14 -0400
+	id 1qT1Ob-0006nh-M3; Mon, 07 Aug 2023 10:39:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1qT18a-0005OZ-6A
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 10:23:12 -0400
-Received: from mgamail.intel.com ([134.134.136.24])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qT1OX-0006nJ-MI
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 10:39:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1qT18X-0007Ko-VU
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 10:23:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1691418190; x=1722954190;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=L2x3UbxKQBM0WqdzPq8aQhaE1+2l3XWf/cMoa+iNM7s=;
- b=kI2B9oMXvHnp0j+YTn6SmNoRmHdZZfOCUEvaILGmOAat/YgHbmHkmYqV
- RETBVRAa2Dd58gmmDhQkqOuwt02wKqLF4uIyWjFED5bb2wBeisKxciSww
- Lre7nMo9KC7hSDKSmXZdzBCqUm22CQM3sS4uCRo7SmNqepPI4N/MjwtXI
- lNJEGtP54RGwnyt6YP+vwDSJGiWpKbTHV4lxJ0qCoEbgH4dcdwEN/mKz7
- VWaO7/B7bPFrbz3CZE2cSVlt0XrvOTKBTTcVy/qT8e5NbHNcyZQIUKAai
- G9PlQAVnhTNrPm5IsThaRAseq3p4fn+x/wVMIU3J3HC9d9SKZRwZu9/sn w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10795"; a="373309162"
-X-IronPort-AV: E=Sophos;i="6.01,262,1684825200"; d="scan'208";a="373309162"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
- by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Aug 2023 07:21:08 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10795"; a="766014711"
-X-IronPort-AV: E=Sophos;i="6.01,262,1684825200"; d="scan'208";a="766014711"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.28])
- by orsmga001.jf.intel.com with ESMTP; 07 Aug 2023 07:21:06 -0700
-Date: Mon, 7 Aug 2023 22:31:35 +0800
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: Igor Mammedov <imammedo@redhat.com>
-Cc: Zhao Liu <zhao1.liu@intel.com>, Michael Tokarev <mjt@tls.msk.ru>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Ani Sinha <anisinha@redhat.com>, qemu-devel@nongnu.org,
- Zhenyu Wang <zhenyu.z.wang@intel.com>
-Subject: Re: [PATCH v2 2/3] hw/smbios: Fix thread count in type4
-Message-ID: <ZNEAR7nK1pY/BFH+@liuzhao-OptiPlex-7080>
-References: <20230601092952.1114727-1-zhao1.liu@linux.intel.com>
- <20230601092952.1114727-3-zhao1.liu@linux.intel.com>
- <598990ac-e5f8-fdcc-5936-e219491c4d0f@tls.msk.ru>
- <32cfa897-4472-083f-88cd-a3c3e3c405b0@tls.msk.ru>
- <20230807115615.278fb838@imammedo.users.ipa.redhat.com>
- <ddfe932b-57b7-8f48-03aa-82e1964dda2a@tls.msk.ru>
- <20230807121129.30e6fe1e@imammedo.users.ipa.redhat.com>
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qT1OV-0002Je-MM
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 10:39:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1691419178;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=8q58zENzRplPYFjpsEGCaZKCxEZcaw6HyHg5ut0bO+8=;
+ b=JtVVCTZ0arwCk6fyl2hSO582Efv8IqIgMoSskxD9/c9qPKE+m8ahzQU/WbNFwdFwlrGuNh
+ ydM76LNa8QLg29gEDn/VPQUmM+IgdP3LeNfMXS+b5Fsg8ZDoT0+n0EI8Wtcxd80KVs9mUE
+ fjIyObwpCmM298401G4ev3z84aNQbmg=
+Received: from mail-ua1-f70.google.com (mail-ua1-f70.google.com
+ [209.85.222.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-517-rQBUmRHqM4yXe_IwtlEQcg-1; Mon, 07 Aug 2023 10:39:37 -0400
+X-MC-Unique: rQBUmRHqM4yXe_IwtlEQcg-1
+Received: by mail-ua1-f70.google.com with SMTP id
+ a1e0cc1a2514c-78681dff350so609081241.0
+ for <qemu-devel@nongnu.org>; Mon, 07 Aug 2023 07:39:37 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1691419176; x=1692023976;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=8q58zENzRplPYFjpsEGCaZKCxEZcaw6HyHg5ut0bO+8=;
+ b=BNJsxyu0L8Zm3q2a48nQNPSPv6eLzw6z/LZbQ65RelOrBfWwtS6kKj/KRNYo9ZKYWB
+ CRmSxUMec2wSEU5ZMGxm9MYn+o2aOwzIiYTuBPMCphAYReFhyxpialNHIepb4QJTXPd5
+ g03/4+T8++RSwENkQ8wD9zQbPMNdmiEzwwFqoZ8qOV6XZHvUTbx3rpTlIm0T7cR7pCTz
+ 0GaTjJNsyjfMOhK6IUvV79/uTUZbJcQcbwvJseWtYBruwamyFdXqt9WUuvAKgpFm2wMK
+ 8RZ1T9nJRuNubYEQQRAUcg8vxHzD34cdnfHxRKRyOIGpkT9XPxa6pyvU29WFe7jPKf/P
+ dluw==
+X-Gm-Message-State: AOJu0YzFqM03532OTmRWjH7KzeN8ilKFnuc3wFy3YD+kz+AN1cgKsrhL
+ WPopgFX9J/eQYuyex4quvEBWFd0LY/r8snHz2VL1CDmIoWlC4yYX1IZqpVZ13lu5w26A4HimjLU
+ iR7nVzjIz+mmzMqESGtTzRzysTEROxBE=
+X-Received: by 2002:a05:6102:d8:b0:445:bd3:5b3a with SMTP id
+ u24-20020a05610200d800b004450bd35b3amr4327813vsp.4.1691419176735; 
+ Mon, 07 Aug 2023 07:39:36 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEAoqmekQjL6LcveAesu+d+XHzqEJHOCjVNazZsgmaIrIs7rKXBnOKEvzlyMyJII1BdhHOhFdL7LLekfb/m47M=
+X-Received: by 2002:a05:6102:d8:b0:445:bd3:5b3a with SMTP id
+ u24-20020a05610200d800b004450bd35b3amr4327801vsp.4.1691419176422; Mon, 07 Aug
+ 2023 07:39:36 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230807121129.30e6fe1e@imammedo.users.ipa.redhat.com>
-Received-SPF: none client-ip=134.134.136.24;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+References: <20230807094807.471646-1-pbonzini@redhat.com>
+ <20230807094807.471646-4-pbonzini@redhat.com>
+ <CAFEAcA8mR04aAQcuB4d0L6XkEPNGfF2+QRg2FVPT3feBVst-7w@mail.gmail.com>
+In-Reply-To: <CAFEAcA8mR04aAQcuB4d0L6XkEPNGfF2+QRg2FVPT3feBVst-7w@mail.gmail.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Mon, 7 Aug 2023 16:39:24 +0200
+Message-ID: <CABgObfYhz7Sz6x31ZDvoQCxdRbfUA7-ab9VCE83run+S=A3-XQ@mail.gmail.com>
+Subject: Re: [PATCH 3/3] configure: unify case statements for CPU
+ canonicalization
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel <qemu-devel@nongnu.org>,
+ Richard Henderson <richard.henderson@linaro.org>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Joel Stanley <joel@jms.id.au>
+Content-Type: multipart/alternative; boundary="0000000000002d668e060256378a"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,44 +98,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Igor,
+--0000000000002d668e060256378a
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Aug 07, 2023 at 12:11:29PM +0200, Igor Mammedov wrote:
-> Date: Mon, 7 Aug 2023 12:11:29 +0200
-> From: Igor Mammedov <imammedo@redhat.com>
-> Subject: Re: [PATCH v2 2/3] hw/smbios: Fix thread count in type4
-> X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
-> 
-> On Mon, 7 Aug 2023 13:06:47 +0300
-> Michael Tokarev <mjt@tls.msk.ru> wrote:
-> 
-> > 07.08.2023 12:56, Igor Mammedov wrote:
-> > > On Sat, 5 Aug 2023 09:00:41 +0300
-> > > Michael Tokarev <mjt@tls.msk.ru> wrote:
-> [...]
-> > The whole thing - provided the preparational patch a1d027be95
-> > "machine: Add helpers to get cores/threads per socket" is also
-> > picked up - applies cleanly and in a stright-forward way to 8.0
-> > and even to 7.2, and passes the usual qemu testsuite. Sure thing
-> > since the issues weren't noticed before, the testsuite does not
-> > cover this area.  It'd be nice to have some verifier to check if
-> > the whole thing actually works after applying the patchset.
-> 
-> Zhao Liu,
-> can you help us out with adding test cases to cover the code
-> you are touching?
+Il lun 7 ago 2023, 15:45 Peter Maydell <peter.maydell@linaro.org> ha
+scritto:
 
-Yes, sure.
+> Can we be consistent within this case statement about whether
+> the ';;' is on its own line or at the end of the last line of
+> the case ? We are not fully consistent within the entire
+> configure script, but mostly we put it on a line of its
+> own. (I prefer that personally.)
+>
 
-Just double check, I should add these 2 test cases:
-1. in "bios-tables-test.c" to test smbios type4 topology related things, and
-2. also in "test-smp-parse.c" to test our new topology helpers.
+Yes, especially given the nicer diffs.
 
-Do I understand correctly?
+Paolo
 
--Zhao
 
-> 
-> [...]
-> 
+> thanks
+> -- PMM
+>
+>
+
+--0000000000002d668e060256378a
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
+class=3D"gmail_attr">Il lun 7 ago 2023, 15:45 Peter Maydell &lt;<a href=3D"=
+mailto:peter.maydell@linaro.org">peter.maydell@linaro.org</a>&gt; ha scritt=
+o:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;bo=
+rder-left:1px #ccc solid;padding-left:1ex">Can we be consistent within this=
+ case statement about whether<br>
+the &#39;;;&#39; is on its own line or at the end of the last line of<br>
+the case ? We are not fully consistent within the entire<br>
+configure script, but mostly we put it on a line of its<br>
+own. (I prefer that personally.)<br></blockquote></div></div><div dir=3D"au=
+to"><br></div><div dir=3D"auto">Yes, especially given the nicer diffs.</div=
+><div dir=3D"auto"><br></div><div dir=3D"auto">Paolo</div><div dir=3D"auto"=
+><br></div><div dir=3D"auto"><div class=3D"gmail_quote"><blockquote class=
+=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padd=
+ing-left:1ex">
+<br>
+thanks<br>
+-- PMM<br>
+<br>
+</blockquote></div></div></div>
+
+--0000000000002d668e060256378a--
+
 
