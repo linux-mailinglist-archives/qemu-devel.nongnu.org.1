@@ -2,112 +2,112 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 192ED7735BE
+	by mail.lfdr.de (Postfix) with ESMTPS id 379977735C1
 	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 03:10:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTBED-0002Y0-M2; Mon, 07 Aug 2023 21:09:41 -0400
+	id 1qTBEC-0002Xd-ST; Mon, 07 Aug 2023 21:09:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ankit.kumar@samsung.com>)
- id 1qTB6V-0000Ob-BD
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 21:01:43 -0400
+ id 1qTB6U-0000O4-9I
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 21:01:42 -0400
 Received: from mailout2.samsung.com ([203.254.224.25])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ankit.kumar@samsung.com>)
- id 1qTB6P-0001vq-Uf
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 21:01:43 -0400
-Received: from epcas5p3.samsung.com (unknown [182.195.41.41])
+ id 1qTB6Q-0001ws-0L
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 21:01:42 -0400
+Received: from epcas5p2.samsung.com (unknown [182.195.41.40])
  by mailout2.samsung.com (KnoxPortal) with ESMTP id
- 20230808010131epoutp029304a0876f72e84d79a8e84546b2a84d~5Qre1G7vg3097430974epoutp02B
- for <qemu-devel@nongnu.org>; Tue,  8 Aug 2023 01:01:31 +0000 (GMT)
+ 20230808010135epoutp0213c6ede79ba4f89121f56660a40f4100~5QrhzveLU3068130681epoutp02b
+ for <qemu-devel@nongnu.org>; Tue,  8 Aug 2023 01:01:35 +0000 (GMT)
 DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com
- 20230808010131epoutp029304a0876f72e84d79a8e84546b2a84d~5Qre1G7vg3097430974epoutp02B
+ 20230808010135epoutp0213c6ede79ba4f89121f56660a40f4100~5QrhzveLU3068130681epoutp02b
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
- s=mail20170921; t=1691456491;
- bh=gSM+Gyo01YgbrodjXi7d5V6BCxBrUdz9zTwpkgw7YNs=;
+ s=mail20170921; t=1691456495;
+ bh=JpYPOlBvqpTKgpjgLJgqjbI43le9C/lfkvjpv5D8ND8=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=YsYluZbNMRSRI6NGzW7VsBgw7PkWH6CYgVsLIYum5neZwqwlGFyRrLxAcq0SMEyP9
- Aq8zFtLXjl5/zvnCcLgVy8kbpHkL9g8mI/aotzcpzKbHd5OP0JieRTBMumn+GrkkyX
- dlVodv2gYtJfIPgRqKMRMxBVOd+bmOzipf8NV20A=
+ b=aUCNff0nTW0wrGBVujIDzdXY4F1p2TAOpoo6yOBOlzBqhjVN3bllSb/qUMFq7/sZO
+ WFsQGPhuB8nbg5uxwUC85xEwMewaotBaLvATeUwuD1qP8F+eJd2q7+QtnQ3oaZU8EU
+ 12BfN6d9HAZfZ88Zklt/I7/dPZtZp14V6KB7+6rs=
 Received: from epsnrtp3.localdomain (unknown [182.195.42.164]) by
- epcas5p2.samsung.com (KnoxPortal) with ESMTP id
- 20230808010131epcas5p2e75d29d1a89dbe993ecf7aa47e7aef80~5QreZBPXB0916909169epcas5p2-;
- Tue,  8 Aug 2023 01:01:31 +0000 (GMT)
-Received: from epsmgec5p1-new.samsung.com (unknown [182.195.38.178]) by
- epsnrtp3.localdomain (Postfix) with ESMTP id 4RKZdQ0rLFz4x9QJ; Tue,  8 Aug
- 2023 01:01:30 +0000 (GMT)
-Received: from epcas5p4.samsung.com ( [182.195.41.42]) by
- epsmgec5p1-new.samsung.com (Symantec Messaging Gateway) with SMTP id
- 26.D3.55173.9E391D46; Tue,  8 Aug 2023 10:01:29 +0900 (KST)
-Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
+ epcas5p1.samsung.com (KnoxPortal) with ESMTP id
+ 20230808010134epcas5p1130e84ba2cc5bdd85bf3b204a71baa50~5QrhlmtnX1435914359epcas5p1K;
+ Tue,  8 Aug 2023 01:01:34 +0000 (GMT)
+Received: from epsmgec5p1new.samsung.com (unknown [182.195.38.180]) by
+ epsnrtp3.localdomain (Postfix) with ESMTP id 4RKZdT4296z4x9Q9; Tue,  8 Aug
+ 2023 01:01:33 +0000 (GMT)
+Received: from epcas5p1.samsung.com ( [182.195.41.39]) by
+ epsmgec5p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
+ 13.C9.57354.DE391D46; Tue,  8 Aug 2023 10:01:33 +0900 (KST)
+Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
  epcas5p3.samsung.com (KnoxPortal) with ESMTPA id
- 20230807160837epcas5p3b360bae29265c0851f13491952b40f38~5JaMYH5Wf1623916239epcas5p3B;
- Mon,  7 Aug 2023 16:08:37 +0000 (GMT)
-Received: from epsmgmcp1.samsung.com (unknown [182.195.42.82]) by
- epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
- 20230807160837epsmtrp1d260d941135e8501bb99c5d740f0cc43~5JaMWpDnq3052430524epsmtrp1V;
- Mon,  7 Aug 2023 16:08:37 +0000 (GMT)
-X-AuditID: b6c32a50-df1ff7000001d785-b7-64d193e9db35
+ 20230807160838epcas5p389c82acd77fd8c74fc7f83300b9d0aa9~5JaNNKyee1415114151epcas5p3G;
+ Mon,  7 Aug 2023 16:08:38 +0000 (GMT)
+Received: from epsmgmc1p1new.samsung.com (unknown [182.195.42.40]) by
+ epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
+ 20230807160838epsmtrp224d033cd3a2493dca4abcda5f7500d6c~5JaNMkeQT2055820558epsmtrp2g;
+ Mon,  7 Aug 2023 16:08:38 +0000 (GMT)
+X-AuditID: b6c32a44-269fb7000001e00a-20-64d193edc6e1
 Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
- epsmgmcp1.samsung.com (Symantec Messaging Gateway) with SMTP id
- 1A.AC.64355.50711D46; Tue,  8 Aug 2023 01:08:37 +0900 (KST)
+ epsmgmc1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
+ 31.6A.14748.60711D46; Tue,  8 Aug 2023 01:08:38 +0900 (KST)
 Received: from unvme-desktop.sa.corp.samsungelectronics.net (unknown
  [107.99.41.39]) by epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
- 20230807160836epsmtip27ac98aa429a6622e6f8e45aaf19e95c0~5JaLnaqzE2883728837epsmtip2O;
- Mon,  7 Aug 2023 16:08:36 +0000 (GMT)
+ 20230807160837epsmtip2507c5966b0dcb5eba5a53bf11c5094e2~5JaMcz6VP2743027430epsmtip2l;
+ Mon,  7 Aug 2023 16:08:37 +0000 (GMT)
 From: Ankit Kumar <ankit.kumar@samsung.com>
 To: kbusch@kernel.org, its@irrelevant.dk
 Cc: qemu-devel@nongnu.org, Ankit Kumar <ankit.kumar@samsung.com>
-Subject: [PATCH 1/3] hw/nvme: fix CRC64 for guard tag
-Date: Tue,  8 Aug 2023 02:57:43 +0530
-Message-Id: <20230807212745.70151-2-ankit.kumar@samsung.com>
+Subject: [PATCH 2/3] hw/nvme: fix disable pi checks for Type 3 protection
+Date: Tue,  8 Aug 2023 02:57:44 +0530
+Message-Id: <20230807212745.70151-3-ankit.kumar@samsung.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230807212745.70151-1-ankit.kumar@samsung.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrDKsWRmVeSWpSXmKPExsWy7bCmlu7LyRdTDKY9trZYc+U3u8X+g99Y
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrDKsWRmVeSWpSXmKPExsWy7bCmuu7byRdTDC5tkLJYc+U3u8X+g99Y
  LSYdusZocbx3B4sDi8e5HefZPTat6mTzeHJtM5NH35ZVjAEsUdk2GamJKalFCql5yfkpmXnp
  tkrewfHO8aZmBoa6hpYW5koKeYm5qbZKLj4Bum6ZOUA7lRTKEnNKgUIBicXFSvp2NkX5pSWp
- Chn5xSW2SqkFKTkFJgV6xYm5xaV56Xp5qSVWhgYGRqZAhQnZGTenX2EuuM5R0bzmNVsD4362
- LkZODgkBE4ljj/8zdTFycQgJ7GGUOHF7ITuE84lRYtn8/axwztIJCxm7GDnAWraekYOI72SU
- WHviJFRHJ5PE0k332EHmsgloS7x6e4MZxBYR0JCYdeAc2D5mAQeJX2duM4HYwgKmEhPOLgCz
- WQRUJZZcuAnWyytgI/Hu9Q8miPvkJWZe+g4W5xSwlXj8bDFUjaDEyZlPWCBmyks0b53NDHKE
- hMAxdomWH9uYIC51kTjz1ANijrDEq+Nb2CFsKYmX/W1QdrbEpoc/oXYVSBx50csMYdtLtJ7q
- ZwYZwyygKbF+lz5EWFZi6ql1TBBr+SR6fz+BauWV2DEPxlaV+HvvNguELS1x891VKNtD4vD8
- J2DjhQQmMEq0tThMYFSYheSbWUi+mYWweQEj8ypGqdSC4tz01GTTAkPdvNRyeCQn5+duYgQn
- Q62AHYyrN/zVO8TIxMF4iFGCg1lJhHfek/MpQrwpiZVVqUX58UWlOanFhxhNgeE9kVlKNDkf
- mI7zSuINTSwNTMzMzEwsjc0MlcR5X7fOTRESSE8sSc1OTS1ILYLpY+LglGpgWvVfQKEiyNTK
- ZWZxyrYVxqs3yJgGnGtZfKXW+LyD4sR94Wd3J1zn3rSpI9Pf95Llx0tyWz4I5fY9PG38J6ay
- bY3SxDfKCvwn/W9sa7dLkZyl8Kk8NHGeQtn5f39/HLJW5p3y/5u+7Z+LR9imepz6veae4v7s
- vskmq/wSNikErRb/9+v+4pDmeN8V34J+xJ9bFmiiezzQ3vXGi5P/Albc3OG389WClmx2XSXr
- oLKQTWuSrOS+3xAtZrnxLWyNwvGvry41nWL+sDGrsXk1//bo/Cl9AZW7soPyT0+b0+h321Dv
- yrz0CtngXsbG2Uqa2x57sZk3J3SV+/sf2Oj86aV/woHe3KSbCq+Ez2xY8N9aTomlOCPRUIu5
- qDgRAGvPkCEPBAAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrLLMWRmVeSWpSXmKPExsWy7bCSvC6r+MUUg723RCzWXPnNbrH/4DdW
- i0mHrjFaHO/dweLA4nFux3l2j02rOtk8nlzbzOTRt2UVYwBLFJdNSmpOZllqkb5dAlfGzelX
- mAuuc1Q0r3nN1sC4n62LkYNDQsBEYusZuS5GLg4hge2MEufvfoCKS0ssXJ/YxcgJZApLrPz3
- nB2ipp1J4uPJHcwgCTYBbYlXb28wg9SLCGhJnOyvBAkzCzhJ7LjVyg5iCwuYSkw4u4AJxGYR
- UJVYcuEmWJxXwEbi3esfTBDz5SVmXvoOFucUsJV4/GwxmC0EVLPmw3kmiHpBiZMzn7BAzJeX
- aN46m3kCo8AsJKlZSFILGJlWMYqmFhTnpucmFxjqFSfmFpfmpesl5+duYgSHqFbQDsZl6//q
- HWJk4mA8xCjBwawkwjvvyfkUId6UxMqq1KL8+KLSnNTiQ4zSHCxK4rzKOZ0pQgLpiSWp2amp
- BalFMFkmDk6pBqYEyWytyKhpwpciuVjv6a78f+wts1/Kh10348y/Jq/VdZ+fuupKiJo92+4z
- 29vPHl/xLtr46Afdolvfz3Eu+910+kHEQ70DLWcTDS9qlT9eLs3kVPrrzMJdq/e8FHeIuKw0
- 4V8Jm7OjVhZXpHLAcqM9LXabt23a3GHavzFvt7fjvgMnFnn9duJQWbzv1Supc2eWvwtzfMhg
- 0M1gP+3X2utKa3tXCik6vhP1K/72JJfN4q1I6Sc36bhJPXkf9jqnvb3ydgJjjldHlHPAkdIZ
- 1T3nPOSXpqx60K76JaumhT/o97ae52XJF86cmNJ5+1xjma62V735xrvNbl+0XgTLzTvx72uR
- b++s64xXp++ec+uuEktxRqKhFnNRcSIAMT4kYMACAAA=
-X-CMS-MailID: 20230807160837epcas5p3b360bae29265c0851f13491952b40f38
+ Chn5xSW2SqkFKTkFJgV6xYm5xaV56Xp5qSVWhgYGRqZAhQnZGeuPrmQs2MRZMfH9C9YGxjns
+ XYycHBICJhJvZu5m7mLk4hAS2M0o8arvBROE84lR4szV2VDON0aJ/p0v2GBaTq/5B5XYyyix
+ +PRXNgink0ni4v0XLCBVbALaEq/e3mAGsUUENCRmHTgH1s0s4CDx68xtJhBbWMBTom3ZNjCb
+ RUBV4uq0T6wgNq+AjcScB/ugtslLzLz0HexYTgFbicfPFrND1AhKnJz5hAViprxE89bZYE9I
+ CJxil7i76g1Us4vEp8W9UJ8KS7w6vgXKlpL4/G4vVE22xKaHP5kg7AKJIy96mSFse4nWU/1A
+ NgfQAk2J9bv0IcKyElNPrWOC2Msn0fv7CVQrr8SOeTC2qsTfe7dZIGxpiZvvrrKAjJEQ8JB4
+ sB1supDABEaJN7vUJzAqzELyzSwk38xCWLyAkXkVo2RqQXFuemqyaYFhXmo5PJKT83M3MYKT
+ oZbLDsYb8//pHWJk4mA8xCjBwawkwjvvyfkUId6UxMqq1KL8+KLSnNTiQ4ymwOCeyCwlmpwP
+ TMd5JfGGJpYGJmZmZiaWxmaGSuK8r1vnpggJpCeWpGanphakFsH0MXFwSjUwud9e0O5tXXy2
+ P8mxX+rwK6fNx05zCtVtf9vRNTssas6m+ZssrFeuvX63KrlupcUEK6U/IqbrRW+8juFWS/p0
+ PO9Dk6vDFaN3m05k3Jyyuu6zhq6y284udtnF8ZsPC1gGPpxZe2LVKoml1+VzD+1NK47jMeHg
+ nHL8WeauG3vMosWCdkxYUfvhsuuL+292B5ce+9i24v5UkxcLxdSnbbv+0fx0xQ6x90aVsV2P
+ MxT37xXRD7gkI/I1kCE7e9U501vPq4zOrnx3xcCyc+mKtM0TH3XO2d145sv5nweyvueanJ0k
+ fYDdv+PsQcceu6neX7pnvnMzeOD3zMtjxquezOTJjuZ6e7Zd5ZapO+V/0W6BVKcSS3FGoqEW
+ c1FxIgAMvnZ8DwQAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrILMWRmVeSWpSXmKPExsWy7bCSvC6b+MUUg+6lfBZrrvxmt9h/8Bur
+ xaRD1xgtjvfuYHFg8Ti34zy7x6ZVnWweT65tZvLo27KKMYAlissmJTUnsyy1SN8ugStj/dGV
+ jAWbOCsmvn/B2sA4h72LkZNDQsBE4vSaf0wgtpDAbkaJj7ukuxg5gOLSEgvXJ0KUCEus/Pcc
+ qJwLqKSdSWLx20tgvWwC2hKv3t5gBqkXEdCSONlfCRJmFnCS2HGrFaxEWMBTom3ZNrDxLAKq
+ ElenfWIFsXkFbCTmPNjHBjFfXmLmpe9g9ZwCthKPny1mhzjHRmLNh/NMEPWCEidnPmGBmC8v
+ 0bx1NvMERoFZSFKzkKQWMDKtYpRMLSjOTc9NNiwwzEst1ytOzC0uzUvXS87P3cQIDlUtjR2M
+ 9+b/0zvEyMTBeIhRgoNZSYR33pPzKUK8KYmVValF+fFFpTmpxYcYpTlYlMR5DWfMThESSE8s
+ Sc1OTS1ILYLJMnFwSjUw3fwbsut6nBbjk8k7A9g55aNSXI7u/lw5s8It+9qCQ7NZy+6rXM77
+ Gsb6b2t7l3D6wWaVOWvMApbUJvjWzBQu3htnvCH67Vu/tYe1Xm16K2d3USjv0HOlA5/smtTd
+ 9hu21hUciar7Eer3dsF6m9fFVs9ZhXUeZyza/bvTV3Njanjlh+23zkREfUo4J87yPz9B4v7T
+ k0dWubBzXYy2Upz9Y21/iHb9Wo4Zf7yPLvr84Eua4gHTcEGWT3X8conH88/FXz41TWnO7M8q
+ zLWeBy8pTPy2OmzbLu1N2zZLmJQGTWVz8fw866nVRfb1pgZ/VI4u/ZGyuZ1PTUFv0jZG56xp
+ J/0TlX9NldHfYRy98dIdXiWW4oxEQy3mouJEAPjmQtjEAgAA
+X-CMS-MailID: 20230807160838epcas5p389c82acd77fd8c74fc7f83300b9d0aa9
 X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
 X-Sendblock-Type: REQ_APPROVE
 CMS-TYPE: 105P
 DLP-Filter: Pass
 X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20230807160837epcas5p3b360bae29265c0851f13491952b40f38
+X-CMS-RootMailID: 20230807160838epcas5p389c82acd77fd8c74fc7f83300b9d0aa9
 References: <20230807212745.70151-1-ankit.kumar@samsung.com>
- <CGME20230807160837epcas5p3b360bae29265c0851f13491952b40f38@epcas5p3.samsung.com>
+ <CGME20230807160838epcas5p389c82acd77fd8c74fc7f83300b9d0aa9@epcas5p3.samsung.com>
 Received-SPF: pass client-ip=203.254.224.25;
  envelope-from=ankit.kumar@samsung.com; helo=mailout2.samsung.com
 X-Spam_score_int: -27
@@ -134,36 +134,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The nvme CRC64 generator expects the caller to pass inverted seed value.
-Pass inverted crc value for metadata buffer.
+As per the NVM command set specification, the protection information
+checks for Type 3 protection are disabled, only when both application
+and reference tag have all bits set to 1.
 
 Signed-off-by: Ankit Kumar <ankit.kumar@samsung.com>
 ---
- hw/nvme/dif.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ hw/nvme/dif.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/hw/nvme/dif.c b/hw/nvme/dif.c
-index 63c44c86ab..01b19c3373 100644
+index 01b19c3373..f9bd29a2a6 100644
 --- a/hw/nvme/dif.c
 +++ b/hw/nvme/dif.c
-@@ -115,7 +115,7 @@ static void nvme_dif_pract_generate_dif_crc64(NvmeNamespace *ns, uint8_t *buf,
-         uint64_t crc = crc64_nvme(~0ULL, buf, ns->lbasz);
- 
-         if (pil) {
--            crc = crc64_nvme(crc, mbuf, pil);
-+            crc = crc64_nvme(~crc, mbuf, pil);
+@@ -157,7 +157,8 @@ static uint16_t nvme_dif_prchk_crc16(NvmeNamespace *ns, NvmeDifTuple *dif,
+ {
+     switch (NVME_ID_NS_DPS_TYPE(ns->id_ns.dps)) {
+     case NVME_ID_NS_DPS_TYPE_3:
+-        if (be32_to_cpu(dif->g16.reftag) != 0xffffffff) {
++        if ((be32_to_cpu(dif->g16.reftag) != 0xffffffff) ||
++            (be16_to_cpu(dif->g16.apptag) != 0xffff)) {
+             break;
          }
  
-         dif->g64.guard = cpu_to_be64(crc);
-@@ -246,7 +246,7 @@ static uint16_t nvme_dif_prchk_crc64(NvmeNamespace *ns, NvmeDifTuple *dif,
-         uint64_t crc = crc64_nvme(~0ULL, buf, ns->lbasz);
+@@ -225,7 +226,7 @@ static uint16_t nvme_dif_prchk_crc64(NvmeNamespace *ns, NvmeDifTuple *dif,
  
-         if (pil) {
--            crc = crc64_nvme(crc, mbuf, pil);
-+            crc = crc64_nvme(~crc, mbuf, pil);
+     switch (NVME_ID_NS_DPS_TYPE(ns->id_ns.dps)) {
+     case NVME_ID_NS_DPS_TYPE_3:
+-        if (r != 0xffffffffffff) {
++        if (r != 0xffffffffffff || (be16_to_cpu(dif->g64.apptag) != 0xffff)) {
+             break;
          }
  
-         trace_pci_nvme_dif_prchk_guard_crc64(be64_to_cpu(dif->g64.guard), crc);
 -- 
 2.25.1
 
