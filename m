@@ -2,76 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64B8177275C
+	by mail.lfdr.de (Postfix) with ESMTPS id 3328D77275B
 	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 16:16:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qT116-00008O-JB; Mon, 07 Aug 2023 10:15:29 -0400
+	id 1qT110-000076-IW; Mon, 07 Aug 2023 10:15:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qT10z-00006x-No
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 10:15:21 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ id 1qT10y-00005U-6v
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 10:15:20 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qT10w-0005Qo-Te
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 10:15:21 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-3fe32016bc8so38565715e9.1
+ id 1qT10w-0005RC-Gj
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 10:15:19 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-3fe4cdb724cso25946915e9.1
  for <qemu-devel@nongnu.org>; Mon, 07 Aug 2023 07:15:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691417716; x=1692022516;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=f9tizgWmwswfKOu+cgNjVcEdMF1Xn+daiPSP9q+Z8ZE=;
- b=p9rcZRTBeieaHL+BJsJLO7dahJwcjjghxx6q18PYSKE9AWGmhdet5aTsarn5db5Gn5
- ItAGExS8FZqz6ufTxCl29CwoOcYJbKwHg3gilZtU5KgvPRAV9sfrgfQOgCh6Ha7FwsGO
- +O9F62W5/yWGPrsHEJvVMNWDJbOBqs1nbUL6mzJa87SwQafbywCNEUruyxwb+u8b5+dn
- I8Qln5QzWRvUNnw1jm0G1P46F3ICtn5voZYjoX7klD1uTbof7HZyT4f2CHSKfuIXTvy6
- ARbCFBvB5LFM6MJKsU9IXp/Tkq1V65qr4Tp9RnvN/vrbm08bxRbRYO8I26GPtoG1ZGhy
- Jxig==
+ d=linaro.org; s=google; t=1691417717; x=1692022517;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=Bd+htH+P/WAjyuut/9qNXD2yHqngSJFvzj95KpMX1XE=;
+ b=b9GWWpqXYW/sxNzDU1E9+PZeNZADDu5zouObLzVPCQcoP4Q0517U1RCjfzutnvs5qo
+ QOILXRh/Df8QxzEgRWrkmlVetzFYs6EFCkAQ+hdWWyQpcf2qNj/zFsjPAdJ1W14ZeSQ6
+ sQYhmiemo+8aBhlWD+rAIYKQDGrsqzwUz46f22odvZJaQWMhG+VWDomJsPg+yja7LT0L
+ b+DJdEC59q+8Ks5JWNndKupjs3gfKcd3UuvsZQBQ0d4qp1x1vGLJjUcR8brGoLAkwkjB
+ 0vI+MglgY1QbNuGlWzjqYJbB/diNdsDMNufycfaqt/jfOwOW7nnLmcUCi6DL0PLW3CoJ
+ RHpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691417716; x=1692022516;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=f9tizgWmwswfKOu+cgNjVcEdMF1Xn+daiPSP9q+Z8ZE=;
- b=ZawZvG42BRVIRbNtggRyqQOQfV0953ZAOoLOUNJLAzoF2FyV+TGW4A8l5rk10JOuWv
- mBOhbSVrY5AIPBpegKiJz+v2VQiv7mbJJSfuJPtCaZhBgTjjoDQJ1oLcd3E+UVk33M0f
- oi+kHQSEo3g2F6VaIQr97MeybXA+zdGZEGV05GHX94Z0PXI6Vm1qVow0y7JqQ/8a/YYY
- W2a/NQWRU36r7X2QDqJkBe1qbrZmxt/lBh2NcxcmfJFeXmR4mMRN600nG6bwAmL4pGAe
- dO0r/oL4DKMV7tb4wxH7Dlb7TV3UxmnUNPSiFhblNCm43xFI1KycQbRgZVRA7+28Mvvf
- Y4Xw==
-X-Gm-Message-State: AOJu0YznzUiNkYt+1pineS6v2vSTPWiM7W5RkCv9t0IetoWAgf/CocsH
- MFPCpSABs7blFDkXNseAxgU1wyocX5lwMiSvD0Q=
-X-Google-Smtp-Source: AGHT+IFTo4j0XqGjM40BkhEmsBX5ERltHno8ZAOuh3ppTA20nI2/Jb60L6Pa9fe/SE8xFp9+2JADug==
-X-Received: by 2002:a05:600c:2193:b0:3fb:f926:4937 with SMTP id
- e19-20020a05600c219300b003fbf9264937mr5737546wme.31.1691417716489; 
- Mon, 07 Aug 2023 07:15:16 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1691417717; x=1692022517;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Bd+htH+P/WAjyuut/9qNXD2yHqngSJFvzj95KpMX1XE=;
+ b=DMOR69zuhhXf034eKLvmPxkmHwXNyU5If0OT8DQntGvJAOr6gPXj+LEXwzxf//6IO7
+ CBr2ylfdAxeIkx4Nqk6funMMJ3EjZSiz3wdHpy1t++faWgpES/FZOq13NcWJfut6IHYf
+ WA6QlkxSPE3xpxZ5DWPDwXVdy/mpmcSe4dH+2N8c5igjRlZhdC0c3aISDJ0T02sMRw1Q
+ DIGmtIVuo8iOUQan8hNzpkkQaTspIEKXdyRJja5Z+y+0fn9lnBXmGkRnS05zcZEo/aA2
+ s2foEwxNJLBAxfzefAGNpdcxywpRzWweCJ9D99hpOpPO9Ag+3gcZ2z3beAf2nb9b40E3
+ RKDA==
+X-Gm-Message-State: AOJu0YwKyycrjdPj3ODuWhKr8ITcAk4//kSdP/UjxD8dbtsuP03XQCcq
+ eNtZ9KGLR2k4hvNgdQo923sJphhZytOdif8oYYc=
+X-Google-Smtp-Source: AGHT+IHonYggG74sTbz1Se8sctQqU0LTlogRZdxSQx3M99zyTWvdbuoCaH+/eJ6b5hZXQU8wSlmb/g==
+X-Received: by 2002:a7b:c846:0:b0:3fe:20ef:1d32 with SMTP id
+ c6-20020a7bc846000000b003fe20ef1d32mr7428318wml.10.1691417717000; 
+ Mon, 07 Aug 2023 07:15:17 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- h20-20020a05600c261400b003fe2ebf479fsm10835617wma.36.2023.08.07.07.15.15
+ h20-20020a05600c261400b003fe2ebf479fsm10835617wma.36.2023.08.07.07.15.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 07 Aug 2023 07:15:15 -0700 (PDT)
+ Mon, 07 Aug 2023 07:15:16 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Subject: [PATCH v2 00/15] target/arm/ptw: Cleanups and a few bugfixes
-Date: Mon,  7 Aug 2023 15:14:59 +0100
-Message-Id: <20230807141514.19075-1-peter.maydell@linaro.org>
+Subject: [PATCH v2 01/15] target/arm/ptw: Don't set fi->s1ptw for
+ UnsuppAtomicUpdate fault
+Date: Mon,  7 Aug 2023 15:15:00 +0100
+Message-Id: <20230807141514.19075-2-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230807141514.19075-1-peter.maydell@linaro.org>
+References: <20230807141514.19075-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,60 +91,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-While I was fixing a ptw bug recently, I noticed that we had a
-somewhat confusing mix of ptw->in_space and ptw->in_secure, where in
-theory the two are supposed to be in sync and you can figure out the
-in_secure state from the in_space.  This patch series' principal aim
-is to clean that up by removing the in_secure and out_secure fields
-in the S1Translate struct.
+For an Unsupported Atomic Update fault where the stage 1 translation
+table descriptor update can't be done because it's to an unsupported
+memory type, this is a stage 1 abort (per the Arm ARM R_VSXXT).  This
+means we should not set fi->s1ptw, because this will cause the code
+in the get_phys_addr_lpae() error-exit path to mark it as stage 2.
 
-The first three patches are fixes for (minor) bugs I noticed
-while I was trying to do this refactoring because they're
-in or around places that were using in_secure.
-The next four are basically plumbing: passing ARMSecurityState
-arguments instead of boolean is_secure arguments.
-The next four patches then can get rid of uses of the
-in_secure and out_secure fields and drop them entirely.
-Finally, the last four patches are minor bug fixes for
-various corner cases that I noticed while I was testing this.
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ target/arm/ptw.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-Changes v1->v2:
- * in patch 6, avoid calling arm_hcr_el2_eff_secstate()
-   with ARMSS_Root, rather than making it return 0
- * new patch 7 ("Pass an ARMSecuritySpace to
-   arm_is_el2_enabled_secstate()")
-
-Only patches 6 and 7 still need review.
-
-thanks
--- PMM
-
-Peter Maydell (15):
-  target/arm/ptw: Don't set fi->s1ptw for UnsuppAtomicUpdate fault
-  target/arm/ptw: Don't report GPC faults on stage 1 ptw as stage2
-    faults
-  target/arm/ptw: Set s1ns bit in fault info more consistently
-  target/arm/ptw: Pass ptw into get_phys_addr_pmsa*() and
-    get_phys_addr_disabled()
-  target/arm/ptw: Pass ARMSecurityState to regime_translation_disabled()
-  target/arm/ptw: Pass an ARMSecuritySpace to arm_hcr_el2_eff_secstate()
-  target/arm: Pass an ARMSecuritySpace to arm_is_el2_enabled_secstate()
-  target/arm/ptw: Only fold in NSTable bit effects in Secure state
-  target/arm/ptw: Remove last uses of ptw->in_secure
-  target/arm/ptw: Remove S1Translate::in_secure
-  target/arm/ptw: Drop S1Translate::out_secure
-  target/arm/ptw: Set attributes correctly for MMU disabled data
-    accesses
-  target/arm/ptw: Check for block descriptors at invalid levels
-  target/arm/ptw: Report stage 2 fault level for stage 2 faults on stage
-    1 ptw
-  target/arm: Adjust PAR_EL1.SH for Device and Normal-NC memory types
-
- target/arm/cpu.h    |  15 ++--
- target/arm/helper.c |  23 +++++-
- target/arm/ptw.c    | 192 +++++++++++++++++++++++++++-----------------
- 3 files changed, 146 insertions(+), 84 deletions(-)
-
+diff --git a/target/arm/ptw.c b/target/arm/ptw.c
+index 8f94100c61f..bafeb876ad7 100644
+--- a/target/arm/ptw.c
++++ b/target/arm/ptw.c
+@@ -701,7 +701,6 @@ static uint64_t arm_casq_ptw(CPUARMState *env, uint64_t old_val,
+ 
+     if (unlikely(!host)) {
+         fi->type = ARMFault_UnsuppAtomicUpdate;
+-        fi->s1ptw = true;
+         return 0;
+     }
+ 
 -- 
 2.34.1
 
