@@ -2,77 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD061772B0B
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 18:35:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDC2A772B13
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 18:36:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qT3Bx-0004ix-NF; Mon, 07 Aug 2023 12:34:49 -0400
+	id 1qT3DL-0005Xg-O3; Mon, 07 Aug 2023 12:36:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <atishp@atishpatra.org>)
- id 1qT3Bu-0004i8-9s
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 12:34:46 -0400
-Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <atishp@atishpatra.org>)
- id 1qT3Bs-00020x-Hi
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 12:34:46 -0400
-Received: by mail-lj1-x234.google.com with SMTP id
- 38308e7fff4ca-2b9e6cc93d8so75535791fa.0
- for <qemu-devel@nongnu.org>; Mon, 07 Aug 2023 09:34:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=atishpatra.org; s=google; t=1691426082; x=1692030882;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=XHxvjnBSRxLQr68jdsdbnmVlyaK76zQk0tdd09tcceM=;
- b=kvnx8gXVTxu+tgPq+HmnQZcFh/kZCUoPqwvhrdZu+fgxx9zXUKS6ZKQT+InQ+I44qQ
- q389rVe7ulvQC7qSBBMNUOvEb6wTzTAJGxA7zG3LciDFcLtgUriqb/XpYCwjy0U6zwX7
- NoxSbRt+eJcwA1Yvd81iEiIDHMv8KTU42aYqg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691426082; x=1692030882;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=XHxvjnBSRxLQr68jdsdbnmVlyaK76zQk0tdd09tcceM=;
- b=K310THCTd1z9Jgckg6rhRHWdqYPM69SfD2TqudcKvjreBcRppHk4EaYi/rXCDirN9K
- Pq+peP1D67K+yHwU/8QwKLWam24WiIl9BxOnQuCzsvQYZxIhhwrGqxDRJmMME4Nanbu7
- ZiHbGoZwRBgqwrw+w/l6Bsw/UtYb2mjRyYBa63tGJiGDaBkHZbfVgTOx278jcy/Bo5FN
- 8ewCF30QHZT8pomwJ6DZlLi0LgOTcd7xjH1zv+2RVr6ybMqEhC24JdsuZXdhjNZOLutl
- x5dyH28/qgsDvsESzVTPvEWUuuWfZzdvI0E1HAMPP28nQaHCgNIkrMfrSg2F/Iqh+t1e
- PCwg==
-X-Gm-Message-State: AOJu0YzQ24RC6qOKaYmAtmtPoUX6TS9+h+0WU3/jolVsLRNiDXoFjnT1
- xB0VcZXLg8Il9R8xtdzPGTrjGU9WVuEW3KjcEoJQ
-X-Google-Smtp-Source: AGHT+IG47KrvJKbopwyIeA/dLPn5F6IYNA/uFCicSCJmT/DGOHGR+z7CTBq67Zz3PLrbdR23khOYn7ZEYz8Lr3ey+Lc=
-X-Received: by 2002:a2e:9bc3:0:b0:2b9:ba02:436c with SMTP id
- w3-20020a2e9bc3000000b002b9ba02436cmr6282035ljj.28.1691426082025; Mon, 07 Aug
- 2023 09:34:42 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1qT3D9-0005WB-0b; Mon, 07 Aug 2023 12:36:03 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1qT3D7-0002O6-7p; Mon, 07 Aug 2023 12:36:02 -0400
+Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 377GV2OI009644; Mon, 7 Aug 2023 16:35:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=+xYybXbIKfS9RFeeE0c9zMZUlSCmlaTZRkFBOABZcNI=;
+ b=D7Frau4HtUCnSUHmeupbDKfmDAQVvXkp/7nly4C5NuvqhtDzklXWgGx48h6x3d6meFxS
+ +TpVpcLe7+B8QzQEuwqfCYq+ubIR4p/1X7eS00AyM3d28xLvSALAlJI5pnu0efy5VhYM
+ lOZVAT8oXXTvIk3MRVxmNQbVt9s2aPD7P2ErKFNYDLsn2WgoV3DNGgJZduMj4fXZx+wT
+ 6/UtAgRqniniB7rbsLtDgnR5++dNmgBpTgZzAZEll24apbXWutOyZ7Vh9UPLBKeyjZkw
+ HZV4CGwf0wjN6p7dCd+oUfCZ9meh/lQhtcmxzeUskrIb8ayF4NcejlK8xwnMDqcrjgFo UA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sb46x0414-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 07 Aug 2023 16:35:55 +0000
+Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 377GV1Dk009137;
+ Mon, 7 Aug 2023 16:35:54 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sb46x040p-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 07 Aug 2023 16:35:54 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 377FlZOg015405; Mon, 7 Aug 2023 16:35:53 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3sb3f2gaca-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 07 Aug 2023 16:35:53 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
+ [10.20.54.106])
+ by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 377GZqMV27722328
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 7 Aug 2023 16:35:52 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0F1D920043;
+ Mon,  7 Aug 2023 16:35:52 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8DACB20040;
+ Mon,  7 Aug 2023 16:35:51 +0000 (GMT)
+Received: from heavy.boeblingen.de.ibm.com (unknown [9.179.26.52])
+ by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Mon,  7 Aug 2023 16:35:51 +0000 (GMT)
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Richard Henderson <richard.henderson@linaro.org>,
+ David Hildenbrand <david@redhat.com>, Thomas Huth <thuth@redhat.com>
+Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org,
+ Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PATCH 2/2] tests/tcg/s390x: Test VREP
+Date: Mon,  7 Aug 2023 18:34:32 +0200
+Message-ID: <20230807163459.849766-2-iii@linux.ibm.com>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230807163459.849766-1-iii@linux.ibm.com>
+References: <20230807163459.849766-1-iii@linux.ibm.com>
 MIME-Version: 1.0
-References: <20230802124906.24197-1-rbradford@rivosinc.com>
-In-Reply-To: <20230802124906.24197-1-rbradford@rivosinc.com>
-From: Atish Patra <atishp@atishpatra.org>
-Date: Mon, 7 Aug 2023 09:34:31 -0700
-Message-ID: <CAOnJCUKeOQgajDX06SYsZmiFiHLhrEQ73CAfGXoRe5szeBtO2A@mail.gmail.com>
-Subject: Re: [PATCH] target/riscv: Implement WARL behaviour for
- mcountinhibit/mcounteren
-To: Rob Bradford <rbradford@rivosinc.com>
-Cc: qemu-devel@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>, 
- Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bin.meng@windriver.com>,
- Weiwei Li <liweiwei@iscas.ac.cn>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
- "open list:RISC-V TCG CPUs" <qemu-riscv@nongnu.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::234;
- envelope-from=atishp@atishpatra.org; helo=mail-lj1-x234.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: KHzGFRgn7qdaL4kiCwQAvnHExSnj4Bp_
+X-Proofpoint-GUID: vlYLLxygZ6RYqWIBE89l9lfEVIkSHfNc
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-08-07_17,2023-08-03_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 impostorscore=0
+ suspectscore=0 malwarescore=0 lowpriorityscore=0 bulkscore=0 mlxscore=0
+ clxscore=1015 priorityscore=1501 spamscore=0 adultscore=0 mlxlogscore=969
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2306200000
+ definitions=main-2308070153
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -89,66 +112,115 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 2, 2023 at 5:50=E2=80=AFAM Rob Bradford <rbradford@rivosinc.com=
-> wrote:
->
-> These are WARL fields - zero out the bits for unavailable counters and
-> special case the TM bit in mcountinhibit which is hardwired to zero.
-> This patch achieves this by modifying the value written so that any use
-> of the field will see the correctly masked bits.
->
-> Tested by modifying OpenSBI to write max value to these CSRs and upon
-> subsequent read the appropriate number of bits for number of PMUs is
-> enabled and the TM bit is zero in mcountinhibit.
->
-> Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
-> ---
->  target/riscv/csr.c | 11 +++++++++--
->  1 file changed, 9 insertions(+), 2 deletions(-)
->
-> diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-> index ea7585329e..495ff6a9c2 100644
-> --- a/target/riscv/csr.c
-> +++ b/target/riscv/csr.c
-> @@ -1834,8 +1834,11 @@ static RISCVException write_mcountinhibit(CPURISCV=
-State *env, int csrno,
->  {
->      int cidx;
->      PMUCTRState *counter;
-> +    RISCVCPU *cpu =3D env_archcpu(env);
->
-> -    env->mcountinhibit =3D val;
-> +    /* WARL register - disable unavailable counters; TM bit is always 0 =
-*/
-> +    env->mcountinhibit =3D
-> +        val & (cpu->pmu_avail_ctrs | COUNTEREN_CY | COUNTEREN_IR);
->
->      /* Check if any other counter is also monitoring cycles/instructions=
- */
->      for (cidx =3D 0; cidx < RV_MAX_MHPMCOUNTERS; cidx++) {
-> @@ -1858,7 +1861,11 @@ static RISCVException read_mcounteren(CPURISCVStat=
-e *env, int csrno,
->  static RISCVException write_mcounteren(CPURISCVState *env, int csrno,
->                                         target_ulong val)
->  {
-> -    env->mcounteren =3D val;
-> +    RISCVCPU *cpu =3D env_archcpu(env);
-> +
-> +    /* WARL register - disable unavailable counters */
-> +    env->mcounteren =3D val & (cpu->pmu_avail_ctrs | COUNTEREN_CY | COUN=
-TEREN_TM |
-> +                             COUNTEREN_IR);
->      return RISCV_EXCP_NONE;
->  }
->
-> --
-> 2.41.0
->
->
+Add a small test to prevent regressions.
 
-LGTM.
-Reviewed-by: Atish Patra <atishp@rivosinc.com>
---=20
-Regards,
-Atish
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+---
+ tests/tcg/s390x/Makefile.target |  1 +
+ tests/tcg/s390x/vrep.c          | 81 +++++++++++++++++++++++++++++++++
+ 2 files changed, 82 insertions(+)
+ create mode 100644 tests/tcg/s390x/vrep.c
+
+diff --git a/tests/tcg/s390x/Makefile.target b/tests/tcg/s390x/Makefile.target
+index 1fc98099070..9548b6d4f51 100644
+--- a/tests/tcg/s390x/Makefile.target
++++ b/tests/tcg/s390x/Makefile.target
+@@ -59,6 +59,7 @@ Z13_TESTS=vistr
+ Z13_TESTS+=lcbb
+ Z13_TESTS+=locfhr
+ Z13_TESTS+=vcksm
++Z13_TESTS+=vrep
+ $(Z13_TESTS): CFLAGS+=-march=z13 -O2
+ TESTS+=$(Z13_TESTS)
+ 
+diff --git a/tests/tcg/s390x/vrep.c b/tests/tcg/s390x/vrep.c
+new file mode 100644
+index 00000000000..d5a3bd8eb20
+--- /dev/null
++++ b/tests/tcg/s390x/vrep.c
+@@ -0,0 +1,81 @@
++/*
++ * Test the VREP instruction.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++#include <assert.h>
++#include <signal.h>
++#include <stdbool.h>
++#include <stdint.h>
++#include <stdlib.h>
++#include <string.h>
++#include <unistd.h>
++#include "vx.h"
++
++static void handle_sigill(int sig, siginfo_t *info, void *ucontext)
++{
++    mcontext_t *mcontext = &((ucontext_t *)ucontext)->uc_mcontext;
++    char *insn = (char *)info->si_addr;
++
++    if (insn[0] != 0xe7 || insn[5] != 0x4d) {
++        _exit(EXIT_FAILURE);
++    }
++
++    mcontext->gregs[2] = SIGILL;
++}
++
++static inline __attribute__((__always_inline__)) unsigned long
++vrep(S390Vector *v1, const S390Vector *v3, const uint16_t i2, const uint8_t m4)
++{
++    register unsigned long sig asm("r2") = -1;
++
++    asm("vrep %[v1],%[v3],%[i2],%[m4]\n"
++        : [v1] "=v" (v1->v)
++        , [sig] "+r" (sig)
++        : [v3] "v" (v3->v)
++        , [i2] "i" (i2)
++        , [m4] "i" (m4));
++
++    return sig;
++}
++
++int main(int argc, char *argv[])
++{
++    S390Vector v3 = {.d[0] = 1, .d[1] = 2};
++    struct sigaction act;
++    S390Vector v1;
++    int err;
++
++    memset(&act, 0, sizeof(act));
++    act.sa_sigaction = handle_sigill;
++    act.sa_flags = SA_SIGINFO;
++    err = sigaction(SIGILL, &act, NULL);
++    assert(err == 0);
++
++    assert(vrep(&v1, &v3, 7, 0) == -1);
++    assert(v1.d[0] == 0x0101010101010101ULL);
++    assert(v1.d[1] == 0x0101010101010101ULL);
++
++    assert(vrep(&v1, &v3, 7, 1) == -1);
++    assert(v1.d[0] == 0x0002000200020002ULL);
++    assert(v1.d[1] == 0x0002000200020002ULL);
++
++    assert(vrep(&v1, &v3, 1, 2) == -1);
++    assert(v1.d[0] == 0x0000000100000001ULL);
++    assert(v1.d[1] == 0x0000000100000001ULL);
++
++    assert(vrep(&v1, &v3, 1, 3) == -1);
++    assert(v1.d[0] == 2);
++    assert(v1.d[1] == 2);
++
++    assert(vrep(&v1, &v3, 0x10, 0) == SIGILL);
++    assert(vrep(&v1, &v3, 0x101, 0) == SIGILL);
++    assert(vrep(&v1, &v3, 0x8, 1) == SIGILL);
++    assert(vrep(&v1, &v3, 0x108, 1) == SIGILL);
++    assert(vrep(&v1, &v3, 0x4, 2) == SIGILL);
++    assert(vrep(&v1, &v3, 0x104, 2) == SIGILL);
++    assert(vrep(&v1, &v3, 0x2, 3) == SIGILL);
++    assert(vrep(&v1, &v3, 0x102, 3) == SIGILL);
++
++    return EXIT_SUCCESS;
++}
+-- 
+2.41.0
+
 
