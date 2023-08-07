@@ -2,95 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 580DE772BEF
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 19:02:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB456772BF7
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 19:03:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qT3b7-0005vT-AN; Mon, 07 Aug 2023 13:00:49 -0400
+	id 1qT3dA-00071n-Ku; Mon, 07 Aug 2023 13:02:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qT3aj-0005qv-5b
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 13:00:33 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1qT3d6-00070R-31; Mon, 07 Aug 2023 13:02:52 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qT3ag-0007Wx-IF
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 13:00:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691427620;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=akGQJgzYBANsmEik8dZNtmG/sAckthz12THGYMxuntQ=;
- b=KFnnM9p3MjUvuLTrsuQKHCa4jaaXspAk5DZRjFpWRAccvoj0tBx2gXd3Qm9qRG8DP6htk9
- I+vjTPa0Kk4P3yQkRGDX2cNTrmWVC+C51nm58KxgK9UzIlC15FXrQaPngqHZBwZBI3o6up
- NsTRCwviPysdd1wHu4EVFHbwqdxYYdg=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-689-jse0jpeVM4e0qDAi4GTaBw-1; Mon, 07 Aug 2023 13:00:17 -0400
-X-MC-Unique: jse0jpeVM4e0qDAi4GTaBw-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-3fe45e71db3so21751465e9.2
- for <qemu-devel@nongnu.org>; Mon, 07 Aug 2023 10:00:17 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691427616; x=1692032416;
- h=content-transfer-encoding:in-reply-to:organization:from:references
- :cc:to:content-language:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=akGQJgzYBANsmEik8dZNtmG/sAckthz12THGYMxuntQ=;
- b=HOQHG3rcIWJAxNmYu5TGYkFyhzTE2UjdqQiiKejvezXyb/701fuUYggKphpQmajC3i
- TKdpo2Ny/HZVC40PksOabMD38JQTkyWPo789pur6YWZmahwImS1rqXwXG1fE4m/ILra7
- /kYVv//HINj5WEiqxAd9HHWbBQKQ0KnoV1cVZyiwtlWyqL/Pak4fJlzRqPFJJT31k58E
- 0ReX2+0OrOTzLZCXZvsxcewtIqQhbVnWOGiL3PSls6N6tjwV7vYStTRyZ4uA4+1h/KTY
- gqf6rZ2iseWSQTDJf9TKc1qd30Z+aU8bnr5jdnZmtMxofiHhIIH6afpt7eitOgjv7l22
- ubxA==
-X-Gm-Message-State: AOJu0YxPkBVrThAhPWbM+wmKmD47yz+fQTfstnrI7cogmXWVWHNQd2Hh
- yAdwrmElvhZBzSnSJ8ikHLG1UnErqOKegAMjtkacelpA78l0ciRfxwZXSUdzpmjNWCjP8nKCe1m
- tnvz6cVWeQ1Eq2eo=
-X-Received: by 2002:a1c:f715:0:b0:3fe:196f:b5f5 with SMTP id
- v21-20020a1cf715000000b003fe196fb5f5mr7838742wmh.16.1691427616603; 
- Mon, 07 Aug 2023 10:00:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF+Z0B5fcQdZ5h4JdGndvmn5Mf54inI+5wxiipbQjx8OqTYEB6PzqTGtSP9eIpQfzc3GTe9dA==
-X-Received: by 2002:a1c:f715:0:b0:3fe:196f:b5f5 with SMTP id
- v21-20020a1cf715000000b003fe196fb5f5mr7838728wmh.16.1691427616236; 
- Mon, 07 Aug 2023 10:00:16 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c740:5d00:5143:1cd2:a300:ceff?
- (p200300cbc7405d0051431cd2a300ceff.dip0.t-ipconnect.de.
- [2003:cb:c740:5d00:5143:1cd2:a300:ceff])
- by smtp.gmail.com with ESMTPSA id
- b13-20020a05600c11cd00b003fba6709c68sm11233113wmi.47.2023.08.07.10.00.15
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 07 Aug 2023 10:00:15 -0700 (PDT)
-Message-ID: <baa436ac-ffe4-8c7d-6eee-af9c26fe3c0f@redhat.com>
-Date: Mon, 7 Aug 2023 19:00:14 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1qT3d2-0007s0-Jy; Mon, 07 Aug 2023 13:02:51 -0400
+Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 377H0esa022501; Mon, 7 Aug 2023 17:02:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=JSLfH1vQo+/IlC6Tg+PVYn3VvTmxR1DA+MDUaivgYRs=;
+ b=Dz5omgJ+eZP+C5q8ow/jDJgfaNHQvq8g9g6mm4mZWqUTEYw/hh0u9Y929ZwYuoeZUOJo
+ czFG5k+Xv0rtXXxwuzztRC5ZnvjXUvxV+nCZ6K4qjhxfth81PMs1h5rGtSeGNsbXjDjc
+ rx8ukKZ+T9PeK5K7Ilc6TNl+iJ/5lfn3DIJrHzjbd2jW4FucfKRy1dMqd6+KkaPMWGVm
+ EmYi4yWEWeESF1ieSRG3XX5Ak/0QkQczeZndxWIKWa2NzKgztoCZcZFd3Lxe3fMIIl3k
+ q1sP56pHib2mIDLSzyAdIRtrWq9nLBWjzYl/90sFLIa2st75QYMGJgKyHdEnFmBGBTEl Lw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sb4mq817n-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 07 Aug 2023 17:02:45 +0000
+Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 377H2iGD029243;
+ Mon, 7 Aug 2023 17:02:44 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sb4mq817a-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 07 Aug 2023 17:02:44 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 377FlZIk015377; Mon, 7 Aug 2023 17:02:44 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3sb3f2ggs4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 07 Aug 2023 17:02:44 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
+ [10.20.54.103])
+ by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 377H2gQJ18219610
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 7 Aug 2023 17:02:42 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 455F22004D;
+ Mon,  7 Aug 2023 17:02:42 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D676020043;
+ Mon,  7 Aug 2023 17:02:41 +0000 (GMT)
+Received: from [9.179.26.52] (unknown [9.179.26.52])
+ by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Mon,  7 Aug 2023 17:02:41 +0000 (GMT)
+Message-ID: <558af8b33fa9164b0a5a21f61aa583a3776784f7.camel@linux.ibm.com>
 Subject: Re: [PATCH 1/2] target/s390x: Use a 16-bit immediate in VREP
-Content-Language: en-US
-To: Ilya Leoshkevich <iii@linux.ibm.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Thomas Huth <thuth@redhat.com>
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: David Hildenbrand <david@redhat.com>, Richard Henderson
+ <richard.henderson@linaro.org>, Thomas Huth <thuth@redhat.com>
 Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org, qemu-stable@nongnu.org
+Date: Mon, 07 Aug 2023 19:02:41 +0200
+In-Reply-To: <baa436ac-ffe4-8c7d-6eee-af9c26fe3c0f@redhat.com>
 References: <20230807163459.849766-1-iii@linux.ibm.com>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-In-Reply-To: <20230807163459.849766-1-iii@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -38
-X-Spam_score: -3.9
-X-Spam_bar: ---
-X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.809, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ <baa436ac-ffe4-8c7d-6eee-af9c26fe3c0f@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+MIME-Version: 1.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: wvPJ3mlJQXKBDAIqIFA8unNpEMUCAx8x
+X-Proofpoint-GUID: YnEEmFB6megM3782kzxMvr1ys9TrIXOj
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-08-07_17,2023-08-03_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 bulkscore=0
+ phishscore=0 lowpriorityscore=0 adultscore=0 mlxscore=0 spamscore=0
+ mlxlogscore=932 impostorscore=0 clxscore=1015 malwarescore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2308070153
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
  RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,54 +113,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 07.08.23 18:34, Ilya Leoshkevich wrote:
-> Unlike most other instructions that contain an immediate element index,
-> VREP's one is 16-bit, and not 4-bit. The code uses only 8 bits, so
-> using, e.g., 0x101 does not lead to a specification exception.
-> 
-> Fix by checking all 16 bits.
-> 
-> Cc: qemu-stable@nongnu.org
+On Mon, 2023-08-07 at 19:00 +0200, David Hildenbrand wrote:
+> On 07.08.23 18:34, Ilya Leoshkevich wrote:
+> > Unlike most other instructions that contain an immediate element
+> > index,
+> > VREP's one is 16-bit, and not 4-bit. The code uses only 8 bits, so
+> > using, e.g., 0x101 does not lead to a specification exception.
+> >=20
+> > Fix by checking all 16 bits.
+> >=20
+> > Cc: qemu-stable@nongnu.org
+>=20
+> Just curious, why stable? Are there valid programs that set invalid=20
+> element size and they are fixed by this?
 
-Just curious, why stable? Are there valid programs that set invalid 
-element size and they are fixed by this?
+None that I know of, but I thought this was still nice to have, and at
+the same time small enough to not cause any trouble.
 
-LGTM
+> LGTM
+>=20
+> Reviewed-by: David Hildenbrand <david@redhat.com>
 
-Reviewed-by: David Hildenbrand <david@redhat.com>
-
-> Fixes: 28d08731b1d8 ("s390x/tcg: Implement VECTOR REPLICATE")
-> Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-> ---
->   target/s390x/tcg/translate_vx.c.inc | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/target/s390x/tcg/translate_vx.c.inc b/target/s390x/tcg/translate_vx.c.inc
-> index f8df121d3d3..a6d840d4065 100644
-> --- a/target/s390x/tcg/translate_vx.c.inc
-> +++ b/target/s390x/tcg/translate_vx.c.inc
-> @@ -57,7 +57,7 @@
->   #define FPF_LONG        3
->   #define FPF_EXT         4
->   
-> -static inline bool valid_vec_element(uint8_t enr, MemOp es)
-> +static inline bool valid_vec_element(uint16_t enr, MemOp es)
->   {
->       return !(enr & ~(NUM_VEC_ELEMENTS(es) - 1));
->   }
-> @@ -964,7 +964,7 @@ static DisasJumpType op_vpdi(DisasContext *s, DisasOps *o)
->   
->   static DisasJumpType op_vrep(DisasContext *s, DisasOps *o)
->   {
-> -    const uint8_t enr = get_field(s, i2);
-> +    const uint16_t enr = get_field(s, i2);
->       const uint8_t es = get_field(s, m4);
->   
->       if (es > ES_64 || !valid_vec_element(enr, es)) {
-
--- 
-Cheers,
-
-David / dhildenb
-
+[...]
+>=20
 
