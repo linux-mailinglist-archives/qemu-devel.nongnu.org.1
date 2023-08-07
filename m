@@ -2,120 +2,121 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 379977735C1
+	by mail.lfdr.de (Postfix) with ESMTPS id 245717735C0
 	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 03:10:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTBEC-0002Xd-ST; Mon, 07 Aug 2023 21:09:40 -0400
+	id 1qTBEB-0002WX-Ol; Mon, 07 Aug 2023 21:09:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ankit.kumar@samsung.com>)
- id 1qTB6U-0000O4-9I
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 21:01:42 -0400
-Received: from mailout2.samsung.com ([203.254.224.25])
+ id 1qTB6Y-0000QN-Dq
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 21:01:46 -0400
+Received: from mailout4.samsung.com ([203.254.224.34])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ankit.kumar@samsung.com>)
- id 1qTB6Q-0001ws-0L
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 21:01:42 -0400
-Received: from epcas5p2.samsung.com (unknown [182.195.41.40])
- by mailout2.samsung.com (KnoxPortal) with ESMTP id
- 20230808010135epoutp0213c6ede79ba4f89121f56660a40f4100~5QrhzveLU3068130681epoutp02b
- for <qemu-devel@nongnu.org>; Tue,  8 Aug 2023 01:01:35 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com
- 20230808010135epoutp0213c6ede79ba4f89121f56660a40f4100~5QrhzveLU3068130681epoutp02b
+ id 1qTB6W-0001xz-07
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 21:01:46 -0400
+Received: from epcas5p3.samsung.com (unknown [182.195.41.41])
+ by mailout4.samsung.com (KnoxPortal) with ESMTP id
+ 20230808010138epoutp04b102701b5f46f4c27409dc68a2aa35a4~5QrlfmRCB3267732677epoutp041
+ for <qemu-devel@nongnu.org>; Tue,  8 Aug 2023 01:01:38 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com
+ 20230808010138epoutp04b102701b5f46f4c27409dc68a2aa35a4~5QrlfmRCB3267732677epoutp041
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
- s=mail20170921; t=1691456495;
- bh=JpYPOlBvqpTKgpjgLJgqjbI43le9C/lfkvjpv5D8ND8=;
+ s=mail20170921; t=1691456499;
+ bh=yVBKiJxjdRz0DEN5wZFdEkAhJ/D9Yjy685K72Y/ZWX0=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=aUCNff0nTW0wrGBVujIDzdXY4F1p2TAOpoo6yOBOlzBqhjVN3bllSb/qUMFq7/sZO
- WFsQGPhuB8nbg5uxwUC85xEwMewaotBaLvATeUwuD1qP8F+eJd2q7+QtnQ3oaZU8EU
- 12BfN6d9HAZfZ88Zklt/I7/dPZtZp14V6KB7+6rs=
+ b=uL5l/EvPcBaiSrkv+uWYaD3HekN2ksa9vc959NkNUGBN+BT2sb1dOy92OjWBxY1U8
+ yFGpgUYo8YuJbxp0BilIGjFAOFQ6agXX6KZVqTdwbvupKbWBDGR4KLhNoXWzuiej2r
+ osuCv50KOD/3vZycyL/owksGaYgALRfRDqzuvGOs=
 Received: from epsnrtp3.localdomain (unknown [182.195.42.164]) by
- epcas5p1.samsung.com (KnoxPortal) with ESMTP id
- 20230808010134epcas5p1130e84ba2cc5bdd85bf3b204a71baa50~5QrhlmtnX1435914359epcas5p1K;
- Tue,  8 Aug 2023 01:01:34 +0000 (GMT)
-Received: from epsmgec5p1new.samsung.com (unknown [182.195.38.180]) by
- epsnrtp3.localdomain (Postfix) with ESMTP id 4RKZdT4296z4x9Q9; Tue,  8 Aug
- 2023 01:01:33 +0000 (GMT)
-Received: from epcas5p1.samsung.com ( [182.195.41.39]) by
+ epcas5p3.samsung.com (KnoxPortal) with ESMTP id
+ 20230808010138epcas5p3f923f556959ffc1d96973a5b0b7629b6~5QrlCD4YZ2072920729epcas5p3J;
+ Tue,  8 Aug 2023 01:01:38 +0000 (GMT)
+Received: from epsmgec5p1new.samsung.com (unknown [182.195.38.179]) by
+ epsnrtp3.localdomain (Postfix) with ESMTP id 4RKZdY10T4z4x9Pp; Tue,  8 Aug
+ 2023 01:01:37 +0000 (GMT)
+Received: from epcas5p2.samsung.com ( [182.195.41.40]) by
  epsmgec5p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
- 13.C9.57354.DE391D46; Tue,  8 Aug 2023 10:01:33 +0900 (KST)
+ C5.C9.57354.1F391D46; Tue,  8 Aug 2023 10:01:37 +0900 (KST)
 Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
  epcas5p3.samsung.com (KnoxPortal) with ESMTPA id
- 20230807160838epcas5p389c82acd77fd8c74fc7f83300b9d0aa9~5JaNNKyee1415114151epcas5p3G;
- Mon,  7 Aug 2023 16:08:38 +0000 (GMT)
-Received: from epsmgmc1p1new.samsung.com (unknown [182.195.42.40]) by
+ 20230807160839epcas5p3fc18f1e23b454a6db48de18c822ac2d4~5JaOC3tn_1429914299epcas5p3-;
+ Mon,  7 Aug 2023 16:08:39 +0000 (GMT)
+Received: from epsmgms1p2new.samsung.com (unknown [182.195.42.42]) by
  epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
- 20230807160838epsmtrp224d033cd3a2493dca4abcda5f7500d6c~5JaNMkeQT2055820558epsmtrp2g;
- Mon,  7 Aug 2023 16:08:38 +0000 (GMT)
-X-AuditID: b6c32a44-269fb7000001e00a-20-64d193edc6e1
+ 20230807160839epsmtrp2eaec2edca287b0cb2745d2e9b76006bb~5JaOCRbn_2055820558epsmtrp2h;
+ Mon,  7 Aug 2023 16:08:39 +0000 (GMT)
+X-AuditID: b6c32a44-269fb7000001e00a-30-64d193f18de5
 Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
- epsmgmc1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
- 31.6A.14748.60711D46; Tue,  8 Aug 2023 01:08:38 +0900 (KST)
+ epsmgms1p2new.samsung.com (Symantec Messaging Gateway) with SMTP id
+ 91.B8.30535.70711D46; Tue,  8 Aug 2023 01:08:39 +0900 (KST)
 Received: from unvme-desktop.sa.corp.samsungelectronics.net (unknown
  [107.99.41.39]) by epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
- 20230807160837epsmtip2507c5966b0dcb5eba5a53bf11c5094e2~5JaMcz6VP2743027430epsmtip2l;
- Mon,  7 Aug 2023 16:08:37 +0000 (GMT)
+ 20230807160838epsmtip2ddde2a078bdc8bac86bb35598ad4ac23~5JaNSFq7I2883728837epsmtip2P;
+ Mon,  7 Aug 2023 16:08:38 +0000 (GMT)
 From: Ankit Kumar <ankit.kumar@samsung.com>
 To: kbusch@kernel.org, its@irrelevant.dk
 Cc: qemu-devel@nongnu.org, Ankit Kumar <ankit.kumar@samsung.com>
-Subject: [PATCH 2/3] hw/nvme: fix disable pi checks for Type 3 protection
-Date: Tue,  8 Aug 2023 02:57:44 +0530
-Message-Id: <20230807212745.70151-3-ankit.kumar@samsung.com>
+Subject: [PATCH 3/3] docs: update hw/nvme documentation for protection
+ information
+Date: Tue,  8 Aug 2023 02:57:45 +0530
+Message-Id: <20230807212745.70151-4-ankit.kumar@samsung.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230807212745.70151-1-ankit.kumar@samsung.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrDKsWRmVeSWpSXmKPExsWy7bCmuu7byRdTDC5tkLJYc+U3u8X+g99Y
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrNKsWRmVeSWpSXmKPExsWy7bCmhu7HyRdTDB7cZbVYc+U3u8X+g99Y
  LSYdusZocbx3B4sDi8e5HefZPTat6mTzeHJtM5NH35ZVjAEsUdk2GamJKalFCql5yfkpmXnp
  tkrewfHO8aZmBoa6hpYW5koKeYm5qbZKLj4Bum6ZOUA7lRTKEnNKgUIBicXFSvp2NkX5pSWp
- Chn5xSW2SqkFKTkFJgV6xYm5xaV56Xp5qSVWhgYGRqZAhQnZGeuPrmQs2MRZMfH9C9YGxjns
- XYycHBICJhJvZu5m7mLk4hAS2M0o8arvBROE84lR4szV2VDON0aJ/p0v2GBaTq/5B5XYyyix
- +PRXNgink0ni4v0XLCBVbALaEq/e3mAGsUUENCRmHTgH1s0s4CDx68xtJhBbWMBTom3ZNjCb
- RUBV4uq0T6wgNq+AjcScB/ugtslLzLz0HexYTgFbicfPFrND1AhKnJz5hAViprxE89bZYE9I
- CJxil7i76g1Us4vEp8W9UJ8KS7w6vgXKlpL4/G4vVE22xKaHP5kg7AKJIy96mSFse4nWU/1A
- NgfQAk2J9bv0IcKyElNPrWOC2Msn0fv7CVQrr8SOeTC2qsTfe7dZIGxpiZvvrrKAjJEQ8JB4
- sB1supDABEaJN7vUJzAqzELyzSwk38xCWLyAkXkVo2RqQXFuemqyaYFhXmo5PJKT83M3MYKT
- oZbLDsYb8//pHWJk4mA8xCjBwawkwjvvyfkUId6UxMqq1KL8+KLSnNTiQ4ymwOCeyCwlmpwP
- TMd5JfGGJpYGJmZmZiaWxmaGSuK8r1vnpggJpCeWpGanphakFsH0MXFwSjUwud9e0O5tXXy2
- P8mxX+rwK6fNx05zCtVtf9vRNTssas6m+ZssrFeuvX63KrlupcUEK6U/IqbrRW+8juFWS/p0
- PO9Dk6vDFaN3m05k3Jyyuu6zhq6y284udtnF8ZsPC1gGPpxZe2LVKoml1+VzD+1NK47jMeHg
- nHL8WeauG3vMosWCdkxYUfvhsuuL+292B5ce+9i24v5UkxcLxdSnbbv+0fx0xQ6x90aVsV2P
- MxT37xXRD7gkI/I1kCE7e9U501vPq4zOrnx3xcCyc+mKtM0TH3XO2d145sv5nweyvueanJ0k
- fYDdv+PsQcceu6neX7pnvnMzeOD3zMtjxquezOTJjuZ6e7Zd5ZapO+V/0W6BVKcSS3FGoqEW
- c1FxIgAMvnZ8DwQAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrILMWRmVeSWpSXmKPExsWy7bCSvC6b+MUUg+6lfBZrrvxmt9h/8Bur
- xaRD1xgtjvfuYHFg8Ti34zy7x6ZVnWweT65tZvLo27KKMYAlissmJTUnsyy1SN8ugStj/dGV
- jAWbOCsmvn/B2sA4h72LkZNDQsBE4vSaf0wgtpDAbkaJj7ukuxg5gOLSEgvXJ0KUCEus/Pcc
- qJwLqKSdSWLx20tgvWwC2hKv3t5gBqkXEdCSONlfCRJmFnCS2HGrFaxEWMBTom3ZNrDxLAKq
- ElenfWIFsXkFbCTmPNjHBjFfXmLmpe9g9ZwCthKPny1mhzjHRmLNh/NMEPWCEidnPmGBmC8v
- 0bx1NvMERoFZSFKzkKQWMDKtYpRMLSjOTc9NNiwwzEst1ytOzC0uzUvXS87P3cQIDlUtjR2M
- 9+b/0zvEyMTBeIhRgoNZSYR33pPzKUK8KYmVValF+fFFpTmpxYcYpTlYlMR5DWfMThESSE8s
- Sc1OTS1ILYLJMnFwSjUw3fwbsut6nBbjk8k7A9g55aNSXI7u/lw5s8It+9qCQ7NZy+6rXM77
- Gsb6b2t7l3D6wWaVOWvMApbUJvjWzBQu3htnvCH67Vu/tYe1Xm16K2d3USjv0HOlA5/smtTd
- 9hu21hUciar7Eer3dsF6m9fFVs9ZhXUeZyza/bvTV3Njanjlh+23zkREfUo4J87yPz9B4v7T
- k0dWubBzXYy2Upz9Y21/iHb9Wo4Zf7yPLvr84Eua4gHTcEGWT3X8conH88/FXz41TWnO7M8q
- zLWeBy8pTPy2OmzbLu1N2zZLmJQGTWVz8fw866nVRfb1pgZ/VI4u/ZGyuZ1PTUFv0jZG56xp
- J/0TlX9NldHfYRy98dIdXiWW4oxEQy3mouJEAPjmQtjEAgAA
-X-CMS-MailID: 20230807160838epcas5p389c82acd77fd8c74fc7f83300b9d0aa9
+ Chn5xSW2SqkFKTkFJgV6xYm5xaV56Xp5qSVWhgYGRqZAhQnZGXun7Gcq6OOu6L+wk6WBcRln
+ FyMnh4SAicS6r0tYuxi5OIQEdjNKbNnbxQbhfGKUmHxsBzOE841R4s7VeawwLcs3LGYBsYUE
+ 9jJK/DptB2F3Mkn8f5gHYrMJaEu8enuDGcQWEdCQmHXgHBuIzSzgIPHrzG0mEFtYIETiy7cj
+ jF2MHBwsAqoSzatcQMK8AjYS11sfsUOskpeYeek7mM0pYCvx+NlidogaQYmTM5+wQIyUl2je
+ OhvsTgmBU+wSpw79ZYZodpFo2r4B6mZhiVfHt0ANlZL4/G4vG4SdLbHp4U8mCLtA4siLXqhe
+ e4nWU/3MILcxC2hKrN+lDxGWlZh6ah0TxF4+id7fT6BaeSV2zIOxVSX+3rvNAmFLS9x8dxXK
+ 9pCY1b2dBRKeExglvnU8Z5rAqDALyT+zkPwzC2H1AkbmVYySqQXFuempyaYFhnmp5fA4Ts7P
+ 3cQIToVaLjsYb8z/p3eIkYmD8RCjBAezkgjvvCfnU4R4UxIrq1KL8uOLSnNSiw8xmgLDeyKz
+ lGhyPjAZ55XEG5pYGpiYmZmZWBqbGSqJ875unZsiJJCeWJKanZpakFoE08fEwSnVwNS7/3mS
+ wZfIU/Knbpk/7dzMsjxoWrVlyE6O/offnttaTP8kedfx1bmJRx6W3H7x7tuG056ZRo8VGxi6
+ p1+59om5X7ft3je5gtnZJzJKbq5z8zcU7JU8y51R9zbTKzN9uhjT2+ufXDaG92aknzo/+WbI
+ k3qzsmVFNlmazSd29CYpMDIFxYk69z6P3/bc/ZPCix4ZE9M3d7hfqv+/kKSc81poRyF3k1JI
+ g4zy3F/hh3u/ljWIPQvtjHOp/jtvc5MkxwGdyD2WVRvyppu+53mkKqrkMuv3jP83A7I6vkd+
+ +jpXZdtNXr+YQP/vJ5c+K1Lc1z7nx0qd7vnHV87dK+8hwnP8s65s2jrByOiZRf3nzZVYijMS
+ DbWYi4oTAYNCjfcOBAAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrALMWRmVeSWpSXmKPExsWy7bCSvC67+MUUg8/NnBZrrvxmt9h/8Bur
+ xaRD1xgtjvfuYHFg8Ti34zy7x6ZVnWweT65tZvLo27KKMYAlissmJTUnsyy1SN8ugStj75T9
+ TAV93BX9F3ayNDAu4+xi5OSQEDCRWL5hMUsXIxeHkMBuRokHDROZuxg5gBLSEgvXJ0LUCEus
+ /PecHcQWEmhnknjVWAhiswloS7x6ewOsXERAS+JkfyVImFnASWLHrVawcmGBIIm2x6fBSlgE
+ VCWaV7mAhHkFbCSutz5ih5guLzHz0ncwm1PAVuLxs8VQm2wk1nw4zwRRLyhxcuYTFojx8hLN
+ W2czT2AUmIUkNQtJagEj0ypGydSC4tz03GLDAqO81HK94sTc4tK8dL3k/NxNjOBA1dLawbhn
+ 1Qe9Q4xMHIyHGCU4mJVEeOc9OZ8ixJuSWFmVWpQfX1Sak1p8iFGag0VJnPfb694UIYH0xJLU
+ 7NTUgtQimCwTB6dUA5OWh7B+6ye99Z+vP5v8QGbi1xmHfDIMt1hcD9vzZYOBj0KfkYzxW6FU
+ lR2ax9wORYt96Vf+VbZzZu2j3+sfBz39n2idum7CjjfrWG9v8zOb8kI6sj059OrvMyrJPMoS
+ izdnnp/urvnnkyVzgXT1Mda4bfX3Q7SijnvsU0gumXry7t919w5XXdiiVvhUS+TkfVnXdWkn
+ X6ubaQqw+y2br7T2/4mQxdZ9L9ynzDywOTP/4mNBi8jy1ISE20J+62+tXPPKsKYzdaU913GL
+ VKVQ8cqOGSFck1tUpa054g+EPtstXDop4ySnb+Pc5v7+jY7vNs893/+Ie4rz8a985VIpdju/
+ dVd43/eMkWpx61snI6LEUpyRaKjFXFScCABNmXiewwIAAA==
+X-CMS-MailID: 20230807160839epcas5p3fc18f1e23b454a6db48de18c822ac2d4
 X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
 X-Sendblock-Type: REQ_APPROVE
 CMS-TYPE: 105P
 DLP-Filter: Pass
 X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20230807160838epcas5p389c82acd77fd8c74fc7f83300b9d0aa9
+X-CMS-RootMailID: 20230807160839epcas5p3fc18f1e23b454a6db48de18c822ac2d4
 References: <20230807212745.70151-1-ankit.kumar@samsung.com>
- <CGME20230807160838epcas5p389c82acd77fd8c74fc7f83300b9d0aa9@epcas5p3.samsung.com>
-Received-SPF: pass client-ip=203.254.224.25;
- envelope-from=ankit.kumar@samsung.com; helo=mailout2.samsung.com
+ <CGME20230807160839epcas5p3fc18f1e23b454a6db48de18c822ac2d4@epcas5p3.samsung.com>
+Received-SPF: pass client-ip=203.254.224.34;
+ envelope-from=ankit.kumar@samsung.com; helo=mailout4.samsung.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
 X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_03_06=1.592,
  DKIMWL_WL_HIGH=-0.001, DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
- DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H4=0.001,
+ DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001,
  RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -134,38 +135,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As per the NVM command set specification, the protection information
-checks for Type 3 protection are disabled, only when both application
-and reference tag have all bits set to 1.
+Add missing entry for pif ("protection information format").
+Protection information size can be 8 or 16 bytes, Update the pil entry
+as per the NVM command set specification.
 
 Signed-off-by: Ankit Kumar <ankit.kumar@samsung.com>
 ---
- hw/nvme/dif.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ docs/system/devices/nvme.rst | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/hw/nvme/dif.c b/hw/nvme/dif.c
-index 01b19c3373..f9bd29a2a6 100644
---- a/hw/nvme/dif.c
-+++ b/hw/nvme/dif.c
-@@ -157,7 +157,8 @@ static uint16_t nvme_dif_prchk_crc16(NvmeNamespace *ns, NvmeDifTuple *dif,
- {
-     switch (NVME_ID_NS_DPS_TYPE(ns->id_ns.dps)) {
-     case NVME_ID_NS_DPS_TYPE_3:
--        if (be32_to_cpu(dif->g16.reftag) != 0xffffffff) {
-+        if ((be32_to_cpu(dif->g16.reftag) != 0xffffffff) ||
-+            (be16_to_cpu(dif->g16.apptag) != 0xffff)) {
-             break;
-         }
+diff --git a/docs/system/devices/nvme.rst b/docs/system/devices/nvme.rst
+index 2a3af268f7..30d46d9338 100644
+--- a/docs/system/devices/nvme.rst
++++ b/docs/system/devices/nvme.rst
+@@ -271,9 +271,13 @@ The virtual namespace device supports DIF- and DIX-based protection information
  
-@@ -225,7 +226,7 @@ static uint16_t nvme_dif_prchk_crc64(NvmeNamespace *ns, NvmeDifTuple *dif,
+ ``pil=UINT8`` (default: ``0``)
+   Controls the location of the protection information within the metadata. Set
+-  to ``1`` to transfer protection information as the first eight bytes of
+-  metadata. Otherwise, the protection information is transferred as the last
+-  eight bytes.
++  to ``1`` to transfer protection information as the first bytes of metadata.
++  Otherwise, the protection information is transferred as the last bytes of
++  metadata.
++
++``pif=UINT8`` (default: ``0``)
++  By default, the namespace device uses 16 bit guard protection information
++  format. Set to ``2`` to enable 64 bit guard protection information format.
  
-     switch (NVME_ID_NS_DPS_TYPE(ns->id_ns.dps)) {
-     case NVME_ID_NS_DPS_TYPE_3:
--        if (r != 0xffffffffffff) {
-+        if (r != 0xffffffffffff || (be16_to_cpu(dif->g64.apptag) != 0xffff)) {
-             break;
-         }
- 
+ Virtualization Enhancements and SR-IOV (Experimental Support)
+ -------------------------------------------------------------
 -- 
 2.25.1
 
