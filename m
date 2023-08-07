@@ -2,79 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8D0F7728E5
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 17:17:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D95B7728ED
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 17:20:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qT1yw-0000dt-NV; Mon, 07 Aug 2023 11:17:18 -0400
+	id 1qT21A-0001KZ-PE; Mon, 07 Aug 2023 11:19:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qT1yo-0000da-Qm
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 11:17:12 -0400
-Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
+ id 1qT218-0001KL-N0
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 11:19:34 -0400
+Received: from mail-oo1-xc32.google.com ([2607:f8b0:4864:20::c32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qT1yj-00020B-Up
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 11:17:10 -0400
-Received: by mail-pg1-x534.google.com with SMTP id
- 41be03b00d2f7-564d6aa9abdso1359197a12.1
- for <qemu-devel@nongnu.org>; Mon, 07 Aug 2023 08:17:05 -0700 (PDT)
+ id 1qT217-0002MR-4s
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 11:19:34 -0400
+Received: by mail-oo1-xc32.google.com with SMTP id
+ 006d021491bc7-56d455462c2so2166452eaf.2
+ for <qemu-devel@nongnu.org>; Mon, 07 Aug 2023 08:19:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691421424; x=1692026224;
+ d=linaro.org; s=google; t=1691421572; x=1692026372;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=Gs37I4OG3tTrPJkJyb61IXsysU0DLUywMc+yODNkydU=;
- b=aisGgD8Traj0OMqO9EQDMVRN8xUzfumwiYgEhcvmKIGochS6eKpwFfgC/M32+Ojtxy
- fOmI9e0fTPs4fg/2esnwrxtiDdz104C68jRQRYiD1x82+BMHKwpAOrGU+XxsgMcWgI62
- 1WsJJZxmTtqR8JB2odXXRYGLBi5RuCKq41lpjNTdl7mRKMbpXVKF3CWmyyANLnDwpz5H
- xMJVFFYuyXgDR55KtaoohvwXlRwGhGzUjHg42nbHlmGAt1CQW5qjkotQR/QmkaoIWB/I
- xHQchKAm5UEmMHzZ0G9h986ORSk+eiz+JvB+xzSBoda5tjwRYoXvTI8qAqtML+/TjvNd
- mUHA==
+ bh=XQ2IGkxK9lhxr9cmcp68Q3htmP3auQ/alI+Ztg3C12U=;
+ b=WopQhYTKA4aNWE7Yz6bjKIGH3XAuEmTwYcdHt8pjuU9B1aWFv8xhDIoeJvRhWv70SP
+ /UM+gYLolPz2fqLhgWcFdKIat+QT12KPY17G8b9ReWiDyN7ypl9tjEA7QDT/i1i/gbPc
+ s5wJ7DGkJ2SS9QHLb2IvvxcpLAcdReAC38bjlm4jqyWQlf8+Aq50Rc0v+PE66LZr5iEl
+ cfAMV1JFaO70xWo9g2TPqDwtg0aXT/YoK6VvQTU3Gy4S7cBD0We5cmfBU/ygikFJMpA9
+ tXldGrzatVO7LSGuCKTM3cRMGzV1oC83LNA6iNUqyQysLsPjXbWeau3Jh6SrxkFtWa1/
+ 1oIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691421424; x=1692026224;
+ d=1e100.net; s=20221208; t=1691421572; x=1692026372;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Gs37I4OG3tTrPJkJyb61IXsysU0DLUywMc+yODNkydU=;
- b=lFErd8WX9TVrk6ewAV2s8PkilU6aKBb2ShJY0efKVtNCPrdi4dgK5jJJKC0pRGYzVI
- lkRtYL62PmOHz6r+02F/TkmYNqi5rJMuAapDJroPVK7d1iF0xMrQTB6qWFZjLqJzrXiz
- THUpcEtErI6qXhhy2e5VkWsk0ohx94BM8TvyY8rIxgoDYn7hXIqAR+D1HWuOVt52NPGv
- b5Ne5ntEDrl69BI3HXIvxTFxrnndsSm2yxBvAqzn19a56CjzimwNcyzgo3K/r/D0C2mW
- W1mccEfdnsv16YY1sY1j2/zoBcb2ubzNLCa3p+KBnaWWUo1rJjQ2Jll860Tpu4DMc56N
- S+Gg==
-X-Gm-Message-State: AOJu0Yy5IG5UNweKcPNa9GxTJw0RXvqTmskEaR/Q3+/BfFj1TvKUo2Gx
- kiBifVNCqdt9MsNodAlZplxfo8yieS1Kmwj4dOA=
-X-Google-Smtp-Source: AGHT+IF+bQRkoZx3+lqG0zstc2eh/vhAIWokMi33Ma2F4lSX2/m41X2eQsWDxP/zJqn41rZ3/yJ46Q==
-X-Received: by 2002:a17:90a:889:b0:268:2af6:e48c with SMTP id
- v9-20020a17090a088900b002682af6e48cmr8769577pjc.4.1691421423908; 
- Mon, 07 Aug 2023 08:17:03 -0700 (PDT)
+ bh=XQ2IGkxK9lhxr9cmcp68Q3htmP3auQ/alI+Ztg3C12U=;
+ b=aCvaURpwaK+x58VhkGH+JJX96mYxMMq6fXUw8U2HGL8AZN3CXHBHqQMlsLWFlXAPRa
+ IWQiWXmN8Qr6var6HkwJ0ktAKp0Z72whub9qf6/Cp0W/JVRyvx3bkK4H1K12JWcel12H
+ GQBGX7VgjYVyckHK9Sxge7Mmm69ADISiDTFzfolXb2SKmISkywQOWKxlRyxSEBojIrgq
+ E0VR00X+/55byXhxKVXFaT1W5ncaB6KVloGB9SmaCyRLHoWk3jS3k5WiumK3OwpjHxSv
+ Pig4cHmn8sgOCJQt/Be4yZCV+xd0sB+JDAY7/zubA/VcFLI+S7H6mBPuC5mcscapLUzC
+ VAEw==
+X-Gm-Message-State: AOJu0YwqINshxPHF7+Ttz4VQbX3PMaCwJ2RQ9F1NcGRhP7oesmWYzCll
+ jOVXF4/G2ZK8DTp7Od/J0RqyEw==
+X-Google-Smtp-Source: AGHT+IGGV6zreCXV0eKudWG7h2lZhe5e9k6eRVG+OT+FWK+WdxPZpavAKf/kdUOnBNE29khDPIAjNQ==
+X-Received: by 2002:a05:6358:419b:b0:134:ce45:b782 with SMTP id
+ w27-20020a056358419b00b00134ce45b782mr7141391rwc.21.1691421571781; 
+ Mon, 07 Aug 2023 08:19:31 -0700 (PDT)
 Received: from ?IPV6:2602:47:d490:6901:e306:567a:e0a1:341?
  ([2602:47:d490:6901:e306:567a:e0a1:341])
  by smtp.gmail.com with ESMTPSA id
- br8-20020a17090b0f0800b0026801e06ac1sm6205412pjb.30.2023.08.07.08.17.03
+ l125-20020a633e83000000b0051b8172fa68sm5191004pga.38.2023.08.07.08.19.31
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 07 Aug 2023 08:17:03 -0700 (PDT)
-Message-ID: <111c8d4a-7d4e-bccb-a185-6053278a2248@linaro.org>
-Date: Mon, 7 Aug 2023 08:17:01 -0700
+ Mon, 07 Aug 2023 08:19:31 -0700 (PDT)
+Message-ID: <9c777523-1a95-fdbb-acf8-80345cd76289@linaro.org>
+Date: Mon, 7 Aug 2023 08:19:29 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH v3 2/6] target/loongarch: Add loongarch32 cpu la132
+Subject: Re: [PATCH v3 3/6] target/loongarch: Add GDB support for loongarch32
+ mode
 Content-Language: en-US
 To: Jiajie Chen <c@jia.je>, qemu-devel@nongnu.org
 Cc: yijun@loongson.cn, shenjinyang@loongson.cn,
- Xiaojuan Yang <yangxiaojuan@loongson.cn>, Song Gao <gaosong@loongson.cn>
+ Xiaojuan Yang <yangxiaojuan@loongson.cn>, Song Gao <gaosong@loongson.cn>,
+ =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
 References: <20230807094505.2030603-1-c@jia.je>
- <20230807094505.2030603-3-c@jia.je>
+ <20230807094505.2030603-4-c@jia.je>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230807094505.2030603-3-c@jia.je>
+In-Reply-To: <20230807094505.2030603-4-c@jia.je>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::534;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x534.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c32;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc32.google.com
 X-Spam_score_int: -38
 X-Spam_score: -3.9
 X-Spam_bar: ---
@@ -98,70 +101,23 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 8/7/23 02:45, Jiajie Chen wrote:
-> Add la132 as a loongarch32 cpu type and allow virt machine to be used
-> with la132 instead of la464.
+> GPRs and PC are 32-bit wide in loongarch32 mode.
 > 
-> Signed-off-by: Jiajie Chen <c@jia.je>
+> Signed-off-by: Jiajie Chen<c@jia.je>
 > ---
->   hw/loongarch/virt.c    |  5 -----
->   target/loongarch/cpu.c | 41 +++++++++++++++++++++++++++++++++++++++++
->   target/loongarch/cpu.h | 11 +++++++++++
->   3 files changed, 52 insertions(+), 5 deletions(-)
-> 
-> diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-> index e19b042ce8..af15bf5aaa 100644
-> --- a/hw/loongarch/virt.c
-> +++ b/hw/loongarch/virt.c
-> @@ -798,11 +798,6 @@ static void loongarch_init(MachineState *machine)
->           cpu_model = LOONGARCH_CPU_TYPE_NAME("la464");
->       }
->   
-> -    if (!strstr(cpu_model, "la464")) {
-> -        error_report("LoongArch/TCG needs cpu type la464");
-> -        exit(1);
-> -    }
-> -
->       if (ram_size < 1 * GiB) {
->           error_report("ram_size must be greater than 1G.");
->           exit(1);
-> diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-> index ad93ecac92..d31efe86da 100644
-> --- a/target/loongarch/cpu.c
-> +++ b/target/loongarch/cpu.c
-> @@ -362,6 +362,8 @@ static void loongarch_la464_initfn(Object *obj)
->       CPULoongArchState *env = &cpu->env;
->       int i;
->   
-> +    env->mode = LA64;
-> +
->       for (i = 0; i < 21; i++) {
->           env->cpucfg[i] = 0x0;
->       }
-> @@ -439,6 +441,20 @@ static void loongarch_la464_initfn(Object *obj)
->       env->CSR_ASID = FIELD_DP64(0, CSR_ASID, ASIDBITS, 0xa);
->   }
->   
-> +static void loongarch_la132_initfn(Object *obj)
-> +{
-> +    LoongArchCPU *cpu = LOONGARCH_CPU(obj);
-> +    CPULoongArchState *env = &cpu->env;
-> +
-> +    env->mode = LA32;
-> +
-> +    cpu->dtb_compatible = "loongarch,Loongson-3C103";
-> +
-> +    uint32_t data = 0;
-> +    data = FIELD_DP32(data, CPUCFG1, ARCH, 1); /* LA32 */
-> +    env->cpucfg[1] = data;
-> +}
+>   configs/targets/loongarch64-softmmu.mak |  2 +-
+>   gdb-xml/loongarch-base32.xml            | 45 +++++++++++++++++++++++++
+>   target/loongarch/cpu.c                  | 10 +++++-
+>   target/loongarch/gdbstub.c              | 32 ++++++++++++++----
+>   4 files changed, 80 insertions(+), 9 deletions(-)
+>   create mode 100644 gdb-xml/loongarch-base32.xml
 
-This is missing quite a lot of other initialization.  I would expect this to look more 
-like loongarch_la464_initfn with quite a lot of CPUCFG settings.
+With the test for LA64 vs LA32 corrected,
 
-This patch should be sorted after support for LA32 is added to the translator, so that 
-when bisecting it is not possible to select this cpu when support is not present.
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+
+You may wish to use a small inline function for testing the mode.
 
 
 r~
-
 
