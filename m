@@ -2,82 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9337E773066
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 22:37:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77391773094
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 22:40:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qT6y8-0000dF-UI; Mon, 07 Aug 2023 16:36:48 -0400
+	id 1qT70y-00028l-9V; Mon, 07 Aug 2023 16:39:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qT6y1-0000cg-NL
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 16:36:42 -0400
-Received: from mail-oi1-x230.google.com ([2607:f8b0:4864:20::230])
+ id 1qT70v-00022o-GO
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 16:39:41 -0400
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qT6xx-0003jV-UE
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 16:36:41 -0400
-Received: by mail-oi1-x230.google.com with SMTP id
- 5614622812f47-3a6f87b2993so3653745b6e.3
- for <qemu-devel@nongnu.org>; Mon, 07 Aug 2023 13:36:37 -0700 (PDT)
+ id 1qT70t-0004PV-Dw
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 16:39:41 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-686e29b058cso3477804b3a.1
+ for <qemu-devel@nongnu.org>; Mon, 07 Aug 2023 13:39:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691440596; x=1692045396;
+ d=linaro.org; s=google; t=1691440778; x=1692045578;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=Rm/mpGHF2I1fxXmGf5G9MCV0FugkJF1izpS5Kw1coGo=;
- b=A1z3/U3eyzDCjBu9iTqla81UQ/PRgY1UtkHJF695T//GzR/0i/wq77gX3/6TGwjBJ+
- w/LsgyJfRlvp/q319+7RYT1u8j+9judBbCm/ojArB1FKak6lWBASSL9Lj0wopdbQejYK
- 304iHaQqsax+5PXM9UKN6X5jQmuJ7TAhKfLttStf6jroDWHWDVkZnGVovmAt9+j9D9Fz
- VOzmxiT6hhzZro3dLSgDxO24EIL5uf+Qy25QMSq0suq8wJr1wOyaEn4SlzyMwRnOmb6q
- 2+zNoG4egGjiUpXtpUa6DzztgZF3v8uY4vOVecq1JEuYHxDQ8GMOTvmysAqa3FpWGZa7
- 4Ezw==
+ bh=wqP3ahU9WRjLaKvK9Qu5mKDxMCywZy5ruY4d11wZ89w=;
+ b=C6VXhQ8Q97+azootpzg1O/gTNJ7s2Z4AGtbRRI3CsTatjkhlDFoUh/MgYya00/N2Yt
+ 8N/t9oqWFs6FqwQEFcKJQW6098ssb7zfZfXxRohN5wmDx2xDgtbxuJo6Dk9aGgxslvf3
+ Z3bj4RIcuhK/txlyMwcVvqRemjvv1SM/0z2O5B2m+cCVb7SiHQOX/Y+XdEpZ4vkmGb1W
+ BGIgmH0USR/MtlVR9ZvXFWhds2osoSq+eOahHLdVcnEEVC7TS29zCqKaOGoA4tjfUk4O
+ xlF84j/8QsMsFiMaTR8AM5N9bOpaOQw74BJGXlMu+JYMrQReHGgmFNkOpXpl0TNlw5dP
+ z88Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691440596; x=1692045396;
+ d=1e100.net; s=20221208; t=1691440778; x=1692045578;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Rm/mpGHF2I1fxXmGf5G9MCV0FugkJF1izpS5Kw1coGo=;
- b=SZ/cK3Q0x5G5vp1t4aAeqOnXvJ5dH4ldgMJnsFo3yPUGB2sqlTTU70hdP+A4JqVbru
- nYMnyeQtN2DynqjPYpkNMuQL2dQ8XYsF6K0Z7uZKzNL5PFk3Qs0SQ+p3d9Nf4nuvtIB9
- GiFA5bTyM19InkWc+23+ssgWMwKF3LvrrTKQ4Aj+0yOVtwE+zj/QDZAdvUl+3ypMzmj0
- 00UTMU9ukcEwKJ9W2iJ0IKzSfTIC9wHO6s+a2s3QnTe9OlHSO27FNTsJb1uokP0UPnXY
- dNbybTq2sXkjpRPs2ICIoJCDXKl41MFfOnegJaVvYXB8neU3ChoRSPdRmeru5x4V8KEq
- MSnQ==
-X-Gm-Message-State: AOJu0Yyf8exgmLut0LY+5Y6Z+Q+U0UDXuPaiHexbgHcAOBHta3VHnfXF
- 5hnMQHhu58f5byrChOoojIIyIg==
-X-Google-Smtp-Source: AGHT+IHRUrnYjYyBVb05xDlWDQYsRltMfHW2YMI/LfKJkantnoJM2E63zbsD2vGeRMqmJ6jpLRJeOA==
-X-Received: by 2002:a05:6808:1386:b0:3a7:94d3:43fe with SMTP id
- c6-20020a056808138600b003a794d343femr6112823oiw.30.1691440595875; 
- Mon, 07 Aug 2023 13:36:35 -0700 (PDT)
+ bh=wqP3ahU9WRjLaKvK9Qu5mKDxMCywZy5ruY4d11wZ89w=;
+ b=aMDB2Qxe03mAQIob5FoIfclhjGxlC+O+z1m1eJXf7ACXO7wliTmuzM1/+GkDgsUUtI
+ vCE7WnsYB2rMcfndSO4s9T9+epHoxd/CX/r/ujft0qi4yfcZqKG1kttWIWGEgzaujWLf
+ jD/Mm/Zne5MNk5rHg2B7kUwwl45N2o/CDmj8ErLQIkIl6FhoayL9wn6Yqu5s24zxUq6+
+ 9TN3NBn9r6E3cg92uRH1d1OjXS8XlgJPW8UEjSMn//MQA9Bs5P1IFUSHB7i3wXr75rWv
+ fX3x+T7jYXNpYLx+vggVDQpebr+VUMWvdqOTualjNeMwjPTWyB98GhGJBEhpiROobLHV
+ aJrQ==
+X-Gm-Message-State: AOJu0Yx2ivCT4xiBExSUiubfIraqIw04dfERRwYOJQ8uIEAPx1Uc1r86
+ gfD3gDqgn4v45YsQx1nhDQM+Jw==
+X-Google-Smtp-Source: AGHT+IEwuACxm8CBwjtQ/xNwZ1HKe6tZH9eJ9dKAYLOTeEEXfR/UUU7SoeK63kTZbILCPcFsxT5uOQ==
+X-Received: by 2002:a05:6a20:9390:b0:134:15df:b148 with SMTP id
+ x16-20020a056a20939000b0013415dfb148mr11407604pzh.29.1691440777687; 
+ Mon, 07 Aug 2023 13:39:37 -0700 (PDT)
 Received: from ?IPV6:2602:47:d490:6901:e306:567a:e0a1:341?
  ([2602:47:d490:6901:e306:567a:e0a1:341])
  by smtp.gmail.com with ESMTPSA id
- w21-20020a170902a71500b001b558c37f91sm7307582plq.288.2023.08.07.13.36.35
+ q24-20020a637518000000b0050f85ef50d1sm5325006pgc.26.2023.08.07.13.39.36
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 07 Aug 2023 13:36:35 -0700 (PDT)
-Message-ID: <6532b5ba-3ebf-5ed1-8430-e2816812da3d@linaro.org>
-Date: Mon, 7 Aug 2023 13:36:33 -0700
+ Mon, 07 Aug 2023 13:39:37 -0700 (PDT)
+Message-ID: <8bf33fec-b26c-1f48-d817-319f17b3ad93@linaro.org>
+Date: Mon, 7 Aug 2023 13:39:35 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PULL 0/2] hw/nvme fixes
+Subject: Re: [PATCH] target/arm: Catch illegal-exception-return from EL3 with
+ bad NSE/NS
 Content-Language: en-US
-To: Klaus Jensen <its@irrelevant.dk>, Peter Maydell
- <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Keith Busch <kbusch@kernel.org>, Hanna Reitz <hreitz@redhat.com>,
- qemu-block@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
- Fam Zheng <fam@euphon.net>, Kevin Wolf <kwolf@redhat.com>,
- Klaus Jensen <k.jensen@samsung.com>
-References: <20230807115359.123-4-its@irrelevant.dk>
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org
+Cc: Jean-Philippe Brucker <jean-philippe@linaro.org>
+References: <20230807150618.101357-1-peter.maydell@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230807115359.123-4-its@irrelevant.dk>
+In-Reply-To: <20230807150618.101357-1-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::230;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x230.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
 X-Spam_score_int: -38
 X-Spam_score: -3.9
 X-Spam_bar: ---
@@ -100,29 +97,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/7/23 04:54, Klaus Jensen wrote:
-> From: Klaus Jensen<k.jensen@samsung.com>
+On 8/7/23 08:06, Peter Maydell wrote:
+> The architecture requires (R_TYTWB) that an attempt to return from EL3
+> when SCR_EL3.{NSE,NS} are {1,0} is an illegal exception return. (This
+> enforces that the CPU can't ever be executing below EL3 with the
+> NSE,NS bits indicating an invalid security state.)
 > 
-> Hi,
+> We were missing this check; add it.
 > 
-> The following changes since commit 9400601a689a128c25fa9c21e932562e0eeb7a26:
-> 
->    Merge tag 'pull-tcg-20230806-3' ofhttps://gitlab.com/rth7680/qemu  into staging (2023-08-06 16:47:48 -0700)
-> 
-> are available in the Git repository at:
-> 
->    https://gitlab.com/birkelund/qemu.git  tags/nvme-next-pull-request
-> 
-> for you to fetch changes up to 6a33f2e920ec0b489a77200888e3692664077f2d:
-> 
->    hw/nvme: fix compliance issue wrt. iosqes/iocqes (2023-08-07 12:27:24 +0200)
-> 
-> ----------------------------------------------------------------
-> hw/nvme fixes
+> Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
+> ---
+>   target/arm/tcg/helper-a64.c | 9 +++++++++
+>   1 file changed, 9 insertions(+)
 
-Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
-
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 r~
-
 
