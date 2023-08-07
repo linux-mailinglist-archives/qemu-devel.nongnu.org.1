@@ -2,70 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54DBA77172A
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 00:09:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCDDC7717C6
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 03:24:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qSlui-0007dD-0u; Sun, 06 Aug 2023 18:07:52 -0400
+	id 1qSoxh-0004Kn-L7; Sun, 06 Aug 2023 21:23:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yu.zhang@ionos.com>)
- id 1qSluf-0007cn-Id
- for qemu-devel@nongnu.org; Sun, 06 Aug 2023 18:07:49 -0400
-Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qSoxZ-0004KQ-EK
+ for qemu-devel@nongnu.org; Sun, 06 Aug 2023 21:23:01 -0400
+Received: from mail-ot1-x32f.google.com ([2607:f8b0:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yu.zhang@ionos.com>)
- id 1qSlub-0003pa-Fx
- for qemu-devel@nongnu.org; Sun, 06 Aug 2023 18:07:49 -0400
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-522462d8416so5356282a12.1
- for <qemu-devel@nongnu.org>; Sun, 06 Aug 2023 15:07:42 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qSoxX-0006Kt-9h
+ for qemu-devel@nongnu.org; Sun, 06 Aug 2023 21:23:00 -0400
+Received: by mail-ot1-x32f.google.com with SMTP id
+ 46e09a7af769-6bc9811558cso3407943a34.0
+ for <qemu-devel@nongnu.org>; Sun, 06 Aug 2023 18:22:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ionos.com; s=google; t=1691359661; x=1691964461;
- h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
- :date:message-id:reply-to;
- bh=9ooOkdoknyQHTqbGMoyr9neUy0Trlp+HEUArBeYm3IA=;
- b=U0CqC0BFqAaySuTzT4mXQpYWWtwyC8bda188zr+gdfEZBB+yFPl7HNao2AhpR8Ce1v
- hLWedO/ko7AOOE0DxHUT+61Lqh3z7YjKKcnZvfG5Kc2329MEZ/LlLGM40gJZFvaBSAA4
- o+Wt+ondwmcS9swhn6Jdw2sdeqpvBKbMhM/EaP7hlQ008TdWmtoMR6FjYuZHrqeawbBB
- Xp3hU+t/xxx/B6xW5Rq8RgtVtgdmPOCxTbFrcAe2zHjMEtbStXDa+y0sFnTxBgacpKG1
- sUnqU/I3F6LMVzuA2GmayTlY+B7adttuRXfWbCfB1RRHSEDI4xdo53tdxt44nhyYnMZE
- SQqQ==
+ d=linaro.org; s=google; t=1691371376; x=1691976176;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :to:from:subject:user-agent:mime-version:date:message-id:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=+phdIQO+HgV9vQyEMRyDPWWF5orpME9gcbh3hd9moys=;
+ b=JD0zRTE1w4KmDOX3Qp+8S84AqjFX1Ek1Sm7lmyqhGIKXGvU6Oa3FbcVszAN0K7H31a
+ Xx3X3+lvrlSP+JCIgoqDEuxKkxdG/jA9p5jmlUB6MmMlxw93g1Cx5n8U8qxxTw6xApxS
+ Jw1tfVI1WLZv3MqtNKzitSVqlAaEOIPjagM0ykxWpwh0l1PZXoMwv5KzEMOwgKvwi/8y
+ sZkMiEJe+gOrI1PNm6f+YsHNfHXxhghjog88NuQsAehYsu+gPiMPgeWXghWpk6geKufA
+ yOhVzznsAJRuIWsZ22GxP+d5dqFsSPJtcf9G5xLsrknW3kJ/wNdgyn43R/MawuiFPzja
+ VT2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691359662; x=1691964462;
- h=to:subject:message-id:date:from:mime-version:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=9ooOkdoknyQHTqbGMoyr9neUy0Trlp+HEUArBeYm3IA=;
- b=DaarsLkrhIvaa7sfMZqIF9Ye27hxjmxedouuFNzeOQTQYgwb3sLAb+uw3/vlzSBjdB
- gf110S/c5Wu6uRZ0lzx3SVqm1KUu11VjESVpZz3rqWqVu1qWB9KsOhwYyHM/OUJom0Am
- TBQFzj20txAoAGetX32ppZqTBmvgNSt4FRSu0qBRhndmYRTuijDWq/1nEl5F1yPPwHhM
- z60JTlm69nEiwv+zZcI6i3emBWRpFsFxEpQPmFaqGm2pIW5o/xnYlK+RQqceo+qimpDH
- DyQiEkznpRe5fE3bhAXSIx0CrhqpCnmjfet9GXZazwgPPlEPF86OrxXDr68HQ3oR9bl/
- bTUg==
-X-Gm-Message-State: AOJu0YyWQvtMEzHnp3DFXh9BR27WUaWPOCluSnpIEFynm2RrToI2xdVF
- +eLF+lzpunuwtcpB5auVuIg0c+2MrrhDIxCIaA9Eo2g5jLl4ARXupBA=
-X-Google-Smtp-Source: AGHT+IF64lrR8vdt5m3N07cajL6sSl9ydd2etwnv1EROl0tRg9VziaxgWMrx8SHE4ImRtAFTWIL0gfMaDlCOKC7ZiQA=
-X-Received: by 2002:a05:6402:514:b0:522:1fd2:ca7a with SMTP id
- m20-20020a056402051400b005221fd2ca7amr6170663edv.29.1691359661712; Sun, 06
- Aug 2023 15:07:41 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1691371376; x=1691976176;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :to:from:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=+phdIQO+HgV9vQyEMRyDPWWF5orpME9gcbh3hd9moys=;
+ b=X9jG9ZLmHaz1HMVy1vcM+U9eRGPDqleDuqt6TstcYqET393mapRIEnZxzfX1fpq6Fp
+ Xg87R/2kUL1GtNr4TuNQJTz1FVy4pCWMF6UOlUWy5m9qBJel3crNxf8O0iLRhyiVE76H
+ TLfwoCfIgTi8Syd7Y1kWp1KWxERQ8EAA0QDvsvUX7EmZrCx7dtW4vbo2iRgmIxoRTFEL
+ YCq+dxNBdkw514Ryhjb5bzZSUiVQu8ZYPH/GsgydujWYxIbrLDEONFSXZgi1GKthtf5n
+ Tcah837xtYzGLc0KpieuJJw0ibZPNhEubqg1KdOmIwKtRGrj3DycI57yrKHNHG2YCaWU
+ QqFQ==
+X-Gm-Message-State: AOJu0YwERMS/vO/gBFl1QfFW14FXBVYZYxX6S1N+9+zB1byxBWNTL1b7
+ PdsjcjPREM+e3AAWzW5jnnfxvfXUCUjSqpmz3KA=
+X-Google-Smtp-Source: AGHT+IFM5dsnnoo7aaqNzWpbIS1OR3tlm0UVGB6Q5Yvb8eg3pFF/5lTd5cSOKwoPRkchXFoKaMjD/A==
+X-Received: by 2002:a05:6871:711:b0:1bf:c55b:eef9 with SMTP id
+ f17-20020a056871071100b001bfc55beef9mr5610166oap.27.1691371376287; 
+ Sun, 06 Aug 2023 18:22:56 -0700 (PDT)
+Received: from ?IPV6:2602:47:d490:6901:aa8f:d2aa:4d57:4d3c?
+ ([2602:47:d490:6901:aa8f:d2aa:4d57:4d3c])
+ by smtp.gmail.com with ESMTPSA id
+ 7-20020a17090a034700b002681bda127esm5197641pjf.35.2023.08.06.18.22.55
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 06 Aug 2023 18:22:55 -0700 (PDT)
+Message-ID: <d0dc52f9-89c2-6a4d-f19c-da3649c5993d@linaro.org>
+Date: Sun, 6 Aug 2023 18:22:53 -0700
 MIME-Version: 1.0
-From: Yu Zhang <yu.zhang@ionos.com>
-Date: Mon, 7 Aug 2023 00:07:31 +0200
-Message-ID: <CAHEcVy6_HUjwvww9WrqeqruYRyEDwq1Tee-tm3mxaQE=w92-HA@mail.gmail.com>
-Subject: about QEMU TLS
-To: qemu-devel <qemu-devel@nongnu.org>, Jinpu Wang <jinpu.wang@ionos.com>, 
- Elmar Gerdes <elmar.gerdes@ionos.com>
-Content-Type: multipart/alternative; boundary="000000000000d2fe260602485b14"
-Received-SPF: permerror client-ip=2a00:1450:4864:20::52d;
- envelope-from=yu.zhang@ionos.com; helo=mail-ed1-x52d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PULL 00/24] tcg + linux-user queue for 8.1-rc3
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+References: <20230806033715.244648-1-richard.henderson@linaro.org>
+Content-Language: en-US
+In-Reply-To: <20230806033715.244648-1-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32f.google.com
+X-Spam_score_int: -61
+X-Spam_score: -6.2
+X-Spam_bar: ------
+X-Spam_report: (-6.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-4.139,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_PERMERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,69 +95,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000d2fe260602485b14
-Content-Type: text/plain; charset="UTF-8"
+On 8/5/23 20:36, Richard Henderson wrote:
+> The following changes since commit 6db03ccc7f4ca33c99debaac290066f4500a2dfb:
+> 
+>    Merge tag 'for-upstream' of https://gitlab.com/bonzini/qemu into staging (2023-08-04 14:47:00 -0700)
+> 
+> are available in the Git repository at:
+> 
+>    https://gitlab.com/rth7680/qemu.git tags/pull-tcg-20230805
+> 
+> for you to fetch changes up to 843246699425adfb6b81f927c16c9c6249b51e1d:
+> 
+>    linux-user/elfload: Set V in ELF_HWCAP for RISC-V (2023-08-05 18:17:20 +0000)
+> 
+> ----------------------------------------------------------------
+> accel/tcg: Do not issue misaligned i/o
+> accel/tcg: Call save_iotlb_data from io_readx
+> gdbstub: use 0 ("any process") on packets with no PID
+> linux-user: Fixes for MAP_FIXED_NOREPLACE
+> linux-user: Fixes for brk
+> linux-user: Adjust task_unmapped_base for reserved_va
+> linux-user: Use ELF_ET_DYN_BASE for ET_DYN with interpreter
+> linux-user: Remove host != guest page size workarounds in brk and image load
+> linux-user: Set V in ELF_HWCAP for RISC-V
+> *-user: Remove last_brk as unused
+> 
+> ----------------------------------------------------------------
+> Akihiko Odaki (6):
+>        linux-user: Unset MAP_FIXED_NOREPLACE for host
+>        linux-user: Fix MAP_FIXED_NOREPLACE on old kernels
+>        linux-user: Do not call get_errno() in do_brk()
+>        linux-user: Use MAP_FIXED_NOREPLACE for do_brk()
+>        linux-user: Do nothing if too small brk is specified
+>        linux-user: Do not align brk with host page size
+> 
+> Helge Deller (1):
+>        linux-user: Adjust initial brk when interpreter is close to executable
+> 
+> Matheus Tavares Bernardino (1):
+>        gdbstub: use 0 ("any process") on packets with no PID
+> 
+> Mikhail Tyutin (1):
+>        accel/tcg: Call save_iotlb_data from io_readx as well.
+> 
+> Nathan Egge (1):
+>        linux-user/elfload: Set V in ELF_HWCAP for RISC-V
+> 
+> Richard Henderson (14):
+>        accel/tcg: Adjust parameters and locking with do_{ld,st}_mmio_*
+>        accel/tcg: Issue wider aligned i/o in do_{ld,st}_mmio_*
+>        accel/tcg: Do not issue misaligned i/o
+>        linux-user: Remove last_brk
+>        bsd-user: Remove last_brk
+>        linux-user: Adjust task_unmapped_base for reserved_va
+>        linux-user: Define TASK_UNMAPPED_BASE in $guest/target_mman.h
+>        linux-user: Define ELF_ET_DYN_BASE in $guest/target_mman.h
+>        linux-user: Use MAP_FIXED_NOREPLACE for initial image mmap
+>        linux-user: Use elf_et_dyn_base for ET_DYN with interpreter
+>        linux-user: Properly set image_info.brk in flatload
+>        linux-user: Do not adjust image mapping for host page size
+>        linux-user: Do not adjust zero_bss for host page size
+>        linux-user: Use zero_bss for PT_LOAD with no file contents too
 
-Hi all,
+Applied a truncated version of this PR:
 
-According to qemu docs [1], TLS parameters are specified as an object in
-the QEMU command line:
+3c4a8a8fda bsd-user: Remove last_brk
+62cbf08150 linux-user: Remove last_brk
+0662a626a7 linux-user: Properly set image_info.brk in flatload
+2aea137a42 linux-user: Do not align brk with host page size
+cb9d5d1fda linux-user: Do nothing if too small brk is specified
+e69e032d1a linux-user: Use MAP_FIXED_NOREPLACE for do_brk()
+c6cc059eca linux-user: Do not call get_errno() in do_brk()
+ddcdd8c48f linux-user: Fix MAP_FIXED_NOREPLACE on old kernels
+c3dd50da0f linux-user: Unset MAP_FIXED_NOREPLACE for host
+4333f0924c linux-user/elfload: Set V in ELF_HWCAP for RISC-V
+89e5b7935e configure: Fix linux-user host detection for riscv64
+6c78de6eb6 gdbstub: use 0 ("any process") on packets with no PID
+c30d0b861c accel/tcg: Call save_iotlb_data from io_readx as well
+f7eaf9d702 accel/tcg: Do not issue misaligned i/o
+190aba803f accel/tcg: Issue wider aligned i/o in do_{ld,st}_mmio_*
+1966855e56 accel/tcg: Adjust parameters and locking with do_{ld,st}_mmio_*
 
-   -object tls-creds-x509,id=id,endpoint=endpoint,dir=/path/to/cred/dir ...
 
-of which "endpoint" is a type of "QCryptoTLSCredsEndpoint" and can be
-either a "server" or a "client".
+The "Use MAP_FIXED_NOREPLACE for initial image mmap" patch tickles a latent bug in 
+probe_guest_base, which affects our s390x host.  I omitted all of the task_unmapped_base 
+and elf_et_dyn_base patches as well since they are also affect layout.
 
-I'd like to know:
 
-- When a VM is started with this config, is there a way (e.g. QMP) to
-change the value of "endpoint"?
-  If possible, how to do this? or else after the first migration of a VM,
-the VM has "endpoint=server",
-  which can't be migrated without stop / start.
-
-- In which case does the QEMU reload its TLS certificate, e.g. when a QEMU
-VM has been run longer
-  than the valid period of its TLS certificate?
-
-- The migration is done by using HMP monitor on both source and target
-side. Is it possible to do it
-  by using QMP commands?
-
-[1] https://www.qemu.org/docs/master/system/tls.html
-[2]
-https://www.berrange.com/posts/2016/08/16/improving-qemu-security-part-7-tls-support-for-migration/
-
-Thank you so much for your reply!
-
-Yu Zhang @ Compute Platform IONOS
-06.08.2023
-
---000000000000d2fe260602485b14
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">Hi all,<br><br>According to qemu docs [1], TLS parameters =
-are specified as an object in the QEMU command line:<br><br>=C2=A0 =C2=A0-o=
-bject tls-creds-x509,id=3Did,endpoint=3Dendpoint,dir=3D/path/to/cred/dir ..=
-.<br><br>of which &quot;endpoint&quot; is a type of &quot;QCryptoTLSCredsEn=
-dpoint&quot; and can be either a &quot;server&quot; or a &quot;client&quot;=
-.<br>=C2=A0 =C2=A0<br>I&#39;d like to know:<br><br>- When a VM is started w=
-ith this config, is there a way (e.g. QMP) to change the value of &quot;end=
-point&quot;? <br>=C2=A0 If possible, how to do this? or else after the firs=
-t migration of a VM, the VM has &quot;endpoint=3Dserver&quot;, <br>=C2=A0 w=
-hich can&#39;t be migrated without stop / start. <br>=C2=A0 =C2=A0<br>- In =
-which case does the QEMU reload its TLS certificate, e.g. when a QEMU VM ha=
-s been run longer <br>=C2=A0 than the valid period of its TLS certificate?<=
-br>=C2=A0 <br>- The migration is done by using HMP monitor on both source a=
-nd target side. Is it possible to do it <br>=C2=A0 by using QMP commands? =
-=C2=A0 =C2=A0<br><br>[1]=C2=A0<a href=3D"https://www.qemu.org/docs/master/s=
-ystem/tls.html">https://www.qemu.org/docs/master/system/tls.html</a><br>[2]=
- <a href=3D"https://www.berrange.com/posts/2016/08/16/improving-qemu-securi=
-ty-part-7-tls-support-for-migration/">https://www.berrange.com/posts/2016/0=
-8/16/improving-qemu-security-part-7-tls-support-for-migration/</a><br><br><=
-div>Thank you so much for your reply!</div><div><br>Yu Zhang @ Compute Plat=
-form IONOS<br><div>06.08.2023</div></div></div>
-
---000000000000d2fe260602485b14--
+r~
 
