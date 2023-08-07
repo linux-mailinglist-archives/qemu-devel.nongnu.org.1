@@ -2,67 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5141D773133
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 23:27:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDB9177323D
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 00:03:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qT7kj-0007eW-Kx; Mon, 07 Aug 2023 17:27:01 -0400
+	id 1qT8IR-0005Sm-K3; Mon, 07 Aug 2023 18:01:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <werner@carne.de>) id 1qT7kb-0007cE-K8
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 17:26:53 -0400
-Received: from mout.kundenserver.de ([217.72.192.75])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <werner@carne.de>) id 1qT7kZ-0008Jo-6z
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 17:26:53 -0400
-Received: from core2.homenet.local ([84.169.127.92]) by
- mrelayeu.kundenserver.de (mreue108 [212.227.15.183]) with ESMTPSA (Nemesis)
- id 1MhUHt-1ppxNE30dv-00eZWQ; Mon, 07 Aug 2023 23:26:47 +0200
-Received: from [192.168.1.191] (unknown [192.168.1.191])
- by core2.homenet.local (Postfix) with ESMTP id 25C5C6438CC2;
- Mon,  7 Aug 2023 23:26:47 +0200 (CEST)
-Content-Type: multipart/alternative;
- boundary="------------lCirNIAQkdGlohLec0C94mj6"
-Message-ID: <c9343da4-e453-ac59-ff86-be11008033aa@carne.de>
-Date: Mon, 7 Aug 2023 23:26:48 +0200
+ (Exim 4.90_1) (envelope-from <rbagley@ventanamicro.com>)
+ id 1qT8IN-0005SV-Lr
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 18:01:48 -0400
+Received: from mail-qt1-x834.google.com ([2607:f8b0:4864:20::834])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <rbagley@ventanamicro.com>)
+ id 1qT8IL-0000aR-0l
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 18:01:46 -0400
+Received: by mail-qt1-x834.google.com with SMTP id
+ d75a77b69052e-40feecefa84so20399031cf.1
+ for <qemu-devel@nongnu.org>; Mon, 07 Aug 2023 15:01:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1691445700; x=1692050500;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=iKl9lsH1P1fo5svgWafgkJpB7I9OEKFXSUNGXWdOsJM=;
+ b=f4f4wQx4mEnl4QfSNsizykkxi/l6tSMOr212pxsggTZMGpPMHesK9Au2xGy7XTVSxm
+ F5VUHGVXeIGMc5oGsTF9BG9MBArDDhpxFurwvW88v0H5mzIF8wOK/QGyOVYtoOtS92at
+ 7JXHM82c0UhWeG+1k8eIMtHUZ3YMHHCUpEZni4YXuCuzKD2ANPhH2o5DqHaBYRTeApVw
+ b+Ybryn9IfOsHA0Q/H05EZLZckzN9eV4BIVpw6fSnX0qLExYp2804wuN+orPiSq+sGmM
+ TGTdNayEhIxK4GY+90qN/gsnXyLEo+YVqcXxHxWqzbY9jG0bAGgjDkWuIsx8b7YDwhVo
+ KIoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1691445700; x=1692050500;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=iKl9lsH1P1fo5svgWafgkJpB7I9OEKFXSUNGXWdOsJM=;
+ b=IJ4wk4XOvfuXH2M1wh/GorMizsrkvzMXMzwy3h/NCWyWwTKvMXyZQoDIonhvejgRCz
+ 4UHPv3po1iASfInFbr5d7nfANaenHyvMBBxzYAfXX97JZYKr641rngRb6TlgH67I+A7t
+ 2ITccKB4w1I5aaNZHd4BvZRf+iX7+YqDFCrsJ+yThWLp0NwhLLSHBlB9i34OYbdJzOlr
+ YwJKFAsXwdrfP5nW04d4azYg8kn7PuzcH7GIEnIRUmuKL3ltPnpV4mb8aicSddEJS5wB
+ X3QQofGjCoAFJBMNt9w8L35Wk7gUJNcMyuCXUhtheJ7Cu2QAu+ROjPecs9mtcqUNzluT
+ qqTw==
+X-Gm-Message-State: AOJu0YzI2NzcPsxcsNXfZFFI5VFGGruOCu+ePacVZhGKHLydiD2RPK6U
+ tY2PEkpX3JAhlSUdwfMWTBlfDYPpp87gYxTDJX1n4Q==
+X-Google-Smtp-Source: AGHT+IEmHqWDEuVC7sazCZxWOannpM445FAblBhXu9M7Ps8juI5u9vZgqpgGd/NgQx5zqjoXSi961Rq1kHLRMtRshOc=
+X-Received: by 2002:a05:622a:148f:b0:403:a0a4:97d5 with SMTP id
+ t15-20020a05622a148f00b00403a0a497d5mr8791660qtx.36.1691445699926; Mon, 07
+ Aug 2023 15:01:39 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] serial COM: windows serial COM PollingFunc don't sleep
-Content-Language: de-DE
-To: =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@gmail.com>
-Cc: qemu-devel@nongnu.org
-References: <20230807201443.2668-1-werner@carne.de>
- <CAJ+F1CJk_7reShjGcUBGszX2LFpmVUapBibtQnYBpxmWDp+mgw@mail.gmail.com>
-From: Werner de Carne <werner@carne.de>
-In-Reply-To: <CAJ+F1CJk_7reShjGcUBGszX2LFpmVUapBibtQnYBpxmWDp+mgw@mail.gmail.com>
-X-Provags-ID: V03:K1:6S2nnxqhdK/z65ZvkBeVn1QqZvgYkVsbFmtFHTjiBn938Apaaf9
- e/sNA6gq+BctyuCZpO0m41hQfKjm6m1+LDxMhQreChX85X7pV4hXabOrox+O9g+X0XAdLBu
- SPAzjaktjCDHckz3LESEt6cdM3ZMg9+ymdelvxCDBAWHth2q2xWMS52fYYGZB6CEberI9Tx
- TWLlBX/IzfbAeEgx0aG4Q==
-UI-OutboundReport: notjunk:1;M01:P0:ClUGHNzliWQ=;RZGaQGzw5elx8W9qdJYU9yIVCJ5
- iaG4o5WV9wUEATACKrzDVS9yVC+yoYzLFm0aq1dBVQfz9Px0+MgR6rT767D+DxcBDS/TaweKE
- eg9QhK9pu2Qp8mFnp1HvA5xGjKwv15zpEtI5dbNkI9DFO6Uz0aONhRVu00s2ZnvZFG7Nwy7s5
- olTGoTeGWU/ms1RYhazMbMWV15I3YfMpdxZ0T8UeWlwMxDRNxNE7KcMgRhcV+uRuvhhdlRtvW
- r9Mnti+fSXdJ/PMqOpJuOQexUlXyMIrIEu1EosADQLSm1TidieG1wewRxS0jwJkZHcheGQ9dN
- w91kFJL0/jVjUWw8GycVgvs3szO58NW3BXrJClZIboR70fardkusmFPN3bK5xg83pL5bD89a+
- /wEPcTSFZFRAN2XNDKCrwLrRFbUG/DjbGP4NdyJCO7S63hrSsJBUNFs437eReU0e2AiDlKNf0
- CAviFzBODK0jl7/9+HH0NmD41o8IrF+6QW9RLsQSSJoLokXkAhBrOwaXTvHTyNHHTs3/wk40C
- uGrLXREPpMdTjxiOH7Md1rXVuUGbM9Pud40L6Ch2t2+UC+Cg7ToiqlVfgWq4WX9vBvkh3iETc
- kBZuuM3KQVSNgibgSeZc7QEa1Cp7oYKyMMQJ7kx/JZYXqmu6Jn5tOXXcODtg+m/l99NPJ6UXe
- 7n5oqDwhEOXhy7f/qTjRkjY3BodvGIb1FwNbLfzq0QCvzAHY32ESwhWCEF9W5SFAvmKntyBLq
- ym+T09SNmeHrSTMG7nGxCS6EzIgzw3y9LdDXdWtQzkekIZri5w265gWlcAb51dGhUYQ4RjGQ6
- VBKBOrk3F+wOSbzmBK5CYoTXVd0fXAHMi3PIkKL8MQWk2j/mOHnSXsj3oNnQ/NvL4h7ZOT2Fi
- sG8gVnTmOBxJNlw==
-Received-SPF: pass client-ip=217.72.192.75; envelope-from=werner@carne.de;
- helo=mout.kundenserver.de
-X-Spam_score_int: -36
-X-Spam_score: -3.7
-X-Spam_bar: ---
-X-Spam_report: (-3.7 / 5.0 requ) BAYES_00=-1.9, HTML_MESSAGE=0.001,
- NICE_REPLY_A=-1.809, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+References: <20230731183320.410922-1-rbagley@ventanamicro.com>
+ <4b38596d-1db6-e03f-8b42-65c4464132ab@linaro.org>
+In-Reply-To: <4b38596d-1db6-e03f-8b42-65c4464132ab@linaro.org>
+From: Richard Bagley <rbagley@ventanamicro.com>
+Date: Mon, 7 Aug 2023 15:01:28 -0700
+Message-ID: <CAARkPA_6=u6fM6F4RYC9Zdfw0iQ6sE5Zp1649gAr3_BBR-GRMg@mail.gmail.com>
+Subject: Re: [PATCH] disas/riscv: Further correction to LUI disassembly
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
+ palmer@rivosinc.com, dbarboza@ventanamicro.com
+Content-Type: multipart/alternative; boundary="00000000000019f21306025c648d"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::834;
+ envelope-from=rbagley@ventanamicro.com; helo=mail-qt1-x834.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -79,227 +87,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a multi-part message in MIME format.
---------------lCirNIAQkdGlohLec0C94mj6
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+--00000000000019f21306025c648d
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Marc-André,
+I do apologize, but I do not understand your remark at all. Could I trouble
+you to spell this out.
 
-when processing 2 or more characters, the guest machine mps2-an386 (uart 
-has a 1 character fifo) will only process one character. Without the 
-loop break, the guest gets no computing time and no further character 
-can be processed. The guest gets no more computing time and so 
-everything freezes. It is also sufficient to connect the uart0 from the 
-guest to the Windows host with -serial COMx, but do not activate the 
-uart0 in the guest. The receipt of a single character at the Windows 
-host also results in the deadlock.
+In:
++                snprintf(tmp, sizeof(tmp), "%d", dec->imm >> 12 & 0xfffff)=
+;
+0xfffff is a mask which recovers the 20 bit field used to represent the
+immediate in the instruction encoding.
 
-greetings
+You seem to be responding to the syntax, which is unrelated to my change.
+But I did notice it is the case that both GCC and LLVM disassemblers do not
+accept signed integer arguments to LUI:
+lui r1, -1
+but instead require
+lui r1, 0xfffff
+I don't see why the former is more accurate, but it would be an aid to the
+assembly programmer.
 
-Am 07.08.2023 um 22:59 schrieb Marc-André Lureau:
-> Hi Werner
+I have recommended internally that if the current format cannot support
+both, then it might be worthwhile to propose a pseudo instruction for RISCV
+for precisely this syntax variant:
+lui.s r1.-1
+
+Richard
+
+On Mon, Jul 31, 2023 at 1:37=E2=80=AFPM Richard Henderson <
+richard.henderson@linaro.org> wrote:
+
+> On 7/31/23 11:33, Richard Bagley wrote:
+> > The recent commit 36df75a0a9 corrected one aspect of LUI disassembly
+> > by recovering the immediate argument from the result of LUI with a
+> > shift right by 12. However, the shift right will left-fill with the
+> > sign. By applying a mask we recover an unsigned representation of the
+> > 20-bit field (which includes a sign bit).
 >
-> On Tue, Aug 8, 2023 at 12:46 AM Werner de Carne<werner@carne.de>  wrote:
->> Resolves:https://gitlab.com/qemu-project/qemu/-/issues/1802
->> Signed-off-by: Werner de Carne<werner@carne.de>
-> This changes the polling callback to return 0 when I/O can't be
-> processed.  in util/main-loop.c, it results in an early break of
-> os_host_main_loop_wait().
+> Why would you want that?  Surely
 >
-> How does that help?
+>      lui r1, -1
 >
-> thanks
+> is more accurate than
 >
->> ---
->>   chardev/char-win.c | 16 ++++++++++------
->>   1 file changed, 10 insertions(+), 6 deletions(-)
->>
->> diff --git a/chardev/char-win.c b/chardev/char-win.c
->> index d4fb44c4dc..92a7016105 100644
->> --- a/chardev/char-win.c
->> +++ b/chardev/char-win.c
->> @@ -28,7 +28,7 @@
->>   #include "qapi/error.h"
->>   #include "chardev/char-win.h"
->>
->> -static void win_chr_read(Chardev *chr, DWORD len)
->> +static int win_chr_read(Chardev *chr, DWORD len)
->>   {
->>       WinChardev *s = WIN_CHARDEV(chr);
->>       int max_size = qemu_chr_be_can_write(chr);
->> @@ -40,7 +40,7 @@ static void win_chr_read(Chardev *chr, DWORD len)
->>           len = max_size;
->>       }
->>       if (len == 0) {
->> -        return;
->> +        return 0;
->>       }
->>
->>       ZeroMemory(&s->orecv, sizeof(s->orecv));
->> @@ -56,6 +56,8 @@ static void win_chr_read(Chardev *chr, DWORD len)
->>       if (size > 0) {
->>           qemu_chr_be_write(chr, buf, size);
->>       }
->> +
->> +    return size > 0 ? 1 : 0;
->>   }
->>
->>   static int win_chr_serial_poll(void *opaque)
->> @@ -67,8 +69,9 @@ static int win_chr_serial_poll(void *opaque)
->>
->>       ClearCommError(s->file, &comerr, &status);
->>       if (status.cbInQue > 0) {
->> -        win_chr_read(chr, status.cbInQue);
->> -        return 1;
->> +        if (win_chr_read(chr, status.cbInQue)) {
->> +                       return 1;
->> +               }
->>       }
->>       return 0;
->>   }
->> @@ -147,8 +150,9 @@ int win_chr_pipe_poll(void *opaque)
->>
->>       PeekNamedPipe(s->file, NULL, 0, NULL, &size, NULL);
->>       if (size > 0) {
->> -        win_chr_read(chr, size);
->> -        return 1;
->> +       if (win_chr_read(chr, size)) {
->> +                       return 1;
->> +               }
->>       }
->>       return 0;
->>   }
->> --
->> 2.28.0.windows.1
->>
->>
+>      lui r1, 0xfffff
+>
+>
+> r~
 >
 
---------------lCirNIAQkdGlohLec0C94mj6
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+--00000000000019f21306025c648d
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <div class="moz-cite-prefix">Hi Marc-André,<br>
-      <br>
-      when processing 2 or more characters, the guest machine mps2-an386
-      (uart has a 1 character fifo) will only process one character.
-      Without the loop break, the guest gets no computing time and no
-      further character can be processed. The guest gets no more
-      computing time and so everything freezes. It is also sufficient to
-      connect the uart0 from the guest to the Windows host with -serial
-      COMx, but do not activate the uart0 in the guest. The receipt of a
-      single character at the Windows host also results in the deadlock.</div>
-    <div class="moz-cite-prefix"><br>
-    </div>
-    <div class="moz-cite-prefix"><span class="HwtZe" lang="en"><span
-          class="jCAhz ChMk0b"><span class="ryNqvb">greetings</span></span></span></div>
-    <div class="moz-cite-prefix"><br>
-    </div>
-    <div class="moz-cite-prefix">Am 07.08.2023 um 22:59 schrieb
-      Marc-André Lureau:<br>
-    </div>
-    <blockquote type="cite"
-cite="mid:CAJ+F1CJk_7reShjGcUBGszX2LFpmVUapBibtQnYBpxmWDp+mgw@mail.gmail.com">
-      <pre class="moz-quote-pre" wrap="">Hi Werner
+<div dir=3D"ltr">I do apologize, but I do not understand your remark at all=
+. Could I trouble you to spell this out.<br><br>In:<br>+=C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 snprintf(tmp, sizeof(tmp), &quot;%d&=
+quot;, dec-&gt;imm &gt;&gt; 12 &amp; 0xfffff);<br>0xfffff is a mask which=
+=C2=A0recovers the 20 bit field used to represent the immediate in the inst=
+ruction encoding.<br><br>You seem to be responding to the syntax, which is =
+unrelated to my change.<br>But I did notice it is the case that both GCC an=
+d LLVM disassemblers do not accept signed integer arguments to LUI:<br>lui =
+r1, -1<br>but instead require<br>lui r1, 0xfffff<br>I don&#39;t see why the=
+ former is more accurate, but it would be an aid to the assembly programmer=
+.<br><br>I have recommended internally that if the current format cannot su=
+pport both, then it might be worthwhile=C2=A0to propose a pseudo instructio=
+n for RISCV for precisely this syntax variant:<br>lui.s r1.-1<br><br>Richar=
+d</div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr"=
+>On Mon, Jul 31, 2023 at 1:37=E2=80=AFPM Richard Henderson &lt;<a href=3D"m=
+ailto:richard.henderson@linaro.org">richard.henderson@linaro.org</a>&gt; wr=
+ote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px=
+ 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">On 7/31/23 =
+11:33, Richard Bagley wrote:<br>
+&gt; The recent commit 36df75a0a9 corrected one aspect of LUI disassembly<b=
+r>
+&gt; by recovering the immediate argument from the result of LUI with a<br>
+&gt; shift right by 12. However, the shift right will left-fill with the<br=
+>
+&gt; sign. By applying a mask we recover an unsigned representation of the<=
+br>
+&gt; 20-bit field (which includes a sign bit).<br>
+<br>
+Why would you want that?=C2=A0 Surely<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0lui r1, -1<br>
+<br>
+is more accurate than<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0lui r1, 0xfffff<br>
+<br>
+<br>
+r~<br>
+</blockquote></div>
 
-On Tue, Aug 8, 2023 at 12:46 AM Werner de Carne <a class="moz-txt-link-rfc2396E" href="mailto:werner@carne.de">&lt;werner@carne.de&gt;</a> wrote:
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">
-Resolves: <a class="moz-txt-link-freetext" href="https://gitlab.com/qemu-project/qemu/-/issues/1802">https://gitlab.com/qemu-project/qemu/-/issues/1802</a>
-Signed-off-by: Werner de Carne <a class="moz-txt-link-rfc2396E" href="mailto:werner@carne.de">&lt;werner@carne.de&gt;</a>
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-This changes the polling callback to return 0 when I/O can't be
-processed.  in util/main-loop.c, it results in an early break of
-os_host_main_loop_wait().
-
-How does that help?
-
-thanks
-
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">---
- chardev/char-win.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
-
-diff --git a/chardev/char-win.c b/chardev/char-win.c
-index d4fb44c4dc..92a7016105 100644
---- a/chardev/char-win.c
-+++ b/chardev/char-win.c
-@@ -28,7 +28,7 @@
- #include "qapi/error.h"
- #include "chardev/char-win.h"
-
--static void win_chr_read(Chardev *chr, DWORD len)
-+static int win_chr_read(Chardev *chr, DWORD len)
- {
-     WinChardev *s = WIN_CHARDEV(chr);
-     int max_size = qemu_chr_be_can_write(chr);
-@@ -40,7 +40,7 @@ static void win_chr_read(Chardev *chr, DWORD len)
-         len = max_size;
-     }
-     if (len == 0) {
--        return;
-+        return 0;
-     }
-
-     ZeroMemory(&amp;s-&gt;orecv, sizeof(s-&gt;orecv));
-@@ -56,6 +56,8 @@ static void win_chr_read(Chardev *chr, DWORD len)
-     if (size &gt; 0) {
-         qemu_chr_be_write(chr, buf, size);
-     }
-+
-+    return size &gt; 0 ? 1 : 0;
- }
-
- static int win_chr_serial_poll(void *opaque)
-@@ -67,8 +69,9 @@ static int win_chr_serial_poll(void *opaque)
-
-     ClearCommError(s-&gt;file, &amp;comerr, &amp;status);
-     if (status.cbInQue &gt; 0) {
--        win_chr_read(chr, status.cbInQue);
--        return 1;
-+        if (win_chr_read(chr, status.cbInQue)) {
-+                       return 1;
-+               }
-     }
-     return 0;
- }
-@@ -147,8 +150,9 @@ int win_chr_pipe_poll(void *opaque)
-
-     PeekNamedPipe(s-&gt;file, NULL, 0, NULL, &amp;size, NULL);
-     if (size &gt; 0) {
--        win_chr_read(chr, size);
--        return 1;
-+       if (win_chr_read(chr, size)) {
-+                       return 1;
-+               }
-     }
-     return 0;
- }
---
-2.28.0.windows.1
-
-
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-
-</pre>
-    </blockquote>
-    <p><br>
-    </p>
-  </body>
-</html>
-
---------------lCirNIAQkdGlohLec0C94mj6--
+--00000000000019f21306025c648d--
 
