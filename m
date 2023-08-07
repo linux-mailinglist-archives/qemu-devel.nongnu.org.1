@@ -2,86 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAE3A772A83
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 18:22:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F666772A96
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 18:25:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qT2zY-00089W-2C; Mon, 07 Aug 2023 12:22:00 -0400
+	id 1qT324-0001KS-W3; Mon, 07 Aug 2023 12:24:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tjeznach@rivosinc.com>)
- id 1qT2zP-00088z-1p
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 12:21:54 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qT323-0001KC-I6
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 12:24:35 -0400
+Received: from mail-lj1-x233.google.com ([2a00:1450:4864:20::233])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <tjeznach@rivosinc.com>)
- id 1qT2zM-0007tJ-6U
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 12:21:50 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-1bc63ef9959so15605565ad.2
- for <qemu-devel@nongnu.org>; Mon, 07 Aug 2023 09:21:47 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qT321-0008Nw-NN
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 12:24:35 -0400
+Received: by mail-lj1-x233.google.com with SMTP id
+ 38308e7fff4ca-2b9338e4695so75808661fa.2
+ for <qemu-devel@nongnu.org>; Mon, 07 Aug 2023 09:24:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1691425306; x=1692030106; 
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Fm2Xe/FNNQima/2rNySSEVvwjIYntFJDVNNxZcUUOZE=;
- b=I1Tbif1EzKbsZD+V305vORCelMWYPgcKQcut0PTcXS5eqps4CoXQpBzBBfcyQJi616
- S6Fl6BhrDNwDgSMmU/mhzQ4vpOwJoz9+5pefUAMha0mm50bq4b5f0gVwNCKWc1PcfF2X
- zJVqQwRI9uEgmyVa7rOe3VJLIzdgAyeGvgGP+sr/1itu6uSBKlmrMVmcpmkulzuX6Z8M
- iF4Zo2+1SroUkAxr4FP6bXI14J1szsANYN8lTmTt0bK8ciKnnyiNqJLC6w0nmCCgYvYm
- Lj5z5UA7cl+1W0sv/Lzg/iqJiP007jIZX1f9EYFGTzhNUMHwr0DNWL2tOE+nANs0Nv4u
- qKBQ==
+ d=linaro.org; s=google; t=1691425471; x=1692030271;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=HkWJFcvv7HzX/+P9B1oBKExc219KhaCWc74BdKmMF+g=;
+ b=ieavqA94BEAkKOCPX9xusHknIczpnODy8Y2pSgsQR2QX6GNWFQa69iLjchyay9zvdR
+ yTxJYcku3t3JuBD41+IMBc/BfI6hNU1knM5vKZ9eyAKhq6QJnbnUECsfG5haweIRSLEF
+ 8ey10jV+Ztux5OADI9T1l2hvMZhxP6dUMMRfGxsU3RlP2xlz781FG8E2sfpcow+wSAFw
+ iGrGGUhk9lw5DxeTDEy8O6ehTAUF1b5uE6wcv3QLy9aVZbs6DrS1nXC14wA026p/yII+
+ YhpWsL1iTufkSU1BgUbjXAVW4jZAfvEtzxJXrhri7lorGZdIpZAL8VWRlhhm44xQtnUb
+ 08Zw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691425306; x=1692030106;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Fm2Xe/FNNQima/2rNySSEVvwjIYntFJDVNNxZcUUOZE=;
- b=XaPoZ1VigHcIVhtkMKzZTvggywg67UaMTgyN4kBnF6s/E0yvqzyzW6tf4pXQ4WUzlZ
- q+jNC3hujMMkSO0ttosPnk1L+oJUEduodCs0qocGnocluXb6QBeqYeqlnV4i2JcxkKtn
- /2y/L1h/cpgFo0EwT9ahEwhnz/kN92WYPXW3khZI0onNFTybEkrSVKD7UTsmVanmZyPO
- bD1Mq0Tly0eWXZ0i9YV2sLetnC0MdU2IiYukVNNhWQBt6ztREKLmYTwiIen4mveIozJ7
- +yrScoxmz+iL1t8+Gzi5FEnKFLHxewGlZ/kFWeaHTCtFr1mSALjDXhimf0gYe4OkcsCC
- HyzA==
-X-Gm-Message-State: AOJu0YwIS+RrMryc3hlPEDvxkXQzWGdosWtVyJN4J3C8gYjFwj+Qpnl4
- 1QHIX0rjZxrWDXPOSHj8SrTEJa2Z1VLt2JOVo30Vxg==
-X-Google-Smtp-Source: AGHT+IHyQHosArVGYm467Qyzq+2t+xnQQUkBBgz4ZGXFGtz+2O6aaD1Vj6bZzzHyFDgrmSQCC+aWyYbGN0JU2rusTN4=
-X-Received: by 2002:a17:90b:3118:b0:267:fe4e:392f with SMTP id
- gc24-20020a17090b311800b00267fe4e392fmr9806984pjb.39.1691425306160; Mon, 07
- Aug 2023 09:21:46 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1691425471; x=1692030271;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=HkWJFcvv7HzX/+P9B1oBKExc219KhaCWc74BdKmMF+g=;
+ b=e3Uzp/XXaGdQwCP7MMGrgZXyb3Ja3AccpkjcjZHa0mlOr7LdMzowQ9Bk0Hf6s9U2QU
+ pRF8mvEJeTCrOTV1cpmISv2w1lkIC10SWevf309YzXo6p0BGek4KcVABpKLcp9wFz7Ej
+ JphtSNQsVq/PfRyrlgkwSAIvegUNALQubqp9ifty+M/mw5a9HjWBJUHB8XeuOq6ObF31
+ l7eXxtd39rd7IttKdWRqO77j5L3i08PkMAM9sPoCL1b6AUpgIp1QyeQjE902eCFOR+2Y
+ iHZgqZZguyDhBzz5q6z9WrU8GO2ncASRCrn8G0WBKvXwl1kY5t+omsCTuZhtg99zK6Co
+ i6Xg==
+X-Gm-Message-State: AOJu0YyVlgz5qIqerPeGmtLP99LD+OaRKQUdp9tB2/rgEwMm5yefGRFC
+ 3n3hgwuyIbV42Bp/41ZDTQMbAddzdpfhIwxYJvcMbA==
+X-Google-Smtp-Source: AGHT+IEoGpWXq99kK4SlzSHjR3uSkfo5Uh7Ifecbw8kk7nUKuYMxnzf91lrCAyL1WE+JCWFUtXI2FxIf5WnkObYjEbM=
+X-Received: by 2002:ac2:465d:0:b0:4fb:8cd1:1679 with SMTP id
+ s29-20020ac2465d000000b004fb8cd11679mr6389696lfo.44.1691425471383; Mon, 07
+ Aug 2023 09:24:31 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1689819031.git.tjeznach@rivosinc.com>
- <4e045d8bd6a211e821b07c6437c9023f183bcacc.1689819032.git.tjeznach@rivosinc.com>
- <CAKmqyKPPFJ1o8chsNUnb0iLKu5gX67H-QBnm_+HkeNckEkfOTg@mail.gmail.com>
-In-Reply-To: <CAKmqyKPPFJ1o8chsNUnb0iLKu5gX67H-QBnm_+HkeNckEkfOTg@mail.gmail.com>
-From: Tomasz Jeznach <tjeznach@rivosinc.com>
-Date: Mon, 7 Aug 2023 09:21:35 -0700
-Message-ID: <CAH2o1u41XOmsnMVG+4MHtfc6LUuJu5y-wP7YFopw3zEzp=ZAVw@mail.gmail.com>
-Subject: Re: [PATCH 5/5] hw/riscv: virt: support for RISC-V IOMMU platform
- device.
-To: Alistair Francis <alistair23@gmail.com>
-Cc: Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, 
- Palmer Dabbelt <palmer@dabbelt.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Thomas Huth <thuth@redhat.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- qemu-devel@nongnu.org, qemu-riscv@nongnu.org, linux@rivosinc.com
+References: <cover.1691010283.git.jcd@tribudubois.net>
+ <011393f8c5be2d382955dceb7bc5d78a77b99c31.1691010283.git.jcd@tribudubois.net>
+In-Reply-To: <011393f8c5be2d382955dceb7bc5d78a77b99c31.1691010283.git.jcd@tribudubois.net>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 7 Aug 2023 17:24:20 +0100
+Message-ID: <CAFEAcA85aDf6+0B=hu12K1+n9w9s_D+MyPHDqVuo8saLETa-SQ@mail.gmail.com>
+Subject: Re: [PATCH v3 3/5] Refactor i.MX7 processor code
+To: Jean-Christophe Dubois <jcd@tribudubois.net>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=tjeznach@rivosinc.com; helo=mail-pl1-x62d.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::233;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x233.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,267 +85,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, Jul 23, 2023 at 7:35=E2=80=AFPM Alistair Francis <alistair23@gmail.=
-com> wrote:
+On Wed, 2 Aug 2023 at 22:09, Jean-Christophe Dubois <jcd@tribudubois.net> wrote:
 >
-> On Thu, Jul 20, 2023 at 12:35=E2=80=AFPM Tomasz Jeznach <tjeznach@rivosin=
-c.com> wrote:
-> >
-> > Adding virt machine property 'iommu' to enable/disable IOMMU
-> > support, with platform RISC-V IOMMU device implementation.
-> >
-> > Generate device tree entry for riscv-iommu device, along with
-> > mapping all PCI device identifiers to the single IOMMU device
-> > instance.
-> >
-> > Signed-off-by: Tomasz Jeznach <tjeznach@rivosinc.com>
-> > ---
-> >  hw/riscv/Kconfig        |   1 +
-> >  hw/riscv/virt.c         | 100 +++++++++++++++++++++++++++++++++++++++-
-> >  include/hw/riscv/virt.h |   3 ++
-> >  3 files changed, 103 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/hw/riscv/Kconfig b/hw/riscv/Kconfig
-> > index 617a509f1b..b1a3a9994f 100644
-> > --- a/hw/riscv/Kconfig
-> > +++ b/hw/riscv/Kconfig
-> > @@ -41,6 +41,7 @@ config RISCV_VIRT
-> >      select SERIAL
-> >      select RISCV_ACLINT
-> >      select RISCV_APLIC
-> > +    select RISCV_IOMMU
-> >      select RISCV_IMSIC
-> >      select SIFIVE_PLIC
-> >      select SIFIVE_TEST
-> > diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-> > index d90286dc46..49cc7105af 100644
-> > --- a/hw/riscv/virt.c
-> > +++ b/hw/riscv/virt.c
-> > @@ -32,6 +32,7 @@
-> >  #include "hw/core/sysbus-fdt.h"
-> >  #include "target/riscv/pmu.h"
-> >  #include "hw/riscv/riscv_hart.h"
-> > +#include "hw/riscv/iommu.h"
-> >  #include "hw/riscv/virt.h"
-> >  #include "hw/riscv/boot.h"
-> >  #include "hw/riscv/numa.h"
-> > @@ -88,7 +89,8 @@ static const MemMapEntry virt_memmap[] =3D {
-> >      [VIRT_APLIC_M] =3D      {  0xc000000, APLIC_SIZE(VIRT_CPUS_MAX) },
-> >      [VIRT_APLIC_S] =3D      {  0xd000000, APLIC_SIZE(VIRT_CPUS_MAX) },
-> >      [VIRT_UART0] =3D        { 0x10000000,         0x100 },
-> > -    [VIRT_VIRTIO] =3D       { 0x10001000,        0x1000 },
-> > +    [VIRT_IOMMU] =3D        { 0x10001000,        0x1000 },
-> > +    [VIRT_VIRTIO] =3D       { 0x10008000,        0x1000 }, /* VIRTIO_C=
-OUNT */
+> * Add Addr and size definition for all i.MX7 devices in i.MX7 header file.
+> * Use those newly defined named constants whenever possible.
+> * Standardize the way we init a familly of unimplemented devices
+>   - SAI
+>   - PWM
+>   - CAN
+> * Add/rework few comments
 >
-> We shouldn't change existing addresses
->
+> Signed-off-by: Jean-Christophe Dubois <jcd@tribudubois.net>
+> ---
 
-OK, I'll find another 4k window for IOMMU.
+>      /*
+> -     * IOMUXC and IOMUXC_LPSR
+> +     * IOMUXC, IOMUXC_GPR and IOMUXC_LPSR
+>       */
+> -    for (i = 0; i < FSL_IMX7_NUM_IOMUXCS; i++) {
+> -        static const hwaddr FSL_IMX7_IOMUXCn_ADDR[FSL_IMX7_NUM_IOMUXCS] = {
+> -            FSL_IMX7_IOMUXC_ADDR,
+> -            FSL_IMX7_IOMUXC_LPSR_ADDR,
+> -        };
+> -
+> -        snprintf(name, NAME_SIZE, "iomuxc%d", i);
+> -        create_unimplemented_device(name, FSL_IMX7_IOMUXCn_ADDR[i],
+> -                                    FSL_IMX7_IOMUXCn_SIZE);
+> -    }
+> +    create_unimplemented_device("iomuxc", FSL_IMX7_IOMUXC_ADDR,
+> +                                FSL_IMX7_IOMUXC_SIZE);
+> +    create_unimplemented_device("iomuxc_gpr", FSL_IMX7_IOMUXC_GPR_ADDR,
+> +                                FSL_IMX7_IOMUXC_GPR_SIZE);
+> +    create_unimplemented_device("iomuxc_lspr", FSL_IMX7_IOMUXC_LPSR_ADDR,
+> +                                FSL_IMX7_IOMUXC_LPSR_SIZE);
 
-> Alistair
->
-> >      [VIRT_FW_CFG] =3D       { 0x10100000,          0x18 },
-> >      [VIRT_FLASH] =3D        { 0x20000000,     0x4000000 },
-> >      [VIRT_IMSIC_M] =3D      { 0x24000000, VIRT_IMSIC_MAX_SIZE },
-> > @@ -1019,6 +1021,44 @@ static void create_fdt_fw_cfg(RISCVVirtState *s,=
- const MemMapEntry *memmap)
-> >      g_free(nodename);
-> >  }
-> >
-> > +static void create_fdt_iommu(RISCVVirtState *s, const MemMapEntry *mem=
-map,
-> > +    uint32_t irq_mmio_phandle)
-> > +{
-> > +    MachineState *ms =3D MACHINE(s);
-> > +    uint32_t iommu_phandle;
-> > +    const char *irq_names[] =3D { "cmdq", "fltq", "pm", "priq" };
-> > +    char *iommu_node;
-> > +    char *pci_node;
-> > +
-> > +    pci_node =3D g_strdup_printf("/soc/pci@%" PRIx64, memmap[VIRT_PCIE=
-_ECAM].base);
-> > +    iommu_node =3D g_strdup_printf("/soc/iommu@%" PRIx64, memmap[VIRT_=
-IOMMU].base);
-> > +
-> > +    iommu_phandle =3D qemu_fdt_alloc_phandle(ms->fdt);
-> > +    qemu_fdt_add_subnode(ms->fdt, iommu_node);
-> > +    qemu_fdt_setprop_string(ms->fdt, iommu_node, "compatible", "riscv,=
-iommu");
-> > +    qemu_fdt_setprop_cell(ms->fdt, iommu_node, "#iommu-cells", 1);
-> > +    qemu_fdt_setprop_cell(ms->fdt, iommu_node, "phandle", iommu_phandl=
-e);
-> > +    qemu_fdt_setprop_cells(ms->fdt, iommu_node, "reg",
-> > +        0x0, memmap[VIRT_IOMMU].base, 0x0, memmap[VIRT_IOMMU].size);
-> > +    qemu_fdt_setprop_cell(ms->fdt, iommu_node, "interrupt-parent", irq=
-_mmio_phandle);
-> > +    qemu_fdt_setprop_string_array(ms->fdt, iommu_node, "interrupt-name=
-s",
-> > +        (char **) &irq_names, ARRAY_SIZE(irq_names));
-> > +    qemu_fdt_setprop_cells(ms->fdt, iommu_node, "interrupts",
-> > +        IOMMU_IRQ + 0, 0x4,
-> > +        IOMMU_IRQ + 1, 0x4,
-> > +        IOMMU_IRQ + 2, 0x4,
-> > +        IOMMU_IRQ + 3, 0x4);
-> > +    qemu_fdt_setprop_cells(ms->fdt, pci_node, "iommu-map",
-> > +        0x0, iommu_phandle, 0x0, 0xffff);
-> > +    g_free(iommu_node);
-> > +    g_free(pci_node);
-> > +}
-> > +
-> > +static bool virt_is_iommu_enabled(RISCVVirtState *s)
-> > +{
-> > +    return s->iommu !=3D ON_OFF_AUTO_OFF;
-> > +}
-> > +
-> >  static void create_fdt(RISCVVirtState *s, const MemMapEntry *memmap)
-> >  {
-> >      MachineState *ms =3D MACHINE(s);
-> > @@ -1051,6 +1091,10 @@ static void create_fdt(RISCVVirtState *s, const =
-MemMapEntry *memmap)
-> >
-> >      create_fdt_pcie(s, memmap, irq_pcie_phandle, msi_pcie_phandle);
-> >
-> > +    if (virt_is_iommu_enabled(s)) {
-> > +        create_fdt_iommu(s, memmap, irq_mmio_phandle);
-> > +    }
-> > +
-> >      create_fdt_reset(s, memmap, &phandle);
-> >
-> >      create_fdt_uart(s, memmap, irq_mmio_phandle);
-> > @@ -1210,6 +1254,31 @@ static DeviceState *virt_create_aia(RISCVVirtAIA=
-Type aia_type, int aia_guests,
-> >      return aplic_m;
-> >  }
-> >
-> > +static DeviceState *virt_create_iommu(RISCVVirtState *s, DeviceState *=
-irqchip)
-> > +{
-> > +    DeviceState *iommu;
-> > +    int i;
-> > +
-> > +    iommu =3D qdev_new(TYPE_RISCV_IOMMU_SYS);
-> > +
-> > +    if (s->aia_type !=3D VIRT_AIA_TYPE_APLIC_IMSIC) {
-> > +        /* Disable MSI_FLAT [22], MSI_MRIF [23] if IMSIC is not enable=
-d. */
-> > +        qdev_prop_set_uint64(iommu, "capabilities", ~(BIT_ULL(22) | BI=
-T_ULL(23)));
-> > +    }
-> > +
-> > +    /* Fixed base register address */
-> > +    qdev_prop_set_uint64(iommu, "addr", virt_memmap[VIRT_IOMMU].base);
-> > +
-> > +    sysbus_realize_and_unref(SYS_BUS_DEVICE(iommu), &error_fatal);
-> > +
-> > +    for (i =3D 0; i < 4; i++) {
-> > +        sysbus_connect_irq(SYS_BUS_DEVICE(iommu), i,
-> > +            qdev_get_gpio_in(irqchip, IOMMU_IRQ + i));
-> > +    }
-> > +
-> > +    return iommu;
-> > +}
-> > +
-> >  static void create_platform_bus(RISCVVirtState *s, DeviceState *irqchi=
-p)
-> >  {
-> >      DeviceState *dev;
-> > @@ -1506,6 +1575,10 @@ static void virt_machine_init(MachineState *mach=
-ine)
-> >
-> >      create_platform_bus(s, mmio_irqchip);
-> >
-> > +    if (virt_is_iommu_enabled(s)) {
-> > +        virt_create_iommu(s, mmio_irqchip);
-> > +    }
-> > +
-> >      serial_mm_init(system_memory, memmap[VIRT_UART0].base,
-> >          0, qdev_get_gpio_in(mmio_irqchip, UART0_IRQ), 399193,
-> >          serial_hd(0), DEVICE_LITTLE_ENDIAN);
-> > @@ -1533,6 +1606,7 @@ static void virt_machine_instance_init(Object *ob=
-j)
-> >      s->oem_id =3D g_strndup(ACPI_BUILD_APPNAME6, 6);
-> >      s->oem_table_id =3D g_strndup(ACPI_BUILD_APPNAME8, 8);
-> >      s->acpi =3D ON_OFF_AUTO_AUTO;
-> > +    s->iommu =3D ON_OFF_AUTO_AUTO;
-> >  }
-> >
-> >  static char *virt_get_aia_guests(Object *obj, Error **errp)
-> > @@ -1607,6 +1681,23 @@ static void virt_set_aclint(Object *obj, bool va=
-lue, Error **errp)
-> >      s->have_aclint =3D value;
-> >  }
-> >
-> > +static void virt_get_iommu(Object *obj, Visitor *v, const char *name,
-> > +                           void *opaque, Error **errp)
-> > +{
-> > +    RISCVVirtState *s =3D RISCV_VIRT_MACHINE(obj);
-> > +    OnOffAuto iommu =3D s->iommu;
-> > +
-> > +    visit_type_OnOffAuto(v, name, &iommu, errp);
-> > +}
-> > +
-> > +static void virt_set_iommu(Object *obj, Visitor *v, const char *name,
-> > +                           void *opaque, Error **errp)
-> > +{
-> > +    RISCVVirtState *s =3D RISCV_VIRT_MACHINE(obj);
-> > +
-> > +    visit_type_OnOffAuto(v, name, &s->iommu, errp);
-> > +}
-> > +
-> >  bool virt_is_acpi_enabled(RISCVVirtState *s)
-> >  {
-> >      return s->acpi !=3D ON_OFF_AUTO_OFF;
-> > @@ -1683,6 +1774,13 @@ static void virt_machine_class_init(ObjectClass =
-*oc, void *data)
-> >      machine_class_allow_dynamic_sysbus_dev(mc, TYPE_TPM_TIS_SYSBUS);
-> >  #endif
-> >
-> > +    machine_class_allow_dynamic_sysbus_dev(mc, TYPE_RISCV_IOMMU_SYS);
-> > +    object_class_property_add(oc, "iommu", "OnOffAuto",
-> > +                              virt_get_iommu, virt_set_iommu,
-> > +                              NULL, NULL);
-> > +    object_class_property_set_description(oc, "iommu",
-> > +        "Set on/off to enable/disable emulating RISC-V IOMMU platform =
-device");
-> > +
-> >      if (tcg_enabled()) {
-> >          object_class_property_add_bool(oc, "aclint", virt_get_aclint,
-> >                                         virt_set_aclint);
-> > diff --git a/include/hw/riscv/virt.h b/include/hw/riscv/virt.h
-> > index e5c474b26e..47b9a4f103 100644
-> > --- a/include/hw/riscv/virt.h
-> > +++ b/include/hw/riscv/virt.h
-> > @@ -59,6 +59,7 @@ struct RISCVVirtState {
-> >      char *oem_id;
-> >      char *oem_table_id;
-> >      OnOffAuto acpi;
-> > +    OnOffAuto iommu;
-> >      const MemMapEntry *memmap;
-> >  };
-> >
-> > @@ -73,6 +74,7 @@ enum {
-> >      VIRT_APLIC_M,
-> >      VIRT_APLIC_S,
-> >      VIRT_UART0,
-> > +    VIRT_IOMMU,
-> >      VIRT_VIRTIO,
-> >      VIRT_FW_CFG,
-> >      VIRT_IMSIC_M,
-> > @@ -91,6 +93,7 @@ enum {
-> >      VIRTIO_IRQ =3D 1, /* 1 to 8 */
-> >      VIRTIO_COUNT =3D 8,
-> >      PCIE_IRQ =3D 0x20, /* 32 to 35 */
-> > +    IOMMU_IRQ =3D 60, /* 60 to 63 */
-> >      VIRT_PLATFORM_BUS_IRQ =3D 64, /* 64 to 95 */
-> >  };
-> >
-> > --
-> > 2.34.1
-> >
-> >
+This is a behaviour change -- we used to create 2 stub
+iomux devices, and now we create 3. Also, we map the
+iomuxc_gpr at FSL_IMX7_IOMUXC_GPR_ADDR here, but we also do
+
+ sysbus_mmio_map(SYS_BUS_DEVICE(&s->gpr), 0, FSL_IMX7_IOMUXC_GPR_ADDR);
+
+below. Which is correct ?
 
 
-best
-- Tomasz
+>      create_unimplemented_device("caam", FSL_IMX7_CAAM_ADDR, FSL_IMX7_CAAM_SIZE);
+>
+>      /*
+> -     * PWM
+> +     * SAIs (Audio SSI (Synchronous Serial Interface))
+>       */
+> -    create_unimplemented_device("pwm1", FSL_IMX7_PWM1_ADDR, FSL_IMX7_PWMn_SIZE);
+> -    create_unimplemented_device("pwm2", FSL_IMX7_PWM2_ADDR, FSL_IMX7_PWMn_SIZE);
+> -    create_unimplemented_device("pwm3", FSL_IMX7_PWM3_ADDR, FSL_IMX7_PWMn_SIZE);
+> -    create_unimplemented_device("pwm4", FSL_IMX7_PWM4_ADDR, FSL_IMX7_PWMn_SIZE);
+> +    for (i = 0; i < FSL_IMX7_NUM_SAIS; i++) {
+> +        static const hwaddr FSL_IMX7_SAIn_ADDR[FSL_IMX7_NUM_SAIS] = {
+> +            FSL_IMX7_SAI1_ADDR,
+> +            FSL_IMX7_SAI2_ADDR,
+> +            FSL_IMX7_SAI3_ADDR,
+> +        };
+> +
+> +        snprintf(name, NAME_SIZE, "sai%d", i);
+> +        create_unimplemented_device(name, FSL_IMX7_SAIn_ADDR[i],
+> +                                    FSL_IMX7_SAIn_SIZE);
+> +    }
+
+Any reason for moving the SAI device creation up like this? It
+makes the diff confusing.
+
+>
+>      /*
+> -     * CAN
+> +     * PWMs
+>       */
+> -    create_unimplemented_device("can1", FSL_IMX7_CAN1_ADDR, FSL_IMX7_CANn_SIZE);
+> -    create_unimplemented_device("can2", FSL_IMX7_CAN2_ADDR, FSL_IMX7_CANn_SIZE);
+> +    for (i = 0; i < FSL_IMX7_NUM_PWMS; i++) {
+> +        static const hwaddr FSL_IMX7_PWMn_ADDR[FSL_IMX7_NUM_PWMS] = {
+> +            FSL_IMX7_PWM1_ADDR,
+> +            FSL_IMX7_PWM2_ADDR,
+> +            FSL_IMX7_PWM3_ADDR,
+> +            FSL_IMX7_PWM4_ADDR,
+> +        };
+> +
+> +        snprintf(name, NAME_SIZE, "pwm%d", i);
+> +        create_unimplemented_device(name, FSL_IMX7_PWMn_ADDR[i],
+> +                                    FSL_IMX7_PWMn_SIZE);
+> +    }
+>
+>      /*
+> -     * SAI (Audio SSI (Synchronous Serial Interface))
+> +     * CANs
+>       */
+> -    create_unimplemented_device("sai1", FSL_IMX7_SAI1_ADDR, FSL_IMX7_SAIn_SIZE);
+> -    create_unimplemented_device("sai2", FSL_IMX7_SAI2_ADDR, FSL_IMX7_SAIn_SIZE);
+> -    create_unimplemented_device("sai2", FSL_IMX7_SAI3_ADDR, FSL_IMX7_SAIn_SIZE);
+> +    for (i = 0; i < FSL_IMX7_NUM_CANS; i++) {
+> +        static const hwaddr FSL_IMX7_CANn_ADDR[FSL_IMX7_NUM_CANS] = {
+> +            FSL_IMX7_CAN1_ADDR,
+> +            FSL_IMX7_CAN2_ADDR,
+> +        };
+> +
+> +        snprintf(name, NAME_SIZE, "can%d", i);
+> +        create_unimplemented_device(name, FSL_IMX7_CANn_ADDR[i],
+> +                                    FSL_IMX7_CANn_SIZE);
+> +    }
+
+
+thanks
+-- PMM
 
