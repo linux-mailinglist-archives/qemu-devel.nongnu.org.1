@@ -2,70 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC3D877231B
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 13:54:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F967772326
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 13:55:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qSyoH-0001Ei-P1; Mon, 07 Aug 2023 07:54:05 -0400
+	id 1qSyoR-0001WP-Iz; Mon, 07 Aug 2023 07:54:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qSyoE-0001Dj-S1
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 07:54:02 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qSyoB-0007sU-4E
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 07:54:02 -0400
-Received: from loongson.cn (unknown [10.20.42.239])
- by gateway (Coremail) with SMTP id _____8AxCPJQ29BkOPsRAA--.40205S3;
- Mon, 07 Aug 2023 19:53:52 +0800 (CST)
-Received: from [10.20.42.239] (unknown [10.20.42.239])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8BxHCNP29BkdhdNAA--.45696S3; 
- Mon, 07 Aug 2023 19:53:51 +0800 (CST)
-Subject: Re: [PATCH v3 6/6] target/loongarch: Support LoongArch32 VPPN
-To: Jiajie Chen <c@jia.je>, qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, yijun@loongson.cn, shenjinyang@loongson.cn, 
- Xiaojuan Yang <yangxiaojuan@loongson.cn>
-References: <20230807094505.2030603-1-c@jia.je>
- <20230807094505.2030603-7-c@jia.je>
-From: gaosong <gaosong@loongson.cn>
-Message-ID: <07898c8a-c787-f692-77dc-9c0d7b7ca2b6@loongson.cn>
-Date: Mon, 7 Aug 2023 19:53:51 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
+ id 1qSyoO-0001VX-PD; Mon, 07 Aug 2023 07:54:12 -0400
+Received: from wout2-smtp.messagingengine.com ([64.147.123.25])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
+ id 1qSyoM-0007tk-BU; Mon, 07 Aug 2023 07:54:12 -0400
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+ by mailout.west.internal (Postfix) with ESMTP id 727223200901;
+ Mon,  7 Aug 2023 07:54:05 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+ by compute1.internal (MEProxy); Mon, 07 Aug 2023 07:54:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
+ h=cc:cc:content-transfer-encoding:content-type:content-type
+ :date:date:from:from:in-reply-to:message-id:mime-version
+ :reply-to:sender:subject:subject:to:to; s=fm2; t=1691409244; x=
+ 1691495644; bh=3N3avKZ+kZ2x4wu5+p8bZ7YZlO+UQbtrFGqd95/RFss=; b=f
+ ucRKoTk5CYZVkvdTc2HJsbtGZ7shwGLsg82YieR2ub/Pu0SsdPlVitJi3AYgOrwg
+ JNNVsug3rQY54MbSDSbWCEPP3SE5Jltya51dFbl8MpAytY5JDNoNnpjchmPX7DCE
+ 8qJfmsyVngmqUD3DBAEVsGTgvPVdAwj5g5P/b1yjKBW7iPKiobbw3iDLfRXzUnxU
+ NwTMFoLivmgUwEQcS3eqSQpmhFyU7MP4nkN99da7+VAo8JPZVzAQfcE6CWgq5WaW
+ kziIJ8ooD4N3ytLvBU4ZfEHnlfgcyvmZNd1ICnPb4Z+H2pTJ9puohJnAXkMjf13h
+ 8ensqf81wgpbMvWRaKXmg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-transfer-encoding
+ :content-type:content-type:date:date:feedback-id:feedback-id
+ :from:from:in-reply-to:message-id:mime-version:reply-to:sender
+ :subject:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender
+ :x-me-sender:x-sasl-enc; s=fm3; t=1691409244; x=1691495644; bh=3
+ N3avKZ+kZ2x4wu5+p8bZ7YZlO+UQbtrFGqd95/RFss=; b=0DlyMhDW9t4WuoOEA
+ 0Vn3fIECNrxTwFjj995RaWdItkaL3GbY48oT37qDoneKpeyRArSF9RjScx5ZuQm/
+ R2JBDObhVWxkJ+kq2dlL1p9lRRBi3gQGQLypb4REvjUJQ0gPuXRH+mza83HwOoZ2
+ hrOAxZTlesfFtLmCUUCMnvnxuCAOiGF5+B4sw1Sxh1g4aYzCDf/U7lKkc8kdgren
+ 6jMFRowp9TVRLEqcovWeV0EzhBPIXs048gBrChHyOeeSdd9K7OQnwxosh/KQzu6u
+ v8Ut6O+ZfGd7Um3ioNFhdh0wYMhFEFQv6VdUdXZ2llBTzSf669EW6g2OM2/xmYt+
+ cWN9w==
+X-ME-Sender: <xms:W9vQZIHf-ZJ29YMisSwbi8rya6PfDSdXsudIUN8FV9RpBast6kPRXQ>
+ <xme:W9vQZBUsFERsxKgIddcqjTC24wXxV04mWLmf_3DKcSKojOjTq1FsQebEDkVyaLCBx
+ ykx9MUqQiy3GLpSJI8>
+X-ME-Received: <xmr:W9vQZCL77ey2uxyd1Pw2mzMGhsq_GIg5Eoi8srZw6syMzZhqQKhQSTmV4FDH3KapT2juFP3_WCrVGQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrledtgdeggecutefuodetggdotefrodftvf
+ curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+ uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+ fjughrpefhvfevufffkffotggggfesthekredtredtjeenucfhrhhomhepmfhlrghushcu
+ lfgvnhhsvghnuceoihhtshesihhrrhgvlhgvvhgrnhhtrdgukheqnecuggftrfgrthhtvg
+ hrnhephfegteffffetgeefveeuieeiueejhfdvkeeljeevhfffudegtdevjeeijedttdeg
+ necuffhomhgrihhnpehgihhtlhgrsgdrtghomhenucevlhhushhtvghrufhiiigvpedtne
+ curfgrrhgrmhepmhgrihhlfhhrohhmpehithhssehirhhrvghlvghvrghnthdrughk
+X-ME-Proxy: <xmx:W9vQZKHlL_WSq2VKG7AAU9IlizC8BSoXjHKj5uGiIeA3cCBlCTbeSw>
+ <xmx:W9vQZOUvY_i-oKa_Rn7KVnxaD06JHF_3DdVCJdSYI_vwiGsfxy6crg>
+ <xmx:W9vQZNO-RR2hV_8X6mFs9JhEwe7go03aw9inTTD0fbBMNXMlfdi6bg>
+ <xmx:XNvQZKSw_Sq6NG7piYAfeJ5oui1TLzKBJy8ZgQopxLvzN4X1Ueds-w>
+Feedback-ID: idc91472f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 7 Aug 2023 07:54:02 -0400 (EDT)
+From: Klaus Jensen <its@irrelevant.dk>
+To: Peter Maydell <peter.maydell@linaro.org>,
+	qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Keith Busch <kbusch@kernel.org>, Hanna Reitz <hreitz@redhat.com>,
+ qemu-block@nongnu.org, Klaus Jensen <its@irrelevant.dk>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Fam Zheng <fam@euphon.net>,
+ Kevin Wolf <kwolf@redhat.com>, Klaus Jensen <k.jensen@samsung.com>
+Subject: [PULL 0/2] hw/nvme fixes
+Date: Mon,  7 Aug 2023 13:54:00 +0200
+Message-ID: <20230807115359.123-4-its@irrelevant.dk>
+X-Mailer: git-send-email 2.41.0
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-In-Reply-To: <20230807094505.2030603-7-c@jia.je>
-Content-Type: text/plain; charset=gbk; format=flowed
-Content-Language: en-US
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1480; i=k.jensen@samsung.com;
+ h=from:subject; bh=qxlhpHt1JuiUUkt1RSKKfaloepiOncuHpg8MrlxlnV4=;
+ b=owJ4nAFtAZL+kA0DAAoBTeGvMW1PDekByyZiAGTQ21je/iS0pLAwRyAMccGv2aQQKoGPOgYzn
+ /S+u0hihxjEhIkBMwQAAQoAHRYhBFIoM6p14tzmokdmwE3hrzFtTw3pBQJk0NtYAAoJEE3hrzFt
+ Tw3pxYkH/0AdRLkEHidisChHng2L+NekEAXb0O9M3t/9w14KgzHOmy0GftWbb5a798mNwW1m6FW
+ fi80zzoQ2N2Evm6cS/3p83Wevziq8qXtCDhj7ephrjOfJ2KF8zckvrIcZm6hkM7Zqogelu0SNmW
+ 9MRKbKRdJHka4oPHKsO9gQzJEl2eXT7VqtItypfclXLAze+QHfE2piNxh+yElTaPqO0GxKXg1Cp
+ KAz6WfWrkMYrEER5aFCiztBtElR1EoyBma2qM5D1GpOc13QVYboC+QwUR0HEpLwqGz+0PPeYDr4
+ 8GNHAqfFXjS0ugy5i/SuBPPFd+CnvHbypnWwIKOG+bxgSuTb731zx69T
+X-Developer-Key: i=k.jensen@samsung.com; a=openpgp;
+ fpr=DDCA4D9C9EF931CC3468427263D56FC5E55DA838
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8BxHCNP29BkdhdNAA--.45696S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxGryUXr18Xw18XFWrCry7XFc_yoWrGr13pF
- yFkry8CFy8trZFy3Z3ta4Yyr43Xw1Iya4vqwsxGryavr1DWw18ZrWxurZ7tFyxAwn5ur48
- AFnay3y5CFyrArgCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUvIb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
- xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
- 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv
- 67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
- AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
- F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw
- 1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
- xVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
- 4j6F4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07jO
- uc_UUUUU=
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -12
-X-Spam_score: -1.3
-X-Spam_bar: -
-X-Spam_report: (-1.3 / 5.0 requ) BAYES_00=-1.9, MIME_CHARSET_FARAWAY=2.45,
- NICE_REPLY_A=-1.809, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=64.147.123.25; envelope-from=its@irrelevant.dk;
+ helo=wout2-smtp.messagingengine.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -82,106 +114,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ÔÚ 2023/8/7 ÏÂÎç5:45, Jiajie Chen Ð´µÀ:
-> VPPN of TLBEHI/TLBREHI is limited to 19 bits in LA32.
-> 
-> Signed-off-by: Jiajie Chen <c@jia.je>
-> ---
->   target/loongarch/cpu-csr.h    |  6 ++++--
->   target/loongarch/tlb_helper.c | 23 ++++++++++++++++++-----
->   2 files changed, 22 insertions(+), 7 deletions(-)
-> 
-> diff --git a/target/loongarch/cpu-csr.h b/target/loongarch/cpu-csr.h
-> index b93f99a9ef..9501a969af 100644
-> --- a/target/loongarch/cpu-csr.h
-> +++ b/target/loongarch/cpu-csr.h
-> @@ -57,7 +57,8 @@ FIELD(CSR_TLBIDX, PS, 24, 6)
->   FIELD(CSR_TLBIDX, NE, 31, 1)
->   
->   #define LOONGARCH_CSR_TLBEHI         0x11 /* TLB EntryHi */
-> -FIELD(CSR_TLBEHI, VPPN, 13, 35)
-> +FIELD(CSR_TLBEHI_32, VPPN, 13, 35)
-> +FIELD(CSR_TLBEHI_64, VPPN, 13, 19)
-> 
+From: Klaus Jensen <k.jensen@samsung.com>
 
-FIELD(CSR_TLBEHI_32, VPPN, 13, 19)
-FIELD(CSR_TLBEHI_64, VPPN, 13, 35)
+Hi,
 
->   #define LOONGARCH_CSR_TLBELO0        0x12 /* TLB EntryLo0 */
->   #define LOONGARCH_CSR_TLBELO1        0x13 /* TLB EntryLo1 */
-> @@ -164,7 +165,8 @@ FIELD(CSR_TLBRERA, PC, 2, 62)
->   #define LOONGARCH_CSR_TLBRELO1       0x8d /* TLB refill entrylo1 */
->   #define LOONGARCH_CSR_TLBREHI        0x8e /* TLB refill entryhi */
->   FIELD(CSR_TLBREHI, PS, 0, 6)
-> -FIELD(CSR_TLBREHI, VPPN, 13, 35)
-> +FIELD(CSR_TLBREHI_32, VPPN, 13, 35)
-> +FIELD(CSR_TLBREHI_64, VPPN, 13, 19)
+The following changes since commit 9400601a689a128c25fa9c21e932562e0eeb7a26:
 
-FIELD(CSR_TLBREHI_32, VPPN, 13, 19)
-FIELD(CSR_TLBREHI_64, VPPN, 13, 35)
+  Merge tag 'pull-tcg-20230806-3' of https://gitlab.com/rth7680/qemu into staging (2023-08-06 16:47:48 -0700)
 
-We should test booting a 64 bit kernel or system,
-and adding a 32bit example in patch0 would be more useful.
+are available in the Git repository at:
 
+  https://gitlab.com/birkelund/qemu.git tags/nvme-next-pull-request
 
-Thanks.
-Song Gao
+for you to fetch changes up to 6a33f2e920ec0b489a77200888e3692664077f2d:
 
->   #define LOONGARCH_CSR_TLBRPRMD       0x8f /* TLB refill mode info */
->   FIELD(CSR_TLBRPRMD, PPLV, 0, 2)
->   FIELD(CSR_TLBRPRMD, PIE, 2, 1)
-> diff --git a/target/loongarch/tlb_helper.c b/target/loongarch/tlb_helper.c
-> index cf6f5863f9..7926c40252 100644
-> --- a/target/loongarch/tlb_helper.c
-> +++ b/target/loongarch/tlb_helper.c
-> @@ -305,8 +305,13 @@ static void raise_mmu_exception(CPULoongArchState *env, target_ulong address,
->   
->       if (tlb_error == TLBRET_NOMATCH) {
->           env->CSR_TLBRBADV = address;
-> -        env->CSR_TLBREHI = FIELD_DP64(env->CSR_TLBREHI, CSR_TLBREHI, VPPN,
-> -                                      extract64(address, 13, 35));
-> +        if (env->mode == LA64) {
-> +            env->CSR_TLBREHI = FIELD_DP64(env->CSR_TLBREHI, CSR_TLBREHI_64,
-> +                                        VPPN, extract64(address, 13, 35));
-> +        } else {
-> +            env->CSR_TLBREHI = FIELD_DP64(env->CSR_TLBREHI, CSR_TLBREHI_32,
-> +                                        VPPN, extract64(address, 13, 19));
-> +        }
->       } else {
->           if (!FIELD_EX64(env->CSR_DBG, CSR_DBG, DST)) {
->               env->CSR_BADV = address;
-> @@ -371,12 +376,20 @@ static void fill_tlb_entry(CPULoongArchState *env, int index)
->   
->       if (FIELD_EX64(env->CSR_TLBRERA, CSR_TLBRERA, ISTLBR)) {
->           csr_ps = FIELD_EX64(env->CSR_TLBREHI, CSR_TLBREHI, PS);
-> -        csr_vppn = FIELD_EX64(env->CSR_TLBREHI, CSR_TLBREHI, VPPN);
-> +        if (env->mode == LA64) {
-> +            csr_vppn = FIELD_EX64(env->CSR_TLBREHI, CSR_TLBREHI_64, VPPN);
-> +        } else {
-> +            csr_vppn = FIELD_EX64(env->CSR_TLBREHI, CSR_TLBREHI_32, VPPN);
-> +        }
->           lo0 = env->CSR_TLBRELO0;
->           lo1 = env->CSR_TLBRELO1;
->       } else {
->           csr_ps = FIELD_EX64(env->CSR_TLBIDX, CSR_TLBIDX, PS);
-> -        csr_vppn = FIELD_EX64(env->CSR_TLBEHI, CSR_TLBEHI, VPPN);
-> +        if (env->mode == LA64) {
-> +            csr_vppn = FIELD_EX64(env->CSR_TLBEHI, CSR_TLBEHI_64, VPPN);
-> +        } else {
-> +            csr_vppn = FIELD_EX64(env->CSR_TLBEHI, CSR_TLBEHI_32, VPPN);
-> +        }
->           lo0 = env->CSR_TLBELO0;
->           lo1 = env->CSR_TLBELO1;
->       }
-> @@ -496,7 +509,7 @@ void helper_tlbfill(CPULoongArchState *env)
->   
->       if (pagesize == stlb_ps) {
->           /* Only write into STLB bits [47:13] */
-> -        address = entryhi & ~MAKE_64BIT_MASK(0, R_CSR_TLBEHI_VPPN_SHIFT);
-> +        address = entryhi & ~MAKE_64BIT_MASK(0, R_CSR_TLBEHI_64_VPPN_SHIFT);
->   
->           /* Choose one set ramdomly */
->           set = get_random_tlb(0, 7);
-> 
+  hw/nvme: fix compliance issue wrt. iosqes/iocqes (2023-08-07 12:27:24 +0200)
+
+----------------------------------------------------------------
+hw/nvme fixes
+
+- two fixes for hw/nvme
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEUigzqnXi3OaiR2bATeGvMW1PDekFAmTQ2y4ACgkQTeGvMW1P
+DenpWQf/WFgEljzgTcgxlfZhCyzWGwVNgKqRxlTuF6ELqm8BajCuCeA5ias6AXOr
+x/gZ0VqrL91L5tRIH5Q0sdC+HBFC1yMs66jopdzc1oL1eYu1HTrLIqMDtkXp/K/P
+PyGah2t4qEMtacSkad+hmB68ViUkkmhkxrWYIeufUQTfLNF5pBqNvB1kQON3jmXE
+a1jI/PabYxi8Km0rfFJD6SUGmL9+m7MY/SyZAy+4EZZ1OEnp5jb3o9lbdwbhIU5e
+dRX4NW4BEDiOJeIcNVDiQkXv2/Lna1B51RVMvM4owpk0eRvRXMSqs2DQ5/jp/nGb
+8uChUJ0QW68I4e9ptTfxmBsr4pSktg==
+=0nwp
+-----END PGP SIGNATURE-----
+
+----------------------------------------------------------------
+
+Klaus Jensen (2):
+  hw/nvme: fix oob memory read in fdp events log
+  hw/nvme: fix compliance issue wrt. iosqes/iocqes
+
+ hw/nvme/ctrl.c       | 51 +++++++++++++++-----------------------------
+ hw/nvme/nvme.h       |  9 ++++++--
+ hw/nvme/trace-events |  1 +
+ 3 files changed, 25 insertions(+), 36 deletions(-)
+
+-- 
+2.41.0
 
 
