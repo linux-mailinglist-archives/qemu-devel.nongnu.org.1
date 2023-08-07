@@ -2,90 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98E89771D8C
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 11:52:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E94E771D87
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 11:52:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qSwql-0001jA-GQ; Mon, 07 Aug 2023 05:48:31 -0400
+	id 1qSwrU-0002kH-QA; Mon, 07 Aug 2023 05:49:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qSwqd-0001Qf-OY
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 05:48:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qSwrA-0002Sz-9u
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 05:48:58 -0400
+Received: from hognose1.porkbun.com ([35.82.102.206])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qSwqb-0003QB-94
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 05:48:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691401700;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=w3m7nJP1sARQaVcmpbe4gbFwTpqCf6ysJLtpJr+yDhU=;
- b=VbFaU/ftlD6QmxC1YyHIXC/lhj7MGNsDsL9c/gNUhu7xLyQlY3d8WTRMJ6HXCA9iP10nzF
- LpagSk/+/2BPpFxt1NrMmhDDtXPUoRyL36SEhO1eVJ/JemqM6C4udOcyB7ZlJ5jsuLlTJ+
- TOTb7Jww1o9oEE8qe4qFh3xkD+FI4ug=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-662-EzVG6EctNIS5L2F9rNzk4Q-1; Mon, 07 Aug 2023 05:48:18 -0400
-X-MC-Unique: EzVG6EctNIS5L2F9rNzk4Q-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-3fe4cca36b7so14777305e9.3
- for <qemu-devel@nongnu.org>; Mon, 07 Aug 2023 02:48:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691401697; x=1692006497;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=w3m7nJP1sARQaVcmpbe4gbFwTpqCf6ysJLtpJr+yDhU=;
- b=iDjt8whGJmAPz2xrkw1C2wiSSzy1VN8g7a6dla3xHbCihOgkmAt//rqQi4Wu/8lzUq
- w/BPBDq9hJOvIOFCSOsTSFZQD5Y8HV3CsKdeSqsF4I2zXEIBS/Ifgdte0El6LqGxtnkb
- jPzuhpLc0OPeLmSfOJwv1QG5r+ZpflcWuF5me9Zgl381TAHuwzMh96GFb9PCAlrDhQMx
- 5gmlq8yKzsfYbsT945uImymxcc2rbIyaRJ2iv2ZMOPDgtBnZCucKMaNYvClNQPI9k1ug
- cogC0wypR1AX6owAM5q9iNhi5FS0G2tod6hS6gY9u3v0oi7FCh3XqqGVV106DAAZJcGW
- eFXg==
-X-Gm-Message-State: AOJu0Yxy9JVIfZdJV+HnNQIo4Van1E5NBXSx6S3Hx/+jBopW1D6vA8hv
- iLm3hBwyXU7G8OIGtp6LBTX3yraU56FA1BrKu3T9kIZpmmjUz5Zpsmr/URor67IsLFP1/H9Wjtw
- KwbyXqHyV5gS4ysG+AycgtY2dGYiA3+8VsG9pDe4S3P6mHhqjd/LEJD9NwsDkJHeJTsLclEQiF4
- A=
-X-Received: by 2002:a1c:7912:0:b0:3fb:e2af:49f6 with SMTP id
- l18-20020a1c7912000000b003fbe2af49f6mr6278999wme.39.1691401696956; 
- Mon, 07 Aug 2023 02:48:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IESKWuQfFKudYOkkQ4QoOLIrXUrzthoAF07zci3lxcOYeopf4AWVkb2J5nX/B+9t91r1oDGwA==
-X-Received: by 2002:a1c:7912:0:b0:3fb:e2af:49f6 with SMTP id
- l18-20020a1c7912000000b003fbe2af49f6mr6278986wme.39.1691401696679; 
- Mon, 07 Aug 2023 02:48:16 -0700 (PDT)
-Received: from [192.168.10.118] ([2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e])
- by smtp.gmail.com with ESMTPSA id
- y8-20020a7bcd88000000b003fe2b081661sm14643075wmj.30.2023.08.07.02.48.15
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 07 Aug 2023 02:48:16 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, philmd@linaro.org,
- Joel Stanley <joel@jms.id.au>
-Subject: [PATCH 3/3] configure: unify case statements for CPU canonicalization
-Date: Mon,  7 Aug 2023 11:48:07 +0200
-Message-ID: <20230807094807.471646-4-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230807094807.471646-1-pbonzini@redhat.com>
-References: <20230807094807.471646-1-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qSwr7-0003YD-BE
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 05:48:55 -0400
+Received: from [172.20.10.3] (unknown [112.97.80.95])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Client did not present a certificate)
+ (Authenticated sender: c@jia.je)
+ by hognose1.porkbun.com (Postfix) with ESMTPSA id 8B2FF43AAE;
+ Mon,  7 Aug 2023 09:48:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jia.je; s=default;
+ t=1691401732; bh=lDLFXZpZ318btt41gZNpQD2ZmTFTU25kkXhDqzm41Uo=;
+ h=Date:Subject:To:Cc:References:From:In-Reply-To;
+ b=dd/1vmTbYUD9PTplTsCAyApGZIfDUejG4NRhMHz0OgKWagn/XPE2+SQb477ty7cZB
+ USgXr7P84Yz1cF2NIFM1WkIL9dKnprFdD+YZQh7l3JCDkM8BBvgPdCyQpHG7RjeyGN
+ xdaYxgxnl/zi09pKfujtm18CkAUfT8bLX+4iEMGY=
+Message-ID: <4cbe7855-6d64-1b3f-a5ad-cea7f3f0aa2c@jia.je>
+Date: Mon, 7 Aug 2023 17:48:41 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.14.0
+Subject: Re: [PATCH v3 6/6] target/loongarch: Support LoongArch32 VPPN
+Content-Language: en-US
+To: qemu-devel@nongnu.org
+Cc: richard.henderson@linaro.org, yijun@loongson.cn, shenjinyang@loongson.cn, 
+ Song Gao <gaosong@loongson.cn>, Xiaojuan Yang <yangxiaojuan@loongson.cn>
+References: <20230807094505.2030603-1-c@jia.je>
+ <20230807094505.2030603-7-c@jia.je>
+From: Jiajie Chen <c@jia.je>
+In-Reply-To: <20230807094505.2030603-7-c@jia.je>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=35.82.102.206; envelope-from=c@jia.je;
+ helo=hognose1.porkbun.com
+X-Spam_score_int: -61
+X-Spam_score: -6.2
+X-Spam_bar: ------
+X-Spam_report: (-6.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-4.139,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,222 +67,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The CPU model has to be canonicalized to what Meson wants in the cross
-file, to what Linux uses for its asm-$ARCH directories, and to what
-QEMU uses for its user-mode emulation host/$ARCH directories.  Do
-all three in a single case statement, and check that the Linux and
-QEMU directories actually exist.
 
-At a small cost in repeated lines, this ensures that there are no hidden
-ordering requirements between the case statements.  In particular, commit
-89e5b7935e9 ("configure: Fix linux-user host detection for riscv64",
-2023-08-06) broke ppc64le because it assigned host_arch based on a
-non-canonicalized version of $cpu.
-
-Reported-by: Joel Stanley <joel@jms.id.au>
-Fixes: 89e5b7935e9 ("configure: Fix linux-user host detection for riscv64", 2023-08-06)
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- configure | 159 +++++++++++++++++++++++++++++-------------------------
- 1 file changed, 87 insertions(+), 72 deletions(-)
-
-diff --git a/configure b/configure
-index 484d38d81f4..fb213412d7c 100755
---- a/configure
-+++ b/configure
-@@ -469,59 +469,104 @@ else
-   echo "WARNING: unrecognized host CPU, proceeding with 'uname -m' output '$cpu'"
- fi
- 
--case "$cpu" in
--  riscv*)
--    host_arch=riscv ;;
--  x32)
--    host_arch=x86_64 ;;
--  *)
--    host_arch="$cpu" ;;
--esac
--
--# Normalise host CPU name and set multilib cflags.  The canonicalization
--# isn't really necessary, because the architectures that we check for
--# should not hit the 'uname -m' case, but better safe than sorry.
-+# Normalise host CPU name to the values used by Meson cross files and in source
-+# directories, and set multilib cflags.  The canonicalization isn't really
-+# necessary, because the architectures that we check for should not hit the
-+# 'uname -m' case, but better safe than sorry.
-+#
- # Note that this case should only have supported host CPUs, not guests.
-+# Please keep it sorted.
-+host_arch=
-+linux_arch=
- case "$cpu" in
-+  aarch64)
-+    host_arch=aarch64
-+    linux_arch=arm64 ;;
-+
-   armv*b|armv*l|arm)
-     cpu="arm" ;;
-+    host_arch=arm
-+    linux_arch=arm ;;
- 
-   i386|i486|i586|i686)
-     cpu="i386"
-+    host_arch=i386
-+    linux_arch=x86
-     CPU_CFLAGS="-m32" ;;
-+
-+  loongarch*)
-+    cpu=loongarch64
-+    host_arch=loongarch64 ;;
-+
-+  mips64*)
-+    cpu=mips64
-+    host_arch=mips
-+    linux_arch=mips ;;
-+  mips*)
-+    cpu=mips
-+    host_arch=mips
-+    linux_arch=mips ;;
-+
-+  ppc)
-+    host_arch=ppc
-+    linux_arch=powerpc
-+    CPU_CFLAGS="-m32" ;;
-+  ppc64)
-+    host_arch=ppc64
-+    linux_arch=powerpc
-+    CPU_CFLAGS="-m64 -mbig-endian" ;;
-+  ppc64le)
-+    cpu=ppc64
-+    host_arch=ppc64
-+    linux_arch=powerpc
-+    CPU_CFLAGS="-m64 -mlittle-endian" ;;
-+
-+  riscv32 | riscv64)
-+    host_arch=riscv
-+    linux_arch=riscv
-+    ;;
-+
-+  s390)
-+    linux_arch=s390
-+    CPU_CFLAGS="-m31" ;;
-+  s390x)
-+    host_arch=s390x
-+    linux_arch=s390
-+    CPU_CFLAGS="-m64" ;;
-+
-+  sparc|sun4[cdmuv])
-+    cpu=sparc
-+    CPU_CFLAGS="-m32 -mv8plus -mcpu=ultrasparc" ;;
-+  sparc64)
-+    host_arch=sparc64
-+    CPU_CFLAGS="-m64 -mcpu=ultrasparc" ;;
-+
-   x32)
-     cpu="x86_64"
-+    host_arch=x86_64
-+    linux_arch=x86
-     CPU_CFLAGS="-mx32" ;;
-   x86_64|amd64)
-     cpu="x86_64"
-+    host_arch=x86_64
-+    linux_arch=x86
-     # ??? Only extremely old AMD cpus do not have cmpxchg16b.
-     # If we truly care, we should simply detect this case at
-     # runtime and generate the fallback to serial emulation.
-     CPU_CFLAGS="-m64 -mcx16" ;;
--
--  mips*)
--    cpu="mips" ;;
--
--  ppc)
--    CPU_CFLAGS="-m32" ;;
--  ppc64)
--    CPU_CFLAGS="-m64 -mbig-endian" ;;
--  ppc64le)
--    cpu="ppc64"
--    CPU_CFLAGS="-m64 -mlittle-endian" ;;
--
--  s390)
--    CPU_CFLAGS="-m31" ;;
--  s390x)
--    CPU_CFLAGS="-m64" ;;
--
--  sparc|sun4[cdmuv])
--    cpu="sparc"
--    CPU_CFLAGS="-m32 -mv8plus -mcpu=ultrasparc" ;;
--  sparc64)
--    CPU_CFLAGS="-m64 -mcpu=ultrasparc" ;;
- esac
- 
-+if test -n "$host_arch" && {
-+    ! test -d "$source_path/linux-user/include/host/$host_arch" ||
-+    ! test -d "$source_path/common-user/host/$host_arch"; }; then
-+    error_exit "linux-user/include/host/$host_arch does not exist." \
-+       "This is a bug in the configure script, please report it."
-+fi
-+if test -n "$linux_arch" && ! test -d "$source_path/linux-headers/asm-$linux_arch"; then
-+    error_exit "linux-headers/asm-$linux_arch does not exist." \
-+       "This is a bug in the configure script, please report it."
-+fi
-+
- check_py_version() {
-     # We require python >= 3.7.
-     # NB: a True python conditional creates a non-zero return code (Failure)
-@@ -812,7 +857,7 @@ default_target_list=""
- mak_wilds=""
- 
- if [ "$linux_user" != no ]; then
--    if [ "$targetos" = linux ] && [ -d "$source_path/linux-user/include/host/$host_arch" ]; then
-+    if [ "$targetos" = linux ] && [ -n "$host_arch" ]; then
-         linux_user=yes
-     elif [ "$linux_user" = yes ]; then
-         error_exit "linux-user not supported on this architecture"
-@@ -1717,40 +1762,10 @@ echo "PKG_CONFIG=${pkg_config}" >> $config_host_mak
- echo "CC=$cc" >> $config_host_mak
- echo "EXESUF=$EXESUF" >> $config_host_mak
- 
--# use included Linux headers
--if test "$linux" = "yes" ; then
-+# use included Linux headers for KVM architectures
-+if test "$linux" = "yes" && test -n "$linux_arch"; then
-   mkdir -p linux-headers
--  case "$cpu" in
--  i386|x86_64)
--    linux_arch=x86
--    ;;
--  ppc|ppc64)
--    linux_arch=powerpc
--    ;;
--  s390x)
--    linux_arch=s390
--    ;;
--  aarch64)
--    linux_arch=arm64
--    ;;
--  loongarch*)
--    linux_arch=loongarch
--    ;;
--  mips64)
--    linux_arch=mips
--    ;;
--  riscv32|riscv64)
--    linux_arch=riscv
--    ;;
--  *)
--    # For most CPUs the kernel architecture name and QEMU CPU name match.
--    linux_arch="$cpu"
--    ;;
--  esac
--    # For non-KVM architectures we will not have asm headers
--    if [ -e "$source_path/linux-headers/asm-$linux_arch" ]; then
--      symlink "$source_path/linux-headers/asm-$linux_arch" linux-headers/asm
--    fi
-+  symlink "$source_path/linux-headers/asm-$linux_arch" linux-headers/asm
- fi
- 
- for target in $target_list; do
--- 
-2.41.0
-
+On 2023/8/7 17:45, Jiajie Chen wrote:
+> VPPN of TLBEHI/TLBREHI is limited to 19 bits in LA32.
+>
+> Signed-off-by: Jiajie Chen <c@jia.je>
+> ---
+>   target/loongarch/cpu-csr.h    |  6 ++++--
+>   target/loongarch/tlb_helper.c | 23 ++++++++++++++++++-----
+>   2 files changed, 22 insertions(+), 7 deletions(-)
+>
+> diff --git a/target/loongarch/cpu-csr.h b/target/loongarch/cpu-csr.h
+> index b93f99a9ef..9501a969af 100644
+> --- a/target/loongarch/cpu-csr.h
+> +++ b/target/loongarch/cpu-csr.h
+> @@ -57,7 +57,8 @@ FIELD(CSR_TLBIDX, PS, 24, 6)
+>   FIELD(CSR_TLBIDX, NE, 31, 1)
+>   
+>   #define LOONGARCH_CSR_TLBEHI         0x11 /* TLB EntryHi */
+> -FIELD(CSR_TLBEHI, VPPN, 13, 35)
+> +FIELD(CSR_TLBEHI_32, VPPN, 13, 35)
+> +FIELD(CSR_TLBEHI_64, VPPN, 13, 19)
+Sorry, the bit width is wrong.
+>   
+>   #define LOONGARCH_CSR_TLBELO0        0x12 /* TLB EntryLo0 */
+>   #define LOONGARCH_CSR_TLBELO1        0x13 /* TLB EntryLo1 */
+> @@ -164,7 +165,8 @@ FIELD(CSR_TLBRERA, PC, 2, 62)
+>   #define LOONGARCH_CSR_TLBRELO1       0x8d /* TLB refill entrylo1 */
+>   #define LOONGARCH_CSR_TLBREHI        0x8e /* TLB refill entryhi */
+>   FIELD(CSR_TLBREHI, PS, 0, 6)
+> -FIELD(CSR_TLBREHI, VPPN, 13, 35)
+> +FIELD(CSR_TLBREHI_32, VPPN, 13, 35)
+> +FIELD(CSR_TLBREHI_64, VPPN, 13, 19)
+>   #define LOONGARCH_CSR_TLBRPRMD       0x8f /* TLB refill mode info */
+>   FIELD(CSR_TLBRPRMD, PPLV, 0, 2)
+>   FIELD(CSR_TLBRPRMD, PIE, 2, 1)
+> diff --git a/target/loongarch/tlb_helper.c b/target/loongarch/tlb_helper.c
+> index cf6f5863f9..7926c40252 100644
+> --- a/target/loongarch/tlb_helper.c
+> +++ b/target/loongarch/tlb_helper.c
+> @@ -305,8 +305,13 @@ static void raise_mmu_exception(CPULoongArchState *env, target_ulong address,
+>   
+>       if (tlb_error == TLBRET_NOMATCH) {
+>           env->CSR_TLBRBADV = address;
+> -        env->CSR_TLBREHI = FIELD_DP64(env->CSR_TLBREHI, CSR_TLBREHI, VPPN,
+> -                                      extract64(address, 13, 35));
+> +        if (env->mode == LA64) {
+> +            env->CSR_TLBREHI = FIELD_DP64(env->CSR_TLBREHI, CSR_TLBREHI_64,
+> +                                        VPPN, extract64(address, 13, 35));
+> +        } else {
+> +            env->CSR_TLBREHI = FIELD_DP64(env->CSR_TLBREHI, CSR_TLBREHI_32,
+> +                                        VPPN, extract64(address, 13, 19));
+> +        }
+>       } else {
+>           if (!FIELD_EX64(env->CSR_DBG, CSR_DBG, DST)) {
+>               env->CSR_BADV = address;
+> @@ -371,12 +376,20 @@ static void fill_tlb_entry(CPULoongArchState *env, int index)
+>   
+>       if (FIELD_EX64(env->CSR_TLBRERA, CSR_TLBRERA, ISTLBR)) {
+>           csr_ps = FIELD_EX64(env->CSR_TLBREHI, CSR_TLBREHI, PS);
+> -        csr_vppn = FIELD_EX64(env->CSR_TLBREHI, CSR_TLBREHI, VPPN);
+> +        if (env->mode == LA64) {
+> +            csr_vppn = FIELD_EX64(env->CSR_TLBREHI, CSR_TLBREHI_64, VPPN);
+> +        } else {
+> +            csr_vppn = FIELD_EX64(env->CSR_TLBREHI, CSR_TLBREHI_32, VPPN);
+> +        }
+>           lo0 = env->CSR_TLBRELO0;
+>           lo1 = env->CSR_TLBRELO1;
+>       } else {
+>           csr_ps = FIELD_EX64(env->CSR_TLBIDX, CSR_TLBIDX, PS);
+> -        csr_vppn = FIELD_EX64(env->CSR_TLBEHI, CSR_TLBEHI, VPPN);
+> +        if (env->mode == LA64) {
+> +            csr_vppn = FIELD_EX64(env->CSR_TLBEHI, CSR_TLBEHI_64, VPPN);
+> +        } else {
+> +            csr_vppn = FIELD_EX64(env->CSR_TLBEHI, CSR_TLBEHI_32, VPPN);
+> +        }
+>           lo0 = env->CSR_TLBELO0;
+>           lo1 = env->CSR_TLBELO1;
+>       }
+> @@ -496,7 +509,7 @@ void helper_tlbfill(CPULoongArchState *env)
+>   
+>       if (pagesize == stlb_ps) {
+>           /* Only write into STLB bits [47:13] */
+> -        address = entryhi & ~MAKE_64BIT_MASK(0, R_CSR_TLBEHI_VPPN_SHIFT);
+> +        address = entryhi & ~MAKE_64BIT_MASK(0, R_CSR_TLBEHI_64_VPPN_SHIFT);
+>   
+>           /* Choose one set ramdomly */
+>           set = get_random_tlb(0, 7);
 
