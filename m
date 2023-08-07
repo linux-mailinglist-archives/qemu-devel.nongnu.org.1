@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0184C7729EE
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 17:58:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 035897729EB
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 17:58:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qT2c1-00069O-Cw; Mon, 07 Aug 2023 11:57:41 -0400
+	id 1qT2c3-0006HW-KK; Mon, 07 Aug 2023 11:57:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qT2br-000607-Jn
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 11:57:33 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qT2bv-00062p-AT
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 11:57:37 -0400
 Received: from rev.ng ([5.9.113.41])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qT2bp-0002YY-IK
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 11:57:31 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qT2bt-0002ZY-HW
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 11:57:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
  Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive;
- bh=KRzJ1bPK/oKfAEdfmj7hjZo4O5MdTZSbZXLT/34Vk2s=; b=c4tjS7waMw8SyCqbBCOrt8I65z
- pyXUDg1rImFvAVurBziC0MbYusEE9yxWlejSnPp2quOf0jhq7vOBstbIunZ/iSa+v+FaFBT4jTWVB
- B8DA7dOFAWHb/Ouu4rgCFEwyUyf9DJ+Og3sZCNgpX6TSCAdWAFa+aPTRaKDM/+c4z0yI=;
+ bh=nB5aAKrfvL5QqK6PN553hhBjHPJx70t+msv7ajaLhPg=; b=YP7o/3cuunpAk4lRf+FUO336Ld
+ LLpDpZxexRnXLxwuPGMFHJvez7XnQtc5ctxEAC+37CW6Yv0p5yQfp5AVx8G2aPRr14dA2tF+jIqJy
+ ezEbqBmKD/TU8KE1kbySty4Vej5N8iag7xJMdIjY7E8ChXsJ+KhbSUZq7M9V8bFEcrQ0=;
 To: qemu-devel@nongnu.org
 Cc: ale@rev.ng, richard.henderson@linaro.org, pbonzini@redhat.com,
  philmd@linaro.org, agraf@csgraf.de, dirty@apple.com, rbolshakov@ddn.com,
  anielhb413@gmail.com, pasic@linux.ibm.com, borntraeger@linux.ibm.com,
  palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
  ysato@users.sourceforge.jp, peter.maydell@linaro.org
-Subject: [PATCH v2 5/9] Replace target_ulong with abi_ptr in cpu_[st|ld]*()
-Date: Mon,  7 Aug 2023 17:57:02 +0200
-Message-ID: <20230807155706.9580-6-anjo@rev.ng>
+Subject: [PATCH v2 6/9] include/exec: typedef abi_ptr to vaddr in softmmu
+Date: Mon,  7 Aug 2023 17:57:03 +0200
+Message-ID: <20230807155706.9580-7-anjo@rev.ng>
 In-Reply-To: <20230807155706.9580-1-anjo@rev.ng>
 References: <20230807155706.9580-1-anjo@rev.ng>
 MIME-Version: 1.0
@@ -62,247 +62,32 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Changes the address type of the guest memory read/write functions from
-target_ulong to abi_ptr. (abi_ptr is currently typedef'd to target_ulong
-but that will change in a following commit.) This will reduce the
-coupling between accel/ and target/.
-
-Note: Function pointers that point to cpu_[st|ld]*() in target/riscv and
-target/rx are also updated in this commit.
+In system mode, abi_ptr is primarily used for representing addresses
+when accessing guest memory with cpu_[st|ld]*(). Widening it from
+target_ulong to vaddr reduces the target dependence of these functions
+and is step towards building accel/ once for system mode.
 
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/atomic_template.h  | 16 ++++++++--------
- include/exec/cpu_ldst.h      | 24 ++++++++++++------------
- accel/tcg/cputlb.c           | 10 +++++-----
- target/riscv/vector_helper.c |  2 +-
- target/rx/op_helper.c        |  6 +++---
- 5 files changed, 29 insertions(+), 29 deletions(-)
+ include/exec/cpu_ldst.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/accel/tcg/atomic_template.h b/accel/tcg/atomic_template.h
-index e312acd16d..84c08b1425 100644
---- a/accel/tcg/atomic_template.h
-+++ b/accel/tcg/atomic_template.h
-@@ -69,7 +69,7 @@
- # define END  _le
- #endif
- 
--ABI_TYPE ATOMIC_NAME(cmpxchg)(CPUArchState *env, target_ulong addr,
-+ABI_TYPE ATOMIC_NAME(cmpxchg)(CPUArchState *env, abi_ptr addr,
-                               ABI_TYPE cmpv, ABI_TYPE newv,
-                               MemOpIdx oi, uintptr_t retaddr)
- {
-@@ -87,7 +87,7 @@ ABI_TYPE ATOMIC_NAME(cmpxchg)(CPUArchState *env, target_ulong addr,
- }
- 
- #if DATA_SIZE < 16
--ABI_TYPE ATOMIC_NAME(xchg)(CPUArchState *env, target_ulong addr, ABI_TYPE val,
-+ABI_TYPE ATOMIC_NAME(xchg)(CPUArchState *env, abi_ptr addr, ABI_TYPE val,
-                            MemOpIdx oi, uintptr_t retaddr)
- {
-     DATA_TYPE *haddr = atomic_mmu_lookup(env, addr, oi, DATA_SIZE, retaddr);
-@@ -100,7 +100,7 @@ ABI_TYPE ATOMIC_NAME(xchg)(CPUArchState *env, target_ulong addr, ABI_TYPE val,
- }
- 
- #define GEN_ATOMIC_HELPER(X)                                        \
--ABI_TYPE ATOMIC_NAME(X)(CPUArchState *env, target_ulong addr,       \
-+ABI_TYPE ATOMIC_NAME(X)(CPUArchState *env, abi_ptr addr,            \
-                         ABI_TYPE val, MemOpIdx oi, uintptr_t retaddr) \
- {                                                                   \
-     DATA_TYPE *haddr, ret;                                          \
-@@ -131,7 +131,7 @@ GEN_ATOMIC_HELPER(xor_fetch)
-  * of CF_PARALLEL's value, we'll trace just a read and a write.
-  */
- #define GEN_ATOMIC_HELPER_FN(X, FN, XDATA_TYPE, RET)                \
--ABI_TYPE ATOMIC_NAME(X)(CPUArchState *env, target_ulong addr,       \
-+ABI_TYPE ATOMIC_NAME(X)(CPUArchState *env, abi_ptr addr,            \
-                         ABI_TYPE xval, MemOpIdx oi, uintptr_t retaddr) \
- {                                                                   \
-     XDATA_TYPE *haddr, cmp, old, new, val = xval;                   \
-@@ -172,7 +172,7 @@ GEN_ATOMIC_HELPER_FN(umax_fetch, MAX,  DATA_TYPE, new)
- # define END  _be
- #endif
- 
--ABI_TYPE ATOMIC_NAME(cmpxchg)(CPUArchState *env, target_ulong addr,
-+ABI_TYPE ATOMIC_NAME(cmpxchg)(CPUArchState *env, abi_ptr addr,
-                               ABI_TYPE cmpv, ABI_TYPE newv,
-                               MemOpIdx oi, uintptr_t retaddr)
- {
-@@ -190,7 +190,7 @@ ABI_TYPE ATOMIC_NAME(cmpxchg)(CPUArchState *env, target_ulong addr,
- }
- 
- #if DATA_SIZE < 16
--ABI_TYPE ATOMIC_NAME(xchg)(CPUArchState *env, target_ulong addr, ABI_TYPE val,
-+ABI_TYPE ATOMIC_NAME(xchg)(CPUArchState *env, abi_ptr addr, ABI_TYPE val,
-                            MemOpIdx oi, uintptr_t retaddr)
- {
-     DATA_TYPE *haddr = atomic_mmu_lookup(env, addr, oi, DATA_SIZE, retaddr);
-@@ -203,7 +203,7 @@ ABI_TYPE ATOMIC_NAME(xchg)(CPUArchState *env, target_ulong addr, ABI_TYPE val,
- }
- 
- #define GEN_ATOMIC_HELPER(X)                                        \
--ABI_TYPE ATOMIC_NAME(X)(CPUArchState *env, target_ulong addr,       \
-+ABI_TYPE ATOMIC_NAME(X)(CPUArchState *env, abi_ptr addr,            \
-                         ABI_TYPE val, MemOpIdx oi, uintptr_t retaddr) \
- {                                                                   \
-     DATA_TYPE *haddr, ret;                                          \
-@@ -231,7 +231,7 @@ GEN_ATOMIC_HELPER(xor_fetch)
-  * of CF_PARALLEL's value, we'll trace just a read and a write.
-  */
- #define GEN_ATOMIC_HELPER_FN(X, FN, XDATA_TYPE, RET)                \
--ABI_TYPE ATOMIC_NAME(X)(CPUArchState *env, target_ulong addr,       \
-+ABI_TYPE ATOMIC_NAME(X)(CPUArchState *env, abi_ptr addr,            \
-                         ABI_TYPE xval, MemOpIdx oi, uintptr_t retaddr) \
- {                                                                   \
-     XDATA_TYPE *haddr, ldo, ldn, old, new, val = xval;              \
 diff --git a/include/exec/cpu_ldst.h b/include/exec/cpu_ldst.h
-index 645476f0e5..da10ba1433 100644
+index da10ba1433..f3ce4eb1d0 100644
 --- a/include/exec/cpu_ldst.h
 +++ b/include/exec/cpu_ldst.h
-@@ -223,31 +223,31 @@ void cpu_stq_mmu(CPUArchState *env, abi_ptr ptr, uint64_t val,
- void cpu_st16_mmu(CPUArchState *env, abi_ptr addr, Int128 val,
-                   MemOpIdx oi, uintptr_t ra);
+@@ -121,8 +121,8 @@ static inline bool guest_range_valid_untagged(abi_ulong start, abi_ulong len)
+     h2g_nocheck(x); \
+ })
+ #else
+-typedef target_ulong abi_ptr;
+-#define TARGET_ABI_FMT_ptr TARGET_FMT_lx
++typedef vaddr abi_ptr;
++#define TARGET_ABI_FMT_ptr "%016" VADDR_PRIx
+ #endif
  
--uint32_t cpu_atomic_cmpxchgb_mmu(CPUArchState *env, target_ulong addr,
-+uint32_t cpu_atomic_cmpxchgb_mmu(CPUArchState *env, abi_ptr addr,
-                                  uint32_t cmpv, uint32_t newv,
-                                  MemOpIdx oi, uintptr_t retaddr);
--uint32_t cpu_atomic_cmpxchgw_le_mmu(CPUArchState *env, target_ulong addr,
-+uint32_t cpu_atomic_cmpxchgw_le_mmu(CPUArchState *env, abi_ptr addr,
-                                     uint32_t cmpv, uint32_t newv,
-                                     MemOpIdx oi, uintptr_t retaddr);
--uint32_t cpu_atomic_cmpxchgl_le_mmu(CPUArchState *env, target_ulong addr,
-+uint32_t cpu_atomic_cmpxchgl_le_mmu(CPUArchState *env, abi_ptr addr,
-                                     uint32_t cmpv, uint32_t newv,
-                                     MemOpIdx oi, uintptr_t retaddr);
--uint64_t cpu_atomic_cmpxchgq_le_mmu(CPUArchState *env, target_ulong addr,
-+uint64_t cpu_atomic_cmpxchgq_le_mmu(CPUArchState *env, abi_ptr addr,
-                                     uint64_t cmpv, uint64_t newv,
-                                     MemOpIdx oi, uintptr_t retaddr);
--uint32_t cpu_atomic_cmpxchgw_be_mmu(CPUArchState *env, target_ulong addr,
-+uint32_t cpu_atomic_cmpxchgw_be_mmu(CPUArchState *env, abi_ptr addr,
-                                     uint32_t cmpv, uint32_t newv,
-                                     MemOpIdx oi, uintptr_t retaddr);
--uint32_t cpu_atomic_cmpxchgl_be_mmu(CPUArchState *env, target_ulong addr,
-+uint32_t cpu_atomic_cmpxchgl_be_mmu(CPUArchState *env, abi_ptr addr,
-                                     uint32_t cmpv, uint32_t newv,
-                                     MemOpIdx oi, uintptr_t retaddr);
--uint64_t cpu_atomic_cmpxchgq_be_mmu(CPUArchState *env, target_ulong addr,
-+uint64_t cpu_atomic_cmpxchgq_be_mmu(CPUArchState *env, abi_ptr addr,
-                                     uint64_t cmpv, uint64_t newv,
-                                     MemOpIdx oi, uintptr_t retaddr);
- 
--#define GEN_ATOMIC_HELPER(NAME, TYPE, SUFFIX)         \
--TYPE cpu_atomic_ ## NAME ## SUFFIX ## _mmu            \
--    (CPUArchState *env, target_ulong addr, TYPE val,  \
-+#define GEN_ATOMIC_HELPER(NAME, TYPE, SUFFIX)   \
-+TYPE cpu_atomic_ ## NAME ## SUFFIX ## _mmu      \
-+    (CPUArchState *env, abi_ptr addr, TYPE val, \
-      MemOpIdx oi, uintptr_t retaddr);
- 
- #ifdef CONFIG_ATOMIC64
-@@ -293,10 +293,10 @@ GEN_ATOMIC_HELPER_ALL(xchg)
- #undef GEN_ATOMIC_HELPER_ALL
- #undef GEN_ATOMIC_HELPER
- 
--Int128 cpu_atomic_cmpxchgo_le_mmu(CPUArchState *env, target_ulong addr,
-+Int128 cpu_atomic_cmpxchgo_le_mmu(CPUArchState *env, abi_ptr addr,
-                                   Int128 cmpv, Int128 newv,
-                                   MemOpIdx oi, uintptr_t retaddr);
--Int128 cpu_atomic_cmpxchgo_be_mmu(CPUArchState *env, target_ulong addr,
-+Int128 cpu_atomic_cmpxchgo_be_mmu(CPUArchState *env, abi_ptr addr,
-                                   Int128 cmpv, Int128 newv,
-                                   MemOpIdx oi, uintptr_t retaddr);
- 
-diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index e0079c9a9d..8e9dc51cd1 100644
---- a/accel/tcg/cputlb.c
-+++ b/accel/tcg/cputlb.c
-@@ -3038,14 +3038,14 @@ static void plugin_store_cb(CPUArchState *env, abi_ptr addr, MemOpIdx oi)
-     qemu_plugin_vcpu_mem_cb(env_cpu(env), addr, oi, QEMU_PLUGIN_MEM_W);
- }
- 
--void cpu_stb_mmu(CPUArchState *env, target_ulong addr, uint8_t val,
-+void cpu_stb_mmu(CPUArchState *env, abi_ptr addr, uint8_t val,
-                  MemOpIdx oi, uintptr_t retaddr)
- {
-     helper_stb_mmu(env, addr, val, oi, retaddr);
-     plugin_store_cb(env, addr, oi);
- }
- 
--void cpu_stw_mmu(CPUArchState *env, target_ulong addr, uint16_t val,
-+void cpu_stw_mmu(CPUArchState *env, abi_ptr addr, uint16_t val,
-                  MemOpIdx oi, uintptr_t retaddr)
- {
-     tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_16);
-@@ -3053,7 +3053,7 @@ void cpu_stw_mmu(CPUArchState *env, target_ulong addr, uint16_t val,
-     plugin_store_cb(env, addr, oi);
- }
- 
--void cpu_stl_mmu(CPUArchState *env, target_ulong addr, uint32_t val,
-+void cpu_stl_mmu(CPUArchState *env, abi_ptr addr, uint32_t val,
-                     MemOpIdx oi, uintptr_t retaddr)
- {
-     tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_32);
-@@ -3061,7 +3061,7 @@ void cpu_stl_mmu(CPUArchState *env, target_ulong addr, uint32_t val,
-     plugin_store_cb(env, addr, oi);
- }
- 
--void cpu_stq_mmu(CPUArchState *env, target_ulong addr, uint64_t val,
-+void cpu_stq_mmu(CPUArchState *env, abi_ptr addr, uint64_t val,
-                  MemOpIdx oi, uintptr_t retaddr)
- {
-     tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_64);
-@@ -3069,7 +3069,7 @@ void cpu_stq_mmu(CPUArchState *env, target_ulong addr, uint64_t val,
-     plugin_store_cb(env, addr, oi);
- }
- 
--void cpu_st16_mmu(CPUArchState *env, target_ulong addr, Int128 val,
-+void cpu_st16_mmu(CPUArchState *env, abi_ptr addr, Int128 val,
-                   MemOpIdx oi, uintptr_t retaddr)
- {
-     tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_128);
-diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
-index 4d06754826..bf7e0029a1 100644
---- a/target/riscv/vector_helper.c
-+++ b/target/riscv/vector_helper.c
-@@ -235,7 +235,7 @@ static inline int vext_elem_mask(void *v0, int index)
- }
- 
- /* elements operations for load and store */
--typedef void vext_ldst_elem_fn(CPURISCVState *env, target_ulong addr,
-+typedef void vext_ldst_elem_fn(CPURISCVState *env, abi_ptr addr,
-                                uint32_t idx, void *vd, uintptr_t retaddr);
- 
- #define GEN_VEXT_LD_ELEM(NAME, ETYPE, H, LDSUF)            \
-diff --git a/target/rx/op_helper.c b/target/rx/op_helper.c
-index dc0092ca99..691a12b2be 100644
---- a/target/rx/op_helper.c
-+++ b/target/rx/op_helper.c
-@@ -216,19 +216,19 @@ void helper_scmpu(CPURXState *env)
- }
- 
- static uint32_t (* const cpu_ldufn[])(CPUArchState *env,
--                                     target_ulong ptr,
-+                                     abi_ptr ptr,
-                                      uintptr_t retaddr) = {
-     cpu_ldub_data_ra, cpu_lduw_data_ra, cpu_ldl_data_ra,
- };
- 
- static uint32_t (* const cpu_ldfn[])(CPUArchState *env,
--                                     target_ulong ptr,
-+                                     abi_ptr ptr,
-                                      uintptr_t retaddr) = {
-     cpu_ldub_data_ra, cpu_lduw_data_ra, cpu_ldl_data_ra,
- };
- 
- static void (* const cpu_stfn[])(CPUArchState *env,
--                                 target_ulong ptr,
-+                                 abi_ptr ptr,
-                                  uint32_t val,
-                                  uintptr_t retaddr) = {
-     cpu_stb_data_ra, cpu_stw_data_ra, cpu_stl_data_ra,
+ uint32_t cpu_ldub_data(CPUArchState *env, abi_ptr ptr);
 -- 
 2.41.0
 
