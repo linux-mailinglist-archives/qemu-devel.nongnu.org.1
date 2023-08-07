@@ -2,101 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56DA777277A
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 16:19:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D82AD772703
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 16:06:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qT14W-0002wi-81; Mon, 07 Aug 2023 10:19:00 -0400
+	id 1qT0qD-0004sf-8L; Mon, 07 Aug 2023 10:04:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1qT14T-0002wL-RO
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 10:18:57 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1qT14R-0006B2-RH
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 10:18:57 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 377E8YpK001771; Mon, 7 Aug 2023 14:18:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=+jZR0/RhcPlYCA89HpjQmGjv96x5KEruSJ8ewuy7SY4=;
- b=CHVvSt9I/kvuDAOF5ZUbXaTXbOgmKzHqIyYDoph4dTerBU9OFSu1bVYQRd4QgT0R/gj0
- Cx18JeT8+F9au59t95BiPcIudDCnbquyI5GgxrwU6M7+2cvSCobZXzDeE7XVEFDdXONd
- 0YISi+0kPlxn7yVfw0OUiM41zhCeQy38/e0tURqp5ucQJuszIsunmEZ57RwlzqOfN5aA
- ZOn7Lr41e/eWT40m8ipQYCpApRhUMAtIYVrIv/z/cugSawlkumGnu+/7idc9mlULph1b
- wNWydBSyEe4SoxF/6wXR2TLld9yWdi3bZs01q4SORnJK9sGUm35OmOPQ9Uxauyoo00Me gg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sb1ys8m04-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 07 Aug 2023 14:18:53 +0000
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 377E97x5006992;
- Mon, 7 Aug 2023 14:18:53 GMT
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sb1ys8kyr-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 07 Aug 2023 14:18:53 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 377E5FIX006654; Mon, 7 Aug 2023 14:18:52 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3sa0rsp5ct-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 07 Aug 2023 14:18:52 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
- [10.20.54.106])
- by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 377EIpmd39322278
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 7 Aug 2023 14:18:51 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1213C20043;
- Mon,  7 Aug 2023 14:18:51 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D7DD820040;
- Mon,  7 Aug 2023 14:18:50 +0000 (GMT)
-Received: from heavy.boeblingen.de.ibm.com (unknown [9.155.200.166])
- by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Mon,  7 Aug 2023 14:18:50 +0000 (GMT)
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH RFC 1/1] tcg: Always pass the full write size to
- notdirty_write()
-Date: Mon,  7 Aug 2023 15:56:37 +0200
-Message-ID: <20230807141846.786530-2-iii@linux.ibm.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230807141846.786530-1-iii@linux.ibm.com>
-References: <20230807141846.786530-1-iii@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
+ id 1qT0q4-0004rb-CT
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 10:04:04 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
+ id 1qT0py-0002aJ-3j
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 10:04:02 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-3fe4b45a336so22814715e9.1
+ for <qemu-devel@nongnu.org>; Mon, 07 Aug 2023 07:03:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1691417036; x=1692021836;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=ybHOHddZSdETsR4kLtiwqTBuOOQ6Q7i/BQT8b36uuzU=;
+ b=bTyShhf8IE0IKMw9YHFUCYV18b5vflIFWe4VAi/7LQpyv8eEgNmdzUskFP/jxJaHSK
+ GlFRnU8okN1JY8kWGKzbAYfkq0nyuDHxaRxUiKHHW2FHlInyYNGeqwd4Lbmiq8XbwBuY
+ YwotIUjiyxvV3QEOFKddcNE+BJbb0pRC2Y+ksPp1h4CJDTZCYZWKtrBIyiCTUDbO8fR5
+ hvujGC2CSEcBMBfV8f4EcPnrB9cPhdrwjKS5jP4sWxUhmzdp1mct7AoA4wkGJIX7L6jn
+ +cXQIDRwrInM7c4zCHxIAhSGBz/PrXuvZzkJEUO9kNwskA8tzDIkaRApkLRwxBpSSl6h
+ cOVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1691417036; x=1692021836;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ybHOHddZSdETsR4kLtiwqTBuOOQ6Q7i/BQT8b36uuzU=;
+ b=LQZBwABoUDs5Z0OnKLnyoJfJZYXN15nWlUKnWo6ARQFDmq8CEU4reEJZWEL6mo+SEw
+ gj6LwgmnYXh5rXlQvI1BTUgp5Lf9kX1ExRI3R/X51TNCJ6NcQNZghnpbfPZtJSP1S4Ff
+ VLMkhMHGNeGm3Y8J7O9YJG2BL6u8OhuJ5V0RCr081vvm//MULXUqH/+O6FZYiCfOgrCG
+ 3/3B8oEZ7/M+3Jo0mvtcIYtp+eeaDfAe46cDzz0KDDCEHbaWBoKgYKZGTRnHDg9YPuq7
+ ul+HofoKSjCQ/IQmfoFMtzr1MD4f/1MhLShzTHXKnAfMfTrSBggocUSFDkUfsj0g0vVC
+ t9ow==
+X-Gm-Message-State: AOJu0Yw1mblXCUxc++IO9zZfwP1KAF9PEsbIFOJWpUPhYLGsMlgm8gnz
+ oy1rznr5JV5qeHoWcSRm6yaoFgKiAsyNKpPz8yg=
+X-Google-Smtp-Source: AGHT+IHXX2+Y+gl7RAcx6S5V+2LkcjMParNTVptQ7fWAzjVy4DDg6n2/vxnmXxZJ1gB8Swj1PnRWVQ==
+X-Received: by 2002:a1c:f60b:0:b0:3fa:991c:2af9 with SMTP id
+ w11-20020a1cf60b000000b003fa991c2af9mr5969338wmc.16.1691417036081; 
+ Mon, 07 Aug 2023 07:03:56 -0700 (PDT)
+Received: from myrica ([2.219.138.198]) by smtp.gmail.com with ESMTPSA id
+ z10-20020a7bc7ca000000b003fbc9b9699dsm10752429wmk.45.2023.08.07.07.03.55
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 07 Aug 2023 07:03:55 -0700 (PDT)
+Date: Mon, 7 Aug 2023 15:03:57 +0100
+From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: richard.henderson@linaro.org, qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org
+Subject: Re: [PATCH v2 5/6] target/arm/helper: Check SCR_EL3.{NSE,NS}
+ encoding for AT instructions
+Message-ID: <20230807140357.GA769137@myrica>
+References: <20230802170157.401491-1-jean-philippe@linaro.org>
+ <20230802170157.401491-6-jean-philippe@linaro.org>
+ <CAFEAcA-0p2UhURwgLRnUxSK8ktFsULsHz5x3pu+h80VOPBrZvQ@mail.gmail.com>
+ <CAFEAcA88J5QnuoJWOsVJj4qOhDHy-P4LMo+v5UdMLOQxy=pvQA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: WbY8BqD5_YqxRZ6VAHIuA_enfgLSa3Tr
-X-Proofpoint-ORIG-GUID: 66OFGYmKCgdWbUGvO4mZ995YUuDJ0Lm5
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-08-07_14,2023-08-03_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 malwarescore=0
- mlxlogscore=609 mlxscore=0 adultscore=0 impostorscore=0 spamscore=0
- clxscore=1015 priorityscore=1501 bulkscore=0 suspectscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2308070130
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAFEAcA88J5QnuoJWOsVJj4qOhDHy-P4LMo+v5UdMLOQxy=pvQA@mail.gmail.com>
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=jean-philippe@linaro.org; helo=mail-wm1-x332.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -113,67 +94,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-One of notdirty_write()'s responsibilities is detecting self-modifying
-code. Some functions pass the full size of a write to it, some pass 1.
-When a write to a code section begins before a TB start, but then
-overlaps the TB, the paths that pass 1 don't flush a TB and don't
-return to the translator loop.
+On Mon, Aug 07, 2023 at 10:54:05AM +0100, Peter Maydell wrote:
+> On Fri, 4 Aug 2023 at 19:08, Peter Maydell <peter.maydell@linaro.org> wrote:
+> >
+> > On Wed, 2 Aug 2023 at 18:02, Jean-Philippe Brucker
+> > <jean-philippe@linaro.org> wrote:
+> > >
+> > > The AT instruction is UNDEFINED if the {NSE,NS} configuration is
+> > > invalid. Add a function to check this on all AT instructions that apply
+> > > to an EL lower than 3.
+> > >
+> > > Suggested-by: Peter Maydell <peter.maydell@linaro.org>
+> > > Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> > > ---
+> > >  target/arm/helper.c | 36 +++++++++++++++++++++++++-----------
+> > >  1 file changed, 25 insertions(+), 11 deletions(-)
+> > >
+> > > diff --git a/target/arm/helper.c b/target/arm/helper.c
+> > > index fbb03c364b..77dd80ad28 100644
+> > > --- a/target/arm/helper.c
+> > > +++ b/target/arm/helper.c
+> > > @@ -3616,6 +3616,20 @@ static void ats1h_write(CPUARMState *env, const ARMCPRegInfo *ri,
+> > >  #endif /* CONFIG_TCG */
+> > >  }
+> > >
+> > > +static CPAccessResult at_e012_access(CPUARMState *env, const ARMCPRegInfo *ri,
+> > > +                                     bool isread)
+> > > +{
+> > > +    /*
+> > > +     * R_NYXTL: instruction is UNDEFINED if it applies to an Exception level
+> > > +     * lower than EL3 and the combination SCR_EL3.{NSE,NS} is reserved.
+> > > +     */
+> > > +    if (cpu_isar_feature(aa64_rme, env_archcpu(env)) &&
+> > > +        (env->cp15.scr_el3 & (SCR_NSE | SCR_NS)) == SCR_NSE) {
+> > > +        return CP_ACCESS_TRAP;
+> > > +    }
+> >
+> > The AArch64.AT() pseudocode and the text in the individual
+> > AT insn descriptions ("When FEAT_RME is implemented, if the Effective
+> > value of SCR_EL3.{NSE, NS} is a reserved value, this instruction is
+> > UNDEFINED at EL3") say that this check needs an "arm_current_el(env) == 3"
+> > condition too.
+> 
+> It's been pointed out to me that since trying to return from
+> EL3 with SCR_EL3.{NSE,NS} == {1,0} is an illegal exception return,
+> it's not actually possible to try to execute these insns in this
+> state from any other EL than EL3. So we don't actually need
+> to check for EL3 here.
+> 
+> QEMU's implementation of exception return is missing that
+> check for illegal-exception-return on bad {NSE,NS}, though.
 
-This may be masked, one example being HELPER(vstl). There,
-probe_write_access() ultimately calls notdirty_write() with a size of
-1 and misses self-modifying code. However, cpu_stq_be_data_ra()
-ultimately calls mmu_watch_or_dirty(), which in turn calls
-notdirty_write() with the full size.
+I can add a patch to check that exception return condition, and add a
+comment here explaining that this can only happen when executing at EL3
 
-It's still worth improving this, because there may still be
-user-visible adverse effects in other helpers.
-
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
----
- accel/tcg/cputlb.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index d68fa6867ce..aa3cffbc11a 100644
---- a/accel/tcg/cputlb.c
-+++ b/accel/tcg/cputlb.c
-@@ -1582,7 +1582,7 @@ int probe_access_full(CPUArchState *env, vaddr addr, int size,
- 
-     /* Handle clean RAM pages.  */
-     if (unlikely(flags & TLB_NOTDIRTY)) {
--        notdirty_write(env_cpu(env), addr, 1, *pfull, retaddr);
-+        notdirty_write(env_cpu(env), addr, size, *pfull, retaddr);
-         flags &= ~TLB_NOTDIRTY;
-     }
- 
-@@ -1605,7 +1605,7 @@ int probe_access_full_mmu(CPUArchState *env, vaddr addr, int size,
- 
-     /* Handle clean RAM pages.  */
-     if (unlikely(flags & TLB_NOTDIRTY)) {
--        notdirty_write(env_cpu(env), addr, 1, *pfull, 0);
-+        notdirty_write(env_cpu(env), addr, size, *pfull, 0);
-         flags &= ~TLB_NOTDIRTY;
-     }
- 
-@@ -1626,7 +1626,7 @@ int probe_access_flags(CPUArchState *env, vaddr addr, int size,
- 
-     /* Handle clean RAM pages. */
-     if (unlikely(flags & TLB_NOTDIRTY)) {
--        notdirty_write(env_cpu(env), addr, 1, full, retaddr);
-+        notdirty_write(env_cpu(env), addr, size, full, retaddr);
-         flags &= ~TLB_NOTDIRTY;
-     }
- 
-@@ -1661,7 +1661,7 @@ void *probe_access(CPUArchState *env, vaddr addr, int size,
- 
-         /* Handle clean RAM pages.  */
-         if (flags & TLB_NOTDIRTY) {
--            notdirty_write(env_cpu(env), addr, 1, full, retaddr);
-+            notdirty_write(env_cpu(env), addr, size, full, retaddr);
-         }
-     }
- 
--- 
-2.41.0
-
+Thanks,
+Jean
 
