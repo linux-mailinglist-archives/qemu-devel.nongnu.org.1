@@ -2,42 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A4D8771D57
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 11:47:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A502A771D5C
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 11:47:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qSwoG-0006yj-3F; Mon, 07 Aug 2023 05:45:56 -0400
+	id 1qSwoK-0006zA-Uz; Mon, 07 Aug 2023 05:46:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qSwo9-0006wa-I5
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 05:45:49 -0400
+ (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qSwoC-0006xe-18
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 05:45:53 -0400
 Received: from hognose1.porkbun.com ([35.82.102.206])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qSwo7-0002um-HP
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 05:45:49 -0400
+ (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qSwoA-0002uu-FK
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 05:45:51 -0400
 Received: from develop.s.cslab.moe (unknown [166.111.226.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (Client did not present a certificate)
  (Authenticated sender: c@jia.je)
- by hognose1.porkbun.com (Postfix) with ESMTPSA id 8061D43B70;
- Mon,  7 Aug 2023 09:45:43 +0000 (UTC)
+ by hognose1.porkbun.com (Postfix) with ESMTPSA id 8BC1E43B72;
+ Mon,  7 Aug 2023 09:45:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jia.je; s=default;
- t=1691401546; bh=0aopDn3HiqdrGJxkqGFEjZ9YRCd2L4Dg6StwXOZgbSI=;
+ t=1691401548; bh=p1lcZI1A3JPIuJpDoPDAu2Pb5+W1Uq5NYlZYHLFu6CE=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References;
- b=ZmP30NbNQX0cSyZfgwPOniwz2tAHwtYGuVsOBQJx9zw3HYDgiUNHjNYErmjhGfF9E
- ZHWRHzdGEM57wOutxuaqcB7XdqS/pk6HikGKirtK2qy8k1oY6i23TKsxrYoA5R1bue
- BIkp1PnFNe6/CZe7BBql6/H59SurTSEG5G7Jjf0A=
+ b=IiPmDxuLIgPE32kEzfKVlAuzEFr5Ih5BfHVMsWQ9cVj4hrY4J2H+0a55F6jxhJ1Sb
+ 1Z1hB623N2FaTI3+oZ1CvQUJPrU7Ty7L8Xlg6rwyoUAWXSH/zlaYxtSpbChOKdTYZG
+ OyW73or0rvkQ3oZNr50iHQnd+QwYv7MMeF/GVey8=
 From: Jiajie Chen <c@jia.je>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org, yijun@loongson.cn, shenjinyang@loongson.cn,
- Jiajie Chen <c@jia.je>, Xiaojuan Yang <yangxiaojuan@loongson.cn>,
- Song Gao <gaosong@loongson.cn>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 3/6] target/loongarch: Add GDB support for loongarch32 mode
-Date: Mon,  7 Aug 2023 17:45:02 +0800
-Message-Id: <20230807094505.2030603-4-c@jia.je>
+ Jiajie Chen <c@jia.je>, Song Gao <gaosong@loongson.cn>,
+ Xiaojuan Yang <yangxiaojuan@loongson.cn>
+Subject: [PATCH v3 4/6] target/loongarch: Support LoongArch32 TLB entry
+Date: Mon,  7 Aug 2023 17:45:03 +0800
+Message-Id: <20230807094505.2030603-5-c@jia.je>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230807094505.2030603-1-c@jia.je>
 References: <20230807094505.2030603-1-c@jia.je>
@@ -66,169 +64,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-GPRs and PC are 32-bit wide in loongarch32 mode.
+The TLB entry of LA32 lacks NR, NX and RPLV and they are hardwired to
+zero in LoongArch32.
 
 Signed-off-by: Jiajie Chen <c@jia.je>
 ---
- configs/targets/loongarch64-softmmu.mak |  2 +-
- gdb-xml/loongarch-base32.xml            | 45 +++++++++++++++++++++++++
- target/loongarch/cpu.c                  | 10 +++++-
- target/loongarch/gdbstub.c              | 32 ++++++++++++++----
- 4 files changed, 80 insertions(+), 9 deletions(-)
- create mode 100644 gdb-xml/loongarch-base32.xml
+ target/loongarch/cpu-csr.h    |  9 +++++----
+ target/loongarch/tlb_helper.c | 17 ++++++++++++-----
+ 2 files changed, 17 insertions(+), 9 deletions(-)
 
-diff --git a/configs/targets/loongarch64-softmmu.mak b/configs/targets/loongarch64-softmmu.mak
-index 9abc99056f..f23780fdd8 100644
---- a/configs/targets/loongarch64-softmmu.mak
-+++ b/configs/targets/loongarch64-softmmu.mak
-@@ -1,5 +1,5 @@
- TARGET_ARCH=loongarch64
- TARGET_BASE_ARCH=loongarch
- TARGET_SUPPORTS_MTTCG=y
--TARGET_XML_FILES= gdb-xml/loongarch-base64.xml gdb-xml/loongarch-fpu.xml
-+TARGET_XML_FILES= gdb-xml/loongarch-base32.xml gdb-xml/loongarch-base64.xml gdb-xml/loongarch-fpu.xml
- TARGET_NEED_FDT=y
-diff --git a/gdb-xml/loongarch-base32.xml b/gdb-xml/loongarch-base32.xml
-new file mode 100644
-index 0000000000..af47bbd3da
---- /dev/null
-+++ b/gdb-xml/loongarch-base32.xml
-@@ -0,0 +1,45 @@
-+<?xml version="1.0"?>
-+<!-- Copyright (C) 2022 Free Software Foundation, Inc.
-+
-+     Copying and distribution of this file, with or without modification,
-+     are permitted in any medium without royalty provided the copyright
-+     notice and this notice are preserved.  -->
-+
-+<!DOCTYPE feature SYSTEM "gdb-target.dtd">
-+<feature name="org.gnu.gdb.loongarch.base">
-+  <reg name="r0" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r1" bitsize="32" type="code_ptr" group="general"/>
-+  <reg name="r2" bitsize="32" type="data_ptr" group="general"/>
-+  <reg name="r3" bitsize="32" type="data_ptr" group="general"/>
-+  <reg name="r4" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r5" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r6" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r7" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r8" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r9" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r10" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r11" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r12" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r13" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r14" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r15" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r16" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r17" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r18" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r19" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r20" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r21" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r22" bitsize="32" type="data_ptr" group="general"/>
-+  <reg name="r23" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r24" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r25" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r26" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r27" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r28" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r29" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r30" bitsize="32" type="uint32" group="general"/>
-+  <reg name="r31" bitsize="32" type="uint32" group="general"/>
-+  <reg name="orig_a0" bitsize="32" type="uint32" group="general"/>
-+  <reg name="pc" bitsize="32" type="code_ptr" group="general"/>
-+  <reg name="badv" bitsize="32" type="code_ptr" group="general"/>
-+</feature>
-diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-index d31efe86da..ee6d45f1b0 100644
---- a/target/loongarch/cpu.c
-+++ b/target/loongarch/cpu.c
-@@ -710,7 +710,13 @@ static const struct SysemuCPUOps loongarch_sysemu_ops = {
+diff --git a/target/loongarch/cpu-csr.h b/target/loongarch/cpu-csr.h
+index f8f24032cb..48ed2e0632 100644
+--- a/target/loongarch/cpu-csr.h
++++ b/target/loongarch/cpu-csr.h
+@@ -66,10 +66,11 @@ FIELD(TLBENTRY, D, 1, 1)
+ FIELD(TLBENTRY, PLV, 2, 2)
+ FIELD(TLBENTRY, MAT, 4, 2)
+ FIELD(TLBENTRY, G, 6, 1)
+-FIELD(TLBENTRY, PPN, 12, 36)
+-FIELD(TLBENTRY, NR, 61, 1)
+-FIELD(TLBENTRY, NX, 62, 1)
+-FIELD(TLBENTRY, RPLV, 63, 1)
++FIELD(TLBENTRY_32, PPN, 8, 24)
++FIELD(TLBENTRY_64, PPN, 12, 36)
++FIELD(TLBENTRY_64, NR, 61, 1)
++FIELD(TLBENTRY_64, NX, 62, 1)
++FIELD(TLBENTRY_64, RPLV, 63, 1)
  
- static gchar *loongarch_gdb_arch_name(CPUState *cs)
- {
--    return g_strdup("loongarch64");
-+    LoongArchCPU *cpu = LOONGARCH_CPU(cs);
-+    CPULoongArchState *env = &cpu->env;
+ #define LOONGARCH_CSR_ASID           0x18 /* Address space identifier */
+ FIELD(CSR_ASID, ASID, 0, 10)
+diff --git a/target/loongarch/tlb_helper.c b/target/loongarch/tlb_helper.c
+index 6e00190547..690c6ef25f 100644
+--- a/target/loongarch/tlb_helper.c
++++ b/target/loongarch/tlb_helper.c
+@@ -48,10 +48,17 @@ static int loongarch_map_tlb_entry(CPULoongArchState *env, hwaddr *physical,
+     tlb_v = FIELD_EX64(tlb_entry, TLBENTRY, V);
+     tlb_d = FIELD_EX64(tlb_entry, TLBENTRY, D);
+     tlb_plv = FIELD_EX64(tlb_entry, TLBENTRY, PLV);
+-    tlb_ppn = FIELD_EX64(tlb_entry, TLBENTRY, PPN);
+-    tlb_nx = FIELD_EX64(tlb_entry, TLBENTRY, NX);
+-    tlb_nr = FIELD_EX64(tlb_entry, TLBENTRY, NR);
+-    tlb_rplv = FIELD_EX64(tlb_entry, TLBENTRY, RPLV);
 +    if (env->mode == LA64) {
-+        return g_strdup("loongarch64");
++        tlb_ppn = FIELD_EX64(tlb_entry, TLBENTRY_64, PPN);
++        tlb_nx = FIELD_EX64(tlb_entry, TLBENTRY_64, NX);
++        tlb_nr = FIELD_EX64(tlb_entry, TLBENTRY_64, NR);
++        tlb_rplv = FIELD_EX64(tlb_entry, TLBENTRY_64, RPLV);
 +    } else {
-+        return g_strdup("loongarch32");
++        tlb_ppn = FIELD_EX64(tlb_entry, TLBENTRY_32, PPN);
++        tlb_nx = 0;
++        tlb_nr = 0;
++        tlb_rplv = 0;
 +    }
- }
  
- static void loongarch_cpu_class_init(ObjectClass *c, void *data)
-@@ -750,6 +756,8 @@ static void loongarch_cpu_class_init(ObjectClass *c, void *data)
- 
- static void loongarch32_cpu_class_init(ObjectClass *c, void *data)
- {
-+    CPUClass *cc = CPU_CLASS(c);
-+    cc->gdb_core_xml_file = "loongarch-base32.xml";
- }
- 
- #define DEFINE_LOONGARCH_CPU_TYPE(model, initfn) \
-diff --git a/target/loongarch/gdbstub.c b/target/loongarch/gdbstub.c
-index 0752fff924..7c82204e92 100644
---- a/target/loongarch/gdbstub.c
-+++ b/target/loongarch/gdbstub.c
-@@ -34,16 +34,25 @@ int loongarch_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
- {
-     LoongArchCPU *cpu = LOONGARCH_CPU(cs);
-     CPULoongArchState *env = &cpu->env;
-+    uint64_t val;
- 
-     if (0 <= n && n < 32) {
--        return gdb_get_regl(mem_buf, env->gpr[n]);
-+        val = env->gpr[n];
-     } else if (n == 32) {
-         /* orig_a0 */
--        return gdb_get_regl(mem_buf, 0);
-+        val = 0;
-     } else if (n == 33) {
--        return gdb_get_regl(mem_buf, env->pc);
-+        val = env->pc;
-     } else if (n == 34) {
--        return gdb_get_regl(mem_buf, env->CSR_BADV);
-+        val = env->CSR_BADV;
-+    }
-+
-+    if (0 <= n && n <= 34) {
-+        if (env->mode == LA64) {
-+            return gdb_get_reg64(mem_buf, val);
-+        } else {
-+            return gdb_get_reg32(mem_buf, val);
-+        }
-     }
-     return 0;
- }
-@@ -52,15 +61,24 @@ int loongarch_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
- {
-     LoongArchCPU *cpu = LOONGARCH_CPU(cs);
-     CPULoongArchState *env = &cpu->env;
--    target_ulong tmp = ldtul_p(mem_buf);
-+    target_ulong tmp;
-+    int read_length;
-     int length = 0;
- 
-+    if (env->mode == LA64) {
-+        tmp = ldq_p(mem_buf);
-+        read_length = 8;
-+    } else {
-+        tmp = ldl_p(mem_buf);
-+        read_length = 4;
-+    }
-+
-     if (0 <= n && n < 32) {
-         env->gpr[n] = tmp;
--        length = sizeof(target_ulong);
-+        length = read_length;
-     } else if (n == 33) {
-         env->pc = tmp;
--        length = sizeof(target_ulong);
-+        length = read_length;
-     }
-     return length;
- }
+     /* Check access rights */
+     if (!tlb_v) {
+@@ -79,7 +86,7 @@ static int loongarch_map_tlb_entry(CPULoongArchState *env, hwaddr *physical,
+      * tlb_entry contains ppn[47:12] while 16KiB ppn is [47:15]
+      * need adjust.
+      */
+-    *physical = (tlb_ppn << R_TLBENTRY_PPN_SHIFT) |
++    *physical = (tlb_ppn << R_TLBENTRY_64_PPN_SHIFT) |
+                 (address & MAKE_64BIT_MASK(0, tlb_ps));
+     *prot = PAGE_READ;
+     if (tlb_d) {
 -- 
 2.39.2
 
