@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F7377730A8
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 22:49:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A9C87730D7
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 23:01:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qT798-00068B-NT; Mon, 07 Aug 2023 16:48:10 -0400
+	id 1qT7KY-000337-Qx; Mon, 07 Aug 2023 16:59:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qT796-00065o-OQ
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 16:48:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qT795-0006kG-62
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 16:48:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691441286;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=P8ZFlSe/0/0xC1+2/G1PqGE3LwwZEexuiUCyAWa0dhA=;
- b=HQoUowEq39fckmEVomHWNDLf9iLIDblb2nySFDYe330PYJC0RjEo81GCq/B8aVdXlUoJ43
- lyr+QkIPZlkC0tzkfbFGeO05LTVanvx8D7/bL9T47Pj/wDZsOOSwsJPvilF7+jG9CSPgxI
- 3hcNt9eoeD/YYQRJP7yLd+CrYOwmfs0=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-561-fY7TS5_vPbaN19ET7-x27g-1; Mon, 07 Aug 2023 16:48:01 -0400
-X-MC-Unique: fY7TS5_vPbaN19ET7-x27g-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B98C11C05157;
- Mon,  7 Aug 2023 20:48:00 +0000 (UTC)
-Received: from localhost (unknown [10.39.208.34])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 637F640C2076;
- Mon,  7 Aug 2023 20:47:58 +0000 (UTC)
-From: marcandre.lureau@redhat.com
-To: qemu-devel@nongnu.org
-Cc: Eduardo Habkost <eduardo@habkost.net>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Dongwon Kim <dongwon.kim@intel.com>,
- Vivek Kasireddy <vivek.kasireddy@intel.com>
-Subject: [PULL 6/6] ui/gtk: set scanout mode in
- gd_egl/gd_gl_area_scanout_texture
-Date: Tue,  8 Aug 2023 00:47:17 +0400
-Message-ID: <20230807204717.2483983-7-marcandre.lureau@redhat.com>
-In-Reply-To: <20230807204717.2483983-1-marcandre.lureau@redhat.com>
-References: <20230807204717.2483983-1-marcandre.lureau@redhat.com>
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qT7KR-00032y-TA
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 16:59:51 -0400
+Received: from mail-qt1-x830.google.com ([2607:f8b0:4864:20::830])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qT7KQ-0001N5-CV
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 16:59:51 -0400
+Received: by mail-qt1-x830.google.com with SMTP id
+ d75a77b69052e-40fd6da0325so32854401cf.3
+ for <qemu-devel@nongnu.org>; Mon, 07 Aug 2023 13:59:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1691441988; x=1692046788;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=sxBfUYloKOmzcCJ/FWttEw4Y980/GIhqarY2Bi83C08=;
+ b=WDtfnp6dRj2rnU02lm9nmyGbfyk9nYyYZ7d5mOlWrGgg5KjVZ7Lo/KzpCyQWQf90H1
+ qA4YXZSlfnXY41fnPlqcyUPcQK+VS/CPP/yogqfH8/c8d0Zjbnw8fvry4HolMMv2v1yc
+ +4Oz+qIR0K/aN6zcNOtDgp2JE1NDDUax9bJdUON9+6bOz58lan5F3RVxgScZLDw0t4LF
+ PHibNRJdmfQB87wQUvalAonv+3Hhit0c3RCrMR6YZBcglv9CCnHx9r42mHv8FbpXw55x
+ Gu+aXH0cw12y2m808QI1Ev7rEWHVsKLM6nysU0KILbRl6bRC87p2iBnM/fLrszyuEK/f
+ 34hQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1691441988; x=1692046788;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=sxBfUYloKOmzcCJ/FWttEw4Y980/GIhqarY2Bi83C08=;
+ b=LDRM2vA3zDiFbiUBs07biM8kB2EbeU/wTLMhthbX2Ec0x3A15t/vmysfvgIqRcb2aB
+ RsItRYiRW9/GD0cbue36On7celU6EUtnslJecB+dLSOnyi+kh7gpCneZAx//Isk6jxZ/
+ lM64030BB43R0GA+g58B/tG1n9E3zfvqDZfZjueONWcyqT5u6nqlZqxR1zDgoqnOa2RU
+ WX+7A6Gk9KdNTHT95ixeQgR0z1U6KUigduPIYgQHVTscaB2J4Iw9GmiAhh+a4759SzF5
+ Smr2ws7T22DvyAZcN5/Sz8en47LcWegrfKuZWuv9sN25xMbm2Crs5XP/GWKrFK9xNGn3
+ hBTw==
+X-Gm-Message-State: AOJu0YxSMFQzt43e59cYI70K5Xw+Vm9oqoZXEKQnV3F8+0AVV/JCaH+K
+ PaZgjNRr0316yaa8FR9c0KTkXjVJgrsZB/NhQIE=
+X-Google-Smtp-Source: AGHT+IEBSxe1Dlz3CgQtwyv1t5eoUHZD+caiVa65qTqkQiFrTPY5xTZkjjin/xY50VG1bAWF7jxT4KzFB6XgdIxh5JA=
+X-Received: by 2002:ac8:7e93:0:b0:403:b103:248 with SMTP id
+ w19-20020ac87e93000000b00403b1030248mr15114952qtj.4.1691441988248; Mon, 07
+ Aug 2023 13:59:48 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=marcandre.lureau@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20230807201443.2668-1-werner@carne.de>
+In-Reply-To: <20230807201443.2668-1-werner@carne.de>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Tue, 8 Aug 2023 00:59:36 +0400
+Message-ID: <CAJ+F1CJk_7reShjGcUBGszX2LFpmVUapBibtQnYBpxmWDp+mgw@mail.gmail.com>
+Subject: Re: [PATCH] serial COM: windows serial COM PollingFunc don't sleep
+To: Werner de Carne <werner@carne.de>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::830;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x830.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,56 +86,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Dongwon Kim <dongwon.kim@intel.com>
+Hi Werner
 
-Fixing a regression (black screen) caused by a commit 92b58156e7
-("ui/gtk: set scanout-mode right before scheduling draw").
+On Tue, Aug 8, 2023 at 12:46=E2=80=AFAM Werner de Carne <werner@carne.de> w=
+rote:
+>
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1802
+> Signed-off-by: Werner de Carne <werner@carne.de>
 
-The commit 92b58156e7 was made with an assumption that the scanout
-mode needs to be set only if the guest scanout is a dmabuf but there
-are cases (e.g. virtio-gpu-virgl) where the scanout is still processed
-in a form of a texture but is not backed by dmabuf. So it is needed
-to put back the line that sets scanout mode in gd_egl_scanout_texture
-and gd_gl_area_scanout_texture.
+This changes the polling callback to return 0 when I/O can't be
+processed.  in util/main-loop.c, it results in an early break of
+os_host_main_loop_wait().
 
-Fixes: 92b58156e7 ("ui/gtk: set scanout-mode right before scheduling draw)
-Reported-by: Volker Rümelin <vr_qemu@t-online.de>
-Cc: Gerd Hoffmann <kraxel@redhat.com>
-Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
-Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
-Signed-off-by: Dongwon Kim <dongwon.kim@intel.com>
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-ID: <20230725001131.24017-1-dongwon.kim@intel.com>
----
- ui/gtk-egl.c     | 1 +
- ui/gtk-gl-area.c | 1 +
- 2 files changed, 2 insertions(+)
+How does that help?
 
-diff --git a/ui/gtk-egl.c b/ui/gtk-egl.c
-index 4c29ac10d0..a1060fd80f 100644
---- a/ui/gtk-egl.c
-+++ b/ui/gtk-egl.c
-@@ -246,6 +246,7 @@ void gd_egl_scanout_texture(DisplayChangeListener *dcl,
-     eglMakeCurrent(qemu_egl_display, vc->gfx.esurface,
-                    vc->gfx.esurface, vc->gfx.ectx);
- 
-+    gtk_egl_set_scanout_mode(vc, true);
-     egl_fb_setup_for_tex(&vc->gfx.guest_fb, backing_width, backing_height,
-                          backing_id, false);
- }
-diff --git a/ui/gtk-gl-area.c b/ui/gtk-gl-area.c
-index 1ce34a249e..52dcac161e 100644
---- a/ui/gtk-gl-area.c
-+++ b/ui/gtk-gl-area.c
-@@ -268,6 +268,7 @@ void gd_gl_area_scanout_texture(DisplayChangeListener *dcl,
-         return;
-     }
- 
-+    gtk_gl_area_set_scanout_mode(vc, true);
-     egl_fb_setup_for_tex(&vc->gfx.guest_fb, backing_width, backing_height,
-                          backing_id, false);
- }
--- 
-2.41.0
+thanks
 
+> ---
+>  chardev/char-win.c | 16 ++++++++++------
+>  1 file changed, 10 insertions(+), 6 deletions(-)
+>
+> diff --git a/chardev/char-win.c b/chardev/char-win.c
+> index d4fb44c4dc..92a7016105 100644
+> --- a/chardev/char-win.c
+> +++ b/chardev/char-win.c
+> @@ -28,7 +28,7 @@
+>  #include "qapi/error.h"
+>  #include "chardev/char-win.h"
+>
+> -static void win_chr_read(Chardev *chr, DWORD len)
+> +static int win_chr_read(Chardev *chr, DWORD len)
+>  {
+>      WinChardev *s =3D WIN_CHARDEV(chr);
+>      int max_size =3D qemu_chr_be_can_write(chr);
+> @@ -40,7 +40,7 @@ static void win_chr_read(Chardev *chr, DWORD len)
+>          len =3D max_size;
+>      }
+>      if (len =3D=3D 0) {
+> -        return;
+> +        return 0;
+>      }
+>
+>      ZeroMemory(&s->orecv, sizeof(s->orecv));
+> @@ -56,6 +56,8 @@ static void win_chr_read(Chardev *chr, DWORD len)
+>      if (size > 0) {
+>          qemu_chr_be_write(chr, buf, size);
+>      }
+> +
+> +    return size > 0 ? 1 : 0;
+>  }
+>
+>  static int win_chr_serial_poll(void *opaque)
+> @@ -67,8 +69,9 @@ static int win_chr_serial_poll(void *opaque)
+>
+>      ClearCommError(s->file, &comerr, &status);
+>      if (status.cbInQue > 0) {
+> -        win_chr_read(chr, status.cbInQue);
+> -        return 1;
+> +        if (win_chr_read(chr, status.cbInQue)) {
+> +                       return 1;
+> +               }
+>      }
+>      return 0;
+>  }
+> @@ -147,8 +150,9 @@ int win_chr_pipe_poll(void *opaque)
+>
+>      PeekNamedPipe(s->file, NULL, 0, NULL, &size, NULL);
+>      if (size > 0) {
+> -        win_chr_read(chr, size);
+> -        return 1;
+> +       if (win_chr_read(chr, size)) {
+> +                       return 1;
+> +               }
+>      }
+>      return 0;
+>  }
+> --
+> 2.28.0.windows.1
+>
+>
+
+
+--=20
+Marc-Andr=C3=A9 Lureau
 
