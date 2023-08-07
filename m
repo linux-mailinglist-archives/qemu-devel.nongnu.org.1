@@ -2,74 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF8D4772AC4
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 18:28:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D740772B14
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 18:36:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qT35M-0003At-LM; Mon, 07 Aug 2023 12:28:00 -0400
+	id 1qT3DJ-0005WC-Gm; Mon, 07 Aug 2023 12:36:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qT35J-0003AU-5L
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 12:27:57 -0400
-Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qT35G-0000g3-PZ
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 12:27:56 -0400
-Received: by mail-ej1-x634.google.com with SMTP id
- a640c23a62f3a-99bdeae1d0aso653550066b.1
- for <qemu-devel@nongnu.org>; Mon, 07 Aug 2023 09:27:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691425673; x=1692030473;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=LfNDcKRuOI+hL1JSklbZy6mFmwyJGqRAyiMRERzAUPM=;
- b=vv2/XwURNxoLRMaV6ALFUARru+PlUxu5NVBeVRIggdJeft5O6eMtH/mbP8pKx1IXvs
- fEVGgoqw52WP9pnGzJ23n4+FVsW+ougYx/HluLGBke65iUCow/fihFE6AAwuPPb7Oli8
- 5YDZERX6svg9bZQa0U915pXVlWg9r2RlQ4BJUm+nSHim35So5xgC2K5BcYtdPfxQjnCe
- 8kpbENjcNtfZpsL1hvpnWaqHvrbqvHCbmyWnZ+Pix4/H94QEdZadixUVqHVUYEQKtHl4
- pGythOEqsrmX1rv+jHKEfYe+e9V0R8jwro5pd2bpwn9piC5ivJ7vxBQI7kP2geZaQuxb
- Qupw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691425673; x=1692030473;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=LfNDcKRuOI+hL1JSklbZy6mFmwyJGqRAyiMRERzAUPM=;
- b=PtxXpANwJYErLjz+5YWgeSLW9M9b6bTtIRYwXUe2XtK/xCsYaLmYsaIDCwFW2kdOBM
- TZ0M2/9PeVYdFKGlKQ3S/px0jXHE9+2sV8rFiI/TDF0670tQfZwuC2zxQz6MVGpRLNuP
- iI5rGNaQLkkPszhk4Etxm1RW5y44QTVrXe2Xx4PPVRboB2kQ2gR6zDFYl3BfnS45qxaB
- zChMPGxLdRm9BNy+Qcsa7Oy+pseXvjLRDDteW2bVpiJSUioayBG2lJ/9wpu4GNG50I9l
- poSalPmiitBYbrsNNAryG9NYz+Nr/Wvn3U9HDzA89+Wiu9G8lcxEzmateon4U5KvI4qd
- 9K/Q==
-X-Gm-Message-State: AOJu0YyZHw6qdaf+NdkgH1Uk214dIChBYjwvnUjqpMrUk7pVEfhns4xP
- 94xnTNWSPoueDzyZj2HMBMtAe2TBCTZYw+YHKCyO6QZ4fqGUU/+m
-X-Google-Smtp-Source: AGHT+IGyG0gB+wqh3ymzZKz82r7OP8SRRTIo8ar9cKzgoTdAjTXT9R9XSR22S040v0w+bWtxzS5/Ucd05ZAhXO9O8HU=
-X-Received: by 2002:aa7:d049:0:b0:522:1f09:dde3 with SMTP id
- n9-20020aa7d049000000b005221f09dde3mr8423786edo.3.1691425672801; Mon, 07 Aug
- 2023 09:27:52 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1qT3D7-0005UF-5w; Mon, 07 Aug 2023 12:36:01 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1qT3D4-0002Nt-JC; Mon, 07 Aug 2023 12:36:00 -0400
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 377GVJIp008655; Mon, 7 Aug 2023 16:35:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=M+ISArOuJHx9ilVsC/OuUekII88Dkpf5V/zhJ/7T9Ow=;
+ b=P1tOM6g67K8A0OHR47ErF31Jp61jyjxHeI9H4bbUspB02tDFptD6esV5BcFrmsDZc+E2
+ zGmjkxfqCvZPYpfcsU3PatX8f8WyOHSEQ39Goe7e/KRgZNYE7ehIHd/gWcBOH6cSfNcm
+ MGbXJzFlryfNRVpskQPxFb3aggexVXXmF/GID//6ZJdyYOjuaiROQHpSXy08hbwY8y0s
+ dwMQU1sN08xijeQY4sxuCEPLmi0KBq+0Z48lZzsBlSep6SSKRYYiv+v/VnWW1vrXhwuX
+ 0MgzXgoNg+dC8GyVNRO69xoBINnmidQ7BD2/t91i9UftY/jfVErx7s/kgT1dF5sS4BPz vA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sb46w06bw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 07 Aug 2023 16:35:55 +0000
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 377GWZiI013834;
+ Mon, 7 Aug 2023 16:35:55 GMT
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sb46w067j-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 07 Aug 2023 16:35:54 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 377FEPmY000373; Mon, 7 Aug 2023 16:35:52 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3sa28k6jen-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 07 Aug 2023 16:35:52 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
+ [10.20.54.106])
+ by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 377GZoID58327362
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 7 Aug 2023 16:35:50 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5891A20043;
+ Mon,  7 Aug 2023 16:35:50 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CAE4320040;
+ Mon,  7 Aug 2023 16:35:49 +0000 (GMT)
+Received: from heavy.boeblingen.de.ibm.com (unknown [9.179.26.52])
+ by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Mon,  7 Aug 2023 16:35:49 +0000 (GMT)
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Richard Henderson <richard.henderson@linaro.org>,
+ David Hildenbrand <david@redhat.com>, Thomas Huth <thuth@redhat.com>
+Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org,
+ Ilya Leoshkevich <iii@linux.ibm.com>, qemu-stable@nongnu.org
+Subject: [PATCH 1/2] target/s390x: Use a 16-bit immediate in VREP
+Date: Mon,  7 Aug 2023 18:34:31 +0200
+Message-ID: <20230807163459.849766-1-iii@linux.ibm.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-References: <cover.1691010283.git.jcd@tribudubois.net>
- <649a1160b36c58ea89daf02a11b12f2dff164fee.1691010283.git.jcd@tribudubois.net>
-In-Reply-To: <649a1160b36c58ea89daf02a11b12f2dff164fee.1691010283.git.jcd@tribudubois.net>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 7 Aug 2023 17:27:41 +0100
-Message-ID: <CAFEAcA_ZS81+0b6tsFxmNNaRCXgUC3HGFSfmyjF-1BnAv6gphw@mail.gmail.com>
-Subject: Re: [PATCH v3 1/5] Refactor i.MX6UL processor code
-To: Jean-Christophe Dubois <jcd@tribudubois.net>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::634;
- envelope-from=peter.maydell@linaro.org; helo=mail-ej1-x634.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: Ype2AmCexr_6ADGznu27nI6frlaTSzsj
+X-Proofpoint-GUID: qY29k2R8H2L1JjUaS6UGXUYYyzmKrqGy
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-08-07_17,2023-08-03_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 mlxlogscore=999
+ impostorscore=0 mlxscore=0 suspectscore=0 adultscore=0 malwarescore=0
+ priorityscore=1501 spamscore=0 phishscore=0 clxscore=1015
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2308070153
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,47 +109,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 2 Aug 2023 at 22:09, Jean-Christophe Dubois <jcd@tribudubois.net> wrote:
->
-> * Add Addr and size definition for all i.MX6UL devices in i.MX6UL header file.
-> * Use those newly defined named constants whenever possible.
-> * Standardize the way we init a familly of unimplemented devices
->   - SAI
->   - PWM (add missing PWM instances)
->   - CAN
-> * Add/rework few comments
->
-> Signed-off-by: Jean-Christophe Dubois <jcd@tribudubois.net>
+Unlike most other instructions that contain an immediate element index,
+VREP's one is 16-bit, and not 4-bit. The code uses only 8 bits, so
+using, e.g., 0x101 does not lead to a specification exception.
 
->
->      /*
-> -     * PWM
-> +     * PWMs
->       */
-> -    create_unimplemented_device("pwm1", FSL_IMX6UL_PWM1_ADDR, 0x4000);
-> -    create_unimplemented_device("pwm2", FSL_IMX6UL_PWM2_ADDR, 0x4000);
-> -    create_unimplemented_device("pwm3", FSL_IMX6UL_PWM3_ADDR, 0x4000);
-> -    create_unimplemented_device("pwm4", FSL_IMX6UL_PWM4_ADDR, 0x4000);
-> +    for (i = 0; i < FSL_IMX6UL_NUM_PWMS; i++) {
-> +        static const hwaddr FSL_IMX6UL_PWMn_ADDR[FSL_IMX6UL_NUM_PWMS] = {
-> +            FSL_IMX6UL_PWM1_ADDR,
-> +            FSL_IMX6UL_PWM2_ADDR,
-> +            FSL_IMX6UL_PWM3_ADDR,
-> +            FSL_IMX6UL_PWM4_ADDR,
-> +            FSL_IMX6UL_PWM5_ADDR,
-> +            FSL_IMX6UL_PWM6_ADDR,
-> +            FSL_IMX6UL_PWM7_ADDR,
-> +            FSL_IMX6UL_PWM8_ADDR,
-> +        };
-> +
-> +        snprintf(name, NAME_SIZE, "pwm%d", i);
-> +        create_unimplemented_device(name, FSL_IMX6UL_PWMn_ADDR[i],
-> +                                    FSL_IMX6UL_PWMn_SIZE);
-> +    }
+Fix by checking all 16 bits.
 
-This looks like a behaviour change -- we used to create 4
-pwm devices, and now we create 8.
+Cc: qemu-stable@nongnu.org
+Fixes: 28d08731b1d8 ("s390x/tcg: Implement VECTOR REPLICATE")
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+---
+ target/s390x/tcg/translate_vx.c.inc | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-thanks
--- PMM
+diff --git a/target/s390x/tcg/translate_vx.c.inc b/target/s390x/tcg/translate_vx.c.inc
+index f8df121d3d3..a6d840d4065 100644
+--- a/target/s390x/tcg/translate_vx.c.inc
++++ b/target/s390x/tcg/translate_vx.c.inc
+@@ -57,7 +57,7 @@
+ #define FPF_LONG        3
+ #define FPF_EXT         4
+ 
+-static inline bool valid_vec_element(uint8_t enr, MemOp es)
++static inline bool valid_vec_element(uint16_t enr, MemOp es)
+ {
+     return !(enr & ~(NUM_VEC_ELEMENTS(es) - 1));
+ }
+@@ -964,7 +964,7 @@ static DisasJumpType op_vpdi(DisasContext *s, DisasOps *o)
+ 
+ static DisasJumpType op_vrep(DisasContext *s, DisasOps *o)
+ {
+-    const uint8_t enr = get_field(s, i2);
++    const uint16_t enr = get_field(s, i2);
+     const uint8_t es = get_field(s, m4);
+ 
+     if (es > ES_64 || !valid_vec_element(enr, es)) {
+-- 
+2.41.0
+
 
