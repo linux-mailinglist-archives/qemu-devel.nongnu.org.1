@@ -2,100 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5F45772310
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 13:51:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC3D877231B
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 13:54:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qSyjz-0007jm-Ae; Mon, 07 Aug 2023 07:49:39 -0400
+	id 1qSyoH-0001Ei-P1; Mon, 07 Aug 2023 07:54:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1qSyjt-0007jT-Rs; Mon, 07 Aug 2023 07:49:34 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1qSyjr-00072H-NV; Mon, 07 Aug 2023 07:49:33 -0400
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 377BfEYd024891; Mon, 7 Aug 2023 11:49:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=u8PbF4C/BdyBy3te61zsAsS/C4MMsKbgrURDz34c4nk=;
- b=ZqOScx4yKq2scL7Lk/oCO62cZyJaMT0oPgXKuhLPCALBH9mFlxYYseyuc8OWrS3brgyJ
- 7rbMB0CvA3+QOyYPi4PVFXqtnBUc7fUtY3jr7ZdUfORxTt+Wgey3S6w4XNBAQySb0ZzA
- HQUgNQUgnsfISUGiCtMR0V3CoV0UdxRy9lanNmKtPGGbVu11o3G/3QMli8bLINz2Wt4I
- EZ/Z3++8Ruvl2ptw69aHlLN767LVx4Kn0qSC9/VUiAUWRTUACPThJ0NwzTR+8VNjHhwZ
- os+lkw/SaPwih5TpoEPJB2KWMj0idsHz/QBquxO7ljawz3jg4+FFTe6D04hVjpSB9t2G FA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sayqyreew-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 07 Aug 2023 11:49:28 +0000
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 377Bhk8i032003;
- Mon, 7 Aug 2023 11:49:28 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sayqyreeh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 07 Aug 2023 11:49:28 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 377A95mf007543; Mon, 7 Aug 2023 11:49:27 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3sa14xw0dj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 07 Aug 2023 11:49:27 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
- [10.20.54.105])
- by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 377BnP6N59638252
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 7 Aug 2023 11:49:25 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A478D20049;
- Mon,  7 Aug 2023 11:49:25 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 82E0320040;
- Mon,  7 Aug 2023 11:49:25 +0000 (GMT)
-Received: from heavy.boeblingen.de.ibm.com (unknown [9.155.200.166])
- by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Mon,  7 Aug 2023 11:49:25 +0000 (GMT)
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Richard Henderson <richard.henderson@linaro.org>,
- David Hildenbrand <david@redhat.com>, Thomas Huth <thuth@redhat.com>
-Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org,
- Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH 2/2] tests/tcg/s390x: Test precise self-modifying code handling
-Date: Mon,  7 Aug 2023 13:48:21 +0200
-Message-ID: <20230807114921.438881-2-iii@linux.ibm.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230807114921.438881-1-iii@linux.ibm.com>
-References: <20230807114921.438881-1-iii@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1qSyoE-0001Dj-S1
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 07:54:02 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1qSyoB-0007sU-4E
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 07:54:02 -0400
+Received: from loongson.cn (unknown [10.20.42.239])
+ by gateway (Coremail) with SMTP id _____8AxCPJQ29BkOPsRAA--.40205S3;
+ Mon, 07 Aug 2023 19:53:52 +0800 (CST)
+Received: from [10.20.42.239] (unknown [10.20.42.239])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8BxHCNP29BkdhdNAA--.45696S3; 
+ Mon, 07 Aug 2023 19:53:51 +0800 (CST)
+Subject: Re: [PATCH v3 6/6] target/loongarch: Support LoongArch32 VPPN
+To: Jiajie Chen <c@jia.je>, qemu-devel@nongnu.org
+Cc: richard.henderson@linaro.org, yijun@loongson.cn, shenjinyang@loongson.cn, 
+ Xiaojuan Yang <yangxiaojuan@loongson.cn>
+References: <20230807094505.2030603-1-c@jia.je>
+ <20230807094505.2030603-7-c@jia.je>
+From: gaosong <gaosong@loongson.cn>
+Message-ID: <07898c8a-c787-f692-77dc-9c0d7b7ca2b6@loongson.cn>
+Date: Mon, 7 Aug 2023 19:53:51 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
+In-Reply-To: <20230807094505.2030603-7-c@jia.je>
+Content-Type: text/plain; charset=gbk; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: g_4HrDBDVIjgTZILMSB1q7taEBo1ardD
-X-Proofpoint-ORIG-GUID: 6cCITDaFUbfx57azgUCbXQ2vctDbMjYf
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-08-07_10,2023-08-03_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- bulkscore=0 clxscore=1015 adultscore=0 mlxscore=0 impostorscore=0
- lowpriorityscore=0 malwarescore=0 suspectscore=0 spamscore=0 phishscore=0
- mlxlogscore=928 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2308070107
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+X-CM-TRANSID: AQAAf8BxHCNP29BkdhdNAA--.45696S3
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxGryUXr18Xw18XFWrCry7XFc_yoWrGr13pF
+ yFkry8CFy8trZFy3Z3ta4Yyr43Xw1Iya4vqwsxGryavr1DWw18ZrWxurZ7tFyxAwn5ur48
+ AFnay3y5CFyrArgCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUvIb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+ xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
+ 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv
+ 67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
+ AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
+ F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw
+ 1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
+ xVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
+ 4j6F4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07jO
+ uc_UUUUU=
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -12
+X-Spam_score: -1.3
+X-Spam_bar: -
+X-Spam_report: (-1.3 / 5.0 requ) BAYES_00=-1.9, MIME_CHARSET_FARAWAY=2.45,
+ NICE_REPLY_A=-1.809, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -112,157 +82,106 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add small softmmu and user tests to prevent regressions.
+ÔÚ 2023/8/7 ÏÂÎç5:45, Jiajie Chen Ð´µÀ:
+> VPPN of TLBEHI/TLBREHI is limited to 19 bits in LA32.
+> 
+> Signed-off-by: Jiajie Chen <c@jia.je>
+> ---
+>   target/loongarch/cpu-csr.h    |  6 ++++--
+>   target/loongarch/tlb_helper.c | 23 ++++++++++++++++++-----
+>   2 files changed, 22 insertions(+), 7 deletions(-)
+> 
+> diff --git a/target/loongarch/cpu-csr.h b/target/loongarch/cpu-csr.h
+> index b93f99a9ef..9501a969af 100644
+> --- a/target/loongarch/cpu-csr.h
+> +++ b/target/loongarch/cpu-csr.h
+> @@ -57,7 +57,8 @@ FIELD(CSR_TLBIDX, PS, 24, 6)
+>   FIELD(CSR_TLBIDX, NE, 31, 1)
+>   
+>   #define LOONGARCH_CSR_TLBEHI         0x11 /* TLB EntryHi */
+> -FIELD(CSR_TLBEHI, VPPN, 13, 35)
+> +FIELD(CSR_TLBEHI_32, VPPN, 13, 35)
+> +FIELD(CSR_TLBEHI_64, VPPN, 13, 19)
+> 
 
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
----
- tests/tcg/s390x/Makefile.softmmu-target |  1 +
- tests/tcg/s390x/Makefile.target         |  1 +
- tests/tcg/s390x/precise-smc-softmmu.S   | 63 +++++++++++++++++++++++++
- tests/tcg/s390x/precise-smc-user.c      | 39 +++++++++++++++
- 4 files changed, 104 insertions(+)
- create mode 100644 tests/tcg/s390x/precise-smc-softmmu.S
- create mode 100644 tests/tcg/s390x/precise-smc-user.c
+FIELD(CSR_TLBEHI_32, VPPN, 13, 19)
+FIELD(CSR_TLBEHI_64, VPPN, 13, 35)
 
-diff --git a/tests/tcg/s390x/Makefile.softmmu-target b/tests/tcg/s390x/Makefile.softmmu-target
-index 76345b6e643..1a1f088b280 100644
---- a/tests/tcg/s390x/Makefile.softmmu-target
-+++ b/tests/tcg/s390x/Makefile.softmmu-target
-@@ -25,6 +25,7 @@ ASM_TESTS =                                                                    \
-     lpswe-early                                                                \
-     lra                                                                        \
-     mc                                                                         \
-+    precise-smc-softmmu                                                        \
-     ssm-early                                                                  \
-     stosm-early                                                                \
-     stpq                                                                       \
-diff --git a/tests/tcg/s390x/Makefile.target b/tests/tcg/s390x/Makefile.target
-index 4f3793532bf..b5f88c20fc6 100644
---- a/tests/tcg/s390x/Makefile.target
-+++ b/tests/tcg/s390x/Makefile.target
-@@ -60,6 +60,7 @@ Z13_TESTS+=lcbb
- Z13_TESTS+=locfhr
- Z13_TESTS+=vcksm
- Z13_TESTS+=vstl
-+Z13_TESTS+=precise-smc-user
- $(Z13_TESTS): CFLAGS+=-march=z13 -O2
- TESTS+=$(Z13_TESTS)
- 
-diff --git a/tests/tcg/s390x/precise-smc-softmmu.S b/tests/tcg/s390x/precise-smc-softmmu.S
-new file mode 100644
-index 00000000000..f7fa57d899d
---- /dev/null
-+++ b/tests/tcg/s390x/precise-smc-softmmu.S
-@@ -0,0 +1,63 @@
-+/*
-+ * Test s390x-softmmu precise self-modifying code handling.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+    .org 0x8e
-+program_interruption_code:
-+    .org 0x150
-+program_old_psw:
-+    .org 0x1D0                         /* program new PSW */
-+    .quad 0x180000000,pgm              /* 64-bit mode */
-+    .org 0x200                         /* lowcore padding */
-+    .globl _start
-+_start:
-+    lctlg %c0,%c0,c0
-+    lghi %r0,15
-+
-+    /* Test 1: replace sgr with agr. */
-+    lghi %r1,21
-+    vl %v0,patch1
-+    jg 1f                              /* start a new TB */
-+0:
-+    .org . + 6                         /* pad patched code to 16 bytes */
-+1:
-+    vstl %v0,%r0,0b                    /* start writing before TB */
-+    sgr %r1,%r1                        /* this becomes `agr %r1,%r1` */
-+    cgijne %r1,42,failure
-+
-+    /* Test 2: replace agr with division by zero. */
-+    vl %v0,patch2
-+    jg 1f                              /* start a new TB */
-+0:
-+    .org . + 6                         /* pad patched code to 16 bytes */
-+1:
-+    vstl %v0,%r0,0b                    /* start writing before TB */
-+    sgr %r1,%r1                        /* this becomes `d %r0,zero` */
-+failure:
-+    lpswe failure_psw
-+
-+pgm:
-+    chhsi program_interruption_code,0x9          /* divide exception? */
-+    jne failure
-+    clc program_old_psw(16),expected_old_psw2    /* correct old PSW? */
-+    jne failure
-+    lpswe success_psw
-+
-+patch1:
-+    .fill 12                           /* replaces padding and stpq */
-+    agr %r1,%r1                        /* replaces sgr */
-+patch2:
-+    .fill 12                           /* replaces padding and stpq */
-+    d %r0,zero                         /* replaces sgr */
-+zero:
-+    .long 0
-+expected_old_psw2:
-+    .quad 0x200180000000,failure       /* cc is from addition */
-+    .align 8
-+c0:
-+    .quad 0x60000                      /* AFP, VX */
-+success_psw:
-+    .quad 0x2000000000000,0xfff        /* see is_special_wait_psw() */
-+failure_psw:
-+    .quad 0x2000000000000,0            /* disabled wait */
-diff --git a/tests/tcg/s390x/precise-smc-user.c b/tests/tcg/s390x/precise-smc-user.c
-new file mode 100644
-index 00000000000..33a5270865c
---- /dev/null
-+++ b/tests/tcg/s390x/precise-smc-user.c
-@@ -0,0 +1,39 @@
-+/*
-+ * Test s390x-linux-user precise self-modifying code handling.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+#include <assert.h>
-+#include <sys/mman.h>
-+#include <stdint.h>
-+#include <stdlib.h>
-+
-+extern __uint128_t __attribute__((__aligned__(1))) smc;
-+extern __uint128_t __attribute__((__aligned__(1))) patch;
-+
-+int main(void)
-+{
-+    char *aligned_smc = (char *)((uintptr_t)&smc & ~0xFFFULL);
-+    char *smc_end = (char *)&smc + sizeof(smc);
-+    uint64_t value = 21;
-+    int err;
-+
-+    err = mprotect(aligned_smc, smc_end - aligned_smc,
-+                   PROT_READ | PROT_WRITE | PROT_EXEC);
-+    assert(err == 0);
-+
-+    asm("jg 0f\n"                           /* start a new TB */
-+        "patch: .byte 0,0,0,0,0,0\n"        /* replaces padding */
-+        ".byte 0,0,0,0,0,0\n"               /* replaces vstl */
-+        "agr %[value],%[value]\n"           /* replaces sgr */
-+        "smc: .org . + 6\n"                 /* pad patched code to 16 bytes */
-+        "0: vstl %[patch],%[idx],%[smc]\n"  /* start writing before TB */
-+        "sgr %[value],%[value]"             /* this becomes `agr %r0,%r0` */
-+        : [smc] "=R" (smc)
-+        , [value] "+r" (value)
-+        : [patch] "v" (patch)
-+        , [idx] "r" (sizeof(patch) - 1)
-+        : "cc");
-+
-+    return value == 42 ? EXIT_SUCCESS : EXIT_FAILURE;
-+}
--- 
-2.41.0
+>   #define LOONGARCH_CSR_TLBELO0        0x12 /* TLB EntryLo0 */
+>   #define LOONGARCH_CSR_TLBELO1        0x13 /* TLB EntryLo1 */
+> @@ -164,7 +165,8 @@ FIELD(CSR_TLBRERA, PC, 2, 62)
+>   #define LOONGARCH_CSR_TLBRELO1       0x8d /* TLB refill entrylo1 */
+>   #define LOONGARCH_CSR_TLBREHI        0x8e /* TLB refill entryhi */
+>   FIELD(CSR_TLBREHI, PS, 0, 6)
+> -FIELD(CSR_TLBREHI, VPPN, 13, 35)
+> +FIELD(CSR_TLBREHI_32, VPPN, 13, 35)
+> +FIELD(CSR_TLBREHI_64, VPPN, 13, 19)
+
+FIELD(CSR_TLBREHI_32, VPPN, 13, 19)
+FIELD(CSR_TLBREHI_64, VPPN, 13, 35)
+
+We should test booting a 64 bit kernel or system,
+and adding a 32bit example in patch0 would be more useful.
+
+
+Thanks.
+Song Gao
+
+>   #define LOONGARCH_CSR_TLBRPRMD       0x8f /* TLB refill mode info */
+>   FIELD(CSR_TLBRPRMD, PPLV, 0, 2)
+>   FIELD(CSR_TLBRPRMD, PIE, 2, 1)
+> diff --git a/target/loongarch/tlb_helper.c b/target/loongarch/tlb_helper.c
+> index cf6f5863f9..7926c40252 100644
+> --- a/target/loongarch/tlb_helper.c
+> +++ b/target/loongarch/tlb_helper.c
+> @@ -305,8 +305,13 @@ static void raise_mmu_exception(CPULoongArchState *env, target_ulong address,
+>   
+>       if (tlb_error == TLBRET_NOMATCH) {
+>           env->CSR_TLBRBADV = address;
+> -        env->CSR_TLBREHI = FIELD_DP64(env->CSR_TLBREHI, CSR_TLBREHI, VPPN,
+> -                                      extract64(address, 13, 35));
+> +        if (env->mode == LA64) {
+> +            env->CSR_TLBREHI = FIELD_DP64(env->CSR_TLBREHI, CSR_TLBREHI_64,
+> +                                        VPPN, extract64(address, 13, 35));
+> +        } else {
+> +            env->CSR_TLBREHI = FIELD_DP64(env->CSR_TLBREHI, CSR_TLBREHI_32,
+> +                                        VPPN, extract64(address, 13, 19));
+> +        }
+>       } else {
+>           if (!FIELD_EX64(env->CSR_DBG, CSR_DBG, DST)) {
+>               env->CSR_BADV = address;
+> @@ -371,12 +376,20 @@ static void fill_tlb_entry(CPULoongArchState *env, int index)
+>   
+>       if (FIELD_EX64(env->CSR_TLBRERA, CSR_TLBRERA, ISTLBR)) {
+>           csr_ps = FIELD_EX64(env->CSR_TLBREHI, CSR_TLBREHI, PS);
+> -        csr_vppn = FIELD_EX64(env->CSR_TLBREHI, CSR_TLBREHI, VPPN);
+> +        if (env->mode == LA64) {
+> +            csr_vppn = FIELD_EX64(env->CSR_TLBREHI, CSR_TLBREHI_64, VPPN);
+> +        } else {
+> +            csr_vppn = FIELD_EX64(env->CSR_TLBREHI, CSR_TLBREHI_32, VPPN);
+> +        }
+>           lo0 = env->CSR_TLBRELO0;
+>           lo1 = env->CSR_TLBRELO1;
+>       } else {
+>           csr_ps = FIELD_EX64(env->CSR_TLBIDX, CSR_TLBIDX, PS);
+> -        csr_vppn = FIELD_EX64(env->CSR_TLBEHI, CSR_TLBEHI, VPPN);
+> +        if (env->mode == LA64) {
+> +            csr_vppn = FIELD_EX64(env->CSR_TLBEHI, CSR_TLBEHI_64, VPPN);
+> +        } else {
+> +            csr_vppn = FIELD_EX64(env->CSR_TLBEHI, CSR_TLBEHI_32, VPPN);
+> +        }
+>           lo0 = env->CSR_TLBELO0;
+>           lo1 = env->CSR_TLBELO1;
+>       }
+> @@ -496,7 +509,7 @@ void helper_tlbfill(CPULoongArchState *env)
+>   
+>       if (pagesize == stlb_ps) {
+>           /* Only write into STLB bits [47:13] */
+> -        address = entryhi & ~MAKE_64BIT_MASK(0, R_CSR_TLBEHI_VPPN_SHIFT);
+> +        address = entryhi & ~MAKE_64BIT_MASK(0, R_CSR_TLBEHI_64_VPPN_SHIFT);
+>   
+>           /* Choose one set ramdomly */
+>           set = get_random_tlb(0, 7);
+> 
 
 
