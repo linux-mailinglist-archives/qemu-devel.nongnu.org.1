@@ -2,87 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BADE772EBE
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 21:35:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5722772F9A
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 21:42:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qT5zp-0004NE-Nc; Mon, 07 Aug 2023 15:34:29 -0400
+	id 1qT66s-0005f7-JQ; Mon, 07 Aug 2023 15:41:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qT5zn-0004Mn-TX
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 15:34:27 -0400
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qT5zm-0002dP-Dq
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 15:34:27 -0400
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-1bc63ef9959so17299635ad.2
- for <qemu-devel@nongnu.org>; Mon, 07 Aug 2023 12:34:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691436864; x=1692041664;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=wkStjdsOBVLyZU4QQaZkHyakNEe/6w+urdxXywEIdpg=;
- b=IiKLtk4E2DjA05vExnWli1dfhgEg0pLbhrKAqFhfuOCDqJ+FNj14F2QWwg5fsOVFWr
- r9sQS24EeHPc8U0qquSlZDOoVR20dzpXMHTfr42cXxzH0FuPFUvfG1wGN2ipL8mQDmIf
- OAJ8A3RHO1eTp+2cIgzP74BGXwVHV2tWb9B0ESBS1Cx0IwYE4TSdSueZfdw7Xx2GkPHN
- 5bQwr0+rYlcf5vX4QtGzHGWm+AQAigsbR0hYnvRwrJUQPIeUdg8a4XywqXViIHefVedG
- JpA0SNSzpum5yh6FAppGREidUws4O6z6ccXxAjE2f1FZutVBevt+s53YXxx5Iq+99kVa
- NU5A==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qT66k-0005ei-K8
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 15:41:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qT66i-0004c0-T1
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 15:41:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1691437295;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=T3FrIEHUYmjKjA7vmnM+MwzZcDFVQxsehRFDJMxthLk=;
+ b=WKBbw4v4QwZB6LOQ/wBQjFNtTAq+wtaMTR9GhnXO22hAadPgxAUmC7nXDtWu8FCOB8F/XV
+ bm/b74uCg4ViJ1qeWc1zSLyTeQ5kGQlJsSHrnpH5u8cRm/Sp/7oDStGROxgh17rYgOT8/e
+ vJzVJE9RqOoZ8EX3keZZiqogbAMvDbs=
+Received: from mail-ua1-f71.google.com (mail-ua1-f71.google.com
+ [209.85.222.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-695-KMCe3c4LOP2PeZNM-O9oug-1; Mon, 07 Aug 2023 15:41:33 -0400
+X-MC-Unique: KMCe3c4LOP2PeZNM-O9oug-1
+Received: by mail-ua1-f71.google.com with SMTP id
+ a1e0cc1a2514c-79aca015f70so941448241.0
+ for <qemu-devel@nongnu.org>; Mon, 07 Aug 2023 12:41:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691436864; x=1692041664;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=wkStjdsOBVLyZU4QQaZkHyakNEe/6w+urdxXywEIdpg=;
- b=aX41NWnxc1fxELFB/9I6MSeAne5sABAhIUoweMaTgigePoJSkAVPtUm6YEO+mNqKkX
- qqRHk4IfI7b8dH1LUIo8yrHD8c4HsjamMskVZuGk5jJ03fKc5UTlS0TquqofCeufI6qi
- LXnaYwalNkR/PlaQexIiQgzkIWUpoNX5ZmH9BkUFsee1bnXySXtedMALvNPF7hoEjhQY
- M7YcBKZdE56V/gDw3nSVPKybaquVsbuBBl79f+QthMdvmsNOmzIkKnn+xt5/5RvfOKIH
- mnydm2rX44OiRUa8CxKzRenAOrS1elMOPk2t8mb2Ge81fhw+ltnqMRrIfLX4E2XEDI6k
- n7FA==
-X-Gm-Message-State: AOJu0Yxp3q1wvOTlAj0Mg6KjIf8e6LELePWhzwqdrur+SYddSDaxRvvw
- Z93rQFaXh7IjmaJweEHy45/ixg==
-X-Google-Smtp-Source: AGHT+IGoQtljZgBqF9ULdjjQxyD0eHVv1+EVoaplDtrhe7DHC2MHyUP207wPit1rEn/+xrsf6v9I/w==
-X-Received: by 2002:a17:902:ce86:b0:1bc:5d0:e8db with SMTP id
- f6-20020a170902ce8600b001bc05d0e8dbmr12184121plg.62.1691436864523; 
- Mon, 07 Aug 2023 12:34:24 -0700 (PDT)
-Received: from ?IPV6:2602:47:d490:6901:e306:567a:e0a1:341?
- ([2602:47:d490:6901:e306:567a:e0a1:341])
- by smtp.gmail.com with ESMTPSA id
- ja4-20020a170902efc400b001b8013ed362sm7312469plb.96.2023.08.07.12.34.23
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 07 Aug 2023 12:34:24 -0700 (PDT)
-Message-ID: <df348946-7092-3211-c088-2bb4f798ad88@linaro.org>
-Date: Mon, 7 Aug 2023 12:34:22 -0700
+ d=1e100.net; s=20221208; t=1691437293; x=1692042093;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=T3FrIEHUYmjKjA7vmnM+MwzZcDFVQxsehRFDJMxthLk=;
+ b=U0caF+XYNlvvT/6x16nyQ88crDwbpmgxbw8+UMB0+VdqoNFS5va6+7dE3xkbQaCuwM
+ S/bnke0+OWS4Z5xzu4fZ5Ea7l/rViicT8bzNczqGPU2QgcwbrZgRErJEp2q4Ski8xIxK
+ aFwYEEYCCvdCO+f1pVVYi46UKndT+S+dCOwD/KbE6TYPfRs/F4JmS7Ltz6nv2pofN2ie
+ 6d7HgxwUqCaEh3WQ1Zd4XBgXj/lMPNmFc4Qv5r8I1rh2/dndsnruQhw5GMXi0eTNwQ1q
+ XdWH0yx4cYuOeAOD8g7AZFgeRwEvr9O8YLlC2S/7BAcT+8v55yVRGtZBsO2l6hXL/Jyb
+ 8XMg==
+X-Gm-Message-State: AOJu0YxWLLEv/K6VCCIipQshOd11luI36Rm6o4dw9KCIKrrvLRTxDEws
+ /m/qy/ku+wjbWPcHrjsfHaizx26SBrniONWoOVQ+aPc6lTe0Vnt3cs43OBTmH5OdZffiwxVC7VI
+ ivypyNxgw0ZdpqJU9NzWCGLQDJCPfNuQ=
+X-Received: by 2002:a05:6102:3a42:b0:445:5314:fd76 with SMTP id
+ c2-20020a0561023a4200b004455314fd76mr5255064vsu.3.1691437292920; 
+ Mon, 07 Aug 2023 12:41:32 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFRTPdsJUk1SukKKvpYHrfmimUAbWrhV+lYI5g3jwI/wyyFOLHN0xMnXQoii+III0tjmdCNfCH5zBckZKNXAvI=
+X-Received: by 2002:a05:6102:3a42:b0:445:5314:fd76 with SMTP id
+ c2-20020a0561023a4200b004455314fd76mr5255057vsu.3.1691437292690; Mon, 07 Aug
+ 2023 12:41:32 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v3 5/6] target/loongarch: Support LoongArch32 DMW
-Content-Language: en-US
-To: Jiajie Chen <c@jia.je>, qemu-devel@nongnu.org
-Cc: yijun@loongson.cn, shenjinyang@loongson.cn, Song Gao
- <gaosong@loongson.cn>, Xiaojuan Yang <yangxiaojuan@loongson.cn>
-References: <20230807094505.2030603-1-c@jia.je>
- <20230807094505.2030603-6-c@jia.je>
- <21b780f0-baa1-c006-2e82-b646442d86f2@linaro.org>
- <b6da05fc-8eea-70d9-20ac-e6cb9d8ea440@jia.je>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <b6da05fc-8eea-70d9-20ac-e6cb9d8ea440@jia.je>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
-X-Spam_score_int: -38
-X-Spam_score: -3.9
-X-Spam_bar: ---
-X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.809,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+References: <20230807094807.471646-1-pbonzini@redhat.com>
+ <20230807094807.471646-3-pbonzini@redhat.com>
+ <6420392676438a75c2696236299d7b31abe12bd0.camel@linux.ibm.com>
+In-Reply-To: <6420392676438a75c2696236299d7b31abe12bd0.camel@linux.ibm.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Mon, 7 Aug 2023 21:41:21 +0200
+Message-ID: <CABgObfbXEXQPPnoGf2rN7yiLSo_WBqARHxMnaO6t-gG7EzFuxg@mail.gmail.com>
+Subject: Re: [PATCH 2/3] linux-user: cleanup unused linux-user/include/host
+ directories
+To: Ilya Leoshkevich <iii@linux.ibm.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>,
+ Richard Henderson <richard.henderson@linaro.org>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Content-Type: multipart/alternative; boundary="000000000000fdb85a06025a6e57"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,52 +97,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/7/23 10:32, Jiajie Chen wrote:
->>>       uint8_t da = FIELD_EX64(env->CSR_CRMD, CSR_CRMD, DA);
->>>       uint8_t pg = FIELD_EX64(env->CSR_CRMD, CSR_CRMD, PG);
->>>   +    /* Truncate high 32 bits for LA32 */
->>> +    if (env->mode == LA32) {
->>> +        address = (uint32_t)address;
->>> +    }
->>
->> You need to do this in the translator, because this also depends on VA32L* and the 
->> current priv level.
-> Could you please elaborate on this? I am checking LA32 and VA32L* in 
-> get_physical_address() currently, the current priv level is read from mmu_idx(or 
-> alternatively, read from env->CSR_CRMD), and I am unsure how to do this in the translator.
+--000000000000fdb85a06025a6e57
+Content-Type: text/plain; charset="UTF-8"
 
-In insn_trans/trans_memory.c.inc, gen_load, we compute the address,
+Yes, found the same in CI. I will send V2 tomorrow.
 
+Paolo
 
->     TCGv addr = gpr_src(ctx, a->rj, EXT_NONE);
-> 
->     if (a->imm) {
->         TCGv temp = tcg_temp_new();
->         tcg_gen_addi_tl(temp, addr, a->imm);
->         addr = temp;
->     }
+Il lun 7 ago 2023, 19:18 Ilya Leoshkevich <iii@linux.ibm.com> ha scritto:
 
-One would use
+> On Mon, 2023-08-07 at 11:48 +0200, Paolo Bonzini wrote:
+> > Alpha and 31-bit s390 lack the assembly fragment to handle signals
+> > occurring at the same time as system calls, so they cannot run
+> > linux-user emulation anymore.  Drop the host-signal.h files for
+> > them.
+> >
+> > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> > Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> > ---
+> >  linux-user/include/host/alpha/host-signal.h |  55 --------
+> >  linux-user/include/host/s390/host-signal.h  | 138 ------------------
+> > --
+> >  2 files changed, 193 deletions(-)
+> >  delete mode 100644 linux-user/include/host/alpha/host-signal.h
+> >  delete mode 100644 linux-user/include/host/s390/host-signal.h
+>
+> s390/host-signal.h is included by s390x/host-signal.h, so on a (64-bit)
+> s390x host I get:
+>
+> In file included from ../linux-user/signal.c:33:
+> ../linux-user/include/host/s390x/host-signal.h:1:10: fatal error:
+> ../s390/host-signal.h: No such file or directory
+>     1 | #include "../s390/host-signal.h"
+>
+>
 
-     if (ctx->va32) {
-         tcg_gen_ext32u_tl(temp, addr);
-         addr = temp;
-     }
+--000000000000fdb85a06025a6e57
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-to zero-extend the address.  You would want to create no more than one temporary for the 
-entire computation.
+<div dir=3D"auto">Yes, found the same in CI. I will send V2 tomorrow.<div d=
+ir=3D"auto"><br></div><div dir=3D"auto">Paolo</div></div><br><div class=3D"=
+gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">Il lun 7 ago 2023, 19:18=
+ Ilya Leoshkevich &lt;<a href=3D"mailto:iii@linux.ibm.com">iii@linux.ibm.co=
+m</a>&gt; ha scritto:<br></div><blockquote class=3D"gmail_quote" style=3D"m=
+argin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">On Mon, 2023-=
+08-07 at 11:48 +0200, Paolo Bonzini wrote:<br>
+&gt; Alpha and 31-bit s390 lack the assembly fragment to handle signals<br>
+&gt; occurring at the same time as system calls, so they cannot run<br>
+&gt; linux-user emulation anymore.=C2=A0 Drop the host-signal.h files for<b=
+r>
+&gt; them.<br>
+&gt; <br>
+&gt; Signed-off-by: Paolo Bonzini &lt;<a href=3D"mailto:pbonzini@redhat.com=
+" target=3D"_blank" rel=3D"noreferrer">pbonzini@redhat.com</a>&gt;<br>
+&gt; Reviewed-by: Richard Henderson &lt;<a href=3D"mailto:richard.henderson=
+@linaro.org" target=3D"_blank" rel=3D"noreferrer">richard.henderson@linaro.=
+org</a>&gt;<br>
+&gt; ---<br>
+&gt; =C2=A0linux-user/include/host/alpha/host-signal.h |=C2=A0 55 --------<=
+br>
+&gt; =C2=A0linux-user/include/host/s390/host-signal.h=C2=A0 | 138 ---------=
+---------<br>
+&gt; --<br>
+&gt; =C2=A02 files changed, 193 deletions(-)<br>
+&gt; =C2=A0delete mode 100644 linux-user/include/host/alpha/host-signal.h<b=
+r>
+&gt; =C2=A0delete mode 100644 linux-user/include/host/s390/host-signal.h<br=
+>
+<br>
+s390/host-signal.h is included by s390x/host-signal.h, so on a (64-bit)<br>
+s390x host I get:<br>
+<br>
+In file included from ../linux-user/signal.c:33:<br>
+../linux-user/include/host/s390x/host-signal.h:1:10: fatal error:<br>
+../s390/host-signal.h: No such file or directory<br>
+=C2=A0 =C2=A0 1 | #include &quot;../s390/host-signal.h&quot;<br>
+<br>
+</blockquote></div>
 
-You would need to modify all of the places which generate an address for tcg_gen_qemu_*: 
-gen_load*, gen_store*, gen_ldptr, gen_stptr.  Also trans_fmemory.c.inc and trans_lsx.c.inc.
+--000000000000fdb85a06025a6e57--
 
-I would strongly suggest creating helper functions, so that all of the addition and 
-extension is done in one place, and not in lots of places as we do now.
-
-If this sounds like more work than just changing get_physical_address, and it is.  But it 
-works better with the softmmu tlb.  If you clear upper bits late, then you get false 
-conflicts in the tlb, and extra tlb fills.
-
-
-
-r~
 
