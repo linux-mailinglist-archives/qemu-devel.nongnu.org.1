@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2C437730A4
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 22:48:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F7377730A8
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 22:49:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qT792-0005cQ-HP; Mon, 07 Aug 2023 16:48:04 -0400
+	id 1qT798-00068B-NT; Mon, 07 Aug 2023 16:48:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qT78z-0005Ob-Oh
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 16:48:01 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qT796-00065o-OQ
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 16:48:08 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qT78x-0006ig-2O
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 16:48:00 -0400
+ id 1qT795-0006kG-62
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 16:48:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691441278;
+ s=mimecast20190719; t=1691441286;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=YGEquOrDYqqCouEnmaVqHGup2MXV07dB8yWThUHILDU=;
- b=Ow65ivFCiVg2kwL7U9y99EqlIivchkQ/74nYl6rlWmIZ+UhuF4Hduz3/E1PFB5LrNFniyL
- Qab9LRJGKBdeJ4UM5szx9LXSSOGAEp82iJpdbSRN5vp0nsxk9k7mlsLeZdYWFV4OqnTY0d
- HV1exR0FtwsQxwe/T52KRYSSC2oKLtw=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-564-BnrR5ahZMv2255y3ptgS6g-1; Mon, 07 Aug 2023 16:47:54 -0400
-X-MC-Unique: BnrR5ahZMv2255y3ptgS6g-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
+ bh=P8ZFlSe/0/0xC1+2/G1PqGE3LwwZEexuiUCyAWa0dhA=;
+ b=HQoUowEq39fckmEVomHWNDLf9iLIDblb2nySFDYe330PYJC0RjEo81GCq/B8aVdXlUoJ43
+ lyr+QkIPZlkC0tzkfbFGeO05LTVanvx8D7/bL9T47Pj/wDZsOOSwsJPvilF7+jG9CSPgxI
+ 3hcNt9eoeD/YYQRJP7yLd+CrYOwmfs0=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-561-fY7TS5_vPbaN19ET7-x27g-1; Mon, 07 Aug 2023 16:48:01 -0400
+X-MC-Unique: fY7TS5_vPbaN19ET7-x27g-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7045185C70B;
- Mon,  7 Aug 2023 20:47:54 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B98C11C05157;
+ Mon,  7 Aug 2023 20:48:00 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.34])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 8129C2026D4B;
- Mon,  7 Aug 2023 20:47:52 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 637F640C2076;
+ Mon,  7 Aug 2023 20:47:58 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Eduardo Habkost <eduardo@habkost.net>,
@@ -49,17 +49,19 @@ Cc: Eduardo Habkost <eduardo@habkost.net>,
  Gerd Hoffmann <kraxel@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Zongmin Zhou <zhouzongmin@kylinos.cn>
-Subject: [PULL 5/6] hw/i386/vmmouse:add relative packet flag for button status
-Date: Tue,  8 Aug 2023 00:47:16 +0400
-Message-ID: <20230807204717.2483983-6-marcandre.lureau@redhat.com>
+ Paolo Bonzini <pbonzini@redhat.com>, Dongwon Kim <dongwon.kim@intel.com>,
+ Vivek Kasireddy <vivek.kasireddy@intel.com>
+Subject: [PULL 6/6] ui/gtk: set scanout mode in
+ gd_egl/gd_gl_area_scanout_texture
+Date: Tue,  8 Aug 2023 00:47:17 +0400
+Message-ID: <20230807204717.2483983-7-marcandre.lureau@redhat.com>
 In-Reply-To: <20230807204717.2483983-1-marcandre.lureau@redhat.com>
 References: <20230807204717.2483983-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -84,63 +86,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zongmin Zhou <zhouzongmin@kylinos.cn>
+From: Dongwon Kim <dongwon.kim@intel.com>
 
-The buttons value use macros instead of direct numbers.
+Fixing a regression (black screen) caused by a commit 92b58156e7
+("ui/gtk: set scanout-mode right before scheduling draw").
 
-If request relative mode, have to add this for
-guest vmmouse driver to judge this is a relative packet.
-otherwise,vmmouse driver will not match
-the condition 'status & VMMOUSE_RELATIVE_PACKET',
-and can't report events on the correct(relative) input device,
-result to relative mode unuseful.
+The commit 92b58156e7 was made with an assumption that the scanout
+mode needs to be set only if the guest scanout is a dmabuf but there
+are cases (e.g. virtio-gpu-virgl) where the scanout is still processed
+in a form of a texture but is not backed by dmabuf. So it is needed
+to put back the line that sets scanout mode in gd_egl_scanout_texture
+and gd_gl_area_scanout_texture.
 
-Signed-off-by: Zongmin Zhou<zhouzongmin@kylinos.cn>
-Message-ID: <20230413081526.2229916-1-zhouzongmin@kylinos.cn>
+Fixes: 92b58156e7 ("ui/gtk: set scanout-mode right before scheduling draw)
+Reported-by: Volker Rümelin <vr_qemu@t-online.de>
+Cc: Gerd Hoffmann <kraxel@redhat.com>
+Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
+Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
+Signed-off-by: Dongwon Kim <dongwon.kim@intel.com>
 Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Message-ID: <20230725001131.24017-1-dongwon.kim@intel.com>
 ---
- hw/i386/vmmouse.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ ui/gtk-egl.c     | 1 +
+ ui/gtk-gl-area.c | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/hw/i386/vmmouse.c b/hw/i386/vmmouse.c
-index a56c185f15..6cd624bd09 100644
---- a/hw/i386/vmmouse.c
-+++ b/hw/i386/vmmouse.c
-@@ -44,6 +44,12 @@
+diff --git a/ui/gtk-egl.c b/ui/gtk-egl.c
+index 4c29ac10d0..a1060fd80f 100644
+--- a/ui/gtk-egl.c
++++ b/ui/gtk-egl.c
+@@ -246,6 +246,7 @@ void gd_egl_scanout_texture(DisplayChangeListener *dcl,
+     eglMakeCurrent(qemu_egl_display, vc->gfx.esurface,
+                    vc->gfx.esurface, vc->gfx.ectx);
  
- #define VMMOUSE_VERSION		0x3442554a
- 
-+#define VMMOUSE_RELATIVE_PACKET    0x00010000
-+
-+#define VMMOUSE_LEFT_BUTTON        0x20
-+#define VMMOUSE_RIGHT_BUTTON       0x10
-+#define VMMOUSE_MIDDLE_BUTTON      0x08
-+
- #ifdef DEBUG_VMMOUSE
- #define DPRINTF(fmt, ...) printf(fmt, ## __VA_ARGS__)
- #else
-@@ -103,15 +109,18 @@ static void vmmouse_mouse_event(void *opaque, int x, int y, int dz, int buttons_
-             x, y, dz, buttons_state);
- 
-     if ((buttons_state & MOUSE_EVENT_LBUTTON))
--        buttons |= 0x20;
-+        buttons |= VMMOUSE_LEFT_BUTTON;
-     if ((buttons_state & MOUSE_EVENT_RBUTTON))
--        buttons |= 0x10;
-+        buttons |= VMMOUSE_RIGHT_BUTTON;
-     if ((buttons_state & MOUSE_EVENT_MBUTTON))
--        buttons |= 0x08;
-+        buttons |= VMMOUSE_MIDDLE_BUTTON;
- 
-     if (s->absolute) {
-         x <<= 1;
-         y <<= 1;
-+    } else{
-+        /* add for guest vmmouse driver to judge this is a relative packet. */
-+        buttons |= VMMOUSE_RELATIVE_PACKET;
++    gtk_egl_set_scanout_mode(vc, true);
+     egl_fb_setup_for_tex(&vc->gfx.guest_fb, backing_width, backing_height,
+                          backing_id, false);
+ }
+diff --git a/ui/gtk-gl-area.c b/ui/gtk-gl-area.c
+index 1ce34a249e..52dcac161e 100644
+--- a/ui/gtk-gl-area.c
++++ b/ui/gtk-gl-area.c
+@@ -268,6 +268,7 @@ void gd_gl_area_scanout_texture(DisplayChangeListener *dcl,
+         return;
      }
  
-     s->queue[s->nb_queue++] = buttons;
++    gtk_gl_area_set_scanout_mode(vc, true);
+     egl_fb_setup_for_tex(&vc->gfx.guest_fb, backing_width, backing_height,
+                          backing_id, false);
+ }
 -- 
 2.41.0
 
