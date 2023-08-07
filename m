@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26CAE772765
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 16:17:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5623977276B
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 16:17:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qT11o-0000FF-VB; Mon, 07 Aug 2023 10:16:13 -0400
+	id 1qT12T-0001tE-TN; Mon, 07 Aug 2023 10:16:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qT10z-00007g-Ub
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 10:15:21 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ id 1qT114-00008q-Q2
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 10:15:28 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qT10x-0005RU-2j
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 10:15:21 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-3fe4b95c371so16784395e9.1
- for <qemu-devel@nongnu.org>; Mon, 07 Aug 2023 07:15:18 -0700 (PDT)
+ id 1qT10y-0005Rq-0j
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 10:15:22 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-3fe45481edfso36005515e9.1
+ for <qemu-devel@nongnu.org>; Mon, 07 Aug 2023 07:15:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691417717; x=1692022517;
+ d=linaro.org; s=google; t=1691417718; x=1692022518;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=mTF0rpR5T9/+RGJwHtQl5zTiqKLJXEt3Fbl4hFG5dDw=;
- b=Kmnnw5f6J1PD5PC8Gkwbux13uGZIYn7v57Sy74U+sqM17YqR+Hs6bjf1diPoqv5QaR
- HZpN08etf2GPFvfCgJ1banmEscT/8QPya9FCSUee4xlt3GNdXtjP6VU6zRzabRDWTWUL
- rm8wa/JTA8IWd+IYBSQQE9yURgXWzQfJn/0X7t5D0lu7fBr0kDO9EAT04spiaAAOcxJb
- NQKPy/CdXZfGmVZtwB3sxe7EvI6FQAUUVGkxOMGEFy58Sv0rK1xgV4qJdHkFWLaXDFKZ
- PFABke3Yne31pkA8RSM9TVvvAjn0OGJShU2OFDC72AQ1+Dd2CZ820GHofWD5JsS3b3qk
- ONWw==
+ :reply-to; bh=lEu4y95quZyOnfSNj/UQtZgzoOcsDey9aZLknEbvT3o=;
+ b=zyd9Hod5fYJ8oZzm3df5Jw3vw9gzN/MCBrJeyt8C/LlpxrF1YiEg2kaTt9mVAjCHgI
+ AofhnuY6joPeOA6JwHH2p395l3UYXuThvvkK2B3IOEmnG6ERPOdvEe+AtcQHP8787GdE
+ adxMn3YSh9F6WAhPIB+GucGijLCwkYOaCUHhHQru2XSM6Mh9AIhGKpPGqANylM6i7g8R
+ a3rTUVeN465xivsPKCI2BAISt/fHB53encUvqv5ePX+nLZHq3xV7v6r1cg3WTXNxPdD9
+ l+nTuq3QijFdOoKuvvIKnaElfRn0FjQ79wdJxhoZs9O2m1qD7ahvl0ED63K9SD9bgom0
+ 2Pwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691417717; x=1692022517;
+ d=1e100.net; s=20221208; t=1691417718; x=1692022518;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mTF0rpR5T9/+RGJwHtQl5zTiqKLJXEt3Fbl4hFG5dDw=;
- b=VxapGYaabmvHsdIOfIGbWKgMJVK25MwWnpqKKKFNP7iDlqvHCDqXevtNRDvsZXnO3d
- NpeUcF3F9FtAWTpTrnzdTiphQXv2pW3rsnfSzbic/khXxwLGMj3AKKQCpQBt0mQ1YzSi
- jqO7EkGn3hRdxtDO38rPysIr24WMNfxpBUt281qhuVLMtiB/AQ+IbeS+CO51dbeCvzjN
- Hr5u9mW6lQz6c69zrfU7dielkJaatLTKFdo1EeGXfzRONVIVb5jaX1yUes2nG5PpB5yh
- 5UolADB0zwNRhrHnG0XkjONIyZxmgTACKPi+/+lR8wrLssFjZ8yLZLkvvXcRVSM78qi3
- vpeQ==
-X-Gm-Message-State: AOJu0YzMzoGPI0ZkchbJcZ7oGvjY5SV5Z6IM/x3xAds9qrVhfPSMf+4H
- gJ7B1PlYtb2trfft6WXH7bJPBqZa7+FL3vckPyw=
-X-Google-Smtp-Source: AGHT+IHDhP6kL82ZAaEDUbCRhyDeVxyDJ0XZQykVAh6jWOo+S1ZbI5g/dauN+zjh/Aei01UZwUhDzA==
-X-Received: by 2002:a05:600c:1d05:b0:3fb:e1d0:6417 with SMTP id
- l5-20020a05600c1d0500b003fbe1d06417mr5437826wms.19.1691417717623; 
- Mon, 07 Aug 2023 07:15:17 -0700 (PDT)
+ bh=lEu4y95quZyOnfSNj/UQtZgzoOcsDey9aZLknEbvT3o=;
+ b=Da+ajzjEfwcJGP5zmw7yTJB82pVxupaN+azALbvfbL6mr7i2Yfvj8qmLsCtgpWJ7U5
+ 8sbbAatOlifpN0LD9Vj2Yq0wmSUeS2tazw+yRNJYdDQ7lGLw4VZxTw1brgaPOBKdeMz1
+ G4kfnTiKxrZSiDVN4zF2GX2TSQLkV5BmHwwaBcMfTGaiOSN1Ev3uI4LNToDREYiYeJRf
+ u+k5oqCZ2hf9ndRxM3/NE1YKJC/JnYDwxjL2xf9D/GMOC1BWODN6Rb3A1klxk+F6GyEm
+ I0DWb60OkxT/oTP8mfeAXV6l4cW0/0F7Bm7BNCKy2NBhsEwKXpOjNxpHkok6lUM+i7RE
+ dmXw==
+X-Gm-Message-State: AOJu0YwqLftnXg1dj7uMczcHVdRZCW+0727Zo+rXc1FNC/6yuXLF8e/J
+ M3zmjvNzs/sCLjhg7uYtGQF4Oe1W71RwRgiAiw8=
+X-Google-Smtp-Source: AGHT+IFCLbogZxvwYEhMPzY9/SpC3iD7f0t+HvR9yEA39VixFeNl9lPDrQuYlCYoYWyuIdqpGsGF/w==
+X-Received: by 2002:a05:600c:2213:b0:3fe:2b76:3d7 with SMTP id
+ z19-20020a05600c221300b003fe2b7603d7mr7638091wml.10.1691417718272; 
+ Mon, 07 Aug 2023 07:15:18 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  h20-20020a05600c261400b003fe2ebf479fsm10835617wma.36.2023.08.07.07.15.17
@@ -58,17 +58,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Subject: [PATCH v2 02/15] target/arm/ptw: Don't report GPC faults on stage 1
- ptw as stage2 faults
-Date: Mon,  7 Aug 2023 15:15:01 +0100
-Message-Id: <20230807141514.19075-3-peter.maydell@linaro.org>
+Subject: [PATCH v2 03/15] target/arm/ptw: Set s1ns bit in fault info more
+ consistently
+Date: Mon,  7 Aug 2023 15:15:02 +0100
+Message-Id: <20230807141514.19075-4-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230807141514.19075-1-peter.maydell@linaro.org>
 References: <20230807141514.19075-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,55 +91,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In S1_ptw_translate() we set up the ARMMMUFaultInfo if the attempt to
-translate the page descriptor address into a physical address fails.
-This used to only be possible if we are doing a stage 2 ptw for that
-descriptor address, and so the code always sets fi->stage2 and
-fi->s1ptw to true.  However, with FEAT_RME it is also possible for
-the lookup of the page descriptor address to fail because of a
-Granule Protection Check fault.  These should not be reported as
-stage 2, otherwise arm_deliver_fault() will incorrectly set
-HPFAR_EL2.  Similarly the s1ptw bit should only be set for stage 2
-faults on stage 1 translation table walks, i.e.  not for GPC faults.
+The s1ns bit in ARMMMUFaultInfo is documented as "true if
+we faulted on a non-secure IPA while in secure state". Both the
+places which look at this bit only do so after having confirmed
+that this is a stage 2 fault and we're dealing with Secure EL2,
+which leaves the ptw.c code free to set the bit to any random
+value in the other cases.
 
-Add a comment to the the other place where we might detect a
-stage2-fault-on-stage-1-ptw, in arm_casq_ptw(), noting why we know in
-that case that it must really be a stage 2 fault and not a GPC fault.
+Instead of taking advantage of that freedom, consistently
+make the bit be set to false for the "not a stage 2 fault
+for Secure EL2" cases. This removes some cases where we
+were using an 'is_secure' boolean and leaving the reader
+guessing about whether that was the right thing for Realm
+and Root cases.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/ptw.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ target/arm/ptw.c | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
 diff --git a/target/arm/ptw.c b/target/arm/ptw.c
-index bafeb876ad7..eb57ebd897b 100644
+index eb57ebd897b..67078ae3509 100644
 --- a/target/arm/ptw.c
 +++ b/target/arm/ptw.c
-@@ -600,8 +600,8 @@ static bool S1_ptw_translate(CPUARMState *env, S1Translate *ptw,
-         fi->type = ARMFault_GPCFOnWalk;
+@@ -514,6 +514,17 @@ static ARMSecuritySpace S2_security_space(ARMSecuritySpace s1_space,
      }
+ }
+ 
++static bool fault_s1ns(ARMSecuritySpace space, ARMMMUIdx s2_mmu_idx)
++{
++    /*
++     * For stage 2 faults in Secure EL22, S1NS indicates
++     * whether the faulting IPA is in the Secure or NonSecure
++     * IPA space. For all other kinds of fault, it is false.
++     */
++    return space == ARMSS_Secure && regime_is_stage2(s2_mmu_idx)
++        && s2_mmu_idx == ARMMMUIdx_Stage2_S;
++}
++
+ /* Translate a S1 pagetable walk through S2 if needed.  */
+ static bool S1_ptw_translate(CPUARMState *env, S1Translate *ptw,
+                              hwaddr addr, ARMMMUFaultInfo *fi)
+@@ -586,7 +597,7 @@ static bool S1_ptw_translate(CPUARMState *env, S1Translate *ptw,
+             fi->s2addr = addr;
+             fi->stage2 = true;
+             fi->s1ptw = true;
+-            fi->s1ns = !is_secure;
++            fi->s1ns = fault_s1ns(ptw->in_space, s2_mmu_idx);
+             return false;
+         }
+     }
+@@ -602,7 +613,7 @@ static bool S1_ptw_translate(CPUARMState *env, S1Translate *ptw,
      fi->s2addr = addr;
--    fi->stage2 = true;
--    fi->s1ptw = true;
-+    fi->stage2 = regime_is_stage2(s2_mmu_idx);
-+    fi->s1ptw = fi->stage2;
-     fi->s1ns = !is_secure;
+     fi->stage2 = regime_is_stage2(s2_mmu_idx);
+     fi->s1ptw = fi->stage2;
+-    fi->s1ns = !is_secure;
++    fi->s1ns = fault_s1ns(ptw->in_space, s2_mmu_idx);
      return false;
  }
-@@ -719,6 +719,12 @@ static uint64_t arm_casq_ptw(CPUARMState *env, uint64_t old_val,
-         env->tlb_fi = NULL;
  
-         if (unlikely(flags & TLB_INVALID_MASK)) {
-+            /*
-+             * We know this must be a stage 2 fault because the granule
-+             * protection table does not separately track read and write
-+             * permission, so all GPC faults are caught in S1_ptw_translate():
-+             * we only get here for "readable but not writeable".
-+             */
-             assert(fi->type != ARMFault_None);
+@@ -729,7 +740,7 @@ static uint64_t arm_casq_ptw(CPUARMState *env, uint64_t old_val,
              fi->s2addr = ptw->out_virt;
              fi->stage2 = true;
+             fi->s1ptw = true;
+-            fi->s1ns = !ptw->in_secure;
++            fi->s1ns = fault_s1ns(ptw->in_space, ptw->in_ptw_idx);
+             return 0;
+         }
+ 
+@@ -2030,7 +2041,7 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
+     fi->level = level;
+     /* Tag the error as S2 for failed S1 PTW at S2 or ordinary S2.  */
+     fi->stage2 = fi->s1ptw || regime_is_stage2(mmu_idx);
+-    fi->s1ns = mmu_idx == ARMMMUIdx_Stage2;
++    fi->s1ns = fault_s1ns(ptw->in_space, mmu_idx);
+     return true;
+ }
+ 
 -- 
 2.34.1
 
