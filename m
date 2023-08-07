@@ -2,104 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14DBE771C0C
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 10:11:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58C2C771C1C
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 10:14:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qSvK9-0006pG-1T; Mon, 07 Aug 2023 04:10:45 -0400
+	id 1qSvN7-0007f2-AC; Mon, 07 Aug 2023 04:13:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1qSvK3-0006oa-Lq; Mon, 07 Aug 2023 04:10:39 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1qSvN5-0007et-Ny
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 04:13:47 -0400
+Received: from mgamail.intel.com ([192.55.52.93])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1qSvJz-0000wQ-75; Mon, 07 Aug 2023 04:10:37 -0400
-Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3778A0nA032695; Mon, 7 Aug 2023 08:10:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=ssXNVX+zZd/lEprh8qHPs3UkazgFRHUonQryaO7tHiY=;
- b=CAY1AGOEVogaJ5ZkpOMnPZnxYNuNBAj9sCc0QgFXdmwzSi8wXFbhGgyaClqoFy8iptyN
- 0mCcGEl3iZ9nlx+uQATYN+2OvnDX68OMuc/ObPD3PeWSS4Zectnv/ArNDqpyH2RatyBt
- o3CANdcUxY/kvSZjRnVRCMxbQrS7WGQWmW2DVEdDMP48LeIxLaoFgE56ZfUel9JIhbcd
- XHrjTKPxNk27CXc/l75YwCXDihiBuji5uW83Mao5DPxY/pvYeyyKDYli8EUt9DPducNt
- o4zh36ZkHMEbDZS4tiqikHSNUot7XDz+YMkB5UkVCyp3Xfk20WjGv+Yydj+37izbpd9K TQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3savkrrbnv-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 07 Aug 2023 08:10:32 +0000
-Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3778AW9s002718;
- Mon, 7 Aug 2023 08:10:32 GMT
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3savkrrbnf-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 07 Aug 2023 08:10:32 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3777e9uI001796; Mon, 7 Aug 2023 08:10:31 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3sa3f1aqa3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 07 Aug 2023 08:10:31 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com
- [10.20.54.101])
- by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 3778ATxc28508770
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 7 Aug 2023 08:10:29 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7C3D42004E;
- Mon,  7 Aug 2023 08:10:29 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E0F5B20040;
- Mon,  7 Aug 2023 08:10:28 +0000 (GMT)
-Received: from [9.171.18.187] (unknown [9.171.18.187])
- by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Mon,  7 Aug 2023 08:10:28 +0000 (GMT)
-Message-ID: <558f087ae3f7e13a202f1e7ddda22e5996066269.camel@linux.ibm.com>
-Subject: Re: [PATCH 2/3] target/s390x: Fix the "ignored match" case in VSTRS
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: David Hildenbrand <david@redhat.com>, Laurent Vivier <laurent@vivier.eu>,
- Richard Henderson <richard.henderson@linaro.org>,
- Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-s390x@nongnu.org, Claudio Fontana
- <cfontana@suse.de>, qemu-stable@nongnu.org
-Date: Mon, 07 Aug 2023 10:10:28 +0200
-In-Reply-To: <5ea25092-b362-0587-5ad0-f3883cc86ba1@redhat.com>
-References: <20230804233748.218935-1-iii@linux.ibm.com>
- <20230804233748.218935-3-iii@linux.ibm.com>
- <5ea25092-b362-0587-5ad0-f3883cc86ba1@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1qSvN3-0001SV-4r
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 04:13:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1691396025; x=1722932025;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=1P/ygiq2ZznFXTopDanu9BY2NVu37gvYGGJ8jgCgJ/I=;
+ b=NllvfXoq5xvsms6JHKjYazk+f07QuvrQaHbZTfd6XVeTCNUKQk6SC0E8
+ 8Njdiyc4XFTZJnsNLsxf91NkfDdO2XOCeoLmmREZW4mDf+HkjnbB84wnA
+ mzB86kFEGZTEREs85gJ2wWhkQLgFfnnnH+NzYkAc0Du2l7e2HmCh8BzBy
+ e8rYXeyczLrP3A0hn0eqMXXjCjeJUZjBl737mXhOTeDnms48wXImIiSSE
+ Yswo1lMltSWM6Hmh6TTOVP4dI9MKZ91+Zdg6JGsC0YbW4H6fepQ9LyXKU
+ gXYpnhTxOLIBLtNjvBY1wKUaChYLnZ5JA7wOTjZJEL6hj/GYRUdjG+Iug Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10794"; a="367942597"
+X-IronPort-AV: E=Sophos;i="6.01,261,1684825200"; d="scan'208";a="367942597"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+ by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Aug 2023 01:13:42 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10794"; a="854570502"
+X-IronPort-AV: E=Sophos;i="6.01,261,1684825200"; d="scan'208";a="854570502"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.16.81])
+ ([10.93.16.81])
+ by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Aug 2023 01:13:38 -0700
+Message-ID: <0ae07b73-0b44-bae4-141a-947a13990daf@intel.com>
+Date: Mon, 7 Aug 2023 16:13:36 +0800
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 4f3L-3WXtJ4YHSyAcQJs0xq_vaohS31r
-X-Proofpoint-GUID: 3zNZAUhGxkZT-f8xWZAiAuEiPl03rAWl
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-08-07_06,2023-08-03_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015
- lowpriorityscore=0 impostorscore=0 priorityscore=1501 bulkscore=0
- mlxlogscore=938 malwarescore=0 phishscore=0 suspectscore=0 mlxscore=0
- spamscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2308070074
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -29
-X-Spam_score: -3.0
-X-Spam_bar: ---
-X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=-1,
- RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.14.0
+Subject: Re: [PATCH v3 05/17] i386/cpu: Use APIC ID offset to encode cache
+ topo in CPUID[4]
+Content-Language: en-US
+To: Zhao Liu <zhao1.liu@linux.intel.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, "Michael S . Tsirkin" <mst@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Babu Moger <babu.moger@amd.com>, Zhao Liu <zhao1.liu@intel.com>,
+ Robert Hoo <robert.hu@linux.intel.com>
+References: <20230801103527.397756-1-zhao1.liu@linux.intel.com>
+ <20230801103527.397756-6-zhao1.liu@linux.intel.com>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20230801103527.397756-6-zhao1.liu@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=192.55.52.93; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -84
+X-Spam_score: -8.5
+X-Spam_bar: --------
+X-Spam_report: (-8.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.001, NICE_REPLY_A=-4.139,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -116,25 +91,150 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, 2023-08-05 at 10:02 +0200, David Hildenbrand wrote:
-> On 05.08.23 01:03, Ilya Leoshkevich wrote:
-> > Currently the emulation of VSTRS recognizes partial matches in
-> > presence
-> > of \0 in the haystack, which, according to PoP, is not correct:
-> >=20
-> > =C2=A0=C2=A0=C2=A0=C2=A0 If the ZS flag is one and a zero byte was dete=
-cted
-> > =C2=A0=C2=A0=C2=A0=C2=A0 in the second operand, then there can not be a
-> > =C2=A0=C2=A0=C2=A0=C2=A0 partial match ...
-> >=20
-> > Add a check for this. While at it, fold a number of explicitly
-> > handled
-> > special cases into the generic logic.
->=20
-> Can we split that off? Or doesn't it make sense to split it off after
-> fixing the issue?
+On 8/1/2023 6:35 PM, Zhao Liu wrote:
+> From: Zhao Liu <zhao1.liu@intel.com>
+> 
+> Refer to the fixes of cache_info_passthrough ([1], [2]) and SDM, the
+> CPUID.04H:EAX[bits 25:14] and CPUID.04H:EAX[bits 31:26] should use the
+> nearest power-of-2 integer.
 
-I could do this if this is important, e.g., for stable, but I came to
-the conclusion that I needed to get rid of the special cases after I
-had to add the new check to more than one place.
+I doubt it. Especially for [1].
+
+SDM doesn't state it should be the nearest power-of-2 integer.
+For example, regarding EAX[25:14], what SDM states are,
+
+1. The value needs to be added with 1
+　
+2. The nearest power-of-2 integer that is not smaller than 
+(1+EAX[25:14]) is the number of unique initial APIC IDs reserved for 
+addressing different logical processor sharing this cache.
+
+Above indicates that
+
+1. "EAX[25:14] + 1", indicates the real number of how many LPs sharing 
+this cache. i.e., how many APIC IDs
+
+while 2. "The nearest power-of-2 integer that is not smaller than 
+(EAX[25:14] + 1)" indicates the how many APIC IDs are reserved for LPs 
+sharing this cache. It doesn't require EAX[25:14] + 1, to be power of 2.
+
+> The nearest power-of-2 integer can be caculated by pow2ceil() or by
+> using APIC ID offset (like L3 topology using 1 << die_offset [3]).
+> 
+> But in fact, CPUID.04H:EAX[bits 25:14] and CPUID.04H:EAX[bits 31:26]
+> are associated with APIC ID. For example, in linux kernel, the field
+> "num_threads_sharing" (Bits 25 - 14) is parsed with APIC ID. And for
+> another example, on Alder Lake P, the CPUID.04H:EAX[bits 31:26] is not
+> matched with actual core numbers and it's caculated by:
+> "(1 << (pkg_offset - core_offset)) - 1".
+> 
+> Therefore the offset of APIC ID should be preferred to caculate nearest
+> power-of-2 integer for CPUID.04H:EAX[bits 25:14] and CPUID.04H:EAX[bits
+> 31:26]:
+> 1. d/i cache is shared in a core, 1 << core_offset should be used
+>     instand of "cs->nr_threads" in encode_cache_cpuid4() for
+>     CPUID.04H.00H:EAX[bits 25:14] and CPUID.04H.01H:EAX[bits 25:14].
+> 2. L2 cache is supposed to be shared in a core as for now, thereby
+>     1 << core_offset should also be used instand of "cs->nr_threads" in
+>     encode_cache_cpuid4() for CPUID.04H.02H:EAX[bits 25:14].
+> 3. Similarly, the value for CPUID.04H:EAX[bits 31:26] should also be
+>     replaced by the offsets upper SMT level in APIC ID.
+> 
+> In addition, use APIC ID offset to replace "pow2ceil()" for
+> cache_info_passthrough case.
+> 
+> [1]: efb3934adf9e ("x86: cpu: make sure number of addressable IDs for processor cores meets the spec")
+> [2]: d7caf13b5fcf ("x86: cpu: fixup number of addressable IDs for logical processors sharing cache")
+> [3]: d65af288a84d ("i386: Update new x86_apicid parsing rules with die_offset support")
+> 
+> Fixes: 7e3482f82480 ("i386: Helpers to encode cache information consistently")
+> Suggested-by: Robert Hoo <robert.hu@linux.intel.com>
+> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> ---
+> Changes since v1:
+>   * Use APIC ID offset to replace "pow2ceil()" for cache_info_passthrough
+>     case. (Yanan)
+>   * Split the L1 cache fix into a separate patch.
+>   * Rename the title of this patch (the original is "i386/cpu: Fix number
+>     of addressable IDs in CPUID.04H").
+> ---
+>   target/i386/cpu.c | 30 +++++++++++++++++++++++-------
+>   1 file changed, 23 insertions(+), 7 deletions(-)
+> 
+> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> index b439a05244ee..c80613bfcded 100644
+> --- a/target/i386/cpu.c
+> +++ b/target/i386/cpu.c
+> @@ -6005,7 +6005,6 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+>   {
+>       X86CPU *cpu = env_archcpu(env);
+>       CPUState *cs = env_cpu(env);
+> -    uint32_t die_offset;
+>       uint32_t limit;
+>       uint32_t signature[3];
+>       X86CPUTopoInfo topo_info;
+> @@ -6089,39 +6088,56 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+>                   int host_vcpus_per_cache = 1 + ((*eax & 0x3FFC000) >> 14);
+>                   int vcpus_per_socket = cs->nr_cores * cs->nr_threads;
+>                   if (cs->nr_cores > 1) {
+> +                    int addressable_cores_offset =
+> +                                                apicid_pkg_offset(&topo_info) -
+> +                                                apicid_core_offset(&topo_info);
+> +
+>                       *eax &= ~0xFC000000;
+> -                    *eax |= (pow2ceil(cs->nr_cores) - 1) << 26;
+> +                    *eax |= (1 << addressable_cores_offset - 1) << 26;
+>                   }
+>                   if (host_vcpus_per_cache > vcpus_per_socket) {
+> +                    int pkg_offset = apicid_pkg_offset(&topo_info);
+> +
+>                       *eax &= ~0x3FFC000;
+> -                    *eax |= (pow2ceil(vcpus_per_socket) - 1) << 14;
+> +                    *eax |= (1 << pkg_offset - 1) << 14;
+>                   }
+>               }
+>           } else if (cpu->vendor_cpuid_only && IS_AMD_CPU(env)) {
+>               *eax = *ebx = *ecx = *edx = 0;
+>           } else {
+>               *eax = 0;
+> +            int addressable_cores_offset = apicid_pkg_offset(&topo_info) -
+> +                                           apicid_core_offset(&topo_info);
+> +            int core_offset, die_offset;
+> +
+>               switch (count) {
+>               case 0: /* L1 dcache info */
+> +                core_offset = apicid_core_offset(&topo_info);
+>                   encode_cache_cpuid4(env->cache_info_cpuid4.l1d_cache,
+> -                                    cs->nr_threads, cs->nr_cores,
+> +                                    (1 << core_offset),
+> +                                    (1 << addressable_cores_offset),
+>                                       eax, ebx, ecx, edx);
+>                   break;
+>               case 1: /* L1 icache info */
+> +                core_offset = apicid_core_offset(&topo_info);
+>                   encode_cache_cpuid4(env->cache_info_cpuid4.l1i_cache,
+> -                                    cs->nr_threads, cs->nr_cores,
+> +                                    (1 << core_offset),
+> +                                    (1 << addressable_cores_offset),
+>                                       eax, ebx, ecx, edx);
+>                   break;
+>               case 2: /* L2 cache info */
+> +                core_offset = apicid_core_offset(&topo_info);
+>                   encode_cache_cpuid4(env->cache_info_cpuid4.l2_cache,
+> -                                    cs->nr_threads, cs->nr_cores,
+> +                                    (1 << core_offset),
+> +                                    (1 << addressable_cores_offset),
+>                                       eax, ebx, ecx, edx);
+>                   break;
+>               case 3: /* L3 cache info */
+>                   die_offset = apicid_die_offset(&topo_info);
+>                   if (cpu->enable_l3_cache) {
+>                       encode_cache_cpuid4(env->cache_info_cpuid4.l3_cache,
+> -                                        (1 << die_offset), cs->nr_cores,
+> +                                        (1 << die_offset),
+> +                                        (1 << addressable_cores_offset),
+>                                           eax, ebx, ecx, edx);
+>                       break;
+>                   }
+
 
