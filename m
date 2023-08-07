@@ -2,65 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A01DB771D3E
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 11:38:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F164771D3F
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 11:38:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qSwgW-0004p8-EC; Mon, 07 Aug 2023 05:37:56 -0400
+	id 1qSwgy-0005C8-Dp; Mon, 07 Aug 2023 05:38:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qSwgU-0004oy-KF
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 05:37:54 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qSwgR-0001Cd-Md
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 05:37:54 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.226])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RKB3T2SsKz6J6gH;
- Mon,  7 Aug 2023 17:34:13 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Mon, 7 Aug
- 2023 10:37:47 +0100
-Date: Mon, 7 Aug 2023 10:37:46 +0100
-To: Jonathan Cameron via <qemu-devel@nongnu.org>
-CC: Jonathan Cameron <Jonathan.Cameron@Huawei.com>, Fan Ni
- <fan.ni@samsung.com>, "linux-cxl@vger.kernel.org"
- <linux-cxl@vger.kernel.org>, "gregory.price@memverge.com"
- <gregory.price@memverge.com>, "hchkuo@avery-design.com.tw"
- <hchkuo@avery-design.com.tw>, "cbrowy@avery-design.com"
- <cbrowy@avery-design.com>, "ira.weiny@intel.com" <ira.weiny@intel.com>,
- "dan.j.williams@intel.com" <dan.j.williams@intel.com>, Adam Manzanares
- <a.manzanares@samsung.com>, "dave@stgolabs.net" <dave@stgolabs.net>,
- "nmtadam.samsung@gmail.com" <nmtadam.samsung@gmail.com>, "nifan@outlook.com"
- <nifan@outlook.com>
-Subject: Re: [Qemu PATCH v2 9/9] hw/mem/cxl_type3: Add dpa range validation
- for accesses to dc regions
-Message-ID: <20230807103746.00003a88@Huawei.com>
-In-Reply-To: <20230807095342.00006f88@Huawei.com>
-References: <20230725183939.2741025-1-fan.ni@samsung.com>
- <CGME20230725183957uscas1p2ca5293c7229ab989ad1a2d95395436a6@uscas1p2.samsung.com>
- <20230725183939.2741025-10-fan.ni@samsung.com>
- <20230807095342.00006f88@Huawei.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
-MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml500004.china.huawei.com (7.191.163.9) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001,
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qSwgr-00052u-Ve; Mon, 07 Aug 2023 05:38:18 -0400
+Received: from mail-oa1-x2b.google.com ([2001:4860:4864:20::2b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qSwgp-0001Et-TV; Mon, 07 Aug 2023 05:38:17 -0400
+Received: by mail-oa1-x2b.google.com with SMTP id
+ 586e51a60fabf-1bb58b4c513so3194697fac.0; 
+ Mon, 07 Aug 2023 02:38:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1691401094; x=1692005894;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=XmrQblq4uMvThj7m086Q1ldfXgN40t40zW1IbgQzS80=;
+ b=pQc5QivbnR1xo6YvExsdvoFpeRYyoKZaIewjo+K/6LG7xrtPtaRUxOkgkVti48ZTmN
+ DO+W43Ej5FiiTiuC7KDFLFZunem0vcfdAz1G5Cwwp8g09T+h3Q+GQKFBh2rjfHdXmw+0
+ c5A+dQ7KQwBz+4UYybwYKj0HWG3WPhhV4TZoTngD0EhQ1iFEtckSBjExsPoZiJDL+yaj
+ 2HFh2ATL+Hkcm9ERQDqo5MtUHuDSLGluPhAaZUEfE8Vh1sfdAJSp91BZy5N+e5yluJ/m
+ S4mX+E5faWKv4IDhWgcRKLL3+Eir81Yt+zaZCa7GcYN+4OTRglxitPoZ8VHsuDbj9940
+ xwvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1691401094; x=1692005894;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=XmrQblq4uMvThj7m086Q1ldfXgN40t40zW1IbgQzS80=;
+ b=WNvA676EylVGMpObtJMYDgPdkKT6ETe6xJiQAsNRdYS2e/3c2wziRe6S4Wk7E5CcGu
+ Zag6RaUYbKMRRPFMOqIM4XU1dHMDrVHCj64O+jQsz3oRUMRNP0EJH6PK3JzkGYWalrg1
+ tcaGYnRP7Uni1X9+OpxJnkEg1jEXTq6mccUSuN9seCHZWtN6Ni5SFoY18Tm2YffLylgV
+ e2K+PaMJ+mY9pfMFMSZp0MitYM9IqzVtcJCLFIAu+gXQXb8YFsztsvbEATgOvI4cZJWN
+ Fs/y4Sl8LwtJdojAwnatgbnsIkWAl7OqyRmp2uzwblcwXn20Sy6UF2/Z9D5GupA13GWx
+ Ej/Q==
+X-Gm-Message-State: AOJu0YyCor2jaqUeG50ey+PSDW33F7zThnGlebTvrppgVafjlunW6mb9
+ KTZk0GuGlJIfNdmW+tlUhPY=
+X-Google-Smtp-Source: AGHT+IFYdy5zy8SDBy9k1OOhK0jFyeA0zGN2kwC6UqYhvVUF9PI2sCRLTEL7hp7Asoe4ZekPhvaUnw==
+X-Received: by 2002:a05:6870:d79b:b0:1bf:80f2:8429 with SMTP id
+ bd27-20020a056870d79b00b001bf80f28429mr10962029oab.40.1691401094063; 
+ Mon, 07 Aug 2023 02:38:14 -0700 (PDT)
+Received: from localhost ([1.146.117.53]) by smtp.gmail.com with ESMTPSA id
+ 29-20020a17090a199d00b0025dc5749b4csm8864023pji.21.2023.08.07.02.38.11
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 07 Aug 2023 02:38:13 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 07 Aug 2023 19:38:08 +1000
+Message-Id: <CUM7N977FTPE.1GCPWFI8J03XM@wheely>
+Cc: <jniethe5@gmail.com>, <qemu-ppc@nongnu.org>, <bgray@linux.ibm.com>
+Subject: Re: [PATCH 7/7] tcg/ppc: Use prefixed instructions for tcg_out_goto_tb
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Nicholas Piggin" <npiggin@gmail.com>, "Richard Henderson"
+ <richard.henderson@linaro.org>, <qemu-devel@nongnu.org>
+X-Mailer: aerc 0.15.2
+References: <20230804213355.294443-1-richard.henderson@linaro.org>
+ <20230804213355.294443-8-richard.henderson@linaro.org>
+ <CULH7KALGQKY.2AVIQQUXLTX5U@wheely>
+ <a0db9ba1-31df-87ab-949e-518c72e3639a@linaro.org>
+ <CUM4WK2EKDQ6.WGQFFO7J8IT1@wheely>
+In-Reply-To: <CUM4WK2EKDQ6.WGQFFO7J8IT1@wheely>
+Received-SPF: pass client-ip=2001:4860:4864:20::2b;
+ envelope-from=npiggin@gmail.com; helo=mail-oa1-x2b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -74,287 +91,302 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 7 Aug 2023 09:53:42 +0100
-Jonathan Cameron via <qemu-devel@nongnu.org> wrote:
+On Mon Aug 7, 2023 at 5:29 PM AEST, Nicholas Piggin wrote:
+> On Mon Aug 7, 2023 at 12:13 AM AEST, Richard Henderson wrote:
+> > On 8/6/23 05:55, Nicholas Piggin wrote:
+> > > On Sat Aug 5, 2023 at 7:33 AM AEST, Richard Henderson wrote:
+> > >> When a direct branch is out of range, we can load the destination fo=
+r
+> > >> the indirect branch using PLA (for 16GB worth of buffer) and PLD fro=
+m
+> > >> the TranslationBlock for everything larger.
+> > >>
+> > >> This means the patch affects exactly one instruction: B (plus filler=
+),
+> > >> PLA or PLD.  Which means we can update and execute the patch atomica=
+lly.
+> > >>
+> > >> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> > >> ---
+> > >>   tcg/ppc/tcg-target.c.inc | 76 ++++++++++++++++++++++++++++++------=
+----
+> > >>   1 file changed, 58 insertions(+), 18 deletions(-)
+> > >>
+> > >> diff --git a/tcg/ppc/tcg-target.c.inc b/tcg/ppc/tcg-target.c.inc
+> > >> index 5b243b2353..47c71bb5f2 100644
+> > >> --- a/tcg/ppc/tcg-target.c.inc
+> > >> +++ b/tcg/ppc/tcg-target.c.inc
+> > >> @@ -2642,31 +2642,41 @@ static void tcg_out_goto_tb(TCGContext *s, i=
+nt which)
+> > >>       uintptr_t ptr =3D get_jmp_target_addr(s, which);
+> > >>  =20
+> > >>       if (USE_REG_TB) {
+> > >> +        /*
+> > >> +         * With REG_TB, we must always use indirect branching,
+> > >> +         * so that the branch destination and TCG_REG_TB match.
+> > >> +         */
+> > >>           ptrdiff_t offset =3D tcg_tbrel_diff(s, (void *)ptr);
+> > >>           tcg_out_mem_long(s, LD, LDX, TCG_REG_TB, TCG_REG_TB, offse=
+t);
+> > >> -
+> > >> -        /* TODO: Use direct branches when possible. */
+> > >> -        set_jmp_insn_offset(s, which);
+> > >>           tcg_out32(s, MTSPR | RS(TCG_REG_TB) | CTR);
+> > >> -
+> > >>           tcg_out32(s, BCCTR | BO_ALWAYS);
+> > >>  =20
+> > >>           /* For the unlinked case, need to reset TCG_REG_TB.  */
+> > >>           set_jmp_reset_offset(s, which);
+> > >>           tcg_out_mem_long(s, ADDI, ADD, TCG_REG_TB, TCG_REG_TB,
+> > >>                            -tcg_current_code_size(s));
+> > >> +        return;
+> > >> +    }
+> > >> +
+> > >> +    if (have_isa_3_10) {
+> > >> +        /* Align, so that we can patch 8 bytes atomically. */
+> > >> +        if ((uintptr_t)s->code_ptr & 7) {
+> > >> +            tcg_out32(s, NOP);
+> > >> +        }
+> > >> +        set_jmp_insn_offset(s, which);
+> > >> +        /* Direct branch will be patched by tb_target_set_jmp_targe=
+t. */
+> > >> +        tcg_out_mls_d(s, ADDI, TCG_REG_TMP1, 0, 0, 1);
+> > >>       } else {
+> > >>           /* Direct branch will be patched by tb_target_set_jmp_targ=
+et. */
+> > >> -        set_jmp_insn_offset(s, which);
+> > >> -        tcg_out32(s, NOP);
+> > >> -
+> > >> +        tcg_out32(s, B);
+> > >>           /* When branch is out of range, fall through to indirect. =
+*/
+> > >>           tcg_out_movi(s, TCG_TYPE_PTR, TCG_REG_TMP1, ptr - (int16_t=
+)ptr);
+> > >>           tcg_out_ld(s, TCG_TYPE_PTR, TCG_REG_TMP1, TCG_REG_TMP1, (i=
+nt16_t)ptr);
+> > >> -        tcg_out32(s, MTSPR | RS(TCG_REG_TMP1) | CTR);
+> > >> -        tcg_out32(s, BCCTR | BO_ALWAYS);
+> > >> -        set_jmp_reset_offset(s, which);
+> > >>       }
+> > >> +
+> > >> +    tcg_out32(s, MTSPR | RS(TCG_REG_TMP1) | CTR);
+> > >> +    tcg_out32(s, BCCTR | BO_ALWAYS);
+> > >> +    set_jmp_reset_offset(s, which);
+> > >>   }
+> > >>  =20
+> > >>   void tb_target_set_jmp_target(const TranslationBlock *tb, int n,
+> > >> @@ -2674,20 +2684,50 @@ void tb_target_set_jmp_target(const Translat=
+ionBlock *tb, int n,
+> > >>   {
+> > >>       uintptr_t addr =3D tb->jmp_target_addr[n];
+> > >>       intptr_t diff =3D addr - jmp_rx;
+> > >> -    tcg_insn_unit insn;
+> > >>  =20
+> > >>       if (USE_REG_TB) {
+> > >>           return;
+> > >>       }
+> > >>  =20
+> > >> -    if (in_range_b(diff)) {
+> > >> -        insn =3D B | (diff & 0x3fffffc);
+> > >> -    } else {
+> > >> -        insn =3D NOP;
+> > >> -    }
+> > >> +    if (have_isa_3_10) {
+> > >> +        tcg_insn_unit insn1, insn2;
+> > >> +        uint64_t pair;
+> > >>  =20
+> > >> -    qatomic_set((uint32_t *)jmp_rw, insn);
+> > >> -    flush_idcache_range(jmp_rx, jmp_rw, 4);
+> > >> +        if (in_range_b(diff)) {
+> > >> +            insn1 =3D B | (diff & 0x3fffffc);
+> > >> +            insn2 =3D NOP;
+> > >> +        } else if (diff =3D=3D sextract64(diff, 0, 34)) {
+> > >> +            /* PLA tmp1, diff */
+> > >> +            insn1 =3D OPCD(1) | (2 << 24) | (1 << 20) | ((diff >> 1=
+6) & 0x3ffff);
+> > >> +            insn2 =3D ADDI | TAI(TCG_REG_TMP1, 0, diff);
+> > >> +        } else {
+> > >> +            addr =3D (uintptr_t)&tb->jmp_target_addr[n];
+> > >> +            diff =3D addr - jmp_rx;
+> > >> +            tcg_debug_assert(diff =3D=3D sextract64(diff, 0, 34));
+> > >> +            /* PLD tmp1, diff */
+> > >> +            insn1 =3D OPCD(1) | (1 << 20) | ((diff >> 16) & 0x3ffff=
+);
+> > >> +            insn2 =3D PLD | TAI(TCG_REG_TMP1, 0, diff);
+> > >> +        }
+> > >=20
+> > > B is a "patch class" word instruction as per CMODX in the ISA, which =
+may
+> > > be patched to/from other instructions without a flush+isync sequence
+> > > betwen. So that part is okay, at least if you were just patching the =
+B
+> > > word. But patching between the PLA and PLD I don't think is kosher pe=
+r
+> > > ISA.
+> > >=20
+> > > I struggle a bit with this part of the ISA, particularly with prefix
+> > > instructions (it only talks about patching 4 bytes at a time).
+> > >=20
+> > > If we patch something it has to go through a patch instruction, which
+> > > is a direct branch, trap, or nop. I think that makes this non-trivial=
+.
+> > >=20
+> > > It could work if you only patched between B and PLD. B->PLD would hav=
+e
+> > > to patch the suffix word first, possibly with an interleaving sync, a=
+nd
+> > > then the prefix. PLD->B could just patch the B word.
+> > >=20
+> > > How much would losing the PLA hurt?
+> >
+> > Really?  I can't imagine how some icache would see a torn prefixed insn=
+ given an atomic=20
+> > store (CMODX talks about prefixed instructions which "may be unaligned"=
+ -- but what if=20
+> > they are not?).
+> >
+> > But if patching an aligned prefixed insn isn't allowed, I would patch b=
+etween B and NOP,=20
+> > leave the PLD alone on the fall-through path, and drop the PLA.
+>
+> Hmm, even patching two different offset B instructions in some sequence
+> with a PLD would go against the ISA, because PLD is not a patch class
+> instruction. The only case you can patch those has to have a sequence of
+> exactly two instruction values. So I think you need the B first, and you
+> can patch that between any offset of B or a NOP to fall through to PLD.
+> NOP and B are both patch class, so any sequence of them is allowed.
 
-> On Tue, 25 Jul 2023 18:39:56 +0000
-> Fan Ni <fan.ni@samsung.com> wrote:
-> 
-> > From: Fan Ni <nifan@outlook.com>
-> > 
-> > Not all dpa range in the dc regions is valid to access until an extent
-> > covering the range has been added. Add a bitmap for each region to
-> > record whether a dc block in the region has been backed by dc extent.
-> > For the bitmap, a bit in the bitmap represents a dc block. When a dc
-> > extent is added, all the bits of the blocks in the extent will be set,
-> > which will be cleared when the extent is released.
-> > 
-> > Signed-off-by: Fan Ni <fan.ni@samsung.com>  
-> Hi Fan,
-> 
-> A few of the bits of feedback apply broadly across the series.  Given I'm
-> rebasing this anyway to give myself something to test I'll tidy things up
-> (feel free to disagree with and revert any changes !) 
-> and push a tree out in next day or two.  I'll message when I've done so.
-> 
-> Jonathan
-> 
+Here is an incremental diff that hopefully solves those issues. Sadly,
+by removing the nice PLA patching :( But it seems to be around or close
+to original performance on my test.
 
-I'll review here but note I've changed all this in my tree anyway 
-unless I specifically add questions etc.
+Feel free to squash it in or take inspiration (or dispute it).
 
-> > ---
-> >  hw/mem/cxl_type3.c          | 155 ++++++++++++++++++++++++++++++++++++
-> >  include/hw/cxl/cxl_device.h |   1 +
-> >  2 files changed, 156 insertions(+)
-> > 
-> > diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-> > index 41a828598a..51943a36fc 100644
-> > --- a/hw/mem/cxl_type3.c
-> > +++ b/hw/mem/cxl_type3.c
-> > @@ -787,13 +787,37 @@ static int cxl_create_dc_regions(CXLType3Dev *ct3d)
-> >          /* dsmad_handle is set when creating cdat table entries */
-> >          region->flags = 0;
-> >  
-> > +        region->blk_bitmap = bitmap_new(region->len / region->block_size);  
-> 
-> In common with many allocators in qemu if this fails it calls abort()
-> internally so no need to handle potential errors.
-> 
-> > +        if (!region->blk_bitmap) {
-> > +            break;
-> > +        }
-> > +
-> >          region_base += region->len;
-> >      }
-> > +
-> > +    if (i < ct3d->dc.num_regions) {
-> > +        while (--i >= 0) {
-> > +            g_free(ct3d->dc.regions[i].blk_bitmap);
-> > +        }
-> > +        return -1;
-> > +    }
-> > +
-> >      QTAILQ_INIT(&ct3d->dc.extents);
-> >  
-> >      return 0;
-> >  }
-> >  
-> > +static void cxl_destroy_dc_regions(CXLType3Dev *ct3d)
-> > +{
-> > +    int i;
-> > +    struct CXLDCD_Region *region;
-> > +
-> > +    for (i = 0; i < ct3d->dc.num_regions; i++) {
-> > +        region = &ct3d->dc.regions[i];
-> > +        g_free(region->blk_bitmap);
-> > +    }
-> > +}
-> > +
-> >  static bool cxl_setup_memory(CXLType3Dev *ct3d, Error **errp)
-> >  {
-> >      DeviceState *ds = DEVICE(ct3d);
-> > @@ -1021,6 +1045,7 @@ err_free_special_ops:
-> >      g_free(regs->special_ops);
-> >  err_address_space_free:
-> >      if (ct3d->dc.host_dc) {
-> > +        cxl_destroy_dc_regions(ct3d);
-> >          address_space_destroy(&ct3d->dc.host_dc_as);
-> >      }
-> >      if (ct3d->hostpmem) {
-> > @@ -1043,6 +1068,7 @@ static void ct3_exit(PCIDevice *pci_dev)
-> >      spdm_sock_fini(ct3d->doe_spdm.socket);
-> >      g_free(regs->special_ops);
-> >      if (ct3d->dc.host_dc) {
-> > +        cxl_destroy_dc_regions(ct3d);
-> >          address_space_destroy(&ct3d->dc.host_dc_as);
-> >      }
-> >      if (ct3d->hostpmem) {
-> > @@ -1053,6 +1079,110 @@ static void ct3_exit(PCIDevice *pci_dev)
-> >      }
-> >  }
-> >  
-> > +/*
-> > + * This function will marked the dpa range [dpa, dap + len) to be backed and
-> > + * accessible, this happens when a dc extent is added and accepted by the
-> > + * host.
-> > + */
-> > +static void set_region_block_backed(CXLType3Dev *ct3d, uint64_t dpa,
+Thanks,
+Nick
 
-I'd prefer all functions to be in the ct3 namespace.
-
-> > +        uint64_t len)
-> > +{
-> > +    int i;
-
-A large chunk of stuff here is repeated as it is just finding the
-relevant region.  Pulled out to a ct3_find_dc_region() utility function.
-
-> > +    CXLDCD_Region *region = &ct3d->dc.regions[0];
-> > +
-> > +    if (dpa < region->base
-> > +            || dpa >= region->base + ct3d->dc.total_capacity)
-> > +        return;
-> > +
-> > +    /*
-> > +     * spec 3.0 9.13.3: Regions are used in increasing-DPA order, with
-> > +     * Region 0 being used for the lowest DPA of Dynamic Capacity and
-> > +     * Region 7 for the highest DPA.
-> > +     * So we check from the last region to find where the dpa belongs.
-> > +     * access across multiple regions is not allowed.
-> > +     **/
-> > +    for (i = ct3d->dc.num_regions - 1; i >= 0; i--) {
-> > +        region = &ct3d->dc.regions[i];
-> > +        if (dpa >= region->base) {
-> > +            break;
-> > +        }
-> > +    }
-> > +
-> > +    bitmap_set(region->blk_bitmap, (dpa - region->base) / region->block_size,
-> > +            len / region->block_size);
-> > +}
-> > +
-> > +/*
-> > + * This function check whether a dpa range [dpa, dpa + len) has been backed
-> > + * with dc extents, used when validating read/write to dc regions
-> > + */
-> > +static bool test_region_block_backed(CXLType3Dev *ct3d, uint64_t dpa,
-> > +        uint64_t len)
-> > +{
-> > +    int i;
-> > +    CXLDCD_Region *region = &ct3d->dc.regions[0];
-> > +    uint64_t nbits;
-> > +    long nr;
-> > +
-> > +    if (dpa < region->base
-> > +            || dpa >= region->base + ct3d->dc.total_capacity)
-> > +        return false;
-> > +
-> > +    /*
-> > +     * spec 3.0 9.13.3: Regions are used in increasing-DPA order, with
-> > +     * Region 0 being used for the lowest DPA of Dynamic Capacity and
-> > +     * Region 7 for the highest DPA.
-> > +     * So we check from the last region to find where the dpa belongs.
-> > +     * access across multiple regions is not allowed.
-> > +     */
-> > +    for (i = ct3d->dc.num_regions - 1; i >= 0; i--) {
-> > +        region = &ct3d->dc.regions[i];
-> > +        if (dpa >= region->base) {
-> > +            break;
-> > +        }
-> > +    }
-> > +
-> > +    nr = (dpa - region->base) / region->block_size;
-> > +    nbits = len / region->block_size;
-> > +    return find_next_zero_bit(region->blk_bitmap, nbits, nr) >= nr + nbits;
-> > +}
-> > +
-> > +/*
-> > + * This function will marked the dpa range [dpa, dap + len) to be unbacked and
-> > + * inaccessible, this happens when a dc extent is added and accepted by the
-> > + * host.
-Second part of comment wrong (Cut and paste fun ;)
-
-> > + */
-> > +static void clear_region_block_backed(CXLType3Dev *ct3d, uint64_t dpa,
-> > +        uint64_t len)
-> > +{
-> > +    int i;
-> > +    CXLDCD_Region *region = &ct3d->dc.regions[0];
-> > +    uint64_t nbits;
-> > +    long nr;
-> > +
-> > +    if (dpa < region->base
-> > +            || dpa >= region->base + ct3d->dc.total_capacity)
-> > +        return;
-> > +
-> > +    /*
-> > +     * spec 3.0 9.13.3: Regions are used in increasing-DPA order, with
-> > +     * Region 0 being used for the lowest DPA of Dynamic Capacity and
-> > +     * Region 7 for the highest DPA.
-> > +     * So we check from the last region to find where the dpa belongs.
-> > +     * access across multiple regions is not allowed.
-> > +     */
-> > +    for (i = ct3d->dc.num_regions - 1; i >= 0; i--) {
-> > +        region = &ct3d->dc.regions[i];
-> > +        if (dpa >= region->base) {
-> > +            break;
-> > +        }
-> > +    }
-> > +
-> > +    nr = (dpa - region->base) / region->block_size;
-> > +    nbits = len / region->block_size;
-> > +    bitmap_clear(region->blk_bitmap, nr, nbits);
-> > +}
-> > +
-> >  static bool cxl_type3_dpa(CXLType3Dev *ct3d, hwaddr host_addr, uint64_t *dpa)
-> >  {
-> >      uint32_t *cache_mem = ct3d->cxl_cstate.crb.cache_mem_registers;
-> > @@ -1145,6 +1275,10 @@ static int cxl_type3_hpa_to_as_and_dpa(CXLType3Dev *ct3d,
-> >          *as = &ct3d->hostpmem_as;
-> >          *dpa_offset -= vmr_size;
-> >      } else {
-> > +        if (!test_region_block_backed(ct3d, *dpa_offset, size)) {
-> > +            return -ENODEV;
-> > +        }
-> > +
-> >          *as = &ct3d->dc.host_dc_as;
-> >          *dpa_offset -= (vmr_size + pmr_size);
-> >      }
-> > @@ -1944,6 +2078,27 @@ static void qmp_cxl_process_dynamic_capacity_event(const char *path,
-> >      }
-> >  
-> >      g_free(extents);
-> > +
-> > +    /* Another choice is to do the set/clear after getting mailbox response*/
-
-I haven't changed this yet - but it needs to be done on host acceptance, not on
-the QMP command. We also need to validate it - so keep a record of what has
-been offered and not yet accepted.  Unfortunately that probably doubles the bitmaps :(
-
-I've updated the comment to reflect this.
-> > +    list = records;
-> > +    while (list) {
-> > +        dpa = list->value->dpa * 1024 * 1024;
-* MiB
-> > +        len = list->value->len * 1024 * 1024;
-> > +        rid = list->value->region_id;
-> > +
-> > +        switch (type) {
-> > +        case DC_EVENT_ADD_CAPACITY:
-> > +            set_region_block_backed(dcd, dpa, len);
-> > +            break;
-> > +        case DC_EVENT_RELEASE_CAPACITY:
-> > +            clear_region_block_backed(dcd, dpa, len);
-> > +            break;
-> > +        default:
-> > +            error_setg(errp, "DC event type not handled yet");
-> > +            break;
-> > +        }
-> > +        list = list->next;
-> > +    }
-> >  }
-> >  
-> >  void qmp_cxl_add_dynamic_capacity_event(const char *path,
-> > diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
-> > index 01a5eaca48..1f85c88017 100644
-> > --- a/include/hw/cxl/cxl_device.h
-> > +++ b/include/hw/cxl/cxl_device.h
-> > @@ -412,6 +412,7 @@ typedef struct CXLDCD_Region {
-> >      uint64_t block_size;
-> >      uint32_t dsmadhandle;
-> >      uint8_t flags;
-> > +    unsigned long *blk_bitmap;
-> >  } CXLDCD_Region;
-> >  
-> >  struct CXLType3Dev {  
-> 
-> 
-> 
-
+---
+diff --git a/tcg/ppc/tcg-target.c.inc b/tcg/ppc/tcg-target.c.inc
+index 47c71bb5f2..569c2e3647 100644
+--- a/tcg/ppc/tcg-target.c.inc
++++ b/tcg/ppc/tcg-target.c.inc
+@@ -748,6 +748,11 @@ static void tcg_out_prefix_align(TCGContext *s)
+     }
+ }
+=20
++static ptrdiff_t tcg_pcrel_diff_for_prefix(TCGContext *s, const void *targ=
+et)
++{
++    return tcg_pcrel_diff(s, target) - (tcg_out_need_prefix_align(s) ? 4 :=
+ 0);
++}
++
+ /* Output Type 00 Prefix - 8-Byte Load/Store Form (8LS:D) */
+ static void tcg_out_8ls_d(TCGContext *s, tcg_insn_unit opc, unsigned rt,
+                           unsigned ra, tcg_target_long imm, bool r)
+@@ -1072,8 +1077,7 @@ static void tcg_out_movi_int(TCGContext *s, TCGType t=
+ype, TCGReg ret,
+             return;
+         }
+=20
+-        tmp =3D tcg_out_need_prefix_align(s) * 4;
+-        tmp =3D tcg_pcrel_diff(s, (void *)arg) - tmp;
++        tmp =3D tcg_pcrel_diff_for_prefix(s, (void *)arg);
+         if (tmp =3D=3D sextract64(tmp, 0, 34)) {
+             /* pla ret,value =3D paddi ret,0,value,1 */
+             tcg_out_mls_d(s, ADDI, ret, 0, tmp, 1);
+@@ -2658,18 +2662,19 @@ static void tcg_out_goto_tb(TCGContext *s, int whic=
+h)
+         return;
+     }
+=20
++    /* Direct branch will be patched by tb_target_set_jmp_target. */
++    set_jmp_insn_offset(s, which);
++    tcg_out32(s, NOP);
++
++    /* When branch is out of range, fall through to indirect. */
+     if (have_isa_3_10) {
+-        /* Align, so that we can patch 8 bytes atomically. */
+-        if ((uintptr_t)s->code_ptr & 7) {
+-            tcg_out32(s, NOP);
+-        }
+-        set_jmp_insn_offset(s, which);
+-        /* Direct branch will be patched by tb_target_set_jmp_target. */
+-        tcg_out_mls_d(s, ADDI, TCG_REG_TMP1, 0, 0, 1);
++        ptrdiff_t offset =3D tcg_pcrel_diff_for_prefix(s, (void *)ptr);
++        /*
++         * Would be nice to use PLA if offset is in range,
++         * but CMODX rules make that difficult.
++         */
++        tcg_out_8ls_d(s, PLD, TCG_REG_TMP1, 0, offset, 1);
+     } else {
+-        /* Direct branch will be patched by tb_target_set_jmp_target. */
+-        tcg_out32(s, B);
+-        /* When branch is out of range, fall through to indirect. */
+         tcg_out_movi(s, TCG_TYPE_PTR, TCG_REG_TMP1, ptr - (int16_t)ptr);
+         tcg_out_ld(s, TCG_TYPE_PTR, TCG_REG_TMP1, TCG_REG_TMP1, (int16_t)p=
+tr);
+     }
+@@ -2684,50 +2689,19 @@ void tb_target_set_jmp_target(const TranslationBloc=
+k *tb, int n,
+ {
+     uintptr_t addr =3D tb->jmp_target_addr[n];
+     intptr_t diff =3D addr - jmp_rx;
++    tcg_insn_unit insn;
+=20
+     if (USE_REG_TB) {
+         return;
+     }
+=20
+-    if (have_isa_3_10) {
+-        tcg_insn_unit insn1, insn2;
+-        uint64_t pair;
+-
+-        if (in_range_b(diff)) {
+-            insn1 =3D B | (diff & 0x3fffffc);
+-            insn2 =3D NOP;
+-        } else if (diff =3D=3D sextract64(diff, 0, 34)) {
+-            /* PLA tmp1, diff */
+-            insn1 =3D OPCD(1) | (2 << 24) | (1 << 20) | ((diff >> 16) & 0x=
+3ffff);
+-            insn2 =3D ADDI | TAI(TCG_REG_TMP1, 0, diff);
+-        } else {
+-            addr =3D (uintptr_t)&tb->jmp_target_addr[n];
+-            diff =3D addr - jmp_rx;
+-            tcg_debug_assert(diff =3D=3D sextract64(diff, 0, 34));
+-            /* PLD tmp1, diff */
+-            insn1 =3D OPCD(1) | (1 << 20) | ((diff >> 16) & 0x3ffff);
+-            insn2 =3D PLD | TAI(TCG_REG_TMP1, 0, diff);
+-        }
+-
+-        if (HOST_BIG_ENDIAN) {
+-            pair =3D ((uint64_t)insn1) << 32 | insn2;
+-        } else {
+-            pair =3D ((uint64_t)insn2) << 32 | insn1;
+-        }
+-
+-        qatomic_set((uint64_t *)jmp_rw, pair);
+-        flush_idcache_range(jmp_rx, jmp_rw, 8);
++    if (in_range_b(diff)) {
++        insn =3D B | (diff & 0x3fffffc);
+     } else {
+-        tcg_insn_unit insn;
+-
+-        if (in_range_b(diff)) {
+-            insn =3D B | (diff & 0x3fffffc);
+-        } else {
+-            insn =3D NOP;
+-        }
+-        qatomic_set((uint32_t *)jmp_rw, insn);
+-        flush_idcache_range(jmp_rx, jmp_rw, 4);
++        insn =3D NOP;
+     }
++    qatomic_set((uint32_t *)jmp_rw, insn);
++    flush_idcache_range(jmp_rx, jmp_rw, 4);
+ }
+=20
+ static void tcg_out_op(TCGContext *s, TCGOpcode opc,
 
