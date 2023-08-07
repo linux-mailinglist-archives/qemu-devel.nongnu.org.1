@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCE45771D08
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 11:21:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B456771D38
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 11:37:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qSwP9-00068D-EV; Mon, 07 Aug 2023 05:19:59 -0400
+	id 1qSwf7-0002w1-WD; Mon, 07 Aug 2023 05:36:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1qSwP5-00067n-Lv
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 05:19:55 -0400
-Received: from mgamail.intel.com ([192.55.52.93])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1qSwP2-00053L-UM
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 05:19:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1691399992; x=1722935992;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=+mFgfWjV2+pizFyuJps77lFen7DU1EbhgRAxNmXhqCo=;
- b=f1+Q+1KU8qtN5YmrH9xAhV7NrejTZ5kU/raV/GLJIRaUM+impsbQOirY
- Sg1NP7/BpC9MFudd/iJziR5FAJi//B++M/g7d0dHd/iDsg4vUoMRi1CSu
- zRcwfJKYpfrHVCvtyFTuVY1VoJNBL79c4GLSJWw0Taa0oHcmwyi88+smD
- 3CPLA4aRN2SOVD4fUP3XxbsmYy7j710XGul6AYYaHZZtRm1QEsfNn8ccS
- 5QNltmhdVeNbnCn/nEXMv/lkbYCaXTdqb4Q0YXclfQv16hDTcAwJWk2Sd
- a6Ug49I7Jv5T87gjDZlTwc74gDMmgN1F7rU7KbM57St8L9fxZmqMkpp6U w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10794"; a="367957405"
-X-IronPort-AV: E=Sophos;i="6.01,261,1684825200"; d="scan'208";a="367957405"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
- by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Aug 2023 02:19:50 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10794"; a="854599510"
-X-IronPort-AV: E=Sophos;i="6.01,261,1684825200"; d="scan'208";a="854599510"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.28])
- by orsmga004.jf.intel.com with ESMTP; 07 Aug 2023 02:19:45 -0700
-Date: Mon, 7 Aug 2023 17:30:14 +0800
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
+ (Exim 4.90_1) (envelope-from <ake@igel.co.jp>) id 1qSwez-0002pV-0Z
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 05:36:22 -0400
+Received: from mail-qk1-x734.google.com ([2607:f8b0:4864:20::734])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ake@igel.co.jp>) id 1qSwew-0000uZ-Pk
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 05:36:20 -0400
+Received: by mail-qk1-x734.google.com with SMTP id
+ af79cd13be357-76ad8892d49so393908985a.1
+ for <qemu-devel@nongnu.org>; Mon, 07 Aug 2023 02:36:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=igel-co-jp.20221208.gappssmtp.com; s=20221208; t=1691400975; x=1692005775;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Kjb2Lb0RodSPhVU0nCFJdyCAFChvledIaVNLXAkV0w8=;
+ b=xwipYGdNcEpyiDk6qsTSlkRrWsfuHPU+lQLEuUUwEAQi7e1qiZW3D4B0yGWbwMOJoE
+ styG2kNVp+LULZP4wT0j7UcbZCEdEC74FpsEd/raGVNqCzH/qLDJE/pXoSI6FpQH4msE
+ D+VtJlcT66KzUy6MY1z9LPN5ZmL/GkXIBDTbosR5l4mYrqWWwb8oKnWoJ/2/fwDEvdyI
+ umGXIo5pbr/Lxv53IhaJA6Cp3OJkvqeFC6riVlnSj3yugSsPnrRyOSHl0wamk4fFXnI9
+ lzWkXO0q0hdHVf3DLdnSAX9AIoJ6qL4zv5YrBIMkNbcTQCwOji0p1GhN5DqnM2mARlqf
+ a0Fg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1691400975; x=1692005775;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Kjb2Lb0RodSPhVU0nCFJdyCAFChvledIaVNLXAkV0w8=;
+ b=QlE1+Cz0OcKqpl3KYX4NuiUeU3x3RMjghpOGMiW4poJx9hwQE/jiPNmBF85awQMy8Y
+ 4EhBhbslni0++c1xBJCfrM2wxsQedleseUbUjRpElgNSl/7KZJtqK9G1BPoxh08JV38x
+ XYWg2I9LPXplK61pfxac1YqqCpU9ZoavoQ2vhpX7pdw00q9KlqiGkiN6g8iWIERl9Oui
+ 3+eeRvXS1wOh08dB2omU8nVlQK72Z6N/rjt94VPP9Rkpha/wdAoJBcWO3O7CZbj+xyRG
+ Goobg18L46wzG9T0zu8FN5p3JdjuPkuhdYVpXJm+wp8xXaEPBxnq6T7/F0pmDPjU0GiB
+ AP5Q==
+X-Gm-Message-State: AOJu0YxJ7Kkw6OsHCO8iV+HMWdJTj7RAgMquDIZlM8qYqfR1GBsZ+D5M
+ 5JDEhaUC0ksyRylRYKpkD4rh1itJrHcqzGLmksURcw==
+X-Google-Smtp-Source: AGHT+IF9jAHbV8nFraUjRWfUV0kqC3/FUdti5p+QtKBK9lDJuY4ZHyXu2zeCuEAouG1s6IsdPGjiCA==
+X-Received: by 2002:a05:620a:4545:b0:767:8083:dd46 with SMTP id
+ u5-20020a05620a454500b007678083dd46mr11825282qkp.61.1691400975530; 
+ Mon, 07 Aug 2023 02:36:15 -0700 (PDT)
+Received: from localhost.co.jp (napt.igel.co.jp. [219.106.231.132])
+ by smtp.gmail.com with ESMTPSA id
+ g28-20020a63375c000000b005633941a547sm4750337pgn.27.2023.08.07.02.36.13
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 07 Aug 2023 02:36:15 -0700 (PDT)
+From: Ake Koomsin <ake@igel.co.jp>
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
- Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Babu Moger <babu.moger@amd.com>, Zhao Liu <zhao1.liu@intel.com>,
- Robert Hoo <robert.hu@linux.intel.com>
-Subject: Re: [PATCH v3 05/17] i386/cpu: Use APIC ID offset to encode cache
- topo in CPUID[4]
-Message-ID: <ZNC5plqi6D/riSPM@liuzhao-OptiPlex-7080>
-References: <20230801103527.397756-1-zhao1.liu@linux.intel.com>
- <20230801103527.397756-6-zhao1.liu@linux.intel.com>
- <0ae07b73-0b44-bae4-141a-947a13990daf@intel.com>
+ Ake Koomsin <ake@igel.co.jp>
+Subject: [RFC PATCH] targer/i386: add support for
+ VMX_SECONDARY_EXEC_ENABLE_USER_WAIT_PAUSE
+Date: Mon,  7 Aug 2023 18:33:40 +0900
+Message-ID: <20230807093339.32091-2-ake@igel.co.jp>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=gb2312
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <0ae07b73-0b44-bae4-141a-947a13990daf@intel.com>
-Received-SPF: none client-ip=192.55.52.93;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::734;
+ envelope-from=ake@igel.co.jp; helo=mail-qk1-x734.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,174 +88,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Xiaoyao,
+Current QEMU can expose waitpkg to guests when it is available. However,
+VMX_SECONDARY_EXEC_ENABLE_USER_WAIT_PAUSE is still not recognized and
+masked by QEMU. This can lead to an unexpected situation when a L1
+hypervisor wants to expose waitpkg to a L2 guest. The L1 hypervisor can
+assume that VMX_SECONDARY_EXEC_ENABLE_USER_WAIT_PAUSE exists as waitpkg is
+available. The L1 hypervisor then can accidentally expose waitpkg to the
+L2 guest. This will cause invalid opcode exception in the L2 guest when
+it executes waitpkg related instructions.
 
-On Mon, Aug 07, 2023 at 04:13:36PM +0800, Xiaoyao Li wrote:
-> Date: Mon, 7 Aug 2023 16:13:36 +0800
-> From: Xiaoyao Li <xiaoyao.li@intel.com>
-> Subject: Re: [PATCH v3 05/17] i386/cpu: Use APIC ID offset to encode cache
->  topo in CPUID[4]
-> 
-> On 8/1/2023 6:35 PM, Zhao Liu wrote:
-> > From: Zhao Liu <zhao1.liu@intel.com>
-> > 
-> > Refer to the fixes of cache_info_passthrough ([1], [2]) and SDM, the
-> > CPUID.04H:EAX[bits 25:14] and CPUID.04H:EAX[bits 31:26] should use the
-> > nearest power-of-2 integer.
-> 
-> I doubt it. Especially for [1].
-> 
-> SDM doesn't state it should be the nearest power-of-2 integer.
-> For example, regarding EAX[25:14], what SDM states are,
-> 
-> 1. The value needs to be added with 1
-> ¡¡
-> 2. The nearest power-of-2 integer that is not smaller than (1+EAX[25:14]) is
-> the number of unique initial APIC IDs reserved for addressing different
-> logical processor sharing this cache.
-> 
-> Above indicates that
-> 
-> 1. "EAX[25:14] + 1", indicates the real number of how many LPs sharing this
-> cache. i.e., how many APIC IDs
-> 
-> while 2. "The nearest power-of-2 integer that is not smaller than
-> (EAX[25:14] + 1)" indicates the how many APIC IDs are reserved for LPs
-> sharing this cache. It doesn't require EAX[25:14] + 1, to be power of 2.
+This patch adds VMX_SECONDARY_EXEC_ENABLE_USER_WAIT_PAUSE support, and
+sets up dependency between the bit and CPUID_7_0_ECX_WAITPKG. QEMU should
+not expose waitpkg feature if VMX_SECONDARY_EXEC_ENABLE_USER_WAIT_PAUSE is
+not available to avoid unexpected invalid opcode exception in L2 guests.
 
-Semantically, it is true that SDM does not strictly require that 
-EAX[25:14] + 1 is the power of 2.
+Signed-off-by: Ake Koomsin <ake@igel.co.jp>
+---
+ target/i386/cpu.c | 6 +++++-
+ target/i386/cpu.h | 1 +
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
-But for our emulation, how much bigger EAX[25:14] + 1 is than "nearest
-power-of-2", it's hard to define...and even there's no rule to define...
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 97ad229d8b..00f913b638 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -1228,7 +1228,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
+             "vmx-invpcid-exit", "vmx-vmfunc", "vmx-shadow-vmcs", "vmx-encls-exit",
+             "vmx-rdseed-exit", "vmx-pml", NULL, NULL,
+             "vmx-xsaves", NULL, NULL, NULL,
+-            NULL, "vmx-tsc-scaling", NULL, NULL,
++            NULL, "vmx-tsc-scaling", "vmx-enable-user-wait-pause", NULL,
+             NULL, NULL, NULL, NULL,
+         },
+         .msr = {
+@@ -1545,6 +1545,10 @@ static FeatureDep feature_dependencies[] = {
+         .from = { FEAT_8000_0001_ECX,       CPUID_EXT3_SVM },
+         .to = { FEAT_SVM,                   ~0ull },
+     },
++    {
++        .from = { FEAT_VMX_SECONDARY_CTLS,  VMX_SECONDARY_EXEC_ENABLE_USER_WAIT_PAUSE },
++        .to = { FEAT_7_0_ECX,               CPUID_7_0_ECX_WAITPKG },
++    },
+ };
+ 
+ typedef struct X86RegisterInfo32 {
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index e0771a1043..a6000e93bd 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -1111,6 +1111,7 @@ uint64_t x86_cpu_get_supported_feature_word(FeatureWord w,
+ #define VMX_SECONDARY_EXEC_ENABLE_PML               0x00020000
+ #define VMX_SECONDARY_EXEC_XSAVES                   0x00100000
+ #define VMX_SECONDARY_EXEC_TSC_SCALING              0x02000000
++#define VMX_SECONDARY_EXEC_ENABLE_USER_WAIT_PAUSE   0x04000000
+ 
+ #define VMX_PIN_BASED_EXT_INTR_MASK                 0x00000001
+ #define VMX_PIN_BASED_NMI_EXITING                   0x00000008
+-- 
+2.41.0
 
-Using "nearest power-of-2" directly is a common and generic way (and in
-line with spec). :-)
-
-On the actual machines (I've seen), this field is also implemented using
-"power-of-2 - 1". (When you meet counterexample, pls educate me)
-
-Thanks,
-Zhao
-
-> 
-> > The nearest power-of-2 integer can be caculated by pow2ceil() or by
-> > using APIC ID offset (like L3 topology using 1 << die_offset [3]).
-> > 
-> > But in fact, CPUID.04H:EAX[bits 25:14] and CPUID.04H:EAX[bits 31:26]
-> > are associated with APIC ID. For example, in linux kernel, the field
-> > "num_threads_sharing" (Bits 25 - 14) is parsed with APIC ID. And for
-> > another example, on Alder Lake P, the CPUID.04H:EAX[bits 31:26] is not
-> > matched with actual core numbers and it's caculated by:
-> > "(1 << (pkg_offset - core_offset)) - 1".
-> > 
-> > Therefore the offset of APIC ID should be preferred to caculate nearest
-> > power-of-2 integer for CPUID.04H:EAX[bits 25:14] and CPUID.04H:EAX[bits
-> > 31:26]:
-> > 1. d/i cache is shared in a core, 1 << core_offset should be used
-> >     instand of "cs->nr_threads" in encode_cache_cpuid4() for
-> >     CPUID.04H.00H:EAX[bits 25:14] and CPUID.04H.01H:EAX[bits 25:14].
-> > 2. L2 cache is supposed to be shared in a core as for now, thereby
-> >     1 << core_offset should also be used instand of "cs->nr_threads" in
-> >     encode_cache_cpuid4() for CPUID.04H.02H:EAX[bits 25:14].
-> > 3. Similarly, the value for CPUID.04H:EAX[bits 31:26] should also be
-> >     replaced by the offsets upper SMT level in APIC ID.
-> > 
-> > In addition, use APIC ID offset to replace "pow2ceil()" for
-> > cache_info_passthrough case.
-> > 
-> > [1]: efb3934adf9e ("x86: cpu: make sure number of addressable IDs for processor cores meets the spec")
-> > [2]: d7caf13b5fcf ("x86: cpu: fixup number of addressable IDs for logical processors sharing cache")
-> > [3]: d65af288a84d ("i386: Update new x86_apicid parsing rules with die_offset support")
-> > 
-> > Fixes: 7e3482f82480 ("i386: Helpers to encode cache information consistently")
-> > Suggested-by: Robert Hoo <robert.hu@linux.intel.com>
-> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-> > ---
-> > Changes since v1:
-> >   * Use APIC ID offset to replace "pow2ceil()" for cache_info_passthrough
-> >     case. (Yanan)
-> >   * Split the L1 cache fix into a separate patch.
-> >   * Rename the title of this patch (the original is "i386/cpu: Fix number
-> >     of addressable IDs in CPUID.04H").
-> > ---
-> >   target/i386/cpu.c | 30 +++++++++++++++++++++++-------
-> >   1 file changed, 23 insertions(+), 7 deletions(-)
-> > 
-> > diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> > index b439a05244ee..c80613bfcded 100644
-> > --- a/target/i386/cpu.c
-> > +++ b/target/i386/cpu.c
-> > @@ -6005,7 +6005,6 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-> >   {
-> >       X86CPU *cpu = env_archcpu(env);
-> >       CPUState *cs = env_cpu(env);
-> > -    uint32_t die_offset;
-> >       uint32_t limit;
-> >       uint32_t signature[3];
-> >       X86CPUTopoInfo topo_info;
-> > @@ -6089,39 +6088,56 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-> >                   int host_vcpus_per_cache = 1 + ((*eax & 0x3FFC000) >> 14);
-> >                   int vcpus_per_socket = cs->nr_cores * cs->nr_threads;
-> >                   if (cs->nr_cores > 1) {
-> > +                    int addressable_cores_offset =
-> > +                                                apicid_pkg_offset(&topo_info) -
-> > +                                                apicid_core_offset(&topo_info);
-> > +
-> >                       *eax &= ~0xFC000000;
-> > -                    *eax |= (pow2ceil(cs->nr_cores) - 1) << 26;
-> > +                    *eax |= (1 << addressable_cores_offset - 1) << 26;
-> >                   }
-> >                   if (host_vcpus_per_cache > vcpus_per_socket) {
-> > +                    int pkg_offset = apicid_pkg_offset(&topo_info);
-> > +
-> >                       *eax &= ~0x3FFC000;
-> > -                    *eax |= (pow2ceil(vcpus_per_socket) - 1) << 14;
-> > +                    *eax |= (1 << pkg_offset - 1) << 14;
-> >                   }
-> >               }
-> >           } else if (cpu->vendor_cpuid_only && IS_AMD_CPU(env)) {
-> >               *eax = *ebx = *ecx = *edx = 0;
-> >           } else {
-> >               *eax = 0;
-> > +            int addressable_cores_offset = apicid_pkg_offset(&topo_info) -
-> > +                                           apicid_core_offset(&topo_info);
-> > +            int core_offset, die_offset;
-> > +
-> >               switch (count) {
-> >               case 0: /* L1 dcache info */
-> > +                core_offset = apicid_core_offset(&topo_info);
-> >                   encode_cache_cpuid4(env->cache_info_cpuid4.l1d_cache,
-> > -                                    cs->nr_threads, cs->nr_cores,
-> > +                                    (1 << core_offset),
-> > +                                    (1 << addressable_cores_offset),
-> >                                       eax, ebx, ecx, edx);
-> >                   break;
-> >               case 1: /* L1 icache info */
-> > +                core_offset = apicid_core_offset(&topo_info);
-> >                   encode_cache_cpuid4(env->cache_info_cpuid4.l1i_cache,
-> > -                                    cs->nr_threads, cs->nr_cores,
-> > +                                    (1 << core_offset),
-> > +                                    (1 << addressable_cores_offset),
-> >                                       eax, ebx, ecx, edx);
-> >                   break;
-> >               case 2: /* L2 cache info */
-> > +                core_offset = apicid_core_offset(&topo_info);
-> >                   encode_cache_cpuid4(env->cache_info_cpuid4.l2_cache,
-> > -                                    cs->nr_threads, cs->nr_cores,
-> > +                                    (1 << core_offset),
-> > +                                    (1 << addressable_cores_offset),
-> >                                       eax, ebx, ecx, edx);
-> >                   break;
-> >               case 3: /* L3 cache info */
-> >                   die_offset = apicid_die_offset(&topo_info);
-> >                   if (cpu->enable_l3_cache) {
-> >                       encode_cache_cpuid4(env->cache_info_cpuid4.l3_cache,
-> > -                                        (1 << die_offset), cs->nr_cores,
-> > +                                        (1 << die_offset),
-> > +                                        (1 << addressable_cores_offset),
-> >                                           eax, ebx, ecx, edx);
-> >                       break;
-> >                   }
-> 
 
