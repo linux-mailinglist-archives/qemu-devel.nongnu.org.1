@@ -2,57 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B32F5771D9E
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 11:56:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 614CF771DA0
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 11:56:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qSwyF-0001Sc-ND; Mon, 07 Aug 2023 05:56:15 -0400
+	id 1qSwyP-0001U9-Cy; Mon, 07 Aug 2023 05:56:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qSwyD-0001S8-KE
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 05:56:13 -0400
-Received: from hognose1.porkbun.com ([35.82.102.206])
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qSwyN-0001Tu-F7
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 05:56:23 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qSwyB-00058o-Si
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 05:56:13 -0400
-Received: from [172.20.10.3] (unknown [112.97.80.95])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client did not present a certificate)
- (Authenticated sender: c@jia.je)
- by hognose1.porkbun.com (Postfix) with ESMTPSA id C6391418FE;
- Mon,  7 Aug 2023 09:55:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jia.je; s=default;
- t=1691402169; bh=rhUjfBKElMTxoIdAWi+UoXGfHxcK2eHgkrlUfg2TqdE=;
- h=Date:Subject:To:Cc:References:From:In-Reply-To;
- b=RQ3gckp+91/Suj5r5OQLeF26MGyzkFJLsNDdxF1Kw+kcNTeUnFTsylRlL71Xfw+HG
- 0hry5D16sVdxGrnMpJowazkm03f0OZLVUWVgkys+tgk8aQU+eHGZl0DOPKdS95EGzx
- pgCG7Lwo5CItPZolT1cUZzBlAh4a/WkBRY53IShE=
-Message-ID: <454fd6c8-bd01-97f7-b171-bb85fbf63adb@jia.je>
-Date: Mon, 7 Aug 2023 17:55:54 +0800
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qSwyL-0005DS-PI
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 05:56:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1691402180;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=pYOSNGmUMytWtrYbNGDbuakocOYZ5VDtki+92y9QTr4=;
+ b=FXjz8DyvOI/qTjqD/smxLofHLeFaumkWu+m4q4ZU4ruoqDYY/v/SGxQCf3v/pD4MshfccS
+ B6juMWNhiO9uwgm5pKGRm91jP4zHLJLYrLmlg5MENcBQvcmBrPHeLVWuinPB5Np6YB2mSL
+ GnrDUCJEc5FOQuIClsn7Ehqi+GpsKWQ=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-74-MclEuGmoOa--UA7KhVdojA-1; Mon, 07 Aug 2023 05:56:18 -0400
+X-MC-Unique: MclEuGmoOa--UA7KhVdojA-1
+Received: by mail-ed1-f71.google.com with SMTP id
+ 4fb4d7f45d1cf-50daa85e940so3295861a12.0
+ for <qemu-devel@nongnu.org>; Mon, 07 Aug 2023 02:56:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1691402177; x=1692006977;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=pYOSNGmUMytWtrYbNGDbuakocOYZ5VDtki+92y9QTr4=;
+ b=Zh4fNYiacGo2Q4T9KaejrEqxpqOhzrj0rV69DSxuMZIu8++M/RjaYchJMXxob/RyWV
+ cOZNmOLYUy7K8ZPX8F47hi0htn788RUCZ3UuaBk9DooH1ZUY0xs23cF7OVUqWppme5dI
+ W3E9MQWUAtvI7LaH6/LM3275/Uo42e0z8mjaj+FCYf52h1piINq1NGA2RnKzfJ5QMj0x
+ 0ZeDFuQuXACtwCkcgqTyPRb6B/nQUn7fOv1yRJYLLLAFwPmuLfbyHCRuds1FS+sK/DaG
+ 4EU+DcQClzJUobpD9/QSj7cFGV4f6GoLccD9Vm12e8K8YgLHXZ3tL85xcocas7ftXTmy
+ oT2Q==
+X-Gm-Message-State: AOJu0YxPj3hB2KUESxzenkJ3uR/r9ueK/inSuosGVdlHBvSg3xxpaC3C
+ xFj1pWLaVP/vT42ukru7V5MSGpLtO0xyHOpUNAZeU4l76ViEkyMnVUT+J08aW7v43nT793QBa70
+ VZdoq4Dog3kNBeWI=
+X-Received: by 2002:aa7:cd97:0:b0:51e:1643:5ad0 with SMTP id
+ x23-20020aa7cd97000000b0051e16435ad0mr7437041edv.8.1691402177512; 
+ Mon, 07 Aug 2023 02:56:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFtfWj/qcmzBFQv/Ult63nDAoZUZbV3G6B7WrJjhz8/mGSqyeUk29MbUtxDPvW2ouCtxHO/5A==
+X-Received: by 2002:aa7:cd97:0:b0:51e:1643:5ad0 with SMTP id
+ x23-20020aa7cd97000000b0051e16435ad0mr7437027edv.8.1691402177284; 
+ Mon, 07 Aug 2023 02:56:17 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ j18-20020aa7c0d2000000b0052239012c65sm4954759edp.82.2023.08.07.02.56.16
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 07 Aug 2023 02:56:16 -0700 (PDT)
+Date: Mon, 7 Aug 2023 11:56:15 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: Zhao Liu <zhao1.liu@linux.intel.com>, "Michael S . Tsirkin"
+ <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>, qemu-devel@nongnu.org,
+ Zhenyu Wang <zhenyu.z.wang@intel.com>, Zhao Liu <zhao1.liu@intel.com>
+Subject: Re: [PATCH v2 2/3] hw/smbios: Fix thread count in type4
+Message-ID: <20230807115615.278fb838@imammedo.users.ipa.redhat.com>
+In-Reply-To: <32cfa897-4472-083f-88cd-a3c3e3c405b0@tls.msk.ru>
+References: <20230601092952.1114727-1-zhao1.liu@linux.intel.com>
+ <20230601092952.1114727-3-zhao1.liu@linux.intel.com>
+ <598990ac-e5f8-fdcc-5936-e219491c4d0f@tls.msk.ru>
+ <32cfa897-4472-083f-88cd-a3c3e3c405b0@tls.msk.ru>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [PATCH v3 2/6] target/loongarch: Add loongarch32 cpu la132
-Content-Language: en-US
-To: WANG Xuerui <i.qemu@xen0n.name>, qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, yijun@loongson.cn, shenjinyang@loongson.cn, 
- Xiaojuan Yang <yangxiaojuan@loongson.cn>, Song Gao <gaosong@loongson.cn>
-References: <20230807094505.2030603-1-c@jia.je>
- <20230807094505.2030603-3-c@jia.je>
- <c9f44271-0f17-037d-9e8b-d598a78a5e27@xen0n.name>
-From: Jiajie Chen <c@jia.je>
-In-Reply-To: <c9f44271-0f17-037d-9e8b-d598a78a5e27@xen0n.name>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=35.82.102.206; envelope-from=c@jia.je;
- helo=hognose1.porkbun.com
-X-Spam_score_int: -61
-X-Spam_score: -6.2
-X-Spam_bar: ------
-X-Spam_report: (-6.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-4.139,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,63 +104,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Sat, 5 Aug 2023 09:00:41 +0300
+Michael Tokarev <mjt@tls.msk.ru> wrote:
 
-On 2023/8/7 17:54, WANG Xuerui wrote:
-> Hi,
->
-> On 2023/8/7 17:45, Jiajie Chen wrote:
->> Add la132 as a loongarch32 cpu type and allow virt machine to be used
->> with la132 instead of la464.
->>
->> Signed-off-by: Jiajie Chen <c@jia.je>
->> ---
->>   hw/loongarch/virt.c    |  5 -----
->>   target/loongarch/cpu.c | 41 +++++++++++++++++++++++++++++++++++++++++
->>   target/loongarch/cpu.h | 11 +++++++++++
->>   3 files changed, 52 insertions(+), 5 deletions(-)
->>
->> diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
->> index e19b042ce8..af15bf5aaa 100644
->> --- a/hw/loongarch/virt.c
->> +++ b/hw/loongarch/virt.c
->> @@ -798,11 +798,6 @@ static void loongarch_init(MachineState *machine)
->>           cpu_model = LOONGARCH_CPU_TYPE_NAME("la464");
->>       }
->>   -    if (!strstr(cpu_model, "la464")) {
->> -        error_report("LoongArch/TCG needs cpu type la464");
->> -        exit(1);
->> -    }
->> -
->>       if (ram_size < 1 * GiB) {
->>           error_report("ram_size must be greater than 1G.");
->>           exit(1);
->> diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
->> index ad93ecac92..d31efe86da 100644
->> --- a/target/loongarch/cpu.c
->> +++ b/target/loongarch/cpu.c
->> @@ -362,6 +362,8 @@ static void loongarch_la464_initfn(Object *obj)
->>       CPULoongArchState *env = &cpu->env;
->>       int i;
->>   +    env->mode = LA64;
->> +
->>       for (i = 0; i < 21; i++) {
->>           env->cpucfg[i] = 0x0;
->>       }
->> @@ -439,6 +441,20 @@ static void loongarch_la464_initfn(Object *obj)
->>       env->CSR_ASID = FIELD_DP64(0, CSR_ASID, ASIDBITS, 0xa);
->>   }
->>   +static void loongarch_la132_initfn(Object *obj)
->> +{
->> +    LoongArchCPU *cpu = LOONGARCH_CPU(obj);
->> +    CPULoongArchState *env = &cpu->env;
->> +
->> +    env->mode = LA32;
->> +
->> +    cpu->dtb_compatible = "loongarch,Loongson-3C103";
->
-> "3C103"? I assume you want something like "1C300" or "1Axxx", at least 
-> something prefixed with "1"...
+> 05.08.2023 08:58, Michael Tokarev wrote:
+> 
+> > 196ea60a73 hw/smbios: Fix core count in type4
+> > 7298fd7de5 hw/smbios: Fix thread count in type4
+> > d79a284a44 hw/smbios: Fix smbios_smp_sockets caculation  
+> 
+> plus this one:
+> 
+> a1d027be95 machine: Add helpers to get cores/threads per socket
+> 
+> /mjt
+> 
 
-You are right, I was meant to write "1C103"..
+just to note: v4 was what got merged eventually
+https://www.mail-archive.com/qemu-devel@nongnu.org/msg972625.html
+
+as for stable, I guess dies/clusters aren't used in production
+(based on lack of bug reports/complaints).
+It's not worth of back-porting if it's too complex,
+but if it's clean cherry-picks it might help folks who use
+downstream (it's easier for downstream to pickup fixes from
+stable branch) to test this code path.
 
 
