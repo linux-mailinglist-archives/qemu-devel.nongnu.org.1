@@ -2,65 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74394772379
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 14:11:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EB157723CD
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 14:23:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qSz47-0004Fp-Cx; Mon, 07 Aug 2023 08:10:27 -0400
+	id 1qSzFk-0006de-JM; Mon, 07 Aug 2023 08:22:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qSz43-0004E3-Sc
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 08:10:23 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1qSzFh-0006cq-RJ
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 08:22:25 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qSz3x-0003DS-D6
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 08:10:21 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.200])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RKFRH6PfJz6J6ct;
- Mon,  7 Aug 2023 20:06:35 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Mon, 7 Aug
- 2023 13:10:10 +0100
-Date: Mon, 7 Aug 2023 13:10:09 +0100
-To: Gregory Price <gregory.price@memverge.com>
-CC: Fan Ni <fan.ni@samsung.com>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>, "linux-cxl@vger.kernel.org"
- <linux-cxl@vger.kernel.org>, "hchkuo@avery-design.com.tw"
- <hchkuo@avery-design.com.tw>, "cbrowy@avery-design.com"
- <cbrowy@avery-design.com>, "ira.weiny@intel.com" <ira.weiny@intel.com>,
- "dan.j.williams@intel.com" <dan.j.williams@intel.com>, Adam Manzanares
- <a.manzanares@samsung.com>, "dave@stgolabs.net" <dave@stgolabs.net>,
- "nmtadam.samsung@gmail.com" <nmtadam.samsung@gmail.com>, "nifan@outlook.com"
- <nifan@outlook.com>
-Subject: Re: [Qemu PATCH v2 5/9] hw/mem/cxl_type3: Add host backend and
- address space handling for DC regions
-Message-ID: <20230807131009.00000fcc@Huawei.com>
-In-Reply-To: <ZM0+ewZtknlOrGMl@memverge.com>
-References: <20230725183939.2741025-1-fan.ni@samsung.com>
- <CGME20230725183957uscas1p1eeb8e8eccc6c00b460d183027642374b@uscas1p1.samsung.com>
- <20230725183939.2741025-6-fan.ni@samsung.com>
- <20230804173623.00007707@Huawei.com>
- <ZM0+ewZtknlOrGMl@memverge.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1qSzFf-0005lm-NF
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 08:22:25 -0400
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 377CBGEd012983; Mon, 7 Aug 2023 12:22:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=7QXR2BYgJtHqQnHIQX/arggfEdx6tPUL0lOOPQZj3Ro=;
+ b=fbMoNMohzizEY9FFbwjhk9aD3phchNh9bWENatkoTBceivsSP/0cyjL6n0ZAgKYsCj+A
+ NrzRTWW+Z/PKtOJxFR66ati2y3h5QNZvn+RVeVK3Dv+Tiw3WrQBMiGIZoZIcYbGCImcV
+ uD8UbHVxN8yfyJ06oprTXoe+ifSTI/DcYYE6WdLNu014lbZ+TldxNDQ7TkW1AlaCy9QV
+ gSMuPDyFtTXySw8c1abEt+PwQ7lYguxhQx4yT3KbEQNSrqrL4azxDCnc7wXUNDQs5sPZ
+ QBZxsdl2/Uxtn7SXDcoXXAF4aXX7CyhKFwCA/bK2NiTCMzC2biWGAQYvkoQX0YOcSaB9 eg== 
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sb01x8u14-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 07 Aug 2023 12:22:20 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 377BABCv000363; Mon, 7 Aug 2023 12:22:19 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3sa28k4sgm-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 07 Aug 2023 12:22:19 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
+ [10.20.54.100])
+ by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 377CMHTV15663626
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 7 Aug 2023 12:22:17 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BC21520043;
+ Mon,  7 Aug 2023 12:22:17 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9A6B820040;
+ Mon,  7 Aug 2023 12:22:17 +0000 (GMT)
+Received: from heavy.boeblingen.de.ibm.com (unknown [9.155.200.166])
+ by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Mon,  7 Aug 2023 12:22:17 +0000 (GMT)
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Laurent Vivier <laurent@vivier.eu>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PATCH v2] linux-user: Emulate the Anonymous: keyword in
+ /proc/self/smaps
+Date: Mon,  7 Aug 2023 14:20:46 +0200
+Message-ID: <20230807122206.655701-1-iii@linux.ibm.com>
+X-Mailer: git-send-email 2.41.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 37L8j9V1Bz2C_3Mn7QkBtojt5dT5i-Sj
+X-Proofpoint-GUID: 37L8j9V1Bz2C_3Mn7QkBtojt5dT5i-Sj
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml100002.china.huawei.com (7.191.160.241) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-08-07_11,2023-08-03_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 bulkscore=0
+ priorityscore=1501 clxscore=1015 mlxlogscore=999 phishscore=0
+ lowpriorityscore=0 malwarescore=0 impostorscore=0 adultscore=0 spamscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2308070111
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -74,92 +101,77 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 4 Aug 2023 14:07:55 -0400
-Gregory Price <gregory.price@memverge.com> wrote:
+Core dumps produced by gdb's gcore when connected to qemu's gdbstub
+lack stack. The reason is that gdb includes only anonymous memory in
+core dumps, which is distinguished by a non-0 Anonymous: value.
 
-> On Fri, Aug 04, 2023 at 05:36:23PM +0100, Jonathan Cameron wrote:
-> > On Tue, 25 Jul 2023 18:39:56 +0000
-> > Fan Ni <fan.ni@samsung.com> wrote:
-> >   
-> > > From: Fan Ni <nifan@outlook.com>
-> > > 
-> > > Add (file/memory backed) host backend, all the dynamic capacity regions
-> > > will share a single, large enough host backend. Set up address space for
-> > > DC regions to support read/write operations to dynamic capacity for DCD.
-> > > 
-> > > With the change, following supports are added:
-> > > 1. add a new property to type3 device "nonvolatile-dc-memdev" to point to host
-> > >    memory backend for dynamic capacity;
-> > > 2. add namespace for dynamic capacity for read/write support;
-> > > 3. create cdat entries for each dynamic capacity region;
-> > > 4. fix dvsec range registers to include DC regions.
-> > > 
-> > > Signed-off-by: Fan Ni <fan.ni@samsung.com>  
-> > Hi Fan,
-> > 
-> > I'm not sure if we want to do all regions backed by one memory backend
-> > or one backend each.  It will become complex when some are shared
-> > (e.g. what Gregory is working on).  
-> 
-> I thought about this briefly when i implemented the original volatile
-> support due to the potential for partitioning. We landed on, iirc, 
-> 2 backends (1 for volatile, 1 for non-volatile).
-> 
-> The reality, though, is the driver (presently) does not have a good way
-> to create more than 1 dax per memdev, and in practice with real devices
-> we see that this just tends to be the case: 1 dax per device.  So unless
-> that's going to change, ever having more than 1 backend will just be
-> unused complexity.
+Consider the mappings with PAGE_ANON fully anonymous, and the mappings
+without it fully non-anonymous.
 
-I'm not sure how this will turn out.  I guess we play with what Fan has
-done here and see if it ever ends up mattering!
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+---
 
-> 
-> To me, this is a good example of "maybe piling everything into the core
-> ct3d is going to get ugly fast".  Maybe it would be better to do
-> something similar to the CCI interface and allow for overriding the
-> other functions as well.
+v1: https://lists.gnu.org/archive/html/qemu-devel/2023-08/msg00848.html
+v1 -> v2: Fix a build issue when TARGET_VSYSCALL_PAGE is set.
 
-In general I agree - but DCD is going to be a fairly standard facility
-so for this one I think it'll end up either in ct3d or in the MHD / MLD
-generalizations of that. For now I'm still thinking a normal type 3 device
-is an MHD or MLD with a limited feature set - so easier to just turn things
-off in one of those than do it as additions.   Now I'm not sure if
-we end up with a MHD MLD with a lot of options in the end - probably still
-as the ct3d but with a default where most stuff is turned off.
+ linux-user/syscall.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-Ultimately I want that super device to be maintainable. That may mean
-breaking the functionality up, but I don't yet think that means going
-the simple + extend model.
-
-> 
-> just a thought.  I apologize for not engaging with the DCD patch set,
-> conferences have been keeping me busier than expected.  I plan on
-> putting it through the grinder this month.
-
-No problem. Definitely some testing needed here so great to have
-some more of that when you get to it.  I think most of the issues
-will occur when the kernel isn't do it's normal flows. So weird
-add and remove sequences linux many never use but which we should
-emulate the handling for correctly.
-
-> 
-> > 
-> > A few questions inline.  In particular there are subtle changes to
-> > existing handling that are either bug fixes (in which case they need
-> > to be sent first) or bugs / have no effect and shouldn't be in here.
-> > 
-> >   
-> > > ---
-> > >  hw/cxl/cxl-mailbox-utils.c  |  19 +++-
-> > >  hw/mem/cxl_type3.c          | 203 +++++++++++++++++++++++++++++-------
-> > >  include/hw/cxl/cxl_device.h |   4 +
-> > >  3 files changed, 185 insertions(+), 41 deletions(-)
-> > >   
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index 7c2c2f6e2fa..3dd493486f6 100644
+--- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -8037,7 +8037,7 @@ static int open_self_cmdline(CPUArchState *cpu_env, int fd)
+     return 0;
+ }
+ 
+-static void show_smaps(int fd, unsigned long size)
++static void show_smaps(int fd, unsigned long size, int flags)
+ {
+     unsigned long page_size_kb = TARGET_PAGE_SIZE >> 10;
+     unsigned long size_kb = size >> 10;
+@@ -8053,7 +8053,7 @@ static void show_smaps(int fd, unsigned long size)
+                 "Private_Clean:         0 kB\n"
+                 "Private_Dirty:         0 kB\n"
+                 "Referenced:            0 kB\n"
+-                "Anonymous:             0 kB\n"
++                "Anonymous:             %lu kB\n"
+                 "LazyFree:              0 kB\n"
+                 "AnonHugePages:         0 kB\n"
+                 "ShmemPmdMapped:        0 kB\n"
+@@ -8063,7 +8063,9 @@ static void show_smaps(int fd, unsigned long size)
+                 "Swap:                  0 kB\n"
+                 "SwapPss:               0 kB\n"
+                 "Locked:                0 kB\n"
+-                "THPeligible:    0\n", size_kb, page_size_kb, page_size_kb);
++                "THPeligible:    0\n",
++            size_kb, page_size_kb, page_size_kb,
++            (flags & PAGE_ANON) ? size_kb : 0);
+ }
+ 
+ static int open_self_maps_1(CPUArchState *cpu_env, int fd, bool smaps)
+@@ -8114,7 +8116,7 @@ static int open_self_maps_1(CPUArchState *cpu_env, int fd, bool smaps)
+                 dprintf(fd, "\n");
+             }
+             if (smaps) {
+-                show_smaps(fd, max - min);
++                show_smaps(fd, max - min, flags);
+                 dprintf(fd, "VmFlags:%s%s%s%s%s%s%s%s\n",
+                         (flags & PAGE_READ) ? " rd" : "",
+                         (flags & PAGE_WRITE_ORG) ? " wr" : "",
+@@ -8140,7 +8142,7 @@ static int open_self_maps_1(CPUArchState *cpu_env, int fd, bool smaps)
+                     TARGET_VSYSCALL_PAGE, TARGET_VSYSCALL_PAGE + TARGET_PAGE_SIZE);
+     dprintf(fd, "%*s%s\n", 73 - count, "",  "[vsyscall]");
+     if (smaps) {
+-        show_smaps(fd, TARGET_PAGE_SIZE);
++        show_smaps(fd, TARGET_PAGE_SIZE, PAGE_EXEC);
+         dprintf(fd, "VmFlags: ex\n");
+     }
+ #endif
+-- 
+2.41.0
 
 
