@@ -2,93 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A3ED772799
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 16:24:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 564C27727A4
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 16:25:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qT19e-0006CK-Jt; Mon, 07 Aug 2023 10:24:18 -0400
+	id 1qT1As-0006sx-HI; Mon, 07 Aug 2023 10:25:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ernunes@redhat.com>)
- id 1qT19c-0006Bz-3x
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 10:24:16 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <groug@kaod.org>) id 1qT1AV-0006sW-UZ
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 10:25:12 -0400
+Received: from 4.mo548.mail-out.ovh.net ([188.165.42.229])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ernunes@redhat.com>)
- id 1qT19a-0007UC-83
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 10:24:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691418252;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=tcBlqX2sbi2sZk0FipcXfBX+rhC4tzprK4gD+wZTILo=;
- b=XJeSwnIV9KlYIGkNeK5+18TNKWA66kKh0tS7wmKNvlgRP665Sp24eZfblM/ionG0dJWgvB
- NgpsbQKXHNNOyFgffpuPcyN7ggmd4dDkHPsBiAFKLZJxvKeN/lMbDPL85yQcBhRtgAcCKE
- 4xhjxPoe7rECNNlCPm7S7Tsby1WEEZw=
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
- [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-517-RE4jgHb3MiigwpDnTr4kzw-1; Mon, 07 Aug 2023 10:24:10 -0400
-X-MC-Unique: RE4jgHb3MiigwpDnTr4kzw-1
-Received: by mail-lj1-f199.google.com with SMTP id
- 38308e7fff4ca-2b9e8abe539so44808201fa.3
- for <qemu-devel@nongnu.org>; Mon, 07 Aug 2023 07:24:10 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691418249; x=1692023049;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=tcBlqX2sbi2sZk0FipcXfBX+rhC4tzprK4gD+wZTILo=;
- b=Dm5axgrHiu+9WFm+HoAa1O1D0AJTRmirLNc29MI+oLWZRExAptq207DDzkgYrbQEBl
- JdbGQTEl5fFC4nVM8E1UlvrhqWgrsxxVAOaM2hxaVIMEPGKmbVgwPAHSSe6uonmc62AF
- e/mC+0it5aRjSyUiJgt57cn14kVfAhvTB8YANgBUrkkfoqZ1TcOJRDrj/fZ+TCHbWlWY
- Yn/fH06H+PSuDKcwkweEp62wO/epMds2ToHIRNg4UR01jisTRIgYDD3UzqMBQW8k1mxQ
- uT6XeUyPKTK4LsA8/Q4SgrP/qYWLoYePsMwEUGKnZs7VcK1VjZSQkz+KZb1ODQkQM+7K
- lF8w==
-X-Gm-Message-State: AOJu0YyE+zs4GBNS0Ix3LYz4lXPL24BGN7V2NWvMIl0AwJL0Em1Ic3Bi
- WRYvhM18QKmE0OX3Ldic5ZzLad1dUm85PkL4Ml1mVTxXW+9/oVNNi8aiBi4V9+ZwCnO5B86hzrI
- RkJSl8WecEGCmU2A=
-X-Received: by 2002:a2e:3a0f:0:b0:2b6:da66:2d69 with SMTP id
- h15-20020a2e3a0f000000b002b6da662d69mr6502892lja.28.1691418249332; 
- Mon, 07 Aug 2023 07:24:09 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE34cB0DmEmXql0MZ37HqaAJUKH2Vs/p7N21ln2Xd/VHwdK12/HDjt+hxP7s7gpb6UVKq6Psg==
-X-Received: by 2002:a2e:3a0f:0:b0:2b6:da66:2d69 with SMTP id
- h15-20020a2e3a0f000000b002b6da662d69mr6502871lja.28.1691418248896; 
- Mon, 07 Aug 2023 07:24:08 -0700 (PDT)
-Received: from [10.43.17.57] (nat-pool-brq-t.redhat.com. [213.175.37.10])
- by smtp.gmail.com with ESMTPSA id
- s15-20020a1709060c0f00b0098e42bef736sm5368081ejf.176.2023.08.07.07.24.07
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 07 Aug 2023 07:24:08 -0700 (PDT)
-Message-ID: <b9dc2c50-00cf-12ae-d1c9-cb31d089a24d@redhat.com>
-Date: Mon, 7 Aug 2023 16:24:07 +0200
+ (Exim 4.90_1) (envelope-from <groug@kaod.org>) id 1qT1AS-0007b4-Ax
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 10:25:11 -0400
+Received: from mxplan5.mail.ovh.net (unknown [10.108.16.246])
+ by mo548.mail-out.ovh.net (Postfix) with ESMTPS id 0B96122030;
+ Mon,  7 Aug 2023 14:24:56 +0000 (UTC)
+Received: from kaod.org (37.59.142.110) by DAG6EX1.mxp5.local (172.16.2.51)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Mon, 7 Aug
+ 2023 16:24:55 +0200
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-110S004d27b8658-6325-4771-bc94-8590dfa59217,
+ 047F72E910A2B8B2EAB1B539FBA6DA9AA8DB97EF) smtp.auth=groug@kaod.org
+X-OVh-ClientIp: 78.113.105.161
+Date: Mon, 7 Aug 2023 16:24:52 +0200
+From: Greg Kurz <groug@kaod.org>
+To: zhenwei pi <pizhenwei@bytedance.com>
+CC: <berto@igalia.com>, <kwolf@redhat.com>, <hreitz@redhat.com>,
+ <qemu_oss@crudebyte.com>, <qemu-devel@nongnu.org>, <qemu-block@nongnu.org>
+Subject: Re: [PATCH v5 8/9] fsdev: Use ThrottleDirection instread of bool
+ is_write
+Message-ID: <20230807162452.5160b645@bahia>
+In-Reply-To: <20230728022006.1098509-9-pizhenwei@bytedance.com>
+References: <20230728022006.1098509-1-pizhenwei@bytedance.com>
+ <20230728022006.1098509-9-pizhenwei@bytedance.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v3 0/9] gfxstream + rutabaga_gfx
-Content-Language: en-US
-To: Gurchetan Singh <gurchetansingh@chromium.org>, qemu-devel@nongnu.org
-Cc: kraxel@redhat.com, marcandre.lureau@redhat.com, akihiko.odaki@gmail.com,
- dmitry.osipenko@collabora.com, ray.huang@amd.com, alex.bennee@linaro.org,
- shentey@gmail.com, hi@alyssa.is
-References: <20230803235502.373-1-gurchetansingh@google.com>
-From: Erico Nunes <ernunes@redhat.com>
-In-Reply-To: <20230803235502.373-1-gurchetansingh@google.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=ernunes@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -38
-X-Spam_score: -3.9
-X-Spam_bar: ---
-X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.809, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Originating-IP: [37.59.142.110]
+X-ClientProxiedBy: DAG5EX1.mxp5.local (172.16.2.41) To DAG6EX1.mxp5.local
+ (172.16.2.51)
+X-Ovh-Tracer-GUID: 9f51b6c3-035d-48f6-9395-a29aea5d9763
+X-Ovh-Tracer-Id: 18354420281531472233
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedviedrledtgdejtdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhfogggtgfhisehtjeertdertddvnecuhfhrohhmpefirhgvghcumfhurhiiuceoghhrohhugheskhgrohgurdhorhhgqeenucggtffrrghtthgvrhhnpeegkeejtdevgeekieelffdvtedvvdegtdduudeigffhhffgvdfhgeejteekheefkeenucfkphepuddvjedrtddrtddruddpfeejrdehledrudegvddruddutddpjeekrdduudefrddutdehrdduiedunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepuddvjedrtddrtddruddpmhgrihhlfhhrohhmpeeoghhrohhugheskhgrohgurdhorhhgqedpnhgspghrtghpthhtohepuddprhgtphhtthhopehpihiihhgvnhifvghisegshihtvggurghntggvrdgtohhmpdgsvghrthhosehighgrlhhirgdrtghomhdpkhifohhlfhesrhgvughhrghtrdgtohhmpdhhrhgvihhtiiesrhgvughhrghtrdgtohhmpdhqvghmuhgpohhsshestghruhguvggshihtvgdrtghomhdpqhgvmhhuqdguvghvvghlsehnohhnghhnuhdrohhrghdpqhgvmhhuqdgslhhotghksehnohhnghhnuhdrohhrghdpoffvtefjohhsthepmhhoheegkedpmhhouggvpehsmhhtphhouhht
+Received-SPF: pass client-ip=188.165.42.229; envelope-from=groug@kaod.org;
+ helo=4.mo548.mail-out.ovh.net
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,55 +73,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello,
+On Fri, 28 Jul 2023 10:20:05 +0800
+zhenwei pi <pizhenwei@bytedance.com> wrote:
 
-On 04/08/2023 01:54, Gurchetan Singh wrote:
-> Prior versions:
+> 'bool is_write' style is obsolete from throttle framework, adapt
+> fsdev to the new style.
 > 
-> https://lists.gnu.org/archive/html/qemu-devel/2023-07/msg05801.html
-> 
-> https://lists.gnu.org/archive/html/qemu-devel/2023-07/msg02341.html
-> 
-> https://patchew.org/QEMU/20230421011223.718-1-gurchetansingh@chromium.org/
-> 
-> Changes since v2:
-> - Incorporated review feedback
-> 
-> How to build both rutabaga and gfxstream guest/host libs:
-> 
-> https://crosvm.dev/book/appendix/rutabaga_gfx.html
-> 
-> Branch containing this patch series:
-> 
-> https://gitlab.freedesktop.org/gurchetansingh/qemu-gfxstream/-/commits/qemu-gfxstream-v3
+> Cc: Greg Kurz <groug@kaod.org>
+> Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
+> Signed-off-by: zhenwei pi <pizhenwei@bytedance.com>
 
-I tried this on Fedora with a Fedora guest and I was able to get Vulkan
-headless applications as well as Wayland proxy with sommelier to work.
-If you don't mind, I have a few questions.
-I was not able to run Vulkan applications over the Wayland proxy, only
-unaccelerated apps. This seems to be unsupported yet; is actually
-unsupported for now or was something missing in my setup?
+Reviewed-by: Greg Kurz <groug@kaod.org>
 
-Also apparently GL/GLES is only supported on Android right now as you
-mentioned, since on Linux the gfxstream guest only installs the Vulkan
-library and icd. What is the plan to support GL on Linux; provide
-gfxstream GL guest libraries later or enable Zink or some other solution?
-Then if I understand correctly, Mesa virgl is not used at all with the
-gfxstream solution, so I guess we would need to find a way to ship the
-gfxstream guest libraries too on distributions?
-Also I wonder about including all of the the dependencies required to
-get this to build on distributions as well to enable the feature on
-distribution-provided qemu, but I guess we can figure this out later...
+> ---
+>  fsdev/qemu-fsdev-throttle.c | 14 +++++++-------
+>  fsdev/qemu-fsdev-throttle.h |  4 ++--
+>  hw/9pfs/cofile.c            |  4 ++--
+>  3 files changed, 11 insertions(+), 11 deletions(-)
+> 
+> diff --git a/fsdev/qemu-fsdev-throttle.c b/fsdev/qemu-fsdev-throttle.c
+> index 1c137d6f0f..d912da906d 100644
+> --- a/fsdev/qemu-fsdev-throttle.c
+> +++ b/fsdev/qemu-fsdev-throttle.c
+> @@ -94,22 +94,22 @@ void fsdev_throttle_init(FsThrottle *fst)
+>      }
+>  }
+>  
+> -void coroutine_fn fsdev_co_throttle_request(FsThrottle *fst, bool is_write,
+> +void coroutine_fn fsdev_co_throttle_request(FsThrottle *fst,
+> +                                            ThrottleDirection direction,
+>                                              struct iovec *iov, int iovcnt)
+>  {
+> -    ThrottleDirection direction = is_write ? THROTTLE_WRITE : THROTTLE_READ;
+> -
+> +    assert(direction < THROTTLE_MAX);
+>      if (throttle_enabled(&fst->cfg)) {
+>          if (throttle_schedule_timer(&fst->ts, &fst->tt, direction) ||
+> -            !qemu_co_queue_empty(&fst->throttled_reqs[is_write])) {
+> -            qemu_co_queue_wait(&fst->throttled_reqs[is_write], NULL);
+> +            !qemu_co_queue_empty(&fst->throttled_reqs[direction])) {
+> +            qemu_co_queue_wait(&fst->throttled_reqs[direction], NULL);
+>          }
+>  
+>          throttle_account(&fst->ts, direction, iov_size(iov, iovcnt));
+>  
+> -        if (!qemu_co_queue_empty(&fst->throttled_reqs[is_write]) &&
+> +        if (!qemu_co_queue_empty(&fst->throttled_reqs[direction]) &&
+>              !throttle_schedule_timer(&fst->ts, &fst->tt, direction)) {
+> -            qemu_co_queue_next(&fst->throttled_reqs[is_write]);
+> +            qemu_co_queue_next(&fst->throttled_reqs[direction]);
+>          }
+>      }
+>  }
+> diff --git a/fsdev/qemu-fsdev-throttle.h b/fsdev/qemu-fsdev-throttle.h
+> index a21aecddc7..daa8ca2494 100644
+> --- a/fsdev/qemu-fsdev-throttle.h
+> +++ b/fsdev/qemu-fsdev-throttle.h
+> @@ -23,14 +23,14 @@ typedef struct FsThrottle {
+>      ThrottleState ts;
+>      ThrottleTimers tt;
+>      ThrottleConfig cfg;
+> -    CoQueue      throttled_reqs[2];
+> +    CoQueue      throttled_reqs[THROTTLE_MAX];
+>  } FsThrottle;
+>  
+>  int fsdev_throttle_parse_opts(QemuOpts *, FsThrottle *, Error **);
+>  
+>  void fsdev_throttle_init(FsThrottle *);
+>  
+> -void coroutine_fn fsdev_co_throttle_request(FsThrottle *, bool ,
+> +void coroutine_fn fsdev_co_throttle_request(FsThrottle *, ThrottleDirection ,
+>                                              struct iovec *, int);
+>  
+>  void fsdev_throttle_cleanup(FsThrottle *);
+> diff --git a/hw/9pfs/cofile.c b/hw/9pfs/cofile.c
+> index 9c5344039e..71174c3e4a 100644
+> --- a/hw/9pfs/cofile.c
+> +++ b/hw/9pfs/cofile.c
+> @@ -252,7 +252,7 @@ int coroutine_fn v9fs_co_pwritev(V9fsPDU *pdu, V9fsFidState *fidp,
+>      if (v9fs_request_cancelled(pdu)) {
+>          return -EINTR;
+>      }
+> -    fsdev_co_throttle_request(s->ctx.fst, true, iov, iovcnt);
+> +    fsdev_co_throttle_request(s->ctx.fst, THROTTLE_WRITE, iov, iovcnt);
+>      v9fs_co_run_in_worker(
+>          {
+>              err = s->ops->pwritev(&s->ctx, &fidp->fs, iov, iovcnt, offset);
+> @@ -272,7 +272,7 @@ int coroutine_fn v9fs_co_preadv(V9fsPDU *pdu, V9fsFidState *fidp,
+>      if (v9fs_request_cancelled(pdu)) {
+>          return -EINTR;
+>      }
+> -    fsdev_co_throttle_request(s->ctx.fst, false, iov, iovcnt);
+> +    fsdev_co_throttle_request(s->ctx.fst, THROTTLE_READ, iov, iovcnt);
+>      v9fs_co_run_in_worker(
+>          {
+>              err = s->ops->preadv(&s->ctx, &fidp->fs, iov, iovcnt, offset);
 
-And finally out of curiosity, I see that rutabaga also has a
-virgl_renderer (and virgl_renderer_next) backend which would then not
-use gfxstream but virglrenderer instead. I wonder if there would be any
-benefit/features in enabling that with qemu later compared to the
-current qemu virtio/virglrenderer implementation (if that would make
-sense at all)?
 
-Thanks
 
-Erico
-
+-- 
+Greg
 
