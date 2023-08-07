@@ -2,65 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5833C772CF4
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 19:29:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F6F3772D0C
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 19:33:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qT42N-0007YF-8S; Mon, 07 Aug 2023 13:28:59 -0400
+	id 1qT464-0000MB-U6; Mon, 07 Aug 2023 13:32:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qT42I-0007Wz-Pe; Mon, 07 Aug 2023 13:28:54 -0400
-Received: from forwardcorp1c.mail.yandex.net
- ([2a02:6b8:c03:500:1:45:d181:df01])
+ (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qT462-0000Ln-PF
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 13:32:46 -0400
+Received: from hognose1.porkbun.com ([35.82.102.206])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qT42F-0006MT-Dr; Mon, 07 Aug 2023 13:28:54 -0400
-Received: from mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
- [IPv6:2a02:6b8:c14:151e:0:640:1960:0])
- by forwardcorp1c.mail.yandex.net (Yandex) with ESMTP id 7E8805F211;
- Mon,  7 Aug 2023 20:28:39 +0300 (MSK)
-Received: from [IPV6:2a02:6b8:b081:25::1:2] (unknown [2a02:6b8:b081:25::1:2])
- by mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
- (smtpcorp/Yandex) with ESMTPSA id cSbg901OqGk0-Vyg5LQSg; 
- Mon, 07 Aug 2023 20:28:38 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; 
- t=1691429318; bh=grEHBkgU9hu1yZmz7YNJC6ZtLO5h/bgvf8jfgBw3y+c=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=WTLV8BUWYa0nHUQG5xC5EsYV9J+I/YYaZ5SVoQoTnHPlhEKRv3L4wcWcyoRU9doMl
- vKoje2nGGp9sr3/jTejVNleIy29xfTtW4GTzRfV9y9axEXB5s9VQk71eJq9MZhhRpR
- /KZ209dWngT8U9djpVFzEFkKZFQcLkopi62Zxc+o=
-Authentication-Results: mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <712acbc9-ad05-6ac3-1bce-55f9d451ec2b@yandex-team.ru>
-Date: Mon, 7 Aug 2023 20:28:38 +0300
+ (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qT461-0007Z8-2e
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 13:32:46 -0400
+Received: from [172.20.10.3] (unknown [112.97.81.50])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Client did not present a certificate)
+ (Authenticated sender: c@jia.je)
+ by hognose1.porkbun.com (Postfix) with ESMTPSA id 2AB7943928;
+ Mon,  7 Aug 2023 17:32:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jia.je; s=default;
+ t=1691429562; bh=3tqEjdWAP1z+BBVE9SiN3pXawAhUSB/GDOFrzLvN1oU=;
+ h=Date:Subject:To:Cc:References:From:In-Reply-To;
+ b=Rg5M4qBknRDWzziNESXNo9XIa/0rdb057waVBHw3gbR9TSe15CqpKGt3LZXWojYaZ
+ E/KDABcRfzyt3Da8RIfs4A/r3KpbcdvoHx5eaIIPlN8w2RYzQDy12K/nGVgolEh+M+
+ ffGewgat+nOZV7vCZj75zwh4zd/kdGRk5EJWEuUY=
+Message-ID: <b6da05fc-8eea-70d9-20ac-e6cb9d8ea440@jia.je>
+Date: Tue, 8 Aug 2023 01:32:34 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v4 16/24] nbd/server: Support 64-bit block status
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.14.0
+Subject: Re: [PATCH v3 5/6] target/loongarch: Support LoongArch32 DMW
 Content-Language: en-US
-To: Eric Blake <eblake@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, libguestfs@redhat.com
-References: <20230608135653.2918540-1-eblake@redhat.com>
- <20230608135653.2918540-17-eblake@redhat.com>
- <26b732b9-c1e5-a032-6139-a01ac1fbd2bd@yandex-team.ru>
- <g2kaumiey7rwho4p6awywn4aikyjmdelmiyexqmqfa3634se54@34nc5ekwvtki>
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <g2kaumiey7rwho4p6awywn4aikyjmdelmiyexqmqfa3634se54@34nc5ekwvtki>
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: yijun@loongson.cn, shenjinyang@loongson.cn, Song Gao
+ <gaosong@loongson.cn>, Xiaojuan Yang <yangxiaojuan@loongson.cn>
+References: <20230807094505.2030603-1-c@jia.je>
+ <20230807094505.2030603-6-c@jia.je>
+ <21b780f0-baa1-c006-2e82-b646442d86f2@linaro.org>
+From: Jiajie Chen <c@jia.je>
+In-Reply-To: <21b780f0-baa1-c006-2e82-b646442d86f2@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a02:6b8:c03:500:1:45:d181:df01;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=35.82.102.206; envelope-from=c@jia.je;
+ helo=hognose1.porkbun.com
 X-Spam_score_int: -38
 X-Spam_score: -3.9
 X-Spam_bar: ---
 X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.809,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,97 +68,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 04.08.23 22:36, Eric Blake wrote:
-> On Tue, Jun 27, 2023 at 04:23:49PM +0300, Vladimir Sementsov-Ogievskiy wrote:
->> On 08.06.23 16:56, Eric Blake wrote:
->>> The NBD spec states that if the client negotiates extended headers,
->>> the server must avoid NBD_REPLY_TYPE_BLOCK_STATUS and instead use
->>> NBD_REPLY_TYPE_BLOCK_STATUS_EXT which supports 64-bit lengths, even if
->>> the reply does not need more than 32 bits.  As of this patch,
->>> client->mode is still never NBD_MODE_EXTENDED, so the code added here
->>> does not take effect until the next patch enables negotiation.
->>>
->>> For now, all metacontexts that we know how to export never populate
->>> more than 32 bits of information, so we don't have to worry about
->>> NBD_REP_ERR_EXT_HEADER_REQD or filtering during handshake, and we
->>> always send all zeroes for the upper 32 bits of status during
->>> NBD_CMD_BLOCK_STATUS.
->>>
->>> Note that we previously had some interesting size-juggling on call
->>> chains, such as:
->>>
->>> nbd_co_send_block_status(uint32_t length)
->>> -> blockstatus_to_extents(uint32_t bytes)
->>>     -> bdrv_block_status_above(bytes, &uint64_t num)
->>>     -> nbd_extent_array_add(uint64_t num)
->>>       -> store num in 32-bit length
->>>
->>> But we were lucky that it never overflowed: bdrv_block_status_above
->>> never sets num larger than bytes, and we had previously been capping
->>> 'bytes' at 32 bits (since the protocol does not allow sending a larger
->>> request without extended headers).  This patch adds some assertions
->>> that ensure we continue to avoid overflowing 32 bits for a narrow
->>
->>
->> [..]
->>
->>> @@ -2162,19 +2187,23 @@ static void nbd_extent_array_convert_to_be(NBDExtentArray *ea)
->>>     * would result in an incorrect range reported to the client)
->>>     */
->>>    static int nbd_extent_array_add(NBDExtentArray *ea,
->>> -                                uint32_t length, uint32_t flags)
->>> +                                uint64_t length, uint32_t flags)
->>>    {
->>>        assert(ea->can_add);
->>>
->>>        if (!length) {
->>>            return 0;
->>>        }
->>> +    if (!ea->extended) {
->>> +        assert(length <= UINT32_MAX);
->>> +    }
->>>
->>>        /* Extend previous extent if flags are the same */
->>>        if (ea->count > 0 && flags == ea->extents[ea->count - 1].flags) {
->>> -        uint64_t sum = (uint64_t)length + ea->extents[ea->count - 1].length;
->>> +        uint64_t sum = length + ea->extents[ea->count - 1].length;
->>>
->>> -        if (sum <= UINT32_MAX) {
->>> +        assert(sum >= length);
->>> +        if (sum <= UINT32_MAX || ea->extended) {
->>
->> that "if" and uint64_t sum was to avoid overflow. I think, we can't just assert, instead include the check into if:
->>
->> if (sum >= length && (sum <= UINT32_MAX || ea->extended) {
-> 
-> Why?  The assertion is stating that there was no overflow, because we
-> are in control of ea->extents[ea->count - 1].length (it came from
-> local code performing block status, and our block layer guarantees
-> that no block status returns more than 2^63 bytes because we don't
-> support images larger than off_t).  At best, all I need is a comment
-> why the assertion is valid.
 
-OK. Small comment would be good. Keep my r-b.
-
-The only my point is that you make this small "extent API" block-layer dependent. But I'm not sure that is the only dependency, and I don't insist anyway.
-
-> 
+On 2023/8/7 23:50, Richard Henderson wrote:
+> On 8/7/23 02:45, Jiajie Chen wrote:
+>> LA32 uses a different encoding for CSR.DMW and a new direct mapping
+>> mechanism.
 >>
->>   ...
+>> Signed-off-by: Jiajie Chen <c@jia.je>
+>> ---
+>>   target/loongarch/cpu-csr.h    |  7 +++----
+>>   target/loongarch/tlb_helper.c | 31 ++++++++++++++++++++++++++++---
+>>   2 files changed, 31 insertions(+), 7 deletions(-)
 >>
->> }
->>
->> with this:
->> Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
->>
->> -- 
->> Best regards,
->> Vladimir
->>
-> 
-
--- 
-Best regards,
-Vladimir
-
+>> diff --git a/target/loongarch/cpu-csr.h b/target/loongarch/cpu-csr.h
+>> index 48ed2e0632..b93f99a9ef 100644
+>> --- a/target/loongarch/cpu-csr.h
+>> +++ b/target/loongarch/cpu-csr.h
+>> @@ -188,10 +188,9 @@ FIELD(CSR_DMW, PLV1, 1, 1)
+>>   FIELD(CSR_DMW, PLV2, 2, 1)
+>>   FIELD(CSR_DMW, PLV3, 3, 1)
+>>   FIELD(CSR_DMW, MAT, 4, 2)
+>> -FIELD(CSR_DMW, VSEG, 60, 4)
+>> -
+>> -#define dmw_va2pa(va) \
+>> -    (va & MAKE_64BIT_MASK(0, TARGET_VIRT_ADDR_SPACE_BITS))
+>> +FIELD(CSR_DMW_32, PSEG, 25, 3)
+>> +FIELD(CSR_DMW_32, VSEG, 29, 3)
+>> +FIELD(CSR_DMW_64, VSEG, 60, 4)
+>>     /* Debug CSRs */
+>>   #define LOONGARCH_CSR_DBG            0x500 /* debug config */
+>> diff --git a/target/loongarch/tlb_helper.c 
+>> b/target/loongarch/tlb_helper.c
+>> index 690c6ef25f..cf6f5863f9 100644
+>> --- a/target/loongarch/tlb_helper.c
+>> +++ b/target/loongarch/tlb_helper.c
+>> @@ -173,6 +173,18 @@ static int 
+>> loongarch_map_address(CPULoongArchState *env, hwaddr *physical,
+>>       return TLBRET_NOMATCH;
+>>   }
+>>   +static hwaddr dmw_va2pa(CPULoongArchState *env, target_ulong va,
+>> +                        target_ulong dmw)
+>> +{
+>> +    if (env->mode == LA64) {
+>> +        return va & TARGET_PHYS_MASK;
+>> +    } else {
+>> +        uint32_t pseg = FIELD_EX32(dmw, CSR_DMW_32, PSEG);
+>> +        return (va & MAKE_64BIT_MASK(0, R_CSR_DMW_32_VSEG_SHIFT)) | \
+>> +            (pseg << R_CSR_DMW_32_VSEG_SHIFT);
+>> +    }
+>> +}
+>> +
+>>   static int get_physical_address(CPULoongArchState *env, hwaddr 
+>> *physical,
+>>                                   int *prot, target_ulong address,
+>>                                   MMUAccessType access_type, int 
+>> mmu_idx)
+>> @@ -184,6 +196,11 @@ static int 
+>> get_physical_address(CPULoongArchState *env, hwaddr *physical,
+>>       uint8_t da = FIELD_EX64(env->CSR_CRMD, CSR_CRMD, DA);
+>>       uint8_t pg = FIELD_EX64(env->CSR_CRMD, CSR_CRMD, PG);
+>>   +    /* Truncate high 32 bits for LA32 */
+>> +    if (env->mode == LA32) {
+>> +        address = (uint32_t)address;
+>> +    }
+>
+> You need to do this in the translator, because this also depends on 
+> VA32L* and the current priv level.
+Could you please elaborate on this? I am checking LA32 and VA32L* in 
+get_physical_address() currently, the current priv level is read from 
+mmu_idx(or alternatively, read from env->CSR_CRMD), and I am unsure how 
+to do this in the translator.
+>
+> Otherwise the window manipulation looks correct.
+>
+>
+> r~
 
