@@ -2,78 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61CB2771D8A
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 11:52:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BFEA6771DC2
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 12:08:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qSwtn-0004y9-UD; Mon, 07 Aug 2023 05:51:39 -0400
+	id 1qSx8g-0005lh-25; Mon, 07 Aug 2023 06:07:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1qSwsA-0004Ni-5z
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 05:50:04 -0400
-Received: from mgamail.intel.com ([134.134.136.20])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qSx8d-0005lY-Mo
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 06:06:59 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1qSws7-0003hD-CV
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 05:49:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1691401795; x=1722937795;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=lx2Usg4vitoRh3VrdkazUO/AHTuyjUYyJciBAk+4334=;
- b=nRl5SLlHLvrbllV9jSlEyoNPvk6igP2aK3HQAcxRtPDnigDfQxk8nDLV
- 2C5kpQMNW7rsihK6U7773vyyVwM6zZFqCs5iZzPrGjx8OVaD+vG6hQTxE
- c6T7fVX1eNe486wWNTOv2A8Fk5Cx7nzVcR5CMoisF/fEfea5luUHWVy/Z
- nKjsFofuwjdzSdzD2l2IJ82BD3kwgpojJDPfgIEKccqCE3s9Cdku0urkH
- grtmaZSn8bYUSEsUa92eLHSwFwoaY+i7L392tLVX8QkQxVzMq6VyLog9u
- SKqrDSNnlkwyUdk8LShAU48vPVN+QhIgn6WgSZmkflYkJZW6t1W17v4QI g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10794"; a="360585237"
-X-IronPort-AV: E=Sophos;i="6.01,261,1684825200"; d="scan'208";a="360585237"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
- by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Aug 2023 02:49:53 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10794"; a="707811179"
-X-IronPort-AV: E=Sophos;i="6.01,261,1684825200"; d="scan'208";a="707811179"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.28])
- by orsmga006.jf.intel.com with ESMTP; 07 Aug 2023 02:49:49 -0700
-Date: Mon, 7 Aug 2023 18:00:18 +0800
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
- Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Babu Moger <babu.moger@amd.com>, Zhao Liu <zhao1.liu@intel.com>,
- Zhuocheng Ding <zhuocheng.ding@intel.com>
-Subject: Re: [PATCH v3 03/17] softmmu: Fix CPUSTATE.nr_cores' calculation
-Message-ID: <ZNDAsj0N/FoBXG/b@liuzhao-OptiPlex-7080>
-References: <20230801103527.397756-1-zhao1.liu@linux.intel.com>
- <20230801103527.397756-4-zhao1.liu@linux.intel.com>
- <17d46d49-844c-60ed-56cc-0e671564948a@intel.com>
- <ZNCi6uNsVB1F39XD@liuzhao-OptiPlex-7080>
- <7d3d2630-4ac4-8875-8c6f-054000462755@intel.com>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qSx8b-0007fX-Gg
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 06:06:59 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id D944518A16;
+ Mon,  7 Aug 2023 13:06:48 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 816F11BF67;
+ Mon,  7 Aug 2023 13:06:47 +0300 (MSK)
+Message-ID: <ddfe932b-57b7-8f48-03aa-82e1964dda2a@tls.msk.ru>
+Date: Mon, 7 Aug 2023 13:06:47 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7d3d2630-4ac4-8875-8c6f-054000462755@intel.com>
-Received-SPF: none client-ip=134.134.136.20;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH v2 2/3] hw/smbios: Fix thread count in type4
+Content-Language: en-US
+To: Igor Mammedov <imammedo@redhat.com>
+Cc: Zhao Liu <zhao1.liu@linux.intel.com>, "Michael S . Tsirkin"
+ <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>, qemu-devel@nongnu.org,
+ Zhenyu Wang <zhenyu.z.wang@intel.com>, Zhao Liu <zhao1.liu@intel.com>
+References: <20230601092952.1114727-1-zhao1.liu@linux.intel.com>
+ <20230601092952.1114727-3-zhao1.liu@linux.intel.com>
+ <598990ac-e5f8-fdcc-5936-e219491c4d0f@tls.msk.ru>
+ <32cfa897-4472-083f-88cd-a3c3e3c405b0@tls.msk.ru>
+ <20230807115615.278fb838@imammedo.users.ipa.redhat.com>
+From: Michael Tokarev <mjt@tls.msk.ru>
+In-Reply-To: <20230807115615.278fb838@imammedo.users.ipa.redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -109
+X-Spam_score: -11.0
+X-Spam_bar: -----------
+X-Spam_report: (-11.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-4.139,
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,108 +65,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Xiaoyao,
-
-On Mon, Aug 07, 2023 at 04:43:32PM +0800, Xiaoyao Li wrote:
-> Date: Mon, 7 Aug 2023 16:43:32 +0800
-> From: Xiaoyao Li <xiaoyao.li@intel.com>
-> Subject: Re: [PATCH v3 03/17] softmmu: Fix CPUSTATE.nr_cores' calculation
+07.08.2023 12:56, Igor Mammedov wrote:
+> On Sat, 5 Aug 2023 09:00:41 +0300
+> Michael Tokarev <mjt@tls.msk.ru> wrote:
 > 
-> On 8/7/2023 3:53 PM, Zhao Liu wrote:
-> > > > diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> > > > index 97ad229d8ba3..50613cd04612 100644
-> > > > --- a/target/i386/cpu.c
-> > > > +++ b/target/i386/cpu.c
-> > > > @@ -6011,7 +6011,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-> > > >        X86CPUTopoInfo topo_info;
-> > > >        topo_info.dies_per_pkg = env->nr_dies;
-> > > > -    topo_info.cores_per_die = cs->nr_cores;
-> > > > +    topo_info.cores_per_die = cs->nr_cores / env->nr_dies;
-> > > This and below things make me think that, it looks ugly that @nr_dies is
-> > > added separately in struct CPUArchState for i386 because CPUState only has
-> > > @nr_cores and nr_threads. Further, for i386, it defines a specific struct
-> > > X86CPUTopoInfo to contain topology info when setting up CPUID. To me, struct
-> > > X86CPUTopoInfo is redundant as struct CpuTopology.
-> > > 
-> > > maybe we can carry a struct CpuTopology in CPUState, so that we can drop
-> > > @nr_threads, @nr_cores in CPUState for all ARCHes, and @nr_dies in struct
-> > > CPUArchState for i386. As well, topo_info can be dropped here.
-> > Yeah, I agree. We think the same way, as did in [1].
-> > 
-> > About X86CPUTopoInfo, it's still necessary to keep to help encode
-> > APICID.
+>> 05.08.2023 08:58, Michael Tokarev wrote:
+>>
+>>> 196ea60a73 hw/smbios: Fix core count in type4
+>>> 7298fd7de5 hw/smbios: Fix thread count in type4
+>>> d79a284a44 hw/smbios: Fix smbios_smp_sockets caculation
+>>
+>> plus this one:
+>>
+>> a1d027be95 machine: Add helpers to get cores/threads per socket
 > 
-> typedef struct X86CPUTopoInfo {
->     unsigned dies_per_pkg;
->     unsigned cores_per_die;
->     unsigned threads_per_core;
-> } X86CPUTopoInfo;
-> 
-> /**
->  * CpuTopology:
->  * @cpus: the number of present logical processors on the machine
->  * @sockets: the number of sockets on the machine
->  * @dies: the number of dies in one socket
->  * @clusters: the number of clusters in one die
->  * @cores: the number of cores in one cluster
->  * @threads: the number of threads in one core
->  * @max_cpus: the maximum number of logical processors on the machine
->  */
-> typedef struct CpuTopology {
->     unsigned int cpus;
->     unsigned int sockets;
->     unsigned int dies;
->     unsigned int clusters;
->     unsigned int cores;
->     unsigned int threads;
->     unsigned int max_cpus;
-> } CpuTopology;
-> 
-> I think 'struct X86CPUTopoInfo' is just a subset of 'struct CpuTopology'
+> just to note: v4 was what got merged eventually
+> https://www.mail-archive.com/qemu-devel@nongnu.org/msg972625.html
 
-For smp topology, it's correct.
+Yeah, I replied to the wrong version of the patch. Sure thing, whatever
+is picked up for -stable gets picked up from the master branch, always,
+not from any other source.  Above, I'm quoting commit-IDs from the master
+branch.
 
-> 
-> IIUC, currently the value of X86CPUTopoInfo::dies_per_pkg should equal with
-> CpuTopology::dies, and the same for cores_per_die and threads_per_core.
-> 
-> So it's OK to keep an copy of 'struct CpuTopology' in CPUState and drop
-> 'struct X86CPUTopoInfo'
-> 
-> > For hybrid topology case, the APICID is likely discontinuous,
-> > and the width of each CPU level in APICID depends on the maximum number
-> > of elements in this level. So I also proposed to rename it to
-> > X86ApicidTopoInfo [2] and count the maximum number of elements in each
-> > CPU level.
-> 
-> Do you mean, for example, for hybrid topology, X86CPUTopoInfo::dies_per_pkg
-> != CpuTopology::dies? Or after rename
-> X86CPUTopoInfo::max_dies != CpuTopology::dies?
+> as for stable, I guess dies/clusters aren't used in production
+> (based on lack of bug reports/complaints).
 
-I mean the latter.
+Quite often people try something and just give up if it doesn't work,
+trying other ways or working around the issue one way or another.
 
-A more typical example nowadays is thread level.
+> It's not worth of back-porting if it's too complex,
+> but if it's clean cherry-picks it might help folks who use
+> downstream (it's easier for downstream to pickup fixes from
+> stable branch) to test this code path.
 
-X86CPUTopoInfo::max_threads may not euqal to CpuTopology::threads,
+The whole thing - provided the preparational patch a1d027be95
+"machine: Add helpers to get cores/threads per socket" is also
+picked up - applies cleanly and in a stright-forward way to 8.0
+and even to 7.2, and passes the usual qemu testsuite. Sure thing
+since the issues weren't noticed before, the testsuite does not
+cover this area.  It'd be nice to have some verifier to check if
+the whole thing actually works after applying the patchset.
 
-since P core has 2 threads per core and E core doesn't support SMT.
+I'll pick this thing up for the next stable, thank you for the
+clarification.
 
-The CpuTopology in CPUState should reflect the topology information for
-current CPU, so CpuTopology::threads is 2 for P core and
-CpuTopology::threads = 1 for E core.
-
-But the width of the SMT level in APICID must be fixed, so that SMT width
-should be determined by X86CPUTopoInfo::max_threads. Current hybrid
-platforms implement it the same way.
+The whole -stable thing is exactly in order to centralize fixes.
 
 Thanks,
-Zhao
 
-> 
-> > [2]:https://mail.gnu.org/archive/html/qemu-devel/2023-02/msg03237.html
-> > 
-> > Thanks,
-> > Zhao
-> > 
-> 
+/mjt
 
