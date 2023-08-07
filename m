@@ -2,59 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAA87771C3F
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 10:25:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68F84771C46
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 10:27:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qSvWp-000151-58; Mon, 07 Aug 2023 04:23:51 -0400
+	id 1qSvZb-0001sU-Ue; Mon, 07 Aug 2023 04:26:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qSvWl-00014t-Bv
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 04:23:47 -0400
-Received: from hognose1.porkbun.com ([35.82.102.206])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qSvWh-0003D4-S6
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 04:23:46 -0400
-Received: from [172.20.10.3] (unknown [112.97.80.95])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client did not present a certificate)
- (Authenticated sender: c@jia.je)
- by hognose1.porkbun.com (Postfix) with ESMTPSA id AA34240DF8;
- Mon,  7 Aug 2023 08:23:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jia.je; s=default;
- t=1691396621; bh=j4r9TFmJOTDFToCVjRzkTzLOnuMzzz/k50E+gQ8QlCw=;
- h=Date:Subject:To:Cc:References:From:In-Reply-To;
- b=Rap13YVA1cRuZFwG4Pr6GEqD1bYEd8dA5vVV1gJ6p9o/RqxrgzvTYRGNWRRzPDtoF
- EUzVC5QZIaIjUP8uPtOj2NEPSyN50Qlbg6tjAVcuMd0P3yqqd/GVeTCKh5hhtKqsZb
- AjL/rKwCN0qs8xZRffJL/kOnXQIemWsTnY14QkH8=
-Message-ID: <36b5af0a-6966-00bc-76bb-c0afa7a3f296@jia.je>
-Date: Mon, 7 Aug 2023 16:23:34 +0800
+ (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
+ id 1qSvZV-0001sK-4u
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 04:26:37 -0400
+Received: from mail-lj1-x229.google.com ([2a00:1450:4864:20::229])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
+ id 1qSvZJ-0003XX-BV
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 04:26:36 -0400
+Received: by mail-lj1-x229.google.com with SMTP id
+ 38308e7fff4ca-2b9d07a8d84so67765851fa.3
+ for <qemu-devel@nongnu.org>; Mon, 07 Aug 2023 01:26:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=jms.id.au; s=google; t=1691396773; x=1692001573;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=6lxac/Z6cGusMzwSeZ4RiPlf+0fXBAutxdF6RHqUGnA=;
+ b=BUdwyDNQf0m6atzQfm6SGSVuo+q6PzvfjsoTxtY0A3mL7DSsOf94ABMn2d7gyhXO0W
+ K9iaP9f1uhQ91aeLjg31MhS8Pbjjy3WVVvpB4cOOL4o9c//RZZId4Zfine8/u1sGYyWL
+ dfLzu72B4+XCd6tPiJsd+RVuPXX7Xg1p5hjMM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1691396773; x=1692001573;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=6lxac/Z6cGusMzwSeZ4RiPlf+0fXBAutxdF6RHqUGnA=;
+ b=gaaH167Jcrmg2rv47y2GDQ4WVQmAxN1pIuNA/bucDPPC+3wjkU9Dc+zoBQINnm/ytx
+ BGFsoSQyiRoIkUJeuDE0zKib9tb+FHrNcrXvN2qAblsVlT0S6dc/N6MU6lAOre0N7ZpA
+ In21vmX7TJIxEHKFGrU8QdKgkF/DeXA+pLEDDRXWa3ir839xqhm8HUFN5BTfGHUdG4Tx
+ 4HTFEJ1cLedde3TFria8WKifrXaVpKCVUnIBfBcKgYp98pO468ejoDGOtQMZAdVffA7l
+ 6w7nutpW0ItIy8+TYBM2FJHjBslaqffxZ8bPSCTofT8wrYXEybfGuoHR6zM3Pz0p9pB/
+ RSaQ==
+X-Gm-Message-State: AOJu0YziQh+QIlmKwW2rFfSIh32X3Nl4jUAWPELnFqQ9USY5g0kbOSEc
+ JrlDCkgAGksHpHx0hMcz6KwoKoLC780p8K32FT0=
+X-Google-Smtp-Source: AGHT+IFF37js94tOFUGCzU26DN9zVIGeCmV2/ux7M8iZpH67PiwybcsOVQkHN2V7O/+5NAOcvaDx3Cwcpb42vA44zP4=
+X-Received: by 2002:a2e:a312:0:b0:2b9:e831:f15f with SMTP id
+ l18-20020a2ea312000000b002b9e831f15fmr6074709lje.32.1691396773111; Mon, 07
+ Aug 2023 01:26:13 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [PATCH v2 4/5] target/loongarch: Support LoongArch32 TLB entry
-Content-Language: en-US
-To: gaosong <gaosong@loongson.cn>, qemu-devel@nongnu.org
-Cc: Xiaojuan Yang <yangxiaojuan@loongson.cn>,
- Richard Henderson <richard.henderson@linaro.org>, yijun@loongson.cn,
- shenjinyang@loongson.cn
-References: <20230807031850.1961130-1-c@jia.je>
- <20230807031850.1961130-4-c@jia.je>
- <49edfbad-c89b-cc58-3296-1d48b2a7b821@jia.je>
- <4c0a66a2-59d5-122e-4402-689c39a3cd4f@loongson.cn>
-From: Jiajie Chen <c@jia.je>
-In-Reply-To: <4c0a66a2-59d5-122e-4402-689c39a3cd4f@loongson.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=35.82.102.206; envelope-from=c@jia.je;
- helo=hognose1.porkbun.com
-X-Spam_score_int: -61
-X-Spam_score: -6.2
-X-Spam_bar: ------
-X-Spam_report: (-6.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-4.139,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20230805180214.57198-1-richard.henderson@linaro.org>
+In-Reply-To: <20230805180214.57198-1-richard.henderson@linaro.org>
+From: Joel Stanley <joel@jms.id.au>
+Date: Mon, 7 Aug 2023 08:26:01 +0000
+Message-ID: <CACPK8XdWpOhwKrdxh+NoMMkP=63g7ib1PdXSrR8f1snAsLu8Nw@mail.gmail.com>
+Subject: Re: [PATCH] configure: Fix linux-user host detection for riscv64
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::229;
+ envelope-from=joel.stan@gmail.com; helo=mail-lj1-x229.google.com
+X-Spam_score_int: -14
+X-Spam_score: -1.5
+X-Spam_bar: -
+X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.25,
+ FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.249,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -70,98 +82,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-On 2023/8/7 14:55, gaosong wrote:
-> Hi, Jiajie
+On Sat, 5 Aug 2023 at 18:02, Richard Henderson
+<richard.henderson@linaro.org> wrote:
 >
-> 在 2023/8/7 下午1:17, Jiajie Chen 写道:
->>
->> On 2023/8/7 11:18, Jiajie Chen wrote:
->>> The TLB entry of LA32 lacks NR, NX and RPLV and they are hardwired to
->>> zero in LoongArch32.
->>>
->>> Signed-off-by: Jiajie Chen <c@jia.je>
->>> ---
->>>   target/loongarch/cpu-csr.h    |  9 +++++----
->>>   target/loongarch/tlb_helper.c | 17 ++++++++++++-----
->>>   2 files changed, 17 insertions(+), 9 deletions(-)
->>>
-> Please
-> Cc: Richard Henderson <richard.henderson@linaro.org>
->
-> And
-> Cc: Jun Yi <yijun@loongson.cn>
-> CC: shenjinyang@loongson.cn>
-> Their are also interested with Loongarch32 softmmu.
->
-> It would be better use the parameter '--cover-letter' create a patch0.
-> Add some Change logs and introduction about this series in patch0.
+> Mirror the host_arch variable from meson.build, so that we
+> probe for the correct linux-user/include/host/ directory.
 
-Thanks, I will add this in my next version of patch series.
+This broke all of the linux-user targets for me on a ppc64le host.
+None show up when running configure --help, and trying to select one
+with --target-list errors out:
 
-> Thanks.
-> Song Gao
->>> diff --git a/target/loongarch/cpu-csr.h b/target/loongarch/cpu-csr.h
->>> index f8f24032cb..faf76a589b 100644
->>> --- a/target/loongarch/cpu-csr.h
->>> +++ b/target/loongarch/cpu-csr.h
->>> @@ -66,10 +66,11 @@ FIELD(TLBENTRY, D, 1, 1)
->>>   FIELD(TLBENTRY, PLV, 2, 2)
->>>   FIELD(TLBENTRY, MAT, 4, 2)
->>>   FIELD(TLBENTRY, G, 6, 1)
->>> -FIELD(TLBENTRY, PPN, 12, 36)
->>> -FIELD(TLBENTRY, NR, 61, 1)
->>> -FIELD(TLBENTRY, NX, 62, 1)
->>> -FIELD(TLBENTRY, RPLV, 63, 1)
->>> +FIELD(TLBENTRY_32, PPN, 12, 24)
->>
->> Sorry, the starting bit of TLBENTRY_32_PPN should be 8 instead of 12. 
->> Will be corrected in v3.
->>
->>
->>> +FIELD(TLBENTRY_64, PPN, 12, 36)
->>> +FIELD(TLBENTRY_64, NR, 61, 1)
->>> +FIELD(TLBENTRY_64, NX, 62, 1)
->>> +FIELD(TLBENTRY_64, RPLV, 63, 1)
->>>   #define LOONGARCH_CSR_ASID           0x18 /* Address space 
->>> identifier */
->>>   FIELD(CSR_ASID, ASID, 0, 10)
->>> diff --git a/target/loongarch/tlb_helper.c 
->>> b/target/loongarch/tlb_helper.c
->>> index 6e00190547..690c6ef25f 100644
->>> --- a/target/loongarch/tlb_helper.c
->>> +++ b/target/loongarch/tlb_helper.c
->>> @@ -48,10 +48,17 @@ static int 
->>> loongarch_map_tlb_entry(CPULoongArchState *env, hwaddr *physical,
->>>       tlb_v = FIELD_EX64(tlb_entry, TLBENTRY, V);
->>>       tlb_d = FIELD_EX64(tlb_entry, TLBENTRY, D);
->>>       tlb_plv = FIELD_EX64(tlb_entry, TLBENTRY, PLV);
->>> -    tlb_ppn = FIELD_EX64(tlb_entry, TLBENTRY, PPN);
->>> -    tlb_nx = FIELD_EX64(tlb_entry, TLBENTRY, NX);
->>> -    tlb_nr = FIELD_EX64(tlb_entry, TLBENTRY, NR);
->>> -    tlb_rplv = FIELD_EX64(tlb_entry, TLBENTRY, RPLV);
->>> +    if (env->mode == LA64) {
->>> +        tlb_ppn = FIELD_EX64(tlb_entry, TLBENTRY_64, PPN);
->>> +        tlb_nx = FIELD_EX64(tlb_entry, TLBENTRY_64, NX);
->>> +        tlb_nr = FIELD_EX64(tlb_entry, TLBENTRY_64, NR);
->>> +        tlb_rplv = FIELD_EX64(tlb_entry, TLBENTRY_64, RPLV);
->>> +    } else {
->>> +        tlb_ppn = FIELD_EX64(tlb_entry, TLBENTRY_32, PPN);
->>> +        tlb_nx = 0;
->>> +        tlb_nr = 0;
->>> +        tlb_rplv = 0;
->>> +    }
->>>       /* Check access rights */
->>>       if (!tlb_v) {
->>> @@ -79,7 +86,7 @@ static int 
->>> loongarch_map_tlb_entry(CPULoongArchState *env, hwaddr *physical,
->>>        * tlb_entry contains ppn[47:12] while 16KiB ppn is [47:15]
->>>        * need adjust.
->>>        */
->>> -    *physical = (tlb_ppn << R_TLBENTRY_PPN_SHIFT) |
->>> +    *physical = (tlb_ppn << R_TLBENTRY_64_PPN_SHIFT) |
->>>                   (address & MAKE_64BIT_MASK(0, tlb_ps));
->>>       *prot = PAGE_READ;
->>>       if (tlb_d) {
+  ERROR: Unknown target name 'aarch64-linux-user'
+
+Reverting this patch restores the old behaviour.
+
+This test is the one that fails with the patch applied:
+
+if [ "$linux_user" != no ]; then
+    if [ "$targetos" = linux ] && [ -d
+"$source_path/linux-user/include/host/$host_arch" ]; then
+        linux_user=yes
+
+WIth your patch $host_arch is ppc64le. Previously the line was:
+
+ if [ "$linux_user" != no ]; then
+     if [ "$targetos" = linux ] && [ -d
+"$source_path/linux-user/include/host/$cpu" ]; then
+      linux_user=yes
+
+The directory needs to be /linux-user/include/host/ppc64 for even for ppc64le.
+
+You've put the new test just above the switch statement that does
+normalisation of the host CPU name. Could add riscv to that switch
+statement instead of adding the host_arch variable?
+
+@@ -508,6 +501,9 @@ case "$cpu" in
+     cpu="ppc64"
+     CPU_CFLAGS="-m64 -mlittle-endian" ;;
+
++  riscv*)
++    cpu="riscv" ;;
++
+   s390)
+     CPU_CFLAGS="-m31" ;;
+   s390x)
+
+Cheers,
+
+Joel
+
+>
+> Fixes: e3e477c3bca0 ("configure: Fix cross-building for RISCV host")
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>  configure | 9 ++++++++-
+>  1 file changed, 8 insertions(+), 1 deletion(-)
+>
+> diff --git a/configure b/configure
+> index afb25fd558..98dc78280e 100755
+> --- a/configure
+> +++ b/configure
+> @@ -469,6 +469,13 @@ else
+>    echo "WARNING: unrecognized host CPU, proceeding with 'uname -m' output '$cpu'"
+>  fi
+>
+> +case "$cpu" in
+> +  riscv*)
+> +    host_arch=riscv ;;
+> +  *)
+> +    host_arch="$cpu" ;;
+> +esac
+> +
+>  # Normalise host CPU name and set multilib cflags.  The canonicalization
+>  # isn't really necessary, because the architectures that we check for
+>  # should not hit the 'uname -m' case, but better safe than sorry.
+> @@ -803,7 +810,7 @@ default_target_list=""
+>  mak_wilds=""
+>
+>  if [ "$linux_user" != no ]; then
+> -    if [ "$targetos" = linux ] && [ -d "$source_path/linux-user/include/host/$cpu" ]; then
+> +    if [ "$targetos" = linux ] && [ -d "$source_path/linux-user/include/host/$host_arch" ]; then
+>          linux_user=yes
+>      elif [ "$linux_user" = yes ]; then
+>          error_exit "linux-user not supported on this architecture"
+> --
+> 2.34.1
+>
 >
 
