@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95A83772D9D
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 20:19:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC43A772DC5
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 20:22:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qT4ny-0005Cv-Vy; Mon, 07 Aug 2023 14:18:11 -0400
+	id 1qT4r7-0006Jj-NO; Mon, 07 Aug 2023 14:21:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qT4nm-0005Bh-Jx
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 14:17:59 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1qT4r5-0006JO-16
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 14:21:23 -0400
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qT4nk-00027R-VH
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 14:17:58 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-1bbf8cb694aso41538705ad.3
- for <qemu-devel@nongnu.org>; Mon, 07 Aug 2023 11:17:56 -0700 (PDT)
+ id 1qT4r3-00037N-9q
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 14:21:22 -0400
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-1bbc06f830aso32558645ad.0
+ for <qemu-devel@nongnu.org>; Mon, 07 Aug 2023 11:21:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691432275; x=1692037075;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ d=linaro.org; s=google; t=1691432479; x=1692037279;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=GoVVMuPgL0FlWms/s3UjiL6a16iL25KjRwXThS0TcQY=;
- b=Y2TjtBAOyWQe0/s4Mo8h7BfykDShcRVQN3jVZz3gTRfcbb012PqP0uLGA4ThhyaJl8
- UEhJFTgUnsM95Wn16MvpKzppwkbt6mLd+anEQRIY7RN4BRkqexj1P+56hfjjDkKHlZrC
- CW1yeG+wd+fW3DvEkyebYVtn67VyOHOuBnNFABtoRJr0UrPDd+YyXsy4w/8rTBaC5tAo
- E+pgY+0I2QXOevQru+JFgEeb70kLYGfMefA8C313lsFrpcAvxbfeBY97iIiRI4gCxrHH
- XwO52FPM5mcTeUhWNmySkDPncllPOs/hNDv+1YWlz4jN9E5W2C+Rn4zN49zPKqzwUOOk
- 0ajA==
+ bh=p4wcFhQ4KN13V5JJyIMz/VC6ikqOe/V4/L3ec4bmILI=;
+ b=jPB0QRJllCxzUbtlE9sxZJRdgiyJU6FX30ayFummJS5r816dQP5qlZJOkcOy5ODwnA
+ ytKI3PHp+ldyjxwW8tsB0F3R3BtfaHGgt+iktKXwDkqcA/ODdp/bZPKIAjeUOUIQDL9f
+ c+WU6gQYXfoJ4c+mZFUkjvQ4D5BDWT9zH1BmJzW398IzDaiPy4SEpy3v3S6fPI73ASOc
+ kHyo5vSJytkdLm85H+OkpOo8xgfdifss9gQ08xbK8W8JbARYW0IYia/ughWOpDaqXnL0
+ agBLNTKTSp14ZB6HK6mh6ybLdkaLs4oncjGvP/DUprwat3/HbV3yaalBQNqgl43VhTTS
+ 8egQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691432275; x=1692037075;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ d=1e100.net; s=20221208; t=1691432479; x=1692037279;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=GoVVMuPgL0FlWms/s3UjiL6a16iL25KjRwXThS0TcQY=;
- b=PQCjlLt9jbIYt/XOlPvZcv6JFvPjwpTjauL3gF5/5lBrsTbvOknDdptwtp66YUQggf
- Ly8EocF9LDxMNADrG02EP08bxkY/FzDcv0juorTsU0yNCKTSozHXcdYi1XS6uNe34SUt
- NTvSH8lPO/cwjcMPTd1uD+vsz/KDiBkh/1a6AoKKOsdRiB7VO5YZ0j4wt/8y+vevOMlq
- PSjo7kCa2sJmC2PbTMbSBariskztT7f9bqwzLi3+7j4KQ1++Vt64tqKFiyT3BFcJaOo3
- f7obyBzcP5JuQ4VAn58X/FKRLGh1FysOYRMkwsBqwh8jamNO/5iIOr50It1Lfd/WPy7J
- vsOA==
-X-Gm-Message-State: AOJu0YyRM7SOEI5we/MWH1sWLfBUCh0l/XVSfn3rqjPFl3yNR0D01vdH
- FpQ5ah9D1VKGCETs3hhTdTvEF4Iw4Oh/ygiqRKE=
-X-Google-Smtp-Source: AGHT+IHMIj46khAr4BmYaVw+SJI4fPORBNThkFRBsf7+o6ZU7uFGXcCE3k9KY0EKhteadzbD/kKm6g==
-X-Received: by 2002:a17:902:6b47:b0:1b8:76ce:9d91 with SMTP id
- g7-20020a1709026b4700b001b876ce9d91mr9158118plt.1.1691432275215; 
- Mon, 07 Aug 2023 11:17:55 -0700 (PDT)
+ bh=p4wcFhQ4KN13V5JJyIMz/VC6ikqOe/V4/L3ec4bmILI=;
+ b=dumnZFQc7vDQiNFEX+CIrrcSFDjP5mWy/QTdaReciADypGpoR8s6V8/go3HyNe4yE8
+ /Tet4PcwB5a2/ayHcsG6Rx6n/a7MJsei/bStjAFt3MUui0L46w31akPKs6VxWjoKilQD
+ U9DK54ZOvWK0vm8TWOZVaaTS69j3UmqV3C0elViRelKqxEVyVrltp/n8fwd/wL8TLlg9
+ fEup9GZQe3n05A+lm9g0Gacuz0hyahQx6pwr4p9ahblamoJ3PTMBEF8VvC5U1yyjdHcQ
+ gfghrIYg3+H8Uu72XP2vtXGFClE8R+oNu/Lht9ZLGVsxwBzTvLOBLrpH+iLTlX8j0rhW
+ IO5Q==
+X-Gm-Message-State: AOJu0Yw3sNaewvA0nifmseQKsA87GE8FTFJUyC2jDIg+8H4Q9LElL4GY
+ C9lzx4jCCrEXtMH8UXHeX4WRpg==
+X-Google-Smtp-Source: AGHT+IGSp0HLX88oTSM6vCnhAuAGp21YTf+3E9iAIHH5W4om8Nw/FiPUdoJCm7VZP6Z0WnW+vds/kw==
+X-Received: by 2002:a17:902:ce8b:b0:1bc:2fe1:1821 with SMTP id
+ f11-20020a170902ce8b00b001bc2fe11821mr9851417plg.17.1691432479619; 
+ Mon, 07 Aug 2023 11:21:19 -0700 (PDT)
 Received: from ?IPV6:2602:47:d490:6901:e306:567a:e0a1:341?
  ([2602:47:d490:6901:e306:567a:e0a1:341])
  by smtp.gmail.com with ESMTPSA id
- u16-20020a170902e81000b001ab2b4105ddsm7215822plg.60.2023.08.07.11.17.54
+ b21-20020a170902d31500b001bbd8cf6b57sm7194174plc.230.2023.08.07.11.21.18
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 07 Aug 2023 11:17:54 -0700 (PDT)
-Message-ID: <d2842004-ce3e-325f-69a7-3eec6e4cd1d5@linaro.org>
-Date: Mon, 7 Aug 2023 11:17:52 -0700
+ Mon, 07 Aug 2023 11:21:19 -0700 (PDT)
+Message-ID: <93412928-2b4b-6541-631e-2d57ccd5f05e@linaro.org>
+Date: Mon, 7 Aug 2023 11:21:17 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH for-8.1 v10 10/14] util/selfmap: Rewrite using
- qemu/interval-tree.h
+Subject: Re: [PATCH RFC 1/1] tcg: Always pass the full write size to
+ notdirty_write()
 Content-Language: en-US
+To: Ilya Leoshkevich <iii@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>
+References: <20230807141846.786530-1-iii@linux.ibm.com>
+ <20230807141846.786530-2-iii@linux.ibm.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com, philmd@linaro.org, laurent@vivier.eu, deller@gmx.de, 
- Ilya Leoshkevich <iii@linux.ibm.com>
-References: <20230807163705.9848-1-richard.henderson@linaro.org>
- <20230807163705.9848-11-richard.henderson@linaro.org>
-In-Reply-To: <20230807163705.9848-11-richard.henderson@linaro.org>
+In-Reply-To: <20230807141846.786530-2-iii@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -38
 X-Spam_score: -3.9
 X-Spam_bar: ---
@@ -98,27 +97,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/7/23 09:37, Richard Henderson wrote:
-> We will want to be able to search the set of mappings.
-> For this patch, the two users iterate the tree in order.
+On 8/7/23 06:56, Ilya Leoshkevich wrote:
+> One of notdirty_write()'s responsibilities is detecting self-modifying
+> code. Some functions pass the full size of a write to it, some pass 1.
+> When a write to a code section begins before a TB start, but then
+> overlaps the TB, the paths that pass 1 don't flush a TB and don't
+> return to the translator loop.
 > 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   include/qemu/selfmap.h |  20 ++++----
->   linux-user/elfload.c   |  14 +++--
->   linux-user/syscall.c   |  15 +++---
->   util/selfmap.c         | 114 +++++++++++++++++++++++++----------------
->   4 files changed, 96 insertions(+), 67 deletions(-)
+> This may be masked, one example being HELPER(vstl). There,
+> probe_write_access() ultimately calls notdirty_write() with a size of
+> 1 and misses self-modifying code. However, cpu_stq_be_data_ra()
+> ultimately calls mmu_watch_or_dirty(), which in turn calls
+> notdirty_write() with the full size.
+> 
+> It's still worth improving this, because there may still be
+> user-visible adverse effects in other helpers.
+> 
+> Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 
-I should note that, for 8.2, this will enable a rewrite of open_self_maps_1 so that it 
-does not require page-by-page checking of page_get_flags.
-
-My idea is that open_self_maps_1 would use walk_memory_regions to see all guest memory 
-regions.  The per-region callback would cross-check with the host-region interval tree to 
-find the dev+inode+path.
-
-Cc Ilya and Helge, since there are two outstanding changes to open_self_maps.
+IIRC there are some uses of probe_access_* that set size == 0.
+Should we adjust addr+size to cover the whole page for that case?
+That seems to be the intent, anyway.
 
 
 r~
+
+> ---
+>   accel/tcg/cputlb.c | 8 ++++----
+>   1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
+> index d68fa6867ce..aa3cffbc11a 100644
+> --- a/accel/tcg/cputlb.c
+> +++ b/accel/tcg/cputlb.c
+> @@ -1582,7 +1582,7 @@ int probe_access_full(CPUArchState *env, vaddr addr, int size,
+>   
+>       /* Handle clean RAM pages.  */
+>       if (unlikely(flags & TLB_NOTDIRTY)) {
+> -        notdirty_write(env_cpu(env), addr, 1, *pfull, retaddr);
+> +        notdirty_write(env_cpu(env), addr, size, *pfull, retaddr);
+>           flags &= ~TLB_NOTDIRTY;
+>       }
+>   
+> @@ -1605,7 +1605,7 @@ int probe_access_full_mmu(CPUArchState *env, vaddr addr, int size,
+>   
+>       /* Handle clean RAM pages.  */
+>       if (unlikely(flags & TLB_NOTDIRTY)) {
+> -        notdirty_write(env_cpu(env), addr, 1, *pfull, 0);
+> +        notdirty_write(env_cpu(env), addr, size, *pfull, 0);
+>           flags &= ~TLB_NOTDIRTY;
+>       }
+>   
+> @@ -1626,7 +1626,7 @@ int probe_access_flags(CPUArchState *env, vaddr addr, int size,
+>   
+>       /* Handle clean RAM pages. */
+>       if (unlikely(flags & TLB_NOTDIRTY)) {
+> -        notdirty_write(env_cpu(env), addr, 1, full, retaddr);
+> +        notdirty_write(env_cpu(env), addr, size, full, retaddr);
+>           flags &= ~TLB_NOTDIRTY;
+>       }
+>   
+> @@ -1661,7 +1661,7 @@ void *probe_access(CPUArchState *env, vaddr addr, int size,
+>   
+>           /* Handle clean RAM pages.  */
+>           if (flags & TLB_NOTDIRTY) {
+> -            notdirty_write(env_cpu(env), addr, 1, full, retaddr);
+> +            notdirty_write(env_cpu(env), addr, size, full, retaddr);
+>           }
+>       }
+>   
+
 
