@@ -2,78 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EC4B771C7B
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 10:41:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A43EE771C83
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 10:44:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qSvmq-0005IO-S7; Mon, 07 Aug 2023 04:40:25 -0400
+	id 1qSvq7-0006aC-FM; Mon, 07 Aug 2023 04:43:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1qSvml-0005Hv-CS
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 04:40:19 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1qSvmf-0005yq-SC
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 04:40:19 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-1bb893e6365so26489185ad.2
- for <qemu-devel@nongnu.org>; Mon, 07 Aug 2023 01:40:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1691397612; x=1692002412;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
- bh=g0bTpnzWG0O3NVLO6TCIQyRtHyybTdzTBPWD/KXQfLM=;
- b=lzGO/+P+KGpQke2ImxRJEvhrKNKbrGmwvG+8F2OqOv0q5pxRH0ADdtqZLRF5HuNQ1k
- nLNfFp3TX1jH+rcud8x6+k9GQb5KDLH9SI9ktx/TS2tixGPWeOYnI84I5klgfeuxDuXK
- imOo1dcqx1DiwBB1J5N+NCPp2hUzrlb2m1SplPjSAHJRjHcRa8BO24ASPO8KiXrbfclO
- f1zRh9N4h6VR/Tk4T+JW2QTlnVai6HAO7mR/MQwIylWICr6PuywZrmFnmFTxEbOifkN9
- mPl8TIGww90DxfMGFtIfiETn/kPMQF+Ujk4ULF2rtG9MCpMGra5YXp1wvCcydEpy7kiQ
- kYsA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691397612; x=1692002412;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:sender:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=g0bTpnzWG0O3NVLO6TCIQyRtHyybTdzTBPWD/KXQfLM=;
- b=b/+uVM6fNeHyymjiPUNbZJVtoMBouN82rrFw43vSNJGJhFnfPlniI426rAIDIw98FT
- gMkRLa+ivKT1Q6w70vkU659DEGiHxk1JfHWkGrUONssGLMNM8aYFB+AD+GsByZdVhH2Q
- sfwqb0PX84rW6re55J2fcbK77h5COowISVBp86zXTg+Z8g1FKa0HB3iWcF1gvoRTMeeZ
- MVjz19zGXprLUJYr8QHpTQvK8PQG19KLrN7SS/PBpFBpR9o+vv+RJha5Ui2TJmAFShaI
- dWwEy5+om4dwIJzo/I3AZ5mz3fwb5WXJOKdM5q/b/2Eow9MviAkD6+AlMHHi0G+mP8DP
- IqCQ==
-X-Gm-Message-State: AOJu0YzfwuxWm6MBXGzZ7phabBrnuPK/MdRmp+UpnuhcYmaMjLBvt4a9
- ZG+c6FJIZQCqpIjr0Lz8QeU=
-X-Google-Smtp-Source: AGHT+IFza0dMAybnzG07HD0x0JcgradxVuI2tRHZaTxlrPIWDY3+fkkBqSpCvSFWNtO6PIGLd7XetA==
-X-Received: by 2002:a17:902:ecd0:b0:1bc:7001:6e62 with SMTP id
- a16-20020a170902ecd000b001bc70016e62mr1212676plh.35.1691397612221; 
- Mon, 07 Aug 2023 01:40:12 -0700 (PDT)
-Received: from localhost.localdomain ([45.124.203.19])
- by smtp.gmail.com with ESMTPSA id
- u18-20020a17090341d200b001aadd0d7364sm6301766ple.83.2023.08.07.01.40.10
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 07 Aug 2023 01:40:11 -0700 (PDT)
-From: Joel Stanley <joel@jms.id.au>
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org
-Subject: [PATCH] configure: Fix linux-user host detection for ppc64le
-Date: Mon,  7 Aug 2023 18:09:50 +0930
-Message-Id: <20230807083950.29521-1-joel@jms.id.au>
-X-Mailer: git-send-email 2.40.1
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1qSvq5-0006Vu-OD
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 04:43:45 -0400
+Received: from mgamail.intel.com ([134.134.136.100])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1qSvq2-0006U6-M5
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 04:43:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1691397822; x=1722933822;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=Vo7MZ5pJHUUmxghQ2yTjCli6Xe7FMaDCESOufDE1kWg=;
+ b=g8uJQYMW1GzLgu9B0EXBHdKv7kE70GeqvuS+ePGa0dsAPIRnmxkaisI0
+ FIIymoLPWggiloJ+d7s0bhA9muje3WREICBNPOvNSGX62OynUfys55Tf3
+ krVIDABYSYxv2qsI1crC7lD2hfsqzS+kjF2VD5Pcw3oWcUiPbbDpEH02M
+ UALpRYDaofobmPBYC/wyKntOJOFJy5tCa/tEBzoIOGCbkgPuvd+v6hcgV
+ aQJEU3NJJu6MMC8Hv0MalqePM2Tt+DSIAa3T4AKoKiJX3RLA1aYG04mso
+ PAbZbSzub5+P4XI29UxhCfQl28cyUH1TMTal+uS2bDTuB9fI7pWbKPSbY w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10794"; a="436824232"
+X-IronPort-AV: E=Sophos;i="6.01,261,1684825200"; d="scan'208";a="436824232"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+ by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Aug 2023 01:43:38 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10794"; a="800869141"
+X-IronPort-AV: E=Sophos;i="6.01,261,1684825200"; d="scan'208";a="800869141"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.16.81])
+ ([10.93.16.81])
+ by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Aug 2023 01:43:35 -0700
+Message-ID: <7d3d2630-4ac4-8875-8c6f-054000462755@intel.com>
+Date: Mon, 7 Aug 2023 16:43:32 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=joel.stan@gmail.com; helo=mail-pl1-x632.google.com
-X-Spam_score_int: -14
-X-Spam_score: -1.5
-X-Spam_bar: -
-X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.25,
- FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.249,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.14.0
+Subject: Re: [PATCH v3 03/17] softmmu: Fix CPUSTATE.nr_cores' calculation
+Content-Language: en-US
+To: Zhao Liu <zhao1.liu@linux.intel.com>
+Cc: Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, "Michael S . Tsirkin" <mst@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
+ Zhenyu Wang <zhenyu.z.wang@intel.com>, Babu Moger <babu.moger@amd.com>,
+ Zhao Liu <zhao1.liu@intel.com>, Zhuocheng Ding <zhuocheng.ding@intel.com>
+References: <20230801103527.397756-1-zhao1.liu@linux.intel.com>
+ <20230801103527.397756-4-zhao1.liu@linux.intel.com>
+ <17d46d49-844c-60ed-56cc-0e671564948a@intel.com>
+ <ZNCi6uNsVB1F39XD@liuzhao-OptiPlex-7080>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <ZNCi6uNsVB1F39XD@liuzhao-OptiPlex-7080>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=134.134.136.100;
+ envelope-from=xiaoyao.li@intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -84
+X-Spam_score: -8.5
+X-Spam_bar: --------
+X-Spam_report: (-8.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.001, NICE_REPLY_A=-4.139,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,56 +91,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Revert the changes in the recent "Fix linux-user host detection for
-riscv64" patch as it broke ppc64le. Instead add riscv to the switch
-statement that performs normalisation of the host cpu name.
+On 8/7/2023 3:53 PM, Zhao Liu wrote:
+>>> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+>>> index 97ad229d8ba3..50613cd04612 100644
+>>> --- a/target/i386/cpu.c
+>>> +++ b/target/i386/cpu.c
+>>> @@ -6011,7 +6011,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+>>>        X86CPUTopoInfo topo_info;
+>>>        topo_info.dies_per_pkg = env->nr_dies;
+>>> -    topo_info.cores_per_die = cs->nr_cores;
+>>> +    topo_info.cores_per_die = cs->nr_cores / env->nr_dies;
+>> This and below things make me think that, it looks ugly that @nr_dies is
+>> added separately in struct CPUArchState for i386 because CPUState only has
+>> @nr_cores and nr_threads. Further, for i386, it defines a specific struct
+>> X86CPUTopoInfo to contain topology info when setting up CPUID. To me, struct
+>> X86CPUTopoInfo is redundant as struct CpuTopology.
+>>
+>> maybe we can carry a struct CpuTopology in CPUState, so that we can drop
+>> @nr_threads, @nr_cores in CPUState for all ARCHes, and @nr_dies in struct
+>> CPUArchState for i386. As well, topo_info can be dropped here.
+> Yeah, I agree. We think the same way, as did in [1].
+> 
+> About X86CPUTopoInfo, it's still necessary to keep to help encode
+> APICID. 
 
-Fixes: 89e5b7935e92 ("configure: Fix linux-user host detection for riscv64")
-Signed-off-by: Joel Stanley <joel@jms.id.au>
----
-Tested on a ppc64le host. Please check it works on riscv too.
----
- configure | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+typedef struct X86CPUTopoInfo {
+     unsigned dies_per_pkg;
+     unsigned cores_per_die;
+     unsigned threads_per_core;
+} X86CPUTopoInfo;
 
-diff --git a/configure b/configure
-index 98dc78280e67..fd0efa69bc36 100755
---- a/configure
-+++ b/configure
-@@ -469,13 +469,6 @@ else
-   echo "WARNING: unrecognized host CPU, proceeding with 'uname -m' output '$cpu'"
- fi
- 
--case "$cpu" in
--  riscv*)
--    host_arch=riscv ;;
--  *)
--    host_arch="$cpu" ;;
--esac
--
- # Normalise host CPU name and set multilib cflags.  The canonicalization
- # isn't really necessary, because the architectures that we check for
- # should not hit the 'uname -m' case, but better safe than sorry.
-@@ -508,6 +501,9 @@ case "$cpu" in
-     cpu="ppc64"
-     CPU_CFLAGS="-m64 -mlittle-endian" ;;
- 
-+  riscv*)
-+    cpu="riscv" ;;
-+
-   s390)
-     CPU_CFLAGS="-m31" ;;
-   s390x)
-@@ -810,7 +806,7 @@ default_target_list=""
- mak_wilds=""
- 
- if [ "$linux_user" != no ]; then
--    if [ "$targetos" = linux ] && [ -d "$source_path/linux-user/include/host/$host_arch" ]; then
-+    if [ "$targetos" = linux ] && [ -d "$source_path/linux-user/include/host/$cpu" ]; then
-         linux_user=yes
-     elif [ "$linux_user" = yes ]; then
-         error_exit "linux-user not supported on this architecture"
--- 
-2.40.1
+/**
+  * CpuTopology:
+  * @cpus: the number of present logical processors on the machine
+  * @sockets: the number of sockets on the machine
+  * @dies: the number of dies in one socket
+  * @clusters: the number of clusters in one die
+  * @cores: the number of cores in one cluster
+  * @threads: the number of threads in one core
+  * @max_cpus: the maximum number of logical processors on the machine
+  */
+typedef struct CpuTopology {
+     unsigned int cpus;
+     unsigned int sockets;
+     unsigned int dies;
+     unsigned int clusters;
+     unsigned int cores;
+     unsigned int threads;
+     unsigned int max_cpus;
+} CpuTopology;
+
+I think 'struct X86CPUTopoInfo' is just a subset of 'struct CpuTopology'
+
+IIUC, currently the value of X86CPUTopoInfo::dies_per_pkg should equal 
+with CpuTopology::dies, and the same for cores_per_die and threads_per_core.
+
+So it's OK to keep an copy of 'struct CpuTopology' in CPUState and drop 
+'struct X86CPUTopoInfo'
+
+> For hybrid topology case, the APICID is likely discontinuous,
+> and the width of each CPU level in APICID depends on the maximum number
+> of elements in this level. So I also proposed to rename it to
+> X86ApicidTopoInfo [2] and count the maximum number of elements in each
+> CPU level.
+
+Do you mean, for example, for hybrid topology, 
+X86CPUTopoInfo::dies_per_pkg != CpuTopology::dies? Or after rename
+X86CPUTopoInfo::max_dies != CpuTopology::dies?
+
+> [2]:https://mail.gnu.org/archive/html/qemu-devel/2023-02/msg03237.html
+> 
+> Thanks,
+> Zhao
+> 
 
 
