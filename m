@@ -2,69 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D45D773050
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 22:25:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9337E773066
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 22:37:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qT6li-0005oA-Sq; Mon, 07 Aug 2023 16:23:58 -0400
+	id 1qT6y8-0000dF-UI; Mon, 07 Aug 2023 16:36:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qT6lh-0005ny-91
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 16:23:57 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qT6lf-0000B2-Ni
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 16:23:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691439834;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=e0Slf+iQrc+jUCQ1xWNyHlBCLrlqJJeueFvcUB+XtZ4=;
- b=bRuYHTAYLbOQQuyHTXtFKWBMBiIE98wbCbPj19v6wEarMPRXpBk6yAU7liuzelqW0IvwYn
- ci3NpO8lE1lk7McmvihhXiDIgxTOzQDci9KRcLHJHVS0JNS6cQFIFL0FYszghBr312SKpR
- XzjcDtnzzCvZLnX5I8DZyxpSAI8JWbc=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-627-ViV1KgBVMwCYdbEqzaJoSA-1; Mon, 07 Aug 2023 16:23:51 -0400
-X-MC-Unique: ViV1KgBVMwCYdbEqzaJoSA-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B360D185A78B;
- Mon,  7 Aug 2023 20:23:50 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.16.35])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 15A8D2026D4B;
- Mon,  7 Aug 2023 20:23:49 +0000 (UTC)
-Date: Mon, 7 Aug 2023 15:23:46 -0500
-From: Eric Blake <eblake@redhat.com>
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>, 
- Hanna Reitz <hreitz@redhat.com>, libguestfs@redhat.com, qemu-block@nongnu.org
-Subject: Re: [Libguestfs] [PATCH v4 24/24] nbd/server: Add FLAG_PAYLOAD
- support to CMD_BLOCK_STATUS
-Message-ID: <v2jlbxtlcyw3h7dwvzlij7fe6pa4as6vzedy3ipbs7xhiprurd@fyorfm3u6gjn>
-References: <20230608135653.2918540-1-eblake@redhat.com>
- <20230608135653.2918540-25-eblake@redhat.com>
- <e09fb0df-ddc2-d731-f735-6f5ccca69846@yandex-team.ru>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qT6y1-0000cg-NL
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 16:36:42 -0400
+Received: from mail-oi1-x230.google.com ([2607:f8b0:4864:20::230])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qT6xx-0003jV-UE
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 16:36:41 -0400
+Received: by mail-oi1-x230.google.com with SMTP id
+ 5614622812f47-3a6f87b2993so3653745b6e.3
+ for <qemu-devel@nongnu.org>; Mon, 07 Aug 2023 13:36:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1691440596; x=1692045396;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Rm/mpGHF2I1fxXmGf5G9MCV0FugkJF1izpS5Kw1coGo=;
+ b=A1z3/U3eyzDCjBu9iTqla81UQ/PRgY1UtkHJF695T//GzR/0i/wq77gX3/6TGwjBJ+
+ w/LsgyJfRlvp/q319+7RYT1u8j+9judBbCm/ojArB1FKak6lWBASSL9Lj0wopdbQejYK
+ 304iHaQqsax+5PXM9UKN6X5jQmuJ7TAhKfLttStf6jroDWHWDVkZnGVovmAt9+j9D9Fz
+ VOzmxiT6hhzZro3dLSgDxO24EIL5uf+Qy25QMSq0suq8wJr1wOyaEn4SlzyMwRnOmb6q
+ 2+zNoG4egGjiUpXtpUa6DzztgZF3v8uY4vOVecq1JEuYHxDQ8GMOTvmysAqa3FpWGZa7
+ 4Ezw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1691440596; x=1692045396;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Rm/mpGHF2I1fxXmGf5G9MCV0FugkJF1izpS5Kw1coGo=;
+ b=SZ/cK3Q0x5G5vp1t4aAeqOnXvJ5dH4ldgMJnsFo3yPUGB2sqlTTU70hdP+A4JqVbru
+ nYMnyeQtN2DynqjPYpkNMuQL2dQ8XYsF6K0Z7uZKzNL5PFk3Qs0SQ+p3d9Nf4nuvtIB9
+ GiFA5bTyM19InkWc+23+ssgWMwKF3LvrrTKQ4Aj+0yOVtwE+zj/QDZAdvUl+3ypMzmj0
+ 00UTMU9ukcEwKJ9W2iJ0IKzSfTIC9wHO6s+a2s3QnTe9OlHSO27FNTsJb1uokP0UPnXY
+ dNbybTq2sXkjpRPs2ICIoJCDXKl41MFfOnegJaVvYXB8neU3ChoRSPdRmeru5x4V8KEq
+ MSnQ==
+X-Gm-Message-State: AOJu0Yyf8exgmLut0LY+5Y6Z+Q+U0UDXuPaiHexbgHcAOBHta3VHnfXF
+ 5hnMQHhu58f5byrChOoojIIyIg==
+X-Google-Smtp-Source: AGHT+IHRUrnYjYyBVb05xDlWDQYsRltMfHW2YMI/LfKJkantnoJM2E63zbsD2vGeRMqmJ6jpLRJeOA==
+X-Received: by 2002:a05:6808:1386:b0:3a7:94d3:43fe with SMTP id
+ c6-20020a056808138600b003a794d343femr6112823oiw.30.1691440595875; 
+ Mon, 07 Aug 2023 13:36:35 -0700 (PDT)
+Received: from ?IPV6:2602:47:d490:6901:e306:567a:e0a1:341?
+ ([2602:47:d490:6901:e306:567a:e0a1:341])
+ by smtp.gmail.com with ESMTPSA id
+ w21-20020a170902a71500b001b558c37f91sm7307582plq.288.2023.08.07.13.36.35
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 07 Aug 2023 13:36:35 -0700 (PDT)
+Message-ID: <6532b5ba-3ebf-5ed1-8430-e2816812da3d@linaro.org>
+Date: Mon, 7 Aug 2023 13:36:33 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e09fb0df-ddc2-d731-f735-6f5ccca69846@yandex-team.ru>
-User-Agent: NeoMutt/20230517
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PULL 0/2] hw/nvme fixes
+Content-Language: en-US
+To: Klaus Jensen <its@irrelevant.dk>, Peter Maydell
+ <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Keith Busch <kbusch@kernel.org>, Hanna Reitz <hreitz@redhat.com>,
+ qemu-block@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
+ Fam Zheng <fam@euphon.net>, Kevin Wolf <kwolf@redhat.com>,
+ Klaus Jensen <k.jensen@samsung.com>
+References: <20230807115359.123-4-its@irrelevant.dk>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230807115359.123-4-its@irrelevant.dk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::230;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x230.google.com
+X-Spam_score_int: -38
+X-Spam_score: -3.9
+X-Spam_bar: ---
+X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.809,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,77 +100,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jun 27, 2023 at 10:42:20PM +0300, Vladimir Sementsov-Ogievskiy wrote:
-> On 08.06.23 16:56, Eric Blake wrote:
-> > Allow a client to request a subset of negotiated meta contexts.  For
-> > example, a client may ask to use a single connection to learn about
-> > both block status and dirty bitmaps, but where the dirty bitmap
-> > queries only need to be performed on a subset of the disk; forcing the
-> > server to compute that information on block status queries in the rest
-> > of the disk is wasted effort (both at the server, and on the amount of
-> > traffic sent over the wire to be parsed and ignored by the client).
-> > 
-> > Qemu as an NBD client never requests to use more than one meta
-> > context, so it has no need to use block status payloads.  Testing this
-> > instead requires support from libnbd, which CAN access multiple meta
-> > contexts in parallel from a single NBD connection; an interop test
-> > submitted to the libnbd project at the same time as this patch
-> > demonstrates the feature working, as well as testing some corner cases
-> > (for example, when the payload length is longer than the export
-> > length), although other corner cases (like passing the same id
-> > duplicated) requires a protocol fuzzer because libnbd is not wired up
-> > to break the protocol that badly.
-> > 
-> > This also includes tweaks to 'qemu-nbd --list' to show when a server
-> > is advertising the capability, and to the testsuite to reflect the
-> > addition to that output.
-> > 
-> > Signed-off-by: Eric Blake <eblake@redhat.com>
-> > ---
+On 8/7/23 04:54, Klaus Jensen wrote:
+> From: Klaus Jensen<k.jensen@samsung.com>
 > 
-> [..]
+> Hi,
 > 
-> > +static int
-> > +nbd_co_block_status_payload_read(NBDClient *client, NBDRequest *request,
-> > +                                 Error **errp)
-> > +{
-> > +    int payload_len = request->len;
-> > +    g_autofree char *buf = NULL;
-> > +    size_t count, i, nr_bitmaps;
-> > +    uint32_t id;
-> > +
-> > +    assert(request->len <= NBD_MAX_BUFFER_SIZE);
-> > +    assert(client->contexts.exp == client->exp);
-> > +    nr_bitmaps = client->exp->nr_export_bitmaps;
-> > +    request->contexts = g_new0(NBDMetaContexts, 1);
-> > +    request->contexts->exp = client->exp;
-> > +
-> > +    if (payload_len % sizeof(uint32_t) ||
-> > +        payload_len < sizeof(NBDBlockStatusPayload) ||
-> > +        payload_len > (sizeof(NBDBlockStatusPayload) +
-> > +                       sizeof(id) * client->contexts.count)) {
-> > +        goto skip;
-> > +    }
-> > @@ -2470,7 +2552,13 @@ static int coroutine_fn nbd_co_receive_request(NBDRequestData *req, NBDRequest *
+> The following changes since commit 9400601a689a128c25fa9c21e932562e0eeb7a26:
 > 
-> [..]
+>    Merge tag 'pull-tcg-20230806-3' ofhttps://gitlab.com/rth7680/qemu  into staging (2023-08-06 16:47:48 -0700)
 > 
-> > @@ -2712,7 +2804,8 @@ static coroutine_fn int nbd_handle_request(NBDClient *client,
-> >                                         "discard failed", errp);
-> > 
-> >       case NBD_CMD_BLOCK_STATUS:
-> > -        if (!request->len) {
-> > +        assert(request->contexts);
-> > +        if (!request->len && !(request->flags & NBD_CMD_FLAG_PAYLOAD_LEN)) {
+> are available in the Git repository at:
 > 
-> why not error-out for len=0 in case of payload?
+>    https://gitlab.com/birkelund/qemu.git  tags/nvme-next-pull-request
+> 
+> for you to fetch changes up to 6a33f2e920ec0b489a77200888e3692664077f2d:
+> 
+>    hw/nvme: fix compliance issue wrt. iosqes/iocqes (2023-08-07 12:27:24 +0200)
+> 
+> ----------------------------------------------------------------
+> hw/nvme fixes
 
-Because nbd_co_block_status_payload_read() already rejected that case.
-But an assertion would not hurt to make it obvious.
+Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
 
--- 
-Eric Blake, Principal Software Engineer
-Red Hat, Inc.
-Virtualization:  qemu.org | libguestfs.org
+
+r~
 
 
