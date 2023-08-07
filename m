@@ -2,63 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 173FE7722F6
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 13:44:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5B1177230F
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 13:51:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qSydN-0006Bw-0U; Mon, 07 Aug 2023 07:42:49 -0400
+	id 1qSyk0-0007kY-GY; Mon, 07 Aug 2023 07:49:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qSydK-0006Bl-4r
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 07:42:46 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1qSyjv-0007ji-SM; Mon, 07 Aug 2023 07:49:35 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qSydF-0005cw-2S
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 07:42:45 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.207])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RKDq91KC0z6J7Ys;
- Mon,  7 Aug 2023 19:38:45 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Mon, 7 Aug
- 2023 12:42:31 +0100
-Date: Mon, 7 Aug 2023 12:42:30 +0100
-To: Fan Ni <fan.ni@samsung.com>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
- "gregory.price@memverge.com" <gregory.price@memverge.com>,
- "hchkuo@avery-design.com.tw" <hchkuo@avery-design.com.tw>,
- "cbrowy@avery-design.com" <cbrowy@avery-design.com>, "ira.weiny@intel.com"
- <ira.weiny@intel.com>, "dan.j.williams@intel.com" <dan.j.williams@intel.com>, 
- Adam Manzanares <a.manzanares@samsung.com>, "dave@stgolabs.net"
- <dave@stgolabs.net>, "nmtadam.samsung@gmail.com" <nmtadam.samsung@gmail.com>, 
- "nifan@outlook.com" <nifan@outlook.com>
-Subject: Re: [Qemu PATCH v2 7/9] hw/cxl/cxl-mailbox-utils: Add mailbox
- commands to support add/release dynamic capacity response
-Message-ID: <20230807124230.00002b3d@Huawei.com>
-In-Reply-To: <20230725183939.2741025-8-fan.ni@samsung.com>
-References: <20230725183939.2741025-1-fan.ni@samsung.com>
- <CGME20230725183957uscas1p2a076b6f7b694d2e632a0b8025ec331d7@uscas1p2.samsung.com>
- <20230725183939.2741025-8-fan.ni@samsung.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1qSyjt-00072a-Ml; Mon, 07 Aug 2023 07:49:35 -0400
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 377BaRCM002986; Mon, 7 Aug 2023 11:49:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=29xuymHN2YKSVGUvqufSAQqBkSBEDwwRaZTnKEUTmuo=;
+ b=aSiu89nXqvG07cnhN3BXCz41RT4+0gHACVPpTtqTaXQVMg13KlR2YWJcbK6ADjgd/4Hm
+ xQn9CyNCjLxaqgyt8RnVpNqsHAaNrYzVZcAn5SKRgCYgKqqSKjbMerUyWnd4MDxF9lfc
+ uQzQvHSt8ExEwQ9w5vQH5w0QCvCTpP+XJJPSIGYnHYOk5+VWeVp5/JujBoefOpR+5gMl
+ b1TnMh849QAtfely66lJ6WUtke2DszgWySXFbRIUQKqi/qwE23EJLgvGWFLAwwFsZKBp
+ NKUjkImqQYhXWhqZ9hZZh/VoAss2u8NO/aBz5y/58lCeLnbvF4tfrBLvKfonbZcSbHvm Mw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sayt4rcbb-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 07 Aug 2023 11:49:27 +0000
+Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 377BaX7R003966;
+ Mon, 7 Aug 2023 11:49:27 GMT
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sayt4rcau-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 07 Aug 2023 11:49:27 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 377BABaZ000404; Mon, 7 Aug 2023 11:49:26 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3sa28k4jhd-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 07 Aug 2023 11:49:25 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
+ [10.20.54.105])
+ by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 377BnO3i28181226
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 7 Aug 2023 11:49:24 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 042112004B;
+ Mon,  7 Aug 2023 11:49:24 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CB93220049;
+ Mon,  7 Aug 2023 11:49:23 +0000 (GMT)
+Received: from heavy.boeblingen.de.ibm.com (unknown [9.155.200.166])
+ by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Mon,  7 Aug 2023 11:49:23 +0000 (GMT)
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Richard Henderson <richard.henderson@linaro.org>,
+ David Hildenbrand <david@redhat.com>, Thomas Huth <thuth@redhat.com>
+Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org,
+ Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PATCH 1/2] target/s390x: Define TARGET_HAS_PRECISE_SMC
+Date: Mon,  7 Aug 2023 13:48:20 +0200
+Message-ID: <20230807114921.438881-1-iii@linux.ibm.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 5AoFiEvamMYCF4YT-7dUZ4_IjDUfXxn1
+X-Proofpoint-ORIG-GUID: ndcU7DlZiXu2ywv3quxP3PSiWWv1sVwy
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-08-07_10,2023-08-03_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=845 bulkscore=0
+ malwarescore=0 spamscore=0 lowpriorityscore=0 suspectscore=0 clxscore=1015
+ priorityscore=1501 phishscore=0 impostorscore=0 adultscore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2306200000
+ definitions=main-2308070107
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -72,408 +106,38 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 25 Jul 2023 18:39:56 +0000
-Fan Ni <fan.ni@samsung.com> wrote:
+PoP (Sequence of Storage References -> Instruction Fetching) says:
 
-> From: Fan Ni <nifan@outlook.com>
-> 
-> Per CXL spec 3.0, two mailbox commands are implemented:
-> Add Dynamic Capacity Response (Opcode 4802h) 8.2.9.8.9.3, and
-> Release Dynamic Capacity (Opcode 4803h) 8.2.9.8.9.4.
-> 
-> Signed-off-by: Fan Ni <fan.ni@samsung.com>
+    ... if a store that is conceptually earlier is
+    made by the same CPU using the same effective
+    address as that by which the instruction is subse-
+    quently fetched, the updated information is obtained ...
 
-I'm reviewing these backwards mostly because I'm tidying them up in that
-order (makes rebases easier).  Hence some of this only makes sense in light of
-patch 9 comments!
+QEMU already has support for this in the common code; enable it for
+s390x.
 
-In my rebase of this, I've made some changes that are non trivial
-so definitely want you to look at them.
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+---
+ target/s390x/cpu.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-I also left what I think is a nasty bug.  If we get extents
-added next to each other they aren't fused, so a release extent that
-covers more than one will fail.  Far as I can tell that's a valid
-if weird corner cases.
-
-Jonathan
-
-
-> ---
->  hw/cxl/cxl-mailbox-utils.c  | 253 ++++++++++++++++++++++++++++++++++++
->  include/hw/cxl/cxl_device.h |   3 +-
->  2 files changed, 255 insertions(+), 1 deletion(-)
-> 
-> diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-> index 3d25a9697e..1e4944da95 100644
-> --- a/hw/cxl/cxl-mailbox-utils.c
-> +++ b/hw/cxl/cxl-mailbox-utils.c
-> @@ -84,6 +84,8 @@ enum {
->      DCD_CONFIG  = 0x48, /*r3.0: 8.2.9.8.9*/
->          #define GET_DC_CONFIG          0x0
->          #define GET_DYN_CAP_EXT_LIST   0x1
-> +        #define ADD_DYN_CAP_RSP        0x2
-> +        #define RELEASE_DYN_CAP        0x3
->      PHYSICAL_SWITCH = 0x51
->          #define IDENTIFY_SWITCH_DEVICE      0x0
->  };
-> @@ -1086,6 +1088,251 @@ static CXLRetCode cmd_dcd_get_dyn_cap_ext_list(struct cxl_cmd *cmd,
->      return CXL_MBOX_SUCCESS;
->  }
->  
-> +/*
-> + * Check whether the bits at addr between [nr, nr+size) are all set,
-> + * return 1 if all 1s, else return 0
-> + */
-> +static inline int test_bits(const unsigned long *addr, int nr, int size)
-bool
-
-Also, let the compiler make decisions on inlining.
-
-Hmm. Documentation lacking on find_next_zero_bit() but I think it returns
-the size if there aren't any so this should be fine.
-
-> +{
-> +    unsigned long res = find_next_zero_bit(addr, size + nr, nr);
-> +
-> +    return (res >= nr + size) ? 1 : 0;
-> +}
-> +
-> +/*
-> + * Find dynamic capacity region id based on dpa range [dpa, dpa+len)
-> + */
-> +static uint8_t find_region_id(struct CXLType3Dev *dev, uint64_t dpa,
-> +        uint64_t len)
-> +{
-> +    int8_t i = dev->dc.num_regions - 1;
-> +
-> +    while (i > 0 && dpa < dev->dc.regions[i].base) {
-> +        i--;
-> +    }
-This is another search function, similar to the one I factored out when applying
-patch 9.  I'll pull that function back here instead of having it in patch 9
-+ rename it to be more in keeping with functions in this file.
-
-The handling is a little different (NULL or the region pointer, and that also
-simplifies the code around where it is used a little.
-
-> +
-> +    if (dpa < dev->dc.regions[i].base
-> +            || dpa + len > dev->dc.regions[i].base + dev->dc.regions[i].len) {
-> +        return dev->dc.num_regions;
-> +    }
-> +
-> +    return i;
-> +}
-> +
-> +static void insert_extent_to_extent_list(CXLDCDExtentList *list, uint64_t dpa,
-> +        uint64_t len, uint8_t *tag, uint16_t shared_seq)
-> +{
-> +    CXLDCD_Extent *extent;
-> +    extent = g_new0(CXLDCD_Extent, 1);
-> +    extent->start_dpa = dpa;
-> +    extent->len = len;
-> +    if (tag) {
-> +        memcpy(extent->tag, tag, 0x10);
-> +    } else {
-> +        memset(extent->tag, 0, 0x10);
-> +    }
-> +    extent->shared_seq = shared_seq;
-> +
-> +    QTAILQ_INSERT_TAIL(list, extent, node);
-> +}
-> +
-Added a reference to both Table 8-129 and Table 8-131 here
-
-> +typedef struct updated_dc_extent_list_in_pl {
-> +    uint32_t num_entries_updated;
-> +    uint8_t rsvd[4];
-> +    struct { /* r3.0: Table 8-130 */
-
-I reformatted this and added name of table. Makes it easier
-to find in CXL rN.0
-
-> +        uint64_t start_dpa;
-> +        uint64_t len;
-> +        uint8_t rsvd[8];
-> +    } QEMU_PACKED updated_entries[];
-> +} QEMU_PACKED updated_dc_extent_list_in_pl;
-> +
-> +/*
-> + * The function only check the input extent list against itself.
-
-I haven't added any info here yet, but feels like this function needs
-comments on what those checks are doing.
-
-> + */
-> +static CXLRetCode detect_malformed_extent_list(CXLType3Dev *dev,
-
-prefixed with cxl_ to keep everything that is easy to do namespaced.
-
-> +        const updated_dc_extent_list_in_pl *in)
-> +{
-> +    unsigned long *blk_bitmap;
-> +    uint64_t min_block_size = dev->dc.regions[0].block_size;
-
-If we use UINT64_MAX then anything seen will be less than it and
-we can just loop over all regions.
-
-> +    struct CXLDCD_Region *region = &dev->dc.regions[0];
-> +    uint32_t i;
-> +    uint64_t dpa, len;
-> +    uint8_t rid;
-> +    CXLRetCode ret;
-> +
-> +    for (i = 1; i < dev->dc.num_regions; i++) {
-> +        region = &dev->dc.regions[i];
-> +        if (min_block_size > region->block_size) {
-> +            min_block_size = region->block_size;
-> +        }
-	min_block_size = MIN(min_block_size, region->block_size);
-> +    }
-> +
-> +    blk_bitmap = bitmap_new((region->len + region->base
-
-This is tricky to read as relies on side effect loop above.
-Better to use
-	&dev->dc.regions[dev->dc.num_regions - 1]
-explicitly via a
-CXLDCDregion *lastregion = &dev->dc.regions[dev->dc.num_regions]
-though I also renamed dev at ct3d to make the type more obvious.
-
-
-
-> +                - dev->dc.regions[0].base) / min_block_size);
-> +
-> +    for (i = 0; i < in->num_entries_updated; i++) {
-> +        dpa = in->updated_entries[i].start_dpa;
-> +        len = in->updated_entries[i].len;
-> +
-> +        rid = find_region_id(dev, dpa, len);
-rid is never needed here as such - just a check on whether the
-region exists. Hence use the find function previously pulled out of patch 9.
-
-> +        if (rid == dev->dc.num_regions) {
-> +            ret = CXL_MBOX_INVALID_PA;
-> +            goto out;
-> +        }
-> +
-> +        region = &dev->dc.regions[rid];
-> +        if (dpa % region->block_size || len % region->block_size) {
-> +            ret = CXL_MBOX_INVALID_EXTENT_LIST;
-> +            goto out;
-> +        }
-> +        /* the dpa range already covered by some other extents in the list */
-> +        if (test_bits(blk_bitmap, dpa / min_block_size, len / min_block_size)) {
-> +            ret = CXL_MBOX_INVALID_EXTENT_LIST;
-> +            goto out;
-> +        }
-> +        bitmap_set(blk_bitmap, dpa / min_block_size, len / min_block_size);
-> +   }
-> +
-> +    ret = CXL_MBOX_SUCCESS;
-> +
-> +out:
-
-Great place for a g_autofree magic pointer as then can return above without any
-manual cleanup.
-
-> +    g_free(blk_bitmap);
-> +    return ret;
-> +}
-> +
-> +/*
-> + * cxl spec 3.0: 8.2.9.8.9.3
-> + * Add Dynamic Capacity Response (opcode 4802h)
-> + * Assume an extent is added only after the response is processed successfully
-> + * TODO: for better extent list validation, a better solution would be
-> + * maintaining a pending extent list and use it to verify the extent list in
-> + * the response.
-> + */
-> +static CXLRetCode cmd_dcd_add_dyn_cap_rsp(struct cxl_cmd *cmd,
-> +        CXLDeviceState *cxl_dstate, uint16_t *len_unused)
-> +{
-> +    updated_dc_extent_list_in_pl *in = (void *)cmd->payload;
-> +    struct CXLType3Dev *ct3d = container_of(cxl_dstate, CXLType3Dev,
-> +            cxl_dstate);
-> +    CXLDCDExtentList *extent_list = &ct3d->dc.extents;
-> +    CXLDCD_Extent *ent;
-> +    uint32_t i;
-> +    uint64_t dpa, len;
-> +    CXLRetCode ret;
-> + 
-> +    if (in->num_entries_updated == 0) {
-> +        ret = CXL_MBOX_SUCCESS;
-> +        goto out;
-
-I always prefer direct returns as it makes the flows easier to follow.
-(don't need to go see what cleanup is there - in this case none!)
-
-> +    }
-> +
-> +    ret = detect_malformed_extent_list(ct3d, in);
-> +    if (ret != CXL_MBOX_SUCCESS) {
-> +        goto out;
-> +    }
-> +
-> +    for (i = 0; i < in->num_entries_updated; i++) {
-> +        dpa = in->updated_entries[i].start_dpa;
-> +        len = in->updated_entries[i].len;
-> +
-> +        /*
-> +         * Check if the DPA range of the to-be-added extent overlaps with
-> +         * existing extent list maintained by the device.
-> +         */
-> +        QTAILQ_FOREACH(ent, extent_list, node) {
-> +            if (ent->start_dpa == dpa && ent->len == len) {
-> +                ret = CXL_MBOX_INVALID_PA;
-> +                goto out;
-> +            } else if (ent->start_dpa <= dpa
-> +                    && dpa + len <= ent->start_dpa + ent->len) {
-
-I think this second one always incorporates the first case.
-I haven't changed this yet though...  Added a todo note.
-
-> +                ret = CXL_MBOX_INVALID_PA;
-> +                goto out;
-> +            } else if ((dpa < ent->start_dpa + ent->len
-> +                        && dpa + len > ent->start_dpa + ent->len)
-> +                    || (dpa < ent->start_dpa && dpa + len > ent->start_dpa)) {
-> +                ret = CXL_MBOX_INVALID_PA;
-> +                goto out;
-> +            }
-> +        }
-> +
-> +        /*
-> +         * TODO: add a pending extent list based on event log record and verify
-> +         * the input response
-> +         */
-> +
-> +        insert_extent_to_extent_list(extent_list, dpa, len, NULL, 0);
-> +    }
-> +    ret = CXL_MBOX_SUCCESS;
-> +
-> +out:
-> +    return ret;
-> +}
-> +
-> +/*
-> + * Spec 3.0: 8.2.9.8.9.4
-> + * Release Dynamic Capacity (opcode 4803h)
-> + **/
-> +static CXLRetCode cmd_dcd_release_dyn_cap(struct cxl_cmd *cmd,
-> +        CXLDeviceState *cxl_dstate,
-> +        uint16_t *len_unused)
-> +{
-> +    updated_dc_extent_list_in_pl *in = (void *)cmd->payload;
-> +    struct CXLType3Dev *ct3d = container_of(cxl_dstate, CXLType3Dev,
-> +            cxl_dstate);
-> +    CXLDCDExtentList *extent_list = &ct3d->dc.extents;
-> +    CXLDCD_Extent *ent;
-> +    uint32_t i;
-> +    uint64_t dpa, len;
-> +    CXLRetCode ret;
-> +
-> +    if (in->num_entries_updated == 0) {
-> +        return CXL_MBOX_INVALID_INPUT;
-> +    }
-> +
-> +    ret = detect_malformed_extent_list(ct3d, in);
-> +    if (ret != CXL_MBOX_SUCCESS) {
-> +        return ret;
-> +    }
-> +
-> +    for (i = 0; i < in->num_entries_updated; i++) {
-> +        dpa = in->updated_entries[i].start_dpa;
-> +        len = in->updated_entries[i].len;
-> +
-> +        QTAILQ_FOREACH(ent, extent_list, node) {
-> +            if (ent->start_dpa == dpa && ent->len == len) {
-> +                break;
-> +            } else if (ent->start_dpa < dpa
-<=  We want to do the partial but at start case.
-Please check my logic on this! I'll test it later, but for now I've
-made the change.
-
-We shuould just let this code run even in the exact match case
-as len1 == len2 == 0 and math is cehap.
-
-
-> +                    && dpa + len <= ent->start_dpa + ent->len) {
-
-Not commented on it though I've tidied this up in other places...
-Local style is to have the boolean operator on the end of the line before
-not the start of the next one.
-
-> +                /* remove partial extent */
-> +                uint64_t len1 = dpa - ent->start_dpa;
-> +                uint64_t len2 = ent->start_dpa + ent->len - dpa - len;
-> +
-> +                if (len1) {
-> +                    insert_extent_to_extent_list(extent_list, ent->start_dpa,
-> +                            len1, NULL, 0);
-> +                }
-> +                if (len2) {
-> +                    insert_extent_to_extent_list(extent_list, dpa + len, len2,
-> +                            NULL, 0);
-> +                }
-> +                break;
-> +            } else if ((dpa < ent->start_dpa + ent->len
-> +                        && dpa + len > ent->start_dpa + ent->len)
-> +                    || (dpa < ent->start_dpa && dpa + len > ent->start_dpa))
-
-This is rejecting attempt to remove a superset. Fair enough but does this code
-fuse neighbouring extents? Left for now.
-
-
-> +                return CXL_MBOX_INVALID_EXTENT_LIST;
-> +        }
-> +
-> +        if (ent) {
-> +            QTAILQ_REMOVE(extent_list, ent, node);
-> +            g_free(ent);
-> +        } else {
-> +            /* Try to remove a non-existing extent */
-> +            return CXL_MBOX_INVALID_PA;
-> +        }
-> +    }
-> +
-> +    return CXL_MBOX_SUCCESS;
-> +}
-> + 
->  #define IMMEDIATE_CONFIG_CHANGE (1 << 1)
->  #define IMMEDIATE_DATA_CHANGE (1 << 2)
->  #define IMMEDIATE_POLICY_CHANGE (1 << 3)
-> @@ -1129,6 +1376,12 @@ static struct cxl_cmd cxl_cmd_set[256][256] = {
->      [DCD_CONFIG][GET_DYN_CAP_EXT_LIST] = {
->          "DCD_GET_DYNAMIC_CAPACITY_EXTENT_LIST", cmd_dcd_get_dyn_cap_ext_list,
->          8, 0 },
-> +    [DCD_CONFIG][ADD_DYN_CAP_RSP] = {
-> +        "ADD_DCD_DYNAMIC_CAPACITY_RESPONSE", cmd_dcd_add_dyn_cap_rsp,
-> +        ~0, IMMEDIATE_DATA_CHANGE },
-> +    [DCD_CONFIG][RELEASE_DYN_CAP] = {
-> +        "RELEASE_DCD_DYNAMIC_CAPACITY", cmd_dcd_release_dyn_cap,
-> +        ~0, IMMEDIATE_DATA_CHANGE },
->  };
->  
->  static struct cxl_cmd cxl_cmd_set_sw[256][256] = {
-> diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
-> index 3a338b3b37..01a5eaca48 100644
-> --- a/include/hw/cxl/cxl_device.h
-> +++ b/include/hw/cxl/cxl_device.h
-> @@ -130,7 +130,8 @@ typedef enum {
->      CXL_MBOX_INCORRECT_PASSPHRASE = 0x14,
->      CXL_MBOX_UNSUPPORTED_MAILBOX = 0x15,
->      CXL_MBOX_INVALID_PAYLOAD_LENGTH = 0x16,
-> -    CXL_MBOX_MAX = 0x17
-> +    CXL_MBOX_INVALID_EXTENT_LIST = 0x1E, /* cxl r3.0: Table 8-34*/
-> +    CXL_MBOX_MAX = 0x1F
->  } CXLRetCode;
->  
->  struct cxl_cmd;
+diff --git a/target/s390x/cpu.h b/target/s390x/cpu.h
+index eb5b65b7d3a..304029e57cf 100644
+--- a/target/s390x/cpu.h
++++ b/target/s390x/cpu.h
+@@ -36,6 +36,8 @@
+ /* The z/Architecture has a strong memory model with some store-after-load re-ordering */
+ #define TCG_GUEST_DEFAULT_MO      (TCG_MO_ALL & ~TCG_MO_ST_LD)
+ 
++#define TARGET_HAS_PRECISE_SMC
++
+ #define TARGET_INSN_START_EXTRA_WORDS 2
+ 
+ #define MMU_USER_IDX 0
+-- 
+2.41.0
 
 
