@@ -2,73 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F22D771DC8
+	by mail.lfdr.de (Postfix) with ESMTPS id A4D2C771DC9
 	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 12:11:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qSxCy-0007yT-PB; Mon, 07 Aug 2023 06:11:28 -0400
+	id 1qSxD9-0007zb-82; Mon, 07 Aug 2023 06:11:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <qian.wen@intel.com>)
- id 1qSxCw-0007yF-Qb
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 06:11:26 -0400
-Received: from mgamail.intel.com ([192.55.52.43])
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qSxD6-0007zS-S7
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 06:11:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <qian.wen@intel.com>)
- id 1qSxCv-0000Kx-41
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 06:11:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1691403085; x=1722939085;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to;
- bh=0yY5pxHhfA3kyaNwWcDyGdI/uY166DHKX2giopHyCMI=;
- b=ShJpAZ0oZAXTTXvuDlZciBtF29SncFOkR0mKCrcFRa80VoSh4NKUF7Mm
- NI0nRbppf+K4cpLsfGqBZm5tXpVQ92tHiefH64frHn3ZYL5RCXzAhO1P7
- mBRDQQd7Hk1HhSiso/SR7xO2SzPbdN3BNtwP2O03bwFbvtaZKHRgUr+LD
- cqk4KLNFeIkILpH2/QSOxYY/Abk2Os6kr+hMmoXxzDxZZrmwc6ON+ArNZ
- 0rDSiB09GpbYF04YrVs6l2DC5ckj1MP1r7e+jNbEoC3zKBSFbesm4xD00
- E7M7WrRoKM8AjaJDglFb4eKRrXIjrfdbzmWW/cCC+4i2NI4WMDG01OA9G g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10794"; a="456888907"
-X-IronPort-AV: E=Sophos;i="6.01,261,1684825200"; 
- d="scan'208,217";a="456888907"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
- by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Aug 2023 03:10:59 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10794"; a="977387859"
-X-IronPort-AV: E=Sophos;i="6.01,261,1684825200"; 
- d="scan'208,217";a="977387859"
-Received: from qianwen-mobl1.ccr.corp.intel.com (HELO [10.238.5.29])
- ([10.238.5.29])
- by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Aug 2023 03:10:57 -0700
-Content-Type: multipart/alternative;
- boundary="------------LwHq7lfkdOUPQmHvbjo70m4S"
-Message-ID: <5d8ba2be-2f61-38b8-5a96-18011921380a@intel.com>
-Date: Mon, 7 Aug 2023 18:10:55 +0800
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qSxD5-0000LZ-Am
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 06:11:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1691403093;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=1E20khcjHM9VwhHWKPgXyzeWZ+W/3koIC8uQoUdp8po=;
+ b=D/Nim+JslV/q6H80Wv13KN36lHYXmNfjEhVvBVfi7cwrTETqCIJ2NHO1Nx6esFpcbs4ulX
+ 7uqwJzkhonDOd4bf/19xOkVn6JSG+9MXDA1j0D7I4e2CZr+726UmqtkcsHHQ8oZ5VsUTgH
+ y6bwLB1bXhPqlr4PdwPbrNcXRlu/JZ0=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-316-AnBgWpRfNQKvxBIdiiXHfw-1; Mon, 07 Aug 2023 06:11:32 -0400
+X-MC-Unique: AnBgWpRfNQKvxBIdiiXHfw-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-99bcb13d8ddso319930166b.0
+ for <qemu-devel@nongnu.org>; Mon, 07 Aug 2023 03:11:31 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1691403091; x=1692007891;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=1E20khcjHM9VwhHWKPgXyzeWZ+W/3koIC8uQoUdp8po=;
+ b=TbvmtcjGiAKjfk4g9fy8AO04a8NDLn1Upisd8TSsAaItgPk/9R5pag6ogtFRhtbjgk
+ QtHB7ufpTScms+gjJbadO53qWmVSaw8/uFZLakgyD/s4r5F9oZyGtdH1UCed3vOVxHIU
+ rt/jeuntBWT0dEhbGwJ7EXmDZORhk1AITAnPoy89zVkN2EqqYm4lM/OBmnjlqFV1nXoK
+ XNfBGeecu/VUvTyfv2cqHpGDzaK8Vw8u39s95FkWlt89rASnjSFa5e7UMOmjmoJm6T13
+ 9CMPK0N0n5tP55XOwKOLfA5/IamVoUgWmfoW8LCVDLOK4SkB4HpcsaKz0Hna0Ap2+mbu
+ uang==
+X-Gm-Message-State: AOJu0Yx9qqwTHIowHfUZdQDjj6fqVib9NMAs6AuSAsNO38aHgvCEh4BH
+ o8yo6RKgmo9YroE4mFTS2gAIWE+azDKhIR06Eyw3JpeTN0qIU1zKv8VNKIKBUur2eqGg2sNjsMk
+ X9hEJG7PYnKis/Lg=
+X-Received: by 2002:a17:906:30cf:b0:973:fd02:a41f with SMTP id
+ b15-20020a17090630cf00b00973fd02a41fmr8995089ejb.40.1691403091115; 
+ Mon, 07 Aug 2023 03:11:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGTFV1WxlyqhEhDS+gAPoHLhh9qytIkkjRrtck3EnI8EgAxjuLGfKZTYtJAOUvC9tNJoqzQbw==
+X-Received: by 2002:a17:906:30cf:b0:973:fd02:a41f with SMTP id
+ b15-20020a17090630cf00b00973fd02a41fmr8995075ejb.40.1691403090872; 
+ Mon, 07 Aug 2023 03:11:30 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ h15-20020a1709066d8f00b00997e52cb30bsm4941515ejt.121.2023.08.07.03.11.29
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 07 Aug 2023 03:11:30 -0700 (PDT)
+Date: Mon, 7 Aug 2023 12:11:29 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: Michael Tokarev <mjt@tls.msk.ru>, Zhao Liu <zhao1.liu@linux.intel.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ qemu-devel@nongnu.org, Zhenyu Wang <zhenyu.z.wang@intel.com>
+Subject: Re: [PATCH v2 2/3] hw/smbios: Fix thread count in type4
+Message-ID: <20230807121129.30e6fe1e@imammedo.users.ipa.redhat.com>
+In-Reply-To: <ddfe932b-57b7-8f48-03aa-82e1964dda2a@tls.msk.ru>
+References: <20230601092952.1114727-1-zhao1.liu@linux.intel.com>
+ <20230601092952.1114727-3-zhao1.liu@linux.intel.com>
+ <598990ac-e5f8-fdcc-5936-e219491c4d0f@tls.msk.ru>
+ <32cfa897-4472-083f-88cd-a3c3e3c405b0@tls.msk.ru>
+ <20230807115615.278fb838@imammedo.users.ipa.redhat.com>
+ <ddfe932b-57b7-8f48-03aa-82e1964dda2a@tls.msk.ru>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [PATCH] target/i386: Avoid cpu number overflow in legacy topology
-Content-Language: en-US
-To: Zhao Liu <zhao1.liu@linux.intel.com>
-Cc: qemu-devel@nongnu.org, xiaoyao.li@intel.com, zhao1.liu@intel.com,
- Paolo Bonzini <pbonzini@redhat.com>, richard.henderson@linaro.org,
- babu.moger@amd.com
-References: <20230728080150.2958048-1-qian.wen@intel.com>
- <ZNCmZJg0Sv1byFNM@liuzhao-OptiPlex-7080>
-From: "Wen, Qian" <qian.wen@intel.com>
-In-Reply-To: <ZNCmZJg0Sv1byFNM@liuzhao-OptiPlex-7080>
-Received-SPF: pass client-ip=192.55.52.43; envelope-from=qian.wen@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -84
-X-Spam_score: -8.5
-X-Spam_bar: --------
-X-Spam_report: (-8.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, NICE_REPLY_A=-4.139, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,176 +106,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a multi-part message in MIME format.
---------------LwHq7lfkdOUPQmHvbjo70m4S
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+On Mon, 7 Aug 2023 13:06:47 +0300
+Michael Tokarev <mjt@tls.msk.ru> wrote:
 
-On 8/7/2023 4:08 PM, Zhao Liu wrote:
-> On Fri, Jul 28, 2023 at 04:01:50PM +0800, Qian Wen wrote:
->> Date: Fri, 28 Jul 2023 16:01:50 +0800
->> From: Qian Wen <qian.wen@intel.com>
->> Subject: [PATCH] target/i386: Avoid cpu number overflow in legacy topology
->> X-Mailer: git-send-email 2.25.1
->>
->> The legacy topology enumerated by CPUID.1.EBX[23:16] is defined in SDM
->> Vol2:
->>
->> Bits 23-16: Maximum number of addressable IDs for logical processors in
->> this physical package.
->>
->> To avoid data overflow, limit the max value written to EBX[23:16] to
->> 255.
->>
->> Signed-off-by: Qian Wen <qian.wen@intel.com>
->> ---
->>  target/i386/cpu.c | 15 +++++++++++++--
->>  1 file changed, 13 insertions(+), 2 deletions(-)
->>
->> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
->> index 1294be374ab2..70589a58b727 100644
->> --- a/target/i386/cpu.c
->> +++ b/target/i386/cpu.c
->> @@ -5356,6 +5356,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
->>      uint32_t die_offset;
->>      uint32_t limit;
->>      uint32_t signature[3];
->> +    uint32_t threads_per_socket;
->>      X86CPUTopoInfo topo_info;
->>  
->>      topo_info.dies_per_pkg = env->nr_dies;
->> @@ -5397,8 +5398,18 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
->>              *ecx |= CPUID_EXT_OSXSAVE;
->>          }
->>          *edx = env->features[FEAT_1_EDX];
->> -        if (cs->nr_cores * cs->nr_threads > 1) {
->> -            *ebx |= (cs->nr_cores * cs->nr_threads) << 16;
->> +        /*
->> +         * The vCPU number more than 255 needs support of V2 Extended
->> +         * Topology enumerated by CPUID.0x1f or Extended Topology
->> +         * enumerated by CPUID.0x0b.
->> +         */
->> +        threads_per_socket = cs->nr_cores * cs->nr_threads;
->> +        if (threads_per_socket > 255) {
->> +            threads_per_socket = 255;
-> Straight encoding to 255 is good for me!
->
-> -Zhao
+> 07.08.2023 12:56, Igor Mammedov wrote:
+> > On Sat, 5 Aug 2023 09:00:41 +0300
+> > Michael Tokarev <mjt@tls.msk.ru> wrote:
+[...]
+> The whole thing - provided the preparational patch a1d027be95
+> "machine: Add helpers to get cores/threads per socket" is also
+> picked up - applies cleanly and in a stright-forward way to 8.0
+> and even to 7.2, and passes the usual qemu testsuite. Sure thing
+> since the issues weren't noticed before, the testsuite does not
+> cover this area.  It'd be nice to have some verifier to check if
+> the whole thing actually works after applying the patchset.
 
+Zhao Liu,
+can you help us out with adding test cases to cover the code
+you are touching?
 
-Got it, thanks!
+[...]
 
-Thanks,
-Qian
-
->> +        }
->> +
->> +        if (threads_per_socket > 1) {
->> +            *ebx |= threads_per_socket << 16;
->>              *edx |= CPUID_HT;
->>          }
->>          /*
->> -- 
->> 2.25.1
->>
---------------LwHq7lfkdOUPQmHvbjo70m4S
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-
-<html data-lt-installed="true">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body style="padding-bottom: 1px;">
-    <div class="moz-cite-prefix">On 8/7/2023 4:08 PM, Zhao Liu wrote:<br>
-    </div>
-    <blockquote type="cite"
-      cite="mid:ZNCmZJg0Sv1byFNM@liuzhao-OptiPlex-7080">
-      <pre class="moz-quote-pre" wrap="">On Fri, Jul 28, 2023 at 04:01:50PM +0800, Qian Wen wrote:
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">Date: Fri, 28 Jul 2023 16:01:50 +0800
-From: Qian Wen <a class="moz-txt-link-rfc2396E" href="mailto:qian.wen@intel.com">&lt;qian.wen@intel.com&gt;</a>
-Subject: [PATCH] target/i386: Avoid cpu number overflow in legacy topology
-X-Mailer: git-send-email 2.25.1
-
-The legacy topology enumerated by CPUID.1.EBX[23:16] is defined in SDM
-Vol2:
-
-Bits 23-16: Maximum number of addressable IDs for logical processors in
-this physical package.
-
-To avoid data overflow, limit the max value written to EBX[23:16] to
-255.
-
-Signed-off-by: Qian Wen <a class="moz-txt-link-rfc2396E" href="mailto:qian.wen@intel.com">&lt;qian.wen@intel.com&gt;</a>
----
- target/i386/cpu.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
-
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 1294be374ab2..70589a58b727 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -5356,6 +5356,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-     uint32_t die_offset;
-     uint32_t limit;
-     uint32_t signature[3];
-+    uint32_t threads_per_socket;
-     X86CPUTopoInfo topo_info;
- 
-     topo_info.dies_per_pkg = env-&gt;nr_dies;
-@@ -5397,8 +5398,18 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-             *ecx |= CPUID_EXT_OSXSAVE;
-         }
-         *edx = env-&gt;features[FEAT_1_EDX];
--        if (cs-&gt;nr_cores * cs-&gt;nr_threads &gt; 1) {
--            *ebx |= (cs-&gt;nr_cores * cs-&gt;nr_threads) &lt;&lt; 16;
-+        /*
-+         * The vCPU number more than 255 needs support of V2 Extended
-+         * Topology enumerated by CPUID.0x1f or Extended Topology
-+         * enumerated by CPUID.0x0b.
-+         */
-+        threads_per_socket = cs-&gt;nr_cores * cs-&gt;nr_threads;
-+        if (threads_per_socket &gt; 255) {
-+            threads_per_socket = 255;
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-Straight encoding to 255 is good for me!
-
--Zhao
-</pre>
-    </blockquote>
-    <p><br>
-    </p>
-    <p>Got it, thanks!<br>
-      <br>
-      Thanks,<br>
-      Qian<br>
-      <br>
-    </p>
-    <blockquote type="cite"
-      cite="mid:ZNCmZJg0Sv1byFNM@liuzhao-OptiPlex-7080">
-      <pre class="moz-quote-pre" wrap="">
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">+        }
-+
-+        if (threads_per_socket &gt; 1) {
-+            *ebx |= threads_per_socket &lt;&lt; 16;
-             *edx |= CPUID_HT;
-         }
-         /*
--- 
-2.25.1
-
-</pre>
-      </blockquote>
-    </blockquote>
-  </body>
-  <lt-container></lt-container>
-</html>
-
---------------LwHq7lfkdOUPQmHvbjo70m4S--
 
