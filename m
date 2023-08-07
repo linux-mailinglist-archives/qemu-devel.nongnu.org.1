@@ -2,92 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EB157723CD
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 14:23:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CF207724DE
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 15:03:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qSzFk-0006de-JM; Mon, 07 Aug 2023 08:22:28 -0400
+	id 1qSzsM-0006GH-Ao; Mon, 07 Aug 2023 09:02:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1qSzFh-0006cq-RJ
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 08:22:25 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <quic_mathbern@quicinc.com>)
+ id 1qSzsA-0006F0-0P
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 09:02:11 -0400
+Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1qSzFf-0005lm-NF
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 08:22:25 -0400
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 377CBGEd012983; Mon, 7 Aug 2023 12:22:21 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : content-transfer-encoding : mime-version; s=pp1;
- bh=7QXR2BYgJtHqQnHIQX/arggfEdx6tPUL0lOOPQZj3Ro=;
- b=fbMoNMohzizEY9FFbwjhk9aD3phchNh9bWENatkoTBceivsSP/0cyjL6n0ZAgKYsCj+A
- NrzRTWW+Z/PKtOJxFR66ati2y3h5QNZvn+RVeVK3Dv+Tiw3WrQBMiGIZoZIcYbGCImcV
- uD8UbHVxN8yfyJ06oprTXoe+ifSTI/DcYYE6WdLNu014lbZ+TldxNDQ7TkW1AlaCy9QV
- gSMuPDyFtTXySw8c1abEt+PwQ7lYguxhQx4yT3KbEQNSrqrL4azxDCnc7wXUNDQs5sPZ
- QBZxsdl2/Uxtn7SXDcoXXAF4aXX7CyhKFwCA/bK2NiTCMzC2biWGAQYvkoQX0YOcSaB9 eg== 
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sb01x8u14-1
+ (Exim 4.90_1) (envelope-from <quic_mathbern@quicinc.com>)
+ id 1qSzs5-0007Az-3q
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 09:02:08 -0400
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 377C8iHd017050; Mon, 7 Aug 2023 13:01:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
+ h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=PgYqGOeygYCB951+osb8gT8ggp1QXxC5Wh2swGjmqck=;
+ b=Jnk2hGX7ftHn0sl8AnMUaBTMlWYCHEsRZWa3bHe2274OCyAoou3kpbRxRVnl/p99FA6h
+ FnZ3CB51bdB8SJQSDSvLxxGWbuXQe7lbkVfZh1tioWgr0KTlRpzcJf1Ee7nVP/KT3P30
+ etyVsGVnfEDGDG73izKlnLKhEVfjPbcK9ZqtNJ7ikTC4eZB1BSpqr1oiXYdOlJ01Gx/l
+ Q9x72b1N3dSmn3jGr+u6FPMIt3KxcVm4OsY//CXXz+azXGxvqryc9zWiP50qcxCw2q0r
+ blljRSrWiuE7+o/CwdtnaeJgPQ78S1/qpUzCGW6goNJ0CiDl3Pv5NTTaFPWbEtNW8RFc TA== 
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com
+ [129.46.96.20])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3s9f6pkdjj-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 07 Aug 2023 12:22:20 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 377BABCv000363; Mon, 7 Aug 2023 12:22:19 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3sa28k4sgm-1
+ Mon, 07 Aug 2023 13:01:49 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com
+ [10.47.209.196])
+ by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 377D1mEr008983
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 07 Aug 2023 12:22:19 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
- [10.20.54.100])
- by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 377CMHTV15663626
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 7 Aug 2023 12:22:17 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BC21520043;
- Mon,  7 Aug 2023 12:22:17 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9A6B820040;
- Mon,  7 Aug 2023 12:22:17 +0000 (GMT)
-Received: from heavy.boeblingen.de.ibm.com (unknown [9.155.200.166])
- by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Mon,  7 Aug 2023 12:22:17 +0000 (GMT)
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Laurent Vivier <laurent@vivier.eu>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH v2] linux-user: Emulate the Anonymous: keyword in
- /proc/self/smaps
-Date: Mon,  7 Aug 2023 14:20:46 +0200
-Message-ID: <20230807122206.655701-1-iii@linux.ibm.com>
-X-Mailer: git-send-email 2.41.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 37L8j9V1Bz2C_3Mn7QkBtojt5dT5i-Sj
-X-Proofpoint-GUID: 37L8j9V1Bz2C_3Mn7QkBtojt5dT5i-Sj
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ Mon, 7 Aug 2023 13:01:48 GMT
+Received: from hu-mathbern-lv.qualcomm.com (10.49.16.6) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.30; Mon, 7 Aug 2023 06:01:47 -0700
+From: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
+To: <richard.henderson@linaro.org>
+CC: <ale@rev.ng>, <alex.bennee@linaro.org>, <anjo@rev.ng>, <bcain@quicinc.com>,
+ <peter.maydell@linaro.org>, <philmd@linaro.org>,
+ <qemu-devel@nongnu.org>, <quic_mathbern@quicinc.com>,
+ <quic_mliebel@quicinc.com>, <stefanha@redhat.com>,
+ <tsimpson@quicinc.com>, <npiggin@gmail.com>, <fbarrat@linux.ibm.com>
+Subject: Re: [PULL v2 40/44] gdbstub: add test for untimely stop-reply packets
+Date: Mon, 7 Aug 2023 10:01:37 -0300
+Message-ID: <20230807130137.2306481-1-quic_mathbern@quicinc.com>
+X-Mailer: git-send-email 2.37.2
+In-Reply-To: <de9dfae3-4145-6933-80aa-e7ef9d9bfb3a@linaro.org>
+References: <de9dfae3-4145-6933-80aa-e7ef9d9bfb3a@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
+ signatures=585085
+X-Proofpoint-ORIG-GUID: bip44Lm6Iz8jVztLjDIf0RNK34EHzpzf
+X-Proofpoint-GUID: bip44Lm6Iz8jVztLjDIf0RNK34EHzpzf
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-08-07_11,2023-08-03_01,2023-05-22_02
+ definitions=2023-08-07_13,2023-08-03_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 bulkscore=0
- priorityscore=1501 clxscore=1015 mlxlogscore=999 phishscore=0
- lowpriorityscore=0 malwarescore=0 impostorscore=0 adultscore=0 spamscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2308070111
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+ malwarescore=0 bulkscore=0
+ mlxscore=0 impostorscore=0 suspectscore=0 phishscore=0 adultscore=0
+ clxscore=1011 lowpriorityscore=0 mlxlogscore=999 priorityscore=1501
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2308070121
+Received-SPF: pass client-ip=205.220.168.131;
+ envelope-from=quic_mathbern@quicinc.com; helo=mx0a-0031df01.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,74 +102,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Core dumps produced by gdb's gcore when connected to qemu's gdbstub
-lack stack. The reason is that gdb includes only anonymous memory in
-core dumps, which is distinguished by a non-0 Anonymous: value.
+Hi, Richard
 
-Consider the mappings with PAGE_ANON fully anonymous, and the mappings
-without it fully non-anonymous.
+Richard Henderson <richard.henderson@linaro.org> wrote:
+>
+> On 5/18/23 13:04, Taylor Simpson wrote:
+> > From: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
+> > 
+> > In the previous commit, we modified gdbstub.c to only send stop-reply
+> > packets as a response to GDB commands that accept it. Now, let's add a
+> > test for this intended behavior. Running this test before the fix from
+> > the previous commit fails as QEMU sends a stop-reply packet
+> > asynchronously, when GDB was in fact waiting an ACK.
+> > 
+> > Signed-off-by: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
+> > Acked-by: Alex Bennée <alex.bennee@linaro.org>
+> > Signed-off-by: Taylor Simpson <tsimpson@quicinc.com>
+> > Message-Id: <a30d93b9a8d66e9d9294354cfa2fc3af35f00202.1683214375.git.quic_mathbern@quicinc.com>
+> > ---
+> >   tests/guest-debug/run-test.py                    | 16 ++++++++++++----
+> >   .../tcg/multiarch/system/Makefile.softmmu-target | 16 +++++++++++++++-
+> >   2 files changed, 27 insertions(+), 5 deletions(-)
+> 
+> This test is failing for me on x86_64 and aarch64 host, aarch64 guest:
+> 
+> 
+> qemu-system-aarch64: -gdb unix:path=/tmp/tmptlr0fa8hqemu-gdbstub/gdbstub.socket,server=on: 
+> info: QEMU waiting for connection on: 
+> disconnected:unix:/tmp/tmptlr0fa8hqemu-gdbstub/gdbstub.socket,server=on
+> qemu-system-aarch64: warning: gdbstub: client sent packet while target running
+> 
+>    GREP    file
+>    untimely-packet.gdb.err
+> make[1]: *** [/home/rth/qemu/src/tests/tcg/multiarch/system/Makefile.softmmu-target:33: 
+> run-gdbstub-untimely-packet] Error 1
 
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
----
-
-v1: https://lists.gnu.org/archive/html/qemu-devel/2023-08/msg00848.html
-v1 -> v2: Fix a build issue when TARGET_VSYSCALL_PAGE is set.
-
- linux-user/syscall.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
-
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 7c2c2f6e2fa..3dd493486f6 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -8037,7 +8037,7 @@ static int open_self_cmdline(CPUArchState *cpu_env, int fd)
-     return 0;
- }
- 
--static void show_smaps(int fd, unsigned long size)
-+static void show_smaps(int fd, unsigned long size, int flags)
- {
-     unsigned long page_size_kb = TARGET_PAGE_SIZE >> 10;
-     unsigned long size_kb = size >> 10;
-@@ -8053,7 +8053,7 @@ static void show_smaps(int fd, unsigned long size)
-                 "Private_Clean:         0 kB\n"
-                 "Private_Dirty:         0 kB\n"
-                 "Referenced:            0 kB\n"
--                "Anonymous:             0 kB\n"
-+                "Anonymous:             %lu kB\n"
-                 "LazyFree:              0 kB\n"
-                 "AnonHugePages:         0 kB\n"
-                 "ShmemPmdMapped:        0 kB\n"
-@@ -8063,7 +8063,9 @@ static void show_smaps(int fd, unsigned long size)
-                 "Swap:                  0 kB\n"
-                 "SwapPss:               0 kB\n"
-                 "Locked:                0 kB\n"
--                "THPeligible:    0\n", size_kb, page_size_kb, page_size_kb);
-+                "THPeligible:    0\n",
-+            size_kb, page_size_kb, page_size_kb,
-+            (flags & PAGE_ANON) ? size_kb : 0);
- }
- 
- static int open_self_maps_1(CPUArchState *cpu_env, int fd, bool smaps)
-@@ -8114,7 +8116,7 @@ static int open_self_maps_1(CPUArchState *cpu_env, int fd, bool smaps)
-                 dprintf(fd, "\n");
-             }
-             if (smaps) {
--                show_smaps(fd, max - min);
-+                show_smaps(fd, max - min, flags);
-                 dprintf(fd, "VmFlags:%s%s%s%s%s%s%s%s\n",
-                         (flags & PAGE_READ) ? " rd" : "",
-                         (flags & PAGE_WRITE_ORG) ? " wr" : "",
-@@ -8140,7 +8142,7 @@ static int open_self_maps_1(CPUArchState *cpu_env, int fd, bool smaps)
-                     TARGET_VSYSCALL_PAGE, TARGET_VSYSCALL_PAGE + TARGET_PAGE_SIZE);
-     dprintf(fd, "%*s%s\n", 73 - count, "",  "[vsyscall]");
-     if (smaps) {
--        show_smaps(fd, TARGET_PAGE_SIZE);
-+        show_smaps(fd, TARGET_PAGE_SIZE, PAGE_EXEC);
-         dprintf(fd, "VmFlags: ex\n");
-     }
- #endif
--- 
-2.41.0
-
+This looks like the recent breakage I reported at
+https://lore.kernel.org/qemu-devel/456ed3318421dd7946bdfb5ceda7e05332da368c.1690910333.git.quic_mathbern@quicinc.com/
 
