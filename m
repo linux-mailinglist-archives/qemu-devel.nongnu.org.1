@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9257C7729F3
+	by mail.lfdr.de (Postfix) with ESMTPS id 3600F7729F2
 	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 17:59:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qT2c5-0006Mt-Eh; Mon, 07 Aug 2023 11:57:45 -0400
+	id 1qT2c3-0006Hz-Ru; Mon, 07 Aug 2023 11:57:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qT2bw-00062r-Mx
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 11:57:37 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qT2c0-00069X-1G
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 11:57:40 -0400
 Received: from rev.ng ([5.9.113.41])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qT2bv-0002Zk-B0
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 11:57:36 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qT2by-0002aM-MN
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 11:57:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
  Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive;
- bh=B4qVJUcVRQmpohxrypGbJCTzfRn1IYVoyWR4GGcKOk0=; b=pjOjVrQpVGSBrZJi3KHjnn5noJ
- EGujL/cPOXy996vadh5LWngjLe5y5qw5VaDthG+Esu58Gj9AeSGE01bJ4EWXmhLvAJDcEDZyG70Pw
- HX5QXl3A/pM4+pgB2lDf9PnW63iuypa9P++Kjxhf+OArFZA8FqFFzuaPprvbr4CtKj1Q=;
+ bh=vZm43iCzYpihVcJ4SGf0kcJEqBsFBc9iT2PDR4b+kn4=; b=CPEgpPR2Nxpos4witDChax0+Kg
+ 2XlvjRjFkr0cMgNU+P0qF1IRq6UVCtRAg1Er1C+oXVrxIEhJqJbzECUhQY6uu+Z7Chv+rrGvhH4ng
+ JAHiHAGFqMEburPE13jE+Z3rJ4g8Tuq+Ra3TlUOWD+n3KK1RAuY8ZMho8nsrAQejojrQ=;
 To: qemu-devel@nongnu.org
 Cc: ale@rev.ng, richard.henderson@linaro.org, pbonzini@redhat.com,
  philmd@linaro.org, agraf@csgraf.de, dirty@apple.com, rbolshakov@ddn.com,
  anielhb413@gmail.com, pasic@linux.ibm.com, borntraeger@linux.ibm.com,
  palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
  ysato@users.sourceforge.jp, peter.maydell@linaro.org
-Subject: [PATCH v2 7/9] include/exec: Widen tlb_hit/tlb_hit_page()
-Date: Mon,  7 Aug 2023 17:57:04 +0200
-Message-ID: <20230807155706.9580-8-anjo@rev.ng>
+Subject: [PATCH v2 8/9] accel/tcg: Widen address arg. in tlb_compare_set()
+Date: Mon,  7 Aug 2023 17:57:05 +0200
+Message-ID: <20230807155706.9580-9-anjo@rev.ng>
 In-Reply-To: <20230807155706.9580-1-anjo@rev.ng>
 References: <20230807155706.9580-1-anjo@rev.ng>
 MIME-Version: 1.0
@@ -62,37 +62,25 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-tlb_addr is changed from target_ulong to uint64_t to match the type of
-a CPUTLBEntry value, and the addressed is changed to vaddr.
-
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/exec/cpu-all.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ accel/tcg/cputlb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/exec/cpu-all.h b/include/exec/cpu-all.h
-index 94f44f1f59..c2c62160c6 100644
---- a/include/exec/cpu-all.h
-+++ b/include/exec/cpu-all.h
-@@ -397,7 +397,7 @@ QEMU_BUILD_BUG_ON(TLB_FLAGS_MASK & TLB_SLOW_FLAGS_MASK);
-  * @addr: virtual address to test (must be page aligned)
-  * @tlb_addr: TLB entry address (a CPUTLBEntry addr_read/write/code value)
-  */
--static inline bool tlb_hit_page(target_ulong tlb_addr, target_ulong addr)
-+static inline bool tlb_hit_page(uint64_t tlb_addr, vaddr addr)
- {
-     return addr == (tlb_addr & (TARGET_PAGE_MASK | TLB_INVALID_MASK));
+diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
+index 8e9dc51cd1..2f97ae2fda 100644
+--- a/accel/tcg/cputlb.c
++++ b/accel/tcg/cputlb.c
+@@ -1108,7 +1108,7 @@ static void tlb_add_large_page(CPUArchState *env, int mmu_idx,
  }
-@@ -408,7 +408,7 @@ static inline bool tlb_hit_page(target_ulong tlb_addr, target_ulong addr)
-  * @addr: virtual address to test (need not be page aligned)
-  * @tlb_addr: TLB entry address (a CPUTLBEntry addr_read/write/code value)
-  */
--static inline bool tlb_hit(target_ulong tlb_addr, target_ulong addr)
-+static inline bool tlb_hit(uint64_t tlb_addr, vaddr addr)
+ 
+ static inline void tlb_set_compare(CPUTLBEntryFull *full, CPUTLBEntry *ent,
+-                                   target_ulong address, int flags,
++                                   vaddr address, int flags,
+                                    MMUAccessType access_type, bool enable)
  {
-     return tlb_hit_page(tlb_addr, addr & TARGET_PAGE_MASK);
- }
+     if (enable) {
 -- 
 2.41.0
 
