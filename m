@@ -2,56 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E94E771D87
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 11:52:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95931771D94
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 11:55:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qSwrU-0002kH-QA; Mon, 07 Aug 2023 05:49:20 -0400
+	id 1qSwwY-00087e-0t; Mon, 07 Aug 2023 05:54:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qSwrA-0002Sz-9u
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 05:48:58 -0400
-Received: from hognose1.porkbun.com ([35.82.102.206])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qSwr7-0003YD-BE
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 05:48:55 -0400
-Received: from [172.20.10.3] (unknown [112.97.80.95])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client did not present a certificate)
- (Authenticated sender: c@jia.je)
- by hognose1.porkbun.com (Postfix) with ESMTPSA id 8B2FF43AAE;
- Mon,  7 Aug 2023 09:48:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jia.je; s=default;
- t=1691401732; bh=lDLFXZpZ318btt41gZNpQD2ZmTFTU25kkXhDqzm41Uo=;
- h=Date:Subject:To:Cc:References:From:In-Reply-To;
- b=dd/1vmTbYUD9PTplTsCAyApGZIfDUejG4NRhMHz0OgKWagn/XPE2+SQb477ty7cZB
- USgXr7P84Yz1cF2NIFM1WkIL9dKnprFdD+YZQh7l3JCDkM8BBvgPdCyQpHG7RjeyGN
- xdaYxgxnl/zi09pKfujtm18CkAUfT8bLX+4iEMGY=
-Message-ID: <4cbe7855-6d64-1b3f-a5ad-cea7f3f0aa2c@jia.je>
-Date: Mon, 7 Aug 2023 17:48:41 +0800
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qSwwP-00086K-5l
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 05:54:21 -0400
+Received: from mail-lj1-x233.google.com ([2a00:1450:4864:20::233])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qSwwM-0004WU-Hj
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 05:54:19 -0400
+Received: by mail-lj1-x233.google.com with SMTP id
+ 38308e7fff4ca-2b962535808so65086501fa.0
+ for <qemu-devel@nongnu.org>; Mon, 07 Aug 2023 02:54:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1691402056; x=1692006856;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=5AgXqcGWgizO9h0h7Vjhp2nLOL60iwt7LetHDUyXzRU=;
+ b=RqejgfN4nrQkFkpGlwiJ00kJtk6a6VuF+UhKEbANZ3g6gXOnz3j4zUGQelM3+opDsa
+ hvxr2/RnJhWbjfyDaZ2hSIUWqsDUFGg5ujlvKIr36ZwfMlftAYCu8LcFSrHlLaFNjon6
+ hzcjk8q/ER6hKxiF/TssmISqpz1yPQDOYSOo4LuGBRDzhQPcQg9ct6F3g1AjrwnqcOJ5
+ hAcNVv2dLphn9/3c7zrFrhEAbRw12UXfCpfWrMabOUCRNLWlyXbHkZ9K4NaP8ss/qXoy
+ jNTXuyZg/essu7b1fnch2hteJGX/AOzwOFZvhzhqsvxK3mAU2GCKO3UU5TVKSgEhDqo4
+ WfLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1691402056; x=1692006856;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=5AgXqcGWgizO9h0h7Vjhp2nLOL60iwt7LetHDUyXzRU=;
+ b=bLfxSKUIi1BDwTZ8+NP3omDHef7LbosrKT0gLB1dlsKJ2fxzp3h7geWP+l8IylbA2x
+ soEFewHY1fdVIJwnY54wcdKVirrEwo7hje4ODCrqWUWgKKOMrNdqQGHVfq68iU4zqcFP
+ CGcnQy3a1GE4mW0SUJtb6XJzFl7BcxarAzIBZVEMBNzALGOFWQq79Fgd8N1IkwQuXF/m
+ VxpCQXfxiiA15oRpENi1qEKCfk9rTmmiURcNU9STKGSHFIq5OUb+m4xOhVLEPWjYmW/n
+ 0mU0sBjZiP6q0CchVY848tdmUACgC6AzmbRpsOLXNK+9VIE43ahHE7Ul5zwycM1JZ8iv
+ +osA==
+X-Gm-Message-State: AOJu0YwsP3+da6vWTNSXcp/z9dk42+A6DXWiKjmnumvy85w3PknOkYhN
+ k2r1m+5iO5zKSN11DRMH/dYz5DQSuly1eLdki2fTw8tON+99k7Uo
+X-Google-Smtp-Source: AGHT+IEL0GoEdhFjAROYKxz6hkLLUjLnl9EFxlC21kb/WddeVf+bSaGws3LtWV4b31k3+Nk0SjQMoc2Hz9BRGcm8JAg=
+X-Received: by 2002:a2e:98cf:0:b0:2b9:e053:79d8 with SMTP id
+ s15-20020a2e98cf000000b002b9e05379d8mr6547585ljj.18.1691402056436; Mon, 07
+ Aug 2023 02:54:16 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [PATCH v3 6/6] target/loongarch: Support LoongArch32 VPPN
-Content-Language: en-US
-To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, yijun@loongson.cn, shenjinyang@loongson.cn, 
- Song Gao <gaosong@loongson.cn>, Xiaojuan Yang <yangxiaojuan@loongson.cn>
-References: <20230807094505.2030603-1-c@jia.je>
- <20230807094505.2030603-7-c@jia.je>
-From: Jiajie Chen <c@jia.je>
-In-Reply-To: <20230807094505.2030603-7-c@jia.je>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=35.82.102.206; envelope-from=c@jia.je;
- helo=hognose1.porkbun.com
-X-Spam_score_int: -61
-X-Spam_score: -6.2
-X-Spam_bar: ------
-X-Spam_report: (-6.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-4.139,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20230802170157.401491-1-jean-philippe@linaro.org>
+ <20230802170157.401491-6-jean-philippe@linaro.org>
+ <CAFEAcA-0p2UhURwgLRnUxSK8ktFsULsHz5x3pu+h80VOPBrZvQ@mail.gmail.com>
+In-Reply-To: <CAFEAcA-0p2UhURwgLRnUxSK8ktFsULsHz5x3pu+h80VOPBrZvQ@mail.gmail.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 7 Aug 2023 10:54:05 +0100
+Message-ID: <CAFEAcA88J5QnuoJWOsVJj4qOhDHy-P4LMo+v5UdMLOQxy=pvQA@mail.gmail.com>
+Subject: Re: [PATCH v2 5/6] target/arm/helper: Check SCR_EL3.{NSE, NS} encoding
+ for AT instructions
+To: Jean-Philippe Brucker <jean-philippe@linaro.org>
+Cc: richard.henderson@linaro.org, qemu-arm@nongnu.org, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::233;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x233.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,91 +87,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Fri, 4 Aug 2023 at 19:08, Peter Maydell <peter.maydell@linaro.org> wrote:
+>
+> On Wed, 2 Aug 2023 at 18:02, Jean-Philippe Brucker
+> <jean-philippe@linaro.org> wrote:
+> >
+> > The AT instruction is UNDEFINED if the {NSE,NS} configuration is
+> > invalid. Add a function to check this on all AT instructions that apply
+> > to an EL lower than 3.
+> >
+> > Suggested-by: Peter Maydell <peter.maydell@linaro.org>
+> > Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> > ---
+> >  target/arm/helper.c | 36 +++++++++++++++++++++++++-----------
+> >  1 file changed, 25 insertions(+), 11 deletions(-)
+> >
+> > diff --git a/target/arm/helper.c b/target/arm/helper.c
+> > index fbb03c364b..77dd80ad28 100644
+> > --- a/target/arm/helper.c
+> > +++ b/target/arm/helper.c
+> > @@ -3616,6 +3616,20 @@ static void ats1h_write(CPUARMState *env, const ARMCPRegInfo *ri,
+> >  #endif /* CONFIG_TCG */
+> >  }
+> >
+> > +static CPAccessResult at_e012_access(CPUARMState *env, const ARMCPRegInfo *ri,
+> > +                                     bool isread)
+> > +{
+> > +    /*
+> > +     * R_NYXTL: instruction is UNDEFINED if it applies to an Exception level
+> > +     * lower than EL3 and the combination SCR_EL3.{NSE,NS} is reserved.
+> > +     */
+> > +    if (cpu_isar_feature(aa64_rme, env_archcpu(env)) &&
+> > +        (env->cp15.scr_el3 & (SCR_NSE | SCR_NS)) == SCR_NSE) {
+> > +        return CP_ACCESS_TRAP;
+> > +    }
+>
+> The AArch64.AT() pseudocode and the text in the individual
+> AT insn descriptions ("When FEAT_RME is implemented, if the Effective
+> value of SCR_EL3.{NSE, NS} is a reserved value, this instruction is
+> UNDEFINED at EL3") say that this check needs an "arm_current_el(env) == 3"
+> condition too.
 
-On 2023/8/7 17:45, Jiajie Chen wrote:
-> VPPN of TLBEHI/TLBREHI is limited to 19 bits in LA32.
->
-> Signed-off-by: Jiajie Chen <c@jia.je>
-> ---
->   target/loongarch/cpu-csr.h    |  6 ++++--
->   target/loongarch/tlb_helper.c | 23 ++++++++++++++++++-----
->   2 files changed, 22 insertions(+), 7 deletions(-)
->
-> diff --git a/target/loongarch/cpu-csr.h b/target/loongarch/cpu-csr.h
-> index b93f99a9ef..9501a969af 100644
-> --- a/target/loongarch/cpu-csr.h
-> +++ b/target/loongarch/cpu-csr.h
-> @@ -57,7 +57,8 @@ FIELD(CSR_TLBIDX, PS, 24, 6)
->   FIELD(CSR_TLBIDX, NE, 31, 1)
->   
->   #define LOONGARCH_CSR_TLBEHI         0x11 /* TLB EntryHi */
-> -FIELD(CSR_TLBEHI, VPPN, 13, 35)
-> +FIELD(CSR_TLBEHI_32, VPPN, 13, 35)
-> +FIELD(CSR_TLBEHI_64, VPPN, 13, 19)
-Sorry, the bit width is wrong.
->   
->   #define LOONGARCH_CSR_TLBELO0        0x12 /* TLB EntryLo0 */
->   #define LOONGARCH_CSR_TLBELO1        0x13 /* TLB EntryLo1 */
-> @@ -164,7 +165,8 @@ FIELD(CSR_TLBRERA, PC, 2, 62)
->   #define LOONGARCH_CSR_TLBRELO1       0x8d /* TLB refill entrylo1 */
->   #define LOONGARCH_CSR_TLBREHI        0x8e /* TLB refill entryhi */
->   FIELD(CSR_TLBREHI, PS, 0, 6)
-> -FIELD(CSR_TLBREHI, VPPN, 13, 35)
-> +FIELD(CSR_TLBREHI_32, VPPN, 13, 35)
-> +FIELD(CSR_TLBREHI_64, VPPN, 13, 19)
->   #define LOONGARCH_CSR_TLBRPRMD       0x8f /* TLB refill mode info */
->   FIELD(CSR_TLBRPRMD, PPLV, 0, 2)
->   FIELD(CSR_TLBRPRMD, PIE, 2, 1)
-> diff --git a/target/loongarch/tlb_helper.c b/target/loongarch/tlb_helper.c
-> index cf6f5863f9..7926c40252 100644
-> --- a/target/loongarch/tlb_helper.c
-> +++ b/target/loongarch/tlb_helper.c
-> @@ -305,8 +305,13 @@ static void raise_mmu_exception(CPULoongArchState *env, target_ulong address,
->   
->       if (tlb_error == TLBRET_NOMATCH) {
->           env->CSR_TLBRBADV = address;
-> -        env->CSR_TLBREHI = FIELD_DP64(env->CSR_TLBREHI, CSR_TLBREHI, VPPN,
-> -                                      extract64(address, 13, 35));
-> +        if (env->mode == LA64) {
-> +            env->CSR_TLBREHI = FIELD_DP64(env->CSR_TLBREHI, CSR_TLBREHI_64,
-> +                                        VPPN, extract64(address, 13, 35));
-> +        } else {
-> +            env->CSR_TLBREHI = FIELD_DP64(env->CSR_TLBREHI, CSR_TLBREHI_32,
-> +                                        VPPN, extract64(address, 13, 19));
-> +        }
->       } else {
->           if (!FIELD_EX64(env->CSR_DBG, CSR_DBG, DST)) {
->               env->CSR_BADV = address;
-> @@ -371,12 +376,20 @@ static void fill_tlb_entry(CPULoongArchState *env, int index)
->   
->       if (FIELD_EX64(env->CSR_TLBRERA, CSR_TLBRERA, ISTLBR)) {
->           csr_ps = FIELD_EX64(env->CSR_TLBREHI, CSR_TLBREHI, PS);
-> -        csr_vppn = FIELD_EX64(env->CSR_TLBREHI, CSR_TLBREHI, VPPN);
-> +        if (env->mode == LA64) {
-> +            csr_vppn = FIELD_EX64(env->CSR_TLBREHI, CSR_TLBREHI_64, VPPN);
-> +        } else {
-> +            csr_vppn = FIELD_EX64(env->CSR_TLBREHI, CSR_TLBREHI_32, VPPN);
-> +        }
->           lo0 = env->CSR_TLBRELO0;
->           lo1 = env->CSR_TLBRELO1;
->       } else {
->           csr_ps = FIELD_EX64(env->CSR_TLBIDX, CSR_TLBIDX, PS);
-> -        csr_vppn = FIELD_EX64(env->CSR_TLBEHI, CSR_TLBEHI, VPPN);
-> +        if (env->mode == LA64) {
-> +            csr_vppn = FIELD_EX64(env->CSR_TLBEHI, CSR_TLBEHI_64, VPPN);
-> +        } else {
-> +            csr_vppn = FIELD_EX64(env->CSR_TLBEHI, CSR_TLBEHI_32, VPPN);
-> +        }
->           lo0 = env->CSR_TLBELO0;
->           lo1 = env->CSR_TLBELO1;
->       }
-> @@ -496,7 +509,7 @@ void helper_tlbfill(CPULoongArchState *env)
->   
->       if (pagesize == stlb_ps) {
->           /* Only write into STLB bits [47:13] */
-> -        address = entryhi & ~MAKE_64BIT_MASK(0, R_CSR_TLBEHI_VPPN_SHIFT);
-> +        address = entryhi & ~MAKE_64BIT_MASK(0, R_CSR_TLBEHI_64_VPPN_SHIFT);
->   
->           /* Choose one set ramdomly */
->           set = get_random_tlb(0, 7);
+It's been pointed out to me that since trying to return from
+EL3 with SCR_EL3.{NSE,NS} == {1,0} is an illegal exception return,
+it's not actually possible to try to execute these insns in this
+state from any other EL than EL3. So we don't actually need
+to check for EL3 here.
+
+QEMU's implementation of exception return is missing that
+check for illegal-exception-return on bad {NSE,NS}, though.
+
+thanks
+-- PMM
 
