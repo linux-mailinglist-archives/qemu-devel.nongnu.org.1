@@ -2,86 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4D2C771DC9
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 12:11:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 263D7771DDF
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 12:22:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qSxD9-0007zb-82; Mon, 07 Aug 2023 06:11:39 -0400
+	id 1qSxME-0001pp-Bx; Mon, 07 Aug 2023 06:21:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qSxD6-0007zS-S7
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 06:11:36 -0400
+ id 1qSxM7-0001pZ-Sr
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 06:20:56 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qSxD5-0000LZ-Am
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 06:11:36 -0400
+ id 1qSxM5-0002RQ-Qd
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 06:20:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691403093;
+ s=mimecast20190719; t=1691403652;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=1E20khcjHM9VwhHWKPgXyzeWZ+W/3koIC8uQoUdp8po=;
- b=D/Nim+JslV/q6H80Wv13KN36lHYXmNfjEhVvBVfi7cwrTETqCIJ2NHO1Nx6esFpcbs4ulX
- 7uqwJzkhonDOd4bf/19xOkVn6JSG+9MXDA1j0D7I4e2CZr+726UmqtkcsHHQ8oZ5VsUTgH
- y6bwLB1bXhPqlr4PdwPbrNcXRlu/JZ0=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=ZMAdsWykZ/EpMQPlZRWke+SKdDATzUw0SAMAYx/BDHU=;
+ b=IbZhbEqp0FZx0BfI3qaeXYy5lLVYHiij9tlSM1k6GG5xfOwdASmQOMWcde7tkdc3FOCs/q
+ trPVRnNLjQhFT0Xa3vaifAWeBRInlp8xRf8IbriYvI7mFbX69aP4Wnr5G6giCDAFYYtfI9
+ YTEWkbj7hkvzc02Gh+iia3cJDF2wJK8=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-316-AnBgWpRfNQKvxBIdiiXHfw-1; Mon, 07 Aug 2023 06:11:32 -0400
-X-MC-Unique: AnBgWpRfNQKvxBIdiiXHfw-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-99bcb13d8ddso319930166b.0
- for <qemu-devel@nongnu.org>; Mon, 07 Aug 2023 03:11:31 -0700 (PDT)
+ us-mta-648-XBdoQxZpO0SUts5JexUh2A-1; Mon, 07 Aug 2023 06:20:51 -0400
+X-MC-Unique: XBdoQxZpO0SUts5JexUh2A-1
+Received: by mail-lf1-f69.google.com with SMTP id
+ 2adb3069b0e04-4fe356c71d6so4139657e87.1
+ for <qemu-devel@nongnu.org>; Mon, 07 Aug 2023 03:20:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691403091; x=1692007891;
+ d=1e100.net; s=20221208; t=1691403649; x=1692008449;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1E20khcjHM9VwhHWKPgXyzeWZ+W/3koIC8uQoUdp8po=;
- b=TbvmtcjGiAKjfk4g9fy8AO04a8NDLn1Upisd8TSsAaItgPk/9R5pag6ogtFRhtbjgk
- QtHB7ufpTScms+gjJbadO53qWmVSaw8/uFZLakgyD/s4r5F9oZyGtdH1UCed3vOVxHIU
- rt/jeuntBWT0dEhbGwJ7EXmDZORhk1AITAnPoy89zVkN2EqqYm4lM/OBmnjlqFV1nXoK
- XNfBGeecu/VUvTyfv2cqHpGDzaK8Vw8u39s95FkWlt89rASnjSFa5e7UMOmjmoJm6T13
- 9CMPK0N0n5tP55XOwKOLfA5/IamVoUgWmfoW8LCVDLOK4SkB4HpcsaKz0Hna0Ap2+mbu
- uang==
-X-Gm-Message-State: AOJu0Yx9qqwTHIowHfUZdQDjj6fqVib9NMAs6AuSAsNO38aHgvCEh4BH
- o8yo6RKgmo9YroE4mFTS2gAIWE+azDKhIR06Eyw3JpeTN0qIU1zKv8VNKIKBUur2eqGg2sNjsMk
- X9hEJG7PYnKis/Lg=
-X-Received: by 2002:a17:906:30cf:b0:973:fd02:a41f with SMTP id
- b15-20020a17090630cf00b00973fd02a41fmr8995089ejb.40.1691403091115; 
- Mon, 07 Aug 2023 03:11:31 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGTFV1WxlyqhEhDS+gAPoHLhh9qytIkkjRrtck3EnI8EgAxjuLGfKZTYtJAOUvC9tNJoqzQbw==
-X-Received: by 2002:a17:906:30cf:b0:973:fd02:a41f with SMTP id
- b15-20020a17090630cf00b00973fd02a41fmr8995075ejb.40.1691403090872; 
- Mon, 07 Aug 2023 03:11:30 -0700 (PDT)
+ bh=ZMAdsWykZ/EpMQPlZRWke+SKdDATzUw0SAMAYx/BDHU=;
+ b=PV1tA3vwf8v/uhBoWJl8RK1dM2iKOacXSmGLRPiI6GP2NtrQzAE+EvQH0fWxrMRZXm
+ fBmHzMwCEMsppca82dGVf0V5NCCQFEjX/XSnRhFVlLKvsvvmJvFREuRHwsSlX1QodEKR
+ fDeN0eIICiXORr23aeKXeDy9Hu6jtG1N0y7uWoTYyVAPJWalRpzEYE+lGe7xn9olB6PI
+ xMqPG/qiLe/Tm5gME9poD8Q0pEz26Ago4ozsot4kXAQ8AgsxxeZMul2Z2wMssYyWrjZP
+ DeI2PQGG93Oxy7TxFtmX6inY+inbSGEiaz4z3DFywDENEPBOB/JYoL/R9g2j7bz5j+D6
+ czGw==
+X-Gm-Message-State: AOJu0YycnyUXZkRd5VvqLGfK2o4iNd9wuYTA+zo1Uufjx/eI82+XAJ87
+ mieLKDCAzAfcqDyGZelEbEkKdlq8XlQ2BdRUPCLMxMUe0bami66flf15Y/6p25bLTki3k5urD7o
+ 5WlgVVKJ6ERmSRoM=
+X-Received: by 2002:a05:6512:2809:b0:4fb:9129:705b with SMTP id
+ cf9-20020a056512280900b004fb9129705bmr6585241lfb.6.1691403649552; 
+ Mon, 07 Aug 2023 03:20:49 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGg2Kpn6LAmYwDnagsb3o4Rg45hvn4Uv85AjbCHYDqQ/ur+uvtmRxfYCkVZtab+VyvP9vFHdg==
+X-Received: by 2002:a05:6512:2809:b0:4fb:9129:705b with SMTP id
+ cf9-20020a056512280900b004fb9129705bmr6585225lfb.6.1691403649165; 
+ Mon, 07 Aug 2023 03:20:49 -0700 (PDT)
 Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
  [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- h15-20020a1709066d8f00b00997e52cb30bsm4941515ejt.121.2023.08.07.03.11.29
+ l13-20020a1709065a8d00b00982a352f078sm2323891ejq.124.2023.08.07.03.20.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 07 Aug 2023 03:11:30 -0700 (PDT)
-Date: Mon, 7 Aug 2023 12:11:29 +0200
+ Mon, 07 Aug 2023 03:20:48 -0700 (PDT)
+Date: Mon, 7 Aug 2023 12:20:47 +0200
 From: Igor Mammedov <imammedo@redhat.com>
-To: Zhao Liu <zhao1.liu@intel.com>
-Cc: Michael Tokarev <mjt@tls.msk.ru>, Zhao Liu <zhao1.liu@linux.intel.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- qemu-devel@nongnu.org, Zhenyu Wang <zhenyu.z.wang@intel.com>
-Subject: Re: [PATCH v2 2/3] hw/smbios: Fix thread count in type4
-Message-ID: <20230807121129.30e6fe1e@imammedo.users.ipa.redhat.com>
-In-Reply-To: <ddfe932b-57b7-8f48-03aa-82e1964dda2a@tls.msk.ru>
-References: <20230601092952.1114727-1-zhao1.liu@linux.intel.com>
- <20230601092952.1114727-3-zhao1.liu@linux.intel.com>
- <598990ac-e5f8-fdcc-5936-e219491c4d0f@tls.msk.ru>
- <32cfa897-4472-083f-88cd-a3c3e3c405b0@tls.msk.ru>
- <20230807115615.278fb838@imammedo.users.ipa.redhat.com>
- <ddfe932b-57b7-8f48-03aa-82e1964dda2a@tls.msk.ru>
+To: Stefan Berger <stefanb@linux.ibm.com>
+Cc: Joelle van Dyne <j@getutm.app>, qemu-devel@nongnu.org, "Michael S.
+ Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>, Stefan Berger <stefanb@linux.vnet.ibm.com>
+Subject: Re: [PATCH v2 06/11] tpm_crb: move ACPI table building to device
+ interface
+Message-ID: <20230807122047.7323ad35@imammedo.users.ipa.redhat.com>
+In-Reply-To: <dc4fa093-3940-8fe8-057b-789243648765@linux.ibm.com>
+References: <20230714070931.23476-1-j@getutm.app>
+ <20230714070931.23476-7-j@getutm.app>
+ <c3e07358-0d07-ffdc-6dbf-aab763ef92be@linux.ibm.com>
+ <20230717154249.3b11f50a@imammedo.users.ipa.redhat.com>
+ <CA+E+eSB4KkTP7mkMm4VWb6DE3nhSOOB7O9ibtusAW4KKjqQakg@mail.gmail.com>
+ <dc4fa093-3940-8fe8-057b-789243648765@linux.ibm.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -106,25 +109,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 7 Aug 2023 13:06:47 +0300
-Michael Tokarev <mjt@tls.msk.ru> wrote:
+On Tue, 1 Aug 2023 15:38:32 -0400
+Stefan Berger <stefanb@linux.ibm.com> wrote:
 
-> 07.08.2023 12:56, Igor Mammedov wrote:
-> > On Sat, 5 Aug 2023 09:00:41 +0300
-> > Michael Tokarev <mjt@tls.msk.ru> wrote:
+> On 7/31/23 23:02, Joelle van Dyne wrote:
+> > On Mon, Jul 17, 2023 at 6:42=E2=80=AFAM Igor Mammedov <imammedo@redhat.=
+com> wrote: =20
+> >>
+> >> On Fri, 14 Jul 2023 13:21:33 -0400
+> >> Stefan Berger <stefanb@linux.ibm.com> wrote:
+> >> =20
+> >>> On 7/14/23 03:09, Joelle van Dyne wrote: =20
+> >>>> This logic is similar to TPM TIS ISA device. Since TPM CRB can only
+> >>>> support TPM 2.0 backends, we check for this in realize.
+> >>>>
+> >>>> Signed-off-by: Joelle van Dyne <j@getutm.app> =20
+> >>>
+> >>> This patch changes the order of in which the ACPI table elements are =
+created but doesn't matter and also doesn't seem to upset ACPI test cases f=
+rom what I saw: =20
+> >>
+> >> it seems we do have tests for TIS only (which I added when I was refac=
+toring it to TYPE_ACPI_DEV_AML_IF)
+> >> perhaps add a test for CRB before this patch a follow process describe=
+d in bios-tables-test.c
+> >> for updating expected blob =20
+> > I read the file and looked at the commits for TIS tests but I'm not
+> > sure I understand how it works. At what point do I specify that the
+> > CRB device should be created for the test? =20
+>=20
+> For me it would be a bit of trial an error as well. So here's my best gue=
+ss:
 [...]
-> The whole thing - provided the preparational patch a1d027be95
-> "machine: Add helpers to get cores/threads per socket" is also
-> picked up - applies cleanly and in a stright-forward way to 8.0
-> and even to 7.2, and passes the usual qemu testsuite. Sure thing
-> since the issues weren't noticed before, the testsuite does not
-> cover this area.  It'd be nice to have some verifier to check if
-> the whole thing actually works after applying the patchset.
+> Then you run the tests again then it should create those files with the A=
+CPI data and you copy them
+> to their destination (like in ca745d2277496464b54fd832c15c45d0227325bb) a=
+nd remove the changes from
+> tests/qtest/bios-tables-test-allowed-diff.h and that becomes your 3rd pat=
+ch. Once you run the tests
+> again with the 3rd patch there should be no more complaints about ACPI re=
+lated changes.
 
-Zhao Liu,
-can you help us out with adding test cases to cover the code
-you are touching?
+ACPI tables update procedure as described bios-tables-test.c looks more or =
+less
+reasonable to me (heavily biased view) for someone else to follow. It shoul=
+dn't
+be 'trial an error'. If something is unclear in the process, lets improve
+description (while your mind is still not poisoned by knowledge how it work=
+s).=20
 
-[...]
+Here is latest patches that one can use as a model for changing ACPI tables.
+45d9d318c8 tests: acpi: x86: whitelist expected blobs
+44d975ef34 x86: acpi: workaround Windows not handling name references in Pa=
+ckage properly
+6e510855a9 tests: acpi: x86: update expected blobs
+
+> Since CRB ACPI tests are not enabled right now you can add these patches =
+somewhere in the middle of
+> the series or also at the end.
+>=20
+>=20
+> I hope this helps.
+>=20
+>     Stefan
+>=20
 
 
