@@ -2,123 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D32DE77283E
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 16:53:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25F29772854
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 16:56:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qT1b6-0001RW-DK; Mon, 07 Aug 2023 10:52:40 -0400
+	id 1qT1eg-0002aY-8H; Mon, 07 Aug 2023 10:56:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <t.dzieciol@partner.samsung.com>)
- id 1qT1b1-0001Qh-Ng
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 10:52:36 -0400
-Received: from mailout2.w1.samsung.com ([210.118.77.12])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qT1ec-0002aP-P4
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 10:56:18 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <t.dzieciol@partner.samsung.com>)
- id 1qT1aw-0005EN-1v
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 10:52:35 -0400
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
- by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id
- 20230807145220euoutp021a275a5f571c077f0410f4983afc4036~5IXlStFud2209422094euoutp026
- for <qemu-devel@nongnu.org>; Mon,  7 Aug 2023 14:52:20 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com
- 20230807145220euoutp021a275a5f571c077f0410f4983afc4036~5IXlStFud2209422094euoutp026
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
- s=mail20170921; t=1691419940;
- bh=ET8p61JLYi16g0Nmy8HtYEPZzEUufGPsN68IuRu36uM=;
- h=From:To:Cc:In-Reply-To:Subject:Date:References:From;
- b=aFNdg0+HuCoMJEdDKUNcNRUQkxqmWxF388SLyx4BlPLxEQVyDci+zkS8DAr/upJJI
- Ia5Qo/j+jxDeSzRa967z+bUzpVUdLsdC88gqissIPHRKIeGLDhH6HpE637QaK7dBHZ
- Jsp3+z3QwKJbHeg+Et2kIUZP8bKMr5ZhmTiQNru8=
-Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
- eucas1p2.samsung.com (KnoxPortal) with ESMTP id
- 20230807145219eucas1p2816439c8fb5a5d0e750236ebfa0da715~5IXk8izFq1195711957eucas1p23;
- Mon,  7 Aug 2023 14:52:19 +0000 (GMT)
-Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
- eusmges2new.samsung.com (EUCPMTA) with SMTP id CB.99.11320.32501D46; Mon,  7
- Aug 2023 15:52:19 +0100 (BST)
-Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
- eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
- 20230807145218eucas1p2fcddd593c963ea1d08cdbeb0b525d757~5IXkV2o--2115221152eucas1p27;
- Mon,  7 Aug 2023 14:52:18 +0000 (GMT)
-Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
- eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
- 20230807145218eusmtrp2cd119befa5a7368b98628dcc5a97a22f~5IXkVTOrO1517215172eusmtrp2i;
- Mon,  7 Aug 2023 14:52:18 +0000 (GMT)
-X-AuditID: cbfec7f4-993ff70000022c38-03-64d1052395bc
-Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
- eusmgms1.samsung.com (EUCPMTA) with SMTP id 13.CD.10549.22501D46; Mon,  7
- Aug 2023 15:52:18 +0100 (BST)
-Received: from AMDN5139 (unknown [106.210.135.112]) by eusmtip1.samsung.com
- (KnoxPortal) with ESMTPA id
- 20230807145218eusmtip17cdffb9d7a9bde712fcb8fbf41b8b084~5IXj2DZt-1828518285eusmtip1a;
- Mon,  7 Aug 2023 14:52:18 +0000 (GMT)
-From: "Tomasz Dzieciol/VIM Integration \(NC\) /SRPOL/Engineer/Samsung
- Electronics" <t.dzieciol@partner.samsung.com>
-To: "'Akihiko Odaki'" <akihiko.odaki@daynix.com>, <qemu-devel@nongnu.org>
-Cc: <sriram.yagnaraman@est.tech>, <jasowang@redhat.com>,
- <k.kwiecien@samsung.com>, <m.sochacki@samsung.com>
-In-Reply-To: <7f1ea2a7-aef1-f090-01ab-218747b167c6@daynix.com>
-Subject: RE: [PATCH v10 0/7] igb: packet-split descriptors support
-Date: Mon, 7 Aug 2023 16:52:17 +0200
-Message-ID: <000201d9c93e$c36323f0$4a296bd0$@partner.samsung.com>
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qT1eZ-0006CG-5l
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 10:56:18 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.201])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RKK6c0NP2z67gZ9;
+ Mon,  7 Aug 2023 22:52:24 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Mon, 7 Aug
+ 2023 15:56:10 +0100
+Date: Mon, 7 Aug 2023 15:56:09 +0100
+To: Gregory Price <gourry.memverge@gmail.com>
+CC: <qemu-devel@nongnu.org>, <linux-cxl@vger.kernel.org>, <junhee.ryu@sk.com>, 
+ <kwangjin.ko@sk.com>, Gregory Price <gregory.price@memverge.com>
+Subject: Re: [PATCH 3/4] cxl/type3: minimum MHD cci support
+Message-ID: <20230807155609.000055db@Huawei.com>
+In-Reply-To: <20230721163505.1910-4-gregory.price@memverge.com>
+References: <20230721163505.1910-1-gregory.price@memverge.com>
+ <20230721163505.1910-4-gregory.price@memverge.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Mailer: Microsoft Outlook 16.0
-Content-Language: pl
-Thread-Index: AQFQQwJuFg0rRZptX9p0sOFXSIx5ggIQh+nQAeUV6e2w0koHQA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprOKsWRmVeSWpSXmKPExsWy7djP87rKrBdTDDYsl7X4fGotu8WyS5+Z
- LBrnz2G12Hr1B7vF8d4dLBa9m14wObB5nHh7kNXjwqNzzB5Prm1m8ni/7yqbR9+WVYwBrFFc
- NimpOZllqUX6dglcGU/nn2Uu2MtXsXyFfAPjE+4uRk4OCQETiS8XLrJ3MXJxCAmsYJRobv7C
- CuF8YZRYtOM5M4TzmVGitfUUG0zLj8VtUFXLGSU2/3wAVfWCUeLvpyWsIFVsAqUSC7sPMoHY
- IgKeEg9vbGcHsZkFciXuPX3J0sXIwcEpYCex7k41SFhYwEni1OVFLCA2i4CKxJLbzWBjeAUc
- JfZ+fMYIYQtKnJz5hAVijLbEsoWvmSEOUpD4+XQZK0RcROLGoxZGiLVOEsduzAS7TULgAYfE
- qh3fWUH2Sgi4SPx7rgjRKyzx6vgWdghbRuL/zvlMEHYzo0TPJRGI3h5GiUf9p6AS1hLL74OC
- hQNomabE+l36EGFHiRUPbzFCjOeTuPFWEOIcPolJ26YzQ4R5JTrahCCqdSS+bZrJNoFReRaS
- x2YheWwWkmdmIexawMiyilE8tbQ4Nz212CgvtVyvODG3uDQvXS85P3cTIzDtnP53/MsOxuWv
- PuodYmTiYDzEKMHBrCTCO+/J+RQh3pTEyqrUovz4otKc1OJDjNIcLErivNq2J5OFBNITS1Kz
- U1MLUotgskwcnFINTGZPfxg/r8haGuqdpe90oly0SW2X6d8Jm1jne66pnT47lz3e3j+iwemU
- h9V503dr/l7QzawXMt6cs3Lz0bf7pstyi1657CkgLn/o6Qv3ffc4T/YVKFxezxUUwXHf1zny
- 3dQdL9rdKlouyP8z7rJtfb/2oGTOu+2f5p7wv67OLV9k8k5mWuGUXjXbpx+zq0/OnTz1gOH+
- vi/TZmhydl7cJ7Xk25oLtbseORmtXLJ4qnCtmXPD+V+S3+pZeGz+S5Z8rVjG/vjKAfdDnv+F
- c9yyGB7UZp1nrq9wveo+oe/NsqcXrSz91ihUnf3K+zUtNn5ex7vri1oLy2tFpDcVCUQKvXUQ
- NXP/fiF8k0hFwDQ3eyWW4oxEQy3mouJEAB5B/juqAwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrBIsWRmVeSWpSXmKPExsVy+t/xu7pKrBdTDPY/Nrf4fGotu8WyS5+Z
- LBrnz2G12Hr1B7vF8d4dLBa9m14wObB5nHh7kNXjwqNzzB5Prm1m8ni/7yqbR9+WVYwBrFF6
- NkX5pSWpChn5xSW2StGGFkZ6hpYWekYmlnqGxuaxVkamSvp2NimpOZllqUX6dgl6GafO32Ar
- mMdXce3QTPYGxsPcXYycHBICJhI/FrexdjFycQgJLGWUmD1xKxNEQkpiX89/dghbWOLPtS42
- iKJnjBLzb2xlAUmwCRRLbLzRxghiiwh4S7xff4wZxGYWKJRYdPw8C0TDMUaJq9c+AyU4ODgF
- 7CTW3akGqREWcJI4dXkR2BwWARWJJbebWUFsXgFHib0fnzFC2IISJ2c+YYGYqS3R+7CVEcZe
- tvA1M8RxChI/ny5jhYiLSNx41AJ1j5PEsRszmScwCs9CMmoWklGzkIyahaR9ASPLKkaR1NLi
- 3PTcYkO94sTc4tK8dL3k/NxNjMAo3Hbs5+YdjPNefdQ7xMjEwXiIUYKDWUmEd96T8ylCvCmJ
- lVWpRfnxRaU5qcWHGE2BfpvILCWanA9MA3kl8YZmBqaGJmaWBqaWZsZK4ryeBR2JQgLpiSWp
- 2ampBalFMH1MHJxSDUwOklOUPAW9ns8J+NC5LS109mz9K6KvC/1DBfSUeDSauja8UHD8t/us
- uex997ebf5S9y9rc+ulY5c2+fey102bOPavQInRwVnnjbKvDJkcf2zAeP32lTTI+xOGyy7LT
- MrKzb4TN3rTt1sbTWRH7Z2lJNhq+XiO5rmrjuuXJLowXbHaq1bZkP9/5caV4fZlZTZd34mrO
- nR22J4M76u46fI4xqf4koftaSGtH1HF1nfWb1pkftAx64TN5sX6RiuuNtzsyH7vobt2s3Djt
- 784jeyoneL+LOcH5fNpm0Sv/X3lflFBztrG4r1nKVF1pKLKN69xB/cXbe6Ievav+NsFJjlNd
- RD/azT7Drlw3a0WT5QklluKMREMt5qLiRADUSYfNSwMAAA==
-X-CMS-MailID: 20230807145218eucas1p2fcddd593c963ea1d08cdbeb0b525d757
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20230529140202eucas1p1920add7c8fd0a0c4efdfac6e9bdf5a7f
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20230529140202eucas1p1920add7c8fd0a0c4efdfac6e9bdf5a7f
-References: <CGME20230529140202eucas1p1920add7c8fd0a0c4efdfac6e9bdf5a7f@eucas1p1.samsung.com>
- <20230529140153.4053-1-t.dzieciol@partner.samsung.com>
- <7f1ea2a7-aef1-f090-01ab-218747b167c6@daynix.com>
-Received-SPF: none client-ip=210.118.77.12;
- envelope-from=t.dzieciol@partner.samsung.com; helo=mailout2.w1.samsung.com
-X-Spam_score_int: -59
-X-Spam_score: -6.0
-X-Spam_bar: ------
-X-Spam_report: (-6.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1,
- PDS_BAD_THREAD_QP_64=0.999, RCVD_IN_DNSWL_HI=-5, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_PASS=-0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml500006.china.huawei.com (7.191.161.198) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -131,56 +63,476 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+On Fri, 21 Jul 2023 12:35:08 -0400
+Gregory Price <gourry.memverge@gmail.com> wrote:
 
-It's been a while since review was done and nothing happened with those pat=
-ches since then.
+> Implement the MHD GET_INFO cci command and add a shared memory
+> region to the type3 device to host the information.
+> 
+> Add a helper program to initialize this shared memory region.
+> 
+> Add a function pointer to type3 devices for future work that
+> will allow an mhd device to provide a hook to validate whether
+> a memory access is valid or not.
+> 
+> For now, limit the number of LD's to the number of heads. Later,
+> this limitation will need to be lifted for MH-MLDs.
+> 
+> Intended use case:
+> 
+> 1. Create the shared memory region
+> 2. Format the shared memory region
+> 3. Launch QEMU with `is_mhd=true,mhd_head=N,mhd_shmid=$shmid`
 
-As I understand from guide: https://www.qemu.org/docs/master/devel/submitti=
-ng-a-patch.html=23is-my-patch-in I should wait. Is that correct?
+I'd definitely like some feedback from experienced QEMU folk on
+how to model this sort of cross QEMU instance sharing.
 
------Original Message-----
-From: Akihiko Odaki <akihiko.odaki=40daynix.com>=20
-Sent: wtorek, 30 maja 2023 04:49
-To: Tomasz Dzieciol <t.dzieciol=40partner.samsung.com>; qemu-devel=40nongnu=
-.org
-Cc: sriram.yagnaraman=40est.tech; jasowang=40redhat.com; k.kwiecien=40samsu=
-ng.com; m.sochacki=40samsung.com
-Subject: Re: =5BPATCH v10 0/7=5D igb: packet-split descriptors support
+My instinct is a socket would be more flexible as it lets us
+potentially emulate the machines on multiple hosts (assuming they
+can see some shared backend storage).
 
-On 2023/05/29 23:01, Tomasz Dzieciol wrote:
-> Purposes of this series of patches:
-> * introduce packet-split RX descriptors support. This feature is used by =
-Linux
->    VF driver for MTU values from 2048.
-> * refactor RX descriptor handling for introduction of packet-split RX
->    descriptors support
-> * fix descriptors flags handling
->=20
-> Tomasz Dzieciol (7):
->    igb: remove TCP ACK detection
->    igb: rename E1000E_RingInfo_st
->    igb: RX descriptors guest writting refactoring
->    igb: RX payload guest writting refactoring
->    igb: add IPv6 extended headers traffic detection
->    igb: packet-split descriptors support
->    e1000e: rename e1000e_ba_state and e1000e_write_hdr_to_rx_buffers
->=20
->   hw/net/e1000e_core.c     =7C  78 +++--
->   hw/net/igb_core.c        =7C 730 ++++++++++++++++++++++++++++----------=
--
->   hw/net/igb_regs.h        =7C  20 +-
->   hw/net/trace-events      =7C   6 +-
->   tests/qtest/libqos/igb.c =7C   5 +
->   5 files changed, 592 insertions(+), 247 deletions(-)
->=20
+Anyhow, some superficial comments inline.
+What you have here looks good if we think shared memory is the
+way to do this!  Some bits are good anyway of course :)
 
-Thanks for keeping working on this. For the entire series:
+Jonathan
 
-Reviewed-by: Akihiko Odaki <akihiko.odaki=40daynix.com>
-Tested-by: Akihiko Odaki <akihiko.odaki=40daynix.com>
+
+> 
+> shmid=`ipcmk -M 4096 | grep -o -E '[0-9]+' | head -1`
+> cxl_mhd_init 4 $shmid
+> qemu-system-x86_64 \
+>   -nographic \
+>   -accel kvm \
+>   -drive file=./mhd.qcow2,format=qcow2,index=0,media=disk,id=hd \
+>   -m 4G,slots=4,maxmem=8G \
+>   -smp 4 \
+>   -machine type=q35,cxl=on,hmat=on \
+>   -device pxb-cxl,id=cxl.0,bus=pcie.0,bus_nr=52 \
+>   -device cxl-rp,id=rp0,bus=cxl.0,chassis=0,port=0,slot=0 \
+>   -object memory-backend-file,id=mem0,mem-path=/tmp/mem0,size=4G,share=true \
+>   -device cxl-type3,bus=rp0,volatile-memdev=mem0,id=cxl-mem0,sn=66666,is_mhd=true,mhd_head=0,mhd_shmid=$shmid \
+>   -M cxl-fmw.0.targets.0=cxl.0,cxl-fmw.0.size=4G
+> 
+> Signed-off-by: Gregory Price <gregory.price@memverge.com>
+> ---
+>  hw/cxl/cxl-mailbox-utils.c  | 53 +++++++++++++++++++++++++++++
+>  hw/mem/cxl_type3.c          | 67 +++++++++++++++++++++++++++++++++++++
+>  include/hw/cxl/cxl_device.h | 14 ++++++++
+>  tools/cxl/cxl_mhd_init.c    | 63 ++++++++++++++++++++++++++++++++++
+>  tools/cxl/meson.build       |  3 ++
+>  tools/meson.build           |  1 +
+>  6 files changed, 201 insertions(+)
+>  create mode 100644 tools/cxl/cxl_mhd_init.c
+>  create mode 100644 tools/cxl/meson.build
+> 
+> diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
+> index cad0cd0adb..57b8da4376 100644
+> --- a/hw/cxl/cxl-mailbox-utils.c
+> +++ b/hw/cxl/cxl-mailbox-utils.c
+> @@ -84,6 +84,8 @@ enum {
+>          #define GET_PHYSICAL_PORT_STATE     0x1
+>      TUNNEL = 0x53,
+>          #define MANAGEMENT_COMMAND     0x0
+> +    MHD = 0x55,
+> +        #define GET_MHD_INFO     0x0
+>  };
+>  
+>  /* CCI Message Format CXL r3.0 Figure 7-19 */
+> @@ -1155,6 +1157,56 @@ static CXLRetCode cmd_media_clear_poison(const struct cxl_cmd *cmd,
+>      return CXL_MBOX_SUCCESS;
+>  }
+>  
+> +static CXLRetCode cmd_mhd_get_info(const struct cxl_cmd *cmd,
+Reference would be good (for some reason it took me quite a bit
+of typing related search terms in to actually find it in
+CXL r3.0 section 7.6.7.5.1: Get Multi-Headed Info (Opcode 5500h)
+
+(I'm trying to standardize on that format - just need to fix
+ all the existing references!)
+
+> +                                   uint8_t *payload_in,
+> +                                   size_t len_in,
+> +                                   uint8_t *payload_out,
+> +                                   size_t *len_out,
+> +                                   CXLCCI *cci)
+> +{
+> +    CXLType3Dev *ct3d = CXL_TYPE3(cci->d);
+> +    struct {
+> +        uint8_t start_ld;
+> +        uint8_t ldmap_len;
+> +    } QEMU_PACKED *input = (void *)payload_in;
+> +
+> +    struct {
+> +        uint8_t nr_lds;
+> +        uint8_t nr_heads;
+> +        uint16_t resv1;
+> +        uint8_t start_ld;
+> +        uint8_t ldmap_len;
+> +        uint16_t resv2;
+> +        uint8_t ldmap[];
+> +    } QEMU_PACKED *output = (void *)payload_out;
+> +
+> +    uint8_t start_ld = input->start_ld;
+> +    uint8_t ldmap_len = input->ldmap_len;
+> +    uint8_t i;
+> +
+> +    if (!ct3d->is_mhd) {
+> +        return CXL_MBOX_UNSUPPORTED;
+> +    }
+> +
+> +    if (start_ld >= ct3d->mhd_state->nr_lds) {
+> +        return CXL_MBOX_INVALID_INPUT;
+> +    }
+> +
+> +    output->nr_lds = ct3d->mhd_state->nr_lds;
+> +    output->nr_heads = ct3d->mhd_state->nr_heads;
+> +    output->resv1 = 0;
+> +    output->start_ld = start_ld;
+> +    output->resv2 = 0;
+> +
+> +    for (i = 0; i < ldmap_len && (start_ld + i) < output->nr_lds; i++) {
+> +        output->ldmap[i] = ct3d->mhd_state->ldmap[start_ld + i];
+> +    }
+> +    output->ldmap_len = i;
+> +
+> +    *len_out = sizeof(*output) + output->ldmap_len;
+> +    return CXL_MBOX_SUCCESS;
+> +}
+> +
+>  #define IMMEDIATE_CONFIG_CHANGE (1 << 1)
+>  #define IMMEDIATE_DATA_CHANGE (1 << 2)
+>  #define IMMEDIATE_POLICY_CHANGE (1 << 3)
+> @@ -1195,6 +1247,7 @@ static const struct cxl_cmd cxl_cmd_set[256][256] = {
+>          cmd_media_inject_poison, 8, 0 },
+>      [MEDIA_AND_POISON][CLEAR_POISON] = { "MEDIA_AND_POISON_CLEAR_POISON",
+>          cmd_media_clear_poison, 72, 0 },
+> +    [MHD][GET_MHD_INFO] = {"GET_MULTI_HEADED_INFO", cmd_mhd_get_info, 2, 0},
+>  };
+>  
+>  static const struct cxl_cmd cxl_cmd_set_sw[256][256] = {
+> diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
+> index efb7dece80..c8eb3aa67d 100644
+> --- a/hw/mem/cxl_type3.c
+> +++ b/hw/mem/cxl_type3.c
+> @@ -18,6 +18,7 @@
+>  #include "hw/cxl/cxl.h"
+>  #include "hw/pci/msix.h"
+>  #include "hw/pci/spdm.h"
+> +#include <sys/shm.h>
+>  
+>  #define DWORD_BYTE 4
+>  
+> @@ -794,6 +795,48 @@ static DOEProtocol doe_spdm_prot[] = {
+>      { }
+>  };
+>  
+> +static bool cxl_setup_mhd(CXLType3Dev *ct3d, Error **errp)
+> +{
+> +    if (!ct3d->is_mhd) {
+> +        ct3d->mhd_access_valid = NULL;
+> +        return true;
+> +    } else if (ct3d->is_mhd &&
+else not needed if we returned in previous leg.
+
+	if (ct3d->is_mhd && ...
+
+> +               (!ct3d->mhd_shmid || (ct3d->mhd_head == ~(0)))) {
+
+How does mhd_head equal that? Default is 0. I'm not sure there is a reason
+to require it.
+
+> +        error_setg(errp, "is_mhd requires mhd_shmid and mhd_head settings");
+> +        return false;
+> +    } else if (!ct3d->is_mhd &&
+
+same here
+
+> +               (ct3d->mhd_shmid || (ct3d->mhd_head == ~(0)))) {
+
+How does mhd_head equal that? Default is 0.
+
+> +        error_setg(errp, "(is_mhd,mhd_head,mhd_shmid) invalid");
+> +        return false;
+> +    }
+> +
+> +    if (ct3d->mhd_head >= 32) {
+> +        error_setg(errp, "MHD Head ID must be between 0-31");
+> +        return false;
+> +    }
+> +
+> +    ct3d->mhd_state = shmat(ct3d->mhd_shmid, NULL, 0);
+> +    if (ct3d->mhd_state == (void*)-1) {
+> +        ct3d->mhd_state = NULL;
+> +        error_setg(errp, "Unable to attach MHD State. Check ipcs is valid");
+> +        return false;
+> +    }
+> +
+> +    /* For now, limit the number of heads to the number of LD's (SLD) */
+
+Feels backwards.  Number of heads never going to be bigger than numbre of
+LDs.  Other way around is possible of course.
+
+> +    if (ct3d->mhd_state->nr_heads <= ct3d->mhd_head) {
+
+mhd head needs to be out of range?  Confused.
+
+> +        error_setg(errp, "Invalid head ID for multiheaded device.");
+> +        return false;
+> +    }
+> +
+> +    if (ct3d->mhd_state->nr_lds <= ct3d->mhd_head) {
+> +        error_setg(errp, "MHD Shared state does not have sufficient lds.");
+> +        return false;
+> +    }
+> +
+> +    ct3d->mhd_state->ldmap[ct3d->mhd_head] = ct3d->mhd_head;
+> +    return true;
+> +}
+> +
+>  static void ct3_realize(PCIDevice *pci_dev, Error **errp)
+>  {
+>      CXLType3Dev *ct3d = CXL_TYPE3(pci_dev);
+> @@ -806,6 +849,10 @@ static void ct3_realize(PCIDevice *pci_dev, Error **errp)
+>  
+>      QTAILQ_INIT(&ct3d->error_list);
+>  
+> +    if (!cxl_setup_mhd(ct3d, errp)) {
+> +        return;
+> +    }
+> +
+>      if (!cxl_setup_memory(ct3d, errp)) {
+>          return;
+>      }
+> @@ -910,6 +957,9 @@ static void ct3_exit(PCIDevice *pci_dev)
+>      if (ct3d->hostvmem) {
+>          address_space_destroy(&ct3d->hostvmem_as);
+>      }
+> +    if (ct3d->mhd_state) {
+> +        shmdt(ct3d->mhd_state);
+> +    }
+
+Reverse order of realize - so I think this wants to be earlier.
+
+>  }
+>  
+>  static bool cxl_type3_dpa(CXLType3Dev *ct3d, hwaddr host_addr, uint64_t *dpa)
+> @@ -1006,6 +1056,7 @@ static int cxl_type3_hpa_to_as_and_dpa(CXLType3Dev *ct3d,
+>  MemTxResult cxl_type3_read(PCIDevice *d, hwaddr host_addr, uint64_t *data,
+>                             unsigned size, MemTxAttrs attrs)
+>  {
+> +    CXLType3Dev *ct3d = CXL_TYPE3(d);
+>      uint64_t dpa_offset = 0;
+>      AddressSpace *as = NULL;
+>      int res;
+> @@ -1016,16 +1067,23 @@ MemTxResult cxl_type3_read(PCIDevice *d, hwaddr host_addr, uint64_t *data,
+>          return MEMTX_ERROR;
+>      }
+>  
+> +    if (ct3d->is_mhd && ct3d->mhd_access_valid) {
+> +        if (!ct3d->mhd_access_valid(ct3d, dpa_offset, size))
+> +            return MEMTX_ERROR;
+
+Brackets for inner block.
+Arguably could just add the ct3d->is_mhd check in the place where
+mhd_access_valid is set and hence only need to check that here.
+Maybe that makes it slightly harder to follow though.
+
+Also could just unset is_mhd if mhd_access_valid not present..
+
+> +    }
+> +
+>      if (sanitize_running(&CXL_TYPE3(d)->cci)) {
+>          qemu_guest_getrandom_nofail(data, size);
+>          return MEMTX_OK;
+>      }
+> +
+
+Reasonable change but not in this patch set.
+
+>      return address_space_read(as, dpa_offset, attrs, data, size);
+>  }
+>  
+>  MemTxResult cxl_type3_write(PCIDevice *d, hwaddr host_addr, uint64_t data,
+>                              unsigned size, MemTxAttrs attrs)
+>  {
+> +    CXLType3Dev *ct3d = CXL_TYPE3(d);
+
+Use that in the other places (can see one below).
+
+>      uint64_t dpa_offset = 0;
+>      AddressSpace *as = NULL;
+>      int res;
+> @@ -1035,6 +1093,12 @@ MemTxResult cxl_type3_write(PCIDevice *d, hwaddr host_addr, uint64_t data,
+>      if (res) {
+>          return MEMTX_ERROR;
+>      }
+> +
+> +    if (ct3d->is_mhd && ct3d->mhd_access_valid) {
+> +        if (!ct3d->mhd_access_valid(ct3d, dpa_offset, size))
+
+Even one lines blocks in QEMU like this need {}
+I keep forgetting that and getting it picked up in reviews.
+
+> +            return MEMTX_ERROR;
+> +    }
+
+if (ct3d->is_mhd && ct3d->mhd_access_valid &&
+     !ctrd->mhd_access_valid(ct3d, dpa_offset, size);
+
+> +
+>      if (sanitize_running(&CXL_TYPE3(d)->cci)) {
+>          return MEMTX_OK;
+>      }
+> @@ -1067,6 +1131,9 @@ static Property ct3_props[] = {
+>      DEFINE_PROP_UINT64("sn", CXLType3Dev, sn, UI64_NULL),
+>      DEFINE_PROP_STRING("cdat", CXLType3Dev, cxl_cstate.cdat.filename),
+>      DEFINE_PROP_UINT16("spdm", CXLType3Dev, spdm_port, 0),
+> +    DEFINE_PROP_BOOL("is_mhd", CXLType3Dev, is_mhd, false),
+> +    DEFINE_PROP_UINT32("mhd_head", CXLType3Dev, mhd_head, 0),
+
+"mhd-head" etc for naming. IIRC that's the conventional form for
+QEMU parameters.
+
+
+> +    DEFINE_PROP_UINT32("mhd_shmid", CXLType3Dev, mhd_shmid, 0),
+>      DEFINE_PROP_END_OF_LIST(),
+>  };
+>  
+> diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
+> index abc8405cc5..b545c5b6f3 100644
+> --- a/include/hw/cxl/cxl_device.h
+> +++ b/include/hw/cxl/cxl_device.h
+> @@ -408,6 +408,12 @@ typedef struct CXLPoison {
+>  typedef QLIST_HEAD(, CXLPoison) CXLPoisonList;
+>  #define CXL_POISON_LIST_LIMIT 256
+>  
+> +struct CXLMHD_SharedState {
+
+No underscores in QEMU types, and make it a typedef to
+CXLMHDSharedState
+
+> +    uint8_t nr_heads;
+> +    uint8_t nr_lds;
+> +    uint8_t ldmap[];
+> +};
+> +
+>  struct CXLType3Dev {
+>      /* Private */
+>      PCIDevice parent_obj;
+> @@ -442,6 +448,14 @@ struct CXLType3Dev {
+>      unsigned int poison_list_cnt;
+>      bool poison_list_overflowed;
+>      uint64_t poison_list_overflow_ts;
+> +
+> +    /* Multi-headed Device */
+> +    bool is_mhd;
+> +    uint32_t mhd_head;
+> +    uint32_t mhd_shmid;
+> +    struct CXLMHD_SharedState *mhd_state;
+> +    bool (*mhd_access_valid)(CXLType3Dev* ct3d, uint64_t addr,
+> +                             unsigned int size);
+>  };
+>  
+>  #define TYPE_CXL_TYPE3 "cxl-type3"
+> diff --git a/tools/cxl/cxl_mhd_init.c b/tools/cxl/cxl_mhd_init.c
+> new file mode 100644
+> index 0000000000..1303aa9494
+> --- /dev/null
+> +++ b/tools/cxl/cxl_mhd_init.c
+
+Good to have a license.
+
+> @@ -0,0 +1,63 @@
+> +#include <signal.h>
+> +#include <stdbool.h>
+> +#include <stdint.h>
+> +#include <stdio.h>
+> +#include <stdlib.h>
+> +#include <string.h>
+> +#include <sys/ipc.h>
+> +#include <sys/shm.h>
+> +#include <sys/types.h>
+> +#include <unistd.h>
+> +
+> +struct mhd_state {
+> +    uint8_t nr_heads;
+> +    uint8_t nr_lds;
+> +    uint8_t ldmap[];
+> +};
+> +
+> +int main(int argc, char *argv[]) {
+> +    int shmid = 0;
+> +    uint32_t heads = 0;
+> +    struct mhd_state* mhd_state = 0;
+> +    uint8_t i;
+> +
+> +    if (argc != 3) {
+> +        printf("usage: cxl_mhd_init <heads> <shmid>\n"
+> +                "\theads         : number of heads on the device\n"
+> +                "\tshmid         : /tmp/mytoken.tmp\n");
+> +        return -1;
+> +    }
+> +
+> +    // must have at least 1 head
+> +    heads = (uint32_t)atoi(argv[1]);
+> +    if (heads == 0 || heads > 32) {
+
+Nice to have a comment here on why 32 is the maximum
+
+> +        printf("bad heads argument (1-32)\n");
+> +        return -1;
+> +    }
+> +
+> +    shmid = (uint32_t)atoi(argv[2]);
+> +    if (shmid== 0) {
+> +        printf("bad shmid argument\n");
+> +        return -1;
+> +    }
+> +
+> +    mhd_state = shmat(shmid, NULL, 0);
+> +    if (mhd_state == (void*)-1) {
+> +        printf("Unable to attach to shared memory\n");
+> +        return -1;
+> +    }
+> +
+> +    // Initialize the mhd_state
+> +    size_t mhd_state_size = sizeof(struct mhd_state) + (sizeof(uint8_t) * heads);
+> +    memset(mhd_state, 0, mhd_state_size);
+> +    mhd_state->nr_heads = heads;
+> +    mhd_state->nr_lds = heads;
+> +
+> +    // Head ID == LD ID for now
+
+Trivial but... C style comments for QEMU probably even standalone utils.
+https://elixir.bootlin.com/qemu/latest/source/docs/devel/style.rst#L235
+
+> +    for (i = 0; i < heads; i++)
+> +        mhd_state->ldmap[i] = i;
+> +
+> +    printf("mhd initialized\n");
+> +    shmdt(mhd_state);
+> +    return 0;
+> +}
+> diff --git a/tools/cxl/meson.build b/tools/cxl/meson.build
+> new file mode 100644
+> index 0000000000..218658fe69
+> --- /dev/null
+> +++ b/tools/cxl/meson.build
+> @@ -0,0 +1,3 @@
+> +executable('cxl_mhd_init', files('cxl_mhd_init.c'),
+> +  install: true,
+> +  install_dir: get_option('libexecdir'))
+> diff --git a/tools/meson.build b/tools/meson.build
+> index e69de29bb2..91a1d788cb 100644
+> --- a/tools/meson.build
+> +++ b/tools/meson.build
+> @@ -0,0 +1 @@
+> +subdir('cxl')
 
 
