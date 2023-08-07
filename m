@@ -2,97 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D740772B14
-	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 18:36:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD061772B0B
+	for <lists+qemu-devel@lfdr.de>; Mon,  7 Aug 2023 18:35:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qT3DJ-0005WC-Gm; Mon, 07 Aug 2023 12:36:13 -0400
+	id 1qT3Bx-0004ix-NF; Mon, 07 Aug 2023 12:34:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1qT3D7-0005UF-5w; Mon, 07 Aug 2023 12:36:01 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1qT3D4-0002Nt-JC; Mon, 07 Aug 2023 12:36:00 -0400
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 377GVJIp008655; Mon, 7 Aug 2023 16:35:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=M+ISArOuJHx9ilVsC/OuUekII88Dkpf5V/zhJ/7T9Ow=;
- b=P1tOM6g67K8A0OHR47ErF31Jp61jyjxHeI9H4bbUspB02tDFptD6esV5BcFrmsDZc+E2
- zGmjkxfqCvZPYpfcsU3PatX8f8WyOHSEQ39Goe7e/KRgZNYE7ehIHd/gWcBOH6cSfNcm
- MGbXJzFlryfNRVpskQPxFb3aggexVXXmF/GID//6ZJdyYOjuaiROQHpSXy08hbwY8y0s
- dwMQU1sN08xijeQY4sxuCEPLmi0KBq+0Z48lZzsBlSep6SSKRYYiv+v/VnWW1vrXhwuX
- 0MgzXgoNg+dC8GyVNRO69xoBINnmidQ7BD2/t91i9UftY/jfVErx7s/kgT1dF5sS4BPz vA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sb46w06bw-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 07 Aug 2023 16:35:55 +0000
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 377GWZiI013834;
- Mon, 7 Aug 2023 16:35:55 GMT
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sb46w067j-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 07 Aug 2023 16:35:54 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 377FEPmY000373; Mon, 7 Aug 2023 16:35:52 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3sa28k6jen-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 07 Aug 2023 16:35:52 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
- [10.20.54.106])
- by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 377GZoID58327362
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 7 Aug 2023 16:35:50 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5891A20043;
- Mon,  7 Aug 2023 16:35:50 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CAE4320040;
- Mon,  7 Aug 2023 16:35:49 +0000 (GMT)
-Received: from heavy.boeblingen.de.ibm.com (unknown [9.179.26.52])
- by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Mon,  7 Aug 2023 16:35:49 +0000 (GMT)
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Richard Henderson <richard.henderson@linaro.org>,
- David Hildenbrand <david@redhat.com>, Thomas Huth <thuth@redhat.com>
-Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org,
- Ilya Leoshkevich <iii@linux.ibm.com>, qemu-stable@nongnu.org
-Subject: [PATCH 1/2] target/s390x: Use a 16-bit immediate in VREP
-Date: Mon,  7 Aug 2023 18:34:31 +0200
-Message-ID: <20230807163459.849766-1-iii@linux.ibm.com>
-X-Mailer: git-send-email 2.41.0
+ (Exim 4.90_1) (envelope-from <atishp@atishpatra.org>)
+ id 1qT3Bu-0004i8-9s
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 12:34:46 -0400
+Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <atishp@atishpatra.org>)
+ id 1qT3Bs-00020x-Hi
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 12:34:46 -0400
+Received: by mail-lj1-x234.google.com with SMTP id
+ 38308e7fff4ca-2b9e6cc93d8so75535791fa.0
+ for <qemu-devel@nongnu.org>; Mon, 07 Aug 2023 09:34:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=atishpatra.org; s=google; t=1691426082; x=1692030882;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=XHxvjnBSRxLQr68jdsdbnmVlyaK76zQk0tdd09tcceM=;
+ b=kvnx8gXVTxu+tgPq+HmnQZcFh/kZCUoPqwvhrdZu+fgxx9zXUKS6ZKQT+InQ+I44qQ
+ q389rVe7ulvQC7qSBBMNUOvEb6wTzTAJGxA7zG3LciDFcLtgUriqb/XpYCwjy0U6zwX7
+ NoxSbRt+eJcwA1Yvd81iEiIDHMv8KTU42aYqg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1691426082; x=1692030882;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=XHxvjnBSRxLQr68jdsdbnmVlyaK76zQk0tdd09tcceM=;
+ b=K310THCTd1z9Jgckg6rhRHWdqYPM69SfD2TqudcKvjreBcRppHk4EaYi/rXCDirN9K
+ Pq+peP1D67K+yHwU/8QwKLWam24WiIl9BxOnQuCzsvQYZxIhhwrGqxDRJmMME4Nanbu7
+ ZiHbGoZwRBgqwrw+w/l6Bsw/UtYb2mjRyYBa63tGJiGDaBkHZbfVgTOx278jcy/Bo5FN
+ 8ewCF30QHZT8pomwJ6DZlLi0LgOTcd7xjH1zv+2RVr6ybMqEhC24JdsuZXdhjNZOLutl
+ x5dyH28/qgsDvsESzVTPvEWUuuWfZzdvI0E1HAMPP28nQaHCgNIkrMfrSg2F/Iqh+t1e
+ PCwg==
+X-Gm-Message-State: AOJu0YzQ24RC6qOKaYmAtmtPoUX6TS9+h+0WU3/jolVsLRNiDXoFjnT1
+ xB0VcZXLg8Il9R8xtdzPGTrjGU9WVuEW3KjcEoJQ
+X-Google-Smtp-Source: AGHT+IG47KrvJKbopwyIeA/dLPn5F6IYNA/uFCicSCJmT/DGOHGR+z7CTBq67Zz3PLrbdR23khOYn7ZEYz8Lr3ey+Lc=
+X-Received: by 2002:a2e:9bc3:0:b0:2b9:ba02:436c with SMTP id
+ w3-20020a2e9bc3000000b002b9ba02436cmr6282035ljj.28.1691426082025; Mon, 07 Aug
+ 2023 09:34:42 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: Ype2AmCexr_6ADGznu27nI6frlaTSzsj
-X-Proofpoint-GUID: qY29k2R8H2L1JjUaS6UGXUYYyzmKrqGy
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-08-07_17,2023-08-03_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 mlxlogscore=999
- impostorscore=0 mlxscore=0 suspectscore=0 adultscore=0 malwarescore=0
- priorityscore=1501 spamscore=0 phishscore=0 clxscore=1015
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2308070153
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+References: <20230802124906.24197-1-rbradford@rivosinc.com>
+In-Reply-To: <20230802124906.24197-1-rbradford@rivosinc.com>
+From: Atish Patra <atishp@atishpatra.org>
+Date: Mon, 7 Aug 2023 09:34:31 -0700
+Message-ID: <CAOnJCUKeOQgajDX06SYsZmiFiHLhrEQ73CAfGXoRe5szeBtO2A@mail.gmail.com>
+Subject: Re: [PATCH] target/riscv: Implement WARL behaviour for
+ mcountinhibit/mcounteren
+To: Rob Bradford <rbradford@rivosinc.com>
+Cc: qemu-devel@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bin.meng@windriver.com>,
+ Weiwei Li <liweiwei@iscas.ac.cn>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
+ "open list:RISC-V TCG CPUs" <qemu-riscv@nongnu.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::234;
+ envelope-from=atishp@atishpatra.org; helo=mail-lj1-x234.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -109,42 +89,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Unlike most other instructions that contain an immediate element index,
-VREP's one is 16-bit, and not 4-bit. The code uses only 8 bits, so
-using, e.g., 0x101 does not lead to a specification exception.
+On Wed, Aug 2, 2023 at 5:50=E2=80=AFAM Rob Bradford <rbradford@rivosinc.com=
+> wrote:
+>
+> These are WARL fields - zero out the bits for unavailable counters and
+> special case the TM bit in mcountinhibit which is hardwired to zero.
+> This patch achieves this by modifying the value written so that any use
+> of the field will see the correctly masked bits.
+>
+> Tested by modifying OpenSBI to write max value to these CSRs and upon
+> subsequent read the appropriate number of bits for number of PMUs is
+> enabled and the TM bit is zero in mcountinhibit.
+>
+> Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
+> ---
+>  target/riscv/csr.c | 11 +++++++++--
+>  1 file changed, 9 insertions(+), 2 deletions(-)
+>
+> diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+> index ea7585329e..495ff6a9c2 100644
+> --- a/target/riscv/csr.c
+> +++ b/target/riscv/csr.c
+> @@ -1834,8 +1834,11 @@ static RISCVException write_mcountinhibit(CPURISCV=
+State *env, int csrno,
+>  {
+>      int cidx;
+>      PMUCTRState *counter;
+> +    RISCVCPU *cpu =3D env_archcpu(env);
+>
+> -    env->mcountinhibit =3D val;
+> +    /* WARL register - disable unavailable counters; TM bit is always 0 =
+*/
+> +    env->mcountinhibit =3D
+> +        val & (cpu->pmu_avail_ctrs | COUNTEREN_CY | COUNTEREN_IR);
+>
+>      /* Check if any other counter is also monitoring cycles/instructions=
+ */
+>      for (cidx =3D 0; cidx < RV_MAX_MHPMCOUNTERS; cidx++) {
+> @@ -1858,7 +1861,11 @@ static RISCVException read_mcounteren(CPURISCVStat=
+e *env, int csrno,
+>  static RISCVException write_mcounteren(CPURISCVState *env, int csrno,
+>                                         target_ulong val)
+>  {
+> -    env->mcounteren =3D val;
+> +    RISCVCPU *cpu =3D env_archcpu(env);
+> +
+> +    /* WARL register - disable unavailable counters */
+> +    env->mcounteren =3D val & (cpu->pmu_avail_ctrs | COUNTEREN_CY | COUN=
+TEREN_TM |
+> +                             COUNTEREN_IR);
+>      return RISCV_EXCP_NONE;
+>  }
+>
+> --
+> 2.41.0
+>
+>
 
-Fix by checking all 16 bits.
-
-Cc: qemu-stable@nongnu.org
-Fixes: 28d08731b1d8 ("s390x/tcg: Implement VECTOR REPLICATE")
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
----
- target/s390x/tcg/translate_vx.c.inc | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/target/s390x/tcg/translate_vx.c.inc b/target/s390x/tcg/translate_vx.c.inc
-index f8df121d3d3..a6d840d4065 100644
---- a/target/s390x/tcg/translate_vx.c.inc
-+++ b/target/s390x/tcg/translate_vx.c.inc
-@@ -57,7 +57,7 @@
- #define FPF_LONG        3
- #define FPF_EXT         4
- 
--static inline bool valid_vec_element(uint8_t enr, MemOp es)
-+static inline bool valid_vec_element(uint16_t enr, MemOp es)
- {
-     return !(enr & ~(NUM_VEC_ELEMENTS(es) - 1));
- }
-@@ -964,7 +964,7 @@ static DisasJumpType op_vpdi(DisasContext *s, DisasOps *o)
- 
- static DisasJumpType op_vrep(DisasContext *s, DisasOps *o)
- {
--    const uint8_t enr = get_field(s, i2);
-+    const uint16_t enr = get_field(s, i2);
-     const uint8_t es = get_field(s, m4);
- 
-     if (es > ES_64 || !valid_vec_element(enr, es)) {
--- 
-2.41.0
-
+LGTM.
+Reviewed-by: Atish Patra <atishp@rivosinc.com>
+--=20
+Regards,
+Atish
 
