@@ -2,79 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19C07773ADB
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 17:08:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FA1D773AF3
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 17:17:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTOIS-00058Y-Ee; Tue, 08 Aug 2023 11:06:56 -0400
+	id 1qTOSm-0001mz-1z; Tue, 08 Aug 2023 11:17:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qTOIQ-00058L-Db
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 11:06:54 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qTOSi-0001bJ-EP
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 11:17:32 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qTOIO-0006HB-GH
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 11:06:54 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1bc411e9d17so35701695ad.0
- for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 08:06:52 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qTOSa-000170-Qj
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 11:17:30 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-3fe24dd8898so49493215e9.2
+ for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 08:17:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1691507211; x=1692112011;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=tAO2I5yRvxwmrHlAsuu79qu0O+yqKkrTGO5KoB4M1sM=;
- b=ktBBzL1nEVN6F+1m/9CweQmBMtNvvE2qtOyU7qHQLJa7nNDx0bMwbE+UdP5wEWF1lw
- QzHl+h8bhb3Cz8C6EyztZSQbFuhWU0lO1vxvUwzh0RH7uJRmVMMBcmlZ9Gkwjr9V1xEd
- rdyKcKyMYTUe/FQtGFE3EuWMAwQL2qkkneHKW8QGgj9qjX4FjbVd+w7HSA/6M6fhwApr
- Uyc7isIp3iXfqm3+GfLsX7IEQUDYUfceYNyWi2udUVYgxwj+BXYmD74sh6xgL0j26g4O
- xwJ40nzDHwiab0jyWj8SOQ1wcYovNg0U7YtAPfvxJQuT1JychY2ZXbPhY6WEns/d1Pyp
- p0yQ==
+ d=linaro.org; s=google; t=1691507842; x=1692112642;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=abvLaOiqeM8KcNNGOGHv4cNoMfXwLSZCo7Ztt25GFhg=;
+ b=Ez2nAlNefZKOSZhKPXvvhdarP3qDfj6CtVbTVsIyBtDAP6oPS+2B0khmrPWjIslQto
+ LpqcjJ5xCuohEJIR4NGDMMnCBwD14HjI6kiqtj6bmv8nmLwnhuFrtdGM3d1bYENhzLvE
+ f34aeKp+GntR92KU12bD5B6BYWjcGWyQvmMRosGZJmu8oinV0YXfuOPUTx4w3FTW/Sag
+ mURcB8ANpwyzzMipJ8umZC1Sfgy0XtHCYo0x4Zka3koIQfTCLNxprX9Gx4zkXvW5YVhn
+ EjUh20ZNhCDh6pw7qAOlaPFEbouoQvmdZdzk+1zDtAVOtsEELC32/HhZq423/DQkB/vl
+ 7BNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691507211; x=1692112011;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=tAO2I5yRvxwmrHlAsuu79qu0O+yqKkrTGO5KoB4M1sM=;
- b=AQTSDlOcRJg2WAp7cYMtrCmARlKzeYPX/QNdadIqt9y26OG+U7COFH+eU1X8aZFiCx
- 6Z5/e+TErwmlJC1ohi++dvIgc1byKY7jKfmfHBbb+UjYdQPzlJK+h9eDaDxys60aWWG2
- JfM972OyZBhNS8aQawaHGoZOYFj1s8PXGjZ1sK1DU5woog3mr+RtstCt1Z2ifl9dKnGm
- UMohDqLUYS4sCNmD023CInLLnbjjENCwnw84PLS1xeD8RIwg00zKAyhhLi9EkriJg/Wi
- t1SUgH0i0rSCaYtDgnpuPzzX+Xstlcfa5J2ea9V3kG4dQGbZOF1w7mjHxr2/Ns3nEngx
- Bt8w==
-X-Gm-Message-State: AOJu0YxWmOm/YT5hYN2G0+7jdw2H1aZl+OobOjJmJqjBxcmDA/m7tFdB
- 7PAKNDuqDGEYEC8P5QTkzG3fwA==
-X-Google-Smtp-Source: AGHT+IE+R4hgYc06jVlXta4gVMjzE4NajZJ1LPmrf3Bf1MbYHRs9e3Jh/9mEKID87kXCpwlhzDDkJA==
-X-Received: by 2002:a17:902:ead1:b0:1a6:74f6:fa92 with SMTP id
- p17-20020a170902ead100b001a674f6fa92mr13649445pld.19.1691507210940; 
- Tue, 08 Aug 2023 08:06:50 -0700 (PDT)
-Received: from alarm.flets-east.jp ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
+ d=1e100.net; s=20221208; t=1691507842; x=1692112642;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=abvLaOiqeM8KcNNGOGHv4cNoMfXwLSZCo7Ztt25GFhg=;
+ b=Hgl9iYzssz0yGLmGxmXpISqXY9mF54VISZikbuqucAhUBL2TD/1ufa/gkHEF+ZLcM2
+ hlzvA0kANr3b0BztrsdEVlWPSX8Kxo18j6pWipbs6fEhyRnL3NWVKdPqwsRXUd4XJP4H
+ lHbPnudhL1x3XQEddt3SdqIRTfSGZ7bO7VMUkZpYllUFXcP3p8NdESH7ooJd8VHsmN3h
+ XoW+6pzl1bvTwzkMpPD0FBNGHsNtpec3lQUqDGVRpzvYwuHqLz8uRl4/AsOzLiqEmHnt
+ qgDIsaGrBZimn9VXnZgVHRPHC/YxF4JU7Bbn6Bqf6NCAkkF7ByYVRniuEcSVpZ0MjL8w
+ Iaqw==
+X-Gm-Message-State: AOJu0YyyuGuVYmERT+3W8opPQ065jg2ep1YwjwvUviAOZmExWeYSTegl
+ 45nhKgBsyqdkF42oZne5LAaW1g==
+X-Google-Smtp-Source: AGHT+IExelftcrDHl64FKGiSrzJdRJDLYjPoSLp85UD50XFACKJVtL9yWZhRA1GHjulM4pCuDYhx+w==
+X-Received: by 2002:a5d:4402:0:b0:318:70:a4ac with SMTP id
+ z2-20020a5d4402000000b003180070a4acmr204697wrq.17.1691507842244; 
+ Tue, 08 Aug 2023 08:17:22 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- s22-20020a170902a51600b001a80ad9c599sm9075317plq.294.2023.08.08.08.06.48
+ s8-20020adfea88000000b0031272fced4dsm13892220wrm.52.2023.08.08.08.17.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 08 Aug 2023 08:06:50 -0700 (PDT)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-To: 
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>, pbonzini@redhat.com,
- philmd@linaro.org, laurent@vivier.eu, deller@gmx.de, qemu-devel@nongnu.org,
- Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH for-8.1 v2] linux-user: Define real MAP_FIXED_NOREPLACE value
-Date: Wed,  9 Aug 2023 00:06:35 +0900
-Message-ID: <20230808150636.91154-1-akihiko.odaki@daynix.com>
-X-Mailer: git-send-email 2.41.0
+ Tue, 08 Aug 2023 08:17:21 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 6733E1FFBB;
+ Tue,  8 Aug 2023 16:17:21 +0100 (BST)
+References: <20230808134435.2719-1-m.tyutin@yadro.com>
+User-agent: mu4e 1.11.13; emacs 29.1.50
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Mikhail Tyutin <m.tyutin@yadro.com>
+Cc: qemu-devel@nongnu.org, richard.henderson@linaro.org,
+ pbonzini@redhat.com, Aleksandr  Anenkov <a.anenkov@yadro.com>
+Subject: Re: [PATCH] Add support of callbacks after instructions to plugin api
+Date: Tue, 08 Aug 2023 16:15:41 +0100
+In-reply-to: <20230808134435.2719-1-m.tyutin@yadro.com>
+Message-ID: <87h6p97eda.fsf@linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::631;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x631.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x335.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,52 +96,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-do_brk() assumes target_mmap() emulates MAP_FIXED_NOREPLACE even when
-the host does not support it. However, such emulation is not possible
-if MAP_FIXED_NOREPLACE is defined as zero.
 
-Define MAP_FIXED_NOREPLACE with the real value instead of zero if it is
-not defined.
+Mikhail Tyutin <m.tyutin@yadro.com> writes:
 
-Fixes: e69e032d1a ("linux-user: Use MAP_FIXED_NOREPLACE for do_brk()")
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
- include/qemu/osdep.h | 8 ++++++--
- linux-user/elfload.c | 1 -
- 2 files changed, 6 insertions(+), 3 deletions(-)
+> Initially, we can only call the callback BEFORE instructions. This
+> commit adds the ability to insert the callback AFTER instructions.
 
-diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
-index cc61b00ba9..6c1050afcd 100644
---- a/include/qemu/osdep.h
-+++ b/include/qemu/osdep.h
-@@ -289,8 +289,12 @@ void QEMU_ERROR("code path is reachable")
- #ifndef MAP_ANONYMOUS
- #define MAP_ANONYMOUS MAP_ANON
- #endif
--#ifndef MAP_FIXED_NOREPLACE
--#define MAP_FIXED_NOREPLACE 0
-+#if defined(__linux__) && !defined(MAP_FIXED_NOREPLACE)
-+#if MAP_HUGETLB == 0x100000
-+#define MAP_FIXED_NOREPLACE 0x200000
-+#else
-+#define MAP_FIXED_NOREPLACE 0x100000
-+#endif
- #endif
- #ifndef MAP_NORESERVE
- #define MAP_NORESERVE 0
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 36e4026f05..9d9c79a653 100644
---- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -2807,7 +2807,6 @@ static void pgb_reserved_va(const char *image_name, abi_ulong guest_loaddr,
-     /* Widen the "image" to the entire reserved address space. */
-     pgb_static(image_name, 0, reserved_va, align);
- 
--    /* osdep.h defines this as 0 if it's missing */
-     flags |= MAP_FIXED_NOREPLACE;
- 
-     /* Reserve the memory on the host. */
--- 
-2.41.0
+What is the use case for this? Because:
 
+<snip>
+>=20=20
+> +
+> +        /* Stop translation if translate_insn so indicated.  */
+> +        if (db->is_jmp !=3D DISAS_NEXT) {
+> +            break;
+> +        }
+> +
+>          /*
+>           * We can't instrument after instructions that change control
+>           * flow although this only really affects post-load operations.
+> @@ -193,11 +199,6 @@ void translator_loop(CPUState *cpu, TranslationBlock=
+ *tb, int *max_insns,
+>              plugin_gen_insn_end();
+>          }
+>=20=20
+> -        /* Stop translation if translate_insn so indicated.  */
+> -        if (db->is_jmp !=3D DISAS_NEXT) {
+> -            break;
+> -        }
+> -
+>          /* Stop translation if the output buffer is full,
+>             or we have executed all of the allowed instructions.  */
+>          if (tcg_op_buf_full() || db->num_insns >=3D db->max_insns) {
+> @@ -211,6 +212,13 @@ void translator_loop(CPUState *cpu, TranslationBlock=
+ *tb, int *max_insns,
+>      gen_tb_end(tb, cflags, icount_start_insn, db->num_insns);
+>=20=20
+>      if (plugin_enabled) {
+> +        /*
+> +         * Last chance to call plugin_gen_insn_end() if is skipped in tr=
+anslation
+> +         * loop above.
+> +         */
+> +        if (db->is_jmp !=3D DISAS_NEXT && tcg_ctx->exitreq_label =3D=3D =
+NULL) {
+> +            plugin_gen_insn_end();
+> +        }
+>          plugin_gen_tb_end(cpu);
+>      }
+>=20=20
+<snip>
+> --- a/tcg/tcg-op.c
+> +++ b/tcg/tcg-op.c
+> @@ -2819,6 +2819,22 @@ void tcg_gen_exit_tb(const TranslationBlock *tb, u=
+nsigned idx)
+>          tcg_debug_assert(idx =3D=3D TB_EXIT_REQUESTED);
+>      }
+>=20=20
+> +#ifdef CONFIG_PLUGIN
+> +    /*
+> +     * Some of instruction generators insert exit_tb explicitelly to
+> +     * trigger early exit from translation block. On the other hand
+> +     * translation loop (translator_loop()) inserts plugin callbacks
+> +     * after instruction is generated, but it appears as dead code
+> +     * because of the explicit exit_tb insert.
+> +     *
+> +     * Calling plugin_gen_insn_end() here before the exit allows
+> +     * plugins to receive control before translation block exits.
+> +     */
+> +    if (tcg_ctx->plugin_insn) {
+> +        plugin_gen_insn_end();
+> +    }
+> +#endif
+> +
+
+This isn't enough as we can exit the run loop in helpers. This is why
+the execlog plugin jumps the hoops it does to complete handling of
+execution on the next instruction.
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
