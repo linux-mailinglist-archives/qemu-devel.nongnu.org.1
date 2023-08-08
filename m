@@ -2,68 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88578774493
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 20:23:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB9177744E2
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 20:31:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTRM2-0001bZ-2Z; Tue, 08 Aug 2023 14:22:50 -0400
+	id 1qTRSa-0003q8-FM; Tue, 08 Aug 2023 14:29:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qTRM0-0001b7-39
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 14:22:48 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qTRLy-0007CU-DJ
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 14:22:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691518965;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=QHit0S0PhhvRox7Lb71Ry+hOMA/x1L/JfmotQT3Rctg=;
- b=cq2f3aNtVPQSekiz9sU/6VFC7sP1wQZ3Apuz6aHe014D9W/TJ3ph8bBr+XoRD2dlBnvpwj
- tn/jm2nuHSsS6yaeUsh/7+BXNkV+yTet5Fz7lP0h5eJ8RfwqrwNakAkuw8qkgcQ8Xc9Zw3
- 3V5GO9HZ2jl8LCGwUTkymVhISM41RTQ=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-168-hlGbWSqzME2l18jP-YkeEw-1; Tue, 08 Aug 2023 14:22:42 -0400
-X-MC-Unique: hlGbWSqzME2l18jP-YkeEw-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 97672101A528;
- Tue,  8 Aug 2023 18:22:41 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.16.35])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id A1A37492C3A;
- Tue,  8 Aug 2023 18:22:40 +0000 (UTC)
-Date: Tue, 8 Aug 2023 13:22:38 -0500
-From: Eric Blake <eblake@redhat.com>
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>, 
- Fam Zheng <fam@euphon.net>, qemu-block@nongnu.org,
- Hanna Reitz <hreitz@redhat.com>
-Subject: Re: [PATCH 2/2] block: change reqs_lock to QemuMutex
-Message-ID: <s674pkvwn3as5r3aitrnvddtsofxo2gtfv26npz5y54uk34yew@oplkvzdeqkut>
-References: <20230808155852.2745350-1-stefanha@redhat.com>
- <20230808155852.2745350-3-stefanha@redhat.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qTRSX-0003oZ-OS
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 14:29:33 -0400
+Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qTRSW-0000An-6e
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 14:29:33 -0400
+Received: by mail-pj1-x1034.google.com with SMTP id
+ 98e67ed59e1d1-268bc714ce0so108248a91.0
+ for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 11:29:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1691519371; x=1692124171;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=4kHWk1Q/PwN6qB7mVj6UYl8MgVcJoJIge7LSkKO3CLA=;
+ b=l5tDsM4OtOYBiLPKptKxx/NdwtkTcC7xszTzEVjKs69G3R5PptbK/2oHsmyVpNe+2e
+ 1vleMkxIRCpOxVeycMQNBdA3PqQdIuYGx5YHYu/+SODH9ybKWUxBcKFzo3hUFhYMM/0z
+ 1oPUY5PnhBKynlB9mCMu1jt/2Si1ldEKYu9Ps2U/SeJU2yLFTBULRudDhzaqjzsqK2CL
+ d60m4DiQTdWkU70MG1b9aXLasi4c9ETS3+6yslk0SRJ0A1gcyt7qFWkt3vB9qIRRsDrX
+ YkLohBvLVhhW+0Ia4aTdAFNpwcCF+citvyed+hbGNQYcUdCK0yfWpJsgVwsgVq1mwYK1
+ UOBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1691519371; x=1692124171;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=4kHWk1Q/PwN6qB7mVj6UYl8MgVcJoJIge7LSkKO3CLA=;
+ b=fk8be3RAdirQ/eTnw6TDd3Dgv93OfIUlAC0UBvGrqpWx8f6qPU7KZoBjK9+6Eq543/
+ 8eiAnYk2cvF6JnSskommQjPCw15xPnOfy2SDXHdANc+pOmlaOUApKibR/vxsv5rmbOsG
+ SIQj5DDiEJuLMQb2e1f5B4PakS3C20oWaheXKvKqiDLnLvf4S2CCDIpTvNfRcbfZoUgP
+ MwH629IX9E73CpyPIYiFMxnedeH41dMUp8FEqsbj+MKIt9GmlAFYduHVpajERqhdXAgt
+ uskAV9mBCyXCVymnWzNERGFNvrcE6BXZB2uxZXFcD8qOnFoZ131DoYShun/8vqD9cfVp
+ DjKg==
+X-Gm-Message-State: AOJu0YxZIQyJNgR0qzrdzGDcvWl9eXOyjk5Hqk4ME/Yi9FMMEX0QKr4t
+ O+vKG+PhN8SPlQOOfl2CIYnqqg==
+X-Google-Smtp-Source: AGHT+IEsJgrw/6BA6rQZa9O1U4/sRhMZalF/HQMd48zsbQ+SQIL91virR7oX8XIFzvQtfQMuX+wabw==
+X-Received: by 2002:a17:90a:480a:b0:268:5b19:c35e with SMTP id
+ a10-20020a17090a480a00b002685b19c35emr12847168pjh.6.1691519370676; 
+ Tue, 08 Aug 2023 11:29:30 -0700 (PDT)
+Received: from ?IPV6:2602:47:d490:6901:63dc:2a47:f4bc:4a95?
+ ([2602:47:d490:6901:63dc:2a47:f4bc:4a95])
+ by smtp.gmail.com with ESMTPSA id
+ b11-20020a63714b000000b005633778becasm7086446pgn.41.2023.08.08.11.29.30
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 08 Aug 2023 11:29:30 -0700 (PDT)
+Message-ID: <0938f9c9-98a4-7238-c644-3eebd8964f87@linaro.org>
+Date: Tue, 8 Aug 2023 11:29:28 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230808155852.2745350-3-stefanha@redhat.com>
-User-Agent: NeoMutt/20230517
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 1/2] riscv: zicond: make non-experimental
+Content-Language: en-US
+To: Vineet Gupta <vineetg@rivosinc.com>, qemu-devel@nongnu.org,
+ qemu-riscv@nongnu.org
+Cc: kito.cheng@gmail.com, Jeff Law <jeffreyalaw@gmail.com>,
+ Palmer Dabbelt <palmer@rivosinc.com>
+References: <20230808181715.436395-1-vineetg@rivosinc.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230808181715.436395-1-vineetg@rivosinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1034;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1034.google.com
+X-Spam_score_int: -61
+X-Spam_score: -6.2
+X-Spam_bar: ------
+X-Spam_report: (-6.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-4.14,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,45 +97,13 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Aug 08, 2023 at 11:58:52AM -0400, Stefan Hajnoczi wrote:
-> CoMutex has poor performance when lock contention is high. The tracked
-> requests list is accessed frequently and performance suffers in QEMU
-> multi-queue block layer scenarios.
-> 
-> It is not necessary to use CoMutex for the requests lock. The lock is
-> always released across coroutine yield operations. It is held for
-> relatively short periods of time and it is not beneficial to yield when
-> the lock is held by another coroutine.
-> 
-> Change the lock type from CoMutex to QemuMutex to improve multi-queue
-> block layer performance. fio randread bs=4k iodepth=64 with 4 IOThreads
-> handling a virtio-blk device with 8 virtqueues improves from 254k to
-> 517k IOPS (+203%). Full benchmark results and configuration details are
-> available here:
-> https://gitlab.com/stefanha/virt-playbooks/-/commit/980c40845d540e3669add1528739503c2e817b57
+On 8/8/23 11:17, Vineet Gupta wrote:
+> zicond is now codegen supported in both llvm and gcc.
 
-Nice!
+It is still not in
 
-> 
-> In the future we may wish to introduce thread-local tracked requests
-> lists to avoid lock contention completely. That would be much more
-> involved though.
+https://wiki.riscv.org/display/HOME/Recently+Ratified+Extensions
 
-Indeed.
 
-> 
-> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-> ---
->  include/block/block_int-common.h |  2 +-
->  block.c                          |  4 +++-
->  block/io.c                       | 24 ++++++++++++------------
->  3 files changed, 16 insertions(+), 14 deletions(-)
-
-Reviewed-by: Eric Blake <eblake@redhat.com>
-
--- 
-Eric Blake, Principal Software Engineer
-Red Hat, Inc.
-Virtualization:  qemu.org | libguestfs.org
-
+r~
 
