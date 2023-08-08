@@ -2,79 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5856C773A06
+	by mail.lfdr.de (Postfix) with ESMTPS id 35788773A04
 	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 14:04:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTLR6-0007tE-9m; Tue, 08 Aug 2023 08:03:40 -0400
+	id 1qTLRS-00082J-4W; Tue, 08 Aug 2023 08:04:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qTLR4-0007sF-J6
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 08:03:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1qTLRJ-00081W-2w
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 08:03:53 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qTLR2-00035h-CN
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 08:03:38 -0400
+ id 1qTLRC-00039R-Ri
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 08:03:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691496212;
+ s=mimecast20190719; t=1691496226;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=JdOxGm3VPCwEzl5Hd1ShKJnELtD7UVW40tUG2cvgEew=;
- b=iTS+8AemfnCtbGY5xtk4VxBirl9xXTwKsY5AOObqCduiD7/8SB9xrBxQcsNjJGazTtW6BJ
- bL4DiBIh9wo1iqucJmhLJN5IzmkS5Xe0o7Vj2Y6ercMcPZaU17VO4pNj3DaoXujPKrxL7d
- syraCxZ1qe3zG0Ksv0GLTCw5k748q4s=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=xDpiSRBkRVqIOjZj8B0XMEbI4X90+GIWA1+GsNLrDD4=;
+ b=GEOr7DQbLloN4QI2LzCN+XdZYMUxOrRtZEj0uygg/ky8TsGeQLZHm5ZZJ3Opcef05Ev2iT
+ rbRhQRs3p+hzrZHrhTLxs3TYI69Q6abgF9MC0+H7yhQG2C13DQ34VcNKW213w+r2Ny0+6q
+ WVkTlyK41Tlz0t9IAWICcGiyhXmFLR4=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-55-VpCuc0w0MfO1En3xbixvgw-1; Tue, 08 Aug 2023 08:03:30 -0400
-X-MC-Unique: VpCuc0w0MfO1En3xbixvgw-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-3fe517ca810so16458465e9.0
- for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 05:03:30 -0700 (PDT)
+ us-mta-616-tg3ilEuXPtOA6cBg3apq5A-1; Tue, 08 Aug 2023 08:03:44 -0400
+X-MC-Unique: tg3ilEuXPtOA6cBg3apq5A-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-3178e3f46b1so2593392f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 05:03:44 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691496209; x=1692101009;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=JdOxGm3VPCwEzl5Hd1ShKJnELtD7UVW40tUG2cvgEew=;
- b=Jh1v6fXx8rmdwEP7dU+ReY0FmK7IIG8D/pSNc3XrcbHWBQLQiljDjNyPLmkWyBA4rZ
- LIbqR0fURSQ8bsFZxmLyZkUgwOP5TZYqVqzBcvHWAlMYnfblovuGkZbPLWkaY+wuS956
- IteJRAJ4yxGxP946i67TInQzxDCI3XAHphJyYPN9/oSqrQegV0Kf3G8m03JrUokoZ3xJ
- 9+ZwPBCNbNz+oC2yLgp7/QgxKO6mI/xGRpLh22i5lQrfGZwFz5eY+ytEXhMor/YK5lFt
- U2w+Cr8+BixzXilY474uiSiLtS9scvfk8mPMNF0W+wSPURyhUOfdmpJY13PT2UE4rJMN
- x9wQ==
-X-Gm-Message-State: AOJu0YxPANlqXnoscmquhYEDF5Qt2G44YHh8rccDdkVyeu+A/eyXLoXE
- QBUA9DWby1QZBVobsvhfqhHA03Nc8lRdwwpDpmXcTReY88vnSI/dpUll4H3JlYDqLWGNY3FkwLi
- d1wnIkLVHuojZ5GoW5OdagF9O1T8GcRgF4KnAQwGqMr1QMeTresX02o1kUYZen0yuCLxsrhULWT
- k=
-X-Received: by 2002:a1c:6a1a:0:b0:3fe:2813:6130 with SMTP id
- f26-20020a1c6a1a000000b003fe28136130mr7623437wmc.22.1691496208812; 
- Tue, 08 Aug 2023 05:03:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE7/25F2o7zfL4Uon/XI4BcEBKmROEVKyqUqAfzaUlpHz2JpqRVQzE5764go2tPCFeVzV4yfg==
-X-Received: by 2002:a1c:6a1a:0:b0:3fe:2813:6130 with SMTP id
- f26-20020a1c6a1a000000b003fe28136130mr7623418wmc.22.1691496208460; 
- Tue, 08 Aug 2023 05:03:28 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1691496222; x=1692101022;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=xDpiSRBkRVqIOjZj8B0XMEbI4X90+GIWA1+GsNLrDD4=;
+ b=DrCNYhWd+GUIx67EbZqsOn8vJCEBz8Jzt+JUk8SFqpomupOK7kqJoZTssLCvJfGwwv
+ BhK976yIl6FkBxugpvlIx1x1+gRsWHPJozlCai4CEnX1t1Bs/tEjTBOP6BEBB3iktGpq
+ KcY6HVN59RJ8RrRiI4lIe9aN5Zud1anhdcOlypPYzy76fg2+izABhhj2gwHd7cl/jy7O
+ NJduj1QHYt3bmhTAznlj0Xv5nvYcaNwQHfKzYlUvQLEe7UvnMop1AH2Ysgo19KIGR+H5
+ YQ4ebo3aS8wuvrmZhsCM8HRckjlxZiZeK/uvJQfrsz/5EeAUdHRt08YcQlVNBVUBWpwr
+ iGAg==
+X-Gm-Message-State: AOJu0YxLYMMMVTXazmOaQgUSHbdMhQ6pe1sQbBwpCmOG6M7+fvtyydGW
+ iDxB7yVAvLwuUG7yDFHB1lQjwnSRimXbqd+MluPA1uKGn4wlD5U7O+V1Iwr3GXjhgPzMjRKTATf
+ 8sQM9MLuN77I2ESyY9+OiMIfwln9dlEkM0e5LB+Kzb4Qje5Uzz3RObmDHrMwgYYfnikroqn5u5+
+ g=
+X-Received: by 2002:a05:6000:1181:b0:317:6ef1:7939 with SMTP id
+ g1-20020a056000118100b003176ef17939mr7772936wrx.23.1691496222283; 
+ Tue, 08 Aug 2023 05:03:42 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFIgDgzlMclEIz0rlVCg0h5X+27y1d4LDVob7n4SlPtPAmLQGnftCUwGjEsVQloDy1XeSFiIA==
+X-Received: by 2002:a05:6000:1181:b0:317:6ef1:7939 with SMTP id
+ g1-20020a056000118100b003176ef17939mr7772910wrx.23.1691496221727; 
+ Tue, 08 Aug 2023 05:03:41 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e])
  by smtp.gmail.com with ESMTPSA id
- 22-20020a05600c22d600b003fe2de3f94fsm13574137wmg.12.2023.08.08.05.03.06
+ k2-20020adfe8c2000000b00317ddccb0d1sm9560839wrn.24.2023.08.08.05.03.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 08 Aug 2023 05:03:17 -0700 (PDT)
+ Tue, 08 Aug 2023 05:03:38 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org,
-	iii@linux.ibm.com
-Subject: [PATCH v2 0/3] linux-user, configure: fix CPU canonicalization
-Date: Tue,  8 Aug 2023 14:03:00 +0200
-Message-ID: <20230808120303.585509-1-pbonzini@redhat.com>
+Cc: peter.maydell@linaro.org, iii@linux.ibm.com,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PATCH v2 1/3] configure: fix detection for x32 linux-user
+Date: Tue,  8 Aug 2023 14:03:01 +0200
+Message-ID: <20230808120303.585509-2-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230808120303.585509-1-pbonzini@redhat.com>
+References: <20230808120303.585509-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -98,40 +101,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The CPU model has to be canonicalized to what Meson wants in the cross
-file, to what Linux uses for its asm-$ARCH directories, and to what
-QEMU uses for its user-mode emulation host/$ARCH directories.  Do
-all three in a single case statement, and check that the Linux and
-QEMU directories actually exist.
+x32 uses the same signal handling fragments as x86_64, since host_arch
+is set to x86_64 when Meson runs.  Remove the unnecessary forwarder and
+set the host_arch variable properly in configure.
 
-At a small cost in repeated lines, this ensures that there are no hidden
-ordering requirements between the case statements.  In particular, commit
-89e5b7935e9 ("configure: Fix linux-user host detection for riscv64",
-2023-08-06) broke ppc64le because it assigned host_arch based on a
-non-canonicalized version of $cpu.
-
-While doing this, I noticed that linux-user won't work on x32, alpha
-and 32-bit s390 these days, due to missing common-user/ fragments.
-The first two patches clean up the directories.
-
-v1->v2: fix s390x compilation; rearrange case terminators
-
-
-Paolo Bonzini (3):
-  configure: fix detection for x32 linux-user
-  linux-user: cleanup unused linux-user/include/host directories
-  configure: unify case statements for CPU canonicalization
-
- configure                                   | 173 ++++++++++++--------
- linux-user/include/host/alpha/host-signal.h |  55 -------
- linux-user/include/host/s390/host-signal.h  | 138 ----------------
- linux-user/include/host/s390x/host-signal.h | 139 +++++++++++++++-
- linux-user/include/host/x32/host-signal.h   |   1 -
- 5 files changed, 240 insertions(+), 266 deletions(-)
- delete mode 100644 linux-user/include/host/alpha/host-signal.h
- delete mode 100644 linux-user/include/host/s390/host-signal.h
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ configure                                 | 2 ++
+ linux-user/include/host/x32/host-signal.h | 1 -
+ 2 files changed, 2 insertions(+), 1 deletion(-)
  delete mode 100644 linux-user/include/host/x32/host-signal.h
 
+diff --git a/configure b/configure
+index 98dc78280e6..484d38d81f4 100755
+--- a/configure
++++ b/configure
+@@ -472,6 +472,8 @@ fi
+ case "$cpu" in
+   riscv*)
+     host_arch=riscv ;;
++  x32)
++    host_arch=x86_64 ;;
+   *)
+     host_arch="$cpu" ;;
+ esac
+diff --git a/linux-user/include/host/x32/host-signal.h b/linux-user/include/host/x32/host-signal.h
+deleted file mode 100644
+index 26800591d3b..00000000000
+--- a/linux-user/include/host/x32/host-signal.h
++++ /dev/null
+@@ -1 +0,0 @@
+-#include "../x86_64/host-signal.h"
 -- 
 2.41.0
 
