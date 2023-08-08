@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 070DE7737D4
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C5A57737D6
 	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 06:21:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTEDU-000789-3Q; Tue, 08 Aug 2023 00:21:08 -0400
+	id 1qTEDa-00079F-3U; Tue, 08 Aug 2023 00:21:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qTEDS-00077g-4Z; Tue, 08 Aug 2023 00:21:06 -0400
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ id 1qTEDX-00078x-57; Tue, 08 Aug 2023 00:21:11 -0400
+Received: from mail-oi1-x230.google.com ([2607:f8b0:4864:20::230])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qTEDQ-0007ml-DC; Tue, 08 Aug 2023 00:21:05 -0400
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-687ca37628eso798907b3a.1; 
- Mon, 07 Aug 2023 21:21:03 -0700 (PDT)
+ id 1qTEDV-0007nP-AE; Tue, 08 Aug 2023 00:21:10 -0400
+Received: by mail-oi1-x230.google.com with SMTP id
+ 5614622812f47-3a4875e65a3so3641896b6e.2; 
+ Mon, 07 Aug 2023 21:21:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1691468463; x=1692073263;
+ d=gmail.com; s=20221208; t=1691468467; x=1692073267;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=4E2HOZjazPZHARfPvsKQ/WSbla5XrPKfruoE7y4VFWg=;
- b=Vhy9EVvi/2EeLXYpJAysbLLbrrqruoJkLs31XrB+ubay8RxDLkofDi8enQKWnchyZR
- aRN7qGJ9fOaEjJm1a7dl+tfweXMqpQXlCO77KoT75gp/pwxwB82VipexZ+x5/36CTAB9
- rPrFyyYiLHvdt4G1uijXROIW8Qsnj3ELRL8J9xLB+7Kj31dZksdzPilXC6UT5cndJBkI
- 1V1Xg8vrzddTgNa/sEwLw7jdhbI3L9m3abYMRfMjhT/SZd91XI95orn+Yi/68F0CLJ1M
- DvwnMG3JyUGEL0Vv3DJ2HYhFQg7qkHZE80jjMNXWofW0oR4t2tFtai/BA4lYeTT/540E
- xaXQ==
+ bh=UCnCdFj9EuliCkE/oMkl/TySBNxO/JoW1C8ZeaibWDg=;
+ b=iXECEEG+QZVy5rAtkW/kmbtBGE15pkDa2nDAO2WOqQR+cTK4skh8bnKBodBAYK+ac1
+ LD++KTt7VDb1wMWNXaGoJ0RRBuz+x75cmhp7EP+grbnvZBZ2QHrrtj/hNRIkaHQ+CqZd
+ wMa1cjtXrixqVgS2TRepaKJkHB1bhxTQBBWheKAYCa2IgsRw6rHB0Qe2Xc5wr8/ndqHW
+ OJBOnxCirNUEmnSE2yssPPP+Bj57ISMqP7yiJfShsUb9OlvIyY/PmZSOavm8tIS+EAJM
+ /eh55uPTNGtHJuUyH+F/5EzG5nSGM5+2dJuS6hSGRXCnXZBrF50euv/KBzF5wuvUc5jj
+ lnWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691468463; x=1692073263;
+ d=1e100.net; s=20221208; t=1691468467; x=1692073267;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4E2HOZjazPZHARfPvsKQ/WSbla5XrPKfruoE7y4VFWg=;
- b=L/OMtaDQb7jjXLVRkVHSQ+Rp1xpCHhZGQHlvsNeP2WP1yEfvbHWTl8aaADbRjza01w
- YBKDaLgAFzrSLHJ1gT7gha2t95AYt18FxQFRV66z6pRsxwCF80DRfhop04Q9YJSoBIDb
- SREeg+1634WkAulfqPjrVRbGTWvjWf5WMsu0lWGf9oomOpluR6Mzkw7YATpsg69RIw4e
- tqGZE3dnkdUB+j5QDIIlrjNVZtDJoCf6PrC1zcJu7srX/z29Xg94T3KTplCpfLae+lqj
- qky0ux2vn+0zk3rWz70KnYqwcoag6PwzQakm+t1GDJxj4m1/DSfuInhzinCNCHNWCOkE
- eFbA==
-X-Gm-Message-State: AOJu0YwREy5o5hlnAltvRiZQo6ptGtW8ipE9EOo/tIVq8LT58i2ce3SS
- htr8af8MNmsh/HEnmq7Ad+c=
-X-Google-Smtp-Source: AGHT+IHdw1TjEAx++ylXkfWcODFEWRN8r73/dqPFCE4T/hdLTeDdZ4G+tAM7siWGLFzvo4CPkUL8oQ==
-X-Received: by 2002:a05:6a20:7495:b0:130:f6bc:9146 with SMTP id
- p21-20020a056a20749500b00130f6bc9146mr13925261pzd.14.1691468462867; 
- Mon, 07 Aug 2023 21:21:02 -0700 (PDT)
+ bh=UCnCdFj9EuliCkE/oMkl/TySBNxO/JoW1C8ZeaibWDg=;
+ b=BVNbK2VBWgW1TD0vn7nU5o5bIcOrVh6pHL7dlin/fSvOJ1av17nJZdc7Td2PjruIp/
+ letbCYLE7q7f6e091VuTeQNzlbqHFXqbah2lVw/2lCO1NBSUXzYbbZ9t2uqKSPbWWQ5s
+ pOPaFYNFMUK8Xad/5vPXbmvcISPhFQwj1SFd5jmqlgXdPWLMO41cZkOcsGqtwpjl9wsu
+ mCPSyBl/QVz45gmDre0QJnmzdstvXyWelVSagKjJPmDLUyLuIaTgl6tVI74UBltvjPwe
+ ZtCXG3B/TbBAvM6FjGhRGXk1jtia2OL0F2KmmbllgjghU7xN5fU328/F5B2r2D/AyZiU
+ alkg==
+X-Gm-Message-State: AOJu0YxZ/LMzsqS3whOn/LSjwDqQYqZ26xi3m7ORKP2MTOCtJlMaHweP
+ 7ET7qZQnnluhCmpkGpN1M40=
+X-Google-Smtp-Source: AGHT+IFzAfKVf2yM7fO5eJWk4udIsyh6rXjOdPzaDJFrSbp/bq9k9BngCcZ9yjAOPI7hS32ErM6L0w==
+X-Received: by 2002:a05:6808:bd5:b0:3a7:3ce0:1ae5 with SMTP id
+ o21-20020a0568080bd500b003a73ce01ae5mr15162867oik.47.1691468467467; 
+ Mon, 07 Aug 2023 21:21:07 -0700 (PDT)
 Received: from wheely.local0.net (61-68-137-140.tpgi.com.au. [61.68.137.140])
  by smtp.gmail.com with ESMTPSA id
- fk10-20020a056a003a8a00b0068718f6a035sm6979207pfb.33.2023.08.07.21.20.57
+ fk10-20020a056a003a8a00b0068718f6a035sm6979207pfb.33.2023.08.07.21.21.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 07 Aug 2023 21:21:02 -0700 (PDT)
+ Mon, 07 Aug 2023 21:21:07 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: Daniel Henrique Barboza <danielhb413@gmail.com>
 Cc: Nicholas Piggin <npiggin@gmail.com>,
@@ -62,18 +62,18 @@ Cc: Nicholas Piggin <npiggin@gmail.com>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>,
  Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
  Paolo Bonzini <pbonzini@redhat.com>, qemu-ppc@nongnu.org,
- qemu-devel@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH v2 11/19] hw/ppc: Reset timebase facilities on machine reset
-Date: Tue,  8 Aug 2023 14:19:53 +1000
-Message-Id: <20230808042001.411094-12-npiggin@gmail.com>
+ qemu-devel@nongnu.org
+Subject: [PATCH v2 12/19] hw/ppc: Read time only once to perform decrementer
+ write
+Date: Tue,  8 Aug 2023 14:19:54 +1000
+Message-Id: <20230808042001.411094-13-npiggin@gmail.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230808042001.411094-1-npiggin@gmail.com>
 References: <20230808042001.411094-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x42e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::230;
+ envelope-from=npiggin@gmail.com; helo=mail-oi1-x230.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,173 +96,225 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Lower interrupts, delete timers, and set time facility registers
-back to initial state on machine reset.
+Reading the time more than once to perform an operation always increases
+complexity and fragility due to introduced deltas. Simplify the
+decrementer write by reading the clock once for the operation.
 
-This is not so important for record-replay since timebase and
-decrementer are migrated, but it gives a cleaner reset state.
-
-Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Cc: BALATON Zoltan <balaton@eik.bme.hu>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/ppc/mac_oldworld.c   |  1 +
- hw/ppc/pegasos2.c       |  1 +
- hw/ppc/pnv_core.c       |  2 ++
- hw/ppc/ppc.c            | 46 +++++++++++++++++++++++------------------
- hw/ppc/prep.c           |  1 +
- hw/ppc/spapr_cpu_core.c |  2 ++
- include/hw/ppc/ppc.h    |  3 ++-
- 7 files changed, 35 insertions(+), 21 deletions(-)
+ hw/ppc/ppc.c | 84 +++++++++++++++++++++++++++++++++-------------------
+ 1 file changed, 53 insertions(+), 31 deletions(-)
 
-diff --git a/hw/ppc/mac_oldworld.c b/hw/ppc/mac_oldworld.c
-index 510ff0eaaf..9acc7adfc9 100644
---- a/hw/ppc/mac_oldworld.c
-+++ b/hw/ppc/mac_oldworld.c
-@@ -81,6 +81,7 @@ static void ppc_heathrow_reset(void *opaque)
- {
-     PowerPCCPU *cpu = opaque;
- 
-+    cpu_ppc_tb_reset(&cpu->env);
-     cpu_reset(CPU(cpu));
- }
- 
-diff --git a/hw/ppc/pegasos2.c b/hw/ppc/pegasos2.c
-index 075367d94d..bd397cf2b5 100644
---- a/hw/ppc/pegasos2.c
-+++ b/hw/ppc/pegasos2.c
-@@ -99,6 +99,7 @@ static void pegasos2_cpu_reset(void *opaque)
-         cpu->env.gpr[1] = 2 * VOF_STACK_SIZE - 0x20;
-         cpu->env.nip = 0x100;
-     }
-+    cpu_ppc_tb_reset(&cpu->env);
- }
- 
- static void pegasos2_pci_irq(void *opaque, int n, int level)
-diff --git a/hw/ppc/pnv_core.c b/hw/ppc/pnv_core.c
-index 9b39d527de..8c7afe037f 100644
---- a/hw/ppc/pnv_core.c
-+++ b/hw/ppc/pnv_core.c
-@@ -61,6 +61,8 @@ static void pnv_core_cpu_reset(PnvCore *pc, PowerPCCPU *cpu)
-     hreg_compute_hflags(env);
-     ppc_maybe_interrupt(env);
- 
-+    cpu_ppc_tb_reset(env);
-+
-     pcc->intc_reset(pc->chip, cpu);
- }
- 
 diff --git a/hw/ppc/ppc.c b/hw/ppc/ppc.c
-index d9a1cfbf91..f391acc39e 100644
+index f391acc39e..a0ee064b1d 100644
 --- a/hw/ppc/ppc.c
 +++ b/hw/ppc/ppc.c
-@@ -944,23 +944,6 @@ void cpu_ppc_store_purr(CPUPPCState *env, uint64_t value)
-                      &tb_env->purr_offset, value);
+@@ -708,13 +708,13 @@ bool ppc_decr_clear_on_delivery(CPUPPCState *env)
+     return ((tb_env->flags & flags) == PPC_DECR_UNDERFLOW_TRIGGERED);
  }
  
--static void cpu_ppc_set_tb_clk (void *opaque, uint32_t freq)
--{
--    CPUPPCState *env = opaque;
--    PowerPCCPU *cpu = env_archcpu(env);
--    ppc_tb_t *tb_env = env->tb_env;
--
--    tb_env->tb_freq = freq;
--    tb_env->decr_freq = freq;
--    /* There is a bug in Linux 2.4 kernels:
--     * if a decrementer exception is pending when it enables msr_ee at startup,
--     * it's not ready to handle it...
--     */
--    _cpu_ppc_store_decr(cpu, 0xFFFFFFFF, 0xFFFFFFFF, 32);
--    _cpu_ppc_store_hdecr(cpu, 0xFFFFFFFF, 0xFFFFFFFF, 32);
--    cpu_ppc_store_purr(env, 0x0000000000000000ULL);
--}
--
- static void timebase_save(PPCTimebase *tb)
+-static inline int64_t _cpu_ppc_load_decr(CPUPPCState *env, uint64_t next)
++static inline int64_t __cpu_ppc_load_decr(CPUPPCState *env, int64_t now,
++                                          uint64_t next)
  {
-     uint64_t ticks = cpu_get_host_ticks();
-@@ -1062,7 +1045,7 @@ const VMStateDescription vmstate_ppc_timebase = {
- };
+     ppc_tb_t *tb_env = env->tb_env;
+-    uint64_t now, n;
++    uint64_t n;
+     int64_t decr;
  
- /* Set up (once) timebase frequency (in Hz) */
--clk_setup_cb cpu_ppc_tb_init (CPUPPCState *env, uint32_t freq)
-+void cpu_ppc_tb_init(CPUPPCState *env, uint32_t freq)
+-    now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
+     n = ns_to_tb(tb_env->decr_freq, now);
+     if (next > n && tb_env->flags & PPC_TIMER_BOOKE) {
+         decr = 0;
+@@ -727,16 +727,12 @@ static inline int64_t _cpu_ppc_load_decr(CPUPPCState *env, uint64_t next)
+     return decr;
+ }
+ 
+-target_ulong cpu_ppc_load_decr(CPUPPCState *env)
++static target_ulong _cpu_ppc_load_decr(CPUPPCState *env, int64_t now)
  {
-     PowerPCCPU *cpu = env_archcpu(env);
-     ppc_tb_t *tb_env;
-@@ -1083,9 +1066,32 @@ clk_setup_cb cpu_ppc_tb_init (CPUPPCState *env, uint32_t freq)
-     } else {
-         tb_env->hdecr_timer = NULL;
-     }
--    cpu_ppc_set_tb_clk(env, freq);
+     ppc_tb_t *tb_env = env->tb_env;
+     uint64_t decr;
  
--    return &cpu_ppc_set_tb_clk;
-+    tb_env->tb_freq = freq;
-+    tb_env->decr_freq = freq;
+-    if (kvm_enabled()) {
+-        return env->spr[SPR_DECR];
+-    }
+-
+-    decr = _cpu_ppc_load_decr(env, tb_env->decr_next);
++    decr = __cpu_ppc_load_decr(env, now, tb_env->decr_next);
+ 
+     /*
+      * If large decrementer is enabled then the decrementer is signed extened
+@@ -750,14 +746,23 @@ target_ulong cpu_ppc_load_decr(CPUPPCState *env)
+     return (uint32_t) decr;
+ }
+ 
+-target_ulong cpu_ppc_load_hdecr(CPUPPCState *env)
++target_ulong cpu_ppc_load_decr(CPUPPCState *env)
++{
++    if (kvm_enabled()) {
++        return env->spr[SPR_DECR];
++    } else {
++        return _cpu_ppc_load_decr(env, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL));
++    }
 +}
 +
-+void cpu_ppc_tb_reset(CPUPPCState *env)
++static target_ulong _cpu_ppc_load_hdecr(CPUPPCState *env, int64_t now)
+ {
+     PowerPCCPU *cpu = env_archcpu(env);
+     PowerPCCPUClass *pcc = POWERPC_CPU_GET_CLASS(cpu);
+     ppc_tb_t *tb_env = env->tb_env;
+     uint64_t hdecr;
+ 
+-    hdecr =  _cpu_ppc_load_decr(env, tb_env->hdecr_next);
++    hdecr =  __cpu_ppc_load_decr(env, now, tb_env->hdecr_next);
+ 
+     /*
+      * If we have a large decrementer (POWER9 or later) then hdecr is sign
+@@ -771,6 +776,11 @@ target_ulong cpu_ppc_load_hdecr(CPUPPCState *env)
+     return (uint32_t) hdecr;
+ }
+ 
++target_ulong cpu_ppc_load_hdecr(CPUPPCState *env)
 +{
-+    PowerPCCPU *cpu = env_archcpu(env);
-+    ppc_tb_t *tb_env = env->tb_env;
++    return _cpu_ppc_load_hdecr(env, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL));
++}
 +
-+    timer_del(tb_env->decr_timer);
-+    ppc_set_irq(cpu, PPC_INTERRUPT_DECR, 0);
-+    tb_env->decr_next = 0;
-+    if (tb_env->hdecr_timer != NULL) {
-+        timer_del(tb_env->hdecr_timer);
-+        ppc_set_irq(cpu, PPC_INTERRUPT_HDECR, 0);
-+        tb_env->hdecr_next = 0;
+ uint64_t cpu_ppc_load_purr (CPUPPCState *env)
+ {
+     ppc_tb_t *tb_env = env->tb_env;
+@@ -815,7 +825,7 @@ static inline void cpu_ppc_hdecr_lower(PowerPCCPU *cpu)
+     ppc_set_irq(cpu, PPC_INTERRUPT_HDECR, 0);
+ }
+ 
+-static void __cpu_ppc_store_decr(PowerPCCPU *cpu, uint64_t *nextp,
++static void __cpu_ppc_store_decr(PowerPCCPU *cpu, int64_t now, uint64_t *nextp,
+                                  QEMUTimer *timer,
+                                  void (*raise_excp)(void *),
+                                  void (*lower_excp)(PowerPCCPU *),
+@@ -824,7 +834,7 @@ static void __cpu_ppc_store_decr(PowerPCCPU *cpu, uint64_t *nextp,
+ {
+     CPUPPCState *env = &cpu->env;
+     ppc_tb_t *tb_env = env->tb_env;
+-    uint64_t now, next;
++    uint64_t next;
+     int64_t signed_value;
+     int64_t signed_decr;
+ 
+@@ -836,18 +846,12 @@ static void __cpu_ppc_store_decr(PowerPCCPU *cpu, uint64_t *nextp,
+ 
+     trace_ppc_decr_store(nr_bits, decr, value);
+ 
+-    if (kvm_enabled()) {
+-        /* KVM handles decrementer exceptions, we don't need our own timer */
+-        return;
+-    }
+-
+     /*
+      * Calculate the next decrementer event and set a timer.
+      * decr_next is in timebase units to keep rounding simple. Note it is
+      * not adjusted by tb_offset because if TB changes via tb_offset changing,
+      * decrementer does not change, so not directly comparable with TB.
+      */
+-    now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
+     next = ns_to_tb(tb_env->decr_freq, now) + value;
+     *nextp = next; /* nextp is in timebase units */
+ 
+@@ -876,12 +880,13 @@ static void __cpu_ppc_store_decr(PowerPCCPU *cpu, uint64_t *nextp,
+     timer_mod(timer, tb_to_ns_round_up(tb_env->decr_freq, next));
+ }
+ 
+-static inline void _cpu_ppc_store_decr(PowerPCCPU *cpu, target_ulong decr,
+-                                       target_ulong value, int nr_bits)
++static inline void _cpu_ppc_store_decr(PowerPCCPU *cpu, int64_t now,
++                                       target_ulong decr, target_ulong value,
++                                       int nr_bits)
+ {
+     ppc_tb_t *tb_env = cpu->env.tb_env;
+ 
+-    __cpu_ppc_store_decr(cpu, &tb_env->decr_next, tb_env->decr_timer,
++    __cpu_ppc_store_decr(cpu, now, &tb_env->decr_next, tb_env->decr_timer,
+                          tb_env->decr_timer->cb, &cpu_ppc_decr_lower,
+                          tb_env->flags, decr, value, nr_bits);
+ }
+@@ -890,13 +895,22 @@ void cpu_ppc_store_decr(CPUPPCState *env, target_ulong value)
+ {
+     PowerPCCPU *cpu = env_archcpu(env);
+     PowerPCCPUClass *pcc = POWERPC_CPU_GET_CLASS(cpu);
++    int64_t now;
++    target_ulong decr;
+     int nr_bits = 32;
+ 
++    if (kvm_enabled()) {
++        /* KVM handles decrementer exceptions, we don't need our own timer */
++        return;
 +    }
 +
-+    /* There is a bug in Linux 2.4 kernels:
-+     * if a decrementer exception is pending when it enables msr_ee at startup,
-+     * it's not ready to handle it...
-+     */
-+    cpu_ppc_store_decr(env, -1);
-+    cpu_ppc_store_hdecr(env, -1);
-+    cpu_ppc_store_purr(env, 0x0000000000000000ULL);
+     if (env->spr[SPR_LPCR] & LPCR_LD) {
+         nr_bits = pcc->lrg_decr_bits;
+     }
+ 
+-    _cpu_ppc_store_decr(cpu, cpu_ppc_load_decr(env), value, nr_bits);
++    now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
++    decr = _cpu_ppc_load_decr(env, now);
++    _cpu_ppc_store_decr(cpu, now, decr, value, nr_bits);
  }
  
- void cpu_ppc_tb_free(CPUPPCState *env)
-diff --git a/hw/ppc/prep.c b/hw/ppc/prep.c
-index d9231c7317..f6fd35fcb9 100644
---- a/hw/ppc/prep.c
-+++ b/hw/ppc/prep.c
-@@ -67,6 +67,7 @@ static void ppc_prep_reset(void *opaque)
-     PowerPCCPU *cpu = opaque;
- 
-     cpu_reset(CPU(cpu));
-+    cpu_ppc_tb_reset(&cpu->env);
+ static void cpu_ppc_decr_cb(void *opaque)
+@@ -906,14 +920,15 @@ static void cpu_ppc_decr_cb(void *opaque)
+     cpu_ppc_decr_excp(cpu);
  }
  
+-static inline void _cpu_ppc_store_hdecr(PowerPCCPU *cpu, target_ulong hdecr,
+-                                        target_ulong value, int nr_bits)
++static inline void _cpu_ppc_store_hdecr(PowerPCCPU *cpu, int64_t now,
++                                        target_ulong hdecr, target_ulong value,
++                                        int nr_bits)
+ {
+     ppc_tb_t *tb_env = cpu->env.tb_env;
  
-diff --git a/hw/ppc/spapr_cpu_core.c b/hw/ppc/spapr_cpu_core.c
-index b482d9754a..91fae56573 100644
---- a/hw/ppc/spapr_cpu_core.c
-+++ b/hw/ppc/spapr_cpu_core.c
-@@ -74,6 +74,8 @@ static void spapr_reset_vcpu(PowerPCCPU *cpu)
+     if (tb_env->hdecr_timer != NULL) {
+         /* HDECR (Book3S 64bit) is edge-based, not level like DECR */
+-        __cpu_ppc_store_decr(cpu, &tb_env->hdecr_next, tb_env->hdecr_timer,
++        __cpu_ppc_store_decr(cpu, now, &tb_env->hdecr_next, tb_env->hdecr_timer,
+                              tb_env->hdecr_timer->cb, &cpu_ppc_hdecr_lower,
+                              PPC_DECR_UNDERFLOW_TRIGGERED,
+                              hdecr, value, nr_bits);
+@@ -924,9 +939,12 @@ void cpu_ppc_store_hdecr(CPUPPCState *env, target_ulong value)
+ {
+     PowerPCCPU *cpu = env_archcpu(env);
+     PowerPCCPUClass *pcc = POWERPC_CPU_GET_CLASS(cpu);
++    int64_t now;
++    target_ulong hdecr;
  
-     kvm_check_mmu(cpu, &error_fatal);
+-    _cpu_ppc_store_hdecr(cpu, cpu_ppc_load_hdecr(env), value,
+-                         pcc->lrg_decr_bits);
++    now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
++    hdecr = _cpu_ppc_load_hdecr(env, now);
++    _cpu_ppc_store_hdecr(cpu, now, hdecr, value, pcc->lrg_decr_bits);
+ }
  
-+    cpu_ppc_tb_reset(env);
+ static void cpu_ppc_hdecr_cb(void *opaque)
+@@ -936,12 +954,16 @@ static void cpu_ppc_hdecr_cb(void *opaque)
+     cpu_ppc_hdecr_excp(cpu);
+ }
+ 
+-void cpu_ppc_store_purr(CPUPPCState *env, uint64_t value)
++static void _cpu_ppc_store_purr(CPUPPCState *env, int64_t now, uint64_t value)
+ {
+     ppc_tb_t *tb_env = env->tb_env;
+ 
+-    cpu_ppc_store_tb(tb_env, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL),
+-                     &tb_env->purr_offset, value);
++    cpu_ppc_store_tb(tb_env, now, &tb_env->purr_offset, value);
++}
 +
-     spapr_irq_cpu_intc_reset(spapr, cpu);
++void cpu_ppc_store_purr(CPUPPCState *env, uint64_t value)
++{
++    _cpu_ppc_store_purr(env, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL), value);
  }
  
-diff --git a/include/hw/ppc/ppc.h b/include/hw/ppc/ppc.h
-index e095c002dc..17a8dfc107 100644
---- a/include/hw/ppc/ppc.h
-+++ b/include/hw/ppc/ppc.h
-@@ -54,7 +54,8 @@ struct ppc_tb_t {
-                                                */
- 
- uint64_t cpu_ppc_get_tb(ppc_tb_t *tb_env, uint64_t vmclk, int64_t tb_offset);
--clk_setup_cb cpu_ppc_tb_init (CPUPPCState *env, uint32_t freq);
-+void cpu_ppc_tb_init(CPUPPCState *env, uint32_t freq);
-+void cpu_ppc_tb_reset(CPUPPCState *env);
- void cpu_ppc_tb_free(CPUPPCState *env);
- void cpu_ppc_hdecr_init(CPUPPCState *env);
- void cpu_ppc_hdecr_exit(CPUPPCState *env);
+ static void timebase_save(PPCTimebase *tb)
 -- 
 2.40.1
 
