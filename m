@@ -2,79 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D303A774C51
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 23:04:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D01EF774C5F
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 23:07:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTTs6-0005zA-69; Tue, 08 Aug 2023 17:04:06 -0400
+	id 1qTTuy-0006rF-BZ; Tue, 08 Aug 2023 17:07:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTTs4-0005yt-Bx
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 17:04:04 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qTTuw-0006qP-6O
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 17:07:02 -0400
+Received: from mail-ot1-x336.google.com ([2607:f8b0:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTTs1-0004rA-Do
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 17:04:04 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1bc1c1c68e2so39517975ad.3
- for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 14:03:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qTTuu-0005Td-Db
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 17:07:01 -0400
+Received: by mail-ot1-x336.google.com with SMTP id
+ 46e09a7af769-6bd0911c95dso811529a34.3
+ for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 14:06:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691528636; x=1692133436;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=ventanamicro.com; s=google; t=1691528819; x=1692133619;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=rh9p7AIOGyU6ObaL+YC3Fbhp2PRzDhw5cjORSwCVzQY=;
- b=FkId8wBQwm/JklwM2K8FK38v3sxGNULoqWTpv5xZyNKSB23gIh6VRzJyBZKQyA3upA
- umZAnxgLfTaOLLTqdh50upzyfqHKcm5PmzAoJjO5hbZlLoNHopzcK9KrM1olkZWTmi5m
- 8vjyCUEgbX6CikEHsNLxQ/Bf9Acea9XKYEipSOW5T8RNZIJuDR5AlABjl8l7EaChu5n/
- C5fKpJPDlvNOayVOFuAWjsSB6WFcvN7Rf9NlRNF0ZfWHWwhv5IkgZMGYlZ+ZCAbysw+T
- 6X0nzlkDTe54qkdz88d2dgehstj0ONm80hFXpv9yItFPwPFCkYiM35mUC8gS/NwPJeO9
- dWtA==
+ bh=xhkFM/Sb5IDeC14Ji5x6ZNEX3+vwWu8QS3FvvhSvAH4=;
+ b=HBfB5V+G41SvWsvy1JCDXZG/KHpCCOkj6SAv5nKmf1YeHlpNPN4cXdSpgMYT1Yvt23
+ X8TzYIUTu5FyRObxSVx+BXkXcY9C3cvxCT3v60xVT6R46fjtiwBCZPe0TI2kPEtVuFBr
+ IqRlAncPxPt5WFRFPg3Q0wmzahf+hn7csMXQxfx85tUE+iC0YSgtUfmPrjdOdwjnPqW6
+ IqyENeuG2288yI1c/wpFJkJKZKmhY7AjYgUbTYx4DzVabEGiBpn/P4XbjmnZ8fBllqtk
+ enZV2bbIkkiWWtlvHYjnD58xEVz8906xysehKJpuRSvbiPJphhdtBvAkIV+o8/k5PBBC
+ TK7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691528636; x=1692133436;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20221208; t=1691528819; x=1692133619;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=rh9p7AIOGyU6ObaL+YC3Fbhp2PRzDhw5cjORSwCVzQY=;
- b=aYymjF3DwdE+37ywYStJ4+4fDNWJimdvQXzVmXnT2oQRQf9F61Y8mWt/vBQ1rNwPNE
- TnARpYQ++I2DTA5k5kDjcbGaC2vLTROnGB4Ed5/pdKmqC0Z6HIYFFpARrFzpgrRA7K8q
- c7++FRYQqVO6wwr7yUXR4AhgZKmU7qnXC0FSRLH7b5ZMbMYsUAnScF8LTJpj3xL5LkKr
- 2Q1OERx+DAzUeDHIUeFEQaD6xC2N0R6VKsQN0o/O7wv7Vfi49JqxjAidTgL3w/wlNgVJ
- eO3SFBIYeteqtx08+Tn9q/A3ibvOwAqbUrMPSamqAA+XJMrX2E4mLQ2Is+HigK4sFdZ/
- bCHw==
-X-Gm-Message-State: AOJu0YyPFLRIthksAyIH6wi0Ye6ErzmNv506NHK1FFkqtSuK4dBI11vJ
- wF/kQL2/BtRd+k7YoWftYGWCZQ==
-X-Google-Smtp-Source: AGHT+IEYY5XEb7dKRnooq6oh08W3CZCCo0yiju11c2DsYO6zv5282uExSKcl28+1hQRfgJ6e6wwVmg==
-X-Received: by 2002:a17:903:32c5:b0:1bc:4f04:17f9 with SMTP id
- i5-20020a17090332c500b001bc4f0417f9mr1018309plr.9.1691528636386; 
- Tue, 08 Aug 2023 14:03:56 -0700 (PDT)
-Received: from ?IPV6:2602:47:d490:6901:63dc:2a47:f4bc:4a95?
- ([2602:47:d490:6901:63dc:2a47:f4bc:4a95])
- by smtp.gmail.com with ESMTPSA id
- y23-20020a17090264d700b001bb24cb9a40sm9635705pli.39.2023.08.08.14.03.55
+ bh=xhkFM/Sb5IDeC14Ji5x6ZNEX3+vwWu8QS3FvvhSvAH4=;
+ b=J82bI9eQHQZKKAGdVC175VfDzd2KUPMtKmbFr86u71sx2kszgF2RkPqgiVdtdUlkrG
+ f5i9AHx9i1PK5oRrnry9FEe9NQVNS1QEtnMssvY+3llFGlYmjHfiNH67vwgFG4gX7fnD
+ 6gaIniFgjA9XXnKy7+1Dq28yB7XiLxUJmVBg4M2FBBSipuYUhgLjb4Cxc8p3D2fqU788
+ 8NNn6ziItV79cLxM/RRh91bSOfbhWZ1MSY4bwRbWCsFTLIQM8ulxM8yU/Q0NOkRS3Otw
+ oRmIC4GiPPkk7HRJw1JURbTJgtU80XhHEah5F0Fw19PhLN72epHrBQE8FrLDUGLqeg8o
+ Q2hA==
+X-Gm-Message-State: AOJu0Yyay++LoPHj+7mt2b8e74sbl2QGfKXyksGU+tn9qU1RutuwSnH+
+ 5T7jMOTkrcdiwJbbQG+8yow6VQ==
+X-Google-Smtp-Source: AGHT+IFYcoJE7NpEgUfzB49aiH+dpsbow5EuDN0xzxInZl1Hjp2UafNRPgY7DX60J8DBa9V3lO3FVQ==
+X-Received: by 2002:a9d:6249:0:b0:6b9:53ff:7513 with SMTP id
+ i9-20020a9d6249000000b006b953ff7513mr813827otk.34.1691528819044; 
+ Tue, 08 Aug 2023 14:06:59 -0700 (PDT)
+Received: from [192.168.68.108] (189-69-160-189.dial-up.telesp.net.br.
+ [189.69.160.189]) by smtp.gmail.com with ESMTPSA id
+ d2-20020a056830004200b006b94aba1f0bsm6434341otp.43.2023.08.08.14.06.55
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 08 Aug 2023 14:03:55 -0700 (PDT)
-Message-ID: <d9caacde-d8ab-2fdc-372a-20988f22267c@linaro.org>
-Date: Tue, 8 Aug 2023 14:03:54 -0700
+ Tue, 08 Aug 2023 14:06:58 -0700 (PDT)
+Message-ID: <ff43edc3-f160-e57d-deb1-185601ed5b7d@ventanamicro.com>
+Date: Tue, 8 Aug 2023 18:06:54 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH 03/33] Update the definitions of __put_user and __get_user
- macros
+Subject: Re: [PATCH 2/2] riscv: zicond: make default
+To: Vineet Gupta <vineetg@rivosinc.com>, qemu-devel@nongnu.org,
+ qemu-riscv@nongnu.org
+Cc: kito.cheng@gmail.com, Jeff Law <jeffreyalaw@gmail.com>,
+ Palmer Dabbelt <palmer@rivosinc.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Weiwei Li
+ <liweiwei@iscas.ac.cn>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+References: <20230808181715.436395-1-vineetg@rivosinc.com>
+ <20230808181715.436395-2-vineetg@rivosinc.com>
 Content-Language: en-US
-To: Karim Taha <kariem.taha2.7@gmail.com>, qemu-devel@nongnu.org
-Cc: imp@bsdimp.com
-References: <20230808060815.9001-1-kariem.taha2.7@gmail.com>
- <20230808060815.9001-4-kariem.taha2.7@gmail.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230808060815.9001-4-kariem.taha2.7@gmail.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20230808181715.436395-2-vineetg@rivosinc.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::336;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-ot1-x336.google.com
 X-Spam_score_int: -61
 X-Spam_score: -6.2
 X-Spam_bar: ------
@@ -97,92 +99,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/7/23 23:07, Karim Taha wrote:
-> From: Warner Losh <imp@bsdimp.com>
+(CCing Alistair and other reviewers)
+
+On 8/8/23 15:17, Vineet Gupta wrote:
+> Again this helps with better testing and something qemu has been doing
+> with newer features anyways.
 > 
-> Use __builtin_choose_expr to avoid type promotion from ?:
-> in __put_user_e and __get_user_e macros.
-> Copied from linux-user/qemu.h, originally by Blue Swirl.
-> 
-> Signed-off-by: Warner Losh <imp@bsdimp.com>
-> Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
+> Signed-off-by: Vineet Gupta <vineetg@rivosinc.com>
 > ---
->   bsd-user/qemu.h   | 81 ++++++++++++++++++++---------------------------
->   bsd-user/signal.c |  5 +--
->   2 files changed, 35 insertions(+), 51 deletions(-)
+
+Even if we can reach a consensus about removing the experimental (x- prefix) status
+from an extension that is Frozen instead of ratified, enabling stuff in the default
+CPUs because it's easier to test is something we would like to avoid. The rv64
+CPU has a random set of extensions enabled for the most different and undocumented
+reasons, and users don't know what they'll get because we keep beefing up the
+generic CPUs arbitrarily.
+
+Starting on QEMU 8.2 we'll have a 'max' CPU type that will enable all non-experimental
+and non-vendor extensions by default, making it easier for tooling to test new
+features/extensions. All tooling should consider changing their scripts to use the
+'max' CPU when it's available.
+
+For now, I fear that gcc and friends will still need to enable 'zicond' in the command
+line via 'zicond=true'.  Thanks,
+
+
+Daniel
+
+
+>   target/riscv/cpu.c | 4 +++-
+>   1 file changed, 3 insertions(+), 1 deletion(-)
 > 
-> diff --git a/bsd-user/qemu.h b/bsd-user/qemu.h
-> index dfdfa8dd67..c41ebfe937 100644
-> --- a/bsd-user/qemu.h
-> +++ b/bsd-user/qemu.h
-> @@ -307,50 +307,37 @@ static inline bool access_ok(int type, abi_ulong addr, abi_ulong size)
->   #define PRAGMA_REENABLE_PACKED_WARNING
->   #endif
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index 022bd9d01223..e6e28414b223 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -438,6 +438,7 @@ static void rv64_thead_c906_cpu_init(Object *obj)
+>       cpu->cfg.ext_xtheadbs = true;
+>       cpu->cfg.ext_xtheadcmo = true;
+>       cpu->cfg.ext_xtheadcondmov = true;
+> +    cpu->cfg.ext_zicond = false;
+>       cpu->cfg.ext_xtheadfmemidx = true;
+>       cpu->cfg.ext_xtheadmac = true;
+>       cpu->cfg.ext_xtheadmemidx = true;
+> @@ -483,6 +484,7 @@ static void rv64_veyron_v1_cpu_init(Object *obj)
+>       cpu->cfg.ext_zbc = true;
+>       cpu->cfg.ext_zbs = true;
+>       cpu->cfg.ext_XVentanaCondOps = true;
+> +    cpu->cfg.ext_zicond = false;
 >   
-> -#define __put_user(x, hptr)\
-> -({\
-> -    int size = sizeof(*hptr);\
-> -    switch (size) {\
-> -    case 1:\
-> -        *(uint8_t *)(hptr) = (uint8_t)(typeof(*hptr))(x);\
-> -        break;\
-> -    case 2:\
-> -        *(uint16_t *)(hptr) = tswap16((typeof(*hptr))(x));\
-> -        break;\
-> -    case 4:\
-> -        *(uint32_t *)(hptr) = tswap32((typeof(*hptr))(x));\
-> -        break;\
-> -    case 8:\
-> -        *(uint64_t *)(hptr) = tswap64((typeof(*hptr))(x));\
-> -        break;\
-> -    default:\
-> -        abort();\
-> -    } \
-> -    0;\
-> -})
-> +#define __put_user_e(x, hptr, e)                                            \
-> +    do {                                                                    \
-> +        PRAGMA_DISABLE_PACKED_WARNING;                                      \
-> +        (__builtin_choose_expr(sizeof(*(hptr)) == 1, stb_p,                 \
-> +        __builtin_choose_expr(sizeof(*(hptr)) == 2, stw_##e##_p,            \
-> +        __builtin_choose_expr(sizeof(*(hptr)) == 4, stl_##e##_p,            \
-> +        __builtin_choose_expr(sizeof(*(hptr)) == 8, stq_##e##_p, abort))))  \
-> +            ((hptr), (x)), (void)0);                                        \
-> +        PRAGMA_REENABLE_PACKED_WARNING;                                     \
-> +    } while (0)
-> +
-> +#define __get_user_e(x, hptr, e)                                            \
-> +    do {                                                                    \
-> +        PRAGMA_DISABLE_PACKED_WARNING;                                      \
-> +        ((x) = (typeof(*hptr))(                                             \
-> +        __builtin_choose_expr(sizeof(*(hptr)) == 1, ldub_p,                 \
-> +        __builtin_choose_expr(sizeof(*(hptr)) == 2, lduw_##e##_p,           \
-> +        __builtin_choose_expr(sizeof(*(hptr)) == 4, ldl_##e##_p,            \
-> +        __builtin_choose_expr(sizeof(*(hptr)) == 8, ldq_##e##_p, abort))))  \
-> +            (hptr)), (void)0);                                              \
-> +        PRAGMA_REENABLE_PACKED_WARNING;                                     \
-> +    } while (0)
-
-Hmm.  I guess this works.  The typeof cast in __get_user_e being required when sizeof(x) > 
-sizeof(*hptr) in order to get the correct extension.
-
-Is it clearer with _Generic?
-
-     (x) = _Generic(*(hptr),
-                    int8_t: *(int8_t *)(hptr),
-                    uint8_t: *(uint8_t *)(hptr),
-                    int16_t: (int16_t)lduw_##e##_p(hptr),
-                    uint16_t: lduw_##e##_p(hptr),
-                    int32_t: (int32_t)ldl_##e##_p(hptr),
-                    uint32_t: (uint32_t)ldl_##e##_p(hptr),
-                    int64_t: (int64_t)ldq_##e##_p(hptr),
-                    uint64_t: ldq_##e##_p(hptr));
-
-In particular I believe the error message will be much prettier.
-
-Either way,
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-
-
-r~
+>       cpu->cfg.mvendorid = VEYRON_V1_MVENDORID;
+>       cpu->cfg.marchid = VEYRON_V1_MARCHID;
+> @@ -1816,7 +1818,7 @@ static Property riscv_cpu_extensions[] = {
+>       DEFINE_PROP_BOOL("zcf", RISCVCPU, cfg.ext_zcf, false),
+>       DEFINE_PROP_BOOL("zcmp", RISCVCPU, cfg.ext_zcmp, false),
+>       DEFINE_PROP_BOOL("zcmt", RISCVCPU, cfg.ext_zcmt, false),
+> -    DEFINE_PROP_BOOL("zicond", RISCVCPU, cfg.ext_zicond, false),
+> +    DEFINE_PROP_BOOL("zicond", RISCVCPU, cfg.ext_zicond, true),
+>   
+>       /* Vendor-specific custom extensions */
+>       DEFINE_PROP_BOOL("xtheadba", RISCVCPU, cfg.ext_xtheadba, false),
 
