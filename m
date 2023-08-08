@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A270D774101
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 19:13:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA3DB7740CF
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 19:10:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTQDW-0001z9-P2; Tue, 08 Aug 2023 13:09:58 -0400
+	id 1qTQDY-00023Y-CL; Tue, 08 Aug 2023 13:10:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qTQDT-0001oJ-Hm
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 13:09:55 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ id 1qTQDV-0001wA-61
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 13:09:57 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qTQDS-0003GS-34
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 13:09:55 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-313e742a787so34679f8f.1
- for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 10:09:53 -0700 (PDT)
+ id 1qTQDT-0003HD-8k
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 13:09:56 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-3fe4b45a336so34063425e9.1
+ for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 10:09:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1691514592; x=1692119392;
+ d=gmail.com; s=20221208; t=1691514593; x=1692119393;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=5bYRjSj2J130dLImDFJiF4YPlkBi+KBGFOgVgJZX32M=;
- b=V6OZgUvXfAPCNORzMUXxIGYZNDUGGL4SWJIXbZO9nOZBjSjiU2z2dy2hS6RJZC4Of3
- JqMpfEEVa1y+aQVmWrYBtFGvnHF0cFwLmb7YvqyzRW+ubjCm+S2B5lVERRyQXlvu1Yur
- N1R5oIEn1XTP49HfQo5TjHMY/fWO6jCFtUK3N4o5zPZQamRmQqBuMkyiDldz1eckYLsR
- cqI3JSOQodBbjfg+vREhCxWIuvMiU6zjooOrAwOz2KTMC3J6ZJJDwSSwewJucvPJd1vA
- XPtgrtqquipPPsaSbzkItGMBsyNm43FbeqLwkV03Pai/mpWpb6MoGp7RYXKDkstf5iah
- rEoQ==
+ bh=zWdOTFt4f+afS8Gf1cP+Ss1h3B7hDQKDrDxkrbbQ9wY=;
+ b=MrFV9kwdvTKcDVX8X9Vn9ETGfK8H5k8saMciuDWKEcdNwokAzw6zp5cF1Mv/rflU/N
+ ej1E0W3+C3Nfey7IDsgqzIstw4pohIWJ9YMrhy+zpbxcYdqYz6T62zkxnkPxj1zKNYn5
+ eJFxCH6jOaAD2UD7CpcMVEFM+dv2JnZnyyx0qGVgDwqw2GfX3kVMXBwsqryXArkFHGiE
+ lpOjqkce7jMXR2JvJgIsI4M3342DbnUnMdhwaBoAJ+JZnBVsdLVLgLEbENdrOWt7JM7A
+ D3+qKx5aRQTmZzMbQ8ftxGXST9UksretY65DuiXAygi6w6gqXzXxTbyqpRjn9SKnlr23
+ blew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691514592; x=1692119392;
+ d=1e100.net; s=20221208; t=1691514593; x=1692119393;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5bYRjSj2J130dLImDFJiF4YPlkBi+KBGFOgVgJZX32M=;
- b=LNumLFn01NUilSeMaf5X4/jX4HiTFjgZ5coMD+8pgSpGawDt/NqExCT18PqLo8NAH8
- uD1A2PdakeBSK1qDuTyr4b9hw1KZUPQHeWEFSejuK5HAW+iBV6IN5fdYEKl54ukLDUME
- cLfDPy7F1sIjdiVDPXw4defG3RrJJhSQPxu7SCT2hVWd2IJIclXShttnsYZo9eORTrk2
- U3D1ZRmWNiQza9hqBTHAhtnnOI0rhfakUN8z21nRRduuNDpN00Ws9czJ3vEN/aLa6nBU
- 9HPysFHqWhsoWXjketfQz5ZC/Kcvo/lf6twXnu9iIlx6raEdY0SXbtf4GybVWGpUCdtG
- fRcw==
-X-Gm-Message-State: AOJu0Yyn5kuyUetIuDKz85od6j/Bd63X0a+Oe9JGa1IfFp+qE6CNUWd1
- U4TlsOKKQQNOxXpE7dySYBwjGz5/BQ5w0g==
-X-Google-Smtp-Source: AGHT+IEK5lAOXCewFXBXrn6hYWnb0p78ocia/6yCa85NmKxxTpxqBrsV6e4MTa66H5Ex5nEFVBKq/A==
-X-Received: by 2002:a5d:63c2:0:b0:317:e9d7:9387 with SMTP id
- c2-20020a5d63c2000000b00317e9d79387mr339108wrw.25.1691514591932; 
- Tue, 08 Aug 2023 10:09:51 -0700 (PDT)
+ bh=zWdOTFt4f+afS8Gf1cP+Ss1h3B7hDQKDrDxkrbbQ9wY=;
+ b=CainPdMDkGHWZWwd5DgA5FrScbJeCAhZErwV9PWMeRz71wrnEBws10o3ZAbV/Qbe7q
+ N/ZyYEkSoQtNBgJVncfSfWjDxsuq4Mh9I3OOpSeXEBkiXaDRERxMcgaN1/MaDYeA95wK
+ yyeqhevOg6cYzM8q68V4lx3vI50s+MOE+9gxBogX9zf+liE85hsaY0VXwauMAK0BkmUH
+ /S0kaUpjWdzhPOCl9If957knltQuPl5SsjICkQLiGLxAry6cYXCXAuLWJTZfYJoL0yhP
+ W2bbWgYMN+Lu8/e8HVFL3lI7ZHQV73eSYGXsfPDSq3zWV5VTAbrsLkJhy/Nc7jQHHTcu
+ LSCA==
+X-Gm-Message-State: AOJu0YzNBjYSqfwcM2A/dP+4005uo6K5do5YvARmXtKU0pSapdQE9VwE
+ DU1H14mky111B9Q0MueZYOWqMkApfgrBWA==
+X-Google-Smtp-Source: AGHT+IFQ6WhttzaDWXRjOKrrNbS2CRthF/WLMEIpiZfCAVbHmRetY5V84aGlcgIgmtKho8/Oj5+pRg==
+X-Received: by 2002:a5d:6050:0:b0:317:9537:d746 with SMTP id
+ j16-20020a5d6050000000b003179537d746mr62780wrt.2.1691514593144; 
+ Tue, 08 Aug 2023 10:09:53 -0700 (PDT)
 Received: from karim.my.domain ([197.39.230.212])
  by smtp.gmail.com with ESMTPSA id
- j6-20020a5d6186000000b0031455482d1fsm14191663wru.47.2023.08.08.10.09.51
+ j6-20020a5d6186000000b0031455482d1fsm14191663wru.47.2023.08.08.10.09.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 08 Aug 2023 10:09:51 -0700 (PDT)
+ Tue, 08 Aug 2023 10:09:52 -0700 (PDT)
 From: Karim Taha <kariem.taha2.7@gmail.com>
 To: qemu-devel@nongnu.org
-Cc: imp@bsdimp.com,
-	Karim Taha <kariem.taha2.7@gmail.com>
-Subject: [PATCH 12/33] Rename target_freebsd_time_t to target_time_t
-Date: Tue,  8 Aug 2023 08:07:54 +0200
-Message-Id: <20230808060815.9001-13-kariem.taha2.7@gmail.com>
+Cc: imp@bsdimp.com, Stacey Son <sson@FreeBSD.org>,
+ Karim Taha <kariem.taha2.7@gmail.com>
+Subject: [PATCH 13/33] Implement host-target convertion functions
+Date: Tue,  8 Aug 2023 08:07:55 +0200
+Message-Id: <20230808060815.9001-14-kariem.taha2.7@gmail.com>
 X-Mailer: git-send-email 2.40.0
 In-Reply-To: <20230808060815.9001-1-kariem.taha2.7@gmail.com>
 References: <20230808060815.9001-1-kariem.taha2.7@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=kariem.taha2.7@gmail.com; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=kariem.taha2.7@gmail.com; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -2
 X-Spam_score: -0.3
 X-Spam_bar: /
@@ -93,51 +93,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Warner Losh <imp@bsdimp.com>
+From: Stacey Son <sson@FreeBSD.org>
 
-This is necessary for future code using target_time_t, in
-bsd-user/syscall_defs.
+Implement the stat converstion functions:
+h2t_freebsd11_stat
+h2t_freebsd_nstat
 
-Signed-off-by: Warner Losh <imp@bsdimp.com>
+Signed-off-by: Stacey Son <sson@FreeBSD.org>
 Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
 ---
- bsd-user/syscall_defs.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ bsd-user/freebsd/os-stat.c | 94 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 94 insertions(+)
+ create mode 100644 bsd-user/freebsd/os-stat.c
 
-diff --git a/bsd-user/syscall_defs.h b/bsd-user/syscall_defs.h
-index 52ebadbe2c..b1d753e9d8 100644
---- a/bsd-user/syscall_defs.h
-+++ b/bsd-user/syscall_defs.h
-@@ -45,9 +45,9 @@
-  *
-  */
- #if (!defined(TARGET_I386))
--typedef int64_t target_freebsd_time_t;
-+typedef int64_t target_time_t;
- #else
--typedef int32_t target_freebsd_time_t;
-+typedef int32_t target_time_t;
- #endif
- 
- struct target_iovec {
-@@ -102,7 +102,7 @@ typedef abi_long target_freebsd_suseconds_t;
- 
- /* compare to sys/timespec.h */
- struct target_freebsd_timespec {
--    target_freebsd_time_t   tv_sec;     /* seconds */
-+    target_time_t   tv_sec;     /* seconds */
-     abi_long                tv_nsec;    /* and nanoseconds */
- #if !defined(TARGET_I386) && TARGET_ABI_BITS == 32
-     abi_long _pad;
-@@ -120,7 +120,7 @@ struct target_freebsd__umtx_time {
- };
- 
- struct target_freebsd_timeval {
--    target_freebsd_time_t       tv_sec; /* seconds */
-+    target_time_t       tv_sec; /* seconds */
-     target_freebsd_suseconds_t  tv_usec;/* and microseconds */
- #if !defined(TARGET_I386) && TARGET_ABI_BITS == 32
-     abi_long _pad;
+diff --git a/bsd-user/freebsd/os-stat.c b/bsd-user/freebsd/os-stat.c
+new file mode 100644
+index 0000000000..8c73f7402c
+--- /dev/null
++++ b/bsd-user/freebsd/os-stat.c
+@@ -0,0 +1,94 @@
++/*
++ *  FreeBSD stat related conversion routines
++ *
++ *  Copyright (c) 2013 Stacey D. Son
++ *
++ *  This program is free software; you can redistribute it and/or modify
++ *  it under the terms of the GNU General Public License as published by
++ *  the Free Software Foundation; either version 2 of the License, or
++ *  (at your option) any later version.
++ *
++ *  This program is distributed in the hope that it will be useful,
++ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *  GNU General Public License for more details.
++ *
++ *  You should have received a copy of the GNU General Public License
++ *  along with this program; if not, see <http://www.gnu.org/licenses/>.
++ */
++#include "qemu/osdep.h"
++
++#include "qemu.h"
++
++/*
++ * stat conversion
++ */
++abi_long h2t_freebsd11_stat(abi_ulong target_addr,
++        struct freebsd11_stat *host_st)
++{
++    struct target_freebsd11_stat *target_st;
++
++    if (!lock_user_struct(VERIFY_WRITE, target_st, target_addr, 0)) {
++        return -TARGET_EFAULT;
++    }
++    memset(target_st, 0, sizeof(*target_st));
++    __put_user(host_st->st_dev, &target_st->st_dev);
++    __put_user(host_st->st_ino, &target_st->st_ino);
++    __put_user(host_st->st_mode, &target_st->st_mode);
++    __put_user(host_st->st_nlink, &target_st->st_nlink);
++    __put_user(host_st->st_uid, &target_st->st_uid);
++    __put_user(host_st->st_gid, &target_st->st_gid);
++    __put_user(host_st->st_rdev, &target_st->st_rdev);
++    __put_user(host_st->st_atim.tv_sec, &target_st->st_atim.tv_sec);
++    __put_user(host_st->st_atim.tv_nsec, &target_st->st_atim.tv_nsec);
++    __put_user(host_st->st_mtim.tv_sec, &target_st->st_mtim.tv_sec);
++    __put_user(host_st->st_mtim.tv_nsec, &target_st->st_mtim.tv_nsec);
++    __put_user(host_st->st_ctim.tv_sec, &target_st->st_ctim.tv_sec);
++    __put_user(host_st->st_ctim.tv_nsec, &target_st->st_ctim.tv_nsec);
++    __put_user(host_st->st_size, &target_st->st_size);
++    __put_user(host_st->st_blocks, &target_st->st_blocks);
++    __put_user(host_st->st_blksize, &target_st->st_blksize);
++    __put_user(host_st->st_flags, &target_st->st_flags);
++    __put_user(host_st->st_gen, &target_st->st_gen);
++    /* st_lspare not used */
++    __put_user(host_st->st_birthtim.tv_sec, &target_st->st_birthtim.tv_sec);
++    __put_user(host_st->st_birthtim.tv_nsec, &target_st->st_birthtim.tv_nsec);
++    unlock_user_struct(target_st, target_addr, 1);
++
++    return 0;
++}
++
++abi_long h2t_freebsd11_nstat(abi_ulong target_addr,
++        struct freebsd11_stat *host_st)
++{
++    struct target_freebsd11_nstat *target_st;
++
++    if (!lock_user_struct(VERIFY_WRITE, target_st, target_addr, 0)) {
++        return -TARGET_EFAULT;
++    }
++    memset(target_st, 0, sizeof(*target_st));
++    __put_user(host_st->st_dev, &target_st->st_dev);
++    __put_user(host_st->st_ino, &target_st->st_ino);
++    __put_user(host_st->st_mode, &target_st->st_mode);
++    __put_user(host_st->st_nlink, &target_st->st_nlink);
++    __put_user(host_st->st_uid, &target_st->st_uid);
++    __put_user(host_st->st_gid, &target_st->st_gid);
++    __put_user(host_st->st_rdev, &target_st->st_rdev);
++    __put_user(host_st->st_atim.tv_sec, &target_st->st_atim.tv_sec);
++    __put_user(host_st->st_atim.tv_nsec, &target_st->st_atim.tv_nsec);
++    __put_user(host_st->st_mtim.tv_sec, &target_st->st_mtim.tv_sec);
++    __put_user(host_st->st_mtim.tv_nsec, &target_st->st_mtim.tv_nsec);
++    __put_user(host_st->st_ctim.tv_sec, &target_st->st_ctim.tv_sec);
++    __put_user(host_st->st_ctim.tv_nsec, &target_st->st_ctim.tv_nsec);
++    __put_user(host_st->st_size, &target_st->st_size);
++    __put_user(host_st->st_blocks, &target_st->st_blocks);
++    __put_user(host_st->st_blksize, &target_st->st_blksize);
++    __put_user(host_st->st_flags, &target_st->st_flags);
++    __put_user(host_st->st_gen, &target_st->st_gen);
++    __put_user(host_st->st_birthtim.tv_sec, &target_st->st_birthtim.tv_sec);
++    __put_user(host_st->st_birthtim.tv_nsec, &target_st->st_birthtim.tv_nsec);
++    unlock_user_struct(target_st, target_addr, 1);
++
++    return 0;
++}
++
 -- 
 2.40.0
 
