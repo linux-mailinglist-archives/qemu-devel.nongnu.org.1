@@ -2,88 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09789774E10
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 00:11:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E14AE774E22
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 00:18:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTUuH-0004pK-0v; Tue, 08 Aug 2023 18:10:26 -0400
+	id 1qTV0m-0006Ug-GA; Tue, 08 Aug 2023 18:17:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vineetg@rivosinc.com>)
- id 1qTUu9-0004m7-2l
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 18:10:17 -0400
-Received: from mail-pg1-x529.google.com ([2607:f8b0:4864:20::529])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qTV0j-0006UW-VC
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 18:17:06 -0400
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <vineetg@rivosinc.com>)
- id 1qTUu5-0000CM-9q
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 18:10:15 -0400
-Received: by mail-pg1-x529.google.com with SMTP id
- 41be03b00d2f7-563f8e8a53dso3544742a12.3
- for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 15:10:12 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qTV0i-0001CN-FO
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 18:17:05 -0400
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-317715ec496so5310073f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 15:17:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1691532611; x=1692137411; 
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=dPDUAI8wkYDoMCVngS1za4p6eQ3nGAgFpSIfADzIvZs=;
- b=ZuAoyCgkyquYKrTIUcmUkvjH8XtKy8HQd1fwc97wSlC/mvY6/TjPP9KJAybKHmDJBI
- WXBm5JFJF/g9SbBn4Z6ks9TYIgEP3jrcWvXB7S6EcI5Ql5M1N8pWRDGx6C0+CQrEQ/Ky
- ziCmMJGVev6KycFullO50KIN2UnvjYI5Po2CV3+8fb4NVGBtI4ec8N3XTXlsD1/rig3d
- sYJ2Hkw8Nbuo6eG1VMkK73qaPV6FjjZBbilfKXAop/6bv3vqoQpKAvRCOZlEXHrLZLg5
- 87Ir/D1OiJtxb2J/FFsWYulELo+HQ7pCGSMMlp3VW40fbN7/cIADbEUYSftzPEZA7Obo
- HEDA==
+ d=linaro.org; s=google; t=1691533022; x=1692137822;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=FhOKxY+IvGTiT60WqayHqIwnhbP+G712hLczy0GL+pM=;
+ b=MIwDOwm6b+dpsbLG1xwPbF+g9JMR+C6MdNOBQBbtYQjXdxWFj+Wn7IUVEFgbR3kB3/
+ uj9Wyn9vI5Z408f8nNXTwA0AA0LTqmZCGkGSP7uVf0Uh/B2SJr+Ouyq1tYfabWjWDnkL
+ Gk5ZgELQqm4WHAwP+PZ6Dl5ZIUM9NxGQziPRPUGdveAQR2+B9uXQ8IC4OWLfDk1LME6j
+ sBtFxJUo5Aljrt3YiS9LRdRD0gEOrN8SodOORRYeBitWUV1A0Izl9/Acd8zyfLvEnZZu
+ uJTnnn6YcGLQW9WXldyAspAwE/3LGkKjCK5uSIPLsHtLBASxQwsJaWuxEZKR8MnOTy7x
+ SSig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691532611; x=1692137411;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=dPDUAI8wkYDoMCVngS1za4p6eQ3nGAgFpSIfADzIvZs=;
- b=ZQBiHdokD0fj3j18QOLaU1Gb+EF81a29LalF4HJPZe2aR0P6U7z5wWmhhlCkeqd71k
- HDNUQQfOUD+RIe493eGnK/+/jfdTjIaZ1tXQlsL9Dnn1bB6gSW6L0vK/uesBy6+LEM/Y
- mXqV1Ojsx9sx0211/Plo7Mv9Mlyda9Boec0+L9FQ0+cU/yHBkwDkNW4gTyyPzKlR4gDm
- PriihSg1Fo9PucLZHCskoERAA7+vdyEEArnmHCH0eUO0hHyES2mQ0bNxt8Gucn9CeBEJ
- JE2FYv/Zr8yb58UdxHEgIWP9ZcXIbsU05hYTQmkzvXJGFLQh528veZCrAXlPSn3rEKav
- yAGA==
-X-Gm-Message-State: AOJu0YzXYqp1q1mp+Gjf3PjeqK9lSBQO1i53xy80/rUXvMt7yexBYbzW
- DZq4x+sAtxsFdSdK2VfWWjpQPw==
-X-Google-Smtp-Source: AGHT+IEaBw3JPsZ8sEZgb+6eQC3flSlYaRw4XlNciO4FUtHyXoSeX33FC/kpWPi6NDI4ZYNf2Mjpag==
-X-Received: by 2002:a17:90b:3144:b0:263:931b:bb5f with SMTP id
- ip4-20020a17090b314400b00263931bbb5fmr695392pjb.14.1691532610977; 
- Tue, 08 Aug 2023 15:10:10 -0700 (PDT)
-Received: from [10.0.16.165] ([50.221.140.188])
+ d=1e100.net; s=20221208; t=1691533022; x=1692137822;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=FhOKxY+IvGTiT60WqayHqIwnhbP+G712hLczy0GL+pM=;
+ b=DZ5LsNzP7bHMW2gNsjo9aXOVKFoslzYdce0JU6TjhQpD7+QeKMF9FvqXcyNBdmx/bq
+ b2qTtNwWBPZ+LibX3XZWiU2t5zaOn/E4cxEFG/fcCl1Y8rA8FSIJgbmiFsudblPEUoYI
+ pfqKX+ypG66uE+/P7/6A+zBreRYfqPGSeqG/4qcaH/qLufpxfGwC0gWdeGgneEzvSTF7
+ MdgWy7YAFMkIUlM3lB/3hPckn6ko9jokQayprjw/gN5n1MUDUxi29VhOoHFLsDXipHA9
+ WsjcCszgAAxh8fY8j1wpZ3YtLK3aacbqd5WpyGpnTaHTPhISZEKWvATdYwhk6Yjgh47e
+ hU5A==
+X-Gm-Message-State: AOJu0YwJvTVPJcX7fgUIjHEbGT5fFpGdVZSyUE7FG+uTfuUXnQFx/hYI
+ 06jow1Pfi5ptHbjPUYcm6huTHQFAn0AbFtPwi2Y=
+X-Google-Smtp-Source: AGHT+IHmeT0/o4yeOdmL5BZOiKlFtJI39frPy2rEeL95KkQToyU1c/Iv/3ec5HUAV6ywJxakhzQItQ==
+X-Received: by 2002:adf:ea4d:0:b0:317:f18b:a94f with SMTP id
+ j13-20020adfea4d000000b00317f18ba94fmr515939wrn.1.1691533022113; 
+ Tue, 08 Aug 2023 15:17:02 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- 23-20020a17090a005700b00268b9862343sm34497pjb.24.2023.08.08.15.10.09
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 08 Aug 2023 15:10:10 -0700 (PDT)
-Message-ID: <1aa3bdff-0db4-c589-8863-56bbea825fda@rivosinc.com>
-Date: Tue, 8 Aug 2023 15:10:09 -0700
+ j6-20020adfff86000000b003175f00e555sm14799450wrr.97.2023.08.08.15.17.01
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 08 Aug 2023 15:17:01 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 4335E1FFBB;
+ Tue,  8 Aug 2023 23:17:01 +0100 (BST)
+References: <20230808164418.69989-1-richard.henderson@linaro.org>
+User-agent: mu4e 1.11.13; emacs 29.1.50
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>, qemu-devel@nongnu.org
+Subject: Re: [PATCH] qemu/osdep: Remove fallback for MAP_FIXED_NOREPLACE
+Date: Tue, 08 Aug 2023 23:16:53 +0100
+In-reply-to: <20230808164418.69989-1-richard.henderson@linaro.org>
+Message-ID: <87r0od5gde.fsf@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 2/2] riscv: zicond: make default
-Content-Language: en-US
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- qemu-devel@nongnu.org, qemu-riscv@nongnu.org
-Cc: kito.cheng@gmail.com, Jeff Law <jeffreyalaw@gmail.com>,
- Palmer Dabbelt <palmer@rivosinc.com>,
- Alistair Francis <alistair.francis@wdc.com>, Weiwei Li
- <liweiwei@iscas.ac.cn>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-References: <20230808181715.436395-1-vineetg@rivosinc.com>
- <20230808181715.436395-2-vineetg@rivosinc.com>
- <ff43edc3-f160-e57d-deb1-185601ed5b7d@ventanamicro.com>
-From: Vineet Gupta <vineetg@rivosinc.com>
-In-Reply-To: <ff43edc3-f160-e57d-deb1-185601ed5b7d@ventanamicro.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::529;
- envelope-from=vineetg@rivosinc.com; helo=mail-pg1-x529.google.com
-X-Spam_score_int: -59
-X-Spam_score: -6.0
-X-Spam_bar: ------
-X-Spam_report: (-6.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, NICE_REPLY_A=-4.14, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x432.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,55 +96,26 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
+Richard Henderson <richard.henderson@linaro.org> writes:
 
-On 8/8/23 14:06, Daniel Henrique Barboza wrote:
-> (CCing Alistair and other reviewers)
+> In order for our emulation of MAP_FIXED_NOREPLACE to succeed within
+> linux-user target_mmap, we require a non-zero value.  This does not
+> require host kernel support, merely the bit being defined.
 >
-> On 8/8/23 15:17, Vineet Gupta wrote:
->> Again this helps with better testing and something qemu has been doing
->> with newer features anyways.
->>
->> Signed-off-by: Vineet Gupta <vineetg@rivosinc.com>
->> ---
+> MAP_FIXED_NOREPLACE was added with glibc 2.28.  From repology.org:
 >
-> Even if we can reach a consensus about removing the experimental (x- 
-> prefix) status
-> from an extension that is Frozen instead of ratified, enabling stuff 
-> in the default
-> CPUs because it's easier to test is something we would like to avoid. 
-> The rv64
-> CPU has a random set of extensions enabled for the most different and 
-> undocumented
-> reasons, and users don't know what they'll get because we keep beefing 
-> up the
-> generic CPUs arbitrarily.
-
-I understand this position given the arbitrary nature of gazillion 
-extensions. However pragmatically things like bitmanip and zicond are so 
-fundamental it would be strange for designs to not have them, in a few 
-years. Besides these don't compete or conflict with other extensions.
-But on face value it is indeed possible for vendors to drop them for 
-various reasons or no-reasons.
-
-But having the x- dropped is good enough for our needs as there's 
-already mechanisms to enable the toggles from elf attributes.
-
+>                   Fedora 36: 2.35
+>           CentOS 8 (RHEL-8): 2.28
+>                   Debian 11: 2.31
+>          OpenSUSE Leap 15.4: 2.31
+>            Ubuntu LTS 20.04: 2.31
 >
-> Starting on QEMU 8.2 we'll have a 'max' CPU type that will enable all 
-> non-experimental
-> and non-vendor extensions by default, making it easier for tooling to 
-> test new
-> features/extensions. All tooling should consider changing their 
-> scripts to use the
-> 'max' CPU when it's available.
+> Reported-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
-That would be great.
+Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 
->
-> For now, I fear that gcc and friends will still need to enable 
-> 'zicond' in the command
-> line via 'zicond=true'.  Thanks,
-
-Thx,
--Vineet
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
