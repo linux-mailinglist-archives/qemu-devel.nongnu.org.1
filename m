@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 455B17745ED
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 20:48:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CEC1774723
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 21:10:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTRkw-0008P3-Db; Tue, 08 Aug 2023 14:48:34 -0400
+	id 1qTS4W-0003R7-2d; Tue, 08 Aug 2023 15:08:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTRku-0008Oq-Bn
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 14:48:32 -0400
-Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
+ id 1qTS4U-0003Kb-1g
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 15:08:46 -0400
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTRks-0004WE-Pt
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 14:48:32 -0400
-Received: by mail-pj1-x102d.google.com with SMTP id
- 98e67ed59e1d1-26830595676so3997965a91.2
- for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 11:48:30 -0700 (PDT)
+ id 1qTS4S-000849-FN
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 15:08:45 -0400
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-1bc0d39b52cso39706275ad.2
+ for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 12:08:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691520509; x=1692125309;
+ d=linaro.org; s=google; t=1691521722; x=1692126522;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=NML/iGK3EMnCNJh/XgThozNq4Y3L58AsGQeJ5A4vXCI=;
- b=Kitmo8Gq+QV2um2LlgkMmoqAEoRs13vUEcGflGEe3tmWFZkA5jWdoSBpJg/JYy2jzz
- iCIVHHVF9ZVWBnIFjKVU7j2cHzs2xOX2iNMfJ/DPXPOwKwGzE+L0AYHpo/HlLd2K6I7B
- O5r+bIOIaxuV0F9kFz0oP4ArmzDWYTsy27nRzVYW34PqEVf8oObAJYFy0RmUIDQLTFQO
- YxTxRVfg9epjB6rvDfdebxQqcql8fGs4MoOiTmd/ZnBijwD8kcm4bp/0xRcvrHl9crha
- t593AJrhzO7UOSg0R0kQPF98pfIjxQ8t4rwfPgENkNp8O6Qi7kN2D1fHotxjAjmgs6hM
- Nssg==
+ bh=M/sGQ0RUDQCfdnMPcet5krpMk9uhab+dAgTBn3QBlVA=;
+ b=GCRmkxoWQHu/4N/CkDLKVRtgznrc+QW7bS9DRLnP6+RgVUkLjC1t6h6hGQF9VEVxG4
+ 9a0AWSa/2OXwtVwxo/33K9UP2lyVeUBz8RupiwePNZEBgx1ECrrsJvsBP6FsA+EA4yCN
+ KRoO+FIkBNp8/3ro69zzqU6S5HXWcQFFKocjXJokMDgD/0ZDwY8Q6jwn+i8MnfCT8JW+
+ VhZ+hkps3FAPKtd3wtG0wnvvkT29iWOXiGik0u+pVPdv8QDzgrj0GSQ3uXh7bw/+wA+g
+ ToTZE2aZr6Ctjyrr8ZAOlTECRVrPVhqHi9LnSUvZxvCJxaOSPvD3e3qSiTP63RvIIO6c
+ Np2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691520509; x=1692125309;
+ d=1e100.net; s=20221208; t=1691521722; x=1692126522;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=NML/iGK3EMnCNJh/XgThozNq4Y3L58AsGQeJ5A4vXCI=;
- b=QS2SBSA4qHRdpJHfEINMoLfl4Loquu3U59AylYjzcGdTLtn+RT6ZGi/+cg+pYOfunu
- Udi5LhoRvaALB/4622pZ3fjS9V7ayd4DEv04PCWiyD04J2QzNuSuml25nrSQc2hOXoNP
- RTp1YpKWDj3N1xoNv7znCsW/BOLQgTeqFGllJiEg2F5/Hdf3cqGukfOLkUxghqor58O0
- WGhcT5yLoVYoJvlyHbFkTCTo+3Yz0nFjZLbhdq1/2ljS5Sqg3MuztJuc8m8Ix24O4hn7
- sdqS1fu8EzMUCAMhTDi3KAtg8wzwq6Bv1B6ZPdtwVqEiJBGG8l5nr1OM0nW3gW2BHWXb
- G0bQ==
-X-Gm-Message-State: AOJu0YwwxAuwHf4oa3f0mBCjnmTG0Mp0Kjs2+ZL6gHkIJYM8evLhbc5M
- J9drtePYpmyqpEwB0K4dJ29QNQ==
-X-Google-Smtp-Source: AGHT+IEVQ1BzYrWdzsPZTW2FTLWBMoQgmo7PaBrseU1Gr6bRujjkwYqQcnj00z7r8Iqjz54dBfU9kA==
-X-Received: by 2002:a17:90a:3808:b0:261:1141:b716 with SMTP id
- w8-20020a17090a380800b002611141b716mr318894pjb.33.1691520509301; 
- Tue, 08 Aug 2023 11:48:29 -0700 (PDT)
+ bh=M/sGQ0RUDQCfdnMPcet5krpMk9uhab+dAgTBn3QBlVA=;
+ b=S3i5NcfdDLifHtSTpuAGvNIi3gwh4F0QbgElo4M1tABLfQiCgih81zCELXujdze1ah
+ BTFSX6N4WT/kd8bLaOiSpwNglsUZsnEMxrWv2ObT+E+Sd5g6hJR50eBDGZ4/hHbrS0Zs
+ uIf7fqBoqn1I/AfOga8Ouw9fW9U61TKokZBOPSGZ8Gat6wRDKXt7P4RJCwLoR4f77oj+
+ pt+/a1Fhfu5OIBi4LMxysBYksSj6lxl9zxLFTg9kGKAV3hQElPdtm//xE68Bd/s4Fp/j
+ 8yvygehEgDQ8vtP62VYLfCMvHhZq8CvBGDhHal0+0/Q75k8Yg3WZU5ZR+iCRvjDuLnPw
+ itKQ==
+X-Gm-Message-State: AOJu0YxDqaI4XpNOIlJuY9IdViznXoNFWDsSyF4zodMYJh1pBisQJaV0
+ M1q7vW9xksA4ioMO+LmrFqTkcQ==
+X-Google-Smtp-Source: AGHT+IF7u/iKJuFRvEXSo9QG/AO+FtE+uZMAklSoAuBqNlJos1R+IOzdunLpXj/LecYm5GcuKbx18g==
+X-Received: by 2002:a17:902:e551:b0:1bb:d7d4:e0d with SMTP id
+ n17-20020a170902e55100b001bbd7d40e0dmr531273plf.64.1691521722467; 
+ Tue, 08 Aug 2023 12:08:42 -0700 (PDT)
 Received: from ?IPV6:2602:47:d490:6901:63dc:2a47:f4bc:4a95?
  ([2602:47:d490:6901:63dc:2a47:f4bc:4a95])
  by smtp.gmail.com with ESMTPSA id
- d10-20020a170902ceca00b001b7e63cfa19sm9383530plg.234.2023.08.08.11.48.28
+ h4-20020a170902f7c400b001b8a3a0c928sm9418351plw.181.2023.08.08.12.08.41
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 08 Aug 2023 11:48:28 -0700 (PDT)
-Message-ID: <bb7294c3-1f2b-d6df-06fe-833233beca5d@linaro.org>
-Date: Tue, 8 Aug 2023 11:48:27 -0700
+ Tue, 08 Aug 2023 12:08:41 -0700 (PDT)
+Message-ID: <816e14d5-dded-3c97-72e3-16c500485d15@linaro.org>
+Date: Tue, 8 Aug 2023 12:08:40 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH v4 08/11] target/loongarch: Reject la64-only instructions
- in la32 mode
+Subject: Re: [PATCH v4 09/11] target/loongarch: Truncate high 32 bits of
+ address in VA32 mode
 Content-Language: en-US
 To: Jiajie Chen <c@jia.je>, qemu-devel@nongnu.org
 Cc: yijun@loongson.cn, shenjinyang@loongson.cn, gaosong@loongson.cn,
  i.qemu@xen0n.name
 References: <20230808015506.1705140-1-c@jia.je>
- <20230808015506.1705140-9-c@jia.je>
+ <20230808015506.1705140-10-c@jia.je>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230808015506.1705140-9-c@jia.je>
+In-Reply-To: <20230808015506.1705140-10-c@jia.je>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -61
 X-Spam_score: -6.2
 X-Spam_bar: ------
@@ -99,31 +99,88 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 8/7/23 18:54, Jiajie Chen wrote:
-> -TRANS(addi_d, gen_rri_c, EXT_NONE, EXT_NONE, tcg_gen_addi_tl)
-> -TRANS(alsl_w, gen_rrr_sa, EXT_NONE, EXT_SIGN, gen_alsl)
-> -TRANS(alsl_wu, gen_rrr_sa, EXT_NONE, EXT_ZERO, gen_alsl)
-> -TRANS(alsl_d, gen_rrr_sa, EXT_NONE, EXT_NONE, gen_alsl)
-> +TRANS_64(addi_d, gen_rri_c, EXT_NONE, EXT_NONE, tcg_gen_addi_tl)
-> +TRANS_64(alsl_w, gen_rrr_sa, EXT_NONE, EXT_SIGN, gen_alsl)
-> +TRANS_64(alsl_wu, gen_rrr_sa, EXT_NONE, EXT_ZERO, gen_alsl)
-> +TRANS_64(alsl_d, gen_rrr_sa, EXT_NONE, EXT_NONE, gen_alsl)
-
-alsl.w is in LA32, according to the table 2 on page 15.
-
-
-> +/* for LoongArch64-only instructions */
-> +#define TRANS_64(NAME, FUNC, ...) \
-> +    static bool trans_##NAME(DisasContext *ctx, arg_##NAME * a) \
-> +    { \
-> +        if (ctx->la32) { \
-> +            return false; \
-> +        } \
-> +        return FUNC(ctx, a, __VA_ARGS__); \
+> When running in VA32 mode(LA32 or VA32L[1-3] matching PLV), virtual
+> address is truncated to 32 bits before address mapping.
+> 
+> Signed-off-by: Jiajie Chen <c@jia.je>
+> ---
+>   target/loongarch/cpu.h                          |  6 +++++-
+>   target/loongarch/insn_trans/trans_atomic.c.inc  |  1 +
+>   target/loongarch/insn_trans/trans_fmemory.c.inc |  8 ++++++++
+>   target/loongarch/insn_trans/trans_lsx.c.inc     |  6 ++++++
+>   target/loongarch/insn_trans/trans_memory.c.inc  | 10 ++++++++++
+>   target/loongarch/translate.c                    | 10 ++++++++++
+>   6 files changed, 40 insertions(+), 1 deletion(-)
+> 
+> diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
+> index 69589f0aef..9ad5fcc494 100644
+> --- a/target/loongarch/cpu.h
+> +++ b/target/loongarch/cpu.h
+> @@ -457,7 +457,11 @@ static inline void cpu_get_tb_cpu_state(CPULoongArchState *env, vaddr *pc,
+>           va32 = 1;
+>       }
+>   
+> -    *pc = env->pc;
+> +    if (va32) {
+> +        *pc = (uint32_t)env->pc;
+> +    } else {
+> +        *pc = env->pc;
 > +    }
 
-With the change suggested for patch 7, this becomes
+This is not wrong, but it might be better to zero-extend when assigning to env->pc.  There 
+are other consumers of env->pc, and we are not updating all of them.
 
-   return ctx->la64 && FUNC(...)
+> --- a/target/loongarch/insn_trans/trans_memory.c.inc
+> +++ b/target/loongarch/insn_trans/trans_memory.c.inc
+> @@ -13,6 +13,7 @@ static bool gen_load(DisasContext *ctx, arg_rr_i *a, MemOp mop)
+>           tcg_gen_addi_tl(temp, addr, a->imm);
+>           addr = temp;
+>       }
+> +    addr = va32_address(ctx, addr);
+
+I did say that you should use a common helper and a single temp.
+This is using two temps: one here and one in va32_address.
+
+I suggest:
+
+static TCGv make_address_x(DisasContext *ctx, TCGv base, TCGv addend)
+{
+     TCGv temp = NULL;
+
+     if (addend || ctx->va32) {
+         temp = tcg_temp_new();
+     }
+     if (addend) {
+         tcg_gen_add_tl(temp, base, addend);
+         base = temp;
+     }
+     if (ctx->va32) {
+         tcg_gen_ext32u_tl(temp, base);
+         base = temp;
+     }
+     return base;
+}
+
+static TCGv make_address_i(DisasContext *ctx, TCGv base, target_long ofs)
+{
+     TCGv addend = ofs ? tcg_constant_tl(ofs) : NULL;
+     return make_address_x(ctx, base, addend);
+}
+
+
+So that gen_load uses
+
+     addr = make_address_i(ctx, addr, a->imm);
+
+and gen_loadx uses
+
+     addr = make_address_x(ctx, src1, src2);
+
+and gen_am uses
+
+     addr = make_address_i(ctx, addr, 0);
+
+and so on for all of the others.
 
 
 r~
