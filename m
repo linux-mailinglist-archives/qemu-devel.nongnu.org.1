@@ -2,81 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2D92773772
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 05:14:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 746A27737A5
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 05:23:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTD9d-0004Lk-SC; Mon, 07 Aug 2023 23:13:05 -0400
+	id 1qTDIt-0001PM-2A; Mon, 07 Aug 2023 23:22:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTD90-0001nf-Cj
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 23:12:29 -0400
-Received: from mail-qk1-x72c.google.com ([2607:f8b0:4864:20::72c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTD8h-0000Ne-5p
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 23:12:26 -0400
-Received: by mail-qk1-x72c.google.com with SMTP id
- af79cd13be357-765942d497fso423808685a.1
- for <qemu-devel@nongnu.org>; Mon, 07 Aug 2023 20:12:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691464326; x=1692069126;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=K5i2/ldl7oLGbxu7tue5+kLhhv2CxQ17wq9IIxK3hMA=;
- b=rq6GfIBSn8q26VHWWcVpOp63Z6yqUH7lxMNEzQzg5udClimbeV+FhXscctljZbSjpq
- x7sv3cOsnok6V8APwC/KF8DOr9ss6PSodi2UAP/76ne8XJkNYSUs/9F6quwj5Opcerdd
- a+IIgOvCs95RUy9gIHdiwxplnmeb3Hi3dB85JvL5Mgz8fcdkm4w7Acag6cpxCDVOC9Ls
- 69eODX0DE5KDlPCiJTduWpWooFKR54qlPRP8ht5yxd5bMFbiyaBf/HiJRmqL6othTS0/
- y2Gm3aIzq9ftQIwNOGvFTVJP3X+nU0nhYq4INIITOIl0ns+nq4DNJ8oT5Rk7h4whRgwT
- GkfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691464326; x=1692069126;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=K5i2/ldl7oLGbxu7tue5+kLhhv2CxQ17wq9IIxK3hMA=;
- b=PvlFc9eYqfukIqLI6gewYVONcdQybyI+FoF2RHz5YIPT740Z1Lu7iZhEUQ6t84LNww
- n4x9NnMNi8hNIDkaEXpE6+I3IwxesM9vqehmjZevJ7OuqzRHRgH4OatrCYK+/B7qJO5Q
- JSzgxrRXGsxZW3i3acZyX95XF46wt579LfTJssF88ovq7LIKV802P/hwi/8SG5o1ImNE
- EBReM+m2+Kjl206M5dMB9AsgvsflYxcvmiM9LWl+7cbTdh61qGkFErkZe34iz3VmDN2b
- sBClmUXB1iMkjzkBZbTyCZ116R6QSGNkNtcKUBOJmYTIkq32p4P0AvdA0vAoTFLaxJWk
- O1pw==
-X-Gm-Message-State: AOJu0Yx0206iZT2E2yYz6R0OowvnjIg32tkCJYz8ODO/6KCd6riHazti
- wKY5k++rMNWJ5qfgiZMIwFF41Obb7lv5NZHs0eM=
-X-Google-Smtp-Source: AGHT+IGb3tEfWoDCjBfBDsbI4zoPCneYvzOE+kaZWiJhh0UGMEZ3w1171PfNavDEzK6oPbWv4flx/Q==
-X-Received: by 2002:a05:620a:450b:b0:76c:9cb6:fe0 with SMTP id
- t11-20020a05620a450b00b0076c9cb60fe0mr15624251qkp.61.1691464325836; 
- Mon, 07 Aug 2023 20:12:05 -0700 (PDT)
-Received: from stoup.. ([2602:47:d490:6901:e306:567a:e0a1:341])
- by smtp.gmail.com with ESMTPSA id
- g64-20020a636b43000000b0055bf96b11d9sm5639087pgc.89.2023.08.07.20.12.05
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 07 Aug 2023 20:12:05 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org, qemu-riscv@nongnu.org,
- qemu-s390x@nongnu.org
-Subject: [PATCH 24/24] tcg/i386: Implement negsetcond_*
-Date: Mon,  7 Aug 2023 20:11:43 -0700
-Message-Id: <20230808031143.50925-25-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230808031143.50925-1-richard.henderson@linaro.org>
-References: <20230808031143.50925-1-richard.henderson@linaro.org>
+ (Exim 4.90_1) (envelope-from <lixianglai@loongson.cn>)
+ id 1qTDIp-0001PB-0z
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 23:22:35 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <lixianglai@loongson.cn>) id 1qTDIl-0003Kf-1o
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 23:22:33 -0400
+Received: from loongson.cn (unknown [10.20.42.32])
+ by gateway (Coremail) with SMTP id _____8Dxg_DstNFkuoMSAA--.41552S3;
+ Tue, 08 Aug 2023 11:22:20 +0800 (CST)
+Received: from [10.20.42.32] (unknown [10.20.42.32])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8DxJ8zrtNFkjUhOAA--.26750S3; 
+ Tue, 08 Aug 2023 11:22:19 +0800 (CST)
+Subject: Re: [PATCH 4/8] Introduce the CPU address space destruction function
+To: Igor Mammedov <imammedo@redhat.com>
+Cc: qemu-devel@nongnu.org, Xiaojuan Yang <yangxiaojuan@loongson.cn>,
+ Song Gao <gaosong@loongson.cn>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?=
+ <berrange@redhat.com>, Peter Xu <peterx@redhat.com>,
+ David Hildenbrand <david@redhat.com>
+References: <cover.1689837093.git.lixianglai@loongson.cn>
+ <cf141dbe0b7d2d0837c02e452889f5669c78444d.1689837093.git.lixianglai@loongson.cn>
+ <20230728141324.5cbe61fb@imammedo.users.ipa.redhat.com>
+From: lixianglai <lixianglai@loongson.cn>
+Message-ID: <80b64054-ff8a-caae-ce20-9743aef93fc1@loongson.cn>
+Date: Tue, 8 Aug 2023 11:22:19 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
+In-Reply-To: <20230728141324.5cbe61fb@imammedo.users.ipa.redhat.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::72c;
- envelope-from=richard.henderson@linaro.org; helo=mail-qk1-x72c.google.com
-X-Spam_score_int: 4
-X-Spam_score: 0.4
-X-Spam_bar: /
-X-Spam_report: (0.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- SUSPICIOUS_RECIPS=2.51 autolearn=no autolearn_force=no
+Content-Language: en-US
+X-CM-TRANSID: AQAAf8DxJ8zrtNFkjUhOAA--.26750S3
+X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj93XoWxXF18WFyxWF4DGFyfAFWDtrc_yoWrWrW5pa
+ 4DAa1Fka1jyrW7Aw4fXa9FgFy7XFWkGF47Ww43JF9Ykrn8Ww1xAr1jka15CFy7Ar1kWF12
+ vFWDWF4fu3W7XFgCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUvFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
+ 6r4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27w
+ Aqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE
+ 14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1c
+ AE67vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8C
+ rVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8Zw
+ CIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x02
+ 67AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr
+ 0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxU7_Ma
+ UUUUU
+Received-SPF: pass client-ip=114.242.206.163;
+ envelope-from=lixianglai@loongson.cn; helo=mail.loongson.cn
+X-Spam_score_int: -36
+X-Spam_score: -3.7
+X-Spam_bar: ---
+X-Spam_report: (-3.7 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.809,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,108 +90,132 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- tcg/i386/tcg-target.h     |  4 ++--
- tcg/i386/tcg-target.c.inc | 27 +++++++++++++++++++--------
- 2 files changed, 21 insertions(+), 10 deletions(-)
+Hi Igor Mammedov:
 
-diff --git a/tcg/i386/tcg-target.h b/tcg/i386/tcg-target.h
-index 41df0e5ae1..1a9025d786 100644
---- a/tcg/i386/tcg-target.h
-+++ b/tcg/i386/tcg-target.h
-@@ -156,7 +156,7 @@ typedef enum {
- #define TCG_TARGET_HAS_muls2_i32        1
- #define TCG_TARGET_HAS_muluh_i32        0
- #define TCG_TARGET_HAS_mulsh_i32        0
--#define TCG_TARGET_HAS_negsetcond_i32   0
-+#define TCG_TARGET_HAS_negsetcond_i32   1
- 
- #if TCG_TARGET_REG_BITS == 64
- /* Keep 32-bit values zero-extended in a register.  */
-@@ -194,7 +194,7 @@ typedef enum {
- #define TCG_TARGET_HAS_muls2_i64        1
- #define TCG_TARGET_HAS_muluh_i64        0
- #define TCG_TARGET_HAS_mulsh_i64        0
--#define TCG_TARGET_HAS_negsetcond_i64   0
-+#define TCG_TARGET_HAS_negsetcond_i64   1
- #define TCG_TARGET_HAS_qemu_st8_i32     0
- #else
- #define TCG_TARGET_HAS_qemu_st8_i32     1
-diff --git a/tcg/i386/tcg-target.c.inc b/tcg/i386/tcg-target.c.inc
-index f68722b8a5..cc75653bb8 100644
---- a/tcg/i386/tcg-target.c.inc
-+++ b/tcg/i386/tcg-target.c.inc
-@@ -1526,7 +1526,7 @@ static void tcg_out_brcond2(TCGContext *s, const TCGArg *args,
- 
- static void tcg_out_setcond(TCGContext *s, int rexw, TCGCond cond,
-                             TCGArg dest, TCGArg arg1, TCGArg arg2,
--                            int const_arg2)
-+                            int const_arg2, bool neg)
- {
-     bool inv = false;
-     bool cleared;
-@@ -1567,11 +1567,13 @@ static void tcg_out_setcond(TCGContext *s, int rexw, TCGCond cond,
-          * This is always smaller than the SETCC expansion.
-          */
-         tcg_out_cmp(s, rexw, arg1, arg2, const_arg2, true);
--        tgen_arithr(s, ARITH_SBB, dest, dest);              /* T:-1 F:0 */
--        if (inv) {
--            tgen_arithi(s, ARITH_ADD, dest, 1, 0);          /* T:0  F:1 */
--        } else {
--            tcg_out_modrm(s, OPC_GRP3_Ev, EXT3_NEG, dest);  /* T:1  F:0 */
-+        tgen_arithr(s, ARITH_SBB + (neg ? rexw : 0), dest, dest); /* T:-1 F:0 */
-+        if (inv && neg) {
-+            tcg_out_modrm(s, OPC_GRP3_Ev + rexw, EXT3_NOT, dest); /* T:0 F:-1 */
-+        } else if (inv) {
-+            tgen_arithi(s, ARITH_ADD, dest, 1, 0);                /* T:0  F:1 */
-+        } else if (!neg) {
-+            tcg_out_modrm(s, OPC_GRP3_Ev, EXT3_NEG, dest);        /* T:1  F:0 */
-         }
-         return;
- 
-@@ -1585,7 +1587,8 @@ static void tcg_out_setcond(TCGContext *s, int rexw, TCGCond cond,
-             if (inv) {
-                 tcg_out_modrm(s, OPC_GRP3_Ev + rexw, EXT3_NOT, dest);
-             }
--            tcg_out_shifti(s, SHIFT_SHR + rexw, dest, rexw ? 63 : 31);
-+            tcg_out_shifti(s, (neg ? SHIFT_SAR : SHIFT_SHR) + rexw,
-+                           dest, rexw ? 63 : 31);
-             return;
-         }
-         break;
-@@ -1611,6 +1614,9 @@ static void tcg_out_setcond(TCGContext *s, int rexw, TCGCond cond,
-     if (!cleared) {
-         tcg_out_ext8u(s, dest, dest);
-     }
-+    if (neg) {
-+        tcg_out_modrm(s, OPC_GRP3_Ev + rexw, EXT3_NEG, dest);
-+    }
- }
- 
- #if TCG_TARGET_REG_BITS == 32
-@@ -2629,7 +2635,10 @@ static inline void tcg_out_op(TCGContext *s, TCGOpcode opc,
-                        arg_label(args[3]), 0);
-         break;
-     OP_32_64(setcond):
--        tcg_out_setcond(s, rexw, args[3], a0, a1, a2, const_a2);
-+        tcg_out_setcond(s, rexw, args[3], a0, a1, a2, const_a2, false);
-+        break;
-+    OP_32_64(negsetcond):
-+        tcg_out_setcond(s, rexw, args[3], a0, a1, a2, const_a2, true);
-         break;
-     OP_32_64(movcond):
-         tcg_out_movcond(s, rexw, args[5], a0, a1, a2, const_a2, args[3]);
-@@ -3357,6 +3366,8 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
- 
-     case INDEX_op_setcond_i32:
-     case INDEX_op_setcond_i64:
-+    case INDEX_op_negsetcond_i32:
-+    case INDEX_op_negsetcond_i64:
-         return C_O1_I2(q, r, re);
- 
-     case INDEX_op_movcond_i32:
--- 
-2.34.1
+The first four patches are written with reference to the patch in the public
+
+modification section of Arm's CPU Hotplug, and the Arm CPU HotPlug-related
+
+patches will be merged into the community in the near future, so the 
+first four
+
+patches will be discarded and rebase based on the latest code.
+
+
+Thanks,
+
+xianglai.
+
+
+On 7/28/23 8:13 PM, Igor Mammedov wrote:
+> On Thu, 20 Jul 2023 15:15:09 +0800
+> xianglai li <lixianglai@loongson.cn> wrote:
+>
+>> Introduce new functions to destroy CPU address space resources
+> s/functions/function/
+>
+>> for cpu hot-(un)plug.
+>>
+>> Cc: Xiaojuan Yang <yangxiaojuan@loongson.cn>
+>> Cc: Song Gao <gaosong@loongson.cn>
+>> Cc: "Michael S. Tsirkin" <mst@redhat.com>
+>> Cc: Igor Mammedov <imammedo@redhat.com>
+>> Cc: Ani Sinha <anisinha@redhat.com>
+>> Cc: Paolo Bonzini <pbonzini@redhat.com>
+>> Cc: Richard Henderson <richard.henderson@linaro.org>
+>> Cc: Eduardo Habkost <eduardo@habkost.net>
+>> Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+>> Cc: "Philippe Mathieu-Daudé" <philmd@linaro.org>
+>> Cc: Yanan Wang <wangyanan55@huawei.com>
+>> Cc: "Daniel P. Berrangé" <berrange@redhat.com>
+>> Cc: Peter Xu <peterx@redhat.com>
+>> Cc: David Hildenbrand <david@redhat.com>
+>> Signed-off-by: xianglai li <lixianglai@loongson.cn>
+>> ---
+>>   include/exec/cpu-common.h |  8 ++++++++
+>>   include/hw/core/cpu.h     |  1 +
+>>   softmmu/physmem.c         | 24 ++++++++++++++++++++++++
+>>   3 files changed, 33 insertions(+)
+>>
+>> diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
+>> index 87dc9a752c..27cd4d32b1 100644
+>> --- a/include/exec/cpu-common.h
+>> +++ b/include/exec/cpu-common.h
+>> @@ -120,6 +120,14 @@ size_t qemu_ram_pagesize_largest(void);
+>>    */
+>>   void cpu_address_space_init(CPUState *cpu, int asidx,
+>>                               const char *prefix, MemoryRegion *mr);
+>> +/**
+>> + * cpu_address_space_destroy:
+>> + * @cpu: CPU for which address space needs to be destroyed
+>> + * @asidx: integer index of this address space
+>> + *
+>> + * Note that with KVM only one address space is supported.
+>> + */
+>> +void cpu_address_space_destroy(CPUState *cpu, int asidx);
+>>   
+>>   void cpu_physical_memory_rw(hwaddr addr, void *buf,
+>>                               hwaddr len, bool is_write);
+>> diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+>> index fdcbe87352..d6d68dac12 100644
+>> --- a/include/hw/core/cpu.h
+>> +++ b/include/hw/core/cpu.h
+>> @@ -366,6 +366,7 @@ struct CPUState {
+>>       QSIMPLEQ_HEAD(, qemu_work_item) work_list;
+>>   
+>>       CPUAddressSpace *cpu_ases;
+>> +    int cpu_ases_ref_count;
+> perhaps renaming it to num_ases would be better
+>
+>>       int num_ases;
+> and this one can be named num__ases_[total|max]
+>
+>
+>>       AddressSpace *as;
+>>       MemoryRegion *memory;
+>> diff --git a/softmmu/physmem.c b/softmmu/physmem.c
+>> index 3df73542e1..f4545b4508 100644
+>> --- a/softmmu/physmem.c
+>> +++ b/softmmu/physmem.c
+>> @@ -762,6 +762,7 @@ void cpu_address_space_init(CPUState *cpu, int asidx,
+>>   
+>>       if (!cpu->cpu_ases) {
+>>           cpu->cpu_ases = g_new0(CPUAddressSpace, cpu->num_ases);
+>> +        cpu->cpu_ases_ref_count = cpu->num_ases;
+>>       }
+>>   
+>>       newas = &cpu->cpu_ases[asidx];
+>> @@ -775,6 +776,29 @@ void cpu_address_space_init(CPUState *cpu, int asidx,
+>>       }
+>>   }
+>>   
+>> +void cpu_address_space_destroy(CPUState *cpu, int asidx)
+>                                                   ^^^ should it be uintX_t ?
+>
+>> +{
+>> +    CPUAddressSpace *cpuas;
+>> +
+>> +    assert(asidx < cpu->num_ases);
+>> +    assert(asidx == 0 || !kvm_enabled());
+>> +    assert(cpu->cpu_ases);
+>> +
+>> +    cpuas = &cpu->cpu_ases[asidx];
+>> +    if (tcg_enabled()) {
+>> +        memory_listener_unregister(&cpuas->tcg_as_listener);
+>> +    }
+>> +
+>> +    address_space_destroy(cpuas->as);
+>> +
+>> +    cpu->cpu_ases_ref_count--;
+>> +    if (cpu->cpu_ases_ref_count == 0) {
+>> +        g_free(cpu->cpu_ases);
+>> +        cpu->cpu_ases = NULL;
+>> +    }
+>> +
+>> +}
+>> +
+>>   AddressSpace *cpu_get_address_space(CPUState *cpu, int asidx)
+>>   {
+>>       /* Return the AddressSpace corresponding to the specified index */
 
 
