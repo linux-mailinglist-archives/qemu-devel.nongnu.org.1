@@ -2,68 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 942377740BE
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 19:09:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39C9F773C67
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 18:05:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTQCE-0000M4-Cm; Tue, 08 Aug 2023 13:08:38 -0400
+	id 1qTPCS-0002Xx-SY; Tue, 08 Aug 2023 12:04:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qTQCB-0000L4-AO
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 13:08:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qTQC9-00033v-Fe
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 13:08:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691514512;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=C36Pe2W99s93e86WGvbuxXSXpawiUvOiqt3IB5BMj7U=;
- b=JL27ByCck8bWf9ejV1hEtmid8t9etEVJVTXrnDzjbTCIedGfLMmpEgCwABRBBeZ/u7tqEg
- RUD8+kOocEoYNm7GgukJEZgXptywgWW52HQP9GDRyL48EKS7F1aQ6PkYlmEqUplQ6shhTw
- WdJEcDNYxhbg70W9n0RYIb9BswSI1/I=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-612-4LjNfZ0lPgu_0klm3-cthw-1; Tue, 08 Aug 2023 13:08:30 -0400
-X-MC-Unique: 4LjNfZ0lPgu_0klm3-cthw-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 566003810D46;
- Tue,  8 Aug 2023 17:08:30 +0000 (UTC)
-Received: from localhost (unknown [10.39.193.72])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 34FBD492C13;
- Tue,  8 Aug 2023 17:08:28 +0000 (UTC)
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Kevin Wolf <kwolf@redhat.com>, Fam Zheng <fam@euphon.net>,
- qemu-block@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PATCH 2/2] block: change reqs_lock to QemuMutex
-Date: Tue,  8 Aug 2023 11:58:52 -0400
-Message-ID: <20230808155852.2745350-3-stefanha@redhat.com>
-In-Reply-To: <20230808155852.2745350-1-stefanha@redhat.com>
-References: <20230808155852.2745350-1-stefanha@redhat.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qTPCI-0002Tc-HD
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 12:04:38 -0400
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qTPCG-0005w3-Id
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 12:04:38 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-68783004143so4200783b3a.2
+ for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 09:04:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1691510672; x=1692115472;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=w4MXxugO4lsDbRuMeAk6J+79QpXfOwfDex5Oq3uNbBQ=;
+ b=ftm+pQvC8jW22VQn3Yjn2cUWayhMJxCCk/YIQqnTrri7bMV6ntcUm1ws5oV2RCOJFd
+ y/JOT/R3s+ebPGoTIwfGoNzkEEEkzrfNGiBgg/4ytEtf8ax//Wb/4Irr2y7Py0JYxM5v
+ d7KlTykaNCKLIQhYdAzhK2po/6gzv3TfBLdL0azQRpdsbgibrsaslUpDeVUvaTmAC1qN
+ 2/1CsURoK4xTL0/YqqeVRYE17mlBmvG5w+yBgOIyNOYKlq/Kc96TmiBKKCJwSRkSaVcX
+ jiORclbORjYxJx1AjrxwCs96nOYz7VD1hEUjK28UktMiXAFLJbaGwetLeAI0p4WpkyQr
+ HdMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1691510672; x=1692115472;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=w4MXxugO4lsDbRuMeAk6J+79QpXfOwfDex5Oq3uNbBQ=;
+ b=gA1PiXoIhSPMCdV3spAj6ErHtZSUujJX/s+q5IUblEmCWrmIpY2nYcywJBWXvklEex
+ U/QIW/6BGB2p2iCfsiNIRzO/4MPdVkXq1NxowLuBzkZsM5wsw87GMRN+BW50P+DtBf52
+ 2p1jd7bYk2gKtRcevlQ2XUuh+bONAnNVnJmrSBNuRYEy7XGbSeywxju1+17lEMo1M3Mu
+ 6AEpwvPfrAkiMjly4jz6GAU5mOtiaxtR1sCQCJ+HTV+1iTuLyp+c5N3RmnRpK5Hc9aft
+ 1BIwanf/x2Y/MoRF83+LYfF0KmEL2b0zCKIHZ8+CGqKHYk1owAgoaEGj0FR297Mr+pC+
+ 39gA==
+X-Gm-Message-State: AOJu0YyzfcewEpkjZJTUzsf5eLvO5WrUGWhPQFdUUfgDryQ7hAtNr16s
+ lp2JcLy9fWqi6UkN+94H+UZI5w==
+X-Google-Smtp-Source: AGHT+IG3a4DMGhDAyiTWKT3n3NQU4zZE3w0Nw2r9dfKS6/nWp+HS7cLAK4cIfAK5dQ2evcE7Tpjlxg==
+X-Received: by 2002:a05:6a20:3d84:b0:138:60e:9c4 with SMTP id
+ s4-20020a056a203d8400b00138060e09c4mr13249563pzi.23.1691510672480; 
+ Tue, 08 Aug 2023 09:04:32 -0700 (PDT)
+Received: from ?IPV6:2602:47:d490:6901:63dc:2a47:f4bc:4a95?
+ ([2602:47:d490:6901:63dc:2a47:f4bc:4a95])
+ by smtp.gmail.com with ESMTPSA id
+ b14-20020aa7870e000000b00687790191a2sm8270302pfo.58.2023.08.08.09.04.31
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 08 Aug 2023 09:04:32 -0700 (PDT)
+Message-ID: <2f65a947-cad1-b292-51f8-5af58596d7d7@linaro.org>
+Date: Tue, 8 Aug 2023 09:04:30 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 02/24] tcg: Use tcg_gen_negsetcond_*
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
+ qemu-riscv@nongnu.org, qemu-s390x@nongnu.org
+References: <20230808031143.50925-1-richard.henderson@linaro.org>
+ <20230808031143.50925-3-richard.henderson@linaro.org>
+ <CAFEAcA8ORUejjC3iVdjYSkX1St6ntxXbDPtTC0tuv5C_5rQ8xQ@mail.gmail.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <CAFEAcA8ORUejjC3iVdjYSkX1St6ntxXbDPtTC0tuv5C_5rQ8xQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
+X-Spam_score_int: -36
+X-Spam_score: -3.7
+X-Spam_bar: ---
+X-Spam_report: (-3.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-4.14,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ SUSPICIOUS_RECIPS=2.51 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,156 +98,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-CoMutex has poor performance when lock contention is high. The tracked
-requests list is accessed frequently and performance suffers in QEMU
-multi-queue block layer scenarios.
+On 8/8/23 08:55, Peter Maydell wrote:
+> On Tue, 8 Aug 2023 at 04:13, Richard Henderson
+> <richard.henderson@linaro.org> wrote:
+>>
+>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>> ---
+>>   tcg/tcg-op-gvec.c | 6 ++----
+>>   tcg/tcg-op.c      | 6 ++----
+>>   2 files changed, 4 insertions(+), 8 deletions(-)
+>>
+>> diff --git a/tcg/tcg-op-gvec.c b/tcg/tcg-op-gvec.c
+>> index a062239804..e260a07c61 100644
+>> --- a/tcg/tcg-op-gvec.c
+>> +++ b/tcg/tcg-op-gvec.c
+>> @@ -3692,8 +3692,7 @@ static void expand_cmp_i32(uint32_t dofs, uint32_t aofs, uint32_t bofs,
+>>       for (i = 0; i < oprsz; i += 4) {
+>>           tcg_gen_ld_i32(t0, cpu_env, aofs + i);
+>>           tcg_gen_ld_i32(t1, cpu_env, bofs + i);
+>> -        tcg_gen_setcond_i32(cond, t0, t0, t1);
+>> -        tcg_gen_neg_i32(t0, t0);
+>> +        tcg_gen_negsetcond_i32(cond, t0, t0, t1);
+>>           tcg_gen_st_i32(t0, cpu_env, dofs + i);
+>>       }
+> 
+> Is it not possible for the optimizer to notice "you did
+> a setcond followed by a neg, let me turn it into negsetcond
+> for you" ?
 
-It is not necessary to use CoMutex for the requests lock. The lock is
-always released across coroutine yield operations. It is held for
-relatively short periods of time and it is not beneficial to yield when
-the lock is held by another coroutine.
+Not at present, no.  That sort of peephole optimization is a bit more difficult than what 
+we do at present.
 
-Change the lock type from CoMutex to QemuMutex to improve multi-queue
-block layer performance. fio randread bs=4k iodepth=64 with 4 IOThreads
-handling a virtio-blk device with 8 virtqueues improves from 254k to
-517k IOPS (+203%). Full benchmark results and configuration details are
-available here:
-https://gitlab.com/stefanha/virt-playbooks/-/commit/980c40845d540e3669add1528739503c2e817b57
 
-In the future we may wish to introduce thread-local tracked requests
-lists to avoid lock contention completely. That would be much more
-involved though.
-
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
----
- include/block/block_int-common.h |  2 +-
- block.c                          |  4 +++-
- block/io.c                       | 24 ++++++++++++------------
- 3 files changed, 16 insertions(+), 14 deletions(-)
-
-diff --git a/include/block/block_int-common.h b/include/block/block_int-common.h
-index 74195c3004..7a1e678031 100644
---- a/include/block/block_int-common.h
-+++ b/include/block/block_int-common.h
-@@ -1231,7 +1231,7 @@ struct BlockDriverState {
-     unsigned int write_gen;               /* Current data generation */
- 
-     /* Protected by reqs_lock.  */
--    CoMutex reqs_lock;
-+    QemuMutex reqs_lock;
-     QLIST_HEAD(, BdrvTrackedRequest) tracked_requests;
-     CoQueue flush_queue;                  /* Serializing flush queue */
-     bool active_flush_req;                /* Flush request in flight? */
-diff --git a/block.c b/block.c
-index a307c151a8..989131156a 100644
---- a/block.c
-+++ b/block.c
-@@ -415,7 +415,7 @@ BlockDriverState *bdrv_new(void)
-     for (i = 0; i < BLOCK_OP_TYPE_MAX; i++) {
-         QLIST_INIT(&bs->op_blockers[i]);
-     }
--    qemu_co_mutex_init(&bs->reqs_lock);
-+    qemu_mutex_init(&bs->reqs_lock);
-     qemu_mutex_init(&bs->dirty_bitmap_mutex);
-     bs->refcnt = 1;
-     bs->aio_context = qemu_get_aio_context();
-@@ -5476,6 +5476,8 @@ static void bdrv_delete(BlockDriverState *bs)
- 
-     bdrv_close(bs);
- 
-+    qemu_mutex_destroy(&bs->reqs_lock);
-+
-     g_free(bs);
- }
- 
-diff --git a/block/io.c b/block/io.c
-index 85d5176256..35be335d2a 100644
---- a/block/io.c
-+++ b/block/io.c
-@@ -591,9 +591,9 @@ static void coroutine_fn tracked_request_end(BdrvTrackedRequest *req)
-         qatomic_dec(&req->bs->serialising_in_flight);
-     }
- 
--    qemu_co_mutex_lock(&req->bs->reqs_lock);
-+    qemu_mutex_lock(&req->bs->reqs_lock);
-     QLIST_REMOVE(req, list);
--    qemu_co_mutex_unlock(&req->bs->reqs_lock);
-+    qemu_mutex_unlock(&req->bs->reqs_lock);
- 
-     /*
-      * At this point qemu_co_queue_wait(&req->wait_queue, ...) won't be called
-@@ -627,9 +627,9 @@ static void coroutine_fn tracked_request_begin(BdrvTrackedRequest *req,
- 
-     qemu_co_queue_init(&req->wait_queue);
- 
--    qemu_co_mutex_lock(&bs->reqs_lock);
-+    qemu_mutex_lock(&bs->reqs_lock);
-     QLIST_INSERT_HEAD(&bs->tracked_requests, req, list);
--    qemu_co_mutex_unlock(&bs->reqs_lock);
-+    qemu_mutex_unlock(&bs->reqs_lock);
- }
- 
- static bool tracked_request_overlaps(BdrvTrackedRequest *req,
-@@ -793,9 +793,9 @@ bdrv_wait_serialising_requests(BdrvTrackedRequest *self)
-         return;
-     }
- 
--    qemu_co_mutex_lock(&bs->reqs_lock);
-+    qemu_mutex_lock(&bs->reqs_lock);
-     bdrv_wait_serialising_requests_locked(self);
--    qemu_co_mutex_unlock(&bs->reqs_lock);
-+    qemu_mutex_unlock(&bs->reqs_lock);
- }
- 
- void coroutine_fn bdrv_make_request_serialising(BdrvTrackedRequest *req,
-@@ -803,12 +803,12 @@ void coroutine_fn bdrv_make_request_serialising(BdrvTrackedRequest *req,
- {
-     IO_CODE();
- 
--    qemu_co_mutex_lock(&req->bs->reqs_lock);
-+    qemu_mutex_lock(&req->bs->reqs_lock);
- 
-     tracked_request_set_serialising(req, align);
-     bdrv_wait_serialising_requests_locked(req);
- 
--    qemu_co_mutex_unlock(&req->bs->reqs_lock);
-+    qemu_mutex_unlock(&req->bs->reqs_lock);
- }
- 
- int bdrv_check_qiov_request(int64_t offset, int64_t bytes,
-@@ -3002,7 +3002,7 @@ int coroutine_fn bdrv_co_flush(BlockDriverState *bs)
-         goto early_exit;
-     }
- 
--    qemu_co_mutex_lock(&bs->reqs_lock);
-+    qemu_mutex_lock(&bs->reqs_lock);
-     current_gen = qatomic_read(&bs->write_gen);
- 
-     /* Wait until any previous flushes are completed */
-@@ -3012,7 +3012,7 @@ int coroutine_fn bdrv_co_flush(BlockDriverState *bs)
- 
-     /* Flushes reach this point in nondecreasing current_gen order.  */
-     bs->active_flush_req = true;
--    qemu_co_mutex_unlock(&bs->reqs_lock);
-+    qemu_mutex_unlock(&bs->reqs_lock);
- 
-     /* Write back all layers by calling one driver function */
-     if (bs->drv->bdrv_co_flush) {
-@@ -3100,11 +3100,11 @@ out:
-         bs->flushed_gen = current_gen;
-     }
- 
--    qemu_co_mutex_lock(&bs->reqs_lock);
-+    qemu_mutex_lock(&bs->reqs_lock);
-     bs->active_flush_req = false;
-     /* Return value is ignored - it's ok if wait queue is empty */
-     qemu_co_queue_next(&bs->flush_queue);
--    qemu_co_mutex_unlock(&bs->reqs_lock);
-+    qemu_mutex_unlock(&bs->reqs_lock);
- 
- early_exit:
-     bdrv_dec_in_flight(bs);
--- 
-2.41.0
+r~
 
 
