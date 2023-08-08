@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 491E2773770
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 05:14:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0928077377A
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 05:16:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTD8z-0001Wi-AF; Mon, 07 Aug 2023 23:12:27 -0400
+	id 1qTD98-00026U-Jq; Mon, 07 Aug 2023 23:12:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTD8j-0001FE-ON
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 23:12:10 -0400
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ id 1qTD8l-0001LU-F3
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 23:12:11 -0400
+Received: from mail-oo1-xc31.google.com ([2607:f8b0:4864:20::c31])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTD8W-0000F7-O3
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 23:12:09 -0400
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-686d8c8fc65so3559810b3a.0
- for <qemu-devel@nongnu.org>; Mon, 07 Aug 2023 20:11:56 -0700 (PDT)
+ id 1qTD8Y-0000Fx-52
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 23:12:11 -0400
+Received: by mail-oo1-xc31.google.com with SMTP id
+ 006d021491bc7-56cc3453e31so3410284eaf.1
+ for <qemu-devel@nongnu.org>; Mon, 07 Aug 2023 20:11:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691464315; x=1692069115;
+ d=linaro.org; s=google; t=1691464316; x=1692069116;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=82T4pR6asvjS0K/TieV1fa+Y+4r718itxbMRosKOlXE=;
- b=s25KEC//J923Yue9MT3neOWgtiDnaWp8QORRkEotpHCMWMrYbtgevHAZzcVm6+VaLm
- Gn1Fydct5wKNWaB7ayeOY61T3/iR8Az8M1baNW7Mk5q1v5jG7ceSHAID7T17EbBQCAcR
- TQ0xPVg/GxcyB25cAL7kkUdMWJGzZtlWElrchX1lAqAz/0y9orU0kJ2vT67hQQkfk/jJ
- J5vkKKN9utUznKQZfh0Xrtre4f61c+R8TqlV2MX9xmpgS5A/ylrllxrUPd8bIgXwWC1m
- RGIPetWGlVdC4MuR7dI53R2ZkSJQ7JIZdFtDvWFKgYGOc09L1z7QAvYMDK6RRJHzZ8Up
- I5Uw==
+ bh=gzWqj3MGsLV9R8E01giJK4jPvvtSNzy1Q6wuC0RlJy0=;
+ b=iaBPZHwCCJjII0luF2VFInF0s3stMkq78vyinGgfBvld8ys7lxSqYSfoAepgzogzwH
+ eF7vcq4yuZMCNRYKN3GbQAzFmqKJ4qMDhQFW5Kyf3o1sBOlUyTaP6xooNV2D9JotLUaZ
+ IDdg5bVUL7qeaSGRQPYvFA/vlO9Ef5oFJfZCvDvJGaX7/xabdmnJrqr7J053S/ymary0
+ t1IGGkBoGSFsSaV9ooy8/JNzw3BMdbT3ykhzEvxpgYp7BfLMkRJiV/9D4NVCH9gpjq2t
+ cbPzZ0pRWj+4djc2VN/aoSwGMaVMS6Uxq5lHH8b3n7puY6zZh9DnP4dbTgFSq0JAvKwm
+ TQLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691464315; x=1692069115;
+ d=1e100.net; s=20221208; t=1691464316; x=1692069116;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=82T4pR6asvjS0K/TieV1fa+Y+4r718itxbMRosKOlXE=;
- b=NMM0/He4v7v5wEKnf0enBwoOU6JqnWaIavLbNrlQBjgvysNrWTIBJCviwJmYezhyJr
- bx53uTOkr9YsSDhScjQVf5g0+3pF+0YdEp87K+kwGIDRjrOABa+qRXZSL+uRHv1KTwLb
- meqAvuqJ/LvM5Yk55mxurVMb+/fC5LGFFQhifp/6UEru0fOAEwZOedPctSojtSvpYdpl
- mZBtuGgHARXmDYQ448pXr0egbTDXqSNhsqooHhGsOO4wyWw2KD976T/e3YapjH5h08RD
- ZSEOEnv2KZ7lveTNTfwe1EqXHlY2a+2dngdh/hO7m1uWY6YWF789R22Txm5wd43lT+r0
- 5csQ==
-X-Gm-Message-State: AOJu0YycZCpEDOHkKYkNeCi4KJtoenvjUiyCiWDjO2lZpR7WoHUPP9AT
- +olTJPVLb48/oDUVV8STab3Vo/SIntd5ZiWrLA4=
-X-Google-Smtp-Source: AGHT+IFYYSwou3PYF9WAsxcp3jS4BzUNCOC2uOjgg2ohhPCp5CUG8vJTcHc4Yu8yoW6ZYp9P01kFkg==
-X-Received: by 2002:a05:6a21:3e0d:b0:131:6464:217b with SMTP id
- bk13-20020a056a213e0d00b001316464217bmr9310225pzc.16.1691464315496; 
- Mon, 07 Aug 2023 20:11:55 -0700 (PDT)
+ bh=gzWqj3MGsLV9R8E01giJK4jPvvtSNzy1Q6wuC0RlJy0=;
+ b=DiZPZThTOWSwFf6xH0M3Y8hz7d52yOL+fkuogHrR86lUdsrx36C1rdQTwMGvSDNFYc
+ FJ4Kqxz/+uiElMoXKbFQ2g0iGOe17/IdtluOslExYsqTzsyfeZtepHsyanU4jLr1PkVe
+ qCJfcTQs+KrPWcScx+7U+J8iaOKFA4DRRCM/K1xArDQMooG8GRCWQT4heNQAJ1rvsmE7
+ IdFfZO/tP7uPBdutPQig+lkIg66BKH2Lv/7RaRkK/BrxE4VCY6F36rqwkgxpoQw7yGaF
+ bgE55HJEqAMfG/vmTqa2VbvjpUm5uM+v55hxSNXMD/iFoLuDBD3u37xGDIK4reU3aeeb
+ kfvQ==
+X-Gm-Message-State: AOJu0Yx2ILPQl7iu7WNxkk73rHnLC9aSLYiWdbXDMsHMvhAIGKovg1xA
+ L3l4DRx87ITQWnjLW9dRPWNJJTu+e6QeDa9I7ng=
+X-Google-Smtp-Source: AGHT+IG3nuxQLfzEbRuGOp4NYX4TOiyBpI8WfAtTn3/TdTG7dpBxLYyeEJpydbT/RnD00LVwTfDFVA==
+X-Received: by 2002:a05:6358:990e:b0:134:d4c3:c47d with SMTP id
+ w14-20020a056358990e00b00134d4c3c47dmr8521568rwa.6.1691464316347; 
+ Mon, 07 Aug 2023 20:11:56 -0700 (PDT)
 Received: from stoup.. ([2602:47:d490:6901:e306:567a:e0a1:341])
  by smtp.gmail.com with ESMTPSA id
- g64-20020a636b43000000b0055bf96b11d9sm5639087pgc.89.2023.08.07.20.11.54
+ g64-20020a636b43000000b0055bf96b11d9sm5639087pgc.89.2023.08.07.20.11.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 07 Aug 2023 20:11:54 -0700 (PDT)
+ Mon, 07 Aug 2023 20:11:55 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org, qemu-riscv@nongnu.org,
  qemu-s390x@nongnu.org
-Subject: [PATCH 12/24] tcg/aarch64: Implement negsetcond_*
-Date: Mon,  7 Aug 2023 20:11:31 -0700
-Message-Id: <20230808031143.50925-13-richard.henderson@linaro.org>
+Subject: [PATCH 13/24] tcg/arm: Implement negsetcond_i32
+Date: Mon,  7 Aug 2023 20:11:32 -0700
+Message-Id: <20230808031143.50925-14-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230808031143.50925-1-richard.henderson@linaro.org>
 References: <20230808031143.50925-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c31;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc31.google.com
 X-Spam_score_int: 4
 X-Spam_score: 0.4
 X-Spam_bar: /
@@ -92,66 +92,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Trivial, as aarch64 has an instruction for this: CSETM.
+Trivial, as we simply need to load a different constant
+in the conditional move.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/aarch64/tcg-target.h     |  4 ++--
- tcg/aarch64/tcg-target.c.inc | 12 ++++++++++++
- 2 files changed, 14 insertions(+), 2 deletions(-)
+ tcg/arm/tcg-target.h     | 2 +-
+ tcg/arm/tcg-target.c.inc | 9 +++++++++
+ 2 files changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/tcg/aarch64/tcg-target.h b/tcg/aarch64/tcg-target.h
-index 6080fddf73..e3faa9cff4 100644
---- a/tcg/aarch64/tcg-target.h
-+++ b/tcg/aarch64/tcg-target.h
-@@ -94,7 +94,7 @@ typedef enum {
+diff --git a/tcg/arm/tcg-target.h b/tcg/arm/tcg-target.h
+index b076d033a9..b064bbda9f 100644
+--- a/tcg/arm/tcg-target.h
++++ b/tcg/arm/tcg-target.h
+@@ -122,7 +122,7 @@ extern bool use_neon_instructions;
  #define TCG_TARGET_HAS_mulsh_i32        0
- #define TCG_TARGET_HAS_extrl_i64_i32    0
- #define TCG_TARGET_HAS_extrh_i64_i32    0
+ #define TCG_TARGET_HAS_div_i32          use_idiv_instructions
+ #define TCG_TARGET_HAS_rem_i32          0
 -#define TCG_TARGET_HAS_negsetcond_i32   0
 +#define TCG_TARGET_HAS_negsetcond_i32   1
  #define TCG_TARGET_HAS_qemu_st8_i32     0
  
- #define TCG_TARGET_HAS_div_i64          1
-@@ -130,7 +130,7 @@ typedef enum {
- #define TCG_TARGET_HAS_muls2_i64        0
- #define TCG_TARGET_HAS_muluh_i64        1
- #define TCG_TARGET_HAS_mulsh_i64        1
--#define TCG_TARGET_HAS_negsetcond_i64   0
-+#define TCG_TARGET_HAS_negsetcond_i64   1
- 
- /*
-  * Without FEAT_LSE2, we must use LDXP+STXP to implement atomic 128-bit load,
-diff --git a/tcg/aarch64/tcg-target.c.inc b/tcg/aarch64/tcg-target.c.inc
-index 35ca80cd56..7d8d114c9e 100644
---- a/tcg/aarch64/tcg-target.c.inc
-+++ b/tcg/aarch64/tcg-target.c.inc
-@@ -2262,6 +2262,16 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc,
-                      TCG_REG_XZR, tcg_invert_cond(args[3]));
+ #define TCG_TARGET_HAS_qemu_ldst_i128   0
+diff --git a/tcg/arm/tcg-target.c.inc b/tcg/arm/tcg-target.c.inc
+index 83e286088f..162df38c73 100644
+--- a/tcg/arm/tcg-target.c.inc
++++ b/tcg/arm/tcg-target.c.inc
+@@ -1975,6 +1975,14 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc,
+         tcg_out_dat_imm(s, tcg_cond_to_arm_cond[tcg_invert_cond(args[3])],
+                         ARITH_MOV, args[0], 0, 0);
          break;
- 
 +    case INDEX_op_negsetcond_i32:
-+        a2 = (int32_t)a2;
-+        /* FALLTHRU */
-+    case INDEX_op_negsetcond_i64:
-+        tcg_out_cmp(s, ext, a1, a2, c2);
-+        /* Use CSETM alias of CSINV Wd, WZR, WZR, invert(cond).  */
-+        tcg_out_insn(s, 3506, CSINV, ext, a0, TCG_REG_XZR,
-+                     TCG_REG_XZR, tcg_invert_cond(args[3]));
++        tcg_out_dat_rIN(s, COND_AL, ARITH_CMP, ARITH_CMN, 0,
++                        args[1], args[2], const_args[2]);
++        tcg_out_dat_imm(s, tcg_cond_to_arm_cond[args[3]],
++                        ARITH_MVN, args[0], 0, 0);
++        tcg_out_dat_imm(s, tcg_cond_to_arm_cond[tcg_invert_cond(args[3])],
++                        ARITH_MOV, args[0], 0, 0);
 +        break;
-+
-     case INDEX_op_movcond_i32:
-         a2 = (int32_t)a2;
-         /* FALLTHRU */
-@@ -2868,6 +2878,8 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
-     case INDEX_op_sub_i64:
-     case INDEX_op_setcond_i32:
-     case INDEX_op_setcond_i64:
-+    case INDEX_op_negsetcond_i32:
-+    case INDEX_op_negsetcond_i64:
-         return C_O1_I2(r, r, rA);
  
-     case INDEX_op_mul_i32:
+     case INDEX_op_brcond2_i32:
+         c = tcg_out_cmp2(s, args, const_args);
+@@ -2112,6 +2120,7 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
+     case INDEX_op_add_i32:
+     case INDEX_op_sub_i32:
+     case INDEX_op_setcond_i32:
++    case INDEX_op_negsetcond_i32:
+         return C_O1_I2(r, r, rIN);
+ 
+     case INDEX_op_and_i32:
 -- 
 2.34.1
 
