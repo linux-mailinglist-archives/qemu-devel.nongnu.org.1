@@ -2,46 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6119F773672
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 04:22:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D1E0773670
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 04:20:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTCLf-0005e3-7V; Mon, 07 Aug 2023 22:21:27 -0400
+	id 1qTCJf-0004ov-5o; Mon, 07 Aug 2023 22:19:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1qTCLd-0005dh-9w
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 22:21:25 -0400
-Received: from mail-b.sr.ht ([173.195.146.151])
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1qTCJd-0004oh-7k
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 22:19:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1qTCLb-0001Zt-7M
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 22:21:25 -0400
-Authentication-Results: mail-b.sr.ht; dkim=none 
-Received: from git.sr.ht (unknown [173.195.146.142])
- by mail-b.sr.ht (Postfix) with ESMTPSA id 29AE611EFD1;
- Tue,  8 Aug 2023 02:21:22 +0000 (UTC)
-From: ~hyman <hyman@git.sr.ht>
-Date: Thu, 27 Jul 2023 02:50:29 +0800
-Subject: [PATCH QEMU v3 3/3] tests/migration: Introduce dirty-limit into
- guestperf
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1qTCJb-0000zM-Ge
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 22:19:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1691461157;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=U+UB1m08yxPkEskaYBItwwq2cjhRHewYpkdRS/RlsIo=;
+ b=faAQ87zmqOiMnrpJ/XuM4fJm44NXjiSeh3PJ0yXnnX8z0/YOhw75pu8jZcPZYFhf6opNHn
+ XugRp5ZVPDMKb9G/urjBblV/IvLxutCgDSf0AAeJIQMRsIu/i+VFmPXkA8EhAr90YNnn91
+ +20/PYlrUm1Y29cpFuoRuILH7Ox0CR0=
+Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
+ [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-552-i1UK3Lb9MzapJf-j0GaaQg-1; Mon, 07 Aug 2023 22:19:16 -0400
+X-MC-Unique: i1UK3Lb9MzapJf-j0GaaQg-1
+Received: by mail-lj1-f198.google.com with SMTP id
+ 38308e7fff4ca-2b980182002so35138711fa.1
+ for <qemu-devel@nongnu.org>; Mon, 07 Aug 2023 19:19:15 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1691461154; x=1692065954;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=U+UB1m08yxPkEskaYBItwwq2cjhRHewYpkdRS/RlsIo=;
+ b=HDd/9K2IVFOiglFNFPTfk9LsCgJa32cTQqw8bXjy+QC1EOj0Awj55Omim64lv628eU
+ kt+2gw0r8u9zeLnMNXUVcg11p4TBivhXlMpgEO1ebTP9G52thWG2cz/xOigOyjTikv8+
+ 4l5h3sjiJxg8b7m7Yp3NTsUzQQg+YXRO4m5OvVcrm6ooMvogNEIrzmAknp6IMjMOhAwW
+ u6/JYoK0QsfQicFeiQNqwGX6Kb4bK2nmwgkmoVM7QzCrl7WBhfjc3KmqU1Nb+R+Od4VO
+ yDICX2KATz9JxI5EOX20+ALlX10DDEhAFIZ+sIWR8QIwbzkVV5YQL16rZUUHfU6B4ab/
+ W1SQ==
+X-Gm-Message-State: AOJu0YwXcxYQw3oT14UTBDfRVKrWZh5EIV0kpRWgCPTnbaLCCcG5urNv
+ wvktq4qh26iVUBxjl+644xHYsxSvSgFZX7K6GoBzPPMJ1dc8Z/zQzHP+HhLsA04bPubENvglXHm
+ asDnX7VyCDULjTQ2r41vtsqv0pKrpA/o=
+X-Received: by 2002:a2e:b53b:0:b0:2b9:dd64:8415 with SMTP id
+ z27-20020a2eb53b000000b002b9dd648415mr2888186ljm.24.1691461154813; 
+ Mon, 07 Aug 2023 19:19:14 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF5tT8TQxJOw7wMmcp6L3oSKJF8X6nZ3UcXxhzm14bHuBwSPHniRvVdSOYbO56qcp/txlO20sHG6h/gh47lKpg=
+X-Received: by 2002:a2e:b53b:0:b0:2b9:dd64:8415 with SMTP id
+ z27-20020a2eb53b000000b002b9dd648415mr2888175ljm.24.1691461154644; Mon, 07
+ Aug 2023 19:19:14 -0700 (PDT)
 MIME-Version: 1.0
-Message-ID: <169146128144.15119.10176158487539386358-3@git.sr.ht>
-X-Mailer: git.sr.ht
-In-Reply-To: <169146128144.15119.10176158487539386358-0@git.sr.ht>
-To: qemu-devel <qemu-devel@nongnu.org>
-Cc: Maintainers: Juan Quintela <quintela@redhat.com>,
- Peter Xu <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Hyman <yong.huang@smartx.com>;
-Content-Type: text/plain; charset="utf-8"
+References: <CGME20230529140202eucas1p1920add7c8fd0a0c4efdfac6e9bdf5a7f@eucas1p1.samsung.com>
+ <20230529140153.4053-1-t.dzieciol@partner.samsung.com>
+ <7f1ea2a7-aef1-f090-01ab-218747b167c6@daynix.com>
+ <000201d9c93e$c36323f0$4a296bd0$@partner.samsung.com>
+In-Reply-To: <000201d9c93e$c36323f0$4a296bd0$@partner.samsung.com>
+From: Jason Wang <jasowang@redhat.com>
+Date: Tue, 8 Aug 2023 10:19:03 +0800
+Message-ID: <CACGkMEvE5nBKqvwok5GBX2fda0b9F8hFow2sZqXJ5AvhFTWyMQ@mail.gmail.com>
+Subject: Re: [PATCH v10 0/7] igb: packet-split descriptors support
+To: "Tomasz Dzieciol/VIM Integration (NC) /SRPOL/Engineer/Samsung Electronics"
+ <t.dzieciol@partner.samsung.com>
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>, qemu-devel@nongnu.org, 
+ sriram.yagnaraman@est.tech, k.kwiecien@samsung.com, m.sochacki@samsung.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=173.195.146.151; envelope-from=outgoing@sr.ht;
- helo=mail-b.sr.ht
-X-Spam_score_int: 15
-X-Spam_score: 1.5
-X-Spam_bar: +
-X-Spam_report: (1.5 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_96_XX=3.405,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -54,233 +95,67 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: ~hyman <yong.huang@smartx.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
+On Mon, Aug 7, 2023 at 10:52=E2=80=AFPM Tomasz Dzieciol/VIM Integration (NC=
+)
+/SRPOL/Engineer/Samsung Electronics <t.dzieciol@partner.samsung.com>
+wrote:
+>
+> Hi,
+>
+> It's been a while since review was done and nothing happened with those p=
+atches since then.
+>
+> As I understand from guide: https://www.qemu.org/docs/master/devel/submit=
+ting-a-patch.html#is-my-patch-in I should wait. Is that correct?
 
-Currently, guestperf does not cover the dirty-limit
-migration, support this feature.
+I've queued this for 8.2.
 
-Note that dirty-limit requires 'dirty-ring-size' set.
+Thanks
 
-To enable dirty-limit, setting x-vcpu-dirty-limit-period
-as 500ms and x-vcpu-dirty-limit as 10MB/s:
-$ ./tests/migration/guestperf.py \
-    --dirty-ring-size 4096 \
-    --dirty-limit --x-vcpu-dirty-limit-period 500 \
-    --vcpu-dirty-limit 10 --output output.json \
+>
+> -----Original Message-----
+> From: Akihiko Odaki <akihiko.odaki@daynix.com>
+> Sent: wtorek, 30 maja 2023 04:49
+> To: Tomasz Dzieciol <t.dzieciol@partner.samsung.com>; qemu-devel@nongnu.o=
+rg
+> Cc: sriram.yagnaraman@est.tech; jasowang@redhat.com; k.kwiecien@samsung.c=
+om; m.sochacki@samsung.com
+> Subject: Re: [PATCH v10 0/7] igb: packet-split descriptors support
+>
+> On 2023/05/29 23:01, Tomasz Dzieciol wrote:
+> > Purposes of this series of patches:
+> > * introduce packet-split RX descriptors support. This feature is used b=
+y Linux
+> >    VF driver for MTU values from 2048.
+> > * refactor RX descriptor handling for introduction of packet-split RX
+> >    descriptors support
+> > * fix descriptors flags handling
+> >
+> > Tomasz Dzieciol (7):
+> >    igb: remove TCP ACK detection
+> >    igb: rename E1000E_RingInfo_st
+> >    igb: RX descriptors guest writting refactoring
+> >    igb: RX payload guest writting refactoring
+> >    igb: add IPv6 extended headers traffic detection
+> >    igb: packet-split descriptors support
+> >    e1000e: rename e1000e_ba_state and e1000e_write_hdr_to_rx_buffers
+> >
+> >   hw/net/e1000e_core.c     |  78 +++--
+> >   hw/net/igb_core.c        | 730 ++++++++++++++++++++++++++++----------=
+-
+> >   hw/net/igb_regs.h        |  20 +-
+> >   hw/net/trace-events      |   6 +-
+> >   tests/qtest/libqos/igb.c |   5 +
+> >   5 files changed, 592 insertions(+), 247 deletions(-)
+> >
+>
+> Thanks for keeping working on this. For the entire series:
+>
+> Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> Tested-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+>
 
-To run the entire standardized set of dirty-limit-enabled
-comparisons, with unix migration:
-$ ./tests/migration/guestperf-batch.py \
-    --dirty-ring-size 4096 \
-    --dst-host localhost --transport unix \
-    --filter compr-dirty-limit* --output outputdir
-
-Signed-off-by: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
-Message-Id: <169073391195.19893.610675378338110324-3@git.sr.ht>
----
- tests/migration/guestperf/comparison.py | 23 +++++++++++++++++++++++
- tests/migration/guestperf/engine.py     | 17 +++++++++++++++++
- tests/migration/guestperf/progress.py   | 16 ++++++++++++++--
- tests/migration/guestperf/scenario.py   | 11 ++++++++++-
- tests/migration/guestperf/shell.py      | 18 +++++++++++++++++-
- 5 files changed, 81 insertions(+), 4 deletions(-)
-
-diff --git a/tests/migration/guestperf/comparison.py b/tests/migration/guestp=
-erf/comparison.py
-index c03b3f6d7e..42cc0372d1 100644
---- a/tests/migration/guestperf/comparison.py
-+++ b/tests/migration/guestperf/comparison.py
-@@ -135,4 +135,27 @@ COMPARISONS =3D [
-         Scenario("compr-multifd-channels-64",
-                  multifd=3DTrue, multifd_channels=3D64),
-     ]),
-+
-+    # Looking at effect of dirty-limit with
-+    # varying x_vcpu_dirty_limit_period
-+    Comparison("compr-dirty-limit-period", scenarios =3D [
-+        Scenario("compr-dirty-limit-period-500",
-+                 dirty_limit=3DTrue, x_vcpu_dirty_limit_period=3D500),
-+        Scenario("compr-dirty-limit-period-800",
-+                 dirty_limit=3DTrue, x_vcpu_dirty_limit_period=3D800),
-+        Scenario("compr-dirty-limit-period-1000",
-+                 dirty_limit=3DTrue, x_vcpu_dirty_limit_period=3D1000),
-+    ]),
-+
-+
-+    # Looking at effect of dirty-limit with
-+    # varying vcpu_dirty_limit
-+    Comparison("compr-dirty-limit", scenarios =3D [
-+        Scenario("compr-dirty-limit-10MB",
-+                 dirty_limit=3DTrue, vcpu_dirty_limit=3D10),
-+        Scenario("compr-dirty-limit-20MB",
-+                 dirty_limit=3DTrue, vcpu_dirty_limit=3D20),
-+        Scenario("compr-dirty-limit-50MB",
-+                 dirty_limit=3DTrue, vcpu_dirty_limit=3D50),
-+    ]),
- ]
-diff --git a/tests/migration/guestperf/engine.py b/tests/migration/guestperf/=
-engine.py
-index 29ebb5011b..93a6f78e46 100644
---- a/tests/migration/guestperf/engine.py
-+++ b/tests/migration/guestperf/engine.py
-@@ -102,6 +102,8 @@ class Engine(object):
-             info.get("expected-downtime", 0),
-             info.get("setup-time", 0),
-             info.get("cpu-throttle-percentage", 0),
-+            info.get("dirty-limit-throttle-time-per-round", 0),
-+            info.get("dirty-limit-ring-full-time", 0),
-         )
-=20
-     def _migrate(self, hardware, scenario, src, dst, connect_uri):
-@@ -203,6 +205,21 @@ class Engine(object):
-             resp =3D dst.command("migrate-set-parameters",
-                                multifd_channels=3Dscenario._multifd_channels)
-=20
-+        if scenario._dirty_limit:
-+            if not hardware._dirty_ring_size:
-+                raise Exception("dirty ring size must be configured when "
-+                                "testing dirty limit migration")
-+
-+            resp =3D src.command("migrate-set-capabilities",
-+                               capabilities =3D [
-+                                   { "capability": "dirty-limit",
-+                                     "state": True }
-+                               ])
-+            resp =3D src.command("migrate-set-parameters",
-+                x_vcpu_dirty_limit_period=3Dscenario._x_vcpu_dirty_limit_per=
-iod)
-+            resp =3D src.command("migrate-set-parameters",
-+                               vcpu_dirty_limit=3Dscenario._vcpu_dirty_limit)
-+
-         resp =3D src.command("migrate", uri=3Dconnect_uri)
-=20
-         post_copy =3D False
-diff --git a/tests/migration/guestperf/progress.py b/tests/migration/guestper=
-f/progress.py
-index ab1ee57273..d490584217 100644
---- a/tests/migration/guestperf/progress.py
-+++ b/tests/migration/guestperf/progress.py
-@@ -81,7 +81,9 @@ class Progress(object):
-                  downtime,
-                  downtime_expected,
-                  setup_time,
--                 throttle_pcent):
-+                 throttle_pcent,
-+                 dirty_limit_throttle_time_per_round,
-+                 dirty_limit_ring_full_time):
-=20
-         self._status =3D status
-         self._ram =3D ram
-@@ -91,6 +93,10 @@ class Progress(object):
-         self._downtime_expected =3D downtime_expected
-         self._setup_time =3D setup_time
-         self._throttle_pcent =3D throttle_pcent
-+        self._dirty_limit_throttle_time_per_round =3D \
-+            dirty_limit_throttle_time_per_round
-+        self._dirty_limit_ring_full_time =3D \
-+            dirty_limit_ring_full_time
-=20
-     def serialize(self):
-         return {
-@@ -102,6 +108,10 @@ class Progress(object):
-             "downtime_expected": self._downtime_expected,
-             "setup_time": self._setup_time,
-             "throttle_pcent": self._throttle_pcent,
-+            "dirty_limit_throttle_time_per_round":
-+                self._dirty_limit_throttle_time_per_round,
-+            "dirty_limit_ring_full_time":
-+                self._dirty_limit_ring_full_time,
-         }
-=20
-     @classmethod
-@@ -114,4 +124,6 @@ class Progress(object):
-             data["downtime"],
-             data["downtime_expected"],
-             data["setup_time"],
--            data["throttle_pcent"])
-+            data["throttle_pcent"],
-+            data["dirty_limit_throttle_time_per_round"],
-+            data["dirty_limit_ring_full_time"])
-diff --git a/tests/migration/guestperf/scenario.py b/tests/migration/guestper=
-f/scenario.py
-index de70d9b2f5..154c4f5d5f 100644
---- a/tests/migration/guestperf/scenario.py
-+++ b/tests/migration/guestperf/scenario.py
-@@ -30,7 +30,9 @@ class Scenario(object):
-                  auto_converge=3DFalse, auto_converge_step=3D10,
-                  compression_mt=3DFalse, compression_mt_threads=3D1,
-                  compression_xbzrle=3DFalse, compression_xbzrle_cache=3D10,
--                 multifd=3DFalse, multifd_channels=3D2):
-+                 multifd=3DFalse, multifd_channels=3D2,
-+                 dirty_limit=3DFalse, x_vcpu_dirty_limit_period=3D500,
-+                 vcpu_dirty_limit=3D1):
-=20
-         self._name =3D name
-=20
-@@ -60,6 +62,10 @@ class Scenario(object):
-         self._multifd =3D multifd
-         self._multifd_channels =3D multifd_channels
-=20
-+        self._dirty_limit =3D dirty_limit
-+        self._x_vcpu_dirty_limit_period =3D x_vcpu_dirty_limit_period
-+        self._vcpu_dirty_limit =3D vcpu_dirty_limit
-+
-     def serialize(self):
-         return {
-             "name": self._name,
-@@ -79,6 +85,9 @@ class Scenario(object):
-             "compression_xbzrle_cache": self._compression_xbzrle_cache,
-             "multifd": self._multifd,
-             "multifd_channels": self._multifd_channels,
-+            "dirty_limit": self._dirty_limit,
-+            "x_vcpu_dirty_limit_period": self._x_vcpu_dirty_limit_period,
-+            "vcpu_dirty_limit": self._vcpu_dirty_limit,
-         }
-=20
-     @classmethod
-diff --git a/tests/migration/guestperf/shell.py b/tests/migration/guestperf/s=
-hell.py
-index 7d6b8cd7cf..c85d89efec 100644
---- a/tests/migration/guestperf/shell.py
-+++ b/tests/migration/guestperf/shell.py
-@@ -131,6 +131,17 @@ class Shell(BaseShell):
-         parser.add_argument("--multifd-channels", dest=3D"multifd_channels",
-                             default=3D2, type=3Dint)
-=20
-+        parser.add_argument("--dirty-limit", dest=3D"dirty_limit", default=
-=3DFalse,
-+                            action=3D"store_true")
-+
-+        parser.add_argument("--x-vcpu-dirty-limit-period",
-+                            dest=3D"x_vcpu_dirty_limit_period",
-+                            default=3D500, type=3Dint)
-+
-+        parser.add_argument("--vcpu-dirty-limit",
-+                            dest=3D"vcpu_dirty_limit",
-+                            default=3D1, type=3Dint)
-+
-     def get_scenario(self, args):
-         return Scenario(name=3D"perfreport",
-                         downtime=3Dargs.downtime,
-@@ -154,7 +165,12 @@ class Shell(BaseShell):
-                         compression_xbzrle_cache=3Dargs.compression_xbzrle_c=
-ache,
-=20
-                         multifd=3Dargs.multifd,
--                        multifd_channels=3Dargs.multifd_channels)
-+                        multifd_channels=3Dargs.multifd_channels,
-+
-+                        dirty_limit=3Dargs.dirty_limit,
-+                        x_vcpu_dirty_limit_period=3D\
-+                            args.x_vcpu_dirty_limit_period,
-+                        vcpu_dirty_limit=3Dargs.vcpu_dirty_limit)
-=20
-     def run(self, argv):
-         args =3D self._parser.parse_args(argv)
---=20
-2.38.5
 
