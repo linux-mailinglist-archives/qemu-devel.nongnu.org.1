@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E5DD773AB1
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 16:21:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB4A7773AB2
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 16:21:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTNYt-0001L4-D8; Tue, 08 Aug 2023 10:19:51 -0400
+	id 1qTNZ0-0001M5-La; Tue, 08 Aug 2023 10:19:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <fufuyqqqqqq@gmail.com>)
- id 1qTNYq-0001Kq-BT
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 10:19:48 -0400
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+ id 1qTNYu-0001Ld-HV
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 10:19:53 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <fufuyqqqqqq@gmail.com>)
- id 1qTNYo-0000Ra-Od
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 10:19:48 -0400
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-686b9920362so3840039b3a.1
- for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 07:19:46 -0700 (PDT)
+ id 1qTNYs-0000VA-Tk
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 10:19:52 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-1b9c5e07c1bso50885855ad.2
+ for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 07:19:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1691504385; x=1692109185;
+ d=gmail.com; s=20221208; t=1691504390; x=1692109190;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=m8X/U9yzOHTgapxb29qT1DD+OGFIOVrJO+35tPcxDbA=;
- b=I5agK3QEuKQfPbj+FQUfwL/8aXrTvksdCC8ZFKbp/BiN2cUAQrdu8yMv/Uf7KYmFF8
- 153F1UJoM0WlVtXIxSpy0pjDXvIOQCh861ulwEApT/qjH8Jm4c5A6ET/tXm7VyS1cg7Y
- V6qysRx/Oe5fMxo4AST/MmJyqDuT1z+EscHrBz9eUiWC65LZ+OdGwpoH+fVo8pDEXQxh
- UF/qaAJSIV+Tp/XvOaun3SQzcQ7kauC87Ca5IIAnqrllJ1i1CITxUbO8OW4uSO/vkx2Q
- b4mPg5jjoQWr23KUN1Ww8cNJmzF+dritk/O1DBmoIjrzeg7Lxh1Gx9Plt7q4b7kC+CHR
- X5gA==
+ bh=vuQ2Qkfj6B3zA1uyx3Q0Q6mG7A7//D96fP1uqBR5p/8=;
+ b=e17Q11KyGXTeKFPK1QOLHSJwvEVtlOXvkqlQUTOlXn3mrLbzFqgq63dkYvjwYYwGQg
+ yAv3Nb8M0e817YIrpZrKqwcRTd+ef4y4Df7PMUWkKiLTrEsS9Lqp6/jY9EcSYIe+LGbE
+ aW7nYu1IDwMqUKmslytOv4dWODEd2ZcNzKTqqqZgadl45ulBVVgp1lHKtvVK9COft2GK
+ 7RIa/bSNWpNMXCU0+jKPMopeBtFiRUFZc7xaSYRoyNJCdTrEP16ZWB/vSVklEcdj4VJC
+ nbfU3nba8AMvxhpRBbAZ6/YIoiZcvglYrR2SPhmHWcEIP007fQiNQrkqpXoKDIIqC6lN
+ 6w3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691504385; x=1692109185;
+ d=1e100.net; s=20221208; t=1691504390; x=1692109190;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=m8X/U9yzOHTgapxb29qT1DD+OGFIOVrJO+35tPcxDbA=;
- b=DqQI+iX9YlUZ9iH/JH6rH/36Y5qoAKFf8TJ5lecFZ+m2uAnCYCc5ihui8EKKwhEAxZ
- V+tZ4Kyx/uu+1Uyof+MabjCw8QzH6imqm0cI8wYKnz9vmcuBlU89r+SftHlcz4hBmGqO
- drlDL5h+0DTV0Q0n4BlQx+qI83ORDmHAEghWV07Sxw6O0c+wS+NfLr0oUdPmOtohuMW2
- Wp2tpmEBW4+dlrMAWYaGXSY1IUrWmOmcO3zFEHCfNg5h3hkT5m1M4A67kgoknOScbue/
- T2pAPHDEVuZ5BT0J+Wtn3FF27BlIrhOInaAlJZbJlydndMNDletxBXCOvDKBSk33AK+o
- bSeg==
-X-Gm-Message-State: AOJu0YwxAGXFSvrlge5TzxmGFrhHc52bwk4EXg94FOV+esYYcgmDoRDe
- pqXe3mr4rhueRShdx7VbeycJ/55Kn7WSdmQh
-X-Google-Smtp-Source: AGHT+IHzOb8xgzfgVfLYwcVU7QCXQHtRSutc7oT5xEBTMGYjXZTIjUk6HTNizNNdvC3NTXxRXI/o/A==
-X-Received: by 2002:a17:903:2281:b0:1bb:c5b5:8353 with SMTP id
- b1-20020a170903228100b001bbc5b58353mr11652023plh.4.1691504385506; 
- Tue, 08 Aug 2023 07:19:45 -0700 (PDT)
+ bh=vuQ2Qkfj6B3zA1uyx3Q0Q6mG7A7//D96fP1uqBR5p/8=;
+ b=F+AtbKsb5K1CqiweN0I8e2zntDIItCUw0O7J43NB95OSVknK9o9c5/zg8nKmgLjlSq
+ oelTvrBt1B45fIt6pT3I02H4E2/RU+omb4ROTi4Dqc7R9oA6X/Rim134JMBZ8A2qVhZq
+ UMIqRGftzpGEFTOItYeu1PWrCnjdv1o1oyyREE1DFKGp3oR7iCF/Tpx2G0EPD1OsYXeh
+ 8/xEnSPy7FUuuHJ793MJ9xaJlH9QGeE79R7MovS2lA69Ux5MkrUVolYLHNHSgDuH5W69
+ d1K3+y+sETVujHXfrX/gZk+BMdiSN5oOzemHRHzLaopLkKg4ctpqZCxiULhB6kyYgLVu
+ 2CAw==
+X-Gm-Message-State: AOJu0YwZTc1tx0Bi6AlnvLmJx09vfE4A2vmdC+W8+ialRpLUeh35jw5t
+ E+RJ3Vv8l+IbmK/cTMTrw3PCC0UWZ5c0zFk9
+X-Google-Smtp-Source: AGHT+IHK+WBxU8zzO1B2I6B1hbv6Bz50yFqt55plcWiCMAWVtJBM0vdFu8k8iTQ7PBhho7LP1iLzXA==
+X-Received: by 2002:a17:902:dad1:b0:1b8:6987:de84 with SMTP id
+ q17-20020a170902dad100b001b86987de84mr16354252plx.48.1691504389643; 
+ Tue, 08 Aug 2023 07:19:49 -0700 (PDT)
 Received: from localhost.localdomain ([223.104.41.22])
  by smtp.gmail.com with ESMTPSA id
- c3-20020a170902b68300b001bb1f0605b2sm9043985pls.214.2023.08.08.07.19.42
+ c3-20020a170902b68300b001bb1f0605b2sm9043985pls.214.2023.08.08.07.19.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 08 Aug 2023 07:19:45 -0700 (PDT)
+ Tue, 08 Aug 2023 07:19:49 -0700 (PDT)
 From: Yeqi Fu <fufuyqqqqqq@gmail.com>
 To: alex.bennee@linaro.org
 Cc: richard.henderson@linaro.org, qemu-devel@nongnu.org,
  Yeqi Fu <fufuyqqqqqq@gmail.com>
-Subject: [RFC v4 10/11] tests/tcg/multiarch: Add nativecall.c test
-Date: Tue,  8 Aug 2023 22:17:38 +0800
-Message-Id: <20230808141739.3110740-11-fufuyqqqqqq@gmail.com>
+Subject: [RFC v4 11/11] docs/user: Add doc for native library calls
+Date: Tue,  8 Aug 2023 22:17:39 +0800
+Message-Id: <20230808141739.3110740-12-fufuyqqqqqq@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230808141739.3110740-1-fufuyqqqqqq@gmail.com>
 References: <20230808141739.3110740-1-fufuyqqqqqq@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=fufuyqqqqqq@gmail.com; helo=mail-pf1-x434.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=fufuyqqqqqq@gmail.com; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,149 +92,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Introduce a new test for native calls to ensure their functionality.
-The process involves cross-compiling the test cases, building them
-as dynamically linked binaries, and running these binaries which
-necessitates the addition of the appropriate interpreter prefix.
-
 Signed-off-by: Yeqi Fu <fufuyqqqqqq@gmail.com>
 ---
- tests/tcg/multiarch/Makefile.target     | 17 +++++
- tests/tcg/multiarch/native/nativecall.c | 98 +++++++++++++++++++++++++
- 2 files changed, 115 insertions(+)
- create mode 100644 tests/tcg/multiarch/native/nativecall.c
+ docs/user/index.rst        |  1 +
+ docs/user/native_calls.rst | 90 ++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 91 insertions(+)
+ create mode 100644 docs/user/native_calls.rst
 
-diff --git a/tests/tcg/multiarch/Makefile.target b/tests/tcg/multiarch/Makefile.target
-index 43bddeaf21..5231df34ba 100644
---- a/tests/tcg/multiarch/Makefile.target
-+++ b/tests/tcg/multiarch/Makefile.target
-@@ -138,5 +138,22 @@ run-plugin-semiconsole-with-%:
- TESTS += semihosting semiconsole
- endif
+diff --git a/docs/user/index.rst b/docs/user/index.rst
+index 782d27cda2..d3fc9b7af1 100644
+--- a/docs/user/index.rst
++++ b/docs/user/index.rst
+@@ -12,3 +12,4 @@ processes compiled for one CPU on another CPU.
+    :maxdepth: 2
  
-+nativecall: native/nativecall.c
-+	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $< -o $@ $(filter-out -static,$(LDFLAGS))
-+
-+ifneq ($(LD_PREFIX),)
-+ifneq ($(wildcard $(LIBNATIVE)),)
-+run-nativecall: nativecall
-+	$(call run-test,$<, $(QEMU) -L $(LD_PREFIX) --native-bypass $(LIBNATIVE) $<, "nativecall")
-+else
-+run-nativecall: nativecall
-+	$(call skip-test, $<, "no native library found")
-+endif
-+else
-+run-nativecall: nativecall
-+	$(call skip-test, $<, "no elf interpreter prefix found")
-+endif
-+EXTRA_RUNS += run-nativecall
-+
- # Update TESTS
- TESTS += $(MULTIARCH_TESTS)
-diff --git a/tests/tcg/multiarch/native/nativecall.c b/tests/tcg/multiarch/native/nativecall.c
+    main
++   native_calls
+diff --git a/docs/user/native_calls.rst b/docs/user/native_calls.rst
 new file mode 100644
-index 0000000000..d3f6f49ed0
+index 0000000000..c4b854096a
 --- /dev/null
-+++ b/tests/tcg/multiarch/native/nativecall.c
-@@ -0,0 +1,98 @@
-+#include <assert.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <sys/mman.h>
++++ b/docs/user/native_calls.rst
+@@ -0,0 +1,90 @@
++Native Library Calls Optimization
++=================================
 +
-+void compare_memory(const void *a, const void *b, size_t n)
-+{
-+    const unsigned char *p1 = a;
-+    const unsigned char *p2 = b;
-+    for (size_t i = 0; i < n; i++) {
-+        assert(p1[i] == p2[i]);
-+    }
-+}
++Description
++-----------
 +
-+void test_memcpy()
-+{
-+    char src[] = "Hello, world!";
-+    char dest[20];
-+    memcpy(dest, src, 13);
-+    compare_memory(dest, src, 13);
-+}
++Executing a program under QEMU's user mode subjects the entire
++program, including all library calls, to translation. It's important
++to understand that many of these library functions are optimized
++specifically for the guest architecture. Therefore, their
++translation might not yield the most efficient execution.
 +
-+void test_strncpy()
-+{
-+    char src[] = "Hello, world!";
-+    char dest[20];
-+    strncpy(dest, src, 13);
-+    compare_memory(dest, src, 13);
-+}
++When the semantics of a library function are well defined, we can
++capitalize on this by substituting the translated version with a call
++to the native equivalent function.
 +
-+void test_strcpy()
-+{
-+    char src[] = "Hello, world!";
-+    char dest[20];
-+    strcpy(dest, src);
-+    compare_memory(dest, src, 13);
-+}
++To achieve tangible results, focus should be given to functions such
++as memory-related ('mem*') and string-related ('str*') functions.
++These subsets of functions often have the most significant effect
++on overall performance, making them optimal candidates for
++optimization.
 +
-+void test_strcat()
-+{
-+    char src[20] = "Hello, ";
-+    char dst[] = "world!";
-+    char str[] = "Hello, world!";
-+    strcat(src, dest);
-+    compare_memory(src, str, 13);
-+}
++Implementation
++--------------
 +
-+void test_memcmp()
-+{
-+    char str1[] = "abc";
-+    char str2[] = "abc";
-+    char str3[] = "def";
-+    assert(memcmp(str1, str2, 3) == 0);
-+    assert(memcmp(str1, str3, 3) != 0);
-+}
++Upon setting the LD_PRELOAD environment variable, the dynamic linker
++will load the library specified in LD_PRELOAD preferentially. If there
++exist functions in the LD_PRELOAD library that share names with those
++in other libraries, they will override the corresponding functions in
++those other libraries.
 +
-+void test_strncmp()
-+{
-+    char str1[] = "abc";
-+    char str2[] = "abc";
-+    char str3[] = "def";
-+    assert(strncmp(str1, str2, 2) == 0);
-+    assert(strncmp(str1, str3, 2) != 0);
-+}
++To implement native library bypass, we created a shared library and
++re-implemented the native functions within it as a special
++instruction sequence. By means of the LD_PRELOAD environment
++variable, we load this shared library into the user program.
++Therefore, when the user program calls a native function, it actually
++executes this special instruction sequence. During execution, QEMU's
++translator captures these special instructions and executes the
++corresponding native functions.
 +
-+void test_strcmp()
-+{
-+    char str1[] = "abc";
-+    char str2[] = "abc";
-+    char str3[] = "def";
-+    assert(strcmp(str1, str2) == 0);
-+    assert(strcmp(str1, str3) != 0);
-+}
++These special instructions are implemented using
++architecture-specific unused or invalid opcodes, ensuring that they
++do not conflict with existing instructions.
 +
-+void test_memset()
-+{
-+    char buffer[10];
-+    memset(buffer, 'A', 10);
-+    int i;
-+    for (i = 0; i < 10; i++) {
-+        assert(buffer[i] == 'A');
-+    }
-+}
 +
-+int main()
-+{
-+    test_memset();
-+    test_memcpy();
-+    test_strncpy();
-+    test_memcmp();
-+    test_strncmp();
-+    test_strcpy();
-+    test_strcmp();
-+    test_strcat();
++i386 and x86_64
++---------------
++An unused instruction is utilized to mark a native call.
 +
-+    return EXIT_SUCCESS;
-+}
++arm and aarch64
++---------------
++HLT is an invalid instruction for userspace and usefully has 16
++bits of spare immeadiate data which we can stuff data in.
++
++mips and mips64
++---------------
++The syscall instruction contains 20 unused bits, which are typically
++set to 0. These bits can be used to store non-zero data,
++distinguishing them from a regular syscall instruction.
++
++Usage
++-----
++
++1. Install cross-compilation tools
++
++Cross-compilation tools are required to build the shared libraries
++that can hook the necessary library functions. For example, a viable
++command on Ubuntu is:
++
++::
++
++    apt install gcc-arm-linux-gnueabihf gcc-aarch64-linux-gnu \
++    gcc-mips-linux-gnu gcc-mips64-linux-gnuabi64
++
++
++2. Locate the compiled libnative.so
++
++After compilation, the libnative.so file can be found in the
++``./build/common-user/native/<target>-linux-user`` directory.
++
++3. Run the program with the ``--native-bypass`` option
++
++To run your program with native library bypass, use the
++``--native-bypass`` option to import libnative.so:
++
++::
++
++    qemu-<target> --native-bypass \
++    ./build/common-user/native/<target>-linux-user/libnative.so ./program
++
 -- 
 2.34.1
 
