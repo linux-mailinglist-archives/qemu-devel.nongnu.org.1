@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB87677382E
+	by mail.lfdr.de (Postfix) with ESMTPS id 75F1E77382C
 	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 08:28:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTGBx-0004TV-Kh; Tue, 08 Aug 2023 02:27:41 -0400
+	id 1qTGBy-0004UO-Ij; Tue, 08 Aug 2023 02:27:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1qTGBu-0004SM-7F; Tue, 08 Aug 2023 02:27:38 -0400
+ id 1qTGBu-0004ST-FS; Tue, 08 Aug 2023 02:27:38 -0400
 Received: from out5-smtp.messagingengine.com ([66.111.4.29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1qTGBr-0006zr-02; Tue, 08 Aug 2023 02:27:37 -0400
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
- by mailout.nyi.internal (Postfix) with ESMTP id C2A6E5C0045;
- Tue,  8 Aug 2023 02:27:32 -0400 (EDT)
+ id 1qTGBs-00070F-P6; Tue, 08 Aug 2023 02:27:38 -0400
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+ by mailout.nyi.internal (Postfix) with ESMTP id C38C85C00CB;
+ Tue,  8 Aug 2023 02:27:34 -0400 (EDT)
 Received: from mailfrontend2 ([10.202.2.163])
- by compute3.internal (MEProxy); Tue, 08 Aug 2023 02:27:32 -0400
+ by compute6.internal (MEProxy); Tue, 08 Aug 2023 02:27:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
- h=cc:cc:content-transfer-encoding:content-type:content-type
- :date:date:from:from:in-reply-to:message-id:mime-version
- :reply-to:sender:subject:subject:to:to; s=fm2; t=1691476052; x=
- 1691562452; bh=YaXbWOZtUa3s1CeLoMicMlPUq706Odh7v0zbxDH00l8=; b=T
- h0Bureepix6bvCpaClgJOPLOZCG6c/Uf6gWxlKZ8Q+fYHycEL0RWe1LlCCuNtY/8
- t5T8AZha0bq2N1toVb4qJZYDkLJKkAabNYkGSzV3XV/+URAFhdrbueWF8v/BsCiv
- aRurAcuMql3tbzBeParYkHBlAa3FqtV9Y4LgK+ZyKZBK1n2lyhvHF9ZdEdO9jIzm
- 6kzgfhK9jGRftjhYOBeAV9YYHchNDZj7h3sFRMwMpO191ZrjQfTrhLAyH7uh4S0H
- NK0Kj6pm0etuZhM8HKF17DsMf97bTjUkrOZBz+SQQt8IFhXieqeq/i7tirc2e5r/
- Hv/mF8iXg4p9hiKmZXvzw==
+ h=cc:cc:content-transfer-encoding:content-type:date:date:from
+ :from:in-reply-to:in-reply-to:message-id:mime-version:references
+ :reply-to:sender:subject:subject:to:to; s=fm2; t=1691476054; x=
+ 1691562454; bh=73Q7o1MaFcuZdXvYSbd98bpNm+tM8IhFfhR4hxDxYoI=; b=c
+ 5iWQuleWSRMTaWgODWQlYkffG2mACOeHQJRCRn8hXnIUsguG5u90i+JV99R7fJQS
+ wFokeB2/wcmVdAcv+j7evBgqV+pF28vhXz5zONuUi7xj8tm6MD0wYft8aTkDYdWj
+ CjIf5OJ4tHOzEfOcYoQvzrQiV7ZdDrvgYGjfXHKnY8r5LvRt5B0RcsI47KSsMIzd
+ yfRtWQWK4Lid/eDNp3ikaRxqbjyUfpoSMgjq29e4pK0N4DexQlUNo7K0h4lpqKQ3
+ GTFRlL0C0QkfP3epngCE80VVMzU40lhpmJVCYaN0vlw9Gc5WvftgdHU8/xdfLmk/
+ 44YCViqp9lthtV7TnYJ9A==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:cc:content-transfer-encoding
- :content-type:content-type:date:date:feedback-id:feedback-id
- :from:from:in-reply-to:message-id:mime-version:reply-to:sender
- :subject:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender
- :x-me-sender:x-sasl-enc; s=fm3; t=1691476052; x=1691562452; bh=Y
- aXbWOZtUa3s1CeLoMicMlPUq706Odh7v0zbxDH00l8=; b=keaYo3AYfgKTy/5HY
- 1dpATFAIE0JVMI4p1bBK0mPcI+ggdhZ48xjP+gqHdho90w+Sc5FzP56gnfNQBrhG
- RlyKBtSSnA1rGQZu/1+xS6FiftzqJatlvDtf74QW5EncATLcATJH40LAZoZAGRn6
- qmYJbeaimr7mTxuPozjT/TdfhB1bYWzv+I/YuMfTY1ecfcrXqI1PxOYIfVo9P7KQ
- Jp2IQRpJCSOFJ58wZazSiljFYTFXB7jTMtA6Pi5aW9c65bYO/EnNYFKLLbU9rfG5
- XzSBgRHbNe11THiwfhpZADlClffqofQbsoECrPAHwAMCWlBLzWCuOsqweatnHT74
- 1xhog==
-X-ME-Sender: <xms:U-DRZCZ4B-G8T9mMWollDz7aJMOwyVyDXaU6FS6Tp7VUJMGyVhNtAA>
- <xme:U-DRZFZoHoV9-OEvUkniSs4KrYWVcCLrhnrwm0894Uvn6KJAa5927btc3dH3Qa35l
- mFDvvNWX5-pRKvtB3Q>
-X-ME-Received: <xmr:U-DRZM8IWLoO4Ch35dmtXxwFZ_Jz4OGN9xpuEK1N8wVqyMKY-o5vDl5qG_Gx6GiYeiyRKbwU35r3FA>
+ :content-type:date:date:feedback-id:feedback-id:from:from
+ :in-reply-to:in-reply-to:message-id:mime-version:references
+ :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1691476054; x=
+ 1691562454; bh=73Q7o1MaFcuZdXvYSbd98bpNm+tM8IhFfhR4hxDxYoI=; b=F
+ u4mjEukogsrmLNXk299Sg2Uw37r8A3+GExnDYjftXk3w3Cnbc4i1rK07G+PgvhxG
+ JFRSdfkBB1PLmX/OyeCA+6+UhmNY1dJXh9D17i8dgRDP/GzAfDlWKcEEU/ETRN4T
+ /PqJ/StTNmgT3z2qxQYalLM8zInBQBwxjxVZmc7KiRH+u+WWOx9z78saWIYjHaBI
+ kzKr/q/NiZFm21kfjmsnTFqu/rlWScOdrkOuCObti1sUMQy3uis++xr76YAuY1Nv
+ 9tsx2xmpa3GHXSSkVVRljo4Ft5Kf1OsMwe0h6wIaQlRplybR+f4QiMBGV1OyNFxL
+ rdEJUd4dz2nhBe/UUiUdA==
+X-ME-Sender: <xms:VuDRZFvbDFGoqodBRE7ouNFK9id4xr2NZxjTzX8PN6f4LXfCVIdB_A>
+ <xme:VuDRZOdDZ3k_taJ6-6MKqzV92kEVQOfodO-wO12FZifAF1uIbQ64bpuy0KsskWCKV
+ D6GPNEK-lfHotJ7kDY>
+X-ME-Received: <xmr:VuDRZIzLTVrJmrZ4k6FlJufcNICGs7Et51l6QjgB6kebc1qFvESx5gZTDqlcj5dkwKuNQ8mW534jHQ>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrledugddutdehucetufdoteggodetrfdotf
  fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
  uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
- cujfgurhephffvvefufffkofgtggfgsehtkeertdertdejnecuhfhrohhmpefmlhgruhhs
- ucflvghnshgvnhcuoehithhssehirhhrvghlvghvrghnthdrughkqeenucggtffrrghtth
- gvrhhnpefhgeetffffteegfeevueeiieeujefhvdekleejvefhffdugedtveejieejtddt
- geenucffohhmrghinhepghhithhlrggsrdgtohhmnecuvehluhhsthgvrhfuihiivgeptd
- enucfrrghrrghmpehmrghilhhfrhhomhepihhtshesihhrrhgvlhgvvhgrnhhtrdgukh
-X-ME-Proxy: <xmx:U-DRZEomHVWl8fO3NWDpvWwm7svILtoW4loTW1udPKBMCndmfGUOvg>
- <xmx:U-DRZNqNSyIk9Y3U57_lzTKRf_infvxBFDKqn_1r2_eQd4j8KyiICw>
- <xmx:U-DRZCTee825SgBceFcTqkQ8ev98w3jixl21RXMpdC5Yf1e9cw3xbA>
- <xmx:VODRZI1tUA0QG0gd1a3RaK17Fa1ZV_AcUnpeITtDgzNsMtbI7sMcfw>
+ cujfgurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepmfhlrghu
+ shculfgvnhhsvghnuceoihhtshesihhrrhgvlhgvvhgrnhhtrdgukheqnecuggftrfgrth
+ htvghrnhepjefgieelgfeiveehkeeuveehheekfeevgeeigfehfefgjeejhefffeegudej
+ udegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepih
+ htshesihhrrhgvlhgvvhgrnhhtrdgukh
+X-ME-Proxy: <xmx:VuDRZMPe8qnzUyumwOdb9Zwqz69AthcWW4fbVZRbgqVOCWH7WrczRw>
+ <xmx:VuDRZF_Pk0Lvn3v3bHiSVPzU4qtAmtC16g-iDY7fscrBJRXP1O-8xQ>
+ <xmx:VuDRZMVBuTO27sLWJY4AdbsuwvXjl69_oMy3TB-byaemwI-9Y5IaNg>
+ <xmx:VuDRZMVPZ4DQ6QuPWk30ibREQoqh3t6myFYxqGg7WJbW6i7EJZI6xQ>
 Feedback-ID: idc91472f:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 8 Aug 2023 02:27:29 -0400 (EDT)
+ 8 Aug 2023 02:27:32 -0400 (EDT)
 From: Klaus Jensen <its@irrelevant.dk>
 To: Peter Maydell <peter.maydell@linaro.org>,
 	qemu-devel@nongnu.org
@@ -72,22 +72,24 @@ Cc: qemu-block@nongnu.org, Keith Busch <kbusch@kernel.org>,
  Klaus Jensen <its@irrelevant.dk>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Stefan Hajnoczi <stefanha@redhat.com>, Fam Zheng <fam@euphon.net>,
+ Ankit Kumar <ankit.kumar@samsung.com>, qemu-stable@nongnu.org,
  Klaus Jensen <k.jensen@samsung.com>
-Subject: [PULL 0/2] hw/nvme late fix
-Date: Tue,  8 Aug 2023 08:27:28 +0200
-Message-ID: <20230808062727.19263-4-its@irrelevant.dk>
+Subject: [PULL 1/2] hw/nvme: fix CRC64 for guard tag
+Date: Tue,  8 Aug 2023 08:27:29 +0200
+Message-ID: <20230808062727.19263-5-its@irrelevant.dk>
 X-Mailer: git-send-email 2.41.0
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20230808062727.19263-4-its@irrelevant.dk>
+References: <20230808062727.19263-4-its@irrelevant.dk>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1850; i=k.jensen@samsung.com;
- h=from:subject; bh=+l+1DuJdd/CdpIR3hwlYocTFBGJgHeUs2vfAfiFceeA=;
- b=owJ4nAFtAZL+kA0DAAoBTeGvMW1PDekByyZiAGTR4E/cf5ElEl/bohuZ5yR0RA+p420JZnfFO
- KVi7c5L0fTtNIkBMwQAAQoAHRYhBFIoM6p14tzmokdmwE3hrzFtTw3pBQJk0eBPAAoJEE3hrzFt
- Tw3pAPoH/ihczT9cFSWZe0chkBloMkHHsm4vJTokHcWd2YECn0Aw71n1fvEDpATNFDgkUs4mVBc
- qcYbzY4+TgaemCo7nqKbjg8LhictzMgll6DwdpTNjpCowEB2tMSsb9cQW+sb7AR6eCqywRYVTpS
- 8FHbBAv4KYo0QxSRSM1kl8IMjYIKJD4J3V6ZueUhecJhR97/AERokwDYwIjExi1pinG0PXNT1ty
- pan8p9m3coABM2PIBBTikjQipRX8DnoTBuilxiZMdmRxSpIMBHw9fpDtMRzn93XLP6/AZBvGp7l
- svsUli9E5HK2JWy2FNX3oTbNneYwPfvZqgjbTlvX8E/pIBXln1jUcaUq
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1245; i=k.jensen@samsung.com;
+ h=from:subject; bh=To/dsDByKFxvBS4IegB9nq00HrvzfWLQN9r3vfwNgkQ=;
+ b=owJ4nAFtAZL+kA0DAAoBTeGvMW1PDekByyZiAGTR4FBCf1kovo80HvZ4CzJ2p2col/h5BQkm0
+ ux2v0Mq43jTDIkBMwQAAQoAHRYhBFIoM6p14tzmokdmwE3hrzFtTw3pBQJk0eBQAAoJEE3hrzFt
+ Tw3pw+0H/RqJopdxS1NA2QuaXG9XnNtu2cnJr4oW7wlq2DrD/xGwelRoimwzEaQ6zG/a96/JuKX
+ iZy4KqESnEZlAJqj9JQoD3Zf2kTXApp8E1OPDirrYZf8FFyn3z/jenD4hzkgi8yuRazZ5pQlRW4
+ CLlLRPzzLJ1wp/7pjjCOctj8LERv9YQ7cWd2fJbYFdillr9FP5otwlf6/zZWMr/ozw2D0oB1z9I
+ rNADIfO75iGLq+D4G9CTOlokaP6dTYayG2eMYEJcEm6eyTn/o8Nlp7duAZFD9tuUj2sgZkZrpbw
+ BKc3QSILkmWI82ITI+leY0jVPi58mypFbKg34VitwMNCf7vonb/LSaup
 X-Developer-Key: i=k.jensen@samsung.com; a=openpgp;
  fpr=DDCA4D9C9EF931CC3468427263D56FC5E55DA838
 Content-Transfer-Encoding: 8bit
@@ -115,59 +117,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Klaus Jensen <k.jensen@samsung.com>
+From: Ankit Kumar <ankit.kumar@samsung.com>
 
-Hi,
+The nvme CRC64 generator expects the caller to pass inverted seed value.
+Pass inverted crc value for metadata buffer.
 
-This is a fix for hw/nvme protection information discovered by Ankit
-late in the cycle. This is not a regression, but a long standing bug and
-not critical (obviously no users of this until now, no potential for
-crash or similar, just plain wrong).
+Cc: qemu-stable@nongnu.org
+Fixes: 44219b6029fc ("hw/nvme: 64-bit pi support")
+Signed-off-by: Ankit Kumar <ankit.kumar@samsung.com>
+Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
+---
+ hw/nvme/dif.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-If this can make it for -rc3 that is great, but it can easily be deferred
-to a stable release or -rc4 if other fixes require it.
-
-Thanks,
-
-
-The following changes since commit 0450cf08976f9036feaded438031b4cba94f6452:
-
-  Merge tag 'fixes-pull-request' of https://gitlab.com/marcandre.lureau/qemu into staging (2023-08-07 13:55:00 -0700)
-
-are available in the Git repository at:
-
-  https://gitlab.com/birkelund/qemu.git tags/nvme-next-pull-request
-
-for you to fetch changes up to bb223df9403beada5b2ab408d2d9a82471432a21:
-
-  docs: update hw/nvme documentation for protection information (2023-08-08 08:10:15 +0200)
-
-----------------------------------------------------------------
-hw/nvme late fix
-
-- late fix for nvme pi
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEUigzqnXi3OaiR2bATeGvMW1PDekFAmTR3uMACgkQTeGvMW1P
-DenZzgf/T5pb1dQhYthpJ/OOLcvtttpRChQSvZJ8uxyzWoNS/9hKn5gd8buvdGwt
-fO1QU3Ogh6ArwZ9GT5OqLV05d9vMuvJlPxpbqOs8XZACobH+nb3CqXBcX1F7TxqV
-j9OmFH4UGPDo42hkT+jqa+kHc9hxmpwg+f6Wlpad+ZJ2UAel0/19JsQItln8JQ/I
-Jxd07Q5qcj06RtwcPf/0WUOs4I6sTkifu7uZIrx1YjYN4/jQmaF2L0MQjUw1ktLF
-hFXSW3iarDKh2fFlfR2fMkkoLLnoS6NoZnTj3fBDabcuMfpJlf7WZ5fuYpOlCKtB
-kpN9/WaGpZtXmWAg82R7wlgR4D9vkw==
-=EuEc
------END PGP SIGNATURE-----
-
-----------------------------------------------------------------
-
-Ankit Kumar (2):
-  hw/nvme: fix CRC64 for guard tag
-  docs: update hw/nvme documentation for protection information
-
- docs/system/devices/nvme.rst | 12 +++++++++---
- hw/nvme/dif.c                |  4 ++--
- 2 files changed, 11 insertions(+), 5 deletions(-)
-
+diff --git a/hw/nvme/dif.c b/hw/nvme/dif.c
+index 63c44c86ab55..01b19c33734e 100644
+--- a/hw/nvme/dif.c
++++ b/hw/nvme/dif.c
+@@ -115,7 +115,7 @@ static void nvme_dif_pract_generate_dif_crc64(NvmeNamespace *ns, uint8_t *buf,
+         uint64_t crc = crc64_nvme(~0ULL, buf, ns->lbasz);
+ 
+         if (pil) {
+-            crc = crc64_nvme(crc, mbuf, pil);
++            crc = crc64_nvme(~crc, mbuf, pil);
+         }
+ 
+         dif->g64.guard = cpu_to_be64(crc);
+@@ -246,7 +246,7 @@ static uint16_t nvme_dif_prchk_crc64(NvmeNamespace *ns, NvmeDifTuple *dif,
+         uint64_t crc = crc64_nvme(~0ULL, buf, ns->lbasz);
+ 
+         if (pil) {
+-            crc = crc64_nvme(crc, mbuf, pil);
++            crc = crc64_nvme(~crc, mbuf, pil);
+         }
+ 
+         trace_pci_nvme_dif_prchk_guard_crc64(be64_to_cpu(dif->g64.guard), crc);
 -- 
 2.41.0
 
