@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D44997740D2
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 19:11:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00C547740F2
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 19:13:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTQDs-00040t-E3; Tue, 08 Aug 2023 13:10:20 -0400
+	id 1qTQDs-0003zi-Il; Tue, 08 Aug 2023 13:10:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qTQDo-0003XY-0O
+ id 1qTQDo-0003Y4-3N
  for qemu-devel@nongnu.org; Tue, 08 Aug 2023 13:10:16 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qTQDk-0003ip-GE
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 13:10:14 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-3fe1a17f983so50287455e9.3
- for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 10:10:12 -0700 (PDT)
+ id 1qTQDl-0003kQ-OK
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 13:10:15 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-3fbea147034so50418995e9.0
+ for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 10:10:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1691514610; x=1692119410;
+ d=gmail.com; s=20221208; t=1691514612; x=1692119412;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=tixgSZaHS/ZX2Ev+4ktdHOXajBb1vL7WwQRW2iV2F2s=;
- b=qcNzImgvPCDC//LZRkZ4cKEPvxq5Pmc9lL27Bo1/8gYXlVS7F7uOfG2pFKxFnJLnQP
- kgzdWwvAvLFHW8x2kf9T0Eu2r5aBlQSnvTNgkGVqAGlLAcWD+53n9JNG6dspYrw+QIPU
- oXxdfU5iJhbPxAJV2O/nHhyave1iio5CZapBqQ95NWnJECeMTgE8ojr/j3K6MEjGQhmR
- 6bKyUkYJhoHYZGGWi1O+qm2HF8Vp7FaVfJwwDPo1Oe40JRKdYSdmXXBhy1jX+yTyyc4+
- a/2v3DmswC8o7o4RPJFdUYtoNqWba1e37J3EjD27arrDCnO7i39342T0eqr5Mq8BkqUB
- jFwg==
+ bh=N72zN3LJii0x8MjnAtEVjcjpdVlbQi/8GCr75AB+WVg=;
+ b=UtHqeFUYBBoO4yQ6S+bIibGF/z8u29k0LFkqpOb3ImI/vPjR/vo6jvnDPG0p2bAUOR
+ uecYfKgvIAZIhk8yNmgAtx9LQRp71KoSMTFUKKhgoDMqy/yxdKxedHuXcpFQ4LXSRuFG
+ 7MVrj7XZsfPMeZPe314IC6ofiQVqSfYtHcNSeb5aHT7XB0l8O78de21ksWGfw/j2L0+y
+ 6oZvpbK5T4zJIqtu5gTZaba+FE/vxtKry3DUP5Jp0Rhqc15mlKF/jhfoz3VNhW94SEkG
+ bB75WKtsmxF+Jxxs06l6Sw9MSc32mjj03gt01GKHFovqlB5Z6Fjr86nujHQKrCkL/Cvt
+ GuQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691514610; x=1692119410;
+ d=1e100.net; s=20221208; t=1691514612; x=1692119412;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tixgSZaHS/ZX2Ev+4ktdHOXajBb1vL7WwQRW2iV2F2s=;
- b=XheqtsEsAOtOnwe3VqeQp8Jj7Ust+p73kEwU+n4LXE6kiOwQRsDQJvKggG5ZIWU/Fg
- xj2OWIYVBwtd424UpLV2zDObdOhRf7PrNxSqP8dLal5S83GHWQi62eMnjIS4dI+j4YuS
- pDd9epDbMRZ/TNBrQeRhXCh+7kotRr8QshPlmYjdhGyc/+wiUUk5OAFGqc2rt/4EOfQV
- v2uF27WnvluP3HQ/tYu7STyTBSw53blT+eVJYEhyV79+99jmQSPR0dkhfq5OoTNWhSac
- MFNqAaS07nFdM5djzlwJ3wyj3PcG3I7ERBjAntdOZTjYt4JK7PKP33qWALXb67pKK/QR
- bRxQ==
-X-Gm-Message-State: AOJu0YxbnrHVT46Uc3Z//91fWynVcfHTl3jtnCjeg+Bsc/VJ4CkmSl3U
- XRtzEaczp2oc6l3wqg05O9dQvX0MJpB+uQ==
-X-Google-Smtp-Source: AGHT+IGBB1r85AWYkP2iaRIDiPavglhbdwRIqr0AY5NPgGwigTiZ97GSLMd5fJAbaUzTE9uqXqb7Ig==
-X-Received: by 2002:a7b:c34e:0:b0:3fb:ffca:b6b8 with SMTP id
- l14-20020a7bc34e000000b003fbffcab6b8mr348207wmj.41.1691514610535; 
- Tue, 08 Aug 2023 10:10:10 -0700 (PDT)
+ bh=N72zN3LJii0x8MjnAtEVjcjpdVlbQi/8GCr75AB+WVg=;
+ b=f8+yptIQBO8vpTrPl9971LKM1utNwAi4e1Fj7YPKDQfj4KACG7EINjvf/FR5z83cFs
+ gFxJ2CRjFnO76swgjFSQUipXdd4Ncp0gCdyOrT4BEjhAIAaS2JrKNZf9J22hsrShZFb6
+ wOA2LzuXgtbc70LvYkz1ClLse3dgmtHL946l3PcqnS/zmnhmz2aX81Ng/KpVJi+nTd62
+ NOQ7IJFMdZQ15cIQTWI9Ws8xMJ9tQwNkmZ5UWFQVEViae16DzaRAJ30j2s/KpRZFrNBi
+ gdGjegsXlAbLUN0fHiKmYqVdxvabBNFBu45I8uruDkT93+zcCh0k6H9jRdoF/ozPB3lI
+ o5ew==
+X-Gm-Message-State: AOJu0YwofVGHsgoVNS87fEVrVfYuPiNTylgfE2TziW7lrxUY7uGHtpkP
+ 1UgK2oN46/S27NrF5+3AmM3LfSrrvFCj+g==
+X-Google-Smtp-Source: AGHT+IEyyY2CREggX/1C9QxSIoSXhy7UZfyLQZaIXvMK33+ppa6HlrJaA/NocB9RpjtTHxvEblOWpA==
+X-Received: by 2002:a05:600c:108b:b0:3fd:3049:9496 with SMTP id
+ e11-20020a05600c108b00b003fd30499496mr351798wmd.33.1691514611768; 
+ Tue, 08 Aug 2023 10:10:11 -0700 (PDT)
 Received: from karim.my.domain ([197.39.230.212])
  by smtp.gmail.com with ESMTPSA id
- j6-20020a5d6186000000b0031455482d1fsm14191663wru.47.2023.08.08.10.10.09
+ j6-20020a5d6186000000b0031455482d1fsm14191663wru.47.2023.08.08.10.10.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 08 Aug 2023 10:10:10 -0700 (PDT)
+ Tue, 08 Aug 2023 10:10:11 -0700 (PDT)
 From: Karim Taha <kariem.taha2.7@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: imp@bsdimp.com, Michal Meloun <mmel@FreeBSD.org>,
  Stacey Son <sson@FreeBSD.org>, Karim Taha <kariem.taha2.7@gmail.com>
-Subject: [PATCH 25/33] Implement freebsd11 stat related syscalls
-Date: Tue,  8 Aug 2023 08:08:07 +0200
-Message-Id: <20230808060815.9001-26-kariem.taha2.7@gmail.com>
+Subject: [PATCH 26/33] Implement freebsd11 stat related syscalls
+Date: Tue,  8 Aug 2023 08:08:08 +0200
+Message-Id: <20230808060815.9001-27-kariem.taha2.7@gmail.com>
 X-Mailer: git-send-email 2.40.0
 In-Reply-To: <20230808060815.9001-1-kariem.taha2.7@gmail.com>
 References: <20230808060815.9001-1-kariem.taha2.7@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=kariem.taha2.7@gmail.com; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=kariem.taha2.7@gmail.com; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -2
 X-Spam_score: -0.3
 X-Spam_bar: /
@@ -96,128 +96,78 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Michal Meloun <mmel@FreeBSD.org>
 
 Implement the freebsd11 variant of the following syscalls:
-statfs(2)
-fstatfs(2)
-getfsstat(2)
+getdirecentries(2)
 
 Co-authored-by: Stacey Son <sson@FreeBSD.org>
 Signed-off-by: Stacey Son <sson@FreeBSD.org>
 Signed-off-by: Michal Meloun <mmel@FreeBSD.org>
 Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
 ---
- bsd-user/freebsd/os-stat.h | 75 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 75 insertions(+)
+ bsd-user/freebsd/os-stat.h | 44 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 44 insertions(+)
 
 diff --git a/bsd-user/freebsd/os-stat.h b/bsd-user/freebsd/os-stat.h
-index 2e0c7245df..04a61fabd1 100644
+index 04a61fabd1..26909af455 100644
 --- a/bsd-user/freebsd/os-stat.h
 +++ b/bsd-user/freebsd/os-stat.h
-@@ -32,9 +32,15 @@ __sym_compat(fstatat, freebsd11_fstatat, FBSD_1.1);
+@@ -41,6 +41,11 @@ __sym_compat(statfs, freebsd11_statfs, FBSD_1.0);
+ int freebsd11_fstatfs(int fd, struct freebsd11_statfs *buf);
+ __sym_compat(fstatfs, freebsd11_fstatfs, FBSD_1.0);
  
- int freebsd11_fhstat(const fhandle_t *fhandle, struct freebsd11_stat *stat);
- __sym_compat(fhstat, freebsd11_fhstat, FBSD_1.0);
-+int freebsd11_getfsstat(struct freebsd11_statfs *buf, long bufsize, int mode);
-+__sym_compat(getfsstat, freebsd11_getfsstat, FBSD_1.0);
- int freebsd11_fhstatfs(const fhandle_t *fhandle, struct freebsd11_statfs * buf);
- __sym_compat(fhstatfs, freebsd11_fhstatfs, FBSD_1.0);
- int freebsd11_statfs(const char *path, struct freebsd11_statfs *buf);
-+__sym_compat(statfs, freebsd11_statfs, FBSD_1.0);
-+int freebsd11_fstatfs(int fd, struct freebsd11_statfs *buf);
-+__sym_compat(fstatfs, freebsd11_fstatfs, FBSD_1.0);
++ssize_t freebsd11_getdirentries(int fd, char *buf, size_t nbytes, off_t *basep);
++__sym_compat(getdirentries, freebsd11_getdirentries, FBSD_1.0);
++ssize_t freebsd11_getdents(int fd, char *buf, size_t nbytes);
++__sym_compat(getdents, freebsd11_getdents, FBSD_1.0);
 +
  
  /* stat(2) */
  static inline abi_long do_freebsd11_stat(abi_long arg1, abi_long arg2)
-@@ -293,6 +299,23 @@ static inline abi_long do_freebsd_fhstatfs(abi_ulong target_fhp_addr,
-     return h2t_freebsd_statfs(target_stfs_addr, &host_stfs);
+@@ -468,6 +473,45 @@ static inline abi_long do_freebsd11_getdents(abi_long arg1,
+     return ret;
  }
  
-+/* statfs(2) */
-+static inline abi_long do_freebsd11_statfs(abi_long arg1, abi_long arg2)
++/* getdirecentries(2) */
++static inline abi_long do_freebsd11_getdirentries(abi_long arg1,
++        abi_ulong arg2, abi_long nbytes, abi_ulong arg4)
 +{
 +    abi_long ret;
-+    void *p;
-+    struct freebsd11_statfs host_stfs;
++    struct freebsd11_dirent *dirp;
++    long basep;
 +
-+    LOCK_PATH(p, arg1);
-+    ret = get_errno(freebsd11_statfs(path(p), &host_stfs));
-+    UNLOCK_PATH(p, arg1);
-+    if (is_error(ret)) {
-+        return ret;
++    dirp = lock_user(VERIFY_WRITE, arg2, nbytes, 0);
++    if (dirp == NULL) {
++        return -TARGET_EFAULT;
 +    }
++    ret = get_errno(freebsd11_getdirentries(arg1, (char *)dirp, nbytes, &basep));
++    if (!is_error(ret)) {
++        struct freebsd11_dirent *de;
++        int len = ret;
++        int reclen;
 +
-+    return h2t_freebsd11_statfs(arg2, &host_stfs);
-+}
-+
- /* statfs(2) */
- static inline abi_long do_freebsd_statfs(abi_long arg1, abi_long arg2)
- {
-@@ -310,6 +333,20 @@ static inline abi_long do_freebsd_statfs(abi_long arg1, abi_long arg2)
-     return h2t_freebsd_statfs(arg2, &host_stfs);
- }
- 
-+/* fstatfs(2) */
-+static inline abi_long do_freebsd11_fstatfs(abi_long fd, abi_ulong target_addr)
-+{
-+    abi_long ret;
-+    struct freebsd11_statfs host_stfs;
-+
-+    ret = get_errno(freebsd11_fstatfs(fd, &host_stfs));
-+    if (is_error(ret)) {
-+        return ret;
++        de = dirp;
++        while (len > 0) {
++            reclen = de->d_reclen;
++            if (reclen > len) {
++                return -TARGET_EFAULT;
++            }
++            de->d_reclen = tswap16(reclen);
++            de->d_fileno = tswap32(de->d_fileno);
++            len -= reclen;
++            de = (struct freebsd11_dirent *)((void *)de + reclen);
++        }
 +    }
-+
-+    return h2t_freebsd11_statfs(target_addr, &host_stfs);
-+}
-+
- /* fstatfs(2) */
- static inline abi_long do_freebsd_fstatfs(abi_long fd, abi_ulong target_addr)
- {
-@@ -324,6 +361,44 @@ static inline abi_long do_freebsd_fstatfs(abi_long fd, abi_ulong target_addr)
-     return h2t_freebsd_statfs(target_addr, &host_stfs);
- }
- 
-+/* getfsstat(2) */
-+static inline abi_long do_freebsd11_getfsstat(abi_ulong target_addr,
-+        abi_long bufsize, abi_long flags)
-+{
-+    abi_long ret;
-+    struct freebsd11_statfs *host_stfs;
-+    int count;
-+    long host_bufsize;
-+
-+    count = bufsize / sizeof(struct target_freebsd11_statfs);
-+
-+    /* if user buffer is NULL then return number of mounted FS's */
-+    if (target_addr == 0 || count == 0) {
-+        return get_errno(freebsd11_getfsstat(NULL, 0, flags));
-+    }
-+
-+    /* XXX check count to be reasonable */
-+    host_bufsize = sizeof(struct freebsd11_statfs) * count;
-+    host_stfs = alloca(host_bufsize);
-+    if (!host_stfs) {
-+        return -TARGET_EINVAL;
-+    }
-+
-+    ret = count = get_errno(freebsd11_getfsstat(host_stfs, host_bufsize, flags));
-+    if (is_error(ret)) {
-+        return ret;
-+    }
-+
-+    while (count--) {
-+        if (h2t_freebsd11_statfs((target_addr +
-+                        (count * sizeof(struct target_freebsd11_statfs))),
-+                    &host_stfs[count])) {
++    unlock_user(dirp, arg2, ret);
++    if (arg4) {
++        if (put_user(basep, arg4, abi_ulong)) {
 +            return -TARGET_EFAULT;
 +        }
 +    }
 +    return ret;
 +}
 +
- /* getfsstat(2) */
- static inline abi_long do_freebsd_getfsstat(abi_ulong target_addr,
-         abi_long bufsize, abi_long flags)
+ /* getdirecentries(2) */
+ static inline abi_long do_freebsd_getdirentries(abi_long arg1,
+         abi_ulong arg2, abi_long nbytes, abi_ulong arg4)
 -- 
 2.40.0
 
