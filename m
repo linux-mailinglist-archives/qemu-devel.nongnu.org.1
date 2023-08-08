@@ -2,86 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E49F0774069
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 19:02:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CB5E7740BC
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 19:09:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTQ5r-0006oT-2F; Tue, 08 Aug 2023 13:02:03 -0400
+	id 1qTQCA-0000KP-CY; Tue, 08 Aug 2023 13:08:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTQ5l-0006ni-Bs
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 13:01:57 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTQ5j-0001Je-6b
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 13:01:57 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1bb9e6c2a90so51520115ad.1
- for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 10:01:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691514114; x=1692118914;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=xmzDpmTTwpXam9wqXKNk57K30hO9VOQ5tB1eaQaTSOU=;
- b=j4vYLcZwUaofVU7+hiw2zz4ZZtBUYv48Poqh5SobhxOfWzhbp15f36MmHV9BhHJfxe
- fVL9Npy9yi9k4xoov9YZtQo+pCnH1uP+0ZwjOUpf2waczdWB3iTPG28Ph7Z+REQ+eiqD
- 6de6ld9MGAELVLZJwG78KCqVpr0RW+Jswm0qv8Tv6hJraHJikyj4EFF28MFgmocg/2Bx
- y1Br+y7E3gnl2UbBxMDYXAk8vz4vICqZBKv0G/CfKFReB5IfDYgITHNEN+woICvall2N
- tC1hFe6vvRh2OB0lYiJSeh3i+KKuxGYGJptqLhlbbbUL8mY+8XIxR5hskt8Ug99Gcwh9
- Hhdg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691514114; x=1692118914;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=xmzDpmTTwpXam9wqXKNk57K30hO9VOQ5tB1eaQaTSOU=;
- b=jiFubSaSDpQjz5ZwT2kE13tx9eMlGKOeAhd6HYLwi1AHF7TydUaFszQ4u7NuKR6HSY
- rKIloT2fALZ5JQAV3yZHb4s1DBSnOM9vVxSSDF2tEuutD/DMHC46UXcDcQ3VTB00lWBl
- RstyapTDzBii2egtFEmhVe3eUzzibOX1FE2SsT3qJUuV79LziKqrPr69roqrYPsT4Ll6
- XLmnPMS8CX1WI4rsLha3vnFhph59K69V/N9wuQTb6l3st4UmiM7Os+Ilvyu/9HQFiGof
- CL84iKU+fsr/OYh1hblQPpQBn/3mR79TpswzVXzIYH0ndBnqxlAtkYi6nxjRi4sLlfCj
- bIlA==
-X-Gm-Message-State: AOJu0YywqyEwHFNKEBPbQB69NvsEJdJMlgCKL0X4JmfMmfk9nv/g4soB
- F7in0Jjb2HhkNSWff8KHSwjc3g==
-X-Google-Smtp-Source: AGHT+IFq2C4/30U+MjmQ5li0bWG4Ro6H0Prp3w/LVmq//oG0XknhdRG67pArSAqQ1jprD5QaYIQQrA==
-X-Received: by 2002:a17:903:44a:b0:1bb:cf4e:ccd with SMTP id
- iw10-20020a170903044a00b001bbcf4e0ccdmr256674plb.28.1691514113447; 
- Tue, 08 Aug 2023 10:01:53 -0700 (PDT)
-Received: from ?IPV6:2602:47:d490:6901:63dc:2a47:f4bc:4a95?
- ([2602:47:d490:6901:63dc:2a47:f4bc:4a95])
- by smtp.gmail.com with ESMTPSA id
- w21-20020a170902a71500b001b558c37f91sm9231257plq.288.2023.08.08.10.01.52
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 08 Aug 2023 10:01:53 -0700 (PDT)
-Message-ID: <68c43230-1198-5d46-5450-26b8f61bd09b@linaro.org>
-Date: Tue, 8 Aug 2023 10:01:51 -0700
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qTQC7-0000Jt-ED
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 13:08:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qTQC5-00033A-QR
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 13:08:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1691514509;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=bCdig3AnflnQgSvG2pmvFsRs9dQV6SVNmg/Ic2gWHgY=;
+ b=hdabOXzz/QZBXPAph8K7A0m0be95QAD3VneBeVjbxF4kuTRGsxEVKhi1yybPE7BLj9vfgn
+ 0UPjuSDyH6EPnkYkPugId346r4qsHhwtj3D3qSDJXszdCewxcEgMI3PXSzz5K+TXye/k9G
+ L5RT/JgVueJ2bNkjnDJjQLnS0xjNlD0=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-13-8qpXIHfnMouVzSnDK8M1bQ-1; Tue, 08 Aug 2023 13:08:27 -0400
+X-MC-Unique: 8qpXIHfnMouVzSnDK8M1bQ-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8D1AF3810D52;
+ Tue,  8 Aug 2023 17:08:26 +0000 (UTC)
+Received: from localhost (unknown [10.39.193.72])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id E790F40C6E8A;
+ Tue,  8 Aug 2023 17:08:25 +0000 (UTC)
+Date: Tue, 8 Aug 2023 13:08:23 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
+ Fam Zheng <fam@euphon.net>, Juan Quintela <quintela@redhat.com>,
+ Peter Xu <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>,
+ qemu-stable@nongnu.org
+Subject: Re: [PATCH] block-migration: Ensure we don't crash during migration
+ cleanup
+Message-ID: <20230808170823.GA2749198@fedora>
+References: <20230731203338.27581-1-farosas@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v4 01/11] target/loongarch: Add macro to check current arch
-Content-Language: en-US
-To: Jiajie Chen <c@jia.je>, qemu-devel@nongnu.org
-Cc: yijun@loongson.cn, shenjinyang@loongson.cn, gaosong@loongson.cn,
- i.qemu@xen0n.name
-References: <20230808015506.1705140-1-c@jia.je>
- <20230808015506.1705140-2-c@jia.je>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230808015506.1705140-2-c@jia.je>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
-X-Spam_score_int: -61
-X-Spam_score: -6.2
-X-Spam_bar: ------
-X-Spam_report: (-6.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-4.14,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="w3WvynHDOgtd7Czt"
+Content-Disposition: inline
+In-Reply-To: <20230731203338.27581-1-farosas@suse.de>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,51 +82,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/7/23 18:54, Jiajie Chen wrote:
-> Add macro to check if the current cpucfg[1].arch equals to 1(LA32) or
-> 2(LA64).
-> 
-> Signed-off-by: Jiajie Chen <c@jia.je>
+
+--w3WvynHDOgtd7Czt
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Mon, Jul 31, 2023 at 05:33:38PM -0300, Fabiano Rosas wrote:
+> We can fail the blk_insert_bs() at init_blk_migration(), leaving the
+> BlkMigDevState without a dirty_bitmap and BlockDriverState. Account
+> for the possibly missing elements when doing cleanup.
+>=20
+> Fix the following crashes:
+>=20
+> Thread 1 "qemu-system-x86" received signal SIGSEGV, Segmentation fault.
+> 0x0000555555ec83ef in bdrv_release_dirty_bitmap (bitmap=3D0x0) at ../bloc=
+k/dirty-bitmap.c:359
+> 359         BlockDriverState *bs =3D bitmap->bs;
+>  #0  0x0000555555ec83ef in bdrv_release_dirty_bitmap (bitmap=3D0x0) at ..=
+/block/dirty-bitmap.c:359
+>  #1  0x0000555555bba331 in unset_dirty_tracking () at ../migration/block.=
+c:371
+>  #2  0x0000555555bbad98 in block_migration_cleanup_bmds () at ../migratio=
+n/block.c:681
+>=20
+> Thread 1 "qemu-system-x86" received signal SIGSEGV, Segmentation fault.
+> 0x0000555555e971ff in bdrv_op_unblock (bs=3D0x0, op=3DBLOCK_OP_TYPE_BACKU=
+P_SOURCE, reason=3D0x0) at ../block.c:7073
+> 7073        QLIST_FOREACH_SAFE(blocker, &bs->op_blockers[op], list, next)=
+ {
+>  #0  0x0000555555e971ff in bdrv_op_unblock (bs=3D0x0, op=3DBLOCK_OP_TYPE_=
+BACKUP_SOURCE, reason=3D0x0) at ../block.c:7073
+>  #1  0x0000555555e9734a in bdrv_op_unblock_all (bs=3D0x0, reason=3D0x0) a=
+t ../block.c:7095
+>  #2  0x0000555555bbae13 in block_migration_cleanup_bmds () at ../migratio=
+n/block.c:690
+>=20
+> Signed-off-by: Fabiano Rosas <farosas@suse.de>
 > ---
->   target/loongarch/cpu.h | 7 +++++++
->   1 file changed, 7 insertions(+)
-> 
-> diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
-> index fa371ca8ba..bf0da8d5b4 100644
-> --- a/target/loongarch/cpu.h
-> +++ b/target/loongarch/cpu.h
-> @@ -132,6 +132,13 @@ FIELD(CPUCFG1, HP, 24, 1)
->   FIELD(CPUCFG1, IOCSR_BRD, 25, 1)
->   FIELD(CPUCFG1, MSG_INT, 26, 1)
->   
-> +/* cpucfg[1].arch */
-> +#define CPUCFG1_ARCH_LA32        1
-> +#define CPUCFG1_ARCH_LA64        2
-> +
-> +#define LOONGARCH_CPUCFG_ARCH(env, mode) \
-> +  (FIELD_EX32(env->cpucfg[1], CPUCFG1, ARCH) == CPUCFG1_ARCH_##mode)
+>  migration/block.c | 11 +++++++++--
+>  1 file changed, 9 insertions(+), 2 deletions(-)
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Sorry, I missed this patch!
 
-But in using this recall that 0 is a defined value for "simplified la32", so
+If this needs to be in QEMU 8.1 (-rc3 is being tagged today), please
+reply and provide a justification. At this point only security fixes and
+showstoppers will be merged. Thanks!
 
-    !LOONGARCH_CPUCFG_ARCH(env, LA64)
+Applied to my block-next tree for QEMU 8.2:
+https://gitlab.com/stefanha/qemu/commits/block-next
 
-may not in future equal
+Stefan
 
-    LOONGARCH_CPUCFG_ARCH(env, LA32)
+--w3WvynHDOgtd7Czt
+Content-Type: application/pgp-signature; name="signature.asc"
 
-it someone ever decides to implement this simplified version. (We emulate very small 
-embedded Arm cpus, so it's not out of the question that you may want to emulate the very 
-smallest LoongArch cpus.)
+-----BEGIN PGP SIGNATURE-----
 
-It might be easier to just define
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmTSdocACgkQnKSrs4Gr
+c8g4ZQgAwUqNRNE9sLz3M6hcqJZUtUQosWOpMIj0hYBHjpXQpy7zxhmTCMYGXvzI
+7U/VIsnbCT8DbQ7SRrssLeG9/IeqhgNsvdCLVGzrqwnO3ClijpaVIfIOnIQYJTwX
+gFz7Tq7RE30QHbycRoP3tqQ+NRdvJRAFW/zk9SGAvabUGtZJRElLc6m1wCHGYWHz
+6toU+wiQVL8S1NGaMsur8YcmWxFLRrUI0QaARmoJtBNzLWWaEeJSXDfqL/gQPvmF
+qEvWoUO8HBf0j8vI4vY84da+xB5ylonVWuUFUAQ2jqg9490DHtMNeshWk7Pah4wc
+SrZAvMHXpVvKYERYmXDViCsgPQLWDw==
+=AcRF
+-----END PGP SIGNATURE-----
 
-static inline bool is_la64(CPULoongArch64 *env)
-{
-     return FIELD_EX32(env->cpucfg[1], CPUCFG1, ARCH) == CPUCFG1_ARCH_LA64;
-}
+--w3WvynHDOgtd7Czt--
 
-
-r~
 
