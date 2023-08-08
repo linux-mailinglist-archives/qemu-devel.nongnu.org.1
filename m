@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 508CD7737DC
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 06:21:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 152B87737E6
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 06:23:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTEDy-00008Q-2E; Tue, 08 Aug 2023 00:21:38 -0400
+	id 1qTEE4-0000yx-1T; Tue, 08 Aug 2023 00:21:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qTEDv-0008NU-Nh; Tue, 08 Aug 2023 00:21:35 -0400
-Received: from mail-oi1-x232.google.com ([2607:f8b0:4864:20::232])
+ id 1qTEE0-0000eP-OH; Tue, 08 Aug 2023 00:21:40 -0400
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qTEDu-0007ql-4f; Tue, 08 Aug 2023 00:21:35 -0400
-Received: by mail-oi1-x232.google.com with SMTP id
- 5614622812f47-3a78604f47fso2644033b6e.1; 
- Mon, 07 Aug 2023 21:21:33 -0700 (PDT)
+ id 1qTEDz-0007rH-0X; Tue, 08 Aug 2023 00:21:40 -0400
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-686f1240a22so5071786b3a.0; 
+ Mon, 07 Aug 2023 21:21:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1691468492; x=1692073292;
+ d=gmail.com; s=20221208; t=1691468497; x=1692073297;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=oe5890oGRPS+euqSPniLxD+ePYVnJf70zsSY1/DG20s=;
- b=QCC2P45G5UjYHNJRNRlIn+jC6BjgA4mImpAqVsmg8LWSMpniLJXhP7PCqS71wDNJpd
- usUxZu5z1Ftd/gD23tcURNaA7hOLweXMiClRysslmiyYxv/MurrFoCC8Cbo93VMLhos1
- H5i07+R4v7IMvnijyxIvbsyFaiSQjeLjJqRNvC2a6uyLusFvOqtqLhPZ3B6rg/hM/AGL
- R7FNyZettE4x6RXISvNolx7pyIth5rYH8gTy5cp6jIPxwjewx0E68905ir0AOmlnNA/4
- 3OvJfJ+BlRGgj+vDXacoaeWNwQOopd01Rbq1ExDHGLkX8rtgx1yqxUjoySdiCOOboJlG
- 9FVg==
+ bh=eUxtws3efJ/zcMLuM2mcZXvJskxwLw3PDsxQvmIrbn0=;
+ b=LjM2pNRekJYwK7hy7FKjtTZ1riuTzOeLtC3XJOXWIEM/Gsa6d8s/Q/dt2UElkSWoS0
+ 1Ak8/Q/5qxK51YT/0/X80zaVfCnZIK/Nm+RQ0KGF4ma06g/0GZOtOHLO3tUe39+8oNAB
+ IJunZ56aHV+LBedhV/1cOfzxA3U7LTnYXYrNiYm+TREB3P4l7fQTGMIrVRUUQN1eCxqX
+ +UCjf0inpxpQvRlDiK1Oth1br+KB0F/BDoiYXyFGHPaQAhYLcrYM8l86PLC7+baj9S9c
+ q6rb4b/uMnLlWItPOp3mJ8huJ9JM14Z86Jl0AxM+tRcgt+yW5RmNIlA0ZU0eXfWoqIdj
+ SXmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691468492; x=1692073292;
+ d=1e100.net; s=20221208; t=1691468497; x=1692073297;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=oe5890oGRPS+euqSPniLxD+ePYVnJf70zsSY1/DG20s=;
- b=cDAYhciPzCg+vMbkRHIBNslWgjbdE47xoIhZRENKRPvJXVDPGBqXJx1FvvaN/6zHSE
- Z+YFpQBL8lzvP1PM0s0i5N1ksxJ91nZSTV9fd7TDO3zZ42zMJfrL090hGZDAyL0V5ciB
- GeOimUf8gf8rdZksAER+L0fiJPyJ4i+JU/yvPjfENq3JWVBl46zvx5BpdWAmSIOjkKKT
- N9Me/etcC5zGb02eVhtVpjAsw/1TM8yT3GY266LxdbVOVe3QGpcH2Nf1FdDxYwAaWHls
- +qfwM5zeSR1l/7fRhDz3kf/0cQUB15EcbWhP6DuF7pRet7+KVk2D0uTfHiSb3WpJ1fPO
- S1ag==
-X-Gm-Message-State: AOJu0YwbiUzdFwlBK54eBztKzVwoLBjaNRsEaxKWZ5NA9J/a6V6ntQFn
- xDicnjOE0THVV7KTHyXxzds=
-X-Google-Smtp-Source: AGHT+IGRuRSBOIC8T4NG6fHADVNd9ju2J3yHn74cjjZkrAuNfFuccRlvQ/fQEnniXi3uWyEq6YWl7w==
-X-Received: by 2002:a05:6808:2218:b0:3a7:a00b:f725 with SMTP id
- bd24-20020a056808221800b003a7a00bf725mr5714279oib.47.1691468492433; 
- Mon, 07 Aug 2023 21:21:32 -0700 (PDT)
+ bh=eUxtws3efJ/zcMLuM2mcZXvJskxwLw3PDsxQvmIrbn0=;
+ b=FGs2LVPYzC80M7FeKrIHgho3IH4eGX66LWcw0didlNjVu3KSFD4bVMbU5062P3saF7
+ 7vW/RA2Ehr3EFkso7MU24TamwiAQknjNRXcKncU084VIjLrLAbfX6od42AgmPqckBFhz
+ MZPTWuEDaEahoWqdFO/eECYWRbf4EWyyJT1XMmb+gXTunc4KF52HvmaHJsqfU/PeBuqq
+ kJGE9vKoprsT2JQDpdle+90OKNJtvk6T9PCzP6vCtr+GEdAyagyCZZjHk8W9wApCwDS0
+ 4h+nWU+XUVHcUdh31lbpRgFoNe6rtvyCZkCLXXge3xXCKNw/7JBOgUuPo63EV7D/+X9B
+ l5OQ==
+X-Gm-Message-State: AOJu0YxV68hTaB+U0pc/RaHDKId9ywhl708ESi3W7Y6xWXYhCYBmBCFj
+ N6t/cROWle+Lp3Qf4ScTNu8=
+X-Google-Smtp-Source: AGHT+IHjv4Gc16NkZgpaPjtLvgzcVJ/gFSkDdV7hiAqvJ+ypUA/RfGOHEbNdBGzP+bkBDqbRpY1/5g==
+X-Received: by 2002:a05:6a00:b90:b0:681:50fd:2b98 with SMTP id
+ g16-20020a056a000b9000b0068150fd2b98mr14446971pfj.31.1691468497333; 
+ Mon, 07 Aug 2023 21:21:37 -0700 (PDT)
 Received: from wheely.local0.net (61-68-137-140.tpgi.com.au. [61.68.137.140])
  by smtp.gmail.com with ESMTPSA id
- fk10-20020a056a003a8a00b0068718f6a035sm6979207pfb.33.2023.08.07.21.21.27
+ fk10-20020a056a003a8a00b0068718f6a035sm6979207pfb.33.2023.08.07.21.21.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 07 Aug 2023 21:21:32 -0700 (PDT)
+ Mon, 07 Aug 2023 21:21:37 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: Daniel Henrique Barboza <danielhb413@gmail.com>
 Cc: Nicholas Piggin <npiggin@gmail.com>,
@@ -63,17 +63,17 @@ Cc: Nicholas Piggin <npiggin@gmail.com>,
  Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
  Paolo Bonzini <pbonzini@redhat.com>, qemu-ppc@nongnu.org,
  qemu-devel@nongnu.org, Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
-Subject: [PATCH v2 17/19] tests/avocado: boot ppc64 pseries replay-record test
- to Linux VFS mount
-Date: Tue,  8 Aug 2023 14:19:59 +1000
-Message-Id: <20230808042001.411094-18-npiggin@gmail.com>
+Subject: [PATCH v2 18/19] tests/avocado: reverse-debugging cope with
+ re-executing breakpoints
+Date: Tue,  8 Aug 2023 14:20:00 +1000
+Message-Id: <20230808042001.411094-19-npiggin@gmail.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230808042001.411094-1-npiggin@gmail.com>
 References: <20230808042001.411094-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::232;
- envelope-from=npiggin@gmail.com; helo=mail-oi1-x232.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,29 +96,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This the ppc64 record-replay test is able to replay the full kernel boot
-so try enabling it.
+The reverse-debugging test creates a trace, then replays it and:
 
-Acked-by: Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
+1. Steps the first 10 instructions and records their addresses.
+2. Steps backward and verifies their addresses match.
+3. Runs to (near) the end of the trace.
+4. Sets breakpoints on the first 10 instructions.
+5. Continues backward and verifies execution stops at the last
+   breakpoint.
+
+Step 5 breaks if any of the other 9 breakpoints are re-executed in the
+trace after the 10th instruction is run, because those will be
+unexpectedly hit when reverse continuing. This situation does arise
+with the ppc pseries machine, the SLOF bios branches to its own entry
+point.
+
+Deal with this by switching steps 3 and 4, so the trace will be run to
+the end *or* one of the breakpoints being re-executed. Step 5 then
+reverses from there to the 10th instruction will not hit a breakpoint in
+between, by definition.
+
+Another step is added between steps 2 and 3, which steps forward over
+the first 10 instructions and verifies their addresses, to support this.
+
+Reviewed-by: Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- tests/avocado/replay_kernel.py | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ tests/avocado/reverse_debugging.py | 25 +++++++++++++++++++++----
+ 1 file changed, 21 insertions(+), 4 deletions(-)
 
-diff --git a/tests/avocado/replay_kernel.py b/tests/avocado/replay_kernel.py
-index 79c607b0e7..a18610542e 100644
---- a/tests/avocado/replay_kernel.py
-+++ b/tests/avocado/replay_kernel.py
-@@ -255,8 +255,7 @@ def test_ppc64_pseries(self):
-         kernel_path = self.fetch_asset(kernel_url, asset_hash=kernel_hash)
+diff --git a/tests/avocado/reverse_debugging.py b/tests/avocado/reverse_debugging.py
+index 680c314cfc..7d1a478df1 100644
+--- a/tests/avocado/reverse_debugging.py
++++ b/tests/avocado/reverse_debugging.py
+@@ -150,16 +150,33 @@ def reverse_debugging(self, shift=7, args=None):
+             self.check_pc(g, addr)
+             logger.info('found position %x' % addr)
  
-         kernel_command_line = self.KERNEL_COMMON_COMMAND_LINE + 'console=hvc0'
--        # icount is not good enough for PPC64 for complete boot yet
--        console_pattern = 'Kernel command line: %s' % kernel_command_line
-+        console_pattern = 'VFS: Cannot open root device'
-         self.run_rr(kernel_path, kernel_command_line, console_pattern)
+-        logger.info('seeking to the end (icount %s)' % (last_icount - 1))
+-        vm.qmp('replay-break', icount=last_icount - 1)
+-        # continue - will return after pausing
+-        g.cmd(b'c', b'T02thread:01;')
++        # visit the recorded instruction in forward order
++        logger.info('stepping forward')
++        for addr in steps:
++            self.check_pc(g, addr)
++            self.gdb_step(g)
++            logger.info('found position %x' % addr)
  
-     def test_ppc64_powernv(self):
++        # set breakpoints for the instructions just stepped over
+         logger.info('setting breakpoints')
+         for addr in steps:
+             # hardware breakpoint at addr with len=1
+             g.cmd(b'Z1,%x,1' % addr, b'OK')
+ 
++        # this may hit a breakpoint if first instructions are executed
++        # again
++        logger.info('continuing execution')
++        vm.qmp('replay-break', icount=last_icount - 1)
++        # continue - will return after pausing
++        # This could stop at the end and get a T02 return, or by
++        # re-executing one of the breakpoints and get a T05 return.
++        g.cmd(b'c')
++        if self.vm_get_icount(vm) == last_icount - 1:
++            logger.info('reached the end (icount %s)' % (last_icount - 1))
++        else:
++            logger.info('hit a breakpoint again at %x (icount %s)' %
++                        (self.get_pc(g), self.vm_get_icount(vm)))
++
+         logger.info('running reverse continue to reach %x' % steps[-1])
+         # reverse continue - will return after stopping at the breakpoint
+         g.cmd(b'bc', b'T05thread:01;')
 -- 
 2.40.1
 
