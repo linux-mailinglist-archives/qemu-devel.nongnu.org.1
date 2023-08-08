@@ -2,78 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84724774CF5
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 23:22:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9679A774CFA
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 23:23:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTU9a-0004Fc-RH; Tue, 08 Aug 2023 17:22:10 -0400
+	id 1qTUAn-000593-5o; Tue, 08 Aug 2023 17:23:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTU9W-0004F6-71
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 17:22:06 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ id 1qTUAk-00058h-6f
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 17:23:22 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTU9T-0000NI-Gz
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 17:22:05 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1bc6535027aso26017405ad.2
- for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 14:22:03 -0700 (PDT)
+ id 1qTUAi-0000U9-Q5
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 17:23:21 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-1bc1c1c68e2so39621835ad.3
+ for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 14:23:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691529722; x=1692134522;
+ d=linaro.org; s=google; t=1691529799; x=1692134599;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=njn8meD4jX1VNWMzlOjih1Pz2xLPlzjEIUE/eGazEQE=;
- b=yDMThbfXaKq80wYPYNYVMVEd/ZiYi76tl5FJN13vjxouUqPevx3xK7bhdjpOF7sY7S
- fuHN0W49YvKXXQCMvZCtuzjx0MK7Z+fyYaGD0sDyjVTnzDIwZ571DuRDaqR7zJItRPnk
- VdfbXUWlYEGWWp21/bqoVQdh5o++8IvMSnXg+RxILQ27Ux5rfYrhVR37hyb5yz3T1fDO
- lsbccORlLg4BJYoXPOqMgERAYqGcpSMbsMRoVy2lcDUzJW5qLOWMX6CdgKJHwT2meyCL
- V0u5wGUxj732qrRroDs9Da6qXCWMLzD9vCHfJaWWIGvGntZ4WGECKbuuiLIsgT7upoee
- Nceg==
+ bh=ba/s4iYLccxde7+EzUXOZWgin7Rci/d7o1AdUZu8970=;
+ b=cEwC2d8zsbbZPjwvbrJ1p/Odo7xSKXyRf885ixmyOZLFfy+ibB+4d2T7y2BTl5xCDr
+ D6eGfJXXAQDQ5LX2mYz/GeF3jRA4uH7ans3OTYMcrV34ZoQWtoouDsNZUS9dlN93987t
+ HLS5p9DDtlIq5AucqK3qXX3SJAaKQG9CYoiB2aI4TSG8sEv2C+MtlV2IcPInukhVu59g
+ GxidJtqrAXu40w/eW2Ac52sSAQTT5Ga069AIS1Ott9V+LVQ2D0pnAASl+IhmnwcTUF28
+ f3+q/cSvSLG50GREMzPxgj0WuSY+NJfumR5DCL8K9y80sBCnVBRry1csBPAAPuhVXH0o
+ H6yA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691529722; x=1692134522;
+ d=1e100.net; s=20221208; t=1691529799; x=1692134599;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=njn8meD4jX1VNWMzlOjih1Pz2xLPlzjEIUE/eGazEQE=;
- b=LpmBcKdk7YvRQV0ttzq+H3fGAOdDB5B3lwH+M3bVGcyM8dJzlBEwrmSkH7nEK5HlVR
- 6+tlxLb82vFJ1lQs+EeWmEc8QLjH8Z87+XMf4C7mNh3qqVhQecYozF0uLvzs84/Hz9IU
- /Fd9lhJ3O+ehZLE4nA80VeLcAbRvoRKlE/zU8XcjJbZluGnLap3CQeJexpAW9zgbs6Zn
- icy6OfFQPXxBuhn5Bi+YyyaqnsJVVyDSj140wxdbXWjMPVarWhB0MNkBsdae9pMW7Rk3
- 99P4WRHguA3ZGiTURMgaTb5uqlDG4lUjaHregWm7Z/l1HdfcE+pwABkqtGevOG2Vd1lL
- a1oA==
-X-Gm-Message-State: AOJu0YwWk6f/hInTjOwAdXKoKPEV08UB52pWLIruafH6KxU+BejGdgfP
- jY+q4qft/os1fCAhPBbVcG19Ng==
-X-Google-Smtp-Source: AGHT+IEfo8ECQM3XM7vfIaaSsEer1sO1vqzj48nhAc/ytd9Tll3CFk3zV4t5jM/mvtZ5yVP91NXCNw==
-X-Received: by 2002:a17:902:f686:b0:1bc:16cf:fc30 with SMTP id
- l6-20020a170902f68600b001bc16cffc30mr999161plg.63.1691529721928; 
- Tue, 08 Aug 2023 14:22:01 -0700 (PDT)
+ bh=ba/s4iYLccxde7+EzUXOZWgin7Rci/d7o1AdUZu8970=;
+ b=IPiyS2/eNNVBwBPUZDAxb3XjnueX5yY17fqt8Ys7S8rFcEfeFz2w/w/vQROR6INxTC
+ leAEcXgCMNAbcGJatOITAU0hk4DEmo66pbGPxAYNWj9lWVBqupMkeg4pzdmZ7JGOo81B
+ 9qgJ404mu1anPug2zIFYDYobZMxtcPLCk3g5OXgstvAquOPb96y38tcivso9IFibI5+G
+ PvXoBNieyqO2K1TvQXgYHgG1uvWBbJMGxKHAlmIBS1dC9uDNRiTfl+AxtLZdjgob5BA8
+ 6sHn6ACy4UFXREgByR7oBoiOPbmoLF9sQYop3ynCALVThu3oqlCIhVvR8IND45C0eGR/
+ m4Xw==
+X-Gm-Message-State: AOJu0Yw4qJS7W2bRUU/V59256fgZn95UOjrxOdabN6672EwKfEc6e51I
+ z01rJfCQb81/DLNnZM7yNTyvcA==
+X-Google-Smtp-Source: AGHT+IHP8FEwgU6tXWafA0aA8Fh0MWzGczl4mn989pXDDseo4K/AZ83wjHw56WtYG9xePJ2r/SaIoQ==
+X-Received: by 2002:a17:903:1cb:b0:1b8:9044:9ede with SMTP id
+ e11-20020a17090301cb00b001b890449edemr1000166plh.62.1691529799157; 
+ Tue, 08 Aug 2023 14:23:19 -0700 (PDT)
 Received: from ?IPV6:2602:47:d490:6901:63dc:2a47:f4bc:4a95?
  ([2602:47:d490:6901:63dc:2a47:f4bc:4a95])
  by smtp.gmail.com with ESMTPSA id
- ix2-20020a170902f80200b001bc6536051bsm5917684plb.184.2023.08.08.14.22.01
+ e16-20020a17090301d000b001b8b2fb52d4sm9457582plh.203.2023.08.08.14.23.18
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 08 Aug 2023 14:22:01 -0700 (PDT)
-Message-ID: <5e757317-35c3-634a-a6dd-1ac267a2bf67@linaro.org>
-Date: Tue, 8 Aug 2023 14:21:59 -0700
+ Tue, 08 Aug 2023 14:23:18 -0700 (PDT)
+Message-ID: <05c85989-b7b3-572a-57b5-3e9c68de52fd@linaro.org>
+Date: Tue, 8 Aug 2023 14:23:17 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH 07/33] Add struct target_stat to bsd-user/syscall_defs.h
+Subject: Re: [PATCH 06/33] Add struct target_freebsd11_stat to
+ bsd-user/syscall_defs
 Content-Language: en-US
 To: Karim Taha <kariem.taha2.7@gmail.com>, qemu-devel@nongnu.org
-Cc: imp@bsdimp.com, Michal Meloun <mmel@FreeBSD.org>
+Cc: imp@bsdimp.com, Stacey Son <sson@FreeBSD.org>
 References: <20230808060815.9001-1-kariem.taha2.7@gmail.com>
- <20230808060815.9001-8-kariem.taha2.7@gmail.com>
+ <20230808060815.9001-7-kariem.taha2.7@gmail.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230808060815.9001-8-kariem.taha2.7@gmail.com>
+In-Reply-To: <20230808060815.9001-7-kariem.taha2.7@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -61
 X-Spam_score: -6.2
 X-Spam_bar: ------
@@ -97,15 +98,11 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 8/7/23 23:07, Karim Taha wrote:
-> +struct target_stat {
-> +        uint64_t  st_dev;               /* inode's device */
-> +        uint64_t  st_ino;               /* inode's number */
-> +        uint64_t  st_nlink;             /* number of hard links */
+> +    uint32_t   st_flags;    /* user defined flags for file */
+> +    __uint32_t st_gen;      /* file generation number */
+> +    __int32_t  st_lspare;
 
-Indentation of 8 instead of 4.
-
-Otherwise,
-Acked-by: Richard Henderson <richard.henderson@linaro.org>
+Oh, drop the __ types.
 
 
 r~
