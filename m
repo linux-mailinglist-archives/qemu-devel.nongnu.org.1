@@ -2,40 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D64BC773616
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 03:57:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7024977361D
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 03:57:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTBxC-0002fW-IH; Mon, 07 Aug 2023 21:56:10 -0400
+	id 1qTBx7-0002eP-SG; Mon, 07 Aug 2023 21:56:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qTBx3-0002dn-HD
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 21:56:02 -0400
+ (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qTBx5-0002e0-Gp
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 21:56:03 -0400
 Received: from hognose1.porkbun.com ([35.82.102.206])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qTBx1-0003lI-Ii
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 21:56:01 -0400
+ (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qTBx4-0003mn-0d
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 21:56:03 -0400
 Received: from cslab-raptor.. (unknown [166.111.226.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (Client did not present a certificate)
  (Authenticated sender: c@jia.je)
- by hognose1.porkbun.com (Postfix) with ESMTPSA id A42BC43F4C;
- Tue,  8 Aug 2023 01:55:56 +0000 (UTC)
+ by hognose1.porkbun.com (Postfix) with ESMTPSA id 1793C43F3A;
+ Tue,  8 Aug 2023 01:55:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jia.je; s=default;
- t=1691459758; bh=c30M3wy1xpV66XCkG+/dWdDlHZQJzXc9XQq4BvOu5L4=;
+ t=1691459761; bh=92LdaPRkiGB8Gjinlv8Hz+Leorky8vF713jZUnMgmFk=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References;
- b=Ir4TDh8vpBr9mkDMHHQij2ffAgqknnJ4Pv3NRV75vTJLTkaKYJsS4XmU9IFIpC+4w
- NMjKhDL/Duq3w1bQy1XfPbiW2Yu2UB3SuDWZLjLydwviGwhs3Lxz7QzvJn7qvPVC7l
- CdfMcjInVVlx2IS2UUx++OiM6U84/uypcoPGp6rA=
+ b=g4WQy4devvhF+ab0svDpQHxdv+70dBqfxFN+XbnsA8+PBIQw4NsTjh2DnZJUSdRsF
+ pdxskMK832fTHywy1WG2A0LonVAS3NHcPAk8N1UiZnxcnMh8UoPYnV4DDDw7nDJDF7
+ yXAC0i93/a6KShrZKwhYXb9nrQVhxQKuL0frJtyE=
 From: Jiajie Chen <c@jia.je>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org, yijun@loongson.cn, shenjinyang@loongson.cn,
  gaosong@loongson.cn, i.qemu@xen0n.name, Jiajie Chen <c@jia.je>
-Subject: [PATCH v4 09/11] target/loongarch: Truncate high 32 bits of address
- in VA32 mode
-Date: Tue,  8 Aug 2023 09:54:35 +0800
-Message-ID: <20230808015506.1705140-10-c@jia.je>
+Subject: [PATCH v4 10/11] target/loongarch: Sign extend results in VA32 mode
+Date: Tue,  8 Aug 2023 09:54:36 +0800
+Message-ID: <20230808015506.1705140-11-c@jia.je>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230808015506.1705140-1-c@jia.je>
 References: <20230808015506.1705140-1-c@jia.je>
@@ -64,266 +63,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When running in VA32 mode(LA32 or VA32L[1-3] matching PLV), virtual
-address is truncated to 32 bits before address mapping.
+In VA32 mode, BL, JIRL and PC* instructions should sign-extend the low
+32 bit result to 64 bits.
 
 Signed-off-by: Jiajie Chen <c@jia.je>
 ---
- target/loongarch/cpu.h                          |  6 +++++-
- target/loongarch/insn_trans/trans_atomic.c.inc  |  1 +
- target/loongarch/insn_trans/trans_fmemory.c.inc |  8 ++++++++
- target/loongarch/insn_trans/trans_lsx.c.inc     |  6 ++++++
- target/loongarch/insn_trans/trans_memory.c.inc  | 10 ++++++++++
- target/loongarch/translate.c                    | 10 ++++++++++
- 6 files changed, 40 insertions(+), 1 deletion(-)
+ target/loongarch/insn_trans/trans_arith.c.inc  |  2 +-
+ target/loongarch/insn_trans/trans_branch.c.inc |  5 +++--
+ target/loongarch/translate.c                   | 13 +++++++++++++
+ 3 files changed, 17 insertions(+), 3 deletions(-)
 
-diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
-index 69589f0aef..9ad5fcc494 100644
---- a/target/loongarch/cpu.h
-+++ b/target/loongarch/cpu.h
-@@ -457,7 +457,11 @@ static inline void cpu_get_tb_cpu_state(CPULoongArchState *env, vaddr *pc,
-         va32 = 1;
-     }
+diff --git a/target/loongarch/insn_trans/trans_arith.c.inc b/target/loongarch/insn_trans/trans_arith.c.inc
+index e6d218e84a..39915f228d 100644
+--- a/target/loongarch/insn_trans/trans_arith.c.inc
++++ b/target/loongarch/insn_trans/trans_arith.c.inc
+@@ -72,7 +72,7 @@ static bool gen_pc(DisasContext *ctx, arg_r_i *a,
+                    target_ulong (*func)(target_ulong, int))
+ {
+     TCGv dest = gpr_dst(ctx, a->rd, EXT_NONE);
+-    target_ulong addr = func(ctx->base.pc_next, a->imm);
++    target_ulong addr = va32_result(ctx, func(ctx->base.pc_next, a->imm));
  
--    *pc = env->pc;
-+    if (va32) {
-+        *pc = (uint32_t)env->pc;
-+    } else {
-+        *pc = env->pc;
-+    }
-     *cs_base = 0;
-     *flags = env->CSR_CRMD & (R_CSR_CRMD_PLV_MASK | R_CSR_CRMD_PG_MASK);
-     *flags |= FIELD_EX64(env->CSR_EUEN, CSR_EUEN, FPE) * HW_FLAGS_EUEN_FPE;
-diff --git a/target/loongarch/insn_trans/trans_atomic.c.inc b/target/loongarch/insn_trans/trans_atomic.c.inc
-index c69f31bc78..d9d950d642 100644
---- a/target/loongarch/insn_trans/trans_atomic.c.inc
-+++ b/target/loongarch/insn_trans/trans_atomic.c.inc
-@@ -10,6 +10,7 @@ static bool gen_ll(DisasContext *ctx, arg_rr_i *a, MemOp mop)
-     TCGv t0 = tcg_temp_new();
- 
-     tcg_gen_addi_tl(t0, src1, a->imm);
-+    t0 = va32_address(ctx, t0);
-     tcg_gen_qemu_ld_i64(dest, t0, ctx->mem_idx, mop);
-     tcg_gen_st_tl(t0, cpu_env, offsetof(CPULoongArchState, lladdr));
-     tcg_gen_st_tl(dest, cpu_env, offsetof(CPULoongArchState, llval));
-diff --git a/target/loongarch/insn_trans/trans_fmemory.c.inc b/target/loongarch/insn_trans/trans_fmemory.c.inc
-index 91c09fb6d9..391af356d0 100644
---- a/target/loongarch/insn_trans/trans_fmemory.c.inc
-+++ b/target/loongarch/insn_trans/trans_fmemory.c.inc
-@@ -22,6 +22,7 @@ static bool gen_fload_i(DisasContext *ctx, arg_fr_i *a, MemOp mop)
-         tcg_gen_addi_tl(temp, addr, a->imm);
-         addr = temp;
-     }
-+    addr = va32_address(ctx, addr);
- 
-     tcg_gen_qemu_ld_tl(dest, addr, ctx->mem_idx, mop);
-     maybe_nanbox_load(dest, mop);
-@@ -42,6 +43,7 @@ static bool gen_fstore_i(DisasContext *ctx, arg_fr_i *a, MemOp mop)
-         tcg_gen_addi_tl(temp, addr, a->imm);
-         addr = temp;
-     }
-+    addr = va32_address(ctx, addr);
- 
-     tcg_gen_qemu_st_tl(src, addr, ctx->mem_idx, mop);
- 
-@@ -59,6 +61,7 @@ static bool gen_floadx(DisasContext *ctx, arg_frr *a, MemOp mop)
- 
-     addr = tcg_temp_new();
-     tcg_gen_add_tl(addr, src1, src2);
-+    addr = va32_address(ctx, addr);
-     tcg_gen_qemu_ld_tl(dest, addr, ctx->mem_idx, mop);
-     maybe_nanbox_load(dest, mop);
-     set_fpr(a->fd, dest);
-@@ -77,6 +80,7 @@ static bool gen_fstorex(DisasContext *ctx, arg_frr *a, MemOp mop)
- 
-     addr = tcg_temp_new();
-     tcg_gen_add_tl(addr, src1, src2);
-+    addr = va32_address(ctx, addr);
-     tcg_gen_qemu_st_tl(src3, addr, ctx->mem_idx, mop);
- 
-     return true;
-@@ -94,6 +98,7 @@ static bool gen_fload_gt(DisasContext *ctx, arg_frr *a, MemOp mop)
-     addr = tcg_temp_new();
-     gen_helper_asrtgt_d(cpu_env, src1, src2);
-     tcg_gen_add_tl(addr, src1, src2);
-+    addr = va32_address(ctx, addr);
-     tcg_gen_qemu_ld_tl(dest, addr, ctx->mem_idx, mop);
-     maybe_nanbox_load(dest, mop);
-     set_fpr(a->fd, dest);
-@@ -113,6 +118,7 @@ static bool gen_fstore_gt(DisasContext *ctx, arg_frr *a, MemOp mop)
-     addr = tcg_temp_new();
-     gen_helper_asrtgt_d(cpu_env, src1, src2);
-     tcg_gen_add_tl(addr, src1, src2);
-+    addr = va32_address(ctx, addr);
-     tcg_gen_qemu_st_tl(src3, addr, ctx->mem_idx, mop);
- 
-     return true;
-@@ -130,6 +136,7 @@ static bool gen_fload_le(DisasContext *ctx, arg_frr *a, MemOp mop)
-     addr = tcg_temp_new();
-     gen_helper_asrtle_d(cpu_env, src1, src2);
-     tcg_gen_add_tl(addr, src1, src2);
-+    addr = va32_address(ctx, addr);
-     tcg_gen_qemu_ld_tl(dest, addr, ctx->mem_idx, mop);
-     maybe_nanbox_load(dest, mop);
-     set_fpr(a->fd, dest);
-@@ -149,6 +156,7 @@ static bool gen_fstore_le(DisasContext *ctx, arg_frr *a, MemOp mop)
-     addr = tcg_temp_new();
-     gen_helper_asrtle_d(cpu_env, src1, src2);
-     tcg_gen_add_tl(addr, src1, src2);
-+    addr = va32_address(ctx, addr);
-     tcg_gen_qemu_st_tl(src3, addr, ctx->mem_idx, mop);
- 
-     return true;
-diff --git a/target/loongarch/insn_trans/trans_lsx.c.inc b/target/loongarch/insn_trans/trans_lsx.c.inc
-index 68779daff6..b7325cfd8a 100644
---- a/target/loongarch/insn_trans/trans_lsx.c.inc
-+++ b/target/loongarch/insn_trans/trans_lsx.c.inc
-@@ -4271,6 +4271,7 @@ static bool trans_vld(DisasContext *ctx, arg_vr_i *a)
-         tcg_gen_addi_tl(temp, addr, a->imm);
-         addr = temp;
-     }
-+    addr = va32_address(ctx, addr);
- 
-     tcg_gen_qemu_ld_i128(val, addr, ctx->mem_idx, MO_128 | MO_TE);
-     tcg_gen_extr_i128_i64(rl, rh, val);
-@@ -4298,6 +4299,7 @@ static bool trans_vst(DisasContext *ctx, arg_vr_i *a)
-         tcg_gen_addi_tl(temp, addr, a->imm);
-         addr = temp;
-     }
-+    addr = va32_address(ctx, addr);
- 
-     get_vreg64(ah, a->vd, 1);
-     get_vreg64(al, a->vd, 0);
-@@ -4323,6 +4325,7 @@ static bool trans_vldx(DisasContext *ctx, arg_vrr *a)
-     rh = tcg_temp_new_i64();
- 
-     tcg_gen_add_tl(addr, src1, src2);
-+    addr = va32_address(ctx, addr);
-     tcg_gen_qemu_ld_i128(val, addr, ctx->mem_idx, MO_128 | MO_TE);
-     tcg_gen_extr_i128_i64(rl, rh, val);
-     set_vreg64(rh, a->vd, 1);
-@@ -4347,6 +4350,7 @@ static bool trans_vstx(DisasContext *ctx, arg_vrr *a)
-     al = tcg_temp_new_i64();
- 
-     tcg_gen_add_tl(addr, src1, src2);
-+    addr = va32_address(ctx, addr);
-     get_vreg64(ah, a->vd, 1);
-     get_vreg64(al, a->vd, 0);
-     tcg_gen_concat_i64_i128(val, al, ah);
-@@ -4371,6 +4375,7 @@ static bool trans_## NAME (DisasContext *ctx, arg_vr_i *a)                \
-         tcg_gen_addi_tl(temp, addr, a->imm);                              \
-         addr = temp;                                                      \
-     }                                                                     \
-+    addr = va32_address(ctx, addr);                                        \
-                                                                           \
-     tcg_gen_qemu_ld_i64(val, addr, ctx->mem_idx, MO);                     \
-     tcg_gen_gvec_dup_i64(MO, vec_full_offset(a->vd), 16, ctx->vl/8, val); \
-@@ -4399,6 +4404,7 @@ static bool trans_## NAME (DisasContext *ctx, arg_vr_ii *a)                  \
-         tcg_gen_addi_tl(temp, addr, a->imm);                                 \
-         addr = temp;                                                         \
-     }                                                                        \
-+    addr = va32_address(ctx, addr);                                           \
-                                                                              \
-     tcg_gen_ld_i64(val, cpu_env,                                             \
-                    offsetof(CPULoongArchState, fpr[a->vd].vreg.E(a->imm2))); \
-diff --git a/target/loongarch/insn_trans/trans_memory.c.inc b/target/loongarch/insn_trans/trans_memory.c.inc
-index 858c97951b..5b45444be4 100644
---- a/target/loongarch/insn_trans/trans_memory.c.inc
-+++ b/target/loongarch/insn_trans/trans_memory.c.inc
-@@ -13,6 +13,7 @@ static bool gen_load(DisasContext *ctx, arg_rr_i *a, MemOp mop)
-         tcg_gen_addi_tl(temp, addr, a->imm);
-         addr = temp;
-     }
-+    addr = va32_address(ctx, addr);
- 
-     tcg_gen_qemu_ld_tl(dest, addr, ctx->mem_idx, mop);
+     tcg_gen_movi_tl(dest, addr);
      gen_set_gpr(a->rd, dest, EXT_NONE);
-@@ -29,6 +30,7 @@ static bool gen_store(DisasContext *ctx, arg_rr_i *a, MemOp mop)
-         tcg_gen_addi_tl(temp, addr, a->imm);
-         addr = temp;
-     }
-+    addr = va32_address(ctx, addr);
+diff --git a/target/loongarch/insn_trans/trans_branch.c.inc b/target/loongarch/insn_trans/trans_branch.c.inc
+index 29b81a9843..41f0bfd489 100644
+--- a/target/loongarch/insn_trans/trans_branch.c.inc
++++ b/target/loongarch/insn_trans/trans_branch.c.inc
+@@ -12,7 +12,7 @@ static bool trans_b(DisasContext *ctx, arg_b *a)
  
-     tcg_gen_qemu_st_tl(data, addr, ctx->mem_idx, mop);
+ static bool trans_bl(DisasContext *ctx, arg_bl *a)
+ {
+-    tcg_gen_movi_tl(cpu_gpr[1], ctx->base.pc_next + 4);
++    tcg_gen_movi_tl(cpu_gpr[1], va32_result(ctx, ctx->base.pc_next + 4));
+     gen_goto_tb(ctx, 0, ctx->base.pc_next + a->offs);
+     ctx->base.is_jmp = DISAS_NORETURN;
      return true;
-@@ -42,6 +44,7 @@ static bool gen_loadx(DisasContext *ctx, arg_rrr *a, MemOp mop)
-     TCGv addr = tcg_temp_new();
+@@ -24,7 +24,8 @@ static bool trans_jirl(DisasContext *ctx, arg_jirl *a)
+     TCGv src1 = gpr_src(ctx, a->rj, EXT_NONE);
  
-     tcg_gen_add_tl(addr, src1, src2);
-+    addr = va32_address(ctx, addr);
-     tcg_gen_qemu_ld_tl(dest, addr, ctx->mem_idx, mop);
+     tcg_gen_addi_tl(cpu_pc, src1, a->imm);
+-    tcg_gen_movi_tl(dest, ctx->base.pc_next + 4);
++    tcg_gen_movi_tl(dest, va32_result(ctx, ctx->base.pc_next + 4));
++
      gen_set_gpr(a->rd, dest, EXT_NONE);
- 
-@@ -56,6 +59,7 @@ static bool gen_storex(DisasContext *ctx, arg_rrr *a, MemOp mop)
-     TCGv addr = tcg_temp_new();
- 
-     tcg_gen_add_tl(addr, src1, src2);
-+    addr = va32_address(ctx, addr);
-     tcg_gen_qemu_st_tl(data, addr, ctx->mem_idx, mop);
- 
-     return true;
-@@ -68,6 +72,7 @@ static bool gen_load_gt(DisasContext *ctx, arg_rrr *a, MemOp mop)
-     TCGv src2 = gpr_src(ctx, a->rk, EXT_NONE);
- 
-     gen_helper_asrtgt_d(cpu_env, src1, src2);
-+    src1 = va32_address(ctx, src1);
-     tcg_gen_qemu_ld_tl(dest, src1, ctx->mem_idx, mop);
-     gen_set_gpr(a->rd, dest, EXT_NONE);
- 
-@@ -81,6 +86,7 @@ static bool gen_load_le(DisasContext *ctx, arg_rrr *a, MemOp mop)
-     TCGv src2 = gpr_src(ctx, a->rk, EXT_NONE);
- 
-     gen_helper_asrtle_d(cpu_env, src1, src2);
-+    src1 = va32_address(ctx, src1);
-     tcg_gen_qemu_ld_tl(dest, src1, ctx->mem_idx, mop);
-     gen_set_gpr(a->rd, dest, EXT_NONE);
- 
-@@ -94,6 +100,7 @@ static bool gen_store_gt(DisasContext *ctx, arg_rrr *a, MemOp mop)
-     TCGv src2 = gpr_src(ctx, a->rk, EXT_NONE);
- 
-     gen_helper_asrtgt_d(cpu_env, src1, src2);
-+    src1 = va32_address(ctx, src1);
-     tcg_gen_qemu_st_tl(data, src1, ctx->mem_idx, mop);
- 
-     return true;
-@@ -106,6 +113,7 @@ static bool gen_store_le(DisasContext *ctx, arg_rrr *a, MemOp mop)
-     TCGv src2 = gpr_src(ctx, a->rk, EXT_NONE);
- 
-     gen_helper_asrtle_d(cpu_env, src1, src2);
-+    src1 = va32_address(ctx, src1);
-     tcg_gen_qemu_st_tl(data, src1, ctx->mem_idx, mop);
- 
-     return true;
-@@ -138,6 +146,7 @@ static bool gen_ldptr(DisasContext *ctx, arg_rr_i *a, MemOp mop)
-         tcg_gen_addi_tl(temp, addr, a->imm);
-         addr = temp;
-     }
-+    addr = va32_address(ctx, addr);
- 
-     tcg_gen_qemu_ld_tl(dest, addr, ctx->mem_idx, mop);
-     gen_set_gpr(a->rd, dest, EXT_NONE);
-@@ -154,6 +163,7 @@ static bool gen_stptr(DisasContext *ctx, arg_rr_i *a, MemOp mop)
-         tcg_gen_addi_tl(temp, addr, a->imm);
-         addr = temp;
-     }
-+    addr = va32_address(ctx, addr);
- 
-     tcg_gen_qemu_st_tl(data, addr, ctx->mem_idx, mop);
-     return true;
+     tcg_gen_lookup_and_goto_ptr();
+     ctx->base.is_jmp = DISAS_NORETURN;
 diff --git a/target/loongarch/translate.c b/target/loongarch/translate.c
-index f1e5fe4cf8..9cd2f13778 100644
+index 9cd2f13778..9703fc46a6 100644
 --- a/target/loongarch/translate.c
 +++ b/target/loongarch/translate.c
-@@ -208,6 +208,16 @@ static void set_fpr(int reg_num, TCGv val)
-                    offsetof(CPULoongArchState, fpr[reg_num].vreg.D(0)));
+@@ -218,6 +218,19 @@ static TCGv va32_address(DisasContext *ctx, TCGv addr)
+     return addr;
  }
  
-+static TCGv va32_address(DisasContext *ctx, TCGv addr)
++static uint64_t sign_extend32(uint64_t data)
++{
++    return (data & 0x7FFFFFFF) - (data & 0x80000000);
++}
++
++static uint64_t va32_result(DisasContext *ctx, uint64_t addr)
 +{
 +    if (ctx->va32) {
-+        TCGv temp = tcg_temp_new();
-+        tcg_gen_ext32u_tl(temp, addr);
-+        addr = temp;
++        addr = sign_extend32(addr);
 +    }
 +    return addr;
 +}
