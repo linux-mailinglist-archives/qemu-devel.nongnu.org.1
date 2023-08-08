@@ -2,89 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E01A773AF0
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 17:17:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2EE8773AEF
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 17:17:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTORd-0008Hl-2g; Tue, 08 Aug 2023 11:16:25 -0400
+	id 1qTORe-0008J4-IL; Tue, 08 Aug 2023 11:16:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1qTORa-0008Fn-JV; Tue, 08 Aug 2023 11:16:22 -0400
+ id 1qTORc-0008HJ-1j; Tue, 08 Aug 2023 11:16:24 -0400
 Received: from wout5-smtp.messagingengine.com ([64.147.123.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1qTORX-0000mq-IK; Tue, 08 Aug 2023 11:16:22 -0400
+ id 1qTORZ-0000nK-O0; Tue, 08 Aug 2023 11:16:23 -0400
 Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
- by mailout.west.internal (Postfix) with ESMTP id 35E8D32000CC;
- Tue,  8 Aug 2023 11:16:16 -0400 (EDT)
+ by mailout.west.internal (Postfix) with ESMTP id D68653200313;
+ Tue,  8 Aug 2023 11:16:18 -0400 (EDT)
 Received: from mailfrontend2 ([10.202.2.163])
- by compute6.internal (MEProxy); Tue, 08 Aug 2023 11:16:16 -0400
+ by compute6.internal (MEProxy); Tue, 08 Aug 2023 11:16:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
- h=cc:cc:content-transfer-encoding:content-type:content-type
- :date:date:from:from:in-reply-to:message-id:mime-version
- :reply-to:sender:subject:subject:to:to; s=fm2; t=1691507775; x=
- 1691594175; bh=szeMu+/cYIGmxA/94/iRo71wkAHwywUdhsDSfDvsxQM=; b=a
- +U5+QpjRd0734SJZj3dI4BRx/MpjMiFmsYZUWVdwAWTktSc0+DRy1q6+1JwvcWPW
- +euQePSMb2ioC4wgEHTNeResgTVB5clG0QlI/l9kjejCfPdS9SBa8LH4p5f4DgEU
- iRQe8PRXyUE77tTiQqWJuqgpCvBzRdSisHOWlep2fDpc/tHl/REWLpCWEN8HirZK
- MqkNsQDhl5b0NbeDCQR/IFteNt2neQ5Ik8QR02DjWIh8dKdmtc6M8vI8BGNd/Att
- 1dykQbhGIoAW9bt2T/D/206zDvVAed8DkeIaAGgaQpG3dQZGPDHlyDZm8uYLOUTr
- j76BFufCPN+SZM2p3JHPg==
+ h=cc:cc:content-transfer-encoding:content-type:date:date:from
+ :from:in-reply-to:in-reply-to:message-id:mime-version:references
+ :reply-to:sender:subject:subject:to:to; s=fm2; t=1691507778; x=
+ 1691594178; bh=utIErE0zSRQECiJRKxegToY8hT7jxZDHY6ToNXDSHT0=; b=P
+ V0vfnxwc118QxkL/zR7zbJ0RYlblHBhCdoIAVmpdI81URgAUH1NyPgCk3VeI3JSt
+ kcK8ltDwADq0SzqSNMvy2hBuSV5ZNzTW5+YNi8AoQvBobxzg8z2W63zJF/cRE2kG
+ 1QzjnvmPdE1CJtfZTsHrmHwmCoTsRVAj01i3ooEwxtos9/bALah2hKLLAn/w2ANi
+ aQXEwXRX8bvaM0jUInjmlqYYzqe5OgI0vVEkXbU9Icgd72CG5XzeWrOW8ryfRpXV
+ Ssb8tqtgcHrwWaO28cIfUeInr99MMLLOur6BbZ13WElUMgdO1AJBGasJPy7fVUvJ
+ FuCz/okePbZaIOxdeXdNw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:cc:content-transfer-encoding
- :content-type:content-type:date:date:feedback-id:feedback-id
- :from:from:in-reply-to:message-id:mime-version:reply-to:sender
- :subject:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender
- :x-me-sender:x-sasl-enc; s=fm3; t=1691507775; x=1691594175; bh=s
- zeMu+/cYIGmxA/94/iRo71wkAHwywUdhsDSfDvsxQM=; b=sGkzMB4T/R6Pf1vOm
- nsMZH6Lzs4KB0Dj/569S5wg4/ZlJ6oqYX1wEg18j5gjHP2zzO6tEhnt7Tixu0HC8
- cZdlN03+dsszNenKZsoIue/EoKjXM5RZIWmp6sc4VJWcQr2vS+3YeRNqJaXq82f9
- GVkd3Zjl8VQ39rwQqE6XVnCW5vwYO0l5Pypr12pgNkFWn88fQ/45KPHEQY22xvDu
- LoUxlH0p+VOM/PHW2HnARiAW9tqcERX+HxwPw9/CsffP4j3djUvlNv+M8G3usEXa
- rxals9tc2wFviQ9ULs7NcSRiycWJccvTfo4OPrYEDgWWLsVgSmdOJSPpKGBXfKVR
- C5Qqw==
-X-ME-Sender: <xms:PlzSZA4ufAmNfxUbOuUFZYPWfkjTaANRhHAg6UvPPKy0Utztc91MVA>
- <xme:PlzSZB5MHnyLqQTlWFXtOc15ffcZP5IWFj-nHzjome5SQW3Fs_jk7sNE9FsS2qILa
- PRt7Til7wZAfQDEdT0>
-X-ME-Received: <xmr:PlzSZPe0UTi90dDVfFpbvTqVLeomsTC0NTkY-Ku41kIkZ9Vsmz-akgIe4uM8mVuOFpMVXrNPZaM>
+ :content-type:date:date:feedback-id:feedback-id:from:from
+ :in-reply-to:in-reply-to:message-id:mime-version:references
+ :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1691507778; x=
+ 1691594178; bh=utIErE0zSRQECiJRKxegToY8hT7jxZDHY6ToNXDSHT0=; b=i
+ daWwfqUs3Fe4zVOts8IAshykFqve2qLV2471tEkCT7yc8gBMH9e/RwvYiUm0qUv4
+ d6JwIORAo3pyDgh4/N4C3CdQ2EJMsEokHtVHm1pAUiZKz8A6Cu/g0Y9ojkK0p5wR
+ ZvTaxA/Yplnch4Q+lUlX32RX53qeqnF5JqQ4QhUcAySirEfQc9fkVefI/GMhQlBX
+ jSPGHaHa0QjHjAdWei4kLDwZk/zOnj/lTYmzPHDb3C3nGQLQhL/TFzzC0Nv49eB2
+ 15N+C/xObx4XOleBU0ldq4ZDb9qzgIvIpCodik9lX5pJoSuPWQleBOmJ/rC5GFe0
+ nyyadXtSauZpv86dWpYsA==
+X-ME-Sender: <xms:QlzSZN7dkYJiAXsOdMJIjGnShUT9nycVI-dg_k2MTdXidxh1TWr3cg>
+ <xme:QlzSZK4HD_psbv8tmGPnfoZ48pGh2Qac9YqSL7D1eaMDXIzrusCuISTc1TuYAw3Q3
+ v3uIQU05yzqfRk-vXE>
+X-ME-Received: <xmr:QlzSZEfxFOlrS3TUl-Wb-KiRA9_FTkaSNnAEm-lupS95Wo6KrhXy4CugTI5YEIWJTlR4WmFlE7Q>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrledvgdekhecutefuodetggdotefrodftvf
  curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
  uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
- fjughrpefhvfevufffkffotggggfesthekredtredtjeenucfhrhhomhepmfhlrghushcu
- lfgvnhhsvghnuceoihhtshesihhrrhgvlhgvvhgrnhhtrdgukheqnecuggftrfgrthhtvg
- hrnhepudekvdfgueejvdfgvdefffffhfehiedtieejkeelfedvhfegvddvtdefueekgfeu
- necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepihhtsh
- esihhrrhgvlhgvvhgrnhhtrdgukh
-X-ME-Proxy: <xmx:PlzSZFJj961qBIuq0bysNxOJI-qg-Hv9c_uW8KnzusGX5Z7ooI3LgQ>
- <xmx:PlzSZEK6bD3_MDg5tSFbDt5YRBjIQFb_GZ2YJve8L9du-KCF-e8KPA>
- <xmx:PlzSZGw2YUho-uePpGRBsXCYr3gC4E9J0PMo2OzjWextQOXjz8V3zQ>
- <xmx:P1zSZJHCtqD8mzGQVeYB6Ih8_AEn-3uFVHcqj5RToroVkJv0WhoMQA>
+ fjughrpefhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpefmlhgruhhs
+ ucflvghnshgvnhcuoehithhssehirhhrvghlvghvrghnthdrughkqeenucggtffrrghtth
+ gvrhhnpeefheetgeehffefgeekgffhgeeijeekveffhfejveefkeduieeiveehteeludej
+ udenucffohhmrghinhepghhithhlrggsrdgtohhmnecuvehluhhsthgvrhfuihiivgeptd
+ enucfrrghrrghmpehmrghilhhfrhhomhepihhtshesihhrrhgvlhgvvhgrnhhtrdgukh
+X-ME-Proxy: <xmx:QlzSZGLxB1PDaR4KHPfpI_1svFpTL8GpUfFKSMPa3OKEfB6XXpMfNA>
+ <xmx:QlzSZBKX2zuTMYSV5qORhP9WkW3JmMKALcySH3s2riDnn2kRQVaXIw>
+ <xmx:QlzSZPwauCeM-gL4Pf82Sf_ayBDXp45lsDesQ-FqlHxKatEYMmkx-A>
+ <xmx:QlzSZPhErI-2_v-skKUtLJ5cudvKvoKbYEqWec7A-3ckwUH1nANGiA>
 Feedback-ID: idc91472f:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 8 Aug 2023 11:16:13 -0400 (EDT)
+ 8 Aug 2023 11:16:17 -0400 (EDT)
 From: Klaus Jensen <its@irrelevant.dk>
 To: qemu-devel@nongnu.org
 Cc: Keith Busch <kbusch@kernel.org>,
  Jesper Devantier <j.devantier@samsung.com>,
  Klaus Jensen <its@irrelevant.dk>, qemu-block@nongnu.org,
- Klaus Jensen <k.jensen@samsung.com>
-Subject: [PATCH 0/2] hw/nvme: two fixes
-Date: Tue,  8 Aug 2023 17:16:12 +0200
-Message-ID: <20230808151611.81933-4-its@irrelevant.dk>
+ Klaus Jensen <k.jensen@samsung.com>, qemu-stable@nongnu.org
+Subject: [PATCH 1/2] hw/nvme: fix null pointer access in directive receive
+Date: Tue,  8 Aug 2023 17:16:13 +0200
+Message-ID: <20230808151611.81933-5-its@irrelevant.dk>
 X-Mailer: git-send-email 2.41.0
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20230808151611.81933-4-its@irrelevant.dk>
+References: <20230808151611.81933-4-its@irrelevant.dk>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=274; i=k.jensen@samsung.com;
- h=from:subject; bh=OrENYWh3CB+gzABI7Okw/97VhskDS83YWvpeMdLU5UY=;
- b=owJ4nAFtAZL+kA0DAAoBTeGvMW1PDekByyZiAGTSXDsRosWqGyWyd2BF7fp6TgdysE2IQZ2Zu
- 35cOBALz73pyokBMwQAAQoAHRYhBFIoM6p14tzmokdmwE3hrzFtTw3pBQJk0lw7AAoJEE3hrzFt
- Tw3p+3QIAKr8GM0k2KdEiVOJSd3MoxKziusxWKAbyZVkge+uq+VIgwZVFE4MfU6YLNacgB/QRfy
- 7HrXg+ga0hQyhfMn4+I0DtOCwCZbk9CqLtiXNkbIts3stOdYJ9JTRne9e+npDvIGAs5Nesn76uu
- 30vUSgQmdwu8osmrffWPJpUYB8gA7jmkS3qPVJNNoBknOpskN7KeqsQCbBEMOdSLICLObKrPXyU
- TYSn/M1qX9VeOt0HdbK+JXzHG7//RDcj/Uq6mtn2SbZ1UirB6dztVbSA8TPmROknW1X/ZUQrWL2
- BTU8hdzPAJ5gbGnBas5EOd2vWKPtJpc9IOyZO2ceDao1bzRvAPOrNrDt
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1116; i=k.jensen@samsung.com;
+ h=from:subject; bh=j+NXBa/MMLYk3DAJYgmXBjwSLj9vOoizgsNljLeNsQo=;
+ b=owJ4nAFtAZL+kA0DAAoBTeGvMW1PDekByyZiAGTSXDvoFpMdDmuwaGu2FDyWDR/d/iE7ReVKy
+ d+P2ntJ4I+HdokBMwQAAQoAHRYhBFIoM6p14tzmokdmwE3hrzFtTw3pBQJk0lw7AAoJEE3hrzFt
+ Tw3pgjoH/2QTQ3WtHqaSM4VIhTAlj/sXnU+bj2DV0mmfEiMZvkbKtjTux1h+UjjI5BEhz3V6qJz
+ 4FXdycOsIolXOWcm4UlOnCW3Am/egdlZNXt/UoBs0KKqP/+RhqVbs6HgOL2oNdNH2ryQLXaiLUD
+ fFo/7dZXhNKtfCpTIsSE53Rm00I+7W5p0sDVtsweJxAtZCEBc2+kFSciJCip8y2OCjxYOXMXifb
+ ui3+qM3+SyQxwSWaM80eP7AYaUC6oZJUuJpyA6w0K6Irlua4TaHzyiAAjuXYqxAJySXTrZTeOEb
+ sQFnZN0j5wzliOK+qdwGsLsmR6UyN//QPOmzcjVMVJXMYPxms6lMAKjt
 X-Developer-Key: i=k.jensen@samsung.com; a=openpgp;
  fpr=DDCA4D9C9EF931CC3468427263D56FC5E55DA838
 Content-Transfer-Encoding: 8bit
@@ -114,15 +115,33 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Klaus Jensen <k.jensen@samsung.com>
 
-Fix two potential accesses to null pointers.
+nvme_directive_receive() does not check if an endurance group has been
+configured (set) prior to testing if flexible data placement is enabled
+or not.
 
-Klaus Jensen (2):
-  hw/nvme: fix null pointer access in directive receive
-  hw/nvme: fix null pointer access in ruh update
+Fix this.
 
- hw/nvme/ctrl.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+Cc: qemu-stable@nongnu.org
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1815
+Fixes: 73064edfb864 ("hw/nvme: flexible data placement emulation")
+Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
+---
+ hw/nvme/ctrl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
+index d217ae91b506..e5b5c7034d2b 100644
+--- a/hw/nvme/ctrl.c
++++ b/hw/nvme/ctrl.c
+@@ -6900,7 +6900,7 @@ static uint16_t nvme_directive_receive(NvmeCtrl *n, NvmeRequest *req)
+     case NVME_DIRECTIVE_IDENTIFY:
+         switch (doper) {
+         case NVME_DIRECTIVE_RETURN_PARAMS:
+-            if (ns->endgrp->fdp.enabled) {
++            if (ns->endgrp && ns->endgrp->fdp.enabled) {
+                 id.supported |= 1 << NVME_DIRECTIVE_DATA_PLACEMENT;
+                 id.enabled |= 1 << NVME_DIRECTIVE_DATA_PLACEMENT;
+                 id.persistent |= 1 << NVME_DIRECTIVE_DATA_PLACEMENT;
 -- 
 2.41.0
 
