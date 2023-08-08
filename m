@@ -2,75 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD423773AA8
+	by mail.lfdr.de (Postfix) with ESMTPS id C39CD773AAA
 	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 16:20:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTNYd-0001GW-57; Tue, 08 Aug 2023 10:19:35 -0400
+	id 1qTNYj-0001H3-Nh; Tue, 08 Aug 2023 10:19:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <fufuyqqqqqq@gmail.com>)
- id 1qTNYb-0001GN-JQ
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 10:19:33 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ id 1qTNYh-0001Gu-Ci
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 10:19:39 -0400
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <fufuyqqqqqq@gmail.com>)
- id 1qTNYa-0000Ju-2O
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 10:19:33 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1bc63ef9959so24046015ad.2
- for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 07:19:31 -0700 (PDT)
+ id 1qTNYf-0000Kv-Qn
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 10:19:39 -0400
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-1bb84194bf3so37314275ad.3
+ for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 07:19:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1691504371; x=1692109171;
+ d=gmail.com; s=20221208; t=1691504376; x=1692109176;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=FQa/+lANshzAG+Ialc3M5x9ofhEssVixSOCCrfqyi5M=;
- b=eNRcKWI9TkhHXTvuHvMvj13NO5hhvhNwDov/xnlBCF0Ex9adDUY2hIlxUsGJ8bzq8G
- k7WTtl+6e+wQ9hqFwz/Qe1+BEF1iy0E8i3EFt/Aket6dj7D923flsDvg1v8MyyP4m7pW
- Yt/JEsWzP71g4QhSDMao32Lzk1ShOm43nTi7F3GFljdld9foHeH9JB+IXgevalk1PMx4
- zcG1ig3LIilZajeifd6Uk7tdNUQRFmP1uITkUYm2MU1y3i/RpZlRbgpPJp1MOTQxJHk+
- kVU9n9pifKRU6pIPgn5RVmebNwBmY/UZzOldvaTCqBs23hDh0REgb/SQ1HYNdpnrC1cY
- dBxQ==
+ bh=WP5X3yCy/F02UfY2IJEZNxNCZRfNcnMSpoz9Z2/i/O0=;
+ b=DjPDKkCYUrLbCi3qVOlSJpUQ6MH4oxO+uWmqHQ+3G73C8vfHV4l/X2crQqxR9KJTHs
+ kqLhOhwuX6ifJPOuPug6uclbJ5Qj6ktLQAgw2Y+NorXhLlApgHtNwo0O4+KjlVMDj+kQ
+ ehXjlEndlX+7z/PZeuD+zoyIX1QqM4fDqhOQa6FVgM82EK7igag9QswGmwLgfDUrTF87
+ hknskbn8K4UxS/EgFpa15npy+lZy8s69JLGJJxHmSa2PS8dxhOmhPmQr3InzWBacdMEI
+ FTy9rx/ig+4ZwnUbJM/jKYHeBB7DyNiI+DbV4Txva+Fnu9FAlyArUhJQaWpjGSIBKKFn
+ 95Xw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691504371; x=1692109171;
+ d=1e100.net; s=20221208; t=1691504376; x=1692109176;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=FQa/+lANshzAG+Ialc3M5x9ofhEssVixSOCCrfqyi5M=;
- b=eyDLlUEsrfK5+V0ZS6HnhLL/g1ilzJOeUKs8692cC/qF1y96c/rQ9cxYl12so1o8dE
- TMChcvl2jg5/1l2CrBxIOxijXoAfYTIoPnof3qJKkGvij3EkJJtEPe3LAm9LUdVXUw5C
- 2bfIW1LnjTeKV2z1MJLALx/flDRoe/s5xF2RvLPw6nw2T5fO8R/wJnaRwWYcxUe/NoF7
- heCsdf61H9w3do1j44IBUSIsVu1w83w3FqdMQU/zmdkfy1/IDjCV1/026Z2eyRFXsmJY
- 3WJWaFZHZl1eORYB3d5ZWh8DwDVKTk9/xXJC+ccZZSBPBqkFza43dKGXSwKap2i5Ar5C
- Y44Q==
-X-Gm-Message-State: AOJu0YyYBW5kl0V8QT2v/kH0ak9M896KE8SFVbgKBExYo2KBQFN8IvJM
- SM9lrZFDHn3dyM7yJQuINTQ=
-X-Google-Smtp-Source: AGHT+IGSsKoajrk9YL3I7O1dOJEuxnuv7pDBEX60/UkX1EfA3Lei9DHdaqVpLClTF5CerMGKHwhIeA==
-X-Received: by 2002:a17:902:ea09:b0:1bb:7b6c:983a with SMTP id
- s9-20020a170902ea0900b001bb7b6c983amr14272862plg.59.1691504370936; 
- Tue, 08 Aug 2023 07:19:30 -0700 (PDT)
+ bh=WP5X3yCy/F02UfY2IJEZNxNCZRfNcnMSpoz9Z2/i/O0=;
+ b=dlm79IzlpaYaqW+Dpog9xwSM1E6Vl1cy+uI31hTp9tX6ZySAQhWewgw+cAbLZ8bDop
+ hCYyHDdbib2G6inEwjK9+Xb/6Y3bFVtXixphWQNxwibns9srtHwKBLp1nQYa2x1P/pSe
+ 2GtjhXeELpvkggKr+jIGAlb5ijBzpKS30o1v6EK2+3qtSYLqfr23bE2AllgSY3TaSe0I
+ RRhtL0n1sEmbEsOe7itWonv3eVhHiTGuVIep4Bv6noJY6Bdf8PDtqzJ0GveYvhKP+dfw
+ Y/VLW0D2BWQa08eYhvBXxc8DnBAGhFCoioFwld3XAmgvIuuzRKrQaf9LdUZVPr6BUSMm
+ ukxg==
+X-Gm-Message-State: AOJu0Yx1lU3uWR0uadWIzUnX/wnjf4svxuqYdhpn9xWDCcPmnvAuVgAO
+ VRClWZ0c31LJABcS8q9Qzhk=
+X-Google-Smtp-Source: AGHT+IE5ZaWCfvmAmuZTBgI/nHMnBXeXe1R1RtofICQ3orHjer1jyiUkCvogs8/5v0s2gRz5NRISeQ==
+X-Received: by 2002:a17:902:7683:b0:1bb:141c:3034 with SMTP id
+ m3-20020a170902768300b001bb141c3034mr11812569pll.12.1691504376306; 
+ Tue, 08 Aug 2023 07:19:36 -0700 (PDT)
 Received: from localhost.localdomain ([223.104.41.22])
  by smtp.gmail.com with ESMTPSA id
- c3-20020a170902b68300b001bb1f0605b2sm9043985pls.214.2023.08.08.07.19.27
+ c3-20020a170902b68300b001bb1f0605b2sm9043985pls.214.2023.08.08.07.19.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 08 Aug 2023 07:19:30 -0700 (PDT)
+ Tue, 08 Aug 2023 07:19:36 -0700 (PDT)
 From: Yeqi Fu <fufuyqqqqqq@gmail.com>
 To: alex.bennee@linaro.org
 Cc: richard.henderson@linaro.org, qemu-devel@nongnu.org,
  Yeqi Fu <fufuyqqqqqq@gmail.com>, Laurent Vivier <laurent@vivier.eu>,
- Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>
-Subject: [RFC v4 07/11] target/i386: Add support for native library calls
-Date: Tue,  8 Aug 2023 22:17:35 +0800
-Message-Id: <20230808141739.3110740-8-fufuyqqqqqq@gmail.com>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Aurelien Jarno <aurelien@aurel32.net>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>
+Subject: [RFC v4 08/11] target/mips: Add support for native library calls
+Date: Tue,  8 Aug 2023 22:17:36 +0800
+Message-Id: <20230808141739.3110740-9-fufuyqqqqqq@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230808141739.3110740-1-fufuyqqqqqq@gmail.com>
 References: <20230808141739.3110740-1-fufuyqqqqqq@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=fufuyqqqqqq@gmail.com; helo=mail-pl1-x62c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=fufuyqqqqqq@gmail.com; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,80 +97,81 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 This commit introduces support for native library calls on the
-i386 target. When special instructions reserved for native calls
+mips target. When special instructions reserved for native calls
 are encountered, the code now performs address translation and
 generates the corresponding native call.
 
 Signed-off-by: Yeqi Fu <fufuyqqqqqq@gmail.com>
 ---
- configs/targets/i386-linux-user.mak   |  1 +
- configs/targets/x86_64-linux-user.mak |  1 +
- target/i386/tcg/translate.c           | 27 +++++++++++++++++++++++++++
- 3 files changed, 29 insertions(+)
+ configs/targets/mips-linux-user.mak   |  1 +
+ configs/targets/mips64-linux-user.mak |  1 +
+ target/mips/tcg/translate.c           | 21 ++++++++++++++++++++-
+ 3 files changed, 22 insertions(+), 1 deletion(-)
 
-diff --git a/configs/targets/i386-linux-user.mak b/configs/targets/i386-linux-user.mak
-index 5b2546a430..2d8bca8f93 100644
---- a/configs/targets/i386-linux-user.mak
-+++ b/configs/targets/i386-linux-user.mak
-@@ -2,3 +2,4 @@ TARGET_ARCH=i386
- TARGET_SYSTBL_ABI=i386
- TARGET_SYSTBL=syscall_32.tbl
- TARGET_XML_FILES= gdb-xml/i386-32bit.xml
+diff --git a/configs/targets/mips-linux-user.mak b/configs/targets/mips-linux-user.mak
+index b4569a9893..fa005d487a 100644
+--- a/configs/targets/mips-linux-user.mak
++++ b/configs/targets/mips-linux-user.mak
+@@ -3,3 +3,4 @@ TARGET_ABI_MIPSO32=y
+ TARGET_SYSTBL_ABI=o32
+ TARGET_SYSTBL=syscall_o32.tbl
+ TARGET_BIG_ENDIAN=y
 +CONFIG_NATIVE_CALL=y
-diff --git a/configs/targets/x86_64-linux-user.mak b/configs/targets/x86_64-linux-user.mak
-index 9ceefbb615..a53b017454 100644
---- a/configs/targets/x86_64-linux-user.mak
-+++ b/configs/targets/x86_64-linux-user.mak
-@@ -3,3 +3,4 @@ TARGET_BASE_ARCH=i386
- TARGET_SYSTBL_ABI=common,64
- TARGET_SYSTBL=syscall_64.tbl
- TARGET_XML_FILES= gdb-xml/i386-64bit.xml
+diff --git a/configs/targets/mips64-linux-user.mak b/configs/targets/mips64-linux-user.mak
+index d2ff509a11..ecfe6bcf73 100644
+--- a/configs/targets/mips64-linux-user.mak
++++ b/configs/targets/mips64-linux-user.mak
+@@ -4,3 +4,4 @@ TARGET_BASE_ARCH=mips
+ TARGET_SYSTBL_ABI=n64
+ TARGET_SYSTBL=syscall_n64.tbl
+ TARGET_BIG_ENDIAN=y
 +CONFIG_NATIVE_CALL=y
-diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index 90c7b32f36..28bf4477fb 100644
---- a/target/i386/tcg/translate.c
-+++ b/target/i386/tcg/translate.c
-@@ -33,6 +33,7 @@
- #include "helper-tcg.h"
+diff --git a/target/mips/tcg/translate.c b/target/mips/tcg/translate.c
+index 74af91e4f5..51a5c1d49b 100644
+--- a/target/mips/tcg/translate.c
++++ b/target/mips/tcg/translate.c
+@@ -36,6 +36,7 @@
+ #include "exec/helper-info.c.inc"
+ #undef  HELPER_H
  
- #include "exec/log.h"
 +#include "native/native.h"
  
- #define HELPER_H "helper.h"
- #include "exec/helper-info.c.inc"
-@@ -6810,6 +6811,32 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
-     case 0x1d0 ... 0x1fe:
-         disas_insn_new(s, cpu, b);
+ /*
+  * Many sysemu-only helpers are not reachable for user-only.
+@@ -13487,7 +13488,7 @@ static void decode_opc_special_legacy(CPUMIPSState *env, DisasContext *ctx)
+ static void decode_opc_special(CPUMIPSState *env, DisasContext *ctx)
+ {
+     int rs, rt, rd, sa;
+-    uint32_t op1;
++    uint32_t op1, sig;
+ 
+     rs = (ctx->opcode >> 21) & 0x1f;
+     rt = (ctx->opcode >> 16) & 0x1f;
+@@ -13583,6 +13584,24 @@ static void decode_opc_special(CPUMIPSState *env, DisasContext *ctx)
+ #endif
          break;
-+    case 0x1ff:
-+        if (native_bypass_enabled()) {
-+            TCGv ret = tcg_temp_new();
+     case OPC_SYSCALL:
++        sig = (ctx->opcode) >> 6;
++        if ((sig == 0xffff) && native_bypass_enabled()) {
 +            TCGv arg1 = tcg_temp_new();
 +            TCGv arg2 = tcg_temp_new();
 +            TCGv arg3 = tcg_temp_new();
-+            const char *fun_name = lookup_symbol((s->base.pc_next) & 0xfff);
-+#ifdef TARGET_X86_64
-+            tcg_gen_mov_tl(arg1, cpu_regs[R_EDI]);
-+            tcg_gen_mov_tl(arg2, cpu_regs[R_ESI]);
-+            tcg_gen_mov_tl(arg3, cpu_regs[R_EDX]);
++            TCGv ret = tcg_temp_new();
++            const char *fun_name = lookup_symbol((ctx->base.pc_next) & 0xfff);
++            tcg_gen_mov_tl(arg1, cpu_gpr[4]);
++            tcg_gen_mov_tl(arg2, cpu_gpr[5]);
++            tcg_gen_mov_tl(arg3, cpu_gpr[6]);
++#if defined(TARGET_MIPS64)
 +            gen_native_call_i64(fun_name, ret, arg1, arg2, arg3);
 +#else
-+            uintptr_t ra = GETPC();
-+            uint32_t a1 = cpu_ldl_data_ra(env, env->regs[R_ESP] + 4, ra);
-+            uint32_t a2 = cpu_ldl_data_ra(env, env->regs[R_ESP] + 8, ra);
-+            uint32_t a3 = cpu_ldl_data_ra(env, env->regs[R_ESP] + 12, ra);
-+            tcg_gen_movi_tl(arg1, a1);
-+            tcg_gen_movi_tl(arg2, a2);
-+            tcg_gen_movi_tl(arg3, a3);
 +            gen_native_call_i32(fun_name, ret, arg1, arg2, arg3);
 +#endif
-+            tcg_gen_mov_tl(cpu_regs[R_EAX], ret);
++            tcg_gen_mov_tl(cpu_gpr[2], ret);
 +            break;
 +        }
-+        break;
-     default:
-         goto unknown_op;
-     }
+         generate_exception_end(ctx, EXCP_SYSCALL);
+         break;
+     case OPC_BREAK:
 -- 
 2.34.1
 
