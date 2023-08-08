@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A20C7737E3
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 06:22:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C50CD7737E4
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 06:22:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTEDj-0007v9-WB; Tue, 08 Aug 2023 00:21:24 -0400
+	id 1qTEDn-00082a-Gz; Tue, 08 Aug 2023 00:21:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qTEDg-0007oZ-V3; Tue, 08 Aug 2023 00:21:20 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ id 1qTEDl-0007zF-Sy; Tue, 08 Aug 2023 00:21:25 -0400
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qTEDf-0007p4-B1; Tue, 08 Aug 2023 00:21:20 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-686fc0d3c92so3476060b3a.0; 
- Mon, 07 Aug 2023 21:21:18 -0700 (PDT)
+ id 1qTEDk-0007pd-4u; Tue, 08 Aug 2023 00:21:25 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-686f19b6dd2so3560067b3a.2; 
+ Mon, 07 Aug 2023 21:21:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1691468477; x=1692073277;
+ d=gmail.com; s=20221208; t=1691468482; x=1692073282;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7hlH2LR6sixLF4V7zBys/ieYFlsDwDyLaEsz5PY7Muc=;
- b=DTb9lJPo9SeRwaMOb7/gYmj/f9MeFq45kW2nrM2SpxRCXYYuhfEtTgOCNSx+DVPZLM
- 69xpl/3dkX7hiTXhO/cNZ67tEZLgV41Iqx06SBjiukPxKAuPABx61FN0kSG0EfyOlVpb
- QaS8x/CRvn/OyeQ/i3YNqzcCPJAgHUf5Qp++HlVlo+w/pZ/DhBKX4gWs5Qpj+nHuIjV0
- e2aAa6Nm5xkUaIFGiBD50jXfQ1ePrMToCqvRoqwtW0VOzR6Rn1KbEMdNyGeU7SKvhxSh
- nyiJj98+CWFp5uLWwG+5uhgbWWhv+DYJDGzJ0c/pXYPeb8fJzxFcHSuuhvnJrUsoFdKG
- RkaQ==
+ bh=+zhYuU1LPhkk5c/LHJ1SKaslbsMf0uSaFlo7cbMkXb4=;
+ b=nxaQ9OT80N1SOxZYG09EDuFjJ3DcUB4qlOfKKKiTL3ZWLfLyHz/rJ/wm09GF0AycYD
+ apjVZpztRbSIqaiuoiBrD+57SJiQwOc0jXSjrUBS+Ewu+HftM1vHN+vAYbiH2ASyUkpL
+ ps8OM35PywL1eux8W5dMieR1iX1wZSdMY3KMw1LffbrwONsfoSKVKg87RcBFj2LCP9EX
+ SCtYeZCI35mwT0MVdrVpYoCEIj7Z7D/LWJ8W3IGhu43M8/3V2/fRhjon2U4gWF83G9jY
+ OfF9dT8auz0j9mqPqwux+kkcTDB667CkPuTLJip9dHqMnho7rZtCT3NDKbvA7Ch8aTDU
+ JRvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691468477; x=1692073277;
+ d=1e100.net; s=20221208; t=1691468482; x=1692073282;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7hlH2LR6sixLF4V7zBys/ieYFlsDwDyLaEsz5PY7Muc=;
- b=NVJPJSPCb5m13/LNW8Ez63hfxzXjruh/gTr8on2a0NpMp5dUV1Lew27FwAAarYo85r
- qN0vM0v6g1bBzQokaXnNgSqFGCuiOyY2RUcoiTaz+Rwt9n2KuGq8WvTOpu9DGbMlIkzx
- W0Std3t3kLSU5Drqknm4Ai2G+uCDxFWLIiXQn+iAWBA39rY534hn3apJkMvXPnAjGb+m
- j41Cpvf4t1MNOwq2X8TQbuGfKNPqs4nSsyExPL2+eEHnxGk3toB2gh2tyQYRzQtGIHtK
- 6SSwHidCJDRMjKmJSoE0YEd2PoLdiPE/gFIqmb4Lk+P+hfd4g6QF5MMkgIzelJkbrVVa
- Z5mw==
-X-Gm-Message-State: AOJu0Yz/c1IF+nbl0B5MCAm0DpSOo8USGt8FoGxgZ27vMMjEQmAk3sGX
- UTQVrpjyFE7AhzY+SiLMmVU=
-X-Google-Smtp-Source: AGHT+IGpMvUMrMRCeZeEIYpHqKdvdM3To54ACaPmaveKGnU+8zwvYhDvadQHMyAgF8578JnihS1clw==
-X-Received: by 2002:a05:6a00:841:b0:666:a25b:3788 with SMTP id
- q1-20020a056a00084100b00666a25b3788mr10637967pfk.34.1691468477397; 
- Mon, 07 Aug 2023 21:21:17 -0700 (PDT)
+ bh=+zhYuU1LPhkk5c/LHJ1SKaslbsMf0uSaFlo7cbMkXb4=;
+ b=TEw6aFUi/t/zJOlrXw0JAy8PzDIodcm8SN5W3OZmSVFgbo+Wx9jtxi72O4cZzgmiX2
+ Vh1bmVuuILXAKFmTVzigwD4JGVW2s0MF5hozWISGNKZF1RjcbtHJWsBPxhJoK5bOuEn2
+ CTc27cbL1jqTJoYi9tgOEVV6Q1WDyRNUfmDeCS/kAfSYrHqzs8UbTJnoFO6M+7iK7fPz
+ YFHVqr0ip+V22hRh9qhk1HqS7YbseYOXXS7jedec6v6YpqswIe5kcLCy49FNBlA9Ez8t
+ NpJHMheShCXCob6Ca1biJ8gf5jKYrhMEi7voClEa+pE6QHjFvdIKp38wU6vKF/NuZntj
+ BqDA==
+X-Gm-Message-State: AOJu0YxHkfDgfJ02xbL1eTwwfghoXkJroP6Vq9ME3nYmLIQV1kHRlcpE
+ lapkVScDYe1JvLRUlkI+UVQ=
+X-Google-Smtp-Source: AGHT+IGwC/NipY6A6yji07yq4FAPm/suS09zvRxseHqE6p27WpYA76BEbHzkvsCx+I/XEJda7hQhiw==
+X-Received: by 2002:a05:6a21:7888:b0:140:4efb:1c09 with SMTP id
+ bf8-20020a056a21788800b001404efb1c09mr8210786pzc.55.1691468482268; 
+ Mon, 07 Aug 2023 21:21:22 -0700 (PDT)
 Received: from wheely.local0.net (61-68-137-140.tpgi.com.au. [61.68.137.140])
  by smtp.gmail.com with ESMTPSA id
- fk10-20020a056a003a8a00b0068718f6a035sm6979207pfb.33.2023.08.07.21.21.12
+ fk10-20020a056a003a8a00b0068718f6a035sm6979207pfb.33.2023.08.07.21.21.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 07 Aug 2023 21:21:17 -0700 (PDT)
+ Mon, 07 Aug 2023 21:21:22 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: Daniel Henrique Barboza <danielhb413@gmail.com>
 Cc: Nicholas Piggin <npiggin@gmail.com>,
@@ -63,16 +63,16 @@ Cc: Nicholas Piggin <npiggin@gmail.com>,
  Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
  Paolo Bonzini <pbonzini@redhat.com>, qemu-ppc@nongnu.org,
  qemu-devel@nongnu.org, Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
-Subject: [PATCH v2 14/19] target/ppc: Fix timebase reset with record-replay
-Date: Tue,  8 Aug 2023 14:19:56 +1000
-Message-Id: <20230808042001.411094-15-npiggin@gmail.com>
+Subject: [PATCH v2 15/19] spapr: Fix machine reset deadlock from replay-record
+Date: Tue,  8 Aug 2023 14:19:57 +1000
+Message-Id: <20230808042001.411094-16-npiggin@gmail.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230808042001.411094-1-npiggin@gmail.com>
 References: <20230808042001.411094-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x436.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,45 +95,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Timebase save uses a random number for a legacy vmstate field, which
-makes rr snapshot loading unbalanced. The easiest way to deal with this
-is just to skip the rng if record-replay is active.
+When the machine is reset to load a new snapshot while being debugged
+with replay-record, it is done from another thread, so the CPU does
+not run the register setting operations. Set CPU registers directly in
+machine reset.
 
-Reviewed-by: Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
+Cc: Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/ppc/ppc.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ hw/ppc/spapr.c         | 20 ++++++++++++++++++--
+ include/hw/ppc/spapr.h |  1 +
+ target/ppc/compat.c    | 19 +++++++++++++++++++
+ target/ppc/cpu.h       |  1 +
+ 4 files changed, 39 insertions(+), 2 deletions(-)
 
-diff --git a/hw/ppc/ppc.c b/hw/ppc/ppc.c
-index a0ee064b1d..87df914600 100644
---- a/hw/ppc/ppc.c
-+++ b/hw/ppc/ppc.c
-@@ -32,6 +32,7 @@
- #include "qemu/main-loop.h"
- #include "qemu/error-report.h"
- #include "sysemu/kvm.h"
-+#include "sysemu/replay.h"
- #include "sysemu/runstate.h"
- #include "kvm_ppc.h"
- #include "migration/vmstate.h"
-@@ -976,8 +977,14 @@ static void timebase_save(PPCTimebase *tb)
-         return;
+diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+index 1c8b8d57a7..7d84244f03 100644
+--- a/hw/ppc/spapr.c
++++ b/hw/ppc/spapr.c
+@@ -1322,6 +1322,22 @@ void spapr_set_all_lpcrs(target_ulong value, target_ulong mask)
      }
+ }
  
--    /* not used anymore, we keep it for compatibility */
--    tb->time_of_the_day_ns = qemu_clock_get_ns(QEMU_CLOCK_HOST);
-+    if (replay_mode == REPLAY_MODE_NONE) {
-+        /* not used anymore, we keep it for compatibility */
-+        tb->time_of_the_day_ns = qemu_clock_get_ns(QEMU_CLOCK_HOST);
-+    } else {
-+        /* simpler for record-replay to avoid this event, compat not needed */
-+        tb->time_of_the_day_ns = 0;
++/* May be used when the machine is not running */
++void spapr_init_all_lpcrs(target_ulong value, target_ulong mask)
++{
++    CPUState *cs;
++    CPU_FOREACH(cs) {
++        PowerPCCPU *cpu = POWERPC_CPU(cs);
++        CPUPPCState *env = &cpu->env;
++        target_ulong lpcr;
++
++        lpcr = env->spr[SPR_LPCR];
++        lpcr &= ~(LPCR_HR | LPCR_UPRT);
++        ppc_store_lpcr(cpu, lpcr);
++    }
++}
++
++
+ static bool spapr_get_pate(PPCVirtualHypervisor *vhyp, PowerPCCPU *cpu,
+                            target_ulong lpid, ppc_v3_pate_t *entry)
+ {
+@@ -1583,7 +1599,7 @@ int spapr_reallocate_hpt(SpaprMachineState *spapr, int shift, Error **errp)
+     }
+     /* We're setting up a hash table, so that means we're not radix */
+     spapr->patb_entry = 0;
+-    spapr_set_all_lpcrs(0, LPCR_HR | LPCR_UPRT);
++    spapr_init_all_lpcrs(0, LPCR_HR | LPCR_UPRT);
+     return 0;
+ }
+ 
+@@ -1661,7 +1677,7 @@ static void spapr_machine_reset(MachineState *machine, ShutdownCause reason)
+     spapr_ovec_cleanup(spapr->ov5_cas);
+     spapr->ov5_cas = spapr_ovec_new();
+ 
+-    ppc_set_compat_all(spapr->max_compat_pvr, &error_fatal);
++    ppc_init_compat_all(spapr->max_compat_pvr, &error_fatal);
+ 
+     /*
+      * This is fixing some of the default configuration of the XIVE
+diff --git a/include/hw/ppc/spapr.h b/include/hw/ppc/spapr.h
+index 538b2dfb89..f47e8419a5 100644
+--- a/include/hw/ppc/spapr.h
++++ b/include/hw/ppc/spapr.h
+@@ -1012,6 +1012,7 @@ bool spapr_check_pagesize(SpaprMachineState *spapr, hwaddr pagesize,
+ #define SPAPR_OV5_XIVE_BOTH     0x80 /* Only to advertise on the platform */
+ 
+ void spapr_set_all_lpcrs(target_ulong value, target_ulong mask);
++void spapr_init_all_lpcrs(target_ulong value, target_ulong mask);
+ hwaddr spapr_get_rtas_addr(void);
+ bool spapr_memory_hot_unplug_supported(SpaprMachineState *spapr);
+ 
+diff --git a/target/ppc/compat.c b/target/ppc/compat.c
+index 7949a24f5a..ebef2cccec 100644
+--- a/target/ppc/compat.c
++++ b/target/ppc/compat.c
+@@ -229,6 +229,25 @@ int ppc_set_compat_all(uint32_t compat_pvr, Error **errp)
+     return 0;
+ }
+ 
++/* To be used when the machine is not running */
++int ppc_init_compat_all(uint32_t compat_pvr, Error **errp)
++{
++    CPUState *cs;
++
++    CPU_FOREACH(cs) {
++        PowerPCCPU *cpu = POWERPC_CPU(cs);
++        int ret;
++
++        ret = ppc_set_compat(cpu, compat_pvr, errp);
++
++        if (ret < 0) {
++            return ret;
++        }
 +    }
 +
-     /*
-      * tb_offset is only expected to be changed by QEMU so
-      * there is no need to update it from KVM here
++    return 0;
++}
++
+ int ppc_compat_max_vthreads(PowerPCCPU *cpu)
+ {
+     const CompatInfo *compat = compat_by_pvr(cpu->compat_pvr);
+diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
+index 9e491e05eb..f8fe0db5cd 100644
+--- a/target/ppc/cpu.h
++++ b/target/ppc/cpu.h
+@@ -1504,6 +1504,7 @@ int ppc_set_compat(PowerPCCPU *cpu, uint32_t compat_pvr, Error **errp);
+ 
+ #if !defined(CONFIG_USER_ONLY)
+ int ppc_set_compat_all(uint32_t compat_pvr, Error **errp);
++int ppc_init_compat_all(uint32_t compat_pvr, Error **errp);
+ #endif
+ int ppc_compat_max_vthreads(PowerPCCPU *cpu);
+ void ppc_compat_add_property(Object *obj, const char *name,
 -- 
 2.40.1
 
