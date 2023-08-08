@@ -2,88 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D28E773AF2
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 17:17:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46E4C773AF1
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 17:17:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTOS1-0008Ts-CH; Tue, 08 Aug 2023 11:16:49 -0400
+	id 1qTOSE-0000Z3-IO; Tue, 08 Aug 2023 11:17:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTORz-0008SB-D2
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 11:16:47 -0400
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qTOSC-0000Oy-BR
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 11:17:00 -0400
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTORx-0000sh-U2
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 11:16:47 -0400
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-686f8614ce5so5713985b3a.3
- for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 08:16:45 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qTOS9-000102-2E
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 11:17:00 -0400
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-686ed1d2594so5560983b3a.2
+ for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 08:16:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691507803; x=1692112603;
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1691507815; x=1692112615;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=a2oaPpujhCxRBcr02f8wlHAWy42WgjRhAkTX4Vn7rJI=;
- b=o8XT6lxYW7OOiyx0ZWWbuGAb0i/1pk6grzMsivq9PZKWGDT2dFWdG+oYI1Zrl77hfw
- eKcIaBAIzduC2wmRh61CkcWiDBMwRojFAmL0lV3RQ/l2cl0X58M3AVio2B33T7kwzuPo
- au263IDvtoMEyjbRILMZn1IcEIhuKWIK5jJb8lZ6JDSuWA+Kn2SJsswnwGbLyiRTD5x3
- vsn4GsOzJsveP9mp1hCr4NOVr6RXHC0Kz/TayUcIoD6lBY5dvQTizDgir4TVYLpq19uZ
- s/Lw5GnRRsFCT3HIwqrhf04zuADbh1lsXIM9CvV12PHPm4AFldKkz90OoL6dFDmQxMN3
- 6HNw==
+ bh=90NI735jDQXiKt0vhfRRh6aDYnJq+9w1ku7mfpcoHLs=;
+ b=yOkr9qaN7y7otNakCMCY6VbSOg00q0AdSHQk5er3fQge8FTzVg36gkJNuP4ONeWGBg
+ Lt6YaHPLjhaTSWzzBRVOpHUEmYeieR3sNrnPlclUQlgXq2KY71MBs4csgXjufeoyP57l
+ +w71kEXp+A4oExyF+8n1jTshyKE9e9mnDq7AEW6GxRel28Pw/Z3+hyzrRzF7phQLNicm
+ 7qvoXgtsfzhmsHq6ZP0Uwfxj1oN69yK+nJiRT/Tqh+STLiWwSkqje3QvGXeGWhuxhpov
+ fANUFhgMXIKsZn4BWLosezZOm5ch4w3hmhEV4RaWoWGEKg5bgE1l67eTUc9uI9FuPMdD
+ vzTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691507803; x=1692112603;
+ d=1e100.net; s=20221208; t=1691507815; x=1692112615;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=a2oaPpujhCxRBcr02f8wlHAWy42WgjRhAkTX4Vn7rJI=;
- b=ViHkjQqu8UIVfG0RqN5cANCnBe+VT4JwpoD/bzGaVqdzbdEuDmt7GYud3v2EaDaPfP
- /lTxwm4hCsr86w9IGtRiLVMWci76zBmPAJnQX6bP4SaBFXF1RpNSPwQmX7/jLADr9Jgi
- AmBkuFPZkfMwKymwGfq8L5oSkj0TQjyWrkY+Gjt+nUkflC893r9uOdG3k4X4VELAFK0x
- 8HWsWDnM8HUEB0V8AZGdC4jYu4Rwhyg322ZnuiQtjbtFfvgIYdSUxS8Wv1tbtPWEFxsr
- U6WpIsvXI4Yn+kAIy/KQi11bViMKw8GoYWD2ypu+ZKC5HLjJzWLAgO/198EJAmXN4+G6
- MIrg==
-X-Gm-Message-State: AOJu0Yxt1gQU5CEUXSiT1rxkB2+xIMUPQ8pzgzofBBI7TUPnBu+FAR7b
- cCcfNsSx7q41VBCPg9pYnN/rrg==
-X-Google-Smtp-Source: AGHT+IFIIXqm3T/b7qSYfYr85gZct2HXrWopQ63bBiyKLZBnRhgw3DeXLZdQiyGI8BdqXTufytrBwA==
-X-Received: by 2002:a05:6a20:7f84:b0:13e:3a7a:2d70 with SMTP id
- d4-20020a056a207f8400b0013e3a7a2d70mr12015338pzj.0.1691507803674; 
- Tue, 08 Aug 2023 08:16:43 -0700 (PDT)
-Received: from ?IPV6:2602:47:d490:6901:63dc:2a47:f4bc:4a95?
- ([2602:47:d490:6901:63dc:2a47:f4bc:4a95])
+ bh=90NI735jDQXiKt0vhfRRh6aDYnJq+9w1ku7mfpcoHLs=;
+ b=JF3/8Zu6/shIj03OSDPITt3WBL3gqO4gSchkWdoUjLdL78h24S4eZvolDm2M88kKkg
+ ceWdbdkIS2qTHzsUovEgpO5Kg5mnq2Xch24zfKFc+mp5m8LkuO20wjb//rkaNfDcIF1u
+ I19Cj8pSbnGQoWof/33MSuCJTeZ0EQUC3KQNL/n/XgGZGUST4LJnjB5NpK+3QA7uGB1G
+ bC0xY3wBzRwCanBq7DN3cHpJpFfMOrddvZsX9OwoaaCWnmv+6weusNOdkvTIW5e8l6jQ
+ KcGhpr8HV9qRpa33HrdczRgRdMvTxtU/U2gHeFWcKyncn0n7K/Nzy+vdvLsMvN13kXyS
+ 4gxg==
+X-Gm-Message-State: AOJu0YyQESPkZMxWmuRi1kZB03oqDgK9C39eAGjZlDFOPSvqxzmRjujH
+ GXBX6CdEV+k20HUTG/KlReefaw==
+X-Google-Smtp-Source: AGHT+IGxZtJc1iUIA7L0eOdH/lE8qAZz5UGcykx2TYUKBsv4l0ynSN1Ns3LLVDyfXNWqmLCv+MPyrQ==
+X-Received: by 2002:a05:6a20:1399:b0:137:53d1:405 with SMTP id
+ hn25-20020a056a20139900b0013753d10405mr13172622pzc.26.1691507815288; 
+ Tue, 08 Aug 2023 08:16:55 -0700 (PDT)
+Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
+ ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
  by smtp.gmail.com with ESMTPSA id
- k14-20020a637b4e000000b005533b6cb3a6sm6718036pgn.16.2023.08.08.08.16.42
+ u6-20020a62ed06000000b006833bcc95b0sm8232275pfh.115.2023.08.08.08.16.53
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 08 Aug 2023 08:16:43 -0700 (PDT)
-Message-ID: <ce7a8180-bb8b-0693-c2c0-22fb378239f0@linaro.org>
-Date: Tue, 8 Aug 2023 08:16:41 -0700
+ Tue, 08 Aug 2023 08:16:54 -0700 (PDT)
+Message-ID: <5e416a73-365e-407d-98fa-3b48be20045d@daynix.com>
+Date: Wed, 9 Aug 2023 00:16:51 +0900
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH for-8.1 v10 01/14] linux-user: Adjust task_unmapped_base
- for reserved_va
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH for-8.1] linux-user: Define real MAP_FIXED_NOREPLACE value
 Content-Language: en-US
-To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
-Cc: pbonzini@redhat.com, philmd@linaro.org, laurent@vivier.eu, deller@gmx.de, 
- Akihiko Odaki <akihiko.odaki@daynix.com>, qemu-devel@nongnu.org
-References: <20230807163705.9848-1-richard.henderson@linaro.org>
- <20230807163705.9848-2-richard.henderson@linaro.org>
- <87wmy599j3.fsf@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <87wmy599j3.fsf@linaro.org>
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ pbonzini@redhat.com, philmd@linaro.org, laurent@vivier.eu, deller@gmx.de,
+ qemu-devel@nongnu.org
+References: <20230808115242.73025-1-akihiko.odaki@daynix.com>
+ <637ce4c6-9ac6-0bb2-aedb-632f79777902@linaro.org>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <637ce4c6-9ac6-0bb2-aedb-632f79777902@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
-X-Spam_score_int: -61
-X-Spam_score: -6.2
-X-Spam_bar: ------
-X-Spam_report: (-6.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-4.14,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: none client-ip=2607:f8b0:4864:20::429;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x429.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,22 +96,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/8/23 02:10, Alex Bennée wrote:
-> One thing I'm slightly confused by is the ELF_ET_DYN_BASE can be above
-> this (or sometimes the same). Should the mapping of ELF segments be
-> handled with mmap_next_start? I assume once mmap_next_start meets the
-> mappings for the ELF segments we skip over until we get to more free
-> space after the program code?
+On 2023/08/08 23:42, Richard Henderson wrote:
+> On 8/8/23 04:52, Akihiko Odaki wrote:
+>> do_brk() assumes target_mmap() emulates MAP_FIXED_NOREPLACE even when
+>> the host does not support it. However, such emulation is not possible
+>> if MAP_FIXED_NOREPLACE is defined as zero.
+>>
+>> Define MAP_FIXED_NOREPLACE with the real value instead of zero if it is
+>> not defined.
+>>
+>> Fixes: e69e032d1a ("linux-user: Use MAP_FIXED_NOREPLACE for do_brk()")
+>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+>> ---
+>>   include/qemu/osdep.h | 8 ++++++--
+>>   linux-user/elfload.c | 1 -
+>>   2 files changed, 6 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
+>> index cc61b00ba9..1aac17ec2f 100644
+>> --- a/include/qemu/osdep.h
+>> +++ b/include/qemu/osdep.h
+>> @@ -289,8 +289,12 @@ void QEMU_ERROR("code path is reachable")
+>>   #ifndef MAP_ANONYMOUS
+>>   #define MAP_ANONYMOUS MAP_ANON
+>>   #endif
+>> -#ifndef MAP_FIXED_NOREPLACE
+>> -#define MAP_FIXED_NOREPLACE 0
+>> +#if defined(__linux__) && !defined(MAP_FIXED_NOREPLACE)
+>> +#if HOST_ALPHA
+> 
+> HOST_ALPHA is not a thing.  Also, see
+> 
+> https://lore.kernel.org/qemu-devel/20230808120303.585509-3-pbonzini@redhat.com/
+> 
+> where host support for Alpha is completely removed.
 
-ELF_ET_DYN_BASE is a hack imported from the kernel to put separation between an ET_DYN 
-main binary and TASK_UNMAPPED_BASE, so that the brk can follow the binary and have space 
-to grow.
+I sent v2 with the condition HOST_ALPHA replaced with
+MAP_HUGETLB == 0x100000.
 
-All of this is part of the "legacy" memory layout, for which there is a personality flag.
+While Alpha is no longer supported, and linux-user will not work on 
+Alpha, code outside linux-user also refers to osdep.h and the build 
+script does not actively block building QEMU on an unsupported host so I 
+left the definition for Alpha just in case.
 
-For 8.2, I think we should work on implementing the "new" memory layout, which places 
-everything top-down.  But most importantly it completely separates brk from the binary.
+> 
+> 
+>> +#define MAP_FIXED_NOREPLACE 0x200000
+>> +#else
+>> +#define MAP_FIXED_NOREPLACE 0x100000
+>> +#endif
+> 
+> Which supported hosts do not define this value?  Can we simply remove 
+> the fallback?
 
+glibc didn't have this defined until 2.28. The older releases still 
+maintained are 2.26, and 2.27, according to:
+https://sourceware.org/glibc/wiki/Release
 
-r~
+The page says ALT Linux p9 and Ubuntu 18.04 LTS (Bionic Beaver) has 
+glibc 2.27.
+
+> 
+> 
+> r~
 
