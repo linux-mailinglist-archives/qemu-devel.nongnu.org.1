@@ -2,65 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 686FE773AD2
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 17:00:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19C07773ADB
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 17:08:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTOBE-0002gz-3L; Tue, 08 Aug 2023 10:59:28 -0400
+	id 1qTOIS-00058Y-Ee; Tue, 08 Aug 2023 11:06:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qTOBC-0002gQ-9N
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 10:59:26 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qTOBA-0003tX-0D
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 10:59:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691506761;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=BaWdBayN+/XneRZ2rEWopSDSYzwiHS0GVLVdSuCFCH8=;
- b=IIopsSQs82xIBSOjQ0wTo/cIcXL08q6U7r3UxcivKGOFxX6l6szOCmlM0oO1GPEpzoEsol
- HtjqwAEzSOxMc+e0sFoo5S5Vvri94DEDDQZXv1R0vLd0+tFW29y5x2C/NloguyjvoGCQuO
- EgQEuPGquUdML1kUiS8f3+wVGVsg5+g=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-26-qDs4D1V-PMWNSXa-v5GpBw-1; Tue, 08 Aug 2023 10:59:19 -0400
-X-MC-Unique: qDs4D1V-PMWNSXa-v5GpBw-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7C0B5800C78
- for <qemu-devel@nongnu.org>; Tue,  8 Aug 2023 14:59:19 +0000 (UTC)
-Received: from lacos-laptop-9.usersys.redhat.com (unknown [10.39.194.241])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 87E9E492C13;
- Tue,  8 Aug 2023 14:59:18 +0000 (UTC)
-From: Laszlo Ersek <lersek@redhat.com>
-To: lersek@redhat.com,
-	qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH] vfio/pci: hide ROM BAR on SFC9220 10/40G Ethernet Controller
- PF
-Date: Tue,  8 Aug 2023 16:59:16 +0200
-Message-Id: <20230808145916.81657-1-lersek@redhat.com>
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qTOIQ-00058L-Db
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 11:06:54 -0400
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qTOIO-0006HB-GH
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 11:06:54 -0400
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-1bc411e9d17so35701695ad.0
+ for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 08:06:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1691507211; x=1692112011;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=tAO2I5yRvxwmrHlAsuu79qu0O+yqKkrTGO5KoB4M1sM=;
+ b=ktBBzL1nEVN6F+1m/9CweQmBMtNvvE2qtOyU7qHQLJa7nNDx0bMwbE+UdP5wEWF1lw
+ QzHl+h8bhb3Cz8C6EyztZSQbFuhWU0lO1vxvUwzh0RH7uJRmVMMBcmlZ9Gkwjr9V1xEd
+ rdyKcKyMYTUe/FQtGFE3EuWMAwQL2qkkneHKW8QGgj9qjX4FjbVd+w7HSA/6M6fhwApr
+ Uyc7isIp3iXfqm3+GfLsX7IEQUDYUfceYNyWi2udUVYgxwj+BXYmD74sh6xgL0j26g4O
+ xwJ40nzDHwiab0jyWj8SOQ1wcYovNg0U7YtAPfvxJQuT1JychY2ZXbPhY6WEns/d1Pyp
+ p0yQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1691507211; x=1692112011;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=tAO2I5yRvxwmrHlAsuu79qu0O+yqKkrTGO5KoB4M1sM=;
+ b=AQTSDlOcRJg2WAp7cYMtrCmARlKzeYPX/QNdadIqt9y26OG+U7COFH+eU1X8aZFiCx
+ 6Z5/e+TErwmlJC1ohi++dvIgc1byKY7jKfmfHBbb+UjYdQPzlJK+h9eDaDxys60aWWG2
+ JfM972OyZBhNS8aQawaHGoZOYFj1s8PXGjZ1sK1DU5woog3mr+RtstCt1Z2ifl9dKnGm
+ UMohDqLUYS4sCNmD023CInLLnbjjENCwnw84PLS1xeD8RIwg00zKAyhhLi9EkriJg/Wi
+ t1SUgH0i0rSCaYtDgnpuPzzX+Xstlcfa5J2ea9V3kG4dQGbZOF1w7mjHxr2/Ns3nEngx
+ Bt8w==
+X-Gm-Message-State: AOJu0YxWmOm/YT5hYN2G0+7jdw2H1aZl+OobOjJmJqjBxcmDA/m7tFdB
+ 7PAKNDuqDGEYEC8P5QTkzG3fwA==
+X-Google-Smtp-Source: AGHT+IE+R4hgYc06jVlXta4gVMjzE4NajZJ1LPmrf3Bf1MbYHRs9e3Jh/9mEKID87kXCpwlhzDDkJA==
+X-Received: by 2002:a17:902:ead1:b0:1a6:74f6:fa92 with SMTP id
+ p17-20020a170902ead100b001a674f6fa92mr13649445pld.19.1691507210940; 
+ Tue, 08 Aug 2023 08:06:50 -0700 (PDT)
+Received: from alarm.flets-east.jp ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
+ by smtp.gmail.com with ESMTPSA id
+ s22-20020a170902a51600b001a80ad9c599sm9075317plq.294.2023.08.08.08.06.48
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 08 Aug 2023 08:06:50 -0700 (PDT)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+To: 
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>, pbonzini@redhat.com,
+ philmd@linaro.org, laurent@vivier.eu, deller@gmx.de, qemu-devel@nongnu.org,
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH for-8.1 v2] linux-user: Define real MAP_FIXED_NOREPLACE value
+Date: Wed,  9 Aug 2023 00:06:35 +0900
+Message-ID: <20230808150636.91154-1-akihiko.odaki@daynix.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=lersek@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::631;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x631.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,45 +90,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-VGhlIFNvbGFyZmxhcmUgQ29tbXVuaWNhdGlvbnMgU0ZDOTIyMCBOSUMncyBwaHlzaWNhbCBmdW5j
-dGlvbiAoUEYpIGFwcGVhcnMKdG8gZXhwb3NlIGFuIGV4cGFuc2lvbiBST00gd2l0aCB0aGUgZm9s
-bG93aW5nIGNoYXJhY3RlcmlzdGljczoKCigxKSBTaW5nbGUtaW1hZ2UgUk9NLCB3aXRoIG9ubHkg
-YSBsZWdhY3kgQklPUyBpbWFnZSAobm8gVUVGSSBkcml2ZXIpLgpBbGV4J3Mgcm9tLXBhcnNlciB1
-dGlsaXR5IGR1bXBzIGl0IGxpa2UgdGhpczoKCj4gVmFsaWQgUk9NIHNpZ25hdHVyZSBmb3VuZCBA
-MGgsIFBDSVIgb2Zmc2V0IDIwaAo+ICAgICAgICAgUENJUjogdHlwZSAwICh4ODYgUEMtQVQpLCB2
-ZW5kb3I6IDE5MjQsIGRldmljZTogMGEwMywgY2xhc3M6IDAwMDAwMgo+ICAgICAgICAgUENJUjog
-cmV2aXNpb24gMywgdmVuZG9yIHJldmlzaW9uOiAxCj4gICAgICAgICBMYXN0IGltYWdlCgooMikg
-VGhlIEJJT1MgaW1hZ2UgY3Jhc2hlcyB3aGVuIGJvb3RlZCBvbiBpNDQwZnguCgooMykgVGhlIEJJ
-T1MgaW1hZ2UgcHJpbnRzIHRoZSBmb2xsb3dpbmcgbWVzc2FnZXMgb24gcTM1OgoKPiBTb2xhcmZs
-YXJlIEJvb3QgTWFuYWdlciAodjUuMi4yLjEwMDYpCj4gU29sYXJmbGFyZSBDb21tdW5pY2F0aW9u
-cyAyMDA4LTIwMTkKPiBnUFhFIChodHRwOi8vZXRoZXJib290Lm9yZykgLSBbLi4uXSBQQ0lbLi4u
-XSBQblAgUE1NWy4uLl0KClNvIGl0IGFwcGVhcnMgbGlrZSBhIG1vZGlmaWVkIGRlcml2YXRpdmUg
-b2Ygb2xkIGdQWEUuCgpBbGV4IHN1cm1pc2VkIGluIGFkdmFuY2UgdGhhdCB0aGUgQklPUyBpbWFn
-ZSBjb3VsZCBiZSBhY2Nlc3NpbmcKaG9zdC1waHlzaWNhbCBhZGRyZXNzZXMgcmF0aGVyIHRoYW4g
-Z3Vlc3QtcGh5cyBvbmVzLCBsZWFkaW5nIHRvIHRoZSBjcmFzaApvbiBpNDQwZnguCgpEb24ndCBl
-eHBvc2UgdGhlIG9wdGlvbiBST00gQkFSIHRvIHRoZSBWTSBieSBkZWZhdWx0LiBXaGlsZSB0aGlz
-IHByZXZlbnRzCm5ldGJvb3RpbmcgdGhlIFZNIG9mZiB0aGUgUEYgb24gcTM1L1NlYUJJT1MgKGEg
-cmVsYXRpdmVseSByYXJlIHNjZW5hcmlvKSwKaXQgZG9lcyBub3QgbWFrZSBhbnkgZGlmZmVyZW5j
-ZSBmb3IgVUVGSSwgYW5kIGF0IGxlYXN0IHRoZSBWTSBkb2Vzbid0CmNyYXNoIGR1cmluZyBib290
-IG9uIGk0NDBmeC9TZWFCSU9TIChhIHJlbGF0aXZlbHkgZnJlcXVlbnQgc2NlbmFyaW8pLgpVc2Vy
-cyBjYW4gcmVzdG9yZSB0aGUgb3JpZ2luYWwgYmVoYXZpb3IgdmlhIHRoZSBRRU1VIGNtZGxpbmUg
-YW5kIHRoZQpsaWJ2aXJ0IGRvbWFpbiBYTUwuCgooSW4gdHdvIHllYXJzLCB3ZSd2ZSBub3Qgc2Vl
-biBhbnkgY3VzdG9tZXIgaW50ZXJlc3QgaW4gdGhpcyBidWcsIGhlbmNlCnRoZXJlJ3Mgbm8gaW5j
-ZW50aXZlIHRvIGludmVzdGlnYXRlICgyKS4pCgpDYzogQWxleCBXaWxsaWFtc29uIDxhbGV4Lndp
-bGxpYW1zb25AcmVkaGF0LmNvbT4gKHN1cHBvcnRlcjpWRklPKQpDYzogIkPDqWRyaWMgTGUgR29h
-dGVyIiA8Y2xnQHJlZGhhdC5jb20+IChzdXBwb3J0ZXI6VkZJTykKQnVnemlsbGE6IGh0dHBzOi8v
-YnVnemlsbGEucmVkaGF0LmNvbS9zaG93X2J1Zy5jZ2k/aWQ9MTk3NTc3NgpTaWduZWQtb2ZmLWJ5
-OiBMYXN6bG8gRXJzZWsgPGxlcnNla0ByZWRoYXQuY29tPgotLS0KIGh3L3ZmaW8vcGNpLXF1aXJr
-cy5jIHwgNCArKysrCiAxIGZpbGUgY2hhbmdlZCwgNCBpbnNlcnRpb25zKCspCgpkaWZmIC0tZ2l0
-IGEvaHcvdmZpby9wY2ktcXVpcmtzLmMgYi9ody92ZmlvL3BjaS1xdWlya3MuYwppbmRleCBmNGZm
-ODM2ODA1NzIuLjI3MGViMTZiOTFmYSAxMDA2NDQKLS0tIGEvaHcvdmZpby9wY2ktcXVpcmtzLmMK
-KysrIGIvaHcvdmZpby9wY2ktcXVpcmtzLmMKQEAgLTQ1LDYgKzQ1LDEwIEBAIHN0YXRpYyBjb25z
-dCBzdHJ1Y3QgewogICAgIHVpbnQzMl90IGRldmljZTsKIH0gcm9tX2RlbnlsaXN0W10gPSB7CiAg
-ICAgeyAweDE0ZTQsIDB4MTY4ZSB9LCAvKiBCcm9hZGNvbSBCQ00gNTc4MTAgKi8KKyAgICB7IDB4
-MTkyNCwgMHgwYTAzIH0sIC8qIFNvbGFyZmxhcmUgQ29tbXVuaWNhdGlvbnMKKyAgICAgICAgICAg
-ICAgICAgICAgICAgICAqIFNGQzkyMjAgMTAvNDBHIEV0aGVybmV0IENvbnRyb2xsZXIKKyAgICAg
-ICAgICAgICAgICAgICAgICAgICAqIGh0dHBzOi8vYnVnemlsbGEucmVkaGF0LmNvbS9zaG93X2J1
-Zy5jZ2k/aWQ9MTk3NTc3NgorICAgICAgICAgICAgICAgICAgICAgICAgICovCiB9OwogCiBib29s
-IHZmaW9fb3B0X3JvbV9pbl9kZW55bGlzdChWRklPUENJRGV2aWNlICp2ZGV2KQo=
+do_brk() assumes target_mmap() emulates MAP_FIXED_NOREPLACE even when
+the host does not support it. However, such emulation is not possible
+if MAP_FIXED_NOREPLACE is defined as zero.
+
+Define MAP_FIXED_NOREPLACE with the real value instead of zero if it is
+not defined.
+
+Fixes: e69e032d1a ("linux-user: Use MAP_FIXED_NOREPLACE for do_brk()")
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+---
+ include/qemu/osdep.h | 8 ++++++--
+ linux-user/elfload.c | 1 -
+ 2 files changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
+index cc61b00ba9..6c1050afcd 100644
+--- a/include/qemu/osdep.h
++++ b/include/qemu/osdep.h
+@@ -289,8 +289,12 @@ void QEMU_ERROR("code path is reachable")
+ #ifndef MAP_ANONYMOUS
+ #define MAP_ANONYMOUS MAP_ANON
+ #endif
+-#ifndef MAP_FIXED_NOREPLACE
+-#define MAP_FIXED_NOREPLACE 0
++#if defined(__linux__) && !defined(MAP_FIXED_NOREPLACE)
++#if MAP_HUGETLB == 0x100000
++#define MAP_FIXED_NOREPLACE 0x200000
++#else
++#define MAP_FIXED_NOREPLACE 0x100000
++#endif
+ #endif
+ #ifndef MAP_NORESERVE
+ #define MAP_NORESERVE 0
+diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+index 36e4026f05..9d9c79a653 100644
+--- a/linux-user/elfload.c
++++ b/linux-user/elfload.c
+@@ -2807,7 +2807,6 @@ static void pgb_reserved_va(const char *image_name, abi_ulong guest_loaddr,
+     /* Widen the "image" to the entire reserved address space. */
+     pgb_static(image_name, 0, reserved_va, align);
+ 
+-    /* osdep.h defines this as 0 if it's missing */
+     flags |= MAP_FIXED_NOREPLACE;
+ 
+     /* Reserve the memory on the host. */
+-- 
+2.41.0
 
 
