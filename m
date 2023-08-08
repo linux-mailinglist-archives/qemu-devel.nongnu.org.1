@@ -2,80 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7595773749
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 05:04:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E77ED77375D
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 05:09:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTCzv-0001RO-8r; Mon, 07 Aug 2023 23:03:03 -0400
+	id 1qTD67-0007SL-KM; Mon, 07 Aug 2023 23:09:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTCzs-0001Pc-Uf
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 23:03:01 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qTD65-0007Rp-Eu; Mon, 07 Aug 2023 23:09:25 -0400
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTCzr-0006bR-B6
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 23:03:00 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-686ed1d2594so5014317b3a.2
- for <qemu-devel@nongnu.org>; Mon, 07 Aug 2023 20:02:58 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qTD64-0007oc-1P; Mon, 07 Aug 2023 23:09:25 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-686ea67195dso3763193b3a.2; 
+ Mon, 07 Aug 2023 20:09:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691463778; x=1692068578;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=gmail.com; s=20221208; t=1691464162; x=1692068962;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=V+PZ+MkLecLrqPhUWEMZ8qOCbS3Yrr8j9Pi4RnELYw4=;
- b=vXRjsnRXqv7Epg9Yr7JAj1qV17tS2XgboGE851OTloUZr0pD9l3+p+5dzLi9B9ArgV
- oUk9wBxCCiaeJyj3LsjjzHYEAeYRlY8qLVnghzNXIyqMzlx2zynbBE+9/oqAJ6J8Qxdi
- QiswrpJR+7Lii5O/JXc+Jc80XXarx9J1unYk3z0Ho9yEB1B2uQa5X1a5mBvzyAPpjaCB
- /2g1HHxWQn8MqeUrknZipX3l2pNrDhDIa6vZsYRO6DLCy9E30e5i9aT8pz/7jrsOFYSF
- v8yo0NAFB+8RR7TBbzRKzDPvV/GOltWKXfK2/eZky6Y6scG2ZKfmD1cB1SzSPz/+LvSK
- KFiA==
+ bh=vdHjciNpGWdMbC3CCZ1sM6WJY5B+CxZfOCmfCfZO4vY=;
+ b=YVJCcn63P1V8fKfF8dKRnHC91AGwur9IXVkE8ke1aQCHuHL1evBQFaQ6TvWYPEcCwy
+ qDPJMMPvIrz9dUZ8Dno27I0ZGXYbPBVuUQrMJTz+oXShqyiICGixe0viG2FP9Rwvf/+d
+ nsH+//MR2iyNpNgq812t5BX3Fo+EhRriE7xIXGo1bQ3qi5EEKmmMFD9ianWUttl8ZrL1
+ QrLIu0lpXpJ19Th2ks9p34znulwIrRV3Kzl3coxFd2PvJVMmp5R5X7oV4RwhFVtC9Prx
+ I/ThPkeLD+2pXLaxqoab3XcN1rcXAzkHMm46h2mjRrGNUaZ51VkjV1w061WyIBkNrKpm
+ YfOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691463778; x=1692068578;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=V+PZ+MkLecLrqPhUWEMZ8qOCbS3Yrr8j9Pi4RnELYw4=;
- b=DEsT04vJ8ESyFAOZoEfgjmqJDnAaw9hmRCWvEZ5oT+FK1JLLyx9jCyXCSxpfFIU0hF
- X8hf8o16RVZbW0MrWVh/nKnJ3oGsUXD4/eYrCWvZnPy6x2VTlJSSktMZ18MJ9Bm0/RfU
- +WjCVHntlVfn8QRJ+EZB9tj90ul8LX58G6S8x6RNKBAEnZzfsY5yMP5zDxLXnyVK4zHW
- ZxysvKM25r4h6tLF7/TofNYX9FN5EeuvTkJ2xW0+D/rhSEf7x00+Ko06yVBa+YBfhHJ8
- VLWq7+j0itgU1cdj79bzb9gb1AE7hW6swdvekg+kTttgfrTiDkWvmbhwWWfvZ52YoDWA
- 5dfQ==
-X-Gm-Message-State: AOJu0YyU8UfnjBB2qe83Ke0It+mbzbHHWGbIfMrMdr6ePYv0o8+1zkpR
- FUVG0+nW/3AIYOkndOuUZD5YlBaH+ifOF+7lNik=
-X-Google-Smtp-Source: AGHT+IG2SHkc3Z0P5QwoUodakZTex91zx3mEKUPJ11cZGLQhO/akn1A/2fy6Q4A0SgJRMeu+GlxS5Q==
-X-Received: by 2002:a05:6a00:1488:b0:687:6184:def4 with SMTP id
- v8-20020a056a00148800b006876184def4mr14000203pfu.21.1691463777951; 
- Mon, 07 Aug 2023 20:02:57 -0700 (PDT)
-Received: from stoup.. ([2602:47:d490:6901:e306:567a:e0a1:341])
+ d=1e100.net; s=20221208; t=1691464162; x=1692068962;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=vdHjciNpGWdMbC3CCZ1sM6WJY5B+CxZfOCmfCfZO4vY=;
+ b=K/uKoaNEShPS/Hoa8LM4FY6z/gQOkovYsr8WaxXqAy8eSG1Jy/FgXK98Prx6ma8K1G
+ mWzUnapm6ASP7G3cEtC2cZCO5RKiWwFseEL62Wccafq0yJcG8cZuev3yuxyJp3Vs6ZtT
+ WNvNW+BUCswrUyDr5BsTWOy1VzgR8NDHB0TmdEub2C1wJmllO1mieHTqnyffdOSdlvPz
+ oMKpbJxxxIk4OM/oYN5DdxO9FnrDcqo92v3xj81dWv8CCROxaSNYqgdLHWhQTdKjpzE5
+ KQBSD+ZGfbaV2/E96DrXmgAVdZ0y7lLQ7YXncyofdiSsyuhxqEeCSaZUYtIr/I4ytdwc
+ sCKg==
+X-Gm-Message-State: AOJu0YxW3HkHSxfWQtmXAQr0sM8ZpddgaDfQrJmY4tLcDuxQUQ0PXDtz
+ aKqmd258J091pKqWvftL3Uk=
+X-Google-Smtp-Source: AGHT+IGFZVfHh+iBflDL23yvKpjwiomaF6o5XPLa71UCIELrMLc16Mi9kCr89g1nvdstTSIlHpl3GA==
+X-Received: by 2002:a05:6a00:130d:b0:675:8f71:28f1 with SMTP id
+ j13-20020a056a00130d00b006758f7128f1mr12227976pfu.30.1691464162390; 
+ Mon, 07 Aug 2023 20:09:22 -0700 (PDT)
+Received: from localhost (61-68-137-140.tpgi.com.au. [61.68.137.140])
  by smtp.gmail.com with ESMTPSA id
- r7-20020a62e407000000b006870c50efaesm6903609pfh.9.2023.08.07.20.02.57
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 07 Aug 2023 20:02:57 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: npiggin@gmail.com,
-	jniethe5@gmail.com,
-	qemu-ppc@nongnu.org
-Subject: [PATCH v2 7/7] tcg/ppc: Use prefixed instructions for tcg_out_goto_tb
-Date: Mon,  7 Aug 2023 20:02:50 -0700
-Message-Id: <20230808030250.50602-8-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230808030250.50602-1-richard.henderson@linaro.org>
-References: <20230808030250.50602-1-richard.henderson@linaro.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x436.google.com
+ s8-20020aa78d48000000b006873aa079aasm7126705pfe.171.2023.08.07.20.09.18
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 07 Aug 2023 20:09:22 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 08 Aug 2023 13:09:15 +1000
+Message-Id: <CUMU01SZ63FP.3B3F5NBPCVQT0@wheely>
+Cc: =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, "David Gibson"
+ <david@gibson.dropbear.id.au>, "Greg Kurz" <groug@kaod.org>, "Harsh Prateek
+ Bora" <harshpb@linux.ibm.com>, "Pavel Dovgalyuk"
+ <pavel.dovgaluk@ispras.ru>, "Paolo Bonzini" <pbonzini@redhat.com>,
+ <qemu-ppc@nongnu.org>, <qemu-devel@nongnu.org>
+Subject: Re: [PATCH 4/7] spapr: Fix record-replay machine reset consuming
+ too many events
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Nicholas Piggin" <npiggin@gmail.com>, "Pavel Dovgalyuk"
+ <pavel.dovgalyuk@ispras.ru>, "Daniel Henrique Barboza"
+ <danielhb413@gmail.com>
+X-Mailer: aerc 0.15.2
+References: <20230726183532.434380-1-npiggin@gmail.com>
+ <20230726183532.434380-5-npiggin@gmail.com>
+ <3be75aa3-780d-2d4d-a68c-1f8d1d000ee8@ispras.ru>
+ <CULFQXOOUWDB.3GMPJXRWAWSDW@wheely>
+In-Reply-To: <CULFQXOOUWDB.3GMPJXRWAWSDW@wheely>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -93,74 +100,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When a direct branch is out of range, we can load the destination for
-the indirect branch using PLA (for 16GB worth of buffer) and PLD from
-the TranslationBlock for everything larger.
+On Sun Aug 6, 2023 at 9:46 PM AEST, Nicholas Piggin wrote:
+> On Fri Aug 4, 2023 at 6:50 PM AEST, Pavel Dovgalyuk wrote:
+> > BTW, there is a function qemu_register_reset_nosnapshotload that can be=
+=20
+> > used in similar cases.
+> > Can you just use it without changing the code of the reset handler?
+>
+> I didn't know that, thanks for pointing it out. I'll take a closer look
+> at it before reposting.
 
-This means the patch affects exactly one instruction: B (plus filler),
-PLA or PLD.  Which means we can update and execute the patch atomically.
+Seems a bit tricky because the device tree has to be rebuilt at reset
+time (including snapshot load), but it uses the random number. So
+having a second nosnapshotload reset function might not be called in
+the correct order, I think?  For now I will keep it as is.
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- tcg/ppc/tcg-target.c.inc | 31 +++++++++++++++++++------------
- 1 file changed, 19 insertions(+), 12 deletions(-)
-
-diff --git a/tcg/ppc/tcg-target.c.inc b/tcg/ppc/tcg-target.c.inc
-index 63fe4ef995..b686a68247 100644
---- a/tcg/ppc/tcg-target.c.inc
-+++ b/tcg/ppc/tcg-target.c.inc
-@@ -2646,31 +2646,38 @@ static void tcg_out_goto_tb(TCGContext *s, int which)
-     uintptr_t ptr = get_jmp_target_addr(s, which);
- 
-     if (USE_REG_TB) {
-+        /*
-+         * With REG_TB, we must always use indirect branching,
-+         * so that the branch destination and TCG_REG_TB match.
-+         */
-         ptrdiff_t offset = tcg_tbrel_diff(s, (void *)ptr);
-         tcg_out_mem_long(s, LD, LDX, TCG_REG_TB, TCG_REG_TB, offset);
--    
--        /* TODO: Use direct branches when possible. */
--        set_jmp_insn_offset(s, which);
-         tcg_out32(s, MTSPR | RS(TCG_REG_TB) | CTR);
--
-         tcg_out32(s, BCCTR | BO_ALWAYS);
- 
-         /* For the unlinked case, need to reset TCG_REG_TB.  */
-         set_jmp_reset_offset(s, which);
-         tcg_out_mem_long(s, ADDI, ADD, TCG_REG_TB, TCG_REG_TB,
-                          -tcg_current_code_size(s));
--    } else {
--        /* Direct branch will be patched by tb_target_set_jmp_target. */
--        set_jmp_insn_offset(s, which);
--        tcg_out32(s, NOP);
-+        return;
-+    }
- 
--        /* When branch is out of range, fall through to indirect. */
-+    /* Direct branch will be patched by tb_target_set_jmp_target. */
-+    set_jmp_insn_offset(s, which);
-+    tcg_out32(s, NOP);
-+
-+    /* When branch is out of range, fall through to indirect. */
-+    if (have_isa_3_10) {
-+        ptrdiff_t offset = tcg_pcrel_diff_for_prefix(s, (void *)ptr);
-+        tcg_out_8ls_d(s, PLD, TCG_REG_TMP1, 0, offset, 1);
-+    } else {
-         tcg_out_movi(s, TCG_TYPE_PTR, TCG_REG_TMP1, ptr - (int16_t)ptr);
-         tcg_out_ld(s, TCG_TYPE_PTR, TCG_REG_TMP1, TCG_REG_TMP1, (int16_t)ptr);
--        tcg_out32(s, MTSPR | RS(TCG_REG_TMP1) | CTR);
--        tcg_out32(s, BCCTR | BO_ALWAYS);
--        set_jmp_reset_offset(s, which);
-     }
-+
-+    tcg_out32(s, MTSPR | RS(TCG_REG_TMP1) | CTR);
-+    tcg_out32(s, BCCTR | BO_ALWAYS);
-+    set_jmp_reset_offset(s, which);
- }
- 
- void tb_target_set_jmp_target(const TranslationBlock *tb, int n,
--- 
-2.34.1
-
+Thanks,
+Nick
 
