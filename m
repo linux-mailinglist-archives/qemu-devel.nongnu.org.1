@@ -2,75 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17B9C773AFF
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 17:33:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70AFF773B07
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 17:37:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTOhN-0001cs-5c; Tue, 08 Aug 2023 11:32:41 -0400
+	id 1qTOkx-0003Kg-DC; Tue, 08 Aug 2023 11:36:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qTOhL-0001ck-Ke
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 11:32:39 -0400
-Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qTOhK-00068A-5o
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 11:32:39 -0400
-Received: by mail-ej1-x631.google.com with SMTP id
- a640c23a62f3a-99c10ba30afso1455180966b.1
- for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 08:32:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691508756; x=1692113556;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=DIhEEooCxnnbnGmnG7N7p+eSATTWrrSJfDAdwagAaJ0=;
- b=ymg3YO3nCP+GB3/pK3UVqGwoe3LTq1Fx0dBkAifSIiskZXNkhXWlt76bcjwwZzSfRU
- w2/STZMEVVd+3w/VCD5gxv44lpH2NWztzn8/812pu44mr2m2LrGulItxfXhr7E5v6gSv
- Lda1um7VIaf5JLHK1pvdL9AX4FvWjMaho2wXZTowUWKWxsgxSro7eZGs+OdX86wR9Hsl
- 7mukqFuNosxCDZsmXiRFPjgiT3XjL6XUDzB0c2ZQ6Yfk911mOA7pahKA9JwBA1kmvIqB
- 4azesuoaghE7LnPBGwl0eB+30ASoW6Pt/EDmqvIq+Qqlfhzguq5D73rnuwYXYsKWPYHc
- wMbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691508756; x=1692113556;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=DIhEEooCxnnbnGmnG7N7p+eSATTWrrSJfDAdwagAaJ0=;
- b=lWwMAeZs/DIMZLXtRt0jN1j5uvHH81cPJvAftp8p2LQt4OWYZl5TcjpVd+KkIIExkc
- 9UOZoL9BvPUUdsuMJ08LdKU94YSrgdiziHvGUzQZYs7c9ScYmbub838aaA/9TtrADXQc
- jpEIzkKY774SEcvQRTi3yyuWSUyjsVFiqjL/Sx7USgdUhOPQ6aBkhZjWp46S32Vklz0c
- 9lJ6QgR0fwHQ9nVZvM4uCvBSNW3Div1M+tfb3XMI7qV1Q1RHa342jbA8HAp4YqsocYO3
- /DezgczLJFQ2U2eeTGPPcBkLJRMEoT4oU+NQ9bQ35Bq0X0TrL1EtGcJ5TNdDr+N7xNNV
- KWng==
-X-Gm-Message-State: AOJu0Yy5xMsBHXyk0k11Id83GnaEUIoSezyj8m4Vj7UbXeAttWfepq8y
- xO5460PauevckuSO5Ih7jprLuWWVMxcbGz2yn5fd1A==
-X-Google-Smtp-Source: AGHT+IH7btPvJ9lVrhJsXLqfApYgXH88SsEUdqjY3dvb2TbAyagzlszbt8o/3cOWwDo0xWy2JlNa3ZvR7Xuz8VduX30=
-X-Received: by 2002:a17:907:6096:b0:974:fb94:8067 with SMTP id
- ht22-20020a170907609600b00974fb948067mr12044962ejc.23.1691508756009; Tue, 08
- Aug 2023 08:32:36 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qTOkl-0003KH-A5
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 11:36:12 -0400
+Received: from mout.gmx.net ([212.227.15.15])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qTOke-00077M-N0
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 11:36:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
+ s=s31663417; t=1691508956; x=1692113756; i=deller@gmx.de;
+ bh=RAhv/mrRqCBHbzsVOB+w7YZEzQnYNQ4Cnr4B7hpFjXQ=;
+ h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+ b=habYe61+24Y0+2V7bgFuC3st4vyBWDKqEvW9Rshlzk6InCbXADC+R8lXyXY7CuH0BDmNwCe
+ ROD3bAuRZjEro2WP2tyN6FNj8WNS83cflZKHkGkqAEnaY2QhzCRk0mO6l6T84kyITFoMfTDEC
+ vz9fkgqBzSFxxMVTsqFr36CfAmLH2ZnUo94i6G55+HAWhKQskZ36hVmaJUecrp18eG5FYhrdl
+ kAJ9cj8ka7jwyqLpPrtAsokTVwlbbj7QF3ctvQELbA7y3oHknQpspDPoYIbLCKFx3luIcMMdL
+ zizvc2ainTTy6kStyzlqx+UtEoY22oG6ce8BOh+06lYwG6VsISLw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.60] ([94.134.144.175]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MCbIn-1qbtLL0cZH-009gp3; Tue, 08
+ Aug 2023 17:35:56 +0200
+Message-ID: <82e20337-af08-bfdf-21bd-71e5bcaad635@gmx.de>
+Date: Tue, 8 Aug 2023 17:35:55 +0200
 MIME-Version: 1.0
-References: <20230808152314.102036-1-akihiko.odaki@daynix.com>
-In-Reply-To: <20230808152314.102036-1-akihiko.odaki@daynix.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 8 Aug 2023 16:32:24 +0100
-Message-ID: <CAFEAcA_F2oSWVcwxLxYZxqgmE03n3c8+aD5_kS0L7LFW4ivTwQ@mail.gmail.com>
-Subject: Re: [PATCH] thunk: Delete checks for old host definitions
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, pbonzini@redhat.com,
- philmd@linaro.org, laurent@vivier.eu, deller@gmx.de, qemu-devel@nongnu.org, 
- Richard Henderson <richard.henderson@linaro.org>, Warner Losh <imp@bsdimp.com>,
- Kyle Evans <kevans@freebsd.org>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::631;
- envelope-from=peter.maydell@linaro.org; helo=mail-ej1-x631.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH for-8.1 v10 01/14] linux-user: Adjust task_unmapped_base
+ for reserved_va
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com, philmd@linaro.org, laurent@vivier.eu,
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+References: <20230807163705.9848-1-richard.henderson@linaro.org>
+ <20230807163705.9848-2-richard.henderson@linaro.org>
+From: Helge Deller <deller@gmx.de>
+In-Reply-To: <20230807163705.9848-2-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:UpcFCUowYdLjpXHQSiCprwXMmeVjjfRMpRC80Rao8twqvTszdXy
+ 4Z3fG6dhwmDX/mB3l/2eNNpBCLgIjR1lp02bhic6BNS8u6NBOoMz32jhaMI41/o9r44CI2h
+ 4NJGpWro3QXCdo7w/sxFlQVAp4iEqBVnXbMscfrqDlvsIKE+ThZTB9VtHVt1S3vsgtNQmQS
+ OTM32bH7Q9Ak+1VrFb8gA==
+UI-OutboundReport: notjunk:1;M01:P0:+yfL4ecIaUw=;tqvL921qnerD3NR1od9Uw5Zv/OF
+ FAu03gGvYfjYfda5rQj7KwDkRLYDnkj9UsJK2z4QNw+I9NoyChgn/Fm6Gr09uI2SzeefP9oWL
+ 4CdMKNAbrNfhJqw9bgGquRfGty06wMZq8qsMEoMT5e87cG3pJAYvh2s1o1siLctywMkY/7oEm
+ Ng1DVSpRCPYqB5HFyU8KmI40Vcl2QIFUvp0fKv5K/aMXM+iOvVrRSHUYITqDfIhN2jbOwjRrh
+ B7/j/3vfqLQkyArhV8ml82alv6i87A+B2WLdcqvqJqQIFvAt4hPDXFVGutMz4Wt7tesWA6YEd
+ whtB0nyT0ScsWssYM2oAc4sgT8MrmqM2SisGr9Wd37cMRUy6tq1o5q8D+2R52WASQIZlXI2Gg
+ vfWMZLkF2i6jeDOwf00XKZR1ttQNpdaaUQNciIBYuM3BN1LkELzcv8VrD2EOCpo9m/sa3YH5k
+ EFAL8DuI6DYnoPyM8p9WKrNiv3+3FKzE15E9JE3eZq607MBDXWhu4KBtkQqmZ4HFkeoO6l/P5
+ VkU0wjC6EXbi1k6C5XbIiMA1Vy2OqNpEbW55eCSmaVzhhhB3aLDOxZejaxGYG+N7Cl1XAdzfu
+ vWDDvT/8/CylvCHZjci1bQOz0qL0pZyA1+vuyH3/mLGGcfYC4pdGjmdhHmat8EyvgLlsB447x
+ I2PkYIb0Zfpnqag7zLT+OUIEPySV3SxDrUY2D9puqktSOFZSSy3/9P778AfAAOWY+zS8MDse7
+ ppo7Tnrui0eU9npF2R39qljlJHrQNYz4F9c4Hm8zjgQmRdZ5C1MtKvFUN7AZ9AXr/YnhyX5bC
+ 0MxewH8dZoHVE+Wqx+gemHe9qsheJbL5ATzHR2Hv8e0ooUvSZI6dZLdmBAXNNuNUYNcTTBISk
+ B3HA00T9iRT+cZdgnKBABAd85yP4rRpP0r/1eH+19Nu8v+HtLf7F+I9zdMemKBG9VSABxmwqV
+ tyKvF4cYf8DPL6s+lLFuaVFKGvE=
+Received-SPF: pass client-ip=212.227.15.15; envelope-from=deller@gmx.de;
+ helo=mout.gmx.net
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ NICE_REPLY_A=-4.14, RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -87,33 +90,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 8 Aug 2023 at 16:23, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
->
-> Alpha, IA-64, and PA-RISC hosts are no longer supported.
->
-> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> ---
->  include/exec/user/thunk.h | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
->
-> diff --git a/include/exec/user/thunk.h b/include/exec/user/thunk.h
-> index 300a840d58..d9c131ec80 100644
-> --- a/include/exec/user/thunk.h
-> +++ b/include/exec/user/thunk.h
-> @@ -111,8 +111,7 @@ static inline int thunk_type_size(const argtype *type_ptr, int is_host)
->          if (is_host) {
->  #if defined(HOST_X86_64)
->              return 8;
-> -#elif defined(HOST_ALPHA) || defined(HOST_IA64) || defined(HOST_MIPS) || \
-> -      defined(HOST_PARISC) || defined(HOST_SPARC64)
-> +#elif defined(HOST_MIPS) || defined(HOST_SPARC64)
->              return 4;
->  #elif defined(HOST_PPC)
->              return sizeof(void *);
-> --
+Hi Richard,
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+On 8/7/23 18:36, Richard Henderson wrote:
+> Ensure that the chosen values for mmap_next_start and
+> task_unmapped_base are within the guest address space.
+>
+> Tested-by: Helge Deller <deller@gmx.de>
+> Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
-thanks
--- PMM
+I've tested this whole series for quite some chroots.
+Good thing is, that all targets do run and can execute a static hello-worl=
+d
+program.
+So, overall that's good and I think the patch series should go in for 8.1.
+
+Looking at the target's memmap I do see non-optimal heap-addresses for arm=
+ and
+powerpc.
+I know it's not directly related to your patches, but we should later
+try to move the heap behind the executables where they can grow bigger.
+
+Helge
+
+armel-chroot  and armhf-chroot:
+Linux p100 6.4.6-200.fc38.x86_64 #1 SMP PREEMPT_DYNAMIC Mon Jul 24 20:51:1=
+2 UTC 2023 armv7l GNU/Linux
+00021000-00042000 rw-p 00000000 00:00 0                                  [=
+heap]
+00400000-00408000 r-xp 00000000 fd:00 801471                             /=
+usr/bin/cat
+00408000-0041f000 ---p 00000000 00:00 0
+0041f000-00420000 r--p 0000f000 fd:00 801471                             /=
+usr/bin/cat
+00420000-00421000 rw-p 00010000 fd:00 801471                             /=
+usr/bin/cat
+40000000-40001000 ---p 00000000 00:00 0
+40001000-40801000 rw-p 00000000 00:00 0                                  [=
+stack]
+40801000-40827000 r-xp 00000000 fd:00 839152                             /=
+usr/lib/arm-linux-gnueabi/ld-linux.so.3
+40827000-40828000 r--p 00026000 fd:00 839152                             /=
+usr/lib/arm-linux-gnueabi/ld-linux.so.3
+40828000-40829000 rw-p 00027000 fd:00 839152                             /=
+usr/lib/arm-linux-gnueabi/ld-linux.so.3
+...
+
+powerpc-chroot
+Linux p100 6.4.6-200.fc38.x86_64 #1 SMP PREEMPT_DYNAMIC Mon Jul 24 20:51:1=
+2 UTC 2023 ppc GNU/Linux
+00021000-00043000 rw-p 00000000 00:00 0                                  [=
+heap]
+001c0000-003d5000 r-xp 00000000 fd:00 577250                             /=
+usr/lib/powerpc-linux-gnu/libc.so.6
+003d5000-003eb000 ---p 00215000 fd:00 577250                             /=
+usr/lib/powerpc-linux-gnu/libc.so.6
+003eb000-003f0000 r--p 0021b000 fd:00 577250                             /=
+usr/lib/powerpc-linux-gnu/libc.so.6
+003f0000-003f1000 rw-p 00220000 fd:00 577250                             /=
+usr/lib/powerpc-linux-gnu/libc.so.6
+003f1000-003fb000 rw-p 00000000 00:00 0
+00400000-0040b000 r-xp 00000000 fd:00 535994                             /=
+usr/bin/cat
+0040b000-0041f000 ---p 00000000 00:00 0
+0041f000-00420000 r--p 0000f000 fd:00 535994                             /=
+usr/bin/cat
+00420000-00421000 rw-p 00010000 fd:00 535994                             /=
+usr/bin/cat
+40000000-40001000 ---p 00000000 00:00 0
+40001000-40801000 rw-p 00000000 00:00 0                                  [=
+stack]
+40801000-40834000 r-xp 00000000 fd:00 577246                             /=
+usr/lib/powerpc-linux-gnu/ld.so.1
+40834000-4084f000 ---p 00000000 00:00 0
+4084f000-40851000 r--p 0003e000 fd:00 577246                             /=
+usr/lib/powerpc-linux-gnu/ld.so.1
+40851000-40852000 rw-p 00040000 fd:00 577246                             /=
+usr/lib/powerpc-linux-gnu/ld.so.1
+40852000-40853000 r-xp 00000000 00:00 0
+40853000-40855000 rw-p 00000000 00:00 0
+
+
 
