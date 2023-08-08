@@ -2,83 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5029774035
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 19:00:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1266477405E
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 19:02:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTQ3x-0005Wg-3z; Tue, 08 Aug 2023 13:00:05 -0400
+	id 1qTQ5m-0006np-PU; Tue, 08 Aug 2023 13:01:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qTQ3v-0005Sr-5i
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 13:00:03 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ id 1qTQ5k-0006na-50
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 13:01:56 -0400
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qTQ3t-0000jj-DQ
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 13:00:02 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-3fe4b95c371so298585e9.1
- for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 10:00:00 -0700 (PDT)
+ id 1qTQ5g-0001JF-Kh
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 13:01:55 -0400
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-31771bb4869so5163242f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 10:01:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691513999; x=1692118799;
+ d=linaro.org; s=google; t=1691514110; x=1692118910;
  h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
  :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3MFiBipxaUdhi7mNeb+uDR2V5K0J4JyXZkDnkiUfUac=;
- b=WaLvl8+gVoIphjwBdfYsxuA1gKK+tOW228eFrrFASk0iPMIavpxKkkaIM75ohq4/w1
- L2Xbg+7wtmWF/Bknnh0wLgzlWlh+e3jhGenG7VwKoJ+7p638mqcr0BFsrLYv3PQN5acH
- ROIKr1d2gwgXOmOZNmamGE9KAKVa9UsYSGnBmdsOQ6Nq9BQMpdttiQCZlDgaqNafA6d8
- Q9ZT35ylhhm7XPzy9zVSUZRJUDFNQWumgzev+a0fNLc0KCtm84QSYfaCTt/2fbuBQ+Ye
- 56Rb1AZs0VKidw7a3PFjN8n0sXqmleFggefQu5tlB+XqL7c0QgBjVQ5gaXNf+GwPr0GP
- P3kQ==
+ bh=8sWzk+iqMQPwc27ifh0zhQTHTdP8jc9ACrpdnmO8nsw=;
+ b=FvCTHvdI2ThWlEoHvGK7mM9sf8lLGsyCXavFQSqDS987u5rhD3UV8X7YigJU6bpdB/
+ iSkG/XGzXoE6+HN3vumFl6BpWeqxWOHbr3UvFH5hMpmM70isLokZZaZUtpN79GFl7Oq4
+ lMz2cW6ZgwKAqmOOej+soziWc9EyVYma2nlZRjFGt6Sl62ZATkIKjQXaSdGTdAov5Cs7
+ tvsrTRJuhUGIx0klIaafE3+A23tY/vnhrjP6nv3MTvvlftTXQLQmOab+wCigFP4Mqgrx
+ sEtx0gOmB/93N03AbMIAfaO41tmkz+Of9clpHiJv80vBbDclNrU5uYBNml26UwrQ+qXH
+ 65aw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691513999; x=1692118799;
+ d=1e100.net; s=20221208; t=1691514110; x=1692118910;
  h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
  :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=3MFiBipxaUdhi7mNeb+uDR2V5K0J4JyXZkDnkiUfUac=;
- b=X2kXX5V+4dMBP55lDeixfHunfypLUpzA/jeVvnb1HBtdqx6JznJycKksN6lcfa6zpF
- YLSmsPyruWFGBgJS8/0k8DYWjX+oCuMYvuJL+4voVJvOkGHxZ5qAdGgz0HJFTrCpyhfD
- 7NY3NJbr8F56kw2o1mutZLN/c3SNzAqW/nwJ7p172ukdIi0+36jU5Xn2Zft3ou3gfHCP
- d+M6/vDFfixYl47mjgbnd77IxrR1al8pKFMX7laBXbTtDr3noWUTIT3KRdJqdlM0JBao
- Rq7L1dEJEFWt8WtY1WdQRv1N4NLFP+Qo8aKD8g16BGxFfdGCJPk/6w8f+vG110l6gOMy
- ChXA==
-X-Gm-Message-State: AOJu0YxBcM0cW5W27i67UVlZKULIgpjQGdL/ZNdCRmZze6SySQpesjLN
- uTDGPHTxZ22qYEptVfNuzuOCrA==
-X-Google-Smtp-Source: AGHT+IGnh8GlVPb6FwI1sIVMlzryt180wIUEVKyR7Rpq6GKgoLLeRK/bXuCb9yT/LhG1+A7j7IhITQ==
-X-Received: by 2002:a7b:c3d3:0:b0:3fe:1c10:8d04 with SMTP id
- t19-20020a7bc3d3000000b003fe1c108d04mr309084wmj.19.1691513999540; 
- Tue, 08 Aug 2023 09:59:59 -0700 (PDT)
+ bh=8sWzk+iqMQPwc27ifh0zhQTHTdP8jc9ACrpdnmO8nsw=;
+ b=H2WU0gHB5nW+Rrmyu5/B0xZCvfuH7XI1D1k1Z7XbS0N5+lRh7zducPGZd7xbrVLJkc
+ lU/vEbzFavn5Gykx/+O8qHJFfDD0naIv9Qq1RiBtvJINwMWDV5L21fMAmu5KmTDFfVZx
+ G5dIYFe1aXRn5IDl3VFOhr8qkPPF+YlUEDfYsTwWXXxE5L+9NpNiG6iL41DCX6kAkDDM
+ H2byvuWMgcbZjJNx2pBXZbCwtF4XWFTL+ICR/Dv+pYZeXs47OeEmMQbYcu6ohqwke/NK
+ EcwI0vELMuYc/cqZtC3EPwQ3BcnEYFNROV3KU7PPlbp2g1jPsLl8Nt1SHhgZBbt+BM3M
+ reJA==
+X-Gm-Message-State: AOJu0YxAsW5MPlrvpZ3K8evEvxk5HHoEijAtOmadFdtQ3WHkKs6bovaY
+ 0gW0ThbbAmc68zogOEJgJMbVhEgLJH/6Xc1ACFs=
+X-Google-Smtp-Source: AGHT+IFklKyeERlN1mT+m8XR+UovE4RmrqqxuYL9T3N++2SML7hd+MP9QNLHa/lSXsVsvWsA31OK7A==
+X-Received: by 2002:adf:e78d:0:b0:317:5b3b:89a1 with SMTP id
+ n13-20020adfe78d000000b003175b3b89a1mr64292wrm.10.1691514110568; 
+ Tue, 08 Aug 2023 10:01:50 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- k18-20020a7bc412000000b003fbbe41fd78sm14420298wmi.10.2023.08.08.09.59.59
+ s18-20020adfeb12000000b0031779a6b451sm14186033wrn.83.2023.08.08.10.01.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 08 Aug 2023 09:59:59 -0700 (PDT)
+ Tue, 08 Aug 2023 10:01:50 -0700 (PDT)
 Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id E373D1FFBB;
- Tue,  8 Aug 2023 17:59:58 +0100 (BST)
+ by zen.linaroharston (Postfix) with ESMTP id BBE6B1FFBB;
+ Tue,  8 Aug 2023 18:01:49 +0100 (BST)
 References: <20230807163705.9848-1-richard.henderson@linaro.org>
- <20230807163705.9848-2-richard.henderson@linaro.org>
- <87wmy599j3.fsf@linaro.org>
- <ce7a8180-bb8b-0693-c2c0-22fb378239f0@linaro.org>
 User-agent: mu4e 1.11.13; emacs 29.1.50
 From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: pbonzini@redhat.com, philmd@linaro.org, laurent@vivier.eu,
- deller@gmx.de, Akihiko Odaki <akihiko.odaki@daynix.com>,
- qemu-devel@nongnu.org
-Subject: Re: [PATCH for-8.1 v10 01/14] linux-user: Adjust task_unmapped_base
- for reserved_va
-Date: Tue, 08 Aug 2023 17:59:09 +0100
-In-reply-to: <ce7a8180-bb8b-0693-c2c0-22fb378239f0@linaro.org>
-Message-ID: <874jl979m9.fsf@linaro.org>
+ deller@gmx.de, qemu-devel@nongnu.org
+Subject: Re: [PATCH for-8.1 v10 00/14] linux-user: image mapping fixes
+Date: Tue, 08 Aug 2023 18:00:31 +0100
+In-reply-to: <20230807163705.9848-1-richard.henderson@linaro.org>
+Message-ID: <87zg315uyq.fsf@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,32 +99,97 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Richard Henderson <richard.henderson@linaro.org> writes:
 
-> On 8/8/23 02:10, Alex Benn=C3=A9e wrote:
->> One thing I'm slightly confused by is the ELF_ET_DYN_BASE can be above
->> this (or sometimes the same). Should the mapping of ELF segments be
->> handled with mmap_next_start? I assume once mmap_next_start meets the
->> mappings for the ELF segments we skip over until we get to more free
->> space after the program code?
+> This is the second half of
 >
-> ELF_ET_DYN_BASE is a hack imported from the kernel to put separation
-> between an ET_DYN main binary and TASK_UNMAPPED_BASE, so that the brk
-> can follow the binary and have space to grow.
-
-yeach :-/
-
+> https://patchew.org/QEMU/20230804220032.295411-1-richard.henderson@linaro=
+.org/
 >
-> All of this is part of the "legacy" memory layout, for which there is a p=
-ersonality flag.
+> which I held back because of regressions with s390x testing.
 >
-> For 8.2, I think we should work on implementing the "new" memory
-> layout, which places everything top-down.  But most importantly it
-> completely separates brk from the binary.
+> It turns out that patch 4, "Use MAP_FIXED_NOREPLACE for initial image mma=
+p"
+> actually triggered EEXIST, which meant that probe_guest_base did not
+> do its job to select unused host virtual memory.  It's a mystery why
+> we have not seen larger problems because of this.
+>
+> As I kept digging, I found quite a number of problems within
+> probe_guest_base and its subroutines.  I have rewritten it completely.
+> Hopefully it is much easier to understand in its new form.
+>
+> Testing this has been difficult, because it is most visible with
+> non-PIE executables, and most modern distros default to PIE, and
+> our current implementation of --disable-pie does not work.
 
-The QEMU brk? The guest will have one emulated for it?
+I should say:
+
+  [alex@aarch64:~/l/q/b/ci.all.linux.static] review/linux-user-mapping-v4|=
+=E2=80=A6 + retry.py -n 100 -c -- make check-tcg
+
+Gives:
+
+  Results summary:
+  0: 100 times (100.00%), avg time 150.644 (14.47 varience/3.80 deviation)
+  Ran command 100 times, 100 passes
+
+which I think has squashed an intermittent bug plaguing CI so have a:
+
+Tested-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+
+for the series.
+
 
 >
 >
 > r~
+>
+>
+> Helge Deller (1):
+>   linux-user: Adjust initial brk when interpreter is close to executable
+>
+> Richard Henderson (13):
+>   linux-user: Adjust task_unmapped_base for reserved_va
+>   linux-user: Define TASK_UNMAPPED_BASE in $guest/target_mman.h
+>   linux-user: Define ELF_ET_DYN_BASE in $guest/target_mman.h
+>   linux-user: Use MAP_FIXED_NOREPLACE for initial image mmap
+>   linux-user: Use elf_et_dyn_base for ET_DYN with interpreter
+>   linux-user: Do not adjust image mapping for host page size
+>   linux-user: Do not adjust zero_bss for host page size
+>   linux-user: Use zero_bss for PT_LOAD with no file contents too
+>   util/selfmap: Rewrite using qemu/interval-tree.h
+>   linux-user: Remove duplicate CPU_LOG_PAGE from probe_guest_base
+>   linux-user: Consolidate guest bounds check in probe_guest_base
+>   linux-user: Rewrite fixed probe_guest_base
+>   linux-user: Rewrite non-fixed probe_guest_base
+>
+>  include/qemu/selfmap.h               |  20 +-
+>  linux-user/aarch64/target_mman.h     |  13 +
+>  linux-user/alpha/target_mman.h       |  11 +
+>  linux-user/arm/target_mman.h         |  11 +
+>  linux-user/cris/target_mman.h        |  12 +
+>  linux-user/hexagon/target_mman.h     |  13 +
+>  linux-user/hppa/target_mman.h        |   6 +
+>  linux-user/i386/target_mman.h        |  16 +
+>  linux-user/loongarch64/target_mman.h |  11 +
+>  linux-user/m68k/target_mman.h        |   5 +
+>  linux-user/microblaze/target_mman.h  |  11 +
+>  linux-user/mips/target_mman.h        |  10 +
+>  linux-user/nios2/target_mman.h       |  10 +
+>  linux-user/openrisc/target_mman.h    |  10 +
+>  linux-user/ppc/target_mman.h         |  20 +
+>  linux-user/qemu.h                    |   1 -
+>  linux-user/riscv/target_mman.h       |  10 +
+>  linux-user/s390x/target_mman.h       |  20 +
+>  linux-user/sh4/target_mman.h         |   7 +
+>  linux-user/sparc/target_mman.h       |  25 +
+>  linux-user/user-mmap.h               |   5 +-
+>  linux-user/x86_64/target_mman.h      |  15 +
+>  linux-user/xtensa/target_mman.h      |  10 +
+>  linux-user/elfload.c                 | 788 +++++++++++++--------------
+>  linux-user/main.c                    |  43 ++
+>  linux-user/mmap.c                    |  19 +-
+>  linux-user/syscall.c                 |  15 +-
+>  util/selfmap.c                       | 114 ++--
+>  28 files changed, 777 insertions(+), 474 deletions(-)
 
 
 --=20
