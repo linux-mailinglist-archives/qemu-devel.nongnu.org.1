@@ -2,40 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75BA4773A32
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 14:40:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1847773A33
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 14:40:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTLzu-0001lA-C5; Tue, 08 Aug 2023 08:39:38 -0400
+	id 1qTM0P-00025F-4D; Tue, 08 Aug 2023 08:40:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qTLzs-0001l0-7z
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 08:39:36 -0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qTM0K-000236-Co
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 08:40:05 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qTLzq-0003yo-9J
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 08:39:35 -0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qTM0E-00044r-DS
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 08:40:00 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id A5A5719063;
- Tue,  8 Aug 2023 15:39:25 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 3CBFD19065;
+ Tue,  8 Aug 2023 15:40:00 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 560AF1C6D2;
- Tue,  8 Aug 2023 15:39:22 +0300 (MSK)
-Message-ID: <45b38c1c-ed04-6b0b-ea4e-0bb5dfea755d@tls.msk.ru>
-Date: Tue, 8 Aug 2023 15:39:22 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id E4F291C6D3;
+ Tue,  8 Aug 2023 15:39:56 +0300 (MSK)
+Message-ID: <5fca59cd-4995-fbd3-2c20-b0778b2e18c0@tls.msk.ru>
+Date: Tue, 8 Aug 2023 15:39:56 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.14.0
-Subject: Re: [PATCH v2 2/3] linux-user: cleanup unused linux-user/include/host
- directories
+Subject: Re: [PATCH v2 1/3] configure: fix detection for x32 linux-user
 Content-Language: en-US
 To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org, iii@linux.ibm.com
+Cc: peter.maydell@linaro.org, iii@linux.ibm.com,
+ Richard Henderson <richard.henderson@linaro.org>
 References: <20230808120303.585509-1-pbonzini@redhat.com>
- <20230808120303.585509-3-pbonzini@redhat.com>
+ <20230808120303.585509-2-pbonzini@redhat.com>
 From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <20230808120303.585509-3-pbonzini@redhat.com>
+In-Reply-To: <20230808120303.585509-2-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
@@ -62,34 +62,11 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 08.08.2023 15:03, Paolo Bonzini wrote:
-> Alpha and 31-bit s390 lack the assembly fragment to handle signals
-> occurring at the same time as system calls, so they cannot run
-> linux-user emulation anymore.  Drop the host-signal.h files for
-> them.
-> 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->   linux-user/include/host/alpha/host-signal.h |  55 --------
->   linux-user/include/host/s390/host-signal.h  | 138 -------------------
->   linux-user/include/host/s390x/host-signal.h | 139 +++++++++++++++++++-
->   3 files changed, 138 insertions(+), 194 deletions(-)
->   delete mode 100644 linux-user/include/host/alpha/host-signal.h
->   delete mode 100644 linux-user/include/host/s390/host-signal.h
-
-I think this cleanup can be postproned to after 8.1 release,
-while other 2 patches in this series are needed for 8.1 to
-fix current breakage with riscv.
-
-linux-user/include/host/s390/ subdir will be be effectively "orphaned"
-after the subsequent patch, just like alpha/ in there now, it can be
-cleaned up later just as well.
-
-But anyway,
+> x32 uses the same signal handling fragments as x86_64, since host_arch
+> is set to x86_64 when Meson runs.  Remove the unnecessary forwarder and
+> set the host_arch variable properly in configure.
 
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
-
-git format-patch should probably have a way to detect renames, no?
-Or does it not work if the target file did exist before the patch?
 
 /mjt
 
