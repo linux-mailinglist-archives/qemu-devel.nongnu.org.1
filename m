@@ -2,84 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 643DA7737E0
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 06:22:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CB75773801
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 07:45:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTEEN-0001d3-Ej; Tue, 08 Aug 2023 00:22:03 -0400
+	id 1qTFVM-00056f-Tw; Tue, 08 Aug 2023 01:43:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qTEE5-0001JQ-Q1; Tue, 08 Aug 2023 00:21:47 -0400
-Received: from mail-oo1-xc31.google.com ([2607:f8b0:4864:20::c31])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qTEE4-0007rq-5s; Tue, 08 Aug 2023 00:21:45 -0400
-Received: by mail-oo1-xc31.google.com with SMTP id
- 006d021491bc7-56c711a88e8so3477443eaf.2; 
- Mon, 07 Aug 2023 21:21:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1691468502; x=1692073302;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=2Jfr1QqEwPHm/0cW4fOVkjgbOw65i5uezh4p2+HDHZI=;
- b=YsJ3bJbM7+RAQ0J2QtR2MEsk6G1lUdNdwjuXa8m0wHqdKBVar2NCeSIWDX9vcU1glg
- yBo1lp+NAkaxyU0BS99jiWMd+VTSGqr6V39L8NzCdTg95lCB9Fm6kAchLTe3EKDMBRBM
- /JdD2baQfZSVSBnB+yFQYiaVvHY37RstOFWW4QWhooNbCwFvlL536BD4D6RgZaYLHGbf
- cRhBkNMfXeVLtulO6UK96oYPbceUKR/dItC8lmOGTM1q+nfs86NA2NdzXZWYZooNYqe0
- oJWVc359eC8MmgSOcTpgKz02di/apTpJJrWjbKzhQD71oUISRjiPrWWBXR4qiSyl6N1h
- J5og==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691468502; x=1692073302;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=2Jfr1QqEwPHm/0cW4fOVkjgbOw65i5uezh4p2+HDHZI=;
- b=IDK1nsihzwK5jMt3v+UPhPUGEPpSVghfrkVgF2CDpsut//3QDupS/A1eacrCTedSNR
- 6C9fANdFs1aNWRINfTn1bwBigqBUB2Mhdg8+a6BVaBrCrO/gL3T+t6X8baeS+8F6Z7f+
- CnYp25H4YNPiX7xqqTDGM0LhyOT3x6bApmNMrXs+OFO8cnhynQzvc2zqmMZpm86vzzxB
- bSui90MgR+lggc2BKfnWA+gJvlTAV3dDqYx7G0FhXkpMUtTiAjFMrha8D7CfGncMIrZs
- taPeJNKBsm7Ol/2LoD/nW06xgduIyXTzHNpOhBVgkQ5/24fBTBgbzkTZo6qF/lNDY8OG
- JTag==
-X-Gm-Message-State: AOJu0YyiY2br0tAhSj5TGXQWkGyVtABaU+JFE2tXWoSddgzyiT9Fi7pc
- O3ekV6yH60YFjyt+s3fsVFE=
-X-Google-Smtp-Source: AGHT+IEdsElLzT9blUAn29xmVZSXyFAjFTOKXiv5mT2it5pJrGDbuABbKHq5LAhny10QDfJwIXGbWg==
-X-Received: by 2002:a05:6358:9041:b0:135:4003:784a with SMTP id
- f1-20020a056358904100b001354003784amr9497659rwf.19.1691468502168; 
- Mon, 07 Aug 2023 21:21:42 -0700 (PDT)
-Received: from wheely.local0.net (61-68-137-140.tpgi.com.au. [61.68.137.140])
- by smtp.gmail.com with ESMTPSA id
- fk10-20020a056a003a8a00b0068718f6a035sm6979207pfb.33.2023.08.07.21.21.37
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 07 Aug 2023 21:21:41 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: Daniel Henrique Barboza <danielhb413@gmail.com>
-Cc: Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-ppc@nongnu.org,
- qemu-devel@nongnu.org, Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
-Subject: [PATCH v2 19/19] tests/avocado: ppc64 reverse debugging tests for
- pseries and powernv
-Date: Tue,  8 Aug 2023 14:20:01 +1000
-Message-Id: <20230808042001.411094-20-npiggin@gmail.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230808042001.411094-1-npiggin@gmail.com>
-References: <20230808042001.411094-1-npiggin@gmail.com>
+ (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qTFVI-00053Q-CT
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 01:43:36 -0400
+Received: from hognose1.porkbun.com ([35.82.102.206])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qTFVG-0003qK-Js
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 01:43:35 -0400
+Received: from cslab-raptor.. (unknown [166.111.226.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Client did not present a certificate)
+ (Authenticated sender: c@jia.je)
+ by hognose1.porkbun.com (Postfix) with ESMTPSA id C7EDD43E34;
+ Tue,  8 Aug 2023 05:43:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jia.je; s=default;
+ t=1691473412; bh=RhvYQMAhwfqQwXvHRfnnmFB8gjdsLVfep/cj+pEIKQM=;
+ h=From:To:Cc:Subject:Date;
+ b=YFOlbeEAoMTaFE7H4KzUZ/Ud8P0jYv5q3+LosSLQJ9CWo4tePnTV+VHk1LsHKDNq3
+ Z/ABVfVS9rZvSmfWkJHeMHhHK89HiLh8JBPp46A8KUNX20uFZ3hI6VMzVEjTegHW/c
+ CoYQbREhwpj5c6Q1a8sQXcypIOSXHP0RDgLT8ue0=
+From: Jiajie Chen <c@jia.je>
+To: qemu-devel@nongnu.org
+Cc: Jiajie Chen <c@jia.je>, Xiaojuan Yang <yangxiaojuan@loongson.cn>,
+ Song Gao <gaosong@loongson.cn>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH] target/loongarch: Split fcc register to fcc0-7 in gdbstub
+Date: Tue,  8 Aug 2023 13:42:47 +0800
+Message-ID: <20230808054315.3391465-1-c@jia.je>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c31;
- envelope-from=npiggin@gmail.com; helo=mail-oo1-xc31.google.com
+Received-SPF: pass client-ip=35.82.102.206; envelope-from=c@jia.je;
+ helo=hognose1.porkbun.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,53 +63,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These machines run reverse-debugging well enough to pass basic tests.
-Wire them up.
+Since GDB 13.1(GDB commit ea3352172), GDB LoongArch changed to use
+fcc0-7 instead of fcc register. This commit partially reverts commit
+2f149c759 (`target/loongarch: Update gdb_set_fpu() and gdb_get_fpu()`)
+to match the behavior of GDB.
 
-Reviewed-by: Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Note that it is a breaking change for GDB 13.0 or earlier, but it is
+also required for GDB 13.1 or later to work.
+
+Signed-off-by: Jiajie Chen <c@jia.je>
 ---
- tests/avocado/reverse_debugging.py | 29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+ gdb-xml/loongarch-fpu.xml  |  9 ++++++++-
+ target/loongarch/gdbstub.c | 16 +++++++---------
+ 2 files changed, 15 insertions(+), 10 deletions(-)
 
-diff --git a/tests/avocado/reverse_debugging.py b/tests/avocado/reverse_debugging.py
-index 7d1a478df1..fc47874eda 100644
---- a/tests/avocado/reverse_debugging.py
-+++ b/tests/avocado/reverse_debugging.py
-@@ -233,3 +233,32 @@ def test_aarch64_virt(self):
- 
-         self.reverse_debugging(
-             args=('-kernel', kernel_path))
-+
-+class ReverseDebugging_ppc64(ReverseDebugging):
-+    """
-+    :avocado: tags=accel:tcg
-+    """
-+
-+    REG_PC = 0x40
-+
-+    # unidentified gitlab timeout problem
-+    @skipIf(os.getenv('GITLAB_CI'), 'Running on GitLab')
-+    def test_ppc64_pseries(self):
-+        """
-+        :avocado: tags=arch:ppc64
-+        :avocado: tags=machine:pseries
-+        """
-+        # SLOF branches back to its entry point, which causes this test
-+        # to take the 'hit a breakpoint again' path. That's not a problem,
-+        # just slightly different than the other machines.
-+        self.endian_is_le = False
-+        self.reverse_debugging()
-+
-+    @skipIf(os.getenv('GITLAB_CI'), 'Running on GitLab')
-+    def test_ppc64_powernv(self):
-+        """
-+        :avocado: tags=arch:ppc64
-+        :avocado: tags=machine:powernv
-+        """
-+        self.endian_is_le = False
-+        self.reverse_debugging()
+diff --git a/gdb-xml/loongarch-fpu.xml b/gdb-xml/loongarch-fpu.xml
+index 78e42cf5dd..e81e3382e7 100644
+--- a/gdb-xml/loongarch-fpu.xml
++++ b/gdb-xml/loongarch-fpu.xml
+@@ -45,6 +45,13 @@
+   <reg name="f29" bitsize="64" type="fputype" group="float"/>
+   <reg name="f30" bitsize="64" type="fputype" group="float"/>
+   <reg name="f31" bitsize="64" type="fputype" group="float"/>
+-  <reg name="fcc" bitsize="64" type="uint64" group="float"/>
++  <reg name="fcc0" bitsize="8" type="uint8" group="float"/>
++  <reg name="fcc1" bitsize="8" type="uint8" group="float"/>
++  <reg name="fcc2" bitsize="8" type="uint8" group="float"/>
++  <reg name="fcc3" bitsize="8" type="uint8" group="float"/>
++  <reg name="fcc4" bitsize="8" type="uint8" group="float"/>
++  <reg name="fcc5" bitsize="8" type="uint8" group="float"/>
++  <reg name="fcc6" bitsize="8" type="uint8" group="float"/>
++  <reg name="fcc7" bitsize="8" type="uint8" group="float"/>
+   <reg name="fcsr" bitsize="32" type="uint32" group="float"/>
+ </feature>
+diff --git a/target/loongarch/gdbstub.c b/target/loongarch/gdbstub.c
+index 0752fff924..15ad6778f1 100644
+--- a/target/loongarch/gdbstub.c
++++ b/target/loongarch/gdbstub.c
+@@ -70,10 +70,9 @@ static int loongarch_gdb_get_fpu(CPULoongArchState *env,
+ {
+     if (0 <= n && n < 32) {
+         return gdb_get_reg64(mem_buf, env->fpr[n].vreg.D(0));
+-    } else if (n == 32) {
+-        uint64_t val = read_fcc(env);
+-        return gdb_get_reg64(mem_buf, val);
+-    } else if (n == 33) {
++    } else if (32 <= n && n < 40) {
++        return gdb_get_reg8(mem_buf, env->cf[n - 32]);
++    } else if (n == 40) {
+         return gdb_get_reg32(mem_buf, env->fcsr0);
+     }
+     return 0;
+@@ -87,11 +86,10 @@ static int loongarch_gdb_set_fpu(CPULoongArchState *env,
+     if (0 <= n && n < 32) {
+         env->fpr[n].vreg.D(0) = ldq_p(mem_buf);
+         length = 8;
+-    } else if (n == 32) {
+-        uint64_t val = ldq_p(mem_buf);
+-        write_fcc(env, val);
+-        length = 8;
+-    } else if (n == 33) {
++    } else if (32 <= n && n < 40) {
++        env->cf[n - 32] = ldub_p(mem_buf);
++        length = 1;
++    } else if (n == 40) {
+         env->fcsr0 = ldl_p(mem_buf);
+         length = 4;
+     }
 -- 
-2.40.1
+2.41.0
 
 
