@@ -2,80 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 725D4774010
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 18:59:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5029774035
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 19:00:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTQ2b-0004H6-Hq; Tue, 08 Aug 2023 12:58:41 -0400
+	id 1qTQ3x-0005Wg-3z; Tue, 08 Aug 2023 13:00:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qTQ2X-0004ED-E6
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 12:58:38 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ id 1qTQ3v-0005Sr-5i
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 13:00:03 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qTQ2V-0000aQ-Fb
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 12:58:36 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-3fe2d218eedso50628875e9.0
- for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 09:58:34 -0700 (PDT)
+ id 1qTQ3t-0000jj-DQ
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 13:00:02 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-3fe4b95c371so298585e9.1
+ for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 10:00:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691513912; x=1692118712;
+ d=linaro.org; s=google; t=1691513999; x=1692118799;
  h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
  :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
  :message-id:reply-to;
- bh=JdmeWIqCFc0bznABJFouRqL3B5cOjPEycZos54Pgr3g=;
- b=bAoan8qeTUxKuxoyohVPvsgic1xqILXelxx3eWiRzgSWtAKQ/iey75F/TMVbRDttEf
- Jgh10+grN6XAHig5Ou2uRqpXTAZoN1rZOdTFhcDdddtDlNIl060oKLO4Kd3r+9+THuGY
- 4//TwaR8S23v2m9bmtUhn2issySHYm4N/bOKnmV3oBtANuipbd+vSt6mS7lfwGY8UY7z
- aQZTEM12rWvsx8izS6O7HK1eO2n6nLweyNMsROCR3LS1SFDCFi5AbbL8pEwBBogQ+CyT
- ZKoGDTRMVzKLFFwGEMEJLj0jeuAjI1aQYtj2xi1GxCBP0t6Si+uCzinpnrj4WVufFSwA
- Lp3Q==
+ bh=3MFiBipxaUdhi7mNeb+uDR2V5K0J4JyXZkDnkiUfUac=;
+ b=WaLvl8+gVoIphjwBdfYsxuA1gKK+tOW228eFrrFASk0iPMIavpxKkkaIM75ohq4/w1
+ L2Xbg+7wtmWF/Bknnh0wLgzlWlh+e3jhGenG7VwKoJ+7p638mqcr0BFsrLYv3PQN5acH
+ ROIKr1d2gwgXOmOZNmamGE9KAKVa9UsYSGnBmdsOQ6Nq9BQMpdttiQCZlDgaqNafA6d8
+ Q9ZT35ylhhm7XPzy9zVSUZRJUDFNQWumgzev+a0fNLc0KCtm84QSYfaCTt/2fbuBQ+Ye
+ 56Rb1AZs0VKidw7a3PFjN8n0sXqmleFggefQu5tlB+XqL7c0QgBjVQ5gaXNf+GwPr0GP
+ P3kQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691513912; x=1692118712;
+ d=1e100.net; s=20221208; t=1691513999; x=1692118799;
  h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
  :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=JdmeWIqCFc0bznABJFouRqL3B5cOjPEycZos54Pgr3g=;
- b=cntlivRELQx1NczBbIyVjvMed4POu1S0uoTG8GniQMDDUwgLMgzcOs735hRHbidYym
- CCz8yGcGSRlxOMYH/2NYMTYWEjFzS1EHY03QbauEvEWrXss7sUV8bUqfQzbSJHR7Ub0Y
- Ykhgd6Dq7JAQvf2e21ux/8i7IWS60aKcl+6MbkGhwdsyOmseT1/s38kJPmwsp92VYaxn
- L4QRUAIYvZ7I5YysOHzQJHz/FgTtYbbVWqyxV8Rml6acntnZ1sWY14GgnUEZDFBBjef3
- ykKp8SobxlclP5+XWJPJZsnQhzpVwVxLdbEidYH4WbnbSKfHoyL05OixQo5+UzSo461R
- RdnQ==
-X-Gm-Message-State: AOJu0YxR3veay2P42kN9SB+tVh4LFh2dWLLgH/4EligCIHcq5DT4ckQt
- 1Uy3E9Dgn2Ts/Nw2uTAcc1fE6A==
-X-Google-Smtp-Source: AGHT+IGToa07DXeWaXt8CYzAt/hYLU3CcTLZEEpEAS4R/e/C9AVsjdN9OfcbD5CYKNgkBOsPlNEUWQ==
-X-Received: by 2002:a7b:cb4d:0:b0:3fb:a62d:1992 with SMTP id
- v13-20020a7bcb4d000000b003fba62d1992mr337171wmj.0.1691513911761; 
- Tue, 08 Aug 2023 09:58:31 -0700 (PDT)
+ bh=3MFiBipxaUdhi7mNeb+uDR2V5K0J4JyXZkDnkiUfUac=;
+ b=X2kXX5V+4dMBP55lDeixfHunfypLUpzA/jeVvnb1HBtdqx6JznJycKksN6lcfa6zpF
+ YLSmsPyruWFGBgJS8/0k8DYWjX+oCuMYvuJL+4voVJvOkGHxZ5qAdGgz0HJFTrCpyhfD
+ 7NY3NJbr8F56kw2o1mutZLN/c3SNzAqW/nwJ7p172ukdIi0+36jU5Xn2Zft3ou3gfHCP
+ d+M6/vDFfixYl47mjgbnd77IxrR1al8pKFMX7laBXbTtDr3noWUTIT3KRdJqdlM0JBao
+ Rq7L1dEJEFWt8WtY1WdQRv1N4NLFP+Qo8aKD8g16BGxFfdGCJPk/6w8f+vG110l6gOMy
+ ChXA==
+X-Gm-Message-State: AOJu0YxBcM0cW5W27i67UVlZKULIgpjQGdL/ZNdCRmZze6SySQpesjLN
+ uTDGPHTxZ22qYEptVfNuzuOCrA==
+X-Google-Smtp-Source: AGHT+IGnh8GlVPb6FwI1sIVMlzryt180wIUEVKyR7Rpq6GKgoLLeRK/bXuCb9yT/LhG1+A7j7IhITQ==
+X-Received: by 2002:a7b:c3d3:0:b0:3fe:1c10:8d04 with SMTP id
+ t19-20020a7bc3d3000000b003fe1c108d04mr309084wmj.19.1691513999540; 
+ Tue, 08 Aug 2023 09:59:59 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- x15-20020a05600c21cf00b003fe577eb8cbsm8923481wmj.44.2023.08.08.09.58.31
+ k18-20020a7bc412000000b003fbbe41fd78sm14420298wmi.10.2023.08.08.09.59.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 08 Aug 2023 09:58:31 -0700 (PDT)
+ Tue, 08 Aug 2023 09:59:59 -0700 (PDT)
 Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 111811FFBB;
- Tue,  8 Aug 2023 17:58:31 +0100 (BST)
+ by zen.linaroharston (Postfix) with ESMTP id E373D1FFBB;
+ Tue,  8 Aug 2023 17:59:58 +0100 (BST)
 References: <20230807163705.9848-1-richard.henderson@linaro.org>
- <20230807163705.9848-15-richard.henderson@linaro.org>
+ <20230807163705.9848-2-richard.henderson@linaro.org>
+ <87wmy599j3.fsf@linaro.org>
+ <ce7a8180-bb8b-0693-c2c0-22fb378239f0@linaro.org>
 User-agent: mu4e 1.11.13; emacs 29.1.50
 From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: pbonzini@redhat.com, philmd@linaro.org, laurent@vivier.eu,
- deller@gmx.de, qemu-devel@nongnu.org
-Subject: Re: [PATCH for-8.1 v10 14/14] linux-user: Rewrite non-fixed
- probe_guest_base
-Date: Tue, 08 Aug 2023 17:58:24 +0100
-In-reply-to: <20230807163705.9848-15-richard.henderson@linaro.org>
-Message-ID: <878ral79oo.fsf@linaro.org>
+ deller@gmx.de, Akihiko Odaki <akihiko.odaki@daynix.com>,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH for-8.1 v10 01/14] linux-user: Adjust task_unmapped_base
+ for reserved_va
+Date: Tue, 08 Aug 2023 17:59:09 +0100
+In-reply-to: <ce7a8180-bb8b-0693-c2c0-22fb378239f0@linaro.org>
+Message-ID: <874jl979m9.fsf@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,24 +104,33 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Richard Henderson <richard.henderson@linaro.org> writes:
 
-> Use pgb_addr_set to probe for all of the guest addresses,
-> not just the main executable.  Handle the identity map
-> specially and separately from the search.
+> On 8/8/23 02:10, Alex Benn=C3=A9e wrote:
+>> One thing I'm slightly confused by is the ELF_ET_DYN_BASE can be above
+>> this (or sometimes the same). Should the mapping of ELF segments be
+>> handled with mmap_next_start? I assume once mmap_next_start meets the
+>> mappings for the ELF segments we skip over until we get to more free
+>> space after the program code?
 >
-> If /proc/self/maps is available, utilize the full power
-> of the interval tree search, rather than a linear search
-> through the address list.
->
-> If /proc/self/maps is not available, increase the skip
-> between probes so that we do not probe every single page
-> of the host address space.  Choose 1 MiB for 32-bit hosts
-> (max 4k probes) and 1 GiB for 64-bit hosts (possibly a
-> large number of probes, but the large step makes it more
-> likely to find empty space quicker).
->
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ELF_ET_DYN_BASE is a hack imported from the kernel to put separation
+> between an ET_DYN main binary and TASK_UNMAPPED_BASE, so that the brk
+> can follow the binary and have space to grow.
 
-Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+yeach :-/
+
+>
+> All of this is part of the "legacy" memory layout, for which there is a p=
+ersonality flag.
+>
+> For 8.2, I think we should work on implementing the "new" memory
+> layout, which places everything top-down.  But most importantly it
+> completely separates brk from the binary.
+
+The QEMU brk? The guest will have one emulated for it?
+
+>
+>
+> r~
+
 
 --=20
 Alex Benn=C3=A9e
