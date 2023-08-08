@@ -2,87 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39C9F773C67
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 18:05:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BB30773D8D
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 18:20:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTPCS-0002Xx-SY; Tue, 08 Aug 2023 12:04:48 -0400
+	id 1qTPQu-0008NQ-UT; Tue, 08 Aug 2023 12:19:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTPCI-0002Tc-HD
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 12:04:38 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ id 1qTPQt-0008NG-PE
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 12:19:43 -0400
+Received: from mail-ot1-x32c.google.com ([2607:f8b0:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTPCG-0005w3-Id
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 12:04:38 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-68783004143so4200783b3a.2
- for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 09:04:33 -0700 (PDT)
+ id 1qTPQs-0000Lx-7U
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 12:19:43 -0400
+Received: by mail-ot1-x32c.google.com with SMTP id
+ 46e09a7af769-6bb07d274feso4813960a34.0
+ for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 09:19:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691510672; x=1692115472;
+ d=linaro.org; s=google; t=1691511580; x=1692116380;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=w4MXxugO4lsDbRuMeAk6J+79QpXfOwfDex5Oq3uNbBQ=;
- b=ftm+pQvC8jW22VQn3Yjn2cUWayhMJxCCk/YIQqnTrri7bMV6ntcUm1ws5oV2RCOJFd
- y/JOT/R3s+ebPGoTIwfGoNzkEEEkzrfNGiBgg/4ytEtf8ax//Wb/4Irr2y7Py0JYxM5v
- d7KlTykaNCKLIQhYdAzhK2po/6gzv3TfBLdL0azQRpdsbgibrsaslUpDeVUvaTmAC1qN
- 2/1CsURoK4xTL0/YqqeVRYE17mlBmvG5w+yBgOIyNOYKlq/Kc96TmiBKKCJwSRkSaVcX
- jiORclbORjYxJx1AjrxwCs96nOYz7VD1hEUjK28UktMiXAFLJbaGwetLeAI0p4WpkyQr
- HdMw==
+ bh=XLxI88kupIfF5026EpHO5X5CPbabn679+iE3oLJa5Bc=;
+ b=OwBw3mlarRVQy3nfAX+tn18MYFBmOFaiaj2alnGqny8wW++ATBElXcuZPnaPWBJiBY
+ Qymhs+yATtadGangvjbIhzJZSIR6SRWq1UddB0BHjawtKiL1UYS+0VWWxsxrFOUkr/Hd
+ g/gruewmf5GMr2uwsAHm9z9XEr/ehahSt4afprLWpo0cFX0XvSC3zlp5o9IpuNYXNepY
+ ZnAig0Zoff6FzP/mvkV85SXsDWOt/KUKYJ0lEhTvq0vqW4p1dZPpYZp9s3NZ1dvW3Tz9
+ 6FR+iU9F/d6oII6WbWkfJmlrh0M6DEHziZTvFaB8p32myIUIEnHBpqfFi/WV/apbXBzT
+ opvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691510672; x=1692115472;
+ d=1e100.net; s=20221208; t=1691511580; x=1692116380;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=w4MXxugO4lsDbRuMeAk6J+79QpXfOwfDex5Oq3uNbBQ=;
- b=gA1PiXoIhSPMCdV3spAj6ErHtZSUujJX/s+q5IUblEmCWrmIpY2nYcywJBWXvklEex
- U/QIW/6BGB2p2iCfsiNIRzO/4MPdVkXq1NxowLuBzkZsM5wsw87GMRN+BW50P+DtBf52
- 2p1jd7bYk2gKtRcevlQ2XUuh+bONAnNVnJmrSBNuRYEy7XGbSeywxju1+17lEMo1M3Mu
- 6AEpwvPfrAkiMjly4jz6GAU5mOtiaxtR1sCQCJ+HTV+1iTuLyp+c5N3RmnRpK5Hc9aft
- 1BIwanf/x2Y/MoRF83+LYfF0KmEL2b0zCKIHZ8+CGqKHYk1owAgoaEGj0FR297Mr+pC+
- 39gA==
-X-Gm-Message-State: AOJu0YyzfcewEpkjZJTUzsf5eLvO5WrUGWhPQFdUUfgDryQ7hAtNr16s
- lp2JcLy9fWqi6UkN+94H+UZI5w==
-X-Google-Smtp-Source: AGHT+IG3a4DMGhDAyiTWKT3n3NQU4zZE3w0Nw2r9dfKS6/nWp+HS7cLAK4cIfAK5dQ2evcE7Tpjlxg==
-X-Received: by 2002:a05:6a20:3d84:b0:138:60e:9c4 with SMTP id
- s4-20020a056a203d8400b00138060e09c4mr13249563pzi.23.1691510672480; 
- Tue, 08 Aug 2023 09:04:32 -0700 (PDT)
+ bh=XLxI88kupIfF5026EpHO5X5CPbabn679+iE3oLJa5Bc=;
+ b=MchTfjgI5BcJcKTljYhmzfjktLLxwxCln18t7wkZqumSFD3Xy9FLuYz1zzf/i31dml
+ ZE9PCrL079bfoRj7MLNawJoR9WVdjHERjqnUDmoz00nIvp4ifxKDudGA8iCqmnhaOKRy
+ GpxxxMWhvTW4fuQsGVQaWiCZDqw8z7F8X/ZXXi4X1cP4EJVXBFU95cAT/4f3hPKh0ZLH
+ FJrSRikVJ/kSSBDT5t/OqukFgD+RNzehHU3td1NzUqb9s1LMxr+nTlXaiNdeHSXPdqml
+ 0aLlKd/3xk+dni19v7onTGg1t5iYrMSKRmkVMXhmORXZ43z5+QQHcUpYuaRW8qeWZvoA
+ zYTA==
+X-Gm-Message-State: AOJu0YwKrntObCp5cy5XlrGyCmIXxqdbQOdGIL9tLCpGqoTH0SvLbzZi
+ W3ntnEeE2vv3zEaEALSjFAZ5Eg==
+X-Google-Smtp-Source: AGHT+IGDjdmgGClgoCrWdfthwmNNO9iyN1OmLjVkG5IiwjOEkdw8+wX/3/ALhqAHfiS8DnVNyDzRCw==
+X-Received: by 2002:a05:6808:5d1:b0:3a7:b094:8f2 with SMTP id
+ d17-20020a05680805d100b003a7b09408f2mr181328oij.45.1691511580358; 
+ Tue, 08 Aug 2023 09:19:40 -0700 (PDT)
 Received: from ?IPV6:2602:47:d490:6901:63dc:2a47:f4bc:4a95?
  ([2602:47:d490:6901:63dc:2a47:f4bc:4a95])
  by smtp.gmail.com with ESMTPSA id
- b14-20020aa7870e000000b00687790191a2sm8270302pfo.58.2023.08.08.09.04.31
+ h11-20020a63574b000000b005633311c70dsm6792366pgm.32.2023.08.08.09.19.39
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 08 Aug 2023 09:04:32 -0700 (PDT)
-Message-ID: <2f65a947-cad1-b292-51f8-5af58596d7d7@linaro.org>
-Date: Tue, 8 Aug 2023 09:04:30 -0700
+ Tue, 08 Aug 2023 09:19:39 -0700 (PDT)
+Message-ID: <af38a30d-e91c-2354-812b-c1938487424f@linaro.org>
+Date: Tue, 8 Aug 2023 09:19:38 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH 02/24] tcg: Use tcg_gen_negsetcond_*
+Subject: Re: [PATCH for-8.1] linux-user: Define real MAP_FIXED_NOREPLACE value
 Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
- qemu-riscv@nongnu.org, qemu-s390x@nongnu.org
-References: <20230808031143.50925-1-richard.henderson@linaro.org>
- <20230808031143.50925-3-richard.henderson@linaro.org>
- <CAFEAcA8ORUejjC3iVdjYSkX1St6ntxXbDPtTC0tuv5C_5rQ8xQ@mail.gmail.com>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ pbonzini@redhat.com, philmd@linaro.org, laurent@vivier.eu, deller@gmx.de,
+ qemu-devel@nongnu.org
+References: <20230808115242.73025-1-akihiko.odaki@daynix.com>
+ <637ce4c6-9ac6-0bb2-aedb-632f79777902@linaro.org>
+ <5e416a73-365e-407d-98fa-3b48be20045d@daynix.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <CAFEAcA8ORUejjC3iVdjYSkX1St6ntxXbDPtTC0tuv5C_5rQ8xQ@mail.gmail.com>
+In-Reply-To: <5e416a73-365e-407d-98fa-3b48be20045d@daynix.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
-X-Spam_score_int: -36
-X-Spam_score: -3.7
-X-Spam_bar: ---
-X-Spam_report: (-3.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32c.google.com
+X-Spam_score_int: -61
+X-Spam_score: -6.2
+X-Spam_bar: ------
+X-Spam_report: (-6.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-4.14,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- SUSPICIOUS_RECIPS=2.51 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,38 +99,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/8/23 08:55, Peter Maydell wrote:
-> On Tue, 8 Aug 2023 at 04:13, Richard Henderson
-> <richard.henderson@linaro.org> wrote:
->>
->> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
->> ---
->>   tcg/tcg-op-gvec.c | 6 ++----
->>   tcg/tcg-op.c      | 6 ++----
->>   2 files changed, 4 insertions(+), 8 deletions(-)
->>
->> diff --git a/tcg/tcg-op-gvec.c b/tcg/tcg-op-gvec.c
->> index a062239804..e260a07c61 100644
->> --- a/tcg/tcg-op-gvec.c
->> +++ b/tcg/tcg-op-gvec.c
->> @@ -3692,8 +3692,7 @@ static void expand_cmp_i32(uint32_t dofs, uint32_t aofs, uint32_t bofs,
->>       for (i = 0; i < oprsz; i += 4) {
->>           tcg_gen_ld_i32(t0, cpu_env, aofs + i);
->>           tcg_gen_ld_i32(t1, cpu_env, bofs + i);
->> -        tcg_gen_setcond_i32(cond, t0, t0, t1);
->> -        tcg_gen_neg_i32(t0, t0);
->> +        tcg_gen_negsetcond_i32(cond, t0, t0, t1);
->>           tcg_gen_st_i32(t0, cpu_env, dofs + i);
->>       }
+On 8/8/23 08:16, Akihiko Odaki wrote:
+>> Which supported hosts do not define this value?  Can we simply remove the fallback?
 > 
-> Is it not possible for the optimizer to notice "you did
-> a setcond followed by a neg, let me turn it into negsetcond
-> for you" ?
+> glibc didn't have this defined until 2.28. The older releases still maintained are 2.26, 
+> and 2.27, according to:
+> https://sourceware.org/glibc/wiki/Release
 
-Not at present, no.  That sort of peephole optimization is a bit more difficult than what 
-we do at present.
+Thanks for digging into glibc versions.
+
+> The page says ALT Linux p9 and Ubuntu 18.04 LTS (Bionic Beaver) has glibc 2.27.
+
+QEMU says
+
+# Support for the previous major version will be dropped 2 years
+# after the new major version is released or when the vendor itself
+# drops support, whichever comes first.
+
+Ubuntu 22.04 is the current major version, so 20.04 is still supported until 2024, but 
+18.04 is unsupported.
+
+Similarly, ALT 10.0 was released in 2021, so ALT 9 is now unsupported.
+
+I have just run a patch to remove the fallback through gitlab CI and it has passed:
+
+https://gitlab.com/rth7680/qemu/-/pipelines/959680899/
 
 
 r~
-
 
