@@ -2,106 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8349177382D
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 08:28:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52E3D77382F
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 08:29:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTGBy-0004UN-HS; Tue, 08 Aug 2023 02:27:42 -0400
+	id 1qTGCo-0004tk-Ix; Tue, 08 Aug 2023 02:28:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1qTGBv-0004St-Ig; Tue, 08 Aug 2023 02:27:39 -0400
-Received: from out5-smtp.messagingengine.com ([66.111.4.29])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1qTGBt-00070X-Mx; Tue, 08 Aug 2023 02:27:39 -0400
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
- by mailout.nyi.internal (Postfix) with ESMTP id A08975C00CF;
- Tue,  8 Aug 2023 02:27:36 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
- by compute4.internal (MEProxy); Tue, 08 Aug 2023 02:27:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
- h=cc:cc:content-transfer-encoding:content-type:date:date:from
- :from:in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:sender:subject:subject:to:to; s=fm2; t=1691476056; x=
- 1691562456; bh=LiVaiUPQkEJAbjOQlo74CUcpKHBAY/5caLUVHR53Y9Y=; b=D
- IYnj1oT68R46ZAqiCW4zQGgjWNvFpML0ZTcTLgpVZr/gAOseWJ9dJKtmnxMC7YoY
- uVUFoKxs6+ehTZsID+skPYoue8G6P/KXBvBDBWu3vzvvPjVUm78nchGCrE9Mvy1N
- X4YxbdzcvKlHcoQMGOecMSgxxRhvJ6LCTbAhP7Lh6cdBLSIiKPajtI5te5kXua7m
- kO1PkiMYdCqrL/estbEdbARmlEo9Tfp9LNIiHB5IRdzERbwQA+XljrJPdTorVUJ8
- jTQr2M96aJoUodFcDhWffkrF1Lo+YwlcZMZW0Imhp87eWF+s/3M5e4UB8njBzm5k
- rhpcjlPrsr7Rmn1+HcPPg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-transfer-encoding
- :content-type:date:date:feedback-id:feedback-id:from:from
- :in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1691476056; x=
- 1691562456; bh=LiVaiUPQkEJAbjOQlo74CUcpKHBAY/5caLUVHR53Y9Y=; b=H
- qWAEy2eLBvSq+g1rzBVN2siZYO9pd7wRETYSMKBg0mXDHYwFphmTvXquJSmzTHRE
- /OrzMtOWquMysuv8o7mFA3xsAShX8TPq57ZEVV7lLwoUbIPyVhloztEb0pFVnc1V
- NFT6mAWXvoW7yCOqZ4/YzXorxd1dgAvKxYprP7rv4ijgW+mGLVMmqzqYMBHANCsb
- AVkF1j8pxJGwxjP3DiPngtmwv9aMlSWzK9S9Sx0FnzjPjOmSnXiBTnnHW9qwY6i0
- gMfyK4NEbcBE5GL/J0vYfHUjQ7SBj92zrZfJDAn37CgJYfbQq+eh45dnZ6rMtKje
- 4tWd1IvofDus1aRyiZ+og==
-X-ME-Sender: <xms:WODRZGlAf9QMr1p7XCO2ONWj1rmgq3G6Ezae5vO61sx0Cdkoc6XeSw>
- <xme:WODRZN3ezoShGy9F__3sI3j83N931UFbSTsJLGu9tdBNmMIY8ZdEe8A-m8YL-vb5T
- Umi-cvjm4HZYX8FqGA>
-X-ME-Received: <xmr:WODRZErKa3nUOPG4_C6iBYYbrpeg5kSpbhn1jXchPlnJkqYrZV_HRDWfZhewnIZwfkbh34nUhXHoMA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrledugddutdehucetufdoteggodetrfdotf
- fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
- uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
- cujfgurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepmfhlrghu
- shculfgvnhhsvghnuceoihhtshesihhrrhgvlhgvvhgrnhhtrdgukheqnecuggftrfgrth
- htvghrnhepjefgieelgfeiveehkeeuveehheekfeevgeeigfehfefgjeejhefffeegudej
- udegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepih
- htshesihhrrhgvlhgvvhgrnhhtrdgukh
-X-ME-Proxy: <xmx:WODRZKkJv3cGSoRHkr9f1bYEHSIMoeYJw7htiw1Szs_HGU7m58jZHw>
- <xmx:WODRZE23FFEURXDG5VUefaiE1g9jyIa-P1T7ZVSmk_4I1oEmu3yt-w>
- <xmx:WODRZBvWY2TAd3TIOroyIptOVtxHHm_Sd8FrViGNw7nn0Ik6uz7Z_Q>
- <xmx:WODRZNu2-z7WsXi6EDo-0Su940djhyiclx8TXhadLX33cra-XnqYrQ>
-Feedback-ID: idc91472f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 8 Aug 2023 02:27:34 -0400 (EDT)
-From: Klaus Jensen <its@irrelevant.dk>
-To: Peter Maydell <peter.maydell@linaro.org>,
-	qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, Keith Busch <kbusch@kernel.org>,
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- Klaus Jensen <its@irrelevant.dk>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Stefan Hajnoczi <stefanha@redhat.com>, Fam Zheng <fam@euphon.net>,
- Ankit Kumar <ankit.kumar@samsung.com>, Klaus Jensen <k.jensen@samsung.com>
-Subject: [PULL 2/2] docs: update hw/nvme documentation for protection
- information
-Date: Tue,  8 Aug 2023 08:27:30 +0200
-Message-ID: <20230808062727.19263-6-its@irrelevant.dk>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230808062727.19263-4-its@irrelevant.dk>
-References: <20230808062727.19263-4-its@irrelevant.dk>
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1qTGCl-0004tD-S3
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 02:28:31 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1qTGCi-0007DO-WC
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 02:28:31 -0400
+Received: from loongson.cn (unknown [10.20.42.170])
+ by gateway (Coremail) with SMTP id _____8AxV_GH4NFkTqESAA--.41883S3;
+ Tue, 08 Aug 2023 14:28:24 +0800 (CST)
+Received: from [10.20.42.170] (unknown [10.20.42.170])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8AxTSOF4NFkXoROAA--.49049S3; 
+ Tue, 08 Aug 2023 14:28:21 +0800 (CST)
+Message-ID: <ff531ad1-fdc6-8c5f-7777-df36604f62fe@loongson.cn>
+Date: Tue, 8 Aug 2023 14:28:21 +0800
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1608; i=k.jensen@samsung.com;
- h=from:subject; bh=7PyhBW87ohtkKzfN7XuRW2ocbhNYaJUMLfDxUacHVr8=;
- b=owJ4nAFtAZL+kA0DAAoBTeGvMW1PDekByyZiAGTR4FBaXSNtgmRZ4xk997G5oewRRdynp8UNL
- BcmTZAA4kdW6okBMwQAAQoAHRYhBFIoM6p14tzmokdmwE3hrzFtTw3pBQJk0eBQAAoJEE3hrzFt
- Tw3pwP4H/AvkP8Eb2qEHX89tGCj2iiixiuZw5ggC1FvKdbYb2KdNSXFnOxI4MPkeBjJzLW7oe8v
- TDQPV5a+zSydY+Vl0xaHI49rT18ZwFAW9S2u3Eq7xkbo5WdUtlE98kLfhaxiLfyO4wYibb4Inwd
- 3mHc1jZY78suW/1t4PrSw95M760Q6I2EYADtgKkECWPOyTPgFjhiRrk6TQ4eebyFk7wEkvZp8zu
- 2S2fUGvXNmGiRhj6qpIrbGGXdfsFL9wAg5MK3cHV0wfWreOyq12I2Z+aa85IBOb+zymXSsbwRhf
- GWHoHI1sFebxAE8gDMSTJ4ye43JJXfe+pdOv1c/29VawWlVQvhvcwKmX
-X-Developer-Key: i=k.jensen@samsung.com; a=openpgp;
- fpr=DDCA4D9C9EF931CC3468427263D56FC5E55DA838
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] target/loongarch: Split fcc register to fcc0-7 in gdbstub
+Content-Language: en-US
+From: bibo mao <maobibo@loongson.cn>
+To: Jiajie Chen <c@jia.je>, Tiezhu Yang <yangtiezhu@loongson.cn>
+Cc: Song Gao <gaosong@loongson.cn>, =?UTF-8?Q?Alex_Benn=c3=a9e?=
+ <alex.bennee@linaro.org>, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
+ <philmd@linaro.org>, qemu-devel@nongnu.org
+References: <20230808054315.3391465-1-c@jia.je>
+ <70c07fd1-51c6-56cd-af40-04a8323b06c5@loongson.cn>
+In-Reply-To: <70c07fd1-51c6-56cd-af40-04a8323b06c5@loongson.cn>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=66.111.4.29; envelope-from=its@irrelevant.dk;
- helo=out5-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-CM-TRANSID: AQAAf8AxTSOF4NFkXoROAA--.49049S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxGrW8Jw4UuF18XFW7XF48Xwc_yoW5CF4kp3
+ s3Aan8GF4Ig39rtrnrX3s0g3Z8ArnrCF1F93WfW340kayDXFWagas8G39xuFW7Cayxtr1F
+ grZYyw1xu3W5JrXCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUU9ab4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+ xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
+ 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv
+ 67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
+ AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwCFI7km07C2
+ 67AKxVWUAVWUtwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI
+ 8E67AF67kF1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWU
+ CwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r
+ 1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsG
+ vfC2KfnxnUUI43ZEXa7IU1QVy3UUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -36
+X-Spam_score: -3.7
+X-Spam_bar: ---
+X-Spam_report: (-3.7 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.809,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,42 +82,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ankit Kumar <ankit.kumar@samsung.com>
+add loongarch gdb maintainer.
 
-Add missing entry for pif ("protection information format").
-Protection information size can be 8 or 16 bytes, Update the pil entry
-as per the NVM command set specification.
-
-Signed-off-by: Ankit Kumar <ankit.kumar@samsung.com>
-Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
----
- docs/system/devices/nvme.rst | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
-
-diff --git a/docs/system/devices/nvme.rst b/docs/system/devices/nvme.rst
-index 2a3af268f7a5..32ff287cd78e 100644
---- a/docs/system/devices/nvme.rst
-+++ b/docs/system/devices/nvme.rst
-@@ -271,9 +271,15 @@ The virtual namespace device supports DIF- and DIX-based protection information
- 
- ``pil=UINT8`` (default: ``0``)
-   Controls the location of the protection information within the metadata. Set
--  to ``1`` to transfer protection information as the first eight bytes of
--  metadata. Otherwise, the protection information is transferred as the last
--  eight bytes.
-+  to ``1`` to transfer protection information as the first bytes of metadata.
-+  Otherwise, the protection information is transferred as the last bytes of
-+  metadata.
-+
-+``pif=UINT8`` (default: ``0``)
-+  By default, the namespace device uses 16 bit guard protection information
-+  format (``pif=0``). Set to ``2`` to enable 64 bit guard protection
-+  information format. This requires at least 16 bytes of metadata. Note that
-+  ``pif=2`` (32 bit guards) are currently not supported.
- 
- Virtualization Enhancements and SR-IOV (Experimental Support)
- -------------------------------------------------------------
--- 
-2.41.0
+在 2023/8/8 14:10, bibo mao 写道:
+> 
+> I am not familiar with gdb, is there  abi breakage?
+> I do not know how gdb client works with gdb server with different versions.
+> 
+> Regards
+> Bibo Mao
+> 
+> 
+> 在 2023/8/8 13:42, Jiajie Chen 写道:
+>> Since GDB 13.1(GDB commit ea3352172), GDB LoongArch changed to use
+>> fcc0-7 instead of fcc register. This commit partially reverts commit
+>> 2f149c759 (`target/loongarch: Update gdb_set_fpu() and gdb_get_fpu()`)
+>> to match the behavior of GDB.
+>>
+>> Note that it is a breaking change for GDB 13.0 or earlier, but it is
+>> also required for GDB 13.1 or later to work.
+>>
+>> Signed-off-by: Jiajie Chen <c@jia.je>
+>> ---
+>>  gdb-xml/loongarch-fpu.xml  |  9 ++++++++-
+>>  target/loongarch/gdbstub.c | 16 +++++++---------
+>>  2 files changed, 15 insertions(+), 10 deletions(-)
+>>
+>> diff --git a/gdb-xml/loongarch-fpu.xml b/gdb-xml/loongarch-fpu.xml
+>> index 78e42cf5dd..e81e3382e7 100644
+>> --- a/gdb-xml/loongarch-fpu.xml
+>> +++ b/gdb-xml/loongarch-fpu.xml
+>> @@ -45,6 +45,13 @@
+>>    <reg name="f29" bitsize="64" type="fputype" group="float"/>
+>>    <reg name="f30" bitsize="64" type="fputype" group="float"/>
+>>    <reg name="f31" bitsize="64" type="fputype" group="float"/>
+>> -  <reg name="fcc" bitsize="64" type="uint64" group="float"/>
+>> +  <reg name="fcc0" bitsize="8" type="uint8" group="float"/>
+>> +  <reg name="fcc1" bitsize="8" type="uint8" group="float"/>
+>> +  <reg name="fcc2" bitsize="8" type="uint8" group="float"/>
+>> +  <reg name="fcc3" bitsize="8" type="uint8" group="float"/>
+>> +  <reg name="fcc4" bitsize="8" type="uint8" group="float"/>
+>> +  <reg name="fcc5" bitsize="8" type="uint8" group="float"/>
+>> +  <reg name="fcc6" bitsize="8" type="uint8" group="float"/>
+>> +  <reg name="fcc7" bitsize="8" type="uint8" group="float"/>
+>>    <reg name="fcsr" bitsize="32" type="uint32" group="float"/>
+>>  </feature>
+>> diff --git a/target/loongarch/gdbstub.c b/target/loongarch/gdbstub.c
+>> index 0752fff924..15ad6778f1 100644
+>> --- a/target/loongarch/gdbstub.c
+>> +++ b/target/loongarch/gdbstub.c
+>> @@ -70,10 +70,9 @@ static int loongarch_gdb_get_fpu(CPULoongArchState *env,
+>>  {
+>>      if (0 <= n && n < 32) {
+>>          return gdb_get_reg64(mem_buf, env->fpr[n].vreg.D(0));
+>> -    } else if (n == 32) {
+>> -        uint64_t val = read_fcc(env);
+>> -        return gdb_get_reg64(mem_buf, val);
+>> -    } else if (n == 33) {
+>> +    } else if (32 <= n && n < 40) {
+>> +        return gdb_get_reg8(mem_buf, env->cf[n - 32]);
+>> +    } else if (n == 40) {
+>>          return gdb_get_reg32(mem_buf, env->fcsr0);
+>>      }
+>>      return 0;
+>> @@ -87,11 +86,10 @@ static int loongarch_gdb_set_fpu(CPULoongArchState *env,
+>>      if (0 <= n && n < 32) {
+>>          env->fpr[n].vreg.D(0) = ldq_p(mem_buf);
+>>          length = 8;
+>> -    } else if (n == 32) {
+>> -        uint64_t val = ldq_p(mem_buf);
+>> -        write_fcc(env, val);
+>> -        length = 8;
+>> -    } else if (n == 33) {
+>> +    } else if (32 <= n && n < 40) {
+>> +        env->cf[n - 32] = ldub_p(mem_buf);
+>> +        length = 1;
+>> +    } else if (n == 40) {
+>>          env->fcsr0 = ldl_p(mem_buf);
+>>          length = 4;
+>>      }
+> 
 
 
