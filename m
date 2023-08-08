@@ -2,79 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22F587739F4
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 13:54:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06FE77739F7
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 13:57:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTLGo-0007zn-CA; Tue, 08 Aug 2023 07:53:02 -0400
+	id 1qTLKy-0001Fo-72; Tue, 08 Aug 2023 07:57:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qTLGm-0007zB-7n
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 07:53:00 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qTLGj-0008W9-5t
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 07:52:59 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-1bba48b0bd2so35959175ad.3
- for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 04:52:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1691495575; x=1692100375;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=C5bVzf/kXW+6y8ZBQL8fmchmVsCziEs+FsRsNhOCy4k=;
- b=4UnOerjZiESiyfXrzuilw2u3PqXRgb1oT1fSP+rsM0qW/34v31SLv6L4nMtLDdeILZ
- KBz9pJVgxcH/zRR9Py2XmdJsL/XSDUhxkNDVzV7pZT+mNPdaj+mS4gE/LLLOgaQbmTjw
- OXbtU39LWdc8L+8XaJBEtIBTFL0WxCYO/HUC0gGWQjHd2Jso5o5GS/VxqvpyxezsSOyU
- 7Rbqvfrd+2BMvjwCp61UQWvzGPVooUdlAI8d3gbZP2LoyUW/XpuSSI2iaL9KVQUDqvGe
- BXSAsK0jqED36pAat204ySyoVk6J5IHnwmX72rGwwjEo9KwEqc6ItvUPjgzX1D9m9Pco
- aWDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691495575; x=1692100375;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=C5bVzf/kXW+6y8ZBQL8fmchmVsCziEs+FsRsNhOCy4k=;
- b=Em5yO0YCsCTKZ/5u1+Hpqdkku6Lu3jts9RKLdUXyS5nk4gsgqiQoFwNiy/yZ/Fn3Zn
- 1y55jOHlSx/0r0EQnJL4lcc1KOuM8yqkBBD09Mo+j+0NayWKpMKC75ZvDDNtphNinmPT
- N7lGLWbuy8foTJ4gaAnyYMezv8RtlCUKXx1MRnpZRNMZQbK7c0V/V8q22SRTZnaR6YrW
- VQf7bC13hDQLGImk0DNbw7oJI0x5MirDPkqvXbrO4I0Z9Zg+tcwre4WWs4k765vb2zfB
- 4uaAFkCTn4LsWCDJGcg1lvIwjs6YK0Vpu1VAmIgqwyFG7muiIixO10Qs/p2SNlOWz6P3
- L8hA==
-X-Gm-Message-State: AOJu0YxmD3lO7JakwjBGUIbOKjaBLgG/fvaRlARt4wJcHZMjYMo0PThl
- jnRXb8SmScZx70+6BgcIsXWW6g==
-X-Google-Smtp-Source: AGHT+IH0Bice8Pzlv44PGFJcqbIbd55iBIP9o/PUmCvGtROXmVtBGT1LgqCieRZq0vQTMGzsG8Rr/w==
-X-Received: by 2002:a17:902:c101:b0:1b5:edd:e3c7 with SMTP id
- 1-20020a170902c10100b001b50edde3c7mr10356699pli.16.1691495574595; 
- Tue, 08 Aug 2023 04:52:54 -0700 (PDT)
-Received: from alarm.flets-east.jp ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
- by smtp.gmail.com with ESMTPSA id
- q17-20020a170902dad100b001bb9aadfb04sm8831390plx.220.2023.08.08.04.52.52
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 08 Aug 2023 04:52:54 -0700 (PDT)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-To: 
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>, pbonzini@redhat.com,
- philmd@linaro.org, laurent@vivier.eu, deller@gmx.de, qemu-devel@nongnu.org,
- Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH for-8.1] linux-user: Define real MAP_FIXED_NOREPLACE value
-Date: Tue,  8 Aug 2023 20:52:38 +0900
-Message-ID: <20230808115242.73025-1-akihiko.odaki@daynix.com>
-X-Mailer: git-send-email 2.41.0
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qTLKu-0001FQ-Lt
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 07:57:16 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qTLKr-0001L6-SU
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 07:57:16 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.226])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RKs5p0z5Qz6J72Y;
+ Tue,  8 Aug 2023 19:53:34 +0800 (CST)
+Received: from SecurePC-101-06.china.huawei.com (10.122.247.231) by
+ lhrpeml500005.china.huawei.com (7.191.163.240) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Tue, 8 Aug 2023 12:57:11 +0100
+To: <qemu-devel@nongnu.org>
+CC: Gavin Shan <gshan@redhat.com>, <linuxarm@huawei.com>, James Morse
+ <james.morse@arm.com>, "peter . maydell @ linaro . org"
+ <peter.maydell@linaro.org>, <zhao1.liu@linux.intel.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>, Shameerali Kolothum
+ Thodi <shameerali.kolothum.thodi@huawei.com>, Yicong Yang
+ <yangyicong@huawei.com>
+Subject: [RFC PATCH 0/5] hw/arm: MPAM Emulation + PPTT cache description.
+Date: Tue, 8 Aug 2023 12:57:08 +0100
+Message-ID: <20230808115713.2613-1-Jonathan.Cameron@huawei.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::632;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x632.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+X-Originating-IP: [10.122.247.231]
+X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,55 +63,163 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-do_brk() assumes target_mmap() emulates MAP_FIXED_NOREPLACE even when
-the host does not support it. However, such emulation is not possible
-if MAP_FIXED_NOREPLACE is defined as zero.
+Aim of this bit of emulation is to use it for testing James Morse's
+kernel tree - in particularly letting us poke the corner cases.
+Right now I'm not that focused on upstreaming this (too many other things
+in my backlog), but any feedback on the approach etc welcome and perhaps
+the PPTT part is useful independent of MPAM support.
 
-Define MAP_FIXED_NOREPLACE with the real value instead of zero if it is
-not defined.
+Current kernel branch (one outstanding bug reported but that's hard to hit
+and requires setting the narrowing target number of IDs to 1 which is bonkers):
+https://git.kernel.org/pub/scm/linux/kernel/git/morse/linux.git/log/?h=mpam/snapshot/v6.5-rc1
 
-Fixes: e69e032d1a ("linux-user: Use MAP_FIXED_NOREPLACE for do_brk()")
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
- include/qemu/osdep.h | 8 ++++++--
- linux-user/elfload.c | 1 -
- 2 files changed, 6 insertions(+), 3 deletions(-)
+Supported:
+* PPTT cache description - this is necessary for the cross references MPAM
+  table entries use to establish which Cache any given control set influences.
+  I included option for generating shared tables which were a common choice
+  prior to MPAM needing those cross references.
+* CPU emulation for MPAM. Given we aren't doing anything with the content
+  this is just a case of adding the MPAM_IDR register and read/write registers
+  to control current PARTID / PMG group.
+* MPAM MSC emulation for caches and memory controllers.
+  Multiple RIS support allows up to 16 such elements to be controlled via
+  a single interface (used only for memory currently.
+  Most controls wired up, though introspection interface and sanity checks
+  only cover some of them so far. No monitoring yet.
+* ACPI tables and device instantiation in ARM Virt. ACPI only because the
+  kernel patches clearly state the DT binding is a WIP.
+* A hack to add lots of caches to the MAX cpu via the relevant CPU registers
+  - these are read back to generate the PPTT Table and MPAM devices.
 
-diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
-index cc61b00ba9..1aac17ec2f 100644
---- a/include/qemu/osdep.h
-+++ b/include/qemu/osdep.h
-@@ -289,8 +289,12 @@ void QEMU_ERROR("code path is reachable")
- #ifndef MAP_ANONYMOUS
- #define MAP_ANONYMOUS MAP_ANON
- #endif
--#ifndef MAP_FIXED_NOREPLACE
--#define MAP_FIXED_NOREPLACE 0
-+#if defined(__linux__) && !defined(MAP_FIXED_NOREPLACE)
-+#if HOST_ALPHA
-+#define MAP_FIXED_NOREPLACE 0x200000
-+#else
-+#define MAP_FIXED_NOREPLACE 0x100000
-+#endif
- #endif
- #ifndef MAP_NORESERVE
- #define MAP_NORESERVE 0
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 36e4026f05..9d9c79a653 100644
---- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -2807,7 +2807,6 @@ static void pgb_reserved_va(const char *image_name, abi_ulong guest_loaddr,
-     /* Widen the "image" to the entire reserved address space. */
-     pgb_static(image_name, 0, reserved_va, align);
+TODO:
+- Dealing with case of no NUMA nodes. Currently we don't start if NUMA
+  nodes aren't specified and mpam=on.  Defaulting to a single NUMA
+  node if MPAM is enabled may make more sense.
+- Error injection / reporting on invalid parameters.
+- Monitor support.
+- Wire up the interrupts properly.
+- Tighten checks on unexpected values to further help with catching
+  bugs in kernel code (a few already found and fixed by James).
+- ACPI table test (yeah I'm lazy).
+- Remove remaining 'fixed' constraints on number of partitions etc
+  so they can be different across controllers / different levels
+  of the hierarchy.
+- Expand the qmp introspection interface to cover the missing parts.
+
+Example command line (who doesn't love SMT arm machines?):
+aarch64-softmmu/qemu-system-aarch64 -D test.log -d unimp \
+ -M virt,nvdimm=on,gic-version=3,mpam=on,mpam_min_msc=on \
+ -m 4g -cpu max,core-count=2 \
+ -smp 16,sockets=1,clusters=4,threads=2,cache-cluster-start-level=2,cache-node-start-level=3 \
+ -kernel Image \
+ -drive if=none,file=full.qcow2,format=qcow2,id=hd \
+ -device pcie-root-port,id=root_port1 -device virtio-blk-pci,drive=hd \
+ -qmp-pretty tcp:localhost:4445,server=on,wait=off \
+...
+ -nographic -no-reboot -append 'earlycon root=/dev/vda2' \
+ -bios QEMU_EFI.fd \
+ -object memory-backend-ram,size=1G,id=mem0 \
+ -object memory-backend-ram,size=1G,id=mem1 \
+ -object memory-backend-ram,size=1G,id=mem2 \
+ -object memory-backend-ram,size=1G,id=mem3 \
+ -numa node,nodeid=0,cpus=0-3,memdev=mem0 \
+ -numa node,nodeid=1,cpus=4-7,memdev=mem1 \
+ -numa node,nodeid=2,cpus=8-11,memdev=mem2 \
+ -numa node,nodeid=3,cpus=12-15,memdev=mem3
  
--    /* osdep.h defines this as 0 if it's missing */
-     flags |= MAP_FIXED_NOREPLACE;
- 
-     /* Reserve the memory on the host. */
+QMP comamnds:
+
+{ "execute": "qmp_capabilities" }
+{ "execute": "query-mpam-cache",
+  "arguments": {
+    "level": 3
+  }
+}
+
+Will return something like (reformatted as the pretty version is 'long')
+An 'ideal' version of this interface will take some more thought as it
+needs to balance readability and clarity with complex implementation of
+the code to 'interpret' the register values.
+
+{
+    "return": [
+        {
+            "cpu": 0,
+            "level": 3,
+            "regs": [
+                {
+                    "mbwumon-idr": 0,
+                    "idr": 758514712831,
+                    "cfg-cpbm": [
+                        { "words": [ 4294967295 ] },
+                        { "words": [ 0 ] },
+                        { "words": [ 0 ] },
+                        { "words": [ 0 ] },	
+                        { "words": [ 0 ] },
+			....
+			{ "words": [ 0 ] }
+                    ],
+                    "partid-nrw-idr": 31,
+                    "mbw-idr": 0,
+                    "csumon-idr": 0,
+                    "esr": 0,
+                    "ecr": 1,
+                    "cfg-part-sel": 0,
+                    "iidr": 44042038,
+                    "cpor-idr": 32,
+                    "msmon-idr": 0,
+                    "ccap-idr": 2952791044,
+                    "aidr": 17,
+                    "pri-idr": 35
+                }
+            ],
+            "type": 3
+        }
+    ]
+}
+
+Jonathan Cameron (5):
+  hw/acpi: Add PPTT cache descriptions
+  HACK: target/arm/tcg: Add some more caches to cpu=max
+  target/arm: Add support for MPAM CPU registers
+  hw/arm: Add MPAM emulation.
+  hw/arm/virt: Add MPAM MSCs for memory controllers and caches.
+
+ qapi/machine.json           |   8 +-
+ qapi/mpam.json              |  78 ++++
+ qapi/qapi-schema.json       |   1 +
+ include/hw/acpi/aml-build.h |  19 +-
+ include/hw/arm/mpam.h       |  13 +
+ include/hw/arm/virt.h       |   2 +
+ include/hw/boards.h         |   4 +
+ target/arm/cpu.h            |  15 +
+ hw/acpi/aml-build.c         | 189 +++++++-
+ hw/arm/mpam-qapi-stubs.c    |   9 +
+ hw/arm/mpam-qapi.c          |  58 +++
+ hw/arm/mpam.c               | 886 ++++++++++++++++++++++++++++++++++++
+ hw/arm/virt-acpi-build.c    | 327 ++++++++++++-
+ hw/arm/virt.c               | 134 ++++++
+ hw/core/machine-smp.c       |   8 +
+ hw/loongarch/acpi-build.c   |   2 +-
+ target/arm/cpu.c            |  10 +-
+ target/arm/helper.c         |  30 ++
+ target/arm/tcg/cpu64.c      |  12 +
+ hw/arm/Kconfig              |   4 +
+ hw/arm/meson.build          |   4 +
+ qapi/meson.build            |   1 +
+ 22 files changed, 1803 insertions(+), 11 deletions(-)
+ create mode 100644 qapi/mpam.json
+ create mode 100644 include/hw/arm/mpam.h
+ create mode 100644 hw/arm/mpam-qapi-stubs.c
+ create mode 100644 hw/arm/mpam-qapi.c
+ create mode 100644 hw/arm/mpam.c
+
 -- 
-2.41.0
+2.39.2
 
 
