@@ -2,85 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EA4B7739E9
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 13:29:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A25DF7739ED
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 13:40:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTKtj-0000cE-B4; Tue, 08 Aug 2023 07:29:11 -0400
+	id 1qTL3B-0002ND-Ic; Tue, 08 Aug 2023 07:38:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qTKth-0000bq-Qp
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 07:29:09 -0400
-Received: from mail-oa1-x33.google.com ([2001:4860:4864:20::33])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qTL35-0002LA-E9
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 07:38:52 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qTKtg-00036T-CM
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 07:29:09 -0400
-Received: by mail-oa1-x33.google.com with SMTP id
- 586e51a60fabf-1bfafe8a425so2975008fac.3
- for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 04:29:08 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qTL2z-0005Pl-3L
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 07:38:48 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-3fe426b8583so48596195e9.2
+ for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 04:38:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1691494147; x=1692098947;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=dF1FOYFtx1t0CDcmsrHdufDD/kuOcnzmTMhZ1Sjz3DM=;
- b=TI+9yuqd146UVNHQ08aedTPYac0MJETwrvCnT6PWCzdEIMP7qleWvPvIKvAEXd129k
- Y97mSFaEjU3KLQFZU8CePoespCsPvheMAjxJo9uVx34T3WbHkjz9ZMFTpeXNz3RDOC6a
- 2j8E+vVYNCb0v4akegy11snuMxdI2nagB3Bs5H0Fqffhs07UsxnnOvxbS5fhKiuRm0zo
- cfhC4zY4N130w5FTysIlnx4gD88EjcTXlL0VgpE07v0FWIuUalcjQozW2obJO6rTfbmp
- eovi3KA21hpQzZiRetcxk0ZPnJgoXnuMgo/iyBagi6+zvNtiPGvldSnmyvpZYi6OS2f6
- ejMw==
+ d=linaro.org; s=google; t=1691494718; x=1692099518;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=5Da0gKrCiIFkB7rzbOtlfWHWU+Xsmy/n0p18ef9P9Vg=;
+ b=wWxcdA0SDlW1mRynY5kkjKxUMMjVXnolxOJS8VFmE6AbfemAA7pmJv/mL022ZPFY5i
+ 2zoVTjgqqkokBWJbYHd+yIhEmqPMUhVYUUYjgXnia5h4Ku+h1ID4SRTuFsq4JVlx8v2x
+ bVibhTJUg/71mnSK4Ps6yGdrYuJtABGlui+dIXmzEheC3ivKrbv8bFmyZlD3JVupuN1T
+ Q1UepNKTsFX7n2/lvEFCa4fUdW9u/Mfy0yfWJu87rSvpVKC4h6rYpo8m8P5yuQdOcBS5
+ vVQ4zBVoZGi17rPwF6UOfO+XSzheoe3Sxss9ShC+z5K6LtniCIjDFoileQIZa1KQgT+A
+ nmrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691494147; x=1692098947;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=dF1FOYFtx1t0CDcmsrHdufDD/kuOcnzmTMhZ1Sjz3DM=;
- b=VVi5/PZ4+IzKbFP+jNvoWvwJyg/ajoM7w9pqfn99Lvu6STruit/iIxk1jGyBzYSFS5
- x1qBrJEvOuqu2omL8CXwhfYFSKnx6yPumot+fVE/R/J4sbNg7oZkZxV4qOGyTvrM0Q0H
- lAInBR0LAPzjwIzHyAg40U9xAThkOFj23PcP/XcqOE0lBy/6s/dJB9KW+zai6WFQFmGM
- yOO+9D/vFlm8+JKFy61opxWNrsX4580BjBoxbrPuvrS9F8R+pnSumBY2PIG1lP/lNErt
- 9trMZaGsu2BooC44P7496vzz/PQ5sXc3Q+7p7vEmE8iKfKHcvJtu8NF5ZojbQGGpNjq5
- g4Rg==
-X-Gm-Message-State: AOJu0YxrMN8TsaASdn2g34gSE/qJBPuSbqnPrnZu1qJdzRNSdLzTGtyo
- WelviH9n4I3DXxFMVxQ9fQk8lw==
-X-Google-Smtp-Source: AGHT+IEQaZY31GGgd/eQhrxsw+nxz5qcyVtWrmZEBUni503QtbvxplC00BoGt6n3Nj8rNoOI09sq4Q==
-X-Received: by 2002:a05:6871:522c:b0:1b0:883e:3095 with SMTP id
- ht44-20020a056871522c00b001b0883e3095mr14913368oac.56.1691494147278; 
- Tue, 08 Aug 2023 04:29:07 -0700 (PDT)
-Received: from ?IPV6:2804:7f0:bcc0:bdf2:b7ba:a476:c0e3:fb59?
- ([2804:7f0:bcc0:bdf2:b7ba:a476:c0e3:fb59])
+ d=1e100.net; s=20221208; t=1691494718; x=1692099518;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=5Da0gKrCiIFkB7rzbOtlfWHWU+Xsmy/n0p18ef9P9Vg=;
+ b=j1mr0h4Layk5Wp+nctBe0qM/nCgrbyYqKfBgdO3czL90EZ8fphF7rbf0rgt248QEd0
+ +x6L8khM/boX/wokGHdPuR9YQtzDYf8TMIQURbOV/iiqJdXYSf+VTBGJ8GtkGz6+r/hR
+ FRFrR/x8P6NLkzaYJ/lAzQbOxKGIjp8jJ0vCA3vl6ubjNbsQ/fUhgPjdtZHZfbLASsm6
+ pj0f2H5Fb3/ew4WscUqR/SD/YhsGxSzYNenHpPNwEZEXOISfAOeouB6fazOLgwhz9xUJ
+ u6t9emXUGQIxMWfo87AULRCL5mTDGkBIRrM2sjUe+ygtAr53MDKL6/aSY4TIPo+cd7DV
+ mHyQ==
+X-Gm-Message-State: AOJu0YxHRvCsv6wbR3VPVxi6Dd51LSxG0vHpmOZ5kNwMm/VNvwcuwKtg
+ BryxUluxLBdqJBeIqTNehYSGIg==
+X-Google-Smtp-Source: AGHT+IEtBUgu8Yez4WdJN/4FJWfTq6LfjDvl+yA7LofWZwwn4RXN1h0UvIC+qyeL8Igd+8rQ+uqT2Q==
+X-Received: by 2002:a05:600c:22ce:b0:3fb:d1db:545b with SMTP id
+ 14-20020a05600c22ce00b003fbd1db545bmr10034682wmg.20.1691494718610; 
+ Tue, 08 Aug 2023 04:38:38 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- ef53-20020a0568701ab500b001b03fbfa0c5sm5969856oab.39.2023.08.08.04.29.04
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 08 Aug 2023 04:29:06 -0700 (PDT)
-Message-ID: <810d09a3-89bd-64e8-99e0-6a1035605575@ventanamicro.com>
-Date: Tue, 8 Aug 2023 08:29:03 -0300
+ m18-20020a7bca52000000b003fe1e3937aesm13366644wml.20.2023.08.08.04.38.37
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 08 Aug 2023 04:38:38 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 6A3F01FFBB;
+ Tue,  8 Aug 2023 12:38:37 +0100 (BST)
+References: <20230807163705.9848-1-richard.henderson@linaro.org>
+ <20230807163705.9848-9-richard.henderson@linaro.org>
+User-agent: mu4e 1.11.13; emacs 29.1.50
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: pbonzini@redhat.com, philmd@linaro.org, laurent@vivier.eu,
+ deller@gmx.de, Akihiko Odaki <akihiko.odaki@daynix.com>,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH for-8.1 v10 08/14] linux-user: Do not adjust zero_bss
+ for host page size
+Date: Tue, 08 Aug 2023 12:38:10 +0100
+In-reply-to: <20230807163705.9848-9-richard.henderson@linaro.org>
+Message-ID: <877cq5932a.fsf@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] linux-user/riscv: Use abi_ulong for target_ucontext
-Content-Language: en-US
-To: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-devel@nongnu.org
-Cc: Alistair.Francis@wdc.com, palmer@dabbelt.com, bin.meng@windriver.com,
- liweiwei@iscas.ac.cn, qemu-riscv@nongnu.org
-References: <20230808093434.2059-1-zhiwei_liu@linux.alibaba.com>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20230808093434.2059-1-zhiwei_liu@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2001:4860:4864:20::33;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x33.google.com
-X-Spam_score_int: -61
-X-Spam_score: -6.2
-X-Spam_bar: ------
-X-Spam_report: (-6.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-4.14,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x330.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,33 +100,101 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
+Richard Henderson <richard.henderson@linaro.org> writes:
 
-On 8/8/23 06:34, LIU Zhiwei wrote:
-> We should not use types dependend on host arch for target_ucontext.
-> This bug is found when run rv32 applications.
-> 
-> Signed-off-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+> Rely on target_mmap to handle guest vs host page size mismatch.
+>
+> Tested-by: Helge Deller <deller@gmx.de>
+> Reviewed-by: Helge Deller <deller@gmx.de>
+> Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
+>  linux-user/elfload.c | 54 +++++++++++++++++++-------------------------
+>  1 file changed, 23 insertions(+), 31 deletions(-)
+>
+> diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+> index 964b21f997..6c28cb70ef 100644
+> --- a/linux-user/elfload.c
+> +++ b/linux-user/elfload.c
+> @@ -2213,44 +2213,36 @@ static abi_ulong setup_arg_pages(struct linux_bin=
+prm *bprm,
+>=20=20
+>  /* Map and zero the bss.  We need to explicitly zero any fractional pages
+>     after the data section (i.e. bss).  */
+> -static void zero_bss(abi_ulong elf_bss, abi_ulong last_bss, int prot)
+> +static void zero_bss(abi_ulong start_bss, abi_ulong end_bss, int prot)
+>  {
+> -    uintptr_t host_start, host_map_start, host_end;
+> +    abi_ulong align_bss;
+>=20=20
+> -    last_bss =3D TARGET_PAGE_ALIGN(last_bss);
+> +    align_bss =3D TARGET_PAGE_ALIGN(start_bss);
+> +    end_bss =3D TARGET_PAGE_ALIGN(end_bss);
+>=20=20
+> -    /* ??? There is confusion between qemu_real_host_page_size and
+> -       qemu_host_page_size here and elsewhere in target_mmap, which
+> -       may lead to the end of the data section mapping from the file
+> -       not being mapped.  At least there was an explicit test and
+> -       comment for that here, suggesting that "the file size must
+> -       be known".  The comment probably pre-dates the introduction
+> -       of the fstat system call in target_mmap which does in fact
+> -       find out the size.  What isn't clear is if the workaround
+> -       here is still actually needed.  For now, continue with it,
+> -       but merge it with the "normal" mmap that would allocate the bss. =
+ */
+> +    if (start_bss < align_bss) {
+> +        int flags =3D page_get_flags(start_bss);
+>=20=20
+> -    host_start =3D (uintptr_t) g2h_untagged(elf_bss);
+> -    host_end =3D (uintptr_t) g2h_untagged(last_bss);
+> -    host_map_start =3D REAL_HOST_PAGE_ALIGN(host_start);
+> -
+> -    if (host_map_start < host_end) {
+> -        void *p =3D mmap((void *)host_map_start, host_end - host_map_sta=
+rt,
+> -                       prot, MAP_FIXED | MAP_PRIVATE | MAP_ANONYMOUS, -1=
+, 0);
+> -        if (p =3D=3D MAP_FAILED) {
+> -            perror("cannot mmap brk");
+> -            exit(-1);
+> +        if (!(flags & PAGE_VALID)) {
+> +            /* Map the start of the bss. */
+> +            align_bss -=3D TARGET_PAGE_SIZE;
+> +        } else if (flags & PAGE_WRITE) {
+> +            /* The page is already mapped writable. */
+> +            memset(g2h_untagged(start_bss), 0, align_bss - start_bss);
+> +        } else {
+> +            /* Read-only zeros? */
+> +            g_assert_not_reached();
+>          }
+>      }
+>=20=20
+> -    /* Ensure that the bss page(s) are valid */
+> -    if ((page_get_flags(last_bss-1) & prot) !=3D prot) {
+> -        page_set_flags(elf_bss & TARGET_PAGE_MASK, last_bss - 1,
+> -                       prot | PAGE_VALID);
+> -    }
+> -
+> -    if (host_start < host_map_start) {
+> -        memset((void *)host_start, 0, host_map_start - host_start);
+> +    if (align_bss < end_bss) {
+> +        abi_long err =3D target_mmap(align_bss, end_bss - align_bss, pro=
+t,
+> +                                   MAP_FIXED | MAP_PRIVATE | MAP_ANONYMO=
+US,
+> +                                   -1, 0);
+> +        if (err =3D=3D -1) {
+> +            perror("cannot mmap brk");
+> +            exit(-1);
 
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+brk !=3D bss even if brk generally comes after the bss section.
+
+> +        }
+>      }
+>  }
 
 
->   linux-user/riscv/signal.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/linux-user/riscv/signal.c b/linux-user/riscv/signal.c
-> index eaa168199a..ff8634a272 100644
-> --- a/linux-user/riscv/signal.c
-> +++ b/linux-user/riscv/signal.c
-> @@ -38,8 +38,8 @@ struct target_sigcontext {
->   }; /* cf. riscv-linux:arch/riscv/include/uapi/asm/ptrace.h */
->   
->   struct target_ucontext {
-> -    unsigned long uc_flags;
-> -    struct target_ucontext *uc_link;
-> +    abi_ulong uc_flags;
-> +    abi_ulong uc_link;
->       target_stack_t uc_stack;
->       target_sigset_t uc_sigmask;
->       uint8_t   __unused[1024 / 8 - sizeof(target_sigset_t)];
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
