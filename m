@@ -2,69 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C02CC774EAC
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 00:52:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CC37774EBC
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 00:56:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTVYa-0003lh-VV; Tue, 08 Aug 2023 18:52:05 -0400
+	id 1qTVcY-0004gI-3h; Tue, 08 Aug 2023 18:56:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maverickk1778@gmail.com>)
- id 1qTVYY-0003lU-GS
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 18:52:02 -0400
-Received: from mail-io1-xd2b.google.com ([2607:f8b0:4864:20::d2b])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qTVcW-0004fg-1n
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 18:56:08 -0400
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <maverickk1778@gmail.com>)
- id 1qTVYW-0006sG-OE
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 18:52:02 -0400
-Received: by mail-io1-xd2b.google.com with SMTP id
- ca18e2360f4ac-790ab117bd5so212886439f.0
- for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 15:51:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qTVcU-0007fx-9w
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 18:56:07 -0400
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-686b9964ae2so4525544b3a.3
+ for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 15:56:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1691535118; x=1692139918;
- h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
- :date:message-id:reply-to;
- bh=B7EKwglenhakd2igRLrP6qwv65F4gW6aaRMaw2PLT40=;
- b=c6HGs5NkpTF2DDv+9cqnHyh30YOi4fjlDCZN7ekgywxAaFrTwxLJooK0FIzD0IFekJ
- ckNwlk6YldOibWJvaAsFa6kaKjWh/lZNuLtLoVlLjKaleGGuZdKns/6Hd2Y5nrYj/2Ta
- mfF4b4+imcRb+PMSuFdCwzJYh5OuUvH4e+il8txgezxTZs/ZDJ+Je6/p0sBxE60hWQKy
- qtt+1uPSK49RR0JHeizbHrMwn4U56VzbHRfbZYBUXQ3fLI/ooU2njCDt9eANdUhhrZEI
- uo2iyFdKCqZN57nzNfLgRzy76a6p2VEWUupUomfbfjLlTLcmA/nxOu0D1yroqVIFuptx
- hLZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691535118; x=1692139918;
- h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+ d=linaro.org; s=google; t=1691535365; x=1692140165;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=B7EKwglenhakd2igRLrP6qwv65F4gW6aaRMaw2PLT40=;
- b=lk+c3PVJXHtXceF8Jmb0KhmOQHHbdS1dFiC/45+r6FObxVmovnqJ2mOoQF1OJSfHIs
- GCGgLgtxDIH31TqduooUOYlSpDsKs7ecFGSWxZShzX3+g++XNE/t7zfxe9gGOYtv/On2
- Qv3ZBMesBLkNGodFKOYVfThtXcjwjWs35zsjJV5PA3CHBxPXlcI4XElnCrk+MGC0Bhno
- gaOZZk+IPPBswfl/YdA8J4J7GIdPzM5y+TM0SF90AdrcPRpFIc9CGkkCFbWl0oU5gVKq
- CYp10VZRq0T2sj7fI838qoBqahvrQd6hPQJOr/94B571smUmC3KIsMr4v6a63wvfeHs9
- G1og==
-X-Gm-Message-State: AOJu0YxgguDnJXneMH/MoPBbBQgfJj6Qs0cR3cGcWkNSzzDd8qe/q3q5
- B9cBiVZA4+ZxmKiNLn3OIj5No9jMzgq1HFph1OFNvBVRW4Q=
-X-Google-Smtp-Source: AGHT+IGqeEnysR4NPTO42DgksaCikePByfC1aM8L1y3y3kaqWwbohdq+vDq6cPhsKNzaAZsa9ADroD3U5tsQXWohDGA=
-X-Received: by 2002:a6b:5c12:0:b0:790:fab3:2052 with SMTP id
- z18-20020a6b5c12000000b00790fab32052mr1138792ioh.5.1691535117767; Tue, 08 Aug
- 2023 15:51:57 -0700 (PDT)
+ bh=rDkuNfRqITiq70RneEW6j8D8G6FxUFoirkYkFqgGAGg=;
+ b=TFsdVJud8ONcYFMnxkYFEFCkYj1IWAucgPbXqqbLGiG7hIxMEv+GRylsl4b9jg00S7
+ b/3pjoKSL3zqLnLkuspOV1mUFrbE7StOgOpX8qpNwDrXdeIgcw5rDk6wv3Jz1v+037v7
+ 871KcZU9STkc2xcopB/M0rr+ZyWHzpfRzVh/LoTJVdBzbogr6Z5ZLvoJJ9mFmYm2Hx+x
+ JmLDZBoVlEdYkERmyV/B7OribGcpniJIh6STdawYmT7LIzj+hovssNQmIvMrwmwbwVWZ
+ ikc8oJ72b20Z5k5al0n/HipnWftVWt4oidRdF1ZkQ+S/RaKOml9g7yB9crGKbZdSd5Jx
+ DIew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1691535365; x=1692140165;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=rDkuNfRqITiq70RneEW6j8D8G6FxUFoirkYkFqgGAGg=;
+ b=ajBg5kvcktfZwXCRdhgS1J4d9KHnz6Zf2NynffMWv1kEJgghElDH78f/NYxOuvcZsk
+ SRzEC6D9KKxR6VcktiTYsQtNx1Dz3OMv6++JbqxxIACCLE/M02YiD92gV39OPhX/OaYq
+ hzzb1JiE4cKKZRJB3BUcEEvKuTGT8UzGWougy+rh5wdLXiNfqfhHTzhQmXJyggINhnkx
+ jyE69NglhioLB+Cop861oMWcKB/F63lyBGPafwwnx3vEZc1EbPGmY9BUxYoTU4OnwI0A
+ CDuFGhznTQfBxNUWw5vTwqvwswk+RxVhfgEPma950Jk2yMRnLA9MgE6+FC0sgCbc377+
+ Itlg==
+X-Gm-Message-State: AOJu0YxJUGpBnaCt5+K/2ZnF1ad89TKB6PuGf0C2+A1MckK2DU5eGln+
+ HHX/Q93daUzAi7/HXLbC3fu6lw==
+X-Google-Smtp-Source: AGHT+IF7wj6ivOMG00+kCHSe51nfRSrcnwRP45RXsG+OF5RpZC0shY/Hniwvn5YNiSHaZBJg1vN0/g==
+X-Received: by 2002:a05:6a20:8f09:b0:132:cd2d:16fd with SMTP id
+ b9-20020a056a208f0900b00132cd2d16fdmr1063691pzk.38.1691535364710; 
+ Tue, 08 Aug 2023 15:56:04 -0700 (PDT)
+Received: from ?IPV6:2602:47:d490:6901:63dc:2a47:f4bc:4a95?
+ ([2602:47:d490:6901:63dc:2a47:f4bc:4a95])
+ by smtp.gmail.com with ESMTPSA id
+ c7-20020a170902d48700b001bb9b87ac95sm9585555plg.103.2023.08.08.15.56.03
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 08 Aug 2023 15:56:04 -0700 (PDT)
+Message-ID: <853e1f7b-f626-8a1b-d0bf-bdc1b4ebf05e@linaro.org>
+Date: Tue, 8 Aug 2023 15:56:02 -0700
 MIME-Version: 1.0
-From: Maverickk 78 <maverickk1778@gmail.com>
-Date: Wed, 9 Aug 2023 04:21:47 +0530
-Message-ID: <CALfBBTtUtydebmJuh6JZ5RAXZfx5OgJ+RCug1apbZa4mm17rJQ@mail.gmail.com>
-Subject: CXL volatile memory is not listed
-To: Jonathan Cameron via <qemu-devel@nongnu.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::d2b;
- envelope-from=maverickk1778@gmail.com; helo=mail-io1-xd2b.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] gdbstub: Fix client Ctrl-C handling
+Content-Language: en-US
+To: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>, npiggin@gmail.com
+Cc: alex.bennee@linaro.org, fbarrat@linux.ibm.com, qemu-devel@nongnu.org,
+ qemu-stable@nongnu.org, bcain@quicinc.com
+References: <CTZTUVQXKUGA.11SSOS1KIFLZK@wheely>
+ <456ed3318421dd7946bdfb5ceda7e05332da368c.1690910333.git.quic_mathbern@quicinc.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <456ed3318421dd7946bdfb5ceda7e05332da368c.1690910333.git.quic_mathbern@quicinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
+X-Spam_score_int: -61
+X-Spam_score: -6.2
+X-Spam_bar: ------
+X-Spam_report: (-6.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-4.14,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -82,35 +97,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello,
+On 8/1/23 11:40, Matheus Tavares Bernardino wrote:
+> Hi, Nick.
+> 
+>> Nicholas Piggin <npiggin@gmail.com> wrote:
+>>
+>> On Tue Jul 11, 2023 at 9:03 PM AEST, Matheus Tavares Bernardino wrote:
+>>>> Nicholas Piggin <npiggin@gmail.com> wrote:
+>>>>
+>>>> diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
+>>>> index 6911b73c07..ce8b42eb15 100644
+>>>> --- a/gdbstub/gdbstub.c
+>>>> +++ b/gdbstub/gdbstub.c
+>>>> @@ -2051,8 +2051,17 @@ void gdb_read_byte(uint8_t ch)
+>>>>               return;
+>>>>       }
+>>>>       if (runstate_is_running()) {
+>>>> -        /* when the CPU is running, we cannot do anything except stop
+>>>> -           it when receiving a char */
+>>>> +        /*
+>>>> +         * When the CPU is running, we cannot do anything except stop
+>>>> +         * it when receiving a char. This is expected on a Ctrl-C in the
+>>>> +         * gdb client. Because we are in all-stop mode, gdb sends a
+>>>> +         * 0x03 byte which is not a usual packet, so we handle it specially
+>>>> +         * here, but it does expect a stop reply.
+>>>> +         */
+>>>> +        if (ch != 0x03) {
+>>>> +            warn_report("gdbstub: client sent packet while target running\n");
+>>>> +        }
+>>>> +        gdbserver_state.allow_stop_reply = true;
+>>>>           vm_stop(RUN_STATE_PAUSED);
+>>>>       } else
+>>>>   #endif
+>>>
+>>> Makes sense to me, but shouldn't we send the stop-reply packet only for
+>>> Ctrl+C/0x03?
+>>
+>> Good question.
+>>
+>> I think if we get a character here that's not a 3, we're already in
+>> trouble, and we eat it so even worse. Since we only send a stop packet
+>> back when the vm stops, then if we don't send one now we might never
+>> send it. At least if we send one then the client might have some chance
+>> to get back to a sane state.
+> 
+> I just noticed now (as I was integrating the latest upstream patches
+> with our downstream qemu-system-hexagon) that this causes the
+> gdbstub-untimely-packet tcg test to fail.
+> 
+> My first thought was that, if 0x3 is the only valid case where we will
+> read a char when the cpu is running, perhaps not issuing the stop-reply
+> isn't that bad as GDB would ignore it anyways. E.g. from a `set debug
+> remote 1` output:
+> 
+>    Sending packet: $qSupported:multiprocess+;swbreak+;hwbreak+;qRelocInsn+;
+>                     fork-events+;vfork-events+;exec-events+;vContSupported+;
+> 		   QThreadEvents+;no-resumed+;
+> 		   xmlRegisters=i386#6a...
+>    Packet instead of Ack, ignoring it
+> 
+> So, perhaps, we could do:
+> 
+> diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
+> index f123b40ce7..8af066301a 100644
+> --- a/gdbstub/gdbstub.c
+> +++ b/gdbstub/gdbstub.c
+> @@ -2055,8 +2055,9 @@ void gdb_read_byte(uint8_t ch)
+>            */
+>           if (ch != 0x03) {
+>               warn_report("gdbstub: client sent packet while target running\n");
+> +        } else {
+> +            gdbserver_state.allow_stop_reply = true;
+>           }
+> -        gdbserver_state.allow_stop_reply = true;
+>           vm_stop(RUN_STATE_PAUSED);
+>       } else
+>   #endif
+> -- >8 --
+> 
+> Alternatively, since GDB ignores the packet anyways, should we just let
+> this be and refactor/remove the test?
 
-I am running qemu-system-x86_64
+Ping, Alex and Nick.
 
-qemu-system-x86_64 --version
-QEMU emulator version 8.0.92 (v8.1.0-rc2-80-g0450cf0897)
-
-qemu-system-x86_64 \
--m 2G,slots=4,maxmem=4G \
--smp 4 \
--machine type=q35,accel=kvm,cxl=on \
--enable-kvm \
--nographic \
--device pxb-cxl,id=cxl.0,bus=pcie.0,bus_nr=52 \
--device cxl-rp,id=rp0,bus=cxl.0,chassis=0,port=0,slot=0 \
--object memory-backend-file,id=mem0,mem-path=/tmp/mem0,size=1G,share=true \
--device cxl-type3,bus=rp0,volatile-memdev=mem0,id=cxl-mem0 \
--M cxl-fmw.0.targets.0=cxl.0,cxl-fmw.0.size=1G
+I can confirm that Matheus' patch fixes the problem I am seeing.
+But I'm also open to removing the test.
 
 
-I was expecting the CXL memory to be listed in "System Ram", the lsmem
-shows only 2G memory which is System RAM, it's not listing the CXL
-memory.
+r~
 
-Do I need to pass any particular parameter in the kernel command line?
-
-Is there any documentation available? I followed the inputs provided in
-
-https://lore.kernel.org/linux-mm/Y+CSOeHVLKudN0A6@kroah.com/T/
-
-Is there any documentation/blog listed?
 
