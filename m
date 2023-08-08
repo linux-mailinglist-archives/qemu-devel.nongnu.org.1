@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59398773916
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 10:35:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57D46773918
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 10:36:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTIBc-0004Hn-Rq; Tue, 08 Aug 2023 04:35:28 -0400
+	id 1qTIBf-0004J4-TS; Tue, 08 Aug 2023 04:35:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1qTIBa-0004Gt-Ed; Tue, 08 Aug 2023 04:35:26 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ id 1qTIBd-0004Il-Op; Tue, 08 Aug 2023 04:35:29 -0400
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1qTIBY-0004OW-Gm; Tue, 08 Aug 2023 04:35:26 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1bc63ef9959so21429825ad.2; 
- Tue, 08 Aug 2023 01:35:23 -0700 (PDT)
+ id 1qTIBc-0004Pj-8J; Tue, 08 Aug 2023 04:35:29 -0400
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-686bc261111so3794522b3a.3; 
+ Tue, 08 Aug 2023 01:35:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1691483723; x=1692088523;
+ d=gmail.com; s=20221208; t=1691483726; x=1692088526;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
  :message-id:reply-to;
- bh=t1Q3AW38/jlyIYsf1v5VwYdbz/llnbPCbq6k0gn8DVI=;
- b=K4Xl43cnrur2Qa1cIDK0WFZhemvllhcK+8T06QdJl9IT0eiQnqgCHbXn9yzz9d0VmR
- 1srxKAYzOSQwSgpCuh+ZyJ5MCQ0qE++jdlpKFHvRddxwY98PTO1vkXCJN4CMPzMVAKz7
- OXsIsPsZxshM1VtfVmXOwLBSNoiDfcfRZuFhmRA0y/zCNSyUMjX7tvtl9wdZYQFR5ifH
- KMn+ZiWnIocTCOjsRhLwttRbNqUIXzPExXSahskQlq1whpA9RJiZXQ5ZNoY3q9CrvfC7
- yoYAZYkdmP4azAgsOMdoVW/lAiyhsk8fkeFLVAOGeELwzp62QLvVD3ID6aUaeFbfzk3O
- QQtw==
+ bh=GeZsdW9RrDxftsXWNXn4yVwofdvv4noPLkLlvvyTocE=;
+ b=soRr9ww82/69hmP+dJZMS7t0KqzKE2DwxBBkVVnq/Req+FCygD/fHatrAd366vLdD7
+ tfmjVpc/iBfzKcDi1577tHxjFt+i6k9yR6+oPbzHbO+ov64uuFXM+UKYCZpbip03cU4O
+ 2CU5/yoc4lyKUwpIfqvzdplQKJkn9FVCgRKRMetMnBlUGL8sO9KpMWcxZHATV8DsuqxN
+ CnCSwRVdQy0lnyYZGnIViZ1CEa+BHnlMVFnBlWPfxhCZxWGdKZCSkWbfbyo821xHfUeK
+ 1THQ+84RkdFm9VYd5LeKti0lEkEgtWjNSa1xg9OSdo50lgBr/Es8CWoGFHczdTS1a8W9
+ zUAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691483723; x=1692088523;
+ d=1e100.net; s=20221208; t=1691483726; x=1692088526;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:sender:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=t1Q3AW38/jlyIYsf1v5VwYdbz/llnbPCbq6k0gn8DVI=;
- b=KWfrSQFAiKr7hgYtXjPIt8sEWsrAYSB/B/hdXPTpJK3CIjTAxN5mR5RJG0uKuPmraV
- kyuVnJ1amsldovzSBhMO7ZOLrDLdqWka8U3+HHxbrXVvyDirDQwKeeGjHJTfcW8cocHQ
- Dq2aRRZpIWzuPL9SFc2QUoVXuKkEkmxiqjoR/jqOo9hrNfOqP1eOxdGhRkE4vWynSEc9
- soqukAQplOxgnbaVQepP0I9OunaXsu3d7iV43AbDS8MMmwNsYgugk5kw2cvJTqb9UdYt
- Y3lmIUhbbuaDavH/Ycy1C2F6My2fFSPAa9pz4Fi5rrkVpwGlWxnSN7QLPoIcpWnIQiU4
- Lazg==
-X-Gm-Message-State: AOJu0Yzrh35vKVGri6l+W4mxGyQy7FMz59QVIjOe2+KU1UR54WAd2KmR
- Qo3bUjrf/Gv32ABWSkQdGxzyMV33IZY=
-X-Google-Smtp-Source: AGHT+IFH52jXWjJPp7HA+AWRI81wGI9pTdC8Z+lJmbmV90axhxCQhH2SWFwpVi0t+Wb0sNMOEVpVUg==
-X-Received: by 2002:a17:903:124f:b0:1b6:9fec:8134 with SMTP id
- u15-20020a170903124f00b001b69fec8134mr15096947plh.46.1691483722705; 
- Tue, 08 Aug 2023 01:35:22 -0700 (PDT)
+ bh=GeZsdW9RrDxftsXWNXn4yVwofdvv4noPLkLlvvyTocE=;
+ b=llG9rf2Emuh5MaXxL75PI3qq+z2x5K0q6yidXqr6yFg7wZCBCb9UxBsW4P9q9d5jY6
+ sWfii0erDcUJsAUKhW8Cjgvvc4ST/sqzJYnpm52+tDFL6enoPAPbEL9FeBAUH220XtM5
+ HXqScJ/dVaF4PlIPa55GAp0iIA1jj1fENcstPWxZqKJm/OfaXXTaRy2vuwggqEqdQrmE
+ cHJykef9fkVnpSsU9I9riHrVn5TcEOZFgNcZxzBmFFszUSAVpdxejdazvN3eZl0uWe1M
+ Twff9nCo/JuxxPwh5kzbNBeqRXkbxtLycqN+Bf/PnhOfjOyYLqVC3rEm8HrKCaRsChRU
+ td/w==
+X-Gm-Message-State: AOJu0YwNHspg0GfjKpC3uLvhut5otDoTvzvA5oEu52+7cOyB3Y0wvCDT
+ BMVceNiBIhnxVnCS5RN6HIw=
+X-Google-Smtp-Source: AGHT+IGZUiR6B0qYtV0ubeGAIfZBTh+bmgtviXJ6WtEY7NTg8J5ufMW/icwQRGIhvVBXobWCWcouDg==
+X-Received: by 2002:a05:6a21:7785:b0:132:d029:e2d7 with SMTP id
+ bd5-20020a056a21778500b00132d029e2d7mr10683014pzc.55.1691483726506; 
+ Tue, 08 Aug 2023 01:35:26 -0700 (PDT)
 Received: from voyager.lan ([45.124.203.19]) by smtp.gmail.com with ESMTPSA id
- n9-20020a170902e54900b001b8062c1db3sm8368112plf.82.2023.08.08.01.35.19
+ n9-20020a170902e54900b001b8062c1db3sm8368112plf.82.2023.08.08.01.35.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 08 Aug 2023 01:35:22 -0700 (PDT)
+ Tue, 08 Aug 2023 01:35:25 -0700 (PDT)
 From: Joel Stanley <joel@jms.id.au>
 To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>,
  Nicholas Piggin <npiggin@gmail.com>
 Cc: qemu-ppc@nongnu.org,
 	qemu-devel@nongnu.org
-Subject: [PATCH for-8.2 2/3] pnv/lpc: Hook up xscom region for P9/P10
-Date: Tue,  8 Aug 2023 18:04:44 +0930
-Message-Id: <20230808083445.4613-3-joel@jms.id.au>
+Subject: [PATCH for-8.2 3/3] HACK: pnv/lpc: Set up XSCOM dt for P9
+Date: Tue,  8 Aug 2023 18:04:45 +0930
+Message-Id: <20230808083445.4613-4-joel@jms.id.au>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230808083445.4613-1-joel@jms.id.au>
 References: <20230808083445.4613-1-joel@jms.id.au>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=joel.stan@gmail.com; helo=mail-pl1-x62b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=joel.stan@gmail.com; helo=mail-pf1-x430.google.com
 X-Spam_score_int: -14
 X-Spam_score: -1.5
 X-Spam_bar: -
@@ -92,79 +92,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From P9 on the LPC bus is memory mapped. However the xscom access still
-is possible, so add it too.
+To test qemu's model of the xscom interface, apply this patch to qemu
+and the following change to skiboot:
+
+  --- a/hw/lpc.c
+  +++ b/hw/lpc.c
+  @@ -1266,7 +1266,7 @@ static void lpc_init_chip_p9(struct dt_node *opb_node)
+          lpc = zalloc(sizeof(struct lpcm));
+          assert(lpc);
+          lpc->chip_id = gcid;
+  -       lpc->mbase = (void *)addr;
+  +       lpc->xbase = dt_get_address(lpc_node, 0, NULL);
+          lpc->fw_idsel = 0xff;
+          lpc->fw_rdsz = 0xff;
+          lpc->node = lpc_node;
 
 Signed-off-by: Joel Stanley <joel@jms.id.au>
 ---
- include/hw/ppc/pnv_xscom.h | 6 ++++++
- hw/ppc/pnv.c               | 4 ++++
- hw/ppc/pnv_lpc.c           | 6 ++++++
- 3 files changed, 16 insertions(+)
+ hw/ppc/pnv_lpc.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/include/hw/ppc/pnv_xscom.h b/include/hw/ppc/pnv_xscom.h
-index 9bc64635471e..42601bdf419d 100644
---- a/include/hw/ppc/pnv_xscom.h
-+++ b/include/hw/ppc/pnv_xscom.h
-@@ -96,6 +96,9 @@ struct PnvXScomInterfaceClass {
- #define PNV9_XSCOM_SBE_CTRL_BASE  0x00050008
- #define PNV9_XSCOM_SBE_CTRL_SIZE  0x1
- 
-+#define PNV9_XSCOM_LPC_BASE       0x00090040
-+#define PNV9_XSCOM_LPC_SIZE       PNV_XSCOM_LPC_SIZE
-+
- #define PNV9_XSCOM_SBE_MBOX_BASE  0x000D0050
- #define PNV9_XSCOM_SBE_MBOX_SIZE  0x16
- 
-@@ -155,6 +158,9 @@ struct PnvXScomInterfaceClass {
- #define PNV10_XSCOM_SBE_CTRL_BASE  PNV9_XSCOM_SBE_CTRL_BASE
- #define PNV10_XSCOM_SBE_CTRL_SIZE  PNV9_XSCOM_SBE_CTRL_SIZE
- 
-+#define PNV10_XSCOM_LPC_BASE       PNV9_XSCOM_LPC_BASE
-+#define PNV10_XSCOM_LPC_SIZE       PNV9_XSCOM_LPC_SIZE
-+
- #define PNV10_XSCOM_SBE_MBOX_BASE  PNV9_XSCOM_SBE_MBOX_BASE
- #define PNV10_XSCOM_SBE_MBOX_SIZE  PNV9_XSCOM_SBE_MBOX_SIZE
- 
-diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-index afdaa25c2b26..a5db655b41b6 100644
---- a/hw/ppc/pnv.c
-+++ b/hw/ppc/pnv.c
-@@ -1566,6 +1566,8 @@ static void pnv_chip_power9_realize(DeviceState *dev, Error **errp)
-     }
-     memory_region_add_subregion(get_system_memory(), PNV9_LPCM_BASE(chip),
-                                 &chip9->lpc.mmio_regs);
-+    pnv_xscom_add_subregion(chip, PNV9_XSCOM_LPC_BASE,
-+                            &chip9->lpc.xscom_regs);
- 
-     chip->fw_mr = &chip9->lpc.isa_fw;
-     chip->dt_isa_nodename = g_strdup_printf("/lpcm-opb@%" PRIx64 "/lpc@0",
-@@ -1785,6 +1787,8 @@ static void pnv_chip_power10_realize(DeviceState *dev, Error **errp)
-     }
-     memory_region_add_subregion(get_system_memory(), PNV10_LPCM_BASE(chip),
-                                 &chip10->lpc.mmio_regs);
-+    pnv_xscom_add_subregion(chip, PNV10_XSCOM_LPC_BASE,
-+                            &chip10->lpc.xscom_regs);
- 
-     chip->fw_mr = &chip10->lpc.isa_fw;
-     chip->dt_isa_nodename = g_strdup_printf("/lpcm-opb@%" PRIx64 "/lpc@0",
 diff --git a/hw/ppc/pnv_lpc.c b/hw/ppc/pnv_lpc.c
-index caf5e10a5f96..6c6a3134087f 100644
+index 6c6a3134087f..62ab688407a3 100644
 --- a/hw/ppc/pnv_lpc.c
 +++ b/hw/ppc/pnv_lpc.c
-@@ -666,6 +666,12 @@ static void pnv_lpc_power9_realize(DeviceState *dev, Error **errp)
-     /* P9 uses a MMIO region */
-     memory_region_init_io(&lpc->mmio_regs, OBJECT(lpc), &pnv_lpc_mmio_ops,
-                           lpc, "lpcm", PNV9_LPCM_SIZE);
+@@ -218,6 +218,11 @@ int pnv_dt_lpc(PnvChip *chip, void *fdt, int root_offset, uint64_t lpcm_addr,
+     offset = fdt_add_subnode(fdt, lpcm_offset, name);
+     _FDT(offset);
+     g_free(name);
++    uint32_t lpc_pcba = PNV9_XSCOM_LPC_BASE;
++    reg[0] = cpu_to_be32(lpc_pcba);
++    reg[1] = cpu_to_be32(PNV_XSCOM_LPC_SIZE);
 +
-+    /* but the XSCOM region still exists */
-+    pnv_xscom_region_init(&lpc->xscom_regs, OBJECT(lpc),
-+                          &pnv_lpc_xscom_ops, lpc, "xscom-lpc",
-+                          PNV_XSCOM_LPC_SIZE);
-+
- }
- 
- static void pnv_lpc_power9_class_init(ObjectClass *klass, void *data)
++    _FDT((fdt_setprop(fdt, offset, "reg", reg, sizeof(reg))));
+     _FDT((fdt_setprop_cell(fdt, offset, "#address-cells", 2)));
+     _FDT((fdt_setprop_cell(fdt, offset, "#size-cells", 1)));
+     _FDT((fdt_setprop(fdt, offset, "compatible", lpc_compat,
 -- 
 2.40.1
 
