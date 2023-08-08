@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCFFA77372A
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 04:56:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 172A077372B
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 04:56:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTCt3-00070f-80; Mon, 07 Aug 2023 22:55:57 -0400
+	id 1qTCt1-000701-At; Mon, 07 Aug 2023 22:55:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTCt1-000703-A4
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 22:55:55 -0400
-Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
+ id 1qTCsz-0006zs-VV
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 22:55:53 -0400
+Received: from mail-oi1-x22d.google.com ([2607:f8b0:4864:20::22d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTCsy-0003Pj-GQ
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 22:55:55 -0400
-Received: by mail-pg1-x52f.google.com with SMTP id
- 41be03b00d2f7-564b326185bso2338636a12.2
- for <qemu-devel@nongnu.org>; Mon, 07 Aug 2023 19:55:45 -0700 (PDT)
+ id 1qTCsx-0003Q4-PD
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 22:55:53 -0400
+Received: by mail-oi1-x22d.google.com with SMTP id
+ 5614622812f47-3a5ad44dc5aso4173073b6e.3
+ for <qemu-devel@nongnu.org>; Mon, 07 Aug 2023 19:55:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691463344; x=1692068144;
+ d=linaro.org; s=google; t=1691463345; x=1692068145;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Yt1XGAv2opR/Bmk0+tN+I91pn3Kd9d8K8AhgnMfp8OA=;
- b=XBGQRJPrg7Lu7OxWvuwu4EYCK5demIsmMpg/EP2ln3VsKCjWM5Xkwczf4hwmNWNEOI
- dn3TnnMhGgYpiolnd1x/zaLdgPd77A6Vq5W75zwB1JEtz2kK5r2cZiuiFKC3F8eoA16F
- tPbZZVP33f7lQkjz6Lapmz4t6UcdsU6IUN9hs4pQfib5wOHiWxDVx+GVWz4RLCKTsPYA
- y0LeB5zaDlGwyDryNzh2crxbmpeG+DDS+fYEb+Ap5877jw4vK+OmrS7eEjX2n92E57t0
- 2y/ljAAQ+dsb7AuPuxLTVknkcCYSw71ILzboHQXsPJ7Ph6fesENYi9by1xXc3vKwXx0O
- e4hA==
+ bh=+1DJOAxPds7+yY6YsheI/Fxfq8y5L8VMrlgusnx0OpQ=;
+ b=KLo07AzsEr/62BbJmvIB1S9B4ChxQnmA8iJGQBO+u10O9JU8+etYoH0B+1pVIOADef
+ qFxcVMFoRq0Yt9bJhzbo/Y4AnxELNCYqC2vRPGKKlWLo6f+8924REEX1ioJ0C4fkLzQY
+ 0pf14qStriIQpPDeNYYIqRFpysfDO4FIUc9tR/52r4g135GYsoi2qlprFcOPhcF0tjBP
+ tVf6IHZfRqDCNrK8LJ0YAeazQNe5sHCGRhx9tKeNkUas+40tbnt0G40pMAyOcMQG3D4F
+ EukUAK1c7H5ZeBS84xdOOA6KoJ+ka7FfaTHNqrh1aMXm40g0tKQ3fF7LGpICXiFiFJO8
+ Ia2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691463344; x=1692068144;
+ d=1e100.net; s=20221208; t=1691463345; x=1692068145;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Yt1XGAv2opR/Bmk0+tN+I91pn3Kd9d8K8AhgnMfp8OA=;
- b=hUE7SBcOlS12OSKwR+7mwGhKx1eHyzXRhu0PdlxKk/qvddqHY0OR9hzO6LEDRnROGO
- NZZFr5qwGI1PyMhj2MtVzKAcKwciJUn+bfwmVL2QGcJv7M95KGbmRkKBcTQlGvS0G5vW
- HYpvZqUVdQe8hg5Bv9PjkoWxgnrZQ5lco31F800gze/kfZylc5TMuMRfpdcvBgoOVFRL
- yzu0hK8fexC+4xtq91sc/RYv9Zbvzb492vJOb7DWQoAY69yDKCXUQdMqRoocsKzLkPdL
- bbVJe9elMq54q/ZMnSYkpXz8zEzZFUYJBgsZzSo4CVLj5ZrLD3Tpc+Rq+BDqjiEdX1Km
- zwDg==
-X-Gm-Message-State: AOJu0Yy3Cdw/Q1sz+nCRywE4fhYwDbSpEs1o77p8pVZK3vWDgmAuE2DP
- 8ml4c1kbp/asr37QjarWFC+E45KashnJVYAdlXg=
-X-Google-Smtp-Source: AGHT+IF0+gFCGnn8JQKHOq+U7/zzrQpgx273qJRkumfNXesAxWHeLAUBxmT5tg9u9zvatObLe3o9uw==
-X-Received: by 2002:a05:6a21:3291:b0:12f:c61e:7cac with SMTP id
- yt17-20020a056a21329100b0012fc61e7cacmr10973001pzb.31.1691463344421; 
- Mon, 07 Aug 2023 19:55:44 -0700 (PDT)
+ bh=+1DJOAxPds7+yY6YsheI/Fxfq8y5L8VMrlgusnx0OpQ=;
+ b=FY5RL02YiESt0L1TPSR/RQODUcJYBbUWmGJ95CJVIC8DH5Kf+km67TfsUR0H/DcVUI
+ pdBXDSagUxVtbyu9rvfeE9cZVF7ZvhNexSthlElmNM/4+zd5MK76+yl9he/WUxiAWB5F
+ QnB6iBND+1b2DJxgchjanpEZUbhYcS7aVa5ptFJXnRW2F/GttboP1mWb/p1ViKO5uuu1
+ WxeHEedmbRkNJUHupFqmySCSy+IWC49GgJakQ9SvZVXJJBAHE5MvXd+zVvxZWdLqpoAR
+ f1xiDorDoaFXFPsZzV4dey75JUoZXOBsOyliJ8vgSp3Z+HEt7BMlrd/i9snfF21Ab1K4
+ Nicw==
+X-Gm-Message-State: AOJu0Yw0u5hdmpaDs/3e3ZJ4eAF1vH//SNWKsGrW5PItGo4fA1C13wcB
+ zRYZXo4oChA2CfoGzms1icliE7fBilhHeL1wbJY=
+X-Google-Smtp-Source: AGHT+IF+cy8mV0NKVsjOjldq2j3ay5xM60JnBR4q5ctLFnPwMyeiv4MwjCHBdKcq/0U5At2N4szkWg==
+X-Received: by 2002:a05:6358:278c:b0:12f:158e:ed88 with SMTP id
+ l12-20020a056358278c00b0012f158eed88mr9118053rwb.22.1691463345223; 
+ Mon, 07 Aug 2023 19:55:45 -0700 (PDT)
 Received: from stoup.. ([2602:47:d490:6901:e306:567a:e0a1:341])
  by smtp.gmail.com with ESMTPSA id
- t2-20020a656082000000b0056353c0a03esm4900037pgu.37.2023.08.07.19.55.43
+ t2-20020a656082000000b0056353c0a03esm4900037pgu.37.2023.08.07.19.55.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 07 Aug 2023 19:55:44 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: mjt@tls.msk.ru,
 	laurent@vivier.eu
-Subject: [PATCH 1/2] linux-user: Split out do_mmap
-Date: Mon,  7 Aug 2023 19:55:41 -0700
-Message-Id: <20230808025542.50392-2-richard.henderson@linaro.org>
+Subject: [PATCH 2/2] linux-user: Use ARRAY_SIZE with bitmask_transtbl
+Date: Mon,  7 Aug 2023 19:55:42 -0700
+Message-Id: <20230808025542.50392-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230808025542.50392-1-richard.henderson@linaro.org>
 References: <20230808025542.50392-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,148 +92,166 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-New function that rejects unsupported map types and flags.
-In 4b840f96 we should not have accepted MAP_SHARED_VALIDATE
-without actually validating the rest of the flags.
+Rather than using a zero tuple to end the table, use a macro
+to apply ARRAY_SIZE and pass that on to the convert functions.
+
+This fixes two bugs in which the conversion functions required
+that both the target and host masks be non-zero in order to
+continue, rather than require both target and host masks be
+zero in order to terminate.
+
+This affected mmap_flags_tbl when the host does not support
+all of the flags we wish to convert (e.g. MAP_UNINITIALIZED).
+Mapping these flags to zero is good enough, and matches how
+the kernel ignores bits that are unknown.
 
 Fixes: 4b840f96 ("linux-user: Populate more bits in mmap_flags_tbl")
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/syscall.c | 90 +++++++++++++++++++++++++++++++++++---------
- 1 file changed, 73 insertions(+), 17 deletions(-)
+ bsd-user/syscall_defs.h   |  2 ++
+ include/exec/user/thunk.h | 15 +++++++++++----
+ linux-user/syscall.c      |  6 ------
+ linux-user/thunk.c        | 24 ++++++++++++------------
+ 4 files changed, 25 insertions(+), 22 deletions(-)
 
+diff --git a/bsd-user/syscall_defs.h b/bsd-user/syscall_defs.h
+index b6d113d24a..aedfbf2d7d 100644
+--- a/bsd-user/syscall_defs.h
++++ b/bsd-user/syscall_defs.h
+@@ -227,7 +227,9 @@ type safe_##name(type1 arg1, type2 arg2, type3 arg3, type4 arg4, \
+ }
+ 
+ /* So far all target and host bitmasks are the same */
++#undef  target_to_host_bitmask
+ #define target_to_host_bitmask(x, tbl) (x)
++#undef  host_to_target_bitmask
+ #define host_to_target_bitmask(x, tbl) (x)
+ 
+ #endif /* SYSCALL_DEFS_H */
+diff --git a/include/exec/user/thunk.h b/include/exec/user/thunk.h
+index 300a840d58..6eedef48d8 100644
+--- a/include/exec/user/thunk.h
++++ b/include/exec/user/thunk.h
+@@ -193,10 +193,17 @@ static inline int thunk_type_align(const argtype *type_ptr, int is_host)
+     }
+ }
+ 
+-unsigned int target_to_host_bitmask(unsigned int target_mask,
+-                                    const bitmask_transtbl * trans_tbl);
+-unsigned int host_to_target_bitmask(unsigned int host_mask,
+-                                    const bitmask_transtbl * trans_tbl);
++unsigned int target_to_host_bitmask_len(unsigned int target_mask,
++                                        const bitmask_transtbl *trans_tbl,
++                                        size_t trans_len);
++unsigned int host_to_target_bitmask_len(unsigned int host_mask,
++                                        const bitmask_transtbl * trans_tbl,
++                                        size_t trans_len);
++
++#define target_to_host_bitmask(M, T) \
++    target_to_host_bitmask_len(M, T, ARRAY_SIZE(T))
++#define host_to_target_bitmask(M, T) \
++    host_to_target_bitmask_len(M, T, ARRAY_SIZE(T))
+ 
+ void thunk_init(unsigned int max_structs);
+ 
 diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index a15bce2be2..34deff0723 100644
+index 34deff0723..12ebc70df5 100644
 --- a/linux-user/syscall.c
 +++ b/linux-user/syscall.c
-@@ -5985,10 +5985,6 @@ static const StructEntry struct_termios_def = {
+@@ -455,7 +455,6 @@ static const bitmask_transtbl fcntl_flags_tbl[] = {
+ #if TARGET_O_LARGEFILE != 0 || O_LARGEFILE != 0
+   { TARGET_O_LARGEFILE, TARGET_O_LARGEFILE, O_LARGEFILE, O_LARGEFILE, },
  #endif
- 
- static const bitmask_transtbl mmap_flags_tbl[] = {
--    { TARGET_MAP_TYPE, TARGET_MAP_SHARED, MAP_TYPE, MAP_SHARED },
--    { TARGET_MAP_TYPE, TARGET_MAP_PRIVATE, MAP_TYPE, MAP_PRIVATE },
--    { TARGET_MAP_TYPE, TARGET_MAP_SHARED_VALIDATE,
--      MAP_TYPE, MAP_SHARED_VALIDATE },
-     { TARGET_MAP_FIXED, TARGET_MAP_FIXED, MAP_FIXED, MAP_FIXED },
-     { TARGET_MAP_ANONYMOUS, TARGET_MAP_ANONYMOUS,
-       MAP_ANONYMOUS, MAP_ANONYMOUS },
-@@ -6006,7 +6002,6 @@ static const bitmask_transtbl mmap_flags_tbl[] = {
-        Recognize it for the target insofar as we do not want to pass
-        it through to the host.  */
-     { TARGET_MAP_STACK, TARGET_MAP_STACK, 0, 0 },
--    { TARGET_MAP_SYNC, TARGET_MAP_SYNC, MAP_SYNC, MAP_SYNC },
-     { TARGET_MAP_NONBLOCK, TARGET_MAP_NONBLOCK, MAP_NONBLOCK, MAP_NONBLOCK },
-     { TARGET_MAP_POPULATE, TARGET_MAP_POPULATE, MAP_POPULATE, MAP_POPULATE },
-     { TARGET_MAP_FIXED_NOREPLACE, TARGET_MAP_FIXED_NOREPLACE,
-@@ -6016,6 +6011,75 @@ static const bitmask_transtbl mmap_flags_tbl[] = {
-     { 0, 0, 0, 0 }
+-  { 0, 0, 0, 0 }
  };
  
-+/*
-+ * Arrange for legacy / undefined architecture specific flags to be
-+ * ignored by mmap handling code.
-+ */
-+#ifndef TARGET_MAP_32BIT
-+#define TARGET_MAP_32BIT 0
-+#endif
-+#ifndef TARGET_MAP_HUGE_2MB
-+#define TARGET_MAP_HUGE_2MB 0
-+#endif
-+#ifndef TARGET_MAP_HUGE_1GB
-+#define TARGET_MAP_HUGE_1GB 0
-+#endif
-+
-+static abi_long do_mmap(abi_ulong addr, abi_ulong len, int prot,
-+                        int target_flags, int fd, off_t offset)
-+{
-+    /*
-+     * The historical set of flags that all mmap types implicitly support.
-+     */
-+    enum {
-+        TARGET_LEGACY_MAP_MASK = TARGET_MAP_SHARED
-+                               | TARGET_MAP_PRIVATE
-+                               | TARGET_MAP_FIXED
-+                               | TARGET_MAP_ANONYMOUS
-+                               | TARGET_MAP_DENYWRITE
-+                               | TARGET_MAP_EXECUTABLE
-+                               | TARGET_MAP_UNINITIALIZED
-+                               | TARGET_MAP_GROWSDOWN
-+                               | TARGET_MAP_LOCKED
-+                               | TARGET_MAP_NORESERVE
-+                               | TARGET_MAP_POPULATE
-+                               | TARGET_MAP_NONBLOCK
-+                               | TARGET_MAP_STACK
-+                               | TARGET_MAP_HUGETLB
-+                               | TARGET_MAP_32BIT
-+                               | TARGET_MAP_HUGE_2MB
-+                               | TARGET_MAP_HUGE_1GB
-+    };
-+    int host_flags;
-+
-+    switch (target_flags & TARGET_MAP_TYPE) {
-+    case TARGET_MAP_PRIVATE:
-+        host_flags = MAP_PRIVATE;
-+        break;
-+    case TARGET_MAP_SHARED:
-+        host_flags = MAP_SHARED;
-+        break;
-+    case TARGET_MAP_SHARED_VALIDATE:
-+        /*
-+         * MAP_SYNC is only supported for MAP_SHARED_VALIDATE, and is
-+         * therefore omitted from mmap_flags_tbl and TARGET_LEGACY_MAP_MASK.
-+         */
-+        if (target_flags & ~(TARGET_LEGACY_MAP_MASK | TARGET_MAP_SYNC)) {
-+            return -TARGET_EOPNOTSUPP;
-+        }
-+        host_flags = MAP_SHARED_VALIDATE;
-+        if (target_flags & TARGET_MAP_SYNC) {
-+            host_flags |= MAP_SYNC;
-+        }
-+        break;
-+    default:
-+        return -TARGET_EINVAL;
-+    }
-+    host_flags |= target_to_host_bitmask(target_flags, mmap_flags_tbl);
-+
-+    return get_errno(target_mmap(addr, len, prot, host_flags, fd, offset));
-+}
-+
+ _syscall2(int, sys_getcwd1, char *, buf, size_t, size)
+@@ -5813,7 +5812,6 @@ static const bitmask_transtbl iflag_tbl[] = {
+         { TARGET_IXOFF, TARGET_IXOFF, IXOFF, IXOFF },
+         { TARGET_IMAXBEL, TARGET_IMAXBEL, IMAXBEL, IMAXBEL },
+         { TARGET_IUTF8, TARGET_IUTF8, IUTF8, IUTF8},
+-        { 0, 0, 0, 0 }
+ };
+ 
+ static const bitmask_transtbl oflag_tbl[] = {
+@@ -5841,7 +5839,6 @@ static const bitmask_transtbl oflag_tbl[] = {
+ 	{ TARGET_VTDLY, TARGET_VT1, VTDLY, VT1 },
+ 	{ TARGET_FFDLY, TARGET_FF0, FFDLY, FF0 },
+ 	{ TARGET_FFDLY, TARGET_FF1, FFDLY, FF1 },
+-	{ 0, 0, 0, 0 }
+ };
+ 
+ static const bitmask_transtbl cflag_tbl[] = {
+@@ -5876,7 +5873,6 @@ static const bitmask_transtbl cflag_tbl[] = {
+ 	{ TARGET_HUPCL, TARGET_HUPCL, HUPCL, HUPCL },
+ 	{ TARGET_CLOCAL, TARGET_CLOCAL, CLOCAL, CLOCAL },
+ 	{ TARGET_CRTSCTS, TARGET_CRTSCTS, CRTSCTS, CRTSCTS },
+-	{ 0, 0, 0, 0 }
+ };
+ 
+ static const bitmask_transtbl lflag_tbl[] = {
+@@ -5896,7 +5892,6 @@ static const bitmask_transtbl lflag_tbl[] = {
+   { TARGET_PENDIN, TARGET_PENDIN, PENDIN, PENDIN },
+   { TARGET_IEXTEN, TARGET_IEXTEN, IEXTEN, IEXTEN },
+   { TARGET_EXTPROC, TARGET_EXTPROC, EXTPROC, EXTPROC},
+-  { 0, 0, 0, 0 }
+ };
+ 
+ static void target_to_host_termios (void *dst, const void *src)
+@@ -6008,7 +6003,6 @@ static const bitmask_transtbl mmap_flags_tbl[] = {
+       MAP_FIXED_NOREPLACE, MAP_FIXED_NOREPLACE },
+     { TARGET_MAP_UNINITIALIZED, TARGET_MAP_UNINITIALIZED,
+       MAP_UNINITIALIZED, MAP_UNINITIALIZED },
+-    { 0, 0, 0, 0 }
+ };
+ 
  /*
-  * NOTE: TARGET_ABI32 is defined for TARGET_I386 (but not for TARGET_X86_64)
-  *       TARGET_I386 is defined if TARGET_X86_64 is defined
-@@ -10536,28 +10600,20 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
-             v5 = tswapal(v[4]);
-             v6 = tswapal(v[5]);
-             unlock_user(v, arg1, 0);
--            ret = get_errno(target_mmap(v1, v2, v3,
--                                        target_to_host_bitmask(v4, mmap_flags_tbl),
--                                        v5, v6));
-+            return do_mmap(v1, v2, v3, v4, v5, v6);
+diff --git a/linux-user/thunk.c b/linux-user/thunk.c
+index dac4bf11c6..071aad4b5f 100644
+--- a/linux-user/thunk.c
++++ b/linux-user/thunk.c
+@@ -436,29 +436,29 @@ const argtype *thunk_print(void *arg, const argtype *type_ptr)
+ /* Utility function: Table-driven functions to translate bitmasks
+  * between host and target formats
+  */
+-unsigned int target_to_host_bitmask(unsigned int target_mask,
+-                                    const bitmask_transtbl * trans_tbl)
++unsigned int target_to_host_bitmask_len(unsigned int target_mask,
++                                        const bitmask_transtbl *tbl,
++                                        size_t len)
+ {
+-    const bitmask_transtbl *btp;
+     unsigned int host_mask = 0;
+ 
+-    for (btp = trans_tbl; btp->target_mask && btp->host_mask; btp++) {
+-        if ((target_mask & btp->target_mask) == btp->target_bits) {
+-            host_mask |= btp->host_bits;
++    for (size_t i = 0; i < len; ++i) {
++        if ((target_mask & tbl[i].target_mask) == tbl[i].target_bits) {
++            host_mask |= tbl[i].host_bits;
          }
- #else
-         /* mmap pointers are always untagged */
--        ret = get_errno(target_mmap(arg1, arg2, arg3,
--                                    target_to_host_bitmask(arg4, mmap_flags_tbl),
--                                    arg5,
--                                    arg6));
-+        return do_mmap(arg1, arg2, arg3, arg4, arg5, arg6);
- #endif
--        return ret;
- #endif
- #ifdef TARGET_NR_mmap2
-     case TARGET_NR_mmap2:
- #ifndef MMAP_SHIFT
- #define MMAP_SHIFT 12
- #endif
--        ret = target_mmap(arg1, arg2, arg3,
--                          target_to_host_bitmask(arg4, mmap_flags_tbl),
--                          arg5, (off_t)(abi_ulong)arg6 << MMAP_SHIFT);
--        return get_errno(ret);
-+        return do_mmap(arg1, arg2, arg3, arg4, arg5,
-+                       (off_t)(abi_ulong)arg6 << MMAP_SHIFT);
- #endif
-     case TARGET_NR_munmap:
-         arg1 = cpu_untagged_addr(cpu, arg1);
+     }
+     return host_mask;
+ }
+ 
+-unsigned int host_to_target_bitmask(unsigned int host_mask,
+-                                    const bitmask_transtbl * trans_tbl)
++unsigned int host_to_target_bitmask_len(unsigned int host_mask,
++                                        const bitmask_transtbl *tbl,
++                                        size_t len)
+ {
+-    const bitmask_transtbl *btp;
+     unsigned int target_mask = 0;
+ 
+-    for (btp = trans_tbl; btp->target_mask && btp->host_mask; btp++) {
+-        if ((host_mask & btp->host_mask) == btp->host_bits) {
+-            target_mask |= btp->target_bits;
++    for (size_t i = 0; i < len; ++i) {
++        if ((host_mask & tbl[i].host_mask) == tbl[i].host_bits) {
++            target_mask |= tbl[i].target_bits;
+         }
+     }
+     return target_mask;
 -- 
 2.34.1
 
