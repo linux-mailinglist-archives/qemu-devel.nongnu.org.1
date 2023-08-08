@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C1F7774105
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 19:13:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7F597740F0
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 19:13:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTQDW-0001yt-ME; Tue, 08 Aug 2023 13:09:58 -0400
+	id 1qTQDW-0001xM-4U; Tue, 08 Aug 2023 13:09:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qTQDQ-0001O9-Ey
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 13:09:52 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ id 1qTQDR-0001R9-9N
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 13:09:53 -0400
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qTQDO-0003F7-9k
+ id 1qTQDP-0003FR-GB
  for qemu-devel@nongnu.org; Tue, 08 Aug 2023 13:09:52 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-3fe2ba3e260so56671365e9.2
- for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 10:09:49 -0700 (PDT)
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-3178dd81ac4so4893849f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 10:09:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1691514588; x=1692119388;
+ d=gmail.com; s=20221208; t=1691514590; x=1692119390;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=tOzOH1LlLca377vY/qlVnv9NB+0PQt8L152jXs/ETl8=;
- b=IcoMAE+TUW1n2glAvNsp+xgNriDyKHygCA+pb7QozZ0nEDhbyLD2R+7FOWdlMCGMqM
- hWU5IzTJLfSJd8BC2JN8+7DZZM2mhCNz4l+gJ+fATB42g5zlTn4ZLHfio7LrLB9v9zlg
- WMH+sTf05ly0NUdUsctuyHCZcEE3tRX+uUcBvRoT974waRgCtt06hEBVrrGvx8lo9cxO
- lKgArOWEV16+gEUhw8jkLWrR4kZ3yZWE842/m4ZYl1TvGzncO1DVikVYsASqAYQNioeg
- 4B+5o3IXIHAb+VehxPw2w3u9TEDXJC2XtzBUtTg6NV8sxHT0xnKJee6csfQm3esvp/ju
- GFzg==
+ bh=JgfqNpuxkggtyaOumlpuSDtILW5+5vEXskfFi5ncc6E=;
+ b=pmaTVW7RTNPuI+5CcjlMX3+E9mBXvp0r/NsC1dwlozGKTODwnLtvXjFAThUMFKNhjK
+ vCNHO9UJdhrTimHb7xa0397hcJ8hI3xR0H1vlHLS8wz/qa9ybWeknbBMIS72acIWl6f5
+ v+kqCFSvVd+77er/Hgbfl2Be5Ju/a020lAWLaSQto+VvxNjJtX7G5OWuE7aSXEolH+pB
+ QjLHPd+dDm2n8kHJ1rfyDmCQW+NlTci4j22FRBGgF2quSRM/EYP0Iygd2hH3oeJNrUr1
+ KoaO2wdTLEOodTv+urp3OnL8sn+w38tVPzOl+f5cz8vgElwRX+E9rWRZ1ii2tTACU6ez
+ AzFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691514588; x=1692119388;
+ d=1e100.net; s=20221208; t=1691514590; x=1692119390;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tOzOH1LlLca377vY/qlVnv9NB+0PQt8L152jXs/ETl8=;
- b=A6XsgtA0rP8S9ywwJcLpO/8jrxq4pccpz1ihDhx3eS5Sw6O9WQQF+AXsKTUySsmYzd
- xuDg3nMF9885997z8z30gFaV21hI41GQUCqHZnxeCQYm0sQN0+MeZZxRGpave8EuaO3m
- 5u8vAXMEZ8keJN1WQ/39T2aUOUdN1Of20opdBH1oL/XwscQT5RRjze0r2Mk5uLeIcw8a
- 8JicSUM1taw2GsL8RygtJ8KW1PJIVQTTntJoocUgPyfyEl2cgHNY1NvksQv3oK2xO/oW
- 8EcieVDIsXwYs9hytXyS0PDdVmkmVrdpOJcV76b6tJOa2+CqNg73Ef3BLn8bgjCAhbS0
- 5mUQ==
-X-Gm-Message-State: AOJu0YzJ42OOCZ/UKSnX40RIY0UibrloeBB3ilQRdZm5p5kIvLIYf92x
- 7HBG6wryIasa/yA2sdsaQWmJxt1/wkEkAA==
-X-Google-Smtp-Source: AGHT+IF2WwwEpyoyb9/W8ty19pDaIbmxRMnVUO6PgOxQ0KD5k/FP77qiBTDCwK+xwkJJeh2impUiSg==
-X-Received: by 2002:a5d:4e07:0:b0:317:62c3:13a7 with SMTP id
- p7-20020a5d4e07000000b0031762c313a7mr69356wrt.19.1691514588656; 
- Tue, 08 Aug 2023 10:09:48 -0700 (PDT)
+ bh=JgfqNpuxkggtyaOumlpuSDtILW5+5vEXskfFi5ncc6E=;
+ b=SPxzMn1utBxU9ijoFlfDPID53J4Vv+9gztRTp8ArXbjEnO+w7ivqUjfpnLiiFfextA
+ IoNKSXKL6fU/9EaYUafbEvlIwZWia5Mj0aSYSBS+/x0USBh1s28Fpa6GFyDCeO8zpoeY
+ pE51W9n8qg6y+nDsETF4cBxtyl4eOUnVGJKfAKaMwijBtqO4/QqkFIZGAJIAy+K9qYPh
+ uEhItS2UbxzDwH68dkZlOKLH2Txt+rew5dMjM9HCesyEVgGTIlBRh7ualLamDFT8cYWu
+ vRPjKxJ6bkE4OeDwWW8QrCFyicYfMcWHMVF7lcAcmwvwy6x1Wd1cdZ84c5zx2lPpgosJ
+ eB3Q==
+X-Gm-Message-State: AOJu0YxLg6EMvGXKeZYp6QI7M18tQr3ztFDtmjIZ/eDjXD8UQ0KxXgIy
+ JvI/JSynMalpPN+v4RTJgov7VGdJwBPapw==
+X-Google-Smtp-Source: AGHT+IEl0YZa9tdPLWXRBi5h2x2XNhUKpWjFPl0QA88yD+w0PQBmV9jCqcfRj7O7g3TjO43P5wBoqg==
+X-Received: by 2002:a5d:4a0c:0:b0:314:2f5b:2ce with SMTP id
+ m12-20020a5d4a0c000000b003142f5b02cemr102668wrq.12.1691514589773; 
+ Tue, 08 Aug 2023 10:09:49 -0700 (PDT)
 Received: from karim.my.domain ([197.39.230.212])
  by smtp.gmail.com with ESMTPSA id
- j6-20020a5d6186000000b0031455482d1fsm14191663wru.47.2023.08.08.10.09.47
+ j6-20020a5d6186000000b0031455482d1fsm14191663wru.47.2023.08.08.10.09.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 08 Aug 2023 10:09:48 -0700 (PDT)
+ Tue, 08 Aug 2023 10:09:49 -0700 (PDT)
 From: Karim Taha <kariem.taha2.7@gmail.com>
 To: qemu-devel@nongnu.org
-Cc: imp@bsdimp.com, Michal Meloun <mmel@FreeBSD.org>,
+Cc: imp@bsdimp.com, Stacey Son <sson@FreeBSD.org>,
  Karim Taha <kariem.taha2.7@gmail.com>
-Subject: [PATCH 09/33] Add struct target_statfs to bsd-user/syscall_defs.h
-Date: Tue,  8 Aug 2023 08:07:51 +0200
-Message-Id: <20230808060815.9001-10-kariem.taha2.7@gmail.com>
+Subject: [PATCH 10/33] Add struct target_freebsd_fhandle and fcntl flags to
+ bsd-user/syscall_defs.h
+Date: Tue,  8 Aug 2023 08:07:52 +0200
+Message-Id: <20230808060815.9001-11-kariem.taha2.7@gmail.com>
 X-Mailer: git-send-email 2.40.0
 In-Reply-To: <20230808060815.9001-1-kariem.taha2.7@gmail.com>
 References: <20230808060815.9001-1-kariem.taha2.7@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=kariem.taha2.7@gmail.com; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=kariem.taha2.7@gmail.com; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -2
 X-Spam_score: -0.3
 X-Spam_bar: /
@@ -93,46 +94,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Michal Meloun <mmel@FreeBSD.org>
+From: Stacey Son <sson@FreeBSD.org>
 
-Signed-off-by: Michal Meloun <mmel@FreeBSD.org>
+Signed-off-by: Stacey Son <sson@FreeBSD.org>
 Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
 ---
- bsd-user/syscall_defs.h | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ bsd-user/syscall_defs.h | 51 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 51 insertions(+)
 
 diff --git a/bsd-user/syscall_defs.h b/bsd-user/syscall_defs.h
-index 06be8244de..ab59d00a47 100644
+index ab59d00a47..608731f0ac 100644
 --- a/bsd-user/syscall_defs.h
 +++ b/bsd-user/syscall_defs.h
-@@ -315,6 +315,31 @@ struct target_freebsd11_statfs {
-     char     f_mntonname[88];      /* dir on which mounted*/
+@@ -340,6 +340,57 @@ struct target_statfs {
+         char      f_mntonname[1024];    /* directory on which mounted */
  };
  
-+struct target_statfs {
-+        uint32_t f_version;             /* structure version number */
-+        uint32_t f_type;                /* type of filesystem */
-+        uint64_t f_flags;               /* copy of mount exported flags */
-+        uint64_t f_bsize;               /* filesystem fragment size */
-+        uint64_t f_iosize;              /* optimal transfer block size */
-+        uint64_t f_blocks;              /* total data blocks in filesystem */
-+        uint64_t f_bfree;               /* free blocks in filesystem */
-+        int64_t  f_bavail;              /* free blocks avail to non-superuser */
-+        uint64_t f_files;               /* total file nodes in filesystem */
-+        int64_t  f_ffree;               /* free nodes avail to non-superuser */
-+        uint64_t f_syncwrites;          /* count of sync writes since mount */
-+        uint64_t f_asyncwrites;         /* count of async writes since mount */
-+        uint64_t f_syncreads;           /* count of sync reads since mount */
-+        uint64_t f_asyncreads;          /* count of async reads since mount */
-+        uint64_t f_spare[10];           /* unused spare */
-+        uint32_t f_namemax;             /* maximum filename length */
-+        uint32_t f_owner;               /* user that mounted the filesystem */
-+        target_freebsd_fsid_t f_fsid;   /* filesystem id */
-+        char      f_charspare[80];      /* spare string space */
-+        char      f_fstypename[16];     /* filesystem type name */
-+        char      f_mntfromname[1024];  /* mounted filesystem */
-+        char      f_mntonname[1024];    /* directory on which mounted */
++/* File identifier. These are unique per filesystem on a single machine. */
++#define TARGET_MAXFIDSZ     16
++
++struct target_freebsd_fid {
++    u_short     fid_len;            /* len of data in bytes */
++    u_short     fid_data0;          /* force longword align */
++    char        fid_data[TARGET_MAXFIDSZ];  /* data (variable len) */
 +};
++
++/* Generic file handle */
++struct target_freebsd_fhandle {
++    target_freebsd_fsid_t   fh_fsid;    /* Filesystem id of mount point */
++    struct target_freebsd_fid fh_fid;   /* Filesys specific id */
++};
++typedef struct target_freebsd_fhandle target_freebsd_fhandle_t;
++
++/*
++ * sys/fcntl.h
++ */
++#define TARGET_F_DUPFD              0
++#define TARGET_F_GETFD              1
++#define TARGET_F_SETFD              2
++#define TARGET_F_GETFL              3
++#define TARGET_F_SETFL              4
++#define TARGET_F_GETOWN             5
++#define TARGET_F_SETOWN             6
++#define TARGET_F_OGETLK             7
++#define TARGET_F_OSETLK             8
++#define TARGET_F_OSETLKW            9
++#define TARGET_F_DUP2FD             10
++#define TARGET_F_GETLK              11
++#define TARGET_F_SETLK              12
++#define TARGET_F_SETLKW             13
++#define TARGET_F_SETLK_REMOTE       14
++#define TARGET_F_READAHEAD          15
++#define TARGET_F_RDAHEAD            16
++#define TARGET_F_DUPFD_CLOEXEC     17
++#define TARGET_F_DUP2FD_CLOEXEC    18
++/* FreeBSD-specific */
++#define TARGET_F_ADD_SEALS          19
++#define TARGET_F_GET_SEALS          20
++
++struct target_freebsd_flock {
++    int64_t l_start;
++    int64_t l_len;
++    int32_t l_pid;
++    int16_t l_type;
++    int16_t l_whence;
++    int32_t l_sysid;
++} QEMU_PACKED;
 +
  #define safe_syscall0(type, name) \
  type safe_##name(void) \
