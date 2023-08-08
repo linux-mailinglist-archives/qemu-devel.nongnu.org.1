@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B8707740EA
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 19:12:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC8777740DC
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 19:11:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTQDU-0001pQ-Ct; Tue, 08 Aug 2023 13:09:56 -0400
+	id 1qTQDT-0001my-Qm; Tue, 08 Aug 2023 13:09:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qTQDK-0001Ip-Cz
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 13:09:50 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ id 1qTQDM-0001J6-6P
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 13:09:52 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qTQDI-0003DK-8v
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 13:09:46 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-317c1845a07so4438533f8f.2
- for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 10:09:43 -0700 (PDT)
+ id 1qTQDJ-0003Dl-TD
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 13:09:47 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-31771a876b5so4448354f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 10:09:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1691514582; x=1692119382;
+ d=gmail.com; s=20221208; t=1691514583; x=1692119383;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=bOxU30OQoR5gvyMpClWPWHQIY25jis+H9qFBw5VwbPg=;
- b=OtSBoKL2dtPmLP5aei3/hLL9PflnHRdFxpG04rm1v8162CLheaEyN44zh9pe25iMKr
- WWhuh2mTLmdux92ilZ0sXsDgs0Z2daJnO5Fru4JGQlUImB8nDj/N85ElIxgvxfZ6tpz1
- bJVpsqIaowyxMd8tfLbJgZ9hshESZ/WVj7s3EVBKhEdVCqa9+5K/qvfnVfjq5NF/N2n7
- yaFSvhfJpk4IlR+4cGfzBa1Srpy5sYz8iSbLhD9wZNr3PXRIBU139ONO/caZLUfFWDz0
- r42tELxQxcHH7Pve2fpjIEpmZ8FZoghBiEuDaXEDw2s5QAXD+O+oy6OXQR0ZEbOOO5SQ
- 6s6Q==
+ bh=7kZtTdznoH+U4bgfI/CMYaMU7x//qT+7OQ+XS9L//to=;
+ b=R77DS3bPvX5rFmWX2soeJqz4Ie84EovIYroe5qz/hLkKdr7pOcrfe1sWRZoSbue3Gl
+ Fpz+G+awji88FKD70eLOJ864IpjmBJaQTmWa2Dt759tqE0qHJvrvWc8vYABLDkqvvoTp
+ QCVOK3pTYbV0qClxoAYpMUe3Mqg/UVW1giXVHRKx3/wz0O9VIBlJqx9sCcnq4PGbDkxV
+ +hE3Vev7fb0MytKijqv9EegCULKZbY31mv5LbR208a6BvHcdO+w3eZeg5MbanrwN3Egi
+ gp4v9P1x7f1hA98tZLXyyGC5SB7NNvVOm/avZBsMOWiLNHKOh/ayMBDopLNEuUdXxLz9
+ HL/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691514582; x=1692119382;
+ d=1e100.net; s=20221208; t=1691514583; x=1692119383;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bOxU30OQoR5gvyMpClWPWHQIY25jis+H9qFBw5VwbPg=;
- b=KSuROwEs4hfopAieL5TtxeVx+38QRr1ad6yGuvOXiGD0o9h97Figox3wo2MFVJHdiM
- t80E6/OSrbFpO4YmazzY+XAo9Ui1JRszEdaMcFc6e0+tpzDnGBSJQPNwZUeIQYVuQxq1
- Scid4oH1wKrdWNibTBq0ReZOCTSRd/5VKSnXYJz2FomChdgxp6ZJ49/jgoL0GOe/btq+
- DE4AXefOgVp3AzZ6ykCWV+tPeSeyDqD1NSwIOjIZH3tiJN32iPf3enz4ILuHKzt5+ox3
- tyLzY+yAiljlO8S2n+BswjwCUeccE9KNSfLKHURYuPIPJq9Tckuk3jf2f5lNFomZvuVq
- pi4A==
-X-Gm-Message-State: AOJu0YxcU0+Gb/Qp6Fh5w9s/qSPr4TSwqLWTIJGLo/gIDDRtDPp+A4zC
- G5UiYnwY8tsF0jvGIBtj1hT3I4Dc3CTs5g==
-X-Google-Smtp-Source: AGHT+IFyEtlnenLyPVQbPZjtEdHyXJOgflI2kXSj4LAp+h+gglAaQ4gXk60idnF9j2xQqgb2jvRntQ==
-X-Received: by 2002:a5d:4ec4:0:b0:316:f24b:597a with SMTP id
- s4-20020a5d4ec4000000b00316f24b597amr40942wrv.46.1691514581908; 
- Tue, 08 Aug 2023 10:09:41 -0700 (PDT)
+ bh=7kZtTdznoH+U4bgfI/CMYaMU7x//qT+7OQ+XS9L//to=;
+ b=VXS3M8p04oPlQ7v4I3Ai+NPaTwHzE7qoglXgubLnGACXinao+mxIrr7RnSEqlJMkEG
+ qS08kfAVogmvEV9MuDsNKfyovqcGKHKjewngvON7IaUnlW82he34GmzCqnbXIr8guo6d
+ e851AFRLSonfLzpFs+AFbAEGHk9Xc0N2bQmPUuzNGEqBm6RSO/JxI0duwQFAq+cSNUrC
+ IRlKuhB8a8RM30C597iqtDOw4VuSjcWAEL1h8EZAVxCRhg5GGwd0rlOwlERSjLL8vqE0
+ NCWYrdLVqNaBh3q9gkUnqRdfpcR9liTfwEjeDQg1xnhFQR1n8mPKNwHnxiicdAkRJmzK
+ OC7w==
+X-Gm-Message-State: AOJu0YzM7C13GHuEQvh7IdP6p0d380+4Muyeg7yCvsUMlAkqtNvsx0z4
+ 2PvPbQWtClhm9jmVMPRk5ZcKR5YPhYmxIA==
+X-Google-Smtp-Source: AGHT+IH4It7B/Iv0RiSZhuk+2t/EwvWixwpMbzPseaAbBa8E8+YaomdPv0CAwCyGyV6uAaQCBGXWaw==
+X-Received: by 2002:adf:df06:0:b0:317:5ed4:d821 with SMTP id
+ y6-20020adfdf06000000b003175ed4d821mr38317wrl.55.1691514583058; 
+ Tue, 08 Aug 2023 10:09:43 -0700 (PDT)
 Received: from karim.my.domain ([197.39.230.212])
  by smtp.gmail.com with ESMTPSA id
- j6-20020a5d6186000000b0031455482d1fsm14191663wru.47.2023.08.08.10.09.41
+ j6-20020a5d6186000000b0031455482d1fsm14191663wru.47.2023.08.08.10.09.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 08 Aug 2023 10:09:41 -0700 (PDT)
+ Tue, 08 Aug 2023 10:09:42 -0700 (PDT)
 From: Karim Taha <kariem.taha2.7@gmail.com>
 To: qemu-devel@nongnu.org
-Cc: imp@bsdimp.com,
-	Karim Taha <kariem.taha2.7@gmail.com>
-Subject: [PATCH 03/33] Update the definitions of __put_user and __get_user
- macros
-Date: Tue,  8 Aug 2023 08:07:45 +0200
-Message-Id: <20230808060815.9001-4-kariem.taha2.7@gmail.com>
+Cc: imp@bsdimp.com, Stacey Son <sson@FreeBSD.org>,
+ Karim Taha <kariem.taha2.7@gmail.com>
+Subject: [PATCH 04/33] Declarations of h2t and t2h conversion functions.
+Date: Tue,  8 Aug 2023 08:07:46 +0200
+Message-Id: <20230808060815.9001-5-kariem.taha2.7@gmail.com>
 X-Mailer: git-send-email 2.40.0
 In-Reply-To: <20230808060815.9001-1-kariem.taha2.7@gmail.com>
 References: <20230808060815.9001-1-kariem.taha2.7@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=kariem.taha2.7@gmail.com; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=kariem.taha2.7@gmail.com; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -2
 X-Spam_score: -0.3
 X-Spam_bar: /
@@ -94,146 +93,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Warner Losh <imp@bsdimp.com>
+From: Stacey Son <sson@FreeBSD.org>
 
-Use __builtin_choose_expr to avoid type promotion from ?:
-in __put_user_e and __get_user_e macros.
-Copied from linux-user/qemu.h, originally by Blue Swirl.
+Declarations of functions that convert between host and target structs.
 
-Signed-off-by: Warner Losh <imp@bsdimp.com>
+Signed-off-by: Stacey Son <sson@FreeBSD.org>
 Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
 ---
- bsd-user/qemu.h   | 81 ++++++++++++++++++++---------------------------
- bsd-user/signal.c |  5 +--
- 2 files changed, 35 insertions(+), 51 deletions(-)
+ bsd-user/freebsd/qemu-os.h | 35 +++++++++++++++++++++++++++++++++++
+ bsd-user/qemu.h            |  1 +
+ 2 files changed, 36 insertions(+)
+ create mode 100644 bsd-user/freebsd/qemu-os.h
 
+diff --git a/bsd-user/freebsd/qemu-os.h b/bsd-user/freebsd/qemu-os.h
+new file mode 100644
+index 0000000000..7ef4c55350
+--- /dev/null
++++ b/bsd-user/freebsd/qemu-os.h
+@@ -0,0 +1,35 @@
++/*
++ *  FreeBSD conversion extern declarations
++ *
++ *  Copyright (c) 2013 Stacey D. Son
++ *
++ *  This program is free software; you can redistribute it and/or modify
++ *  it under the terms of the GNU General Public License as published by
++ *  the Free Software Foundation; either version 2 of the License, or
++ *  (at your option) any later version.
++ *
++ *  This program is distributed in the hope that it will be useful,
++ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *  GNU General Public License for more details.
++ *
++ *  You should have received a copy of the GNU General Public License
++ *  along with this program; if not, see <http://www.gnu.org/licenses/>.
++ */
++
++#ifndef QEMU_OS_H
++#define QEMU_OS_H
++
++/* qemu/osdep.h pulls in the rest */
++
++#include <sys/acl.h>
++#include <sys/mount.h>
++#include <sys/timex.h>
++#include <sys/rtprio.h>
++#include <sys/select.h>
++#include <sys/socket.h>
++#include <netinet/in.h>
++
++struct freebsd11_stat;
++
++#endif /* QEMU_OS_H */
 diff --git a/bsd-user/qemu.h b/bsd-user/qemu.h
-index dfdfa8dd67..c41ebfe937 100644
+index c41ebfe937..1344c3fce6 100644
 --- a/bsd-user/qemu.h
 +++ b/bsd-user/qemu.h
-@@ -307,50 +307,37 @@ static inline bool access_ok(int type, abi_ulong addr, abi_ulong size)
- #define PRAGMA_REENABLE_PACKED_WARNING
- #endif
+@@ -38,6 +38,7 @@ extern char **environ;
+ #include "exec/gdbstub.h"
+ #include "qemu/clang-tsa.h"
  
--#define __put_user(x, hptr)\
--({\
--    int size = sizeof(*hptr);\
--    switch (size) {\
--    case 1:\
--        *(uint8_t *)(hptr) = (uint8_t)(typeof(*hptr))(x);\
--        break;\
--    case 2:\
--        *(uint16_t *)(hptr) = tswap16((typeof(*hptr))(x));\
--        break;\
--    case 4:\
--        *(uint32_t *)(hptr) = tswap32((typeof(*hptr))(x));\
--        break;\
--    case 8:\
--        *(uint64_t *)(hptr) = tswap64((typeof(*hptr))(x));\
--        break;\
--    default:\
--        abort();\
--    } \
--    0;\
--})
-+#define __put_user_e(x, hptr, e)                                            \
-+    do {                                                                    \
-+        PRAGMA_DISABLE_PACKED_WARNING;                                      \
-+        (__builtin_choose_expr(sizeof(*(hptr)) == 1, stb_p,                 \
-+        __builtin_choose_expr(sizeof(*(hptr)) == 2, stw_##e##_p,            \
-+        __builtin_choose_expr(sizeof(*(hptr)) == 4, stl_##e##_p,            \
-+        __builtin_choose_expr(sizeof(*(hptr)) == 8, stq_##e##_p, abort))))  \
-+            ((hptr), (x)), (void)0);                                        \
-+        PRAGMA_REENABLE_PACKED_WARNING;                                     \
-+    } while (0)
-+
-+#define __get_user_e(x, hptr, e)                                            \
-+    do {                                                                    \
-+        PRAGMA_DISABLE_PACKED_WARNING;                                      \
-+        ((x) = (typeof(*hptr))(                                             \
-+        __builtin_choose_expr(sizeof(*(hptr)) == 1, ldub_p,                 \
-+        __builtin_choose_expr(sizeof(*(hptr)) == 2, lduw_##e##_p,           \
-+        __builtin_choose_expr(sizeof(*(hptr)) == 4, ldl_##e##_p,            \
-+        __builtin_choose_expr(sizeof(*(hptr)) == 8, ldq_##e##_p, abort))))  \
-+            (hptr)), (void)0);                                              \
-+        PRAGMA_REENABLE_PACKED_WARNING;                                     \
-+    } while (0)
- 
--#define __get_user(x, hptr) \
--({\
--    int size = sizeof(*hptr);\
--    switch (size) {\
--    case 1:\
--        x = (typeof(*hptr))*(uint8_t *)(hptr);\
--        break;\
--    case 2:\
--        x = (typeof(*hptr))tswap16(*(uint16_t *)(hptr));\
--        break;\
--    case 4:\
--        x = (typeof(*hptr))tswap32(*(uint32_t *)(hptr));\
--        break;\
--    case 8:\
--        x = (typeof(*hptr))tswap64(*(uint64_t *)(hptr));\
--        break;\
--    default:\
--        x = 0;\
--        abort();\
--    } \
--    0;\
--})
-+
-+#if TARGET_BIG_ENDIAN
-+# define __put_user(x, hptr)  __put_user_e(x, hptr, be)
-+# define __get_user(x, hptr)  __get_user_e(x, hptr, be)
-+#else
-+# define __put_user(x, hptr)  __put_user_e(x, hptr, le)
-+# define __get_user(x, hptr)  __get_user_e(x, hptr, le)
-+#endif
- 
++#include "qemu-os.h"
  /*
-  * put_user()/get_user() take a guest address and check access
-@@ -363,10 +350,10 @@ static inline bool access_ok(int type, abi_ulong addr, abi_ulong size)
- ({                                                                      \
-     abi_ulong __gaddr = (gaddr);                                        \
-     target_type *__hptr;                                                \
--    abi_long __ret;                                                     \
-+    abi_long __ret = 0;                                                 \
-     __hptr = lock_user(VERIFY_WRITE, __gaddr, sizeof(target_type), 0);  \
-     if (__hptr) {                                                       \
--        __ret = __put_user((x), __hptr);                                \
-+        __put_user((x), __hptr);                                        \
-         unlock_user(__hptr, __gaddr, sizeof(target_type));              \
-     } else                                                              \
-         __ret = -TARGET_EFAULT;                                         \
-@@ -377,10 +364,10 @@ static inline bool access_ok(int type, abi_ulong addr, abi_ulong size)
- ({                                                                      \
-     abi_ulong __gaddr = (gaddr);                                        \
-     target_type *__hptr;                                                \
--    abi_long __ret;                                                     \
-+    abi_long __ret = 0;                                                 \
-     __hptr = lock_user(VERIFY_READ, __gaddr, sizeof(target_type), 1);   \
-     if (__hptr) {                                                       \
--        __ret = __get_user((x), __hptr);                                \
-+        __get_user((x), __hptr);                                        \
-         unlock_user(__hptr, __gaddr, 0);                                \
-     } else {                                                            \
-         (x) = 0;                                                        \
-diff --git a/bsd-user/signal.c b/bsd-user/signal.c
-index f4e078ee1d..4db85a3485 100644
---- a/bsd-user/signal.c
-+++ b/bsd-user/signal.c
-@@ -787,10 +787,7 @@ static int reset_signal_mask(target_ucontext_t *ucontext)
-     TaskState *ts = (TaskState *)thread_cpu->opaque;
- 
-     for (i = 0; i < TARGET_NSIG_WORDS; i++) {
--        if (__get_user(target_set.__bits[i],
--                    &ucontext->uc_sigmask.__bits[i])) {
--            return -TARGET_EFAULT;
--        }
-+        __get_user(target_set.__bits[i], &ucontext->uc_sigmask.__bits[i]);
-     }
-     target_to_host_sigset_internal(&blocked, &target_set);
-     ts->signal_mask = blocked;
+  * This struct is used to hold certain information about the image.  Basically,
+  * it replicates in user space what would be certain task_struct fields in the
 -- 
 2.40.0
 
