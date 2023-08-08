@@ -2,79 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70AFF773B07
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 17:37:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69C1E773B18
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 17:42:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTOkx-0003Kg-DC; Tue, 08 Aug 2023 11:36:23 -0400
+	id 1qTOpH-0004mt-Va; Tue, 08 Aug 2023 11:40:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qTOkl-0003KH-A5
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 11:36:12 -0400
-Received: from mout.gmx.net ([212.227.15.15])
+ (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
+ id 1qTOpG-0004kG-8G
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 11:40:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qTOke-00077M-N0
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 11:36:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1691508956; x=1692113756; i=deller@gmx.de;
- bh=RAhv/mrRqCBHbzsVOB+w7YZEzQnYNQ4Cnr4B7hpFjXQ=;
- h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
- b=habYe61+24Y0+2V7bgFuC3st4vyBWDKqEvW9Rshlzk6InCbXADC+R8lXyXY7CuH0BDmNwCe
- ROD3bAuRZjEro2WP2tyN6FNj8WNS83cflZKHkGkqAEnaY2QhzCRk0mO6l6T84kyITFoMfTDEC
- vz9fkgqBzSFxxMVTsqFr36CfAmLH2ZnUo94i6G55+HAWhKQskZ36hVmaJUecrp18eG5FYhrdl
- kAJ9cj8ka7jwyqLpPrtAsokTVwlbbj7QF3ctvQELbA7y3oHknQpspDPoYIbLCKFx3luIcMMdL
- zizvc2ainTTy6kStyzlqx+UtEoY22oG6ce8BOh+06lYwG6VsISLw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([94.134.144.175]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MCbIn-1qbtLL0cZH-009gp3; Tue, 08
- Aug 2023 17:35:56 +0200
-Message-ID: <82e20337-af08-bfdf-21bd-71e5bcaad635@gmx.de>
-Date: Tue, 8 Aug 2023 17:35:55 +0200
+ (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
+ id 1qTOpD-0008VD-Qt
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 11:40:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1691509245;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=+KR/40KWqYYeStz6CoBUBV1PDNpkwdo9VOhFseuWuHQ=;
+ b=iYV5erPunz2fJ5IDiNGbLPIn3IhCHtT4fAiSxn+VasAGVlG17S+IwbJdQRG7/u3RmuXo8b
+ 6eg+nYQXZcwQJCmD6CoD0qgl3j2gwZ6YYhHxIEsRRLDfrFql9z/ggBeoqiNG+byKasF4ZA
+ NrGPt/pG27/tAjcr9YEmEQBHlGOc1GI=
+Received: from mail-io1-f70.google.com (mail-io1-f70.google.com
+ [209.85.166.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-364-4mqV2z7FO6qNTB8_f5__GQ-1; Tue, 08 Aug 2023 11:40:44 -0400
+X-MC-Unique: 4mqV2z7FO6qNTB8_f5__GQ-1
+Received: by mail-io1-f70.google.com with SMTP id
+ ca18e2360f4ac-790b95a4871so551436539f.1
+ for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 08:40:44 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1691509243; x=1692114043;
+ h=content-transfer-encoding:mime-version:organization:references
+ :in-reply-to:message-id:subject:cc:to:from:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=+KR/40KWqYYeStz6CoBUBV1PDNpkwdo9VOhFseuWuHQ=;
+ b=F6NjyqEbR+nmoVQsyLC9AvhN5+LMjQKWgcg4CfAdvIqNic9A94G3oT0PruUnJa+uGy
+ fmUeW1CWcGNHwBQNxvDILbmRCanc368HTvr0SWcIyGE14Bt/dB+935/6OXdIoiR4KdSp
+ 0H2ZEFa1NqLfxfbYQFpR1WuTbO64sXbRw/HyomMEQ6cFDVwArMb9/5AielAESsJBmd83
+ OBULDahX6PB+pPcgRJhW9KDSTt1GufKcNlKZUZtqd3QhSMUYnXGUOGVlVav1xgu7k6hq
+ VIDQDiquIPqKK1Nj8E5XXjsy9tPEZOmeZptE33QW3m8RGNMHp1jWCZRkkI8iDwuZh7LC
+ 82/A==
+X-Gm-Message-State: AOJu0YxBUKSLEcfrrUPQ0Xtoo7c1rRGnPtN6QoV6N1geQgorSJ/fz35n
+ bhFIf5A8P2IAn4kXXIyQ44TXckPdS8Umq2+Zoq4heBiDk6cCMHb5xLxO/XdKwC1QLKl8dlUcf7p
+ k8Ii3wwzQDKTdo7k=
+X-Received: by 2002:a5d:9302:0:b0:790:9f26:26a2 with SMTP id
+ l2-20020a5d9302000000b007909f2626a2mr14708013ion.6.1691509243609; 
+ Tue, 08 Aug 2023 08:40:43 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHXpC/P0ty7uaoIxot3MYbmjlsIaNQNgf++E941au5kekJiwo0GZBIL5HVpNtINVaSnefN93A==
+X-Received: by 2002:a5d:9302:0:b0:790:9f26:26a2 with SMTP id
+ l2-20020a5d9302000000b007909f2626a2mr14707996ion.6.1691509243320; 
+ Tue, 08 Aug 2023 08:40:43 -0700 (PDT)
+Received: from redhat.com ([38.15.60.12]) by smtp.gmail.com with ESMTPSA id
+ eh11-20020a056638298b00b0042b46224650sm3122920jab.91.2023.08.08.08.40.42
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 08 Aug 2023 08:40:42 -0700 (PDT)
+Date: Tue, 8 Aug 2023 09:40:41 -0600
+From: Alex Williamson <alex.williamson@redhat.com>
+To: Laszlo Ersek <lersek@redhat.com>
+Cc: qemu-devel@nongnu.org, =?UTF-8?B?Q8OpZHJpYw==?= Le Goater <clg@redhat.com>
+Subject: Re: [PATCH] vfio/pci: hide ROM BAR on SFC9220 10/40G Ethernet
+ Controller PF
+Message-ID: <20230808094041.41ebe3b6.alex.williamson@redhat.com>
+In-Reply-To: <20230808145916.81657-1-lersek@redhat.com>
+References: <20230808145916.81657-1-lersek@redhat.com>
+Organization: Red Hat
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH for-8.1 v10 01/14] linux-user: Adjust task_unmapped_base
- for reserved_va
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com, philmd@linaro.org, laurent@vivier.eu,
- Akihiko Odaki <akihiko.odaki@daynix.com>
-References: <20230807163705.9848-1-richard.henderson@linaro.org>
- <20230807163705.9848-2-richard.henderson@linaro.org>
-From: Helge Deller <deller@gmx.de>
-In-Reply-To: <20230807163705.9848-2-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:UpcFCUowYdLjpXHQSiCprwXMmeVjjfRMpRC80Rao8twqvTszdXy
- 4Z3fG6dhwmDX/mB3l/2eNNpBCLgIjR1lp02bhic6BNS8u6NBOoMz32jhaMI41/o9r44CI2h
- 4NJGpWro3QXCdo7w/sxFlQVAp4iEqBVnXbMscfrqDlvsIKE+ThZTB9VtHVt1S3vsgtNQmQS
- OTM32bH7Q9Ak+1VrFb8gA==
-UI-OutboundReport: notjunk:1;M01:P0:+yfL4ecIaUw=;tqvL921qnerD3NR1od9Uw5Zv/OF
- FAu03gGvYfjYfda5rQj7KwDkRLYDnkj9UsJK2z4QNw+I9NoyChgn/Fm6Gr09uI2SzeefP9oWL
- 4CdMKNAbrNfhJqw9bgGquRfGty06wMZq8qsMEoMT5e87cG3pJAYvh2s1o1siLctywMkY/7oEm
- Ng1DVSpRCPYqB5HFyU8KmI40Vcl2QIFUvp0fKv5K/aMXM+iOvVrRSHUYITqDfIhN2jbOwjRrh
- B7/j/3vfqLQkyArhV8ml82alv6i87A+B2WLdcqvqJqQIFvAt4hPDXFVGutMz4Wt7tesWA6YEd
- whtB0nyT0ScsWssYM2oAc4sgT8MrmqM2SisGr9Wd37cMRUy6tq1o5q8D+2R52WASQIZlXI2Gg
- vfWMZLkF2i6jeDOwf00XKZR1ttQNpdaaUQNciIBYuM3BN1LkELzcv8VrD2EOCpo9m/sa3YH5k
- EFAL8DuI6DYnoPyM8p9WKrNiv3+3FKzE15E9JE3eZq607MBDXWhu4KBtkQqmZ4HFkeoO6l/P5
- VkU0wjC6EXbi1k6C5XbIiMA1Vy2OqNpEbW55eCSmaVzhhhB3aLDOxZejaxGYG+N7Cl1XAdzfu
- vWDDvT/8/CylvCHZjci1bQOz0qL0pZyA1+vuyH3/mLGGcfYC4pdGjmdhHmat8EyvgLlsB447x
- I2PkYIb0Zfpnqag7zLT+OUIEPySV3SxDrUY2D9puqktSOFZSSy3/9P778AfAAOWY+zS8MDse7
- ppo7Tnrui0eU9npF2R39qljlJHrQNYz4F9c4Hm8zjgQmRdZ5C1MtKvFUN7AZ9AXr/YnhyX5bC
- 0MxewH8dZoHVE+Wqx+gemHe9qsheJbL5ATzHR2Hv8e0ooUvSZI6dZLdmBAXNNuNUYNcTTBISk
- B3HA00T9iRT+cZdgnKBABAd85yP4rRpP0r/1eH+19Nu8v+HtLf7F+I9zdMemKBG9VSABxmwqV
- tyKvF4cYf8DPL6s+lLFuaVFKGvE=
-Received-SPF: pass client-ip=212.227.15.15; envelope-from=deller@gmx.de;
- helo=mout.gmx.net
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- NICE_REPLY_A=-4.14, RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=alex.williamson@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,86 +100,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Richard,
+On Tue,  8 Aug 2023 16:59:16 +0200
+Laszlo Ersek <lersek@redhat.com> wrote:
 
-On 8/7/23 18:36, Richard Henderson wrote:
-> Ensure that the chosen values for mmap_next_start and
-> task_unmapped_base are within the guest address space.
->
-> Tested-by: Helge Deller <deller@gmx.de>
-> Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> The Solarflare Communications SFC9220 NIC's physical function (PF) appears
+> to expose an expansion ROM with the following characteristics:
+>=20
+> (1) Single-image ROM, with only a legacy BIOS image (no UEFI driver).
+> Alex's rom-parser utility dumps it like this:
+>=20
+> > Valid ROM signature found @0h, PCIR offset 20h
+> >         PCIR: type 0 (x86 PC-AT), vendor: 1924, device: 0a03, class: 00=
+0002
+> >         PCIR: revision 3, vendor revision: 1
+> >         Last image =20
+>=20
+> (2) The BIOS image crashes when booted on i440fx.
+>=20
+> (3) The BIOS image prints the following messages on q35:
+>=20
+> > Solarflare Boot Manager (v5.2.2.1006)
+> > Solarflare Communications 2008-2019
+> > gPXE (http://etherboot.org) - [...] PCI[...] PnP PMM[...] =20
+>=20
+> So it appears like a modified derivative of old gPXE.
+>=20
+> Alex surmised in advance that the BIOS image could be accessing
+> host-physical addresses rather than guest-phys ones, leading to the crash
+> on i440fx.
 
-I've tested this whole series for quite some chroots.
-Good thing is, that all targets do run and can execute a static hello-worl=
-d
-program.
-So, overall that's good and I think the patch series should go in for 8.1.
+ROMs sometimes take shortcuts around the standard interfaces to the
+device and can therefore hit gaps in the virtualization, which is why
+that's suspect to me.  However if it works on q35 but not 440fx it
+might be more that we're not matching a PCI topology expectation of the
+ROM.  Was it only tested on 440fx attached to the root bus or does it
+also fail if the PF is attached downstream of a PCI-to-PCI bridge?
 
-Looking at the target's memmap I do see non-optimal heap-addresses for arm=
- and
-powerpc.
-I know it's not directly related to your patches, but we should later
-try to move the heap behind the executables where they can grow bigger.
+> Don't expose the option ROM BAR to the VM by default. While this prevents
+> netbooting the VM off the PF on q35/SeaBIOS (a relatively rare scenario),
+> it does not make any difference for UEFI, and at least the VM doesn't
+> crash during boot on i440fx/SeaBIOS (a relatively frequent scenario).
+> Users can restore the original behavior via the QEMU cmdline and the
+> libvirt domain XML.
+>=20
+> (In two years, we've not seen any customer interest in this bug, hence
+> there's no incentive to investigate (2).)
+>=20
+> Cc: Alex Williamson <alex.williamson@redhat.com> (supporter:VFIO)
+> Cc: "C=C3=A9dric Le Goater" <clg@redhat.com> (supporter:VFIO)
+> Bugzilla: https://bugzilla.redhat.com/show_bug.cgi?id=3D1975776
+> Signed-off-by: Laszlo Ersek <lersek@redhat.com>
+> ---
+>  hw/vfio/pci-quirks.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+>=20
+> diff --git a/hw/vfio/pci-quirks.c b/hw/vfio/pci-quirks.c
+> index f4ff83680572..270eb16b91fa 100644
+> --- a/hw/vfio/pci-quirks.c
+> +++ b/hw/vfio/pci-quirks.c
+> @@ -45,6 +45,10 @@ static const struct {
+>      uint32_t device;
+>  } rom_denylist[] =3D {
+>      { 0x14e4, 0x168e }, /* Broadcom BCM 57810 */
+> +    { 0x1924, 0x0a03 }, /* Solarflare Communications
+> +                         * SFC9220 10/40G Ethernet Controller
+> +                         * https://bugzilla.redhat.com/show_bug.cgi?id=
+=3D1975776
 
-Helge
+Unfortunately this is not a public bz so there's not much point in
+referencing it in public code or commit log :-\  Thanks,
 
-armel-chroot  and armhf-chroot:
-Linux p100 6.4.6-200.fc38.x86_64 #1 SMP PREEMPT_DYNAMIC Mon Jul 24 20:51:1=
-2 UTC 2023 armv7l GNU/Linux
-00021000-00042000 rw-p 00000000 00:00 0                                  [=
-heap]
-00400000-00408000 r-xp 00000000 fd:00 801471                             /=
-usr/bin/cat
-00408000-0041f000 ---p 00000000 00:00 0
-0041f000-00420000 r--p 0000f000 fd:00 801471                             /=
-usr/bin/cat
-00420000-00421000 rw-p 00010000 fd:00 801471                             /=
-usr/bin/cat
-40000000-40001000 ---p 00000000 00:00 0
-40001000-40801000 rw-p 00000000 00:00 0                                  [=
-stack]
-40801000-40827000 r-xp 00000000 fd:00 839152                             /=
-usr/lib/arm-linux-gnueabi/ld-linux.so.3
-40827000-40828000 r--p 00026000 fd:00 839152                             /=
-usr/lib/arm-linux-gnueabi/ld-linux.so.3
-40828000-40829000 rw-p 00027000 fd:00 839152                             /=
-usr/lib/arm-linux-gnueabi/ld-linux.so.3
-...
+Alex
 
-powerpc-chroot
-Linux p100 6.4.6-200.fc38.x86_64 #1 SMP PREEMPT_DYNAMIC Mon Jul 24 20:51:1=
-2 UTC 2023 ppc GNU/Linux
-00021000-00043000 rw-p 00000000 00:00 0                                  [=
-heap]
-001c0000-003d5000 r-xp 00000000 fd:00 577250                             /=
-usr/lib/powerpc-linux-gnu/libc.so.6
-003d5000-003eb000 ---p 00215000 fd:00 577250                             /=
-usr/lib/powerpc-linux-gnu/libc.so.6
-003eb000-003f0000 r--p 0021b000 fd:00 577250                             /=
-usr/lib/powerpc-linux-gnu/libc.so.6
-003f0000-003f1000 rw-p 00220000 fd:00 577250                             /=
-usr/lib/powerpc-linux-gnu/libc.so.6
-003f1000-003fb000 rw-p 00000000 00:00 0
-00400000-0040b000 r-xp 00000000 fd:00 535994                             /=
-usr/bin/cat
-0040b000-0041f000 ---p 00000000 00:00 0
-0041f000-00420000 r--p 0000f000 fd:00 535994                             /=
-usr/bin/cat
-00420000-00421000 rw-p 00010000 fd:00 535994                             /=
-usr/bin/cat
-40000000-40001000 ---p 00000000 00:00 0
-40001000-40801000 rw-p 00000000 00:00 0                                  [=
-stack]
-40801000-40834000 r-xp 00000000 fd:00 577246                             /=
-usr/lib/powerpc-linux-gnu/ld.so.1
-40834000-4084f000 ---p 00000000 00:00 0
-4084f000-40851000 r--p 0003e000 fd:00 577246                             /=
-usr/lib/powerpc-linux-gnu/ld.so.1
-40851000-40852000 rw-p 00040000 fd:00 577246                             /=
-usr/lib/powerpc-linux-gnu/ld.so.1
-40852000-40853000 r-xp 00000000 00:00 0
-40853000-40855000 rw-p 00000000 00:00 0
-
+> +                         */
+>  };
+> =20
+>  bool vfio_opt_rom_in_denylist(VFIOPCIDevice *vdev)
 
 
