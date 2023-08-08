@@ -2,75 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6175774553
+	by mail.lfdr.de (Postfix) with ESMTPS id E92CF774554
 	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 20:41:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTRdF-0001Zh-Ua; Tue, 08 Aug 2023 14:40:37 -0400
+	id 1qTRdJ-0001cG-1F; Tue, 08 Aug 2023 14:40:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jason.chien@sifive.com>)
- id 1qTRdB-0001WQ-RT
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 14:40:33 -0400
-Received: from mail-lj1-x22a.google.com ([2a00:1450:4864:20::22a])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qTRdG-0001be-O6
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 14:40:38 -0400
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jason.chien@sifive.com>)
- id 1qTRdA-0002l4-0Z
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 14:40:33 -0400
-Received: by mail-lj1-x22a.google.com with SMTP id
- 38308e7fff4ca-2b9338e4695so96960401fa.2
- for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 11:40:31 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qTRdF-0002lj-4p
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 14:40:38 -0400
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-686be28e1a8so4272126b3a.0
+ for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 11:40:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1691520029; x=1692124829;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=EBL/394En3TFgg5hXf3zvRoe4YyOVxe3ntLWODwwFLE=;
- b=aYJIN1brkaMVSCu+VNv3bL7N31CoolUzOOdtO5GQlx+dS7eaGaHGVQ1vhIOHHaodvJ
- f8NExtTF2nigF4LoYrSMbHQYrV8h8CSNKb5VUg+XRW7SE4z3++VLrPpNMNWmOH4HZ30r
- fWnp74ZWslveNurB7gPPsLTILV/KCnh2FPqwYggjHpdVyM4fqsnJMwh8b17rC6gHazDQ
- FCweydqrFgr23HTk2FCOOmU6WvjQkGadclhGDLHyTUQrq3e0Hh1mcc6qR4QSCunHZntN
- 3kjl16lHCEr/8z9xcpykN3UpwreDeuxg8mmApZPAo5Xn/N/mcVhvzjo8AN5kNQ5ABtKh
- ng/A==
+ d=linaro.org; s=google; t=1691520035; x=1692124835;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=sd6HOEFfq+SdO2BwaoyjTljBryW7Tlu9BRzjfNygjVg=;
+ b=MJvOHzICgVQlin/WljZs7txjO4eHgGorpvbdVKRnk2Zlund+fucuhAD9x0KdDOVL3H
+ kq1AuWlbxA5XmiPsEXhSRETDJ9nV3CJ220aEzVTB7SdRjM4DjwfJC8Y1UrdYF14ztcO/
+ kSLDrccQGCskp/15FIQMJOgSxPmZUIpzmTKlqB89+2gAagmq2sdBUJsykXsH9UQIiwqv
+ /+zK7J1Gsnmx4MRLgVe1pieTODhtx2ijBBc360k2s0FZOQbqrX7Abi3f0cL0Oqhl/h0t
+ LujKCORDjeLg8muqKbFCYU+cU4beSq/4taUt0GZzuNNXGB9nFcN3r2oYwbiQQeGdycx/
+ EiZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691520029; x=1692124829;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=EBL/394En3TFgg5hXf3zvRoe4YyOVxe3ntLWODwwFLE=;
- b=Cvytkl/bZd6OEdmsIFByVwM3URQ3SK8SbAjGVXKuFwI6YCiqAPObkzW7HPRRhR8c28
- 0IY0emHJvGQWCa/VBtEy19OHuImDtg15AukZVuSRkGH13QiLbmZLk7CcnjfeXMCLS8oM
- M9wo1bCoE9uG2CuiFk8Y43Ojw1DD45JQ1D5WsH9BFjuTwyOEF/cg5r7z0ZfLkuOEnxKw
- 3moIgOVyonRxtIcbJRfZ09URjvoLJHK0x7rOcOQ0Bhx6L50Hw0uYoCuVcyzEM4Nryv/1
- MZmbQV4CYdmO9OuJ5toxvLvoSFiF1qLIoI+aBgcz7XM/ttQ/e0kKrRVeCwl/BXv5yAeG
- PVLQ==
-X-Gm-Message-State: AOJu0YzIgKTWBRYSoQw7R+UiWIyuO02YfwMF6GBG6zt3VTsuyA1WSBTk
- 0UH8yAREthf0lPMfTBoJDKGa4L+e4AN767cBAA+HyutMmHkSPrBiTsI=
-X-Google-Smtp-Source: AGHT+IGIazrIx9NWgPCT7GlKXB83AE+tZbkRF/1/zsuGFbsKA9V+crw9Js/z0Q4yT8HZcmDMGmBWwq98NCh7b5j3cgA=
-X-Received: by 2002:a2e:9902:0:b0:2b9:eb9d:cc51 with SMTP id
- v2-20020a2e9902000000b002b9eb9dcc51mr229040lji.49.1691520029218; Tue, 08 Aug
- 2023 11:40:29 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1691520035; x=1692124835;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=sd6HOEFfq+SdO2BwaoyjTljBryW7Tlu9BRzjfNygjVg=;
+ b=WE5v+Xj0KbhWSsueUHAAimMVXFchswfNJL9W5bwpfQsCFMTcnnkXE1LD7AvfWpALbX
+ jlRveTUqGJQuE1rBiWP7QF+wNkFp2BUs1nrJAAohFIXYZATFG7A5Ls/z7ZveLwoYyFYK
+ OHlgbpWyeWC/8qOQ8IIqoqdH4u29tE+zZpVe2IO3MdZdIaNArmtE26v9QvuBlwRdAuiG
+ iIKwowrnPdZS2Bl0ALkqlJvUJfbnY77PdF1cQsB9Iyej4mTWOYi0pnfi27lupJxyJXKT
+ X+PCuqcV++NNlJt6CtJ7BWa5oAhi2f2ArWmT/JnKcrP5WYPBZOnhSfYPwDEyeFL8iuSj
+ GyTw==
+X-Gm-Message-State: AOJu0YxnyRgT+H4OLfTHo3nHZU4SAkksGE9tx7O0Zm7p2RHNmR8WKmyz
+ dIEvIwGwzO1wGqyCxSNbpq/rpA==
+X-Google-Smtp-Source: AGHT+IEpBctsmiw3GXrWwDABn0gHWixGKgUiBoSUEt3XIC5smgrjqw5EfMQBOxTsoC+G1plUhrDuqQ==
+X-Received: by 2002:a05:6a00:a88:b0:668:753a:b150 with SMTP id
+ b8-20020a056a000a8800b00668753ab150mr354741pfl.21.1691520035418; 
+ Tue, 08 Aug 2023 11:40:35 -0700 (PDT)
+Received: from ?IPV6:2602:47:d490:6901:63dc:2a47:f4bc:4a95?
+ ([2602:47:d490:6901:63dc:2a47:f4bc:4a95])
+ by smtp.gmail.com with ESMTPSA id
+ j8-20020aa78008000000b00686f0b15b06sm8394806pfi.188.2023.08.08.11.40.34
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 08 Aug 2023 11:40:34 -0700 (PDT)
+Message-ID: <9ce62de2-5f2f-5db6-e78f-de39620dcdc5@linaro.org>
+Date: Tue, 8 Aug 2023 11:40:33 -0700
 MIME-Version: 1.0
-References: <20230728082502.26439-1-jason.chien@sifive.com>
- <20230728082502.26439-2-jason.chien@sifive.com>
-In-Reply-To: <20230728082502.26439-2-jason.chien@sifive.com>
-From: Jason Chien <jason.chien@sifive.com>
-Date: Wed, 9 Aug 2023 02:40:17 +0800
-Message-ID: <CADr__8qQxfJTFsj0k59i9KZQAiZ8NGUqXhgDq0hPqXid-vUyWg@mail.gmail.com>
-Subject: Re: [PATCH 2/2] hw/intc: Make rtc variable names consistent
-To: qemu-devel@nongnu.org, qemu-riscv@nongnu.org
-Cc: Anup Patel <apatel@ventanamicro.com>,
- Alistair Francis <alistair.francis@wdc.com>, 
- Andrew Jones <ajones@ventanamicro.com>, 
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Content-Type: multipart/alternative; boundary="00000000000078fe4506026db272"
-Received-SPF: pass client-ip=2a00:1450:4864:20::22a;
- envelope-from=jason.chien@sifive.com; helo=mail-lj1-x22a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v4 07/11] target/loongarch: Add LA32 & VA32 to DisasContext
+Content-Language: en-US
+To: Jiajie Chen <c@jia.je>, qemu-devel@nongnu.org
+Cc: yijun@loongson.cn, shenjinyang@loongson.cn, gaosong@loongson.cn,
+ i.qemu@xen0n.name
+References: <20230808015506.1705140-1-c@jia.je>
+ <20230808015506.1705140-8-c@jia.je>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230808015506.1705140-8-c@jia.je>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42d.google.com
+X-Spam_score_int: -61
+X-Spam_score: -6.2
+X-Spam_bar: ------
+X-Spam_report: (-6.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-4.14,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -88,132 +97,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000078fe4506026db272
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On 8/7/23 18:54, Jiajie Chen wrote:
+> --- a/target/loongarch/translate.c
+> +++ b/target/loongarch/translate.c
+> @@ -119,6 +119,9 @@ static void loongarch_tr_init_disas_context(DisasContextBase *dcbase,
+>           ctx->vl = LSX_LEN;
+>       }
+>   
+> +    ctx->la32 = LOONGARCH_CPUCFG_ARCH(env, LA32);
+> +    ctx->va32 = (ctx->base.tb->flags & HW_FLAGS_VA32) != 0;
+> +
+>       ctx->zero = tcg_constant_tl(0);
+>   }
+>   
+> diff --git a/target/loongarch/translate.h b/target/loongarch/translate.h
+> index 7f60090580..828f1185d2 100644
+> --- a/target/loongarch/translate.h
+> +++ b/target/loongarch/translate.h
+> @@ -33,6 +33,8 @@ typedef struct DisasContext {
+>       uint16_t plv;
+>       int vl;   /* Vector length */
+>       TCGv zero;
+> +    bool la32; /* LoongArch32 mode */
 
-Hi,
-The patch seems to be ignored. I am not sure who to ping. Could someone
-please review this patch? Thank you!
-patch link:
-https://lore.kernel.org/qemu-devel/20230728082502.26439-2-jason.chien@sifiv=
-e.com/
+Because if the LA32 Restricted (or simplified), let's make this la64.
 
-Jason
+Otherwise,
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-On Fri, Jul 28, 2023 at 4:25=E2=80=AFPM Jason Chien <jason.chien@sifive.com=
-> wrote:
 
-> The variables whose values are given by cpu_riscv_read_rtc() should be
-> named
-> "rtc". The variables whose value are given by cpu_riscv_read_rtc_raw()
-> should be named "rtc_r".
->
-> Signed-off-by: Jason Chien <jason.chien@sifive.com>
-> ---
->  hw/intc/riscv_aclint.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/hw/intc/riscv_aclint.c b/hw/intc/riscv_aclint.c
-> index bf77e29a70..25cf7a5d9d 100644
-> --- a/hw/intc/riscv_aclint.c
-> +++ b/hw/intc/riscv_aclint.c
-> @@ -64,13 +64,13 @@ static void
-> riscv_aclint_mtimer_write_timecmp(RISCVAclintMTimerState *mtimer,
->      uint64_t next;
->      uint64_t diff;
->
-> -    uint64_t rtc_r =3D cpu_riscv_read_rtc(mtimer);
-> +    uint64_t rtc =3D cpu_riscv_read_rtc(mtimer);
->
->      /* Compute the relative hartid w.r.t the socket */
->      hartid =3D hartid - mtimer->hartid_base;
->
->      mtimer->timecmp[hartid] =3D value;
-> -    if (mtimer->timecmp[hartid] <=3D rtc_r) {
-> +    if (mtimer->timecmp[hartid] <=3D rtc) {
->          /*
->           * If we're setting an MTIMECMP value in the "past",
->           * immediately raise the timer interrupt
-> @@ -81,7 +81,7 @@ static void
-> riscv_aclint_mtimer_write_timecmp(RISCVAclintMTimerState *mtimer,
->
->      /* otherwise, set up the future timer interrupt */
->      qemu_irq_lower(mtimer->timer_irqs[hartid]);
-> -    diff =3D mtimer->timecmp[hartid] - rtc_r;
-> +    diff =3D mtimer->timecmp[hartid] - rtc;
->      /* back to ns (note args switched in muldiv64) */
->      uint64_t ns_diff =3D muldiv64(diff, NANOSECONDS_PER_SECOND,
-> timebase_freq);
->
-> --
-> 2.17.1
->
->
-
---00000000000078fe4506026db272
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">Hi,<div>The patch seems to be ignored. I am not sure who t=
-o ping. Could someone please review this patch? Thank you!</div><div>patch =
-link:=C2=A0<a href=3D"https://lore.kernel.org/qemu-devel/20230728082502.264=
-39-2-jason.chien@sifive.com/">https://lore.kernel.org/qemu-devel/2023072808=
-2502.26439-2-jason.chien@sifive.com/</a><br></div><div><br></div><div>Jason=
-</div></div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_=
-attr">On Fri, Jul 28, 2023 at 4:25=E2=80=AFPM Jason Chien &lt;<a href=3D"ma=
-ilto:jason.chien@sifive.com" target=3D"_blank">jason.chien@sifive.com</a>&g=
-t; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0p=
-x 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">The va=
-riables whose values are given by cpu_riscv_read_rtc() should be named<br>
-&quot;rtc&quot;. The variables whose value are given by cpu_riscv_read_rtc_=
-raw()<br>
-should be named &quot;rtc_r&quot;.<br>
-<br>
-Signed-off-by: Jason Chien &lt;<a href=3D"mailto:jason.chien@sifive.com" ta=
-rget=3D"_blank">jason.chien@sifive.com</a>&gt;<br>
----<br>
-=C2=A0hw/intc/riscv_aclint.c | 6 +++---<br>
-=C2=A01 file changed, 3 insertions(+), 3 deletions(-)<br>
-<br>
-diff --git a/hw/intc/riscv_aclint.c b/hw/intc/riscv_aclint.c<br>
-index bf77e29a70..25cf7a5d9d 100644<br>
---- a/hw/intc/riscv_aclint.c<br>
-+++ b/hw/intc/riscv_aclint.c<br>
-@@ -64,13 +64,13 @@ static void riscv_aclint_mtimer_write_timecmp(RISCVAcli=
-ntMTimerState *mtimer,<br>
-=C2=A0 =C2=A0 =C2=A0uint64_t next;<br>
-=C2=A0 =C2=A0 =C2=A0uint64_t diff;<br>
-<br>
--=C2=A0 =C2=A0 uint64_t rtc_r =3D cpu_riscv_read_rtc(mtimer);<br>
-+=C2=A0 =C2=A0 uint64_t rtc =3D cpu_riscv_read_rtc(mtimer);<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0/* Compute the relative hartid w.r.t the socket */<br>
-=C2=A0 =C2=A0 =C2=A0hartid =3D hartid - mtimer-&gt;hartid_base;<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0mtimer-&gt;timecmp[hartid] =3D value;<br>
--=C2=A0 =C2=A0 if (mtimer-&gt;timecmp[hartid] &lt;=3D rtc_r) {<br>
-+=C2=A0 =C2=A0 if (mtimer-&gt;timecmp[hartid] &lt;=3D rtc) {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0/*<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 * If we&#39;re setting an MTIMECMP value=
- in the &quot;past&quot;,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 * immediately raise the timer interrupt<=
-br>
-@@ -81,7 +81,7 @@ static void riscv_aclint_mtimer_write_timecmp(RISCVAclint=
-MTimerState *mtimer,<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0/* otherwise, set up the future timer interrupt */<br>
-=C2=A0 =C2=A0 =C2=A0qemu_irq_lower(mtimer-&gt;timer_irqs[hartid]);<br>
--=C2=A0 =C2=A0 diff =3D mtimer-&gt;timecmp[hartid] - rtc_r;<br>
-+=C2=A0 =C2=A0 diff =3D mtimer-&gt;timecmp[hartid] - rtc;<br>
-=C2=A0 =C2=A0 =C2=A0/* back to ns (note args switched in muldiv64) */<br>
-=C2=A0 =C2=A0 =C2=A0uint64_t ns_diff =3D muldiv64(diff, NANOSECONDS_PER_SEC=
-OND, timebase_freq);<br>
-<br>
--- <br>
-2.17.1<br>
-<br>
-</blockquote></div>
-
---00000000000078fe4506026db272--
+r~
 
