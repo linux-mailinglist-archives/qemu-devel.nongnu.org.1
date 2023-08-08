@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B574D773779
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 05:16:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1420277376B
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 05:13:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTD9b-0003vn-3J; Mon, 07 Aug 2023 23:13:03 -0400
+	id 1qTD9M-00033L-TR; Mon, 07 Aug 2023 23:12:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTD8x-0001ie-Ky
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 23:12:27 -0400
-Received: from mail-qk1-x72d.google.com ([2607:f8b0:4864:20::72d])
+ id 1qTD8y-0001ix-MB
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 23:12:25 -0400
+Received: from mail-ot1-x335.google.com ([2607:f8b0:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTD8f-0000MR-HV
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 23:12:23 -0400
-Received: by mail-qk1-x72d.google.com with SMTP id
- af79cd13be357-7658430eb5dso504655485a.2
- for <qemu-devel@nongnu.org>; Mon, 07 Aug 2023 20:12:04 -0700 (PDT)
+ id 1qTD8g-0000Mx-HX
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 23:12:24 -0400
+Received: by mail-ot1-x335.google.com with SMTP id
+ 46e09a7af769-6bcd4b5ebbaso3104042a34.1
+ for <qemu-devel@nongnu.org>; Mon, 07 Aug 2023 20:12:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691464324; x=1692069124;
+ d=linaro.org; s=google; t=1691464325; x=1692069125;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=kot5PEmuPDK/CyGN6ee3rwJzaEBsQpYk5OnUPUMG6UA=;
- b=H0N+6wB/55D91L4PTpoKFT2OnuU5j8OL6wf21rRD7/ElhRhjkxgLZeXS6+lGRXxs70
- 8oTmNS7p4OFVSizMFjF8Zch052RgqR4b6vSHzDdA1rRSq05gLWQc/AFvj8uNqmTot5hf
- ypU2YGUn6kIO5jzndI5UjBZvZhE+XP0+6HMWwvobAwVpr59+F27G2uMS7+9PUGB8Df8y
- 0s0z+f1ipIn3kV15qx9kOyylWkob8fy89sQBxFEwXCjPVT65k+1+JA8DzfkW6t4gNZqV
- wH4vkTc0i6G4YE+prbsf12FgN/MYTjyi89lql8gNDSGwLm2UwDBGrtVXlbVkUz/kw+0i
- OfwQ==
+ bh=6EOxe5rq5CkC99jUD9BB2Rzj7nk3YmOBqVYbqZbgC9Y=;
+ b=YtCr5WT4JZ7PqlIYfbJ/+eQoGlFj4dkbROp4d1fFu7DctOEAQoHHrNE7WBe/SNi93I
+ 5cwoVe3LPN5NxeeA1dbiZYYVVZDeL14Vz+BjYyqvMYK+RCZTOtJDhv1NvakTE9vqqj8N
+ PFYbY2sJfg+zJDAbLghbYT8095C0CwUTvY5DRxDIcBOwlBSedhEgqQzRhywT9cCpqGw5
+ n1ou6ExupjHpGBt7r1yA0RmPfqvawJzmDfDECX3K9dvXD7/WsezkL5wAaMXnlsEnBKmy
+ 9E6hPy/H4OGB6ANUQSovGvp/kny3oN/lXCcL9rrFmNFhFpEa0JL1pVVXe+F5VY1Iks0c
+ 1VxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691464324; x=1692069124;
+ d=1e100.net; s=20221208; t=1691464325; x=1692069125;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kot5PEmuPDK/CyGN6ee3rwJzaEBsQpYk5OnUPUMG6UA=;
- b=NomAPVvaCnSgkxJ4PbzMDcnLKfYYzTbeLU/glUuscTmrMI/xewR7R5Bofdda9F7dGq
- 7eIR4cp0HxV8bwbk9dEeuvoj/WlRvpDvksoOnvpDqan7Yq5PSwpuZjjfXT2vaC4VFvww
- uX0ps3z/P4Xp+YTY0BhcRl2YECvOxQ8mPan1h73NDT3rQn6ItSRGcwyGbbD5CBq1Y0VO
- /JeZKzPSRdI/fVVzMLPGH0xAB79ZkHCcaPD82R1sBDYpec5WUmdkIXuIyvp7eZQ7TLBY
- nxQd1hRGvZVtVe46HkqA+luPn3Ncbw1C2q7+GwCGnIgzuTkJf9YR9CWh0QpvwiM2Uu1n
- zVXw==
-X-Gm-Message-State: AOJu0YyqiB5JIFZiq1bc68uNqwzTa6d6durAC/fXfejENqKiSCoCVVu2
- +NLOryaae7g+Xv+ouGtmZ8DGG5wHT5A3h1dgVsg=
-X-Google-Smtp-Source: AGHT+IEakiThj1Rb9ehn6LEa7qPCgMd7v3VGPLIPoRx93Mf+hd0c72kgo/rLsMik90T1uPTG/o6q5Q==
-X-Received: by 2002:a05:620a:28d1:b0:76c:95a5:b86b with SMTP id
- l17-20020a05620a28d100b0076c95a5b86bmr18046091qkp.47.1691464324226; 
- Mon, 07 Aug 2023 20:12:04 -0700 (PDT)
+ bh=6EOxe5rq5CkC99jUD9BB2Rzj7nk3YmOBqVYbqZbgC9Y=;
+ b=C/c3nRt1AW5OMLImBw8J01152vV6OLUWqbgh52VhwuU3V3VtqqTeLfyOkiKtr9HPC+
+ b9jMuX+Qwe8xb9sYWHMJSQrkv0tbpsNiVTUC7eyVGP//WgNbaBcdAYp7Gd2QF7g3dQET
+ lNpsKCA1q7vlvm+K21sClrQeSXnHASr/Cyz7YtWZAQJIqxcbQLNxVSXRZdARfMvV5noh
+ A2/eMHTbku2S/CsALB/zTXNhEnZHBnGYlI6uiWD02A8vgQeqZ4f9UpLBL+qtTIjqnjpB
+ uJOQxZDomIcWCTl49ucutNi4i0o0ZNYlyO+CHfOfCU2S3vI6YPlS7BPl6M2VYaxLlhzX
+ dmrg==
+X-Gm-Message-State: AOJu0Yz7oINVT6HxIRzf3qw7LdBHO3EA2VNIvt/Mf09CNWqBHdSp6jUS
+ JE7fND4w5PCKXrR4dy5SZIgh2Sjm/pxdAe7yLQQ=
+X-Google-Smtp-Source: AGHT+IHCr4PhfMZNCUvy8TvETJhBBpSERO9GzvUcf0hprQ6HEDV5JSR9qKvwcufG1lIguTDPodmmHg==
+X-Received: by 2002:a05:6830:16c6:b0:6bc:f854:4850 with SMTP id
+ l6-20020a05683016c600b006bcf8544850mr4303146otr.4.1691464325089; 
+ Mon, 07 Aug 2023 20:12:05 -0700 (PDT)
 Received: from stoup.. ([2602:47:d490:6901:e306:567a:e0a1:341])
  by smtp.gmail.com with ESMTPSA id
- g64-20020a636b43000000b0055bf96b11d9sm5639087pgc.89.2023.08.07.20.12.03
+ g64-20020a636b43000000b0055bf96b11d9sm5639087pgc.89.2023.08.07.20.12.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 07 Aug 2023 20:12:03 -0700 (PDT)
+ Mon, 07 Aug 2023 20:12:04 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org, qemu-riscv@nongnu.org,
  qemu-s390x@nongnu.org
-Subject: [PATCH 22/24] tcg/i386: Clear dest first in tcg_out_setcond if
- possible
-Date: Mon,  7 Aug 2023 20:11:41 -0700
-Message-Id: <20230808031143.50925-23-richard.henderson@linaro.org>
+Subject: [PATCH 23/24] tcg/i386: Use shift in tcg_out_setcond
+Date: Mon,  7 Aug 2023 20:11:42 -0700
+Message-Id: <20230808031143.50925-24-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230808031143.50925-1-richard.henderson@linaro.org>
 References: <20230808031143.50925-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::72d;
- envelope-from=richard.henderson@linaro.org; helo=mail-qk1-x72d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::335;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x335.google.com
 X-Spam_score_int: 4
 X-Spam_score: 0.4
 X-Spam_bar: /
@@ -93,51 +92,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Using XOR first is both smaller and more efficient,
-though cannot be applied if it clobbers an input.
+For LT/GE vs zero, shift down the sign bit.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/i386/tcg-target.c.inc | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ tcg/i386/tcg-target.c.inc | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
 diff --git a/tcg/i386/tcg-target.c.inc b/tcg/i386/tcg-target.c.inc
-index e06ac638b0..cca49fe63a 100644
+index cca49fe63a..f68722b8a5 100644
 --- a/tcg/i386/tcg-target.c.inc
 +++ b/tcg/i386/tcg-target.c.inc
-@@ -1529,6 +1529,7 @@ static void tcg_out_setcond(TCGContext *s, int rexw, TCGCond cond,
-                             int const_arg2)
- {
-     bool inv = false;
-+    bool cleared;
+@@ -1575,6 +1575,21 @@ static void tcg_out_setcond(TCGContext *s, int rexw, TCGCond cond,
+         }
+         return;
  
-     switch (cond) {
-     case TCG_COND_NE:
-@@ -1578,9 +1579,23 @@ static void tcg_out_setcond(TCGContext *s, int rexw, TCGCond cond,
++    case TCG_COND_GE:
++        inv = true;
++        /* fall through */
++    case TCG_COND_LT:
++        /* If arg2 is 0, extract the sign bit. */
++        if (const_arg2 && arg2 == 0) {
++            tcg_out_mov(s, rexw ? TCG_TYPE_I64 : TCG_TYPE_I32, dest, arg1);
++            if (inv) {
++                tcg_out_modrm(s, OPC_GRP3_Ev + rexw, EXT3_NOT, dest);
++            }
++            tcg_out_shifti(s, SHIFT_SHR + rexw, dest, rexw ? 63 : 31);
++            return;
++        }
++        break;
++
+     default:
          break;
      }
- 
-+    /*
-+     * If dest does not overlap the inputs, clearing it first is preferred.
-+     * The XOR breaks any false dependency for the low-byte write to dest,
-+     * and is also one byte smaller than MOVZBL.
-+     */
-+    cleared = false;
-+    if (dest != arg1 && (const_arg2 || dest != arg2)) {
-+        tgen_arithr(s, ARITH_XOR, dest, dest);
-+        cleared = true;
-+    }
-+
-     tcg_out_cmp(s, rexw, arg1, arg2, const_arg2, false);
-     tcg_out_modrm(s, OPC_SETCC | tcg_cond_to_jcc[cond], 0, dest);
--    tcg_out_ext8u(s, dest, dest);
-+
-+    if (!cleared) {
-+        tcg_out_ext8u(s, dest, dest);
-+    }
- }
- 
- #if TCG_TARGET_REG_BITS == 32
 -- 
 2.34.1
 
