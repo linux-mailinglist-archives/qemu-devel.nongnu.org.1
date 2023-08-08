@@ -2,85 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A155774BA3
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 22:51:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2E8D774BA9
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 22:52:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTTfM-0001u1-QW; Tue, 08 Aug 2023 16:50:56 -0400
+	id 1qTTgi-0002cg-1u; Tue, 08 Aug 2023 16:52:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTTfK-0001to-NT
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 16:50:54 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <palmer@rivosinc.com>)
+ id 1qTTga-0002cH-F0
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 16:52:12 -0400
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTTfJ-0002kO-0G
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 16:50:54 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-686b9964ae2so4455133b3a.3
- for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 13:50:52 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <palmer@rivosinc.com>)
+ id 1qTTgY-0002pA-Jf
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 16:52:12 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-686ba29ccb1so191645b3a.1
+ for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 13:52:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691527851; x=1692132651;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=iyz9OgVtGeMYFF+Cug6ac8vBRxmckEeU505c+EM0mz8=;
- b=niWeAiSW4TIuQRYoklFeB5rui/LJcgr2AWeR3drcQyxKSiNqLheJHdiM3nCLQnQCm/
- HFgryPZ/hRHDsI8DHm93XgFafcMOBClnmBQ6fpyHBiaNbH1hsk/ruJe/wtFU0diymW3G
- gT5O5Svkznf89zV8UW8+E9RD02nKOzH5tGDSQtldwOr4q1rS3uXWqSjg80M4JsdnXAWf
- hVp0SY9j2hWrS+lmFAWlMdysofcmmjD8wX3yFkVXgJ2A+vHe15RWpEqDA3SDyoLY6UQA
- YjPk9OLXj/H2ZlLOYCJvJSwdHpTmI4J5bnzh5ztyqB2t7il+DsVCv5PDDzuBQnmZFRdm
- 7xJw==
+ d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1691527928; x=1692132728; 
+ h=content-transfer-encoding:mime-version:message-id:to:from:cc
+ :in-reply-to:subject:date:from:to:cc:subject:date:message-id
+ :reply-to; bh=bSKkwhdpLh/nnW86dzL18ZgpQUgswlv3SlQVDzBFYAM=;
+ b=ykD3gQhzhX1pV3f1AQ0zTF1p8ZgsAJlyCvDBr0G4LI7sAj2gGNHb2IyRVJM6tn7ra2
+ EIZN3bnaAY3LZJnH+GQLVpsJ81o/sKzc4DTDKtOU5RhaZEgeRVZslmONCJDYio2Pgdcd
+ jbjbHsp1cb0joXenSaP1DMbulF+k/7LbNxpK1wLv+MJ5MUkhli3v06B2KLZKMw3B/rBf
+ nZrjYxVciAw2uKLqfAth7pueiy+40iurEVlA+UrMU/aaxn2Ubu0WTpWLkNg/+BNtEGkq
+ DPfjoR+xUkTWxyq+heY7o4wQ41Docj3+qGYojAsbM9uB3GrpMOqAXUQ4ynDhNNBNft53
+ VhAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691527851; x=1692132651;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=iyz9OgVtGeMYFF+Cug6ac8vBRxmckEeU505c+EM0mz8=;
- b=RlgfrRfeBjBDXfQtema+GwBnVN/BPLGjGRBp8ppJgLFPlEUOlc2JuSTYl84LcpqutF
- Odd1QoAffyAUVOS3g02Bc9XVPGfP+ooV2cYtO46LSsRNyO+1Egzl+vddxai2cFhwPK9l
- W7hxyrskM3PXkCN9HCY7ynLPYwWlnmJ2IuFezFSqjzkcvcMkcwG3skJFR+kWq2L2RRpc
- 5RLWLSgWjJQA/eoC8BYVdpu1qPXz/9zjyXSwdkUkFlOUt3KNL/UysRTFf7m4+j2vE4Ah
- 6Jaziemj4fL0VnF2FgnlBA/gmplaavNgeGQWXU4BfDwk0xJKsrjiSn16icPmFd2S2mUg
- E1Ow==
-X-Gm-Message-State: AOJu0Yzu7tR7gipcnWO4YR/r8JMOQqOc86/K8Yem1CfydmZsHkssXjAR
- NpsdVXXFMMYFR2znn/5w7IZNSA==
-X-Google-Smtp-Source: AGHT+IHCACHWqW8PBzkjgNNZduO41JVqUASNFgqCHmV/D7V5f1+acRoFXGvcyoYZlPCuxBK/ZU3ohw==
-X-Received: by 2002:a05:6a20:244b:b0:138:60e:9c4 with SMTP id
- t11-20020a056a20244b00b00138060e09c4mr718332pzc.23.1691527851427; 
- Tue, 08 Aug 2023 13:50:51 -0700 (PDT)
-Received: from ?IPV6:2602:47:d490:6901:63dc:2a47:f4bc:4a95?
- ([2602:47:d490:6901:63dc:2a47:f4bc:4a95])
- by smtp.gmail.com with ESMTPSA id
- v10-20020a170902b7ca00b001b567bbe82dsm9453133plz.150.2023.08.08.13.50.50
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 08 Aug 2023 13:50:50 -0700 (PDT)
-Message-ID: <612acdbb-865d-0e32-9212-df9440a0e8bb@linaro.org>
-Date: Tue, 8 Aug 2023 13:50:49 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 02/33] Disable clang warnings arising from bsd-user/qemu.h
-Content-Language: en-US
-To: Karim Taha <kariem.taha2.7@gmail.com>, qemu-devel@nongnu.org
-Cc: imp@bsdimp.com, Kyle Evans <kevans@FreeBSD.org>
-References: <20230808060815.9001-1-kariem.taha2.7@gmail.com>
- <20230808060815.9001-3-kariem.taha2.7@gmail.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230808060815.9001-3-kariem.taha2.7@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
-X-Spam_score_int: -61
-X-Spam_score: -6.2
-X-Spam_bar: ------
-X-Spam_report: (-6.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-4.14,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ d=1e100.net; s=20221208; t=1691527928; x=1692132728;
+ h=content-transfer-encoding:mime-version:message-id:to:from:cc
+ :in-reply-to:subject:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=bSKkwhdpLh/nnW86dzL18ZgpQUgswlv3SlQVDzBFYAM=;
+ b=lIm+OtjZ65X2f4OVx7jzrXmxwtlPzFF2XChcOztXr1Vvlvjz0pSzfyrma8dxI4uqY2
+ vxrN4ox8VxgeoN6MCC9tiFOIbCfvme3kHLw6YQ7ewXbUSiVOEAjJ9L0oEhgIfiPoOPeE
+ Gb6wyKDtUDdr/LegmmREum5RYTV24p+71t3ktWRRhPqgADIxwG8w2U7YRbTAuuS6R0xB
+ PJXqrtVVPuZocu4PKekfPnERpaD0m0lynTIPT0nLzVVG9hyUN4OTJ6W4ExXgGK5kve9I
+ 1Fv2S1ckfJT4fetEJoqukE4tNUvfsPprJi/Wjn+xX36/1MKBYBHIgMQsdxUy7wNSd8TD
+ F+EA==
+X-Gm-Message-State: AOJu0YwWXvXtKXbvCh74Go8zeNaFLm7r5VSFgwYVlBYdhom7plXRYvX6
+ DfL0JrOB8KoxUnHt/qFbV8JO2g7T9pJuAHnRJ40=
+X-Google-Smtp-Source: AGHT+IE2bx46EEVIgjd8fhbe7L2qJfjEal+FFtlpPuvTZmM9ytzOVqVrwQvOjtS/A+4lUaCqe8MiNA==
+X-Received: by 2002:a05:6a20:3d82:b0:140:3775:308e with SMTP id
+ s2-20020a056a203d8200b001403775308emr1175541pzi.0.1691527928548; 
+ Tue, 08 Aug 2023 13:52:08 -0700 (PDT)
+Received: from localhost ([50.221.140.188]) by smtp.gmail.com with ESMTPSA id
+ l24-20020a62be18000000b006675c242548sm8448199pff.182.2023.08.08.13.52.08
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 08 Aug 2023 13:52:08 -0700 (PDT)
+Date: Tue, 08 Aug 2023 13:52:08 -0700 (PDT)
+X-Google-Original-Date: Tue, 08 Aug 2023 13:52:06 PDT (-0700)
+Subject: Re: [PATCH 1/2] riscv: zicond: make non-experimental
+In-Reply-To: <9fceb378-f079-e9ff-b8fe-da05b51fc1e1@rivosinc.com>
+CC: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
+ qemu-riscv@nongnu.org, Kito Cheng <kito.cheng@gmail.com>, jeffreyalaw@gmail.com
+From: Palmer Dabbelt <palmer@rivosinc.com>
+To: Vineet Gupta <vineetg@rivosinc.com>,
+ Alistair Francis <Alistair.Francis@wdc.com>
+Message-ID: <mhng-c8c16500-b5e6-4246-be18-849b74753d4d@palmer-ri-x1c9a>
+Mime-Version: 1.0 (MHng)
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=palmer@rivosinc.com; helo=mail-pf1-x435.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,30 +90,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/7/23 23:07, Karim Taha wrote:
-> +/*
-> + * Tricky points:
-> + * - Use __builtin_choose_expr to avoid type promotion from ?:,
-> + * - Invalid sizes result in a compile time error stemming from
-> + *   the fact that abort has no parameters.
-> + * - It's easier to use the endian-specific unaligned load/store
-> + *   functions than host-endian unaligned load/store plus tswapN.
-> + * - The pragmas are necessary only to silence a clang false-positive
-> + *   warning: see https://bugs.llvm.org/show_bug.cgi?id=39113 .
-> + * - We have to disable -Wpragmas warnings to avoid a complaint about
-> + *   an unknown warning type from older compilers that don't know about
-> + *   -Waddress-of-packed-member.
-> + * - gcc has bugs in its _Pragma() support in some versions, eg
-> + *   https://gcc.gnu.org/bugzilla/show_bug.cgi?id=83256 -- so we only
-> + *   include the warning-suppression pragmas for clang
+On Tue, 08 Aug 2023 11:45:49 PDT (-0700), Vineet Gupta wrote:
+>
+>
+> On 8/8/23 11:29, Richard Henderson wrote:
+>> On 8/8/23 11:17, Vineet Gupta wrote:
+>>> zicond is now codegen supported in both llvm and gcc.
+>>
+>> It is still not in
+>>
+>> https://wiki.riscv.org/display/HOME/Recently+Ratified+Extensions
+>
+> Right, its been frozen since April though and with support trickling in
+> rest of tooling it becomes harder to test.
+> I don't know what exactly QEMU's policy is on this ?
 
-Perhaps s/in some versions/prior to gcc-13/ ?
-At least that's what the bugzilla says, and it
-will help when auditing for compiler versions
-in a few years when gcc-12 is EOL.
+IIUC we'd historically marked stuff as non-experimental when it's 
+frozen, largely because ratification is such a nebulous process.  
+There's obviously risk there, but there's risk to anything.  Last I can 
+find is 260b594d8a ("RISC-V: Add Zawrs ISA extension support"), which 
+specifically calls out Zawrs as frozen and IIUC adds support without the 
+"x-" prefix.
 
-Either way,
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-
-r~
+I can't find anything written down about it, though...
 
