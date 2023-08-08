@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1266477405E
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 19:02:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E49F0774069
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 19:02:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTQ5m-0006np-PU; Tue, 08 Aug 2023 13:01:58 -0400
+	id 1qTQ5r-0006oT-2F; Tue, 08 Aug 2023 13:02:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qTQ5k-0006na-50
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 13:01:56 -0400
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qTQ5l-0006ni-Bs
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 13:01:57 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qTQ5g-0001JF-Kh
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 13:01:55 -0400
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-31771bb4869so5163242f8f.0
- for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 10:01:51 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qTQ5j-0001Je-6b
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 13:01:57 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-1bb9e6c2a90so51520115ad.1
+ for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 10:01:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691514110; x=1692118910;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=8sWzk+iqMQPwc27ifh0zhQTHTdP8jc9ACrpdnmO8nsw=;
- b=FvCTHvdI2ThWlEoHvGK7mM9sf8lLGsyCXavFQSqDS987u5rhD3UV8X7YigJU6bpdB/
- iSkG/XGzXoE6+HN3vumFl6BpWeqxWOHbr3UvFH5hMpmM70isLokZZaZUtpN79GFl7Oq4
- lMz2cW6ZgwKAqmOOej+soziWc9EyVYma2nlZRjFGt6Sl62ZATkIKjQXaSdGTdAov5Cs7
- tvsrTRJuhUGIx0klIaafE3+A23tY/vnhrjP6nv3MTvvlftTXQLQmOab+wCigFP4Mqgrx
- sEtx0gOmB/93N03AbMIAfaO41tmkz+Of9clpHiJv80vBbDclNrU5uYBNml26UwrQ+qXH
- 65aw==
+ d=linaro.org; s=google; t=1691514114; x=1692118914;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=xmzDpmTTwpXam9wqXKNk57K30hO9VOQ5tB1eaQaTSOU=;
+ b=j4vYLcZwUaofVU7+hiw2zz4ZZtBUYv48Poqh5SobhxOfWzhbp15f36MmHV9BhHJfxe
+ fVL9Npy9yi9k4xoov9YZtQo+pCnH1uP+0ZwjOUpf2waczdWB3iTPG28Ph7Z+REQ+eiqD
+ 6de6ld9MGAELVLZJwG78KCqVpr0RW+Jswm0qv8Tv6hJraHJikyj4EFF28MFgmocg/2Bx
+ y1Br+y7E3gnl2UbBxMDYXAk8vz4vICqZBKv0G/CfKFReB5IfDYgITHNEN+woICvall2N
+ tC1hFe6vvRh2OB0lYiJSeh3i+KKuxGYGJptqLhlbbbUL8mY+8XIxR5hskt8Ug99Gcwh9
+ Hhdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691514110; x=1692118910;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=8sWzk+iqMQPwc27ifh0zhQTHTdP8jc9ACrpdnmO8nsw=;
- b=H2WU0gHB5nW+Rrmyu5/B0xZCvfuH7XI1D1k1Z7XbS0N5+lRh7zducPGZd7xbrVLJkc
- lU/vEbzFavn5Gykx/+O8qHJFfDD0naIv9Qq1RiBtvJINwMWDV5L21fMAmu5KmTDFfVZx
- G5dIYFe1aXRn5IDl3VFOhr8qkPPF+YlUEDfYsTwWXXxE5L+9NpNiG6iL41DCX6kAkDDM
- H2byvuWMgcbZjJNx2pBXZbCwtF4XWFTL+ICR/Dv+pYZeXs47OeEmMQbYcu6ohqwke/NK
- EcwI0vELMuYc/cqZtC3EPwQ3BcnEYFNROV3KU7PPlbp2g1jPsLl8Nt1SHhgZBbt+BM3M
- reJA==
-X-Gm-Message-State: AOJu0YxAsW5MPlrvpZ3K8evEvxk5HHoEijAtOmadFdtQ3WHkKs6bovaY
- 0gW0ThbbAmc68zogOEJgJMbVhEgLJH/6Xc1ACFs=
-X-Google-Smtp-Source: AGHT+IFklKyeERlN1mT+m8XR+UovE4RmrqqxuYL9T3N++2SML7hd+MP9QNLHa/lSXsVsvWsA31OK7A==
-X-Received: by 2002:adf:e78d:0:b0:317:5b3b:89a1 with SMTP id
- n13-20020adfe78d000000b003175b3b89a1mr64292wrm.10.1691514110568; 
- Tue, 08 Aug 2023 10:01:50 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
+ d=1e100.net; s=20221208; t=1691514114; x=1692118914;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=xmzDpmTTwpXam9wqXKNk57K30hO9VOQ5tB1eaQaTSOU=;
+ b=jiFubSaSDpQjz5ZwT2kE13tx9eMlGKOeAhd6HYLwi1AHF7TydUaFszQ4u7NuKR6HSY
+ rKIloT2fALZ5JQAV3yZHb4s1DBSnOM9vVxSSDF2tEuutD/DMHC46UXcDcQ3VTB00lWBl
+ RstyapTDzBii2egtFEmhVe3eUzzibOX1FE2SsT3qJUuV79LziKqrPr69roqrYPsT4Ll6
+ XLmnPMS8CX1WI4rsLha3vnFhph59K69V/N9wuQTb6l3st4UmiM7Os+Ilvyu/9HQFiGof
+ CL84iKU+fsr/OYh1hblQPpQBn/3mR79TpswzVXzIYH0ndBnqxlAtkYi6nxjRi4sLlfCj
+ bIlA==
+X-Gm-Message-State: AOJu0YywqyEwHFNKEBPbQB69NvsEJdJMlgCKL0X4JmfMmfk9nv/g4soB
+ F7in0Jjb2HhkNSWff8KHSwjc3g==
+X-Google-Smtp-Source: AGHT+IFq2C4/30U+MjmQ5li0bWG4Ro6H0Prp3w/LVmq//oG0XknhdRG67pArSAqQ1jprD5QaYIQQrA==
+X-Received: by 2002:a17:903:44a:b0:1bb:cf4e:ccd with SMTP id
+ iw10-20020a170903044a00b001bbcf4e0ccdmr256674plb.28.1691514113447; 
+ Tue, 08 Aug 2023 10:01:53 -0700 (PDT)
+Received: from ?IPV6:2602:47:d490:6901:63dc:2a47:f4bc:4a95?
+ ([2602:47:d490:6901:63dc:2a47:f4bc:4a95])
  by smtp.gmail.com with ESMTPSA id
- s18-20020adfeb12000000b0031779a6b451sm14186033wrn.83.2023.08.08.10.01.50
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 08 Aug 2023 10:01:50 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id BBE6B1FFBB;
- Tue,  8 Aug 2023 18:01:49 +0100 (BST)
-References: <20230807163705.9848-1-richard.henderson@linaro.org>
-User-agent: mu4e 1.11.13; emacs 29.1.50
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: pbonzini@redhat.com, philmd@linaro.org, laurent@vivier.eu,
- deller@gmx.de, qemu-devel@nongnu.org
-Subject: Re: [PATCH for-8.1 v10 00/14] linux-user: image mapping fixes
-Date: Tue, 08 Aug 2023 18:00:31 +0100
-In-reply-to: <20230807163705.9848-1-richard.henderson@linaro.org>
-Message-ID: <87zg315uyq.fsf@linaro.org>
+ w21-20020a170902a71500b001b558c37f91sm9231257plq.288.2023.08.08.10.01.52
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 08 Aug 2023 10:01:53 -0700 (PDT)
+Message-ID: <68c43230-1198-5d46-5450-26b8f61bd09b@linaro.org>
+Date: Tue, 8 Aug 2023 10:01:51 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v4 01/11] target/loongarch: Add macro to check current arch
+Content-Language: en-US
+To: Jiajie Chen <c@jia.je>, qemu-devel@nongnu.org
+Cc: yijun@loongson.cn, shenjinyang@loongson.cn, gaosong@loongson.cn,
+ i.qemu@xen0n.name
+References: <20230808015506.1705140-1-c@jia.je>
+ <20230808015506.1705140-2-c@jia.je>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230808015506.1705140-2-c@jia.je>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
+X-Spam_score_int: -61
+X-Spam_score: -6.2
+X-Spam_bar: ------
+X-Spam_report: (-6.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-4.14,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -96,103 +97,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 8/7/23 18:54, Jiajie Chen wrote:
+> Add macro to check if the current cpucfg[1].arch equals to 1(LA32) or
+> 2(LA64).
+> 
+> Signed-off-by: Jiajie Chen <c@jia.je>
+> ---
+>   target/loongarch/cpu.h | 7 +++++++
+>   1 file changed, 7 insertions(+)
+> 
+> diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
+> index fa371ca8ba..bf0da8d5b4 100644
+> --- a/target/loongarch/cpu.h
+> +++ b/target/loongarch/cpu.h
+> @@ -132,6 +132,13 @@ FIELD(CPUCFG1, HP, 24, 1)
+>   FIELD(CPUCFG1, IOCSR_BRD, 25, 1)
+>   FIELD(CPUCFG1, MSG_INT, 26, 1)
+>   
+> +/* cpucfg[1].arch */
+> +#define CPUCFG1_ARCH_LA32        1
+> +#define CPUCFG1_ARCH_LA64        2
+> +
+> +#define LOONGARCH_CPUCFG_ARCH(env, mode) \
+> +  (FIELD_EX32(env->cpucfg[1], CPUCFG1, ARCH) == CPUCFG1_ARCH_##mode)
 
-Richard Henderson <richard.henderson@linaro.org> writes:
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-> This is the second half of
->
-> https://patchew.org/QEMU/20230804220032.295411-1-richard.henderson@linaro=
-.org/
->
-> which I held back because of regressions with s390x testing.
->
-> It turns out that patch 4, "Use MAP_FIXED_NOREPLACE for initial image mma=
-p"
-> actually triggered EEXIST, which meant that probe_guest_base did not
-> do its job to select unused host virtual memory.  It's a mystery why
-> we have not seen larger problems because of this.
->
-> As I kept digging, I found quite a number of problems within
-> probe_guest_base and its subroutines.  I have rewritten it completely.
-> Hopefully it is much easier to understand in its new form.
->
-> Testing this has been difficult, because it is most visible with
-> non-PIE executables, and most modern distros default to PIE, and
-> our current implementation of --disable-pie does not work.
+But in using this recall that 0 is a defined value for "simplified la32", so
 
-I should say:
+    !LOONGARCH_CPUCFG_ARCH(env, LA64)
 
-  [alex@aarch64:~/l/q/b/ci.all.linux.static] review/linux-user-mapping-v4|=
-=E2=80=A6 + retry.py -n 100 -c -- make check-tcg
+may not in future equal
 
-Gives:
+    LOONGARCH_CPUCFG_ARCH(env, LA32)
 
-  Results summary:
-  0: 100 times (100.00%), avg time 150.644 (14.47 varience/3.80 deviation)
-  Ran command 100 times, 100 passes
+it someone ever decides to implement this simplified version. (We emulate very small 
+embedded Arm cpus, so it's not out of the question that you may want to emulate the very 
+smallest LoongArch cpus.)
 
-which I think has squashed an intermittent bug plaguing CI so have a:
+It might be easier to just define
 
-Tested-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
-
-for the series.
-
-
->
->
-> r~
->
->
-> Helge Deller (1):
->   linux-user: Adjust initial brk when interpreter is close to executable
->
-> Richard Henderson (13):
->   linux-user: Adjust task_unmapped_base for reserved_va
->   linux-user: Define TASK_UNMAPPED_BASE in $guest/target_mman.h
->   linux-user: Define ELF_ET_DYN_BASE in $guest/target_mman.h
->   linux-user: Use MAP_FIXED_NOREPLACE for initial image mmap
->   linux-user: Use elf_et_dyn_base for ET_DYN with interpreter
->   linux-user: Do not adjust image mapping for host page size
->   linux-user: Do not adjust zero_bss for host page size
->   linux-user: Use zero_bss for PT_LOAD with no file contents too
->   util/selfmap: Rewrite using qemu/interval-tree.h
->   linux-user: Remove duplicate CPU_LOG_PAGE from probe_guest_base
->   linux-user: Consolidate guest bounds check in probe_guest_base
->   linux-user: Rewrite fixed probe_guest_base
->   linux-user: Rewrite non-fixed probe_guest_base
->
->  include/qemu/selfmap.h               |  20 +-
->  linux-user/aarch64/target_mman.h     |  13 +
->  linux-user/alpha/target_mman.h       |  11 +
->  linux-user/arm/target_mman.h         |  11 +
->  linux-user/cris/target_mman.h        |  12 +
->  linux-user/hexagon/target_mman.h     |  13 +
->  linux-user/hppa/target_mman.h        |   6 +
->  linux-user/i386/target_mman.h        |  16 +
->  linux-user/loongarch64/target_mman.h |  11 +
->  linux-user/m68k/target_mman.h        |   5 +
->  linux-user/microblaze/target_mman.h  |  11 +
->  linux-user/mips/target_mman.h        |  10 +
->  linux-user/nios2/target_mman.h       |  10 +
->  linux-user/openrisc/target_mman.h    |  10 +
->  linux-user/ppc/target_mman.h         |  20 +
->  linux-user/qemu.h                    |   1 -
->  linux-user/riscv/target_mman.h       |  10 +
->  linux-user/s390x/target_mman.h       |  20 +
->  linux-user/sh4/target_mman.h         |   7 +
->  linux-user/sparc/target_mman.h       |  25 +
->  linux-user/user-mmap.h               |   5 +-
->  linux-user/x86_64/target_mman.h      |  15 +
->  linux-user/xtensa/target_mman.h      |  10 +
->  linux-user/elfload.c                 | 788 +++++++++++++--------------
->  linux-user/main.c                    |  43 ++
->  linux-user/mmap.c                    |  19 +-
->  linux-user/syscall.c                 |  15 +-
->  util/selfmap.c                       | 114 ++--
->  28 files changed, 777 insertions(+), 474 deletions(-)
+static inline bool is_la64(CPULoongArch64 *env)
+{
+     return FIELD_EX32(env->cpucfg[1], CPUCFG1, ARCH) == CPUCFG1_ARCH_LA64;
+}
 
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+r~
 
