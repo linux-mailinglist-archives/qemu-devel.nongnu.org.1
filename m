@@ -2,91 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85D37774CFB
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 23:24:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19378774CFF
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 23:25:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTUBA-0005bM-Kc; Tue, 08 Aug 2023 17:23:48 -0400
+	id 1qTUCH-0006Mz-Ol; Tue, 08 Aug 2023 17:24:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qTUB8-0005aZ-7H
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 17:23:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qTUB6-0000V5-Lv
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 17:23:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691529823;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ZJtjkxpyExzGRDkmlguulXQVSBnY8m3jR93zJKi43y8=;
- b=GkqbLsTBICmHuVaDU9uLZb+yccPwmURdjnyD4TwMTD0xezT+ysRcuiEOQtGaBx4KrAHYEX
- xvxIoBl8jE+ELRnD/NTgXnj7StJdOW3gA+J6AOyEe4/0CB+4EXk8OMgVeTbHvM22LYnZHV
- b4XMNL0dwvykRYOv74zVtpX1neDObrM=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-632-5mMc94gIPZ6Nppn2RR1-OA-1; Tue, 08 Aug 2023 17:23:42 -0400
-X-MC-Unique: 5mMc94gIPZ6Nppn2RR1-OA-1
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-63cebe9238bso18026356d6.1
- for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 14:23:42 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qTUCF-0006Ma-Vr
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 17:24:56 -0400
+Received: from mail-oi1-x22c.google.com ([2607:f8b0:4864:20::22c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qTUCE-0000aK-Fq
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 17:24:55 -0400
+Received: by mail-oi1-x22c.google.com with SMTP id
+ 5614622812f47-3a5ad6087a1so3525081b6e.2
+ for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 14:24:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1691529893; x=1692134693;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=22TEvse9lAesR0zStf9Ij46h9t2KivkUat8oP9Qzq+E=;
+ b=LWTYtLLnqRXFbnGl/JERXlENPoASacqcNHhKRiUHrEX6TeO97BTZgjsN2O5a+7Q5UL
+ wfoPm1kNRdmGeMurDNQ1QcFqZ0oUWu2t3tAVt/wopl8Nfo9uVHZnN1lfZ3qUynqymio0
+ uplvBPnBS5V7Cveiq3N6YuXVEMNa3YSHRQYlm+P6ECRbyUPGQ1NLz+X0trGLGEE0x6Yo
+ UWaWq4pUngrCQAqTjxYNaK5V2HZEIdWn50JxdW9k897QBfVrMeAT46j7X3NZ5O/g79mB
+ HuY76nAMAgGZQuUO2CEjISjS5S2/K4zLy8HKSwUlLZVUJOM1TTBZZiH0D9nr1ifpXXsJ
+ y+sA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691529822; x=1692134622;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
+ d=1e100.net; s=20221208; t=1691529893; x=1692134693;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ZJtjkxpyExzGRDkmlguulXQVSBnY8m3jR93zJKi43y8=;
- b=OavdIKHDuXw2gKD+FRGoKm4v2k7LuGPgqA+Rt7lhUQ4UIIxjwF1VcG3jsehsXKVI7/
- KfuTuprnAXLytJvRztITpfeHAFnYPH6VpLg6dbvtr2n7jXQQGMY0T/IMJHB8jUXojc4N
- Ipl4fw0Q77rFFVwYMzLtf/9S6QPgtnYDAcodLkDgT/xNVRcgUcFuycHxgmuFzWWtKeFX
- msaKn3GxVI/4AUGNHspSrStQfs+RRQsufNAKBt5RM2sF+ElRoaPjDxXXue8H+O9x5j7+
- phsx7ZsYOC84w4O+sDDMdIXZ4ghbI2KDevKiFTR/7sV5Eb80kHmPK82IeFho+XbC1xiM
- Go5Q==
-X-Gm-Message-State: AOJu0YwbsLvABD882OxlT4HIcv+YB/pgHURGT6tDP89ek6XNLuWjKuU3
- urJkEmLdRRqyBP55j7nWGneYPxQmWAwshVol6Idz8iCuM5xV3X3I2tIj0rlWStVQvQR22/3O17e
- ASy+fJFzb1zmoCPc=
-X-Received: by 2002:a05:6214:2a82:b0:63c:f852:aa30 with SMTP id
- jr2-20020a0562142a8200b0063cf852aa30mr749333qvb.0.1691529821800; 
- Tue, 08 Aug 2023 14:23:41 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFitugVCTp0BJqmwNqTyUsWywkC49zDhqyzG31TC1819Pz+WEvwpydYDyEePbawKGLzPRY6ug==
-X-Received: by 2002:a05:6214:2a82:b0:63c:f852:aa30 with SMTP id
- jr2-20020a0562142a8200b0063cf852aa30mr749321qvb.0.1691529821517; 
- Tue, 08 Aug 2023 14:23:41 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- c12-20020a0ce14c000000b0063d162a8b8bsm3939345qvl.19.2023.08.08.14.23.40
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 08 Aug 2023 14:23:41 -0700 (PDT)
-Date: Tue, 8 Aug 2023 17:23:37 -0400
-From: Peter Xu <peterx@redhat.com>
-To: ~hyman <yong.huang@smartx.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>, Maintainers: 
- Juan Quintela <quintela@redhat.com>,
- Leonardo Bras <leobras@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>;
-Subject: Re: [PATCH QEMU v3 1/3] tests: Add migration dirty-limit capability
- test
-Message-ID: <ZNKyWfI7VNaLs2NK@x1n>
-References: <169146128144.15119.10176158487539386358-0@git.sr.ht>
- <169146128144.15119.10176158487539386358-1@git.sr.ht>
+ bh=22TEvse9lAesR0zStf9Ij46h9t2KivkUat8oP9Qzq+E=;
+ b=c38oplkOqcO7kYz7vSAYtOJ3s2NfXEUS8W7SQvvC1ICj+WLr1Ag1jdXmDLEY95+/0W
+ Hzkn3Ci/JkmloLbT0FwlTi8UDYxw6gJIaPX2WPwQ/N3CiRwvw0hjXVts0n/CEIM3bOPO
+ sGqMVlispIqNkLEV7vCXU9VRxi4vd7HWR94yULwXDntw8+Szj07II/FT0Cpt08OF5lAU
+ g+0pz/onqiqi+ILceNZHfITQrcCZOEab6Br6AVIRPGixZ9qyqeyB5d7ZdwUtqyuzjMXx
+ 2tkDNsy1RWAQZX4voDxdrJKphjW5tuAMyBAtZFeTdazpJ61IBQC6OEtPdyAY2sFeUc6J
+ afdA==
+X-Gm-Message-State: AOJu0YzYJQ5SRg8y2x0yhX2kxWQmJkBJ6uy4yoU2d455YYPuzTxn3IJp
+ vv2GDPH+t7ahv6SpdhEbX8jp1M+Ii7yshrgRmes=
+X-Google-Smtp-Source: AGHT+IEm/O8HB9e5VG6NvfCClaiSrFgFoGI7cEJKUwiQoSk+eXgVAUe0HML6pST7LuRORPXyzQgueA==
+X-Received: by 2002:aca:2415:0:b0:3a7:5314:e572 with SMTP id
+ n21-20020aca2415000000b003a75314e572mr935626oic.53.1691529893166; 
+ Tue, 08 Aug 2023 14:24:53 -0700 (PDT)
+Received: from ?IPV6:2602:47:d490:6901:63dc:2a47:f4bc:4a95?
+ ([2602:47:d490:6901:63dc:2a47:f4bc:4a95])
+ by smtp.gmail.com with ESMTPSA id
+ v1-20020a17090abb8100b0025bdc3454c6sm1399pjr.8.2023.08.08.14.24.52
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 08 Aug 2023 14:24:52 -0700 (PDT)
+Message-ID: <14d3fa60-0c91-66b7-7887-7854a6a5125a@linaro.org>
+Date: Tue, 8 Aug 2023 14:24:51 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <169146128144.15119.10176158487539386358-1@git.sr.ht>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 08/33] Add structs target_freebsd11_nstat and
+ target_freebsd11_statfs to bsd-user/syscall_defs.h
+Content-Language: en-US
+To: Karim Taha <kariem.taha2.7@gmail.com>, qemu-devel@nongnu.org
+Cc: imp@bsdimp.com, Stacey Son <sson@FreeBSD.org>
+References: <20230808060815.9001-1-kariem.taha2.7@gmail.com>
+ <20230808060815.9001-9-kariem.taha2.7@gmail.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230808060815.9001-9-kariem.taha2.7@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22c.google.com
+X-Spam_score_int: -61
+X-Spam_score: -6.2
+X-Spam_bar: ------
+X-Spam_report: (-6.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-4.14,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,34 +97,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jun 08, 2023 at 12:46:45AM +0800, ~hyman wrote:
-> From: Hyman Huang(黄勇) <yong.huang@smartx.com>
-> 
-> Add migration dirty-limit capability test if kernel support
-> dirty ring.
-> 
-> Migration dirty-limit capability introduce dirty limit
-> capability, two parameters: x-vcpu-dirty-limit-period and
-> vcpu-dirty-limit are introduced to implement the live
-> migration with dirty limit.
-> 
-> The test case does the following things:
-> 1. start src, dst vm and enable dirty-limit capability
-> 2. start migrate and set cancel it to check if dirty limit
->    stop working.
-> 3. restart dst vm
-> 4. start migrate and enable dirty-limit capability
-> 5. check if migration satisfy the convergence condition
->    during pre-switchover phase.
-> 
-> Note that this test case involves many passes, so it runs
-> in slow mode only.
-> 
-> Signed-off-by: Hyman Huang(黄勇) <yong.huang@smartx.com>
+On 8/7/23 23:07, Karim Taha wrote:
+> +    uint32_t   st_flags;    /* user defined flags for file */
+> +    __uint32_t st_gen;      /* file generation number */
 
-Acked-by: Peter Xu <peterx@redhat.com>
+Drop the __.
 
--- 
-Peter Xu
+> +    /* __int32_t  st_lspare; */
 
+Why commented out?
+
+> +    struct target_freebsd_timespec st_birthtim; /* time of file creation */
+
+Does that not place st_birthtim at the wrong place?
+
+
+r~
 
