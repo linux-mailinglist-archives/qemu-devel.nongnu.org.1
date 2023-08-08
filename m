@@ -2,85 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 605D9773AC4
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 16:48:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 686FE773AD2
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 17:00:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTNzl-0008WQ-E4; Tue, 08 Aug 2023 10:47:37 -0400
+	id 1qTOBE-0002gz-3L; Tue, 08 Aug 2023 10:59:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTNzV-0008ST-Qf
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 10:47:21 -0400
-Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTNzT-0000tq-G0
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 10:47:21 -0400
-Received: by mail-pj1-x102d.google.com with SMTP id
- 98e67ed59e1d1-2682e33509bso4116020a91.1
- for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 07:47:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691506038; x=1692110838;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=YqxlgfwsBzZZJGB03OjTy61Ik0nY2AvqboRprF4VLE4=;
- b=KBpdcEunsMNNdR34XFwsTPMHZBpa99ipPA5oJnGiKRjSXw46c9pgbEwkuoCm6v+Niz
- 9/vLCKsmGNES0C1Uq78hQPtkzXU9hYKecpY1KzWkJ6Oma4rkOGkDZdIQElwDizNwiCQl
- 7NuKDxNRsMmSA4M+SjdXwYnA9dVm2S6WXyHn59uRq2FhEikxP2p7MJOF6G6CbbazHZjj
- Mt/wP+ZJkkkctRu5YEnCoZKMtGZFETASRUoTX/VjrATflWZX/1m1Xmqw79EfqsPkSC4v
- uO32mjr416/XvBiqTbmUGC9emYX5CChI19Qatvi7NFtEQdj+jRhHZPUutQ6S4VGGq6GV
- DAqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691506038; x=1692110838;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=YqxlgfwsBzZZJGB03OjTy61Ik0nY2AvqboRprF4VLE4=;
- b=aNexxEqwQI1RT0fX3SbGr2jiFBzEzAYlozn/PWzqeebpZ56SMwFdI5BESh28it5Sd2
- A+UK5A958U6j6/bbHPXtfb5W/zsaMkiLoyxvo0AutA3yY1g+rRFw3tQbh1RyJuuFr/up
- L2a2oNsumVFQ/iPtSrqSBETe/ijdp3i9/qcla9h6Qczbdo+yiqB5uUFelP1kwEhM17rx
- JDdtYZiKdEdwl4LWWNKa+QNTfrK/phuJZMe49uMb17NjuN5vgMCB8nLKaCztbeEeh8r0
- AKGUtMZ0UVbePulWp0LZ3b4dE2jEWihBhdO5LU/wf3ke/wZvzTASx1nZ025G8q/yg3yi
- 13mg==
-X-Gm-Message-State: AOJu0YyyAmMtheIZpI8G/g+g5vcpEcZ5cHT2T6FQQFwxZKfiExHhv+MS
- FyVnzmovdpzdPZNwEljlE5USIQ==
-X-Google-Smtp-Source: AGHT+IGjbwiuDS8MAyMaf9Ca3Uh5TANLm/uFiJlir+EeiSMfS87ZYKN0MXd3NV3FFP4aRdnAfLvH1g==
-X-Received: by 2002:a17:90a:4308:b0:263:4815:cb9a with SMTP id
- q8-20020a17090a430800b002634815cb9amr11224976pjg.41.1691506037766; 
- Tue, 08 Aug 2023 07:47:17 -0700 (PDT)
-Received: from ?IPV6:2602:47:d490:6901:63dc:2a47:f4bc:4a95?
- ([2602:47:d490:6901:63dc:2a47:f4bc:4a95])
- by smtp.gmail.com with ESMTPSA id
- pq8-20020a17090b3d8800b00267b38f5e13sm8039756pjb.2.2023.08.08.07.47.17
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 08 Aug 2023 07:47:17 -0700 (PDT)
-Message-ID: <2cdaf4c5-2151-0acf-8bc9-55ab719e874f@linaro.org>
-Date: Tue, 8 Aug 2023 07:47:15 -0700
+ (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qTOBC-0002gQ-9N
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 10:59:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qTOBA-0003tX-0D
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 10:59:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1691506761;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=BaWdBayN+/XneRZ2rEWopSDSYzwiHS0GVLVdSuCFCH8=;
+ b=IIopsSQs82xIBSOjQ0wTo/cIcXL08q6U7r3UxcivKGOFxX6l6szOCmlM0oO1GPEpzoEsol
+ HtjqwAEzSOxMc+e0sFoo5S5Vvri94DEDDQZXv1R0vLd0+tFW29y5x2C/NloguyjvoGCQuO
+ EgQEuPGquUdML1kUiS8f3+wVGVsg5+g=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-26-qDs4D1V-PMWNSXa-v5GpBw-1; Tue, 08 Aug 2023 10:59:19 -0400
+X-MC-Unique: qDs4D1V-PMWNSXa-v5GpBw-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7C0B5800C78
+ for <qemu-devel@nongnu.org>; Tue,  8 Aug 2023 14:59:19 +0000 (UTC)
+Received: from lacos-laptop-9.usersys.redhat.com (unknown [10.39.194.241])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 87E9E492C13;
+ Tue,  8 Aug 2023 14:59:18 +0000 (UTC)
+From: Laszlo Ersek <lersek@redhat.com>
+To: lersek@redhat.com,
+	qemu-devel@nongnu.org
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PATCH] vfio/pci: hide ROM BAR on SFC9220 10/40G Ethernet Controller
+ PF
+Date: Tue,  8 Aug 2023 16:59:16 +0200
+Message-Id: <20230808145916.81657-1-lersek@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] Add support of callbacks after instructions to plugin api
-Content-Language: en-US
-To: Mikhail Tyutin <m.tyutin@yadro.com>, qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com, alex.bennee@linaro.org,
- Aleksandr Anenkov <a.anenkov@yadro.com>
-References: <20230808134435.2719-1-m.tyutin@yadro.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230808134435.2719-1-m.tyutin@yadro.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102d.google.com
-X-Spam_score_int: -61
-X-Spam_score: -6.2
-X-Spam_bar: ------
-X-Spam_report: (-6.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-4.14,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=lersek@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,16 +76,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/8/23 06:44, Mikhail Tyutin wrote:
-> Initially, we can only call the callback BEFORE instructions. This commit adds the ability to insert the callback AFTER instructions.
-> 
-> No callback call for control-flow instructions.
-
-You're going to miss whole categories of instructions, not just control-flow.  You're 
-going to miss anything that raises an exception.  The list goes on and on.  This is why we 
-didn't implement this "after" hook in the first place.
-
-
-r~
+VGhlIFNvbGFyZmxhcmUgQ29tbXVuaWNhdGlvbnMgU0ZDOTIyMCBOSUMncyBwaHlzaWNhbCBmdW5j
+dGlvbiAoUEYpIGFwcGVhcnMKdG8gZXhwb3NlIGFuIGV4cGFuc2lvbiBST00gd2l0aCB0aGUgZm9s
+bG93aW5nIGNoYXJhY3RlcmlzdGljczoKCigxKSBTaW5nbGUtaW1hZ2UgUk9NLCB3aXRoIG9ubHkg
+YSBsZWdhY3kgQklPUyBpbWFnZSAobm8gVUVGSSBkcml2ZXIpLgpBbGV4J3Mgcm9tLXBhcnNlciB1
+dGlsaXR5IGR1bXBzIGl0IGxpa2UgdGhpczoKCj4gVmFsaWQgUk9NIHNpZ25hdHVyZSBmb3VuZCBA
+MGgsIFBDSVIgb2Zmc2V0IDIwaAo+ICAgICAgICAgUENJUjogdHlwZSAwICh4ODYgUEMtQVQpLCB2
+ZW5kb3I6IDE5MjQsIGRldmljZTogMGEwMywgY2xhc3M6IDAwMDAwMgo+ICAgICAgICAgUENJUjog
+cmV2aXNpb24gMywgdmVuZG9yIHJldmlzaW9uOiAxCj4gICAgICAgICBMYXN0IGltYWdlCgooMikg
+VGhlIEJJT1MgaW1hZ2UgY3Jhc2hlcyB3aGVuIGJvb3RlZCBvbiBpNDQwZnguCgooMykgVGhlIEJJ
+T1MgaW1hZ2UgcHJpbnRzIHRoZSBmb2xsb3dpbmcgbWVzc2FnZXMgb24gcTM1OgoKPiBTb2xhcmZs
+YXJlIEJvb3QgTWFuYWdlciAodjUuMi4yLjEwMDYpCj4gU29sYXJmbGFyZSBDb21tdW5pY2F0aW9u
+cyAyMDA4LTIwMTkKPiBnUFhFIChodHRwOi8vZXRoZXJib290Lm9yZykgLSBbLi4uXSBQQ0lbLi4u
+XSBQblAgUE1NWy4uLl0KClNvIGl0IGFwcGVhcnMgbGlrZSBhIG1vZGlmaWVkIGRlcml2YXRpdmUg
+b2Ygb2xkIGdQWEUuCgpBbGV4IHN1cm1pc2VkIGluIGFkdmFuY2UgdGhhdCB0aGUgQklPUyBpbWFn
+ZSBjb3VsZCBiZSBhY2Nlc3NpbmcKaG9zdC1waHlzaWNhbCBhZGRyZXNzZXMgcmF0aGVyIHRoYW4g
+Z3Vlc3QtcGh5cyBvbmVzLCBsZWFkaW5nIHRvIHRoZSBjcmFzaApvbiBpNDQwZnguCgpEb24ndCBl
+eHBvc2UgdGhlIG9wdGlvbiBST00gQkFSIHRvIHRoZSBWTSBieSBkZWZhdWx0LiBXaGlsZSB0aGlz
+IHByZXZlbnRzCm5ldGJvb3RpbmcgdGhlIFZNIG9mZiB0aGUgUEYgb24gcTM1L1NlYUJJT1MgKGEg
+cmVsYXRpdmVseSByYXJlIHNjZW5hcmlvKSwKaXQgZG9lcyBub3QgbWFrZSBhbnkgZGlmZmVyZW5j
+ZSBmb3IgVUVGSSwgYW5kIGF0IGxlYXN0IHRoZSBWTSBkb2Vzbid0CmNyYXNoIGR1cmluZyBib290
+IG9uIGk0NDBmeC9TZWFCSU9TIChhIHJlbGF0aXZlbHkgZnJlcXVlbnQgc2NlbmFyaW8pLgpVc2Vy
+cyBjYW4gcmVzdG9yZSB0aGUgb3JpZ2luYWwgYmVoYXZpb3IgdmlhIHRoZSBRRU1VIGNtZGxpbmUg
+YW5kIHRoZQpsaWJ2aXJ0IGRvbWFpbiBYTUwuCgooSW4gdHdvIHllYXJzLCB3ZSd2ZSBub3Qgc2Vl
+biBhbnkgY3VzdG9tZXIgaW50ZXJlc3QgaW4gdGhpcyBidWcsIGhlbmNlCnRoZXJlJ3Mgbm8gaW5j
+ZW50aXZlIHRvIGludmVzdGlnYXRlICgyKS4pCgpDYzogQWxleCBXaWxsaWFtc29uIDxhbGV4Lndp
+bGxpYW1zb25AcmVkaGF0LmNvbT4gKHN1cHBvcnRlcjpWRklPKQpDYzogIkPDqWRyaWMgTGUgR29h
+dGVyIiA8Y2xnQHJlZGhhdC5jb20+IChzdXBwb3J0ZXI6VkZJTykKQnVnemlsbGE6IGh0dHBzOi8v
+YnVnemlsbGEucmVkaGF0LmNvbS9zaG93X2J1Zy5jZ2k/aWQ9MTk3NTc3NgpTaWduZWQtb2ZmLWJ5
+OiBMYXN6bG8gRXJzZWsgPGxlcnNla0ByZWRoYXQuY29tPgotLS0KIGh3L3ZmaW8vcGNpLXF1aXJr
+cy5jIHwgNCArKysrCiAxIGZpbGUgY2hhbmdlZCwgNCBpbnNlcnRpb25zKCspCgpkaWZmIC0tZ2l0
+IGEvaHcvdmZpby9wY2ktcXVpcmtzLmMgYi9ody92ZmlvL3BjaS1xdWlya3MuYwppbmRleCBmNGZm
+ODM2ODA1NzIuLjI3MGViMTZiOTFmYSAxMDA2NDQKLS0tIGEvaHcvdmZpby9wY2ktcXVpcmtzLmMK
+KysrIGIvaHcvdmZpby9wY2ktcXVpcmtzLmMKQEAgLTQ1LDYgKzQ1LDEwIEBAIHN0YXRpYyBjb25z
+dCBzdHJ1Y3QgewogICAgIHVpbnQzMl90IGRldmljZTsKIH0gcm9tX2RlbnlsaXN0W10gPSB7CiAg
+ICAgeyAweDE0ZTQsIDB4MTY4ZSB9LCAvKiBCcm9hZGNvbSBCQ00gNTc4MTAgKi8KKyAgICB7IDB4
+MTkyNCwgMHgwYTAzIH0sIC8qIFNvbGFyZmxhcmUgQ29tbXVuaWNhdGlvbnMKKyAgICAgICAgICAg
+ICAgICAgICAgICAgICAqIFNGQzkyMjAgMTAvNDBHIEV0aGVybmV0IENvbnRyb2xsZXIKKyAgICAg
+ICAgICAgICAgICAgICAgICAgICAqIGh0dHBzOi8vYnVnemlsbGEucmVkaGF0LmNvbS9zaG93X2J1
+Zy5jZ2k/aWQ9MTk3NTc3NgorICAgICAgICAgICAgICAgICAgICAgICAgICovCiB9OwogCiBib29s
+IHZmaW9fb3B0X3JvbV9pbl9kZW55bGlzdChWRklPUENJRGV2aWNlICp2ZGV2KQo=
 
 
