@@ -2,69 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B07BA77442A
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 20:16:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF620774462
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 20:18:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTRE9-00063v-O5; Tue, 08 Aug 2023 14:14:41 -0400
+	id 1qTRGq-0007jj-9h; Tue, 08 Aug 2023 14:17:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qTRE6-00063H-W6
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 14:14:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qTRE5-0004so-MW
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 14:14:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691518477;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=7NVu2LsdpSbDkyb2riWniYDRcMKsdf0tTivVS/I9UwM=;
- b=QpOCCMCSunVVe9IzP/Bq5PLN+9JsK1EEkrEUnxfd1mH75OThW5rlyVC03HfzNaAkhqyd+q
- BtfQddpRKXxstbUgMbDT94yDcYgJTNy9vsfm4TRKdc+d/Hyu1kl395yr/krQbODXYlzDXN
- gnJ98PKpD9/5ConkAav7FHxhp0vMTeM=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-384-od-HllrbN-2fYOKaRmmh3A-1; Tue, 08 Aug 2023 14:14:33 -0400
-X-MC-Unique: od-HllrbN-2fYOKaRmmh3A-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 150A63806736;
- Tue,  8 Aug 2023 18:14:33 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.16.35])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 1AD322166B25;
- Tue,  8 Aug 2023 18:14:31 +0000 (UTC)
-Date: Tue, 8 Aug 2023 13:14:30 -0500
-From: Eric Blake <eblake@redhat.com>
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>, 
- Fam Zheng <fam@euphon.net>, qemu-block@nongnu.org,
- Hanna Reitz <hreitz@redhat.com>
-Subject: Re: [PATCH 1/2] block: minimize bs->reqs_lock section in
- tracked_request_end()
-Message-ID: <yffykpkv4p4ihbat3ahowrf3mcvz42l5onktrsnefwxrmkxetl@j5luqc7v6wob>
-References: <20230808155852.2745350-1-stefanha@redhat.com>
- <20230808155852.2745350-2-stefanha@redhat.com>
+ (Exim 4.90_1) (envelope-from <vineetg@rivosinc.com>)
+ id 1qTRGk-0007ii-IO
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 14:17:23 -0400
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <vineetg@rivosinc.com>)
+ id 1qTRGi-0005fd-Sq
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 14:17:22 -0400
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-1bbc64f9a91so51209005ad.0
+ for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 11:17:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1691518638; x=1692123438; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=kquCB3S6DJznCAq/H5AtwqsePfIU1qyDH4Mkk6K35/Y=;
+ b=khdZrlcXeaaPKDopC4oHJQ6NWDHGQCTaf5f0xg3eY1ZrbJbW/Hzp1Kcv66ws86YW70
+ 4CHXi9tka3naY8eq/GB4wZofDo/KFnmSo1JMIwxPf5vGLI6RnFqX3bxfslJ8NJooRpy7
+ +cW53FlgLhzoKVKA2GP0bMITAIF7WOpNrQXhixvoJnsLKJtFndsxfu/HZ96FTltoM6Xy
+ /KlD5z9hejQLgUuFs8+tp0lCDg1j6RdbssSpkpjPnu6u4zGfJxcBHFtlywWQ7yCvpE16
+ OLmKAUuex+GoOOp7jCeG96B31opyfraMVm4OhVkRyOFlsQ9ufsYAKOvxFCNJtLnXLQJE
+ 73DA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1691518638; x=1692123438;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=kquCB3S6DJznCAq/H5AtwqsePfIU1qyDH4Mkk6K35/Y=;
+ b=D1DqxkP3JUeeSRt7v5rdqgVoHIJsCZUEGLmxxfnrvJaXZWOWoIKogRF7mO2TnnSpMa
+ iIrbT6m3Mrku3jkR4CAR8mast6tPle52Rm5sp18OS7uNIQ3mBjYwjmVgEUNB5rp2NOlC
+ Eg5A/MwhtPtatN7EJ9b7q9YECFrYjxnGXqlxPqwQ4jHNMpww66rmBpZ68xLPkevb/wWp
+ oOjkX+osUScfQszQ+I+f4QYexlz/nNXBJvljHXtgj31kr0NgkU9avqo9bejr/OLNPAtQ
+ Ht86DfKivmWpzv0c8hDU1cdUcdvyqyPKNBp5cX0h5UZzNmyQZnSwRNcGel7dVUJ6oEWG
+ GQKg==
+X-Gm-Message-State: AOJu0YzDVFOghX0fAWZINKFFasBjBkaUmEW3kYy9zmWElq0fFXnCZnP6
+ Nq5OaEhPK4c/AkNbTD/Pq19etYxlfDMqfnD5BOepTg==
+X-Google-Smtp-Source: AGHT+IHRNdTnFXFxEC3CcXKnerO5NqxX5uIBofvheXY2HtiNQUyU8T8uDRgT/CNyB1Z4+xuLBGsnGA==
+X-Received: by 2002:a17:902:be0a:b0:1b8:4f93:b210 with SMTP id
+ r10-20020a170902be0a00b001b84f93b210mr438848pls.45.1691518638513; 
+ Tue, 08 Aug 2023 11:17:18 -0700 (PDT)
+Received: from vineet-framework.hq.rivosinc.com ([50.221.140.188])
+ by smtp.gmail.com with ESMTPSA id
+ e5-20020a170902b78500b001a5fccab02dsm9337248pls.177.2023.08.08.11.17.17
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 08 Aug 2023 11:17:18 -0700 (PDT)
+From: Vineet Gupta <vineetg@rivosinc.com>
+To: qemu-devel@nongnu.org,
+	qemu-riscv@nongnu.org
+Cc: kito.cheng@gmail.com, Jeff Law <jeffreyalaw@gmail.com>,
+ Palmer Dabbelt <palmer@rivosinc.com>, Vineet Gupta <vineetg@rivosinc.com>
+Subject: [PATCH 1/2] riscv: zicond: make non-experimental
+Date: Tue,  8 Aug 2023 11:17:14 -0700
+Message-Id: <20230808181715.436395-1-vineetg@rivosinc.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230808155852.2745350-2-stefanha@redhat.com>
-User-Agent: NeoMutt/20230517
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=vineetg@rivosinc.com; helo=mail-pl1-x62b.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,43 +89,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Aug 08, 2023 at 11:58:51AM -0400, Stefan Hajnoczi wrote:
-> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-> ---
->  block/io.c | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
+zicond is now codegen supported in both llvm and gcc.
 
-Reviewed-by: Eric Blake <eblake@redhat.com>
+This change allows seamless enabling/testing of zicond in downstream
+projects. e.g. currently riscv-gnu-toolchain parses elf attributes
+to create a cmdline for qemu but fails short of enabling it because of
+the "x-" prefix.
 
-> 
-> diff --git a/block/io.c b/block/io.c
-> index 055fcf7438..85d5176256 100644
-> --- a/block/io.c
-> +++ b/block/io.c
-> @@ -593,8 +593,14 @@ static void coroutine_fn tracked_request_end(BdrvTrackedRequest *req)
->  
->      qemu_co_mutex_lock(&req->bs->reqs_lock);
->      QLIST_REMOVE(req, list);
-> +    qemu_co_mutex_unlock(&req->bs->reqs_lock);
-> +
-> +    /*
-> +     * At this point qemu_co_queue_wait(&req->wait_queue, ...) won't be called
-> +     * anymore because the request has been removed from the list, so it's safe
-> +     * to restart the queue outside reqs_lock to minimize the critical section.
-> +     */
->      qemu_co_queue_restart_all(&req->wait_queue);
-> -    qemu_co_mutex_unlock(&req->bs->reqs_lock);
->  }
->  
->  /**
-> -- 
-> 2.41.0
-> 
-> 
+Signed-off-by: Vineet Gupta <vineetg@rivosinc.com>
+---
+ target/riscv/cpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 6b93b04453c8..022bd9d01223 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -1816,6 +1816,7 @@ static Property riscv_cpu_extensions[] = {
+     DEFINE_PROP_BOOL("zcf", RISCVCPU, cfg.ext_zcf, false),
+     DEFINE_PROP_BOOL("zcmp", RISCVCPU, cfg.ext_zcmp, false),
+     DEFINE_PROP_BOOL("zcmt", RISCVCPU, cfg.ext_zcmt, false),
++    DEFINE_PROP_BOOL("zicond", RISCVCPU, cfg.ext_zicond, false),
+ 
+     /* Vendor-specific custom extensions */
+     DEFINE_PROP_BOOL("xtheadba", RISCVCPU, cfg.ext_xtheadba, false),
+@@ -1832,7 +1833,6 @@ static Property riscv_cpu_extensions[] = {
+     DEFINE_PROP_BOOL("xventanacondops", RISCVCPU, cfg.ext_XVentanaCondOps, false),
+ 
+     /* These are experimental so mark with 'x-' */
+-    DEFINE_PROP_BOOL("x-zicond", RISCVCPU, cfg.ext_zicond, false),
+ 
+     /* ePMP 0.9.3 */
+     DEFINE_PROP_BOOL("x-epmp", RISCVCPU, cfg.epmp, false),
 -- 
-Eric Blake, Principal Software Engineer
-Red Hat, Inc.
-Virtualization:  qemu.org | libguestfs.org
+2.34.1
 
 
