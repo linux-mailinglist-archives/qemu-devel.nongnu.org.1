@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 968F4773917
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 10:36:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59398773916
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 10:35:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTIBa-0004Gq-9j; Tue, 08 Aug 2023 04:35:26 -0400
+	id 1qTIBc-0004Hn-Rq; Tue, 08 Aug 2023 04:35:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1qTIBW-0004EY-K5; Tue, 08 Aug 2023 04:35:22 -0400
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ id 1qTIBa-0004Gt-Ed; Tue, 08 Aug 2023 04:35:26 -0400
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1qTIBU-0004NZ-SU; Tue, 08 Aug 2023 04:35:22 -0400
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-1bb9e6c2a90so47333175ad.1; 
- Tue, 08 Aug 2023 01:35:20 -0700 (PDT)
+ id 1qTIBY-0004OW-Gm; Tue, 08 Aug 2023 04:35:26 -0400
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-1bc63ef9959so21429825ad.2; 
+ Tue, 08 Aug 2023 01:35:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1691483719; x=1692088519;
+ d=gmail.com; s=20221208; t=1691483723; x=1692088523;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
  :message-id:reply-to;
- bh=MWMOGoc8MASPMcsU31cUu07Cy8VS8fV2qqbIFZ8ZRM4=;
- b=O7I2GHz3pePM5KHN3n6+EDN3VIVAzU9mzShvCm4se3bzh1fsuySNKsHGXTnrN0n54W
- udkDvCs2LHTuFtWEuDFNe4MEEIp7yUEbADKN9sm4LdAj2c1PzHELSM9MCFIK67sqR8ea
- U3SsSPQMbgZBIzEdCjo8FwpboRSbwBVWsygVkTFPjuguHzcrrVKjKXaK1g5p56SXGrGu
- tWMt5zAs8rfLg7JdmtotxhZDrPOanaUop5VUUhrskXOE8Fp8J4eFWVsXPpurLrKcdLHE
- bb4GnUOrDGYJ1INSNI0pzSkAzSgRNpqvPS4uF3zwKqol/8ZV9nHSU4bmF8X1qA0+Wd/3
- VW0A==
+ bh=t1Q3AW38/jlyIYsf1v5VwYdbz/llnbPCbq6k0gn8DVI=;
+ b=K4Xl43cnrur2Qa1cIDK0WFZhemvllhcK+8T06QdJl9IT0eiQnqgCHbXn9yzz9d0VmR
+ 1srxKAYzOSQwSgpCuh+ZyJ5MCQ0qE++jdlpKFHvRddxwY98PTO1vkXCJN4CMPzMVAKz7
+ OXsIsPsZxshM1VtfVmXOwLBSNoiDfcfRZuFhmRA0y/zCNSyUMjX7tvtl9wdZYQFR5ifH
+ KMn+ZiWnIocTCOjsRhLwttRbNqUIXzPExXSahskQlq1whpA9RJiZXQ5ZNoY3q9CrvfC7
+ yoYAZYkdmP4azAgsOMdoVW/lAiyhsk8fkeFLVAOGeELwzp62QLvVD3ID6aUaeFbfzk3O
+ QQtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691483719; x=1692088519;
+ d=1e100.net; s=20221208; t=1691483723; x=1692088523;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:sender:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=MWMOGoc8MASPMcsU31cUu07Cy8VS8fV2qqbIFZ8ZRM4=;
- b=ZS/wfjo23pDbuD/rN1WmISjYiDOgMwdhZBKGQLP/4R0P+CkpOkaSkF7nTxgKfhVUeN
- shaieziXvlcif4mv9sDb8G5iSgm8OqjA4d/BdBLQyYPWTThP+dLqyEyop/DWULEvbZ4N
- RqiiWKhWltlDEaCeNHwcImmRpWeu7a8QUyfq+53lflYFJRVE212scv877vTQwy3mHibS
- LjCvtU0NEhJS9eeOuoFMo2ZvzA1BuXfEWUzJfjDjnSQY3QC4vvc3w23HctcPsTPNP/v6
- psl7jFXegsWi+DPNotJh2rwevktt9jpIwyOzhSyeePEEk83hpQGBj+h3h1/Q8TjEvL3A
- 85Tg==
-X-Gm-Message-State: AOJu0Yxlp1kU0T5HAgUBPv+ELhuMusnm3wQCqdaxd02L0J4LBqS2t00I
- ylMXST6saX/nIJLP+bR1/WA=
-X-Google-Smtp-Source: AGHT+IG59e9fus6Zmhixy7PaaeyZ5/iOnVQp4Ehx2vr6gdKH1VB/oLYe7sD/PLJ0CxU/7caNcXDmnA==
-X-Received: by 2002:a17:902:c952:b0:1ac:5717:fd5 with SMTP id
- i18-20020a170902c95200b001ac57170fd5mr15884799pla.60.1691483719130; 
- Tue, 08 Aug 2023 01:35:19 -0700 (PDT)
+ bh=t1Q3AW38/jlyIYsf1v5VwYdbz/llnbPCbq6k0gn8DVI=;
+ b=KWfrSQFAiKr7hgYtXjPIt8sEWsrAYSB/B/hdXPTpJK3CIjTAxN5mR5RJG0uKuPmraV
+ kyuVnJ1amsldovzSBhMO7ZOLrDLdqWka8U3+HHxbrXVvyDirDQwKeeGjHJTfcW8cocHQ
+ Dq2aRRZpIWzuPL9SFc2QUoVXuKkEkmxiqjoR/jqOo9hrNfOqP1eOxdGhRkE4vWynSEc9
+ soqukAQplOxgnbaVQepP0I9OunaXsu3d7iV43AbDS8MMmwNsYgugk5kw2cvJTqb9UdYt
+ Y3lmIUhbbuaDavH/Ycy1C2F6My2fFSPAa9pz4Fi5rrkVpwGlWxnSN7QLPoIcpWnIQiU4
+ Lazg==
+X-Gm-Message-State: AOJu0Yzrh35vKVGri6l+W4mxGyQy7FMz59QVIjOe2+KU1UR54WAd2KmR
+ Qo3bUjrf/Gv32ABWSkQdGxzyMV33IZY=
+X-Google-Smtp-Source: AGHT+IFH52jXWjJPp7HA+AWRI81wGI9pTdC8Z+lJmbmV90axhxCQhH2SWFwpVi0t+Wb0sNMOEVpVUg==
+X-Received: by 2002:a17:903:124f:b0:1b6:9fec:8134 with SMTP id
+ u15-20020a170903124f00b001b69fec8134mr15096947plh.46.1691483722705; 
+ Tue, 08 Aug 2023 01:35:22 -0700 (PDT)
 Received: from voyager.lan ([45.124.203.19]) by smtp.gmail.com with ESMTPSA id
- n9-20020a170902e54900b001b8062c1db3sm8368112plf.82.2023.08.08.01.35.15
+ n9-20020a170902e54900b001b8062c1db3sm8368112plf.82.2023.08.08.01.35.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 08 Aug 2023 01:35:18 -0700 (PDT)
+ Tue, 08 Aug 2023 01:35:22 -0700 (PDT)
 From: Joel Stanley <joel@jms.id.au>
 To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>,
  Nicholas Piggin <npiggin@gmail.com>
 Cc: qemu-ppc@nongnu.org,
 	qemu-devel@nongnu.org
-Subject: [PATCH for-8.2 1/3] pnv/lpc: Place mmio regs in their own memory
- region
-Date: Tue,  8 Aug 2023 18:04:43 +0930
-Message-Id: <20230808083445.4613-2-joel@jms.id.au>
+Subject: [PATCH for-8.2 2/3] pnv/lpc: Hook up xscom region for P9/P10
+Date: Tue,  8 Aug 2023 18:04:44 +0930
+Message-Id: <20230808083445.4613-3-joel@jms.id.au>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230808083445.4613-1-joel@jms.id.au>
 References: <20230808083445.4613-1-joel@jms.id.au>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=joel.stan@gmail.com; helo=mail-pl1-x62f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=joel.stan@gmail.com; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -14
 X-Spam_score: -1.5
 X-Spam_bar: -
@@ -93,69 +92,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The P9 and P10 models re-used the xscom_regs memory region for the mmio
-access, which is confusing.
-
-Add a separate memory region in preparation for enabling both xscom and
-mmio access.
+From P9 on the LPC bus is memory mapped. However the xscom access still
+is possible, so add it too.
 
 Signed-off-by: Joel Stanley <joel@jms.id.au>
 ---
- include/hw/ppc/pnv_lpc.h | 3 ++-
- hw/ppc/pnv.c             | 4 ++--
- hw/ppc/pnv_lpc.c         | 2 +-
- 3 files changed, 5 insertions(+), 4 deletions(-)
+ include/hw/ppc/pnv_xscom.h | 6 ++++++
+ hw/ppc/pnv.c               | 4 ++++
+ hw/ppc/pnv_lpc.c           | 6 ++++++
+ 3 files changed, 16 insertions(+)
 
-diff --git a/include/hw/ppc/pnv_lpc.h b/include/hw/ppc/pnv_lpc.h
-index 5d22c4557041..3000964f8999 100644
---- a/include/hw/ppc/pnv_lpc.h
-+++ b/include/hw/ppc/pnv_lpc.h
-@@ -81,8 +81,9 @@ struct PnvLpcController {
-     uint32_t lpc_hc_irqstat;
-     uint32_t lpc_hc_error_addr;
+diff --git a/include/hw/ppc/pnv_xscom.h b/include/hw/ppc/pnv_xscom.h
+index 9bc64635471e..42601bdf419d 100644
+--- a/include/hw/ppc/pnv_xscom.h
++++ b/include/hw/ppc/pnv_xscom.h
+@@ -96,6 +96,9 @@ struct PnvXScomInterfaceClass {
+ #define PNV9_XSCOM_SBE_CTRL_BASE  0x00050008
+ #define PNV9_XSCOM_SBE_CTRL_SIZE  0x1
  
--    /* XSCOM registers */
-+    /* Registers */
-     MemoryRegion xscom_regs;
-+    MemoryRegion mmio_regs;
++#define PNV9_XSCOM_LPC_BASE       0x00090040
++#define PNV9_XSCOM_LPC_SIZE       PNV_XSCOM_LPC_SIZE
++
+ #define PNV9_XSCOM_SBE_MBOX_BASE  0x000D0050
+ #define PNV9_XSCOM_SBE_MBOX_SIZE  0x16
  
-     /* PSI to generate interrupts */
-     qemu_irq psi_irq;
+@@ -155,6 +158,9 @@ struct PnvXScomInterfaceClass {
+ #define PNV10_XSCOM_SBE_CTRL_BASE  PNV9_XSCOM_SBE_CTRL_BASE
+ #define PNV10_XSCOM_SBE_CTRL_SIZE  PNV9_XSCOM_SBE_CTRL_SIZE
+ 
++#define PNV10_XSCOM_LPC_BASE       PNV9_XSCOM_LPC_BASE
++#define PNV10_XSCOM_LPC_SIZE       PNV9_XSCOM_LPC_SIZE
++
+ #define PNV10_XSCOM_SBE_MBOX_BASE  PNV9_XSCOM_SBE_MBOX_BASE
+ #define PNV10_XSCOM_SBE_MBOX_SIZE  PNV9_XSCOM_SBE_MBOX_SIZE
+ 
 diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-index eb54f93986df..afdaa25c2b26 100644
+index afdaa25c2b26..a5db655b41b6 100644
 --- a/hw/ppc/pnv.c
 +++ b/hw/ppc/pnv.c
-@@ -1565,7 +1565,7 @@ static void pnv_chip_power9_realize(DeviceState *dev, Error **errp)
-         return;
+@@ -1566,6 +1566,8 @@ static void pnv_chip_power9_realize(DeviceState *dev, Error **errp)
      }
      memory_region_add_subregion(get_system_memory(), PNV9_LPCM_BASE(chip),
--                                &chip9->lpc.xscom_regs);
-+                                &chip9->lpc.mmio_regs);
+                                 &chip9->lpc.mmio_regs);
++    pnv_xscom_add_subregion(chip, PNV9_XSCOM_LPC_BASE,
++                            &chip9->lpc.xscom_regs);
  
      chip->fw_mr = &chip9->lpc.isa_fw;
      chip->dt_isa_nodename = g_strdup_printf("/lpcm-opb@%" PRIx64 "/lpc@0",
-@@ -1784,7 +1784,7 @@ static void pnv_chip_power10_realize(DeviceState *dev, Error **errp)
-         return;
+@@ -1785,6 +1787,8 @@ static void pnv_chip_power10_realize(DeviceState *dev, Error **errp)
      }
      memory_region_add_subregion(get_system_memory(), PNV10_LPCM_BASE(chip),
--                                &chip10->lpc.xscom_regs);
-+                                &chip10->lpc.mmio_regs);
+                                 &chip10->lpc.mmio_regs);
++    pnv_xscom_add_subregion(chip, PNV10_XSCOM_LPC_BASE,
++                            &chip10->lpc.xscom_regs);
  
      chip->fw_mr = &chip10->lpc.isa_fw;
      chip->dt_isa_nodename = g_strdup_printf("/lpcm-opb@%" PRIx64 "/lpc@0",
 diff --git a/hw/ppc/pnv_lpc.c b/hw/ppc/pnv_lpc.c
-index d692858bee78..caf5e10a5f96 100644
+index caf5e10a5f96..6c6a3134087f 100644
 --- a/hw/ppc/pnv_lpc.c
 +++ b/hw/ppc/pnv_lpc.c
-@@ -664,7 +664,7 @@ static void pnv_lpc_power9_realize(DeviceState *dev, Error **errp)
-     }
- 
+@@ -666,6 +666,12 @@ static void pnv_lpc_power9_realize(DeviceState *dev, Error **errp)
      /* P9 uses a MMIO region */
--    memory_region_init_io(&lpc->xscom_regs, OBJECT(lpc), &pnv_lpc_mmio_ops,
-+    memory_region_init_io(&lpc->mmio_regs, OBJECT(lpc), &pnv_lpc_mmio_ops,
+     memory_region_init_io(&lpc->mmio_regs, OBJECT(lpc), &pnv_lpc_mmio_ops,
                            lpc, "lpcm", PNV9_LPCM_SIZE);
++
++    /* but the XSCOM region still exists */
++    pnv_xscom_region_init(&lpc->xscom_regs, OBJECT(lpc),
++                          &pnv_lpc_xscom_ops, lpc, "xscom-lpc",
++                          PNV_XSCOM_LPC_SIZE);
++
  }
  
+ static void pnv_lpc_power9_class_init(ObjectClass *klass, void *data)
 -- 
 2.40.1
 
