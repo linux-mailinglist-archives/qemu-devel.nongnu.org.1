@@ -2,62 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1B7C773A8D
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 15:46:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F105F773A91
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 15:51:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTN1j-0000aL-2t; Tue, 08 Aug 2023 09:45:35 -0400
+	id 1qTN6g-0001ww-Eg; Tue, 08 Aug 2023 09:50:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <m.tyutin@yadro.com>)
- id 1qTN1O-0000YK-LC
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 09:45:18 -0400
-Received: from mta-04.yadro.com ([89.207.88.248])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <m.tyutin@yadro.com>)
- id 1qTN1K-0006EE-N5
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 09:45:14 -0400
-DKIM-Filter: OpenDKIM Filter v2.11.0 mta-04.yadro.com 96BB6C0006
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yadro.com; s=mta-04;
- t=1691502304; bh=gMSSlkHpjavbAWB5sooUd2wDSAnwxnetOX6BaO/2UxM=;
- h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
- b=V941yJcUBClcEs3am+S+mU9d5ylbl4Ff6yS3eYlvPEcDdLoti/TpyvoBtwNeisHdR
- S2GDTabDJ+C4hkyM4yURAyunIvqZn1/qfIp7WrmaHpOFyY1232jYg2U/qdn2VrONz8
- af1WByWpPLeFcuVNwK3+Vo5cXjjdf7TuggMeWxEQgGMMIHNZ04/LzUCcLUGN0h1yh7
- 4f5ovy6nAyP5roRpJpAHrTWEaJlFWZnkNQD9iBFesQ+O1Ce07Npb7vEtKFJFMO2Y1A
- zA4LoJZcCAfSqvOBpprLkEaCpmsijoWIiSX4HU5p5V8O39hd/uhkO2jxlqenYh4JsT
- M0fyHy/6UyCng==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yadro.com; s=mta-03;
- t=1691502304; bh=gMSSlkHpjavbAWB5sooUd2wDSAnwxnetOX6BaO/2UxM=;
- h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
- b=p8+wP2L8ppr7M7l5iBRCyiP4JUyAFxjHvkl3li2n+SJ81fvTPYz7X+GcOn8b/fzej
- gQ8ckmD2jTm+IyNVCX6pnX9VUjqedweDPrxvck8E0SvaLTGPgLw/s6T7FYIZct6plX
- Hy29vUSnmQJdTl96RloTUpB6J0rwEjUlH+LxgCBXoATX+22iAuZZzlVwrXr1zAc6Bm
- IdM2v0DoETkAW86aA+7cOKXPF2/xlzy34RF5//B6QnuLaFeTyoek4eyZbWub7L2iQP
- 7/0sLi4nA1azPrX7DWvRN65iLpKKJM54ZN/v9zrgKqw0y/q5MnhC8ynPDh2ZuAetp1
- CeGicaxzRQsuw==
-From: Mikhail Tyutin <m.tyutin@yadro.com>
-To: <qemu-devel@nongnu.org>
-CC: <richard.henderson@linaro.org>, <pbonzini@redhat.com>,
- <alex.bennee@linaro.org>, Mikhail Tyutin <m.tyutin@yadro.com>, Aleksandr
- Anenkov <a.anenkov@yadro.com>
-Subject: [PATCH] Add support of callbacks after instructions to plugin api
-Date: Tue, 8 Aug 2023 16:44:35 +0300
-Message-ID: <20230808134435.2719-1-m.tyutin@yadro.com>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qTN6G-0001wa-Rk
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 09:50:18 -0400
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qTN6D-0007z2-5Q
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 09:50:16 -0400
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-317744867a6so4350952f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 06:50:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1691502611; x=1692107411;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=vp0MhQN1ilgfX3L5PM8yT1GHmY4p7GOO/2qsl1+Yy2c=;
+ b=DJ6oMEnjCBjFBh0sCgwxKwqdyH6ICM7+vmOisxeien+7fbDxTHP69cQcJ5JpPGC+GT
+ NbH8GmR1ecMV7N1R+ltxHOPjTnwk40LzqWrbzl5xCbcMmJReVObZRNAMtxhMpq/20AKq
+ mE93EgqxXf32fqIaeNDkqr/wbALJm0U2n9WfKBiyRpsTgIWlYo0Br1E0d6Hjo4+2+vRL
+ tFgy67kpvhFha2Us2kXpVbjr0YyxBOcJmKT4a8tR3On7j3BJGSaEuDordlaZ6ziL1N23
+ 9TiL0d1fqUZzPrB43F7atHL/raHM9grPbNJhA3MyYZoB6SIVmVmF+f5UqV96hXvL1DBw
+ SrUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1691502611; x=1692107411;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=vp0MhQN1ilgfX3L5PM8yT1GHmY4p7GOO/2qsl1+Yy2c=;
+ b=CKmSltdaz78jSMCL/j40o4zcL9kSR1qyvRxjQAsGoONObZ0syhfv72rTGeHM9QCfFO
+ j+psbkYTEovNAI40rrAyMa0dE0lYg5Jppk6ROBmY1/7JEpUTlV1sMn4EddYBRH7Eb4WD
+ d+Vt6KHyMDgkatqcLzPGjzTU1jKy0kfQxhR7EDcaMhm5HROETu+d4Ml8guW2X1pE6jp6
+ S1LhLlAv5bIMlDt89tGoTjNRfDGFSXJkVQKajbrlqKn6ErHCTCfaQG8r7NCQXjuQMJAa
+ 2KdGbzCjNXV7j+Ba+bMyyujkpjirqUV1jJAHMTstBPkq0pjUU9ju+ACkT60u3NclG8lg
+ KmaA==
+X-Gm-Message-State: AOJu0YwGMh1sKRQYZTuW9OOJdID4AK4QvL/aaqRhh2GROQRm1NeAwB0l
+ lxxHXmZZ96mP6Xk205slLnTguw==
+X-Google-Smtp-Source: AGHT+IFFv1KxgY5PDjqX6BcTONJOSGo7AG+jvBSdGNAwtc/g0422YdkNi1Y1fW7NjFqm1RJqzHbOYA==
+X-Received: by 2002:adf:f088:0:b0:307:7f38:37f with SMTP id
+ n8-20020adff088000000b003077f38037fmr8590343wro.66.1691502611040; 
+ Tue, 08 Aug 2023 06:50:11 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ k18-20020a7bc412000000b003fbbe41fd78sm13940441wmi.10.2023.08.08.06.50.10
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 08 Aug 2023 06:50:10 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 08F881FFBB;
+ Tue,  8 Aug 2023 14:50:10 +0100 (BST)
+References: <20230807163705.9848-1-richard.henderson@linaro.org>
+ <20230807163705.9848-5-richard.henderson@linaro.org>
+ <87o7jh98bt.fsf@linaro.org>
+ <9ad42b10-d1ae-4a60-9185-8f43534b818f@daynix.com>
+User-agent: mu4e 1.11.13; emacs 29.1.50
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>, pbonzini@redhat.com,
+ philmd@linaro.org, laurent@vivier.eu, deller@gmx.de, qemu-devel@nongnu.org
+Subject: Re: [PATCH for-8.1 v10 04/14] linux-user: Use MAP_FIXED_NOREPLACE
+ for initial image mmap
+Date: Tue, 08 Aug 2023 14:48:54 +0100
+In-reply-to: <9ad42b10-d1ae-4a60-9185-8f43534b818f@daynix.com>
+Message-ID: <87pm3x7iem.fsf@linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: T-EXCH-06.corp.yadro.com (172.17.10.110) To
- T-EXCH-08.corp.yadro.com (172.17.11.58)
-Received-SPF: pass client-ip=89.207.88.248; envelope-from=m.tyutin@yadro.com;
- helo=mta-04.yadro.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -74,290 +100,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Initially, we can only call the callback BEFORE instructions. This commit adds the ability to insert the callback AFTER instructions.
 
-No callback call for control-flow instructions.
+Akihiko Odaki <akihiko.odaki@daynix.com> writes:
 
-Signed-off-by: Aleksandr Anenkov <a.anenkov@yadro.com>
-Signed-off-by: Mikhail Tyutin <m.tyutin@yadro.com>
----
- accel/tcg/plugin-gen.c       | 25 ++++++++++++++++++++-----
- accel/tcg/translator.c       | 18 +++++++++++++-----
- include/qemu/plugin.h        |  1 +
- include/qemu/qemu-plugin.h   | 33 ++++++++++++++++++++++++++++++++-
- plugins/api.c                | 26 ++++++++++++++++++++++++--
- plugins/qemu-plugins.symbols |  2 ++
- tcg/tcg-op.c                 | 16 ++++++++++++++++
- 7 files changed, 108 insertions(+), 13 deletions(-)
+> On 2023/08/08 18:43, Alex Benn=C3=A9e wrote:
+>> Richard Henderson <richard.henderson@linaro.org> writes:
+>>=20
+>>> Use this as extra protection for the guest mapping over
+>>> any qemu host mappings.
+>>>
+>>> Tested-by: Helge Deller <deller@gmx.de>
+>>> Reviewed-by: Helge Deller <deller@gmx.de>
+>>> Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+>>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>>> ---
+>>>   linux-user/elfload.c | 9 ++++++---
+>>>   1 file changed, 6 insertions(+), 3 deletions(-)
+>>>
+>>> diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+>>> index 36e4026f05..1b4bb2d5af 100644
+>>> --- a/linux-user/elfload.c
+>>> +++ b/linux-user/elfload.c
+>>> @@ -3147,8 +3147,11 @@ static void load_elf_image(const char *image_nam=
+e, int image_fd,
+>>>       /*
+>>>        * Reserve address space for all of this.
+>>>        *
+>>> -     * In the case of ET_EXEC, we supply MAP_FIXED so that we get
+>>> -     * exactly the address range that is required.
+>>> +     * In the case of ET_EXEC, we supply MAP_FIXED_NOREPLACE so that w=
+e get
+>>> +     * exactly the address range that is required.  Without reserved_v=
+a,
+>>> +     * the guest address space is not isolated.  We have attempted to =
+avoid
+>>> +     * conflict with the host program itself via probe_guest_base, but=
+ using
+>>> +     * MAP_FIXED_NOREPLACE instead of MAP_FIXED provides an extra chec=
+k.
+>>>        *
+>>>        * Otherwise this is ET_DYN, and we are searching for a location
+>>>        * that can hold the memory space required.  If the image is
+>>> @@ -3160,7 +3163,7 @@ static void load_elf_image(const char *image_name=
+, int image_fd,
+>>>        */
+>>>       load_addr =3D target_mmap(loaddr, (size_t)hiaddr - loaddr + 1, PR=
+OT_NONE,
+>>>                               MAP_PRIVATE | MAP_ANON | MAP_NORESERVE |
+>>> -                            (ehdr->e_type =3D=3D ET_EXEC ? MAP_FIXED :=
+ 0),
+>>> +                            (ehdr->e_type =3D=3D ET_EXEC ? MAP_FIXED_N=
+OREPLACE : 0),
+>>>                               -1, 0);
+>> We should probably also check the result =3D=3D load_addr for the places
+>> where MAP_FIXED_NOREPLACE isn't supported as we have this in osdep.h:
+>>    #ifndef MAP_FIXED_NOREPLACE
+>>    #define MAP_FIXED_NOREPLACE 0
+>>    #endif
+>> See 2667e069e7 (linux-user: don't use MAP_FIXED in
+>> pgd_find_hole_fallback)
+>
+> It assumes target_mmap() emulates MAP_FIXED_NOREPLACE when the host
+> does not support it as commit e69e032d1a ("linux-user: Use
+> MAP_FIXED_NOREPLACE for do_brk()") already does, but defining
+> MAP_FIXED_NOREPLACE zero breaks such emulation. I wrote a fix:
+> https://patchew.org/QEMU/20230808115242.73025-1-akihiko.odaki@daynix.com/
 
-diff --git a/accel/tcg/plugin-gen.c b/accel/tcg/plugin-gen.c
-index 5c13615112..88dcbda651 100644
---- a/accel/tcg/plugin-gen.c
-+++ b/accel/tcg/plugin-gen.c
-@@ -180,6 +180,8 @@ static void plugin_gen_empty_callback(enum plugin_gen_from from)
- {
-     switch (from) {
-     case PLUGIN_GEN_AFTER_INSN:
-+        gen_wrapped(from, PLUGIN_GEN_CB_UDATA, gen_empty_udata_cb);
-+        gen_wrapped(from, PLUGIN_GEN_CB_INLINE, gen_empty_inline_cb);
-         gen_wrapped(from, PLUGIN_GEN_DISABLE_MEM_HELPER,
-                     gen_empty_mem_helper);
-         break;
-@@ -598,18 +600,21 @@ static void plugin_gen_tb_inline(const struct qemu_plugin_tb *ptb,
- }
- 
- static void plugin_gen_insn_udata(const struct qemu_plugin_tb *ptb,
-+                                  enum plugin_dyn_cb_type cb_type,
-                                   TCGOp *begin_op, int insn_idx)
- {
-+    g_assert(cb_type == PLUGIN_CB_INSN || cb_type == PLUGIN_CB_AFTER_INSN);
-     struct qemu_plugin_insn *insn = g_ptr_array_index(ptb->insns, insn_idx);
--
--    inject_udata_cb(insn->cbs[PLUGIN_CB_INSN][PLUGIN_CB_REGULAR], begin_op);
-+    inject_udata_cb(insn->cbs[cb_type][PLUGIN_CB_REGULAR], begin_op);
- }
- 
- static void plugin_gen_insn_inline(const struct qemu_plugin_tb *ptb,
-+                                   enum plugin_dyn_cb_type cb_type,
-                                    TCGOp *begin_op, int insn_idx)
- {
-+    g_assert(cb_type == PLUGIN_CB_INSN || cb_type == PLUGIN_CB_AFTER_INSN);
-     struct qemu_plugin_insn *insn = g_ptr_array_index(ptb->insns, insn_idx);
--    inject_inline_cb(insn->cbs[PLUGIN_CB_INSN][PLUGIN_CB_INLINE],
-+    inject_inline_cb(insn->cbs[cb_type][PLUGIN_CB_INLINE],
-                      begin_op, op_ok);
- }
- 
-@@ -738,10 +743,12 @@ static void plugin_gen_inject(struct qemu_plugin_tb *plugin_tb)
- 
-                 switch (type) {
-                 case PLUGIN_GEN_CB_UDATA:
--                    plugin_gen_insn_udata(plugin_tb, op, insn_idx);
-+                    plugin_gen_insn_udata(plugin_tb, PLUGIN_CB_INSN,
-+                                          op, insn_idx);
-                     break;
-                 case PLUGIN_GEN_CB_INLINE:
--                    plugin_gen_insn_inline(plugin_tb, op, insn_idx);
-+                    plugin_gen_insn_inline(plugin_tb, PLUGIN_CB_INSN,
-+                                           op, insn_idx);
-                     break;
-                 case PLUGIN_GEN_ENABLE_MEM_HELPER:
-                     plugin_gen_enable_mem_helper(plugin_tb, op, insn_idx);
-@@ -773,6 +780,14 @@ static void plugin_gen_inject(struct qemu_plugin_tb *plugin_tb)
-                 g_assert(insn_idx >= 0);
- 
-                 switch (type) {
-+                case PLUGIN_GEN_CB_UDATA:
-+                    plugin_gen_insn_udata(plugin_tb, PLUGIN_CB_AFTER_INSN,
-+                                          op, insn_idx);
-+                    break;
-+                case PLUGIN_GEN_CB_INLINE:
-+                    plugin_gen_insn_inline(plugin_tb, PLUGIN_CB_AFTER_INSN,
-+                                           op, insn_idx);
-+                    break;
-                 case PLUGIN_GEN_DISABLE_MEM_HELPER:
-                     plugin_gen_disable_mem_helper(plugin_tb, op, insn_idx);
-                     break;
-diff --git a/accel/tcg/translator.c b/accel/tcg/translator.c
-index 1a6a5448c8..5e57dc754e 100644
---- a/accel/tcg/translator.c
-+++ b/accel/tcg/translator.c
-@@ -180,6 +180,12 @@ void translator_loop(CPUState *cpu, TranslationBlock *tb, int *max_insns,
-             ops->translate_insn(db, cpu);
-         }
- 
-+
-+        /* Stop translation if translate_insn so indicated.  */
-+        if (db->is_jmp != DISAS_NEXT) {
-+            break;
-+        }
-+
-         /*
-          * We can't instrument after instructions that change control
-          * flow although this only really affects post-load operations.
-@@ -193,11 +199,6 @@ void translator_loop(CPUState *cpu, TranslationBlock *tb, int *max_insns,
-             plugin_gen_insn_end();
-         }
- 
--        /* Stop translation if translate_insn so indicated.  */
--        if (db->is_jmp != DISAS_NEXT) {
--            break;
--        }
--
-         /* Stop translation if the output buffer is full,
-            or we have executed all of the allowed instructions.  */
-         if (tcg_op_buf_full() || db->num_insns >= db->max_insns) {
-@@ -211,6 +212,13 @@ void translator_loop(CPUState *cpu, TranslationBlock *tb, int *max_insns,
-     gen_tb_end(tb, cflags, icount_start_insn, db->num_insns);
- 
-     if (plugin_enabled) {
-+        /*
-+         * Last chance to call plugin_gen_insn_end() if is skipped in translation
-+         * loop above.
-+         */
-+        if (db->is_jmp != DISAS_NEXT && tcg_ctx->exitreq_label == NULL) {
-+            plugin_gen_insn_end();
-+        }
-         plugin_gen_tb_end(cpu);
-     }
- 
-diff --git a/include/qemu/plugin.h b/include/qemu/plugin.h
-index bc0781cab8..b221650281 100644
---- a/include/qemu/plugin.h
-+++ b/include/qemu/plugin.h
-@@ -68,6 +68,7 @@ union qemu_plugin_cb_sig {
- enum plugin_dyn_cb_type {
-     PLUGIN_CB_INSN,
-     PLUGIN_CB_MEM,
-+    PLUGIN_CB_AFTER_INSN,
-     PLUGIN_N_CB_TYPES,
- };
- 
-diff --git a/include/qemu/qemu-plugin.h b/include/qemu/qemu-plugin.h
-index 50a9957279..21e25e895d 100644
---- a/include/qemu/qemu-plugin.h
-+++ b/include/qemu/qemu-plugin.h
-@@ -51,7 +51,7 @@ typedef uint64_t qemu_plugin_id_t;
- 
- extern QEMU_PLUGIN_EXPORT int qemu_plugin_version;
- 
--#define QEMU_PLUGIN_VERSION 1
-+#define QEMU_PLUGIN_VERSION 2
- 
- /**
-  * struct qemu_info_t - system information for plugins
-@@ -314,6 +314,21 @@ void qemu_plugin_register_vcpu_insn_exec_cb(struct qemu_plugin_insn *insn,
-                                             enum qemu_plugin_cb_flags flags,
-                                             void *userdata);
- 
-+/**
-+ * qemu_plugin_register_vcpu_after_insn_exec_cb() - register cb
-+ * after insn execution
-+ * @insn: the opaque qemu_plugin_insn handle for an instruction
-+ * @cb: callback function
-+ * @flags: does the plugin read or write the CPU's registers?
-+ * @userdata: any plugin data to pass to the @cb?
-+ *
-+ * The @cb function is called every time after a non-control-flow
-+ * instruction is executed
-+ */
-+void qemu_plugin_register_vcpu_after_insn_exec_cb(
-+    struct qemu_plugin_insn *insn, qemu_plugin_vcpu_udata_cb_t cb,
-+    enum qemu_plugin_cb_flags flags, void *userdata);
-+
- /**
-  * qemu_plugin_register_vcpu_insn_exec_inline() - insn execution inline op
-  * @insn: the opaque qemu_plugin_insn handle for an instruction
-@@ -328,6 +343,22 @@ void qemu_plugin_register_vcpu_insn_exec_inline(struct qemu_plugin_insn *insn,
-                                                 enum qemu_plugin_op op,
-                                                 void *ptr, uint64_t imm);
- 
-+/**
-+ * qemu_plugin_register_vcpu_after_insn_exec_inline() - after insn execution
-+ * inline op
-+ * @insn: the opaque qemu_plugin_insn handle for an instruction
-+ * @op: the type of qemu_plugin_op (e.g. ADD_U64)
-+ * @ptr: the target memory location for the op
-+ * @imm: the op data (e.g. 1)
-+ *
-+ * Insert an inline op to every time after a non-control-flow
-+ * instruction executes.
-+ * Useful if you just want to increment a single counter somewhere in memory.
-+ */
-+void qemu_plugin_register_vcpu_after_insn_exec_inline(
-+    struct qemu_plugin_insn *insn, enum qemu_plugin_op op,
-+    void *ptr, uint64_t imm);
-+
- /**
-  * qemu_plugin_tb_n_insns() - query helper for number of insns in TB
-  * @tb: opaque handle to TB passed to callback
-diff --git a/plugins/api.c b/plugins/api.c
-index 2078b16edb..5d4aedc0b5 100644
---- a/plugins/api.c
-+++ b/plugins/api.c
-@@ -114,16 +114,38 @@ void qemu_plugin_register_vcpu_insn_exec_cb(struct qemu_plugin_insn *insn,
-     }
- }
- 
-+void qemu_plugin_register_vcpu_after_insn_exec_cb(
-+    struct qemu_plugin_insn *insn, qemu_plugin_vcpu_udata_cb_t cb,
-+    enum qemu_plugin_cb_flags flags, void *udata)
-+{
-+    if (!insn->mem_only) {
-+        plugin_register_dyn_cb__udata(
-+            &insn->cbs[PLUGIN_CB_AFTER_INSN][PLUGIN_CB_REGULAR],
-+            cb, flags, udata);
-+    }
-+}
-+
- void qemu_plugin_register_vcpu_insn_exec_inline(struct qemu_plugin_insn *insn,
-                                                 enum qemu_plugin_op op,
-                                                 void *ptr, uint64_t imm)
- {
-     if (!insn->mem_only) {
--        plugin_register_inline_op(&insn->cbs[PLUGIN_CB_INSN][PLUGIN_CB_INLINE],
--                                  0, op, ptr, imm);
-+        plugin_register_inline_op(
-+            &insn->cbs[PLUGIN_CB_INSN][PLUGIN_CB_INLINE],
-+            0, op, ptr, imm);
-     }
- }
- 
-+void qemu_plugin_register_vcpu_after_insn_exec_inline(
-+    struct qemu_plugin_insn *insn, enum qemu_plugin_op op,
-+    void *ptr, uint64_t imm)
-+{
-+    if (!insn->mem_only) {
-+        plugin_register_inline_op(
-+            &insn->cbs[PLUGIN_CB_AFTER_INSN][PLUGIN_CB_INLINE],
-+            0, op, ptr, imm);
-+    }
-+}
- 
- /*
-  * We always plant memory instrumentation because they don't finalise until
-diff --git a/plugins/qemu-plugins.symbols b/plugins/qemu-plugins.symbols
-index 71f6c90549..d6c25521d1 100644
---- a/plugins/qemu-plugins.symbols
-+++ b/plugins/qemu-plugins.symbols
-@@ -26,7 +26,9 @@
-   qemu_plugin_register_vcpu_idle_cb;
-   qemu_plugin_register_vcpu_init_cb;
-   qemu_plugin_register_vcpu_insn_exec_cb;
-+  qemu_plugin_register_vcpu_after_insn_exec_cb;
-   qemu_plugin_register_vcpu_insn_exec_inline;
-+  qemu_plugin_register_vcpu_after_insn_exec_inline;
-   qemu_plugin_register_vcpu_mem_cb;
-   qemu_plugin_register_vcpu_mem_inline;
-   qemu_plugin_register_vcpu_resume_cb;
-diff --git a/tcg/tcg-op.c b/tcg/tcg-op.c
-index 7aadb37756..566da1cb04 100644
---- a/tcg/tcg-op.c
-+++ b/tcg/tcg-op.c
-@@ -2819,6 +2819,22 @@ void tcg_gen_exit_tb(const TranslationBlock *tb, unsigned idx)
-         tcg_debug_assert(idx == TB_EXIT_REQUESTED);
-     }
- 
-+#ifdef CONFIG_PLUGIN
-+    /*
-+     * Some of instruction generators insert exit_tb explicitelly to
-+     * trigger early exit from translation block. On the other hand
-+     * translation loop (translator_loop()) inserts plugin callbacks
-+     * after instruction is generated, but it appears as dead code
-+     * because of the explicit exit_tb insert.
-+     *
-+     * Calling plugin_gen_insn_end() here before the exit allows
-+     * plugins to receive control before translation block exits.
-+     */
-+    if (tcg_ctx->plugin_insn) {
-+        plugin_gen_insn_end();
-+    }
-+#endif
-+
-     tcg_gen_op1i(INDEX_op_exit_tb, val);
- }
- 
--- 
-2.34.1
+Hmm doesn't that push the problem to real mmap() calls to a host system
+that doesn't support MAP_FIXED_NOREPLACE?
 
+I wonder if we need an internal flag rather than overloading the host
+flags?
+
+>
+>>=20
+>>>       if (load_addr =3D=3D -1) {
+>>>           goto exit_mmap;
+>>=20
+
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
