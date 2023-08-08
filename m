@@ -2,88 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 029D7774C05
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 23:02:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D303A774C51
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 23:04:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTTpa-0004SD-Fo; Tue, 08 Aug 2023 17:01:30 -0400
+	id 1qTTs6-0005zA-69; Tue, 08 Aug 2023 17:04:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qTTpY-0004Rz-5r
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 17:01:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qTTpW-0004Wl-Gx
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 17:01:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691528485;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=KrsZpokEOxo0xRRQpLboOyrlU0Shjv+mCxwffPvGntA=;
- b=F+2SQkDn+m5AM9XIeU6U16QjlV/raF18gqKKKqMiF27/yLEPIgNoQOhmZH98trGKhmvvhA
- iiq93JlZGADgD//LNTJUwxLwrYJrZ1iVaT10krKyw+AeVwYiobeuDHin2kCPqM6EEQlov/
- BD/zAIIjZCV68u2+8tlaJGBzspckeso=
-Received: from mail-oo1-f70.google.com (mail-oo1-f70.google.com
- [209.85.161.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-376-YtdMatyGNoSESNCVnR_tqA-1; Tue, 08 Aug 2023 17:01:22 -0400
-X-MC-Unique: YtdMatyGNoSESNCVnR_tqA-1
-Received: by mail-oo1-f70.google.com with SMTP id
- 006d021491bc7-56ce4f82d18so718121eaf.1
- for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 14:01:22 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qTTs4-0005yt-Bx
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 17:04:04 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qTTs1-0004rA-Do
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 17:04:04 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-1bc1c1c68e2so39517975ad.3
+ for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 14:03:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1691528636; x=1692133436;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=rh9p7AIOGyU6ObaL+YC3Fbhp2PRzDhw5cjORSwCVzQY=;
+ b=FkId8wBQwm/JklwM2K8FK38v3sxGNULoqWTpv5xZyNKSB23gIh6VRzJyBZKQyA3upA
+ umZAnxgLfTaOLLTqdh50upzyfqHKcm5PmzAoJjO5hbZlLoNHopzcK9KrM1olkZWTmi5m
+ 8vjyCUEgbX6CikEHsNLxQ/Bf9Acea9XKYEipSOW5T8RNZIJuDR5AlABjl8l7EaChu5n/
+ C5fKpJPDlvNOayVOFuAWjsSB6WFcvN7Rf9NlRNF0ZfWHWwhv5IkgZMGYlZ+ZCAbysw+T
+ 6X0nzlkDTe54qkdz88d2dgehstj0ONm80hFXpv9yItFPwPFCkYiM35mUC8gS/NwPJeO9
+ dWtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691528481; x=1692133281;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=KrsZpokEOxo0xRRQpLboOyrlU0Shjv+mCxwffPvGntA=;
- b=J+cbubOQg4mMSBX+kOzc1hc3MSdTkp3DvcW3TY7jJ7JgdJ0SlHipCgX9RAG6oNzR7s
- intH5BYrZiHqVowYSjR2g3yyNqW3m6Xd+yNH0yGHBKs+EjHMAld04mf2C7UViBfYhM9L
- HxXOewJbH0P0xcxUKQ+wVDuTxzK3zO2NwaAKRuXOg8brYr8ihT8SCM6UokG35blhVtIy
- y8XLTRBLGIX1IsGXUX3zPrgpuPxUrnPMttE96jDnLzL0GmeD1d2BQmI2O1BoXKA28UCh
- S9c/wf/J9zFeyBypUmKFN2tG10kbUQd/n4NuIotfZeUwjXgoiGEm7/t+6WoDTqE6+oyG
- JKsQ==
-X-Gm-Message-State: AOJu0YxnJt7NZB0qUSe4HBlydIm6Vsx2SNTBZRzzKcNivPbMK6PkcKAA
- FMbqEnCVuCeZgBWECjz5CYWldUE159Sjaj0ytdRTqCTdV8pihFFAnDtVNd0law1pSZc6r+u+jP/
- FhWCk5wn973y0yVM=
-X-Received: by 2002:a05:6359:a21:b0:139:fd45:5db5 with SMTP id
- el33-20020a0563590a2100b00139fd455db5mr490651rwb.1.1691528481659; 
- Tue, 08 Aug 2023 14:01:21 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEBxNr+IuQwnZfbbPyGWmB0OeOXjc0wRnLsE2L3R20OP85wdlexPG+HJiBLaUJUC26sgE7/qA==
-X-Received: by 2002:a05:6359:a21:b0:139:fd45:5db5 with SMTP id
- el33-20020a0563590a2100b00139fd455db5mr490633rwb.1.1691528481300; 
- Tue, 08 Aug 2023 14:01:21 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- y5-20020ac81285000000b00405502aaf76sm3620553qti.57.2023.08.08.14.01.20
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 08 Aug 2023 14:01:20 -0700 (PDT)
-Date: Tue, 8 Aug 2023 17:01:17 -0400
-From: Peter Xu <peterx@redhat.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Thiner Logoer <logoerthiner1@163.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: Re: [PATCH v1 1/3] softmmu/physmem: fallback to opening guest RAM
- file as readonly in a MAP_PRIVATE mapping
-Message-ID: <ZNKtHVotkfgI1tb4@x1n>
-References: <20230807190736.572665-1-david@redhat.com>
- <20230807190736.572665-2-david@redhat.com>
+ d=1e100.net; s=20221208; t=1691528636; x=1692133436;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=rh9p7AIOGyU6ObaL+YC3Fbhp2PRzDhw5cjORSwCVzQY=;
+ b=aYymjF3DwdE+37ywYStJ4+4fDNWJimdvQXzVmXnT2oQRQf9F61Y8mWt/vBQ1rNwPNE
+ TnARpYQ++I2DTA5k5kDjcbGaC2vLTROnGB4Ed5/pdKmqC0Z6HIYFFpARrFzpgrRA7K8q
+ c7++FRYQqVO6wwr7yUXR4AhgZKmU7qnXC0FSRLH7b5ZMbMYsUAnScF8LTJpj3xL5LkKr
+ 2Q1OERx+DAzUeDHIUeFEQaD6xC2N0R6VKsQN0o/O7wv7Vfi49JqxjAidTgL3w/wlNgVJ
+ eO3SFBIYeteqtx08+Tn9q/A3ibvOwAqbUrMPSamqAA+XJMrX2E4mLQ2Is+HigK4sFdZ/
+ bCHw==
+X-Gm-Message-State: AOJu0YyPFLRIthksAyIH6wi0Ye6ErzmNv506NHK1FFkqtSuK4dBI11vJ
+ wF/kQL2/BtRd+k7YoWftYGWCZQ==
+X-Google-Smtp-Source: AGHT+IEYY5XEb7dKRnooq6oh08W3CZCCo0yiju11c2DsYO6zv5282uExSKcl28+1hQRfgJ6e6wwVmg==
+X-Received: by 2002:a17:903:32c5:b0:1bc:4f04:17f9 with SMTP id
+ i5-20020a17090332c500b001bc4f0417f9mr1018309plr.9.1691528636386; 
+ Tue, 08 Aug 2023 14:03:56 -0700 (PDT)
+Received: from ?IPV6:2602:47:d490:6901:63dc:2a47:f4bc:4a95?
+ ([2602:47:d490:6901:63dc:2a47:f4bc:4a95])
+ by smtp.gmail.com with ESMTPSA id
+ y23-20020a17090264d700b001bb24cb9a40sm9635705pli.39.2023.08.08.14.03.55
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 08 Aug 2023 14:03:55 -0700 (PDT)
+Message-ID: <d9caacde-d8ab-2fdc-372a-20988f22267c@linaro.org>
+Date: Tue, 8 Aug 2023 14:03:54 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230807190736.572665-2-david@redhat.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 03/33] Update the definitions of __put_user and __get_user
+ macros
+Content-Language: en-US
+To: Karim Taha <kariem.taha2.7@gmail.com>, qemu-devel@nongnu.org
+Cc: imp@bsdimp.com
+References: <20230808060815.9001-1-kariem.taha2.7@gmail.com>
+ <20230808060815.9001-4-kariem.taha2.7@gmail.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230808060815.9001-4-kariem.taha2.7@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
+X-Spam_score_int: -61
+X-Spam_score: -6.2
+X-Spam_bar: ------
+X-Spam_report: (-6.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-4.14,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,105 +97,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Aug 07, 2023 at 09:07:32PM +0200, David Hildenbrand wrote:
-> From: Thiner Logoer <logoerthiner1@163.com>
+On 8/7/23 23:07, Karim Taha wrote:
+> From: Warner Losh <imp@bsdimp.com>
 > 
-> Users may specify
-> * "-mem-path" or
-> * "-object memory-backend-file,share=off,readonly=off"
-> and expect such COW (MAP_PRIVATE) mappings to work, even if the user
-> does not have write permissions to open the file.
+> Use __builtin_choose_expr to avoid type promotion from ?:
+> in __put_user_e and __get_user_e macros.
+> Copied from linux-user/qemu.h, originally by Blue Swirl.
 > 
-> For now, we would always fail in that case, always requiring file write
-> permissions. Let's detect when that failure happens and fallback to opening
-> the file readonly.
-> 
-> Warn the user, since there are other use cases where we want the file to
-> be mapped writable: ftruncate() and fallocate() will fail if the file
-> was not opened with write permissions.
-> 
-> Signed-off-by: Thiner Logoer <logoerthiner1@163.com>
-> Co-developed-by: David Hildenbrand <david@redhat.com>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
+> Signed-off-by: Warner Losh <imp@bsdimp.com>
+> Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
 > ---
->  softmmu/physmem.c | 26 ++++++++++++++++++--------
->  1 file changed, 18 insertions(+), 8 deletions(-)
+>   bsd-user/qemu.h   | 81 ++++++++++++++++++++---------------------------
+>   bsd-user/signal.c |  5 +--
+>   2 files changed, 35 insertions(+), 51 deletions(-)
 > 
-> diff --git a/softmmu/physmem.c b/softmmu/physmem.c
-> index 3df73542e1..d1ae694b20 100644
-> --- a/softmmu/physmem.c
-> +++ b/softmmu/physmem.c
-> @@ -1289,8 +1289,7 @@ static int64_t get_file_align(int fd)
->  static int file_ram_open(const char *path,
->                           const char *region_name,
->                           bool readonly,
-> -                         bool *created,
-> -                         Error **errp)
-> +                         bool *created)
->  {
->      char *filename;
->      char *sanitized_name;
-> @@ -1334,10 +1333,7 @@ static int file_ram_open(const char *path,
->              g_free(filename);
->          }
->          if (errno != EEXIST && errno != EINTR) {
-> -            error_setg_errno(errp, errno,
-> -                             "can't open backing store %s for guest RAM",
-> -                             path);
-> -            return -1;
-> +            return -errno;
->          }
->          /*
->           * Try again on EINTR and EEXIST.  The latter happens when
-> @@ -1946,9 +1942,23 @@ RAMBlock *qemu_ram_alloc_from_file(ram_addr_t size, MemoryRegion *mr,
->      bool created;
->      RAMBlock *block;
->  
-> -    fd = file_ram_open(mem_path, memory_region_name(mr), readonly, &created,
-> -                       errp);
-> +    fd = file_ram_open(mem_path, memory_region_name(mr), readonly, &created);
-> +    if (fd == -EACCES && !(ram_flags & RAM_SHARED) && !readonly) {
-> +        /*
-> +         * We can have a writable MAP_PRIVATE mapping of a readonly file.
-> +         * However, some operations like ftruncate() or fallocate() might fail
-> +         * later, let's warn the user.
-> +         */
-> +        fd = file_ram_open(mem_path, memory_region_name(mr), true, &created);
-> +        if (fd >= 0) {
-> +            warn_report("backing store %s for guest RAM (MAP_PRIVATE) opened"
-> +                        " readonly because the file is not writable", mem_path);
+> diff --git a/bsd-user/qemu.h b/bsd-user/qemu.h
+> index dfdfa8dd67..c41ebfe937 100644
+> --- a/bsd-user/qemu.h
+> +++ b/bsd-user/qemu.h
+> @@ -307,50 +307,37 @@ static inline bool access_ok(int type, abi_ulong addr, abi_ulong size)
+>   #define PRAGMA_REENABLE_PACKED_WARNING
+>   #endif
+>   
+> -#define __put_user(x, hptr)\
+> -({\
+> -    int size = sizeof(*hptr);\
+> -    switch (size) {\
+> -    case 1:\
+> -        *(uint8_t *)(hptr) = (uint8_t)(typeof(*hptr))(x);\
+> -        break;\
+> -    case 2:\
+> -        *(uint16_t *)(hptr) = tswap16((typeof(*hptr))(x));\
+> -        break;\
+> -    case 4:\
+> -        *(uint32_t *)(hptr) = tswap32((typeof(*hptr))(x));\
+> -        break;\
+> -    case 8:\
+> -        *(uint64_t *)(hptr) = tswap64((typeof(*hptr))(x));\
+> -        break;\
+> -    default:\
+> -        abort();\
+> -    } \
+> -    0;\
+> -})
+> +#define __put_user_e(x, hptr, e)                                            \
+> +    do {                                                                    \
+> +        PRAGMA_DISABLE_PACKED_WARNING;                                      \
+> +        (__builtin_choose_expr(sizeof(*(hptr)) == 1, stb_p,                 \
+> +        __builtin_choose_expr(sizeof(*(hptr)) == 2, stw_##e##_p,            \
+> +        __builtin_choose_expr(sizeof(*(hptr)) == 4, stl_##e##_p,            \
+> +        __builtin_choose_expr(sizeof(*(hptr)) == 8, stq_##e##_p, abort))))  \
+> +            ((hptr), (x)), (void)0);                                        \
+> +        PRAGMA_REENABLE_PACKED_WARNING;                                     \
+> +    } while (0)
+> +
+> +#define __get_user_e(x, hptr, e)                                            \
+> +    do {                                                                    \
+> +        PRAGMA_DISABLE_PACKED_WARNING;                                      \
+> +        ((x) = (typeof(*hptr))(                                             \
+> +        __builtin_choose_expr(sizeof(*(hptr)) == 1, ldub_p,                 \
+> +        __builtin_choose_expr(sizeof(*(hptr)) == 2, lduw_##e##_p,           \
+> +        __builtin_choose_expr(sizeof(*(hptr)) == 4, ldl_##e##_p,            \
+> +        __builtin_choose_expr(sizeof(*(hptr)) == 8, ldq_##e##_p, abort))))  \
+> +            (hptr)), (void)0);                                              \
+> +        PRAGMA_REENABLE_PACKED_WARNING;                                     \
+> +    } while (0)
 
-I can understand the use case, but this will be slightly unwanted,
-especially the user doesn't yet have a way to predict when will it happen.
+Hmm.  I guess this works.  The typeof cast in __get_user_e being required when sizeof(x) > 
+sizeof(*hptr) in order to get the correct extension.
 
-Meanwhile this changes the behavior, is it a concern that someone may want
-to rely on current behavior of failing?
+Is it clearer with _Generic?
 
-To think from a higher level of current use case, the ideal solution seems
-to me that if the ram file can be put on a file system that supports CoW
-itself (like btrfs), we can snapshot that ram file and make it RW for the
-qemu instance. Then here it'll be able to open the file.  We'll be able to
-keep the interface working as before, meanwhile it'll work with fallocate
-or truncations too I assume.
+     (x) = _Generic(*(hptr),
+                    int8_t: *(int8_t *)(hptr),
+                    uint8_t: *(uint8_t *)(hptr),
+                    int16_t: (int16_t)lduw_##e##_p(hptr),
+                    uint16_t: lduw_##e##_p(hptr),
+                    int32_t: (int32_t)ldl_##e##_p(hptr),
+                    uint32_t: (uint32_t)ldl_##e##_p(hptr),
+                    int64_t: (int64_t)ldq_##e##_p(hptr),
+                    uint64_t: ldq_##e##_p(hptr));
 
-Would that be better instead of changing QEMU?
+In particular I believe the error message will be much prettier.
 
-Thanks,
+Either way,
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-> +        }
-> +    }
->      if (fd < 0) {
-> +        error_setg_errno(errp, -fd,
-> +                         "can't open backing store %s for guest RAM",
-> +                         mem_path);
->          return NULL;
->      }
->  
-> -- 
-> 2.41.0
-> 
 
--- 
-Peter Xu
-
+r~
 
