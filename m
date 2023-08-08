@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC8777740DC
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 19:11:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5198C7740D0
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 19:11:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTQDT-0001my-Qm; Tue, 08 Aug 2023 13:09:55 -0400
+	id 1qTQDT-0001g4-36; Tue, 08 Aug 2023 13:09:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qTQDM-0001J6-6P
+ id 1qTQDN-0001JP-4b
  for qemu-devel@nongnu.org; Tue, 08 Aug 2023 13:09:52 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qTQDJ-0003Dl-TD
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 13:09:47 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-31771a876b5so4448354f8f.3
- for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 10:09:44 -0700 (PDT)
+ id 1qTQDK-0003EA-Q2
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 13:09:48 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-3110ab7110aso5151331f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 10:09:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1691514583; x=1692119383;
+ d=gmail.com; s=20221208; t=1691514584; x=1692119384;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7kZtTdznoH+U4bgfI/CMYaMU7x//qT+7OQ+XS9L//to=;
- b=R77DS3bPvX5rFmWX2soeJqz4Ie84EovIYroe5qz/hLkKdr7pOcrfe1sWRZoSbue3Gl
- Fpz+G+awji88FKD70eLOJ864IpjmBJaQTmWa2Dt759tqE0qHJvrvWc8vYABLDkqvvoTp
- QCVOK3pTYbV0qClxoAYpMUe3Mqg/UVW1giXVHRKx3/wz0O9VIBlJqx9sCcnq4PGbDkxV
- +hE3Vev7fb0MytKijqv9EegCULKZbY31mv5LbR208a6BvHcdO+w3eZeg5MbanrwN3Egi
- gp4v9P1x7f1hA98tZLXyyGC5SB7NNvVOm/avZBsMOWiLNHKOh/ayMBDopLNEuUdXxLz9
- HL/g==
+ bh=dUXdjqhzsI3nw2PqVOgdvYv9H8Cx5wm1FMu37In2c7U=;
+ b=UWNgC0qbGK6gLrmprRL+bndkm/Pd129MAmO70Mw3gpg/MXHstZDoS/5qAPaFltr//Z
+ /TKLmcuekInpk5c0+ZKQ5CVirfPW042vU8mAI0XVfiUGkPnMQ8jBmqM/iXfSnA37yfVT
+ 9F+IftmAt2MCjl0rxJ+RRa+yeZkdjrXOc1iTO2KwDfLrHG71vkf9jiBYdIjurNaHqbwI
+ ZN+uEIs+49pINKOzQUSPa43idPGJcIsRq1ul7IIx4AF5X3j/Mc5Q1brapEK7dlAUEHjy
+ MZCNWCurg9DYn+tnFocQiaw4dDt/wMXEbt6cTioJQjqiWzjGO6xgBeAVcF/DgzDfG7pR
+ lZzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691514583; x=1692119383;
+ d=1e100.net; s=20221208; t=1691514584; x=1692119384;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7kZtTdznoH+U4bgfI/CMYaMU7x//qT+7OQ+XS9L//to=;
- b=VXS3M8p04oPlQ7v4I3Ai+NPaTwHzE7qoglXgubLnGACXinao+mxIrr7RnSEqlJMkEG
- qS08kfAVogmvEV9MuDsNKfyovqcGKHKjewngvON7IaUnlW82he34GmzCqnbXIr8guo6d
- e851AFRLSonfLzpFs+AFbAEGHk9Xc0N2bQmPUuzNGEqBm6RSO/JxI0duwQFAq+cSNUrC
- IRlKuhB8a8RM30C597iqtDOw4VuSjcWAEL1h8EZAVxCRhg5GGwd0rlOwlERSjLL8vqE0
- NCWYrdLVqNaBh3q9gkUnqRdfpcR9liTfwEjeDQg1xnhFQR1n8mPKNwHnxiicdAkRJmzK
- OC7w==
-X-Gm-Message-State: AOJu0YzM7C13GHuEQvh7IdP6p0d380+4Muyeg7yCvsUMlAkqtNvsx0z4
- 2PvPbQWtClhm9jmVMPRk5ZcKR5YPhYmxIA==
-X-Google-Smtp-Source: AGHT+IH4It7B/Iv0RiSZhuk+2t/EwvWixwpMbzPseaAbBa8E8+YaomdPv0CAwCyGyV6uAaQCBGXWaw==
-X-Received: by 2002:adf:df06:0:b0:317:5ed4:d821 with SMTP id
- y6-20020adfdf06000000b003175ed4d821mr38317wrl.55.1691514583058; 
- Tue, 08 Aug 2023 10:09:43 -0700 (PDT)
+ bh=dUXdjqhzsI3nw2PqVOgdvYv9H8Cx5wm1FMu37In2c7U=;
+ b=QBbCmmwEP5su/XGre3qxXFW9pDgMtMLUftM/rPUWK9t9ANRzZwdXKrquX+SEfF/FjQ
+ 0+WgiYcbLrp6PerbWyA+6YAelN4+rps/Fk/YsbP/je2J8OqnxuPOFI0SO3fQCCQQtsDp
+ 12EBrtxFaRe0rda3oo0V+2tq/MaHX5Zrpk88OkJ6d7I6N7QbLUpQygQbTgr9cAmBvsRD
+ FHoCvi2PlKXtcxV+hxm1pWxv+gcP+Z2EQGRbPXnPt1BldaRbUA6/7PpDqgMPdX0UocOm
+ EkYBL+B43QwHB96r/zbwJkzozaINi7eNehT/rPVkYg68zr0SHz7FW4OFaNBuWsXhyw96
+ tcfQ==
+X-Gm-Message-State: AOJu0YyW1wMW0UiAxyjeTrmappa+RGQfEboN+nCfg6tfCi+Cv0Z4EXou
+ Y01EX4Ud8D4Wpl3215C/yWq0YYjCSv0lMQ==
+X-Google-Smtp-Source: AGHT+IFqGpLGMHRia1wdTUcu0cf9oxtpbOv2hA9mKRXppptpPQKOjsctNfp1FhQ7nxpIDXKA7v3EIA==
+X-Received: by 2002:a5d:668d:0:b0:314:1aed:8f5f with SMTP id
+ l13-20020a5d668d000000b003141aed8f5fmr51491wru.34.1691514584150; 
+ Tue, 08 Aug 2023 10:09:44 -0700 (PDT)
 Received: from karim.my.domain ([197.39.230.212])
  by smtp.gmail.com with ESMTPSA id
- j6-20020a5d6186000000b0031455482d1fsm14191663wru.47.2023.08.08.10.09.42
+ j6-20020a5d6186000000b0031455482d1fsm14191663wru.47.2023.08.08.10.09.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 08 Aug 2023 10:09:42 -0700 (PDT)
+ Tue, 08 Aug 2023 10:09:43 -0700 (PDT)
 From: Karim Taha <kariem.taha2.7@gmail.com>
 To: qemu-devel@nongnu.org
-Cc: imp@bsdimp.com, Stacey Son <sson@FreeBSD.org>,
+Cc: imp@bsdimp.com, Michal Meloun <mmel@FreeBSD.org>,
  Karim Taha <kariem.taha2.7@gmail.com>
-Subject: [PATCH 04/33] Declarations of h2t and t2h conversion functions.
-Date: Tue,  8 Aug 2023 08:07:46 +0200
-Message-Id: <20230808060815.9001-5-kariem.taha2.7@gmail.com>
+Subject: [PATCH 05/33] Forward declare functions defined in os-stat.c
+Date: Tue,  8 Aug 2023 08:07:47 +0200
+Message-Id: <20230808060815.9001-6-kariem.taha2.7@gmail.com>
 X-Mailer: git-send-email 2.40.0
 In-Reply-To: <20230808060815.9001-1-kariem.taha2.7@gmail.com>
 References: <20230808060815.9001-1-kariem.taha2.7@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=kariem.taha2.7@gmail.com; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=kariem.taha2.7@gmail.com; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -2
 X-Spam_score: -0.3
 X-Spam_bar: /
@@ -93,71 +93,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Stacey Son <sson@FreeBSD.org>
+From: Michal Meloun <mmel@FreeBSD.org>
 
-Declarations of functions that convert between host and target structs.
+Add to bsd-user/freebsd/qemu-os.h the forward declarations
+of conversion functions related to stat syscalls.
 
-Signed-off-by: Stacey Son <sson@FreeBSD.org>
+Signed-off-by: Michal Meloun <mmel@FreeBSD.org>
 Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
 ---
- bsd-user/freebsd/qemu-os.h | 35 +++++++++++++++++++++++++++++++++++
- bsd-user/qemu.h            |  1 +
- 2 files changed, 36 insertions(+)
- create mode 100644 bsd-user/freebsd/qemu-os.h
+ bsd-user/freebsd/qemu-os.h | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
 diff --git a/bsd-user/freebsd/qemu-os.h b/bsd-user/freebsd/qemu-os.h
-new file mode 100644
-index 0000000000..7ef4c55350
---- /dev/null
+index 7ef4c55350..12adc50928 100644
+--- a/bsd-user/freebsd/qemu-os.h
 +++ b/bsd-user/freebsd/qemu-os.h
-@@ -0,0 +1,35 @@
-+/*
-+ *  FreeBSD conversion extern declarations
-+ *
-+ *  Copyright (c) 2013 Stacey D. Son
-+ *
-+ *  This program is free software; you can redistribute it and/or modify
-+ *  it under the terms of the GNU General Public License as published by
-+ *  the Free Software Foundation; either version 2 of the License, or
-+ *  (at your option) any later version.
-+ *
-+ *  This program is distributed in the hope that it will be useful,
-+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ *  GNU General Public License for more details.
-+ *
-+ *  You should have received a copy of the GNU General Public License
-+ *  along with this program; if not, see <http://www.gnu.org/licenses/>.
-+ */
-+
-+#ifndef QEMU_OS_H
-+#define QEMU_OS_H
-+
-+/* qemu/osdep.h pulls in the rest */
-+
-+#include <sys/acl.h>
-+#include <sys/mount.h>
-+#include <sys/timex.h>
-+#include <sys/rtprio.h>
-+#include <sys/select.h>
-+#include <sys/socket.h>
-+#include <netinet/in.h>
-+
-+struct freebsd11_stat;
-+
-+#endif /* QEMU_OS_H */
-diff --git a/bsd-user/qemu.h b/bsd-user/qemu.h
-index c41ebfe937..1344c3fce6 100644
---- a/bsd-user/qemu.h
-+++ b/bsd-user/qemu.h
-@@ -38,6 +38,7 @@ extern char **environ;
- #include "exec/gdbstub.h"
- #include "qemu/clang-tsa.h"
+@@ -32,4 +32,19 @@
  
-+#include "qemu-os.h"
- /*
-  * This struct is used to hold certain information about the image.  Basically,
-  * it replicates in user space what would be certain task_struct fields in the
+ struct freebsd11_stat;
+ 
++/* os-stat.c */
++abi_long h2t_freebsd11_stat(abi_ulong target_addr,
++        struct freebsd11_stat *host_st);
++abi_long h2t_freebsd11_nstat(abi_ulong target_addr,
++        struct freebsd11_stat *host_st);
++abi_long t2h_freebsd_fhandle(fhandle_t *host_fh, abi_ulong target_addr);
++abi_long h2t_freebsd_fhandle(abi_ulong target_addr, fhandle_t *host_fh);
++abi_long h2t_freebsd11_statfs(abi_ulong target_addr,
++    struct freebsd11_statfs *host_statfs);
++abi_long target_to_host_fcntl_cmd(int cmd);
++abi_long h2t_freebsd_stat(abi_ulong target_addr,
++        struct stat *host_st);
++abi_long h2t_freebsd_statfs(abi_ulong target_addr,
++    struct statfs *host_statfs);
++
+ #endif /* QEMU_OS_H */
 -- 
 2.40.0
 
