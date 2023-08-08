@@ -2,82 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E77ED77375D
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 05:09:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72B6D77375E
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 05:12:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTD67-0007SL-KM; Mon, 07 Aug 2023 23:09:27 -0400
+	id 1qTD88-0008D9-SL; Mon, 07 Aug 2023 23:11:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qTD65-0007Rp-Eu; Mon, 07 Aug 2023 23:09:25 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ id 1qTD84-0008Ca-Bx; Mon, 07 Aug 2023 23:11:28 -0400
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qTD64-0007oc-1P; Mon, 07 Aug 2023 23:09:25 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-686ea67195dso3763193b3a.2; 
- Mon, 07 Aug 2023 20:09:23 -0700 (PDT)
+ id 1qTD82-0008U9-SZ; Mon, 07 Aug 2023 23:11:28 -0400
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-686efa1804eso3761834b3a.3; 
+ Mon, 07 Aug 2023 20:11:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1691464162; x=1692068962;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=vdHjciNpGWdMbC3CCZ1sM6WJY5B+CxZfOCmfCfZO4vY=;
- b=YVJCcn63P1V8fKfF8dKRnHC91AGwur9IXVkE8ke1aQCHuHL1evBQFaQ6TvWYPEcCwy
- qDPJMMPvIrz9dUZ8Dno27I0ZGXYbPBVuUQrMJTz+oXShqyiICGixe0viG2FP9Rwvf/+d
- nsH+//MR2iyNpNgq812t5BX3Fo+EhRriE7xIXGo1bQ3qi5EEKmmMFD9ianWUttl8ZrL1
- QrLIu0lpXpJ19Th2ks9p34znulwIrRV3Kzl3coxFd2PvJVMmp5R5X7oV4RwhFVtC9Prx
- I/ThPkeLD+2pXLaxqoab3XcN1rcXAzkHMm46h2mjRrGNUaZ51VkjV1w061WyIBkNrKpm
- YfOQ==
+ d=gmail.com; s=20221208; t=1691464285; x=1692069085;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=TZyf5+UX5gxHs9CMMTgdol4anCPni50GyS0r2QCvvIo=;
+ b=oyXVG0EYDfuvAnVeNRst75fgqsxVg5sRMnkTA2v7cKyBfDcGGSHRSr8oLbTcnPaDd5
+ YpxQ+C3o81qDYmYuloMANcrlt306azBIppLfZHJ+8fvqVyQHDPa/m1RhAah36uoYVJU1
+ 8Me+10Av9HxRThAactvbF2mflqaphrwFrAUz3/0sbOK7FwrMa3Bj1t5ODBMfSr7ZkMhe
+ TNd8cPXszRmrfHd7Qradn3rQYmIYZYv0EL9n1BMgSmbDroYbeY+oVUIVcyif/dkSkis2
+ Bd7EB+8x0rLMyQm7dp1CSTL5mHIRZTn49IJirnV+i++k7Br8SOraiSmWaXVcXpbScxs4
+ 8hAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691464162; x=1692068962;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=vdHjciNpGWdMbC3CCZ1sM6WJY5B+CxZfOCmfCfZO4vY=;
- b=K/uKoaNEShPS/Hoa8LM4FY6z/gQOkovYsr8WaxXqAy8eSG1Jy/FgXK98Prx6ma8K1G
- mWzUnapm6ASP7G3cEtC2cZCO5RKiWwFseEL62Wccafq0yJcG8cZuev3yuxyJp3Vs6ZtT
- WNvNW+BUCswrUyDr5BsTWOy1VzgR8NDHB0TmdEub2C1wJmllO1mieHTqnyffdOSdlvPz
- oMKpbJxxxIk4OM/oYN5DdxO9FnrDcqo92v3xj81dWv8CCROxaSNYqgdLHWhQTdKjpzE5
- KQBSD+ZGfbaV2/E96DrXmgAVdZ0y7lLQ7YXncyofdiSsyuhxqEeCSaZUYtIr/I4ytdwc
- sCKg==
-X-Gm-Message-State: AOJu0YxW3HkHSxfWQtmXAQr0sM8ZpddgaDfQrJmY4tLcDuxQUQ0PXDtz
- aKqmd258J091pKqWvftL3Uk=
-X-Google-Smtp-Source: AGHT+IGFZVfHh+iBflDL23yvKpjwiomaF6o5XPLa71UCIELrMLc16Mi9kCr89g1nvdstTSIlHpl3GA==
-X-Received: by 2002:a05:6a00:130d:b0:675:8f71:28f1 with SMTP id
- j13-20020a056a00130d00b006758f7128f1mr12227976pfu.30.1691464162390; 
- Mon, 07 Aug 2023 20:09:22 -0700 (PDT)
-Received: from localhost (61-68-137-140.tpgi.com.au. [61.68.137.140])
+ d=1e100.net; s=20221208; t=1691464285; x=1692069085;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=TZyf5+UX5gxHs9CMMTgdol4anCPni50GyS0r2QCvvIo=;
+ b=FID6vChp2P4kuTnwHseCyCx3v3aUTaQsuVVQS6oPWu99cNBWy1RRYZsB4Ksj9W01VX
+ ZRm49YTxnYq3fCIV9sQxrNZrhdpEJc1ohGpyiCUr52o34gydPtrKwYHyJRJ1r4X9wfC/
+ coqLL3xjxL0aaCjwMd+iIQ1sunFH7VuLA0Yp9kQXddL+VAakFQHQjptojFGSOautjs5+
+ c1GFJdKmTQt0hjNt79doZRZ4sHIav8OZbwdiHGf2LbZLbqmDmmO/jZk0hEHBmZCf6xLJ
+ jGA6M9P5GpzIxKieYrD7kETr7Y+DN4EyzBQGNAbVny1lF3NSrmhBhxpaql2lwLv+8TRH
+ v1TQ==
+X-Gm-Message-State: AOJu0Yx7diD+yZdTdEGJgXLM2p1moUf7MGjJ6Vxv1M9Rfquu5rr6p+PM
+ OfBmLlFvuJjNSqsSyzKfNblvN+fm41w=
+X-Google-Smtp-Source: AGHT+IEdH/eqDXsqMooI1fzH69sytwwGzJM85M+oH9S1TDykYRoCTHjNnNy0h7tdu27MS1TiT/mSUg==
+X-Received: by 2002:a05:6a20:196:b0:133:bf9a:dd16 with SMTP id
+ 22-20020a056a20019600b00133bf9add16mr10546245pzy.35.1691464285232; 
+ Mon, 07 Aug 2023 20:11:25 -0700 (PDT)
+Received: from wheely.local0.net (61-68-137-140.tpgi.com.au. [61.68.137.140])
  by smtp.gmail.com with ESMTPSA id
- s8-20020aa78d48000000b006873aa079aasm7126705pfe.171.2023.08.07.20.09.18
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 07 Aug 2023 20:09:22 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 08 Aug 2023 13:09:15 +1000
-Message-Id: <CUMU01SZ63FP.3B3F5NBPCVQT0@wheely>
-Cc: =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, "David Gibson"
- <david@gibson.dropbear.id.au>, "Greg Kurz" <groug@kaod.org>, "Harsh Prateek
- Bora" <harshpb@linux.ibm.com>, "Pavel Dovgalyuk"
- <pavel.dovgaluk@ispras.ru>, "Paolo Bonzini" <pbonzini@redhat.com>,
- <qemu-ppc@nongnu.org>, <qemu-devel@nongnu.org>
-Subject: Re: [PATCH 4/7] spapr: Fix record-replay machine reset consuming
- too many events
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Nicholas Piggin" <npiggin@gmail.com>, "Pavel Dovgalyuk"
- <pavel.dovgalyuk@ispras.ru>, "Daniel Henrique Barboza"
- <danielhb413@gmail.com>
-X-Mailer: aerc 0.15.2
-References: <20230726183532.434380-1-npiggin@gmail.com>
- <20230726183532.434380-5-npiggin@gmail.com>
- <3be75aa3-780d-2d4d-a68c-1f8d1d000ee8@ispras.ru>
- <CULFQXOOUWDB.3GMPJXRWAWSDW@wheely>
-In-Reply-To: <CULFQXOOUWDB.3GMPJXRWAWSDW@wheely>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x42f.google.com
+ i21-20020aa79095000000b00687ce7c6540sm482642pfa.99.2023.08.07.20.11.21
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 07 Aug 2023 20:11:24 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: Daniel Henrique Barboza <danielhb413@gmail.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Shivaprasad G Bhat <sbhat@linux.ibm.com>, qemu-ppc@nongnu.org,
+ qemu-devel@nongnu.org
+Subject: [PATCH for-8.2 0/6] ppc: debug facility improvements
+Date: Tue,  8 Aug 2023 13:11:10 +1000
+Message-Id: <20230808031116.398205-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.40.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,21 +91,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun Aug 6, 2023 at 9:46 PM AEST, Nicholas Piggin wrote:
-> On Fri Aug 4, 2023 at 6:50 PM AEST, Pavel Dovgalyuk wrote:
-> > BTW, there is a function qemu_register_reset_nosnapshotload that can be=
-=20
-> > used in similar cases.
-> > Can you just use it without changing the code of the reset handler?
->
-> I didn't know that, thanks for pointing it out. I'll take a closer look
-> at it before reposting.
+I started out looking at this to reduce divergence of TCG and KVM
+machines with 2nd DAWR. The divergence already exists with first
+DAWR, so I don't want to tie the KVM 2nd DAWR enablement to this,
+but it would be nice to ensure the caps and such for the 2nd DAWR
+will also work for TCG.
 
-Seems a bit tricky because the device tree has to be rebuilt at reset
-time (including snapshot load), but it uses the random number. So
-having a second nosnapshotload reset function might not be called in
-the correct order, I think?  For now I will keep it as is.
+I don't know that we have great test cases for this, it does work
+with some of the Linux selftests ptrace debug tests (although those
+tests seem to have a few issues in upstream kernels), some basic
+Linux xmon and gdb tests by hand, and I've started working on some
+kvm unit tests.
 
 Thanks,
-Nick
+Nick 
+
+Nicholas Piggin (6):
+  target/ppc: Remove single-step suppression inside 0x100-0xf00
+  target/ppc: Improve book3s branch trace interrupt for v2.07S
+  target/ppc: Suppress single step interrupts on rfi-type instructions
+  target/ppc: Implement breakpoint debug facility for v2.07S
+  target/ppc: Implement watchpoint debug facility for v2.07S
+  spapr: implement H_SET_MODE debug facilities
+
+ hw/ppc/spapr_hcall.c     |  57 +++++++++++++++++++++
+ target/ppc/cpu.c         |  86 +++++++++++++++++++++++++++++++
+ target/ppc/cpu.h         |   7 +++
+ target/ppc/cpu_init.c    |  11 ++--
+ target/ppc/excp_helper.c | 108 ++++++++++++++++++++++++++++++++++++++-
+ target/ppc/helper.h      |   4 ++
+ target/ppc/internal.h    |   3 ++
+ target/ppc/machine.c     |   5 ++
+ target/ppc/misc_helper.c |  15 ++++++
+ target/ppc/spr_common.h  |   3 ++
+ target/ppc/translate.c   |  60 +++++++++++++++++-----
+ 11 files changed, 341 insertions(+), 18 deletions(-)
+
+-- 
+2.40.1
+
 
