@@ -2,84 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E257A774E88
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 00:47:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C02CC774EAC
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 00:52:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTVSQ-0002e0-A9; Tue, 08 Aug 2023 18:45:42 -0400
+	id 1qTVYa-0003lh-VV; Tue, 08 Aug 2023 18:52:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTVSN-0002dm-U8
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 18:45:40 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ (Exim 4.90_1) (envelope-from <maverickk1778@gmail.com>)
+ id 1qTVYY-0003lU-GS
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 18:52:02 -0400
+Received: from mail-io1-xd2b.google.com ([2607:f8b0:4864:20::d2b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTVSK-0006Bm-U6
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 18:45:39 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-686fc0d3c92so4264260b3a.0
- for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 15:45:36 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <maverickk1778@gmail.com>)
+ id 1qTVYW-0006sG-OE
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 18:52:02 -0400
+Received: by mail-io1-xd2b.google.com with SMTP id
+ ca18e2360f4ac-790ab117bd5so212886439f.0
+ for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 15:51:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691534735; x=1692139535;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=4zoE2ZwVmHBor7Y96sjSCtAhah8L8hrknysTAlUT2V4=;
- b=TAbwMfuSrFyqTDzYJUvyeiyrMdaH+DlnAaTUV1QkPbXywrrqe/pvbJjxws3pPHJOTg
- W8uV7bpAUM54z2Cqlimx+XxNtLZKpKTqLmqbCIGVmFGz+xGtay+sfU0BTCR0jlIhqwtC
- uOxb2F56Wl3oOJMk03RFyAOng8AxQHx4wKADo4Lmwcorzuq6HVQF/vpBydtf4YBIcMhf
- 4kxtkoLZq3IabpbL0LILrjO6h/TJlnlMJ+IMgy2eeQx2jNvYQ4PD+AXbvaaWwnSsOVi1
- PXxjnkMmx7ou5s0/oVe2YVNtNQoTDhys9nhYh4E5eCxyP50zVCeRCI818hD9KByA3Q4M
- hnDg==
+ d=gmail.com; s=20221208; t=1691535118; x=1692139918;
+ h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=B7EKwglenhakd2igRLrP6qwv65F4gW6aaRMaw2PLT40=;
+ b=c6HGs5NkpTF2DDv+9cqnHyh30YOi4fjlDCZN7ekgywxAaFrTwxLJooK0FIzD0IFekJ
+ ckNwlk6YldOibWJvaAsFa6kaKjWh/lZNuLtLoVlLjKaleGGuZdKns/6Hd2Y5nrYj/2Ta
+ mfF4b4+imcRb+PMSuFdCwzJYh5OuUvH4e+il8txgezxTZs/ZDJ+Je6/p0sBxE60hWQKy
+ qtt+1uPSK49RR0JHeizbHrMwn4U56VzbHRfbZYBUXQ3fLI/ooU2njCDt9eANdUhhrZEI
+ uo2iyFdKCqZN57nzNfLgRzy76a6p2VEWUupUomfbfjLlTLcmA/nxOu0D1yroqVIFuptx
+ hLZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691534735; x=1692139535;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=4zoE2ZwVmHBor7Y96sjSCtAhah8L8hrknysTAlUT2V4=;
- b=UsrWUh6d88yfELmQs3AhBYHqJKRBvJdHJA8iUPLbNTAWv5tzCE++m46HBsPzdXb7yk
- br4uSthhQU0Q3jYuhk1/KhQV0ML64u/WlMOkaFlp96AxQ3LhXTiMHNilY87/ZKhJ8jhx
- 4ixdJqcCJjxDned0C2my1OmaPGxIZHu/3FQ0/16KF2pfreYe6kCTOB9n4jDWxUCx6/FL
- S7qkxsaQGFPgveMhAd10nkT1tYFruO+5NAYsptSxIZuS+HljBRETOADefpuERHUezbqm
- fFFtCV+206h4ldmt1xNVF3ZdeqBqjog7jnFJBykMLqX8DxuF5QxZQcgFhHGeioduDpf5
- 1TQA==
-X-Gm-Message-State: AOJu0YyXfiDolvo5ViIvYBS7jL5m+ByyFcCzxEHa4ziQJv1tlRJiOCXZ
- JGep0nzRSGXz44rCgFGPXrqw3UkUt7XfsViNaH8=
-X-Google-Smtp-Source: AGHT+IESA1vEkAb8NN1TKxScZTcfirIJcswPjC8o4gDaqNs+Sb0inq2cwg097aRc0ym8UTDBGOkMIA==
-X-Received: by 2002:a05:6a20:12ca:b0:11f:4707:7365 with SMTP id
- v10-20020a056a2012ca00b0011f47077365mr1037172pzg.38.1691534734965; 
- Tue, 08 Aug 2023 15:45:34 -0700 (PDT)
-Received: from ?IPV6:2602:47:d490:6901:63dc:2a47:f4bc:4a95?
- ([2602:47:d490:6901:63dc:2a47:f4bc:4a95])
- by smtp.gmail.com with ESMTPSA id
- x10-20020aa793aa000000b0064fde7ae1ffsm8581562pff.38.2023.08.08.15.45.34
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 08 Aug 2023 15:45:34 -0700 (PDT)
-Message-ID: <9c4fb0c5-7057-6fdc-b672-113bb9d1c8cd@linaro.org>
-Date: Tue, 8 Aug 2023 15:45:32 -0700
+ d=1e100.net; s=20221208; t=1691535118; x=1692139918;
+ h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=B7EKwglenhakd2igRLrP6qwv65F4gW6aaRMaw2PLT40=;
+ b=lk+c3PVJXHtXceF8Jmb0KhmOQHHbdS1dFiC/45+r6FObxVmovnqJ2mOoQF1OJSfHIs
+ GCGgLgtxDIH31TqduooUOYlSpDsKs7ecFGSWxZShzX3+g++XNE/t7zfxe9gGOYtv/On2
+ Qv3ZBMesBLkNGodFKOYVfThtXcjwjWs35zsjJV5PA3CHBxPXlcI4XElnCrk+MGC0Bhno
+ gaOZZk+IPPBswfl/YdA8J4J7GIdPzM5y+TM0SF90AdrcPRpFIc9CGkkCFbWl0oU5gVKq
+ CYp10VZRq0T2sj7fI838qoBqahvrQd6hPQJOr/94B571smUmC3KIsMr4v6a63wvfeHs9
+ G1og==
+X-Gm-Message-State: AOJu0YxgguDnJXneMH/MoPBbBQgfJj6Qs0cR3cGcWkNSzzDd8qe/q3q5
+ B9cBiVZA4+ZxmKiNLn3OIj5No9jMzgq1HFph1OFNvBVRW4Q=
+X-Google-Smtp-Source: AGHT+IGqeEnysR4NPTO42DgksaCikePByfC1aM8L1y3y3kaqWwbohdq+vDq6cPhsKNzaAZsa9ADroD3U5tsQXWohDGA=
+X-Received: by 2002:a6b:5c12:0:b0:790:fab3:2052 with SMTP id
+ z18-20020a6b5c12000000b00790fab32052mr1138792ioh.5.1691535117767; Tue, 08 Aug
+ 2023 15:51:57 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v4 38/38] tests/tcg: Add a test for info proc mappings
-Content-Language: en-US
-To: qemu-devel@nongnu.org
-Cc: Ilya Leoshkevich <iii@linux.ibm.com>, =?UTF-8?Q?Alex_Benn=c3=a9e?=
- <alex.bennee@linaro.org>
-References: <20230630180423.558337-1-alex.bennee@linaro.org>
- <20230630180423.558337-39-alex.bennee@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230630180423.558337-39-alex.bennee@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
-X-Spam_score_int: -61
-X-Spam_score: -6.2
-X-Spam_bar: ------
-X-Spam_report: (-6.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-4.14,
+From: Maverickk 78 <maverickk1778@gmail.com>
+Date: Wed, 9 Aug 2023 04:21:47 +0530
+Message-ID: <CALfBBTtUtydebmJuh6JZ5RAXZfx5OgJ+RCug1apbZa4mm17rJQ@mail.gmail.com>
+Subject: CXL volatile memory is not listed
+To: Jonathan Cameron via <qemu-devel@nongnu.org>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::d2b;
+ envelope-from=maverickk1778@gmail.com; helo=mail-io1-xd2b.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -97,43 +82,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/30/23 11:04, Alex Bennée wrote:
-> From: Ilya Leoshkevich <iii@linux.ibm.com>
-> 
-> Add a small test to prevent regressions.
-> 
-> Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-> Message-Id: <20230621203627.1808446-9-iii@linux.ibm.com>
-> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-...
-> +def run_test():
-> +    """Run through the tests one by one"""
-> +    try:
-> +        mappings = gdb.execute("info proc mappings", False, True)
-> +    except gdb.error as exc:
-> +        exc_str = str(exc)
-> +        if "Not supported on this target." in exc_str:
-> +            # Detect failures due to an outstanding issue with how GDB handles
-> +            # the x86_64 QEMU's target.xml, which does not contain the
-> +            # definition of orig_rax. Skip the test in this case.
-> +            print("SKIP: {}".format(exc_str))
-> +            return
-> +        raise
-> +    report(isinstance(mappings, str), "Fetched the mappings from the inferior")
-> +    report("/sha1" in mappings, "Found the test binary name in the mappings")
+Hello,
 
-This test fails on ppc64 host, or indeed any host with page size != 4k.
+I am running qemu-system-x86_64
 
-When host page size != target page size, and the executable image is small, such as sha1, 
-then target_mmap cannot directly map the executable file, but must implement the mmap via 
-MAP_ANON + pread.  Which leaves us with no binary name in the host /proc/self/maps for us 
-to copy to the artificial guest /proc/self/maps.
+qemu-system-x86_64 --version
+QEMU emulator version 8.0.92 (v8.1.0-rc2-80-g0450cf0897)
 
-One of the very many issues with page size mismatch...
-
-I'm tempted to remove the test, but I suppose we could check host page size in python.
+qemu-system-x86_64 \
+-m 2G,slots=4,maxmem=4G \
+-smp 4 \
+-machine type=q35,accel=kvm,cxl=on \
+-enable-kvm \
+-nographic \
+-device pxb-cxl,id=cxl.0,bus=pcie.0,bus_nr=52 \
+-device cxl-rp,id=rp0,bus=cxl.0,chassis=0,port=0,slot=0 \
+-object memory-backend-file,id=mem0,mem-path=/tmp/mem0,size=1G,share=true \
+-device cxl-type3,bus=rp0,volatile-memdev=mem0,id=cxl-mem0 \
+-M cxl-fmw.0.targets.0=cxl.0,cxl-fmw.0.size=1G
 
 
-r~
+I was expecting the CXL memory to be listed in "System Ram", the lsmem
+shows only 2G memory which is System RAM, it's not listing the CXL
+memory.
 
+Do I need to pass any particular parameter in the kernel command line?
+
+Is there any documentation available? I followed the inputs provided in
+
+https://lore.kernel.org/linux-mm/Y+CSOeHVLKudN0A6@kroah.com/T/
+
+Is there any documentation/blog listed?
 
