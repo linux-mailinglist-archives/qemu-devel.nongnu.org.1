@@ -2,74 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD8FE774C71
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 23:09:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9EF0774C80
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 23:10:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTTwu-0007ez-A6; Tue, 08 Aug 2023 17:09:04 -0400
+	id 1qTTwv-0007fp-SL; Tue, 08 Aug 2023 17:09:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTTws-0007eP-44
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 17:09:02 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1qTTwt-0007ex-QE
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 17:09:03 -0400
+Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTTwq-0005vF-BH
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 17:09:01 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-1bc3d94d40fso53342925ad.3
- for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 14:08:59 -0700 (PDT)
+ id 1qTTwr-0005vU-BY
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 17:09:03 -0400
+Received: by mail-pg1-x52a.google.com with SMTP id
+ 41be03b00d2f7-565334377d0so9890a12.2
+ for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 14:09:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691528939; x=1692133739;
+ d=linaro.org; s=google; t=1691528940; x=1692133740;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=p1NLSIvorkQrsaaDKLyaBigg9Lde4sad1iqhAbZMlyw=;
- b=MDpP9kd7pBJnh2iFK0ctNMk5dSBef9/29x7WlX4pZnMuIP7GlBFsLMgqrvTrXk/koM
- JZ8k94EdoUwS+lkhgVwEZq5tYlbz8g03IhQcsiWa3BLywJAiU4TIDSO++1jUPnxMaqMi
- nHKv/1pLs3yyoaMxJw7Lgj1JATSHmKEYeubktBkZTru1i8v05dDiUANLbVyh4sU9PaJp
- whR5ud+QMwXONiItj3XyvnK0Vxi8Nye3WeWapifVDGuvOJsXBPnuDwk1JccqKap/W3QI
- IdhrbOPpcEF2cB5NSKdI1FwdUkwHuVHH6TSInc3VvzEiwEdUfIDHFai2TnWvMJ0gASRV
- TedQ==
+ bh=A9/ZyN+A4dvu4eBsZbJl245Yx/P0Ka3dfVWhmlJt8gU=;
+ b=ad8e9m+3TPqbUQMZ9DaCKu5cPxYMMMfIn51ZhywyAJKhMopHZnrUpCiRFqAWAb9Ap1
+ LkdpINZ4bdpr/izsojVveu9N9CLp7IF6Rce5uMF5WGpNu8XloAqMpTFzCuP3PJlw9OyL
+ wJIohIJAHtJQ8nI8Esp3nxGfpCxXYq0ZG3uDcjKchJxfV9wiyxKbZu01oWosdz7TrMtC
+ UQ2gqSrQyM8CAdBDFmEYWNRJcM8L3UNNhejkqZRzrmk5fmWh/NtstlFwBZYVcHFxEFpO
+ hLbAzDNqQFdE/xsrHFhfD/0XV7SNggMDQojcIOuQq8vhupeRo2mHHqV6Uz3SDggM8FgB
+ kGBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691528939; x=1692133739;
+ d=1e100.net; s=20221208; t=1691528940; x=1692133740;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=p1NLSIvorkQrsaaDKLyaBigg9Lde4sad1iqhAbZMlyw=;
- b=MgymohYg/HfyyweHXShfUhkM7Zj5SOtnrwucTjzusr9QMNcQAPM8nsce3Lzbcge7sE
- zztObyRR+eETT4slrlZ/88Vv5cXTnOfLNRZVKnE+HY0fosDTgr3h4TQnM5I63zDcSKuX
- 4Z7V2IcQOstHEad22E6gu/iPeNQPQjvb/OH1jAw2o5Ewbn4zp2r9yN1fOdE3aRngS1Wc
- 2JolgOVO8LBwgwAomCRG9psIZU1SNGWfwA0NO5m9mxQojpA4hy8U0xDwwT+hGfny8vL+
- mwsbtCX178rJnUG004GXb0Xpmd41tJ/rZ6Wzykxek9VTQvgfx972D9MOITsJX3P5Yg3D
- +h2g==
-X-Gm-Message-State: AOJu0Yx7WcInMwNxA+KnqDij5py8s+yHyIzPCHsXWiRvE+ZA3cf1/BXT
- b0iBrnqErPyxpqnaa0MaQUiIFYhhu6kEgPyPb4U=
-X-Google-Smtp-Source: AGHT+IGNuLJmZnfoSgxuYGPRbG3zol2Cd/2m1nPGwQCtx75LIQxwl7a15Q/lphPO1aDeE2tDkM/4Iw==
-X-Received: by 2002:a17:902:dacf:b0:1bb:97d0:c628 with SMTP id
- q15-20020a170902dacf00b001bb97d0c628mr1038330plx.31.1691528938986; 
- Tue, 08 Aug 2023 14:08:58 -0700 (PDT)
+ bh=A9/ZyN+A4dvu4eBsZbJl245Yx/P0Ka3dfVWhmlJt8gU=;
+ b=TP8Lj4wExT2dQjrH+1nkc331kRfhzWO2BqAUmVjVz7dbQRPMv1OVg4StjrRxN3H7tG
+ pMir8SF7D8PqI5U62NBSjnhFuI6LDBMXSLZCE4zUuUaaF8oOMqxkaZxOX/dv1sTyiRLe
+ 95iKlqJhjxB3dAs0OL4f3Ywhe//0o89sTx+avtKbTAmk+lUsuR7Rchxw2sr0eZc1gVuu
+ kxSXehbUpUiX9N3hAr4yX+OP5R3ypQg14XrTUR9cmGbFwJpTL2bcJP0i76JY4ZncMOmc
+ eu9/qGUspkaPSZIqnS730bBd6adHyXIciDtsbybYWCzfBx+StLMTAhyv9QOGMlms+I4J
+ iPAQ==
+X-Gm-Message-State: AOJu0YyvmRRJRQWj8mPuo+ojuP3BR0d36J8jEKVW8NYGtAIrjUzXoqnH
+ f1K8346v+e+hlpV+p76NdkQ8PCH7fEIjIq8LVHM=
+X-Google-Smtp-Source: AGHT+IHiWIDKShpmQnUVpQ/GEqTm4QhgmN9re5CpaTx7pw6crMjIr3ypGa5zr+KAYwJOJglkH7C+Gw==
+X-Received: by 2002:a17:90a:1608:b0:268:13c4:b800 with SMTP id
+ n8-20020a17090a160800b0026813c4b800mr674710pja.21.1691528939821; 
+ Tue, 08 Aug 2023 14:08:59 -0700 (PDT)
 Received: from stoup.. ([2602:47:d490:6901:63dc:2a47:f4bc:4a95])
  by smtp.gmail.com with ESMTPSA id
- k11-20020a170902694b00b001b3fb2f0296sm9437533plt.120.2023.08.08.14.08.58
+ k11-20020a170902694b00b001b3fb2f0296sm9437533plt.120.2023.08.08.14.08.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 08 Aug 2023 14:08:58 -0700 (PDT)
+ Tue, 08 Aug 2023 14:08:59 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Helge Deller <deller@gmx.de>,
-	Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PULL 01/14] linux-user: Adjust task_unmapped_base for reserved_va
-Date: Tue,  8 Aug 2023 14:08:43 -0700
-Message-Id: <20230808210856.95568-2-richard.henderson@linaro.org>
+Cc: Helge Deller <deller@gmx.de>, Akihiko Odaki <akihiko.odaki@daynix.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PULL 02/14] linux-user: Define TASK_UNMAPPED_BASE in
+ $guest/target_mman.h
+Date: Tue,  8 Aug 2023 14:08:44 -0700
+Message-Id: <20230808210856.95568-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230808210856.95568-1-richard.henderson@linaro.org>
 References: <20230808210856.95568-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,116 +94,332 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Ensure that the chosen values for mmap_next_start and
-task_unmapped_base are within the guest address space.
+Provide default values that are as close as possible to the
+values used by the guest's kernel.
 
 Tested-by: Helge Deller <deller@gmx.de>
+Reviewed-by: Helge Deller <deller@gmx.de>
 Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/user-mmap.h | 34 +++++++++++++++++++++++++++++++++-
- linux-user/main.c      | 28 ++++++++++++++++++++++++++++
- linux-user/mmap.c      | 18 +++---------------
- 3 files changed, 64 insertions(+), 16 deletions(-)
+ linux-user/aarch64/target_mman.h     | 10 ++++++++++
+ linux-user/alpha/target_mman.h       |  8 ++++++++
+ linux-user/arm/target_mman.h         |  8 ++++++++
+ linux-user/cris/target_mman.h        |  9 +++++++++
+ linux-user/hexagon/target_mman.h     | 10 ++++++++++
+ linux-user/hppa/target_mman.h        |  3 +++
+ linux-user/i386/target_mman.h        | 13 +++++++++++++
+ linux-user/loongarch64/target_mman.h |  8 ++++++++
+ linux-user/m68k/target_mman.h        |  3 +++
+ linux-user/microblaze/target_mman.h  |  8 ++++++++
+ linux-user/mips/target_mman.h        |  7 +++++++
+ linux-user/nios2/target_mman.h       |  7 +++++++
+ linux-user/openrisc/target_mman.h    |  7 +++++++
+ linux-user/ppc/target_mman.h         | 13 +++++++++++++
+ linux-user/riscv/target_mman.h       |  7 +++++++
+ linux-user/s390x/target_mman.h       | 10 ++++++++++
+ linux-user/sh4/target_mman.h         |  4 ++++
+ linux-user/sparc/target_mman.h       | 14 ++++++++++++++
+ linux-user/user-mmap.h               | 14 --------------
+ linux-user/x86_64/target_mman.h      | 12 ++++++++++++
+ linux-user/xtensa/target_mman.h      |  6 ++++++
+ 21 files changed, 167 insertions(+), 14 deletions(-)
 
+diff --git a/linux-user/aarch64/target_mman.h b/linux-user/aarch64/target_mman.h
+index f721295fe1..4d3eecfb26 100644
+--- a/linux-user/aarch64/target_mman.h
++++ b/linux-user/aarch64/target_mman.h
+@@ -4,6 +4,16 @@
+ #define TARGET_PROT_BTI         0x10
+ #define TARGET_PROT_MTE         0x20
+ 
++/*
++ * arch/arm64/include/asm/processor.h:
++ *
++ * TASK_UNMAPPED_BASE     DEFAULT_MAP_WINDOW / 4
++ * DEFAULT_MAP_WINDOW     DEFAULT_MAP_WINDOW_64
++ * DEFAULT_MAP_WINDOW_64  UL(1) << VA_BITS_MIN
++ * VA_BITS_MIN            48 (unless explicitly configured smaller)
++ */
++#define TASK_UNMAPPED_BASE      (1ull << (48 - 2))
++
+ #include "../generic/target_mman.h"
+ 
+ #endif
+diff --git a/linux-user/alpha/target_mman.h b/linux-user/alpha/target_mman.h
+index 6bb03e7336..c90b493711 100644
+--- a/linux-user/alpha/target_mman.h
++++ b/linux-user/alpha/target_mman.h
+@@ -20,6 +20,14 @@
+ #define TARGET_MS_SYNC 2
+ #define TARGET_MS_INVALIDATE 4
+ 
++/*
++ * arch/alpha/include/asm/processor.h:
++ *
++ * TASK_UNMAPPED_BASE           TASK_SIZE / 2
++ * TASK_SIZE                    0x40000000000UL
++ */
++#define TASK_UNMAPPED_BASE      0x20000000000ull
++
+ #include "../generic/target_mman.h"
+ 
+ #endif
+diff --git a/linux-user/arm/target_mman.h b/linux-user/arm/target_mman.h
+index e7ba6070fe..76275b2c7e 100644
+--- a/linux-user/arm/target_mman.h
++++ b/linux-user/arm/target_mman.h
+@@ -1 +1,9 @@
++/*
++ * arch/arm/include/asm/memory.h
++ * TASK_UNMAPPED_BASE        ALIGN(TASK_SIZE / 3, SZ_16M)
++ * TASK_SIZE                 CONFIG_PAGE_OFFSET
++ * CONFIG_PAGE_OFFSET        0xC0000000 (default in Kconfig)
++ */
++#define TASK_UNMAPPED_BASE   0x40000000
++
+ #include "../generic/target_mman.h"
+diff --git a/linux-user/cris/target_mman.h b/linux-user/cris/target_mman.h
+index e7ba6070fe..9df7b1eda5 100644
+--- a/linux-user/cris/target_mman.h
++++ b/linux-user/cris/target_mman.h
+@@ -1 +1,10 @@
++/*
++ * arch/cris/include/asm/processor.h:
++ * TASK_UNMAPPED_BASE      (PAGE_ALIGN(TASK_SIZE / 3))
++ *
++ * arch/cris/include/arch-v32/arch/processor.h
++ * TASK_SIZE               0xb0000000
++ */
++#define TASK_UNMAPPED_BASE TARGET_PAGE_ALIGN(0xb0000000 / 3)
++
+ #include "../generic/target_mman.h"
+diff --git a/linux-user/hexagon/target_mman.h b/linux-user/hexagon/target_mman.h
+index e7ba6070fe..c5ae336e07 100644
+--- a/linux-user/hexagon/target_mman.h
++++ b/linux-user/hexagon/target_mman.h
+@@ -1 +1,11 @@
++/*
++ * arch/hexgon/include/asm/processor.h
++ * TASK_UNMAPPED_BASE        PAGE_ALIGN(TASK_SIZE / 3)
++ *
++ * arch/hexagon/include/asm/mem-layout.h
++ * TASK_SIZE                 PAGE_OFFSET
++ * PAGE_OFFSET               0xc0000000
++ */
++#define TASK_UNMAPPED_BASE   0x40000000
++
+ #include "../generic/target_mman.h"
+diff --git a/linux-user/hppa/target_mman.h b/linux-user/hppa/target_mman.h
+index 97f87d042a..6459e7dbdd 100644
+--- a/linux-user/hppa/target_mman.h
++++ b/linux-user/hppa/target_mman.h
+@@ -24,6 +24,9 @@
+ #define TARGET_MS_ASYNC 2
+ #define TARGET_MS_INVALIDATE 4
+ 
++/* arch/parisc/include/asm/processor.h: DEFAULT_MAP_BASE32 */
++#define TASK_UNMAPPED_BASE      0x40000000
++
+ #include "../generic/target_mman.h"
+ 
+ #endif
+diff --git a/linux-user/i386/target_mman.h b/linux-user/i386/target_mman.h
+index e7ba6070fe..cc3382007f 100644
+--- a/linux-user/i386/target_mman.h
++++ b/linux-user/i386/target_mman.h
+@@ -1 +1,14 @@
++/*
++ * arch/x86/include/asm/processor.h:
++ * TASK_UNMAPPED_BASE         __TASK_UNMAPPED_BASE(TASK_SIZE_LOW)
++ * __TASK_UNMAPPED_BASE(S)    PAGE_ALIGN(S / 3)
++ *
++ * arch/x86/include/asm/page_32_types.h:
++ * TASK_SIZE_LOW              TASK_SIZE
++ * TASK_SIZE                  __PAGE_OFFSET
++ * __PAGE_OFFSET              CONFIG_PAGE_OFFSET
++ * CONFIG_PAGE_OFFSET         0xc0000000 (default in Kconfig)
++ */
++#define TASK_UNMAPPED_BASE    0x40000000
++
+ #include "../generic/target_mman.h"
+diff --git a/linux-user/loongarch64/target_mman.h b/linux-user/loongarch64/target_mman.h
+index e7ba6070fe..d70e44d44c 100644
+--- a/linux-user/loongarch64/target_mman.h
++++ b/linux-user/loongarch64/target_mman.h
+@@ -1 +1,9 @@
++/*
++ * arch/loongarch/include/asm/processor.h:
++ * TASK_UNMAPPED_BASE         PAGE_ALIGN(TASK_SIZE / 3)
++ * TASK_SIZE64                0x1UL << (... ? VA_BITS : ...)
++ */
++#define TASK_UNMAPPED_BASE \
++    TARGET_PAGE_ALIGN((1ull << TARGET_VIRT_ADDR_SPACE_BITS) / 3)
++
+ #include "../generic/target_mman.h"
+diff --git a/linux-user/m68k/target_mman.h b/linux-user/m68k/target_mman.h
+index e7ba6070fe..d3eceb663b 100644
+--- a/linux-user/m68k/target_mman.h
++++ b/linux-user/m68k/target_mman.h
+@@ -1 +1,4 @@
++/* arch/m68k/include/asm/processor.h */
++#define TASK_UNMAPPED_BASE      0xC0000000
++
+ #include "../generic/target_mman.h"
+diff --git a/linux-user/microblaze/target_mman.h b/linux-user/microblaze/target_mman.h
+index e7ba6070fe..ffee869db4 100644
+--- a/linux-user/microblaze/target_mman.h
++++ b/linux-user/microblaze/target_mman.h
+@@ -1 +1,9 @@
++/*
++ * arch/microblaze/include/asm/processor.h:
++ * TASK_UNMAPPED_BASE           (TASK_SIZE / 8 * 3)
++ * TASK_SIZE                    CONFIG_KERNEL_START
++ * CONFIG_KERNEL_START          0xc0000000 (default in Kconfig)
++ */
++#define TASK_UNMAPPED_BASE      0x48000000
++
+ #include "../generic/target_mman.h"
+diff --git a/linux-user/mips/target_mman.h b/linux-user/mips/target_mman.h
+index e97694aa4e..fe1eec2d0b 100644
+--- a/linux-user/mips/target_mman.h
++++ b/linux-user/mips/target_mman.h
+@@ -14,6 +14,13 @@
+ #define TARGET_MAP_STACK                0x40000
+ #define TARGET_MAP_HUGETLB              0x80000
+ 
++/*
++ * arch/mips/include/asm/processor.h:
++ * TASK_UNMAPPED_BASE         PAGE_ALIGN(TASK_SIZE / 3)
++ */
++#define TASK_UNMAPPED_BASE \
++    TARGET_PAGE_ALIGN((1ull << TARGET_VIRT_ADDR_SPACE_BITS) / 3)
++
+ #include "../generic/target_mman.h"
+ 
+ #endif
+diff --git a/linux-user/nios2/target_mman.h b/linux-user/nios2/target_mman.h
+index e7ba6070fe..ce18f4f871 100644
+--- a/linux-user/nios2/target_mman.h
++++ b/linux-user/nios2/target_mman.h
+@@ -1 +1,8 @@
++/*
++ * arch/nios2/include/asm/processor.h:
++ * TASK_UNMAPPED_BASE         PAGE_ALIGN(TASK_SIZE / 3)
++ * TASK_SIZE                  0x7FFF0000UL
++ */
++#define TASK_UNMAPPED_BASE    TARGET_PAGE_ALIGN(0x7FFF0000 / 3)
++
+ #include "../generic/target_mman.h"
+diff --git a/linux-user/openrisc/target_mman.h b/linux-user/openrisc/target_mman.h
+index e7ba6070fe..f1aaad809d 100644
+--- a/linux-user/openrisc/target_mman.h
++++ b/linux-user/openrisc/target_mman.h
+@@ -1 +1,8 @@
++/*
++ * arch/openrisc/include/asm/processor.h:
++ * TASK_UNMAPPED_BASE      (TASK_SIZE / 8 * 3)
++ * TASK_SIZE               (0x80000000UL)
++ */
++#define TASK_UNMAPPED_BASE      0x30000000
++
+ #include "../generic/target_mman.h"
+diff --git a/linux-user/ppc/target_mman.h b/linux-user/ppc/target_mman.h
+index 67cc218f2e..04f99c6077 100644
+--- a/linux-user/ppc/target_mman.h
++++ b/linux-user/ppc/target_mman.h
+@@ -4,6 +4,19 @@
+ #define TARGET_MAP_NORESERVE            0x40
+ #define TARGET_MAP_LOCKED               0x80
+ 
++/*
++ * arch/powerpc/include/asm/task_size_64.h
++ * TASK_UNMAPPED_BASE_USER32    (PAGE_ALIGN(TASK_SIZE_USER32 / 4))
++ * TASK_UNMAPPED_BASE_USER64    (PAGE_ALIGN(DEFAULT_MAP_WINDOW_USER64 / 4))
++ * TASK_SIZE_USER32             (0x0000000100000000UL - (1 * PAGE_SIZE))
++ * DEFAULT_MAP_WINDOW_USER64    TASK_SIZE_64TB (with 4k pages)
++ */
++#ifdef TARGET_PPC64
++#define TASK_UNMAPPED_BASE      0x0000100000000000ull
++#else
++#define TASK_UNMAPPED_BASE      0x40000000
++#endif
++
+ #include "../generic/target_mman.h"
+ 
+ #endif
+diff --git a/linux-user/riscv/target_mman.h b/linux-user/riscv/target_mman.h
+index e7ba6070fe..0f06dadbd4 100644
+--- a/linux-user/riscv/target_mman.h
++++ b/linux-user/riscv/target_mman.h
+@@ -1 +1,8 @@
++/*
++ * arch/loongarch/include/asm/processor.h:
++ * TASK_UNMAPPED_BASE         PAGE_ALIGN(TASK_SIZE / 3)
++ */
++#define TASK_UNMAPPED_BASE \
++    TARGET_PAGE_ALIGN((1ull << (TARGET_VIRT_ADDR_SPACE_BITS - 1)) / 3)
++
+ #include "../generic/target_mman.h"
+diff --git a/linux-user/s390x/target_mman.h b/linux-user/s390x/target_mman.h
+index e7ba6070fe..40d149b329 100644
+--- a/linux-user/s390x/target_mman.h
++++ b/linux-user/s390x/target_mman.h
+@@ -1 +1,11 @@
++/*
++ * arch/s390/include/asm/processor.h:
++ * TASK_UNMAPPED_BASE           (... : (_REGION2_SIZE >> 1))
++ *
++ * arch/s390/include/asm/pgtable.h:
++ * _REGION2_SIZE                (1UL << _REGION2_SHIFT)
++ * _REGION2_SHIFT               42
++ */
++#define TASK_UNMAPPED_BASE      (1ull << 41)
++
+ #include "../generic/target_mman.h"
+diff --git a/linux-user/sh4/target_mman.h b/linux-user/sh4/target_mman.h
+index e7ba6070fe..bbbc223398 100644
+--- a/linux-user/sh4/target_mman.h
++++ b/linux-user/sh4/target_mman.h
+@@ -1 +1,5 @@
++/* arch/sh/include/asm/processor_32.h */
++#define TASK_UNMAPPED_BASE \
++    TARGET_PAGE_ALIGN((1u << TARGET_VIRT_ADDR_SPACE_BITS) / 3)
++
+ #include "../generic/target_mman.h"
+diff --git a/linux-user/sparc/target_mman.h b/linux-user/sparc/target_mman.h
+index 9bad99c852..692ebf9dd7 100644
+--- a/linux-user/sparc/target_mman.h
++++ b/linux-user/sparc/target_mman.h
+@@ -5,6 +5,20 @@
+ #define TARGET_MAP_LOCKED              0x100
+ #define TARGET_MAP_GROWSDOWN           0x0200
+ 
++/*
++ * arch/sparc/include/asm/page_64.h:
++ * TASK_UNMAPPED_BASE      (test_thread_flag(TIF_32BIT) ? \
++ *                          _AC(0x0000000070000000,UL) : \
++ *                          VA_EXCLUDE_END)
++ * But VA_EXCLUDE_END is > 0xffff800000000000UL which doesn't work
++ * in userland emulation.
++ */
++#ifdef TARGET_ABI32
++#define TASK_UNMAPPED_BASE      0x70000000
++#else
++#define TASK_UNMAPPED_BASE      (1ull << (TARGET_VIRT_ADDR_SPACE_BITS - 2))
++#endif
++
+ #include "../generic/target_mman.h"
+ 
+ #endif
 diff --git a/linux-user/user-mmap.h b/linux-user/user-mmap.h
-index 7265c2c116..2c9d99ed6c 100644
+index 2c9d99ed6c..f844ba4e61 100644
 --- a/linux-user/user-mmap.h
 +++ b/linux-user/user-mmap.h
-@@ -18,6 +18,39 @@
+@@ -18,20 +18,6 @@
  #ifndef LINUX_USER_USER_MMAP_H
  #define LINUX_USER_USER_MMAP_H
- 
-+#if HOST_LONG_BITS == 64 && TARGET_ABI_BITS == 64
-+#ifdef TARGET_AARCH64
-+# define TASK_UNMAPPED_BASE  0x5500000000
-+#else
-+# define TASK_UNMAPPED_BASE  (1ul << 38)
-+#endif
-+#else
-+#ifdef TARGET_HPPA
-+# define TASK_UNMAPPED_BASE  0xfa000000
-+#else
-+# define TASK_UNMAPPED_BASE  0x40000000
-+#endif
-+#endif
-+
-+/*
-+ * Guest parameters for the ADDR_COMPAT_LAYOUT personality
-+ * (at present this is the only layout supported by QEMU).
-+ *
-+ * TASK_UNMAPPED_BASE: For mmap without hint (addr != 0), the search
-+ * for unused virtual memory begins at TASK_UNMAPPED_BASE.
-+ *
-+ * task_unmapped_base: When the guest address space is limited via -R,
-+ * the value of TASK_UNMAPPED_BASE is adjusted to fit.
-+ */
-+extern abi_ulong task_unmapped_base;
-+
-+/*
-+ * mmap_next_start: The base address for the next mmap without hint,
-+ * increased after each successful map, starting at task_unmapped_base.
-+ * This is an optimization within QEMU and not part of ADDR_COMPAT_LAYOUT.
-+ */
-+extern abi_ulong mmap_next_start;
-+
- int target_mprotect(abi_ulong start, abi_ulong len, int prot);
- abi_long target_mmap(abi_ulong start, abi_ulong len, int prot,
-                      int flags, int fd, off_t offset);
-@@ -26,7 +59,6 @@ abi_long target_mremap(abi_ulong old_addr, abi_ulong old_size,
-                        abi_ulong new_size, unsigned long flags,
-                        abi_ulong new_addr);
- abi_long target_madvise(abi_ulong start, abi_ulong len_in, int advice);
--extern abi_ulong mmap_next_start;
- abi_ulong mmap_find_vma(abi_ulong, abi_ulong, abi_ulong);
- void mmap_fork_start(void);
- void mmap_fork_end(int child);
-diff --git a/linux-user/main.c b/linux-user/main.c
-index 556956c363..be621dc792 100644
---- a/linux-user/main.c
-+++ b/linux-user/main.c
-@@ -821,6 +821,34 @@ int main(int argc, char **argv, char **envp)
-         reserved_va = max_reserved_va;
-     }
- 
-+    /*
-+     * Temporarily disable
-+     *   "comparison is always false due to limited range of data type"
-+     * due to comparison between (possible) uint64_t and uintptr_t.
-+     */
-+#pragma GCC diagnostic push
-+#pragma GCC diagnostic ignored "-Wtype-limits"
-+
-+    /*
-+     * Select an initial value for task_unmapped_base that is in range.
-+     */
-+    if (reserved_va) {
-+        if (TASK_UNMAPPED_BASE < reserved_va) {
-+            task_unmapped_base = TASK_UNMAPPED_BASE;
-+        } else {
-+            /* The most common default formula is TASK_SIZE / 3. */
-+            task_unmapped_base = TARGET_PAGE_ALIGN(reserved_va / 3);
-+        }
-+    } else if (TASK_UNMAPPED_BASE < UINTPTR_MAX) {
-+        task_unmapped_base = TASK_UNMAPPED_BASE;
-+    } else {
-+        /* 32-bit host: pick something medium size. */
-+        task_unmapped_base = 0x10000000;
-+    }
-+    mmap_next_start = task_unmapped_base;
-+
-+#pragma GCC diagnostic pop
-+
-     {
-         Error *err = NULL;
-         if (seed_optarg != NULL) {
-diff --git a/linux-user/mmap.c b/linux-user/mmap.c
-index eb04fab8ab..84436d45c8 100644
---- a/linux-user/mmap.c
-+++ b/linux-user/mmap.c
-@@ -299,20 +299,8 @@ static bool mmap_frag(abi_ulong real_start, abi_ulong start, abi_ulong last,
-     return true;
- }
  
 -#if HOST_LONG_BITS == 64 && TARGET_ABI_BITS == 64
 -#ifdef TARGET_AARCH64
@@ -216,21 +434,45 @@ index eb04fab8ab..84436d45c8 100644
 -# define TASK_UNMAPPED_BASE  0x40000000
 -#endif
 -#endif
--abi_ulong mmap_next_start = TASK_UNMAPPED_BASE;
-+abi_ulong task_unmapped_base;
-+abi_ulong mmap_next_start;
- 
+-
  /*
-  * Subroutine of mmap_find_vma, used when we have pre-allocated
-@@ -391,7 +379,7 @@ abi_ulong mmap_find_vma(abi_ulong start, abi_ulong size, abi_ulong align)
+  * Guest parameters for the ADDR_COMPAT_LAYOUT personality
+  * (at present this is the only layout supported by QEMU).
+diff --git a/linux-user/x86_64/target_mman.h b/linux-user/x86_64/target_mman.h
+index e7ba6070fe..f9ff652b37 100644
+--- a/linux-user/x86_64/target_mman.h
++++ b/linux-user/x86_64/target_mman.h
+@@ -1 +1,13 @@
++/*
++ * arch/x86/include/asm/processor.h:
++ * TASK_UNMAPPED_BASE         __TASK_UNMAPPED_BASE(TASK_SIZE_LOW)
++ * __TASK_UNMAPPED_BASE(S)    PAGE_ALIGN(S / 3)
++ *
++ * arch/x86/include/asm/page_64_types.h:
++ * TASK_SIZE_LOW              DEFAULT_MAP_WINDOW
++ * DEFAULT_MAP_WINDOW         ((1UL << 47) - PAGE_SIZE)
++ */
++#define TASK_UNMAPPED_BASE \
++    TARGET_PAGE_ALIGN((1ull << TARGET_VIRT_ADDR_SPACE_BITS) / 3)
++
+ #include "../generic/target_mman.h"
+diff --git a/linux-user/xtensa/target_mman.h b/linux-user/xtensa/target_mman.h
+index 3933771b5b..c4f671adb7 100644
+--- a/linux-user/xtensa/target_mman.h
++++ b/linux-user/xtensa/target_mman.h
+@@ -14,6 +14,12 @@
+ #define TARGET_MAP_STACK                0x40000
+ #define TARGET_MAP_HUGETLB              0x80000
  
-             if ((addr & (align - 1)) == 0) {
-                 /* Success.  */
--                if (start == mmap_next_start && addr >= TASK_UNMAPPED_BASE) {
-+                if (start == mmap_next_start && addr >= task_unmapped_base) {
-                     mmap_next_start = addr + size;
-                 }
-                 return addr;
++/*
++ * arch/xtensa/include/asm/processor.h:
++ * TASK_UNMAPPED_BASE           (TASK_SIZE / 2)
++ */
++#define TASK_UNMAPPED_BASE      (1u << (TARGET_VIRT_ADDR_SPACE_BITS - 1))
++
+ #include "../generic/target_mman.h"
+ 
+ #endif
 -- 
 2.34.1
 
