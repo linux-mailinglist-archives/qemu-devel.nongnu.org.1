@@ -2,84 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19F5E7736DB
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 04:41:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AC19773703
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 04:45:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTCdH-00045r-00; Mon, 07 Aug 2023 22:39:39 -0400
+	id 1qTChm-0005Ct-Q8; Mon, 07 Aug 2023 22:44:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qTCdC-00045h-IA
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 22:39:34 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qTCd9-0005rn-UB
- for qemu-devel@nongnu.org; Mon, 07 Aug 2023 22:39:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691462371;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=jqkKW7cGTuNOUpogNbIEgXpCg6OhtKLeCV99qALBa84=;
- b=DOrqAApLvmLzE9ygFS3zGqZAkfN0//pm9fJaImDxY4m9Rd9VA8LxgyRzBwzEGL3iXfQXni
- 9YIf1qnmxk1s+P8dahWGZr3W3E/KSzmoaQinTPbVUZesz35XfKPGxqzTWYECpuwaunwyD4
- Y91y6jbyij0zYQUx1LBn2wdUTIvyfJ0=
-Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
- [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-609-8bQkYlknM3iRwhp0QcxCzQ-1; Mon, 07 Aug 2023 22:39:27 -0400
-X-MC-Unique: 8bQkYlknM3iRwhp0QcxCzQ-1
-Received: by mail-lj1-f198.google.com with SMTP id
- 38308e7fff4ca-2b9e8abe56bso49485581fa.2
- for <qemu-devel@nongnu.org>; Mon, 07 Aug 2023 19:39:27 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <ake@igel.co.jp>) id 1qTChj-0005CM-J1
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 22:44:15 -0400
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ake@igel.co.jp>) id 1qTChh-00070I-6X
+ for qemu-devel@nongnu.org; Mon, 07 Aug 2023 22:44:15 -0400
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-1bba04b9df3so45713265ad.0
+ for <qemu-devel@nongnu.org>; Mon, 07 Aug 2023 19:44:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=igel-co-jp.20221208.gappssmtp.com; s=20221208; t=1691462651; x=1692067451;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=tRcQgRjRVa0F4G+R0JeZyuWvu2eFe3r6uexZMFMsd58=;
+ b=1l5TFHnlbe/UFE/iltJv0jJr8sm8gyzt1oGQ3OO0aa8U+aIOBqIYWXH3siJhLRTcSs
+ d2xewPhg/Awayk0psmscb7/ivGBS/jR1NLcyzP67igMNtQ66/3rKn397GtjY+POHI6Tk
+ xZoVVvuiaOEvGOUGrnvGi9soNdTzeO7oJmpf1rEL3s1xoEbzlxXquw3c34BcTXo5QL6R
+ m1LsF5DbvkmlyoqDT6OCZwGotMVoOAQPhlyojj5F8pNogkqo+/GL2V3S6oZ/EnGgu8KS
+ 3wMP2q25VR3coFMYu5/d09aGIX80z3zYi6rjnPs8afciHXIPWJukHrkChV076/oHN4G6
+ rBjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691462366; x=1692067166;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=jqkKW7cGTuNOUpogNbIEgXpCg6OhtKLeCV99qALBa84=;
- b=Q7eUneytyZSypF/pzHxbbbR5hgqGX14T7LALFU3+X4iIKiwnLtmRxm+YTe9uBW2gyj
- 2WS3FDVX+GkRpPHtk3tUXDgB8AgoCPK89WIwE0vISc0UpBX0Z8MpkyZX6O9c/N3dtATV
- N3J4YEnV2x0T7g22oBj0sYoI1YYCEGwMvBNhdDNP3mdV+JGK9K27MmEcrcw+nXKXGMoY
- VwjnpK3cD5rE4/JzaJlLADB9zalNuHXzot6QfS2YhbLqv9vr19vaZX4Aaqx4ZhL1zgSy
- bpt6Km8ZnuMnobE4WHbNXal5nPdvK4IL3BpFkaTKhzehoiV1Wl72bxLrccFNKZw0Pz/n
- zt+w==
-X-Gm-Message-State: AOJu0Yyy130s4yfFjxlk9CA2zCcYJ+JFHwVimm6DhvCFYQCSITb4bH4c
- URRzLtZAkl5YXrM+R31henjK5Ufv+GjK6GcIJYQiLlUbg4CKDkgs4cODDA7w/2DItlfdDsny0WI
- r2g7XyjU2NETe237sG3Rkexe3NEGNemM=
-X-Received: by 2002:a2e:9217:0:b0:2b9:f31e:51ff with SMTP id
- k23-20020a2e9217000000b002b9f31e51ffmr7780893ljg.37.1691462365895; 
- Mon, 07 Aug 2023 19:39:25 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHt6klFPiGftwMRffQFjsJmRmj3mWbzKUgP57tQV4/wlwCkoxuP9ZaxFDxBKQ2QCr1fkFa2P8i0dQBrmBpsLio=
-X-Received: by 2002:a2e:9217:0:b0:2b9:f31e:51ff with SMTP id
- k23-20020a2e9217000000b002b9f31e51ffmr7780880ljg.37.1691462365508; Mon, 07
- Aug 2023 19:39:25 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1691462651; x=1692067451;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=tRcQgRjRVa0F4G+R0JeZyuWvu2eFe3r6uexZMFMsd58=;
+ b=lkLXlOrZMFZyOnrX/5cB9OpTQ4qYinXXM09Yn7s4hcWE6NV5itunTRELupcOKRS20B
+ DQ0eH3zphwzId70FidTSDUPgSfJSkFgBe5N0XyXZU/hyaGor6l/dWT8V7Rwa9kKPLstf
+ B1PXV1TuoXmSFxlBUl4652snPpQcQtG6AzXqpCfOFlklWduyI9hkIWqfpJd79vCyGQgp
+ ronW/dFNyQDT8h1rwDRD6Lsh7N1s7IK2MyU/MQFms+HN85tM9TB+MWe/vYk7R+1+YJxu
+ qi52WzgJ2z2bLMZeg7malA3KDuI0L/Jlc5c9iw23OxQF1SIYj8l0+LEmOwojyMOnzaoz
+ y89A==
+X-Gm-Message-State: AOJu0Yyv7FY4WqsFSmGPKamUUlOIYEL7Em6ynhU46vLtjGR06fJ3JKQ1
+ Q3GK7zstElkqoqkVXHLTfNHm+aeQu62FJruzgcNKjA==
+X-Google-Smtp-Source: AGHT+IFRrzOKjmuMBEETspqAuRlBMkD9uxxKIZtFqDtmsYn7vdneJqskKqbNXI3cUzex7OO7VXMZtQ==
+X-Received: by 2002:a17:902:ceca:b0:1bb:97d0:c628 with SMTP id
+ d10-20020a170902ceca00b001bb97d0c628mr11189023plg.31.1691462651062; 
+ Mon, 07 Aug 2023 19:44:11 -0700 (PDT)
+Received: from localhost.co.jp (napt.igel.co.jp. [219.106.231.132])
+ by smtp.gmail.com with ESMTPSA id
+ a13-20020a170902b58d00b001bb04755212sm7619844pls.228.2023.08.07.19.44.09
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 07 Aug 2023 19:44:10 -0700 (PDT)
+From: Ake Koomsin <ake@igel.co.jp>
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Ake Koomsin <ake@igel.co.jp>
+Subject: [RFC PATCH v2] target/i386: add support for
+ VMX_SECONDARY_EXEC_ENABLE_USER_WAIT_PAUSE
+Date: Tue,  8 Aug 2023 11:40:02 +0900
+Message-ID: <20230808024000.3985-3-ake@igel.co.jp>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-References: <20230802204125.33688-1-andrew@daynix.com>
- <20230802204125.33688-2-andrew@daynix.com>
-In-Reply-To: <20230802204125.33688-2-andrew@daynix.com>
-From: Jason Wang <jasowang@redhat.com>
-Date: Tue, 8 Aug 2023 10:39:14 +0800
-Message-ID: <CACGkMEshvbR3kK+NWqHqDZBkDNLHkWPtxTPE-hVhtaSzAeBvcA@mail.gmail.com>
-Subject: Re: [PATCH v5 1/5] ebpf: Added eBPF map update through mmap.
-To: Andrew Melnychenko <andrew@daynix.com>
-Cc: mst@redhat.com, armbru@redhat.com, eblake@redhat.com, berrange@redhat.com, 
- qemu-devel@nongnu.org, yuri.benditovich@daynix.com, yan@daynix.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=ake@igel.co.jp; helo=mail-pl1-x630.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,247 +88,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Aug 3, 2023 at 5:01=E2=80=AFAM Andrew Melnychenko <andrew@daynix.co=
-m> wrote:
->
-> Changed eBPF map updates through mmaped array.
-> Mmaped arrays provide direct access to map data.
-> It should omit using bpf_map_update_elem() call,
-> which may require capabilities that are not present.
->
-> Signed-off-by: Andrew Melnychenko <andrew@daynix.com>
-> ---
->  ebpf/ebpf_rss.c | 117 ++++++++++++++++++++++++++++++++++++++----------
->  ebpf/ebpf_rss.h |   5 +++
->  2 files changed, 99 insertions(+), 23 deletions(-)
->
-> diff --git a/ebpf/ebpf_rss.c b/ebpf/ebpf_rss.c
-> index cee658c158b..247f5eee1b6 100644
-> --- a/ebpf/ebpf_rss.c
-> +++ b/ebpf/ebpf_rss.c
-> @@ -27,19 +27,83 @@ void ebpf_rss_init(struct EBPFRSSContext *ctx)
->  {
->      if (ctx !=3D NULL) {
->          ctx->obj =3D NULL;
-> +        ctx->program_fd =3D -1;
-> +        ctx->map_configuration =3D -1;
-> +        ctx->map_toeplitz_key =3D -1;
-> +        ctx->map_indirections_table =3D -1;
-> +
-> +        ctx->mmap_configuration =3D NULL;
-> +        ctx->mmap_toeplitz_key =3D NULL;
-> +        ctx->mmap_indirections_table =3D NULL;
->      }
->  }
->
->  bool ebpf_rss_is_loaded(struct EBPFRSSContext *ctx)
->  {
-> -    return ctx !=3D NULL && ctx->obj !=3D NULL;
-> +    return ctx !=3D NULL && (ctx->obj !=3D NULL || ctx->program_fd !=3D =
--1);
-> +}
-> +
-> +static bool ebpf_rss_mmap(struct EBPFRSSContext *ctx)
-> +{
-> +    if (!ebpf_rss_is_loaded(ctx)) {
-> +        return false;
-> +    }
-> +
-> +    ctx->mmap_configuration =3D mmap(NULL, qemu_real_host_page_size(),
-> +                                   PROT_READ | PROT_WRITE, MAP_SHARED,
-> +                                   ctx->map_configuration, 0);
-> +    if (ctx->mmap_configuration =3D=3D MAP_FAILED) {
-> +        trace_ebpf_error("eBPF RSS", "can not mmap eBPF configuration ar=
-ray");
-> +        return false;
-> +    }
-> +    ctx->mmap_toeplitz_key =3D mmap(NULL, qemu_real_host_page_size(),
-> +                                   PROT_READ | PROT_WRITE, MAP_SHARED,
-> +                                   ctx->map_toeplitz_key, 0);
-> +    if (ctx->mmap_toeplitz_key =3D=3D MAP_FAILED) {
-> +        trace_ebpf_error("eBPF RSS", "can not mmap eBPF toeplitz key");
-> +        goto toeplitz_fail;
-> +    }
-> +    ctx->mmap_indirections_table =3D mmap(NULL, qemu_real_host_page_size=
-(),
-> +                                   PROT_READ | PROT_WRITE, MAP_SHARED,
-> +                                   ctx->map_indirections_table, 0);
-> +    if (ctx->mmap_indirections_table =3D=3D MAP_FAILED) {
-> +        trace_ebpf_error("eBPF RSS", "can not mmap eBPF indirection tabl=
-e");
-> +        goto indirection_fail;
-> +    }
-> +
-> +    return true;
-> +
-> +indirection_fail:
-> +    munmap(ctx->mmap_toeplitz_key, qemu_real_host_page_size());
-> +toeplitz_fail:
-> +    munmap(ctx->mmap_configuration, qemu_real_host_page_size());
-> +
-> +    ctx->mmap_configuration =3D NULL;
-> +    ctx->mmap_toeplitz_key =3D NULL;
-> +    ctx->mmap_indirections_table =3D NULL;
-> +    return false;
-> +}
-> +
-> +static void ebpf_rss_munmap(struct EBPFRSSContext *ctx)
-> +{
-> +    if (!ebpf_rss_is_loaded(ctx)) {
-> +        return;
-> +    }
-> +
-> +    munmap(ctx->mmap_indirections_table, qemu_real_host_page_size());
-> +    munmap(ctx->mmap_toeplitz_key, qemu_real_host_page_size());
-> +    munmap(ctx->mmap_configuration, qemu_real_host_page_size());
-> +
-> +    ctx->mmap_configuration =3D NULL;
-> +    ctx->mmap_toeplitz_key =3D NULL;
-> +    ctx->mmap_indirections_table =3D NULL;
->  }
->
->  bool ebpf_rss_load(struct EBPFRSSContext *ctx)
->  {
->      struct rss_bpf *rss_bpf_ctx;
->
-> -    if (ctx =3D=3D NULL) {
-> +    if (ctx =3D=3D NULL || ebpf_rss_is_loaded(ctx)) {
->          return false;
->      }
->
-> @@ -66,10 +130,18 @@ bool ebpf_rss_load(struct EBPFRSSContext *ctx)
->      ctx->map_toeplitz_key =3D bpf_map__fd(
->              rss_bpf_ctx->maps.tap_rss_map_toeplitz_key);
->
-> +    if (!ebpf_rss_mmap(ctx)) {
-> +        goto error;
-> +    }
-> +
->      return true;
->  error:
->      rss_bpf__destroy(rss_bpf_ctx);
->      ctx->obj =3D NULL;
-> +    ctx->program_fd =3D -1;
-> +    ctx->map_configuration =3D -1;
-> +    ctx->map_toeplitz_key =3D -1;
-> +    ctx->map_indirections_table =3D -1;
->
->      return false;
->  }
-> @@ -77,15 +149,11 @@ error:
->  static bool ebpf_rss_set_config(struct EBPFRSSContext *ctx,
->                                  struct EBPFRSSConfig *config)
->  {
-> -    uint32_t map_key =3D 0;
-> -
->      if (!ebpf_rss_is_loaded(ctx)) {
->          return false;
->      }
-> -    if (bpf_map_update_elem(ctx->map_configuration,
-> -                            &map_key, config, 0) < 0) {
-> -        return false;
-> -    }
-> +
-> +    memcpy(ctx->mmap_configuration, config, sizeof(*config));
->      return true;
->  }
->
-> @@ -93,27 +161,19 @@ static bool ebpf_rss_set_indirections_table(struct E=
-BPFRSSContext *ctx,
->                                              uint16_t *indirections_table=
-,
->                                              size_t len)
->  {
-> -    uint32_t i =3D 0;
-> -
->      if (!ebpf_rss_is_loaded(ctx) || indirections_table =3D=3D NULL ||
->         len > VIRTIO_NET_RSS_MAX_TABLE_LEN) {
->          return false;
->      }
->
-> -    for (; i < len; ++i) {
-> -        if (bpf_map_update_elem(ctx->map_indirections_table, &i,
-> -                                indirections_table + i, 0) < 0) {
-> -            return false;
-> -        }
-> -    }
-> +    memcpy(ctx->mmap_indirections_table, indirections_table,
-> +            sizeof(*indirections_table) * len);
+Current QEMU can expose waitpkg to guests when it is available. However,
+VMX_SECONDARY_EXEC_ENABLE_USER_WAIT_PAUSE is still not recognized and
+masked by QEMU. This can lead to an unexpected situation when a L1
+hypervisor wants to expose waitpkg to a L2 guest. The L1 hypervisor can
+assume that VMX_SECONDARY_EXEC_ENABLE_USER_WAIT_PAUSE exists as waitpkg is
+available. The L1 hypervisor then can accidentally expose waitpkg to the
+L2 guest. This will cause invalid opcode exception in the L2 guest when
+it executes waitpkg related instructions.
 
-As discussed, should we stick the compatibility on the host without
-bpf mmap support?
+This patch adds VMX_SECONDARY_EXEC_ENABLE_USER_WAIT_PAUSE support, and
+sets up dependency between the bit and CPUID_7_0_ECX_WAITPKG. QEMU should
+not expose waitpkg feature if VMX_SECONDARY_EXEC_ENABLE_USER_WAIT_PAUSE is
+not available to avoid unexpected invalid opcode exception in L2 guests.
 
-If we don't, we need at least probe BPF mmap and disable ebpf rss? If
-yes, we should track if the map is mmaped and switch between memcpy
-and syscall.
+Signed-off-by: Ake Koomsin <ake@igel.co.jp>
+---
 
-Thanks
+v2:
+- Fix typo in the patch header (targer -> target)
 
->      return true;
->  }
->
->  static bool ebpf_rss_set_toepliz_key(struct EBPFRSSContext *ctx,
->                                       uint8_t *toeplitz_key)
->  {
-> -    uint32_t map_key =3D 0;
-> -
->      /* prepare toeplitz key */
->      uint8_t toe[VIRTIO_NET_RSS_MAX_KEY_SIZE] =3D {};
->
-> @@ -123,10 +183,7 @@ static bool ebpf_rss_set_toepliz_key(struct EBPFRSSC=
-ontext *ctx,
->      memcpy(toe, toeplitz_key, VIRTIO_NET_RSS_MAX_KEY_SIZE);
->      *(uint32_t *)toe =3D ntohl(*(uint32_t *)toe);
->
-> -    if (bpf_map_update_elem(ctx->map_toeplitz_key, &map_key, toe,
-> -                            0) < 0) {
-> -        return false;
-> -    }
-> +    memcpy(ctx->mmap_toeplitz_key, toe, VIRTIO_NET_RSS_MAX_KEY_SIZE);
->      return true;
->  }
->
-> @@ -160,6 +217,20 @@ void ebpf_rss_unload(struct EBPFRSSContext *ctx)
->          return;
->      }
->
-> -    rss_bpf__destroy(ctx->obj);
-> +    ebpf_rss_munmap(ctx);
-> +
-> +    if (ctx->obj) {
-> +        rss_bpf__destroy(ctx->obj);
-> +    } else {
-> +        close(ctx->program_fd);
-> +        close(ctx->map_configuration);
-> +        close(ctx->map_toeplitz_key);
-> +        close(ctx->map_indirections_table);
-> +    }
-> +
->      ctx->obj =3D NULL;
-> +    ctx->program_fd =3D -1;
-> +    ctx->map_configuration =3D -1;
-> +    ctx->map_toeplitz_key =3D -1;
-> +    ctx->map_indirections_table =3D -1;
->  }
-> diff --git a/ebpf/ebpf_rss.h b/ebpf/ebpf_rss.h
-> index bf3f2572c7c..ab08a7266d0 100644
-> --- a/ebpf/ebpf_rss.h
-> +++ b/ebpf/ebpf_rss.h
-> @@ -20,6 +20,11 @@ struct EBPFRSSContext {
->      int map_configuration;
->      int map_toeplitz_key;
->      int map_indirections_table;
-> +
-> +    /* mapped eBPF maps for direct access to omit bpf_map_update_elem() =
-*/
-> +    void *mmap_configuration;
-> +    void *mmap_toeplitz_key;
-> +    void *mmap_indirections_table;
->  };
->
->  struct EBPFRSSConfig {
-> --
-> 2.41.0
->
+v1:
+https://lists.gnu.org/archive/html/qemu-devel/2023-08/msg01048.html
+
+ target/i386/cpu.c | 6 +++++-
+ target/i386/cpu.h | 1 +
+ 2 files changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 97ad229d8b..00f913b638 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -1228,7 +1228,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
+             "vmx-invpcid-exit", "vmx-vmfunc", "vmx-shadow-vmcs", "vmx-encls-exit",
+             "vmx-rdseed-exit", "vmx-pml", NULL, NULL,
+             "vmx-xsaves", NULL, NULL, NULL,
+-            NULL, "vmx-tsc-scaling", NULL, NULL,
++            NULL, "vmx-tsc-scaling", "vmx-enable-user-wait-pause", NULL,
+             NULL, NULL, NULL, NULL,
+         },
+         .msr = {
+@@ -1545,6 +1545,10 @@ static FeatureDep feature_dependencies[] = {
+         .from = { FEAT_8000_0001_ECX,       CPUID_EXT3_SVM },
+         .to = { FEAT_SVM,                   ~0ull },
+     },
++    {
++        .from = { FEAT_VMX_SECONDARY_CTLS,  VMX_SECONDARY_EXEC_ENABLE_USER_WAIT_PAUSE },
++        .to = { FEAT_7_0_ECX,               CPUID_7_0_ECX_WAITPKG },
++    },
+ };
+ 
+ typedef struct X86RegisterInfo32 {
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index e0771a1043..a6000e93bd 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -1111,6 +1111,7 @@ uint64_t x86_cpu_get_supported_feature_word(FeatureWord w,
+ #define VMX_SECONDARY_EXEC_ENABLE_PML               0x00020000
+ #define VMX_SECONDARY_EXEC_XSAVES                   0x00100000
+ #define VMX_SECONDARY_EXEC_TSC_SCALING              0x02000000
++#define VMX_SECONDARY_EXEC_ENABLE_USER_WAIT_PAUSE   0x04000000
+ 
+ #define VMX_PIN_BASED_EXT_INTR_MASK                 0x00000001
+ #define VMX_PIN_BASED_NMI_EXITING                   0x00000008
+-- 
+2.41.0
 
 
