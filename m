@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75F1E77382C
+	by mail.lfdr.de (Postfix) with ESMTPS id 8349177382D
 	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 08:28:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTGBy-0004UO-Ij; Tue, 08 Aug 2023 02:27:42 -0400
+	id 1qTGBy-0004UN-HS; Tue, 08 Aug 2023 02:27:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1qTGBu-0004ST-FS; Tue, 08 Aug 2023 02:27:38 -0400
+ id 1qTGBv-0004St-Ig; Tue, 08 Aug 2023 02:27:39 -0400
 Received: from out5-smtp.messagingengine.com ([66.111.4.29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1qTGBs-00070F-P6; Tue, 08 Aug 2023 02:27:38 -0400
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
- by mailout.nyi.internal (Postfix) with ESMTP id C38C85C00CB;
- Tue,  8 Aug 2023 02:27:34 -0400 (EDT)
+ id 1qTGBt-00070X-Mx; Tue, 08 Aug 2023 02:27:39 -0400
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+ by mailout.nyi.internal (Postfix) with ESMTP id A08975C00CF;
+ Tue,  8 Aug 2023 02:27:36 -0400 (EDT)
 Received: from mailfrontend2 ([10.202.2.163])
- by compute6.internal (MEProxy); Tue, 08 Aug 2023 02:27:34 -0400
+ by compute4.internal (MEProxy); Tue, 08 Aug 2023 02:27:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
  h=cc:cc:content-transfer-encoding:content-type:date:date:from
  :from:in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:sender:subject:subject:to:to; s=fm2; t=1691476054; x=
- 1691562454; bh=73Q7o1MaFcuZdXvYSbd98bpNm+tM8IhFfhR4hxDxYoI=; b=c
- 5iWQuleWSRMTaWgODWQlYkffG2mACOeHQJRCRn8hXnIUsguG5u90i+JV99R7fJQS
- wFokeB2/wcmVdAcv+j7evBgqV+pF28vhXz5zONuUi7xj8tm6MD0wYft8aTkDYdWj
- CjIf5OJ4tHOzEfOcYoQvzrQiV7ZdDrvgYGjfXHKnY8r5LvRt5B0RcsI47KSsMIzd
- yfRtWQWK4Lid/eDNp3ikaRxqbjyUfpoSMgjq29e4pK0N4DexQlUNo7K0h4lpqKQ3
- GTFRlL0C0QkfP3epngCE80VVMzU40lhpmJVCYaN0vlw9Gc5WvftgdHU8/xdfLmk/
- 44YCViqp9lthtV7TnYJ9A==
+ :reply-to:sender:subject:subject:to:to; s=fm2; t=1691476056; x=
+ 1691562456; bh=LiVaiUPQkEJAbjOQlo74CUcpKHBAY/5caLUVHR53Y9Y=; b=D
+ IYnj1oT68R46ZAqiCW4zQGgjWNvFpML0ZTcTLgpVZr/gAOseWJ9dJKtmnxMC7YoY
+ uVUFoKxs6+ehTZsID+skPYoue8G6P/KXBvBDBWu3vzvvPjVUm78nchGCrE9Mvy1N
+ X4YxbdzcvKlHcoQMGOecMSgxxRhvJ6LCTbAhP7Lh6cdBLSIiKPajtI5te5kXua7m
+ kO1PkiMYdCqrL/estbEdbARmlEo9Tfp9LNIiHB5IRdzERbwQA+XljrJPdTorVUJ8
+ jTQr2M96aJoUodFcDhWffkrF1Lo+YwlcZMZW0Imhp87eWF+s/3M5e4UB8njBzm5k
+ rhpcjlPrsr7Rmn1+HcPPg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:cc:content-transfer-encoding
  :content-type:date:date:feedback-id:feedback-id:from:from
  :in-reply-to:in-reply-to:message-id:mime-version:references
  :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1691476054; x=
- 1691562454; bh=73Q7o1MaFcuZdXvYSbd98bpNm+tM8IhFfhR4hxDxYoI=; b=F
- u4mjEukogsrmLNXk299Sg2Uw37r8A3+GExnDYjftXk3w3Cnbc4i1rK07G+PgvhxG
- JFRSdfkBB1PLmX/OyeCA+6+UhmNY1dJXh9D17i8dgRDP/GzAfDlWKcEEU/ETRN4T
- /PqJ/StTNmgT3z2qxQYalLM8zInBQBwxjxVZmc7KiRH+u+WWOx9z78saWIYjHaBI
- kzKr/q/NiZFm21kfjmsnTFqu/rlWScOdrkOuCObti1sUMQy3uis++xr76YAuY1Nv
- 9tsx2xmpa3GHXSSkVVRljo4Ft5Kf1OsMwe0h6wIaQlRplybR+f4QiMBGV1OyNFxL
- rdEJUd4dz2nhBe/UUiUdA==
-X-ME-Sender: <xms:VuDRZFvbDFGoqodBRE7ouNFK9id4xr2NZxjTzX8PN6f4LXfCVIdB_A>
- <xme:VuDRZOdDZ3k_taJ6-6MKqzV92kEVQOfodO-wO12FZifAF1uIbQ64bpuy0KsskWCKV
- D6GPNEK-lfHotJ7kDY>
-X-ME-Received: <xmr:VuDRZIzLTVrJmrZ4k6FlJufcNICGs7Et51l6QjgB6kebc1qFvESx5gZTDqlcj5dkwKuNQ8mW534jHQ>
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1691476056; x=
+ 1691562456; bh=LiVaiUPQkEJAbjOQlo74CUcpKHBAY/5caLUVHR53Y9Y=; b=H
+ qWAEy2eLBvSq+g1rzBVN2siZYO9pd7wRETYSMKBg0mXDHYwFphmTvXquJSmzTHRE
+ /OrzMtOWquMysuv8o7mFA3xsAShX8TPq57ZEVV7lLwoUbIPyVhloztEb0pFVnc1V
+ NFT6mAWXvoW7yCOqZ4/YzXorxd1dgAvKxYprP7rv4ijgW+mGLVMmqzqYMBHANCsb
+ AVkF1j8pxJGwxjP3DiPngtmwv9aMlSWzK9S9Sx0FnzjPjOmSnXiBTnnHW9qwY6i0
+ gMfyK4NEbcBE5GL/J0vYfHUjQ7SBj92zrZfJDAn37CgJYfbQq+eh45dnZ6rMtKje
+ 4tWd1IvofDus1aRyiZ+og==
+X-ME-Sender: <xms:WODRZGlAf9QMr1p7XCO2ONWj1rmgq3G6Ezae5vO61sx0Cdkoc6XeSw>
+ <xme:WODRZN3ezoShGy9F__3sI3j83N931UFbSTsJLGu9tdBNmMIY8ZdEe8A-m8YL-vb5T
+ Umi-cvjm4HZYX8FqGA>
+X-ME-Received: <xmr:WODRZErKa3nUOPG4_C6iBYYbrpeg5kSpbhn1jXchPlnJkqYrZV_HRDWfZhewnIZwfkbh34nUhXHoMA>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrledugddutdehucetufdoteggodetrfdotf
  fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
  uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
@@ -57,13 +57,13 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrledugddutdehucetufdoteggod
  htvghrnhepjefgieelgfeiveehkeeuveehheekfeevgeeigfehfefgjeejhefffeegudej
  udegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepih
  htshesihhrrhgvlhgvvhgrnhhtrdgukh
-X-ME-Proxy: <xmx:VuDRZMPe8qnzUyumwOdb9Zwqz69AthcWW4fbVZRbgqVOCWH7WrczRw>
- <xmx:VuDRZF_Pk0Lvn3v3bHiSVPzU4qtAmtC16g-iDY7fscrBJRXP1O-8xQ>
- <xmx:VuDRZMVBuTO27sLWJY4AdbsuwvXjl69_oMy3TB-byaemwI-9Y5IaNg>
- <xmx:VuDRZMVPZ4DQ6QuPWk30ibREQoqh3t6myFYxqGg7WJbW6i7EJZI6xQ>
+X-ME-Proxy: <xmx:WODRZKkJv3cGSoRHkr9f1bYEHSIMoeYJw7htiw1Szs_HGU7m58jZHw>
+ <xmx:WODRZE23FFEURXDG5VUefaiE1g9jyIa-P1T7ZVSmk_4I1oEmu3yt-w>
+ <xmx:WODRZBvWY2TAd3TIOroyIptOVtxHHm_Sd8FrViGNw7nn0Ik6uz7Z_Q>
+ <xmx:WODRZNu2-z7WsXi6EDo-0Su940djhyiclx8TXhadLX33cra-XnqYrQ>
 Feedback-ID: idc91472f:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 8 Aug 2023 02:27:32 -0400 (EDT)
+ 8 Aug 2023 02:27:34 -0400 (EDT)
 From: Klaus Jensen <its@irrelevant.dk>
 To: Peter Maydell <peter.maydell@linaro.org>,
 	qemu-devel@nongnu.org
@@ -72,24 +72,24 @@ Cc: qemu-block@nongnu.org, Keith Busch <kbusch@kernel.org>,
  Klaus Jensen <its@irrelevant.dk>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Stefan Hajnoczi <stefanha@redhat.com>, Fam Zheng <fam@euphon.net>,
- Ankit Kumar <ankit.kumar@samsung.com>, qemu-stable@nongnu.org,
- Klaus Jensen <k.jensen@samsung.com>
-Subject: [PULL 1/2] hw/nvme: fix CRC64 for guard tag
-Date: Tue,  8 Aug 2023 08:27:29 +0200
-Message-ID: <20230808062727.19263-5-its@irrelevant.dk>
+ Ankit Kumar <ankit.kumar@samsung.com>, Klaus Jensen <k.jensen@samsung.com>
+Subject: [PULL 2/2] docs: update hw/nvme documentation for protection
+ information
+Date: Tue,  8 Aug 2023 08:27:30 +0200
+Message-ID: <20230808062727.19263-6-its@irrelevant.dk>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230808062727.19263-4-its@irrelevant.dk>
 References: <20230808062727.19263-4-its@irrelevant.dk>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1245; i=k.jensen@samsung.com;
- h=from:subject; bh=To/dsDByKFxvBS4IegB9nq00HrvzfWLQN9r3vfwNgkQ=;
- b=owJ4nAFtAZL+kA0DAAoBTeGvMW1PDekByyZiAGTR4FBCf1kovo80HvZ4CzJ2p2col/h5BQkm0
- ux2v0Mq43jTDIkBMwQAAQoAHRYhBFIoM6p14tzmokdmwE3hrzFtTw3pBQJk0eBQAAoJEE3hrzFt
- Tw3pw+0H/RqJopdxS1NA2QuaXG9XnNtu2cnJr4oW7wlq2DrD/xGwelRoimwzEaQ6zG/a96/JuKX
- iZy4KqESnEZlAJqj9JQoD3Zf2kTXApp8E1OPDirrYZf8FFyn3z/jenD4hzkgi8yuRazZ5pQlRW4
- CLlLRPzzLJ1wp/7pjjCOctj8LERv9YQ7cWd2fJbYFdillr9FP5otwlf6/zZWMr/ozw2D0oB1z9I
- rNADIfO75iGLq+D4G9CTOlokaP6dTYayG2eMYEJcEm6eyTn/o8Nlp7duAZFD9tuUj2sgZkZrpbw
- BKc3QSILkmWI82ITI+leY0jVPi58mypFbKg34VitwMNCf7vonb/LSaup
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1608; i=k.jensen@samsung.com;
+ h=from:subject; bh=7PyhBW87ohtkKzfN7XuRW2ocbhNYaJUMLfDxUacHVr8=;
+ b=owJ4nAFtAZL+kA0DAAoBTeGvMW1PDekByyZiAGTR4FBaXSNtgmRZ4xk997G5oewRRdynp8UNL
+ BcmTZAA4kdW6okBMwQAAQoAHRYhBFIoM6p14tzmokdmwE3hrzFtTw3pBQJk0eBQAAoJEE3hrzFt
+ Tw3pwP4H/AvkP8Eb2qEHX89tGCj2iiixiuZw5ggC1FvKdbYb2KdNSXFnOxI4MPkeBjJzLW7oe8v
+ TDQPV5a+zSydY+Vl0xaHI49rT18ZwFAW9S2u3Eq7xkbo5WdUtlE98kLfhaxiLfyO4wYibb4Inwd
+ 3mHc1jZY78suW/1t4PrSw95M760Q6I2EYADtgKkECWPOyTPgFjhiRrk6TQ4eebyFk7wEkvZp8zu
+ 2S2fUGvXNmGiRhj6qpIrbGGXdfsFL9wAg5MK3cHV0wfWreOyq12I2Z+aa85IBOb+zymXSsbwRhf
+ GWHoHI1sFebxAE8gDMSTJ4ye43JJXfe+pdOv1c/29VawWlVQvhvcwKmX
 X-Developer-Key: i=k.jensen@samsung.com; a=openpgp;
  fpr=DDCA4D9C9EF931CC3468427263D56FC5E55DA838
 Content-Transfer-Encoding: 8bit
@@ -119,39 +119,39 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Ankit Kumar <ankit.kumar@samsung.com>
 
-The nvme CRC64 generator expects the caller to pass inverted seed value.
-Pass inverted crc value for metadata buffer.
+Add missing entry for pif ("protection information format").
+Protection information size can be 8 or 16 bytes, Update the pil entry
+as per the NVM command set specification.
 
-Cc: qemu-stable@nongnu.org
-Fixes: 44219b6029fc ("hw/nvme: 64-bit pi support")
 Signed-off-by: Ankit Kumar <ankit.kumar@samsung.com>
 Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
 ---
- hw/nvme/dif.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ docs/system/devices/nvme.rst | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/hw/nvme/dif.c b/hw/nvme/dif.c
-index 63c44c86ab55..01b19c33734e 100644
---- a/hw/nvme/dif.c
-+++ b/hw/nvme/dif.c
-@@ -115,7 +115,7 @@ static void nvme_dif_pract_generate_dif_crc64(NvmeNamespace *ns, uint8_t *buf,
-         uint64_t crc = crc64_nvme(~0ULL, buf, ns->lbasz);
+diff --git a/docs/system/devices/nvme.rst b/docs/system/devices/nvme.rst
+index 2a3af268f7a5..32ff287cd78e 100644
+--- a/docs/system/devices/nvme.rst
++++ b/docs/system/devices/nvme.rst
+@@ -271,9 +271,15 @@ The virtual namespace device supports DIF- and DIX-based protection information
  
-         if (pil) {
--            crc = crc64_nvme(crc, mbuf, pil);
-+            crc = crc64_nvme(~crc, mbuf, pil);
-         }
+ ``pil=UINT8`` (default: ``0``)
+   Controls the location of the protection information within the metadata. Set
+-  to ``1`` to transfer protection information as the first eight bytes of
+-  metadata. Otherwise, the protection information is transferred as the last
+-  eight bytes.
++  to ``1`` to transfer protection information as the first bytes of metadata.
++  Otherwise, the protection information is transferred as the last bytes of
++  metadata.
++
++``pif=UINT8`` (default: ``0``)
++  By default, the namespace device uses 16 bit guard protection information
++  format (``pif=0``). Set to ``2`` to enable 64 bit guard protection
++  information format. This requires at least 16 bytes of metadata. Note that
++  ``pif=2`` (32 bit guards) are currently not supported.
  
-         dif->g64.guard = cpu_to_be64(crc);
-@@ -246,7 +246,7 @@ static uint16_t nvme_dif_prchk_crc64(NvmeNamespace *ns, NvmeDifTuple *dif,
-         uint64_t crc = crc64_nvme(~0ULL, buf, ns->lbasz);
- 
-         if (pil) {
--            crc = crc64_nvme(crc, mbuf, pil);
-+            crc = crc64_nvme(~crc, mbuf, pil);
-         }
- 
-         trace_pci_nvme_dif_prchk_guard_crc64(be64_to_cpu(dif->g64.guard), crc);
+ Virtualization Enhancements and SR-IOV (Experimental Support)
+ -------------------------------------------------------------
 -- 
 2.41.0
 
