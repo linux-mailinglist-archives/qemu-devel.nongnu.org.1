@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70ABD7740DF
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 19:11:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 450C77740EE
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 19:12:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTQDb-00029E-JN; Tue, 08 Aug 2023 13:10:03 -0400
+	id 1qTQDe-0002EQ-S5; Tue, 08 Aug 2023 13:10:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qTQDZ-00027j-Pz
+ id 1qTQDa-000298-Ti
  for qemu-devel@nongnu.org; Tue, 08 Aug 2023 13:10:02 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qTQDY-0003Ls-0x
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 13:10:01 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-317744867a6so4537449f8f.1
- for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 10:09:59 -0700 (PDT)
+ id 1qTQDZ-0003Mp-2C
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 13:10:02 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-3fe5c0e58c0so22162855e9.3
+ for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 10:10:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1691514598; x=1692119398;
+ d=gmail.com; s=20221208; t=1691514599; x=1692119399;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=vwwzHh4jtcDKMijbf0Y31zTGoQm568cf8UPg0Fct6p8=;
- b=bzqUBGT7RmOdMERTHjCjQWfxoJB/kINeGBUEb//KyLSTmFNzse3KwBk4GH+Hj+vvOh
- oOYEcy6tu2IB6/Id4lhmrusYAutCi4Rpq/R1ebSeY98tomY+ynFTpYKqQFn6k2C2Hr7w
- DAKIYMFlbUWEXYZKEGoj9scaYOphpy8AHxZ47GnW/2W4t7Ttr03FOY4C5ytGeWra8bm2
- HxVLBfFIe+MAPeZ3BsrBI/uTaDuHQywGJBf7T7amqGSQhWqWjsqEZTCjpq9RBy3fm8QW
- LjF1j88T+mp+k/xO1r1paCcfMx6iVxaUmC7yOoMmrXMUltwm9vbbgOeJu03SNpad58wt
- DMxA==
+ bh=f1DVEj9gV4h69+era7txyW8Wg/o1egzcjAPEzcjHmS0=;
+ b=mu6Key9DW0wwgXA0thdN65fgqxEDuAoPVIV6CAe+xB3C03TNizsDbYCCBHmzzuNvm8
+ kXBlPhuu7s2ylEMhQr0dVnRAWM9MCnel+UzDUqVKAqBxcE2AGg3OTbWTAvQ+HdRuhlmY
+ pp6TfkXuhDEmXs+UmHE12iL0E0/BmXsRc0GAGMdPUxRdjIyp9C7FnLorBIcqJvBOiNvL
+ k7JLm3Vu8oTHvzEjxebpRPlnTfTTut1nuPiLFp8nC9BhvqCRZ86+xGa0LlcPw6U5IZVB
+ Xj0eyNP5kgFg1zlbWutFChm8lXxduGBFcQCHF5VUM1zem3knSs7JoQ1nKVIKVotP33r8
+ OI0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691514598; x=1692119398;
+ d=1e100.net; s=20221208; t=1691514599; x=1692119399;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vwwzHh4jtcDKMijbf0Y31zTGoQm568cf8UPg0Fct6p8=;
- b=dgIFaP1jAlQ+Y+eNj9kscoVKjhAOtng9PzqnCoe/E6bd4UgfX+I588aLxrpkSNYxV7
- 210kYedBqBJdFvoGy8GQLXfCHCvKnXsGGXnPXPVj7VFpvoRJpyMhKShKVhxhYdq92wSp
- H2psgqwl3hMxnUjwrL/QaYZy2BdS+NqSfPCAD17dYlgPLsLfygW5Uy/WuoHOOdCaMkMf
- nuBjnKVRmJrZcLUAHGSUot7cg9WdifOMe1POD8/3ffMzRgYbMAF7ziXvR9SARlgn1FbP
- WZHkp3LOm1xwx0dbqTeOCyni6lF+3T2/RcxXIANB114e6pkFJe9aLZj+tVBWJtq5bQeY
- NO6w==
-X-Gm-Message-State: AOJu0Yx4QNzbzHS8y4imSmy78OpBtuj26ty51xp/wpX4FiTUNFch6Zp5
- mWRKCgMOJcFSwRINzvzEbOrFZAJ7wwCPNg==
-X-Google-Smtp-Source: AGHT+IF4+SFYdAP9ZH4F7ixM0UqwolXuJjZ3yrEUh1+52OkyMjDvZGbJyr6lxEmt+0lO94V00kTwjA==
-X-Received: by 2002:a5d:4e4b:0:b0:313:f33c:24c4 with SMTP id
- r11-20020a5d4e4b000000b00313f33c24c4mr40880wrt.39.1691514598132; 
- Tue, 08 Aug 2023 10:09:58 -0700 (PDT)
+ bh=f1DVEj9gV4h69+era7txyW8Wg/o1egzcjAPEzcjHmS0=;
+ b=Jvp6t8fVq0uNtdg4ssY+w/5J+FJ/BYk32pxwLnB1keMIK8IGv/AKze0M9SQPatZP3q
+ dtoQHAudyysgxGGJ9fwkQwzUiSU1BmgTQL1ta4lSk0kKlZL0McnNGGwjV4daI3VF7AMQ
+ UCaXBwKwySZHIRWwjfnL+iVFwtYlpHW7Cd/B9fWNHD+t1I+LMxfeuluwSqwkceU5fXTt
+ AmyVVUMWBA4EtsGmZGD/dlESoHi3/sHR0vJP6oS1m8juNPZCJgK1dSq9vYQkimUYQqJ+
+ idDibut3A2DabKQC4A4P0Cgb7Xt8YPxW1kJCNX7ScX5qOSaJi20YO8QMvGvBtEuwpAt9
+ cSTA==
+X-Gm-Message-State: AOJu0YzDv31GgzuZb+KeYaAZo9hft+VZ/hja2bQegZAbu9Tr6eugJYfN
+ EYge0TZVbS+jNB7HmuJZwNPsTbOMbKTYMg==
+X-Google-Smtp-Source: AGHT+IECxS3ApsB9E47j8qGC3KynHrBcz1f+LuWnlz4J1TlFNbvtvo+d1dctbLkBhmsv/mm2FCHYOA==
+X-Received: by 2002:a7b:c7c6:0:b0:3fe:2b76:3d7 with SMTP id
+ z6-20020a7bc7c6000000b003fe2b7603d7mr358224wmk.10.1691514599514; 
+ Tue, 08 Aug 2023 10:09:59 -0700 (PDT)
 Received: from karim.my.domain ([197.39.230.212])
  by smtp.gmail.com with ESMTPSA id
- j6-20020a5d6186000000b0031455482d1fsm14191663wru.47.2023.08.08.10.09.56
+ j6-20020a5d6186000000b0031455482d1fsm14191663wru.47.2023.08.08.10.09.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 08 Aug 2023 10:09:57 -0700 (PDT)
+ Tue, 08 Aug 2023 10:09:59 -0700 (PDT)
 From: Karim Taha <kariem.taha2.7@gmail.com>
 To: qemu-devel@nongnu.org
-Cc: imp@bsdimp.com, Michal Meloun <mmel@FreeBSD.org>,
+Cc: imp@bsdimp.com, Stacey Son <sson@FreeBSD.org>,
  Karim Taha <kariem.taha2.7@gmail.com>
-Subject: [PATCH 17/33] Implement h2t_freebsd_stat and h2t_freebsd_statfs
- functions
-Date: Tue,  8 Aug 2023 08:07:59 +0200
-Message-Id: <20230808060815.9001-18-kariem.taha2.7@gmail.com>
+Subject: [PATCH 18/33] Implement stat related syscalls
+Date: Tue,  8 Aug 2023 08:08:00 +0200
+Message-Id: <20230808060815.9001-19-kariem.taha2.7@gmail.com>
 X-Mailer: git-send-email 2.40.0
 In-Reply-To: <20230808060815.9001-1-kariem.taha2.7@gmail.com>
 References: <20230808060815.9001-1-kariem.taha2.7@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=kariem.taha2.7@gmail.com; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=kariem.taha2.7@gmail.com; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -2
 X-Spam_score: -0.3
 X-Spam_bar: /
@@ -94,117 +93,160 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Michal Meloun <mmel@FreeBSD.org>
+From: Stacey Son <sson@FreeBSD.org>
 
-They are the 64-bit variants of h2t_freebsd11_stat and
-h2t_freebsd11_statfs, respectively
+Implement the following syscalls:
+stat(2)
+lstat(2)
+fstat(2)
+fstatat(2)
+nstat
+nfstat
+nlstat
 
-Signed-off-by: Michal Meloun <mmel@FreeBSD.org>
+Signed-off-by: Stacey Son <sson@FreeBSD.org>
 Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
 ---
- bsd-user/freebsd/os-stat.c | 82 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 82 insertions(+)
+ bsd-user/freebsd/os-stat.h | 130 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 130 insertions(+)
+ create mode 100644 bsd-user/freebsd/os-stat.h
 
-diff --git a/bsd-user/freebsd/os-stat.c b/bsd-user/freebsd/os-stat.c
-index f5b4ded8bb..57b5368331 100644
---- a/bsd-user/freebsd/os-stat.c
-+++ b/bsd-user/freebsd/os-stat.c
-@@ -58,6 +58,50 @@ abi_long h2t_freebsd11_stat(abi_ulong target_addr,
-     return 0;
- }
- 
-+abi_long h2t_freebsd_stat(abi_ulong target_addr,
-+        struct stat *host_st)
+diff --git a/bsd-user/freebsd/os-stat.h b/bsd-user/freebsd/os-stat.h
+new file mode 100644
+index 0000000000..f8f99b4a72
+--- /dev/null
++++ b/bsd-user/freebsd/os-stat.h
+@@ -0,0 +1,130 @@
++/*
++ *  stat related system call shims and definitions
++ *
++ *  Copyright (c) 2013 Stacey D. Son
++ *
++ *  This program is free software; you can redistribute it and/or modify
++ *  it under the terms of the GNU General Public License as published by
++ *  the Free Software Foundation; either version 2 of the License, or
++ *  (at your option) any later version.
++ *
++ *  This program is distributed in the hope that it will be useful,
++ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *  GNU General Public License for more details.
++ *
++ *  You should have received a copy of the GNU General Public License
++ *  along with this program; if not, see <http://www.gnu.org/licenses/>.
++ */
++
++#ifndef BSD_USER_FREEBSD_OS_STAT_H
++#define BSD_USER_FREEBSD_OS_STAT_H
++
++/* stat(2) */
++static inline abi_long do_freebsd11_stat(abi_long arg1, abi_long arg2)
 +{
-+    struct target_stat *target_st;
++    abi_long ret;
++    void *p;
++    struct freebsd11_stat st;
 +
-+    if (!lock_user_struct(VERIFY_WRITE, target_st, target_addr, 0)) {
-+        return -TARGET_EFAULT;
++    LOCK_PATH(p, arg1);
++    ret = get_errno(freebsd11_stat(path(p), &st));
++    UNLOCK_PATH(p, arg1);
++    if (!is_error(ret)) {
++        ret = h2t_freebsd11_stat(arg2, &st);
 +    }
-+    memset(target_st, 0, sizeof(*target_st));
-+    __put_user(host_st->st_dev, &target_st->st_dev);
-+    __put_user(host_st->st_ino, &target_st->st_ino);
-+    __put_user(host_st->st_nlink, &target_st->st_nlink);
-+    __put_user(host_st->st_mode, &target_st->st_mode);
-+    __put_user(host_st->st_uid, &target_st->st_uid);
-+    __put_user(host_st->st_gid, &target_st->st_gid);
-+    __put_user(host_st->st_rdev, &target_st->st_rdev);
-+    __put_user(host_st->st_atim.tv_sec, &target_st->st_atim.tv_sec);
-+    __put_user(host_st->st_atim.tv_nsec, &target_st->st_atim.tv_nsec);
-+#ifdef TARGET_HAS_STAT_TIME_T_EXT
-+/*    __put_user(host_st->st_mtim_ext, &target_st->st_mtim_ext); XXX */
-+#endif
-+    __put_user(host_st->st_mtim.tv_sec, &target_st->st_mtim.tv_sec);
-+    __put_user(host_st->st_mtim.tv_nsec, &target_st->st_mtim.tv_nsec);
-+#ifdef TARGET_HAS_STAT_TIME_T_EXT
-+/*    __put_user(host_st->st_ctim_ext, &target_st->st_ctim_ext); XXX */
-+#endif
-+    __put_user(host_st->st_ctim.tv_sec, &target_st->st_ctim.tv_sec);
-+    __put_user(host_st->st_ctim.tv_nsec, &target_st->st_ctim.tv_nsec);
-+#ifdef TARGET_HAS_STAT_TIME_T_EXT
-+/*    __put_user(host_st->st_birthtim_ext, &target_st->st_birthtim_ext); XXX */
-+#endif
-+    __put_user(host_st->st_birthtim.tv_sec, &target_st->st_birthtim.tv_sec);
-+    __put_user(host_st->st_birthtim.tv_nsec, &target_st->st_birthtim.tv_nsec);
-+
-+    __put_user(host_st->st_size, &target_st->st_size);
-+    __put_user(host_st->st_blocks, &target_st->st_blocks);
-+    __put_user(host_st->st_blksize, &target_st->st_blksize);
-+    __put_user(host_st->st_flags, &target_st->st_flags);
-+    __put_user(host_st->st_gen, &target_st->st_gen);
-+    unlock_user_struct(target_st, target_addr, 1);
-+
-+    return 0;
++    return ret;
 +}
 +
- abi_long h2t_freebsd11_nstat(abi_ulong target_addr,
-         struct freebsd11_stat *host_st)
- {
-@@ -170,6 +214,44 @@ abi_long h2t_freebsd11_statfs(abi_ulong target_addr,
-     return 0;
- }
- 
-+abi_long h2t_freebsd_statfs(abi_ulong target_addr,
-+        struct statfs *host_statfs)
++/* lstat(2) */
++static inline abi_long do_freebsd11_lstat(abi_long arg1, abi_long arg2)
 +{
-+    struct target_statfs *target_statfs;
++    abi_long ret;
++    void *p;
++    struct freebsd11_stat st;
 +
-+    if (!lock_user_struct(VERIFY_WRITE, target_statfs, target_addr, 0)) {
-+        return -TARGET_EFAULT;
++    LOCK_PATH(p, arg1);
++    ret = get_errno(freebsd11_lstat(path(p), &st));
++    UNLOCK_PATH(p, arg1);
++    if (!is_error(ret)) {
++        ret = h2t_freebsd11_stat(arg2, &st);
 +    }
-+    __put_user(host_statfs->f_version, &target_statfs->f_version);
-+    __put_user(host_statfs->f_type, &target_statfs->f_type);
-+    __put_user(host_statfs->f_flags, &target_statfs->f_flags);
-+    __put_user(host_statfs->f_bsize, &target_statfs->f_bsize);
-+    __put_user(host_statfs->f_iosize, &target_statfs->f_iosize);
-+    __put_user(host_statfs->f_blocks, &target_statfs->f_blocks);
-+    __put_user(host_statfs->f_bfree, &target_statfs->f_bfree);
-+    __put_user(host_statfs->f_bavail, &target_statfs->f_bavail);
-+    __put_user(host_statfs->f_files, &target_statfs->f_files);
-+    __put_user(host_statfs->f_ffree, &target_statfs->f_ffree);
-+    __put_user(host_statfs->f_syncwrites, &target_statfs->f_syncwrites);
-+    __put_user(host_statfs->f_asyncwrites, &target_statfs->f_asyncwrites);
-+    __put_user(host_statfs->f_syncreads, &target_statfs->f_syncreads);
-+    __put_user(host_statfs->f_asyncreads, &target_statfs->f_asyncreads);
-+    /* uint64_t f_spare[10]; */
-+    __put_user(host_statfs->f_namemax, &target_statfs->f_namemax);
-+    __put_user(host_statfs->f_owner, &target_statfs->f_owner);
-+    __put_user(host_statfs->f_fsid.val[0], &target_statfs->f_fsid.val[0]);
-+    __put_user(host_statfs->f_fsid.val[1], &target_statfs->f_fsid.val[1]);
-+    /* char f_charspace[80]; */
-+    strncpy(target_statfs->f_fstypename, host_statfs->f_fstypename,
-+        sizeof(target_statfs->f_fstypename));
-+    strncpy(target_statfs->f_mntfromname, host_statfs->f_mntfromname,
-+        sizeof(target_statfs->f_mntfromname));
-+    strncpy(target_statfs->f_mntonname, host_statfs->f_mntonname,
-+        sizeof(target_statfs->f_mntonname));
-+    unlock_user_struct(target_statfs, target_addr, 1);
-+    return 0;
++    return ret;
 +}
 +
- /*
-  * fcntl cmd conversion
-  */
++/* fstat(2) */
++static inline abi_long do_freebsd_fstat(abi_long arg1, abi_long arg2)
++{
++    abi_long ret;
++    struct stat st;
++
++    ret = get_errno(fstat(arg1, &st));
++    if (!is_error(ret))  {
++        ret = h2t_freebsd_stat(arg2, &st);
++    }
++    return ret;
++}
++
++/* fstatat(2) */
++static inline abi_long do_freebsd_fstatat(abi_long arg1, abi_long arg2,
++        abi_long arg3, abi_long arg4)
++{
++    abi_long ret;
++    void *p;
++    struct stat st;
++
++    LOCK_PATH(p, arg2);
++    ret = get_errno(fstatat(arg1, p, &st, arg4));
++    UNLOCK_PATH(p, arg2);
++    if (!is_error(ret) && arg3) {
++        ret = h2t_freebsd_stat(arg3, &st);
++    }
++    return ret;
++}
++
++/* undocummented nstat(char *path, struct nstat *ub) syscall */
++static abi_long do_freebsd11_nstat(abi_long arg1, abi_long arg2)
++{
++    abi_long ret;
++    void *p;
++    struct freebsd11_stat st;
++
++    LOCK_PATH(p, arg1);
++    ret = get_errno(freebsd11_nstat(path(p), &st));
++    UNLOCK_PATH(p, arg1);
++    if (!is_error(ret)) {
++        ret = h2t_freebsd11_nstat(arg2, &st);
++    }
++    return ret;
++}
++
++/* undocummented nfstat(int fd, struct nstat *sb) syscall */
++static abi_long do_freebsd11_nfstat(abi_long arg1, abi_long arg2)
++{
++    abi_long ret;
++    struct freebsd11_stat st;
++
++    ret = get_errno(freebsd11_nfstat(arg1, &st));
++    if (!is_error(ret))  {
++        ret = h2t_freebsd11_nstat(arg2, &st);
++    }
++    return ret;
++}
++
++/* undocummented nlstat(char *path, struct nstat *ub) syscall */
++static abi_long do_freebsd11_nlstat(abi_long arg1, abi_long arg2)
++{
++    abi_long ret;
++    void *p;
++    struct freebsd11_stat st;
++
++    LOCK_PATH(p, arg1);
++    ret = get_errno(freebsd11_nlstat(path(p), &st));
++    UNLOCK_PATH(p, arg1);
++    if (!is_error(ret)) {
++        ret = h2t_freebsd11_nstat(arg2, &st);
++    }
++    return ret;
++}
++
++#endif /* BSD_USER_FREEBSD_OS_STAT_H */
 -- 
 2.40.0
 
