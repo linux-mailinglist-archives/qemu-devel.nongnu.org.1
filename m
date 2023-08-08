@@ -2,35 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2F36773A0F
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 14:09:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54E23773A1A
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 14:18:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTLWV-0003aO-TV; Tue, 08 Aug 2023 08:09:15 -0400
+	id 1qTLeS-0006mk-0M; Tue, 08 Aug 2023 08:17:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lixianglai@loongson.cn>)
- id 1qTLWS-0003aF-O0
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 08:09:12 -0400
+ id 1qTLeP-0006mJ-30
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 08:17:25 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <lixianglai@loongson.cn>) id 1qTLWP-0004Vi-Nq
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 08:09:12 -0400
+ (envelope-from <lixianglai@loongson.cn>) id 1qTLeL-0006Q2-Pc
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 08:17:24 -0400
 Received: from loongson.cn (unknown [10.20.42.32])
- by gateway (Coremail) with SMTP id _____8BxnutgMNJk1NUSAA--.39399S3;
- Tue, 08 Aug 2023 20:09:04 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8CxrutLMtJkE9gSAA--.39075S3;
+ Tue, 08 Aug 2023 20:17:15 +0800 (CST)
 Received: from [10.20.42.32] (unknown [10.20.42.32])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8Bx3yNfMNJkrvROAA--.28242S3; 
- Tue, 08 Aug 2023 20:09:04 +0800 (CST)
-Subject: Re: [PATCH 3/8] Introduced a new function to disconnect GPIO
- connections
-To: Peter Maydell <peter.maydell@linaro.org>
+ AQAAf8DxPCNKMtJka_dOAA--.49703S3; 
+ Tue, 08 Aug 2023 20:17:15 +0800 (CST)
+Subject: Re: [PATCH 6/8] Add support of *unrealize* for loongarch cpu
+To: Igor Mammedov <imammedo@redhat.com>
 Cc: qemu-devel@nongnu.org, Xiaojuan Yang <yangxiaojuan@loongson.cn>,
  Song Gao <gaosong@loongson.cn>, "Michael S. Tsirkin" <mst@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
@@ -39,37 +37,37 @@ Cc: qemu-devel@nongnu.org, Xiaojuan Yang <yangxiaojuan@loongson.cn>,
  <berrange@redhat.com>, Peter Xu <peterx@redhat.com>,
  David Hildenbrand <david@redhat.com>
 References: <cover.1689837093.git.lixianglai@loongson.cn>
- <6f3c91ecab2d61c2cfb2d1a34a0f2120138e28ed.1689837093.git.lixianglai@loongson.cn>
- <CAFEAcA9_yJki9Ntp-diviYHfxts-eJawcFiV1tYvpB2V0e7Mqw@mail.gmail.com>
+ <3c03a7e5c3a3e93adb50b852264a02790221865e.1689837093.git.lixianglai@loongson.cn>
+ <20230728152328.37420bee@imammedo.users.ipa.redhat.com>
 From: lixianglai <lixianglai@loongson.cn>
-Message-ID: <806a8cee-1690-36e1-083a-5b57ba0b3ca3@loongson.cn>
-Date: Tue, 8 Aug 2023 20:09:03 +0800
+Message-ID: <889edcee-7642-b0b7-6309-0a3c349ead15@loongson.cn>
+Date: Tue, 8 Aug 2023 20:17:14 +0800
 User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
  Thunderbird/68.7.0
 MIME-Version: 1.0
-In-Reply-To: <CAFEAcA9_yJki9Ntp-diviYHfxts-eJawcFiV1tYvpB2V0e7Mqw@mail.gmail.com>
+In-Reply-To: <20230728152328.37420bee@imammedo.users.ipa.redhat.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Content-Language: en-US
-X-CM-TRANSID: AQAAf8Bx3yNfMNJkrvROAA--.28242S3
+X-CM-TRANSID: AQAAf8DxPCNKMtJka_dOAA--.49703S3
 X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBj93XoWxKr4UZrWxXw47XF4kXrW8uFX_yoWxtF4DpF
- y8WF1YgrW8Zr18Aa4jq3WUuFyUtrZ0k3ZrCr1rta18Cw1DCw1Yvr17XFyFgry5C395tr1j
- vF1rX340v3Z8AwcCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
+X-Coremail-Antispam: 1Uk129KBj93XoWxCF1DGFWrJw15uw15Jw4rtFc_yoWrZw4fpF
+ ZrZF4YyF4UJrZrA3sIqas8uF98Xr4xGFyIva13tr10kw4qqrnrXw10krWDuF1Uu3y09F40
+ vrnYk3WrWF48JFXCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
  sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
  0xBIdaVrnRJUUUvIb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
  xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
- 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv
- 67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
+ 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1q6rW5McIj6I8E87Iv
+ 67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
  AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
- F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_Wr
- ylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
- xVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
- 1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07j1
- WlkUUUUU=
+ F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GF
+ ylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUCVW8JwCI42IY6xIIjxv20xvEc7Cj
+ xVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
+ 4j6F4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07jO
+ db8UUUUU=
 Received-SPF: pass client-ip=114.242.206.163;
  envelope-from=lixianglai@loongson.cn; helo=mail.loongson.cn
 X-Spam_score_int: -59
@@ -92,13 +90,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,Peter Maydell :
+Hi Igor Mammedov:
 
 
-On 7/28/23 8:38 PM, Peter Maydell wrote:
-> On Thu, 20 Jul 2023 at 08:16, xianglai li <lixianglai@loongson.cn> wrote:
->> It introduces a new function to unwire the
->> vcpu<->exioi interrupts for the vcpu hot-(un)plug cases.
+On 7/28/23 9:23 PM, Igor Mammedov wrote:
+> On Thu, 20 Jul 2023 15:15:11 +0800
+> xianglai li <lixianglai@loongson.cn> wrote:
+>
+>> 1.Add the Unrealize function to the Loongarch CPU for cpu hot-(un)plug
+>> 2.Add CPU topology-related properties to the Loongarch CPU for cpu hot-(un)plug
 >>
 >> Cc: Xiaojuan Yang <yangxiaojuan@loongson.cn>
 >> Cc: Song Gao <gaosong@loongson.cn>
@@ -116,176 +116,106 @@ On 7/28/23 8:38 PM, Peter Maydell wrote:
 >> Cc: David Hildenbrand <david@redhat.com>
 >> Signed-off-by: xianglai li <lixianglai@loongson.cn>
 >> ---
->>   hw/core/gpio.c         | 4 ++--
->>   include/hw/qdev-core.h | 2 ++
->>   2 files changed, 4 insertions(+), 2 deletions(-)
+>>   target/loongarch/cpu.c | 33 +++++++++++++++++++++++++++++++++
+>>   target/loongarch/cpu.h |  1 +
+>>   2 files changed, 34 insertions(+)
 >>
->> diff --git a/hw/core/gpio.c b/hw/core/gpio.c
->> index 80d07a6ec9..4fc6409545 100644
->> --- a/hw/core/gpio.c
->> +++ b/hw/core/gpio.c
->> @@ -143,8 +143,8 @@ qemu_irq qdev_get_gpio_out_connector(DeviceState *dev, const char *name, int n)
->>
->>   /* disconnect a GPIO output, returning the disconnected input (if any) */
->>
->> -static qemu_irq qdev_disconnect_gpio_out_named(DeviceState *dev,
->> -                                               const char *name, int n)
->> +qemu_irq qdev_disconnect_gpio_out_named(DeviceState *dev,
->> +                                        const char *name, int n)
->>   {
->>       char *propname = g_strdup_printf("%s[%d]",
->>                                        name ? name : "unnamed-gpio-out", n);
-> This function as currently written is intended only for
-> use in qdev_intercept_gpio_out(), which in turn is there
-> only for qtest test case use. I would be a bit cautious
-> about whether there are unexpected issues with trying
-> to use it in "production" functionality with a running
-> QEMU (eg when perhaps some device might be trying to
-> signal the gpio line in another thread while this one
-> is trying to disconnect it).
+>> diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
+>> index ad93ecac92..97c577820f 100644
+>> --- a/target/loongarch/cpu.c
+>> +++ b/target/loongarch/cpu.c
+>> @@ -18,6 +18,7 @@
+>>   #include "cpu-csr.h"
+>>   #include "sysemu/reset.h"
+>>   #include "tcg/tcg.h"
+>> +#include "hw/qdev-properties.h"
+>>   
+>>   const char * const regnames[32] = {
+>>       "r0", "r1", "r2", "r3", "r4", "r5", "r6", "r7",
+>> @@ -540,6 +541,24 @@ static void loongarch_cpu_realizefn(DeviceState *dev, Error **errp)
+>>       lacc->parent_realize(dev, errp);
+>>   }
+>>   
+>> +static void loongarch_cpu_unrealizefn(DeviceState *dev)
+>> +{
+>> +    LoongArchCPUClass *mcc = LOONGARCH_CPU_GET_CLASS(dev);
+>> +
+>> +#ifndef CONFIG_USER_ONLY
+>> +    CPUState *cs = CPU(dev);
+>> +    LoongArchCPU *cpu = LOONGARCH_CPU(dev);
+>> +    CPULoongArchState *env = &cpu->env;
+>> +
+>> +    cpu_remove_sync(CPU(dev));
+>> +    cpu_address_space_destroy(cs, 0);
+>> +    address_space_destroy(&env->address_space_iocsr);
+>> +    memory_region_del_subregion(&env->system_iocsr, &env->iocsr_mem);
+>> +#endif
+>> +
+>> +    mcc->parent_unrealize(dev);
+>> +}
+>> +
+>>   #ifndef CONFIG_USER_ONLY
+>>   static void loongarch_qemu_write(void *opaque, hwaddr addr,
+>>                                    uint64_t val, unsigned size)
+>> @@ -697,6 +716,15 @@ static gchar *loongarch_gdb_arch_name(CPUState *cs)
+>>       return g_strdup("loongarch64");
+>>   }
+>>   
+>
+>> +static Property loongarch_cpu_properties[] = {
+>> +    DEFINE_PROP_INT32("socket-id", LoongArchCPU, socket_id, 0),
+>> +    DEFINE_PROP_INT32("core-id", LoongArchCPU, core_id, 0),
+>> +    DEFINE_PROP_INT32("thread-id", LoongArchCPU, thread_id, 0),
+>> +    DEFINE_PROP_INT32("node-id", LoongArchCPU, node_id, CPU_UNSET_NUMA_NODE_ID),
+>> +
+>> +    DEFINE_PROP_END_OF_LIST()
+>> +};
+> this should be a part of topo patches
 
-That's how I understand it:
 
-Take Loongarch's extended interrupt controller, for example:
+Ok, I'll move it to the topo patch.
 
-1.The interrupt pin of the extended interrupt controller is initialized in
-
-static void loongarch_extioi_instance_init(Object *obj)
-
-{
-
-....
-
-     for (cpu = 0; cpu < EXTIOI_CPUS; cpu++) {
-....
-         for (pin = 0; pin < LS3A_INTC_IP; pin++) {
-             qdev_init_gpio_out(DEVICE(obj), &s->parent_irq[cpu][pin], 1);
-         }
-     }
-
-.....
-
-}
-
-The above function binds the extended interrupt pin to the variable 
-s->parent_irq[cpu][pin] pointer.
-
-2.The assignment of the interrupt pin of the extended interrupt 
-controller operates in
-
-static LoongArchCPU *loongarch_cpu_create(MachineState *machine, 
-LoongArchCPU *cpu, Error **errp)
-{
-...
-         for (pin = 0; pin < LS3A_INTC_IP; pin++) {
-             qdev_connect_gpio_out(extioi, (cpu_index * 8 + pin), 
-qdev_get_gpio_in(cpudev, pin + 2));
-         }
-...
-}
-
-The above function binds the extended interrupt pin to the return value 
-of the qdev_get_gpio_in(cpudev, pin + 2).
-
-You actually do the following:
-
-s->parent_irq[cpu][pin] = qdev_get_gpio_in(cpudev, pin + 2);
-
-Variables are only accessed when the interrupt controller's IO space is 
-extended to read and write.
-
-There are QEMU thread locks when reading and writing in IO space：
-
-static inline void glue(address_space_stw_internal, SUFFIX)(ARG1_DECL, 
-hwaddr addr, uint16_t val, MemTxAttrs attrs, MemTxResult *result, enum 
-device_endian endian)
-{
-...
-     RCU_READ_LOCK();
-...
-     release_lock |= prepare_mmio_access(mr);
-     r = memory_region_dispatch_write(mr, addr1, val, MO_16 | 
-devend_memop(endian), attrs);
-...
-     if (release_lock) {
-         qemu_mutex_unlock_iothread();
-     }
-     RCU_READ_UNLOCK();
-...
-}
-
-Therefore, both are locked by the thread of QEMU when the CPU is 
-unplugged or interrupted sent, which can ensure that the two are 
-mutually exclusive.
-
- From the call stack below, it can be seen that interrupt sending and 
-CPU unplugging are in two worker threads, but both worker threads are 
-mutexe.
-
-for example:
-
-Thread 1 "qemu-system-loo" hit Breakpoint 5, qemu_set_irq
-41          if (!irq)
-(gdb) bt
-#0  0x000000aaab1e3630 in qemu_set_irq
-#1  0x000000aaab1324d8 in loongarch_msi_mem_write
-#2  0x000000aaab1835e0 in memory_region_write_accessor
-#3  0x000000aaab182e38 in access_with_adjusted_size
-#4  0x000000aaab18323c in memory_region_dispatch_write
-#5  0x000000aaab190cf8 in address_space_stl_internal
-#6  0x000000aaab190cf8 in address_space_stl_le
-#7  0x000000aaab3714a8 in aio_dispatch_handler
-#8  0x000000aaab371e20 in aio_dispatch_handlers
-#9  0x000000aaab371e20 in aio_dispatch
-#10 0x000000aaab388ae0 in aio_ctx_dispatch
-#11 0x000000fff724d334 in g_main_context_dispatch
-#12 0x000000aaab38a390 in glib_pollfds_poll
-#13 0x000000aaab38a390 in os_host_main_loop_wait
-#14 0x000000aaab38a390 in main_loop_wait
-#15 0x000000aaab05aa0c in qemu_main_loop
-#16 0x000000aaab1ddf2c in qemu_default_main
-#17 0x000000fff60d9670 in __libc_start_main
-#18 0x000000aaaae719fc in _start ()
-(gdb) call qemu_mutex_iothread_locked()
-$5 = true
-
-Thread 4 "qemu-system-loo" hit Breakpoint 2, loongarch_cpu_destroy
-1177        LoongArchMachineState *lsms = LOONGARCH_MACHINE(machine);
-(gdb) bt
-#0  0x000000aaab0eeb60 in loongarch_cpu_destroy
-#1  0x000000aaab0eeb60 in loongarch_cpu_unplug
-#2  0x000000aaab0eeb60 in virt_machine_device_unplug
-#3  0x000000aaab0eeb60 in virt_machine_device_unplug
-#4  0x000000aaaaeca0d8 in cpu_hotplug_wr
-#5  0x000000aaab1835e0 in memory_region_write_accessor
-#6  0x000000aaab182e38 in access_with_adjusted_size
-#7  0x000000aaab18323c in memory_region_dispatch_write
-#8  0x000000aaab18a914 in flatview_write_continue
-#9  0x000000aaab18aae0 in flatview_write
-#10 0x000000aaab18ab7c in subpage_write
-#11 0x000000aaab183328 in memory_region_write_with_attrs_accessor
-#12 0x000000aaab182e38 in access_with_adjusted_size
-#13 0x000000aaab18323c in memory_region_dispatch_write
-#14 0x000000aaab1ca714 in io_writex
-#15 0x000000aaab1cfdfc in helper_stb_mmu
-#16 0x000000ffa55a2224 in code_gen_buffer ()
-#17 0x000000aaab1be7d0 in tb_lookup
-#18 0x000000aaab1be7d0 in cpu_exec_loop
-#19 0x000000aaab1bf04c in cpu_exec_setjmp
-#20 0x000000aaab1bf0f8 in cpu_exec
-#21 0x000000aaab1da660 in tcg_cpus_exec
-#22 0x000000aaab1da7e0 in mttcg_cpu_thread_fn
-#23 0x000000aaab374fd4 in qemu_thread_start
-#24 0x000000fff623ddc8 in start_thread
-#25 0x000000fff618d8fc in __thread_start
-(gdb) call qemu_mutex_iothread_locked()
-$6 = true
 
 Thanks,
 
 xianglai
 
-> thanks
-> -- PMM
+>> +
+>>   static void loongarch_cpu_class_init(ObjectClass *c, void *data)
+>>   {
+>>       LoongArchCPUClass *lacc = LOONGARCH_CPU_CLASS(c);
+>> @@ -704,8 +732,12 @@ static void loongarch_cpu_class_init(ObjectClass *c, void *data)
+>>       DeviceClass *dc = DEVICE_CLASS(c);
+>>       ResettableClass *rc = RESETTABLE_CLASS(c);
+>>   
+>> +    device_class_set_props(dc, loongarch_cpu_properties);
+>>       device_class_set_parent_realize(dc, loongarch_cpu_realizefn,
+>>                                       &lacc->parent_realize);
+>> +    device_class_set_parent_unrealize(dc, loongarch_cpu_unrealizefn,
+>> +                                  &lacc->parent_unrealize);
+>> +
+>>       resettable_class_set_parent_phases(rc, NULL, loongarch_cpu_reset_hold, NULL,
+>>                                          &lacc->parent_phases);
+>>   
+>> @@ -730,6 +762,7 @@ static void loongarch_cpu_class_init(ObjectClass *c, void *data)
+>>   #ifdef CONFIG_TCG
+>>       cc->tcg_ops = &loongarch_tcg_ops;
+>>   #endif
+>> +    dc->user_creatable = true;
+>>   }
+>>   
+>>   #define DEFINE_LOONGARCH_CPU_TYPE(model, initfn) \
+>> diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
+>> index f4439c245f..32feee4fe6 100644
+>> --- a/target/loongarch/cpu.h
+>> +++ b/target/loongarch/cpu.h
+>> @@ -397,6 +397,7 @@ struct LoongArchCPUClass {
+>>       /*< public >*/
+>>   
+>>       DeviceRealize parent_realize;
+>> +    DeviceUnrealize parent_unrealize;
+>>       ResettablePhases parent_phases;
+>>   };
+>>   
 
 
