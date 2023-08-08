@@ -2,100 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8335E773A5B
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 15:08:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A517773A27
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 14:32:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTMQV-00068p-RU; Tue, 08 Aug 2023 09:07:07 -0400
+	id 1qTLrY-0005Vs-0E; Tue, 08 Aug 2023 08:31:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1qTMQT-00068Q-1r
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 09:07:05 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1qTMQQ-0004L2-Es
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 09:07:04 -0400
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 378D1NNA001947; Tue, 8 Aug 2023 13:06:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=lofQmZ8yx/DHM0IoK/wrLRYsgo7r1o8F919ghu+NoJ8=;
- b=nPSlI7nsPsuaAo6ed5s75SFIoT3HQ/IFjeKPzVZe3V/Ra4y1KsEOPEyrJnITCCs9Vb1x
- BWeQt80G1gSOCCXFksFceqXIXQQ62ZCwiGA5Gx5EYQFvAXlpLy7mL/1X/0TBjv+xwAvk
- g3iBKzWDSI/Tyb4ds/SF0t/V3GUrbzZcSNm+m3a50w4THdivwJNbxIOaq29nNuuu0I6C
- QjAn1hc0HmZbkURDUxhJqFD2qReJrTJ9idm3OAJD+EE4vbvb2MNaLYsVKcgHN9bs7ByM
- BOBqRHDLCGXbFQQkS2UAPzfea41gineChxf3p9YCyZtVQYvu+XIIdyk5/69uym33uXpx 9A== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sbp7fg79y-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 08 Aug 2023 13:06:56 +0000
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 378D2Uai007499;
- Tue, 8 Aug 2023 13:03:56 GMT
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sbp7fg56g-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 08 Aug 2023 13:03:56 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 378BhbSn000382; Tue, 8 Aug 2023 12:29:26 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3sa28ke9nh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 08 Aug 2023 12:29:26 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
- [10.20.54.100])
- by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 378CTOEi44958394
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 8 Aug 2023 12:29:24 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AE3002004E;
- Tue,  8 Aug 2023 12:29:24 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 92F702004B;
- Tue,  8 Aug 2023 12:29:24 +0000 (GMT)
-Received: from [9.155.200.166] (unknown [9.155.200.166])
- by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Tue,  8 Aug 2023 12:29:24 +0000 (GMT)
-Message-ID: <7d0202d9641569aa79e9e9a08c8d3c8257435469.camel@linux.ibm.com>
-Subject: Re: [PATCH v2 0/3] linux-user, configure: fix CPU canonicalization
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org
-Date: Tue, 08 Aug 2023 14:29:24 +0200
-In-Reply-To: <20230808120303.585509-1-pbonzini@redhat.com>
-References: <20230808120303.585509-1-pbonzini@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+ (Exim 4.90_1) (envelope-from <lixianglai@loongson.cn>)
+ id 1qTLrI-0005Tw-Tp
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 08:30:47 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <lixianglai@loongson.cn>) id 1qTLrG-0001cs-CR
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 08:30:44 -0400
+Received: from loongson.cn (unknown [10.20.42.32])
+ by gateway (Coremail) with SMTP id _____8DxqOpsNdJkotkSAA--.32171S3;
+ Tue, 08 Aug 2023 20:30:36 +0800 (CST)
+Received: from [10.20.42.32] (unknown [10.20.42.32])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8Bx3yNrNdJk3PtOAA--.28288S3; 
+ Tue, 08 Aug 2023 20:30:35 +0800 (CST)
+Subject: Re: [PATCH 8/8] Turn on CPU hot-(un)plug customization for loongarch
+To: Igor Mammedov <imammedo@redhat.com>
+Cc: qemu-devel@nongnu.org, Xiaojuan Yang <yangxiaojuan@loongson.cn>,
+ Song Gao <gaosong@loongson.cn>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?=
+ <berrange@redhat.com>, Peter Xu <peterx@redhat.com>,
+ David Hildenbrand <david@redhat.com>
+References: <cover.1689837093.git.lixianglai@loongson.cn>
+ <bd2121db4e4a54b408f2cfef82132fcccd972257.1689837093.git.lixianglai@loongson.cn>
+ <20230728153009.2e4c3667@imammedo.users.ipa.redhat.com>
+From: lixianglai <lixianglai@loongson.cn>
+Message-ID: <b6fdb191-2c09-e952-c645-1aee1a9c3746@loongson.cn>
+Date: Tue, 8 Aug 2023 20:30:35 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: I9QFxRxuLLgR_nlRRCJTticY4o4TCRia
-X-Proofpoint-ORIG-GUID: 6txsCRdmY36bvrJHjDgDg8ldrcWbSCaZ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-08-08_10,2023-08-08_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- phishscore=0 suspectscore=0 bulkscore=0 adultscore=0 impostorscore=0
- mlxlogscore=562 mlxscore=0 clxscore=1015 spamscore=0 malwarescore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2308080116
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+In-Reply-To: <20230728153009.2e4c3667@imammedo.users.ipa.redhat.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-CM-TRANSID: AQAAf8Bx3yNrNdJk3PtOAA--.28288S3
+X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj93XoW7Ww1kuFykCF4Uur47Cr15GFX_yoW8Cr1UpF
+ 93AF1UCFs7trW2kwnrXa4fCrZxXan3G34xXanFyryvk3yDA3srZr18tr1kZFy7uw1fKa40
+ vry0g3W0v3Z0qFXCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+ xVWxJr0_GcWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27w
+ Aqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jw0_WrylYx0Ex4A2jsIE
+ 14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1c
+ AE67vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8C
+ rVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8Zw
+ CIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r4j6ryUMIIF0xvE2Ix0cI8IcVCY1x02
+ 67AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr
+ 0_Cr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU8QJ
+ 57UUUUU==
+Received-SPF: pass client-ip=114.242.206.163;
+ envelope-from=lixianglai@loongson.cn; helo=mail.loongson.cn
+X-Spam_score_int: -59
+X-Spam_score: -6.0
+X-Spam_bar: ------
+X-Spam_report: (-6.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-4.14,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,52 +90,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 2023-08-08 at 14:03 +0200, Paolo Bonzini wrote:
-> The CPU model has to be canonicalized to what Meson wants in the
-> cross
-> file, to what Linux uses for its asm-$ARCH directories, and to what
-> QEMU uses for its user-mode emulation host/$ARCH directories.=C2=A0 Do
-> all three in a single case statement, and check that the Linux and
-> QEMU directories actually exist.
->=20
-> At a small cost in repeated lines, this ensures that there are no
-> hidden
-> ordering requirements between the case statements.=C2=A0 In particular,
-> commit
-> 89e5b7935e9 ("configure: Fix linux-user host detection for riscv64",
-> 2023-08-06) broke ppc64le because it assigned host_arch based on a
-> non-canonicalized version of $cpu.
->=20
-> While doing this, I noticed that linux-user won't work on x32, alpha
-> and 32-bit s390 these days, due to missing common-user/ fragments.
-> The first two patches clean up the directories.
->=20
-> v1->v2: fix s390x compilation; rearrange case terminators
->=20
->=20
-> Paolo Bonzini (3):
-> =C2=A0 configure: fix detection for x32 linux-user
-> =C2=A0 linux-user: cleanup unused linux-user/include/host directories
-> =C2=A0 configure: unify case statements for CPU canonicalization
->=20
-> =C2=A0configure=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | =
-173 ++++++++++++------
-> --
-> =C2=A0linux-user/include/host/alpha/host-signal.h |=C2=A0 55 -------
-> =C2=A0linux-user/include/host/s390/host-signal.h=C2=A0 | 138 ------------=
-----
-> =C2=A0linux-user/include/host/s390x/host-signal.h | 139 +++++++++++++++-
-> =C2=A0linux-user/include/host/x32/host-signal.h=C2=A0=C2=A0 |=C2=A0=C2=A0=
- 1 -
-> =C2=A05 files changed, 240 insertions(+), 266 deletions(-)
-> =C2=A0delete mode 100644 linux-user/include/host/alpha/host-signal.h
-> =C2=A0delete mode 100644 linux-user/include/host/s390/host-signal.h
-> =C2=A0delete mode 100644 linux-user/include/host/x32/host-signal.h
+Hi, Igor Mammedov:
 
-Now it works, thanks!
 
-Acked-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Tested-by: Ilya Leoshkevich <iii@linux.ibm.com>
+On 7/28/23 9:30 PM, Igor Mammedov wrote:
+> On Thu, 20 Jul 2023 15:15:13 +0800
+> xianglai li <lixianglai@loongson.cn> wrote:
+>
+>> Turn on CPU hot-(un)plug custom for loongarch in the configuration file
+>>
+>> Cc: Xiaojuan Yang <yangxiaojuan@loongson.cn>
+>> Cc: Song Gao <gaosong@loongson.cn>
+>> Cc: "Michael S. Tsirkin" <mst@redhat.com>
+>> Cc: Igor Mammedov <imammedo@redhat.com>
+>> Cc: Ani Sinha <anisinha@redhat.com>
+>> Cc: Paolo Bonzini <pbonzini@redhat.com>
+>> Cc: Richard Henderson <richard.henderson@linaro.org>
+>> Cc: Eduardo Habkost <eduardo@habkost.net>
+>> Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+>> Cc: "Philippe Mathieu-Daudé" <philmd@linaro.org>
+>> Cc: Yanan Wang <wangyanan55@huawei.com>
+>> Cc: "Daniel P. Berrangé" <berrange@redhat.com>
+>> Cc: Peter Xu <peterx@redhat.com>
+>> Cc: David Hildenbrand <david@redhat.com>
+>> Signed-off-by: xianglai li <lixianglai@loongson.cn>
+>> ---
+>>   configs/devices/loongarch64-softmmu/default.mak | 1 +
+>>   1 file changed, 1 insertion(+)
+>>
+>> diff --git a/configs/devices/loongarch64-softmmu/default.mak b/configs/devices/loongarch64-softmmu/default.mak
+>> index 928bc117ef..e596706fab 100644
+>> --- a/configs/devices/loongarch64-softmmu/default.mak
+>> +++ b/configs/devices/loongarch64-softmmu/default.mak
+>> @@ -1,3 +1,4 @@
+>>   # Default configuration for loongarch64-softmmu
+>>   
+>>   CONFIG_LOONGARCH_VIRT=y
+>> +CONFIG_ACPI_CPU_HOTPLUG=y
+> this likely shall be part of prior patch (one that starts to use generic cpu hotplug functions)
+> otherwise you risk a broke bisection in the middle of series
+> (aka try to build series after applying each patch)
+
+
+Do you mean this patch should be inside the first patch?
+
+Thanks,
+
+xianglai
+
+>
+
 
