@@ -2,82 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBD43774F6D
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 01:39:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE411774F91
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 01:51:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTWHu-0008HX-En; Tue, 08 Aug 2023 19:38:54 -0400
+	id 1qTWSj-0001ue-Or; Tue, 08 Aug 2023 19:50:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTWHp-0008HP-Mz
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 19:38:49 -0400
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ id 1qTWSh-0001uG-8f
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 19:50:03 -0400
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTWHo-0006qW-4K
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 19:38:49 -0400
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-686b91c2744so4616760b3a.0
- for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 16:38:47 -0700 (PDT)
+ id 1qTWSf-0000Gq-Iy
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 19:50:02 -0400
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-1bc6624623cso27996835ad.3
+ for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 16:50:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691537927; x=1692142727;
- h=content-transfer-encoding:in-reply-to:references:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=aWdTr+BVDgUi7XgYueB7BGQnoAP1uNh6N8HvaqlRTm0=;
- b=lVdBuHWdYMcnWfx88DSo8UzsfqG70P4sJk3ECBxww/mZ/VW2XfjWTDHRFnjWcbcQNn
- I92cVJ3RLBffvnp1I3oITZouY+p+FRbXNsbLTEa+Y4smSdqlY1/mquAcziRnMUiw5dEC
- BtYqqsTMW/Cbv137jW3miTVyQqMXuujVCeknOHBU7EMfsuCTrt1dMFlm1wBcUu5dg+q/
- XhXitWXxTGB5cYvl3cCCETHYYqsZMILZ0r8lEV87RM57LagzX0qKJt+6WHlRFt9WFLi2
- vBbFwWesFG2Z69Qt0HDMJdvuaJ/ccjBzJenlgT694oqpT0XoqXWK8rWo2eDERTOxXmmU
- 5rpA==
+ d=linaro.org; s=google; t=1691538599; x=1692143399;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Kdvvm1Sbj/FVrIt73ZveaGPXelgbYbK28PYr4uX6Pao=;
+ b=Pk0atLq7kI5rtqeaPubgEx53PBAh1aW/z7b6WcGX2INuAnGQ6LpV3CoRTJsuXzaBuS
+ JRc/jQo+EB9a3zGfo2PT8PjqPAY6tmdsQjgiEKADD9iSUIR2WjXswYjVhFm6Ir2ZrbFE
+ tiWnO1Pdzri2rAkg7zF3gtnrA05cfNTUyHzMhz3VSWKRubsKMSRTj6R7Zlmifjwht4c+
+ EUDOjQ7X75nV/+uDf8v3RLtuGW9UWc8E/YF82tdFxW9A3LOvLaBRMjSJZWYUSlhmqEwI
+ f5F1TT1x9TYvCiTGJ6Zkzfw022HisLwcaly3KC1sgNd5frDDzR9efrFtTdZMtsJQM3tQ
+ 4OPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691537927; x=1692142727;
- h=content-transfer-encoding:in-reply-to:references:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=aWdTr+BVDgUi7XgYueB7BGQnoAP1uNh6N8HvaqlRTm0=;
- b=C8gTigpiSOw6vU7JERH9RyUBRyIg0pPxYJW1ri+WSX0ovqqwTQrOjnAwLnZQ46tPnI
- F9rbfBN8mwvmWcM6z4JzyArGR/4bQO0NDZZEtFWEGHZIpVWMvSwdAWBx/mH2UumVlhQo
- UFKZSSB7QnDpQYZR4CLt+L0chnuq18waCFNPpD/42YLxRmu2dxEMl5E9vvC/VuncLW7A
- t5JuLGK7pYfTX99clcchyK7GI+Q3KUe7yYRHwKBMi0imzWZtnXX/35erlonoiXgsT/iO
- m7juGIx6e0G7fVFsYsQBTa2xTK+soalkw9rSHaKyKIBULATsa2VukNacYA+9Qc5VCYQl
- P72g==
-X-Gm-Message-State: AOJu0YwqK4XeYTXbpVHF7J3JWzP0C7106CIerhpF68QL4iO40etuvofo
- /iv+2LbsQk9WN+SL2en5wBxDT8TsClmjnr2c+wI=
-X-Google-Smtp-Source: AGHT+IHm55twR6xkFhcRUl/Hc/yjl3la3FhBDcYj88b9tvJlmPQKNt+U9yEcbZwxtBl5dvrAg2dqYw==
-X-Received: by 2002:a05:6a20:9694:b0:125:f3d8:e65b with SMTP id
- hp20-20020a056a20969400b00125f3d8e65bmr745292pzc.18.1691537926739; 
- Tue, 08 Aug 2023 16:38:46 -0700 (PDT)
-Received: from ?IPV6:2602:47:d490:6901:63dc:2a47:f4bc:4a95?
- ([2602:47:d490:6901:63dc:2a47:f4bc:4a95])
+ d=1e100.net; s=20221208; t=1691538599; x=1692143399;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Kdvvm1Sbj/FVrIt73ZveaGPXelgbYbK28PYr4uX6Pao=;
+ b=eRz6STd5XGl7U0778db7idMjJwrDvqQG/wFqreWCScEYcpGRpbt+Ef4YsaKX5hqy7U
+ BEOfsPWrSC11l8LgEihK7GfXeOa3bq4CLpYsOye5uUGlrfMq4PRpPzkIt0RG6/uPhYPx
+ ouhxtQjwW0Dlab6qJkjAAmEvU78L8ncqnDTKXtxo/1gLrz3rXW35D1yivZISNPOdVPxy
+ cx1D/eyCdg9uElRHBEWVhr/Ld0HxmDHWllQrLMyj55oPxULe+AhqX6u2fiufcu4IKFdG
+ eJvkJcgPYE+2dDrlpt1FrUk5sokHfqJPKx3AvZd4hbNfnoioTk7Ncxp4xABrZxLMtst/
+ ilLg==
+X-Gm-Message-State: AOJu0Yw6D++52w8XW4v0w36QlJwJ0p4CpXnqJ7ONfTXbptbl1E2U3prJ
+ 9HZBCMzEDbIcNkk3Fe/3BlXVvYYEX4fdNwSieb0=
+X-Google-Smtp-Source: AGHT+IGrpL5uvz/oJlMK09965O1RoKcCbS7iD+9ICodRP7OaARVBJhnvBvaCWLvLo/qHvGnD6ScHSg==
+X-Received: by 2002:a17:902:be01:b0:1b8:36a8:faf9 with SMTP id
+ r1-20020a170902be0100b001b836a8faf9mr1298530pls.38.1691538599696; 
+ Tue, 08 Aug 2023 16:49:59 -0700 (PDT)
+Received: from stoup.. ([2602:47:d490:6901:63dc:2a47:f4bc:4a95])
  by smtp.gmail.com with ESMTPSA id
- d10-20020a170902ceca00b001b7e63cfa19sm9604876plg.234.2023.08.08.16.38.46
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 08 Aug 2023 16:38:46 -0700 (PDT)
-Message-ID: <2a5e66e4-ac7c-4ab0-037b-3e1561acd012@linaro.org>
-Date: Tue, 8 Aug 2023 16:38:44 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PULL 00/14] linux-user image mapping fixes
-Content-Language: en-US
+ i5-20020a170902eb4500b001b04c2023e3sm9523022pli.218.2023.08.08.16.49.58
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 08 Aug 2023 16:49:59 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-References: <20230808210856.95568-1-richard.henderson@linaro.org>
-In-Reply-To: <20230808210856.95568-1-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
-X-Spam_score_int: -61
-X-Spam_score: -6.2
-X-Spam_bar: ------
-X-Spam_report: (-6.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-4.14,
+Cc: iii@linux.ibm.com,
+	alex.bennee@linaro.org
+Subject: [PATCH for-8.1] tests/tcg: Disable filename test for info proc
+ mappings
+Date: Tue,  8 Aug 2023 16:49:58 -0700
+Message-Id: <20230808234958.148910-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -95,29 +90,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/8/23 14:08, Richard Henderson wrote:
-> The following changes since commit 0450cf08976f9036feaded438031b4cba94f6452:
-> 
->    Merge tag 'fixes-pull-request' ofhttps://gitlab.com/marcandre.lureau/qemu  into staging (2023-08-07 13:55:00 -0700)
-> 
-> are available in the Git repository at:
-> 
->    https://gitlab.com/rth7680/qemu.git  tags/pull-lu-20230808
-> 
-> for you to fetch changes up to dd55885516f42f718d0d121c59a5f7be5fdae3e6:
-> 
->    linux-user: Rewrite non-fixed probe_guest_base (2023-08-08 13:41:55 -0700)
-> 
-> ----------------------------------------------------------------
-> linux-user: Adjust guest image layout vs reserved_va
-> linux-user: Do not adjust image mapping for host page size
-> linux-user: Adjust initial brk when interpreter is close to executable
-> util/selfmap: Rewrite using qemu/interval-tree.h
-> linux-user: Rewrite probe_guest_base
+This test fails when host page size != guest page size,
+because qemu may not be able to directly map the file.
 
-Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
+Fixes: a6341482695 ("tests/tcg: Add a test for info proc mappings")
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ tests/tcg/multiarch/gdbstub/test-proc-mappings.py | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-
-r~
+diff --git a/tests/tcg/multiarch/gdbstub/test-proc-mappings.py b/tests/tcg/multiarch/gdbstub/test-proc-mappings.py
+index 7b596ac21b..5e3e5a2fb7 100644
+--- a/tests/tcg/multiarch/gdbstub/test-proc-mappings.py
++++ b/tests/tcg/multiarch/gdbstub/test-proc-mappings.py
+@@ -33,7 +33,8 @@ def run_test():
+             return
+         raise
+     report(isinstance(mappings, str), "Fetched the mappings from the inferior")
+-    report("/sha1" in mappings, "Found the test binary name in the mappings")
++    # Broken with host page size > guest page size
++    # report("/sha1" in mappings, "Found the test binary name in the mappings")
+ 
+ 
+ def main():
+-- 
+2.34.1
 
 
