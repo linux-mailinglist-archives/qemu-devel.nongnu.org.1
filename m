@@ -2,76 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 672B5774108
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 19:13:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 771237740DA
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 19:11:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTQDv-0004UO-G1; Tue, 08 Aug 2023 13:10:23 -0400
+	id 1qTQDv-0004Yy-V4; Tue, 08 Aug 2023 13:10:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qTQDs-00047e-7S
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 13:10:20 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ id 1qTQDt-0004GJ-9s
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 13:10:21 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qTQDq-0003oQ-8q
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 13:10:19 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-317e14b0935so42459f8f.0
- for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 10:10:17 -0700 (PDT)
+ id 1qTQDr-0003p3-8W
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 13:10:20 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-3fe1fc8768aso57368045e9.1
+ for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 10:10:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1691514616; x=1692119416;
+ d=gmail.com; s=20221208; t=1691514617; x=1692119417;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NdOxVXghhdO4DgKur4m3AtRQMe0xFu/87Bd79EJQ6xk=;
- b=T0pBoiGQZV6yUYFcjcfxBCj0v9h5Q+KeImVmbogLdr03RkUWi/4YtdWvrMXMSyb+rC
- ojCn8h5uPq4UkA4hbFtiOzt87nnW8KT6myOiOWKDncryrF3jLdIMLcZUVIDmZtKqg0kD
- mHrUufTgEjcsD8SHDlaY+bHKN20h96XEvH+tKO0DYOAWf7uHaX4SSALcSXsloF2/nnrc
- 7M7iLnGVz9RYJDr/NJz43SQvvRbKnLAbMTt2FFYCVu66XxQ5r7vMpljV6lKeAsV14hfR
- EuOen8BjFRdtf/OKfy3zZ9z/RQPcILHr2E57O1Q+/KSvzJK29qe/Khc7BaIzBOr61T4O
- vgDQ==
+ bh=m7L4DblnyZ6mZ6SUX5IHPSXJ1ZwP6k4CfYzPJU5sNjU=;
+ b=VQMDVujvZlstMpOLDknVeRQOOOJzhQ6OXQW+a3f8TNhB9hurJqC1lQyLnYf4kywNRe
+ +FLfHSo36REWJzDIS2KFU7IEsU1Hijpl3Qx54nLmnEX/dUgY/I8SvScB/wzeK9nws4DY
+ D7N/9BYoaZ4kMyK79y02Dkk5MxhGDVuU6o6qFF5bz+ZI4ESfQRfaLlGzjI/5FN7lUwJT
+ MmXC0QkjICRXvGQftyKSKx5ywuppR8i9PIW8+ojV9wuC+qZ3qBi8NzTRaagtVxrIkU2E
+ uOlsAyx0FIVwECl3rLjACYjrHddA3P8ttNwe5xqmoQlu5rVt/wrXmCJDDA44hMCv/AMO
+ Nm1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691514616; x=1692119416;
+ d=1e100.net; s=20221208; t=1691514617; x=1692119417;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NdOxVXghhdO4DgKur4m3AtRQMe0xFu/87Bd79EJQ6xk=;
- b=PKUtfS1Us4MJrrxGX9EM7egrNf/FNxWswCiM4PmGZQUAK5hPMOu9Pt47DzhbSK719+
- NzYT9KXC8sk3SJGb+u64v+ztaN+vGXGq6d4mL0aUi43mNvDNoN9hupjk7u8C7wphFjPR
- vVtBgFRAHK1/1uw2noW2Abda8B5t1jUQO5Sw+Z4IFgIxQkoqxx+frNiulUIW29zwhX5n
- jZ10q1SkErVhJafKa7EECrCWm2PmmJ2QYL9fliOQ+BctQOrFgk/Qt3Ft7FrQtWl25CTc
- wqF9s6LDQSlXOt7iKXXiAHhSFd0318k9uKkTH8I7VB7M3gDXLyp6hZM3/0FGVjABP89v
- DkCw==
-X-Gm-Message-State: AOJu0Yz1JZSzmvDcXf21Z08JymbRqypwxvTvUqxEgLr60ArHQjXRNuxf
- Sdx0n2T/bswD4C3EatS5xrOuouXCYoloAw==
-X-Google-Smtp-Source: AGHT+IG1Jl+df69Y/ma761rJig+vDNxS1qO0dxFUIV8gFyGCqhxQPR7L3LrXURPmbg6+kX16dRTxog==
-X-Received: by 2002:a5d:4249:0:b0:314:3f1:cebf with SMTP id
- s9-20020a5d4249000000b0031403f1cebfmr8638062wrr.28.1691514615843; 
- Tue, 08 Aug 2023 10:10:15 -0700 (PDT)
+ bh=m7L4DblnyZ6mZ6SUX5IHPSXJ1ZwP6k4CfYzPJU5sNjU=;
+ b=l8Ga6u8zSCmeHbFueihkSPkODrVZIZkehAzM1CJOzxlSB7iudUgKWbdLnOBQKpEzz0
+ MJdisBm62+33fg6zlnrMNpCVtfVfz257AwVfM78L5BvD/rPalVsaEW6OD0VmO5CT+nOJ
+ wTg7N6pvEZ+7DuMM2tw1mDF4s7Ht2231cii3k6CZuOhM8wCLqfgUWaKuX2q6JMk8UOuS
+ R3Ua/4aHdAmvuvPsXJp9s+VSwGHs981YY8u9we2C8ygJ23u0acjnbuCkNniUY4Bm3jMu
+ 514CB/0lGeHOjJuEYZyeBVNfK7J9ONNwuMCLW5nDWo3o6pAlHV7U1KcrMgekkuALCk5N
+ GVmg==
+X-Gm-Message-State: AOJu0YznwCgSDRyCrOD807pXq8gW6hxezSWThRZTHWbmmxO0D07ccNQO
+ A/a5+dvesbb8akbtN62J9/9zF1144gMRcQ==
+X-Google-Smtp-Source: AGHT+IEjGzK8rZfKQNNynipwgdYccJ56LobS4dIdiVqATKitXS8spCBAUgPk2oyihukwDlRLAx3vIA==
+X-Received: by 2002:a7b:c399:0:b0:3fc:3e1:7105 with SMTP id
+ s25-20020a7bc399000000b003fc03e17105mr345871wmj.24.1691514616921; 
+ Tue, 08 Aug 2023 10:10:16 -0700 (PDT)
 Received: from karim.my.domain ([197.39.230.212])
  by smtp.gmail.com with ESMTPSA id
- j6-20020a5d6186000000b0031455482d1fsm14191663wru.47.2023.08.08.10.10.14
+ j6-20020a5d6186000000b0031455482d1fsm14191663wru.47.2023.08.08.10.10.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 08 Aug 2023 10:10:15 -0700 (PDT)
+ Tue, 08 Aug 2023 10:10:16 -0700 (PDT)
 From: Karim Taha <kariem.taha2.7@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: imp@bsdimp.com,
- =?UTF-8?q?Mika=C3=ABl=20Urankar?= <mikael.urankar@gmail.com>,
- Karim Taha <kariem.taha2.7@gmail.com>
-Subject: [PATCH 28/33] Implement do_freebsd_realpathat syscall
-Date: Tue,  8 Aug 2023 08:08:10 +0200
-Message-Id: <20230808060815.9001-29-kariem.taha2.7@gmail.com>
+	Karim Taha <kariem.taha2.7@gmail.com>
+Subject: [PATCH 29/33] Add os-stat.c to the build
+Date: Tue,  8 Aug 2023 08:08:11 +0200
+Message-Id: <20230808060815.9001-30-kariem.taha2.7@gmail.com>
 X-Mailer: git-send-email 2.40.0
 In-Reply-To: <20230808060815.9001-1-kariem.taha2.7@gmail.com>
 References: <20230808060815.9001-1-kariem.taha2.7@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=kariem.taha2.7@gmail.com; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=kariem.taha2.7@gmail.com; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -2
 X-Spam_score: -0.3
 X-Spam_bar: /
@@ -95,49 +93,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Mikaël Urankar <mikael.urankar@gmail.com>
-
-Signed-off-by: Mikaël Urankar <mikael.urankar@gmail.com>
 Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
 ---
- bsd-user/freebsd/os-stat.h | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ bsd-user/freebsd/meson.build | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/bsd-user/freebsd/os-stat.h b/bsd-user/freebsd/os-stat.h
-index e31b2aab9e..cf56c778ae 100644
---- a/bsd-user/freebsd/os-stat.h
-+++ b/bsd-user/freebsd/os-stat.h
-@@ -634,4 +634,30 @@ static inline abi_long do_freebsd_fcntl(abi_long arg1, abi_long arg2,
-     return ret;
- }
- 
-+#if defined(__FreeBSD_version) && __FreeBSD_version >= 1300080
-+extern int __realpathat(int fd, const char *path, char *buf, size_t size,
-+        int flags);
-+// https://svnweb.freebsd.org/base?view=revision&revision=358172
-+// no man page
-+static inline abi_long do_freebsd_realpathat(abi_long arg1, abi_long arg2,
-+        abi_long arg3, abi_long arg4, abi_long arg5)
-+{
-+    abi_long ret;
-+    void *p, *b;
-+
-+    LOCK_PATH(p, arg2);
-+    b = lock_user(VERIFY_WRITE, arg3, arg4, 0);
-+    if (b == NULL) {
-+        UNLOCK_PATH(p, arg2);
-+        return -TARGET_EFAULT;
-+    }
-+
-+    ret = get_errno(__realpathat(arg1, p, b, arg4, arg5));
-+    UNLOCK_PATH(p, arg2);
-+    unlock_user(b, arg3, ret);
-+
-+    return ret;
-+}
-+#endif
-+
- #endif /* BSD_USER_FREEBSD_OS_STAT_H */
+diff --git a/bsd-user/freebsd/meson.build b/bsd-user/freebsd/meson.build
+index f87c788e84..f2f047cca3 100644
+--- a/bsd-user/freebsd/meson.build
++++ b/bsd-user/freebsd/meson.build
+@@ -1,4 +1,5 @@
+ bsd_user_ss.add(files(
++  'os-stat.c',
+   'os-sys.c',
+   'os-syscall.c',
+ ))
 -- 
 2.40.0
 
