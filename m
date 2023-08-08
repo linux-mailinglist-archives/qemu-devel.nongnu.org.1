@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EC287740C4
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 19:10:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 799A77740CA
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 19:10:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTQDj-0002qC-1r; Tue, 08 Aug 2023 13:10:11 -0400
+	id 1qTQDl-00037h-2Y; Tue, 08 Aug 2023 13:10:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qTQDg-0002fR-Kn
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 13:10:08 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ id 1qTQDi-0002pI-4z
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 13:10:10 -0400
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qTQDe-0003cZ-NT
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 13:10:08 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-31792ac0fefso4447006f8f.2
- for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 10:10:06 -0700 (PDT)
+ id 1qTQDg-0003gB-5b
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 13:10:09 -0400
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-317715ec496so5100150f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 10:10:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1691514605; x=1692119405;
+ d=gmail.com; s=20221208; t=1691514606; x=1692119406;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=rbWdB/ZK+UVkxi7fyaDkVKQfgjGC/Wz/Ej9MOzEDLnQ=;
- b=nUYfW7J5m1bYv30R9cYuf5c6x17CUVQfkE4JwBfsqZ91dNs6oy15zluCigUlwemmAi
- 9+2Kl5ejXQQdrJejd9nBpXEdvKe0+f6RUirJc2q4mMg65yTgY5DVMdsRk6709zCSb57Y
- 44L6fhQ4PSwpq6UnDqNIVOOheoro5cyQYY05JNXMZq1P2pjMUw2lw3JimkAn0c3k3wMr
- YF0HCWRNvEu7aD5XYFbfeHi68GdjDuRqRQwDEgldLcwIQCPDiBPK36RwxXUBxc2MdEk5
- 4DiAdqfDHvkutgwc6xr+1s9i03+LzpWl7XvsoyuRXHRxGJWezQ6VEg1RrDt+BHAcDt4D
- zfYQ==
+ bh=nvFPlgrYHpsc/4GkTgJK28/M4h5pOfI3dgSj1J3z6O8=;
+ b=DrwaRMDJiX7Zd4zf5+NzJkr+vkyqrMMtXVwu0bQlmNi2DV6qXe8fWlKi88Svkp0ync
+ OvdAqpQUjbr0KqIiZr0yfydi+s5uZkDkFDG2IDFIK8fBmdvqUYLut7nHeNrPtmdmVhI5
+ HqYn43MavoLPbRMUoAHjENFxW5qz6l6GYqoWXKcDmvW5c17YSWBWdncW6mCf/8uMJKY5
+ fpaXUENOIL7xYUiuKrJ07+v42PVjbwp60hjeJF19prR2w7+7GWxR7NUZwtfD6lQ5keNT
+ ES+d30zedsohhVy4bx39OQAYX+w6k3dMgLrIBMmWK/X4k6m09TJ3HNlDTM1rf2Q2ARW2
+ L0bg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691514605; x=1692119405;
+ d=1e100.net; s=20221208; t=1691514606; x=1692119406;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rbWdB/ZK+UVkxi7fyaDkVKQfgjGC/Wz/Ej9MOzEDLnQ=;
- b=YW/1ux4w3enmWpg+Gmn37gbUgzt7KrUw2WJyut3AGAHN58BufMrscLkk6iU+ZEFASY
- pDJQUb/+eTgKWIPxeQwBnFebmOulAd8dSaBaHOpOt3aUKawCZDgtxUh0TDl/FR3Z0I/Y
- Fn7bEe4RPCHjf6rUEyJAnCVHmbYgSlD7vEe+ony8095e3Vm/J30W6g8OVBUFerto2KmS
- uiw/2OvMhg0QSFuYIZGLvTKJ04DokF/HXeN+TRdOZFblkxlQXp2n/3UFwXcBdIoj7vK0
- bClgGHDHIDSRcE2FhpQGnOqDOmD5hCu8lec7m25xQgR7decxqeZb8RdO3nfelVCwr9x+
- 1R7Q==
-X-Gm-Message-State: AOJu0Yz5/3uJpQo49zyP7VBRBosmkOY0ACDXiQx6EKvDLPCSJOfn/pL/
- 2wZ9JPSouMGqypZVjIUDUKDvXkt0Q0H3eg==
-X-Google-Smtp-Source: AGHT+IFO7iVGF3XZkNOQ4y/dqtWIXE2uH9YG7dUH8Iw5UA0uo8DomSKuY2R88lVtdPPiUpQV78yowA==
-X-Received: by 2002:adf:f58c:0:b0:314:2fdd:28ef with SMTP id
- f12-20020adff58c000000b003142fdd28efmr68665wro.18.1691514604808; 
- Tue, 08 Aug 2023 10:10:04 -0700 (PDT)
+ bh=nvFPlgrYHpsc/4GkTgJK28/M4h5pOfI3dgSj1J3z6O8=;
+ b=MFsYISoV3A43k3y5672SmQREszxD7UoTcEPSrgHZ+/X8q6ywo9gCaGdOgN5GWhSRpZ
+ Jc+psEdexsx9GJXVhUYM4N+WTXqsh4omm2JbyAJaMycCnW8AadqFXoQc+k/i8Mt6Qbdk
+ hKHVw72Ki46LJMc+HxE5xvzypt9QX5KwlptbpUeC1SfC/fdPvYJH2r6YGnIylbRPqoPe
+ 0nuII2+X4dnqVwUz29nET2T2K5Ho6DHnMKz5/KBUQgnXCIq0ClsVZAZ1DHv/Vk2rrwF/
+ 6q87xa1I/ySYRoXEdhsdB67sBqyecJlBHE2n1SYbkwts37odwDSDQ7GnQqEJcUTFHGyu
+ 4A2Q==
+X-Gm-Message-State: AOJu0YxQ9wr7SR0gxenV0YE3/2695zjyhHyguvIMmQgG8VKUqr4HH2pi
+ YoDfipdkB03bbWzJ/r7xBhrfKCkZ5EzvhQ==
+X-Google-Smtp-Source: AGHT+IG2usyka+Ri9oAPZkAAmn9GMKQ5uOpZmpW5EWBIU6VFT0yc3zLLHx59oOErwOMpbP9PcYJRFw==
+X-Received: by 2002:adf:f4ca:0:b0:317:6fb5:bafc with SMTP id
+ h10-20020adff4ca000000b003176fb5bafcmr38183wrp.65.1691514606454; 
+ Tue, 08 Aug 2023 10:10:06 -0700 (PDT)
 Received: from karim.my.domain ([197.39.230.212])
  by smtp.gmail.com with ESMTPSA id
- j6-20020a5d6186000000b0031455482d1fsm14191663wru.47.2023.08.08.10.10.03
+ j6-20020a5d6186000000b0031455482d1fsm14191663wru.47.2023.08.08.10.10.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 08 Aug 2023 10:10:04 -0700 (PDT)
+ Tue, 08 Aug 2023 10:10:06 -0700 (PDT)
 From: Karim Taha <kariem.taha2.7@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: imp@bsdimp.com, Stacey Son <sson@FreeBSD.org>,
  Karim Taha <kariem.taha2.7@gmail.com>
-Subject: [PATCH 21/33] Implement stat related syscalls
-Date: Tue,  8 Aug 2023 08:08:03 +0200
-Message-Id: <20230808060815.9001-22-kariem.taha2.7@gmail.com>
+Subject: [PATCH 22/33] Implement stat related syscalls
+Date: Tue,  8 Aug 2023 08:08:04 +0200
+Message-Id: <20230808060815.9001-23-kariem.taha2.7@gmail.com>
 X-Mailer: git-send-email 2.40.0
 In-Reply-To: <20230808060815.9001-1-kariem.taha2.7@gmail.com>
 References: <20230808060815.9001-1-kariem.taha2.7@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=kariem.taha2.7@gmail.com; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=kariem.taha2.7@gmail.com; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -2
 X-Spam_score: -0.3
 X-Spam_bar: /
@@ -96,91 +96,92 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Stacey Son <sson@FreeBSD.org>
 
 Implement the following syscalls:
-getdents(2)
-getdirecentries(2)
+fcntl(2)
 
 Signed-off-by: Stacey Son <sson@FreeBSD.org>
 Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
 ---
- bsd-user/freebsd/os-stat.h | 72 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 72 insertions(+)
+ bsd-user/freebsd/os-stat.h | 74 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 74 insertions(+)
 
 diff --git a/bsd-user/freebsd/os-stat.h b/bsd-user/freebsd/os-stat.h
-index 9492c93c55..7dc41cd0bf 100644
+index 7dc41cd0bf..5d9323c7d1 100644
 --- a/bsd-user/freebsd/os-stat.h
 +++ b/bsd-user/freebsd/os-stat.h
-@@ -279,4 +279,76 @@ static inline abi_long do_freebsd_getfsstat(abi_ulong target_addr,
+@@ -351,4 +351,78 @@ static inline abi_long do_freebsd_getdirentries(abi_long arg1,
      return ret;
  }
  
-+/* getdents(2) */
-+static inline abi_long do_freebsd11_getdents(abi_long arg1,
-+        abi_ulong arg2, abi_long nbytes)
++/* fcntl(2) */
++static inline abi_long do_freebsd_fcntl(abi_long arg1, abi_long arg2,
++        abi_ulong arg3)
 +{
 +    abi_long ret;
-+    struct freebsd11_dirent *dirp;
++    int host_cmd;
++    struct flock fl;
++    struct target_freebsd_flock *target_fl;
 +
-+    dirp = lock_user(VERIFY_WRITE, arg2, nbytes, 0);
-+    if (dirp == NULL) {
-+        return -TARGET_EFAULT;
++    host_cmd = target_to_host_fcntl_cmd(arg2);
++    if (host_cmd < 0) {
++        return host_cmd;
 +    }
-+    ret = get_errno(freebsd11_getdents(arg1, (char *)dirp, nbytes));
-+    if (!is_error(ret)) {
-+        struct freebsd11_dirent *de;
-+        int len = ret;
-+        int reclen;
-+
-+        de = dirp;
-+        while (len > 0) {
-+            reclen = de->d_reclen;
-+            if (reclen > len) {
-+                return -TARGET_EFAULT;
-+            }
-+            de->d_reclen = tswap16(reclen);
-+            de->d_fileno = tswap32(de->d_fileno);
-+            len -= reclen;
-+        }
-+    }
-+    return ret;
-+}
-+
-+/* getdirecentries(2) */
-+static inline abi_long do_freebsd_getdirentries(abi_long arg1,
-+        abi_ulong arg2, abi_long nbytes, abi_ulong arg4)
-+{
-+    abi_long ret;
-+    struct dirent *dirp;
-+    long basep;
-+
-+    dirp = lock_user(VERIFY_WRITE, arg2, nbytes, 0);
-+    if (dirp == NULL) {
-+        return -TARGET_EFAULT;
-+    }
-+    ret = get_errno(getdirentries(arg1, (char *)dirp, nbytes, &basep));
-+    if (!is_error(ret)) {
-+        struct dirent *de;
-+        int len = ret;
-+        int reclen;
-+
-+        de = dirp;
-+        while (len > 0) {
-+            reclen = de->d_reclen;
-+            if (reclen > len) {
-+                return -TARGET_EFAULT;
-+            }
-+            de->d_fileno = tswap64(de->d_fileno);
-+            de->d_off = tswap64(de->d_off);
-+            de->d_reclen = tswap16(de->d_reclen);
-+            de->d_namlen = tswap16(de->d_namlen);
-+            len -= reclen;
-+            de = (struct dirent *)((void *)de + reclen);
-+        }
-+    }
-+    unlock_user(dirp, arg2, ret);
-+    if (arg4) {
-+        if (put_user(basep, arg4, abi_ulong)) {
++    switch (arg2) {
++    case TARGET_F_GETLK:
++        if (!lock_user_struct(VERIFY_READ, target_fl, arg3, 1)) {
 +            return -TARGET_EFAULT;
 +        }
++        __get_user(fl.l_type, &target_fl->l_type);
++        __get_user(fl.l_whence, &target_fl->l_whence);
++        __get_user(fl.l_start, &target_fl->l_start);
++        __get_user(fl.l_len, &target_fl->l_len);
++        __get_user(fl.l_pid, &target_fl->l_pid);
++        __get_user(fl.l_sysid, &target_fl->l_sysid);
++        unlock_user_struct(target_fl, arg3, 0);
++        ret = get_errno(safe_fcntl(arg1, host_cmd, &fl));
++        if (!is_error(ret)) {
++            if (!lock_user_struct(VERIFY_WRITE, target_fl, arg3, 0)) {
++                return -TARGET_EFAULT;
++            }
++            __put_user(fl.l_type, &target_fl->l_type);
++            __put_user(fl.l_whence, &target_fl->l_whence);
++            __put_user(fl.l_start, &target_fl->l_start);
++            __put_user(fl.l_len, &target_fl->l_len);
++            __put_user(fl.l_pid, &target_fl->l_pid);
++            __put_user(fl.l_sysid, &target_fl->l_sysid);
++            unlock_user_struct(target_fl, arg3, 1);
++        }
++        break;
++
++    case TARGET_F_SETLK:
++    case TARGET_F_SETLKW:
++        if (!lock_user_struct(VERIFY_READ, target_fl, arg3, 1)) {
++            return -TARGET_EFAULT;
++        }
++        __get_user(fl.l_type, &target_fl->l_type);
++        __get_user(fl.l_whence, &target_fl->l_whence);
++        __get_user(fl.l_start, &target_fl->l_start);
++        __get_user(fl.l_len, &target_fl->l_len);
++        __get_user(fl.l_pid, &target_fl->l_pid);
++        __get_user(fl.l_sysid, &target_fl->l_sysid);
++        unlock_user_struct(target_fl, arg3, 0);
++        ret = get_errno(safe_fcntl(arg1, host_cmd, &fl));
++        break;
++
++    case TARGET_F_DUPFD:
++    case TARGET_F_DUP2FD:
++    case TARGET_F_GETOWN:
++    case TARGET_F_SETOWN:
++    case TARGET_F_GETFD:
++    case TARGET_F_SETFD:
++    case TARGET_F_GETFL:
++    case TARGET_F_SETFL:
++    case TARGET_F_READAHEAD:
++    case TARGET_F_RDAHEAD:
++    case TARGET_F_ADD_SEALS:
++    case TARGET_F_GET_SEALS:
++    default:
++        ret = get_errno(safe_fcntl(arg1, host_cmd, arg3));
++        break;
 +    }
 +    return ret;
 +}
