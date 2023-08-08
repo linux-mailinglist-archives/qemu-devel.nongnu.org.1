@@ -2,84 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FA1D773AF3
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 17:17:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E01A773AF0
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 17:17:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTOSm-0001mz-1z; Tue, 08 Aug 2023 11:17:36 -0400
+	id 1qTORd-0008Hl-2g; Tue, 08 Aug 2023 11:16:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qTOSi-0001bJ-EP
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 11:17:32 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qTOSa-000170-Qj
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 11:17:30 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-3fe24dd8898so49493215e9.2
- for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 08:17:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691507842; x=1692112642;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=abvLaOiqeM8KcNNGOGHv4cNoMfXwLSZCo7Ztt25GFhg=;
- b=Ez2nAlNefZKOSZhKPXvvhdarP3qDfj6CtVbTVsIyBtDAP6oPS+2B0khmrPWjIslQto
- LpqcjJ5xCuohEJIR4NGDMMnCBwD14HjI6kiqtj6bmv8nmLwnhuFrtdGM3d1bYENhzLvE
- f34aeKp+GntR92KU12bD5B6BYWjcGWyQvmMRosGZJmu8oinV0YXfuOPUTx4w3FTW/Sag
- mURcB8ANpwyzzMipJ8umZC1Sfgy0XtHCYo0x4Zka3koIQfTCLNxprX9Gx4zkXvW5YVhn
- EjUh20ZNhCDh6pw7qAOlaPFEbouoQvmdZdzk+1zDtAVOtsEELC32/HhZq423/DQkB/vl
- 7BNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691507842; x=1692112642;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=abvLaOiqeM8KcNNGOGHv4cNoMfXwLSZCo7Ztt25GFhg=;
- b=Hgl9iYzssz0yGLmGxmXpISqXY9mF54VISZikbuqucAhUBL2TD/1ufa/gkHEF+ZLcM2
- hlzvA0kANr3b0BztrsdEVlWPSX8Kxo18j6pWipbs6fEhyRnL3NWVKdPqwsRXUd4XJP4H
- lHbPnudhL1x3XQEddt3SdqIRTfSGZ7bO7VMUkZpYllUFXcP3p8NdESH7ooJd8VHsmN3h
- XoW+6pzl1bvTwzkMpPD0FBNGHsNtpec3lQUqDGVRpzvYwuHqLz8uRl4/AsOzLiqEmHnt
- qgDIsaGrBZimn9VXnZgVHRPHC/YxF4JU7Bbn6Bqf6NCAkkF7ByYVRniuEcSVpZ0MjL8w
- Iaqw==
-X-Gm-Message-State: AOJu0YyyuGuVYmERT+3W8opPQ065jg2ep1YwjwvUviAOZmExWeYSTegl
- 45nhKgBsyqdkF42oZne5LAaW1g==
-X-Google-Smtp-Source: AGHT+IExelftcrDHl64FKGiSrzJdRJDLYjPoSLp85UD50XFACKJVtL9yWZhRA1GHjulM4pCuDYhx+w==
-X-Received: by 2002:a5d:4402:0:b0:318:70:a4ac with SMTP id
- z2-20020a5d4402000000b003180070a4acmr204697wrq.17.1691507842244; 
- Tue, 08 Aug 2023 08:17:22 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- s8-20020adfea88000000b0031272fced4dsm13892220wrm.52.2023.08.08.08.17.21
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 08 Aug 2023 08:17:21 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 6733E1FFBB;
- Tue,  8 Aug 2023 16:17:21 +0100 (BST)
-References: <20230808134435.2719-1-m.tyutin@yadro.com>
-User-agent: mu4e 1.11.13; emacs 29.1.50
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Mikhail Tyutin <m.tyutin@yadro.com>
-Cc: qemu-devel@nongnu.org, richard.henderson@linaro.org,
- pbonzini@redhat.com, Aleksandr  Anenkov <a.anenkov@yadro.com>
-Subject: Re: [PATCH] Add support of callbacks after instructions to plugin api
-Date: Tue, 08 Aug 2023 16:15:41 +0100
-In-reply-to: <20230808134435.2719-1-m.tyutin@yadro.com>
-Message-ID: <87h6p97eda.fsf@linaro.org>
+ (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
+ id 1qTORa-0008Fn-JV; Tue, 08 Aug 2023 11:16:22 -0400
+Received: from wout5-smtp.messagingengine.com ([64.147.123.21])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
+ id 1qTORX-0000mq-IK; Tue, 08 Aug 2023 11:16:22 -0400
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+ by mailout.west.internal (Postfix) with ESMTP id 35E8D32000CC;
+ Tue,  8 Aug 2023 11:16:16 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+ by compute6.internal (MEProxy); Tue, 08 Aug 2023 11:16:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
+ h=cc:cc:content-transfer-encoding:content-type:content-type
+ :date:date:from:from:in-reply-to:message-id:mime-version
+ :reply-to:sender:subject:subject:to:to; s=fm2; t=1691507775; x=
+ 1691594175; bh=szeMu+/cYIGmxA/94/iRo71wkAHwywUdhsDSfDvsxQM=; b=a
+ +U5+QpjRd0734SJZj3dI4BRx/MpjMiFmsYZUWVdwAWTktSc0+DRy1q6+1JwvcWPW
+ +euQePSMb2ioC4wgEHTNeResgTVB5clG0QlI/l9kjejCfPdS9SBa8LH4p5f4DgEU
+ iRQe8PRXyUE77tTiQqWJuqgpCvBzRdSisHOWlep2fDpc/tHl/REWLpCWEN8HirZK
+ MqkNsQDhl5b0NbeDCQR/IFteNt2neQ5Ik8QR02DjWIh8dKdmtc6M8vI8BGNd/Att
+ 1dykQbhGIoAW9bt2T/D/206zDvVAed8DkeIaAGgaQpG3dQZGPDHlyDZm8uYLOUTr
+ j76BFufCPN+SZM2p3JHPg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-transfer-encoding
+ :content-type:content-type:date:date:feedback-id:feedback-id
+ :from:from:in-reply-to:message-id:mime-version:reply-to:sender
+ :subject:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender
+ :x-me-sender:x-sasl-enc; s=fm3; t=1691507775; x=1691594175; bh=s
+ zeMu+/cYIGmxA/94/iRo71wkAHwywUdhsDSfDvsxQM=; b=sGkzMB4T/R6Pf1vOm
+ nsMZH6Lzs4KB0Dj/569S5wg4/ZlJ6oqYX1wEg18j5gjHP2zzO6tEhnt7Tixu0HC8
+ cZdlN03+dsszNenKZsoIue/EoKjXM5RZIWmp6sc4VJWcQr2vS+3YeRNqJaXq82f9
+ GVkd3Zjl8VQ39rwQqE6XVnCW5vwYO0l5Pypr12pgNkFWn88fQ/45KPHEQY22xvDu
+ LoUxlH0p+VOM/PHW2HnARiAW9tqcERX+HxwPw9/CsffP4j3djUvlNv+M8G3usEXa
+ rxals9tc2wFviQ9ULs7NcSRiycWJccvTfo4OPrYEDgWWLsVgSmdOJSPpKGBXfKVR
+ C5Qqw==
+X-ME-Sender: <xms:PlzSZA4ufAmNfxUbOuUFZYPWfkjTaANRhHAg6UvPPKy0Utztc91MVA>
+ <xme:PlzSZB5MHnyLqQTlWFXtOc15ffcZP5IWFj-nHzjome5SQW3Fs_jk7sNE9FsS2qILa
+ PRt7Til7wZAfQDEdT0>
+X-ME-Received: <xmr:PlzSZPe0UTi90dDVfFpbvTqVLeomsTC0NTkY-Ku41kIkZ9Vsmz-akgIe4uM8mVuOFpMVXrNPZaM>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrledvgdekhecutefuodetggdotefrodftvf
+ curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+ uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+ fjughrpefhvfevufffkffotggggfesthekredtredtjeenucfhrhhomhepmfhlrghushcu
+ lfgvnhhsvghnuceoihhtshesihhrrhgvlhgvvhgrnhhtrdgukheqnecuggftrfgrthhtvg
+ hrnhepudekvdfgueejvdfgvdefffffhfehiedtieejkeelfedvhfegvddvtdefueekgfeu
+ necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepihhtsh
+ esihhrrhgvlhgvvhgrnhhtrdgukh
+X-ME-Proxy: <xmx:PlzSZFJj961qBIuq0bysNxOJI-qg-Hv9c_uW8KnzusGX5Z7ooI3LgQ>
+ <xmx:PlzSZEK6bD3_MDg5tSFbDt5YRBjIQFb_GZ2YJve8L9du-KCF-e8KPA>
+ <xmx:PlzSZGw2YUho-uePpGRBsXCYr3gC4E9J0PMo2OzjWextQOXjz8V3zQ>
+ <xmx:P1zSZJHCtqD8mzGQVeYB6Ih8_AEn-3uFVHcqj5RToroVkJv0WhoMQA>
+Feedback-ID: idc91472f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 8 Aug 2023 11:16:13 -0400 (EDT)
+From: Klaus Jensen <its@irrelevant.dk>
+To: qemu-devel@nongnu.org
+Cc: Keith Busch <kbusch@kernel.org>,
+ Jesper Devantier <j.devantier@samsung.com>,
+ Klaus Jensen <its@irrelevant.dk>, qemu-block@nongnu.org,
+ Klaus Jensen <k.jensen@samsung.com>
+Subject: [PATCH 0/2] hw/nvme: two fixes
+Date: Tue,  8 Aug 2023 17:16:12 +0200
+Message-ID: <20230808151611.81933-4-its@irrelevant.dk>
+X-Mailer: git-send-email 2.41.0
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x335.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Developer-Signature: v=1; a=openpgp-sha256; l=274; i=k.jensen@samsung.com;
+ h=from:subject; bh=OrENYWh3CB+gzABI7Okw/97VhskDS83YWvpeMdLU5UY=;
+ b=owJ4nAFtAZL+kA0DAAoBTeGvMW1PDekByyZiAGTSXDsRosWqGyWyd2BF7fp6TgdysE2IQZ2Zu
+ 35cOBALz73pyokBMwQAAQoAHRYhBFIoM6p14tzmokdmwE3hrzFtTw3pBQJk0lw7AAoJEE3hrzFt
+ Tw3p+3QIAKr8GM0k2KdEiVOJSd3MoxKziusxWKAbyZVkge+uq+VIgwZVFE4MfU6YLNacgB/QRfy
+ 7HrXg+ga0hQyhfMn4+I0DtOCwCZbk9CqLtiXNkbIts3stOdYJ9JTRne9e+npDvIGAs5Nesn76uu
+ 30vUSgQmdwu8osmrffWPJpUYB8gA7jmkS3qPVJNNoBknOpskN7KeqsQCbBEMOdSLICLObKrPXyU
+ TYSn/M1qX9VeOt0HdbK+JXzHG7//RDcj/Uq6mtn2SbZ1UirB6dztVbSA8TPmROknW1X/ZUQrWL2
+ BTU8hdzPAJ5gbGnBas5EOd2vWKPtJpc9IOyZO2ceDao1bzRvAPOrNrDt
+X-Developer-Key: i=k.jensen@samsung.com; a=openpgp;
+ fpr=DDCA4D9C9EF931CC3468427263D56FC5E55DA838
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=64.147.123.21; envelope-from=its@irrelevant.dk;
+ helo=wout5-smtp.messagingengine.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,85 +112,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+From: Klaus Jensen <k.jensen@samsung.com>
 
-Mikhail Tyutin <m.tyutin@yadro.com> writes:
+Fix two potential accesses to null pointers.
 
-> Initially, we can only call the callback BEFORE instructions. This
-> commit adds the ability to insert the callback AFTER instructions.
+Klaus Jensen (2):
+  hw/nvme: fix null pointer access in directive receive
+  hw/nvme: fix null pointer access in ruh update
 
-What is the use case for this? Because:
+ hw/nvme/ctrl.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-<snip>
->=20=20
-> +
-> +        /* Stop translation if translate_insn so indicated.  */
-> +        if (db->is_jmp !=3D DISAS_NEXT) {
-> +            break;
-> +        }
-> +
->          /*
->           * We can't instrument after instructions that change control
->           * flow although this only really affects post-load operations.
-> @@ -193,11 +199,6 @@ void translator_loop(CPUState *cpu, TranslationBlock=
- *tb, int *max_insns,
->              plugin_gen_insn_end();
->          }
->=20=20
-> -        /* Stop translation if translate_insn so indicated.  */
-> -        if (db->is_jmp !=3D DISAS_NEXT) {
-> -            break;
-> -        }
-> -
->          /* Stop translation if the output buffer is full,
->             or we have executed all of the allowed instructions.  */
->          if (tcg_op_buf_full() || db->num_insns >=3D db->max_insns) {
-> @@ -211,6 +212,13 @@ void translator_loop(CPUState *cpu, TranslationBlock=
- *tb, int *max_insns,
->      gen_tb_end(tb, cflags, icount_start_insn, db->num_insns);
->=20=20
->      if (plugin_enabled) {
-> +        /*
-> +         * Last chance to call plugin_gen_insn_end() if is skipped in tr=
-anslation
-> +         * loop above.
-> +         */
-> +        if (db->is_jmp !=3D DISAS_NEXT && tcg_ctx->exitreq_label =3D=3D =
-NULL) {
-> +            plugin_gen_insn_end();
-> +        }
->          plugin_gen_tb_end(cpu);
->      }
->=20=20
-<snip>
-> --- a/tcg/tcg-op.c
-> +++ b/tcg/tcg-op.c
-> @@ -2819,6 +2819,22 @@ void tcg_gen_exit_tb(const TranslationBlock *tb, u=
-nsigned idx)
->          tcg_debug_assert(idx =3D=3D TB_EXIT_REQUESTED);
->      }
->=20=20
-> +#ifdef CONFIG_PLUGIN
-> +    /*
-> +     * Some of instruction generators insert exit_tb explicitelly to
-> +     * trigger early exit from translation block. On the other hand
-> +     * translation loop (translator_loop()) inserts plugin callbacks
-> +     * after instruction is generated, but it appears as dead code
-> +     * because of the explicit exit_tb insert.
-> +     *
-> +     * Calling plugin_gen_insn_end() here before the exit allows
-> +     * plugins to receive control before translation block exits.
-> +     */
-> +    if (tcg_ctx->plugin_insn) {
-> +        plugin_gen_insn_end();
-> +    }
-> +#endif
-> +
+-- 
+2.41.0
 
-This isn't enough as we can exit the run loop in helpers. This is why
-the execlog plugin jumps the hoops it does to complete handling of
-execution on the next instruction.
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
