@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 711817745D4
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 20:47:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61F4D7745E4
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 20:47:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTRif-0005Bq-NY; Tue, 08 Aug 2023 14:46:15 -0400
+	id 1qTRih-0005CY-Oy; Tue, 08 Aug 2023 14:46:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qTRiW-0005BA-V9
+ id 1qTRiX-0005BD-DQ
  for qemu-devel@nongnu.org; Tue, 08 Aug 2023 14:46:06 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qTRiT-00047g-Vp
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 14:46:03 -0400
+ id 1qTRiV-00047x-LP
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 14:46:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691520361;
+ s=mimecast20190719; t=1691520362;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=dbxmfz/m6432xjJwoRgE+UYPOT+ApabJPxNLYbtQHqY=;
- b=FYv/hGodIuDXtAoAsVGF3YbFV0Q3jBrlWCYoYA662//jfVGZIoUnt38VDy60U+W2NZBoDc
- BG9EJXbiufFXfj/KNxjrgr0F42DGY2Qbm1Ob5v3rTh7O3skYeZcLNm7d16t75XBe5/C0zV
- Ae/AAbBrPCxFEoUk0BwuDPpx/1UILCk=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=kXPXSQ6jJ11jmAL/h4GCXiuzzlnxbtiU87ykDO52728=;
+ b=LkYEjh0xvkLX+J5zc9jjDfYAhILeasgP3uU0sXKNVbD2IJuw0Ypktbh0VHb4QUhsuisPpb
+ BlP3iEyXaCAshbfQmUQiUTlhwiDWDZ0AiTk79hAHp+elhfU5wLwUVDM+LqvXlaFNWLbCLe
+ p12R3BWCoIMTSQRLlIW2l4AwEJhH+TQ=
+Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
+ [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-54-9fd6s5KuNXqGzeJlq7lhdw-1; Tue, 08 Aug 2023 14:45:58 -0400
-X-MC-Unique: 9fd6s5KuNXqGzeJlq7lhdw-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-3fe182913c5so33139535e9.0
- for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 11:45:58 -0700 (PDT)
+ us-mta-672-Ipzu2V5WP-ifA3WW0itztQ-1; Tue, 08 Aug 2023 14:46:01 -0400
+X-MC-Unique: Ipzu2V5WP-ifA3WW0itztQ-1
+Received: by mail-lj1-f200.google.com with SMTP id
+ 38308e7fff4ca-2b9bb2d0b47so31012861fa.2
+ for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 11:46:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691520357; x=1692125157;
+ d=1e100.net; s=20221208; t=1691520359; x=1692125159;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dbxmfz/m6432xjJwoRgE+UYPOT+ApabJPxNLYbtQHqY=;
- b=RYfW/pkJroLXjZBC06w/aznXezo07lQsQoafLKeyAD6xH3qNH2Lw34zo9xrHEBFyay
- Vw5e5klizlpkY6hRgvwukNkyXtd1u9RIDyaZTIPvKZNAKyaPMOtnvQS3FGnHxuffxq+b
- hJCuGVnloXuJXTp8XMPr5/xqM07E33dPyiNtjKh28bmJDuU0qG5TcI14r8XexrMbOIul
- A/PyH0DAMjbHL+QE9DtvxurSPKYsCAU06yX2XFNaUi367zbHgQfdhGDTI/J2arYMMhh1
- alEjRw/yInxmSjaySBcEuESkL9fpn/CedBtupf36ROOYEpURivGw70EIHgjLvhTKLMfv
- FDcA==
-X-Gm-Message-State: AOJu0YyzvSb0luQF8CoU+4bs20Nu4A+uUoYuofsUGpmlcvgfOVPh2JtV
- FQGhmrD/4835a+gUVZXX3OWuSAQ/4Va+kntpvbwjBeaGtjP6tFV5kqSgtTLI20EEhGOX6z8cJIb
- fxRJBFZf5IVwShFG3gXtaui+TcbTeMuHUcjGSTVVYWlDEIVZr6A3miSH32tkNGXrtRPqX02Ta9L
- Q=
-X-Received: by 2002:a1c:7710:0:b0:3fe:1d13:4663 with SMTP id
- t16-20020a1c7710000000b003fe1d134663mr546365wmi.1.1691520356646; 
- Tue, 08 Aug 2023 11:45:56 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFs+7Lddw572Pd30Bn+f0Yo5SmN48hi9F9Yb8G0ujLMVRcEyHUWXGZnYmAQffoRqsUgjDttLw==
-X-Received: by 2002:a1c:7710:0:b0:3fe:1d13:4663 with SMTP id
- t16-20020a1c7710000000b003fe1d134663mr546350wmi.1.1691520356305; 
- Tue, 08 Aug 2023 11:45:56 -0700 (PDT)
+ bh=kXPXSQ6jJ11jmAL/h4GCXiuzzlnxbtiU87ykDO52728=;
+ b=fFfWySPcvxK2CA7je0NRRu40cGk+ZPqE0EkCGOL3NFsZJXwmZ/QNvrQ1Ls2d/bX+HE
+ 2tA0IqVElcQZJFbsavyyMgGduHbzAlIxM8zBS5O8fVTdqSXT2QWmQPhgIvHTodKd8/1/
+ d3p/2CX0Ncw1IYDZ0PA3PzX+lhK7K/kFGlJr9OIPevUxjPvT9NcSllRHk0wB3JxkaByZ
+ /qdcoOHrwsUU5eilGRSk0DMUikq2eMFDtWeEzjmNP9PjZaAfcMw7vP3XEfYED9oxcR1U
+ N7kZ2nxiLdrtecRK393KPgnwn8HxAcqzJfynxYX6oxadDfCLQpgx0SrKR61PoDwZ1zHy
+ jm7w==
+X-Gm-Message-State: AOJu0Yxj5VzY6ufW5SrgkkamQl2gO5E5lvG+PrDE9PSstGebnd1s86R2
+ EK4PrOrsqTlksimrwTICLwNYpfxnfYgNRkifUtaZKMxzqMMgmxVtjVqnkWUU3RPtbKgUscOGHWD
+ cGOkTpE15xZ27E0dnkyuC8JtIKFrvSqGQWW39YWMhB+BH4lq0kZCqLuuQQnM6vlPYV72G0OhtZt
+ U=
+X-Received: by 2002:a2e:7e06:0:b0:2b6:9ed5:bf15 with SMTP id
+ z6-20020a2e7e06000000b002b69ed5bf15mr268613ljc.23.1691520358876; 
+ Tue, 08 Aug 2023 11:45:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEtrNC2lPzdffJctnRsQT2fiH9pmRglIZZ2zpDYIVq/fW+LTZtULmA5RSIfxbwI4V3uhUTaNg==
+X-Received: by 2002:a2e:7e06:0:b0:2b6:9ed5:bf15 with SMTP id
+ z6-20020a2e7e06000000b002b69ed5bf15mr268594ljc.23.1691520358461; 
+ Tue, 08 Aug 2023 11:45:58 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e])
  by smtp.gmail.com with ESMTPSA id
- m21-20020a7bcb95000000b003fc02e8ea68sm19012304wmi.13.2023.08.08.11.45.54
+ n4-20020a05600c294400b003fbe4cecc3bsm18832970wmd.16.2023.08.08.11.45.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 08 Aug 2023 11:45:54 -0700 (PDT)
+ Tue, 08 Aug 2023 11:45:57 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Ilya Leoshkevich <iii@linux.ibm.com>,
-	Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 2/3] linux-user: cleanup unused linux-user/include/host
- directories
-Date: Tue,  8 Aug 2023 20:45:50 +0200
-Message-ID: <20230808184551.684522-3-pbonzini@redhat.com>
+Cc: Joel Stanley <joel@jms.id.au>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Ilya Leoshkevich <iii@linux.ibm.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PULL 3/3] configure: unify case statements for CPU canonicalization
+Date: Tue,  8 Aug 2023 20:45:51 +0200
+Message-ID: <20230808184551.684522-4-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230808184551.684522-1-pbonzini@redhat.com>
 References: <20230808184551.684522-1-pbonzini@redhat.com>
@@ -102,375 +102,246 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Alpha and 31-bit s390 lack the assembly fragment to handle signals
-occurring at the same time as system calls, so they cannot run
-linux-user emulation anymore.  Drop the host-signal.h files for
-them.
+The CPU model has to be canonicalized to what Meson wants in the cross
+file, to what Linux uses for its asm-$ARCH directories, and to what
+QEMU uses for its user-mode emulation host/$ARCH directories.  Do
+all three in a single case statement, and check that the Linux and
+QEMU directories actually exist.
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+At a small cost in repeated lines, this ensures that there are no hidden
+ordering requirements between the case statements.  In particular, commit
+89e5b7935e9 ("configure: Fix linux-user host detection for riscv64",
+2023-08-06) broke ppc64le because it assigned host_arch based on a
+non-canonicalized version of $cpu.
+
+Reported-by: Joel Stanley <joel@jms.id.au>
+Fixes: 89e5b7935e9 ("configure: Fix linux-user host detection for riscv64", 2023-08-06)
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Acked-by: Ilya Leoshkevich <iii@linux.ibm.com>
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Tested-by: Ilya Leoshkevich <iii@linux.ibm.com>
 Tested-by: Michael Tokarev <mjt@tls.msk.ru>
-Message-ID: <20230808120303.585509-3-pbonzini@redhat.com>
+Message-ID: <20230808120303.585509-4-pbonzini@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- linux-user/include/host/alpha/host-signal.h |  55 --------
- linux-user/include/host/s390/host-signal.h  | 138 -------------------
- linux-user/include/host/s390x/host-signal.h | 139 +++++++++++++++++++-
- 3 files changed, 138 insertions(+), 194 deletions(-)
- delete mode 100644 linux-user/include/host/alpha/host-signal.h
- delete mode 100644 linux-user/include/host/s390/host-signal.h
+ configure | 175 +++++++++++++++++++++++++++++++-----------------------
+ 1 file changed, 102 insertions(+), 73 deletions(-)
 
-diff --git a/linux-user/include/host/alpha/host-signal.h b/linux-user/include/host/alpha/host-signal.h
-deleted file mode 100644
-index 4f9e2abc4b0..00000000000
---- a/linux-user/include/host/alpha/host-signal.h
-+++ /dev/null
-@@ -1,55 +0,0 @@
--/*
-- * host-signal.h: signal info dependent on the host architecture
-- *
-- * Copyright (c) 2003-2005 Fabrice Bellard
-- * Copyright (c) 2021 Linaro Limited
-- *
-- * This work is licensed under the terms of the GNU LGPL, version 2.1 or later.
-- * See the COPYING file in the top-level directory.
-- */
+diff --git a/configure b/configure
+index 484d38d81f4..133f4e32351 100755
+--- a/configure
++++ b/configure
+@@ -469,59 +469,119 @@ else
+   echo "WARNING: unrecognized host CPU, proceeding with 'uname -m' output '$cpu'"
+ fi
+ 
+-case "$cpu" in
+-  riscv*)
+-    host_arch=riscv ;;
+-  x32)
+-    host_arch=x86_64 ;;
+-  *)
+-    host_arch="$cpu" ;;
+-esac
 -
--#ifndef ALPHA_HOST_SIGNAL_H
--#define ALPHA_HOST_SIGNAL_H
--
--/* The third argument to a SA_SIGINFO handler is ucontext_t. */
--typedef ucontext_t host_sigcontext;
--
--static inline uintptr_t host_signal_pc(host_sigcontext *uc)
--{
--    return uc->uc_mcontext.sc_pc;
--}
--
--static inline void host_signal_set_pc(host_sigcontext *uc, uintptr_t pc)
--{
--    uc->uc_mcontext.sc_pc = pc;
--}
--
--static inline void *host_signal_mask(host_sigcontext *uc)
--{
--    return &uc->uc_sigmask;
--}
--
--static inline bool host_signal_write(siginfo_t *info, host_sigcontext *uc)
--{
--    uint32_t *pc = (uint32_t *)host_signal_pc(uc);
--    uint32_t insn = *pc;
--
--    /* XXX: need kernel patch to get write flag faster */
--    switch (insn >> 26) {
--    case 0x0d: /* stw */
--    case 0x0e: /* stb */
--    case 0x0f: /* stq_u */
--    case 0x24: /* stf */
--    case 0x25: /* stg */
--    case 0x26: /* sts */
--    case 0x27: /* stt */
--    case 0x2c: /* stl */
--    case 0x2d: /* stq */
--    case 0x2e: /* stl_c */
--    case 0x2f: /* stq_c */
--        return true;
--    }
--    return false;
--}
--
--#endif
-diff --git a/linux-user/include/host/s390/host-signal.h b/linux-user/include/host/s390/host-signal.h
-deleted file mode 100644
-index e6d3ec26dc7..00000000000
---- a/linux-user/include/host/s390/host-signal.h
-+++ /dev/null
-@@ -1,138 +0,0 @@
--/*
-- * host-signal.h: signal info dependent on the host architecture
-- *
-- * Copyright (c) 2003-2005 Fabrice Bellard
-- * Copyright (c) 2021 Linaro Limited
-- *
-- * This work is licensed under the terms of the GNU LGPL, version 2.1 or later.
-- * See the COPYING file in the top-level directory.
-- */
--
--#ifndef S390_HOST_SIGNAL_H
--#define S390_HOST_SIGNAL_H
--
--/* The third argument to a SA_SIGINFO handler is ucontext_t. */
--typedef ucontext_t host_sigcontext;
--
--static inline uintptr_t host_signal_pc(host_sigcontext *uc)
--{
--    return uc->uc_mcontext.psw.addr;
--}
--
--static inline void host_signal_set_pc(host_sigcontext *uc, uintptr_t pc)
--{
--    uc->uc_mcontext.psw.addr = pc;
--}
--
--static inline void *host_signal_mask(host_sigcontext *uc)
--{
--    return &uc->uc_sigmask;
--}
--
--static inline bool host_signal_write(siginfo_t *info, host_sigcontext *uc)
--{
--    uint16_t *pinsn = (uint16_t *)host_signal_pc(uc);
--
--    /*
--     * ??? On linux, the non-rt signal handler has 4 (!) arguments instead
--     * of the normal 2 arguments.  The 4th argument contains the "Translation-
--     * Exception Identification for DAT Exceptions" from the hardware (aka
--     * "int_parm_long"), which does in fact contain the is_write value.
--     * The rt signal handler, as far as I can tell, does not give this value
--     * at all.  Not that we could get to it from here even if it were.
--     * So fall back to parsing instructions.  Treat read-modify-write ones as
--     * writes, which is not fully correct, but for tracking self-modifying code
--     * this is better than treating them as reads.  Checking si_addr page flags
--     * might be a viable improvement, albeit a racy one.
--     */
--    /* ??? This is not even close to complete.  */
--    switch (pinsn[0] >> 8) {
--    case 0x50: /* ST */
--    case 0x42: /* STC */
--    case 0x40: /* STH */
--    case 0x44: /* EX */
--    case 0xba: /* CS */
--    case 0xbb: /* CDS */
--        return true;
--    case 0xc4: /* RIL format insns */
--        switch (pinsn[0] & 0xf) {
--        case 0xf: /* STRL */
--        case 0xb: /* STGRL */
--        case 0x7: /* STHRL */
--            return true;
--        }
--        break;
--    case 0xc6: /* RIL-b format insns */
--        switch (pinsn[0] & 0xf) {
--        case 0x0: /* EXRL */
--            return true;
--        }
--        break;
--    case 0xc8: /* SSF format insns */
--        switch (pinsn[0] & 0xf) {
--        case 0x2: /* CSST */
--            return true;
--        }
--        break;
--    case 0xe3: /* RXY format insns */
--        switch (pinsn[2] & 0xff) {
--        case 0x50: /* STY */
--        case 0x24: /* STG */
--        case 0x72: /* STCY */
--        case 0x70: /* STHY */
--        case 0x8e: /* STPQ */
--        case 0x3f: /* STRVH */
--        case 0x3e: /* STRV */
--        case 0x2f: /* STRVG */
--            return true;
--        }
--        break;
--    case 0xe6:
--        switch (pinsn[2] & 0xff) {
--        case 0x09: /* VSTEBRH */
--        case 0x0a: /* VSTEBRG */
--        case 0x0b: /* VSTEBRF */
--        case 0x0e: /* VSTBR */
--        case 0x0f: /* VSTER */
--        case 0x3f: /* VSTRLR */
--            return true;
--        }
--        break;
--    case 0xe7:
--        switch (pinsn[2] & 0xff) {
--        case 0x08: /* VSTEB */
--        case 0x09: /* VSTEH */
--        case 0x0a: /* VSTEG */
--        case 0x0b: /* VSTEF */
--        case 0x0e: /* VST */
--        case 0x1a: /* VSCEG */
--        case 0x1b: /* VSCEF */
--        case 0x3e: /* VSTM */
--        case 0x3f: /* VSTL */
--            return true;
--        }
--        break;
--    case 0xeb: /* RSY format insns */
--        switch (pinsn[2] & 0xff) {
--        case 0x14: /* CSY */
--        case 0x30: /* CSG */
--        case 0x31: /* CDSY */
--        case 0x3e: /* CDSG */
--        case 0xe4: /* LANG */
--        case 0xe6: /* LAOG */
--        case 0xe7: /* LAXG */
--        case 0xe8: /* LAAG */
--        case 0xea: /* LAALG */
--        case 0xf4: /* LAN */
--        case 0xf6: /* LAO */
--        case 0xf7: /* LAX */
--        case 0xfa: /* LAAL */
--        case 0xf8: /* LAA */
--            return true;
--        }
--        break;
--    }
--    return false;
--}
--
--#endif
-diff --git a/linux-user/include/host/s390x/host-signal.h b/linux-user/include/host/s390x/host-signal.h
-index 0e83f9358df..e6d3ec26dc7 100644
---- a/linux-user/include/host/s390x/host-signal.h
-+++ b/linux-user/include/host/s390x/host-signal.h
-@@ -1 +1,138 @@
--#include "../s390/host-signal.h"
-+/*
-+ * host-signal.h: signal info dependent on the host architecture
-+ *
-+ * Copyright (c) 2003-2005 Fabrice Bellard
-+ * Copyright (c) 2021 Linaro Limited
-+ *
-+ * This work is licensed under the terms of the GNU LGPL, version 2.1 or later.
-+ * See the COPYING file in the top-level directory.
-+ */
+-# Normalise host CPU name and set multilib cflags.  The canonicalization
+-# isn't really necessary, because the architectures that we check for
+-# should not hit the 'uname -m' case, but better safe than sorry.
++# Normalise host CPU name to the values used by Meson cross files and in source
++# directories, and set multilib cflags.  The canonicalization isn't really
++# necessary, because the architectures that we check for should not hit the
++# 'uname -m' case, but better safe than sorry in case --cpu= is used.
++#
+ # Note that this case should only have supported host CPUs, not guests.
++# Please keep it sorted and synchronized with meson.build's host_arch.
++host_arch=
++linux_arch=
+ case "$cpu" in
++  aarch64)
++    host_arch=aarch64
++    linux_arch=arm64
++    ;;
 +
-+#ifndef S390_HOST_SIGNAL_H
-+#define S390_HOST_SIGNAL_H
+   armv*b|armv*l|arm)
+-    cpu="arm" ;;
++    cpu=arm
++    host_arch=arm
++    linux_arch=arm
++    ;;
+ 
+   i386|i486|i586|i686)
+     cpu="i386"
+-    CPU_CFLAGS="-m32" ;;
++    host_arch=i386
++    linux_arch=x86
++    CPU_CFLAGS="-m32"
++    ;;
 +
-+/* The third argument to a SA_SIGINFO handler is ucontext_t. */
-+typedef ucontext_t host_sigcontext;
++  loongarch*)
++    cpu=loongarch64
++    host_arch=loongarch64
++    ;;
 +
-+static inline uintptr_t host_signal_pc(host_sigcontext *uc)
-+{
-+    return uc->uc_mcontext.psw.addr;
-+}
++  mips64*)
++    cpu=mips64
++    host_arch=mips
++    linux_arch=mips
++    ;;
++  mips*)
++    cpu=mips
++    host_arch=mips
++    linux_arch=mips
++    ;;
 +
-+static inline void host_signal_set_pc(host_sigcontext *uc, uintptr_t pc)
-+{
-+    uc->uc_mcontext.psw.addr = pc;
-+}
++  ppc)
++    host_arch=ppc
++    linux_arch=powerpc
++    CPU_CFLAGS="-m32"
++    ;;
++  ppc64)
++    host_arch=ppc64
++    linux_arch=powerpc
++    CPU_CFLAGS="-m64 -mbig-endian"
++    ;;
++  ppc64le)
++    cpu=ppc64
++    host_arch=ppc64
++    linux_arch=powerpc
++    CPU_CFLAGS="-m64 -mlittle-endian"
++    ;;
 +
-+static inline void *host_signal_mask(host_sigcontext *uc)
-+{
-+    return &uc->uc_sigmask;
-+}
++  riscv32 | riscv64)
++    host_arch=riscv
++    linux_arch=riscv
++    ;;
 +
-+static inline bool host_signal_write(siginfo_t *info, host_sigcontext *uc)
-+{
-+    uint16_t *pinsn = (uint16_t *)host_signal_pc(uc);
++  s390)
++    linux_arch=s390
++    CPU_CFLAGS="-m31"
++    ;;
++  s390x)
++    host_arch=s390x
++    linux_arch=s390
++    CPU_CFLAGS="-m64"
++    ;;
 +
-+    /*
-+     * ??? On linux, the non-rt signal handler has 4 (!) arguments instead
-+     * of the normal 2 arguments.  The 4th argument contains the "Translation-
-+     * Exception Identification for DAT Exceptions" from the hardware (aka
-+     * "int_parm_long"), which does in fact contain the is_write value.
-+     * The rt signal handler, as far as I can tell, does not give this value
-+     * at all.  Not that we could get to it from here even if it were.
-+     * So fall back to parsing instructions.  Treat read-modify-write ones as
-+     * writes, which is not fully correct, but for tracking self-modifying code
-+     * this is better than treating them as reads.  Checking si_addr page flags
-+     * might be a viable improvement, albeit a racy one.
-+     */
-+    /* ??? This is not even close to complete.  */
-+    switch (pinsn[0] >> 8) {
-+    case 0x50: /* ST */
-+    case 0x42: /* STC */
-+    case 0x40: /* STH */
-+    case 0x44: /* EX */
-+    case 0xba: /* CS */
-+    case 0xbb: /* CDS */
-+        return true;
-+    case 0xc4: /* RIL format insns */
-+        switch (pinsn[0] & 0xf) {
-+        case 0xf: /* STRL */
-+        case 0xb: /* STGRL */
-+        case 0x7: /* STHRL */
-+            return true;
-+        }
-+        break;
-+    case 0xc6: /* RIL-b format insns */
-+        switch (pinsn[0] & 0xf) {
-+        case 0x0: /* EXRL */
-+            return true;
-+        }
-+        break;
-+    case 0xc8: /* SSF format insns */
-+        switch (pinsn[0] & 0xf) {
-+        case 0x2: /* CSST */
-+            return true;
-+        }
-+        break;
-+    case 0xe3: /* RXY format insns */
-+        switch (pinsn[2] & 0xff) {
-+        case 0x50: /* STY */
-+        case 0x24: /* STG */
-+        case 0x72: /* STCY */
-+        case 0x70: /* STHY */
-+        case 0x8e: /* STPQ */
-+        case 0x3f: /* STRVH */
-+        case 0x3e: /* STRV */
-+        case 0x2f: /* STRVG */
-+            return true;
-+        }
-+        break;
-+    case 0xe6:
-+        switch (pinsn[2] & 0xff) {
-+        case 0x09: /* VSTEBRH */
-+        case 0x0a: /* VSTEBRG */
-+        case 0x0b: /* VSTEBRF */
-+        case 0x0e: /* VSTBR */
-+        case 0x0f: /* VSTER */
-+        case 0x3f: /* VSTRLR */
-+            return true;
-+        }
-+        break;
-+    case 0xe7:
-+        switch (pinsn[2] & 0xff) {
-+        case 0x08: /* VSTEB */
-+        case 0x09: /* VSTEH */
-+        case 0x0a: /* VSTEG */
-+        case 0x0b: /* VSTEF */
-+        case 0x0e: /* VST */
-+        case 0x1a: /* VSCEG */
-+        case 0x1b: /* VSCEF */
-+        case 0x3e: /* VSTM */
-+        case 0x3f: /* VSTL */
-+            return true;
-+        }
-+        break;
-+    case 0xeb: /* RSY format insns */
-+        switch (pinsn[2] & 0xff) {
-+        case 0x14: /* CSY */
-+        case 0x30: /* CSG */
-+        case 0x31: /* CDSY */
-+        case 0x3e: /* CDSG */
-+        case 0xe4: /* LANG */
-+        case 0xe6: /* LAOG */
-+        case 0xe7: /* LAXG */
-+        case 0xe8: /* LAAG */
-+        case 0xea: /* LAALG */
-+        case 0xf4: /* LAN */
-+        case 0xf6: /* LAO */
-+        case 0xf7: /* LAX */
-+        case 0xfa: /* LAAL */
-+        case 0xf8: /* LAA */
-+            return true;
-+        }
-+        break;
-+    }
-+    return false;
-+}
++  sparc|sun4[cdmuv])
++    cpu=sparc
++    CPU_CFLAGS="-m32 -mv8plus -mcpu=ultrasparc"
++    ;;
++  sparc64)
++    host_arch=sparc64
++    CPU_CFLAGS="-m64 -mcpu=ultrasparc"
++    ;;
 +
-+#endif
+   x32)
+     cpu="x86_64"
+-    CPU_CFLAGS="-mx32" ;;
++    host_arch=x86_64
++    linux_arch=x86
++    CPU_CFLAGS="-mx32"
++    ;;
+   x86_64|amd64)
+     cpu="x86_64"
++    host_arch=x86_64
++    linux_arch=x86
+     # ??? Only extremely old AMD cpus do not have cmpxchg16b.
+     # If we truly care, we should simply detect this case at
+     # runtime and generate the fallback to serial emulation.
+-    CPU_CFLAGS="-m64 -mcx16" ;;
+-
+-  mips*)
+-    cpu="mips" ;;
+-
+-  ppc)
+-    CPU_CFLAGS="-m32" ;;
+-  ppc64)
+-    CPU_CFLAGS="-m64 -mbig-endian" ;;
+-  ppc64le)
+-    cpu="ppc64"
+-    CPU_CFLAGS="-m64 -mlittle-endian" ;;
+-
+-  s390)
+-    CPU_CFLAGS="-m31" ;;
+-  s390x)
+-    CPU_CFLAGS="-m64" ;;
+-
+-  sparc|sun4[cdmuv])
+-    cpu="sparc"
+-    CPU_CFLAGS="-m32 -mv8plus -mcpu=ultrasparc" ;;
+-  sparc64)
+-    CPU_CFLAGS="-m64 -mcpu=ultrasparc" ;;
++    CPU_CFLAGS="-m64 -mcx16"
++    ;;
+ esac
+ 
++if test -n "$host_arch" && {
++    ! test -d "$source_path/linux-user/include/host/$host_arch" ||
++    ! test -d "$source_path/common-user/host/$host_arch"; }; then
++    error_exit "linux-user/include/host/$host_arch does not exist." \
++       "This is a bug in the configure script, please report it."
++fi
++if test -n "$linux_arch" && ! test -d "$source_path/linux-headers/asm-$linux_arch"; then
++    error_exit "linux-headers/asm-$linux_arch does not exist." \
++       "This is a bug in the configure script, please report it."
++fi
++
+ check_py_version() {
+     # We require python >= 3.7.
+     # NB: a True python conditional creates a non-zero return code (Failure)
+@@ -812,7 +872,7 @@ default_target_list=""
+ mak_wilds=""
+ 
+ if [ "$linux_user" != no ]; then
+-    if [ "$targetos" = linux ] && [ -d "$source_path/linux-user/include/host/$host_arch" ]; then
++    if [ "$targetos" = linux ] && [ -n "$host_arch" ]; then
+         linux_user=yes
+     elif [ "$linux_user" = yes ]; then
+         error_exit "linux-user not supported on this architecture"
+@@ -1717,40 +1777,9 @@ echo "PKG_CONFIG=${pkg_config}" >> $config_host_mak
+ echo "CC=$cc" >> $config_host_mak
+ echo "EXESUF=$EXESUF" >> $config_host_mak
+ 
+-# use included Linux headers
+-if test "$linux" = "yes" ; then
+-  mkdir -p linux-headers
+-  case "$cpu" in
+-  i386|x86_64)
+-    linux_arch=x86
+-    ;;
+-  ppc|ppc64)
+-    linux_arch=powerpc
+-    ;;
+-  s390x)
+-    linux_arch=s390
+-    ;;
+-  aarch64)
+-    linux_arch=arm64
+-    ;;
+-  loongarch*)
+-    linux_arch=loongarch
+-    ;;
+-  mips64)
+-    linux_arch=mips
+-    ;;
+-  riscv32|riscv64)
+-    linux_arch=riscv
+-    ;;
+-  *)
+-    # For most CPUs the kernel architecture name and QEMU CPU name match.
+-    linux_arch="$cpu"
+-    ;;
+-  esac
+-    # For non-KVM architectures we will not have asm headers
+-    if [ -e "$source_path/linux-headers/asm-$linux_arch" ]; then
+-      symlink "$source_path/linux-headers/asm-$linux_arch" linux-headers/asm
+-    fi
++# use included Linux headers for KVM architectures
++if test "$linux" = "yes" && test -n "$linux_arch"; then
++  symlink "$source_path/linux-headers/asm-$linux_arch" linux-headers/asm
+ fi
+ 
+ for target in $target_list; do
 -- 
 2.41.0
 
