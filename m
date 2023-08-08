@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22A537740C5
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 19:10:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9303877410A
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 19:13:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTQDU-0001pj-IP; Tue, 08 Aug 2023 13:09:56 -0400
+	id 1qTQDV-0001uK-9Y; Tue, 08 Aug 2023 13:09:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qTQDI-0001Hz-Oq
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 13:09:45 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ id 1qTQDI-0001IA-Uz
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 13:09:48 -0400
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qTQDG-0003Cz-62
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 13:09:43 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-3fe5eb84d43so17442065e9.3
- for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 10:09:41 -0700 (PDT)
+ id 1qTQDH-0003DB-3J
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 13:09:44 -0400
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-317715ec496so5099855f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 10:09:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1691514580; x=1692119380;
+ d=gmail.com; s=20221208; t=1691514581; x=1692119381;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=DNZTycRhT1z+dhPCDuZivfVDPfYQWNMB+t8hhmuprEQ=;
- b=JFfBCZ2N+9pEOm2YShc9wq70os/owS1Sz2ZYuDwcno49NYtdhVueSbxNX5V7ezPPX9
- D5IgEBUXmy/ek1244ZyXxGPW4nYGmMfe3uEA0PwlkDma7Sso2pDGUX/R5OmzVPPo0n0Q
- byXEybK+noQCCmN6XoLETELMlyDiqrIzWepNgHpjuLaO44q0mNxkkAW3SwGrJ5VnVGGk
- ImKsoUy3EKiMFE/fiuG7yigOh/j17h/bwIb5DTOC3857+WAT09H0RSesfXOVh6O4MxvP
- xAXyp5MOjWrh37K9sErcI708sYVe9/bvAYpuMiJYmn8qFpQMgtu2pXSyXJzjD/SCrUmb
- KYgQ==
+ bh=UoDVrI+V/WeST7HHYmpphoZh47MLRk/ECXknUSo6bhk=;
+ b=T/fYG6Y4W2Ft9oPC/PpjIiFRK3kZL89ISpu8NPdgjbK441poq9kzBZzwe1kkMoEARc
+ V98hA+bup8UFoW+XbVmcGHCnjjZkVU2p/A78LEl2IIfWZnIuypgIt77qy3QkPzVxzBZE
+ 3KkuCHuqNRiuefQcfuwvUOMsFQFBFtAzsmiP/siSCXSdWNxq72u8f96bAX4oEarg56/+
+ eWSTEh7B0kt/nGWSvgTSS2lhKbpKhuj4CcJmFqIOMbpJosoA8Lknpk2gsoi2GU3SQird
+ FR8BujokQojut8ambPnnYeEFcQzZeJZEaKExByTxeVZR6Kvf9UkKVOPtIW2aQOsIJ3/6
+ 7K5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691514580; x=1692119380;
+ d=1e100.net; s=20221208; t=1691514581; x=1692119381;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DNZTycRhT1z+dhPCDuZivfVDPfYQWNMB+t8hhmuprEQ=;
- b=TKcWZsNS479YIHEJBudYWtPvaIbSe6XZZp4P2+4hQmnkqPPuVSf4upMGL1YZ6GLxz+
- 1OvyDr/irIq3FvQ6T/D5WCReNwIyp5wpRSPwpu4AKb9mzaWsPSEdgFZSv+Gv4kPDSyyr
- LKmpP+CfKrZ6+HniLgcH7i4VS00A9fR2K0GkEjbSUBHabEYZWqScrrlbVmZAxmnS7UDh
- BmTxdOkl2WaMXP+ZMkstY1zy4zKdlUYkeCrYaZIWRUHRiBr9vy1S2Fwlf35T+TPFqgCd
- 5HoI2ztuVFDEar7G6kJuLX92gjmChW1bj2hJTqyNUsuFBHnB1VN+DNUYOMfeLSP7SRp+
- tPsg==
-X-Gm-Message-State: AOJu0YzACJ41ko9tyzQKRTBt+Z6MYgof2izir4tHDpAZzfqMNSVqOhbn
- xHNFQKGnACrNeEjInKmdtUpOjLsBCeu4+Q==
-X-Google-Smtp-Source: AGHT+IFM7AjUdHGKAl6INKYfPWV1qaPijwOLdEADoDQk3CMqq6/E/yyvu9qOfw/mbWvxva7EkFc7yg==
-X-Received: by 2002:a5d:45d1:0:b0:317:f4c2:a99c with SMTP id
- b17-20020a5d45d1000000b00317f4c2a99cmr60803wrs.32.1691514579716; 
- Tue, 08 Aug 2023 10:09:39 -0700 (PDT)
+ bh=UoDVrI+V/WeST7HHYmpphoZh47MLRk/ECXknUSo6bhk=;
+ b=XCuAnoMXirtuhHHL2nUweVigKpiJXlo39oU2TB1blKSIyanE0XTAV3td3JJXIK2L1G
+ Vegi38n7uyGWCKBiSR7goqwjeaLHxJb15s0KAfGrwNOQaArjIXwcM1CCuw+4oa4b5+dZ
+ BgOvMNBI8nVuXMfCNqnsnmrqDcRbZV1osOTylGTDIUozOBUXDqc08Gk1oRf1y3l8US6l
+ y7lsu5JYu+KMBT77w4esWAjwL0RZ+gyjtZdi+RYMFSW3sKJM7sDz2aSiB2yziCguouvV
+ zHFa36Iu4vTdGpDRcdfragFcIShACiXe2A/Fbb+tszAUTqbWsi/UusAEDxxTVDuW896C
+ p66Q==
+X-Gm-Message-State: AOJu0Yxfsl4yRLY9LjwBzXmgpiB9kc56hrgcxWFkkY8kN5+S7FYWNzRv
+ spzKaeGUD0JqyO4DUe3R402czi1rTLRmww==
+X-Google-Smtp-Source: AGHT+IFvn+ODGoDdIjyMoyTZjS26F/yaH4Ia2Bdkfw8IlWbRh3jszZxFCyd16SBlSkSPVvEOui/IbA==
+X-Received: by 2002:adf:fe04:0:b0:314:3bd7:6a0c with SMTP id
+ n4-20020adffe04000000b003143bd76a0cmr53804wrr.33.1691514580889; 
+ Tue, 08 Aug 2023 10:09:40 -0700 (PDT)
 Received: from karim.my.domain ([197.39.230.212])
  by smtp.gmail.com with ESMTPSA id
- j6-20020a5d6186000000b0031455482d1fsm14191663wru.47.2023.08.08.10.09.38
+ j6-20020a5d6186000000b0031455482d1fsm14191663wru.47.2023.08.08.10.09.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 08 Aug 2023 10:09:39 -0700 (PDT)
+ Tue, 08 Aug 2023 10:09:40 -0700 (PDT)
 From: Karim Taha <kariem.taha2.7@gmail.com>
 To: qemu-devel@nongnu.org
-Cc: imp@bsdimp.com,
-	Karim Taha <kariem.taha2.7@gmail.com>
-Subject: [PATCH 01/33] Move _WANT_FREEBSD macros to include/qemu/osdep.h
-Date: Tue,  8 Aug 2023 08:07:43 +0200
-Message-Id: <20230808060815.9001-2-kariem.taha2.7@gmail.com>
+Cc: imp@bsdimp.com, Kyle Evans <kevans@FreeBSD.org>,
+ Karim Taha <kariem.taha2.7@gmail.com>
+Subject: [PATCH 02/33] Disable clang warnings arising from bsd-user/qemu.h
+Date: Tue,  8 Aug 2023 08:07:44 +0200
+Message-Id: <20230808060815.9001-3-kariem.taha2.7@gmail.com>
 X-Mailer: git-send-email 2.40.0
 In-Reply-To: <20230808060815.9001-1-kariem.taha2.7@gmail.com>
 References: <20230808060815.9001-1-kariem.taha2.7@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=kariem.taha2.7@gmail.com; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=kariem.taha2.7@gmail.com; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -2
 X-Spam_score: -0.3
 X-Spam_bar: /
@@ -93,65 +93,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Warner Losh <imp@bsdimp.com>
+From: Kyle Evans <kevans@FreeBSD.org>
 
-move _WANT_FREEBSD macros from bsd-user/freebsd/os-syscall.c to
-include/qemu/osdep.h in order to pull some struct defintions needed
-later in the build.
+Implement PRAGMA_DISABLE_PACKED_WARNING and PRAGMA_REENABLE_PACKED_WARNING macros in bsd-user/qemu.h.
 
-Signed-off-by: Warner Losh <imp@bsdimp.com>
+Signed-off-by: Kyle Evans <kevans@FreeBSD.org>
 Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
 ---
- bsd-user/freebsd/os-syscall.c | 11 -----------
- include/qemu/osdep.h          | 13 +++++++++++++
- 2 files changed, 13 insertions(+), 11 deletions(-)
+ bsd-user/qemu.h | 31 +++++++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
-diff --git a/bsd-user/freebsd/os-syscall.c b/bsd-user/freebsd/os-syscall.c
-index de36c4b71c..2224a280ea 100644
---- a/bsd-user/freebsd/os-syscall.c
-+++ b/bsd-user/freebsd/os-syscall.c
-@@ -17,17 +17,6 @@
-  *  You should have received a copy of the GNU General Public License
-  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
+diff --git a/bsd-user/qemu.h b/bsd-user/qemu.h
+index edf9602f9b..dfdfa8dd67 100644
+--- a/bsd-user/qemu.h
++++ b/bsd-user/qemu.h
+@@ -276,6 +276,37 @@ static inline bool access_ok(int type, abi_ulong addr, abi_ulong size)
+  * These are usually used to access struct data members once the struct has been
+  * locked - usually with lock_user_struct().
   */
--
--/*
-- * We need the FreeBSD "legacy" definitions. Rust needs the FreeBSD 11 system
-- * calls since it doesn't use libc at all, so we have to emulate that despite
-- * FreeBSD 11 being EOL'd.
-- */
--#define _WANT_FREEBSD11_STAT
--#define _WANT_FREEBSD11_STATFS
--#define _WANT_FREEBSD11_DIRENT
--#define _WANT_KERNEL_ERRNO
--#define _WANT_SEMUN
- #include "qemu/osdep.h"
- #include "qemu/cutils.h"
- #include "qemu/path.h"
-diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
-index cc61b00ba9..1ca94ad3de 100644
---- a/include/qemu/osdep.h
-+++ b/include/qemu/osdep.h
-@@ -88,6 +88,19 @@ QEMU_EXTERN_C int daemon(int, int);
- #define __USE_MINGW_ANSI_STDIO 1
- #endif
- 
++
 +/*
-+ * We need the FreeBSD "legacy" definitions. Rust needs the FreeBSD 11 system
-+ * calls since it doesn't use libc at all, so we have to emulate that despite
-+ * FreeBSD 11 being EOL'd.
++ * Tricky points:
++ * - Use __builtin_choose_expr to avoid type promotion from ?:,
++ * - Invalid sizes result in a compile time error stemming from
++ *   the fact that abort has no parameters.
++ * - It's easier to use the endian-specific unaligned load/store
++ *   functions than host-endian unaligned load/store plus tswapN.
++ * - The pragmas are necessary only to silence a clang false-positive
++ *   warning: see https://bugs.llvm.org/show_bug.cgi?id=39113 .
++ * - We have to disable -Wpragmas warnings to avoid a complaint about
++ *   an unknown warning type from older compilers that don't know about
++ *   -Waddress-of-packed-member.
++ * - gcc has bugs in its _Pragma() support in some versions, eg
++ *   https://gcc.gnu.org/bugzilla/show_bug.cgi?id=83256 -- so we only
++ *   include the warning-suppression pragmas for clang
 + */
-+#ifdef __FreeBSD__
-+#define _WANT_FREEBSD11_STAT
-+#define _WANT_FREEBSD11_STATFS
-+#define _WANT_FREEBSD11_DIRENT
-+#define _WANT_KERNEL_ERRNO
-+#define _WANT_SEMUN
++#ifdef __clang__
++#define PRAGMA_DISABLE_PACKED_WARNING                                   \
++    _Pragma("GCC diagnostic push");                                     \
++    _Pragma("GCC diagnostic ignored \"-Wpragmas\"");                    \
++    _Pragma("GCC diagnostic ignored \"-Waddress-of-packed-member\"")
++
++#define PRAGMA_REENABLE_PACKED_WARNING          \
++    _Pragma("GCC diagnostic pop")
++
++#else
++#define PRAGMA_DISABLE_PACKED_WARNING
++#define PRAGMA_REENABLE_PACKED_WARNING
 +#endif
 +
- #include <stdarg.h>
- #include <stddef.h>
- #include <stdbool.h>
+ #define __put_user(x, hptr)\
+ ({\
+     int size = sizeof(*hptr);\
 -- 
 2.40.0
 
