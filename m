@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1B81774D13
-	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 23:30:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46BF8774D14
+	for <lists+qemu-devel@lfdr.de>; Tue,  8 Aug 2023 23:31:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTUHP-0001F0-BC; Tue, 08 Aug 2023 17:30:15 -0400
+	id 1qTUHq-0001j0-9h; Tue, 08 Aug 2023 17:30:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTUHI-0001AK-TG
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 17:30:09 -0400
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+ id 1qTUHo-0001cd-7J
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 17:30:40 -0400
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTUFs-0001EL-3p
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 17:28:41 -0400
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-686daaa5f1fso4318522b3a.3
- for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 14:28:39 -0700 (PDT)
+ id 1qTUHm-0001fH-Lw
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 17:30:39 -0400
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-1bc8b15c3c3so7262085ad.0
+ for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 14:30:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691530118; x=1692134918;
+ d=linaro.org; s=google; t=1691530237; x=1692135037;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=ahIM7PDCQp0RXXJ6QMkIjepupHtLdwR54UCi38RcleA=;
- b=UyF1K6D859Cnh2GGItD+EX/vVEjJbP21pr1TfGkNfJbayuIpH4V0lu4kC3GMYOFSU6
- HiILBaD4bHc1HBKSQ8kob8BXcmukwrMQ/iOXG9ZhBtMVSsVQJ4eIQpBqS62D0D7Tp+2h
- 5PMF68gW0AceWwhlHJpssw4Ln+vExaPMGGwY/bnL3HVyugav4n4fKsSSMx61J4idq1md
- q+lEn5vJ4lKV+/1MxDxBJbA8COKiDGOlk9tQrNfuFZgIUPcAIbpsTHhIBAtLlOLy4wq3
- aVSmVvHCpva6U4X8oII9m1HpQtymXv2Ra3NcfhD4u9F5gvNgyNrAghjrgtpE46rA4TGo
- Eb7Q==
+ bh=NYUlEzmMtdYdFD2PYJ/AEEGs4blk+bXeQtOLn1OYMbM=;
+ b=z7t7OTAbmtB8r2Bh9py3Q6I1aoFW/ZPcpledgQv0LSoAyVwupKBQ4nFMIwpWZC56kG
+ q3J/hcqOeIVcje6j+jovd/oEuP/jLdaxdACpCVe6Qc3cTXqAl88DA+eTaLHEwf76sfQd
+ dG88Fntsg3jwqI0Y+BEwPKR0Ur/u0B0pLPxQ6SrHn3jj0iJ0rKW6utx0HScG+dScP/U1
+ MGFC+q1tt8nCyJC8Q8esbAyLx5CDhgapANQXRDQBfPO9HpaiWeqeuQyDhfpnmqoRXJU2
+ f4q0rCCATGX7kGe8eMDHrxYEcTrdVKVSAHIP7lBRK3Cjqrt5r6VragrbAAkO0aTfSs+B
+ a5nw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691530118; x=1692134918;
+ d=1e100.net; s=20221208; t=1691530237; x=1692135037;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ahIM7PDCQp0RXXJ6QMkIjepupHtLdwR54UCi38RcleA=;
- b=ZvZLaLIvxYQshEq/rQzLlHaAlYtCtJXsY4LC5bCG7UUJujSZeTY9wA2UiPmpWmdB3j
- iiQ3pG82DvlGJhjgWJjci4iWEH4HMH+eYdrmX33RLUm5nJcEI/3APfPa63ArvzKKkTFM
- WIyjTGyIalPspZAeg/vNPg+zVXcXiU+VKcQTsAprl2sIvRDbww9dnLWUkXP0js541FX5
- tQA/5RNgg98w+x2O1YhQXMrUJ096N8Lv+FoXGgdMIFQCpOG0gy7Ehfoa+gKfTUJyJiht
- f36tfQPJWoyiTwylFZDQVVyJrLsuQb0E1serTpFchQec6wuOSmadrXu9g4LtDRjSF+qL
- dZ4g==
-X-Gm-Message-State: AOJu0YxrJvk/9+mGZp3fj8FE//AwohnAFQvWBM12pfKVMqj54wJibYIl
- 2oMs1vnkHOEyHNbYwgXG8GTtMA==
-X-Google-Smtp-Source: AGHT+IEe7mjeFZ6Xz86vR8pbXhofDLdezVb03s+SCu3LDSjCaYTMYc1+WCZGz4NcUcsthamq8nqTUQ==
-X-Received: by 2002:a05:6a21:3390:b0:137:fa5:8519 with SMTP id
- yy16-20020a056a21339000b001370fa58519mr895581pzb.31.1691530118402; 
- Tue, 08 Aug 2023 14:28:38 -0700 (PDT)
+ bh=NYUlEzmMtdYdFD2PYJ/AEEGs4blk+bXeQtOLn1OYMbM=;
+ b=QxY1at9RszklUnh6IEdP6dTunikbRsW3yU7wb5TKo1xXYsm0Z/D94qhU0cuJDpn1g9
+ 35HJ2OoxgjtaGUkSxAzu6s0I3voXfIUGrN8DH4Z0YrHXGudV5UaQJ8y7IIcO3NWc7eXr
+ S0CnuwWGZLwyJkdy4KCOiFT809JVUi4FTw64cMM87kfn/JOKiIFPU7xJq019oaUtemHD
+ 5r6dn4NWE6OZsuIe5s2Eqax7oAnOL8kzG6IjZxrcNMTAupWQ75U7fr0U92VoUXB54OBS
+ otroDjvRx6+g5LCgAwMfxVhLKNnfzGUpAPXtHSKAx64Bs5d+bttCOdQ+3VXtzFn38r/Z
+ 6GWQ==
+X-Gm-Message-State: AOJu0YwEGmfK1zj1OC2i9KeMjVedJTBX27P3ZpMoYmQQtm8ArgR3W3Mx
+ GrQWPVP+R3WqKBTmRcfNHuOg403K/rPs1tsiMR0=
+X-Google-Smtp-Source: AGHT+IGSkT8uJotVJbheeT5nNSm9D9wBpaxHs/uxMf4dw+MP2jKQcQ4LCfungCdvwrbAIBAsZ4dOBQ==
+X-Received: by 2002:a17:90b:3e8d:b0:268:df3d:bfa1 with SMTP id
+ rj13-20020a17090b3e8d00b00268df3dbfa1mr717868pjb.20.1691530237299; 
+ Tue, 08 Aug 2023 14:30:37 -0700 (PDT)
 Received: from ?IPV6:2602:47:d490:6901:63dc:2a47:f4bc:4a95?
  ([2602:47:d490:6901:63dc:2a47:f4bc:4a95])
  by smtp.gmail.com with ESMTPSA id
- i11-20020aa787cb000000b006828ee9fa69sm8549019pfo.206.2023.08.08.14.28.37
+ q15-20020a17090ad38f00b00268188ea4b9sm2791pju.19.2023.08.08.14.30.36
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 08 Aug 2023 14:28:38 -0700 (PDT)
-Message-ID: <ad06ff30-d1ba-a401-c31c-6ac642816824@linaro.org>
-Date: Tue, 8 Aug 2023 14:28:36 -0700
+ Tue, 08 Aug 2023 14:30:36 -0700 (PDT)
+Message-ID: <c17fc2da-e134-1e71-0e6f-657898c10282@linaro.org>
+Date: Tue, 8 Aug 2023 14:30:35 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH 12/33] Rename target_freebsd_time_t to target_time_t
+Subject: Re: [PATCH 13/33] Implement host-target convertion functions
 Content-Language: en-US
 To: Karim Taha <kariem.taha2.7@gmail.com>, qemu-devel@nongnu.org
-Cc: imp@bsdimp.com
+Cc: imp@bsdimp.com, Stacey Son <sson@FreeBSD.org>
 References: <20230808060815.9001-1-kariem.taha2.7@gmail.com>
- <20230808060815.9001-13-kariem.taha2.7@gmail.com>
+ <20230808060815.9001-14-kariem.taha2.7@gmail.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230808060815.9001-13-kariem.taha2.7@gmail.com>
+In-Reply-To: <20230808060815.9001-14-kariem.taha2.7@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -61
 X-Spam_score: -6.2
 X-Spam_bar: ------
@@ -97,19 +97,20 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 8/7/23 23:07, Karim Taha wrote:
-> From: Warner Losh<imp@bsdimp.com>
+> From: Stacey Son<sson@FreeBSD.org>
 > 
-> This is necessary for future code using target_time_t, in
-> bsd-user/syscall_defs.
+> Implement the stat converstion functions:
+> h2t_freebsd11_stat
+> h2t_freebsd_nstat
 > 
-> Signed-off-by: Warner Losh<imp@bsdimp.com>
+> Signed-off-by: Stacey Son<sson@FreeBSD.org>
 > Signed-off-by: Karim Taha<kariem.taha2.7@gmail.com>
 > ---
->   bsd-user/syscall_defs.h | 8 ++++----
->   1 file changed, 4 insertions(+), 4 deletions(-)
+>   bsd-user/freebsd/os-stat.c | 94 ++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 94 insertions(+)
+>   create mode 100644 bsd-user/freebsd/os-stat.c
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-
 
 r~
 
