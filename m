@@ -2,68 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07AFB776077
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 15:19:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1887F776088
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 15:21:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTj4I-0002M1-1w; Wed, 09 Aug 2023 09:17:42 -0400
+	id 1qTj7X-0003j3-QE; Wed, 09 Aug 2023 09:21:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <m.tyutin@yadro.com>)
- id 1qTj4F-0002Lj-SL
- for qemu-devel@nongnu.org; Wed, 09 Aug 2023 09:17:40 -0400
-Received: from mta-04.yadro.com ([89.207.88.248])
+ (Exim 4.90_1) (envelope-from <qian.wen@intel.com>)
+ id 1qTj7T-0003iR-R4
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 09:20:59 -0400
+Received: from mgamail.intel.com ([192.55.52.88])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <m.tyutin@yadro.com>)
- id 1qTj4C-0005hC-Vf
- for qemu-devel@nongnu.org; Wed, 09 Aug 2023 09:17:39 -0400
-DKIM-Filter: OpenDKIM Filter v2.11.0 mta-04.yadro.com 4C521C0002
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yadro.com; s=mta-04;
- t=1691587051; bh=y35q9b17nAnioeuCBvuKYLFUp05dPCev6gAMN7TaJUk=;
- h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version:From;
- b=Oj+oqhRyl1BHZPj9iVHfe6zt+dhv9ZhQ/QOm1x3UIsqMpkJV2bKxR3KZeNU9BgTgU
- M+6XE1aR/mZup+5hO6I/j8/4aoFh1OgPWtzODBsaRc/9XR0K47gR6O/vq9KDZddCio
- gcNcFsufE0ijV/3A2QXNtNvO70jpvHR/iXprpLHTDP62hkiVL2N8lxMSWGu3RwS1ZO
- b7DLPq2gHH7xGtCjENpP0KWu+xOoEJGJaPRJ9YlCC3kARcgRmYFE5c1MBI/OFoI0mN
- Ej67s1F5vRnKuIYIS5KTSA9RDpR0wgtgBFzukg1muy/s3nRsntqFJ1uJ50ApYP2svD
- OQrlU7K5C/uUA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yadro.com; s=mta-03;
- t=1691587051; bh=y35q9b17nAnioeuCBvuKYLFUp05dPCev6gAMN7TaJUk=;
- h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version:From;
- b=HITSKhwsVKGG+9fGDlneQvVudRv3//79IGOf3C4yAwOLEyHtMMde+OJXjlAWIKnIP
- 0wypeUbAcSUVjU3OwMntzLnWQ+Wt5esvj9IKMcTQiF6JIJE7QNjRAlf4ppDuWGHw5q
- vpcSKwgaIE70ZnfQxxAeBm72HoTfTLZ4luC1Kyd8Lrbdtn8Kc5EbnyhJKyOenZsKdw
- IL6PYPboXIMhpqcsoLLPNIsziM+sTLoHGosTqEz4F7fSeBkcaKvFBqBnaFJnRz554T
- 4DhGeLQvN+LvvbJ256uQgumSe5KISeeRTR8GQBcjGTAYzlaO2GldEwFOB1Imklrxne
- mv0zseBZ0xKBA==
-From: Mikhail Tyutin <m.tyutin@yadro.com>
-To: Richard Henderson <richard.henderson@linaro.org>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>
-CC: Dmitriy Solovev <d.solovev@yadro.com>, "pbonzini@redhat.com"
- <pbonzini@redhat.com>, =?utf-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Subject: RE: [PATCH] Fix SEGFAULT on getting physical address of MMIO region.
-Thread-Topic: [PATCH] Fix SEGFAULT on getting physical address of MMIO region.
-Thread-Index: AQHZxUJ9uWdHfTvY/E+smozUO/WhN6/W+rwAgArzYkA=
-Date: Wed, 9 Aug 2023 13:17:29 +0000
-Message-ID: <7c2d7791b1af4d54919c51ea6b666dfd@yadro.com>
-References: <bf8ae2fd-158a-57b6-6270-2e56b6506421@yadro.com>
- <ffcb690c-91d2-60f5-3e65-e0be204de7b8@linaro.org>
-In-Reply-To: <ffcb690c-91d2-60f5-3e65-e0be204de7b8@linaro.org>
-Accept-Language: ru-RU, en-US
-Content-Language: ru-RU
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <qian.wen@intel.com>)
+ id 1qTj7Q-0006vU-4K
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 09:20:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1691587256; x=1723123256;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to;
+ bh=rpn4rm74LJhFnDHsdtW+7bi+vSI9IC8hE5QYWtUGbUE=;
+ b=icJWMCGO8lKPqOEtBQJFXEzmlKfZQx4nvfWys7fZ5Jj1nT4Mr4wstbY/
+ xpT4R5gE+3wbICjkIVnp63tXn+hmSAHL7fH4d+0mEk2mMApmjE0sJ4LRQ
+ 5lNRhp6+RliClbjbaPL4LFfKQbytmzzd5zRFjLWKLCW5/olmYyAodwoyr
+ 6djAKWeyhbIZoGjk2/mp2/jpgKYSA/1fRGtjgjG13E329ztIFvxsFkmbi
+ K46CSs41kPdxoHB6r4MlrIXCSAg77RnGl8ONhbbDWwU76+OtViMo6R0Da
+ B5mbmxRgomhbQKYSkGUwqdhKlxImB7w1Wu/BS7OqOk5SFC5UKgMg4j2RD g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10795"; a="402083742"
+X-IronPort-AV: E=Sophos;i="6.01,159,1684825200"; 
+ d="scan'208,217";a="402083742"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+ by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Aug 2023 06:20:52 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10795"; a="725399003"
+X-IronPort-AV: E=Sophos;i="6.01,159,1684825200"; 
+ d="scan'208,217";a="725399003"
+Received: from qianwen-mobl1.ccr.corp.intel.com (HELO [10.93.8.78])
+ ([10.93.8.78])
+ by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Aug 2023 06:20:50 -0700
+Content-Type: multipart/alternative;
+ boundary="------------yW4rw3Rl9tUeKxsYtq37zrpG"
+Message-ID: <f1710cde-a3ce-6125-2608-c1ebcf4be581@intel.com>
+Date: Wed, 9 Aug 2023 21:20:48 +0800
 MIME-Version: 1.0
-Received-SPF: pass client-ip=89.207.88.248; envelope-from=m.tyutin@yadro.com;
- helo=mta-04.yadro.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH v2] target/i386: Avoid cpu number overflow in legacy
+ topology
+To: Igor Mammedov <imammedo@redhat.com>
+Cc: qemu-devel@nongnu.org, xiaoyao.li@intel.com, zhao1.liu@intel.com,
+ pbonzini@redhat.com, richard.henderson@linaro.org, babu.moger@amd.com
+References: <20230809102732.3124908-1-qian.wen@intel.com>
+ <20230809131426.1d9f5821@imammedo.users.ipa.redhat.com>
+Content-Language: en-US
+From: "Wen, Qian" <qian.wen@intel.com>
+In-Reply-To: <20230809131426.1d9f5821@imammedo.users.ipa.redhat.com>
+Received-SPF: pass client-ip=192.55.52.88; envelope-from=qian.wen@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -84
+X-Spam_score: -8.5
+X-Spam_bar: --------
+X-Spam_report: (-8.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, NICE_REPLY_A=-4.14, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -80,27 +86,189 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-PiBPbiA4LzIvMjMgMDY6MDgsIE1pa2hhaWwgVHl1dGluIHdyb3RlOg0KPiA+IFRoZSBmaXggaXMg
-dG8gY2xlYXIgVExCX0lOVkFMSURfTUFTSyBiaXQgaW4gdGxiX2FkZHIsIGFzIGl0IGhhcHBlbnMg
-aW4gb3RoZXIgcGxhY2VzIGUuZy4NCj4gPiBsb2FkX2hlbHBlcigpLg0KPiA+DQo+ID4gU2lnbmVk
-LW9mZi1ieTogRG1pdHJpeSBTb2xvdmV2IDxkLnNvbG92ZXZAeWFkcm8uY29tPg0KPiA+IFNpZ25l
-ZC1vZmYtYnk6IE1pa2hhaWwgVHl1dGluIDxtLnR5dXRpbkB5YWRyby5jb20+DQo+ID4gLS0tDQo+
-ID4gICBhY2NlbC90Y2cvY3B1dGxiLmMgfCAyICstDQo+ID4gICAxIGZpbGUgY2hhbmdlZCwgMSBp
-bnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkNCj4gDQo+IFRoZSBvdGhlciBwbGFjZXMgaW4gbG9h
-ZF9oZWxwZXIgaGFwcGVuIG9ubHkgZGlyZWN0bHkgYWZ0ZXIgdGxiX2ZpbGwgaGFzIHN1Y2NlZWRl
-ZC4gIEhlcmUNCj4geW91IGhhdmUgbm8gc3VjaCBndWFyYW50ZWUuDQo+IA0KPiBJIHRoaW5rIHBl
-cmhhcHMgdGhlIHNhdmVfaW90bGJfZGF0YSgpIGNhbGwgc2hvdWxkIGJlIGFwcGxpZWQgdG8gbG9h
-ZHMgYXMgd2VsbCwgYW5kIHRoZW4NCj4gdGxiX3BsdWdpbl9sb29rdXAgc2ltcGxpZmllZC4NCj4g
-DQoNCkhlbGxvIFJpY2hhcmQsDQoNCldlIHBlcmZvcm1lZCB0ZXN0aW5nIG9uIG1vcmUgc2NlbmFy
-aW9zIGFuZCBub3RpY2VkIHRoYXQgcGF0Y2ggd2hlbiBzYXZlX2lvdGxiX2RhdGEoKSBjYWxsIGlz
-IGFkZGVkIHRvIGlvX3JlYWR4DQooaHR0cHM6Ly9wYXRjaGV3Lm9yZy9RRU1VLzIwMjMwODA0MTEw
-OTAzLjE5OTY4LTEtbS50eXV0aW5AeWFkcm8uY29tLykuIEl0IGRvZXNuJ3Qgd29yayBmb3IgYWRk
-cmVzc2VzDQppbiBPQ1JBTSByZWdpb24uIFRob3NlIGFjY2Vzc2VkIGJ5cGFzcyBpb193cml0ZXgv
-aW9fcmVhZHggZnVuY3Rpb24gYW5kIHRoZXJlZm9yZSBkb27igJl0IGludm9rZSBzYXZlX2lvdGxi
-X2RhdGEoKS4NClNvIHdlIG9ic2VydmUgdGhlIHdyb25nIHZhbHVlIG9mIGNwdS0+c2F2ZWRfaW90
-bGIgZm9yIGl0Lg0KDQpXb3VsZCBub3QgYmUgYmV0dGVyIHRvIGdldCBiYWNrIHRvIGluaXRpYWwg
-djEgYXBwcm9hY2ggd2hlbiB3ZSBjbGVhbiBUTEJfSU5WQUxJRF9NQVNLIGZsYWcgaW4NCnRsYl9w
-bHVnaW5fbG9va3VwKCk/IEl0IHdvcmtzIHdlbGwgZm9yIHRob3NlIHJlZ2lvbnMuDQooaHR0cHM6
-Ly9wYXRjaGV3Lm9yZy9RRU1VL2JmOGFlMmZkLTE1OGEtNTdiNi02MjcwLTJlNTZiNjUwNjQyMUB5
-YWRyby5jb20pDQo=
+This is a multi-part message in MIME format.
+--------------yW4rw3Rl9tUeKxsYtq37zrpG
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+On 8/9/2023 7:14 PM, Igor Mammedov wrote:
+> On Wed,  9 Aug 2023 18:27:32 +0800
+> Qian Wen <qian.wen@intel.com> wrote:
+>
+>> The legacy topology enumerated by CPUID.1.EBX[23:16] is defined in SDM
+>> Vol2:
+>>
+>> Bits 23-16: Maximum number of addressable IDs for logical processors in
+>> this physical package.
+>>
+>> When launching the VM with -smp 256, the value written to EBX[23:16] is
+>> 0 because of data overflow. If the guest only supports legacy topology,
+>> without V2 Extended Topology enumerated by CPUID.0x1f or Extended
+>> Topology enumerated by CPUID.0x0b to support over 255 CPUs, the return
+>> of the kernel invoking cpu_smt_allowed() is false and AP's bring-up will
+>> fail. Then only CPU 0 is online, and others are offline.
+>>
+>> To avoid this issue caused by overflow, limit the max value written to
+>> EBX[23:16] to 255.
+> what happens on real hw or in lack of thereof what SDM says about this
+> value when there is more than 255 threads?.
+>
+
+Current SDM doesn't specify what the value should be when APIC IDs per package exceeds 255. So we asked the internal HW architect, the response is that EBX[23:16] will report 255 instead of being truncated to a smaller value.
+
+Thanks,
+Qian
+
+>> Signed-off-by: Qian Wen <qian.wen@intel.com>
+>> ---
+>> Changes v1 -> v2:
+>>  - Revise the commit message and comment to more clearer.
+>>  - Rebased to v8.1.0-rc2.
+>> ---
+>>  target/i386/cpu.c | 16 ++++++++++++++--
+>>  1 file changed, 14 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+>> index 97ad229d8b..6e1d88fbd7 100644
+>> --- a/target/i386/cpu.c
+>> +++ b/target/i386/cpu.c
+>> @@ -6008,6 +6008,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+>>      uint32_t die_offset;
+>>      uint32_t limit;
+>>      uint32_t signature[3];
+>> +    uint32_t threads_per_socket;
+>>      X86CPUTopoInfo topo_info;
+>>  
+>>      topo_info.dies_per_pkg = env->nr_dies;
+>> @@ -6049,8 +6050,19 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+>>              *ecx |= CPUID_EXT_OSXSAVE;
+>>          }
+>>          *edx = env->features[FEAT_1_EDX];
+>> -        if (cs->nr_cores * cs->nr_threads > 1) {
+>> -            *ebx |= (cs->nr_cores * cs->nr_threads) << 16;
+>> +        /*
+>> +         * Only bits [23:16] represent the maximum number of addressable
+>> +         * IDs for logical processors in this physical package.
+>> +         * When thread_per_socket > 255, it will 1) overwrite bits[31:24]
+>> +         * which is apic_id, 2) bits [23:16] get truncated.
+>> +         */
+>> +        threads_per_socket = cs->nr_cores * cs->nr_threads;
+>> +        if (threads_per_socket > 255) {
+>> +            threads_per_socket = 255;
+>> +        }
+>> +
+>> +        if (threads_per_socket > 1) {
+>> +            *ebx |= threads_per_socket << 16;
+>>              *edx |= CPUID_HT;
+>>          }
+>>          if (!cpu->enable_pmu) {
+--------------yW4rw3Rl9tUeKxsYtq37zrpG
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<html data-lt-installed="true">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body style="padding-bottom: 1px;">
+    <div class="moz-cite-prefix">On 8/9/2023 7:14 PM, Igor Mammedov
+      wrote:<br>
+    </div>
+    <blockquote type="cite"
+      cite="mid:20230809131426.1d9f5821@imammedo.users.ipa.redhat.com">
+      <pre class="moz-quote-pre" wrap="">On Wed,  9 Aug 2023 18:27:32 +0800
+Qian Wen <a class="moz-txt-link-rfc2396E" href="mailto:qian.wen@intel.com">&lt;qian.wen@intel.com&gt;</a> wrote:
+
+</pre>
+      <blockquote type="cite">
+        <pre class="moz-quote-pre" wrap="">The legacy topology enumerated by CPUID.1.EBX[23:16] is defined in SDM
+Vol2:
+
+Bits 23-16: Maximum number of addressable IDs for logical processors in
+this physical package.
+
+When launching the VM with -smp 256, the value written to EBX[23:16] is
+0 because of data overflow. If the guest only supports legacy topology,
+without V2 Extended Topology enumerated by CPUID.0x1f or Extended
+Topology enumerated by CPUID.0x0b to support over 255 CPUs, the return
+of the kernel invoking cpu_smt_allowed() is false and AP's bring-up will
+fail. Then only CPU 0 is online, and others are offline.
+
+To avoid this issue caused by overflow, limit the max value written to
+EBX[23:16] to 255.
+</pre>
+      </blockquote>
+      <pre class="moz-quote-pre" wrap="">
+what happens on real hw or in lack of thereof what SDM says about this
+value when there is more than 255 threads?.
+
+</pre>
+    </blockquote>
+    <br>
+    Current SDM doesn't specify what the value should be when APIC IDs
+    per package exceeds 255. So we asked the internal HW architect, the
+    response is that EBX[23:16] will report 255 instead of being
+    truncated to a smaller value.<br>
+    <br>
+    Thanks,<br>
+    Qian<br>
+    <br>
+    <blockquote type="cite"
+      cite="mid:20230809131426.1d9f5821@imammedo.users.ipa.redhat.com">
+      <pre class="moz-quote-pre" wrap="">
+</pre>
+      <blockquote type="cite">
+        <pre class="moz-quote-pre" wrap="">Signed-off-by: Qian Wen <a class="moz-txt-link-rfc2396E" href="mailto:qian.wen@intel.com">&lt;qian.wen@intel.com&gt;</a>
+---
+Changes v1 -&gt; v2:
+ - Revise the commit message and comment to more clearer.
+ - Rebased to v8.1.0-rc2.
+---
+ target/i386/cpu.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
+
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 97ad229d8b..6e1d88fbd7 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -6008,6 +6008,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+     uint32_t die_offset;
+     uint32_t limit;
+     uint32_t signature[3];
++    uint32_t threads_per_socket;
+     X86CPUTopoInfo topo_info;
+ 
+     topo_info.dies_per_pkg = env-&gt;nr_dies;
+@@ -6049,8 +6050,19 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+             *ecx |= CPUID_EXT_OSXSAVE;
+         }
+         *edx = env-&gt;features[FEAT_1_EDX];
+-        if (cs-&gt;nr_cores * cs-&gt;nr_threads &gt; 1) {
+-            *ebx |= (cs-&gt;nr_cores * cs-&gt;nr_threads) &lt;&lt; 16;
++        /*
++         * Only bits [23:16] represent the maximum number of addressable
++         * IDs for logical processors in this physical package.
++         * When thread_per_socket &gt; 255, it will 1) overwrite bits[31:24]
++         * which is apic_id, 2) bits [23:16] get truncated.
++         */
++        threads_per_socket = cs-&gt;nr_cores * cs-&gt;nr_threads;
++        if (threads_per_socket &gt; 255) {
++            threads_per_socket = 255;
++        }
++
++        if (threads_per_socket &gt; 1) {
++            *ebx |= threads_per_socket &lt;&lt; 16;
+             *edx |= CPUID_HT;
+         }
+         if (!cpu-&gt;enable_pmu) {
+</pre>
+      </blockquote>
+      <pre class="moz-quote-pre" wrap="">
+</pre>
+    </blockquote>
+  </body>
+  <lt-container></lt-container>
+</html>
+
+--------------yW4rw3Rl9tUeKxsYtq37zrpG--
 
