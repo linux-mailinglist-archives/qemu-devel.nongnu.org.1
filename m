@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2806775613
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 11:03:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3B01775616
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 11:04:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTf55-0002mV-5t; Wed, 09 Aug 2023 05:02:15 -0400
+	id 1qTf6f-0003gh-De; Wed, 09 Aug 2023 05:03:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cfontana@suse.de>)
- id 1qTf52-0002lm-Vt; Wed, 09 Aug 2023 05:02:13 -0400
-Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qTf6d-0003gJ-HY; Wed, 09 Aug 2023 05:03:51 -0400
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <cfontana@suse.de>)
- id 1qTf51-0006mr-7K; Wed, 09 Aug 2023 05:02:12 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 183292186F;
- Wed,  9 Aug 2023 09:02:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1691571726; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ZBxpHHRYipyeEtQyh8RmZb6JiBaguz3E4YF6GzSv3cw=;
- b=kgjF7eK35uTSnbEjyz+RdT93TuEB1d379ObtMJdDrwDOCcF5tN0Dxhno42Tuu+MGmLD25t
- CGsBfnrxAXejvNHAWe66xbAIgX/7rDlyDImRn/ZVsU8O8/nH/PXQKtiK2mDd4XF70WjZKq
- idV7zjvlpdC0fiAkrc4+adHOGc6/icM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1691571726;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ZBxpHHRYipyeEtQyh8RmZb6JiBaguz3E4YF6GzSv3cw=;
- b=ZGGsRSwIMSfCUMogHCd1gWL717itT6Ilk/SoCLLncq5Dz4CDJPx626CyVN/hLVns6FxJHY
- tIR70TiMNy1PxeDQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id AE0F513251;
- Wed,  9 Aug 2023 09:02:05 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id PGxrKA1W02RqBAAAMHmgww
- (envelope-from <cfontana@suse.de>); Wed, 09 Aug 2023 09:02:05 +0000
-Message-ID: <d94ff8c4-12f6-0e47-d384-26a9e94ca26f@suse.de>
-Date: Wed, 9 Aug 2023 11:02:05 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.4.0
-Subject: Re: [PATCH] block-migration: Ensure we don't crash during migration
- cleanup
-Content-Language: en-US
-To: Stefan Hajnoczi <stefanha@redhat.com>, Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, Fam Zheng <fam@euphon.net>, 
- Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
- Leonardo Bras <leobras@redhat.com>, qemu-stable@nongnu.org
-References: <20230731203338.27581-1-farosas@suse.de>
- <20230808170823.GA2749198@fedora>
-From: Claudio Fontana <cfontana@suse.de>
-In-Reply-To: <20230808170823.GA2749198@fedora>
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qTf6b-0006zf-PB; Wed, 09 Aug 2023 05:03:51 -0400
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-1bbc87ded50so42780545ad.1; 
+ Wed, 09 Aug 2023 02:03:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1691571828; x=1692176628;
+ h=in-reply-to:references:subject:cc:to:from:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=lFMIESJghnjF1y0UXa6qHG7uij1ZxpDKI7QxOD2x2RY=;
+ b=D1dstaCTTSHCcXr3E6OmtKWHXacc1QHHOiUbRW5E90b4rWi+qjPWXDpUEah0OaqChk
+ n9VBF+OTuXmzOEB9UBJhOCsHnivDv/htYghLfqJat3b4qXDUL4cO5KaxzTwr8LVsPsgE
+ 6g6ukipaQTNCM7TzLjD+OD5O+vM4gIcaHY6DP5nr+7e36Q0Y/qA9SyCn/l3PcpbeOnpw
+ +FDbWN22sNB7FL4rSddMWsOO2rtXc9m/fPcRc3dHp1qhiJCGfVpWi+/jxmLK0+VqVj/e
+ yV2t4OsUBEyBS4lyL507pDVOqZgp9Ez3zoXdFeE+N8Ag8YX7q1y1/qiroGb2yO9xeb1a
+ tUvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1691571828; x=1692176628;
+ h=in-reply-to:references:subject:cc:to:from:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=lFMIESJghnjF1y0UXa6qHG7uij1ZxpDKI7QxOD2x2RY=;
+ b=LFl88NUXWHv1Un92nQ/TmRqNIE+rOtWHtxBXRdi/RIDp4KmMfv8BupdwbCqI34+UdW
+ pNAPOuMg3GDC7Bs9UrpvdEwOVJludXb+QwQ3vHvRbp1hlkwKfrCVcn2aC3tt9k0uB+Y8
+ YF5uJlmXEhRliak4ob7mx4rMI9XlyZ3iZeDbaKc6zlFXVErYC6lFZNLFPIHnwjbIwkr/
+ J44r15j1/qyndWouz4D7P3qmrH69/DRRqn8/wxhbtxV4aYsrd0MKoApLuztHavFv8VZ+
+ 4vc+WA+1TKlQ3yz+FG08gNRR6epxdMayb79v1k/pYl+1+5LU6jVJiyBhwlY/SVGqR9Vt
+ RQ5g==
+X-Gm-Message-State: AOJu0YzYzdZDPW7BkWQIcJcrQGifEnIzDIcv6YcY2SnSA/uJ/xrDmNmL
+ 9hH4UmGy5p0pXauyaIrKSPE=
+X-Google-Smtp-Source: AGHT+IF0AnDuFI9BnC9zYEKv2cU+cqk9S025iqC8Gm2/NFocXG9aeDhRBSpnCnYoRvnz3WFssLEROA==
+X-Received: by 2002:a17:903:228b:b0:1b1:9218:6bf9 with SMTP id
+ b11-20020a170903228b00b001b192186bf9mr2084193plh.43.1691571827979; 
+ Wed, 09 Aug 2023 02:03:47 -0700 (PDT)
+Received: from localhost (61-68-137-140.tpgi.com.au. [61.68.137.140])
+ by smtp.gmail.com with ESMTPSA id
+ x15-20020a170902a38f00b001bbdf32f011sm8489025pla.269.2023.08.09.02.03.45
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 09 Aug 2023 02:03:47 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2001:67c:2178:6::1c;
- envelope-from=cfontana@suse.de; helo=smtp-out1.suse.de
-X-Spam_score_int: -84
-X-Spam_score: -8.5
-X-Spam_bar: --------
-X-Spam_report: (-8.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-4.14,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+Date: Wed, 09 Aug 2023 19:03:43 +1000
+Message-Id: <CUNW5ZQWZ32V.3MXWUU3X0QI8O@wheely>
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Richard Henderson" <richard.henderson@linaro.org>, <qemu-devel@nongnu.org>
+Cc: <jniethe5@gmail.com>, <qemu-ppc@nongnu.org>
+Subject: Re: [PATCH v2 2/7] tcg/ppc: Use PADDI in tcg_out_movi
+X-Mailer: aerc 0.15.2
+References: <20230808030250.50602-1-richard.henderson@linaro.org>
+ <20230808030250.50602-3-richard.henderson@linaro.org>
+In-Reply-To: <20230808030250.50602-3-richard.henderson@linaro.org>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x636.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -91,48 +91,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/8/23 19:08, Stefan Hajnoczi wrote:
-> On Mon, Jul 31, 2023 at 05:33:38PM -0300, Fabiano Rosas wrote:
->> We can fail the blk_insert_bs() at init_blk_migration(), leaving the
->> BlkMigDevState without a dirty_bitmap and BlockDriverState. Account
->> for the possibly missing elements when doing cleanup.
->>
->> Fix the following crashes:
->>
->> Thread 1 "qemu-system-x86" received signal SIGSEGV, Segmentation fault.
->> 0x0000555555ec83ef in bdrv_release_dirty_bitmap (bitmap=0x0) at ../block/dirty-bitmap.c:359
->> 359         BlockDriverState *bs = bitmap->bs;
->>  #0  0x0000555555ec83ef in bdrv_release_dirty_bitmap (bitmap=0x0) at ../block/dirty-bitmap.c:359
->>  #1  0x0000555555bba331 in unset_dirty_tracking () at ../migration/block.c:371
->>  #2  0x0000555555bbad98 in block_migration_cleanup_bmds () at ../migration/block.c:681
->>
->> Thread 1 "qemu-system-x86" received signal SIGSEGV, Segmentation fault.
->> 0x0000555555e971ff in bdrv_op_unblock (bs=0x0, op=BLOCK_OP_TYPE_BACKUP_SOURCE, reason=0x0) at ../block.c:7073
->> 7073        QLIST_FOREACH_SAFE(blocker, &bs->op_blockers[op], list, next) {
->>  #0  0x0000555555e971ff in bdrv_op_unblock (bs=0x0, op=BLOCK_OP_TYPE_BACKUP_SOURCE, reason=0x0) at ../block.c:7073
->>  #1  0x0000555555e9734a in bdrv_op_unblock_all (bs=0x0, reason=0x0) at ../block.c:7095
->>  #2  0x0000555555bbae13 in block_migration_cleanup_bmds () at ../migration/block.c:690
->>
->> Signed-off-by: Fabiano Rosas <farosas@suse.de>
->> ---
->>  migration/block.c | 11 +++++++++--
->>  1 file changed, 9 insertions(+), 2 deletions(-)
-> 
-> Sorry, I missed this patch!
-> 
-> If this needs to be in QEMU 8.1 (-rc3 is being tagged today), please
-> reply and provide a justification. At this point only security fixes and
-> showstoppers will be merged. Thanks!
-> 
-> Applied to my block-next tree for QEMU 8.2:
-> https://gitlab.com/stefanha/qemu/commits/block-next
-> 
-> Stefan
+On Tue Aug 8, 2023 at 1:02 PM AEST, Richard Henderson wrote:
+> PADDI can load 34-bit immediates and 34-bit pc-relative addresses.
+>
 
-Thanks, and in my personal view I think it's ok for 8.2, IIUC it happens during the migration to file work which is not in 8.1 anyway,
-Fabiano correct me here if I am wrong,
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 
-Ciao,
+> Reviewed-by: Jordan Niethe <jniethe5@gmail.com>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>  tcg/ppc/tcg-target.c.inc | 51 ++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 51 insertions(+)
+>
+> diff --git a/tcg/ppc/tcg-target.c.inc b/tcg/ppc/tcg-target.c.inc
+> index 642d0fd128..2141c0bc78 100644
+> --- a/tcg/ppc/tcg-target.c.inc
+> +++ b/tcg/ppc/tcg-target.c.inc
+> @@ -707,6 +707,38 @@ static bool patch_reloc(tcg_insn_unit *code_ptr, int=
+ type,
+>      return true;
+>  }
+> =20
+> +/* Ensure that the prefixed instruction does not cross a 64-byte boundar=
+y. */
+> +static bool tcg_out_need_prefix_align(TCGContext *s)
+> +{
+> +    return ((uintptr_t)s->code_ptr & 0x3f) =3D=3D 0x3c;
+> +}
+> +
+> +static void tcg_out_prefix_align(TCGContext *s)
+> +{
+> +    if (tcg_out_need_prefix_align(s)) {
+> +        tcg_out32(s, NOP);
+> +    }
+> +}
+> +
+> +static ptrdiff_t tcg_pcrel_diff_for_prefix(TCGContext *s, const void *ta=
+rget)
+> +{
+> +    return tcg_pcrel_diff(s, target) - (tcg_out_need_prefix_align(s) ? 4=
+ : 0);
+> +}
+> +
+> +/* Output Type 10 Prefix - Modified Load/Store Form (MLS:D) */
+> +static void tcg_out_mls_d(TCGContext *s, tcg_insn_unit opc, unsigned rt,
+> +                          unsigned ra, tcg_target_long imm, bool r)
+> +{
+> +    tcg_insn_unit p, i;
+> +
+> +    p =3D OPCD(1) | (2 << 24) | (r << 20) | ((imm >> 16) & 0x3ffff);
+> +    i =3D opc | TAI(rt, ra, imm);
+> +
+> +    tcg_out_prefix_align(s);
+> +    tcg_out32(s, p);
+> +    tcg_out32(s, i);
+> +}
+> +
+>  static void tcg_out_mem_long(TCGContext *s, int opi, int opx, TCGReg rt,
+>                               TCGReg base, tcg_target_long offset);
+> =20
+> @@ -992,6 +1024,25 @@ static void tcg_out_movi_int(TCGContext *s, TCGType=
+ type, TCGReg ret,
+>          return;
+>      }
+> =20
+> +    /*
+> +     * Load values up to 34 bits, and pc-relative addresses,
+> +     * with one prefixed insn.
+> +     */
+> +    if (have_isa_3_10) {
+> +        if (arg =3D=3D sextract64(arg, 0, 34)) {
+> +            /* pli ret,value =3D paddi ret,0,value,0 */
+> +            tcg_out_mls_d(s, ADDI, ret, 0, arg, 0);
+> +            return;
+> +        }
+> +
+> +        tmp =3D tcg_pcrel_diff_for_prefix(s, (void *)arg);
+> +        if (tmp =3D=3D sextract64(tmp, 0, 34)) {
+> +            /* pla ret,value =3D paddi ret,0,value,1 */
+> +            tcg_out_mls_d(s, ADDI, ret, 0, tmp, 1);
+> +            return;
+> +        }
+> +    }
+> +
+>      /* Load 32-bit immediates with two insns.  Note that we've already
+>         eliminated bare ADDIS, so we know both insns are required.  */
+>      if (TCG_TARGET_REG_BITS =3D=3D 32 || arg =3D=3D (int32_t)arg) {
 
-Claudio
 
