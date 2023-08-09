@@ -2,68 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CCAE77510B
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 04:55:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C538777510C
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 04:56:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTZLU-0005vl-Rd; Tue, 08 Aug 2023 22:54:48 -0400
+	id 1qTZMy-0006dP-Fp; Tue, 08 Aug 2023 22:56:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qTZLT-0005vc-8r
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 22:54:47 -0400
-Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qTZMx-0006dB-6o
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 22:56:19 -0400
+Received: from mail-lj1-x22e.google.com ([2a00:1450:4864:20::22e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qTZLQ-0008Mr-SY
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 22:54:47 -0400
-Received: by mail-ej1-x634.google.com with SMTP id
- a640c23a62f3a-99bed101b70so897709266b.3
- for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 19:54:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qTZMv-0000Db-BZ
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 22:56:18 -0400
+Received: by mail-lj1-x22e.google.com with SMTP id
+ 38308e7fff4ca-2b962c226ceso101078101fa.3
+ for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 19:56:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20221208.gappssmtp.com; s=20221208; t=1691549683; x=1692154483;
+ d=bsdimp-com.20221208.gappssmtp.com; s=20221208; t=1691549774; x=1692154574;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=7zZLeYJPOK1QTMs1y76TsKxEAOBX4hdblRL0PJPo5GE=;
- b=J8HnPJJdQvb/RvVsmPPh9ubzSu+/l2Y2Mx90GX+0dGeGfj5ADSy+OpXWhxT96Qm81h
- 5K+4jo5pOoryf0sgpTiIgaK14oH6GMi1ZeanVffBult1ZYqZQIn3wQaW0FvJVr7rDTvP
- ZC2GwiXR7DQHE/XJbJcTTnCmtLM4HY+rtXlTlgLLVyHqmBa2bfoaY0te1SeWB7FzVQPC
- 6iIj6/iJEMIe02Bi1pYoklVZzB9V2W97PsqvCNOhyQz3HZlDUqbQ5dSXpxwnpWcMouuI
- Ijpuk80QE48ZRghOCYEiXUaOyrvIxuaNzFuZFPCrvNlovzGwdh/9yCnBWgF02dVt3owu
- iZKg==
+ bh=UyGMJ9PH7A7bFdU7O03I1IAi2LmtbdEoZX/8JUVsioE=;
+ b=MkLOJT1Qp8iNYw78W+8nzbNN2ZuYbeKFfK6zlWzy4LXC4kxTofbirOaxYubtdBqBke
+ xwG5SLzIr2nePiEvE4SWMHFpQ1mQsrr+fiMAc4x3kyh1XBrmrvN4A6KSBu5H6gOcEvLC
+ x+EA/8pwyzXyrPw75wkHyCW2ImyVPyCmvrBIro37TFVXO++RPDtx+o6z23KwJ/5UODcv
+ pyu19PAnGR/mUwqlX6Dp0y7+aRjlmVqEYcuAyM8viKmnsy67C/jrZypep1NXuy1MMpks
+ 4fpx/sMFDhjZFZpqNOkyYud1XK3JM1kXN2ylG2iCZl3arjdfzh+dLKPslUqr17VuPkeN
+ d2gg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691549683; x=1692154483;
+ d=1e100.net; s=20221208; t=1691549774; x=1692154574;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=7zZLeYJPOK1QTMs1y76TsKxEAOBX4hdblRL0PJPo5GE=;
- b=kXj2fwIQmTJYvQNKUv3UXBFmUvCLozfAvNbnRzIlHgZ1jmB2bkehZ5dl/Cau1BTkuo
- x/vO1S/IOT32sTJzJGkgCSkuIzo5IJIbeu9eYfDhz1WGptKz0qjMV6NmolKR6xJF14rY
- PPCEWWV9I5cbt2S+CUQqOjQlss0ikmw5E7NJnlTlBaFSwj6P1H2vA2sqfzinx7MufZha
- vSruzUjk68xHmDv9cskzhAkm/QQMum82AjJACe8g+Mc9Yt7PqHToMPrSIoDZ9NQTLp/u
- lmUL+SXAKRIr1DmO0MY/jyXau53wTrtnhzhxXgM74moQDLiEw0aE1f7o7TTnPZtoEg58
- uIIw==
-X-Gm-Message-State: AOJu0Yyv6NzbxQSmE+u8HRR3Y7ClvZgFYsbVQgLE03rYeBW0Q/q5b2QL
- x5G+p7AoEea0uBUgXxkYDsvJcJy8Q2N7lpT07W0pzcaE+aCRcMeDXZA=
-X-Google-Smtp-Source: AGHT+IF8tN+qVJDbgnO+a0IlfVf9klrPjD77i5W+j8u/e+u/rAIIr0YQAsfIFBC30C9drH5OdfdycXZPzCO9mkFedh8=
-X-Received: by 2002:a17:906:74d9:b0:99c:50ee:3da9 with SMTP id
- z25-20020a17090674d900b0099c50ee3da9mr1154694ejl.45.1691549683343; Tue, 08
- Aug 2023 19:54:43 -0700 (PDT)
+ bh=UyGMJ9PH7A7bFdU7O03I1IAi2LmtbdEoZX/8JUVsioE=;
+ b=Ds2W6xE554RGypt7SpaimHtXbGFMiqDP0M44QAIPo3SPkNkI7bRoB+EU/6qL6IoV31
+ A9ZjfeID3qoVWmighorfpAkmwdneNeSxwuhYKcuCWNiI3kvqJb6PEhx/qwmCIiuDofV+
+ tUP0vfyys1y8OHjkoXgsuTdbFOtjFl9vgCvH9u4unVcPHf4DNRA9IzNANZi9mw3Fn3GD
+ 7xumdvCgxV5VI8SW+E2plomnmeYZspBgCcV5a9HfE92iUp+r5co/54BG5YaRX8ezkLz0
+ A5cBQ9XeUD1lKXK9F/aH9oaxVZZdH07s0ho3V3eEemEGYvwrkiP1FL1qSvxN3cZUAq+a
+ IXSQ==
+X-Gm-Message-State: AOJu0YyVgtU/dWtbYs35Ub0BnjZ6WR+KDx+qHfBBXTrQs57EimUCnPgs
+ jwAlwhkmnCMWrCVB9n9ugqYmrJqHMlkc8aet6D2rxA==
+X-Google-Smtp-Source: AGHT+IHgvI+gXStwqL6vCLRwmWd72njZcXmV+PX5PI5mDLjX4579QQ7ffJkI9WU/gfE9h9f3ulQ98uINkzVBTFtAuO0=
+X-Received: by 2002:a2e:8603:0:b0:2b8:4079:fd9d with SMTP id
+ a3-20020a2e8603000000b002b84079fd9dmr882985lji.29.1691549774224; Tue, 08 Aug
+ 2023 19:56:14 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230808060815.9001-1-kariem.taha2.7@gmail.com>
- <20230808060815.9001-11-kariem.taha2.7@gmail.com>
- <2c787602-ba70-3607-aaf0-fd3db6857c1b@linaro.org>
-In-Reply-To: <2c787602-ba70-3607-aaf0-fd3db6857c1b@linaro.org>
+ <20230808060815.9001-3-kariem.taha2.7@gmail.com>
+ <612acdbb-865d-0e32-9212-df9440a0e8bb@linaro.org>
+In-Reply-To: <612acdbb-865d-0e32-9212-df9440a0e8bb@linaro.org>
 From: Warner Losh <imp@bsdimp.com>
-Date: Tue, 8 Aug 2023 20:54:30 -0600
-Message-ID: <CANCZdfqfEdmyQ9GpZoWnNuTZPKkxPmeY7f7RsXk8zvc3iVxf6Q@mail.gmail.com>
-Subject: Re: [PATCH 10/33] Add struct target_freebsd_fhandle and fcntl flags
- to bsd-user/syscall_defs.h
+Date: Tue, 8 Aug 2023 20:56:05 -0600
+Message-ID: <CANCZdfoLG8vpwgnxB2hW1ZoNeoTZvQuMfXYkB45eLisEtgbLYA@mail.gmail.com>
+Subject: Re: [PATCH 02/33] Disable clang warnings arising from bsd-user/qemu.h
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: Karim Taha <kariem.taha2.7@gmail.com>, qemu-devel@nongnu.org, 
- Stacey Son <sson@freebsd.org>
-Content-Type: multipart/alternative; boundary="000000000000ff2bf006027499af"
-Received-SPF: none client-ip=2a00:1450:4864:20::634;
- envelope-from=wlosh@bsdimp.com; helo=mail-ej1-x634.google.com
+ Kyle Evans <kevans@freebsd.org>
+Content-Type: multipart/alternative; boundary="00000000000069be340602749fa7"
+Received-SPF: none client-ip=2a00:1450:4864:20::22e;
+ envelope-from=wlosh@bsdimp.com; helo=mail-lj1-x22e.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -85,62 +84,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000ff2bf006027499af
+--00000000000069be340602749fa7
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Aug 8, 2023 at 3:26=E2=80=AFPM Richard Henderson <
+On Tue, Aug 8, 2023 at 2:50=E2=80=AFPM Richard Henderson <
 richard.henderson@linaro.org> wrote:
 
 > On 8/7/23 23:07, Karim Taha wrote:
-> > +struct target_freebsd_fid {
-> > +    u_short     fid_len;            /* len of data in bytes */
-> > +    u_short     fid_data0;          /* force longword align */
-> > +    char        fid_data[TARGET_MAXFIDSZ];  /* data (variable len) */
+> > +/*
+> > + * Tricky points:
+> > + * - Use __builtin_choose_expr to avoid type promotion from ?:,
+> > + * - Invalid sizes result in a compile time error stemming from
+> > + *   the fact that abort has no parameters.
+> > + * - It's easier to use the endian-specific unaligned load/store
+> > + *   functions than host-endian unaligned load/store plus tswapN.
+> > + * - The pragmas are necessary only to silence a clang false-positive
+> > + *   warning: see https://bugs.llvm.org/show_bug.cgi?id=3D39113 .
+> > + * - We have to disable -Wpragmas warnings to avoid a complaint about
+> > + *   an unknown warning type from older compilers that don't know abou=
+t
+> > + *   -Waddress-of-packed-member.
+> > + * - gcc has bugs in its _Pragma() support in some versions, eg
+> > + *   https://gcc.gnu.org/bugzilla/show_bug.cgi?id=3D83256 -- so we onl=
+y
+> > + *   include the warning-suppression pragmas for clang
 >
-> uint16_t?
+> Perhaps s/in some versions/prior to gcc-13/ ?
+> At least that's what the bugzilla says, and it
+> will help when auditing for compiler versions
+> in a few years when gcc-12 is EOL.
 >
 
-These were copied from FreeBSD's sys/mount.h... Changing to uint16_t likely
-is a good idea, though. I'll handle the logistics of making changes like
-this in
-bsd-user upstream with Kariim.
+Looking at this now, This bug is in clang 7, from 2018. For FreeBSD, we
+don't support
+anything older than clang 12 or 13 However, the bug still exists in clang
+16, the latest.
+I believe this was also copied verbatim from linux-user, so let's leave it
+and then make
+this one of the common things as a followup... ok?
 
 Warner
 
-
-> Otherwise,
-> Acked-by: Richard Henderson <richard.henderson@linaro.org>
+Either way,
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+>
+> r~
 >
 
---000000000000ff2bf006027499af
+--00000000000069be340602749fa7
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 <div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Tue, Aug 8, 2023 at 3:26=E2=80=AFP=
-M Richard Henderson &lt;<a href=3D"mailto:richard.henderson@linaro.org">ric=
-hard.henderson@linaro.org</a>&gt; wrote:<br></div><blockquote class=3D"gmai=
-l_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,20=
-4,204);padding-left:1ex">On 8/7/23 23:07, Karim Taha wrote:<br>
-&gt; +struct target_freebsd_fid {<br>
-&gt; +=C2=A0 =C2=A0 u_short=C2=A0 =C2=A0 =C2=A0fid_len;=C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 /* len of data in bytes */<br>
-&gt; +=C2=A0 =C2=A0 u_short=C2=A0 =C2=A0 =C2=A0fid_data0;=C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 /* force longword align */<br>
-&gt; +=C2=A0 =C2=A0 char=C2=A0 =C2=A0 =C2=A0 =C2=A0 fid_data[TARGET_MAXFIDS=
-Z];=C2=A0 /* data (variable len) */<br>
+<div dir=3D"ltr" class=3D"gmail_attr">On Tue, Aug 8, 2023 at 2:50=E2=80=AFP=
+M Richard Henderson &lt;<a href=3D"mailto:richard.henderson@linaro.org" tar=
+get=3D"_blank">richard.henderson@linaro.org</a>&gt; wrote:<br></div><blockq=
+uote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1p=
+x solid rgb(204,204,204);padding-left:1ex">On 8/7/23 23:07, Karim Taha wrot=
+e:<br>
+&gt; +/*<br>
+&gt; + * Tricky points:<br>
+&gt; + * - Use __builtin_choose_expr to avoid type promotion from ?:,<br>
+&gt; + * - Invalid sizes result in a compile time error stemming from<br>
+&gt; + *=C2=A0 =C2=A0the fact that abort has no parameters.<br>
+&gt; + * - It&#39;s easier to use the endian-specific unaligned load/store<=
+br>
+&gt; + *=C2=A0 =C2=A0functions than host-endian unaligned load/store plus t=
+swapN.<br>
+&gt; + * - The pragmas are necessary only to silence a clang false-positive=
 <br>
-uint16_t?<br></blockquote><div><br></div><div>These were copied from FreeBS=
-D&#39;s sys/mount.h... Changing to uint16_t likely</div><div>is a good idea=
-, though. I&#39;ll handle the logistics of making changes like this in</div=
-><div>bsd-user upstream with Kariim.</div><div><br></div><div>Warner<br></d=
-iv><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0=
-px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
-Otherwise,<br>
-Acked-by: Richard Henderson &lt;<a href=3D"mailto:richard.henderson@linaro.=
-org" target=3D"_blank">richard.henderson@linaro.org</a>&gt;<br>
+&gt; + *=C2=A0 =C2=A0warning: see <a href=3D"https://bugs.llvm.org/show_bug=
+.cgi?id=3D39113" rel=3D"noreferrer" target=3D"_blank">https://bugs.llvm.org=
+/show_bug.cgi?id=3D39113</a> .<br>
+&gt; + * - We have to disable -Wpragmas warnings to avoid a complaint about=
+<br>
+&gt; + *=C2=A0 =C2=A0an unknown warning type from older compilers that don&=
+#39;t know about<br>
+&gt; + *=C2=A0 =C2=A0-Waddress-of-packed-member.<br>
+&gt; + * - gcc has bugs in its _Pragma() support in some versions, eg<br>
+&gt; + *=C2=A0 =C2=A0<a href=3D"https://gcc.gnu.org/bugzilla/show_bug.cgi?i=
+d=3D83256" rel=3D"noreferrer" target=3D"_blank">https://gcc.gnu.org/bugzill=
+a/show_bug.cgi?id=3D83256</a> -- so we only<br>
+&gt; + *=C2=A0 =C2=A0include the warning-suppression pragmas for clang<br>
+<br>
+Perhaps s/in some versions/prior to gcc-13/ ?<br>
+At least that&#39;s what the bugzilla says, and it<br>
+will help when auditing for compiler versions<br>
+in a few years when gcc-12 is EOL.<br></blockquote><div><br></div><div>Look=
+ing at this now, This bug is in clang 7, from 2018. For FreeBSD, we don&#39=
+;t support</div><div>anything older than clang 12 or 13 However, the bug st=
+ill exists in clang 16, the latest.</div><div>I believe this was also copie=
+d verbatim from linux-user, so let&#39;s leave it and then make</div><div>t=
+his one of the common things as a followup... ok?</div><div><br></div><div>=
+Warner<br></div><div><br></div><blockquote class=3D"gmail_quote" style=3D"m=
+argin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left=
+:1ex">
+Either way,<br>
+Reviewed-by: Richard Henderson &lt;<a href=3D"mailto:richard.henderson@lina=
+ro.org" target=3D"_blank">richard.henderson@linaro.org</a>&gt;<br>
+<br>
+r~<br>
 </blockquote></div></div>
 
---000000000000ff2bf006027499af--
+--00000000000069be340602749fa7--
 
