@@ -2,89 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 687BE776164
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 15:40:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EEB1E776196
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 15:48:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTjPx-0002tB-2a; Wed, 09 Aug 2023 09:40:05 -0400
+	id 1qTjXU-0006s3-Hy; Wed, 09 Aug 2023 09:47:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qTjPu-0002t2-C7
- for qemu-devel@nongnu.org; Wed, 09 Aug 2023 09:40:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1qTjXS-0006rR-0l
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 09:47:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qTjPs-0002uu-P5
- for qemu-devel@nongnu.org; Wed, 09 Aug 2023 09:40:02 -0400
+ id 1qTjXQ-0005Nl-CM
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 09:47:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691588399;
+ s=mimecast20190719; t=1691588867;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=flPDYzSyfp211f0MdFgt38SNZIp/oJAHUOcWzYx2ros=;
- b=GTFe58Qg2e85S0S1cpwuDrlppC4Dm0ru9fFMB7Bzd6pu7nfnkY2UzvoT3I+T+ga5Y0jrST
- 7aBtf90ee+6VnZKa6vGW34KK60YZBGe8bZNswFyD07cqCyKZCcqbjkAk/uaYZtmFO66UtW
- 6iA2VuauXxiEC0GBPZR8vU1SYAQfdZw=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Zmhd7JMKMCgqoC8YNzrpomo2C16dWkOVGIKW/bXyPKA=;
+ b=RYgW4V1lKPU26tW5Ir0XnapqYf5F3KVB5vcmQXLLhO+MJjuY8ocppu2c+sS9PO0xkSmiwv
+ XiJ88xYhPmr7+YKToC/kPqTeAw7pgmqjWPmrc8f9wbUIJ8RdfXVV1PLugITbczg5pQjIWY
+ rumV6YUNvZi7I5PsEM9me+gXKhYSSrI=
+Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
+ [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-647-qKPtEbjPP6OcPnppMgtXMQ-1; Wed, 09 Aug 2023 09:39:57 -0400
-X-MC-Unique: qKPtEbjPP6OcPnppMgtXMQ-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-98e40d91fdfso490847566b.3
- for <qemu-devel@nongnu.org>; Wed, 09 Aug 2023 06:39:57 -0700 (PDT)
+ us-mta-318-pTlv3pZQMPewk1fox0q9EA-1; Wed, 09 Aug 2023 09:47:45 -0400
+X-MC-Unique: pTlv3pZQMPewk1fox0q9EA-1
+Received: by mail-lj1-f198.google.com with SMTP id
+ 38308e7fff4ca-2ba37b5519fso38621331fa.2
+ for <qemu-devel@nongnu.org>; Wed, 09 Aug 2023 06:47:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691588396; x=1692193196;
+ d=1e100.net; s=20221208; t=1691588864; x=1692193664;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=flPDYzSyfp211f0MdFgt38SNZIp/oJAHUOcWzYx2ros=;
- b=dOpifvM66xe1rGmB+jBqgHfwmTg26GFl487exjK4nuZ/DMeBGkvAMSic5GlgjlaynV
- eLmHyxtbTXUlWbpGGk5mrN14JoxrJxHx9RiZfjkPx2m+C4NVRmkZ1KVkcCWm5kjXqafM
- Cip+9HJmeVz4CuOcHJOXEBDV7nWHlI4NZl6QJO22JMzUqYek3UbmiNFVWdKn0eZwfo1b
- /V1PTGrKJG0Y7bP8dM3XddC483qXbtMWDQGJW/E6Rw6fiRh3EUvyn1yOuLCdJP/RvbaS
- wGYoxOczzXqdeWhrxKl8zDDVe26gAiO1efDtiW9ru76K7JR43WFHS8urg1d4f1E8bxus
- M5uA==
-X-Gm-Message-State: AOJu0YxF+BGyj3s5Z0nh3R2H11KXLlGHpzxUqpwtx1d8izqKj4rZ/7Gm
- a3Ry4IUHZEn95txc6b8yH28a6DHOa867S32EGTefv8N+AtPX7ofT901WyCKhS7HuEtRmQDatsz3
- q6fx/yKWVEQIQJKY=
-X-Received: by 2002:a17:906:3096:b0:99c:f6f4:6306 with SMTP id
- 22-20020a170906309600b0099cf6f46306mr2127169ejv.46.1691588396426; 
- Wed, 09 Aug 2023 06:39:56 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IETK3NbNUM2FoiVWXuDriVpIJy0DKTuwt5G/vIyXo94zyWi2Ya4gCnyn6sLdaKEWmX5TORjAg==
-X-Received: by 2002:a17:906:3096:b0:99c:f6f4:6306 with SMTP id
- 22-20020a170906309600b0099cf6f46306mr2127159ejv.46.1691588396191; 
- Wed, 09 Aug 2023 06:39:56 -0700 (PDT)
+ bh=Zmhd7JMKMCgqoC8YNzrpomo2C16dWkOVGIKW/bXyPKA=;
+ b=dRnUlktCaXFpsFVw2J0OUYc++5eXc73vosk9ByP5xt23uew1GSV2mhiN29q+a4Ci4j
+ bVygMOpaX0jqLh/HFN3H+rvd76aOttm5Fs+F09br1BpfOD0/KoiRcCmVyXDTjcjTzU6X
+ 3E8FbNFUUnVd8qktFngRmWKdFvHS7wiINhDzjSJGehlJejztJQVls41YsqugVyGtKfRb
+ qSG+5GwPK3xjfBbqgiOgC0rQOqVA0/R9U3aytM1GF1VNoxJu6ei+EZBM7JiqM/pswlQj
+ zs0q/IwOfl+NUlQxfC2xkJKvJ53AFOmB5Vq6TOSNQQxukwekfNZ4huXkJ0hNUKPAwvbP
+ eniQ==
+X-Gm-Message-State: AOJu0YzAHRHgFpmO0F8KGfIStxqrn+NVplpzJV06kCYnyPOU/6LdPNNb
+ 9Dz+0wUveXM/RS3ULGICdZogsmLq6AEpo2puXyjfwkXqFcr+0ixyPY6E/MWXwBdrmwMYuW8BQAT
+ oRkG5HcdOw0iLYgo=
+X-Received: by 2002:a2e:8609:0:b0:2b7:15d:24 with SMTP id
+ a9-20020a2e8609000000b002b7015d0024mr1957711lji.41.1691588864052; 
+ Wed, 09 Aug 2023 06:47:44 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHFT9CrAgxqb8xzR/majllOm/tmG+HsFy50mZZz+xL1i00qxP7KxW3cSnypbB8hx6NtcGQC5Q==
+X-Received: by 2002:a2e:8609:0:b0:2b7:15d:24 with SMTP id
+ a9-20020a2e8609000000b002b7015d0024mr1957696lji.41.1691588863700; 
+ Wed, 09 Aug 2023 06:47:43 -0700 (PDT)
 Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
  [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- d11-20020a170906c20b00b00992d70f8078sm8071827ejz.106.2023.08.09.06.39.55
+ h11-20020a170906854b00b0099cb1a2cab0sm6652162ejy.28.2023.08.09.06.47.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 09 Aug 2023 06:39:55 -0700 (PDT)
-Date: Wed, 9 Aug 2023 15:39:54 +0200
+ Wed, 09 Aug 2023 06:47:43 -0700 (PDT)
+Date: Wed, 9 Aug 2023 15:47:42 +0200
 From: Igor Mammedov <imammedo@redhat.com>
-To: Zhao Liu <zhao1.liu@linux.intel.com>
-Cc: Zhao Liu <zhao1.liu@intel.com>, Michael Tokarev <mjt@tls.msk.ru>,
- "Michael S . Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- qemu-devel@nongnu.org, Zhenyu Wang <zhenyu.z.wang@intel.com>
-Subject: Re: [PATCH v2 2/3] hw/smbios: Fix thread count in type4
-Message-ID: <20230809153954.64720adc@imammedo.users.ipa.redhat.com>
-In-Reply-To: <ZNEAR7nK1pY/BFH+@liuzhao-OptiPlex-7080>
-References: <20230601092952.1114727-1-zhao1.liu@linux.intel.com>
- <20230601092952.1114727-3-zhao1.liu@linux.intel.com>
- <598990ac-e5f8-fdcc-5936-e219491c4d0f@tls.msk.ru>
- <32cfa897-4472-083f-88cd-a3c3e3c405b0@tls.msk.ru>
- <20230807115615.278fb838@imammedo.users.ipa.redhat.com>
- <ddfe932b-57b7-8f48-03aa-82e1964dda2a@tls.msk.ru>
- <20230807121129.30e6fe1e@imammedo.users.ipa.redhat.com>
- <ZNEAR7nK1pY/BFH+@liuzhao-OptiPlex-7080>
+To: "Wen, Qian" <qian.wen@intel.com>
+Cc: qemu-devel@nongnu.org, xiaoyao.li@intel.com, zhao1.liu@intel.com,
+ pbonzini@redhat.com, richard.henderson@linaro.org, babu.moger@amd.com
+Subject: Re: [PATCH v2] target/i386: Avoid cpu number overflow in legacy
+ topology
+Message-ID: <20230809154742.494c3697@imammedo.users.ipa.redhat.com>
+In-Reply-To: <f1710cde-a3ce-6125-2608-c1ebcf4be581@intel.com>
+References: <20230809102732.3124908-1-qian.wen@intel.com>
+ <20230809131426.1d9f5821@imammedo.users.ipa.redhat.com>
+ <f1710cde-a3ce-6125-2608-c1ebcf4be581@intel.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -108,60 +103,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 7 Aug 2023 22:31:35 +0800
-Zhao Liu <zhao1.liu@linux.intel.com> wrote:
+On Wed, 9 Aug 2023 21:20:48 +0800
+"Wen, Qian" <qian.wen@intel.com> wrote:
 
-> Hi Igor,
+> On 8/9/2023 7:14 PM, Igor Mammedov wrote:
+> > On Wed,  9 Aug 2023 18:27:32 +0800
+> > Qian Wen <qian.wen@intel.com> wrote:
+> >  
+> >> The legacy topology enumerated by CPUID.1.EBX[23:16] is defined in SDM
+> >> Vol2:
+> >>
+> >> Bits 23-16: Maximum number of addressable IDs for logical processors in
+> >> this physical package.
+> >>
+> >> When launching the VM with -smp 256, the value written to EBX[23:16] is
+> >> 0 because of data overflow. If the guest only supports legacy topology,
+> >> without V2 Extended Topology enumerated by CPUID.0x1f or Extended
+> >> Topology enumerated by CPUID.0x0b to support over 255 CPUs, the return
+> >> of the kernel invoking cpu_smt_allowed() is false and AP's bring-up will
+> >> fail. Then only CPU 0 is online, and others are offline.
+> >>
+> >> To avoid this issue caused by overflow, limit the max value written to
+> >> EBX[23:16] to 255.  
+> > what happens on real hw or in lack of thereof what SDM says about this
+> > value when there is more than 255 threads?.
+> >  
 > 
-> On Mon, Aug 07, 2023 at 12:11:29PM +0200, Igor Mammedov wrote:
-> > Date: Mon, 7 Aug 2023 12:11:29 +0200
-> > From: Igor Mammedov <imammedo@redhat.com>
-> > Subject: Re: [PATCH v2 2/3] hw/smbios: Fix thread count in type4
-> > X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
-> > 
-> > On Mon, 7 Aug 2023 13:06:47 +0300
-> > Michael Tokarev <mjt@tls.msk.ru> wrote:
-> >   
-> > > 07.08.2023 12:56, Igor Mammedov wrote:  
-> > > > On Sat, 5 Aug 2023 09:00:41 +0300
-> > > > Michael Tokarev <mjt@tls.msk.ru> wrote:  
-> > [...]  
-> > > The whole thing - provided the preparational patch a1d027be95
-> > > "machine: Add helpers to get cores/threads per socket" is also
-> > > picked up - applies cleanly and in a stright-forward way to 8.0
-> > > and even to 7.2, and passes the usual qemu testsuite. Sure thing
-> > > since the issues weren't noticed before, the testsuite does not
-> > > cover this area.  It'd be nice to have some verifier to check if
-> > > the whole thing actually works after applying the patchset.  
-> > 
-> > Zhao Liu,
-> > can you help us out with adding test cases to cover the code
-> > you are touching?  
-> 
-> Yes, sure.
-> 
-> Just double check, I should add these 2 test cases:
-> 1. in "bios-tables-test.c" to test smbios type4 topology related things, and
-> 2. also in "test-smp-parse.c" to test our new topology helpers.
-> 
-> Do I understand correctly?
+> Current SDM doesn't specify what the value should be when APIC IDs per package exceeds 255. So we asked the internal HW architect, the response is that EBX[23:16] will report 255 instead of being truncated to a smaller value.
 
-yep, I'd do both.
-Also looking at test cases I don't see any test cases that
-check topo end-to-end path (at least for x86). I mean
-checking related CPUID values.
-One possible place to it without writing testcase from scratch
-could be test-x86-cpuid-compat.c.
-Where I'd add test cases for some CPUID leaves at certain topo
-configurations (values to check could be hardcoded magic numbers
-as long as they are properly documented/reference specs) .
+then mention it in commit log so one wouldn't wonder where the value came from.
 
 > 
-> -Zhao
+> Thanks,
+> Qian
 > 
-> > 
-> > [...]
-> >   
-> 
+> >> Signed-off-by: Qian Wen <qian.wen@intel.com>
+> >> ---
+> >> Changes v1 -> v2:
+> >>  - Revise the commit message and comment to more clearer.
+> >>  - Rebased to v8.1.0-rc2.
+> >> ---
+> >>  target/i386/cpu.c | 16 ++++++++++++++--
+> >>  1 file changed, 14 insertions(+), 2 deletions(-)
+> >>
+> >> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> >> index 97ad229d8b..6e1d88fbd7 100644
+> >> --- a/target/i386/cpu.c
+> >> +++ b/target/i386/cpu.c
+> >> @@ -6008,6 +6008,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+> >>      uint32_t die_offset;
+> >>      uint32_t limit;
+> >>      uint32_t signature[3];
+> >> +    uint32_t threads_per_socket;
+> >>      X86CPUTopoInfo topo_info;
+> >>  
+> >>      topo_info.dies_per_pkg = env->nr_dies;
+> >> @@ -6049,8 +6050,19 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+> >>              *ecx |= CPUID_EXT_OSXSAVE;
+> >>          }
+> >>          *edx = env->features[FEAT_1_EDX];
+> >> -        if (cs->nr_cores * cs->nr_threads > 1) {
+> >> -            *ebx |= (cs->nr_cores * cs->nr_threads) << 16;
+> >> +        /*
+> >> +         * Only bits [23:16] represent the maximum number of addressable
+> >> +         * IDs for logical processors in this physical package.
+> >> +         * When thread_per_socket > 255, it will 1) overwrite bits[31:24]
+> >> +         * which is apic_id, 2) bits [23:16] get truncated.
+> >> +         */
+> >> +        threads_per_socket = cs->nr_cores * cs->nr_threads;
+> >> +        if (threads_per_socket > 255) {
+> >> +            threads_per_socket = 255;
+> >> +        }
+> >> +
+> >> +        if (threads_per_socket > 1) {
+
+> >> +            *ebx |= threads_per_socket << 16;
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^
+more robust would be mask out non-relevant fields at rhs 
+
+also perhaps double check if we could do induce similar overflow
+tweaking other -smp properties (todo for another patch[es] if there are such places).
+
+> >>              *edx |= CPUID_HT;
+> >>          }
+> >>          if (!cpu->enable_pmu) {  
 
 
