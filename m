@@ -2,105 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B5D9776322
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 16:58:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F5A87763A2
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 17:24:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTkcP-0001BA-Cz; Wed, 09 Aug 2023 10:57:01 -0400
+	id 1qTl2m-00042X-9l; Wed, 09 Aug 2023 11:24:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fbarrat@linux.ibm.com>)
- id 1qTkcN-0001Aj-1k; Wed, 09 Aug 2023 10:56:59 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <yilun.xu@intel.com>)
+ id 1qTkkN-0004Em-Md
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 11:05:15 -0400
+Received: from mgamail.intel.com ([134.134.136.24])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fbarrat@linux.ibm.com>)
- id 1qTkcL-0005Wb-9T; Wed, 09 Aug 2023 10:56:58 -0400
-Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 379EtQMM032504; Wed, 9 Aug 2023 14:56:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=CN0DsRSRBMfEMSWQyAdPr7VlkqnL+w7SG5YKFTvET2M=;
- b=lXOF8uhEx4Ekzt5eSp+OScKcxrVWCRetqS3mEvE8hevq9Sg3Nyw6L3Vs7SfxhVjQXhBs
- NDiRPT127MkvVZpA41Sgcf1oWdvHc3zK2Sqqf2jc+5sQt73qoMgg8sWiFaXF+3S82Zv8
- VOkYK/6zRM/eRemewHgPhNudoeyPuxTp9c64hnJJJdcrHvkCzGxtGqlw9nLHhQV2cDTJ
- 7sGLJipKlAXMs9W7QrTAYMXu+dysz2o28B7ZTKIsB1D62i0GDjhfsvliIJQgZcabLSEa
- BAvho23gjA53C0j9bKnhC8m6FQZUyCc5+sVFPhn2b99ztg9U4atIWXNDXSApFbg5uSjK Hw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3scd0700km-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 09 Aug 2023 14:56:42 +0000
-Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 379Eug5G002712;
- Wed, 9 Aug 2023 14:56:42 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3scd0700kf-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 09 Aug 2023 14:56:42 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 379EqEsv007552; Wed, 9 Aug 2023 14:56:41 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3sa14yhh3v-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 09 Aug 2023 14:56:41 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
- [10.20.54.105])
- by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 379EudFY39649624
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 9 Aug 2023 14:56:39 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7EA0020049;
- Wed,  9 Aug 2023 14:56:39 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2984320040;
- Wed,  9 Aug 2023 14:56:39 +0000 (GMT)
-Received: from [9.171.65.240] (unknown [9.171.65.240])
- by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Wed,  9 Aug 2023 14:56:39 +0000 (GMT)
-Message-ID: <61cf0069-e845-3a07-2a55-659594e886be@linux.ibm.com>
-Date: Wed, 9 Aug 2023 16:56:38 +0200
+ (Exim 4.90_1) (envelope-from <yilun.xu@intel.com>)
+ id 1qTkkL-000718-AI
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 11:05:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1691593513; x=1723129513;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=g9pq6B+mSe9PyjCgvZrOnLjd8YP/EmJQp5wp/gLGkHw=;
+ b=GiG17GWXfX3z0Pjy60Dwq5GEGr9Flki5Bzca6QeNhJ+IXWQQE71I9nUE
+ xL5JMGYAGJaytMwdqoSfD3zO5/nnTiFnncNmhaSpXxyRq8rCfVmv8oA2H
+ Ps1LxaLK9Mld1rYRePjV3dR2dSKMe9zLIUld1EE6vWZky14TvwdA3jvMR
+ l4RuuN/GUsKhDFpCHAcILG2IVUe5MROpH9zxPTpDZIXZ7Gp4ClB8WUP3X
+ cjkkFv+Ly3aFdNEYfTLoaQTH7K56/IkGPrrnVD5V8GZ7Cb/bbCWOvpYBE
+ QPouLyBN9ZQZ+s86+nTxTJenzPgdq5kMyr3hK61vYtTtWnRnccW8cbohq Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10797"; a="373927974"
+X-IronPort-AV: E=Sophos;i="6.01,159,1684825200"; d="scan'208";a="373927974"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+ by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Aug 2023 08:04:47 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10797"; a="855568982"
+X-IronPort-AV: E=Sophos;i="6.01,159,1684825200"; d="scan'208";a="855568982"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost)
+ ([10.239.159.165])
+ by orsmga004.jf.intel.com with ESMTP; 09 Aug 2023 08:04:41 -0700
+Date: Wed, 9 Aug 2023 23:02:31 +0800
+From: Xu Yilun <yilun.xu@intel.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Sean Christopherson <seanjc@google.com>,
+ David Hildenbrand <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Marcelo Tosatti <mtosatti@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Peter Xu <peterx@redhat.com>, Chao Peng <chao.p.peng@linux.intel.com>,
+ Michael Roth <michael.roth@amd.com>, isaku.yamahata@gmail.com,
+ qemu-devel@nongnu.org, kvm@vger.kernel.org
+Subject: Re: [RFC PATCH 15/19] kvm: handle KVM_EXIT_MEMORY_FAULT
+Message-ID: <ZNOqhy1NlGzDA6/F@yilunxu-OptiPlex-7050>
+References: <20230731162201.271114-1-xiaoyao.li@intel.com>
+ <20230731162201.271114-16-xiaoyao.li@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH for-8.2 2/3] pnv/lpc: Hook up xscom region for P9/P10
-To: Joel Stanley <joel@jms.id.au>, =?UTF-8?Q?C=c3=a9dric_Le_Goater?=
- <clg@kaod.org>, Nicholas Piggin <npiggin@gmail.com>
-Cc: qemu-ppc@nongnu.org, qemu-devel@nongnu.org
-References: <20230808083445.4613-1-joel@jms.id.au>
- <20230808083445.4613-3-joel@jms.id.au>
-Content-Language: en-US
-From: Frederic Barrat <fbarrat@linux.ibm.com>
-In-Reply-To: <20230808083445.4613-3-joel@jms.id.au>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 8jheH1XaU9G9kLCWFGrQU-RaGUcjL9kO
-X-Proofpoint-ORIG-GUID: vs9WfUKuoHIMQQ2-DTtuk8lvfwVCBvAj
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-08-09_11,2023-08-09_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 mlxlogscore=544
- priorityscore=1501 impostorscore=0 lowpriorityscore=0 adultscore=0
- malwarescore=0 mlxscore=0 spamscore=0 suspectscore=0 phishscore=0
- clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2308090128
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=fbarrat@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -60
-X-Spam_score: -6.1
-X-Spam_bar: ------
-X-Spam_report: (-6.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-4.14,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230731162201.271114-16-xiaoyao.li@intel.com>
+Received-SPF: pass client-ip=134.134.136.24; envelope-from=yilun.xu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Wed, 09 Aug 2023 11:24:14 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -115,88 +90,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello Joel,
-
-So we're re-using the same xscom ops as on P8. A quick look at the 
-definition of those 4 registers on P8 (0xb0020) and on P9/P10 
-(0x00090040) seem to show they are not the same though. Am i missing 
-something?
-
-   Fred
-
-
-On 08/08/2023 10:34, Joel Stanley wrote:
->  From P9 on the LPC bus is memory mapped. However the xscom access still
-> is possible, so add it too.
+On 2023-07-31 at 12:21:57 -0400, Xiaoyao Li wrote:
+> From: Chao Peng <chao.p.peng@linux.intel.com>
 > 
-> Signed-off-by: Joel Stanley <joel@jms.id.au>
+> Currently only KVM_MEMORY_EXIT_FLAG_PRIVATE in flags is valid when
+> KVM_EXIT_MEMORY_FAULT happens. It indicates userspace needs to do
+> the memory conversion on the RAMBlock to turn the memory into desired
+> attribute, i.e., private/shared.
+> 
+> Note, KVM_EXIT_MEMORY_FAULT makes sense only when the RAMBlock has
+> gmem memory backend.
+> 
+> Signed-off-by: Chao Peng <chao.p.peng@linux.intel.com>
+> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 > ---
->   include/hw/ppc/pnv_xscom.h | 6 ++++++
->   hw/ppc/pnv.c               | 4 ++++
->   hw/ppc/pnv_lpc.c           | 6 ++++++
->   3 files changed, 16 insertions(+)
+>  accel/kvm/kvm-all.c | 52 +++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 52 insertions(+)
 > 
-> diff --git a/include/hw/ppc/pnv_xscom.h b/include/hw/ppc/pnv_xscom.h
-> index 9bc64635471e..42601bdf419d 100644
-> --- a/include/hw/ppc/pnv_xscom.h
-> +++ b/include/hw/ppc/pnv_xscom.h
-> @@ -96,6 +96,9 @@ struct PnvXScomInterfaceClass {
->   #define PNV9_XSCOM_SBE_CTRL_BASE  0x00050008
->   #define PNV9_XSCOM_SBE_CTRL_SIZE  0x1
->   
-> +#define PNV9_XSCOM_LPC_BASE       0x00090040
-> +#define PNV9_XSCOM_LPC_SIZE       PNV_XSCOM_LPC_SIZE
+> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+> index f9b5050b8885..72d50b923bf2 100644
+> --- a/accel/kvm/kvm-all.c
+> +++ b/accel/kvm/kvm-all.c
+> @@ -3040,6 +3040,48 @@ static void kvm_eat_signals(CPUState *cpu)
+>      } while (sigismember(&chkset, SIG_IPI));
+>  }
+>  
+> +static int kvm_convert_memory(hwaddr start, hwaddr size, bool to_private)
+> +{
+> +    MemoryRegionSection section;
+> +    void *addr;
+> +    RAMBlock *rb;
+> +    ram_addr_t offset;
+> +    int ret = -1;
 > +
->   #define PNV9_XSCOM_SBE_MBOX_BASE  0x000D0050
->   #define PNV9_XSCOM_SBE_MBOX_SIZE  0x16
->   
-> @@ -155,6 +158,9 @@ struct PnvXScomInterfaceClass {
->   #define PNV10_XSCOM_SBE_CTRL_BASE  PNV9_XSCOM_SBE_CTRL_BASE
->   #define PNV10_XSCOM_SBE_CTRL_SIZE  PNV9_XSCOM_SBE_CTRL_SIZE
->   
-> +#define PNV10_XSCOM_LPC_BASE       PNV9_XSCOM_LPC_BASE
-> +#define PNV10_XSCOM_LPC_SIZE       PNV9_XSCOM_LPC_SIZE
+> +    section = memory_region_find(get_system_memory(), start, size);
+> +    if (!section.mr) {
+> +        return ret;
+> +    }
 > +
->   #define PNV10_XSCOM_SBE_MBOX_BASE  PNV9_XSCOM_SBE_MBOX_BASE
->   #define PNV10_XSCOM_SBE_MBOX_SIZE  PNV9_XSCOM_SBE_MBOX_SIZE
->   
-> diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-> index afdaa25c2b26..a5db655b41b6 100644
-> --- a/hw/ppc/pnv.c
-> +++ b/hw/ppc/pnv.c
-> @@ -1566,6 +1566,8 @@ static void pnv_chip_power9_realize(DeviceState *dev, Error **errp)
->       }
->       memory_region_add_subregion(get_system_memory(), PNV9_LPCM_BASE(chip),
->                                   &chip9->lpc.mmio_regs);
-> +    pnv_xscom_add_subregion(chip, PNV9_XSCOM_LPC_BASE,
-> +                            &chip9->lpc.xscom_regs);
->   
->       chip->fw_mr = &chip9->lpc.isa_fw;
->       chip->dt_isa_nodename = g_strdup_printf("/lpcm-opb@%" PRIx64 "/lpc@0",
-> @@ -1785,6 +1787,8 @@ static void pnv_chip_power10_realize(DeviceState *dev, Error **errp)
->       }
->       memory_region_add_subregion(get_system_memory(), PNV10_LPCM_BASE(chip),
->                                   &chip10->lpc.mmio_regs);
-> +    pnv_xscom_add_subregion(chip, PNV10_XSCOM_LPC_BASE,
-> +                            &chip10->lpc.xscom_regs);
->   
->       chip->fw_mr = &chip10->lpc.isa_fw;
->       chip->dt_isa_nodename = g_strdup_printf("/lpcm-opb@%" PRIx64 "/lpc@0",
-> diff --git a/hw/ppc/pnv_lpc.c b/hw/ppc/pnv_lpc.c
-> index caf5e10a5f96..6c6a3134087f 100644
-> --- a/hw/ppc/pnv_lpc.c
-> +++ b/hw/ppc/pnv_lpc.c
-> @@ -666,6 +666,12 @@ static void pnv_lpc_power9_realize(DeviceState *dev, Error **errp)
->       /* P9 uses a MMIO region */
->       memory_region_init_io(&lpc->mmio_regs, OBJECT(lpc), &pnv_lpc_mmio_ops,
->                             lpc, "lpcm", PNV9_LPCM_SIZE);
+> +    if (memory_region_can_be_private(section.mr)) {
+> +        if (to_private) {
+> +            ret = kvm_set_memory_attributes_private(start, size);
+> +        } else {
+> +            ret = kvm_set_memory_attributes_shared(start, size);
+> +        }
 > +
-> +    /* but the XSCOM region still exists */
-> +    pnv_xscom_region_init(&lpc->xscom_regs, OBJECT(lpc),
-> +                          &pnv_lpc_xscom_ops, lpc, "xscom-lpc",
-> +                          PNV_XSCOM_LPC_SIZE);
+> +        if (ret) {
+> +            return ret;
+
+Should we unref the memory region before return?
+
+Thanks,
+Yilun
+
+> +        }
 > +
->   }
->   
->   static void pnv_lpc_power9_class_init(ObjectClass *klass, void *data)
+> +        addr = memory_region_get_ram_ptr(section.mr) +
+> +               section.offset_within_region;
+> +        rb = qemu_ram_block_from_host(addr, false, &offset);
+> +        /*
+> +         * With KVM_SET_MEMORY_ATTRIBUTES by kvm_set_memory_attributes(),
+> +         * operation on underlying file descriptor is only for releasing
+> +         * unnecessary pages.
+> +         */
+> +        ram_block_convert_range(rb, offset, size, to_private);
+> +    } else {
+> +        warn_report("Convert non guest-memfd backed memory region (0x%"HWADDR_PRIx" ,+ 0x%"HWADDR_PRIx") to %s",
+> +                    start, size, to_private ? "private" : "shared");
+> +    }
+> +
+> +    memory_region_unref(section.mr);
+> +    return ret;
+> +}
 
