@@ -2,41 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7190577557F
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 10:35:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECE4B775580
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 10:35:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTedX-00047I-4s; Wed, 09 Aug 2023 04:33:47 -0400
+	id 1qTeda-00048x-HF; Wed, 09 Aug 2023 04:33:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qTedV-000470-Dx
- for qemu-devel@nongnu.org; Wed, 09 Aug 2023 04:33:45 -0400
+ (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qTedY-00047t-7h
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 04:33:48 -0400
 Received: from hognose1.porkbun.com ([35.82.102.206])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qTedS-0001o0-OG
- for qemu-devel@nongnu.org; Wed, 09 Aug 2023 04:33:45 -0400
+ (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qTedV-0001oI-JL
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 04:33:47 -0400
 Received: from cslab-raptor.. (unknown [166.111.226.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (Client did not present a certificate)
  (Authenticated sender: c@jia.je)
- by hognose1.porkbun.com (Postfix) with ESMTPSA id 906DB44026;
- Wed,  9 Aug 2023 08:33:39 +0000 (UTC)
+ by hognose1.porkbun.com (Postfix) with ESMTPSA id 455894404B;
+ Wed,  9 Aug 2023 08:33:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jia.je; s=default;
- t=1691570021; bh=Pb26ArMgG1DeAx9wd73HUqgWtxFxbSpsYl8xHeaIfZA=;
+ t=1691570024; bh=PeDSdLd80k1ckMiwyU0utgXgopEtrOXlO4lDLTn2q1Q=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References;
- b=PxX7pYVW1ggzbXgRUkOXvLeaWj100RL6M+5b/7RXfbqP9GjwYGVxj+SF6gKIPFlNC
- XmgDp9GRKp3lJYx4x9xjbKaO2UuH2wIPodFK/eiS9OCFznZlBJnuXGfRCtMyRexiVa
- FdOyuafygLXxWbgANyfvAj9P276CKnnzKv0MP3QI=
+ b=MF8SIoQMiFTqfjsEx9BYz/1tMHIczk5yAN0DsFCycxJ/uUIEH+LQkv29Whw8b5rAH
+ YoR8O2QG9cr35szqno9pFqD9hsKW/uB76Q+5Zj8YL7hpji8/tvkkLb6wZnWwO0KJL8
+ LVjogxnqRfepOJeGSIfceTp8IarI7J875MTCKPT4=
 From: Jiajie Chen <c@jia.je>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org, yijun@loongson.cn, shenjinyang@loongson.cn,
  gaosong@loongson.cn, i.qemu@xen0n.name, Jiajie Chen <c@jia.je>,
  Xiaojuan Yang <yangxiaojuan@loongson.cn>
-Subject: [PATCH v5 08/11] target/loongarch: Reject la64-only instructions in
- la32 mode
-Date: Wed,  9 Aug 2023 16:26:36 +0800
-Message-ID: <20230809083258.1787464-9-c@jia.je>
+Subject: [PATCH v5 09/11] target/loongarch: Truncate high 32 bits of address
+ in VA32 mode
+Date: Wed,  9 Aug 2023 16:26:37 +0800
+Message-ID: <20230809083258.1787464-10-c@jia.je>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230809083258.1787464-1-c@jia.je>
 References: <20230809083258.1787464-1-c@jia.je>
@@ -65,390 +65,564 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-LoongArch64-only instructions are marked with regard to the instruction
-manual Table 2. LSX instructions are not marked for now for lack of
-public manual.
+When running in VA32 mode(!LA64 or VA32L[1-3] matching PLV), virtual
+address is truncated to 32 bits before address mapping.
 
 Signed-off-by: Jiajie Chen <c@jia.je>
+Co-authored-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/loongarch/insn_trans/trans_arith.c.inc | 30 ++++----
- .../loongarch/insn_trans/trans_atomic.c.inc   | 76 +++++++++----------
- target/loongarch/insn_trans/trans_bit.c.inc   | 28 +++----
- .../loongarch/insn_trans/trans_branch.c.inc   |  4 +-
- target/loongarch/insn_trans/trans_extra.c.inc | 16 ++--
- target/loongarch/insn_trans/trans_fmov.c.inc  |  4 +-
- .../loongarch/insn_trans/trans_memory.c.inc   | 68 ++++++++---------
- target/loongarch/insn_trans/trans_shift.c.inc | 14 ++--
- target/loongarch/translate.h                  |  7 ++
- 9 files changed, 127 insertions(+), 120 deletions(-)
+ target/loongarch/cpu.c                        | 16 ++++----
+ target/loongarch/cpu.h                        |  9 +++++
+ target/loongarch/gdbstub.c                    |  2 +-
+ .../loongarch/insn_trans/trans_atomic.c.inc   |  5 ++-
+ .../loongarch/insn_trans/trans_branch.c.inc   |  3 +-
+ .../loongarch/insn_trans/trans_fmemory.c.inc  | 30 ++++-----------
+ target/loongarch/insn_trans/trans_lsx.c.inc   | 38 +++++--------------
+ .../loongarch/insn_trans/trans_memory.c.inc   | 34 +++++------------
+ target/loongarch/op_helper.c                  |  4 +-
+ target/loongarch/translate.c                  | 32 ++++++++++++++++
+ 10 files changed, 85 insertions(+), 88 deletions(-)
 
-diff --git a/target/loongarch/insn_trans/trans_arith.c.inc b/target/loongarch/insn_trans/trans_arith.c.inc
-index 43d6cf261d..4c21d8b037 100644
---- a/target/loongarch/insn_trans/trans_arith.c.inc
-+++ b/target/loongarch/insn_trans/trans_arith.c.inc
-@@ -249,9 +249,9 @@ static bool trans_addu16i_d(DisasContext *ctx, arg_addu16i_d *a)
+diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
+index 30dd70571a..bd980790f2 100644
+--- a/target/loongarch/cpu.c
++++ b/target/loongarch/cpu.c
+@@ -81,7 +81,7 @@ static void loongarch_cpu_set_pc(CPUState *cs, vaddr value)
+     LoongArchCPU *cpu = LOONGARCH_CPU(cs);
+     CPULoongArchState *env = &cpu->env;
+ 
+-    env->pc = value;
++    set_pc(env, value);
  }
  
- TRANS(add_w, gen_rrr, EXT_NONE, EXT_NONE, EXT_SIGN, tcg_gen_add_tl)
--TRANS(add_d, gen_rrr, EXT_NONE, EXT_NONE, EXT_NONE, tcg_gen_add_tl)
-+TRANS_64(add_d, gen_rrr, EXT_NONE, EXT_NONE, EXT_NONE, tcg_gen_add_tl)
- TRANS(sub_w, gen_rrr, EXT_NONE, EXT_NONE, EXT_SIGN, tcg_gen_sub_tl)
--TRANS(sub_d, gen_rrr, EXT_NONE, EXT_NONE, EXT_NONE, tcg_gen_sub_tl)
-+TRANS_64(sub_d, gen_rrr, EXT_NONE, EXT_NONE, EXT_NONE, tcg_gen_sub_tl)
- TRANS(and, gen_rrr, EXT_NONE, EXT_NONE, EXT_NONE, tcg_gen_and_tl)
- TRANS(or, gen_rrr, EXT_NONE, EXT_NONE, EXT_NONE, tcg_gen_or_tl)
- TRANS(xor, gen_rrr, EXT_NONE, EXT_NONE, EXT_NONE, tcg_gen_xor_tl)
-@@ -261,32 +261,32 @@ TRANS(orn, gen_rrr, EXT_NONE, EXT_NONE, EXT_NONE, tcg_gen_orc_tl)
- TRANS(slt, gen_rrr, EXT_NONE, EXT_NONE, EXT_NONE, gen_slt)
- TRANS(sltu, gen_rrr, EXT_NONE, EXT_NONE, EXT_NONE, gen_sltu)
- TRANS(mul_w, gen_rrr, EXT_SIGN, EXT_SIGN, EXT_SIGN, tcg_gen_mul_tl)
--TRANS(mul_d, gen_rrr, EXT_NONE, EXT_NONE, EXT_NONE, tcg_gen_mul_tl)
-+TRANS_64(mul_d, gen_rrr, EXT_NONE, EXT_NONE, EXT_NONE, tcg_gen_mul_tl)
- TRANS(mulh_w, gen_rrr, EXT_SIGN, EXT_SIGN, EXT_NONE, gen_mulh_w)
- TRANS(mulh_wu, gen_rrr, EXT_ZERO, EXT_ZERO, EXT_NONE, gen_mulh_w)
--TRANS(mulh_d, gen_rrr, EXT_NONE, EXT_NONE, EXT_NONE, gen_mulh_d)
--TRANS(mulh_du, gen_rrr, EXT_NONE, EXT_NONE, EXT_NONE, gen_mulh_du)
--TRANS(mulw_d_w, gen_rrr, EXT_SIGN, EXT_SIGN, EXT_NONE, tcg_gen_mul_tl)
--TRANS(mulw_d_wu, gen_rrr, EXT_ZERO, EXT_ZERO, EXT_NONE, tcg_gen_mul_tl)
-+TRANS_64(mulh_d, gen_rrr, EXT_NONE, EXT_NONE, EXT_NONE, gen_mulh_d)
-+TRANS_64(mulh_du, gen_rrr, EXT_NONE, EXT_NONE, EXT_NONE, gen_mulh_du)
-+TRANS_64(mulw_d_w, gen_rrr, EXT_SIGN, EXT_SIGN, EXT_NONE, tcg_gen_mul_tl)
-+TRANS_64(mulw_d_wu, gen_rrr, EXT_ZERO, EXT_ZERO, EXT_NONE, tcg_gen_mul_tl)
- TRANS(div_w, gen_rrr, EXT_SIGN, EXT_SIGN, EXT_SIGN, gen_div_w)
- TRANS(mod_w, gen_rrr, EXT_SIGN, EXT_SIGN, EXT_SIGN, gen_rem_w)
- TRANS(div_wu, gen_rrr, EXT_ZERO, EXT_ZERO, EXT_SIGN, gen_div_du)
- TRANS(mod_wu, gen_rrr, EXT_ZERO, EXT_ZERO, EXT_SIGN, gen_rem_du)
--TRANS(div_d, gen_rrr, EXT_NONE, EXT_NONE, EXT_NONE, gen_div_d)
--TRANS(mod_d, gen_rrr, EXT_NONE, EXT_NONE, EXT_NONE, gen_rem_d)
--TRANS(div_du, gen_rrr, EXT_NONE, EXT_NONE, EXT_NONE, gen_div_du)
--TRANS(mod_du, gen_rrr, EXT_NONE, EXT_NONE, EXT_NONE, gen_rem_du)
-+TRANS_64(div_d, gen_rrr, EXT_NONE, EXT_NONE, EXT_NONE, gen_div_d)
-+TRANS_64(mod_d, gen_rrr, EXT_NONE, EXT_NONE, EXT_NONE, gen_rem_d)
-+TRANS_64(div_du, gen_rrr, EXT_NONE, EXT_NONE, EXT_NONE, gen_div_du)
-+TRANS_64(mod_du, gen_rrr, EXT_NONE, EXT_NONE, EXT_NONE, gen_rem_du)
- TRANS(slti, gen_rri_v, EXT_NONE, EXT_NONE, gen_slt)
- TRANS(sltui, gen_rri_v, EXT_NONE, EXT_NONE, gen_sltu)
- TRANS(addi_w, gen_rri_c, EXT_NONE, EXT_SIGN, tcg_gen_addi_tl)
--TRANS(addi_d, gen_rri_c, EXT_NONE, EXT_NONE, tcg_gen_addi_tl)
-+TRANS_64(addi_d, gen_rri_c, EXT_NONE, EXT_NONE, tcg_gen_addi_tl)
- TRANS(alsl_w, gen_rrr_sa, EXT_NONE, EXT_SIGN, gen_alsl)
--TRANS(alsl_wu, gen_rrr_sa, EXT_NONE, EXT_ZERO, gen_alsl)
--TRANS(alsl_d, gen_rrr_sa, EXT_NONE, EXT_NONE, gen_alsl)
-+TRANS_64(alsl_wu, gen_rrr_sa, EXT_NONE, EXT_ZERO, gen_alsl)
-+TRANS_64(alsl_d, gen_rrr_sa, EXT_NONE, EXT_NONE, gen_alsl)
- TRANS(pcaddi, gen_pc, gen_pcaddi)
- TRANS(pcalau12i, gen_pc, gen_pcalau12i)
- TRANS(pcaddu12i, gen_pc, gen_pcaddu12i)
--TRANS(pcaddu18i, gen_pc, gen_pcaddu18i)
-+TRANS_64(pcaddu18i, gen_pc, gen_pcaddu18i)
- TRANS(andi, gen_rri_c, EXT_NONE, EXT_NONE, tcg_gen_andi_tl)
- TRANS(ori, gen_rri_c, EXT_NONE, EXT_NONE, tcg_gen_ori_tl)
- TRANS(xori, gen_rri_c, EXT_NONE, EXT_NONE, tcg_gen_xori_tl)
-diff --git a/target/loongarch/insn_trans/trans_atomic.c.inc b/target/loongarch/insn_trans/trans_atomic.c.inc
-index 612709f2a7..c69f31bc78 100644
---- a/target/loongarch/insn_trans/trans_atomic.c.inc
-+++ b/target/loongarch/insn_trans/trans_atomic.c.inc
-@@ -70,41 +70,41 @@ static bool gen_am(DisasContext *ctx, arg_rrr *a,
+ static vaddr loongarch_cpu_get_pc(CPUState *cs)
+@@ -168,7 +168,7 @@ static void loongarch_cpu_do_interrupt(CPUState *cs)
+     set_DERA:
+         env->CSR_DERA = env->pc;
+         env->CSR_DBG = FIELD_DP64(env->CSR_DBG, CSR_DBG, DST, 1);
+-        env->pc = env->CSR_EENTRY + 0x480;
++        set_pc(env, env->CSR_EENTRY + 0x480);
+         break;
+     case EXCCODE_INT:
+         if (FIELD_EX64(env->CSR_DBG, CSR_DBG, DST)) {
+@@ -249,7 +249,8 @@ static void loongarch_cpu_do_interrupt(CPUState *cs)
  
- TRANS(ll_w, gen_ll, MO_TESL)
- TRANS(sc_w, gen_sc, MO_TESL)
--TRANS(ll_d, gen_ll, MO_TEUQ)
--TRANS(sc_d, gen_sc, MO_TEUQ)
--TRANS(amswap_w, gen_am, tcg_gen_atomic_xchg_tl, MO_TESL)
--TRANS(amswap_d, gen_am, tcg_gen_atomic_xchg_tl, MO_TEUQ)
--TRANS(amadd_w, gen_am, tcg_gen_atomic_fetch_add_tl, MO_TESL)
--TRANS(amadd_d, gen_am, tcg_gen_atomic_fetch_add_tl, MO_TEUQ)
--TRANS(amand_w, gen_am, tcg_gen_atomic_fetch_and_tl, MO_TESL)
--TRANS(amand_d, gen_am, tcg_gen_atomic_fetch_and_tl, MO_TEUQ)
--TRANS(amor_w, gen_am, tcg_gen_atomic_fetch_or_tl, MO_TESL)
--TRANS(amor_d, gen_am, tcg_gen_atomic_fetch_or_tl, MO_TEUQ)
--TRANS(amxor_w, gen_am, tcg_gen_atomic_fetch_xor_tl, MO_TESL)
--TRANS(amxor_d, gen_am, tcg_gen_atomic_fetch_xor_tl, MO_TEUQ)
--TRANS(ammax_w, gen_am, tcg_gen_atomic_fetch_smax_tl, MO_TESL)
--TRANS(ammax_d, gen_am, tcg_gen_atomic_fetch_smax_tl, MO_TEUQ)
--TRANS(ammin_w, gen_am, tcg_gen_atomic_fetch_smin_tl, MO_TESL)
--TRANS(ammin_d, gen_am, tcg_gen_atomic_fetch_smin_tl, MO_TEUQ)
--TRANS(ammax_wu, gen_am, tcg_gen_atomic_fetch_umax_tl, MO_TESL)
--TRANS(ammax_du, gen_am, tcg_gen_atomic_fetch_umax_tl, MO_TEUQ)
--TRANS(ammin_wu, gen_am, tcg_gen_atomic_fetch_umin_tl, MO_TESL)
--TRANS(ammin_du, gen_am, tcg_gen_atomic_fetch_umin_tl, MO_TEUQ)
--TRANS(amswap_db_w, gen_am, tcg_gen_atomic_xchg_tl, MO_TESL)
--TRANS(amswap_db_d, gen_am, tcg_gen_atomic_xchg_tl, MO_TEUQ)
--TRANS(amadd_db_w, gen_am, tcg_gen_atomic_fetch_add_tl, MO_TESL)
--TRANS(amadd_db_d, gen_am, tcg_gen_atomic_fetch_add_tl, MO_TEUQ)
--TRANS(amand_db_w, gen_am, tcg_gen_atomic_fetch_and_tl, MO_TESL)
--TRANS(amand_db_d, gen_am, tcg_gen_atomic_fetch_and_tl, MO_TEUQ)
--TRANS(amor_db_w, gen_am, tcg_gen_atomic_fetch_or_tl, MO_TESL)
--TRANS(amor_db_d, gen_am, tcg_gen_atomic_fetch_or_tl, MO_TEUQ)
--TRANS(amxor_db_w, gen_am, tcg_gen_atomic_fetch_xor_tl, MO_TESL)
--TRANS(amxor_db_d, gen_am, tcg_gen_atomic_fetch_xor_tl, MO_TEUQ)
--TRANS(ammax_db_w, gen_am, tcg_gen_atomic_fetch_smax_tl, MO_TESL)
--TRANS(ammax_db_d, gen_am, tcg_gen_atomic_fetch_smax_tl, MO_TEUQ)
--TRANS(ammin_db_w, gen_am, tcg_gen_atomic_fetch_smin_tl, MO_TESL)
--TRANS(ammin_db_d, gen_am, tcg_gen_atomic_fetch_smin_tl, MO_TEUQ)
--TRANS(ammax_db_wu, gen_am, tcg_gen_atomic_fetch_umax_tl, MO_TESL)
--TRANS(ammax_db_du, gen_am, tcg_gen_atomic_fetch_umax_tl, MO_TEUQ)
--TRANS(ammin_db_wu, gen_am, tcg_gen_atomic_fetch_umin_tl, MO_TESL)
--TRANS(ammin_db_du, gen_am, tcg_gen_atomic_fetch_umin_tl, MO_TEUQ)
-+TRANS_64(ll_d, gen_ll, MO_TEUQ)
-+TRANS_64(sc_d, gen_sc, MO_TEUQ)
-+TRANS_64(amswap_w, gen_am, tcg_gen_atomic_xchg_tl, MO_TESL)
-+TRANS_64(amswap_d, gen_am, tcg_gen_atomic_xchg_tl, MO_TEUQ)
-+TRANS_64(amadd_w, gen_am, tcg_gen_atomic_fetch_add_tl, MO_TESL)
-+TRANS_64(amadd_d, gen_am, tcg_gen_atomic_fetch_add_tl, MO_TEUQ)
-+TRANS_64(amand_w, gen_am, tcg_gen_atomic_fetch_and_tl, MO_TESL)
-+TRANS_64(amand_d, gen_am, tcg_gen_atomic_fetch_and_tl, MO_TEUQ)
-+TRANS_64(amor_w, gen_am, tcg_gen_atomic_fetch_or_tl, MO_TESL)
-+TRANS_64(amor_d, gen_am, tcg_gen_atomic_fetch_or_tl, MO_TEUQ)
-+TRANS_64(amxor_w, gen_am, tcg_gen_atomic_fetch_xor_tl, MO_TESL)
-+TRANS_64(amxor_d, gen_am, tcg_gen_atomic_fetch_xor_tl, MO_TEUQ)
-+TRANS_64(ammax_w, gen_am, tcg_gen_atomic_fetch_smax_tl, MO_TESL)
-+TRANS_64(ammax_d, gen_am, tcg_gen_atomic_fetch_smax_tl, MO_TEUQ)
-+TRANS_64(ammin_w, gen_am, tcg_gen_atomic_fetch_smin_tl, MO_TESL)
-+TRANS_64(ammin_d, gen_am, tcg_gen_atomic_fetch_smin_tl, MO_TEUQ)
-+TRANS_64(ammax_wu, gen_am, tcg_gen_atomic_fetch_umax_tl, MO_TESL)
-+TRANS_64(ammax_du, gen_am, tcg_gen_atomic_fetch_umax_tl, MO_TEUQ)
-+TRANS_64(ammin_wu, gen_am, tcg_gen_atomic_fetch_umin_tl, MO_TESL)
-+TRANS_64(ammin_du, gen_am, tcg_gen_atomic_fetch_umin_tl, MO_TEUQ)
-+TRANS_64(amswap_db_w, gen_am, tcg_gen_atomic_xchg_tl, MO_TESL)
-+TRANS_64(amswap_db_d, gen_am, tcg_gen_atomic_xchg_tl, MO_TEUQ)
-+TRANS_64(amadd_db_w, gen_am, tcg_gen_atomic_fetch_add_tl, MO_TESL)
-+TRANS_64(amadd_db_d, gen_am, tcg_gen_atomic_fetch_add_tl, MO_TEUQ)
-+TRANS_64(amand_db_w, gen_am, tcg_gen_atomic_fetch_and_tl, MO_TESL)
-+TRANS_64(amand_db_d, gen_am, tcg_gen_atomic_fetch_and_tl, MO_TEUQ)
-+TRANS_64(amor_db_w, gen_am, tcg_gen_atomic_fetch_or_tl, MO_TESL)
-+TRANS_64(amor_db_d, gen_am, tcg_gen_atomic_fetch_or_tl, MO_TEUQ)
-+TRANS_64(amxor_db_w, gen_am, tcg_gen_atomic_fetch_xor_tl, MO_TESL)
-+TRANS_64(amxor_db_d, gen_am, tcg_gen_atomic_fetch_xor_tl, MO_TEUQ)
-+TRANS_64(ammax_db_w, gen_am, tcg_gen_atomic_fetch_smax_tl, MO_TESL)
-+TRANS_64(ammax_db_d, gen_am, tcg_gen_atomic_fetch_smax_tl, MO_TEUQ)
-+TRANS_64(ammin_db_w, gen_am, tcg_gen_atomic_fetch_smin_tl, MO_TESL)
-+TRANS_64(ammin_db_d, gen_am, tcg_gen_atomic_fetch_smin_tl, MO_TEUQ)
-+TRANS_64(ammax_db_wu, gen_am, tcg_gen_atomic_fetch_umax_tl, MO_TESL)
-+TRANS_64(ammax_db_du, gen_am, tcg_gen_atomic_fetch_umax_tl, MO_TEUQ)
-+TRANS_64(ammin_db_wu, gen_am, tcg_gen_atomic_fetch_umin_tl, MO_TESL)
-+TRANS_64(ammin_db_du, gen_am, tcg_gen_atomic_fetch_umin_tl, MO_TEUQ)
-diff --git a/target/loongarch/insn_trans/trans_bit.c.inc b/target/loongarch/insn_trans/trans_bit.c.inc
-index 25b4d7858b..4907b67379 100644
---- a/target/loongarch/insn_trans/trans_bit.c.inc
-+++ b/target/loongarch/insn_trans/trans_bit.c.inc
-@@ -184,25 +184,25 @@ TRANS(clo_w, gen_rr, EXT_NONE, EXT_NONE, gen_clo_w)
- TRANS(clz_w, gen_rr, EXT_ZERO, EXT_NONE, gen_clz_w)
- TRANS(cto_w, gen_rr, EXT_NONE, EXT_NONE, gen_cto_w)
- TRANS(ctz_w, gen_rr, EXT_NONE, EXT_NONE, gen_ctz_w)
--TRANS(clo_d, gen_rr, EXT_NONE, EXT_NONE, gen_clo_d)
--TRANS(clz_d, gen_rr, EXT_NONE, EXT_NONE, gen_clz_d)
--TRANS(cto_d, gen_rr, EXT_NONE, EXT_NONE, gen_cto_d)
--TRANS(ctz_d, gen_rr, EXT_NONE, EXT_NONE, gen_ctz_d)
-+TRANS_64(clo_d, gen_rr, EXT_NONE, EXT_NONE, gen_clo_d)
-+TRANS_64(clz_d, gen_rr, EXT_NONE, EXT_NONE, gen_clz_d)
-+TRANS_64(cto_d, gen_rr, EXT_NONE, EXT_NONE, gen_cto_d)
-+TRANS_64(ctz_d, gen_rr, EXT_NONE, EXT_NONE, gen_ctz_d)
- TRANS(revb_2h, gen_rr, EXT_NONE, EXT_SIGN, gen_revb_2h)
--TRANS(revb_4h, gen_rr, EXT_NONE, EXT_NONE, gen_revb_4h)
--TRANS(revb_2w, gen_rr, EXT_NONE, EXT_NONE, gen_revb_2w)
--TRANS(revb_d, gen_rr, EXT_NONE, EXT_NONE, tcg_gen_bswap64_i64)
--TRANS(revh_2w, gen_rr, EXT_NONE, EXT_NONE, gen_revh_2w)
--TRANS(revh_d, gen_rr, EXT_NONE, EXT_NONE, gen_revh_d)
-+TRANS_64(revb_4h, gen_rr, EXT_NONE, EXT_NONE, gen_revb_4h)
-+TRANS_64(revb_2w, gen_rr, EXT_NONE, EXT_NONE, gen_revb_2w)
-+TRANS_64(revb_d, gen_rr, EXT_NONE, EXT_NONE, tcg_gen_bswap64_i64)
-+TRANS_64(revh_2w, gen_rr, EXT_NONE, EXT_NONE, gen_revh_2w)
-+TRANS_64(revh_d, gen_rr, EXT_NONE, EXT_NONE, gen_revh_d)
- TRANS(bitrev_4b, gen_rr, EXT_ZERO, EXT_SIGN, gen_helper_bitswap)
--TRANS(bitrev_8b, gen_rr, EXT_NONE, EXT_NONE, gen_helper_bitswap)
-+TRANS_64(bitrev_8b, gen_rr, EXT_NONE, EXT_NONE, gen_helper_bitswap)
- TRANS(bitrev_w, gen_rr, EXT_NONE, EXT_SIGN, gen_helper_bitrev_w)
--TRANS(bitrev_d, gen_rr, EXT_NONE, EXT_NONE, gen_helper_bitrev_d)
-+TRANS_64(bitrev_d, gen_rr, EXT_NONE, EXT_NONE, gen_helper_bitrev_d)
- TRANS(maskeqz, gen_rrr, EXT_NONE, EXT_NONE, EXT_NONE, gen_maskeqz)
- TRANS(masknez, gen_rrr, EXT_NONE, EXT_NONE, EXT_NONE, gen_masknez)
- TRANS(bytepick_w, gen_rrr_sa, EXT_NONE, EXT_NONE, gen_bytepick_w)
--TRANS(bytepick_d, gen_rrr_sa, EXT_NONE, EXT_NONE, gen_bytepick_d)
-+TRANS_64(bytepick_d, gen_rrr_sa, EXT_NONE, EXT_NONE, gen_bytepick_d)
- TRANS(bstrins_w, gen_bstrins, EXT_SIGN)
--TRANS(bstrins_d, gen_bstrins, EXT_NONE)
-+TRANS_64(bstrins_d, gen_bstrins, EXT_NONE)
- TRANS(bstrpick_w, gen_bstrpick, EXT_SIGN)
--TRANS(bstrpick_d, gen_bstrpick, EXT_NONE)
-+TRANS_64(bstrpick_d, gen_bstrpick, EXT_NONE)
-diff --git a/target/loongarch/insn_trans/trans_branch.c.inc b/target/loongarch/insn_trans/trans_branch.c.inc
-index a860f7e733..29b81a9843 100644
---- a/target/loongarch/insn_trans/trans_branch.c.inc
-+++ b/target/loongarch/insn_trans/trans_branch.c.inc
-@@ -79,5 +79,5 @@ TRANS(bltu, gen_rr_bc, TCG_COND_LTU)
- TRANS(bgeu, gen_rr_bc, TCG_COND_GEU)
- TRANS(beqz, gen_rz_bc, TCG_COND_EQ)
- TRANS(bnez, gen_rz_bc, TCG_COND_NE)
--TRANS(bceqz, gen_cz_bc, TCG_COND_EQ)
--TRANS(bcnez, gen_cz_bc, TCG_COND_NE)
-+TRANS_64(bceqz, gen_cz_bc, TCG_COND_EQ)
-+TRANS_64(bcnez, gen_cz_bc, TCG_COND_NE)
-diff --git a/target/loongarch/insn_trans/trans_extra.c.inc b/target/loongarch/insn_trans/trans_extra.c.inc
-index 06f4de4515..596f707c45 100644
---- a/target/loongarch/insn_trans/trans_extra.c.inc
-+++ b/target/loongarch/insn_trans/trans_extra.c.inc
-@@ -89,11 +89,11 @@ static bool gen_crc(DisasContext *ctx, arg_rrr *a,
-     return true;
+         /* Find the highest-priority interrupt. */
+         vector = 31 - clz32(pending);
+-        env->pc = env->CSR_EENTRY + (EXCCODE_EXTERNAL_INT + vector) * vec_size;
++        set_pc(env, env->CSR_EENTRY + \
++               (EXCCODE_EXTERNAL_INT + vector) * vec_size);
+         qemu_log_mask(CPU_LOG_INT,
+                       "%s: PC " TARGET_FMT_lx " ERA " TARGET_FMT_lx
+                       " cause %d\n" "    A " TARGET_FMT_lx " D "
+@@ -260,10 +261,9 @@ static void loongarch_cpu_do_interrupt(CPUState *cs)
+                       env->CSR_ECFG, env->CSR_ESTAT);
+     } else {
+         if (tlbfill) {
+-            env->pc = env->CSR_TLBRENTRY;
++            set_pc(env, env->CSR_TLBRENTRY);
+         } else {
+-            env->pc = env->CSR_EENTRY;
+-            env->pc += EXCODE_MCODE(cause) * vec_size;
++            set_pc(env, env->CSR_EENTRY + EXCODE_MCODE(cause) * vec_size);
+         }
+         qemu_log_mask(CPU_LOG_INT,
+                       "%s: PC " TARGET_FMT_lx " ERA " TARGET_FMT_lx
+@@ -324,7 +324,7 @@ static void loongarch_cpu_synchronize_from_tb(CPUState *cs,
+     CPULoongArchState *env = &cpu->env;
+ 
+     tcg_debug_assert(!(cs->tcg_cflags & CF_PCREL));
+-    env->pc = tb->pc;
++    set_pc(env, tb->pc);
  }
  
--TRANS(crc_w_b_w, gen_crc, gen_helper_crc32, tcg_constant_tl(1))
--TRANS(crc_w_h_w, gen_crc, gen_helper_crc32, tcg_constant_tl(2))
--TRANS(crc_w_w_w, gen_crc, gen_helper_crc32, tcg_constant_tl(4))
--TRANS(crc_w_d_w, gen_crc, gen_helper_crc32, tcg_constant_tl(8))
--TRANS(crcc_w_b_w, gen_crc, gen_helper_crc32c, tcg_constant_tl(1))
--TRANS(crcc_w_h_w, gen_crc, gen_helper_crc32c, tcg_constant_tl(2))
--TRANS(crcc_w_w_w, gen_crc, gen_helper_crc32c, tcg_constant_tl(4))
--TRANS(crcc_w_d_w, gen_crc, gen_helper_crc32c, tcg_constant_tl(8))
-+TRANS_64(crc_w_b_w, gen_crc, gen_helper_crc32, tcg_constant_tl(1))
-+TRANS_64(crc_w_h_w, gen_crc, gen_helper_crc32, tcg_constant_tl(2))
-+TRANS_64(crc_w_w_w, gen_crc, gen_helper_crc32, tcg_constant_tl(4))
-+TRANS_64(crc_w_d_w, gen_crc, gen_helper_crc32, tcg_constant_tl(8))
-+TRANS_64(crcc_w_b_w, gen_crc, gen_helper_crc32c, tcg_constant_tl(1))
-+TRANS_64(crcc_w_h_w, gen_crc, gen_helper_crc32c, tcg_constant_tl(2))
-+TRANS_64(crcc_w_w_w, gen_crc, gen_helper_crc32c, tcg_constant_tl(4))
-+TRANS_64(crcc_w_d_w, gen_crc, gen_helper_crc32c, tcg_constant_tl(8))
-diff --git a/target/loongarch/insn_trans/trans_fmov.c.inc b/target/loongarch/insn_trans/trans_fmov.c.inc
-index 5af0dd1b66..c58c5c6534 100644
---- a/target/loongarch/insn_trans/trans_fmov.c.inc
-+++ b/target/loongarch/insn_trans/trans_fmov.c.inc
-@@ -181,8 +181,8 @@ static bool trans_movcf2gr(DisasContext *ctx, arg_movcf2gr *a)
- TRANS(fmov_s, gen_f2f, tcg_gen_mov_tl, true)
- TRANS(fmov_d, gen_f2f, tcg_gen_mov_tl, false)
- TRANS(movgr2fr_w, gen_r2f, gen_movgr2fr_w)
--TRANS(movgr2fr_d, gen_r2f, tcg_gen_mov_tl)
-+TRANS_64(movgr2fr_d, gen_r2f, tcg_gen_mov_tl)
- TRANS(movgr2frh_w, gen_r2f, gen_movgr2frh_w)
- TRANS(movfr2gr_s, gen_f2r, tcg_gen_ext32s_tl)
--TRANS(movfr2gr_d, gen_f2r, tcg_gen_mov_tl)
-+TRANS_64(movfr2gr_d, gen_f2r, tcg_gen_mov_tl)
- TRANS(movfrh2gr_s, gen_f2r, gen_movfrh2gr_s)
-diff --git a/target/loongarch/insn_trans/trans_memory.c.inc b/target/loongarch/insn_trans/trans_memory.c.inc
-index 75cfdf59ad..858c97951b 100644
---- a/target/loongarch/insn_trans/trans_memory.c.inc
-+++ b/target/loongarch/insn_trans/trans_memory.c.inc
-@@ -162,42 +162,42 @@ static bool gen_stptr(DisasContext *ctx, arg_rr_i *a, MemOp mop)
- TRANS(ld_b, gen_load, MO_SB)
- TRANS(ld_h, gen_load, MO_TESW)
- TRANS(ld_w, gen_load, MO_TESL)
--TRANS(ld_d, gen_load, MO_TEUQ)
-+TRANS_64(ld_d, gen_load, MO_TEUQ)
- TRANS(st_b, gen_store, MO_UB)
- TRANS(st_h, gen_store, MO_TEUW)
- TRANS(st_w, gen_store, MO_TEUL)
--TRANS(st_d, gen_store, MO_TEUQ)
-+TRANS_64(st_d, gen_store, MO_TEUQ)
- TRANS(ld_bu, gen_load, MO_UB)
- TRANS(ld_hu, gen_load, MO_TEUW)
--TRANS(ld_wu, gen_load, MO_TEUL)
--TRANS(ldx_b, gen_loadx, MO_SB)
--TRANS(ldx_h, gen_loadx, MO_TESW)
--TRANS(ldx_w, gen_loadx, MO_TESL)
--TRANS(ldx_d, gen_loadx, MO_TEUQ)
--TRANS(stx_b, gen_storex, MO_UB)
--TRANS(stx_h, gen_storex, MO_TEUW)
--TRANS(stx_w, gen_storex, MO_TEUL)
--TRANS(stx_d, gen_storex, MO_TEUQ)
--TRANS(ldx_bu, gen_loadx, MO_UB)
--TRANS(ldx_hu, gen_loadx, MO_TEUW)
--TRANS(ldx_wu, gen_loadx, MO_TEUL)
--TRANS(ldptr_w, gen_ldptr, MO_TESL)
--TRANS(stptr_w, gen_stptr, MO_TEUL)
--TRANS(ldptr_d, gen_ldptr, MO_TEUQ)
--TRANS(stptr_d, gen_stptr, MO_TEUQ)
--TRANS(ldgt_b, gen_load_gt, MO_SB)
--TRANS(ldgt_h, gen_load_gt, MO_TESW)
--TRANS(ldgt_w, gen_load_gt, MO_TESL)
--TRANS(ldgt_d, gen_load_gt, MO_TEUQ)
--TRANS(ldle_b, gen_load_le, MO_SB)
--TRANS(ldle_h, gen_load_le, MO_TESW)
--TRANS(ldle_w, gen_load_le, MO_TESL)
--TRANS(ldle_d, gen_load_le, MO_TEUQ)
--TRANS(stgt_b, gen_store_gt, MO_UB)
--TRANS(stgt_h, gen_store_gt, MO_TEUW)
--TRANS(stgt_w, gen_store_gt, MO_TEUL)
--TRANS(stgt_d, gen_store_gt, MO_TEUQ)
--TRANS(stle_b, gen_store_le, MO_UB)
--TRANS(stle_h, gen_store_le, MO_TEUW)
--TRANS(stle_w, gen_store_le, MO_TEUL)
--TRANS(stle_d, gen_store_le, MO_TEUQ)
-+TRANS_64(ld_wu, gen_load, MO_TEUL)
-+TRANS_64(ldx_b, gen_loadx, MO_SB)
-+TRANS_64(ldx_h, gen_loadx, MO_TESW)
-+TRANS_64(ldx_w, gen_loadx, MO_TESL)
-+TRANS_64(ldx_d, gen_loadx, MO_TEUQ)
-+TRANS_64(stx_b, gen_storex, MO_UB)
-+TRANS_64(stx_h, gen_storex, MO_TEUW)
-+TRANS_64(stx_w, gen_storex, MO_TEUL)
-+TRANS_64(stx_d, gen_storex, MO_TEUQ)
-+TRANS_64(ldx_bu, gen_loadx, MO_UB)
-+TRANS_64(ldx_hu, gen_loadx, MO_TEUW)
-+TRANS_64(ldx_wu, gen_loadx, MO_TEUL)
-+TRANS_64(ldptr_w, gen_ldptr, MO_TESL)
-+TRANS_64(stptr_w, gen_stptr, MO_TEUL)
-+TRANS_64(ldptr_d, gen_ldptr, MO_TEUQ)
-+TRANS_64(stptr_d, gen_stptr, MO_TEUQ)
-+TRANS_64(ldgt_b, gen_load_gt, MO_SB)
-+TRANS_64(ldgt_h, gen_load_gt, MO_TESW)
-+TRANS_64(ldgt_w, gen_load_gt, MO_TESL)
-+TRANS_64(ldgt_d, gen_load_gt, MO_TEUQ)
-+TRANS_64(ldle_b, gen_load_le, MO_SB)
-+TRANS_64(ldle_h, gen_load_le, MO_TESW)
-+TRANS_64(ldle_w, gen_load_le, MO_TESL)
-+TRANS_64(ldle_d, gen_load_le, MO_TEUQ)
-+TRANS_64(stgt_b, gen_store_gt, MO_UB)
-+TRANS_64(stgt_h, gen_store_gt, MO_TEUW)
-+TRANS_64(stgt_w, gen_store_gt, MO_TEUL)
-+TRANS_64(stgt_d, gen_store_gt, MO_TEUQ)
-+TRANS_64(stle_b, gen_store_le, MO_UB)
-+TRANS_64(stle_h, gen_store_le, MO_TEUW)
-+TRANS_64(stle_w, gen_store_le, MO_TEUL)
-+TRANS_64(stle_d, gen_store_le, MO_TEUQ)
-diff --git a/target/loongarch/insn_trans/trans_shift.c.inc b/target/loongarch/insn_trans/trans_shift.c.inc
-index bf5428a2ba..7bbbfe6c8c 100644
---- a/target/loongarch/insn_trans/trans_shift.c.inc
-+++ b/target/loongarch/insn_trans/trans_shift.c.inc
-@@ -81,15 +81,15 @@ static bool trans_srai_w(DisasContext *ctx, arg_srai_w *a)
- TRANS(sll_w, gen_rrr, EXT_ZERO, EXT_NONE, EXT_SIGN, gen_sll_w)
- TRANS(srl_w, gen_rrr, EXT_ZERO, EXT_NONE, EXT_SIGN, gen_srl_w)
- TRANS(sra_w, gen_rrr, EXT_SIGN, EXT_NONE, EXT_SIGN, gen_sra_w)
--TRANS(sll_d, gen_rrr, EXT_NONE, EXT_NONE, EXT_NONE, gen_sll_d)
--TRANS(srl_d, gen_rrr, EXT_NONE, EXT_NONE, EXT_NONE, gen_srl_d)
--TRANS(sra_d, gen_rrr, EXT_NONE, EXT_NONE, EXT_NONE, gen_sra_d)
-+TRANS_64(sll_d, gen_rrr, EXT_NONE, EXT_NONE, EXT_NONE, gen_sll_d)
-+TRANS_64(srl_d, gen_rrr, EXT_NONE, EXT_NONE, EXT_NONE, gen_srl_d)
-+TRANS_64(sra_d, gen_rrr, EXT_NONE, EXT_NONE, EXT_NONE, gen_sra_d)
- TRANS(rotr_w, gen_rrr, EXT_ZERO, EXT_NONE, EXT_SIGN, gen_rotr_w)
--TRANS(rotr_d, gen_rrr, EXT_NONE, EXT_NONE, EXT_NONE, gen_rotr_d)
-+TRANS_64(rotr_d, gen_rrr, EXT_NONE, EXT_NONE, EXT_NONE, gen_rotr_d)
- TRANS(slli_w, gen_rri_c, EXT_NONE, EXT_SIGN, tcg_gen_shli_tl)
--TRANS(slli_d, gen_rri_c, EXT_NONE, EXT_NONE, tcg_gen_shli_tl)
-+TRANS_64(slli_d, gen_rri_c, EXT_NONE, EXT_NONE, tcg_gen_shli_tl)
- TRANS(srli_w, gen_rri_c, EXT_ZERO, EXT_SIGN, tcg_gen_shri_tl)
- TRANS(srli_d, gen_rri_c, EXT_NONE, EXT_NONE, tcg_gen_shri_tl)
--TRANS(srai_d, gen_rri_c, EXT_NONE, EXT_NONE, tcg_gen_sari_tl)
-+TRANS_64(srai_d, gen_rri_c, EXT_NONE, EXT_NONE, tcg_gen_sari_tl)
- TRANS(rotri_w, gen_rri_v, EXT_NONE, EXT_NONE, gen_rotr_w)
--TRANS(rotri_d, gen_rri_c, EXT_NONE, EXT_NONE, tcg_gen_rotri_tl)
-+TRANS_64(rotri_d, gen_rri_c, EXT_NONE, EXT_NONE, tcg_gen_rotri_tl)
-diff --git a/target/loongarch/translate.h b/target/loongarch/translate.h
-index b6fa5df82d..6f8ff57923 100644
---- a/target/loongarch/translate.h
-+++ b/target/loongarch/translate.h
-@@ -14,6 +14,13 @@
-     static bool trans_##NAME(DisasContext *ctx, arg_##NAME * a) \
-     { return FUNC(ctx, a, __VA_ARGS__); }
+ static void loongarch_restore_state_to_opc(CPUState *cs,
+@@ -334,7 +334,7 @@ static void loongarch_restore_state_to_opc(CPUState *cs,
+     LoongArchCPU *cpu = LOONGARCH_CPU(cs);
+     CPULoongArchState *env = &cpu->env;
  
-+/* for LoongArch64-only instructions */
-+#define TRANS_64(NAME, FUNC, ...) \
-+    static bool trans_##NAME(DisasContext *ctx, arg_##NAME * a) \
-+    { \
-+        return ctx->la64 && FUNC(ctx, a, __VA_ARGS__); \
+-    env->pc = data[0];
++    set_pc(env, data[0]);
+ }
+ #endif /* CONFIG_TCG */
+ 
+diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
+index 0e02257f91..9f550793ca 100644
+--- a/target/loongarch/cpu.h
++++ b/target/loongarch/cpu.h
+@@ -442,6 +442,15 @@ static inline bool is_va32(CPULoongArchState *env)
+     return va32;
+ }
+ 
++static inline void set_pc(CPULoongArchState *env, uint64_t value)
++{
++    if (is_va32(env)) {
++        env->pc = (uint32_t)value;
++    } else {
++        env->pc = value;
 +    }
++}
 +
  /*
-  * If an operation is being performed on less than TARGET_LONG_BITS,
-  * it may require the inputs to be sign- or zero-extended; which will
+  * LoongArch CPUs hardware flags.
+  */
+diff --git a/target/loongarch/gdbstub.c b/target/loongarch/gdbstub.c
+index a462e25737..e20b20f99b 100644
+--- a/target/loongarch/gdbstub.c
++++ b/target/loongarch/gdbstub.c
+@@ -77,7 +77,7 @@ int loongarch_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
+         env->gpr[n] = tmp;
+         length = read_length;
+     } else if (n == 33) {
+-        env->pc = tmp;
++        set_pc(env, tmp);
+         length = read_length;
+     }
+     return length;
+diff --git a/target/loongarch/insn_trans/trans_atomic.c.inc b/target/loongarch/insn_trans/trans_atomic.c.inc
+index c69f31bc78..d90312729b 100644
+--- a/target/loongarch/insn_trans/trans_atomic.c.inc
++++ b/target/loongarch/insn_trans/trans_atomic.c.inc
+@@ -7,9 +7,8 @@ static bool gen_ll(DisasContext *ctx, arg_rr_i *a, MemOp mop)
+ {
+     TCGv dest = gpr_dst(ctx, a->rd, EXT_NONE);
+     TCGv src1 = gpr_src(ctx, a->rj, EXT_NONE);
+-    TCGv t0 = tcg_temp_new();
++    TCGv t0 = make_address_i(ctx, src1, a->imm);
+ 
+-    tcg_gen_addi_tl(t0, src1, a->imm);
+     tcg_gen_qemu_ld_i64(dest, t0, ctx->mem_idx, mop);
+     tcg_gen_st_tl(t0, cpu_env, offsetof(CPULoongArchState, lladdr));
+     tcg_gen_st_tl(dest, cpu_env, offsetof(CPULoongArchState, llval));
+@@ -62,6 +61,8 @@ static bool gen_am(DisasContext *ctx, arg_rrr *a,
+         return false;
+     }
+ 
++    addr = make_address_i(ctx, addr, 0);
++
+     func(dest, addr, val, ctx->mem_idx, mop);
+     gen_set_gpr(a->rd, dest, EXT_NONE);
+ 
+diff --git a/target/loongarch/insn_trans/trans_branch.c.inc b/target/loongarch/insn_trans/trans_branch.c.inc
+index 29b81a9843..b63058235d 100644
+--- a/target/loongarch/insn_trans/trans_branch.c.inc
++++ b/target/loongarch/insn_trans/trans_branch.c.inc
+@@ -23,7 +23,8 @@ static bool trans_jirl(DisasContext *ctx, arg_jirl *a)
+     TCGv dest = gpr_dst(ctx, a->rd, EXT_NONE);
+     TCGv src1 = gpr_src(ctx, a->rj, EXT_NONE);
+ 
+-    tcg_gen_addi_tl(cpu_pc, src1, a->imm);
++    TCGv addr = make_address_i(ctx, src1, a->imm);
++    tcg_gen_mov_tl(cpu_pc, addr);
+     tcg_gen_movi_tl(dest, ctx->base.pc_next + 4);
+     gen_set_gpr(a->rd, dest, EXT_NONE);
+     tcg_gen_lookup_and_goto_ptr();
+diff --git a/target/loongarch/insn_trans/trans_fmemory.c.inc b/target/loongarch/insn_trans/trans_fmemory.c.inc
+index 91c09fb6d9..bd3aba2c49 100644
+--- a/target/loongarch/insn_trans/trans_fmemory.c.inc
++++ b/target/loongarch/insn_trans/trans_fmemory.c.inc
+@@ -17,11 +17,7 @@ static bool gen_fload_i(DisasContext *ctx, arg_fr_i *a, MemOp mop)
+ 
+     CHECK_FPE;
+ 
+-    if (a->imm) {
+-        TCGv temp = tcg_temp_new();
+-        tcg_gen_addi_tl(temp, addr, a->imm);
+-        addr = temp;
+-    }
++    addr = make_address_i(ctx, addr, a->imm);
+ 
+     tcg_gen_qemu_ld_tl(dest, addr, ctx->mem_idx, mop);
+     maybe_nanbox_load(dest, mop);
+@@ -37,11 +33,7 @@ static bool gen_fstore_i(DisasContext *ctx, arg_fr_i *a, MemOp mop)
+ 
+     CHECK_FPE;
+ 
+-    if (a->imm) {
+-        TCGv temp = tcg_temp_new();
+-        tcg_gen_addi_tl(temp, addr, a->imm);
+-        addr = temp;
+-    }
++    addr = make_address_i(ctx, addr, a->imm);
+ 
+     tcg_gen_qemu_st_tl(src, addr, ctx->mem_idx, mop);
+ 
+@@ -57,8 +49,7 @@ static bool gen_floadx(DisasContext *ctx, arg_frr *a, MemOp mop)
+ 
+     CHECK_FPE;
+ 
+-    addr = tcg_temp_new();
+-    tcg_gen_add_tl(addr, src1, src2);
++    addr = make_address_x(ctx, src1, src2);
+     tcg_gen_qemu_ld_tl(dest, addr, ctx->mem_idx, mop);
+     maybe_nanbox_load(dest, mop);
+     set_fpr(a->fd, dest);
+@@ -75,8 +66,7 @@ static bool gen_fstorex(DisasContext *ctx, arg_frr *a, MemOp mop)
+ 
+     CHECK_FPE;
+ 
+-    addr = tcg_temp_new();
+-    tcg_gen_add_tl(addr, src1, src2);
++    addr = make_address_x(ctx, src1, src2);
+     tcg_gen_qemu_st_tl(src3, addr, ctx->mem_idx, mop);
+ 
+     return true;
+@@ -91,9 +81,8 @@ static bool gen_fload_gt(DisasContext *ctx, arg_frr *a, MemOp mop)
+ 
+     CHECK_FPE;
+ 
+-    addr = tcg_temp_new();
+     gen_helper_asrtgt_d(cpu_env, src1, src2);
+-    tcg_gen_add_tl(addr, src1, src2);
++    addr = make_address_x(ctx, src1, src2);
+     tcg_gen_qemu_ld_tl(dest, addr, ctx->mem_idx, mop);
+     maybe_nanbox_load(dest, mop);
+     set_fpr(a->fd, dest);
+@@ -110,9 +99,8 @@ static bool gen_fstore_gt(DisasContext *ctx, arg_frr *a, MemOp mop)
+ 
+     CHECK_FPE;
+ 
+-    addr = tcg_temp_new();
+     gen_helper_asrtgt_d(cpu_env, src1, src2);
+-    tcg_gen_add_tl(addr, src1, src2);
++    addr = make_address_x(ctx, src1, src2);
+     tcg_gen_qemu_st_tl(src3, addr, ctx->mem_idx, mop);
+ 
+     return true;
+@@ -127,9 +115,8 @@ static bool gen_fload_le(DisasContext *ctx, arg_frr *a, MemOp mop)
+ 
+     CHECK_FPE;
+ 
+-    addr = tcg_temp_new();
+     gen_helper_asrtle_d(cpu_env, src1, src2);
+-    tcg_gen_add_tl(addr, src1, src2);
++    addr = make_address_x(ctx, src1, src2);
+     tcg_gen_qemu_ld_tl(dest, addr, ctx->mem_idx, mop);
+     maybe_nanbox_load(dest, mop);
+     set_fpr(a->fd, dest);
+@@ -146,9 +133,8 @@ static bool gen_fstore_le(DisasContext *ctx, arg_frr *a, MemOp mop)
+ 
+     CHECK_FPE;
+ 
+-    addr = tcg_temp_new();
+     gen_helper_asrtle_d(cpu_env, src1, src2);
+-    tcg_gen_add_tl(addr, src1, src2);
++    addr = make_address_x(ctx, src1, src2);
+     tcg_gen_qemu_st_tl(src3, addr, ctx->mem_idx, mop);
+ 
+     return true;
+diff --git a/target/loongarch/insn_trans/trans_lsx.c.inc b/target/loongarch/insn_trans/trans_lsx.c.inc
+index 68779daff6..50153d6d0b 100644
+--- a/target/loongarch/insn_trans/trans_lsx.c.inc
++++ b/target/loongarch/insn_trans/trans_lsx.c.inc
+@@ -4255,7 +4255,7 @@ TRANS(vextrins_d, gen_vv_i, gen_helper_vextrins_d)
+ 
+ static bool trans_vld(DisasContext *ctx, arg_vr_i *a)
+ {
+-    TCGv addr, temp;
++    TCGv addr;
+     TCGv_i64 rl, rh;
+     TCGv_i128 val;
+ 
+@@ -4266,11 +4266,7 @@ static bool trans_vld(DisasContext *ctx, arg_vr_i *a)
+     rl = tcg_temp_new_i64();
+     rh = tcg_temp_new_i64();
+ 
+-    if (a->imm) {
+-        temp = tcg_temp_new();
+-        tcg_gen_addi_tl(temp, addr, a->imm);
+-        addr = temp;
+-    }
++    addr = make_address_i(ctx, addr, a->imm);
+ 
+     tcg_gen_qemu_ld_i128(val, addr, ctx->mem_idx, MO_128 | MO_TE);
+     tcg_gen_extr_i128_i64(rl, rh, val);
+@@ -4282,7 +4278,7 @@ static bool trans_vld(DisasContext *ctx, arg_vr_i *a)
+ 
+ static bool trans_vst(DisasContext *ctx, arg_vr_i *a)
+ {
+-    TCGv addr, temp;
++    TCGv addr;
+     TCGv_i128 val;
+     TCGv_i64 ah, al;
+ 
+@@ -4293,11 +4289,7 @@ static bool trans_vst(DisasContext *ctx, arg_vr_i *a)
+     ah = tcg_temp_new_i64();
+     al = tcg_temp_new_i64();
+ 
+-    if (a->imm) {
+-        temp = tcg_temp_new();
+-        tcg_gen_addi_tl(temp, addr, a->imm);
+-        addr = temp;
+-    }
++    addr = make_address_i(ctx, addr, a->imm);
+ 
+     get_vreg64(ah, a->vd, 1);
+     get_vreg64(al, a->vd, 0);
+@@ -4315,14 +4307,13 @@ static bool trans_vldx(DisasContext *ctx, arg_vrr *a)
+ 
+     CHECK_SXE;
+ 
+-    addr = tcg_temp_new();
+     src1 = gpr_src(ctx, a->rj, EXT_NONE);
+     src2 = gpr_src(ctx, a->rk, EXT_NONE);
+     val = tcg_temp_new_i128();
+     rl = tcg_temp_new_i64();
+     rh = tcg_temp_new_i64();
+ 
+-    tcg_gen_add_tl(addr, src1, src2);
++    addr = make_address_x(ctx, src1, src2);
+     tcg_gen_qemu_ld_i128(val, addr, ctx->mem_idx, MO_128 | MO_TE);
+     tcg_gen_extr_i128_i64(rl, rh, val);
+     set_vreg64(rh, a->vd, 1);
+@@ -4339,14 +4330,13 @@ static bool trans_vstx(DisasContext *ctx, arg_vrr *a)
+ 
+     CHECK_SXE;
+ 
+-    addr = tcg_temp_new();
+     src1 = gpr_src(ctx, a->rj, EXT_NONE);
+     src2 = gpr_src(ctx, a->rk, EXT_NONE);
+     val = tcg_temp_new_i128();
+     ah = tcg_temp_new_i64();
+     al = tcg_temp_new_i64();
+ 
+-    tcg_gen_add_tl(addr, src1, src2);
++    addr = make_address_x(ctx, src1, src2);
+     get_vreg64(ah, a->vd, 1);
+     get_vreg64(al, a->vd, 0);
+     tcg_gen_concat_i64_i128(val, al, ah);
+@@ -4358,7 +4348,7 @@ static bool trans_vstx(DisasContext *ctx, arg_vrr *a)
+ #define VLDREPL(NAME, MO)                                                 \
+ static bool trans_## NAME (DisasContext *ctx, arg_vr_i *a)                \
+ {                                                                         \
+-    TCGv addr, temp;                                                      \
++    TCGv addr;                                                            \
+     TCGv_i64 val;                                                         \
+                                                                           \
+     CHECK_SXE;                                                            \
+@@ -4366,11 +4356,7 @@ static bool trans_## NAME (DisasContext *ctx, arg_vr_i *a)                \
+     addr = gpr_src(ctx, a->rj, EXT_NONE);                                 \
+     val = tcg_temp_new_i64();                                             \
+                                                                           \
+-    if (a->imm) {                                                         \
+-        temp = tcg_temp_new();                                            \
+-        tcg_gen_addi_tl(temp, addr, a->imm);                              \
+-        addr = temp;                                                      \
+-    }                                                                     \
++    addr = make_address_i(ctx, addr, a->imm);                             \
+                                                                           \
+     tcg_gen_qemu_ld_i64(val, addr, ctx->mem_idx, MO);                     \
+     tcg_gen_gvec_dup_i64(MO, vec_full_offset(a->vd), 16, ctx->vl/8, val); \
+@@ -4386,7 +4372,7 @@ VLDREPL(vldrepl_d, MO_64)
+ #define VSTELM(NAME, MO, E)                                                  \
+ static bool trans_## NAME (DisasContext *ctx, arg_vr_ii *a)                  \
+ {                                                                            \
+-    TCGv addr, temp;                                                         \
++    TCGv addr;                                                               \
+     TCGv_i64 val;                                                            \
+                                                                              \
+     CHECK_SXE;                                                               \
+@@ -4394,11 +4380,7 @@ static bool trans_## NAME (DisasContext *ctx, arg_vr_ii *a)                  \
+     addr = gpr_src(ctx, a->rj, EXT_NONE);                                    \
+     val = tcg_temp_new_i64();                                                \
+                                                                              \
+-    if (a->imm) {                                                            \
+-        temp = tcg_temp_new();                                               \
+-        tcg_gen_addi_tl(temp, addr, a->imm);                                 \
+-        addr = temp;                                                         \
+-    }                                                                        \
++    addr = make_address_i(ctx, addr, a->imm);                                \
+                                                                              \
+     tcg_gen_ld_i64(val, cpu_env,                                             \
+                    offsetof(CPULoongArchState, fpr[a->vd].vreg.E(a->imm2))); \
+diff --git a/target/loongarch/insn_trans/trans_memory.c.inc b/target/loongarch/insn_trans/trans_memory.c.inc
+index 858c97951b..63269e52c9 100644
+--- a/target/loongarch/insn_trans/trans_memory.c.inc
++++ b/target/loongarch/insn_trans/trans_memory.c.inc
+@@ -8,11 +8,7 @@ static bool gen_load(DisasContext *ctx, arg_rr_i *a, MemOp mop)
+     TCGv dest = gpr_dst(ctx, a->rd, EXT_NONE);
+     TCGv addr = gpr_src(ctx, a->rj, EXT_NONE);
+ 
+-    if (a->imm) {
+-        TCGv temp = tcg_temp_new();
+-        tcg_gen_addi_tl(temp, addr, a->imm);
+-        addr = temp;
+-    }
++    addr = make_address_i(ctx, addr, a->imm);
+ 
+     tcg_gen_qemu_ld_tl(dest, addr, ctx->mem_idx, mop);
+     gen_set_gpr(a->rd, dest, EXT_NONE);
+@@ -24,11 +20,7 @@ static bool gen_store(DisasContext *ctx, arg_rr_i *a, MemOp mop)
+     TCGv data = gpr_src(ctx, a->rd, EXT_NONE);
+     TCGv addr = gpr_src(ctx, a->rj, EXT_NONE);
+ 
+-    if (a->imm) {
+-        TCGv temp = tcg_temp_new();
+-        tcg_gen_addi_tl(temp, addr, a->imm);
+-        addr = temp;
+-    }
++    addr = make_address_i(ctx, addr, a->imm);
+ 
+     tcg_gen_qemu_st_tl(data, addr, ctx->mem_idx, mop);
+     return true;
+@@ -39,9 +31,8 @@ static bool gen_loadx(DisasContext *ctx, arg_rrr *a, MemOp mop)
+     TCGv dest = gpr_dst(ctx, a->rd, EXT_NONE);
+     TCGv src1 = gpr_src(ctx, a->rj, EXT_NONE);
+     TCGv src2 = gpr_src(ctx, a->rk, EXT_NONE);
+-    TCGv addr = tcg_temp_new();
++    TCGv addr = make_address_x(ctx, src1, src2);
+ 
+-    tcg_gen_add_tl(addr, src1, src2);
+     tcg_gen_qemu_ld_tl(dest, addr, ctx->mem_idx, mop);
+     gen_set_gpr(a->rd, dest, EXT_NONE);
+ 
+@@ -53,9 +44,8 @@ static bool gen_storex(DisasContext *ctx, arg_rrr *a, MemOp mop)
+     TCGv data = gpr_src(ctx, a->rd, EXT_NONE);
+     TCGv src1 = gpr_src(ctx, a->rj, EXT_NONE);
+     TCGv src2 = gpr_src(ctx, a->rk, EXT_NONE);
+-    TCGv addr = tcg_temp_new();
++    TCGv addr = make_address_x(ctx, src1, src2);
+ 
+-    tcg_gen_add_tl(addr, src1, src2);
+     tcg_gen_qemu_st_tl(data, addr, ctx->mem_idx, mop);
+ 
+     return true;
+@@ -68,6 +58,7 @@ static bool gen_load_gt(DisasContext *ctx, arg_rrr *a, MemOp mop)
+     TCGv src2 = gpr_src(ctx, a->rk, EXT_NONE);
+ 
+     gen_helper_asrtgt_d(cpu_env, src1, src2);
++    src1 = make_address_i(ctx, src1, 0);
+     tcg_gen_qemu_ld_tl(dest, src1, ctx->mem_idx, mop);
+     gen_set_gpr(a->rd, dest, EXT_NONE);
+ 
+@@ -81,6 +72,7 @@ static bool gen_load_le(DisasContext *ctx, arg_rrr *a, MemOp mop)
+     TCGv src2 = gpr_src(ctx, a->rk, EXT_NONE);
+ 
+     gen_helper_asrtle_d(cpu_env, src1, src2);
++    src1 = make_address_i(ctx, src1, 0);
+     tcg_gen_qemu_ld_tl(dest, src1, ctx->mem_idx, mop);
+     gen_set_gpr(a->rd, dest, EXT_NONE);
+ 
+@@ -94,6 +86,7 @@ static bool gen_store_gt(DisasContext *ctx, arg_rrr *a, MemOp mop)
+     TCGv src2 = gpr_src(ctx, a->rk, EXT_NONE);
+ 
+     gen_helper_asrtgt_d(cpu_env, src1, src2);
++    src1 = make_address_i(ctx, src1, 0);
+     tcg_gen_qemu_st_tl(data, src1, ctx->mem_idx, mop);
+ 
+     return true;
+@@ -106,6 +99,7 @@ static bool gen_store_le(DisasContext *ctx, arg_rrr *a, MemOp mop)
+     TCGv src2 = gpr_src(ctx, a->rk, EXT_NONE);
+ 
+     gen_helper_asrtle_d(cpu_env, src1, src2);
++    src1 = make_address_i(ctx, src1, 0);
+     tcg_gen_qemu_st_tl(data, src1, ctx->mem_idx, mop);
+ 
+     return true;
+@@ -133,11 +127,7 @@ static bool gen_ldptr(DisasContext *ctx, arg_rr_i *a, MemOp mop)
+     TCGv dest = gpr_dst(ctx, a->rd, EXT_NONE);
+     TCGv addr = gpr_src(ctx, a->rj, EXT_NONE);
+ 
+-    if (a->imm) {
+-        TCGv temp = tcg_temp_new();
+-        tcg_gen_addi_tl(temp, addr, a->imm);
+-        addr = temp;
+-    }
++    addr = make_address_i(ctx, addr, a->imm);
+ 
+     tcg_gen_qemu_ld_tl(dest, addr, ctx->mem_idx, mop);
+     gen_set_gpr(a->rd, dest, EXT_NONE);
+@@ -149,11 +139,7 @@ static bool gen_stptr(DisasContext *ctx, arg_rr_i *a, MemOp mop)
+     TCGv data = gpr_src(ctx, a->rd, EXT_NONE);
+     TCGv addr = gpr_src(ctx, a->rj, EXT_NONE);
+ 
+-    if (a->imm) {
+-        TCGv temp = tcg_temp_new();
+-        tcg_gen_addi_tl(temp, addr, a->imm);
+-        addr = temp;
+-    }
++    addr = make_address_i(ctx, addr, a->imm);
+ 
+     tcg_gen_qemu_st_tl(data, addr, ctx->mem_idx, mop);
+     return true;
+diff --git a/target/loongarch/op_helper.c b/target/loongarch/op_helper.c
+index 60335a05e2..cf84f20aba 100644
+--- a/target/loongarch/op_helper.c
++++ b/target/loongarch/op_helper.c
+@@ -114,14 +114,14 @@ void helper_ertn(CPULoongArchState *env)
+         env->CSR_TLBRERA = FIELD_DP64(env->CSR_TLBRERA, CSR_TLBRERA, ISTLBR, 0);
+         env->CSR_CRMD = FIELD_DP64(env->CSR_CRMD, CSR_CRMD, DA, 0);
+         env->CSR_CRMD = FIELD_DP64(env->CSR_CRMD, CSR_CRMD, PG, 1);
+-        env->pc = env->CSR_TLBRERA;
++        set_pc(env, env->CSR_TLBRERA);
+         qemu_log_mask(CPU_LOG_INT, "%s: TLBRERA " TARGET_FMT_lx "\n",
+                       __func__, env->CSR_TLBRERA);
+     } else {
+         csr_pplv = FIELD_EX64(env->CSR_PRMD, CSR_PRMD, PPLV);
+         csr_pie = FIELD_EX64(env->CSR_PRMD, CSR_PRMD, PIE);
+ 
+-        env->pc = env->CSR_ERA;
++        set_pc(env, env->CSR_ERA);
+         qemu_log_mask(CPU_LOG_INT, "%s: ERA " TARGET_FMT_lx "\n",
+                       __func__, env->CSR_ERA);
+     }
+diff --git a/target/loongarch/translate.c b/target/loongarch/translate.c
+index ac847745df..689da19ed0 100644
+--- a/target/loongarch/translate.c
++++ b/target/loongarch/translate.c
+@@ -86,6 +86,10 @@ void generate_exception(DisasContext *ctx, int excp)
+ 
+ static inline void gen_goto_tb(DisasContext *ctx, int n, target_ulong dest)
+ {
++    if (ctx->va32) {
++        dest = (uint32_t) dest;
++    }
++
+     if (translator_use_goto_tb(&ctx->base, dest)) {
+         tcg_gen_goto_tb(n);
+         tcg_gen_movi_tl(cpu_pc, dest);
+@@ -208,6 +212,30 @@ static void set_fpr(int reg_num, TCGv val)
+                    offsetof(CPULoongArchState, fpr[reg_num].vreg.D(0)));
+ }
+ 
++static TCGv make_address_x(DisasContext *ctx, TCGv base, TCGv addend)
++{
++    TCGv temp = NULL;
++
++    if (addend || ctx->va32) {
++        temp = tcg_temp_new();
++    }
++    if (addend) {
++        tcg_gen_add_tl(temp, base, addend);
++        base = temp;
++    }
++    if (ctx->va32) {
++        tcg_gen_ext32u_tl(temp, base);
++        base = temp;
++    }
++    return base;
++}
++
++static TCGv make_address_i(DisasContext *ctx, TCGv base, target_long ofs)
++{
++    TCGv addend = ofs ? tcg_constant_tl(ofs) : NULL;
++    return make_address_x(ctx, base, addend);
++}
++
+ #include "decode-insns.c.inc"
+ #include "insn_trans/trans_arith.c.inc"
+ #include "insn_trans/trans_shift.c.inc"
+@@ -239,6 +267,10 @@ static void loongarch_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
+     }
+ 
+     ctx->base.pc_next += 4;
++
++    if (ctx->va32) {
++        ctx->base.pc_next = (uint32_t)ctx->base.pc_next;
++    }
+ }
+ 
+ static void loongarch_tr_tb_stop(DisasContextBase *dcbase, CPUState *cs)
 -- 
 2.41.0
 
