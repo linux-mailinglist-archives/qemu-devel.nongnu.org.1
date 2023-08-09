@@ -2,85 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAFB577652F
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 18:34:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52F897765D9
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 19:01:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTm7c-0003az-Ou; Wed, 09 Aug 2023 12:33:20 -0400
+	id 1qTmXH-0004cs-Ae; Wed, 09 Aug 2023 12:59:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTm7S-0003XW-M7
- for qemu-devel@nongnu.org; Wed, 09 Aug 2023 12:33:11 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qTmXE-0004c7-R6
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 12:59:48 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTm7Q-0006wQ-VW
- for qemu-devel@nongnu.org; Wed, 09 Aug 2023 12:33:10 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-686b9964ae2so5089771b3a.3
- for <qemu-devel@nongnu.org>; Wed, 09 Aug 2023 09:33:08 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qTmXC-00048P-N0
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 12:59:48 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-3fe2048c910so59702865e9.1
+ for <qemu-devel@nongnu.org>; Wed, 09 Aug 2023 09:59:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691598787; x=1692203587;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=ZTyfu7guzStRdOGAufoNVKkesDunZqpbIQOI7GKNZiY=;
- b=Ah2QnZiql/NbYUGjiT2+MyLOjYWLSOozVgNk/NiGWB/+9vIZSqgAE7WZ5JWHtOh+Or
- MZelDs9JaT9E77hbGRPHt415dTpCjAAxPfdcKHK8m+kYxgvgvPb69C+0bY+Rpkx1Hx8R
- IRW0n0HztQz6A3TC2zVu13F7o0yP1Ab0CuxqMK39mUvt2Txwx5+YiCw9EbiSnpEcp1rM
- 6oXIXRuNoDDUDuedCVdt4tYoLI0oBkgmRAPY/pHNpzm63AiR8jpAGYc9kTMMsGHvABub
- vCNSywZ+wbrqNWO1oqWnuA2sxC2FO22k/XKl0Q69NLluf5dN475o62ZuWwc50ZgL0eDP
- BpeQ==
+ d=linaro.org; s=google; t=1691600385; x=1692205185;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=H9ebYCN41wBfKyeFxl6H5zJHFCzPWRp12K+L6+19DXc=;
+ b=WrFaflDzsyPCFaTuA63xAKYN5MzTLLrNvUqtvXtgpa4iqItA7TBNsMzQ1qXA3KNwle
+ x9w8U+Xnt745m3XyWkm72L6tGSUOQKTnXN/iXV/EpL6edakSJ3GhsFm1e0qnXh7CKyf/
+ IQFp65oVi5ukleNisEyTZJ/Njf8jSPWw19J0PRRyXdhjni+GCOYHkfk3IwBr1Xo5A4fT
+ +Dncb+r8VDlqsAAcpgQtF2S+OADjEMKzTnIkaxx8m8RXdgQ0Cs36JnKzdq+NMbta2G+o
+ SvUztQ7JflOijUYXcyquPHlhGcB9qNS6dDzwU9Iqw4n0eUh+BUVCueIz3jrcxPlUoAwO
+ EwaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691598787; x=1692203587;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ZTyfu7guzStRdOGAufoNVKkesDunZqpbIQOI7GKNZiY=;
- b=LRyCqdBuE6Gs1OyoUQJJMeSTLPi6T5Eu1RjJPOSpLJa+pyKuLH7H/z0lJDqR1vueET
- 3XX7ElzluLP77YSWiJmQrfbg5cL9C36GNVV3Es32njEhZkGZT9cPMOxUXEkKXUn1INIB
- 3cNemXTuFDDdSCT0C93rVrtzOOQUF5Ng67ckfKz0G2oH8fdMl0gx3UGM2cOjtSdoT87o
- Us/Xt3i0W9/zY0iW3/Vc5ivzp2wCkSnx60W68wZ9MuX/97joATQHE2j9HK6mTTFZAsg1
- QTFPdklkVrFd+vAgndPwkNNp80qwvAx04KxR6ZC6+bVrRuZoeiT7RL+5NIVSxEJvu67B
- Q3kg==
-X-Gm-Message-State: AOJu0YxM1Wd5L2iUIUhVnmli/yZwI9HHJsjGNdR6J6ghhBEwdJrZOZmK
- KgwMA6p7FHwLhfWl4NRAi8eyjA==
-X-Google-Smtp-Source: AGHT+IFVliie93mNC0zuz//4x6oavJE9FICk22AD22Yf7xnhtnsKCyQKksnCi/Xafe0T+XQPACWjCA==
-X-Received: by 2002:a05:6a21:329b:b0:13e:fbee:a5d1 with SMTP id
- yt27-20020a056a21329b00b0013efbeea5d1mr3597387pzb.37.1691598787174; 
- Wed, 09 Aug 2023 09:33:07 -0700 (PDT)
-Received: from ?IPV6:2602:47:d483:7301:6bf0:9674:6ac4:f74c?
- ([2602:47:d483:7301:6bf0:9674:6ac4:f74c])
+ d=1e100.net; s=20221208; t=1691600385; x=1692205185;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=H9ebYCN41wBfKyeFxl6H5zJHFCzPWRp12K+L6+19DXc=;
+ b=QTxrB6+BXLeF+5pvMA4upeAMqUSqcMYfM8qU+0Kctn71DUd6+VxynyFF83V9VWV5KI
+ A4oShzBrk87V6mfpgT3inf8ODjxu5QMRrioSOTr7y0UwAA5ogeCA8N3cM811oEJy4S+1
+ cQ24nolFAg8ZwEkZq9TYuPKD11DGPU/LqTpCbqYgBHuLyitNvSqfWQpcbAy7f8NFIKbX
+ LRPd1eIL854Ldz3RE3tXpSLfNhMgYCoCoYxDuV0W2pMJR5N5qGTrd+5Xz7Ni2uaC4593
+ 4OZWlpRf5gRKTjsnOqohPBkb0RnHxHAMj5bvD8gAQr6gwrfiE9xQo9d5ui0LvJiIECfT
+ ogSA==
+X-Gm-Message-State: AOJu0Yw3EGkkvPy60QAWJdQphVSl29twPsuP8x48FlNCun9WActn0/uy
+ KE9GcghuMMXZpJCu/yaWnrT4nw==
+X-Google-Smtp-Source: AGHT+IEQ26Rr21aIzrxGr17D0ZpOI6A11AhjEUxIiY6+OQHhYZbNg3ckNqRwjbeEu8t8vni/F8/BWA==
+X-Received: by 2002:a05:600c:2811:b0:3fe:2079:196c with SMTP id
+ m17-20020a05600c281100b003fe2079196cmr2531244wmb.16.1691600384728; 
+ Wed, 09 Aug 2023 09:59:44 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- u22-20020aa78396000000b0063f1a1e3003sm10123458pfm.166.2023.08.09.09.33.06
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 09 Aug 2023 09:33:06 -0700 (PDT)
-Message-ID: <0765135d-2a91-0260-4d19-de8554908797@linaro.org>
-Date: Wed, 9 Aug 2023 09:33:04 -0700
+ f10-20020a7bc8ca000000b003fbc9b9699dsm2470657wml.45.2023.08.09.09.59.44
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 09 Aug 2023 09:59:44 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id EB4091FFBB;
+ Wed,  9 Aug 2023 17:59:43 +0100 (BST)
+References: <20230808141739.3110740-1-fufuyqqqqqq@gmail.com>
+ <20230808141739.3110740-7-fufuyqqqqqq@gmail.com>
+User-agent: mu4e 1.11.13; emacs 29.1.50
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Yeqi Fu <fufuyqqqqqq@gmail.com>
+Cc: richard.henderson@linaro.org, qemu-devel@nongnu.org, Paolo Bonzini
+ <pbonzini@redhat.com>
+Subject: Re: [RFC v4 06/11] tcg: Add tcg opcodes and helpers for native
+ library calls
+Date: Wed, 09 Aug 2023 17:41:57 +0100
+In-reply-to: <20230808141739.3110740-7-fufuyqqqqqq@gmail.com>
+Message-ID: <87cyzw40e8.fsf@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: Fix interval_tree_iter_first() to check root node value
-Content-Language: en-US
-To: Helge Deller <deller@gmx.de>, qemu-devel@nongnu.org
-References: <20230807163705.9848-1-richard.henderson@linaro.org>
- <20230807163705.9848-11-richard.henderson@linaro.org>
- <d2842004-ce3e-325f-69a7-3eec6e4cd1d5@linaro.org> <ZNOsq6Z7t/eyIG/9@p100>
- <9251069c-95e5-aff5-9ee9-de7a493b23bf@linaro.org>
- <6f4c3b1d-4254-526a-4cf1-6aefbba6796d@gmx.de>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <6f4c3b1d-4254-526a-4cf1-6aefbba6796d@gmx.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
-X-Spam_score_int: -61
-X-Spam_score: -6.2
-X-Spam_bar: ------
-X-Spam_report: (-6.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-4.14,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x336.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -98,60 +98,283 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/9/23 08:53, Helge Deller wrote:
-> On 8/9/23 17:23, Richard Henderson wrote:
->> On 8/9/23 08:11, Helge Deller wrote:
->>> Fix a crash in qemu-user when running
->>>
->>>      cat /proc/self/maps
->>>
->>> in a chroot, where /proc isn't mounted.
->>>
->>> The problem was introduced by commit 3ce3dd8ca965 ("util/selfmap:
->>> Rewrite using qemu/interval-tree.h") where in open_self_maps_1() the
->>> function read_self_maps() is called and which returns NULL if it can't
->>> read the hosts /proc/self/maps file. Afterwards that NULL is fed into
->>> interval_tree_iter_first() which doesn't check if the root node is NULL.
->>>
->>> Fix it by adding a check if root is NULL and return NULL in that case.
->>>
->>> Signed-off-by: Helge Deller <deller@gmx.de>
->>> Fixes: 3ce3dd8ca965 ("util/selfmap: Rewrite using qemu/interval-tree.h")
->>>
->>> diff --git a/util/interval-tree.c b/util/interval-tree.c
->>> index f2866aa7d3..53465182e6 100644
->>> --- a/util/interval-tree.c
->>> +++ b/util/interval-tree.c
->>> @@ -797,7 +797,7 @@ IntervalTreeNode *interval_tree_iter_first(IntervalTreeRoot *root,
->>>   {
->>>       IntervalTreeNode *node, *leftmost;
->>>
->>> -    if (!root->rb_root.rb_node) {
->>> +    if (!root || !root->rb_root.rb_node) {
->>
->>
->> I guess this is good enough for 8.1.  Before the conversion to interval-tree we would 
->> also emit nothing.
-> 
-> Yes and yes.
-> 
->> I've already done a rewrite for 8.2, and I noticed this problem.
->> There I emit what mapping information that I have, which is
->> everything except for the device+path data.
-> 
-> nice.
-> 
->> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-> 
-> Shall I send a pull request?
-> If so, is it OK that I include this patch in the pull-request as well?
->    linux-user: Fix openat() emulation to correctly detect accesses to /proc
->    https://lists.nongnu.org/archive/html/qemu-devel/2023-08/msg00165.html
-> which already has been R-b: Daniel P. Berrangé
 
-I can pick them both up -- I have other linux-user patches to send.
+Yeqi Fu <fufuyqqqqqq@gmail.com> writes:
+
+> This commit implements tcg opcodes and helpers for extracting and
+> invoke native functions.
+>
+> Signed-off-by: Yeqi Fu <fufuyqqqqqq@gmail.com>
+> ---
+>  accel/tcg/tcg-runtime.h     |  22 ++++++
+>  include/tcg/tcg-op-common.h |  11 +++
+>  include/tcg/tcg.h           |   9 +++
+>  tcg/tcg-op.c                | 140 ++++++++++++++++++++++++++++++++++++
+>  4 files changed, 182 insertions(+)
+>
+> diff --git a/accel/tcg/tcg-runtime.h b/accel/tcg/tcg-runtime.h
+> index 39e68007f9..bda78b4489 100644
+> --- a/accel/tcg/tcg-runtime.h
+> +++ b/accel/tcg/tcg-runtime.h
+> @@ -37,6 +37,28 @@ DEF_HELPER_FLAGS_1(exit_atomic, TCG_CALL_NO_WG, noretu=
+rn, env)
+>   */
+>  #define helper_memset memset
+>  DEF_HELPER_FLAGS_3(memset, TCG_CALL_NO_RWG, ptr, ptr, int, ptr)
+> +
+> +#define helper_memcpy memcpy
+> +DEF_HELPER_FLAGS_3(memcpy, TCG_CALL_NO_RWG, ptr, ptr, ptr, ptr)
+> +
+> +#define helper_strncpy strncpy
+> +DEF_HELPER_FLAGS_3(strncpy, TCG_CALL_NO_RWG, ptr, ptr, ptr, ptr)
+> +
+> +#define helper_memcmp memcmp
+> +DEF_HELPER_FLAGS_3(memcmp, TCG_CALL_NO_RWG, int, ptr, ptr, ptr)
+> +
+> +#define helper_strncmp strncmp
+> +DEF_HELPER_FLAGS_3(strncmp, TCG_CALL_NO_RWG, int, ptr, ptr, ptr)
+> +
+> +#define helper_strcpy strcpy
+> +DEF_HELPER_FLAGS_2(strcpy, TCG_CALL_NO_RWG, ptr, ptr, ptr)
+> +
+> +#define helper_strcat strcat
+> +DEF_HELPER_FLAGS_2(strcat, TCG_CALL_NO_RWG, ptr, ptr, ptr)
+> +
+> +#define helper_strcmp strcmp
+> +DEF_HELPER_FLAGS_2(strcmp, TCG_CALL_NO_RWG, int, ptr, ptr)
+> +
+>  #endif /* IN_HELPER_PROTO */
+>=20=20
+>  DEF_HELPER_FLAGS_3(ld_i128, TCG_CALL_NO_WG, i128, env, i64, i32)
+> diff --git a/include/tcg/tcg-op-common.h b/include/tcg/tcg-op-common.h
+> index be382bbf77..2e712f1573 100644
+> --- a/include/tcg/tcg-op-common.h
+> +++ b/include/tcg/tcg-op-common.h
+> @@ -903,6 +903,12 @@ void tcg_gen_ld_vec(TCGv_vec r, TCGv_ptr base, TCGAr=
+g offset);
+>  void tcg_gen_st_vec(TCGv_vec r, TCGv_ptr base, TCGArg offset);
+>  void tcg_gen_stl_vec(TCGv_vec r, TCGv_ptr base, TCGArg offset, TCGType t=
+);
+>=20=20
+> +/* Host <-> guest conversions */
+> +void tcg_gen_g2h_i32(TCGv_ptr ret, TCGv_i32 arg);
+> +void tcg_gen_g2h_i64(TCGv_ptr ret, TCGv_i64 arg);
+> +void tcg_gen_h2g_i32(TCGv_i32 ret, TCGv_ptr arg);
+> +void tcg_gen_h2g_i64(TCGv_i64 ret, TCGv_ptr arg);
+> +
+>  /* Host pointer ops */
+>=20=20
+>  #if UINTPTR_MAX =3D=3D UINT32_MAX
+> @@ -938,6 +944,11 @@ static inline void tcg_gen_addi_ptr(TCGv_ptr r, TCGv=
+_ptr a, intptr_t b)
+>      glue(tcg_gen_addi_,PTR)((NAT)r, (NAT)a, b);
+>  }
+>=20=20
+> +static inline void tcg_gen_subi_ptr(TCGv_ptr r, TCGv_ptr a, intptr_t b)
+> +{
+> +    glue(tcg_gen_subi_, PTR)((NAT)r, (NAT)a, b);
+> +}
+> +
+>  static inline void tcg_gen_mov_ptr(TCGv_ptr d, TCGv_ptr s)
+>  {
+>      glue(tcg_gen_mov_,PTR)((NAT)d, (NAT)s);
+> diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
+> index 0875971719..7c7fafb1cd 100644
+> --- a/include/tcg/tcg.h
+> +++ b/include/tcg/tcg.h
+> @@ -35,6 +35,9 @@
+>  #include "tcg-target.h"
+>  #include "tcg/tcg-cond.h"
+>  #include "tcg/debug-assert.h"
+> +#ifdef CONFIG_USER_ONLY
+> +#include "exec/user/guest-base.h"
+> +#endif
+>=20=20
+>  /* XXX: make safe guess about sizes */
+>  #define MAX_OP_PER_INSTR 266
+> @@ -1148,4 +1151,10 @@ static inline const TCGOpcode *tcg_swap_vecop_list=
+(const TCGOpcode *n)
+>=20=20
+>  bool tcg_can_emit_vecop_list(const TCGOpcode *, TCGType, unsigned);
+>=20=20
+> +/* native call */
+> +void gen_native_call_i32(const char *fun_name, TCGv_i32 ret,
+> +                         TCGv_i32 arg1, TCGv_i32 arg2, TCGv_i32 arg3);
+> +void gen_native_call_i64(const char *fun_name, TCGv_i64 ret,
+> +                         TCGv_i64 arg1, TCGv_i64 arg2, TCGv_i64 arg3);
+> +
+>  #endif /* TCG_H */
+> diff --git a/tcg/tcg-op.c b/tcg/tcg-op.c
+> index 7aadb37756..83e3a5682c 100644
+> --- a/tcg/tcg-op.c
+> +++ b/tcg/tcg-op.c
+> @@ -2852,3 +2852,143 @@ void tcg_gen_lookup_and_goto_ptr(void)
+>      tcg_gen_op1i(INDEX_op_goto_ptr, tcgv_ptr_arg(ptr));
+>      tcg_temp_free_ptr(ptr);
+>  }
+> +
+> +#ifdef CONFIG_USER_ONLY
+> +void tcg_gen_g2h_i32(TCGv_ptr ret, TCGv_i32 arg)
+> +{
+> +    TCGv_ptr temp =3D tcg_temp_new_ptr();
+> +    tcg_gen_ext_i32_ptr(temp, arg);
+> +    tcg_gen_addi_ptr(ret, temp, guest_base);
+> +    tcg_temp_free_ptr(temp);
+> +}
+> +
+> +void tcg_gen_g2h_i64(TCGv_ptr ret, TCGv_i64 arg)
+> +{
+> +    TCGv_ptr temp =3D tcg_temp_new_ptr();
+> +    tcg_gen_trunc_i64_ptr(temp, arg); /* Not sure */
+> +    tcg_gen_addi_ptr(ret, temp, guest_base);
+> +    tcg_temp_free_ptr(temp);
+> +}
+> +
+> +void tcg_gen_h2g_i32(TCGv_i32 ret, TCGv_ptr arg)
+> +{
+> +    TCGv_ptr temp =3D tcg_temp_new_ptr();
+> +    tcg_gen_subi_ptr(temp, arg, guest_base);
+> +    tcg_gen_trunc_ptr_i32(ret, temp);
+> +    tcg_temp_free_ptr(temp);
+> +}
+> +
+> +void tcg_gen_h2g_i64(TCGv_i64 ret, TCGv_ptr arg)
+> +{
+> +    TCGv_ptr temp =3D tcg_temp_new_ptr();
+> +    tcg_gen_subi_ptr(temp, arg, guest_base);
+> +    tcg_gen_extu_ptr_i64(ret, temp);
+> +    tcg_temp_free_ptr(temp);
+> +}
+> +
+> +#else
+> +void tcg_gen_g2h_i32(TCGv_ptr ret, TCGv_i32 arg)
+> +{
+
+It would be worth adding g_assert_not_reached() to these stubs so any
+accidental call gets flagged straight away.
+
+> +}
+> +void tcg_gen_g2h_i64(TCGv_ptr ret, TCGv_i64 arg)
+> +{
+> +}
+> +void tcg_gen_h2g_i32(TCGv_i32 ret, TCGv_ptr arg)
+> +{
+> +}
+> +void tcg_gen_h2g_i64(TCGv_i64 ret, TCGv_ptr arg)
+> +{
+> +}
+> +#endif
+> +
+> +/* p: iptr ; i: i32 ; a: ptr(address) */
+> +void gen_native_call_i32(const char *fun_name, TCGv_i32 ret,
+> +                         TCGv_i32 arg1, TCGv_i32 arg2, TCGv_i32 arg3)
+> +{
+> +    TCGv_ptr arg1_ptr =3D tcg_temp_new_ptr();
+> +    TCGv_ptr arg2_ptr =3D tcg_temp_new_ptr();
+> +    TCGv_ptr arg3_ptr =3D tcg_temp_new_ptr();
+> +    TCGv_ptr ret_ptr =3D tcg_temp_new_ptr();
+> +    tcg_gen_g2h_i32(arg1_ptr, arg1);
+> +    if (strcmp(fun_name, "memset") =3D=3D 0) {/* a aip */
+> +        tcg_gen_ext_i32_ptr(arg3_ptr, arg3);
+> +        gen_helper_memset(ret_ptr, arg1_ptr, arg2, arg3_ptr);
+> +        goto ret_ptr;
+> +    }
+> +    tcg_gen_g2h_i32(arg2_ptr, arg2);
+> +    if (strcmp(fun_name, "strcpy") =3D=3D 0) { /* a aa */
+> +        gen_helper_strcpy(ret_ptr, arg1_ptr, arg2_ptr);
+> +        goto ret_ptr;
+> +    } else if (strcmp(fun_name, "strcat") =3D=3D 0) { /* a aa */
+> +        gen_helper_strcat(ret_ptr, arg1_ptr, arg2_ptr);
+> +        goto ret_ptr;
+> +    } else if (strcmp(fun_name, "strcmp") =3D=3D 0) { /* i aa */
+> +        gen_helper_strcmp(ret, arg1_ptr, arg2_ptr);
+> +    }
+> +    tcg_gen_ext_i32_ptr(arg3_ptr, arg3);
+> +    if (strcmp(fun_name, "memcpy") =3D=3D 0) { /* a aap */
+> +        gen_helper_memcpy(ret_ptr, arg1_ptr, arg2_ptr, arg3_ptr);
+> +        goto ret_ptr;
+> +    } else if (strcmp(fun_name, "strncpy") =3D=3D 0) { /* a aap */
+> +        gen_helper_strncpy(ret_ptr, arg1_ptr, arg2_ptr, arg3_ptr);
+> +        goto ret_ptr;
+> +    } else if (strcmp(fun_name, "memcmp") =3D=3D 0) { /* i aap */
+> +        gen_helper_memcmp(ret, arg1_ptr, arg2_ptr, arg3_ptr);
+> +    } else if (strcmp(fun_name, "strncmp") =3D=3D 0) { /* i aap */
+> +        gen_helper_strncmp(ret, arg1_ptr, arg2_ptr, arg3_ptr);
+> +    }
+> +    return;
+> +ret_ptr:
+> +    tcg_gen_h2g_i32(ret, ret_ptr);
+> +    return;
+
+This is a bit of a messy function considering that most of it is data
+driven. I think we could have a table with something like:
+
+   {
+     { .func =3D "memset", .helper =3D gen_helper_memset,
+       .g2h_arg1 =3D true },
+     ...
+   }
+
+and then remove the duplication between the two gen_native_calls as
+simply having different signatures for their g2h and h2h conversions. If
+we ever get to embedding the signatures in the library that would make
+things simpler to replace as well I think.
 
 
-r~
+> +}
+> +
+> +void gen_native_call_i64(const char *fun_name, TCGv_i64 ret,
+> +                         TCGv_i64 arg1, TCGv_i64 arg2, TCGv_i64 arg3)
+> +{
+> +    TCGv_ptr arg1_ptr =3D tcg_temp_new_ptr();
+> +    TCGv_ptr arg2_ptr =3D tcg_temp_new_ptr();
+> +    TCGv_ptr arg3_ptr =3D tcg_temp_new_ptr();
+> +    TCGv_ptr ret_ptr =3D tcg_temp_new_ptr();
+> +    TCGv_i32 arg2_i32, ret_i32 =3D tcg_temp_new_i32();
+> +    tcg_gen_g2h_i64(arg1_ptr, arg1);
+> +    if (strcmp(fun_name, "memset") =3D=3D 0) { /* a aip */
+> +        arg2_i32 =3D tcg_temp_new_i32();
+> +        tcg_gen_extrl_i64_i32(arg2_i32, arg2);
+> +        tcg_gen_trunc_i64_ptr(arg3_ptr, arg3);
+> +        gen_helper_memset(ret_ptr, arg1_ptr, arg2_i32, arg3_ptr);
+> +        goto ret_ptr;
+> +    }
+> +    tcg_gen_g2h_i64(arg2_ptr, arg2);
+> +    if (strcmp(fun_name, "strcpy") =3D=3D 0) { /* a aa */
+> +        gen_helper_strcpy(ret_ptr, arg1_ptr, arg2_ptr);
+> +        goto ret_ptr;
+> +    } else if (strcmp(fun_name, "strcat") =3D=3D 0) { /* a aa */
+> +        gen_helper_strcat(ret_ptr, arg1_ptr, arg2_ptr);
+> +        goto ret_ptr;
+> +    } else if (strcmp(fun_name, "strcmp") =3D=3D 0) { /* i aa */
+> +        gen_helper_strcmp(ret_i32, arg1_ptr, arg2_ptr);
+> +        goto ret_i32;
+> +    }
+> +    tcg_gen_trunc_i64_ptr(arg3_ptr, arg3);
+> +    if (strcmp(fun_name, "memcpy") =3D=3D 0) { /* a aap */
+> +        gen_helper_memcpy(ret_ptr, arg1_ptr, arg2_ptr, arg3_ptr);
+> +        goto ret_ptr;
+> +    } else if (strcmp(fun_name, "strncpy") =3D=3D 0) { /* a aap */
+> +        gen_helper_strncpy(ret_ptr, arg1_ptr, arg2_ptr, arg3_ptr);
+> +        goto ret_ptr;
+> +    } else if (strcmp(fun_name, "memcmp") =3D=3D 0) { /* i aap */
+> +        gen_helper_memcmp(ret_i32, arg1_ptr, arg2_ptr, arg3_ptr);
+> +        goto ret_i32;
+> +    } else if (strcmp(fun_name, "strncmp") =3D=3D 0) { /* i aap */
+> +        gen_helper_strncmp(ret_i32, arg1_ptr, arg2_ptr, arg3_ptr);
+> +        goto ret_i32;
+> +    }
+> +    return;
+> +ret_ptr:
+> +    tcg_gen_h2g_i64(ret, ret_ptr);
+> +    return;
+> +ret_i32:
+> +    tcg_gen_extu_i32_i64(ret, ret_i32);
+> +    return;
+> +}
 
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
