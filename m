@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB44D7764BE
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 18:11:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E0927764CD
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 18:16:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTllu-0004nE-QM; Wed, 09 Aug 2023 12:10:54 -0400
+	id 1qTlpb-0007Kx-B8; Wed, 09 Aug 2023 12:14:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTlls-0004mm-9m
- for qemu-devel@nongnu.org; Wed, 09 Aug 2023 12:10:52 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ id 1qTlpY-0007Is-NN
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 12:14:40 -0400
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTllq-0002BK-Pt
- for qemu-devel@nongnu.org; Wed, 09 Aug 2023 12:10:52 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1bc0d39b52cso214045ad.2
- for <qemu-devel@nongnu.org>; Wed, 09 Aug 2023 09:10:50 -0700 (PDT)
+ id 1qTlpX-0002gt-7O
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 12:14:40 -0400
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-1bbc87ded50so309575ad.1
+ for <qemu-devel@nongnu.org>; Wed, 09 Aug 2023 09:14:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691597449; x=1692202249;
+ d=linaro.org; s=google; t=1691597677; x=1692202477;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=v07HobsrW78DX5f7W8oL61kDbknec09rpztRlRfCd2o=;
- b=ebS/jcLOZaSNMyoD7uYoAN3tF1T7Js7hE54WeBUts0kADvO7k8LCcz8F5nxnTrP13D
- XQFqSueidEMRu8OqS+XwUpV7M/Ws0fDggQArhk1IQv/Dsc17uLrfOOvBXbaoVlrUL20T
- mYLsKtqNlz86JD6IZME14P418FWHGH/DcHfhRxakYH2IbOsFJazC6nk2rb61Nyp3j4vc
- Fin11B+2qMky0hI0XoSljIFFYzDeKkk2DgzedU9eYeiobdiT7UrtrEMGl3L+X9pIq30i
- SDmLKRc17LawZx6y5BAqgS6CZP1f3HpNJNLevq2NxPEwk1h/m1lTitoy0gqOzZo/+T0/
- 9yoA==
+ bh=ReJjrFw/LL76Jafls8LTHEmgAWDDhsPgaPPDQz7kylo=;
+ b=zv6DLAronZOCubLg0WLRjElMuXifh4HWyGlP79P58YV+F6x+em6g1vqbOmcwGbPsKb
+ ZERgFlZlaeC2q963ozkUAF/+bCoAYZvnpl62eWjLbKkJ43LcksZmvJJ4EmcN3iXh55Td
+ BvBYTXD8P5q+yni6b3jkdNdwvGBERwWYRuVw0liwreIZ7qAx1DHTic5nFVW8hRf9QB8v
+ ILDUEGMjywc71ISXRUZ4X6vbufNFzugLhQHULi5joiIgGhAX2QMpY8U18IoE+ANBX8NL
+ 1yWD2k4Oqn/QOB61GVAHxQdzYv9rbAM6Yn+DZSuFkYCyqoe3KYUtzf5PGM0XUoIizWQ4
+ wGsw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691597449; x=1692202249;
+ d=1e100.net; s=20221208; t=1691597677; x=1692202477;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=v07HobsrW78DX5f7W8oL61kDbknec09rpztRlRfCd2o=;
- b=JHnfFycwf1zhpHb9+hkuGMeLSOQ+Mx3hjSVZ7FP7pzSCnWAqC5pWUe6OW8dyCh5r6P
- +YNPOG0nWAsMfeUDEnC7bBDr/oEJ5hZu1Cu0Fda51LN8mANv5McSPAPtLjGmYiYxTqOy
- dVxcXr+IHCoxx5UNheRYSQc8UAebCWniDsEJT+kClJZxozKItu6WQ93es0MgB0E6PHzC
- CdSOCxGHVhRBleqVQ58l2z2ZKhnajiD8LP5LuRCbhCm0Y0UTOkZ9akDjexbKIke0QCWF
- 2OfA27N+Rv9kjOBd17nvlDq+fDAzcQ4/zoEix4ylIFrR94aKZpRQYWBOEw7wxQXZuBUU
- Ii2g==
-X-Gm-Message-State: AOJu0YwX+DFtp1PRge2aQZog0xFjGWypPC9jXTu8SXOcpLhNqUNIjdEW
- ZM3UBswXR2mkdiNsXEqVf7t2ZA==
-X-Google-Smtp-Source: AGHT+IHiKBnxkdChPRzagLnSC87mV4fXvZeaG7ZYy+YMPbQmM3q3xlGaKO24ZJilXECt6ZiNUBJvMA==
-X-Received: by 2002:a17:902:da81:b0:1bb:c7c6:3454 with SMTP id
- j1-20020a170902da8100b001bbc7c63454mr3194269plx.48.1691597449027; 
- Wed, 09 Aug 2023 09:10:49 -0700 (PDT)
+ bh=ReJjrFw/LL76Jafls8LTHEmgAWDDhsPgaPPDQz7kylo=;
+ b=WmB/xFjDmasEXHGF34mj8v5/HrWW1+vYVkw7p3F0hXOpN2lbt5avlJT/cPQWzU5L35
+ W0eStXSV5P1w4yTJklFlx35QTt9PBSef83O9RxnYPE9FhkTTBk0ijijlHuQXWq688uUu
+ xj/ofr3Wwa7fGhJH63EQXxoMPMqwFsvQr97ZCSARLyLvZUil0wzzq/dAjrFof+dhcRI+
+ 1pA4DaZ3ow1Ji8w1BSClsEPry3JUL343PHwLSBVv15JAO7gAUTIBdUv3mjJIVLAzVvsl
+ VL+a3FaPkNPgnVZTVN2NMiK/wqwogqYH0OArxodbcMQi3N6WIAlsL4HsuEtN03rA6VyR
+ M/cw==
+X-Gm-Message-State: AOJu0YywLbKN7oDLxjsMsw3aE3YuWvv5OIjEPQu7V5r1Q+EEYvIjaC9f
+ aDM11vECt51GFy0L6+OZ3HnYFaD69uQa47tMzRM=
+X-Google-Smtp-Source: AGHT+IFijC3GK1kGZgq15eNau15298ZxqVRSvFs9P0Mpb1WjGuifzOkZo+H3IE/T58KxvKuBxiMR0g==
+X-Received: by 2002:a17:902:eed2:b0:1bb:3a7:6af7 with SMTP id
+ h18-20020a170902eed200b001bb03a76af7mr2908983plb.23.1691597677638; 
+ Wed, 09 Aug 2023 09:14:37 -0700 (PDT)
 Received: from ?IPV6:2602:47:d483:7301:6bf0:9674:6ac4:f74c?
  ([2602:47:d483:7301:6bf0:9674:6ac4:f74c])
  by smtp.gmail.com with ESMTPSA id
- w13-20020a170902d3cd00b001b53be3d956sm11354059plb.167.2023.08.09.09.10.48
+ c7-20020a170902d48700b001bb9b87ac95sm11399480plg.103.2023.08.09.09.14.36
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 09 Aug 2023 09:10:48 -0700 (PDT)
-Message-ID: <451be3fb-1431-3ae6-241a-51ae1273fbda@linaro.org>
-Date: Wed, 9 Aug 2023 09:10:46 -0700
+ Wed, 09 Aug 2023 09:14:37 -0700 (PDT)
+Message-ID: <7bebed42-a081-c2d8-d931-9a12e7258d63@linaro.org>
+Date: Wed, 9 Aug 2023 09:14:35 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [RFC v4 02/11] build: Implement libnative library and the build
- machinery for libnative
+Subject: Re: [RFC v4 05/11] linux-user/elfload: Add support for parsing
+ symbols of native libraries.
 Content-Language: en-US
 To: Yeqi Fu <fufuyqqqqqq@gmail.com>, alex.bennee@linaro.org
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Riku Voipio <riku.voipio@iki.fi>
+Cc: qemu-devel@nongnu.org, Laurent Vivier <laurent@vivier.eu>
 References: <20230808141739.3110740-1-fufuyqqqqqq@gmail.com>
- <20230808141739.3110740-3-fufuyqqqqqq@gmail.com>
+ <20230808141739.3110740-6-fufuyqqqqqq@gmail.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230808141739.3110740-3-fufuyqqqqqq@gmail.com>
+In-Reply-To: <20230808141739.3110740-6-fufuyqqqqqq@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
 X-Spam_score_int: -61
 X-Spam_score: -6.2
 X-Spam_bar: ------
@@ -99,39 +98,19 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 8/8/23 07:17, Yeqi Fu wrote:
-> +#if defined(i386) || defined(x86_64)
-> +/*
-> + * An unused instruction is utilized to mark a native call.
-> + */
-> +#define __CALL_EXPR ".byte 0x0f, 0xff;"
-> +#endif
+> This commit addresses the need to parse symbols of native libraries.
+> The base address of a shared library is determined by the dynamic
+> linker. To simplify the process, we focus on the last three digits,
+> which reside within the same page and remain unaffected by the base
+> address.
+> 
+> Signed-off-by: Yeqi Fu<fufuyqqqqqq@gmail.com>
+> ---
+>   linux-user/elfload.c | 85 +++++++++++++++++++++++++++++++++++++++++---
+>   1 file changed, 80 insertions(+), 5 deletions(-)
 
-This is 2 of the 3 (or more) bytes of the UD0 instruction.
-At minimum you should include a third byte for the modrm.
-
-For example,
-
-	0F FF C0	ud0	%eax, %eax
-
-If you want to encode more data, or simply magic numbers, you can use
-
-	0F FF 80
-	78 56 34 12	ud0	0x12345678(%eax), %eax
-
-or with modrm + sib bytes,
-
-	0F FF 84 00
-	78 56 34 12	ud0	0x12345678(%eax, %eax, 0), %eax
-
-So you have up to 32 (displacement) + 3 * 3 (registers) + 2 (shift) = 43 bits that you can 
-vary while staying within the encoding of UD0.
-
-You can even have the assembler help encode a displacement to associated data:
-
-	.text
-0:	ud0	label-0b(%eax), %eax
-	.rodata
-label:	.byte	some stuff
+I'm not keen on this.  I would much prefer the native library to be self-contained and not 
+rely on symbols in this fashion.
 
 
 r~
