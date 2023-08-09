@@ -2,81 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7216775C2F
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 13:24:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 549CC775E7F
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 14:08:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qThIj-0008I5-Cz; Wed, 09 Aug 2023 07:24:29 -0400
+	id 1qThyR-0001zZ-As; Wed, 09 Aug 2023 08:07:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qThId-0008He-02; Wed, 09 Aug 2023 07:24:23 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qThIb-0002ky-FX; Wed, 09 Aug 2023 07:24:22 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-686ed1d2594so6369194b3a.2; 
- Wed, 09 Aug 2023 04:24:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1691580259; x=1692185059;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=HJp/5OHFBfZLnaM74CzAWAR7M9SwTyhjIAxC1QSKtbw=;
- b=NLGaBEFyaPMy8wWpIowOs18fpgPC/OWNef1lOIE8HgVKX1IpIHlNTziyRDAvqO/Qo7
- m+DeTBTf5JqiwAbCv0omhj1dGEkt756QmyhdNuwFvdrXADiwaMZ77VJVMK6zuBJFUOMZ
- 25YMiGNBgVaYaR017PRDmYeWmPLRpSZh3RENqoZnZ/614IcsV/etljlMvpXzXo8vPyZ8
- XRFS/vZosPavutTfBv4awEElVixg05P4W7S+kmNHLoXcClw49Y0OigqRZ1Zseu7L24rG
- QAQJDQ9UxdvjNIfpZS1UMugJrY8YjPxwaWxE1dLA1BQmPnwuEmPBpHrUFAMz9wr6eepk
- PouQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691580259; x=1692185059;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=HJp/5OHFBfZLnaM74CzAWAR7M9SwTyhjIAxC1QSKtbw=;
- b=b25k/8wLLnV2K2FadP5Rdkym9ER9o1XjEXGaTNFALqQoYzQ48Vzn6coSPfCO37neQv
- 1Ldk/HvRVtrUS+2H1bnh+jbW6jkIN+0/HcESwCTNYpe+5LAoBwnozVFdSEryOjVdov71
- zHyM7cfHkMcoLuzh8jcY3A2MM3zm2YQtQCFNeRYE7wA1BRtyCF4MNlqrNmjVh2+EAz4L
- 1lPGdUNwBMNEMWZWxqT1ftUt/7PdCLrdHrWVK5ZUf1TTkgtDN/VAxep5kLZ4dJeTKKCl
- g57REwF0fPmE+lDliECR5rgV+cM6nSVTsS+WsoF3Pa4x2U2T4iWERW7mJk/7EMv6oIDA
- gMrQ==
-X-Gm-Message-State: AOJu0YxhPhbWX/5achevGXmpIHBg4yWf062shq201YsOb/WTN6DuhPQS
- gKjw7OA7RtN+wjrmnp9kkv+FIt+AmZA=
-X-Google-Smtp-Source: AGHT+IHP0Xr/ocS6oJbdL0aokzf0XIi0FdFKFdAaMgAFK6mETz+NgpGqEOREegh9/e7gYwI7faK6fg==
-X-Received: by 2002:a05:6a20:d5:b0:137:74f8:62ee with SMTP id
- 21-20020a056a2000d500b0013774f862eemr2333454pzh.18.1691580258936; 
- Wed, 09 Aug 2023 04:24:18 -0700 (PDT)
-Received: from localhost (61-68-137-140.tpgi.com.au. [61.68.137.140])
- by smtp.gmail.com with ESMTPSA id
- bm2-20020a056a00320200b00682a8e600f0sm9813364pfb.35.2023.08.09.04.24.16
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 09 Aug 2023 04:24:18 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qThyD-0001vK-O7
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 08:07:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qThy9-0003bw-4j
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 08:07:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1691582835;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=aQtxMVsioRMsb/7sOogW6YXBawSftQVL5QRT6E5cklI=;
+ b=X14fH5XdquYEuwDxhpD2JbD7B9B46HHyCz0aYlO/CFRMR/o1egtghC1T2sWAkWnWb74eDa
+ lKWeIps3VSqlzOKuWpIfDjQYvG12ywiMhzD7g9V3c6fojYv9yfZrcNT2Ty+xlMJ6damRjK
+ z1nAPJ5LjJxfBHGeeymTJmeSttlTyus=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-96-bvAcZXY3NPScn07hTcAX4g-1; Wed, 09 Aug 2023 08:07:13 -0400
+X-MC-Unique: bvAcZXY3NPScn07hTcAX4g-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3CF03856DED
+ for <qemu-devel@nongnu.org>; Wed,  9 Aug 2023 12:07:13 +0000 (UTC)
+Received: from [10.39.193.134] (unknown [10.39.193.134])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 8F6205CC01;
+ Wed,  9 Aug 2023 12:07:12 +0000 (UTC)
+Message-ID: <5cd1b468-5b94-6459-73b9-f428e6dce342@redhat.com>
+Date: Wed, 9 Aug 2023 14:07:07 +0200
+MIME-Version: 1.0
+Subject: Re: [PATCH] vfio/pci: hide ROM BAR on SFC9220 10/40G Ethernet
+ Controller PF
+Content-Language: en-US
+To: Alex Williamson <alex.williamson@redhat.com>
+Cc: qemu-devel@nongnu.org, =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
+References: <20230808145916.81657-1-lersek@redhat.com>
+ <20230808094041.41ebe3b6.alex.williamson@redhat.com>
+From: Laszlo Ersek <lersek@redhat.com>
+In-Reply-To: <20230808094041.41ebe3b6.alex.williamson@redhat.com>
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 09 Aug 2023 21:24:14 +1000
-Message-Id: <CUNZ5KZ50C7Q.B6VB3EOMEFH1@wheely>
-Cc: <jniethe5@gmail.com>, <qemu-ppc@nongnu.org>
-Subject: Re: [PATCH v2 7/7] tcg/ppc: Use prefixed instructions for
- tcg_out_goto_tb
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Richard Henderson" <richard.henderson@linaro.org>, <qemu-devel@nongnu.org>
-X-Mailer: aerc 0.15.2
-References: <20230808030250.50602-1-richard.henderson@linaro.org>
- <20230808030250.50602-8-richard.henderson@linaro.org>
-In-Reply-To: <20230808030250.50602-8-richard.henderson@linaro.org>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x435.google.com
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=lersek@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,80 +79,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue Aug 8, 2023 at 1:02 PM AEST, Richard Henderson wrote:
-> When a direct branch is out of range, we can load the destination for
-> the indirect branch using PLA (for 16GB worth of buffer) and PLD from
-> the TranslationBlock for everything larger.
->
-> This means the patch affects exactly one instruction: B (plus filler),
-> PLA or PLD.  Which means we can update and execute the patch atomically.
->
+On 8/8/23 17:40, Alex Williamson wrote:
+> On Tue,  8 Aug 2023 16:59:16 +0200
+> Laszlo Ersek <lersek@redhat.com> wrote:
+> 
+>> The Solarflare Communications SFC9220 NIC's physical function (PF) appears
+>> to expose an expansion ROM with the following characteristics:
+>>
+>> (1) Single-image ROM, with only a legacy BIOS image (no UEFI driver).
+>> Alex's rom-parser utility dumps it like this:
+>>
+>>> Valid ROM signature found @0h, PCIR offset 20h
+>>>         PCIR: type 0 (x86 PC-AT), vendor: 1924, device: 0a03, class: 000002
+>>>         PCIR: revision 3, vendor revision: 1
+>>>         Last image  
+>>
+>> (2) The BIOS image crashes when booted on i440fx.
+>>
+>> (3) The BIOS image prints the following messages on q35:
+>>
+>>> Solarflare Boot Manager (v5.2.2.1006)
+>>> Solarflare Communications 2008-2019
+>>> gPXE (http://etherboot.org) - [...] PCI[...] PnP PMM[...]  
+>>
+>> So it appears like a modified derivative of old gPXE.
+>>
+>> Alex surmised in advance that the BIOS image could be accessing
+>> host-physical addresses rather than guest-phys ones, leading to the crash
+>> on i440fx.
+> 
+> ROMs sometimes take shortcuts around the standard interfaces to the
+> device and can therefore hit gaps in the virtualization, which is why
+> that's suspect to me.  However if it works on q35 but not 440fx it
+> might be more that we're not matching a PCI topology expectation of the
+> ROM.  Was it only tested on 440fx attached to the root bus or does it
+> also fail if the PF is attached downstream of a PCI-to-PCI bridge?
 
-Aside from changelog that Jordan pointed out,
+Turns out the oprom wants the NIC to have PCI device number 0,
+regardless of the bus number, and regardless of the bus's location in
+the PCI topology.
 
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+Please drop this patch; I've documented the workaround in the BZ for now
+(which I've also opened up to the public).
 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->  tcg/ppc/tcg-target.c.inc | 31 +++++++++++++++++++------------
->  1 file changed, 19 insertions(+), 12 deletions(-)
->
-> diff --git a/tcg/ppc/tcg-target.c.inc b/tcg/ppc/tcg-target.c.inc
-> index 63fe4ef995..b686a68247 100644
-> --- a/tcg/ppc/tcg-target.c.inc
-> +++ b/tcg/ppc/tcg-target.c.inc
-> @@ -2646,31 +2646,38 @@ static void tcg_out_goto_tb(TCGContext *s, int wh=
-ich)
->      uintptr_t ptr =3D get_jmp_target_addr(s, which);
-> =20
->      if (USE_REG_TB) {
-> +        /*
-> +         * With REG_TB, we must always use indirect branching,
-> +         * so that the branch destination and TCG_REG_TB match.
-> +         */
->          ptrdiff_t offset =3D tcg_tbrel_diff(s, (void *)ptr);
->          tcg_out_mem_long(s, LD, LDX, TCG_REG_TB, TCG_REG_TB, offset);
-> -   =20
-> -        /* TODO: Use direct branches when possible. */
-> -        set_jmp_insn_offset(s, which);
->          tcg_out32(s, MTSPR | RS(TCG_REG_TB) | CTR);
-> -
->          tcg_out32(s, BCCTR | BO_ALWAYS);
-> =20
->          /* For the unlinked case, need to reset TCG_REG_TB.  */
->          set_jmp_reset_offset(s, which);
->          tcg_out_mem_long(s, ADDI, ADD, TCG_REG_TB, TCG_REG_TB,
->                           -tcg_current_code_size(s));
-> -    } else {
-> -        /* Direct branch will be patched by tb_target_set_jmp_target. */
-> -        set_jmp_insn_offset(s, which);
-> -        tcg_out32(s, NOP);
-> +        return;
-> +    }
-> =20
-> -        /* When branch is out of range, fall through to indirect. */
-> +    /* Direct branch will be patched by tb_target_set_jmp_target. */
-> +    set_jmp_insn_offset(s, which);
-> +    tcg_out32(s, NOP);
-> +
-> +    /* When branch is out of range, fall through to indirect. */
-> +    if (have_isa_3_10) {
-> +        ptrdiff_t offset =3D tcg_pcrel_diff_for_prefix(s, (void *)ptr);
-> +        tcg_out_8ls_d(s, PLD, TCG_REG_TMP1, 0, offset, 1);
-> +    } else {
->          tcg_out_movi(s, TCG_TYPE_PTR, TCG_REG_TMP1, ptr - (int16_t)ptr);
->          tcg_out_ld(s, TCG_TYPE_PTR, TCG_REG_TMP1, TCG_REG_TMP1, (int16_t=
-)ptr);
-> -        tcg_out32(s, MTSPR | RS(TCG_REG_TMP1) | CTR);
-> -        tcg_out32(s, BCCTR | BO_ALWAYS);
-> -        set_jmp_reset_offset(s, which);
->      }
-> +
-> +    tcg_out32(s, MTSPR | RS(TCG_REG_TMP1) | CTR);
-> +    tcg_out32(s, BCCTR | BO_ALWAYS);
-> +    set_jmp_reset_offset(s, which);
->  }
-> =20
->  void tb_target_set_jmp_target(const TranslationBlock *tb, int n,
+We should probably find a more visible place for the documentation, though.
+
+Thanks for pointing me in the right direction!
+Laszlo
+
+> 
+>> Don't expose the option ROM BAR to the VM by default. While this prevents
+>> netbooting the VM off the PF on q35/SeaBIOS (a relatively rare scenario),
+>> it does not make any difference for UEFI, and at least the VM doesn't
+>> crash during boot on i440fx/SeaBIOS (a relatively frequent scenario).
+>> Users can restore the original behavior via the QEMU cmdline and the
+>> libvirt domain XML.
+>>
+>> (In two years, we've not seen any customer interest in this bug, hence
+>> there's no incentive to investigate (2).)
+>>
+>> Cc: Alex Williamson <alex.williamson@redhat.com> (supporter:VFIO)
+>> Cc: "Cédric Le Goater" <clg@redhat.com> (supporter:VFIO)
+>> Bugzilla: https://bugzilla.redhat.com/show_bug.cgi?id=1975776
+>> Signed-off-by: Laszlo Ersek <lersek@redhat.com>
+>> ---
+>>  hw/vfio/pci-quirks.c | 4 ++++
+>>  1 file changed, 4 insertions(+)
+>>
+>> diff --git a/hw/vfio/pci-quirks.c b/hw/vfio/pci-quirks.c
+>> index f4ff83680572..270eb16b91fa 100644
+>> --- a/hw/vfio/pci-quirks.c
+>> +++ b/hw/vfio/pci-quirks.c
+>> @@ -45,6 +45,10 @@ static const struct {
+>>      uint32_t device;
+>>  } rom_denylist[] = {
+>>      { 0x14e4, 0x168e }, /* Broadcom BCM 57810 */
+>> +    { 0x1924, 0x0a03 }, /* Solarflare Communications
+>> +                         * SFC9220 10/40G Ethernet Controller
+>> +                         * https://bugzilla.redhat.com/show_bug.cgi?id=1975776
+> 
+> Unfortunately this is not a public bz so there's not much point in
+> referencing it in public code or commit log :-\  Thanks,
+> 
+> Alex
+> 
+>> +                         */
+>>  };
+>>  
+>>  bool vfio_opt_rom_in_denylist(VFIOPCIDevice *vdev)
+> 
 
 
