@@ -2,85 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9216777522D
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 07:19:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0261775249
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 07:41:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTbaf-00019o-4y; Wed, 09 Aug 2023 01:18:37 -0400
+	id 1qTbvL-0005ir-QS; Wed, 09 Aug 2023 01:39:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@gmail.com>)
- id 1qTbac-00019M-Am
- for qemu-devel@nongnu.org; Wed, 09 Aug 2023 01:18:34 -0400
-Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@gmail.com>)
- id 1qTbaa-0003Jr-9F
- for qemu-devel@nongnu.org; Wed, 09 Aug 2023 01:18:34 -0400
-Received: by mail-pg1-x52e.google.com with SMTP id
- 41be03b00d2f7-564b326185bso3095333a12.2
- for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 22:18:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1691558311; x=1692163111;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=T1vchhNw+HxemdR2dS5ZyswaYrJwYHNi8z6C4pxzG3o=;
- b=Vnlx6thzPV+VPPlI9QKJszkIB1gbSkrT1DR0qww+11/XlPYFxezHio8oHw9SmovM+a
- Nct29SqLM/aHzzwcGouoD1xedJidDYqOA/ej86EtAf2n1PW13e6oScY3lg2ENwO7CHId
- VdOYOmMflt1ozjruouTb5aNp+5RR8yPbPefgK6U/k5GEXj1K0P3my/brRvnUCsUAa300
- Q5p2qMuJ+F4iiuew/vCZAqaG2WtdrfIN4XU7fZcPmO8U0QAJHRrs+tLiaN+DSPkcbVFH
- bDMgfRuu+4meHDmwlNHeK9rpV9xv//S4RyEpCjQrlUU4ONJFclJFTHR8yGhovQUJxWiJ
- Vozw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691558311; x=1692163111;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=T1vchhNw+HxemdR2dS5ZyswaYrJwYHNi8z6C4pxzG3o=;
- b=eevf3ERpkTb62BP774EiJmoqzYia24IPlNuriJLS1nGzE9+M9B7e/TIPlddpGenLw4
- 1C/a9xXRbIlseXR4yy3PWHJpkFSqR3dZUxCKHFka7XVj1iMpw/IN6nQNRFETE2bhyvJ3
- FQbhwuJeVWgdbm9eiR4kecOj5vtfc/N5Ro7X6bhqwaADQBpoUNcsYiIfrN6/UEZ3F9fn
- ozE0kaHYxoPFErPdEKJQE0f0hu96ymKArDuA4nP/x+HBU7SlElfpmN0LOigSk4u+Mn8p
- /v9m+Dcx5bkNgS7u39f9xyQsrLWN67kkoo9q0v4Nx5JCdzigajz42FUX779lctQCtl1v
- 56nw==
-X-Gm-Message-State: AOJu0YxsvemW2OgpyXMloTxhWMgx6WKEYi66ucEZlvoT/HipI0vDGL7C
- 75cL6bOaZ4ZMgSnT8oG2VjQ=
-X-Google-Smtp-Source: AGHT+IFtqc7vmixc3YKzt+lsPqAC7GN1d+FKC5UpzKtO0QUNPRz7ghIMa+vTjM+L+eWS2Z0lObpLuw==
-X-Received: by 2002:a05:6a20:1c7:b0:13f:7c0e:dc74 with SMTP id
- 7-20020a056a2001c700b0013f7c0edc74mr1011388pzz.55.1691558310639; 
- Tue, 08 Aug 2023 22:18:30 -0700 (PDT)
-Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
- ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
- by smtp.gmail.com with ESMTPSA id
- j1-20020aa783c1000000b0063b96574b8bsm8943749pfn.220.2023.08.08.22.18.28
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 08 Aug 2023 22:18:30 -0700 (PDT)
-Message-ID: <41d8c647-164a-46ce-aaee-f48bc5f4d752@gmail.com>
-Date: Wed, 9 Aug 2023 14:18:27 +0900
+ (Exim 4.90_1) (envelope-from <logoerthiner1@163.com>)
+ id 1qTbvG-0005hW-0v
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 01:39:54 -0400
+Received: from m1368.mail.163.com ([220.181.13.68])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <logoerthiner1@163.com>) id 1qTbvC-0007sd-OA
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 01:39:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+ s=s110527; h=Date:From:Subject:Content-Type:MIME-Version:
+ Message-ID; bh=fkLh1475YyjR7W1+VShSHhwbzaMN7n6N4/jsqnTTy0Q=; b=f
+ i3eKfZwiYKatRikbADA/5maa4+rZkatK31s/ZNr1VsBn5eQzSffmHV0zHDI8cl57
+ h0vOALnPIm7ma+zBzBIebj5joHMuv4p4vCgnuUY9Z1bm8L4XSjP0DfDiuMaC2/f0
+ sRtMJWlpPZyyt7HKpXA+cJX38AbBujnzjE5k2kpnpE=
+Received: from logoerthiner1$163.com ( [183.242.254.172] ) by
+ ajax-webmail-wmsvr68 (Coremail) ; Wed, 9 Aug 2023 13:39:39 +0800 (CST)
+X-Originating-IP: [183.242.254.172]
+Date: Wed, 9 Aug 2023 13:39:39 +0800 (CST)
+From: ThinerLogoer  <logoerthiner1@163.com>
+To: "Peter Xu" <peterx@redhat.com>, qemu-devel@nongnu.org
+Cc: "David Hildenbrand" <david@redhat.com>, 
+ "Paolo Bonzini" <pbonzini@redhat.com>, 
+ "Igor Mammedov" <imammedo@redhat.com>, 
+ =?GBK?Q?Philippe_Mathieu-Daud=A8=A6?= <philmd@linaro.org>
+Subject: Re:Re: [PATCH v1 1/3] softmmu/physmem: fallback to opening guest
+ RAM file as readonly in a MAP_PRIVATE mapping
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version XT5.0.14 build 20230109(dcb5de15)
+ Copyright (c) 2002-2023 www.mailtech.cn 163com
+In-Reply-To: <ZNKtHVotkfgI1tb4@x1n>
+References: <20230807190736.572665-1-david@redhat.com>
+ <20230807190736.572665-2-david@redhat.com> <ZNKtHVotkfgI1tb4@x1n>
+X-NTES-SC: AL_QuySA/metk0s7yCYYekXnk4Shuc2XMu4u/gu34JTP5E0mSrkxCkyRXBkLVnYwtKRDyGBvxeTXjF11NxHVIlbQpJDr8WyzDziQhlkeHd0JyCq
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=GBK
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 9/9] docs/system: add basic virtio-gpu documentation
-Content-Language: en-US
-To: Gurchetan Singh <gurchetansingh@chromium.org>, qemu-devel@nongnu.org
-Cc: marcandre.lureau@redhat.com, kraxel@redhat.com, ray.huang@amd.com,
- alex.bennee@linaro.org, shentey@gmail.com, hi@alyssa.is, ernunes@redhat.com
-References: <20230809021108.674-1-gurchetansingh@chromium.org>
- <20230809021108.674-10-gurchetansingh@chromium.org>
-From: Akihiko Odaki <akihiko.odaki@gmail.com>
-In-Reply-To: <20230809021108.674-10-gurchetansingh@chromium.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
- envelope-from=akihiko.odaki@gmail.com; helo=mail-pg1-x52e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+Message-ID: <5ea77364.4e8d.189d8cecd7f.Coremail.logoerthiner1@163.com>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID: RMGowACndbCbJtNk17oQAA--.9342W
+X-CM-SenderInfo: 5orj0vpuwkx0thurqiywtou0bp/xtbBoR7GnmI0ZtCDYwABsm
+X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
+Received-SPF: pass client-ip=220.181.13.68; envelope-from=logoerthiner1@163.com;
+ helo=m1368.mail.163.com
+X-Spam_score_int: -13
+X-Spam_score: -1.4
+X-Spam_bar: -
+X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,171 +74,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/08/09 11:11, Gurchetan Singh wrote:
-> This adds basic documentation for virtio-gpu.
-> 
-> Suggested-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> Signed-off-by: Gurchetan Singh <gurchetansingh@chromium.org>
-> ---
-> v2: - Incorporated suggestions by Akihiko Odaki
->      - Listed the currently supported capset_names (Bernard)
-> 
-> v3: - Incorporated suggestions by Akihiko Odaki and Alyssa Ross
-> 
-> v4: - Incorporated suggestions by Akihiko Odaki
-> 
->   docs/system/device-emulation.rst   |   1 +
->   docs/system/devices/virtio-gpu.rst | 115 +++++++++++++++++++++++++++++
->   2 files changed, 116 insertions(+)
->   create mode 100644 docs/system/devices/virtio-gpu.rst
-> 
-> diff --git a/docs/system/device-emulation.rst b/docs/system/device-emulation.rst
-> index 4491c4cbf7..1167f3a9f2 100644
-> --- a/docs/system/device-emulation.rst
-> +++ b/docs/system/device-emulation.rst
-> @@ -91,6 +91,7 @@ Emulated Devices
->      devices/nvme.rst
->      devices/usb.rst
->      devices/vhost-user.rst
-> +   devices/virtio-gpu.rst
->      devices/virtio-pmem.rst
->      devices/vhost-user-rng.rst
->      devices/canokey.rst
-> diff --git a/docs/system/devices/virtio-gpu.rst b/docs/system/devices/virtio-gpu.rst
-> new file mode 100644
-> index 0000000000..d56524270d
-> --- /dev/null
-> +++ b/docs/system/devices/virtio-gpu.rst
-> @@ -0,0 +1,115 @@
-> +..
-> +   SPDX-License-Identifier: GPL-2.0
-> +
-> +virtio-gpu
-> +==========
-> +
-> +This document explains the setup and usage of the virtio-gpu device.
-> +The virtio-gpu device paravirtualizes the GPU and display controller.
-> +
-> +Linux kernel support
-> +--------------------
-> +
-> +virtio-gpu requires a guest Linux kernel built with the
-> +``CONFIG_DRM_VIRTIO_GPU`` option.
-> +
-> +QEMU virtio-gpu variants
-> +------------------------
-> +
-> +QEMU virtio-gpu device variants come in the following form:
-> +
-> + * ``virtio-vga[-BACKEND]``
-> + * ``virtio-gpu[-BACKEND][-INTERFACE]``
-> + * ``vhost-user-vga``
-> + * ``vhost-user-pci``
-> +
-> +**Backends:** QEMU provides a 2D virtio-gpu backend, and two accelerated
-> +backends: virglrenderer ('gl' device label) and rutabaga_gfx ('rutabaga'
-> +device label).  There is a vhost-user backend that runs the graphics stack
-> +in a separate process for improved isolation.
-> +
-> +**Interfaces:** QEMU further categorizes virtio-gpu device variants based
-> +on the interface exposed to the guest. The interfaces can be classified
-> +into VGA and non-VGA variants. The VGA ones are prefixed with virtio-vga
-> +or vhost-user-vga while the non-VGA ones are prefixed with virtio-gpu or
-> +vhost-user-gpu.
-> +
-> +The VGA ones always use the PCI interface, but for the non-VGA ones, the
-> +user can further pick between MMIO or PCI. For MMIO, the user can suffix
-> +the device name with -device, though vhost-user-gpu does not support MMIO.
-> +For PCI, the user can suffix it with -pci. Without these suffixes, the
-> +platform default will be chosen.
-> +
-> +This document uses the PCI interface in examples.
-
-I think it's better to omit -pci.
-
-By the way you are not adding the aliases for Rutabaga so please do so. 
-You can find the table in: softmmu/qdev-monitor.c
-
-> +
-> +virtio-gpu 2d
-> +-------------
-> +
-> +The default 2D backend only performs 2D operations. The guest needs to
-> +employ a software renderer for 3D graphics.
-> +
-> +Typically, the software renderer is provided by `Mesa`_ or `SwiftShader`_.
-> +Mesa's implementations (LLVMpipe, Lavapipe and virgl below) work out of box
-> +on typical modern Linux distributions.
-> +
-> +.. parsed-literal::
-> +    -device virtio-gpu-pci
-> +
-> +.. _Mesa: https://www.mesa3d.org/
-> +.. _SwiftShader: https://github.com/google/swiftshader
-> +
-> +virtio-gpu virglrenderer
-> +------------------------
-> +
-> +When using virgl accelerated graphics mode in the guest, OpenGL API calls
-> +are translated into an intermediate representation (see `Gallium3D`_). The
-> +intermediate representation is communicated to the host and the
-> +`virglrenderer`_ library on the host translates the intermediate
-> +representation back to OpenGL API calls.
-> +
-> +.. parsed-literal::
-> +    -device virtio-gpu-gl-pci
-> +
-> +.. _Gallium3D: https://www.freedesktop.org/wiki/Software/gallium/
-> +.. _virglrenderer: https://gitlab.freedesktop.org/virgl/virglrenderer/
-> +
-> +virtio-gpu rutabaga
-> +-------------------
-> +
-> +virtio-gpu can also leverage `rutabaga_gfx`_ to provide `gfxstream`_
-> +rendering and `Wayland display passthrough`_.  With the gfxstream rendering
-> +mode, GLES and Vulkan calls are forwarded to the host with minimal
-> +modification.
-> +
-> +The crosvm book provides directions on how to build a `gfxstream-enabled
-> +rutabaga`_ and launch a `guest Wayland proxy`_.
-> +
-> +This device does require host blob support (``hostmem`` field below). The
-> +``hostmem`` field specifies the size of virtio-gpu host memory window.
-> +This is typically between 256M and 8G.
-> +
-> +At least one capset (see colon separated ``capset_names`` below) must be
-> +specified when starting the device.  The currently supported
-> +``capset_names`` are ``gfxstream-vulkan`` and ``cross-domain`` on Linux
-> +guests. For Android guests, ``gfxstream-gles`` is also supported.
-> +
-> +The device will try to auto-detect the wayland socket path if the
-> +``cross-domain`` capset name is set.  The user may optionally specify
-> +``wayland_socket_path`` for non-standard paths.
-> +
-> +The ``wsi`` option can be set to ``surfaceless`` or ``headless``.
-> +Surfaceless doesn't create a native window surface, but does copy from the
-> +render target to the Pixman buffer if a virtio-gpu 2D hypercall is issued.
-> +Headless is like surfaceless, but doesn't copy to the Pixman buffer.
-> +Surfaceless is the default if ``wsi`` is not specified.
-> +
-> +.. parsed-literal::
-> +    -device virtio-gpu-rutabaga-pci,capset_names=gfxstream-vulkan:cross-domain,
-> +       hostmem=8G,wayland_socket_path=/tmp/nonstandard/mock_wayland.sock,
-> +       wsi=headless
-> +
-> +.. _rutabaga_gfx: https://github.com/google/crosvm/blob/main/rutabaga_gfx/ffi/src/include/rutabaga_gfx_ffi.h
-> +.. _gfxstream: https://android.googlesource.com/platform/hardware/google/gfxstream/
-> +.. _Wayland display passthrough: https://www.youtube.com/watch?v=OZJiHMtIQ2M
-> +.. _gfxstream-enabled rutabaga: https://crosvm.dev/book/appendix/rutabaga_gfx.html
-
-The build procedure looks almost good, but a command for building gfxstream:
-meson -Ddefault_library=static build/
-
-This results in a warning:
-WARNING: Running the setup command as `meson [options]` instead of 
-`meson setup [options]` is ambiguous and deprecated.
-
-The same goes for the command for guest-side libraries.
-
-> +.. _guest Wayland proxy: https://crosvm.dev/book/devices/wayland.html
+QXQgMjAyMy0wOC0wOSAwNTowMToxNywgIlBldGVyIFh1IiA8cGV0ZXJ4QHJlZGhhdC5jb20+IHdy
+b3RlOgo+T24gTW9uLCBBdWcgMDcsIDIwMjMgYXQgMDk6MDc6MzJQTSArMDIwMCwgRGF2aWQgSGls
+ZGVuYnJhbmQgd3JvdGU6Cj4+IEZyb206IFRoaW5lciBMb2dvZXIgPGxvZ29lcnRoaW5lcjFAMTYz
+LmNvbT4KPj4gCj4+IFVzZXJzIG1heSBzcGVjaWZ5Cj4+ICogIi1tZW0tcGF0aCIgb3IKPj4gKiAi
+LW9iamVjdCBtZW1vcnktYmFja2VuZC1maWxlLHNoYXJlPW9mZixyZWFkb25seT1vZmYiCj4+IGFu
+ZCBleHBlY3Qgc3VjaCBDT1cgKE1BUF9QUklWQVRFKSBtYXBwaW5ncyB0byB3b3JrLCBldmVuIGlm
+IHRoZSB1c2VyCj4+IGRvZXMgbm90IGhhdmUgd3JpdGUgcGVybWlzc2lvbnMgdG8gb3BlbiB0aGUg
+ZmlsZS4KPj4gCj4+IEZvciBub3csIHdlIHdvdWxkIGFsd2F5cyBmYWlsIGluIHRoYXQgY2FzZSwg
+YWx3YXlzIHJlcXVpcmluZyBmaWxlIHdyaXRlCj4+IHBlcm1pc3Npb25zLiBMZXQncyBkZXRlY3Qg
+d2hlbiB0aGF0IGZhaWx1cmUgaGFwcGVucyBhbmQgZmFsbGJhY2sgdG8gb3BlbmluZwo+PiB0aGUg
+ZmlsZSByZWFkb25seS4KPj4gCj4+IFdhcm4gdGhlIHVzZXIsIHNpbmNlIHRoZXJlIGFyZSBvdGhl
+ciB1c2UgY2FzZXMgd2hlcmUgd2Ugd2FudCB0aGUgZmlsZSB0bwo+PiBiZSBtYXBwZWQgd3JpdGFi
+bGU6IGZ0cnVuY2F0ZSgpIGFuZCBmYWxsb2NhdGUoKSB3aWxsIGZhaWwgaWYgdGhlIGZpbGUKPj4g
+d2FzIG5vdCBvcGVuZWQgd2l0aCB3cml0ZSBwZXJtaXNzaW9ucy4KPj4gCj4+IFNpZ25lZC1vZmYt
+Ynk6IFRoaW5lciBMb2dvZXIgPGxvZ29lcnRoaW5lcjFAMTYzLmNvbT4KPj4gQ28tZGV2ZWxvcGVk
+LWJ5OiBEYXZpZCBIaWxkZW5icmFuZCA8ZGF2aWRAcmVkaGF0LmNvbT4KPj4gU2lnbmVkLW9mZi1i
+eTogRGF2aWQgSGlsZGVuYnJhbmQgPGRhdmlkQHJlZGhhdC5jb20+Cj4+IC0tLQo+PiAgc29mdG1t
+dS9waHlzbWVtLmMgfCAyNiArKysrKysrKysrKysrKysrKystLS0tLS0tLQo+PiAgMSBmaWxlIGNo
+YW5nZWQsIDE4IGluc2VydGlvbnMoKyksIDggZGVsZXRpb25zKC0pCj4+IAo+PiBkaWZmIC0tZ2l0
+IGEvc29mdG1tdS9waHlzbWVtLmMgYi9zb2Z0bW11L3BoeXNtZW0uYwo+PiBpbmRleCAzZGY3MzU0
+MmUxLi5kMWFlNjk0YjIwIDEwMDY0NAo+PiAtLS0gYS9zb2Z0bW11L3BoeXNtZW0uYwo+PiArKysg
+Yi9zb2Z0bW11L3BoeXNtZW0uYwo+PiBAQCAtMTI4OSw4ICsxMjg5LDcgQEAgc3RhdGljIGludDY0
+X3QgZ2V0X2ZpbGVfYWxpZ24oaW50IGZkKQo+PiAgc3RhdGljIGludCBmaWxlX3JhbV9vcGVuKGNv
+bnN0IGNoYXIgKnBhdGgsCj4+ICAgICAgICAgICAgICAgICAgICAgICAgICAgY29uc3QgY2hhciAq
+cmVnaW9uX25hbWUsCj4+ICAgICAgICAgICAgICAgICAgICAgICAgICAgYm9vbCByZWFkb25seSwK
+Pj4gLSAgICAgICAgICAgICAgICAgICAgICAgICBib29sICpjcmVhdGVkLAo+PiAtICAgICAgICAg
+ICAgICAgICAgICAgICAgIEVycm9yICoqZXJycCkKPj4gKyAgICAgICAgICAgICAgICAgICAgICAg
+ICBib29sICpjcmVhdGVkKQo+PiAgewo+PiAgICAgIGNoYXIgKmZpbGVuYW1lOwo+PiAgICAgIGNo
+YXIgKnNhbml0aXplZF9uYW1lOwo+PiBAQCAtMTMzNCwxMCArMTMzMyw3IEBAIHN0YXRpYyBpbnQg
+ZmlsZV9yYW1fb3Blbihjb25zdCBjaGFyICpwYXRoLAo+PiAgICAgICAgICAgICAgZ19mcmVlKGZp
+bGVuYW1lKTsKPj4gICAgICAgICAgfQo+PiAgICAgICAgICBpZiAoZXJybm8gIT0gRUVYSVNUICYm
+IGVycm5vICE9IEVJTlRSKSB7Cj4+IC0gICAgICAgICAgICBlcnJvcl9zZXRnX2Vycm5vKGVycnAs
+IGVycm5vLAo+PiAtICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiY2FuJ3Qgb3BlbiBiYWNr
+aW5nIHN0b3JlICVzIGZvciBndWVzdCBSQU0iLAo+PiAtICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICBwYXRoKTsKPj4gLSAgICAgICAgICAgIHJldHVybiAtMTsKPj4gKyAgICAgICAgICAgIHJl
+dHVybiAtZXJybm87Cj4+ICAgICAgICAgIH0KPj4gICAgICAgICAgLyoKPj4gICAgICAgICAgICog
+VHJ5IGFnYWluIG9uIEVJTlRSIGFuZCBFRVhJU1QuICBUaGUgbGF0dGVyIGhhcHBlbnMgd2hlbgo+
+PiBAQCAtMTk0Niw5ICsxOTQyLDIzIEBAIFJBTUJsb2NrICpxZW11X3JhbV9hbGxvY19mcm9tX2Zp
+bGUocmFtX2FkZHJfdCBzaXplLCBNZW1vcnlSZWdpb24gKm1yLAo+PiAgICAgIGJvb2wgY3JlYXRl
+ZDsKPj4gICAgICBSQU1CbG9jayAqYmxvY2s7Cj4+ICAKPj4gLSAgICBmZCA9IGZpbGVfcmFtX29w
+ZW4obWVtX3BhdGgsIG1lbW9yeV9yZWdpb25fbmFtZShtciksIHJlYWRvbmx5LCAmY3JlYXRlZCwK
+Pj4gLSAgICAgICAgICAgICAgICAgICAgICAgZXJycCk7Cj4+ICsgICAgZmQgPSBmaWxlX3JhbV9v
+cGVuKG1lbV9wYXRoLCBtZW1vcnlfcmVnaW9uX25hbWUobXIpLCByZWFkb25seSwgJmNyZWF0ZWQp
+Owo+PiArICAgIGlmIChmZCA9PSAtRUFDQ0VTICYmICEocmFtX2ZsYWdzICYgUkFNX1NIQVJFRCkg
+JiYgIXJlYWRvbmx5KSB7Cj4+ICsgICAgICAgIC8qCj4+ICsgICAgICAgICAqIFdlIGNhbiBoYXZl
+IGEgd3JpdGFibGUgTUFQX1BSSVZBVEUgbWFwcGluZyBvZiBhIHJlYWRvbmx5IGZpbGUuCj4+ICsg
+ICAgICAgICAqIEhvd2V2ZXIsIHNvbWUgb3BlcmF0aW9ucyBsaWtlIGZ0cnVuY2F0ZSgpIG9yIGZh
+bGxvY2F0ZSgpIG1pZ2h0IGZhaWwKPj4gKyAgICAgICAgICogbGF0ZXIsIGxldCdzIHdhcm4gdGhl
+IHVzZXIuCj4+ICsgICAgICAgICAqLwo+PiArICAgICAgICBmZCA9IGZpbGVfcmFtX29wZW4obWVt
+X3BhdGgsIG1lbW9yeV9yZWdpb25fbmFtZShtciksIHRydWUsICZjcmVhdGVkKTsKPj4gKyAgICAg
+ICAgaWYgKGZkID49IDApIHsKPj4gKyAgICAgICAgICAgIHdhcm5fcmVwb3J0KCJiYWNraW5nIHN0
+b3JlICVzIGZvciBndWVzdCBSQU0gKE1BUF9QUklWQVRFKSBvcGVuZWQiCj4+ICsgICAgICAgICAg
+ICAgICAgICAgICAgICAiIHJlYWRvbmx5IGJlY2F1c2UgdGhlIGZpbGUgaXMgbm90IHdyaXRhYmxl
+IiwgbWVtX3BhdGgpOwo+Cj5JIGNhbiB1bmRlcnN0YW5kIHRoZSB1c2UgY2FzZSwgYnV0IHRoaXMg
+d2lsbCBiZSBzbGlnaHRseSB1bndhbnRlZCwKPmVzcGVjaWFsbHkgdGhlIHVzZXIgZG9lc24ndCB5
+ZXQgaGF2ZSBhIHdheSB0byBwcmVkaWN0IHdoZW4gd2lsbCBpdCBoYXBwZW4uCj4KPk1lYW53aGls
+ZSB0aGlzIGNoYW5nZXMgdGhlIGJlaGF2aW9yLCBpcyBpdCBhIGNvbmNlcm4gdGhhdCBzb21lb25l
+IG1heSB3YW50Cj50byByZWx5IG9uIGN1cnJlbnQgYmVoYXZpb3Igb2YgZmFpbGluZz8KPgoKSSBh
+bSBoYXBweSB0byBsZWFybiBpZiB0aGVyZSBpcyBzb21lIHNvbGlkIGV2aWRlbmNlIHN1cHBvcnRp
+bmcgdGhpcyB2aWV3LgoKVGhlIHRhcmdldCBvZiBjb21wYXRpYmlsaXR5IGlzICJwcml2YXRlK2Rp
+c2NhcmQiIHdoaWNoIHNlZW1zIGl0c2VsZiBwYXRob2xvZ2ljYWwKcHJhY3RpY2UgaW4gZWFybHkg
+ZGlzY3Vzc2lvbi4gVGhlIG9ubHkgZGlmZmVyZW5jZSBpbiBiZWhhdmlvciB0aGF0IG1pZ2h0IGJl
+IHVud2FudGVkCmluIHlvdXIgYXJndW1lbnQgbGllcyBpbiAicmVhZG9ubHkgZmlsZStwcml2YXRl
+K2Rpc2NhcmQiIGZhaWx1cmUgdGltZS4gQmVmb3JlIHRoZQpwYXRjaCBpdCBmYWlscyBlYXJseSwg
+YWZ0ZXIgdGhlIHBhdGNoIGl0IGZhaWxzIGxhdGVyIGFuZCBtYXkgZG9lcyBhZGRpdGlvbmFsIHN0
+dWZmLgpEbyB5b3UgdGhpbmsgdGhhdCBhIGJ1ZyByZXBvcnRpbmcgbWVjaGFuaXNtIHdoaWNoIHJl
+bGllcyBvbiBxZW11IGZhaWx1cmUKdGltaW5nIGlzIHZhbGlkPwoKSWYgc29tZW9uZSBhcmd1ZXMg
+dGhhdCAicmVhZG9ubHkgZmlsZStwcml2YXRlK2Rpc2NhcmQiIGVhcmx5IGZhaWx1cmUgYmVoYXZp
+b3IKaXMgYWxsIHdoZXJlIHRoZWlyIHN5c3RlbSByZWxpZXMsIEkgd291bGQgYmUgaGFwcHkgdG8g
+bGVhcm4gd2h5LiBBY3R1YWxseSB0aGlzCmlzIG11Y2ggZWFzaWVyIHRvIHNvbHZlIG91dHNpZGUg
+cWVtdSwgYnkgY2hlY2tpbmcgbWVtb3J5IGZpbGUgcGVybWlzc2lvbiwKY29tcGFyZWQgdG8gdGhl
+ICJyZWFkb25seStwcml2YXRlIiBhbHRlcm5hdGl2ZSBwbGFuIHRoYXQgcmVxdWlyZXMgYSBidHJm
+cy4KCkluIHRoZSBsb25nIHJ1biB0aGUgInByaXZhdGUrZGlzY2FyZCIgc2V0dXAgbWF5IGl0c2Vs
+ZiBiZSB3YXJuZWQgYW5kCmRlcHJlY2F0ZWQsIHJhdGhlciB0aGFuICJwcml2YXRlK3JlYWRvbmx5
+IGZpbGUiIHdoaWNoIGlzIHN1cHBvcnRlZCBieQpsaW51eCBrZXJuZWwuCgpDdXJyZW50IHBhdGNo
+IGlzIGFscmVhZHkgYSBjb21wcm9taXNlIGNvbnNpZGVyaW5nIGNvbXBhdGliaWxpdHksIGFzIGl0
+CmFsd2F5cyB0cmllcyBvcGVuIHRoZSBmaWxlIGluIHJlYWR3cml0ZSBtb2RlIGZpcnN0LCB0byBw
+ZXJzaXN0IGJlaGF2aW9yIG9uCiJyZWFkd3JpdGUrcHJpdmF0ZStkaXNjYXJkIiBjYXNlLiBQZXJz
+b25hbGx5IEkgcHJlZmVyIHRvIHRyeSBvcGVuaW5nIHRoZSBmaWxlCnJlYWRvbmx5IGZpcnN0LCBh
+cyB0aGlzIHdpbGwgcmVkdWNlIHRoZSByaXNrIG9mIG9wZW5pbmcgcmFtIGZpbGUgYWNjaWRlbnRh
+bGx5CndpdGggd3JpdGUgcGVybWlzc2lvbi4KCkhvd2V2ZXIgSSBjYW4gYWNjZXB0IGEgc2Vjb25k
+IGxldmVsIG9mIGNvbXByb21pc2UsIGFrYSBhZGRpbmcgIi1kaXNhbGxvdy1wcml2YXRlLWRpc2Nh
+cmQiCnRvIHFlbXUgYXJndW1lbnQgZm9yIGF0IGxlYXN0IHRocmVlIHFlbXUgcmVsZWFzZXMgYmVm
+b3JlICJwcml2YXRlK2Rpc2NhcmQiCmdldCBkZXByZWNhdGVkIGFuZCByZW1vdmVkLCBpZiBleHRy
+ZW1lIGNvbXBhdGliaWxpdHkgZW50aHVzaWFzdCBpcyBpbnZvbHZlZC4KV2l0aCB0aGlzIGFyZ3Vt
+ZW50LCByZWFkb25seSBwcml2YXRlIGlzIGVuYWJsZWQgYW5kIHByaXZhdGUKZGlzY2FyZCBmYWls
+cyBpbW1lZGlhdGVseSB3aGVuIGRpc2NhcmQgcmVxdWVzdCBpcyBkZXRlY3RlZCwgYW5kIHdpdGhv
+dXQgdGhpcwphcmd1bWVudCByZWFkb25seSBwcml2YXRlIGlzIGRpc2FibGVkIGFuZCB0aGUgYmVo
+YXZpb3IgaXMgdW5jaGFuZ2VkLgpUaGlzIGFyZ3VtZW50IGlzIHVzZWZ1bCBhbHNvIGJlY2F1c2Ug
+aXQgaGVscHMKZmluZGluZyBvdXQgZXhpc3RlbnQgInByaXZhdGUrZGlzY2FyZCIgYmVoYXZpb3Ig
+YW5kIGFzc2lzdHMgZGVidWdnaW5nLgpEbyB5b3UgdGhpbmsgdGhhdCB0aGlzIHNvbHV0aW9uIHBh
+eXMgb2ZmPwooSSBhbSBubyBleHBlcnQgcWVtdSBwcm9ncmFtbWVyLCBob3BlIGFueW9uZSBlbHNl
+IHRvIGhhbmRsZSB0aGUgY29tbWFuZApsaW5lIGFyZ3VtZW50cyBpZiB0aGlzIGlzIHByZWZlcnJl
+ZCkKCj5UbyB0aGluayBmcm9tIGEgaGlnaGVyIGxldmVsIG9mIGN1cnJlbnQgdXNlIGNhc2UsIHRo
+ZSBpZGVhbCBzb2x1dGlvbiBzZWVtcwo+dG8gbWUgdGhhdCBpZiB0aGUgcmFtIGZpbGUgY2FuIGJl
+IHB1dCBvbiBhIGZpbGUgc3lzdGVtIHRoYXQgc3VwcG9ydHMgQ29XCj5pdHNlbGYgKGxpa2UgYnRy
+ZnMpLCB3ZSBjYW4gc25hcHNob3QgdGhhdCByYW0gZmlsZSBhbmQgbWFrZSBpdCBSVyBmb3IgdGhl
+Cj5xZW11IGluc3RhbmNlLiBUaGVuIGhlcmUgaXQnbGwgYmUgYWJsZSB0byBvcGVuIHRoZSBmaWxl
+LiAgV2UnbGwgYmUgYWJsZSB0bwo+a2VlcCB0aGUgaW50ZXJmYWNlIHdvcmtpbmcgYXMgYmVmb3Jl
+LCBtZWFud2hpbGUgaXQnbGwgd29yayB3aXRoIGZhbGxvY2F0ZQo+b3IgdHJ1bmNhdGlvbnMgdG9v
+IEkgYXNzdW1lLgo+Cj5Xb3VsZCB0aGF0IGJlIGJldHRlciBpbnN0ZWFkIG9mIGNoYW5naW5nIFFF
+TVU/Cj4KCkkgYW0gYWZyYWlkIHRoYXQgeW91ciBhbHRlcm5hdGl2ZSBzb2x1dGlvbiB3aWxsIG1h
+a2UgaXQgc3RpbGwgaW1wb3NzaWJsZQpmb3IgdGhlIHVzZSBjYXNlIHRvIGJlIHVzZWQgb24gcm9v
+dGxlc3Mgc3lzdGVtOyB3aGlsZSBNQVBfUFJJVkFURQpiYXNlZCBDb1cgd29ya3MgYW55d2hlcmUu
+IEZvciBleGFtcGxlIHRoaXMgd2lsbCBub3Qgd29yayBvbiBleHQ0IHdpdGgKcmVhZG9ubHkgZmls
+ZSBtb2RlLCBvciB0aGF0IHRoZSBmaWxlIGlzIG93bmVkIGJ5IHJvb3QgYW5kIHlvdSBhcmUKbm9y
+bWFsIHVzZXIsIGFuZCBvbiBzcXVhc2hmcy4gQmFzaWNhbGx5IGV2ZXJ5dGhpbmcgb24gdGhlIG1h
+Y2hpbmUKc2hvdWxkIGJlIHJlYWRvbmx5IGFuZCB5b3UgYXJlIGFsc28gb25seSBhIG5vYm9keSwg
+dGhlbgpvbmx5IHRoZSBpbi1xZW11IGNob2ljZSBpcyBwb3NzaWJsZS4KCkkgYmVsaWV2ZSB0aGUg
+d2FybmluZyB0aGF0IHRoZSBmaWxlIGlzIG9wZW5lZCByZWFkb25seSBpcyBlbm91Z2gKZm9yIHBv
+dGVudGlhbCB1c2VyIHRvIGNvbnNpZGVyIGRvaW5nIG90aGVyd2lzZS4gRG8geW91IHRoaW5rIHRo
+YXQKbG9va2luZyBzb2xlbHkgYXQgcWVtdSBleGl0IHN0YXR1cyBhbmQgcGlwZSBhbGwgcWVtdSBz
+dGRlcnIgbG9nIHRvIC9kZXYvbnVsbAphbGwgdGhlIHRpbWUgaXMgb25lIG9mIHRoZSBzdXBwb3J0
+ZWQgdXNlIGNhc2VzPwoKLS0KClJlZ2FyZHMsCgpsb2dvZXJ0aGluZXI=
 
