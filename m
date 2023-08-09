@@ -2,68 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3B08776A1C
+	by mail.lfdr.de (Postfix) with ESMTPS id AB9E2776A1B
 	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 22:36:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTptH-0004LR-Gt; Wed, 09 Aug 2023 16:34:47 -0400
+	id 1qTptK-0004MC-4H; Wed, 09 Aug 2023 16:34:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shorne@gmail.com>) id 1qTptF-0004LJ-ID
- for qemu-devel@nongnu.org; Wed, 09 Aug 2023 16:34:45 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <shorne@gmail.com>) id 1qTptI-0004Li-D8
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 16:34:48 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shorne@gmail.com>) id 1qTptD-000146-UP
- for qemu-devel@nongnu.org; Wed, 09 Aug 2023 16:34:45 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-3fe2d218eedso1693815e9.0
- for <qemu-devel@nongnu.org>; Wed, 09 Aug 2023 13:34:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <shorne@gmail.com>) id 1qTptG-00014i-SC
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 16:34:48 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-317c3ac7339so251626f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 09 Aug 2023 13:34:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1691613281; x=1692218081;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=3dsODYW+B5PeLwCUlqIs9FYG3OHgKJCzKu7xEC8wIc8=;
- b=hW9E3IX9wf97YKGDHfwB3jFrCMpwwqOXNM3i3PfllzmjJz8tEGuzJhMujNkzQdRUR0
- PtfYy7ZHWutsciy3hOEGoV2WyLB+fOsYSLl94zBpdg3aWq4cKF0hZN5YSr+rOMLqMugY
- HNHWzSmIKAngdZlfZS4xHXm2Fj1h0vLSZTknF0p82sLXQR62H4Hl7TojHRnS46cxIdaD
- vMxv1QXAKJARP/tIWCt/f6IFx7/yc9IK5JUzRwX0IWi3dyFzBhuzHg+ZhmI1Xr/jMBPm
- m838MXwLXwDE+RXoDW6SBpk51THqr3sOp5y35oKc5Mnb+L8xGI7DgSsQkr8ZGc+Mtu7f
- ISPQ==
+ d=gmail.com; s=20221208; t=1691613284; x=1692218084;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=iKD6WWO6p/9oTv8bApcU7nPsFXgbOEwMT1T7aFVY2oY=;
+ b=ljh2YCtNLiPkoOjD+4mJE5fIIrccPG/dTdI0LKrexgqPE2gJTuDelEqfnpe6rj1s0u
+ 1bQH2tUNya6Sn5kbKPJnQcvaGtJxi5f4MRwfnT3WBW0JZ78qhwPEjq38xgvfor8/sMsm
+ ByDvzHi5f8jMHYgCDwri8hH8TB73ufHqi8Rne14k9P8RrAVCO2KeRR0I7kXnYl0FUa9F
+ TyNugEdFRZt9Jr/Prwp9Eeb9iUZM/IeaGJ4n4nH/CwZsBeNWjMYRyMdamyFM1KjpCUIS
+ xv+SmCt3VYnZ9OPlIHSE1yLj2hngs2wBVcVzaH+j2q3AivUzCuU2uV2GvXVVG6OKQqcv
+ Rj2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691613281; x=1692218081;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=3dsODYW+B5PeLwCUlqIs9FYG3OHgKJCzKu7xEC8wIc8=;
- b=L44XKfCT6+jDg/O2nSqyr6TtCCCjMMfkfAoRsEr0s9ezzercqKxyps36uKmOJcCiUR
- 92xLW6ELpnK6lW4UgYFqHPIr/MvxyYO5C6m8A7INO+WSSgIbJtNP57LbaawVsDBPehsx
- h4S1JNdRsgtVrV/PxCzFquAKhdKPMJBLXtiF95pyPyj6ezmTrKpFJfzEiXp3gAMnNMcY
- F+C6Y/xWbvxJvXzb64IeU/6Sk/e3WlIdvmFxjtLzrkZtlHRPhYj/Kl9lpRHKSf75TG06
- BVoNpDScyiuBWgFmJyU3DcZJYPukM3/iMP0G5NoOG8FTxreJ2JOgxHJlHR2jdqF0ybqI
- ZJjg==
-X-Gm-Message-State: AOJu0Yz7EbyzbWZAzPIvZOafaMDTL7O/uhmtCQEcH5gNNJzborXYjrl0
- /emJqD5S+x3f9qInSVAZLut8oE3WUS0UZw==
-X-Google-Smtp-Source: AGHT+IFXAa1vBwVp+ZsO6/j3NWEctf8Lb6pCECuRIYEh/p4sREeImKfJ8iUAdFTiks7YSIYWfHd9fA==
-X-Received: by 2002:a1c:4b0b:0:b0:3fb:ac9c:e6f with SMTP id
- y11-20020a1c4b0b000000b003fbac9c0e6fmr167613wma.38.1691613281375; 
- Wed, 09 Aug 2023 13:34:41 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1691613284; x=1692218084;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=iKD6WWO6p/9oTv8bApcU7nPsFXgbOEwMT1T7aFVY2oY=;
+ b=Dn1QmtU8GAEjYHJlkO4hrfoEo85xHEYa/MuR0G/n33zKIUAlVJ4nIe47YTlQUlNbb7
+ 5DkoggOb8Ad4g1DXmQjO7ddeN8MBfEXKRGBL0ntapfho30kW+yM+/N1e44XBGBoCIsyO
+ AoWwmYDeTRB22TdUW1coipGUbGbt+mWUlm1RKA3xvwUpvbLafOd1SONVZjEZV9LHn7OR
+ ho/99E0IpBO1nW5Lo08m8j4h5sMQnAcYt4HT/379Q4A+np+6NnTMqDx3WDe3zFazMQXZ
+ xYNn2y4mWml5ze6I4Pqe5XrnD9LbE8okbKKQ4WZ55jd2999FtcVrI4MqJkbfAwvaEiQg
+ fOsw==
+X-Gm-Message-State: AOJu0YwIpOa2lFkySGUtuP56tmm+5LCM3mH8Q70E97lb/1hsNaV0mnf/
+ lPUW1m1N/ona7wdc8AeFvsHsPSWX3fpuCA==
+X-Google-Smtp-Source: AGHT+IG+aMy05E1HnhDg6BBo+7IqXqeOf+9j9zEZ/6nB9tHewDzJe0HkXzJWGRjhf7YOvZPdOOLZ0Q==
+X-Received: by 2002:a5d:4105:0:b0:317:df3e:134 with SMTP id
+ l5-20020a5d4105000000b00317df3e0134mr342393wrp.65.1691613284219; 
+ Wed, 09 Aug 2023 13:34:44 -0700 (PDT)
 Received: from localhost (cpc1-brnt4-2-0-cust862.4-2.cable.virginm.net.
  [86.9.131.95]) by smtp.gmail.com with ESMTPSA id
- fk3-20020a05600c0cc300b003fc05b89e5bsm8412wmb.34.2023.08.09.13.34.40
+ m9-20020adfe0c9000000b003145559a691sm18161399wri.41.2023.08.09.13.34.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 09 Aug 2023 13:34:40 -0700 (PDT)
+ Wed, 09 Aug 2023 13:34:43 -0700 (PDT)
 From: Stafford Horne <shorne@gmail.com>
 To: QEMU Development <qemu-devel@nongnu.org>
-Cc: Stafford Horne <shorne@gmail.com>
-Subject: [PULL 0/1] OpenRISC FPU Fix for 8.1
-Date: Wed,  9 Aug 2023 21:34:31 +0100
-Message-Id: <20230809203432.424071-1-shorne@gmail.com>
+Cc: Stafford Horne <shorne@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 1/1] target/openrisc: Set EPCR to next PC on FPE exceptions
+Date: Wed,  9 Aug 2023 21:34:32 +0100
+Message-Id: <20230809203432.424071-2-shorne@gmail.com>
 X-Mailer: git-send-email 2.39.1
+In-Reply-To: <20230809203432.424071-1-shorne@gmail.com>
+References: <20230809203432.424071-1-shorne@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=shorne@gmail.com; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=shorne@gmail.com; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -86,28 +90,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit ccdd31267678db9d80578b5f80bbe94141609ef4:
+The architecture specification calls for the EPCR to be set to "Address
+of next not executed instruction" when there is a floating point
+exception (FPE).  This was not being done, so fix it by using the same
+pattern as syscall.  Also, we move this logic down to be done for
+instructions not in the delay slot as called for by the architecture
+manual.
 
-  Merge tag 'pull-qapi-2023-07-26-v2' of https://repo.or.cz/qemu/armbru into staging (2023-07-26 07:16:19 -0700)
+Without this patch FPU exceptions will loop, as the exception handling
+will always return back to the failed floating point instruction.
 
-are available in the Git repository at:
+This was not noticed in earlier testing because:
 
-  https://github.com/stffrdhrn/qemu.git tags/or1k-pull-request-20230809
+ 1. The compiler usually generates code which clobbers the input operand
+    such as:
 
-for you to fetch changes up to 765fdc1e8355d4bae563b3b185c5f9d079384164:
+      lf.div.s r19,r17,r19
 
-  target/openrisc: Set EPCR to next PC on FPE exceptions (2023-07-31 22:01:03 +0100)
+ 2. The target will store the operation output before to the register
+    before handling the exception.  So an operation such as:
 
-----------------------------------------------------------------
-OpenRISC FPU Fix for 8.1
+      float a = 100.0f;
+      float b = 0.0f;
+      float c = a / b;    /* lf.div.s r19,r17,r19 */
 
-A patch to pass the correct exception address when handling floating
-point exceptions.
+    Will first execute:
 
-----------------------------------------------------------------
-Stafford Horne (1):
-      target/openrisc: Set EPCR to next PC on FPE exceptions
+      100 / 0    -> Store inf to c (r19)
+                 -> triggering divide by zero exception
+                 -> handle and return
 
+    Then it will execute:
+
+      100 / inf  -> Store 0 to c  (no exception)
+
+To confirm the looping behavior and the fix I used the following:
+
+    float fpu_div(float a, float b) {
+	float c;
+	asm volatile("lf.div.s %0, %1, %2"
+		      : "+r" (c)
+		      : "r" (a), "r" (b));
+	return c;
+    }
+
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Stafford Horne <shorne@gmail.com>
+---
  target/openrisc/interrupt.c | 7 ++++---
  1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/target/openrisc/interrupt.c b/target/openrisc/interrupt.c
+index 3887812810..d4fdb8ce8e 100644
+--- a/target/openrisc/interrupt.c
++++ b/target/openrisc/interrupt.c
+@@ -34,9 +34,7 @@ void openrisc_cpu_do_interrupt(CPUState *cs)
+     int exception = cs->exception_index;
+ 
+     env->epcr = env->pc;
+-    if (exception == EXCP_SYSCALL) {
+-        env->epcr += 4;
+-    }
++
+     /* When we have an illegal instruction the error effective address
+        shall be set to the illegal instruction address.  */
+     if (exception == EXCP_ILLEGAL) {
+@@ -63,6 +61,9 @@ void openrisc_cpu_do_interrupt(CPUState *cs)
+         env->epcr -= 4;
+     } else {
+         env->sr &= ~SR_DSX;
++        if (exception == EXCP_SYSCALL || exception == EXCP_FPE) {
++            env->epcr += 4;
++        }
+     }
+ 
+     if (exception > 0 && exception < EXCP_NR) {
+-- 
+2.39.1
+
 
