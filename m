@@ -2,78 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBA8D775F52
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 14:38:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0343775F5B
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 14:39:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTiRH-0002ZC-Kf; Wed, 09 Aug 2023 08:37:23 -0400
+	id 1qTiRI-0002Zr-7v; Wed, 09 Aug 2023 08:37:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
- id 1qTiRF-0002Xf-3G
+ id 1qTiRF-0002Xp-Cq
  for qemu-devel@nongnu.org; Wed, 09 Aug 2023 08:37:21 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
- id 1qTiRC-0002nm-Aw
+ id 1qTiRC-0002nu-Aa
  for qemu-devel@nongnu.org; Wed, 09 Aug 2023 08:37:20 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-314172bac25so5143703f8f.3
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-3fe1fc8768aso65039055e9.1
  for <qemu-devel@nongnu.org>; Wed, 09 Aug 2023 05:37:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1691584635; x=1692189435;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=/4ysh9xQ8pcgY+P8IcJ5XzhWArdi/CT5G2Y6EcaPHbo=;
- b=OpNWUhihDLHlvVr6Y0IQh7P6heQit8mh0P2tbEIX5waUneUCpbTTygJFI+Pi05/izt
- xKeuF8WjRrgSdMTYOWq46N9+Fm7DlhJypaTIeDeWYFjITpXQVh821C1xBRGPeY6/056S
- QF/vEJahEzjxAKG9mWEb0DyxCzaoH7zYtxLv5+7c0hf26JKY0K1Q7cwtKd+VAihBkLJo
- kcjfqgSNXu8lRNBK3ABrOm3tqNO3kZ12BVa7szbEttrDWYuyo4viB9xS6EwHs2e7N4EN
- MtxTasv8EyXFSrEhe60rINIiwcj0NoSzxzu3QThYsqgvFefIBtwSfg330rMDm/7jbzdu
- 9ZSQ==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=CuvReQXvG/EOd6YQVXedXfCkpVkxyqWb9vu/7k0okhs=;
+ b=nSZX/z/kVJyX8+oBBQKdrz3jsv1UBNGGj5ghtIFyueJdQmnZ9Vr5wgDPJrgkAVzHmY
+ xMJ9/wx5lIrRN5buX1KDo2OzFt9mJf9iBvzkxvnjXTPtNRdb1mtQu+VZ5xGoXELgqBki
+ O6wjQ6E6kylCI4id/hMPEYYMLLXAnBoChhymi/iUq7sYekbHTYf7Sbo6gf+LbW0DM1Ju
+ 6PBdOj5a9gcwlBfdS3AQpcDJd+tDbvCqpxVU1l0JmUKYVEiJKINCHCGAAell4NlgdzFb
+ by0UR204ZPb8VE/XNXGwh1tCpBcIf0ljbIc7HDgiat/fiPwlSAgbFBdmHcFOLWUO/P8F
+ tpzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1691584635; x=1692189435;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=/4ysh9xQ8pcgY+P8IcJ5XzhWArdi/CT5G2Y6EcaPHbo=;
- b=QHrcS5n2KRN6oXkUFlWEjjWfqsuMF07XZuWjFInncSP2LbkGuEsiL7TEV1BtqsgXAV
- NxAMs79gQNOt5j0htiUtmyw1VmkzYO1FM4UcRxsIcZWpk3BsX9gSGMsBUQ/m7FH8mEhh
- XGWVPAxt9eFAzXqCGkPLEf6WSqKkKTrs91y3wT9HkU8exbmxaqRgy/7eLVAKUbvzbsJY
- u6ax5FzjAcr3pKFFIshJDVnQ6ppUb9lup7ve9lzGRBbhm+Xt00z9WBMwS0R7L0h/aEm6
- WbBQryHvO3tCdDM7CKbKNFWVRNtlVXnDK++4zYHv4gOBhLtDphP2RZIXLycQMIOwAC1k
- LOdg==
-X-Gm-Message-State: AOJu0YyBu4ojSxuJXOHhhvVJIn8WZd+Kxsv9hYonuaQuxu8kUC0bDD4P
- NPdim0GXWz/JOrPYvdYWJhxKNg==
-X-Google-Smtp-Source: AGHT+IFMuDeS3V6FQT5StZdyTVkor22ZYvSEWzKgW1tF7d8NOG1H6EK3qN7vW97DJ+vbvLPRsMUiyQ==
-X-Received: by 2002:adf:edd2:0:b0:317:eeaa:22cd with SMTP id
- v18-20020adfedd2000000b00317eeaa22cdmr1869460wro.37.1691584634894; 
- Wed, 09 Aug 2023 05:37:14 -0700 (PDT)
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=CuvReQXvG/EOd6YQVXedXfCkpVkxyqWb9vu/7k0okhs=;
+ b=Zf+tkwKVqYzhADFUDPGYmZ30Me9Z6luxIqBIH96Z3y2mkk97Y27BSxm/qjUJ2FKPes
+ pBC4wiQLYfmBMfcW7KfvLToVkVa0dGm9LCgkUTkwEOM3he696DuFrXCoGVM8iR9LUw5K
+ 2d7sbCmRNSCGxqzjzG/d/Vn/L63nyIM2dqwtWhUS1hqnAUmZCGaNB7xxgCEoGJbFBF1X
+ KjH6O0J2IwMRcBXnM234Un0ARGQZPAYMCf/wuozM5hM05rGajq4vu+jln3uPJkISccCe
+ BhPpqg7S7Yy13KwPzOi2lHnfZylPJqKQ/4lFuCW/RrFxk6n8cBFD936P2jTeRDzBvvgZ
+ e8bg==
+X-Gm-Message-State: AOJu0YzkVLYXbfAOV57BzPl/SRHai9D77lnit3Le6FvLA6fj/4k0ZT7Z
+ 3Ga0AIvCm6PeMZj29U9yy4szAw==
+X-Google-Smtp-Source: AGHT+IGuo5ndPmzKMFYUzsJxc5qSg8g1CkUpJ5mlTIAVOHh2muUS978QVM5xKcgCBecY8bq95vr+3A==
+X-Received: by 2002:a5d:46ca:0:b0:317:5686:e4b9 with SMTP id
+ g10-20020a5d46ca000000b003175686e4b9mr1655249wrs.56.1691584635353; 
+ Wed, 09 Aug 2023 05:37:15 -0700 (PDT)
 Received: from localhost.localdomain ([2.219.138.198])
  by smtp.gmail.com with ESMTPSA id
- k6-20020a5d5246000000b00317f70240afsm5617888wrc.27.2023.08.09.05.37.13
+ k6-20020a5d5246000000b00317f70240afsm5617888wrc.27.2023.08.09.05.37.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 09 Aug 2023 05:37:14 -0700 (PDT)
+ Wed, 09 Aug 2023 05:37:15 -0700 (PDT)
 From: Jean-Philippe Brucker <jean-philippe@linaro.org>
 To: peter.maydell@linaro.org
 Cc: richard.henderson@linaro.org, qemu-arm@nongnu.org, qemu-devel@nongnu.org,
  Jean-Philippe Brucker <jean-philippe@linaro.org>
-Subject: [PATCH v3 0/6] target/arm: Fixes for RME
-Date: Wed,  9 Aug 2023 13:37:00 +0100
-Message-ID: <20230809123706.1842548-1-jean-philippe@linaro.org>
+Subject: [PATCH v3 1/6] target/arm/ptw: Load stage-2 tables from realm
+ physical space
+Date: Wed,  9 Aug 2023 13:37:01 +0100
+Message-ID: <20230809123706.1842548-2-jean-philippe@linaro.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230809123706.1842548-1-jean-philippe@linaro.org>
+References: <20230809123706.1842548-1-jean-philippe@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=jean-philippe@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=jean-philippe@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,46 +93,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A few patches to fix RME support and allow booting a realm guest, based
-on "[PATCH v2 00/15] target/arm/ptw: Cleanups and a few bugfixes"
-https://lore.kernel.org/all/20230807141514.19075-1-peter.maydell@linaro.org/
+In realm state, stage-2 translation tables are fetched from the realm
+physical address space (R_PGRQD).
 
-Since v2:
+Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+---
+ target/arm/ptw.c | 26 ++++++++++++++++++--------
+ 1 file changed, 18 insertions(+), 8 deletions(-)
 
-* Updated the comment in patch 5. I also removed the check for FEAT_RME,
-  because as pointed out in "target/arm: Catch illegal-exception-return
-  from EL3 with bad NSE/NS", the SCR_NSE bit can only be set with
-  FEAT_RME enabled. Because of this additional change, I didn't add the
-  Reviewed-by.
-
-* Added an EL-change hook to patch 6, to update the timer IRQ
-  when changing the security state. I was wondering whether the
-  el_change function should filter security state changes, since we only
-  need to update IRQ state when switching between Root and
-  Secure/NonSecure. But with a small syscall benchmark exercising
-  EL0-EL1 switch with FEAT_RME enabled, I couldn't see any difference
-  with and without the el_change hook, so I kept it simple.
-
-* Also added the .raw_write callback for CNTHCTL_EL2.
-
-v2: https://lore.kernel.org/all/20230802170157.401491-1-jean-philippe@linaro.org/
-
-Jean-Philippe Brucker (6):
-  target/arm/ptw: Load stage-2 tables from realm physical space
-  target/arm/helper: Fix tlbmask and tlbbits for TLBI VAE2*
-  target/arm: Skip granule protection checks for AT instructions
-  target/arm: Pass security space rather than flag for AT instructions
-  target/arm/helper: Check SCR_EL3.{NSE,NS} encoding for AT instructions
-  target/arm/helper: Implement CNTHCTL_EL2.CNT[VP]MASK
-
- target/arm/cpu.h        |   4 +
- target/arm/internals.h  |  25 +++---
- target/arm/cpu.c        |   4 +
- target/arm/helper.c     | 184 ++++++++++++++++++++++++++++++----------
- target/arm/ptw.c        |  39 ++++++---
- target/arm/trace-events |   7 +-
- 6 files changed, 188 insertions(+), 75 deletions(-)
-
+diff --git a/target/arm/ptw.c b/target/arm/ptw.c
+index d1de934702..063adbd84a 100644
+--- a/target/arm/ptw.c
++++ b/target/arm/ptw.c
+@@ -157,22 +157,32 @@ static ARMMMUIdx ptw_idx_for_stage_2(CPUARMState *env, ARMMMUIdx stage2idx)
+ 
+     /*
+      * We're OK to check the current state of the CPU here because
+-     * (1) we always invalidate all TLBs when the SCR_EL3.NS bit changes
++     * (1) we always invalidate all TLBs when the SCR_EL3.NS or SCR_EL3.NSE bit
++     * changes.
+      * (2) there's no way to do a lookup that cares about Stage 2 for a
+      * different security state to the current one for AArch64, and AArch32
+      * never has a secure EL2. (AArch32 ATS12NSO[UP][RW] allow EL3 to do
+      * an NS stage 1+2 lookup while the NS bit is 0.)
+      */
+-    if (!arm_is_secure_below_el3(env) || !arm_el_is_aa64(env, 3)) {
++    if (!arm_el_is_aa64(env, 3)) {
+         return ARMMMUIdx_Phys_NS;
+     }
+-    if (stage2idx == ARMMMUIdx_Stage2_S) {
+-        s2walk_secure = !(env->cp15.vstcr_el2 & VSTCR_SW);
+-    } else {
+-        s2walk_secure = !(env->cp15.vtcr_el2 & VTCR_NSW);
+-    }
+-    return s2walk_secure ? ARMMMUIdx_Phys_S : ARMMMUIdx_Phys_NS;
+ 
++    switch (arm_security_space_below_el3(env)) {
++    case ARMSS_NonSecure:
++        return ARMMMUIdx_Phys_NS;
++    case ARMSS_Realm:
++        return ARMMMUIdx_Phys_Realm;
++    case ARMSS_Secure:
++        if (stage2idx == ARMMMUIdx_Stage2_S) {
++            s2walk_secure = !(env->cp15.vstcr_el2 & VSTCR_SW);
++        } else {
++            s2walk_secure = !(env->cp15.vtcr_el2 & VTCR_NSW);
++        }
++        return s2walk_secure ? ARMMMUIdx_Phys_S : ARMMMUIdx_Phys_NS;
++    default:
++        g_assert_not_reached();
++    }
+ }
+ 
+ static bool regime_translation_big_endian(CPUARMState *env, ARMMMUIdx mmu_idx)
 -- 
 2.41.0
 
