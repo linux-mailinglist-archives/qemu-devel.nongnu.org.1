@@ -2,83 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88E107766B2
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 19:51:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 567E67769CD
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 22:22:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTnK6-0000Q4-C9; Wed, 09 Aug 2023 13:50:18 -0400
+	id 1qTpgG-0000kL-6S; Wed, 09 Aug 2023 16:21:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTnK4-0000Ov-78
- for qemu-devel@nongnu.org; Wed, 09 Aug 2023 13:50:16 -0400
-Received: from mail-ot1-x331.google.com ([2607:f8b0:4864:20::331])
+ (Exim 4.90_1) (envelope-from <yuri.benditovich@daynix.com>)
+ id 1qTpgE-0000k7-8k
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 16:21:18 -0400
+Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTnK2-0005g0-Ep
- for qemu-devel@nongnu.org; Wed, 09 Aug 2023 13:50:15 -0400
-Received: by mail-ot1-x331.google.com with SMTP id
- 46e09a7af769-6bc8d1878a0so54818a34.1
- for <qemu-devel@nongnu.org>; Wed, 09 Aug 2023 10:50:14 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <yuri.benditovich@daynix.com>)
+ id 1qTpgC-0007FH-Ge
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 16:21:18 -0400
+Received: by mail-lf1-x136.google.com with SMTP id
+ 2adb3069b0e04-4fe3678010eso213534e87.3
+ for <qemu-devel@nongnu.org>; Wed, 09 Aug 2023 13:21:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691603413; x=1692208213;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=hIJbV1+QSy586PHNn48HKMsvhOSunQxnQqr0K94zk5U=;
- b=Ld3vbphY4vL9PDzXs1ZSC+0g/pDzUI71ZYemHpH+T0FZK6o8iIjo0EwvzNHPLBAfEE
- WXSRBmubQBBXF+t4Bp1edacF3IIwbk+MNz2i7ZmEIfl6U0EqmFO36rbN1FcJuSzHtYXD
- j9aW5p7q/J8R9XOIarXqpIuf0t12RgsICnTc+neikFsi+a9gKml/o5JGbH+E/9nDJdvS
- +SS4Lw7P6D5nxETBFKWhL6EC+sU0RxVnyt0mWZPWoyRRRif+LFPhTpVetthPXS7rh9ji
- gzpkVMpA19+XlclJRBCMizuXEh2d3E0aTQTIgq90gnvo33yhMW4TVWTXZNUE6aB33bxy
- 5ETQ==
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1691612474; x=1692217274;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=6TX84wKJnc8azC3YuoK94GEzSEcJOUh0wUAdYhJxEGc=;
+ b=ooJRmqQZF8fXZu8Z5Z1Ha9J5NZPT5mTwp7ChStqnB2+HT4G0oyYC3vypdp4lf/mzo4
+ CgD2U1VATPJ3c2+Qvd/jJf6XAJuuCb6PmGERkyhnILyXENSAuN+rUYNdKHWbiwBUvAmW
+ kEW+YmvwlWYb0F0fK48QtUJ6B8ceeQKGsCnKNTyvoN8XWQAGhKpH9JdiMBiO6Iz881IJ
+ FPCUFfolU47jJqQdAsmbjKGazq+7qUpvr8RXrHhDY+di+VMVNUFArty+39iH87Cw6O+h
+ wZGqodbfriMDUuroaXxIBmyCtvqamyxoRufmx+LGbLTTUR68Jd4FqntBO8i37ROWskAi
+ t2mQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691603413; x=1692208213;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=hIJbV1+QSy586PHNn48HKMsvhOSunQxnQqr0K94zk5U=;
- b=Yra75fGETBgTtVH+GdtrjAtZ5BF1IEaMNlwSbnHEOeElwhdNXn5oVjcjFR9Q8mh5yj
- S1PtHCjW0rB5rGoALYp1iItvUlnrCkLutvxucHPLH0mllBT0PrAKU0XcSjczKbw4x7X5
- GcSsHRZGFOfhD+7rF530Z7revem7ld84hfH+6VDOh/1DtsckuxLiKNZg1GH4K901cfG2
- LC2HxjOX/VkoLQuKVVdtgXwQu+S1Hi6GG5vNGWEHF8g1sGtYDoH8O5AB16p756Uxfxav
- wwP1qz4M/tq2AYCgCdOjbxYmo+Iw+dJunXT/vejb4pnctYbrv59H07X1tXnb5XqI5FU/
- BjjQ==
-X-Gm-Message-State: AOJu0YzJYdPdTVjiDG9p+fpIVPLVkxhn3PzLXSgS0koGoMFoD2R9DO8q
- tHf8kIp1sMbCdyFRVXhn++KGAQGPH0U/i9ZSvls=
-X-Google-Smtp-Source: AGHT+IE0q1U8d8ySmI7HF/9rbdrVO8tAbMHXkZcCcv4GCj4wEYnIsFA7Ptf6tw61pXi1e3f/UYEDrA==
-X-Received: by 2002:a05:6808:2092:b0:3a3:613b:2787 with SMTP id
- s18-20020a056808209200b003a3613b2787mr41229oiw.32.1691603412805; 
- Wed, 09 Aug 2023 10:50:12 -0700 (PDT)
-Received: from stoup.. ([2602:47:d483:7301:6bf0:9674:6ac4:f74c])
- by smtp.gmail.com with ESMTPSA id
- y7-20020a17090a2b4700b0025dc5749b4csm1753710pjc.21.2023.08.09.10.50.12
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 09 Aug 2023 10:50:12 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Helge Deller <deller@gmx.de>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 6/6] linux-user: Fix openat() emulation to correctly detect
- accesses to /proc
-Date: Wed,  9 Aug 2023 10:50:06 -0700
-Message-Id: <20230809175006.242479-7-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230809175006.242479-1-richard.henderson@linaro.org>
-References: <20230809175006.242479-1-richard.henderson@linaro.org>
+ d=1e100.net; s=20221208; t=1691612474; x=1692217274;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=6TX84wKJnc8azC3YuoK94GEzSEcJOUh0wUAdYhJxEGc=;
+ b=Ycsgh6jT58fr4o7nJX5kEGGzGiiRkOWoamsaWUhZ2DmXeeFgARP6qVyHOyja8k/FyT
+ kKPd4ObJdkejdNn/qsp5Dqz08UNqaHUgY75jwDJJkvhnC5ClERnQ7ReekM5AqHgNm0Zv
+ 6M+E5AbBQLl5OvojqqftcTOqUad/yAIV3R4ztEk8Ugbl7Q718RyiH7z9euNcf6wTi5y8
+ rbLLU18dHX3P5a+L4nI7yz4fjsLGvcGD0Eh2lPeG0p1l5DRrh/n9ayKxYwlbdNeMmJ16
+ vvIhi07C/vljs64BPZ6l+o2JM92a2uWJ3oNHRbBb5fKxg5LAr2maGXYPsd2TN+WrGTm3
+ BhBg==
+X-Gm-Message-State: AOJu0YzQHPhcBD9xmdI+5tBcQg4JfYNLuSxVCNd5PNeeq+POLEXZaNdd
+ DMevnFetOj5ptJWJzGNk6gpGE4UKQSsUDU6/Era9hA==
+X-Google-Smtp-Source: AGHT+IH02xeMK4IwR8sWjsFDh/YB0L3Ikr9oJBrmve2BnornTc0eT1ThTvR7KTX5TDHtfcXCujvgqFmW0PUJiIslMTs=
+X-Received: by 2002:a05:6512:2312:b0:4f9:556b:93c5 with SMTP id
+ o18-20020a056512231200b004f9556b93c5mr135687lfu.40.1691612474271; Wed, 09 Aug
+ 2023 13:21:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::331;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x331.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20230731223148.1002258-1-yuri.benditovich@daynix.com>
+In-Reply-To: <20230731223148.1002258-1-yuri.benditovich@daynix.com>
+From: Yuri Benditovich <yuri.benditovich@daynix.com>
+Date: Wed, 9 Aug 2023 23:21:01 +0300
+Message-ID: <CAOEp5Ocvd=WByDkh4jDO1mcbQbcAxA=As61_JaUxaP-t3+FMzQ@mail.gmail.com>
+Subject: Re: [PATCH v2 0/4] virtio-net: add USO feature (UDP segmentation
+ offload)
+To: eduardo@habkost.net, marcel.apfelbaum@gmail.com, philmd@linaro.org, 
+ wangyanan55@huawei.com, dmitry.fleytman@gmail.com, akihiko.odaki@daynix.com, 
+ jasowang@redhat.com, sriram.yagnaraman@est.tech, mst@redhat.com, 
+ sw@weilnetz.de, qemu-devel@nongnu.org
+Cc: yan@daynix.com
+Content-Type: multipart/alternative; boundary="000000000000a08187060283380e"
+Received-SPF: none client-ip=2a00:1450:4864:20::136;
+ envelope-from=yuri.benditovich@daynix.com; helo=mail-lf1-x136.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,62 +87,106 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Helge Deller <deller@gmx.de>
+--000000000000a08187060283380e
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-In qemu we catch accesses to files like /proc/cpuinfo or /proc/net/route
-and return to the guest contents which would be visible on a real system
-(instead what the host would show).
+ping
 
-This patch fixes a bug, where for example the accesses
-    cat /proc////cpuinfo
-or
-    cd /proc && cat cpuinfo
-will not be recognized by qemu and where qemu will wrongly show
-the contents of the host's /proc/cpuinfo file.
+On Tue, Aug 1, 2023 at 1:32=E2=80=AFAM Yuri Benditovich <yuri.benditovich@d=
+aynix.com>
+wrote:
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-Id: <20230803214450.647040-2-deller@gmx.de>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- linux-user/syscall.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+> Starting from 6.2 the kernel supports UDP segmentation offload, it
+> uses GSO_UDP_L4 to mark packets with UDP sermentation request
+>
+> v1->v2:
+>  Enable USO features by default starting from 8.1
+>  Move command-line parameters to the last patch
+>
+> Andrew Melnychenko (2):
+>   tap: Add USO support to tap device.
+>   virtio-net: Add USO flags to vhost support.
+>
+> Yuri Benditovich (2):
+>   tap: Add check for USO features
+>   virtio-net: Add support for USO features
+>
+>  hw/core/machine.c    |  4 ++++
+>  hw/net/e1000e_core.c |  2 +-
+>  hw/net/igb_core.c    |  2 +-
+>  hw/net/vhost_net.c   |  3 +++
+>  hw/net/virtio-net.c  | 35 ++++++++++++++++++++++++++++++++---
+>  hw/net/vmxnet3.c     |  2 ++
+>  include/net/net.h    |  7 +++++--
+>  net/net.c            | 13 +++++++++++--
+>  net/tap-bsd.c        |  7 ++++++-
+>  net/tap-linux.c      | 27 ++++++++++++++++++++++++---
+>  net/tap-linux.h      |  2 ++
+>  net/tap-solaris.c    |  7 ++++++-
+>  net/tap-stub.c       |  7 ++++++-
+>  net/tap-win32.c      |  2 +-
+>  net/tap.c            | 18 +++++++++++++++---
+>  net/tap_int.h        |  4 +++-
+>  net/vhost-vdpa.c     |  3 +++
+>  17 files changed, 125 insertions(+), 20 deletions(-)
+>
+> --
+> 2.34.3
+>
+>
 
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 12ebc70df5..9353268cc1 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -8557,9 +8557,12 @@ static int open_hardware(CPUArchState *cpu_env, int fd)
- }
- #endif
- 
--int do_guest_openat(CPUArchState *cpu_env, int dirfd, const char *pathname,
-+
-+int do_guest_openat(CPUArchState *cpu_env, int dirfd, const char *fname,
-                     int flags, mode_t mode, bool safe)
- {
-+    g_autofree char *proc_name = NULL;
-+    const char *pathname;
-     struct fake_open {
-         const char *filename;
-         int (*fill)(CPUArchState *cpu_env, int fd);
-@@ -8585,6 +8588,14 @@ int do_guest_openat(CPUArchState *cpu_env, int dirfd, const char *pathname,
-         { NULL, NULL, NULL }
-     };
- 
-+    /* if this is a file from /proc/ filesystem, expand full name */
-+    proc_name = realpath(fname, NULL);
-+    if (proc_name && strncmp(proc_name, "/proc/", 6) == 0) {
-+        pathname = proc_name;
-+    } else {
-+        pathname = fname;
-+    }
-+
-     if (is_proc_myself(pathname, "exe")) {
-         if (safe) {
-             return safe_openat(dirfd, exec_path, flags, mode);
--- 
-2.34.1
+--000000000000a08187060283380e
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+<div dir=3D"ltr">ping</div><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
+class=3D"gmail_attr">On Tue, Aug 1, 2023 at 1:32=E2=80=AFAM Yuri Benditovic=
+h &lt;<a href=3D"mailto:yuri.benditovich@daynix.com">yuri.benditovich@dayni=
+x.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"ma=
+rgin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:=
+1ex">Starting from 6.2 the kernel supports UDP segmentation offload, it<br>
+uses GSO_UDP_L4 to mark packets with UDP sermentation request<br>
+<br>
+v1-&gt;v2:<br>
+=C2=A0Enable USO features by default starting from 8.1<br>
+=C2=A0Move command-line parameters to the last patch<br>
+<br>
+Andrew Melnychenko (2):<br>
+=C2=A0 tap: Add USO support to tap device.<br>
+=C2=A0 virtio-net: Add USO flags to vhost support.<br>
+<br>
+Yuri Benditovich (2):<br>
+=C2=A0 tap: Add check for USO features<br>
+=C2=A0 virtio-net: Add support for USO features<br>
+<br>
+=C2=A0hw/core/machine.c=C2=A0 =C2=A0 |=C2=A0 4 ++++<br>
+=C2=A0hw/net/e1000e_core.c |=C2=A0 2 +-<br>
+=C2=A0hw/net/igb_core.c=C2=A0 =C2=A0 |=C2=A0 2 +-<br>
+=C2=A0hw/net/vhost_net.c=C2=A0 =C2=A0|=C2=A0 3 +++<br>
+=C2=A0hw/net/virtio-net.c=C2=A0 | 35 ++++++++++++++++++++++++++++++++---<br=
+>
+=C2=A0hw/net/vmxnet3.c=C2=A0 =C2=A0 =C2=A0|=C2=A0 2 ++<br>
+=C2=A0include/net/net.h=C2=A0 =C2=A0 |=C2=A0 7 +++++--<br>
+=C2=A0net/net.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 | 13 +++++++++++--=
+<br>
+=C2=A0net/tap-bsd.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=A0 7 ++++++-<br>
+=C2=A0net/tap-linux.c=C2=A0 =C2=A0 =C2=A0 | 27 ++++++++++++++++++++++++---<=
+br>
+=C2=A0net/tap-linux.h=C2=A0 =C2=A0 =C2=A0 |=C2=A0 2 ++<br>
+=C2=A0net/tap-solaris.c=C2=A0 =C2=A0 |=C2=A0 7 ++++++-<br>
+=C2=A0net/tap-stub.c=C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 7 ++++++-<br>
+=C2=A0net/tap-win32.c=C2=A0 =C2=A0 =C2=A0 |=C2=A0 2 +-<br>
+=C2=A0net/tap.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 | 18 +++++++++++++=
+++---<br>
+=C2=A0net/tap_int.h=C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=A0 4 +++-<br>
+=C2=A0net/vhost-vdpa.c=C2=A0 =C2=A0 =C2=A0|=C2=A0 3 +++<br>
+=C2=A017 files changed, 125 insertions(+), 20 deletions(-)<br>
+<br>
+-- <br>
+2.34.3<br>
+<br>
+</blockquote></div>
+
+--000000000000a08187060283380e--
 
