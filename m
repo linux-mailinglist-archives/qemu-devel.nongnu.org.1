@@ -2,84 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47F3E776295
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 16:35:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D325E7762BD
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 16:43:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTkG4-00021g-Ll; Wed, 09 Aug 2023 10:33:56 -0400
+	id 1qTkNh-0004fS-6X; Wed, 09 Aug 2023 10:41:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qTkG2-000213-3J
- for qemu-devel@nongnu.org; Wed, 09 Aug 2023 10:33:54 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qTkG0-0008SJ-Bt
- for qemu-devel@nongnu.org; Wed, 09 Aug 2023 10:33:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691591631;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=DMQPZZe7Gyvht16fOAZ/QWMdNA669oDXIaGUEX2gqlE=;
- b=DOFwcOvNgNyMBvXbxrPFnxu4D/vm5vmGIKbxsaldsC8GTnro7xdIEOQsB/615rHlWq2GZr
- IsSwHwwIqUMbFyNNsEt2dgayRAFty0t51TKeMlMCw+YUOmMcqw0jvIMeznw4mYRrzxxgM4
- Pb04Xo3yG2XD8OoIZHT+m6h3Y3Svzms=
-Received: from mail-vs1-f71.google.com (mail-vs1-f71.google.com
- [209.85.217.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-610-84_KYBZoNXSkuDxq6ELTXw-1; Wed, 09 Aug 2023 10:33:49 -0400
-X-MC-Unique: 84_KYBZoNXSkuDxq6ELTXw-1
-Received: by mail-vs1-f71.google.com with SMTP id
- ada2fe7eead31-447783b6c09so1481230137.3
- for <qemu-devel@nongnu.org>; Wed, 09 Aug 2023 07:33:49 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qTkNf-0004fH-IF
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 10:41:47 -0400
+Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qTkNe-0001yB-2U
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 10:41:47 -0400
+Received: by mail-pj1-x1034.google.com with SMTP id
+ 98e67ed59e1d1-26813478800so3887268a91.1
+ for <qemu-devel@nongnu.org>; Wed, 09 Aug 2023 07:41:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1691592104; x=1692196904;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=sLGrP4CyInRit21LxZML+ISfZCo2dNhzgh+zsy/7734=;
+ b=q1LQ3s+HQ/PBp/GELSsnymFyeWlaVEafdEfMhjiozcS7i/D4t678eRoSZbzf3sqRNz
+ EU/klO8oGfIReUusDYw4cOAKX1Z0sN1f2jFXBD//ad78FwkpX3EyuO6ehLUbFn87ehWT
+ TgnKqfwsLIi4u2h03QZ/sQdqZ+lgt+ylf+3yjFmZY92rElDthjeGu0st8Hv5ugty9FlV
+ No7y1D78vATU3b1+UTagZ7nYncfJ7f0GNwc+aZgyp4K9WEfyy1Z2sakKc9KsXo9g1L2E
+ kZhTsAHPSc7D/CJIj6qyfhgUiROuBmAdBIQh5CLPts6oshPENVHZNpzWantgZxlmDjVX
+ GTsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691591629; x=1692196429;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=DMQPZZe7Gyvht16fOAZ/QWMdNA669oDXIaGUEX2gqlE=;
- b=WNmXcUHNHrAm/5ipaHLiKdRgP2dxHFqb3r/tROwTxvwUfr8Xq9+j6DZ+5RmPKP8kXD
- kkdLvBSD9ugvqofEKSpxgYVrK+6bQL1N81kdusb096XvTMeOQCbdzu43tc1JOEPCF+Rs
- QASdVRBGMmhI/j6WCEddhrQ5yuJUlSwHONpSWrZ+iyo1kuGDrC7PQS4TWNNhV1qsq2Na
- KVqleJzsx26D05tIbDehgOvwHJkJkHrMDTelkSPJNbFJ4LP8Ns25fysc5smJNkuG9Rdn
- VfEfP2djY6BsMBpzMjaK9nSLJP89wsDf/kPkeBsq4Y0eiM/kMf35pNszo3yOLbI4CvJe
- AiSw==
-X-Gm-Message-State: AOJu0Yxqm86HNFe55YXyKyHt+WYrLXEnd/WlErrwznh+gDkpgZ15yz+D
- y5j1+rKyv7XZwK5BW5S5SUHwzJANgyMWlVvtwZqtkJ3yLKHWRRQqoCStY3xPplH3AR2S6IvMGA0
- I7uXgiS0kA8GheUX1sHgB0a7sclLUDzU=
-X-Received: by 2002:a67:fa58:0:b0:443:6052:43ae with SMTP id
- j24-20020a67fa58000000b00443605243aemr2852314vsq.24.1691591629249; 
- Wed, 09 Aug 2023 07:33:49 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEy+DlJcbtgo/agArJ0Yg38DqBk6kNe8ZQEhbvuq6DMG7LUg1Or5igtx+AflAyAEDZ3ApisLICCdbJ3/a+az/Y=
-X-Received: by 2002:a67:fa58:0:b0:443:6052:43ae with SMTP id
- j24-20020a67fa58000000b00443605243aemr2852301vsq.24.1691591628995; Wed, 09
- Aug 2023 07:33:48 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1691592104; x=1692196904;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=sLGrP4CyInRit21LxZML+ISfZCo2dNhzgh+zsy/7734=;
+ b=OGJ+1NZJbd5LEH0vksb6wbCGoh1RUOYy6jfeouxBYuU273QJj97GzWomDiZWWsz+Dz
+ zogn/cP3fqe4ds5vocNHDKIlvtW5mBBWzdWjpROGSt+mDAivCV8nzbyFnzrZm5N+/xJI
+ TdVVLJUgRe+3z1MvVHGGOIV72t45vij+5L42yr5aXbySQbdpwrylbgcVDWDRKLz6s7D0
+ PcYw7/bsF6/oY1L+M33p+2gvwIX1NJ4xfqcvn9W0HHUD+xxQz1nzR6XglFasQJk6XnfU
+ 3h3RnryBys2aq2f+63BN97pZkKY6PwzDYTuHu6I29FNr2KIBvKpfaDogiCvqF5iLtHsM
+ p//w==
+X-Gm-Message-State: AOJu0YwhdBdhB3hTFgP6NtvLVUnG44Vqnmu3VrXKTSAr03OREfy4i0Po
+ nvzaYk/a4B8jPWNvYwDae3cXew==
+X-Google-Smtp-Source: AGHT+IFIXIJ+KV2LSEmrYxvpbDCZWKsjRyE/OvHeG44oqDV4Di5GaOm1gnbP3KKwHrJqMFhnvZTsGA==
+X-Received: by 2002:a17:90a:ce06:b0:268:22bb:f0d0 with SMTP id
+ f6-20020a17090ace0600b0026822bbf0d0mr2121559pju.7.1691592104490; 
+ Wed, 09 Aug 2023 07:41:44 -0700 (PDT)
+Received: from ?IPV6:2602:47:d483:7301:6bf0:9674:6ac4:f74c?
+ ([2602:47:d483:7301:6bf0:9674:6ac4:f74c])
+ by smtp.gmail.com with ESMTPSA id
+ 27-20020a17090a031b00b00263d15f0e87sm1631889pje.42.2023.08.09.07.41.43
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 09 Aug 2023 07:41:43 -0700 (PDT)
+Message-ID: <c982d7b2-248a-7daa-1653-025efb17c195@linaro.org>
+Date: Wed, 9 Aug 2023 07:41:41 -0700
 MIME-Version: 1.0
-References: <20230809082946.747668-2-pbonzini@redhat.com>
- <ydnxvhzqxdnijglqo2tpeopfl6m7gqep2ovw2znll4aaner7lv@cx73n3cit6uu>
-In-Reply-To: <ydnxvhzqxdnijglqo2tpeopfl6m7gqep2ovw2znll4aaner7lv@cx73n3cit6uu>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Wed, 9 Aug 2023 16:33:37 +0200
-Message-ID: <CABgObfYGPsK8HWMQzbEbzy2JJX5p9jXeru9J5PjBJ1_Pfv1dCA@mail.gmail.com>
-Subject: Re: [PATCH for-8.2] dockerfiles: bump tricore cross compiler
- container to Debian 11
-To: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
-Cc: qemu-devel@nongnu.org, alex.bennee@linaro.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] Fix SEGFAULT on getting physical address of MMIO region.
+To: Mikhail Tyutin <m.tyutin@yadro.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Cc: Dmitriy Solovev <d.solovev@yadro.com>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
+References: <bf8ae2fd-158a-57b6-6270-2e56b6506421@yadro.com>
+ <ffcb690c-91d2-60f5-3e65-e0be204de7b8@linaro.org>
+ <7c2d7791b1af4d54919c51ea6b666dfd@yadro.com>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <7c2d7791b1af4d54919c51ea6b666dfd@yadro.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1034;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1034.google.com
+X-Spam_score_int: -61
+X-Spam_score: -6.2
+X-Spam_bar: ------
+X-Spam_report: (-6.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-4.14,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,31 +100,12 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 9, 2023 at 3:53=E2=80=AFPM Bastian Koppelmann
-<kbastian@mail.uni-paderborn.de> wrote:
-> > diff --git a/tests/docker/dockerfiles/debian-tricore-cross.docker b/tes=
-ts/docker/dockerfiles/debian-tricore-cross.docker
-> > index 269bfa8d423..5bd1963fb55 100644
-> > --- a/tests/docker/dockerfiles/debian-tricore-cross.docker
-> > +++ b/tests/docker/dockerfiles/debian-tricore-cross.docker
-> > @@ -9,7 +9,7 @@
-> >  #
-> >  # SPDX-License-Identifier: GPL-2.0-or-later
-> >  #
-> > -FROM docker.io/library/debian:buster-slim
-> > +FROM docker.io/library/debian:11-slim
->
-> I think it would be better to skip debian-11 and use 12 instead.
+On 8/9/23 06:17, Mikhail Tyutin wrote:
+> Would not be better to get back to initial v1 approach when we clean TLB_INVALID_MASK flag in
+> tlb_plugin_lookup()? It works well for those regions.
 
-I picked 11 in order to keep the container in sync with the
-lcitool-generated dockerfiles. Once we switch lcitool from 11 to
-12, it is easier to see what the changes are and replicate them in
-debian-tricore-cross and friends.
+You're just as likely to get invalid data.
 
-lcitool support for Debian 12 has already landed, but usually we
-try to keep the containers on the oldest supported release of a
-distro, and that is currently Debian 11.
 
-Paolo
-
+r~
 
