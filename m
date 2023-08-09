@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D250E775BDB
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 13:21:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AD44775C0D
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 13:23:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qThFC-0006Kp-Uc; Wed, 09 Aug 2023 07:20:51 -0400
+	id 1qThGp-0007E8-Un; Wed, 09 Aug 2023 07:22:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qThF8-0006KU-U3; Wed, 09 Aug 2023 07:20:47 -0400
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ id 1qThGk-0007Dm-R0; Wed, 09 Aug 2023 07:22:26 -0400
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qThF4-000229-Sg; Wed, 09 Aug 2023 07:20:45 -0400
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-686f090310dso6538884b3a.0; 
- Wed, 09 Aug 2023 04:20:42 -0700 (PDT)
+ id 1qThGb-0002OW-KR; Wed, 09 Aug 2023 07:22:26 -0400
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-1bba54f7eefso5716975ad.1; 
+ Wed, 09 Aug 2023 04:22:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1691580041; x=1692184841;
+ d=gmail.com; s=20221208; t=1691580122; x=1692184922;
  h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Qcphbv0iO+6FDc61lZ0fVhxZyo7mMU07c8iZVyTzgaE=;
- b=hi0ViBSSeE4tOOiaN94jOpGCmszeO4fN2gAUdfxepCcVwuLZgvk5uVeruVFl1lvawg
- MDCmIKvOyvJRzl7sVljm4u59NzvFmPPaPM0bmA6+poBjel274WHlaZehpkJm8D5gJbhZ
- sbNkwmF/eBGvFsb1kf0LNDS8ZFo+t9Rt/+cDehEHa3y81qQyNfD4/IwhZZpx4bI2GP+F
- nH8VPM0dAdmQ4B7EQzH1j/qEAhQfEi6C587E7pE69CQfII42ppX8WtLmCNv48Bl0Spym
- KwsusSdGTTRF+WVisHfj/pQ9jiAz6CoGVPm1r1t2pPEk1BsYx43e9BhgWrMBgrpNIw5m
- SUMw==
+ bh=LfXWr4a88ZK7CzyVYwzU146Xz+2/v1Q7AUDoy9HG2gg=;
+ b=kdvAhHgYlYn8ZjSMHnnClVGV32cqAYnUID3XINkAr+l0xb+nqEgJYdvn09d/DVPZbg
+ HZ6n/ugAQaEpdFFD3HovDCCtETBMxiVa6D1XwW93rg3jxhSGJbvy97KY0t/F6BpSSt4r
+ MJHQfSBrYEGD+J75XDkozN+gv4v316vqRSASsNoOwZOK5z9v1FMXzP1H7RDckrce6M2k
+ OdHwad6P8v4PedHBOBaqoOSd90HyeqscWSKzbWl6arfTkHh+lu9vSYt3j5UfTJe96Y/E
+ DtkCbiwFIjr2Ld/c+4m5BLS9d+1HJ86UgL4iSFS/Xy/p5a2N6oPvGughdlckRVbeKr+R
+ q5Wg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691580041; x=1692184841;
+ d=1e100.net; s=20221208; t=1691580122; x=1692184922;
  h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=Qcphbv0iO+6FDc61lZ0fVhxZyo7mMU07c8iZVyTzgaE=;
- b=h20n1ztUzdPU0Z9oKlFR5anHSglC8AhRnPfXr6ROnXruae9ditvQqCse9PwMEvs5zy
- +VRIPHolPYq3e+HC1UqQpjMEUjBWrhgv+jondSQ4/NyiHuTr/fB7AxjIgB+BC2+fErOY
- BJtY79YirMAx/ltmT9QETOqPJXpcjHfgt5k5Uv0FCqSGN6tRywFInpYCt14hYNN+TIVS
- ATs3PcFil2qyuaDWaaqHe28EdQGIJLr5jQXTzVOBYsSRR7M2/NwERvluwTqpaV04O9Hl
- wqpC7CI6jux/2/0MSXLwDQwVL+Qtx7sC60H60IdeJVXzs1J4pxIaMEVFxiDBYktRWtk+
- qAwg==
-X-Gm-Message-State: AOJu0Yzzuyw+Ss5un9iwhQ5iuDAKv8Wthx0d9PvjAPfm8nODZm/WM79/
- qxhF7IO8BCzhvfxLQ5IRDULHoh+sTMg=
-X-Google-Smtp-Source: AGHT+IGUwJ/mwwWULd42n7Scu1nVx+M1dlO6HplYanzW7v3E+K1/AaKJpx1aaF4tyZqrGKBYscLGQg==
-X-Received: by 2002:a05:6a20:7489:b0:13e:3a7a:2d70 with SMTP id
- p9-20020a056a20748900b0013e3a7a2d70mr2963434pzd.0.1691580040850; 
- Wed, 09 Aug 2023 04:20:40 -0700 (PDT)
+ bh=LfXWr4a88ZK7CzyVYwzU146Xz+2/v1Q7AUDoy9HG2gg=;
+ b=RNS4AHH3Ug5TIEB4+Aj8Lu1ThexMe/dVhwHCy/EM1sI3dRiYEIYuG4vzFxSNUaRbaN
+ 4PXJ/Iz5FGpUAjlUiLQNsRIuN2AoYCkDir+4J7j82gDrLu+IifD2QFnyIGD4hFgUWYlt
+ JZhW3Fsrhh+tPGWgmm6lPQy8fMU4uDGKDY7FGeV6GLx+fsY1417cmgYzdykuBFHDwKeY
+ X+6hiiZ6x3toWhECwwAqopFO1WGXFC/NERW8CFjPEDcSbDl407/p0+HsCVfjiM+T9Ro7
+ L9JQ6sP6WMHRvt05MViEe4FejFg+jxMIwFc74RO+652nSvd0/HYqvAdBhJD4wLX9jLvT
+ W0Gw==
+X-Gm-Message-State: AOJu0YzUdFIKoeYZG/gwM+jLoYw2SUbfZP8CUrGb0yXjsIu9ZBoq8uLn
+ +QsL3u3aq4fPoe0tBQY4N/c=
+X-Google-Smtp-Source: AGHT+IGK5PXkEjZdbgs5Ku3En5+6HL8k6sCVssBBFVH3Diq9xbT3gznm1x/WSUOKSmmTss68rjZwIg==
+X-Received: by 2002:a17:902:c781:b0:1b9:c61c:4c01 with SMTP id
+ w1-20020a170902c78100b001b9c61c4c01mr12974494pla.9.1691580121884; 
+ Wed, 09 Aug 2023 04:22:01 -0700 (PDT)
 Received: from localhost (61-68-137-140.tpgi.com.au. [61.68.137.140])
  by smtp.gmail.com with ESMTPSA id
- e15-20020aa78c4f000000b00666e883757fsm9723242pfd.123.2023.08.09.04.20.38
+ iy15-20020a170903130f00b001bbb1eec92esm10907406plb.281.2023.08.09.04.21.59
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 09 Aug 2023 04:20:40 -0700 (PDT)
+ Wed, 09 Aug 2023 04:22:01 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 09 Aug 2023 21:20:36 +1000
-Message-Id: <CUNZ2SOR0AMY.2H67OHTB0OVDC@wheely>
+Date: Wed, 09 Aug 2023 21:21:53 +1000
+Message-Id: <CUNZ3S3QUQ4V.OQZZMUYGOQO8@wheely>
 Cc: <jniethe5@gmail.com>, <qemu-ppc@nongnu.org>
-Subject: Re: [PATCH v2 4/7] tcg/ppc: Use PLD in tcg_out_movi for constant pool
+Subject: Re: [PATCH v2 6/7] tcg/ppc: Disable USE_REG_TB for Power v3.1
 From: "Nicholas Piggin" <npiggin@gmail.com>
 To: "Richard Henderson" <richard.henderson@linaro.org>, <qemu-devel@nongnu.org>
 X-Mailer: aerc 0.15.2
 References: <20230808030250.50602-1-richard.henderson@linaro.org>
- <20230808030250.50602-5-richard.henderson@linaro.org>
-In-Reply-To: <20230808030250.50602-5-richard.henderson@linaro.org>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x42e.google.com
+ <20230808030250.50602-7-richard.henderson@linaro.org>
+In-Reply-To: <20230808030250.50602-7-richard.henderson@linaro.org>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,79 +92,29 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On Tue Aug 8, 2023 at 1:02 PM AEST, Richard Henderson wrote:
-> The prefixed instruction has a pc-relative form to use here.
-
-I don't understand this code very well but going by existing
-relocs it looks okay.
-
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-
+> With Power v3.1, we have pc-relative addressing and so
+> do not require a register holding the current TB.
 >
+
+Acked-by: Nicholas Piggin <npiggin@gmail.com>
+
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->  tcg/ppc/tcg-target.c.inc | 24 ++++++++++++++++++++++++
->  1 file changed, 24 insertions(+)
+>  tcg/ppc/tcg-target.c.inc | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
 > diff --git a/tcg/ppc/tcg-target.c.inc b/tcg/ppc/tcg-target.c.inc
-> index 61ae9d8ab7..b3b2e9874d 100644
+> index 01ca5c9f39..63fe4ef995 100644
 > --- a/tcg/ppc/tcg-target.c.inc
 > +++ b/tcg/ppc/tcg-target.c.inc
-> @@ -101,6 +101,10 @@
->  #define ALL_GENERAL_REGS  0xffffffffu
->  #define ALL_VECTOR_REGS   0xffffffff00000000ull
+> @@ -83,7 +83,7 @@
+>  #define TCG_VEC_TMP2    TCG_REG_V1
 > =20
-> +#ifndef R_PPC64_PCREL34
-> +#define R_PPC64_PCREL34  132
-> +#endif
-> +
->  #define have_isel  (cpuinfo & CPUINFO_ISEL)
+>  #define TCG_REG_TB     TCG_REG_R31
+> -#define USE_REG_TB     (TCG_TARGET_REG_BITS =3D=3D 64)
+> +#define USE_REG_TB     (TCG_TARGET_REG_BITS =3D=3D 64 && !have_isa_3_10)
 > =20
->  #ifndef CONFIG_SOFTMMU
-> @@ -260,6 +264,19 @@ static bool reloc_pc14(tcg_insn_unit *src_rw, const =
-tcg_insn_unit *target)
->      return false;
->  }
-> =20
-> +static bool reloc_pc34(tcg_insn_unit *src_rw, const tcg_insn_unit *targe=
-t)
-> +{
-> +    const tcg_insn_unit *src_rx =3D tcg_splitwx_to_rx(src_rw);
-> +    ptrdiff_t disp =3D tcg_ptr_byte_diff(target, src_rx);
-> +
-> +    if (disp =3D=3D sextract64(disp, 0, 34)) {
-> +        src_rw[0] =3D (src_rw[0] & ~0x3ffff) | ((disp >> 16) & 0x3ffff);
-> +        src_rw[1] =3D (src_rw[1] & ~0xffff) | (disp & 0xffff);
-> +        return true;
-> +    }
-> +    return false;
-> +}
-> +
->  /* test if a constant matches the constraint */
->  static bool tcg_target_const_match(int64_t val, TCGType type, int ct)
->  {
-> @@ -684,6 +701,8 @@ static bool patch_reloc(tcg_insn_unit *code_ptr, int =
-type,
->          return reloc_pc14(code_ptr, target);
->      case R_PPC_REL24:
->          return reloc_pc24(code_ptr, target);
-> +    case R_PPC64_PCREL34:
-> +        return reloc_pc34(code_ptr, target);
->      case R_PPC_ADDR16:
->          /*
->           * We are (slightly) abusing this relocation type.  In particula=
-r,
-> @@ -1111,6 +1130,11 @@ static void tcg_out_movi_int(TCGContext *s, TCGTyp=
-e type, TCGReg ret,
->      }
-> =20
->      /* Use the constant pool, if possible.  */
-> +    if (have_isa_3_10) {
-> +        tcg_out_8ls_d(s, PLD, ret, 0, 0, 1);
-> +        new_pool_label(s, arg, R_PPC64_PCREL34, s->code_ptr - 2, 0);
-> +        return;
-> +    }
->      if (!in_prologue && USE_REG_TB) {
->          new_pool_label(s, arg, R_PPC_ADDR16, s->code_ptr,
->                         tcg_tbrel_diff(s, NULL));
+>  /* Shorthand for size of a pointer.  Avoid promotion to unsigned.  */
+>  #define SZP  ((int)sizeof(void *))
 
 
