@@ -2,74 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A8AA775F5A
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 14:39:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13F25775FFE
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 14:58:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTiRN-0002cz-Ht; Wed, 09 Aug 2023 08:37:29 -0400
+	id 1qTikB-0005Bh-C3; Wed, 09 Aug 2023 08:56:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
- id 1qTiRI-0002aa-Dp
- for qemu-devel@nongnu.org; Wed, 09 Aug 2023 08:37:24 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1qTik9-0005BH-15
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 08:56:53 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
- id 1qTiRD-0002pB-3z
- for qemu-devel@nongnu.org; Wed, 09 Aug 2023 08:37:24 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-3fe5c0e587eso29516605e9.0
- for <qemu-devel@nongnu.org>; Wed, 09 Aug 2023 05:37:18 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1qTik7-0008Rk-CR
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 08:56:52 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-3175f17a7baso5101447f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 09 Aug 2023 05:56:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691584638; x=1692189438;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=sXJYVEA+2MZ2M64PWy3XM84dhleTXLNQ1mNpSTn0Nl8=;
- b=mRpsIs1U0/hkOqvqGbLnZ9jmfHCvJiZTVph9sCavYrULYnP1A+CQRRJ8KOfXlK+Uxc
- qAVzpZ0gxV2E6hcNfi5jAvMfZNssLzEPCiPsTU+ZbOUmKRNU832NCIml2ZuHcFJz8nN6
- dvNGea04e5w5CEpHwYf6yVAe7xOutqC4b5uN0Dyom48N5qA4onp7qaV7VayBqjO8QlfZ
- D11bzABRj+aef7UFMV3sIYLyCW95TFgfJSfkuV7UsaCmmY/XeoSnMPiV3sNiUIKMxz6c
- BIXvzqpwLXCWghGL1Dds9AEgPk63OCbKJQBJqRz/Rtbf7V+Cg2m6S4Dz9pnRl+9HCK1j
- Ud2g==
+ d=linaro.org; s=google; t=1691585809; x=1692190609;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=dcYS0Wd/jw+aWeI1jT+vtv/OqXYGSYwSV0tZ70QuqCI=;
+ b=o818Up4vdTZNg/P9kFjWuLsmfBZVlJN0j7rW8i8jXBoMr6156OtKoG/pKh2gVlZ1ej
+ JTLYHMjqcFGuAiaGc85Ki437pwKdgV5qusqnL2s7N69lq8lxbLRHAdkImV1lDVdG5kBF
+ w4rlVamGp0z3Nic/uouMw+9UwgZRy3ER7fo+8TwNsr/5rjDiEhERO39C8sGwTdIAslCz
+ MbYNukqbKrq/WqVMRlfs2VzuRxQ74NN0Oc3BPTh6xB2rdJkjQ2UoOUPs/nAxrzbPQdLz
+ xpUBUq0+ahchVvnXWKw5HvmH4iOqSRtGM7g3gyhC2MIeo+NziNjcc3cbvHbU5JeYieE1
+ Hvdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691584638; x=1692189438;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=sXJYVEA+2MZ2M64PWy3XM84dhleTXLNQ1mNpSTn0Nl8=;
- b=FalauX2SbLDyHuTPRzu4SjjX2U/7+fleAQrlzBUDxriVVpiXRVOj8FdNAqxaQRMR/A
- GPHQFfttpwkib/3j72UVw7C96YeKjLf7phz6Uf1BPwr1oXhzO9gdtGhaoGB8e8tVJSxU
- 84Dtnn797Ztp4wLxq4APZBFpMr0SdMkOGgWV1UNdDh8G/W5R7xzkeQue1MjjcVCBIG/0
- keO/rX0wh3uLVGNt++qXAaFXKtMz03ti9oEeqkwgbAmp/5wPC+vMHFFq1WnUZc5q4E36
- 6yWLH2xTL6+P2i3qAOWURpfawjpW23Mn9MmR+/OlPmBDTBIKXOkYVz+D8K7SCIVr8OLr
- TMSA==
-X-Gm-Message-State: AOJu0YywRmqT3xGqP50BRJ+sxXeyQYnYSTDfyDn/TuUSUZEUMVZyUxwq
- I5DBo3hH1kqoSRV79H9cnmj0Jg==
-X-Google-Smtp-Source: AGHT+IGrduL2Df1uNNeFxwp0GTJeYME7RfQ0CVctGmVWo6pb/wDurD17IGp7Frm4BHD5aeIjeh+mGg==
-X-Received: by 2002:a5d:5348:0:b0:317:618a:c72 with SMTP id
- t8-20020a5d5348000000b00317618a0c72mr1683172wrv.64.1691584637780; 
- Wed, 09 Aug 2023 05:37:17 -0700 (PDT)
-Received: from localhost.localdomain ([2.219.138.198])
- by smtp.gmail.com with ESMTPSA id
- k6-20020a5d5246000000b00317f70240afsm5617888wrc.27.2023.08.09.05.37.17
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 09 Aug 2023 05:37:17 -0700 (PDT)
-From: Jean-Philippe Brucker <jean-philippe@linaro.org>
-To: peter.maydell@linaro.org
-Cc: richard.henderson@linaro.org, qemu-arm@nongnu.org, qemu-devel@nongnu.org,
- Jean-Philippe Brucker <jean-philippe@linaro.org>
-Subject: [PATCH v3 6/6] target/arm/helper: Implement CNTHCTL_EL2.CNT[VP]MASK
-Date: Wed,  9 Aug 2023 13:37:06 +0100
-Message-ID: <20230809123706.1842548-7-jean-philippe@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809123706.1842548-1-jean-philippe@linaro.org>
-References: <20230809123706.1842548-1-jean-philippe@linaro.org>
+ d=1e100.net; s=20221208; t=1691585809; x=1692190609;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=dcYS0Wd/jw+aWeI1jT+vtv/OqXYGSYwSV0tZ70QuqCI=;
+ b=QXrS+5SEpfW0LAClI0Dx/hrlsnAuSFxIW9Yijnkei0gnzg6K6NF4izNdoWYUeNlC46
+ AanfOIvwyZnOCZc0lcgyvTyJBhxR0/BNYzAKKMpHgxdsqorp+hKz/ijniyZHzciCOMy1
+ if8pSHQq6CqzgocfjAGuyGtzQ4jX2EsOZVvtinIShxgwxKMeTlSTfYjNvuae2BZb8A0+
+ z98yumCyjTpejPuCxibq7AfEETYoeG3mvoffuzcxyUU5v35AI5TOPYNa7BKIEjROM+nZ
+ CPDwr1HxMUA3HK2OznkQVkZ0rxWQEgIVR4rMyVX74tIgk1VPd9nZvTl7tBo54+7fuhkp
+ 0zbQ==
+X-Gm-Message-State: AOJu0YxskwZpfR5tBphwXiI7yeUGBHvcYY/ETc5xwYvRVSSn0iO3GIyB
+ 1DeirfTJ+fLblNGH4yAiywSpUP5Oio14XcjrjuNimA==
+X-Google-Smtp-Source: AGHT+IGFD8DZWq50vKeUpUjBqF2FiP/FsCdJKOZV8oVwCUNr7zawSxemtVfVit3WnvUXHKMeOXqd8Q==
+X-Received: by 2002:a5d:6046:0:b0:314:10d8:b482 with SMTP id
+ j6-20020a5d6046000000b0031410d8b482mr1852271wrt.65.1691585809423; 
+ Wed, 09 Aug 2023 05:56:49 -0700 (PDT)
+Received: from meli.delivery (75.53-176-91.adsl-dyn.isp.belgacom.be.
+ [91.176.53.75]) by smtp.gmail.com with ESMTPSA id
+ z14-20020adfe54e000000b00317e9f8f194sm9579795wrm.34.2023.08.09.05.56.49
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Wed, 09 Aug 2023 05:56:49 -0700 (PDT)
+Date: Wed, 09 Aug 2023 14:51:28 +0200
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+To: qemu-devel@nongnu.org, Yeqi Fu <fufuyqqqqqq@gmail.com>,
+ alex.bennee@linaro.org
+Cc: richard.henderson@linaro.org, qemu-devel@nongnu.org,
+ Yeqi Fu <fufuyqqqqqq@gmail.com>
+Subject: Re: [RFC v4 11/11] docs/user: Add doc for native library calls
+User-Agent: meli 0.7.3
+References: <20230808141739.3110740-1-fufuyqqqqqq@gmail.com>
+ <20230808141739.3110740-12-fufuyqqqqqq@gmail.com>
+In-Reply-To: <20230808141739.3110740-12-fufuyqqqqqq@gmail.com>
+Message-ID: <z4jyo.wmks0dt3bth1@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=jean-philippe@linaro.org; helo=mail-wm1-x32b.google.com
+Content-Type: text/plain; charset=utf-8; format=flowed
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,202 +95,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When FEAT_RME is implemented, these bits override the value of
-CNT[VP]_CTL_EL0.IMASK in Realm and Root state. Move the IRQ state update
-into a new gt_update_irq() function and test those bits every time we
-recompute the IRQ state.
+On Tue, 08 Aug 2023 16:17, Yeqi Fu <fufuyqqqqqq@gmail.com> wrote:
+>+arm and aarch64
+>+---------------
+>+HLT is an invalid instruction for userspace and usefully has 16
+>+bits of spare immeadiate data which we can stuff data in.
 
-Since we're removing the IRQ state from some trace events, add a new
-trace event for gt_update_irq().
+s/immeadiate/immediate
 
-Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
----
- target/arm/cpu.h        |  4 +++
- target/arm/cpu.c        |  4 +++
- target/arm/helper.c     | 65 ++++++++++++++++++++++++++++++++++-------
- target/arm/trace-events |  7 +++--
- 4 files changed, 66 insertions(+), 14 deletions(-)
+With that fix, you can add
 
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index bcd65a63ca..855a76ae81 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -1115,6 +1115,7 @@ struct ArchCPU {
- };
- 
- unsigned int gt_cntfrq_period_ns(ARMCPU *cpu);
-+void gt_rme_post_el_change(ARMCPU *cpu, void *opaque);
- 
- void arm_cpu_post_init(Object *obj);
- 
-@@ -1743,6 +1744,9 @@ static inline void xpsr_write(CPUARMState *env, uint32_t val, uint32_t mask)
- #define HSTR_TTEE (1 << 16)
- #define HSTR_TJDBX (1 << 17)
- 
-+#define CNTHCTL_CNTVMASK      (1 << 18)
-+#define CNTHCTL_CNTPMASK      (1 << 19)
-+
- /* Return the current FPSCR value.  */
- uint32_t vfp_get_fpscr(CPUARMState *env);
- void vfp_set_fpscr(CPUARMState *env, uint32_t val);
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index 93c28d50e5..7df1f7600b 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -2169,6 +2169,10 @@ static void arm_cpu_realizefn(DeviceState *dev, Error **errp)
-         set_feature(env, ARM_FEATURE_VBAR);
-     }
- 
-+    if (cpu_isar_feature(aa64_rme, cpu)) {
-+        arm_register_el_change_hook(cpu, &gt_rme_post_el_change, 0);
-+    }
-+
-     register_cp_regs_for_features(cpu);
-     arm_cpu_register_gdb_regs_for_features(cpu);
- 
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index dbfe9f2f5e..86ce6a52bb 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -2608,6 +2608,39 @@ static uint64_t gt_get_countervalue(CPUARMState *env)
-     return qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) / gt_cntfrq_period_ns(cpu);
- }
- 
-+static void gt_update_irq(ARMCPU *cpu, int timeridx)
-+{
-+    CPUARMState *env = &cpu->env;
-+    uint64_t cnthctl = env->cp15.cnthctl_el2;
-+    ARMSecuritySpace ss = arm_security_space(env);
-+    /* ISTATUS && !IMASK */
-+    int irqstate = (env->cp15.c14_timer[timeridx].ctl & 6) == 4;
-+
-+    /*
-+     * If bit CNTHCTL_EL2.CNT[VP]MASK is set, it overrides IMASK.
-+     * It is RES0 in Secure and NonSecure state.
-+     */
-+    if ((ss == ARMSS_Root || ss == ARMSS_Realm) &&
-+        ((timeridx == GTIMER_VIRT && (cnthctl & CNTHCTL_CNTVMASK)) ||
-+         (timeridx == GTIMER_PHYS && (cnthctl & CNTHCTL_CNTPMASK)))) {
-+        irqstate = 0;
-+    }
-+
-+    qemu_set_irq(cpu->gt_timer_outputs[timeridx], irqstate);
-+    trace_arm_gt_update_irq(timeridx, irqstate);
-+}
-+
-+void gt_rme_post_el_change(ARMCPU *cpu, void *ignored)
-+{
-+    /*
-+     * Changing security state between Root and Secure/NonSecure, which may
-+     * happen when switching EL, can change the effective value of CNTHCTL_EL2
-+     * mask bits. Update the IRQ state accordingly.
-+     */
-+    gt_update_irq(cpu, GTIMER_VIRT);
-+    gt_update_irq(cpu, GTIMER_PHYS);
-+}
-+
- static void gt_recalc_timer(ARMCPU *cpu, int timeridx)
- {
-     ARMGenericTimer *gt = &cpu->env.cp15.c14_timer[timeridx];
-@@ -2623,13 +2656,9 @@ static void gt_recalc_timer(ARMCPU *cpu, int timeridx)
-         /* Note that this must be unsigned 64 bit arithmetic: */
-         int istatus = count - offset >= gt->cval;
-         uint64_t nexttick;
--        int irqstate;
- 
-         gt->ctl = deposit32(gt->ctl, 2, 1, istatus);
- 
--        irqstate = (istatus && !(gt->ctl & 2));
--        qemu_set_irq(cpu->gt_timer_outputs[timeridx], irqstate);
--
-         if (istatus) {
-             /* Next transition is when count rolls back over to zero */
-             nexttick = UINT64_MAX;
-@@ -2648,14 +2677,14 @@ static void gt_recalc_timer(ARMCPU *cpu, int timeridx)
-         } else {
-             timer_mod(cpu->gt_timer[timeridx], nexttick);
-         }
--        trace_arm_gt_recalc(timeridx, irqstate, nexttick);
-+        trace_arm_gt_recalc(timeridx, nexttick);
-     } else {
-         /* Timer disabled: ISTATUS and timer output always clear */
-         gt->ctl &= ~4;
--        qemu_set_irq(cpu->gt_timer_outputs[timeridx], 0);
-         timer_del(cpu->gt_timer[timeridx]);
-         trace_arm_gt_recalc_disabled(timeridx);
-     }
-+    gt_update_irq(cpu, timeridx);
- }
- 
- static void gt_timer_reset(CPUARMState *env, const ARMCPRegInfo *ri,
-@@ -2759,10 +2788,8 @@ static void gt_ctl_write(CPUARMState *env, const ARMCPRegInfo *ri,
-          * IMASK toggled: don't need to recalculate,
-          * just set the interrupt line based on ISTATUS
-          */
--        int irqstate = (oldval & 4) && !(value & 2);
--
--        trace_arm_gt_imask_toggle(timeridx, irqstate);
--        qemu_set_irq(cpu->gt_timer_outputs[timeridx], irqstate);
-+        trace_arm_gt_imask_toggle(timeridx);
-+        gt_update_irq(cpu, timeridx);
-     }
- }
- 
-@@ -2888,6 +2915,21 @@ static void gt_virt_ctl_write(CPUARMState *env, const ARMCPRegInfo *ri,
-     gt_ctl_write(env, ri, GTIMER_VIRT, value);
- }
- 
-+static void gt_cnthctl_write(CPUARMState *env, const ARMCPRegInfo *ri,
-+                             uint64_t value)
-+{
-+    ARMCPU *cpu = env_archcpu(env);
-+    uint32_t oldval = env->cp15.cnthctl_el2;
-+
-+    raw_write(env, ri, value);
-+
-+    if ((oldval ^ value) & CNTHCTL_CNTVMASK) {
-+        gt_update_irq(cpu, GTIMER_VIRT);
-+    } else if ((oldval ^ value) & CNTHCTL_CNTPMASK) {
-+        gt_update_irq(cpu, GTIMER_PHYS);
-+    }
-+}
-+
- static void gt_cntvoff_write(CPUARMState *env, const ARMCPRegInfo *ri,
-                               uint64_t value)
- {
-@@ -6202,7 +6244,8 @@ static const ARMCPRegInfo el2_cp_reginfo[] = {
-        * reset values as IMPDEF. We choose to reset to 3 to comply with
-        * both ARMv7 and ARMv8.
-        */
--      .access = PL2_RW, .resetvalue = 3,
-+      .access = PL2_RW, .type = ARM_CP_IO, .resetvalue = 3,
-+      .writefn = gt_cnthctl_write, .raw_writefn = raw_write,
-       .fieldoffset = offsetof(CPUARMState, cp15.cnthctl_el2) },
-     { .name = "CNTVOFF_EL2", .state = ARM_CP_STATE_AA64,
-       .opc0 = 3, .opc1 = 4, .crn = 14, .crm = 0, .opc2 = 3,
-diff --git a/target/arm/trace-events b/target/arm/trace-events
-index 2a0ba7bffc..48cc0512db 100644
---- a/target/arm/trace-events
-+++ b/target/arm/trace-events
-@@ -1,13 +1,14 @@
- # See docs/devel/tracing.rst for syntax documentation.
- 
- # helper.c
--arm_gt_recalc(int timer, int irqstate, uint64_t nexttick) "gt recalc: timer %d irqstate %d next tick 0x%" PRIx64
--arm_gt_recalc_disabled(int timer) "gt recalc: timer %d irqstate 0 timer disabled"
-+arm_gt_recalc(int timer, uint64_t nexttick) "gt recalc: timer %d next tick 0x%" PRIx64
-+arm_gt_recalc_disabled(int timer) "gt recalc: timer %d timer disabled"
- arm_gt_cval_write(int timer, uint64_t value) "gt_cval_write: timer %d value 0x%" PRIx64
- arm_gt_tval_write(int timer, uint64_t value) "gt_tval_write: timer %d value 0x%" PRIx64
- arm_gt_ctl_write(int timer, uint64_t value) "gt_ctl_write: timer %d value 0x%" PRIx64
--arm_gt_imask_toggle(int timer, int irqstate) "gt_ctl_write: timer %d IMASK toggle, new irqstate %d"
-+arm_gt_imask_toggle(int timer) "gt_ctl_write: timer %d IMASK toggle"
- arm_gt_cntvoff_write(uint64_t value) "gt_cntvoff_write: value 0x%" PRIx64
-+arm_gt_update_irq(int timer, int irqstate) "gt_update_irq: timer %d irqstate %d"
- 
- # kvm.c
- kvm_arm_fixup_msi_route(uint64_t iova, uint64_t gpa) "MSI iova = 0x%"PRIx64" is translated into 0x%"PRIx64
--- 
-2.41.0
-
+Reviewed-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 
