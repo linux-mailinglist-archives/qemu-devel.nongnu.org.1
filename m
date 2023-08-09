@@ -2,89 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2574D77638A
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 17:16:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B0C27763A1
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 17:24:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTkuh-0000jr-BN; Wed, 09 Aug 2023 11:15:56 -0400
+	id 1qTl1Z-0002wA-3J; Wed, 09 Aug 2023 11:23:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qTkuI-0000hR-51
- for qemu-devel@nongnu.org; Wed, 09 Aug 2023 11:15:30 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qTkuF-0000Vr-TV
- for qemu-devel@nongnu.org; Wed, 09 Aug 2023 11:15:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691594126;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=ZugeCaq9wQIS6w8G/hCXsv3Rv8DA5BbiPEOPDnUwQ2E=;
- b=F9rTuVBwtk49g2mzFQRVXsWPOJ1lKlgcDRz+yiB/TgrpI7BabVgIED+1Ul8wqWRIu6owBv
- aFUbmAyiVZmSw+mrQcHGgTT8hpTdN7/qcPyirBn+npfyswBRFnseCeBUl4OcZfT5rieLfj
- Aja17BZcgssLmjrQ2xpY5jumcCpsvGs=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-622-Z-elQp66Pn6_1JCZyhRAKw-1; Wed, 09 Aug 2023 11:15:25 -0400
-X-MC-Unique: Z-elQp66Pn6_1JCZyhRAKw-1
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-637948b24bdso17211826d6.1
- for <qemu-devel@nongnu.org>; Wed, 09 Aug 2023 08:15:25 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691594125; x=1692198925;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qTl1X-0002w2-HL
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 11:22:59 -0400
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qTl1V-0001up-Ip
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 11:22:59 -0400
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-31771a876b5so5208463f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 09 Aug 2023 08:22:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1691594576; x=1692199376;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ZugeCaq9wQIS6w8G/hCXsv3Rv8DA5BbiPEOPDnUwQ2E=;
- b=bnhMu1v8znHcvPBsVdjWiP56zp/b8D+auJ7Gy/onET6dJJ1Q5Ctj68kpY2CxvicHql
- LY/j9E6wIpjKu+Er8QFLoD103d4R9siXJoa6RFRgQ2ZcJVMe86WJHSO0sOPqlAJx/Fz+
- MDkIpbh+z/MrU2IxImkngMiQ2AjJU/Ow7Q/Tsw1W4/LCiZl+ntoDmDwRQpuDZ5X1XGM6
- xrGDbuSvPa7H4cw4ql7T5rfyFAQP5aYsLUjOCp5r/kPnoTp16YQPP9Isdi8AW3qtEJxK
- MPN4xAEMGfcal+P+6YYlocKOS0Ramu9+6dX3zRIK+7x7qFTgN5GRSAD1Gwey8c8pSdsX
- PLSg==
-X-Gm-Message-State: AOJu0Yxnl2n9XW7LjENcXOfnkuU7fdEbdsTtznqNZ4+c856Qpq9Z31js
- tdXmLBhIOeL/H/7vkIhRYfF+0mJzLIbyxX8s1jI2O6NYRUWsedMIZ33Fxn7vTClhrc3TdKynBZ7
- 97SRqfRa0fxavlrE=
-X-Received: by 2002:a05:620a:4052:b0:76c:b369:22e4 with SMTP id
- i18-20020a05620a405200b0076cb36922e4mr3481801qko.4.1691594124917; 
- Wed, 09 Aug 2023 08:15:24 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH6mNjgHQZXX1XZGZdZ8JZffWvUn70QtkC1712AY+i6yEkJQN5Lme2yd8KDqKC49TCURrypvQ==
-X-Received: by 2002:a05:620a:4052:b0:76c:b369:22e4 with SMTP id
- i18-20020a05620a405200b0076cb36922e4mr3481778qko.4.1691594124533; 
- Wed, 09 Aug 2023 08:15:24 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- q7-20020a05620a038700b00767db6f47bbsm4037747qkm.73.2023.08.09.08.15.23
+ bh=P9BB30DPJdgu3jckbj1kP8Y5dDNivecGTeXnLgflP9Y=;
+ b=NZ5RuvalpLhbkNFeml0hwwnFPTUMMtn3gXoGofxQsd9MRyE+T3DptHPwzU+s6ZiC9s
+ 5fdoacOt+bxm4FS+DD3FksVCCFxNWjS9nHJL0GshJeCgsFPdLH/yxXlPmq9j5u6ul/cS
+ 3LSCIldvkGV7mO1VpqFbQ+HCydmVBF9eQkd36D6QsLRSHcni2RP1493hzTUFr8BbiPY+
+ YQRw+LdDHN7b+THcEXOhalQKN5aPxrG0Xamuu0218Xu3yRwZIJX9YEMvS749hBP5T4gx
+ pmUn9jdngwXmNA2qYCRyALgU0zZwAgeWS90wUA1pDE3/evAZF4FVCSKx+kZenz957hbb
+ JarQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1691594576; x=1692199376;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=P9BB30DPJdgu3jckbj1kP8Y5dDNivecGTeXnLgflP9Y=;
+ b=Rqs16CqhgJjDJ89VjHKD6XH7UBAdDZvJ1JJxonlfKK9Xy0K1ukkOKd0piZHpuAjYfL
+ hyJB05xlXECz46DR6n8NMZX9siQihq9rRjrrDE1UFaAbFscUkMltqitWUm0pmsc4WC1e
+ rH4Q/Pw3/DhPAV05fYiPws+/cm0rUHubGXoD84zGM1QMJYOqjK4uWmZHNPuESMsRxi4s
+ X28XPLIOyBXxpdBzpoQT9SjmCRecjwa2xt12nDUIQaOVDaQlgpF4Al8B0S8nDSbTXdeu
+ /VrkeSG/MzyFX33t7uNXyE+VfY/wgX0ae5M7QK3nd3ZQOot6Y0OI71j2aaOJx7YD8Mkn
+ lH1w==
+X-Gm-Message-State: AOJu0YwIvptN3yuU8XZ1sSNPVrUjxr+kgfnenaIowHNYKXHrWyDynmB7
+ eGRTPqrKaJuCvYP1IeviidvLkg==
+X-Google-Smtp-Source: AGHT+IFhkEBmBiaHGfUFhVe8Gl8KnFAesu6lmTyL2AKojApCPuLGE6SYfLOnhLMFIrsGKANHwv514w==
+X-Received: by 2002:adf:ffc3:0:b0:315:a91c:1a8c with SMTP id
+ x3-20020adfffc3000000b00315a91c1a8cmr2250663wrs.22.1691594575845; 
+ Wed, 09 Aug 2023 08:22:55 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ s1-20020adff801000000b00314417f5272sm16976839wrp.64.2023.08.09.08.22.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 09 Aug 2023 08:15:24 -0700 (PDT)
-Date: Wed, 9 Aug 2023 11:15:23 -0400
-From: Peter Xu <peterx@redhat.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Thiner Logoer <logoerthiner1@163.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: Re: [PATCH v1 1/3] softmmu/physmem: fallback to opening guest RAM
- file as readonly in a MAP_PRIVATE mapping
-Message-ID: <ZNOti1OKN79t68jP@x1n>
-References: <20230807190736.572665-1-david@redhat.com>
- <20230807190736.572665-2-david@redhat.com> <ZNKtHVotkfgI1tb4@x1n>
- <1d1a7d8f-6260-5905-57ea-514b762ce869@redhat.com>
+ Wed, 09 Aug 2023 08:22:55 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 139591FFBB;
+ Wed,  9 Aug 2023 16:22:55 +0100 (BST)
+References: <20230808141739.3110740-1-fufuyqqqqqq@gmail.com>
+ <20230808141739.3110740-3-fufuyqqqqqq@gmail.com>
+User-agent: mu4e 1.11.13; emacs 29.1.50
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Yeqi Fu <fufuyqqqqqq@gmail.com>
+Cc: richard.henderson@linaro.org, qemu-devel@nongnu.org, Paolo Bonzini
+ <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>, Riku Voipio
+ <riku.voipio@iki.fi>
+Subject: Re: [RFC v4 02/11] build: Implement libnative library and the build
+ machinery for libnative
+Date: Wed, 09 Aug 2023 16:18:47 +0100
+In-reply-to: <20230808141739.3110740-3-fufuyqqqqqq@gmail.com>
+Message-ID: <87wmy444vk.fsf@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <1d1a7d8f-6260-5905-57ea-514b762ce869@redhat.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,132 +99,255 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 09, 2023 at 11:20:11AM +0200, David Hildenbrand wrote:
-> Hi Peter!
 
-Hi, David,
+Yeqi Fu <fufuyqqqqqq@gmail.com> writes:
 
-> 
-> > > -    fd = file_ram_open(mem_path, memory_region_name(mr), readonly, &created,
-> > > -                       errp);
-> > > +    fd = file_ram_open(mem_path, memory_region_name(mr), readonly, &created);
-> > > +    if (fd == -EACCES && !(ram_flags & RAM_SHARED) && !readonly) {
-> > > +        /*
-> > > +         * We can have a writable MAP_PRIVATE mapping of a readonly file.
-> > > +         * However, some operations like ftruncate() or fallocate() might fail
-> > > +         * later, let's warn the user.
-> > > +         */
-> > > +        fd = file_ram_open(mem_path, memory_region_name(mr), true, &created);
-> > > +        if (fd >= 0) {
-> > > +            warn_report("backing store %s for guest RAM (MAP_PRIVATE) opened"
-> > > +                        " readonly because the file is not writable", mem_path);
-> > 
-> > I can understand the use case, but this will be slightly unwanted,
-> > especially the user doesn't yet have a way to predict when will it happen.
-> 
-> Users can set the file permissions accordingly I guess. If they don't want
-> the file to never ever be modified via QEMU, set it R/O.
-> 
-> > 
-> > Meanwhile this changes the behavior, is it a concern that someone may want
-> > to rely on current behavior of failing?
-> 
-> The scenario would be that someone passes a readonly file to "-mem-path" or
-> "-object memory-backend-file,share=off,readonly=off", with the expectation
-> that it would currently fail.
-> 
-> If it now doesn't fail (and we warn instead), what would happen is:
-> * In file_ram_alloc() we won't even try ftruncate(), because the file
->   already had a size > 0. So ftruncate() is not a concern as I now
->   realize.
-> * fallocate might fail later. AFAIKS, that only applies to
->   ram_block_discard_range().
->  -> virtio-mem performs an initial ram_block_discard_range() check and
->     fails gracefully early.
->  -> virtio-ballooon ignores any errors
->  -> ram_discard_range() in migration code fails early for postcopy in
->     init_range() and loadvm_postcopy_ram_handle_discard(), handling it
->     gracefully.
-> 
-> So mostly nothing "bad" would happen, it might just be undesirable, and we
-> properly warn.
+> This commit implements a shared library, where native functions are
+> rewritten as special instructions. At runtime, user programs load
+> the shared library, and special instructions are executed when
+> native functions are called.
+>
+> Signed-off-by: Yeqi Fu <fufuyqqqqqq@gmail.com>
+> ---
+>  Makefile                            |  2 +
+>  common-user/native/Makefile.include |  9 ++++
+>  common-user/native/Makefile.target  | 22 ++++++++++
+>  common-user/native/libnative.c      | 67 +++++++++++++++++++++++++++++
+>  configure                           | 39 +++++++++++++++++
+>  include/native/libnative.h          |  8 ++++
+>  6 files changed, 147 insertions(+)
+>  create mode 100644 common-user/native/Makefile.include
+>  create mode 100644 common-user/native/Makefile.target
+>  create mode 100644 common-user/native/libnative.c
+>  create mode 100644 include/native/libnative.h
+>
+> diff --git a/Makefile b/Makefile
+> index 5d48dfac18..6f6147b40f 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -182,6 +182,8 @@ SUBDIR_MAKEFLAGS=3D$(if $(V),,--no-print-directory --=
+quiet)
+>=20=20
+>  include $(SRC_PATH)/tests/Makefile.include
+>=20=20
+> +include $(SRC_PATH)/common-user/native/Makefile.include
+> +
+>  all: recurse-all
+>=20=20
+>  ROMS_RULES=3D$(foreach t, all clean distclean, $(addsuffix /$(t), $(ROMS=
+)))
+> diff --git a/common-user/native/Makefile.include b/common-user/native/Mak=
+efile.include
+> new file mode 100644
+> index 0000000000..40d20bcd4c
+> --- /dev/null
+> +++ b/common-user/native/Makefile.include
+> @@ -0,0 +1,9 @@
+> +.PHONY: build-native
+> +build-native: $(NATIVE_TARGETS:%=3Dbuild-native-library-%)
+> +$(NATIVE_TARGETS:%=3Dbuild-native-library-%): build-native-library-%:
+> +	$(call quiet-command, \
+> +	    $(MAKE) -C common-user/native/$* $(SUBDIR_MAKEFLAGS), \
+> +	"BUILD","$* native library")
+> +# endif
+> +
+> +all: build-native
+> diff --git a/common-user/native/Makefile.target b/common-user/native/Make=
+file.target
+> new file mode 100644
+> index 0000000000..0c1241b368
+> --- /dev/null
+> +++ b/common-user/native/Makefile.target
+> @@ -0,0 +1,22 @@
+> +# -*- Mode: makefile -*-
+> +#
+> +# Library for native calls
+> +#
+> +
+> +all:
+> +-include ../../config-host.mak
 
-Indeed, all of them can fail gracefully, while balloon one is harmless.
-Definitely good news.
+This is sensitive to the out of tree build structure the user chooses. For
+example:
 
-> 
-> Most importantly, we won't be corrupting/touching the original file in any
-> case, because it is R/O.
-> 
-> If we really want to be careful, we could clue that behavior to compat
-> machines. I'm not really sure yet if we really have to go down that path.
-> 
-> Any other alternatives? I'd like to avoid new flags where not really
-> required.
+  =E2=9E=9C  pwd
+  /home/alex/lsrc/qemu.git/builds/user/common-user/native/aarch64-linux-user
+  =F0=9F=95=9916:20:08 alex@zen:common-user/native/aarch64-linux-user  on =
+=EE=82=A0 review/native-lib-calls-v4 [$!?]=20
+  =E2=9E=9C  make libnative.so
+  make: *** No rule to make target '/common-user/native/libnative.c', neede=
+d by 'libnative.so'.  Stop.
+  =F0=9F=95=9916:20:13 alex@zen:common-user/native/aarch64-linux-user  on =
+=EE=82=A0 review/native-lib-calls-v4 [$!?] [=F0=9F=94=B4 USAGE]=20
+  =E2=9C=97=20=20
 
-I was just thinking of a new flag. :) So have you already discussed that
-possibility and decided that not a good idea?
+I think this can be solved the same way as we do for tests/tcg by
+symlinking the config-host.mak into place and referring to it directly
+or adjusting the include to ../../../config-host.mak because the top of
+the build tree has a symlinked copy as well.
 
-The root issue to me here is we actually have two resources (memory map of
-the process, and the file) but we only have one way to describe the
-permissions upon the two objects.  I'd think it makes a lot more sense if a
-new flag is added, when there's a need to differentiate the two.
 
-Consider if you see a bunch of qemu instances with:
+> +-include config-target.mak
+> +
+> +CFLAGS+=3D-O1 -fPIC -shared -fno-stack-protector -I$(SRC_PATH)/include -=
+D$(TARGET_NAME)
+> +LDFLAGS+=3D
+> +
+> +SRC =3D $(SRC_PATH)/common-user/native/libnative.c
+> +LIBNATIVE =3D libnative.so
+> +
+> +all: $(LIBNATIVE)
+> +
+> +$(LIBNATIVE): $(SRC)
+> +	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $(EXTRA_NATIVE_CALL_FLAGS) $< -o $@ $(L=
+DFLAGS)
+> +
+> +clean:
+> +	rm -f $(LIBNATIVE)
+> diff --git a/common-user/native/libnative.c b/common-user/native/libnativ=
+e.c
+> new file mode 100644
+> index 0000000000..662ae6fbfe
+> --- /dev/null
+> +++ b/common-user/native/libnative.c
+> @@ -0,0 +1,67 @@
+> +#include <stdint.h>
+> +#include <stdio.h>
+> +#include <stdlib.h>
+> +
+> +#include "native/libnative.h"
+> +
+> +#define WRAP_NATIVE()                                 \
+> +    do {                                              \
+> +        __asm__ volatile(__CALL_EXPR : : : "memory"); \
+> +    } while (0)
+> +
+> +#if defined(i386) || defined(x86_64)
+> +/*
+> + * An unused instruction is utilized to mark a native call.
+> + */
+> +#define __CALL_EXPR ".byte 0x0f, 0xff;"
+> +#endif
+> +
+> +#if defined(arm) || defined(aarch64)
+> +/*
+> + * HLT is an invalid instruction for userspace and usefully has 16
+> + * bits of spare immeadiate data which we can stuff data in.
+> + */
+> +#define __CALL_EXPR "hlt 0xffff;"
+> +#endif
+> +
+> +#if defined(mips) || defined(mips64)
+> +/*
+> + * The syscall instruction contains 20 unused bits, which are typically
+> + * set to 0. These bits can be used to store non-zero data,
+> + * distinguishing them from a regular syscall instruction.
+> + */
+> +#define __CALL_EXPR "syscall 0xffff;"
+> +#endif
+> +
+> +void *memcpy(void *dest, const void *src, size_t n)
+> +{
+> +    WRAP_NATIVE();
+> +}
+> +int memcmp(const void *s1, const void *s2, size_t n)
+> +{
+> +    WRAP_NATIVE();
+> +}
+> +void *memset(void *s, int c, size_t n)
+> +{
+> +    WRAP_NATIVE();
+> +}
+> +char *strncpy(char *dest, const char *src, size_t n)
+> +{
+> +    WRAP_NATIVE();
+> +}
+> +int strncmp(const char *s1, const char *s2, size_t n)
+> +{
+> +    WRAP_NATIVE();
+> +}
+> +char *strcpy(char *dest, const char *src)
+> +{
+> +    WRAP_NATIVE();
+> +}
+> +char *strcat(char *dest, const char *src)
+> +{
+> +    WRAP_NATIVE();
+> +}
+> +int strcmp(const char *s1, const char *s2)
+> +{
+> +    WRAP_NATIVE();
+> +}
+> diff --git a/configure b/configure
+> index a076583141..e02fc2c5c0 100755
+> --- a/configure
+> +++ b/configure
+> @@ -1822,6 +1822,45 @@ if test "$tcg" =3D "enabled"; then
+>  fi
+>  )
+>=20=20
+> +# common-user/native configuration
+> +(mkdir -p common-user/native
+> +
+> +native_targets=3D
+> +for target in $target_list; do
+> +  case $target in
+> +    *-softmmu)
+> +    continue
+> +    ;;
+> +  esac
+> +
+> +  # native call is only supported on these architectures
+> +  arch=3D${target%%-*}
+> +  config_target_mak=3Dcommon-user/native/$target/config-target.mak
+> +  case $arch in
+> +    i386|x86_64|arm|aarch64|mips|mips64)
+> +      if test -f cross-build/$target/config-target.mak; then
+> +        mkdir -p "common-user/native/$target"
+> +        ln -srf cross-build/$target/config-target.mak "$config_target_ma=
+k"
+> +        if test $arch =3D arm; then
+> +          echo "EXTRA_NATIVE_CALL_FLAGS=3D-marm" >> "$config_target_mak"
+> +        fi
+> +        if test $arch =3D $cpu || \
+> +          { test $arch =3D i386 && test $cpu =3D x86_64; } || \
+> +          { test $arch =3D arm && test $cpu =3D aarch64; } || \
+> +          { test $arch =3D mips && test $cpu =3D mips64; }; then
+> +          echo "LD_PREFIX=3D/" >> "$config_target_mak"
+> +        fi
+> +        echo "LIBNATIVE=3D$PWD/common-user/native/$target/libnative.so" =
+>> "$config_target_mak"
+> +        ln -sf $source_path/common-user/native/Makefile.target common-us=
+er/native/$target/Makefile
+> +        native_targets=3D"$native_targets $target"
+> +      fi
+> +    ;;
+> +  esac
+> +done
+> +
+> +echo "NATIVE_TARGETS=3D$native_targets" >> config-host.mak
+> +)
+> +
+>  if test "$skip_meson" =3D no; then
+>    cross=3D"config-meson.cross.new"
+>    meson_quote() {
+> diff --git a/include/native/libnative.h b/include/native/libnative.h
+> new file mode 100644
+> index 0000000000..ec990d8e5f
+> --- /dev/null
+> +++ b/include/native/libnative.h
+> @@ -0,0 +1,8 @@
+> +void *memset(void *s, int c, size_t n);
+> +void *memcpy(void *dest, const void *src, size_t n);
+> +char *strncpy(char *dest, const char *src, size_t n);
+> +int memcmp(const void *s1, const void *s2, size_t n);
+> +int strncmp(const char *s1, const char *s2, size_t n);
+> +char *strcpy(char *dest, const char *src);
+> +char *strcat(char *dest, const char *src);
+> +int strcmp(const char *s1, const char *s2);
 
-  -mem-path $RAM_FILE
 
-On the same host, which can be as weird as it could be to me.. At least
-'-mem-path' looks still like a way to exclusively own a ram file for an
-instance. I hesitate the new fallback can confuse people too, while that's
-so far not the major use case.
-
-Nobody may really rely on any existing behavior of the failure, but
-changing existing behavior is just always not wanted.  The guideline here
-to me is: whether we want existing "-mem-path XXX" users to start using the
-fallback in general?  If it's "no", then maybe it implies a new flag is
-better?
-
-> 
-> > 
-> > To think from a higher level of current use case, the ideal solution seems
-> > to me that if the ram file can be put on a file system that supports CoW
-> > itself (like btrfs), we can snapshot that ram file and make it RW for the
-> > qemu instance. Then here it'll be able to open the file.  We'll be able to
-> > keep the interface working as before, meanwhile it'll work with fallocate
-> > or truncations too I assume.
-> > 
-> > Would that be better instead of changing QEMU?
-> 
-> As I recently learned, using file-backed VMs (on real ssd/disks, not
-> shmem/hugetlb) is usually undesired, because the dirtied pages will
-> constantly get rewritten to disk by background writeback threads, eventually
-> resulting in bad performance and SSD wear.
-> 
-> So while using a COW filesystem sounds cleaner in theory, it's not
-> applicable in practice -- unless one disables any background writeback,
-> which has different side effects because it cannot be configured on a
-> per-file basis.
-> 
-> So for VM templating, it makes sense to capture the guest RAM and store it
-> in a file, to then use a COW (MAP_PRIVATE) mapping. Using a read-only file
-> makes perfect sense in that scenario IMHO.
-
-Valid point.
-
-> 
-> [I'm curious at what point a filesystem will actually break COW. if it's
-> wired up to the writenotify infrastructure, it would happen when actually
-> writing to a page, not at mmap time. I know that filesystems use writenotify
-> for lazy allocation of disk blocks on file holes, maybe they also do that
-> for lazy allocation of disk blocks on COW]
-
-I don't know either, but it definitely looks more promising and reasonable
-if the CoW only happens until being written, rather than being mapped RW.
-
-Thanks,
-
--- 
-Peter Xu
-
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
