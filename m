@@ -2,96 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B71F8775641
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 11:21:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80C3877564D
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 11:26:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTfMa-00025t-IX; Wed, 09 Aug 2023 05:20:20 -0400
+	id 1qTfS3-0003Jg-Jl; Wed, 09 Aug 2023 05:25:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qTfMY-00025i-R1
- for qemu-devel@nongnu.org; Wed, 09 Aug 2023 05:20:18 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qTfMX-00028u-2S
- for qemu-devel@nongnu.org; Wed, 09 Aug 2023 05:20:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691572815;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=zX/iOgKNQ1ZCDprwcJjOpDQNjjOW4VtF6d7R5ipwhMc=;
- b=SGTVb1TUv2Vbb3L8Idghy2+cLVAjf7oUtRjl/SnQP2NTtjFBWvhPi2L7Rb9O+K/+Bl0Oi7
- 3JPC5MlCOLzfHunMRvNGFC5O9pa9KgppJeT3FS/PL1fPgRdHXp8l9u1ebYmYSeNgpCSXkU
- XyaYTJ2BLZz8dQ6hJb9Pi6+jW5vyVkc=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-408-8QZ-T7WqMnGT4YXZNP6peg-1; Wed, 09 Aug 2023 05:20:14 -0400
-X-MC-Unique: 8QZ-T7WqMnGT4YXZNP6peg-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-3178532c6c8so3315248f8f.1
- for <qemu-devel@nongnu.org>; Wed, 09 Aug 2023 02:20:13 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qTfRy-0003Ir-RN; Wed, 09 Aug 2023 05:25:54 -0400
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qTfRx-0003BG-76; Wed, 09 Aug 2023 05:25:54 -0400
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-686ba29ccb1so525590b3a.1; 
+ Wed, 09 Aug 2023 02:25:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1691573151; x=1692177951;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=jg7TfBkAIZ7COlp962qSLwU4ReQBJ+jz7s8vhxQiVMY=;
+ b=bu0VdSNKMT/H5s+Kt45AI1GSLFvuw8iSPlj9Q4ixZN6HsjpiYn0LLo/b15zRB8SfnL
+ srqRhRCny3gb5kNHEAFI4G+s73KyMqLaLAsTB/ij8hFWumBdevazZ4hMh2joftFhM5pu
+ C5pnaTHoEoJn8nwb7UYJs/ULInDj7JacYhFwmK9CbmX1rWtJiOTuXPkty6eCfEELXWSV
+ lmYHRVTux9lqYkfF1LNSpfgoWC1kXQj9A8jFM5o59rvlIbhWTpS2x+ENlgOhSJAkf2SJ
+ ROWeqg28SwbD45L5Q9tisTt2MzVIopWpQb+l9gvs7DvHrluiUQ9idP25VY/piJAEhwed
+ shkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691572813; x=1692177613;
- h=content-transfer-encoding:in-reply-to:subject:organization:from
- :references:cc:to:content-language:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=zX/iOgKNQ1ZCDprwcJjOpDQNjjOW4VtF6d7R5ipwhMc=;
- b=iDlKlyaH+vddw+vP4Lu7T0YmvBMvMGABglfYdJtVIN6+2I7YjYZs8+DkhFPbJGAspa
- HmQ9oBW6FHlhCOwTTvpjGngXZcKZCW38UoBj+lRrRnW0wuVc82JiHVkOo68cCC3XpE2v
- fSR0GiKFUOWIk+ciBn0NkIZM1OJxoi0c4veZF3JkV+UzqKfDASWOFsnQEsiRQcoK3RGm
- E8xdW5hAl2y4FGAco/cbD4J/Zj0UfOSR/Y4a0YTnPaQ3DGiKwNc+rS8Pn3fkgphU0Y0u
- NmukjKmlrWFWfzJRvZ99KtKSXi3gfn5Eq1NvNtR3pDOhmEI9DX+ex5fkLIemXrkyKcFo
- LP9Q==
-X-Gm-Message-State: AOJu0YyOwwARTWE35TTQuC9cGwXOmzsh0TWNdqKaPq8/VnCWkq87kgds
- 1JQKNdfLrFieiYzk7pHwn3VRXyLKuqHEpJv+4HiGfHwyyGE/F1Mteief1R8HnortieXIX21HQ52
- SunFNi9f8LOeV9Fk=
-X-Received: by 2002:adf:b613:0:b0:313:fbd0:9810 with SMTP id
- f19-20020adfb613000000b00313fbd09810mr1480255wre.4.1691572812867; 
- Wed, 09 Aug 2023 02:20:12 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGLh5N09ODRhrOr7dcifO++fvxRqr704Gy/AN01XA7kmDehLnvK96Nk9jgeA2vRfPEdnWl2rw==
-X-Received: by 2002:adf:b613:0:b0:313:fbd0:9810 with SMTP id
- f19-20020adfb613000000b00313fbd09810mr1480242wre.4.1691572812436; 
- Wed, 09 Aug 2023 02:20:12 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c70e:6800:9933:28db:f83a:ef5?
- (p200300cbc70e6800993328dbf83a0ef5.dip0.t-ipconnect.de.
- [2003:cb:c70e:6800:9933:28db:f83a:ef5])
+ d=1e100.net; s=20221208; t=1691573151; x=1692177951;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=jg7TfBkAIZ7COlp962qSLwU4ReQBJ+jz7s8vhxQiVMY=;
+ b=TIH18b1ZTS4VoBBH2WGcKwvKet4HxJLSxdS3R0XTubDTtvwKR7Wx6RsNgV6mDQSE5h
+ vDo6suTGuRQrVtrc7YCzTmTU9Fo/+bllwV/bOw3ztF0wWQo8+GGB8neyp97Wz/rOPnRE
+ 6ZBcQIE4w/caME+OqsZrmrQVi9L6Om9z9cwfGqNKKG6qU2YV2hN/CUkbYo9L6Q8Q4oCB
+ qRd5ixc6fK6dIx2xnqV+H1yFe+IWTVWps9BR30uOIy7Nrr8mW6l1K24kwvuoH/O0XE/1
+ 1Q2rmhj5OUPDqMFigh/+7gx3Q9NQDpfJsrcfoALkcVDivx7LziK3/IWTJFDWgv12IIsT
+ gptA==
+X-Gm-Message-State: AOJu0Yy7nmFMr8eyfeTPSUfgGrhcaMhpByuX5cN6E7KbGPXPRyJGBtuO
+ kf/XdPjXGP2YGV6GHb22giw=
+X-Google-Smtp-Source: AGHT+IFDJVuvHcnxaiolPORQ8i3qgOG5A9WfG/j5FURSBYJcLSsiQ2EHTA6zVA71J3M1oQjR8tgWEQ==
+X-Received: by 2002:a05:6a00:1948:b0:666:b22d:c6e0 with SMTP id
+ s8-20020a056a00194800b00666b22dc6e0mr3015696pfk.11.1691573151265; 
+ Wed, 09 Aug 2023 02:25:51 -0700 (PDT)
+Received: from localhost (61-68-137-140.tpgi.com.au. [61.68.137.140])
  by smtp.gmail.com with ESMTPSA id
- j6-20020adff006000000b00317b0155502sm16205446wro.8.2023.08.09.02.20.11
+ j8-20020aa783c8000000b00682c864f35bsm9820910pfn.140.2023.08.09.02.25.47
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 09 Aug 2023 02:20:11 -0700 (PDT)
-Message-ID: <1d1a7d8f-6260-5905-57ea-514b762ce869@redhat.com>
-Date: Wed, 9 Aug 2023 11:20:11 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Content-Language: en-US
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Thiner Logoer <logoerthiner1@163.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-References: <20230807190736.572665-1-david@redhat.com>
- <20230807190736.572665-2-david@redhat.com> <ZNKtHVotkfgI1tb4@x1n>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-Subject: Re: [PATCH v1 1/3] softmmu/physmem: fallback to opening guest RAM
- file as readonly in a MAP_PRIVATE mapping
-In-Reply-To: <ZNKtHVotkfgI1tb4@x1n>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -61
-X-Spam_score: -6.2
-X-Spam_bar: ------
-X-Spam_report: (-6.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-4.14, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ Wed, 09 Aug 2023 02:25:50 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 09 Aug 2023 19:25:45 +1000
+Message-Id: <CUNWMUZJLXTN.3R78CO579P9ID@wheely>
+Cc: =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, "David Gibson"
+ <david@gibson.dropbear.id.au>, "Greg Kurz" <groug@kaod.org>, "Harsh Prateek
+ Bora" <harshpb@linux.ibm.com>, "Pavel Dovgalyuk"
+ <pavel.dovgaluk@ispras.ru>, "Paolo Bonzini" <pbonzini@redhat.com>,
+ <qemu-ppc@nongnu.org>, <qemu-devel@nongnu.org>
+Subject: Re: [PATCH 4/7] spapr: Fix record-replay machine reset consuming
+ too many events
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Pavel Dovgalyuk" <pavel.dovgalyuk@ispras.ru>, "Daniel Henrique Barboza"
+ <danielhb413@gmail.com>
+X-Mailer: aerc 0.15.2
+References: <20230726183532.434380-1-npiggin@gmail.com>
+ <20230726183532.434380-5-npiggin@gmail.com>
+ <3be75aa3-780d-2d4d-a68c-1f8d1d000ee8@ispras.ru>
+ <CULFQXOOUWDB.3GMPJXRWAWSDW@wheely> <CUMU01SZ63FP.3B3F5NBPCVQT0@wheely>
+ <7903fa1d-1bcd-fd72-5dff-0ac665eb1ddd@ispras.ru>
+In-Reply-To: <7903fa1d-1bcd-fd72-5dff-0ac665eb1ddd@ispras.ru>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x434.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -108,96 +100,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Peter!
+On Tue Aug 8, 2023 at 1:52 PM AEST, Pavel Dovgalyuk wrote:
+> On 08.08.2023 06:09, Nicholas Piggin wrote:
+> > On Sun Aug 6, 2023 at 9:46 PM AEST, Nicholas Piggin wrote:
+> >> On Fri Aug 4, 2023 at 6:50 PM AEST, Pavel Dovgalyuk wrote:
+> >>> BTW, there is a function qemu_register_reset_nosnapshotload that can =
+be
+> >>> used in similar cases.
+> >>> Can you just use it without changing the code of the reset handler?
+> >>
+> >> I didn't know that, thanks for pointing it out. I'll take a closer loo=
+k
+> >> at it before reposting.
+> >=20
+> > Seems a bit tricky because the device tree has to be rebuilt at reset
+> > time (including snapshot load), but it uses the random number. So
+>
+> It seems strange to me, that loading the existing configuration has to=20
+> randomize the device tree.
 
->> -    fd = file_ram_open(mem_path, memory_region_name(mr), readonly, &created,
->> -                       errp);
->> +    fd = file_ram_open(mem_path, memory_region_name(mr), readonly, &created);
->> +    if (fd == -EACCES && !(ram_flags & RAM_SHARED) && !readonly) {
->> +        /*
->> +         * We can have a writable MAP_PRIVATE mapping of a readonly file.
->> +         * However, some operations like ftruncate() or fallocate() might fail
->> +         * later, let's warn the user.
->> +         */
->> +        fd = file_ram_open(mem_path, memory_region_name(mr), true, &created);
->> +        if (fd >= 0) {
->> +            warn_report("backing store %s for guest RAM (MAP_PRIVATE) opened"
->> +                        " readonly because the file is not writable", mem_path);
-> 
-> I can understand the use case, but this will be slightly unwanted,
-> especially the user doesn't yet have a way to predict when will it happen.
+Building the device tree requires a random number for one of the
+properties.
 
-Users can set the file permissions accordingly I guess. If they don't 
-want the file to never ever be modified via QEMU, set it R/O.
+Other architectures that don't have this "cas" firmware call that
+changes the device tree and so requires it is rebuilt at machine
+reset time just build the device tree once at machine creation time
+I believe.
 
-> 
-> Meanwhile this changes the behavior, is it a concern that someone may want
-> to rely on current behavior of failing?
+So spapr is already weird in that way. We could go the way that
+other archs have and just save that random number once at
+creation and then reuse it for each reset. I thought that was not
+so good because for a normal reset I think it is better to get a
+new random number each time, no?
 
-The scenario would be that someone passes a readonly file to "-mem-path" 
-or "-object memory-backend-file,share=off,readonly=off", with the 
-expectation that it would currently fail.
+So I think it's natural enough to take a new random number for a
+regular reset, but keep the existing one for a snapshot reset. I
+could be misunderstanding something though.
 
-If it now doesn't fail (and we warn instead), what would happen is:
-* In file_ram_alloc() we won't even try ftruncate(), because the file
-   already had a size > 0. So ftruncate() is not a concern as I now
-   realize.
-* fallocate might fail later. AFAIKS, that only applies to
-   ram_block_discard_range().
-  -> virtio-mem performs an initial ram_block_discard_range() check and
-     fails gracefully early.
-  -> virtio-ballooon ignores any errors
-  -> ram_discard_range() in migration code fails early for postcopy in
-     init_range() and loadvm_postcopy_ram_handle_discard(), handling it
-     gracefully.
+Thanks,
+Nick
 
-So mostly nothing "bad" would happen, it might just be undesirable, and 
-we properly warn.
-
-Most importantly, we won't be corrupting/touching the original file in 
-any case, because it is R/O.
-
-If we really want to be careful, we could clue that behavior to compat 
-machines. I'm not really sure yet if we really have to go down that path.
-
-Any other alternatives? I'd like to avoid new flags where not really 
-required.
-
-> 
-> To think from a higher level of current use case, the ideal solution seems
-> to me that if the ram file can be put on a file system that supports CoW
-> itself (like btrfs), we can snapshot that ram file and make it RW for the
-> qemu instance. Then here it'll be able to open the file.  We'll be able to
-> keep the interface working as before, meanwhile it'll work with fallocate
-> or truncations too I assume.
-> 
-> Would that be better instead of changing QEMU?
-
-As I recently learned, using file-backed VMs (on real ssd/disks, not 
-shmem/hugetlb) is usually undesired, because the dirtied pages will 
-constantly get rewritten to disk by background writeback threads, 
-eventually resulting in bad performance and SSD wear.
-
-So while using a COW filesystem sounds cleaner in theory, it's not 
-applicable in practice -- unless one disables any background writeback, 
-which has different side effects because it cannot be configured on a 
-per-file basis.
-
-So for VM templating, it makes sense to capture the guest RAM and store 
-it in a file, to then use a COW (MAP_PRIVATE) mapping. Using a read-only 
-file makes perfect sense in that scenario IMHO.
-
-[I'm curious at what point a filesystem will actually break COW. if it's 
-wired up to the writenotify infrastructure, it would happen when 
-actually writing to a page, not at mmap time. I know that filesystems 
-use writenotify for lazy allocation of disk blocks on file holes, maybe 
-they also do that for lazy allocation of disk blocks on COW]
-
-Thanks!
-
--- 
-Cheers,
-
-David / dhildenb
+>
+> > having a second nosnapshotload reset function might not be called in
+> > the correct order, I think?  For now I will keep it as is.
+>
+> Ok, let's wait for other reviewers.
+>
+>
+> Pavel Dovgalyuk
 
 
