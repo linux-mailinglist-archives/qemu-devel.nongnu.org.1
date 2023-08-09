@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 567E67769CD
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 22:22:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3B08776A1C
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 22:36:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTpgG-0000kL-6S; Wed, 09 Aug 2023 16:21:20 -0400
+	id 1qTptH-0004LR-Gt; Wed, 09 Aug 2023 16:34:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yuri.benditovich@daynix.com>)
- id 1qTpgE-0000k7-8k
- for qemu-devel@nongnu.org; Wed, 09 Aug 2023 16:21:18 -0400
-Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
+ (Exim 4.90_1) (envelope-from <shorne@gmail.com>) id 1qTptF-0004LJ-ID
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 16:34:45 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yuri.benditovich@daynix.com>)
- id 1qTpgC-0007FH-Ge
- for qemu-devel@nongnu.org; Wed, 09 Aug 2023 16:21:18 -0400
-Received: by mail-lf1-x136.google.com with SMTP id
- 2adb3069b0e04-4fe3678010eso213534e87.3
- for <qemu-devel@nongnu.org>; Wed, 09 Aug 2023 13:21:15 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <shorne@gmail.com>) id 1qTptD-000146-UP
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 16:34:45 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-3fe2d218eedso1693815e9.0
+ for <qemu-devel@nongnu.org>; Wed, 09 Aug 2023 13:34:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1691612474; x=1692217274;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=6TX84wKJnc8azC3YuoK94GEzSEcJOUh0wUAdYhJxEGc=;
- b=ooJRmqQZF8fXZu8Z5Z1Ha9J5NZPT5mTwp7ChStqnB2+HT4G0oyYC3vypdp4lf/mzo4
- CgD2U1VATPJ3c2+Qvd/jJf6XAJuuCb6PmGERkyhnILyXENSAuN+rUYNdKHWbiwBUvAmW
- kEW+YmvwlWYb0F0fK48QtUJ6B8ceeQKGsCnKNTyvoN8XWQAGhKpH9JdiMBiO6Iz881IJ
- FPCUFfolU47jJqQdAsmbjKGazq+7qUpvr8RXrHhDY+di+VMVNUFArty+39iH87Cw6O+h
- wZGqodbfriMDUuroaXxIBmyCtvqamyxoRufmx+LGbLTTUR68Jd4FqntBO8i37ROWskAi
- t2mQ==
+ d=gmail.com; s=20221208; t=1691613281; x=1692218081;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=3dsODYW+B5PeLwCUlqIs9FYG3OHgKJCzKu7xEC8wIc8=;
+ b=hW9E3IX9wf97YKGDHfwB3jFrCMpwwqOXNM3i3PfllzmjJz8tEGuzJhMujNkzQdRUR0
+ PtfYy7ZHWutsciy3hOEGoV2WyLB+fOsYSLl94zBpdg3aWq4cKF0hZN5YSr+rOMLqMugY
+ HNHWzSmIKAngdZlfZS4xHXm2Fj1h0vLSZTknF0p82sLXQR62H4Hl7TojHRnS46cxIdaD
+ vMxv1QXAKJARP/tIWCt/f6IFx7/yc9IK5JUzRwX0IWi3dyFzBhuzHg+ZhmI1Xr/jMBPm
+ m838MXwLXwDE+RXoDW6SBpk51THqr3sOp5y35oKc5Mnb+L8xGI7DgSsQkr8ZGc+Mtu7f
+ ISPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691612474; x=1692217274;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20221208; t=1691613281; x=1692218081;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=6TX84wKJnc8azC3YuoK94GEzSEcJOUh0wUAdYhJxEGc=;
- b=Ycsgh6jT58fr4o7nJX5kEGGzGiiRkOWoamsaWUhZ2DmXeeFgARP6qVyHOyja8k/FyT
- kKPd4ObJdkejdNn/qsp5Dqz08UNqaHUgY75jwDJJkvhnC5ClERnQ7ReekM5AqHgNm0Zv
- 6M+E5AbBQLl5OvojqqftcTOqUad/yAIV3R4ztEk8Ugbl7Q718RyiH7z9euNcf6wTi5y8
- rbLLU18dHX3P5a+L4nI7yz4fjsLGvcGD0Eh2lPeG0p1l5DRrh/n9ayKxYwlbdNeMmJ16
- vvIhi07C/vljs64BPZ6l+o2JM92a2uWJ3oNHRbBb5fKxg5LAr2maGXYPsd2TN+WrGTm3
- BhBg==
-X-Gm-Message-State: AOJu0YzQHPhcBD9xmdI+5tBcQg4JfYNLuSxVCNd5PNeeq+POLEXZaNdd
- DMevnFetOj5ptJWJzGNk6gpGE4UKQSsUDU6/Era9hA==
-X-Google-Smtp-Source: AGHT+IH02xeMK4IwR8sWjsFDh/YB0L3Ikr9oJBrmve2BnornTc0eT1ThTvR7KTX5TDHtfcXCujvgqFmW0PUJiIslMTs=
-X-Received: by 2002:a05:6512:2312:b0:4f9:556b:93c5 with SMTP id
- o18-20020a056512231200b004f9556b93c5mr135687lfu.40.1691612474271; Wed, 09 Aug
- 2023 13:21:14 -0700 (PDT)
+ bh=3dsODYW+B5PeLwCUlqIs9FYG3OHgKJCzKu7xEC8wIc8=;
+ b=L44XKfCT6+jDg/O2nSqyr6TtCCCjMMfkfAoRsEr0s9ezzercqKxyps36uKmOJcCiUR
+ 92xLW6ELpnK6lW4UgYFqHPIr/MvxyYO5C6m8A7INO+WSSgIbJtNP57LbaawVsDBPehsx
+ h4S1JNdRsgtVrV/PxCzFquAKhdKPMJBLXtiF95pyPyj6ezmTrKpFJfzEiXp3gAMnNMcY
+ F+C6Y/xWbvxJvXzb64IeU/6Sk/e3WlIdvmFxjtLzrkZtlHRPhYj/Kl9lpRHKSf75TG06
+ BVoNpDScyiuBWgFmJyU3DcZJYPukM3/iMP0G5NoOG8FTxreJ2JOgxHJlHR2jdqF0ybqI
+ ZJjg==
+X-Gm-Message-State: AOJu0Yz7EbyzbWZAzPIvZOafaMDTL7O/uhmtCQEcH5gNNJzborXYjrl0
+ /emJqD5S+x3f9qInSVAZLut8oE3WUS0UZw==
+X-Google-Smtp-Source: AGHT+IFXAa1vBwVp+ZsO6/j3NWEctf8Lb6pCECuRIYEh/p4sREeImKfJ8iUAdFTiks7YSIYWfHd9fA==
+X-Received: by 2002:a1c:4b0b:0:b0:3fb:ac9c:e6f with SMTP id
+ y11-20020a1c4b0b000000b003fbac9c0e6fmr167613wma.38.1691613281375; 
+ Wed, 09 Aug 2023 13:34:41 -0700 (PDT)
+Received: from localhost (cpc1-brnt4-2-0-cust862.4-2.cable.virginm.net.
+ [86.9.131.95]) by smtp.gmail.com with ESMTPSA id
+ fk3-20020a05600c0cc300b003fc05b89e5bsm8412wmb.34.2023.08.09.13.34.40
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 09 Aug 2023 13:34:40 -0700 (PDT)
+From: Stafford Horne <shorne@gmail.com>
+To: QEMU Development <qemu-devel@nongnu.org>
+Cc: Stafford Horne <shorne@gmail.com>
+Subject: [PULL 0/1] OpenRISC FPU Fix for 8.1
+Date: Wed,  9 Aug 2023 21:34:31 +0100
+Message-Id: <20230809203432.424071-1-shorne@gmail.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-References: <20230731223148.1002258-1-yuri.benditovich@daynix.com>
-In-Reply-To: <20230731223148.1002258-1-yuri.benditovich@daynix.com>
-From: Yuri Benditovich <yuri.benditovich@daynix.com>
-Date: Wed, 9 Aug 2023 23:21:01 +0300
-Message-ID: <CAOEp5Ocvd=WByDkh4jDO1mcbQbcAxA=As61_JaUxaP-t3+FMzQ@mail.gmail.com>
-Subject: Re: [PATCH v2 0/4] virtio-net: add USO feature (UDP segmentation
- offload)
-To: eduardo@habkost.net, marcel.apfelbaum@gmail.com, philmd@linaro.org, 
- wangyanan55@huawei.com, dmitry.fleytman@gmail.com, akihiko.odaki@daynix.com, 
- jasowang@redhat.com, sriram.yagnaraman@est.tech, mst@redhat.com, 
- sw@weilnetz.de, qemu-devel@nongnu.org
-Cc: yan@daynix.com
-Content-Type: multipart/alternative; boundary="000000000000a08187060283380e"
-Received-SPF: none client-ip=2a00:1450:4864:20::136;
- envelope-from=yuri.benditovich@daynix.com; helo=mail-lf1-x136.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=shorne@gmail.com; helo=mail-wm1-x32a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,106 +86,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000a08187060283380e
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+The following changes since commit ccdd31267678db9d80578b5f80bbe94141609ef4:
 
-ping
+  Merge tag 'pull-qapi-2023-07-26-v2' of https://repo.or.cz/qemu/armbru into staging (2023-07-26 07:16:19 -0700)
 
-On Tue, Aug 1, 2023 at 1:32=E2=80=AFAM Yuri Benditovich <yuri.benditovich@d=
-aynix.com>
-wrote:
+are available in the Git repository at:
 
-> Starting from 6.2 the kernel supports UDP segmentation offload, it
-> uses GSO_UDP_L4 to mark packets with UDP sermentation request
->
-> v1->v2:
->  Enable USO features by default starting from 8.1
->  Move command-line parameters to the last patch
->
-> Andrew Melnychenko (2):
->   tap: Add USO support to tap device.
->   virtio-net: Add USO flags to vhost support.
->
-> Yuri Benditovich (2):
->   tap: Add check for USO features
->   virtio-net: Add support for USO features
->
->  hw/core/machine.c    |  4 ++++
->  hw/net/e1000e_core.c |  2 +-
->  hw/net/igb_core.c    |  2 +-
->  hw/net/vhost_net.c   |  3 +++
->  hw/net/virtio-net.c  | 35 ++++++++++++++++++++++++++++++++---
->  hw/net/vmxnet3.c     |  2 ++
->  include/net/net.h    |  7 +++++--
->  net/net.c            | 13 +++++++++++--
->  net/tap-bsd.c        |  7 ++++++-
->  net/tap-linux.c      | 27 ++++++++++++++++++++++++---
->  net/tap-linux.h      |  2 ++
->  net/tap-solaris.c    |  7 ++++++-
->  net/tap-stub.c       |  7 ++++++-
->  net/tap-win32.c      |  2 +-
->  net/tap.c            | 18 +++++++++++++++---
->  net/tap_int.h        |  4 +++-
->  net/vhost-vdpa.c     |  3 +++
->  17 files changed, 125 insertions(+), 20 deletions(-)
->
-> --
-> 2.34.3
->
->
+  https://github.com/stffrdhrn/qemu.git tags/or1k-pull-request-20230809
 
---000000000000a08187060283380e
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+for you to fetch changes up to 765fdc1e8355d4bae563b3b185c5f9d079384164:
 
-<div dir=3D"ltr">ping</div><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
-class=3D"gmail_attr">On Tue, Aug 1, 2023 at 1:32=E2=80=AFAM Yuri Benditovic=
-h &lt;<a href=3D"mailto:yuri.benditovich@daynix.com">yuri.benditovich@dayni=
-x.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"ma=
-rgin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:=
-1ex">Starting from 6.2 the kernel supports UDP segmentation offload, it<br>
-uses GSO_UDP_L4 to mark packets with UDP sermentation request<br>
-<br>
-v1-&gt;v2:<br>
-=C2=A0Enable USO features by default starting from 8.1<br>
-=C2=A0Move command-line parameters to the last patch<br>
-<br>
-Andrew Melnychenko (2):<br>
-=C2=A0 tap: Add USO support to tap device.<br>
-=C2=A0 virtio-net: Add USO flags to vhost support.<br>
-<br>
-Yuri Benditovich (2):<br>
-=C2=A0 tap: Add check for USO features<br>
-=C2=A0 virtio-net: Add support for USO features<br>
-<br>
-=C2=A0hw/core/machine.c=C2=A0 =C2=A0 |=C2=A0 4 ++++<br>
-=C2=A0hw/net/e1000e_core.c |=C2=A0 2 +-<br>
-=C2=A0hw/net/igb_core.c=C2=A0 =C2=A0 |=C2=A0 2 +-<br>
-=C2=A0hw/net/vhost_net.c=C2=A0 =C2=A0|=C2=A0 3 +++<br>
-=C2=A0hw/net/virtio-net.c=C2=A0 | 35 ++++++++++++++++++++++++++++++++---<br=
->
-=C2=A0hw/net/vmxnet3.c=C2=A0 =C2=A0 =C2=A0|=C2=A0 2 ++<br>
-=C2=A0include/net/net.h=C2=A0 =C2=A0 |=C2=A0 7 +++++--<br>
-=C2=A0net/net.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 | 13 +++++++++++--=
-<br>
-=C2=A0net/tap-bsd.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=A0 7 ++++++-<br>
-=C2=A0net/tap-linux.c=C2=A0 =C2=A0 =C2=A0 | 27 ++++++++++++++++++++++++---<=
-br>
-=C2=A0net/tap-linux.h=C2=A0 =C2=A0 =C2=A0 |=C2=A0 2 ++<br>
-=C2=A0net/tap-solaris.c=C2=A0 =C2=A0 |=C2=A0 7 ++++++-<br>
-=C2=A0net/tap-stub.c=C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 7 ++++++-<br>
-=C2=A0net/tap-win32.c=C2=A0 =C2=A0 =C2=A0 |=C2=A0 2 +-<br>
-=C2=A0net/tap.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 | 18 +++++++++++++=
-++---<br>
-=C2=A0net/tap_int.h=C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=A0 4 +++-<br>
-=C2=A0net/vhost-vdpa.c=C2=A0 =C2=A0 =C2=A0|=C2=A0 3 +++<br>
-=C2=A017 files changed, 125 insertions(+), 20 deletions(-)<br>
-<br>
--- <br>
-2.34.3<br>
-<br>
-</blockquote></div>
+  target/openrisc: Set EPCR to next PC on FPE exceptions (2023-07-31 22:01:03 +0100)
 
---000000000000a08187060283380e--
+----------------------------------------------------------------
+OpenRISC FPU Fix for 8.1
+
+A patch to pass the correct exception address when handling floating
+point exceptions.
+
+----------------------------------------------------------------
+Stafford Horne (1):
+      target/openrisc: Set EPCR to next PC on FPE exceptions
+
+ target/openrisc/interrupt.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
