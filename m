@@ -2,50 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BADB7756D3
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 12:09:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB4EA775705
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 12:23:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTg6d-0001Vv-LJ; Wed, 09 Aug 2023 06:07:55 -0400
+	id 1qTgLt-0006Oc-41; Wed, 09 Aug 2023 06:23:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maksim.kostin@ispras.ru>)
- id 1qTg6a-0001Vh-Ri; Wed, 09 Aug 2023 06:07:53 -0400
-Received: from mail.ispras.ru ([83.149.199.84])
- by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maksim.kostin@ispras.ru>)
- id 1qTg6Y-0002KO-Qi; Wed, 09 Aug 2023 06:07:52 -0400
-Received: from timbersaw.intra.ispras.ru (unknown [85.142.117.226])
- by mail.ispras.ru (Postfix) with ESMTPSA id BA16640F1DD7;
- Wed,  9 Aug 2023 10:07:45 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru BA16640F1DD7
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
- s=default; t=1691575665;
- bh=KSUA1EF/4walk+vI1G+OyBeQQdvGHsA+9ce6SthPjJA=;
- h=From:To:Cc:Subject:Date:From;
- b=QtQ1lCqdDSvStM1wKSwkp1/OSv87UHign3hzumGezmoXOhB1pFp9iPduFlVg9EViM
- R6N6t9vQh3AJosCokV0QMOVTgGm6V6BodlcY6hrr8CJUf6f2Dg5VS7UyhZc4wfvkWj
- WfDLZXnxykTlCnPiLVf4bBka1fuLebYPaLBBK8aU=
-From: Maksim Kostin <maksim.kostin@ispras.ru>
-To: qemu-devel@nongnu.org
-Cc: Maksim Kostin <maksim.kostin@ispras.ru>, qemu-ppc@nongnu.org,
- pavel.dovgaluk@ispras.ru, pbonzini@redhat.com, alex.bennee@linaro.org,
- Vitaly Cheptsov <cheptsov@ispras.ru>
-Subject: [PATCH] hw/ppc/e500: fix broken snapshot replay
-Date: Wed,  9 Aug 2023 13:07:33 +0300
-Message-Id: <20230809100733.32189-1-maksim.kostin@ispras.ru>
-X-Mailer: git-send-email 2.34.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=83.149.199.84;
- envelope-from=maksim.kostin@ispras.ru; helo=mail.ispras.ru
+ (Exim 4.90_1) (envelope-from <jason.chien@sifive.com>)
+ id 1qTgLr-0006Ny-H3
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 06:23:39 -0400
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <jason.chien@sifive.com>)
+ id 1qTgLp-00055r-K7
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 06:23:39 -0400
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-686f38692b3so6483050b3a.2
+ for <qemu-devel@nongnu.org>; Wed, 09 Aug 2023 03:23:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=sifive.com; s=google; t=1691576615; x=1692181415;
+ h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=JjTpRtgk7g09UYe/5wWTzD2WRGklQow3z8dJyWIKW+k=;
+ b=QPPqUOhPvJ9uQTJSPqAgfU5uOvcamSivXh1noFR7uSKtJ7bp4iBQKy8RtyoEnFUHWE
+ t4TgU/o4gjM9pXLuphyT27mxPB7ryQBNdUkJqUAh6lyqtfclkfkDQXUAfjQCyw5ddHrN
+ v7vqiqEqwuiGuRTcQdowO6WYi8tYaN8wuBB7rGuR+MuLpe8dPtIxc+AyGQBwKDoD59xF
+ HPJAz9pp6ZazLRcp0aVDHBo+y1CqdKuhVTyi+3VsbrcA0giFjuzhP/qQSQFpQf4nKxkw
+ 1CI2kYW71aXp2XUmjsYf6Ylhyoh7opFH5mvkBKCWnNZ3M75c6PLBagWLrgJQ6jYk2IVn
+ 1Ahg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1691576615; x=1692181415;
+ h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=JjTpRtgk7g09UYe/5wWTzD2WRGklQow3z8dJyWIKW+k=;
+ b=PwmukIEo7BWBEX27ri/m8RstS2ro24GVIFScuM3+61oGvqThl3ba0x0Kqxq5V14FGd
+ N64zPtxt6pYMH5ttlTqV7CSvMPswNXAyl2DPg1vnJb+Eod1nGmt2JMl9n6GkdkuyTasI
+ qlMU8M1uw4UIYjG5+au2BWB7UNCTJqd8zabZiSZP+H9xHgv4htVnO/WpqvFGxRusz82q
+ iBYem6nXP696yRcacfq7CSbHjhaLeRS6O3U/jp+lgm+o6ZKrmkjP2aZEwH47YnDcuDRV
+ Jr4aslNy8hKRRxdcXH+K3Xkia2P4nDZrRkLJ8+HY1NmD8rTOWG64XDDgpUWr9zFJs29f
+ 6EMQ==
+X-Gm-Message-State: AOJu0Yzmj5stG0Lr8aa3+4XXPrD7SHIxkNjsxonqAM1M0hKylWIol0v8
+ NVm9o7nIy/rzLB338nVuuts+OUkdCBXrBPjXRlRLjOteymXTx1AccZbIG8KK2ZaU0aK6R20YCrE
+ orRdR+brOs/+0Jtapmub16Qo5hA/OtvHOltvTGfHLZlObCzPwe9cl0H40YkSJC2dR+de3yOvDnl
+ zrSQ==
+X-Google-Smtp-Source: AGHT+IEvLTpKLQh5nzrSLkSIwo1I8XPBKy7MBizHB7oRdMAAPINtCfOSccIknAmrtOmGMZF2fFnaTQ==
+X-Received: by 2002:a05:6a21:3291:b0:135:8a65:a772 with SMTP id
+ yt17-20020a056a21329100b001358a65a772mr2392397pzb.50.1691576615407; 
+ Wed, 09 Aug 2023 03:23:35 -0700 (PDT)
+Received: from hsinchu26.internal.sifive.com
+ (59-124-168-89.hinet-ip.hinet.net. [59.124.168.89])
+ by smtp.gmail.com with ESMTPSA id
+ j21-20020a62b615000000b00687375d9135sm9557544pff.4.2023.08.09.03.23.33
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 09 Aug 2023 03:23:34 -0700 (PDT)
+From: Jason Chien <jason.chien@sifive.com>
+To: qemu-devel@nongnu.org,
+	qemu-riscv@nongnu.org
+Cc: Jason Chien <jason.chien@sifive.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Andrey Smirnov <andrew.smirnov@gmail.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Greg Kurz <groug@kaod.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Igor Mammedov <imammedo@redhat.com>, qemu-arm@nongnu.org
+Subject: [PATCH] hw/pci-host: Allow extended config space access for
+ Designware PCIe host
+Date: Wed,  9 Aug 2023 10:22:50 +0000
+Message-Id: <20230809102257.25121-1-jason.chien@sifive.com>
+X-Mailer: git-send-email 2.17.1
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=jason.chien@sifive.com; helo=mail-pf1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -61,38 +95,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ppce500_reset_device_tree is registered for system reset, but after
-c4b075318eb1 this function rerandomizes rng-seed via
-qemu_guest_getrandom_nofail. And when loading a snapshot, it tries to read
-EVENT_RANDOM that doesn't exist, so we have an error:
+In pcie_bus_realize(), a root bus is realized as a PCIe bus and a non-root
+bus is realized as a PCIe bus if its parent bus is a PCIe bus. However,
+the child bus "dw-pcie" is realized before the parent bus "pcie" which is
+the root PCIe bus. Thus, the extended configuration space is not accessible
+on "dw-pcie". The issue can be resolved by adding the
+PCI_BUS_EXTENDED_CONFIG_SPACE flag to "pcie" before "dw-pcie" is realized.
 
-  qemu-system-ppc: Missing random event in the replay log
-
-To fix this, use qemu_register_reset_nosnapshotload instead of
-qemu_register_reset.
-
-Reported-by: Vitaly Cheptsov <cheptsov@ispras.ru>
-Fixes: c4b075318eb1 ("hw/ppc: pass random seed to fdt ")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1634
-Signed-off-by: Maksim Kostin <maksim.kostin@ispras.ru>
+Signed-off-by: Jason Chien <jason.chien@sifive.com>
 ---
- hw/ppc/e500.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/pci-host/designware.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/hw/ppc/e500.c b/hw/ppc/e500.c
-index 67793a86f1..d5b6820d1d 100644
---- a/hw/ppc/e500.c
-+++ b/hw/ppc/e500.c
-@@ -712,7 +712,7 @@ static int ppce500_prep_device_tree(PPCE500MachineState *machine,
-     p->kernel_base = kernel_base;
-     p->kernel_size = kernel_size;
+diff --git a/hw/pci-host/designware.c b/hw/pci-host/designware.c
+index 9e183caa48..388d252ee2 100644
+--- a/hw/pci-host/designware.c
++++ b/hw/pci-host/designware.c
+@@ -694,6 +694,7 @@ static void designware_pcie_host_realize(DeviceState *dev, Error **errp)
+                                      &s->pci.io,
+                                      0, 4,
+                                      TYPE_PCIE_BUS);
++    pci->bus->flags |= PCI_BUS_EXTENDED_CONFIG_SPACE;
  
--    qemu_register_reset(ppce500_reset_device_tree, p);
-+    qemu_register_reset_nosnapshotload(ppce500_reset_device_tree, p);
-     p->notifier.notify = ppce500_init_notify;
-     qemu_add_machine_init_done_notifier(&p->notifier);
- 
+     memory_region_init(&s->pci.address_space_root,
+                        OBJECT(s),
 -- 
-2.34.1
+2.17.1
 
 
