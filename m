@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53461776375
+	by mail.lfdr.de (Postfix) with ESMTPS id 5449C776376
 	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 17:11:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTkpb-0006QL-CD; Wed, 09 Aug 2023 11:10:39 -0400
+	id 1qTkqB-0006ZF-KI; Wed, 09 Aug 2023 11:11:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTkpV-0006Pj-Rd
- for qemu-devel@nongnu.org; Wed, 09 Aug 2023 11:10:36 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ id 1qTkqA-0006Z7-Ey
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 11:11:14 -0400
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTkpT-0007xa-Mw
- for qemu-devel@nongnu.org; Wed, 09 Aug 2023 11:10:32 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-1bbc64f9a91so58446895ad.0
- for <qemu-devel@nongnu.org>; Wed, 09 Aug 2023 08:10:30 -0700 (PDT)
+ id 1qTkq9-00083q-0Y
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 11:11:14 -0400
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-686e29b058cso4955234b3a.1
+ for <qemu-devel@nongnu.org>; Wed, 09 Aug 2023 08:11:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691593830; x=1692198630;
+ d=linaro.org; s=google; t=1691593871; x=1692198671;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=jfAbdbP+lNzWWVkLPvs4YNUHAxn9NY/LE5yLd2IKNIc=;
- b=R6DnTI0rUre/hwgI5EHDo/4++f400XiL8X9hkvUFMm9xbRATEeEf5pcaYyBOgPM2Hs
- TV5AWWg/Bijs4NlXDfDeTDnFPBSVto7a103KOVYLgehmlg+hC/kEYshzwQhGWnO3BqRB
- IGTPSti08LspXkeKkIe0epo8/4n2FerQMoDTHkwc1/LnObVEw/c+dWIU1zgb6G2RTW7J
- CwgSg7Z/muEXvuvnw8jRCswB6eb4aq2UswX3NKSVt6xQmZkMvfxdjtvFrGyF0hPUG4RE
- /ethH6Mns5Be77NYGu2v2Xh0Y2wQRUJDHGPn8VIS+T4lTXJ8+0DGhoiDvGDJrDMn4C6E
- tYXw==
+ bh=W2RNdv7MQVQMJmnFgtFJBdkUf7vmm1iSlEMrytAZYs0=;
+ b=CLRS+s8A5zvOC99wUoVUoPboVpNUKqthuR5DQe6iM14jNQrziNCnWaQ+Gm/SbPY0uu
+ cd9wElJa2awzt02HnBnyuHeEU0Vtyon/hCqPK2Typm5Ps2Tgrgr3HFmo+ZKSqoPlIM/i
+ U0TNPCP1HtKYJS6+LfyJwjchzXpu5ODVzDxlFdxkVaEGCfJd9+03eTap8743Y4LW63wH
+ 4ixhdH+1aAuA93bGQBpNAaXGVQx0/gsCgCUZCC6kTuxoRHaqtIML7KykpmyfaKKqb9im
+ Ao9W6jpBVMxzmTBN59AArWU4IV+iqorMGza3tDiEY87yswtCCBtS3ftnPfqCi3ODgosM
+ 2Btw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691593830; x=1692198630;
+ d=1e100.net; s=20221208; t=1691593871; x=1692198671;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=jfAbdbP+lNzWWVkLPvs4YNUHAxn9NY/LE5yLd2IKNIc=;
- b=F0IRY/5IyUkFRcAsc3o5rO8n350B1ps+xvNe/HEoYRCR8n/YimDHd3crDaUMVVHMLf
- w9vn+1XgkRdBtMJ6QJkPZeGBKlpQ2jIlSYd5wVZh/vvJyVjOA802RzsOjKZfyS+tsDgz
- J31b3pFJey0eubnWz+wwf5gxKwPQd9xli2Qi3F+tJxDO8uPj+P26fFiHcE3n2qBXHOQR
- 2On7ljcKQIQKIcRU0QZvST5dsOpVBndu5BJ8gTYtUYfbVnxxJMaEl4mtttVo2S+wf9re
- OKQhqMvHXKLJJQwqukflsJ32C0ErlnDn/xixZo0kGJhosp5KpWaVd8SLmXsoSKEsYJ1j
- Ez+w==
-X-Gm-Message-State: AOJu0Yxxun9BQFqLR38zW3QMuQw2NhYklRXB8USea5FR7kAHJA9Upg9o
- tPx/WRAc7XcIoglehu1nig4VyA==
-X-Google-Smtp-Source: AGHT+IGCI3gmcveU1MvfWMrFh/39kZuNz7jLA+/iTe98skJxiEH4Inl3qq48rsXFQGO9pP5bxnvohQ==
-X-Received: by 2002:a17:902:aa05:b0:1bb:8f37:dd0b with SMTP id
- be5-20020a170902aa0500b001bb8f37dd0bmr2891812plb.52.1691593829700; 
- Wed, 09 Aug 2023 08:10:29 -0700 (PDT)
+ bh=W2RNdv7MQVQMJmnFgtFJBdkUf7vmm1iSlEMrytAZYs0=;
+ b=TGbi/Wrw4sPmqUWqDQDbO8ehaIf0KdgpebnKq1IgsRJ1uNfOPS6l6eSkGHvdgwnYit
+ f6c8kPlNjV933sTqFZGvw/vD/eeAdU3KQHAf8w4h8Uv31IrbUYHEmcvYJWZKOIw6YP7o
+ k119pBUWQ3giIE9JdNT4obgUlvFo3+zAMqXHsmxmN6UyLd9RrujqJoRIZjV+LInsdY95
+ A1WpuN0dFAlpzdpW9etd7wQvzRrBpclF7LpoSvA4SW9LdQYWbAVvDWIdlUKgeZYCrvGT
+ 1K69SazpH5rITq4ydAonGpPVlBQcHEDlucIc7iliBbJVLrhBgrZG7Kj4eP5xbSn8SGqv
+ eNfA==
+X-Gm-Message-State: AOJu0YyLiiD4L8CmGzMj4Oc/7UHihnBDCJvLDtTYGw0KCoN+2Nbhy/Nm
+ y5b3TzoxOU4Lxoc7kh+lZpPcNg==
+X-Google-Smtp-Source: AGHT+IGe+HWogYyTmqFB/taGUQS7hGmMa4iYnMlSbSVOSTx82u+IGoSIkep0PLwvjj85byxomJli9w==
+X-Received: by 2002:a05:6a20:8f0b:b0:134:d4d3:f0a8 with SMTP id
+ b11-20020a056a208f0b00b00134d4d3f0a8mr3221574pzk.3.1691593871657; 
+ Wed, 09 Aug 2023 08:11:11 -0700 (PDT)
 Received: from ?IPV6:2602:47:d483:7301:6bf0:9674:6ac4:f74c?
  ([2602:47:d483:7301:6bf0:9674:6ac4:f74c])
  by smtp.gmail.com with ESMTPSA id
- r14-20020a170902be0e00b001bb99ea5d02sm11267409pls.4.2023.08.09.08.10.28
+ q16-20020a170902dad000b001adf6b21c77sm11303242plx.107.2023.08.09.08.11.10
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 09 Aug 2023 08:10:28 -0700 (PDT)
-Message-ID: <1b400192-d622-02d9-0a3f-1b6d8dfc7eea@linaro.org>
-Date: Wed, 9 Aug 2023 08:10:26 -0700
+ Wed, 09 Aug 2023 08:11:11 -0700 (PDT)
+Message-ID: <b5a030a3-eb95-6ce0-e0f5-15912d61f57d@linaro.org>
+Date: Wed, 9 Aug 2023 08:11:09 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH v5 09/11] target/loongarch: Truncate high 32 bits of
- address in VA32 mode
+Subject: Re: [PATCH v5 10/11] target/loongarch: Sign extend results in VA32
+ mode
 Content-Language: en-US
 To: Jiajie Chen <c@jia.je>, qemu-devel@nongnu.org
 Cc: yijun@loongson.cn, shenjinyang@loongson.cn, gaosong@loongson.cn,
  i.qemu@xen0n.name, Xiaojuan Yang <yangxiaojuan@loongson.cn>
 References: <20230809083258.1787464-1-c@jia.je>
- <20230809083258.1787464-10-c@jia.je>
+ <20230809083258.1787464-11-c@jia.je>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230809083258.1787464-10-c@jia.je>
+In-Reply-To: <20230809083258.1787464-11-c@jia.je>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
 X-Spam_score_int: -61
 X-Spam_score: -6.2
 X-Spam_bar: ------
@@ -99,25 +99,15 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 8/9/23 01:26, Jiajie Chen wrote:
-> When running in VA32 mode(!LA64 or VA32L[1-3] matching PLV), virtual
-> address is truncated to 32 bits before address mapping.
+> In VA32 mode, BL, JIRL and PC* instructions should sign-extend the low
+> 32 bit result to 64 bits.
 > 
 > Signed-off-by: Jiajie Chen<c@jia.je>
-> Co-authored-by: Richard Henderson<richard.henderson@linaro.org>
 > ---
->   target/loongarch/cpu.c                        | 16 ++++----
->   target/loongarch/cpu.h                        |  9 +++++
->   target/loongarch/gdbstub.c                    |  2 +-
->   .../loongarch/insn_trans/trans_atomic.c.inc   |  5 ++-
->   .../loongarch/insn_trans/trans_branch.c.inc   |  3 +-
->   .../loongarch/insn_trans/trans_fmemory.c.inc  | 30 ++++-----------
->   target/loongarch/insn_trans/trans_lsx.c.inc   | 38 +++++--------------
->   .../loongarch/insn_trans/trans_memory.c.inc   | 34 +++++------------
->   target/loongarch/op_helper.c                  |  4 +-
->   target/loongarch/translate.c                  | 32 ++++++++++++++++
->   10 files changed, 85 insertions(+), 88 deletions(-)
-
-Much better, thanks.
+>   target/loongarch/insn_trans/trans_arith.c.inc  | 2 +-
+>   target/loongarch/insn_trans/trans_branch.c.inc | 4 ++--
+>   target/loongarch/translate.c                   | 8 ++++++++
+>   3 files changed, 11 insertions(+), 3 deletions(-)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
