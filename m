@@ -2,78 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CDBD77643F
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 17:43:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1AAB776444
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 17:44:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTlKS-0002eZ-Vz; Wed, 09 Aug 2023 11:42:33 -0400
+	id 1qTlM7-0003OX-4L; Wed, 09 Aug 2023 11:44:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTlKQ-0002dC-Jk
- for qemu-devel@nongnu.org; Wed, 09 Aug 2023 11:42:30 -0400
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ id 1qTlLx-0003OB-Dp
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 11:44:06 -0400
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTlKP-0005WM-2w
- for qemu-devel@nongnu.org; Wed, 09 Aug 2023 11:42:30 -0400
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-686be28e1a8so4940000b3a.0
- for <qemu-devel@nongnu.org>; Wed, 09 Aug 2023 08:42:28 -0700 (PDT)
+ id 1qTlLv-0005i7-Ue
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 11:44:05 -0400
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-6874d1c8610so5056996b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 09 Aug 2023 08:44:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691595747; x=1692200547;
+ d=linaro.org; s=google; t=1691595842; x=1692200642;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=hhtL7IGvgzsYaF6mhTvgqbU+b90lmSlICguvdIDSBkY=;
- b=bJ6uJYx86P5pux8h6RRQTsd6YltxiFV06n6cPx8oXowlmUYJAkt/Y78vTxQGbSphfi
- p5bU3gAIq8zANXzzvIpQ1wY6L2OPRgN+5Ctbv3ol5Js35bfaRYD2IQT52f0rcJWvjJm1
- pcVfvht8vbz28KkHKpRXdX3m2/tB31vYkzN0nB0eYkJbVBBs6V/GPQ8WDV+mBYWw54Is
- i4j5gPQeI8dABTUwXewMChm+mG5ZDLYPej/A+gWhYMtbmM6cnQvQxI9bu1p82AOkq2pE
- j/khqUr9l60xBO8x+u8twKcAlQR5eZ4IPjYtZIl89r81Kk1snfcKudCoDxjnEE1/5fNc
- LHGA==
+ bh=uRayGt/7vBZvSFOt01c82DNlfu/weLIxDRhQzRS0KMg=;
+ b=NtMWRySJ6DzpgC8nRGwgB4j68oKTwLe4mvYmf+Se5GPVhq4Cz+pzlzw1H8KS//wgqe
+ kdUD8BjR0k9e+XFRxs75xGtkyY6MD5YHD/eotWOZQfImSfKD31f3Co91ph9MiLxde+b5
+ 18Oq5QsLRRyUZvWLxxYUMHRsZAMmA9NE+wgx0iq6ORn/hqyn06LrF1z8L3tAHu55iEhi
+ 648tL5H7dDBz/ciiz5BgZ11LhIhR567uBa6yTXbbwGECeVw8NpRRRawSzZhpzWHzKaph
+ 5EP29ACxgv2PVLVeW9gBSKj39AavNqL80MR7MHjpoFe9HRxTDJR9tz5HvSWELzYvnEvv
+ cjsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691595747; x=1692200547;
+ d=1e100.net; s=20221208; t=1691595842; x=1692200642;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=hhtL7IGvgzsYaF6mhTvgqbU+b90lmSlICguvdIDSBkY=;
- b=MOOvnCMqlxxs6txGYmPM8Ed5+HcRpxXKIiMLMrPpQO/nUCVJ5daz1Jn0QGh+HpC3NC
- q0QbJznQXlW3bOq5xqn5KCm1RHX01IN76NNnv8Dh84H7slc9pMP4uGKAWkpVUKj77YRw
- b3jRGb2qoFHClLk++tU1K49YdcAawuP10QjfzaRV2LE9L1kIxguaAQ3B6k3r+tgkNQLI
- uGYMClGAOHSP+YJjEY3aDAGEGZtSujNl0WVgV0EE7Q/uvVViZGuUHMtgywinlAOrKPLv
- hUiSPWN2epyj+BexcJ7yZFvujYHJn3pzVUArZVGBrw2cZTCyT0Nzbr/8bOrKvxM8kqRN
- zDlw==
-X-Gm-Message-State: AOJu0YwcrhFzP11ASqqgx4Fx7hRVhVfuwevgm65kRHzE3E2jOayPRqG2
- RnjT+d9xdI01hb5xuc8pmYCgou2TiwajHCP0FN0=
-X-Google-Smtp-Source: AGHT+IGnjAjySZ+c7sjsNyLI69e4YJr4V9ckNGCNSRyCQDTbimHVSV6ja86xXGbb8XV24yjeT83qnQ==
-X-Received: by 2002:a05:6a20:12cd:b0:134:9f4e:623f with SMTP id
- v13-20020a056a2012cd00b001349f4e623fmr3088971pzg.14.1691595747386; 
- Wed, 09 Aug 2023 08:42:27 -0700 (PDT)
+ bh=uRayGt/7vBZvSFOt01c82DNlfu/weLIxDRhQzRS0KMg=;
+ b=bwhiTDPUCyGiNBs1xYjzlDiRObY18Xvc/LTcjgnazzbTWBmv3V5gFNkDVY6Yct0Vu/
+ gH62kNo6dAc9noGweP4Q5PS5jFqKhowfl1pja0abw/vozZumd3FohDUsppGiliWGo+6d
+ pujYX3TZD8ZL94afSxSBwOpVD6tZmJz6C1RWT7eIJu90lnQxOVA2Zy6MwhZDFed6NHcM
+ Zu/rFLaqq0ZXa/9E/WV6tHg64CVCtzwgn40XZhcEOOWOndU3gj6iMoBhXKejvvCuZ1GU
+ DCaKKJAGFaWoq0HVkToi0MpKa0BxxswNnf+zIAW0e2W+CTVvqAMZYFLfVd1zUY8ecKhY
+ IDHw==
+X-Gm-Message-State: AOJu0YxdlV08rP0yvNZCke6A4TdIg8m9tkiXTC9lWm5xbgqVA+tngc2N
+ hBTSb5M4Oo/cv2l6bK3GTowpOg==
+X-Google-Smtp-Source: AGHT+IHNa7Mc9Od+rWnGkxwnsIMqSk9AjL8N4sKhtqxgSoKhWMv1bUDmmI8jpPEErbb456qYazFxCA==
+X-Received: by 2002:a05:6a00:2d05:b0:686:6e90:a99b with SMTP id
+ fa5-20020a056a002d0500b006866e90a99bmr3222764pfb.25.1691595842429; 
+ Wed, 09 Aug 2023 08:44:02 -0700 (PDT)
 Received: from ?IPV6:2602:47:d483:7301:6bf0:9674:6ac4:f74c?
  ([2602:47:d483:7301:6bf0:9674:6ac4:f74c])
  by smtp.gmail.com with ESMTPSA id
- g17-20020a62e311000000b0068790c41ca2sm10113623pfh.27.2023.08.09.08.42.26
+ k24-20020aa790d8000000b006829b28b393sm10026956pfk.199.2023.08.09.08.44.01
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 09 Aug 2023 08:42:26 -0700 (PDT)
-Message-ID: <cd1fa6f2-90f7-c915-8aab-0b8ba2b7a374@linaro.org>
-Date: Wed, 9 Aug 2023 08:42:25 -0700
+ Wed, 09 Aug 2023 08:44:01 -0700 (PDT)
+Message-ID: <474ba745-4501-da43-91b2-fa757ec0b240@linaro.org>
+Date: Wed, 9 Aug 2023 08:44:00 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [RFC v4 04/11] linux-user: Implement native-bypass option support
+Subject: Re: [RFC v4 03/11] linux-user: Implement envlist_appendenv and add
+ tests for envlist
 Content-Language: en-US
 To: Yeqi Fu <fufuyqqqqqq@gmail.com>, alex.bennee@linaro.org
-Cc: qemu-devel@nongnu.org, Laurent Vivier <laurent@vivier.eu>
+Cc: qemu-devel@nongnu.org
 References: <20230808141739.3110740-1-fufuyqqqqqq@gmail.com>
- <20230808141739.3110740-5-fufuyqqqqqq@gmail.com>
+ <20230808141739.3110740-4-fufuyqqqqqq@gmail.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230808141739.3110740-5-fufuyqqqqqq@gmail.com>
+In-Reply-To: <20230808141739.3110740-4-fufuyqqqqqq@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
 X-Spam_score_int: -61
 X-Spam_score: -6.2
 X-Spam_bar: ------
@@ -97,21 +98,50 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 8/8/23 07:17, Yeqi Fu wrote:
-> +#define native_bypass_enabled() native_lib_path ? true : false
+> Signed-off-by: Yeqi Fu <fufuyqqqqqq@gmail.com>
+> ---
+>   include/qemu/envlist.h    | 13 ++++++
+>   tests/unit/meson.build    |  1 +
+>   tests/unit/test-envlist.c | 94 +++++++++++++++++++++++++++++++++++++++
+>   util/envlist.c            | 71 ++++++++++++++++++++++++-----
+>   4 files changed, 169 insertions(+), 10 deletions(-)
+>   create mode 100644 tests/unit/test-envlist.c
+> 
+> diff --git a/include/qemu/envlist.h b/include/qemu/envlist.h
+> index 6006dfae44..9eb1459e79 100644
+> --- a/include/qemu/envlist.h
+> +++ b/include/qemu/envlist.h
+> @@ -1,12 +1,25 @@
+>   #ifndef ENVLIST_H
+>   #define ENVLIST_H
+>   
+> +#include "qemu/queue.h"
+> +
+> +struct envlist_entry {
+> +    const char *ev_var;            /* actual env value */
+> +    QLIST_ENTRY(envlist_entry) ev_link;
+> +};
+> +
+> +struct envlist {
+> +    QLIST_HEAD(, envlist_entry) el_entries; /* actual entries */
+> +    size_t el_count;                        /* number of entries */
+> +};
+> +
 
-Need parenthesis for the expression, and possibly better as
+Why are you exposing the structures?
 
-     (native_lib_path != NULL)
+> +static void envlist_parse_set_unset_test(void)
+> +{
+> +    envlist_t *testenvlist;
+> +    const char *env = "TEST1=123,TEST2=456";
+> +
+> +    testenvlist = envlist_create();
+> +    g_assert(envlist_parse_set(testenvlist, env) == 0);
+> +    g_assert(testenvlist->el_count == 2);
+> +    g_assert(envlist_parse_unset(testenvlist, "TEST1,TEST2") == 0);
+> +    g_assert(testenvlist->el_count == 0);
 
-rather than ternary expression.
-
-> +#if defined(CONFIG_NATIVE_CALL)
-> +    /* Set the library for native bypass  */
-> +    if (native_lib_path) {
-> +        if (g_file_test(native_lib_path, G_FILE_TEST_EXISTS)) {
-
-G_FILE_TEST_EXISTS may be a directory.
-Better with G_FILE_TEST_IS_REGULAR, I guess?
+If it's just for the count, then add an envlist_length() function.
 
 
 r~
