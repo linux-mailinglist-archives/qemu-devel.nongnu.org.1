@@ -2,85 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5AFB776469
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 17:52:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E663776470
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 17:54:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTlSn-00053r-Tu; Wed, 09 Aug 2023 11:51:09 -0400
+	id 1qTlVR-0006RC-Rb; Wed, 09 Aug 2023 11:53:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qTlSl-00053Q-P4
- for qemu-devel@nongnu.org; Wed, 09 Aug 2023 11:51:07 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qTlSk-00071b-2E
- for qemu-devel@nongnu.org; Wed, 09 Aug 2023 11:51:07 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-317744867a6so17366f8f.1
- for <qemu-devel@nongnu.org>; Wed, 09 Aug 2023 08:51:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691596264; x=1692201064;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=f+dif+GT8wBdIzKIRtXzL5kS3BIRSBm8PjdMulAt0Z8=;
- b=es7b2S9SjiPFmWltx115jWh2NqhmWqkaszA/G0IhzlUfDtkntrNvMOr0RafxV5J7vI
- +JLOYP9UJm/6KhXkCt58QJGbdtcN1UE1ALILj4pdo8OY+NWNpRKeO5jQcKOWZKiyzNWb
- ndDuUHDJHF2VM7ft5QrMF39KCMhOkuP/wZtT5FKh2FMcQ7eYVcz54ZxaGSbNmfBRvlBT
- lbnvPRUE6PRX/r74ZfTtoCFQGl2qHav6dRPafuOcXLKADf2tbqWDsvtB+yLicTCJ2nYg
- BzOLbErzS9dHdVFWvbABaUA8S1vgsqEkrpg2K5Z9S0PYFZS/Jhq1PxemmGQEGV5QXEYc
- SsGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691596264; x=1692201064;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=f+dif+GT8wBdIzKIRtXzL5kS3BIRSBm8PjdMulAt0Z8=;
- b=UwRPLPTsQXuMNHEHl6VEeXBsr1G95e9ES13/Wsvw6qQdnZTuwFF1O2vPPH/DLOj8VW
- wya6mxQlshAXH7RsoG+GXgZJD7UNpSWHYD598HVv18QlX5qx9BEBYvAt6JhZV7XbcBpx
- grQlLVYrX3vN/jRPArPR/h4pCnhnK8x4y4ZJOm2cfvJYyo+2TqZe0LFAEJzR6NhxAYKq
- wFayWidx22brAxbVCkQ7bIT5kn4pnC5Woi/o4yK4mWpfzvhymS7nNz19Qzh5ZsmoVL0b
- YjUShLfYqOFjhNP+KRc6ic8+3N2uDotoToEe7fx4VYbc0SBBfvVQ58BOJ4EcB7UZF7Nv
- /g7w==
-X-Gm-Message-State: AOJu0Yw2Js2g1NWrwqxFqtTOS//I8BLJTnq4xWs7mevOLPAdhzK02X3T
- ExKQtQLbmTV98dxEcHPyRa+/pg==
-X-Google-Smtp-Source: AGHT+IEmPNwti7l4OfRZq4n8hEntqBc4Rjrk3NjSD+mc8MTyWa3veMPRSYVhNqPpcz4q+UUZKbcH3A==
-X-Received: by 2002:adf:f608:0:b0:317:7441:1a4 with SMTP id
- t8-20020adff608000000b00317744101a4mr2344187wrp.29.1691596264182; 
- Wed, 09 Aug 2023 08:51:04 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- u18-20020a05600c211200b003fbb0c01d4bsm2331657wml.16.2023.08.09.08.51.03
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 09 Aug 2023 08:51:03 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 703D91FFBB;
- Wed,  9 Aug 2023 16:51:03 +0100 (BST)
-References: <20230808141739.3110740-1-fufuyqqqqqq@gmail.com>
- <20230808141739.3110740-5-fufuyqqqqqq@gmail.com>
-User-agent: mu4e 1.11.13; emacs 29.1.50
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Yeqi Fu <fufuyqqqqqq@gmail.com>
-Cc: richard.henderson@linaro.org, qemu-devel@nongnu.org, Laurent Vivier
- <laurent@vivier.eu>
-Subject: Re: [RFC v4 04/11] linux-user: Implement native-bypass option support
-Date: Wed, 09 Aug 2023 16:47:26 +0100
-In-reply-to: <20230808141739.3110740-5-fufuyqqqqqq@gmail.com>
-Message-ID: <87h6p843ko.fsf@linaro.org>
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qTlVQ-0006Qs-13
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 11:53:52 -0400
+Received: from mout.gmx.net ([212.227.17.22])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qTlVN-0007Lf-Aj
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 11:53:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
+ s=s31663417; t=1691596425; x=1692201225; i=deller@gmx.de;
+ bh=zV2G6TuzSLhDh4a3QDfRwuced6EPYGRi1Ol9w0Nr8qM=;
+ h=X-UI-Sender-Class:Date:Subject:To:References:From:In-Reply-To;
+ b=RRPzR4vCrbYmRGEARtAGDj7xBREpgEZzbNCrFWwuECvZjGjz45vBdyfmXmkT84+8bub6qPY
+ 8h/joEUiW59fjiGgiOmDF3fSkKJqpZqX8as2VKkf2B4bHCejThVxwTkY7JRRaI5JwP8opI5PN
+ zPv0L6C8HubZ76FwfoV2Mv9jpJtevBeqlO+ttljRRe30e4+TFIGpvhXmJnfejkoMUUevzpx7+
+ L9qsPMsF2yP7AYOY+B+z3pOXNbmpwtDO7eu9F2zjOu5fXQA6apMe+FWEoo1dvbLyFTaKx6GqW
+ Fw1r+lqhsJTG3oBFFcj0XzVXk2Z3yzMMm/cFkNQRIB8RJH0SGXgA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.60] ([94.134.156.76]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1N0oG5-1pZIwG2s8T-00wmFe; Wed, 09
+ Aug 2023 17:53:45 +0200
+Message-ID: <6f4c3b1d-4254-526a-4cf1-6aefbba6796d@gmx.de>
+Date: Wed, 9 Aug 2023 17:53:45 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: Fix interval_tree_iter_first() to check root node value
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20230807163705.9848-1-richard.henderson@linaro.org>
+ <20230807163705.9848-11-richard.henderson@linaro.org>
+ <d2842004-ce3e-325f-69a7-3eec6e4cd1d5@linaro.org> <ZNOsq6Z7t/eyIG/9@p100>
+ <9251069c-95e5-aff5-9ee9-de7a493b23bf@linaro.org>
+From: Helge Deller <deller@gmx.de>
+In-Reply-To: <9251069c-95e5-aff5-9ee9-de7a493b23bf@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Provags-ID: V03:K1:Ukde404qBvb8nozofy3Obt0TB83bY2A61dJLTJ+YZND3X5R83zF
+ 1+NXnctfz0wiIFtSteehPbkTIZxbFUBHrnWfN8LjHXJIB4PGPhcAjaFrfxEf5JjBaLpXsci
+ 1e9wJx8CeqDk6T8zO+b27PrGBtu3LtG43xg1KhO/DRfe15/HReYfo3/gH9VPZRMLK/o9YBi
+ bukjn8dDFXIS2ZB9GHqDA==
+UI-OutboundReport: notjunk:1;M01:P0:ucC4k7pGvjs=;vOY0ITWOD64kJ8tT5lIz+iYwdz3
+ NY1Zmo6JHwqusu92fEp85fGTU2EtSfcA7mwY1iAZRv2blIrVrLUgwAggnacGp/V8ZOIYyW/FH
+ fV5Ss/XaY2Qi93FIeP6qN+UUxlX4MvLRz3LZfj7xjun9LKpjvLJVxS/KhcX/0vA8DSwVHPpHF
+ lld7B0/+4cWmhFQGSi7GBbpactCIYOu2P5b8lBYI6hLK+Y4lIk699CkrtGkLcwjuW2xm09cAN
+ maAi9dhMzOEhN99UV/7+jL3YTqrmWVGoZoB3nDq4+nwKjpOxAZEFWFu+1UYKu7PsvcPj0FBG3
+ dUJQybXdTLIJMMqlRFeWVjQXdIWcalssK/Man/fZlXqEVI9M8C89J5GO86b01BtTnPWwi32Dx
+ Iu5/Sitn9f2RaI4Zs28ndfEVDCo0YGCaJ/73200L0VUBWIjPAugeHo/djDjdkLD4DrtPT8CZ7
+ jRUN0FGAfoQE5hoM8FD8ow+ldIER4xJ8wQpWnAbG7buYgcm+rOXzvDpCvJZrXN9Yl0vmcvqeg
+ xbgnyoUW/UqZSJPvfPKqB/+obZa3grQz90JoXkIQUroBJDaMgRGJt4hgUUx80Sq/2tmxgxxTj
+ YhzZVCws6cPxOqLL5vG3nbjV8hkU2VKvL/j2dxoh4e0VM7jWVz95NwRRia9mY/N28vwSgzrsr
+ diWLTN47mD4b9pw+5Xtc1CUmCVikj8Blgkz1y9MO+KiPVyDxtiS5YpZFOcfOULrD4Ap/LmlGZ
+ fefYkbd0kK7623REQZ4W7QhxHdBxmFL2ToAAnFq6bFdAy6wVBKf9los3Sllfn9Z2gXqi7gpPK
+ rqPVj4LMAQhpF4vC8dc3Hf0CeaZKPxKJAdpesimaKFsq/PerFo0kOUwKteOPY5xmGBrccx9mR
+ nbXkQAGVAysUnWEEBLB5w0JKyefbK8andZlAlW1YeghzucHto85eJEbl+1LVrivkwLXUHoDkV
+ qxQBpFp90Io22xqu7Bi21GmQB2s=
+Received-SPF: pass client-ip=212.227.17.22; envelope-from=deller@gmx.de;
+ helo=mout.gmx.net
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ NICE_REPLY_A=-4.14, RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,96 +89,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-Yeqi Fu <fufuyqqqqqq@gmail.com> writes:
-
-> This commit implements the -native-bypass support in linux-user. The
-> native_calls_enabled() function can be true only when the
-> '-native-bypass' option is given.
+On 8/9/23 17:23, Richard Henderson wrote:
+> On 8/9/23 08:11, Helge Deller wrote:
+>> Fix a crash in qemu-user when running
+>>
+>> =C2=A0=C2=A0=C2=A0=C2=A0 cat /proc/self/maps
+>>
+>> in a chroot, where /proc isn't mounted.
+>>
+>> The problem was introduced by commit 3ce3dd8ca965 ("util/selfmap:
+>> Rewrite using qemu/interval-tree.h") where in open_self_maps_1() the
+>> function read_self_maps() is called and which returns NULL if it can't
+>> read the hosts /proc/self/maps file. Afterwards that NULL is fed into
+>> interval_tree_iter_first() which doesn't check if the root node is NULL=
+.
+>>
+>> Fix it by adding a check if root is NULL and return NULL in that case.
+>>
+>> Signed-off-by: Helge Deller <deller@gmx.de>
+>> Fixes: 3ce3dd8ca965 ("util/selfmap: Rewrite using qemu/interval-tree.h"=
+)
+>>
+>> diff --git a/util/interval-tree.c b/util/interval-tree.c
+>> index f2866aa7d3..53465182e6 100644
+>> --- a/util/interval-tree.c
+>> +++ b/util/interval-tree.c
+>> @@ -797,7 +797,7 @@ IntervalTreeNode *interval_tree_iter_first(Interval=
+TreeRoot *root,
+>> =C2=A0 {
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 IntervalTreeNode *node, *leftmost;
+>>
+>> -=C2=A0=C2=A0=C2=A0 if (!root->rb_root.rb_node) {
+>> +=C2=A0=C2=A0=C2=A0 if (!root || !root->rb_root.rb_node) {
 >
-> Signed-off-by: Yeqi Fu <fufuyqqqqqq@gmail.com>
-> ---
->  include/native/native.h |  9 +++++++++
->  linux-user/main.c       | 38 ++++++++++++++++++++++++++++++++++++++
->  2 files changed, 47 insertions(+)
->  create mode 100644 include/native/native.h
 >
-> diff --git a/include/native/native.h b/include/native/native.h
-> new file mode 100644
-> index 0000000000..62951fafb1
-> --- /dev/null
-> +++ b/include/native/native.h
-> @@ -0,0 +1,9 @@
-> +/*
-> + * Check if the native bypass feature is enabled.
-> + */
-> +#if defined(CONFIG_USER_ONLY) && defined(CONFIG_NATIVE_CALL)
-> +extern char *native_lib_path;
-> +#define native_bypass_enabled() native_lib_path ? true : false
-> +#else
-> +#define native_bypass_enabled() false
-> +#endif
-> diff --git a/linux-user/main.c b/linux-user/main.c
-> index dba67ffa36..86ea0191f7 100644
-> --- a/linux-user/main.c
-> +++ b/linux-user/main.c
-> @@ -60,6 +60,11 @@
->  #include "semihosting/semihost.h"
->  #endif
->=20=20
-> +#if defined(CONFIG_NATIVE_CALL)
-> +#include "native/native.h"
-> +char *native_lib_path;
-> +#endif
-> +
->  #ifndef AT_FLAGS_PRESERVE_ARGV0
->  #define AT_FLAGS_PRESERVE_ARGV0_BIT 0
->  #define AT_FLAGS_PRESERVE_ARGV0 (1 << AT_FLAGS_PRESERVE_ARGV0_BIT)
-> @@ -293,6 +298,17 @@ static void handle_arg_set_env(const char *arg)
->      free(r);
->  }
->=20=20
-> +#if defined(CONFIG_NATIVE_CALL)
-> +static void handle_arg_native_bypass(const char *arg)
-> +{
-> +    if (access(arg, F_OK) !=3D 0) {
-> +        fprintf(stderr, "native library %s does not exist\n", arg);
-> +        exit(EXIT_FAILURE);
-> +    }
-> +    native_lib_path =3D strdup(arg);
+> I guess this is good enough for 8.1.=C2=A0 Before the conversion to inte=
+rval-tree we would also emit nothing.
 
-Although we never free this the coding style states:
+Yes and yes.
 
-  Because of the memory management rules, you must use g_strdup/g_strndup
-  instead of plain strdup/strndup.
+> I've already done a rewrite for 8.2, and I noticed this problem.
+> There I emit what mapping information that I have, which is
+> everything except for the device+path data.
 
-We do still have a few legacy strdup's to eliminate from the code base
-though.
+nice.
 
-> +}
-> +#endif
-> +
->  static void handle_arg_unset_env(const char *arg)
->  {
->      char *r, *p, *token;
-> @@ -522,6 +538,10 @@ static const struct qemu_argument arg_table[] =3D {
->       "",           "Generate a /tmp/perf-${pid}.map file for perf"},
->      {"jitdump",    "QEMU_JITDUMP",     false, handle_arg_jitdump,
->       "",           "Generate a jit-${pid}.dump file for perf"},
-> +#if defined(CONFIG_NATIVE_CALL)
-> +    {"native-bypass", "QEMU_NATIVE_BYPASS", true, handle_arg_native_bypa=
-ss,
-> +     "",           "native bypass for library calls in user mode only."},
-> +#endif
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-You can drop " in user mode only" because this help text will only show
-up on linux-user binaries with support for native bypass.
+Shall I send a pull request?
+If so, is it OK that I include this patch in the pull-request as well?
+   linux-user: Fix openat() emulation to correctly detect accesses to /pro=
+c
+   https://lists.nongnu.org/archive/html/qemu-devel/2023-08/msg00165.html
+which already has been R-b: Daniel P. Berrang=C3=A9
 
-Otherwise:
-
-Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+Helge
 
