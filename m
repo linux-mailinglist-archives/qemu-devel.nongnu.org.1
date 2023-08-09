@@ -2,63 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0261775249
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 07:41:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F9697752CA
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 08:19:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTbvL-0005ir-QS; Wed, 09 Aug 2023 01:39:59 -0400
+	id 1qTcWE-0005Tw-Lh; Wed, 09 Aug 2023 02:18:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <logoerthiner1@163.com>)
- id 1qTbvG-0005hW-0v
- for qemu-devel@nongnu.org; Wed, 09 Aug 2023 01:39:54 -0400
-Received: from m1368.mail.163.com ([220.181.13.68])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <logoerthiner1@163.com>) id 1qTbvC-0007sd-OA
- for qemu-devel@nongnu.org; Wed, 09 Aug 2023 01:39:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
- s=s110527; h=Date:From:Subject:Content-Type:MIME-Version:
- Message-ID; bh=fkLh1475YyjR7W1+VShSHhwbzaMN7n6N4/jsqnTTy0Q=; b=f
- i3eKfZwiYKatRikbADA/5maa4+rZkatK31s/ZNr1VsBn5eQzSffmHV0zHDI8cl57
- h0vOALnPIm7ma+zBzBIebj5joHMuv4p4vCgnuUY9Z1bm8L4XSjP0DfDiuMaC2/f0
- sRtMJWlpPZyyt7HKpXA+cJX38AbBujnzjE5k2kpnpE=
-Received: from logoerthiner1$163.com ( [183.242.254.172] ) by
- ajax-webmail-wmsvr68 (Coremail) ; Wed, 9 Aug 2023 13:39:39 +0800 (CST)
-X-Originating-IP: [183.242.254.172]
-Date: Wed, 9 Aug 2023 13:39:39 +0800 (CST)
-From: ThinerLogoer  <logoerthiner1@163.com>
-To: "Peter Xu" <peterx@redhat.com>, qemu-devel@nongnu.org
-Cc: "David Hildenbrand" <david@redhat.com>, 
- "Paolo Bonzini" <pbonzini@redhat.com>, 
- "Igor Mammedov" <imammedo@redhat.com>, 
- =?GBK?Q?Philippe_Mathieu-Daud=A8=A6?= <philmd@linaro.org>
-Subject: Re:Re: [PATCH v1 1/3] softmmu/physmem: fallback to opening guest
- RAM file as readonly in a MAP_PRIVATE mapping
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT5.0.14 build 20230109(dcb5de15)
- Copyright (c) 2002-2023 www.mailtech.cn 163com
-In-Reply-To: <ZNKtHVotkfgI1tb4@x1n>
-References: <20230807190736.572665-1-david@redhat.com>
- <20230807190736.572665-2-david@redhat.com> <ZNKtHVotkfgI1tb4@x1n>
-X-NTES-SC: AL_QuySA/metk0s7yCYYekXnk4Shuc2XMu4u/gu34JTP5E0mSrkxCkyRXBkLVnYwtKRDyGBvxeTXjF11NxHVIlbQpJDr8WyzDziQhlkeHd0JyCq
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=GBK
+ (Exim 4.90_1) (envelope-from <jason.chien@sifive.com>)
+ id 1qTcWC-0005TQ-Um
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 02:18:04 -0400
+Received: from mail-lj1-x232.google.com ([2a00:1450:4864:20::232])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <jason.chien@sifive.com>)
+ id 1qTcWA-0006xw-Qt
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 02:18:04 -0400
+Received: by mail-lj1-x232.google.com with SMTP id
+ 38308e7fff4ca-2b9c907bc68so100875371fa.2
+ for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 23:18:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=sifive.com; s=google; t=1691561880; x=1692166680;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=Or0p23hOAO5Yt+sSYF4t7ng4wTzCa5mJHjVwHaV2gjg=;
+ b=LLHsZ1aCVS8FHuioqyAz1Ut2+Ma9lmI1xMEN5sHBEnaFkNlM/EsFGhPpFXNdwuaBcB
+ rvJFyOvmPveuzxdJgoR2kIZgbdnfit0bDDemC9dSg7QGBK7XMD7o+ylYu1MFxZbf6Azr
+ oHgs89pnIiHlmAhbyHszEDZ8jd0CH89ErmlHZeyTJKcsNMELLVrnbbIo/eGsiJ7H1HWs
+ mBrUoK7Ut3pDddyuammkSNgsYHx8AvO4Ey5CyeGMEJxDFkxYFaRX9561dTczhVSh6YVN
+ BJMNPerb+AYHR4VSb7O2k8Ug364VTKIuHlH6yCocNb7RQubqywVU/T7qC5os86l2DC4g
+ axEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1691561880; x=1692166680;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Or0p23hOAO5Yt+sSYF4t7ng4wTzCa5mJHjVwHaV2gjg=;
+ b=ilv96/aAVHndpVluV346f7KrTAIXhhspDPhz0ebXu8T0hkksIZGkHxt2/fO6MmyvGz
+ VEjCQc4MgdRVUKu4iW5JSLZqznNgBXwbcxXa+11uIha06xzXUf38264fNShcI6m0pi3k
+ D0AaBD4bzHdyhlr2YvJfIv8qcwFuKHklWU+Wy8LoQt9sjVJEUuBDc6+eOOtjEEgRVwUp
+ YaKcuzPkv2g3/5gRAyVA2PKLXm53RIxeCLKq9VlDIwN+lRU6H88RSIADNOoRrvIrmA/j
+ cBuALEE/YyBcV1gwVTa3Tv8/zrSlS5WdxhL2LOuM5ScgMgi0U87/dSX0VePwfC/hoR8n
+ oNAA==
+X-Gm-Message-State: AOJu0YziZh/UggAxEZAYn3EFbEbn9LJDke/YxKjgaSPK80FekLO3GWq1
+ c/KKLypZqR+ICzpWmrDkfSlmOUBhvohkjhKaX/bA/RW9Ojbz9W4saDk=
+X-Google-Smtp-Source: AGHT+IGWiKr/5JtDa2hFx0J+uNX4hMU2Vnh+htwlJ5MxNK2cPFMOHnYTfhosD5UiWQVJtbI8QYX8H6fwvkJmW8kO25E=
+X-Received: by 2002:a2e:b693:0:b0:2b9:575e:5298 with SMTP id
+ l19-20020a2eb693000000b002b9575e5298mr1135653ljo.13.1691561880223; Tue, 08
+ Aug 2023 23:18:00 -0700 (PDT)
 MIME-Version: 1.0
-Message-ID: <5ea77364.4e8d.189d8cecd7f.Coremail.logoerthiner1@163.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID: RMGowACndbCbJtNk17oQAA--.9342W
-X-CM-SenderInfo: 5orj0vpuwkx0thurqiywtou0bp/xtbBoR7GnmI0ZtCDYwABsm
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
-Received-SPF: pass client-ip=220.181.13.68; envelope-from=logoerthiner1@163.com;
- helo=m1368.mail.163.com
-X-Spam_score_int: -13
-X-Spam_score: -1.4
-X-Spam_bar: -
-X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+References: <20230726074049.19505-1-jason.chien@sifive.com>
+ <20230726074049.19505-2-jason.chien@sifive.com>
+In-Reply-To: <20230726074049.19505-2-jason.chien@sifive.com>
+From: Jason Chien <jason.chien@sifive.com>
+Date: Wed, 9 Aug 2023 14:17:48 +0800
+Message-ID: <CADr__8qKbbBEWLsTTVoaqUHVg=C7W3+zuvMv1Kf38qzMJ3ZviQ@mail.gmail.com>
+Subject: Re: [RESEND PATCH v3 1/1] target/riscv: Add Zihintntl extension ISA
+ string to DTS
+To: qemu-devel@nongnu.org, qemu-riscv@nongnu.org
+Cc: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, 
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>, 
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+Content-Type: multipart/alternative; boundary="000000000000fcaa5b06027770c6"
+Received-SPF: pass client-ip=2a00:1450:4864:20::232;
+ envelope-from=jason.chien@sifive.com; helo=mail-lj1-x232.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,118 +90,196 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-QXQgMjAyMy0wOC0wOSAwNTowMToxNywgIlBldGVyIFh1IiA8cGV0ZXJ4QHJlZGhhdC5jb20+IHdy
-b3RlOgo+T24gTW9uLCBBdWcgMDcsIDIwMjMgYXQgMDk6MDc6MzJQTSArMDIwMCwgRGF2aWQgSGls
-ZGVuYnJhbmQgd3JvdGU6Cj4+IEZyb206IFRoaW5lciBMb2dvZXIgPGxvZ29lcnRoaW5lcjFAMTYz
-LmNvbT4KPj4gCj4+IFVzZXJzIG1heSBzcGVjaWZ5Cj4+ICogIi1tZW0tcGF0aCIgb3IKPj4gKiAi
-LW9iamVjdCBtZW1vcnktYmFja2VuZC1maWxlLHNoYXJlPW9mZixyZWFkb25seT1vZmYiCj4+IGFu
-ZCBleHBlY3Qgc3VjaCBDT1cgKE1BUF9QUklWQVRFKSBtYXBwaW5ncyB0byB3b3JrLCBldmVuIGlm
-IHRoZSB1c2VyCj4+IGRvZXMgbm90IGhhdmUgd3JpdGUgcGVybWlzc2lvbnMgdG8gb3BlbiB0aGUg
-ZmlsZS4KPj4gCj4+IEZvciBub3csIHdlIHdvdWxkIGFsd2F5cyBmYWlsIGluIHRoYXQgY2FzZSwg
-YWx3YXlzIHJlcXVpcmluZyBmaWxlIHdyaXRlCj4+IHBlcm1pc3Npb25zLiBMZXQncyBkZXRlY3Qg
-d2hlbiB0aGF0IGZhaWx1cmUgaGFwcGVucyBhbmQgZmFsbGJhY2sgdG8gb3BlbmluZwo+PiB0aGUg
-ZmlsZSByZWFkb25seS4KPj4gCj4+IFdhcm4gdGhlIHVzZXIsIHNpbmNlIHRoZXJlIGFyZSBvdGhl
-ciB1c2UgY2FzZXMgd2hlcmUgd2Ugd2FudCB0aGUgZmlsZSB0bwo+PiBiZSBtYXBwZWQgd3JpdGFi
-bGU6IGZ0cnVuY2F0ZSgpIGFuZCBmYWxsb2NhdGUoKSB3aWxsIGZhaWwgaWYgdGhlIGZpbGUKPj4g
-d2FzIG5vdCBvcGVuZWQgd2l0aCB3cml0ZSBwZXJtaXNzaW9ucy4KPj4gCj4+IFNpZ25lZC1vZmYt
-Ynk6IFRoaW5lciBMb2dvZXIgPGxvZ29lcnRoaW5lcjFAMTYzLmNvbT4KPj4gQ28tZGV2ZWxvcGVk
-LWJ5OiBEYXZpZCBIaWxkZW5icmFuZCA8ZGF2aWRAcmVkaGF0LmNvbT4KPj4gU2lnbmVkLW9mZi1i
-eTogRGF2aWQgSGlsZGVuYnJhbmQgPGRhdmlkQHJlZGhhdC5jb20+Cj4+IC0tLQo+PiAgc29mdG1t
-dS9waHlzbWVtLmMgfCAyNiArKysrKysrKysrKysrKysrKystLS0tLS0tLQo+PiAgMSBmaWxlIGNo
-YW5nZWQsIDE4IGluc2VydGlvbnMoKyksIDggZGVsZXRpb25zKC0pCj4+IAo+PiBkaWZmIC0tZ2l0
-IGEvc29mdG1tdS9waHlzbWVtLmMgYi9zb2Z0bW11L3BoeXNtZW0uYwo+PiBpbmRleCAzZGY3MzU0
-MmUxLi5kMWFlNjk0YjIwIDEwMDY0NAo+PiAtLS0gYS9zb2Z0bW11L3BoeXNtZW0uYwo+PiArKysg
-Yi9zb2Z0bW11L3BoeXNtZW0uYwo+PiBAQCAtMTI4OSw4ICsxMjg5LDcgQEAgc3RhdGljIGludDY0
-X3QgZ2V0X2ZpbGVfYWxpZ24oaW50IGZkKQo+PiAgc3RhdGljIGludCBmaWxlX3JhbV9vcGVuKGNv
-bnN0IGNoYXIgKnBhdGgsCj4+ICAgICAgICAgICAgICAgICAgICAgICAgICAgY29uc3QgY2hhciAq
-cmVnaW9uX25hbWUsCj4+ICAgICAgICAgICAgICAgICAgICAgICAgICAgYm9vbCByZWFkb25seSwK
-Pj4gLSAgICAgICAgICAgICAgICAgICAgICAgICBib29sICpjcmVhdGVkLAo+PiAtICAgICAgICAg
-ICAgICAgICAgICAgICAgIEVycm9yICoqZXJycCkKPj4gKyAgICAgICAgICAgICAgICAgICAgICAg
-ICBib29sICpjcmVhdGVkKQo+PiAgewo+PiAgICAgIGNoYXIgKmZpbGVuYW1lOwo+PiAgICAgIGNo
-YXIgKnNhbml0aXplZF9uYW1lOwo+PiBAQCAtMTMzNCwxMCArMTMzMyw3IEBAIHN0YXRpYyBpbnQg
-ZmlsZV9yYW1fb3Blbihjb25zdCBjaGFyICpwYXRoLAo+PiAgICAgICAgICAgICAgZ19mcmVlKGZp
-bGVuYW1lKTsKPj4gICAgICAgICAgfQo+PiAgICAgICAgICBpZiAoZXJybm8gIT0gRUVYSVNUICYm
-IGVycm5vICE9IEVJTlRSKSB7Cj4+IC0gICAgICAgICAgICBlcnJvcl9zZXRnX2Vycm5vKGVycnAs
-IGVycm5vLAo+PiAtICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiY2FuJ3Qgb3BlbiBiYWNr
-aW5nIHN0b3JlICVzIGZvciBndWVzdCBSQU0iLAo+PiAtICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICBwYXRoKTsKPj4gLSAgICAgICAgICAgIHJldHVybiAtMTsKPj4gKyAgICAgICAgICAgIHJl
-dHVybiAtZXJybm87Cj4+ICAgICAgICAgIH0KPj4gICAgICAgICAgLyoKPj4gICAgICAgICAgICog
-VHJ5IGFnYWluIG9uIEVJTlRSIGFuZCBFRVhJU1QuICBUaGUgbGF0dGVyIGhhcHBlbnMgd2hlbgo+
-PiBAQCAtMTk0Niw5ICsxOTQyLDIzIEBAIFJBTUJsb2NrICpxZW11X3JhbV9hbGxvY19mcm9tX2Zp
-bGUocmFtX2FkZHJfdCBzaXplLCBNZW1vcnlSZWdpb24gKm1yLAo+PiAgICAgIGJvb2wgY3JlYXRl
-ZDsKPj4gICAgICBSQU1CbG9jayAqYmxvY2s7Cj4+ICAKPj4gLSAgICBmZCA9IGZpbGVfcmFtX29w
-ZW4obWVtX3BhdGgsIG1lbW9yeV9yZWdpb25fbmFtZShtciksIHJlYWRvbmx5LCAmY3JlYXRlZCwK
-Pj4gLSAgICAgICAgICAgICAgICAgICAgICAgZXJycCk7Cj4+ICsgICAgZmQgPSBmaWxlX3JhbV9v
-cGVuKG1lbV9wYXRoLCBtZW1vcnlfcmVnaW9uX25hbWUobXIpLCByZWFkb25seSwgJmNyZWF0ZWQp
-Owo+PiArICAgIGlmIChmZCA9PSAtRUFDQ0VTICYmICEocmFtX2ZsYWdzICYgUkFNX1NIQVJFRCkg
-JiYgIXJlYWRvbmx5KSB7Cj4+ICsgICAgICAgIC8qCj4+ICsgICAgICAgICAqIFdlIGNhbiBoYXZl
-IGEgd3JpdGFibGUgTUFQX1BSSVZBVEUgbWFwcGluZyBvZiBhIHJlYWRvbmx5IGZpbGUuCj4+ICsg
-ICAgICAgICAqIEhvd2V2ZXIsIHNvbWUgb3BlcmF0aW9ucyBsaWtlIGZ0cnVuY2F0ZSgpIG9yIGZh
-bGxvY2F0ZSgpIG1pZ2h0IGZhaWwKPj4gKyAgICAgICAgICogbGF0ZXIsIGxldCdzIHdhcm4gdGhl
-IHVzZXIuCj4+ICsgICAgICAgICAqLwo+PiArICAgICAgICBmZCA9IGZpbGVfcmFtX29wZW4obWVt
-X3BhdGgsIG1lbW9yeV9yZWdpb25fbmFtZShtciksIHRydWUsICZjcmVhdGVkKTsKPj4gKyAgICAg
-ICAgaWYgKGZkID49IDApIHsKPj4gKyAgICAgICAgICAgIHdhcm5fcmVwb3J0KCJiYWNraW5nIHN0
-b3JlICVzIGZvciBndWVzdCBSQU0gKE1BUF9QUklWQVRFKSBvcGVuZWQiCj4+ICsgICAgICAgICAg
-ICAgICAgICAgICAgICAiIHJlYWRvbmx5IGJlY2F1c2UgdGhlIGZpbGUgaXMgbm90IHdyaXRhYmxl
-IiwgbWVtX3BhdGgpOwo+Cj5JIGNhbiB1bmRlcnN0YW5kIHRoZSB1c2UgY2FzZSwgYnV0IHRoaXMg
-d2lsbCBiZSBzbGlnaHRseSB1bndhbnRlZCwKPmVzcGVjaWFsbHkgdGhlIHVzZXIgZG9lc24ndCB5
-ZXQgaGF2ZSBhIHdheSB0byBwcmVkaWN0IHdoZW4gd2lsbCBpdCBoYXBwZW4uCj4KPk1lYW53aGls
-ZSB0aGlzIGNoYW5nZXMgdGhlIGJlaGF2aW9yLCBpcyBpdCBhIGNvbmNlcm4gdGhhdCBzb21lb25l
-IG1heSB3YW50Cj50byByZWx5IG9uIGN1cnJlbnQgYmVoYXZpb3Igb2YgZmFpbGluZz8KPgoKSSBh
-bSBoYXBweSB0byBsZWFybiBpZiB0aGVyZSBpcyBzb21lIHNvbGlkIGV2aWRlbmNlIHN1cHBvcnRp
-bmcgdGhpcyB2aWV3LgoKVGhlIHRhcmdldCBvZiBjb21wYXRpYmlsaXR5IGlzICJwcml2YXRlK2Rp
-c2NhcmQiIHdoaWNoIHNlZW1zIGl0c2VsZiBwYXRob2xvZ2ljYWwKcHJhY3RpY2UgaW4gZWFybHkg
-ZGlzY3Vzc2lvbi4gVGhlIG9ubHkgZGlmZmVyZW5jZSBpbiBiZWhhdmlvciB0aGF0IG1pZ2h0IGJl
-IHVud2FudGVkCmluIHlvdXIgYXJndW1lbnQgbGllcyBpbiAicmVhZG9ubHkgZmlsZStwcml2YXRl
-K2Rpc2NhcmQiIGZhaWx1cmUgdGltZS4gQmVmb3JlIHRoZQpwYXRjaCBpdCBmYWlscyBlYXJseSwg
-YWZ0ZXIgdGhlIHBhdGNoIGl0IGZhaWxzIGxhdGVyIGFuZCBtYXkgZG9lcyBhZGRpdGlvbmFsIHN0
-dWZmLgpEbyB5b3UgdGhpbmsgdGhhdCBhIGJ1ZyByZXBvcnRpbmcgbWVjaGFuaXNtIHdoaWNoIHJl
-bGllcyBvbiBxZW11IGZhaWx1cmUKdGltaW5nIGlzIHZhbGlkPwoKSWYgc29tZW9uZSBhcmd1ZXMg
-dGhhdCAicmVhZG9ubHkgZmlsZStwcml2YXRlK2Rpc2NhcmQiIGVhcmx5IGZhaWx1cmUgYmVoYXZp
-b3IKaXMgYWxsIHdoZXJlIHRoZWlyIHN5c3RlbSByZWxpZXMsIEkgd291bGQgYmUgaGFwcHkgdG8g
-bGVhcm4gd2h5LiBBY3R1YWxseSB0aGlzCmlzIG11Y2ggZWFzaWVyIHRvIHNvbHZlIG91dHNpZGUg
-cWVtdSwgYnkgY2hlY2tpbmcgbWVtb3J5IGZpbGUgcGVybWlzc2lvbiwKY29tcGFyZWQgdG8gdGhl
-ICJyZWFkb25seStwcml2YXRlIiBhbHRlcm5hdGl2ZSBwbGFuIHRoYXQgcmVxdWlyZXMgYSBidHJm
-cy4KCkluIHRoZSBsb25nIHJ1biB0aGUgInByaXZhdGUrZGlzY2FyZCIgc2V0dXAgbWF5IGl0c2Vs
-ZiBiZSB3YXJuZWQgYW5kCmRlcHJlY2F0ZWQsIHJhdGhlciB0aGFuICJwcml2YXRlK3JlYWRvbmx5
-IGZpbGUiIHdoaWNoIGlzIHN1cHBvcnRlZCBieQpsaW51eCBrZXJuZWwuCgpDdXJyZW50IHBhdGNo
-IGlzIGFscmVhZHkgYSBjb21wcm9taXNlIGNvbnNpZGVyaW5nIGNvbXBhdGliaWxpdHksIGFzIGl0
-CmFsd2F5cyB0cmllcyBvcGVuIHRoZSBmaWxlIGluIHJlYWR3cml0ZSBtb2RlIGZpcnN0LCB0byBw
-ZXJzaXN0IGJlaGF2aW9yIG9uCiJyZWFkd3JpdGUrcHJpdmF0ZStkaXNjYXJkIiBjYXNlLiBQZXJz
-b25hbGx5IEkgcHJlZmVyIHRvIHRyeSBvcGVuaW5nIHRoZSBmaWxlCnJlYWRvbmx5IGZpcnN0LCBh
-cyB0aGlzIHdpbGwgcmVkdWNlIHRoZSByaXNrIG9mIG9wZW5pbmcgcmFtIGZpbGUgYWNjaWRlbnRh
-bGx5CndpdGggd3JpdGUgcGVybWlzc2lvbi4KCkhvd2V2ZXIgSSBjYW4gYWNjZXB0IGEgc2Vjb25k
-IGxldmVsIG9mIGNvbXByb21pc2UsIGFrYSBhZGRpbmcgIi1kaXNhbGxvdy1wcml2YXRlLWRpc2Nh
-cmQiCnRvIHFlbXUgYXJndW1lbnQgZm9yIGF0IGxlYXN0IHRocmVlIHFlbXUgcmVsZWFzZXMgYmVm
-b3JlICJwcml2YXRlK2Rpc2NhcmQiCmdldCBkZXByZWNhdGVkIGFuZCByZW1vdmVkLCBpZiBleHRy
-ZW1lIGNvbXBhdGliaWxpdHkgZW50aHVzaWFzdCBpcyBpbnZvbHZlZC4KV2l0aCB0aGlzIGFyZ3Vt
-ZW50LCByZWFkb25seSBwcml2YXRlIGlzIGVuYWJsZWQgYW5kIHByaXZhdGUKZGlzY2FyZCBmYWls
-cyBpbW1lZGlhdGVseSB3aGVuIGRpc2NhcmQgcmVxdWVzdCBpcyBkZXRlY3RlZCwgYW5kIHdpdGhv
-dXQgdGhpcwphcmd1bWVudCByZWFkb25seSBwcml2YXRlIGlzIGRpc2FibGVkIGFuZCB0aGUgYmVo
-YXZpb3IgaXMgdW5jaGFuZ2VkLgpUaGlzIGFyZ3VtZW50IGlzIHVzZWZ1bCBhbHNvIGJlY2F1c2Ug
-aXQgaGVscHMKZmluZGluZyBvdXQgZXhpc3RlbnQgInByaXZhdGUrZGlzY2FyZCIgYmVoYXZpb3Ig
-YW5kIGFzc2lzdHMgZGVidWdnaW5nLgpEbyB5b3UgdGhpbmsgdGhhdCB0aGlzIHNvbHV0aW9uIHBh
-eXMgb2ZmPwooSSBhbSBubyBleHBlcnQgcWVtdSBwcm9ncmFtbWVyLCBob3BlIGFueW9uZSBlbHNl
-IHRvIGhhbmRsZSB0aGUgY29tbWFuZApsaW5lIGFyZ3VtZW50cyBpZiB0aGlzIGlzIHByZWZlcnJl
-ZCkKCj5UbyB0aGluayBmcm9tIGEgaGlnaGVyIGxldmVsIG9mIGN1cnJlbnQgdXNlIGNhc2UsIHRo
-ZSBpZGVhbCBzb2x1dGlvbiBzZWVtcwo+dG8gbWUgdGhhdCBpZiB0aGUgcmFtIGZpbGUgY2FuIGJl
-IHB1dCBvbiBhIGZpbGUgc3lzdGVtIHRoYXQgc3VwcG9ydHMgQ29XCj5pdHNlbGYgKGxpa2UgYnRy
-ZnMpLCB3ZSBjYW4gc25hcHNob3QgdGhhdCByYW0gZmlsZSBhbmQgbWFrZSBpdCBSVyBmb3IgdGhl
-Cj5xZW11IGluc3RhbmNlLiBUaGVuIGhlcmUgaXQnbGwgYmUgYWJsZSB0byBvcGVuIHRoZSBmaWxl
-LiAgV2UnbGwgYmUgYWJsZSB0bwo+a2VlcCB0aGUgaW50ZXJmYWNlIHdvcmtpbmcgYXMgYmVmb3Jl
-LCBtZWFud2hpbGUgaXQnbGwgd29yayB3aXRoIGZhbGxvY2F0ZQo+b3IgdHJ1bmNhdGlvbnMgdG9v
-IEkgYXNzdW1lLgo+Cj5Xb3VsZCB0aGF0IGJlIGJldHRlciBpbnN0ZWFkIG9mIGNoYW5naW5nIFFF
-TVU/Cj4KCkkgYW0gYWZyYWlkIHRoYXQgeW91ciBhbHRlcm5hdGl2ZSBzb2x1dGlvbiB3aWxsIG1h
-a2UgaXQgc3RpbGwgaW1wb3NzaWJsZQpmb3IgdGhlIHVzZSBjYXNlIHRvIGJlIHVzZWQgb24gcm9v
-dGxlc3Mgc3lzdGVtOyB3aGlsZSBNQVBfUFJJVkFURQpiYXNlZCBDb1cgd29ya3MgYW55d2hlcmUu
-IEZvciBleGFtcGxlIHRoaXMgd2lsbCBub3Qgd29yayBvbiBleHQ0IHdpdGgKcmVhZG9ubHkgZmls
-ZSBtb2RlLCBvciB0aGF0IHRoZSBmaWxlIGlzIG93bmVkIGJ5IHJvb3QgYW5kIHlvdSBhcmUKbm9y
-bWFsIHVzZXIsIGFuZCBvbiBzcXVhc2hmcy4gQmFzaWNhbGx5IGV2ZXJ5dGhpbmcgb24gdGhlIG1h
-Y2hpbmUKc2hvdWxkIGJlIHJlYWRvbmx5IGFuZCB5b3UgYXJlIGFsc28gb25seSBhIG5vYm9keSwg
-dGhlbgpvbmx5IHRoZSBpbi1xZW11IGNob2ljZSBpcyBwb3NzaWJsZS4KCkkgYmVsaWV2ZSB0aGUg
-d2FybmluZyB0aGF0IHRoZSBmaWxlIGlzIG9wZW5lZCByZWFkb25seSBpcyBlbm91Z2gKZm9yIHBv
-dGVudGlhbCB1c2VyIHRvIGNvbnNpZGVyIGRvaW5nIG90aGVyd2lzZS4gRG8geW91IHRoaW5rIHRo
-YXQKbG9va2luZyBzb2xlbHkgYXQgcWVtdSBleGl0IHN0YXR1cyBhbmQgcGlwZSBhbGwgcWVtdSBz
-dGRlcnIgbG9nIHRvIC9kZXYvbnVsbAphbGwgdGhlIHRpbWUgaXMgb25lIG9mIHRoZSBzdXBwb3J0
-ZWQgdXNlIGNhc2VzPwoKLS0KClJlZ2FyZHMsCgpsb2dvZXJ0aGluZXI=
+--000000000000fcaa5b06027770c6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Ping
+
+This patch seems to be ignored.
+patch link:
+https://lore.kernel.org/qemu-devel/20230726074049.19505-2-jason.chien@sifiv=
+e.com/
+
+On Wed, Jul 26, 2023 at 3:41=E2=80=AFPM Jason Chien <jason.chien@sifive.com=
+> wrote:
+
+> RVA23 Profiles states:
+> The RVA23 profiles are intended to be used for 64-bit application
+> processors that will run rich OS stacks from standard binary OS
+> distributions and with a substantial number of third-party binary user
+> applications that will be supported over a considerable length of time
+> in the field.
+>
+> The chapter 4 of the unprivileged spec introduces the Zihintntl extension
+> and Zihintntl is a mandatory extension presented in RVA23 Profiles, whose
+> purpose is to enable application and operating system portability across
+> different implementations. Thus the DTS should contain the Zihintntl ISA
+> string in order to pass to software.
+>
+> The unprivileged spec states:
+> Like any HINTs, these instructions may be freely ignored. Hence, although
+> they are described in terms of cache-based memory hierarchies, they do no=
+t
+> mandate the provision of caches.
+>
+> These instructions are encoded with non-used opcode, e.g. ADD x0, x0, x2,
+> which QEMU already supports, and QEMU does not emulate cache. Therefore
+> these instructions can be considered as a no-op, and we only need to add
+> a new property for the Zihintntl extension.
+>
+> Reviewed-by: Frank Chang <frank.chang@sifive.com>
+> Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+> Signed-off-by: Jason Chien <jason.chien@sifive.com>
+> ---
+>  target/riscv/cpu.c     | 2 ++
+>  target/riscv/cpu_cfg.h | 1 +
+>  2 files changed, 3 insertions(+)
+>
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index 921c19e6cd..a49e934b41 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -87,6 +87,7 @@ static const struct isa_ext_data isa_edata_arr[] =3D {
+>      ISA_EXT_DATA_ENTRY(zicond, PRIV_VERSION_1_12_0, ext_zicond),
+>      ISA_EXT_DATA_ENTRY(zicsr, PRIV_VERSION_1_10_0, ext_icsr),
+>      ISA_EXT_DATA_ENTRY(zifencei, PRIV_VERSION_1_10_0, ext_ifencei),
+> +    ISA_EXT_DATA_ENTRY(zihintntl, PRIV_VERSION_1_10_0, ext_zihintntl),
+>      ISA_EXT_DATA_ENTRY(zihintpause, PRIV_VERSION_1_10_0, ext_zihintpause=
+),
+>      ISA_EXT_DATA_ENTRY(zmmul, PRIV_VERSION_1_12_0, ext_zmmul),
+>      ISA_EXT_DATA_ENTRY(zawrs, PRIV_VERSION_1_12_0, ext_zawrs),
+> @@ -1763,6 +1764,7 @@ static Property riscv_cpu_extensions[] =3D {
+>      DEFINE_PROP_BOOL("sscofpmf", RISCVCPU, cfg.ext_sscofpmf, false),
+>      DEFINE_PROP_BOOL("Zifencei", RISCVCPU, cfg.ext_ifencei, true),
+>      DEFINE_PROP_BOOL("Zicsr", RISCVCPU, cfg.ext_icsr, true),
+> +    DEFINE_PROP_BOOL("Zihintntl", RISCVCPU, cfg.ext_zihintntl, true),
+>      DEFINE_PROP_BOOL("Zihintpause", RISCVCPU, cfg.ext_zihintpause, true)=
+,
+>      DEFINE_PROP_BOOL("Zawrs", RISCVCPU, cfg.ext_zawrs, true),
+>      DEFINE_PROP_BOOL("Zfa", RISCVCPU, cfg.ext_zfa, true),
+> diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+> index 2bd9510ba3..518686eaa3 100644
+> --- a/target/riscv/cpu_cfg.h
+> +++ b/target/riscv/cpu_cfg.h
+> @@ -66,6 +66,7 @@ struct RISCVCPUConfig {
+>      bool ext_icbom;
+>      bool ext_icboz;
+>      bool ext_zicond;
+> +    bool ext_zihintntl;
+>      bool ext_zihintpause;
+>      bool ext_smstateen;
+>      bool ext_sstc;
+> --
+> 2.17.1
+>
+>
+
+--000000000000fcaa5b06027770c6
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Ping<div><br>This patch seems to be ignored.<br>patch link=
+:=C2=A0<a href=3D"https://lore.kernel.org/qemu-devel/20230726074049.19505-2=
+-jason.chien@sifive.com/">https://lore.kernel.org/qemu-devel/20230726074049=
+.19505-2-jason.chien@sifive.com/</a></div></div><br><div class=3D"gmail_quo=
+te"><div dir=3D"ltr" class=3D"gmail_attr">On Wed, Jul 26, 2023 at 3:41=E2=
+=80=AFPM Jason Chien &lt;<a href=3D"mailto:jason.chien@sifive.com">jason.ch=
+ien@sifive.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" st=
+yle=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padd=
+ing-left:1ex">RVA23 Profiles states:<br>
+The RVA23 profiles are intended to be used for 64-bit application<br>
+processors that will run rich OS stacks from standard binary OS<br>
+distributions and with a substantial number of third-party binary user<br>
+applications that will be supported over a considerable length of time<br>
+in the field.<br>
+<br>
+The chapter 4 of the unprivileged spec introduces the Zihintntl extension<b=
+r>
+and Zihintntl is a mandatory extension presented in RVA23 Profiles, whose<b=
+r>
+purpose is to enable application and operating system portability across<br=
+>
+different implementations. Thus the DTS should contain the Zihintntl ISA<br=
+>
+string in order to pass to software.<br>
+<br>
+The unprivileged spec states:<br>
+Like any HINTs, these instructions may be freely ignored. Hence, although<b=
+r>
+they are described in terms of cache-based memory hierarchies, they do not<=
+br>
+mandate the provision of caches.<br>
+<br>
+These instructions are encoded with non-used opcode, e.g. ADD x0, x0, x2,<b=
+r>
+which QEMU already supports, and QEMU does not emulate cache. Therefore<br>
+these instructions can be considered as a no-op, and we only need to add<br=
+>
+a new property for the Zihintntl extension.<br>
+<br>
+Reviewed-by: Frank Chang &lt;<a href=3D"mailto:frank.chang@sifive.com" targ=
+et=3D"_blank">frank.chang@sifive.com</a>&gt;<br>
+Reviewed-by: Alistair Francis &lt;<a href=3D"mailto:alistair.francis@wdc.co=
+m" target=3D"_blank">alistair.francis@wdc.com</a>&gt;<br>
+Signed-off-by: Jason Chien &lt;<a href=3D"mailto:jason.chien@sifive.com" ta=
+rget=3D"_blank">jason.chien@sifive.com</a>&gt;<br>
+---<br>
+=C2=A0target/riscv/cpu.c=C2=A0 =C2=A0 =C2=A0| 2 ++<br>
+=C2=A0target/riscv/cpu_cfg.h | 1 +<br>
+=C2=A02 files changed, 3 insertions(+)<br>
+<br>
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c<br>
+index 921c19e6cd..a49e934b41 100644<br>
+--- a/target/riscv/cpu.c<br>
++++ b/target/riscv/cpu.c<br>
+@@ -87,6 +87,7 @@ static const struct isa_ext_data isa_edata_arr[] =3D {<br=
+>
+=C2=A0 =C2=A0 =C2=A0ISA_EXT_DATA_ENTRY(zicond, PRIV_VERSION_1_12_0, ext_zic=
+ond),<br>
+=C2=A0 =C2=A0 =C2=A0ISA_EXT_DATA_ENTRY(zicsr, PRIV_VERSION_1_10_0, ext_icsr=
+),<br>
+=C2=A0 =C2=A0 =C2=A0ISA_EXT_DATA_ENTRY(zifencei, PRIV_VERSION_1_10_0, ext_i=
+fencei),<br>
++=C2=A0 =C2=A0 ISA_EXT_DATA_ENTRY(zihintntl, PRIV_VERSION_1_10_0, ext_zihin=
+tntl),<br>
+=C2=A0 =C2=A0 =C2=A0ISA_EXT_DATA_ENTRY(zihintpause, PRIV_VERSION_1_10_0, ex=
+t_zihintpause),<br>
+=C2=A0 =C2=A0 =C2=A0ISA_EXT_DATA_ENTRY(zmmul, PRIV_VERSION_1_12_0, ext_zmmu=
+l),<br>
+=C2=A0 =C2=A0 =C2=A0ISA_EXT_DATA_ENTRY(zawrs, PRIV_VERSION_1_12_0, ext_zawr=
+s),<br>
+@@ -1763,6 +1764,7 @@ static Property riscv_cpu_extensions[] =3D {<br>
+=C2=A0 =C2=A0 =C2=A0DEFINE_PROP_BOOL(&quot;sscofpmf&quot;, RISCVCPU, cfg.ex=
+t_sscofpmf, false),<br>
+=C2=A0 =C2=A0 =C2=A0DEFINE_PROP_BOOL(&quot;Zifencei&quot;, RISCVCPU, cfg.ex=
+t_ifencei, true),<br>
+=C2=A0 =C2=A0 =C2=A0DEFINE_PROP_BOOL(&quot;Zicsr&quot;, RISCVCPU, cfg.ext_i=
+csr, true),<br>
++=C2=A0 =C2=A0 DEFINE_PROP_BOOL(&quot;Zihintntl&quot;, RISCVCPU, cfg.ext_zi=
+hintntl, true),<br>
+=C2=A0 =C2=A0 =C2=A0DEFINE_PROP_BOOL(&quot;Zihintpause&quot;, RISCVCPU, cfg=
+.ext_zihintpause, true),<br>
+=C2=A0 =C2=A0 =C2=A0DEFINE_PROP_BOOL(&quot;Zawrs&quot;, RISCVCPU, cfg.ext_z=
+awrs, true),<br>
+=C2=A0 =C2=A0 =C2=A0DEFINE_PROP_BOOL(&quot;Zfa&quot;, RISCVCPU, cfg.ext_zfa=
+, true),<br>
+diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h<br>
+index 2bd9510ba3..518686eaa3 100644<br>
+--- a/target/riscv/cpu_cfg.h<br>
++++ b/target/riscv/cpu_cfg.h<br>
+@@ -66,6 +66,7 @@ struct RISCVCPUConfig {<br>
+=C2=A0 =C2=A0 =C2=A0bool ext_icbom;<br>
+=C2=A0 =C2=A0 =C2=A0bool ext_icboz;<br>
+=C2=A0 =C2=A0 =C2=A0bool ext_zicond;<br>
++=C2=A0 =C2=A0 bool ext_zihintntl;<br>
+=C2=A0 =C2=A0 =C2=A0bool ext_zihintpause;<br>
+=C2=A0 =C2=A0 =C2=A0bool ext_smstateen;<br>
+=C2=A0 =C2=A0 =C2=A0bool ext_sstc;<br>
+-- <br>
+2.17.1<br>
+<br>
+</blockquote></div>
+
+--000000000000fcaa5b06027770c6--
 
