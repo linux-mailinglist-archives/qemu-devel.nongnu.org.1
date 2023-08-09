@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1491775633
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 11:16:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B709775634
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 11:16:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTfHV-0006OE-Pm; Wed, 09 Aug 2023 05:15:08 -0400
+	id 1qTfHj-0006RJ-8T; Wed, 09 Aug 2023 05:15:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qTfHS-0006O3-SZ
- for qemu-devel@nongnu.org; Wed, 09 Aug 2023 05:15:03 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ id 1qTfHh-0006R3-Vp
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 05:15:18 -0400
+Received: from mail-lj1-x22a.google.com ([2a00:1450:4864:20::22a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qTfHQ-00017R-Ql
- for qemu-devel@nongnu.org; Wed, 09 Aug 2023 05:15:02 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-3fe4b95c371so3891475e9.1
- for <qemu-devel@nongnu.org>; Wed, 09 Aug 2023 02:14:58 -0700 (PDT)
+ id 1qTfHg-0001Le-GQ
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 05:15:17 -0400
+Received: by mail-lj1-x22a.google.com with SMTP id
+ 38308e7fff4ca-2b9bb097c1bso100705021fa.0
+ for <qemu-devel@nongnu.org>; Wed, 09 Aug 2023 02:15:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691572497; x=1692177297;
+ d=linaro.org; s=google; t=1691572514; x=1692177314;
  h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
  :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LnIaLEx26x6QjCxiijPE4Wx4VYH0qw3tVyVTw4zHmXQ=;
- b=vrXbwjQsgziTDpWNWv0jYdqbOuIMXi7na1/Orrip5Ept6XJBuXhIM0MlkxOMANh8fT
- UzVApEoUxYIlr563kbpbIY1pxvUmyAfoVtamcmpaqcJ+FVdEDGPLQ7fkFksbrw99+Ltm
- pCyvyVVQDbq0WAOWxlvh3bz4qMYed+Nx+kRUymlFDzxqZtPNmltXlz+CavlGJP7qhYuO
- RvW9HHngl8J73h4xAxUJJAw95rWwliGJh0GExc4FE16JP9nFc0WU8zFBPUUo6h6l3oTq
- 1GPKTA1WVYU24uypvWaUSuGMrQIjTqgaVB/DOUdMYMpZiDpJe8hbSE0ZuvRwLucayJqt
- 95TA==
+ bh=Q8UBIxCcn3jhYFPdbmQhP4c67bHPjh/F9tN0g625FZw=;
+ b=Eim9qHM7el67vdreyCuPE/tPfJb2Lv5ibxbNXIbn2zj1deZ0Ub7Nf0ASbiX34K5JXg
+ Fjb9x/qFsfeTEXXIriKq27wNp4rDWZzqsVOTLzNcmHNJv+GqCjrePUj555VRfiB3YWVm
+ dIWHlPkRN3qW/VOP9V8d12VBlMman6nAM03e+YrOh4XyDLNUm7tIZXRsWpDFGBRXQfqo
+ uzw0ehSqFUI/q5COz7GvUzNMe6O4Z3W0u4akqwqTtIV84Zh7JlKa6WWRbo5luax64aQ4
+ DCwBVgwdfpnrEiWsuzYeD+qRP1UqlUDD3MfRy5LJFh6kcsJq56T49VWa2qLhjknlRwPl
+ oWxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691572497; x=1692177297;
+ d=1e100.net; s=20221208; t=1691572514; x=1692177314;
  h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
  :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=LnIaLEx26x6QjCxiijPE4Wx4VYH0qw3tVyVTw4zHmXQ=;
- b=ZPPUF0+aHrNsU7pAEfMp7PGYbUz1nSbcfjQinpkHr4xfBhjEDzhDaoBPv9ukmQgGBV
- IRsDDe7XdAziFHIIjAkGZiQ8CghJ8IlEgxTpRQCpc6W2//UpM/Ly5WR57nyqnrlXW9E5
- cihhsiap6ADs56Yp4/ILZ+oMv0jo+4/AZQUDTIxgNpB6KWKOS5UOZw0aNauXmxq5hfTs
- AbAQuPNAWOFv4JKO2SluTDQRWILquxZrTSSkIyK+ZLvyEDQMQW/mlyY+dhKh0nF8aV8k
- Uw1BD/HHaeBRJi69HfGi1/Prmp82+tYibNX7YcDfbHiEcf+CPpAEPfxLy2SSa1K/TfaN
- gBWQ==
-X-Gm-Message-State: AOJu0YxxXI9c+Rwpa6Uky4rn5yg0L/bld+J3k/SCNRoOjgDRJ04mdeyy
- 3ZGUG6GdTzgo9R9aJh9mxu7Izg==
-X-Google-Smtp-Source: AGHT+IHytye7m4ONVuNbjaWr1m3m+F9DzY4GBvLE4yN7NRxox5Sqp/RJbmf6OF9CIufB+Gr9OgV8yQ==
-X-Received: by 2002:a05:600c:43d5:b0:3fe:1f70:9e54 with SMTP id
- f21-20020a05600c43d500b003fe1f709e54mr10081900wmn.4.1691572497677; 
- Wed, 09 Aug 2023 02:14:57 -0700 (PDT)
+ bh=Q8UBIxCcn3jhYFPdbmQhP4c67bHPjh/F9tN0g625FZw=;
+ b=i8O4a+3YZJjndarun05HlZExX0+Wi9lTD7okzfiJ71KfMBEiq6fRKaBU9Hf6PC52k9
+ 46gQ7944/1WEYga+tU7Rn+m1PALA1MrgDVK3oHXuZiPylH8n+/UhCOxv51ie2DPcfOtX
+ V10c1jKo0IZwnmRUbqOuc2x3IF6swrewGgZv2ri0jU4VzDtWTEBvqR6jjQ4lKazRYlEv
+ BqW5s5/B6FKn3Fhd0a9UfaN4dzkQ2K/PP1MiVIeEVSxktCo3hbaAbfjFNsE62/NwvAcs
+ gZ4RjND0nOCVpSkRuvQxqiaZiCpmq5xsg9aZy7yrmcpIQoxcNCacld2MyIF+1S5FNlp1
+ 2+gg==
+X-Gm-Message-State: AOJu0YzDceamD1q3ncRfCGKtW2hSc2WE2zI0ELPqYrAH+J9N0v50kUxx
+ UitehmXbeZYKlJAydIJ2tyHm4Q==
+X-Google-Smtp-Source: AGHT+IGUznxscP9QwAgeovkka1PlWfZNpyYpUtya6+sqR2VJ0Kg7uHZuMxSwSc9AwN7PLPUFggZRyg==
+X-Received: by 2002:a2e:884b:0:b0:2b8:3ac9:e201 with SMTP id
+ z11-20020a2e884b000000b002b83ac9e201mr1342732ljj.40.1691572514361; 
+ Wed, 09 Aug 2023 02:15:14 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- x16-20020a05600c2a5000b003fe13c3ece7sm1368650wme.10.2023.08.09.02.14.57
+ x20-20020a05600c2a5400b003fc01189b0dsm1352978wme.42.2023.08.09.02.15.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 09 Aug 2023 02:14:57 -0700 (PDT)
+ Wed, 09 Aug 2023 02:15:13 -0700 (PDT)
 Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id AA0171FFBB;
- Wed,  9 Aug 2023 10:14:56 +0100 (BST)
+ by zen.linaroharston (Postfix) with ESMTP id 832E61FFBB;
+ Wed,  9 Aug 2023 10:15:13 +0100 (BST)
 References: <20230808025542.50392-1-richard.henderson@linaro.org>
- <20230808025542.50392-3-richard.henderson@linaro.org>
+ <20230808025542.50392-2-richard.henderson@linaro.org>
 User-agent: mu4e 1.11.13; emacs 29.1.50
 From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: mjt@tls.msk.ru, laurent@vivier.eu, qemu-devel@nongnu.org
-Subject: Re: [PATCH 2/2] linux-user: Use ARRAY_SIZE with bitmask_transtbl
-Date: Wed, 09 Aug 2023 10:14:51 +0100
-In-reply-to: <20230808025542.50392-3-richard.henderson@linaro.org>
-Message-ID: <87edkc60hb.fsf@linaro.org>
+Subject: Re: [PATCH 1/2] linux-user: Split out do_mmap
+Date: Wed, 09 Aug 2023 10:15:08 +0100
+In-reply-to: <20230808025542.50392-2-richard.henderson@linaro.org>
+Message-ID: <87a5v060gu.fsf@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22a;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x22a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,18 +99,9 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Richard Henderson <richard.henderson@linaro.org> writes:
 
-> Rather than using a zero tuple to end the table, use a macro
-> to apply ARRAY_SIZE and pass that on to the convert functions.
->
-> This fixes two bugs in which the conversion functions required
-> that both the target and host masks be non-zero in order to
-> continue, rather than require both target and host masks be
-> zero in order to terminate.
->
-> This affected mmap_flags_tbl when the host does not support
-> all of the flags we wish to convert (e.g. MAP_UNINITIALIZED).
-> Mapping these flags to zero is good enough, and matches how
-> the kernel ignores bits that are unknown.
+> New function that rejects unsupported map types and flags.
+> In 4b840f96 we should not have accepted MAP_SHARED_VALIDATE
+> without actually validating the rest of the flags.
 >
 > Fixes: 4b840f96 ("linux-user: Populate more bits in mmap_flags_tbl")
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
