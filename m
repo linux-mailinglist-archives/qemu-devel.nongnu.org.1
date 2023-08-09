@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50A23775661
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 11:30:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53B1B77566A
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 11:30:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTfVz-0004cE-Mc; Wed, 09 Aug 2023 05:30:05 -0400
+	id 1qTfW3-0004e5-Cs; Wed, 09 Aug 2023 05:30:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qTfVu-0004Yv-EI
- for qemu-devel@nongnu.org; Wed, 09 Aug 2023 05:29:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qTfVv-0004bG-E2
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 05:29:59 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qTfVr-0003bg-Nx
- for qemu-devel@nongnu.org; Wed, 09 Aug 2023 05:29:57 -0400
+ id 1qTfVs-0003cB-TI
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 05:29:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691573393;
+ s=mimecast20190719; t=1691573396;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=2pz7ZyjjzpgXLctfdSRjcfpn/5nBsICJw714i/8sNLk=;
- b=OxMmIEaHE+6sZCf0YM50pbMt0AxYKdlzoBIMKPyhMJDLR+qTg51KNw5kyj/pJ6pbqqDAh1
- Pk6zLcvi8/LupD7lisYCygiP/qyfaWaQD2zXCbJx+Rrf8gTMcOn6TzrMEGexhIB70mJGCA
- Fv3w42y3Xu+hF5twiiT9FAn5sUi5s0I=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=t7UF4docS3pczfv2bGjGXHzDpLqqty5id5D1OGunvEc=;
+ b=jWo8so9TIFYsDjF7OK4XhED83y/HW7DSSYESpyxdvAdxdMfXi0w4TYx4+QIYZIrRWP2i0c
+ y+49HkhwOyoREZZV3bNhoMM/DhAYsNo1RxYsjlkuJdChJcv2d3YEOY4XAMlSoubeAiNQzi
+ hZSOBKyRa56s5z4swpNSotPjOosT9WA=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-620-9ST5k2ZeNP664pbrL-hrmA-1; Wed, 09 Aug 2023 05:29:52 -0400
-X-MC-Unique: 9ST5k2ZeNP664pbrL-hrmA-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-315af0252c2so3757272f8f.0
- for <qemu-devel@nongnu.org>; Wed, 09 Aug 2023 02:29:52 -0700 (PDT)
+ us-mta-61-1Bv_guLKMfSue9WFgQYZRA-1; Wed, 09 Aug 2023 05:29:54 -0400
+X-MC-Unique: 1Bv_guLKMfSue9WFgQYZRA-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-3fe45e71db3so34358225e9.2
+ for <qemu-devel@nongnu.org>; Wed, 09 Aug 2023 02:29:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691573390; x=1692178190;
+ d=1e100.net; s=20221208; t=1691573393; x=1692178193;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2pz7ZyjjzpgXLctfdSRjcfpn/5nBsICJw714i/8sNLk=;
- b=KHhjrLaqlwDnUEuW7G9cKFm25mVuQLjeEyyD8iLO5jaLIfdJNiJdlv0N6p9P5MSW7k
- CEOV/UhmmXTonys/3Z1ClhPVVVuRBLUEZshJOp1OMC1PLQujLE7n0W3JrEBP7p1gXl8P
- hD4QpKOjGin0V6CfDnWaUsuJTVgbYfXzkPd48XYlymVLbmvEb+mZCF0irpCZjcsAIaVF
- rQZpjpsUnT+88zXOoS7z9oEbh91rjGtEtDU3uc+mnw58CBoiGAtaF2yWdHVAruGlhUw6
- k2Ooc8/jnQZeWH4iwXEGzaXGUuGSMSH25k+7qIoQYPYCdw12x5efptuwS+O/BBiC/vkX
- EWnw==
-X-Gm-Message-State: AOJu0YzhOQmTk+GAvZPsu1w+jQyhDWblGCvWjx1EfFV8yBDG6r35UQsL
- 5UlO9a7f46YM1mjlMyVsVdIxijMkehScdVcH27kw8pBGW3fZJZA5lrH2VgbZsCGAkdM41RBpYB7
- bCCmrohfGOGwf/LcspPt7UVk0gWSpNLCaEfQOg1xSEcdte4BDZ+2Vv4OfjkmmvKpMSausjAZqJy
- 8=
-X-Received: by 2002:a5d:4389:0:b0:314:a3f:9c08 with SMTP id
- i9-20020a5d4389000000b003140a3f9c08mr1494997wrq.39.1691573390368; 
- Wed, 09 Aug 2023 02:29:50 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEq5vatDsAqJ9t8xW+ZKwOBptqHNjFFV703zQ6ICBrXxp3KqkOCX8vmsQSpvly2S5RrEw5IVg==
-X-Received: by 2002:a5d:4389:0:b0:314:a3f:9c08 with SMTP id
- i9-20020a5d4389000000b003140a3f9c08mr1494979wrq.39.1691573389800; 
- Wed, 09 Aug 2023 02:29:49 -0700 (PDT)
+ bh=t7UF4docS3pczfv2bGjGXHzDpLqqty5id5D1OGunvEc=;
+ b=JVkoPSfKPv9wQ65hV4jAdFvptU2pr/Zh17I1p+DzbLji2hYbCjQCxqTMVkeZnU5LYQ
+ RLOPaK+99K0SxXa3laQRXTCj1egaziYANJXLOrq68WrNhShITJvWhF7WnzQvP5I15fjI
+ h/EW06UYIv3UkS5rfkBneRvIIPRQ9vIRa9HgrTtJkIuaM7feSdpbVkHUD3c/rlXbOcav
+ qXPOt3NIRL5CZ9TMy4Av0oqczk6teV2m5QS4Qz0I0dGFZLFlm+0xIp3IvjL+0mS/GWa+
+ kglUr4qO1E7yuFTJve0B4VL5edrCgTabvHFDp+6ujFte7OSm1zp511YRBjD8MvI/XRcX
+ iuCA==
+X-Gm-Message-State: AOJu0YwkCM52I3b+elxnvoDNH9Vi1o/3jN/IeQWVEri+PXwbDaaBaBbx
+ vqx59cN7+yEa4LTn6eXW2oYzmLyOIVTbX611rTQJchNzpQbHGz9cCqSf3xkXgJE71nHKbNRAnXf
+ zDey2rPx9pSroLvFGRaqFw1x0xj5fUeBytW+aQvMNAtDtPqLe7SLgd2MLDtYxFF7pLSBGehwPW/
+ k=
+X-Received: by 2002:a1c:7916:0:b0:3fb:e643:1225 with SMTP id
+ l22-20020a1c7916000000b003fbe6431225mr1676597wme.13.1691573392858; 
+ Wed, 09 Aug 2023 02:29:52 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHEzLQnudzw2yI+cCPEoQWbtY0RlswAyalwNX/cLVLIpV61+gtHheWvRiOONbU8Gzu5e2i+sA==
+X-Received: by 2002:a1c:7916:0:b0:3fb:e643:1225 with SMTP id
+ l22-20020a1c7916000000b003fbe6431225mr1676586wme.13.1691573392376; 
+ Wed, 09 Aug 2023 02:29:52 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
  by smtp.gmail.com with ESMTPSA id
- m5-20020a5d6a05000000b003143801f8d8sm16251073wru.103.2023.08.09.02.29.47
+ x20-20020a05600c2a5400b003fc01189b0dsm1393878wme.42.2023.08.09.02.29.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 09 Aug 2023 02:29:48 -0700 (PDT)
+ Wed, 09 Aug 2023 02:29:50 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: jsnow@redhat.com
-Subject: [PATCH 8/9] Revert "tests: Use separate virtual environment for
- avocado"
-Date: Wed,  9 Aug 2023 11:29:32 +0200
-Message-ID: <20230809092933.761524-9-pbonzini@redhat.com>
+Subject: [PATCH 9/9] tests/docker: add python3-tomli dependency to containers
+Date: Wed,  9 Aug 2023 11:29:33 +0200
+Message-ID: <20230809092933.761524-10-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230809092933.761524-1-pbonzini@redhat.com>
 References: <20230809092933.761524-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -101,314 +100,456 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This reverts commit e8e4298feadae7924cf7600bb3bcc5b0a8d7cbe9.
+Instead of having CI pick tomli from the vendored wheel at configure
+time, place it in the containers.
 
-ensuregroup allows to specify both the acceptable versions of avocado,
-and a locked version to be used when avocado is not installed as a system
-pacakge.  This lets us install avocado in pyvenv/ using "mkvenv.py" and
-reuse the distro package on Fedora and CentOS Stream (the only distros
-where it's available).
-
-ensuregroup's usage of "(>=..., <=...)" constraints when evaluating
-the distro package, and "==" constraints when installing it from PyPI,
-makes it possible to avoid conflicts between the known-good version and
-a package plugins included in the distro.
-
-This is because package plugins have "==" constraints on the version
-that is included in the distro, and, using "pip install avocado==88.1"
-on a venv that includes system packages will result in an error:
-
-   avocado-framework-plugin-varianter-yaml-to-mux 98.0 requires avocado-framework==98.0, but you have avocado-framework 88.1 which is incompatible.
-   avocado-framework-plugin-result-html 98.0 requires avocado-framework==98.0, but you have avocado-framework 88.1 which is incompatible.
-
-But at the same time, if the venv does not include a system distribution
-of avocado then we can install a known-good version and stick to LTS
-releases.
-
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1663
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- .gitlab-ci.d/buildtest.yml                    |  6 +++---
- docs/devel/acpi-bits.rst                      |  6 +++---
- docs/devel/testing.rst                        | 14 +++++++-------
- python/scripts/mkvenv.py                      | 13 +++++--------
- pythondeps.toml                               |  7 +++++++
- .../org.centos/stream/8/x86_64/test-avocado   |  4 ++--
- scripts/device-crash-test                     |  2 +-
- tests/Makefile.include                        | 19 ++++++++-----------
- tests/requirements.txt                        |  6 ------
- tests/vm/Makefile.include                     |  2 +-
- 10 files changed, 37 insertions(+), 42 deletions(-)
- delete mode 100644 tests/requirements.txt
+ .gitlab-ci.d/cirrus/freebsd-13.vars               |  2 +-
+ .gitlab-ci.d/cirrus/macos-12.vars                 |  2 +-
+ tests/docker/dockerfiles/centos8.docker           |  3 ++-
+ .../dockerfiles/debian-all-test-cross.docker      |  7 ++++++-
+ .../docker/dockerfiles/debian-amd64-cross.docker  |  4 ++++
+ tests/docker/dockerfiles/debian-amd64.docker      |  4 ++++
+ .../docker/dockerfiles/debian-arm64-cross.docker  |  4 ++++
+ .../docker/dockerfiles/debian-armel-cross.docker  |  4 ++++
+ .../docker/dockerfiles/debian-armhf-cross.docker  |  4 ++++
+ .../dockerfiles/debian-hexagon-cross.docker       |  6 +++++-
+ .../dockerfiles/debian-mips64el-cross.docker      |  4 ++++
+ .../docker/dockerfiles/debian-mipsel-cross.docker |  4 ++++
+ .../dockerfiles/debian-ppc64el-cross.docker       |  4 ++++
+ .../docker/dockerfiles/debian-s390x-cross.docker  |  4 ++++
+ .../dockerfiles/debian-tricore-cross.docker       |  2 ++
+ tests/docker/dockerfiles/fedora-i386-cross.docker |  1 +
+ tests/docker/dockerfiles/opensuse-leap.docker     |  3 ++-
+ tests/docker/dockerfiles/ubuntu2004.docker        |  4 +++-
+ tests/docker/dockerfiles/ubuntu2204.docker        |  1 +
+ tests/lcitool/mappings.yml                        | 15 +++++++++++++++
+ tests/lcitool/projects/qemu.yml                   |  1 +
+ tests/vm/generated/freebsd.json                   |  1 +
+ 22 files changed, 77 insertions(+), 7 deletions(-)
 
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index 77dc83a6be0..aee91015077 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -103,7 +103,7 @@ crash-test-debian:
-   script:
-     - cd build
-     - make NINJA=":" check-venv
--    - tests/venv/bin/python3 scripts/device-crash-test -q --tcg-only ./qemu-system-i386
-+    - pyvenv/bin/python3 scripts/device-crash-test -q --tcg-only ./qemu-system-i386
+diff --git a/.gitlab-ci.d/cirrus/freebsd-13.vars b/.gitlab-ci.d/cirrus/freebsd-13.vars
+index facb649f5bd..3785afca36d 100644
+--- a/.gitlab-ci.d/cirrus/freebsd-13.vars
++++ b/.gitlab-ci.d/cirrus/freebsd-13.vars
+@@ -11,6 +11,6 @@ MAKE='/usr/local/bin/gmake'
+ NINJA='/usr/local/bin/ninja'
+ PACKAGING_COMMAND='pkg'
+ PIP3='/usr/local/bin/pip-3.8'
+-PKGS='alsa-lib bash bison bzip2 ca_root_nss capstone4 ccache cmocka ctags curl cyrus-sasl dbus diffutils dtc flex fusefs-libs3 gettext git glib gmake gnutls gsed gtk3 json-c libepoxy libffi libgcrypt libjpeg-turbo libnfs libslirp libspice-server libssh libtasn1 llvm lzo2 meson mtools ncurses nettle ninja opencv pixman pkgconf png py39-numpy py39-pillow py39-pip py39-sphinx py39-sphinx_rtd_theme py39-yaml python3 rpm2cpio sdl2 sdl2_image snappy sndio socat spice-protocol tesseract usbredir virglrenderer vte3 xorriso zstd'
++PKGS='alsa-lib bash bison bzip2 ca_root_nss capstone4 ccache cmocka ctags curl cyrus-sasl dbus diffutils dtc flex fusefs-libs3 gettext git glib gmake gnutls gsed gtk3 json-c libepoxy libffi libgcrypt libjpeg-turbo libnfs libslirp libspice-server libssh libtasn1 llvm lzo2 meson mtools ncurses nettle ninja opencv pixman pkgconf png py39-numpy py39-pillow py39-pip py39-sphinx py39-sphinx_rtd_theme py39-tomli py39-yaml python3 rpm2cpio sdl2 sdl2_image snappy sndio socat spice-protocol tesseract usbredir virglrenderer vte3 xorriso zstd'
+ PYPI_PKGS=''
+ PYTHON='/usr/local/bin/python3'
+diff --git a/.gitlab-ci.d/cirrus/macos-12.vars b/.gitlab-ci.d/cirrus/macos-12.vars
+index ceb294e1539..80eadaab296 100644
+--- a/.gitlab-ci.d/cirrus/macos-12.vars
++++ b/.gitlab-ci.d/cirrus/macos-12.vars
+@@ -12,5 +12,5 @@ NINJA='/opt/homebrew/bin/ninja'
+ PACKAGING_COMMAND='brew'
+ PIP3='/opt/homebrew/bin/pip3'
+ PKGS='bash bc bison bzip2 capstone ccache cmocka ctags curl dbus diffutils dtc flex gcovr gettext git glib gnu-sed gnutls gtk+3 jemalloc jpeg-turbo json-c libepoxy libffi libgcrypt libiscsi libnfs libpng libslirp libssh libtasn1 libusb llvm lzo make meson mtools ncurses nettle ninja pixman pkg-config python3 rpm2cpio sdl2 sdl2_image snappy socat sparse spice-protocol tesseract usbredir vde vte3 xorriso zlib zstd'
+-PYPI_PKGS='PyYAML numpy pillow sphinx sphinx-rtd-theme'
++PYPI_PKGS='PyYAML numpy pillow sphinx sphinx-rtd-theme tomli'
+ PYTHON='/opt/homebrew/bin/python3'
+diff --git a/tests/docker/dockerfiles/centos8.docker b/tests/docker/dockerfiles/centos8.docker
+index da7dc818fb6..fc1830966f4 100644
+--- a/tests/docker/dockerfiles/centos8.docker
++++ b/tests/docker/dockerfiles/centos8.docker
+@@ -133,7 +133,8 @@ RUN /usr/bin/pip3.8 install \
+                     meson==0.63.2 \
+                     pillow \
+                     sphinx \
+-                    sphinx-rtd-theme
++                    sphinx-rtd-theme \
++                    tomli
  
- build-system-fedora:
-   extends:
-@@ -146,8 +146,8 @@ crash-test-fedora:
-   script:
-     - cd build
-     - make NINJA=":" check-venv
--    - tests/venv/bin/python3 scripts/device-crash-test -q ./qemu-system-ppc
--    - tests/venv/bin/python3 scripts/device-crash-test -q ./qemu-system-riscv32
-+    - pyvenv/bin/python3 scripts/device-crash-test -q ./qemu-system-ppc
-+    - pyvenv/bin/python3 scripts/device-crash-test -q ./qemu-system-riscv32
- 
- build-system-centos:
-   extends:
-diff --git a/docs/devel/acpi-bits.rst b/docs/devel/acpi-bits.rst
-index 22e2580200c..9677b0098f4 100644
---- a/docs/devel/acpi-bits.rst
-+++ b/docs/devel/acpi-bits.rst
-@@ -61,19 +61,19 @@ Under ``tests/avocado/`` as the root we have:
-    ::
- 
-      $ make check-venv (needed only the first time to create the venv)
--     $ ./tests/venv/bin/avocado run -t acpi tests/avocado
-+     $ ./pyvenv/bin/avocado run -t acpi tests/avocado
- 
-    The above will run all acpi avocado tests including this one.
-    In order to run the individual tests, perform the following:
-    ::
- 
--     $ ./tests/venv/bin/avocado run tests/avocado/acpi-bits.py --tap -
-+     $ ./pyvenv/bin/avocado run tests/avocado/acpi-bits.py --tap -
- 
-    The above will produce output in tap format. You can omit "--tap -" in the
-    end and it will produce output like the following:
-    ::
- 
--      $ ./tests/venv/bin/avocado run tests/avocado/acpi-bits.py
-+      $ ./pyvenv/bin/avocado run tests/avocado/acpi-bits.py
-       Fetching asset from tests/avocado/acpi-bits.py:AcpiBitsTest.test_acpi_smbios_bits
-       JOB ID     : eab225724da7b64c012c65705dc2fa14ab1defef
-       JOB LOG    : /home/anisinha/avocado/job-results/job-2022-10-10T17.58-eab2257/job.log
-diff --git a/docs/devel/testing.rst b/docs/devel/testing.rst
-index b6ad21bed1c..5d1fc0aa95f 100644
---- a/docs/devel/testing.rst
-+++ b/docs/devel/testing.rst
-@@ -894,9 +894,9 @@ You can run the avocado tests simply by executing:
- 
-   make check-avocado
- 
--This involves the automatic creation of Python virtual environment
--within the build tree (at ``tests/venv``) which will have all the
--right dependencies, and will save tests results also within the
-+This involves the automatic installation, from PyPI, of all the
-+necessary avocado-framework dependencies into the QEMU venv within the
-+build tree (at ``./pyvenv``). Test results are also saved within the
- build tree (at ``tests/results``).
- 
- Note: the build environment must be using a Python 3 stack, and have
-@@ -953,7 +953,7 @@ may be invoked by running:
- 
-  .. code::
- 
--  tests/venv/bin/avocado run $OPTION1 $OPTION2 tests/avocado/
-+  pyvenv/bin/avocado run $OPTION1 $OPTION2 tests/avocado/
- 
- Note that if ``make check-avocado`` was not executed before, it is
- possible to create the Python virtual environment with the dependencies
-@@ -968,20 +968,20 @@ a test file. To run tests from a single file within the build tree, use:
- 
-  .. code::
- 
--  tests/venv/bin/avocado run tests/avocado/$TESTFILE
-+  pyvenv/bin/avocado run tests/avocado/$TESTFILE
- 
- To run a single test within a test file, use:
- 
-  .. code::
- 
--  tests/venv/bin/avocado run tests/avocado/$TESTFILE:$TESTCLASS.$TESTNAME
-+  pyvenv/bin/avocado run tests/avocado/$TESTFILE:$TESTCLASS.$TESTNAME
- 
- Valid test names are visible in the output from any previous execution
- of Avocado or ``make check-avocado``, and can also be queried using:
- 
-  .. code::
- 
--  tests/venv/bin/avocado list tests/avocado
-+  pyvenv/bin/avocado list tests/avocado
- 
- Manual Installation
- ~~~~~~~~~~~~~~~~~~~
-diff --git a/python/scripts/mkvenv.py b/python/scripts/mkvenv.py
-index 02bcd9a8c92..4f2349fbb65 100644
---- a/python/scripts/mkvenv.py
-+++ b/python/scripts/mkvenv.py
-@@ -964,14 +964,11 @@ def _parse_groups(file: str) -> Dict[str, Dict[str, Any]]:
-             "Python >=3.11 does not have tomllib... what have you done!?"
-         )
- 
--    try:
--        # Use loads() to support both tomli v1.2.x (Ubuntu 22.04,
--        # Debian bullseye-backports) and v2.0.x
--        with open(file, "r", encoding="ascii") as depfile:
--            contents = depfile.read()
--            return tomllib.loads(contents)  # type: ignore
--    except tomllib.TOMLDecodeError as exc:
--        raise Ouch(f"parsing {file} failed: {exc}") from exc
-+    # Use loads() to support both tomli v1.2.x (Ubuntu 22.04,
-+    # Debian bullseye-backports) and v2.0.x
-+    with open(file, "r", encoding="ascii") as depfile:
-+        contents = depfile.read()
-+        return tomllib.loads(contents)  # type: ignore
- 
- 
- def ensure_group(
-diff --git a/pythondeps.toml b/pythondeps.toml
-index 6be31dba301..0a35ebcf9f0 100644
---- a/pythondeps.toml
-+++ b/pythondeps.toml
-@@ -23,3 +23,10 @@ meson = { accepted = ">=0.63.0", installed = "0.63.3", canary = "meson" }
- [docs]
- sphinx = { accepted = ">=1.6", installed = "5.3.0", canary = "sphinx-build" }
- sphinx_rtd_theme = { accepted = ">=0.5", installed = "1.1.1" }
+ ENV CCACHE_WRAPPERSDIR "/usr/libexec/ccache-wrappers"
+ ENV LANG "en_US.UTF-8"
+diff --git a/tests/docker/dockerfiles/debian-all-test-cross.docker b/tests/docker/dockerfiles/debian-all-test-cross.docker
+index f9f401544a0..54e957d5e74 100644
+--- a/tests/docker/dockerfiles/debian-all-test-cross.docker
++++ b/tests/docker/dockerfiles/debian-all-test-cross.docker
+@@ -58,7 +58,12 @@ RUN DEBIAN_FRONTEND=noninteractive eatmydata \
+         libc6-dev-sh4-cross \
+         gcc-sparc64-linux-gnu \
+         libc6-dev-sparc64-cross \
+-        python3-venv
++        python3-pip \
++        python3-setuptools \
++        python3-venv \
++        python3-wheel
 +
-+[avocado]
-+# Note that qemu.git/python/ is always implicitly installed.
-+# Prefer an LTS version when updating the accepted versions of
-+# avocado-framework, for example right now the limit is 92.x.
-+avocado-framework = { accepted = "(>=88.1, <93.0)", installed = "88.1", canary = "avocado" }
-+pycdlib = { accepted = ">=1.11.0" }
-diff --git a/scripts/ci/org.centos/stream/8/x86_64/test-avocado b/scripts/ci/org.centos/stream/8/x86_64/test-avocado
-index e0443fc8ae8..73e7a1a3126 100755
---- a/scripts/ci/org.centos/stream/8/x86_64/test-avocado
-+++ b/scripts/ci/org.centos/stream/8/x86_64/test-avocado
-@@ -4,7 +4,7 @@
- # KVM and x86_64, or tests that are generic enough to be valid for all
- # targets. Such a test list can be generated with:
- #
--# ./tests/venv/bin/avocado list --filter-by-tags-include-empty \
-+# ./pyvenv/bin/avocado list --filter-by-tags-include-empty \
- #   --filter-by-tags-include-empty-key -t accel:kvm,arch:x86_64 \
- #   tests/avocado/
- #
-@@ -22,7 +22,7 @@
- #   - tests/avocado/virtio_check_params.py:VirtioMaxSegSettingsCheck.test_machine_types
- #
- make get-vm-images
--./tests/venv/bin/avocado run \
-+./pyvenv/bin/avocado run \
-     --job-results-dir=tests/results/ \
-     tests/avocado/boot_linux.py:BootLinuxX8664.test_pc_i440fx_kvm \
-     tests/avocado/boot_linux.py:BootLinuxX8664.test_pc_q35_kvm \
-diff --git a/scripts/device-crash-test b/scripts/device-crash-test
-index b74d887331d..353aa575d7b 100755
---- a/scripts/device-crash-test
-+++ b/scripts/device-crash-test
-@@ -43,7 +43,7 @@ except ModuleNotFoundError as exc:
-     print(f"Module '{exc.name}' not found.")
-     print("  Try 'make check-venv' from your build directory,")
-     print("  and then one way to run this script is like so:")
--    print(f'  > $builddir/tests/venv/bin/python3 "{path}"')
-+    print(f'  > $builddir/pyvenv/bin/python3 "{path}"')
-     sys.exit(1)
++RUN /usr/bin/pip3 install tomli
  
- logger = logging.getLogger('device-crash-test')
-diff --git a/tests/Makefile.include b/tests/Makefile.include
-index 9422ddaece5..985cda7a945 100644
---- a/tests/Makefile.include
-+++ b/tests/Makefile.include
-@@ -89,10 +89,8 @@ distclean-tcg: $(DISTCLEAN_TCG_TARGET_RULES)
- # Build up our target list from the filtered list of ninja targets
- TARGETS=$(patsubst libqemu-%.fa, %, $(filter libqemu-%.fa, $(ninja-targets)))
+ ENV QEMU_CONFIGURE_OPTS --disable-system --disable-docs --disable-tools
+ ENV DEF_TARGET_LIST aarch64-linux-user,alpha-linux-user,arm-linux-user,hppa-linux-user,i386-linux-user,m68k-linux-user,mips-linux-user,mips64-linux-user,mips64el-linux-user,mipsel-linux-user,ppc-linux-user,ppc64-linux-user,ppc64le-linux-user,riscv64-linux-user,s390x-linux-user,sh4-linux-user,sparc64-linux-user
+diff --git a/tests/docker/dockerfiles/debian-amd64-cross.docker b/tests/docker/dockerfiles/debian-amd64-cross.docker
+index b9871f9c8c7..b66b9cc191b 100644
+--- a/tests/docker/dockerfiles/debian-amd64-cross.docker
++++ b/tests/docker/dockerfiles/debian-amd64-cross.docker
+@@ -47,9 +47,11 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       python3-opencv \
+                       python3-pillow \
+                       python3-pip \
++                      python3-setuptools \
+                       python3-sphinx \
+                       python3-sphinx-rtd-theme \
+                       python3-venv \
++                      python3-wheel \
+                       python3-yaml \
+                       rpm2cpio \
+                       sed \
+@@ -65,6 +67,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+     sed -Ei 's,^# (en_US\.UTF-8 .*)$,\1,' /etc/locale.gen && \
+     dpkg-reconfigure locales
  
--TESTS_VENV_DIR=$(BUILD_DIR)/tests/venv
--TESTS_VENV_REQ=$(SRC_PATH)/tests/requirements.txt
-+TESTS_VENV_TOKEN=$(BUILD_DIR)/pyvenv/tests.group
- TESTS_RESULTS_DIR=$(BUILD_DIR)/tests/results
--TESTS_PYTHON=$(TESTS_VENV_DIR)/bin/python3
- ifndef AVOCADO_TESTS
- 	AVOCADO_TESTS=tests/avocado
- endif
-@@ -108,20 +106,19 @@ else
- endif
++RUN /usr/bin/pip3 install tomli
++
+ ENV CCACHE_WRAPPERSDIR "/usr/libexec/ccache-wrappers"
+ ENV LANG "en_US.UTF-8"
+ ENV MAKE "/usr/bin/make"
+diff --git a/tests/docker/dockerfiles/debian-amd64.docker b/tests/docker/dockerfiles/debian-amd64.docker
+index 6d2fa38e3e6..02262bc70ec 100644
+--- a/tests/docker/dockerfiles/debian-amd64.docker
++++ b/tests/docker/dockerfiles/debian-amd64.docker
+@@ -115,9 +115,11 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       python3-opencv \
+                       python3-pillow \
+                       python3-pip \
++                      python3-setuptools \
+                       python3-sphinx \
+                       python3-sphinx-rtd-theme \
+                       python3-venv \
++                      python3-wheel \
+                       python3-yaml \
+                       rpm2cpio \
+                       sed \
+@@ -143,6 +145,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/g++ && \
+     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/gcc
  
- quiet-venv-pip = $(quiet-@)$(call quiet-command-run, \
--    $(TESTS_PYTHON) -m pip -q --disable-pip-version-check $1, \
-+    $(PYTHON) -m pip -q --disable-pip-version-check $1, \
-     "VENVPIP","$1")
++RUN /usr/bin/pip3 install tomli
++
+ ENV CCACHE_WRAPPERSDIR "/usr/libexec/ccache-wrappers"
+ ENV LANG "en_US.UTF-8"
+ ENV MAKE "/usr/bin/make"
+diff --git a/tests/docker/dockerfiles/debian-arm64-cross.docker b/tests/docker/dockerfiles/debian-arm64-cross.docker
+index 3504c771a76..a0a968b8c67 100644
+--- a/tests/docker/dockerfiles/debian-arm64-cross.docker
++++ b/tests/docker/dockerfiles/debian-arm64-cross.docker
+@@ -47,9 +47,11 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       python3-opencv \
+                       python3-pillow \
+                       python3-pip \
++                      python3-setuptools \
+                       python3-sphinx \
+                       python3-sphinx-rtd-theme \
+                       python3-venv \
++                      python3-wheel \
+                       python3-yaml \
+                       rpm2cpio \
+                       sed \
+@@ -65,6 +67,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+     sed -Ei 's,^# (en_US\.UTF-8 .*)$,\1,' /etc/locale.gen && \
+     dpkg-reconfigure locales
  
--$(TESTS_VENV_DIR): $(TESTS_VENV_REQ)
--	$(call quiet-command, $(PYTHON) -m venv $@, VENV, $@)
-+$(TESTS_VENV_TOKEN): $(SRC_PATH)/pythondeps.toml
- 	$(call quiet-venv-pip,install -e "$(SRC_PATH)/python/")
--	$(call quiet-venv-pip,install -r $(TESTS_VENV_REQ))
-+	$(PYTHON) python/scripts/mkvenv.py ensuregroup --online $< avocado
- 	$(call quiet-command, touch $@)
++RUN /usr/bin/pip3 install tomli
++
+ ENV CCACHE_WRAPPERSDIR "/usr/libexec/ccache-wrappers"
+ ENV LANG "en_US.UTF-8"
+ ENV MAKE "/usr/bin/make"
+diff --git a/tests/docker/dockerfiles/debian-armel-cross.docker b/tests/docker/dockerfiles/debian-armel-cross.docker
+index 6d11c9510fd..f1fc34a28ac 100644
+--- a/tests/docker/dockerfiles/debian-armel-cross.docker
++++ b/tests/docker/dockerfiles/debian-armel-cross.docker
+@@ -47,9 +47,11 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       python3-opencv \
+                       python3-pillow \
+                       python3-pip \
++                      python3-setuptools \
+                       python3-sphinx \
+                       python3-sphinx-rtd-theme \
+                       python3-venv \
++                      python3-wheel \
+                       python3-yaml \
+                       rpm2cpio \
+                       sed \
+@@ -65,6 +67,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+     sed -Ei 's,^# (en_US\.UTF-8 .*)$,\1,' /etc/locale.gen && \
+     dpkg-reconfigure locales
  
- $(TESTS_RESULTS_DIR):
- 	$(call quiet-command, mkdir -p $@, \
-             MKDIR, $@)
++RUN /usr/bin/pip3 install tomli
++
+ ENV CCACHE_WRAPPERSDIR "/usr/libexec/ccache-wrappers"
+ ENV LANG "en_US.UTF-8"
+ ENV MAKE "/usr/bin/make"
+diff --git a/tests/docker/dockerfiles/debian-armhf-cross.docker b/tests/docker/dockerfiles/debian-armhf-cross.docker
+index 37ae575cf7e..a2785782119 100644
+--- a/tests/docker/dockerfiles/debian-armhf-cross.docker
++++ b/tests/docker/dockerfiles/debian-armhf-cross.docker
+@@ -47,9 +47,11 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       python3-opencv \
+                       python3-pillow \
+                       python3-pip \
++                      python3-setuptools \
+                       python3-sphinx \
+                       python3-sphinx-rtd-theme \
+                       python3-venv \
++                      python3-wheel \
+                       python3-yaml \
+                       rpm2cpio \
+                       sed \
+@@ -65,6 +67,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+     sed -Ei 's,^# (en_US\.UTF-8 .*)$,\1,' /etc/locale.gen && \
+     dpkg-reconfigure locales
  
--check-venv: $(TESTS_VENV_DIR)
-+check-venv: $(TESTS_VENV_TOKEN)
++RUN /usr/bin/pip3 install tomli
++
+ ENV CCACHE_WRAPPERSDIR "/usr/libexec/ccache-wrappers"
+ ENV LANG "en_US.UTF-8"
+ ENV MAKE "/usr/bin/make"
+diff --git a/tests/docker/dockerfiles/debian-hexagon-cross.docker b/tests/docker/dockerfiles/debian-hexagon-cross.docker
+index c2cfb6a5d0f..153fc7cfb31 100644
+--- a/tests/docker/dockerfiles/debian-hexagon-cross.docker
++++ b/tests/docker/dockerfiles/debian-hexagon-cross.docker
+@@ -21,11 +21,15 @@ RUN apt-get update && \
+         flex \
+         git \
+         ninja-build \
+-        python3-venv && \
++        python3-pip \
++        python3-setuptools \
++        python3-venv \
++        python3-wheel && \
+ # Install QEMU build deps for use in CI
+     DEBIAN_FRONTEND=noninteractive eatmydata \
+     apt build-dep -yy --arch-only qemu
  
- FEDORA_31_ARCHES_TARGETS=$(patsubst %-softmmu,%, $(filter %-softmmu,$(TARGETS)))
- FEDORA_31_ARCHES_CANDIDATES=$(patsubst ppc64,ppc64le,$(FEDORA_31_ARCHES_TARGETS))
-@@ -131,7 +128,7 @@ FEDORA_31_DOWNLOAD=$(filter $(FEDORA_31_ARCHES),$(FEDORA_31_ARCHES_CANDIDATES))
- # download one specific Fedora 31 image
- get-vm-image-fedora-31-%: check-venv
- 	$(call quiet-command, \
--             $(TESTS_PYTHON) -m avocado vmimage get \
-+             $(PYTHON) -m avocado vmimage get \
-              --distro=fedora --distro-version=31 --arch=$*, \
- 	"AVOCADO", "Downloading avocado tests VM image for $*")
++RUN /usr/bin/pip3 install tomli
  
-@@ -140,7 +137,7 @@ get-vm-images: check-venv $(patsubst %,get-vm-image-fedora-31-%, $(FEDORA_31_DOW
+ ENV TOOLCHAIN_INSTALL /opt
+ ENV TOOLCHAIN_RELEASE 16.0.0
+diff --git a/tests/docker/dockerfiles/debian-mips64el-cross.docker b/tests/docker/dockerfiles/debian-mips64el-cross.docker
+index 26ed730165a..17d3e01ecc8 100644
+--- a/tests/docker/dockerfiles/debian-mips64el-cross.docker
++++ b/tests/docker/dockerfiles/debian-mips64el-cross.docker
+@@ -47,9 +47,11 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       python3-opencv \
+                       python3-pillow \
+                       python3-pip \
++                      python3-setuptools \
+                       python3-sphinx \
+                       python3-sphinx-rtd-theme \
+                       python3-venv \
++                      python3-wheel \
+                       python3-yaml \
+                       rpm2cpio \
+                       sed \
+@@ -65,6 +67,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+     sed -Ei 's,^# (en_US\.UTF-8 .*)$,\1,' /etc/locale.gen && \
+     dpkg-reconfigure locales
  
- check-avocado: check-venv $(TESTS_RESULTS_DIR) get-vm-images
- 	$(call quiet-command, \
--            $(TESTS_PYTHON) -m avocado \
-+            $(PYTHON) -m avocado \
-             --show=$(AVOCADO_SHOW) run --job-results-dir=$(TESTS_RESULTS_DIR) \
-             $(if $(AVOCADO_TAGS),, --filter-by-tags-include-empty \
- 			--filter-by-tags-include-empty-key) \
-@@ -163,7 +160,7 @@ check:
- check-build: run-ninja
++RUN /usr/bin/pip3 install tomli
++
+ ENV CCACHE_WRAPPERSDIR "/usr/libexec/ccache-wrappers"
+ ENV LANG "en_US.UTF-8"
+ ENV MAKE "/usr/bin/make"
+diff --git a/tests/docker/dockerfiles/debian-mipsel-cross.docker b/tests/docker/dockerfiles/debian-mipsel-cross.docker
+index ade2f37ed1d..5fcd641f155 100644
+--- a/tests/docker/dockerfiles/debian-mipsel-cross.docker
++++ b/tests/docker/dockerfiles/debian-mipsel-cross.docker
+@@ -47,9 +47,11 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       python3-opencv \
+                       python3-pillow \
+                       python3-pip \
++                      python3-setuptools \
+                       python3-sphinx \
+                       python3-sphinx-rtd-theme \
+                       python3-venv \
++                      python3-wheel \
+                       python3-yaml \
+                       rpm2cpio \
+                       sed \
+@@ -65,6 +67,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+     sed -Ei 's,^# (en_US\.UTF-8 .*)$,\1,' /etc/locale.gen && \
+     dpkg-reconfigure locales
  
- check-clean:
--	rm -rf $(TESTS_VENV_DIR) $(TESTS_RESULTS_DIR)
-+	rm -rf $(TESTS_RESULTS_DIR)
++RUN /usr/bin/pip3 install tomli
++
+ ENV CCACHE_WRAPPERSDIR "/usr/libexec/ccache-wrappers"
+ ENV LANG "en_US.UTF-8"
+ ENV MAKE "/usr/bin/make"
+diff --git a/tests/docker/dockerfiles/debian-ppc64el-cross.docker b/tests/docker/dockerfiles/debian-ppc64el-cross.docker
+index 08dcffa0a85..30e5efa986e 100644
+--- a/tests/docker/dockerfiles/debian-ppc64el-cross.docker
++++ b/tests/docker/dockerfiles/debian-ppc64el-cross.docker
+@@ -47,9 +47,11 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       python3-opencv \
+                       python3-pillow \
+                       python3-pip \
++                      python3-setuptools \
+                       python3-sphinx \
+                       python3-sphinx-rtd-theme \
+                       python3-venv \
++                      python3-wheel \
+                       python3-yaml \
+                       rpm2cpio \
+                       sed \
+@@ -65,6 +67,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+     sed -Ei 's,^# (en_US\.UTF-8 .*)$,\1,' /etc/locale.gen && \
+     dpkg-reconfigure locales
  
- clean: check-clean clean-tcg
- distclean: distclean-tcg
-diff --git a/tests/requirements.txt b/tests/requirements.txt
-deleted file mode 100644
-index 0ba561b6bdf..00000000000
---- a/tests/requirements.txt
-+++ /dev/null
-@@ -1,6 +0,0 @@
--# Add Python module requirements, one per line, to be installed
--# in the tests/venv Python virtual environment. For more info,
--# refer to: https://pip.pypa.io/en/stable/user_guide/#id1
--# Note that qemu.git/python/ is always implicitly installed.
--avocado-framework==88.1
--pycdlib==1.11.0
-diff --git a/tests/vm/Makefile.include b/tests/vm/Makefile.include
-index c2a8ca1c175..f0f5d32fb0f 100644
---- a/tests/vm/Makefile.include
-+++ b/tests/vm/Makefile.include
-@@ -5,7 +5,7 @@ ifeq ($(realpath $(SRC_PATH)),$(realpath .))
- VM_PYTHON = PYTHONPATH=$(SRC_PATH)/python /usr/bin/env python3
- VM_VENV =
- else
--VM_PYTHON = $(TESTS_PYTHON)
-+VM_PYTHON = $(PYTHON)
- VM_VENV = check-venv
- endif
++RUN /usr/bin/pip3 install tomli
++
+ ENV CCACHE_WRAPPERSDIR "/usr/libexec/ccache-wrappers"
+ ENV LANG "en_US.UTF-8"
+ ENV MAKE "/usr/bin/make"
+diff --git a/tests/docker/dockerfiles/debian-s390x-cross.docker b/tests/docker/dockerfiles/debian-s390x-cross.docker
+index 48a2c10fdbd..ee6db7b526b 100644
+--- a/tests/docker/dockerfiles/debian-s390x-cross.docker
++++ b/tests/docker/dockerfiles/debian-s390x-cross.docker
+@@ -47,9 +47,11 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       python3-opencv \
+                       python3-pillow \
+                       python3-pip \
++                      python3-setuptools \
+                       python3-sphinx \
+                       python3-sphinx-rtd-theme \
+                       python3-venv \
++                      python3-wheel \
+                       python3-yaml \
+                       rpm2cpio \
+                       sed \
+@@ -65,6 +67,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+     sed -Ei 's,^# (en_US\.UTF-8 .*)$,\1,' /etc/locale.gen && \
+     dpkg-reconfigure locales
  
++RUN /usr/bin/pip3 install tomli
++
+ ENV CCACHE_WRAPPERSDIR "/usr/libexec/ccache-wrappers"
+ ENV LANG "en_US.UTF-8"
+ ENV MAKE "/usr/bin/make"
+diff --git a/tests/docker/dockerfiles/debian-tricore-cross.docker b/tests/docker/dockerfiles/debian-tricore-cross.docker
+index 5bd1963fb55..c597f8e16b1 100644
+--- a/tests/docker/dockerfiles/debian-tricore-cross.docker
++++ b/tests/docker/dockerfiles/debian-tricore-cross.docker
+@@ -36,6 +36,8 @@ RUN apt update && \
+        python3-wheel \
+        python3-venv
+ 
++RUN /usr/bin/pip3 install tomli
++
+ RUN curl -#SL https://github.com/bkoppelmann/package_940/releases/download/tricore-toolchain-9.40/tricore-toolchain-9.4.0.tar.gz \
+     | tar -xzC /usr/local/
+ 
+diff --git a/tests/docker/dockerfiles/fedora-i386-cross.docker b/tests/docker/dockerfiles/fedora-i386-cross.docker
+index 14c1fb2c93a..b59a9115c4c 100644
+--- a/tests/docker/dockerfiles/fedora-i386-cross.docker
++++ b/tests/docker/dockerfiles/fedora-i386-cross.docker
+@@ -24,6 +24,7 @@ ENV PACKAGES \
+     nettle-devel.i686 \
+     pcre-devel.i686 \
+     pixman-devel.i686 \
++    python3-tomli \
+     sysprof-capture-devel.i686 \
+     zlib-devel.i686
+ 
+diff --git a/tests/docker/dockerfiles/opensuse-leap.docker b/tests/docker/dockerfiles/opensuse-leap.docker
+index fef8d5a2e45..9392f404fb2 100644
+--- a/tests/docker/dockerfiles/opensuse-leap.docker
++++ b/tests/docker/dockerfiles/opensuse-leap.docker
+@@ -130,7 +130,8 @@ RUN /usr/bin/pip3.11 install \
+                      meson==0.63.2 \
+                      pillow \
+                      sphinx \
+-                     sphinx-rtd-theme
++                     sphinx-rtd-theme \
++                     tomli
+ 
+ ENV CCACHE_WRAPPERSDIR "/usr/libexec/ccache-wrappers"
+ ENV LANG "en_US.UTF-8"
+diff --git a/tests/docker/dockerfiles/ubuntu2004.docker b/tests/docker/dockerfiles/ubuntu2004.docker
+index 8f864d19e60..4180cd86740 100644
+--- a/tests/docker/dockerfiles/ubuntu2004.docker
++++ b/tests/docker/dockerfiles/ubuntu2004.docker
+@@ -141,7 +141,9 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/g++ && \
+     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/gcc
+ 
+-RUN /usr/bin/pip3 install meson==0.63.2
++RUN /usr/bin/pip3 install \
++                            meson==0.63.2 \
++                            tomli
+ 
+ ENV CCACHE_WRAPPERSDIR "/usr/libexec/ccache-wrappers"
+ ENV LANG "en_US.UTF-8"
+diff --git a/tests/docker/dockerfiles/ubuntu2204.docker b/tests/docker/dockerfiles/ubuntu2204.docker
+index 8f939870ae7..88493f00f6f 100644
+--- a/tests/docker/dockerfiles/ubuntu2204.docker
++++ b/tests/docker/dockerfiles/ubuntu2204.docker
+@@ -117,6 +117,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       python3-pip \
+                       python3-sphinx \
+                       python3-sphinx-rtd-theme \
++                      python3-tomli \
+                       python3-venv \
+                       python3-yaml \
+                       rpm2cpio \
+diff --git a/tests/lcitool/mappings.yml b/tests/lcitool/mappings.yml
+index 3c554099ed6..7e203763f49 100644
+--- a/tests/lcitool/mappings.yml
++++ b/tests/lcitool/mappings.yml
+@@ -59,6 +59,15 @@ mappings:
+     CentOSStream8:
+     OpenSUSELeap15:
+ 
++  python3-tomli:
++    # test using tomllib
++    apk:
++    Fedora:
++    Debian12:
++    # Not available for Python 3.8/3.9
++    CentOSStream8:
++    OpenSUSELeap15:
++
+   python3-venv:
+     CentOSStream8: python38
+     OpenSUSELeap15: python311-base
+@@ -75,3 +84,9 @@ pypi_mappings:
+   # Drop packages that need devel headers
+   python3-numpy:
+     OpenSUSELeap15:
++
++  # see above
++  python3-tomli:
++    apk:
++    Fedora:
++    Debian12:
+diff --git a/tests/lcitool/projects/qemu.yml b/tests/lcitool/projects/qemu.yml
+index 2d31cf792ae..584f78cb7f9 100644
+--- a/tests/lcitool/projects/qemu.yml
++++ b/tests/lcitool/projects/qemu.yml
+@@ -96,6 +96,7 @@ packages:
+  - python3-pip
+  - python3-sphinx
+  - python3-sphinx-rtd-theme
++ - python3-tomli
+  - python3-venv
+  - rpm2cpio
+  - sdl2
+diff --git a/tests/vm/generated/freebsd.json b/tests/vm/generated/freebsd.json
+index 7c435cf23e9..2d5895ebed9 100644
+--- a/tests/vm/generated/freebsd.json
++++ b/tests/vm/generated/freebsd.json
+@@ -56,6 +56,7 @@
+     "py39-pip",
+     "py39-sphinx",
+     "py39-sphinx_rtd_theme",
++    "py39-tomli",
+     "py39-yaml",
+     "python3",
+     "rpm2cpio",
 -- 
 2.41.0
 
