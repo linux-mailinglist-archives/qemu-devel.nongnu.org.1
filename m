@@ -2,83 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6074D7763A0
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 17:24:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C7187763A3
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 17:24:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTl1t-0002xg-9R; Wed, 09 Aug 2023 11:23:21 -0400
+	id 1qTl2w-0004Gf-RZ; Wed, 09 Aug 2023 11:24:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTl1q-0002xJ-Lf
- for qemu-devel@nongnu.org; Wed, 09 Aug 2023 11:23:18 -0400
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qTl2v-0004GQ-9W
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 11:24:25 -0400
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTl1p-0001yF-3n
- for qemu-devel@nongnu.org; Wed, 09 Aug 2023 11:23:18 -0400
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-686fc0d3c92so4749261b3a.0
- for <qemu-devel@nongnu.org>; Wed, 09 Aug 2023 08:23:16 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qTl2t-00024G-Kz
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 11:24:25 -0400
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-317e427488aso3051901f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 09 Aug 2023 08:24:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691594595; x=1692199395;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=V5amRLnCuKsBT8DRgge9hKljBAtuBaOud/g7b4FC7oA=;
- b=L8LtZAvAR98jsWd423kWxYz35Mmz3ti9DSs+nqDgABHqBYPjZE8FOx74oKN1V2hNbi
- EgZcUk1XARhxyHmc+Oc/OhuQ7k0LeURVtuaYAzb6ULlZ+uyUtrtlqWZ1/UhRp/w/Q1E+
- CWmmMrevQzq3fLUDSV0DZ6jon2ZKYZ2wMoSmgaov0OaFwy/uwJvP583QZUX9TMBGZXGg
- tEBuPYWcMO70ILpN2R6EBSXv9o2tcHq8Zf9i12yr8WgaEQzBzUdx73aqGFLmWeaJxO6G
- zj9cltH23//sFRDoQAtlwGytriYvtymLm6v+WT5/ykREVVgpq+0mY90cM/0w/mvaxZRI
- 8xjg==
+ d=linaro.org; s=google; t=1691594662; x=1692199462;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=8oXIdvcJG5xSzM+RlrgVXhDde6Y5Q8+vk9Ss7z2AwnY=;
+ b=F9mdf6u97tHzNijnkzwMGgCLMBVErcahMvY6QnclwgLibgqw5PM6NzCX1naa5ilMKX
+ MAFPgK/7xwqf2YRTifUUjWzs9TAxBmW6Oki7n0tonza3h4qK/55lS4kXg6pgX4aZion2
+ xHOS44yTmQ1WcNWsszyYSzQfH3CN+1WCyvdbygFRamQ5c9hL795M4SvqB/o1mNSW9Td5
+ rcMide5nWG5wM2wMgWUvWTiaRk4Np3bd80z3m4+3AxzLPYLLVRma17RY6IIWOWSShR5C
+ sKsxGLtwrNbd3+E53sIjz8BmVxkgj64PGJik8S+jwyI+U6Gq+6+BUxr0mn6v0PTrom2z
+ N8fQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691594595; x=1692199395;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=V5amRLnCuKsBT8DRgge9hKljBAtuBaOud/g7b4FC7oA=;
- b=OgMPEko/YCw/lzHV676M6RDGtMlMSckwO+YUEtw+6UluelNfqfW8l7Ro5j0hM71FeS
- k7XSWRx+hT0ZUj33QdJLsUFwMIN30H08HYnpQkbDwsd2Uv12zt9/tq1sPZxzvJ4Kh6Vh
- eb6BV2kM32FEqB3wyM3mDIUnpBF1O5lfd9M/4wY5IXDpuZtXYosx0n3gkw/8Dk14MDa1
- Bdr1fTGEI+Y6FH8z/Lon43v2Wd93bfCFGyJU7DjayQfH4YFrFC293WRxali2SB3s8gK/
- IFjU+3zjOK/88xhVBa5Cf1nKEC+2Ar9XvanB5dIZf+cwnfyUMJwNLFw8KUYjv4e5n62J
- HnEg==
-X-Gm-Message-State: AOJu0Yzkg+SpJ/u8AqtQGIG38ehqvIhvF9LN8SoJ2pVEu9CVyMfG1PkG
- WvCdmQqphHtzU04l4CHibaovHg==
-X-Google-Smtp-Source: AGHT+IFlTx8/COS5skSvoPLb/aCKJ0yL/g/PxUpV7xDFzQ+BdU+sjW43LeXF3V3KxpdJbNPll3yWpA==
-X-Received: by 2002:a05:6a20:12ca:b0:11f:4707:7365 with SMTP id
- v10-20020a056a2012ca00b0011f47077365mr3341539pzg.38.1691594595251; 
- Wed, 09 Aug 2023 08:23:15 -0700 (PDT)
-Received: from ?IPV6:2602:47:d483:7301:6bf0:9674:6ac4:f74c?
- ([2602:47:d483:7301:6bf0:9674:6ac4:f74c])
+ d=1e100.net; s=20221208; t=1691594662; x=1692199462;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=8oXIdvcJG5xSzM+RlrgVXhDde6Y5Q8+vk9Ss7z2AwnY=;
+ b=gtba+GrcMCnESrohM/n7v707oOLfZ7VIF4PHhH1Wrw4TpEG6TqzSlZJRQk64G0mJtE
+ 6+WzP71Mxf5V7z8d5kdBkDKFDXr0K75Q1cxJtq8dCqL3I9uGXTUQ4Gr35Y5JNtuhl7rO
+ 0M9WuWhwf1L5PUR5WLRtYZ7F02hq7xNNjUtNqWKjurSBeDp7ZyUN6WaWAnYQpsLrfPgY
+ XjEL8C/H/LySat9EuRGGCqAr5RGiC98T2ls+FXF1bL6CLx6OGdBDMuZ50k50IMdVbuqY
+ 5KJiKb6lpnD/C0dY9CgvUqm6fr4lHY5ErLkmwnz6GFmYofnSHRDDmuwWhPzaUxmCccVq
+ xluw==
+X-Gm-Message-State: AOJu0YwmKnEjLpBihxToNiF4dtw2e9hmwnEufdBYBp2DYq4UWh4CyAtB
+ 64LA246HOO+n2ANEH036OmSbDw==
+X-Google-Smtp-Source: AGHT+IGL7wZe1mei0Y9ftr580BrbwFqgq4ORMFytxUEGL81cXsGpowb+6yMMnrMBac8LGmJOhvlzDg==
+X-Received: by 2002:adf:e8c7:0:b0:313:f5e9:13ec with SMTP id
+ k7-20020adfe8c7000000b00313f5e913ecmr2036064wrn.68.1691594661940; 
+ Wed, 09 Aug 2023 08:24:21 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- x9-20020a63fe49000000b0053051d50a48sm8331921pgj.79.2023.08.09.08.23.14
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 09 Aug 2023 08:23:14 -0700 (PDT)
-Message-ID: <9251069c-95e5-aff5-9ee9-de7a493b23bf@linaro.org>
-Date: Wed, 9 Aug 2023 08:23:13 -0700
+ e11-20020a5d500b000000b003143c9beeaesm16997745wrt.44.2023.08.09.08.24.21
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 09 Aug 2023 08:24:21 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 540241FFBB;
+ Wed,  9 Aug 2023 16:24:21 +0100 (BST)
+References: <20230808141739.3110740-1-fufuyqqqqqq@gmail.com>
+ <20230808141739.3110740-2-fufuyqqqqqq@gmail.com>
+ <871qgc5l00.fsf@linaro.org>
+User-agent: mu4e 1.11.13; emacs 29.1.50
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: Yeqi Fu <fufuyqqqqqq@gmail.com>, richard.henderson@linaro.org,
+ qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth
+ <thuth@redhat.com>
+Subject: Re: [RFC v4 01/11] build: Implement logic for sharing
+ cross-building config files
+Date: Wed, 09 Aug 2023 16:23:20 +0100
+In-reply-to: <871qgc5l00.fsf@linaro.org>
+Message-ID: <87sf8s44t6.fsf@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: Fix interval_tree_iter_first() to check root node value
-Content-Language: en-US
-To: Helge Deller <deller@gmx.de>, qemu-devel@nongnu.org
-References: <20230807163705.9848-1-richard.henderson@linaro.org>
- <20230807163705.9848-11-richard.henderson@linaro.org>
- <d2842004-ce3e-325f-69a7-3eec6e4cd1d5@linaro.org> <ZNOsq6Z7t/eyIG/9@p100>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <ZNOsq6Z7t/eyIG/9@p100>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
-X-Spam_score_int: -61
-X-Spam_score: -6.2
-X-Spam_bar: ------
-X-Spam_report: (-6.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-4.14,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -96,44 +100,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/9/23 08:11, Helge Deller wrote:
-> Fix a crash in qemu-user when running
-> 
->      cat /proc/self/maps
-> 
-> in a chroot, where /proc isn't mounted.
-> 
-> The problem was introduced by commit 3ce3dd8ca965 ("util/selfmap:
-> Rewrite using qemu/interval-tree.h") where in open_self_maps_1() the
-> function read_self_maps() is called and which returns NULL if it can't
-> read the hosts /proc/self/maps file. Afterwards that NULL is fed into
-> interval_tree_iter_first() which doesn't check if the root node is NULL.
-> 
-> Fix it by adding a check if root is NULL and return NULL in that case.
-> 
-> Signed-off-by: Helge Deller <deller@gmx.de>
-> Fixes: 3ce3dd8ca965 ("util/selfmap: Rewrite using qemu/interval-tree.h")
-> 
-> diff --git a/util/interval-tree.c b/util/interval-tree.c
-> index f2866aa7d3..53465182e6 100644
-> --- a/util/interval-tree.c
-> +++ b/util/interval-tree.c
-> @@ -797,7 +797,7 @@ IntervalTreeNode *interval_tree_iter_first(IntervalTreeRoot *root,
->   {
->       IntervalTreeNode *node, *leftmost;
-> 
-> -    if (!root->rb_root.rb_node) {
-> +    if (!root || !root->rb_root.rb_node) {
 
+Alex Benn=C3=A9e <alex.bennee@linaro.org> writes:
 
-I guess this is good enough for 8.1.  Before the conversion to interval-tree we would also 
-emit nothing.
+> Yeqi Fu <fufuyqqqqqq@gmail.com> writes:
+>
+>> Signed-off-by: Yeqi Fu <fufuyqqqqqq@gmail.com>
+>> ---
+>>  configure | 57 +++++++++++++++++++++++++++++++++----------------------
+>>  1 file changed, 34 insertions(+), 23 deletions(-)
+>>
+>> diff --git a/configure b/configure
+>> index 2b41c49c0d..a076583141 100755
+>> --- a/configure
+>> +++ b/configure
+>> @@ -1751,56 +1751,67 @@ if test "$ccache_cpp2" =3D "yes"; then
+>>    echo "export CCACHE_CPP2=3Dy" >> $config_host_mak
+>>  fi
+>>=20=20
+>> -# tests/tcg configuration
+>> -(config_host_mak=3Dtests/tcg/config-host.mak
+>> -mkdir -p tests/tcg
+>> -echo "# Automatically generated by configure - do not modify" > $config=
+_host_mak
+>> -echo "SRC_PATH=3D$source_path" >> $config_host_mak
+>> -echo "HOST_CC=3D$host_cc" >> $config_host_mak
+>> +# Prepare the config files for cross building.
+>> +# This process generates 'cross-build/<target>/config-target.mak' files.
+>> +# These files are then symlinked to the directories that need them which
+>> +# including the TCG tests (tests/tcg/<target>) and the libnative library
+>> +# for linux-user (common/native/<target>/).
+>> +mkdir -p cross-build
+>>=20=20
+>> -# versioned checked in the main config_host.mak above
+>> -if test -n "$gdb_bin"; then
+>> -    echo "HAVE_GDB_BIN=3D$gdb_bin" >> $config_host_mak
+>> -fi
+>> -if test "$plugins" =3D "yes" ; then
+>> -    echo "CONFIG_PLUGIN=3Dy" >> $config_host_mak
+>> -fi
+>
+> I think there is a merge conflict here because a bunch of the
+> config-host.mak output has been squashed. This disabled plugins and gdb
+> testing.
 
-I've already done a rewrite for 8.2, and I noticed this problem.  There I emit what 
-mapping information that I have, which is everything except for the device+path data.
+Ahh I see now this was intentional because we symlink however it was
+lost in the noise of the diff. As Manos pointed out detailing the
+movement in the commit message aids reviewers in tracing what has
+changed.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-
-
-r~
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
