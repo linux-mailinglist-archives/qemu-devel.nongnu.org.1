@@ -2,93 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0374775087
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 03:51:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CB0B775086
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 03:51:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTYMA-0001QU-HV; Tue, 08 Aug 2023 21:51:26 -0400
+	id 1qTYLb-0000mj-EA; Tue, 08 Aug 2023 21:50:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <bgray@linux.ibm.com>)
- id 1qTYM7-0001Hm-OP; Tue, 08 Aug 2023 21:51:23 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <bgray@linux.ibm.com>)
- id 1qTYM5-0005Sk-MV; Tue, 08 Aug 2023 21:51:23 -0400
-Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3791o5I3026777; Wed, 9 Aug 2023 01:51:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=zVVwr4VtPTUY83ryHUI0AtNwfFnG/w15VLBR9rci2Hg=;
- b=TAON78Jf6y5NCFhvMmTlfWxW4+ejBoopaYLUktz5nhVXfWqLskni2O9Dr6zCUM5/iyww
- F6dzSGgkCT/rgaWCTMpkkS0v/tev9+s29ngO20u/qcYsYbFwS1z293yTfpvcnT7GXLHT
- JFKcA3E3FcL5BL8whPEswuX13tzJZhgLF12zeacLoMAKmoMZ0vMezgMmiFoW/nWAks9f
- XhhDIiMCQdCK1USYkMl6xwRn/jNSJlQ/P4MNy4tBmssNPHyq+xVBHbJW7J08puyJOMZ9
- 8Reocrk1mzPI/I9Z+Hz65ZjZpWARYLHBX+yR1+ikhQLT1SZa7SQB69gj3rDziqxYryFY Xw== 
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sc15v8bss-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 09 Aug 2023 01:51:18 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3791V3D7007543; Wed, 9 Aug 2023 01:51:17 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3sa14yc8j4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 09 Aug 2023 01:51:17 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
- [10.20.54.103])
- by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 3791pFA436962938
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 9 Aug 2023 01:51:15 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 75B612004B;
- Wed,  9 Aug 2023 01:51:15 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EC6BB20043;
- Wed,  9 Aug 2023 01:51:14 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Wed,  9 Aug 2023 01:51:14 +0000 (GMT)
-Received: from bgray-lenovo-p15.fritz.box (unknown [9.43.219.123])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id F2CED60113;
- Wed,  9 Aug 2023 11:51:09 +1000 (AEST)
-From: Benjamin Gray <bgray@linux.ibm.com>
-To: qemu-ppc@nongnu.org
-Cc: qemu-devel@nongnu.org, Benjamin Gray <bgray@linux.ibm.com>
-Subject: [PATCH] powerpc/spapr: Add DEXCR to device tree
-Date: Wed,  9 Aug 2023 11:50:18 +1000
-Message-ID: <20230809015018.44499-1-bgray@linux.ibm.com>
-X-Mailer: git-send-email 2.41.0
+ (Exim 4.90_1) (envelope-from <gurchetansingh@chromium.org>)
+ id 1qTYLZ-0000l7-7c
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 21:50:49 -0400
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <gurchetansingh@chromium.org>)
+ id 1qTYLX-0005Lu-09
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 21:50:49 -0400
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-523100882f2so7592212a12.2
+ for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 18:50:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=chromium.org; s=google; t=1691545843; x=1692150643;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=Y035M7j4dfeyylO7mmJsqInY0SIo/T2Et0LpPMev5PU=;
+ b=KKzGID34Yw62A4s5ULoVX55hpvQZ3GARTnUXeRSoqLJ/wWN9Yfvu+MWDfpjr0uCInR
+ Vq2YLtmGgSd/AhEBHj5FJvFVxPadfIVy0M+gTAf5079w/scJcm0sg0KYl+WA7bneSoqQ
+ cBQUsCxRTJ4wTJY1D0qy4/YNrtTZrIMVWq9mY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1691545843; x=1692150643;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Y035M7j4dfeyylO7mmJsqInY0SIo/T2Et0LpPMev5PU=;
+ b=EaaCkhwvh83tvrVrq80s2Xct3HhpXYvVotEMl+LrF7a0TyCqkLR5nwnfgS5wnn/tm9
+ tRUeZZSb1fNyR6uKxIqwazPBqAuO5P0jWyIXJTk+g/BqhSXdAzbU6M5dPoCfGyH3FDiK
+ 4oCgEXprxdshV8LbyW6X1/0V8AZsmKHMmNBtUiuUwuQo9aapIjNMMYK6H8OFE0Wx/M9H
+ 5kCiWvDncJ6WXNiAmKzQZiKMprP5VUH3WwV5KEYefTzWww7rV/7VbrdpuO3zhFnmbdV+
+ 3LUJ8K9WCFWZHy+6Jwa+07JRUStKAJzKUbArS2GKhuFOyPpH5RXrKxF1wCwIJx/W3UuY
+ 9NuA==
+X-Gm-Message-State: AOJu0Yxh1ICTP0yZa+zz4v7PtKS6PEi7arCF2SGNsVYe8xex/5AUn1jv
+ njgvhAe29NteoLxMhobCLFkIyvoeu0pKQ/JYMSa38w==
+X-Google-Smtp-Source: AGHT+IFFg9kgU2/mANQBurG4/QyTIJhA95L5mHH5y517n5Ai95ANW33aATjtF4ggmLgF8lh2lse48A==
+X-Received: by 2002:a50:ed13:0:b0:51e:2e39:9003 with SMTP id
+ j19-20020a50ed13000000b0051e2e399003mr1032502eds.40.1691545842772; 
+ Tue, 08 Aug 2023 18:50:42 -0700 (PDT)
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com.
+ [209.85.208.51]) by smtp.gmail.com with ESMTPSA id
+ v7-20020aa7dbc7000000b0052333e5237esm4411711edt.88.2023.08.08.18.50.42
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 08 Aug 2023 18:50:42 -0700 (PDT)
+Received: by mail-ed1-f51.google.com with SMTP id
+ 4fb4d7f45d1cf-521e046f6c7so3696a12.1
+ for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 18:50:42 -0700 (PDT)
+X-Received: by 2002:a50:d683:0:b0:522:cc9c:f5a4 with SMTP id
+ r3-20020a50d683000000b00522cc9cf5a4mr27574edi.4.1691545841921; Tue, 08 Aug
+ 2023 18:50:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: aMS9kBfAJ2wyCJsNNNhyOr3AT6b3STXw
-X-Proofpoint-ORIG-GUID: aMS9kBfAJ2wyCJsNNNhyOr3AT6b3STXw
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-08-08_24,2023-08-08_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 adultscore=0
- mlxlogscore=999 spamscore=0 impostorscore=0 suspectscore=0 phishscore=0
- mlxscore=0 lowpriorityscore=0 priorityscore=1501 malwarescore=0
- clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2308090012
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=bgray@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+References: <20230803235502.373-1-gurchetansingh@google.com>
+ <b9dc2c50-00cf-12ae-d1c9-cb31d089a24d@redhat.com>
+In-Reply-To: <b9dc2c50-00cf-12ae-d1c9-cb31d089a24d@redhat.com>
+From: Gurchetan Singh <gurchetansingh@chromium.org>
+Date: Tue, 8 Aug 2023 18:50:29 -0700
+X-Gmail-Original-Message-ID: <CAAfnVB=wVMy9zUF+-MYZpH=j3cv9-qHz9-4xOjkFhoour89asg@mail.gmail.com>
+Message-ID: <CAAfnVB=wVMy9zUF+-MYZpH=j3cv9-qHz9-4xOjkFhoour89asg@mail.gmail.com>
+Subject: Re: [PATCH v3 0/9] gfxstream + rutabaga_gfx
+To: Erico Nunes <ernunes@redhat.com>
+Cc: qemu-devel@nongnu.org, kraxel@redhat.com, marcandre.lureau@redhat.com, 
+ akihiko.odaki@gmail.com, dmitry.osipenko@collabora.com, ray.huang@amd.com, 
+ alex.bennee@linaro.org, shentey@gmail.com, hi@alyssa.is
+Content-Type: multipart/alternative; boundary="000000000000080539060273b5a0"
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=gurchetansingh@chromium.org; helo=mail-ed1-x531.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,77 +97,195 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Each DEXCR aspect is allocated a bit in the device tree, using the
-68--71 byte range (inclusive). The functionality of the
-[P]HASHST/[P]HASHCHK instructions is separately declared in byte 72,
-bit 0 (BE).
+--000000000000080539060273b5a0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-QEMU supports these features (though the speculation aspects are just
-tracked, they don't do anything), so declare this in the device tree.
+On Mon, Aug 7, 2023 at 7:24=E2=80=AFAM Erico Nunes <ernunes@redhat.com> wro=
+te:
 
-Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
+> Hello,
+>
+> On 04/08/2023 01:54, Gurchetan Singh wrote:
+> > Prior versions:
+> >
+> > https://lists.gnu.org/archive/html/qemu-devel/2023-07/msg05801.html
+> >
+> > https://lists.gnu.org/archive/html/qemu-devel/2023-07/msg02341.html
+> >
+> >
+> https://patchew.org/QEMU/20230421011223.718-1-gurchetansingh@chromium.org=
+/
+> >
+> > Changes since v2:
+> > - Incorporated review feedback
+> >
+> > How to build both rutabaga and gfxstream guest/host libs:
+> >
+> > https://crosvm.dev/book/appendix/rutabaga_gfx.html
+> >
+> > Branch containing this patch series:
+> >
+> >
+> https://gitlab.freedesktop.org/gurchetansingh/qemu-gfxstream/-/commits/qe=
+mu-gfxstream-v3
+>
+> I tried this on Fedora with a Fedora guest and I was able to get Vulkan
+> headless applications as well as Wayland proxy with sommelier to work.
+> If you don't mind, I have a few questions.
+> I was not able to run Vulkan applications over the Wayland proxy, only
+> unaccelerated apps. This seems to be unsupported yet; is actually
+> unsupported for now or was something missing in my setup?
+>
 
----
+Yes, currently this is unsupported.  In the near future, I do imagine 3D
+accelerated rendering over cross-domain to be a thing (among many context
+types, not just gfxstream VK).
 
-The current design appears to duplicate the previous block and add the
-new features after it. I copied that for the 3.10 features, but not sure
-how well this scales, so alternatives welcome.
----
- hw/ppc/spapr.c | 33 +++++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
+Re: using gfxstream VK in Linux distros, depends on your use case.  If you
+are looking for best performance over virtio on open-source Linux
+platforms, perhaps gfxstream Vulkan (or any API virtualization solution) is
+not your best bet.  The Mesa native context work looks particularly
+exciting there:
 
-diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index 1c8b8d57a7..df76d2dc12 100644
---- a/hw/ppc/spapr.c
-+++ b/hw/ppc/spapr.c
-@@ -244,6 +244,35 @@ static void spapr_dt_pa_features(SpaprMachineState *spapr,
-         /* 60: NM atomic, 62: RNG */
-         0x80, 0x00, 0x80, 0x00, 0x00, 0x00, /* 60 - 65 */
-     };
-+    uint8_t pa_features_310[] = { 74, 0,
-+        /* 0: MMU|FPU|SLB|RUN|DABR|NX, 1: fri[nzpm]|DABRX|SPRG3|SLB0|PP110 */
-+        /* 2: VPM|DS205|PPR|DS202|DS206, 3: LSD|URG, SSO, 5: LE|CFAR|EB|LSQ */
-+        0xf6, 0x1f, 0xc7, 0xc0, 0x80, 0xf0, /* 0 - 5 */
-+        /* 6: DS207 */
-+        0x80, 0x00, 0x00, 0x00, 0x00, 0x00, /* 6 - 11 */
-+        /* 16: Vector */
-+        0x00, 0x00, 0x00, 0x00, 0x80, 0x00, /* 12 - 17 */
-+        /* 18: Vec. Scalar, 20: Vec. XOR, 22: HTM */
-+        0x80, 0x00, 0x80, 0x00, 0x00, 0x00, /* 18 - 23 */
-+        /* 24: Ext. Dec, 26: 64 bit ftrs, 28: PM ftrs */
-+        0x80, 0x00, 0x80, 0x00, 0x80, 0x00, /* 24 - 29 */
-+        /* 30: MMR, 32: LE atomic, 34: EBB + ext EBB */
-+        0x80, 0x00, 0x80, 0x00, 0xC0, 0x00, /* 30 - 35 */
-+        /* 36: SPR SO, 38: Copy/Paste, 40: Radix MMU */
-+        0x80, 0x00, 0x80, 0x00, 0x80, 0x00, /* 36 - 41 */
-+        /* 42: PM, 44: PC RA, 46: SC vec'd */
-+        0x80, 0x00, 0x80, 0x00, 0x80, 0x00, /* 42 - 47 */
-+        /* 48: SIMD, 50: QP BFP, 52: String */
-+        0x80, 0x00, 0x80, 0x00, 0x80, 0x00, /* 48 - 53 */
-+        /* 54: DecFP, 56: DecI, 58: SHA */
-+        0x80, 0x00, 0x80, 0x00, 0x80, 0x00, /* 54 - 59 */
-+        /* 60: NM atomic, 62: RNG */
-+        0x80, 0x00, 0x80, 0x00, 0x00, 0x00, /* 60 - 65 */
-+        /* 68: DEXCR */
-+        0x00, 0x00, 0x9E, 0x00, 0x00, 0x00, /* 66 - 71 */
-+        /* 72: [P]HASHCHK */
-+        0x80, 0x00,                         /* 72 - 73 */
-+    };
-     uint8_t *pa_features = NULL;
-     size_t pa_size;
- 
-@@ -259,6 +288,10 @@ static void spapr_dt_pa_features(SpaprMachineState *spapr,
-         pa_features = pa_features_300;
-         pa_size = sizeof(pa_features_300);
-     }
-+    if (ppc_check_compat(cpu, CPU_POWERPC_LOGICAL_3_10, 0, cpu->compat_pvr)) {
-+        pa_features = pa_features_310;
-+        pa_size = sizeof(pa_features_310);
-+    }
-     if (!pa_features) {
-         return;
-     }
--- 
-2.41.0
+https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/21658
 
+We are interested in running gfxstream VK in Linux guests, but we envisage
+that for reference and testing.  For all embedded use cases, using the host
+driver in the guest will predominate due to performance considerations
+(either through virtio or HW direct / mediated passthru).
+
+Also apparently GL/GLES is only supported on Android right now as you
+> mentioned, since on Linux the gfxstream guest only installs the Vulkan
+> library and icd. What is the plan to support GL on Linux; provide
+> gfxstream GL guest libraries later or enable Zink or some other solution?
+> Then if I understand correctly, Mesa virgl is not used at all with the
+> gfxstream solution, so I guess we would need to find a way to ship the
+> gfxstream guest libraries too on distributions?
+
+
+
+Also I wonder about including all of the the dependencies required to
+> get this to build on distributions as well to enable the feature on
+> distribution-provided qemu, but I guess we can figure this out later...
+>
+> And finally out of curiosity, I see that rutabaga also has a
+> virgl_renderer (and virgl_renderer_next) backend which would then not
+> use gfxstream but virglrenderer instead. I wonder if there would be any
+> benefit/features in enabling that with qemu later compared to the
+> current qemu virtio/virglrenderer implementation (if that would make
+> sense at all)?
+>
+
+Yeah, maybe later if there's developer interest,  rutabaga FFI can build
+its virglrenderer bindings in a subsequent release.  So far I don't have
+time to test, and the most important use case is gfxstream + Android for
+Emulator.  As ever, patches are welcome.
+
+Thanks
+>
+> Erico
+>
+>
+
+--000000000000080539060273b5a0
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Mon, Aug 7, 2023 at 7:24=E2=80=AFA=
+M Erico Nunes &lt;<a href=3D"mailto:ernunes@redhat.com">ernunes@redhat.com<=
+/a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0=
+px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">H=
+ello,<br>
+<br>
+On 04/08/2023 01:54, Gurchetan Singh wrote:<br>
+&gt; Prior versions:<br>
+&gt; <br>
+&gt; <a href=3D"https://lists.gnu.org/archive/html/qemu-devel/2023-07/msg05=
+801.html" rel=3D"noreferrer" target=3D"_blank">https://lists.gnu.org/archiv=
+e/html/qemu-devel/2023-07/msg05801.html</a><br>
+&gt; <br>
+&gt; <a href=3D"https://lists.gnu.org/archive/html/qemu-devel/2023-07/msg02=
+341.html" rel=3D"noreferrer" target=3D"_blank">https://lists.gnu.org/archiv=
+e/html/qemu-devel/2023-07/msg02341.html</a><br>
+&gt; <br>
+&gt; <a href=3D"https://patchew.org/QEMU/20230421011223.718-1-gurchetansing=
+h@chromium.org/" rel=3D"noreferrer" target=3D"_blank">https://patchew.org/Q=
+EMU/20230421011223.718-1-gurchetansingh@chromium.org/</a><br>
+&gt; <br>
+&gt; Changes since v2:<br>
+&gt; - Incorporated review feedback<br>
+&gt; <br>
+&gt; How to build both rutabaga and gfxstream guest/host libs:<br>
+&gt; <br>
+&gt; <a href=3D"https://crosvm.dev/book/appendix/rutabaga_gfx.html" rel=3D"=
+noreferrer" target=3D"_blank">https://crosvm.dev/book/appendix/rutabaga_gfx=
+.html</a><br>
+&gt; <br>
+&gt; Branch containing this patch series:<br>
+&gt; <br>
+&gt; <a href=3D"https://gitlab.freedesktop.org/gurchetansingh/qemu-gfxstrea=
+m/-/commits/qemu-gfxstream-v3" rel=3D"noreferrer" target=3D"_blank">https:/=
+/gitlab.freedesktop.org/gurchetansingh/qemu-gfxstream/-/commits/qemu-gfxstr=
+eam-v3</a><br>
+<br>
+I tried this on Fedora with a Fedora guest and I was able to get Vulkan<br>
+headless applications as well as Wayland proxy with sommelier to work.<br>
+If you don&#39;t mind, I have a few questions.<br>
+I was not able to run Vulkan applications over the Wayland proxy, only<br>
+unaccelerated apps. This seems to be unsupported yet; is actually<br>
+unsupported for now or was something missing in my setup?<br></blockquote><=
+div><br></div><div>Yes, currently this is unsupported.=C2=A0 In the near fu=
+ture, I do imagine 3D accelerated rendering over cross-domain to be a thing=
+ (among many context types, not just gfxstream VK).=C2=A0=C2=A0</div><div><=
+br></div>Re: using gfxstream VK in Linux distros,=C2=A0depends on your use =
+case.=C2=A0 If you are looking for best performance over virtio on open-sou=
+rce Linux platforms, perhaps gfxstream Vulkan (or any API virtualization so=
+lution) is not your best bet.=C2=A0 The Mesa native context work looks part=
+icularly exciting there:<br><br><a href=3D"https://gitlab.freedesktop.org/m=
+esa/mesa/-/merge_requests/21658">https://gitlab.freedesktop.org/mesa/mesa/-=
+/merge_requests/21658</a>=C2=A0=C2=A0</div><div class=3D"gmail_quote"><br><=
+/div><div class=3D"gmail_quote">We are interested in running gfxstream VK i=
+n Linux guests, but we envisage that for reference and testing.=C2=A0 For a=
+ll embedded use cases, using the host driver in the guest will predominate =
+due to performance considerations (either through virtio or HW direct / med=
+iated passthru).=C2=A0 =C2=A0=C2=A0<br><div><br></div><blockquote class=3D"=
+gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(20=
+4,204,204);padding-left:1ex">
+Also apparently GL/GLES is only supported on Android right now as you<br>
+mentioned, since on Linux the gfxstream guest only installs the Vulkan<br>
+library and icd. What is the plan to support GL on Linux; provide<br>
+gfxstream GL guest libraries later or enable Zink or some other solution?<b=
+r>
+Then if I understand correctly, Mesa virgl is not used at all with the<br>
+gfxstream solution, so I guess we would need to find a way to ship the<br>
+gfxstream guest libraries too on distributions?=C2=A0=C2=A0</blockquote><bl=
+ockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-lef=
+t:1px solid rgb(204,204,204);padding-left:1ex">=C2=A0</blockquote><blockquo=
+te class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px =
+solid rgb(204,204,204);padding-left:1ex">
+Also I wonder about including all of the the dependencies required to<br>
+get this to build on distributions as well to enable the feature on<br>
+distribution-provided qemu, but I guess we can figure this out later...<br>
+<br>
+And finally out of curiosity, I see that rutabaga also has a<br>
+virgl_renderer (and virgl_renderer_next) backend which would then not<br>
+use gfxstream but virglrenderer instead. I wonder if there would be any<br>
+benefit/features in enabling that with qemu later compared to the<br>
+current qemu virtio/virglrenderer implementation (if that would make<br>
+sense at all)?<br></blockquote><div><br></div><div>Yeah, maybe later if the=
+re&#39;s developer interest,=C2=A0 rutabaga FFI can build its virglrenderer=
+ bindings in a subsequent release.=C2=A0 So far I don&#39;t have time to te=
+st, and the most=C2=A0important use case is gfxstream + Android for Emulato=
+r.=C2=A0 As ever, patches are welcome.=C2=A0 =C2=A0 =C2=A0</div><div><br></=
+div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;bor=
+der-left:1px solid rgb(204,204,204);padding-left:1ex">
+Thanks<br>
+<br>
+Erico<br>
+<br>
+</blockquote></div></div>
+
+--000000000000080539060273b5a0--
 
