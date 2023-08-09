@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AD44775C0D
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 13:23:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7216775C2F
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 13:24:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qThGp-0007E8-Un; Wed, 09 Aug 2023 07:22:31 -0400
+	id 1qThIj-0008I5-Cz; Wed, 09 Aug 2023 07:24:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qThGk-0007Dm-R0; Wed, 09 Aug 2023 07:22:26 -0400
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ id 1qThId-0008He-02; Wed, 09 Aug 2023 07:24:23 -0400
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qThGb-0002OW-KR; Wed, 09 Aug 2023 07:22:26 -0400
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-1bba54f7eefso5716975ad.1; 
- Wed, 09 Aug 2023 04:22:02 -0700 (PDT)
+ id 1qThIb-0002ky-FX; Wed, 09 Aug 2023 07:24:22 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-686ed1d2594so6369194b3a.2; 
+ Wed, 09 Aug 2023 04:24:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1691580122; x=1692184922;
+ d=gmail.com; s=20221208; t=1691580259; x=1692185059;
  h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LfXWr4a88ZK7CzyVYwzU146Xz+2/v1Q7AUDoy9HG2gg=;
- b=kdvAhHgYlYn8ZjSMHnnClVGV32cqAYnUID3XINkAr+l0xb+nqEgJYdvn09d/DVPZbg
- HZ6n/ugAQaEpdFFD3HovDCCtETBMxiVa6D1XwW93rg3jxhSGJbvy97KY0t/F6BpSSt4r
- MJHQfSBrYEGD+J75XDkozN+gv4v316vqRSASsNoOwZOK5z9v1FMXzP1H7RDckrce6M2k
- OdHwad6P8v4PedHBOBaqoOSd90HyeqscWSKzbWl6arfTkHh+lu9vSYt3j5UfTJe96Y/E
- DtkCbiwFIjr2Ld/c+4m5BLS9d+1HJ86UgL4iSFS/Xy/p5a2N6oPvGughdlckRVbeKr+R
- q5Wg==
+ bh=HJp/5OHFBfZLnaM74CzAWAR7M9SwTyhjIAxC1QSKtbw=;
+ b=NLGaBEFyaPMy8wWpIowOs18fpgPC/OWNef1lOIE8HgVKX1IpIHlNTziyRDAvqO/Qo7
+ m+DeTBTf5JqiwAbCv0omhj1dGEkt756QmyhdNuwFvdrXADiwaMZ77VJVMK6zuBJFUOMZ
+ 25YMiGNBgVaYaR017PRDmYeWmPLRpSZh3RENqoZnZ/614IcsV/etljlMvpXzXo8vPyZ8
+ XRFS/vZosPavutTfBv4awEElVixg05P4W7S+kmNHLoXcClw49Y0OigqRZ1Zseu7L24rG
+ QAQJDQ9UxdvjNIfpZS1UMugJrY8YjPxwaWxE1dLA1BQmPnwuEmPBpHrUFAMz9wr6eepk
+ PouQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691580122; x=1692184922;
+ d=1e100.net; s=20221208; t=1691580259; x=1692185059;
  h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=LfXWr4a88ZK7CzyVYwzU146Xz+2/v1Q7AUDoy9HG2gg=;
- b=RNS4AHH3Ug5TIEB4+Aj8Lu1ThexMe/dVhwHCy/EM1sI3dRiYEIYuG4vzFxSNUaRbaN
- 4PXJ/Iz5FGpUAjlUiLQNsRIuN2AoYCkDir+4J7j82gDrLu+IifD2QFnyIGD4hFgUWYlt
- JZhW3Fsrhh+tPGWgmm6lPQy8fMU4uDGKDY7FGeV6GLx+fsY1417cmgYzdykuBFHDwKeY
- X+6hiiZ6x3toWhECwwAqopFO1WGXFC/NERW8CFjPEDcSbDl407/p0+HsCVfjiM+T9Ro7
- L9JQ6sP6WMHRvt05MViEe4FejFg+jxMIwFc74RO+652nSvd0/HYqvAdBhJD4wLX9jLvT
- W0Gw==
-X-Gm-Message-State: AOJu0YzUdFIKoeYZG/gwM+jLoYw2SUbfZP8CUrGb0yXjsIu9ZBoq8uLn
- +QsL3u3aq4fPoe0tBQY4N/c=
-X-Google-Smtp-Source: AGHT+IGK5PXkEjZdbgs5Ku3En5+6HL8k6sCVssBBFVH3Diq9xbT3gznm1x/WSUOKSmmTss68rjZwIg==
-X-Received: by 2002:a17:902:c781:b0:1b9:c61c:4c01 with SMTP id
- w1-20020a170902c78100b001b9c61c4c01mr12974494pla.9.1691580121884; 
- Wed, 09 Aug 2023 04:22:01 -0700 (PDT)
+ bh=HJp/5OHFBfZLnaM74CzAWAR7M9SwTyhjIAxC1QSKtbw=;
+ b=b25k/8wLLnV2K2FadP5Rdkym9ER9o1XjEXGaTNFALqQoYzQ48Vzn6coSPfCO37neQv
+ 1Ldk/HvRVtrUS+2H1bnh+jbW6jkIN+0/HcESwCTNYpe+5LAoBwnozVFdSEryOjVdov71
+ zHyM7cfHkMcoLuzh8jcY3A2MM3zm2YQtQCFNeRYE7wA1BRtyCF4MNlqrNmjVh2+EAz4L
+ 1lPGdUNwBMNEMWZWxqT1ftUt/7PdCLrdHrWVK5ZUf1TTkgtDN/VAxep5kLZ4dJeTKKCl
+ g57REwF0fPmE+lDliECR5rgV+cM6nSVTsS+WsoF3Pa4x2U2T4iWERW7mJk/7EMv6oIDA
+ gMrQ==
+X-Gm-Message-State: AOJu0YxhPhbWX/5achevGXmpIHBg4yWf062shq201YsOb/WTN6DuhPQS
+ gKjw7OA7RtN+wjrmnp9kkv+FIt+AmZA=
+X-Google-Smtp-Source: AGHT+IHP0Xr/ocS6oJbdL0aokzf0XIi0FdFKFdAaMgAFK6mETz+NgpGqEOREegh9/e7gYwI7faK6fg==
+X-Received: by 2002:a05:6a20:d5:b0:137:74f8:62ee with SMTP id
+ 21-20020a056a2000d500b0013774f862eemr2333454pzh.18.1691580258936; 
+ Wed, 09 Aug 2023 04:24:18 -0700 (PDT)
 Received: from localhost (61-68-137-140.tpgi.com.au. [61.68.137.140])
  by smtp.gmail.com with ESMTPSA id
- iy15-20020a170903130f00b001bbb1eec92esm10907406plb.281.2023.08.09.04.21.59
+ bm2-20020a056a00320200b00682a8e600f0sm9813364pfb.35.2023.08.09.04.24.16
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 09 Aug 2023 04:22:01 -0700 (PDT)
+ Wed, 09 Aug 2023 04:24:18 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 09 Aug 2023 21:21:53 +1000
-Message-Id: <CUNZ3S3QUQ4V.OQZZMUYGOQO8@wheely>
+Date: Wed, 09 Aug 2023 21:24:14 +1000
+Message-Id: <CUNZ5KZ50C7Q.B6VB3EOMEFH1@wheely>
 Cc: <jniethe5@gmail.com>, <qemu-ppc@nongnu.org>
-Subject: Re: [PATCH v2 6/7] tcg/ppc: Disable USE_REG_TB for Power v3.1
+Subject: Re: [PATCH v2 7/7] tcg/ppc: Use prefixed instructions for
+ tcg_out_goto_tb
 From: "Nicholas Piggin" <npiggin@gmail.com>
 To: "Richard Henderson" <richard.henderson@linaro.org>, <qemu-devel@nongnu.org>
 X-Mailer: aerc 0.15.2
 References: <20230808030250.50602-1-richard.henderson@linaro.org>
- <20230808030250.50602-7-richard.henderson@linaro.org>
-In-Reply-To: <20230808030250.50602-7-richard.henderson@linaro.org>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x62a.google.com
+ <20230808030250.50602-8-richard.henderson@linaro.org>
+In-Reply-To: <20230808030250.50602-8-richard.henderson@linaro.org>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,29 +93,79 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On Tue Aug 8, 2023 at 1:02 PM AEST, Richard Henderson wrote:
-> With Power v3.1, we have pc-relative addressing and so
-> do not require a register holding the current TB.
+> When a direct branch is out of range, we can load the destination for
+> the indirect branch using PLA (for 16GB worth of buffer) and PLD from
+> the TranslationBlock for everything larger.
+>
+> This means the patch affects exactly one instruction: B (plus filler),
+> PLA or PLD.  Which means we can update and execute the patch atomically.
 >
 
-Acked-by: Nicholas Piggin <npiggin@gmail.com>
+Aside from changelog that Jordan pointed out,
+
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->  tcg/ppc/tcg-target.c.inc | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  tcg/ppc/tcg-target.c.inc | 31 +++++++++++++++++++------------
+>  1 file changed, 19 insertions(+), 12 deletions(-)
 >
 > diff --git a/tcg/ppc/tcg-target.c.inc b/tcg/ppc/tcg-target.c.inc
-> index 01ca5c9f39..63fe4ef995 100644
+> index 63fe4ef995..b686a68247 100644
 > --- a/tcg/ppc/tcg-target.c.inc
 > +++ b/tcg/ppc/tcg-target.c.inc
-> @@ -83,7 +83,7 @@
->  #define TCG_VEC_TMP2    TCG_REG_V1
+> @@ -2646,31 +2646,38 @@ static void tcg_out_goto_tb(TCGContext *s, int wh=
+ich)
+>      uintptr_t ptr =3D get_jmp_target_addr(s, which);
 > =20
->  #define TCG_REG_TB     TCG_REG_R31
-> -#define USE_REG_TB     (TCG_TARGET_REG_BITS =3D=3D 64)
-> +#define USE_REG_TB     (TCG_TARGET_REG_BITS =3D=3D 64 && !have_isa_3_10)
+>      if (USE_REG_TB) {
+> +        /*
+> +         * With REG_TB, we must always use indirect branching,
+> +         * so that the branch destination and TCG_REG_TB match.
+> +         */
+>          ptrdiff_t offset =3D tcg_tbrel_diff(s, (void *)ptr);
+>          tcg_out_mem_long(s, LD, LDX, TCG_REG_TB, TCG_REG_TB, offset);
+> -   =20
+> -        /* TODO: Use direct branches when possible. */
+> -        set_jmp_insn_offset(s, which);
+>          tcg_out32(s, MTSPR | RS(TCG_REG_TB) | CTR);
+> -
+>          tcg_out32(s, BCCTR | BO_ALWAYS);
 > =20
->  /* Shorthand for size of a pointer.  Avoid promotion to unsigned.  */
->  #define SZP  ((int)sizeof(void *))
+>          /* For the unlinked case, need to reset TCG_REG_TB.  */
+>          set_jmp_reset_offset(s, which);
+>          tcg_out_mem_long(s, ADDI, ADD, TCG_REG_TB, TCG_REG_TB,
+>                           -tcg_current_code_size(s));
+> -    } else {
+> -        /* Direct branch will be patched by tb_target_set_jmp_target. */
+> -        set_jmp_insn_offset(s, which);
+> -        tcg_out32(s, NOP);
+> +        return;
+> +    }
+> =20
+> -        /* When branch is out of range, fall through to indirect. */
+> +    /* Direct branch will be patched by tb_target_set_jmp_target. */
+> +    set_jmp_insn_offset(s, which);
+> +    tcg_out32(s, NOP);
+> +
+> +    /* When branch is out of range, fall through to indirect. */
+> +    if (have_isa_3_10) {
+> +        ptrdiff_t offset =3D tcg_pcrel_diff_for_prefix(s, (void *)ptr);
+> +        tcg_out_8ls_d(s, PLD, TCG_REG_TMP1, 0, offset, 1);
+> +    } else {
+>          tcg_out_movi(s, TCG_TYPE_PTR, TCG_REG_TMP1, ptr - (int16_t)ptr);
+>          tcg_out_ld(s, TCG_TYPE_PTR, TCG_REG_TMP1, TCG_REG_TMP1, (int16_t=
+)ptr);
+> -        tcg_out32(s, MTSPR | RS(TCG_REG_TMP1) | CTR);
+> -        tcg_out32(s, BCCTR | BO_ALWAYS);
+> -        set_jmp_reset_offset(s, which);
+>      }
+> +
+> +    tcg_out32(s, MTSPR | RS(TCG_REG_TMP1) | CTR);
+> +    tcg_out32(s, BCCTR | BO_ALWAYS);
+> +    set_jmp_reset_offset(s, which);
+>  }
+> =20
+>  void tb_target_set_jmp_target(const TranslationBlock *tb, int n,
 
 
