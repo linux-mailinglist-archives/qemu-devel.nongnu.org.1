@@ -2,83 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 510FA774F94
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 01:53:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DAEC774FB0
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 02:05:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTWVd-00039q-Gu; Tue, 08 Aug 2023 19:53:05 -0400
+	id 1qTWgE-0005iN-6H; Tue, 08 Aug 2023 20:04:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTWVb-0002wh-0m
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 19:53:03 -0400
-Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
+ id 1qTWgD-0005iF-29
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 20:04:01 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTWVZ-0000ow-Fx
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 19:53:02 -0400
-Received: by mail-pg1-x536.google.com with SMTP id
- 41be03b00d2f7-564d6aa9abdso268696a12.1
- for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 16:53:01 -0700 (PDT)
+ id 1qTWgB-0002W3-Bh
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 20:04:00 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-686f8614ce5so6171638b3a.3
+ for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 17:03:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691538780; x=1692143580;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=linaro.org; s=google; t=1691539437; x=1692144237;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=NroxWFCBOz+Ul+yt8wKSwhGFkFspsFyllf4amsJ18Qw=;
- b=hZ9rdIFnodJd0sY42dk5G5C1BFXjrCuRHe3hd7cCFkqLkSqPie9HKixakF/xm0XxBQ
- R898M8mqLKJdk509a2+7VEZFrCEW53LVO5ktmE5z+y3P2/iHY74qU0Yr3uq/o872OfsC
- 4VPlr/IvgP528uiUIGsVeiVtq/uFo4qcmkLNpH0p/Ozk7MMPdiHof/s6U4cRafNi1HkI
- zaoPicCm8fPPlno2kdCLSse6g2Gu9gbWOLziAcBRnygcYOGdus8AC81NSXtISI1KOT+y
- +H2v7tMASxO+etw4OuxXz67+rf7Kka0/vpUFEmuIkIgfDboN7lUlmOrPQIjzzzTkgfii
- aTJg==
+ bh=RA2y+GwOqnY3JuI7mIPdxzQhJfjYR+5p4SJ6Z1vE04A=;
+ b=zEwzycZxW8bDV9eMrnlEB88xpD7RJHC2mjPqIESBRlZiKnkWxWj25wQxixDWE2BECf
+ ZBHUrbIhMnp+prGAY0qvaE6LBeZ6u1haet5SupAlygZHKq3lHN2q+i2/y/SrSZNGtdm+
+ zovSSkwqv9uftFsZcV2996cYyW90DKod/j6Rt8SEsMq6eg8vyqZZ9k5MZQSRtboJ1eTo
+ rAFhkXzf+sT0Xb3kx3EJZvt5Nudh5VJ21hF4d1xRVuvtUTmylvAAU4R0svBCWtNtu520
+ btqi3GoywnCOlPQ/vxcuSR5fRPsDjlwU39mngXQC356SC1m5mDr1O+htJp5SZqk6FDAX
+ phfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691538780; x=1692143580;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20221208; t=1691539437; x=1692144237;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=NroxWFCBOz+Ul+yt8wKSwhGFkFspsFyllf4amsJ18Qw=;
- b=Ptq7fu7eH8QEAybdA6Im5ri8mjbqu7osfcAR3BKI4WqZkovllBYp6WA7CNCMfL8bj/
- N7Qa4I8u5/OLSX1OTWOICapAN4NY85W2++a5O57kCnbE21JkB2D/5qpqbC8UYgGB1bDU
- y9yCI1mm/fMeaJixWRn4QbDAALtwcwmyCp4RKkwsbYC+eRC52a7rMDTSr0swMa8b3Irf
- KqfkCsstCkFBZryFoPn3YG+SkDeBO3diP32F6vPNO8b2mrrpFOEcO6Ff2TG073Hz5Qs2
- /HKMBsyl+kRyKbHO6dTdK28LqeVmZqmU1FokLNqQTO+nW8xQ+CJKPfIeJ/bDuo6Bbx2p
- o5Og==
-X-Gm-Message-State: AOJu0Yyb5kTE/r0pKbKy6IYvlvz/onRZzdjk0gTHL5v2myNqzcoiOikf
- tUeLkK+QXs6MgvPDx9BT7W+uJw==
-X-Google-Smtp-Source: AGHT+IEoeKvaZYcQRqnhU5PrzM0L6yG7HyAHw8R0hfT7K+JhUFhJ85AhTSbgIpj3kw3733AqH2vaBw==
-X-Received: by 2002:a17:90b:1b46:b0:268:808:8e82 with SMTP id
- nv6-20020a17090b1b4600b0026808088e82mr1604928pjb.1.1691538780006; 
- Tue, 08 Aug 2023 16:53:00 -0700 (PDT)
+ bh=RA2y+GwOqnY3JuI7mIPdxzQhJfjYR+5p4SJ6Z1vE04A=;
+ b=BaOI7Kx4lR81Wo8h09474RTXTbTrfphCF01hhVvHV0qeRfFf7qTLviAUjxUrGMkoy/
+ umRIv+vGpHwgX3rNmuc/0bAs7jOiQG3gWsaVDvKQRzH2rpdI7actktwe3B9WqHrriVDl
+ 8ZxHhP6QAQF+AOdk9C2ba+Fb+oqYeTzLVG+B0RhOYWGkApKGC+1uxJVJ63sbMvO/za+A
+ lc//Wd3UdRLZkM/+Ugl/LHIP8SXmTjQ4GDBQXyN8F7GaUZZM3+OOsXtE04HSqHaGkJ63
+ 881g8SWMYvsZfrBG4mDu2b0IgHV7ll5NX924IvPH/YBYAswIHP6+H2yl4vzFgyYalkq/
+ 8IYA==
+X-Gm-Message-State: AOJu0YygVwSpc8Du3Ll7E8EsNvEgl1oLqZDG8zNXUUJLoJEll0EmfquJ
+ 2T+jO32pcps0YrlKiX48/akvvt8GgeNO+Jt1VhY=
+X-Google-Smtp-Source: AGHT+IGuwuBd6RijE+rQIbYaYpH2ZTdYkcoh/Z5OF6n74kmS2MX45HsGMKK0xTodEgVBhXA5PSGdpQ==
+X-Received: by 2002:a05:6a00:190e:b0:687:2be1:e2f6 with SMTP id
+ y14-20020a056a00190e00b006872be1e2f6mr1355484pfi.16.1691539437652; 
+ Tue, 08 Aug 2023 17:03:57 -0700 (PDT)
 Received: from ?IPV6:2602:47:d490:6901:63dc:2a47:f4bc:4a95?
  ([2602:47:d490:6901:63dc:2a47:f4bc:4a95])
  by smtp.gmail.com with ESMTPSA id
- w22-20020a17090a029600b002639c4f81cesm120737pja.3.2023.08.08.16.52.59
+ y9-20020aa78049000000b00640dbbd7830sm8929708pfm.18.2023.08.08.17.03.56
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 08 Aug 2023 16:52:59 -0700 (PDT)
-Message-ID: <6ffc52a2-446f-e963-4307-9d57225686ae@linaro.org>
-Date: Tue, 8 Aug 2023 16:52:57 -0700
+ Tue, 08 Aug 2023 17:03:57 -0700 (PDT)
+Message-ID: <e871da82-dcaf-b7da-d299-99e8911d1e9b@linaro.org>
+Date: Tue, 8 Aug 2023 17:03:55 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH v2 4/9] target: Use vaddr for
- hvf_arch_[insert|remove]_hw_breakpoint
+Subject: Re: [PATCH 0/9] Replace remaining target_ulong in system-mode accel
 Content-Language: en-US
 To: Anton Johansson <anjo@rev.ng>, qemu-devel@nongnu.org
-Cc: ale@rev.ng, pbonzini@redhat.com, philmd@linaro.org, agraf@csgraf.de,
- dirty@apple.com, rbolshakov@ddn.com, anielhb413@gmail.com,
- pasic@linux.ibm.com, borntraeger@linux.ibm.com, palmer@dabbelt.com,
- alistair.francis@wdc.com, bin.meng@windriver.com,
- ysato@users.sourceforge.jp, peter.maydell@linaro.org
 References: <20230807155706.9580-1-anjo@rev.ng>
- <20230807155706.9580-5-anjo@rev.ng>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230807155706.9580-5-anjo@rev.ng>
+In-Reply-To: <20230807155706.9580-1-anjo@rev.ng>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x536.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -61
 X-Spam_score: -6.2
 X-Spam_bar: ------
@@ -101,20 +94,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/7/23 08:57, Anton Johansson wrote:
-> Changes the signature of the target-defined functions for
-> inserting/removing hvf hw breakpoints. The address and length arguments
-> are now of vaddr type, which both matches the type used internally in
-> accel/hvf/hvf-all.c and makes the api target-agnostic.
+On 8/7/23 08:56, Anton Johansson wrote:
+> This patchset replaces the remaining uses of target_ulong in the accel/
+> directory.  Specifically, the address type of a few kvm/hvf functions
+> is widened to vaddr, and the address type of the cpu_[st|ld]*()
+> functions is changed to abi_ptr (which is re-typedef'd to vaddr in
+> system mode).
 > 
-> Signed-off-by: Anton Johansson<anjo@rev.ng>
-> ---
->   include/sysemu/hvf.h  | 6 ++----
->   target/arm/hvf/hvf.c  | 4 ++--
->   target/i386/hvf/hvf.c | 4 ++--
->   3 files changed, 6 insertions(+), 8 deletions(-)
+> As a starting point, my goal is to be able to build cputlb.c once for
+> system mode, and this is a step in that direction by reducing the
+> target-dependence of accel/.
+> 
+> * Changes in v2:
+>      - Removed explicit target_ulong casts from 3rd and 4th patches.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Queued to for 8.2.
+
 
 r~
 
