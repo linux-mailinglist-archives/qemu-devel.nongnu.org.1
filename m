@@ -2,84 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 348307750FA
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 04:39:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95A43775100
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 04:42:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTZ56-0001Ee-Tp; Tue, 08 Aug 2023 22:37:52 -0400
+	id 1qTZ8w-0002YY-A2; Tue, 08 Aug 2023 22:41:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qTZ54-0001ER-3D
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 22:37:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qTZ52-0005VC-7u
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 22:37:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691548667;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=xDVgBZ8fbjeEcw/ZXdaveDgWFwdLNTnrGBRdeWJv+lE=;
- b=BPhfnMlxj0WSownjXn5zp/Nsy3ECMtl4u76ttnOzDnHaOTQwhuv6nkjmDt4m7HyyuuwdjV
- BwVqDSLNsSB/UT1YgUfbTQWkZebyAAPf9b0V3Zp2eNLlPeMRbaA7K8xRUGaoc19IjO/U83
- RcMgsZ/cBPez6hC4k7cmW2QUJm5Xfhg=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-255-oHriHf6sM9OvZKzeRwG9eA-1; Tue, 08 Aug 2023 22:37:45 -0400
-X-MC-Unique: oHriHf6sM9OvZKzeRwG9eA-1
-Received: by mail-lj1-f197.google.com with SMTP id
- 38308e7fff4ca-2b9ba3d6191so61159501fa.2
- for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 19:37:45 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qTZ8t-0002YP-Eu
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 22:41:47 -0400
+Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qTZ8r-00069V-6q
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 22:41:47 -0400
+Received: by mail-ej1-x62e.google.com with SMTP id
+ a640c23a62f3a-99bf1f632b8so937776466b.1
+ for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 19:41:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=bsdimp-com.20221208.gappssmtp.com; s=20221208; t=1691548903; x=1692153703;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=ylr/xKMFtvnpKVvGYtjAT1LyqmrvjhDWsGWvQEBoFhg=;
+ b=lXOlZHxqPH3iKn+1upqSMfAC34AA9XRZTR7dTaCe86euI826efDAN7cOoMFmqcUv0C
+ QLVqzxUz+uFN7mSQo24vjITb7Rv0ZX6lIPOntcRXlsCcM4q6leITovzZN8yLFicEwSvx
+ aLH0KtUiIkjL4sqalLwK11p2fWMYygqWkxdIm+EkUFycvIXtdJwluP0BF37ovHi7d7cs
+ HVnv/mS6baNlA+czIaSf8J3JtJ3c+bGmrOvI+aqB/8Ghcp5XMhedQxdMgWXdGz6XwTjV
+ pFRpJIm5r2K5R6Y1ELZTZLOXMIGxoDYe699TOz7uQ3xABBseCJaWzaTurqw49f9ZUySg
+ 8ZSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691548663; x=1692153463;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=xDVgBZ8fbjeEcw/ZXdaveDgWFwdLNTnrGBRdeWJv+lE=;
- b=dxaNCVr3KhnejzMRG5bHLhXOerXnByvS0OrXJ2D9ZZauG1B+af1Pc3JB3KB3eegxLm
- zN3Em1Oreu4NH5EbifykKEBeFeAv+GoGiVUPqcsrSFt8hfb8q6o5ApR6i0k5bhgRybmN
- CVGm0LuOXa5/tD5uCIafctbfTfmFeg+RUzkE5qR5qSx62aDirV8zVUDk6BiQUW4aGnWE
- DxuJFzVCnmAwogeUUldc1AZA2U1PFG1njZrvVEnB91X8V5LySi3+Bxx7dNVRCuXyttGO
- kvXEt0ZXDAtnlb8rlVjk758X6L7ZrfnEbkbC3nlVtWo4Aw60v6WuTlk202mScrd6mcvR
- MaGg==
-X-Gm-Message-State: AOJu0YzD/+Y5YlEQBAE85l9n4HVaS7Y91ro+hLWbYrneQlj9yJiz68Z+
- d5RZxA2U1a3xWHcOhA16Qgvv9B8FV/PJSOAVuEMQniJjm5xCaEm7001uCzvDxz/czh7nrdCTDCz
- seLOQ0BPtvD0m3Zwwd08iiwkq1ru49LU=
-X-Received: by 2002:a2e:7219:0:b0:2b9:3883:a765 with SMTP id
- n25-20020a2e7219000000b002b93883a765mr873392ljc.31.1691548663311; 
- Tue, 08 Aug 2023 19:37:43 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHC2Ilv0wd8IpVcD/GcGdfV90Vgql4hIzAbvwS8ZCP5Y6XVgohGca3w+qc4DYkocFKE46n+kyGTNfZwLOKcUh4=
-X-Received: by 2002:a2e:7219:0:b0:2b9:3883:a765 with SMTP id
- n25-20020a2e7219000000b002b93883a765mr873381ljc.31.1691548662979; Tue, 08 Aug
- 2023 19:37:42 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1691548903; x=1692153703;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ylr/xKMFtvnpKVvGYtjAT1LyqmrvjhDWsGWvQEBoFhg=;
+ b=MVTEePiJL5fD8gsXIHq3Ri1a06AJRza6oYSBH2zBGQ5Ql899LX/HGE0F06sz406a/U
+ Ypw2B8Tp8+bwE5BMxk6XfsdlHbbSlByYP3Yi2CoUotVGz98RTEj4v8TuvZVsPBlMfqx4
+ txf2fgFL+d/KFG1G4inFMiuRWBg+Ekmr/TXhodrgKL2cUe0Wz8LWx4wG7NFvskI8911Y
+ kdP0udjkvPyTYUsRswlzAPnXeqhnaPP2qXVTEx7grGBa4I/BmAGZgsHQo8KdYAYihqoh
+ 5bV1hKFtgnW4G8nBMPFunKtqJufY93npsRGofvKDwrNTx0q0QfESBWmsX/NrkApDm3wr
+ KbFA==
+X-Gm-Message-State: AOJu0YzY/vyKWz21oXc3gvrVP53yGtja3cQLe+adnFjH27VwzwpWErn4
+ sUipGRHiBfb6DPFV16txYZOwjQOU8EcLP5Y0827uEw==
+X-Google-Smtp-Source: AGHT+IGTQ8HoKO/JobRcp+3ucmTs4+ljo1WJKiXgxiJu+oJtLeV+fBMOsCwfelFM3BYSYmI6CHU5ZkmaVYd5LLNN/Nw=
+X-Received: by 2002:a17:907:7757:b0:991:c9da:70da with SMTP id
+ kx23-20020a170907775700b00991c9da70damr1049307ejc.61.1691548902953; Tue, 08
+ Aug 2023 19:41:42 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230807222847.2837393-1-i.maximets@ovn.org>
-In-Reply-To: <20230807222847.2837393-1-i.maximets@ovn.org>
-From: Jason Wang <jasowang@redhat.com>
-Date: Wed, 9 Aug 2023 10:37:31 +0800
-Message-ID: <CACGkMEs8qVpaJCc=1jUyY_8-NE23fsjQBwSrbAn8n3sjihuv5g@mail.gmail.com>
-Subject: Re: [PATCH] virtio: don't zero out memory region cache for indirect
- descriptors
-To: Ilya Maximets <i.maximets@ovn.org>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
- Stefan Hajnoczi <stefanha@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20230808060815.9001-1-kariem.taha2.7@gmail.com>
+ <20230808060815.9001-4-kariem.taha2.7@gmail.com>
+ <d9caacde-d8ab-2fdc-372a-20988f22267c@linaro.org>
+ <CANCZdfoMCNF-SuBz5Ab=rmeW+1VLbR4mcUvfYqkbuV91rdtyPg@mail.gmail.com>
+ <0a5370ca-ab9e-6a35-ea14-d685e1fa0540@linaro.org>
+In-Reply-To: <0a5370ca-ab9e-6a35-ea14-d685e1fa0540@linaro.org>
+From: Warner Losh <imp@bsdimp.com>
+Date: Tue, 8 Aug 2023 20:41:33 -0600
+Message-ID: <CANCZdfqWsrvhqbGC79Mu=05nmMANwXxb+TrKVi_fQpyk6QpEdw@mail.gmail.com>
+Subject: Re: [PATCH 03/33] Update the definitions of __put_user and __get_user
+ macros
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: Karim Taha <kariem.taha2.7@gmail.com>, qemu-devel@nongnu.org
+Content-Type: multipart/alternative; boundary="0000000000007b29410602746b85"
+Received-SPF: none client-ip=2a00:1450:4864:20::62e;
+ envelope-from=wlosh@bsdimp.com; helo=mail-ej1-x62e.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,185 +86,201 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Aug 8, 2023 at 6:28=E2=80=AFAM Ilya Maximets <i.maximets@ovn.org> w=
-rote:
->
-> Lots of virtio functions that are on a hot path in data transmission
-> are initializing indirect descriptor cache at the point of stack
-> allocation.  It's a 112 byte structure that is getting zeroed out on
-> each call adding unnecessary overhead.  It's going to be correctly
-> initialized later via special init function.  The only reason to
-> actually initialize right away is the ability to safely destruct it.
-> However, we only need to destruct it when it was used, i.e. when a
-> desc_cache points to it.
->
-> Removing these unnecessary stack initializations improves throughput
-> of virtio-net devices in terms of 64B packets per second by 6-14 %
-> depending on the case.  Tested with a proposed af-xdp network backend
-> and a dpdk testpmd application in the guest, but should be beneficial
-> for other virtio devices as well.
->
-> Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
+--0000000000007b29410602746b85
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Acked-by: Jason Wang <jasowang@redhat.com>
+On Tue, Aug 8, 2023 at 7:47=E2=80=AFPM Richard Henderson <
+richard.henderson@linaro.org> wrote:
 
-Btw, we can probably remove MEMORY_REGION_CACHE_INVALID.
-
-Thanks
-
-> ---
->  hw/virtio/virtio.c | 42 +++++++++++++++++++++++++++---------------
->  1 file changed, 27 insertions(+), 15 deletions(-)
+> On 8/8/23 18:39, Warner Losh wrote:
+> >      > +#define __put_user_e(x, hptr, e)
+>             \
+> >      > +    do {
+>             \
+> >      > +        PRAGMA_DISABLE_PACKED_WARNING;
+>             \
+> >      > +        (__builtin_choose_expr(sizeof(*(hptr)) =3D=3D 1, stb_p,
+>            \
+> >      > +        __builtin_choose_expr(sizeof(*(hptr)) =3D=3D 2,
+> stw_##e##_p,            \
+> >      > +        __builtin_choose_expr(sizeof(*(hptr)) =3D=3D 4,
+> stl_##e##_p,            \
+> >      > +        __builtin_choose_expr(sizeof(*(hptr)) =3D=3D 8, stq_##e=
+##_p,
+> abort))))  \
+> >      > +            ((hptr), (x)), (void)0);
+>             \
+> >      > +        PRAGMA_REENABLE_PACKED_WARNING;
+>            \
+> >      > +    } while (0)
+> >      > +
+> >      > +#define __get_user_e(x, hptr, e)
+>             \
+> >      > +    do {
+>             \
+> >      > +        PRAGMA_DISABLE_PACKED_WARNING;
+>             \
+> >      > +        ((x) =3D (typeof(*hptr))(
+>            \
+> >      > +        __builtin_choose_expr(sizeof(*(hptr)) =3D=3D 1, ldub_p,
+>            \
+> >      > +        __builtin_choose_expr(sizeof(*(hptr)) =3D=3D 2,
+> lduw_##e##_p,           \
+> >      > +        __builtin_choose_expr(sizeof(*(hptr)) =3D=3D 4,
+> ldl_##e##_p,            \
+> >      > +        __builtin_choose_expr(sizeof(*(hptr)) =3D=3D 8, ldq_##e=
+##_p,
+> abort))))  \
+> >      > +            (hptr)), (void)0);
+>             \
+> >      > +        PRAGMA_REENABLE_PACKED_WARNING;
+>            \
+> >      > +    } while (0)
+> >
+> >     Hmm.  I guess this works.  The typeof cast in __get_user_e being
+> required when
+> >     sizeof(x) >
+> >     sizeof(*hptr) in order to get the correct extension.
+> >
+> >
+> > This code was copied 100% from the current linux-user :)
 >
-> diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-> index 309038fd46..a65396e616 100644
-> --- a/hw/virtio/virtio.c
-> +++ b/hw/virtio/virtio.c
-> @@ -1071,7 +1071,8 @@ static void virtqueue_split_get_avail_bytes(VirtQue=
-ue *vq,
->      VirtIODevice *vdev =3D vq->vdev;
->      unsigned int idx;
->      unsigned int total_bufs, in_total, out_total;
-> -    MemoryRegionCache indirect_desc_cache =3D MEMORY_REGION_CACHE_INVALI=
-D;
-> +    MemoryRegionCache indirect_desc_cache;
-> +    MemoryRegionCache *desc_cache =3D NULL;
->      int64_t len =3D 0;
->      int rc;
->
-> @@ -1079,7 +1080,6 @@ static void virtqueue_split_get_avail_bytes(VirtQue=
-ue *vq,
->      total_bufs =3D in_total =3D out_total =3D 0;
->
->      while ((rc =3D virtqueue_num_heads(vq, idx)) > 0) {
-> -        MemoryRegionCache *desc_cache =3D &caches->desc;
->          unsigned int num_bufs;
->          VRingDesc desc;
->          unsigned int i;
-> @@ -1091,6 +1091,8 @@ static void virtqueue_split_get_avail_bytes(VirtQue=
-ue *vq,
->              goto err;
->          }
->
-> +        desc_cache =3D &caches->desc;
-> +
->          vring_split_desc_read(vdev, &desc, desc_cache, i);
->
->          if (desc.flags & VRING_DESC_F_INDIRECT) {
-> @@ -1156,7 +1158,9 @@ static void virtqueue_split_get_avail_bytes(VirtQue=
-ue *vq,
->      }
->
->  done:
-> -    address_space_cache_destroy(&indirect_desc_cache);
-> +    if (desc_cache =3D=3D &indirect_desc_cache) {
-> +        address_space_cache_destroy(&indirect_desc_cache);
-> +    }
->      if (in_bytes) {
->          *in_bytes =3D in_total;
->      }
-> @@ -1207,8 +1211,8 @@ static void virtqueue_packed_get_avail_bytes(VirtQu=
-eue *vq,
->      VirtIODevice *vdev =3D vq->vdev;
->      unsigned int idx;
->      unsigned int total_bufs, in_total, out_total;
-> -    MemoryRegionCache *desc_cache;
-> -    MemoryRegionCache indirect_desc_cache =3D MEMORY_REGION_CACHE_INVALI=
-D;
-> +    MemoryRegionCache indirect_desc_cache;
-> +    MemoryRegionCache *desc_cache =3D NULL;
->      int64_t len =3D 0;
->      VRingPackedDesc desc;
->      bool wrap_counter;
-> @@ -1297,7 +1301,9 @@ static void virtqueue_packed_get_avail_bytes(VirtQu=
-eue *vq,
->      vq->shadow_avail_idx =3D idx;
->      vq->shadow_avail_wrap_counter =3D wrap_counter;
->  done:
-> -    address_space_cache_destroy(&indirect_desc_cache);
-> +    if (desc_cache =3D=3D &indirect_desc_cache) {
-> +        address_space_cache_destroy(&indirect_desc_cache);
-> +    }
->      if (in_bytes) {
->          *in_bytes =3D in_total;
->      }
-> @@ -1487,8 +1493,8 @@ static void *virtqueue_split_pop(VirtQueue *vq, siz=
-e_t sz)
->  {
->      unsigned int i, head, max;
->      VRingMemoryRegionCaches *caches;
-> -    MemoryRegionCache indirect_desc_cache =3D MEMORY_REGION_CACHE_INVALI=
-D;
-> -    MemoryRegionCache *desc_cache;
-> +    MemoryRegionCache indirect_desc_cache;
-> +    MemoryRegionCache *desc_cache =3D NULL;
->      int64_t len;
->      VirtIODevice *vdev =3D vq->vdev;
->      VirtQueueElement *elem =3D NULL;
-> @@ -1611,7 +1617,9 @@ static void *virtqueue_split_pop(VirtQueue *vq, siz=
-e_t sz)
->
->      trace_virtqueue_pop(vq, elem, elem->in_num, elem->out_num);
->  done:
-> -    address_space_cache_destroy(&indirect_desc_cache);
-> +    if (desc_cache =3D=3D &indirect_desc_cache) {
-> +        address_space_cache_destroy(&indirect_desc_cache);
-> +    }
->
->      return elem;
->
-> @@ -1624,8 +1632,8 @@ static void *virtqueue_packed_pop(VirtQueue *vq, si=
-ze_t sz)
->  {
->      unsigned int i, max;
->      VRingMemoryRegionCaches *caches;
-> -    MemoryRegionCache indirect_desc_cache =3D MEMORY_REGION_CACHE_INVALI=
-D;
-> -    MemoryRegionCache *desc_cache;
-> +    MemoryRegionCache indirect_desc_cache;
-> +    MemoryRegionCache *desc_cache =3D NULL;
->      int64_t len;
->      VirtIODevice *vdev =3D vq->vdev;
->      VirtQueueElement *elem =3D NULL;
-> @@ -1746,7 +1754,9 @@ static void *virtqueue_packed_pop(VirtQueue *vq, si=
-ze_t sz)
->
->      trace_virtqueue_pop(vq, elem, elem->in_num, elem->out_num);
->  done:
-> -    address_space_cache_destroy(&indirect_desc_cache);
-> +    if (desc_cache =3D=3D &indirect_desc_cache) {
-> +        address_space_cache_destroy(&indirect_desc_cache);
-> +    }
->
->      return elem;
->
-> @@ -3935,8 +3945,8 @@ VirtioQueueElement *qmp_x_query_virtio_queue_elemen=
-t(const char *path,
->      } else {
->          unsigned int head, i, max;
->          VRingMemoryRegionCaches *caches;
-> -        MemoryRegionCache indirect_desc_cache =3D MEMORY_REGION_CACHE_IN=
-VALID;
-> -        MemoryRegionCache *desc_cache;
-> +        MemoryRegionCache indirect_desc_cache;
-> +        MemoryRegionCache *desc_cache =3D NULL;
->          VRingDesc desc;
->          VirtioRingDescList *list =3D NULL;
->          VirtioRingDescList *node;
-> @@ -4011,7 +4021,9 @@ VirtioQueueElement *qmp_x_query_virtio_queue_elemen=
-t(const char *path,
->          } while (rc =3D=3D VIRTQUEUE_READ_DESC_MORE);
->          element->descs =3D list;
->  done:
-> -        address_space_cache_destroy(&indirect_desc_cache);
-> +        if (desc_cache =3D=3D &indirect_desc_cache) {
-> +            address_space_cache_destroy(&indirect_desc_cache);
-> +        }
->      }
->
->      return element;
-> --
-> 2.40.1
+> Ha ha indeed!  I should have known.
 >
 
+Yea... It's old-school crazy, and I've done a lot of that in my day, but no=
+t
+here :)
+
+
+> >     Is it clearer with _Generic?
+> >
+> >           (x) =3D _Generic(*(hptr),
+> >                          int8_t: *(int8_t *)(hptr),
+> >                          uint8_t: *(uint8_t *)(hptr),
+> >                          int16_t: (int16_t)lduw_##e##_p(hptr),
+> >                          uint16_t: lduw_##e##_p(hptr),
+> >                          int32_t: (int32_t)ldl_##e##_p(hptr),
+> >                          uint32_t: (uint32_t)ldl_##e##_p(hptr),
+> >                          int64_t: (int64_t)ldq_##e##_p(hptr),
+> >                          uint64_t: ldq_##e##_p(hptr));
+> >
+> >     In particular I believe the error message will be much prettier.
+> >
+> >
+> > Indeed. That looks cleaner. I'll see if I can test that against the
+> latest bsd-user upstream.
+>
+> I'll see if we can share this code via common-user.
+>
+
+It seems to work, though I still need the pragmas for clang 16 (see another
+patch for that).
+
+I tried to implement both get and put in terms of this, but found that it
+broke the blitz
+branch. So why don't we land this as is for bsd-user and then one of us can
+try to
+put it into common-user so as to not create too many waves for our GSoC
+student Kariim.
+There's already enough to fix in this series... Sound fair?
+
+Warner
+
+--0000000000007b29410602746b85
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: base64
+
+PGRpdiBkaXI9Imx0ciI+PGRpdiBkaXI9Imx0ciI+PGJyPjwvZGl2Pjxicj48ZGl2IGNsYXNzPSJn
+bWFpbF9xdW90ZSI+PGRpdiBkaXI9Imx0ciIgY2xhc3M9ImdtYWlsX2F0dHIiPk9uIFR1ZSwgQXVn
+IDgsIDIwMjMgYXQgNzo0N+KAr1BNIFJpY2hhcmQgSGVuZGVyc29uICZsdDs8YSBocmVmPSJtYWls
+dG86cmljaGFyZC5oZW5kZXJzb25AbGluYXJvLm9yZyI+cmljaGFyZC5oZW5kZXJzb25AbGluYXJv
+Lm9yZzwvYT4mZ3Q7IHdyb3RlOjxicj48L2Rpdj48YmxvY2txdW90ZSBjbGFzcz0iZ21haWxfcXVv
+dGUiIHN0eWxlPSJtYXJnaW46MHB4IDBweCAwcHggMC44ZXg7Ym9yZGVyLWxlZnQ6MXB4IHNvbGlk
+IHJnYigyMDQsMjA0LDIwNCk7cGFkZGluZy1sZWZ0OjFleCI+T24gOC84LzIzIDE4OjM5LCBXYXJu
+ZXIgTG9zaCB3cm90ZTo8YnI+DQomZ3Q7wqAgwqAgwqAgJmd0OyArI2RlZmluZSBfX3B1dF91c2Vy
+X2UoeCwgaHB0ciwgZSnCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
+oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCBcPGJyPg0KJmd0O8KgIMKgIMKgICZndDsgK8KgIMKgIGRv
+IHvCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
+oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCBcPGJyPg0KJmd0
+O8KgIMKgIMKgICZndDsgK8KgIMKgIMKgIMKgIFBSQUdNQV9ESVNBQkxFX1BBQ0tFRF9XQVJOSU5H
+O8KgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
+IFw8YnI+DQomZ3Q7wqAgwqAgwqAgJmd0OyArwqAgwqAgwqAgwqAgKF9fYnVpbHRpbl9jaG9vc2Vf
+ZXhwcihzaXplb2YoKihocHRyKSkgPT0gMSwgc3RiX3AswqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAg
+wqBcPGJyPg0KJmd0O8KgIMKgIMKgICZndDsgK8KgIMKgIMKgIMKgIF9fYnVpbHRpbl9jaG9vc2Vf
+ZXhwcihzaXplb2YoKihocHRyKSkgPT0gMiwgc3R3XyMjZSMjX3AswqAgwqAgwqAgwqAgwqAgwqAg
+XDxicj4NCiZndDvCoCDCoCDCoCAmZ3Q7ICvCoCDCoCDCoCDCoCBfX2J1aWx0aW5fY2hvb3NlX2V4
+cHIoc2l6ZW9mKCooaHB0cikpID09IDQsIHN0bF8jI2UjI19wLMKgIMKgIMKgIMKgIMKgIMKgIFw8
+YnI+DQomZ3Q7wqAgwqAgwqAgJmd0OyArwqAgwqAgwqAgwqAgX19idWlsdGluX2Nob29zZV9leHBy
+KHNpemVvZigqKGhwdHIpKSA9PSA4LCBzdHFfIyNlIyNfcCwgYWJvcnQpKSkpwqAgXDxicj4NCiZn
+dDvCoCDCoCDCoCAmZ3Q7ICvCoCDCoCDCoCDCoCDCoCDCoCAoKGhwdHIpLCAoeCkpLCAodm9pZCkw
+KTvCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
+oCDCoCBcPGJyPg0KJmd0O8KgIMKgIMKgICZndDsgK8KgIMKgIMKgIMKgIFBSQUdNQV9SRUVOQUJM
+RV9QQUNLRURfV0FSTklORzvCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
+oCDCoCDCoCDCoCDCoCDCoFw8YnI+DQomZ3Q7wqAgwqAgwqAgJmd0OyArwqAgwqAgfSB3aGlsZSAo
+MCk8YnI+DQomZ3Q7wqAgwqAgwqAgJmd0OyArPGJyPg0KJmd0O8KgIMKgIMKgICZndDsgKyNkZWZp
+bmUgX19nZXRfdXNlcl9lKHgsIGhwdHIsIGUpwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAg
+wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgXDxicj4NCiZndDvCoCDCoCDCoCAm
+Z3Q7ICvCoCDCoCBkbyB7wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAg
+wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAg
+wqAgXDxicj4NCiZndDvCoCDCoCDCoCAmZ3Q7ICvCoCDCoCDCoCDCoCBQUkFHTUFfRElTQUJMRV9Q
+QUNLRURfV0FSTklORzvCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
+oCDCoCDCoCDCoCDCoCBcPGJyPg0KJmd0O8KgIMKgIMKgICZndDsgK8KgIMKgIMKgIMKgICgoeCkg
+PSAodHlwZW9mKCpocHRyKSkowqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAg
+wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqBcPGJyPg0KJmd0O8KgIMKgIMKgICZndDsgK8Kg
+IMKgIMKgIMKgIF9fYnVpbHRpbl9jaG9vc2VfZXhwcihzaXplb2YoKihocHRyKSkgPT0gMSwgbGR1
+Yl9wLMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgXDxicj4NCiZndDvCoCDCoCDCoCAmZ3Q7ICvC
+oCDCoCDCoCDCoCBfX2J1aWx0aW5fY2hvb3NlX2V4cHIoc2l6ZW9mKCooaHB0cikpID09IDIsIGxk
+dXdfIyNlIyNfcCzCoCDCoCDCoCDCoCDCoCDCoFw8YnI+DQomZ3Q7wqAgwqAgwqAgJmd0OyArwqAg
+wqAgwqAgwqAgX19idWlsdGluX2Nob29zZV9leHByKHNpemVvZigqKGhwdHIpKSA9PSA0LCBsZGxf
+IyNlIyNfcCzCoCDCoCDCoCDCoCDCoCDCoCBcPGJyPg0KJmd0O8KgIMKgIMKgICZndDsgK8KgIMKg
+IMKgIMKgIF9fYnVpbHRpbl9jaG9vc2VfZXhwcihzaXplb2YoKihocHRyKSkgPT0gOCwgbGRxXyMj
+ZSMjX3AsIGFib3J0KSkpKcKgIFw8YnI+DQomZ3Q7wqAgwqAgwqAgJmd0OyArwqAgwqAgwqAgwqAg
+wqAgwqAgKGhwdHIpKSwgKHZvaWQpMCk7wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAg
+wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgXDxicj4NCiZndDvCoCDCoCDCoCAm
+Z3Q7ICvCoCDCoCDCoCDCoCBQUkFHTUFfUkVFTkFCTEVfUEFDS0VEX1dBUk5JTkc7wqAgwqAgwqAg
+wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqBcPGJyPg0KJmd0
+O8KgIMKgIMKgICZndDsgK8KgIMKgIH0gd2hpbGUgKDApPGJyPg0KJmd0OyA8YnI+DQomZ3Q7wqAg
+wqAgwqBIbW0uwqAgSSBndWVzcyB0aGlzIHdvcmtzLsKgIFRoZSB0eXBlb2YgY2FzdCBpbiBfX2dl
+dF91c2VyX2UgYmVpbmcgcmVxdWlyZWQgd2hlbjxicj4NCiZndDvCoCDCoCDCoHNpemVvZih4KSAm
+Z3Q7PGJyPg0KJmd0O8KgIMKgIMKgc2l6ZW9mKCpocHRyKSBpbiBvcmRlciB0byBnZXQgdGhlIGNv
+cnJlY3QgZXh0ZW5zaW9uLjxicj4NCiZndDsgPGJyPg0KJmd0OyA8YnI+DQomZ3Q7IFRoaXMgY29k
+ZSB3YXMgY29waWVkIDEwMCUgZnJvbSB0aGUgY3VycmVudCBsaW51eC11c2VyIDopIDxicj4NCjxi
+cj4NCkhhIGhhIGluZGVlZCHCoCBJIHNob3VsZCBoYXZlIGtub3duLjxicj48L2Jsb2NrcXVvdGU+
+PGRpdj48YnI+PC9kaXY+PGRpdj5ZZWEuLi4gSXQmIzM5O3Mgb2xkLXNjaG9vbCBjcmF6eSwgYW5k
+IEkmIzM5O3ZlIGRvbmUgYSBsb3Qgb2YgdGhhdCBpbiBteSBkYXksIGJ1dCBub3Q8L2Rpdj48ZGl2
+PmhlcmUgOik8YnI+PC9kaXY+PGRpdj7CoDwvZGl2PjxibG9ja3F1b3RlIGNsYXNzPSJnbWFpbF9x
+dW90ZSIgc3R5bGU9Im1hcmdpbjowcHggMHB4IDBweCAwLjhleDtib3JkZXItbGVmdDoxcHggc29s
+aWQgcmdiKDIwNCwyMDQsMjA0KTtwYWRkaW5nLWxlZnQ6MWV4Ij4NCiZndDvCoCDCoCDCoElzIGl0
+IGNsZWFyZXIgd2l0aCBfR2VuZXJpYz88YnI+DQomZ3Q7IDxicj4NCiZndDvCoCDCoCDCoCDCoCDC
+oCDCoCh4KSA9IF9HZW5lcmljKCooaHB0ciksPGJyPg0KJmd0O8KgIMKgIMKgIMKgIMKgIMKgIMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIGludDhfdDogKihpbnQ4X3QgKikoaHB0ciksPGJyPg0KJmd0O8Kg
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHVpbnQ4X3Q6ICoodWludDhfdCAq
+KShocHRyKSw8YnI+DQomZ3Q7wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAg
+aW50MTZfdDogKGludDE2X3QpbGR1d18jI2UjI19wKGhwdHIpLDxicj4NCiZndDvCoCDCoCDCoCDC
+oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCB1aW50MTZfdDogbGR1d18jI2UjI19wKGhwdHIp
+LDxicj4NCiZndDvCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCBpbnQzMl90
+OiAoaW50MzJfdClsZGxfIyNlIyNfcChocHRyKSw8YnI+DQomZ3Q7wqAgwqAgwqAgwqAgwqAgwqAg
+wqAgwqAgwqAgwqAgwqAgwqAgwqAgdWludDMyX3Q6ICh1aW50MzJfdClsZGxfIyNlIyNfcChocHRy
+KSw8YnI+DQomZ3Q7wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgaW50NjRf
+dDogKGludDY0X3QpbGRxXyMjZSMjX3AoaHB0ciksPGJyPg0KJmd0O8KgIMKgIMKgIMKgIMKgIMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIHVpbnQ2NF90OiBsZHFfIyNlIyNfcChocHRyKSk7PGJyPg0K
+Jmd0OyA8YnI+DQomZ3Q7wqAgwqAgwqBJbiBwYXJ0aWN1bGFyIEkgYmVsaWV2ZSB0aGUgZXJyb3Ig
+bWVzc2FnZSB3aWxsIGJlIG11Y2ggcHJldHRpZXIuPGJyPg0KJmd0OyA8YnI+DQomZ3Q7IDxicj4N
+CiZndDsgSW5kZWVkLiBUaGF0IGxvb2tzIGNsZWFuZXIuIEkmIzM5O2xsIHNlZSBpZiBJIGNhbiB0
+ZXN0IHRoYXQgYWdhaW5zdCB0aGUgbGF0ZXN0IGJzZC11c2VyIHVwc3RyZWFtLjxicj4NCjxicj4N
+CkkmIzM5O2xsIHNlZSBpZiB3ZSBjYW4gc2hhcmUgdGhpcyBjb2RlIHZpYSBjb21tb24tdXNlci48
+YnI+PC9ibG9ja3F1b3RlPjxkaXY+PGJyPjwvZGl2PjxkaXY+SXQgc2VlbXMgdG8gd29yaywgdGhv
+dWdoIEkgc3RpbGwgbmVlZCB0aGUgcHJhZ21hcyBmb3IgY2xhbmcgMTYgKHNlZSBhbm90aGVyIHBh
+dGNoIGZvciB0aGF0KS48L2Rpdj48ZGl2Pjxicj48L2Rpdj48ZGl2PkkgdHJpZWQgdG8gaW1wbGVt
+ZW50IGJvdGggZ2V0IGFuZCBwdXQgaW4gdGVybXMgb2YgdGhpcywgYnV0IGZvdW5kIHRoYXQgaXQg
+YnJva2UgdGhlIGJsaXR6PC9kaXY+PGRpdj5icmFuY2guIFNvIHdoeSBkb24mIzM5O3Qgd2UgbGFu
+ZCB0aGlzIGFzIGlzIGZvciBic2QtdXNlciBhbmQgdGhlbiBvbmUgb2YgdXMgY2FuIHRyeSB0bzwv
+ZGl2PjxkaXY+cHV0IGl0IGludG8gY29tbW9uLXVzZXIgc28gYXMgdG8gbm90IGNyZWF0ZSB0b28g
+bWFueSB3YXZlcyBmb3Igb3VyIEdTb0Mgc3R1ZGVudCBLYXJpaW0uPC9kaXY+PGRpdj5UaGVyZSYj
+Mzk7cyBhbHJlYWR5IGVub3VnaCB0byBmaXggaW4gdGhpcyBzZXJpZXMuLi4gU291bmQgZmFpcj88
+YnI+PC9kaXY+PGRpdj48YnI+PC9kaXY+PGRpdj5XYXJuZXI8YnI+PC9kaXY+PC9kaXY+PC9kaXY+
+DQo=
+--0000000000007b29410602746b85--
 
