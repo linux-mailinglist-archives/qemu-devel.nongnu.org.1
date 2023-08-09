@@ -2,73 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8285E775127
-	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 05:02:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9AF7775136
+	for <lists+qemu-devel@lfdr.de>; Wed,  9 Aug 2023 05:06:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTZSh-0001Mx-EG; Tue, 08 Aug 2023 23:02:15 -0400
+	id 1qTZW3-0002Rb-DN; Tue, 08 Aug 2023 23:05:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qTZSd-0001MN-4e
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 23:02:11 -0400
-Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qTZW0-0002RF-Lo
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 23:05:40 -0400
+Received: from mail-ot1-x335.google.com ([2607:f8b0:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qTZSb-0001Jz-Gn
- for qemu-devel@nongnu.org; Tue, 08 Aug 2023 23:02:10 -0400
-Received: by mail-ej1-x635.google.com with SMTP id
- a640c23a62f3a-99bf8e5ab39so931274766b.2
- for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 20:02:07 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qTZVx-00022u-Sa
+ for qemu-devel@nongnu.org; Tue, 08 Aug 2023 23:05:39 -0400
+Received: by mail-ot1-x335.google.com with SMTP id
+ 46e09a7af769-6bca3588edbso4337505a34.0
+ for <qemu-devel@nongnu.org>; Tue, 08 Aug 2023 20:05:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20221208.gappssmtp.com; s=20221208; t=1691550126; x=1692154926;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=pOFNaXoYGQHDbPrx3fzWMfmgnW4+ryakp+S9m2QF6b8=;
- b=u95hP4KqZZXI+DW0r6MCJowqYVQ6i9Qs0DinXMyYLTdyGX6eyULxObKdF5hI5Vtgw+
- t/Od9Gwv3mqG1pe0TJNYc01YLHecaa957ZwMEcAEhD/m9kjOfF1IcIIZT9x0p5n3ttc9
- +vvMUosmEpI+pXCHk5GFGf2EOFotaaHeNDY4Qay0qGvMyDdL040DA07aT4SEB6MmQWKr
- 9iiLn/9F1jslVxZB3M+ggXfravByevRD9HfCZMhtrvyICLOD3zPmo+dF/u9QmoHAksiH
- ZWUQMMixaZGVbwk/HxSv1NaS0N2e6f90aNKeHTPf8tcp8bCtS2gP2gXukZHUPE5nVSDh
- xwJw==
+ d=linaro.org; s=google; t=1691550336; x=1692155136;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=eV5cYUVKwD61JXHP+Bbt/G/gZmCAjoi/zJMx2VayMt0=;
+ b=AcjU+VjbCUGJYDBlA6rjE48pXAPtmn57D7X8tnYNMCV9f0DNvHig7ACh3ZlHuHd0wp
+ 5xC08OCu2XYmYlueayTsyOw+Ce9LKVE6E94m/c1Qhdx3I6lrNxK/oYLwORzhA9AnrGDI
+ DM/S9x+yutySf49zxRGPtq/ooDidAn1iumNXsGrYiBIw8rek9UE5/nfqhW3FnYY8bzUI
+ 8AqGOQBkM3YesWuooy229TV2pxRYkt/sMLwGjSVmclC2wbvrcrG2CBbskvnmqN5K2ugi
+ 65q9qy2OOeUdytcUwXWmn7VAr2PQKoM6w87G1ZB+SW8rpvBThiVg+Dn1f+WnpGTvg61I
+ BX6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691550126; x=1692154926;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=pOFNaXoYGQHDbPrx3fzWMfmgnW4+ryakp+S9m2QF6b8=;
- b=Wm8vZZfPdaSs8TJ0ANufMsjL/SDW0hL67Oc52KF3f60RKv7LNyEeqjAcd2cbHNuMMH
- JYoAHPkcnOCefPW3sTwIUl6zncFGna0uQqM2IB67UKVCkCBYtHKHGng78gOrMYls+B+K
- GqNiZW0h/WxHe5HqpgdTDyeAwfa5cA826UZ96rnhILgvGgV05Qgv8iEStIl3ZKs8Gxs0
- 7f+NIXTpvV3dM6Tbh00aeql34+97JaQ74Bw38yypWOz6cWBnWeEYI0lzygvvQbme3UQZ
- w836i44JPMfxlAz8SVWFnO7rc2gi6z6CStuZw5J5QT0AennkRHTlCUoKX/2HU6TPhMU8
- YI3A==
-X-Gm-Message-State: AOJu0Ywv9bnBHQseUOBz46jjkqgB3FVvCmZF01yC0RDufCSDi57O2LNl
- IqtmAiLMOxfFkjCBI3Wz/2lLPKZ4GmTKR3l9va1uJvxWyA5An3+2+8vHzA==
-X-Google-Smtp-Source: AGHT+IFZKrEUbbBICawEaggs1uiC43gtcAaRI1YAVAnsA8ZCodmdsSyMf3TQMXixZGYPSUN+38xt1N5Kntmof6JrGeE=
-X-Received: by 2002:a17:907:2c54:b0:994:54ff:10f6 with SMTP id
- hf20-20020a1709072c5400b0099454ff10f6mr1002069ejc.30.1691550126160; Tue, 08
- Aug 2023 20:02:06 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1691550336; x=1692155136;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=eV5cYUVKwD61JXHP+Bbt/G/gZmCAjoi/zJMx2VayMt0=;
+ b=hzqgAyXW3BmbNLLnvvLxBfJisSphD4xT5nm1uplE3141NIvBOYPBHl4oE9phODkiju
+ Ff4Uo6OjIvjxgvQcghumb9XKByBEXyhRlGhNfGVXtZyrYB/jbQjcmU/qF2lTOdxyDKXQ
+ cA1NueTrj9V/0A75L+LT6F2wD1Y2aX827jlDeyxf3t7MDqG3ewPBWPnaBTbJh8LlLvU1
+ Qg9d4EBCpbjWpWZCKifC5hWzYO8VXkIgt0x4DhB5U7sY2mVTfVhq8lgbDU0cSledBodF
+ lDeMX8TVvmIfgW4cvU/o1pq3zscxwoV2kahMmPByMB/FMZmrU3ntZ+Rw3HDkMGKYRbXW
+ JG1g==
+X-Gm-Message-State: AOJu0Yw2Q1TMnJFx1HGnd7xT40uFLyGlk32LLq5OdX6HcZ1TR1DOf+RA
+ cYj9XOxBrhidPmzOmtPmDLyNUA==
+X-Google-Smtp-Source: AGHT+IEVANpJcsjUVmk2s8VDn36VrxDDDFDG774OT6EWeiJ7rXsIdWPSk1elQmSbifjgozWRDBj/zA==
+X-Received: by 2002:a9d:731a:0:b0:6b9:c5b5:6a96 with SMTP id
+ e26-20020a9d731a000000b006b9c5b56a96mr1399741otk.6.1691550336643; 
+ Tue, 08 Aug 2023 20:05:36 -0700 (PDT)
+Received: from ?IPV6:2602:47:d483:7301:aef:cddd:11b6:aee3?
+ ([2602:47:d483:7301:aef:cddd:11b6:aee3])
+ by smtp.gmail.com with ESMTPSA id
+ s13-20020a63b40d000000b0056129129ef8sm6380714pgf.18.2023.08.08.20.05.35
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 08 Aug 2023 20:05:36 -0700 (PDT)
+Message-ID: <51f6d14a-bf36-1d3a-e9ee-de86bc506eaf@linaro.org>
+Date: Tue, 8 Aug 2023 20:05:34 -0700
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 02/33] Disable clang warnings arising from bsd-user/qemu.h
+Content-Language: en-US
+To: Warner Losh <imp@bsdimp.com>
+Cc: Karim Taha <kariem.taha2.7@gmail.com>, qemu-devel@nongnu.org,
+ Kyle Evans <kevans@freebsd.org>
 References: <20230808060815.9001-1-kariem.taha2.7@gmail.com>
- <20230808060815.9001-17-kariem.taha2.7@gmail.com>
- <9e972ae4-34f4-6924-3b7e-13d5112ed399@linaro.org>
-In-Reply-To: <9e972ae4-34f4-6924-3b7e-13d5112ed399@linaro.org>
-From: Warner Losh <imp@bsdimp.com>
-Date: Tue, 8 Aug 2023 21:01:56 -0600
-Message-ID: <CANCZdfr2Nk3gaSpif1PxXK-s8qE-MxH5ysp=OKGAgD=_DDhZxA@mail.gmail.com>
-Subject: Re: [PATCH 16/33] Implement host-target convertion functions
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: Karim Taha <kariem.taha2.7@gmail.com>, qemu-devel@nongnu.org, 
- Stacey Son <sson@freebsd.org>
-Content-Type: multipart/alternative; boundary="00000000000063cf4c060274b46a"
-Received-SPF: none client-ip=2a00:1450:4864:20::635;
- envelope-from=wlosh@bsdimp.com; helo=mail-ej1-x635.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+ <20230808060815.9001-3-kariem.taha2.7@gmail.com>
+ <612acdbb-865d-0e32-9212-df9440a0e8bb@linaro.org>
+ <CANCZdfoLG8vpwgnxB2hW1ZoNeoTZvQuMfXYkB45eLisEtgbLYA@mail.gmail.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <CANCZdfoLG8vpwgnxB2hW1ZoNeoTZvQuMfXYkB45eLisEtgbLYA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::335;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x335.google.com
+X-Spam_score_int: -61
+X-Spam_score: -6.2
+X-Spam_bar: ------
+X-Spam_report: (-6.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-4.14,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,72 +99,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000063cf4c060274b46a
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On 8/8/23 19:56, Warner Losh wrote:
+> Looking at this now, This bug is in clang 7, from 2018. For FreeBSD, we don't support
+> anything older than clang 12 or 13 However, the bug still exists in clang 16, the latest.
+> I believe this was also copied verbatim from linux-user, so let's leave it and then make
+> this one of the common things as a followup... ok?
 
-On Tue, Aug 8, 2023 at 3:39=E2=80=AFPM Richard Henderson <
-richard.henderson@linaro.org> wrote:
+Ah.  In which case this should simply be moved to qemu/compiler.h.
 
-> On 8/7/23 23:07, Karim Taha wrote:
-> > From: Stacey Son <sson@FreeBSD.org>
-> >
-> > Implement the stat converstion functions:
-> > target_to_host_fcntl_cmd
-> >
-> > Signed-off-by: Stacey Son <sson@FreeBSD.org>
-> > Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
-> > ---
-> >   bsd-user/freebsd/os-stat.c | 71 +++++++++++++++++++++++++++++++++++++=
-+
-> >   1 file changed, 71 insertions(+)
->
-> Which host / guest pairs have varying fcntl constants?
-> I thought freebsd had these standardized...
->
 
-Ah, indeed. This can be an identity wrapper, since the only #ifdefs for
-these
-values are for visibility. So this whole function can be replaced by
-
-abi_long target_to_host_fcntl_cmd(int cmd)
-{
-    return cmd;
-}
-
-Warner
-
---00000000000063cf4c060274b46a
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Tue, Aug 8, 2023 at 3:39=E2=80=AFP=
-M Richard Henderson &lt;<a href=3D"mailto:richard.henderson@linaro.org">ric=
-hard.henderson@linaro.org</a>&gt; wrote:<br></div><blockquote class=3D"gmai=
-l_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,20=
-4,204);padding-left:1ex">On 8/7/23 23:07, Karim Taha wrote:<br>
-&gt; From: Stacey Son &lt;sson@FreeBSD.org&gt;<br>
-&gt; <br>
-&gt; Implement the stat converstion functions:<br>
-&gt; target_to_host_fcntl_cmd<br>
-&gt; <br>
-&gt; Signed-off-by: Stacey Son &lt;sson@FreeBSD.org&gt;<br>
-&gt; Signed-off-by: Karim Taha &lt;<a href=3D"mailto:kariem.taha2.7@gmail.c=
-om" target=3D"_blank">kariem.taha2.7@gmail.com</a>&gt;<br>
-&gt; ---<br>
-&gt;=C2=A0 =C2=A0bsd-user/freebsd/os-stat.c | 71 ++++++++++++++++++++++++++=
-++++++++++++<br>
-&gt;=C2=A0 =C2=A01 file changed, 71 insertions(+)<br>
-<br>
-Which host / guest pairs have varying fcntl constants?<br>
-I thought freebsd had these standardized...<br></blockquote><div><br></div>=
-<div>Ah, indeed. This can be an identity wrapper, since the only #ifdefs fo=
-r these</div><div>values are for visibility. So this whole function can be =
-replaced by</div><div><br></div><div>
-abi_long target_to_host_fcntl_cmd(int cmd)</div><div>{</div><div>=C2=A0=C2=
-=A0=C2=A0 return cmd;</div><div>}<br></div><div><br></div><div>Warner <br><=
-/div></div></div>
-
---00000000000063cf4c060274b46a--
+r~
 
