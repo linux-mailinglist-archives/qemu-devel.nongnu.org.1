@@ -2,77 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82988776BB0
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 00:05:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DB6F776C11
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 00:17:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTrID-0007V3-MU; Wed, 09 Aug 2023 18:04:37 -0400
+	id 1qTrTQ-0002Ph-Jn; Wed, 09 Aug 2023 18:16:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTrI8-0007Ul-EH
- for qemu-devel@nongnu.org; Wed, 09 Aug 2023 18:04:32 -0400
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qTrTO-0002PJ-7z
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 18:16:10 -0400
+Received: from mail-oi1-x233.google.com ([2607:f8b0:4864:20::233])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTrI5-0008Rz-LG
- for qemu-devel@nongnu.org; Wed, 09 Aug 2023 18:04:31 -0400
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-68783b2e40bso200643b3a.3
- for <qemu-devel@nongnu.org>; Wed, 09 Aug 2023 15:04:29 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qTrTL-0003NS-2c
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 18:16:09 -0400
+Received: by mail-oi1-x233.google.com with SMTP id
+ 5614622812f47-3a78a2c0f81so244536b6e.0
+ for <qemu-devel@nongnu.org>; Wed, 09 Aug 2023 15:16:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691618668; x=1692223468;
- h=content-transfer-encoding:in-reply-to:references:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=ventanamicro.com; s=google; t=1691619365; x=1692224165;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=FJDberCdVl5PjRa/JnExc4W9YFuE33Zx/fA0UykSCN8=;
- b=vH4zChKNtQrlAs0BX60NAww1emnXV1xmhzgUUAFw1+bwwPBdnBrf7EyoCiP5aVSSTL
- j2OmP0lfylVOZFsFps0OeVtFWn81E2D1xF58dd309aLRtHLf94LfCzxZ6OJuLJdj+S0k
- 4h8pioBuNcaaXmdynpONKQtkh1nT4VcpIlekLjR6ISL6kzYuphs82esc30QNixtDOaDa
- HLNMrGIsx1joso3jfabthwn1m/adqtAe7Uxwp9lrkmKN4rEaXiqjvaq03t0AZzcXsfkT
- iQqIac4vCWBGPTfekMp29pybl8B74jt9XobvcoIdlrSC4eq8vDtkp1+iCjy8yx+KlAEV
- vTjw==
+ bh=LYuct3OTuvKgCYJDGQ6dFDQnBIb+9Efrs+RKsSQi53Q=;
+ b=Ng9flm/0QvicM7RocLhElUGs4SI/NARPCXhlRprKNHLsEujLg1ES0olWF0JeI+LFVx
+ 7GXhrS7huErRmF9+TLW4mMHP6JxR7W8EXiGh5uEL6U72kgVUwyyV7kgFwlSFdx227xTm
+ KtQWjfm4bKa5J4RVu9eg3b1ZMAxS4HtP57aYzn8/sQ3hiR1ZQmRaREdsXVTLGRFkeDkN
+ vVP5qCo1WZ9Iz9LN4arV1zIuSCdWBGZB9sW3c1+BqqPCPgW2DB4aLjmmhNiwDTWIsZCi
+ yXxXLI9uLdvYk50UVs3kbweXJO54CiZymze1L6ILHCbmxFJ4VnGtY1+se5ALc6+v1bxD
+ a1ZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691618668; x=1692223468;
- h=content-transfer-encoding:in-reply-to:references:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20221208; t=1691619365; x=1692224165;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=FJDberCdVl5PjRa/JnExc4W9YFuE33Zx/fA0UykSCN8=;
- b=STrdA1QmiL4IvTnYD35firLOirU3muKqs3FjBMgFu/xcQJts18Mys+1mm1cWpB6FcX
- T1GqStWXfr5W6lV2UyHCb2TtO2xl0lCWpAC0Xmi7mkVpqicpj5czv2DuSdY4JCDJGFlY
- p3REG+HCnigMrHY9EzVycXwMt/XZc1IW2d2d9UQTDUaWv7kVrKWH+188hK07M0sOkvG2
- u9gBcpgo1xb3wLZxnwtJ4gQm+2u+6AtBnBRw77qZ3RUzfWYeHKedVDwWCttNWuES8/V8
- urtFOwgWBx+H3LSuWtG2KhNGOyA55bDU7+GGIGd3fMEWEVmOoFA+XLzm5RTnfyqmrtQM
- 2RXw==
-X-Gm-Message-State: AOJu0YyT6DnMLj5HMSGJ/gQn8r/VMlnzuJU/vL53woUTGdncsZh2bfL4
- G8rDZbSA1lUsnUipZ/pXBTR2leOf8pXoVBYCzKY=
-X-Google-Smtp-Source: AGHT+IHWlmJos5cMJb9GV3RK72IDpQMsJnxPYXFXYhn7Vc/X1WgvLQGaZmoVaqc3zrtzV6Vm0GtVxQ==
-X-Received: by 2002:a17:903:1206:b0:1b3:cf98:a20b with SMTP id
- l6-20020a170903120600b001b3cf98a20bmr476688plh.54.1691618668243; 
- Wed, 09 Aug 2023 15:04:28 -0700 (PDT)
-Received: from ?IPV6:2602:47:d483:7301:6bf0:9674:6ac4:f74c?
- ([2602:47:d483:7301:6bf0:9674:6ac4:f74c])
- by smtp.gmail.com with ESMTPSA id
- q14-20020a17090311ce00b001b51b3e84cesm19835plh.166.2023.08.09.15.04.27
- for <qemu-devel@nongnu.org>
+ bh=LYuct3OTuvKgCYJDGQ6dFDQnBIb+9Efrs+RKsSQi53Q=;
+ b=kT0uqUf0ZsFtGwGQUK9SsS17C3StLi2K3h/SMfe9B/bFoFpTTDdYaNgaz3rJUnwnaq
+ FfU+7PbMN4Vf+B/IK77CQBjatcEqKGDHf6hPpmfC9SWdGrUW/TUCpCbUSlM87wGnaSAr
+ FGlUL0I8/LYh0widWAamdhFgh+RGljmL3QzQrCCs2b7Nul43XiaCrXFL4Z+yPvYdIrrj
+ CQPgTS83fk8tbRVtnriOFHjRju5GRcgfvoCCqByJQZaH4VPpsh+RrIdfb5AaGrlWQAER
+ vjRRsrwIdKghAFom2ZkcCE75+0O3imxQ/hEZZ5M5WqSRg/Ab4wgSQ1W33IJ+aRxMKo1j
+ TojQ==
+X-Gm-Message-State: AOJu0Yzv6zOCr/0BlwBodurv4pRozQGRpBqv6mgdnkNYsgNNcT26sS2W
+ cvT4iOpZXG8gLAJKFbtBXgXDJA==
+X-Google-Smtp-Source: AGHT+IHEg4uEtkgAGEodeVWYSbFQx02Qslb21VamvzXK4qbKH6afYxlobDXKxMmLJcNkuh1QUr3vUg==
+X-Received: by 2002:a05:6808:4389:b0:3a7:7366:7526 with SMTP id
+ dz9-20020a056808438900b003a773667526mr699511oib.53.1691619365241; 
+ Wed, 09 Aug 2023 15:16:05 -0700 (PDT)
+Received: from [192.168.68.108] (189-69-160-189.dial-up.telesp.net.br.
+ [189.69.160.189]) by smtp.gmail.com with ESMTPSA id
+ eu9-20020a056808288900b003a1dfa93903sm68727oib.12.2023.08.09.15.16.02
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 09 Aug 2023 15:04:27 -0700 (PDT)
-Message-ID: <7e43dc9a-f57f-fdfd-fb0e-8941908a46c5@linaro.org>
-Date: Wed, 9 Aug 2023 15:04:26 -0700
+ Wed, 09 Aug 2023 15:16:04 -0700 (PDT)
+Message-ID: <93cf5366-9723-3c08-6ce1-d0dbd1f4a76f@ventanamicro.com>
+Date: Wed, 9 Aug 2023 19:16:00 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PULL 0/6] linux-user late fixes
+Subject: Re: [PATCH] target/riscv/kvm.c: fix mvendorid size in
+ vcpu_set_machine_ids()
+To: Andrew Jones <ajones@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com,
+ palmer@rivosinc.com
+References: <20230802180058.281385-1-dbarboza@ventanamicro.com>
+ <20230803-3d2b378004c77196efc74f09@orel>
+ <d9659727-2ba4-370c-32ac-9f5ade5bea60@ventanamicro.com>
+ <20230803-70bedcfb60cb5b2efb87cedc@orel>
 Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-References: <20230809175006.242479-1-richard.henderson@linaro.org>
-In-Reply-To: <20230809175006.242479-1-richard.henderson@linaro.org>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20230803-70bedcfb60cb5b2efb87cedc@orel>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::233;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-oi1-x233.google.com
 X-Spam_score_int: -61
 X-Spam_score: -6.2
 X-Spam_bar: ------
@@ -95,28 +100,167 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/9/23 10:50, Richard Henderson wrote:
-> The following changes since commit 32e07fddc6d989dc5fdff4f9c9e47cb1f3911904:
-> 
->    Merge tag 'pull-lu-20230808' ofhttps://gitlab.com/rth7680/qemu  into staging (2023-08-08 14:10:07 -0700)
-> 
-> are available in the Git repository at:
-> 
->    https://gitlab.com/rth7680/qemu.git  tags/pull-lu-20230809
-> 
-> for you to fetch changes up to b8002058c45a50d893c51cf62ec96c70128fc1eb:
-> 
->    linux-user: Fix openat() emulation to correctly detect accesses to /proc (2023-08-09 09:31:30 -0700)
-> 
-> ----------------------------------------------------------------
-> linux-user: Fixes for mmap syscall emulation
-> linux-user: Correctly detect access to /proc in openat
-> util/interval-tree: Check root for null in interval_tree_iter_first
-> tests/tcg: Disable filename test for info proc mappings
+Drew,
 
-Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
+On 8/3/23 09:05, Andrew Jones wrote:
+> On Thu, Aug 03, 2023 at 08:36:57AM -0300, Daniel Henrique Barboza wrote:
+>>
+>>
+>> On 8/3/23 06:29, Andrew Jones wrote:
+>>> On Wed, Aug 02, 2023 at 03:00:58PM -0300, Daniel Henrique Barboza wrote:
+>>>> cpu->cfg.mvendorid is a 32 bit field and kvm_set_one_reg() always write
+>>>> a target_ulong val, i.e. a 64 bit field in a 64 bit host.
+>>>>
+>>>> Given that we're passing a pointer to the mvendorid field, the reg is
+>>>> reading 64 bits starting from mvendorid and going 32 bits in the next
+>>>> field, marchid. Here's an example:
+>>>>
+>>>> $ ./qemu-system-riscv64 -machine virt,accel=kvm -m 2G -smp 1 \
+>>>>      -cpu rv64,marchid=0xab,mvendorid=0xcd,mimpid=0xef(...)
+>>>>
+>>>> (inside the guest)
+>>>>    # cat /proc/cpuinfo
+>>>> processor	: 0
+>>>> hart		: 0
+>>>> isa		: rv64imafdc_zicbom_zicboz_zihintpause_zbb_sstc
+>>>> mmu		: sv57
+>>>> mvendorid	: 0xab000000cd
+>>>> marchid		: 0xab
+>>>> mimpid		: 0xef
+>>>>
+>>>> 'mvendorid' was written as a combination of 0xab (the value from the
+>>>> adjacent field, marchid) and its intended value 0xcd.
+>>>>
+>>>> Fix it by assigning cpu->cfg.mvendorid to a target_ulong var 'reg' and
+>>>> use it as input for kvm_set_one_reg(). Here's the result with this patch
+>>>> applied and using the same QEMU command line:
+>>>>
+>>>>    # cat /proc/cpuinfo
+>>>> processor	: 0
+>>>> hart		: 0
+>>>> isa		: rv64imafdc_zicbom_zicboz_zihintpause_zbb_sstc
+>>>> mmu		: sv57
+>>>> mvendorid	: 0xcd
+>>>> marchid		: 0xab
+>>>> mimpid		: 0xef
+>>>>
+>>>> This bug affects only the generic (rv64) CPUs when running with KVM in a
+>>>> 64 bit env since the 'host' CPU does not allow the machine IDs to be
+>>>> changed via command line.
+>>>>
+>>>> Fixes: 1fb5a622f7 ("target/riscv: handle mvendorid/marchid/mimpid for KVM CPUs")
+>>>> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+>>>> ---
+>>>>    target/riscv/kvm.c | 9 ++++++++-
+>>>>    1 file changed, 8 insertions(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
+>>>> index 9d8a8982f9..b1fd2233c0 100644
+>>>> --- a/target/riscv/kvm.c
+>>>> +++ b/target/riscv/kvm.c
+>>>> @@ -852,12 +852,19 @@ void kvm_arch_init_irq_routing(KVMState *s)
+>>>>    static int kvm_vcpu_set_machine_ids(RISCVCPU *cpu, CPUState *cs)
+>>>>    {
+>>>>        CPURISCVState *env = &cpu->env;
+>>>> +    target_ulong reg;
+>>>
+>>> We can use the type of cfg since KVM just gets an address and uses the
+>>> KVM register type to determine the size. So here,
+>>>
+>>>    uint32_t reg = cpu->cfg.mvendorid;
+>>>
+>>> and then...
+>>>
+>>>>        uint64_t id;
+>>>>        int ret;
+>>>>        id = kvm_riscv_reg_id(env, KVM_REG_RISCV_CONFIG,
+>>>>                              KVM_REG_RISCV_CONFIG_REG(mvendorid));
+>>>> -    ret = kvm_set_one_reg(cs, id, &cpu->cfg.mvendorid);
+>>>> +    /*
+>>>> +     * cfg.mvendorid is an uint32 but a target_ulong will
+>>>> +     * be written. Assign it to a target_ulong var to avoid
+>>>> +     * writing pieces of other cpu->cfg fields in the reg.
+>>>> +     */
+>>>
+>>> ...we don't need this comment since we're not doing anything special.
+>>
+>> I tried it out and it doesn't seem to work. Here's the result:
+>>
+>> / # cat /proc/cpuinfo
+>> processor	: 0
+>> hart		: 0
+>> isa		: rv64imafdc_zicbom_zicboz_zihintpause_zbb_sstc
+>> mmu		: sv57
+>> mvendorid	: 0xaaaaaa000000cd
+>> marchid		: 0xab
+>> mimpid		: 0xef
+>>
+>>
+>> The issue here is that the kernel considers 'mvendorid' as an unsigned long (or
+>> what QEMU calls target_ulong). kvm_set_one_reg() will write an unsigned long
+>> regardless of the uint32_t typing of 'reg', meaning that it'll end up writing
+>> 32 bits of uninitialized stuff from the stack.
+> 
+> Indeed, I managed to reverse the problem in my head. We need to to worry
+> about KVM's notion of the type, not QEMU's. I feel like we still need some
+> sort of helper, but one that takes the type of the KVM register into
+> account. KVM_REG_RISCV_CONFIG registers are KVM ulongs, which may be
+> different than QEMU's ulongs, if we ever supported 32-bit userspace on
+> 64-bit kernels. Also, not all KVM register types are ulong, some are
+> explicitly u32s and others u64s. I see kvm_riscv_reg_id() is used to try
+> and get the right KVM reg size set, but it's broken for RISCV_FP_F_REG(),
+> since those are all u32s, even when KVM has 64-bit ulong (I guess nobody
+> is testing get/set-one-reg with F registers using that helper, otherwise
+> we'd be getting EINVAL from KVM). And KVM_REG_RISCV_FP_D_REG(fcsr) is also
+> broken and RISCV_TIMER_REG() looks broken with 32-bit KVM, since it should
+> always be u64. I guess all that stuff needs an audit.
+> 
+> So, I think we need a helper that has a switch on the KVM register type
+> and provides the right sized buffer for each case.
+
+Is this a suggestion to do this right now in this patch? I didn't understand
+whether you're ok with the fix as is for 8.1 or if you want more things done
+right away.
 
 
-r~
+Thanks,
 
+Daniel
+
+> 
+> Thanks,
+> drew
+> 
+> 
+>>
+>> target_ulong seems that the right choice here. We could perhaps work with
+>> uint64_t (other parts of the code does that) but target_ulong is nicer with
+>> 32-bit setups.
+>>
+>>
+>> Thanks,
+>>
+>> Daniel
+>>
+>>>
+>>>> +    reg = cpu->cfg.mvendorid;
+>>>> +    ret = kvm_set_one_reg(cs, id, &reg);
+>>>>        if (ret != 0) {
+>>>>            return ret;
+>>>>        }
+>>>> -- 
+>>>> 2.41.0
+>>>>
+>>>
+>>> We should audit and fix all uses of &cpu->cfg.* with KVM ioctls. We can
+>>> also consider introducing wrappers like
+>>>
+>>> #define kvm_set_one_reg_safe(cs, id, addr)	\
+>>> ({						\
+>>> 	typeof(*(addr)) _addr = *(addr);	\
+>>> 	kvm_set_one_reg(cs, id, &_addr)		\
+>>> })
+>>>
+>>> Thanks,
+>>> drew
 
