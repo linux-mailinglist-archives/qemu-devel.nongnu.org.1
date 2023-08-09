@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B327776BB1
+	by mail.lfdr.de (Postfix) with ESMTPS id 82988776BB0
 	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 00:05:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTrI4-0007SC-G1; Wed, 09 Aug 2023 18:04:28 -0400
+	id 1qTrID-0007V3-MU; Wed, 09 Aug 2023 18:04:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTrHu-0007Rc-Bq
- for qemu-devel@nongnu.org; Wed, 09 Aug 2023 18:04:18 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ id 1qTrI8-0007Ul-EH
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 18:04:32 -0400
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTrHs-0008NQ-HB
- for qemu-devel@nongnu.org; Wed, 09 Aug 2023 18:04:18 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-1bc8a2f71eeso2924175ad.0
- for <qemu-devel@nongnu.org>; Wed, 09 Aug 2023 15:04:15 -0700 (PDT)
+ id 1qTrI5-0008Rz-LG
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 18:04:31 -0400
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-68783b2e40bso200643b3a.3
+ for <qemu-devel@nongnu.org>; Wed, 09 Aug 2023 15:04:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691618654; x=1692223454;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=linaro.org; s=google; t=1691618668; x=1692223468;
+ h=content-transfer-encoding:in-reply-to:references:to:from
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=JpSzuVjrJ9U8iOviJPkno+RABJdCzE0hv+vIKUsBA4k=;
- b=BBudCVgNRtKvjcT0FPB75/zsm4eGjQB1WM4vJrYrstePpWSPwamkgAveNAWkW7LcjX
- oA/96/Aiv+EGkzN2G8688U147DP8fXt89RIEU8yhun8sqrTpsMqiFW8bxveXzRGK3Lib
- 4DP8NcWkAGNmMcXWmOA7kIE8cMl2yyVykIVlI6GWW1QsupWs9iwB5Or1mMrm/PLWVUgM
- 5TEUBsQz3Wo0JDXEAQN04WW7Am3SfKp+Ut5s+tdk92FAjYf4QblLamoNQN/t+IxG1wzg
- LIbaWdxAM8/XaNQBkBVM07QCD/8SPbwuD38p0eafIQjZmMYksg/v2DmIyb14VJ/F5XSN
- NThw==
+ bh=FJDberCdVl5PjRa/JnExc4W9YFuE33Zx/fA0UykSCN8=;
+ b=vH4zChKNtQrlAs0BX60NAww1emnXV1xmhzgUUAFw1+bwwPBdnBrf7EyoCiP5aVSSTL
+ j2OmP0lfylVOZFsFps0OeVtFWn81E2D1xF58dd309aLRtHLf94LfCzxZ6OJuLJdj+S0k
+ 4h8pioBuNcaaXmdynpONKQtkh1nT4VcpIlekLjR6ISL6kzYuphs82esc30QNixtDOaDa
+ HLNMrGIsx1joso3jfabthwn1m/adqtAe7Uxwp9lrkmKN4rEaXiqjvaq03t0AZzcXsfkT
+ iQqIac4vCWBGPTfekMp29pybl8B74jt9XobvcoIdlrSC4eq8vDtkp1+iCjy8yx+KlAEV
+ vTjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691618654; x=1692223454;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20221208; t=1691618668; x=1692223468;
+ h=content-transfer-encoding:in-reply-to:references:to:from
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=JpSzuVjrJ9U8iOviJPkno+RABJdCzE0hv+vIKUsBA4k=;
- b=Or6TVl6MaeCzDnlkLC2DHrIujbflf6QCUCBHlLSdP8ucXRKIqJzqE9e4RQeRnufato
- REScasBVxTzoAdqv2ajwAUJedeotcCiPIxwigNIaOKNEM3ykcLQ9fAUOisRNsSNtxuoT
- CgoF1Dq3gNMesai99mP21B0f9rNe+3XBMUXxlifVcejl1fuJjXNmWw7hokAaQZ0HGnUC
- AJE8e8ZHVaO4MWlqPScItTsvZmOaAc78vtJmA64JMkDmc+s7ZgiWcc4K03q5D8Gj+WwF
- Io4w3vXdOdGW2S/7I4DQBqMfA1n+v7BIsqoXHoZgyIS59wuRC3w2CfsskaO4pkLqijed
- qQ3Q==
-X-Gm-Message-State: AOJu0Ywe4B5PjNPIdts/gnuN96vhebRmcrXA01vHUt1fJtpaLxl21MDx
- H2/QXcEbc90jlhsr6FrNagR9pg==
-X-Google-Smtp-Source: AGHT+IGBcOfmmB3h/eM3eZ2EnM/iutza4m++1rgXAb3yVCSS6oToPmwqh1YF0t4qIo6nN9URc/4FwQ==
-X-Received: by 2002:a17:902:c40b:b0:1bc:921c:eb48 with SMTP id
- k11-20020a170902c40b00b001bc921ceb48mr477654plk.34.1691618653980; 
- Wed, 09 Aug 2023 15:04:13 -0700 (PDT)
+ bh=FJDberCdVl5PjRa/JnExc4W9YFuE33Zx/fA0UykSCN8=;
+ b=STrdA1QmiL4IvTnYD35firLOirU3muKqs3FjBMgFu/xcQJts18Mys+1mm1cWpB6FcX
+ T1GqStWXfr5W6lV2UyHCb2TtO2xl0lCWpAC0Xmi7mkVpqicpj5czv2DuSdY4JCDJGFlY
+ p3REG+HCnigMrHY9EzVycXwMt/XZc1IW2d2d9UQTDUaWv7kVrKWH+188hK07M0sOkvG2
+ u9gBcpgo1xb3wLZxnwtJ4gQm+2u+6AtBnBRw77qZ3RUzfWYeHKedVDwWCttNWuES8/V8
+ urtFOwgWBx+H3LSuWtG2KhNGOyA55bDU7+GGIGd3fMEWEVmOoFA+XLzm5RTnfyqmrtQM
+ 2RXw==
+X-Gm-Message-State: AOJu0YyT6DnMLj5HMSGJ/gQn8r/VMlnzuJU/vL53woUTGdncsZh2bfL4
+ G8rDZbSA1lUsnUipZ/pXBTR2leOf8pXoVBYCzKY=
+X-Google-Smtp-Source: AGHT+IHWlmJos5cMJb9GV3RK72IDpQMsJnxPYXFXYhn7Vc/X1WgvLQGaZmoVaqc3zrtzV6Vm0GtVxQ==
+X-Received: by 2002:a17:903:1206:b0:1b3:cf98:a20b with SMTP id
+ l6-20020a170903120600b001b3cf98a20bmr476688plh.54.1691618668243; 
+ Wed, 09 Aug 2023 15:04:28 -0700 (PDT)
 Received: from ?IPV6:2602:47:d483:7301:6bf0:9674:6ac4:f74c?
  ([2602:47:d483:7301:6bf0:9674:6ac4:f74c])
  by smtp.gmail.com with ESMTPSA id
- q10-20020a170902daca00b001b03b7f8adfsm17239plx.246.2023.08.09.15.04.13
+ q14-20020a17090311ce00b001b51b3e84cesm19835plh.166.2023.08.09.15.04.27
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 09 Aug 2023 15:04:13 -0700 (PDT)
-Message-ID: <095cf8cf-f0b4-02ad-b555-e52e67343b4e@linaro.org>
-Date: Wed, 9 Aug 2023 15:04:11 -0700
+ Wed, 09 Aug 2023 15:04:27 -0700 (PDT)
+Message-ID: <7e43dc9a-f57f-fdfd-fb0e-8941908a46c5@linaro.org>
+Date: Wed, 9 Aug 2023 15:04:26 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PULL 0/2] hw/nvme: more fixes
+Subject: Re: [PULL 0/6] linux-user late fixes
 Content-Language: en-US
-To: Klaus Jensen <its@irrelevant.dk>, qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, Keith Busch <kbusch@kernel.org>,
- Klaus Jensen <k.jensen@samsung.com>
-References: <20230809133909.45818-4-its@irrelevant.dk>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230809133909.45818-4-its@irrelevant.dk>
+To: qemu-devel@nongnu.org
+References: <20230809175006.242479-1-richard.henderson@linaro.org>
+In-Reply-To: <20230809175006.242479-1-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -61
 X-Spam_score: -6.2
 X-Spam_bar: ------
@@ -96,25 +95,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/9/23 06:39, Klaus Jensen wrote:
-> From: Klaus Jensen<k.jensen@samsung.com>
+On 8/9/23 10:50, Richard Henderson wrote:
+> The following changes since commit 32e07fddc6d989dc5fdff4f9c9e47cb1f3911904:
 > 
-> Hi,
-> 
-> The following changes since commit a8fc5165aab02f328ccd148aafec1e59fd1426eb:
-> 
->    Merge tag 'nvme-next-pull-request' ofhttps://gitlab.com/birkelund/qemu  into staging (2023-08-08 16:39:20 -0700)
+>    Merge tag 'pull-lu-20230808' ofhttps://gitlab.com/rth7680/qemu  into staging (2023-08-08 14:10:07 -0700)
 > 
 > are available in the Git repository at:
 > 
->    https://gitlab.com/birkelund/qemu.git  tags/nvme-fixes-pull-request
+>    https://gitlab.com/rth7680/qemu.git  tags/pull-lu-20230809
 > 
-> for you to fetch changes up to 3439ba9c5da943d96f7a3c86e0a7eb2ff48de41c:
+> for you to fetch changes up to b8002058c45a50d893c51cf62ec96c70128fc1eb:
 > 
->    hw/nvme: fix null pointer access in ruh update (2023-08-09 15:32:32 +0200)
+>    linux-user: Fix openat() emulation to correctly detect accesses to /proc (2023-08-09 09:31:30 -0700)
 > 
 > ----------------------------------------------------------------
-> hw/nvme: fixes
+> linux-user: Fixes for mmap syscall emulation
+> linux-user: Correctly detect access to /proc in openat
+> util/interval-tree: Check root for null in interval_tree_iter_first
+> tests/tcg: Disable filename test for info proc mappings
 
 Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
 
