@@ -2,95 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ECAF777759
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 13:40:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 777FC777757
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 13:40:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qU3hE-0007j0-78; Thu, 10 Aug 2023 07:19:17 -0400
+	id 1qU3iQ-0008Ax-DV; Thu, 10 Aug 2023 07:20:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qU3h4-0007iJ-AC
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 07:19:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qU3h0-00085J-Cz
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 07:19:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691666340;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=pp+EZx2Jtbnhm6RJgieq1zEP7WiMD8qk35ak2B53/xY=;
- b=fMgcDaYP1gEn3qNWnYWu6L6iHf8MISloqdW8BCNlACMvrU/D2PHDKa9vIW4fOglGCBhB/b
- jx23AAo2FVZdHzc7lBBd2N6xl173NwretCvqTSCI9RtbDaXzCSxmchDRDQbNT/n0+8IghR
- 4RBAywW8S9I+UYY5142jYqhrY4APwSo=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-153-6D33pO0SMqayj4JqFiC9aQ-1; Thu, 10 Aug 2023 07:18:59 -0400
-X-MC-Unique: 6D33pO0SMqayj4JqFiC9aQ-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-3fe216798e9so5393805e9.3
- for <qemu-devel@nongnu.org>; Thu, 10 Aug 2023 04:18:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691666338; x=1692271138;
- h=content-transfer-encoding:in-reply-to:organization:from:references
- :cc:to:content-language:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=pp+EZx2Jtbnhm6RJgieq1zEP7WiMD8qk35ak2B53/xY=;
- b=kDvhKnNgLfpszRDwV6tcm7TIqkLPm5I548GkGNfpjrTh4lloucbef3YroWoWhFII1h
- N5BFJ1F6hN7YW8d/D39MX5EyCrP7icurVKOnJiwgMTZ/7saHkQiT6GDgEoqjsaSVqxQM
- vC1/3iQbrrcbssS3bSJlX+MKQh7R52USJmqAy9v/4deaIi9oICI46PB+11jyzEAUdItP
- x3zOQJuYHrnsBTVxe0cqWfRVCF0aEGun3lKXf7DZWaDKp4KqexsDrCzZ317FIOl7QKNR
- BpqFcwmMmkaYACH4OLVZeWa9uJqjMeN/0SwfdcEmKnM9A0CM/fWdJtBYi2lijpPLuefA
- dyuQ==
-X-Gm-Message-State: AOJu0YzDnsekjpCNfSmZaU7PNmoi/bREaI20wxuXEsse2QOQsr3WHFqW
- Hi+1jwtTCCirem24lJK0nsgI8knoeRBCYt6CPB3N/d4WkzjIMpeUFKSXHxkcx9+0p+lS6WLeP6A
- UmtQkVkZaevZ2rt8=
-X-Received: by 2002:a05:600c:2110:b0:3fe:22a9:910 with SMTP id
- u16-20020a05600c211000b003fe22a90910mr1761715wml.14.1691666337886; 
- Thu, 10 Aug 2023 04:18:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEqqLYrhI1TLVlMgqRxwE6UMmFmmJCD2RU7DuOMU6qfaU+z/Yc6vZq/oj7pb2lTeyFRbjgyyA==
-X-Received: by 2002:a05:600c:2110:b0:3fe:22a9:910 with SMTP id
- u16-20020a05600c211000b003fe22a90910mr1761696wml.14.1691666337468; 
- Thu, 10 Aug 2023 04:18:57 -0700 (PDT)
-Received: from ?IPV6:2a09:80c0:192:0:5dac:bf3d:c41:c3e7?
- ([2a09:80c0:192:0:5dac:bf3d:c41:c3e7])
- by smtp.gmail.com with ESMTPSA id
- f21-20020a1c6a15000000b003fc02218d6csm4657610wmc.25.2023.08.10.04.18.56
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 10 Aug 2023 04:18:57 -0700 (PDT)
-Message-ID: <41f42c91-bcbe-cba6-c987-ae34d0879a9d@redhat.com>
-Date: Thu, 10 Aug 2023 13:18:56 +0200
+ (Exim 4.90_1) (envelope-from <lixianglai@loongson.cn>)
+ id 1qU3iH-00086S-HW
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 07:20:23 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <lixianglai@loongson.cn>) id 1qU3iD-0000Jw-1i
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 07:20:20 -0400
+Received: from loongson.cn (unknown [10.20.42.32])
+ by gateway (Coremail) with SMTP id _____8AxXOrsx9Rkqp8UAA--.17201S3;
+ Thu, 10 Aug 2023 19:20:12 +0800 (CST)
+Received: from [10.20.42.32] (unknown [10.20.42.32])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8CxWM3qx9RkbwxTAA--.12538S3; 
+ Thu, 10 Aug 2023 19:20:10 +0800 (CST)
+Subject: Re: [PATCH] roms: Support compile the efi bios for loongarch
+To: bibo mao <maobibo@loongson.cn>, qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
+ <philmd@linaro.org>, Gerd Hoffmann <kraxel@redhat.com>,
+ Xiaojuan Yang <yangxiaojuan@loongson.cn>, Song Gao <gaosong@loongson.cn>
+References: <260307952ffe5382a55d66a4999034490e04f7df.1691653307.git.lixianglai@loongson.cn>
+ <faa7b333-6e9e-f0ff-abe6-db773682fdef@loongson.cn>
+From: lixianglai <lixianglai@loongson.cn>
+Message-ID: <a0bc49ea-f3ee-ce9a-7b48-48022174892c@loongson.cn>
+Date: Thu, 10 Aug 2023 19:20:10 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: CXL volatile memory is not listed
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Maverickk 78 <maverickk1778@gmail.com>, Igor Mammedov <imammedo@redhat.com>
-Cc: QEMU Developers <qemu-devel@nongnu.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>
-References: <CALfBBTtUtydebmJuh6JZ5RAXZfx5OgJ+RCug1apbZa4mm17rJQ@mail.gmail.com>
- <f64d5006-ae77-cc10-270a-0c0fc6e3a0ef@linaro.org>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-In-Reply-To: <f64d5006-ae77-cc10-270a-0c0fc6e3a0ef@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+In-Reply-To: <faa7b333-6e9e-f0ff-abe6-db773682fdef@loongson.cn>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
+Content-Language: en-US
+X-CM-TRANSID: AQAAf8CxWM3qx9RkbwxTAA--.12538S3
+X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj93XoW3Ww4rKr1fAFy5CFy3AF17CFX_yoW7GFyfp3
+ ykAF1xCr4xJryjvr4xGa4rXFW3Xr1kKr15Xa95tryUAasrGr18XF48t3Z8WF47Z3WUKFW8
+ ZrykK3W09a10qFXCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+ xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
+ 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv
+ 67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
+ AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
+ F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GF
+ ylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
+ xVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
+ 1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU1CP
+ fJUUUUU==
+Received-SPF: pass client-ip=114.242.206.163;
+ envelope-from=lixianglai@loongson.cn; helo=mail.loongson.cn
+X-Spam_score_int: -40
+X-Spam_score: -4.1
 X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-2.156, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-2.156,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,48 +85,149 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10.08.23 12:59, Philippe Mathieu-Daudé wrote:
-> Hi,
-> 
-> Cc'ing Igor and David.
-> 
-> On 9/8/23 00:51, Maverickk 78 wrote:
->> Hello,
+Hi, BiBo
+
+On 8/10/23 5:58 PM, bibo mao wrote:
+> Xianglai,
+>
+> I reply inline.
+>
+> 在 2023/8/10 15:42, xianglai li 写道:
+>> 1.Add edk2-platform submodule
+>> 2.Added loongarch UEFI BIOS support to compiled scripts.
+> The description is somewhat too simple, it should be paragraph.
+
+
+Okay, I'll describe it in detail in the next version.
+
+
+>> 3.The cross-compilation toolchain on x86 can be obtained from the link below:
+>> https://github.com/loongson/build-tools/tree/2022.09.06
+> Fedora38 has LoongArch cross-compiler rpm package, maybe we do not need this.
+
+Okay, I'll remove it in the next version.
+
+
+>> Cc: Paolo Bonzini <pbonzini@redhat.com>
+>> Cc: "Marc-André Lureau" <marcandre.lureau@redhat.com>
+>> Cc: "Daniel P. Berrangé" <berrange@redhat.com>
+>> Cc: Thomas Huth <thuth@redhat.com>
+>> Cc: "Philippe Mathieu-Daudé" <philmd@linaro.org>
+>> Cc: Gerd Hoffmann <kraxel@redhat.com>
+>> Cc: Xiaojuan Yang <yangxiaojuan@loongson.cn>
+>> Cc: Song Gao <gaosong@loongson.cn>
+>> Cc: Bibo Mao <maobibo@loongson.cn>
+>> Signed-off-by: xianglai li <lixianglai@loongson.cn>
+>> ---
+>>   .gitmodules            |  3 +++
+>>   meson.build            |  2 +-
+>>   pc-bios/meson.build    |  2 ++
+>>   roms/edk2-build.config | 14 ++++++++++++++
+>>   roms/edk2-build.py     |  4 ++--
+>>   roms/edk2-platforms    |  1 +
+>>   6 files changed, 23 insertions(+), 3 deletions(-)
+>>   create mode 160000 roms/edk2-platforms
 >>
->> I am running qemu-system-x86_64
->>
->> qemu-system-x86_64 --version
->> QEMU emulator version 8.0.92 (v8.1.0-rc2-80-g0450cf0897)
->>
->> qemu-system-x86_64 \
->> -m 2G,slots=4,maxmem=4G \
->> -smp 4 \
->> -machine type=q35,accel=kvm,cxl=on \
->> -enable-kvm \
->> -nographic \
->> -device pxb-cxl,id=cxl.0,bus=pcie.0,bus_nr=52 \
->> -device cxl-rp,id=rp0,bus=cxl.0,chassis=0,port=0,slot=0 \
->> -object memory-backend-file,id=mem0,mem-path=/tmp/mem0,size=1G,share=true \
->> -device cxl-type3,bus=rp0,volatile-memdev=mem0,id=cxl-mem0 \
->> -M cxl-fmw.0.targets.0=cxl.0,cxl-fmw.0.size=1G
->>
->>
->> I was expecting the CXL memory to be listed in "System Ram", the lsmem
->> shows only 2G memory which is System RAM, it's not listing the CXL
->> memory.
+>> diff --git a/.gitmodules b/.gitmodules
+>> index 73cae4cd4d..0cb57123fa 100644
+>> --- a/.gitmodules
+>> +++ b/.gitmodules
+>> @@ -43,3 +43,6 @@
+>>   [submodule "tests/lcitool/libvirt-ci"]
+>>   	path = tests/lcitool/libvirt-ci
+>>   	url = https://gitlab.com/libvirt/libvirt-ci.git
+>> +[submodule "roms/edk2-platforms"]
+>> +	path = roms/edk2-platforms
+>> +	url = https://github.com/tianocore/edk2-platforms.git
+>> diff --git a/meson.build b/meson.build
+>> index 98e68ef0b1..b398caf2ce 100644
+>> --- a/meson.build
+>> +++ b/meson.build
+>> @@ -153,7 +153,7 @@ if targetos != 'darwin'
+>>     modular_tcg = ['i386-softmmu', 'x86_64-softmmu']
+>>   endif
+>>   
+>> -edk2_targets = [ 'arm-softmmu', 'aarch64-softmmu', 'i386-softmmu', 'x86_64-softmmu' ]
+>> +edk2_targets = [ 'arm-softmmu', 'aarch64-softmmu', 'i386-softmmu', 'x86_64-softmmu', 'loongarch64-softmmu' ]
+>>   unpack_edk2_blobs = false
+>>   foreach target : edk2_targets
+>>     if target in target_dirs
+>> diff --git a/pc-bios/meson.build b/pc-bios/meson.build
+>> index a7224ef469..fc73222b6c 100644
+>> --- a/pc-bios/meson.build
+>> +++ b/pc-bios/meson.build
+>> @@ -9,6 +9,8 @@ if unpack_edk2_blobs
+>>       'edk2-i386-vars.fd',
+>>       'edk2-x86_64-code.fd',
+>>       'edk2-x86_64-secure-code.fd',
+>> +    'edk2-loongarch64-code.fd',
+>> +    'edk2-loongarch64-vars.fd',
+>>     ]
+>>   
+>>     foreach f : fds
+>> diff --git a/roms/edk2-build.config b/roms/edk2-build.config
+>> index 66ef9ffcb9..7960c4c2c5 100644
+>> --- a/roms/edk2-build.config
+>> +++ b/roms/edk2-build.config
+>> @@ -1,5 +1,6 @@
+>>   [global]
+>>   core = edk2
+>> +pkgs = edk2-platforms
+>>   
+>>   ####################################################################################
+>>   # options
+>> @@ -122,3 +123,16 @@ plat = RiscVVirtQemu
+>>   dest = ../pc-bios
+>>   cpy1 = FV/RISCV_VIRT.fd  edk2-riscv.fd
+>>   pad1 = edk2-riscv.fd     32m
+>> +
+>> +####################################################################################
+>> +# LoongArch64
+>> +
+>> +[build.loongach64.qemu]
+>> +conf = Platform/Loongson/LoongArchQemuPkg/Loongson.dsc
+>> +arch = LOONGARCH64
+>> +plat = LoongArchQemu
+>> +dest = ../pc-bios
+>> +cpy1 = FV/QEMU_EFI.fd  edk2-loongarch64-code.fd
+>> +pad1 = edk2-loongarch64-code.fd     4m
+>> +cpy2 = FV/QEMU_VARS.fd  edk2-loongarch64-vars.fd
+>> +pad2 = edk2-loongarch64-vars.fd     16m
+>> diff --git a/roms/edk2-build.py b/roms/edk2-build.py
+>> index 870893f7c8..dbd641e51e 100755
+>> --- a/roms/edk2-build.py
+>> +++ b/roms/edk2-build.py
+>> @@ -269,8 +269,8 @@ def prepare_env(cfg):
+>>       # for cross builds
+>>       if binary_exists('arm-linux-gnu-gcc'):
+>>           os.environ['GCC5_ARM_PREFIX'] = 'arm-linux-gnu-'
+>> -    if binary_exists('loongarch64-linux-gnu-gcc'):
+>> -        os.environ['GCC5_LOONGARCH64_PREFIX'] = 'loongarch64-linux-gnu-'
+>> +    if binary_exists('loongarch64-unknown-linux-gnu-gcc'):
+>> +        os.environ['GCC5_LOONGARCH64_PREFIX'] = 'loongarch64-unknown-linux-gnu-'
+> I think loongarch64-unknown-linux- is not necessary here, loongarch64-linux-gnu-
+> is default prefix on Fedora38, else there will be too many prefix names :)
 
-We are talking about the memory via inside the guest, right?
 
-In the guest, that memory most probably has to be added as "System RAM" 
-explicitly using the dax/kmem driver.
+Ok!I'll fix it in the next version.
 
-https://lwn.net/Articles/922944/
+Thanks,
 
-Contains some details on how to use "daxctl reconfigure-device".
+xianglai.
 
--- 
-Cheers,
 
-David / dhildenb
+>
+> Regards
+> Bibo Mao
+>>   
+>>       hostarch = os.uname().machine
+>>       if binary_exists('aarch64-linux-gnu-gcc') and hostarch != 'aarch64':
+>> diff --git a/roms/edk2-platforms b/roms/edk2-platforms
+>> new file mode 160000
+>> index 0000000000..84ccada592
+>> --- /dev/null
+>> +++ b/roms/edk2-platforms
+>> @@ -0,0 +1 @@
+>> +Subproject commit 84ccada59257a8151a592a416017fbb03b8ed3cf
 
 
