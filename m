@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12CFD7778DE
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 14:55:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A1AD77796A
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 15:18:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qU5BJ-0004Fe-9Z; Thu, 10 Aug 2023 08:54:25 -0400
+	id 1qU5XN-0003Lo-7l; Thu, 10 Aug 2023 09:17:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lixianglai@loongson.cn>)
- id 1qU5BF-0004F6-QI
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 08:54:21 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <lixianglai@loongson.cn>) id 1qU5BB-0007xq-Og
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 08:54:21 -0400
-Received: from loongson.cn (unknown [10.20.42.32])
- by gateway (Coremail) with SMTP id _____8Dxg_Dy3dRkrqwUAA--.44874S3;
- Thu, 10 Aug 2023 20:54:10 +0800 (CST)
-Received: from [10.20.42.32] (unknown [10.20.42.32])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8Ax98zv3dRkeClTAA--.56422S3; 
- Thu, 10 Aug 2023 20:54:07 +0800 (CST)
-Subject: Re: [PATCH] roms: Support compile the efi bios for loongarch
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?=
- <berrange@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>
-Cc: =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- Xiaojuan Yang <yangxiaojuan@loongson.cn>, Song Gao <gaosong@loongson.cn>,
- Bibo Mao <maobibo@loongson.cn>
-References: <260307952ffe5382a55d66a4999034490e04f7df.1691653307.git.lixianglai@loongson.cn>
- <41a215d5-4ae6-dfa3-a61e-c21fd8ca311d@linaro.org>
-From: lixianglai <lixianglai@loongson.cn>
-Message-ID: <0cc3d20d-e849-9e2d-7560-fd694a412032@loongson.cn>
-Date: Thu, 10 Aug 2023 20:54:07 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qU5XL-0003LY-2P
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 09:17:11 -0400
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qU5XJ-0007Hg-As
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 09:17:10 -0400
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-52256241c66so1877236a12.1
+ for <qemu-devel@nongnu.org>; Thu, 10 Aug 2023 06:17:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1691673428; x=1692278228;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=XvznmDeo1oK14c9Q6GLwEOoHv2gSi+p2PJZSwYjMG3M=;
+ b=IZSghdtfkWQ72+6+i7kIB9azioGJUSy62LgBbW6TK13LJEStKXrST7GZDQSZEjyLac
+ IzDSPKvEHDu+LEURTHCTHSrZWWXBDVsrhwbQOy6qwqBM85wL9VvKEggQJiVqPehgzFoj
+ riDEn1l62lbVcRo1VEmEQAnMiudaBlGPOUPEhSfmDGlWhvcT0kT+YV2gOEsYa3YwMO25
+ /nQcfUe5+QCLj8buGQp1VbQd2in09Mqe1tmGxN//tFF2ntaRXYX4NAcfwbVH4bn2hB6O
+ RS/r+gGT7rgMLl3LkoQzFMGP2AAIOZnGdbcNp4Ta6pVVxgzfG1C784f29fiyMF2VpQjB
+ lkIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1691673428; x=1692278228;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=XvznmDeo1oK14c9Q6GLwEOoHv2gSi+p2PJZSwYjMG3M=;
+ b=G+k8gFsD46wZHuMGQ2Ko4j8AbElJqyfgjH6G46mR12wRIm8759b6gr5rT4Chv4ARxH
+ sTBkf0wGspcQ+WE7cUaFdKrm2TeoFhlLYHrdMLlgccw/731i4eYxfDeANUrBE8bKw3Ts
+ O/9cSuYrhLUxrh5BU3kqvQMSOTzgawe+zVGJW7XU5BViI2uI0ZaGkDRrmeL0Ysb/YnOi
+ OzyKSe/l+6HLVGFFr2Pl4dZIfRW2Q4iFQC1VUwxGbLvHW24ZbO/HD1wzmd8ti1ATW+Jq
+ qvmXP+BAZVPzUUYfcu3ATXdSGtb6fFLVF83sTSh4NZiNrFRJ8DHkCvcGp53sIem7QWfK
+ vMVw==
+X-Gm-Message-State: AOJu0YyDF7eJhPNpCfqaXRUfZuBeIDtVzUXoSBdJt94jq7kT3CUyYlGn
+ 7gDSgZE1FOZOJ6ig5JyWOwq57/+wftMsdW7R4RiJCA==
+X-Google-Smtp-Source: AGHT+IH6mxa4nWlqPUoWlLZfzqhiRswbchZZ8safXPe41J94Euhy7TseSP72ugkkbxKZxLrT/yLgezE82LvFULarrwM=
+X-Received: by 2002:a05:6402:1ac9:b0:523:e25:5656 with SMTP id
+ ba9-20020a0564021ac900b005230e255656mr2517110edb.5.1691673427593; Thu, 10 Aug
+ 2023 06:17:07 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <41a215d5-4ae6-dfa3-a61e-c21fd8ca311d@linaro.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-TRANSID: AQAAf8Ax98zv3dRkeClTAA--.56422S3
-X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBj93XoWxAF48AFyftr4rur45Gw4DGFX_yoW5Aw4Upa
- n7GrW5CrZ7WrWktFs3W3WxZFy7ZrsYq398Xan3tFyUAas8Xw1qvr1jvF1j9FnrXw48KF4j
- qry0g3W09a45XFXCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUBvb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
- xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
- 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv
- 67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
- AlzVAYIcxG8wCY1x0262kKe7AKxVWUAVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE
- 7xkEbVWUJVW8JwCFI7km07C267AKxVWUtVW8ZwC20s026c02F40E14v26r1j6r18MI8I3I
- 0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAI
- cVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcV
- CF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIE
- c7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07jbsqXUUUUU=
-Received-SPF: pass client-ip=114.242.206.163;
- envelope-from=lixianglai@loongson.cn; helo=mail.loongson.cn
-X-Spam_score_int: -40
-X-Spam_score: -4.1
-X-Spam_bar: ----
-X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-2.156,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20230809123706.1842548-1-jean-philippe@linaro.org>
+In-Reply-To: <20230809123706.1842548-1-jean-philippe@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 10 Aug 2023 14:16:56 +0100
+Message-ID: <CAFEAcA8wh35V4ivo2cMP6zUGgCDi6t9-AHS0FVfeLThvjHtV9A@mail.gmail.com>
+Subject: Re: [PATCH v3 0/6] target/arm: Fixes for RME
+To: Jean-Philippe Brucker <jean-philippe@linaro.org>
+Cc: richard.henderson@linaro.org, qemu-arm@nongnu.org, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,95 +84,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-On 8/10/23 7:34 PM, Philippe Mathieu-Daudé wrote:
-> Hi,
+On Wed, 9 Aug 2023 at 13:37, Jean-Philippe Brucker
+<jean-philippe@linaro.org> wrote:
 >
-> On 10/8/23 09:42, xianglai li wrote:
->> 1.Add edk2-platform submodule
->> 2.Added loongarch UEFI BIOS support to compiled scripts.
->> 3.The cross-compilation toolchain on x86 can be obtained from the 
->> link below:
->> https://github.com/loongson/build-tools/tree/2022.09.06
->>
->> Cc: Paolo Bonzini <pbonzini@redhat.com>
->> Cc: "Marc-André Lureau" <marcandre.lureau@redhat.com>
->> Cc: "Daniel P. Berrangé" <berrange@redhat.com>
->> Cc: Thomas Huth <thuth@redhat.com>
->> Cc: "Philippe Mathieu-Daudé" <philmd@linaro.org>
->> Cc: Gerd Hoffmann <kraxel@redhat.com>
->> Cc: Xiaojuan Yang <yangxiaojuan@loongson.cn>
->> Cc: Song Gao <gaosong@loongson.cn>
->> Cc: Bibo Mao <maobibo@loongson.cn>
->> Signed-off-by: xianglai li <lixianglai@loongson.cn>
->> ---
->>   .gitmodules            |  3 +++
->>   meson.build            |  2 +-
->>   pc-bios/meson.build    |  2 ++
->>   roms/edk2-build.config | 14 ++++++++++++++
->>   roms/edk2-build.py     |  4 ++--
->>   roms/edk2-platforms    |  1 +
->>   6 files changed, 23 insertions(+), 3 deletions(-)
->>   create mode 160000 roms/edk2-platforms
->>
->> diff --git a/.gitmodules b/.gitmodules
->> index 73cae4cd4d..0cb57123fa 100644
->> --- a/.gitmodules
->> +++ b/.gitmodules
->> @@ -43,3 +43,6 @@
->>   [submodule "tests/lcitool/libvirt-ci"]
->>       path = tests/lcitool/libvirt-ci
->>       url = https://gitlab.com/libvirt/libvirt-ci.git
->> +[submodule "roms/edk2-platforms"]
->> +    path = roms/edk2-platforms
->> +    url = https://github.com/tianocore/edk2-platforms.git
+> A few patches to fix RME support and allow booting a realm guest, based
+> on "[PATCH v2 00/15] target/arm/ptw: Cleanups and a few bugfixes"
+> https://lore.kernel.org/all/20230807141514.19075-1-peter.maydell@linaro.org/
 >
-> See "Topic 4" in [*].
+> Since v2:
 >
->  > We do need to be careful about GPL compliance (making sure users
->  > have the source if we provide them the compiled firmware blob
->  > for a GPL'd piece of firmware); but we don't need to necessarily
->  > ship the sources in the exact same tarball as the blob.
+> * Updated the comment in patch 5. I also removed the check for FEAT_RME,
+>   because as pointed out in "target/arm: Catch illegal-exception-return
+>   from EL3 with bad NSE/NS", the SCR_NSE bit can only be set with
+>   FEAT_RME enabled. Because of this additional change, I didn't add the
+>   Reviewed-by.
 >
->  > [...]
+> * Added an EL-change hook to patch 6, to update the timer IRQ
+>   when changing the security state. I was wondering whether the
+>   el_change function should filter security state changes, since we only
+>   need to update IRQ state when switching between Root and
+>   Secure/NonSecure. But with a small syscall benchmark exercising
+>   EL0-EL1 switch with FEAT_RME enabled, I couldn't see any difference
+>   with and without the el_change hook, so I kept it simple.
 >
->  > Users of QEMU from git don't get a great firmware experience either,
->  > since the firmware is in submodules, with all the usual git submodule
->  > problems.
+> * Also added the .raw_write callback for CNTHCTL_EL2.
 >
-> edk2-platforms.git use the same license than edk2.git, 
-> BSD-2-Clause-Patent, which is compatible with GPLv2. At least this is not
-> edk2-non-osi.git.
->
-> Still, we should discuss this generic issue before going forward with
-> this patch IMO.
->
+> v2: https://lore.kernel.org/all/20230802170157.401491-1-jean-philippe@linaro.org/
 
-Okay, I also think that there is no need to include EDK2 source code in 
-the tar ball,
+This didn't build for the linux-user targets. I squashed
+this into patch 6:
 
-you can package the git repository of QEMU for distribution,
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index 7df1f7600b1..d906d2b1caa 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -2169,9 +2169,11 @@ static void arm_cpu_realizefn(DeviceState *dev,
+Error **errp)
+         set_feature(env, ARM_FEATURE_VBAR);
+     }
 
-and compile the BIOS binary package before release,
+-    if (cpu_isar_feature(aa64_rme, cpu)) {
++#ifndef CONFIG_USER_ONLY
++    if (tcg_enabled() && cpu_isar_feature(aa64_rme, cpu)) {
+         arm_register_el_change_hook(cpu, &gt_rme_post_el_change, 0);
+     }
++#endif
 
-so that there is no need to include BIOS code,
+     register_cp_regs_for_features(cpu);
+     arm_cpu_register_gdb_regs_for_features(cpu);
 
-QEMU users can also get the source code of BIOS through Git Submodule.
+With that, I've applied the series to target-arm-for-8.2.
 
-This is only my opinion, and I look forward to the outcome of the final 
-discussion.
-
-
-Thanks,
-
-xianglai
-
-
-> Regards,
->
-> Phil.
->
-> [*] 
-> https://lore.kernel.org/qemu-devel/CAFEAcA_rziBuSwgJ9cg9m1PS5pNG58eyim+_P9hMu5nF7G70XA@mail.gmail.com/
-
+thanks
+-- PMM
 
