@@ -2,68 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42EB97773F6
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 11:15:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5971177743B
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 11:18:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qU1kN-000189-DV; Thu, 10 Aug 2023 05:14:23 -0400
+	id 1qU1nK-0002YW-73; Thu, 10 Aug 2023 05:17:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qU1kL-00017n-S5
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 05:14:21 -0400
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ id 1qU1n6-0002R3-0z
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 05:17:16 -0400
+Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qU1kK-0007MY-Bi
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 05:14:21 -0400
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-5234f2c6c1dso859415a12.1
- for <qemu-devel@nongnu.org>; Thu, 10 Aug 2023 02:14:19 -0700 (PDT)
+ id 1qU1n1-000062-TJ
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 05:17:09 -0400
+Received: by mail-ed1-x52c.google.com with SMTP id
+ 4fb4d7f45d1cf-5234f2c6c1dso863607a12.1
+ for <qemu-devel@nongnu.org>; Thu, 10 Aug 2023 02:17:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691658858; x=1692263658;
+ d=linaro.org; s=google; t=1691659026; x=1692263826;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=2ymAEecElLVLmcZKoFbNRjqEhJz0WRnXzYSGc5XvTyQ=;
- b=ur60bvk7dZtOxUIZNlDR8EgG0xVx8NWge3fsVbas26GeP7FTMxRsNPHwQ6qmb5UNpR
- eJZSnfkq7FAXersiLcRoQIzNg/kQ9+Kcbpqnzy1GmNlhTYUUvtFdfhs61xrgNllb36Kv
- CrJxvHRKrv6uT4xRu1uKwhInRarkseKoMHFt0LK0iR1J0t8p0CpXlX9+NSldCKrLBYba
- TvtceUO8uhvh0X6orgAXQREdJ3M+GTgnmmex2B3OS7CM7WaSWfpavRkh9i0SezpW7V41
- mvpwlem+PwCH/mFUyVsthvAtSP16TDXiPGQG2SfBRlVIpRJfQ1GV71ahEmZfIJFIP8Yl
- a6zw==
+ bh=cROljJL0g0JpQ4Zaq6M6Leunnnywaeha3HFbFJAjtMg=;
+ b=S/XS9zm1x+2jN7SIU5iFOPbaEVricnXezMf0e4+3Jk3PSeBw8g7XMXHHa4Yk2ZknHZ
+ IPfQvu/xhu3y6xwoyUtoVxCxb5yHO303bR/bqCgMmHVyL1ujAjIafM74wjoG2WLgenfH
+ R2Rd8chPDYyL+YXyWWsjpguPWp38QzsH2DJBERXXoVzKkB3Wn96UZPfXohbDz39mYnuu
+ Kz5enXx/xGeJzLKECh9N7eE4c+wA646fj5Ph18le1LSwmq7QIZVGeRqVvdNSEVophAr3
+ dRTz4dA8YItodDjVp0QYev+oiavBWrgKySDnj6lZmLIFhT2RclSvOE2+j4QqqqX1SQoH
+ eklQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691658858; x=1692263658;
+ d=1e100.net; s=20221208; t=1691659026; x=1692263826;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=2ymAEecElLVLmcZKoFbNRjqEhJz0WRnXzYSGc5XvTyQ=;
- b=LnZFyzgwY3Ten34l8ZHbmwhm/qa39MavYpqUwKhSisFQfMbfXqWpDiilomrwo9zv4P
- yiMbrpXMezKWJUlh4t9PExzQYM8jl/iDmOrA16E+AMnYuguA7e/NY7Us+HRiSFPY3Y90
- 180QVc1z3xfVMeWK4Mcj5wY+C2z3V9ntJ4JAUXoG69MMQ/B0LqdJ9/5eI8hcnpN4l7eX
- spdG1WxWB1NPhVjdUhet4I9v3Pw87JVHf3uSIqwp0THihwJ0B0HizHJUWb376Froo1Qv
- rTYfm1JOmB+gDsOFYIcALPilvYGWSUts1EFQArD+R7sT50ljn2/Lp5A1PZkrQyu9/bX8
- Rw5w==
-X-Gm-Message-State: AOJu0YxhZYuQOECiaeY8WNyX6iw/PnQ5b/HFDCsUFwKDrdLHQPOgNxVI
- m8NwLFNYp135hy6pVjhRQy+wsPZ97fhvxTCr0oE3ug==
-X-Google-Smtp-Source: AGHT+IGI4o5ty+wUntNAp6eHZPITCMSCjzfIkXZ/NYcJ8m3LvT6lEi3AKfXOlv8kMLlN0K3wD22vzIbOzXNperoJfek=
-X-Received: by 2002:aa7:d747:0:b0:523:4bee:43ed with SMTP id
- a7-20020aa7d747000000b005234bee43edmr1701665eds.18.1691658857991; Thu, 10 Aug
- 2023 02:14:17 -0700 (PDT)
+ bh=cROljJL0g0JpQ4Zaq6M6Leunnnywaeha3HFbFJAjtMg=;
+ b=ftHnXOi1m1l6mCeKnvD677Cxijg8lWKv0ZVKe7ZeRZjNYv+VXPCycz7UYrsWL1Qx3r
+ xfKwhb8V1qFxt8fub+7CglGpTS5kU5x4kVt6e+Iq+0QF7les9hsetyY2VEgGu9RB8tCF
+ iI7JYv6vl5kLJi+VugKEuGoh9vv5tSaQ4BYEhWAid4xMpjQME2ryd1IWAMq7it5o23iw
+ Lpozaw65DC9VUXppoJLzeGUxAaxDjryPAglobCYJ94nW/ssLuZa2h6O1BfxX8/PUEz5V
+ 8YlY3frTGyo9ErXl8iRwQqfCgN7t41MxpboVb9wHTLgWcpLXHrka/ZxRcjqeq+xnmrgc
+ STYA==
+X-Gm-Message-State: AOJu0YxVZrk0E8eA3vI5Rba3/Db9BbZYoNKlQr9Fgi4JkxjGbY9U3pP5
+ WKvyksXsrnbi3dOzZ+iEQXNEWPV1c3rbS/QGd/+sNQ==
+X-Google-Smtp-Source: AGHT+IHmQ661dkFC7OZs3KnPMZtq40GMZGTESGXOO7ORZFpSCpuOLwJLDTdMLPXy8bSHXnRCxIpUQxWLjpsKruCxr/g=
+X-Received: by 2002:aa7:d814:0:b0:522:2ba9:6fce with SMTP id
+ v20-20020aa7d814000000b005222ba96fcemr1816474edq.8.1691659026097; Thu, 10 Aug
+ 2023 02:17:06 -0700 (PDT)
 MIME-Version: 1.0
-References: <ZNQcQxcL/22LmrVP@p100>
- <129c90ab-14cc-04bb-493a-d4524b54c02f@linaro.org>
-In-Reply-To: <129c90ab-14cc-04bb-493a-d4524b54c02f@linaro.org>
+References: <20230810023548.412310-1-richard.henderson@linaro.org>
+ <20230810023548.412310-2-richard.henderson@linaro.org>
+In-Reply-To: <20230810023548.412310-2-richard.henderson@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 10 Aug 2023 10:14:06 +0100
-Message-ID: <CAFEAcA_yD37zTnXNkX+qg_WtUUQPJrk72UL4vusdJrnNHz4H7A@mail.gmail.com>
-Subject: Re: [PATCH][RFC] Add crash handler for qemu-linux-user
+Date: Thu, 10 Aug 2023 10:16:54 +0100
+Message-ID: <CAFEAcA_utXHbmNydvQZoNVciuj8XnTjRW8zdGRbruyr2QK70ZA@mail.gmail.com>
+Subject: Re: [PATCH 1/5] target/arm: Disable FEAT_TRF in neoverse-v1
 To: Richard Henderson <richard.henderson@linaro.org>
-Cc: Helge Deller <deller@gmx.de>, qemu-devel@nongnu.org, 
- "Daniel P. Berrange" <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-stable@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -86,24 +85,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 10 Aug 2023 at 02:28, Richard Henderson
+On Thu, 10 Aug 2023 at 03:36, Richard Henderson
 <richard.henderson@linaro.org> wrote:
 >
-> On 8/9/23 16:07, Helge Deller wrote:
-> > +            /* did qemu source code crashed? */
-> > +            if (unlikely(!h2g_valid(host_addr))) {
-> > +                qemu_show_backtrace(info);
-> > +            }
->
-> This won't do anything at all when reserved_va == 0,
-> i.e. 64-bit guest on 64-bit host, or any 32-bit host.
->
-> The idea of having a backtrace is nice, I suppose, we just need
-> a better detector.
+> Self-hosted trace is out of scope for QEMU.
 
-I think Dan also had a look at one point at doing
-backtraces for crashes in system emulation mode?
-Certainly this would be useful for test crashes in CI.
+True, but we already disable this in arm_cpu_realizefn()
+along with FEAT_SPE, FEAT_AMU and a bunch of other "out
+of scope" or not-yet-implemented features. I thought
+it more reliable to do the disabling globally rather
+than rely on everybody adding a new CPU to remember
+to adjust the ID register values. (Plus if we ever do
+implement some approximation to one of these features
+we only need to change one place in the code, not
+re-look-up all the CPU ID register values.) See
+commit 7d8c283e10dd81.
 
 thanks
 -- PMM
