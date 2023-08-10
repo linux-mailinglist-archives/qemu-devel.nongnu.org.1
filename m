@@ -2,74 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5971177743B
+	by mail.lfdr.de (Postfix) with ESMTPS id 1199D77743A
 	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 11:18:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qU1nK-0002YW-73; Thu, 10 Aug 2023 05:17:26 -0400
+	id 1qU1nh-00036t-Ao; Thu, 10 Aug 2023 05:17:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qU1n6-0002R3-0z
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 05:17:16 -0400
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qU1nf-00031O-J5
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 05:17:47 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qU1n1-000062-TJ
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 05:17:09 -0400
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-5234f2c6c1dso863607a12.1
- for <qemu-devel@nongnu.org>; Thu, 10 Aug 2023 02:17:07 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qU1nd-0000F6-2P
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 05:17:47 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-31765aee31bso609354f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 10 Aug 2023 02:17:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691659026; x=1692263826;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=cROljJL0g0JpQ4Zaq6M6Leunnnywaeha3HFbFJAjtMg=;
- b=S/XS9zm1x+2jN7SIU5iFOPbaEVricnXezMf0e4+3Jk3PSeBw8g7XMXHHa4Yk2ZknHZ
- IPfQvu/xhu3y6xwoyUtoVxCxb5yHO303bR/bqCgMmHVyL1ujAjIafM74wjoG2WLgenfH
- R2Rd8chPDYyL+YXyWWsjpguPWp38QzsH2DJBERXXoVzKkB3Wn96UZPfXohbDz39mYnuu
- Kz5enXx/xGeJzLKECh9N7eE4c+wA646fj5Ph18le1LSwmq7QIZVGeRqVvdNSEVophAr3
- dRTz4dA8YItodDjVp0QYev+oiavBWrgKySDnj6lZmLIFhT2RclSvOE2+j4QqqqX1SQoH
- eklQ==
+ d=linaro.org; s=google; t=1691659063; x=1692263863;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=QQf4LquBd65ySTnhKk68cIBvF8eXymDszmhfrBPoOXM=;
+ b=EzT9qs7EF0FCAf8FT9mNBnTxzVfbxzvYti8Z4cfty3I7+xW+D+IxjrdVbLbmLVNzzc
+ r3LCTYuY+aSbieOgqUrFI5aBI4QRMDjeoq565fhZT4vokXEbzR5D5lF/tmq+PQec8M5A
+ 5gsNG4TNfKPdK1fTBQn3LU9/QpYX64r5KdRKsKtfuw96ncNoaKf7a66sAK7g4+S4sidQ
+ 72ORPnxU8jcYlVIH6OAey+eI5JYo+auC3oJ27H5vHeR38bv/L4Z3XivRPhZFWy47Oep3
+ VAWEf2yNPO8Y5J+mKQ1pSpWYXjrCsroclNC9IzUx+Qnl7uT2HKLNeic+Sd2XIPCwi4dK
+ 2oCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691659026; x=1692263826;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=cROljJL0g0JpQ4Zaq6M6Leunnnywaeha3HFbFJAjtMg=;
- b=ftHnXOi1m1l6mCeKnvD677Cxijg8lWKv0ZVKe7ZeRZjNYv+VXPCycz7UYrsWL1Qx3r
- xfKwhb8V1qFxt8fub+7CglGpTS5kU5x4kVt6e+Iq+0QF7les9hsetyY2VEgGu9RB8tCF
- iI7JYv6vl5kLJi+VugKEuGoh9vv5tSaQ4BYEhWAid4xMpjQME2ryd1IWAMq7it5o23iw
- Lpozaw65DC9VUXppoJLzeGUxAaxDjryPAglobCYJ94nW/ssLuZa2h6O1BfxX8/PUEz5V
- 8YlY3frTGyo9ErXl8iRwQqfCgN7t41MxpboVb9wHTLgWcpLXHrka/ZxRcjqeq+xnmrgc
- STYA==
-X-Gm-Message-State: AOJu0YxVZrk0E8eA3vI5Rba3/Db9BbZYoNKlQr9Fgi4JkxjGbY9U3pP5
- WKvyksXsrnbi3dOzZ+iEQXNEWPV1c3rbS/QGd/+sNQ==
-X-Google-Smtp-Source: AGHT+IHmQ661dkFC7OZs3KnPMZtq40GMZGTESGXOO7ORZFpSCpuOLwJLDTdMLPXy8bSHXnRCxIpUQxWLjpsKruCxr/g=
-X-Received: by 2002:aa7:d814:0:b0:522:2ba9:6fce with SMTP id
- v20-20020aa7d814000000b005222ba96fcemr1816474edq.8.1691659026097; Thu, 10 Aug
- 2023 02:17:06 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1691659063; x=1692263863;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=QQf4LquBd65ySTnhKk68cIBvF8eXymDszmhfrBPoOXM=;
+ b=gHYAHzaN2262hJmpo0be8jfRgBPUI2VHZwRhlQIp5nlHgtHIy0SkDp+b+IkXAHD1Np
+ KEJh2wqAWrvTDEOOoogymL+QYuvIwgvAWEBj8g727xruv2D9W94i3vlo7vNbGhUsfPqA
+ JyCwaQTVUq+6/tiQV5fmh4uFlb0Q5bMgT+6kwIFG0pXtKfjk8RYAbSz8MHmgq/MvQX85
+ Mkd8qtXMK+qF9esu5dYhINTsg0kRqE/fJXH+saKcXekG+edAP2iuv9nkgzTvqm89Jwv2
+ kiNDeXuEIp6GOI/m1j8jxpNuCP73DHXFMQEe/B8RAdgP/JdGjVFi0QAESjJsECSqXo4k
+ WF5g==
+X-Gm-Message-State: AOJu0Yw4dRIIWy0/1JUPpOPp3tgv7RjFqMas+vqsatN7Wg2HeegCZCPh
+ 9t9rkTKcncRTZbec7ikx0MMxRw==
+X-Google-Smtp-Source: AGHT+IHVUZC2xblty8/WDMMkeM/XMBFZhxw55Mv09xof8YsHMJLyDXUAOmZP4Zn7njVT6X3A3C4Gzw==
+X-Received: by 2002:adf:e689:0:b0:317:690e:7b39 with SMTP id
+ r9-20020adfe689000000b00317690e7b39mr1643959wrm.12.1691659062935; 
+ Thu, 10 Aug 2023 02:17:42 -0700 (PDT)
+Received: from [192.168.69.115] ([176.176.158.65])
+ by smtp.gmail.com with ESMTPSA id
+ a2-20020a5d4d42000000b00317ca89f6c5sm1499244wru.107.2023.08.10.02.17.41
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 10 Aug 2023 02:17:42 -0700 (PDT)
+Message-ID: <183b3243-e61a-12fa-0460-73e417bf029d@linaro.org>
+Date: Thu, 10 Aug 2023 11:17:39 +0200
 MIME-Version: 1.0
-References: <20230810023548.412310-1-richard.henderson@linaro.org>
- <20230810023548.412310-2-richard.henderson@linaro.org>
-In-Reply-To: <20230810023548.412310-2-richard.henderson@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 10 Aug 2023 10:16:54 +0100
-Message-ID: <CAFEAcA_utXHbmNydvQZoNVciuj8XnTjRW8zdGRbruyr2QK70ZA@mail.gmail.com>
-Subject: Re: [PATCH 1/5] target/arm: Disable FEAT_TRF in neoverse-v1
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-stable@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.13.0
+Subject: Re: [PATCH v5 3/6] mips: Report an error when KVM_VM_MIPS_VZ is
+ unavailable
+Content-Language: en-US
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, kvm@vger.kernel.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell
+ <peter.maydell@linaro.org>, Richard Henderson <richard.henderson@linaro.org>
+References: <20230727073134.134102-1-akihiko.odaki@daynix.com>
+ <20230727073134.134102-4-akihiko.odaki@daynix.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230727073134.134102-4-akihiko.odaki@daynix.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+X-Spam_score_int: -61
+X-Spam_score: -6.2
+X-Spam_bar: ------
+X-Spam_report: (-6.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-4.14,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,22 +96,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 10 Aug 2023 at 03:36, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> Self-hosted trace is out of scope for QEMU.
+On 27/7/23 09:31, Akihiko Odaki wrote:
+> On MIPS, QEMU requires KVM_VM_MIPS_VZ type for KVM. Report an error in
+> such a case as other architectures do when an error occurred during KVM
+> type decision.
+> 
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> ---
+>   target/mips/kvm.c | 1 +
+>   1 file changed, 1 insertion(+)
 
-True, but we already disable this in arm_cpu_realizefn()
-along with FEAT_SPE, FEAT_AMU and a bunch of other "out
-of scope" or not-yet-implemented features. I thought
-it more reliable to do the disabling globally rather
-than rely on everybody adding a new CPU to remember
-to adjust the ID register values. (Plus if we ever do
-implement some approximation to one of these features
-we only need to change one place in the code, not
-re-look-up all the CPU ID register values.) See
-commit 7d8c283e10dd81.
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-thanks
--- PMM
 
