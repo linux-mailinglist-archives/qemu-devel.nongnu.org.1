@@ -2,74 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95D60777C5C
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 17:38:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 526EA777C64
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 17:39:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qU7iX-0005OR-Oz; Thu, 10 Aug 2023 11:36:53 -0400
+	id 1qU7iT-0005Ik-PC; Thu, 10 Aug 2023 11:36:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qU7iT-0005JU-M5
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 11:36:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qU7iO-0003EB-KA
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 11:36:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691681803;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=yC7Gi8MdqujrMqjsXf1KLit2ElA40mQsftTm2Eu2lPE=;
- b=JjXnR1e5C1RzcWcjvJtJrJ+KSb8xQlSdNGN1IL9Gp8BcCRn2kCf8lFCeT0RlMmb1GGyAgg
- EvUIom4MjjEwygihfyMdX+nBlSOuMl1w9WTj8J4Osor2wvQ+gSn1/qYOSMul4vvX4zuQ72
- lx20AUdspsUQS5AMi7tF86eGOh8DxF4=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-607-Lp8tZX_hOQyZn-nM_u-ZmQ-1; Thu, 10 Aug 2023 11:36:38 -0400
-X-MC-Unique: Lp8tZX_hOQyZn-nM_u-ZmQ-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 49CFE1C0782D;
- Thu, 10 Aug 2023 15:36:35 +0000 (UTC)
-Received: from eperezma.remote.csb (unknown [10.39.194.195])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 855C52166B25;
- Thu, 10 Aug 2023 15:36:32 +0000 (UTC)
-From: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qU7iS-0005Hg-GR
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 11:36:48 -0400
+Received: from mail-lj1-x230.google.com ([2a00:1450:4864:20::230])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qU7iN-0003DJ-U5
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 11:36:48 -0400
+Received: by mail-lj1-x230.google.com with SMTP id
+ 38308e7fff4ca-2b9c907bc68so16368281fa.2
+ for <qemu-devel@nongnu.org>; Thu, 10 Aug 2023 08:36:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1691681802; x=1692286602;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=QpJlLC+2rPb/GCH1pCbOPBgLpIEQvbMEnU2tGVcF2MQ=;
+ b=Pw0utXnsmDKFz87cK5160z6HTHc2XQRm8KhcD+V+UCB5cQSyauzPykRAPxNrXJ6Yon
+ 1Bb7GRvrbrkoRAYW7ddpyBZgTsdjAbqhn7yJ/ptNai+egThcLCBfmz82oXxwZuSOmrIz
+ vUTqOZzp+dhmJ2hbzNYJ8diAgwMHbOhULALrBnj88wDRo465iA0WZx0cxX2dLqTBRfkU
+ L4FQ7ZNsonTGwQUMthGEp6VgEK6y+F8+hUTVtwHoVmMnqsXvjWUsmy7Wbu+3rArd+qZJ
+ GGrEnn9QO8bRJ4VsHxCRFg/q93rrFDX/o82z6eryfRjVlswQ1aYtXY7JIEopMkmVpL4a
+ myOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1691681802; x=1692286602;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=QpJlLC+2rPb/GCH1pCbOPBgLpIEQvbMEnU2tGVcF2MQ=;
+ b=Yx0Nj+MGfe4K1Nomg3OL4SLvslYi+zUCWv+PmXE1z/5jDnLxGTT/xOCnYe/j2TDwGW
+ /7cTg8iwg53pXLCjhRelxe43nTGKkpHVud4/+OhkSCxY7I+L2bQNIfkyu3osMVqpU1ry
+ 9VPrcgYj6LZYrXsN1DXGjpZB3j5A8w8bIR9TFuPeR1JBhUkRvsRsl/T8JNfdBlyyyLu9
+ d1+YRjyM/M0/F9tluEPpFGtUUDFIOUtiD6B+H2qlxHKzA+QakEJ/6VotLdZcVdz0VRmZ
+ sJEnexXIAzyZAlyCuHgI6NKqpLTgjkt4EQw2C/uh14bfIOJoj02vBPGfMdkYIVbrQx0B
+ FzkQ==
+X-Gm-Message-State: AOJu0YynPKQ2W8o9eKowiKk25cparKRKoKetnWfsjJHzgDGIUnHz3uVB
+ 3xPD0lznoRCIn5Ws7dLJyfX49Q==
+X-Google-Smtp-Source: AGHT+IHDLwEDS2FGaKCPqH9YbO9rnvrXLu4htgkQXlEWBZ1zsBI0gMQEl1HwwObGhAsZxjRiE6K+zQ==
+X-Received: by 2002:a2e:8653:0:b0:2b7:4169:fcf5 with SMTP id
+ i19-20020a2e8653000000b002b74169fcf5mr2434628ljj.37.1691681801772; 
+ Thu, 10 Aug 2023 08:36:41 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ v1-20020a05600c214100b003fe215e4492sm2511175wml.4.2023.08.10.08.36.41
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 10 Aug 2023 08:36:41 -0700 (PDT)
+Received: from zen.lan (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id B01921FFBB;
+ Thu, 10 Aug 2023 16:36:40 +0100 (BST)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Laurent Vivier <lvivier@redhat.com>, Dragos Tatulea <dtatulea@nvidia.com>,
- si-wei.liu@oracle.com, Parav Pandit <parav@mellanox.com>,
- Gautam Dawar <gdawar@xilinx.com>, Zhu Lingshan <lingshan.zhu@intel.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Cindy Lu <lulu@redhat.com>,
- Harpreet Singh Anand <hanand@xilinx.com>,
- Stefano Garzarella <sgarzare@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Hawkins Jiawei <yin31149@gmail.com>, Shannon Nelson <snelson@pensando.io>,
- Lei Yang <leiyang@redhat.com>
-Subject: [PATCH v2 5/5] vdpa: remove net cvq migration blocker
-Date: Thu, 10 Aug 2023 17:36:11 +0200
-Message-Id: <20230810153611.3410882-6-eperezma@redhat.com>
-In-Reply-To: <20230810153611.3410882-1-eperezma@redhat.com>
-References: <20230810153611.3410882-1-eperezma@redhat.com>
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Ilya Leoshkevich <iii@linux.ibm.com>, Yonggang Luo <luoyonggang@gmail.com>,
+ Beraldo Leal <bleal@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, David Hildenbrand <david@redhat.com>,
+ qemu-arm@nongnu.org, qemu-s390x@nongnu.org,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>
+Subject: [PATCH 0/8] some testing and gdbstub fixes
+Date: Thu, 10 Aug 2023 16:36:32 +0100
+Message-Id: <20230810153640.1879717-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::230;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x230.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,39 +100,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that we have add migration blockers if the device does not support
-all the needed features, remove the general blocker applied to all net
-devices with CVQ.
+This is mostly gdbstub focused but I cleaned up some bits while I was
+in the testing makefiles. This is mostly to make the "check-tcg"
+output as clean as possible without ugly line wraps. I tried to
+eliminate the gdbstub info() output but sadly this is harder than
+expected.
 
-Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
----
- net/vhost-vdpa.c | 12 ------------
- 1 file changed, 12 deletions(-)
+I've tweaked the gdbstub handling for Ctrl-c packets as suggested by
+Matheus. While I was there I also noticed we were being a bit precious
+about gdb sending preemptive ACKS so I fixed that as well.
 
-diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index 3bf60f9431..6bb56f7d94 100644
---- a/net/vhost-vdpa.c
-+++ b/net/vhost-vdpa.c
-@@ -1413,18 +1413,6 @@ static NetClientState *net_vhost_vdpa_init(NetClientState *peer,
-         s->vhost_vdpa.shadow_vq_ops = &vhost_vdpa_net_svq_ops;
-         s->vhost_vdpa.shadow_vq_ops_opaque = s;
-         s->cvq_isolated = cvq_isolated;
--
--        /*
--         * TODO: We cannot migrate devices with CVQ and no x-svq enabled as
--         * there is no way to set the device state (MAC, MQ, etc) before
--         * starting the datapath.
--         *
--         * Migration blocker ownership now belongs to s->vhost_vdpa.
--         */
--        if (!svq) {
--            error_setg(&s->vhost_vdpa.migration_blocker,
--                       "net vdpa cannot migrate with CVQ feature");
--        }
-     }
-     ret = vhost_vdpa_add(nc, (void *)&s->vhost_vdpa, queue_pair_index, nvqs);
-     if (ret) {
+I don't know if this is all late 8.1-rc material but its fairly simple
+testing updates and the ccache stuff from Daniel should help as well.
+
+Alex Bennée (7):
+  tests/docker: cleanup non-verbose output
+  tests/tcg: remove quoting for info output
+  tests: remove test-gdbstub.py
+  tests/tcg: clean-up gdb confirm/pagination settings
+  tests/tcg: ensure system-mode gdb tests start stopped
+  gdbstub: more fixes for client Ctrl-C handling
+  gdbstub: don't complain about preemptive ACK chars
+
+Daniel P. Berrangé (1):
+  gitlab: enable ccache for many build jobs
+
+ docs/devel/ci-jobs.rst.inc                    |   7 +
+ gdbstub/gdbstub.c                             |  10 +-
+ .gitlab-ci.d/buildtest-template.yml           |  11 ++
+ .gitlab-ci.d/crossbuild-template.yml          |  26 +++
+ .gitlab-ci.d/windows.yml                      |  13 +-
+ gdbstub/trace-events                          |   1 +
+ tests/docker/Makefile.include                 |   6 +-
+ .../dockerfiles/debian-hexagon-cross.docker   |   9 +-
+ tests/guest-debug/run-test.py                 |  11 +-
+ tests/guest-debug/test-gdbstub.py             | 177 ------------------
+ tests/tcg/aarch64/Makefile.target             |   2 +-
+ tests/tcg/aarch64/gdbstub/test-sve-ioctl.py   |   3 -
+ tests/tcg/aarch64/gdbstub/test-sve.py         |   3 -
+ tests/tcg/multiarch/gdbstub/memory.py         |   3 -
+ tests/tcg/multiarch/gdbstub/sha1.py           |   4 -
+ .../multiarch/gdbstub/test-proc-mappings.py   |   4 -
+ .../multiarch/gdbstub/test-qxfer-auxv-read.py |   4 -
+ .../gdbstub/test-thread-breakpoint.py         |   4 -
+ .../multiarch/system/Makefile.softmmu-target  |   4 +-
+ tests/tcg/s390x/gdbstub/test-signals-s390x.py |   4 -
+ tests/tcg/s390x/gdbstub/test-svc.py           |   4 -
+ 21 files changed, 83 insertions(+), 227 deletions(-)
+ delete mode 100644 tests/guest-debug/test-gdbstub.py
+
 -- 
-2.39.3
+2.39.2
 
 
