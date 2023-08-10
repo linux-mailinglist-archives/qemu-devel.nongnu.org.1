@@ -2,73 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0289A777CE6
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 17:57:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F5F5777CEA
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 17:57:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qU81k-0006yq-9F; Thu, 10 Aug 2023 11:56:44 -0400
+	id 1qU822-00072d-Sz; Thu, 10 Aug 2023 11:57:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qU81i-0006yh-FJ
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 11:56:42 -0400
-Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qU821-000721-CB
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 11:57:01 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qU81h-0007OJ-16
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 11:56:42 -0400
-Received: by mail-lf1-x129.google.com with SMTP id
- 2adb3069b0e04-4fe2d152f62so1696980e87.0
- for <qemu-devel@nongnu.org>; Thu, 10 Aug 2023 08:56:40 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qU81z-0007QQ-3p
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 11:57:01 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-3fe5695b180so9106505e9.2
+ for <qemu-devel@nongnu.org>; Thu, 10 Aug 2023 08:56:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691682999; x=1692287799;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=KVIH7GxvUfpCxLU1VOTtbV+KIZEvvQudMpC18bda69s=;
- b=VqJMiump642uz8nZ8jD49EaGe6HrwJSMV8765ByWsNqIKjbGP/Vb5bmv5EbB99ixAq
- QVi7W7PeL7XFTxK1DEyYDRQSgvfrmzuQRjA5ijr/V/EstC7T9tPbyezLkAqvGCp+C1Us
- y3tBYY3Eun+Ff12wMTModEJbJU0FKqUvpuXV4yDJ+RrSN99L2CvKFSBhZNQACT6vqOeq
- HGR5tTG28ypmANXM+wNiq5NdGVutSOk3Xh7JJSgFr5HPiFj+CYdpApF9NCLNvtme4CDs
- 4/de1Vb5N0GIzznRu228/ChfY1L339XwHG+MmZi0undHPMcIYcFOqWIKVLkkit0fWiA3
- GqYA==
+ d=linaro.org; s=google; t=1691683017; x=1692287817;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=IftU204Dx3wX9GbOj52OKsZdF8meIuhiRJV4tTtRhzg=;
+ b=lmF79bjOH3NyzLC7ga1wH5kFoakb9ECoW34XxZMk87j519QTw9AejqWdKL/gLU9U6e
+ EIYBwq5uj46BaVsIcPLDTUE0W8eaLY6vX7mY+cGoXvOa3zoXGCN4+tAinRfxSiKGFzS9
+ d7ztFMbfyGgd7bLIr2Ezq7MW+wAQrXHdng7bABtfOfxfnPclRFndCap5MZre1AMfvmt6
+ OjeE+FOQXB0dB2hIgzRZ/eCWgKqeiDUoN08RoDR0oNtlHRabaQeXyxFb1IkC2OLdxF9d
+ C2qpBfzBPIjRlIi2uIqjhA5sh0LlK+nQPUatyH7QymoXa4ZsfFTUvGJaIrm8YdcQBXHE
+ 6r6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691682999; x=1692287799;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=KVIH7GxvUfpCxLU1VOTtbV+KIZEvvQudMpC18bda69s=;
- b=EE1KlCKaFJNixO3jXHc/4w5x0a9yA08Z6Qjvx9HoLpj5xtzQDdWI2i8bU4AncnCQkf
- LUn9tW/SPn8+iJc7qf6jBvg233gnGKfb0o+PTZA23IbhFKALJhZex/PnrKvey44+fpxr
- Gg8Fw4bdL7+lb+BPUsQgqZIu0VhmyxbstWjQtv3pNZw6qVK6cHVnwFMNkUXc/HXP4Zor
- QCNXoYzTizQnvH3Lnobj4Lra7/UvUWzRwritaCwLOD8Pu35Ug1r4tWX8QQR3zQcSlQrS
- kuPy1+DOt9L5b8dmHBBR/F69nY9am+VRo034R9g+I26l6LKKplOQteQRHWL2/XuxejyP
- Flag==
-X-Gm-Message-State: AOJu0Yxlmlf9UnzalpiK3N5qQ1Clear7LqlD5KL0baFciG1j0XZEied8
- CKQGc7m0aFUis7pu6PARSJzOQU8gWgBanXYXeEsGxo6oeHkN5c2r
-X-Google-Smtp-Source: AGHT+IF+JQG9fyX9NnXpLtBbrQDuwlUwc9cih0llCe6UfQErqlGZ7t5tUWiUQOcCcHejhGVGJfJM2A6ElkamxB8kv7Y=
-X-Received: by 2002:a05:6512:1095:b0:4fe:8c4:44fb with SMTP id
- j21-20020a056512109500b004fe08c444fbmr2477664lfg.38.1691682998945; Thu, 10
- Aug 2023 08:56:38 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1691683017; x=1692287817;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=IftU204Dx3wX9GbOj52OKsZdF8meIuhiRJV4tTtRhzg=;
+ b=RYxWBAELML8X5m/VWdynBSdbS41PIT7aCpAPy791hD3rUNAqy/RujfwaXG+/2xcHLD
+ e8pquUXXSGc06xv1HpxsDX2m6l0wCCfW1Zejviy+TEXgivyydXlrndS3ix1MATxyZ7Yp
+ EQBDcQJhg4yA9KEqKXF4MmuLCMc8JvGof3odzRS3XScJbWyQ6h00QkbsT5pX85V89dM4
+ +lZa+Kyd81YoEXkeO5cwYQRz4YyukveCaTFEgZXZNjbyN+1K0t5DvIAyCCJQHJOU9OaO
+ LcDW0/KX+N6mU9W0ZNyp0vEdTszU1LkP8VW07DfRoItX1IwBOsEc7zAYsU6RfpPtw00x
+ Qkag==
+X-Gm-Message-State: AOJu0YxxA8NVsKIs6Jb6a6/faKvkixCu4GQU035XOrOzTN5eSdwNYVHa
+ AVSEqg0cPgesiDcBwgXKBH74RQ==
+X-Google-Smtp-Source: AGHT+IGsVbOUUzCe6wYBdQ1X431JQoVBiwZ7U+plB+t2qApaP2vuzvOhdKQmW4ARmvk+t+LKPDfWag==
+X-Received: by 2002:adf:e34b:0:b0:317:6681:e426 with SMTP id
+ n11-20020adfe34b000000b003176681e426mr2167114wrj.25.1691683017449; 
+ Thu, 10 Aug 2023 08:56:57 -0700 (PDT)
+Received: from [192.168.69.115] (tre93-h02-176-184-7-255.dsl.sta.abo.bbox.fr.
+ [176.184.7.255]) by smtp.gmail.com with ESMTPSA id
+ j13-20020a5d452d000000b003179d7ed4f3sm2601025wra.12.2023.08.10.08.56.55
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 10 Aug 2023 08:56:56 -0700 (PDT)
+Message-ID: <e3b16390-d174-6c8c-3a36-d31dc5298376@linaro.org>
+Date: Thu, 10 Aug 2023 17:56:54 +0200
 MIME-Version: 1.0
-References: <20230810154802.16663-1-richard.henderson@linaro.org>
-In-Reply-To: <20230810154802.16663-1-richard.henderson@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 10 Aug 2023 16:56:27 +0100
-Message-ID: <CAFEAcA9KWycM5qUsB+FRui=C_HA_7=enpKNYf=hyx+ZUEc4BCQ@mail.gmail.com>
-Subject: Re: [PATCH for-8.1] accel/tcg: Avoid reading too much in load_atom_{2, 4}
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::129;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x129.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.13.0
+Subject: Re: [PATCH 7/8] gdbstub: more fixes for client Ctrl-C handling
+Content-Language: en-US
+To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Ilya Leoshkevich <iii@linux.ibm.com>, Yonggang Luo
+ <luoyonggang@gmail.com>, Beraldo Leal <bleal@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
+ David Hildenbrand <david@redhat.com>, qemu-arm@nongnu.org,
+ qemu-s390x@nongnu.org, Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
+References: <20230810153640.1879717-1-alex.bennee@linaro.org>
+ <20230810153640.1879717-8-alex.bennee@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230810153640.1879717-8-alex.bennee@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.156,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,40 +100,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 10 Aug 2023 at 16:49, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> When load_atom_extract_al16_or_al8 is inexpensive, we want to use
-> it early, in order to avoid the overhead of required_atomicity.
-> However, we must not read past the end of the page.
->
-> Reported-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+On 10/8/23 17:36, Alex Bennée wrote:
+> The original fix caused problems with spurious characters on other
+> system emulation. So:
+> 
+>    - instead of spamming output make the warning a trace point
+>    - ensure we only allow a stop reply if it was 0x3
+> 
+> Suggested-by: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
+> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> Message-Id: <456ed3318421dd7946bdfb5ceda7e05332da368c.1690910333.git.quic_mathbern@quicinc.com>
 > ---
+>   gdbstub/gdbstub.c    | 5 +++--
+>   gdbstub/trace-events | 1 +
+>   2 files changed, 4 insertions(+), 2 deletions(-)
+
+
+> diff --git a/gdbstub/trace-events b/gdbstub/trace-events
+> index 0c18a4d70a..b383bf8d29 100644
+> --- a/gdbstub/trace-events
+> +++ b/gdbstub/trace-events
+> @@ -26,6 +26,7 @@ gdbstub_err_invalid_repeat(uint8_t ch) "got invalid RLE count: 0x%02x"
+>   gdbstub_err_invalid_rle(void) "got invalid RLE sequence"
+>   gdbstub_err_checksum_invalid(uint8_t ch) "got invalid command checksum digit: 0x%02x"
+>   gdbstub_err_checksum_incorrect(uint8_t expected, uint8_t got) "got command packet with incorrect checksum, expected=0x%02x, received=0x%02x"
+> +gdbstub_err_unexpected_runpkt(uint8_t ch) "unexpected packet (%c) while target running"
+
+Since unexpected packet can be non-ASCII, better log its hexa value.
+
+Otherwise,
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
 
->      if (HAVE_ATOMIC128_RO) {
-> -        return load_atom_extract_al16_or_al8(pv, 2);
-> +        intptr_t left_in_page = pi | TARGET_PAGE_MASK;
-
-isn't left_in_page actually -(pi | TARGET_PAGE_MASK) ?
-I feel like that would be clearer than leaving it
-the negative of the number of bytes left in the page
-and comparing against -16 (and assume the compiler
-generates equivalent code).
-
-(I always have trouble with expressions that combine
-boolean operations and 2s-complement arithmetic, though.)
-
-> +        if (likely(left_in_page <= -16)) {
-> +            return load_atom_extract_al16_or_al8(pv, 2);
-> +        }
->      }
-
-Either way
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-
-thanks
--- PMM
 
