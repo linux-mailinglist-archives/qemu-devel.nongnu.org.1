@@ -2,74 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD34A777EE1
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 19:13:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBE97777EE8
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 19:14:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qU9Dm-0006zi-4k; Thu, 10 Aug 2023 13:13:14 -0400
+	id 1qU9En-0007lC-Nv; Thu, 10 Aug 2023 13:14:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qU9Di-0006zS-DR
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 13:13:10 -0400
-Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qU9El-0007ky-Qr; Thu, 10 Aug 2023 13:14:15 -0400
+Received: from mail-ua1-x931.google.com ([2607:f8b0:4864:20::931])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qU9Dg-0007Nl-95
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 13:13:09 -0400
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-522bd411679so1428184a12.0
- for <qemu-devel@nongnu.org>; Thu, 10 Aug 2023 10:13:07 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qU9Ek-0007We-3F; Thu, 10 Aug 2023 13:14:15 -0400
+Received: by mail-ua1-x931.google.com with SMTP id
+ a1e0cc1a2514c-7948c329363so401351241.0; 
+ Thu, 10 Aug 2023 10:14:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691687586; x=1692292386;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=EiAV9WEj5eIkPc4Jq+fte4QSUn33GtcJgdcXqbMLuSw=;
- b=UpK8woqyYnFX4UCzyEEypyhlkKXlE+Wm5SGQ4NTb0WvXFYm5i2ZdjRwEwpKzsvc3JG
- kMWqQ0a15gyfOuLKXz9Ly/G8K189DmKyKv9nMgcBJ4M6qgeVbp6yqky97qN+adE/Bj1G
- FmW54GiCUN9LaIlEUDGWCg4HwRdwKKFb9WFp+nq/PUodBNJrTjww93Lr6DhQ7hXPamsy
- Gz3iEPZoVJIlOfQ+lXjUA6p7cxL9gHK+RnFhtlr0DxHl+AmBXalcqTOZWoP50aDpiVRq
- vTc8HQ2povhFFMEdravMfyNWAbzwTSQF4WM0Ryo0jv0pVpHx76bgeisr81hwzj/HB2/j
- PWXg==
+ d=gmail.com; s=20221208; t=1691687652; x=1692292452;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=PwYl3RufS59rYFOLJhjSizdGxmIooWkZuj9aJSrZd9o=;
+ b=qmGhNEWXpwGMq3WLE5hLy8x5TkTil6o/g/TWuMmK54lapMjy0kp8okbgTIi43k9TWl
+ /lp2h+twXP214QgYB5E5eDxePeVcKlOlYTCNOv6NN8rvmbtgTQGq+4Gn83cltOayHmS0
+ XAfoAO5OHKqO/6VATs/i0M1C2N3CXGP60xWGBNjYaCcdTYQSK8twTvzaVNWUPb/1VLkg
+ u8U88cnLxKnuVOLLdCgpzqtDUstLRhGmD3Yy3ukyveEcqsRut09hH6BCMOO7E38eLcDp
+ q7EdLzyB0YnvJZUchv8ry4alfxgVXyv9LvMWm7X6fUiWveCWxDy+ZznwjMwCqA7kfI6M
+ yT3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691687586; x=1692292386;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=EiAV9WEj5eIkPc4Jq+fte4QSUn33GtcJgdcXqbMLuSw=;
- b=O09lZo9Hi9Etqxxn+en6uDtjuqyKhkqziSOUS7KCcQaRtGCJOhpCgYjwQV/ygFPuwZ
- wS/Djw1YI2U25V0bp0I1LBckNh4s9CVdKIomFC47ieY2q2XU9RezqKXfosxadhBHyXHb
- Gd5a959kNCUWKX8yEabRzDZgGE2Rh4gUblGXbPsjhjdqw39Rst9pRLwod5tjISxoS8gx
- LzwXiWa3QWnGfMqGp5g5NZXBSgXq6RLH/drAwECrghxsQBzkvyLJOVMAPmMQIAqnFw9M
- OgyLGwWKq8bj3Uxy9G4b2aKaV8bPrKDOydt61cx1u29P2J7eyEUYwoGLj7/0Psm8XpIP
- dN7w==
-X-Gm-Message-State: AOJu0YzYBXS2VMm6NBQSPptORxKQIIgw5LFwMYjfKHSLIQ5anvhz6qNa
- zG5oMpHo/AWCC7v33/hNQJ8M3ML44HpVMs7eKbWnXQ==
-X-Google-Smtp-Source: AGHT+IHKJhveIIJDipnYF0KlVJIxclgWYp9kg6JFWuStYXxJd0fbSZfpWlBrGbTRmeXROKjRt+Vo5OdO6uzUvQtAnEQ=
-X-Received: by 2002:aa7:c245:0:b0:522:1d47:2d81 with SMTP id
- y5-20020aa7c245000000b005221d472d81mr2435184edo.17.1691687586513; Thu, 10 Aug
- 2023 10:13:06 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1691687652; x=1692292452;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=PwYl3RufS59rYFOLJhjSizdGxmIooWkZuj9aJSrZd9o=;
+ b=X5vrHm50IGPPsCsqDgy6rkk6crIHzXF0ijq+1Kp0TP/xwrr+WSK5YlEXvfp2KfesFL
+ OrsOWdECMmJbNAEqZn+DRjv4qrSMGIH6vxUZWLJn6oXRIhAYYmp5hCuEX+PoFwR6MhT4
+ E1+kk7bZEEkv/AGlDDRYPQJkB6N8lRPaqxpfbNPwxspg3cgwuoP3XZR73uSDvD1eWfCX
+ OILjxx6hjxEwEyfX/jxGp3I0GZczeGaUjHn29cAb0atFdqa66vQOX0X0jTKTVikfIgvi
+ Evf32I6OUj3WCxE6qbeJrxQysQhsPeXErWTAUHofi2AXu/8Ao7ATyOQ2IXuR1Tv5uGGA
+ TNuA==
+X-Gm-Message-State: AOJu0YxFtpHklGTE3E7lkXJZq9bblUbB/yBipfoTKvJZxFEsURYAcZ9C
+ Y7Ulg/CBeb458Vpdgcc55LRZBozvc66eQQt4cB8=
+X-Google-Smtp-Source: AGHT+IFM8PANJ03bxIJLjYrm6tEN3B6EQHqR9QcvAIodUKUU+50pDLj5tRb11B+7Fh7Aic/jZQbRR7m4RUU9qNuklcA=
+X-Received: by 2002:a67:ee5a:0:b0:443:5809:ec21 with SMTP id
+ g26-20020a67ee5a000000b004435809ec21mr2339011vsp.17.1691687652387; Thu, 10
+ Aug 2023 10:14:12 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230810023548.412310-1-richard.henderson@linaro.org>
- <20230810023548.412310-6-richard.henderson@linaro.org>
- <CAFEAcA_Lzj1LEutMro72fCfqiCWtOpd+5b-YPcfKv8Bg1f+rCg@mail.gmail.com>
- <17230fdc-6daf-82be-e665-97ca64d16feb@linaro.org>
-In-Reply-To: <17230fdc-6daf-82be-e665-97ca64d16feb@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 10 Aug 2023 18:12:55 +0100
-Message-ID: <CAFEAcA8viVtMGqBJ9D-2rehecb7QB7-F8PObhNTY9U-D=aNMTg@mail.gmail.com>
-Subject: Re: [PATCH 5/5] target/arm: Implement cortex-a710
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
+References: <d734a730-f41f-4d3e-01fb-a0876d05c9e2@ventanamicro.com>
+ <mhng-973b4687-69f6-4c32-976a-60bc068eca86@palmer-ri-x1c9a>
+In-Reply-To: <mhng-973b4687-69f6-4c32-976a-60bc068eca86@palmer-ri-x1c9a>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Thu, 10 Aug 2023 13:13:46 -0400
+Message-ID: <CAKmqyKN4a4wa1LrBtVinDTgZ-p5kWj6jCFAPqprf-Y9BOANO3g@mail.gmail.com>
+Subject: Re: [PATCH 1/2] riscv: zicond: make non-experimental
+To: Palmer Dabbelt <palmer@rivosinc.com>
+Cc: dbarboza@ventanamicro.com, Alistair Francis <Alistair.Francis@wdc.com>, 
+ Vineet Gupta <vineetg@rivosinc.com>,
+ Richard Henderson <richard.henderson@linaro.org>, 
+ qemu-devel@nongnu.org, qemu-riscv@nongnu.org, 
+ Kito Cheng <kito.cheng@gmail.com>, jeffreyalaw@gmail.com
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::931;
+ envelope-from=alistair23@gmail.com; helo=mail-ua1-x931.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -87,80 +90,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 10 Aug 2023 at 18:05, Richard Henderson
-<richard.henderson@linaro.org> wrote:
+On Tue, Aug 8, 2023 at 5:16=E2=80=AFPM Palmer Dabbelt <palmer@rivosinc.com>=
+ wrote:
 >
-> On 8/10/23 08:49, Peter Maydell wrote:
-> > On Thu, 10 Aug 2023 at 03:36, Richard Henderson
-> > <richard.henderson@linaro.org> wrote:
-> >>
-> >> The cortex-a710 is a first generation ARMv9.0-A processor.
-> >>
-> >> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> >> ---
-> >>   docs/system/arm/virt.rst |   1 +
-> >>   hw/arm/virt.c            |   1 +
-> >>   target/arm/tcg/cpu64.c   | 167 +++++++++++++++++++++++++++++++++++++++
-> >>   3 files changed, 169 insertions(+)
-> >>
-> >> diff --git a/docs/system/arm/virt.rst b/docs/system/arm/virt.rst
-> >> index 51cdac6841..e1697ac8f4 100644
-> >> --- a/docs/system/arm/virt.rst
-> >> +++ b/docs/system/arm/virt.rst
-> >> @@ -58,6 +58,7 @@ Supported guest CPU types:
-> >>   - ``cortex-a57`` (64-bit)
-> >>   - ``cortex-a72`` (64-bit)
-> >>   - ``cortex-a76`` (64-bit)
-> >> +- ``cortex-a710`` (64-bit)
-> >>   - ``a64fx`` (64-bit)
-> >>   - ``host`` (with KVM only)
-> >>   - ``neoverse-n1`` (64-bit)
-> >> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-> >> index 7d9dbc2663..d1522c305d 100644
-> >> --- a/hw/arm/virt.c
-> >> +++ b/hw/arm/virt.c
-> >> @@ -211,6 +211,7 @@ static const char *valid_cpus[] = {
-> >>       ARM_CPU_TYPE_NAME("cortex-a55"),
-> >>       ARM_CPU_TYPE_NAME("cortex-a72"),
-> >>       ARM_CPU_TYPE_NAME("cortex-a76"),
-> >> +    ARM_CPU_TYPE_NAME("cortex-a710"),
-> >>       ARM_CPU_TYPE_NAME("a64fx"),
-> >>       ARM_CPU_TYPE_NAME("neoverse-n1"),
-> >>       ARM_CPU_TYPE_NAME("neoverse-v1"),
+> On Tue, 08 Aug 2023 14:10:54 PDT (-0700), dbarboza@ventanamicro.com wrote=
+:
 > >
-> > Will sbsa-ref want this core ?
->
-> It only has 40 PA bits, and I think sbsa-ref requires 48.
-
-Yes, it does want 48 (we ran into that with some other core).
-
-> >> +    cpu->isar.id_mmfr4 = 0x21021110;
 > >
-> > I don't think we implement HPDS == 2 (that's FEAT_HPDS2).
-> > I guess we should push it down to HPDS 1 only in cpu.c
-> > for now. (Or implement it, it's probably simple.)
->
-> Feh.  I thought I'd double-checked all of the features.
-> I'll have a look at implementing that.
-
-I think we (meaning Linaro) kind of noted a lot of features
-as architecturally optional and then didn't think through
-that we might need them anyway for specific implementations.
-(I got surprised by FEAT_NV that way for the Neoverse-V1.)
-
-> >> +    cpu->ctr               = 0x00000004b444c004ull; /* with DIC set */
+> > On 8/8/23 17:52, Palmer Dabbelt wrote:
+> >> On Tue, 08 Aug 2023 11:45:49 PDT (-0700), Vineet Gupta wrote:
+> >>>
+> >>>
+> >>> On 8/8/23 11:29, Richard Henderson wrote:
+> >>>> On 8/8/23 11:17, Vineet Gupta wrote:
+> >>>>> zicond is now codegen supported in both llvm and gcc.
+> >>>>
+> >>>> It is still not in
+> >>>>
+> >>>> https://wiki.riscv.org/display/HOME/Recently+Ratified+Extensions
+> >>>
+> >>> Right, its been frozen since April though and with support trickling =
+in
+> >>> rest of tooling it becomes harder to test.
+> >>> I don't know what exactly QEMU's policy is on this ?
+> >>
+> >> IIUC we'd historically marked stuff as non-experimental when it's froz=
+en, largely because ratification is such a nebulous process. There's obviou=
+sly risk there, but there's risk to anything.  Last I can find is 260b594d8=
+a ("RISC-V: Add Zawrs ISA extension support"), which specifically calls out=
+ Zawrs as frozen and IIUC adds support without the "x-" prefix.
 > >
-> > Why set DIC? The h/w doesn't.
+> > If that's the case then I think it's sensible to remove the 'experiment=
+al' status
+> > of zicond as well.
+> >
+> >>
+> >> I can't find anything written down about it, though...
+> >
+> > As soon as we agree on an official policy I'll do a doc update. Thanks,
 >
-> Heh.  From the comment in neoverse-v1, I thought you had force enabled it there.  But it
-> must simply be a h/w option?
+> Thanks.  We should probably give Alistair some time to chime in, it's
+> still pretty early there.
 
-Yes, the Neoverse-V1 TRM documents a config option of
-"instruction cache hardware coherency" (which sets DIC),
-and that the IDC pin "reflects the inverse value of the
-BROADCASTCACHEMAINTPOU pin". So I opted for the config
-choices that happen to be faster for QEMU.
+Frozen should be enough to remove the `x-`. We do have it written down
+at: https://wiki.qemu.org/Documentation/Platforms/RISCV#RISC-V_Foundation_E=
+xtensions
 
-thanks
--- PMM
+Alistair
+
+>
+> >
+> >
+> > Daniel
+> >
+> >>
+>
 
