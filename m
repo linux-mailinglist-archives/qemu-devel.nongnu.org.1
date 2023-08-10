@@ -2,88 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CEA6777FA3
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B5D3777FA4
 	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 19:55:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qU9rd-0004nI-6o; Thu, 10 Aug 2023 13:54:25 -0400
+	id 1qU9rq-0004oT-9H; Thu, 10 Aug 2023 13:54:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gurchetansingh@chromium.org>)
- id 1qU9rX-0004n7-N4
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 13:54:20 -0400
-Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qU9rn-0004oE-Is; Thu, 10 Aug 2023 13:54:35 -0400
+Received: from mail-ua1-x92f.google.com ([2607:f8b0:4864:20::92f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <gurchetansingh@chromium.org>)
- id 1qU9rV-0006vg-Ac
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 13:54:19 -0400
-Received: by mail-ej1-x634.google.com with SMTP id
- a640c23a62f3a-99cce6f7de2so170444566b.3
- for <qemu-devel@nongnu.org>; Thu, 10 Aug 2023 10:54:16 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qU9rm-0006wh-3J; Thu, 10 Aug 2023 13:54:35 -0400
+Received: by mail-ua1-x92f.google.com with SMTP id
+ a1e0cc1a2514c-79d8edd6d99so406902241.3; 
+ Thu, 10 Aug 2023 10:54:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=chromium.org; s=google; t=1691690054; x=1692294854;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=kiC+AdZKw56QpFeTtr12gCed9KwcNKMnpINP7NU4/l8=;
- b=ExujqNl/V6isPG8tw/bHVfCpL694a/qC7JxGr9vg8VWoDoJSvUdXSLGWANwNFKPWAP
- xZFmx4A73l6stUDl7Q8KYzeBiGJjqMKR40PtC6+yZjsY3YGYDuXb52XEaa6OgtDjlwP4
- No0qHlnQiZb+dcE7+bGNIIXo4ZaOvoOaSVGGY=
+ d=gmail.com; s=20221208; t=1691690071; x=1692294871;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=5rBr0RfG72V1tpcZQFRsbWfrthlbTXE2H2NQFT6Ma70=;
+ b=CjSBEMdel1uvucfawPQn8JhyUXGQahPEj2XYq6DQxwzKKGGSj5TZa0TajCCDTGY3Xv
+ /3T/xk+G6kjjOCr+ivxO/78hYwf8oL4IAiaM9ak+1rqQLNhB1KwRuV0ewxo/WbUnkb9I
+ Izxkb5B0uJO3lIaK2cvzat/Rkws30WdXhBa10RxHprqF2o6Rip0jr15rvPqeHZzfpkQ2
+ J0C2pmhFUZLyHfE+Z4IgLzIr0FK8BAJCbkd8lbt4KOwxbUKmspYTCiY5+PmUDsnSBnw/
+ tIvpd3J59j6XbOJIgoD2pkpOd0jHph+QCHBQ1sDoIBtvDGBHejiCfFHjQPG8InTKMAPb
+ xl6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691690054; x=1692294854;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=kiC+AdZKw56QpFeTtr12gCed9KwcNKMnpINP7NU4/l8=;
- b=je846Ue/KVoe1VO7wx5n1+eiI6wG0b27xFaCEhC2t57pmZ01VKvhxJMfb6acmuf30V
- MjZR/LbqPcA0BWkV6DpX0W0DgZe/hKanhcBTov94e6kv3FP7I6J/6zQ+31MCvA1qEdL1
- 1d8CWtteyNPDO0WQpx4BU19Cc4GkWI8bjrNlguIU2rweJBpLFh3TDxkhdwwgoLi6V8dY
- CIkkIE3IVeHNZP74K0F34MREhDbGOTlcDAzgCBDkPZPTYIxAgo3kLqf+cuHbyFBHkxy3
- ri3lUr+TgkNljxasB4N2nmw7gc2oo69f8w+NSBe7+RkTHG+4jP3X1gZioWTY+XkNknNY
- pPog==
-X-Gm-Message-State: AOJu0Yx1L4nPj5aRRgt932VEFDTP59FUXlFdNUro/D4otzfsoELQP1WA
- /xinHBJB3H8+VA9WlHX8Qmwb6hHRH1ts6AFMNDiQsA==
-X-Google-Smtp-Source: AGHT+IFzEkmObCmqCzq5DKrEAh7OZI/VRWfVp2X8KLnXK33w9HDdvi0lnsruggN+tUTEVRE6UtoDWQ==
-X-Received: by 2002:a17:906:109:b0:99b:efd3:3dcc with SMTP id
- 9-20020a170906010900b0099befd33dccmr2605487eje.62.1691690054329; 
- Thu, 10 Aug 2023 10:54:14 -0700 (PDT)
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com.
- [209.85.208.53]) by smtp.gmail.com with ESMTPSA id
- qx22-20020a170906fcd600b0099cd008c1a4sm1227269ejb.136.2023.08.10.10.54.13
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 10 Aug 2023 10:54:14 -0700 (PDT)
-Received: by mail-ed1-f53.google.com with SMTP id
- 4fb4d7f45d1cf-5232ce75e26so1453a12.1
- for <qemu-devel@nongnu.org>; Thu, 10 Aug 2023 10:54:13 -0700 (PDT)
-X-Received: by 2002:a50:c30e:0:b0:523:193b:5587 with SMTP id
- a14-20020a50c30e000000b00523193b5587mr8264edb.6.1691690053240; Thu, 10 Aug
- 2023 10:54:13 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1691690071; x=1692294871;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=5rBr0RfG72V1tpcZQFRsbWfrthlbTXE2H2NQFT6Ma70=;
+ b=VP2hC5hcfAXCh4KA7jIeUMeG9wLu+tTknFAAuNZFQvhmRAHLy2FLdjJuj/0XJ8s65X
+ tD0d/j1H+xOTukW+bfdWl5EXgJ0Ybfhe0qtPqWbpkcGqVmBU4pZz9McwW6eOovzVQUyn
+ oP0TI2LJhz3BPbM1NUg6fcXKA7GQsXt7qeYROvYWm7cwKWprxeFze+GZt4nq384vCCpx
+ 53l7InBZ0MyU7g8vjwRYeWMAvEiW+r1o4bmvqakuZnGkxo9xR/wAA7DctArDSNn04TRc
+ vjK/cbQNXQaKkn5m9u7fv1h//wlM6HjViGJR/ohIbyhG/g/zsYVa05Fa+W7R/voz1UPE
+ G1og==
+X-Gm-Message-State: AOJu0Yw7kOkNh8LOsNvC5mcE61sh8hq2dCp4IgTK/x9hC7P6UoatY0tT
+ 1UKClC9YI+gC4xNppZ5crzKDbjPnnIoh+ty0CGo=
+X-Google-Smtp-Source: AGHT+IHjZaQobB9xipoASlv1QmgtnvuJFAD9dc5KctS61BZkHDGd9YGIE83QV5FuNlV2d0KCg4rjceTP9+28lNTk0F0=
+X-Received: by 2002:a67:ee5a:0:b0:443:5809:ec21 with SMTP id
+ g26-20020a67ee5a000000b004435809ec21mr2435242vsp.17.1691690071649; Thu, 10
+ Aug 2023 10:54:31 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230809021108.674-1-gurchetansingh@chromium.org>
- <20230809021108.674-10-gurchetansingh@chromium.org>
- <41d8c647-164a-46ce-aaee-f48bc5f4d752@gmail.com>
- <CAAfnVB=Dbi8SiX1ZgbMHb3udTNNMUxwf78pt9sXjMYftGLveng@mail.gmail.com>
- <3fd3467c-e6ea-4cce-9d08-3ad521f66848@gmail.com>
-In-Reply-To: <3fd3467c-e6ea-4cce-9d08-3ad521f66848@gmail.com>
-From: Gurchetan Singh <gurchetansingh@chromium.org>
-Date: Thu, 10 Aug 2023 10:54:00 -0700
-X-Gmail-Original-Message-ID: <CAAfnVBkdmaKY9zDb+fp-NqxKGiuA5Z8m+gRX_tfissOA+W4mXA@mail.gmail.com>
-Message-ID: <CAAfnVBkdmaKY9zDb+fp-NqxKGiuA5Z8m+gRX_tfissOA+W4mXA@mail.gmail.com>
-Subject: Re: [PATCH v4 9/9] docs/system: add basic virtio-gpu documentation
-To: Akihiko Odaki <akihiko.odaki@gmail.com>
-Cc: qemu-devel@nongnu.org, marcandre.lureau@redhat.com, kraxel@redhat.com, 
- ray.huang@amd.com, alex.bennee@linaro.org, shentey@gmail.com, hi@alyssa.is, 
- ernunes@redhat.com
-Content-Type: multipart/alternative; boundary="000000000000b2609c0602954812"
-Received-SPF: pass client-ip=2a00:1450:4864:20::634;
- envelope-from=gurchetansingh@chromium.org; helo=mail-ej1-x634.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+References: <20230727220927.62950-1-dbarboza@ventanamicro.com>
+ <20230727220927.62950-10-dbarboza@ventanamicro.com>
+In-Reply-To: <20230727220927.62950-10-dbarboza@ventanamicro.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Thu, 10 Aug 2023 13:54:05 -0400
+Message-ID: <CAKmqyKOuRGAVTBohvVOkRu14byfgFO2BPBtyQW2EKCLTd0sWSg@mail.gmail.com>
+Subject: Re: [PATCH v6 09/12] target/riscv/cpu.c: limit cfg->vext_spec log
+ message
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
+ palmer@rivosinc.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::92f;
+ envelope-from=alistair23@gmail.com; helo=mail-ua1-x92f.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,366 +89,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000b2609c0602954812
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Wed, Aug 9, 2023 at 11:55=E2=80=AFPM Akihiko Odaki <akihiko.odaki@gmail.=
-com>
-wrote:
-
-> On 2023/08/10 10:11, Gurchetan Singh wrote:
-> >
-> >
-> > On Tue, Aug 8, 2023 at 10:18=E2=80=AFPM Akihiko Odaki <akihiko.odaki@gm=
-ail.com
-> > <mailto:akihiko.odaki@gmail.com>> wrote:
-> >
-> >     On 2023/08/09 11:11, Gurchetan Singh wrote:
-> >      > This adds basic documentation for virtio-gpu.
-> >      >
-> >      > Suggested-by: Akihiko Odaki <akihiko.odaki@daynix.com
-> >     <mailto:akihiko.odaki@daynix.com>>
-> >      > Signed-off-by: Gurchetan Singh <gurchetansingh@chromium.org
-> >     <mailto:gurchetansingh@chromium.org>>
-> >      > ---
-> >      > v2: - Incorporated suggestions by Akihiko Odaki
-> >      >      - Listed the currently supported capset_names (Bernard)
-> >      >
-> >      > v3: - Incorporated suggestions by Akihiko Odaki and Alyssa Ross
-> >      >
-> >      > v4: - Incorporated suggestions by Akihiko Odaki
-> >      >
-> >      >   docs/system/device-emulation.rst   |   1 +
-> >      >   docs/system/devices/virtio-gpu.rst | 115
-> >     +++++++++++++++++++++++++++++
-> >      >   2 files changed, 116 insertions(+)
-> >      >   create mode 100644 docs/system/devices/virtio-gpu.rst
-> >      >
-> >      > diff --git a/docs/system/device-emulation.rst
-> >     b/docs/system/device-emulation.rst
-> >      > index 4491c4cbf7..1167f3a9f2 100644
-> >      > --- a/docs/system/device-emulation.rst
-> >      > +++ b/docs/system/device-emulation.rst
-> >      > @@ -91,6 +91,7 @@ Emulated Devices
-> >      >      devices/nvme.rst
-> >      >      devices/usb.rst
-> >      >      devices/vhost-user.rst
-> >      > +   devices/virtio-gpu.rst
-> >      >      devices/virtio-pmem.rst
-> >      >      devices/vhost-user-rng.rst
-> >      >      devices/canokey.rst
-> >      > diff --git a/docs/system/devices/virtio-gpu.rst
-> >     b/docs/system/devices/virtio-gpu.rst
-> >      > new file mode 100644
-> >      > index 0000000000..d56524270d
-> >      > --- /dev/null
-> >      > +++ b/docs/system/devices/virtio-gpu.rst
-> >      > @@ -0,0 +1,115 @@
-> >      > +..
-> >      > +   SPDX-License-Identifier: GPL-2.0
-> >      > +
-> >      > +virtio-gpu
-> >      > +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> >      > +
-> >      > +This document explains the setup and usage of the virtio-gpu
-> device.
-> >      > +The virtio-gpu device paravirtualizes the GPU and display
-> >     controller.
-> >      > +
-> >      > +Linux kernel support
-> >      > +--------------------
-> >      > +
-> >      > +virtio-gpu requires a guest Linux kernel built with the
-> >      > +``CONFIG_DRM_VIRTIO_GPU`` option.
-> >      > +
-> >      > +QEMU virtio-gpu variants
-> >      > +------------------------
-> >      > +
-> >      > +QEMU virtio-gpu device variants come in the following form:
-> >      > +
-> >      > + * ``virtio-vga[-BACKEND]``
-> >      > + * ``virtio-gpu[-BACKEND][-INTERFACE]``
-> >      > + * ``vhost-user-vga``
-> >      > + * ``vhost-user-pci``
-> >      > +
-> >      > +**Backends:** QEMU provides a 2D virtio-gpu backend, and two
-> >     accelerated
-> >      > +backends: virglrenderer ('gl' device label) and rutabaga_gfx
-> >     ('rutabaga'
-> >      > +device label).  There is a vhost-user backend that runs the
-> >     graphics stack
-> >      > +in a separate process for improved isolation.
-> >      > +
-> >      > +**Interfaces:** QEMU further categorizes virtio-gpu device
-> >     variants based
-> >      > +on the interface exposed to the guest. The interfaces can be
-> >     classified
-> >      > +into VGA and non-VGA variants. The VGA ones are prefixed with
-> >     virtio-vga
-> >      > +or vhost-user-vga while the non-VGA ones are prefixed with
-> >     virtio-gpu or
-> >      > +vhost-user-gpu.
-> >      > +
-> >      > +The VGA ones always use the PCI interface, but for the non-VGA
-> >     ones, the
-> >      > +user can further pick between MMIO or PCI. For MMIO, the user
-> >     can suffix
-> >      > +the device name with -device, though vhost-user-gpu does not
-> >     support MMIO.
-> >      > +For PCI, the user can suffix it with -pci. Without these
-> >     suffixes, the
-> >      > +platform default will be chosen.
-> >      > +
-> >      > +This document uses the PCI interface in examples.
-> >
-> >     I think it's better to omit -pci.
-> >
-> >
-> > Are you suggesting to use "-device virtio-gpu-rutabaga" or "-device
-> > virtio-gpu-gl" in the examples?  Or "-device virtio-gpu-rutabaga-device=
-"
-> > or "-device virtio-gpu-gl-device"?  The former I believe wouldn't
-> > launch, and the examples should ideally be directly applicable to a use=
-r.
-> >
-> >
-> >     By the way you are not adding the aliases for Rutabaga so please do
-> so.
-> >     You can find the table in: softmmu/qdev-monitor.c
-> >
-> >
-> > I don't follow this comment.  Isn't "-device virtio-gpu-rutabaga-pci"
-> > (along with "-device virtio-gpu-rutabaga-device") an alias for the
-> > rutabaga device?  Where would the alias be placed in the doc (we don't
-> > explicitly list aliases for other devices either), outside the
-> > "..parsed-literal::" launch command?
+On Thu, Jul 27, 2023 at 6:22=E2=80=AFPM Daniel Henrique Barboza
+<dbarboza@ventanamicro.com> wrote:
 >
-> virtio-gpu-gl should work, and you need add an alias definition to get
-> virtio-gpu-rutabaga work.
+> Inside riscv_cpu_validate_v() we're always throwing a log message if the
+> user didn't set a vector version via 'vext_spec'.
 >
-
-I see the problem: virtio-gpu-gl as a device works, but virtio-gpu-rutabaga
-doesn't.  But the aliases for the gl device and rutabaga device are the
-same in softmmu/qdev-monitor.c?
-
-    { "virtio-gpu-gl-device", "virtio-gpu-gl", QEMU_ARCH_VIRTIO_MMIO },
-    { "virtio-gpu-gl-pci", "virtio-gpu-gl", QEMU_ARCH_VIRTIO_PCI },
-    { "virtio-gpu-rutabaga-device", "virtio-gpu-rutabaga",
-      QEMU_ARCH_VIRTIO_MMIO },
-    { "virtio-gpu-rutabaga-pci", "virtio-gpu-rutabaga",
-QEMU_ARCH_VIRTIO_PCI },
-
-What else needs to be added?
-
-
-> Your documentation already says:
->  > Without these suffixes, the platform default will be chosen.
+> We're going to include one case with the 'max' CPU where env->vext_ver
+> will be set in the cpu_init(). But that alone will not stop the "vector
+> version is not specified" message from appearing. The usefulness of this
+> log message is debatable for the generic CPUs, but for a 'max' CPU type,
+> where we are supposed to deliver a CPU model with all features possible,
+> it's strange to force users to set 'vext_spec' to get rid of this
+> message.
 >
-> You should confirm what you say in the documentation and fix the
-> documentation or code if something is wrong.
-
---000000000000b2609c0602954812
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Wed, Aug 9, 2023 at 11:55=E2=80=AF=
-PM Akihiko Odaki &lt;<a href=3D"mailto:akihiko.odaki@gmail.com">akihiko.oda=
-ki@gmail.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" styl=
-e=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);paddin=
-g-left:1ex">On 2023/08/10 10:11, Gurchetan Singh wrote:<br>
-&gt; <br>
-&gt; <br>
-&gt; On Tue, Aug 8, 2023 at 10:18=E2=80=AFPM Akihiko Odaki &lt;<a href=3D"m=
-ailto:akihiko.odaki@gmail.com" target=3D"_blank">akihiko.odaki@gmail.com</a=
-> <br>
-&gt; &lt;mailto:<a href=3D"mailto:akihiko.odaki@gmail.com" target=3D"_blank=
-">akihiko.odaki@gmail.com</a>&gt;&gt; wrote:<br>
-&gt; <br>
-&gt;=C2=A0 =C2=A0 =C2=A0On 2023/08/09 11:11, Gurchetan Singh wrote:<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; This adds basic documentation for virtio-gpu.=
-<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; Suggested-by: Akihiko Odaki &lt;<a href=3D"ma=
-ilto:akihiko.odaki@daynix.com" target=3D"_blank">akihiko.odaki@daynix.com</=
-a><br>
-&gt;=C2=A0 =C2=A0 =C2=A0&lt;mailto:<a href=3D"mailto:akihiko.odaki@daynix.c=
-om" target=3D"_blank">akihiko.odaki@daynix.com</a>&gt;&gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; Signed-off-by: Gurchetan Singh &lt;<a href=3D=
-"mailto:gurchetansingh@chromium.org" target=3D"_blank">gurchetansingh@chrom=
-ium.org</a><br>
-&gt;=C2=A0 =C2=A0 =C2=A0&lt;mailto:<a href=3D"mailto:gurchetansingh@chromiu=
-m.org" target=3D"_blank">gurchetansingh@chromium.org</a>&gt;&gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; ---<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; v2: - Incorporated suggestions by Akihiko Oda=
-ki<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 - Listed the currently su=
-pported capset_names (Bernard)<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; v3: - Incorporated suggestions by Akihiko Oda=
-ki and Alyssa Ross<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; v4: - Incorporated suggestions by Akihiko Oda=
-ki<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0docs/system/device-emulation.rst=
-=C2=A0 =C2=A0|=C2=A0 =C2=A01 +<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0docs/system/devices/virtio-gpu.rs=
-t | 115<br>
-&gt;=C2=A0 =C2=A0 =C2=A0+++++++++++++++++++++++++++++<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A02 files changed, 116 insertions(+=
-)<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0create mode 100644 docs/system/de=
-vices/virtio-gpu.rst<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; diff --git a/docs/system/device-emulation.rst=
-<br>
-&gt;=C2=A0 =C2=A0 =C2=A0b/docs/system/device-emulation.rst<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; index 4491c4cbf7..1167f3a9f2 100644<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; --- a/docs/system/device-emulation.rst<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +++ b/docs/system/device-emulation.rst<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; @@ -91,6 +91,7 @@ Emulated Devices<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 devices/nvme.rst<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 devices/usb.rst<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 devices/vhost-user.rst<br=
+> Change riscv_cpu_validate_v() to not throw this log message if
+> env->vext_ver is already set.
 >
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +=C2=A0 =C2=A0devices/virtio-gpu.rst<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 devices/virtio-pmem.rst<b=
-r>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 devices/vhost-user-rng.rs=
-t<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 devices/canokey.rst<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; diff --git a/docs/system/devices/virtio-gpu.r=
-st<br>
-&gt;=C2=A0 =C2=A0 =C2=A0b/docs/system/devices/virtio-gpu.rst<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; new file mode 100644<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; index 0000000000..d56524270d<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; --- /dev/null<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +++ b/docs/system/devices/virtio-gpu.rst<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; @@ -0,0 +1,115 @@<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +..<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +=C2=A0 =C2=A0SPDX-License-Identifier: GPL-2.=
-0<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +virtio-gpu<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +This document explains the setup and usage o=
-f the virtio-gpu device.<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +The virtio-gpu device paravirtualizes the GP=
-U and display<br>
-&gt;=C2=A0 =C2=A0 =C2=A0controller.<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +Linux kernel support<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +--------------------<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +virtio-gpu requires a guest Linux kernel bui=
-lt with the<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +``CONFIG_DRM_VIRTIO_GPU`` option.<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +QEMU virtio-gpu variants<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +------------------------<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +QEMU virtio-gpu device variants come in the =
-following form:<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; + * ``virtio-vga[-BACKEND]``<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; + * ``virtio-gpu[-BACKEND][-INTERFACE]``<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; + * ``vhost-user-vga``<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; + * ``vhost-user-pci``<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +**Backends:** QEMU provides a 2D virtio-gpu =
-backend, and two<br>
-&gt;=C2=A0 =C2=A0 =C2=A0accelerated<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +backends: virglrenderer (&#39;gl&#39; device=
- label) and rutabaga_gfx<br>
-&gt;=C2=A0 =C2=A0 =C2=A0(&#39;rutabaga&#39;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +device label).=C2=A0 There is a vhost-user b=
-ackend that runs the<br>
-&gt;=C2=A0 =C2=A0 =C2=A0graphics stack<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +in a separate process for improved isolation=
-.<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +**Interfaces:** QEMU further categorizes vir=
-tio-gpu device<br>
-&gt;=C2=A0 =C2=A0 =C2=A0variants based<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +on the interface exposed to the guest. The i=
-nterfaces can be<br>
-&gt;=C2=A0 =C2=A0 =C2=A0classified<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +into VGA and non-VGA variants. The VGA ones =
-are prefixed with<br>
-&gt;=C2=A0 =C2=A0 =C2=A0virtio-vga<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +or vhost-user-vga while the non-VGA ones are=
- prefixed with<br>
-&gt;=C2=A0 =C2=A0 =C2=A0virtio-gpu or<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +vhost-user-gpu.<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +The VGA ones always use the PCI interface, b=
-ut for the non-VGA<br>
-&gt;=C2=A0 =C2=A0 =C2=A0ones, the<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +user can further pick between MMIO or PCI. F=
-or MMIO, the user<br>
-&gt;=C2=A0 =C2=A0 =C2=A0can suffix<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +the device name with -device, though vhost-u=
-ser-gpu does not<br>
-&gt;=C2=A0 =C2=A0 =C2=A0support MMIO.<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +For PCI, the user can suffix it with -pci. W=
-ithout these<br>
-&gt;=C2=A0 =C2=A0 =C2=A0suffixes, the<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +platform default will be chosen.<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +This document uses the PCI interface in exam=
-ples.<br>
-&gt; <br>
-&gt;=C2=A0 =C2=A0 =C2=A0I think it&#39;s better to omit -pci.<br>
-&gt; <br>
-&gt; <br>
-&gt; Are you suggesting to use &quot;-device virtio-gpu-rutabaga&quot; or &=
-quot;-device <br>
-&gt; virtio-gpu-gl&quot; in the examples?=C2=A0 Or &quot;-device virtio-gpu=
--rutabaga-device&quot; <br>
-&gt; or &quot;-device virtio-gpu-gl-device&quot;?=C2=A0 The former I believ=
-e wouldn&#39;t <br>
-&gt; launch, and the examples should ideally be directly applicable to a us=
-er.<br>
-&gt; <br>
-&gt; <br>
-&gt;=C2=A0 =C2=A0 =C2=A0By the way you are not adding the aliases for Rutab=
-aga so please do so.<br>
-&gt;=C2=A0 =C2=A0 =C2=A0You can find the table in: softmmu/qdev-monitor.c<b=
-r>
-&gt; <br>
-&gt; <br>
-&gt; I don&#39;t follow this comment.=C2=A0 Isn&#39;t &quot;-device virtio-=
-gpu-rutabaga-pci&quot; <br>
-&gt; (along with &quot;-device virtio-gpu-rutabaga-device&quot;) an alias f=
-or the <br>
-&gt; rutabaga device?=C2=A0 Where would the alias be placed in the doc (we =
-don&#39;t <br>
-&gt; explicitly list aliases for other devices either), outside the <br>
-&gt; &quot;..parsed-literal::&quot; launch command?<br>
-<br>
-virtio-gpu-gl should work, and you need add an alias definition to get <br>
-virtio-gpu-rutabaga work.<br></blockquote><div><br></div><div>I see the pro=
-blem: virtio-gpu-gl as a device works, but virtio-gpu-rutabaga doesn&#39;t.=
-=C2=A0 But the aliases for the gl device and rutabaga device are the same i=
-n softmmu/qdev-monitor.c?=C2=A0</div><div><br></div><div>=C2=A0 =C2=A0 { &q=
-uot;virtio-gpu-gl-device&quot;, &quot;virtio-gpu-gl&quot;, QEMU_ARCH_VIRTIO=
-_MMIO },<br>=C2=A0 =C2=A0 { &quot;virtio-gpu-gl-pci&quot;, &quot;virtio-gpu=
--gl&quot;, QEMU_ARCH_VIRTIO_PCI },<br>=C2=A0 =C2=A0 { &quot;virtio-gpu-ruta=
-baga-device&quot;, &quot;virtio-gpu-rutabaga&quot;,<br>=C2=A0 =C2=A0 =C2=A0=
- QEMU_ARCH_VIRTIO_MMIO },<br>=C2=A0 =C2=A0 { &quot;virtio-gpu-rutabaga-pci&=
-quot;, &quot;virtio-gpu-rutabaga&quot;, QEMU_ARCH_VIRTIO_PCI },<br></div><d=
-iv><br></div><div>What else needs to be added?=C2=A0</div><div><br></div><b=
-lockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-le=
-ft:1px solid rgb(204,204,204);padding-left:1ex">
-<br>
-Your documentation already says:<br>
-=C2=A0&gt; Without these suffixes, the platform default will be chosen.<br>
-<br>
-You should confirm what you say in the documentation and fix the <br>
-documentation or code if something is wrong.=C2=A0</blockquote></div></div>
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
---000000000000b2609c0602954812--
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+
+Alistair
+
+> ---
+>  target/riscv/cpu.c | 9 ++++-----
+>  1 file changed, 4 insertions(+), 5 deletions(-)
+>
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index 08f61ed051..01b0d228f5 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -939,8 +939,6 @@ static void riscv_cpu_disas_set_info(CPUState *s, dis=
+assemble_info *info)
+>  static void riscv_cpu_validate_v(CPURISCVState *env, RISCVCPUConfig *cfg=
+,
+>                                   Error **errp)
+>  {
+> -    int vext_version =3D VEXT_VERSION_1_00_0;
+> -
+>      if (!is_power_of_2(cfg->vlen)) {
+>          error_setg(errp, "Vector extension VLEN must be power of 2");
+>          return;
+> @@ -963,17 +961,18 @@ static void riscv_cpu_validate_v(CPURISCVState *env=
+, RISCVCPUConfig *cfg,
+>      }
+>      if (cfg->vext_spec) {
+>          if (!g_strcmp0(cfg->vext_spec, "v1.0")) {
+> -            vext_version =3D VEXT_VERSION_1_00_0;
+> +            env->vext_ver =3D VEXT_VERSION_1_00_0;
+>          } else {
+>              error_setg(errp, "Unsupported vector spec version '%s'",
+>                         cfg->vext_spec);
+>              return;
+>          }
+> -    } else {
+> +    } else if (env->vext_ver =3D=3D 0) {
+>          qemu_log("vector version is not specified, "
+>                   "use the default value v1.0\n");
+> +
+> +        env->vext_ver =3D VEXT_VERSION_1_00_0;
+>      }
+> -    env->vext_ver =3D vext_version;
+>  }
+>
+>  static void riscv_cpu_validate_priv_spec(RISCVCPU *cpu, Error **errp)
+> --
+> 2.41.0
+>
+>
 
