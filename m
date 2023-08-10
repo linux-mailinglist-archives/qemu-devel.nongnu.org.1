@@ -2,70 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EDE5776E22
+	by mail.lfdr.de (Postfix) with ESMTPS id 41A3F776E20
 	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 04:37:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTvWp-0000ux-ES; Wed, 09 Aug 2023 22:35:59 -0400
+	id 1qTvWq-0000zW-3W; Wed, 09 Aug 2023 22:36:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTvWj-0000tw-BD
+ id 1qTvWj-0000uY-RH
  for qemu-devel@nongnu.org; Wed, 09 Aug 2023 22:35:53 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTvWh-0004x1-Os
+ id 1qTvWi-0004x8-7U
  for qemu-devel@nongnu.org; Wed, 09 Aug 2023 22:35:53 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-687087d8ddaso403908b3a.1
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-686f38692b3so370698b3a.2
  for <qemu-devel@nongnu.org>; Wed, 09 Aug 2023 19:35:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691634950; x=1692239750;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=CpX0550wKMCux/3GBST6e64zt0DiUd6H3+LGhoX5Le4=;
- b=nxE6HNRCusB6fZYY6XNCichRSFLYz/wJ+Z80eX+cTtzkebnHEr7zNV/9ryCAMh/VX9
- xa9dGe5ZUocQ1flZzigcxXUPIFGccTSyLGesSW4yFyd6kA+GF+FV0XZi6h4x6+P2Pmyy
- nDenJJBTgak0vLbieRfJqbJh+zUOBmW0olwE4qBVYhcwtwLb6366JA1RzdjRfbBVYtlP
- KT/Fo/Y/usHC8XJxEhcjEeO4RcKBGJxJDOYUwayOfy64lOl67qzOTMiQBPvXwZ727lwU
- JXpXyiOO58QRMER1Y5U08BrjpUw7xNBA0/wX335ELzn11snWJvp36BvIBqiBXFySH3FF
- YOHQ==
+ d=linaro.org; s=google; t=1691634951; x=1692239751;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=phrIw6b5pWNBBmVHR2P9mXRKZKLN/f9yT3V1nvx09pc=;
+ b=hetcGLSTvMBODJofQGfMVBISegsvqZdiKKEbSfvqqqx+d99tfCCDuaJWnrsG3hV+gX
+ HeX00d8gGHe9ieeT8E3SnzLZiy0K+JL/Vf3EN5EDq1i9CFp1PrEhJ4mVePQ9vO1g7tbZ
+ herQk+zbXxrFUzSytvWYr3gFniGDMuDmXW9GFngAh3r5ExlIX7IiyEzofpDk4+ypzfkG
+ KX43SBIB+cpGu/HC3yzMxaRaVi3mlnug36VLLig+Q2A0/ZwpQ4O0Q3l5uU5e7AY6RIBV
+ PimncngeezMtCofNYYrpyqc49LtO1xjVFWkcLo7R5y/t1KpFpCsRx8Pmrkj6MbxU2VzH
+ H8Rw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691634950; x=1692239750;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=CpX0550wKMCux/3GBST6e64zt0DiUd6H3+LGhoX5Le4=;
- b=l0wTCD218XY1Cvyb1SUq4n0ACVq4D3iJd7w+JBOdlDPKZKXDHwX3Ra7Q6jteyUStof
- Cmrv1LEYvXGmtD1G7NDVW2oePQ7PpoHBEBmkmNTyjhPTsku7Majxq7Y99nTK7Mzlxm8q
- XlzbNmsF9rp6MWURd+weEmK8WoxHRFGlQsEQeUQhXThy0uc430vVe3YXBpFeL18U5XV2
- slAgjrQK22Qsj71h5Jfur9qUn1p7GReWiDBt5SVUSaUC5Us7rZesXx1YmrD8Lp9hoRMk
- fai1J7FWBrWG62zoRKHWKO5ImuSHdm8+AzUUFBrsnmhx5POk40NKBrvr3wjGrijSEQ94
- EwwA==
-X-Gm-Message-State: AOJu0Yy8F5KSLEYlwtf1UJsdD/uUJ+cXwM8rVtEJ73ZKEV03ShISXMvF
- nB+xrLrHVvf0QCRX5JpXOH6VpGCNgxRKnDhyaEs=
-X-Google-Smtp-Source: AGHT+IFhJdrxAZzXSEj0lkiMQ+wk6BekqZA7OjS/Gc7j7LTe6kQdIRMvQR0BqW5z2ZF1tpRhheeecA==
-X-Received: by 2002:a05:6a20:1583:b0:11d:8a8f:655d with SMTP id
- h3-20020a056a20158300b0011d8a8f655dmr1541785pzj.4.1691634950092; 
+ d=1e100.net; s=20221208; t=1691634951; x=1692239751;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=phrIw6b5pWNBBmVHR2P9mXRKZKLN/f9yT3V1nvx09pc=;
+ b=AX2PWhf1ZTgUn9kSAckmH1NH+NXZnNCvlHfSG1XupyLA+n8YSU3xWhi7wcd1/93wAN
+ 5IP9RHb8K0K9q90ZPn5rFQs+7dzyBw11QbKQvu212g+jOD3tuVGWbwbgLSb/Lwosbpk8
+ 4DCM1aezieTV0fYFoYztANWibmoCnsiSD5E8yJNJ1SXCTJHZIaOqwk5vsgJgfFTAKxrV
+ P2oCbtGeeYLtlFTVRmUASGvffTMIcwW3COFtfoh54MrbImw4pEhp6WUf+LXsohTcteM1
+ yVPNGJR84uXi8FoIp/FkJp0kCWhHxgmkUmxDha3EMaGkO9P/3qmJryzPAoP6FKFo9GSX
+ eeCw==
+X-Gm-Message-State: AOJu0YymsuusrddBxeddiEUJ0uAztZcyPAwt1Tf+kTAdZUpPOXotY6FX
+ ncoqnP+ZnHvlmVFuEtnH+KlqB0FFTMIP4kFz0ho=
+X-Google-Smtp-Source: AGHT+IEUG51SrYGxqrFVabABdMjUAcKCckHEvErqH8od8fPuYIIAMz9p2mGtyazKJ+rZO1dPB6WhDw==
+X-Received: by 2002:a05:6a00:23d1:b0:687:520e:4b17 with SMTP id
+ g17-20020a056a0023d100b00687520e4b17mr1382835pfc.8.1691634950943; 
  Wed, 09 Aug 2023 19:35:50 -0700 (PDT)
 Received: from stoup.. ([2602:47:d483:7301:6bf0:9674:6ac4:f74c])
  by smtp.gmail.com with ESMTPSA id
- z7-20020aa791c7000000b0066ebaeb149dsm287283pfa.88.2023.08.09.19.35.49
+ z7-20020aa791c7000000b0066ebaeb149dsm287283pfa.88.2023.08.09.19.35.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 09 Aug 2023 19:35:49 -0700 (PDT)
+ Wed, 09 Aug 2023 19:35:50 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org
-Subject: [PATCH for-8.2 0/5] target/arm: Implement cortex-a710
-Date: Wed,  9 Aug 2023 19:35:43 -0700
-Message-Id: <20230810023548.412310-1-richard.henderson@linaro.org>
+Cc: qemu-arm@nongnu.org,
+	qemu-stable@nongnu.org
+Subject: [PATCH 1/5] target/arm: Disable FEAT_TRF in neoverse-v1
+Date: Wed,  9 Aug 2023 19:35:44 -0700
+Message-Id: <20230810023548.412310-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230810023548.412310-1-richard.henderson@linaro.org>
+References: <20230810023548.412310-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -88,38 +92,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is one of the first generation Armv9 cores, and gives us something
-concrete to test in that area.  Notably, it supports MTE.
+Self-hosted trace is out of scope for QEMU.
 
-The first patch is a bug fix of sorts for neoverse-v1, as we don't,
-and won't, support FEAT_TRF.
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ target/arm/tcg/cpu64.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-The only thing missing for the a710 is FEAT_MPAM.  I haven't looked
-at that properly, and I believe that there may already be some work
-done on that within Linaro -- even if a stub implementation.
-
-
-r~
-
-
-Richard Henderson (5):
-  target/arm: Disable FEAT_TRF in neoverse-v1
-  target/arm: Reduce dcz_blocksize to uint8_t
-  target/arm: Allow cpu to configure GM blocksize
-  target/arm: Support more GM blocksizes
-  target/arm: Implement cortex-a710
-
- docs/system/arm/virt.rst       |   1 +
- target/arm/cpu.h               |   5 +-
- target/arm/internals.h         |   6 --
- target/arm/tcg/translate.h     |   2 +
- hw/arm/virt.c                  |   1 +
- target/arm/helper.c            |  11 ++-
- target/arm/tcg/cpu64.c         | 172 ++++++++++++++++++++++++++++++++-
- target/arm/tcg/mte_helper.c    |  91 ++++++++++++++---
- target/arm/tcg/translate-a64.c |   5 +-
- 9 files changed, 263 insertions(+), 31 deletions(-)
-
+diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
+index 8019f00bc3..60e5f034d9 100644
+--- a/target/arm/tcg/cpu64.c
++++ b/target/arm/tcg/cpu64.c
+@@ -618,7 +618,7 @@ static void aarch64_neoverse_v1_initfn(Object *obj)
+     cpu->dcz_blocksize = 4;
+     cpu->id_aa64afr0 = 0x00000000;
+     cpu->id_aa64afr1 = 0x00000000;
+-    cpu->isar.id_aa64dfr0  = 0x000001f210305519ull;
++    cpu->isar.id_aa64dfr0  = 0x000000f210305519ull; /* w/o FEAT_TRF */
+     cpu->isar.id_aa64dfr1 = 0x00000000;
+     cpu->isar.id_aa64isar0 = 0x1011111110212120ull; /* with FEAT_RNG */
+     cpu->isar.id_aa64isar1 = 0x0111000001211032ull;
+@@ -628,7 +628,7 @@ static void aarch64_neoverse_v1_initfn(Object *obj)
+     cpu->isar.id_aa64pfr0  = 0x1101110120111112ull; /* GIC filled in later */
+     cpu->isar.id_aa64pfr1  = 0x0000000000000020ull;
+     cpu->id_afr0       = 0x00000000;
+-    cpu->isar.id_dfr0  = 0x15011099;
++    cpu->isar.id_dfr0  = 0x05011099; /* w/o FEAT_TRF */
+     cpu->isar.id_isar0 = 0x02101110;
+     cpu->isar.id_isar1 = 0x13112111;
+     cpu->isar.id_isar2 = 0x21232042;
 -- 
 2.34.1
 
