@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59591777C58
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 17:38:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03006777C59
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 17:38:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qU7iZ-0005PM-FA; Thu, 10 Aug 2023 11:36:55 -0400
+	id 1qU7iZ-0005Pm-NP; Thu, 10 Aug 2023 11:36:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qU7iV-0005MT-S0
+ id 1qU7iV-0005Mg-Uj
  for qemu-devel@nongnu.org; Thu, 10 Aug 2023 11:36:51 -0400
-Received: from mail-lj1-x22a.google.com ([2a00:1450:4864:20::22a])
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qU7iQ-0003Em-9U
+ id 1qU7iQ-0003Ey-BI
  for qemu-devel@nongnu.org; Thu, 10 Aug 2023 11:36:51 -0400
-Received: by mail-lj1-x22a.google.com with SMTP id
- 38308e7fff4ca-2b9ba3d6157so16122561fa.3
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-3fe4ad22eb0so9289025e9.3
  for <qemu-devel@nongnu.org>; Thu, 10 Aug 2023 08:36:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691681804; x=1692286604;
+ d=linaro.org; s=google; t=1691681805; x=1692286605;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=pWHkl2jpAyxPACNnTV5P1s0rijLChl436ygUcdDaXic=;
- b=h3nj/RX/PEBMGORRsUbFI+KHNK8wIaqFIm9SzLx3IjDxRl0jb+QuZhpiW3teTbcfg6
- E3PDpgaFrplq5WN2SUvJF6yvqcGP5fJ1dOh3LxM5VMG/SNRT4c/bKr2pPH7bLmbTwfVV
- MYwk+w19KETrxyA6AM55Gjd6bltBVB1bNz4JeCcnRx68GeNwANgl7WrEAgoVb0WrzPKl
- 5zv9fkpVQuNjZB8VLhymMm+Gs21b94erzYQ+XkN6XU78H+RbEFAZ3d8Z7RLgZawXVpaF
- KENHZDcCDwdJwFXag+RXdA5gu9v3lmCT34Jx4q790KQu5G25Yz3SyYv7nimdRTLR4AhD
- DHDQ==
+ bh=h+hzkLqMShk2eSDpt7ofnm8iQ+BmAGdQ23pVnCkXYCc=;
+ b=qSPdGP5emdtMSmZHodKdvztcmt7T2Wkdf08tKPUMS/9gAsiyfPFv+Ci/GKNhXrZnT9
+ 7RGEA6bBHUMUog0P+/yiJV+tax/4X5wj6ToeaKaCIE5BXAOutBMDqp2tNwISMd/keoKo
+ oumOpPBpU6Ow1A7iHYosTIZ7Z4Bs2ajdKeH8CIGDP07pGYKZaJp2OQpbpt60pYiQq2WC
+ Ch8qoESAQZJibYd3a80bJUfWdy1RWnr4sOzDYBDUsEXEgrFB+/od2/n6XM6sPOKR1MJi
+ 5+ZjSPBanf1SdlGkqtHhwOymo8+q0FzlyhHNNYKCIjUtpMA1zoP3leECjU9jPdbwgr9q
+ S/iw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691681804; x=1692286604;
+ d=1e100.net; s=20221208; t=1691681805; x=1692286605;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pWHkl2jpAyxPACNnTV5P1s0rijLChl436ygUcdDaXic=;
- b=E+VSDc8Wfk9wYEOL5OFFtXwBsN7PJZoRX8p8SGBOnUZgjNnSW70t/6s7ONc59rNz7C
- 3QuvD89HiQfU3ODlWtb6p0fMZS8BJDlNnks1UdH6Kriwh9Bx4ksbfsV8l+pwlBILBj+V
- t1QxBMAyOTVdArrKwiuCXvaWFqXxVvByr/6SB1ly0UAVScZhh51b2B8o4y2OUILN+ytJ
- QSSb3qICdRCEmfhMB1PR4LqTVvgsB/CT6hDK/XQBZ/DsstXFo577mzdoH5e+xav0LWRb
- vwPlOIjNwVV0meeOY40KTRsqElDR1+S2G9x6taxhHrG+sZgBj66Lz2fKKnWDlqNouKEK
- gJzA==
-X-Gm-Message-State: AOJu0YyJB09IBhTWXVNRizt68KgUc1ERcm5ECcxXNh8i64dN9fA4zeub
- 6ZDChapZBg4KnZT+6oCSnT+6ug==
-X-Google-Smtp-Source: AGHT+IHL54S1rQpcljLV5yVWT8wYrIxnkO8ICdS4coZbqboZFYHgMc/4zAZiuvhkNhFPsarm3vEr3g==
-X-Received: by 2002:a2e:9190:0:b0:2b9:ac48:d7fb with SMTP id
- f16-20020a2e9190000000b002b9ac48d7fbmr2385872ljg.41.1691681804724; 
+ bh=h+hzkLqMShk2eSDpt7ofnm8iQ+BmAGdQ23pVnCkXYCc=;
+ b=FOcnKpAVywQSR5/9kdvrWgeHnmJn5Ym5+4F8oNtliS3Q/U7FVmDT9N93dOKmtKqtoL
+ VsI1wWqBtDUaCIiwCeZgP+fNQ0LNJ6oEyu1ekpOwFADXk0l1xqUU9mhI0udzaHV2XZAD
+ Ngqt/2Tl8m95zuDQARzUskEMFQNBsGDj0PexiYYzZvDZipxdofLHYDgCRWnVy8Pth9H6
+ ORQmKT/W3MxPj00RnLJBP33vaVli5xPkrHVWHH1LbxehPZEE0ec5VahYrYqeZ5r1xWXl
+ CJMmo+KxRYYa3Yz+CMwAgqFWH2TATrJBz3ho9f+HrMs2wlU7d9KEokHUEz+XOiwcNL9u
+ FtlA==
+X-Gm-Message-State: AOJu0YwntERWfzkt9ZF6p8z73x31Ogf2rnoO6yf8C3TSTvZZpoY16+Fz
+ YRo/MHtSTE4MvAoMYEqLgnqytg==
+X-Google-Smtp-Source: AGHT+IFEg2o3IM7QDmNxkgmskaXfAN/Z2Ug/n7eOHumvqAFZjT1yRHJZn6u6sqnuFgQqHWEAoZCEXQ==
+X-Received: by 2002:a5d:504a:0:b0:317:74ce:3e27 with SMTP id
+ h10-20020a5d504a000000b0031774ce3e27mr2676389wrt.67.1691681804925; 
  Thu, 10 Aug 2023 08:36:44 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- z15-20020a05600c114f00b003fe2bea77ccsm2504470wmz.5.2023.08.10.08.36.42
+ z4-20020a5d4d04000000b00314398e4dd4sm2503902wrt.54.2023.08.10.08.36.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 10 Aug 2023 08:36:43 -0700 (PDT)
 Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 6F52C1FFC1;
+ by zen.linaroharston (Postfix) with ESMTP id 8AA4E1FFC2;
  Thu, 10 Aug 2023 16:36:41 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -69,18 +69,19 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Thomas Huth <thuth@redhat.com>, David Hildenbrand <david@redhat.com>,
  qemu-arm@nongnu.org, qemu-s390x@nongnu.org,
- Wainer dos Santos Moschetta <wainersm@redhat.com>
-Subject: [PATCH 6/8] tests/tcg: ensure system-mode gdb tests start stopped
-Date: Thu, 10 Aug 2023 16:36:38 +0100
-Message-Id: <20230810153640.1879717-7-alex.bennee@linaro.org>
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
+Subject: [PATCH 7/8] gdbstub: more fixes for client Ctrl-C handling
+Date: Thu, 10 Aug 2023 16:36:39 +0100
+Message-Id: <20230810153640.1879717-8-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230810153640.1879717-1-alex.bennee@linaro.org>
 References: <20230810153640.1879717-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22a;
- envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x22a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,36 +104,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Without -S we run into potential races with tests starting before the
-gdbstub attaches. We don't need to worry about user-mode as enabling
-the gdbstub implies we wait for the initial connection.
+The original fix caused problems with spurious characters on other
+system emulation. So:
 
+  - instead of spamming output make the warning a trace point
+  - ensure we only allow a stop reply if it was 0x3
+
+Suggested-by: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Message-Id: <456ed3318421dd7946bdfb5ceda7e05332da368c.1690910333.git.quic_mathbern@quicinc.com>
 ---
- tests/guest-debug/run-test.py | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ gdbstub/gdbstub.c    | 5 +++--
+ gdbstub/trace-events | 1 +
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/tests/guest-debug/run-test.py b/tests/guest-debug/run-test.py
-index c0d0075e2e..b13b27d4b1 100755
---- a/tests/guest-debug/run-test.py
-+++ b/tests/guest-debug/run-test.py
-@@ -69,13 +69,10 @@ def log(output, msg):
+diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
+index e74ecc78cc..20b6fe03fb 100644
+--- a/gdbstub/gdbstub.c
++++ b/gdbstub/gdbstub.c
+@@ -2059,9 +2059,10 @@ void gdb_read_byte(uint8_t ch)
+          * here, but it does expect a stop reply.
+          */
+         if (ch != 0x03) {
+-            warn_report("gdbstub: client sent packet while target running\n");
++            trace_gdbstub_err_unexpected_runpkt(ch);
++        } else {
++            gdbserver_state.allow_stop_reply = true;
+         }
+-        gdbserver_state.allow_stop_reply = true;
+         vm_stop(RUN_STATE_PAUSED);
+     } else
+ #endif
+diff --git a/gdbstub/trace-events b/gdbstub/trace-events
+index 0c18a4d70a..b383bf8d29 100644
+--- a/gdbstub/trace-events
++++ b/gdbstub/trace-events
+@@ -26,6 +26,7 @@ gdbstub_err_invalid_repeat(uint8_t ch) "got invalid RLE count: 0x%02x"
+ gdbstub_err_invalid_rle(void) "got invalid RLE sequence"
+ gdbstub_err_checksum_invalid(uint8_t ch) "got invalid command checksum digit: 0x%02x"
+ gdbstub_err_checksum_incorrect(uint8_t expected, uint8_t got) "got command packet with incorrect checksum, expected=0x%02x, received=0x%02x"
++gdbstub_err_unexpected_runpkt(uint8_t ch) "unexpected packet (%c) while target running"
  
-     # Launch QEMU with binary
-     if "system" in args.qemu:
--        cmd = "%s %s %s -gdb unix:path=%s,server=on" % (args.qemu,
--                                                        args.qargs,
--                                                        args.binary,
--                                                        socket_name)
-+        cmd = f'{args.qemu} {args.qargs} {args.binary}' \
-+            f' -S -gdb unix:path={socket_name},server=on'
-     else:
--        cmd = "%s %s -g %s %s" % (args.qemu, args.qargs, socket_name,
--                                  args.binary)
-+        cmd = f'{args.qemu} {args.qargs} -g {socket_name} {args.binary}'
- 
-     log(output, "QEMU CMD: %s" % (cmd))
-     inferior = subprocess.Popen(shlex.split(cmd))
+ # softmmu.c
+ gdbstub_hit_watchpoint(const char *type, int cpu_gdb_index, uint64_t vaddr) "Watchpoint hit, type=\"%s\" cpu=%d, vaddr=0x%" PRIx64 ""
 -- 
 2.39.2
 
