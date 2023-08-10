@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D07F777765
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 13:42:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4A0B777773
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 13:45:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qU3Wj-0004wz-Ek; Thu, 10 Aug 2023 07:08:25 -0400
+	id 1qU3ZP-0005mg-Kk; Thu, 10 Aug 2023 07:11:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qU3Wh-0004wp-HI
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 07:08:23 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qU3ZM-0005lK-Ur
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 07:11:08 -0400
+Received: from mail-lj1-x236.google.com ([2a00:1450:4864:20::236])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qU3Wg-00064q-0r
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 07:08:23 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-3fe1fc8768aso7072285e9.1
- for <qemu-devel@nongnu.org>; Thu, 10 Aug 2023 04:08:20 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qU3ZL-0006ZB-Dl
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 07:11:08 -0400
+Received: by mail-lj1-x236.google.com with SMTP id
+ 38308e7fff4ca-2b9b9f0387dso11935651fa.0
+ for <qemu-devel@nongnu.org>; Thu, 10 Aug 2023 04:11:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691665699; x=1692270499;
+ d=linaro.org; s=google; t=1691665865; x=1692270665;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=2IrbW9Mq+c8/OLy1JgI85jl2Yxm5TKtiw4QyDmH/GYw=;
- b=GNzlyRarW2YEs55h+ES/Jgl5LRPm/f5oWKbiCm9KxiUdVhoRj7eh9jZrHXaIkK2bFd
- TPNYnzJNhu35jMh0uswrIMZ1Vo341/g7v3bnPCz2DGyfjsHrvimmc3D7BzPuo8TmQnvu
- 1HaKNTXDLshbBa3W3A9qFQ3ImT0WnQaCVnzI/ro2dXQmq+HTBONQ8FT8ezMAkg3/wCv6
- Ykia5BVWBPvmuiJixgtoxP1Vvqi2HLosn0wRW+gqYqCSIs+G0jOPRKuTD7oDTsd6MsnR
- M2UNe9EBkxFr9vUjtFMiD8HUXEpybw8se4SOXzvnkQqSE2OGGG/A8DlkMvglOdZRlSl/
- MXkA==
+ bh=ixOEa7SHrFgx5QSQ3jqH8K1vBzbtQ2da9T/80Xz+MSw=;
+ b=a9tzEDdZ4fKpDU8hUXPtX2I4svtDwoKG1bGrdA3uwwauw/+n4U3nodLqc52a2YuUjJ
+ 1smgS27orcUz/re91gUVovSsuNvtA9LnsDHr8PvDrlKMVmDVRCq08xmbZtY3YFkO15Oa
+ fr00ekMv2e+Qv181/r24XLtCltm9rtqOP1T2mFSSV2R/0d28K7YkIx8A/9wgqJlWoNhm
+ /VEv+V+rVJhYCnehitkUVFtfOwCeINhNOBuwjViOACeBVqVzM5CfVWbanYs/0gl0EiyZ
+ 003enz5yoyEnneTIueJlPZlt7EFFJZRV2/3e0al9dVA0sYy1jL8QS2c0NTsGc7AnXtbj
+ mOXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691665699; x=1692270499;
+ d=1e100.net; s=20221208; t=1691665865; x=1692270665;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=2IrbW9Mq+c8/OLy1JgI85jl2Yxm5TKtiw4QyDmH/GYw=;
- b=hm/wtBJnVHJKmTeZ2IG73LabIkefXmqvRu1e9xWfTqjMT2TUclmCNw35Vxm27uM/RJ
- hCcpEGEMujVo98FVf2kPOPyvi2MJADe69tsYJXLa3YDg5PcxPnpBHb0rh2FuroWofnHh
- 6fV81z7tIXqSLTdlGLrVzs3H+KU8QY+AWgWnSHBvuj+bE1mzlkz81ygKpjHYw+gfTkX5
- voBNqBGff2hzNp20O8A+hZmB6RQ7oIjTshgJSFYFchuWV1ozo+g67onU5nSoOVtV0nw8
- JC8BtyATRnmc5GOEKfEvt7U9pnCTDtesdDHlytMMtG3BTHjVBa/jbfJnzKu/siwneIX/
- aY4g==
-X-Gm-Message-State: AOJu0YxyWB8WfheumSyx2pUG9BEfodDpXgMfmXXZJzVeqAfA+/V8COLg
- QK5+L1iIKmN7eJp1ekT7/XLb4Q==
-X-Google-Smtp-Source: AGHT+IEGDHNIxMLEiS8lWJIn2PH4CUKTnCktxNe7CqprwanNhFKuWL45pIPCvSySBdkUmk+q9vWQoQ==
-X-Received: by 2002:a7b:c34e:0:b0:3fe:2bb1:11ba with SMTP id
- l14-20020a7bc34e000000b003fe2bb111bamr1900818wmj.27.1691665699486; 
- Thu, 10 Aug 2023 04:08:19 -0700 (PDT)
+ bh=ixOEa7SHrFgx5QSQ3jqH8K1vBzbtQ2da9T/80Xz+MSw=;
+ b=VG4kAy0Q3rYE+JYtV4h1TSiLQW4Q1qJccwPmZX4LVpBzqdpiKBAYkFVNCKLsfrlxy1
+ eXSkbu4PVLpnd8e7oX5hdAvj5nPBn5IGyCR6PbN6DhRxECVAFcmJwb1zhpN4Q5L9D1LH
+ DbdJTPUNpbCRGfyWDp1KdTTcXCdEsBjuXHGOnmuGEDm2I4cjgav5qR2SE5adujjOiN3S
+ daxg68M/N/MuSN9s4gAcYEy4FExgQ27H5UbevieZClZMPdZyxRDSSUu4ehbxd83A9EVd
+ JM+ViAFkhWiGVFP8oTd/rHwrglpSwXKcrZNLSDZ7RUeSBMjDUOIuAbOG02RPZ47jHIDZ
+ 6eMg==
+X-Gm-Message-State: AOJu0YwFeAyYA/y8IkvrzcUBQj/IJBZvu5KY9WiEyFWL5ZA7wD87/WwZ
+ FV3G9k+REUd8ptCU5utd97F6gQ==
+X-Google-Smtp-Source: AGHT+IGl5qkw8ib3XdlC3Mx9Ek4HpNGn+z7AdpW+bqujwNYjeoP19ZvvstL2v9LPILwocr6QRuPZAw==
+X-Received: by 2002:a2e:9397:0:b0:2b9:ecc5:d1de with SMTP id
+ g23-20020a2e9397000000b002b9ecc5d1demr1548516ljh.37.1691665865317; 
+ Thu, 10 Aug 2023 04:11:05 -0700 (PDT)
 Received: from [192.168.69.115] ([176.176.158.65])
  by smtp.gmail.com with ESMTPSA id
- m8-20020a7bca48000000b003fa96fe2bd9sm4775041wml.22.2023.08.10.04.08.18
+ 8-20020a05600c024800b003fd2d33ea53sm1784413wmj.14.2023.08.10.04.11.04
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 10 Aug 2023 04:08:19 -0700 (PDT)
-Message-ID: <2669cda6-a25a-6742-d072-f04fb6c18c08@linaro.org>
-Date: Thu, 10 Aug 2023 13:08:17 +0200
+ Thu, 10 Aug 2023 04:11:04 -0700 (PDT)
+Message-ID: <f7774c34-64eb-893c-5533-d0746d10eedd@linaro.org>
+Date: Thu, 10 Aug 2023 13:11:03 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.13.0
-Subject: Re: [PATCH v4 01/11] target/loongarch: Add macro to check current arch
+Subject: Re: [PATCH v1 0/3] softmmu/physmem: file_ram_open() readonly
+ improvements
 Content-Language: en-US
-To: Jiajie Chen <c@jia.je>, Richard Henderson <richard.henderson@linaro.org>, 
- qemu-devel@nongnu.org
-Cc: yijun@loongson.cn, shenjinyang@loongson.cn, gaosong@loongson.cn,
- i.qemu@xen0n.name
-References: <20230808015506.1705140-1-c@jia.je>
- <20230808015506.1705140-2-c@jia.je>
- <68c43230-1198-5d46-5450-26b8f61bd09b@linaro.org>
- <6783fb78-b346-1395-da8e-648792557909@jia.je>
+To: ThinerLogoer <logoerthiner1@163.com>, David Hildenbrand
+ <david@redhat.com>, qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>
+References: <20230807190736.572665-1-david@redhat.com>
+ <19a4115f.867a.189d62f6665.Coremail.logoerthiner1@163.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <6783fb78-b346-1395-da8e-648792557909@jia.je>
+In-Reply-To: <19a4115f.867a.189d62f6665.Coremail.logoerthiner1@163.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::236;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x236.google.com
 X-Spam_score_int: -42
 X-Spam_score: -4.3
 X-Spam_bar: ----
@@ -97,30 +96,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/8/23 19:13, Jiajie Chen wrote:
+Hi,
+
+On 8/8/23 19:26, ThinerLogoer wrote:
 > 
-> On 2023/8/9 01:01, Richard Henderson wrote:
->> On 8/7/23 18:54, Jiajie Chen wrote:
->>> Add macro to check if the current cpucfg[1].arch equals to 1(LA32) or
->>> 2(LA64).
->>>
->>> Signed-off-by: Jiajie Chen <c@jia.je>
->>> ---
->>>   target/loongarch/cpu.h | 7 +++++++
->>>   1 file changed, 7 insertions(+)
+> At 2023-08-08 03:07:31, "David Hildenbrand" <david@redhat.com> wrote:
 
+>> Instead of handling it inside file_ram_open(), handle it in the caller
+>> and only fallback to readonly in a MAP_PRIVATE mapping.
 
->> It might be easier to just define
->>
->> static inline bool is_la64(CPULoongArch64 *env)
->> {
->>     return FIELD_EX32(env->cpucfg[1], CPUCFG1, ARCH) == 
->> CPUCFG1_ARCH_LA64;
->> }
+> I have tested the patch on my compilation environment. These patches does not
+> have problem on my setup. Great job on handling more cases about file
+> opening here!
 
-Ah, drop my other suggestion (Richard's way is simpler).
+Does that mean we can add your tag on this series?
 
-> Sure, I will use this way.
-
+Tested-by: Thiner Logoer <logoerthiner1@163.com>
 
 
