@@ -2,75 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 679E6777E2B
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 18:25:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD087777E35
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 18:27:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qU8T5-00077k-US; Thu, 10 Aug 2023 12:24:59 -0400
+	id 1qU8Uw-00007n-Ex; Thu, 10 Aug 2023 12:26:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qU8T4-00076J-8V
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 12:24:58 -0400
-Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qU8Uv-00007B-8R
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 12:26:53 -0400
+Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qU8T2-00058a-1D
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 12:24:58 -0400
-Received: by mail-ej1-x62e.google.com with SMTP id
- a640c23a62f3a-99bc9e3cbf1so231237266b.0
- for <qemu-devel@nongnu.org>; Thu, 10 Aug 2023 09:24:55 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qU8Us-0005fj-O9
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 12:26:53 -0400
+Received: by mail-pg1-x531.google.com with SMTP id
+ 41be03b00d2f7-56401f1da3dso753402a12.0
+ for <qemu-devel@nongnu.org>; Thu, 10 Aug 2023 09:26:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691684694; x=1692289494;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=NKzFWzq3o7yoHtgpH4lMpHDKTXKeav8BD70Hoz1nnBI=;
- b=e0++HBtDGMkopIReN6Ivx5APHJpB/Ojn/J9CF8xdFig8chYpZt/rUC+/w75qBhRWoN
- q/beVa0b52rXuXlzOOIxzY8sq+H0p5M7gOs1zDXsrkot4JBqmuJj5aZvDpEfGOTsXAw/
- yW5Todo+EDfzUtxG8VA+Lrqoi5Jeu2O8Nn/c95iRhFudiwDt+Y4HBAxX9JvKKwhTAkif
- Ia/T1v5z9LE05L3fQhZqMm6es9F7gluUKtzBbkdmCSQsMkt92Wfm0RH13a6pAY/upLbc
- 9VmQGNozXTwFZDflI5nAmrCSJ/XJ5OhbzHBCoGY4NOYVSerqWuLbeTE++8b1F44xACmP
- 2Gcg==
+ d=linaro.org; s=google; t=1691684809; x=1692289609;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=px4jMCORn8BkTnGqbwmcdQPd6+jq/StZOLagI2oIQ6g=;
+ b=g67sP9whDCA1vrgY2/P/A0GabJVA4ISYYoogp/kUSnW5XTYDA7jUg+o3lUzhrGAv59
+ iovEGUXoa9eY+JGhYr1FhkbZ198hI43R9diAXcYEQtXSLu0O65gJVAaic+mBjAclK50t
+ 8vYGkCOCUZkrmiXP282P1qNp43zZ1ZjUvqAxVp6V+qmGb+hAZqhzXFsCrHExfIRdghbp
+ K91NAZJkN78xXfFNkTKus9I0QpRqenKIhrYVlF1nt4sj+kKECJcxy36wB0iH0a5+TMfm
+ qcsf0krOvZ0CSL+sggUD1bKFijuJs1hSubzUcv4OtkwlGqvv7H9NwHUUBWQkKqVO4Ag/
+ RCkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691684694; x=1692289494;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=NKzFWzq3o7yoHtgpH4lMpHDKTXKeav8BD70Hoz1nnBI=;
- b=JBoKmYyqkuFlPTK3cB+ENwqiLXWAwaStyEtYI9ssYFOfLN4t2VXyKdAJkYVM0fD+Qp
- kqvOoI0+1vACruSzmp+usbL1VY0a0mExtEsoPJchd2FryJ8+oHG2743UcDvDilxcah5B
- rh1lgacgSGwk4+oqF9aLkJF1MR3dwPbQH6FgV5rsmn0Eadp92ijSYAyzBcJcSROjjnp1
- uY/+BXdgWF68kppPA/XfpGJ2BPhysj2vdqiy9rRJQzPBO37txcYmrKTFSdp9DeyV4dY1
- MgWDPa7YA0iTfSen2UdsmTRMnxf3xX9TC5CbgqArdIQlJ/WavKUm3C7G0TCecY3nXkRT
- as/A==
-X-Gm-Message-State: AOJu0YydDNIQ/GYXql+wasXRxaKcEehlEun+0FpVGpoPhxjwr0n26x7L
- 6qyhSq96Wdc3jUFBA13nxui1SWu9uDOiVrv8Pr0EOg==
-X-Google-Smtp-Source: AGHT+IH9UjPwUs8PIr6ht7l7PMtAG0t/rIHGkvA4jesBb7RUy8PoFQW2CqFdv8480KUgkt47UAjC2iKQZvajy1kyCEc=
-X-Received: by 2002:a17:907:8a04:b0:99d:ae3:80a3 with SMTP id
- sc4-20020a1709078a0400b0099d0ae380a3mr3231266ejc.0.1691684694459; Thu, 10 Aug
- 2023 09:24:54 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1691684809; x=1692289609;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=px4jMCORn8BkTnGqbwmcdQPd6+jq/StZOLagI2oIQ6g=;
+ b=bUtKC0PvWutuY3Bt/wLrvQrMYStaasgGOAMd84tMWoavRa21WD79LGtJ2CbIOLLbBq
+ kfLS7dSxy7QFxaB2pihp9Lg/J943+9f3Be80ajmaxrF6VbG/hBXvlh7WoAOxfr2+16Gx
+ OHh6oDwplUdSbFEkTl4Wtxx67LRm/jq/o50RBD+WQLAkpBo69285izWdw7V5f5fq9RW6
+ +zObhHTZPzo7IcuN9jDcnRB3pS3e9ugO5NIJY7qh31vzx6r35ay1SvEiF4/mZ0/XnC4+
+ ZP3/H3YiLe3XzCyhfDf5nXIvFDu3wEHXehM8yX5Bfc66pT5/LK37RpKLd3XQg0wSc5Wl
+ ERXA==
+X-Gm-Message-State: AOJu0YzGg+kgZ9kZzf0UZ+pRG0IX/nHFKhiiLsyVgAtxn9o5ymEeeyif
+ JinKZgOOn82F7nIATmJ0qdFSvw==
+X-Google-Smtp-Source: AGHT+IEcKIVYgPm/YHDHpCTz19NMa0Y8hxmBQOrDAG9CU8MhoDKTAl71gw+b522eJ1nUtp9/Tv2mDA==
+X-Received: by 2002:a17:90a:a88b:b0:263:e133:b9c9 with SMTP id
+ h11-20020a17090aa88b00b00263e133b9c9mr2396592pjq.34.1691684809096; 
+ Thu, 10 Aug 2023 09:26:49 -0700 (PDT)
+Received: from ?IPV6:2602:47:d483:7301:9e4d:b830:d4fd:9164?
+ ([2602:47:d483:7301:9e4d:b830:d4fd:9164])
+ by smtp.gmail.com with ESMTPSA id
+ v10-20020a17090a898a00b00263fc1ef1aasm3565912pjn.10.2023.08.10.09.26.48
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 10 Aug 2023 09:26:48 -0700 (PDT)
+Message-ID: <ea1034db-68b6-8644-7fc0-309596ede0e1@linaro.org>
+Date: Thu, 10 Aug 2023 09:26:46 -0700
 MIME-Version: 1.0
-References: <20230808031143.50925-1-richard.henderson@linaro.org>
- <20230808031143.50925-7-richard.henderson@linaro.org>
-In-Reply-To: <20230808031143.50925-7-richard.henderson@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 10 Aug 2023 17:24:43 +0100
-Message-ID: <CAFEAcA8LYVyER2HN9-2wedpoKQCCoRPHOjDTZMF5u_Y7mDiywg@mail.gmail.com>
-Subject: Re: [PATCH 06/24] target/openrisc: Use tcg_gen_negsetcond_*
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-ppc@nongnu.org, 
- qemu-riscv@nongnu.org, qemu-s390x@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
- envelope-from=peter.maydell@linaro.org; helo=mail-ej1-x62e.google.com
-X-Spam_score_int: 4
-X-Spam_score: 0.4
-X-Spam_bar: /
-X-Spam_report: (0.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- SUSPICIOUS_RECIPS=2.51 autolearn=no autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 7/8] gdbstub: more fixes for client Ctrl-C handling
+Content-Language: en-US
+To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Ilya Leoshkevich <iii@linux.ibm.com>, Yonggang Luo
+ <luoyonggang@gmail.com>, Beraldo Leal <bleal@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, David Hildenbrand <david@redhat.com>,
+ qemu-arm@nongnu.org, qemu-s390x@nongnu.org,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
+References: <20230810153640.1879717-1-alex.bennee@linaro.org>
+ <20230810153640.1879717-8-alex.bennee@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230810153640.1879717-8-alex.bennee@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x531.google.com
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.156,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,16 +104,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 8 Aug 2023 at 04:13, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+On 8/10/23 08:36, Alex Bennée wrote:
+> The original fix caused problems with spurious characters on other
+> system emulation. So:
+> 
+>    - instead of spamming output make the warning a trace point
+>    - ensure we only allow a stop reply if it was 0x3
+> 
+> Suggested-by: Matheus Tavares Bernardino<quic_mathbern@quicinc.com>
+> Signed-off-by: Alex Bennée<alex.bennee@linaro.org>
+> Message-Id:<456ed3318421dd7946bdfb5ceda7e05332da368c.1690910333.git.quic_mathbern@quicinc.com>
 > ---
->  target/openrisc/translate.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
+>   gdbstub/gdbstub.c    | 5 +++--
+>   gdbstub/trace-events | 1 +
+>   2 files changed, 4 insertions(+), 2 deletions(-)
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Tested-by: Richard Henderson <richard.henderson@linaro.org>
 
-thanks
--- PMM
+
+r~
 
