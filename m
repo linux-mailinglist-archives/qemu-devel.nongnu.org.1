@@ -2,78 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6804777EC0
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 19:05:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B38B2777EC3
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 19:06:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qU95X-0007Um-6I; Thu, 10 Aug 2023 13:04:43 -0400
+	id 1qU96V-0008Pr-Hm; Thu, 10 Aug 2023 13:05:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qU95S-0007RI-3n; Thu, 10 Aug 2023 13:04:38 -0400
-Received: from mail-oo1-xc30.google.com ([2607:f8b0:4864:20::c30])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qU96T-0008Oy-Rh
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 13:05:41 -0400
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qU95P-0005YU-Qi; Thu, 10 Aug 2023 13:04:37 -0400
-Received: by mail-oo1-xc30.google.com with SMTP id
- 006d021491bc7-56c96982829so943964eaf.0; 
- Thu, 10 Aug 2023 10:04:31 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qU96S-000600-0X
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 13:05:41 -0400
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-686efa1804eso851271b3a.3
+ for <qemu-devel@nongnu.org>; Thu, 10 Aug 2023 10:05:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1691687070; x=1692291870;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=rLbpsZgNZJw0qnTsdZe1hynL5U2DSL77G2+EImjfiBk=;
- b=GXWoFo2PhW2QUFw5EFoBTlYRRv06quKwpvPF7D7Sf4TKmKfceXKWGgcI3grbdWKfnX
- +hu7Cw0HOFmpBl+eGJPlbxF5HVmcIJsDL8FtrTqM98Vu3o+0TApaqgh2AFcLMdkR1S0u
- HkMuxWlYHiQEoXXEpYNVk6RP3ArvwTlyK2CWlrV5G5s+SmVFtDKI9V2GB/62xz7b7cIc
- ZgJWowVeIXnR+McYozEE2UQ5BdKM5slD831ZSCojhtlo6YCoHY4thV1PI1VEQFaFAowF
- S/4v3A4+tv3zU8Ml8HXhnanV+ia0ch15TfAEaQgYfG99RZ2KA+rqjh19uyfREZCLoahl
- bjbA==
+ d=linaro.org; s=google; t=1691687138; x=1692291938;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=bHlZGMkapcKLLIr41RCc4qF3Clv1trayfwPgsmkFMyE=;
+ b=ytUvNGYBQaWn1KW6HyAOQhM+1WFwJ1FPmpesF1t5H0kyOZ67+KJu14UzmAVDkNGHGq
+ 3cII2bqEkBV2lpy/0VS7qsLGuoaSxL3VZXeRZ1/NOVdvdBEAgMNnK8ogNz0OlJgUHdSS
+ NJnowRKgTtgMs9hpMKai4VNolslY6UytZN7nO6MmYryyFmOVcNo5PvUWNqShjuvdxYVS
+ 8GVEETRDswOp9j7Fh5qf2m/bRpJ6jM1lpzIzlTxXJJl7DyaHEzzmX5Sm0jq5nZYuHtZQ
+ POihmzrBPOKEQyabQeLS9PvAhjkYkUJfLB5JnuVdSc925J2PZIb7IgmJ7HHYTRHwi7K8
+ svmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691687070; x=1692291870;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=rLbpsZgNZJw0qnTsdZe1hynL5U2DSL77G2+EImjfiBk=;
- b=lqh3a2iP6bAD7TVc0VApG8OLhd3JXPb/CTH5pEeqy7L6PYhynMMs5AlLaCyZ7NXmwA
- yWL3PVo31hye7474C/VB2Rjbek/0bVvoXL3US3dpX2WbxF/vgiWoJ2bqUovbYYZw7fcN
- vPLBk98NGcPnT8ZuR4/zsV8nJpKJ+VqZ2JKD3TLUVc6YechIg7UgYRkXotyzi15QoIcu
- Ixr6I1NMWjarPGc7XJ3r72l/9aao+cXY2ErcJBT2EwkKdanNQv/X9J0DsuZT5d3bV4C/
- s9Jav0UJQkewRm8TUsrYmoi0GGMngqL16TE4N7DIGIPF9NwLw1m6KglihN2x8G9U+cQR
- XaZA==
-X-Gm-Message-State: AOJu0YxFRdAohTj4UvYlxypjcQOvIJP9gPB+Q1uBgJZFvYHsJTRYR7ep
- XjkUkABYNQe+TXUH9LLZZZGFgTUpWBJrSXRSiwE=
-X-Google-Smtp-Source: AGHT+IGU4r60gtV+Q5AHXlinWPNPOcLvN5V9hKsnMcoxBIEpFNLY+lHubsZLIR+uEKZpHSO+/58X86NKD76DRUPFHYA=
-X-Received: by 2002:a05:6358:3426:b0:13a:2d76:e6dd with SMTP id
- h38-20020a056358342600b0013a2d76e6ddmr3896842rwd.31.1691687070122; Thu, 10
- Aug 2023 10:04:30 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1691687138; x=1692291938;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=bHlZGMkapcKLLIr41RCc4qF3Clv1trayfwPgsmkFMyE=;
+ b=FrH7mTiIDJIK8NhSCkHf4X/Y+Sk6hxErCG+Znh7YaNH5kAXspCt0XoZ6mUOAN6hkiB
+ RvixJW+EV68gzTd0XGk1uFcMMnVN/WqVizINiwuINeesnhpfHs+yM+TdiZyp57nZFrRn
+ kuVhzDx8yTznD6mpzcsiQlPDU141D9tj5TjxmvQnUzmkjE+iAE5FWapofN/otHn5GSbq
+ a+BvzWE+OwvaYoEM5JgKji5jd71arWKfPLSgptlVcxZx87MjDTo1uAX+p8+mraTY+ygI
+ KMBAr4M4QBOwBvRPJrjVKzCXR+Cp+CbWuNszrCptE4AnPYAyxqylYEy/4Y9kvu1IIGso
+ v34w==
+X-Gm-Message-State: AOJu0YyEL8Oof3Ly02dZ1tB4DAqdtvDZrHQsY990Bp/KTSlBSi5gHRrZ
+ M/Up0YYy97OmJ9vrNiUWCgvULg==
+X-Google-Smtp-Source: AGHT+IFRNi/SJSJv999xCPKlVY73i8QzvpoUEmYMq1nj7FK98ZVkEPhUsWxC5MTRHx5eofQJWjy1Bg==
+X-Received: by 2002:a05:6a00:1943:b0:687:5763:ef27 with SMTP id
+ s3-20020a056a00194300b006875763ef27mr3849663pfk.33.1691687138413; 
+ Thu, 10 Aug 2023 10:05:38 -0700 (PDT)
+Received: from ?IPV6:2602:47:d483:7301:9e4d:b830:d4fd:9164?
+ ([2602:47:d483:7301:9e4d:b830:d4fd:9164])
+ by smtp.gmail.com with ESMTPSA id
+ x27-20020a056a00271b00b006827c26f147sm1761345pfv.138.2023.08.10.10.05.37
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 10 Aug 2023 10:05:37 -0700 (PDT)
+Message-ID: <17230fdc-6daf-82be-e665-97ca64d16feb@linaro.org>
+Date: Thu, 10 Aug 2023 10:05:36 -0700
 MIME-Version: 1.0
-References: <20230802124906.24197-1-rbradford@rivosinc.com>
-In-Reply-To: <20230802124906.24197-1-rbradford@rivosinc.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Thu, 10 Aug 2023 13:04:04 -0400
-Message-ID: <CAKmqyKP6haPc7qGrL833ftPPg44_B501t28no05DK=2q7rYJag@mail.gmail.com>
-Subject: Re: [PATCH] target/riscv: Implement WARL behaviour for
- mcountinhibit/mcounteren
-To: Rob Bradford <rbradford@rivosinc.com>
-Cc: qemu-devel@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>, 
- Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bin.meng@windriver.com>,
- Weiwei Li <liweiwei@iscas.ac.cn>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
- "open list:RISC-V TCG CPUs" <qemu-riscv@nongnu.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c30;
- envelope-from=alistair23@gmail.com; helo=mail-oo1-xc30.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 5/5] target/arm: Implement cortex-a710
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
+References: <20230810023548.412310-1-richard.henderson@linaro.org>
+ <20230810023548.412310-6-richard.henderson@linaro.org>
+ <CAFEAcA_Lzj1LEutMro72fCfqiCWtOpd+5b-YPcfKv8Bg1f+rCg@mail.gmail.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <CAFEAcA_Lzj1LEutMro72fCfqiCWtOpd+5b-YPcfKv8Bg1f+rCg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x432.google.com
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.156,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -91,65 +97,141 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 2, 2023 at 8:50=E2=80=AFAM Rob Bradford <rbradford@rivosinc.com=
-> wrote:
->
-> These are WARL fields - zero out the bits for unavailable counters and
-> special case the TM bit in mcountinhibit which is hardwired to zero.
-> This patch achieves this by modifying the value written so that any use
-> of the field will see the correctly masked bits.
->
-> Tested by modifying OpenSBI to write max value to these CSRs and upon
-> subsequent read the appropriate number of bits for number of PMUs is
-> enabled and the TM bit is zero in mcountinhibit.
->
-> Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
+On 8/10/23 08:49, Peter Maydell wrote:
+> On Thu, 10 Aug 2023 at 03:36, Richard Henderson
+> <richard.henderson@linaro.org> wrote:
+>>
+>> The cortex-a710 is a first generation ARMv9.0-A processor.
+>>
+>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>> ---
+>>   docs/system/arm/virt.rst |   1 +
+>>   hw/arm/virt.c            |   1 +
+>>   target/arm/tcg/cpu64.c   | 167 +++++++++++++++++++++++++++++++++++++++
+>>   3 files changed, 169 insertions(+)
+>>
+>> diff --git a/docs/system/arm/virt.rst b/docs/system/arm/virt.rst
+>> index 51cdac6841..e1697ac8f4 100644
+>> --- a/docs/system/arm/virt.rst
+>> +++ b/docs/system/arm/virt.rst
+>> @@ -58,6 +58,7 @@ Supported guest CPU types:
+>>   - ``cortex-a57`` (64-bit)
+>>   - ``cortex-a72`` (64-bit)
+>>   - ``cortex-a76`` (64-bit)
+>> +- ``cortex-a710`` (64-bit)
+>>   - ``a64fx`` (64-bit)
+>>   - ``host`` (with KVM only)
+>>   - ``neoverse-n1`` (64-bit)
+>> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+>> index 7d9dbc2663..d1522c305d 100644
+>> --- a/hw/arm/virt.c
+>> +++ b/hw/arm/virt.c
+>> @@ -211,6 +211,7 @@ static const char *valid_cpus[] = {
+>>       ARM_CPU_TYPE_NAME("cortex-a55"),
+>>       ARM_CPU_TYPE_NAME("cortex-a72"),
+>>       ARM_CPU_TYPE_NAME("cortex-a76"),
+>> +    ARM_CPU_TYPE_NAME("cortex-a710"),
+>>       ARM_CPU_TYPE_NAME("a64fx"),
+>>       ARM_CPU_TYPE_NAME("neoverse-n1"),
+>>       ARM_CPU_TYPE_NAME("neoverse-v1"),
+> 
+> Will sbsa-ref want this core ?
 
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
+It only has 40 PA bits, and I think sbsa-ref requires 48.
 
-Alistair
+>> +static void define_cortex_a710_cp_reginfo(ARMCPU *cpu)
+>> +{
+>> +    /*
+>> +     * The Cortex A710 has all of the Neoverse V1's IMPDEF
+>> +     * registers and a few more of its own.
+>> +     */
+>> +    define_arm_cp_regs(cpu, neoverse_n1_cp_reginfo);
+>> +    define_arm_cp_regs(cpu, neoverse_v1_cp_reginfo);
+>> +    define_arm_cp_regs(cpu, cortex_a710_cp_reginfo);
+> 
+> The TRM doesn't document the existence of these regs
+> from the n1 reginfo:
+> 
+>      { .name = "ERXPFGCDN_EL1", .state = ARM_CP_STATE_AA64,
+>        .opc0 = 3, .opc1 = 0, .crn = 15, .crm = 2, .opc2 = 2,
+>        .access = PL1_RW, .type = ARM_CP_CONST, .resetvalue = 0 },
+>      { .name = "ERXPFGCTL_EL1", .state = ARM_CP_STATE_AA64,
+>        .opc0 = 3, .opc1 = 0, .crn = 15, .crm = 2, .opc2 = 1,
+>        .access = PL1_RW, .type = ARM_CP_CONST, .resetvalue = 0 },
+>      { .name = "ERXPFGF_EL1", .state = ARM_CP_STATE_AA64,
+>        .opc0 = 3, .opc1 = 0, .crn = 15, .crm = 2, .opc2 = 0,
+>        .access = PL1_RW, .type = ARM_CP_CONST, .resetvalue = 0 },
+> 
+> This one in the v1 reginfo:
+> 
+>      { .name = "CPUPPMCR3_EL3", .state = ARM_CP_STATE_AA64,
+>        .opc0 = 3, .opc1 = 6, .crn = 15, .crm = 2, .opc2 = 6,
+>        .access = PL3_RW, .type = ARM_CP_CONST, .resetvalue = 0 },
+> 
+> exists but has been renamed CPUPPMCR6_EL3, which means it's
+> a duplicate of an entry in your new array. Meanwhile the
+> A710's actual CPUPPMCR3_EL3 at 3, 0, c15, c2, 4 isn't in
+> your new array.
+> 
+> (I thought we had an assert to detect duplicate regdefs,
+> so I'm surprised this didn't fall over.)
 
-> ---
->  target/riscv/csr.c | 11 +++++++++--
->  1 file changed, 9 insertions(+), 2 deletions(-)
->
-> diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-> index ea7585329e..495ff6a9c2 100644
-> --- a/target/riscv/csr.c
-> +++ b/target/riscv/csr.c
-> @@ -1834,8 +1834,11 @@ static RISCVException write_mcountinhibit(CPURISCV=
-State *env, int csrno,
->  {
->      int cidx;
->      PMUCTRState *counter;
-> +    RISCVCPU *cpu =3D env_archcpu(env);
->
-> -    env->mcountinhibit =3D val;
-> +    /* WARL register - disable unavailable counters; TM bit is always 0 =
-*/
-> +    env->mcountinhibit =3D
-> +        val & (cpu->pmu_avail_ctrs | COUNTEREN_CY | COUNTEREN_IR);
->
->      /* Check if any other counter is also monitoring cycles/instructions=
- */
->      for (cidx =3D 0; cidx < RV_MAX_MHPMCOUNTERS; cidx++) {
-> @@ -1858,7 +1861,11 @@ static RISCVException read_mcounteren(CPURISCVStat=
-e *env, int csrno,
->  static RISCVException write_mcounteren(CPURISCVState *env, int csrno,
->                                         target_ulong val)
->  {
-> -    env->mcounteren =3D val;
-> +    RISCVCPU *cpu =3D env_archcpu(env);
-> +
-> +    /* WARL register - disable unavailable counters */
-> +    env->mcounteren =3D val & (cpu->pmu_avail_ctrs | COUNTEREN_CY | COUN=
-TEREN_TM |
-> +                             COUNTEREN_IR);
->      return RISCV_EXCP_NONE;
->  }
->
-> --
-> 2.41.0
->
->
+It did fall over.  Pre-send-email testing mistake, which I found immediately after (of 
+course).
+
+>> +    cpu->revidr = cpu->midr;         /* mirror midr: "no significance" */
+> 
+> The bit about "no significance" is just the boilerplate text from
+> the architecture manual. I think we should continue our usual
+> practice of setting the revidr to 0.
+
+Ok.
+
+>> +    cpu->isar.id_dfr0  = 0x06011099; /* w/o FEAT_TRF */
+> 
+> You don't have to suppress FEAT_TRF manually, we do
+> it in cpu.c.
+
+Ok.
+
+>> +    cpu->isar.id_isar5 = 0x11011121;
+> 
+> For isar5 we could say /* with Crypto */
+
+Ok.
+
+>> +    cpu->isar.id_mmfr4 = 0x21021110;
+> 
+> I don't think we implement HPDS == 2 (that's FEAT_HPDS2).
+> I guess we should push it down to HPDS 1 only in cpu.c
+> for now. (Or implement it, it's probably simple.)
+
+Feh.  I thought I'd double-checked all of the features.
+I'll have a look at implementing that.
+
+>> +    cpu->ctr               = 0x00000004b444c004ull; /* with DIC set */
+> 
+> Why set DIC? The h/w doesn't.
+
+Heh.  From the comment in neoverse-v1, I thought you had force enabled it there.  But it 
+must simply be a h/w option?
+
+>> +    cpu->ccsidr[0] = 0x000000ff0000001aull; /* 64KB L1 dcache */
+>> +    cpu->ccsidr[1] = 0x000000ff0000001aull; /* 64KB L1 icache */
+>> +    cpu->ccsidr[2] = 0x000003ff0000003aull; /* 512KB L2 cache */
+> 
+> I was too lazy to do this for neoverse-v1, so I don't insist
+> on it here, but if we're going to find ourselves calculating
+> new-format ccsidr values by hand for each new CPU, I wonder if we
+> should define a macro that takes numsets, assoc, linesize,
+> subtracts 1 where relevant, and shifts them into the right bit
+> fields? (Shame the preprocessor can't do a log2() operation ;-))
+
+I'll create something for this.
+It doesn't need to be in the preprocessor.  :-)
+
+Thanks for the careful review.
+
+
+r~
 
