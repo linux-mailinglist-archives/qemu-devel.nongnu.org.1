@@ -2,87 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F5F5777CEA
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 17:57:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85E11777CFF
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 17:58:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qU822-00072d-Sz; Thu, 10 Aug 2023 11:57:02 -0400
+	id 1qU83V-0008QK-K1; Thu, 10 Aug 2023 11:58:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qU821-000721-CB
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 11:57:01 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qU83T-0008PO-HE
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 11:58:31 -0400
+Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qU81z-0007QQ-3p
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 11:57:01 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-3fe5695b180so9106505e9.2
- for <qemu-devel@nongnu.org>; Thu, 10 Aug 2023 08:56:58 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qU83R-0007ct-Q7
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 11:58:31 -0400
+Received: by mail-lf1-x12b.google.com with SMTP id
+ 2adb3069b0e04-4fe2d152f62so1699934e87.0
+ for <qemu-devel@nongnu.org>; Thu, 10 Aug 2023 08:58:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691683017; x=1692287817;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=IftU204Dx3wX9GbOj52OKsZdF8meIuhiRJV4tTtRhzg=;
- b=lmF79bjOH3NyzLC7ga1wH5kFoakb9ECoW34XxZMk87j519QTw9AejqWdKL/gLU9U6e
- EIYBwq5uj46BaVsIcPLDTUE0W8eaLY6vX7mY+cGoXvOa3zoXGCN4+tAinRfxSiKGFzS9
- d7ztFMbfyGgd7bLIr2Ezq7MW+wAQrXHdng7bABtfOfxfnPclRFndCap5MZre1AMfvmt6
- OjeE+FOQXB0dB2hIgzRZ/eCWgKqeiDUoN08RoDR0oNtlHRabaQeXyxFb1IkC2OLdxF9d
- C2qpBfzBPIjRlIi2uIqjhA5sh0LlK+nQPUatyH7QymoXa4ZsfFTUvGJaIrm8YdcQBXHE
- 6r6w==
+ d=linaro.org; s=google; t=1691683107; x=1692287907;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=MVy0qRrVryPm5pUGMlP2xUZofAO7F8EQp9yGVBbD7gc=;
+ b=UeAPvk0HnRVSqKOdQW2KEwaMRXvm9GCTfUjGeAafgtkceC3UK9q+5p/oUBe7jPOyA3
+ g5b3JOnvCBVSqKjgO5UgBSejCgNinhh48wqxIb/5PaDKYwtCAWMyLI2PhVlnfIm62ANc
+ s0Zu0mlDwQKWk85r8hUg9LhyIRebCRAb0PK+kDFCYHbrf90c7RA9nYCVgunA1tpp66oS
+ dvgq++l3PVa9kXulQz/72Sva9wGwlxYB9tAm3Bu7yWjFo1fp6nv3Divf+W3cn1DFBCTj
+ JsDGxCOmObvnZE39LyfAfzJfTpy2dRReIrGGKAv243a9PHrsXa0UQxozDMGM7LoCQqkA
+ pUAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691683017; x=1692287817;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=IftU204Dx3wX9GbOj52OKsZdF8meIuhiRJV4tTtRhzg=;
- b=RYxWBAELML8X5m/VWdynBSdbS41PIT7aCpAPy791hD3rUNAqy/RujfwaXG+/2xcHLD
- e8pquUXXSGc06xv1HpxsDX2m6l0wCCfW1Zejviy+TEXgivyydXlrndS3ix1MATxyZ7Yp
- EQBDcQJhg4yA9KEqKXF4MmuLCMc8JvGof3odzRS3XScJbWyQ6h00QkbsT5pX85V89dM4
- +lZa+Kyd81YoEXkeO5cwYQRz4YyukveCaTFEgZXZNjbyN+1K0t5DvIAyCCJQHJOU9OaO
- LcDW0/KX+N6mU9W0ZNyp0vEdTszU1LkP8VW07DfRoItX1IwBOsEc7zAYsU6RfpPtw00x
- Qkag==
-X-Gm-Message-State: AOJu0YxxA8NVsKIs6Jb6a6/faKvkixCu4GQU035XOrOzTN5eSdwNYVHa
- AVSEqg0cPgesiDcBwgXKBH74RQ==
-X-Google-Smtp-Source: AGHT+IGsVbOUUzCe6wYBdQ1X431JQoVBiwZ7U+plB+t2qApaP2vuzvOhdKQmW4ARmvk+t+LKPDfWag==
-X-Received: by 2002:adf:e34b:0:b0:317:6681:e426 with SMTP id
- n11-20020adfe34b000000b003176681e426mr2167114wrj.25.1691683017449; 
- Thu, 10 Aug 2023 08:56:57 -0700 (PDT)
-Received: from [192.168.69.115] (tre93-h02-176-184-7-255.dsl.sta.abo.bbox.fr.
- [176.184.7.255]) by smtp.gmail.com with ESMTPSA id
- j13-20020a5d452d000000b003179d7ed4f3sm2601025wra.12.2023.08.10.08.56.55
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 10 Aug 2023 08:56:56 -0700 (PDT)
-Message-ID: <e3b16390-d174-6c8c-3a36-d31dc5298376@linaro.org>
-Date: Thu, 10 Aug 2023 17:56:54 +0200
+ d=1e100.net; s=20221208; t=1691683107; x=1692287907;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=MVy0qRrVryPm5pUGMlP2xUZofAO7F8EQp9yGVBbD7gc=;
+ b=Pllpn/GQ0a4Ba0QiVuGoJ2OKJU4q2YrjMVBIFURCnFXL83AEz4+5CIUrPQzIh/bZba
+ tA3y+2gLEi4oKcpkxaEy7xr9pW6juIzsyqSft8XI6HkEcZBa0kFXzBAUI+87sUS4OQvX
+ ux9e6xYTgzo4SUJ1lpGoHRnn8ShjPFlRkveSPA8FjX4H3mhGRW7OEYfTo0C3bD99tFBn
+ 0vc3EHUraLtGbGxprZ8VrqeyMNk2dcS3fjefXN9D7YhVC8If/L16S/wDR4ATQUKheDK5
+ eyg4sbwLjMO8Tn2SdwRkVnt6bhJQKr9ilYha9oEDt03XZ1sqfPvhbaTrrYhlurj8cLPJ
+ 5B3w==
+X-Gm-Message-State: AOJu0YzDtV4jAGfjBT4krfEhFrdjOKP8Z8ZhIiPZfkkzL6k33IvsFHL2
+ yI93SV7/weGfIoY/1US6CoPMFtsDOrWOJF9LOMMJ/g==
+X-Google-Smtp-Source: AGHT+IGYEGIUqx27S9WcJgHf6DRwRpIeCAN94mDinMoCMzb4w81urpg2OwO8lyW0MEGmEsoHuiYwtvkoB+N4BiW81tU=
+X-Received: by 2002:a05:6512:313c:b0:4fe:7df0:41ab with SMTP id
+ p28-20020a056512313c00b004fe7df041abmr1697661lfd.17.1691683107104; Thu, 10
+ Aug 2023 08:58:27 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.13.0
-Subject: Re: [PATCH 7/8] gdbstub: more fixes for client Ctrl-C handling
-Content-Language: en-US
-To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Ilya Leoshkevich <iii@linux.ibm.com>, Yonggang Luo
- <luoyonggang@gmail.com>, Beraldo Leal <bleal@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
- David Hildenbrand <david@redhat.com>, qemu-arm@nongnu.org,
- qemu-s390x@nongnu.org, Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
 References: <20230810153640.1879717-1-alex.bennee@linaro.org>
- <20230810153640.1879717-8-alex.bennee@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230810153640.1879717-8-alex.bennee@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.156,
+In-Reply-To: <20230810153640.1879717-1-alex.bennee@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 10 Aug 2023 16:58:15 +0100
+Message-ID: <CAFEAcA9bOS7tJDe_TRKOUGFcCDq_CjUfzAF7dYYRJbZA=5hvqw@mail.gmail.com>
+Subject: Re: [PATCH 0/8] some testing and gdbstub fixes
+To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>, 
+ Yonggang Luo <luoyonggang@gmail.com>, Beraldo Leal <bleal@redhat.com>, 
+ Richard Henderson <richard.henderson@linaro.org>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Thomas Huth <thuth@redhat.com>, David Hildenbrand <david@redhat.com>,
+ qemu-arm@nongnu.org, 
+ qemu-s390x@nongnu.org, Wainer dos Santos Moschetta <wainersm@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
@@ -100,38 +92,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/8/23 17:36, Alex Bennée wrote:
-> The original fix caused problems with spurious characters on other
-> system emulation. So:
-> 
->    - instead of spamming output make the warning a trace point
->    - ensure we only allow a stop reply if it was 0x3
-> 
-> Suggested-by: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
-> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-> Message-Id: <456ed3318421dd7946bdfb5ceda7e05332da368c.1690910333.git.quic_mathbern@quicinc.com>
-> ---
->   gdbstub/gdbstub.c    | 5 +++--
->   gdbstub/trace-events | 1 +
->   2 files changed, 4 insertions(+), 2 deletions(-)
+On Thu, 10 Aug 2023 at 16:36, Alex Benn=C3=A9e <alex.bennee@linaro.org> wro=
+te:
+>
+> This is mostly gdbstub focused but I cleaned up some bits while I was
+> in the testing makefiles. This is mostly to make the "check-tcg"
+> output as clean as possible without ugly line wraps. I tried to
+> eliminate the gdbstub info() output but sadly this is harder than
+> expected.
+>
+> I've tweaked the gdbstub handling for Ctrl-c packets as suggested by
+> Matheus. While I was there I also noticed we were being a bit precious
+> about gdb sending preemptive ACKS so I fixed that as well.
+>
+> I don't know if this is all late 8.1-rc material but its fairly simple
+> testing updates and the ccache stuff from Daniel should help as well.
 
+At this point in the cycle I would favour putting in
+the minimum that actually fixes bugs / test failure issues.
 
-> diff --git a/gdbstub/trace-events b/gdbstub/trace-events
-> index 0c18a4d70a..b383bf8d29 100644
-> --- a/gdbstub/trace-events
-> +++ b/gdbstub/trace-events
-> @@ -26,6 +26,7 @@ gdbstub_err_invalid_repeat(uint8_t ch) "got invalid RLE count: 0x%02x"
->   gdbstub_err_invalid_rle(void) "got invalid RLE sequence"
->   gdbstub_err_checksum_invalid(uint8_t ch) "got invalid command checksum digit: 0x%02x"
->   gdbstub_err_checksum_incorrect(uint8_t expected, uint8_t got) "got command packet with incorrect checksum, expected=0x%02x, received=0x%02x"
-> +gdbstub_err_unexpected_runpkt(uint8_t ch) "unexpected packet (%c) while target running"
-
-Since unexpected packet can be non-ASCII, better log its hexa value.
-
-Otherwise,
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
-
-
+thanks
+-- PMM
 
