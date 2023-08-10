@@ -2,57 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F37017771C9
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 09:44:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CA107771E2
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 09:48:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qU0KJ-0005MM-U5; Thu, 10 Aug 2023 03:43:23 -0400
+	id 1qU0OE-00071g-UY; Thu, 10 Aug 2023 03:47:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lixianglai@loongson.cn>)
- id 1qU0KH-0005ME-Km
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 03:43:21 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <lixianglai@loongson.cn>) id 1qU0KD-0003V3-HG
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 03:43:21 -0400
-Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8AxZ+gGldRks3oUAA--.8434S3;
- Thu, 10 Aug 2023 15:43:03 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8CxbSMDldRk9bhSAA--.26845S2; 
- Thu, 10 Aug 2023 15:42:59 +0800 (CST)
-From: xianglai li <lixianglai@loongson.cn>
-To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>,
- Xiaojuan Yang <yangxiaojuan@loongson.cn>, Song Gao <gaosong@loongson.cn>,
- Bibo Mao <maobibo@loongson.cn>
-Subject: [PATCH] roms: Support compile the efi bios for loongarch
-Date: Thu, 10 Aug 2023 15:42:58 +0800
-Message-Id: <260307952ffe5382a55d66a4999034490e04f7df.1691653307.git.lixianglai@loongson.cn>
-X-Mailer: git-send-email 2.39.1
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1qU0O4-00070d-QK
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 03:47:16 -0400
+Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1qU0O3-0004tc-79
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 03:47:16 -0400
+Received: by mail-ej1-x62c.google.com with SMTP id
+ a640c23a62f3a-99c1f6f3884so93659566b.0
+ for <qemu-devel@nongnu.org>; Thu, 10 Aug 2023 00:47:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1691653633; x=1692258433;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=pVU9GmaLP9YMZK19YgyoTNHTGqRtDjFo7X9L6/f6nYA=;
+ b=ftvIxxuBiP9V3cPvn3XDaj1Iw88nAu5v4NW+oreUc1vJBFbzG9fRIF8Bx/SRUd7dSn
+ AoDS9Toc39wgqyisJ2BnXFm9D3E3uMv1EXwOqdUPdXhGaWCxRENzDhkD2cJ7xff2TbJt
+ p17A+16Xf4e3bTtD1hANtMA15f43ueN841LupJMQG3kr2pEnskazZkyVF9AC1aC3+hZN
+ kKWXuiOodooU4hVYNYVNjU/O3usVuGCBdU8MSaSbLFI53sfjhwIa9hJHBjYXYUlK+hUj
+ vGGDw3Gk8a8LSa80wUQpvfneRIBmkbDxZaNZr2kYa7n1Mdb9xMaxPGQiwWonhpy/40oI
+ Geug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1691653633; x=1692258433;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=pVU9GmaLP9YMZK19YgyoTNHTGqRtDjFo7X9L6/f6nYA=;
+ b=DJzyjAFa3fn3SVWnbjeSoFj1/1U0NX/V/R7jx+7AJ+uZORR6+9t4tVUUnesmcyhnaa
+ x+uboj2Ma0zgpFNmo3mUSQwEjvVDOomqNSBlZUDiTMHqvJj+Ur7a3pTUi7CRJSNoYQrg
+ wKFaYwa1Np7jzk6HLzJhF9cgJIfuiNSun62axdWfY7XGB04ADYoKUJ7Yt+4IxmgQukGm
+ LYtKBRm1fwKarE11aAqoxPdjI+p5BqEEtCToXuq+XVCO1ZUq3czHBjA86kWfeVR9ygcn
+ 6CPjzcFsqF3YXi21beYSfHYqOzxVsk6BDw6K9dQNti/uRU4Fuq/2V28yqzygWJWm+7ao
+ psZw==
+X-Gm-Message-State: AOJu0YwpD3+gaS1YLStz74q63tRp1TMKfm3yqEcV0UVWYw9KrWofFbgL
+ 0PyGQfI5/MijZqoOQntNNoPp+A==
+X-Google-Smtp-Source: AGHT+IGBwHe4aJnPYdtpcrjDH/j1KdGE2i3CbWxjGoCAU87oGN60llCNtiecv/TgUAZb1OwLgpCekA==
+X-Received: by 2002:a17:906:cc1:b0:99c:ae35:8cd with SMTP id
+ l1-20020a1709060cc100b0099cae3508cdmr1115990ejh.43.1691653632832; 
+ Thu, 10 Aug 2023 00:47:12 -0700 (PDT)
+Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
+ [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
+ by smtp.gmail.com with ESMTPSA id
+ qh28-20020a170906ecbc00b0099ce188be7fsm561334ejb.3.2023.08.10.00.47.12
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 10 Aug 2023 00:47:12 -0700 (PDT)
+Date: Thu, 10 Aug 2023 09:47:11 +0200
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
+ palmer@rivosinc.com
+Subject: Re: [PATCH] target/riscv/kvm.c: fix mvendorid size in
+ vcpu_set_machine_ids()
+Message-ID: <20230810-d6727b594103fdc73eebbe09@orel>
+References: <20230802180058.281385-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8CxbSMDldRk9bhSAA--.26845S2
-X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163;
- envelope-from=lixianglai@loongson.cn; helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230802180058.281385-1-dbarboza@ventanamicro.com>
+Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
+ envelope-from=ajones@ventanamicro.com; helo=mail-ej1-x62c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,119 +94,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-1.Add edk2-platform submodule
-2.Added loongarch UEFI BIOS support to compiled scripts.
-3.The cross-compilation toolchain on x86 can be obtained from the link below:
-https://github.com/loongson/build-tools/tree/2022.09.06
+On Wed, Aug 02, 2023 at 03:00:58PM -0300, Daniel Henrique Barboza wrote:
+> cpu->cfg.mvendorid is a 32 bit field and kvm_set_one_reg() always write
+> a target_ulong val, i.e. a 64 bit field in a 64 bit host.
+> 
+> Given that we're passing a pointer to the mvendorid field, the reg is
+> reading 64 bits starting from mvendorid and going 32 bits in the next
+> field, marchid. Here's an example:
+> 
+> $ ./qemu-system-riscv64 -machine virt,accel=kvm -m 2G -smp 1 \
+>    -cpu rv64,marchid=0xab,mvendorid=0xcd,mimpid=0xef(...)
+> 
+> (inside the guest)
+>  # cat /proc/cpuinfo
+> processor	: 0
+> hart		: 0
+> isa		: rv64imafdc_zicbom_zicboz_zihintpause_zbb_sstc
+> mmu		: sv57
+> mvendorid	: 0xab000000cd
+> marchid		: 0xab
+> mimpid		: 0xef
+> 
+> 'mvendorid' was written as a combination of 0xab (the value from the
+> adjacent field, marchid) and its intended value 0xcd.
+> 
+> Fix it by assigning cpu->cfg.mvendorid to a target_ulong var 'reg' and
+> use it as input for kvm_set_one_reg(). Here's the result with this patch
+> applied and using the same QEMU command line:
+> 
+>  # cat /proc/cpuinfo
+> processor	: 0
+> hart		: 0
+> isa		: rv64imafdc_zicbom_zicboz_zihintpause_zbb_sstc
+> mmu		: sv57
+> mvendorid	: 0xcd
+> marchid		: 0xab
+> mimpid		: 0xef
+> 
+> This bug affects only the generic (rv64) CPUs when running with KVM in a
+> 64 bit env since the 'host' CPU does not allow the machine IDs to be
+> changed via command line.
+> 
+> Fixes: 1fb5a622f7 ("target/riscv: handle mvendorid/marchid/mimpid for KVM CPUs")
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> ---
+>  target/riscv/kvm.c | 9 ++++++++-
+>  1 file changed, 8 insertions(+), 1 deletion(-)
+> 
+> diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
+> index 9d8a8982f9..b1fd2233c0 100644
+> --- a/target/riscv/kvm.c
+> +++ b/target/riscv/kvm.c
+> @@ -852,12 +852,19 @@ void kvm_arch_init_irq_routing(KVMState *s)
+>  static int kvm_vcpu_set_machine_ids(RISCVCPU *cpu, CPUState *cs)
+>  {
+>      CPURISCVState *env = &cpu->env;
+> +    target_ulong reg;
+>      uint64_t id;
+>      int ret;
+>  
+>      id = kvm_riscv_reg_id(env, KVM_REG_RISCV_CONFIG,
+>                            KVM_REG_RISCV_CONFIG_REG(mvendorid));
+> -    ret = kvm_set_one_reg(cs, id, &cpu->cfg.mvendorid);
+> +    /*
+> +     * cfg.mvendorid is an uint32 but a target_ulong will
+> +     * be written. Assign it to a target_ulong var to avoid
+> +     * writing pieces of other cpu->cfg fields in the reg.
+> +     */
+> +    reg = cpu->cfg.mvendorid;
+> +    ret = kvm_set_one_reg(cs, id, &reg);
+>      if (ret != 0) {
+>          return ret;
+>      }
+> -- 
+> 2.41.0
+> 
+>
 
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: "Marc-André Lureau" <marcandre.lureau@redhat.com>
-Cc: "Daniel P. Berrangé" <berrange@redhat.com>
-Cc: Thomas Huth <thuth@redhat.com>
-Cc: "Philippe Mathieu-Daudé" <philmd@linaro.org>
-Cc: Gerd Hoffmann <kraxel@redhat.com>
-Cc: Xiaojuan Yang <yangxiaojuan@loongson.cn>
-Cc: Song Gao <gaosong@loongson.cn>
-Cc: Bibo Mao <maobibo@loongson.cn>
-Signed-off-by: xianglai li <lixianglai@loongson.cn>
----
- .gitmodules            |  3 +++
- meson.build            |  2 +-
- pc-bios/meson.build    |  2 ++
- roms/edk2-build.config | 14 ++++++++++++++
- roms/edk2-build.py     |  4 ++--
- roms/edk2-platforms    |  1 +
- 6 files changed, 23 insertions(+), 3 deletions(-)
- create mode 160000 roms/edk2-platforms
-
-diff --git a/.gitmodules b/.gitmodules
-index 73cae4cd4d..0cb57123fa 100644
---- a/.gitmodules
-+++ b/.gitmodules
-@@ -43,3 +43,6 @@
- [submodule "tests/lcitool/libvirt-ci"]
- 	path = tests/lcitool/libvirt-ci
- 	url = https://gitlab.com/libvirt/libvirt-ci.git
-+[submodule "roms/edk2-platforms"]
-+	path = roms/edk2-platforms
-+	url = https://github.com/tianocore/edk2-platforms.git
-diff --git a/meson.build b/meson.build
-index 98e68ef0b1..b398caf2ce 100644
---- a/meson.build
-+++ b/meson.build
-@@ -153,7 +153,7 @@ if targetos != 'darwin'
-   modular_tcg = ['i386-softmmu', 'x86_64-softmmu']
- endif
- 
--edk2_targets = [ 'arm-softmmu', 'aarch64-softmmu', 'i386-softmmu', 'x86_64-softmmu' ]
-+edk2_targets = [ 'arm-softmmu', 'aarch64-softmmu', 'i386-softmmu', 'x86_64-softmmu', 'loongarch64-softmmu' ]
- unpack_edk2_blobs = false
- foreach target : edk2_targets
-   if target in target_dirs
-diff --git a/pc-bios/meson.build b/pc-bios/meson.build
-index a7224ef469..fc73222b6c 100644
---- a/pc-bios/meson.build
-+++ b/pc-bios/meson.build
-@@ -9,6 +9,8 @@ if unpack_edk2_blobs
-     'edk2-i386-vars.fd',
-     'edk2-x86_64-code.fd',
-     'edk2-x86_64-secure-code.fd',
-+    'edk2-loongarch64-code.fd',
-+    'edk2-loongarch64-vars.fd',
-   ]
- 
-   foreach f : fds
-diff --git a/roms/edk2-build.config b/roms/edk2-build.config
-index 66ef9ffcb9..7960c4c2c5 100644
---- a/roms/edk2-build.config
-+++ b/roms/edk2-build.config
-@@ -1,5 +1,6 @@
- [global]
- core = edk2
-+pkgs = edk2-platforms
- 
- ####################################################################################
- # options
-@@ -122,3 +123,16 @@ plat = RiscVVirtQemu
- dest = ../pc-bios
- cpy1 = FV/RISCV_VIRT.fd  edk2-riscv.fd
- pad1 = edk2-riscv.fd     32m
-+
-+####################################################################################
-+# LoongArch64
-+
-+[build.loongach64.qemu]
-+conf = Platform/Loongson/LoongArchQemuPkg/Loongson.dsc
-+arch = LOONGARCH64
-+plat = LoongArchQemu
-+dest = ../pc-bios
-+cpy1 = FV/QEMU_EFI.fd  edk2-loongarch64-code.fd
-+pad1 = edk2-loongarch64-code.fd     4m
-+cpy2 = FV/QEMU_VARS.fd  edk2-loongarch64-vars.fd
-+pad2 = edk2-loongarch64-vars.fd     16m
-diff --git a/roms/edk2-build.py b/roms/edk2-build.py
-index 870893f7c8..dbd641e51e 100755
---- a/roms/edk2-build.py
-+++ b/roms/edk2-build.py
-@@ -269,8 +269,8 @@ def prepare_env(cfg):
-     # for cross builds
-     if binary_exists('arm-linux-gnu-gcc'):
-         os.environ['GCC5_ARM_PREFIX'] = 'arm-linux-gnu-'
--    if binary_exists('loongarch64-linux-gnu-gcc'):
--        os.environ['GCC5_LOONGARCH64_PREFIX'] = 'loongarch64-linux-gnu-'
-+    if binary_exists('loongarch64-unknown-linux-gnu-gcc'):
-+        os.environ['GCC5_LOONGARCH64_PREFIX'] = 'loongarch64-unknown-linux-gnu-'
- 
-     hostarch = os.uname().machine
-     if binary_exists('aarch64-linux-gnu-gcc') and hostarch != 'aarch64':
-diff --git a/roms/edk2-platforms b/roms/edk2-platforms
-new file mode 160000
-index 0000000000..84ccada592
---- /dev/null
-+++ b/roms/edk2-platforms
-@@ -0,0 +1 @@
-+Subproject commit 84ccada59257a8151a592a416017fbb03b8ed3cf
--- 
-2.39.1
-
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 
