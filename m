@@ -2,67 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61050777F69
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 19:44:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E73B777F71
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 19:45:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qU9gF-00045s-K8; Thu, 10 Aug 2023 13:42:39 -0400
+	id 1qU9gq-0004tp-Sl; Thu, 10 Aug 2023 13:43:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qU9gC-000447-LJ
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 13:42:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qU9g9-00052C-CD
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 13:42:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691689352;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=fVLYqwOqZoF/hHSLFBlPRwJk0HQgszgMGXvcoXohhqI=;
- b=cYd6xkebRL0tUs4CQu2ya8rnl1qzBWfy8zuKK5rTdey6JPXsIPWfIt8VvuDpoAGBjHTjmo
- r/AB7NiPfVSXBRXZ6ws57MAFJnC+BEOmbUMSWwjLLvPIWKeSKOBb9Siq1uONpaFVE5BD09
- e/c2YHixqBSo+yPVHEkokdBFcSaZPRs=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-222-k0i71-J6M6-QEwqLP9w95Q-1; Thu, 10 Aug 2023 13:42:29 -0400
-X-MC-Unique: k0i71-J6M6-QEwqLP9w95Q-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 42ABF3804520;
- Thu, 10 Aug 2023 17:42:29 +0000 (UTC)
-Received: from green.redhat.com (unknown [10.2.16.169])
- by smtp.corp.redhat.com (Postfix) with ESMTP id C65241121314;
- Thu, 10 Aug 2023 17:42:28 +0000 (UTC)
-From: Eric Blake <eblake@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, vsementsov@yandex-team.ru,
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>
-Subject: [PATCH v5 17/17] nbd/server: Add FLAG_PAYLOAD support to
- CMD_BLOCK_STATUS
-Date: Thu, 10 Aug 2023 12:37:04 -0500
-Message-ID: <20230810173646.17695-36-eblake@redhat.com>
-In-Reply-To: <20230810173646.17695-19-eblake@redhat.com>
-References: <20230810173646.17695-19-eblake@redhat.com>
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qU9go-0004lp-Tq; Thu, 10 Aug 2023 13:43:14 -0400
+Received: from mail-vk1-xa29.google.com ([2607:f8b0:4864:20::a29])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qU9gn-00056S-5K; Thu, 10 Aug 2023 13:43:14 -0400
+Received: by mail-vk1-xa29.google.com with SMTP id
+ 71dfb90a1353d-487359fa94eso345742e0c.1; 
+ Thu, 10 Aug 2023 10:43:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1691689391; x=1692294191;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=LB+aVHj0tVb/+i3ZaY26GQreUrjdW7QfX5oNkoGEzow=;
+ b=rk7mtzsq5YgqQmvpQ21IGv9ewGRuj8yuT1nEuIVuSUs2A/NyjkMNiIq10YUq7MhPYE
+ zqiiK+OwA7+R2mY6VuJZTLW5wHYjZm+0bLUrEYmNSqwIiDMnCuMoTFOCf6Vh1+HLIF+0
+ RwtDju3ST6DHCoW+JgWlXboWsmm2xN1mXBX0fsm9amg4YGZVWb/h8V7D5/iox4XAteLb
+ /RR+KLUxI/RLw4h4yYbSmJOlxZ3Sc7mFh5zSUWDlbFllI+ApcJJszJ50+AfPAkW056lI
+ DnNDzDBNrCgSRzHHzJ1N9q1kQ64tjkDnwfoEUSq11sKQljSPIGVj/6XBrTjPG0kNNA6H
+ n92Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1691689391; x=1692294191;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=LB+aVHj0tVb/+i3ZaY26GQreUrjdW7QfX5oNkoGEzow=;
+ b=MputPKnxRFntghvOEOxGg0wLNy8vH7Zasv/PTw+01TkxuTre2ffzIHaj3vopcm0pql
+ 9BOvwLXdWCqkaoB92By/BGUK6SBBg40U4udmgIEtOsJxYwoaD9eXrHNJbgkQDdvpGgrI
+ YZvPKo+6u2lIht9gcKmf08zh53grGqNOchyrQ8eOziyirSqW444xlSwEaKH83KyyRM6y
+ qokioSZjgyP6RB7P53zOpsJNIMq85PU0r0Oqu5T6F4GxqqkmCDUQt5pKv51PI6/tMxcv
+ J2U45D9jpPbnH+AOb9s253Jme5FOp7zk3VhiqTzokxm6s/sQjHfA5Loo77R9e69GLna3
+ IxKA==
+X-Gm-Message-State: AOJu0YyUu5S+xIOqyIQYV9HGuswibOGdAR/8HPYuY8R7u+O+pQ5LK2YX
+ oDF1CFzX+rJmppLkZ8BhfbnClUQoeYYhJGptnlc=
+X-Google-Smtp-Source: AGHT+IEm96+7h0NS9AYghC5T6CRt7IipjmPGdI8oOFLl2W0inEyd7MOx3D9/fJhPhaRGHZYp2p2T+eZHOAHyjto8TgA=
+X-Received: by 2002:a67:ee53:0:b0:443:6c48:4d49 with SMTP id
+ g19-20020a67ee53000000b004436c484d49mr1714663vsp.10.1691689391617; Thu, 10
+ Aug 2023 10:43:11 -0700 (PDT)
 MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+References: <20230727220927.62950-1-dbarboza@ventanamicro.com>
+ <20230727220927.62950-4-dbarboza@ventanamicro.com>
+In-Reply-To: <20230727220927.62950-4-dbarboza@ventanamicro.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Thu, 10 Aug 2023 13:42:45 -0400
+Message-ID: <CAKmqyKOPXV=AfaW_Ot2TpBR8L5_GXb_H1LS5RuOkPore8FbD3Q@mail.gmail.com>
+Subject: Re: [PATCH v6 03/12] target/riscv/cpu.c: split kvm prop handling to
+ its own helper
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
+ palmer@rivosinc.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a29;
+ envelope-from=alistair23@gmail.com; helo=mail-vk1-xa29.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,374 +89,130 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Allow a client to request a subset of negotiated meta contexts.  For
-example, a client may ask to use a single connection to learn about
-both block status and dirty bitmaps, but where the dirty bitmap
-queries only need to be performed on a subset of the disk; forcing the
-server to compute that information on block status queries in the rest
-of the disk is wasted effort (both at the server, and on the amount of
-traffic sent over the wire to be parsed and ignored by the client).
+On Thu, Jul 27, 2023 at 6:39=E2=80=AFPM Daniel Henrique Barboza
+<dbarboza@ventanamicro.com> wrote:
+>
+> Future patches will split the existing Property arrays even further, and
+> the existing code in riscv_cpu_add_user_properties() will start to scale
+> bad with it because it's dealing with KVM constraints mixed in with TCG
+> constraints. We're going to pay a high price to share a couple of common
+> lines of code between the two.
+>
+> Create a new riscv_cpu_add_kvm_properties() that will be forked from
+> riscv_cpu_add_user_properties() if we're running KVM. The helper
+> includes all properties that a KVM CPU will add. The rest of
+> riscv_cpu_add_user_properties() body will then be relieved from having
+> to deal with KVM constraints.
+>
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> Reviewed-by: Weiwei Li <liweiwei@iscas.ac.cn>
 
-Qemu as an NBD client never requests to use more than one meta
-context, so it has no need to use block status payloads.  Testing this
-instead requires support from libnbd, which CAN access multiple meta
-contexts in parallel from a single NBD connection; an interop test
-submitted to the libnbd project at the same time as this patch
-demonstrates the feature working, as well as testing some corner cases
-(for example, when the payload length is longer than the export
-length), although other corner cases (like passing the same id
-duplicated) requires a protocol fuzzer because libnbd is not wired up
-to break the protocol that badly.
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 
-This also includes tweaks to 'qemu-nbd --list' to show when a server
-is advertising the capability, and to the testsuite to reflect the
-addition to that output.
+Alistair
 
-Of note: qemu will always advertise the new feature bit during
-NBD_OPT_INFO if extended headers have alreay been negotiated
-(regardless of whether any NBD_OPT_SET_META_CONTEXT negotiation has
-occurred); but for NBD_OPT_GO, qemu only advertises the feature if
-block status is also enabled (that is, if the client does not
-negotiate any contexts, then NBD_CMD_BLOCK_STATUS cannot be used, so
-the feature is not advertised).
-
-Signed-off-by: Eric Blake <eblake@redhat.com>
----
-
-v5: factor out 'id - NBD_MTA_ID_DIRTY_BITMAP' [Vladimir], rework logic
-on zero-length requests to be clearer [Vladimir], rebase to earlier
-changes
----
- docs/interop/nbd.txt                          |   2 +-
- nbd/server.c                                  | 114 ++++++++++++++++--
- qemu-nbd.c                                    |   1 +
- nbd/trace-events                              |   1 +
- tests/qemu-iotests/223.out                    |  12 +-
- tests/qemu-iotests/307.out                    |  10 +-
- .../tests/nbd-qemu-allocation.out             |   2 +-
- 7 files changed, 122 insertions(+), 20 deletions(-)
-
-diff --git a/docs/interop/nbd.txt b/docs/interop/nbd.txt
-index 9aae5e1f294..18efb251de9 100644
---- a/docs/interop/nbd.txt
-+++ b/docs/interop/nbd.txt
-@@ -69,4 +69,4 @@ NBD_CMD_BLOCK_STATUS for "qemu:dirty-bitmap:", NBD_CMD_CACHE
- NBD_CMD_FLAG_FAST_ZERO
- * 5.2: NBD_CMD_BLOCK_STATUS for "qemu:allocation-depth"
- * 7.1: NBD_FLAG_CAN_MULTI_CONN for shareable writable exports
--* 8.2: NBD_OPT_EXTENDED_HEADERS
-+* 8.2: NBD_OPT_EXTENDED_HEADERS, NBD_FLAG_BLOCK_STATUS_PAYLOAD
-diff --git a/nbd/server.c b/nbd/server.c
-index ed988aa6308..4d5416e3ffb 100644
---- a/nbd/server.c
-+++ b/nbd/server.c
-@@ -512,6 +512,9 @@ static int nbd_negotiate_handle_export_name(NBDClient *client, bool no_zeroes,
-     if (client->mode >= NBD_MODE_STRUCTURED) {
-         myflags |= NBD_FLAG_SEND_DF;
-     }
-+    if (client->mode >= NBD_MODE_EXTENDED && client->contexts.count) {
-+        myflags |= NBD_FLAG_BLOCK_STAT_PAYLOAD;
-+    }
-     trace_nbd_negotiate_new_style_size_flags(client->exp->size, myflags);
-     stq_be_p(buf, client->exp->size);
-     stw_be_p(buf + 8, myflags);
-@@ -699,6 +702,10 @@ static int nbd_negotiate_handle_info(NBDClient *client, Error **errp)
-     if (client->mode >= NBD_MODE_STRUCTURED) {
-         myflags |= NBD_FLAG_SEND_DF;
-     }
-+    if (client->mode >= NBD_MODE_EXTENDED &&
-+        (client->contexts.count || client->opt == NBD_OPT_INFO)) {
-+        myflags |= NBD_FLAG_BLOCK_STAT_PAYLOAD;
-+    }
-     trace_nbd_negotiate_new_style_size_flags(exp->size, myflags);
-     stq_be_p(buf, exp->size);
-     stw_be_p(buf + 8, myflags);
-@@ -2432,6 +2439,87 @@ static int coroutine_fn nbd_co_send_bitmap(NBDClient *client,
-     return nbd_co_send_extents(client, request, ea, last, context_id, errp);
- }
-
-+/*
-+ * nbd_co_block_status_payload_read
-+ * Called when a client wants a subset of negotiated contexts via a
-+ * BLOCK_STATUS payload.  Check the payload for valid length and
-+ * contents.  On success, return 0 with request updated to effective
-+ * length.  If request was invalid but all payload consumed, return 0
-+ * with request->len and request->contexts->count set to 0 (which will
-+ * trigger an appropriate NBD_EINVAL response later on).  Return
-+ * negative errno if the payload was not fully consumed.
-+ */
-+static int
-+nbd_co_block_status_payload_read(NBDClient *client, NBDRequest *request,
-+                                 Error **errp)
-+{
-+    int payload_len = request->len;
-+    g_autofree char *buf = NULL;
-+    size_t count, i, nr_bitmaps;
-+    uint32_t id;
-+
-+    if (payload_len > NBD_MAX_BUFFER_SIZE) {
-+        error_setg(errp, "len (%" PRIu64" ) is larger than max len (%u)",
-+                   request->len, NBD_MAX_BUFFER_SIZE);
-+        return -EINVAL;
-+    }
-+
-+    assert(client->contexts.exp == client->exp);
-+    nr_bitmaps = client->exp->nr_export_bitmaps;
-+    request->contexts = g_new0(NBDMetaContexts, 1);
-+    request->contexts->exp = client->exp;
-+
-+    if (payload_len % sizeof(uint32_t) ||
-+        payload_len < sizeof(NBDBlockStatusPayload) ||
-+        payload_len > (sizeof(NBDBlockStatusPayload) +
-+                       sizeof(id) * client->contexts.count)) {
-+        goto skip;
-+    }
-+
-+    buf = g_malloc(payload_len);
-+    if (nbd_read(client->ioc, buf, payload_len,
-+                 "CMD_BLOCK_STATUS data", errp) < 0) {
-+        return -EIO;
-+    }
-+    trace_nbd_co_receive_request_payload_received(request->cookie,
-+                                                  payload_len);
-+    request->contexts->bitmaps = g_new0(bool, nr_bitmaps);
-+    count = (payload_len - sizeof(NBDBlockStatusPayload)) / sizeof(id);
-+    payload_len = 0;
-+
-+    for (i = 0; i < count; i++) {
-+        id = ldl_be_p(buf + sizeof(NBDBlockStatusPayload) + sizeof(id) * i);
-+        if (id == NBD_META_ID_BASE_ALLOCATION) {
-+            if (request->contexts->base_allocation) {
-+                goto skip;
-+            }
-+            request->contexts->base_allocation = true;
-+        } else if (id == NBD_META_ID_ALLOCATION_DEPTH) {
-+            if (request->contexts->allocation_depth) {
-+                goto skip;
-+            }
-+            request->contexts->allocation_depth = true;
-+        } else {
-+            int idx = id - NBD_META_ID_DIRTY_BITMAP;
-+
-+            if (idx > nr_bitmaps || request->contexts->bitmaps[idx]) {
-+                goto skip;
-+            }
-+            request->contexts->bitmaps[idx] = true;
-+        }
-+    }
-+
-+    request->len = ldq_be_p(buf);
-+    request->contexts->count = count;
-+    return 0;
-+
-+ skip:
-+    trace_nbd_co_receive_block_status_payload_compliance(request->from,
-+                                                         request->len);
-+    request->len = request->contexts->count = 0;
-+    return nbd_drop(client->ioc, payload_len, errp);
-+}
-+
- /* nbd_co_receive_request
-  * Collect a client request. Return 0 if request looks valid, -EIO to drop
-  * connection right away, -EAGAIN to indicate we were interrupted and the
-@@ -2511,7 +2599,18 @@ static int coroutine_fn nbd_co_receive_request(NBDRequestData *req,
-         break;
-
-     case NBD_CMD_BLOCK_STATUS:
--        request->contexts = &client->contexts;
-+        if (extended_with_payload) {
-+            ret = nbd_co_block_status_payload_read(client, request, errp);
-+            if (ret < 0) {
-+                return ret;
-+            }
-+            /* payload now consumed */
-+            check_length = extended_with_payload = false;
-+            payload_len = 0;
-+            valid_flags |= NBD_CMD_FLAG_PAYLOAD_LEN;
-+        } else {
-+            request->contexts = &client->contexts;
-+        }
-         valid_flags |= NBD_CMD_FLAG_REQ_ONE;
-         break;
-
-@@ -2753,16 +2852,16 @@ static coroutine_fn int nbd_handle_request(NBDClient *client,
-
-     case NBD_CMD_BLOCK_STATUS:
-         assert(request->contexts);
--        if (!request->len) {
--            return nbd_send_generic_reply(client, request, -EINVAL,
--                                          "need non-zero length", errp);
--        }
-         assert(client->mode >= NBD_MODE_EXTENDED ||
-                request->len <= UINT32_MAX);
-         if (request->contexts->count) {
-             bool dont_fragment = request->flags & NBD_CMD_FLAG_REQ_ONE;
-             int contexts_remaining = request->contexts->count;
-
-+            if (!request->len) {
-+                return nbd_send_generic_reply(client, request, -EINVAL,
-+                                              "need non-zero length", errp);
-+            }
-             if (request->contexts->base_allocation) {
-                 ret = nbd_co_send_block_status(client, request,
-                                                exp->common.blk,
-@@ -2899,8 +2998,9 @@ static coroutine_fn void nbd_trip(void *opaque)
-         goto disconnect;
-     }
-
--    /* We must disconnect after NBD_CMD_WRITE if we did not
--     * read the payload.
-+    /*
-+     * We must disconnect after NBD_CMD_WRITE or BLOCK_STATUS with
-+     * payload if we did not read the payload.
-      */
-     if (!req->complete) {
-         error_setg(&local_err, "Request handling failed in intermediate state");
-diff --git a/qemu-nbd.c b/qemu-nbd.c
-index ca846f7d96d..9c6dfe04535 100644
---- a/qemu-nbd.c
-+++ b/qemu-nbd.c
-@@ -221,6 +221,7 @@ static int qemu_nbd_client_list(SocketAddress *saddr, QCryptoTLSCreds *tls,
-                 [NBD_FLAG_SEND_RESIZE_BIT]          = "resize",
-                 [NBD_FLAG_SEND_CACHE_BIT]           = "cache",
-                 [NBD_FLAG_SEND_FAST_ZERO_BIT]       = "fast-zero",
-+                [NBD_FLAG_BLOCK_STAT_PAYLOAD_BIT]   = "block-status-payload",
-             };
-
-             printf("  size:  %" PRIu64 "\n", list[i].size);
-diff --git a/nbd/trace-events b/nbd/trace-events
-index 8f4e20ee9f2..ac186c19ec0 100644
---- a/nbd/trace-events
-+++ b/nbd/trace-events
-@@ -70,6 +70,7 @@ nbd_co_send_chunk_read(uint64_t cookie, uint64_t offset, void *data, uint64_t si
- nbd_co_send_chunk_read_hole(uint64_t cookie, uint64_t offset, uint64_t size) "Send structured read hole reply: cookie = %" PRIu64 ", offset = %" PRIu64 ", len = %" PRIu64
- nbd_co_send_extents(uint64_t cookie, unsigned int extents, uint32_t id, uint64_t length, int last) "Send block status reply: cookie = %" PRIu64 ", extents = %u, context = %d (extents cover %" PRIu64 " bytes, last chunk = %d)"
- nbd_co_send_chunk_error(uint64_t cookie, int err, const char *errname, const char *msg) "Send structured error reply: cookie = %" PRIu64 ", error = %d (%s), msg = '%s'"
-+nbd_co_receive_block_status_payload_compliance(uint64_t from, int len) "client sent unusable block status payload: from=0x%" PRIx64 ", len=0x%x"
- nbd_co_receive_request_decode_type(uint64_t cookie, uint16_t type, const char *name) "Decoding type: cookie = %" PRIu64 ", type = %" PRIu16 " (%s)"
- nbd_co_receive_request_payload_received(uint64_t cookie, uint64_t len) "Payload received: cookie = %" PRIu64 ", len = %" PRIu64
- nbd_co_receive_ext_payload_compliance(uint64_t from, uint64_t len) "client sent non-compliant write without payload flag: from=0x%" PRIx64 ", len=0x%" PRIx64
-diff --git a/tests/qemu-iotests/223.out b/tests/qemu-iotests/223.out
-index b98582c38ea..b38f0b7963b 100644
---- a/tests/qemu-iotests/223.out
-+++ b/tests/qemu-iotests/223.out
-@@ -83,7 +83,7 @@ exports available: 0
- exports available: 3
-  export: 'n'
-   size:  4194304
--  flags: 0x58f ( readonly flush fua df multi cache )
-+  flags: 0x158f ( readonly flush fua df multi cache block-status-payload )
-   min block: 1
-   opt block: 4096
-   max block: 33554432
-@@ -94,7 +94,7 @@ exports available: 3
-  export: 'n2'
-   description: some text
-   size:  4194304
--  flags: 0xded ( flush fua trim zeroes df multi cache fast-zero )
-+  flags: 0x1ded ( flush fua trim zeroes df multi cache fast-zero block-status-payload )
-   min block: 1
-   opt block: 4096
-   max block: 33554432
-@@ -104,7 +104,7 @@ exports available: 3
-    qemu:dirty-bitmap:b2
-  export: 'n3'
-   size:  4194304
--  flags: 0x58f ( readonly flush fua df multi cache )
-+  flags: 0x158f ( readonly flush fua df multi cache block-status-payload )
-   min block: 1
-   opt block: 4096
-   max block: 33554432
-@@ -205,7 +205,7 @@ exports available: 0
- exports available: 3
-  export: 'n'
-   size:  4194304
--  flags: 0x58f ( readonly flush fua df multi cache )
-+  flags: 0x158f ( readonly flush fua df multi cache block-status-payload )
-   min block: 1
-   opt block: 4096
-   max block: 33554432
-@@ -216,7 +216,7 @@ exports available: 3
-  export: 'n2'
-   description: some text
-   size:  4194304
--  flags: 0xded ( flush fua trim zeroes df multi cache fast-zero )
-+  flags: 0x1ded ( flush fua trim zeroes df multi cache fast-zero block-status-payload )
-   min block: 1
-   opt block: 4096
-   max block: 33554432
-@@ -226,7 +226,7 @@ exports available: 3
-    qemu:dirty-bitmap:b2
-  export: 'n3'
-   size:  4194304
--  flags: 0x58f ( readonly flush fua df multi cache )
-+  flags: 0x158f ( readonly flush fua df multi cache block-status-payload )
-   min block: 1
-   opt block: 4096
-   max block: 33554432
-diff --git a/tests/qemu-iotests/307.out b/tests/qemu-iotests/307.out
-index 2b9a6a67a1a..f645f3315f8 100644
---- a/tests/qemu-iotests/307.out
-+++ b/tests/qemu-iotests/307.out
-@@ -15,7 +15,7 @@ wrote 4096/4096 bytes at offset 0
- exports available: 1
-  export: 'fmt'
-   size:  67108864
--  flags: 0x58f ( readonly flush fua df multi cache )
-+  flags: 0x158f ( readonly flush fua df multi cache block-status-payload )
-   min block: XXX
-   opt block: XXX
-   max block: XXX
-@@ -44,7 +44,7 @@ exports available: 1
- exports available: 1
-  export: 'fmt'
-   size:  67108864
--  flags: 0x58f ( readonly flush fua df multi cache )
-+  flags: 0x158f ( readonly flush fua df multi cache block-status-payload )
-   min block: XXX
-   opt block: XXX
-   max block: XXX
-@@ -76,7 +76,7 @@ exports available: 1
- exports available: 2
-  export: 'fmt'
-   size:  67108864
--  flags: 0x58f ( readonly flush fua df multi cache )
-+  flags: 0x158f ( readonly flush fua df multi cache block-status-payload )
-   min block: XXX
-   opt block: XXX
-   max block: XXX
-@@ -86,7 +86,7 @@ exports available: 2
-  export: 'export1'
-   description: This is the writable second export
-   size:  67108864
--  flags: 0xded ( flush fua trim zeroes df multi cache fast-zero )
-+  flags: 0x1ded ( flush fua trim zeroes df multi cache fast-zero block-status-payload )
-   min block: XXX
-   opt block: XXX
-   max block: XXX
-@@ -113,7 +113,7 @@ exports available: 1
-  export: 'export1'
-   description: This is the writable second export
-   size:  67108864
--  flags: 0xded ( flush fua trim zeroes df multi cache fast-zero )
-+  flags: 0x1ded ( flush fua trim zeroes df multi cache fast-zero block-status-payload )
-   min block: XXX
-   opt block: XXX
-   max block: XXX
-diff --git a/tests/qemu-iotests/tests/nbd-qemu-allocation.out b/tests/qemu-iotests/tests/nbd-qemu-allocation.out
-index 659276032b0..794d1bfce62 100644
---- a/tests/qemu-iotests/tests/nbd-qemu-allocation.out
-+++ b/tests/qemu-iotests/tests/nbd-qemu-allocation.out
-@@ -17,7 +17,7 @@ wrote 2097152/2097152 bytes at offset 1048576
- exports available: 1
-  export: ''
-   size:  4194304
--  flags: 0x48f ( readonly flush fua df cache )
-+  flags: 0x148f ( readonly flush fua df cache block-status-payload )
-   min block: 1
-   opt block: 4096
-   max block: 33554432
--- 
-2.41.0
-
+> ---
+>  target/riscv/cpu.c | 65 ++++++++++++++++++++++++++++++----------------
+>  1 file changed, 42 insertions(+), 23 deletions(-)
+>
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index 2fa2581742..f1a292d967 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -1881,6 +1881,46 @@ static void cpu_set_cfg_unavailable(Object *obj, V=
+isitor *v,
+>  }
+>  #endif
+>
+> +#ifndef CONFIG_USER_ONLY
+> +static void riscv_cpu_add_kvm_unavail_prop(Object *obj, const char *prop=
+_name)
+> +{
+> +    /* Check if KVM created the property already */
+> +    if (object_property_find(obj, prop_name)) {
+> +        return;
+> +    }
+> +
+> +    /*
+> +     * Set the default to disabled for every extension
+> +     * unknown to KVM and error out if the user attempts
+> +     * to enable any of them.
+> +     */
+> +    object_property_add(obj, prop_name, "bool",
+> +                        NULL, cpu_set_cfg_unavailable,
+> +                        NULL, (void *)prop_name);
+> +}
+> +
+> +static void riscv_cpu_add_kvm_properties(Object *obj)
+> +{
+> +    Property *prop;
+> +    DeviceState *dev =3D DEVICE(obj);
+> +
+> +    kvm_riscv_init_user_properties(obj);
+> +    riscv_cpu_add_misa_properties(obj);
+> +
+> +    for (prop =3D riscv_cpu_extensions; prop && prop->name; prop++) {
+> +        riscv_cpu_add_kvm_unavail_prop(obj, prop->name);
+> +    }
+> +
+> +    for (int i =3D 0; i < ARRAY_SIZE(riscv_cpu_options); i++) {
+> +        /* Check if KVM created the property already */
+> +        if (object_property_find(obj, riscv_cpu_options[i].name)) {
+> +            continue;
+> +        }
+> +        qdev_property_add_static(dev, &riscv_cpu_options[i]);
+> +    }
+> +}
+> +#endif
+> +
+>  /*
+>   * Add CPU properties with user-facing flags.
+>   *
+> @@ -1896,39 +1936,18 @@ static void riscv_cpu_add_user_properties(Object =
+*obj)
+>      riscv_add_satp_mode_properties(obj);
+>
+>      if (kvm_enabled()) {
+> -        kvm_riscv_init_user_properties(obj);
+> +        riscv_cpu_add_kvm_properties(obj);
+> +        return;
+>      }
+>  #endif
+>
+>      riscv_cpu_add_misa_properties(obj);
+>
+>      for (prop =3D riscv_cpu_extensions; prop && prop->name; prop++) {
+> -#ifndef CONFIG_USER_ONLY
+> -        if (kvm_enabled()) {
+> -            /* Check if KVM created the property already */
+> -            if (object_property_find(obj, prop->name)) {
+> -                continue;
+> -            }
+> -
+> -            /*
+> -             * Set the default to disabled for every extension
+> -             * unknown to KVM and error out if the user attempts
+> -             * to enable any of them.
+> -             */
+> -            object_property_add(obj, prop->name, "bool",
+> -                                NULL, cpu_set_cfg_unavailable,
+> -                                NULL, (void *)prop->name);
+> -            continue;
+> -        }
+> -#endif
+>          qdev_property_add_static(dev, prop);
+>      }
+>
+>      for (int i =3D 0; i < ARRAY_SIZE(riscv_cpu_options); i++) {
+> -        /* Check if KVM created the property already */
+> -        if (object_property_find(obj, riscv_cpu_options[i].name)) {
+> -            continue;
+> -        }
+>          qdev_property_add_static(dev, &riscv_cpu_options[i]);
+>      }
+>  }
+> --
+> 2.41.0
+>
+>
 
