@@ -2,89 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BEF4777CAD
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 17:50:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C750777CB2
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 17:51:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qU7vP-0003eW-Fl; Thu, 10 Aug 2023 11:50:11 -0400
+	id 1qU7wD-0005Hl-V5; Thu, 10 Aug 2023 11:51:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qU7vN-0003ad-45
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 11:50:09 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qU7vL-0006If-Kn
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 11:50:08 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-3fe4b45a336so9349275e9.1
- for <qemu-devel@nongnu.org>; Thu, 10 Aug 2023 08:50:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691682606; x=1692287406;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=bzWRg9t3NBeGgqD2frdxXgTFnImdvBvy/pZ8Bw5TM0Q=;
- b=YUPmdPy0avWTCLsih53YzXQ2G1REDZ5Dc3mL3EkCUcWOApcVO/tSU6Pe8xeA/Ou1rw
- uSA5cAfD0SXznfjMarb/GHFDrNuIOis9LPUa7hMuM4n7+7cTyg2Hkp4KrXgtPz0NVHU4
- FKt0O4Rf0RIrJnz8aWgQVTXtg0wQO8IwpvylxGrItVci1FngJ5gjKXk4GkYDTi5cMZbI
- zLPbOETCcJULjJiPT/2ZBSWRCPNk+gwUZf9i3vo5WJMwT93o7N2+UAyI+b5B8wWNtQUW
- 8IuG4uT44dJDp3SIHfoQJ/l2hg785MJiUHSIrek2hTvVSCojVJMCWahptRRPeWYDZUQm
- OkJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691682606; x=1692287406;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=bzWRg9t3NBeGgqD2frdxXgTFnImdvBvy/pZ8Bw5TM0Q=;
- b=LOrwB+1WkjTXoLyNrUVtluwjIVdHc2KklZR7QQVF9I1jcKU4x89Hf4gFdCbDcPTAhF
- PfRaDk8umrV/3+qU/iXzLi2bB3nP6iW9iC+iFOZgEwPnFf9gaoALClZsp4ytoNLd+SVL
- VE53sPsrHo3lj3DZBcmOCrkQuGNua/GD9dCnxi3b7p5urNx975Tg1DA/Eq34fizH7pJ3
- i56FSrMMQ30DOBKCVojCT+uiplerq+OQfxXtDg+trM98I8Mvn81FWMvtL4rNd9jOa+MK
- fVBnbQ/HkSGJKBJtQ+S7M9YW3KVWIv22gLdqPohfWfLpLckUVM7ZBuxWPi3cLZu2KT1L
- bsDg==
-X-Gm-Message-State: AOJu0YznpXWgNtc4vZeNygmmYmnqEaEfIawzBL1AHlSQ2kHd2uQSy4NM
- /ocKxySuVchoyFUuqADwo0DtoA==
-X-Google-Smtp-Source: AGHT+IGYKxvfnVLx2tEvZBQWdhrTj0bEbFmZH/mSmzSVoTYms2qQik6dKMN9s0OBWScmyhK/SUb0wA==
-X-Received: by 2002:a05:600c:3654:b0:3fb:403d:90c0 with SMTP id
- y20-20020a05600c365400b003fb403d90c0mr2226663wmq.39.1691682605963; 
- Thu, 10 Aug 2023 08:50:05 -0700 (PDT)
-Received: from [192.168.69.115] (tre93-h02-176-184-7-255.dsl.sta.abo.bbox.fr.
- [176.184.7.255]) by smtp.gmail.com with ESMTPSA id
- n16-20020a5d6610000000b003179d5aee67sm2543434wru.94.2023.08.10.08.50.04
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 10 Aug 2023 08:50:05 -0700 (PDT)
-Message-ID: <9816ed3e-28af-508c-62f6-b638827436c4@linaro.org>
-Date: Thu, 10 Aug 2023 17:50:03 +0200
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qU7wA-0005H4-D9
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 11:50:58 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qU7w8-0006OT-Ho
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 11:50:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1691682654;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=7/RJgkNLqtMXZGLmr4B8A3HlEnfOnYh+ki2/hJgDSDw=;
+ b=Sm/peuAvh/nmx5gbCrI7mzvza00nomRphuzNIAX3tyNzgL3OMASJRh9M2cKHlZVX0cPLmu
+ dmgn2GL9MBwibezhQ8ZEWh9zsU8zHHbd1ZVBLjSRzyVI9yj0FoW15YdaL4Kn6RHL2soT9q
+ 59CJbNmKHaj8N039PPpDxndgoFckTqw=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-653-9sN4ueSiPgyblJ2dvmaIcw-1; Thu, 10 Aug 2023 11:50:51 -0400
+X-MC-Unique: 9sN4ueSiPgyblJ2dvmaIcw-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2D1A93C0FCA2;
+ Thu, 10 Aug 2023 15:50:51 +0000 (UTC)
+Received: from localhost (unknown [10.39.194.92])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 55466492B0F;
+ Thu, 10 Aug 2023 15:50:49 +0000 (UTC)
+Date: Thu, 10 Aug 2023 11:50:48 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Ilya Maximets <i.maximets@ovn.org>
+Cc: qemu-devel@nongnu.org, Jason Wang <jasowang@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
+Subject: Re: [PATCH] virtio: don't zero out memory region cache for indirect
+ descriptors
+Message-ID: <20230810155048.GI2931656@fedora>
+References: <20230807222847.2837393-1-i.maximets@ovn.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.13.0
-Subject: Re: [PATCH 8/8] gdbstub: don't complain about preemptive ACK chars
-Content-Language: en-US
-To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Ilya Leoshkevich <iii@linux.ibm.com>, Yonggang Luo
- <luoyonggang@gmail.com>, Beraldo Leal <bleal@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
- David Hildenbrand <david@redhat.com>, qemu-arm@nongnu.org,
- qemu-s390x@nongnu.org, Wainer dos Santos Moschetta <wainersm@redhat.com>,
- gdb-patches@sourceware.org
-References: <20230810153640.1879717-1-alex.bennee@linaro.org>
- <20230810153640.1879717-9-alex.bennee@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230810153640.1879717-9-alex.bennee@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.156,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="Jy41rjd18rZTIt9n"
+Content-Disposition: inline
+In-Reply-To: <20230807222847.2837393-1-i.maximets@ovn.org>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,22 +80,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/8/23 17:36, Alex Bennée wrote:
-> When starting a remote connection GDB sends an '+':
-> 
->    /* Ack any packet which the remote side has already sent.  */
->    remote_serial_write ("+", 1);
-> 
-> which gets flagged as a garbage character in the gdbstub state
-> machine. As gdb does send it out lets be permissive about the handling
-> so we can better see real issues.
-> 
-> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-> Cc: gdb-patches@sourceware.org
-> ---
->   gdbstub/gdbstub.c | 5 +++++
->   1 file changed, 5 insertions(+)
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+--Jy41rjd18rZTIt9n
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, Aug 08, 2023 at 12:28:47AM +0200, Ilya Maximets wrote:
+> Lots of virtio functions that are on a hot path in data transmission
+> are initializing indirect descriptor cache at the point of stack
+> allocation.  It's a 112 byte structure that is getting zeroed out on
+> each call adding unnecessary overhead.  It's going to be correctly
+> initialized later via special init function.  The only reason to
+> actually initialize right away is the ability to safely destruct it.
+> However, we only need to destruct it when it was used, i.e. when a
+> desc_cache points to it.
+>=20
+> Removing these unnecessary stack initializations improves throughput
+> of virtio-net devices in terms of 64B packets per second by 6-14 %
+> depending on the case.  Tested with a proposed af-xdp network backend
+> and a dpdk testpmd application in the guest, but should be beneficial
+> for other virtio devices as well.
+>=20
+> Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
+> ---
+>  hw/virtio/virtio.c | 42 +++++++++++++++++++++++++++---------------
+>  1 file changed, 27 insertions(+), 15 deletions(-)
+
+Another option is to create an address_space_cache_init_invalid()
+function that only assigns mrs.mr =3D NULL instead of touching all bytes
+of the struct like =3D MEMORY_REGION_CACHE_INVALID. There would be less
+code and the existing mrs.mr check in address_space_cache_destroy()
+would serve the same function as the desc_cache =3D=3D &indirect_desc_cache
+check added by this patch.
+
+I'm fine with your approach too:
+
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+
+--Jy41rjd18rZTIt9n
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmTVB1gACgkQnKSrs4Gr
+c8jwlQf/YFHODWGJdow6MFwBDSOMQpW9Ww7SF49fzBru0WFgFsu1G48whL+u7Qkc
+zvbwqWOUmjZFiPdwhaMGlm/ikVQjTMB6yQOW0ozCiogs8CwhwxadIDIkedq3dp+6
+9lOf8NxTWy6CCKRlP8NT5TOlyKXBES2hRqy8wAvlbo7wwMzWvnQtfn2aimBZNHm5
+9y4+W6m4b34oIfNhK4PPwzLLSaN3FgssOwFViEEXxT8j328+iiRKSKjlZJB17R0O
+I+Gt5UjEXT+sB7Vc0mIzFvmM7sFT0pluO0B653jJnEAtyaXUwJNjl2OqO/wV9qbx
+Xn6w2pnUAzopJMrneVWnxXsSnSwYAw==
+=givq
+-----END PGP SIGNATURE-----
+
+--Jy41rjd18rZTIt9n--
 
 
