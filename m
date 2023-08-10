@@ -2,82 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4A667781CD
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 21:50:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F6367781D5
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 21:51:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qUBdv-0003Od-W1; Thu, 10 Aug 2023 15:48:24 -0400
+	id 1qUBg3-00055P-UG; Thu, 10 Aug 2023 15:50:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qUBdv-0003OV-3Q
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 15:48:23 -0400
-Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
+ (Exim 4.90_1) (envelope-from <shorne@gmail.com>) id 1qUBg2-0004y8-0w
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 15:50:34 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qUBdt-0005BX-9Q
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 15:48:22 -0400
-Received: by mail-pj1-x102d.google.com with SMTP id
- 98e67ed59e1d1-26b0b92e190so690988a91.1
- for <qemu-devel@nongnu.org>; Thu, 10 Aug 2023 12:48:20 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <shorne@gmail.com>) id 1qUBfz-0005gi-SG
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 15:50:33 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-3fe4ad22eb0so11417925e9.3
+ for <qemu-devel@nongnu.org>; Thu, 10 Aug 2023 12:50:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691696900; x=1692301700;
- h=content-transfer-encoding:in-reply-to:references:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=V7tUVfJHXlsbQeSzGY39KHcpyy6Mkh9IpG4dq1hyCcw=;
- b=IKBnLbxxBgajTnPRPLd7IpbRnn/RSyx2i9GfB5fmY9BKCFrSOnwBE7tmcPHPw0tAUP
- rMKxdZW8HACXhAEntJqrW19AYxSpX+weLRBCpmwf3PnIBw2ar+cOBOv1yj6gj9uwlxfr
- CowaEMQykUw1IxHHTnx45mpt/QYtgoTK3O0z45sbHGCJbk9lr8gQdO2AMx2QcDo7rtHV
- kE62ghg0Z9hU9CVi1JEeV+83EmbNmnJBWShylJ5nGciD0yZHglExY9m4JHpI1Gs+fFJL
- AJudC6LQuGJHr6Ak0RRAGtLqJM5+H8LjbMrzBco0t1n8bieLK73HdMZVQO6+ZjfOxQgJ
- cFlg==
+ d=gmail.com; s=20221208; t=1691697030; x=1692301830;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=xZ/0qa3NSvcGehwzEfYsq9DfQlpGMzFLi1EENyQ/ChQ=;
+ b=S/nzAr6dBVKocUB4FPxZbXIDPezZjhSA7ehpWHpRduueis7JRhnxK575jiNI9rRhW1
+ AnExbHuYl0bOZAzzdFP0aXUUCWM8+D1wb/agYdq+GCLK457YhoDInbn9k/6NCrv2Vq6r
+ h7ptjobWYOCwSK1/mPDvNtUQlYYuvax2rpVQXEYtWXtEh/i6c5GqeYZsB6SKIyKQBNk5
+ mHeon00MYaaH2jYqvutcRniRkjbMgJIA+SURaZz8P2IjO5KdDLB6wUJC34iaaA0a/0L2
+ o3S/OdbVKJdGrTiMgI4jmBU6Mh3NJ8NLv21K42Jomx7K5KVHm5eEijkjBLCEL3aafIGr
+ vLGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691696900; x=1692301700;
- h=content-transfer-encoding:in-reply-to:references:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20221208; t=1691697030; x=1692301830;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=V7tUVfJHXlsbQeSzGY39KHcpyy6Mkh9IpG4dq1hyCcw=;
- b=YdCPKMSru/V4GTikkOX/oTwXvO4OSKOhLrouLPTLw+54+LNxJujU8rsshC2X0U8TFT
- sWIhQEiUkKUPFTAtGryQVg/dJdo0dIePV2sjBrng04rSjLwf2jLrLnsOvxeDVdSrXSv4
- XcLbP8xkURCNcD6xO3+3iSooLkURQADykpgskTvqRWj9ONGF4pLwJuZgNhoF3oOjiwBX
- JoWfpdEXAtOcjunCshohQ2uX9+pSD6dHYV4d40vNKwY4iLieeewbzHBW6y8AMm2BaJKI
- EKx+69UqnIqOolco9fUEST2pLal7D/PzAYcoxUrG1PUlQn9Mu1/koW8EPRtt5R05ZLFd
- ruiA==
-X-Gm-Message-State: AOJu0YzmAOmw18IqqoIV96yrG81vsJTObTDg44cy4FTvkHF64m9pXYM3
- 3uKoSPkN1R6Ma5Qzg70SD3qit5HreE5+66w/kqA=
-X-Google-Smtp-Source: AGHT+IGAzCvDU8kqu0BA+A8ipZNKX+Xcxxtkv0NtealT5o/wrQrKo9Vtun9SsfnHKJE1zCTp6aqJUw==
-X-Received: by 2002:a17:90a:c782:b0:268:808:8e82 with SMTP id
- gn2-20020a17090ac78200b0026808088e82mr4167493pjb.1.1691696899567; 
- Thu, 10 Aug 2023 12:48:19 -0700 (PDT)
-Received: from ?IPV6:2602:47:d483:7301:9e4d:b830:d4fd:9164?
- ([2602:47:d483:7301:9e4d:b830:d4fd:9164])
- by smtp.gmail.com with ESMTPSA id
- em9-20020a17090b014900b00260cce91d20sm1872808pjb.33.2023.08.10.12.48.18
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 10 Aug 2023 12:48:19 -0700 (PDT)
-Message-ID: <bf83c1f5-4e84-4aa5-fa98-081550584260@linaro.org>
-Date: Thu, 10 Aug 2023 12:48:16 -0700
+ bh=xZ/0qa3NSvcGehwzEfYsq9DfQlpGMzFLi1EENyQ/ChQ=;
+ b=jySKXwXDfAqJbi1sOJLeZjgl0flt268xHC2R7y5Eo+gNfEu136cZCOlWNYRAqVpKgF
+ x4W5s/sHig3zieWr7eXM6XV5BSUe8yKX8p5/VNZryEpwemE+Blco3U7a4hIXJ9RodrJq
+ 7PJXtXj7aO2z39Wp7fX2WJ5q8tJMlifdyK61KI6hjajC0pDRIQbLORIOuauqwjB21SF0
+ dX377/VUHKFz0gs9GA4hJwJ17oTCxDRqDTeoOHVT9r1Dg5sUqgFehIAcLVDn2YYNacMH
+ eSIkcqzE/fyHl00vZ0Me5lR518TBtRSnYAwic8S1YUUwHKRH30+lF0OcyWU8DeTyyXeH
+ hvLg==
+X-Gm-Message-State: AOJu0YwbnsZHRkNgMBD5tIiPfh7MR4m1Q3CT7KOTrxdD7qGHd9viT2R2
+ ru0BffHuGUg6/gWpglqmY/U=
+X-Google-Smtp-Source: AGHT+IHB2JZ6WD5feshU3966iuVz4Fby6H3QK2UdwAsWCm+Y0gWYa0gOLJZO2xB+mRYuxJqlyOK+Fg==
+X-Received: by 2002:a7b:c398:0:b0:3fe:173e:4a54 with SMTP id
+ s24-20020a7bc398000000b003fe173e4a54mr2807740wmj.17.1691697029979; 
+ Thu, 10 Aug 2023 12:50:29 -0700 (PDT)
+Received: from localhost (cpc1-brnt4-2-0-cust862.4-2.cable.virginm.net.
+ [86.9.131.95]) by smtp.gmail.com with ESMTPSA id
+ z1-20020a05600c220100b003fc01f7b415sm5902582wml.39.2023.08.10.12.50.29
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 10 Aug 2023 12:50:29 -0700 (PDT)
+Date: Thu, 10 Aug 2023 20:50:29 +0100
+From: Stafford Horne <shorne@gmail.com>
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: QEMU Development <qemu-devel@nongnu.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: Re: [PULL 1/1] target/openrisc: Set EPCR to next PC on FPE exceptions
+Message-ID: <ZNU/hbdfbAOzp95u@antec>
+References: <20230809203432.424071-1-shorne@gmail.com>
+ <20230809203432.424071-2-shorne@gmail.com>
+ <a5dc02df-158e-4ff8-fce9-e2ec7df980ad@tls.msk.ru>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PULL 0/4] tcg/gdbstub late fixes
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-References: <20230810180852.54477-1-richard.henderson@linaro.org>
-In-Reply-To: <20230810180852.54477-1-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102d.google.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.156,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <a5dc02df-158e-4ff8-fce9-e2ec7df980ad@tls.msk.ru>
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=shorne@gmail.com; helo=mail-wm1-x32e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -95,28 +93,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/10/23 11:08, Richard Henderson wrote:
-> The following changes since commit 64d3be986f9e2379bc688bf1d0aca0557e0035ca:
+On Thu, Aug 10, 2023 at 09:35:18AM +0300, Michael Tokarev wrote:
+> 09.08.2023 23:34, Stafford Horne пишет:
+> > The architecture specification calls for the EPCR to be set to "Address
+> > of next not executed instruction" when there is a floating point
+> > exception (FPE).  This was not being done, so fix it by using the same
+> > pattern as syscall.  Also, we move this logic down to be done for
+> > instructions not in the delay slot as called for by the architecture
+> > manual.
+> > 
+> > Without this patch FPU exceptions will loop, as the exception handling
+> > will always return back to the failed floating point instruction.
+> > 
+> > This was not noticed in earlier testing because:
+> > 
+> >   1. The compiler usually generates code which clobbers the input operand
+> >      such as:
+> > 
+> >        lf.div.s r19,r17,r19
+> > 
+> >   2. The target will store the operation output before to the register
+> >      before handling the exception.  So an operation such as:
+> > 
+> >        float a = 100.0f;
+> >        float b = 0.0f;
+> >        float c = a / b;    /* lf.div.s r19,r17,r19 */
+> > 
+> >      Will first execute:
+> > 
+> >        100 / 0    -> Store inf to c (r19)
+> >                   -> triggering divide by zero exception
+> >                   -> handle and return
+> > 
+> >      Then it will execute:
+> > 
+> >        100 / inf  -> Store 0 to c  (no exception)
+> > 
+> > To confirm the looping behavior and the fix I used the following:
+> > 
+> >      float fpu_div(float a, float b) {
+> > 	float c;
+> > 	asm volatile("lf.div.s %0, %1, %2"
+> > 		      : "+r" (c)
+> > 		      : "r" (a), "r" (b));
+> > 	return c;
+> >      }
 > 
->    Merge tag 'or1k-pull-request-20230809' of https://github.com/stffrdhrn/qemu into staging (2023-08-09 15:05:02 -0700)
-> 
-> are available in the Git repository at:
-> 
->    https://gitlab.com/rth7680/qemu.git tags/pull-tcg-20230810
-> 
-> for you to fetch changes up to f1b0f894c8c25f7ed24197ff130c7acb6b9fd6e7:
-> 
->    gdbstub: don't complain about preemptive ACK chars (2023-08-10 11:04:34 -0700)
-> 
-> ----------------------------------------------------------------
-> accel/tcg: Avoid reading too much in load_atom_{2,4}
-> tests/tcg: ensure system-mode gdb tests start stopped
-> gdbstub: more fixes for client Ctrl-C handling
+> Is it a -stable material?  It applies cleanly to 8.0 and 7.2.
+> Or maybe it is not needed on older versions, not being noticed before?
 
-Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
+I would say no, it will work on 8.0 an 7.2 but this code path is not very useful
+withouth the other 8.1 Floating Point Exception handling updates.
 
-
-r~
-
-
+-Stafford
 
