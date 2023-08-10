@@ -2,80 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AB58777ED3
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 19:10:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 405C1777ED8
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 19:11:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qU9Aj-00053q-H2; Thu, 10 Aug 2023 13:10:05 -0400
+	id 1qU9BZ-0005yy-CS; Thu, 10 Aug 2023 13:10:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qU9Ah-0004wo-0e; Thu, 10 Aug 2023 13:10:03 -0400
-Received: from mail-ua1-x92c.google.com ([2607:f8b0:4864:20::92c])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qU9BU-0005yH-BA
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 13:10:52 -0400
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qU9Af-0006gW-BY; Thu, 10 Aug 2023 13:10:02 -0400
-Received: by mail-ua1-x92c.google.com with SMTP id
- a1e0cc1a2514c-79aa1f24ba2so337347241.2; 
- Thu, 10 Aug 2023 10:10:00 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qU9BQ-0006wG-Em
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 13:10:50 -0400
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-1bbff6b2679so8861695ad.1
+ for <qemu-devel@nongnu.org>; Thu, 10 Aug 2023 10:10:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1691687400; x=1692292200;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=NWXbUpki0WpFVeqzKegX1vROjVTGZR59+MlQpz04dt0=;
- b=l9B9locMT5hlmaz7mOkkxdWVD3rAQKZX4NVeT+9szRUaekd9RLR+WVcNk63oBDx1qb
- CPgWbQJ6XkUvnMCFFdRF7/ZvqaOr46I1iniJCwjWSsoNN+EecYYkzj7pSkhGn5GpeAiB
- 7BxkvYkYwEz0D53Jk59by90ug1masSI5dD++xQYiiB4SzyCbXUcs3PD5RlYVw8KZQ1uv
- eriesTw22KFCJcajrRvEyHIJxbK6nndxJ2Olsqp5HNy/9m9urv+tOfFd0hXyLBj+X6VT
- yda12uF4UeHKkg1Cn+AeYVQKWfDTlUAapp5eqpC64+UvQktFdZsHzWFJ2ZTEwy5HVr1G
- ShPg==
+ d=linaro.org; s=google; t=1691687446; x=1692292246;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=ZxMOPh9dOkuMEVe8qKBEydcF9wbCuV5C9JH1zuchmzs=;
+ b=IqZNEa3Gkpr1nrFpwm2GEKfx0VRSl8xTwMSrkhs7sG44XhJVwdgwdgfLqXLgTJoMY2
+ 5ouLLaoJdvlIR+fEVvttjqw6AQae4EJ6oqEVEt2g6Pb8SWZxqlSS/8vYItz9XRALviGX
+ cWbSIfn8SjLYSXsie8MdSDRJMwIQQDcJDImLNrlu0jBB26fSMgbhjGhxJf8urXFWCEa/
+ a2tzcBUdp3AOM1j40nbNqniuuXomYqvpAF88XLETIrokhqQbsMa2bSnFxyjVYxAQi+Ch
+ wUcFIrqi9CnZHQDjJnc199na9PKvf3Nj+IPgkcsGTSsAI6yu5t85giSYHcILlXHk8XqA
+ O5RA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691687400; x=1692292200;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=NWXbUpki0WpFVeqzKegX1vROjVTGZR59+MlQpz04dt0=;
- b=HgMuQZK76gpIJTDQ87/yzYFQHL4A80i1xH2BWf1g+XvKV4vq9SkC475/VqRLo4mfpq
- JnyKWpqVf6vsfbCDUU7JDIg4/CEzOUXyxYVXSmH0FEp337To2uX/PNr6bxFjqP+7FOp2
- nppr7dDz9hI1FoxghPGrXnLv3mXfgyQgNLTG8CkO9qt2VC0Js3F0JKtWWKrocraoJCQz
- 2uhDMD7hoJPc1ShALbvMR2tqITFqrvvVdty6F6jTu9+SaIwOWnW9+gRcpfqdXCHV4JZR
- 2+7erhYaU1K837AFOSnhawHIl5H8zh3AM9vfSLF1OIRLDVJ5r8equkh4CKMgT6OHc5X6
- j46A==
-X-Gm-Message-State: AOJu0Yz61Js/hd3EI4Y4Zcvgn1LbAm3EaMD5vKBgrxkaMoq6UfIEOaQr
- 04Hh0Z3q4n1VC6YemPpUFlHDqN5HQvN8HKkhxuQ=
-X-Google-Smtp-Source: AGHT+IHaJNqdG8pH0uNryiSg8YQLSmxAMmsrGF1VkAUBFqAADtpKZdlOjbbCDO26NT9eiHE+Aynfb6G+3VZM9cmRj8M=
-X-Received: by 2002:a67:fe12:0:b0:447:925c:a047 with SMTP id
- l18-20020a67fe12000000b00447925ca047mr1884195vsr.26.1691687400136; Thu, 10
- Aug 2023 10:10:00 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1691687446; x=1692292246;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ZxMOPh9dOkuMEVe8qKBEydcF9wbCuV5C9JH1zuchmzs=;
+ b=P0ihSoa/Bk6vOTTg4llovSXZGuaHfe4xF3Q8lkMby9v/0dVclZtwtPBR0aQ72dxOEA
+ OBvZyVum0WCPqBiA8Q9VrSfoTpjlP6iF0PhGGzAB/Q9jV8JE/ncHidk9q5mGvJ2ftCuc
+ YxeyQH58tEVPGm2Z2c05lHjDURhh7zJTiQ+6/RrCAPACzx8ssOfUTphgEViI5kwvsWuM
+ 3EOcxlWqV40v42aRN9JddzM8BMoTB9QwN3yNE7bK636feL6goFmPiroqnAgRsZJ0G4j4
+ e2SKMxQXxdfq0YFR6HFKzLSEA10Lj0eDz0XhOhkquK/VSo5t0ksD79+jRQUGlCT0j7YP
+ mzMQ==
+X-Gm-Message-State: AOJu0YyvZJZ2riy+e3wEeh+vDKNDOUZsE6Vt9ssQUMvqsHaYAqyrKTrB
+ Er+BEUStZfu3MGwSsi1AZlPA7Q==
+X-Google-Smtp-Source: AGHT+IH0pyGQ9d3kYugccm4968ZAj8mKTRtHWsYriwy5ZukitLyant26rTe6yqAk5KrBu6NUbQEBSA==
+X-Received: by 2002:a17:903:444:b0:1b7:f546:44d7 with SMTP id
+ iw4-20020a170903044400b001b7f54644d7mr2299778plb.17.1691687445770; 
+ Thu, 10 Aug 2023 10:10:45 -0700 (PDT)
+Received: from ?IPV6:2602:47:d483:7301:9e4d:b830:d4fd:9164?
+ ([2602:47:d483:7301:9e4d:b830:d4fd:9164])
+ by smtp.gmail.com with ESMTPSA id
+ a7-20020a170902ecc700b001aaecc0b6ffsm2017370plh.160.2023.08.10.10.10.44
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 10 Aug 2023 10:10:45 -0700 (PDT)
+Message-ID: <02c799be-e6c7-111b-0211-d45bfc34a4d8@linaro.org>
+Date: Thu, 10 Aug 2023 10:10:43 -0700
 MIME-Version: 1.0
-References: <20230803131424.40744-1-negge@xiph.org>
- <c8bf0c5f-6cc8-cc1b-9b26-bcb2512bcc87@tls.msk.ru>
-In-Reply-To: <c8bf0c5f-6cc8-cc1b-9b26-bcb2512bcc87@tls.msk.ru>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Thu, 10 Aug 2023 13:09:33 -0400
-Message-ID: <CAKmqyKPFG8jJsxknYneom2iQ3SWT1RyGcsiDD8SVkT2Jv_Aqew@mail.gmail.com>
-Subject: Re: [PATCH] linux-user/elfload: Set V in ELF_HWCAP for RISC-V
-To: Michael Tokarev <mjt@tls.msk.ru>
-Cc: Nathan Egge <negge@xiph.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
- Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bin.meng@windriver.com>,
- Weiwei Li <liweiwei@iscas.ac.cn>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-riscv@nongnu.org,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 4/8] tests: remove test-gdbstub.py
+Content-Language: en-US
+To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
  qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::92c;
- envelope-from=alistair23@gmail.com; helo=mail-ua1-x92c.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+Cc: Ilya Leoshkevich <iii@linux.ibm.com>, Yonggang Luo
+ <luoyonggang@gmail.com>, Beraldo Leal <bleal@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, David Hildenbrand <david@redhat.com>,
+ qemu-arm@nongnu.org, qemu-s390x@nongnu.org,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>
+References: <20230810153640.1879717-1-alex.bennee@linaro.org>
+ <20230810153640.1879717-5-alex.bennee@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230810153640.1879717-5-alex.bennee@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.156,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,41 +103,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Aug 8, 2023 at 2:37=E2=80=AFAM Michael Tokarev <mjt@tls.msk.ru> wro=
-te:
->
-> 03.08.2023 16:14, Nathan Egge wrote:
-> > From: "Nathan Egge" <negge@xiph.org>
-> >
-> > Set V bit for hwcap if misa is set.
-> >
-> > Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1793
-> > Signed-off-by: Nathan Egge <negge@xiph.org>
-> > ---
-> >   linux-user/elfload.c | 3 ++-
-> >   1 file changed, 2 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-> > index 861ec07abc..a299ba7300 100644
-> > --- a/linux-user/elfload.c
-> > +++ b/linux-user/elfload.c
-> > @@ -1710,7 +1710,8 @@ static uint32_t get_elf_hwcap(void)
-> >   #define MISA_BIT(EXT) (1 << (EXT - 'A'))
-> >       RISCVCPU *cpu =3D RISCV_CPU(thread_cpu);
-> >       uint32_t mask =3D MISA_BIT('I') | MISA_BIT('M') | MISA_BIT('A')
-> > -                    | MISA_BIT('F') | MISA_BIT('D') | MISA_BIT('C');
-> > +                    | MISA_BIT('F') | MISA_BIT('D') | MISA_BIT('C')
-> > +                    | MISA_BIT('V');
->
-> Is smells like a -stable material (incl. 7.2), is it not?
+On 8/10/23 08:36, Alex Bennée wrote:
+> This isn't directly called by our CI and because it doesn't run via
+> our run-test.py script does things slightly differently. Lets remove
+> it as we have plenty of working in-tree tests now for various aspects
+> of gdbstub.
+> 
+> Signed-off-by: Alex Bennée<alex.bennee@linaro.org>
+> ---
+>   tests/guest-debug/test-gdbstub.py | 177 ------------------------------
+>   1 file changed, 177 deletions(-)
+>   delete mode 100644 tests/guest-debug/test-gdbstub.py
 
-I think so as well
+The first sentence could be clearer.  But as it's unused,
 
-Alistair
+Acked-by: Richard Henderson <richard.henderson@linaro.org>
 
->
-> Thanks,
->
-> /mjt
->
+
+r~
 
