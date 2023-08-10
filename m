@@ -2,80 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 136FA777DDE
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 18:14:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85460777DDF
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 18:14:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qU8HJ-00089D-Fw; Thu, 10 Aug 2023 12:12:50 -0400
+	id 1qU8Hb-0008D8-GH; Thu, 10 Aug 2023 12:13:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <palmer@rivosinc.com>)
- id 1qU8HH-00088t-0c
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 12:12:47 -0400
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qU8HZ-0008C4-AZ
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 12:13:05 -0400
+Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <palmer@rivosinc.com>)
- id 1qU8HF-0002VG-9L
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 12:12:46 -0400
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-686f19b6dd2so801931b3a.2
- for <qemu-devel@nongnu.org>; Thu, 10 Aug 2023 09:12:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qU8HW-0002e8-MN
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 12:13:05 -0400
+Received: by mail-lf1-x132.google.com with SMTP id
+ 2adb3069b0e04-4fe2de785e7so1688949e87.1
+ for <qemu-devel@nongnu.org>; Thu, 10 Aug 2023 09:13:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1691683963; x=1692288763; 
- h=content-transfer-encoding:mime-version:message-id:to:from:cc
- :in-reply-to:subject:date:from:to:cc:subject:date:message-id
- :reply-to; bh=vfaU3OrsYfQeVd17GEFviGDPcOOzJCDudRP+bkbgTvg=;
- b=Wemfs/38l9HHZN9QhCoNyCZl2z6yQEZ/7lr5AlFg+xpVh9GNISGILUYeOLCGRV3RBi
- ZWn1xOj3nZTZQO+d0tLB7xXdLu7g4+pkDftuw5675fx9ixSRXub0QD8//WDSJzuLtT1f
- RbUE+1In9FuAum47jgH+iP1p6GoesI1epfswSoMT9D23yMOD1ae9qeJ3qIKLZPhdHv2c
- dIYdzD2Y6S/EaheW1yU+FqLlT5ukAWbcwte6jQw17xdUKS33KnYq6B3Z19vCSDocuovj
- +fd/oYqDPGAZ6yjCRpy5bPNirRpUSHX6CRhaewozb6//uads9MKdaXtg+Dauar2ysNYh
- ncDw==
+ d=linaro.org; s=google; t=1691683981; x=1692288781;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=S+DK/m+jscP/AP0BmZqeAxyMSJZTabVUzOqp4jitSag=;
+ b=BSYfEY2M6NYfqFRvDvlrUNoCO//r2CCbZK9OZn0s0xnGxtXB+5Bb2Mk2hAzUHKPEDo
+ 97eMLK1EbXVgKkMIjjt3fxV/j96gbF/rl9R+uMlLkG7dm+UvBxaYtKWMSQhA4E95t4o1
+ xxG8NbvW6S2CY3nn+l87QqIhr26Cff/y+MTkDKlogL0d+LOE8eB5PMd4Ee8qlr2Eki9d
+ +fmORue5GXR/LgtmO366Pu/qFpVLm+rWrjIpagxHQww3OFaET47dNllb6GrcEX7Vnw8p
+ GIUqYSorhqyONtV2ilhMsPMY8KeuPwJIG6URlc4enm6GndmGOaFzFeIUymmQf0YDNXIg
+ 1O6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691683963; x=1692288763;
- h=content-transfer-encoding:mime-version:message-id:to:from:cc
- :in-reply-to:subject:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=vfaU3OrsYfQeVd17GEFviGDPcOOzJCDudRP+bkbgTvg=;
- b=domXGjgzuD557My4a0Cnz8MxxC2zslHQUWKpOKszeApFKBh6SIdksNY8hvNcjNoEps
- JI208YF4LK5wiESqzlJLt+4aPjKKtf1WH+y+LtKkjJbjhDHBbmIKZtW88eNrFLNXMi3S
- 93M+Ml7sfTTE+CjtBciR0L7XjGuLuChFUIqNrWvvLPH73Xgesyqk1zz8vwecCCgM/39R
- eGSLT7vMZD1OYUCmvgVjs9jWTD7V17m7yYFiY5OieAcGdSv+3WlnuyfkEvWjUXff2eCf
- kqTznO0HYOii7ePj1aNAFOPHsQgAZhrYIYUbEaFxAJtpw6RZIs7C5zVkHFcRzuAAxocd
- 8mmA==
-X-Gm-Message-State: AOJu0YzBdKk6DsEUqxi4bRt0GJmilhKJLqUl8Dg1qCfqVwWBDwCVevr7
- bcE16nZk0o3WbHQ4EnYoNyqdgg==
-X-Google-Smtp-Source: AGHT+IGNMgKZ8oR5K80p2m3InV9yUW72L3cHtDdwMf4qCOR6gcov0j5PDDEiYy1GCdAMjklBUmlmtg==
-X-Received: by 2002:a05:6a20:8f17:b0:133:faf4:ed2f with SMTP id
- b23-20020a056a208f1700b00133faf4ed2fmr3240750pzk.40.1691683963089; 
- Thu, 10 Aug 2023 09:12:43 -0700 (PDT)
-Received: from localhost ([135.180.227.0]) by smtp.gmail.com with ESMTPSA id
- p16-20020aa78610000000b00682ad247e5fsm1769322pfn.179.2023.08.10.09.12.42
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 10 Aug 2023 09:12:42 -0700 (PDT)
-Date: Thu, 10 Aug 2023 09:12:42 -0700 (PDT)
-X-Google-Original-Date: Thu, 10 Aug 2023 09:12:41 PDT (-0700)
-Subject: Re: [PATCH] disas/riscv: Further correction to LUI disassembly
-In-Reply-To: <20230810-c9e1f2783168b48bc07a1aa2@orel>
-CC: rbagley@ventanamicro.com, qemu-devel@nongnu.org, qemu-riscv@nongnu.org,
- Alistair Francis <Alistair.Francis@wdc.com>, bmeng@tinylab.org,
- liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
- dbarboza@ventanamicro.com
-From: Palmer Dabbelt <palmer@rivosinc.com>
-To: ajones@ventanamicro.com
-Message-ID: <mhng-a6344a0c-8820-41b5-a015-b82b261b463d@palmer-ri-x1c9>
-Mime-Version: 1.0 (MHng)
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=palmer@rivosinc.com; helo=mail-pf1-x430.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ d=1e100.net; s=20221208; t=1691683981; x=1692288781;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=S+DK/m+jscP/AP0BmZqeAxyMSJZTabVUzOqp4jitSag=;
+ b=Z1fmVUlt+S3mNQpisl5W9dFtFWpoWvtr6Lkb1eRpFo/TkopGozqOwqFaawXSJRf5wy
+ Vz74bp/djMys2vWOtvzk36L7ZuXk6hi3+Eoix+L3YEWDcnYnGsYyGan3TzK9yyvTo3U7
+ J4wcODC5sEzZnoxPnuuLuLGFlkZEtxhFKChwTGd+msDPKG2cefbb086gQ7DC/y0cKfy0
+ xNHNjVXf+LZq5jvVz5CwcAiAJbAQRz8N4yMX2TF8WSoUmT5dIg6Jma54FXY3iNjg2Bhj
+ W63+vt0EtAMsQl+IqRasCRdLf6Jdenz2OuyhYH0WiIZXm8S+J9+T9nLF5U7itKNpb/hY
+ p5Jg==
+X-Gm-Message-State: AOJu0YxP7pnGnPGid7ftEa8gBNfJMyD/asKZzxRWJWZ+zXNo4l9dv0K1
+ tr8vyKFz7Qyg+Z7pht3WXF1bIqGd/bOVVaUiRGmVGA==
+X-Google-Smtp-Source: AGHT+IEjZJOZwXi++dffudXz2C5+TWZOfz4XmglxA/RTQ/ANwbyYApbsSgpqnuUWPwnzvlEXM6hW3OxH+4bs91bHPok=
+X-Received: by 2002:a05:6512:36cc:b0:4f9:6528:fb15 with SMTP id
+ e12-20020a05651236cc00b004f96528fb15mr2062967lfs.12.1691683980651; Thu, 10
+ Aug 2023 09:13:00 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230808031143.50925-1-richard.henderson@linaro.org>
+ <20230808031143.50925-2-richard.henderson@linaro.org>
+In-Reply-To: <20230808031143.50925-2-richard.henderson@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 10 Aug 2023 17:12:49 +0100
+Message-ID: <CAFEAcA93xKE8xaYEwED2Wwj0-3QiOfnfN7Zgvf=KMYgO1tnz-Q@mail.gmail.com>
+Subject: Re: [PATCH 01/24] tcg: Introduce negsetcond opcodes
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-ppc@nongnu.org, 
+ qemu-riscv@nongnu.org, qemu-s390x@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::132;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x132.google.com
+X-Spam_score_int: 4
+X-Spam_score: 0.4
+X-Spam_bar: /
+X-Spam_report: (0.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ SUSPICIOUS_RECIPS=2.51 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,77 +86,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 10 Aug 2023 08:31:46 PDT (-0700), ajones@ventanamicro.com wrote:
-> On Mon, Jul 31, 2023 at 11:33:20AM -0700, Richard Bagley wrote:
->> The recent commit 36df75a0a9 corrected one aspect of LUI disassembly
->> by recovering the immediate argument from the result of LUI with a
->> shift right by 12. However, the shift right will left-fill with the
->> sign. By applying a mask we recover an unsigned representation of the
->> 20-bit field (which includes a sign bit).
->>
->> Example:
->> 0xfffff000 >> 12 = 0xffffffff
->> 0xfffff000 >> 12 & 0xfffff = 0x000fffff
->>
->> Fixes: 36df75a0a9 ("riscv/disas: Fix disas output of upper immediates")
->> Signed-off-by: Richard Bagley <rbagley@ventanamicro.com>
->> ---
->>  disas/riscv.c | 9 ++++++---
->>  1 file changed, 6 insertions(+), 3 deletions(-)
->>
->> diff --git a/disas/riscv.c b/disas/riscv.c
->> index 4023e3fc65..690eb4a1ac 100644
->> --- a/disas/riscv.c
->> +++ b/disas/riscv.c
->> @@ -4723,9 +4723,12 @@ static void format_inst(char *buf, size_t buflen, size_t tab, rv_decode *dec)
->>              break;
->>          case 'U':
->>              fmt++;
->> -            snprintf(tmp, sizeof(tmp), "%d", dec->imm >> 12);
->> -            append(buf, tmp, buflen);
->> -            if (*fmt == 'o') {
->> +            if (*fmt == 'i') {
->> +                snprintf(tmp, sizeof(tmp), "%d", dec->imm >> 12 & 0xfffff);
+On Tue, 8 Aug 2023 at 04:12, Richard Henderson
+<richard.henderson@linaro.org> wrote:
 >
-> Why are we correcting LUI's output, but still outputting sign-extended
-> values for AUIPC?
+> Introduce a new opcode for negative setcond.
 >
-> We can't assemble 'auipc a1, 0xffffffff' or 'auipc a1, -1' without getting
->
->  Error: lui expression not in range 0..1048575
->
-> (and additionally for 0xffffffff)
->
->  Error: value of 00000ffffffff000 too large for field of 4 bytes at 0000000000000000
->
-> either.
->
-> (I see that the assembler's error messages state 'lui', but I was trying
-> 'auipc'.)
->
-> I'm using as from gnu binutils 2.40.0.20230214.
->
-> (And, FWIW, I agree with Richard Henderson that these instructions should
-> accept negative values.)
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
-I'm kind of lost here, and you saying binutils rejects this syntax?  If 
-that's the case it's probably just an oversight, can you file a bug in 
-binutils land so folks can see?
 
->
-> Thanks,
-> drew
->
->
->> +                append(buf, tmp, buflen);
->> +            } else if (*fmt == 'o') {
->> +                snprintf(tmp, sizeof(tmp), "%d", dec->imm >> 12);
->> +                append(buf, tmp, buflen);
->>                  while (strlen(buf) < tab * 2) {
->>                      append(buf, " ", buflen);
->>                  }
->> --
->> 2.34.1
->>
->>
+
+
+> +static bool fold_negsetcond(OptContext *ctx, TCGOp *op)
+> +{
+> +    TCGCond cond = op->args[3];
+> +    int i;
+> +
+> +    if (swap_commutative(op->args[0], &op->args[1], &op->args[2])) {
+> +        op->args[3] = cond = tcg_swap_cond(cond);
+> +    }
+> +
+> +    i = do_constant_folding_cond(ctx->type, op->args[1], op->args[2], cond);
+> +    if (i >= 0) {
+> +        return tcg_opt_gen_movi(ctx, op, op->args[0], -i);
+> +    }
+> +
+> +    /* Value is {0,-1} so all bits are repititions of the sign. */
+
+"repetitions"
+
+> +    ctx->s_mask = -1;
+
+Do we not also need to set z_mask to something here (presumably -1)?
+(I'm not very familiar with the optimizer internals.)
+
+> +    return false;
+> +}
+
+Otherwise
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+
+thanks
+-- PMM
 
