@@ -2,69 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C750777CB2
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 17:51:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6645C777CC3
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 17:53:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qU7wD-0005Hl-V5; Thu, 10 Aug 2023 11:51:01 -0400
+	id 1qU7yY-00061y-L7; Thu, 10 Aug 2023 11:53:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qU7wA-0005H4-D9
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 11:50:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qU7w8-0006OT-Ho
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 11:50:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691682654;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=7/RJgkNLqtMXZGLmr4B8A3HlEnfOnYh+ki2/hJgDSDw=;
- b=Sm/peuAvh/nmx5gbCrI7mzvza00nomRphuzNIAX3tyNzgL3OMASJRh9M2cKHlZVX0cPLmu
- dmgn2GL9MBwibezhQ8ZEWh9zsU8zHHbd1ZVBLjSRzyVI9yj0FoW15YdaL4Kn6RHL2soT9q
- 59CJbNmKHaj8N039PPpDxndgoFckTqw=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-653-9sN4ueSiPgyblJ2dvmaIcw-1; Thu, 10 Aug 2023 11:50:51 -0400
-X-MC-Unique: 9sN4ueSiPgyblJ2dvmaIcw-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2D1A93C0FCA2;
- Thu, 10 Aug 2023 15:50:51 +0000 (UTC)
-Received: from localhost (unknown [10.39.194.92])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 55466492B0F;
- Thu, 10 Aug 2023 15:50:49 +0000 (UTC)
-Date: Thu, 10 Aug 2023 11:50:48 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Ilya Maximets <i.maximets@ovn.org>
-Cc: qemu-devel@nongnu.org, Jason Wang <jasowang@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
-Subject: Re: [PATCH] virtio: don't zero out memory region cache for indirect
- descriptors
-Message-ID: <20230810155048.GI2931656@fedora>
-References: <20230807222847.2837393-1-i.maximets@ovn.org>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qU7yX-00061q-BE
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 11:53:25 -0400
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qU7yV-0006o0-PJ
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 11:53:25 -0400
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-31768ce2e81so1041537f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 10 Aug 2023 08:53:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1691682802; x=1692287602;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=3i6hx8m+Aih9MHDimlyT/kZDY0ptqV38TDAXRGskueM=;
+ b=kSikDV4wrWcLVmuJIWyY7EL3IluqL+nyKbAVK/TkcktQL3kCxTkUZSiz7HUnQf59DB
+ p6dKHVXHwtsVGB09W2T2yufk2xEG5iq48bVsdqw/XHQTfzA+IdzP1iN2rSlOBdjgXfZv
+ sJryF6TDDKou8ULWm+LUJnfGV/0861DV5HDSNJ571623gpPoLSDbBxOZ1wSzCH8Z+4Y9
+ B+zMj7sTXtwv1FBkK/vSYcAPns8zp8guLSZ8esN/KISBQTGQsuJDWyEOhtRy07rkwAmU
+ wIAAxW3+mHPFEA48ltdWHEWAgmgwZ+UY1X3sBSpXEJfIk1yb09+1ORG1HksYqA88krkt
+ y/xg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1691682802; x=1692287602;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=3i6hx8m+Aih9MHDimlyT/kZDY0ptqV38TDAXRGskueM=;
+ b=ks/5nNaW/zxrpBAsNufP1ZXyoN7xVnBxTbqpGckhw9sOEaQS0PIC+4Bun+Kde4z4vl
+ xeIHllHglfp6BY/EBj1uI03Rka2YUGYOu4Nu4rWwy8C/rZveFSk3JQkqOs6TlA+3uUav
+ GKrWvuBQqO7RClLOG32RHlj/OHhZ0C8Pd4xOC6r7u8L/ZgN3PM/2rN9CgXShm0S+zu2j
+ ijFDw3GXa6CUS5k+TgO+7dJ/Xf5MZbQnJ2eKkfbX3568r5bxuf7+pe2TGQAbStM7LJcp
+ TG+80T8p4/wgEmVuQXMc96oabMLewjrzlYkk5ocng4DOkgxHq2x6jHvUdl4YLsjFDcCS
+ nBOA==
+X-Gm-Message-State: AOJu0YzOpAGetAHyFdfhEj67+JIHvtqCoVQE2zf78NSJDAM1Oe13X0Xr
+ YNea8YlqTh3hAm02M5f74hrF5AuUj+avAit9WnI=
+X-Google-Smtp-Source: AGHT+IFLSWXrlRW+/c0n2ci6CfKXuOUuu1j/e0yS346W7PlmhwnEpiTN2m72OzS4yeDz7BA/PoGkDQ==
+X-Received: by 2002:adf:ef83:0:b0:317:55de:d8 with SMTP id
+ d3-20020adfef83000000b0031755de00d8mr2538239wro.14.1691682801990; 
+ Thu, 10 Aug 2023 08:53:21 -0700 (PDT)
+Received: from [192.168.69.115] (tre93-h02-176-184-7-255.dsl.sta.abo.bbox.fr.
+ [176.184.7.255]) by smtp.gmail.com with ESMTPSA id
+ l17-20020a05600012d100b00314329f7d8asm2584387wrx.29.2023.08.10.08.53.21
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 10 Aug 2023 08:53:21 -0700 (PDT)
+Message-ID: <de3548d1-1885-4131-f6f9-d78bb9b50a16@linaro.org>
+Date: Thu, 10 Aug 2023 17:53:19 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="Jy41rjd18rZTIt9n"
-Content-Disposition: inline
-In-Reply-To: <20230807222847.2837393-1-i.maximets@ovn.org>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.13.0
+Subject: Re: [PATCH for-8.1] accel/tcg: Avoid reading too much in
+ load_atom_{2,4}
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+References: <20230810154802.16663-1-richard.henderson@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230810154802.16663-1-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.156,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,59 +93,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
---Jy41rjd18rZTIt9n
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Tue, Aug 08, 2023 at 12:28:47AM +0200, Ilya Maximets wrote:
-> Lots of virtio functions that are on a hot path in data transmission
-> are initializing indirect descriptor cache at the point of stack
-> allocation.  It's a 112 byte structure that is getting zeroed out on
-> each call adding unnecessary overhead.  It's going to be correctly
-> initialized later via special init function.  The only reason to
-> actually initialize right away is the ability to safely destruct it.
-> However, we only need to destruct it when it was used, i.e. when a
-> desc_cache points to it.
->=20
-> Removing these unnecessary stack initializations improves throughput
-> of virtio-net devices in terms of 64B packets per second by 6-14 %
-> depending on the case.  Tested with a proposed af-xdp network backend
-> and a dpdk testpmd application in the guest, but should be beneficial
-> for other virtio devices as well.
->=20
-> Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
+On 10/8/23 17:48, Richard Henderson wrote:
+> When load_atom_extract_al16_or_al8 is inexpensive, we want to use
+> it early, in order to avoid the overhead of required_atomicity.
+> However, we must not read past the end of the page.
+> 
+> Reported-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->  hw/virtio/virtio.c | 42 +++++++++++++++++++++++++++---------------
->  1 file changed, 27 insertions(+), 15 deletions(-)
 
-Another option is to create an address_space_cache_init_invalid()
-function that only assigns mrs.mr =3D NULL instead of touching all bytes
-of the struct like =3D MEMORY_REGION_CACHE_INVALID. There would be less
-code and the existing mrs.mr check in address_space_cache_destroy()
-would serve the same function as the desc_cache =3D=3D &indirect_desc_cache
-check added by this patch.
 
-I'm fine with your approach too:
+> diff --git a/accel/tcg/ldst_atomicity.c.inc b/accel/tcg/ldst_atomicity.c.inc
+> index e5c590a499..5d92485a49 100644
+> --- a/accel/tcg/ldst_atomicity.c.inc
+> +++ b/accel/tcg/ldst_atomicity.c.inc
+> @@ -404,7 +404,10 @@ static uint16_t load_atom_2(CPUArchState *env, uintptr_t ra,
+>           return load_atomic2(pv);
+>       }
+>       if (HAVE_ATOMIC128_RO) {
+> -        return load_atom_extract_al16_or_al8(pv, 2);
+> +        intptr_t left_in_page = pi | TARGET_PAGE_MASK;
+> +        if (likely(left_in_page <= -16)) {
+> +            return load_atom_extract_al16_or_al8(pv, 2);
+> +        }
+>       }
+>   
+>       atmax = required_atomicity(env, pi, memop);
+> @@ -443,7 +446,10 @@ static uint32_t load_atom_4(CPUArchState *env, uintptr_t ra,
+>           return load_atomic4(pv);
+>       }
+>       if (HAVE_ATOMIC128_RO) {
+> -        return load_atom_extract_al16_or_al8(pv, 4);
+> +        intptr_t left_in_page = pi | TARGET_PAGE_MASK;
+> +        if (likely(left_in_page <= -16)) {
+> +            return load_atom_extract_al16_or_al8(pv, 4);
+> +        }
+>       }
 
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Makes sense, so to the best of my knowledge:
 
---Jy41rjd18rZTIt9n
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmTVB1gACgkQnKSrs4Gr
-c8jwlQf/YFHODWGJdow6MFwBDSOMQpW9Ww7SF49fzBru0WFgFsu1G48whL+u7Qkc
-zvbwqWOUmjZFiPdwhaMGlm/ikVQjTMB6yQOW0ozCiogs8CwhwxadIDIkedq3dp+6
-9lOf8NxTWy6CCKRlP8NT5TOlyKXBES2hRqy8wAvlbo7wwMzWvnQtfn2aimBZNHm5
-9y4+W6m4b34oIfNhK4PPwzLLSaN3FgssOwFViEEXxT8j328+iiRKSKjlZJB17R0O
-I+Gt5UjEXT+sB7Vc0mIzFvmM7sFT0pluO0B653jJnEAtyaXUwJNjl2OqO/wV9qbx
-Xn6w2pnUAzopJMrneVWnxXsSnSwYAw==
-=givq
------END PGP SIGNATURE-----
-
---Jy41rjd18rZTIt9n--
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
