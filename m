@@ -2,81 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 042FE7775DE
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 12:32:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8F467775EC
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 12:36:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qU2x9-00076a-2K; Thu, 10 Aug 2023 06:31:39 -0400
+	id 1qU30m-0000P3-EB; Thu, 10 Aug 2023 06:35:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qU2wy-000741-SL
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 06:31:28 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qU2wx-00062O-3Q
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 06:31:28 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-3177f520802so1083793f8f.1
- for <qemu-devel@nongnu.org>; Thu, 10 Aug 2023 03:31:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691663485; x=1692268285;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=UVtfqiZ2cMW9MqlBP3N3NaUPwO4lvMWwxV5/f71n0aw=;
- b=IOU4zpDWbNUpyUsrFYC00FU1UDeIZpNSAURxzmqNUlKGsa61L1ODXJ+t6QUIOjP02s
- r1C66Km9YYVwP6x0Nmvju8Mk0hZSUI1So4LOxUqj0iI7Wey46yd4ry+xFKcxDYy8GEl7
- 1MFY+NAXFMWmlukDqO5eGk+/wJuVCuPtBnVkAEPw86Np9IkYDtzzKFStfhDCmV8IFB9g
- tKJpi4kDT9EiXQhVBuTiBaOutny5GkNc0LMeG2pK9dmRbP6NuQzGaxLoXshhGlLfNrFB
- JWGncS6i+QfGnNruyoQSChbfOyyLRT2in8j4cfxKbqLYptCpEls4bbkUceTkLUyWIRxz
- 4r9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691663485; x=1692268285;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=UVtfqiZ2cMW9MqlBP3N3NaUPwO4lvMWwxV5/f71n0aw=;
- b=hiW2/ZYD2Z3QNDyLmBiwTbg5U5hiKUPxlpKQKfHCPnBeUvRCY3iiApCJ6XF0MWmy5o
- yx99nlaGXaHn/k5Hr45A+QO0OEXfvSTK6E1RIEBph7vJBwk0WJx+lMPDEpgJkzAog0wr
- u7ae4bBP1r26CV6AC0DOtOJrFoQVpW5Qm69wy+RzU20KnkhctHOF+w42YLzd4TyLwLKM
- hlS+qMXONybwKZLQ+4SYd3QJf03vdIi3w5vBVSYzVYhVswodJlO7R7wg7r3saMFT/P33
- rA8mNCueo/ell/pEHEz2B655/SGxsxCVTcmlW/0roxuvqmR29tGvhftih62vKDlKSkS0
- UE7Q==
-X-Gm-Message-State: AOJu0YwmQKHAkHKQZNIG0tx0/XrTJydnIMRTZ+8HZJS60M1ieKk6Etl8
- CEHYsxJvgwinVTaOnzUvHWubb7WaknbrLm2cCms=
-X-Google-Smtp-Source: AGHT+IGdGpSWhs9AtsDMVM5IvZSjKSCXXIXRnxFDRhcBBVOiT5oaSPFqnT/OAbdjiP/UBpV+GzFGbg==
-X-Received: by 2002:a5d:658f:0:b0:313:f38d:555f with SMTP id
- q15-20020a5d658f000000b00313f38d555fmr1169580wru.24.1691663485115; 
- Thu, 10 Aug 2023 03:31:25 -0700 (PDT)
-Received: from [192.168.69.115] ([176.176.158.65])
- by smtp.gmail.com with ESMTPSA id
- y15-20020adff6cf000000b003176f2d9ce5sm1729034wrp.71.2023.08.10.03.31.24
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 10 Aug 2023 03:31:24 -0700 (PDT)
-Message-ID: <d4fdff5b-96ab-88f7-1e45-725bd5ac8e36@linaro.org>
-Date: Thu, 10 Aug 2023 12:31:23 +0200
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qU30j-0000OY-EF
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 06:35:21 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qU30h-00074q-1o
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 06:35:21 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.201])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RM3B91FWcz6J6lG;
+ Thu, 10 Aug 2023 18:31:29 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Thu, 10 Aug
+ 2023 11:35:12 +0100
+Date: Thu, 10 Aug 2023 11:35:12 +0100
+To: Maverickk 78 <maverickk1778@gmail.com>
+CC: Jonathan Cameron via <qemu-devel@nongnu.org>, <linux-cxl@vger.kernel.org>
+Subject: Re: CXL volatile memory is not listed
+Message-ID: <20230810113512.00000516@Huawei.com>
+In-Reply-To: <CALfBBTtUtydebmJuh6JZ5RAXZfx5OgJ+RCug1apbZa4mm17rJQ@mail.gmail.com>
+References: <CALfBBTtUtydebmJuh6JZ5RAXZfx5OgJ+RCug1apbZa4mm17rJQ@mail.gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.13.0
-Subject: Re: [PATCH 1/3] configure: fix detection for x32 linux-user
-Content-Language: en-US
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org
-References: <20230807094807.471646-1-pbonzini@redhat.com>
- <20230807094807.471646-2-pbonzini@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230807094807.471646-2-pbonzini@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
-X-Spam_score_int: -61
-X-Spam_score: -6.2
-X-Spam_bar: ------
-X-Spam_report: (-6.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-4.14,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml100005.china.huawei.com (7.191.160.25) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -90,22 +61,67 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/8/23 11:48, Paolo Bonzini wrote:
-> x32 uses the same signal handling fragments as x86_64, since host_arch
-> is set to x86_64 when Meson runs.  Remove the unnecessary forwarder and
-> set the host_arch variable properly in configure.
+On Wed, 9 Aug 2023 04:21:47 +0530
+Maverickk 78 <maverickk1778@gmail.com> wrote:
+
+> Hello,
 > 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->   configure                                 | 2 ++
->   linux-user/include/host/x32/host-signal.h | 1 -
->   2 files changed, 2 insertions(+), 1 deletion(-)
->   delete mode 100644 linux-user/include/host/x32/host-signal.h
+> I am running qemu-system-x86_64
+> 
+> qemu-system-x86_64 --version
+> QEMU emulator version 8.0.92 (v8.1.0-rc2-80-g0450cf0897)
+>
++Cc linux-cxl as the answer is more todo with linux than qemu.
+ 
+> qemu-system-x86_64 \
+> -m 2G,slots=4,maxmem=4G \
+> -smp 4 \
+> -machine type=q35,accel=kvm,cxl=on \
+> -enable-kvm \
+> -nographic \
+> -device pxb-cxl,id=cxl.0,bus=pcie.0,bus_nr=52 \
+> -device cxl-rp,id=rp0,bus=cxl.0,chassis=0,port=0,slot=0 \
+> -object memory-backend-file,id=mem0,mem-path=/tmp/mem0,size=1G,share=true \
+> -device cxl-type3,bus=rp0,volatile-memdev=mem0,id=cxl-mem0 \
+> -M cxl-fmw.0.targets.0=cxl.0,cxl-fmw.0.size=1G
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+There are some problems upstream at the moment (probably not cxl related but
+I'm digging). So today I can't boot an x86 machine. (goody)
 
+
+More generally for the flow that would bring the memory up as system ram
+you would typically need the bios to have done the CXL enumeration or
+a bunch of scripts in the kernel to have done it.  In general it can't
+be fully automated, because there are policy decisions to make on things like
+interleaving.
+
+I'm not aware of any open source BIOSs that do it yet.  So you have
+to rely on the same kernel paths as for persistent memory - manual configuration
+etc in the kernel. 
+
+There is support in ndctl for those enabling flows, so I'd look there
+for more information
+
+Jonathan
+
+
+> 
+> 
+> I was expecting the CXL memory to be listed in "System Ram", the lsmem
+> shows only 2G memory which is System RAM, it's not listing the CXL
+> memory.
+> 
+> Do I need to pass any particular parameter in the kernel command line?
+> 
+> Is there any documentation available? I followed the inputs provided in
+> 
+> https://lore.kernel.org/linux-mm/Y+CSOeHVLKudN0A6@kroah.com/T/
+> 
+> Is there any documentation/blog listed?
 
 
