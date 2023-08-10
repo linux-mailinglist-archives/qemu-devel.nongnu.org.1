@@ -2,75 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B180777E79
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 18:40:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9395777E7A
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 18:40:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qU8h6-0000dX-FJ; Thu, 10 Aug 2023 12:39:28 -0400
+	id 1qU8hs-0001Mj-2B; Thu, 10 Aug 2023 12:40:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qU8h4-0000XE-0f
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 12:39:26 -0400
-Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qU8hq-0001KB-2M
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 12:40:14 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qU8gz-00089F-NH
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 12:39:25 -0400
-Received: by mail-lf1-x130.google.com with SMTP id
- 2adb3069b0e04-4fe0fe622c3so1701325e87.2
- for <qemu-devel@nongnu.org>; Thu, 10 Aug 2023 09:39:21 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qU8ho-0008UN-Ig
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 12:40:13 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-3fe5695b180so9474045e9.2
+ for <qemu-devel@nongnu.org>; Thu, 10 Aug 2023 09:40:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691685560; x=1692290360;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=d4S6ax0GQAgWndF5nePyMopDHsjLNLNzVViEbcdlH38=;
- b=z6xT7P69jrEWLWpdlUm/1I/Xf1wgMauXaQ/9u1xc/58QkMo8hlpwLkwioTOs3TQdtB
- zJ9YyYx0S83cWSUj7JdaainIia5+dOXXxQWVZamFJOOy3FpDsOqvjVqcHe6a/omhpj8j
- kzvL5gzWnDFi2696TUrMhv099IhWvTib+LpOvR61YXLTer4Pzz842Mv1BLfjlxuMRbjB
- tsH7IS/Ix9KZKHDLXsRP+82/g6lrmfNXlN5TQGqwyyS6oIctEVNZuyrFQOw/OajgOUJU
- qCMWRQjH4UBJSGQpzJOnfr87CV/cb52OgnXeDhjxT+fiQiejgQn9idZSSOYjndGQvxkh
- BPaw==
+ d=linaro.org; s=google; t=1691685611; x=1692290411;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=0FPnM/+IRhsE1TVP5M8Qd8UpUL+EWAB2Ie1AtKfDOqI=;
+ b=xuSkFTIzJcYbLWsb3RYX/GMATVIrY7Zzp70ou1yiXfFvM2qDdHiCbi+wlSjs/s/pRR
+ /bmSq4M5Z38qeVwVHgNvYauct7PJji+iZ3K521jhOODosQ9EHZh7H3VAqmtarFEsJ3tW
+ wn61LzoKEHlUWAKeHOYIetzRdJiCQMWnZMcP6aEICnjkKi8forZ2wOU8/7mlDO/QL47N
+ /J6V/Kr8RWxYyRmTll4+Gkx4KM8RWZ4FLtMbK0LW4gE1FHgJLmdAoiGAksvl7MD+/HY6
+ WopekCaLhX4WClHLdNKBCkq4Csocxn86AFdrJczDLdoi/nHIB2RbptZlP/hk+uRJcM9H
+ GaIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691685560; x=1692290360;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=d4S6ax0GQAgWndF5nePyMopDHsjLNLNzVViEbcdlH38=;
- b=mH0xwXqSjlRtneG+smtMvIwhn+wyAS6NGZecWghL5TeWYgiJWT3HIab98mw6rETZlp
- DUCZBcBXxmrPT87rIw97XiVb/TNZFuoFs9e5enpgeHT+0K0TOtQDcNk6nrcWW4umWkB/
- PZm+y0TlQYOez/Fl3pfzIndlhEinRie3clj71JyoDSG2Fu5FQsBht3xfX2blMJTISKSm
- UAObCkWWcV/cR52mCxWAdt9CUlRmTcvoLE0Kh8t1NtiJiv8RZxKih1vJ8YDzZ7Y17PT5
- MQ1LUkSFQS8zPgOzmOVA/ngYJiH2jw/GLoxwwYbKaeSyra0vBDRZHGk6l4rrbGDIvRHz
- fa1g==
-X-Gm-Message-State: AOJu0Ywcd4KCAqn871+k89F4Iy/JFGqX+sDWZ17p4OL47UgakKxZ63LN
- yD4AJcam/7jLx8JLqHTVIi3il+TE0U44fbO6EQE2xA==
-X-Google-Smtp-Source: AGHT+IGUrYQnNRikO89gpkqi4uNF3gZrUO2tnaT4n3oa5cx8J9LnEZIW43tECshhCvlr8VgUcnLvZud9hnaPt8kQ53k=
-X-Received: by 2002:a05:6512:1d0:b0:4fb:9469:d659 with SMTP id
- f16-20020a05651201d000b004fb9469d659mr2098174lfp.23.1691685559778; Thu, 10
- Aug 2023 09:39:19 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1691685611; x=1692290411;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=0FPnM/+IRhsE1TVP5M8Qd8UpUL+EWAB2Ie1AtKfDOqI=;
+ b=EBuBAtgqcsH6r0syVBxkXe/5vpOir3OxeQ0fruoovfXzeW/Q4VNsVCtIeGX58B4UJs
+ nGDmlO3xMG2dgdWyZj5uXk+q6fI7Dh053fmBXdHhwo/sEMMXjqq4TQeCMwzrokHGtg4Z
+ Mc59PVyzHBUIXu5EU6YnkA4j2upVJ+P7FPJY/LZwZQ4OipxiL2vy27RbxmGjT0pGSiTt
+ xBpdmnZDpJ7JPjpQfMA2sMU4JFPDaG8FuPH+vGIcrAnuTun0reHJL+M2xtVTyx+/583b
+ 2S9Zye+vtRJpYowwxO/i1PNG0nRnLSLPzs4QDiVWej/H59bbqg78adtgh36zcuVfAVJ9
+ jHGw==
+X-Gm-Message-State: AOJu0YyzjqZKqGcJxePGtcbj0Y3U9UroD1xaKggCclEzAYk3AxCSRSFu
+ erSwSYM5gkM25igq7wedR6ml1w==
+X-Google-Smtp-Source: AGHT+IF7T/yY1NIJSTJECi56nGHO/CFfCLTTJpz+reX1g5mWEycxuTef3RhK3kjNtmUjVS8+0L/UdQ==
+X-Received: by 2002:a05:600c:259:b0:3fe:3b8e:1cba with SMTP id
+ 25-20020a05600c025900b003fe3b8e1cbamr2336574wmj.6.1691685610962; 
+ Thu, 10 Aug 2023 09:40:10 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ l4-20020a1ced04000000b003fe61c33df5sm5579922wmh.3.2023.08.10.09.40.10
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 10 Aug 2023 09:40:10 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 013151FFBB;
+ Thu, 10 Aug 2023 17:40:10 +0100 (BST)
+References: <20230810161329.7453-1-philmd@linaro.org>
+User-agent: mu4e 1.11.13; emacs 29.1.50
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ qemu-arm@nongnu.org
+Subject: Re: [PATCH-for-8.2] target/arm/cpu: Allow logging disabled CPU
+ features at UNIMP level
+Date: Thu, 10 Aug 2023 17:39:27 +0100
+In-reply-to: <20230810161329.7453-1-philmd@linaro.org>
+Message-ID: <87edka3l7a.fsf@linaro.org>
 MIME-Version: 1.0
-References: <20230808031143.50925-1-richard.henderson@linaro.org>
- <20230808031143.50925-13-richard.henderson@linaro.org>
-In-Reply-To: <20230808031143.50925-13-richard.henderson@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 10 Aug 2023 17:39:08 +0100
-Message-ID: <CAFEAcA9dqnaqGrLz804UB8zHSnbCEWwhv1nzvdt_j0CS3=mCSg@mail.gmail.com>
-Subject: Re: [PATCH 12/24] tcg/aarch64: Implement negsetcond_*
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-ppc@nongnu.org, 
- qemu-riscv@nongnu.org, qemu-s390x@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::130;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x130.google.com
-X-Spam_score_int: 4
-X-Spam_score: 0.4
-X-Spam_bar: /
-X-Spam_report: (0.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- SUSPICIOUS_RECIPS=2.51 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,75 +97,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 8 Aug 2023 at 04:13, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> Trivial, as aarch64 has an instruction for this: CSETM.
->
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->  tcg/aarch64/tcg-target.h     |  4 ++--
->  tcg/aarch64/tcg-target.c.inc | 12 ++++++++++++
->  2 files changed, 14 insertions(+), 2 deletions(-)
->
-> diff --git a/tcg/aarch64/tcg-target.h b/tcg/aarch64/tcg-target.h
-> index 6080fddf73..e3faa9cff4 100644
-> --- a/tcg/aarch64/tcg-target.h
-> +++ b/tcg/aarch64/tcg-target.h
-> @@ -94,7 +94,7 @@ typedef enum {
->  #define TCG_TARGET_HAS_mulsh_i32        0
->  #define TCG_TARGET_HAS_extrl_i64_i32    0
->  #define TCG_TARGET_HAS_extrh_i64_i32    0
-> -#define TCG_TARGET_HAS_negsetcond_i32   0
-> +#define TCG_TARGET_HAS_negsetcond_i32   1
->  #define TCG_TARGET_HAS_qemu_st8_i32     0
->
->  #define TCG_TARGET_HAS_div_i64          1
-> @@ -130,7 +130,7 @@ typedef enum {
->  #define TCG_TARGET_HAS_muls2_i64        0
->  #define TCG_TARGET_HAS_muluh_i64        1
->  #define TCG_TARGET_HAS_mulsh_i64        1
-> -#define TCG_TARGET_HAS_negsetcond_i64   0
-> +#define TCG_TARGET_HAS_negsetcond_i64   1
->
->  /*
->   * Without FEAT_LSE2, we must use LDXP+STXP to implement atomic 128-bit load,
-> diff --git a/tcg/aarch64/tcg-target.c.inc b/tcg/aarch64/tcg-target.c.inc
-> index 35ca80cd56..7d8d114c9e 100644
-> --- a/tcg/aarch64/tcg-target.c.inc
-> +++ b/tcg/aarch64/tcg-target.c.inc
-> @@ -2262,6 +2262,16 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc,
->                       TCG_REG_XZR, tcg_invert_cond(args[3]));
->          break;
->
-> +    case INDEX_op_negsetcond_i32:
-> +        a2 = (int32_t)a2;
-> +        /* FALLTHRU */
 
-I see this is what we already do for setcond and movcond,
-but how does it work when the 2nd input is a register?
-Or is reg-reg guaranteed to always use the _i64 op?
+Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
 
-> +    case INDEX_op_negsetcond_i64:
-> +        tcg_out_cmp(s, ext, a1, a2, c2);
-> +        /* Use CSETM alias of CSINV Wd, WZR, WZR, invert(cond).  */
-> +        tcg_out_insn(s, 3506, CSINV, ext, a0, TCG_REG_XZR,
-> +                     TCG_REG_XZR, tcg_invert_cond(args[3]));
-> +        break;
-> +
->      case INDEX_op_movcond_i32:
->          a2 = (int32_t)a2;
->          /* FALLTHRU */
-> @@ -2868,6 +2878,8 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
->      case INDEX_op_sub_i64:
->      case INDEX_op_setcond_i32:
->      case INDEX_op_setcond_i64:
-> +    case INDEX_op_negsetcond_i32:
-> +    case INDEX_op_negsetcond_i64:
->          return C_O1_I2(r, r, rA);
+> Some CPU features aren't strictly required to run guest code (such
+> debugging features), so we don't model them. To prevent the guest
+> to access non-existent system registers, we disable the feature bit
+> in the ID registers (see commit 7d8c283e10 "target/arm: Suppress more
+> TCG unimplemented features in ID registers").
 >
->      case INDEX_op_mul_i32:
+> Since it might be useful to know when a CPU supposed to implement a
+> feature has it disabled in QEMU, provide the ability to log disabled
+> features at the UNIMP level:
+>
+>   $ qemu-system-aarch64 -M virt -d unimp -S -cpu neoverse-v1
+>   QEMU 8.0.92 monitor - type 'help' for more information
+>   CPU#0: Disabling unimplemented feature 'FEAT_SPE (Statistical Profiling=
+ Extension)' for neoverse-v1
+>   CPU#0: Disabling unimplemented feature 'FEAT_TRF (Self-hosted Trace Ext=
+ension)' for neoverse-v1
+>   CPU#0: Disabling unimplemented feature 'FEAT_TRF (Self-hosted Trace Ext=
+ension)' for neoverse-v1
+>   CPU#0: Disabling unimplemented feature 'Trace Macrocell system register=
+ access' for neoverse-v1
+>   CPU#0: Disabling unimplemented feature 'Trace Macrocell system register=
+ access' for neoverse-v1
+>   CPU#0: Disabling unimplemented feature 'Memory-mapped Trace' for
+>   neoverse-v1
 
-thanks
--- PMM
+Don't these also depend on FEAT_?
+
+Otherwise:
+
+Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
