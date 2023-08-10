@@ -2,74 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D672777F15
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 19:25:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ACBBC777FB8
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 20:00:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qU9P6-0003jh-K6; Thu, 10 Aug 2023 13:24:56 -0400
+	id 1qU9wW-0007xk-QX; Thu, 10 Aug 2023 13:59:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qU9P3-0003j5-0H; Thu, 10 Aug 2023 13:24:53 -0400
-Received: from mail-vs1-xe29.google.com ([2607:f8b0:4864:20::e29])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qU9wN-0007vC-Nm
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 13:59:20 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qU9P1-0000qW-H2; Thu, 10 Aug 2023 13:24:52 -0400
-Received: by mail-vs1-xe29.google.com with SMTP id
- ada2fe7eead31-447a3d97d77so492912137.1; 
- Thu, 10 Aug 2023 10:24:50 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qU9wL-0007jC-Kq
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 13:59:19 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-3fe426b8583so11466025e9.2
+ for <qemu-devel@nongnu.org>; Thu, 10 Aug 2023 10:59:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1691688290; x=1692293090;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1691690356; x=1692295156;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
  :message-id:reply-to;
- bh=QWyJYnXfBQ1k0mHCplBELSf2rGr2UF8tA1vjtAa305g=;
- b=X+7B6/+IXWWu/GyCh2h33PRfM2L3AqzhbIUbBekn31L/u6HQhgkc4QK/5Bl2cdWyhB
- 0eBDzTYT3UENMArxGD38z1kGYiNcBTgUxMYYAMgJO8HBaek1qQXI8bAd1dbyNrLfkdV+
- xgZ8j8WwVkqLI+8NFGl+JKb8LRxHYXxnU5SGLkZboepraJXFDsIuzEN4UFqF8hbprkyV
- +gKmWIu3dZ03DaqEQuBdo2EVz3vYpND61WncEHN+AT/SiWfKE/Hixlmn4sBiQHAgxFla
- zYzuqO6NUHlJcv5ldGhvyuwY9HE73PD2v925Tk79RtyQ9Ja3e8yCQmSj+U3xXXCedwhI
- 7uZA==
+ bh=gp8oa2zOrfadjkcCAnmrhE41pDNjnkYNRFQKBUlc0Us=;
+ b=aC/oO443/MBmjFQtt3yhpUJdes4jToq7isC6y+x24QFEp36DQvusV7IrXwYyqmYtG4
+ 2mubW4avXifqN4P+gpVmKtsSEXsCzToDfmOynsiN15rXDbl0ebzieSSsiSH2C/HczFlH
+ ecdcs3Ut+bhaZTI8jSiCk8Jdv+96GW39g1N7v/Mts0YoEtp4lVL8CAgGQoQ4u8y5sNC1
+ GyTekkWPIbifmQ09Hexx5/50shOW0eHc9MYXcVG2loCKH/6keEONlGQY3yO+6f5/D8XP
+ Pb33HzCES962txinlKdp0xFmNPKo4o7EdHkMXBNfdJDjMjxGCanIWu6R9hIs7MqZaz+a
+ Co0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691688290; x=1692293090;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=QWyJYnXfBQ1k0mHCplBELSf2rGr2UF8tA1vjtAa305g=;
- b=KuobZGEJV4uKo/7D+Nt2eZAb35j2KBIK3NOEjvDfBkRmpwTx44NFDVLWshZncv9gsq
- yVGG8eJndP1a9T0DwSMkYx4wXKowbmk3RPwoVESFI9Q2Aupb6vxwl7F8d5o66OSvX2z5
- 82EZd0q0iOrAtdyWwYR3PklKIuifv7jKIElVgROyNI34kOUWbE76cKrtiIqZqr0BGmL+
- qGuGcb27TsEsQvnxaAY7nVMm7ZSkpD/lawG9sEdQuH04R9A7KNkQ4Wg3hr8/rj5K21Xl
- IDdO/wMXfeL6INDRE1BUuRog6LoCBzIemLljRtoWlDZSJJsoYxG1O6dwy9pBgxSJMye+
- LLdA==
-X-Gm-Message-State: AOJu0Yz4zgvRwztte6EXoLZXxDdQYKSWQEvhnJbLeEbnv2lz292v3f3a
- nmxR9G9F3oJjZ2sGRKAbYVzV3ew/IXdmzKMgXmE=
-X-Google-Smtp-Source: AGHT+IFY7065DewLLvIXkfH0x/YOYfElwPWl7ERDAn3MRhCK9vqNekt2e9VqggnZOuDWP6WUdvbtBTRBmatIImPKnyQ=
-X-Received: by 2002:a05:6102:366b:b0:444:9475:362b with SMTP id
- bg11-20020a056102366b00b004449475362bmr2433689vsb.1.1691688290085; Thu, 10
- Aug 2023 10:24:50 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1691690356; x=1692295156;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=gp8oa2zOrfadjkcCAnmrhE41pDNjnkYNRFQKBUlc0Us=;
+ b=LO6z2MCbsypNlnam3azp3q+qflgvY8X2Bp84OydXQ0Vj139JyXqkkZaPDy6U2fpHAf
+ Y3cHw26aKpjZ8YO43kUi3X9VYEtBU+NOkxxmwQOJUf0DtdNITGAlVoaubmJKUMU6vajt
+ ZbHgxWVLyAYzdgEFmOUgZnhHCTANDa+QwGJwWykUmzhaQ6sUrKbGF3Pf9tNzazJ0Qlbn
+ ykizH//g68kVbd9Mww0IZlwXjJHgVyFWcrTkRu4EjoTOn2j0jsHlhE4DoY+5BltVvEpj
+ 8+hl6vm4Nurx/Yxpfglue/SL9EPI31cgBX94yPIzjt8PwyhBQntJety5wtJR7Hx+rSVn
+ 9ClA==
+X-Gm-Message-State: AOJu0YzSyraou9To8Z3cMAPP0fIhhm/RbX1ihKQSLgyKhEDeTcR6ZSss
+ JmYUlAaieE0/h+k7jTqJeQ37hQ==
+X-Google-Smtp-Source: AGHT+IFeHxkb1Ib6upUPKFbA9XLk2ex0e7NjBUeROR/8V2SzJ3lkiLEKhIuaKpDuCxFjW+iR317ipA==
+X-Received: by 2002:a05:600c:2196:b0:3fe:2e0d:b715 with SMTP id
+ e22-20020a05600c219600b003fe2e0db715mr2660045wme.18.1691690355668; 
+ Thu, 10 Aug 2023 10:59:15 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ t16-20020a05600001d000b00317b5c8a4f1sm2847281wrx.60.2023.08.10.10.59.15
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 10 Aug 2023 10:59:15 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id DA05D1FFBB;
+ Thu, 10 Aug 2023 18:59:14 +0100 (BST)
+References: <87y1k5yxiy.fsf@linaro.org>
+ <20230804182633.47300-2-dark.ryu.550@gmail.com>
+User-agent: mu4e 1.11.13; emacs 29.1.50
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Matheus Branco Borella <dark.ryu.550@gmail.com>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH v2] gdbstub: fixes cases where wrong threads were
+ reported to GDB on SIGINT
+Date: Thu, 10 Aug 2023 18:30:10 +0100
+In-reply-to: <20230804182633.47300-2-dark.ryu.550@gmail.com>
+Message-ID: <87a5uy3hjh.fsf@linaro.org>
 MIME-Version: 1.0
-References: <20230728003906.768-1-zhiwei_liu@linux.alibaba.com>
-In-Reply-To: <20230728003906.768-1-zhiwei_liu@linux.alibaba.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Thu, 10 Aug 2023 13:24:24 -0400
-Message-ID: <CAKmqyKNZbt6HP6_r1Ct_Rw17u69vF_qLZdyH8+KmPM0cgeqNmA@mail.gmail.com>
-Subject: Re: [PATCH] target/riscv: Fix zfa fleq.d and fltq.d
-To: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-Cc: qemu-devel@nongnu.org, Alistair.Francis@wdc.com, palmer@dabbelt.com, 
- bin.meng@windriver.com, liweiwei@iscas.ac.cn, dbarboza@ventanamicro.com, 
- qemu-riscv@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::e29;
- envelope-from=alistair23@gmail.com; helo=mail-vs1-xe29.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -87,52 +97,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 27, 2023 at 8:50=E2=80=AFPM LIU Zhiwei <zhiwei_liu@linux.alibab=
-a.com> wrote:
+
+Matheus Branco Borella <dark.ryu.550@gmail.com> writes:
+
+> Alex Benn=C3=A9e <alex.bennee@linaro.org> writes:
+>> Can gdb switch which packet sequence it uses to halt and restart
+>> threads?
 >
-> Commit a47842d ("riscv: Add support for the Zfa extension") implemented t=
-he zfa extension.
-> However, it has some typos for fleq.d and fltq.d. Both of them misused th=
-e fltq.s
-> helper function.
+> Yes, but the way it does it does not trigger the behavior I was concerned=
+=20
+> about. GDB falls back to the old sequence when either (1) the target does=
+ not
+> support the vCont command it's trying to send or (2) you step backwards. =
+In both
+> cases, though, whenever it does fall back, it will first send an Hc packe=
+t=20
+> before continuing or stepping, which means we won't ever see a sequence s=
+uch as
+> ["Hc", "vCont;c:*", "c"]. This means, in short, that, while the shortcomi=
+ng does
+> exist in the code, GDB never actually triggers it.
 >
-> Signed-off-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-
-Thanks!
-
-Applied to riscv-to-apply.next after adding a `Fixes` tag
-
-Alistair
-
+>> The test I would like see is pretty much your test case
+>>=20
+>>  - load a multi-threaded program
+>>  - wait until threads running
+>>  - pause
+>>  - resume thread
+>>  - check resumed thread was the right one
+>
+> What I have here should be pretty much that.=20
+>
+> Is there something else you think I'm missing?
+>
 > ---
->  target/riscv/insn_trans/trans_rvzfa.c.inc | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1725
 >
-> diff --git a/target/riscv/insn_trans/trans_rvzfa.c.inc b/target/riscv/ins=
-n_trans/trans_rvzfa.c.inc
-> index 2c715af3e5..0fdd2698f6 100644
-> --- a/target/riscv/insn_trans/trans_rvzfa.c.inc
-> +++ b/target/riscv/insn_trans/trans_rvzfa.c.inc
-> @@ -470,7 +470,7 @@ bool trans_fleq_d(DisasContext *ctx, arg_fleq_d *a)
->      TCGv_i64 src1 =3D get_fpr_hs(ctx, a->rs1);
->      TCGv_i64 src2 =3D get_fpr_hs(ctx, a->rs2);
+> This fix is implemented by having the vCont handler set the value of
+> `gdbserver_state.c_cpu` if any threads are to be resumed. The specific CPU
+> picked is arbitrarily from the ones to be resumed, but it should be okay,=
+ as all
+> GDB cares about is that it is a resumed thread.
 >
-> -    gen_helper_fltq_s(dest, cpu_env, src1, src2);
-> +    gen_helper_fleq_d(dest, cpu_env, src1, src2);
->      gen_set_gpr(ctx, a->rd, dest);
->      return true;
->  }
-> @@ -485,7 +485,7 @@ bool trans_fltq_d(DisasContext *ctx, arg_fltq_d *a)
->      TCGv_i64 src1 =3D get_fpr_hs(ctx, a->rs1);
->      TCGv_i64 src2 =3D get_fpr_hs(ctx, a->rs2);
->
-> -    gen_helper_fltq_s(dest, cpu_env, src1, src2);
-> +    gen_helper_fltq_d(dest, cpu_env, src1, src2);
->      gen_set_gpr(ctx, a->rd, dest);
->      return true;
->  }
-> --
-> 2.17.1
->
->
+> Signed-off-by: Matheus Branco Borella <dark.ryu.550@gmail.com>
+
+Arg the commit message is in the --- discard section.
+
+Queued to for-8.1/misc-fixes, thanks.
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
