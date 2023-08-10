@@ -2,82 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92A23777798
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 13:54:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5665D7777B0
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 13:57:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qU4FD-00045P-L2; Thu, 10 Aug 2023 07:54:23 -0400
+	id 1qU4Hj-0004xz-6w; Thu, 10 Aug 2023 07:56:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qU4FB-00042K-I5
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 07:54:21 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qU4FA-000736-1t
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 07:54:21 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-3fe4a89e7efso6706625e9.3
- for <qemu-devel@nongnu.org>; Thu, 10 Aug 2023 04:54:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691668458; x=1692273258;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=+qoXEr4xTa17bvr7fUrzb3Ii7Mcxx0mOdg7s5ar7Kgg=;
- b=GDcw0VdkaKLj8Gjq6SrsqG1Yeu+i9SQ8VERJe1XPLMEpJcJmH3pySWUCSzoYMlBrp2
- 8C+FgwpHAGz5GNfUdcEXmUQfPWiAmaq0LRaU3OuiZPFd1hmve4DMqbtxawKZollQwIHC
- nZEeUJoE1arQIcQVMA+gQzVVRsdH7iAnIEPDjMGt2QfkBT9XoTTHvQrINvkAghmVY6fe
- jKdxtHjb7SaUuMrljixK2FEtUmlpE5ePDsCDCCB4UjN883WjAERqN+YnU+w+YLgrOY0H
- UbQTfIqfxtgNCupDUdLqVwaOYLiC93RlI7C/yhF3RYU3O0TFIdfs4aIYlZRbrbwYgCG9
- 5rgQ==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qU4Hh-0004xg-CN
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 07:56:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qU4Hf-0008Vf-Pw
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 07:56:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1691668614;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=pAANHwSE4oXsr2PaJoMWRudsz0vqHg8l1+KHI7xzJ4E=;
+ b=chPKJ0Y0KjEPsyf7lykWSbJgafCNWhXYrAkMfuj77TF4zBCmxJ5mDscn9WtSl6OTX4lngV
+ cGikY9ge8ZYXwQ5LsCkiQVEMNXVhBzJZ/yABbme61hReyIcUHTEt9Ch9JTirboiKSHVD2p
+ 0VuTLoY/POa9CbUqQ5DQIN3ESQNAi0I=
+Received: from mail-ua1-f69.google.com (mail-ua1-f69.google.com
+ [209.85.222.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-218-nm8nuAQ7Ooi1VoCOtGygTw-1; Thu, 10 Aug 2023 07:56:53 -0400
+X-MC-Unique: nm8nuAQ7Ooi1VoCOtGygTw-1
+Received: by mail-ua1-f69.google.com with SMTP id
+ a1e0cc1a2514c-79a0010dd40so292483241.1
+ for <qemu-devel@nongnu.org>; Thu, 10 Aug 2023 04:56:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691668458; x=1692273258;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=+qoXEr4xTa17bvr7fUrzb3Ii7Mcxx0mOdg7s5ar7Kgg=;
- b=J9fMEFlnuSWj0SZFwVWfqGUhjBRJadWFDobyADfvRKA1V2HEFQPuwVZ11UxMw7jRmV
- bpGUAepGqwi/PPHElFwjB+QajWWwcUGQU1oKqv6anuVSLm/nXolsuN/jHN1TKMTxUhOS
- BlQ8KuDqHiAGVrSv7JTWQw/CTRmJxTIPw65WHmYxcYBrjdABQzRei2cP+3CZyxzU6ORA
- KUhgdFMtBxMywV/sojNfrgeWx1GIjY8UyKOrHd79oGPWsoPGAlgWAKH55B4hxJdgUput
- OA/d/ZzTUk8Hn5R3e0K71pqtjQwgrQdP03jYFQ790mWu3qBm3cFsx0RtGd1f4zxAGbrF
- q+bA==
-X-Gm-Message-State: AOJu0Yzn3P/b6owxbN9FKaluUHzyuI/0nYZCojgzH70z5WjWiyHTmDML
- Tmo7BXJNkxgb/9hvwl/S3XiN7A==
-X-Google-Smtp-Source: AGHT+IGhZ6Td4qLSi1bf7m266u71Y4sB9j76Jza5BZtboxsChWu7Oc5NK0B9NVe/mEKlVzzagHXgeQ==
-X-Received: by 2002:a1c:7c1a:0:b0:3f8:fc2a:c7eb with SMTP id
- x26-20020a1c7c1a000000b003f8fc2ac7ebmr1666006wmc.5.1691668458389; 
- Thu, 10 Aug 2023 04:54:18 -0700 (PDT)
-Received: from [192.168.69.115] ([176.176.158.65])
- by smtp.gmail.com with ESMTPSA id
- h9-20020adffd49000000b003176aa612b1sm1990744wrs.38.2023.08.10.04.54.17
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 10 Aug 2023 04:54:17 -0700 (PDT)
-Message-ID: <4347bd76-f9ab-ce44-32aa-95f2dd2a5c59@linaro.org>
-Date: Thu, 10 Aug 2023 13:54:16 +0200
+ d=1e100.net; s=20221208; t=1691668612; x=1692273412;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=pAANHwSE4oXsr2PaJoMWRudsz0vqHg8l1+KHI7xzJ4E=;
+ b=EW9p4O82aTrpH4jPiRgJFxUTtiiQsa+9Ve43+SguybEwyFXhEcWgF+jwX0SSJBmzEg
+ uEDkQ302uStsuqoGrhXf4sBEOzSao+erZtVaJphr0I7cknIls9It3N2f0bLh0D1PSmi5
+ 0f+j2PSEuO62LXdGH1EoiIi+fua0aZNM/ey3oyk47Q7r98ahuzt01SQPkWSSbhyP3pbP
+ uK1KR4lyEzG3nB/O0ddZB9aG/6uxmTRGmFNErWn+ooKlVsn4TFffBGWjBwWaBHuSG+Vu
+ jrlPeghMpElLX3/2eGKBuE12Jbbwmgjrc+lHBSO8+iRPUjpAVpYkG5PvHWND4zg+NotL
+ E9rA==
+X-Gm-Message-State: AOJu0YzBZiqjyQWUYJMgSqzmjFZchpE6qOXZkVS6oJUhHrqJr7Dw26yS
+ M3M0pQT0XuOmrM02PFjvxhBQeeLrWef9tUQatKl+LnkPfX3KAu/usI/NbEB27Z31z5HjAJ/3YPI
+ 358Ah4op/7sKKXw5Kv6NRQNoKiYZC9r8=
+X-Received: by 2002:a05:6102:3031:b0:443:7e93:641f with SMTP id
+ v17-20020a056102303100b004437e93641fmr1375772vsa.9.1691668612795; 
+ Thu, 10 Aug 2023 04:56:52 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG6MScJCMt8/D8jWN27dlllUX2cG6L/OZl2jFY7yH20OA0H6bpJiLZxMTZHZDx5prlvPgLrMBfp/XHrk8pOY2o=
+X-Received: by 2002:a05:6102:3031:b0:443:7e93:641f with SMTP id
+ v17-20020a056102303100b004437e93641fmr1375759vsa.9.1691668612577; Thu, 10 Aug
+ 2023 04:56:52 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.13.0
-Subject: Re: [PATCH for-8.2] dockerfiles: bump tricore cross compiler
- container to Debian 11
-Content-Language: en-US
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-Cc: kbastian@mail.uni-paderborn.de, alex.bennee@linaro.org
-References: <20230809082946.747668-2-pbonzini@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230809082946.747668-2-pbonzini@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.156,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20230809092933.761524-1-pbonzini@redhat.com>
+ <c8d32a26-b749-01b3-0b36-98e374947427@linaro.org>
+In-Reply-To: <c8d32a26-b749-01b3-0b36-98e374947427@linaro.org>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Thu, 10 Aug 2023 13:56:40 +0200
+Message-ID: <CABgObfYAeAnUNW=x+qE=dearKg7pKtSvRRsXaSKaHBgnVS7NuQ@mail.gmail.com>
+Subject: Re: [PATCH 0/9] Use known good releases when installing in pyvenv
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, jsnow@redhat.com, Jan Richter <jarichte@redhat.com>,
+ Cleber Rosa <crosa@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,16 +95,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/8/23 10:29, Paolo Bonzini wrote:
-> With the release of version 12 on June 10, 2023, Debian 10 is
-> not supported anymore.  Modify the cross compiler container to
-> build on a newer version.
-> 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->   tests/docker/dockerfiles/debian-tricore-cross.docker | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+On Thu, Aug 10, 2023 at 1:52=E2=80=AFPM Philippe Mathieu-Daud=C3=A9
+<philmd@linaro.org> wrote:
+> Does this fix the second point of commit eaf245becd ("Revert
+> "tests/requirements.txt: bump up avocado-framework version to 101.0"")
+>
+>   > Second, the recent changes to Python handling mean that there is
+>   > a single virtual environment for all the build, instead of a separate
+>   > one for testing.
 
-Acked-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+This was reverted and Avocado has a separate venv than pyvenv/ (which
+is the one created by configure). This series makes it possible to
+have again a single virtual environment for all the build.
+
+>   > Avocado is not logging of command lines or terminal output, and
+>   > not collecting Python logs outside the avocado namespace.
+>
+> This seems to be fixed in Avocado 102.0:
+
+Correct.
+
+> Assuming this is enough for macOS, what would be the next change,
+> moving to 102.0 or integrate 102.0 in the current set? I.e.:
+>
+>    avocado-framework =3D { accepted =3D "(>=3D88.1, <93.0, 102.0)", ... }
+
+The plan is to:
+
+1) wait for the next LTS release of Avocado (103.0)
+
+2) wait for it to be packaged in Fedora
+
+3) change "accepted" to be "~=3D 103.0"
+
+Users of Fedora will have to switch from the 92.0 module to the 103.0
+module if they want to use the system avocado.
+
+Paolo
 
 
