@@ -2,78 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E431777EC7
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 19:08:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADFAE777ECA
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 19:08:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qU98R-0001ag-Ga; Thu, 10 Aug 2023 13:07:43 -0400
+	id 1qU99G-0002yt-9j; Thu, 10 Aug 2023 13:08:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qU98P-0001a6-NH; Thu, 10 Aug 2023 13:07:41 -0400
-Received: from mail-vk1-xa2b.google.com ([2607:f8b0:4864:20::a2b])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qU99D-0002xp-PN
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 13:08:31 -0400
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qU98M-0006P8-BY; Thu, 10 Aug 2023 13:07:41 -0400
-Received: by mail-vk1-xa2b.google.com with SMTP id
- 71dfb90a1353d-48713d11531so733375e0c.1; 
- Thu, 10 Aug 2023 10:07:37 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qU99C-0006Yh-3J
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 13:08:31 -0400
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-1bbf8cb694aso10066145ad.3
+ for <qemu-devel@nongnu.org>; Thu, 10 Aug 2023 10:08:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1691687257; x=1692292057;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=bXNlGR7lWmbb3UExCZW38tnFqs9sBXHoQ8GbAEMXKbA=;
- b=TlqP0MM7fa0QZ4WAwnxUJdGtqW3tu+EC3phcWH9vpphfctWVZeLHdWnBeaSu6TXccn
- 0Zqj0/3RCC5a0lvOlSfKpEbu8rUAut7Gs8YXm147XeViz5zU7K9GyI+Mqsl8nQkYh8zm
- xv/S78wM4U/tbT81oouOmoTo6ntMCJeDWH0loTFfRkmO6DSIb5C11l81uLI6JTY3yb33
- Mj2uo7NS6C0UsksDEnDRVXT15DxDE78UIjv9OdtVgwZJ7iSEqJkqv/5K58MRKeA9db/I
- eX7fF9RCOwkrf1V5o7iWK23j13AcDYwygqli6F8BBYkPkBXe5/4IdngemhBnL7Dn3f27
- ffFA==
+ d=linaro.org; s=google; t=1691687309; x=1692292109;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=X2tiTK8ShdSEvcy2YLmekvQATEtwugllbbTpIbnRq3Y=;
+ b=XQZg+G8vyHX9x67QHIhW6cqv2s6eISiJvGkwsB9yJ2a0X4HiSktOpD3IXRz12dB2Ob
+ nOI0zFCAPvm8H1lFvt4lSx4vDo/N5AqNzdWWdnSwVoDA6GkrKedN6We2d9E91WqIGuha
+ zevQkJnITn69i2MeYMe5AJrmxpg3hl+JerbHMNCtReoN7QE/fbCQgVLv3VTfTbtyZS6Q
+ pMSf4t6uYyOrf0wZdJx/TnbsZoIRLYIqtGNMm31UUkc2T2xfny8wgt8QJLxJz7nL4bKM
+ kxsGKAUq3DA2w0JZTrdi/sjBrtcm84Z5cdG/6/7f31ea/cvgIQt5cQe+ZOHStQkhdfFj
+ N+xg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691687257; x=1692292057;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=bXNlGR7lWmbb3UExCZW38tnFqs9sBXHoQ8GbAEMXKbA=;
- b=UeUpmTxww867jM4tzR/oMoESqNb3e3XA8VCYHYbVCMMRs7ifv30yT+qzJz8dyMXYYi
- G0tdvwSKiF1//Zxn0NlyRGIbxBB6OdEB+jK3hMsg0FmFL5W8l4Zmg+dk60cT+iNRa/9n
- h3byOAw2tkultu4Y2YdhxYhbHEEtuS7C/gxdsDA6LtoWnrvauWVC54Co7fu7EeiXZLKn
- smKnWv1prfMQTs6+EmZIukd0k8Hi335cuf1SPaG8msXiy4W18XAurZ4iRfInLvfxc9tE
- oPgL3zZyCLj44K8FqlD/eI3+zWh6erXpvzCCx+a+dybF+xd48ATof2bapZMPcCE3EhqF
- zgwg==
-X-Gm-Message-State: AOJu0YzmjcJadABgYj865FJrorqTF72jYDUVB3lqz71AfQsqsAeUpTEa
- IRtVIEldgYa4+r/1qxOrFDfMU8kvcvWvZmllOVI=
-X-Google-Smtp-Source: AGHT+IGdh0cxVPJcpigi4tioVFvJW20neOwgXu13dBbKfd4Ujlvy6To/iwmK53yqj3XTicAG72QoqhJONLw1wM2WCFc=
-X-Received: by 2002:a1f:c114:0:b0:486:4cb9:944f with SMTP id
- r20-20020a1fc114000000b004864cb9944fmr1877183vkf.1.1691687256920; Thu, 10 Aug
- 2023 10:07:36 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1691687309; x=1692292109;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=X2tiTK8ShdSEvcy2YLmekvQATEtwugllbbTpIbnRq3Y=;
+ b=Wc6V3bVwCKL4o3JVg/Sn84tZluhfN09VxJUOfuXvRWAby6+wvgtG65jjj5xkrErK1g
+ dPntyPa9MRncWabSIe8m4Hr4X7d25ZqA5Gd2tNMMhmIsealOQjy4scp0g8fKUsJwXDy4
+ 2TwrABEGyferOTC/CjtXpzicNRXgNLNphNtE3oYr6vR1tOKrWv9KOt1Aee6KUetNhIcr
+ eqWJzm0sAscwaU707V2NgF+UIiITA4+uvYQExgbyDyFn0KGGBwyRgmbYNYdkY6BaM+QL
+ VkhAQSuQbuAvP89uAFaD2jMQqlOOiOCpu+yRlrN0Y28+NhGV4SLypTE3hV6nrjDseeH/
+ wh4A==
+X-Gm-Message-State: AOJu0YxfBI4YZpQcwnLn7AFJqFTWT0//ThHJrJqbRyw6MrmmzUTi3SnV
+ ZNCVDEevp3IklNPwzSh2lGAaZA==
+X-Google-Smtp-Source: AGHT+IH/+htUrMjIai+o1C86lI2M0kpD6ffvqWy8yt1pcyI17vGdDUxkXvADFxtnJ5oA+TyuYYeaYQ==
+X-Received: by 2002:a17:902:7d92:b0:1b8:6cae:3570 with SMTP id
+ a18-20020a1709027d9200b001b86cae3570mr2564262plm.11.1691687308795; 
+ Thu, 10 Aug 2023 10:08:28 -0700 (PDT)
+Received: from ?IPV6:2602:47:d483:7301:9e4d:b830:d4fd:9164?
+ ([2602:47:d483:7301:9e4d:b830:d4fd:9164])
+ by smtp.gmail.com with ESMTPSA id
+ d12-20020a170902728c00b001bbaf09ce15sm2024261pll.152.2023.08.10.10.08.27
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 10 Aug 2023 10:08:28 -0700 (PDT)
+Message-ID: <d4593d2a-e0f2-4421-2451-e46017ca492a@linaro.org>
+Date: Thu, 10 Aug 2023 10:08:26 -0700
 MIME-Version: 1.0
-References: <20230802124906.24197-1-rbradford@rivosinc.com>
-In-Reply-To: <20230802124906.24197-1-rbradford@rivosinc.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Thu, 10 Aug 2023 13:07:11 -0400
-Message-ID: <CAKmqyKMDb2RAoafBXD5HjL5WEQK1vFrwYdHA3cufCPzFDtoQVw@mail.gmail.com>
-Subject: Re: [PATCH] target/riscv: Implement WARL behaviour for
- mcountinhibit/mcounteren
-To: Rob Bradford <rbradford@rivosinc.com>
-Cc: qemu-devel@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>, 
- Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bin.meng@windriver.com>,
- Weiwei Li <liweiwei@iscas.ac.cn>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
- "open list:RISC-V TCG CPUs" <qemu-riscv@nongnu.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a2b;
- envelope-from=alistair23@gmail.com; helo=mail-vk1-xa2b.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 6/8] tests/tcg: ensure system-mode gdb tests start stopped
+Content-Language: en-US
+To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Ilya Leoshkevich <iii@linux.ibm.com>, Yonggang Luo
+ <luoyonggang@gmail.com>, Beraldo Leal <bleal@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, David Hildenbrand <david@redhat.com>,
+ qemu-arm@nongnu.org, qemu-s390x@nongnu.org,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>
+References: <20230810153640.1879717-1-alex.bennee@linaro.org>
+ <20230810153640.1879717-7-alex.bennee@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230810153640.1879717-7-alex.bennee@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.156,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -91,67 +103,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 2, 2023 at 8:50=E2=80=AFAM Rob Bradford <rbradford@rivosinc.com=
-> wrote:
->
-> These are WARL fields - zero out the bits for unavailable counters and
-> special case the TM bit in mcountinhibit which is hardwired to zero.
-> This patch achieves this by modifying the value written so that any use
-> of the field will see the correctly masked bits.
->
-> Tested by modifying OpenSBI to write max value to these CSRs and upon
-> subsequent read the appropriate number of bits for number of PMUs is
-> enabled and the TM bit is zero in mcountinhibit.
->
-> Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
-
-Thanks!
-
-Applied to riscv-to-apply.next
-
-Alistair
-
+On 8/10/23 08:36, Alex Bennée wrote:
+> Without -S we run into potential races with tests starting before the
+> gdbstub attaches. We don't need to worry about user-mode as enabling
+> the gdbstub implies we wait for the initial connection.
+> 
+> Signed-off-by: Alex Bennée<alex.bennee@linaro.org>
 > ---
->  target/riscv/csr.c | 11 +++++++++--
->  1 file changed, 9 insertions(+), 2 deletions(-)
->
-> diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-> index ea7585329e..495ff6a9c2 100644
-> --- a/target/riscv/csr.c
-> +++ b/target/riscv/csr.c
-> @@ -1834,8 +1834,11 @@ static RISCVException write_mcountinhibit(CPURISCV=
-State *env, int csrno,
->  {
->      int cidx;
->      PMUCTRState *counter;
-> +    RISCVCPU *cpu =3D env_archcpu(env);
->
-> -    env->mcountinhibit =3D val;
-> +    /* WARL register - disable unavailable counters; TM bit is always 0 =
-*/
-> +    env->mcountinhibit =3D
-> +        val & (cpu->pmu_avail_ctrs | COUNTEREN_CY | COUNTEREN_IR);
->
->      /* Check if any other counter is also monitoring cycles/instructions=
- */
->      for (cidx =3D 0; cidx < RV_MAX_MHPMCOUNTERS; cidx++) {
-> @@ -1858,7 +1861,11 @@ static RISCVException read_mcounteren(CPURISCVStat=
-e *env, int csrno,
->  static RISCVException write_mcounteren(CPURISCVState *env, int csrno,
->                                         target_ulong val)
->  {
-> -    env->mcounteren =3D val;
-> +    RISCVCPU *cpu =3D env_archcpu(env);
-> +
-> +    /* WARL register - disable unavailable counters */
-> +    env->mcounteren =3D val & (cpu->pmu_avail_ctrs | COUNTEREN_CY | COUN=
-TEREN_TM |
-> +                             COUNTEREN_IR);
->      return RISCV_EXCP_NONE;
->  }
->
-> --
-> 2.41.0
->
->
+>   tests/guest-debug/run-test.py | 9 +++------
+>   1 file changed, 3 insertions(+), 6 deletions(-)
+
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+
+r~
 
