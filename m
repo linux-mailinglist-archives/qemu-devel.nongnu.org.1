@@ -2,85 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60158777B90
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 17:05:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 527F6777C1D
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 17:26:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qU7Cc-0004fb-P7; Thu, 10 Aug 2023 11:03:54 -0400
+	id 1qU7X6-0000ss-Qh; Thu, 10 Aug 2023 11:25:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qU7Ca-0004en-SI
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 11:03:52 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qU7X4-0000sc-Nn
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 11:25:02 -0400
+Received: from mail-ot1-x32a.google.com ([2607:f8b0:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qU7CZ-00050F-1P
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 11:03:52 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-687ca37628eso892142b3a.1
- for <qemu-devel@nongnu.org>; Thu, 10 Aug 2023 08:03:50 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qU7X2-0000VH-SA
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 11:25:02 -0400
+Received: by mail-ot1-x32a.google.com with SMTP id
+ 46e09a7af769-6bcae8c4072so913038a34.1
+ for <qemu-devel@nongnu.org>; Thu, 10 Aug 2023 08:25:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691679829; x=1692284629;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=qDopEXVB8Cz/L+euXO83cymHp9IOkF+xPBhsyYc6pQg=;
- b=w7zXTCoSZhRs2/Vx67k42c8B5HVcwtmZu6rfGhF7Jw8+YCeJBVC1lmMA7UPRvMZJHk
- TVOehe7ZUBh4Mp2pqkHEdBMDy+rx+O7cadcu3Z84i73OupHM0agcnxOpXqHGRp+kcK+Y
- lxjklXrgh+vGV60cRyY9iCYdJjtVKwkcBZ7jSS/PaairOU9Y727YsZMw2JvajUer1IUy
- 7hPhrTEuvSOejogQnqrCSI95jiTpI56GsDLYrTABt3Ujv/EnUp8jo/jiMHqmq/3sVQvv
- 13fhCeAMA9wQpj5LYxugfV8Dlj+7tx5/Lt34b1sVoaXZcXHZNTHx5W9KPlH+Bw9IcJtK
- ETeQ==
+ d=gmail.com; s=20221208; t=1691681099; x=1692285899;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=pxV1ytHBtuwEj4BK9j4YrDkuqfRrb/9v0z1bR7ApUsg=;
+ b=keSFfrxGvW9+vNTAeY+ZLLYXtTl076j9GB0mPdG7AjMWKWklL9M4JH0o6R6fEleA0u
+ 2Rsl8foXcpLkknJ3qdNh2ihYvxvfGyvf7RVyHBFOrJUBiH4suHRc2lpRfB8PA+HM8Qjv
+ pOvybco23lVRrTemV89y5RN6vUCTxnVbwUkVJrRMsVPD9ZTuQKsoVreVehL6JsS5nDsD
+ u1OFfmB5rzZi4tKzKpkeEQC9MkPCiLi7fvINowXgTZjl+JvcX0GU7gz6SscyeAwCtinz
+ ddItWDoX5mveqdk4MxbAEH+CKtTLrik3UUn2+tTS1y6JkzDVhsuHar7ORJCeKKH11kbP
+ UoTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691679829; x=1692284629;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=qDopEXVB8Cz/L+euXO83cymHp9IOkF+xPBhsyYc6pQg=;
- b=Rdhk5dSUqfySq8WoP+5bOlygoa/anYpWbokSoFLYpeoy5aPbDqZvDdAEw7IHNAbzMA
- RhXPzKxq2nXo0zgpTFeusK92CEPq8C5SeVqCkl/gH5MW/VVOZG+y3KKPuU/4+hzeQCDy
- mwm0UYKmHUgGxyPlj8xCChOGdLleEcVS/KrS5x4MsdMdLeyNyf27589EI1rMk7EZTVzy
- FLvE7TowkAS6ymkpORWeDoIvkNgPNBViEqbm+FqcXc8EryG+PIatqrJDdN0Pv+sAstBy
- Zbr/BEUL+4oN5WA77bVyHSJsMIhYdNQOVSshdu4RrIUtwvUQc6jAGEFNId2fHt8vdBOT
- 7q0A==
-X-Gm-Message-State: AOJu0YxKLmeSBDuF7f1FGYgsOgUx5ntDFfMsLlrD0NDIJwP/0qV5ov7s
- 6fJfHDWBxRi74SRf+MajjImITw==
-X-Google-Smtp-Source: AGHT+IFcocg8cTIJgmIPhx8474+WJzhqTzD6OXJgM8DnRCXiAxYu/6QtXnuxnE+v18v/MdxM3fyHGg==
-X-Received: by 2002:a05:6a00:3a1a:b0:687:9909:3c75 with SMTP id
- fj26-20020a056a003a1a00b0068799093c75mr3372509pfb.4.1691679829286; 
- Thu, 10 Aug 2023 08:03:49 -0700 (PDT)
-Received: from ?IPV6:2602:47:d483:7301:9e4d:b830:d4fd:9164?
- ([2602:47:d483:7301:9e4d:b830:d4fd:9164])
- by smtp.gmail.com with ESMTPSA id
- x6-20020a63b346000000b00553b9e0510esm1500985pgt.60.2023.08.10.08.03.48
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 10 Aug 2023 08:03:48 -0700 (PDT)
-Message-ID: <57292469-fe1c-60d2-a7f0-b715c62af3a9@linaro.org>
-Date: Thu, 10 Aug 2023 08:03:46 -0700
+ d=1e100.net; s=20221208; t=1691681099; x=1692285899;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=pxV1ytHBtuwEj4BK9j4YrDkuqfRrb/9v0z1bR7ApUsg=;
+ b=Z5rnZP9ZPCz1lhjxdg6KwTukCHQYVoPxtE5hL81kl7lxaBT2EhloPmeq5e1TuzuyKO
+ JiYA+cc+GXGKYHRNCVVSgbXrd9BYIMhF+FFMFPBKoVFhSVyCRlG3CffKXYhfueW7ORiE
+ 8uv2NrWWtxR9w98J2iJPZ+Ef/GlPfjAKJSyvlCz9Ef6wKqbWExmPYxkguwnZUtRkTd4o
+ SrTQ/5WC1nXY4fjyzBE39S8lMWRziY21x7EwZLpoTJ7b6A2lmsUwicELS7Kb/NsrfnB5
+ 09HyXozMdr8+fKVBPxg1rGRJyNeRf62Ue3EPQVcabZQkcw427CoolAZ5/JZutdEPH7BH
+ wWrw==
+X-Gm-Message-State: AOJu0YzOYNRX0ihnFUBHMUi8ZCOadt9S9ZvIF/vUirjGEyVVyShQTWLT
+ r4hWQZm/YdSkog1W5H710aGTtEMVadTyrht+Pv0=
+X-Google-Smtp-Source: AGHT+IGd7kCDLmQrnXgLm6RiEGZyVgclWpjJ1SRgzCRNZHbOmYNGHUdaSxNfNGlZ54CN/PtIrQs1X+d9JXyC+03nRX0=
+X-Received: by 2002:a05:6870:3412:b0:1bf:dc26:4947 with SMTP id
+ g18-20020a056870341200b001bfdc264947mr2944492oah.46.1691681099260; Thu, 10
+ Aug 2023 08:24:59 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v1 2/6] target/loongarch: Add some checks before
- translating fpu instructions
-Content-Language: en-US
-To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
-Cc: philmd@linaro.org, maobibo@loongson.cn, yangxiaojuan@loongson.cn,
- Jiajie Chen <c@jia.je>
-References: <20230810124112.236640-1-gaosong@loongson.cn>
- <20230810124112.236640-3-gaosong@loongson.cn>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230810124112.236640-3-gaosong@loongson.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.156,
+References: <461df15f.15e2d.189deaa6eed.Coremail.kvmluck@163.com>
+ <38e69323-0185-32bb-2de1-8e5b36de2abc@tls.msk.ru>
+ <3c1a93da.16493.189df040e16.Coremail.kvmluck@163.com>
+ <20230810141335.GA2931656@fedora>
+In-Reply-To: <20230810141335.GA2931656@fedora>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Thu, 10 Aug 2023 11:24:47 -0400
+Message-ID: <CAJSP0QX5Z=GFnjyGOgQ8hs6hkdUASznUPmuZJp11ViokSRZ0Tw@mail.gmail.com>
+Subject: Re: LTP test related to virtio releasing and reassigning resource
+ leads to guest hung
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: "longguang.yue" <kvmluck@163.com>, Michael Tokarev <mjt@tls.msk.ru>,
+ "mst@redhat.com" <mst@redhat.com>, 
+ qemu-devel <qemu-devel@nongnu.org>, linux-kernel <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32a;
+ envelope-from=stefanha@gmail.com; helo=mail-ot1-x32a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -98,120 +92,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/10/23 05:41, Song Gao wrote:
-> This patch adds REQUIRE_FP/FP_SP/FP_DP to check CPUCFG2.FP/FP_SP/FP_DP.
-> 
-> Signed-off-by: Song Gao <gaosong@loongson.cn>
-> ---
->   target/loongarch/cpu.h                        |   6 +
->   .../loongarch/insn_trans/trans_farith.c.inc   | 132 ++++++++++++------
->   target/loongarch/insn_trans/trans_fcmp.c.inc  |   4 +
->   target/loongarch/insn_trans/trans_fcnv.c.inc  |  56 ++++----
->   .../loongarch/insn_trans/trans_fmemory.c.inc  | 104 ++++++++++----
->   target/loongarch/insn_trans/trans_fmov.c.inc  |  47 +++++--
->   6 files changed, 247 insertions(+), 102 deletions(-)
-> 
-> diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
-> index 9f550793ca..5594d83011 100644
-> --- a/target/loongarch/cpu.h
-> +++ b/target/loongarch/cpu.h
-> @@ -459,6 +459,9 @@ static inline void set_pc(CPULoongArchState *env, uint64_t value)
->   #define HW_FLAGS_EUEN_FPE   0x04
->   #define HW_FLAGS_EUEN_SXE   0x08
->   #define HW_FLAGS_VA32       0x20
-> +#define HW_FLAGS_FP         0x40
-> +#define HW_FLAGS_FP_SP      0x80
-> +#define HW_FLAGS_FP_DP      0x100
->   
->   static inline void cpu_get_tb_cpu_state(CPULoongArchState *env, vaddr *pc,
->                                           uint64_t *cs_base, uint32_t *flags)
-> @@ -469,6 +472,9 @@ static inline void cpu_get_tb_cpu_state(CPULoongArchState *env, vaddr *pc,
->       *flags |= FIELD_EX64(env->CSR_EUEN, CSR_EUEN, FPE) * HW_FLAGS_EUEN_FPE;
->       *flags |= FIELD_EX64(env->CSR_EUEN, CSR_EUEN, SXE) * HW_FLAGS_EUEN_SXE;
->       *flags |= is_va32(env) * HW_FLAGS_VA32;
-> +    *flags |= FIELD_EX32(env->cpucfg[2], CPUCFG2, FP) * HW_FLAGS_FP;
-> +    *flags |= FIELD_EX32(env->cpucfg[2], CPUCFG2, FP_SP) * HW_FLAGS_FP_SP;
-> +    *flags |= FIELD_EX32(env->cpucfg[2], CPUCFG2, FP_DP) * HW_FLAGS_FP_DP;
+On Thu, 10 Aug 2023 at 10:14, Stefan Hajnoczi <stefanha@redhat.com> wrote:
+>
+> On Thu, Aug 10, 2023 at 06:35:32PM +0800, longguang.yue wrote:
+> > could you please give me some tips to diagnose?  I could do tests on qe=
+mu 8.0, but product environment could not update.
+> > I test on different kernel version 5.10.0-X, one is better and results =
+show problem is more about host kernel  rather than qemu.
+> >
+> >
+> > test cases are different combination of i440fx/q35 and virtio/scsi and =
+kernel.
+>
+> Can you post the guest kernel messages (dmesg)? If the guest is hanging
+> then it may be easiest to configure a serial console so the kernel
+> messages are sent to the host where you can see them.
+>
+> Does the hang occur during the LTP code you linked or afterwards when
+> the PCI device is bound to a virtio driver?
 
-You do not need to put any of these in HW_FLAGS, because CPUCFG space never changes for 
-the lifetime of the cpu.
+I didn't see your original email so I missed the panic. I'd still like
+to see the earlier kernel messages before the panic in order to
+understand how the PCI device is bound.
 
-You can extract these into DisasContext in loongarch_tr_init_disas_context.
+Is the vda device with hung I/O the same device that was accessed by
+the LTP test earlier? I guess the LTP test runs against the device and
+then the virtio driver binds to the device again afterwards?
 
-> +#define REQUIRE_FP do { \
-> +    if ((ctx->base.tb->flags & HW_FLAGS_FP) == 0) { \
-> +        return false; \
-> +    } \
-> +} while (0)
-> +
-> +#define REQUIRE_FP_SP do { \
-> +    if ((ctx->base.tb->flags & HW_FLAGS_FP_SP) == 0) { \
-> +        return false; \
-> +    } \
-> +} while (0)
-> +
-> +#define REQUIRE_FP_DP do { \
-> +    if ((ctx->base.tb->flags & HW_FLAGS_FP_DP) == 0) { \
-> +        return false; \
-> +    } \
-> +} while (0)
-
-It would be much better to not create so many of these REQUIRE macros.
-
-> +TRANS(fadd_s, gen_fff, 0, gen_helper_fadd_s)
-> +TRANS(fadd_d, gen_fff, 1, gen_helper_fadd_d)
-
-0 vs 1 is very opaque.
-
-Better is something like Jiajie Chen's TRANS_64,
-
-> +/* for LoongArch64-only instructions */
-> +#define TRANS_64(NAME, FUNC, ...) \
-> +    static bool trans_##NAME(DisasContext *ctx, arg_##NAME * a) \
-> +    { \
-> +        return ctx->la64 && FUNC(ctx, a, __VA_ARGS__); \
-> +    }
-
-But as we now know, we would need at least 7 of these.
-
-Even better would be to generalize this so that every instruction records the condition 
-under which it is valid.
-
-Perhaps
-
-typedef struct DisasContext {
-     ...
-     uint32_t cpucfg1;
-     uint32_t cpucfg2;
-};
-
-static void loongarch_tr_init_disas_context(...)
-{
-     ...
-     ctx->cpucfg1 = env->cpucfg[1];
-     ctx->cpucfg2 = env->cpucfg[2];
-}
-
-#define avail_ALL(C)  true
-#define avail_64(C)   FIELD_EX32((C)->cpucfg1, CPUCFG1, ARCH) == CPUCFG1_ARCH_LA64
-#define avail_FP(C)   FIELD_EX32((C)->cpucfg2, CPUCFG2, FP)
-etc
-
-
-#define TRANS(NAME, AVAIL, FUNC, ...) \
-     static bool trans_##NAME(DisasContext *ctx, arg_##NAME *a)  \
-     { return avail_##AVAIL(ctx) && FUNC(ctx, a, __VA_ARGS__); }
-
-so that the above becomes
-
-TRANS(fadd_s, FP_SP, gen_fff, gen_helper_fadd_s)
-TRANS(fadd_d, FP_DP, gen_fff, gen_helper_fadd_d)
-
-and even simple instructions get
-
-TRANS(add_w, ALL, gen_rrr, EXT_NONE, EXT_NONE, EXT_SIGN, tcg_gen_add_tl)
-TRANS(add_d,  64, gen_rrr, EXT_NONE, EXT_NONE, EXT_SIGN, tcg_gen_add_tl)
-
-
-r~
+>
+> Which virtio device causes the problem?
+>
+> Can you describe the hang in more detail: is the guest still responsive
+> (e.g. console or network)? Is the QEMU HMP/QMP monitor still responsive?
+>
+> Thanks,
+> Stefan
+>
+> >
+> >
+> >
+> >
+> > thanks
+> >
+> >
+> >
+> >
+> > ---- Replied Message ----
+> > | From | Michael Tokarev<mjt@tls.msk.ru> |
+> > | Date | 08/10/2023 17:08 |
+> > | To | longguang.yue<kvmluck@163.com> ,
+> > qemu-devel<qemu-devel@nongnu.org> ,
+> > linux-kernel<linux-kernel@vger.kernel.org> |
+> > | Subject | Re: LTP test related to virtio releasing and reassigning re=
+source leads to guest hung |
+> > 10.08.2023 11:57, longguang.yue wrote:
+> > Hi, all:
+> > A ltp test leads to guest hung(io hung), the test releases virtio devic=
+e resource and then reassign.
+> > I find device=E2=80=99s mem prefetchable resource 64-bit is changed.
+> >
+> > ltp
+> > test: https://github.com/linux-test-project/ltp/blob/522d7fba4afc84e07b=
+252aa4cd91b241e81d6613/testcases/kernel/device-drivers/pci/tpci_kernel/ltp_=
+tpci.c#L428
+> >
+> > Do you know what cause the problem?
+> >
+> > Thanks very much.
+> >
+> > --------------------------
+> > ENV: kernel 5.10.0, qemu 6.2
+> >
+> > Current qemu is 8.1 (well, almost, to be released this month;
+> > previous release is 8.0 anyway).
+> >
+> > This might be interesting to test in a current version before
+> > going any further.
+> >
+> > Thanks,
+> >
+> > /mjt
 
