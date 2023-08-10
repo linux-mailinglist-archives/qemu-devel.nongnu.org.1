@@ -2,92 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81388777F36
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 19:34:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F4169777F58
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 19:43:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qU9XY-0008IU-95; Thu, 10 Aug 2023 13:33:40 -0400
+	id 1qU9g1-0003qH-I8; Thu, 10 Aug 2023 13:42:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qU9XV-0008Gh-UQ
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 13:33:38 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qU9XU-00037Y-EZ
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 13:33:37 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-1bd9b4f8e0eso7408655ad.1
- for <qemu-devel@nongnu.org>; Thu, 10 Aug 2023 10:33:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691688815; x=1692293615;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=2JnnLrcqUSR/cO44gL/tnfJEOUA8DNDbgFdFPXVws/A=;
- b=Wf/2SgHl8Dt3WWbbZ3mCqtphG69JUc0lxM+4ajyNW+1zaoTioPuSo/HjzoRAuCWRbC
- ys7FQTrsSywH5o3YtXkYR75E4fT2k2jJC0ZBKfivfJ24WA6LACdOZYVor6vhh855dA/d
- ctux9jkyYFsDq08k0H4t79wn/iiC4W51fh0BtaWQgKwEfmlUvEbnn3ObsOjvJZ125kCs
- X35hrOE4B+6uurxdM7uegYU/eVL9kXbyQBWv0EXw1BFviZxKR2Vsth16jcG8pSXt+9AD
- KzC3A9BAsJokbUIW7aM0irN92vYLWvmiqaSOQIU8oLcobGx2AP9gLYnyZ/aWmtPNg5xG
- KziA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691688815; x=1692293615;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=2JnnLrcqUSR/cO44gL/tnfJEOUA8DNDbgFdFPXVws/A=;
- b=EOi/ibWZ8ORlaa4szZ/k1qyPXVlJPjhLI6uLKZKJX4VX+9UEdcu1kqEIo3Z4XpPbVV
- h8Sn0kXOVTOQfB+t5I7cKuQaVnf/CamqRaCPw3aQitzkkQRpU6rwj/kwEncrFQheb2ng
- p95oLAxTyVjtxGrdYhxC6fQqLih76//NYNP4c7n9qyxxvq+zQFQYwGqdJRVu0FbBIPmD
- WG8rR/u26sscvF5EzW602HL0HrySc2EaO/envgXW3sC0nH679g7qOdw34BX5JC4eBib1
- PlFUC2cyIFlKvp1I3MNQgOqbA7xutDgMnoRi13s03RAoPTkjlDg+UZpxKY4seHrh1QCQ
- FbIg==
-X-Gm-Message-State: AOJu0YziN0fImy5+GTNOPFcZTg0Cxhj0Aq3DaAqAXzdlNY14Y7pFONzo
- Zztmn4pZvYQRcWhAMKV4nkKN7Q==
-X-Google-Smtp-Source: AGHT+IE20S2Fu48Rsp1XvuJyFTL2uDROvOry2JFMln4B2jgSUVDitPrW5/5nA5dkAULl87bQrxVjVA==
-X-Received: by 2002:a17:902:a9c1:b0:1bb:1523:b311 with SMTP id
- b1-20020a170902a9c100b001bb1523b311mr2363701plr.41.1691688814878; 
- Thu, 10 Aug 2023 10:33:34 -0700 (PDT)
-Received: from ?IPV6:2602:47:d483:7301:9e4d:b830:d4fd:9164?
- ([2602:47:d483:7301:9e4d:b830:d4fd:9164])
- by smtp.gmail.com with ESMTPSA id
- jc3-20020a17090325c300b001b86492d724sm2052124plb.223.2023.08.10.10.33.33
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 10 Aug 2023 10:33:34 -0700 (PDT)
-Message-ID: <e7b03309-aa23-9144-eb01-a117a2d71dde@linaro.org>
-Date: Thu, 10 Aug 2023 10:33:32 -0700
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qU9fx-0003na-VU
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 13:42:22 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qU9fv-0004wm-P1
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 13:42:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1691689338;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=/+NbpfajK8n0CfzwEQw36B19oG4MQzWIGMhHnrGdLSM=;
+ b=Cg3ma78aGcrqyihYDD2BNlJUhnrCSIuVNrr/Mpd7/SbR09BJITK9bRltnn/u1mKEGzSDWJ
+ jYW8JsU3NVj2fSSMIlv+1kE6pHM3xt2CDkHxBj3ywMy2dIKblxB7WM/xaEPv2Pk8mblfwx
+ KcVfWkJQrxWFUxH8Zc6QYVvoNEpF354=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-112-J4oha2l3PL2Sygp73atrjQ-1; Thu, 10 Aug 2023 13:42:16 -0400
+X-MC-Unique: J4oha2l3PL2Sygp73atrjQ-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 62ED0805AF6;
+ Thu, 10 Aug 2023 17:42:16 +0000 (UTC)
+Received: from green.redhat.com (unknown [10.2.16.169])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 93C4A1121314;
+ Thu, 10 Aug 2023 17:42:15 +0000 (UTC)
+From: Eric Blake <eblake@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org,
+	vsementsov@yandex-team.ru
+Subject: [PATCH v5 00/17] qemu patches for 64-bit NBD extensions
+Date: Thu, 10 Aug 2023 12:36:47 -0500
+Message-ID: <20230810173646.17695-19-eblake@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 0/8] some testing and gdbstub fixes
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>,
- Yonggang Luo <luoyonggang@gmail.com>, Beraldo Leal <bleal@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>, David Hildenbrand <david@redhat.com>,
- qemu-arm@nongnu.org, qemu-s390x@nongnu.org,
- Wainer dos Santos Moschetta <wainersm@redhat.com>
-References: <20230810153640.1879717-1-alex.bennee@linaro.org>
- <CAFEAcA9bOS7tJDe_TRKOUGFcCDq_CjUfzAF7dYYRJbZA=5hvqw@mail.gmail.com>
- <87il9m3ld7.fsf@linaro.org> <3fb6e5ac-5887-2947-b431-4a15394c347b@linaro.org>
-In-Reply-To: <3fb6e5ac-5887-2947-b431-4a15394c347b@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.156,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,17 +74,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/10/23 09:43, Richard Henderson wrote:
-> On 8/10/23 09:35, Alex Bennée wrote:
->> So 7 and 8? I would argue for 6 as well given that's a foot gun just
->> waiting to happen.
-> 
-> Yes, the timing issues with 6 are nasty.
+v4 was here:
+https://lists.gnu.org/archive/html/qemu-devel/2023-06/msg01898.html
+(1-8/24 of that series made it into 8.1; this is the rest)
 
-I'm going to queue 6-8 to tcg-next, along with the %x change Phil suggested for logging 
-non-ASCII characters.
+v5 addresses Vladimir's review comments; and the amount of change is
+smaller, so this is probably ready to merge in once 8.1 is out the
+door and the remaining patches get R-b tags.  The biggest change is
+probably the split of v4 13/24 into a split 5 and 6 here, which had
+knock-on effects to patch 17.
+
+001/17:[0006] [FC] 'nbd: Replace bool structured_reply with mode enum'
+002/17:[----] [--] 'nbd/client: Pass mode through to nbd_send_request'
+003/17:[----] [--] 'nbd: Add types for extended headers'
+004/17:[0018] [FC] 'nbd: Prepare for 64-bit request effect lengths'
+005/17:[down] 'nbd/server: Refactor handling of command sanity checks'
+006/17:[down] 'nbd/server: Support a request payload'
+007/17:[----] [--] 'nbd/server: Prepare to receive extended header requests'
+008/17:[0004] [FC] 'nbd/server: Prepare to send extended header replies'
+009/17:[0004] [FC] 'nbd/server: Support 64-bit block status'
+010/17:[0002] [FC] 'nbd/server: Enable initial support for extended headers'
+011/17:[0002] [FC] 'nbd/client: Plumb errp through nbd_receive_replies'
+012/17:[0004] [FC] 'nbd/client: Initial support for extended headers'
+013/17:[0010] [FC] 'nbd/client: Accept 64-bit block status chunks'
+014/17:[----] [--] 'nbd/client: Request extended headers during negotiation'
+015/17:[----] [-C] 'nbd/server: Refactor list of negotiated meta contexts'
+016/17:[0006] [FC] 'nbd/server: Prepare for per-request filtering of BLOCK_STATUS'
+017/17:[0053] [FC] 'nbd/server: Add FLAG_PAYLOAD support to CMD_BLOCK_STATUS'
+
+Eric Blake (17):
+  nbd: Replace bool structured_reply with mode enum
+  nbd/client: Pass mode through to nbd_send_request
+  nbd: Add types for extended headers
+  nbd: Prepare for 64-bit request effect lengths
+  nbd/server: Refactor handling of command sanity checks
+  nbd/server: Support a request payload
+  nbd/server: Prepare to receive extended header requests
+  nbd/server: Prepare to send extended header replies
+  nbd/server: Support 64-bit block status
+  nbd/server: Enable initial support for extended headers
+  nbd/client: Plumb errp through nbd_receive_replies
+  nbd/client: Initial support for extended headers
+  nbd/client: Accept 64-bit block status chunks
+  nbd/client: Request extended headers during negotiation
+  nbd/server: Refactor list of negotiated meta contexts
+  nbd/server: Prepare for per-request filtering of BLOCK_STATUS
+  nbd/server: Add FLAG_PAYLOAD support to CMD_BLOCK_STATUS
+
+ docs/interop/nbd.txt                          |   1 +
+ include/block/nbd.h                           | 147 +++--
+ nbd/nbd-internal.h                            |   8 +-
+ block/nbd.c                                   | 105 +++-
+ nbd/client-connection.c                       |   4 +-
+ nbd/client.c                                  | 140 +++--
+ nbd/common.c                                  |  12 +-
+ nbd/server.c                                  | 558 +++++++++++++-----
+ qemu-nbd.c                                    |   8 +-
+ block/trace-events                            |   3 +-
+ nbd/trace-events                              |  19 +-
+ tests/qemu-iotests/223.out                    |  18 +-
+ tests/qemu-iotests/233.out                    |   4 +
+ tests/qemu-iotests/241.out                    |   3 +
+ tests/qemu-iotests/307.out                    |  15 +-
+ .../tests/nbd-qemu-allocation.out             |   3 +-
+ 16 files changed, 762 insertions(+), 286 deletions(-)
 
 
-r~
+base-commit: 64d3be986f9e2379bc688bf1d0aca0557e0035ca
+-- 
+2.41.0
 
 
