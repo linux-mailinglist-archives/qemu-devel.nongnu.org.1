@@ -2,87 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 516397782AF
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 23:29:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C31447782B7
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 23:32:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qUDDT-0002Se-K6; Thu, 10 Aug 2023 17:29:11 -0400
+	id 1qUDFo-0004xO-5l; Thu, 10 Aug 2023 17:31:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qUDDR-0002S3-Cw
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 17:29:09 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qUDDO-0008Qn-MM
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 17:29:09 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-1bda9207132so6903235ad.0
- for <qemu-devel@nongnu.org>; Thu, 10 Aug 2023 14:29:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1691702945; x=1692307745;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=fdaAjU7eu7/6zjq9wYdV7oXA7Fcrn6qUknenq/F/BCA=;
- b=SeqUB7EIBMS6LOHPLBEU/TfaZKx7p0lEfSOxqtlbVkEKAE5cqei9ECIa/JKP4/ef8A
- mpIyK5VWPzgB7zuD+m00jhcEQhpg1IzIOILXmIRnmptzK0zLouDyNRY+l7kTCt2MYZH+
- ocuI8NX+kWzVtMqwlZZyZYlkn5rzwSgFvQE7RH5LxWleUe3tUwX9e4sd8d6hCRCFvgs7
- QonDeJzuRswJgkAJlHemMsD3PBOxEfVnx86RRC9tOmeredZMZVm7mEwrZpu/7K8jaIOb
- j2tkmqL4moRDnzgaaabJYkQXJnHzwhrUijaGp27CiKJ0nlaqv9/1mdwZHP3QrFsADlyd
- kFxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691702945; x=1692307745;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=fdaAjU7eu7/6zjq9wYdV7oXA7Fcrn6qUknenq/F/BCA=;
- b=izin+QUlsucsREaxlV+Qc8qsOqIxnNET50f9nz9O1mR5FhiSCT9HqGcnqbaBUxlLuZ
- 3PDtNDrMaBgtzJ/XAnVkNG4jGy7Oq8QpsUzVQ+2LhNGljA1LegY9dFTYh0MMBWbZdzzN
- giA//bzshazuUXelnjnc9qoleaGg533Uh98QDwEuXElbakokpOWmy697G6nMp0fXP2gF
- VIrzb1p9NSUoGtH4aZ/NEx0AABqQ6QEL2UtnPAn+Hak9OIsdJkIP7rGi9tRCuU5fgJdO
- jljZ/c0R4/K0tBuQed29Gaf9dg2UgFBglnZKeNY7fPP8knV6hueURGr8F1vrH8SAOZR8
- sgnw==
-X-Gm-Message-State: AOJu0Yxc0B28D7jl4VcAG0iOuqWff+zr+qFUvLVCXx/T1Yi1cy8WA71a
- n7YISrfXpkalbwGCOgvZtklqnA==
-X-Google-Smtp-Source: AGHT+IG0SSx2O61rI5h49aMBb+2UJYezyHYRbBQRhEC8+JwLg0AeH8om1ehazPLP1RnpMzf58rUapw==
-X-Received: by 2002:a17:902:ce84:b0:1b8:971c:b7b7 with SMTP id
- f4-20020a170902ce8400b001b8971cb7b7mr4366054plg.56.1691702944982; 
- Thu, 10 Aug 2023 14:29:04 -0700 (PDT)
-Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
- ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
- by smtp.gmail.com with ESMTPSA id
- w18-20020a170902e89200b001bb9f104330sm2245273plg.240.2023.08.10.14.29.02
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 10 Aug 2023 14:29:04 -0700 (PDT)
-Message-ID: <00d65683-47ea-44dc-889b-130cd6d1483e@daynix.com>
-Date: Fri, 11 Aug 2023 06:29:01 +0900
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1qUDFl-0004xG-58
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 17:31:33 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1qUDFi-0000VG-Qx
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 17:31:32 -0400
+Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 37ALQXec031375; Thu, 10 Aug 2023 21:31:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=Fdh5tS9BpEgcPE7w6UQ9/EtyOTcorqfHSgvhcHDaYI4=;
+ b=l2YDA3HCLgMWzMfAaaWpYUMhd10mYqh5eNhRegjBBx8rczTFDYo4mHgdLkPQirlKRYFb
+ FntmIh0j19YZ7acRmePdbcOktUkRL+P3aFWg1QqLXe72f27WYov0O4Aa4oaJUmUlbw0H
+ XRnBhk69C1cICSewFO6zfzIiuTyWGNaHfMOGn7Up3j3NmA82ZDrTktqTnIKgDaWxcoKa
+ WQPV00rqAlatAWJfk1gjZXYqyaNnRV99kKeqP51OgxCQtfxTleig9DdS6APX7T2LJFFE
+ bMPHyOXmZiMPxwKi3D7JFSRM6SoETJK8WvlVNzqRCu4bQ7WhyU/O2TDOUNjobgxSfu3p cQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sd7thg2y9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 10 Aug 2023 21:31:03 +0000
+Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 37ALQsOf032057;
+ Thu, 10 Aug 2023 21:31:03 GMT
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sd7thg2xu-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 10 Aug 2023 21:31:03 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 37AJS3YO006421; Thu, 10 Aug 2023 21:31:02 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3sd2evag88-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 10 Aug 2023 21:31:02 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
+ [10.20.54.104])
+ by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 37ALV0u520513530
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 10 Aug 2023 21:31:00 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B0C9620043;
+ Thu, 10 Aug 2023 21:31:00 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5E66020040;
+ Thu, 10 Aug 2023 21:31:00 +0000 (GMT)
+Received: from [9.171.63.20] (unknown [9.171.63.20])
+ by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 10 Aug 2023 21:31:00 +0000 (GMT)
+Message-ID: <0b00937cb4643ef19029e48d1de2a90c3614c3b5.camel@linux.ibm.com>
+Subject: Re: [PATCH for-8.1 v10 10/14] util/selfmap: Rewrite using
+ qemu/interval-tree.h
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com, philmd@linaro.org, laurent@vivier.eu, deller@gmx.de
+Date: Thu, 10 Aug 2023 23:31:00 +0200
+In-Reply-To: <d2842004-ce3e-325f-69a7-3eec6e4cd1d5@linaro.org>
+References: <20230807163705.9848-1-richard.henderson@linaro.org>
+ <20230807163705.9848-11-richard.henderson@linaro.org>
+ <d2842004-ce3e-325f-69a7-3eec6e4cd1d5@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] thunk: Delete checks for old host definitions
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- deller@gmx.de, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- pbonzini@redhat.com, laurent@vivier.eu, qemu-devel@nongnu.org,
- Richard Henderson <richard.henderson@linaro.org>,
- Warner Losh <imp@bsdimp.com>, Kyle Evans <kevans@freebsd.org>
-References: <20230808152314.102036-1-akihiko.odaki@daynix.com>
- <f61ff7ff-44a2-14c3-da08-755c290c75b7@linaro.org>
-Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <f61ff7ff-44a2-14c3-da08-755c290c75b7@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::62d;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62d.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: VDJCw7_dwrJxYtddpFfCzFeBLcs3nyHY
+X-Proofpoint-GUID: 7e5-MS-WRx18nUJntyTyZAtgawrxiiLf
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-08-10_16,2023-08-10_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 spamscore=0
+ priorityscore=1501 phishscore=0 mlxlogscore=773 impostorscore=0
+ adultscore=0 malwarescore=0 clxscore=1015 suspectscore=0 mlxscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2308100181
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,46 +114,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/08/10 19:56, Philippe Mathieu-Daudé wrote:
-> Helge and myself sometime run the tests on a HPPA host
-> (testing the QEMU tools). I guess remember John Paul
-> also runs some on Alpha (so Cc'ing him).
-> 
-> Helge, what is your take on this?
+On Mon, 2023-08-07 at 11:17 -0700, Richard Henderson wrote:
+> On 8/7/23 09:37, Richard Henderson wrote:
+> > We will want to be able to search the set of mappings.
+> > For this patch, the two users iterate the tree in order.
+> >=20
+> > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> > ---
+> > =C2=A0 include/qemu/selfmap.h |=C2=A0 20 ++++----
+> > =C2=A0 linux-user/elfload.c=C2=A0=C2=A0 |=C2=A0 14 +++--
+> > =C2=A0 linux-user/syscall.c=C2=A0=C2=A0 |=C2=A0 15 +++---
+> > =C2=A0 util/selfmap.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=
+ 114 +++++++++++++++++++++++++-----------
+> > -----
+> > =C2=A0 4 files changed, 96 insertions(+), 67 deletions(-)
+>=20
+> I should note that, for 8.2, this will enable a rewrite of
+> open_self_maps_1 so that it=20
+> does not require page-by-page checking of page_get_flags.
+>=20
+> My idea is that open_self_maps_1 would use walk_memory_regions to see
+> all guest memory=20
+> regions.=C2=A0 The per-region callback would cross-check with the host-
+> region interval tree to=20
+> find the dev+inode+path.
+>=20
+> Cc Ilya and Helge, since there are two outstanding changes to
+> open_self_maps.
+>=20
+>=20
+> r~
 
-This file is only used in userspace emulation so it's not a problem for 
-Alpha, which does no longer have userspace emulation.
+My outstanding change should not be sensitive to this; it should be
+possible to put it in both before or after the rewrite.
 
-The story is different for HPPA. HPPA has userspace emulation code and 
-there are also references for HOST_HPPA in coroutine code 
-(util/async-teardown.c and util/os-posix.c). Probably HPPA support is 
-broken both for userspace and system emulation. I think it's time to 
-think of dropping HPPA support for both of userspace and system emulation.
 
-> 
-> On 8/8/23 17:23, Akihiko Odaki wrote:
->> Alpha, IA-64, and PA-RISC hosts are no longer supported.
->>
->> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
->> ---
->>   include/exec/user/thunk.h | 3 +--
->>   1 file changed, 1 insertion(+), 2 deletions(-)
->>
->> diff --git a/include/exec/user/thunk.h b/include/exec/user/thunk.h
->> index 300a840d58..d9c131ec80 100644
->> --- a/include/exec/user/thunk.h
->> +++ b/include/exec/user/thunk.h
->> @@ -111,8 +111,7 @@ static inline int thunk_type_size(const argtype 
->> *type_ptr, int is_host)
->>           if (is_host) {
->>   #if defined(HOST_X86_64)
->>               return 8;
->> -#elif defined(HOST_ALPHA) || defined(HOST_IA64) || defined(HOST_MIPS) 
->> || \
->> -      defined(HOST_PARISC) || defined(HOST_SPARC64)
->> +#elif defined(HOST_MIPS) || defined(HOST_SPARC64)
->>               return 4;
->>   #elif defined(HOST_PPC)
->>               return sizeof(void *);
-> 
+
+I really like this idea though, since I looked into ppc64le and there
+printing maps is quite broken: it's not just that QEMU can't determine
+the names of the mapped files, but also a number of regions are simply
+missing. This also affects core dumps generated by GDB attached to
+gdbstub.
+
+For example, cat /proc/self/maps has the following internal page
+layout:
+
+start            end              size             prot
+0000000010000000-000000001000d000 000000000000d000 r-x
+000000001000d000-0000000010010000 0000000000003000 ---
+0000000010010000-000000001001f000 000000000000f000 r--
+000000001001f000-0000000010020000 0000000000001000 r--
+0000000010020000-0000000010021000 0000000000001000 rw-
+0000100000000000-0000100000010000 0000000000010000 ---
+0000100000010000-0000100000810000 0000000000800000 rw-
+0000100000810000-0000100000830000 0000000000020000 r-x
+0000100000830000-000010000083d000 000000000000d000 r-x
+000010000083d000-0000100000840000 0000000000003000 ---
+0000100000840000-000010000084f000 000000000000f000 r--
+000010000084f000-0000100000850000 0000000000001000 r--
+0000100000850000-0000100000851000 0000000000001000 rw-
+0000100000851000-0000100000852000 0000000000001000 rw-
+0000100000860000-0000100000861000 0000000000001000 r-x
+0000100000880000-0000100000a50000 00000000001d0000 r-x
+0000100000a50000-0000100000a60000 0000000000010000 r--
+0000100000a60000-0000100000a70000 0000000000010000 rw-
+0000100000a70000-0000100000b70000 0000000000100000 rw-
+0000100000b70000-000010000742d000 00000000068bd000 r--
+00007fffb22b0000-00007fffb22e0000 0000000000030000 rw-
+
+but prints only:
+
+100000000000-100000010000 ---p 00000000 00:00 0                      =20
+100000010000-100000810000 rw-p 00000000 00:00 0                      =20
+[stack]
+100000810000-100000830000 r-xp 00000000 fd:00 3049136                =20
+/usr/lib64/ld-2.17.so
+100000880000-100000a50000 r-xp 00000000 fd:00 3017372                =20
+/usr/lib64/libc-2.17.so
+100000a50000-100000a60000 r--p 001c0000 fd:00 3017372                =20
+/usr/lib64/libc-2.17.so
+100000a60000-100000a70000 rw-p 001d0000 fd:00 3017372                =20
+/usr/lib64/libc-2.17.so
+100000a70000-100000b70000 rw-p 00000000 00:00 0                      =20
+7fffb22b0000-7fffb22e0000 rw-p 00000000 00:00 0                      =20
+
+I don't see a good way to prevent page_check_range() from rejecting
+most of the mappings with the current code structure, but I think that
+after the proposed rewrite it should begin to just work.
 
