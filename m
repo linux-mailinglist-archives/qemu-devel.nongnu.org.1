@@ -2,39 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03DCB7778BC
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 14:43:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4BFB7778B9
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 14:43:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qU4yq-0001CY-0Y; Thu, 10 Aug 2023 08:41:32 -0400
+	id 1qU4ym-0001Aw-Px; Thu, 10 Aug 2023 08:41:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qU4yh-00018k-Jl
+ id 1qU4yh-00018h-Cx
  for qemu-devel@nongnu.org; Thu, 10 Aug 2023 08:41:23 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qU4yd-000447-Uc
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 08:41:23 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1qU4yd-00044E-9B
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 08:41:22 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8Cx2erq2tRkb6sUAA--.39391S3;
- Thu, 10 Aug 2023 20:41:14 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8BxuOjp2tRkaqsUAA--.8735S3;
+ Thu, 10 Aug 2023 20:41:13 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8Ax3c7o2tRkoiNTAA--.11480S2; 
- Thu, 10 Aug 2023 20:41:12 +0800 (CST)
+ AQAAf8Ax3c7o2tRkoiNTAA--.11480S3; 
+ Thu, 10 Aug 2023 20:41:13 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org, philmd@linaro.org, maobibo@loongson.cn,
  yangxiaojuan@loongson.cn
-Subject: [PATCH v1 0/6] Add some macros to check cpu features 
-Date: Thu, 10 Aug 2023 20:41:06 +0800
-Message-Id: <20230810124112.236640-1-gaosong@loongson.cn>
+Subject: [PATCH v1 1/6] target/loongarch: Fix loongarch_la464_initfn() misses
+ setting LSPW.
+Date: Thu, 10 Aug 2023 20:41:07 +0800
+Message-Id: <20230810124112.236640-2-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
+In-Reply-To: <20230810124112.236640-1-gaosong@loongson.cn>
+References: <20230810124112.236640-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8Ax3c7o2tRkoiNTAA--.11480S2
+X-CM-TRANSID: AQAAf8Ax3c7o2tRkoiNTAA--.11480S3
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -61,47 +64,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Based-on: https://patchew.org/QEMU/20230809083258.1787464-1-c@jia.je/
+Signed-off-by: Song Gao <gaosong@loongson.cn>
+---
+ target/loongarch/cpu.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Hi, 
-
-This series adds some macros to check CPU features.
-
-This includes:
-
-CPUCFG[1].IOCSR
-
-CPUCFG[2].FP
-CPUCFG[2].FP_SP
-CPUCFG[2].FP_DP
-CPUCFG[2].LSPW
-CPUCFG[2].LAM
-CPUCFG[2].LSX
-
-Thanks.
-Song Gao
-
-
-Song Gao (6):
-  target/loongarch: Fix loongarch_la464_initfn() misses setting LSPW.
-  target/loongarch: Add some checks before translating fpu instructions
-  target/loongarch: Add REQUIRE_LSPW macro to check LSPW instructions
-  target/loongarch: Add REQUIRE_LAM macro to check atomic instructions
-  target/loongarch: Add REQUIRE_LSX macro to check LSX instructions
-  target/loongarch: Add REQUIRE_IOCSR macro to check IOCSR instructions
-
- target/loongarch/cpu.c                        |   1 +
- target/loongarch/cpu.h                        |  14 ++
- .../loongarch/insn_trans/trans_atomic.c.inc   |  12 ++
- .../loongarch/insn_trans/trans_farith.c.inc   | 132 ++++++++++++------
- target/loongarch/insn_trans/trans_fcmp.c.inc  |   4 +
- target/loongarch/insn_trans/trans_fcnv.c.inc  |  56 ++++----
- .../loongarch/insn_trans/trans_fmemory.c.inc  | 104 ++++++++++----
- target/loongarch/insn_trans/trans_fmov.c.inc  |  47 +++++--
- target/loongarch/insn_trans/trans_lsx.c.inc   |  71 +++++++++-
- .../insn_trans/trans_privileged.c.inc         |  16 +++
- 10 files changed, 354 insertions(+), 103 deletions(-)
-
+diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
+index dd1cd7d7d2..95e00a044c 100644
+--- a/target/loongarch/cpu.c
++++ b/target/loongarch/cpu.c
+@@ -391,6 +391,7 @@ static void loongarch_la464_initfn(Object *obj)
+     data = FIELD_DP32(data, CPUCFG2, LSX, 1),
+     data = FIELD_DP32(data, CPUCFG2, LLFTP, 1);
+     data = FIELD_DP32(data, CPUCFG2, LLFTP_VER, 1);
++    data = FIELD_DP32(data, CPUCFG2, LSPW, 1);
+     data = FIELD_DP32(data, CPUCFG2, LAM, 1);
+     env->cpucfg[2] = data;
+ 
 -- 
 2.39.1
 
