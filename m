@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EE4A777E52
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 18:30:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 462BE777EBB
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 19:03:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qU8Y8-0003DZ-Nj; Thu, 10 Aug 2023 12:30:12 -0400
+	id 1qU93y-0004vG-Dt; Thu, 10 Aug 2023 13:03:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qU8Y6-0003Ct-S0
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 12:30:10 -0400
-Received: from mail-lf1-x135.google.com ([2a00:1450:4864:20::135])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qU8Y3-0006CB-Se
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 12:30:10 -0400
-Received: by mail-lf1-x135.google.com with SMTP id
- 2adb3069b0e04-4fe700f9bf7so1709127e87.0
- for <qemu-devel@nongnu.org>; Thu, 10 Aug 2023 09:30:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691685006; x=1692289806;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=gA4mnv26ntMrN4AAuQOG1RqRjz7KC9vkxL3VRP9zBNs=;
- b=BpkuZhKGU2D0Wl+SLS5EkvYyMoARq0QKbOSQxw1et7RKw8eeIfvLPJ6p60YkgRBGiZ
- hBSP20kUqwmro3UYyr9tqZJA6DiyWMSCKQufn4rSv6Ps+dmU+Oo73F2uOSwjXN05Zv9Q
- FP4PMjGFyEaZGTYrytkyvnOjrhXM92LBfu/MbYaeDpcqBIjYLgfgEm7RsUfdu1l6bIqD
- 7TrxyNbC7sZiN3wDWxd6NNkI5NxPO1f7wGoZUxm5UthiJu41nvDXYAjgu3KRb06q2Q++
- rSo7LpSiy0qPpSkQo2ogDTZ5Ge7q5qE/sL3/QhMrFB4gDpIpnBFEPoP3JWTewQ0yKjzC
- 8MAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691685006; x=1692289806;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=gA4mnv26ntMrN4AAuQOG1RqRjz7KC9vkxL3VRP9zBNs=;
- b=HTnHLJjAPnwb5W6xkkGo4Z4p1BwgVnp0otLJqXsCY7MKUFlN+tLCW32vOY3ETXiCEI
- u7z3xgzv71mxOLauLzTyvbOjpS54Ha9wdi2pW/6BOqM8bnis2a3PUbD5P2nfyxL2yulw
- /Nw6hTK+oA8OXL47eiJs/j3+qILqlFqbzmNPWwhHV+LiP3QnCQgF+xCjkfzHbEDUWo7Z
- wx6jmNVKZb8JAJsrSn1e+rllQr7SOBI7VEJGsQM/Z8o8gpcVaWr6SvpAQi8CtpUlZAW7
- pN/dwBEtGpBksDPBEtS4oRMJvDHdIxEUE4XvrfIejRqO7NSIoXnN0FFZW3dhMvLgnimK
- VNSg==
-X-Gm-Message-State: AOJu0YzbWlQAiTrlCJa/hcXnrq0ltjI4phJVWf+/ck9vXe/8pdFgSzn0
- 9Qd+AHhcb5EODDdumxpCVVfOp9eBMUy/M/Y6NEtd5A==
-X-Google-Smtp-Source: AGHT+IGPs1rSsBSyBOgM3RiQCy/W1E3nydCdJXio5HmBmyOmxGTA2aigvbmDhjt4puScoKmhwuYyWPieKinU8YC7cpE=
-X-Received: by 2002:a05:6512:4896:b0:4fc:dcff:773b with SMTP id
- eq22-20020a056512489600b004fcdcff773bmr2158763lfb.3.1691685005905; Thu, 10
- Aug 2023 09:30:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <fan.ni@gmx.us>) id 1qU8bD-00054X-T1
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 12:33:23 -0400
+Received: from mout.gmx.net ([212.227.17.21])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <fan.ni@gmx.us>) id 1qU8bB-0006tz-VO
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 12:33:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.us;
+ s=s31663417; t=1691685188; x=1692289988; i=fan.ni@gmx.us;
+ bh=Ic34E1rhStu5oBJ08gz/o3kbUbXuZnUVTlGULk/Q6ks=;
+ h=X-UI-Sender-Class:Date:From:To:Cc:Subject:References:In-Reply-To;
+ b=dytzl3366sQQ9n/9D6wuVdYhzCHBBE6CgQB7eD4Y/nUiObxr1PUaDaQpySEFhSpZvVPcEU0
+ jEy1eAdRZ6Cv5Jv60gcp5+AyC67dpL4fY3RfHMBFDRzi3dbW3O5QJCLjqzghzSHj/8kta+6DP
+ SrdAogyL45Na7k1w5NEbD5g2ORqiCSbCvL0dXV4H/3b7kC6W+6+iKFTw+HbmK7ZJrre461/79
+ gsyg12b7bkP0+lBYifqtJ/NXxbqYbAIs0bMHJipXGnst61rMeW5GNLREqyQJLBl1tE9vyeSAA
+ ddRBux/5didM9hM9qUdX+O92dsg5KIRyn/4KjcZ316SA8RWi/wVA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from debian ([99.13.228.231]) by mail.gmx.net (mrgmx104
+ [212.227.17.174]) with ESMTPSA (Nemesis) id 1MJE6F-1qF5ke1eB9-00KiTo; Thu, 10
+ Aug 2023 18:33:08 +0200
+Date: Thu, 10 Aug 2023 09:32:55 -0700
+From: Fan Ni <fan.ni@gmx.us>
+To: Maverickk 78 <maverickk1778@gmail.com>
+Cc: Jonathan Cameron via <qemu-devel@nongnu.org>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-cxl@vger.kernel.org
+Subject: Re: CXL volatile memory is not listed
+Message-ID: <ZNURN6Zzf2hJfmt/@debian>
+References: <CALfBBTtUtydebmJuh6JZ5RAXZfx5OgJ+RCug1apbZa4mm17rJQ@mail.gmail.com>
 MIME-Version: 1.0
-References: <20230808031143.50925-1-richard.henderson@linaro.org>
- <20230808031143.50925-9-richard.henderson@linaro.org>
-In-Reply-To: <20230808031143.50925-9-richard.henderson@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 10 Aug 2023 17:29:54 +0100
-Message-ID: <CAFEAcA_f9CRaFzEc8-aA3Wgy7hY2KmcHjsijXA5v+3jMRd+R1w@mail.gmail.com>
-Subject: Re: [PATCH 08/24] target/sparc: Use tcg_gen_movcond_i64 in gen_edge
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-ppc@nongnu.org, 
- qemu-riscv@nongnu.org, qemu-s390x@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::135;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x135.google.com
-X-Spam_score_int: 4
-X-Spam_score: 0.4
-X-Spam_bar: /
-X-Spam_report: (0.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- SUSPICIOUS_RECIPS=2.51 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CALfBBTtUtydebmJuh6JZ5RAXZfx5OgJ+RCug1apbZa4mm17rJQ@mail.gmail.com>
+X-Provags-ID: V03:K1:34c3h0X1GoGb6w3tlWtZc4NsiTaDJ4S1HgxAVUBpatoGVB55JX3
+ HtRJskZ0coaxwKVJgE/MarNgvBazmvKfa9j+CAKPLqDLiGFPVf/PbmbZJZa87sbIQxeZ0ja
+ CZ92rV2XS5APrNxQHJVoPawZRuajTM4+5n4PO1zgCaHMky9aqPACczDan5rDVdHPAJ5Vaal
+ uq5d7tsa4/WL9gfTd1Q5w==
+UI-OutboundReport: notjunk:1;M01:P0:0gRq4+nxu1k=;XzOB6oQ5IH2ZLKstESxah76vVh5
+ +Ful1GMetCckoAsTwzWweA2e3f/Qi7H0EuHZhv52+lmtIuO+GVSNZ1Q4lTdEbX/UFREfnCL+Z
+ /EuKMy3zDxxDQJ07qeLHhOX956OBg/aaE5V13ty273E2qHEZgfAO+j55PTa2XFT5yf2ma5MaU
+ Ixu1e8/vwkPfLTtkeWHbndUTNeiBywWI65D/r9tZQIhQLIKmY6K3+oKXHh2PMrd7gMAjV1Mef
+ drInTjZTd6rP7CIkqvYn/s/LHBj63eMOhs8PMpmNPvu6Q6NzatpJgqSbm2yXfqDi00Z+ZP3uX
+ N3Mw+GgszJEXmyMj4pXkMooGXnW2nk2VPJzzJit+eIF+paZeLl8T7ZLii60Xr+XOBhxO10l4K
+ Pe4x4mLBrq3HXNalVNrCTL+0oAwZWZ4Z/CUSrO28CbGvLrcADrDdWYuyG8tFedhq9pUsIcbEO
+ KNFfWWMmRnQQSAgsm1JHGy9Y0wrGBR34X90HgPwMvknGGlluVfFeef4CE1OTG3AkC9xv3bk+l
+ KR+ORV2kbomimA2ufg8Ah+/YPUhceavk3sLlxIEBCj9tc1ntbHRkhi81gN09scY0PVgg4Ldvi
+ K0PVaNml9SUruFdTw6w8t+EPqcrx30hneD9tUphve+QtnLIqhD/LrVyZLvHBkVUvq97KmyKP6
+ kpI29IhN9B2TLxWZFk7QU+OQSv7zACxpyJf2QOYZHeYbSHdRHiE+K1l0u8UBYuDBzjAQAn2XT
+ KB+03R+NpX6ot4dM87vd5PnDrkT7CLf9oLMIFjN1j4Ke9li8nlKZtQchO2VhoC8wDeBpAYGIb
+ J+z4RcjbUz9CUzjIsLsIcPiG0UCyC8EE2wxIjTGh23I7CmD5Aiz6fAPwWxeAQSE/4L4qkiBmv
+ pB7vr4ANlQOzNshcdFAIySzo7AhGzdCFZa2wLX84Pe9pGXt/8EnZiZ5dCeIYYxAUYjzCn0v2u
+ 2f+mxzXte2tqmlUIcYL2da6I2SM=
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=212.227.17.21; envelope-from=fan.ni@gmx.us;
+ helo=mout.gmx.net
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Thu, 10 Aug 2023 13:02:45 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,56 +86,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 8 Aug 2023 at 04:14, Richard Henderson
-<richard.henderson@linaro.org> wrote:
+On Wed, Aug 09, 2023 at 04:21:47AM +0530, Maverickk 78 wrote:
+> Hello,
 >
-> The setcond + neg + or sequence is a complex method of
-> performing a conditional move.
+> I am running qemu-system-x86_64
 >
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->  target/sparc/translate.c | 17 ++++-------------
->  1 file changed, 4 insertions(+), 13 deletions(-)
+> qemu-system-x86_64 --version
+> QEMU emulator version 8.0.92 (v8.1.0-rc2-80-g0450cf0897)
 >
-> diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-> index bd877a5e4a..fa80a91161 100644
-> --- a/target/sparc/translate.c
-> +++ b/target/sparc/translate.c
-> @@ -2916,7 +2916,7 @@ static void gen_edge(DisasContext *dc, TCGv dst, TCGv s1, TCGv s2,
+> qemu-system-x86_64 \
+> -m 2G,slots=3D4,maxmem=3D4G \
+> -smp 4 \
+> -machine type=3Dq35,accel=3Dkvm,cxl=3Don \
+> -enable-kvm \
+> -nographic \
+> -device pxb-cxl,id=3Dcxl.0,bus=3Dpcie.0,bus_nr=3D52 \
+> -device cxl-rp,id=3Drp0,bus=3Dcxl.0,chassis=3D0,port=3D0,slot=3D0 \
+> -object memory-backend-file,id=3Dmem0,mem-path=3D/tmp/mem0,size=3D1G,sha=
+re=3Dtrue \
+> -device cxl-type3,bus=3Drp0,volatile-memdev=3Dmem0,id=3Dcxl-mem0 \
+> -M cxl-fmw.0.targets.0=3Dcxl.0,cxl-fmw.0.size=3D1G
 >
->      tcg_gen_shr_tl(lo1, tcg_constant_tl(tabl), lo1);
->      tcg_gen_shr_tl(lo2, tcg_constant_tl(tabr), lo2);
-> -    tcg_gen_andi_tl(dst, lo1, omask);
-> +    tcg_gen_andi_tl(lo1, lo1, omask);
->      tcg_gen_andi_tl(lo2, lo2, omask);
 >
->      amask = -8;
-> @@ -2926,18 +2926,9 @@ static void gen_edge(DisasContext *dc, TCGv dst, TCGv s1, TCGv s2,
->      tcg_gen_andi_tl(s1, s1, amask);
->      tcg_gen_andi_tl(s2, s2, amask);
+> I was expecting the CXL memory to be listed in "System Ram", the lsmem
+> shows only 2G memory which is System RAM, it's not listing the CXL
+> memory.
 >
-> -    /* We want to compute
-> -        dst = (s1 == s2 ? lo1 : lo1 & lo2).
-> -       We've already done dst = lo1, so this reduces to
-> -        dst &= (s1 == s2 ? -1 : lo2)
-> -       Which we perform by
-> -        lo2 |= -(s1 == s2)
-> -        dst &= lo2
-> -    */
-> -    tcg_gen_setcond_tl(TCG_COND_EQ, lo1, s1, s2);
-> -    tcg_gen_neg_tl(lo1, lo1);
-> -    tcg_gen_or_tl(lo2, lo2, lo1);
-> -    tcg_gen_and_tl(dst, dst, lo2);
-> +    /* Compute dst = (s1 == s2 ? lo1 : lo1 & lo2). */
-> +    tcg_gen_and_tl(lo2, lo2, lo1);
-> +    tcg_gen_movcond_tl(TCG_COND_EQ, dst, s1, s2, lo1, lo2);
->  }
+> Do I need to pass any particular parameter in the kernel command line?
+>
+> Is there any documentation available? I followed the inputs provided in
+>
+> https://lore.kernel.org/linux-mm/Y+CSOeHVLKudN0A6@kroah.com/T/
+>
+> Is there any documentation/blog listed?
 
-I'm glad I didn't have to figure out exactly what this
-exciting instruction actually does to review this :-)
+If I remember it correctly, for volatile cxl memory, we need to create a
+region and then it will be discovered as system memory and shows up.
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Try to create a region with "cxl create-region".
 
-thanks
--- PMM
+Fan
+>
 
