@@ -2,76 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 462BE777EBB
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 19:03:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94A0A777E65
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 18:37:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qU93y-0004vG-Dt; Thu, 10 Aug 2023 13:03:06 -0400
+	id 1qU8du-0005kW-Po; Thu, 10 Aug 2023 12:36:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fan.ni@gmx.us>) id 1qU8bD-00054X-T1
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 12:33:23 -0400
-Received: from mout.gmx.net ([212.227.17.21])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fan.ni@gmx.us>) id 1qU8bB-0006tz-VO
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 12:33:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.us;
- s=s31663417; t=1691685188; x=1692289988; i=fan.ni@gmx.us;
- bh=Ic34E1rhStu5oBJ08gz/o3kbUbXuZnUVTlGULk/Q6ks=;
- h=X-UI-Sender-Class:Date:From:To:Cc:Subject:References:In-Reply-To;
- b=dytzl3366sQQ9n/9D6wuVdYhzCHBBE6CgQB7eD4Y/nUiObxr1PUaDaQpySEFhSpZvVPcEU0
- jEy1eAdRZ6Cv5Jv60gcp5+AyC67dpL4fY3RfHMBFDRzi3dbW3O5QJCLjqzghzSHj/8kta+6DP
- SrdAogyL45Na7k1w5NEbD5g2ORqiCSbCvL0dXV4H/3b7kC6W+6+iKFTw+HbmK7ZJrre461/79
- gsyg12b7bkP0+lBYifqtJ/NXxbqYbAIs0bMHJipXGnst61rMeW5GNLREqyQJLBl1tE9vyeSAA
- ddRBux/5didM9hM9qUdX+O92dsg5KIRyn/4KjcZ316SA8RWi/wVA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from debian ([99.13.228.231]) by mail.gmx.net (mrgmx104
- [212.227.17.174]) with ESMTPSA (Nemesis) id 1MJE6F-1qF5ke1eB9-00KiTo; Thu, 10
- Aug 2023 18:33:08 +0200
-Date: Thu, 10 Aug 2023 09:32:55 -0700
-From: Fan Ni <fan.ni@gmx.us>
-To: Maverickk 78 <maverickk1778@gmail.com>
-Cc: Jonathan Cameron via <qemu-devel@nongnu.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-cxl@vger.kernel.org
-Subject: Re: CXL volatile memory is not listed
-Message-ID: <ZNURN6Zzf2hJfmt/@debian>
-References: <CALfBBTtUtydebmJuh6JZ5RAXZfx5OgJ+RCug1apbZa4mm17rJQ@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <logoerthiner1@163.com>)
+ id 1qU8ds-0005kH-J9
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 12:36:08 -0400
+Received: from m131.mail.163.com ([220.181.13.1])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <logoerthiner1@163.com>) id 1qU8dn-0007TH-5u
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 12:36:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+ s=s110527; h=Date:From:Subject:Content-Type:MIME-Version:
+ Message-ID; bh=6bqZ1umCd14tFfZvuy68ZVfMis45CD++Y4vWiW5M4xA=; b=f
+ VFh60rDWOg9eIsC7PqdYhIkkabc74mKvPgf89kH1j55k+VR1chaqCm1fzf2y9F9T
+ VRp6sfZdb/kwtpjIMeX3H0QoqtHZES0CzdEhhlEePG7ooO7uoxMGExxNQSMfn5uy
+ W60QKb4XthE0UKT0O6QciIg/4fXYRA2WghpH2zMkTI=
+Received: from logoerthiner1$163.com ( [183.242.254.172] ) by
+ ajax-webmail-wmsvr1 (Coremail) ; Fri, 11 Aug 2023 00:35:26 +0800 (CST)
+X-Originating-IP: [183.242.254.172]
+Date: Fri, 11 Aug 2023 00:35:26 +0800 (CST)
+From: ThinerLogoer  <logoerthiner1@163.com>
+To: =?GBK?Q?Philippe_Mathieu-Daud=A8=A6?= <philmd@linaro.org>, 
+ qemu-devel@nongnu.org
+Cc: "David Hildenbrand" <david@redhat.com>, 
+ "Paolo Bonzini" <pbonzini@redhat.com>, "Peter Xu" <peterx@redhat.com>, 
+ "Igor Mammedov" <imammedo@redhat.com>
+Subject: Re:Re: [PATCH v1 0/3] softmmu/physmem: file_ram_open() readonly
+ improvements
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version XT5.0.14 build 20230109(dcb5de15)
+ Copyright (c) 2002-2023 www.mailtech.cn 163com
+In-Reply-To: <f7774c34-64eb-893c-5533-d0746d10eedd@linaro.org>
+References: <20230807190736.572665-1-david@redhat.com>
+ <19a4115f.867a.189d62f6665.Coremail.logoerthiner1@163.com>
+ <f7774c34-64eb-893c-5533-d0746d10eedd@linaro.org>
+X-NTES-SC: AL_QuySA/qTuksp4COeZukXnk4Shuc2XMu4u/gu34JTP5E0tCno/Sowe3lHJXHx4PCSOwORth69TCRCweteQYxyYLI82876uLgiPLYo8IUNwEgd
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=GBK
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CALfBBTtUtydebmJuh6JZ5RAXZfx5OgJ+RCug1apbZa4mm17rJQ@mail.gmail.com>
-X-Provags-ID: V03:K1:34c3h0X1GoGb6w3tlWtZc4NsiTaDJ4S1HgxAVUBpatoGVB55JX3
- HtRJskZ0coaxwKVJgE/MarNgvBazmvKfa9j+CAKPLqDLiGFPVf/PbmbZJZa87sbIQxeZ0ja
- CZ92rV2XS5APrNxQHJVoPawZRuajTM4+5n4PO1zgCaHMky9aqPACczDan5rDVdHPAJ5Vaal
- uq5d7tsa4/WL9gfTd1Q5w==
-UI-OutboundReport: notjunk:1;M01:P0:0gRq4+nxu1k=;XzOB6oQ5IH2ZLKstESxah76vVh5
- +Ful1GMetCckoAsTwzWweA2e3f/Qi7H0EuHZhv52+lmtIuO+GVSNZ1Q4lTdEbX/UFREfnCL+Z
- /EuKMy3zDxxDQJ07qeLHhOX956OBg/aaE5V13ty273E2qHEZgfAO+j55PTa2XFT5yf2ma5MaU
- Ixu1e8/vwkPfLTtkeWHbndUTNeiBywWI65D/r9tZQIhQLIKmY6K3+oKXHh2PMrd7gMAjV1Mef
- drInTjZTd6rP7CIkqvYn/s/LHBj63eMOhs8PMpmNPvu6Q6NzatpJgqSbm2yXfqDi00Z+ZP3uX
- N3Mw+GgszJEXmyMj4pXkMooGXnW2nk2VPJzzJit+eIF+paZeLl8T7ZLii60Xr+XOBhxO10l4K
- Pe4x4mLBrq3HXNalVNrCTL+0oAwZWZ4Z/CUSrO28CbGvLrcADrDdWYuyG8tFedhq9pUsIcbEO
- KNFfWWMmRnQQSAgsm1JHGy9Y0wrGBR34X90HgPwMvknGGlluVfFeef4CE1OTG3AkC9xv3bk+l
- KR+ORV2kbomimA2ufg8Ah+/YPUhceavk3sLlxIEBCj9tc1ntbHRkhi81gN09scY0PVgg4Ldvi
- K0PVaNml9SUruFdTw6w8t+EPqcrx30hneD9tUphve+QtnLIqhD/LrVyZLvHBkVUvq97KmyKP6
- kpI29IhN9B2TLxWZFk7QU+OQSv7zACxpyJf2QOYZHeYbSHdRHiE+K1l0u8UBYuDBzjAQAn2XT
- KB+03R+NpX6ot4dM87vd5PnDrkT7CLf9oLMIFjN1j4Ke9li8nlKZtQchO2VhoC8wDeBpAYGIb
- J+z4RcjbUz9CUzjIsLsIcPiG0UCyC8EE2wxIjTGh23I7CmD5Aiz6fAPwWxeAQSE/4L4qkiBmv
- pB7vr4ANlQOzNshcdFAIySzo7AhGzdCFZa2wLX84Pe9pGXt/8EnZiZ5dCeIYYxAUYjzCn0v2u
- 2f+mxzXte2tqmlUIcYL2da6I2SM=
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=212.227.17.21; envelope-from=fan.ni@gmx.us;
- helo=mout.gmx.net
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+Message-ID: <4a01dbe4.6a11.189e04d8e1e.Coremail.logoerthiner1@163.com>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID: AcGowABnbzvOEdVkkZcAAA--.5993W
+X-CM-SenderInfo: 5orj0vpuwkx0thurqiywtou0bp/xtbBawzHnlet94nj2QACsC
+X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
+Received-SPF: pass client-ip=220.181.13.1; envelope-from=logoerthiner1@163.com;
+ helo=m131.mail.163.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 10 Aug 2023 13:02:45 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,45 +75,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 09, 2023 at 04:21:47AM +0530, Maverickk 78 wrote:
-> Hello,
->
-> I am running qemu-system-x86_64
->
-> qemu-system-x86_64 --version
-> QEMU emulator version 8.0.92 (v8.1.0-rc2-80-g0450cf0897)
->
-> qemu-system-x86_64 \
-> -m 2G,slots=3D4,maxmem=3D4G \
-> -smp 4 \
-> -machine type=3Dq35,accel=3Dkvm,cxl=3Don \
-> -enable-kvm \
-> -nographic \
-> -device pxb-cxl,id=3Dcxl.0,bus=3Dpcie.0,bus_nr=3D52 \
-> -device cxl-rp,id=3Drp0,bus=3Dcxl.0,chassis=3D0,port=3D0,slot=3D0 \
-> -object memory-backend-file,id=3Dmem0,mem-path=3D/tmp/mem0,size=3D1G,sha=
-re=3Dtrue \
-> -device cxl-type3,bus=3Drp0,volatile-memdev=3Dmem0,id=3Dcxl-mem0 \
-> -M cxl-fmw.0.targets.0=3Dcxl.0,cxl-fmw.0.size=3D1G
->
->
-> I was expecting the CXL memory to be listed in "System Ram", the lsmem
-> shows only 2G memory which is System RAM, it's not listing the CXL
-> memory.
->
-> Do I need to pass any particular parameter in the kernel command line?
->
-> Is there any documentation available? I followed the inputs provided in
->
-> https://lore.kernel.org/linux-mm/Y+CSOeHVLKudN0A6@kroah.com/T/
->
-> Is there any documentation/blog listed?
+QXQgMjAyMy0wOC0xMCAxOToxMTowMywgIlBoaWxpcHBlIE1hdGhpZXUtRGF1ZKimIiA8cGhpbG1k
+QGxpbmFyby5vcmc+IHdyb3RlOgo+SGksCj4KPk9uIDgvOC8yMyAxOToyNiwgVGhpbmVyTG9nb2Vy
+IHdyb3RlOgo+PiAKPj4gQXQgMjAyMy0wOC0wOCAwMzowNzozMSwgIkRhdmlkIEhpbGRlbmJyYW5k
+IiA8ZGF2aWRAcmVkaGF0LmNvbT4gd3JvdGU6Cj4KPj4+IEluc3RlYWQgb2YgaGFuZGxpbmcgaXQg
+aW5zaWRlIGZpbGVfcmFtX29wZW4oKSwgaGFuZGxlIGl0IGluIHRoZSBjYWxsZXIKPj4+IGFuZCBv
+bmx5IGZhbGxiYWNrIHRvIHJlYWRvbmx5IGluIGEgTUFQX1BSSVZBVEUgbWFwcGluZy4KPgo+PiBJ
+IGhhdmUgdGVzdGVkIHRoZSBwYXRjaCBvbiBteSBjb21waWxhdGlvbiBlbnZpcm9ubWVudC4gVGhl
+c2UgcGF0Y2hlcyBkb2VzIG5vdAo+PiBoYXZlIHByb2JsZW0gb24gbXkgc2V0dXAuIEdyZWF0IGpv
+YiBvbiBoYW5kbGluZyBtb3JlIGNhc2VzIGFib3V0IGZpbGUKPj4gb3BlbmluZyBoZXJlIQo+Cj5E
+b2VzIHRoYXQgbWVhbiB3ZSBjYW4gYWRkIHlvdXIgdGFnIG9uIHRoaXMgc2VyaWVzPwo+Cj5UZXN0
+ZWQtYnk6IFRoaW5lciBMb2dvZXIgPGxvZ29lcnRoaW5lcjFAMTYzLmNvbT4KClRoaXMgdGFnIGlz
+IE9LLCBkZXNwaXRlIHRoYXQgSSBoaWdobHkgc3VzcGVjdCB3aGV0aGVyIG15IHRlc3RpbmcgaXMg
+c3VmZmljaWVudC4KTXkgdGVzdGluZyBpcyB2ZXJ5IHJvdWdoIGFuZCBvbmx5IGZvY3VzIG9uIHRo
+ZSBmdW5jdGlvbmFsaXRpZXMgSSBjYXJlIGFib3V0LgpJdCB3b3VsZCBiZSBiZXR0ZXIgdG8gaGF2
+ZSBhIG1vcmUgcHJvZmVzc2lvbmFsIHRlc3Rlci4KCi0tCgpSZWdhcmRzLAoKbG9nb2VydGhpbmVy
 
-If I remember it correctly, for volatile cxl memory, we need to create a
-region and then it will be discovered as system memory and shows up.
-
-Try to create a region with "cxl create-region".
-
-Fan
->
 
