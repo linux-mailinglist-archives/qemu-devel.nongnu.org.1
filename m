@@ -2,79 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BE46776D8D
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 03:35:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EDE5776E22
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 04:37:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTuZQ-00054K-NB; Wed, 09 Aug 2023 21:34:36 -0400
+	id 1qTvWp-0000ux-ES; Wed, 09 Aug 2023 22:35:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qTuZP-000546-Ei; Wed, 09 Aug 2023 21:34:35 -0400
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qTvWj-0000tw-BD
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 22:35:53 -0400
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qTuZN-0001P3-OK; Wed, 09 Aug 2023 21:34:35 -0400
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-686f94328a4so309743b3a.0; 
- Wed, 09 Aug 2023 18:34:33 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qTvWh-0004x1-Os
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 22:35:53 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-687087d8ddaso403908b3a.1
+ for <qemu-devel@nongnu.org>; Wed, 09 Aug 2023 19:35:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1691631272; x=1692236072;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=XQ9pKefyJp5v1WELZFm0Wa2aDjq4xGO7KrIiPXot3Q4=;
- b=eW2yzCDzctcBVg/65Rwx1ITJlolPpi1s0W04XWxNUW5QQFZAkEH/pd3oJGRjIK2FpD
- KIgXFRU41GPdNHyMStNCiYvZMGCLJsaeZ018exOMJF8YiCBuJGJ/pvzuCKxLd3iHLEAC
- Pe15HUgpQmOLMpIq+kpN/2hSTEEKLhLjSfV+ey/1yhnJInrbcBSKKeiBCGxTbeoPDTGT
- mrqLPNFPHoKraVyL3kvbM8xv+7u1EEjuaH1IMQ2qJQKQL5GNLGI1HQ2ylWEujZMK75Tn
- lyXLa9l4tg5srfMwssDMQhtt6cHEa8CtsvWIAJjm+70F9Ia8+t0sT9Ntrz6kbLsvEmlT
- EOUQ==
+ d=linaro.org; s=google; t=1691634950; x=1692239750;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=CpX0550wKMCux/3GBST6e64zt0DiUd6H3+LGhoX5Le4=;
+ b=nxE6HNRCusB6fZYY6XNCichRSFLYz/wJ+Z80eX+cTtzkebnHEr7zNV/9ryCAMh/VX9
+ xa9dGe5ZUocQ1flZzigcxXUPIFGccTSyLGesSW4yFyd6kA+GF+FV0XZi6h4x6+P2Pmyy
+ nDenJJBTgak0vLbieRfJqbJh+zUOBmW0olwE4qBVYhcwtwLb6366JA1RzdjRfbBVYtlP
+ KT/Fo/Y/usHC8XJxEhcjEeO4RcKBGJxJDOYUwayOfy64lOl67qzOTMiQBPvXwZ727lwU
+ JXpXyiOO58QRMER1Y5U08BrjpUw7xNBA0/wX335ELzn11snWJvp36BvIBqiBXFySH3FF
+ YOHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691631272; x=1692236072;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=XQ9pKefyJp5v1WELZFm0Wa2aDjq4xGO7KrIiPXot3Q4=;
- b=keB3ZcKzNYEJdWWNlXt1Di+n+Ga8n/rDm/9kaprh0Vjs342CiQiVWPW7v8I+5VQVgs
- IXki34ZgGz8ahw8ovC7tdBCDwSzzT2fEibEXKeJUOsZ9L8PwkxeNdse+sJ8RgIiU3MBn
- aqXHoqfIpAWvAAXx59ww1VNlRPheD3A57qyKsiLPyeNK2VLWor2kCbCPQwfhpHrGL6lH
- EKSZgpRr46FiauFG2ttEZzQZFaLvo7qVq3pDdTsmEP8pEZ8ws3qdE+1EvLSCNheK8hAh
- PyRqPWAnkUY64KohG3TIZYfIArwA6lRKYG0Oc/qEzuqXuyOwdfIkDxPazl8p5kxvCSUY
- QqPg==
-X-Gm-Message-State: AOJu0YyvAO4z8IXT8BDk+6T9yTjOzQnIFCnnle1Wjyrn9YBjKvyCeuAs
- gCO0UbHRgd7vrKGvsf6u4BlW4t3TlCU=
-X-Google-Smtp-Source: AGHT+IEl9tkEGc7VJgCzYC6drAucIJeCIjW0DDTIh2rcoNMmhikz14xn3zzw80+3uj5wKXuSKxmSIA==
-X-Received: by 2002:a05:6a00:1301:b0:687:1706:e8bf with SMTP id
- j1-20020a056a00130100b006871706e8bfmr781756pfu.10.1691631271968; 
- Wed, 09 Aug 2023 18:34:31 -0700 (PDT)
-Received: from localhost (61-68-137-140.tpgi.com.au. [61.68.137.140])
+ d=1e100.net; s=20221208; t=1691634950; x=1692239750;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=CpX0550wKMCux/3GBST6e64zt0DiUd6H3+LGhoX5Le4=;
+ b=l0wTCD218XY1Cvyb1SUq4n0ACVq4D3iJd7w+JBOdlDPKZKXDHwX3Ra7Q6jteyUStof
+ Cmrv1LEYvXGmtD1G7NDVW2oePQ7PpoHBEBmkmNTyjhPTsku7Majxq7Y99nTK7Mzlxm8q
+ XlzbNmsF9rp6MWURd+weEmK8WoxHRFGlQsEQeUQhXThy0uc430vVe3YXBpFeL18U5XV2
+ slAgjrQK22Qsj71h5Jfur9qUn1p7GReWiDBt5SVUSaUC5Us7rZesXx1YmrD8Lp9hoRMk
+ fai1J7FWBrWG62zoRKHWKO5ImuSHdm8+AzUUFBrsnmhx5POk40NKBrvr3wjGrijSEQ94
+ EwwA==
+X-Gm-Message-State: AOJu0Yy8F5KSLEYlwtf1UJsdD/uUJ+cXwM8rVtEJ73ZKEV03ShISXMvF
+ nB+xrLrHVvf0QCRX5JpXOH6VpGCNgxRKnDhyaEs=
+X-Google-Smtp-Source: AGHT+IFhJdrxAZzXSEj0lkiMQ+wk6BekqZA7OjS/Gc7j7LTe6kQdIRMvQR0BqW5z2ZF1tpRhheeecA==
+X-Received: by 2002:a05:6a20:1583:b0:11d:8a8f:655d with SMTP id
+ h3-20020a056a20158300b0011d8a8f655dmr1541785pzj.4.1691634950092; 
+ Wed, 09 Aug 2023 19:35:50 -0700 (PDT)
+Received: from stoup.. ([2602:47:d483:7301:6bf0:9674:6ac4:f74c])
  by smtp.gmail.com with ESMTPSA id
- c9-20020a62e809000000b0064aea45b040sm226108pfi.168.2023.08.09.18.34.29
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 09 Aug 2023 18:34:31 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 10 Aug 2023 11:34:26 +1000
-Message-Id: <CUOH8JPKIYFX.28OUSWNMQMQJR@wheely>
-Cc: <qemu-ppc@nongnu.org>, <pavel.dovgaluk@ispras.ru>,
- <pbonzini@redhat.com>, <alex.bennee@linaro.org>, "Vitaly Cheptsov"
- <cheptsov@ispras.ru>
-Subject: Re: [PATCH] hw/ppc/e500: fix broken snapshot replay
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Maksim Kostin" <maksim.kostin@ispras.ru>, <qemu-devel@nongnu.org>
-X-Mailer: aerc 0.15.2
-References: <20230809100733.32189-1-maksim.kostin@ispras.ru>
-In-Reply-To: <20230809100733.32189-1-maksim.kostin@ispras.ru>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x430.google.com
+ z7-20020aa791c7000000b0066ebaeb149dsm287283pfa.88.2023.08.09.19.35.49
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 09 Aug 2023 19:35:49 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org
+Subject: [PATCH for-8.2 0/5] target/arm: Implement cortex-a710
+Date: Wed,  9 Aug 2023 19:35:43 -0700
+Message-Id: <20230810023548.412310-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -92,61 +88,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed Aug 9, 2023 at 8:07 PM AEST, Maksim Kostin wrote:
-> ppce500_reset_device_tree is registered for system reset, but after
-> c4b075318eb1 this function rerandomizes rng-seed via
-> qemu_guest_getrandom_nofail. And when loading a snapshot, it tries to rea=
-d
-> EVENT_RANDOM that doesn't exist, so we have an error:
->
->   qemu-system-ppc: Missing random event in the replay log
->
-> To fix this, use qemu_register_reset_nosnapshotload instead of
-> qemu_register_reset.
+This is one of the first generation Armv9 cores, and gives us something
+concrete to test in that area.  Notably, it supports MTE.
 
-This is the same issue that spapr machine hit, so that looks good.
+The first patch is a bug fix of sorts for neoverse-v1, as we don't,
+and won't, support FEAT_TRF.
 
-But is there a problem that the device tree can change after the
-machine reset? In that case your snapshot could resume with a
-different device tree and replay will diverge.
+The only thing missing for the a710 is FEAT_MPAM.  I haven't looked
+at that properly, and I believe that there may already be some work
+done on that within Linaro -- even if a stub implementation.
 
-It looks like software could just overwrite the device tree value
-in memory. That seems to be why it's rebuilt at reset time. But
-maybe you could just copy the machine->fdt again.
 
-There is also qemu_fdt_randomize_seeds that some archs use that
-we might be able to use for this, if it helps.
+r~
 
-But this is better than nothing and probably a minimal fix, so
-probably good to go upstream before more complicated changes.
 
-Thanks,
-Nick
+Richard Henderson (5):
+  target/arm: Disable FEAT_TRF in neoverse-v1
+  target/arm: Reduce dcz_blocksize to uint8_t
+  target/arm: Allow cpu to configure GM blocksize
+  target/arm: Support more GM blocksizes
+  target/arm: Implement cortex-a710
 
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+ docs/system/arm/virt.rst       |   1 +
+ target/arm/cpu.h               |   5 +-
+ target/arm/internals.h         |   6 --
+ target/arm/tcg/translate.h     |   2 +
+ hw/arm/virt.c                  |   1 +
+ target/arm/helper.c            |  11 ++-
+ target/arm/tcg/cpu64.c         | 172 ++++++++++++++++++++++++++++++++-
+ target/arm/tcg/mte_helper.c    |  91 ++++++++++++++---
+ target/arm/tcg/translate-a64.c |   5 +-
+ 9 files changed, 263 insertions(+), 31 deletions(-)
 
->
-> Reported-by: Vitaly Cheptsov <cheptsov@ispras.ru>
-> Fixes: c4b075318eb1 ("hw/ppc: pass random seed to fdt ")
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1634
-> Signed-off-by: Maksim Kostin <maksim.kostin@ispras.ru>
-> ---
->  hw/ppc/e500.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/hw/ppc/e500.c b/hw/ppc/e500.c
-> index 67793a86f1..d5b6820d1d 100644
-> --- a/hw/ppc/e500.c
-> +++ b/hw/ppc/e500.c
-> @@ -712,7 +712,7 @@ static int ppce500_prep_device_tree(PPCE500MachineSta=
-te *machine,
->      p->kernel_base =3D kernel_base;
->      p->kernel_size =3D kernel_size;
-> =20
-> -    qemu_register_reset(ppce500_reset_device_tree, p);
-> +    qemu_register_reset_nosnapshotload(ppce500_reset_device_tree, p);
->      p->notifier.notify =3D ppce500_init_notify;
->      qemu_add_machine_init_done_notifier(&p->notifier);
-> =20
+-- 
+2.34.1
 
 
