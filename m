@@ -2,81 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E06CB7782E0
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 23:53:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69D4D778306
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 23:58:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qUDZ2-0007ru-CF; Thu, 10 Aug 2023 17:51:28 -0400
+	id 1qUDeq-0001Jo-JG; Thu, 10 Aug 2023 17:57:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qUDYx-0007rT-Sv
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 17:51:23 -0400
-Received: from mout.gmx.net ([212.227.15.15])
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1qUDen-0001J9-FW
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 17:57:25 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qUDYw-00040Q-2z
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 17:51:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1691704254; x=1692309054; i=deller@gmx.de;
- bh=DtxgqEu+XMTyi62hedGS9ZKkuig3fioOcbtbJrtfA7A=;
- h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
- b=N4o1KhctVwaHCMfrcupYXnU8Mv9CtGN8XBqHLiCyDPOZ/mv6TiyMPk/htFnjyNoAa2bkpEu
- Y8UaeiKP/spMzyTP8mOcOBEDaW/2Umuqete9Se6vOHDtvuAqAzZk9NUqhaJfJX/rRKLW7JY7p
- m7ZmoKqFeIsYUPcqFwy3JC9u9w9IuZdtuhP92UJi3oPCMYnyTgJohPKae3uDh9Bz9FMoz2ZSg
- WJJL/Eah9wBR8dte5hge5ryX4jZKcc5nZ0KIhwwFgzKOt9pVOupx3n+G1FIWVAQ4EXSyncNUe
- eRovs9/y+mjRmqXxPA6Mb9lUukID4PxFK6anayGY18CrC4Rumd1A==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([94.134.144.133]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MWRVh-1qJQij3Ft5-00Xvvc; Thu, 10
- Aug 2023 23:50:54 +0200
-Message-ID: <9a5f4a80-0700-4261-f26d-ad86ad4209cd@gmx.de>
-Date: Thu, 10 Aug 2023 23:50:53 +0200
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1qUDel-0005H9-EH
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 17:57:25 -0400
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 37ALrAkH029780; Thu, 10 Aug 2023 21:57:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=lEf5aXRYlrUeaQzNLYIn8LD6GG6Lo/XAR+xI/eH/bhw=;
+ b=ah1RrDFxaayFAomUKI2T2ddz8yp60UhcQpkW5FHO5RkURff6Vl+X9KaYdsDTh7yId29z
+ o+inWU650igrCfSeIyl//l4jqJy92nXN0ZEjsn2br5LCQaopx1Pv2cxBFF6O2kAevRRP
+ W3Es6EC5Q2fvPyLSgb0VbQXBQN99+h2CXyCmVLqMPamsK2ku7+/5/j3gmmi1QbHMt43k
+ 7wpzRO9HR04eE65YEbozKRVvufJ9a7+9qY5O9mK3t6NpG2whC+Hj3UtMXjitH5kKJOJj
+ VKQBmilCgQSl5jjZU84DDc6gd3A+PFGqZmrQ//OcXmuzWb6mrJ2mJy5xBlWOOKmvcA1U QQ== 
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sd86u82f2-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 10 Aug 2023 21:57:17 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 37AJYKmU006408; Thu, 10 Aug 2023 21:57:16 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3sd2evamrj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 10 Aug 2023 21:57:15 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
+ [10.20.54.106])
+ by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 37ALvDZQ43516168
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 10 Aug 2023 21:57:14 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E390820043;
+ Thu, 10 Aug 2023 21:57:13 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9842C20040;
+ Thu, 10 Aug 2023 21:57:13 +0000 (GMT)
+Received: from heavy.boeblingen.de.ibm.com (unknown [9.171.63.20])
+ by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 10 Aug 2023 21:57:13 +0000 (GMT)
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Laurent Vivier <laurent@vivier.eu>,
+ Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PATCH 2/3] linux-user: Fix the build on systems without
+ MAP_SHARED_VALIDATE
+Date: Thu, 10 Aug 2023 23:51:32 +0200
+Message-ID: <20230810215706.1394220-3-iii@linux.ibm.com>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230810215706.1394220-1-iii@linux.ibm.com>
+References: <20230810215706.1394220-1-iii@linux.ibm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] thunk: Delete checks for old host definitions
-Content-Language: en-US
-To: Akihiko Odaki <akihiko.odaki@daynix.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- pbonzini@redhat.com, laurent@vivier.eu, qemu-devel@nongnu.org,
- Richard Henderson <richard.henderson@linaro.org>,
- Warner Losh <imp@bsdimp.com>, Kyle Evans <kevans@freebsd.org>
-References: <20230808152314.102036-1-akihiko.odaki@daynix.com>
- <f61ff7ff-44a2-14c3-da08-755c290c75b7@linaro.org>
- <00d65683-47ea-44dc-889b-130cd6d1483e@daynix.com>
-From: Helge Deller <deller@gmx.de>
-In-Reply-To: <00d65683-47ea-44dc-889b-130cd6d1483e@daynix.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:E+CyOtzLi4AKZDJSaXEsZQ3XqaZBEyOlr51QfuaNKiZx/qW7fl7
- bpkRcjRr9++L0Xyl0+x3wt+vpu4Kx0NnTrRO9GusUxg3OJ+Ss0RwUmTYlltQokZiNBv23XV
- lb7zIYvdkHQBC2jN75j7OAMQx/gVCXb5oO39QrDt4ERl15K0CfpAfsnv/0dLPFAKCuCzm/q
- hBwQNPXbh4exaSKZvEbOA==
-UI-OutboundReport: notjunk:1;M01:P0:TSwZrh/cU1c=;0vfE7/lvZpHSkpoWUi3DuqMeL3y
- 5sGUtcd6dlWubmn81keg2ZMr1t7FiYPN9S47C1o8SH8MJ4OrgNT5NnKiZOcvTzc2OUt2xM5ey
- pSjIpLZ0OISgzr6sHUrIbhkDuDSKzy+QOJrOtvOYzWKu+pKzGoqemdmgQw7ASTJYQyLvVc4V+
- WTEplcGPKXPRIGu7/JYeDnS3j9aRKvxUCbOczZ+aGRcumiiUsCp0z/U8Y0O3v+kDHXv52vPDW
- IGhgoOxdnpRutBQmxU+O/wNX+SNXHnlmQKrwH4myNP5p0cq4xdAMEHAlkwMcTHopiOJi8fAik
- 4eAWRfkwVergnh0KgyCQfzjt9fZYkkN1yPfnSEvqnHpCjvWTVjxOhLOev1Bll4MDq/sVIbomA
- qR5POzwYBXwpZuT/1uuWVocM0qevLsww32x/amd4O0tGazJmX25WV/blzBNrCDiK57ngVFolT
- oOcMPS/IpWqjEfU2uUYofhy2l5VEQ68XaWcUTXofqwhEgsF1cVS79k4M54OcBgOvcAxs53uDt
- s7UpWQ4tfdvhcf5gwOSCI0K2ngv9yLpIAtSxY2xkORUs+Y41Myddnp/yRflcJRe8qeZ9ttp5+
- 1d5odkj2HLpzscMfTv5w8j+h7EgOi7FmfOTKVCrt1xXfgMHdvQSiBhDjWExefx9hJh13qqTFo
- xmhW7F3abXhSC6K0xcZo0Bxy1YYV9ucBZkztw38AMNwg4QZxKp3Iwk4yFRG50kEZQIEPyqdJF
- u5PxC/btQbg8x4xU8Bw4UJZTMMMm2T6+IT2/u6bP2rUSPcGQtg/qKY76TnVrYRBqCMo+bt/zr
- Z4Abr8AvauYEh1qNy7gKd2ku5ufreojniMfT2vJZ8RKpEa+LHJnSteF9XzPLMoOEy+TDt6ffE
- ms9Cy/k5XPcNTGBkFdNRG+uDF70TnhWCxweRKaKTsfI1Pvrf3xJu5ZWNOMxUaqcBbdVFNnSUJ
- yH04zyAGHix7N15XmM3706bYiFM=
-Received-SPF: pass client-ip=212.227.15.15; envelope-from=deller@gmx.de;
- helo=mout.gmx.net
-X-Spam_score_int: -49
-X-Spam_score: -5.0
-X-Spam_bar: -----
-X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- NICE_REPLY_A=-2.156, RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001,
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: kVuNNvRaw3zfQx1DT4LwfCbbPrlRqIOG
+X-Proofpoint-ORIG-GUID: kVuNNvRaw3zfQx1DT4LwfCbbPrlRqIOG
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-08-10_16,2023-08-10_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0
+ mlxlogscore=878 priorityscore=1501 suspectscore=0 bulkscore=0 adultscore=0
+ spamscore=0 phishscore=0 clxscore=1015 mlxscore=0 lowpriorityscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2308100185
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
  RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -94,73 +105,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/10/23 23:29, Akihiko Odaki wrote:
-> On 2023/08/10 19:56, Philippe Mathieu-Daud=C3=A9 wrote:
->> Helge and myself sometime run the tests on a HPPA host
+CentOS 7 does not define MAP_SHARED_VALIDATE. Use a definition provided
+by the QEMU's copy of linux/mman.h.
 
-I think we mix up HOST and TARGET here....
-I run HPPA target (=3Dguest) on x86-64 host.
-That means, both qemu-hppa-user and qemu-hppa-system does
-run fine for me (on x86-64 "HOST_X86_64" emulating HPPA).
+Fixes: 4b840f96096d ("linux-user: Populate more bits in mmap_flags_tbl")
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+---
+ linux-user/syscall.c | 1 +
+ 1 file changed, 1 insertion(+)
 
->> (testing the QEMU tools). I guess remember John Paul
->> also runs some on Alpha (so Cc'ing him).
-
-Yes, I think so.
-If I find more time I'd like too.
-
->> Helge, what is your take on this?
->
-> This file is only used in userspace emulation so it's not a problem
-> for Alpha, which does no longer have userspace emulation.
-
-Akihiko, your statement is correct, but somewhat misleading.
-A native alpha machine (as host) isn't any longer able to run a linux-user
-emulation to emulate Linux for some other architecture.
-That's true.
-
-> The story is different for HPPA. HPPA has userspace emulation code
-> and there are also references for HOST_HPPA in coroutine code
-> (util/async-teardown.c and util/os-posix.c). Probably HPPA support is
-> broken both for userspace and system emulation. I think it's time to
-> think of dropping HPPA support for both of userspace and system
-> emulation.
-HPPA as host... Yes, I think it doesn't make sense to try to emulate
-something else on HPPA.
-
-So, I think the patch below is OK.
-
-Helge
-
->> On 8/8/23 17:23, Akihiko Odaki wrote:
->>> Alpha, IA-64, and PA-RISC hosts are no longer supported.
->>>
->>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
->>> ---
->>> =C2=A0 include/exec/user/thunk.h | 3 +--
->>> =C2=A0 1 file changed, 1 insertion(+), 2 deletions(-)
->>>
->>> diff --git a/include/exec/user/thunk.h b/include/exec/user/thunk.h
->>> index 300a840d58..d9c131ec80 100644
->>> --- a/include/exec/user/thunk.h
->>> +++ b/include/exec/user/thunk.h
->>> @@ -111,8 +111,7 @@ static inline int thunk_type_size(const argtype *t=
-ype_ptr, int is_host)
->>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (is_host) {
->>> =C2=A0 #if defined(HOST_X86_64)
->>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 return 8;
->>> -#elif defined(HOST_ALPHA) || defined(HOST_IA64) || defined(HOST_MIPS)=
- || \
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 defined(HOST_PARISC) || defined(HOST_S=
-PARC64)
->>> +#elif defined(HOST_MIPS) || defined(HOST_SPARC64)
->>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 return 4;
->>> =C2=A0 #elif defined(HOST_PPC)
->>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 return sizeof(void *);
->>
->
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index 42f4aed8e84..256f38cdd5d 100644
+--- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -121,6 +121,7 @@
+ #ifdef HAVE_BTRFS_H
+ #include <linux/btrfs.h>
+ #endif
++#include <linux/mman.h>
+ #ifdef HAVE_DRM_H
+ #include <libdrm/drm.h>
+ #include <libdrm/i915_drm.h>
+-- 
+2.41.0
 
 
