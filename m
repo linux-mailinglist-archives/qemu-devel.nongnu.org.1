@@ -2,72 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97192777AA4
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 16:24:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60158777B90
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 17:05:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qU6aF-00027w-Eh; Thu, 10 Aug 2023 10:24:15 -0400
+	id 1qU7Cc-0004fb-P7; Thu, 10 Aug 2023 11:03:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qU6aC-000278-UB
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 10:24:12 -0400
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qU7Ca-0004en-SI
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 11:03:52 -0400
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qU6aB-0005uQ-6r
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 10:24:12 -0400
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-522bd411679so1219585a12.0
- for <qemu-devel@nongnu.org>; Thu, 10 Aug 2023 07:24:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qU7CZ-00050F-1P
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 11:03:52 -0400
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-687ca37628eso892142b3a.1
+ for <qemu-devel@nongnu.org>; Thu, 10 Aug 2023 08:03:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691677449; x=1692282249;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=8cIROWgM81ULThBkGHmsA3T76gE+Z0o8J/hwau0oBOk=;
- b=QJIQt/OiZ0JNpvXTD9Trc73kzlz1FMnspf0w9JPcUCmitH/XqGV6nIRqEvhzOVlNbu
- NQcXWJxzoBlA1C2F3asUYqvvMyJEo3BXSW0dPEQUhOiqkKVJ4tGUh/2lA4TpOzQhHhkd
- WgeQCKxxGopiViR8xNI0wEB9GTr2plQGDdoSDID9SlXKMvqddTLIFkTDHpLR3lzCZnLf
- 1GPXlmHXJOEhYApapEJdPQW3lnoXMyba0TRcJLoLGaTp4vf9Gc7E4dIQsh8F2elG8nQA
- qH0mLAgpx/5BA41o6vBlfnC+WSaFf8/G29Dj6+wwdIXnbI+WsocaK5l1jTu+dT8Gy+hc
- 5J2w==
+ d=linaro.org; s=google; t=1691679829; x=1692284629;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=qDopEXVB8Cz/L+euXO83cymHp9IOkF+xPBhsyYc6pQg=;
+ b=w7zXTCoSZhRs2/Vx67k42c8B5HVcwtmZu6rfGhF7Jw8+YCeJBVC1lmMA7UPRvMZJHk
+ TVOehe7ZUBh4Mp2pqkHEdBMDy+rx+O7cadcu3Z84i73OupHM0agcnxOpXqHGRp+kcK+Y
+ lxjklXrgh+vGV60cRyY9iCYdJjtVKwkcBZ7jSS/PaairOU9Y727YsZMw2JvajUer1IUy
+ 7hPhrTEuvSOejogQnqrCSI95jiTpI56GsDLYrTABt3Ujv/EnUp8jo/jiMHqmq/3sVQvv
+ 13fhCeAMA9wQpj5LYxugfV8Dlj+7tx5/Lt34b1sVoaXZcXHZNTHx5W9KPlH+Bw9IcJtK
+ ETeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691677449; x=1692282249;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=8cIROWgM81ULThBkGHmsA3T76gE+Z0o8J/hwau0oBOk=;
- b=KXUSq8we5oezegDWQH5nkLgoBvzfoVR3ZXiMToJzIcb7b17bVt2q7gGeUk6fGl331P
- C9fWllyT86EdIlXtWfR2erMdfWPgBzpHCwcjmu+Rwo0To2siKFADkfuSlsuSfC49btlJ
- N/P0Ua4WpnRJH+dprsWqvPwz5umUMeFviJm+E1atsHYqU5Q3yPQ6UK+cZrFW2HDXNNIW
- 8F1N708lhCp5QZahONERMq7kYJ29KsHCai8EoJZXfW4rZGOZfCRRoi3iRcEwY6ESvd5w
- LgeYsyVQDbeDyJB1KHGpwi7fiTlkw0A90Yimp3tD5pHMsjzLKaoZU3C/1/m1DwMDhCjP
- 6dWA==
-X-Gm-Message-State: AOJu0YwWKH67zTUlBSGgEHCUdneiIt5KWGlRwyCqtG5zLGsb0xHgwnMk
- hyc1G9W1LA8ydma5k3/cqa/1uqkWMnhCn66ahxFmIQ==
-X-Google-Smtp-Source: AGHT+IF1JooI85EdEtJNHJK+QWe1OTU9NI3oBpMU2Xr/9572xDg2W2+53S+W1sqNQJPG1Yd73Z7AbQ5jfrd1F4m5nL0=
-X-Received: by 2002:a50:fb81:0:b0:523:47b0:9077 with SMTP id
- e1-20020a50fb81000000b0052347b09077mr2322442edq.38.1691677449363; Thu, 10 Aug
- 2023 07:24:09 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1691679829; x=1692284629;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=qDopEXVB8Cz/L+euXO83cymHp9IOkF+xPBhsyYc6pQg=;
+ b=Rdhk5dSUqfySq8WoP+5bOlygoa/anYpWbokSoFLYpeoy5aPbDqZvDdAEw7IHNAbzMA
+ RhXPzKxq2nXo0zgpTFeusK92CEPq8C5SeVqCkl/gH5MW/VVOZG+y3KKPuU/4+hzeQCDy
+ mwm0UYKmHUgGxyPlj8xCChOGdLleEcVS/KrS5x4MsdMdLeyNyf27589EI1rMk7EZTVzy
+ FLvE7TowkAS6ymkpORWeDoIvkNgPNBViEqbm+FqcXc8EryG+PIatqrJDdN0Pv+sAstBy
+ Zbr/BEUL+4oN5WA77bVyHSJsMIhYdNQOVSshdu4RrIUtwvUQc6jAGEFNId2fHt8vdBOT
+ 7q0A==
+X-Gm-Message-State: AOJu0YxKLmeSBDuF7f1FGYgsOgUx5ntDFfMsLlrD0NDIJwP/0qV5ov7s
+ 6fJfHDWBxRi74SRf+MajjImITw==
+X-Google-Smtp-Source: AGHT+IFcocg8cTIJgmIPhx8474+WJzhqTzD6OXJgM8DnRCXiAxYu/6QtXnuxnE+v18v/MdxM3fyHGg==
+X-Received: by 2002:a05:6a00:3a1a:b0:687:9909:3c75 with SMTP id
+ fj26-20020a056a003a1a00b0068799093c75mr3372509pfb.4.1691679829286; 
+ Thu, 10 Aug 2023 08:03:49 -0700 (PDT)
+Received: from ?IPV6:2602:47:d483:7301:9e4d:b830:d4fd:9164?
+ ([2602:47:d483:7301:9e4d:b830:d4fd:9164])
+ by smtp.gmail.com with ESMTPSA id
+ x6-20020a63b346000000b00553b9e0510esm1500985pgt.60.2023.08.10.08.03.48
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 10 Aug 2023 08:03:48 -0700 (PDT)
+Message-ID: <57292469-fe1c-60d2-a7f0-b715c62af3a9@linaro.org>
+Date: Thu, 10 Aug 2023 08:03:46 -0700
 MIME-Version: 1.0
-References: <20230810023548.412310-1-richard.henderson@linaro.org>
- <20230810023548.412310-5-richard.henderson@linaro.org>
-In-Reply-To: <20230810023548.412310-5-richard.henderson@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 10 Aug 2023 15:23:58 +0100
-Message-ID: <CAFEAcA8YcX0qq392chnpVdB2-qjk7Jb-4gBEu-e2uDGka3Ccvg@mail.gmail.com>
-Subject: Re: [PATCH 4/5] target/arm: Support more GM blocksizes
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x529.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v1 2/6] target/loongarch: Add some checks before
+ translating fpu instructions
+Content-Language: en-US
+To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
+Cc: philmd@linaro.org, maobibo@loongson.cn, yangxiaojuan@loongson.cn,
+ Jiajie Chen <c@jia.je>
+References: <20230810124112.236640-1-gaosong@loongson.cn>
+ <20230810124112.236640-3-gaosong@loongson.cn>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230810124112.236640-3-gaosong@loongson.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.156,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -85,140 +98,120 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 10 Aug 2023 at 03:36, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> Support all of the easy GM block sizes.
-> Use direct memory operations, since the pointers are aligned.
->
-> While BS=2 (16 bytes, 1 tag) is a legal setting, that requires
-> an atomic store of one nibble.  This is not difficult, but there
-> is also no point in supporting it until required.
->
-> Note that cortex-a710 sets GM blocksize to match its cacheline
-> size of 64 bytes.  I expect many implementations will also
-> match the cacheline, which makes 16 bytes very unlikely.
->
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+On 8/10/23 05:41, Song Gao wrote:
+> This patch adds REQUIRE_FP/FP_SP/FP_DP to check CPUCFG2.FP/FP_SP/FP_DP.
+> 
+> Signed-off-by: Song Gao <gaosong@loongson.cn>
 > ---
->  target/arm/tcg/mte_helper.c | 61 ++++++++++++++++++++++++++++++++-----
->  1 file changed, 53 insertions(+), 8 deletions(-)
->
-> diff --git a/target/arm/tcg/mte_helper.c b/target/arm/tcg/mte_helper.c
-> index 3640c6e57f..6faf4e42d5 100644
-> --- a/target/arm/tcg/mte_helper.c
-> +++ b/target/arm/tcg/mte_helper.c
-> @@ -428,6 +428,8 @@ uint64_t HELPER(ldgm)(CPUARMState *env, uint64_t ptr)
->      int gm_bs = env_archcpu(env)->gm_blocksize;
->      int gm_bs_bytes = 4 << gm_bs;
->      void *tag_mem;
-> +    uint64_t ret;
-> +    int shift;
->
->      ptr = QEMU_ALIGN_DOWN(ptr, gm_bs_bytes);
->
-> @@ -443,16 +445,39 @@ uint64_t HELPER(ldgm)(CPUARMState *env, uint64_t ptr)
->
->      /*
->       * The ordering of elements within the word corresponds to
-> -     * a little-endian operation.
-> +     * a little-endian operation.  Computation of shift comes from
-> +     *
-> +     *     index = address<LOG2_TAG_GRANULE+3:LOG2_TAG_GRANULE>
-> +     *     data<index*4+3:index*4> = tag
-> +     *
-> +     * Because of the alignment of ptr above, BS=6 has shift=0.
-> +     * All memory operations are aligned.
->       */
->      switch (gm_bs) {
-> -    case 6:
-> -        /* 256 bytes -> 16 tags -> 64 result bits */
-> -        return ldq_le_p(tag_mem);
-> -    default:
-> +    case 2:
->          /* cpu configured with unsupported gm blocksize. */
->          g_assert_not_reached();
-> +    case 3:
-> +        /* 32 bytes -> 2 tags -> 8 result bits */
-> +        ret = *(uint8_t *)tag_mem;
-> +        break;
-> +    case 4:
-> +        /* 64 bytes -> 4 tags -> 16 result bits */
-> +        ret = cpu_to_le16(*(uint16_t *)tag_mem);
+>   target/loongarch/cpu.h                        |   6 +
+>   .../loongarch/insn_trans/trans_farith.c.inc   | 132 ++++++++++++------
+>   target/loongarch/insn_trans/trans_fcmp.c.inc  |   4 +
+>   target/loongarch/insn_trans/trans_fcnv.c.inc  |  56 ++++----
+>   .../loongarch/insn_trans/trans_fmemory.c.inc  | 104 ++++++++++----
+>   target/loongarch/insn_trans/trans_fmov.c.inc  |  47 +++++--
+>   6 files changed, 247 insertions(+), 102 deletions(-)
+> 
+> diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
+> index 9f550793ca..5594d83011 100644
+> --- a/target/loongarch/cpu.h
+> +++ b/target/loongarch/cpu.h
+> @@ -459,6 +459,9 @@ static inline void set_pc(CPULoongArchState *env, uint64_t value)
+>   #define HW_FLAGS_EUEN_FPE   0x04
+>   #define HW_FLAGS_EUEN_SXE   0x08
+>   #define HW_FLAGS_VA32       0x20
+> +#define HW_FLAGS_FP         0x40
+> +#define HW_FLAGS_FP_SP      0x80
+> +#define HW_FLAGS_FP_DP      0x100
+>   
+>   static inline void cpu_get_tb_cpu_state(CPULoongArchState *env, vaddr *pc,
+>                                           uint64_t *cs_base, uint32_t *flags)
+> @@ -469,6 +472,9 @@ static inline void cpu_get_tb_cpu_state(CPULoongArchState *env, vaddr *pc,
+>       *flags |= FIELD_EX64(env->CSR_EUEN, CSR_EUEN, FPE) * HW_FLAGS_EUEN_FPE;
+>       *flags |= FIELD_EX64(env->CSR_EUEN, CSR_EUEN, SXE) * HW_FLAGS_EUEN_SXE;
+>       *flags |= is_va32(env) * HW_FLAGS_VA32;
+> +    *flags |= FIELD_EX32(env->cpucfg[2], CPUCFG2, FP) * HW_FLAGS_FP;
+> +    *flags |= FIELD_EX32(env->cpucfg[2], CPUCFG2, FP_SP) * HW_FLAGS_FP_SP;
+> +    *flags |= FIELD_EX32(env->cpucfg[2], CPUCFG2, FP_DP) * HW_FLAGS_FP_DP;
 
-Does this really make a difference compared to ldw_le_p() ?
+You do not need to put any of these in HW_FLAGS, because CPUCFG space never changes for 
+the lifetime of the cpu.
 
-> +        break;
-> +    case 5:
-> +        /* 128 bytes -> 8 tags -> 32 result bits */
-> +        ret = cpu_to_le32(*(uint32_t *)tag_mem);
-> +        break;
-> +    case 6:
-> +        /* 256 bytes -> 16 tags -> 64 result bits */
-> +        return cpu_to_le64(*(uint64_t *)tag_mem);
-> +    default:
-> +        /* cpu configured with invalid gm blocksize. */
-> +        g_assert_not_reached();
+You can extract these into DisasContext in loongarch_tr_init_disas_context.
 
-Is it worth having an assert in CPU realize for an invalid
-blocksize, so that we can catch duff ID register values
-without having to rely on there being a test run that
-uses ldgm/stgm ?
+> +#define REQUIRE_FP do { \
+> +    if ((ctx->base.tb->flags & HW_FLAGS_FP) == 0) { \
+> +        return false; \
+> +    } \
+> +} while (0)
+> +
+> +#define REQUIRE_FP_SP do { \
+> +    if ((ctx->base.tb->flags & HW_FLAGS_FP_SP) == 0) { \
+> +        return false; \
+> +    } \
+> +} while (0)
+> +
+> +#define REQUIRE_FP_DP do { \
+> +    if ((ctx->base.tb->flags & HW_FLAGS_FP_DP) == 0) { \
+> +        return false; \
+> +    } \
+> +} while (0)
 
->      }
-> +    shift = extract64(ptr, LOG2_TAG_GRANULE, 4) * 4;
-> +    return ret << shift;
->  }
->
->  void HELPER(stgm)(CPUARMState *env, uint64_t ptr, uint64_t val)
-> @@ -462,6 +487,7 @@ void HELPER(stgm)(CPUARMState *env, uint64_t ptr, uint64_t val)
->      int gm_bs = env_archcpu(env)->gm_blocksize;
->      int gm_bs_bytes = 4 << gm_bs;
->      void *tag_mem;
-> +    int shift;
->
->      ptr = QEMU_ALIGN_DOWN(ptr, gm_bs_bytes);
->
-> @@ -480,14 +506,33 @@ void HELPER(stgm)(CPUARMState *env, uint64_t ptr, uint64_t val)
->
->      /*
->       * The ordering of elements within the word corresponds to
-> -     * a little-endian operation.
-> +     * a little-endian operation.  See LDGM for comments on shift.
-> +     * All memory operations are aligned.
->       */
-> +    shift = extract64(ptr, LOG2_TAG_GRANULE, 4) * 4;
-> +    val >>= shift;
->      switch (gm_bs) {
-> +    case 2:
-> +        /* cpu configured with unsupported gm blocksize. */
-> +        g_assert_not_reached();
-> +    case 3:
-> +        /* 32 bytes -> 2 tags -> 8 result bits */
-> +        *(uint8_t *)tag_mem = val;
-> +        break;
-> +    case 4:
-> +        /* 64 bytes -> 4 tags -> 16 result bits */
-> +        *(uint16_t *)tag_mem = cpu_to_le16(val);
-> +        break;
-> +    case 5:
-> +        /* 128 bytes -> 8 tags -> 32 result bits */
-> +        *(uint32_t *)tag_mem = cpu_to_le32(val);
-> +        break;
->      case 6:
-> -        stq_le_p(tag_mem, val);
-> +        /* 256 bytes -> 16 tags -> 64 result bits */
-> +        *(uint64_t *)tag_mem = cpu_to_le64(val);
->          break;
->      default:
-> -        /* cpu configured with unsupported gm blocksize. */
-> +        /* cpu configured with invalid gm blocksize. */
->          g_assert_not_reached();
->      }
->  }
-> --
-> 2.34.1
+It would be much better to not create so many of these REQUIRE macros.
 
-thanks
--- PMM
+> +TRANS(fadd_s, gen_fff, 0, gen_helper_fadd_s)
+> +TRANS(fadd_d, gen_fff, 1, gen_helper_fadd_d)
+
+0 vs 1 is very opaque.
+
+Better is something like Jiajie Chen's TRANS_64,
+
+> +/* for LoongArch64-only instructions */
+> +#define TRANS_64(NAME, FUNC, ...) \
+> +    static bool trans_##NAME(DisasContext *ctx, arg_##NAME * a) \
+> +    { \
+> +        return ctx->la64 && FUNC(ctx, a, __VA_ARGS__); \
+> +    }
+
+But as we now know, we would need at least 7 of these.
+
+Even better would be to generalize this so that every instruction records the condition 
+under which it is valid.
+
+Perhaps
+
+typedef struct DisasContext {
+     ...
+     uint32_t cpucfg1;
+     uint32_t cpucfg2;
+};
+
+static void loongarch_tr_init_disas_context(...)
+{
+     ...
+     ctx->cpucfg1 = env->cpucfg[1];
+     ctx->cpucfg2 = env->cpucfg[2];
+}
+
+#define avail_ALL(C)  true
+#define avail_64(C)   FIELD_EX32((C)->cpucfg1, CPUCFG1, ARCH) == CPUCFG1_ARCH_LA64
+#define avail_FP(C)   FIELD_EX32((C)->cpucfg2, CPUCFG2, FP)
+etc
+
+
+#define TRANS(NAME, AVAIL, FUNC, ...) \
+     static bool trans_##NAME(DisasContext *ctx, arg_##NAME *a)  \
+     { return avail_##AVAIL(ctx) && FUNC(ctx, a, __VA_ARGS__); }
+
+so that the above becomes
+
+TRANS(fadd_s, FP_SP, gen_fff, gen_helper_fadd_s)
+TRANS(fadd_d, FP_DP, gen_fff, gen_helper_fadd_d)
+
+and even simple instructions get
+
+TRANS(add_w, ALL, gen_rrr, EXT_NONE, EXT_NONE, EXT_SIGN, tcg_gen_add_tl)
+TRANS(add_d,  64, gen_rrr, EXT_NONE, EXT_NONE, EXT_SIGN, tcg_gen_add_tl)
+
+
+r~
 
