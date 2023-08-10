@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73AFF776D6E
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 03:16:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63776776D81
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 03:28:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTuHY-00010z-D5; Wed, 09 Aug 2023 21:16:08 -0400
+	id 1qTuSS-00036f-2b; Wed, 09 Aug 2023 21:27:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTuHS-0000yY-VJ
- for qemu-devel@nongnu.org; Wed, 09 Aug 2023 21:16:03 -0400
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ id 1qTuSQ-00035r-V4
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 21:27:22 -0400
+Received: from mail-ot1-x32e.google.com ([2607:f8b0:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTuHQ-0006r0-Eo
- for qemu-devel@nongnu.org; Wed, 09 Aug 2023 21:16:02 -0400
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-686efb9ee3cso355262b3a.3
- for <qemu-devel@nongnu.org>; Wed, 09 Aug 2023 18:15:58 -0700 (PDT)
+ id 1qTuSP-0000G7-EL
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 21:27:22 -0400
+Received: by mail-ot1-x32e.google.com with SMTP id
+ 46e09a7af769-6bcaa6d5e2cso391007a34.3
+ for <qemu-devel@nongnu.org>; Wed, 09 Aug 2023 18:27:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691630157; x=1692234957;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=29vtLLq5dpR2ATfPUQltcfCnhc6fz9PpQtt22AmCV0o=;
- b=ouSwuft0WU77eDqhdnVfMTdgeD6LhwogiIv5246U89jj/q8H3wEXYWMOTAsd/iLg3G
- AfPOr3iqenI9UD2Q/Fvszz8gBbtmYkKL5Cg1WxyNsPyGNLLZ0UbG+2YX2qQtlO9sfdec
- rQa54d30USBC5FAvDyi839TqESNnoIlimcTKN+Ky/6+I+XWknaBXyxI2we8KMgURpaxL
- 0NZQ2RKqIcVcFCduyX0wwdokY5PltxmoYoouU/omdnEDVVYEHmOGz2vBIeom/J8s5bky
- VG1K4B7xyFC7gnp9LqLXKakC8iVaB4slhQWHiCgElWuHbixW4T7EX7P7THPoiKJybhov
- zxXA==
+ d=linaro.org; s=google; t=1691630839; x=1692235639;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=/T8OtNbbPK084bpQmMglzYUguZoPB43wUgaseZT2Eak=;
+ b=XFA4CSGR8SKxMz/0OqffQTtkT8YL7XLGVJaeOYLoBG13EQLYF/wvUF7pvukl2ICv5q
+ p8pj3dgkJU08psno/QwOTPmC60cPyXZpNQIXfECr3vhq2pfaY8iNoQmiIEOrVMPvqqnB
+ IihR737QtB1l8rfJJ1kVsGBByghK+HjPysEsZL71fogfkV41NWLVZ4E5e4dZ3CFQrWcq
+ R/TiY/aVBcXBzopX5LDUB6/PMedcoupSDWe8cSNb1CKun8uscLsx54YpgmUjuKdKafcm
+ ZvL+mRZPWfBZaTN+mltHaCPQXHc5SNHHw6FUg0YOGMTvMPbXjt07ky7pcY6WSKWfcDjb
+ 6lKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691630157; x=1692234957;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20221208; t=1691630839; x=1692235639;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=29vtLLq5dpR2ATfPUQltcfCnhc6fz9PpQtt22AmCV0o=;
- b=KoZxMjdg2Oq3qliQ74WJWnu9FvnnG0u2ud1Mp4zSCcNTi6vqaYhckttOe7vrG4BEX9
- E4pH28WVYq5OzUqObAbcW7iy26s23GEJoZTt4r0cfImFybeZONXCljVHMoFMDHN+4RNo
- /lllOqsAVezrCGBsneWjpmicQmdXAf3758/8IUzNm/3OgQVKhP6ju0IE2vVXYveDtn7T
- yWbabbT6t+I01PxndAVrvZewXQdC/NHC7lMxI+xaI0V0aXzeYJJVJuAnOZp3bjiX5I1b
- Q+m3SM195T1YMJFSH1IMRJOPd1EaMeRUdywvPL2rwcLDc/zdquoY7jY6jbjxy/uzVmcl
- EUqA==
-X-Gm-Message-State: AOJu0Yz8N5m9C/UAS0D85670muEM2aVfoOQbPwn6vD6RVnpqlmWd96hK
- 5gH6kdXJdGMp9ukdbXVWw/C63+T4WlZNRbg6fMc=
-X-Google-Smtp-Source: AGHT+IEMgwA8eduGycxlyZAlegWnWzylhZw1BOK4tHOFOG42F8XE1DK6z9JsQpmtjPaonS6G2pndyw==
-X-Received: by 2002:a05:6a00:b8d:b0:67f:3dcd:bc00 with SMTP id
- g13-20020a056a000b8d00b0067f3dcdbc00mr1271923pfj.2.1691630157466; 
- Wed, 09 Aug 2023 18:15:57 -0700 (PDT)
+ bh=/T8OtNbbPK084bpQmMglzYUguZoPB43wUgaseZT2Eak=;
+ b=W1KCkObaMmywnz7MFNvQpiSoulfZeSeNWeMnXHLthItUxOvz8VDZsqtD9X914LkCXK
+ m5+cT5gHvl7YeGJg89eT0yGOo+GW0ZX0FvgbPLJAh8zSLleuAB3VVX3Ehp613Cttmfui
+ b8LB0NXtoBHfS2KuUgwMXJcNBTGov9930TakDLDDCXG70XyTxG6nnUco/UiF8WvbMIqi
+ ngYhKMD/EGBwWYu5txZk8bfT32wGOjh9DCLcddisbdt+qPeDZFP+PYoYjvd0rCb3zZ9E
+ YQzx6NJPTyXLoYwi3txe73WWS8wDpTxRJk2iskATqYiQUtbGmBytd4Bvlm8NRNSFVDFa
+ vxSQ==
+X-Gm-Message-State: AOJu0YzM1Sc2EwLRw6OJK8O3yDsH8cQdXog6F7EUlTgGes6GYYBbVmk1
+ G+lbhm9OgOSanBwW1im91zb8aQ==
+X-Google-Smtp-Source: AGHT+IFskeOaX0CWnrkPqze2oVVmcqwrEvftxsasUabjPqU76l00Mgtwmoig69wBG2jXQV45ZJsB7g==
+X-Received: by 2002:a05:6808:1311:b0:3a3:6450:f5c4 with SMTP id
+ y17-20020a056808131100b003a36450f5c4mr1614799oiv.4.1691630839642; 
+ Wed, 09 Aug 2023 18:27:19 -0700 (PDT)
 Received: from ?IPV6:2602:47:d483:7301:6bf0:9674:6ac4:f74c?
  ([2602:47:d483:7301:6bf0:9674:6ac4:f74c])
  by smtp.gmail.com with ESMTPSA id
- q23-20020a62ae17000000b0068780736f11sm219972pff.176.2023.08.09.18.15.56
+ 22-20020a17090a19d600b00263d3448141sm254391pjj.8.2023.08.09.18.27.18
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 09 Aug 2023 18:15:57 -0700 (PDT)
-Message-ID: <0293df98-3129-d04d-8db8-479607b81a55@linaro.org>
-Date: Wed, 9 Aug 2023 18:15:55 -0700
+ Wed, 09 Aug 2023 18:27:18 -0700 (PDT)
+Message-ID: <129c90ab-14cc-04bb-493a-d4524b54c02f@linaro.org>
+Date: Wed, 9 Aug 2023 18:27:17 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PULL 0/1] OpenRISC FPU Fix for 8.1
-To: Stafford Horne <shorne@gmail.com>, QEMU Development <qemu-devel@nongnu.org>
-References: <20230809203432.424071-1-shorne@gmail.com>
+Subject: Re: [PATCH][RFC] Add crash handler for qemu-linux-user
 Content-Language: en-US
+To: Helge Deller <deller@gmx.de>, qemu-devel@nongnu.org
+References: <ZNQcQxcL/22LmrVP@p100>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230809203432.424071-1-shorne@gmail.com>
+In-Reply-To: <ZNQcQxcL/22LmrVP@p100>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32e.google.com
 X-Spam_score_int: -61
 X-Spam_score: -6.2
 X-Spam_bar: ------
@@ -94,28 +94,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/9/23 13:34, Stafford Horne wrote:
-> The following changes since commit ccdd31267678db9d80578b5f80bbe94141609ef4:
-> 
->    Merge tag 'pull-qapi-2023-07-26-v2' ofhttps://repo.or.cz/qemu/armbru  into staging (2023-07-26 07:16:19 -0700)
-> 
-> are available in the Git repository at:
-> 
->    https://github.com/stffrdhrn/qemu.git  tags/or1k-pull-request-20230809
-> 
-> for you to fetch changes up to 765fdc1e8355d4bae563b3b185c5f9d079384164:
-> 
->    target/openrisc: Set EPCR to next PC on FPE exceptions (2023-07-31 22:01:03 +0100)
-> 
-> ----------------------------------------------------------------
-> OpenRISC FPU Fix for 8.1
-> 
-> A patch to pass the correct exception address when handling floating
-> point exceptions.
+On 8/9/23 16:07, Helge Deller wrote:
+> +            /* did qemu source code crashed? */
+> +            if (unlikely(!h2g_valid(host_addr))) {
+> +                qemu_show_backtrace(info);
+> +            }
 
-Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
+This won't do anything at all when reserved_va == 0,
+i.e. 64-bit guest on 64-bit host, or any 32-bit host.
+
+The idea of having a backtrace is nice, I suppose, we just need a better detector. Between 
+host_signal_pc() and adjust_signal_pc(), we should be able to determine if the access is 
+being done on behalf of the guest.  If it isn't, it's a qemu bug.
 
 
 r~
+
 
 
