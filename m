@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAED1776E25
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 04:38:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46592776E21
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 04:37:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qTvWs-00011y-Cx; Wed, 09 Aug 2023 22:36:02 -0400
+	id 1qTvWr-00010L-9h; Wed, 09 Aug 2023 22:36:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTvWl-0000wg-P9
+ id 1qTvWn-0000x7-3c
  for qemu-devel@nongnu.org; Wed, 09 Aug 2023 22:35:57 -0400
-Received: from mail-qk1-x735.google.com ([2607:f8b0:4864:20::735])
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qTvWj-0004xl-Uq
- for qemu-devel@nongnu.org; Wed, 09 Aug 2023 22:35:55 -0400
-Received: by mail-qk1-x735.google.com with SMTP id
- af79cd13be357-76ad8892d49so32778185a.1
- for <qemu-devel@nongnu.org>; Wed, 09 Aug 2023 19:35:53 -0700 (PDT)
+ id 1qTvWk-0004yA-TX
+ for qemu-devel@nongnu.org; Wed, 09 Aug 2023 22:35:56 -0400
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-686f0d66652so382587b3a.2
+ for <qemu-devel@nongnu.org>; Wed, 09 Aug 2023 19:35:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1691634953; x=1692239753;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Nf9XjMu3LHBxXgSXZqt7S0nPQIM+HaIPhW4YZS55L/M=;
- b=BY3fq7DTH1R8/mWIJh41Tbldrn7lZoQn9OFh9Eq4rZSq+en2APuk6TI6ocT+qBcg+f
- dGvr4UzJ0SJghLhapRh/s2IaevB7OOPdW9FNH4vvUTll3IhJmoMscePcz2ulf9N+7Elz
- gys/VIGsxW4VyOJ8bjLRHlrR2xRF9zf84QDS41ndOCGOiWhZwiqbcSv1iqdK0Q1lPYzJ
- pidYXRmuYMYKADxoNFzTU8CDeK7F5OaI+bo8Oo0Biruvic79V6SKf9p9Ch/kaId3yDdz
- BkmvhbEFSHdT8bEwwb5l0G51AHI7bXhASet+lhwbaS1dH81BT/s6RMC/tLs5KtVSpCCL
- P57g==
+ bh=DxgqNR4/eVoHsIiiFC5Te9EYL+Uy4Gcd+N/BbwRB+MQ=;
+ b=f5dJmtSxVZskh73aGB1ynAf/qnaTllGhYpUrauK0PYHAXj020th+U2B0UqM7akwREb
+ NrQtRV4stAv1H7oaJU5dteu3ruw/OYMoq8VoDq8vMzEHgUrnwUPPmrsT2oCisxJ3f1P7
+ UOPiIyCHMTwt65dO6SDb3rRvkOx/7h+V6ndv+ouW1HRQLRVStlJNObnoaEDWU+9c6o9g
+ x0Y09fcp1EmDEeYtw1YA1/bPzHhYzDZA2pToNM5mtwSEynVp4I5q+IQRhdicNX7I6L4I
+ 83hSNCt6jUvm8L4Wj3Xp2w0G9sKhDUq6qiQqoMAKiqPKjWCftnT7i89ra6q208yoD26o
+ 9B4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1691634953; x=1692239753;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Nf9XjMu3LHBxXgSXZqt7S0nPQIM+HaIPhW4YZS55L/M=;
- b=Lk/vYVBuRWhNASylmS2ce4SPnVO7voS1HftdvEax1SAO+eVvQbpEvA1qgV19DHZoLy
- nJ9F7yRflcuZjH5YzBU8gO3eoqdO/t3r4EMY2oxzNu0qkAZFdDtKdqhkHb+RDeW5fvn+
- TPnQK6WY5sBHA74+peJk35W3IWeJJA4YRzsT+436iSH8wX7XaLQ9YiseMqZaJIy/MhdQ
- /I6QM0F+KoXfi29mwZ6AdewAez+JkAvtxYaSUAnRpXsbwszg/wqB+flrSt+uB2mT+dyt
- TMQNevvfIli2kx8l5EDNbKAyegPiilrSJiuJ/+JvxVLzz6MdnyxMZaZVN8lPLI33CxWm
- RUCA==
-X-Gm-Message-State: AOJu0YyVD8pM4z5Q24VTU0Z+t4c+AXP3qH/61ESukP2E2cbOMU5+7yu/
- pcmO3Mwuc/ikvrYyBpf+P4WGwfucNTIUedKNSCc=
-X-Google-Smtp-Source: AGHT+IEZq4A0W6kGPTJ3bKFHLySh1crqkio8cDWrvDuofqH+E4pHHH3bV5iwYohX1xm9Kc66f8VHYw==
-X-Received: by 2002:a05:620a:3953:b0:768:14a8:9eb with SMTP id
- qs19-20020a05620a395300b0076814a809ebmr1113205qkn.9.1691634952888; 
- Wed, 09 Aug 2023 19:35:52 -0700 (PDT)
+ bh=DxgqNR4/eVoHsIiiFC5Te9EYL+Uy4Gcd+N/BbwRB+MQ=;
+ b=Y+bef9XXcExaRBP/nxWZ7w3lCEbB3q4XCdZERsRH9I3dQ5g8UUrF7fiq0bau0Q+nxA
+ 12tMvAZP4jEpxZaWf5IJQiZHEQs/TvRomlNAlR10YAHAji/uZkXSm1aNJFVKcJJUKIYI
+ /R2iqapSGdnn+zOndNFEIXSFwB0cGj2iMqsb8Ymhjh+vru15474qh1/ZSSHwQ+K74b/z
+ WT2Ps//aNn0qHr0GgSsJq+kM4bTBS8UQieRivYcL5sLhXNxYQwU0GUDu5btlfGvQ77Or
+ nGIY7wEw76CsSUgL3o+Y18FLuyffEM1vNXH47TQup414WPyb6s64INli5ABGmShcd2eY
+ jGbw==
+X-Gm-Message-State: AOJu0Yx97Q27SYcwJ9E2SZb2cUSHv+SilADsvE7CvzqE9Jqh82hiP5aL
+ HjRT2ybPKGssFEpL0prnOxckJYGCrg3cnqlFtWM=
+X-Google-Smtp-Source: AGHT+IEvL+EHVOmMwbaEjyap8Hl+Cojnkete5hPgoTVeLWn2ZJsso2QHZ9V8oA0fGtHzAkb3a5CVKA==
+X-Received: by 2002:a05:6a00:1588:b0:64d:46b2:9a58 with SMTP id
+ u8-20020a056a00158800b0064d46b29a58mr1753737pfk.26.1691634953603; 
+ Wed, 09 Aug 2023 19:35:53 -0700 (PDT)
 Received: from stoup.. ([2602:47:d483:7301:6bf0:9674:6ac4:f74c])
  by smtp.gmail.com with ESMTPSA id
- z7-20020aa791c7000000b0066ebaeb149dsm287283pfa.88.2023.08.09.19.35.52
+ z7-20020aa791c7000000b0066ebaeb149dsm287283pfa.88.2023.08.09.19.35.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 09 Aug 2023 19:35:52 -0700 (PDT)
+ Wed, 09 Aug 2023 19:35:53 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org
-Subject: [PATCH 3/5] target/arm: Allow cpu to configure GM blocksize
-Date: Wed,  9 Aug 2023 19:35:46 -0700
-Message-Id: <20230810023548.412310-4-richard.henderson@linaro.org>
+Subject: [PATCH 4/5] target/arm: Support more GM blocksizes
+Date: Wed,  9 Aug 2023 19:35:47 -0700
+Message-Id: <20230810023548.412310-5-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230810023548.412310-1-richard.henderson@linaro.org>
 References: <20230810023548.412310-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::735;
- envelope-from=richard.henderson@linaro.org; helo=mail-qk1-x735.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,231 +91,125 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Previously we hard-coded the blocksize with GMID_EL1_BS.
-But the value we choose for -cpu max does not match the
-value that cortex-a710 uses.
+Support all of the easy GM block sizes.
+Use direct memory operations, since the pointers are aligned.
 
-Mirror the way we handle dcz_blocksize.
+While BS=2 (16 bytes, 1 tag) is a legal setting, that requires
+an atomic store of one nibble.  This is not difficult, but there
+is also no point in supporting it until required.
+
+Note that cortex-a710 sets GM blocksize to match its cacheline
+size of 64 bytes.  I expect many implementations will also
+match the cacheline, which makes 16 bytes very unlikely.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/cpu.h               |  2 ++
- target/arm/internals.h         |  6 -----
- target/arm/tcg/translate.h     |  2 ++
- target/arm/helper.c            | 11 +++++---
- target/arm/tcg/cpu64.c         |  1 +
- target/arm/tcg/mte_helper.c    | 46 ++++++++++++++++++++++------------
- target/arm/tcg/translate-a64.c |  5 ++--
- 7 files changed, 45 insertions(+), 28 deletions(-)
+ target/arm/tcg/mte_helper.c | 61 ++++++++++++++++++++++++++++++++-----
+ 1 file changed, 53 insertions(+), 8 deletions(-)
 
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index 7fedbb34ba..dfa02eb4dc 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -1075,6 +1075,8 @@ struct ArchCPU {
- 
-     /* DCZ blocksize, in log_2(words), ie low 4 bits of DCZID_EL0 */
-     uint8_t dcz_blocksize;
-+    /* GM blocksize, in log_2(words), ie low 4 bits of GMID_EL0 */
-+    uint8_t gm_blocksize;
- 
-     uint64_t rvbar_prop; /* Property/input signals.  */
- 
-diff --git a/target/arm/internals.h b/target/arm/internals.h
-index 0f01bc32a8..6fcf12c178 100644
---- a/target/arm/internals.h
-+++ b/target/arm/internals.h
-@@ -1243,12 +1243,6 @@ void arm_log_exception(CPUState *cs);
- 
- #endif /* !CONFIG_USER_ONLY */
- 
--/*
-- * The log2 of the words in the tag block, for GMID_EL1.BS.
-- * The is the maximum, 256 bytes, which manipulates 64-bits of tags.
-- */
--#define GMID_EL1_BS  6
--
- /*
-  * SVE predicates are 1/8 the size of SVE vectors, and cannot use
-  * the same simd_desc() encoding due to restrictions on size.
-diff --git a/target/arm/tcg/translate.h b/target/arm/tcg/translate.h
-index d1cacff0b2..f748ba6f39 100644
---- a/target/arm/tcg/translate.h
-+++ b/target/arm/tcg/translate.h
-@@ -151,6 +151,8 @@ typedef struct DisasContext {
-     int8_t btype;
-     /* A copy of cpu->dcz_blocksize. */
-     uint8_t dcz_blocksize;
-+    /* A copy of cpu->gm_blocksize. */
-+    uint8_t gm_blocksize;
-     /* True if this page is guarded.  */
-     bool guarded_page;
-     /* Bottom two bits of XScale c15_cpar coprocessor access control reg */
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 50f61e42ca..f5effa30f7 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -7643,10 +7643,6 @@ static const ARMCPRegInfo mte_reginfo[] = {
-       .opc0 = 3, .opc1 = 0, .crn = 1, .crm = 0, .opc2 = 6,
-       .access = PL1_RW, .accessfn = access_mte,
-       .fieldoffset = offsetof(CPUARMState, cp15.gcr_el1) },
--    { .name = "GMID_EL1", .state = ARM_CP_STATE_AA64,
--      .opc0 = 3, .opc1 = 1, .crn = 0, .crm = 0, .opc2 = 4,
--      .access = PL1_R, .accessfn = access_aa64_tid5,
--      .type = ARM_CP_CONST, .resetvalue = GMID_EL1_BS },
-     { .name = "TCO", .state = ARM_CP_STATE_AA64,
-       .opc0 = 3, .opc1 = 3, .crn = 4, .crm = 2, .opc2 = 7,
-       .type = ARM_CP_NO_RAW,
-@@ -9237,6 +9233,13 @@ void register_cp_regs_for_features(ARMCPU *cpu)
-      * then define only a RAZ/WI version of PSTATE.TCO.
-      */
-     if (cpu_isar_feature(aa64_mte, cpu)) {
-+        ARMCPRegInfo gmid_reginfo = {
-+            .name = "GMID_EL1", .state = ARM_CP_STATE_AA64,
-+            .opc0 = 3, .opc1 = 1, .crn = 0, .crm = 0, .opc2 = 4,
-+            .access = PL1_R, .accessfn = access_aa64_tid5,
-+            .type = ARM_CP_CONST, .resetvalue = cpu->gm_blocksize,
-+        };
-+        define_one_arm_cp_reg(cpu, &gmid_reginfo);
-         define_arm_cp_regs(cpu, mte_reginfo);
-         define_arm_cp_regs(cpu, mte_el0_cacheop_reginfo);
-     } else if (cpu_isar_feature(aa64_mte_insn_reg, cpu)) {
-diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
-index 60e5f034d9..5ca9070c14 100644
---- a/target/arm/tcg/cpu64.c
-+++ b/target/arm/tcg/cpu64.c
-@@ -868,6 +868,7 @@ void aarch64_max_tcg_initfn(Object *obj)
-     cpu->ctr = 0x80038003; /* 32 byte I and D cacheline size, VIPT icache */
-     cpu->dcz_blocksize = 7; /*  512 bytes */
- #endif
-+    cpu->gm_blocksize = 6;  /*  256 bytes */
- 
-     cpu->sve_vq.supported = MAKE_64BIT_MASK(0, ARM_MAX_VQ);
-     cpu->sme_vq.supported = SVE_VQ_POW2_MAP;
 diff --git a/target/arm/tcg/mte_helper.c b/target/arm/tcg/mte_helper.c
-index 9c64def081..3640c6e57f 100644
+index 3640c6e57f..6faf4e42d5 100644
 --- a/target/arm/tcg/mte_helper.c
 +++ b/target/arm/tcg/mte_helper.c
-@@ -421,46 +421,54 @@ void HELPER(st2g_stub)(CPUARMState *env, uint64_t ptr)
-     }
- }
- 
--#define LDGM_STGM_SIZE  (4 << GMID_EL1_BS)
--
- uint64_t HELPER(ldgm)(CPUARMState *env, uint64_t ptr)
- {
-     int mmu_idx = cpu_mmu_index(env, false);
-     uintptr_t ra = GETPC();
-+    int gm_bs = env_archcpu(env)->gm_blocksize;
-+    int gm_bs_bytes = 4 << gm_bs;
+@@ -428,6 +428,8 @@ uint64_t HELPER(ldgm)(CPUARMState *env, uint64_t ptr)
+     int gm_bs = env_archcpu(env)->gm_blocksize;
+     int gm_bs_bytes = 4 << gm_bs;
      void *tag_mem;
++    uint64_t ret;
++    int shift;
  
--    ptr = QEMU_ALIGN_DOWN(ptr, LDGM_STGM_SIZE);
-+    ptr = QEMU_ALIGN_DOWN(ptr, gm_bs_bytes);
+     ptr = QEMU_ALIGN_DOWN(ptr, gm_bs_bytes);
  
-     /* Trap if accessing an invalid page.  */
-     tag_mem = allocation_tag_mem(env, mmu_idx, ptr, MMU_DATA_LOAD,
--                                 LDGM_STGM_SIZE, MMU_DATA_LOAD,
--                                 LDGM_STGM_SIZE / (2 * TAG_GRANULE), ra);
-+                                 gm_bs_bytes, MMU_DATA_LOAD,
-+                                 gm_bs_bytes / (2 * TAG_GRANULE), ra);
+@@ -443,16 +445,39 @@ uint64_t HELPER(ldgm)(CPUARMState *env, uint64_t ptr)
  
-     /* The tag is squashed to zero if the page does not support tags.  */
-     if (!tag_mem) {
-         return 0;
-     }
- 
--    QEMU_BUILD_BUG_ON(GMID_EL1_BS != 6);
      /*
--     * We are loading 64-bits worth of tags.  The ordering of elements
--     * within the word corresponds to a 64-bit little-endian operation.
-+     * The ordering of elements within the word corresponds to
-+     * a little-endian operation.
+      * The ordering of elements within the word corresponds to
+-     * a little-endian operation.
++     * a little-endian operation.  Computation of shift comes from
++     *
++     *     index = address<LOG2_TAG_GRANULE+3:LOG2_TAG_GRANULE>
++     *     data<index*4+3:index*4> = tag
++     *
++     * Because of the alignment of ptr above, BS=6 has shift=0.
++     * All memory operations are aligned.
       */
--    return ldq_le_p(tag_mem);
-+    switch (gm_bs) {
+     switch (gm_bs) {
+-    case 6:
+-        /* 256 bytes -> 16 tags -> 64 result bits */
+-        return ldq_le_p(tag_mem);
+-    default:
++    case 2:
+         /* cpu configured with unsupported gm blocksize. */
+         g_assert_not_reached();
++    case 3:
++        /* 32 bytes -> 2 tags -> 8 result bits */
++        ret = *(uint8_t *)tag_mem;
++        break;
++    case 4:
++        /* 64 bytes -> 4 tags -> 16 result bits */
++        ret = cpu_to_le16(*(uint16_t *)tag_mem);
++        break;
++    case 5:
++        /* 128 bytes -> 8 tags -> 32 result bits */
++        ret = cpu_to_le32(*(uint32_t *)tag_mem);
++        break;
 +    case 6:
 +        /* 256 bytes -> 16 tags -> 64 result bits */
-+        return ldq_le_p(tag_mem);
++        return cpu_to_le64(*(uint64_t *)tag_mem);
 +    default:
-+        /* cpu configured with unsupported gm blocksize. */
++        /* cpu configured with invalid gm blocksize. */
 +        g_assert_not_reached();
-+    }
+     }
++    shift = extract64(ptr, LOG2_TAG_GRANULE, 4) * 4;
++    return ret << shift;
  }
  
  void HELPER(stgm)(CPUARMState *env, uint64_t ptr, uint64_t val)
- {
-     int mmu_idx = cpu_mmu_index(env, false);
-     uintptr_t ra = GETPC();
-+    int gm_bs = env_archcpu(env)->gm_blocksize;
-+    int gm_bs_bytes = 4 << gm_bs;
+@@ -462,6 +487,7 @@ void HELPER(stgm)(CPUARMState *env, uint64_t ptr, uint64_t val)
+     int gm_bs = env_archcpu(env)->gm_blocksize;
+     int gm_bs_bytes = 4 << gm_bs;
      void *tag_mem;
++    int shift;
  
--    ptr = QEMU_ALIGN_DOWN(ptr, LDGM_STGM_SIZE);
-+    ptr = QEMU_ALIGN_DOWN(ptr, gm_bs_bytes);
+     ptr = QEMU_ALIGN_DOWN(ptr, gm_bs_bytes);
  
-     /* Trap if accessing an invalid page.  */
-     tag_mem = allocation_tag_mem(env, mmu_idx, ptr, MMU_DATA_STORE,
--                                 LDGM_STGM_SIZE, MMU_DATA_LOAD,
--                                 LDGM_STGM_SIZE / (2 * TAG_GRANULE), ra);
-+                                 gm_bs_bytes, MMU_DATA_LOAD,
-+                                 gm_bs_bytes / (2 * TAG_GRANULE), ra);
+@@ -480,14 +506,33 @@ void HELPER(stgm)(CPUARMState *env, uint64_t ptr, uint64_t val)
  
      /*
-      * Tag store only happens if the page support tags,
-@@ -470,12 +478,18 @@ void HELPER(stgm)(CPUARMState *env, uint64_t ptr, uint64_t val)
-         return;
-     }
- 
--    QEMU_BUILD_BUG_ON(GMID_EL1_BS != 6);
-     /*
--     * We are storing 64-bits worth of tags.  The ordering of elements
--     * within the word corresponds to a 64-bit little-endian operation.
-+     * The ordering of elements within the word corresponds to
-+     * a little-endian operation.
+      * The ordering of elements within the word corresponds to
+-     * a little-endian operation.
++     * a little-endian operation.  See LDGM for comments on shift.
++     * All memory operations are aligned.
       */
--    stq_le_p(tag_mem, val);
-+    switch (gm_bs) {
-+    case 6:
-+        stq_le_p(tag_mem, val);
-+        break;
-+    default:
++    shift = extract64(ptr, LOG2_TAG_GRANULE, 4) * 4;
++    val >>= shift;
+     switch (gm_bs) {
++    case 2:
 +        /* cpu configured with unsupported gm blocksize. */
 +        g_assert_not_reached();
-+    }
++    case 3:
++        /* 32 bytes -> 2 tags -> 8 result bits */
++        *(uint8_t *)tag_mem = val;
++        break;
++    case 4:
++        /* 64 bytes -> 4 tags -> 16 result bits */
++        *(uint16_t *)tag_mem = cpu_to_le16(val);
++        break;
++    case 5:
++        /* 128 bytes -> 8 tags -> 32 result bits */
++        *(uint32_t *)tag_mem = cpu_to_le32(val);
++        break;
+     case 6:
+-        stq_le_p(tag_mem, val);
++        /* 256 bytes -> 16 tags -> 64 result bits */
++        *(uint64_t *)tag_mem = cpu_to_le64(val);
+         break;
+     default:
+-        /* cpu configured with unsupported gm blocksize. */
++        /* cpu configured with invalid gm blocksize. */
+         g_assert_not_reached();
+     }
  }
- 
- void HELPER(stzgm_tags)(CPUARMState *env, uint64_t ptr, uint64_t val)
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 5fa1257d32..d822d9a9af 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -3786,7 +3786,7 @@ static bool trans_STGM(DisasContext *s, arg_ldst_tag *a)
-         gen_helper_stgm(cpu_env, addr, tcg_rt);
-     } else {
-         MMUAccessType acc = MMU_DATA_STORE;
--        int size = 4 << GMID_EL1_BS;
-+        int size = 4 << s->gm_blocksize;
- 
-         clean_addr = clean_data_tbi(s, addr);
-         tcg_gen_andi_i64(clean_addr, clean_addr, -size);
-@@ -3818,7 +3818,7 @@ static bool trans_LDGM(DisasContext *s, arg_ldst_tag *a)
-         gen_helper_ldgm(tcg_rt, cpu_env, addr);
-     } else {
-         MMUAccessType acc = MMU_DATA_LOAD;
--        int size = 4 << GMID_EL1_BS;
-+        int size = 4 << s->gm_blocksize;
- 
-         clean_addr = clean_data_tbi(s, addr);
-         tcg_gen_andi_i64(clean_addr, clean_addr, -size);
-@@ -13900,6 +13900,7 @@ static void aarch64_tr_init_disas_context(DisasContextBase *dcbase,
-     dc->cp_regs = arm_cpu->cp_regs;
-     dc->features = env->features;
-     dc->dcz_blocksize = arm_cpu->dcz_blocksize;
-+    dc->gm_blocksize = arm_cpu->gm_blocksize;
- 
- #ifdef CONFIG_USER_ONLY
-     /* In sve_probe_page, we assume TBI is enabled. */
 -- 
 2.34.1
 
