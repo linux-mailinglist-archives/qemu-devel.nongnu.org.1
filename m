@@ -2,84 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACBBC777FB8
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 20:00:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E13FD777F25
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 19:32:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qU9wW-0007xk-QX; Thu, 10 Aug 2023 13:59:28 -0400
+	id 1qU9Uy-000646-VH; Thu, 10 Aug 2023 13:31:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qU9wN-0007vC-Nm
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 13:59:20 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qU9Uk-00061p-0C; Thu, 10 Aug 2023 13:30:53 -0400
+Received: from mail-vk1-xa2f.google.com ([2607:f8b0:4864:20::a2f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qU9wL-0007jC-Kq
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 13:59:19 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-3fe426b8583so11466025e9.2
- for <qemu-devel@nongnu.org>; Thu, 10 Aug 2023 10:59:17 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qU9Uh-0002R5-JK; Thu, 10 Aug 2023 13:30:44 -0400
+Received: by mail-vk1-xa2f.google.com with SMTP id
+ 71dfb90a1353d-48719fc6b18so468658e0c.1; 
+ Thu, 10 Aug 2023 10:30:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691690356; x=1692295156;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ d=gmail.com; s=20221208; t=1691688642; x=1692293442;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=gp8oa2zOrfadjkcCAnmrhE41pDNjnkYNRFQKBUlc0Us=;
- b=aC/oO443/MBmjFQtt3yhpUJdes4jToq7isC6y+x24QFEp36DQvusV7IrXwYyqmYtG4
- 2mubW4avXifqN4P+gpVmKtsSEXsCzToDfmOynsiN15rXDbl0ebzieSSsiSH2C/HczFlH
- ecdcs3Ut+bhaZTI8jSiCk8Jdv+96GW39g1N7v/Mts0YoEtp4lVL8CAgGQoQ4u8y5sNC1
- GyTekkWPIbifmQ09Hexx5/50shOW0eHc9MYXcVG2loCKH/6keEONlGQY3yO+6f5/D8XP
- Pb33HzCES962txinlKdp0xFmNPKo4o7EdHkMXBNfdJDjMjxGCanIWu6R9hIs7MqZaz+a
- Co0A==
+ bh=e73qVEAKR2HYIiLRHTV1HycZI9/BjNrFoTfAxcTR6y0=;
+ b=jFVDX90O0RyTbdPA3UbQVlQkGU4MuFln96PJEkXxqolxWxv14YlTGK1YvyzvaNG/bu
+ 1iyXmEBZNnbLaALuM71B5Abh6MO6gUDFzcLvpzjyBZbYjmJpiO6pES1Moul85FVY15BC
+ XJH6sKTjIz1WBhWVVr/DAcuhj32qQ9MHGbjeG5lfqOICPSn4X4FGGF2758JCc6+0djdy
+ 3U7tLKpADDoekPpgodVAPWI4bCwKrCUcR6cY2bFosOh+E08aPgo4+BQHUxs3HBHY279q
+ +ZhaLxJ1rUEuoW3toL1ffgHEYWKiocg7pKzQAV0eDMhYUUAKZ5bybaxsKTv35gDDMk1t
+ PYHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691690356; x=1692295156;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=gp8oa2zOrfadjkcCAnmrhE41pDNjnkYNRFQKBUlc0Us=;
- b=LO6z2MCbsypNlnam3azp3q+qflgvY8X2Bp84OydXQ0Vj139JyXqkkZaPDy6U2fpHAf
- Y3cHw26aKpjZ8YO43kUi3X9VYEtBU+NOkxxmwQOJUf0DtdNITGAlVoaubmJKUMU6vajt
- ZbHgxWVLyAYzdgEFmOUgZnhHCTANDa+QwGJwWykUmzhaQ6sUrKbGF3Pf9tNzazJ0Qlbn
- ykizH//g68kVbd9Mww0IZlwXjJHgVyFWcrTkRu4EjoTOn2j0jsHlhE4DoY+5BltVvEpj
- 8+hl6vm4Nurx/Yxpfglue/SL9EPI31cgBX94yPIzjt8PwyhBQntJety5wtJR7Hx+rSVn
- 9ClA==
-X-Gm-Message-State: AOJu0YzSyraou9To8Z3cMAPP0fIhhm/RbX1ihKQSLgyKhEDeTcR6ZSss
- JmYUlAaieE0/h+k7jTqJeQ37hQ==
-X-Google-Smtp-Source: AGHT+IFeHxkb1Ib6upUPKFbA9XLk2ex0e7NjBUeROR/8V2SzJ3lkiLEKhIuaKpDuCxFjW+iR317ipA==
-X-Received: by 2002:a05:600c:2196:b0:3fe:2e0d:b715 with SMTP id
- e22-20020a05600c219600b003fe2e0db715mr2660045wme.18.1691690355668; 
- Thu, 10 Aug 2023 10:59:15 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- t16-20020a05600001d000b00317b5c8a4f1sm2847281wrx.60.2023.08.10.10.59.15
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 10 Aug 2023 10:59:15 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id DA05D1FFBB;
- Thu, 10 Aug 2023 18:59:14 +0100 (BST)
-References: <87y1k5yxiy.fsf@linaro.org>
- <20230804182633.47300-2-dark.ryu.550@gmail.com>
-User-agent: mu4e 1.11.13; emacs 29.1.50
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Matheus Branco Borella <dark.ryu.550@gmail.com>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH v2] gdbstub: fixes cases where wrong threads were
- reported to GDB on SIGINT
-Date: Thu, 10 Aug 2023 18:30:10 +0100
-In-reply-to: <20230804182633.47300-2-dark.ryu.550@gmail.com>
-Message-ID: <87a5uy3hjh.fsf@linaro.org>
+ d=1e100.net; s=20221208; t=1691688642; x=1692293442;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=e73qVEAKR2HYIiLRHTV1HycZI9/BjNrFoTfAxcTR6y0=;
+ b=Yia1nDIxhrB/nbRSCPdFSeVuz92ocghwMTlHK2dXpm2vN3/kqBIvJh7Io2Euqnno0D
+ pPajuv4W98jZqKFCgz96Cxuv8clma3ejCAc/Kff54eDDIE4icHNYrBCio6xlP5DD5xcl
+ +VuV77gEiE+y30oNj0YEcUmWRjEHo0qddOm0VGBmmedt0f+QKe6AWXU00OW4daCsUszD
+ 4M77VY9FLJ50yYLXmSmXCKEC8FZmi8IHtcAojjPimuZn6Wfn5EVUnSGqHJFuAy+Y1sjb
+ 002NFZ4jG5RPJ/R2AMNsUC0yrDZ6o+IaYe6kCJrL0ouayvix5hF4GWGYmZWwM7Dx+vxz
+ kpOA==
+X-Gm-Message-State: AOJu0YyrJ3m+61YHZcB2kMEy86T7Rz71aYApIT6CCWxjih0aVKRQmFyv
+ Yzfw+mZKkm4FKPefn0U+1EjG9hSV+COwRziLN1E=
+X-Google-Smtp-Source: AGHT+IEx/skVJcMLfQpHRy6zY26wCoGY0rBFUmohy4dri5r2RhFHMUqHKODf8wnTcpxq0noPtWbCw43RByIdanmXEN4=
+X-Received: by 2002:a67:ff93:0:b0:444:bb6c:1188 with SMTP id
+ v19-20020a67ff93000000b00444bb6c1188mr2409673vsq.1.1691688642039; Thu, 10 Aug
+ 2023 10:30:42 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20230728131520.110394-1-dbarboza@ventanamicro.com>
+ <20230728131520.110394-2-dbarboza@ventanamicro.com>
+In-Reply-To: <20230728131520.110394-2-dbarboza@ventanamicro.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Thu, 10 Aug 2023 13:30:16 -0400
+Message-ID: <CAKmqyKPPg=9QR+A4AYf6_SFnaDk+3XcP8nuViBb77riuTW_fuA@mail.gmail.com>
+Subject: Re: [PATCH 1/8] target/riscv/cpu.c: use offset in
+ isa_ext_is_enabled/update_enabled
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
+ palmer@rivosinc.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a2f;
+ envelope-from=alistair23@gmail.com; helo=mail-vk1-xa2f.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -97,55 +89,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Fri, Jul 28, 2023 at 9:18=E2=80=AFAM Daniel Henrique Barboza
+<dbarboza@ventanamicro.com> wrote:
+>
+> We'll have future usage for a function where, given an offset of the
+> struct RISCVCPUConfig, the flag is updated to a certain val.
+>
+> Change all existing callers to use edata->ext_enable_offset instead of
+> 'edata'.
+>
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-Matheus Branco Borella <dark.ryu.550@gmail.com> writes:
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 
-> Alex Benn=C3=A9e <alex.bennee@linaro.org> writes:
->> Can gdb switch which packet sequence it uses to halt and restart
->> threads?
->
-> Yes, but the way it does it does not trigger the behavior I was concerned=
-=20
-> about. GDB falls back to the old sequence when either (1) the target does=
- not
-> support the vCont command it's trying to send or (2) you step backwards. =
-In both
-> cases, though, whenever it does fall back, it will first send an Hc packe=
-t=20
-> before continuing or stepping, which means we won't ever see a sequence s=
-uch as
-> ["Hc", "vCont;c:*", "c"]. This means, in short, that, while the shortcomi=
-ng does
-> exist in the code, GDB never actually triggers it.
->
->> The test I would like see is pretty much your test case
->>=20
->>  - load a multi-threaded program
->>  - wait until threads running
->>  - pause
->>  - resume thread
->>  - check resumed thread was the right one
->
-> What I have here should be pretty much that.=20
->
-> Is there something else you think I'm missing?
->
+Alistair
+
 > ---
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1725
+>  target/riscv/cpu.c | 18 +++++++++---------
+>  1 file changed, 9 insertions(+), 9 deletions(-)
 >
-> This fix is implemented by having the vCont handler set the value of
-> `gdbserver_state.c_cpu` if any threads are to be resumed. The specific CPU
-> picked is arbitrarily from the ones to be resumed, but it should be okay,=
- as all
-> GDB cares about is that it is a resumed thread.
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index b5a2266eef..644ce7a018 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -153,18 +153,17 @@ static const struct isa_ext_data isa_edata_arr[] =
+=3D {
+>      ISA_EXT_DATA_ENTRY(xventanacondops, PRIV_VERSION_1_12_0, ext_XVentan=
+aCondOps),
+>  };
 >
-> Signed-off-by: Matheus Branco Borella <dark.ryu.550@gmail.com>
-
-Arg the commit message is in the --- discard section.
-
-Queued to for-8.1/misc-fixes, thanks.
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+> -static bool isa_ext_is_enabled(RISCVCPU *cpu,
+> -                               const struct isa_ext_data *edata)
+> +static bool isa_ext_is_enabled(RISCVCPU *cpu, uint32_t ext_offset)
+>  {
+> -    bool *ext_enabled =3D (void *)&cpu->cfg + edata->ext_enable_offset;
+> +    bool *ext_enabled =3D (void *)&cpu->cfg + ext_offset;
+>
+>      return *ext_enabled;
+>  }
+>
+> -static void isa_ext_update_enabled(RISCVCPU *cpu,
+> -                                   const struct isa_ext_data *edata, boo=
+l en)
+> +static void isa_ext_update_enabled(RISCVCPU *cpu, uint32_t ext_offset,
+> +                                   bool en)
+>  {
+> -    bool *ext_enabled =3D (void *)&cpu->cfg + edata->ext_enable_offset;
+> +    bool *ext_enabled =3D (void *)&cpu->cfg + ext_offset;
+>
+>      *ext_enabled =3D en;
+>  }
+> @@ -1025,9 +1024,10 @@ static void riscv_cpu_disable_priv_spec_isa_exts(R=
+ISCVCPU *cpu)
+>
+>      /* Force disable extensions if priv spec version does not match */
+>      for (i =3D 0; i < ARRAY_SIZE(isa_edata_arr); i++) {
+> -        if (isa_ext_is_enabled(cpu, &isa_edata_arr[i]) &&
+> +        if (isa_ext_is_enabled(cpu, isa_edata_arr[i].ext_enable_offset) =
+&&
+>              (env->priv_ver < isa_edata_arr[i].min_version)) {
+> -            isa_ext_update_enabled(cpu, &isa_edata_arr[i], false);
+> +            isa_ext_update_enabled(cpu, isa_edata_arr[i].ext_enable_offs=
+et,
+> +                                   false);
+>  #ifndef CONFIG_USER_ONLY
+>              warn_report("disabling %s extension for hart 0x" TARGET_FMT_=
+lx
+>                          " because privilege spec version does not match"=
+,
+> @@ -2271,7 +2271,7 @@ static void riscv_isa_string_ext(RISCVCPU *cpu, cha=
+r **isa_str,
+>      int i;
+>
+>      for (i =3D 0; i < ARRAY_SIZE(isa_edata_arr); i++) {
+> -        if (isa_ext_is_enabled(cpu, &isa_edata_arr[i])) {
+> +        if (isa_ext_is_enabled(cpu, isa_edata_arr[i].ext_enable_offset))=
+ {
+>              new =3D g_strconcat(old, "_", isa_edata_arr[i].name, NULL);
+>              g_free(old);
+>              old =3D new;
+> --
+> 2.41.0
+>
+>
 
