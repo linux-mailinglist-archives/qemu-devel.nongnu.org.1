@@ -2,72 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CDCA777A3D
-	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 16:14:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B226B777A6D
+	for <lists+qemu-devel@lfdr.de>; Thu, 10 Aug 2023 16:21:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qU6Q5-0006Nm-Bp; Thu, 10 Aug 2023 10:13:45 -0400
+	id 1qU6W6-0000py-4F; Thu, 10 Aug 2023 10:19:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qU6Q3-0006LV-O3
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 10:13:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qU6W2-0000o5-KO
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 10:19:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qU6Q1-00049x-Tb
- for qemu-devel@nongnu.org; Thu, 10 Aug 2023 10:13:43 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qU6Vz-00058i-Et
+ for qemu-devel@nongnu.org; Thu, 10 Aug 2023 10:19:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691676820;
+ s=mimecast20190719; t=1691677189;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=WxYXM6cRU3VgO4HqnDK/7ut3y9KuKig5mKLrs4m51yE=;
- b=eJmoE/Qq+qRPl3bzA5/+RfhUyQHTTgHLDDGEjbgCgsUSBJZzCS+Xr5YQgWJ1eiRo77nfSk
- /GvYgzELs7YZnJ5tR07ayf99PeyUlSjzWFRBs0kDkOUxuRO6TUmAWJCX3wW5Pn3x/7yAwi
- umcfYfymyXErZXqYXJhYJ/keV4kn6C0=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-610-DFk5jPS6MQeqBjCgWCE0JQ-1; Thu, 10 Aug 2023 10:13:38 -0400
-X-MC-Unique: DFk5jPS6MQeqBjCgWCE0JQ-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E024E8DC661;
- Thu, 10 Aug 2023 14:13:37 +0000 (UTC)
-Received: from localhost (unknown [10.39.194.92])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 5EF275CBFF;
- Thu, 10 Aug 2023 14:13:37 +0000 (UTC)
-Date: Thu, 10 Aug 2023 10:13:35 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: "longguang.yue" <kvmluck@163.com>
-Cc: Michael Tokarev <mjt@tls.msk.ru>, "mst@redhat.com" <mst@redhat.com>,
- qemu-devel <qemu-devel@nongnu.org>,
- linux-kernel <linux-kernel@vger.kernel.org>
-Subject: Re: LTP test related to virtio releasing and reassigning resource
- leads to guest hung
-Message-ID: <20230810141335.GA2931656@fedora>
-References: <461df15f.15e2d.189deaa6eed.Coremail.kvmluck@163.com>
- <38e69323-0185-32bb-2de1-8e5b36de2abc@tls.msk.ru>
- <3c1a93da.16493.189df040e16.Coremail.kvmluck@163.com>
+ bh=/TynlECZjqQUFTE93/dvjgTUJxVIXdZLycGnyH3T+64=;
+ b=LCOiPoAFujiZs1ziQv+Y/BUTDBM5KqyET6Hvau9MXsNTOTi/qTsjiM/le9eOIyW6+ukcmc
+ 5g20233nBAKFNysi910Vo4opn95yh7cBPdDJ6JzJph95tUbh5psrmR6DiC0vsCqs6dnECA
+ IhhH5XJf5hqXOL3oWVwFpJm2EiOqWXc=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-85-59qQWkVuMOyXKoDJRhV68g-1; Thu, 10 Aug 2023 10:19:48 -0400
+X-MC-Unique: 59qQWkVuMOyXKoDJRhV68g-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-317dff409dfso397593f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 10 Aug 2023 07:19:48 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1691677187; x=1692281987;
+ h=content-transfer-encoding:in-reply-to:subject:organization:from
+ :content-language:references:cc:to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=/TynlECZjqQUFTE93/dvjgTUJxVIXdZLycGnyH3T+64=;
+ b=YTIaPHD4zkjQMWKmsESvW0YeFAo7eXL90edye0vDztajb2dIa4K7RVP6C5gESpRyJf
+ rSzjBG02jK+ukI8sde6peMsGlld+L87snAqSpCb1oZ2sNBP8qorHrSXyBHvUyVPJaqUz
+ XuUyNk5FiT19jOJPvkhraV6ugZsYxT0ewask9NpU8TTrx+044XWV1t5YZ7uMgvITn8W1
+ /+rDVQo+myIC+w2haViGwaZlueASClErvB90JZQzXf24oAW82/J7OqPIoEH/2AjyX4YV
+ 6s3f2A2CdcK/p0K1PsBD4SkfamFXMoJXKowQrHtQLNjJZzN+I/KFRocUR9pZ6FhD6Ukd
+ s7Aw==
+X-Gm-Message-State: AOJu0YxcpzLb+yhw5zh1B2HCi9cLi9x0PSA2rpZ8Tq3ltvAm2NeyoFth
+ rqWenLN3n3SdmQqrvAq6rA/sDAlhN1MJGfqGw4g4rh3ID9mu5qF+y0Z0kqn+ogJV6tRUtcE19xG
+ dlhqqf6hMc+yq6TI=
+X-Received: by 2002:adf:e342:0:b0:311:b18:9ca4 with SMTP id
+ n2-20020adfe342000000b003110b189ca4mr1714238wrj.17.1691677187281; 
+ Thu, 10 Aug 2023 07:19:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFaJ1BVX/zwIwreeOa+QBHsbRgSDGyt4wowLX9257QvQ03B9FBLS9x8ciEMrjdTf5EivZeppg==
+X-Received: by 2002:adf:e342:0:b0:311:b18:9ca4 with SMTP id
+ n2-20020adfe342000000b003110b189ca4mr1714210wrj.17.1691677186761; 
+ Thu, 10 Aug 2023 07:19:46 -0700 (PDT)
+Received: from ?IPV6:2a09:80c0:192:0:5dac:bf3d:c41:c3e7?
+ ([2a09:80c0:192:0:5dac:bf3d:c41:c3e7])
+ by smtp.gmail.com with ESMTPSA id
+ k19-20020a05600c479300b003fe1afb99b5sm2997810wmo.0.2023.08.10.07.19.46
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 10 Aug 2023 07:19:46 -0700 (PDT)
+Message-ID: <e9c53fbd-369c-2605-1470-e67a765f923b@redhat.com>
+Date: Thu, 10 Aug 2023 16:19:45 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="C0aUbutZkQIXwC4Q"
-Content-Disposition: inline
-In-Reply-To: <3c1a93da.16493.189df040e16.Coremail.kvmluck@163.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Thiner Logoer <logoerthiner1@163.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+References: <20230807190736.572665-1-david@redhat.com>
+ <20230807190736.572665-2-david@redhat.com> <ZNKtHVotkfgI1tb4@x1n>
+ <1d1a7d8f-6260-5905-57ea-514b762ce869@redhat.com> <ZNOti1OKN79t68jP@x1n>
+Content-Language: en-US
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+Subject: Re: [PATCH v1 1/3] softmmu/physmem: fallback to opening guest RAM
+ file as readonly in a MAP_PRIVATE mapping
+In-Reply-To: <ZNOti1OKN79t68jP@x1n>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ NICE_REPLY_A=-2.156, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,97 +108,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+>> Most importantly, we won't be corrupting/touching the original file in any
+>> case, because it is R/O.
+>>
+>> If we really want to be careful, we could clue that behavior to compat
+>> machines. I'm not really sure yet if we really have to go down that path.
+>>
+>> Any other alternatives? I'd like to avoid new flags where not really
+>> required.
+> 
+> I was just thinking of a new flag. :) So have you already discussed that
+> possibility and decided that not a good idea?
 
---C0aUbutZkQIXwC4Q
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Not really. I was briefly playing with that idea but already struggled 
+to come up with a reasonable name :)
 
-On Thu, Aug 10, 2023 at 06:35:32PM +0800, longguang.yue wrote:
-> could you please give me some tips to diagnose?  I could do tests on qemu=
- 8.0, but product environment could not update.
-> I test on different kernel version 5.10.0-X, one is better and results sh=
-ow problem is more about host kernel  rather than qemu.
->=20
->=20
-> test cases are different combination of i440fx/q35 and virtio/scsi and ke=
-rnel.
+Less toggles and just have it working nice, if possible.
 
-Can you post the guest kernel messages (dmesg)? If the guest is hanging
-then it may be easiest to configure a serial console so the kernel
-messages are sent to the host where you can see them.
+> 
+> The root issue to me here is we actually have two resources (memory map of
+> the process, and the file) but we only have one way to describe the
+> permissions upon the two objects.  I'd think it makes a lot more sense if a
+> new flag is added, when there's a need to differentiate the two.
+> 
+> Consider if you see a bunch of qemu instances with:
+> 
+>    -mem-path $RAM_FILE
+> 
+> On the same host, which can be as weird as it could be to me.. At least
+> '-mem-path' looks still like a way to exclusively own a ram file for an
+> instance. I hesitate the new fallback can confuse people too, while that's
+> so far not the major use case.
 
-Does the hang occur during the LTP code you linked or afterwards when
-the PCI device is bound to a virtio driver?
+Once I learned that this is not a MAP_SHARED mapping, I was extremely 
+confused. For example, vhost-user with "-mem-path" will absolutely not 
+work with "-mem-path", even though the documentation explicitly spells 
+that out (I still have to send a patch to fix that).
 
-Which virtio device causes the problem?
+I guess "-mem-path" was primarily only used to consume hugetlb. Even for 
+tmpfs it will already result in a double memory consumption, just like 
+when using -memory-backend-memfd,share=no.
 
-Can you describe the hang in more detail: is the guest still responsive
-(e.g. console or network)? Is the QEMU HMP/QMP monitor still responsive?
+I guess deprecating it was the right decision.
 
-Thanks,
-Stefan
+But memory-backend-file also defaults to "share=no" ... so the same 
+default behavior unfortunately.
 
->=20
->=20
->=20
->=20
-> thanks
->=20
->=20
->=20
->=20
-> ---- Replied Message ----
-> | From | Michael Tokarev<mjt@tls.msk.ru> |
-> | Date | 08/10/2023 17:08 |
-> | To | longguang.yue<kvmluck@163.com> ,
-> qemu-devel<qemu-devel@nongnu.org> ,
-> linux-kernel<linux-kernel@vger.kernel.org> |
-> | Subject | Re: LTP test related to virtio releasing and reassigning reso=
-urce leads to guest hung |
-> 10.08.2023 11:57, longguang.yue wrote:
-> Hi, all:
-> A ltp test leads to guest hung(io hung), the test releases virtio device =
-resource and then reassign.
-> I find device=E2=80=99s mem prefetchable resource 64-bit is changed.
->=20
-> ltp
-> test: https://github.com/linux-test-project/ltp/blob/522d7fba4afc84e07b25=
-2aa4cd91b241e81d6613/testcases/kernel/device-drivers/pci/tpci_kernel/ltp_tp=
-ci.c#L428
->=20
-> Do you know what cause the problem?
->=20
-> Thanks very much.
->=20
-> --------------------------
-> ENV: kernel 5.10.0, qemu 6.2
->=20
-> Current qemu is 8.1 (well, almost, to be released this month;
-> previous release is 8.0 anyway).
->=20
-> This might be interesting to test in a current version before
-> going any further.
->=20
-> Thanks,
->=20
-> /mjt
+> 
+> Nobody may really rely on any existing behavior of the failure, but
+> changing existing behavior is just always not wanted.  The guideline here
+> to me is: whether we want existing "-mem-path XXX" users to start using the
+> fallback in general?  If it's "no", then maybe it implies a new flag is
+> better?
 
---C0aUbutZkQIXwC4Q
-Content-Type: application/pgp-signature; name="signature.asc"
+I think we have the following options (there might be more)
 
------BEGIN PGP SIGNATURE-----
+1) This patch.
 
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmTU8I8ACgkQnKSrs4Gr
-c8iftQf/VbD9nqCTiUqYNyNgpBMqri6AccV8q9Bl8Cz5cyCjt1cg0Fry3XWudOzS
-mNOj+3NMhcLdeVJ8RUSslk2/dFtbJN8DjVrKVAyaJt4lzZAtdcwk7EkazgifFXio
-+S9Qp/HTHltKKubizxkOcrztPdxJVQroftYiM4gMQFU66153jj+CQR0HifEpaSIv
-BvAijLPjEZCRypnXJctOkOh1X9IhddkXj/WVzaebqNKtzo6nCKlilyzGkj4QWWDq
-mXtOls4skkbGQr0109aXYWZ0VC/f8LAG2rdGV7wNvdn2hlan302GV9OANtoAr9zE
-RIU30sexogHvshQKciba5s95wgfP9w==
-=0C0d
------END PGP SIGNATURE-----
+2) New flag for memory-backend-file. We already have "readonly" and 
+"share=". I'm having a hard time coming up with a good name that really 
+describes the subtle difference.
 
---C0aUbutZkQIXwC4Q--
+3) Glue behavior to the QEMU machine
+
+
+For 3), one option would be to always open a COW file readonly (as 
+Thiner originally proposed). We could leave "-mem-path" behavior alone 
+and only change memory-backend-file semantics. If the COW file does 
+*not* exist yet, we would refuse to create the file like patch 2+3 do. 
+Therefore, no ftruncate() errors, and fallocate() errors would always 
+happen.
+
+
+What are your thoughts?
+
+[...]
+
+>>
+>> [I'm curious at what point a filesystem will actually break COW. if it's
+>> wired up to the writenotify infrastructure, it would happen when actually
+>> writing to a page, not at mmap time. I know that filesystems use writenotify
+>> for lazy allocation of disk blocks on file holes, maybe they also do that
+>> for lazy allocation of disk blocks on COW]
+> 
+> I don't know either, but it definitely looks more promising and reasonable
+> if the CoW only happens until being written, rather than being mapped RW.
+
+That would be my best guess. But then, we have multiple pagecache pages 
+point at the same disk block until COW happens ... maybe that's how it 
+already works. Once I have some spare time, I might play with that.
+
+-- 
+Cheers,
+
+David / dhildenb
 
 
