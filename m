@@ -2,73 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4077779717
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 20:26:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28415779718
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 20:26:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qUWpF-0002OO-U3; Fri, 11 Aug 2023 14:25:29 -0400
+	id 1qUWpD-0002MR-N5; Fri, 11 Aug 2023 14:25:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qUWpD-0002Ms-BX
- for qemu-devel@nongnu.org; Fri, 11 Aug 2023 14:25:27 -0400
-Received: from mail-ua1-x933.google.com ([2607:f8b0:4864:20::933])
+ id 1qUWpB-0002Kf-W8
+ for qemu-devel@nongnu.org; Fri, 11 Aug 2023 14:25:26 -0400
+Received: from mail-vk1-xa30.google.com ([2607:f8b0:4864:20::a30])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qUWpA-0003oI-D6
- for qemu-devel@nongnu.org; Fri, 11 Aug 2023 14:25:27 -0400
-Received: by mail-ua1-x933.google.com with SMTP id
- a1e0cc1a2514c-799761430c2so629941241.2
- for <qemu-devel@nongnu.org>; Fri, 11 Aug 2023 11:25:05 -0700 (PDT)
+ id 1qUWpA-0003oQ-1f
+ for qemu-devel@nongnu.org; Fri, 11 Aug 2023 14:25:25 -0400
+Received: by mail-vk1-xa30.google.com with SMTP id
+ 71dfb90a1353d-48746a002f8so828062e0c.1
+ for <qemu-devel@nongnu.org>; Fri, 11 Aug 2023 11:25:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1691778304; x=1692383104;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=iQWGIGyjSjTmqkt22c86absvPht5A+dob6U27lQudSo=;
- b=iNvctOem7OnCJ0t+IWI54p56H7eI7HTaw/U15Yg0Lt/7HgFLM/+esfsZ2FqR0r2AV1
- /xSwe5WOVmzxKHW3cBSxm0yLTckEGIk/iEoxEQ6ZjbJ8SqMTr+geo+BaPWLAofQSqgJi
- +BCZF3gtLQ75CSmMIMM8w/KBZkAY2lBuusYH6eU7j6LcByyNxzxvFwsXNxu3KDBhwW/p
- wR+w5fCto3WlJDeOH7mPGxH+xA/85qqVNp3DbnGyVfWtRgkYJQnZT69NEh/KUE0ZXrLA
- tO1MBOCrL7VW6h11354zuOuMp9+nirpEstwPLeK5B5tEk9vL8pm4kO2qZmKFH9cZdxZQ
- siSg==
+ d=gmail.com; s=20221208; t=1691778305; x=1692383105;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=1F7SrSpIXNlKh5W9vshZuEadPvion/6uR1Y68b6CsiE=;
+ b=nXoe5ERThCaQB6Z1anFuYR+pr+yxmf9BZSj1viPU0vvgalrxOaZgr3M4M4V5SUaCvc
+ qtCeVZYB1xJvfODFp7ZEJqUu754N+1zyq7NqQEHSgvhQvJlxMkyeM9Ak8PyUiygWRGx9
+ CTL3u9zSh4Rj58+DQdeAfsCntTCTYJLEgGoH+TBmLR+/u+NR/XmoimWIB82ewni9O+Ah
+ zc3sbJWqIc8cEpqUNWb+ggWm+DTtqKzLBY6Gasxbp7JtBQjoLgQjtEw4mLcxv29RGIeJ
+ DwfmZ0cLLEn+m2c4in/68p7nUFW44xgH5uL2ey+fIJFeFoGQHHJjl7+Vo6+AysMWsvBz
+ 4BZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691778304; x=1692383104;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=iQWGIGyjSjTmqkt22c86absvPht5A+dob6U27lQudSo=;
- b=FzXz7A+1Swx1kAyjIaq41TUQEMU6jLaMWMh0hlZO7BBX6nr11xq39kZWvufrSKGV+V
- l43MQwpgepOgIr7HiRd+c82NAdr8tX0IskGcZAP7q1Gp0xtXW5O2EN8LHcFgMD5reP5r
- FWHeyBbOhhlwcd9KAGjcJogH3mgMJpFlUvCSMs0DbxSTRKCmTfURSe0TOF6/wkauqgou
- G9IJXy4IMZjQLjcFrQktPhIXTp7WLqaEmC9SpwW4QHlhVW7JFiG0EiAL7kipxQUjGU6M
- eqlfGr3aVsgBckWYOlBByOx1WpMPDUstlbS/pt+6Ftgj289QjAJIJRXBQ9Q42C9oPnzB
- 3jSg==
-X-Gm-Message-State: AOJu0Yx0fUKnLk8uzVjsdReRT5XPWYLfvLye/5mhM6dFIlan4MLBlgRP
- bG3P5mEPvE+tj9GhOqx25tlI8+FqgoDi4Nmt
-X-Google-Smtp-Source: AGHT+IEiDezpV6yT/Ys/7GYINjcDsLJAejL3cI6uxWt1LyZfzNgEF2Xnk3qy6cKSZvuacOQuq5mCLg==
-X-Received: by 2002:a05:6102:4a9:b0:444:ca59:57a6 with SMTP id
- r9-20020a05610204a900b00444ca5957a6mr2469777vsa.8.1691778304580; 
- Fri, 11 Aug 2023 11:25:04 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1691778305; x=1692383105;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=1F7SrSpIXNlKh5W9vshZuEadPvion/6uR1Y68b6CsiE=;
+ b=MTyesCS6LWZe4a8BEkkh3+JO7KK2gRTj44Fn4bToleoHemQ+Tv/Aby8wPro5tWsDQ1
+ 4HyzjfHcoiX4d/zzre8qMABhrOztKddBW9RENjP/Qq4jWdOJpDJGsELMRJgKSFxtxaqg
+ thateUQzynAkEMc97yrciIVUQXr9esPX1PSbJnBKrxRz1HCkPCGeTaLmMTwVa6tjFwUM
+ vYs16jT5BH7KeLj6dx1eI1wmYo+5LwcyPI8m/9FPZ6Q+4PR9tNYNvSySuQmXK7DrKH1R
+ N0CGCqeFwXhpPxxQrW65gTVVu43Rd3mspH8qtYfatYB71bEBTdFnXdOEUD01syrdSpVa
+ Foiw==
+X-Gm-Message-State: AOJu0YxmuBxnIRGqigqCSByYY0K6tEjvQfy1vQ7FLsarI7UlkE1yvLm5
+ 9fgkB9gBOXjIImQR433/WOygWhkEfxoAEcgS
+X-Google-Smtp-Source: AGHT+IF/JGj7BhmkTUdf5BbP+lx7xLzXRcF3qmZybFAK+wPBUDFm6VNJjLVE547SUlmYZhsP8OPt+g==
+X-Received: by 2002:a05:6102:282f:b0:446:f573:3ec6 with SMTP id
+ ba15-20020a056102282f00b00446f5733ec6mr2322801vsb.9.1691778305464; 
+ Fri, 11 Aug 2023 11:25:05 -0700 (PDT)
 Received: from localhost.localdomain ([146.70.187.10])
  by smtp.gmail.com with ESMTPSA id
- g30-20020ab016de000000b007876731f2dbsm638234uaf.22.2023.08.11.11.25.03
+ g30-20020ab016de000000b007876731f2dbsm638234uaf.22.2023.08.11.11.25.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 11 Aug 2023 11:25:04 -0700 (PDT)
+ Fri, 11 Aug 2023 11:25:05 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com,
-	Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 0/2] riscv-to-apply queue
-Date: Fri, 11 Aug 2023 14:24:43 -0400
-Message-ID: <20230811182445.1185140-1-alistair.francis@wdc.com>
+Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Andrew Jones <ajones@ventanamicro.com>
+Subject: [PULL 1/2] target/riscv/kvm.c: fix mvendorid size in
+ vcpu_set_machine_ids()
+Date: Fri, 11 Aug 2023 14:24:44 -0400
+Message-ID: <20230811182445.1185140-2-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230811182445.1185140-1-alistair.francis@wdc.com>
+References: <20230811182445.1185140-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::933;
- envelope-from=alistair23@gmail.com; helo=mail-ua1-x933.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a30;
+ envelope-from=alistair23@gmail.com; helo=mail-vk1-xa30.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -92,39 +96,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 3944e93af06f06eb07316e0bef46b007573e0309:
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-  Update version for v8.1.0-rc3 release (2023-08-10 12:49:56 -0700)
+cpu->cfg.mvendorid is a 32 bit field and kvm_set_one_reg() always write
+a target_ulong val, i.e. a 64 bit field in a 64 bit host.
 
-are available in the Git repository at:
+Given that we're passing a pointer to the mvendorid field, the reg is
+reading 64 bits starting from mvendorid and going 32 bits in the next
+field, marchid. Here's an example:
 
-  https://github.com/alistair23/qemu.git tags/pull-riscv-to-apply-20230811-3
+$ ./qemu-system-riscv64 -machine virt,accel=kvm -m 2G -smp 1 \
+   -cpu rv64,marchid=0xab,mvendorid=0xcd,mimpid=0xef(...)
 
-for you to fetch changes up to b274c2388e9fcde75d60c6e7c7d8f888874b61b7:
+(inside the guest)
+ # cat /proc/cpuinfo
+processor	: 0
+hart		: 0
+isa		: rv64imafdc_zicbom_zicboz_zihintpause_zbb_sstc
+mmu		: sv57
+mvendorid	: 0xab000000cd
+marchid		: 0xab
+mimpid		: 0xef
 
-  hw/riscv/virt.c: change 'aclint' TCG check (2023-08-11 14:16:26 -0400)
+'mvendorid' was written as a combination of 0xab (the value from the
+adjacent field, marchid) and its intended value 0xcd.
 
-----------------------------------------------------------------
-Sixth RISC-V PR for 8.1
+Fix it by assigning cpu->cfg.mvendorid to a target_ulong var 'reg' and
+use it as input for kvm_set_one_reg(). Here's the result with this patch
+applied and using the same QEMU command line:
 
-This is a last minute PR for RISC-V.
+ # cat /proc/cpuinfo
+processor	: 0
+hart		: 0
+isa		: rv64imafdc_zicbom_zicboz_zihintpause_zbb_sstc
+mmu		: sv57
+mvendorid	: 0xcd
+marchid		: 0xab
+mimpid		: 0xef
 
-The main goal is to fix
-https://gitlab.com/qemu-project/qemu/-/issues/1823
-which is a regression that means the aclint option
-cannot be enabled.
+This bug affects only the generic (rv64) CPUs when running with KVM in a
+64 bit env since the 'host' CPU does not allow the machine IDs to be
+changed via command line.
 
-While we are here we also fixup KVM issue.
+Fixes: 1fb5a622f7 ("target/riscv: handle mvendorid/marchid/mimpid for KVM CPUs")
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Message-ID: <20230802180058.281385-1-dbarboza@ventanamicro.com>
+Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+---
+ target/riscv/kvm.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
- * KVM: fix mvendorid size
- * Fixup aclint check
+diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
+index 9d8a8982f9..b1fd2233c0 100644
+--- a/target/riscv/kvm.c
++++ b/target/riscv/kvm.c
+@@ -852,12 +852,19 @@ void kvm_arch_init_irq_routing(KVMState *s)
+ static int kvm_vcpu_set_machine_ids(RISCVCPU *cpu, CPUState *cs)
+ {
+     CPURISCVState *env = &cpu->env;
++    target_ulong reg;
+     uint64_t id;
+     int ret;
+ 
+     id = kvm_riscv_reg_id(env, KVM_REG_RISCV_CONFIG,
+                           KVM_REG_RISCV_CONFIG_REG(mvendorid));
+-    ret = kvm_set_one_reg(cs, id, &cpu->cfg.mvendorid);
++    /*
++     * cfg.mvendorid is an uint32 but a target_ulong will
++     * be written. Assign it to a target_ulong var to avoid
++     * writing pieces of other cpu->cfg fields in the reg.
++     */
++    reg = cpu->cfg.mvendorid;
++    ret = kvm_set_one_reg(cs, id, &reg);
+     if (ret != 0) {
+         return ret;
+     }
+-- 
+2.41.0
 
-----------------------------------------------------------------
-Daniel Henrique Barboza (2):
-      target/riscv/kvm.c: fix mvendorid size in vcpu_set_machine_ids()
-      hw/riscv/virt.c: change 'aclint' TCG check
-
- hw/riscv/virt.c    | 20 +++++++++++++-------
- target/riscv/kvm.c |  9 ++++++++-
- 2 files changed, 21 insertions(+), 8 deletions(-)
 
