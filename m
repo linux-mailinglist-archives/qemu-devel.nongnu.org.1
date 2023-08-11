@@ -2,75 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD4A6779236
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 16:52:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EB63779240
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 16:53:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qUTTt-0005tR-Pv; Fri, 11 Aug 2023 10:51:13 -0400
+	id 1qUTVY-0007sj-Ie; Fri, 11 Aug 2023 10:52:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qUTTr-0005t4-PZ
- for qemu-devel@nongnu.org; Fri, 11 Aug 2023 10:51:11 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qUTVW-0007sU-EI; Fri, 11 Aug 2023 10:52:54 -0400
+Received: from mail-vs1-xe32.google.com ([2607:f8b0:4864:20::e32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qUTTq-00022M-7o
- for qemu-devel@nongnu.org; Fri, 11 Aug 2023 10:51:11 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-1bc3d94d40fso18254315ad.3
- for <qemu-devel@nongnu.org>; Fri, 11 Aug 2023 07:51:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qUTVU-0002KV-31; Fri, 11 Aug 2023 10:52:53 -0400
+Received: by mail-vs1-xe32.google.com with SMTP id
+ ada2fe7eead31-447d6748aacso858501137.1; 
+ Fri, 11 Aug 2023 07:52:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1691765469; x=1692370269;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=gmail.com; s=20221208; t=1691765570; x=1692370370;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3DMuVNULUVy23JpCXi1mERaaGVw+Y7a2st0eZNSjR6o=;
- b=pVTdJ7Ogla0bPfAPoRy+vW+nDMNiZEW0mKtjlPXl8IHW60DFpcsFb7swGzzuPo+kOq
- BJ5k+YOeCbv0+ijeLfzgp1b+76jdW8/5pHKwGiFarw2YcdxkCWTjuDSyKIaShESm/kv8
- tKo4bGs2VIZNRGphVcQy2EchAwJoRm7L0cd5NliujQdz+2f31rhTpXotCiLGLv3WtbvS
- xbqadxlu+yJSzXWUfZr+CCcKwNXSKVD97yZ9xr9NN3OJJxESDOmfKhoi917gzqkBP1Di
- fHOWbkyb8EJ6P4JGwGdASPuWi5lZA1wPkN/9zqQ5qBlGjKbxaoZO495E4DMbdC4MjfcN
- 4qSQ==
+ bh=KR+K1ogNKTgiU1MOHnrT9PbEcEfeuQAEv2S47izRJQ0=;
+ b=U9glT+jxbq8Ips1fW7ItXofK1fGxReX7nq3DVRsdzN8k53Whw2BBdLBXdxRALXx+VP
+ fNPB1/tdkeNZD0j5GhrvYG5oGSDG+PfpPo2tJ/Reao6erBk7FPnEnG9Xsfty4LcevFs1
+ PwlU3eWoB2aGJAjuOpmwsljhOmc969SqT24mh6L3x6iM9AFLLXhzidRVAkqQyAcsLoxL
+ oajuL//pUHcT6ynwbFOyTEcs1NFffcOqIlcnTHB1f4vBdHdMVISzMaf6KkzO7t++///o
+ qPHHQ0uBXhxItaBdqTiZ5eLzjpHND1vmLONMVkUpeIyXsWJxnE+g+HSmGxsYUVDubTWt
+ PSgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691765469; x=1692370269;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20221208; t=1691765570; x=1692370370;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3DMuVNULUVy23JpCXi1mERaaGVw+Y7a2st0eZNSjR6o=;
- b=YxOE32GVkmGSOlEo6F3aG+BoLXo5WK6JIbP+JlYhHXu1jlXMxxrnN597/o8uwfO0EH
- RYkMPPImTbrm4GJ6RO7Ac5+QnanH07GY+4Z9KfjKqw2L6P/i8pHEkZxvRu1rBbIq8W16
- itEP8dCzZEnIZ9FoAWCIKnkec8S7tg4Cv/qVJVo99JlvJLCiESpfawEtrl9Ei5lgjDXS
- Zd4/vlNo3kUC4P+W9nD5N+wH/1vmowKS35FGH21p3Hzj21PKFC9VXdUClGsJRz97/T6c
- QZmzqt+eqgMQ2UFtmK6/bautunT3iiK3KSeS1HLU3JZgdlPfVqZLN+/ADN9aH3q8pxN3
- 9f0Q==
-X-Gm-Message-State: AOJu0Yyqh3O13PpxGiHFG9o2Yin0TpzFyfGqwW9vbY2kT5nQvqAV+yQD
- kTsC6lm3IjWkME/14j16KqY=
-X-Google-Smtp-Source: AGHT+IEsD21AfwTk+63Sf07GHU+YPpqowrAI1neZ2XtL7lGOgKGG6eWl5mzfHeTqqvLDTWWrbFtwIw==
-X-Received: by 2002:a17:902:a407:b0:1bc:5197:73c5 with SMTP id
- p7-20020a170902a40700b001bc519773c5mr2032712plq.54.1691765468628; 
- Fri, 11 Aug 2023 07:51:08 -0700 (PDT)
-Received: from localhost ([183.242.254.166]) by smtp.gmail.com with ESMTPSA id
- x12-20020a170902ec8c00b001b1a2c14a4asm3993750plg.38.2023.08.11.07.51.07
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 11 Aug 2023 07:51:08 -0700 (PDT)
-From: Hawkins Jiawei <yin31149@gmail.com>
-To: jasowang@redhat.com,
-	mst@redhat.com,
-	eperezma@redhat.com
-Cc: qemu-devel@nongnu.org, yin31149@gmail.com, 18801353760@163.com,
- yuri.benditovich@daynix.com
-Subject: [RFC PATCH 1/2] vdpa: Restore hash calculation state
-Date: Fri, 11 Aug 2023 22:50:49 +0800
-Message-Id: <a54ca70b12ebe2f3c391864e41241697ab1aba30.1691762906.git.yin31149@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <cover.1691762906.git.yin31149@gmail.com>
-References: <cover.1691762906.git.yin31149@gmail.com>
+ bh=KR+K1ogNKTgiU1MOHnrT9PbEcEfeuQAEv2S47izRJQ0=;
+ b=RlEyOqAUSP2byb3l82/i069e+AhLMQf1LGhRIZA9C/zA100jiS8kIkhmzFK51ir1o0
+ Bhv5IvZb9qW2X/WEtB+P3r6vBKw6iv8waR+o/Dg14a35uDi+ez3CnC299mz7CDbfCeEh
+ CwbgZklI0oTQAzIoqkAgiHUZvDeKnRHONdE1sc8Zzrr/rs8/5MZCzEMSb7xPbyaW8pUD
+ Lw/sXZr01L9Bl74sFu3/5tM22FGoex+VbxyexGIXOzSn1CPQqaJGEGhqFyXh2PQl+Dnq
+ U5JJtNnlVQrLHLLi2CbPoavVxWY6Bfz4/f4yB9kaUnKqSuQXkRK0vKGCccSUH/4tVZeB
+ lRGw==
+X-Gm-Message-State: AOJu0YyTeodth54TFjgFL19AwK7QeJg9cGOIzmW8CkbTK/ajlXFL5NER
+ dTAghLtd98JXh2NDmRg/FszLM0nEdkc8ZJ6mih0=
+X-Google-Smtp-Source: AGHT+IEGZGaDxt6zkF56qrV1zzst788F2AUzhfm2bWd1vD5XlVP3jo0h8Mm/eleRlyQtyZcgj0qK3XjWUfSsbFCivlI=
+X-Received: by 2002:a67:f5cb:0:b0:447:7dc0:e14 with SMTP id
+ t11-20020a67f5cb000000b004477dc00e14mr1642480vso.21.1691765570535; Fri, 11
+ Aug 2023 07:52:50 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=yin31149@gmail.com; helo=mail-pl1-x62d.google.com
+References: <20230728131520.110394-1-dbarboza@ventanamicro.com>
+ <20230728131520.110394-5-dbarboza@ventanamicro.com>
+In-Reply-To: <20230728131520.110394-5-dbarboza@ventanamicro.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Fri, 11 Aug 2023 10:52:24 -0400
+Message-ID: <CAKmqyKPSC1_oT6muzGtFs-sU2Vbrg0K9Vs_QT+661BSrBe09Kg@mail.gmail.com>
+Subject: Re: [PATCH 4/8] target/riscv/cpu.c: use cpu_cfg_ext_auto_update()
+ during realize()
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
+ palmer@rivosinc.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::e32;
+ envelope-from=alistair23@gmail.com; helo=mail-vs1-xe32.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -94,138 +89,151 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch introduces vhost_vdpa_net_load_rss() to restore
-the hash calculation state at device's startup.
+On Fri, Jul 28, 2023 at 10:08=E2=80=AFAM Daniel Henrique Barboza
+<dbarboza@ventanamicro.com> wrote:
+>
+> Let's change the other instances in realize() where we're enabling an
+> extension based on a certain criteria (e.g. it's a dependency of another
+> extension).
+>
+> We're leaving icsr and ifencei being enabled during RVG for later -
+> we'll want to error out in that case. Every other extension enablement
+> during realize is now done via cpu_cfg_ext_auto_update().
+>
+> The end goal is that only cpu init() functions will handle extension
+> flags directly via "cpu->cfg.ext_N =3D true|false".
+>
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-Note that vhost_vdpa_net_load_rss() has `do_rss` argument,
-which allows future code to reuse this function to restore
-the receive-side scaling state when the VIRTIO_NET_F_RSS
-feature is enabled in SVQ. Currently, vhost_vdpa_net_load_rss()
-could only be invoked when `do_rss` is set to false.
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 
-Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
----
-Question:
+Alistair
 
-It seems that virtio_net_handle_rss() currently does not restore the
-hash key length parsed from the CVQ command sent from the guest into
-n->rss_data and uses the maximum key length in other code.
-
-So for `hash_key_length` field in VIRTIO_NET_CTRL_MQ_HASH_CONFIG command
-sent to device, is it okay to also use the maximum key length as its value?
-Or should we introduce the `hash_key_length` field in n->rss_data
-structure to record the key length from guest and use this value?
-
- net/vhost-vdpa.c | 88 ++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 88 insertions(+)
-
-diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index 7bb29f6009..bd51020771 100644
---- a/net/vhost-vdpa.c
-+++ b/net/vhost-vdpa.c
-@@ -788,6 +788,85 @@ static int vhost_vdpa_net_load_mac(VhostVDPAState *s, const VirtIONet *n,
-     return 0;
- }
- 
-+static int vhost_vdpa_net_load_rss(VhostVDPAState *s, const VirtIONet *n,
-+                                   void **out_cursor, void **in_cursor,
-+                                   bool do_rss)
-+{
-+    struct virtio_net_rss_config cfg;
-+    ssize_t r;
-+
-+    /*
-+     * According to VirtIO standard, "Initially the device has all hash
-+     * types disabled and reports only VIRTIO_NET_HASH_REPORT_NONE.".
-+     *
-+     * Therefore, there is no need to send this CVQ command if the
-+     * driver disable the all hash types, which aligns with
-+     * the device's defaults.
-+     *
-+     * Note that the device's defaults can mismatch the driver's
-+     * configuration only at live migration.
-+     */
-+    if (!n->rss_data.enabled ||
-+        n->rss_data.hash_types == VIRTIO_NET_HASH_REPORT_NONE) {
-+        return 0;
-+    }
-+
-+    cfg.hash_types = cpu_to_le32(n->rss_data.hash_types);
-+    /*
-+     * According to VirtIO standard, "Field reserved MUST contain zeroes.
-+     * It is defined to make the structure to match the layout of
-+     * virtio_net_rss_config structure, defined in 5.1.6.5.7.".
-+     *
-+     * Therefore, we need to zero the fields in struct virtio_net_rss_config,
-+     * which corresponds the `reserved` field in
-+     * struct virtio_net_hash_config.
-+     */
-+    memset(&cfg.indirection_table_mask, 0,
-+           sizeof_field(struct virtio_net_hash_config, reserved));
-+    /*
-+     * Consider that virtio_net_handle_rss() currently does not restore the
-+     * hash key length parsed from the CVQ command sent from the guest into
-+     * n->rss_data and uses the maximum key length in other code, so we also
-+     * employthe the maxium key length here.
-+     */
-+    cfg.hash_key_length = sizeof(n->rss_data.key);
-+
-+    g_autofree uint16_t *table = g_malloc_n(n->rss_data.indirections_len,
-+                                    sizeof(n->rss_data.indirections_table[0]));
-+    for (int i = 0; i < n->rss_data.indirections_len; ++i) {
-+        table[i] = cpu_to_le16(n->rss_data.indirections_table[i]);
-+    }
-+
-+    const struct iovec data[] = {
-+        {
-+            .iov_base = &cfg,
-+            .iov_len = offsetof(struct virtio_net_rss_config,
-+                                indirection_table),
-+        }, {
-+            .iov_base = table,
-+            .iov_len = n->rss_data.indirections_len *
-+                       sizeof(n->rss_data.indirections_table[0]),
-+        }, {
-+            .iov_base = &cfg.max_tx_vq,
-+            .iov_len = offsetof(struct virtio_net_rss_config, hash_key_data) -
-+                       offsetof(struct virtio_net_rss_config, max_tx_vq),
-+        }, {
-+            .iov_base = (void *)n->rss_data.key,
-+            .iov_len = sizeof(n->rss_data.key),
-+        }
-+    };
-+
-+    r = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
-+                                VIRTIO_NET_CTRL_MQ,
-+                                VIRTIO_NET_CTRL_MQ_HASH_CONFIG,
-+                                data, ARRAY_SIZE(data));
-+    if (unlikely(r < 0)) {
-+        return r;
-+    }
-+
-+    return 0;
-+}
-+
- static int vhost_vdpa_net_load_mq(VhostVDPAState *s,
-                                   const VirtIONet *n,
-                                   void **out_cursor, void **in_cursor)
-@@ -812,6 +891,15 @@ static int vhost_vdpa_net_load_mq(VhostVDPAState *s,
-         return r;
-     }
- 
-+    if (!virtio_vdev_has_feature(&n->parent_obj, VIRTIO_NET_F_HASH_REPORT)) {
-+        return 0;
-+    }
-+
-+    r = vhost_vdpa_net_load_rss(s, n, out_cursor, in_cursor, false);
-+    if (unlikely(r < 0)) {
-+        return r;
-+    }
-+
-     return 0;
- }
- 
--- 
-2.25.1
-
+> ---
+>  target/riscv/cpu.c | 50 +++++++++++++++++++++++-----------------------
+>  1 file changed, 25 insertions(+), 25 deletions(-)
+>
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index 75dc83407e..88b263e830 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -1174,7 +1174,7 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cp=
+u, Error **errp)
+>      }
+>
+>      if (cpu->cfg.ext_zfh) {
+> -        cpu->cfg.ext_zfhmin =3D true;
+> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zfhmin), true);
+>      }
+>
+>      if (cpu->cfg.ext_zfhmin && !riscv_has_ext(env, RVF)) {
+> @@ -1200,17 +1200,17 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *=
+cpu, Error **errp)
+>          }
+>
+>          /* The V vector extension depends on the Zve64d extension */
+> -        cpu->cfg.ext_zve64d =3D true;
+> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zve64d), true);
+>      }
+>
+>      /* The Zve64d extension depends on the Zve64f extension */
+>      if (cpu->cfg.ext_zve64d) {
+> -        cpu->cfg.ext_zve64f =3D true;
+> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zve64f), true);
+>      }
+>
+>      /* The Zve64f extension depends on the Zve32f extension */
+>      if (cpu->cfg.ext_zve64f) {
+> -        cpu->cfg.ext_zve32f =3D true;
+> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zve32f), true);
+>      }
+>
+>      if (cpu->cfg.ext_zve64d && !riscv_has_ext(env, RVD)) {
+> @@ -1224,7 +1224,7 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cp=
+u, Error **errp)
+>      }
+>
+>      if (cpu->cfg.ext_zvfh) {
+> -        cpu->cfg.ext_zvfhmin =3D true;
+> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zvfhmin), true);
+>      }
+>
+>      if (cpu->cfg.ext_zvfhmin && !cpu->cfg.ext_zve32f) {
+> @@ -1254,7 +1254,7 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cp=
+u, Error **errp)
+>
+>      /* Set the ISA extensions, checks should have happened above */
+>      if (cpu->cfg.ext_zhinx) {
+> -        cpu->cfg.ext_zhinxmin =3D true;
+> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zca), true);
+>      }
+>
+>      if ((cpu->cfg.ext_zdinx || cpu->cfg.ext_zhinxmin) && !cpu->cfg.ext_z=
+finx) {
+> @@ -1275,12 +1275,12 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *=
+cpu, Error **errp)
+>      }
+>
+>      if (cpu->cfg.ext_zce) {
+> -        cpu->cfg.ext_zca =3D true;
+> -        cpu->cfg.ext_zcb =3D true;
+> -        cpu->cfg.ext_zcmp =3D true;
+> -        cpu->cfg.ext_zcmt =3D true;
+> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zca), true);
+> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zcb), true);
+> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zcmp), true);
+> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zcmt), true);
+>          if (riscv_has_ext(env, RVF) && env->misa_mxl_max =3D=3D MXL_RV32=
+) {
+> -            cpu->cfg.ext_zcf =3D true;
+> +            cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zcf), true);
+>          }
+>      }
+>
+> @@ -1329,26 +1329,26 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *=
+cpu, Error **errp)
+>      }
+>
+>      if (cpu->cfg.ext_zk) {
+> -        cpu->cfg.ext_zkn =3D true;
+> -        cpu->cfg.ext_zkr =3D true;
+> -        cpu->cfg.ext_zkt =3D true;
+> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zkn), true);
+> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zkr), true);
+> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zkt), true);
+>      }
+>
+>      if (cpu->cfg.ext_zkn) {
+> -        cpu->cfg.ext_zbkb =3D true;
+> -        cpu->cfg.ext_zbkc =3D true;
+> -        cpu->cfg.ext_zbkx =3D true;
+> -        cpu->cfg.ext_zkne =3D true;
+> -        cpu->cfg.ext_zknd =3D true;
+> -        cpu->cfg.ext_zknh =3D true;
+> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zbkb), true);
+> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zbkc), true);
+> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zbkx), true);
+> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zkne), true);
+> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zknd), true);
+> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zknh), true);
+>      }
+>
+>      if (cpu->cfg.ext_zks) {
+> -        cpu->cfg.ext_zbkb =3D true;
+> -        cpu->cfg.ext_zbkc =3D true;
+> -        cpu->cfg.ext_zbkx =3D true;
+> -        cpu->cfg.ext_zksed =3D true;
+> -        cpu->cfg.ext_zksh =3D true;
+> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zbkb), true);
+> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zbkc), true);
+> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zbkx), true);
+> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zksed), true);
+> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zksh), true);
+>      }
+>
+>      /*
+> --
+> 2.41.0
+>
+>
 
