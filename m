@@ -2,70 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E3D8779237
+	by mail.lfdr.de (Postfix) with ESMTPS id 50DF5779238
 	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 16:52:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qUTTe-0005rV-Q0; Fri, 11 Aug 2023 10:50:58 -0400
+	id 1qUTTp-0005sf-0D; Fri, 11 Aug 2023 10:51:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qUTTd-0005rC-2V; Fri, 11 Aug 2023 10:50:57 -0400
-Received: from mail-vs1-xe2f.google.com ([2607:f8b0:4864:20::e2f])
+ (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
+ id 1qUTTn-0005sV-PC
+ for qemu-devel@nongnu.org; Fri, 11 Aug 2023 10:51:07 -0400
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qUTTb-0001zY-CJ; Fri, 11 Aug 2023 10:50:56 -0400
-Received: by mail-vs1-xe2f.google.com with SMTP id
- ada2fe7eead31-447a3d97d77so846938137.1; 
- Fri, 11 Aug 2023 07:50:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
+ id 1qUTTm-00021q-71
+ for qemu-devel@nongnu.org; Fri, 11 Aug 2023 10:51:07 -0400
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-6873a30d02eso1548435b3a.3
+ for <qemu-devel@nongnu.org>; Fri, 11 Aug 2023 07:51:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1691765454; x=1692370254;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=YZhnLwn/8GLsrVm+YjBC8U9XhBzLq6uEQ0uLpzplokM=;
- b=ocMVQr2P1NKP93OnmJH7I5F4u9l5ezDClbbGyej9YgiwaK2wUQGq8OSOjsqlvoYz9c
- G7iNIXUJK1pm4WwNXCsJHbNAnyRlyzBCnvEWYqYff77DuRoDTwfdKvtdOxCPwqMZcXKY
- xHYbaHu6lfP39p0Yd685mp/EBQI+qnaDh2hDFAio/qgMZpTOwZ9T7NazgOHafZ835ccb
- /OeRw20VPYHApZUUVTSdR75n73ujY9jfSW7x4eTCgZoCS8M/dB1m0SUibsRwdpugx/mo
- sOwSz+KDtTJW1LJOu5FNt0OIa8P6bkCjKAv/DeFzzseHAt29ak79XZpmCtLqQhEEUcbX
- AVMw==
+ d=gmail.com; s=20221208; t=1691765464; x=1692370264;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=lGGS85EdF+n2tsSxAgTDPy2Jb7EnRjrZDRNYv6vgzSs=;
+ b=bfpd0bnRdHqEW3gk1x0Oxsr5k3IkhTWEPel83jI5H8am9LncZKFHD0N7OFKa9o2fjY
+ YKo0miKMkwllnHtMreE0kiAxY6ktj/JnJIeTkkWBHkpc58Es46T9F+nV/uVRL8fobps8
+ 3pVVkjyPENbF6cB+kAJ4kJxUSC0pxahBqAKpm2lLoPyiUTNbOYle5taNvoRHaFoJCEnA
+ wWy60BWfTJiBHIRqq7XHFKDojOq4dnJvcYUHz/C30i9QCagwO0A90i31Io6LGMiqCxsO
+ HVrtWA8h3U4bc3WLT6IjuOVhXj+86y4G+xqrq4ndhq0NAFNpDhsVv/XWixOjRV1uHJzd
+ 0XLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691765454; x=1692370254;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=YZhnLwn/8GLsrVm+YjBC8U9XhBzLq6uEQ0uLpzplokM=;
- b=PeAkJoG60VI7/Ugzc861E7wfd1qbhGP+CrlTYvBk6pLnZQeHttb5CuzJb223z/RGJQ
- NbENFaxN6dLocAj97nbEuA4FeSvx4/Gk8nxRJ6PJrNznB4K8PPefY1HqruU2aAsxhzCN
- uvOCoSWl1NXh/YXCOs9GISVULN68IysyzAV8kHNLmX/+wGsBHyUD1f+PXd0Jfa9ds182
- f+y937HHjSOs3D3iEhkpcqHTMW1u7rprV5ME0oQPYrxe73N6Qpf96vH+JOHQrf9kG8Zg
- 0iEbJm1FOqoiEUn5TQvUx139G9xlAXlHn853YBnNthCuarH64VYtMFyPxnjsF5iUC0w1
- ypEg==
-X-Gm-Message-State: AOJu0YxXdGjoq8f8iaIX/uIxi/Wc5AzLGDPbQhk6vR++4W4o/+LdixpD
- py+h3aykM2ob0d/ZEMNa5w2d39VlI8PyrOWtpx8=
-X-Google-Smtp-Source: AGHT+IHTkCoq5layrMhI8gxl0Lqu61Wfwv1wuVn9Fg7SSLssyV+TvJILj12z2pvjJOIiBeZuPo2gHyvjUu+IsCA8tic=
-X-Received: by 2002:a05:6102:2854:b0:443:5943:4f7b with SMTP id
- az20-20020a056102285400b0044359434f7bmr1789109vsb.13.1691765453988; Fri, 11
- Aug 2023 07:50:53 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1691765464; x=1692370264;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=lGGS85EdF+n2tsSxAgTDPy2Jb7EnRjrZDRNYv6vgzSs=;
+ b=fQqY1fXMr+KROSTiE7i4ZwtwGjQ+RPz3aGFD4ki5mNEE5l8ndYRtOE0XsurLTu1fwG
+ 2jP2mX6UZLUsEIibTqXM5NWa+FFRg4TcH2ujT3+atJPR+9Fv45vYXHUaXBcVczAcJx4E
+ NCZpQ5R+7Nm0qUI2OZPNcX7MAcsxmsf41Qw0Z0YBQrfwe3PZlYkXd4kLkondPKZ4nAyV
+ uj0uDJ/Szkqs6Chv5/Y2zKddFY5HWHXiI4mdXVrVSeoJyX3nt2vwMz/5zoDom69n5Hmn
+ eFDv+k5qnw/Cv0HuAYAnxvbKdfpAAaXWgXgQX7RcOskJm5hfaIoRI9Xf5B0X4CbicPVI
+ SEDQ==
+X-Gm-Message-State: AOJu0Yw1iFPi9fMNu3uaZQG/2fmRLzzUphC77BxM3vjtC6uhuptPvSpB
+ sFX7gQQYiIJl6hjv4FzRWTc=
+X-Google-Smtp-Source: AGHT+IELlbMFrmXVkUWaWZPYOQEq9AhG7r5ZzVml8z57I19TPn5QM2K9vkogIEetp0jiDZ+KpClEQA==
+X-Received: by 2002:a05:6a21:4847:b0:104:ad71:f080 with SMTP id
+ au7-20020a056a21484700b00104ad71f080mr1914941pzc.34.1691765463980; 
+ Fri, 11 Aug 2023 07:51:03 -0700 (PDT)
+Received: from localhost ([183.242.254.166]) by smtp.gmail.com with ESMTPSA id
+ m16-20020aa79010000000b006827d86ca0csm3416849pfo.55.2023.08.11.07.51.02
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 11 Aug 2023 07:51:03 -0700 (PDT)
+From: Hawkins Jiawei <yin31149@gmail.com>
+To: jasowang@redhat.com,
+	mst@redhat.com,
+	eperezma@redhat.com
+Cc: qemu-devel@nongnu.org, yin31149@gmail.com, 18801353760@163.com,
+ yuri.benditovich@daynix.com
+Subject: [RFC PATCH 0/2] Vhost-vdpa Shadow Virtqueue Hash calculation Support
+Date: Fri, 11 Aug 2023 22:50:48 +0800
+Message-Id: <cover.1691762906.git.yin31149@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20230728131520.110394-1-dbarboza@ventanamicro.com>
- <20230728131520.110394-4-dbarboza@ventanamicro.com>
-In-Reply-To: <20230728131520.110394-4-dbarboza@ventanamicro.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Fri, 11 Aug 2023 10:50:27 -0400
-Message-ID: <CAKmqyKOU+N7JCo85zGcYDDd7=ya9aZ+UDFLLY90BxHV31VsiJA@mail.gmail.com>
-Subject: Re: [PATCH 3/8] target/riscv/cpu.c: introduce
- cpu_cfg_ext_auto_update()
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::e2f;
- envelope-from=alistair23@gmail.com; helo=mail-vs1-xe2f.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=yin31149@gmail.com; helo=mail-pf1-x42a.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -89,116 +91,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jul 28, 2023 at 9:22=E2=80=AFAM Daniel Henrique Barboza
-<dbarboza@ventanamicro.com> wrote:
->
-> During realize() time we're activating a lot of extensions based on some
-> criteria, e.g.:
->
->     if (cpu->cfg.ext_zk) {
->         cpu->cfg.ext_zkn =3D true;
->         cpu->cfg.ext_zkr =3D true;
->         cpu->cfg.ext_zkt =3D true;
->     }
->
-> This practice resulted in at least one case where we ended up enabling
-> something we shouldn't: RVC enabling zca/zcd/zcf when using a CPU that
-> has priv_spec older than 1.12.0.
->
-> We're also not considering user choice. There's no way of doing it now
-> but this is about to change in the next few patches.
->
-> cpu_cfg_ext_auto_update() will check for priv version mismatches before
-> enabling extensions. If we have a mismatch between the current priv
-> version and the extension we want to enable, do not enable it. In the
-> near future, this same function will also consider user choice when
-> deciding if we're going to enable/disable an extension or not.
->
-> For now let's use it to handle zca/zcd/zcf enablement if RVC is enabled.
->
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+This series enables shadowed CVQ to intercept
+VIRTIO_NET_CTRL_MQ_HASH_CONFIG command through shadowed CVQ,
+update the virtio NIC device model so qemu send it in a
+migration, and the restore of that Hash calculation state
+in the destination.
 
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Note that this patch should be based on
+patch "vdpa: Send all CVQ state load commands in parallel" at [1].
 
-Alistair
+[1]. https://lore.kernel.org/all/cover.1689748694.git.yin31149@gmail.com/
 
-> ---
->  target/riscv/cpu.c | 44 +++++++++++++++++++++++++++++++++++++++++---
->  1 file changed, 41 insertions(+), 3 deletions(-)
->
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index 3e62881d85..75dc83407e 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -168,6 +168,44 @@ static void isa_ext_update_enabled(RISCVCPU *cpu, ui=
-nt32_t ext_offset,
->      *ext_enabled =3D en;
->  }
->
-> +static int cpu_cfg_ext_get_min_version(uint32_t ext_offset)
-> +{
-> +    int i;
-> +
-> +    for (i =3D 0; i < ARRAY_SIZE(isa_edata_arr); i++) {
-> +        if (isa_edata_arr[i].ext_enable_offset !=3D ext_offset) {
-> +            continue;
-> +        }
-> +
-> +        return isa_edata_arr[i].min_version;
-> +    }
-> +
-> +    /* Default to oldest priv spec if no match found */
-> +    return PRIV_VERSION_1_10_0;
-> +}
-> +
-> +static void cpu_cfg_ext_auto_update(RISCVCPU *cpu, uint32_t ext_offset,
-> +                                    bool value)
-> +{
-> +    CPURISCVState *env =3D &cpu->env;
-> +    bool prev_val =3D isa_ext_is_enabled(cpu, ext_offset);
-> +    int min_version;
-> +
-> +    if (prev_val =3D=3D value) {
-> +        return;
-> +    }
-> +
-> +    if (value && env->priv_ver !=3D PRIV_VERSION_LATEST) {
-> +        /* Do not enable it if priv_ver is older than min_version */
-> +        min_version =3D cpu_cfg_ext_get_min_version(ext_offset);
-> +        if (env->priv_ver < min_version) {
-> +            return;
-> +        }
-> +    }
-> +
-> +    isa_ext_update_enabled(cpu, ext_offset, value);
-> +}
-> +
->  const char * const riscv_int_regnames[] =3D {
->      "x0/zero", "x1/ra",  "x2/sp",  "x3/gp",  "x4/tp",  "x5/t0",   "x6/t1=
-",
->      "x7/t2",   "x8/s0",  "x9/s1",  "x10/a0", "x11/a1", "x12/a2",  "x13/a=
-3",
-> @@ -1248,12 +1286,12 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *=
-cpu, Error **errp)
->
->      /* zca, zcd and zcf has a PRIV 1.12.0 restriction */
->      if (riscv_has_ext(env, RVC) && env->priv_ver >=3D PRIV_VERSION_1_12_=
-0) {
-> -        cpu->cfg.ext_zca =3D true;
-> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zca), true);
->          if (riscv_has_ext(env, RVF) && env->misa_mxl_max =3D=3D MXL_RV32=
-) {
-> -            cpu->cfg.ext_zcf =3D true;
-> +            cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zcf), true);
->          }
->          if (riscv_has_ext(env, RVD)) {
-> -            cpu->cfg.ext_zcd =3D true;
-> +            cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zcd), true);
->          }
->      }
->
-> --
-> 2.41.0
->
->
+TestStep
+========
+1. test the migration using vp-vdpa device
+  - For L0 guest, boot QEMU with two virtio-net-pci net device with
+`ctrl_vq`, `mq`, `hash` features on, command line like:
+	-netdev tap,...
+	-device virtio-net-pci,disable-legacy=on,disable-modern=off,
+iommu_platform=on,mq=on,ctrl_vq=on,hash=on,guest_announce=off,
+indirect_desc=off,queue_reset=off,...
+
+  - For L1 guest, apply the relative patch series and compile the
+source code, start QEMU with two vdpa device with svq mode on,
+enable the `ctrl_vq`, `mq`, `hash` features on, command line like:
+      -netdev type=vhost-vdpa,x-svq=true,...
+      -device virtio-net-pci,mq=on,guest_announce=off,ctrl_vq=on,
+hash=on,...
+
+  - For L2 source guest, run the following bash command:
+```bash
+#!/bin/sh
+
+ethtool -K eth0 rxhash on
+```
+  - Gdb attach the destination VM and break at the
+vhost_vdpa_net_load_rss()
+
+  - Execute the live migration in L2 source monitor
+
+  - Result
+    * with this series, gdb can hit the breakpoint and continue
+the executing without triggering any error or warning.
+
+Hawkins Jiawei (2):
+  vdpa: Restore hash calculation state
+  vdpa: Allow VIRTIO_NET_F_HASH_REPORT in SVQ
+
+ net/vhost-vdpa.c | 89 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 89 insertions(+)
+
+-- 
+2.25.1
+
 
