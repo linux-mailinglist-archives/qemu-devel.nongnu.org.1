@@ -2,66 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8606577910B
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 15:52:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 338C7779117
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 15:55:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qUSYg-0000jC-6R; Fri, 11 Aug 2023 09:52:06 -0400
+	id 1qUSbm-0004bN-ER; Fri, 11 Aug 2023 09:55:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <twiederh@redhat.com>)
- id 1qUSYd-0000iY-Uj
- for qemu-devel@nongnu.org; Fri, 11 Aug 2023 09:52:03 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qUSbj-0004b5-C0
+ for qemu-devel@nongnu.org; Fri, 11 Aug 2023 09:55:15 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <twiederh@redhat.com>)
- id 1qUSYc-000394-76
- for qemu-devel@nongnu.org; Fri, 11 Aug 2023 09:52:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691761921;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=KtR7/mOWyjlooXnBTec0ACvT+LAQo+yC+T4Mj0Zre8k=;
- b=hj9sG7/wgr0f6plhdO+QWojNtrqV6CvNL4H7oSm7YXgj9Eoihs+kmMl3DK4Owu8DDROuHI
- l4zHARTVoiSR3Z+dU+5e7RmUmeGrmMT7ur8h6EDYNTqMmOUL0Dpkid1ZV23Mn1Tw0M5nDm
- pFMw9OCu2JWvHEAu+QidrIZwqPfyxLA=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-459-2khNARG-NU-vwcByxnO3TQ-1; Fri, 11 Aug 2023 09:50:16 -0400
-X-MC-Unique: 2khNARG-NU-vwcByxnO3TQ-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5F3553C0FCA4
- for <qemu-devel@nongnu.org>; Fri, 11 Aug 2023 13:50:16 +0000 (UTC)
-Received: from work.redhat.com (unknown [10.39.193.214])
- by smtp.corp.redhat.com (Postfix) with ESMTP id E7516140E96D;
- Fri, 11 Aug 2023 13:50:15 +0000 (UTC)
-From: Tim Wiederhake <twiederh@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Tim Wiederhake <twiederh@redhat.com>
-Subject: [PATCH 4/4] target/i386: Autogenerate feature_word_info.c.inc
-Date: Fri, 11 Aug 2023 15:50:11 +0200
-Message-Id: <20230811135011.23343-5-twiederh@redhat.com>
-In-Reply-To: <20230811135011.23343-1-twiederh@redhat.com>
-References: <20230811135011.23343-1-twiederh@redhat.com>
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qUSbh-0003cZ-4a
+ for qemu-devel@nongnu.org; Fri, 11 Aug 2023 09:55:15 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.207])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RMlfM5ppYz6HJTd;
+ Fri, 11 Aug 2023 21:54:51 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Fri, 11 Aug
+ 2023 14:54:59 +0100
+Date: Fri, 11 Aug 2023 14:54:58 +0100
+To: Maverickk 78 <maverickk1778@gmail.com>
+CC: Jonathan Cameron via <qemu-devel@nongnu.org>, <linux-cxl@vger.kernel.org>
+Subject: Re: CXL volatile memory is not listed
+Message-ID: <20230811145458.000029c7@Huawei.com>
+In-Reply-To: <CALfBBTud4Y7qxKB8nkZ5Lo5sQs-7-F9Rkso+iQGvLO07VyRcDA@mail.gmail.com>
+References: <CALfBBTtUtydebmJuh6JZ5RAXZfx5OgJ+RCug1apbZa4mm17rJQ@mail.gmail.com>
+ <20230810113512.00000516@Huawei.com>
+ <CALfBBTud4Y7qxKB8nkZ5Lo5sQs-7-F9Rkso+iQGvLO07VyRcDA@mail.gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=twiederh@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,157 +63,105 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This introduces no semantic changes to the file.
+On Fri, 11 Aug 2023 08:04:26 +0530
+Maverickk 78 <maverickk1778@gmail.com> wrote:
 
-Signed-off-by: Tim Wiederhake <twiederh@redhat.com>
----
- target/i386/feature_word_info.c.inc |   2 +
- target/i386/feature_word_info.py    | 110 ++++++++++++++++++++++++++++
- target/i386/feature_word_info.xml   |   3 +
- 3 files changed, 115 insertions(+)
- create mode 100755 target/i386/feature_word_info.py
+> Jonathan,
+> 
+> > More generally for the flow that would bring the memory up as system ram
+> > you would typically need the bios to have done the CXL enumeration or
+> > a bunch of scripts in the kernel to have done it.  In general it can't
+> > be fully automated, because there are policy decisions to make on things like
+> > interleaving.  
+> 
+> BIOS CXL enumeration? is CEDT not enough? or BIOS further needs to
+> create an entry
+> in the e820 table?
+On intel platforms 'maybe' :)  I know how it works on those that just
+use the nice standard EFI tables - less familiar with the e820 stuff :)
 
-diff --git a/target/i386/feature_word_info.c.inc b/target/i386/feature_word_info.c.inc
-index 040c3c4e56..b8e77ab7e5 100644
---- a/target/i386/feature_word_info.c.inc
-+++ b/target/i386/feature_word_info.c.inc
-@@ -1,3 +1,5 @@
-+/* This file is autogenerated by feature_word_info.py. */
-+
- FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
-     [FEAT_1_EDX] = {
-         .type = CPUID_FEATURE_WORD,
-diff --git a/target/i386/feature_word_info.py b/target/i386/feature_word_info.py
-new file mode 100755
-index 0000000000..95f3931aa0
---- /dev/null
-+++ b/target/i386/feature_word_info.py
-@@ -0,0 +1,110 @@
-+#!/bin/env python3
-+
-+import lxml.etree
-+import os
-+
-+
-+class FeatureWord:
-+    def __init__(self, xml):
-+        self.index = xml.values()[0]
-+        for node in xml:
-+            if node.tag == "cpuid":
-+                self.cpuid = dict()
-+                for child in node:
-+                    self.cpuid[child.tag] = child.text
-+            elif node.tag == "feat_names":
-+                self.feat_names = [child.text for child in node]
-+            else:
-+                setattr(self, node.tag, node.text)
-+
-+
-+def write_feat_names(f, data):
-+    f.write("        .feat_names = {\n")
-+    for index, name in enumerate(data):
-+        if name is None:
-+            name = "NULL"
-+        if index % 4 == 0:
-+            f.write(" " * 11)
-+        f.write(" " + str(name) + ",")
-+        if index % 4 == 3:
-+            f.write("\n")
-+    f.write("        },\n")
-+
-+
-+def write_cpuid(f, data):
-+    f.write("        .cpuid = {\n")
-+    f.write("            .eax = {},\n".format(data["eax"]))
-+    if "ecx" in data:
-+        f.write("            .needs_ecx = true,\n")
-+        f.write("            .ecx = {},\n".format(data["ecx"]))
-+    f.write("            .reg = {},\n".format(data["reg"]))
-+    f.write("        },\n")
-+
-+
-+def write_msr(f, data):
-+    f.write("        .msr = {\n")
-+    f.write("            .index = {},\n".format(data))
-+    f.write("        },\n")
-+
-+
-+def write_tcg_features(f, data):
-+    f.write("        .tcg_features = {},\n".format(data))
-+
-+
-+def write_unmigratable_flags(f, data):
-+    f.write("        .unmigratable_flags = {},\n".format(data))
-+
-+
-+def write_migratable_flags(f, data):
-+    f.write("        .migratable_flags = {},\n".format(data))
-+
-+
-+def write_no_autoenable_flags(f, data):
-+    f.write("        .no_autoenable_flags = {},\n".format(data))
-+
-+
-+def write_feature_word(f, data):
-+    f.write("    [{}] = {{\n".format(data.index))
-+    f.write("        .type = {},\n".format(data.type))
-+    if hasattr(data, "feat_names"):
-+        write_feat_names(f, data.feat_names)
-+    if hasattr(data, "cpuid"):
-+        write_cpuid(f, data.cpuid)
-+    if hasattr(data, "msr"):
-+        write_msr(f, data.msr)
-+    if hasattr(data, "tcg_features"):
-+        write_tcg_features(f, data.tcg_features)
-+    if hasattr(data, "unmigratable_flags"):
-+        write_unmigratable_flags(f, data.unmigratable_flags)
-+    if hasattr(data, "migratable_flags"):
-+        write_migratable_flags(f, data.migratable_flags)
-+    if hasattr(data, "no_autoenable_flags"):
-+        write_no_autoenable_flags(f, data.no_autoenable_flags)
-+    f.write("    },\n")
-+
-+
-+def write_feature_words(f, data):
-+    f.write("/* This file is autogenerated by feature_word_info.py. */\n\n")
-+    f.write("FeatureWordInfo feature_word_info[FEATURE_WORDS] = {\n")
-+    for feature_word in data:
-+        write_feature_word(f, feature_word)
-+    f.write("};\n")
-+
-+
-+def main():
-+    dirname = os.path.dirname(__file__)
-+    ifile = os.path.join(dirname, "feature_word_info.xml")
-+    ofile = os.path.join(dirname, "feature_word_info.c.inc")
-+
-+    parser = lxml.etree.XMLParser(remove_comments=True, remove_blank_text=True)
-+    with open(ifile, "tr") as f:
-+        doc = lxml.etree.parse(f, parser=parser)
-+
-+    feature_words = [FeatureWord(node) for node in doc.getroot()]
-+
-+    with open(ofile, "tw") as f:
-+        write_feature_words(f, feature_words)
-+
-+
-+if __name__ == "__main__":
-+    main()
-diff --git a/target/i386/feature_word_info.xml b/target/i386/feature_word_info.xml
-index ff741b9f5a..662b8b1dfc 100644
---- a/target/i386/feature_word_info.xml
-+++ b/target/i386/feature_word_info.xml
-@@ -1,3 +1,6 @@
-+<!--
-+    Run `feature_word_info.py` when you make changes to this file.
-+-->
- <feature_words>
-     <feature_word index="FEAT_1_EDX">
-         <type>CPUID_FEATURE_WORD</type>
--- 
-2.39.2
+CEDT says where to find the the various bits of system related CXL stuff.
+Nothing in there on the configuration that should be used such as interleaving
+as that depends on what the administrator wants. Or on what the BIOS has
+decided the users should have.
+
+> 
+> >
+> > I'm not aware of any open source BIOSs that do it yet.  So you have
+> > to rely on the same kernel paths as for persistent memory - manual configuration
+> > etc in the kernel.
+> >  
+> Manual works with "cxl create regiton"  :)
+Great.
+
+Jonathan
+
+> 
+> On Thu, 10 Aug 2023 at 16:05, Jonathan Cameron
+> <Jonathan.Cameron@huawei.com> wrote:
+> >
+> > On Wed, 9 Aug 2023 04:21:47 +0530
+> > Maverickk 78 <maverickk1778@gmail.com> wrote:
+> >  
+> > > Hello,
+> > >
+> > > I am running qemu-system-x86_64
+> > >
+> > > qemu-system-x86_64 --version
+> > > QEMU emulator version 8.0.92 (v8.1.0-rc2-80-g0450cf0897)
+> > >  
+> > +Cc linux-cxl as the answer is more todo with linux than qemu.
+> >  
+> > > qemu-system-x86_64 \
+> > > -m 2G,slots=4,maxmem=4G \
+> > > -smp 4 \
+> > > -machine type=q35,accel=kvm,cxl=on \
+> > > -enable-kvm \
+> > > -nographic \
+> > > -device pxb-cxl,id=cxl.0,bus=pcie.0,bus_nr=52 \
+> > > -device cxl-rp,id=rp0,bus=cxl.0,chassis=0,port=0,slot=0 \
+> > > -object memory-backend-file,id=mem0,mem-path=/tmp/mem0,size=1G,share=true \
+> > > -device cxl-type3,bus=rp0,volatile-memdev=mem0,id=cxl-mem0 \
+> > > -M cxl-fmw.0.targets.0=cxl.0,cxl-fmw.0.size=1G  
+> >
+> > There are some problems upstream at the moment (probably not cxl related but
+> > I'm digging). So today I can't boot an x86 machine. (goody)
+> >
+> >
+> > More generally for the flow that would bring the memory up as system ram
+> > you would typically need the bios to have done the CXL enumeration or
+> > a bunch of scripts in the kernel to have done it.  In general it can't
+> > be fully automated, because there are policy decisions to make on things like
+> > interleaving.
+> >
+> > I'm not aware of any open source BIOSs that do it yet.  So you have
+> > to rely on the same kernel paths as for persistent memory - manual configuration
+> > etc in the kernel.
+> >
+> > There is support in ndctl for those enabling flows, so I'd look there
+> > for more information
+> >
+> > Jonathan
+> >
+> >  
+> > >
+> > >
+> > > I was expecting the CXL memory to be listed in "System Ram", the lsmem
+> > > shows only 2G memory which is System RAM, it's not listing the CXL
+> > > memory.
+> > >
+> > > Do I need to pass any particular parameter in the kernel command line?
+> > >
+> > > Is there any documentation available? I followed the inputs provided in
+> > >
+> > > https://lore.kernel.org/linux-mm/Y+CSOeHVLKudN0A6@kroah.com/T/
+> > >
+> > > Is there any documentation/blog listed?  
+> >  
 
 
