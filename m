@@ -2,80 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17157779169
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 16:08:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABF9B77917D
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 16:12:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qUSnT-0007jl-Vb; Fri, 11 Aug 2023 10:07:23 -0400
+	id 1qUSrl-0001AO-Jt; Fri, 11 Aug 2023 10:11:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qUSnJ-0007j5-8k
- for qemu-devel@nongnu.org; Fri, 11 Aug 2023 10:07:13 -0400
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qUSri-0001AE-Sl
+ for qemu-devel@nongnu.org; Fri, 11 Aug 2023 10:11:47 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qUSnH-0006z7-OR
- for qemu-devel@nongnu.org; Fri, 11 Aug 2023 10:07:13 -0400
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-52364e9daceso2593163a12.2
- for <qemu-devel@nongnu.org>; Fri, 11 Aug 2023 07:07:11 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qUSrh-0008OM-8L
+ for qemu-devel@nongnu.org; Fri, 11 Aug 2023 10:11:46 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-3fe5c0e57d2so17792315e9.0
+ for <qemu-devel@nongnu.org>; Fri, 11 Aug 2023 07:11:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691762830; x=1692367630;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=r7bFbX07yuBBUa5uASnwWdoa6sYiAjx93TaQjSh4YIE=;
- b=IQKCVtmzNx6rQrukzGiTiIBfBH6QZCN7WSa6zPnV9SAVQA3MzJW/3KrkR3oIo9RRhK
- j/Y3Z5jQspsZhsRRw4nOqoMmJ2OuR3ZzHGSjWEjKEN3NMqr2domJn76LIE1ucmN7MMN6
- w07Y7lGvYJBzjvu9ct2DMPN/pR+ZY5xNIBzVmJ0kIL2OEXiNpG44xoror5/16t09mFA/
- zeraHCfxWcZJPK15LCGcHOKdb6sw9Cm+fm197gwiwBamriiqLiosXa7FdUlDbn8gUGx7
- RpuLsGv0KZ1nFes87/Bds8sXCJ2AL+WnQLSFproTWvnejYT/OrIfSkUvDXfff3Jtz5dd
- cvUA==
+ d=linaro.org; s=google; t=1691763102; x=1692367902;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=aje4WPzicPMczHXwcqWSlcA1kbW/rv7Fdx5iuYsOxSo=;
+ b=H6hBKbiSKY7fr0kxp3GOdV2gs7HfFePKFv7c+mBAQis1d4v8RdfvW9ss9PGGlqnay4
+ rs6bHMr6O5P7T2e8TOpnFhPncrnrSNI4OB5foOMnDDbXICGZCCIXeqHTJzAVkQrRi5cF
+ Sf4IXTWSMyHdT18sxcIytvDZmsfE5m+xGxmNJ30PhfGrsq0U2EIrb+S4f3f/hyEfD38k
+ XIQgcI65t2YrbDZQL/fGOS9IifYBwapsqQhmIQL3pWOshN/q9sgrwJ+3gWU+Ix7Ck0pP
+ C+AooDzeKY7BtvI0n6Dz1gijP3oPpUkpCVzJA15qd801pX8OpOH+udU2d63swqsjKFc+
+ zQ/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691762830; x=1692367630;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=r7bFbX07yuBBUa5uASnwWdoa6sYiAjx93TaQjSh4YIE=;
- b=ZuL2WV+tXbcyg9vS6YdogQj8WhMS1Y3JQMF3uL11hWoWk2zwJ2I/UK7VvrwuOl1nB5
- iT0e/WHic0FEHdRWl0uMbMl10xLmTcsUXKGL1F7w5yvifiaFp8sLLnyDiuEmc606hhaB
- PxnW21wl8CO7X9bVTx7jdlH8IJbI/umf+D7VSa5AqUWcNRyE1xAzyHoFcaozWdvlInTQ
- HUz6l8wzL4ZQEcwThn6M2SfJaL+qftwHpMP9fcThHkcKnlIFCrPH7WMwBMyC1wHKQSBP
- byTrlCTnfkzuTGAeFF+RMEulzphZ6WHIM9GMDkx3NdCja+NZ9zAh7rEir1Vze+Ghl/yh
- raFA==
-X-Gm-Message-State: AOJu0Yy1sMubA74sdZpEnMI9HFXzjgHH4WQuJu9tv2aWDX/R5bJB6tBC
- 4RuyHOt8enZ4ewW3L23rfzw2D2+clGdLmlGLzn/iMw==
-X-Google-Smtp-Source: AGHT+IFiyeP/ZkgFTxAL4bkOACJPV96sNR7bmQDloXzjTkvcOtpyrPdYLzQJHlh/12YphOmC/gn213+jJVj2USfjQiQ=
-X-Received: by 2002:aa7:d357:0:b0:51f:f1a4:edc6 with SMTP id
- m23-20020aa7d357000000b0051ff1a4edc6mr1858217edr.37.1691762829896; Fri, 11
- Aug 2023 07:07:09 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1691763102; x=1692367902;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=aje4WPzicPMczHXwcqWSlcA1kbW/rv7Fdx5iuYsOxSo=;
+ b=aOo0foonsbjA9UZr3V21Z4ftLaqJYB9pZdRJAi4dM0IXabxpHHU5vvNKTdrB/othYN
+ U6NDKDCVcxgMFhADtZaYE3Uxeys3An4XLe+faI8ng0Uc2I4kfCM3EWIjb36fwWkXBL7U
+ oYIhlFJ38XbGGD5OKI9h4+hQrFCt54PB9/wF7v+C//uVxJ45iH8YC3QHKV6WlR6XaEPs
+ 6otTjq1GzrbIHBgU8mqMu1LhgXChzLEoxp65qcfTWb9wqSXWworlrrehpQ+qJLcHDDhk
+ pwxj0FVmRAymmvf9t8uDUO1si3xkyVe3w0MzxqX8iPmiqZJcDSUhckKzq+0WdDEvDo4c
+ 7rlQ==
+X-Gm-Message-State: AOJu0YxsCR/x1bViEaI+XzNoegmnL680s3UkSStOObiz2mp0Pjz5cvrD
+ Aoyj/khKlGbw+7Qd6+oLbV0e9g==
+X-Google-Smtp-Source: AGHT+IGvTNWMEsIBQudy/6UXnAtdTJrr1+WqeMlwqanc4stNvgoxhusQkQzCMx5E2Xs2E3jDipgwrA==
+X-Received: by 2002:a1c:7703:0:b0:3fe:159d:422b with SMTP id
+ t3-20020a1c7703000000b003fe159d422bmr1645066wmi.32.1691763102646; 
+ Fri, 11 Aug 2023 07:11:42 -0700 (PDT)
+Received: from [192.168.69.115] (tre93-h02-176-184-7-255.dsl.sta.abo.bbox.fr.
+ [176.184.7.255]) by smtp.gmail.com with ESMTPSA id
+ f21-20020a7bcc15000000b003fc01189b0dsm5278047wmh.42.2023.08.11.07.11.41
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 11 Aug 2023 07:11:42 -0700 (PDT)
+Message-ID: <509307d1-ffa6-59c8-d8bc-068b4923eeb0@linaro.org>
+Date: Fri, 11 Aug 2023 16:11:39 +0200
 MIME-Version: 1.0
-References: <20230809102257.25121-1-jason.chien@sifive.com>
- <20230810135050-mutt-send-email-mst@kernel.org>
- <CAFEAcA_B5W5CX7-C_a7iWTL87kpcLsGEjAsqs5t54sgjTKi3Eg@mail.gmail.com>
-In-Reply-To: <CAFEAcA_B5W5CX7-C_a7iWTL87kpcLsGEjAsqs5t54sgjTKi3Eg@mail.gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 11 Aug 2023 15:06:58 +0100
-Message-ID: <CAFEAcA8vr-Bk+tPvugTH4DwAk=S_RXiUhrqDytFGg-EyoC9Mmg@mail.gmail.com>
-Subject: Re: [PATCH] hw/pci-host: Allow extended config space access for
- Designware PCIe host
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Jason Chien <jason.chien@sifive.com>, qemu-devel@nongnu.org,
- qemu-riscv@nongnu.org, 
- Andrey Smirnov <andrew.smirnov@gmail.com>, Greg Kurz <groug@kaod.org>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Igor Mammedov <imammedo@redhat.com>, qemu-arm@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x531.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.14.0
+Subject: Re: [PATCH 1/3] linux-user: Fix the build on systems without SOL_ALG
+To: Ilya Leoshkevich <iii@linux.ibm.com>, Laurent Vivier <laurent@vivier.eu>, 
+ Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org
+References: <20230810215706.1394220-1-iii@linux.ibm.com>
+ <20230810215706.1394220-2-iii@linux.ibm.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230810215706.1394220-2-iii@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.972,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,32 +94,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 11 Aug 2023 at 10:55, Peter Maydell <peter.maydell@linaro.org> wrote:
->
-> On Thu, 10 Aug 2023 at 18:51, Michael S. Tsirkin <mst@redhat.com> wrote:
-> >
-> > On Wed, Aug 09, 2023 at 10:22:50AM +0000, Jason Chien wrote:
-> > > In pcie_bus_realize(), a root bus is realized as a PCIe bus and a non-root
-> > > bus is realized as a PCIe bus if its parent bus is a PCIe bus. However,
-> > > the child bus "dw-pcie" is realized before the parent bus "pcie" which is
-> > > the root PCIe bus. Thus, the extended configuration space is not accessible
-> > > on "dw-pcie". The issue can be resolved by adding the
-> > > PCI_BUS_EXTENDED_CONFIG_SPACE flag to "pcie" before "dw-pcie" is realized.
-> > >
-> > > Signed-off-by: Jason Chien <jason.chien@sifive.com>
-> >
-> >
-> > Acked-by: Michael S. Tsirkin <mst@redhat.com>
-> >
-> > I'm not planning another pull before release, hopefully
-> > another maintainer can pick it up? Peter?
->
-> At the moment I don't have anything intended for 8.1 either,
-> so whoever of us does it it would be a 1-patch pullreq...
+On 10/8/23 23:51, Ilya Leoshkevich wrote:
+> Building QEMU on CentOS 7 fails, because there SOL_ALG is not defined.
+> There already exists #if defined(SOL_ALG) in do_setsockopt(); add it to
+> target_to_host_cmsg() as well.
 
-Also, at this stage in the release cycle it's always worth
-asking: is this a regression, or was this bug also in 8.0?
+Does including "crypto/afalgpriv.h" help?
 
-thanks
--- PMM
+> Fixes: 27404b6c15c1 ("linux-user: Implement SOL_ALG encryption support")
+> Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+> ---
+>   linux-user/syscall.c | 2 ++
+>   1 file changed, 2 insertions(+)
+
+
 
