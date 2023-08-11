@@ -2,82 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4443F7792D1
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 17:19:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA3207792F4
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 17:24:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qUTuD-00087X-1g; Fri, 11 Aug 2023 11:18:25 -0400
+	id 1qUTyz-0001gB-1G; Fri, 11 Aug 2023 11:23:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qUTuB-000879-8m
- for qemu-devel@nongnu.org; Fri, 11 Aug 2023 11:18:23 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ id 1qUTyx-0001fo-3J
+ for qemu-devel@nongnu.org; Fri, 11 Aug 2023 11:23:19 -0400
+Received: from mail-pj1-x1036.google.com ([2607:f8b0:4864:20::1036])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qUTu9-0007vh-FJ
- for qemu-devel@nongnu.org; Fri, 11 Aug 2023 11:18:23 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1bc73a2b0easo15978905ad.0
- for <qemu-devel@nongnu.org>; Fri, 11 Aug 2023 08:18:20 -0700 (PDT)
+ id 1qUTyu-0000fU-TS
+ for qemu-devel@nongnu.org; Fri, 11 Aug 2023 11:23:18 -0400
+Received: by mail-pj1-x1036.google.com with SMTP id
+ 98e67ed59e1d1-267fabc8465so1246429a91.1
+ for <qemu-devel@nongnu.org>; Fri, 11 Aug 2023 08:23:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691767100; x=1692371900;
+ d=linaro.org; s=google; t=1691767394; x=1692372194;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=So6T/DK2nYqbNPN3py5XJkbU6qHsf0SZlljjv130jIE=;
- b=PqrTCol+J/c8OIha+xu3EcHHrxhVKprhElLYYZPEJTNbeLTfMvWyMeVOUwJbBMcgT1
- JcUlR7faNUFt7SFQDbGDI0y+jKTwyBWrPDKNmRIw325xc4uRJSe6IB6cdy2B0PbeYsEg
- 4ESARpbQDPDCiED2joDZFoHv8uT8mdsVYwx92mT0RNjmjDolurKfOjZttcewfmgkoN3H
- Y83Cwq9bKDfVUzQDBg+GGOYR3yUuAcOYCzK/oL65cq74JKHUQ5KXyr1LSeU/A9Nx7Fzm
- u+0trckD1DTLCDxsbnp/g26rskEGfMPoo/xoomy2+08G9Q5/xYAvdKQyoy8ZBHfrW/R5
- Lfcg==
+ bh=hZdFZQIFN0jc51oqaz9N5OsY65rsBjyEydT4UN7bDaY=;
+ b=winn+RBdVMthYYbxBIEy+qER+Cwee0eYd6DXxYKF3QzO/WwOHZ1Aa6+DNynGpPV1eA
+ xp8o2BFXky//avdZTcnmMgsaGX9bkLIrvQPW/LBiQx2QSrr9L/YN9j6SCNHbFNwilN+F
+ rIWtAnw2hovfQEqF5LFycOFVCFIlfFbDcRgUceVABONx1qJnNbCUeMP5g5c8UvWPNXCZ
+ 97GkkNppo31QIgHgjwIqI/ASWbM8v4lR3q3n4cOO7I/+8Ti7gCqUWQvYWhu9CPXzDmUa
+ LRcc1ZOIskTs9MDbjZ3v0ITmBipm9WrcKUzcdBSgxnacZzvY35NfIJG8euZko3GbE/Zf
+ WTaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691767100; x=1692371900;
+ d=1e100.net; s=20221208; t=1691767394; x=1692372194;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=So6T/DK2nYqbNPN3py5XJkbU6qHsf0SZlljjv130jIE=;
- b=QpFQWDPDh5wW3eU9H1cKHpoq3U2hvkVG7sXCC3ecHLa1ABhd1wLA2CUQpLQSrJ7Gb2
- xx2nae2lHhT/Q0EGKjlCMm1eUtDiRYP8Puvf9iLCE38UymQt0UAVzOuOdBeRj2bJtX1h
- 9uqbv3sYQnWG8PO88gI8HNsTZfj8Hfz1EbsoVfRV49rFOl07OtaKr3Yysfb23OLiHfv5
- mYJhrfPXsEl0ANyTc+RSldRYD9ALWlyg01i7/XzjpCroJvxrkkm6vX5h3VdfJVkPWuMv
- 2Nr2zAOKV+xOEkBULBpelr5NO0smQYMvGsec8tx9UILCIJtCMBwxYef6FwlMS17cizsI
- 7YsA==
-X-Gm-Message-State: AOJu0Yxw+uxaaCnIs2sYqWz2H+WOUEr9caPPgTbEy3FAR/s8zxdlgmoT
- JSpWwMRiKypkMVNXwaDNhLl8ydJa0wKrTVZL658=
-X-Google-Smtp-Source: AGHT+IEwnotT5AjVzGiG1R0z084shkhcdgG2kAkf6rKUu9c8bns1KBNNmeSjcqfLtDpXJozAowhcDQ==
-X-Received: by 2002:a17:902:8d83:b0:1bb:f82f:fb93 with SMTP id
- v3-20020a1709028d8300b001bbf82ffb93mr1588048plo.2.1691767099842; 
- Fri, 11 Aug 2023 08:18:19 -0700 (PDT)
+ bh=hZdFZQIFN0jc51oqaz9N5OsY65rsBjyEydT4UN7bDaY=;
+ b=lLOAa1RSQuYGeglATOu2Q5z44qAr392Ey5KS6VaVS58wsR10IW/w8WhdPA57BLqQgZ
+ jJcZHguf55rglvbLTke7/IQQnCnzURW1pUe1QaBySwe0VqQPSVMxZOSe3gH0PfL+Pv4f
+ eFAdpprSo53Qr2QvQupMVHDzt6culzKtZIZvd3/aX55chwAGAFb/o+YHIos0jvt3R2IQ
+ X2TQTJ7J6PFlw2+xPfmKe3iwzDexcoOCKCo9+cT9mFVTMczSOKl/htjw/W1/E3b7td/7
+ OmkIGdIS4hlj/IIIhuIU0gKxx/sF9SGUn/PFjLPb+Gp0vaRVEf+JGRFivouoATzLh1iX
+ IISw==
+X-Gm-Message-State: AOJu0Yzfc2g7CVGaY6GFxzAnOYEuPgmjYraUDr4hUjpEo0hSsmF0Pud/
+ qppwE4oe4q1zgS1/IcKwu47Yqg==
+X-Google-Smtp-Source: AGHT+IGEo++tQrTcwOYRbF9Bb5Ka8GVyP1450bSjyuq5QwVt0yP2x3S3QySS9jBrzVW8g0t3Teu3aQ==
+X-Received: by 2002:a17:90a:1783:b0:268:29cb:f93a with SMTP id
+ q3-20020a17090a178300b0026829cbf93amr1544208pja.1.1691767394646; 
+ Fri, 11 Aug 2023 08:23:14 -0700 (PDT)
 Received: from ?IPV6:2602:47:d483:7301:e773:351d:2db2:8a8a?
  ([2602:47:d483:7301:e773:351d:2db2:8a8a])
  by smtp.gmail.com with ESMTPSA id
- o12-20020a1709026b0c00b001bbc9e36d55sm4021402plk.268.2023.08.11.08.18.18
+ k4-20020a17090a910400b002694da8a9cdsm3446851pjo.48.2023.08.11.08.23.13
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 11 Aug 2023 08:18:19 -0700 (PDT)
-Message-ID: <ea9dbc59-b1af-5abc-55d0-f4e4e85f99c9@linaro.org>
-Date: Fri, 11 Aug 2023 08:18:17 -0700
+ Fri, 11 Aug 2023 08:23:14 -0700 (PDT)
+Message-ID: <af285335-f2c5-bcb8-63e4-d3a47634dc5d@linaro.org>
+Date: Fri, 11 Aug 2023 08:23:12 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH v5 08/11] target/loongarch: Reject la64-only instructions
- in la32 mode
+Subject: Re: [PATCH v2 2/8] target/loongarch: Add a check parameter to the
+ TRANS macro
 Content-Language: en-US
-To: gaosong <gaosong@loongson.cn>, Jiajie Chen <c@jia.je>,
- qemu-devel@nongnu.org
-Cc: yijun@loongson.cn, shenjinyang@loongson.cn, i.qemu@xen0n.name,
- Xiaojuan Yang <yangxiaojuan@loongson.cn>
-References: <20230809083258.1787464-1-c@jia.je>
- <20230809083258.1787464-9-c@jia.je>
- <b87f51eb-6e82-5ecd-5412-5a892c9510d1@loongson.cn>
+To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
+Cc: philmd@linaro.org, maobibo@loongson.cn, yangxiaojuan@loongson.cn, c@jia.je
+References: <20230811100208.271649-1-gaosong@loongson.cn>
+ <20230811100208.271649-3-gaosong@loongson.cn>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <b87f51eb-6e82-5ecd-5412-5a892c9510d1@loongson.cn>
+In-Reply-To: <20230811100208.271649-3-gaosong@loongson.cn>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1036;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1036.google.com
 X-Spam_score_int: -30
 X-Spam_score: -3.1
 X-Spam_bar: ---
@@ -100,22 +97,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/11/23 01:12, gaosong wrote:
->> +TRANS_64(sra_d, gen_rrr, EXT_NONE, EXT_NONE, EXT_NONE, gen_sra_d)
->>   TRANS(rotr_w, gen_rrr, EXT_ZERO, EXT_NONE, EXT_SIGN, gen_rotr_w)
-> TRANS_64(rotr_w, ...)
-...
->>   TRANS(rotri_w, gen_rri_v, EXT_NONE, EXT_NONE, gen_rotr_w)
-> TRANS_64(rotri_w, ...)
+On 8/11/23 03:02, Song Gao wrote:
+> The default check parmeter is ALL, remove TRANS_64 marco.
 > 
-> I see the manual from https://www.loongson.cn/download/index
-> 
-> insn cpucfg also not support on la32.
+> Suggested-by: Richard Henderson <richard.henderson@linaro.org>
+> Signed-off-by: Song Gao <gaosong@loongson.cn>
 
+If you're going to remove TRANS_64, you should simply drop the patch that added it, and be 
+careful about the final patch ordering such that the LA32 cpu is created after your patch 
+3 (which adds avail_64()).
 
-I see all 3 of these, ROTR.W, ROTRI.W and CPUCFG listed in Table 2 at
-
-https://loongson.github.io/LoongArch-Documentation/LoongArch-Vol1-EN.html#overview-of-basic-integer-instructions
+Otherwise there will be a bisection point at which LA32 is enabled, but avail_64 is not 
+enforced.
 
 
 r~
