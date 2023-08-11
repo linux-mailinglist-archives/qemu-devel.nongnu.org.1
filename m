@@ -2,84 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE63C779716
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 20:26:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D313C779767
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 20:59:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qUWpF-0002No-B1; Fri, 11 Aug 2023 14:25:29 -0400
+	id 1qUXL8-0005cE-SK; Fri, 11 Aug 2023 14:58:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qUWpD-0002Mj-AK
- for qemu-devel@nongnu.org; Fri, 11 Aug 2023 14:25:27 -0400
-Received: from mail-ua1-x92a.google.com ([2607:f8b0:4864:20::92a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qUWpA-0003oX-DF
- for qemu-devel@nongnu.org; Fri, 11 Aug 2023 14:25:27 -0400
-Received: by mail-ua1-x92a.google.com with SMTP id
- a1e0cc1a2514c-79d8edd6d99so750703241.3
- for <qemu-devel@nongnu.org>; Fri, 11 Aug 2023 11:25:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1691778306; x=1692383106;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=xNoSfbOUSMZ0uPLpFeXZj/thZpSQpdkJJbUVXjq2Rnk=;
- b=dMGlE8xjtJiwfTcstFOh5yu/NaOSNFCr6HqmuQ8Ji506BpNzleuksSmudLTtgCMzaQ
- oUp8fZXytYHYGK7Z6PmLVDV7eiQa7iEor32zuPl0/eZSGLDNBkzftA7P5U0ykpmWUhaY
- Gf71NtsIzQBFLGLQ/h/pqMg6rZxGjvum+fpDtE9OTTLKvLFEuSjpTsKHCxyhusT5cLmy
- 785Eqv3CDQ40HUWSg1s/cp1ztlM6ptTxkwAI4E0HcmaJVRCpqHT1/b6kw9codWPw25YN
- Q35mmtAsNhoGmyP8M5YzwyGwW8lLYoEJrdY6V2Ff6CjtmwIUsPLLWJG9/RmrsWyPYZa3
- alkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691778306; x=1692383106;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=xNoSfbOUSMZ0uPLpFeXZj/thZpSQpdkJJbUVXjq2Rnk=;
- b=j+C/kmIqC93dTFqZIFVzyU+kEs3w3CfZ3XQgVTf5m6UkYSXtrDHiEvHDzS+RSRw42P
- vaEBkJuybBb68bv8iUqFcqEcimVU2h6uMuLG633khqsN8pK0/vLEg4Kola3a0J3obpXK
- b7qhLZp2Ya/Nt3oNnpN4xZG5nkigbPYDffl5Axx2s+CLr5v1DQNTwUCRGXD3RMfzAvqc
- N8WLKHHcY5C+nDuUp6aYaZQ9u9DsTyxhCnGJoZbaj597PgaPheqxBr4W+5Cytjrwe9Cr
- Eu8EDIhz/Jeg8eFPkwrw3ICEFtcfWOdYLQN3Rcpr0w/7KgPfZB+PO6Z31I9EOr2Ii/20
- vL/g==
-X-Gm-Message-State: AOJu0YxdtWo2BzFLpb6EpxOXpdwDDBjWOM7IQGJw3kgoOE562Pqd1KNp
- KW6AOYL3+XvJeltiimciZMs+3IDP53dzm5bN
-X-Google-Smtp-Source: AGHT+IEhu7LvbA82YYvDcAG6gHk4ENkcqJ1Kkz/QqOEwQS8Y+hscXPJJ6+hBSwC6Eildlp9Vh+rqDA==
-X-Received: by 2002:a67:f80d:0:b0:443:6deb:2b4 with SMTP id
- l13-20020a67f80d000000b004436deb02b4mr2738910vso.2.1691778306537; 
- Fri, 11 Aug 2023 11:25:06 -0700 (PDT)
-Received: from localhost.localdomain ([146.70.187.10])
- by smtp.gmail.com with ESMTPSA id
- g30-20020ab016de000000b007876731f2dbsm638234uaf.22.2023.08.11.11.25.05
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 11 Aug 2023 11:25:06 -0700 (PDT)
-From: Alistair Francis <alistair23@gmail.com>
-X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
-To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 2/2] hw/riscv/virt.c: change 'aclint' TCG check
-Date: Fri, 11 Aug 2023 14:24:45 -0400
-Message-ID: <20230811182445.1185140-3-alistair.francis@wdc.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230811182445.1185140-1-alistair.francis@wdc.com>
-References: <20230811182445.1185140-1-alistair.francis@wdc.com>
+ (Exim 4.90_1) (envelope-from <zhitingz@cs.utexas.edu>)
+ id 1qUXL7-0005bx-1w
+ for qemu-devel@nongnu.org; Fri, 11 Aug 2023 14:58:25 -0400
+Received: from newman.cs.utexas.edu ([128.83.139.110])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhitingz@cs.utexas.edu>)
+ id 1qUXL4-0001vC-VK
+ for qemu-devel@nongnu.org; Fri, 11 Aug 2023 14:58:24 -0400
+X-AuthUser: zhitingz
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=cs.utexas.edu;
+ s=default; t=1691780296;
+ bh=hexQUSjYka8rBBoSjMdaNi8G+GvaS2/qNg1W84Imfaw=;
+ h=From:Date:Subject:To:From;
+ b=SuGzmc6rkd2XvLAHb+2VAfXw0SFwLaWWFMJNzvwx9W0Ubujk99IAtmDagFOR/pj+d
+ lWsjKucEh486OutolNJSvT1h/cuhIVHnYcL9ymqIhqYG46nvXif+yCN8sj81lVubp1
+ s/vLZTiWR8/f2lwTZmOOI94mQVWoYfaGKUpuSD7g=
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com
+ [209.85.221.46]) (authenticated bits=0)
+ by newman.cs.utexas.edu (8.14.4/8.14.4/Debian-4.1ubuntu1.1) with ESMTP id
+ 37BIwFCj036313
+ (version=TLSv1/SSLv3 cipher=AES128-GCM-SHA256 bits=128 verify=NOT)
+ for <qemu-devel@nongnu.org>; Fri, 11 Aug 2023 13:58:16 -0500
+Received: by mail-wr1-f46.google.com with SMTP id
+ ffacd0b85a97d-31969580797so9280f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 11 Aug 2023 11:58:16 -0700 (PDT)
+X-Gm-Message-State: AOJu0YzzQjU6JwZMTobiqJ6Tx0VkMBV+QEXJ5ks6x1/Gr8V9VqAJzAt2
+ J5pDfRd4t2DuiEIWYrKD/d1zALKgtXpE/N/hgfY=
+X-Google-Smtp-Source: AGHT+IFuGXGVUC9iN4I5oggMaBkMWN48rNHxm7rTIIrECluoM81QrhZNI2FqH/zIF36cfTRB2JOgoCF7nJWVts9zZvo=
+X-Received: by 2002:adf:e444:0:b0:318:7bc:e1b5 with SMTP id
+ t4-20020adfe444000000b0031807bce1b5mr1827815wrm.32.1691780294437; Fri, 11 Aug
+ 2023 11:58:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::92a;
- envelope-from=alistair23@gmail.com; helo=mail-ua1-x92a.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+From: zhiting zhu <zhitingz@cs.utexas.edu>
+Date: Fri, 11 Aug 2023 13:58:03 -0500
+X-Gmail-Original-Message-ID: <CA+3q14wwxVR7g6ixibVtrB8oVYbYc=yhDf8USfJay_9BCE9VEg@mail.gmail.com>
+Message-ID: <CA+3q14wwxVR7g6ixibVtrB8oVYbYc=yhDf8USfJay_9BCE9VEg@mail.gmail.com>
+Subject: Question about MTRR settings for IVSHMEM device
+To: qemu-devel@nongnu.org
+Content-Type: multipart/alternative; boundary="0000000000007cf5e50602aa4bd6"
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.3.9
+ (newman.cs.utexas.edu [128.83.139.110]); Fri, 11 Aug 2023 13:58:16 -0500 (CDT)
+X-Virus-Scanned: clamav-milter 0.103.8 at newman
+X-Virus-Status: Clean
+Received-SPF: pass client-ip=128.83.139.110;
+ envelope-from=zhitingz@cs.utexas.edu; helo=newman.cs.utexas.edu
+X-Spam_score_int: -32
+X-Spam_score: -3.3
+X-Spam_bar: ---
+X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, HTML_MESSAGE=0.001, RCVD_DOTEDU_SHORT=1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,71 +77,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+--0000000000007cf5e50602aa4bd6
+Content-Type: text/plain; charset="UTF-8"
 
-The 'aclint' property is being conditioned with tcg acceleration in
-virt_machine_class_init(). But acceleration code starts later than the
-class init of the board, meaning that tcg_enabled() will be always be
-false during class_init(), and the option is never being declared even
-when declaring TCG accel:
+Hi,
 
-$ ./build/qemu-system-riscv64 -M virt,accel=tcg,aclint=on
-qemu-system-riscv64: Property 'virt-machine.aclint' not found
+I found that in the guest Linux OS. The IVSHMEM device is set with 3 MTRR
+regions.
 
-Fix it by moving the check from class_init() to machine_init(). Tune the
-description to mention that the option is TCG only.
+reg00: base=0x0c0000000 ( 3072MB), size= 1024MB, count=1: uncachable
+reg01: base=0x0b0000000 ( 2816MB), size=  256MB, count=1: uncachable
+reg02: base=0x800000000 (32768MB), size=32768MB, count=1: uncachable
 
-Cc: Philippe Mathieu-Daudé <philmd@linaro.org>
-Fixes: c0716c81b ("hw/riscv/virt: Restrict ACLINT to TCG")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1823
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20230811160224.440697-2-dbarboza@ventanamicro.com>
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
----
- hw/riscv/virt.c | 20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+Bar 2 is listed in reg02. As the entry said, it's set to uncachable. This
+entry causes slow access on AMD machine even though I map the region to be
+writeback using devm_memmap_pages with type set to MEMORY_DEVICE_GENERIC.
+By removing the entry, the access to the region goes faster as it's
+cacheable. Inside the kernel driver, there's no way to remove those entries
+as the mtrr_del are not exposed. I have to do it in user space.
 
-diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-index d90286dc46..99c4e6314b 100644
---- a/hw/riscv/virt.c
-+++ b/hw/riscv/virt.c
-@@ -1350,6 +1350,11 @@ static void virt_machine_init(MachineState *machine)
-         exit(1);
-     }
- 
-+    if (!tcg_enabled() && s->have_aclint) {
-+        error_report("'aclint' is only available with TCG acceleration");
-+        exit(1);
-+    }
-+
-     /* Initialize sockets */
-     mmio_irqchip = virtio_irqchip = pcie_irqchip = NULL;
-     for (i = 0; i < socket_count; i++) {
-@@ -1683,13 +1688,14 @@ static void virt_machine_class_init(ObjectClass *oc, void *data)
-     machine_class_allow_dynamic_sysbus_dev(mc, TYPE_TPM_TIS_SYSBUS);
- #endif
- 
--    if (tcg_enabled()) {
--        object_class_property_add_bool(oc, "aclint", virt_get_aclint,
--                                       virt_set_aclint);
--        object_class_property_set_description(oc, "aclint",
--                                              "Set on/off to enable/disable "
--                                              "emulating ACLINT devices");
--    }
-+
-+    object_class_property_add_bool(oc, "aclint", virt_get_aclint,
-+                                   virt_set_aclint);
-+    object_class_property_set_description(oc, "aclint",
-+                                          "(TCG only) Set on/off to "
-+                                          "enable/disable emulating "
-+                                          "ACLINT devices");
-+
-     object_class_property_add_str(oc, "aia", virt_get_aia,
-                                   virt_set_aia);
-     object_class_property_set_description(oc, "aia",
--- 
-2.41.0
+Does anyone know what sets these MTRR entries? By default, the virtio-pci
+driver is used for the IVSHMEM device. I saw the device driver use ioremap
+to map the bar. But what I saw in the source code is it sets the PAT not
+MTRR.
 
+Best,
+Zhiting
+
+--0000000000007cf5e50602aa4bd6
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Hi,<div><br></div><div>I found that in the guest Linux OS.=
+ The IVSHMEM device is set with 3 MTRR regions.=C2=A0</div><div><br></div><=
+div>reg00: base=3D0x0c0000000 ( 3072MB), size=3D 1024MB, count=3D1: uncacha=
+ble<br>reg01: base=3D0x0b0000000 ( 2816MB), size=3D =C2=A0256MB, count=3D1:=
+ uncachable<br>reg02: base=3D0x800000000 (32768MB), size=3D32768MB, count=
+=3D1: uncachable<br></div><div><br></div><div>Bar 2 is listed in reg02. As =
+the entry said, it&#39;s set to uncachable. This entry causes slow access o=
+n AMD machine even though I map the region to be writeback using devm_memma=
+p_pages with type set to MEMORY_DEVICE_GENERIC. By removing the entry, the =
+access to the region goes faster as it&#39;s cacheable. Inside the kernel d=
+river, there&#39;s no way to remove those entries as the mtrr_del are not e=
+xposed. I have to do it in user space.=C2=A0</div><div><br></div><div>Does =
+anyone know what sets these MTRR entries? By default, the virtio-pci driver=
+ is used for the IVSHMEM device. I saw the device driver use ioremap to map=
+ the bar. But what I saw in the source code is it sets the PAT not MTRR.=C2=
+=A0</div><div><br></div><div>Best,</div><div>Zhiting=C2=A0<br></div></div>
+
+--0000000000007cf5e50602aa4bd6--
 
