@@ -2,84 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C4A27793C6
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 18:03:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A8317793F4
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 18:11:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qUUb2-0007EJ-1d; Fri, 11 Aug 2023 12:02:40 -0400
+	id 1qUUhz-0002Sf-Jp; Fri, 11 Aug 2023 12:09:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qUUb0-000797-DX
- for qemu-devel@nongnu.org; Fri, 11 Aug 2023 12:02:38 -0400
-Received: from mail-oi1-x231.google.com ([2607:f8b0:4864:20::231])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qUUhw-0002SF-Ua
+ for qemu-devel@nongnu.org; Fri, 11 Aug 2023 12:09:48 -0400
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qUUay-0008PS-O3
- for qemu-devel@nongnu.org; Fri, 11 Aug 2023 12:02:38 -0400
-Received: by mail-oi1-x231.google.com with SMTP id
- 5614622812f47-3a76cbd4bbfso1964555b6e.3
- for <qemu-devel@nongnu.org>; Fri, 11 Aug 2023 09:02:36 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qUUhv-0001Dg-9M
+ for qemu-devel@nongnu.org; Fri, 11 Aug 2023 12:09:48 -0400
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-1bdb801c667so6136455ad.1
+ for <qemu-devel@nongnu.org>; Fri, 11 Aug 2023 09:09:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1691769755; x=1692374555;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=JNkV73nBOn2NJCSOY1LvGtGzf0pJiCHbvNBgBai2cTI=;
- b=AZyLXSLaJU6r+ZOXVAhiXB8zoyRQ03yOOF1pqVYtwmTnrVZ+dNSaBKFG7DAbuiqWoc
- smToi/uV8pArTnW/cCmfGdqvuEzEMVhwtLlfKF2IWwS31UL46867Fhh9UgecbLuj0Y3I
- Kdn9D0bPMyfiGGVaG6pHHhzBAbe02S/Ll1XoDDPP/Q8r2LVMie+P8cuyGr8K6Z+HUhJ8
- klWdD3vPwda3wLkPTaqCAa0bwJ7UaaaoyGv1quLuiQrdAjcUP68F14iVAXZaFdyR0pym
- iDPnIkQMPi1ehndLQY60Zb7nKxG1h/7iWDASHdHMDp3an2u8QmKmO+3yNmhfZQeXUZZg
- R3xw==
+ d=linaro.org; s=google; t=1691770186; x=1692374986;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=oB26QBoLreLPO1Ggyj5LdAQx1D7O5lqPSeheJrZwNXM=;
+ b=SBUyiE86rLn5j2g46oazLU6iUHiIJ3mrYZw2dwYq5yeiE02vwP46TpqpFrfj6oSpYm
+ 4mCSn1Kr0suRdG6JslVNvgESc66kQBFb2jAYeRxv0ecg5eCxDwnFLAFz0bIInS5drTWr
+ I4N/Uhp3iU7zdEkweYLqbdSt48mQOaGgZDpNS4x/H931Jxax6QpuDGtoAWoscten4SEi
+ oVs4t09dAePt4ns6VvZkpsN8JmRegm+N71Bx6u9w3hgEFYMZpnor/cZB+fYv3OKzy1qm
+ rquOUjpPgfjxZrsIOIVTOZ9Of0vgHO9sC70CqFcAKpYG04xN1po/DnNTogLzqY4pi4Yj
+ UJ6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691769755; x=1692374555;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=JNkV73nBOn2NJCSOY1LvGtGzf0pJiCHbvNBgBai2cTI=;
- b=E7be0w0JmO1gPDf0lFIw8pk6/rJuOAiK2AMUv2k2myeNeURXJrqtNEcdIyWZXneevj
- QFzebCJoLziUOjXBhvyMoVTebu9rEbcmuAzOevTcUaDPUOZ2mLKcHRQ+3kaL7BiCKudw
- rjSIUTLAKjsKv6dkckEtEjgVDzIDgLT/7KukVI+pl8R1M/yxhzMMBdx+qr+tNtPicx3S
- sLVyDcycq2DDvSUamwsdYFkFV8n04E31Sk2UocvvOykQ62joq0R/c6+Za6qrellL2UGD
- 56EZVVS5IjcSK0agMxAYi7H5zH1QFmNuPJBQKjj5szHYOeB5zGYlUYj9cpycT099vmTH
- zP/A==
-X-Gm-Message-State: AOJu0YwjU3sGZ9iJo6RD3C0lTUNs0DotRP1nT+R+haD7qkxWxl0abU7m
- haiCkmN8Yn94al3KF0vPbdSRq9FH04sGDj+aObgGgw==
-X-Google-Smtp-Source: AGHT+IGr7diEABTVhwwOzMLCTs8OwbGQTwhYHIdBd9KAvDjJcL+/KUXsZmsRlDUtCt/JWqwzEUvIhw==
-X-Received: by 2002:a05:6808:144d:b0:3a7:1e3e:7f97 with SMTP id
- x13-20020a056808144d00b003a71e3e7f97mr3635255oiv.4.1691769755058; 
- Fri, 11 Aug 2023 09:02:35 -0700 (PDT)
-Received: from grind.. (189-69-160-189.dial-up.telesp.net.br. [189.69.160.189])
+ d=1e100.net; s=20221208; t=1691770186; x=1692374986;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=oB26QBoLreLPO1Ggyj5LdAQx1D7O5lqPSeheJrZwNXM=;
+ b=Jn6IvqrbuQ71JLXmzhdNVWr22EmyGMDNfgtQiT6ZrpmuAnkSArQJ1Zjbp/+aHT5AV7
+ ewSTJ6YRO7dhpPkuCtapYaBfXnb/RnTEhltzKVZb9I25Lo27GmjfJMD2iwYlFHDQxnSC
+ wpF7SfPBB331CE65T7XJjKkpK86yzm5oUBTpI15OhFit207WpW4TdgE0YjfRzeuKw9Ma
+ RkUhQ5ehr//FIo3BghvtKg6XjQnEHvVsZB06bfBX4UhGPBfWMqJ/DwZtxiwMPqgpWUSn
+ vBozzsGpRTQeQGKYYohVC5ZCP3VbRGYgnbk+v50H1OtM8k6ISc5cOcBFwVSRIiBUZyG0
+ uNqg==
+X-Gm-Message-State: AOJu0Ywxw4cWVUAXqeHjBzQwAGAntX4SLI+H1+/Hj1A6ZPJjRXVbYY24
+ 7mZsCZ2dNt5TGCN/UGeppcqUwQ==
+X-Google-Smtp-Source: AGHT+IF5sz85WhggRs+PFC9k6fItlA/WciU9el4b0EeiOHgMWIWQM2t3ENz5levR3TJcd6RjfxzLtA==
+X-Received: by 2002:a17:902:cec3:b0:1bc:c82:9368 with SMTP id
+ d3-20020a170902cec300b001bc0c829368mr2694008plg.32.1691770185875; 
+ Fri, 11 Aug 2023 09:09:45 -0700 (PDT)
+Received: from ?IPV6:2602:47:d483:7301:e773:351d:2db2:8a8a?
+ ([2602:47:d483:7301:e773:351d:2db2:8a8a])
  by smtp.gmail.com with ESMTPSA id
- bj32-20020a05680819a000b003a43759b9cdsm1834823oib.29.2023.08.11.09.02.31
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 11 Aug 2023 09:02:34 -0700 (PDT)
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- philmd@linaro.org, richard.henderson@linaro.org,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH for-8.1 1/1] hw/riscv/virt.c: change 'aclint' TCG check
-Date: Fri, 11 Aug 2023 13:02:24 -0300
-Message-ID: <20230811160224.440697-2-dbarboza@ventanamicro.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230811160224.440697-1-dbarboza@ventanamicro.com>
-References: <20230811160224.440697-1-dbarboza@ventanamicro.com>
+ y6-20020a170902864600b001bc56c1a384sm4079651plt.277.2023.08.11.09.09.45
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 11 Aug 2023 09:09:45 -0700 (PDT)
+Message-ID: <64439183-7776-c8ad-59fe-28145a69a5e4@linaro.org>
+Date: Fri, 11 Aug 2023 09:09:43 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::231;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oi1-x231.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v2 4/8] target/loongarch: Add avail_FP/FP_SP/FP_DP to
+ check fpu instructions
+Content-Language: en-US
+To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
+Cc: philmd@linaro.org, maobibo@loongson.cn, yangxiaojuan@loongson.cn, c@jia.je
+References: <20230811100208.271649-1-gaosong@loongson.cn>
+ <20230811100208.271649-5-gaosong@loongson.cn>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230811100208.271649-5-gaosong@loongson.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.972,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,65 +97,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The 'aclint' property is being conditioned with tcg acceleration in
-virt_machine_class_init(). But acceleration code starts later than the
-class init of the board, meaning that tcg_enabled() will be always be
-false during class_init(), and the option is never being declared even
-when declaring TCG accel:
+On 8/11/23 03:02, Song Gao wrote:
+> Signed-off-by: Song Gao<gaosong@loongson.cn>
+> ---
+>   .../loongarch/insn_trans/trans_farith.c.inc   | 96 ++++++++++++-------
+>   target/loongarch/insn_trans/trans_fcmp.c.inc  |  8 ++
+>   target/loongarch/insn_trans/trans_fcnv.c.inc  | 56 +++++------
+>   .../loongarch/insn_trans/trans_fmemory.c.inc  | 32 +++----
+>   target/loongarch/insn_trans/trans_fmov.c.inc  | 48 ++++++++--
+>   target/loongarch/translate.h                  |  3 +
+>   6 files changed, 157 insertions(+), 86 deletions(-)
 
-$ ./build/qemu-system-riscv64 -M virt,accel=tcg,aclint=on
-qemu-system-riscv64: Property 'virt-machine.aclint' not found
+Since the manual does not explicitly list "basic floating point" vs single vs double, I 
+can only give you an
 
-Fix it by moving the check from class_init() to machine_init(). Tune the
-description to mention that the option is TCG only.
+Acked-by: Richard Henderson <richard.henderson@linaro.org>
 
-Cc: Philippe Mathieu-Daudé <philmd@linaro.org>
-Fixes: c0716c81b ("hw/riscv/virt: Restrict ACLINT to TCG")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1823
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
----
- hw/riscv/virt.c | 20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
 
-diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-index d90286dc46..99c4e6314b 100644
---- a/hw/riscv/virt.c
-+++ b/hw/riscv/virt.c
-@@ -1350,6 +1350,11 @@ static void virt_machine_init(MachineState *machine)
-         exit(1);
-     }
- 
-+    if (!tcg_enabled() && s->have_aclint) {
-+        error_report("'aclint' is only available with TCG acceleration");
-+        exit(1);
-+    }
-+
-     /* Initialize sockets */
-     mmio_irqchip = virtio_irqchip = pcie_irqchip = NULL;
-     for (i = 0; i < socket_count; i++) {
-@@ -1683,13 +1688,14 @@ static void virt_machine_class_init(ObjectClass *oc, void *data)
-     machine_class_allow_dynamic_sysbus_dev(mc, TYPE_TPM_TIS_SYSBUS);
- #endif
- 
--    if (tcg_enabled()) {
--        object_class_property_add_bool(oc, "aclint", virt_get_aclint,
--                                       virt_set_aclint);
--        object_class_property_set_description(oc, "aclint",
--                                              "Set on/off to enable/disable "
--                                              "emulating ACLINT devices");
--    }
-+
-+    object_class_property_add_bool(oc, "aclint", virt_get_aclint,
-+                                   virt_set_aclint);
-+    object_class_property_set_description(oc, "aclint",
-+                                          "(TCG only) Set on/off to "
-+                                          "enable/disable emulating "
-+                                          "ACLINT devices");
-+
-     object_class_property_add_str(oc, "aia", virt_get_aia,
-                                   virt_set_aia);
-     object_class_property_set_description(oc, "aia",
--- 
-2.41.0
-
+r~
 
