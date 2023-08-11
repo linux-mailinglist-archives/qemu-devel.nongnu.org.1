@@ -2,88 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B74E2779268
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 17:07:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23D33779275
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 17:09:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qUTiV-0007BW-Dk; Fri, 11 Aug 2023 11:06:19 -0400
+	id 1qUTkz-0000Zr-9s; Fri, 11 Aug 2023 11:08:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qUTiS-0007Ak-JQ
- for qemu-devel@nongnu.org; Fri, 11 Aug 2023 11:06:16 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qUTkr-0000X3-Aw
+ for qemu-devel@nongnu.org; Fri, 11 Aug 2023 11:08:45 -0400
+Received: from smtp-out2.suse.de ([195.135.220.29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qUTiM-0005eE-Nb
- for qemu-devel@nongnu.org; Fri, 11 Aug 2023 11:06:15 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1bc6535027aso18040115ad.2
- for <qemu-devel@nongnu.org>; Fri, 11 Aug 2023 08:06:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691766365; x=1692371165;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=NzGcAH/wncr/lLEDpQNjY48DJKuZa1xa3K7ctnyqPhA=;
- b=ewPr9aBfFeMHvRKTY4BnGez/n6gOhTaZI8XpC/MeZRcyIUBAzO+OZL8tlPzH/wx/CK
- VgW+w7BCIj7ej1rRcLRJ+Ei3rJ8RgbLdJ5YVPkDCn56+OJHVUTpZo+z17ojBU0ldBqOl
- ztNf751uA3v2/2lmadO/xytegJuhZF00L2ipm100nm00TurutDYrpV11ZXx09Fh2aDah
- 4l8hNpm3woHTM31SOZa9rBoaqp5ooQq4BRmRcrZk1p8OtD4fEwPTYNIVTQbGyHhK5A8+
- AUDH/H4QRIo3+gG4wznj1Mwu6s67CJ66gwm1676pzA+/I8G1SFbpPU9WigTjjtxu7N8w
- A7QQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691766365; x=1692371165;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=NzGcAH/wncr/lLEDpQNjY48DJKuZa1xa3K7ctnyqPhA=;
- b=S4RThXRdcuMb8ZV3rocmnwxS5P2nysM0YoEzTmKAWd5pDgSFzuKxOr6oyszz2WRYO4
- +khWImGuSNV+aYyajwYP3QOWXQoab71HS19grPXdXe+KESu/kbTOs+nqM7DvW6aniZrE
- +qFnpLpqsyYQMt4RPJ5TmYDC//Aua+Roram8MYE1JwUFuy4F+DuMqrb5tl+KMiymUO9M
- sXTgVhWuJKtWPh2znA8Sf1DaejPtmnX113QkxAOKK61/pM51G6N9maxnlax4aLnpbKaf
- MwWxdCvtKbBTNLgWKJfAcsKgfbIQeZciuULKJJ6EP5dobnupLW2XC05q2NJ+DbvKft5E
- 9qGw==
-X-Gm-Message-State: AOJu0YyzqYZW/bsNSpljwEooO++3/xCwGBlLvaVOHiZmfH+1sJ5Iv8j/
- ju8z4U0oym64LMO9YW63xdwcbg==
-X-Google-Smtp-Source: AGHT+IFeMiEi9YAMZN29Zr72AQgiAE89yFmKlUh0vw/E+KmKN8BQtPhM3jTD/BgFS15trS/H7wOiJw==
-X-Received: by 2002:a17:903:120a:b0:1b8:987f:3f34 with SMTP id
- l10-20020a170903120a00b001b8987f3f34mr2666087plh.25.1691766365228; 
- Fri, 11 Aug 2023 08:06:05 -0700 (PDT)
-Received: from ?IPV6:2602:47:d483:7301:e773:351d:2db2:8a8a?
- ([2602:47:d483:7301:e773:351d:2db2:8a8a])
- by smtp.gmail.com with ESMTPSA id
- h18-20020a170902eed200b001ac6b926621sm4019046plb.292.2023.08.11.08.06.04
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 11 Aug 2023 08:06:04 -0700 (PDT)
-Message-ID: <6a116d10-5e01-30f8-fbd6-30c062fcccc5@linaro.org>
-Date: Fri, 11 Aug 2023 08:06:02 -0700
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qUTko-0006FA-St
+ for qemu-devel@nongnu.org; Fri, 11 Aug 2023 11:08:45 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 021341F889;
+ Fri, 11 Aug 2023 15:08:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1691766520; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=4B2oWdfDCihCgFLx2HtRTxFR1MYVYwTks7WIjwZShws=;
+ b=Vt5AJehTDfEohM3l86QEsaNg3Ch8oNTyd2BzsP5mgvy1jSfOfEJByyw2l1ubonBIq1uGRO
+ YJZYojmSRDNEO1AfENWP5+trfLHgBDP5dyEQW/b7c0gzBQX2KmPskWs96jZxM9qa2fdV4d
+ xAd+cJQagRQTSq236hiD9A5y4nSRMIA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1691766520;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=4B2oWdfDCihCgFLx2HtRTxFR1MYVYwTks7WIjwZShws=;
+ b=RbTYjn6jl40VwIczc4+hK4avs73oEbw2n1RZAj3Op5au2LcJsoigxDS3YMzbzXRxFCJrMz
+ ZEHTsRZpczQr0EBw==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id A955413592;
+ Fri, 11 Aug 2023 15:08:38 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id 0htxHPZO1mS7KwAAMHmgww
+ (envelope-from <farosas@suse.de>); Fri, 11 Aug 2023 15:08:38 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: qemu-devel@nongnu.org
+Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Wei Wang <wei.w.wang@intel.com>
+Subject: [PATCH v3 00/10] Fix segfault on migration return path
+Date: Fri, 11 Aug 2023 12:08:26 -0300
+Message-Id: <20230811150836.2895-1-farosas@suse.de>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 20/24] tcg/i386: Add cf parameter to tcg_out_cmp
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
- qemu-riscv@nongnu.org, qemu-s390x@nongnu.org
-References: <20230808031143.50925-1-richard.henderson@linaro.org>
- <20230808031143.50925-21-richard.henderson@linaro.org>
- <CAFEAcA-N-QWQXcHgMNnXTr+Bmf7fhdSKYQwS-kkWGdR+UHvT-Q@mail.gmail.com>
- <CAFEAcA9xsPHOeorJvjfO7mrpX_TfYHMNcMHi3dyt41+CktyXsg@mail.gmail.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <CAFEAcA9xsPHOeorJvjfO7mrpX_TfYHMNcMHi3dyt41+CktyXsg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
-X-Spam_score_int: -5
-X-Spam_score: -0.6
-X-Spam_bar: /
-X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.972,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- SUSPICIOUS_RECIPS=2.51 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,65 +79,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/11/23 03:45, Peter Maydell wrote:
-> On Fri, 11 Aug 2023 at 11:26, Peter Maydell <peter.maydell@linaro.org> wrote:
->>
->> On Tue, 8 Aug 2023 at 04:13, Richard Henderson
->> <richard.henderson@linaro.org> wrote:
->>>
->>> Add the parameter to avoid TEST and pass along to tgen_arithi.
->>> All current users pass false.
->>>
->>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
->>> ---
->>>   tcg/i386/tcg-target.c.inc | 16 ++++++++--------
->>>   1 file changed, 8 insertions(+), 8 deletions(-)
->>>
->>> diff --git a/tcg/i386/tcg-target.c.inc b/tcg/i386/tcg-target.c.inc
->>> index b88fc14afd..56549ff2a0 100644
->>> --- a/tcg/i386/tcg-target.c.inc
->>> +++ b/tcg/i386/tcg-target.c.inc
->>> @@ -1418,15 +1418,15 @@ static void tcg_out_jxx(TCGContext *s, int opc, TCGLabel *l, bool small)
->>>       }
->>>   }
->>>
->>> -static void tcg_out_cmp(TCGContext *s, TCGArg arg1, TCGArg arg2,
->>> -                        int const_arg2, int rexw)
->>> +static void tcg_out_cmp(TCGContext *s, int rexw, TCGArg arg1, TCGArg arg2,
->>> +                        int const_arg2, bool cf)
->>>   {
->>>       if (const_arg2) {
->>> -        if (arg2 == 0) {
->>> +        if (arg2 == 0 && !cf) {
->>>               /* test r, r */
->>>               tcg_out_modrm(s, OPC_TESTL + rexw, arg1, arg1);
->>>           } else {
->>> -            tgen_arithi(s, ARITH_CMP + rexw, arg1, arg2, 0);
->>> +            tgen_arithi(s, ARITH_CMP + rexw, arg1, arg2, cf);
->>>           }
->>>       } else {
->>>           tgen_arithr(s, ARITH_CMP + rexw, arg1, arg2);
->>
->> I don't really understand the motivation here.
->> Why are some uses of this function fine with using the TEST
->> insn, but some must avoid it? What does 'cf' stand for?
->> A comment would help here if there isn't a clearer argument
->> name available...
-> 
-> Looking at the following patch suggests perhaps:
-> 
-> /**
->   * tcg_out_cmp: Emit a compare, setting the X, Y, Z flags accordingly.
->   * @need_cf : true if the comparison must also set CF
->   */
-> 
-> (fill in which XYZ flags you can rely on even if need_cf is false)
+I decided to fix the issues with the shutdown instead of complaining
+about them. First 5 patches address all of the possible races I
+found. The only problem left to figure out is the -EIO on shutdown
+which will need more thought.
 
-I can add that, yes.
+Patches 6 & 7 fix the original segfault.
 
-Basically, test sets SZ flags, where cmp sets SZCO.  I want to add an optimizaton using C, 
-so "cmp 0,x" should not be silently replaced by "test x,x".
+Patches 8-10 make the cleanup of migration files more predictable and
+centralized.
 
+I also adjusted some small things that were mentioned by Peter:
 
-r~
+- moved the rp.error = false outside of the thread;
+- stopped checking for errors during postcopy_pause();
+- dropped the tracepoint;
+
+CI run: https://gitlab.com/farosas/qemu/-/pipelines/963407228
+
+v2:
+https://lore.kernel.org/r/20230802143644.7534-1-farosas@suse.de
+
+- moved the await into postcopy_pause() as Peter suggested;
+
+- brought back the mark_source_rp_bad call. Turns out that piece of
+code is filled with nuance. I just moved it aside since it doesn't
+make sense during pause/resume. We can tackle that when we get the
+chance.
+
+CI run: https://gitlab.com/farosas/qemu/-/pipelines/953420150
+Also ran the switchover and preempt tests for 1000 times each on
+x86_64.
+
+v1:
+https://lore.kernel.org/r/20230728121516.16258-1-farosas@suse.de
+
+The /x86_64/migration/postcopy/preempt/recovery/plain test is
+sometimes failing due a segmentation fault on the migration return
+path. There is a race involving the retry logic of the return path and
+the migration resume command.
+
+The issue happens when the retry logic tries to cleanup the current
+return path file, but ends up cleaning the new one and trying to use
+it right after. Tracing shows it clearly:
+
+open_return_path_on_source  <-- at migration start
+open_return_path_on_source_continue <-- rp thread created
+postcopy_pause_incoming
+postcopy_pause_fast_load
+qemu-system-x86_64: Detected IO failure for postcopy. Migration paused. (incoming)
+postcopy_pause_fault_thread
+qemu-system-x86_64: Detected IO failure for postcopy. Migration paused. (source)
+postcopy_pause_incoming_continued
+open_return_path_on_source   <-- NOK, too soon
+postcopy_pause_continued
+postcopy_pause_return_path   <-- too late, already operating on the new from_dst_file
+postcopy_pause_return_path_continued <-- will continue and crash
+postcopy_pause_incoming
+qemu-system-x86_64: Detected IO failure for postcopy. Migration paused.
+postcopy_pause_incoming_continued
+
+We could solve this by adding some form of synchronization to ensure
+that we always do the cleanup before setting up the new file, but I
+find it more straight-forward to move the retry logic outside of the
+thread by letting it finish and starting a new thread when resuming
+the migration.
+
+More details on the commit message.
+
+CI run: https://gitlab.com/farosas/qemu/-/pipelines/947875609
+
+Fabiano Rosas (10):
+  migration: Fix possible race when setting rp_state.error
+  migration: Fix possible race when shutting return path
+  migration: Fix possible race when checking to_dst_file for errors
+  migration: Fix possible race when shutting down to_dst_file
+  migration: Remove redundant cleanup of postcopy_qemufile_src
+  migration: Consolidate return path closing code
+  migration: Replace the return path retry logic
+  migration: Move return path cleanup to main migration thread
+  migration: Be consistent about shutdown of source shared files
+  migration: Add a wrapper to cleanup migration files
+
+ migration/migration.c | 228 +++++++++++++++---------------------------
+ migration/migration.h |   1 -
+ util/yank.c           |   2 -
+ 3 files changed, 79 insertions(+), 152 deletions(-)
+
+-- 
+2.35.3
+
 
