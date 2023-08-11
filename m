@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96222779289
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 17:10:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75042779288
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 17:10:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qUTl7-0000br-1f; Fri, 11 Aug 2023 11:09:01 -0400
+	id 1qUTl7-0000ba-1F; Fri, 11 Aug 2023 11:09:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qUTkz-0000Zt-BC
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qUTkz-0000Zs-9w
  for qemu-devel@nongnu.org; Fri, 11 Aug 2023 11:08:53 -0400
 Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qUTkv-0006Ha-1j
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qUTkv-0006Hu-3k
  for qemu-devel@nongnu.org; Fri, 11 Aug 2023 11:08:51 -0400
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id E35C821887;
- Fri, 11 Aug 2023 15:08:45 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id CE7B62188D;
+ Fri, 11 Aug 2023 15:08:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1691766525; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1691766527; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Sdig4Xam+KaxFnZLj6qvoskpEIm5WZWhu/1QE/MF7bM=;
- b=fRAAbpFjVM1AauZWTUvg+MOX/+6px2YjBz3p1rpROVJArPXAn7hPSDSvLGEYYCHSF5ZoHr
- dxwvn6kZxdmlRP+fXtfuTVIAgQGcZJT3Esppx1YY+pemzFonim8R0iVimw92riiPswl9pZ
- ejGN5fWwJDrPaOGBFXHtyufeZbOj66E=
+ bh=TGQOHZA1EOlvWg+cTrtICJk/oIlwUWTaoHqhgAIgHuE=;
+ b=t8vx8ShN4dS+OUzU4cVi1tvRwEx1J23jGljol5fvTyMr5zDIncmUnUYddtTfGApUOlgahM
+ cd+xxsqYSQ1Des9gHiXOcuvhTSoUvvG4AN7I3LxEVziVEF9UfbvOCG2BGJfjLTacSMnJsw
+ uGDUziFeaVtgFrAW5UDjAZAvGtq5Bx8=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1691766525;
+ s=susede2_ed25519; t=1691766527;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Sdig4Xam+KaxFnZLj6qvoskpEIm5WZWhu/1QE/MF7bM=;
- b=vOVmr/n5X2isJoRzkhBUD5CTaXnIqd/s7L903QRDfKQxHFKwySyHrsJ/wOGjc00Kd1hGFi
- SCbobTNg7abN+eCA==
+ bh=TGQOHZA1EOlvWg+cTrtICJk/oIlwUWTaoHqhgAIgHuE=;
+ b=I3E5xfudieMG3Th5S5nkqgq3SFSvyCtrHsOGq4n8VyaaEonjMoa1S3a3+MDc6YQnk822u8
+ Zo2JLyXthOhdTSAg==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 5772E13592;
- Fri, 11 Aug 2023 15:08:44 +0000 (UTC)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 4D3BB13592;
+ Fri, 11 Aug 2023 15:08:46 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id AG2jCPxO1mS7KwAAMHmgww
- (envelope-from <farosas@suse.de>); Fri, 11 Aug 2023 15:08:44 +0000
+ by imap2.suse-dmz.suse.de with ESMTPSA id 4GpPBv5O1mS7KwAAMHmgww
+ (envelope-from <farosas@suse.de>); Fri, 11 Aug 2023 15:08:46 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  Wei Wang <wei.w.wang@intel.com>, Leonardo Bras <leobras@redhat.com>
-Subject: [PATCH v3 03/10] migration: Fix possible race when checking
- to_dst_file for errors
-Date: Fri, 11 Aug 2023 12:08:29 -0300
-Message-Id: <20230811150836.2895-4-farosas@suse.de>
+Subject: [PATCH v3 04/10] migration: Fix possible race when shutting down
+ to_dst_file
+Date: Fri, 11 Aug 2023 12:08:30 -0300
+Message-Id: <20230811150836.2895-5-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20230811150836.2895-1-farosas@suse.de>
 References: <20230811150836.2895-1-farosas@suse.de>
@@ -86,38 +86,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Checking ms->to_dst_file for errors when cleaning up the return path
-could race with migrate_fd_cleanup() which clears the pointer.
-
-Since migrate_fd_cleanup() is reachable via qmp_migrate(), which is
-issued by the user, it is safer if we take the lock when reading
-ms->to_dst_file.
+It's not safe to call qemu_file_shutdown() on the to_dst_file without
+first checking for the file's presence under the lock. The cleanup of
+this file happens at postcopy_pause() and migrate_fd_cleanup() which
+are not necessarily running in the same thread as migrate_fd_cancel().
 
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/migration.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ migration/migration.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
 diff --git a/migration/migration.c b/migration/migration.c
-index 0067c927fa..85c171f32c 100644
+index 85c171f32c..5e6a766235 100644
 --- a/migration/migration.c
 +++ b/migration/migration.c
-@@ -2057,11 +2057,10 @@ static int await_return_path_close_on_source(MigrationState *ms)
-      * need to cause it to exit. shutdown(2), if we have it, will
-      * cause it to unblock if it's stuck waiting for the destination.
-      */
--    if (qemu_file_get_error(ms->to_dst_file)) {
--        WITH_QEMU_LOCK_GUARD(&ms->qemu_file_lock) {
--            if (ms->rp_state.from_dst_file) {
--                qemu_file_shutdown(ms->rp_state.from_dst_file);
--            }
-+    WITH_QEMU_LOCK_GUARD(&ms->qemu_file_lock) {
-+        if (ms->to_dst_file && ms->rp_state.from_dst_file &&
-+            qemu_file_get_error(ms->to_dst_file)) {
-+            qemu_file_shutdown(ms->rp_state.from_dst_file);
-         }
-     }
+@@ -1245,7 +1245,7 @@ static void migrate_fd_error(MigrationState *s, const Error *error)
+ static void migrate_fd_cancel(MigrationState *s)
+ {
+     int old_state ;
+-    QEMUFile *f = migrate_get_current()->to_dst_file;
++
+     trace_migrate_fd_cancel();
  
+     WITH_QEMU_LOCK_GUARD(&s->qemu_file_lock) {
+@@ -1271,11 +1271,13 @@ static void migrate_fd_cancel(MigrationState *s)
+      * If we're unlucky the migration code might be stuck somewhere in a
+      * send/write while the network has failed and is waiting to timeout;
+      * if we've got shutdown(2) available then we can force it to quit.
+-     * The outgoing qemu file gets closed in migrate_fd_cleanup that is
+-     * called in a bh, so there is no race against this cancel.
+      */
+-    if (s->state == MIGRATION_STATUS_CANCELLING && f) {
+-        qemu_file_shutdown(f);
++    if (s->state == MIGRATION_STATUS_CANCELLING) {
++        WITH_QEMU_LOCK_GUARD(&s->qemu_file_lock) {
++            if (s->to_dst_file) {
++                qemu_file_shutdown(s->to_dst_file);
++            }
++        }
+     }
+     if (s->state == MIGRATION_STATUS_CANCELLING && s->block_inactive) {
+         Error *local_err = NULL;
+@@ -1519,12 +1521,14 @@ void qmp_migrate_pause(Error **errp)
+ {
+     MigrationState *ms = migrate_get_current();
+     MigrationIncomingState *mis = migration_incoming_get_current();
+-    int ret;
++    int ret = 0;
+ 
+     if (ms->state == MIGRATION_STATUS_POSTCOPY_ACTIVE) {
+         /* Source side, during postcopy */
+         qemu_mutex_lock(&ms->qemu_file_lock);
+-        ret = qemu_file_shutdown(ms->to_dst_file);
++        if (ms->to_dst_file) {
++            ret = qemu_file_shutdown(ms->to_dst_file);
++        }
+         qemu_mutex_unlock(&ms->qemu_file_lock);
+         if (ret) {
+             error_setg(errp, "Failed to pause source migration");
 -- 
 2.35.3
 
