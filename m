@@ -2,83 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC1527791A5
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 16:17:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F281E7791E3
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 16:30:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qUSvc-0002rH-6r; Fri, 11 Aug 2023 10:15:48 -0400
+	id 1qUT8m-0006g0-0W; Fri, 11 Aug 2023 10:29:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qUSva-0002qz-Qr
- for qemu-devel@nongnu.org; Fri, 11 Aug 2023 10:15:46 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qUSvZ-0000mw-06
- for qemu-devel@nongnu.org; Fri, 11 Aug 2023 10:15:46 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-3fe4a89e8c4so18217345e9.3
- for <qemu-devel@nongnu.org>; Fri, 11 Aug 2023 07:15:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691763343; x=1692368143;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=tDIgT/twgiO8D6JJTgdM4fHS5xWGX+S3UD7LUUkUxq4=;
- b=FhZVB78hC95y9Xvd5dY/e1OqMd0MuNcdhSETuaPBgguyFTcnm6lH3a4PuCg0+oFKr/
- ZCBS4/GZGihzc6unbYoX9ET10LaMmf+emUxtty3Inh9f9pg8zn5+lD4d1rtbl+DFQhfi
- 4brmPUEWzn/POuW6LbywfEydL7QrbiJZNSOgaYFmR/JogDHJDqI05vyyRLpFrH95hsRt
- 68kTZuS8mGhS+olHTDUhqFIunaORoI/VaucJ7C9lV44OXXZ3qJPJw252UIWrBNb3gq26
- ZsbS5nzO5uPLS0+aJpGpNGDjZ4QzV7CxMGYOdr+ERohx86o0/qZP/X4XZt6Zs2O8I5zO
- IXGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691763343; x=1692368143;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=tDIgT/twgiO8D6JJTgdM4fHS5xWGX+S3UD7LUUkUxq4=;
- b=d9scGko8l9TrnGoBPDZpO5Eq4WyI5uv/nTKtwG/v++pC310dOaLSmBOdRfmutkDs/+
- WiRxTZbHO01CD5cO49Gzc93wn2JvbJh+OIP2MHyJB1iZWyB26p4krKrn9PbESVWC9DE6
- vxM2cpSX0Y+bOTEbaUrzX85IHXv50QrrgK69AyoY3nXx6kMlQvGAFgKIZZfZAddGtf70
- rft+2voBvyujI+OFfCN65uY3Y4ZAcOvlkAtVfDCnb+8w36yVLqZs4XJkFRvB6XMOQOQ8
- SgA2PCvxGVReiMShzN59M5to4OUxSy/RY56HneVwbHT9Dd4dG3m2pYEhh5Jx7dac2y0T
- d8xg==
-X-Gm-Message-State: AOJu0YynjDJdumZ6TUNaS75YiGweAAar+2rLQnARYBGSXteKgsURV9Qw
- hGx6/TCg/hbWzWe+aTgfTDeUQV2XDt1XmTXmBsM=
-X-Google-Smtp-Source: AGHT+IG509djyuTXbXnl+ns8CCB6PM+nrUyqQaMMsrXi4R03dvyq9D+QpkBJarY4V0/KKxrS16EUQA==
-X-Received: by 2002:a05:600c:2207:b0:3fe:6199:939f with SMTP id
- z7-20020a05600c220700b003fe6199939fmr1747926wml.33.1691763343158; 
- Fri, 11 Aug 2023 07:15:43 -0700 (PDT)
-Received: from [192.168.69.115] (tre93-h02-176-184-7-255.dsl.sta.abo.bbox.fr.
- [176.184.7.255]) by smtp.gmail.com with ESMTPSA id
- 17-20020a05600c021100b003fe1c332810sm8341551wmi.33.2023.08.11.07.15.41
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 11 Aug 2023 07:15:42 -0700 (PDT)
-Message-ID: <70792c75-1a77-eb21-98b3-032aebb773e3@linaro.org>
-Date: Fri, 11 Aug 2023 16:15:40 +0200
+ (Exim 4.90_1) (envelope-from <i.maximets@ovn.org>)
+ id 1qUT8h-0006fi-5b
+ for qemu-devel@nongnu.org; Fri, 11 Aug 2023 10:29:19 -0400
+Received: from relay8-d.mail.gandi.net ([2001:4b98:dc4:8::228])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <i.maximets@ovn.org>)
+ id 1qUT8d-0004OU-PD
+ for qemu-devel@nongnu.org; Fri, 11 Aug 2023 10:29:18 -0400
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 231F51BF206;
+ Fri, 11 Aug 2023 14:29:06 +0000 (UTC)
+Message-ID: <cacf01d2-7ce3-b0c5-cdc3-b855a27872e9@ovn.org>
+Date: Fri, 11 Aug 2023 16:29:47 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [PATCH v2] linux-user/riscv: Use abi type for target_ucontext
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Cc: i.maximets@ovn.org, Stefan Hajnoczi <stefanha@redhat.com>,
+ qemu-devel <qemu-devel@nongnu.org>, Jason Wang <jasowang@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
+Subject: Re: [PATCH] virtio: don't zero out memory region cache for indirect
+ descriptors
 Content-Language: en-US
-To: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, Alistair.Francis@wdc.com,
- palmer@dabbelt.com, bin.meng@windriver.com, liweiwei@iscas.ac.cn,
- dbarboza@ventanamicro.com, qemu-riscv@nongnu.org
-References: <20230811055438.1945-1-zhiwei_liu@linux.alibaba.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230811055438.1945-1-zhiwei_liu@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: Stefan Hajnoczi <stefanha@gmail.com>
+References: <20230807222847.2837393-1-i.maximets@ovn.org>
+ <20230810155048.GI2931656@fedora>
+ <3479fe54-66c5-4c17-8972-2c5d22028bdd@ovn.org>
+ <CAJSP0QXi9PKShUgtVf6DVsNOEW3-AT8+rbdFU1GHgmD0J-G8MQ@mail.gmail.com>
+From: Ilya Maximets <i.maximets@ovn.org>
+In-Reply-To: <CAJSP0QXi9PKShUgtVf6DVsNOEW3-AT8+rbdFU1GHgmD0J-G8MQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.972,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-GND-Sasl: i.maximets@ovn.org
+Received-SPF: neutral client-ip=2001:4b98:dc4:8::228;
+ envelope-from=i.maximets@ovn.org; helo=relay8-d.mail.gandi.net
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.972,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_PASS=-0.001,
+ SPF_NEUTRAL=0.779 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,21 +64,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/8/23 07:54, LIU Zhiwei wrote:
-> We should not use types dependend on host arch for target_ucontext.
-> This bug is found when run rv32 applications.
+On 8/11/23 15:58, Stefan Hajnoczi wrote:
 > 
-> Signed-off-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-> Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> ---
-> v2:
-> - Use abi_ptr instead of abi_ulong for uc_link. (Suggest by Philippe Mathieu-Daudé)
-> ---
->   linux-user/riscv/signal.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> On Fri, Aug 11, 2023, 08:50 Ilya Maximets <i.maximets@ovn.org <mailto:i.maximets@ovn.org>> wrote:
+> 
+>     On 8/10/23 17:50, Stefan Hajnoczi wrote:
+>     > On Tue, Aug 08, 2023 at 12:28:47AM +0200, Ilya Maximets wrote:
+>     >> Lots of virtio functions that are on a hot path in data transmission
+>     >> are initializing indirect descriptor cache at the point of stack
+>     >> allocation.  It's a 112 byte structure that is getting zeroed out on
+>     >> each call adding unnecessary overhead.  It's going to be correctly
+>     >> initialized later via special init function.  The only reason to
+>     >> actually initialize right away is the ability to safely destruct it.
+>     >> However, we only need to destruct it when it was used, i.e. when a
+>     >> desc_cache points to it.
+>     >>
+>     >> Removing these unnecessary stack initializations improves throughput
+>     >> of virtio-net devices in terms of 64B packets per second by 6-14 %
+>     >> depending on the case.  Tested with a proposed af-xdp network backend
+>     >> and a dpdk testpmd application in the guest, but should be beneficial
+>     >> for other virtio devices as well.
+>     >>
+>     >> Signed-off-by: Ilya Maximets <i.maximets@ovn.org <mailto:i.maximets@ovn.org>>
+>     >> ---
+>     >>  hw/virtio/virtio.c | 42 +++++++++++++++++++++++++++---------------
+>     >>  1 file changed, 27 insertions(+), 15 deletions(-)
+>     >
+>     > Another option is to create an address_space_cache_init_invalid()
+>     > function that only assigns mrs.mr <http://mrs.mr> = NULL instead of touching all bytes
+>     > of the struct like = MEMORY_REGION_CACHE_INVALID. There would be less
+>     > code and the existing mrs.mr <http://mrs.mr> check in address_space_cache_destroy()
+>     > would serve the same function as the desc_cache == &indirect_desc_cache
+>     > check added by this patch.
+> 
+>     It does look simpler this way, indeed.  Though I'm not sure about
+>     a function name.  We have address_space_cache_invalidate() that
+>     does a completely different thing and the invalidated cache can
+>     still be used, while the cache initialized with the newly proposed
+>     address_space_cache_init_invalid() can not be safely used.
+> 
+>     I suppose, the problem is not new, since the macro was named similarly,
+>     but making it a function seems to make the issue worse.
+> 
+>     Maybe address_space_cache_init_empty() will be a better name?
+>     E.g.:
+> 
+>     **
+>      * address_space_cache_init_empty: Initialize empty #MemoryRegionCache
+>      *
+>      * @cache: The #MemoryRegionCache to operate on.
+>      *
+>      * Initializes #MemoryRegionCache structure without memory region attached.
+>      * Cache initialized this way can only be safely destroyed, but not used.
+>      */
+>     static inline void address_space_cache_init_empty(MemoryRegionCache *cache)
+>     {
+>         cache->mrs.mr = NULL;
+>     }
+> 
+>     What do you think?
+> 
+> 
+> init_empty() is good.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+I'll use it then.  Will send a v2 shortly.
 
+Thanks!
+
+> 
+> Stefan
+> 
 
 
