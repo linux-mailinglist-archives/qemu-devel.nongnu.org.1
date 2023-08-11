@@ -2,94 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E494C77937B
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 17:49:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C6F67793C5
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 18:03:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qUUMf-0000if-2I; Fri, 11 Aug 2023 11:47:49 -0400
+	id 1qUUYz-0004aE-8X; Fri, 11 Aug 2023 12:00:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qUUMP-0000gv-OB
- for qemu-devel@nongnu.org; Fri, 11 Aug 2023 11:47:34 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qUUMO-00050C-2E
- for qemu-devel@nongnu.org; Fri, 11 Aug 2023 11:47:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691768850;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=y2cicZPFtD1+DEzPMplD3B1x4uhcJje9HvoqWz6HL/A=;
- b=cctMlVk4QeacedjMNSFVGhJc4wRMJobUXBY4sqdalEAu6lc7md81hHsGPerFnqY9QQf05a
- HXR7Q1Iyvz5w/tn/6Wva2lrr6JGjOOnRgu7PV6WIJSGMQMpZwF2aLnaoaBQKKls9+/yJNt
- koDnNTQpSqFM2O1Rs6mlWGWe2T7Q/08=
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-56-idWw9n5FOV-dkulgmMvwvQ-1; Fri, 11 Aug 2023 11:47:29 -0400
-X-MC-Unique: idWw9n5FOV-dkulgmMvwvQ-1
-Received: by mail-qt1-f197.google.com with SMTP id
- d75a77b69052e-4059b5c3dd0so5586901cf.0
- for <qemu-devel@nongnu.org>; Fri, 11 Aug 2023 08:47:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qUUYq-0004YU-UZ
+ for qemu-devel@nongnu.org; Fri, 11 Aug 2023 12:00:25 -0400
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qUUYp-00084S-69
+ for qemu-devel@nongnu.org; Fri, 11 Aug 2023 12:00:24 -0400
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-1bb84194bf3so14656065ad.3
+ for <qemu-devel@nongnu.org>; Fri, 11 Aug 2023 09:00:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1691769620; x=1692374420;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=fa1lIFhs/aw4bLGE0OKA8/gu8et3hzVukf2KvK4rErA=;
+ b=LZlDNqlDuczwAb2bynUpbFHUkm3JZsR74NP2Ec4F9A4D0rcTpiL1rO9q3NVyoP10cR
+ BF6r8pqy6/VNIBGculHkuh6Ung0uhZkPEkJHy64lbTPbFzksvjAZPZ0mKQxR4GRv1ouV
+ nCRXEnBUiz6ZSCBUWgC87oyjIAwH1gnuA1xIlQN5hMGUwTJP+M8W3Hyux3JKdra34Afk
+ gIXH5VofpX8t+jIKSo9gfwZfDdLd9LiB6vwkz6wjDYPDHULdaeqVQP86I5Mi7Ve0B6gh
+ 6o6IlrOU0QmCW36Q9z//uXGYjR4Nn4Lb+LxtaSFhiLTmttj+au/Qa9IC4Klulym/UCx9
+ JvAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691768848; x=1692373648;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=y2cicZPFtD1+DEzPMplD3B1x4uhcJje9HvoqWz6HL/A=;
- b=KWpH/u5x960TvwG6724N6tfSC0Io4Ps/J3lYAxhOU4vOun9GtIn3dGnKvjfXKMR6kC
- jH+ihS36bfX4IvSwWQfXEO60i+qCO4wS9/7f1Y5Bu6ub6/WVVD+cePYoaDCIflQ1AAl+
- WCzNZb7jIeeU3AMHf9CIGNmo0aB1xtan32k+vSSnJ3cVoTEo38dIKJgiApP64dNQhTm0
- MrZx9stkTOqCnK6zLdeMWZgSz/4DJwk+LojPXV9gEpaSMZHyF8UVpoxIhJBgy0XboL4K
- TwVUqLYMtIOZhRP59xFK/lek78zU8vFWWm1s/hRt5q2aTn2mePen243AcoLNREjnEzzp
- rH9A==
-X-Gm-Message-State: AOJu0YwFUoXljKAyaC83rTASd9f8PjOtnPOeuJ129J1PXSxq5mVC0oTm
- 4hKIS4SB0ZO5S7Lv+5J94EQMt0RCsIXsJaaunom1jMHoEhH+j1eqUec+LzSGNQrXuSEwY3FFk/P
- l0ByzA49/p/t+g9g=
-X-Received: by 2002:a05:6214:3002:b0:63f:7d29:1697 with SMTP id
- ke2-20020a056214300200b0063f7d291697mr2689618qvb.2.1691768848374; 
- Fri, 11 Aug 2023 08:47:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFYCGqBkhtfbimejW7YEBfVOBwPsP+AbjrAPhNAfOzi13+DvBiAMX95GyB0xwxp7QCLT+MGbA==
-X-Received: by 2002:a05:6214:3002:b0:63f:7d29:1697 with SMTP id
- ke2-20020a056214300200b0063f7d291697mr2689596qvb.2.1691768848074; 
- Fri, 11 Aug 2023 08:47:28 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- o11-20020a0ccb0b000000b0062de6537febsm1306273qvk.58.2023.08.11.08.47.27
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 11 Aug 2023 08:47:27 -0700 (PDT)
-Date: Fri, 11 Aug 2023 11:47:26 -0400
-From: Peter Xu <peterx@redhat.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: ThinerLogoer <logoerthiner1@163.com>, qemu-devel@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: Re: [PATCH v1 1/3] softmmu/physmem: fallback to opening guest RAM
- file as readonly in a MAP_PRIVATE mapping
-Message-ID: <ZNZYDjtkQRJtZF9Y@x1n>
-References: <20230807190736.572665-1-david@redhat.com>
- <20230807190736.572665-2-david@redhat.com> <ZNKtHVotkfgI1tb4@x1n>
- <1d1a7d8f-6260-5905-57ea-514b762ce869@redhat.com>
- <ZNOti1OKN79t68jP@x1n>
- <e9c53fbd-369c-2605-1470-e67a765f923b@redhat.com>
- <6152f171.6a4c.189e069baf7.Coremail.logoerthiner1@163.com>
- <ZNVVmxuQAsSEHqZq@x1n>
- <9feaf960-637b-9392-3c8f-9e1ba1a7ca40@redhat.com>
+ d=1e100.net; s=20221208; t=1691769620; x=1692374420;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=fa1lIFhs/aw4bLGE0OKA8/gu8et3hzVukf2KvK4rErA=;
+ b=C17QLDRVoq1/qCvVav7y5PSGjkL+e22KwTNvEZS/JZrdA4Coun+mU98oFxLEREfghd
+ Us3sfmTGhINz+oyNoY2fjfvEeV5mt0tu/LTAqLP+3M/YhTXoxCyCVbrYC8SanbROwWZf
+ f5M3Tg0IpG3flepZC6m6EpsgMKiEGBUCxgxItWYQrvzWMKeGqFw+k+/GsUrXv85VgGHU
+ SBEHKX5OQVCgR31axiGVvXoo3Nw2xbqWkTrhO3LKrOdRNA2/ZWo++LwybSy3B2yn4Ft9
+ Vfe6/eJdPdgfxnGOFosXyE6Pk961m7KSJ1nLXknobiaD1dQOKb4CcRfhy+77bsl4ndfk
+ MK8Q==
+X-Gm-Message-State: AOJu0YzXFtXVOqHCjdn2ImrUZqftX7dUAYiuLk5Mtu76RtdiNApsTpyI
+ 6qVYGgWieuq17B83HyrGc51l/A==
+X-Google-Smtp-Source: AGHT+IEstrEItUMa9mzYFV8yiORlcbPBQ/zwtUjuksXZydONmALZnI8YOeGp6+nPrT7RjJ0lKQlbxA==
+X-Received: by 2002:a17:902:74c2:b0:1b8:17e8:5475 with SMTP id
+ f2-20020a17090274c200b001b817e85475mr2243219plt.24.1691769619776; 
+ Fri, 11 Aug 2023 09:00:19 -0700 (PDT)
+Received: from ?IPV6:2602:47:d483:7301:e773:351d:2db2:8a8a?
+ ([2602:47:d483:7301:e773:351d:2db2:8a8a])
+ by smtp.gmail.com with ESMTPSA id
+ q20-20020a170902e31400b001afd821c057sm4108963plc.58.2023.08.11.09.00.18
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 11 Aug 2023 09:00:19 -0700 (PDT)
+Message-ID: <3d151e82-f431-37b3-dae2-e111ee3946eb@linaro.org>
+Date: Fri, 11 Aug 2023 09:00:16 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <9feaf960-637b-9392-3c8f-9e1ba1a7ca40@redhat.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v2 3/8] target/loongarch: Add avail_64 to check la64-only
+ instructions
+Content-Language: en-US
+To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
+Cc: philmd@linaro.org, maobibo@loongson.cn, yangxiaojuan@loongson.cn, c@jia.je
+References: <20230811100208.271649-1-gaosong@loongson.cn>
+ <20230811100208.271649-4-gaosong@loongson.cn>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230811100208.271649-4-gaosong@loongson.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.972,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,63 +97,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Aug 11, 2023 at 04:59:56PM +0200, David Hildenbrand wrote:
-> On 10.08.23 23:24, Peter Xu wrote:
-> > On Fri, Aug 11, 2023 at 01:06:12AM +0800, ThinerLogoer wrote:
-> > > > I think we have the following options (there might be more)
-> > > > 
-> > > > 1) This patch.
-> > > > 
-> > > > 2) New flag for memory-backend-file. We already have "readonly" and
-> > > > "share=". I'm having a hard time coming up with a good name that really
-> > > > describes the subtle difference.
-> > > > 
-> > > > 3) Glue behavior to the QEMU machine
-> > > > 
-> > > 
-> > > 4) '-deny-private-discard' argv, or environment variable, or both
-> > 
-> > I'd personally vote for (2).  How about "fdperm"?  To describe when we want
-> > to use different rw permissions on the file (besides the access permission
-> > of the memory we already provided with "readonly"=XXX).  IIUC the only sane
-> > value will be ro/rw/default, where "default" should just use the same rw
-> > permission as the memory ("readonly"=XXX).
+On 8/11/23 03:02, Song Gao wrote:
+> The la32 manual from [1], and it is not the final version.
 > 
-> Hmm, I'm not particularly happy about that.
-> 
-> > 
-> > Would that be relatively clean and also work in this use case?
-> > 
-> 
-> I get the feeling that we are over-engineering something that probably
-> should never have been allowed: MAP_PRIVATE mapping of a file and opening it
-> rw because someone might punch holes into it.
-> 
-> Once we start adding new parameters just for that, I get a bit skeptical
-> that this is what we want. The number of people that care about that are
-> probably close to 0.
-> 
-> The only real use case where this used to make sense (by accident I assume)
-> was with hugetlb. And somehow, we decided that it was a good idea for
-> "-mem-path" to use MAP_PRIVATE.
-> 
-> So, what stops us from
-> 
-> a) Leaving -mem-path alone. Keep opening files rw.
-> b) Make memory-backend-file with shared=off,readonly=off open the file
->    read-only
-> c) Gluing that behavior to a QEMU compat machine
+> [1]: https://www.loongson.cn/uploads/images/2023041918122813624.%E9%BE%99%E8%8A%AF%E6%9E%B6%E6%9E%8432%E4%BD%8D%E7%B2%BE%E7%AE%80%E7%89%88%E5%8F%82%E8%80%83%E6%89%8B%E5%86%8C_r1p03.pdf
 
-So we want to make all users with shared=off + readonly=off to only open
-the file RO always, failing file write ops rather than crashing others.
+I really hope this manual will be changed before final.
 
-Sounds reasonable to me.
 
-In that case, do we even need a compat bit, if we're 100% sure it won't
-break anyone but only help, with the fact that everything should be
-transparent?
+> -TRANS(pcaddi, ALL, gen_pc, gen_pcaddi)
+> -TRANS(pcalau12i, ALL, gen_pc, gen_pcalau12i)
+> +TRANS(pcaddi, 64, gen_pc, gen_pcaddi)
+> +TRANS(pcalau12i, 64, gen_pc, gen_pcalau12i)
+>   TRANS(pcaddu12i, ALL, gen_pc, gen_pcaddu12i)
+> -TRANS(pcaddu18i, ALL, gen_pc, gen_pcaddu18i)
+> +TRANS(pcaddu18i, 64, gen_pc, gen_pcaddu18i)
 
--- 
-Peter Xu
+For the compiler, PCALAU12I is much more useful than PCADDU12I.
 
+Because PCALAU12I produces zeros in the lower 12 bits, the high-part pc-relative 
+relocation does not need to be paired with a corresponding low-part pc-relative relocation.
+
+Whereas PCADDU12I produces a full 32-bit result, and the low-part pc-relative relocation 
+needs to know where the high-part was produced in order to compensate.  This fundamental 
+error was made by the RISC-V ISA, and their toolchain is still paying the price.
+
+
+> @@ -69,6 +77,10 @@ static bool trans_cpucfg(DisasContext *ctx, arg_cpucfg *a)
+>       TCGv dest = gpr_dst(ctx, a->rd, EXT_NONE);
+>       TCGv src1 = gpr_src(ctx, a->rj, EXT_NONE);
+>   
+> +    if (!avail_64(ctx)) {
+> +        return false;
+> +    }
+
+For the operating system running on LA32, lack of CPUCFG means that you now have to 
+provide the cpu configuration in another way:
+
+(1) Via compilation options, such that one operating system build will only run on a 
+single cpu.
+
+(2) Via external data, like device tree.
+
+Either option complicates the usage of LA32.
+
+I would hope that a few words of rom for CPUCFG to read is not too expensive to 
+incorporate in even the smallest cpu implementation.
+
+
+r~
 
