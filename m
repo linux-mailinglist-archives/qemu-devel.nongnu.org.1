@@ -2,86 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24DD177942D
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 18:17:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D28677942E
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 18:18:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qUUpV-0000GC-4b; Fri, 11 Aug 2023 12:17:37 -0400
+	id 1qUUq2-00019J-7O; Fri, 11 Aug 2023 12:18:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qUUpS-0000Ax-SL
- for qemu-devel@nongnu.org; Fri, 11 Aug 2023 12:17:34 -0400
-Received: from mail-oa1-x31.google.com ([2001:4860:4864:20::31])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qUUpR-0002pg-E2
- for qemu-devel@nongnu.org; Fri, 11 Aug 2023 12:17:34 -0400
-Received: by mail-oa1-x31.google.com with SMTP id
- 586e51a60fabf-1c0fff40ec6so1353891fac.2
- for <qemu-devel@nongnu.org>; Fri, 11 Aug 2023 09:17:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691770652; x=1692375452;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=xrD7e2u9SOcfyz+wvkjY7hsjoIJI6nO0lMAN7gQhPlA=;
- b=sCzxGtVWk8eBz18gi3ALGO1QQbRwnvXsReptsDSVsLbLK96M/psCJQ6nsMSNaprZyQ
- qh/EASFNRE9vFsWAAjvaLFze+Tysgq2l+Lks4cfANqTwsTy60XYjKuGa5ecIGpFzuIKM
- orHwq9r8FtmSCOe6hyh6NekVUBh/Tgs995hfs2lHTf8clF4+EYda+Bd7962abV9SIbP5
- e+sst4aIz+eGKCKkpRGnnghIbjJ2rgtR3WdKlabvPc/2z+U1kDSYso3RN7fXcbuDKqOh
- P0mvc/k9k0UE7j/mLmH7pr0Ps8bt6YDKT5FOUFv6/QH29ys2IiPJA10U3hMSS98DKst/
- 4hMw==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qUUq0-000194-7H
+ for qemu-devel@nongnu.org; Fri, 11 Aug 2023 12:18:08 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qUUpy-0002u4-Nq
+ for qemu-devel@nongnu.org; Fri, 11 Aug 2023 12:18:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1691770685;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+ bh=M1n0dUBoe6R7rj5pNoHWGq+QUWKU5JnXu+Z3+LuF/kE=;
+ b=hiHZhE9jxRdSds6lEz8MMxGG3lZ8zO2ngnAXVskLKKqV28MjzSSpJM0wQuXhH41w3Ht1R5
+ GfWwxdwrjzBbTTRHpM4FE8osdrutzXsRUPtGr4fuZfKUbsB9Ezuk7FKjrlFVrDIhT6NAOe
+ 8JfviVbB+RnNxZ7O00kOEIEGxrvFDjk=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-515-OW7NC0-HNk2A2-iZxhipdQ-1; Fri, 11 Aug 2023 12:18:04 -0400
+X-MC-Unique: OW7NC0-HNk2A2-iZxhipdQ-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-51d981149b5so1433019a12.3
+ for <qemu-devel@nongnu.org>; Fri, 11 Aug 2023 09:18:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691770652; x=1692375452;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20221208; t=1691770682; x=1692375482;
+ h=content-disposition:mime-version:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=xrD7e2u9SOcfyz+wvkjY7hsjoIJI6nO0lMAN7gQhPlA=;
- b=YKrq2jFe4YC7AzMlaXjjiOFsSgY17zOj4wzvLKgmnzR2ZLoBXJaEl8ir1n2rGifuog
- boX2IIP+S4EBPwyOGDatAWJIxap3zuvZ65hDuV4DTowmGV1bWjQJK2vm3t0RvoXYfOCF
- tbVd1JyRu5nuGBN3JyDw13kcRx1g9czH5dkZ8XXL+m0hd0RwZgPSW/TLrsIfSEqqOcxB
- o/ZfsSX2tMgxGxcshiBQnzDNEwHEAg6jTdgkBaeK+lHdvEgnVZ/WA7PkpqN1h0tpcto2
- RWxAu+lcBp87VeX3F1dhqI9h4icD85tf2UnTgoiNn3xbAd/7oaK+wrlTWLZ+URrlJLLD
- qv2Q==
-X-Gm-Message-State: AOJu0Yw8xutqbcX/cG/MvCetZDJbDLo30A5CgHlIJGLfXcIjW42r4wjx
- oqPVW9QcHjtr2dcFl27SUh8s7w==
-X-Google-Smtp-Source: AGHT+IGXv63VsYk3i4ypeEEwDetg94veqReqdC9KULBoNxgv7cBQ2z28tEGPSSHKhZezClUm2GmrIA==
-X-Received: by 2002:a05:6870:468e:b0:1bb:867e:caeb with SMTP id
- a14-20020a056870468e00b001bb867ecaebmr2589904oap.51.1691770652198; 
- Fri, 11 Aug 2023 09:17:32 -0700 (PDT)
-Received: from ?IPV6:2602:47:d483:7301:e773:351d:2db2:8a8a?
- ([2602:47:d483:7301:e773:351d:2db2:8a8a])
- by smtp.gmail.com with ESMTPSA id
- ne10-20020a17090b374a00b002682392506bsm3540556pjb.50.2023.08.11.09.17.31
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 11 Aug 2023 09:17:31 -0700 (PDT)
-Message-ID: <25ba9b6b-14a5-4233-34d6-5e9023a45309@linaro.org>
-Date: Fri, 11 Aug 2023 09:17:30 -0700
+ bh=M1n0dUBoe6R7rj5pNoHWGq+QUWKU5JnXu+Z3+LuF/kE=;
+ b=X5221a3hSi1uKPxuGsaAyTbpRM75uo9ULmTrszmkTSU3Xj5T3FNbWAfZv1qX07UvP+
+ 0+ZN1O+0901O6JtadBTgbOIYf3JATcjAChvx+hBHeJRJTqjGcHhQ34VzMrvDSEBNI2Bf
+ +5vpL/pCHllONP9s06+wyso4oO4uaKAtm2ckrvYc4FJbVHycrIBYdJbLtEo2ik/C14uE
+ vqxWptGTIBL4N8XODZXK4l5Hvwz+FvbSPNPEZPA2KK3cMXSwMClBApMzV9Qa7Kdfz3oN
+ Qbod7bhhgQEISY0RUJt7SmxW7ezvZPEPMn9F5bWfPN9f1P7Ndn/lvcwfatyYyQ55u280
+ z5eQ==
+X-Gm-Message-State: AOJu0Yw/UgDegEGhBPFG00xMKEwKTbQMPnmmMH6zX+tJ06U/sxewQBKi
+ 9ZczkeOOKNRre6TYsdDPg2K620UDYZBysc8WnevMmNd83Xif4cthT7vNY5r5bebWyCZfSWFptHB
+ 4EfZFFa/JQUPGuBHdr0vompevrhQW+X58c6PN4ghO+lRCwYmzv5zTX2IwB5aqVEPPrIPw
+X-Received: by 2002:a17:906:3292:b0:99b:eca2:47a8 with SMTP id
+ 18-20020a170906329200b0099beca247a8mr2103160ejw.38.1691770682494; 
+ Fri, 11 Aug 2023 09:18:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGncaSCwUfjvc609njvEtDbZ1iI1wwH6URF8XXG0XgTgkk8edYBeIQs6r862KEN0vjNTz/CFQ==
+X-Received: by 2002:a17:906:3292:b0:99b:eca2:47a8 with SMTP id
+ 18-20020a170906329200b0099beca247a8mr2103146ejw.38.1691770682151; 
+ Fri, 11 Aug 2023 09:18:02 -0700 (PDT)
+Received: from redhat.com ([2.55.42.146]) by smtp.gmail.com with ESMTPSA id
+ lw12-20020a170906bccc00b0099ce23c57e6sm2424084ejb.224.2023.08.11.09.18.00
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 11 Aug 2023 09:18:01 -0700 (PDT)
+Date: Fri, 11 Aug 2023 12:17:58 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>
+Subject: [PULL 0/2] pci: last minute bugfixes
+Message-ID: <cover.1691770630.git.mst@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2 8/8] target/loongarch: Add avail_IOCSR to check iocsr
- instructions
-Content-Language: en-US
-To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
-Cc: philmd@linaro.org, maobibo@loongson.cn, yangxiaojuan@loongson.cn, c@jia.je
-References: <20230811100208.271649-1-gaosong@loongson.cn>
- <20230811100208.271649-9-gaosong@loongson.cn>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230811100208.271649-9-gaosong@loongson.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2001:4860:4864:20::31;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x31.google.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.972,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
+X-Mutt-Fcc: =sent
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,15 +92,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/11/23 03:02, Song Gao wrote:
-> Signed-off-by: Song Gao<gaosong@loongson.cn>
-> ---
->   .../loongarch/insn_trans/trans_privileged.c.inc  | 16 ++++++++--------
->   target/loongarch/translate.h                     |  2 +-
->   2 files changed, 9 insertions(+), 9 deletions(-)
+The following changes since commit 15b11a1da6a4b7c6b8bb37883f52b544dee2b8fd:
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+  cryptodev: Handle unexpected request to avoid crash (2023-08-03 16:16:17 -0400)
 
+are available in the Git repository at:
 
-r~
+  https://git.kernel.org/pub/scm/virt/kvm/mst/qemu.git tags/for_upstream
+
+for you to fetch changes up to 0f936247e8ed0ab5fb7e75827dd8c8f73d5ef4b5:
+
+  pci: Fix the update of interrupt disable bit in PCI_COMMAND register (2023-08-11 12:15:24 -0400)
+
+----------------------------------------------------------------
+pci: last minute bugfixes
+
+two fixes that seem very safe and important enough to sneak
+in before the release.
+
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+
+----------------------------------------------------------------
+Guoyi Tu (1):
+      pci: Fix the update of interrupt disable bit in PCI_COMMAND register
+
+Jason Chien (1):
+      hw/pci-host: Allow extended config space access for Designware PCIe host
+
+ hw/pci-host/designware.c | 1 +
+ hw/pci/pci.c             | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+
 
