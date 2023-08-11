@@ -2,71 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4F8B779082
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 15:13:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7482077910D
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 15:53:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qURwP-0006gf-D4; Fri, 11 Aug 2023 09:12:33 -0400
+	id 1qUSY2-0000dj-9K; Fri, 11 Aug 2023 09:51:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jinpu.wang@ionos.com>)
- id 1qURwK-0006gC-UY
- for qemu-devel@nongnu.org; Fri, 11 Aug 2023 09:12:28 -0400
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jinpu.wang@ionos.com>)
- id 1qURwJ-0003QC-4p
- for qemu-devel@nongnu.org; Fri, 11 Aug 2023 09:12:28 -0400
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-51cff235226so4126773a12.0
- for <qemu-devel@nongnu.org>; Fri, 11 Aug 2023 06:12:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ionos.com; s=google; t=1691759543; x=1692364343;
- h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
- :date:message-id:reply-to;
- bh=nBZWSP2C3HyntujncHEI7Q7XZucXTZ9+eGCGM7A26ew=;
- b=h2HO4iCIJiqKjDjIaCp9UDgyDYO7mSFdfVSHprcIqMVFp8qCpFF2jf5VHUdzBgxGPU
- M3vtXPdyGo8gxNMnMguW4Ibk8B1xJp8GSAi8vdPJCN471rkabQUCrzRhrhpaBWegEPQk
- 4St2JX/EHj41JP4kEUO7vMh41kgOzlO0ZX9dp+MQUvgzWZTBczWechfBhlstAKW70ocj
- 7zQPu00ShHC3TH1BiZcWLkBqHaOvZpCQtLydwCTSBrZpL9wBL7oqCYqWf0bInmu6QZZF
- ypM8RyUI5a72CtuW80WoxGemrlTZD+ziLkxOdVvXplOSKIBMN6WN3YNg7c5/rBmGX5h0
- 5igw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691759543; x=1692364343;
- h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=nBZWSP2C3HyntujncHEI7Q7XZucXTZ9+eGCGM7A26ew=;
- b=TqizZTzyUDE5ahgHHkSgMSrydo2g+7/TIpK9S2RjQnf9k/UczRd2Vc8U8QA6Y1wvA3
- NYw51cdKqbJfFtB+wJJY+8SnQbRU9wENVDJaDK6mA91Th+DntJyeoSFvllNqnqfOqE2w
- MjvCp5NEPFjv3lG+E3C5etG5q7ARwd8gNOHjuFuVV1nnrzbASP/mabZkMyZofM4xwz2q
- 8OW4tMosq25krao99fX7usRW7YxNyDZc68b6vYhl06VVV/bSvb9L98eK2nwUjKdJwPQ1
- bFs5Gv0/yZFM+4s+8qICkP9BGquT6/hQH4BJRqz4MkyTF18qucNPl44zKdYgYGsdkEyY
- i2Eg==
-X-Gm-Message-State: AOJu0Yy9DVT+Z5merM/45YJljj0+n4YGupXxV1mQRMnYcCIByleRo9Wu
- aVd3TTGequTB5050b6hmkXlgHKCDbTicVnahrrAzVR3M69XUS3zS80w=
-X-Google-Smtp-Source: AGHT+IH/Ai3tYY2Som0oRGkhZdVewshjhBNk+HhYWsybZ8rDPt+0AK7Hklygk+OFSQYFST8iSEn4yiX52OXyLCtXJwQ=
-X-Received: by 2002:aa7:dc06:0:b0:522:2add:5841 with SMTP id
- b6-20020aa7dc06000000b005222add5841mr2096014edu.7.1691759543395; Fri, 11 Aug
- 2023 06:12:23 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <twiederh@redhat.com>)
+ id 1qUSY0-0000dO-5V
+ for qemu-devel@nongnu.org; Fri, 11 Aug 2023 09:51:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <twiederh@redhat.com>)
+ id 1qUSXy-00032q-F2
+ for qemu-devel@nongnu.org; Fri, 11 Aug 2023 09:51:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1691761881;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=JqIHIUjbjQpm5YZMZ4TDKtlypcxYvEzkhdx9HxYSUzg=;
+ b=hpzX+uQwKvJhiM9nFwd/uQlpA/G8UyAbrTYqMuZIaUajm2jLVpW5HALBYB4job3hR99Wn6
+ MuJ8dBXsSJxPQxDiVIf5w3lNcSFoGzcLapwFaF0BrTCBz6llVT0ynFIC+u6JmwUPb9zr1B
+ 5Kh8Xs2yaOjHep7y4nErUnN4/6Dv0uo=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-636-DKU31BBUOGqQbHMJTjTA7w-1; Fri, 11 Aug 2023 09:50:13 -0400
+X-MC-Unique: DKU31BBUOGqQbHMJTjTA7w-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1DD3E28004A7
+ for <qemu-devel@nongnu.org>; Fri, 11 Aug 2023 13:50:13 +0000 (UTC)
+Received: from work.redhat.com (unknown [10.39.193.214])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id A5E55140E96D;
+ Fri, 11 Aug 2023 13:50:12 +0000 (UTC)
+From: Tim Wiederhake <twiederh@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Tim Wiederhake <twiederh@redhat.com>
+Subject: [PATCH 0/4] Generate x86 cpu features
+Date: Fri, 11 Aug 2023 15:50:07 +0200
+Message-Id: <20230811135011.23343-1-twiederh@redhat.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-From: Jinpu Wang <jinpu.wang@ionos.com>
-Date: Fri, 11 Aug 2023 15:12:12 +0200
-Message-ID: <CAMGffEmG6TNq0n3+4OJAgXc8J0OevY60KHZekXCBs3LoK9vehA@mail.gmail.com>
-Subject: RFC: guest INTEL GDS mitigation status on patched host
-To: qemu-devel <qemu-devel@nongnu.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, tao1.su@linux.intel.com,
- xiaoyao.li@intel.com, Yu Zhang <yu.zhang@ionos.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: permerror client-ip=2a00:1450:4864:20::52a;
- envelope-from=jinpu.wang@ionos.com; helo=mail-ed1-x52a.google.com
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=twiederh@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_PERMERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,73 +75,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi folks on the list:
+Synchronizing the list of cpu features and models with qemu is a recurring
+task in libvirt. For x86, this is done by reading qom-list-properties for
+max-x86_64-cpu and manually filtering out everthing that does not look like
+a feature name, as well as parsing target/i386/cpu.c for cpu models.
 
-I'm testing the latest Downfall cpu vulnerability mitigation. what I
-notice is when both host and guest are using patched kernel +
-microcode eg kernel 5.15.125 +  intel-microcode 20230808 on affected
-server eg Icelake server.
+This is a flawed, tedious and error-prone procedure. Ideally, qemu
+and libvirt would query a common source for cpu feature and model
+related information. Meanwhile, converting this information into an easier
+to parse format would help libvirt a lot.
 
-The mitigation status inside guest is:
+This patch series converts the cpu feature information present in
+target/i386/cpu.c (`feature_word_info`) into an xml file and adds a
+script to generate the c code from this xml.
 
-Vulnerabilities:
-  Gather data sampling:  Unknown: Dependent on hyp
-                         ervisor status
------------------------------------> this one.
-  Itlb multihit:         Not affected
-  L1tf:                  Not affected
-  Mds:                   Not affected
-  Meltdown:              Not affected
-  Mmio stale data:       Vulnerable: Clear CPU buf
-                         fers attempted, no microc
-                         ode; SMT Host state unkno
-                         wn
-  Retbleed:              Not affected
-  Spec rstack overflow:  Not affected
-  Spec store bypass:     Mitigation; Speculative S
-                         tore Bypass disabled via
-                         prctl and seccomp
-  Spectre v1:            Mitigation; usercopy/swap
-                         gs barriers and __user po
-                         inter sanitization
-  Spectre v2:            Mitigation; Enhanced IBRS
-                         , IBPB conditional, RSB f
-                         illing, PBRSB-eIBRS SW se
-                         quence
-  Srbds:                 Not affected
-  Tsx async abort:       Not affected
+A patch set to convert the cpu model data (`builtin_x86_defs`) in the
+same way will follow.
 
-According to kernel commit below
-commit 81ac7e5d741742d650b4ed6186c4826c1a0631a7
-Author: Daniel Sneddon <daniel.sneddon@linux.intel.com>
-Date:   Wed Jul 12 19:43:14 2023 -0700
+Tim Wiederhake (4):
+  target/i386: Split out feature_word_info
+  target/i386: Translate feature_word_info to xml
+  target/i386: Format feature_word_info.c.inc
+  target/i386: Autogenerate feature_word_info.c.inc
 
-    KVM: Add GDS_NO support to KVM
+ target/i386/cpu.c                   |  677 +----------
+ target/i386/feature_word_info.c.inc |  704 ++++++++++++
+ target/i386/feature_word_info.py    |  110 ++
+ target/i386/feature_word_info.xml   | 1610 +++++++++++++++++++++++++++
+ 4 files changed, 2425 insertions(+), 676 deletions(-)
+ create mode 100644 target/i386/feature_word_info.c.inc
+ create mode 100755 target/i386/feature_word_info.py
+ create mode 100644 target/i386/feature_word_info.xml
 
-    Gather Data Sampling (GDS) is a transient execution attack using
-    gather instructions from the AVX2 and AVX512 extensions. This attack
-    allows malicious code to infer data that was previously stored in
-    vector registers. Systems that are not vulnerable to GDS will set the
-    GDS_NO bit of the IA32_ARCH_CAPABILITIES MSR. This is useful for VM
-    guests that may think they are on vulnerable systems that are, in
-    fact, not affected. Guests that are running on affected hosts where
-    the mitigation is enabled are protected as if they were running
-    on an unaffected system.
+-- 
+2.39.2
 
-    On all hosts that are not affected or that are mitigated, set the
-    GDS_NO bit.
-
-    Signed-off-by: Daniel Sneddon <daniel.sneddon@linux.intel.com>
-    Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-    Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
-
-KVM also has the support of GDS_NO, but seems qemu side doesn't pass
-the info to guest, that's why it is unknown. IMO qemu should pass
-GDS_NO if the host is already patched.
-
-Is Intel or anyone already working on the qemu patch? I know it's not
-a must, but good to do.
-
-Thx!
-Jinpu Wang @ IONOS Cloud
 
