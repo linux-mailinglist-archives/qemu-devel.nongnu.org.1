@@ -2,99 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D2F2778C18
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 12:30:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A57B778C3E
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 12:47:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qUPOV-0004Xi-KI; Fri, 11 Aug 2023 06:29:23 -0400
+	id 1qUPeV-0001IC-I2; Fri, 11 Aug 2023 06:45:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qUPOU-0004XS-9p
- for qemu-devel@nongnu.org; Fri, 11 Aug 2023 06:29:22 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qUPOS-0007h2-I9
- for qemu-devel@nongnu.org; Fri, 11 Aug 2023 06:29:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691749758;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=vwdsRepq6N0n1uIesFnapigskQH2uoomgnxs7HHXBqk=;
- b=a5fiGnCpIXMFODlqcTIYwaUi6GfjBI4X8zUcOAdWhBngXxzAro4eqJwA/rnOacuAZPaPRY
- Qc2tZZZC/RkDhG/IMIPlwino0Yi7vZ5z3MErzwzZYJzCuzl1kIpjMgru2TZo9DuDz/VX/c
- bCSfPhUJLdwsYib9qVGiJ0ZkZ0zntH0=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-253-poXAnRsrP0ymB_QmC9XGCQ-1; Fri, 11 Aug 2023 06:29:16 -0400
-X-MC-Unique: poXAnRsrP0ymB_QmC9XGCQ-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-31955c0e2adso610977f8f.2
- for <qemu-devel@nongnu.org>; Fri, 11 Aug 2023 03:29:16 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qUPeM-0001Gk-TJ
+ for qemu-devel@nongnu.org; Fri, 11 Aug 2023 06:45:50 -0400
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qUPeB-0002bb-0g
+ for qemu-devel@nongnu.org; Fri, 11 Aug 2023 06:45:45 -0400
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-522bd411679so2327273a12.0
+ for <qemu-devel@nongnu.org>; Fri, 11 Aug 2023 03:45:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1691750732; x=1692355532;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=N2FvBgkiIdUsjB/FxaUZBa1ZB141qaGSBWUTFySHBvs=;
+ b=blBPD6HD8/SYnvzrcjkchCddZQJyt0JDrSYgcCnx9gotMlBW5gmYWVLDWqOWZOWYFY
+ 4hG73rLMNShtzjl3af52L6v9ZVYsYoJSrZ40w+t/UnkXWMnG7QgJQfivV1eIS5RS9SjH
+ 4ybPMGh86PXphuatyJYmYTstWQMq/AA3NJnZeVG44zaVD69N0uhcZLZEN+1M1kZ8WHb2
+ CJojja2Y5hhcFzEt+3FKykoeFC5uyibJ/IY7m4KnrdwOjOed4gfSBblXNL7xOFJkoPpu
+ 7YPiVeNih+VhGg0W3zb/w3gIor9ZeBhwvEa5B/8jHB0ChQ8lGyI4X29hBaNSk/3Np6Mg
+ TvLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691749756; x=1692354556;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=vwdsRepq6N0n1uIesFnapigskQH2uoomgnxs7HHXBqk=;
- b=H+JPg3V95muiJkcwoBWrmCZlLNLjhRigF1/avBQdji0RLhbtPceoaB5Gxt9ACI5Plc
- YjZbYrGhouefCVxv5UZRB8bMzOqgbaHf/4xJVqFhK+sOmoLxaZYkqNAh+tlpcXm4vNq6
- d2i1kcAH5uFMFJPwpGCxv4kgh+atjVkn2SAGJ8El8HGmJG05pTB6jKD1YgvL2lT0vkfc
- FFoY0jxGKf93yEEH7wgKebS7zoq+uiiftpEayPwpEiL8c1Csiitzyj62R5Pm9iI064Ee
- kkvomJlAIMTVJsbEs9+kTSUh0uihlVQPuGLebQ9RUtJDKNQmFjs4FUUTCK7YAI1PNubT
- UL2A==
-X-Gm-Message-State: AOJu0YxUvCeLeYQyr/Mpz9FFG9y5FYXpB2Mx55bZKtuzNWSoClEX/NOK
- 988qQkV8bKG5doD4sgcAL2Zf+UwsB8s97wGXMalpe1mff+Htt8eyK+PV1SLrekOw5x69d9KRHCf
- vRDkkQd/sMa9fSAc=
-X-Received: by 2002:adf:f242:0:b0:306:2e62:8d2e with SMTP id
- b2-20020adff242000000b003062e628d2emr1037988wrp.1.1691749755881; 
- Fri, 11 Aug 2023 03:29:15 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHyFAoqVyNpUxUfcngGDAshzkpyQ0CuBgeHj5us05CVo88k6Z6ivXr7IKN//MBwGp6Xnk0+KA==
-X-Received: by 2002:adf:f242:0:b0:306:2e62:8d2e with SMTP id
- b2-20020adff242000000b003062e628d2emr1037978wrp.1.1691749755514; 
- Fri, 11 Aug 2023 03:29:15 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:9e2:9000:d55d:ba01:adf2:d3ae?
- ([2a01:e0a:9e2:9000:d55d:ba01:adf2:d3ae])
- by smtp.gmail.com with ESMTPSA id
- k13-20020a5d428d000000b0030ada01ca78sm5049014wrq.10.2023.08.11.03.29.14
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 11 Aug 2023 03:29:14 -0700 (PDT)
-Message-ID: <6a6abfd7-16c0-ff7f-4af4-314be9307c52@redhat.com>
-Date: Fri, 11 Aug 2023 12:29:13 +0200
+ d=1e100.net; s=20221208; t=1691750732; x=1692355532;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=N2FvBgkiIdUsjB/FxaUZBa1ZB141qaGSBWUTFySHBvs=;
+ b=C1OKya3huFOBnWdaqeq2DF3rHQzPMu/X68GnzKqaekfBv51qKTrCO7b5tJPE9S1JA6
+ EQlB6zFFEXsLM+oRBEVRD9OKX7Z6nTcofx/G70Hu/Kon7LLz0xNaCo2l8Vktgl0H7R1V
+ isHB8k+5elwSJAk4eKE8rsGQsRERfG/qIKI2M5KVMPvtiOCtAQddUVzaQInvK9GS99Dq
+ oPWBsUWk6IayNFibInik3OS8sTygQ60Kzq1WUJfYJAA9ra+Kkosh+gVeW90U+Z0uXDui
+ kaMCOR2CLTqMpBGRpuIRJDsVXOEH594cRtfMOJfNKFOibc4Qt4//oEVoT/W7AGImOuWV
+ vUfw==
+X-Gm-Message-State: AOJu0YysLMyTmCfw7UNHsifWlfGnQnqjHHHshezgiChCgiiW1x44rJwe
+ PPNShjyLAcJ2mG2RpJGQPl/ODaSkxApygje1ajk6bg==
+X-Google-Smtp-Source: AGHT+IEnOfuB8VVchtq/CHXO+vYHLurhSNwuuYF759reM8xl+ubcoUpMoAN7Fh8aS42Jj0xIqMqyGWuje23MXxH+uZE=
+X-Received: by 2002:aa7:c557:0:b0:522:cef7:83c3 with SMTP id
+ s23-20020aa7c557000000b00522cef783c3mr1291540edr.8.1691750732278; Fri, 11 Aug
+ 2023 03:45:32 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH for-8.2 v3 1/6] vfio/migration: Move from STOP_COPY to
- STOP in vfio_save_cleanup()
-Content-Language: en-US
-To: Avihai Horon <avihaih@nvidia.com>, qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Joao Martins
- <joao.m.martins@oracle.com>, Yishai Hadas <yishaih@nvidia.com>,
- Jason Gunthorpe <jgg@nvidia.com>, Maor Gottlieb <maorg@nvidia.com>,
- Kirti Wankhede <kwankhede@nvidia.com>, Tarun Gupta <targupta@nvidia.com>,
- Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>
-References: <20230802081449.2528-1-avihaih@nvidia.com>
- <20230802081449.2528-2-avihaih@nvidia.com>
- <cc6d0b1c-036f-00f8-41fb-6ef1c59cafa2@redhat.com>
- <d870e5d4-dd34-6cdc-7586-971928927869@nvidia.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <d870e5d4-dd34-6cdc-7586-971928927869@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-2.156, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20230808031143.50925-1-richard.henderson@linaro.org>
+ <20230808031143.50925-21-richard.henderson@linaro.org>
+ <CAFEAcA-N-QWQXcHgMNnXTr+Bmf7fhdSKYQwS-kkWGdR+UHvT-Q@mail.gmail.com>
+In-Reply-To: <CAFEAcA-N-QWQXcHgMNnXTr+Bmf7fhdSKYQwS-kkWGdR+UHvT-Q@mail.gmail.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 11 Aug 2023 11:45:21 +0100
+Message-ID: <CAFEAcA9xsPHOeorJvjfO7mrpX_TfYHMNcMHi3dyt41+CktyXsg@mail.gmail.com>
+Subject: Re: [PATCH 20/24] tcg/i386: Add cf parameter to tcg_out_cmp
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-ppc@nongnu.org, 
+ qemu-riscv@nongnu.org, qemu-s390x@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52e.google.com
+X-Spam_score_int: 4
+X-Spam_score: 0.4
+X-Spam_bar: /
+X-Spam_report: (0.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ SUSPICIOUS_RECIPS=2.51 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,53 +87,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/8/23 08:23, Avihai Horon wrote:
-> 
-> On 07/08/2023 18:53, Cédric Le Goater wrote:
->> External email: Use caution opening links or attachments
->>
->>
->> [ Adding Juan and Peter for their awareness ]
->>
->> On 8/2/23 10:14, Avihai Horon wrote:
->>> Changing the device state from STOP_COPY to STOP can take time as the
->>> device may need to free resources and do other operations as part of the
->>> transition. Currently, this is done in vfio_save_complete_precopy() and
->>> therefore it is counted in the migration downtime.
->>>
->>> To avoid this, change the device state from STOP_COPY to STOP in
->>> vfio_save_cleanup(), which is called after migration has completed and
->>> thus is not part of migration downtime.
->>
->> What bothers me is that this looks like a device specific optimization
-> 
-> True, currently it helps mlx5, but this change is based on the assumption that, in general, VFIO devices are likely to free resources when transitioning from STOP_COPY to STOP.
-> So I think this is a good change to have in any case.
-> 
->>
->> and we are loosing the error part.
-> 
-> I don't think we lose the error part.
-> AFAIU, the crucial part is transitioning to STOP_COPY and sending the final data.
-> If that's done successfully, then migration is successful.
-> The STOP_COPY->STOP transition is done as part of the cleanup flow, after the migration is completed -- i.e., failure in it does not affect the success of migration.
-> Further more, if there is an error in the STOP_COPY->STOP transition, then it's reported by vfio_migration_set_state().
+On Fri, 11 Aug 2023 at 11:26, Peter Maydell <peter.maydell@linaro.org> wrote:
+>
+> On Tue, 8 Aug 2023 at 04:13, Richard Henderson
+> <richard.henderson@linaro.org> wrote:
+> >
+> > Add the parameter to avoid TEST and pass along to tgen_arithi.
+> > All current users pass false.
+> >
+> > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> > ---
+> >  tcg/i386/tcg-target.c.inc | 16 ++++++++--------
+> >  1 file changed, 8 insertions(+), 8 deletions(-)
+> >
+> > diff --git a/tcg/i386/tcg-target.c.inc b/tcg/i386/tcg-target.c.inc
+> > index b88fc14afd..56549ff2a0 100644
+> > --- a/tcg/i386/tcg-target.c.inc
+> > +++ b/tcg/i386/tcg-target.c.inc
+> > @@ -1418,15 +1418,15 @@ static void tcg_out_jxx(TCGContext *s, int opc, TCGLabel *l, bool small)
+> >      }
+> >  }
+> >
+> > -static void tcg_out_cmp(TCGContext *s, TCGArg arg1, TCGArg arg2,
+> > -                        int const_arg2, int rexw)
+> > +static void tcg_out_cmp(TCGContext *s, int rexw, TCGArg arg1, TCGArg arg2,
+> > +                        int const_arg2, bool cf)
+> >  {
+> >      if (const_arg2) {
+> > -        if (arg2 == 0) {
+> > +        if (arg2 == 0 && !cf) {
+> >              /* test r, r */
+> >              tcg_out_modrm(s, OPC_TESTL + rexw, arg1, arg1);
+> >          } else {
+> > -            tgen_arithi(s, ARITH_CMP + rexw, arg1, arg2, 0);
+> > +            tgen_arithi(s, ARITH_CMP + rexw, arg1, arg2, cf);
+> >          }
+> >      } else {
+> >          tgen_arithr(s, ARITH_CMP + rexw, arg1, arg2);
+>
+> I don't really understand the motivation here.
+> Why are some uses of this function fine with using the TEST
+> insn, but some must avoid it? What does 'cf' stand for?
+> A comment would help here if there isn't a clearer argument
+> name available...
 
-It is indeed. I am nit-picking. Pushed on :
+Looking at the following patch suggests perhaps:
 
-   https://github.com/legoater/qemu/tree/vfio-next
+/**
+ * tcg_out_cmp: Emit a compare, setting the X, Y, Z flags accordingly.
+ * @need_cf : true if the comparison must also set CF
+ */
 
-It can still be updated before I send a PR. I also provided custom
-rpms to our QE team for extras tests.
+(fill in which XYZ flags you can rely on even if need_cf is false)
 
-Should follow Dynamic MSI-X allocation [1] and Joao's series regarding
-vIOMMU [2] but first I will take some PTO. See you in a couple of weeks !
+?
 
-Cheers,
-
-C.
-
-[1] https://lore.kernel.org/qemu-devel/20230727072410.135743-1-jing2.liu@intel.com/
-[2] https://lore.kernel.org/qemu-devel/20230622214845.3980-1-joao.m.martins@oracle.com/
-
+-- PMM
 
