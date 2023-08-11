@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C78A9778BF0
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 12:23:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9ADC778C0A
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 12:27:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qUPI2-0001Wl-8s; Fri, 11 Aug 2023 06:22:42 -0400
+	id 1qUPLi-0002fz-Ad; Fri, 11 Aug 2023 06:26:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qUPI0-0001Tn-4B
- for qemu-devel@nongnu.org; Fri, 11 Aug 2023 06:22:40 -0400
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ id 1qUPLc-0002en-7X
+ for qemu-devel@nongnu.org; Fri, 11 Aug 2023 06:26:24 -0400
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qUPHx-0006Uf-LC
- for qemu-devel@nongnu.org; Fri, 11 Aug 2023 06:22:39 -0400
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-5230a22cfd1so2314643a12.1
- for <qemu-devel@nongnu.org>; Fri, 11 Aug 2023 03:22:37 -0700 (PDT)
+ id 1qUPLW-0007DJ-5Y
+ for qemu-devel@nongnu.org; Fri, 11 Aug 2023 06:26:22 -0400
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-5234f46c6f9so2384944a12.3
+ for <qemu-devel@nongnu.org>; Fri, 11 Aug 2023 03:26:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691749356; x=1692354156;
+ d=linaro.org; s=google; t=1691749576; x=1692354376;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=XpP3rdBE5w+IiQdYR1lx8C/z1R1Ia26ftCFvEKLRgeQ=;
- b=BmzdJZK+FHLfWnDfBaqVmu3t7qEB05/EjGNWYuR52WrDlaJHkM0MZrY70WNt5m1Ebm
- R4bIVlMTvqFGcD5zq2l1pOTsMuMjNIXw8T5MXgYclaSjavNHQnuCJrZy23Hcd6tSVBmv
- qkBEE8HdKyojADY7e42+O4m1vahuW8zzgvbtzKv6NuOwbGD6PSOhJfhf6DQp4XW3d0ZS
- 8poPlRYCm3Ag/tGrqduuBxpAh0IWdAj55Gp3BbsyJHo9SHvPIzbM3/O1EG9UGuPv/zLR
- vVfmJ12tprnEvxe3e/h5WCg0MtpLKwX8K+leLucyR4CQrgojo5GANfu10un7qyeC7PQo
- RKqw==
+ bh=AxW4QMohZTd4ffGqz5mVyYv+XPVEgvrR1n8HhpUVgXw=;
+ b=yhVR4tjOVidwv87lqVVJHDxHF6L1X7ukxRQiWMtFwUuWbgM6lugRU2o1HpRzxfTq6T
+ STquIND3nn5cEEL8aU1YUtkZXSH5jjayubDJsdOy+hrT37IVMJqhKrqYkJ8vvP9aley9
+ oNeYglWwMoilyw6Vxd2JlfaId8AoOVvXAR32y64XbyjvdrcQJ8i2WEwMkRoqOpNqJI/i
+ qp95J2XiWL5GUM7MIAWbvkLbWT13fJFN3cEE84dl4unKjO7hFAmV1drqM0CPP4hHSFC1
+ AfYQ4TbrsoFrk1ibQrIhmhG/vc0XXyd98qnqMfoCfyg+ghb9EwNeKfattBgDCmqYzTkA
+ bUfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691749356; x=1692354156;
+ d=1e100.net; s=20221208; t=1691749576; x=1692354376;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=XpP3rdBE5w+IiQdYR1lx8C/z1R1Ia26ftCFvEKLRgeQ=;
- b=fW/XbLpk9CjiX1MViPDeIGwuPY6wu5v4UgDJqDsAmc4ViWk+8yCLJABEM5Tseu9yYU
- mp1933B8bTX6Cf3/Zv/ZanOGctt6Ll3wd8S8drLKNzr7Pe2au1quhCD1oXrd4wZP07F7
- 3f2V1CDXUmXReSZ8A6aItGDBiQETSU61zaxwV6rtkVhCgn4K7EwQYq4Sf4ghfni61Er8
- 2XRC2PQWhHSIVWgOZZQJvpKFsnXpICisZDMjKmrrq4IQ54ultJbAsLqszIX+adMmmceA
- r3xksD9x0CudELxHv2ImiE05d0dZLGT8/ZUg0xlXva9NtB36ysReaKtRIK2zgwazLT15
- GxxA==
-X-Gm-Message-State: AOJu0YwFK2ubkFzkTJUeWIImpED3eeSN9k7+Cx9LXz+WAzb+iGL+Yl5F
- HGL7NNwgMRKt2K7ywz643UElbwoiklPvN6yquk8MsA==
-X-Google-Smtp-Source: AGHT+IGa1GViyP8+9a2lL2U8L+iUR8m9ZYRISh+frqsO+O5fVpM8b1upGSjrInSDGe2+39lRsyCwgW1azL9QG9X9gSQ=
-X-Received: by 2002:a05:6402:3449:b0:523:197c:36e0 with SMTP id
- l9-20020a056402344900b00523197c36e0mr1317966edc.19.1691749355783; Fri, 11 Aug
- 2023 03:22:35 -0700 (PDT)
+ bh=AxW4QMohZTd4ffGqz5mVyYv+XPVEgvrR1n8HhpUVgXw=;
+ b=CB957Wdp0gKK8L4Rw7cP/RzAdVK4vts/EDH+grms6e9YuFeiK7jYYY9LY4xvqBQfs+
+ EdT8PVeMqMX8qqWTVSjY1ZU61qklEEiMb1+CMb54g9ZoM47qmIfLL7zu38IeF0AKA4Vx
+ RA3kigRv+aoU+/bX4kA3PRWYc/SxnQUX2liMBD4JcGnSmFtSp4E0jb9x9+7PQD/kbqrs
+ +YMxKUYaKh/O6DoyO2U4v61/5ZJauPBsxjusTJsZyCGl+YCevqg+cffOlbKOt9ABDHA6
+ ordj4AlF/aFnOHn32HUySxOjW25HmyHKZRCImDUcFskDaJf8uVhYqxAYMCRGoGsNVEuV
+ evcA==
+X-Gm-Message-State: AOJu0YzJ+jA/f/YyD6TvhJK/BfthjAJYX/bBPKCOYrwm0MDg5sARfK4s
+ U+KwcO1hYeE2v+AObL6wBXrl+wQuUwtdy5OcqjYJMA==
+X-Google-Smtp-Source: AGHT+IGdtKJ1W/hcKSpKFcS62mzhtCPwus7xC/jgOS+0m/tNb8dq8AsERokfwBYfG7JbMG4D1kfWMoosiqdC5FlkyB0=
+X-Received: by 2002:a05:6402:1846:b0:523:406a:5f6 with SMTP id
+ v6-20020a056402184600b00523406a05f6mr1313950edy.12.1691749576480; Fri, 11 Aug
+ 2023 03:26:16 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230808031143.50925-1-richard.henderson@linaro.org>
- <20230808031143.50925-20-richard.henderson@linaro.org>
-In-Reply-To: <20230808031143.50925-20-richard.henderson@linaro.org>
+ <20230808031143.50925-21-richard.henderson@linaro.org>
+In-Reply-To: <20230808031143.50925-21-richard.henderson@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 11 Aug 2023 11:22:24 +0100
-Message-ID: <CAFEAcA-Z2rEnyf1Lk6swhBQhUCMLjPvoHYfyk-FkspsQ8f5qOQ@mail.gmail.com>
-Subject: Re: [PATCH 19/24] tcg/i386: Merge tcg_out_movcond{32,64}
+Date: Fri, 11 Aug 2023 11:26:05 +0100
+Message-ID: <CAFEAcA-N-QWQXcHgMNnXTr+Bmf7fhdSKYQwS-kkWGdR+UHvT-Q@mail.gmail.com>
+Subject: Re: [PATCH 20/24] tcg/i386: Add cf parameter to tcg_out_cmp
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-ppc@nongnu.org, 
  qemu-riscv@nongnu.org, qemu-s390x@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x534.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52d.google.com
 X-Spam_score_int: 4
 X-Spam_score: 0.4
 X-Spam_bar: /
@@ -86,15 +86,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 8 Aug 2023 at 04:16, Richard Henderson
+On Tue, 8 Aug 2023 at 04:13, Richard Henderson
 <richard.henderson@linaro.org> wrote:
 >
-> Pass a rexw parameter instead of duplicating the functions.
+> Add the parameter to avoid TEST and pass along to tgen_arithi.
+> All current users pass false.
 >
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
+>  tcg/i386/tcg-target.c.inc | 16 ++++++++--------
+>  1 file changed, 8 insertions(+), 8 deletions(-)
+>
+> diff --git a/tcg/i386/tcg-target.c.inc b/tcg/i386/tcg-target.c.inc
+> index b88fc14afd..56549ff2a0 100644
+> --- a/tcg/i386/tcg-target.c.inc
+> +++ b/tcg/i386/tcg-target.c.inc
+> @@ -1418,15 +1418,15 @@ static void tcg_out_jxx(TCGContext *s, int opc, TCGLabel *l, bool small)
+>      }
+>  }
+>
+> -static void tcg_out_cmp(TCGContext *s, TCGArg arg1, TCGArg arg2,
+> -                        int const_arg2, int rexw)
+> +static void tcg_out_cmp(TCGContext *s, int rexw, TCGArg arg1, TCGArg arg2,
+> +                        int const_arg2, bool cf)
+>  {
+>      if (const_arg2) {
+> -        if (arg2 == 0) {
+> +        if (arg2 == 0 && !cf) {
+>              /* test r, r */
+>              tcg_out_modrm(s, OPC_TESTL + rexw, arg1, arg1);
+>          } else {
+> -            tgen_arithi(s, ARITH_CMP + rexw, arg1, arg2, 0);
+> +            tgen_arithi(s, ARITH_CMP + rexw, arg1, arg2, cf);
+>          }
+>      } else {
+>          tgen_arithr(s, ARITH_CMP + rexw, arg1, arg2);
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+I don't really understand the motivation here.
+Why are some uses of this function fine with using the TEST
+insn, but some must avoid it? What does 'cf' stand for?
+A comment would help here if there isn't a clearer argument
+name available...
 
 thanks
 -- PMM
