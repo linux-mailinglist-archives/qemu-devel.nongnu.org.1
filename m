@@ -2,51 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65848778FE4
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 14:50:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4F8B779082
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 15:13:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qURb1-0000c2-Gg; Fri, 11 Aug 2023 08:50:27 -0400
+	id 1qURwP-0006gf-D4; Fri, 11 Aug 2023 09:12:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <i.maximets@ovn.org>)
- id 1qURay-0000bj-JI
- for qemu-devel@nongnu.org; Fri, 11 Aug 2023 08:50:25 -0400
-Received: from relay3-d.mail.gandi.net ([217.70.183.195])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <i.maximets@ovn.org>)
- id 1qURaw-0007JQ-M9
- for qemu-devel@nongnu.org; Fri, 11 Aug 2023 08:50:24 -0400
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 68E7060004;
- Fri, 11 Aug 2023 12:50:19 +0000 (UTC)
-Message-ID: <3479fe54-66c5-4c17-8972-2c5d22028bdd@ovn.org>
-Date: Fri, 11 Aug 2023 14:51:00 +0200
+ (Exim 4.90_1) (envelope-from <jinpu.wang@ionos.com>)
+ id 1qURwK-0006gC-UY
+ for qemu-devel@nongnu.org; Fri, 11 Aug 2023 09:12:28 -0400
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <jinpu.wang@ionos.com>)
+ id 1qURwJ-0003QC-4p
+ for qemu-devel@nongnu.org; Fri, 11 Aug 2023 09:12:28 -0400
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-51cff235226so4126773a12.0
+ for <qemu-devel@nongnu.org>; Fri, 11 Aug 2023 06:12:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ionos.com; s=google; t=1691759543; x=1692364343;
+ h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=nBZWSP2C3HyntujncHEI7Q7XZucXTZ9+eGCGM7A26ew=;
+ b=h2HO4iCIJiqKjDjIaCp9UDgyDYO7mSFdfVSHprcIqMVFp8qCpFF2jf5VHUdzBgxGPU
+ M3vtXPdyGo8gxNMnMguW4Ibk8B1xJp8GSAi8vdPJCN471rkabQUCrzRhrhpaBWegEPQk
+ 4St2JX/EHj41JP4kEUO7vMh41kgOzlO0ZX9dp+MQUvgzWZTBczWechfBhlstAKW70ocj
+ 7zQPu00ShHC3TH1BiZcWLkBqHaOvZpCQtLydwCTSBrZpL9wBL7oqCYqWf0bInmu6QZZF
+ ypM8RyUI5a72CtuW80WoxGemrlTZD+ziLkxOdVvXplOSKIBMN6WN3YNg7c5/rBmGX5h0
+ 5igw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1691759543; x=1692364343;
+ h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=nBZWSP2C3HyntujncHEI7Q7XZucXTZ9+eGCGM7A26ew=;
+ b=TqizZTzyUDE5ahgHHkSgMSrydo2g+7/TIpK9S2RjQnf9k/UczRd2Vc8U8QA6Y1wvA3
+ NYw51cdKqbJfFtB+wJJY+8SnQbRU9wENVDJaDK6mA91Th+DntJyeoSFvllNqnqfOqE2w
+ MjvCp5NEPFjv3lG+E3C5etG5q7ARwd8gNOHjuFuVV1nnrzbASP/mabZkMyZofM4xwz2q
+ 8OW4tMosq25krao99fX7usRW7YxNyDZc68b6vYhl06VVV/bSvb9L98eK2nwUjKdJwPQ1
+ bFs5Gv0/yZFM+4s+8qICkP9BGquT6/hQH4BJRqz4MkyTF18qucNPl44zKdYgYGsdkEyY
+ i2Eg==
+X-Gm-Message-State: AOJu0Yy9DVT+Z5merM/45YJljj0+n4YGupXxV1mQRMnYcCIByleRo9Wu
+ aVd3TTGequTB5050b6hmkXlgHKCDbTicVnahrrAzVR3M69XUS3zS80w=
+X-Google-Smtp-Source: AGHT+IH/Ai3tYY2Som0oRGkhZdVewshjhBNk+HhYWsybZ8rDPt+0AK7Hklygk+OFSQYFST8iSEn4yiX52OXyLCtXJwQ=
+X-Received: by 2002:aa7:dc06:0:b0:522:2add:5841 with SMTP id
+ b6-20020aa7dc06000000b005222add5841mr2096014edu.7.1691759543395; Fri, 11 Aug
+ 2023 06:12:23 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Cc: i.maximets@ovn.org, qemu-devel@nongnu.org,
- Jason Wang <jasowang@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>
-Content-Language: en-US
-To: Stefan Hajnoczi <stefanha@redhat.com>
-References: <20230807222847.2837393-1-i.maximets@ovn.org>
- <20230810155048.GI2931656@fedora>
-From: Ilya Maximets <i.maximets@ovn.org>
-Subject: Re: [PATCH] virtio: don't zero out memory region cache for indirect
- descriptors
-In-Reply-To: <20230810155048.GI2931656@fedora>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-GND-Sasl: i.maximets@ovn.org
-Received-SPF: pass client-ip=217.70.183.195; envelope-from=i.maximets@ovn.org;
- helo=relay3-d.mail.gandi.net
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.972,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+From: Jinpu Wang <jinpu.wang@ionos.com>
+Date: Fri, 11 Aug 2023 15:12:12 +0200
+Message-ID: <CAMGffEmG6TNq0n3+4OJAgXc8J0OevY60KHZekXCBs3LoK9vehA@mail.gmail.com>
+Subject: RFC: guest INTEL GDS mitigation status on patched host
+To: qemu-devel <qemu-devel@nongnu.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, tao1.su@linux.intel.com,
+ xiaoyao.li@intel.com, Yu Zhang <yu.zhang@ionos.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: permerror client-ip=2a00:1450:4864:20::52a;
+ envelope-from=jinpu.wang@ionos.com; helo=mail-ed1-x52a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_PERMERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -62,61 +82,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/10/23 17:50, Stefan Hajnoczi wrote:
-> On Tue, Aug 08, 2023 at 12:28:47AM +0200, Ilya Maximets wrote:
->> Lots of virtio functions that are on a hot path in data transmission
->> are initializing indirect descriptor cache at the point of stack
->> allocation.  It's a 112 byte structure that is getting zeroed out on
->> each call adding unnecessary overhead.  It's going to be correctly
->> initialized later via special init function.  The only reason to
->> actually initialize right away is the ability to safely destruct it.
->> However, we only need to destruct it when it was used, i.e. when a
->> desc_cache points to it.
->>
->> Removing these unnecessary stack initializations improves throughput
->> of virtio-net devices in terms of 64B packets per second by 6-14 %
->> depending on the case.  Tested with a proposed af-xdp network backend
->> and a dpdk testpmd application in the guest, but should be beneficial
->> for other virtio devices as well.
->>
->> Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
->> ---
->>  hw/virtio/virtio.c | 42 +++++++++++++++++++++++++++---------------
->>  1 file changed, 27 insertions(+), 15 deletions(-)
-> 
-> Another option is to create an address_space_cache_init_invalid()
-> function that only assigns mrs.mr = NULL instead of touching all bytes
-> of the struct like = MEMORY_REGION_CACHE_INVALID. There would be less
-> code and the existing mrs.mr check in address_space_cache_destroy()
-> would serve the same function as the desc_cache == &indirect_desc_cache
-> check added by this patch.
+Hi folks on the list:
 
-It does look simpler this way, indeed.  Though I'm not sure about
-a function name.  We have address_space_cache_invalidate() that
-does a completely different thing and the invalidated cache can
-still be used, while the cache initialized with the newly proposed
-address_space_cache_init_invalid() can not be safely used.
+I'm testing the latest Downfall cpu vulnerability mitigation. what I
+notice is when both host and guest are using patched kernel +
+microcode eg kernel 5.15.125 +  intel-microcode 20230808 on affected
+server eg Icelake server.
 
-I suppose, the problem is not new, since the macro was named similarly,
-but making it a function seems to make the issue worse.
+The mitigation status inside guest is:
 
-Maybe address_space_cache_init_empty() will be a better name?
-E.g.:
+Vulnerabilities:
+  Gather data sampling:  Unknown: Dependent on hyp
+                         ervisor status
+-----------------------------------> this one.
+  Itlb multihit:         Not affected
+  L1tf:                  Not affected
+  Mds:                   Not affected
+  Meltdown:              Not affected
+  Mmio stale data:       Vulnerable: Clear CPU buf
+                         fers attempted, no microc
+                         ode; SMT Host state unkno
+                         wn
+  Retbleed:              Not affected
+  Spec rstack overflow:  Not affected
+  Spec store bypass:     Mitigation; Speculative S
+                         tore Bypass disabled via
+                         prctl and seccomp
+  Spectre v1:            Mitigation; usercopy/swap
+                         gs barriers and __user po
+                         inter sanitization
+  Spectre v2:            Mitigation; Enhanced IBRS
+                         , IBPB conditional, RSB f
+                         illing, PBRSB-eIBRS SW se
+                         quence
+  Srbds:                 Not affected
+  Tsx async abort:       Not affected
 
-**
- * address_space_cache_init_empty: Initialize empty #MemoryRegionCache
- *
- * @cache: The #MemoryRegionCache to operate on.
- *
- * Initializes #MemoryRegionCache structure without memory region attached.
- * Cache initialized this way can only be safely destroyed, but not used.
- */
-static inline void address_space_cache_init_empty(MemoryRegionCache *cache)
-{
-    cache->mrs.mr = NULL;
-}
+According to kernel commit below
+commit 81ac7e5d741742d650b4ed6186c4826c1a0631a7
+Author: Daniel Sneddon <daniel.sneddon@linux.intel.com>
+Date:   Wed Jul 12 19:43:14 2023 -0700
 
-What do you think?
+    KVM: Add GDS_NO support to KVM
 
-Best regards, Ilya Maximets.
+    Gather Data Sampling (GDS) is a transient execution attack using
+    gather instructions from the AVX2 and AVX512 extensions. This attack
+    allows malicious code to infer data that was previously stored in
+    vector registers. Systems that are not vulnerable to GDS will set the
+    GDS_NO bit of the IA32_ARCH_CAPABILITIES MSR. This is useful for VM
+    guests that may think they are on vulnerable systems that are, in
+    fact, not affected. Guests that are running on affected hosts where
+    the mitigation is enabled are protected as if they were running
+    on an unaffected system.
+
+    On all hosts that are not affected or that are mitigated, set the
+    GDS_NO bit.
+
+    Signed-off-by: Daniel Sneddon <daniel.sneddon@linux.intel.com>
+    Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+    Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
+
+KVM also has the support of GDS_NO, but seems qemu side doesn't pass
+the info to guest, that's why it is unknown. IMO qemu should pass
+GDS_NO if the host is already patched.
+
+Is Intel or anyone already working on the qemu patch? I know it's not
+a must, but good to do.
+
+Thx!
+Jinpu Wang @ IONOS Cloud
 
