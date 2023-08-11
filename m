@@ -2,77 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 215E7779265
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 17:06:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B74E2779268
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 17:07:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qUTiQ-00079p-Dv; Fri, 11 Aug 2023 11:06:14 -0400
+	id 1qUTiV-0007BW-Dk; Fri, 11 Aug 2023 11:06:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qUTiN-00079I-2g; Fri, 11 Aug 2023 11:06:11 -0400
-Received: from mail-oa1-x35.google.com ([2001:4860:4864:20::35])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qUTiS-0007Ak-JQ
+ for qemu-devel@nongnu.org; Fri, 11 Aug 2023 11:06:16 -0400
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qUTiE-0005do-BS; Fri, 11 Aug 2023 11:06:08 -0400
-Received: by mail-oa1-x35.google.com with SMTP id
- 586e51a60fabf-1a1fa977667so1770095fac.1; 
- Fri, 11 Aug 2023 08:06:00 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qUTiM-0005eE-Nb
+ for qemu-devel@nongnu.org; Fri, 11 Aug 2023 11:06:15 -0400
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-1bc6535027aso18040115ad.2
+ for <qemu-devel@nongnu.org>; Fri, 11 Aug 2023 08:06:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1691766360; x=1692371160;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=VTcLEnd/zpGW5dMMhX79pwcx3lsMZ9GVWbofPSJ+FyY=;
- b=qvmOJTe7Kkkw8zPgnra9zIsVhVb7b/0MlWTiuQilW1JBmC+5GKVWMJF1k39Ys8e77P
- Yqexow4gg+Du8EzS+qAv1L1rP1+aIYuEtwyGl2jPJUiiw7VDXXZ5Ie2RZT1G2Kzy5fv/
- 2by96/ciltyJeopnOqvnviHqeGutLty7YXA+IvDWvXBYPUDb7jfcOU+qmC25mc1+Bf4s
- zGggmdYoDlyqm7FlJ5Ld2KZH0ryqcX/Kgmuk7ohE6OhBp5ZWeZMncTX4JRs/8pFVRWEf
- Wz3aBqKMvL6fDxPsDx70wxTJ9sm8CUyRZQo2WFhggWG7SU6kJKI9gY0d4EC5SSmCO9po
- dkwA==
+ d=linaro.org; s=google; t=1691766365; x=1692371165;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=NzGcAH/wncr/lLEDpQNjY48DJKuZa1xa3K7ctnyqPhA=;
+ b=ewPr9aBfFeMHvRKTY4BnGez/n6gOhTaZI8XpC/MeZRcyIUBAzO+OZL8tlPzH/wx/CK
+ VgW+w7BCIj7ej1rRcLRJ+Ei3rJ8RgbLdJ5YVPkDCn56+OJHVUTpZo+z17ojBU0ldBqOl
+ ztNf751uA3v2/2lmadO/xytegJuhZF00L2ipm100nm00TurutDYrpV11ZXx09Fh2aDah
+ 4l8hNpm3woHTM31SOZa9rBoaqp5ooQq4BRmRcrZk1p8OtD4fEwPTYNIVTQbGyHhK5A8+
+ AUDH/H4QRIo3+gG4wznj1Mwu6s67CJ66gwm1676pzA+/I8G1SFbpPU9WigTjjtxu7N8w
+ A7QQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691766360; x=1692371160;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=VTcLEnd/zpGW5dMMhX79pwcx3lsMZ9GVWbofPSJ+FyY=;
- b=VvdXPi0+qoI/+fxp8gvCdHL7nvFlMF9fa1DOQmaWN/cvUcYHl4AZqpfctOdSJk5h+B
- 4mg6xXNyZJ7Eudkl7Fpuauyi7f22fPWZfZF99TeB6hf8u6LaGGmN/UmZNWk/b+0peHEt
- GvIMRcKe7QF1HbaYa+ajipeTsBtvprtfqXcgBUPAyvqpAuiV4lkC7pPk+TbC9Kn5x4Df
- 4TrlMy9Q32ckDcPMVvquuVL/i8QeKCdPIzAJxRqYINdD8C/sPI9/XkESd+BKqI1PMrrz
- zX48VNqigJVj4E9a9AA7AR/Gjd6avKqZl+6y5S+Yw1iknLkNlIEkhg0qa3jMoWbiL6qz
- 03fg==
-X-Gm-Message-State: AOJu0YzoxbenOZe4jFIRckA5nO2doZ0PzNywImFJzUBn2n96zrZ48gRn
- SuslUspNEVtLQqJEPlxtLv2QhOGbNe5kMj7bhiek6QK0Eg3iQg==
-X-Google-Smtp-Source: AGHT+IFTCnRNUy1PTsV+X7BKbJ6Cd38NPD1fOH9utFSTRpq53So4e8vmtRuiCHxOuzZrTGnNxGem8hFYgWuvk+OI+BI=
-X-Received: by 2002:a05:6358:8a3:b0:133:a55:7e26 with SMTP id
- m35-20020a05635808a300b001330a557e26mr2629253rwj.7.1691766358183; Fri, 11 Aug
- 2023 08:05:58 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1691766365; x=1692371165;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=NzGcAH/wncr/lLEDpQNjY48DJKuZa1xa3K7ctnyqPhA=;
+ b=S4RThXRdcuMb8ZV3rocmnwxS5P2nysM0YoEzTmKAWd5pDgSFzuKxOr6oyszz2WRYO4
+ +khWImGuSNV+aYyajwYP3QOWXQoab71HS19grPXdXe+KESu/kbTOs+nqM7DvW6aniZrE
+ +qFnpLpqsyYQMt4RPJ5TmYDC//Aua+Roram8MYE1JwUFuy4F+DuMqrb5tl+KMiymUO9M
+ sXTgVhWuJKtWPh2znA8Sf1DaejPtmnX113QkxAOKK61/pM51G6N9maxnlax4aLnpbKaf
+ MwWxdCvtKbBTNLgWKJfAcsKgfbIQeZciuULKJJ6EP5dobnupLW2XC05q2NJ+DbvKft5E
+ 9qGw==
+X-Gm-Message-State: AOJu0YyzqYZW/bsNSpljwEooO++3/xCwGBlLvaVOHiZmfH+1sJ5Iv8j/
+ ju8z4U0oym64LMO9YW63xdwcbg==
+X-Google-Smtp-Source: AGHT+IFeMiEi9YAMZN29Zr72AQgiAE89yFmKlUh0vw/E+KmKN8BQtPhM3jTD/BgFS15trS/H7wOiJw==
+X-Received: by 2002:a17:903:120a:b0:1b8:987f:3f34 with SMTP id
+ l10-20020a170903120a00b001b8987f3f34mr2666087plh.25.1691766365228; 
+ Fri, 11 Aug 2023 08:06:05 -0700 (PDT)
+Received: from ?IPV6:2602:47:d483:7301:e773:351d:2db2:8a8a?
+ ([2602:47:d483:7301:e773:351d:2db2:8a8a])
+ by smtp.gmail.com with ESMTPSA id
+ h18-20020a170902eed200b001ac6b926621sm4019046plb.292.2023.08.11.08.06.04
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 11 Aug 2023 08:06:04 -0700 (PDT)
+Message-ID: <6a116d10-5e01-30f8-fbd6-30c062fcccc5@linaro.org>
+Date: Fri, 11 Aug 2023 08:06:02 -0700
 MIME-Version: 1.0
-References: <20230728131520.110394-1-dbarboza@ventanamicro.com>
- <20230728131520.110394-9-dbarboza@ventanamicro.com>
-In-Reply-To: <20230728131520.110394-9-dbarboza@ventanamicro.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Fri, 11 Aug 2023 11:05:32 -0400
-Message-ID: <CAKmqyKO+MtFfZiCFofH8=vfvWmk62hdiia9xovM+3AdbWPFMcQ@mail.gmail.com>
-Subject: Re: [PATCH 8/8] target/riscv/cpu.c: consider user option with RVG
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2001:4860:4864:20::35;
- envelope-from=alistair23@gmail.com; helo=mail-oa1-x35.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 20/24] tcg/i386: Add cf parameter to tcg_out_cmp
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
+ qemu-riscv@nongnu.org, qemu-s390x@nongnu.org
+References: <20230808031143.50925-1-richard.henderson@linaro.org>
+ <20230808031143.50925-21-richard.henderson@linaro.org>
+ <CAFEAcA-N-QWQXcHgMNnXTr+Bmf7fhdSKYQwS-kkWGdR+UHvT-Q@mail.gmail.com>
+ <CAFEAcA9xsPHOeorJvjfO7mrpX_TfYHMNcMHi3dyt41+CktyXsg@mail.gmail.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <CAFEAcA9xsPHOeorJvjfO7mrpX_TfYHMNcMHi3dyt41+CktyXsg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
+X-Spam_score_int: -5
+X-Spam_score: -0.6
+X-Spam_bar: /
+X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.972,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ SUSPICIOUS_RECIPS=2.51 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,66 +99,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jul 28, 2023 at 9:39=E2=80=AFAM Daniel Henrique Barboza
-<dbarboza@ventanamicro.com> wrote:
->
-> Enabling RVG will enable a set of extensions that we're not checking if
-> the user was okay enabling or not. And in this case we want to error
-> out, instead of ignoring, otherwise we will be inconsistent enabling RVG
-> without all its extensions.
->
-> After this patch, disabling ifencei or icsr while enabling RVG will
-> result in error:
->
-> $ ./build/qemu-system-riscv64 -M virt -cpu rv64,g=3Dtrue,Zifencei=3Dfalse=
- --nographic
-> qemu-system-riscv64: warning: Setting G will also set IMAFD_Zicsr_Zifence=
-i
-> qemu-system-riscv64: RVG requires Zifencei but user set Zifencei to false
->
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+On 8/11/23 03:45, Peter Maydell wrote:
+> On Fri, 11 Aug 2023 at 11:26, Peter Maydell <peter.maydell@linaro.org> wrote:
+>>
+>> On Tue, 8 Aug 2023 at 04:13, Richard Henderson
+>> <richard.henderson@linaro.org> wrote:
+>>>
+>>> Add the parameter to avoid TEST and pass along to tgen_arithi.
+>>> All current users pass false.
+>>>
+>>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>>> ---
+>>>   tcg/i386/tcg-target.c.inc | 16 ++++++++--------
+>>>   1 file changed, 8 insertions(+), 8 deletions(-)
+>>>
+>>> diff --git a/tcg/i386/tcg-target.c.inc b/tcg/i386/tcg-target.c.inc
+>>> index b88fc14afd..56549ff2a0 100644
+>>> --- a/tcg/i386/tcg-target.c.inc
+>>> +++ b/tcg/i386/tcg-target.c.inc
+>>> @@ -1418,15 +1418,15 @@ static void tcg_out_jxx(TCGContext *s, int opc, TCGLabel *l, bool small)
+>>>       }
+>>>   }
+>>>
+>>> -static void tcg_out_cmp(TCGContext *s, TCGArg arg1, TCGArg arg2,
+>>> -                        int const_arg2, int rexw)
+>>> +static void tcg_out_cmp(TCGContext *s, int rexw, TCGArg arg1, TCGArg arg2,
+>>> +                        int const_arg2, bool cf)
+>>>   {
+>>>       if (const_arg2) {
+>>> -        if (arg2 == 0) {
+>>> +        if (arg2 == 0 && !cf) {
+>>>               /* test r, r */
+>>>               tcg_out_modrm(s, OPC_TESTL + rexw, arg1, arg1);
+>>>           } else {
+>>> -            tgen_arithi(s, ARITH_CMP + rexw, arg1, arg2, 0);
+>>> +            tgen_arithi(s, ARITH_CMP + rexw, arg1, arg2, cf);
+>>>           }
+>>>       } else {
+>>>           tgen_arithr(s, ARITH_CMP + rexw, arg1, arg2);
+>>
+>> I don't really understand the motivation here.
+>> Why are some uses of this function fine with using the TEST
+>> insn, but some must avoid it? What does 'cf' stand for?
+>> A comment would help here if there isn't a clearer argument
+>> name available...
+> 
+> Looking at the following patch suggests perhaps:
+> 
+> /**
+>   * tcg_out_cmp: Emit a compare, setting the X, Y, Z flags accordingly.
+>   * @need_cf : true if the comparison must also set CF
+>   */
+> 
+> (fill in which XYZ flags you can rely on even if need_cf is false)
 
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+I can add that, yes.
 
-Alistair
+Basically, test sets SZ flags, where cmp sets SZCO.  I want to add an optimizaton using C, 
+so "cmp 0,x" should not be silently replaced by "test x,x".
 
-> ---
->  target/riscv/cpu.c | 18 ++++++++++++++++--
->  1 file changed, 16 insertions(+), 2 deletions(-)
->
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index 644d0fdad2..72a36b47ed 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -1135,8 +1135,22 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *c=
-pu, Error **errp)
->            riscv_has_ext(env, RVD) &&
->            cpu->cfg.ext_icsr && cpu->cfg.ext_ifencei)) {
->          warn_report("Setting G will also set IMAFD_Zicsr_Zifencei");
-> -        cpu->cfg.ext_icsr =3D true;
-> -        cpu->cfg.ext_ifencei =3D true;
-> +
-> +        if (cpu_cfg_ext_is_user_set(CPU_CFG_OFFSET(ext_icsr)) &&
-> +            !cpu->cfg.ext_icsr) {
-> +            error_setg(errp, "RVG requires Zicsr but user set Zicsr to f=
-alse");
-> +            return;
-> +        }
-> +
-> +        if (cpu_cfg_ext_is_user_set(CPU_CFG_OFFSET(ext_ifencei)) &&
-> +            !cpu->cfg.ext_ifencei) {
-> +            error_setg(errp, "RVG requires Zifencei but user set "
-> +                       "Zifencei to false");
-> +            return;
-> +        }
-> +
-> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_icsr), true);
-> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_ifencei), true);
->
->          env->misa_ext |=3D RVI | RVM | RVA | RVF | RVD;
->          env->misa_ext_mask |=3D RVI | RVM | RVA | RVF | RVD;
-> --
-> 2.41.0
->
->
+
+r~
 
