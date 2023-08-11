@@ -2,91 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43EC87787A3
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 08:48:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E70CB7787CD
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 09:03:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qULvK-0006w3-UA; Fri, 11 Aug 2023 02:47:03 -0400
+	id 1qUM9h-0001WX-Vl; Fri, 11 Aug 2023 03:01:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <frank.chang@sifive.com>)
- id 1qULvI-0006vb-9o
- for qemu-devel@nongnu.org; Fri, 11 Aug 2023 02:47:00 -0400
-Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1qUM9K-0001Pf-Cd
+ for qemu-devel@nongnu.org; Fri, 11 Aug 2023 03:01:30 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <frank.chang@sifive.com>)
- id 1qULvG-0004eG-GX
- for qemu-devel@nongnu.org; Fri, 11 Aug 2023 02:47:00 -0400
-Received: by mail-lf1-x12f.google.com with SMTP id
- 2adb3069b0e04-4fe98583a6fso183912e87.3
- for <qemu-devel@nongnu.org>; Thu, 10 Aug 2023 23:46:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1qUM9H-0007U8-Tq
+ for qemu-devel@nongnu.org; Fri, 11 Aug 2023 03:01:29 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-3fe5695b180so14339455e9.2
+ for <qemu-devel@nongnu.org>; Fri, 11 Aug 2023 00:01:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1691736415; x=1692341215;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=bAVRsGL/nstakXHQHZDJYJdchDf8xqdkflm1jLCCLs4=;
- b=X2t2AJsCM+Nby0oGrr/ZVA15qtRIP/5XUHGmkXMQprhfN/xyAC5KhG8nbGTdHJk7To
- /IUaXi8i2hwV5ONBpwkT3nE1Rs7tnTX/rkwXKDA0o8d7H5VhLY7TG+yZPsYubE9Jr+Yf
- LR/FDVBNOnrgzgkXURKVv0Q83bo1JKvarJk//uPm3egtRrGiZptWDBjrNHXb4EvhUb4H
- G//3iDi7hXKShM329EPUHnH/BvMZTH3b34/mC5RkL082AW3hL0jyOlQCXcp/7wM6j1IC
- NfKby3dFiaWnVLBU0K+5oCAo+fddu85PhLoWdYh5sb2+Ep39QS2XVywjI9wE0uYFZI3i
- IcFQ==
+ d=ventanamicro.com; s=google; t=1691737286; x=1692342086;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=GnEgtBOFOPJD60jWty+zwjcaT5pxpLUINeaMh7ZaYyU=;
+ b=nYglEKKmJhagElHy1fmCXp8/ElKzg0iSAtnBXu9J1oJ6BJObLIXWV3cZ2r0acp/tmu
+ OWK3JeHbxbAJFwwqcApFfGMOWMXTgnLTE/+XRFsbYjD5xYXyi1kb1Jw8Bv1Hoz8D5I8O
+ dU9XkiZyDow6hNo1vfkIc1NLn5/kgleBR8p+932Y88m0NhaQ9sG8fvWX688Y8KiKmkTL
+ VLtxlgB583Vv65chQaBq/z2i3aoeoADuxzF+pb/QJ+60n81S8CrNtTsXf4xIyW3NW4EM
+ 6uehNOc7jy8Fa/0WAQS5gFBPWrTO5dQOptrrqlRz3R3Sc3DZEtCqUiLjRJtlK5oHHwRo
+ vxrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691736415; x=1692341215;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=bAVRsGL/nstakXHQHZDJYJdchDf8xqdkflm1jLCCLs4=;
- b=STLttPeY37gPJ/hW3hueQrt5TIEfbVlkZmiwUYjAc68dUo5Om9MMaeLtKRH+7uJURz
- xtEQ/e8Z094kmkLs/R+dro2g9bJ1AO6eZgOItUqP+L/iTEIwP08r7qZjzYScSQpMdePF
- 8xt6lfK/HKRTeY/Kc73Pg+Ibxg3NJTOst4qRMOyYoylouse5Ehgtwyf7KbPbdrqn8st+
- hxceYerSDFqtLamXdK4kRg/MGmDMeJ9LvgoqUzir/dbIAQ+RH/hGII1A0eW9H6hH5/2F
- qGb6s/KmMhrhvy/sbBIum0ivV+Q9cZ/t0OfWAPjjOPe/+GxfpdpzlYbc/O903j0ASZob
- QRlQ==
-X-Gm-Message-State: AOJu0YypFhQNJSJvxgFD6s9rtbhdaEIF9I2mV6imZwFt1ZBDSef2IAFk
- CIctsJXnQstjX+J1bLVgaDqek7SFyOVr+rBnd40/zpRXp0Q4oXesfK1onOlbz14bz+8WHA8E1Bb
- NJnakQ+yqgq3zVEXFvQHj5yWmEn1I0zXXCnZwbEZAto4pQCEUvXVEXgUhMu/cPofREEU3jBlvtm
- KUKog8
-X-Google-Smtp-Source: AGHT+IEoBoq5IZOzLH0jVqRiisO8WGYHtEFmhUzKeQDhn8b1/DKYM6sVfb7hwMEllxChOccRuvH/og==
-X-Received: by 2002:a19:7b1a:0:b0:4f8:7734:8dd2 with SMTP id
- w26-20020a197b1a000000b004f877348dd2mr593478lfc.53.1691736415586; 
- Thu, 10 Aug 2023 23:46:55 -0700 (PDT)
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com.
- [209.85.167.43]) by smtp.gmail.com with ESMTPSA id
- w25-20020ac254b9000000b004fe48a27fa1sm596887lfk.114.2023.08.10.23.46.54
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 10 Aug 2023 23:46:54 -0700 (PDT)
-Received: by mail-lf1-f43.google.com with SMTP id
- 2adb3069b0e04-4fe3b86cec1so2511019e87.2; 
- Thu, 10 Aug 2023 23:46:54 -0700 (PDT)
-X-Received: by 2002:a19:5049:0:b0:4fb:7592:7e03 with SMTP id
- z9-20020a195049000000b004fb75927e03mr741375lfj.20.1691736414579; Thu, 10 Aug
- 2023 23:46:54 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1691737286; x=1692342086;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=GnEgtBOFOPJD60jWty+zwjcaT5pxpLUINeaMh7ZaYyU=;
+ b=EPHxEtlqGCYKOH/B/GR40ssk5VH0UF3Gk6rweKPgUjpeQXVHHtdyEPQOXKr/3gKXNQ
+ A3NqH57wiCPwNUd8wRDBqxWG8zMYq4quTMJVT3qxo2o1fDRBviE1hssKNoo2nq8wdWUm
+ F9Dr5+0SeBD201hiAcK5upPhZsf5rGzYMb5MwNmWKs0uqJWyzdih4IM5GUg61s9/4z5G
+ ve0j5OcHQLKzRxHgIWOuFJXNHQIp+wM+8wYi6faPTIM93DKyVhwkZrR/ZGwv99JOHfCS
+ FAksG+sDE6OIQ94jQWXJbcqOmSHDff8sl6n7Ykndf1u51ouvNEsnj0+ks/HleIOMjXY4
+ 5KZw==
+X-Gm-Message-State: AOJu0YzGSCdBslJ2yC1MdmXB2Bc649wYtb3FPv4YN5aprm5l5wm1yl8z
+ /nXIl8z0AzJ5eMjUB8aA7Y+5/w==
+X-Google-Smtp-Source: AGHT+IEdrCXJbfBsWEV5vlzvwkT2lHyLqPI+nD4BHbsR770dgcBzO87q7bEyyQoUeNS5z+YEeYWUkA==
+X-Received: by 2002:a05:600c:2949:b0:3f7:f584:579b with SMTP id
+ n9-20020a05600c294900b003f7f584579bmr847873wmd.9.1691737285946; 
+ Fri, 11 Aug 2023 00:01:25 -0700 (PDT)
+Received: from localhost (cst2-173-16.cust.vodafone.cz. [31.30.173.16])
+ by smtp.gmail.com with ESMTPSA id
+ l4-20020a1ced04000000b003fe61c33df5sm7184763wmh.3.2023.08.11.00.01.25
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 11 Aug 2023 00:01:25 -0700 (PDT)
+Date: Fri, 11 Aug 2023 09:01:19 +0200
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Alistair Francis <alistair23@gmail.com>
+Cc: Vineet Gupta <vineetg@rivosinc.com>, 
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org,
+ qemu-riscv@nongnu.org, 
+ kito.cheng@gmail.com, Jeff Law <jeffreyalaw@gmail.com>, 
+ Palmer Dabbelt <palmer@rivosinc.com>,
+ Alistair Francis <alistair.francis@wdc.com>, 
+ Weiwei Li <liweiwei@iscas.ac.cn>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+Subject: Re: [PATCH 2/2] riscv: zicond: make default
+Message-ID: <20230811-f81889afd0f38ffdc215883d@orel>
+References: <20230808181715.436395-1-vineetg@rivosinc.com>
+ <20230808181715.436395-2-vineetg@rivosinc.com>
+ <ff43edc3-f160-e57d-deb1-185601ed5b7d@ventanamicro.com>
+ <1aa3bdff-0db4-c589-8863-56bbea825fda@rivosinc.com>
+ <CAKmqyKP2jQ1TYFNjMJNJxGqxHgq5fe5RhBhJDiPE1DoBXpf0gw@mail.gmail.com>
 MIME-Version: 1.0
-References: <20230809102257.25121-1-jason.chien@sifive.com>
-In-Reply-To: <20230809102257.25121-1-jason.chien@sifive.com>
-From: Frank Chang <frank.chang@sifive.com>
-Date: Fri, 11 Aug 2023 14:46:43 +0800
-X-Gmail-Original-Message-ID: <CANzO1D2fK5_CXEpeJpODxSKmLSqvB4je=9C64HDEDrwQWippaw@mail.gmail.com>
-Message-ID: <CANzO1D2fK5_CXEpeJpODxSKmLSqvB4je=9C64HDEDrwQWippaw@mail.gmail.com>
-Subject: Re: [PATCH] hw/pci-host: Allow extended config space access for
- Designware PCIe host
-To: Jason Chien <jason.chien@sifive.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, 
- Peter Maydell <peter.maydell@linaro.org>,
- Andrey Smirnov <andrew.smirnov@gmail.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>, Greg Kurz <groug@kaod.org>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Igor Mammedov <imammedo@redhat.com>, qemu-arm@nongnu.org
-Content-Type: multipart/alternative; boundary="0000000000000b70820602a014bf"
-Received-SPF: pass client-ip=2a00:1450:4864:20::12f;
- envelope-from=frank.chang@sifive.com; helo=mail-lf1-x12f.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAKmqyKP2jQ1TYFNjMJNJxGqxHgq5fe5RhBhJDiPE1DoBXpf0gw@mail.gmail.com>
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=ajones@ventanamicro.com; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -104,102 +102,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000000b70820602a014bf
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On Thu, Aug 10, 2023 at 02:07:17PM -0400, Alistair Francis wrote:
+> On Tue, Aug 8, 2023 at 6:10 PM Vineet Gupta <vineetg@rivosinc.com> wrote:
+> >
+> >
+> >
+> > On 8/8/23 14:06, Daniel Henrique Barboza wrote:
+> > > (CCing Alistair and other reviewers)
+> > >
+> > > On 8/8/23 15:17, Vineet Gupta wrote:
+> > >> Again this helps with better testing and something qemu has been doing
+> > >> with newer features anyways.
+> > >>
+> > >> Signed-off-by: Vineet Gupta <vineetg@rivosinc.com>
+> > >> ---
+> > >
+> > > Even if we can reach a consensus about removing the experimental (x-
+> > > prefix) status
+> > > from an extension that is Frozen instead of ratified, enabling stuff
+> > > in the default
+> > > CPUs because it's easier to test is something we would like to avoid.
+> > > The rv64
+> > > CPU has a random set of extensions enabled for the most different and
+> > > undocumented
+> > > reasons, and users don't know what they'll get because we keep beefing
+> > > up the
+> > > generic CPUs arbitrarily.
+> 
+> The idea was to enable "most" extensions for the virt machine. It's a
+> bit wishy-washy, but the idea was to enable as much as possible by
+> default on the virt machine, as long as it doesn't conflict. The goal
+> being to allow users to get the "best" experience as all their
+> favourite extensions are enabled.
+> 
+> It's harder to do in practice, so we are in a weird state where users
+> don't know what is and isn't enabled.
+> 
+> We probably want to revisit this. We should try to enable what is
+> useful for users and make it clear what is and isn't enabled. I'm not
+> clear on how best to do that though.
+> 
+> Again, I think this comes back to we need to version the virt machine.
+> I might do that as a starting point, that allows us to make changes in
+> a clear way.
 
-Reviewed-by: Frank Chang <frank.chang@sifive.com>
+While some extensions will impact the machine model, as well as cpu
+models, versioning the machine model won't help much with ambiguity in
+cpu model extension support. Daniel's proposal of having a base cpu mode,
+which, on top, users can explicitly enable what they want (including with
+profile support which work like a shorthand to enable many extensions at
+once), is, IMO, the best way for users to know what they get. Also, the
+'max' cpu model is the best way to "quickly get as much as possible" for
+testing. To know what's in 'max', or named cpu models, we need to
+implement qmp_query_cpu_model_expansion(). Something that could be used
+from the command line would also be nice, but neither x86 nor arm provide
+that (they have '-cpu help', but arm doesn't output anything for cpu
+features and x86 dumps all features out without saying what's enabled for
+any particular cpu model...)
 
-On Wed, Aug 9, 2023 at 6:23=E2=80=AFPM Jason Chien <jason.chien@sifive.com>=
- wrote:
+I know x86 people have in the past discussed versioning cpu models, but
+I don't think that should be necessary for riscv with the base+profile
+approach. A profile would effectively be a versioned cpu model in that
+case.
 
-> In pcie_bus_realize(), a root bus is realized as a PCIe bus and a non-roo=
-t
-> bus is realized as a PCIe bus if its parent bus is a PCIe bus. However,
-> the child bus "dw-pcie" is realized before the parent bus "pcie" which is
-> the root PCIe bus. Thus, the extended configuration space is not accessib=
-le
-> on "dw-pcie". The issue can be resolved by adding the
-> PCI_BUS_EXTENDED_CONFIG_SPACE flag to "pcie" before "dw-pcie" is realized=
-.
->
-> Signed-off-by: Jason Chien <jason.chien@sifive.com>
-> ---
->  hw/pci-host/designware.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/hw/pci-host/designware.c b/hw/pci-host/designware.c
-> index 9e183caa48..388d252ee2 100644
-> --- a/hw/pci-host/designware.c
-> +++ b/hw/pci-host/designware.c
-> @@ -694,6 +694,7 @@ static void designware_pcie_host_realize(DeviceState
-> *dev, Error **errp)
->                                       &s->pci.io,
->                                       0, 4,
->                                       TYPE_PCIE_BUS);
-> +    pci->bus->flags |=3D PCI_BUS_EXTENDED_CONFIG_SPACE;
->
->      memory_region_init(&s->pci.address_space_root,
->                         OBJECT(s),
-> --
-> 2.17.1
->
->
->
+Finally, I'd discourage versioning the virt machine type until we need
+to worry about users creating riscv guest images that they are unwilling
+to modify, despite wanting to update their QEMU versions. And, even then,
+we should only consider versioning when we're aware of problems for those
+static guest images, i.e. we introduce a change to the virt machine model
+which breaks that supported, old guest image. (NB: It was me that
+advocated to start versioning Arm's virt machine type. In hindsight, I
+think I may have advocated prematurely. I'm trying not to make that
+mistake twice!)
 
---0000000000000b70820602a014bf
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+> 
+> >
+> > I understand this position given the arbitrary nature of gazillion
+> > extensions. However pragmatically things like bitmanip and zicond are so
+> > fundamental it would be strange for designs to not have them, in a few
+> > years. Besides these don't compete or conflict with other extensions.
+> > But on face value it is indeed possible for vendors to drop them for
+> > various reasons or no-reasons.
+> >
+> > But having the x- dropped is good enough for our needs as there's
+> > already mechanisms to enable the toggles from elf attributes.
+> >
+> > >
+> > > Starting on QEMU 8.2 we'll have a 'max' CPU type that will enable all
+> > > non-experimental
+> > > and non-vendor extensions by default, making it easier for tooling to
+> > > test new
+> > > features/extensions. All tooling should consider changing their
+> > > scripts to use the
+> > > 'max' CPU when it's available.
+> >
+> > That would be great.
+> 
+> The max CPU helps, but I do feel that the default should allow users
+> to experience as many RISC-V extensions/features as practical.
+> 
 
-<div dir=3D"ltr">Reviewed-by: Frank Chang &lt;<a href=3D"mailto:frank.chang=
-@sifive.com">frank.chang@sifive.com</a>&gt;</div><br><div class=3D"gmail_qu=
-ote"><div dir=3D"ltr" class=3D"gmail_attr">On Wed, Aug 9, 2023 at 6:23=E2=
-=80=AFPM Jason Chien &lt;<a href=3D"mailto:jason.chien@sifive.com">jason.ch=
-ien@sifive.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" st=
-yle=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padd=
-ing-left:1ex">In pcie_bus_realize(), a root bus is realized as a PCIe bus a=
-nd a non-root<br>
-bus is realized as a PCIe bus if its parent bus is a PCIe bus. However,<br>
-the child bus &quot;dw-pcie&quot; is realized before the parent bus &quot;p=
-cie&quot; which is<br>
-the root PCIe bus. Thus, the extended configuration space is not accessible=
-<br>
-on &quot;dw-pcie&quot;. The issue can be resolved by adding the<br>
-PCI_BUS_EXTENDED_CONFIG_SPACE flag to &quot;pcie&quot; before &quot;dw-pcie=
-&quot; is realized.<br>
-<br>
-Signed-off-by: Jason Chien &lt;<a href=3D"mailto:jason.chien@sifive.com" ta=
-rget=3D"_blank">jason.chien@sifive.com</a>&gt;<br>
----<br>
-=C2=A0hw/pci-host/designware.c | 1 +<br>
-=C2=A01 file changed, 1 insertion(+)<br>
-<br>
-diff --git a/hw/pci-host/designware.c b/hw/pci-host/designware.c<br>
-index 9e183caa48..388d252ee2 100644<br>
---- a/hw/pci-host/designware.c<br>
-+++ b/hw/pci-host/designware.c<br>
-@@ -694,6 +694,7 @@ static void designware_pcie_host_realize(DeviceState *d=
-ev, Error **errp)<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 &amp;s-&gt;<a h=
-ref=3D"http://pci.io" rel=3D"noreferrer" target=3D"_blank">pci.io</a>,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 0, 4,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 TYPE_PCIE_BUS);=
-<br>
-+=C2=A0 =C2=A0 pci-&gt;bus-&gt;flags |=3D PCI_BUS_EXTENDED_CONFIG_SPACE;<br=
->
-<br>
-=C2=A0 =C2=A0 =C2=A0memory_region_init(&amp;s-&gt;pci.address_space_root,<b=
-r>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 OBJECT(s),<br>
--- <br>
-2.17.1<br>
-<br>
-<br>
-</blockquote></div>
+If the virt machine type has a default cpu type, then why not set it to
+'max'?
 
---0000000000000b70820602a014bf--
+Thanks,
+drew
 
