@@ -2,66 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C45D77965A
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 19:42:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E4E6779679
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 19:49:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qUW9L-0004fa-0b; Fri, 11 Aug 2023 13:42:11 -0400
+	id 1qUWEx-0006rP-AU; Fri, 11 Aug 2023 13:47:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qUW9I-0004fF-KO
- for qemu-devel@nongnu.org; Fri, 11 Aug 2023 13:42:08 -0400
-Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
+ id 1qUWEu-0006mL-M0
+ for qemu-devel@nongnu.org; Fri, 11 Aug 2023 13:47:56 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qUW9G-0003Ib-HC
- for qemu-devel@nongnu.org; Fri, 11 Aug 2023 13:42:08 -0400
-Received: by mail-lf1-x132.google.com with SMTP id
- 2adb3069b0e04-4fe0d5f719dso3686660e87.2
- for <qemu-devel@nongnu.org>; Fri, 11 Aug 2023 10:42:06 -0700 (PDT)
+ id 1qUWEs-0004sl-NH
+ for qemu-devel@nongnu.org; Fri, 11 Aug 2023 13:47:56 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-3fe5c0e587eso21133735e9.0
+ for <qemu-devel@nongnu.org>; Fri, 11 Aug 2023 10:47:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691775724; x=1692380524;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=DoXPQfBfORr2qtUwwPeP0Ub9Bu1hZ5LFeYSR68td+Z8=;
- b=uZSMbG9eIs6xFUtyXZ24hlulbrfDQ0vwOWTVC7h/6AI32gFhPw1/157dL9YZxTOAOk
- BKRExf9l16z2F0A0YcBmpzlgSSlSc4JEJIfYzS4o2sbPCcsyW5j/eXszjHtbZUZg7cIC
- Dy8TJDBO9tNhdSw30GwcAhW+e5ZWOA0gESFPfd66ytvduFOpvqgvmrS05KAKEDGlSkOw
- 6S+80/3O2hzsHVHRbBy5j9Uma3ayCsMYKKFAkeq9jAV4KvVbAbuywJ2sUd+LoKggjB4T
- usiRH3QFJRUB8lkp7dzzLPtwhh+RGPD8qqSozo3RH5l5GQbp1B+bLgoN5AR9jSXeS7WQ
- vHGw==
+ d=linaro.org; s=google; t=1691776073; x=1692380873;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=0ZjqSHq7/cZ8OsQEHGhOPAij5Qo4MVYdiXsrrjnC+xs=;
+ b=w35ls+EdmPgGvIip0cTaiXQ9UynsHAHrBCe91OI05JM1YbjcbWBQ8LfODYmJ5hKzwG
+ n5NC3+/iFJASEAV1QDyntd5ywzEidfxlhNQb7X+cbLbpcjC+OSOUOMWj2JiXMli4D25X
+ qX41y1DT1pJS1dI8i9f7aDMhL2gCDcEfvC2UX0YSIMgJcIyJqrN1ZLfY9L/ZLTTUSJ8L
+ X146ZluavpXG9NyI7tEnvMf6ddU7EaVfePjVX3lZ420amt9vNaqhwErLI461ABqGuTQI
+ fcgR7jZ30vb7T8AofcQmXizN/xVHHvEYGHRn7Jyill8zeZ0lI+J596mo7Tw7LUDYIbRG
+ lszg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691775724; x=1692380524;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20221208; t=1691776073; x=1692380873;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=DoXPQfBfORr2qtUwwPeP0Ub9Bu1hZ5LFeYSR68td+Z8=;
- b=TTKYGn1EvgwNSn51TqMg5D9y5PLT3SRqcqCtxmNb1v/q4AK2gxmb9bvRpJ6D6eK1IY
- gShQs3n6GjRMsN8Sv/2c9QZU+stuIiElKGLUkpygt4z6Qzg4TBaTNsQqCROW1IGZ5hEf
- RAwbOkT/80EcPBm6SxTsIvIaND2/pb1f6TvSQLp6lVu5z+D0MSydWOU/8sP+dSKU7OZa
- RpqxtmqutrCFfAURW58kZLmaDG0OBdO+bxPtqk/0oiCJ1qwkVA1tr534RdEAwrFY9sZM
- 4/63zUr9uj4m2iQoATlYQ8CsvokQrYdlo5rkI9CbpvNFaiY0K5/3dwj0oIdKEJ5ctTpv
- mEtw==
-X-Gm-Message-State: AOJu0Yw8e7gjrk3A86WFPzA/UOfQpQ1cuoawC142LdJwEWllxvFv0HU8
- ceURQUEXYiygQOr3dhalm8eWS6mxjNE73hKT755H4A==
-X-Google-Smtp-Source: AGHT+IE4TggTkg5/lg7k32D04uWR7gURQEpye2O37Xi66NLaK+PxPc5oj6X/0iu+WtjXlTYyvRwJdaZlEmb0r4f7EK8=
-X-Received: by 2002:a19:2d49:0:b0:4f9:586b:dba1 with SMTP id
- t9-20020a192d49000000b004f9586bdba1mr1984397lft.4.1691775724315; Fri, 11 Aug
- 2023 10:42:04 -0700 (PDT)
-MIME-Version: 1.0
-References: <cover.1691770630.git.mst@redhat.com>
-In-Reply-To: <cover.1691770630.git.mst@redhat.com>
+ bh=0ZjqSHq7/cZ8OsQEHGhOPAij5Qo4MVYdiXsrrjnC+xs=;
+ b=PIyYVrVpsv5hKqDjITNUlnI3Tuv6Q1hJVRRVfa/oCN8NCdXrhqqVXZcwOn1U1ScR22
+ zEKTm5g4KHMsGgSQM+6ctaVmakVV6+L9qaNOoGfhIJRZxm7T0ILyk8L0/p8w4r03OZPq
+ U5u++IaovbxATZ7spDs5EM7Gyaz0ZjUwO/O3xGnlqZKXnRMFskifDUq/7J/uAr2PYDXw
+ MR9xFf+yTeD8QFBuHzM9gBrRv+rYtxOt1EGt+Dt+8Pb1SMu/BAo9PgqLUBoOQWE16Rcw
+ lxXPoaFICc3RYH6NSM23xfsIwEY0BHvyAfuOb1VCOSqxj9bvqCSxOpwZYi+84ixhMRhm
+ ZGRg==
+X-Gm-Message-State: AOJu0YwvybellUuV5wyZk8eTYTMBUo+qwRCdR5S9faprMJa/jGXB1SJk
+ cqVbc57DcmbJkLk22eyOtfQ5JM9kijqdMFKjUa0=
+X-Google-Smtp-Source: AGHT+IGXRpgfKcLu/x/mrYYlFfw0ZvtHjgSbUoYEC4bWU4rrGoo3QE00BhvCV10L+iK3R8QwiKa5ww==
+X-Received: by 2002:a1c:6a14:0:b0:3f5:fff8:d4f3 with SMTP id
+ f20-20020a1c6a14000000b003f5fff8d4f3mr2229738wmc.7.1691776073060; 
+ Fri, 11 Aug 2023 10:47:53 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ c21-20020a05600c0ad500b003fbb346279dsm5874940wmr.38.2023.08.11.10.47.52
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 11 Aug 2023 10:47:52 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 11 Aug 2023 18:41:53 +0100
-Message-ID: <CAFEAcA8sKYYfo_OazF_fftUwnU0viaTxk9tyn=TUrChMxaLgGg@mail.gmail.com>
-Subject: Re: [PULL 0/2] pci: last minute bugfixes
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::132;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x132.google.com
+To: qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Keith Busch <kbusch@kernel.org>, Klaus Jensen <its@irrelevant.dk>
+Subject: [PATCH 0/2] nvme: avoid dynamic stack allocations
+Date: Fri, 11 Aug 2023 18:47:49 +0100
+Message-Id: <20230811174751.784620-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -84,38 +91,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 11 Aug 2023 at 17:18, Michael S. Tsirkin <mst@redhat.com> wrote:
->
-> The following changes since commit 15b11a1da6a4b7c6b8bb37883f52b544dee2b8fd:
->
->   cryptodev: Handle unexpected request to avoid crash (2023-08-03 16:16:17 -0400)
->
-> are available in the Git repository at:
->
->   https://git.kernel.org/pub/scm/virt/kvm/mst/qemu.git tags/for_upstream
->
-> for you to fetch changes up to 0f936247e8ed0ab5fb7e75827dd8c8f73d5ef4b5:
->
->   pci: Fix the update of interrupt disable bit in PCI_COMMAND register (2023-08-11 12:15:24 -0400)
->
-> ----------------------------------------------------------------
-> pci: last minute bugfixes
->
-> two fixes that seem very safe and important enough to sneak
-> in before the release.
->
-> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
->
-> ----------------------------------------------------------------
-> Guoyi Tu (1):
->       pci: Fix the update of interrupt disable bit in PCI_COMMAND register
->
-> Jason Chien (1):
->       hw/pci-host: Allow extended config space access for Designware PCIe host
+The QEMU codebase has very few C variable length arrays, and if we can
+get rid of them all we can make the compiler error on new additions.
+This is a defensive measure against security bugs where an on-stack
+dynamic allocation isn't correctly size-checked (e.g.  CVE-2021-3527).
 
-Could you respin to get rid of the malformed Signed-off-by
-line in patch 1 which has an HTML mailto link in it, please?
+We last had a go at this a few years ago, when Philippe wrote
+patches for this:
+https://patchew.org/QEMU/20210505211047.1496765-1-philmd@redhat.com/
+Some of the fixes made it into the tree, but some didn't (either
+because of lack of review or because review found some changes
+that needed to be made). I'm going through the remainder as a
+non-urgent Friday afternoon task...
+
+This patchset deals with two VLAs in the NVME code.
 
 thanks
 -- PMM
+
+Peter Maydell (1):
+  hw/nvme: Avoid dynamic stack allocation
+
+Philippe Mathieu-Daudé (1):
+  hw/nvme: Use #define to avoid variable length array
+
+ hw/nvme/ctrl.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+-- 
+2.34.1
+
 
