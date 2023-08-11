@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A14F779495
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 18:29:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE36E779494
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 18:29:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qUV0A-0006MO-Fk; Fri, 11 Aug 2023 12:28:38 -0400
+	id 1qUV0A-0006MX-TV; Fri, 11 Aug 2023 12:28:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qUV08-0006KQ-6t
- for qemu-devel@nongnu.org; Fri, 11 Aug 2023 12:28:36 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ id 1qUV07-0006KG-Bs
+ for qemu-devel@nongnu.org; Fri, 11 Aug 2023 12:28:35 -0400
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qUV05-0005EH-E3
+ id 1qUV05-0005EJ-Ey
  for qemu-devel@nongnu.org; Fri, 11 Aug 2023 12:28:35 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-3fe167d4a18so19898645e9.0
- for <qemu-devel@nongnu.org>; Fri, 11 Aug 2023 09:28:32 -0700 (PDT)
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-317798b359aso1905274f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 11 Aug 2023 09:28:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1691771311; x=1692376111;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0uq95LEssCksJywB6tkgBjETgh3jj8wLZB4MC0pmpaE=;
- b=aEhsemw4TfNpoFlrrcepUj25C3961mZIRJ3ht6DEGyU1ANAJYx5eoeeJYA8SxRljBL
- kn9qlc0T/PtEevmIhV2OzFQihCPRvHsa4vCJfptpxtTlncTbwSiMQvN1YEZ5ZCLa23aQ
- uPjSfI+UvrPTIGeuzLtwNw7EVPdnwEWgd8PRyamsYxq5ssGrzE7ezNkMlYwPqoAuefWc
- 3v1zEzwa/Z5MGjO6C/XFcRIIavfRS/ib8Zmob3Btmd39SeT6b0GA5U2RVa6OCIFMXlDw
- 0oV/C6qM5nB+o57lhhNH9+vAV+CIoU74TxuqI7fGcCF46IbVC4FoqCzeZzUCtqRX0VM/
- buaA==
+ bh=lApY/NS9JZkO2TeBB7cMCe3ZjrjnlsHvzNxG3ftYJfw=;
+ b=lKs7CX3ClgyXu6jLtFx08RnKuLz4JwNfBbnZOZBkuPd7LGqVNoELNq0oYn0PAjDNyu
+ xqPR2xHNpsiLhzhUZZECLY5HFRTmEpddGXV30iSiO4PNBXi8j3S02s6+swRbf/HWia2t
+ mUSadxBtcc5HregmOYMIMn27BdgwqJuapORbnMF4tSrXY/AolEwYmYpUI8q/5ou1ezk8
+ 4CK2xY4Gdozi9t3zQwch8lvNiiBMXw2DAfl0b+iHU6IYD/BD3j6rI/Fu47V8+rtqSV7G
+ mS8hUgJ0p4+P2fEmEyogTt3HDcXyGOgl0pS67a/1bUULq0xjldsEASByN2Ey+CAc/Rto
+ bODg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1691771311; x=1692376111;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0uq95LEssCksJywB6tkgBjETgh3jj8wLZB4MC0pmpaE=;
- b=Mub3QM+oxRmJn0ank4UtBEelU0ORdnnS1/sedU6TRqPdwjJcmQqsJ7l5L9jIvLskLZ
- CPLknrfyQllvNgI1n9YcsWA3I/Btomw03fhiQ6jXWh2weyTWfxZFnp1FMK5K0hVdkRE8
- 1H7pG3n/TH7v+CerKIR2CfuJgQXI6cbfE70d74NSa1QBMD0VTNg9nuPfDQm7QzzSErtg
- iTUhzMJdEGy4JwgFC6emPiR9s79FIv385pAZm5DsGsqTIIavWP7p8lm66TIJoK7f5Ce3
- maCSqRKqFzKOdYJ62UYM5OGW5w7paRKimd2UsLXoF6r2Z8tZPr5sb8SALJcHtH75FaVD
- K9JA==
-X-Gm-Message-State: AOJu0Ywl9LlniM4boIm+JhyEwRymmew24kpPfFRM5N7y3eHaT3fYiHmS
- t4tqm7DyaS4FiNwLsPGdrAFlqTZ9WMUlV6V73J8=
-X-Google-Smtp-Source: AGHT+IF6R2Z7XdkUbmsEsIOmspvo7NYHrfP84iZAUjoZ4dTZ6JDKbcBqr//YQerGPlJjC8627K2b4g==
-X-Received: by 2002:a5d:40ce:0:b0:317:4d79:1e45 with SMTP id
- b14-20020a5d40ce000000b003174d791e45mr1821109wrq.15.1691771311270; 
+ bh=lApY/NS9JZkO2TeBB7cMCe3ZjrjnlsHvzNxG3ftYJfw=;
+ b=c7E7xpwJ3qBe1w82jum4MVlXP8MHSLEFYNQaXBIKLL2FPiF73gyuqIcOYkVV4yO1Tt
+ LV5Uq3c23hbGq8nZ7itLjmc/BcZYSSoD62Og8nWYuSRNa8ktknisibEoXmVEbchPXkk4
+ UzpIOeXJm4YygMLa6GskKy/xBCgvbXCxEfJHgsVIJvXk0qr4KUr5D/UrVQyn4NdoCyEB
+ KpOIHfbYqoBJPIDo7wc8QYrQNLjOofPtHXDmdy4S1SgDRkTuwVJAKHqsq+T/CNOCruvh
+ 6oapoy6pcondfeOBZOAgamnyzKqFChW5utAC+nSTnJZEXM/DdTO8vbKsIODgqU1W3xbu
+ 2iTw==
+X-Gm-Message-State: AOJu0Yz8RKU9WqoXre5l6paQ00oI0wyDy92amdlL4jKO98m2DLfRWasC
+ dUMAan/kiSQL/VYhdRrUjBstLQ==
+X-Google-Smtp-Source: AGHT+IFANeEiKyvDyoCNijN1+ciKQN+xWK3J6dMfyaOy3hxTu01VnUrW/GGEUlSdzOh+jH8GzdwnDA==
+X-Received: by 2002:a5d:4448:0:b0:317:f537:748d with SMTP id
+ x8-20020a5d4448000000b00317f537748dmr1534970wrr.64.1691771311580; 
  Fri, 11 Aug 2023 09:28:31 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- j4-20020adfe504000000b003177f57e79esm5872855wrm.88.2023.08.11.09.28.30
+ k18-20020a056000005200b00317d2be2e59sm5844590wrx.73.2023.08.11.09.28.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 11 Aug 2023 09:28:30 -0700 (PDT)
+ Fri, 11 Aug 2023 09:28:31 -0700 (PDT)
 Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 718571FFBC;
+ by zen.linaroharston (Postfix) with ESMTP id 8E7E61FFBD;
  Fri, 11 Aug 2023 17:28:30 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org,
 	Yeqi Fu <fufuyqqqqqq@gmail.com>
 Cc: Laurent Vivier <laurent@vivier.eu>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [RFC PATCH 1/2] linux-user: implement some basic FD<->path tracking
-Date: Fri, 11 Aug 2023 17:28:29 +0100
-Message-Id: <20230811162830.2278032-2-alex.bennee@linaro.org>
+Subject: [RFC PATCH 2/2] linux-user: implement name lookup for dfilter
+Date: Fri, 11 Aug 2023 17:28:30 +0100
+Message-Id: <20230811162830.2278032-3-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230811162830.2278032-1-alex.bennee@linaro.org>
 References: <20230811162830.2278032-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,99 +97,186 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This will be useful in later patches for tracking the paths associated
-with mmap operations. This will be useful to the upcoming -dfilter
-changes to track execution only certain libraries.
+This implements a simple extension to dfilter so we can use pathnames
+as a proxy for address ranges such that:
+
+  ./qemu-x86_64 -d page,in_asm,op,op_opt,out_asm \
+    --dfilter libnative \
+    --native-bypass common-user/native/x86_64-linux-user/libnative.so \
+    /usr/bin/tar xvf audacity-sources-3.3.3.tar.gz
+
+will only output debug information for the thing I'm interested in.
+
+There are a couple of things that need fixing before we could merge
+but it works well enough for debug:
+
+  - we don't do the PROT_EXEC check because the linker mprotects the
+    region after the fact and that requires more plumbing
+  - there is no locking in the hot path of qemu_log_in_addr_range(),
+    in theory we only expand debug_regions but GArray could move the
+    pointer
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- linux-user/syscall.c | 59 ++++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 54 insertions(+), 5 deletions(-)
+ include/qemu/log.h   | 12 ++++++++++++
+ linux-user/syscall.c | 31 ++++++++++++++++++++++++++++++-
+ util/log.c           | 36 +++++++++++++++++++++++++++++++++++-
+ 3 files changed, 77 insertions(+), 2 deletions(-)
 
+diff --git a/include/qemu/log.h b/include/qemu/log.h
+index df59bfabcd..3dba364b05 100644
+--- a/include/qemu/log.h
++++ b/include/qemu/log.h
+@@ -86,6 +86,18 @@ bool qemu_set_log(int log_flags, Error **errp);
+ bool qemu_set_log_filename(const char *filename, Error **errp);
+ bool qemu_set_log_filename_flags(const char *name, int flags, Error **errp);
+ void qemu_set_dfilter_ranges(const char *ranges, Error **errp);
++
++/**
++ * qemu_maybe_append_dfilter_range() - maybe add mapped binary range to dfilter
++ * @path - the full path to the mapped binary
++ * @start - start guest address
++ * @end - end guest address
++ *
++ * This allows *-user to add ranges to the dfilter list after the fact
++ * as binary sections are mapped in.
++ */
++void qemu_maybe_append_dfilter_range(const char *path, uint64_t start, uint64_t end);
++
+ bool qemu_log_in_addr_range(uint64_t addr);
+ int qemu_str_to_log_mask(const char *str);
+ 
 diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 9353268cc1..e191163c49 100644
+index e191163c49..b724ec8df6 100644
 --- a/linux-user/syscall.c
 +++ b/linux-user/syscall.c
-@@ -8557,6 +8557,58 @@ static int open_hardware(CPUArchState *cpu_env, int fd)
- }
+@@ -6019,6 +6019,18 @@ static const bitmask_transtbl mmap_flags_tbl[] = {
+ #define TARGET_MAP_HUGE_1GB 0
  #endif
  
-+/*
-+ * Handle non-intercepted guest open operations. This gives us the
-+ * opportunity to track some information
-+ */
++static char *get_fd_path_mapping(int fd);
 +
-+static QemuMutex fd_tracking_lock;
-+static GHashTable *fd_path;
-+
-+__attribute__((constructor))
-+static void fd_tracking_init(void)
++static void track_exec_segments(int fd, abi_ulong addr, abi_ulong len, off_t offset)
 +{
-+    qemu_mutex_init(&fd_tracking_lock);
++    g_autofree char *path = get_fd_path_mapping(fd);
++    if (path) {
++        uint64_t start = addr + offset;
++        uint64_t end = start + len;
++        qemu_maybe_append_dfilter_range(path, start, end);
++    }
 +}
 +
-+static int do_plain_guest_openat(int dirfd, const char *pathname,
-+                                 int flags, mode_t mode, bool safe)
-+{
-+    const char * real_path = path(pathname);
-+    int fd;
+ static abi_long do_mmap(abi_ulong addr, abi_ulong len, int prot,
+                         int target_flags, int fd, off_t offset)
+ {
+@@ -6045,6 +6057,7 @@ static abi_long do_mmap(abi_ulong addr, abi_ulong len, int prot,
+                                | TARGET_MAP_HUGE_1GB
+     };
+     int host_flags;
++    abi_long map_addr;
+ 
+     switch (target_flags & TARGET_MAP_TYPE) {
+     case TARGET_MAP_PRIVATE:
+@@ -6071,7 +6084,14 @@ static abi_long do_mmap(abi_ulong addr, abi_ulong len, int prot,
+     }
+     host_flags |= target_to_host_bitmask(target_flags, mmap_flags_tbl);
+ 
+-    return get_errno(target_mmap(addr, len, prot, host_flags, fd, offset));
 +
-+    if (safe) {
-+        fd = safe_openat(dirfd, real_path, flags, mode);
-+    } else {
-+        fd = openat(dirfd, real_path, flags, mode);
++    map_addr = target_mmap(addr, len, prot, host_flags, fd, offset);
++    /* Have we successfully mapped an executable segment? */
++    if (map_addr > 0 /* && prot & PROT_EXEC */) {
++        track_exec_segments(fd, map_addr, len, offset);
 +    }
 +
-+    /* If we opened an fd save some details */
-+    if (fd >= 0) {
-+        WITH_QEMU_LOCK_GUARD(&fd_tracking_lock) {
-+            if (!fd_path) {
-+                fd_path = g_hash_table_new(NULL, NULL);
-+            }
++    return get_errno(map_addr);
+ }
+ 
+ /*
+@@ -8571,6 +8591,15 @@ static void fd_tracking_init(void)
+     qemu_mutex_init(&fd_tracking_lock);
+ }
+ 
++/* caller owns result */
++static char * get_fd_path_mapping(int fd) {
++    gpointer value;
++    WITH_QEMU_LOCK_GUARD(&fd_tracking_lock) {
++        value = g_hash_table_lookup(fd_path, GINT_TO_POINTER(fd));
++    }
++    return g_strdup(value);
++}
 +
-+            if (!g_hash_table_insert(fd_path, GINT_TO_POINTER(fd), g_strdup(real_path))) {
-+                fprintf(stderr, "%s: duplicate fd %d in fd_path hash\n", __func__, fd);
+ static int do_plain_guest_openat(int dirfd, const char *pathname,
+                                  int flags, mode_t mode, bool safe)
+ {
+diff --git a/util/log.c b/util/log.c
+index def88a9402..b4bd20fd72 100644
+--- a/util/log.c
++++ b/util/log.c
+@@ -48,6 +48,15 @@ int qemu_loglevel;
+ static bool log_per_thread;
+ static GArray *debug_regions;
+ 
++static QemuMutex debug_names_lock;
++static GPtrArray *debug_names; /* unresolved named ranges */
++
++__attribute__((constructor))
++static void debug_names_init(void)
++{
++    qemu_mutex_init(&debug_names_lock);
++}
++
+ /* Returns true if qemu_log() will really write somewhere. */
+ bool qemu_log_enabled(void)
+ {
+@@ -393,6 +402,8 @@ void qemu_set_dfilter_ranges(const char *filter_spec, Error **errp)
+ 
+     debug_regions = g_array_sized_new(FALSE, FALSE,
+                                       sizeof(Range), g_strv_length(ranges));
++    debug_names = g_ptr_array_new();
++
+     for (i = 0; ranges[i]; i++) {
+         const char *r = ranges[i];
+         const char *range_op, *r2, *e;
+@@ -410,7 +421,8 @@ void qemu_set_dfilter_ranges(const char *filter_spec, Error **errp)
+             r2 = range_op ? range_op + 2 : NULL;
+         }
+         if (!range_op) {
+-            error_setg(errp, "Bad range specifier");
++            /* this might be a libname, defer until we map stuff */
++            g_ptr_array_add(debug_names, g_strdup(r));
+             goto out;
+         }
+ 
+@@ -453,6 +465,28 @@ out:
+     g_strfreev(ranges);
+ }
+ 
++void qemu_maybe_append_dfilter_range(const char *path, uint64_t start, uint64_t end)
++{
++    if (!debug_names) {
++        return;
++    }
++
++    WITH_QEMU_LOCK_GUARD(&debug_names_lock) {
++        int i;
++        for (i = 0; i < debug_names->len; i++) {
++            char *name = g_ptr_array_index(debug_names, i);
++
++            if (strstr(path, name) != NULL) {
++                struct Range range;
++                range_set_bounds(&range, start, end);
++                g_array_append_val(debug_regions, range);
++                g_free(g_ptr_array_remove_index(debug_names, i));
++                break;
 +            }
 +        }
 +    }
-+
-+    return fd;
 +}
 +
-+static void fd_path_cleanup(int fd) {
-+    WITH_QEMU_LOCK_GUARD(&fd_tracking_lock) {
-+        /*
-+         * Assume success, if we failed to cleanup its totally
-+         * possible the guest got confused and closed something twice.
-+         */
-+        g_hash_table_remove(fd_path, GINT_TO_POINTER(fd));
-+    }
-+}
-+
- 
- int do_guest_openat(CPUArchState *cpu_env, int dirfd, const char *fname,
-                     int flags, mode_t mode, bool safe)
-@@ -8643,11 +8695,7 @@ int do_guest_openat(CPUArchState *cpu_env, int dirfd, const char *fname,
-         return fd;
-     }
- 
--    if (safe) {
--        return safe_openat(dirfd, path(pathname), flags, mode);
--    } else {
--        return openat(dirfd, path(pathname), flags, mode);
--    }
-+    return do_plain_guest_openat(dirfd, pathname, flags, mode, safe);
- }
- 
- ssize_t do_guest_readlink(const char *pathname, char *buf, size_t bufsiz)
-@@ -9355,6 +9403,7 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
-         return get_errno(pidfd_getfd(arg1, arg2, arg3));
- #endif
-     case TARGET_NR_close:
-+        fd_path_cleanup(arg1);
-         fd_trans_unregister(arg1);
-         return get_errno(close(arg1));
- #if defined(__NR_close_range) && defined(TARGET_NR_close_range)
+ const QEMULogItem qemu_log_items[] = {
+     { CPU_LOG_TB_OUT_ASM, "out_asm",
+       "show generated host assembly code for each compiled TB" },
 -- 
 2.39.2
 
