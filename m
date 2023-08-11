@@ -2,39 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D88FD778A91
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 12:03:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 241B5778A97
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 12:03:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qUOyR-0006c9-H4; Fri, 11 Aug 2023 06:02:27 -0400
+	id 1qUOyS-0006dp-3E; Fri, 11 Aug 2023 06:02:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qUOyL-0006OT-IX
- for qemu-devel@nongnu.org; Fri, 11 Aug 2023 06:02:23 -0400
+ id 1qUOyK-0006Ml-7P
+ for qemu-devel@nongnu.org; Fri, 11 Aug 2023 06:02:21 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qUOyG-0002EJ-Hf
- for qemu-devel@nongnu.org; Fri, 11 Aug 2023 06:02:21 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1qUOyF-0002EK-Vk
+ for qemu-devel@nongnu.org; Fri, 11 Aug 2023 06:02:19 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8BxnusiB9Zku4AVAA--.43537S3;
- Fri, 11 Aug 2023 18:02:10 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8DxxPAjB9Zkv4AVAA--.46657S3;
+ Fri, 11 Aug 2023 18:02:11 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8AxTSMhB9ZkBcpUAA--.61494S2; 
- Fri, 11 Aug 2023 18:02:09 +0800 (CST)
+ AQAAf8AxTSMhB9ZkBcpUAA--.61494S3; 
+ Fri, 11 Aug 2023 18:02:11 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org, philmd@linaro.org, maobibo@loongson.cn,
  yangxiaojuan@loongson.cn, c@jia.je
-Subject: [PATCH v2 0/8] Add some checks before translating instructions
-Date: Fri, 11 Aug 2023 18:02:00 +0800
-Message-Id: <20230811100208.271649-1-gaosong@loongson.cn>
+Subject: [PATCH v2 1/8] target/loongarch: Fix loongarch_la464_initfn() misses
+ setting LSPW.
+Date: Fri, 11 Aug 2023 18:02:01 +0800
+Message-Id: <20230811100208.271649-2-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
+In-Reply-To: <20230811100208.271649-1-gaosong@loongson.cn>
+References: <20230811100208.271649-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8AxTSMhB9ZkBcpUAA--.61494S2
+X-CM-TRANSID: AQAAf8AxTSMhB9ZkBcpUAA--.61494S3
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -61,61 +64,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Based-on: https://patchew.org/QEMU/20230809083258.1787464-1-c@jia.je/
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Song Gao <gaosong@loongson.cn>
+---
+ target/loongarch/cpu.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Hi,
-
-This series adds some checks before translating instructions
-
-This includes:
-
-CPUCFG[1].IOCSR
-
-CPUCFG[2].FP
-CPUCFG[2].FP_SP
-CPUCFG[2].FP_DP
-CPUCFG[2].LSPW
-CPUCFG[2].LAM
-CPUCFG[2].LSX
-
-V2:
-- Add a check parameter to the TRANS macro.
-- remove TRANS_64.
-- Add avail_ALL/64/FP/FP_SP/FP_DP/LSPW/LAM/LSX/IOCSR
-  to check instructions.
-
-Thanks.
-Song Gao
-
-Song Gao (8):
-  target/loongarch: Fix loongarch_la464_initfn() misses setting LSPW.
-  target/loongarch: Add a check parameter to the TRANS macro
-  target/loongarch: Add avail_64 to check la64-only instructions
-  target/loongarch: Add avail_FP/FP_SP/FP_DP to check fpu instructions
-  target/loongarch: Add avail_LSPW to check LSPW instructions
-  target/loongarch: Add avail_LAM to check atomic instructions
-  target/loongarch: Add avail_LSX to check LSX instructions
-  target/loongarch: Add avail_IOCSR to check iocsr instructions
-
- target/loongarch/cpu.c                        |    1 +
- target/loongarch/insn_trans/trans_arith.c.inc |   96 +-
- .../loongarch/insn_trans/trans_atomic.c.inc   |   92 +-
- target/loongarch/insn_trans/trans_bit.c.inc   |   56 +-
- .../loongarch/insn_trans/trans_branch.c.inc   |   20 +-
- target/loongarch/insn_trans/trans_extra.c.inc |   28 +-
- .../loongarch/insn_trans/trans_farith.c.inc   |   96 +-
- target/loongarch/insn_trans/trans_fcmp.c.inc  |    8 +
- target/loongarch/insn_trans/trans_fcnv.c.inc  |   56 +-
- .../loongarch/insn_trans/trans_fmemory.c.inc  |   32 +-
- target/loongarch/insn_trans/trans_fmov.c.inc  |   52 +-
- target/loongarch/insn_trans/trans_lsx.c.inc   | 1482 +++++++++--------
- .../loongarch/insn_trans/trans_memory.c.inc   |   84 +-
- .../insn_trans/trans_privileged.c.inc         |   24 +-
- target/loongarch/insn_trans/trans_shift.c.inc |   34 +-
- target/loongarch/translate.c                  |    3 +
- target/loongarch/translate.h                  |   24 +-
- 17 files changed, 1237 insertions(+), 951 deletions(-)
-
+diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
+index dd1cd7d7d2..95e00a044c 100644
+--- a/target/loongarch/cpu.c
++++ b/target/loongarch/cpu.c
+@@ -391,6 +391,7 @@ static void loongarch_la464_initfn(Object *obj)
+     data = FIELD_DP32(data, CPUCFG2, LSX, 1),
+     data = FIELD_DP32(data, CPUCFG2, LLFTP, 1);
+     data = FIELD_DP32(data, CPUCFG2, LLFTP_VER, 1);
++    data = FIELD_DP32(data, CPUCFG2, LSPW, 1);
+     data = FIELD_DP32(data, CPUCFG2, LAM, 1);
+     env->cpucfg[2] = data;
+ 
 -- 
 2.39.1
 
