@@ -2,76 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A57B778C3E
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 12:47:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C9AC778D33
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 13:12:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qUPeV-0001IC-I2; Fri, 11 Aug 2023 06:45:55 -0400
+	id 1qUQ21-00023A-8g; Fri, 11 Aug 2023 07:10:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qUPeM-0001Gk-TJ
- for qemu-devel@nongnu.org; Fri, 11 Aug 2023 06:45:50 -0400
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qUPeB-0002bb-0g
- for qemu-devel@nongnu.org; Fri, 11 Aug 2023 06:45:45 -0400
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-522bd411679so2327273a12.0
- for <qemu-devel@nongnu.org>; Fri, 11 Aug 2023 03:45:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691750732; x=1692355532;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=N2FvBgkiIdUsjB/FxaUZBa1ZB141qaGSBWUTFySHBvs=;
- b=blBPD6HD8/SYnvzrcjkchCddZQJyt0JDrSYgcCnx9gotMlBW5gmYWVLDWqOWZOWYFY
- 4hG73rLMNShtzjl3af52L6v9ZVYsYoJSrZ40w+t/UnkXWMnG7QgJQfivV1eIS5RS9SjH
- 4ybPMGh86PXphuatyJYmYTstWQMq/AA3NJnZeVG44zaVD69N0uhcZLZEN+1M1kZ8WHb2
- CJojja2Y5hhcFzEt+3FKykoeFC5uyibJ/IY7m4KnrdwOjOed4gfSBblXNL7xOFJkoPpu
- 7YPiVeNih+VhGg0W3zb/w3gIor9ZeBhwvEa5B/8jHB0ChQ8lGyI4X29hBaNSk/3Np6Mg
- TvLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691750732; x=1692355532;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=N2FvBgkiIdUsjB/FxaUZBa1ZB141qaGSBWUTFySHBvs=;
- b=C1OKya3huFOBnWdaqeq2DF3rHQzPMu/X68GnzKqaekfBv51qKTrCO7b5tJPE9S1JA6
- EQlB6zFFEXsLM+oRBEVRD9OKX7Z6nTcofx/G70Hu/Kon7LLz0xNaCo2l8Vktgl0H7R1V
- isHB8k+5elwSJAk4eKE8rsGQsRERfG/qIKI2M5KVMPvtiOCtAQddUVzaQInvK9GS99Dq
- oPWBsUWk6IayNFibInik3OS8sTygQ60Kzq1WUJfYJAA9ra+Kkosh+gVeW90U+Z0uXDui
- kaMCOR2CLTqMpBGRpuIRJDsVXOEH594cRtfMOJfNKFOibc4Qt4//oEVoT/W7AGImOuWV
- vUfw==
-X-Gm-Message-State: AOJu0YysLMyTmCfw7UNHsifWlfGnQnqjHHHshezgiChCgiiW1x44rJwe
- PPNShjyLAcJ2mG2RpJGQPl/ODaSkxApygje1ajk6bg==
-X-Google-Smtp-Source: AGHT+IEnOfuB8VVchtq/CHXO+vYHLurhSNwuuYF759reM8xl+ubcoUpMoAN7Fh8aS42Jj0xIqMqyGWuje23MXxH+uZE=
-X-Received: by 2002:aa7:c557:0:b0:522:cef7:83c3 with SMTP id
- s23-20020aa7c557000000b00522cef783c3mr1291540edr.8.1691750732278; Fri, 11 Aug
- 2023 03:45:32 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qUQ1x-000225-Q2; Fri, 11 Aug 2023 07:10:09 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qUQ1u-0007od-0T; Fri, 11 Aug 2023 07:10:09 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id A26F319D09;
+ Fri, 11 Aug 2023 14:10:00 +0300 (MSK)
+Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with SMTP id E22371D9A7;
+ Fri, 11 Aug 2023 14:09:51 +0300 (MSK)
+Received: (nullmailer pid 2435082 invoked by uid 1000);
+ Fri, 11 Aug 2023 11:09:51 -0000
+From: Michael Tokarev <mjt@tls.msk.ru>
+To: qemu-devel@nongnu.org
+Cc: Michael Tokarev <mjt@tls.msk.ru>, qemu-trivial@nongnu.org,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ qemu-block@nongnu.org
+Subject: [PATCH trivial] qemu-img: omit errno value in error message
+Date: Fri, 11 Aug 2023 14:09:46 +0300
+Message-Id: <20230811110946.2435067-1-mjt@tls.msk.ru>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-References: <20230808031143.50925-1-richard.henderson@linaro.org>
- <20230808031143.50925-21-richard.henderson@linaro.org>
- <CAFEAcA-N-QWQXcHgMNnXTr+Bmf7fhdSKYQwS-kkWGdR+UHvT-Q@mail.gmail.com>
-In-Reply-To: <CAFEAcA-N-QWQXcHgMNnXTr+Bmf7fhdSKYQwS-kkWGdR+UHvT-Q@mail.gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 11 Aug 2023 11:45:21 +0100
-Message-ID: <CAFEAcA9xsPHOeorJvjfO7mrpX_TfYHMNcMHi3dyt41+CktyXsg@mail.gmail.com>
-Subject: Re: [PATCH 20/24] tcg/i386: Add cf parameter to tcg_out_cmp
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-ppc@nongnu.org, 
- qemu-riscv@nongnu.org, qemu-s390x@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52e.google.com
-X-Spam_score_int: 4
-X-Spam_score: 0.4
-X-Spam_bar: /
-X-Spam_report: (0.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- SUSPICIOUS_RECIPS=2.51 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,60 +57,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 11 Aug 2023 at 11:26, Peter Maydell <peter.maydell@linaro.org> wrote:
->
-> On Tue, 8 Aug 2023 at 04:13, Richard Henderson
-> <richard.henderson@linaro.org> wrote:
-> >
-> > Add the parameter to avoid TEST and pass along to tgen_arithi.
-> > All current users pass false.
-> >
-> > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> > ---
-> >  tcg/i386/tcg-target.c.inc | 16 ++++++++--------
-> >  1 file changed, 8 insertions(+), 8 deletions(-)
-> >
-> > diff --git a/tcg/i386/tcg-target.c.inc b/tcg/i386/tcg-target.c.inc
-> > index b88fc14afd..56549ff2a0 100644
-> > --- a/tcg/i386/tcg-target.c.inc
-> > +++ b/tcg/i386/tcg-target.c.inc
-> > @@ -1418,15 +1418,15 @@ static void tcg_out_jxx(TCGContext *s, int opc, TCGLabel *l, bool small)
-> >      }
-> >  }
-> >
-> > -static void tcg_out_cmp(TCGContext *s, TCGArg arg1, TCGArg arg2,
-> > -                        int const_arg2, int rexw)
-> > +static void tcg_out_cmp(TCGContext *s, int rexw, TCGArg arg1, TCGArg arg2,
-> > +                        int const_arg2, bool cf)
-> >  {
-> >      if (const_arg2) {
-> > -        if (arg2 == 0) {
-> > +        if (arg2 == 0 && !cf) {
-> >              /* test r, r */
-> >              tcg_out_modrm(s, OPC_TESTL + rexw, arg1, arg1);
-> >          } else {
-> > -            tgen_arithi(s, ARITH_CMP + rexw, arg1, arg2, 0);
-> > +            tgen_arithi(s, ARITH_CMP + rexw, arg1, arg2, cf);
-> >          }
-> >      } else {
-> >          tgen_arithr(s, ARITH_CMP + rexw, arg1, arg2);
->
-> I don't really understand the motivation here.
-> Why are some uses of this function fine with using the TEST
-> insn, but some must avoid it? What does 'cf' stand for?
-> A comment would help here if there isn't a clearer argument
-> name available...
+I'm getting io-qcow2-244 test failure on mips*
+due to output mismatch:
 
-Looking at the following patch suggests perhaps:
+  Take an internal snapshot:
+ -qemu-img: Could not create snapshot 'test': -95 (Operation not supported)
+ +qemu-img: Could not create snapshot 'test': -122 (Operation not supported)
+  No errors were found on the image.
 
-/**
- * tcg_out_cmp: Emit a compare, setting the X, Y, Z flags accordingly.
- * @need_cf : true if the comparison must also set CF
- */
+This is because errno values might be different across
+different architectures.
 
-(fill in which XYZ flags you can rely on even if need_cf is false)
+This error message in qemu-img.c is the only one which
+prints errno directly, all the rest print strerror(errno)
+only.  Fix this error message and the expected output
+of the 3 test cases too.
 
-?
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+---
+ qemu-img.c                 | 4 ++--
+ tests/qemu-iotests/080.out | 6 +++---
+ tests/qemu-iotests/112.out | 6 +++---
+ tests/qemu-iotests/244.out | 2 +-
+ 4 files changed, 9 insertions(+), 9 deletions(-)
 
--- PMM
+(there are a few other places in the code which also print errno,
+mostly in vhost area, but let's deal with this one first)
+
+
+diff --git a/qemu-img.c b/qemu-img.c
+index 27f48051b0..0756dbb835 100644
+--- a/qemu-img.c
++++ b/qemu-img.c
+@@ -3468,8 +3468,8 @@ static int img_snapshot(int argc, char **argv)
+ 
+         ret = bdrv_snapshot_create(bs, &sn);
+         if (ret) {
+-            error_report("Could not create snapshot '%s': %d (%s)",
+-                snapshot_name, ret, strerror(-ret));
++            error_report("Could not create snapshot '%s': %s",
++                snapshot_name, strerror(-ret));
+         }
+         break;
+ 
+diff --git a/tests/qemu-iotests/080.out b/tests/qemu-iotests/080.out
+index 45ab01db8e..d8acb3e723 100644
+--- a/tests/qemu-iotests/080.out
++++ b/tests/qemu-iotests/080.out
+@@ -33,7 +33,7 @@ qemu-io: can't open device TEST_DIR/t.qcow2: Snapshot table offset invalid
+ 
+ == Hitting snapshot table size limit ==
+ Formatting 'TEST_DIR/t.IMGFMT', fmt=IMGFMT size=67108864
+-qemu-img: Could not create snapshot 'test': -27 (File too large)
++qemu-img: Could not create snapshot 'test': File too large
+ read 512/512 bytes at offset 0
+ 512 bytes, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
+ 
+@@ -56,8 +56,8 @@ qemu-io: can't open device TEST_DIR/t.qcow2: Backing file name too long
+ Formatting 'TEST_DIR/t.IMGFMT', fmt=IMGFMT size=67108864
+ wrote 512/512 bytes at offset 0
+ 512 bytes, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
+-qemu-img: Could not create snapshot 'test': -27 (File too large)
+-qemu-img: Could not create snapshot 'test': -11 (Resource temporarily unavailable)
++qemu-img: Could not create snapshot 'test': File too large
++qemu-img: Could not create snapshot 'test': Resource temporarily unavailable
+ 
+ == Invalid snapshot L1 table offset ==
+ Formatting 'TEST_DIR/t.IMGFMT', fmt=IMGFMT size=67108864
+diff --git a/tests/qemu-iotests/112.out b/tests/qemu-iotests/112.out
+index dd3cc4383c..ebf426febc 100644
+--- a/tests/qemu-iotests/112.out
++++ b/tests/qemu-iotests/112.out
+@@ -32,7 +32,7 @@ Formatting 'TEST_DIR/t.IMGFMT', fmt=IMGFMT size=67108864
+ refcount bits: 1
+ wrote 512/512 bytes at offset 0
+ 512 bytes, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
+-qemu-img: Could not create snapshot 'foo': -22 (Invalid argument)
++qemu-img: Could not create snapshot 'foo': Invalid argument
+ Leaked cluster 6 refcount=1 reference=0
+ 
+ 1 leaked clusters were found on the image.
+@@ -44,7 +44,7 @@ Formatting 'TEST_DIR/t.IMGFMT', fmt=IMGFMT size=67108864
+ refcount bits: 2
+ wrote 512/512 bytes at offset 0
+ 512 bytes, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
+-qemu-img: Could not create snapshot 'baz': -22 (Invalid argument)
++qemu-img: Could not create snapshot 'baz': Invalid argument
+ Leaked cluster 7 refcount=1 reference=0
+ 
+ 1 leaked clusters were found on the image.
+@@ -75,7 +75,7 @@ Formatting 'TEST_DIR/t.IMGFMT', fmt=IMGFMT size=67108864
+ refcount bits: 64
+ wrote 512/512 bytes at offset 0
+ 512 bytes, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
+-qemu-img: Could not create snapshot 'foo': -22 (Invalid argument)
++qemu-img: Could not create snapshot 'foo': Invalid argument
+ Leaked cluster 5 refcount=18446744073709551615 reference=1
+ Leaked cluster 6 refcount=1 reference=0
+ 
+diff --git a/tests/qemu-iotests/244.out b/tests/qemu-iotests/244.out
+index 5e03add054..4815a489b0 100644
+--- a/tests/qemu-iotests/244.out
++++ b/tests/qemu-iotests/244.out
+@@ -41,7 +41,7 @@ write failed: Operation not supported
+ No errors were found on the image.
+ 
+ Take an internal snapshot:
+-qemu-img: Could not create snapshot 'test': -95 (Operation not supported)
++qemu-img: Could not create snapshot 'test': Operation not supported
+ No errors were found on the image.
+ 
+ === Standalone image with external data file (efficient) ===
+-- 
+2.39.2
+
 
