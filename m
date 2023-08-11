@@ -2,75 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BC53778F67
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 14:26:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBA3B778FE3
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 14:50:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qURCh-0002Dz-BJ; Fri, 11 Aug 2023 08:25:19 -0400
+	id 1qURZl-0008PM-4o; Fri, 11 Aug 2023 08:49:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qURCU-0002CV-B8
- for qemu-devel@nongnu.org; Fri, 11 Aug 2023 08:25:07 -0400
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qURCR-0007j1-Lu
- for qemu-devel@nongnu.org; Fri, 11 Aug 2023 08:25:05 -0400
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-51e28cac164so6278320a12.1
- for <qemu-devel@nongnu.org>; Fri, 11 Aug 2023 05:25:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691756701; x=1692361501;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=4aYHUM94VO3BDPln/7WJPRoSZyQ6oJgnhLNoV7ckoDA=;
- b=W+66tjE3TTjfaSeu8aewV2relsNCcXStzwCzuxE7gPdvA7lAiggBT3DiwM/mE+/As0
- OBdwtDmhqtoLNtcWL7EGAoCQKhr4Xgei2BS/30FuQGbISG6bszagA8c3rbilkqK0BfXA
- 0VPZapFrV/sTVgkdZX4zwk2lNsESl4/wDN4koMkBc2/ZSXV9Gn15njDK6XIc60DlLWTD
- QPtmLeW0YzM2cIhxa90x5kyGUT4BPIMntGblEp77sBKrNrcNLq3FalayPHL++eqIXVU7
- Fwr85NTuretSVciPpwyyPpYNLUZq1/qThsNYT275nzBwS5P53VwbGyd6+jBsTQ2G+g7o
- HCMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691756701; x=1692361501;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=4aYHUM94VO3BDPln/7WJPRoSZyQ6oJgnhLNoV7ckoDA=;
- b=cnbpTfF+uYFJNmNNSGOJYksXWgFHhknMMTK9fq143RZZFTR1Wuoe8IY6XbKGhKKHcl
- QxVMXuMfcJdsxzzFl5eUEM45sbwe9fEZq5GPFth+BKM9Wd80mD4xhF8/QCFiemRa4OFS
- TmSbqTxOH0kbKGV7V2DulrLoF+Hwbq0UTgG9aEzL4QCFyLlsazA5/0zrTFLhoU0ztcYM
- gbXKJDPVjNOXavsZ2UnMB2W7Ku7iPy8mwybIScOM+YnPelImbhA+1f3MDPHuIQWruw5H
- 4IpNNkKVk/Qzt9KKNBrGVTB/18Id1mpBdzzIo9Tr/hv3kNwuJiPeSPRZ2Xg8NyH2W5sS
- zHvQ==
-X-Gm-Message-State: AOJu0Yx+697QL2xHf5UazrOW8OuwAM8YmYAJNii421wPAd9gtE4KCq6P
- ZpDQc/zhq0v0uPI46xGA6hJTyNQituZbPePDcJ8r3g==
-X-Google-Smtp-Source: AGHT+IGFVXUfAcdws8J5u6u+bAiGeoUqvhkt/pE4vmYpWhzQm5VZNn8oU2NWTaTQQ1hCDko7mFya8gQdPTxZoEvqPUU=
-X-Received: by 2002:a05:6402:26c6:b0:522:ab20:368a with SMTP id
- x6-20020a05640226c600b00522ab20368amr6278244edd.13.1691756700333; Fri, 11 Aug
- 2023 05:25:00 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <i.maximets@ovn.org>)
+ id 1qURZi-0008Om-9L
+ for qemu-devel@nongnu.org; Fri, 11 Aug 2023 08:49:06 -0400
+Received: from relay3-d.mail.gandi.net ([217.70.183.195])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <i.maximets@ovn.org>)
+ id 1qURZg-0006n9-0g
+ for qemu-devel@nongnu.org; Fri, 11 Aug 2023 08:49:05 -0400
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 2F4566000C;
+ Fri, 11 Aug 2023 12:48:58 +0000 (UTC)
+Message-ID: <0e67c8b5-adfe-029a-d999-8aab52e0f7ad@ovn.org>
+Date: Fri, 11 Aug 2023 14:49:39 +0200
 MIME-Version: 1.0
-References: <20230808031143.50925-1-richard.henderson@linaro.org>
- <20230808031143.50925-17-richard.henderson@linaro.org>
-In-Reply-To: <20230808031143.50925-17-richard.henderson@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 11 Aug 2023 13:24:49 +0100
-Message-ID: <CAFEAcA8FPkmcJM7evL6aCN4ZkQD76d6xaaOJXL=pB+Qq93rbZw@mail.gmail.com>
-Subject: Re: [PATCH 16/24] tcg/sparc64: Implement negsetcond_*
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-ppc@nongnu.org, 
- qemu-riscv@nongnu.org, qemu-s390x@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x532.google.com
-X-Spam_score_int: 4
-X-Spam_score: 0.4
-X-Spam_bar: /
-X-Spam_report: (0.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- SUSPICIOUS_RECIPS=2.51 autolearn=no autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Cc: i.maximets@ovn.org, qemu-devel@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>
+Subject: Re: [PATCH] virtio: don't zero out memory region cache for indirect
+ descriptors
+Content-Language: en-US
+To: Jason Wang <jasowang@redhat.com>
+References: <20230807222847.2837393-1-i.maximets@ovn.org>
+ <CACGkMEs8qVpaJCc=1jUyY_8-NE23fsjQBwSrbAn8n3sjihuv5g@mail.gmail.com>
+From: Ilya Maximets <i.maximets@ovn.org>
+In-Reply-To: <CACGkMEs8qVpaJCc=1jUyY_8-NE23fsjQBwSrbAn8n3sjihuv5g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: i.maximets@ovn.org
+Received-SPF: pass client-ip=217.70.183.195; envelope-from=i.maximets@ovn.org;
+ helo=relay3-d.mail.gandi.net
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.972,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,13 +62,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 8 Aug 2023 at 04:14, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+On 8/9/23 04:37, Jason Wang wrote:
+> On Tue, Aug 8, 2023 at 6:28 AM Ilya Maximets <i.maximets@ovn.org> wrote:
+>>
+>> Lots of virtio functions that are on a hot path in data transmission
+>> are initializing indirect descriptor cache at the point of stack
+>> allocation.  It's a 112 byte structure that is getting zeroed out on
+>> each call adding unnecessary overhead.  It's going to be correctly
+>> initialized later via special init function.  The only reason to
+>> actually initialize right away is the ability to safely destruct it.
+>> However, we only need to destruct it when it was used, i.e. when a
+>> desc_cache points to it.
+>>
+>> Removing these unnecessary stack initializations improves throughput
+>> of virtio-net devices in terms of 64B packets per second by 6-14 %
+>> depending on the case.  Tested with a proposed af-xdp network backend
+>> and a dpdk testpmd application in the guest, but should be beneficial
+>> for other virtio devices as well.
+>>
+>> Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
+> 
+> Acked-by: Jason Wang <jasowang@redhat.com>
+> 
+> Btw, we can probably remove MEMORY_REGION_CACHE_INVALID.
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Good point.  I can include that in the patch.  Or just replace it
+with a function, as Stefan suggested.
 
-thanks
--- PMM
+Best regards, Ilya Maximets.
 
