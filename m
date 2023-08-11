@@ -2,71 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06B2C779244
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 16:54:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A96B77924D
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 16:59:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qUTXH-0000Bz-QL; Fri, 11 Aug 2023 10:54:43 -0400
+	id 1qUTb7-0001te-A4; Fri, 11 Aug 2023 10:58:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qUTXG-0000Bn-8s; Fri, 11 Aug 2023 10:54:42 -0400
-Received: from mail-vk1-xa34.google.com ([2607:f8b0:4864:20::a34])
+ (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
+ id 1qUTb5-0001tW-G0
+ for qemu-devel@nongnu.org; Fri, 11 Aug 2023 10:58:39 -0400
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qUTXE-0002a8-Lq; Fri, 11 Aug 2023 10:54:42 -0400
-Received: by mail-vk1-xa34.google.com with SMTP id
- 71dfb90a1353d-48719981585so747602e0c.2; 
- Fri, 11 Aug 2023 07:54:40 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
+ id 1qUTb3-0003tp-Uw
+ for qemu-devel@nongnu.org; Fri, 11 Aug 2023 10:58:39 -0400
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-686ba97e4feso1896755b3a.0
+ for <qemu-devel@nongnu.org>; Fri, 11 Aug 2023 07:58:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1691765679; x=1692370479;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
+ d=gmail.com; s=20221208; t=1691765917; x=1692370717;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=xaw+CGkLrDTbJL+8DS7nKM/nNvQbpXTeAQGJy5NjyHE=;
- b=okAsffy01XeLSx3v6AtSXJ7XnQQ6JOyuoH8FnrnQbJNyqMAgqPQRGCIOHzJtEoBfeV
- DHbGy9f4tSCKMx0Yt6BFgZURLiIBH76Vs5uLGj1LjGTfkWWt39/bsBhbWppVr7GFmAdb
- VsRSrCDSpHGZ99H3303H5bmD1t7ZAI6ZxaMcae0kcCDDjqmEA4GS9kdsblj+LGhajgt/
- Mq+D4NFcku7XEa7gspDRBDLQLVPHVEiBc7PSlHwKx1r2OHIcZWwGFA1l4+t/Gb5qkq7W
- ezg5TB+jTugmKw50jV0UWy7ZEx8EfxE3pLc+Z8Jx4fom1Rne6Ej3u/0EHfrKJvUI98RI
- y9ng==
+ bh=Ig4bGUXjVQxVRXkXE363PNmEeuHWoH0Y7Ce9MWEJKZE=;
+ b=cTTfpn/al8hdjO00skWS0jG1eGvAgsSd3TGr2r/88txvKHGfqTNaSYXyRM2A15+DTT
+ XEeRL06xDidHtfufwatpB0FAaQGVSvvZaIR1TeeVJMAUoEcNRf1E8L5xXsw6gVSwhmcm
+ BSjq4KQLt63iRQM4Jw9jGGKtWTd70oxwrDcNw9T2i1Qt2DeiJUP4XvfBbvKEGaV3uxR3
+ T6M36N+nEO5HT6nQJbus/l1+fr0EkMNYx4WIQLjFT6wswX7YJlrAeDIyMNMUY1MRbDkr
+ +rlZq18yOnX90uvPPNydp0aj6JcSk5vBTZnS/QUjfy5d7BASxHl6O9aMzsc6JEafE9N7
+ e1lg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691765679; x=1692370479;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20221208; t=1691765917; x=1692370717;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xaw+CGkLrDTbJL+8DS7nKM/nNvQbpXTeAQGJy5NjyHE=;
- b=dwkug4cIF6NzmMDUfmsnwhd34aPKixYm3Fx2D7CKKpkAhW5kp0+Sza1I6FfgJbtWnI
- 7zlIZbpz/pW8evw3NyOq4ZvJESUv0pqrwTrDqgAsC/TVTUSCUnEINZcU9+uoTqzoWvwE
- A8qiQavNlJSFiGMOP6aUcv6cIOY5Lhrw6gYRKfAT7RQsBfJKRFDUHPkCTerJHLzD2DoU
- rprViz3tm56sCq9zNT52mSasY2p4HjHrcpb+bh9yk1lI00ZMPGFZ+9VKlqJxKO+/Ca0K
- 1U8DycslIhekaX2WPiKBkvyP4ywzaAB69wR9BoxOh83Jvd1K3pH+hSnRRMMFfjNvb1Xy
- M8qQ==
-X-Gm-Message-State: AOJu0YzjSfuuFWC1HEgnDrpVQg8SYVmvpd6EZQgPUeZI/fq/UMVnalOz
- mF2goZwr2gk9cWGSi13WHRgTu+h2C7ujg71zyXU=
-X-Google-Smtp-Source: AGHT+IH6vLpqjZkBWqALdQNdNzIpYN9TDiv+Xr+kgs+0BhNbAWd42Ae5KQlgbREiwqvklhjZc2+M3uaGO5l4pYQ4lTs=
-X-Received: by 2002:a1f:3d87:0:b0:486:3e81:9b8a with SMTP id
- k129-20020a1f3d87000000b004863e819b8amr2155090vka.13.1691765679291; Fri, 11
- Aug 2023 07:54:39 -0700 (PDT)
+ bh=Ig4bGUXjVQxVRXkXE363PNmEeuHWoH0Y7Ce9MWEJKZE=;
+ b=gr1f3SwW7ERlInKFHRaDZ4dMmE2LqFwetGaaVD4wvcB4GjNvSnxMD4tzjbJDVY3xWa
+ FPGrQT4lX6knwqIN0gtyLuRoMiQKzSTKBb9TlDxD7xXmfRrLY3DBpRZIPA7H5GYFWEoP
+ OSMOvm18KvYoQ3czxrlXWKJzEdPTpUUsObJ0GjambjawIXPN8RZ+nT0HlgNlSb5KSrXU
+ CQn9vfPkwGKpZs8mKIoDFGaaL/pON2M4q+aLveulJLCcROXuQDrnnE4eJU8zZlNle7nH
+ admkh1f1f0R5yUUbYIcwD5rg7z5PqCYPxqUt6+haEItwIlmTl0ZHbyXfs/r+pm9Kyeja
+ pMQA==
+X-Gm-Message-State: AOJu0YzUvmUfb8QjDwaQVxVS4a5cKvPxMVTPOZ9U0aDp9XXryclV5Q6C
+ SPZv1FHcv4pctaCIBo8ZjC8=
+X-Google-Smtp-Source: AGHT+IG1gdiDOQ4N4lMfZ7gj8+RhfI/nW4ICWdCpuja/BPi6DpFIuEZ/tA0LylYy7wpa/arpUOJXnw==
+X-Received: by 2002:a05:6a00:a0c:b0:64c:4f2f:a235 with SMTP id
+ p12-20020a056a000a0c00b0064c4f2fa235mr2504094pfh.30.1691765916313; 
+ Fri, 11 Aug 2023 07:58:36 -0700 (PDT)
+Received: from localhost ([183.242.254.166]) by smtp.gmail.com with ESMTPSA id
+ c4-20020a63ea04000000b0055c178a8df1sm3430243pgi.94.2023.08.11.07.58.35
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 11 Aug 2023 07:58:35 -0700 (PDT)
+From: Hawkins Jiawei <yin31149@gmail.com>
+To: jasowang@redhat.com,
+	mst@redhat.com,
+	eperezma@redhat.com
+Cc: qemu-devel@nongnu.org, yin31149@gmail.com, 18801353760@163.com,
+ yuri.benditovich@daynix.com
+Subject: [RFC PATCH 2/2] vdpa: Allow VIRTIO_NET_F_HASH_REPORT in SVQ
+Date: Fri, 11 Aug 2023 22:58:28 +0800
+Message-Id: <f19fadf2d5e75410df9ce12d996357d4b95db047.1691762906.git.yin31149@gmail.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <cover.1691762906.git.yin31149@gmail.com>
+References: <cover.1691762906.git.yin31149@gmail.com>
 MIME-Version: 1.0
-References: <20230727-groom-decline-2c57ce42841c@spud>
-In-Reply-To: <20230727-groom-decline-2c57ce42841c@spud>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Fri, 11 Aug 2023 10:54:13 -0400
-Message-ID: <CAKmqyKOKenm506+xvdLnf_h09k-s4=_UzTJ-sZy5J=rAWztMTg@mail.gmail.com>
-Subject: Re: [PATCH] hw/riscv: virt: Fix riscv,pmu DT node path
-To: Conor Dooley <conor@kernel.org>
-Cc: qemu-riscv@nongnu.org, Conor Dooley <conor.dooley@microchip.com>, 
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, 
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>, 
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a34;
- envelope-from=alistair23@gmail.com; helo=mail-vk1-xa34.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=yin31149@gmail.com; helo=mail-pf1-x434.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -90,59 +94,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 27, 2023 at 10:37=E2=80=AFAM Conor Dooley <conor@kernel.org> wr=
-ote:
->
-> From: Conor Dooley <conor.dooley@microchip.com>
->
-> On a dtb dumped from the virt machine, dt-validate complains:
-> soc: pmu: {'riscv,event-to-mhpmcounters': [[1, 1, 524281], [2, 2, 524284]=
-, [65561, 65561, 524280], [65563, 65563, 524280], [65569, 65569, 524280]], =
-'compatible': ['riscv,pmu']} should not be valid under {'type': 'object'}
->         from schema $id: http://devicetree.org/schemas/simple-bus.yaml#
-> That's pretty cryptic, but running the dtb back through dtc produces
-> something a lot more reasonable:
-> Warning (simple_bus_reg): /soc/pmu: missing or empty reg/ranges property
->
-> Moving the riscv,pmu node out of the soc bus solves the problem.
->
-> Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+Enable SVQ with VIRTIO_NET_F_HASH_REPORT feature.
 
-Thanks!
+Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
+---
+ net/vhost-vdpa.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Applied to riscv-to-apply.next
+diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+index bd51020771..a13b267250 100644
+--- a/net/vhost-vdpa.c
++++ b/net/vhost-vdpa.c
+@@ -118,6 +118,7 @@ static const uint64_t vdpa_svq_device_features =
+     BIT_ULL(VIRTIO_NET_F_CTRL_MAC_ADDR) |
+     /* VHOST_F_LOG_ALL is exposed by SVQ */
+     BIT_ULL(VHOST_F_LOG_ALL) |
++    BIT_ULL(VIRTIO_NET_F_HASH_REPORT) |
+     BIT_ULL(VIRTIO_NET_F_RSC_EXT) |
+     BIT_ULL(VIRTIO_NET_F_STANDBY) |
+     BIT_ULL(VIRTIO_NET_F_SPEED_DUPLEX);
+-- 
+2.25.1
 
-Alistair
-
-> ---
-> CC: Palmer Dabbelt <palmer@dabbelt.com>
-> CC: Alistair Francis <alistair.francis@wdc.com>
-> CC: Bin Meng <bin.meng@windriver.com>
-> CC: Weiwei Li <liweiwei@iscas.ac.cn>
-> CC: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> CC: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-> CC: qemu-riscv@nongnu.org
-> CC: qemu-devel@nongnu.org
-> ---
->  hw/riscv/virt.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-> index d90286dc46..25dcc2616e 100644
-> --- a/hw/riscv/virt.c
-> +++ b/hw/riscv/virt.c
-> @@ -732,7 +732,7 @@ static void create_fdt_pmu(RISCVVirtState *s)
->      MachineState *ms =3D MACHINE(s);
->      RISCVCPU hart =3D s->soc[0].harts[0];
->
-> -    pmu_name =3D g_strdup_printf("/soc/pmu");
-> +    pmu_name =3D g_strdup_printf("/pmu");
->      qemu_fdt_add_subnode(ms->fdt, pmu_name);
->      qemu_fdt_setprop_string(ms->fdt, pmu_name, "compatible", "riscv,pmu"=
-);
->      riscv_pmu_generate_fdt_node(ms->fdt, hart.cfg.pmu_num, pmu_name);
-> --
-> 2.39.2
->
->
 
