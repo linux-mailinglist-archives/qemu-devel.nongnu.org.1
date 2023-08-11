@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08EBD779546
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 18:53:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72DDB779543
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 18:52:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qUVLu-0005lA-K1; Fri, 11 Aug 2023 12:51:06 -0400
+	id 1qUVLw-0005ll-0K; Fri, 11 Aug 2023 12:51:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qUVLq-0005jc-2z
+ id 1qUVLq-0005jd-9C
  for qemu-devel@nongnu.org; Fri, 11 Aug 2023 12:51:02 -0400
-Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
+Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qUVLn-0001M7-SS
- for qemu-devel@nongnu.org; Fri, 11 Aug 2023 12:51:01 -0400
-Received: by mail-pj1-x102e.google.com with SMTP id
- 98e67ed59e1d1-26b1adbd655so803821a91.1
- for <qemu-devel@nongnu.org>; Fri, 11 Aug 2023 09:50:59 -0700 (PDT)
+ id 1qUVLo-0001MM-Jp
+ for qemu-devel@nongnu.org; Fri, 11 Aug 2023 12:51:02 -0400
+Received: by mail-pg1-x52e.google.com with SMTP id
+ 41be03b00d2f7-563f8e8a53dso1423477a12.3
+ for <qemu-devel@nongnu.org>; Fri, 11 Aug 2023 09:51:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691772658; x=1692377458;
+ d=linaro.org; s=google; t=1691772659; x=1692377459;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ePVxotW82jMDrWJ+ESk2twixLo2Priek8MjmEOc4z70=;
- b=S/5bRopbca9klFqAItm/gifsMChV/8vThrgzVyOEaRiOqCHzAN0tkEkPghqOb0XKwQ
- wX+G/GPV3mssho23nIN3UYP4cpIddOiJGiJp3UJd1mdZECWwSzXIv87+CebmSSuIs81O
- wn2H10JSvqYmHdJmSbUmFY9qMr137O+JLoG/3C+uSTKt6hTYoQI63cxI9coxufO7Up34
- MQWoN4INO/gRBeq/AARHxUPDyvMzo5+u9+sIF8Nhvm33Vy62VXXXcu5UMhrUsrTiivDv
- A42fr6rHNfJKmsVhD3RjZlWCDwCMS2krSlg6clcu3dSiQ1eZURVfaC9rITH9nZ7wq/Cc
- Zw0w==
+ bh=RtG96b3jmli1q7lVtewuvoGgDoJMS7AqHQZel0hsDHw=;
+ b=UiXW5TU+wILTYLNL38oY7ZT/faQ7p/gDcFPljcXnk6DSGenvZNoESlruX7ncDUIMce
+ 8Iji+wBNTXPbiOoyBDIXHILZaML2e0D6FXq42ACW5bKdCt1vt9Sbb4CdEVjbNLkYgiWc
+ Oe9gNO8gLRhV+Mtzw7HZiK2FsR++V2LHzCsq/XKL4Zw9kwsnTV6PlJLxQjBZibgCP8qw
+ miT7dxQVtWNRcwJrD6QA5qqkxGgoJ4gmRdV1pQT09XzYVoyX4HowicRLnL4SZdUMczHu
+ QqmEseRP5+P/85btDUAUpWWF3ATHeLecqm1oVnQznzldpS7NdVCqbVqTeM3OSZ3xreO5
+ zRsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691772658; x=1692377458;
+ d=1e100.net; s=20221208; t=1691772659; x=1692377459;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ePVxotW82jMDrWJ+ESk2twixLo2Priek8MjmEOc4z70=;
- b=DmZYRbPpnQb8M6ltCqszV8zAHICB1edjmDhRn+IoA+uhTOezRQI/F6RQU1Nm/OAJw/
- MAkAdBkkh9w6c41tl537+JY1TJXbX+4z+RL32H1LclmMwJaJxWuJxi+lHns3ANk9xJJq
- YTprzR5xDqxhzSj7sTjEIRMTUbxaGb9HAotsSsb4Uv5Idbgu9SE6mvo/2mdOVem5Z5YD
- yMMzoL2gIP27f3zL8W/HJlLV2IhoYkJRUMLMDtAOPX3i2lwE8AVJbqHYPnJlnB7N/O7A
- YRBFlZkIglCtDjmQyHyDFdgkYfBetpt38V5miISjX5IdPJ6B1upcLFROa0gGa957JB/6
- Rm+g==
-X-Gm-Message-State: AOJu0YyA0pTqvVIrLlpuitj2Iq50+HvUV2bSIyhYwvVRaSHoMMpMmCiv
- RVkopj/mFXo2ZtQg/DGCLTdqNNSW2Gmn8DbpoZQ=
-X-Google-Smtp-Source: AGHT+IFcoT57+UXJAo6N6aGFRlHcjIGHXq6RiNHyI/PSujS/3gkpvjgFMV5aJy5ojtNVElJPunGZaQ==
-X-Received: by 2002:a17:90b:3503:b0:268:105b:ca1c with SMTP id
- ls3-20020a17090b350300b00268105bca1cmr1750761pjb.32.1691772658441; 
- Fri, 11 Aug 2023 09:50:58 -0700 (PDT)
+ bh=RtG96b3jmli1q7lVtewuvoGgDoJMS7AqHQZel0hsDHw=;
+ b=E4q48YgXaGVUtrrZFC9DoiEUOSjEaZ5t81YSCvUiGPLoztm//QmCUyQHQ2bt6JijL+
+ Z5Km7eyZ2U7dPbiTn+X8h6pq6ZHHnwDJTZaGBtebHq4j3m31U35pRT59jNA9LusRIZpc
+ hsnG/qttUtM3iElhS+bEEipF+GvyMPhIHQCPyfFkOtByEGQAhKFUGJV9/2fTKpeX3D+y
+ jriJiJJxBHpcr0RAeeWEpvFuAa1nciQjsCQmgmtOM9iQ6JKIeLyQ1jgjiKbxwnkl/JqF
+ GXPAFdSrvYCeOwQY1RsmKyzJtKwZPmqxVoTvYrnh3t48/cnfGZhKKCbjCGMp6J4I9/1P
+ d4mg==
+X-Gm-Message-State: AOJu0Yw6c8c/nD5TX2xfqAFZZUpTYKMekzY0GVts0mSxne0PHO0e3T2y
+ Gl/rNXxlzQdMiXSsI/vJIX+j1VFTbAiRikWN60w=
+X-Google-Smtp-Source: AGHT+IHIMgTxDP9r/zi0dsqcy/vqrOd4NWH8AQs6/65aUsNZE9OuMk/yB+NDjUnccXMWmIirJkq+9w==
+X-Received: by 2002:a17:90a:f3c7:b0:267:e011:3e9a with SMTP id
+ ha7-20020a17090af3c700b00267e0113e9amr1597673pjb.3.1691772659260; 
+ Fri, 11 Aug 2023 09:50:59 -0700 (PDT)
 Received: from stoup.. ([2602:47:d483:7301:e773:351d:2db2:8a8a])
  by smtp.gmail.com with ESMTPSA id
- 22-20020a17090a19d600b00263d3448141sm3803713pjj.8.2023.08.11.09.50.57
+ 22-20020a17090a19d600b00263d3448141sm3803713pjj.8.2023.08.11.09.50.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 11 Aug 2023 09:50:58 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: alex.bennee@linaro.org,
-	pbonzini@redhat.com,
-	philmd@linaro.org
-Subject: [PATCH v3 05/15] linux-user: Use ImageSource in load_symbols
-Date: Fri, 11 Aug 2023 09:50:42 -0700
-Message-Id: <20230811165052.161080-6-richard.henderson@linaro.org>
+Cc: alex.bennee@linaro.org, pbonzini@redhat.com, philmd@linaro.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <f4bug@amsat.org>
+Subject: [PATCH v3 06/15] linux-user: Replace bprm->fd with bprm->src.fd
+Date: Fri, 11 Aug 2023 09:50:43 -0700
+Message-Id: <20230811165052.161080-7-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230811165052.161080-1-richard.henderson@linaro.org>
 References: <20230811165052.161080-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,167 +93,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Aside from the section headers, we're unlikely to hit the
-ImageSource cache on guest executables.  But the interface
-for imgsrc_read_* is better.
+There are only a couple of uses of bprm->fd remaining.
+Migrate to the other field.
 
+Reviewed-by: Philippe Mathieu-Daudé <f4bug@amsat.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/elfload.c | 87 ++++++++++++++++++++++++--------------------
- 1 file changed, 48 insertions(+), 39 deletions(-)
+ linux-user/loader.h    | 1 -
+ linux-user/flatload.c  | 8 ++++----
+ linux-user/linuxload.c | 5 ++---
+ 3 files changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index f3511ae766..19d3cac039 100644
---- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -2048,7 +2048,8 @@ static inline void bswap_mips_abiflags(Mips_elf_abiflags_v0 *abiflags) { }
- #ifdef USE_ELF_CORE_DUMP
- static int elf_core_dump(int, const CPUArchState *);
- #endif /* USE_ELF_CORE_DUMP */
--static void load_symbols(struct elfhdr *hdr, int fd, abi_ulong load_bias);
-+static void load_symbols(struct elfhdr *hdr, const ImageSource *src,
-+                         abi_ulong load_bias);
+diff --git a/linux-user/loader.h b/linux-user/loader.h
+index 311d20f5d1..5b4cdddd50 100644
+--- a/linux-user/loader.h
++++ b/linux-user/loader.h
+@@ -74,7 +74,6 @@ struct linux_binprm {
+     char buf[BPRM_BUF_SIZE] __attribute__((aligned));
+     ImageSource src;
+     abi_ulong p;
+-    int fd;
+     int e_uid, e_gid;
+     int argc, envc;
+     char **argv;
+diff --git a/linux-user/flatload.c b/linux-user/flatload.c
+index 8f5e9f489b..15e3ec5f6b 100644
+--- a/linux-user/flatload.c
++++ b/linux-user/flatload.c
+@@ -463,7 +463,7 @@ static int load_flat_file(struct linux_binprm * bprm,
+         DBG_FLT("BINFMT_FLAT: ROM mapping of file (we hope)\n");
  
- /* Verify the portions of EHDR within E_IDENT for the target.
-    This can be performed before bswapping the entire header.  */
-@@ -3293,7 +3294,7 @@ static void load_elf_image(const char *image_name, const ImageSource *src,
+         textpos = target_mmap(0, text_len, PROT_READ|PROT_EXEC,
+-                              MAP_PRIVATE, bprm->fd, 0);
++                              MAP_PRIVATE, bprm->src.fd, 0);
+         if (textpos == -1) {
+             fprintf(stderr, "Unable to mmap process text\n");
+             return -1;
+@@ -490,7 +490,7 @@ static int load_flat_file(struct linux_binprm * bprm,
+         } else
+ #endif
+         {
+-            result = target_pread(bprm->fd, datapos,
++            result = target_pread(bprm->src.fd, datapos,
+                                   data_len + (relocs * sizeof(abi_ulong)),
+                                   fpos);
+         }
+@@ -540,10 +540,10 @@ static int load_flat_file(struct linux_binprm * bprm,
+         else
+ #endif
+         {
+-            result = target_pread(bprm->fd, textpos,
++            result = target_pread(bprm->src.fd, textpos,
+                                   text_len, 0);
+             if (result >= 0) {
+-                result = target_pread(bprm->fd, datapos,
++                result = target_pread(bprm->src.fd, datapos,
+                     data_len + (relocs * sizeof(abi_ulong)),
+                     ntohl(hdr->data_start));
+             }
+diff --git a/linux-user/linuxload.c b/linux-user/linuxload.c
+index 5b7e9ab983..4a794f8cea 100644
+--- a/linux-user/linuxload.c
++++ b/linux-user/linuxload.c
+@@ -39,7 +39,7 @@ static int prepare_binprm(struct linux_binprm *bprm)
+     int mode;
+     int retval;
+ 
+-    if (fstat(bprm->fd, &st) < 0) {
++    if (fstat(bprm->src.fd, &st) < 0) {
+         return -errno;
      }
  
-     if (qemu_log_enabled()) {
--        load_symbols(ehdr, src->fd, load_bias);
-+        load_symbols(ehdr, src, load_bias);
+@@ -69,7 +69,7 @@ static int prepare_binprm(struct linux_binprm *bprm)
+         bprm->e_gid = st.st_gid;
      }
  
-     debuginfo_report_elf(image_name, src->fd, load_bias);
-@@ -3384,19 +3385,20 @@ static int symcmp(const void *s0, const void *s1)
- }
- 
- /* Best attempt to load symbols from this ELF object. */
--static void load_symbols(struct elfhdr *hdr, int fd, abi_ulong load_bias)
-+static void load_symbols(struct elfhdr *hdr, const ImageSource *src,
-+                         abi_ulong load_bias)
+-    retval = read(bprm->fd, bprm->buf, BPRM_BUF_SIZE);
++    retval = read(bprm->src.fd, bprm->buf, BPRM_BUF_SIZE);
+     if (retval < 0) {
+         perror("prepare_binprm");
+         exit(-1);
+@@ -144,7 +144,6 @@ int loader_exec(int fdexec, const char *filename, char **argv, char **envp,
  {
-     int i, shnum, nsyms, sym_idx = 0, str_idx = 0;
--    uint64_t segsz;
--    struct elf_shdr *shdr;
-+    g_autofree struct elf_shdr *shdr = NULL;
-     char *strings = NULL;
--    struct syminfo *s = NULL;
--    struct elf_sym *new_syms, *syms = NULL;
-+    struct elf_sym *syms = NULL;
-+    struct elf_sym *new_syms;
-+    uint64_t segsz;
+     int retval;
  
-     shnum = hdr->e_shnum;
--    i = shnum * sizeof(struct elf_shdr);
--    shdr = (struct elf_shdr *)alloca(i);
--    if (pread(fd, shdr, i, hdr->e_shoff) != i) {
-+    shdr = imgsrc_read_alloc(hdr->e_shoff, shnum * sizeof(struct elf_shdr),
-+                             src, NULL);
-+    if (shdr == NULL) {
-         return;
-     }
- 
-@@ -3414,31 +3416,33 @@ static void load_symbols(struct elfhdr *hdr, int fd, abi_ulong load_bias)
- 
-  found:
-     /* Now know where the strtab and symtab are.  Snarf them.  */
--    s = g_try_new(struct syminfo, 1);
--    if (!s) {
--        goto give_up;
--    }
- 
-     segsz = shdr[str_idx].sh_size;
--    s->disas_strtab = strings = g_try_malloc(segsz);
--    if (!strings ||
--        pread(fd, strings, segsz, shdr[str_idx].sh_offset) != segsz) {
-+    strings = g_try_malloc(segsz);
-+    if (!strings) {
-+        goto give_up;
-+    }
-+    if (!imgsrc_read(strings, shdr[str_idx].sh_offset, segsz, src, NULL)) {
-         goto give_up;
-     }
- 
-     segsz = shdr[sym_idx].sh_size;
--    syms = g_try_malloc(segsz);
--    if (!syms || pread(fd, syms, segsz, shdr[sym_idx].sh_offset) != segsz) {
--        goto give_up;
--    }
--
-     if (segsz / sizeof(struct elf_sym) > INT_MAX) {
--        /* Implausibly large symbol table: give up rather than ploughing
--         * on with the number of symbols calculation overflowing
-+        /*
-+         * Implausibly large symbol table: give up rather than ploughing
-+         * on with the number of symbols calculation overflowing.
-          */
-         goto give_up;
-     }
-     nsyms = segsz / sizeof(struct elf_sym);
-+    syms = g_try_malloc(segsz);
-+    if (!syms) {
-+        goto give_up;
-+    }
-+    if (!imgsrc_read(syms, shdr[sym_idx].sh_offset, segsz, src, NULL)) {
-+        goto give_up;
-+    }
-+
-     for (i = 0; i < nsyms; ) {
-         bswap_sym(syms + i);
-         /* Throw away entries which we do not need.  */
-@@ -3463,10 +3467,12 @@ static void load_symbols(struct elfhdr *hdr, int fd, abi_ulong load_bias)
-         goto give_up;
-     }
- 
--    /* Attempt to free the storage associated with the local symbols
--       that we threw away.  Whether or not this has any effect on the
--       memory allocation depends on the malloc implementation and how
--       many symbols we managed to discard.  */
-+    /*
-+     * Attempt to free the storage associated with the local symbols
-+     * that we threw away.  Whether or not this has any effect on the
-+     * memory allocation depends on the malloc implementation and how
-+     * many symbols we managed to discard.
-+     */
-     new_syms = g_try_renew(struct elf_sym, syms, nsyms);
-     if (new_syms == NULL) {
-         goto give_up;
-@@ -3475,20 +3481,23 @@ static void load_symbols(struct elfhdr *hdr, int fd, abi_ulong load_bias)
- 
-     qsort(syms, nsyms, sizeof(*syms), symcmp);
- 
--    s->disas_num_syms = nsyms;
--#if ELF_CLASS == ELFCLASS32
--    s->disas_symtab.elf32 = syms;
--#else
--    s->disas_symtab.elf64 = syms;
--#endif
--    s->lookup_symbol = lookup_symbolxx;
--    s->next = syminfos;
--    syminfos = s;
-+    {
-+        struct syminfo *s = g_new(struct syminfo, 1);
- 
-+        s->disas_strtab = strings;
-+        s->disas_num_syms = nsyms;
-+#if ELF_CLASS == ELFCLASS32
-+        s->disas_symtab.elf32 = syms;
-+#else
-+        s->disas_symtab.elf64 = syms;
-+#endif
-+        s->lookup_symbol = lookup_symbolxx;
-+        s->next = syminfos;
-+        syminfos = s;
-+    }
-     return;
- 
--give_up:
--    g_free(s);
-+ give_up:
-     g_free(strings);
-     g_free(syms);
- }
+-    bprm->fd = fdexec;
+     bprm->src.fd = fdexec;
+     bprm->filename = (char *)filename;
+     bprm->argc = count(argv);
 -- 
 2.34.1
 
