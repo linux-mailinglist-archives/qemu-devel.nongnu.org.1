@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFCD9779286
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 17:10:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D350779279
+	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 17:09:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qUTl8-0000cy-Hv; Fri, 11 Aug 2023 11:09:02 -0400
+	id 1qUTl8-0000d7-Km; Fri, 11 Aug 2023 11:09:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qUTl4-0000bG-7r
- for qemu-devel@nongnu.org; Fri, 11 Aug 2023 11:08:58 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qUTl6-0000bx-HI
+ for qemu-devel@nongnu.org; Fri, 11 Aug 2023 11:09:00 -0400
 Received: from smtp-out1.suse.de ([195.135.220.28])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qUTl2-0006L3-Of
- for qemu-devel@nongnu.org; Fri, 11 Aug 2023 11:08:58 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qUTl4-0006LK-Qq
+ for qemu-devel@nongnu.org; Fri, 11 Aug 2023 11:09:00 -0400
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id AB81921885;
- Fri, 11 Aug 2023 15:08:55 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id A183E21887;
+ Fri, 11 Aug 2023 15:08:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1691766535; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1691766537; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=AALRj7Ab+jv8HnQxY3S5JhK39qpam5fKLXPpns0eBC8=;
- b=mdyDmmJM/50RopQtAdfvA/OueItDANhtBXpkU1amBybmofVnmQZrpPozIorhaek52kq5Bw
- /0CnlnJQ6fikR1mwsa0uQJXF/C8gMS9jRIhh2yLKAPZGu65QOgF/q7lzVOcYUV2O1kHn4b
- x99voQ+lF/ej+6cqmQOiAEzx3SvOoRc=
+ bh=bfyqSy/vexXZrrfoBllaNADL3zw4+p60HBnsLWD6L18=;
+ b=02cG/sgQi2JRH1ek6/a1CqVYu4W8uY/kGuneiFEWrsgyADKcTxBPYkaopyRz+YsUsbV0EC
+ U+Zej+x9Gl5h3Vpzzrzi/PSU0Y3i3/FmNjVuFT1qExYkV0jRQefAjQXTwUMOXtodO5fBqD
+ l+AIrtCDVXUQyH+ysdxxGTuU4iIpCOY=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1691766535;
+ s=susede2_ed25519; t=1691766537;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=AALRj7Ab+jv8HnQxY3S5JhK39qpam5fKLXPpns0eBC8=;
- b=Udntlm476gqsiuamMbJpGJd8Zf4galsJp1Cm28m7IV501vFyWlQhpMGK98YzrohRKnfKny
- NQLUAW2FWZJDYyCw==
+ bh=bfyqSy/vexXZrrfoBllaNADL3zw4+p60HBnsLWD6L18=;
+ b=Xa0uOBuHA+cikx8xDm4S6HT9irRn3bXRm9kVmBqVYvudE86SoUoc+0OqQgJwPlI8oIiXhE
+ XvtEYVf9Egnx2aCw==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 2F5E713592;
- Fri, 11 Aug 2023 15:08:53 +0000 (UTC)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 2445913592;
+ Fri, 11 Aug 2023 15:08:55 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id mNuSOgVP1mS7KwAAMHmgww
- (envelope-from <farosas@suse.de>); Fri, 11 Aug 2023 15:08:53 +0000
+ by imap2.suse-dmz.suse.de with ESMTPSA id IOfPNwdP1mS7KwAAMHmgww
+ (envelope-from <farosas@suse.de>); Fri, 11 Aug 2023 15:08:55 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  Wei Wang <wei.w.wang@intel.com>, Leonardo Bras <leobras@redhat.com>
-Subject: [PATCH v3 08/10] migration: Move return path cleanup to main
- migration thread
-Date: Fri, 11 Aug 2023 12:08:34 -0300
-Message-Id: <20230811150836.2895-9-farosas@suse.de>
+Subject: [PATCH v3 09/10] migration: Be consistent about shutdown of source
+ shared files
+Date: Fri, 11 Aug 2023 12:08:35 -0300
+Message-Id: <20230811150836.2895-10-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20230811150836.2895-1-farosas@suse.de>
 References: <20230811150836.2895-1-farosas@suse.de>
@@ -86,58 +86,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that the return path thread is allowed to finish during a paused
-migration, we can move the cleanup of the QEMUFiles to the main
-migration thread.
+When doing cleanup, we currently close() some of the shared migration
+files and shutdown() + close() others. Be consistent by always calling
+shutdown() before close().
+
+Do this only for the source files for now because the source runs
+multiple threads which could cause races between the two calls. Having
+them together allows us to move them to a centralized place under the
+protection of a lock the next patch.
 
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/migration.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ migration/migration.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/migration/migration.c b/migration/migration.c
-index 7dfcbc3634..7fec57ad7f 100644
+index 7fec57ad7f..4df5ca25c1 100644
 --- a/migration/migration.c
 +++ b/migration/migration.c
-@@ -98,6 +98,7 @@ static int migration_maybe_pause(MigrationState *s,
-                                  int *current_active_state,
-                                  int new_state);
- static void migrate_fd_cancel(MigrationState *s);
-+static int await_return_path_close_on_source(MigrationState *s);
- 
- static bool migration_needs_multiple_sockets(void)
- {
-@@ -1177,6 +1178,12 @@ static void migrate_fd_cleanup(MigrationState *s)
+@@ -1175,6 +1175,7 @@ static void migrate_fd_cleanup(MigrationState *s)
+          * critical section won't block for long.
+          */
+         migration_ioc_unregister_yank_from_file(tmp);
++        qemu_file_shutdown(tmp);
          qemu_fclose(tmp);
      }
  
-+    /*
-+     * We already cleaned up to_dst_file, so errors from the return
-+     * path might be due to that, ignore them.
-+     */
-+    await_return_path_close_on_source(s);
-+
-     assert(!migration_is_active(s));
- 
-     if (s->state == MIGRATION_STATUS_CANCELLING) {
-@@ -1985,7 +1992,6 @@ out:
+@@ -1844,6 +1845,7 @@ static void migration_release_dst_files(MigrationState *ms)
+         ms->postcopy_qemufile_src = NULL;
      }
  
-     trace_source_return_path_thread_end();
--    migration_release_dst_files(ms);
-     rcu_unregister_thread();
-     return NULL;
++    qemu_file_shutdown(file);
+     qemu_fclose(file);
  }
-@@ -2039,6 +2045,9 @@ static int await_return_path_close_on_source(MigrationState *ms)
  
-     ret = ms->rp_state.error;
-     ms->rp_state.error = false;
-+
-+    migration_release_dst_files(ms);
-+
-     trace_migration_return_path_end_after(ret);
-     return ret;
- }
 -- 
 2.35.3
 
