@@ -2,53 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F1F177A024
-	for <lists+qemu-devel@lfdr.de>; Sat, 12 Aug 2023 15:33:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FA8177A0E5
+	for <lists+qemu-devel@lfdr.de>; Sat, 12 Aug 2023 17:51:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qUoiL-0005Kq-3Z; Sat, 12 Aug 2023 09:31:33 -0400
+	id 1qUqsW-000121-Ay; Sat, 12 Aug 2023 11:50:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qUoi8-0005JQ-Mv
- for qemu-devel@nongnu.org; Sat, 12 Aug 2023 09:31:24 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qUoi6-0005b6-Um
- for qemu-devel@nongnu.org; Sat, 12 Aug 2023 09:31:20 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 3AE7119FC0;
- Sat, 12 Aug 2023 16:31:25 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 5BCFE1DF70;
- Sat, 12 Aug 2023 16:31:14 +0300 (MSK)
-Message-ID: <d22f7211-4e3d-6b3d-b4d7-329f04377142@tls.msk.ru>
-Date: Sat, 12 Aug 2023 16:31:14 +0300
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qUqsT-00011l-MF
+ for qemu-devel@nongnu.org; Sat, 12 Aug 2023 11:50:09 -0400
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qUqsR-0005Mx-Nu
+ for qemu-devel@nongnu.org; Sat, 12 Aug 2023 11:50:09 -0400
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-1bb84194bf3so18295245ad.3
+ for <qemu-devel@nongnu.org>; Sat, 12 Aug 2023 08:50:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1691855406; x=1692460206;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=fqZSCiPIjXkMCQuBVNFnU5HowLv++9wRPPtY1DT3rx0=;
+ b=uePRFoXbqWiE4U3cJ40Fsyp5jfe8Eqqv0kVv0W0I3JYF4Z5USx2FJFl5g56VlGvzfO
+ o21Aw0rVhiFDEcUvnxrmx3thRe97Nk9zP+S9T455hyP8r8jOk/dpXMoMZTtJPxGhv5Bd
+ kRayIW9jTpRhQsDCEheEA2hG4w6lfzy4NxWPePoFcvUzLpK/KW5G9fmH3LCsaaIrgti3
+ +zsBAgyOHAumoTyRgf414YJOTekGAojWmo0xfC6w8conMvARsXUKm/jugPNrQ7Br2lSs
+ 15UWtMlPTAaTIvbkumRCjyj+S7fj7pVxRbC0qvJQq3SldgzcwgPIRU0eopEjKBqDI11Y
+ cK/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1691855406; x=1692460206;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=fqZSCiPIjXkMCQuBVNFnU5HowLv++9wRPPtY1DT3rx0=;
+ b=UuWjl/IyWpwD1H7r0G8b+Pj/2dApPwR25QOg2Zgo3EkP5S3bY9UENeSbVmi0fQsArt
+ MxL9ZZC6sZPFxDf8lD6FgbbJM1qqICE+z16yjSJz1KyApY9ejLJGHiZXikJ6LxdZZSIM
+ Ly4BOH2/ndIAVGXhk7D/GGO7XFOz0Jx8RzK3xFudXHVdAwn5nEWvGUMtRt559WDTSrk4
+ CtmINSNA+nEXZKP8nfA9RTV0/ehiYI8XD8z1TtI1EX17ya/j3Qp6pnh892W+VbpWTmpL
+ VgR+GOEMrQEIGU/LQB9QjYlwTI05LC0Y7DQ2SHR7eSs2dMW0IDKXf+C3tWqq0Pi8IjdT
+ BTGw==
+X-Gm-Message-State: AOJu0YxLjFDNQy9MOpmIa7Cvr/1BIrxmtuXL4v2tCSYQvGnocSNTQ3Jr
+ iO0i/k/u6gDLYmijaPKWLvAxG9nX7nT1Folhm4Q=
+X-Google-Smtp-Source: AGHT+IELL+FdGKP5QtcNiqaKqAD29NGJWDZIlku91my3lIA/u5zRqxXbTVtG8wjRtzf3ENe3/LGKLg==
+X-Received: by 2002:a17:902:e551:b0:1b8:7483:d488 with SMTP id
+ n17-20020a170902e55100b001b87483d488mr4416177plf.57.1691855405542; 
+ Sat, 12 Aug 2023 08:50:05 -0700 (PDT)
+Received: from stoup.. ([2602:47:d483:7301:a229:715e:62f0:756f])
+ by smtp.gmail.com with ESMTPSA id
+ l3-20020a170903244300b001b9dadf8bd2sm5981601pls.190.2023.08.12.08.50.04
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 12 Aug 2023 08:50:04 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Subject: [PATCH for-8.1] tcg/i386: Output %gs prefix in tcg_out_vex_opc
+Date: Sat, 12 Aug 2023 08:50:04 -0700
+Message-Id: <20230812155004.326182-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [PATCH] meson: Fix MESONINTROSPECT parsing
-Content-Language: en-US
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
- <philmd@linaro.org>, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Cleber Rosa <crosa@redhat.com>,
- John Snow <jsnow@redhat.com>
-References: <20230812061540.5398-1-akihiko.odaki@daynix.com>
- <fbc4b1e3-c504-4d79-b803-a23c866361e8@daynix.com>
-From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <fbc4b1e3-c504-4d79-b803-a23c866361e8@daynix.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -78
-X-Spam_score: -7.9
-X-Spam_bar: -------
-X-Spam_report: (-7.9 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.972,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -65,12 +87,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-12.08.2023 15:09, Akihiko Odaki wrote:
+Missing the segment prefix means that user-only fails
+to add guest_base for some 128-bit load/store.
 
-> Please do NOT merge this. This will break Windows builds. I'm putting this patch on hold.
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1763
+Fixes: 098d0fc10d2 ("tcg/i386: Support 128-bit load/store")
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ tcg/i386/tcg-target.c.inc | 3 +++
+ 1 file changed, 3 insertions(+)
 
-I don't think this is something to rush about, it definitely can wait
-8.2 development cycle.
+diff --git a/tcg/i386/tcg-target.c.inc b/tcg/i386/tcg-target.c.inc
+index 77482da070..a6b2eae995 100644
+--- a/tcg/i386/tcg-target.c.inc
++++ b/tcg/i386/tcg-target.c.inc
+@@ -595,6 +595,9 @@ static void tcg_out_vex_opc(TCGContext *s, int opc, int r, int v,
+ {
+     int tmp;
+ 
++    if (opc & P_GS) {
++        tcg_out8(s, 0x65);
++    }
+     /* Use the two byte form if possible, which cannot encode
+        VEX.W, VEX.B, VEX.X, or an m-mmmm field other than P_EXT.  */
+     if ((opc & (P_EXT | P_EXT38 | P_EXT3A | P_VEXW)) == P_EXT
+-- 
+2.34.1
 
-/mjt
 
