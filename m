@@ -2,83 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 685BF779DA3
-	for <lists+qemu-devel@lfdr.de>; Sat, 12 Aug 2023 08:17:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0045A779DB1
+	for <lists+qemu-devel@lfdr.de>; Sat, 12 Aug 2023 08:22:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qUhv4-0004No-A4; Sat, 12 Aug 2023 02:16:14 -0400
+	id 1qUi0n-0006iY-1u; Sat, 12 Aug 2023 02:22:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qUhur-0004JV-DZ
- for qemu-devel@nongnu.org; Sat, 12 Aug 2023 02:16:01 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qUhup-0000jd-Os
- for qemu-devel@nongnu.org; Sat, 12 Aug 2023 02:16:01 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1bc5acc627dso18737475ad.1
- for <qemu-devel@nongnu.org>; Fri, 11 Aug 2023 23:15:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1691820958; x=1692425758;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=zpRXX0MOvFzeoXEBWluDwa8bnkmvIKfq1Ck9DtAohE8=;
- b=FJRhCE3Ki2i5aMuTCNkJuXD3lPaXZIJzsaFhZ3vt/HXvTRpL1nx+Onvo7s12vNpSuZ
- kML5Ahg5EPEpeP0HSECfKR2R1HjAU1KC3AcGycRZd+jn7ryrTBw19oESWagUrZN92efK
- ADfT8FS5EyK6t+CcCDRxeUJxWOw3TcEyiynLAy+S2U0zJsbgMo+ku/AfFvXZJXe+rdyr
- rCtkNEqlQ2da3URR4PRwzepP4ApGtXKja5/OgBAdjpZpwCdu695DQlYSP9SApe6PWpEP
- BSpKMuYOD+oqNEARALWIqp980eWG0/3pNKBvtcP5h8YNKA26sITCPlwLDofFLRJcpo6Q
- H3NQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691820958; x=1692425758;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=zpRXX0MOvFzeoXEBWluDwa8bnkmvIKfq1Ck9DtAohE8=;
- b=TQkARyCKNTQZkc38Q7RgmWN/A/6o/UVLe4P/D/9jNf9GetMsT9nmrAfI50XV0ijHQg
- EtPOu3FrO+vyFc/0saBNEvLgFAq9NRdawupHaKi9Ovurolh/YTu6YsykrmetUQI0OHM9
- 5Sbk1vpOmYWWduyzk6XGEw4so0seL37wUJdGUsHozz6gRH9gSwemKEXhKBusDzvP08Ui
- z1C4k/BfSbDiUfk9uBreBjgpRYy9eOHmLcEgnEb+Aa8iK0ArFRLU57k3ZQyAxBiIrzyZ
- t1xqKZXmWxtuURA8UgpoatnQ3BcpKkSYHCDsadgmcnmWUOvGKa/M17ta5xJn+1nF4gn3
- Jc7A==
-X-Gm-Message-State: AOJu0YyGKkfwyMhuVoemsAuDcGXnuPXxZB8elfSRPlOhzPM2VKdqKZpC
- Bvf/S54tyagNhkk/RRkZhPpw3CiOEdeJlKl159k=
-X-Google-Smtp-Source: AGHT+IEpFj5WK7/vcLTJR0XeqmgTUWDO26bmnmUxQXVfEJf7egH3tAdUd/VawGvXilKceLps+ra4Vg==
-X-Received: by 2002:a05:6a20:3255:b0:13b:d080:aa03 with SMTP id
- hm21-20020a056a20325500b0013bd080aa03mr3469564pzc.60.1691820957666; 
- Fri, 11 Aug 2023 23:15:57 -0700 (PDT)
-Received: from alarm.flets-east.jp ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
- by smtp.gmail.com with ESMTPSA id
- kg14-20020a170903060e00b001bdcc3a09c3sm450068plb.256.2023.08.11.23.15.54
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 11 Aug 2023 23:15:57 -0700 (PDT)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-To: 
-Cc: qemu-devel@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Cleber Rosa <crosa@redhat.com>,
- John Snow <jsnow@redhat.com>, Akihiko Odaki <akihiko.odaki@daynix.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH] meson: Fix MESONINTROSPECT parsing
-Date: Sat, 12 Aug 2023 15:15:38 +0900
-Message-ID: <20230812061540.5398-1-akihiko.odaki@daynix.com>
-X-Mailer: git-send-email 2.41.0
+ (Exim 4.90_1) (envelope-from <logoerthiner1@163.com>)
+ id 1qUi0k-0006gf-8w
+ for qemu-devel@nongnu.org; Sat, 12 Aug 2023 02:22:06 -0400
+Received: from m13139.mail.163.com ([220.181.13.139])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <logoerthiner1@163.com>) id 1qUi0e-0001WG-OZ
+ for qemu-devel@nongnu.org; Sat, 12 Aug 2023 02:22:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+ s=s110527; h=Date:From:Subject:Content-Type:MIME-Version:
+ Message-ID; bh=WtDMlVRty9Wx4St7ZMVakDuigo7Ynt7oYSWNsybS5RU=; b=i
+ toldbyLh8xKktJ96+C0ezTuntszE7TQ3xmVOWcG1L+IdB44bZHhShPiXCHJwk+T8
+ 2heYzyjhhLfkikcEMdzT8wRNXCgLyqacosVwts0XwmxZ/T2PqtwQzVw/ItVC0NcY
+ 4rl2ChVEnCBLFNzNnJ3CLWtfAojODXM3fwhjzfeqcQ=
+Received: from logoerthiner1$163.com ( [183.242.254.172] ) by
+ ajax-webmail-wmsvr139 (Coremail) ; Sat, 12 Aug 2023 14:21:27 +0800 (CST)
+X-Originating-IP: [183.242.254.172]
+Date: Sat, 12 Aug 2023 14:21:27 +0800 (CST)
+From: ThinerLogoer  <logoerthiner1@163.com>
+To: "Peter Xu" <peterx@redhat.com>
+Cc: "David Hildenbrand" <david@redhat.com>, qemu-devel@nongnu.org, 
+ "Paolo Bonzini" <pbonzini@redhat.com>, 
+ "Igor Mammedov" <imammedo@redhat.com>, 
+ =?GBK?Q?Philippe_Mathieu-Daud=A8=A6?= <philmd@linaro.org>
+Subject: Re:Re: Re: Re: [PATCH v1 1/3] softmmu/physmem: fallback to opening
+ guest RAM file as readonly in a MAP_PRIVATE mapping
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version XT5.0.14 build 20230109(dcb5de15)
+ Copyright (c) 2002-2023 www.mailtech.cn 163com
+In-Reply-To: <ZNZGSON+yDFod2AZ@x1n>
+References: <20230807190736.572665-1-david@redhat.com>
+ <20230807190736.572665-2-david@redhat.com> <ZNKtHVotkfgI1tb4@x1n>
+ <1d1a7d8f-6260-5905-57ea-514b762ce869@redhat.com> <ZNOti1OKN79t68jP@x1n>
+ <e9c53fbd-369c-2605-1470-e67a765f923b@redhat.com>
+ <6152f171.6a4c.189e069baf7.Coremail.logoerthiner1@163.com>
+ <ZNVVmxuQAsSEHqZq@x1n>
+ <1b4168d2.4182.189e324e0ef.Coremail.logoerthiner1@163.com>
+ <ZNZGSON+yDFod2AZ@x1n>
+X-NTES-SC: AL_QuySA/SZvkoj4SafbOkXnk4Shuc2XMu4u/gu34JTP5E0uyvwwRs5X11hF1DH1+uvNS6BkjqZUDJC6edTc7N4WKvBiITgxOGd6ccvxyMzmNbH
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=GBK
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::62b;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62b.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
+Message-ID: <2337d9f.16d6.189e8682901.Coremail.logoerthiner1@163.com>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID: i8GowAC3x7_nJNdkOq4BAA--.12685W
+X-CM-SenderInfo: 5orj0vpuwkx0thurqiywtou0bp/1tbiKRzJnlXl6y1BkwABsH
+X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
+Received-SPF: pass client-ip=220.181.13.139;
+ envelope-from=logoerthiner1@163.com; helo=m13139.mail.163.com
+X-Spam_score_int: -13
+X-Spam_score: -1.4
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,38 +80,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The arguments in MESONINTROSPECT are quoted with shlex.quote() so it
-must be parsed with shlex.split().
-
-Fixes: cf60ccc330 ("cutils: Introduce bundle mechanism")
-Reported-by: Michael Tokarev <mjt@tls.msk.ru>
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
- scripts/symlink-install-tree.py | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/scripts/symlink-install-tree.py b/scripts/symlink-install-tree.py
-index 8ed97e3c94..b72563895c 100644
---- a/scripts/symlink-install-tree.py
-+++ b/scripts/symlink-install-tree.py
-@@ -4,6 +4,7 @@
- import errno
- import json
- import os
-+import shlex
- import subprocess
- import sys
- 
-@@ -14,7 +15,7 @@ def destdir_join(d1: str, d2: str) -> str:
-     return str(PurePath(d1, *PurePath(d2).parts[1:]))
- 
- introspect = os.environ.get('MESONINTROSPECT')
--out = subprocess.run([*introspect.split(' '), '--installed'],
-+out = subprocess.run([*shlex.split(introspect), '--installed'],
-                      stdout=subprocess.PIPE, check=True).stdout
- for source, dest in json.loads(out).items():
-     bundle_dest = destdir_join('qemu-bundle', dest)
--- 
-2.41.0
-
+QXQgMjAyMy0wOC0xMSAyMjozMTozNiwgIlBldGVyIFh1IiA8cGV0ZXJ4QHJlZGhhdC5jb20+IHdy
+b3RlOgo+T24gRnJpLCBBdWcgMTEsIDIwMjMgYXQgMDE6NDk6NTJQTSArMDgwMCwgVGhpbmVyTG9n
+b2VyIHdyb3RlOgo+PiBBdCAyMDIzLTA4LTExIDA1OjI0OjQzLCAiUGV0ZXIgWHUiIDxwZXRlcnhA
+cmVkaGF0LmNvbT4gd3JvdGU6Cj4+ID5PbiBGcmksIEF1ZyAxMSwgMjAyMyBhdCAwMTowNjoxMkFN
+ICswODAwLCBUaGluZXJMb2dvZXIgd3JvdGU6Cj4+ID4+ID5JIHRoaW5rIHdlIGhhdmUgdGhlIGZv
+bGxvd2luZyBvcHRpb25zICh0aGVyZSBtaWdodCBiZSBtb3JlKQo+PiA+PiA+Cj4+ID4+ID4xKSBU
+aGlzIHBhdGNoLgo+PiA+PiA+Cj4+ID4+ID4yKSBOZXcgZmxhZyBmb3IgbWVtb3J5LWJhY2tlbmQt
+ZmlsZS4gV2UgYWxyZWFkeSBoYXZlICJyZWFkb25seSIgYW5kIAo+PiA+PiA+InNoYXJlPSIuIEkn
+bSBoYXZpbmcgYSBoYXJkIHRpbWUgY29taW5nIHVwIHdpdGggYSBnb29kIG5hbWUgdGhhdCByZWFs
+bHkgCj4+ID4+ID5kZXNjcmliZXMgdGhlIHN1YnRsZSBkaWZmZXJlbmNlLgo+PiA+PiA+Cj4+ID4+
+ID4zKSBHbHVlIGJlaGF2aW9yIHRvIHRoZSBRRU1VIG1hY2hpbmUKPj4gPj4gPgo+PiA+PiAKPj4g
+Pj4gNCkgJy1kZW55LXByaXZhdGUtZGlzY2FyZCcgYXJndiwgb3IgZW52aXJvbm1lbnQgdmFyaWFi
+bGUsIG9yIGJvdGgKPj4gPgo+PiA+SSdkIHBlcnNvbmFsbHkgdm90ZSBmb3IgKDIpLiAgSG93IGFi
+b3V0ICJmZHBlcm0iPyAgVG8gZGVzY3JpYmUgd2hlbiB3ZSB3YW50Cj4+ID50byB1c2UgZGlmZmVy
+ZW50IHJ3IHBlcm1pc3Npb25zIG9uIHRoZSBmaWxlIChiZXNpZGVzIHRoZSBhY2Nlc3MgcGVybWlz
+c2lvbgo+PiA+b2YgdGhlIG1lbW9yeSB3ZSBhbHJlYWR5IHByb3ZpZGVkIHdpdGggInJlYWRvbmx5
+Ij1YWFgpLiAgSUlVQyB0aGUgb25seSBzYW5lCj4+ID52YWx1ZSB3aWxsIGJlIHJvL3J3L2RlZmF1
+bHQsIHdoZXJlICJkZWZhdWx0IiBzaG91bGQganVzdCB1c2UgdGhlIHNhbWUgcncKPj4gPnBlcm1p
+c3Npb24gYXMgdGhlIG1lbW9yeSAoInJlYWRvbmx5Ij1YWFgpLgo+PiA+Cj4+ID5Xb3VsZCB0aGF0
+IGJlIHJlbGF0aXZlbHkgY2xlYW4gYW5kIGFsc28gd29yayBpbiB0aGlzIHVzZSBjYXNlPwo+PiA+
+Cj4+ID4odGhlIG90aGVyIHRoaW5nIEknZCB3aXNoIHdlIGRvbid0IGhhdmUgdGhhdCBmYWxsYmFj
+ayBpcywgYXMgbG9uZyBhcyB3ZQo+PiA+IGhhdmUgYW55IG9mIHRoYXQgImZhbGxiYWNrIiB3ZSds
+bCBuZWVkIHRvIGJlIGNvbXBhdGlibGUgd2l0aCBpdCBzaW5jZQo+PiA+IHRoZW4sIGFuZCBmb3Ig
+ZXZlci4uLikKPj4gCj4+IElmIGl0IG11c3QgYmUgKDIpLCBJIHdvdWxkIHZvdGUgKDIpICsgKDQp
+LCB3aXRoICg0KSBhZGp1c3QgdGhlIGRlZmF1bHQgYmVoYXZpb3Igb2Ygc2FpZCBgZmRwZXJtYC4K
+Pj4gTWFpbmx5IGJlY2F1c2UgKHByaXZhdGUrZGlzY2FyZCkgaXMgaXRzZWxmIG5vdCBhIGdvb2Qg
+cHJhY3RpY2UgYW5kICg0KSBzZXJ2ZXMKPj4gYXMgYSBnb29kIHRvb2wgdG8gaGVscCBjYXRjaCBl
+eGlzdGluZyAocHJpdmF0ZStkaXNjYXJkKSBwcm9ibGVtcy4KPj4gCj4+IEFjdHVhbGx5IChyZWFk
+b25seStwcml2YXRlKSBpcyBtb3JlIHJlYXNvbmFibGUgdGhhbiAocHJpdmF0ZStkaXNjYXJkKSwg
+c28gSQo+PiB3YW50IGF0IGxlYXN0IG9uZSByb29tIGZvciBhIGRlZmF1bHQgKHJlYWRvbmx5K3By
+aXZhdGUpIGJlaGF2aW9yLgo+Cj5KdXN0IGZvciBwdXJlbHkgZGlzY3Vzc2lvbiBwdXJwb3NlOiBJ
+IHRoaW5rIG1heWJlIHNvbWVkYXkgcHJpdmF0ZStkaXNjYXJkCj5jb3VsZCB3b3JrLiAgSUlVQyB3
+aGF0IHdlJ3JlIG1pc3NpbmcgaXMgYW4gc3lzY2FsbCBpbnRlcmZhY2UgdG8gaW5zdGFsbCBhCj56
+ZXJvIHBhZ2UgZm9yIGEgTUFQX1BSSVZBVEUsIGF0b21pY2FsbHkgZnJlZWluZyB3aGF0J3MgdW5k
+ZXJuZWF0aDogaXQgc2VlbXMKPmVpdGhlciBwdW5jaGluZyBhIGhvbGUgb3IgRE9OVE5FRUQgd29u
+J3Qgc3VmZmljZSBoZXJlLiAgSXQnbGwganVzdCBiZQo+YW5vdGhlciBwcm9ibGVtIHdoZW4gaGF2
+aW5nIHplcm8gcGFnZSBpbnZvbHZlZCBpbiBmaWxlIG1hcHBpbmdzIGF0IGxlYXN0Lgo+Cj4+IAo+
+PiBBbHNvIGluIG15IGNhc2UgSSBraW5kIG9mIGhhdmUgdG8gdXNlICItbWVtLXBhdGgiIGRlc3Bp
+dGUgaXQgYmVpbmcgY29uc2lkZXJlZAo+PiB0byBiZSBjbG9zZSB0byBkZXByZWNhdGVkLiBPbmx5
+IHdpdGggdGhpcyBJIGNhbiBhdm9pZCBrbm93bGVkZ2Ugb2YgbWVtb3J5Cj4+IGJhY2tlbmQgYmVm
+b3JlIG1pZ3JhdGlvbi4gQWN0dWFsbHkgdGhlcmUgc2VlbXMgdG8gYmUgbm8gZXF1aXZhbGVudCB3
+b3JraW5nIGFmdGVyLW1pZ3JhdGlvbgo+PiBzZXR1cCBvZiAiLW9iamVjdCBtZW1vcnktYmFja2Vu
+ZC1maWxlLC4uLiAtbWFjaGluZSBxMzUsbWVtPS4uLiIgdGhhdCBjYW4gbWF0Y2gKPj4gYmVmb3Jl
+LW1pZ3JhdGlvbiBzZXR1cCBvZiAiLW1hY2hpbmUgcTM1IiAoc3BlY2lmeWluZyBub3RoaW5nKS4g
+VGhlcmVmb3JlCj4+IEkgbXVzdCBtYWtlIGEgcGxhbiBhbmQgY2hvb3NlIGEgbWlncmF0aW9uIG1l
+dGhvZCBCRUZPUkUgSSBib290IHRoZQo+PiBtYWNoaW5lIGFuZCBwcmVwYXJlIHRvIG1pZ3JhdGUs
+IHJlZHVjaW5nIHRoZSBvcGVyYXRpb24gZnJlZWRvbS4KPj4gQ29uc2lkZXJpbmcgdGhhdCwgSSBo
+YXZlIHRvIHVzZSAiLW1lbS1wYXRoIiB3aGljaCBrZWVwcyB0aGUgZnJlZWRvbSBidXQKPj4gaGFz
+IG5vIGNvbmZpZ3VyYWJsZSBhcmd1bWVudCBhbmQgSSBoYXZlIHRvIHJlbHkgb24gZGVmYXVsdCBj
+b25maWcuCj4+IAo+PiBBcmUgdGhlcmUgYW55ICItb2JqZWN0IG1lbW9yeS1iYWNrZW5kLWZpbGUu
+Li4iIHNldHVwIGVxdWl2YWxlbnQgdG8gIi1tYWNoaW5lIHEzNSIKPj4gdGhhdCBjYW4gbWlncmF0
+ZSBmcm9tIGFuZCB0byBlYWNoIG90aGVyPyBJZiB0aGVyZSBpcywgSSB3YW50IHRvIHRyeSBpdCBv
+dXQuCj4+IEJ5IHRoZSB3YXkgIi1vYmplY3QgbWVtb3J5LWJhY2tlbmQtZmlsZSxpZD1wYy5yYW0i
+IGhhcyBqdXN0IGJlZW4ga2lsbGVkIGJ5IGFuIGVhcmxpZXIKPj4gY29tbWl0Lgo+Cj5JJ20gYWN0
+dWFsbHkgbm90IGZhbWlsaWFyIGVub3VnaCBvbiB0aGUgaW50ZXJmYWNlcyBoZXJlLCBidXQgSSBq
+dXN0IGNoZWNrZWQKPnVwIHRoZSBtYW4gcGFnZTsgd291bGQgdGhpcyB3b3JrIGZvciB5b3UsIHRv
+Z2V0aGVyIHdpdGggb3B0aW9uICgyKT8KPgo+ICAgICAgICBtZW1vcnktYmFja2VuZD0naWQnCj4g
+ICAgICAgICAgICAgICAgQW4gYWx0ZXJuYXRpdmUgdG8gbGVnYWN5IC1tZW0tcGF0aCBhbmQgbWVt
+LXByZWFsbG9jIG9wdGlvbnMuICBBbGxvd3MgdG8gdXNlIGEgbWVtb3J5IGJhY2tlbmQgYXMgbWFp
+biBSQU0uCj4KPiAgICAgICAgICAgICAgICBGb3IgZXhhbXBsZToKPgo+ICAgICAgICAgICAgICAg
+IC1vYmplY3QgbWVtb3J5LWJhY2tlbmQtZmlsZSxpZD1wYy5yYW0sc2l6ZT01MTJNLG1lbS1wYXRo
+PS9odWdldGxiZnMscHJlYWxsb2M9b24sc2hhcmU9b24KPiAgICAgICAgICAgICAgICAtbWFjaGlu
+ZSBtZW1vcnktYmFja2VuZD1wYy5yYW0KPiAgICAgICAgICAgICAgICAtbSA1MTJNCj4KCldhaXQg
+Li4uIEkgdGhvdWdodCBpdCBzaG91bGQgbm90IHdvcmsgYnV0IGl0IGRpZCB3b3JrIHRvZGF5LiBI
+b3cgYmFkIGFtIEkgYXQgcmVhZGluZwp0aGUgY29ycmVjdCBwYXJ0IG9mIGRvY3VtZW50YXRpb24g
+Li4uCgonLW1hY2hpbmUgcTM1IC1tIDUxMk0nIGlzIGVxdWl2YWxlbnQgdG8gJy1vYmplY3QKbWVt
+b3J5LWJhY2tlbmQtZmlsZSxpZD1wYy5yYW0sc2l6ZT01MTJNCi1tYWNoaW5lIHEzNSxtZW1vcnkt
+YmFja2VuZD1wYy5yYW0nLAp0aGUgbGF0dGVyIHdvcmtzLCBhbmQgdGhlIHR3byBtZW50aW9uZWQg
+c2V0dXAgY2FuIGJlCm1pZ3JhdGVkIGZyb20gb25lIHRvIGFub3RoZXIuCgpXaGF0IEkgd2FzIGNv
+bnNpc3RlbnRseSB0cnlpbmcgd2FzICctb2JqZWN0Cm1lbW9yeS1iYWNrZW5kLWZpbGUsaWQ9cGMu
+cmFtLHNpemU9NTEyTSAtbWFjaGluZSBxMzUnLCBhbmQgcWVtdSByYWlzZXMgYW4gZXJyb3IKZm9y
+IHRoaXMgaW4gYSByZWNlbnQgdXBkYXRlOgoKYGBgCnFlbXUtc3lzdGVtLXg4Nl82NDogb2JqZWN0
+IG5hbWUgJ3BjLnJhbScgaXMgcmVzZXJ2ZWQgZm9yIHRoZSBkZWZhdWx0IFJBTSBiYWNrZW5kLCBp
+dCBjYW4ndCBiZSB1c2VkIGZvciBhbnkgb3RoZXIgcHVycG9zZXMuIENoYW5nZSB0aGUgb2JqZWN0
+J3MgJ2lkJyB0byBzb21ldGhpbmcgZWxzZQpgYGAKClRoaXMgZXJyb3IgaXMgbWlzbGVhZGluZy4g
+QWN0dWFsbHkgaW4gdGhpcyBjYXNlLCB0aGUgZXJyb3IgcmVwb3J0IG1lc3NhZ2Ugc2hvdWxkIGJl
+IG1vcmUKY2xvc2UgdG86CmBgYApvYmplY3QgbmFtZSAncGMucmFtJyBpcyByZXNlcnZlZCBmb3Ig
+dGhlIGRlZmF1bHQgUkFNIGJhY2tlbmQsIGl0IGNhbid0CmJlIHVzZWQgZm9yIGFueSBvdGhlciBw
+dXJwb3Nlcy4gQ2hhbmdlIHRoZSBvYmplY3QncyAnaWQnIHRvIHNvbWV0aGluZwplbHNlLCBvciBh
+cHBlbmQgIm1lbW9yeS1iYWNrZW5kPXBjLnJhbSIgdG8gLW1hY2hpbmUgYXJndW1lbnRzCmBgYAoK
+KEkgc3VnZ2VzdCByZXdyaXRpbmcgdGhlIGVycm9yIG1lc3NhZ2UgbGlrZSB0aGlzIHN0cmluZyBi
+ZWNhdXNlIG9mIHRoZSBjb25mdXNpb24ganVzdCBub3cpCgoKRXZlbiB0aG91Z2ggdGhlIGRlZmF1
+bHQgbWVtb3J5IGJhY2tlbmQgbmFtZSBpcyBwYy5yYW0sIHRoZQonLW1hY2hpbmUgcTM1LG1lbW9y
+eS1iYWNrZW5kPXBjLnJhbScgcGFydCBleHBsaWNpdGx5IG1hcmtzIHRoYXQgcWVtdQp1c2VzIGEg
+bWVtb3J5IGJhY2tlbmQgbmFtZWQgcGMucmFtLCByYXRoZXIgdGhhbiByZWx5IG9uIGRlZmF1bHQu
+CgpJdCBzZWVtcyB0aGF0IGlmIGl0ICJyZWx5IG9uIGRlZmF1bHQiIGFuZCBtZW1vcnktYmFja2Vu
+ZC1maWxlIGhhcyBhbiBpZApvZiAicGMucmFtIiAoaW4geDg2XzY0IG9mIGNvdXJzZSksIGl0IHdp
+bGwgZmFpbC4KCkdyZWF0LiBOb3cgSSB3aWxsIGNvbnNpZGVyIHVzaW5nIGEgIi1vYmplY3QKbWVt
+b3J5LWJhY2tlbmQtZmlsZSxpZD1wYy5yYW0sc2l6ZT01MTJNCi1tYWNoaW5lIHEzNSxtZW1vcnkt
+YmFja2VuZD1wYy5yYW0iCgotLQoKUmVnYXJkcywKCmxvZ29lcnRoaW5lcg==
 
