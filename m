@@ -2,42 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8243A779EAE
-	for <lists+qemu-devel@lfdr.de>; Sat, 12 Aug 2023 11:49:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B09C8779EB2
+	for <lists+qemu-devel@lfdr.de>; Sat, 12 Aug 2023 11:52:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qUlEU-0007LF-M8; Sat, 12 Aug 2023 05:48:30 -0400
+	id 1qUlHD-0008Am-18; Sat, 12 Aug 2023 05:51:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qUlEL-0007Ky-Bm
- for qemu-devel@nongnu.org; Sat, 12 Aug 2023 05:48:21 -0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qUlHB-0008Ad-7K
+ for qemu-devel@nongnu.org; Sat, 12 Aug 2023 05:51:17 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qUlEJ-0004Ze-JX
- for qemu-devel@nongnu.org; Sat, 12 Aug 2023 05:48:21 -0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qUlH9-00051Y-MF
+ for qemu-devel@nongnu.org; Sat, 12 Aug 2023 05:51:16 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 46C4F19F8F;
- Sat, 12 Aug 2023 12:48:25 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 7C64719F91;
+ Sat, 12 Aug 2023 12:51:23 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id C9A431DF52;
- Sat, 12 Aug 2023 12:48:14 +0300 (MSK)
-Message-ID: <a2f99abb-7ad6-41b4-1b74-ab7dba3d2424@tls.msk.ru>
-Date: Sat, 12 Aug 2023 12:48:14 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id EFFDB1DF53;
+ Sat, 12 Aug 2023 12:51:12 +0300 (MSK)
+Message-ID: <82aba2ed-bb8c-77ee-5941-9bec0b8be452@tls.msk.ru>
+Date: Sat, 12 Aug 2023 12:51:12 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.14.0
-Subject: Re: util/async-teardown.c: is it really needed for --disable-system
- build?
+Subject: Re: [PATCH] meson: Use subprocess.check_output()
 Content-Language: en-US
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
+ <philmd@linaro.org>, Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Cleber Rosa <crosa@redhat.com>,
+ John Snow <jsnow@redhat.com>
+References: <20230812091111.13411-1-akihiko.odaki@daynix.com>
 From: Michael Tokarev <mjt@tls.msk.ru>
-To: QEMU Developers <qemu-devel@nongnu.org>,
- Claudio Imbrenda <imbrenda@linux.ibm.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-References: <744ac8a7-dd6b-2ce4-3f47-250812241d0e@tls.msk.ru>
-In-Reply-To: <744ac8a7-dd6b-2ce4-3f47-250812241d0e@tls.msk.ru>
+In-Reply-To: <20230812091111.13411-1-akihiko.odaki@daynix.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
 X-Spam_score_int: -78
@@ -61,22 +64,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-12.08.2023 12:38, Michael Tokarev wrote:
-...
-> It smells like, at the very least, os-posix.c should be split. We shouldn't include
-> a ton of qemu-system functionality (like very specific option parsing) into qemu-nbd
-> for example.
+12.08.2023 12:11, Akihiko Odaki wrote:
+> subprocess.check_output() is a more concise way to execute a subprocess
+> here.
 > 
-> How about splitting os-posix.c into a few files in util/ (not in the root dir), and
-> adding them to util_ss in case of posix-os?  Ditto for os-win32.c, I guess, but I
-> haven't looked at this.
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> ---
+> Based-on: <20230812061540.5398-1-akihiko.odaki@daynix.com>
+> ("[PATCH] meson: Fix MESONINTROSPECT parsing")
 > 
-> And for the question in $subj, this one needs to be guarded by CONFIG_SOFTMMU.
+>   scripts/symlink-install-tree.py | 3 +--
+>   1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/scripts/symlink-install-tree.py b/scripts/symlink-install-tree.py
+> index b72563895c..56d603588f 100644
+> --- a/scripts/symlink-install-tree.py
+> +++ b/scripts/symlink-install-tree.py
+> @@ -15,8 +15,7 @@ def destdir_join(d1: str, d2: str) -> str:
+>       return str(PurePath(d1, *PurePath(d2).parts[1:]))
+>   
+>   introspect = os.environ.get('MESONINTROSPECT')
+> -out = subprocess.run([*shlex.split(introspect), '--installed'],
+> -                     stdout=subprocess.PIPE, check=True).stdout
+> +out = subprocess.check_output([*shlex.split(introspect), '--installed'])
+>   for source, dest in json.loads(out).items():
+>       bundle_dest = destdir_join('qemu-bundle', dest)
+>       path = os.path.dirname(bundle_dest)
 
-Or maybe better yet, put the softmmu-specific functions (one very good example here
-is os_parse_cmd_args() function - it clearly belongs to softmmu/, it should never
-has been in global os-foo.c but in some softmmu-os-foo.c instead.  This way,
-async-teardown.c is moved to softmmu/ too, maybe os-linux-async-teardown.c.
+Yes, this works too and is shorter and easier to read.
+
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+Tested-by: Michael Tokarev <mjt@tls.msk.ru>
+
+Thanks!
 
 /mjt
 
