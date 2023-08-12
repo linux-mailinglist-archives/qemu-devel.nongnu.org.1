@@ -2,86 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03E2B779FE8
-	for <lists+qemu-devel@lfdr.de>; Sat, 12 Aug 2023 14:10:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 194F677A003
+	for <lists+qemu-devel@lfdr.de>; Sat, 12 Aug 2023 14:49:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qUnRA-00018F-Uc; Sat, 12 Aug 2023 08:09:44 -0400
+	id 1qUo2g-0001TG-C3; Sat, 12 Aug 2023 08:48:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qUnR0-00017f-Sj
- for qemu-devel@nongnu.org; Sat, 12 Aug 2023 08:09:36 -0400
-Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qUnQy-0005v3-W6
- for qemu-devel@nongnu.org; Sat, 12 Aug 2023 08:09:34 -0400
-Received: by mail-pg1-x532.google.com with SMTP id
- 41be03b00d2f7-56546b45f30so2201104a12.3
- for <qemu-devel@nongnu.org>; Sat, 12 Aug 2023 05:09:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1691842171; x=1692446971;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=SQDhS/SipcobMYrlaFJ4lgJ2suMMPryJ+VLuEQdLNmE=;
- b=MuB2u8NjVBgWC67/G0+d7Mn0x9B8aHUK08DzF6ucGqVRLvmn8FkLUOnrzngmr3AoLh
- aS+TMBAdksS2ufOWCnCLlHq2wtMcYaANt2qsNw75Q0zGphitloe1Ucd+MqT0Tmk2F6FS
- k3k7CJt2PxsKieCqk+ZVZUF70f2zNMRrU8y6cDzwHj+gxsEwBMd39ALFw9klbhDrSXTY
- DlP/bV1NtPDcMTbw4I+gu4rHHF0gM/8oxPhQW12YNjHQGAzHkFxWyq+8edL1Q62cF36K
- KF3yepVzZvHn4xqSngKhtIv9Odl2x+e57JWYCM/vBXtwSwEh/Islahl182JHU8mOvDqD
- 1ZmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691842171; x=1692446971;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=SQDhS/SipcobMYrlaFJ4lgJ2suMMPryJ+VLuEQdLNmE=;
- b=d4EsPdPLgdRFXucontewzJbxbAcIjcdtLAQFAzyhjyEK7v8/1l63gym55kzvUGFxAx
- tXlDeO7abjrXUDfEDglzk9A/5U4nHu+kJJ3swPyhxElGniw94FLKEU7u1GlXtY967PDS
- 1BifNLcuy48XAkcTdEqFIIoI8IOov4EvSMT3u+4KZmgkJucrR/edPFCNPYk1rJQ3j+d8
- mBIndR3LMnQWA5UWaBQGuvYWUZLskxW8NoNKeHFfHNvySapy9P9DnLyKAmAFbfIcDnTF
- bVY5BJ7ae3fEK1Sl3IXdEIA5J65V5DpVt5Vw8lFiTisI97cYu9c2eYfxv+MM9mpcMntM
- aUjQ==
-X-Gm-Message-State: AOJu0YzN52nu6qLkLYrYwoiIxMHtsCRa43Rfur711AzNB+HHxEG1Vnx9
- OrKaudBtAx2eIEzsg+bgiO3Oayh8NfEqQwFbf1o=
-X-Google-Smtp-Source: AGHT+IFfcQ7nIgdysforRdLoxkzPwUzbGwvg45Vcq2daryme0t2So9TehELVrYAUggiQxx8t1viOAw==
-X-Received: by 2002:a17:90a:9e7:b0:268:52a6:103d with SMTP id
- 94-20020a17090a09e700b0026852a6103dmr4070092pjo.9.1691842171183; 
- Sat, 12 Aug 2023 05:09:31 -0700 (PDT)
-Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
- ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
- by smtp.gmail.com with ESMTPSA id
- n32-20020a17090a2ca300b00262d9b4b527sm5167901pjd.52.2023.08.12.05.09.28
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 12 Aug 2023 05:09:30 -0700 (PDT)
-Message-ID: <fbc4b1e3-c504-4d79-b803-a23c866361e8@daynix.com>
-Date: Sat, 12 Aug 2023 21:09:26 +0900
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qUo2V-0001Rz-Ag
+ for qemu-devel@nongnu.org; Sat, 12 Aug 2023 08:48:19 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qUo2T-0005m0-CL
+ for qemu-devel@nongnu.org; Sat, 12 Aug 2023 08:48:19 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 4CA1419FAA
+ for <qemu-devel@nongnu.org>; Sat, 12 Aug 2023 15:48:17 +0300 (MSK)
+Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with SMTP id 8F5AE1DF66;
+ Sat, 12 Aug 2023 15:48:06 +0300 (MSK)
+Received: (nullmailer pid 2881125 invoked by uid 1000);
+ Sat, 12 Aug 2023 12:48:06 -0000
+From: Michael Tokarev <mjt@tls.msk.ru>
+To: qemu-devel@nongnu.org
+Cc: Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PATCH RFC 0/7] move softmmu options processing from os-posix.c to
+ vl.c
+Date: Sat, 12 Aug 2023 15:47:54 +0300
+Message-Id: <cover.1691843673.git.mjt@tls.msk.ru>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] meson: Fix MESONINTROSPECT parsing
-Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Cleber Rosa <crosa@redhat.com>,
- John Snow <jsnow@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-References: <20230812061540.5398-1-akihiko.odaki@daynix.com>
-Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <20230812061540.5398-1-akihiko.odaki@daynix.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::532;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x532.google.com
-X-Spam_score_int: -8
-X-Spam_score: -0.9
-X-Spam_bar: /
-X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, MISSING_HEADERS=1.021, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,47 +56,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/08/12 15:15, Akihiko Odaki wrote:
-> The arguments in MESONINTROSPECT are quoted with shlex.quote() so it
-> must be parsed with shlex.split().
-> 
-> Fixes: cf60ccc330 ("cutils: Introduce bundle mechanism")
-> Reported-by: Michael Tokarev <mjt@tls.msk.ru>
-> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> ---
->   scripts/symlink-install-tree.py | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/scripts/symlink-install-tree.py b/scripts/symlink-install-tree.py
-> index 8ed97e3c94..b72563895c 100644
-> --- a/scripts/symlink-install-tree.py
-> +++ b/scripts/symlink-install-tree.py
-> @@ -4,6 +4,7 @@
->   import errno
->   import json
->   import os
-> +import shlex
->   import subprocess
->   import sys
->   
-> @@ -14,7 +15,7 @@ def destdir_join(d1: str, d2: str) -> str:
->       return str(PurePath(d1, *PurePath(d2).parts[1:]))
->   
->   introspect = os.environ.get('MESONINTROSPECT')
-> -out = subprocess.run([*introspect.split(' '), '--installed'],
-> +out = subprocess.run([*shlex.split(introspect), '--installed'],
->                        stdout=subprocess.PIPE, check=True).stdout
->   for source, dest in json.loads(out).items():
->       bundle_dest = destdir_join('qemu-bundle', dest)
+qemu_init() calls os_parse_cmd_args(), which is obviously a very vl.c-specicic
+piece of code.  It looks like when moving vl.c to softmmu/, os-posix.c should've
+been moved too (together with os-win32.c).  But there are other functions in
+os-posix.c which are used by other parts of the code, eg qemu-nbd or
+qemu-storage-daemon both uses parts from there.  The result is rather ugly.
+One of the side-effects is that even if system build is disabled, we still
+have to compile util/async-teardown.c, since it is used in os-posix.c, - and
+this one can not be built on ia64 due to lack of clone syscall.  But qemu-nbd
+does not need async-teardown, which is also very softmmu-specific.
 
-Please do NOT merge this. This will break Windows builds. I'm putting 
-this patch on hold.
+This patchset tries to address these defects.  It moves the "bottom half" of
+vl.c options processing back into vl.c, effectively undoing commit 59a5264b99434
+from 2010.  We do not have many os-specific options, and this move makes
+qemu_init() the only function which processes options, all in the single
+place, which is, in my opinion, easier to manage.
 
-The problem is that Meson uses a different logic for escaping arguments 
-in MESONINTROSPECT on Windows. I'll wait till Meson maintainers figure 
-out how MESONINTROSPECT should be used. For details, see:
-https://github.com/mesonbuild/meson/pull/12115#issuecomment-1675863266
+Before this move, lower-level constructs (chroot, runas) are being exported.
 
-Regards,
-Akihiko Odaki
+In the end, we have almost no softmmu-related things in os-posix.c, and the
+same functionality can be actually used in qemu-storage-daemon or qemu-nbd.
+For qemu-nbd, it is now possible to switch to using -runas/-chroot/etc the
+same way as qemu-storage-daemon does, instead of having one more abstraction
+named qemu_daemon().
+
+Michael Tokarev (7):
+  include/sysemu/os-posix.h: move *daemonize* declaration together
+  os-posix: create and export os_set_runas()
+  os-posix.c: create and export os_set_chroot()
+  os-posix.c, softmmu/vl.c: move os_parse_cmd_args() into qemu_init()
+  softmmu/vl.c: inline include/qemu/qemu-options.h into vl.c
+  os-posix.c: move code around
+  util/async-teardown.c: move to softmmu/, only build it when system
+    build is requested
+
+ include/qemu/qemu-options.h        |  41 --------
+ include/sysemu/os-posix.h          |   8 +-
+ include/sysemu/os-win32.h          |   1 -
+ os-posix.c                         | 152 +++++++++--------------------
+ {util => softmmu}/async-teardown.c |   0
+ softmmu/meson.build                |   1 +
+ softmmu/vl.c                       |  87 ++++++++++++++++-
+ util/meson.build                   |   1 -
+ 8 files changed, 134 insertions(+), 157 deletions(-)
+ delete mode 100644 include/qemu/qemu-options.h
+ rename {util => softmmu}/async-teardown.c (100%)
+
+-- 
+2.39.2
+
 
