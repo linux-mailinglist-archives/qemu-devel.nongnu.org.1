@@ -2,79 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AD787799EF
-	for <lists+qemu-devel@lfdr.de>; Fri, 11 Aug 2023 23:51:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1D19779C38
+	for <lists+qemu-devel@lfdr.de>; Sat, 12 Aug 2023 03:17:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qUa1o-0005Xq-9m; Fri, 11 Aug 2023 17:50:40 -0400
+	id 1qUdEp-00044C-MN; Fri, 11 Aug 2023 21:16:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qUa1l-0005XX-C2
- for qemu-devel@nongnu.org; Fri, 11 Aug 2023 17:50:37 -0400
-Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
+ id 1qUdEm-00043a-Hh
+ for qemu-devel@nongnu.org; Fri, 11 Aug 2023 21:16:17 -0400
+Received: from mail-oi1-x230.google.com ([2607:f8b0:4864:20::230])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qUa1j-000444-Gh
- for qemu-devel@nongnu.org; Fri, 11 Aug 2023 17:50:37 -0400
-Received: by mail-pj1-x102d.google.com with SMTP id
- 98e67ed59e1d1-2680182bc21so1426421a91.2
- for <qemu-devel@nongnu.org>; Fri, 11 Aug 2023 14:50:35 -0700 (PDT)
+ id 1qUdEk-0007AI-PT
+ for qemu-devel@nongnu.org; Fri, 11 Aug 2023 21:16:16 -0400
+Received: by mail-oi1-x230.google.com with SMTP id
+ 5614622812f47-3a741f46fadso2259613b6e.0
+ for <qemu-devel@nongnu.org>; Fri, 11 Aug 2023 18:16:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691790634; x=1692395434;
+ d=linaro.org; s=google; t=1691802973; x=1692407773;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=FEXZw0l5vQCgB0OV7BlglBafnxpaMwdlJfHKVlEvtrg=;
- b=nXLl5L0bs+z/pNcRZ18mhtN4LRGsvzxmWBVHg0/KyTbATG78yyIwkUPJcSVwVsAsfM
- yR+gdDBdXtns4FgOmmTEMQD4h5uKTFLbaijdz+m6pgbckhuljkQw+9ra3JnE22MYcrqW
- DAdQl1+dlHrHI7Voz7dVaVlvf2M90nHApjNU+LkcOPxW1F1lUFMSm8LZqcCJfyd9zu+o
- dnm+HoLJ+/I0KFlDcnGHYaroG8hPfruUIo/CPDCOl99IZ01YY5iq4zPoFtb8aIKcxPJt
- FDr2amqWPuynBeokjtBim0IVoyY++ARzEz+hWIiy+ubiBGIIom0wCaLe0KjOoV7JWyOt
- OINw==
+ bh=+8ZH8lQhU3zfjGHhWBbs/r0tIRN06isJ4o6TaLHN06s=;
+ b=p2ATs3GW0NuuB18KWxQ5Fh0DPUwvfnpYpuUB9w8ZSBoSKq/rCPZrU90nBd1HPiPjSl
+ v6w/5M3kGmDnDCrQ3l0lLPlS+dIB/R0hM0ZOwiLbpc1VzuRadYmXNCS3gu7t4XByd4Zl
+ f6dtd3nyVlWzgg74li2z3ZfGqx7jBWIfEkcO9TVlv3R6d21+d2F3GGztcFKVSKU8Vf57
+ bxbUFNGyQmzDzkn0deNgBKG4upPmJ7PeBKluXY2IzjQsLKO4sxHJJY3DlWpMttOsNbMG
+ cWCdPQU6SFMPoCFoIZOLN5zC2NX5rFEQcYMZ9ZIxedNxtjeEF68hlCHp4y3Eg+24KH+J
+ hDWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691790634; x=1692395434;
+ d=1e100.net; s=20221208; t=1691802973; x=1692407773;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=FEXZw0l5vQCgB0OV7BlglBafnxpaMwdlJfHKVlEvtrg=;
- b=jGXAEX2rQ7Yht1tUK2HxVT5JCFYPHR7CFtfKYsxUadwBmnDmtUK1hrU60FZYHSL/GV
- hpNMwHhP+KaAnJ6+g2IwiO7s00qa5tZZyPNCnbfbZbpbS0yVt8pzhf3ghCzwyzuG8aBG
- IS8sQPzmbTS9ctrixQ8WeteheEJup+aKaKsqZztgUyo5RAx++bosslCgmtVBNzbGwWi8
- k3NRoOVYghiPLxeFiL0JpTVmNgPxic5qWkCbXvDnIdKeUSeYaE3+ZNhyt9+8dk7Rm4LF
- Ignj/tBk6eL8RBKywKGqZ6HHadCJgYrNuo1Ag/gj0c6Ju+aih24LdiIUOabXJWXLdsYs
- aAPA==
-X-Gm-Message-State: AOJu0Yzepyk+X9FSCm54ISus9ntcS+9mnkkB9Xda1MasMSdpCx+LhG1k
- cQU3g7m4MZmW+zhl+1N6HKc+mvZhVdaOW9/ydyc=
-X-Google-Smtp-Source: AGHT+IFRA6dOKY6A/tT8T+bXhciYL9/IiY/Z0F2c3hqBwF4j6LZLppEedE5Sqo4YhP248Z0IQP52UQ==
-X-Received: by 2002:a17:90b:4d8e:b0:263:fbe5:2125 with SMTP id
- oj14-20020a17090b4d8e00b00263fbe52125mr2231382pjb.15.1691790634108; 
- Fri, 11 Aug 2023 14:50:34 -0700 (PDT)
+ bh=+8ZH8lQhU3zfjGHhWBbs/r0tIRN06isJ4o6TaLHN06s=;
+ b=U2ZMjNuB648Q4vZPQJzhLrZt7YdoGmOxLSpy1Tg9ZIySwuLMZDiNhzZAdkUJFyrNn0
+ NachUImWGUZa6eH1BJFcIo3gt+9G9v+wVqBRGLK3GqSu1gC9+QjN1XXbzfcYUVaFnlM8
+ PT5ySOVAMO+2Zim8/lNhigLOb4/JD2P0iWGLQtVj7GPnZbulaluG4dOoDcmbwT78qFe9
+ JuHyo4UfzjuphOThqriK6ms2ajgOYHVWK4Il+fh9txaFqFe1jfskDVJemmz0sbNARQO8
+ GfoVyNMC4hse8Jdfq1t34bDlHEAmGA78HuOTgC7VKueRnH/h7VsIXppE5CPgn/x8r9v4
+ kycw==
+X-Gm-Message-State: AOJu0Yz5+h6uwrtT+va4Q9bjMbWzmncQuc84lom/+G2Py+OI08lsXo4X
+ 2qZMoJyah/3AGDjyK/C/2ZVV8g==
+X-Google-Smtp-Source: AGHT+IEnp6HZ8Ls2n5I3DhX3A7PEEFtYmW8yzzxh4giMqvOMMad03nUUYEjxyAtf2aKl/DTtXKRBSg==
+X-Received: by 2002:aca:674c:0:b0:3a7:b5ea:f5e8 with SMTP id
+ b12-20020aca674c000000b003a7b5eaf5e8mr4029283oiy.27.1691802972826; 
+ Fri, 11 Aug 2023 18:16:12 -0700 (PDT)
 Received: from ?IPV6:2602:47:d483:7301:e773:351d:2db2:8a8a?
  ([2602:47:d483:7301:e773:351d:2db2:8a8a])
  by smtp.gmail.com with ESMTPSA id
- 22-20020a17090a19d600b00263d3448141sm4054620pjj.8.2023.08.11.14.50.33
+ g12-20020a62e30c000000b006870814361bsm3913387pfh.114.2023.08.11.18.16.12
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 11 Aug 2023 14:50:33 -0700 (PDT)
-Message-ID: <f3cae6c8-f598-f926-8863-c421e8fffb01@linaro.org>
-Date: Fri, 11 Aug 2023 14:50:31 -0700
+ Fri, 11 Aug 2023 18:16:12 -0700 (PDT)
+Message-ID: <94d64ad4-9358-0351-9780-e01680b4bd8f@linaro.org>
+Date: Fri, 11 Aug 2023 18:16:10 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PULL 0/2] pci: last minute bugfixes
+Subject: Re: [PULL 0/2] riscv-to-apply queue
 Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>
-Cc: qemu-devel@nongnu.org
-References: <cover.1691770630.git.mst@redhat.com>
- <CAFEAcA8sKYYfo_OazF_fftUwnU0viaTxk9tyn=TUrChMxaLgGg@mail.gmail.com>
+To: Alistair Francis <alistair23@gmail.com>, qemu-devel@nongnu.org
+Cc: Alistair Francis <alistair.francis@wdc.com>
+References: <20230811182445.1185140-1-alistair.francis@wdc.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <CAFEAcA8sKYYfo_OazF_fftUwnU0viaTxk9tyn=TUrChMxaLgGg@mail.gmail.com>
+In-Reply-To: <20230811182445.1185140-1-alistair.francis@wdc.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::230;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x230.google.com
 X-Spam_score_int: -30
 X-Spam_score: -3.1
 X-Spam_bar: ---
@@ -97,44 +95,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/11/23 10:41, Peter Maydell wrote:
-> On Fri, 11 Aug 2023 at 17:18, Michael S. Tsirkin <mst@redhat.com> wrote:
->>
->> The following changes since commit 15b11a1da6a4b7c6b8bb37883f52b544dee2b8fd:
->>
->>    cryptodev: Handle unexpected request to avoid crash (2023-08-03 16:16:17 -0400)
->>
->> are available in the Git repository at:
->>
->>    https://git.kernel.org/pub/scm/virt/kvm/mst/qemu.git tags/for_upstream
->>
->> for you to fetch changes up to 0f936247e8ed0ab5fb7e75827dd8c8f73d5ef4b5:
->>
->>    pci: Fix the update of interrupt disable bit in PCI_COMMAND register (2023-08-11 12:15:24 -0400)
->>
->> ----------------------------------------------------------------
->> pci: last minute bugfixes
->>
->> two fixes that seem very safe and important enough to sneak
->> in before the release.
->>
->> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
->>
->> ----------------------------------------------------------------
->> Guoyi Tu (1):
->>        pci: Fix the update of interrupt disable bit in PCI_COMMAND register
->>
->> Jason Chien (1):
->>        hw/pci-host: Allow extended config space access for Designware PCIe host
+On 8/11/23 11:24, Alistair Francis wrote:
+> The following changes since commit 3944e93af06f06eb07316e0bef46b007573e0309:
 > 
-> Could you respin to get rid of the malformed Signed-off-by
-> line in patch 1 which has an HTML mailto link in it, please?
+>    Update version for v8.1.0-rc3 release (2023-08-10 12:49:56 -0700)
+> 
+> are available in the Git repository at:
+> 
+>    https://github.com/alistair23/qemu.git  tags/pull-riscv-to-apply-20230811-3
+> 
+> for you to fetch changes up to b274c2388e9fcde75d60c6e7c7d8f888874b61b7:
+> 
+>    hw/riscv/virt.c: change 'aclint' TCG check (2023-08-11 14:16:26 -0400)
+> 
+> ----------------------------------------------------------------
+> Sixth RISC-V PR for 8.1
+> 
+> This is a last minute PR for RISC-V.
+> 
+> The main goal is to fix
+> https://gitlab.com/qemu-project/qemu/-/issues/1823
+> which is a regression that means the aclint option
+> cannot be enabled.
+> 
+> While we are here we also fixup KVM issue.
+> 
+>   * KVM: fix mvendorid size
+>   * Fixup aclint check
 
-Oops.  I lost my train of thought over the course of the day.
-I mean to not push the pr to master and wait for v2, but then
-I forgot and did it anyway hours later.
+Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
 
-Sorry about that.
 
 r~
+
 
