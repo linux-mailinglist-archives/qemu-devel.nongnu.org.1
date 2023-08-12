@@ -2,83 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7E4D77A171
-	for <lists+qemu-devel@lfdr.de>; Sat, 12 Aug 2023 19:34:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3431C77A1A1
+	for <lists+qemu-devel@lfdr.de>; Sat, 12 Aug 2023 20:07:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qUsUI-0004fS-HS; Sat, 12 Aug 2023 13:33:18 -0400
+	id 1qUt0i-0001B1-Ve; Sat, 12 Aug 2023 14:06:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qUsUG-0004f1-Qc
- for qemu-devel@nongnu.org; Sat, 12 Aug 2023 13:33:16 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qUsUF-0007sE-87
- for qemu-devel@nongnu.org; Sat, 12 Aug 2023 13:33:16 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1bbc06f830aso20924655ad.0
- for <qemu-devel@nongnu.org>; Sat, 12 Aug 2023 10:33:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691861593; x=1692466393;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Y2YXgfMDrYPzIYbCrlFGkfAndljXKF00LrYlHbIPl8E=;
- b=TrAyIJoU5bY7OGtgxdvqtrypJ5KKuzr+jPELwPkUSu/NRGaGcarvwl5tdJZOEPxgNN
- /g172ObWvX2ekoOWpJ5oRJ+MveWcRlzpdemh4D1IfnCUIqvlgyoiN6QeGdmNa9LDwiFx
- e1Gl6NtDr66lSrj4pbtyUmhy8xjSIqO7HTK4p2WVeHYhEuW2wze16yWZJW5gRtiPV9s4
- /6AMgXBY0FycvkFVkBKEgMEoUNox8oRZEBe359kXVq8hq+nplo3NDO1v9zEZMXEXRCe9
- Ax1NLKv+kHcm2hUr3xezbjFo+hD6d849VcIlNjPBkX4K28AZLZXWnjf6tiLh4SRqU6Mz
- p6tg==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qUt0g-0001AY-JN
+ for qemu-devel@nongnu.org; Sat, 12 Aug 2023 14:06:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qUt0e-0006JA-3a
+ for qemu-devel@nongnu.org; Sat, 12 Aug 2023 14:06:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1691863602;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=+XclhbQLYfDVhd4kNBe0JGX7zf7FYOs8+Zi+O3JfqPw=;
+ b=QR3OnGxWuJlru52CjPfLZvkNMUpsDUoMPHVLmHAoO/6m2R4N/KsdrmD7PEcfeRiMUlv/UO
+ xKIYoJc3VKc6khpU5NZLbm7ZVFIDKcj827Fl3cUG6MKk5mA1UC0Jr6xfDA1Ulwr3C1c8GR
+ qFXQIkAgywdmW3iHIAIt7aKKqurcc4E=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-622-S3cJzoYCNHeKWVN2TZDDng-1; Sat, 12 Aug 2023 14:06:40 -0400
+X-MC-Unique: S3cJzoYCNHeKWVN2TZDDng-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-317a3951296so1852752f8f.2
+ for <qemu-devel@nongnu.org>; Sat, 12 Aug 2023 11:06:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691861593; x=1692466393;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Y2YXgfMDrYPzIYbCrlFGkfAndljXKF00LrYlHbIPl8E=;
- b=fKPKH+cdn/x0EpMxgcUrzxP7AWSJIwG/3Gx9PbNBS667YfXk32cv0B8r67vyITwyB9
- JNhBE4QAzOwI10hzYovu2eXIa+ergyq1ykK/d0lNNlByw0m7fuJ8D38kqhY79acENfOe
- gw3Pa9xBO8w1H3URH2wU/h+3CTLeAUs6gAjwFNz1ssV7GoFGOB0gGkuNHTa8T22/CZjj
- D9P+6QgQrPlCF1/Rzb94VmlRHyty7cElBmyCGFkz/4QLrFbMSwrwaBvrHtJ3Lq3lBmYf
- eqKin+zvRYsSXIPnJs4qpwRc0XjY0BcOAwTWz0ARfCwVMcclbAEgn3u/27ITU2jzPKkt
- uXIw==
-X-Gm-Message-State: AOJu0YwLHN4x380MmKk0C8QRKIxbsX9qtkaC2yk5u84ikE6bHZCpucKS
- zRh43qbvUrmWW+VJCoN2wSACqA==
-X-Google-Smtp-Source: AGHT+IH27/m/HfDS3Y+CAiEW1TgXfTwOA3WWivC8ZvvNMxVoqKZ4tuQMhVRSBPqAUXSThHhGG1CKRg==
-X-Received: by 2002:a17:902:f68c:b0:1b8:a67f:1c15 with SMTP id
- l12-20020a170902f68c00b001b8a67f1c15mr11622196plg.25.1691861593549; 
- Sat, 12 Aug 2023 10:33:13 -0700 (PDT)
-Received: from ?IPV6:2602:47:d483:7301:a229:715e:62f0:756f?
- ([2602:47:d483:7301:a229:715e:62f0:756f])
+ d=1e100.net; s=20221208; t=1691863599; x=1692468399;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=+XclhbQLYfDVhd4kNBe0JGX7zf7FYOs8+Zi+O3JfqPw=;
+ b=ErPqisuQKIyC4O4mKF8a9ROoMulOy5YjF7Otqr5aUeAMMwO0DuJoBhMOUk6k+ez+R+
+ hnJjMHdfF9rJ1LXHtHDr8AddBuee53PVnn1OdC/0SorxLGze45HhoX0T7AXJvlt1y5x2
+ HSiX87eggHZFwBw4o0jwgHeRALAVr+k0DD0/XzL3Ek/epxlPoKNkpZxSuHYXTEGboMgw
+ bbx7A5/VGp99mkVrOJs6lu9o4GttPJtiDLe3GcVpHnDDztXV32vjkpI5Pywa/FUKWq58
+ rydiHN1b97CQ3TLjGlaBKJbvnec+h5HlgWRt2TAr9yGdaw8dRgtLiqYRFznwZF3lT+rN
+ q1qQ==
+X-Gm-Message-State: AOJu0YwPPEpyU2yxVgMeXHuNi/m7lJq9tqb5wJUdu2jHdZKxiFVoYuWI
+ njA73wJVV6Pm+x/bFWLNWb+YpsF1usaSaBw3Qil/QETBPSzLFIKmU1WwjdKMf22aqZv2Mz8AiKr
+ KpZHuYJzFklFW5JE=
+X-Received: by 2002:a5d:544e:0:b0:317:3b13:94c3 with SMTP id
+ w14-20020a5d544e000000b003173b1394c3mr4161499wrv.41.1691863599502; 
+ Sat, 12 Aug 2023 11:06:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFQ2mFaWZ0MedHJDT6HcmhiPV09S0yRn/66T57BCwqtFNy31kTF9jPGBF93BP891B57qKx5EQ==
+X-Received: by 2002:a5d:544e:0:b0:317:3b13:94c3 with SMTP id
+ w14-20020a5d544e000000b003173b1394c3mr4161491wrv.41.1691863599191; 
+ Sat, 12 Aug 2023 11:06:39 -0700 (PDT)
+Received: from redhat.com ([2a06:c701:73f2:b100:fba1:19ce:4f7b:4008])
  by smtp.gmail.com with ESMTPSA id
- b1-20020a170902d50100b001bc445e249asm6111829plg.124.2023.08.12.10.33.12
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 12 Aug 2023 10:33:12 -0700 (PDT)
-Message-ID: <56908f79-c883-0d83-c990-e7a86714b6da@linaro.org>
-Date: Sat, 12 Aug 2023 10:33:11 -0700
+ e1-20020a5d5941000000b003141f96ed36sm9217086wri.0.2023.08.12.11.06.37
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 12 Aug 2023 11:06:37 -0700 (PDT)
+Date: Sat, 12 Aug 2023 14:06:35 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PULL 0/2] pci: last minute bugfixes
+Message-ID: <20230812140616-mutt-send-email-mst@kernel.org>
+References: <cover.1691770630.git.mst@redhat.com>
+ <CAFEAcA8sKYYfo_OazF_fftUwnU0viaTxk9tyn=TUrChMxaLgGg@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] Fix signal handler to detect crashes in qemu-linux-user
-Content-Language: en-US
-To: Helge Deller <deller@gmx.de>, qemu-devel@nongnu.org
-References: <20230812164314.352131-1-deller@gmx.de>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230812164314.352131-1-deller@gmx.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.972,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAFEAcA8sKYYfo_OazF_fftUwnU0viaTxk9tyn=TUrChMxaLgGg@mail.gmail.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,44 +96,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/12/23 09:43, Helge Deller wrote:
-> +/* _init and _fini are provided by the linker */
-> +extern char _init;
-> +extern char _fini;
-> +
->   static void host_signal_handler(int host_sig, siginfo_t *info, void *puc)
->   {
->       CPUArchState *env = thread_cpu->env_ptr;
-> @@ -819,6 +848,13 @@ static void host_signal_handler(int host_sig, siginfo_t *info, void *puc)
->           if (host_sig == SIGSEGV) {
->               bool maperr = true;
+On Fri, Aug 11, 2023 at 06:41:53PM +0100, Peter Maydell wrote:
+> On Fri, 11 Aug 2023 at 17:18, Michael S. Tsirkin <mst@redhat.com> wrote:
+> >
+> > The following changes since commit 15b11a1da6a4b7c6b8bb37883f52b544dee2b8fd:
+> >
+> >   cryptodev: Handle unexpected request to avoid crash (2023-08-03 16:16:17 -0400)
+> >
+> > are available in the Git repository at:
+> >
+> >   https://git.kernel.org/pub/scm/virt/kvm/mst/qemu.git tags/for_upstream
+> >
+> > for you to fetch changes up to 0f936247e8ed0ab5fb7e75827dd8c8f73d5ef4b5:
+> >
+> >   pci: Fix the update of interrupt disable bit in PCI_COMMAND register (2023-08-11 12:15:24 -0400)
+> >
+> > ----------------------------------------------------------------
+> > pci: last minute bugfixes
+> >
+> > two fixes that seem very safe and important enough to sneak
+> > in before the release.
+> >
+> > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> >
+> > ----------------------------------------------------------------
+> > Guoyi Tu (1):
+> >       pci: Fix the update of interrupt disable bit in PCI_COMMAND register
+> >
+> > Jason Chien (1):
+> >       hw/pci-host: Allow extended config space access for Designware PCIe host
 > 
-> +            /* Did segfault happened in qemu source code? */
-> +            if ((pc >= (uintptr_t) &_init && pc < (uintptr_t) &_fini) ||
-> +                (TARGET_ABI_BITS == 32 && HOST_LONG_BITS == 64
-> +                 && !h2g_valid(host_addr))) {
-> +                qemu_show_backtrace(info);
-> +            }
+> Could you respin to get rid of the malformed Signed-off-by
+> line in patch 1 which has an HTML mailto link in it, please?
+> 
+> thanks
+> -- PMM
 
-This is incorrect.
+Pushed as c4e775652a1043b21e6228e8a4d73abe943637b0, sorry I didn't
+notice.
 
-I did mention that you should look at adjust_signal_pc,
-which has a lot of commentary on the subject.
+-- 
+MST
 
-(0) Place this after the write-protect and restart check
-just below, since that is not an error of any sort.
-
-(1) If helper_retaddr == 1, then this is a fault reading
-for translation and is a guest SIGSEGV.
-
-(2) If helper_retaddr != 0, then this is a fault in some
-cpu_ldst.h operation and is a guest SIGSEGV.
-
-(3) If in_code_gen_buffer(host_signal_pc()), then this
-is a fault within generated code and is a guest SIGSEGV.
-
-Otherwise it's a host SIGSEGV.
-
-
-r~
 
