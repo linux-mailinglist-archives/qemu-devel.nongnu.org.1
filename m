@@ -2,81 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E33A1779D52
-	for <lists+qemu-devel@lfdr.de>; Sat, 12 Aug 2023 07:39:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 685BF779DA3
+	for <lists+qemu-devel@lfdr.de>; Sat, 12 Aug 2023 08:17:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qUhJr-0003vt-D5; Sat, 12 Aug 2023 01:37:47 -0400
+	id 1qUhv4-0004No-A4; Sat, 12 Aug 2023 02:16:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jason.chien@sifive.com>)
- id 1qUhJo-0003vJ-Tv
- for qemu-devel@nongnu.org; Sat, 12 Aug 2023 01:37:44 -0400
-Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qUhur-0004JV-DZ
+ for qemu-devel@nongnu.org; Sat, 12 Aug 2023 02:16:01 -0400
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jason.chien@sifive.com>)
- id 1qUhJn-0002K5-66
- for qemu-devel@nongnu.org; Sat, 12 Aug 2023 01:37:44 -0400
-Received: by mail-lj1-x22d.google.com with SMTP id
- 38308e7fff4ca-2b9ba3d6157so40822231fa.3
- for <qemu-devel@nongnu.org>; Fri, 11 Aug 2023 22:37:42 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qUhup-0000jd-Os
+ for qemu-devel@nongnu.org; Sat, 12 Aug 2023 02:16:01 -0400
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-1bc5acc627dso18737475ad.1
+ for <qemu-devel@nongnu.org>; Fri, 11 Aug 2023 23:15:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1691818661; x=1692423461;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=0w49hh0ndCUVUw3IOTmlaZgcRVo6pbefY0/yWB1pShQ=;
- b=GjlnB5FuaWriwuy6+n2f2/nt2sOu+KS8/phNd6n71EV7ek3wGjAKD1uB7L2XD4o/7y
- K4KokySxTGLKct2sZTteFRsOY4ne6qEeEkn41Nbd6go0/3D1Gc/VquaVT/gOU9ZLddPa
- S2yfAk8YBUSjNUB86fA1hjutxWMI8DBSLIw55+3O7GCc/7JMP3Qk/B35wq4Dw9STYiDl
- u/d07a1pngtPdscbxytWo1OduATxO9aNE4sIsJMUoHke51Cv1HyAUYcA9YO3MJLjbdK3
- Iub3EI3+xfHWEPrMDgyeah6pUgov+I2ceqqkTwgvL/ErmEJ9vQZLioRMkGKD4+n8wyY+
- ELFg==
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1691820958; x=1692425758;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=zpRXX0MOvFzeoXEBWluDwa8bnkmvIKfq1Ck9DtAohE8=;
+ b=FJRhCE3Ki2i5aMuTCNkJuXD3lPaXZIJzsaFhZ3vt/HXvTRpL1nx+Onvo7s12vNpSuZ
+ kML5Ahg5EPEpeP0HSECfKR2R1HjAU1KC3AcGycRZd+jn7ryrTBw19oESWagUrZN92efK
+ ADfT8FS5EyK6t+CcCDRxeUJxWOw3TcEyiynLAy+S2U0zJsbgMo+ku/AfFvXZJXe+rdyr
+ rCtkNEqlQ2da3URR4PRwzepP4ApGtXKja5/OgBAdjpZpwCdu695DQlYSP9SApe6PWpEP
+ BSpKMuYOD+oqNEARALWIqp980eWG0/3pNKBvtcP5h8YNKA26sITCPlwLDofFLRJcpo6Q
+ H3NQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691818661; x=1692423461;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20221208; t=1691820958; x=1692425758;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=0w49hh0ndCUVUw3IOTmlaZgcRVo6pbefY0/yWB1pShQ=;
- b=ZHBQRG4XTvWMYBto7Et/bYpYtLkXdiyew+mEpooRVHP08iOWpCrbXcVCKSONobosEV
- IO7Cfsu85WOwozydmZZQWfohOMvjEUEQ2JdtiNVHm6wJYFM7ZgcZy9g2BzMaYsUMAZO2
- fCG/3+IypK9SI4ngRP/DEsYAqbatsnDM2gjZE+WcFwuj0H0lfWqLyF0ZgnW1Kgu1GQEh
- hSZxEhbl3w/YeUdZqmz01SuDN5vBtPYHnkptl3FwO7SHWn6UHp6LfhDxO/CW8h01vKgG
- m0uu6Os5Ia62dEBna5cnEkPbkVSgSBYNejRg7J4orXts2nDxC/EUtXQRmFloEWsrw2wm
- RS4g==
-X-Gm-Message-State: AOJu0YxvLWPCrT8N1neq9Ttr0H6SCavwNBZvhLGoG6Y9Vu3PcbZ0+KhF
- tWlK5bvueY/DmR0H+p8AFftzzK5aZ1TSNOJf1AV3aw==
-X-Google-Smtp-Source: AGHT+IH70RgfJY0C85CMxhWbmW3WvwIa2kmWUpzO4vkwe46Bg3lD+7h9e5l5U4HkEx7bBYiFyvWiG5aB1Fhc71TNlAM=
-X-Received: by 2002:a2e:b0fc:0:b0:2b9:e053:7a01 with SMTP id
- h28-20020a2eb0fc000000b002b9e0537a01mr3364558ljl.43.1691818660257; Fri, 11
- Aug 2023 22:37:40 -0700 (PDT)
+ bh=zpRXX0MOvFzeoXEBWluDwa8bnkmvIKfq1Ck9DtAohE8=;
+ b=TQkARyCKNTQZkc38Q7RgmWN/A/6o/UVLe4P/D/9jNf9GetMsT9nmrAfI50XV0ijHQg
+ EtPOu3FrO+vyFc/0saBNEvLgFAq9NRdawupHaKi9Ovurolh/YTu6YsykrmetUQI0OHM9
+ 5Sbk1vpOmYWWduyzk6XGEw4so0seL37wUJdGUsHozz6gRH9gSwemKEXhKBusDzvP08Ui
+ z1C4k/BfSbDiUfk9uBreBjgpRYy9eOHmLcEgnEb+Aa8iK0ArFRLU57k3ZQyAxBiIrzyZ
+ t1xqKZXmWxtuURA8UgpoatnQ3BcpKkSYHCDsadgmcnmWUOvGKa/M17ta5xJn+1nF4gn3
+ Jc7A==
+X-Gm-Message-State: AOJu0YyGKkfwyMhuVoemsAuDcGXnuPXxZB8elfSRPlOhzPM2VKdqKZpC
+ Bvf/S54tyagNhkk/RRkZhPpw3CiOEdeJlKl159k=
+X-Google-Smtp-Source: AGHT+IEpFj5WK7/vcLTJR0XeqmgTUWDO26bmnmUxQXVfEJf7egH3tAdUd/VawGvXilKceLps+ra4Vg==
+X-Received: by 2002:a05:6a20:3255:b0:13b:d080:aa03 with SMTP id
+ hm21-20020a056a20325500b0013bd080aa03mr3469564pzc.60.1691820957666; 
+ Fri, 11 Aug 2023 23:15:57 -0700 (PDT)
+Received: from alarm.flets-east.jp ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
+ by smtp.gmail.com with ESMTPSA id
+ kg14-20020a170903060e00b001bdcc3a09c3sm450068plb.256.2023.08.11.23.15.54
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 11 Aug 2023 23:15:57 -0700 (PDT)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+To: 
+Cc: qemu-devel@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Cleber Rosa <crosa@redhat.com>,
+ John Snow <jsnow@redhat.com>, Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PATCH] meson: Fix MESONINTROSPECT parsing
+Date: Sat, 12 Aug 2023 15:15:38 +0900
+Message-ID: <20230812061540.5398-1-akihiko.odaki@daynix.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-References: <20230809102257.25121-1-jason.chien@sifive.com>
- <20230810135050-mutt-send-email-mst@kernel.org>
- <CAFEAcA_B5W5CX7-C_a7iWTL87kpcLsGEjAsqs5t54sgjTKi3Eg@mail.gmail.com>
- <CAFEAcA8vr-Bk+tPvugTH4DwAk=S_RXiUhrqDytFGg-EyoC9Mmg@mail.gmail.com>
-In-Reply-To: <CAFEAcA8vr-Bk+tPvugTH4DwAk=S_RXiUhrqDytFGg-EyoC9Mmg@mail.gmail.com>
-From: Jason Chien <jason.chien@sifive.com>
-Date: Sat, 12 Aug 2023 13:37:28 +0800
-Message-ID: <CADr__8rR7dT+UNqEAUgw6Z-V+OLJ8th750UA-LrmY7Y7LkKKkw@mail.gmail.com>
-Subject: Re: [PATCH] hw/pci-host: Allow extended config space access for
- Designware PCIe host
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, qemu-devel@nongnu.org,
- qemu-riscv@nongnu.org, 
- Andrey Smirnov <andrew.smirnov@gmail.com>, Greg Kurz <groug@kaod.org>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Igor Mammedov <imammedo@redhat.com>, qemu-arm@nongnu.org
-Content-Type: multipart/alternative; boundary="0000000000004513eb0602b33a81"
-Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
- envelope-from=jason.chien@sifive.com; helo=mail-lj1-x22d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62b.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,104 +94,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000004513eb0602b33a81
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+The arguments in MESONINTROSPECT are quoted with shlex.quote() so it
+must be parsed with shlex.split().
 
-This bug was also in 8.0.
+Fixes: cf60ccc330 ("cutils: Introduce bundle mechanism")
+Reported-by: Michael Tokarev <mjt@tls.msk.ru>
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+---
+ scripts/symlink-install-tree.py | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Jason
+diff --git a/scripts/symlink-install-tree.py b/scripts/symlink-install-tree.py
+index 8ed97e3c94..b72563895c 100644
+--- a/scripts/symlink-install-tree.py
++++ b/scripts/symlink-install-tree.py
+@@ -4,6 +4,7 @@
+ import errno
+ import json
+ import os
++import shlex
+ import subprocess
+ import sys
+ 
+@@ -14,7 +15,7 @@ def destdir_join(d1: str, d2: str) -> str:
+     return str(PurePath(d1, *PurePath(d2).parts[1:]))
+ 
+ introspect = os.environ.get('MESONINTROSPECT')
+-out = subprocess.run([*introspect.split(' '), '--installed'],
++out = subprocess.run([*shlex.split(introspect), '--installed'],
+                      stdout=subprocess.PIPE, check=True).stdout
+ for source, dest in json.loads(out).items():
+     bundle_dest = destdir_join('qemu-bundle', dest)
+-- 
+2.41.0
 
-On Fri, Aug 11, 2023 at 10:07=E2=80=AFPM Peter Maydell <peter.maydell@linar=
-o.org>
-wrote:
-
-> On Fri, 11 Aug 2023 at 10:55, Peter Maydell <peter.maydell@linaro.org>
-> wrote:
-> >
-> > On Thu, 10 Aug 2023 at 18:51, Michael S. Tsirkin <mst@redhat.com> wrote=
-:
-> > >
-> > > On Wed, Aug 09, 2023 at 10:22:50AM +0000, Jason Chien wrote:
-> > > > In pcie_bus_realize(), a root bus is realized as a PCIe bus and a
-> non-root
-> > > > bus is realized as a PCIe bus if its parent bus is a PCIe bus.
-> However,
-> > > > the child bus "dw-pcie" is realized before the parent bus "pcie"
-> which is
-> > > > the root PCIe bus. Thus, the extended configuration space is not
-> accessible
-> > > > on "dw-pcie". The issue can be resolved by adding the
-> > > > PCI_BUS_EXTENDED_CONFIG_SPACE flag to "pcie" before "dw-pcie" is
-> realized.
-> > > >
-> > > > Signed-off-by: Jason Chien <jason.chien@sifive.com>
-> > >
-> > >
-> > > Acked-by: Michael S. Tsirkin <mst@redhat.com>
-> > >
-> > > I'm not planning another pull before release, hopefully
-> > > another maintainer can pick it up? Peter?
-> >
-> > At the moment I don't have anything intended for 8.1 either,
-> > so whoever of us does it it would be a 1-patch pullreq...
->
-> Also, at this stage in the release cycle it's always worth
-> asking: is this a regression, or was this bug also in 8.0?
->
-> thanks
-> -- PMM
->
-
---0000000000004513eb0602b33a81
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">This bug was also in 8.0.<br><br>Jason</div><br><div class=
-=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Fri, Aug 11, 2023=
- at 10:07=E2=80=AFPM Peter Maydell &lt;<a href=3D"mailto:peter.maydell@lina=
-ro.org">peter.maydell@linaro.org</a>&gt; wrote:<br></div><blockquote class=
-=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rg=
-b(204,204,204);padding-left:1ex">On Fri, 11 Aug 2023 at 10:55, Peter Maydel=
-l &lt;<a href=3D"mailto:peter.maydell@linaro.org" target=3D"_blank">peter.m=
-aydell@linaro.org</a>&gt; wrote:<br>
-&gt;<br>
-&gt; On Thu, 10 Aug 2023 at 18:51, Michael S. Tsirkin &lt;<a href=3D"mailto=
-:mst@redhat.com" target=3D"_blank">mst@redhat.com</a>&gt; wrote:<br>
-&gt; &gt;<br>
-&gt; &gt; On Wed, Aug 09, 2023 at 10:22:50AM +0000, Jason Chien wrote:<br>
-&gt; &gt; &gt; In pcie_bus_realize(), a root bus is realized as a PCIe bus =
-and a non-root<br>
-&gt; &gt; &gt; bus is realized as a PCIe bus if its parent bus is a PCIe bu=
-s. However,<br>
-&gt; &gt; &gt; the child bus &quot;dw-pcie&quot; is realized before the par=
-ent bus &quot;pcie&quot; which is<br>
-&gt; &gt; &gt; the root PCIe bus. Thus, the extended configuration space is=
- not accessible<br>
-&gt; &gt; &gt; on &quot;dw-pcie&quot;. The issue can be resolved by adding =
-the<br>
-&gt; &gt; &gt; PCI_BUS_EXTENDED_CONFIG_SPACE flag to &quot;pcie&quot; befor=
-e &quot;dw-pcie&quot; is realized.<br>
-&gt; &gt; &gt;<br>
-&gt; &gt; &gt; Signed-off-by: Jason Chien &lt;<a href=3D"mailto:jason.chien=
-@sifive.com" target=3D"_blank">jason.chien@sifive.com</a>&gt;<br>
-&gt; &gt;<br>
-&gt; &gt;<br>
-&gt; &gt; Acked-by: Michael S. Tsirkin &lt;<a href=3D"mailto:mst@redhat.com=
-" target=3D"_blank">mst@redhat.com</a>&gt;<br>
-&gt; &gt;<br>
-&gt; &gt; I&#39;m not planning another pull before release, hopefully<br>
-&gt; &gt; another maintainer can pick it up? Peter?<br>
-&gt;<br>
-&gt; At the moment I don&#39;t have anything intended for 8.1 either,<br>
-&gt; so whoever of us does it it would be a 1-patch pullreq...<br>
-<br>
-Also, at this stage in the release cycle it&#39;s always worth<br>
-asking: is this a regression, or was this bug also in 8.0?<br>
-<br>
-thanks<br>
--- PMM<br>
-</blockquote></div>
-
---0000000000004513eb0602b33a81--
 
