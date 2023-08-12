@@ -2,77 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9FC7779E6D
-	for <lists+qemu-devel@lfdr.de>; Sat, 12 Aug 2023 11:13:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76619779E72
+	for <lists+qemu-devel@lfdr.de>; Sat, 12 Aug 2023 11:17:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qUkeq-0007hK-Nq; Sat, 12 Aug 2023 05:11:40 -0400
+	id 1qUkji-0000ev-0I; Sat, 12 Aug 2023 05:16:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qUkeY-0007f5-Sy
- for qemu-devel@nongnu.org; Sat, 12 Aug 2023 05:11:23 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ id 1qUkjg-0000eW-FH
+ for qemu-devel@nongnu.org; Sat, 12 Aug 2023 05:16:40 -0400
+Received: from mail-ot1-x334.google.com ([2607:f8b0:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qUkeX-0006mU-2p
- for qemu-devel@nongnu.org; Sat, 12 Aug 2023 05:11:22 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-686daaa5f1fso1957577b3a.3
- for <qemu-devel@nongnu.org>; Sat, 12 Aug 2023 02:11:20 -0700 (PDT)
+ id 1qUkje-0007ch-Jc
+ for qemu-devel@nongnu.org; Sat, 12 Aug 2023 05:16:40 -0400
+Received: by mail-ot1-x334.google.com with SMTP id
+ 46e09a7af769-6bca5d6dcedso2555890a34.1
+ for <qemu-devel@nongnu.org>; Sat, 12 Aug 2023 02:16:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1691831478; x=1692436278;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=Rhmue/BjU41UiF+ApjC5nebRdrNKPT4LzJBrsOT2z1A=;
- b=CjubmK/+b4ou9GDj+qeFp4DN/sb/3yhlY6tF3A360F4V1n/cUXb8cx3sJNKW/zNBwb
- ag4N9V1X/T0d/EzUiB9y0PRtLNdt1ME87ivWkxd4SPFMLUw1bk+9yJmrlouAKGTCxEML
- sXS08aVjmHN6iWfy4QALm7nc5a+OsZC1uXKa42WVNKryXx+lFrPSW3kvF/2cSmm+VVGI
- NU5onyrNA8jpzji/XAxaWGrpIS7W7nke4LNNO95ZIWCLnJ6O5qSCI3VqItlbj9YfFDzp
- s5OGpCEbhwHjz4L5dTAZyNFXDnkh61nl0Spu3eov3uoJduHCtfZ9FKomtdJIXkDxOBQU
- Mh9Q==
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1691831797; x=1692436597;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=fppUk3q7ZyUNtuisd5QuM7JLN5jwNpZy0Yh5ebQVRKI=;
+ b=AOeuv3Wy1bp77uQIeEgApXaiukhqXRZ9PY4sWQXw6XgGg+DHr7F2HavyTgmyADcWkH
+ VryxRxOV6vBs2KlY0WMQ0syJJxS9caM4VFgejXTvneibrp7T3kUDjJa2jZ5gPb07ouIv
+ gwOiU9JescXOJvXiS9KQsf8a1f6UMqkgcv2Jnwi6LCfvcDylD53r+buZqlp8tUpHeDHn
+ gyvCtgNU9ngPnf6HphpuLU9BAhWnwiiSGvNj7x3BVuqk3wIhZUzELTUi5NOob0sz8f0i
+ dKvHytDUYOkkZR8EwcLlIPPvSX9eGHDBBEXFIqZ29zQLhMKTYxOwc9IKtjH02R4M1FcG
+ /wBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691831478; x=1692436278;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Rhmue/BjU41UiF+ApjC5nebRdrNKPT4LzJBrsOT2z1A=;
- b=Z+i3SGts75+FCNBLC2GDHBzft2ObVWKDs/MzKcibE2/S5x2XO5eQP3FdOXFP8Q1zHP
- n4f6qiNiMoKYHrJYSjvybA8pTe7Vs+qRoMoBmavpaUdy1lLXkqquEWa/y/yAzv55X7jl
- qyo4GjU80Xo7gx74jNFGZl1T24AZSUmAvtLP40QFOULa+gVP7CJDQ7+Qj7nG2A7obPJx
- jcovQsuyjivhrZcw+vCzOzl8/ciTsHCN+h3bb/q/Wt7a8GeSHbObAR0j/VvG+cVnATqn
- NQUrhWb2Q6F7/pufy5cwMHYD8zvyDeRcTsgp02U7PH7nTErQk31xsgCzSJQzfVtzLzyJ
- 8NVw==
-X-Gm-Message-State: AOJu0YyvvCOAjauaGiRL4R9orrl7OOft8o7yu13CV4WTIEZ6CSUGr8RG
- 9KNx512nrWHlzIo2nt4O+bI2VzL4lIGcvV8b2eE=
-X-Google-Smtp-Source: AGHT+IEq2QCdWrCff4jez3Sx0wpIB1XY+O0k+6WrbZEZVr3Uen8pBLjjcNtgXas2xNAbW4pFVxgxMw==
-X-Received: by 2002:a17:903:22cd:b0:1b9:c207:1802 with SMTP id
- y13-20020a17090322cd00b001b9c2071802mr3892215plg.0.1691831478171; 
- Sat, 12 Aug 2023 02:11:18 -0700 (PDT)
-Received: from alarm.flets-east.jp ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
+ d=1e100.net; s=20221208; t=1691831797; x=1692436597;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=fppUk3q7ZyUNtuisd5QuM7JLN5jwNpZy0Yh5ebQVRKI=;
+ b=Wdm0EKgnazINg3TBbNsUsFhoRLvs/SOChSxkzYxdtjEBkdaVQxdtQna7Zj5Vx9ulVm
+ dW7Il966vXXMIdk61WhJwAl+lrvhEidCUlHAjJvsfS5je5+HS77S7uvlytgGYiTq2p03
+ F7F4vVYgaSruf+0bJVV/NGR6AAY+qovLUsaim/SeLZ34OSIcnrguQQZdJE7Wrkuej+k9
+ 1AJ8p6OE2lY506mQc7A+sqsJHUZqGhSK3q4JBBv1znMMzD+V1XgCtdr4iyUESZf259QZ
+ uFd5fYaQKgxA5BIHsSN2c0rOTWA8ZLx5L4FT6VkCjuUQalkqJKATHh6T+0SfmFrTiMPt
+ ww2Q==
+X-Gm-Message-State: AOJu0Yx0ulNxLAblVUwxGdsn1KEJwDm6Yo+B4DKmIpxYVHLCT2HaAs2x
+ 0FM3ZnoWkCpENMpJ8ytTGzNMgw==
+X-Google-Smtp-Source: AGHT+IGeMmjCD15Y4UQnuNnSHs5BO6In6b220i1uCt2wpzkYX6kbLlaSmolFMiih6SfMOrXws0TsQg==
+X-Received: by 2002:a05:6871:6a5:b0:19f:4dc2:428e with SMTP id
+ l37-20020a05687106a500b0019f4dc2428emr5197609oao.14.1691831797195; 
+ Sat, 12 Aug 2023 02:16:37 -0700 (PDT)
+Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
+ ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
  by smtp.gmail.com with ESMTPSA id
- o12-20020a1709026b0c00b001bbc9e36d55sm5322714plk.268.2023.08.12.02.11.15
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 12 Aug 2023 02:11:17 -0700 (PDT)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-To: 
-Cc: qemu-devel@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Cleber Rosa <crosa@redhat.com>,
- John Snow <jsnow@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>,
- Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH] meson: Use subprocess.check_output()
-Date: Sat, 12 Aug 2023 18:11:09 +0900
-Message-ID: <20230812091111.13411-1-akihiko.odaki@daynix.com>
-X-Mailer: git-send-email 2.41.0
+ c6-20020a17090a674600b0026b25c05495sm2610001pjm.20.2023.08.12.02.16.34
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sat, 12 Aug 2023 02:16:36 -0700 (PDT)
+Message-ID: <c9f3232c-5103-410c-a158-e56d26331968@daynix.com>
+Date: Sat, 12 Aug 2023 18:16:34 +0900
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] meson: Fix MESONINTROSPECT parsing
+Content-Language: en-US
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Cleber Rosa <crosa@redhat.com>,
+ John Snow <jsnow@redhat.com>
+References: <20230812061540.5398-1-akihiko.odaki@daynix.com>
+ <8bb503c3-5b45-f686-a0d8-24799d69f6b1@tls.msk.ru>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <8bb503c3-5b45-f686-a0d8-24799d69f6b1@tls.msk.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::435;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x435.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::334;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-ot1-x334.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -94,32 +99,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-subprocess.check_output() is a more concise way to execute a subprocess
-here.
+On 2023/08/12 17:01, Michael Tokarev wrote:
+> 12.08.2023 09:15, Akihiko Odaki wrote:
+>> The arguments in MESONINTROSPECT are quoted with shlex.quote() so it
+>> must be parsed with shlex.split().
+>>
+>> Fixes: cf60ccc330 ("cutils: Introduce bundle mechanism")
+>> Reported-by: Michael Tokarev <mjt@tls.msk.ru>
+>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+>> ---
+>>   scripts/symlink-install-tree.py | 3 ++-
+>>   1 file changed, 2 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/scripts/symlink-install-tree.py 
+>> b/scripts/symlink-install-tree.py
+>> index 8ed97e3c94..b72563895c 100644
+>> --- a/scripts/symlink-install-tree.py
+>> +++ b/scripts/symlink-install-tree.py
+>> @@ -4,6 +4,7 @@
+>>   import errno
+>>   import json
+>>   import os
+>> +import shlex
+>>   import subprocess
+>>   import sys
+>> @@ -14,7 +15,7 @@ def destdir_join(d1: str, d2: str) -> str:
+>>       return str(PurePath(d1, *PurePath(d2).parts[1:]))
+>>   introspect = os.environ.get('MESONINTROSPECT')
+>> -out = subprocess.run([*introspect.split(' '), '--installed'],
+>> +out = subprocess.run([*shlex.split(introspect), '--installed'],
+>>                        stdout=subprocess.PIPE, check=True).stdout
+>>   for source, dest in json.loads(out).items():
+>>       bundle_dest = destdir_join('qemu-bundle', dest)
+> 
+> This fixes one of the two issues, - the script is being run
+> now without failures.
+> 
+> Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+> Tested-by: Michael Tokarev <mjt@tls.msk.ru>
+> 
+> There's one more possible problem which is worth to fix, I'd say:
+> it is the fact that script failure is not detected in any way.
+> Shouldn't subprocess.run raise an exception in case of failure?
+> I think it needs check=True (since python 3.5 iirc).
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
-Based-on: <20230812061540.5398-1-akihiko.odaki@daynix.com>
-("[PATCH] meson: Fix MESONINTROSPECT parsing")
+I missed that you noted this failure is not detected by configure. It is 
+certainly better to fix.
 
- scripts/symlink-install-tree.py | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+It does have check=True but it's rather a obfuscated way to say that 
+when you can just use subprocess.check_output(). I sent another patch to 
+use subprocess.check_output().
 
-diff --git a/scripts/symlink-install-tree.py b/scripts/symlink-install-tree.py
-index b72563895c..56d603588f 100644
---- a/scripts/symlink-install-tree.py
-+++ b/scripts/symlink-install-tree.py
-@@ -15,8 +15,7 @@ def destdir_join(d1: str, d2: str) -> str:
-     return str(PurePath(d1, *PurePath(d2).parts[1:]))
- 
- introspect = os.environ.get('MESONINTROSPECT')
--out = subprocess.run([*shlex.split(introspect), '--installed'],
--                     stdout=subprocess.PIPE, check=True).stdout
-+out = subprocess.check_output([*shlex.split(introspect), '--installed'])
- for source, dest in json.loads(out).items():
-     bundle_dest = destdir_join('qemu-bundle', dest)
-     path = os.path.dirname(bundle_dest)
--- 
-2.41.0
+The reason why configure does not detect the failure is that Meson 
+ignores postconf script failures. I opened a pull request upstream:
+https://github.com/mesonbuild/meson/pull/12115
 
+Regards,
+Akihiko Odaki
 
