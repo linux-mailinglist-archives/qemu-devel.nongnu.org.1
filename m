@@ -2,84 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FC6677A647
-	for <lists+qemu-devel@lfdr.de>; Sun, 13 Aug 2023 14:03:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C49077A6B8
+	for <lists+qemu-devel@lfdr.de>; Sun, 13 Aug 2023 16:13:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qV9nP-0002e1-VQ; Sun, 13 Aug 2023 08:02:11 -0400
+	id 1qVBpF-0007zs-Cm; Sun, 13 Aug 2023 10:12:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qV9nN-0002bU-9Y
- for qemu-devel@nongnu.org; Sun, 13 Aug 2023 08:02:09 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
+ id 1qVBpE-0007zk-1s
+ for qemu-devel@nongnu.org; Sun, 13 Aug 2023 10:12:12 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qV9nL-0007zj-7H
- for qemu-devel@nongnu.org; Sun, 13 Aug 2023 08:02:09 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-686f94328a4so2324743b3a.0
- for <qemu-devel@nongnu.org>; Sun, 13 Aug 2023 05:02:06 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
+ id 1qVBpC-0000mZ-IL
+ for qemu-devel@nongnu.org; Sun, 13 Aug 2023 10:12:11 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-31771bb4869so3339776f8f.0
+ for <qemu-devel@nongnu.org>; Sun, 13 Aug 2023 07:12:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1691928126; x=1692532926;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=GWlbRiQXU9gddI5oKN/IiHFJnr/wffsiljRPll1sFTc=;
- b=aeqyZBSWtgvPoEcsKT0IGn3rfWqaShmKLYTOEqyyk8G9T2GfJCeNWYrXiZUK7Tx0XS
- J1KyaCoG5QrgEp4ZlmU7V+96glQoB2nmlOtEjYeZ/SA+Ek0q/rjlffYIKJq6JPFK06/9
- Vu8yTSmNvFhfUQTID4PxstwROn0JtMboPlz+GdE7L8NJAVF4bCxHyy2KKsewgJQ5hVmm
- fjOWfH2lfB2NmWGNawJyzKYFHPiVaVAsxoEpgWnKYN6wRwC97bsLD2DIHwKD5CfoRP8F
- /sjYMGyDANQtfHHSMmNWnMSx14KNYQL4Ndtz3xkjSpPfA7y1c+wbGEUHJiqjC91LlZvY
- AKcw==
+ d=gmail.com; s=20221208; t=1691935928; x=1692540728;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=mZkCQ1yQ2x3vp6dfJTClLuD7tLuUJi1rmlTlilzcOdg=;
+ b=bFktTq+kpmdrUUIg70ChhLLOF4n6Yfn4JhR6kh/ljvJnrxlYs+etBjUUQv8Ut+eIoa
+ dxX8EoQoph+zCTmA2RU2DZL1Z9T6G0PPNBgTs0JrCyDOUg9kpk3waKBPMzLrBXbvx4Re
+ Ssn4QpH46GygAfWzmXOBZL77P5nsB5WZNtiQDAIROlvBZQB+1YaDglamO1kxgWiR1UsM
+ OdlAuSpJWVDaol+PlXtP17dqaf467TRDHeOZrxdpnaoQ2KLF/Xf8zTX14V6Vj4rFyFAW
+ YHQ6sCHpFJbCmHnLnbO4DIb+o49ACF5dRot7M3t2UruDn/0h4FE/zs7VNyQpfDOs9PCR
+ SCyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691928126; x=1692532926;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=GWlbRiQXU9gddI5oKN/IiHFJnr/wffsiljRPll1sFTc=;
- b=Oz/OD0WE4pVuo1EFTjqOTktaBRApmeubROXrzLBE1sRJr9WOgDBcNoyKe1pg0vaegR
- 8/mo1NL0hCo9rw9zjomRXTE4fkIckbQB9t3DSyVH+jlyaaGhYZCVyxA2hCKxdtQiAhYN
- 0cfEgz+R1PqIx+1rOle9tIQy6DSBrsxRVctIZes8G5m8LHwKl7QK0H7dihkqzL7JFkr2
- 4Y/dCRh9rU5j4LVWELCLt70Ye68kSqiYBcpVmqI3Z+QjKzWEUG8PJMB7OMS087Jnp2IL
- K+RkQHDyEbgPDOqjPn7HDUIEtp9RM6C/86IRDJVHAzj7f6hhuMb1ucvVxZkJOqccwXeE
- /eaw==
-X-Gm-Message-State: AOJu0YyBUvockrzUWieWz7NTZjIoZGnEjSuGtwi3wXE6cWLl//OW1/Zi
- WTSeDbQgI24vknzRa5o2Kvf099Lpd2I+sgWF
-X-Google-Smtp-Source: AGHT+IF+LppDmvtucCarc0RYx4rwrJ0qrEGmy1EQRHVxqqUwOMnHdW+tgDD3wfbkkWjYnEJL074o5w==
-X-Received: by 2002:a05:6a20:4426:b0:12e:44:a1a6 with SMTP id
- ce38-20020a056a20442600b0012e0044a1a6mr8809235pzb.11.1691928125630; 
- Sun, 13 Aug 2023 05:02:05 -0700 (PDT)
-Received: from localhost ([125.35.86.198]) by smtp.gmail.com with ESMTPSA id
- v16-20020a62a510000000b0068285a7f107sm6309667pfm.177.2023.08.13.05.02.04
+ d=1e100.net; s=20221208; t=1691935928; x=1692540728;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=mZkCQ1yQ2x3vp6dfJTClLuD7tLuUJi1rmlTlilzcOdg=;
+ b=KHmBJAIxL+cQ6BgAzgPdCCsy3Li19VHCsABY3DYKj1nsh/tA/u4EffL9aMFqLv7waR
+ dYX3uQHj2azxHrNcr0o7d2y1xujbwUzDc9fvoZ5BNYLrjG+pM4bL4hj3+9E38Kk4wQIu
+ l2z1jrCTfTDIeBYvWEKSpfRtGiKLp7tFhpEp8ziM/cD/dLeGp1FJz+J6D9ecFNecyHbg
+ oRI7n8zwXHl3KcbZCIaV6/qUDlepC3Fu/PPJY8oRWXR6CJSeDY4JEnxG24boK4MTCEgX
+ 0VNM/MHZT3/TpnBQ8fny7fe4QqEqKCwiXB3P/gWRskP01WPbOMagl8w+gkONtj88SFhJ
+ u0iQ==
+X-Gm-Message-State: AOJu0Yzy+3xgjROcd+WaiDch55nqmWW/niv0UabrhvjhZDaShjdoWOnr
+ ac2fhvIw1zjrSTZxGzERKBYXEYIDWJc=
+X-Google-Smtp-Source: AGHT+IGqt8374SsWeHRQBKaxo/w6MIE5GYrfQwoSLqxjUU0gLJzf1sioU1ZYvv2m/bRgiwjxq3M+tQ==
+X-Received: by 2002:adf:ee0d:0:b0:317:7062:32d2 with SMTP id
+ y13-20020adfee0d000000b00317706232d2mr4953656wrn.54.1691935927871; 
+ Sun, 13 Aug 2023 07:12:07 -0700 (PDT)
+Received: from karim.my.domain ([197.39.204.50])
+ by smtp.gmail.com with ESMTPSA id
+ l18-20020a5d4112000000b003144b95e1ecsm11409101wrp.93.2023.08.13.07.12.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 13 Aug 2023 05:02:05 -0700 (PDT)
-From: Hawkins Jiawei <yin31149@gmail.com>
-To: jasowang@redhat.com,
-	mst@redhat.com,
-	eperezma@redhat.com
-Cc: qemu-devel@nongnu.org,
-	yin31149@gmail.com,
-	18801353760@163.com
-Subject: [RFC PATCH v2 3/3] vdpa: Allow VIRTIO_NET_F_RSS in SVQ
-Date: Sun, 13 Aug 2023 20:01:54 +0800
-Message-Id: <f46fb929582cef326282a42237589efb85a7124b.1691926415.git.yin31149@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <cover.1691926415.git.yin31149@gmail.com>
-References: <cover.1691926415.git.yin31149@gmail.com>
+ Sun, 13 Aug 2023 07:12:07 -0700 (PDT)
+From: Karim Taha <kariem.taha2.7@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: imp@bsdimp.com,
+	Karim Taha <kariem.taha2.7@gmail.com>
+Subject: [PATCH v2 00/32] Implement the stat system calls for FreeBSD.
+Date: Sun, 13 Aug 2023 05:09:41 +0200
+Message-Id: <20230813031013.1743-1-kariem.taha2.7@gmail.com>
+X-Mailer: git-send-email 2.40.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=yin31149@gmail.com; helo=mail-pf1-x435.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=kariem.taha2.7@gmail.com; helo=mail-wr1-x436.google.com
+X-Spam_score_int: -2
+X-Spam_score: -0.3
+X-Spam_bar: /
+X-Spam_report: (-0.3 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_06_12=1.543,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,26 +91,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Enable SVQ with VIRTIO_NET_F_RSS feature.
+Upstream the implementation of the stat system calls from the
+qemu-bsd-user fork, the following system calls are implemented:
+stat(2), lstat(2), fstat(2), fstatat(2), nstat, nfstat, nlstat
+getfh(2), lgetfh(2), fhopen(2), fhstat(2), fhstatfs(2), statfs(2)
+fstatfs(2), getfsstat(2), getdents(2), getdirentries(2), fcntl(2)
 
-Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
----
- net/vhost-vdpa.c | 1 +
- 1 file changed, 1 insertion(+)
+Karim Taha (1):
+  Add os-stat.c to the build
 
-diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index e21b3ac67a..2a276ef528 100644
---- a/net/vhost-vdpa.c
-+++ b/net/vhost-vdpa.c
-@@ -119,6 +119,7 @@ static const uint64_t vdpa_svq_device_features =
-     /* VHOST_F_LOG_ALL is exposed by SVQ */
-     BIT_ULL(VHOST_F_LOG_ALL) |
-     BIT_ULL(VIRTIO_NET_F_HASH_REPORT) |
-+    BIT_ULL(VIRTIO_NET_F_RSS) |
-     BIT_ULL(VIRTIO_NET_F_RSC_EXT) |
-     BIT_ULL(VIRTIO_NET_F_STANDBY) |
-     BIT_ULL(VIRTIO_NET_F_SPEED_DUPLEX);
+Kyle Evans (2):
+  Disable clang warnings
+  Define safe_fcntl macro in bsd-user/syscall_defs.h
+
+Michal Meloun (8):
+  Add struct target_stat to bsd-user/syscall_defs.h
+  Add struct target_statfs to bsd-user/syscall_defs.h
+  Implement h2t_freebsd_stat and h2t_freebsd_statfs functions
+  Implement freebsd11 stat related syscalls
+  Implement freebsd11 stat related syscalls
+  Implement freebsd11 stat related syscalls
+  Implement freebsd11 stat related syscalls
+  Implement freebsd11 stat related syscalls
+
+Mikaël Urankar (1):
+  Implement do_freebsd_realpathat syscall
+
+Stacey Son (13):
+  Declarations of h2t and t2h conversion functions.
+  Add struct target_freebsd11_stat to bsd-user/syscall_defs
+  Add structs target_freebsd11_nstat and target_freebsd11_statfs to
+    bsd-user/syscall_defs.h
+  Add struct target_freebsd_fhandle and fcntl flags to
+    bsd-user/syscall_defs.h
+  Implement h2t_freebsd11_stat h2t_freebsd_nstat
+  Implement h2t_freebsd_fhandle t2h_freebsd_fhandle functions
+  Implement h2t_freebds11_statfs
+  Implement target_to_host_fcntl_cmd
+  Implement stat related syscalls
+  Implement stat related syscalls
+  Implement stat related syscalls
+  Implement stat related syscalls
+  Implement stat related syscalls
+
+Warner Losh (7):
+  Move _WANT_FREEBSD macros to include/qemu/osdep.h
+  Update the definitions of __put_user and __get_user macros
+  Rename target_freebsd_time_t to target_time_t
+  Add glue to call the following syscalls to the freebsd_syscall
+    function:
+  Add glue to call the following syscalls to the freebsd_syscall
+    function:
+  Add glue to call the following syscalls to the freebsd_syscall
+    function:
+  Add glue to call the following syscalls to the freebsd_syscall
+    function:
+
+ bsd-user/freebsd/meson.build  |   1 +
+ bsd-user/freebsd/os-stat.c    | 262 ++++++++++++++
+ bsd-user/freebsd/os-stat.h    | 663 ++++++++++++++++++++++++++++++++++
+ bsd-user/freebsd/os-syscall.c | 121 ++++++-
+ bsd-user/freebsd/qemu-os.h    |  50 +++
+ bsd-user/qemu.h               |  82 ++---
+ bsd-user/signal.c             |   5 +-
+ bsd-user/syscall_defs.h       | 221 +++++++++++-
+ include/qemu/compiler.h       |  30 ++
+ include/qemu/osdep.h          |  13 +
+ 10 files changed, 1382 insertions(+), 66 deletions(-)
+ create mode 100644 bsd-user/freebsd/os-stat.c
+ create mode 100644 bsd-user/freebsd/os-stat.h
+ create mode 100644 bsd-user/freebsd/qemu-os.h
+
 -- 
-2.25.1
+2.40.0
 
 
