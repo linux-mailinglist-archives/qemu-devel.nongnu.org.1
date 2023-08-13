@@ -2,83 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 574B277AAE9
-	for <lists+qemu-devel@lfdr.de>; Sun, 13 Aug 2023 21:44:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B91A77AEF9
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Aug 2023 01:49:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qVH03-0007yn-Ck; Sun, 13 Aug 2023 15:43:43 -0400
+	id 1qVKpE-0006aS-44; Sun, 13 Aug 2023 19:48:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qVH01-0007yO-0a
- for qemu-devel@nongnu.org; Sun, 13 Aug 2023 15:43:41 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qVGzz-0002UQ-Hg
- for qemu-devel@nongnu.org; Sun, 13 Aug 2023 15:43:40 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-3fe2048c910so33672145e9.1
- for <qemu-devel@nongnu.org>; Sun, 13 Aug 2023 12:43:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1691955818; x=1692560618;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Rl/vvZTq7At57smayFXGDxxVD4P17UWOFIucJHnT9y8=;
- b=ruonNH7Zc2ExNsbr3jQzEwmcJs+XfRUDZkTGnnPy5wRzmYTrRB/BLRMPAd5GUpAOx6
- jYoioF+2Wk6Y6lWp9jqejV+1vZtsz15/Md8Kf1xo0SuwxEnv6Kj7lAUzl1LXJ2FZfNa/
- +58yMObe/qE/4OrXTVB69fBOhLbnaA4wd880YwPnageOdq5goZYcIFiGLZirIJLXxqpe
- vPhDAagWgnBvoUhTemm/uyfmTmTczxfbGcsWnt2wVAfwuq65uGAWv3ZkJKZ0N0zUctaE
- nYEsXmtTzrBwDg0S5Rr7VHtdLVQI7kbtOLhLLan/akLxp8ts3ozoWr0WdugfdUmciPDV
- 7bCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691955818; x=1692560618;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Rl/vvZTq7At57smayFXGDxxVD4P17UWOFIucJHnT9y8=;
- b=Yf//syZ9qaAxzKitM16KZLtI4xo9DZpaNAU8uU4VDwCWiCA+lKo4YtPYjxn+KHjTRo
- AkqwjFE32CwVqlOepRKMmqF2j/sTKFOm2eUNsc/l4NpMXN9kES0YGpKKs47/Ubn6e/PT
- QpLAm1AF7VAN+x2kWnhCgJxAjxsBUBi+szOFEbrRjSFlIp0J8arBX8PGw97wElWkNKMD
- PLUvW5746fFO5bbYGg312WzEWcYfvHPd/JXFFKJIC8/OyiJqzmU9+KAEm3D+IuCbI/as
- 0CfhtUA9ot1GHrPb3wATxzGtt+LQqQyuigNIqAb8yshX1bFkFTZ83srM4Qv505iI7VBL
- l9UA==
-X-Gm-Message-State: AOJu0YwTQm4rbYziYM6nG37aq1Cgw+OJDqSruKcuiu1dbejYMDsU9BoR
- Oq93/Q2rBgL9+6DjGj5YHN2nVY4YNIU=
-X-Google-Smtp-Source: AGHT+IGTk64h38p4maj8+r4d/KoeukKguxDdKR3fPm6yOCgvstvb/eUh520T3IURJ5EZtt0807Yfxg==
-X-Received: by 2002:a7b:ce0b:0:b0:3f8:2777:15e with SMTP id
- m11-20020a7bce0b000000b003f82777015emr6174138wmc.31.1691955817911; 
- Sun, 13 Aug 2023 12:43:37 -0700 (PDT)
-Received: from karim.my.domain ([197.39.204.50])
- by smtp.gmail.com with ESMTPSA id
- t20-20020a7bc3d4000000b003fe263dab33sm12234536wmj.9.2023.08.13.12.43.37
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 13 Aug 2023 12:43:37 -0700 (PDT)
-From: Karim Taha <kariem.taha2.7@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: imp@bsdimp.com, Karim Taha <kariem.taha2.7@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v3 32/32] Add glue to call the following syscalls to the
- freebsd_syscall function:
-Date: Sun, 13 Aug 2023 10:41:53 +0200
-Message-Id: <20230813084153.6510-33-kariem.taha2.7@gmail.com>
-X-Mailer: git-send-email 2.40.0
-In-Reply-To: <20230813084153.6510-1-kariem.taha2.7@gmail.com>
-References: <20230813084153.6510-1-kariem.taha2.7@gmail.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1qVKpB-0006aG-Gq
+ for qemu-devel@nongnu.org; Sun, 13 Aug 2023 19:48:45 -0400
+Received: from mgamail.intel.com ([192.55.52.43])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1qVKp8-0000RD-BJ
+ for qemu-devel@nongnu.org; Sun, 13 Aug 2023 19:48:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1691970522; x=1723506522;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=x+9NiVqCNSgHBifXxq3zeYAQc+a6TAIhWJ1if0Ru1M4=;
+ b=EyPbNzY2EF7Jt7TepbLGpWtwSw3Rr0LttFNUu4ukYxfslYSfRv02uYWr
+ wYpHeoP3pRWC07j19tFVDGaCVlPHtyUvDc8WZD9ZsbyS3A5q9NJX+Bd/O
+ Amh3hbn61m0VIFyisV9ouSQiwQBhrRfNoMKDrTabs8eDSPX2OnwrDYsRF
+ hyv8oVqUF/JBAvmOuoFvW7yY4MbUytgaZUC3tUfTNKZKdBnZNADpFnVwr
+ Ok6mNmzQZ03h+TBRNCqIUexfvEhS884r1OPhrQV+WWq3A2utHVPOuIs+h
+ +3L/DIoAhWBvYIKRTI41iPM5g69HzzZTcFXsTUi/zsMOO2zuyRJAX2gbs Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10801"; a="458296100"
+X-IronPort-AV: E=Sophos;i="6.01,171,1684825200"; d="scan'208";a="458296100"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+ by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Aug 2023 16:48:37 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10801"; a="856886490"
+X-IronPort-AV: E=Sophos;i="6.01,171,1684825200"; d="scan'208";a="856886490"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.28])
+ by orsmga004.jf.intel.com with ESMTP; 13 Aug 2023 16:48:35 -0700
+Date: Mon, 14 Aug 2023 07:59:07 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: "Wen, Qian" <qian.wen@intel.com>
+Cc: Igor Mammedov <imammedo@redhat.com>, qemu-devel@nongnu.org,
+ xiaoyao.li@intel.com, pbonzini@redhat.com,
+ richard.henderson@linaro.org, babu.moger@amd.com, zhao1.liu@intel.com
+Subject: Re: [PATCH v2] target/i386: Avoid cpu number overflow in legacy
+ topology
+Message-ID: <ZNluSyIAyOxYFomL@liuzhao-OptiPlex-7080>
+References: <20230809102732.3124908-1-qian.wen@intel.com>
+ <20230809131426.1d9f5821@imammedo.users.ipa.redhat.com>
+ <f1710cde-a3ce-6125-2608-c1ebcf4be581@intel.com>
+ <20230809154742.494c3697@imammedo.users.ipa.redhat.com>
+ <6aa7915c-c39d-ad5f-0171-8516868c9632@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=kariem.taha2.7@gmail.com; helo=mail-wm1-x334.google.com
-X-Spam_score_int: -2
-X-Spam_score: -0.3
-X-Spam_bar: /
-X-Spam_report: (-0.3 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_06_12=1.543,
+In-Reply-To: <6aa7915c-c39d-ad5f-0171-8516868c9632@intel.com>
+Received-SPF: pass client-ip=192.55.52.43; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,48 +84,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Warner Losh <imp@bsdimp.com>
+Hi Qian,
 
-freebsd11_getdents
-getdirentries
-freebsd11_getdirentries
-fcntl
+On Sun, Aug 13, 2023 at 06:49:40PM +0800, Wen, Qian wrote:
 
-Signed-off-by: Warner Losh <imp@bsdimp.com>
-Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
----
- bsd-user/freebsd/os-syscall.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+[snip]
 
-diff --git a/bsd-user/freebsd/os-syscall.c b/bsd-user/freebsd/os-syscall.c
-index 916a754bf8..e9b1b663af 100644
---- a/bsd-user/freebsd/os-syscall.c
-+++ b/bsd-user/freebsd/os-syscall.c
-@@ -576,6 +576,22 @@ static abi_long freebsd_syscall(void *cpu_env, int num, abi_long arg1,
-         ret = do_freebsd_getfsstat(arg1, arg2, arg3);
-         break;
- 
-+    case TARGET_FREEBSD_NR_freebsd11_getdents: /* getdents(2) */
-+        ret = do_freebsd11_getdents(arg1, arg2, arg3);
-+        break;
-+
-+    case TARGET_FREEBSD_NR_getdirentries: /* getdirentries(2) */
-+        ret = do_freebsd_getdirentries(arg1, arg2, arg3, arg4);
-+        break;
-+
-+    case TARGET_FREEBSD_NR_freebsd11_getdirentries: /* getdirentries(2) */
-+        ret = do_freebsd11_getdirentries(arg1, arg2, arg3, arg4);
-+        break;
-+    case TARGET_FREEBSD_NR_fcntl: /* fcntl(2) */
-+        ret = do_freebsd_fcntl(arg1, arg2, arg3);
-+        break;
-+
-+
-         /*
-          * sys{ctl, arch, call}
-          */
--- 
-2.40.0
+> 
+> > also perhaps double check if we could do induce similar overflow
+> > tweaking other -smp properties (todo for another patch[es] if there are such places).
+> 
+> I have a check, the CPUID.0x4:EAX[31:26] indicates the Maximum number of addressable IDs for processor cores in the physical package.
+> If we launch over 64 cores VM, the 6-bits field will also overflow. I will add the following fix to patch2 in v2.
 
+Good catch!
+
+Just discussion, I find if we use APIC ID offset to encode 0x4, then it
+seems no need for an explicit check [1], right?
+
+[1]: https://lists.gnu.org/archive/html/qemu-devel/2023-08/msg00027.html
+
+Thanks,
+Zhao
+
+> 
+> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> index 52a2a1a1c7..9c1ae3d83d 100644
+> --- a/target/i386/cpu.c
+> +++ b/target/i386/cpu.c
+> @@ -243,6 +243,7 @@ static void encode_cache_cpuid4(CPUCacheInfo *cache,
+>                            cache->partitions * cache->sets);
+> 
+>      assert(num_apic_ids > 0);
+> +    num_cores = num_cores > 64 ? 64 : num_cores;
+>      *eax = CACHE_TYPE(cache->type) |
+>             CACHE_LEVEL(cache->level) |
+>             (cache->self_init ? CACHE_SELF_INIT_LEVEL : 0) |
+> 
+> 
+> Thanks,
+> Qian
+> >>>>              *edx |= CPUID_HT;
+> >>>>          }
+> >>>>          if (!cpu->enable_pmu) {  
 
