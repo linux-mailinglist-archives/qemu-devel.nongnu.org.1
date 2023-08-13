@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A49C77A6C1
-	for <lists+qemu-devel@lfdr.de>; Sun, 13 Aug 2023 16:14:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11E2077A6C5
+	for <lists+qemu-devel@lfdr.de>; Sun, 13 Aug 2023 16:14:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qVBpw-0008GF-8w; Sun, 13 Aug 2023 10:12:56 -0400
+	id 1qVBpu-0008G3-VV; Sun, 13 Aug 2023 10:12:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qVBpc-0008Av-7b
+ id 1qVBpd-0008B1-30
  for qemu-devel@nongnu.org; Sun, 13 Aug 2023 10:12:38 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qVBpa-0000sF-3R
- for qemu-devel@nongnu.org; Sun, 13 Aug 2023 10:12:35 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-3fbea14706eso31527405e9.2
- for <qemu-devel@nongnu.org>; Sun, 13 Aug 2023 07:12:32 -0700 (PDT)
+ id 1qVBpb-0000sM-Fe
+ for qemu-devel@nongnu.org; Sun, 13 Aug 2023 10:12:36 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-3fe2fb9b4d7so31611035e9.1
+ for <qemu-devel@nongnu.org>; Sun, 13 Aug 2023 07:12:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1691935952; x=1692540752;
+ d=gmail.com; s=20221208; t=1691935953; x=1692540753;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=tytNoWwd4l2oWWKY6hZbDrOZveBwceyNmveWX7P6eu0=;
- b=qrHULHUjop1hD9soqGB53Y64bUXC7X0Nl5WhA3CdFAhsUDHnlnwKxu4G8vUEQXnFn+
- a9MK0W+pd4jW5yMhv8mDr/WlaPlkO/OQ7r23Miccf0+tEYB+kUFILH+6gISnctYBTPKi
- 6rlY6r0X4a0JoMDq3vONezFbnkv6eckJknqBA9iQfqojXU/yXN6ktejluwxORXDtYsP+
- cx2UhNJs1ygNuZNTWoi+Ya7Qq+TFJX8UFntdE5lxTLm680tjZ2K8kK2kEhCvavIpK/3x
- gGmxJJDn4Yl2JM5sqlqiQZ8oKG56ZNWwANRUgIUkQrla+bs+7pHGCKjk5GEsQ7/+l8oK
- EC0Q==
+ bh=nWpL2ZjaRHGF59jykGmUuJR96pZMoEaAnfNSKG75X6s=;
+ b=pULEL/pC1+wjHpuiWuNcWe9tY+EUzb1JkYGjIZV455KJb2Pj0RgbvKxBSyR+ji5zC9
+ GGSE6Dpf+s8xfLO719Nly6DhQQBkWeO+eDKaHzCOQ9a59qPxmo4jgWStmq8AARHS4l4w
+ GTjs5+fwB31msSsaKaxF57Ccj2JCwZu1IxyqXcoSXgBEh0QPihZ8wxI2q1oPFCoqAfDl
+ Z3NPElt1yvIe0UtVc0KcOKubga7pPcfVNffmjMBEmHfc/bC627MvvzMy9NfT92p4mkeS
+ RW+kfgGjLi+Un5YfrTFrGrRunjBcoAmylBKCn9yoKT4fMZnhIrtOg0SrZjgpyKmR5U84
+ rDPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691935952; x=1692540752;
+ d=1e100.net; s=20221208; t=1691935953; x=1692540753;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tytNoWwd4l2oWWKY6hZbDrOZveBwceyNmveWX7P6eu0=;
- b=Cwm4KB3V2QQbA6E+eGzEWbQnXbnwPIdiOKWKbML6pm+1Ir1TQjwMr89MvP7gDvc+GS
- nnorJxB26rm5fRkc0FxTFcyYrIp3YWYaHNSjF0+ywJfvaEacnp4dhnLYfGWLQNSXr/U+
- IY1bAkj1wAFXGLrm0cl+k6eAI6DAcncUyUKB0dC6LUS3megsrN5n5dLjedy4g1GJZhLU
- 3VeJXdF0x0GsFG1aUUFzhl+sU1NDupN74RmZv7SKDi0ywd/yb1SLHedFtG1Nd6Glk2Qe
- /P2SvitxtlOnYAfM1cqVGTx1C8STy4ACqwoCWIXsgm+H1MIJdmVR5kUxNDJhm46xpHyR
- qXtw==
-X-Gm-Message-State: AOJu0YzHd0rtQWqOcEaN5ciDsd8idvIfbnEmSiwNji3PFz7RB8vJv7ag
- YX3G841+ReLFaBnqspjAJM6/X+VpR+w=
-X-Google-Smtp-Source: AGHT+IEBpybv657wgdmmLaFcBYukxRTqJOnXjlqX8/9kDVLkFG7xYAHZ74xKD7l3O3MP0FJLCP1Cng==
-X-Received: by 2002:a5d:4a47:0:b0:317:3f64:4901 with SMTP id
- v7-20020a5d4a47000000b003173f644901mr4719807wrs.41.1691935951682; 
- Sun, 13 Aug 2023 07:12:31 -0700 (PDT)
+ bh=nWpL2ZjaRHGF59jykGmUuJR96pZMoEaAnfNSKG75X6s=;
+ b=WTzfVESDaN6Mcov87Cnec6+aUfe0jfLLGNnDX/lhSKPVCbQpG391QJXCeuBWmAEbBM
+ lYw4qXLcgJLu01uCTB0k5flqEvuRz5lrERJUGyO5jOTMdY5mUxJk7yoDBu0f/g1Xyi5x
+ 6dha/25KJeyNWEGtiYv/mg4kPVYcjPB0MZ3khc6KwuN6NJ8kMj3GlXSAXPPRiiwLXud7
+ 7jJTx6TSDHwpid630oU9PZLDtlP2bEVun55CqeSyCIhhKKSExzfTEK5hTAtf+UujwgB6
+ ak36UxpOlcp9gez1CS6WxZyhTuY5qcjdqjF5Vw49xH2a2rIZrEyhA3o/h+WD7Ypm6Dzw
+ clSA==
+X-Gm-Message-State: AOJu0YwXHpZcR9Ombo6K4Dm67LEVar2f63cTX1ZOgOJHKxzBvfANOnGQ
+ vAerzdyBV3Vt1FqEMCOPJ7YpfIXeCZ8=
+X-Google-Smtp-Source: AGHT+IFPuo1T/f2pY3GL+sv2H5UxRIgA9wGnBPbHuvNpY2mVY1nXS9Lwo7yzhGTIdSwfcS9uai7c1Q==
+X-Received: by 2002:a05:6000:90a:b0:30f:b7b4:3e55 with SMTP id
+ cw10-20020a056000090a00b0030fb7b43e55mr5112365wrb.19.1691935952934; 
+ Sun, 13 Aug 2023 07:12:32 -0700 (PDT)
 Received: from karim.my.domain ([197.39.204.50])
  by smtp.gmail.com with ESMTPSA id
- l18-20020a5d4112000000b003144b95e1ecsm11409101wrp.93.2023.08.13.07.12.30
+ l18-20020a5d4112000000b003144b95e1ecsm11409101wrp.93.2023.08.13.07.12.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 13 Aug 2023 07:12:31 -0700 (PDT)
+ Sun, 13 Aug 2023 07:12:32 -0700 (PDT)
 From: Karim Taha <kariem.taha2.7@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: imp@bsdimp.com, Stacey Son <sson@FreeBSD.org>,
  Karim Taha <kariem.taha2.7@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v2 19/32] Implement stat related syscalls
-Date: Sun, 13 Aug 2023 05:10:00 +0200
-Message-Id: <20230813031013.1743-20-kariem.taha2.7@gmail.com>
+Subject: [PATCH v2 20/32] Implement stat related syscalls
+Date: Sun, 13 Aug 2023 05:10:01 +0200
+Message-Id: <20230813031013.1743-21-kariem.taha2.7@gmail.com>
 X-Mailer: git-send-email 2.40.0
 In-Reply-To: <20230813031013.1743-1-kariem.taha2.7@gmail.com>
 References: <20230813031013.1743-1-kariem.taha2.7@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=kariem.taha2.7@gmail.com; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=kariem.taha2.7@gmail.com; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -2
 X-Spam_score: -0.3
 X-Spam_bar: /
@@ -97,88 +97,90 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Stacey Son <sson@FreeBSD.org>
 
 Implement the following syscalls:
-statfs(2)
-fstatfs(2)
-getfsstat(2)
+getdents(2)
+getdirecentries(2)
 
 Signed-off-by: Stacey Son <sson@FreeBSD.org>
 Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- bsd-user/freebsd/os-stat.h | 69 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 69 insertions(+)
+ bsd-user/freebsd/os-stat.h | 72 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 72 insertions(+)
 
 diff --git a/bsd-user/freebsd/os-stat.h b/bsd-user/freebsd/os-stat.h
-index 935663c071..9492c93c55 100644
+index 9492c93c55..7dc41cd0bf 100644
 --- a/bsd-user/freebsd/os-stat.h
 +++ b/bsd-user/freebsd/os-stat.h
-@@ -210,4 +210,73 @@ static inline abi_long do_freebsd_fhstatfs(abi_ulong target_fhp_addr,
-     return h2t_freebsd_statfs(target_stfs_addr, &host_stfs);
+@@ -279,4 +279,76 @@ static inline abi_long do_freebsd_getfsstat(abi_ulong target_addr,
+     return ret;
  }
  
-+/* statfs(2) */
-+static inline abi_long do_freebsd_statfs(abi_long arg1, abi_long arg2)
++/* getdents(2) */
++static inline abi_long do_freebsd11_getdents(abi_long arg1,
++        abi_ulong arg2, abi_long nbytes)
 +{
 +    abi_long ret;
-+    void *p;
-+    struct statfs host_stfs;
++    struct freebsd11_dirent *dirp;
 +
-+    LOCK_PATH(p, arg1);
-+    ret = get_errno(statfs(path(p), &host_stfs));
-+    UNLOCK_PATH(p, arg1);
-+    if (is_error(ret)) {
-+        return ret;
++    dirp = lock_user(VERIFY_WRITE, arg2, nbytes, 0);
++    if (dirp == NULL) {
++        return -TARGET_EFAULT;
 +    }
++    ret = get_errno(freebsd11_getdents(arg1, (char *)dirp, nbytes));
++    if (!is_error(ret)) {
++        struct freebsd11_dirent *de;
++        int len = ret;
++        int reclen;
 +
-+    return h2t_freebsd_statfs(arg2, &host_stfs);
++        de = dirp;
++        while (len > 0) {
++            reclen = de->d_reclen;
++            if (reclen > len) {
++                return -TARGET_EFAULT;
++            }
++            de->d_reclen = tswap16(reclen);
++            de->d_fileno = tswap32(de->d_fileno);
++            len -= reclen;
++        }
++    }
++    return ret;
 +}
 +
-+/* fstatfs(2) */
-+static inline abi_long do_freebsd_fstatfs(abi_long fd, abi_ulong target_addr)
++/* getdirecentries(2) */
++static inline abi_long do_freebsd_getdirentries(abi_long arg1,
++        abi_ulong arg2, abi_long nbytes, abi_ulong arg4)
 +{
 +    abi_long ret;
-+    struct statfs host_stfs;
++    struct dirent *dirp;
++    long basep;
 +
-+    ret = get_errno(fstatfs(fd, &host_stfs));
-+    if (is_error(ret)) {
-+        return ret;
++    dirp = lock_user(VERIFY_WRITE, arg2, nbytes, 0);
++    if (dirp == NULL) {
++        return -TARGET_EFAULT;
 +    }
++    ret = get_errno(getdirentries(arg1, (char *)dirp, nbytes, &basep));
++    if (!is_error(ret)) {
++        struct dirent *de;
++        int len = ret;
++        int reclen;
 +
-+    return h2t_freebsd_statfs(target_addr, &host_stfs);
-+}
-+
-+/* getfsstat(2) */
-+static inline abi_long do_freebsd_getfsstat(abi_ulong target_addr,
-+        abi_long bufsize, abi_long flags)
-+{
-+    abi_long ret;
-+    struct statfs *host_stfs;
-+    int count;
-+    long host_bufsize;
-+
-+    count = bufsize / sizeof(struct target_statfs);
-+
-+    /* if user buffer is NULL then return number of mounted FS's */
-+    if (target_addr == 0 || count == 0) {
-+        return get_errno(freebsd11_getfsstat(NULL, 0, flags));
++        de = dirp;
++        while (len > 0) {
++            reclen = de->d_reclen;
++            if (reclen > len) {
++                return -TARGET_EFAULT;
++            }
++            de->d_fileno = tswap64(de->d_fileno);
++            de->d_off = tswap64(de->d_off);
++            de->d_reclen = tswap16(de->d_reclen);
++            de->d_namlen = tswap16(de->d_namlen);
++            len -= reclen;
++            de = (struct dirent *)((void *)de + reclen);
++        }
 +    }
-+
-+    /* XXX check count to be reasonable */
-+    host_bufsize = sizeof(struct statfs) * count;
-+    host_stfs = alloca(host_bufsize);
-+    if (!host_stfs) {
-+        return -TARGET_EINVAL;
-+    }
-+
-+    ret = count = get_errno(getfsstat(host_stfs, host_bufsize, flags));
-+    if (is_error(ret)) {
-+        return ret;
-+    }
-+
-+    while (count--) {
-+        if (h2t_freebsd_statfs((target_addr +
-+                        (count * sizeof(struct target_statfs))),
-+                    &host_stfs[count])) {
++    unlock_user(dirp, arg2, ret);
++    if (arg4) {
++        if (put_user(basep, arg4, abi_ulong)) {
 +            return -TARGET_EFAULT;
 +        }
 +    }
