@@ -2,67 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 759DD77A624
-	for <lists+qemu-devel@lfdr.de>; Sun, 13 Aug 2023 13:17:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B54177A645
+	for <lists+qemu-devel@lfdr.de>; Sun, 13 Aug 2023 14:03:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qV94r-0004Tl-Ku; Sun, 13 Aug 2023 07:16:09 -0400
+	id 1qV9nQ-0002e0-1C; Sun, 13 Aug 2023 08:02:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qV94p-0004T5-0B
- for qemu-devel@nongnu.org; Sun, 13 Aug 2023 07:16:07 -0400
-Received: from mail-lj1-x233.google.com ([2a00:1450:4864:20::233])
+ id 1qV9nH-0002Zb-AD
+ for qemu-devel@nongnu.org; Sun, 13 Aug 2023 08:02:05 -0400
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qV94m-00088V-0h
- for qemu-devel@nongnu.org; Sun, 13 Aug 2023 07:16:06 -0400
-Received: by mail-lj1-x233.google.com with SMTP id
- 38308e7fff4ca-2b9338e4695so52201041fa.2
- for <qemu-devel@nongnu.org>; Sun, 13 Aug 2023 04:16:03 -0700 (PDT)
+ id 1qV9nD-0007yW-6n
+ for qemu-devel@nongnu.org; Sun, 13 Aug 2023 08:02:02 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-6877eb31261so2304215b3a.1
+ for <qemu-devel@nongnu.org>; Sun, 13 Aug 2023 05:01:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1691925362; x=1692530162;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=wGARFZCaM/IrJ8hkRIL4fPLH3yjFiKC/1R3PVADx6+I=;
- b=aT7H7FjXGIgZcx0a3TXH4VE9hgBczRA1lU2Tr7Szk5ZUp2XxalegLMDpCZIgiMFnCJ
- 7UMclTMQDr75hkOxHkq0BdA2QJWmJNgaZH3B7Psi7vwl7z6V+BqnNUz4P0WGTPa9VEkd
- IcE+0W0DPZjk/DyOyS5907mnZ9otrKH6F6qAWfTuoAV7Qd1P+hNmXU3tEyD5djkQUMLB
- ygRvmv1Q+YbcRS7m4sF5MO/KUsDEq+0ELtZRvozHzIWrHUpVGFNR2bWoe4cEr1uhdWk7
- gni057WsLmA1OAYRRyfEMcalTL5t49AXzJwuQ1VrlHwbMQHUhy5eSzGmrzQJxehQcGsu
- GrYw==
+ d=gmail.com; s=20221208; t=1691928117; x=1692532917;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=HqNJmtyZKc+1TTSUOx7OVCOjIE+RV7DDXNmkl5fE+ho=;
+ b=L/gnK2VZmf8INfrp3wHu/cimdPBeXU1VN+Z5Q2NVCqlD3KHq6IJfrwA9DFdKomkAba
+ J4jMlfD1lYQnRcBoLdnnppyXl3LUDydVXQzOl0L+G1HvFu/kBG7Gu106Ob+eAyWbMaFZ
+ 33rseufqLKxo6FoR46PeoS6l6s6UuBbmPb93oDE2VRXddLJIbLuAbbr7Xg1BBzoI+pt1
+ Ew3SXZHMCJudbY/QXJF5pbFYD1PSRMAF9wxrC8NuRptg8Bpr4V8hPvxox5PucI9RGXIo
+ tpXATqY6qJd1Y9Ju6kYUA/UZ2VcIpDcpvYEl6ZjJtj+U2fRMDhSjZegB/oceON3PdQ9f
+ xJ8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691925362; x=1692530162;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20221208; t=1691928117; x=1692532917;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=wGARFZCaM/IrJ8hkRIL4fPLH3yjFiKC/1R3PVADx6+I=;
- b=BIrPJ9TwXjcGM/aDcPl5RAYAMbb2JPEnX3uVD0CNLPFpmroynyQSg9efDgDVXpuoIP
- PoPIIpHj3Q+ZqdtGIicP5RYocR4v9UT4GCw8R9saUk6ERLJwLzutksiosKpYkhOBX7oF
- eLi3rOTUImdAXb19jwiAQCpNWcloyG1NT+aoxY33uKplEfwNpYTsRvojU6O4YFzXufR/
- MjRFCZ7K2/jkydzE0HJH+dL2xG1WMpG4LEx7VvxzuoFpjoUxYKC7SyQriMcVjXJ4wzHT
- X13AWzoWipQ85meOYw2CM28MSy7EDmFV3luuR691to1qBJSVk3Z7SAeOz8M3JRA17/IM
- eelQ==
-X-Gm-Message-State: AOJu0YziSoYeVgJNGJDp5tBuDXCibS/Vm26K5XWwS7hKRX+HtZqnuFgZ
- 6khFGoqMs1Ovm9LANBxbWSgpD8ePtaJspPLeiSw=
-X-Google-Smtp-Source: AGHT+IFFQldmknNkN1FZtKx77+Ab3HGivkW1Fak3S3kENnFg9SiNo3PvZLH0QPFmMo2Q/yRUWVktD+2iz5bbPBNbSzU=
-X-Received: by 2002:a2e:b0dc:0:b0:2b9:dfd1:3803 with SMTP id
- g28-20020a2eb0dc000000b002b9dfd13803mr5028859ljl.30.1691925361271; Sun, 13
- Aug 2023 04:16:01 -0700 (PDT)
-MIME-Version: 1.0
-References: <cover.1691766252.git.yin31149@gmail.com>
- <93d5d82f0a5df71df326830033e50358c8b6be7a.1691766252.git.yin31149@gmail.com>
-In-Reply-To: <93d5d82f0a5df71df326830033e50358c8b6be7a.1691766252.git.yin31149@gmail.com>
+ bh=HqNJmtyZKc+1TTSUOx7OVCOjIE+RV7DDXNmkl5fE+ho=;
+ b=AZapcjzzuHW3hVyIDJEBq6aJbwS08C8hIjUgyoHiIR6UevUigt37r+OIw7vxuP1fkx
+ qaOiwCSuhsHzb39YelSghRBeeGMAu6QZMErCryYPsVvaq0+I1k3ia284ogFvZzFbWluk
+ 0VbrO56PbgqCkiQ2LSqY7NJz1AXcCuDv+RYY/TwtC5PPlkGytOG1dr958Gwb5JmXgilx
+ ZQt4nyE6yT7PZCTEPXPrk6OsHCSwJFAgjqMJ0DaC3+6B6NTuGmWxJsk3xb/2c0JT4NvE
+ IMa+wX528lWgbd7FpzFqrP3UldqgrldkhxarKyM8vkpuUUx94zcK9i7QCXGWXblbIxSh
+ bkQQ==
+X-Gm-Message-State: AOJu0Yxnkpw25by+XTFIwm+zvDt9bX+QTCBZYbTYc4xTLQSxrw78R4B+
+ 2Qfjr5nkTHrBouQlNbdY44M=
+X-Google-Smtp-Source: AGHT+IH6chaiaP6ORRnQspRqxqQiUTEAQlprqknOLdKjuakdIaIdpoXwYifuyFQFc2qXwGkb607z5A==
+X-Received: by 2002:a05:6a00:158d:b0:658:cbf1:d05a with SMTP id
+ u13-20020a056a00158d00b00658cbf1d05amr8205280pfk.3.1691928117239; 
+ Sun, 13 Aug 2023 05:01:57 -0700 (PDT)
+Received: from localhost ([125.35.86.198]) by smtp.gmail.com with ESMTPSA id
+ j17-20020a62b611000000b0067777e960d9sm6148792pff.155.2023.08.13.05.01.56
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 13 Aug 2023 05:01:56 -0700 (PDT)
 From: Hawkins Jiawei <yin31149@gmail.com>
-Date: Sun, 13 Aug 2023 19:15:49 +0800
-Message-ID: <CAKrof1MvRBGTAc2ETModAtkRh6_Hn-v72+P2MvMbJ3EsVUX3Aw@mail.gmail.com>
-Subject: Re: [RFC PATCH 2/3] vdpa: Restore receive-side scaling state
-To: jasowang@redhat.com, mst@redhat.com, eperezma@redhat.com
-Cc: qemu-devel@nongnu.org, 18801353760@163.com
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::233;
- envelope-from=yin31149@gmail.com; helo=mail-lj1-x233.google.com
+To: jasowang@redhat.com,
+	mst@redhat.com,
+	eperezma@redhat.com
+Cc: qemu-devel@nongnu.org,
+	yin31149@gmail.com,
+	18801353760@163.com
+Subject: [RFC PATCH v2 0/3] Vhost-vdpa Shadow Virtqueue RSS Support
+Date: Sun, 13 Aug 2023 20:01:51 +0800
+Message-Id: <cover.1691926415.git.yin31149@gmail.com>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=yin31149@gmail.com; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -86,99 +93,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/8/11 23:28, Hawkins Jiawei wrote:
-> This patch reuses vhost_vdpa_net_load_rss() with some
-> refactorings to restore the receive-side scaling state
-> at device's startup.
->
-> Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
-> ---
->   net/vhost-vdpa.c | 53 ++++++++++++++++++++++++++++++++----------------
->   1 file changed, 35 insertions(+), 18 deletions(-)
->
-> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-> index 4c8e4b19f6..7870cbe142 100644
-> --- a/net/vhost-vdpa.c
-> +++ b/net/vhost-vdpa.c
-> @@ -820,17 +820,28 @@ static int vhost_vdpa_net_load_rss(VhostVDPAState *s, const VirtIONet *n,
->       }
->
->       cfg.hash_types = cpu_to_le32(n->rss_data.hash_types);
-> -    /*
-> -     * According to VirtIO standard, "Field reserved MUST contain zeroes.
-> -     * It is defined to make the structure to match the layout of
-> -     * virtio_net_rss_config structure, defined in 5.1.6.5.7.".
-> -     *
-> -     * Therefore, we need to zero the fields in struct virtio_net_rss_config,
-> -     * which corresponds the `reserved` field in
-> -     * struct virtio_net_hash_config.
-> -     */
-> -    memset(&cfg.indirection_table_mask, 0,
-> -           sizeof_field(struct virtio_net_hash_config, reserved));
-> +    if (do_rss) {
-> +        /*
-> +         * According to VirtIO standard, "Number of entries in indirection_table
-> +         * is (indirection_table_mask + 1)".
-> +         */
-> +        cfg.indirection_table_mask = cpu_to_le16(n->rss_data.indirections_len -
-> +                                                 1);
-> +        cfg.unclassified_queue = cpu_to_le16(n->rss_data.default_queue);
-> +        cfg.max_tx_vq = cpu_to_le16(n->curr_queue_pairs);
-> +    } else {
-> +        /*
-> +         * According to VirtIO standard, "Field reserved MUST contain zeroes.
-> +         * It is defined to make the structure to match the layout of
-> +         * virtio_net_rss_config structure, defined in 5.1.6.5.7.".
-> +         *
-> +         * Therefore, we need to zero the fields in
-> +         * struct virtio_net_rss_config, which corresponds the `reserved` field
-> +         * in struct virtio_net_hash_config.
-> +         */
-> +        memset(&cfg.indirection_table_mask, 0,
-> +               sizeof_field(struct virtio_net_hash_config, reserved));
-> +    }
->       /*
->        * Consider that virtio_net_handle_rss() currently does not restore the
->        * hash key length parsed from the CVQ command sent from the guest into
-> @@ -866,6 +877,7 @@ static int vhost_vdpa_net_load_rss(VhostVDPAState *s, const VirtIONet *n,
->
->       r = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
->                                   VIRTIO_NET_CTRL_MQ,
-> +                                do_rss ? VIRTIO_NET_CTRL_MQ_RSS_CONFIG :
->                                   VIRTIO_NET_CTRL_MQ_HASH_CONFIG,
->                                   data, ARRAY_SIZE(data));
->       if (unlikely(r < 0)) {
-> @@ -899,13 +911,18 @@ static int vhost_vdpa_net_load_mq(VhostVDPAState *s,
->           return r;
->       }
->
-> -    if (!virtio_vdev_has_feature(&n->parent_obj, VIRTIO_NET_F_HASH_REPORT)) {
-> -        return 0;
-> -    }
-> -
-> -    r = vhost_vdpa_net_load_rss(s, n, out_cursor, in_cursor, false);
-> -    if (unlikely(r < 0)) {
-> -        return r;
-> +    if (virtio_vdev_has_feature(&n->parent_obj, VIRTIO_NET_F_RSS)) {
-> +        /* Load the receive-side scaling state */
-> +        r = vhost_vdpa_net_load_rss(s, n, out_cursor, in_cursor, true);
-> +        if (unlikely(r < 0)) {
-> +            return r;
-> +        }
-> +    } else if (virtio_vdev_has_feature(&n->parent_obj, VIRTIO_NET_F_RSS)) {
+This series enables shadowed CVQ to intercept RSS command
+through shadowed CVQ, update the virtio NIC device model
+so qemu send it in a migration, and the restore of that
+RSS state in the destination.
 
-The correct feature to be used here is VIRTIO_NET_F_HASH_REPORT, rather
-than VIRTIO_NET_F_RSS. I will correct this in the v2 patch.
+Note that this patch should be based on
+patch "Vhost-vdpa Shadow Virtqueue Hash calculation Support" at [1].
 
-Thanks!
+[1]. https://lore.kernel.org/all/cover.1691762906.git.yin31149@gmail.com/
 
+ChangeLog
+=========
+v2:
+  - Correct the feature usage to VIRTIO_NET_F_HASH_REPORT when
+loading the hash calculation state in
+patch "vdpa: Restore receive-side scaling state"
 
-> +        /* Load the hash calculation state */
-> +        r = vhost_vdpa_net_load_rss(s, n, out_cursor, in_cursor, false);
-> +        if (unlikely(r < 0)) {
-> +            return r;
-> +        }
->       }
->
->       return 0;
+v1: https://lore.kernel.org/all/cover.1691766252.git.yin31149@gmail.com/
+
+TestStep
+========
+1. test the migration using vp-vdpa device
+  - For L0 guest, boot QEMU with two virtio-net-pci net device with
+`in-qemu` RSS, command line like:
+	-netdev tap,vhost=off...
+	-device virtio-net-pci,disable-legacy=on,disable-modern=off,
+iommu_platform=on,mq=on,ctrl_vq=on,hash=on,rss=on,guest_announce=off,
+indirect_desc=off,queue_reset=off,...
+
+  - For L1 guest, apply the relative patch series and compile the
+source code, start QEMU with two vdpa device with svq mode on,
+enable the `ctrl_vq`, `mq`, `rss` features on, command line like:
+      -netdev type=vhost-vdpa,x-svq=true,...
+      -device virtio-net-pci,mq=on,guest_announce=off,ctrl_vq=on,
+rss=on,...
+
+  - For L2 source guest, run the following bash command:
+```bash
+#!/bin/sh
+
+ethtool -K eth0 rxhash on
+```
+
+  - Execute the live migration in L2 source monitor
+
+  - Result
+    * with this series, L2 QEMU can execute without
+triggering any error or warning. L0 QEMU echo
+"Can't load eBPF RSS - fallback to software RSS".
+
+Hawkins Jiawei (3):
+  vdpa: Add SetSteeringEBPF method for NetClientState
+  vdpa: Restore receive-side scaling state
+  vdpa: Allow VIRTIO_NET_F_RSS in SVQ
+
+ net/vhost-vdpa.c | 63 ++++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 45 insertions(+), 18 deletions(-)
+
+-- 
+2.25.1
+
 
