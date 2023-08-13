@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BA8A77A5FF
-	for <lists+qemu-devel@lfdr.de>; Sun, 13 Aug 2023 12:51:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 759DD77A624
+	for <lists+qemu-devel@lfdr.de>; Sun, 13 Aug 2023 13:17:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qV8fg-00087P-MA; Sun, 13 Aug 2023 06:50:08 -0400
+	id 1qV94r-0004Tl-Ku; Sun, 13 Aug 2023 07:16:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <qian.wen@intel.com>)
- id 1qV8fY-00086y-KW
- for qemu-devel@nongnu.org; Sun, 13 Aug 2023 06:50:00 -0400
-Received: from mgamail.intel.com ([192.55.52.136])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <qian.wen@intel.com>)
- id 1qV8fV-0002UY-0V
- for qemu-devel@nongnu.org; Sun, 13 Aug 2023 06:50:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1691923797; x=1723459797;
- h=message-id:date:mime-version:from:subject:to:cc:
- references:in-reply-to;
- bh=T8PSG9GlXJFkThrYB0uf0875QHr+h2bXErz2kME8toE=;
- b=U/Wem8YtN0hGTFwhSkAvjgvzeMqquYLDqILzE5f7pGvEUASCY7T+3zw5
- 1mDvkcM2kDL9N7zEt8R0qofJTZgRjpB1Yvd4UgiUPg5NFN8p9bISGhYoL
- HPukGSRu3Xekz6adARfwvZ30rX2gi55RLvpb8+mKL3adMP0qEn2xyNlCt
- lVDBGWxziOo2seIyJkKgbJVIUqbiJhh/5fpTMlesNolOlvgXmdU77IweU
- oTdDLyaGmJphAV9XRl1UIkgUzXCGM6M6RTP8gI7hBjJ5zkKrXW1btPzup
- aUXzpdABsPB/AhzWvUhBut7Tv9/KRr6t5Rv911f2SdI5Bb4foYX/3u1eA A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10800"; a="351491346"
-X-IronPort-AV: E=Sophos;i="6.01,169,1684825200"; 
- d="scan'208,217";a="351491346"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
- by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Aug 2023 03:49:44 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10800"; a="736231651"
-X-IronPort-AV: E=Sophos;i="6.01,169,1684825200"; 
- d="scan'208,217";a="736231651"
-Received: from qianwen-mobl1.ccr.corp.intel.com (HELO [10.93.21.67])
- ([10.93.21.67])
- by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Aug 2023 03:49:42 -0700
-Content-Type: multipart/alternative;
- boundary="------------Qfi55lrJxHc2EsXaeIipV8BS"
-Message-ID: <6aa7915c-c39d-ad5f-0171-8516868c9632@intel.com>
-Date: Sun, 13 Aug 2023 18:49:40 +0800
+ (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
+ id 1qV94p-0004T5-0B
+ for qemu-devel@nongnu.org; Sun, 13 Aug 2023 07:16:07 -0400
+Received: from mail-lj1-x233.google.com ([2a00:1450:4864:20::233])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
+ id 1qV94m-00088V-0h
+ for qemu-devel@nongnu.org; Sun, 13 Aug 2023 07:16:06 -0400
+Received: by mail-lj1-x233.google.com with SMTP id
+ 38308e7fff4ca-2b9338e4695so52201041fa.2
+ for <qemu-devel@nongnu.org>; Sun, 13 Aug 2023 04:16:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1691925362; x=1692530162;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=wGARFZCaM/IrJ8hkRIL4fPLH3yjFiKC/1R3PVADx6+I=;
+ b=aT7H7FjXGIgZcx0a3TXH4VE9hgBczRA1lU2Tr7Szk5ZUp2XxalegLMDpCZIgiMFnCJ
+ 7UMclTMQDr75hkOxHkq0BdA2QJWmJNgaZH3B7Psi7vwl7z6V+BqnNUz4P0WGTPa9VEkd
+ IcE+0W0DPZjk/DyOyS5907mnZ9otrKH6F6qAWfTuoAV7Qd1P+hNmXU3tEyD5djkQUMLB
+ ygRvmv1Q+YbcRS7m4sF5MO/KUsDEq+0ELtZRvozHzIWrHUpVGFNR2bWoe4cEr1uhdWk7
+ gni057WsLmA1OAYRRyfEMcalTL5t49AXzJwuQ1VrlHwbMQHUhy5eSzGmrzQJxehQcGsu
+ GrYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1691925362; x=1692530162;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=wGARFZCaM/IrJ8hkRIL4fPLH3yjFiKC/1R3PVADx6+I=;
+ b=BIrPJ9TwXjcGM/aDcPl5RAYAMbb2JPEnX3uVD0CNLPFpmroynyQSg9efDgDVXpuoIP
+ PoPIIpHj3Q+ZqdtGIicP5RYocR4v9UT4GCw8R9saUk6ERLJwLzutksiosKpYkhOBX7oF
+ eLi3rOTUImdAXb19jwiAQCpNWcloyG1NT+aoxY33uKplEfwNpYTsRvojU6O4YFzXufR/
+ MjRFCZ7K2/jkydzE0HJH+dL2xG1WMpG4LEx7VvxzuoFpjoUxYKC7SyQriMcVjXJ4wzHT
+ X13AWzoWipQ85meOYw2CM28MSy7EDmFV3luuR691to1qBJSVk3Z7SAeOz8M3JRA17/IM
+ eelQ==
+X-Gm-Message-State: AOJu0YziSoYeVgJNGJDp5tBuDXCibS/Vm26K5XWwS7hKRX+HtZqnuFgZ
+ 6khFGoqMs1Ovm9LANBxbWSgpD8ePtaJspPLeiSw=
+X-Google-Smtp-Source: AGHT+IFFQldmknNkN1FZtKx77+Ab3HGivkW1Fak3S3kENnFg9SiNo3PvZLH0QPFmMo2Q/yRUWVktD+2iz5bbPBNbSzU=
+X-Received: by 2002:a2e:b0dc:0:b0:2b9:dfd1:3803 with SMTP id
+ g28-20020a2eb0dc000000b002b9dfd13803mr5028859ljl.30.1691925361271; Sun, 13
+ Aug 2023 04:16:01 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-From: "Wen, Qian" <qian.wen@intel.com>
-Subject: Re: [PATCH v2] target/i386: Avoid cpu number overflow in legacy
- topology
-To: Igor Mammedov <imammedo@redhat.com>
-Cc: qemu-devel@nongnu.org, xiaoyao.li@intel.com, zhao1.liu@intel.com,
- pbonzini@redhat.com, richard.henderson@linaro.org, babu.moger@amd.com
-References: <20230809102732.3124908-1-qian.wen@intel.com>
- <20230809131426.1d9f5821@imammedo.users.ipa.redhat.com>
- <f1710cde-a3ce-6125-2608-c1ebcf4be581@intel.com>
- <20230809154742.494c3697@imammedo.users.ipa.redhat.com>
-Content-Language: en-US
-In-Reply-To: <20230809154742.494c3697@imammedo.users.ipa.redhat.com>
-Received-SPF: pass client-ip=192.55.52.136; envelope-from=qian.wen@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, NICE_REPLY_A=-0.972, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <cover.1691766252.git.yin31149@gmail.com>
+ <93d5d82f0a5df71df326830033e50358c8b6be7a.1691766252.git.yin31149@gmail.com>
+In-Reply-To: <93d5d82f0a5df71df326830033e50358c8b6be7a.1691766252.git.yin31149@gmail.com>
+From: Hawkins Jiawei <yin31149@gmail.com>
+Date: Sun, 13 Aug 2023 19:15:49 +0800
+Message-ID: <CAKrof1MvRBGTAc2ETModAtkRh6_Hn-v72+P2MvMbJ3EsVUX3Aw@mail.gmail.com>
+Subject: Re: [RFC PATCH 2/3] vdpa: Restore receive-side scaling state
+To: jasowang@redhat.com, mst@redhat.com, eperezma@redhat.com
+Cc: qemu-devel@nongnu.org, 18801353760@163.com
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::233;
+ envelope-from=yin31149@gmail.com; helo=mail-lj1-x233.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,287 +86,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a multi-part message in MIME format.
---------------Qfi55lrJxHc2EsXaeIipV8BS
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-On 8/9/2023 9:47 PM, Igor Mammedov wrote:
-> On Wed, 9 Aug 2023 21:20:48 +0800
-> "Wen, Qian" <qian.wen@intel.com> wrote:
+On 2023/8/11 23:28, Hawkins Jiawei wrote:
+> This patch reuses vhost_vdpa_net_load_rss() with some
+> refactorings to restore the receive-side scaling state
+> at device's startup.
 >
->> On 8/9/2023 7:14 PM, Igor Mammedov wrote:
->>> On Wed,  9 Aug 2023 18:27:32 +0800
->>> Qian Wen <qian.wen@intel.com> wrote:
->>>  
->>>> The legacy topology enumerated by CPUID.1.EBX[23:16] is defined in SDM
->>>> Vol2:
->>>>
->>>> Bits 23-16: Maximum number of addressable IDs for logical processors in
->>>> this physical package.
->>>>
->>>> When launching the VM with -smp 256, the value written to EBX[23:16] is
->>>> 0 because of data overflow. If the guest only supports legacy topology,
->>>> without V2 Extended Topology enumerated by CPUID.0x1f or Extended
->>>> Topology enumerated by CPUID.0x0b to support over 255 CPUs, the return
->>>> of the kernel invoking cpu_smt_allowed() is false and AP's bring-up will
->>>> fail. Then only CPU 0 is online, and others are offline.
->>>>
->>>> To avoid this issue caused by overflow, limit the max value written to
->>>> EBX[23:16] to 255.  
->>> what happens on real hw or in lack of thereof what SDM says about this
->>> value when there is more than 255 threads?.
->>>  
->> Current SDM doesn't specify what the value should be when APIC IDs per package exceeds 255. So we asked the internal HW architect, the response is that EBX[23:16] will report 255 instead of being truncated to a smaller value.
-> then mention it in commit log so one wouldn't wonder where the value came from.
+> Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
+> ---
+>   net/vhost-vdpa.c | 53 ++++++++++++++++++++++++++++++++----------------
+>   1 file changed, 35 insertions(+), 18 deletions(-)
+>
+> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+> index 4c8e4b19f6..7870cbe142 100644
+> --- a/net/vhost-vdpa.c
+> +++ b/net/vhost-vdpa.c
+> @@ -820,17 +820,28 @@ static int vhost_vdpa_net_load_rss(VhostVDPAState *s, const VirtIONet *n,
+>       }
+>
+>       cfg.hash_types = cpu_to_le32(n->rss_data.hash_types);
+> -    /*
+> -     * According to VirtIO standard, "Field reserved MUST contain zeroes.
+> -     * It is defined to make the structure to match the layout of
+> -     * virtio_net_rss_config structure, defined in 5.1.6.5.7.".
+> -     *
+> -     * Therefore, we need to zero the fields in struct virtio_net_rss_config,
+> -     * which corresponds the `reserved` field in
+> -     * struct virtio_net_hash_config.
+> -     */
+> -    memset(&cfg.indirection_table_mask, 0,
+> -           sizeof_field(struct virtio_net_hash_config, reserved));
+> +    if (do_rss) {
+> +        /*
+> +         * According to VirtIO standard, "Number of entries in indirection_table
+> +         * is (indirection_table_mask + 1)".
+> +         */
+> +        cfg.indirection_table_mask = cpu_to_le16(n->rss_data.indirections_len -
+> +                                                 1);
+> +        cfg.unclassified_queue = cpu_to_le16(n->rss_data.default_queue);
+> +        cfg.max_tx_vq = cpu_to_le16(n->curr_queue_pairs);
+> +    } else {
+> +        /*
+> +         * According to VirtIO standard, "Field reserved MUST contain zeroes.
+> +         * It is defined to make the structure to match the layout of
+> +         * virtio_net_rss_config structure, defined in 5.1.6.5.7.".
+> +         *
+> +         * Therefore, we need to zero the fields in
+> +         * struct virtio_net_rss_config, which corresponds the `reserved` field
+> +         * in struct virtio_net_hash_config.
+> +         */
+> +        memset(&cfg.indirection_table_mask, 0,
+> +               sizeof_field(struct virtio_net_hash_config, reserved));
+> +    }
+>       /*
+>        * Consider that virtio_net_handle_rss() currently does not restore the
+>        * hash key length parsed from the CVQ command sent from the guest into
+> @@ -866,6 +877,7 @@ static int vhost_vdpa_net_load_rss(VhostVDPAState *s, const VirtIONet *n,
+>
+>       r = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
+>                                   VIRTIO_NET_CTRL_MQ,
+> +                                do_rss ? VIRTIO_NET_CTRL_MQ_RSS_CONFIG :
+>                                   VIRTIO_NET_CTRL_MQ_HASH_CONFIG,
+>                                   data, ARRAY_SIZE(data));
+>       if (unlikely(r < 0)) {
+> @@ -899,13 +911,18 @@ static int vhost_vdpa_net_load_mq(VhostVDPAState *s,
+>           return r;
+>       }
+>
+> -    if (!virtio_vdev_has_feature(&n->parent_obj, VIRTIO_NET_F_HASH_REPORT)) {
+> -        return 0;
+> -    }
+> -
+> -    r = vhost_vdpa_net_load_rss(s, n, out_cursor, in_cursor, false);
+> -    if (unlikely(r < 0)) {
+> -        return r;
+> +    if (virtio_vdev_has_feature(&n->parent_obj, VIRTIO_NET_F_RSS)) {
+> +        /* Load the receive-side scaling state */
+> +        r = vhost_vdpa_net_load_rss(s, n, out_cursor, in_cursor, true);
+> +        if (unlikely(r < 0)) {
+> +            return r;
+> +        }
+> +    } else if (virtio_vdev_has_feature(&n->parent_obj, VIRTIO_NET_F_RSS)) {
 
-Ok, thanks for your suggestion!
+The correct feature to be used here is VIRTIO_NET_F_HASH_REPORT, rather
+than VIRTIO_NET_F_RSS. I will correct this in the v2 patch.
 
->> Thanks,
->> Qian
->>
->>>> Signed-off-by: Qian Wen <qian.wen@intel.com>
->>>> ---
->>>> Changes v1 -> v2:
->>>>  - Revise the commit message and comment to more clearer.
->>>>  - Rebased to v8.1.0-rc2.
->>>> ---
->>>>  target/i386/cpu.c | 16 ++++++++++++++--
->>>>  1 file changed, 14 insertions(+), 2 deletions(-)
->>>>
->>>> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
->>>> index 97ad229d8b..6e1d88fbd7 100644
->>>> --- a/target/i386/cpu.c
->>>> +++ b/target/i386/cpu.c
->>>> @@ -6008,6 +6008,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
->>>>      uint32_t die_offset;
->>>>      uint32_t limit;
->>>>      uint32_t signature[3];
->>>> +    uint32_t threads_per_socket;
->>>>      X86CPUTopoInfo topo_info;
->>>>  
->>>>      topo_info.dies_per_pkg = env->nr_dies;
->>>> @@ -6049,8 +6050,19 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
->>>>              *ecx |= CPUID_EXT_OSXSAVE;
->>>>          }
->>>>          *edx = env->features[FEAT_1_EDX];
->>>> -        if (cs->nr_cores * cs->nr_threads > 1) {
->>>> -            *ebx |= (cs->nr_cores * cs->nr_threads) << 16;
->>>> +        /*
->>>> +         * Only bits [23:16] represent the maximum number of addressable
->>>> +         * IDs for logical processors in this physical package.
->>>> +         * When thread_per_socket > 255, it will 1) overwrite bits[31:24]
->>>> +         * which is apic_id, 2) bits [23:16] get truncated.
->>>> +         */
->>>> +        threads_per_socket = cs->nr_cores * cs->nr_threads;
->>>> +        if (threads_per_socket > 255) {
->>>> +            threads_per_socket = 255;
->>>> +        }
->>>> +
->>>> +        if (threads_per_socket > 1) {
->>>> +            *ebx |= threads_per_socket << 16;
->                           ^^^^^^^^^^^^^^^^^^^^^^^^^
-> more robust would be mask out non-relevant fields at rhs 
-
-I think a mask for this case is a bit redundant, since the limitation of 255 already filtered non-relevant fields.
-I prefer not to add the mask here and keep code style consistency with others place.
-
-> also perhaps double check if we could do induce similar overflow
-> tweaking other -smp properties (todo for another patch[es] if there are such places).
-
-I have a check, the CPUID.0x4:EAX[31:26] indicates the Maximum number of addressable IDs for processor cores in the physical package.
-If we launch over 64 cores VM, the 6-bits field will also overflow. I will add the following fix to patch2 in v2.
-
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 52a2a1a1c7..9c1ae3d83d 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -243,6 +243,7 @@ static void encode_cache_cpuid4(CPUCacheInfo *cache,
-                           cache->partitions * cache->sets);
-
-     assert(num_apic_ids > 0);
-+    num_cores = num_cores > 64 ? 64 : num_cores;
-     *eax = CACHE_TYPE(cache->type) |
-            CACHE_LEVEL(cache->level) |
-            (cache->self_init ? CACHE_SELF_INIT_LEVEL : 0) |
+Thanks!
 
 
-Thanks,
-Qian
->>>>              *edx |= CPUID_HT;
->>>>          }
->>>>          if (!cpu->enable_pmu) {  
---------------Qfi55lrJxHc2EsXaeIipV8BS
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-<html data-lt-installed="true">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body style="padding-bottom: 1px;">
-    <div class="moz-cite-prefix">On 8/9/2023 9:47 PM, Igor Mammedov
-      wrote:<br>
-    </div>
-    <blockquote type="cite"
-      cite="mid:20230809154742.494c3697@imammedo.users.ipa.redhat.com">
-      <pre class="moz-quote-pre" wrap="">On Wed, 9 Aug 2023 21:20:48 +0800
-"Wen, Qian" <a class="moz-txt-link-rfc2396E" href="mailto:qian.wen@intel.com">&lt;qian.wen@intel.com&gt;</a> wrote:
-
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">On 8/9/2023 7:14 PM, Igor Mammedov wrote:
-</pre>
-        <blockquote type="cite">
-          <pre class="moz-quote-pre" wrap="">On Wed,  9 Aug 2023 18:27:32 +0800
-Qian Wen <a class="moz-txt-link-rfc2396E" href="mailto:qian.wen@intel.com">&lt;qian.wen@intel.com&gt;</a> wrote:
- 
-</pre>
-          <blockquote type="cite">
-            <pre class="moz-quote-pre" wrap="">The legacy topology enumerated by CPUID.1.EBX[23:16] is defined in SDM
-Vol2:
-
-Bits 23-16: Maximum number of addressable IDs for logical processors in
-this physical package.
-
-When launching the VM with -smp 256, the value written to EBX[23:16] is
-0 because of data overflow. If the guest only supports legacy topology,
-without V2 Extended Topology enumerated by CPUID.0x1f or Extended
-Topology enumerated by CPUID.0x0b to support over 255 CPUs, the return
-of the kernel invoking cpu_smt_allowed() is false and AP's bring-up will
-fail. Then only CPU 0 is online, and others are offline.
-
-To avoid this issue caused by overflow, limit the max value written to
-EBX[23:16] to 255.  
-</pre>
-          </blockquote>
-          <pre class="moz-quote-pre" wrap="">what happens on real hw or in lack of thereof what SDM says about this
-value when there is more than 255 threads?.
- 
-</pre>
-        </blockquote>
-        <pre class="moz-quote-pre" wrap="">Current SDM doesn't specify what the value should be when APIC IDs per package exceeds 255. So we asked the internal HW architect, the response is that EBX[23:16] will report 255 instead of being truncated to a smaller value.
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">then mention it in commit log so one wouldn't wonder where the value came from.</pre>
-    </blockquote>
-    <br>
-    Ok, thanks for your suggestion!<br>
-    <br>
-    <blockquote type="cite"
-      cite="mid:20230809154742.494c3697@imammedo.users.ipa.redhat.com">
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">Thanks,
-Qian
-
-</pre>
-        <blockquote type="cite">
-          <blockquote type="cite">
-            <pre class="moz-quote-pre" wrap="">Signed-off-by: Qian Wen <a class="moz-txt-link-rfc2396E" href="mailto:qian.wen@intel.com">&lt;qian.wen@intel.com&gt;</a>
----
-Changes v1 -&gt; v2:
- - Revise the commit message and comment to more clearer.
- - Rebased to v8.1.0-rc2.
----
- target/i386/cpu.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
-
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 97ad229d8b..6e1d88fbd7 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -6008,6 +6008,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-     uint32_t die_offset;
-     uint32_t limit;
-     uint32_t signature[3];
-+    uint32_t threads_per_socket;
-     X86CPUTopoInfo topo_info;
- 
-     topo_info.dies_per_pkg = env-&gt;nr_dies;
-@@ -6049,8 +6050,19 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-             *ecx |= CPUID_EXT_OSXSAVE;
-         }
-         *edx = env-&gt;features[FEAT_1_EDX];
--        if (cs-&gt;nr_cores * cs-&gt;nr_threads &gt; 1) {
--            *ebx |= (cs-&gt;nr_cores * cs-&gt;nr_threads) &lt;&lt; 16;
-+        /*
-+         * Only bits [23:16] represent the maximum number of addressable
-+         * IDs for logical processors in this physical package.
-+         * When thread_per_socket &gt; 255, it will 1) overwrite bits[31:24]
-+         * which is apic_id, 2) bits [23:16] get truncated.
-+         */
-+        threads_per_socket = cs-&gt;nr_cores * cs-&gt;nr_threads;
-+        if (threads_per_socket &gt; 255) {
-+            threads_per_socket = 255;
-+        }
-+
-+        if (threads_per_socket &gt; 1) {
-</pre>
-          </blockquote>
-        </blockquote>
-      </blockquote>
-      <blockquote type="cite">
-        <blockquote type="cite">
-          <blockquote type="cite">
-            <pre class="moz-quote-pre" wrap="">+            *ebx |= threads_per_socket &lt;&lt; 16;
-</pre>
-          </blockquote>
-        </blockquote>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">                          ^^^^^^^^^^^^^^^^^^^^^^^^^
-more robust would be mask out non-relevant fields at rhs </pre>
-    </blockquote>
-    <br>
-    I think a mask for this case is a bit redundant, since the
-    limitation of 255 already filtered non-relevant fields. <br>
-    I prefer not to add the mask here and keep code style consistency
-    with others place.<br>
-    <br>
-    <blockquote type="cite"
-      cite="mid:20230809154742.494c3697@imammedo.users.ipa.redhat.com">
-      <pre class="moz-quote-pre" wrap="">also perhaps double check if we could do induce similar overflow
-tweaking other -smp properties (todo for another patch[es] if there are such places).</pre>
-    </blockquote>
-    <br>
-    I have a check, the CPUID.0x4:EAX[31:26] indicates the Maximum
-    number of addressable IDs for processor cores in the physical
-    package.<br>
-    If we launch over 64 cores VM, the 6-bits field will also overflow.
-    I will add the following fix to patch2 in v2.<br>
-    <br>
-    diff --git a/target/i386/cpu.c b/target/i386/cpu.c<br>
-    index 52a2a1a1c7..9c1ae3d83d 100644<br>
-    --- a/target/i386/cpu.c<br>
-    +++ b/target/i386/cpu.c<br>
-    @@ -243,6 +243,7 @@ static void encode_cache_cpuid4(CPUCacheInfo
-    *cache,<br>
-                               cache-&gt;partitions * cache-&gt;sets);<br>
-    <br>
-         assert(num_apic_ids &gt; 0);<br>
-    +    num_cores = num_cores &gt; 64 ? 64 : num_cores;<br>
-         *eax = CACHE_TYPE(cache-&gt;type) |<br>
-                CACHE_LEVEL(cache-&gt;level) |<br>
-                (cache-&gt;self_init ? CACHE_SELF_INIT_LEVEL : 0) |<br>
-    <br>
-    <br>
-    Thanks,<br>
-    Qian<br>
-    <blockquote type="cite"
-      cite="mid:20230809154742.494c3697@imammedo.users.ipa.redhat.com">
-      <blockquote type="cite">
-        <blockquote type="cite">
-          <blockquote type="cite">
-            <pre class="moz-quote-pre" wrap="">             *edx |= CPUID_HT;
-         }
-         if (!cpu-&gt;enable_pmu) {  
-</pre>
-          </blockquote>
-        </blockquote>
-      </blockquote>
-    </blockquote>
-    <lt-container></lt-container>
-  </body>
-</html>
-
---------------Qfi55lrJxHc2EsXaeIipV8BS--
+> +        /* Load the hash calculation state */
+> +        r = vhost_vdpa_net_load_rss(s, n, out_cursor, in_cursor, false);
+> +        if (unlikely(r < 0)) {
+> +            return r;
+> +        }
+>       }
+>
+>       return 0;
 
