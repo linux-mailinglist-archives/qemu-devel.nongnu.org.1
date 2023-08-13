@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3722677AAF9
+	by mail.lfdr.de (Postfix) with ESMTPS id BD25D77AAFA
 	for <lists+qemu-devel@lfdr.de>; Sun, 13 Aug 2023 21:48:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qVGzf-0007nl-7J; Sun, 13 Aug 2023 15:43:19 -0400
+	id 1qVGze-0007nc-2s; Sun, 13 Aug 2023 15:43:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qVGzb-0007mq-98
- for qemu-devel@nongnu.org; Sun, 13 Aug 2023 15:43:15 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ id 1qVGzc-0007n0-C7
+ for qemu-devel@nongnu.org; Sun, 13 Aug 2023 15:43:16 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qVGzZ-0002O0-RB
- for qemu-devel@nongnu.org; Sun, 13 Aug 2023 15:43:15 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-3fe5c0e57d2so33018045e9.0
- for <qemu-devel@nongnu.org>; Sun, 13 Aug 2023 12:43:13 -0700 (PDT)
+ id 1qVGza-0002OG-T0
+ for qemu-devel@nongnu.org; Sun, 13 Aug 2023 15:43:16 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-3fbd33a57b6so36893935e9.2
+ for <qemu-devel@nongnu.org>; Sun, 13 Aug 2023 12:43:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1691955792; x=1692560592;
+ d=gmail.com; s=20221208; t=1691955793; x=1692560593;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0uTjuUZfn1BMnx+++7JtIeJPCYgZiSfPp9MKsrrDqfY=;
- b=R8jzdv2k3tkXmhnawXu0kCHasixcIfB3cKv+eOt5H1gmjou8MlX7et4pNJWIdOGQtI
- iSmzN2/ilgAyq+5tPi6uo2Tkq4/YNS6B27bBZh6a55Q8JSAinoetspKrVE5S6Fl82qTs
- NoYrWXS9VLf8mY33Lf8ccP9IwtNku26n/ngrLy7Ipa5EYWWmllq5wEH0HzAsEdgrqMaq
- I/GanErMll4Es9lU5u8ONnswGw8sRr4n1LowZ0Vcx/nxQCWWgVn4K9bM+zNCkBXJYRZ6
- DjUTWeCumYfdUoiGfsTDZ4eq6hFFRkmW/Zqohmbu9aFbnEcm2ss5nudzZi+vCkaaIHBu
- ezzw==
+ bh=MDTOrlECkXwtbP3Q8uyO+H9meUZpmn7vqWB6qzJf774=;
+ b=YzIR7wwkPhs16ONmCw4wI54gcDFFOzfEFtXFkkVPrnIm851C8map4VdKnDGZCgCE6y
+ 5twCXJUa7k40tz4N3TMWLDepkirKnFzCV1sGj+ZE09Voi4ArA/dDLSAdgQmpV7C/SSCP
+ XRqfJHAy30NaWAwtB47H2QCE7wt34T4Ta541NTg//GWGRNh0LRH0ZAch8eQG90xQjPjp
+ 80wYGpR9iPsCFXDL77H/Up+X/ZWUgCRRZgIossS4u5Kf7PYAqyUXITjo3RgToQFuSVzH
+ M+UcoCGQS7Z4bvvudmV0XNZEj+HuCeyKCTgXyFZaPB65BlQn6TIoq1QNBqi+t3ru7usj
+ KTrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691955792; x=1692560592;
+ d=1e100.net; s=20221208; t=1691955793; x=1692560593;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0uTjuUZfn1BMnx+++7JtIeJPCYgZiSfPp9MKsrrDqfY=;
- b=ggdIrtGyS3+tleO5BE+Ah0aMKw/xad7dymsP224j7lmeQ69mCZdme37HSQn9tgy9D9
- 8DZxzxTKH6PMI5lgPNN4XV3nIABjBkMVNVCiNvCgFMcoS6anxl0GwRW7w3W3X+KmEBa+
- ai88I/IvcZC7aZPKz7v8xJYretrbOrQQqvTSIoKE5i/3TD+UBWOY7fozRWvNmurncMw7
- LNJPCTKUxvhFdxHPFiIThbFZgoDb80zyIg+3a4vVRKDPnsNACwV+uVRHJiGtOjH51Ffv
- ZxbvUduS6yvDQLBHnxBuN6IBl0khTx+rsSl86acxHvpQxIE1xs3KJCPRTgAscPERiQV4
- DBdg==
-X-Gm-Message-State: AOJu0YyWO0JQNy++3YtSb6ZAWuR8ZVaCQ+t1x8tRcbiiMbzFGPxqDRv7
- VBqxLGJfanhk8na8K2wOP67Tt+/uAeA=
-X-Google-Smtp-Source: AGHT+IGbswNsXXUURDyTe/+MrrFSHtS1Fa+19ILA2Mpt2Xj6XuzcrRSmUsnQlPXEn4esL7A/K86xlQ==
-X-Received: by 2002:a05:600c:2811:b0:3fe:188c:b684 with SMTP id
- m17-20020a05600c281100b003fe188cb684mr5774881wmb.7.1691955792237; 
- Sun, 13 Aug 2023 12:43:12 -0700 (PDT)
+ bh=MDTOrlECkXwtbP3Q8uyO+H9meUZpmn7vqWB6qzJf774=;
+ b=j/6ASlIJdaEnpJuDktssNy/OwcG5lRwLEUp/NdO8EOHHs/qTu4z0VLL+HVnNnG5ick
+ vJU6Y2JgRh89wVjmC8q78GQpoLhVvzkdI3qVTRw2TSRAsXYtlmrc2k3/nKPh7FAmSYvj
+ Y6cnZ9pLuhBMNE+HFkWWZ1ZtxCRnBfX4O5Y9DujCrKRJ2d6ofhZ7I1LCMhkhOcJRxVj1
+ sUAvX5dg8T3ZfmXbGyxuxgPAD2I6hGwkzHlAlJpkxRSKXr82LQaO5h/rbEIVhg10mRS2
+ KZmvddMMCgJEAxHn8PL4MxUTHNyxYr1CJCHcvF+uKUF1azUZWHBEg+uvRs+BXgqHCjkG
+ fu3w==
+X-Gm-Message-State: AOJu0Yx0zFvkvc8QKEFTxdUm1M4xjIn2QK1byIiu6VUSs2m7s81K9ayf
+ gRN32EYtaiADVBMcpplkBVKBT0ZcVcg=
+X-Google-Smtp-Source: AGHT+IFgMhw+8Rd1sJ/HEm/4OtLn4mbajUnYqBA9csymsOQYZmbGYHinHiV4gnwrPZyNd8YadmtLcw==
+X-Received: by 2002:a05:600c:217:b0:3fe:10d8:e7ef with SMTP id
+ 23-20020a05600c021700b003fe10d8e7efmr7364324wmi.19.1691955793338; 
+ Sun, 13 Aug 2023 12:43:13 -0700 (PDT)
 Received: from karim.my.domain ([197.39.204.50])
  by smtp.gmail.com with ESMTPSA id
- t20-20020a7bc3d4000000b003fe263dab33sm12234536wmj.9.2023.08.13.12.43.11
+ t20-20020a7bc3d4000000b003fe263dab33sm12234536wmj.9.2023.08.13.12.43.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 13 Aug 2023 12:43:11 -0700 (PDT)
+ Sun, 13 Aug 2023 12:43:13 -0700 (PDT)
 From: Karim Taha <kariem.taha2.7@gmail.com>
 To: qemu-devel@nongnu.org
-Cc: imp@bsdimp.com, Kyle Evans <kevans@FreeBSD.org>,
- Karim Taha <kariem.taha2.7@gmail.com>,
+Cc: imp@bsdimp.com, Karim Taha <kariem.taha2.7@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v3 10/32] Define safe_fcntl macro in bsd-user/syscall_defs.h
-Date: Sun, 13 Aug 2023 10:41:31 +0200
-Message-Id: <20230813084153.6510-11-kariem.taha2.7@gmail.com>
+Subject: [PATCH v3 11/32] Rename target_freebsd_time_t to target_time_t
+Date: Sun, 13 Aug 2023 10:41:32 +0200
+Message-Id: <20230813084153.6510-12-kariem.taha2.7@gmail.com>
 X-Mailer: git-send-email 2.40.0
 In-Reply-To: <20230813084153.6510-1-kariem.taha2.7@gmail.com>
 References: <20230813084153.6510-1-kariem.taha2.7@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=kariem.taha2.7@gmail.com; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=kariem.taha2.7@gmail.com; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -2
 X-Spam_score: -0.3
 X-Spam_bar: /
@@ -94,28 +93,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Kyle Evans <kevans@FreeBSD.org>
+From: Warner Losh <imp@bsdimp.com>
 
-Signed-off-by: Kyle Evans <kevans@FreeBSD.org>
+This is necessary for future code using target_time_t, in
+bsd-user/syscall_defs.
+
+Signed-off-by: Warner Losh <imp@bsdimp.com>
 Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- bsd-user/syscall_defs.h | 2 ++
- 1 file changed, 2 insertions(+)
+ bsd-user/syscall_defs.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/bsd-user/syscall_defs.h b/bsd-user/syscall_defs.h
-index 68db9cf4b2..bdcdc4c0fe 100644
+index bdcdc4c0fe..ae679650e3 100644
 --- a/bsd-user/syscall_defs.h
 +++ b/bsd-user/syscall_defs.h
-@@ -437,6 +437,8 @@ type safe_##name(type1 arg1, type2 arg2, type3 arg3, type4 arg4, \
-     return safe_syscall(SYS_##name, arg1, arg2, arg3, arg4, arg5, arg6); \
- }
+@@ -45,9 +45,9 @@
+  *
+  */
+ #if (!defined(TARGET_I386))
+-typedef int64_t target_freebsd_time_t;
++typedef int64_t target_time_t;
+ #else
+-typedef int32_t target_freebsd_time_t;
++typedef int32_t target_time_t;
+ #endif
  
-+#define safe_fcntl(...) safe_syscall(SYS_fcntl, __VA_ARGS__)
-+
- /* So far all target and host bitmasks are the same */
- #define target_to_host_bitmask(x, tbl) (x)
- #define host_to_target_bitmask(x, tbl) (x)
+ struct target_iovec {
+@@ -102,7 +102,7 @@ typedef abi_long target_freebsd_suseconds_t;
+ 
+ /* compare to sys/timespec.h */
+ struct target_freebsd_timespec {
+-    target_freebsd_time_t   tv_sec;     /* seconds */
++    target_time_t   tv_sec;     /* seconds */
+     abi_long                tv_nsec;    /* and nanoseconds */
+ #if !defined(TARGET_I386) && TARGET_ABI_BITS == 32
+     abi_long _pad;
+@@ -120,7 +120,7 @@ struct target_freebsd__umtx_time {
+ };
+ 
+ struct target_freebsd_timeval {
+-    target_freebsd_time_t       tv_sec; /* seconds */
++    target_time_t       tv_sec; /* seconds */
+     target_freebsd_suseconds_t  tv_usec;/* and microseconds */
+ #if !defined(TARGET_I386) && TARGET_ABI_BITS == 32
+     abi_long _pad;
 -- 
 2.40.0
 
