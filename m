@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BD6A77A646
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E63377A648
 	for <lists+qemu-devel@lfdr.de>; Sun, 13 Aug 2023 14:03:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qV9nO-0002ck-Ia; Sun, 13 Aug 2023 08:02:11 -0400
+	id 1qV9nQ-0002f2-H8; Sun, 13 Aug 2023 08:02:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qV9nI-0002a4-U9
- for qemu-devel@nongnu.org; Sun, 13 Aug 2023 08:02:05 -0400
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ id 1qV9nK-0002bG-Ot
+ for qemu-devel@nongnu.org; Sun, 13 Aug 2023 08:02:09 -0400
+Received: from mail-pj1-x1036.google.com ([2607:f8b0:4864:20::1036])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qV9nH-0007yo-2O
- for qemu-devel@nongnu.org; Sun, 13 Aug 2023 08:02:04 -0400
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-686ea67195dso2305763b3a.2
- for <qemu-devel@nongnu.org>; Sun, 13 Aug 2023 05:02:01 -0700 (PDT)
+ id 1qV9nI-0007zR-TH
+ for qemu-devel@nongnu.org; Sun, 13 Aug 2023 08:02:06 -0400
+Received: by mail-pj1-x1036.google.com with SMTP id
+ 98e67ed59e1d1-26b4dea0000so289070a91.0
+ for <qemu-devel@nongnu.org>; Sun, 13 Aug 2023 05:02:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1691928120; x=1692532920;
+ d=gmail.com; s=20221208; t=1691928123; x=1692532923;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=G4lniF7wupK5k//ouvNO3aQ67CFpv2Z9I/33Tzs/oFA=;
- b=KapLnZ9p4wHMh3MWr5AZoUhy7//gAuBZo7fVv3YTiMAXxcAIRkUaa+20K806RWA/tX
- ryiSn+X2H5+4j6umZXbVIy8zsD/qmnUHmjKKHY9pfzpoEGqSLFQq6pTxTQSfW0qJDyp5
- yzhtFxtu/zbFHevOq5Orj3pQhKCTuyhxQDPvnF8JlxAEeE0yom6yStFZw1DwDhBZfLDI
- 2ek7AwBky/e88Eb/cCcwm0KTZ/YDXuVkiqFtclh/e9OJbtJOJK+uHqxWYF7MSeQNvcnx
- 47zTDbawR8gBqVIv+orVI30yRwNUZMjTvkFOry1FnrvHfQNCyfqWcWyrOMyr/f+K6ORS
- 0ZZQ==
+ bh=1PSwnwx+0e4/avZ47FqqTcvScAWeBIzqBHe+gH48HnQ=;
+ b=H6hrnXIOLxxoz5qR15vu2r+KamGsdUftU0ltRZqGk9z+pe3UyaGGJsTJsEIC+KdwYy
+ x61LuQlAj0xI78KBgUyRdtXGCZ1LBoXzdNWvsPdZk9hk3o6nedpKaE+eQBIZ9zyEHQUc
+ WieVznAPPxz/IMYYH6Cdx63/rx8FmWSP5W+TZzYbP6caKZrA9BuzJnQ0U92q+bsH2HQT
+ AbEeslPogTGdZJdunMMHMscqOi28ihWqXl2OuIo9fD9SI5CEg5Q4hipeAtbPh/z0TxQs
+ +YEh06LAPJ0K8GOOn/WrNwR6tURUpvvCGgg8txfPS7Y5AtCpYLlrGF4iEbvbd1SPzius
+ wAJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691928120; x=1692532920;
+ d=1e100.net; s=20221208; t=1691928123; x=1692532923;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=G4lniF7wupK5k//ouvNO3aQ67CFpv2Z9I/33Tzs/oFA=;
- b=L6FWuoXU9B8GVd0wx9JwzJsgju4pOc27g+8XzfovIFJt4ONtaU83k8s37pNLsz3Y10
- 8jyso9q7E5gbmy8O0dAb3PfNB98N7ll3m4bKiuzvx/PNZDfLfwad4hdPSn8obGqL19HX
- FEUD0Kws2/b29mfQiKklrhS9Vrw+ctWnRBAjG87uxxUDgE1ks8cJV3uTqrTiap/2yRkQ
- BVz+J858tF+gEzS0tF0G3orV1QDN0gDPfXWSk7HGT1o/X9PcIoCA4J6z7211+g+P7eHw
- 9N/SoBnCQgWGYx8YwFMHEbtgTYqIIJUyHVwQVlB9gb93gHTMjWFNO1inTQYxti21aZoU
- XcDw==
-X-Gm-Message-State: AOJu0YyV9cSWUQnIy+yjDWnD87a2J1clULiDTF9lZb1q9nl/Af8yLq26
- ZRKSl13z9++/TM65ga6TBxo=
-X-Google-Smtp-Source: AGHT+IG6/43sMuBsPsZLmiEyzKUJF9VQFFru69RinX7nkpYkqdQJMBj42WytD2dyZ7gEKN3ZfogAEA==
-X-Received: by 2002:a05:6a00:855:b0:687:189c:4e26 with SMTP id
- q21-20020a056a00085500b00687189c4e26mr7355587pfk.2.1691928119742; 
- Sun, 13 Aug 2023 05:01:59 -0700 (PDT)
+ bh=1PSwnwx+0e4/avZ47FqqTcvScAWeBIzqBHe+gH48HnQ=;
+ b=c6CbTCM5Av4ZaAe19mmwlYWYLu1jWvzGQ/pcOZNIFPsbG9yBMIHjUJuxPt9sXFtUIJ
+ yiPnnonnVLq/2W1MFwaJQNe7fzQPRZWPeruW8ev9tRR0n+rUYTYZ2IfxApcOkXBkzP4G
+ /VhjkvlEq262tRQB/F0KkdioGp9RxpW8e+VJpe9jLw3Xf/Cq+2BEUp/4dYrZSlLjeR2c
+ Yn6lHoR9kaWVBbyiUUEFBnGUmgEr9U7CFxAKNw1uVu1RPQqIv4AUkzH094rggbeobHpQ
+ 5iGlYYdYwqv0N/joFtUS7dnrkwjKQwfHwPfpSbIOdzr+mOqgVHrcpGeBo3aYjGdLwOqn
+ flVg==
+X-Gm-Message-State: AOJu0Yx3Lib3DX0YpUKUqtWO9M1cw2rORy7AnwB04s+Z50/H1Ef6DLiB
+ Uh4E+x4ydpZuz5z1085sLTPuNxbwqqlKDjhI
+X-Google-Smtp-Source: AGHT+IGr/ZPvFQ1E5J6C2hVhgmrpj3giGReYfWP27EF9FFwdgkncJIB24qT81V+tuQAtCSG27tP8mA==
+X-Received: by 2002:a17:90a:5a4d:b0:269:1e3f:a54d with SMTP id
+ m13-20020a17090a5a4d00b002691e3fa54dmr6025411pji.10.1691928123186; 
+ Sun, 13 Aug 2023 05:02:03 -0700 (PDT)
 Received: from localhost ([125.35.86.198]) by smtp.gmail.com with ESMTPSA id
- z3-20020aa785c3000000b0066a613c4a58sm6148033pfn.102.2023.08.13.05.01.59
+ 40-20020a17090a0fab00b002680f0f2886sm8688235pjz.12.2023.08.13.05.02.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 13 Aug 2023 05:01:59 -0700 (PDT)
+ Sun, 13 Aug 2023 05:02:02 -0700 (PDT)
 From: Hawkins Jiawei <yin31149@gmail.com>
 To: jasowang@redhat.com,
 	mst@redhat.com,
@@ -62,17 +62,16 @@ To: jasowang@redhat.com,
 Cc: qemu-devel@nongnu.org,
 	yin31149@gmail.com,
 	18801353760@163.com
-Subject: [RFC PATCH v2 1/3] vdpa: Add SetSteeringEBPF method for NetClientState
-Date: Sun, 13 Aug 2023 20:01:52 +0800
-Message-Id: <d01d0de97688c5587935da753c63f0441808cb9d.1691926415.git.yin31149@gmail.com>
+Subject: [RFC PATCH v2 2/3] vdpa: Restore receive-side scaling state
+Date: Sun, 13 Aug 2023 20:01:53 +0800
+Message-Id: <af33aa80bc4ef0b2cec6c21b9448866c517fde80.1691926415.git.yin31149@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <cover.1691926415.git.yin31149@gmail.com>
 References: <cover.1691926415.git.yin31149@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=yin31149@gmail.com; helo=mail-pf1-x42e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1036;
+ envelope-from=yin31149@gmail.com; helo=mail-pj1-x1036.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -96,59 +95,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-At present, to enable the VIRTIO_NET_F_RSS feature, eBPF must
-be loaded for the vhost backend.
+This patch reuses vhost_vdpa_net_load_rss() with some
+refactorings to restore the receive-side scaling state
+at device's startup.
 
-Given that vhost-vdpa is one of the vhost backend, we need to
-implement the SetSteeringEBPF method to support RSS for vhost-vdpa,
-even if vhost-vdpa calculates the rss hash in the hardware device
-instead of in the kernel by eBPF.
-
-Although this requires QEMU to be compiled with `--enable-bpf`
-configuration even if the vdpa device does not use eBPF to
-calculate the rss hash, this can avoid adding the specific
-conditional statements for vDPA case to enable the VIRTIO_NET_F_RSS
-feature, which reduces code maintainbility.
-
-Suggested-by: Eugenio Pérez <eperezma@redhat.com>
 Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
 ---
- net/vhost-vdpa.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+v2:
+  - Correct the feature usage to VIRTIO_NET_F_HASH_REPORT when
+loading the hash calculation state
+
+v1: https://lore.kernel.org/all/93d5d82f0a5df71df326830033e50358c8b6be7a.1691766252.git.yin31149@gmail.com/
+
+ net/vhost-vdpa.c | 54 ++++++++++++++++++++++++++++++++----------------
+ 1 file changed, 36 insertions(+), 18 deletions(-)
 
 diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index a13b267250..4c8e4b19f6 100644
+index 4c8e4b19f6..e21b3ac67a 100644
 --- a/net/vhost-vdpa.c
 +++ b/net/vhost-vdpa.c
-@@ -238,6 +238,12 @@ static void vhost_vdpa_cleanup(NetClientState *nc)
+@@ -820,17 +820,28 @@ static int vhost_vdpa_net_load_rss(VhostVDPAState *s, const VirtIONet *n,
      }
- }
  
-+/** Dummy SetSteeringEBPF to support RSS for vhost-vdpa backend  */
-+static bool vhost_vdpa_set_steering_ebpf(NetClientState *nc, int prog_fd)
-+{
-+    return true;
-+}
-+
- static bool vhost_vdpa_has_vnet_hdr(NetClientState *nc)
- {
-     assert(nc->info->type == NET_CLIENT_DRIVER_VHOST_VDPA);
-@@ -400,6 +406,7 @@ static NetClientInfo net_vhost_vdpa_info = {
-         .has_vnet_hdr = vhost_vdpa_has_vnet_hdr,
-         .has_ufo = vhost_vdpa_has_ufo,
-         .check_peer_type = vhost_vdpa_check_peer_type,
-+        .set_steering_ebpf = vhost_vdpa_set_steering_ebpf,
- };
+     cfg.hash_types = cpu_to_le32(n->rss_data.hash_types);
+-    /*
+-     * According to VirtIO standard, "Field reserved MUST contain zeroes.
+-     * It is defined to make the structure to match the layout of
+-     * virtio_net_rss_config structure, defined in 5.1.6.5.7.".
+-     *
+-     * Therefore, we need to zero the fields in struct virtio_net_rss_config,
+-     * which corresponds the `reserved` field in
+-     * struct virtio_net_hash_config.
+-     */
+-    memset(&cfg.indirection_table_mask, 0,
+-           sizeof_field(struct virtio_net_hash_config, reserved));
++    if (do_rss) {
++        /*
++         * According to VirtIO standard, "Number of entries in indirection_table
++         * is (indirection_table_mask + 1)".
++         */
++        cfg.indirection_table_mask = cpu_to_le16(n->rss_data.indirections_len -
++                                                 1);
++        cfg.unclassified_queue = cpu_to_le16(n->rss_data.default_queue);
++        cfg.max_tx_vq = cpu_to_le16(n->curr_queue_pairs);
++    } else {
++        /*
++         * According to VirtIO standard, "Field reserved MUST contain zeroes.
++         * It is defined to make the structure to match the layout of
++         * virtio_net_rss_config structure, defined in 5.1.6.5.7.".
++         *
++         * Therefore, we need to zero the fields in
++         * struct virtio_net_rss_config, which corresponds the `reserved` field
++         * in struct virtio_net_hash_config.
++         */
++        memset(&cfg.indirection_table_mask, 0,
++               sizeof_field(struct virtio_net_hash_config, reserved));
++    }
+     /*
+      * Consider that virtio_net_handle_rss() currently does not restore the
+      * hash key length parsed from the CVQ command sent from the guest into
+@@ -866,6 +877,7 @@ static int vhost_vdpa_net_load_rss(VhostVDPAState *s, const VirtIONet *n,
  
- static int64_t vhost_vdpa_get_vring_group(int device_fd, unsigned vq_index,
-@@ -1215,6 +1222,7 @@ static NetClientInfo net_vhost_vdpa_cvq_info = {
-     .has_vnet_hdr = vhost_vdpa_has_vnet_hdr,
-     .has_ufo = vhost_vdpa_has_ufo,
-     .check_peer_type = vhost_vdpa_check_peer_type,
-+    .set_steering_ebpf = vhost_vdpa_set_steering_ebpf,
- };
+     r = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
+                                 VIRTIO_NET_CTRL_MQ,
++                                do_rss ? VIRTIO_NET_CTRL_MQ_RSS_CONFIG :
+                                 VIRTIO_NET_CTRL_MQ_HASH_CONFIG,
+                                 data, ARRAY_SIZE(data));
+     if (unlikely(r < 0)) {
+@@ -899,13 +911,19 @@ static int vhost_vdpa_net_load_mq(VhostVDPAState *s,
+         return r;
+     }
  
- /*
+-    if (!virtio_vdev_has_feature(&n->parent_obj, VIRTIO_NET_F_HASH_REPORT)) {
+-        return 0;
+-    }
+-
+-    r = vhost_vdpa_net_load_rss(s, n, out_cursor, in_cursor, false);
+-    if (unlikely(r < 0)) {
+-        return r;
++    if (virtio_vdev_has_feature(&n->parent_obj, VIRTIO_NET_F_RSS)) {
++        /* Load the receive-side scaling state */
++        r = vhost_vdpa_net_load_rss(s, n, out_cursor, in_cursor, true);
++        if (unlikely(r < 0)) {
++            return r;
++        }
++    } else if (virtio_vdev_has_feature(&n->parent_obj,
++                                       VIRTIO_NET_F_HASH_REPORT)) {
++        /* Load the hash calculation state */
++        r = vhost_vdpa_net_load_rss(s, n, out_cursor, in_cursor, false);
++        if (unlikely(r < 0)) {
++            return r;
++        }
+     }
+ 
+     return 0;
 -- 
 2.25.1
 
