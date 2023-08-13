@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 529E877AAFF
-	for <lists+qemu-devel@lfdr.de>; Sun, 13 Aug 2023 21:49:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC7F877AB01
+	for <lists+qemu-devel@lfdr.de>; Sun, 13 Aug 2023 21:49:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qVGzZ-0007lu-Nl; Sun, 13 Aug 2023 15:43:13 -0400
+	id 1qVGzb-0007mj-93; Sun, 13 Aug 2023 15:43:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qVGzY-0007lS-1t
- for qemu-devel@nongnu.org; Sun, 13 Aug 2023 15:43:12 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ id 1qVGzZ-0007lw-CL
+ for qemu-devel@nongnu.org; Sun, 13 Aug 2023 15:43:13 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qVGzW-0002NL-As
- for qemu-devel@nongnu.org; Sun, 13 Aug 2023 15:43:11 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-3fbea147034so33299035e9.0
- for <qemu-devel@nongnu.org>; Sun, 13 Aug 2023 12:43:09 -0700 (PDT)
+ id 1qVGzX-0002Na-RP
+ for qemu-devel@nongnu.org; Sun, 13 Aug 2023 15:43:13 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-3fe1fc8768aso37028465e9.1
+ for <qemu-devel@nongnu.org>; Sun, 13 Aug 2023 12:43:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1691955789; x=1692560589;
+ d=gmail.com; s=20221208; t=1691955790; x=1692560590;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=FZ1PstjxV58F6xW5IPzHSu5+uF2rn3kjg/rqjVrZAhM=;
- b=leaYNDIbqhnk5b0wknrzriuMsop0sevQQLH9/UlZhJol6t/pT867/fyEAiEEogrvHG
- C6FOjTBJlmxDfvbxzRKWncipmTY9q92G0Zc7Nsxfd7gU69qtN2reKQ/zvTdskSGmCCam
- E9+YFSSEaQGYAEIZMLtO69j7RVxoJYNm6VaEJCGZxJDA141/kVLn1ztByf4vqdL9QhUF
- ivlWlfVMzrqOoEBJCyB7dRnwaTAeYjIPH9p2F4HXshDx91ohmQuykQAZnfk1XSBGm5/X
- q15mEib7ChAAlhJhF4R9NDh3tH5pcXcqzm0HdCFNhzL71I8fVFMldxBFwWfmpiOCHbLU
- Rolw==
+ bh=5FGE2sta9eusQxC1zo0jWDIeINfRT8xwkVjpvLMM6rA=;
+ b=FkEInF0QonkUzM6F5ty5NvQEkAz8BYPfey+n0xjKPgICJ1wUHaty0ovJwPHAP0/gxL
+ nzTor5gw/YMGITae0xsPJ+xVEtYK0aSZo72dZqRHjlTLLWnm2hCR4C+1VkNVbVs+MKrH
+ fnaUzY7qZN0kk+YpkLK/K1me1Wy94DxUFZpWWl2CX9tz58D6sjk+FaXN1MwCm+FGmfvp
+ +fET/og/ZWbR0rMwMJbATzfYGsrKGoaQtPaFhd1PiccGXZRAe10nMwMPhPcYqwtRnwEf
+ KyluuBCttefoP3WhV037QmPIVM9jwoiRmpG3PnUXHiq6x4e6mLx7PumPZjeh5uIdmTFY
+ FxgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691955789; x=1692560589;
+ d=1e100.net; s=20221208; t=1691955790; x=1692560590;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=FZ1PstjxV58F6xW5IPzHSu5+uF2rn3kjg/rqjVrZAhM=;
- b=C9AXCn0vZ7q/b0A0lRMqQYJvmquy3fCWtQDYaswbYpv3vDiKNMwrOAwHvdDz/6bsgM
- +ZkJqNlFr1uqgj5+CCihj3tSkiKRrc3SjUZ3dwp3kNwAT4MKZTMcyAclkd4EMozu+et3
- r6rq+qFd0hoOqc/i5APns+hve+Oh7TlPHB4B6PSomvZQW8q8+pxMgORLXRLA8oJMrn7+
- ujU/06pnfJWSch/YgzK/lmC2eNcjLTqID6hMnoLC3pdPoq3jVS00+sGEXiXICUZSPyJQ
- BysD/h3ahTQDjB5kdB3znYfRtxWeDNDBVOYKgSeQsX5d8igHy4bhG1hajm2EalpGBXrr
- p2WA==
-X-Gm-Message-State: AOJu0YxWYTdYGXom45BYFI3nTI5Ph9UznNifa1IHI6sQUtVN7EBht+yi
- hkMw2AAiNeTloZXFKhyamZmYkHv0vMU=
-X-Google-Smtp-Source: AGHT+IGMoME1oxZDuP54P7zzj46dEx0iyOI7MzXj9tWDTdKD2Rb7MXZ8E384vQLZ4u+i2WK+/I02OQ==
-X-Received: by 2002:a05:600c:2494:b0:3fe:2021:d616 with SMTP id
- 20-20020a05600c249400b003fe2021d616mr6105999wms.38.1691955788756; 
- Sun, 13 Aug 2023 12:43:08 -0700 (PDT)
+ bh=5FGE2sta9eusQxC1zo0jWDIeINfRT8xwkVjpvLMM6rA=;
+ b=YI9wfSs7E63R62BB3mNqPTJh0kD74n49sjNlEaaa9lpyuDa3E2bBR/Bvz81IJXhdmf
+ jk0+rnhTZl+3iNJjTz9qFoCYd2ZTQUWbS9pLH9zjPLcA7FX1BgoZlu/Sk9wVIrFwA2z2
+ 9wNp/9+rJ7Osl0maFwWF9WwhSM737W95c1yNWx8v7pQwFtyzcA3Cms3A/taAEFjNomwl
+ 8Bms87SBjPehn+/EyIj3FRGq5fkoa2k8N2oJ97n1cP+PgmUnv35l4KIFVBUO7W+91V1y
+ cYukH5RE6HUnBpCtrJjVOpxCTdk/PrznjmgFyeNtFPdEcTbIUZKeyVeFtePMjyBL554/
+ sKgQ==
+X-Gm-Message-State: AOJu0YzsMZDpHyz+fLdMtmQIshmH3LGYWme/EF5Da54dV4RGfiH0ue7y
+ jPVYiddqu0pcRIHGtHXKhEB6LnP5Nq8=
+X-Google-Smtp-Source: AGHT+IGvr6dy+BdMnj9Glxof+hNY9Lv/lIiJnj6jBOL/pqgnhZKV4l9QajraiDi286YZgPe4tvsRAg==
+X-Received: by 2002:a05:600c:214d:b0:3fc:193:734e with SMTP id
+ v13-20020a05600c214d00b003fc0193734emr6877866wml.32.1691955790036; 
+ Sun, 13 Aug 2023 12:43:10 -0700 (PDT)
 Received: from karim.my.domain ([197.39.204.50])
  by smtp.gmail.com with ESMTPSA id
- t20-20020a7bc3d4000000b003fe263dab33sm12234536wmj.9.2023.08.13.12.43.07
+ t20-20020a7bc3d4000000b003fe263dab33sm12234536wmj.9.2023.08.13.12.43.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 13 Aug 2023 12:43:08 -0700 (PDT)
+ Sun, 13 Aug 2023 12:43:09 -0700 (PDT)
 From: Karim Taha <kariem.taha2.7@gmail.com>
 To: qemu-devel@nongnu.org
-Cc: imp@bsdimp.com, Stacey Son <sson@FreeBSD.org>,
+Cc: imp@bsdimp.com, Michal Meloun <mmel@FreeBSD.org>,
  Karim Taha <kariem.taha2.7@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v3 07/32] Add structs target_freebsd11_nstat and
- target_freebsd11_statfs to bsd-user/syscall_defs.h
-Date: Sun, 13 Aug 2023 10:41:28 +0200
-Message-Id: <20230813084153.6510-8-kariem.taha2.7@gmail.com>
+Subject: [PATCH v3 08/32] Add struct target_statfs to bsd-user/syscall_defs.h
+Date: Sun, 13 Aug 2023 10:41:29 +0200
+Message-Id: <20230813084153.6510-9-kariem.taha2.7@gmail.com>
 X-Mailer: git-send-email 2.40.0
 In-Reply-To: <20230813084153.6510-1-kariem.taha2.7@gmail.com>
 References: <20230813084153.6510-1-kariem.taha2.7@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=kariem.taha2.7@gmail.com; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=kariem.taha2.7@gmail.com; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -2
 X-Spam_score: -0.3
 X-Spam_bar: /
@@ -95,85 +94,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Stacey Son <sson@FreeBSD.org>
+From: Michal Meloun <mmel@FreeBSD.org>
 
-Signed-off-by: Stacey Son <sson@FreeBSD.org>
+Signed-off-by: Michal Meloun <mmel@FreeBSD.org>
 Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
 Acked-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- bsd-user/syscall_defs.h | 64 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 64 insertions(+)
+ bsd-user/syscall_defs.h | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
 diff --git a/bsd-user/syscall_defs.h b/bsd-user/syscall_defs.h
-index 41259848cd..f8f37517b2 100644
+index f8f37517b2..2aefdd205e 100644
 --- a/bsd-user/syscall_defs.h
 +++ b/bsd-user/syscall_defs.h
-@@ -250,6 +250,70 @@ struct target_stat {
-     uint64_t  st_spare[10];
+@@ -314,6 +314,31 @@ struct target_freebsd11_statfs {
+     char     f_mntonname[88];      /* dir on which mounted*/
  };
  
-+
-+/* struct nstat is the same as stat above but without the st_lspare field */
-+struct target_freebsd11_nstat {
-+    uint32_t  st_dev;       /* inode's device */
-+    uint32_t  st_ino;       /* inode's number */
-+    int16_t   st_mode;      /* inode protection mode */
-+    int16_t   st_nlink;     /* number of hard links */
-+    uint32_t  st_uid;       /* user ID of the file's owner */
-+    uint32_t  st_gid;       /* group ID of the file's group */
-+    uint32_t  st_rdev;      /* device type */
-+    struct  target_freebsd_timespec st_atim; /* time last accessed */
-+    struct  target_freebsd_timespec st_mtim; /* time last data modification */
-+    struct  target_freebsd_timespec st_ctim; /* time last file status change */
-+    int64_t    st_size;     /* file size, in bytes */
-+    int64_t    st_blocks;   /* blocks allocated for file */
-+    uint32_t   st_blksize;  /* optimal blocksize for I/O */
-+    uint32_t   st_flags;    /* user defined flags for file */
-+    uint32_t   st_gen;      /* file generation number */
-+    struct target_freebsd_timespec st_birthtim; /* time of file creation */
-+    /*
-+     * Explicitly pad st_birthtim to 16 bytes so that the size of
-+     * struct stat is backwards compatible.  We use bitfields instead
-+     * of an array of chars so that this doesn't require a C99 compiler
-+     * to compile if the size of the padding is 0.  We use 2 bitfields
-+     * to cover up to 64 bits on 32-bit machines.  We assume that
-+     * CHAR_BIT is 8...
-+     */
-+    unsigned int:(8 / 2) * (16 - (int)sizeof(struct target_freebsd_timespec));
-+    unsigned int:(8 / 2) * (16 - (int)sizeof(struct target_freebsd_timespec));
-+} __packed;
-+
-+/*
-+ * sys/mount.h
-+ */
-+
-+/* filesystem id type */
-+typedef struct target_freebsd_fsid { int32_t val[2]; } target_freebsd_fsid_t;
-+
-+/* filesystem statistics */
-+struct target_freebsd11_statfs {
-+    uint32_t f_version; /* structure version number */
-+    uint32_t f_type;    /* type of filesystem */
-+    uint64_t f_flags;   /* copy of mount exported flags */
-+    uint64_t f_bsize;   /* filesystem fragment size */
-+    uint64_t f_iosize;  /* optimal transfer block size */
-+    uint64_t f_blocks;  /* total data blocks in filesystem */
-+    uint64_t f_bfree;   /* free blocks in filesystem */
-+    int64_t  f_bavail;  /* free blocks avail to non-superuser */
-+    uint64_t f_files;   /* total file nodes in filesystem */
-+    int64_t  f_ffree;   /* free nodes avail to non-superuser */
-+    uint64_t f_syncwrites;  /* count of sync writes since mount */
-+    uint64_t f_asyncwrites; /* count of async writes since mount */
-+    uint64_t f_syncreads;   /* count of sync reads since mount */
-+    uint64_t f_asyncreads;  /* count of async reads since mount */
-+    uint64_t f_spare[10];   /* unused spare */
-+    uint32_t f_namemax; /* maximum filename length */
-+    uint32_t f_owner;   /* user that mounted the filesystem */
-+    target_freebsd_fsid_t   f_fsid; /* filesystem id */
-+    char     f_charspare[80];           /* spare string space */
-+    char     f_fstypename[16];   /* filesys type name */
-+    char     f_mntfromname[88];    /* mount filesystem */
-+    char     f_mntonname[88];      /* dir on which mounted*/
++struct target_statfs {
++    uint32_t f_version;             /* structure version number */
++    uint32_t f_type;                /* type of filesystem */
++    uint64_t f_flags;               /* copy of mount exported flags */
++    uint64_t f_bsize;               /* filesystem fragment size */
++    uint64_t f_iosize;              /* optimal transfer block size */
++    uint64_t f_blocks;              /* total data blocks in filesystem */
++    uint64_t f_bfree;               /* free blocks in filesystem */
++    int64_t  f_bavail;              /* free blocks avail to non-superuser */
++    uint64_t f_files;               /* total file nodes in filesystem */
++    int64_t  f_ffree;               /* free nodes avail to non-superuser */
++    uint64_t f_syncwrites;          /* count of sync writes since mount */
++    uint64_t f_asyncwrites;         /* count of async writes since mount */
++    uint64_t f_syncreads;           /* count of sync reads since mount */
++    uint64_t f_asyncreads;          /* count of async reads since mount */
++    uint64_t f_spare[10];           /* unused spare */
++    uint32_t f_namemax;             /* maximum filename length */
++    uint32_t f_owner;               /* user that mounted the filesystem */
++    target_freebsd_fsid_t f_fsid;   /* filesystem id */
++    char      f_charspare[80];      /* spare string space */
++    char      f_fstypename[16];     /* filesystem type name */
++    char      f_mntfromname[1024];  /* mounted filesystem */
++    char      f_mntonname[1024];    /* directory on which mounted */
 +};
 +
  #define safe_syscall0(type, name) \
