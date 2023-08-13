@@ -2,83 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85CE977A7BD
-	for <lists+qemu-devel@lfdr.de>; Sun, 13 Aug 2023 17:50:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C353C77A834
+	for <lists+qemu-devel@lfdr.de>; Sun, 13 Aug 2023 17:56:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qVDKs-00088l-OD; Sun, 13 Aug 2023 11:48:58 -0400
+	id 1qVDQa-0001Ui-5i; Sun, 13 Aug 2023 11:54:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qVDKq-00088V-82
- for qemu-devel@nongnu.org; Sun, 13 Aug 2023 11:48:56 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ id 1qVDQS-0001UR-UT
+ for qemu-devel@nongnu.org; Sun, 13 Aug 2023 11:54:44 -0400
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qVDKo-0002Gu-K4
- for qemu-devel@nongnu.org; Sun, 13 Aug 2023 11:48:55 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-686f8614ce5so3408074b3a.3
- for <qemu-devel@nongnu.org>; Sun, 13 Aug 2023 08:48:53 -0700 (PDT)
+ id 1qVDQJ-000357-GP
+ for qemu-devel@nongnu.org; Sun, 13 Aug 2023 11:54:39 -0400
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-1bc8045e09dso21928495ad.0
+ for <qemu-devel@nongnu.org>; Sun, 13 Aug 2023 08:54:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1691941733; x=1692546533;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=jHg5/l+AW6NLNmsfOrnITejIgoPyg91vp9nxeyUPQAQ=;
- b=ZhmXOF+/nJ6Sozv4AWogtURNzi4Epr/UR3JZCnms+xDUCvdeRLJDKb15L9TW40rf6v
- FUz7MwxwIcnmZo67h5GCdnwBJMTcHtR+QkqQ/SFWBx9i4DRmhSkJR715IuuvPw9MSQAT
- tmoi/xaGAv2Ka998C3P4EBbO7ZbFGuOj1IPkO7wOMeMD+pZQSn1+WH8pjsWq0WFk1SnE
- l+O69BxLN/9EV6aoLlMQ0VkpK55WmowPtib6kaVzeZGJwqSD7bl+yOFXjDLnoihXYvma
- mIq3uPuAXAuIO4CNijse2qST9iKysntVVh1y4nBcpX4vYDw2SNpIVfexlHhe+0dIEchD
- MF3A==
+ d=linaro.org; s=google; t=1691942067; x=1692546867;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=oMtp5cKAKiBFXlWN8P5tcieCRda+DasFw5ToSvYX0dQ=;
+ b=q8RZIzZy6psu/fxTyi6di6B9hKkoM1zMG0WqJzZdlPPEz+b29dy7955pnkXHaqZUhL
+ l3x1IQfLOsJzV7dU//RkpcvdvnMnLGsRf8AVEjmdBdxiQYn0Dg+flamFnYJYHavGVQyO
+ 7tA908VLUtySKaLpnnduB4JUUSyyJts1JRpEBwIhBDhAo/ih+jyUJbkviBFHpcdXajWZ
+ ISqUzcVlKUdtlnPTCtzg6/8Kl/jvF365MRXVs/xLxzNPJ7Mc8emcSKEjHEAk+veMZtC0
+ HnGUWR985wctxQu0ycg8Q6YekzKkdHBoOVb7kj6m6Kjeh718unN/MP9J12zzV2bXLk5N
+ mNtg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691941733; x=1692546533;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=jHg5/l+AW6NLNmsfOrnITejIgoPyg91vp9nxeyUPQAQ=;
- b=EYvVWkJB7qPCmPoeeNKFS1DisHW83cdu9Hr5Jp6sybheo/+GJZ4t8orpOaFtd+zV2f
- 2h2cvwoWoFw5UgsbXpalabxvmZtgvroi3vy/spaM/bE2jejru2NCeqjCaMqgwKba50X1
- 1v1PsCEyyEFGUZxrPyHaEtORp6y4kFbfuEnhldPKEMomd14aWtN7t1ZBSKwzcWRu5LVP
- J1z24aROMEJlIVVW/q+/1lwcYcPBq8BWy11Zp3fXhYhyMITDfxSBeGCoiabbQh6s21wF
- Ds6fMeuocPCEvIM29yjkuEXOv6nfqZ7j/7WrzwRIalsgqN/2sfjjFErp7TPirjYBULIz
- xa7Q==
-X-Gm-Message-State: AOJu0YwrnAVL+gtM2XAPmSPCEs8SSMhd7il8DhIm/cqP6QatzAakPSST
- nXsmANcCKnEiqYBGZ/q3HJz6R3uTkwNh8ZLLtKI=
-X-Google-Smtp-Source: AGHT+IG6Ra0FAS838YtgXgmKcqH0Yv1KaTkzfrFv0Dhfkc1pfLUbX7kxGjb44vHiBeBbhVGfx7OPtw==
-X-Received: by 2002:a05:6a20:3204:b0:13b:cc09:a547 with SMTP id
- hl4-20020a056a20320400b0013bcc09a547mr8654041pzc.36.1691941732946; 
- Sun, 13 Aug 2023 08:48:52 -0700 (PDT)
-Received: from ?IPV6:2602:47:d483:7301:8022:692c:81e3:39db?
- ([2602:47:d483:7301:8022:692c:81e3:39db])
+ d=1e100.net; s=20221208; t=1691942067; x=1692546867;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=oMtp5cKAKiBFXlWN8P5tcieCRda+DasFw5ToSvYX0dQ=;
+ b=j95rErvCIqqxtRfubaIbWtCcMxEPE4gbR6SRxFc9XY0cx1tkr3l69BFfxrDCBrNVdz
+ R2dQFlDnMXQ4/+3Si0gKWmm1CcqoDfNoobRurrZh7wBicqdMarvXuQepeXD57Zy4eJaL
+ ITjJnsxAFR22Gjm8iv298UcEW6MR8vTLKEaKUalKfsauz+gQID1+zYBrt66OvOHuACiK
+ m/DXiPwNzO/EN8pdhBfil209+HoagJ5JaqlAVitJC+lrpVEtkJrNi99kB2fPBWpvb7fk
+ DX0Ec6d4tfAYGVxZ5SwyxIxCr4OIWgf4t/s8dd9zX2OD/ReEGncP/T/DdambXiUg9SyD
+ Q2Rg==
+X-Gm-Message-State: AOJu0YzY1+bhRdn3JyxTZyGDZT2DoT4I/Ty1dAQiVNCZfemfoVPIHYlt
+ 6tYH2hnK+9WGQiYfJnAbqsdwyk+Fi/w0iI7GA8U=
+X-Google-Smtp-Source: AGHT+IEz2OZ3q03Y+FfmN7kNd8VAVyVhY/N+Yug7dKNLkolDpzVLRCW9LuZ/ehJYKYKpUnkslOCw4A==
+X-Received: by 2002:a17:902:ce82:b0:1b8:c580:5fb9 with SMTP id
+ f2-20020a170902ce8200b001b8c5805fb9mr5732455plg.14.1691942067476; 
+ Sun, 13 Aug 2023 08:54:27 -0700 (PDT)
+Received: from stoup.. ([2602:47:d483:7301:8022:692c:81e3:39db])
  by smtp.gmail.com with ESMTPSA id
- ff10-20020a056a002f4a00b00682a8e600f0sm6414620pfb.35.2023.08.13.08.48.52
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 13 Aug 2023 08:48:52 -0700 (PDT)
-Message-ID: <ebf2bcdf-be70-88a0-7dba-656c55757c78@linaro.org>
-Date: Sun, 13 Aug 2023 08:48:50 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2 27/32] Implement do_freebsd_realpathat syscall
-Content-Language: en-US
-To: Karim Taha <kariem.taha2.7@gmail.com>, qemu-devel@nongnu.org
-Cc: imp@bsdimp.com, =?UTF-8?Q?Mika=c3=abl_Urankar?= <mikael.urankar@gmail.com>
-References: <20230813031013.1743-1-kariem.taha2.7@gmail.com>
- <20230813031013.1743-28-kariem.taha2.7@gmail.com>
+ e9-20020a170902744900b001b7e63cfa19sm7587127plt.234.2023.08.13.08.54.26
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 13 Aug 2023 08:54:26 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230813031013.1743-28-kariem.taha2.7@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
-X-Spam_score_int: -64
-X-Spam_score: -6.5
-X-Spam_bar: ------
-X-Spam_report: (-6.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-4.359,
+To: qemu-devel@nongnu.org
+Cc: laurent@vivier.eu
+Subject: [PATCH for-8.2] target/m68k: Use tcg_gen_deposit_i32 in
+ gen_partset_reg
+Date: Sun, 13 Aug 2023 08:54:25 -0700
+Message-Id: <20230813155425.341598-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -96,15 +89,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/12/23 20:10, Karim Taha wrote:
-> +#if defined(__FreeBSD_version) && __FreeBSD_version >= 1300080
-> +extern int __realpathat(int fd, const char *path, char *buf, size_t size,
-> +        int flags);
-> +//https://svnweb.freebsd.org/base?view=revision&revision=358172
-> +// no man page
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ target/m68k/translate.c | 11 ++---------
+ 1 file changed, 2 insertions(+), 9 deletions(-)
 
-C comments, not C++.
+diff --git a/target/m68k/translate.c b/target/m68k/translate.c
+index 37954d11a6..15b3701b8f 100644
+--- a/target/m68k/translate.c
++++ b/target/m68k/translate.c
+@@ -697,19 +697,12 @@ static inline int ext_opsize(int ext, int pos)
+  */
+ static void gen_partset_reg(int opsize, TCGv reg, TCGv val)
+ {
+-    TCGv tmp;
+     switch (opsize) {
+     case OS_BYTE:
+-        tcg_gen_andi_i32(reg, reg, 0xffffff00);
+-        tmp = tcg_temp_new();
+-        tcg_gen_ext8u_i32(tmp, val);
+-        tcg_gen_or_i32(reg, reg, tmp);
++        tcg_gen_deposit_i32(reg, reg, val, 0, 8);
+         break;
+     case OS_WORD:
+-        tcg_gen_andi_i32(reg, reg, 0xffff0000);
+-        tmp = tcg_temp_new();
+-        tcg_gen_ext16u_i32(tmp, val);
+-        tcg_gen_or_i32(reg, reg, tmp);
++        tcg_gen_deposit_i32(reg, reg, val, 0, 16);
+         break;
+     case OS_LONG:
+     case OS_SINGLE:
+-- 
+2.34.1
 
-
-r~
 
