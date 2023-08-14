@@ -2,81 +2,112 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7956077BC2F
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Aug 2023 16:56:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84B9A77BC3A
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Aug 2023 17:00:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qVYz6-0006qk-MX; Mon, 14 Aug 2023 10:55:56 -0400
+	id 1qVZ2P-0007nQ-VU; Mon, 14 Aug 2023 10:59:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qVYz3-0006qT-Lt
- for qemu-devel@nongnu.org; Mon, 14 Aug 2023 10:55:54 -0400
-Received: from smtp-out1.suse.de ([195.135.220.28])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qVZ2O-0007mk-4K
+ for qemu-devel@nongnu.org; Mon, 14 Aug 2023 10:59:20 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qVYz2-0004PE-2O
- for qemu-devel@nongnu.org; Mon, 14 Aug 2023 10:55:53 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id B453821878;
- Mon, 14 Aug 2023 14:55:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1692024949; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=B2/h4vIDKmHpZ2cSpUMrZj6Dl+oqkGSr9jH2l/JxTQk=;
- b=QbxlXaCxqHNIqGUfXafLQPeIK0zAYL/sJ+NvoSKUaFVR4rUPAcbxDwfOY/31TXroDlQrpA
- 4rwa/Fi8z7C3TP8z8md7S3KSoXtV8RXYDBOLptKdbu+CDx+4svotP1QlgzIeLx3hrvh9/t
- CHhpumgyhIefC7nheO6ZbNDSfeR2z0I=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1692024949;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=B2/h4vIDKmHpZ2cSpUMrZj6Dl+oqkGSr9jH2l/JxTQk=;
- b=Y+5lO85N06YpWF5mc//n+1KSWVfQPkua8PdaFfhWpUR+7EPGWo8ZAyP0Pp+NaJoAmnj+QE
- HmriCxGmNr7DLuCQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 433A9138EE;
- Mon, 14 Aug 2023 14:55:49 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id u7QLBHVA2mR9CAAAMHmgww
- (envelope-from <farosas@suse.de>); Mon, 14 Aug 2023 14:55:49 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: "chenyuhui (A)" <chenyuhui5@huawei.com>, Juan Quintela
- <quintela@redhat.com>, qemu-devel@nongnu.org
-Cc: xuyinghua3@huawei.com, liheng.liheng@huawei.com, renxuming@huawei.com,
- pengyi.pengyi@huawei.com, yubihong@huawei.com, zhengchuan@huawei.com,
- huhao33@huawei.com, caozhongwang1@huawei.com, caiqingmu@huawei.com, Peter
- Xu <peterx@redhat.com>
-Subject: Re: [PATCH] migrate/multifd: fix coredump when the multifd thread
- cleanup
-In-Reply-To: <731ee7bd-8935-7970-e217-888a4199ba95@huawei.com>
-References: <20230621081826.3203053-1-zhangjianguo18@huawei.com>
- <87wmzwsxmz.fsf@suse.de> <53a69e3b-f9f7-b2c1-9487-f9992ffec2a3@huawei.com>
- <ae697c8c-5d57-071c-240a-6f1e8307bdbd@huawei.com>
- <dd678c96-6065-0c53-9543-312a647298e2@huawei.com> <ZL/97XT8wRq1hsVN@x1n>
- <731ee7bd-8935-7970-e217-888a4199ba95@huawei.com>
-Date: Mon, 14 Aug 2023 11:55:46 -0300
-Message-ID: <87h6p1vfkd.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qVZ2M-0005Ex-0f
+ for qemu-devel@nongnu.org; Mon, 14 Aug 2023 10:59:19 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-3fe32016bc8so39812565e9.1
+ for <qemu-devel@nongnu.org>; Mon, 14 Aug 2023 07:59:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1692025156; x=1692629956;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=sKziK/xFndoa9bUcpBoOg/LkGNa2BGBXIRbHsDBSlsY=;
+ b=cAgURWfztegoOaIqaLUGU95vvfmlR9OSIwiQIeAIoMO1eWPDKR+t27X02HlIXbIITy
+ aanuABpttkq/Oyq61qjnxUKHYLdgvHgotTr3+oXckfJAtLB2vEs5EF5fxhsHtteFa8Vy
+ lwRjZwGzQ90GoeS/BFbqJX7KsifNmQKV+uzXTQ/S+1QWDRqBg4/jtg3A6BBVOIBdz6Y+
+ MKzkWdAON4meiSknHwKEY3iBn3TEToEFvtefHTuxZNSuk7P3o2Ax904wXa6NhuzjGTSJ
+ ml/Tg+vcq1RpKL6OkGx8/KAKe+rZywRgHSuzghzY+Ii2/6Pk9BiMZims/kdKqrooaO40
+ eM2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1692025156; x=1692629956;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=sKziK/xFndoa9bUcpBoOg/LkGNa2BGBXIRbHsDBSlsY=;
+ b=LYbzEk2Khktj+4diPMc1eemcacJeM5/3N7LwNJZFSMy0+kcrAaIc/C6yFtO1JHHLDR
+ urqWlsavA1cY6bhXFxUOz2UBXaxtlLsSeMdg1JUVfjFe751jgJYx7dT8hoSDC1Z+cIqD
+ QvEBdjeG7nUuWALxLCZDRtUGtdoH4ubIY9IJQgFsgoW6zBogJ5ItpRHHjGvqz1GRPJWI
+ P2e6GbN+2D94z9WbW9J8se0SOkb5ruHj4bZ+EoKOECXg29XIdBfp5MG54WCpEgxdacLe
+ U8m62j3TqVOBDQu2yp6xk5/0Q1pgr691O54ACELuVj34LqRhGZ+lVqnA7FKttNtGfB2m
+ xMnA==
+X-Gm-Message-State: AOJu0Yy81mxSbJFtNrjBbSBwDd5X6jrakyZMlViWz+6bMCBObanazDjH
+ HIJEMwMf27C3U4stZCjWSSrwrg==
+X-Google-Smtp-Source: AGHT+IGvpfzK93iZxKBG1xPuwbXbwZOjEKLI0AKtIH+FTiEQDRStEYjJPsFcPMvQ+BKCZH9R5rXuJQ==
+X-Received: by 2002:a05:600c:2258:b0:3fe:2f80:8394 with SMTP id
+ a24-20020a05600c225800b003fe2f808394mr7434195wmm.15.1692025156168; 
+ Mon, 14 Aug 2023 07:59:16 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ v2-20020a5d6102000000b003141e629cb6sm14506898wrt.101.2023.08.14.07.59.15
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 14 Aug 2023 07:59:15 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 5B5381FFBB;
+ Mon, 14 Aug 2023 15:59:15 +0100 (BST)
+References: <20230731084354.115015-1-akihiko.odaki@daynix.com>
+ <20230731084354.115015-16-akihiko.odaki@daynix.com>
+User-agent: mu4e 1.11.14; emacs 29.1.50
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Alexandre Iooss <erdnaxe@crans.org>, Mahmoud Mandour
+ <ma.mandourr@gmail.com>, Eduardo Habkost <eduardo@habkost.net>, Marcel
+ Apfelbaum <marcel.apfelbaum@gmail.com>, Philippe =?utf-8?Q?Mathieu-Daud?=
+ =?utf-8?Q?=C3=A9?=
+ <philmd@linaro.org>, Yanan Wang <wangyanan55@huawei.com>, Richard
+ Henderson <richard.henderson@linaro.org>, =?utf-8?Q?Marc-Andr=C3=A9?=
+ Lureau <marcandre.lureau@redhat.com>, =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>,
+ John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>, Peter
+ Maydell <peter.maydell@linaro.org>, Michael Rolnik <mrolnik@gmail.com>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, Brian Cain
+ <bcain@quicinc.com>, Song Gao <gaosong@loongson.cn>, Xiaojuan Yang
+ <yangxiaojuan@loongson.cn>, Laurent Vivier <laurent@vivier.eu>, Aurelien
+ Jarno <aurelien@aurel32.net>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>, Chris Wulff
+ <crwulff@gmail.com>, Marek Vasut <marex@denx.de>, Stafford Horne
+ <shorne@gmail.com>, Daniel Henrique Barboza <danielhb413@gmail.com>,
+ =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>, David Gibson
+ <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>, Nicholas Piggin
+ <npiggin@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Alistair Francis
+ <alistair.francis@wdc.com>, Bin Meng <bin.meng@windriver.com>, Weiwei Li
+ <liweiwei@iscas.ac.cn>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, David Hildenbrand
+ <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>, Mark Cave-Ayland
+ <mark.cave-ayland@ilande.co.uk>, Artyom Tarasenko <atar4qemu@gmail.com>,
+ Bastian Koppelmann <kbastian@mail.uni-paderborn.de>, Max Filippov
+ <jcmvbkbc@gmail.com>, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
+ qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org
+Subject: Re: [RFC PATCH 15/24] target/arm: Fill new members of GDBFeature
+Date: Mon, 14 Aug 2023 15:56:59 +0100
+In-reply-to: <20230731084354.115015-16-akihiko.odaki@daynix.com>
+Message-ID: <87350lr7p8.fsf@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=195.135.220.28; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x330.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,79 +124,248 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"chenyuhui (A)" via <qemu-devel@nongnu.org> writes:
 
-> On 2023/7/26 0:53, Peter Xu wrote:
->> On Tue, Jul 25, 2023 at 04:43:28PM +0800, chenyuhui (A) wrote:
->>> @Peter Xu @Fabiano Rosas
->>> Kindly ping on this.
->>=20
->> Ah I see what's missing - please copy maintainer (Juan) for any migration
->> patches, especially multifd ones..  I'm doing that for this one, but I'd
->> suggest you repost with a whole patch and information put into commit ms=
-g.
->>=20
->> Thanks.
->>=20
-> Hi, Juan
-> This is a patch for migration=EF=BC=8Cplease take a look.
+Akihiko Odaki <akihiko.odaki@daynix.com> writes:
+
+> These members will be used to help plugins to identify registers.
 >
-> From: Yuhui Chen <chenyuhui5@huawei.com>
-> Date: Tue, 25 Jul 2023 10:45:48 +0800
-> Subject: [PATCH] migrate/multifd: fix coredump when the multifd thread cl=
-eanup
->
-> There is a coredump while trying to destroy mutex when
-> p->running is false but p->mutex is not unlock.
-> Make sure all mutexes has been released before destroy them.
->
-> Signed-off-by: Yuhui Chen <chenyuhui5@huawei.com>
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 > ---
->  migration/multifd.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
+>  target/arm/gdbstub.c   | 46 +++++++++++++++++++++++++++---------------
+>  target/arm/gdbstub64.c | 42 +++++++++++++++++++++++++-------------
+>  2 files changed, 58 insertions(+), 30 deletions(-)
 >
-> diff --git a/migration/multifd.c b/migration/multifd.c
-> index 3387d8277f..3a085bf3ec 100644
-> --- a/migration/multifd.c
-> +++ b/migration/multifd.c
-> @@ -521,9 +521,7 @@ void multifd_save_cleanup(void)
->      for (i =3D 0; i < migrate_multifd_channels(); i++) {
->          MultiFDSendParams *p =3D &multifd_send_state->params[i];
->
-> -        if (p->running) {
-> -            qemu_thread_join(&p->thread);
-> -        }
-> +        qemu_thread_join(&p->thread);
+> diff --git a/target/arm/gdbstub.c b/target/arm/gdbstub.c
+> index 100a6eed15..56d24028f6 100644
+> --- a/target/arm/gdbstub.c
+> +++ b/target/arm/gdbstub.c
+> @@ -270,6 +270,7 @@ static void arm_gen_one_feature_sysreg(GString *s,
+>      g_string_append_printf(s, " regnum=3D\"%d\"", regnum);
+>      g_string_append_printf(s, " group=3D\"cp_regs\"/>");
+>      dyn_feature->data.cpregs.keys[dyn_feature->desc.num_regs] =3D ri_key;
+> +    ((const char **)dyn_feature->desc.regs)[dyn_feature->desc.num_regs] =
+=3D ri->name;
+>      dyn_feature->desc.num_regs++;
+>  }
+>=20=20
+> @@ -316,6 +317,8 @@ static GDBFeature *arm_gen_dynamic_sysreg_feature(CPU=
+State *cs, int base_reg)
+>      DynamicGDBFeatureInfo *dyn_feature =3D &cpu->dyn_sysreg_feature;
+>      gsize num_regs =3D g_hash_table_size(cpu->cp_regs);
+>=20=20
+> +    dyn_feature->desc.name =3D "org.qemu.gdb.arm.sys.regs";
+> +    dyn_feature->desc.regs =3D g_new(const char *, num_regs);
+
+AIUI this means we now have an array of register names which mirrors the
+names embedded in the XML. This smells like a few steps away from just
+abstracting the whole XML away from the targets and generating them
+inside gdbstub when we need them. As per my stalled attempt I referenced
+earlier.
+
+
+>      dyn_feature->desc.num_regs =3D 0;
+>      dyn_feature->data.cpregs.keys =3D g_new(uint32_t, num_regs);
+>      g_string_printf(s, "<?xml version=3D\"1.0\"?>");
+> @@ -418,30 +421,34 @@ static int arm_gdb_set_m_systemreg(CPUARMState *env=
+, uint8_t *buf, int reg)
+>  }
+>=20=20
+>  static GDBFeature *arm_gen_dynamic_m_systemreg_feature(CPUState *cs,
+> -                                                       int orig_base_reg)
+> +                                                       int base_reg)
+>  {
+>      ARMCPU *cpu =3D ARM_CPU(cs);
+>      CPUARMState *env =3D &cpu->env;
+>      GString *s =3D g_string_new(NULL);
+> -    int base_reg =3D orig_base_reg;
+> -    int i;
+> +    const char **regs =3D g_new(const char *, ARRAY_SIZE(m_sysreg_def));
+> +    int i =3D 0;
+> +    int j;
+>=20=20
+>      g_string_printf(s, "<?xml version=3D\"1.0\"?>");
+>      g_string_append_printf(s, "<!DOCTYPE target SYSTEM \"gdb-target.dtd\=
+">");
+>      g_string_append_printf(s, "<feature name=3D\"org.gnu.gdb.arm.m-syste=
+m\">\n");
+>=20=20
+> -    for (i =3D 0; i < ARRAY_SIZE(m_sysreg_def); i++) {
+> -        if (arm_feature(env, m_sysreg_def[i].feature)) {
+> +    for (j =3D 0; j < ARRAY_SIZE(m_sysreg_def); j++) {
+> +        if (arm_feature(env, m_sysreg_def[j].feature)) {
+> +            regs[i] =3D m_sysreg_def[j].name;
+>              g_string_append_printf(s,
+>                  "<reg name=3D\"%s\" bitsize=3D\"32\" regnum=3D\"%d\"/>\n=
+",
+> -                m_sysreg_def[i].name, base_reg++);
+> +                m_sysreg_def[j].name, base_reg + i++);
+>          }
 >      }
->      for (i =3D 0; i < migrate_multifd_channels(); i++) {
->          MultiFDSendParams *p =3D &multifd_send_state->params[i];
+>=20=20
+>      g_string_append_printf(s, "</feature>");
+> +    cpu->dyn_m_systemreg_feature.desc.name =3D "org.gnu.gdb.arm.m-system=
+";
+>      cpu->dyn_m_systemreg_feature.desc.xmlname =3D "arm-m-system.xml";
+>      cpu->dyn_m_systemreg_feature.desc.xml =3D g_string_free(s, false);
+> -    cpu->dyn_m_systemreg_feature.desc.num_regs =3D base_reg - orig_base_=
+reg;
+> +    cpu->dyn_m_systemreg_feature.desc.regs =3D regs;
+> +    cpu->dyn_m_systemreg_feature.desc.num_regs =3D i;
+>=20=20
+>      return &cpu->dyn_m_systemreg_feature.desc;
+>  }
+> @@ -462,30 +469,37 @@ static int arm_gdb_set_m_secextreg(CPUARMState *env=
+, uint8_t *buf, int reg)
+>  }
+>=20=20
+>  static GDBFeature *arm_gen_dynamic_m_secextreg_feature(CPUState *cs,
+> -                                                       int orig_base_reg)
+> +                                                       int base_reg)
+>  {
+>      ARMCPU *cpu =3D ARM_CPU(cs);
+>      GString *s =3D g_string_new(NULL);
+> -    int base_reg =3D orig_base_reg;
+> -    int i;
+> +    const char **regs =3D g_new(const char *, ARRAY_SIZE(m_sysreg_def) *=
+ 2);
+> +    int i =3D 0;
+> +    int j;
+>=20=20
+>      g_string_printf(s, "<?xml version=3D\"1.0\"?>");
+>      g_string_append_printf(s, "<!DOCTYPE target SYSTEM \"gdb-target.dtd\=
+">");
+>      g_string_append_printf(s, "<feature name=3D\"org.gnu.gdb.arm.secext\=
+">\n");
+>=20=20
+> -    for (i =3D 0; i < ARRAY_SIZE(m_sysreg_def); i++) {
+> +    for (j =3D 0; j < ARRAY_SIZE(m_sysreg_def); j++) {
+> +        regs[i] =3D g_strconcat(m_sysreg_def[j].name, "_ns", NULL);
+>          g_string_append_printf(s,
+> -            "<reg name=3D\"%s_ns\" bitsize=3D\"32\" regnum=3D\"%d\"/>\n",
+> -            m_sysreg_def[i].name, base_reg++);
+> +            "<reg name=3D\"%s\" bitsize=3D\"32\" regnum=3D\"%d\"/>\n",
+> +            regs[i], base_reg + i);
+> +        i++;
+> +        regs[i] =3D g_strconcat(m_sysreg_def[j].name, "_s", NULL);
+>          g_string_append_printf(s,
+> -            "<reg name=3D\"%s_s\" bitsize=3D\"32\" regnum=3D\"%d\"/>\n",
+> -            m_sysreg_def[i].name, base_reg++);
+> +            "<reg name=3D\"%s\" bitsize=3D\"32\" regnum=3D\"%d\"/>\n",
+> +            regs[i], base_reg + i);
+> +        i++;
+>      }
+>=20=20
+>      g_string_append_printf(s, "</feature>");
+> +    cpu->dyn_m_secextreg_feature.desc.name =3D "org.gnu.gdb.arm.secext";
+>      cpu->dyn_m_secextreg_feature.desc.xmlname =3D "arm-m-secext.xml";
+>      cpu->dyn_m_secextreg_feature.desc.xml =3D g_string_free(s, false);
+> -    cpu->dyn_m_secextreg_feature.desc.num_regs =3D base_reg - orig_base_=
+reg;
+> +    cpu->dyn_m_secextreg_feature.desc.regs =3D regs;
+> +    cpu->dyn_m_secextreg_feature.desc.num_regs =3D i;
+>=20=20
+>      return &cpu->dyn_m_secextreg_feature.desc;
+>  }
+> diff --git a/target/arm/gdbstub64.c b/target/arm/gdbstub64.c
+> index 20483ef9bc..c5ed7c0aa3 100644
+> --- a/target/arm/gdbstub64.c
+> +++ b/target/arm/gdbstub64.c
+> @@ -316,15 +316,21 @@ static void output_vector_union_type(GString *s, in=
+t reg_width,
+>      g_string_append(s, "</union>");
+>  }
+>=20=20
+> -GDBFeature *arm_gen_dynamic_svereg_feature(CPUState *cs, int orig_base_r=
+eg)
+> +GDBFeature *arm_gen_dynamic_svereg_feature(CPUState *cs, int base_reg)
+>  {
+>      ARMCPU *cpu =3D ARM_CPU(cs);
+>      GString *s =3D g_string_new(NULL);
+>      DynamicGDBFeatureInfo *info =3D &cpu->dyn_svereg_feature;
+> +    const char **regs;
+>      int reg_width =3D cpu->sve_max_vq * 128;
+>      int pred_width =3D cpu->sve_max_vq * 16;
+> -    int base_reg =3D orig_base_reg;
+> -    int i;
+> +    int i =3D 0;
+> +    int j;
+> +
+> +    info->desc.name =3D "org.gnu.gdb.aarch64.sve";
+> +    info->desc.num_regs =3D 32 + 16 + 4;
+> +    regs =3D g_new(const char *, info->desc.num_regs);
+> +    info->desc.regs =3D regs;
+>=20=20
+>      g_string_printf(s, "<?xml version=3D\"1.0\"?>");
+>      g_string_append_printf(s, "<!DOCTYPE target SYSTEM \"gdb-target.dtd\=
+">");
+> @@ -339,44 +345,52 @@ GDBFeature *arm_gen_dynamic_svereg_feature(CPUState=
+ *cs, int orig_base_reg)
+>                             pred_width / 8);
+>=20=20
+>      /* Define the vector registers. */
+> -    for (i =3D 0; i < 32; i++) {
+> +    for (j =3D 0; j < 32; j++) {
+> +        regs[i] =3D g_strdup_printf("z%d", j);
+>          g_string_append_printf(s,
+> -                               "<reg name=3D\"z%d\" bitsize=3D\"%d\""
+> +                               "<reg name=3D\"%s\" bitsize=3D\"%d\""
+>                                 " regnum=3D\"%d\" type=3D\"svev\"/>",
+> -                               i, reg_width, base_reg++);
+> +                               regs[i], reg_width, base_reg + i);
+> +        i++;
+>      }
+>=20=20
+>      /* fpscr & status registers */
+> +    regs[i] =3D "fpsr";
+>      g_string_append_printf(s, "<reg name=3D\"fpsr\" bitsize=3D\"32\""
+>                             " regnum=3D\"%d\" group=3D\"float\""
+> -                           " type=3D\"int\"/>", base_reg++);
+> +                           " type=3D\"int\"/>", base_reg + i++);
+> +    regs[i] =3D "fpcr";
+>      g_string_append_printf(s, "<reg name=3D\"fpcr\" bitsize=3D\"32\""
+>                             " regnum=3D\"%d\" group=3D\"float\""
+> -                           " type=3D\"int\"/>", base_reg++);
+> +                           " type=3D\"int\"/>", base_reg + i++);
+>=20=20
+>      /* Define the predicate registers. */
+> -    for (i =3D 0; i < 16; i++) {
+> +    for (j =3D 0; j < 16; j++) {
+> +        regs[i] =3D g_strdup_printf("p%d", j);
+>          g_string_append_printf(s,
+> -                               "<reg name=3D\"p%d\" bitsize=3D\"%d\""
+> +                               "<reg name=3D\"%s\" bitsize=3D\"%d\""
+>                                 " regnum=3D\"%d\" type=3D\"svep\"/>",
+> -                               i, pred_width, base_reg++);
+> +                               regs[i], pred_width, base_reg + i);
+> +        i++;
+>      }
+> +    regs[i] =3D "ffr";
+>      g_string_append_printf(s,
+>                             "<reg name=3D\"ffr\" bitsize=3D\"%d\""
+>                             " regnum=3D\"%d\" group=3D\"vector\""
+>                             " type=3D\"svep\"/>",
+> -                           pred_width, base_reg++);
+> +                           pred_width, base_reg + i++);
+>=20=20
+>      /* Define the vector length pseudo-register. */
+> +    regs[i] =3D "vg";
+>      g_string_append_printf(s,
+>                             "<reg name=3D\"vg\" bitsize=3D\"64\""
+>                             " regnum=3D\"%d\" type=3D\"int\"/>",
+> -                           base_reg++);
+> +                           base_reg + i++);
+>=20=20
+>      g_string_append_printf(s, "</feature>");
+>=20=20
+>      info->desc.xmlname =3D "sve-registers.xml";
+>      info->desc.xml =3D g_string_free(s, false);
+> -    info->desc.num_regs =3D base_reg - orig_base_reg;
+> +    assert(info->desc.num_regs =3D=3D i);
+>      return &info->desc;
+>  }
 
-Hi,
 
-I took another look at this and noticed that we're not even holding the
-lock in the other threads when accessing p->running.
-
-Also, the save_cleanup() function can be called before
-qemu_thread_create(), which means p->thread.thread would have a bogus
-value and qemu_thread_join() would abort the QEMU process.
-
-What we need here is to stop setting p->running from inside the thread
-altogether. The flag is only effectively protecting the
-qemu_thread_join() from being called before the thread's creation. We
-can post to sem_sync regardless of the thread state because we only
-destroy it a few lines down in the same function. And there's already
-p->quit which is being accessed properly and sends the thread out of the
-loop.
-
-So I suggest this pattern:
-
-qemu_sem_post(&p->sem_sync);
-if (p->running) {
-    qemu_thread_join(&p->thread);
-    p->running =3D false;
-}
-
-It would also be nice to move the p->running =3D true closer to the
-qemu_thread_create() call at multifd_channel_connect().
-
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
