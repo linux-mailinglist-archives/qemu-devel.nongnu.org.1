@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2067B77C01D
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Aug 2023 20:56:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B079577C021
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Aug 2023 20:57:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qVciH-0005WH-0E; Mon, 14 Aug 2023 14:54:49 -0400
+	id 1qVciI-0005XP-Nb; Mon, 14 Aug 2023 14:54:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1qVciF-0005W0-Mi
- for qemu-devel@nongnu.org; Mon, 14 Aug 2023 14:54:47 -0400
+ id 1qVciG-0005WQ-RI
+ for qemu-devel@nongnu.org; Mon, 14 Aug 2023 14:54:48 -0400
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1qVciE-0007ry-4j
- for qemu-devel@nongnu.org; Mon, 14 Aug 2023 14:54:47 -0400
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+ id 1qVciE-0007s7-5Y
+ for qemu-devel@nongnu.org; Mon, 14 Aug 2023 14:54:48 -0400
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 37EGTqjM027893; Mon, 14 Aug 2023 18:54:43 GMT
+ 37EGU2kL018156; Mon, 14 Aug 2023 18:54:44 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
  subject : date : message-id : in-reply-to : references; s=corp-2023-03-30;
- bh=OtH/AkO68NvSc8Mo4tJbs/bBr22Kdb/i0fS05G9Dl0A=;
- b=x/DbAADVNbeKLEw9oww3MlzZhj5ymdtvkPRO4yKWdoajO28YQq0TqDrlWWQPJWAkVE3P
- mvdsxa7mOj+lSkR3cJYIbohK7D1AtbY+zuZCT4LbgCvBNuHFpsYt+a1WA4B+WTYDxPHX
- nxgOgin14WmJTzoNYB/XBYVzPUc7pwn588vLsykTgu3Fv9IqzQvKZNAziSet/3kpdZyn
- sF0VAFSi3GW3TlDbIPOteHdtEDTZweGA5KHWDTN81zVqP/2K2JPJ5n2ODmMEz8pcZ6o5
- K2Y/JQ25khPG6fQC9eAmsKNQZPdH2nXLt8zkbeIugu6fdl+kFpdgtxbcMAUzzW9MkV+p PQ== 
+ bh=3nDBCK4MwPedipYXkGi2sNbBGfr4dJ2ZfeM/fMZbXAI=;
+ b=AW2MpFSrB70D9TrzIrjSVFjqGkLxdo/tl8JmdY1x3DIgRsK6PCzPVLr/bV/gc08YDlI3
+ Mv+1mQCNZcetQC84rSRFb32dm8FNWpZdzAIYlmYP5fU3IPJsKxHXprseOk3mYG06MvGr
+ XuPw9XMb6wZ5Nvie78RyPPEtuBX0PCRCt3cGFoHRV3aXX2QcEQprCnkE/yOStRDfEPiA
+ Jws5Ny2W478qTYCBI63DCa9nO3Pqvmm8F7Et1LhatuC7DZmvvfgworMYDzkoqBFZSIsT
+ XhrSDcDByDn39jOImYsV6JlGgCn7xJQ57nSG9X73e5nc31Ra0omT8U8kWVpotWX06eSN yw== 
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3se2y2ubyj-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3se61c37km-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 14 Aug 2023 18:54:42 +0000
+ Mon, 14 Aug 2023 18:54:43 +0000
 Received: from pps.filterd
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 37EIdYuK006780; Mon, 14 Aug 2023 18:54:42 GMT
+ with ESMTP id 37EIasgu005491; Mon, 14 Aug 2023 18:54:43 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3sey2c8x5u-1
+ 3sey2c8x66-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 14 Aug 2023 18:54:42 +0000
+ Mon, 14 Aug 2023 18:54:43 +0000
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 37EIsb3t008127;
- Mon, 14 Aug 2023 18:54:41 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 37EIsb3v008127;
+ Mon, 14 Aug 2023 18:54:42 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 3sey2c8x3f-5; Mon, 14 Aug 2023 18:54:41 +0000
+ ESMTP id 3sey2c8x3f-6; Mon, 14 Aug 2023 18:54:42 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V3 04/10] migration: preserve suspended for snapshot
-Date: Mon, 14 Aug 2023 11:54:30 -0700
-Message-Id: <1692039276-148610-5-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V3 05/10] migration: preserve suspended for bg_migration
+Date: Mon, 14 Aug 2023 11:54:31 -0700
+Message-Id: <1692039276-148610-6-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1692039276-148610-1-git-send-email-steven.sistare@oracle.com>
 References: <1692039276-148610-1-git-send-email-steven.sistare@oracle.com>
@@ -71,8 +71,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
  mlxlogscore=999 bulkscore=0 adultscore=0 spamscore=0 malwarescore=0
  mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2306200000 definitions=main-2308140175
-X-Proofpoint-ORIG-GUID: 8rqelQ4ChiK82lJTGZV0huoHGIjnjNYu
-X-Proofpoint-GUID: 8rqelQ4ChiK82lJTGZV0huoHGIjnjNYu
+X-Proofpoint-GUID: UKA8AEjsEnFvGLxNCPqRSWcvuQV1QFMp
+X-Proofpoint-ORIG-GUID: UKA8AEjsEnFvGLxNCPqRSWcvuQV1QFMp
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -97,47 +97,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Restoring a snapshot can break a suspended guest.
-
-If a guest is suspended and saved to a snapshot using savevm, and qemu
-is terminated and restarted with the -S option, then loadvm does not
-restore the guest.  The runstate is running, but the guest is not, because
-vm_start was not called.  The root cause is that loadvm does not restore
-the runstate (eg suspended) from global_state loaded from the state file.
-
-Restore the runstate, and allow the new state transitions that are possible.
+Do not wake a suspended guest during bg_migration.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 ---
- migration/savevm.c | 1 +
- softmmu/runstate.c | 2 ++
- 2 files changed, 3 insertions(+)
+ migration/migration.c | 12 +++++-------
+ softmmu/runstate.c    |  1 +
+ 2 files changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/migration/savevm.c b/migration/savevm.c
-index eba3653..7b9c477 100644
---- a/migration/savevm.c
-+++ b/migration/savevm.c
-@@ -3194,6 +3194,7 @@ bool load_snapshot(const char *name, const char *vmstate,
-     }
-     aio_context_acquire(aio_context);
-     ret = qemu_loadvm_state(f);
-+    migrate_set_runstate();
-     migration_incoming_state_destroy();
-     aio_context_release(aio_context);
+diff --git a/migration/migration.c b/migration/migration.c
+index 1a5484a..e6b8024 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -3069,7 +3069,9 @@ static void bg_migration_vm_start_bh(void *opaque)
+     qemu_bh_delete(s->vm_start_bh);
+     s->vm_start_bh = NULL;
  
+-    vm_start();
++    if (!runstate_check(RUN_STATE_SUSPENDED)) {
++        vm_start();
++    }
+     s->downtime = qemu_clock_get_ms(QEMU_CLOCK_REALTIME) - s->downtime_start;
+ }
+ 
+@@ -3139,16 +3141,12 @@ static void *bg_migration_thread(void *opaque)
+ 
+     qemu_mutex_lock_iothread();
+ 
+-    /*
+-     * If VM is currently in suspended state, then, to make a valid runstate
+-     * transition in vm_stop_force_state() we need to wakeup it up.
+-     */
+-    qemu_system_wakeup_request(QEMU_WAKEUP_REASON_OTHER, NULL);
+     s->vm_old_state = runstate_get();
+ 
+     global_state_store();
+     /* Forcibly stop VM before saving state of vCPUs and devices */
+-    if (vm_stop_force_state(RUN_STATE_PAUSED)) {
++    if (!runstate_check(RUN_STATE_SUSPENDED) &&
++        vm_stop_force_state(RUN_STATE_PAUSED)) {
+         goto fail;
+     }
+     /*
 diff --git a/softmmu/runstate.c b/softmmu/runstate.c
-index 95c6ae7..2f70c07 100644
+index 2f70c07..c683dcf 100644
 --- a/softmmu/runstate.c
 +++ b/softmmu/runstate.c
-@@ -77,6 +77,8 @@ typedef struct {
+@@ -163,6 +163,7 @@ static const RunStateTransition runstate_transitions_def[] = {
+     { RUN_STATE_SUSPENDED, RUN_STATE_FINISH_MIGRATE },
+     { RUN_STATE_SUSPENDED, RUN_STATE_PRELAUNCH },
+     { RUN_STATE_SUSPENDED, RUN_STATE_COLO},
++    { RUN_STATE_SUSPENDED, RUN_STATE_PAUSED },
  
- static const RunStateTransition runstate_transitions_def[] = {
-     { RUN_STATE_PRELAUNCH, RUN_STATE_INMIGRATE },
-+    { RUN_STATE_PRELAUNCH, RUN_STATE_PAUSED },
-+    { RUN_STATE_PRELAUNCH, RUN_STATE_SUSPENDED },
- 
-     { RUN_STATE_DEBUG, RUN_STATE_RUNNING },
-     { RUN_STATE_DEBUG, RUN_STATE_FINISH_MIGRATE },
+     { RUN_STATE_WATCHDOG, RUN_STATE_RUNNING },
+     { RUN_STATE_WATCHDOG, RUN_STATE_FINISH_MIGRATE },
 -- 
 1.8.3.1
 
