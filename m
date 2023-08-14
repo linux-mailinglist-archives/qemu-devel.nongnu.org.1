@@ -2,65 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42C2F77BCF6
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Aug 2023 17:27:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BD7277BD2D
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Aug 2023 17:36:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qVZTE-0001ms-CU; Mon, 14 Aug 2023 11:27:04 -0400
+	id 1qVZat-0004E0-Mw; Mon, 14 Aug 2023 11:34:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qVZSq-0001hQ-T1
- for qemu-devel@nongnu.org; Mon, 14 Aug 2023 11:26:41 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ id 1qVZam-0004Cl-OA
+ for qemu-devel@nongnu.org; Mon, 14 Aug 2023 11:34:56 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qVZSn-0002v1-OP
- for qemu-devel@nongnu.org; Mon, 14 Aug 2023 11:26:40 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-3fe2ba3e260so43903875e9.2
- for <qemu-devel@nongnu.org>; Mon, 14 Aug 2023 08:26:37 -0700 (PDT)
+ id 1qVZaj-0004K1-Tp
+ for qemu-devel@nongnu.org; Mon, 14 Aug 2023 11:34:52 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-3fe45481edfso45341065e9.1
+ for <qemu-devel@nongnu.org>; Mon, 14 Aug 2023 08:34:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692026796; x=1692631596;
+ d=linaro.org; s=google; t=1692027288; x=1692632088;
  h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
  :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9O05BxKyDrr7bmrS0J4Smir2XTDQKVk17AzYT+PHKcg=;
- b=nAj2wmH66hwiTXu3XlGIl4MP2VlzYIUdjc043fZgFaUhIq4im2OgOMcFv2V7nUvd0f
- VG1br+/o2gXFuBBO15tdOIxccvCl0o6REN80F2UoDSV+AjWgq2ZdeICd4APpBHH/6cpf
- N+2+BSQohIGnN9ypMP6gfsmKOqL9cAlSKVAeiJ+pNYkBcgWlABxkgwI8Pywha3ibd1l2
- 1BR9DAsS4Aj5oQFmiQ29I1Pl+EhqSGmkgEPdRha4dVC9Civ9AULn4VFm0t0kTRMJ8t2d
- f0IOJn31iJKQ1srbFprlbRbMz8JR2r9hICdkKzsWY20Nf+lcmRzD594pSIrhj9OjIv2w
- FTcA==
+ bh=f4wrOsVR1IYr28e2rGLXssLRPSZYCC8zvYvmEmn+J2M=;
+ b=J1rMyRCCbo1b+x9BG7rlcDjxtlK/iRM8IdMSHVeyNgzGBNMpojQGU996AVxn2gu2j1
+ xKtz6PpfP/TBDomo7tSivaX/ouwCvrCKHdYszoA7ZcXf0h/HgpN7Ys7vSy3oqfZBpSaK
+ txdeg/hDvSjxY0oJGptdAFwjwP4p5c+Z/xL3Hu2rUvobTDgG7llqfPbymxrxPhrwLA3v
+ BgXCQ+0n/+dn3rlD5odhYrNWaoQZxK6WuVhm2Nx+2uhMX7UHxoWDufqEHpuBDotuNRPB
+ IJfCsBQEXdcoVmK39PBJ6ZHy72deCu67IDCpum8oWOUDsW0F3c0YNhchp/GjqaWQwNUg
+ 3P/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692026796; x=1692631596;
+ d=1e100.net; s=20221208; t=1692027288; x=1692632088;
  h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
  :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=9O05BxKyDrr7bmrS0J4Smir2XTDQKVk17AzYT+PHKcg=;
- b=bgjMnv6KaNd/UImgxpB4w+229q8uszmSGEXtPzDRTxoMRj8LdNdH3Z1j3qSCIKuvM5
- EvFuic74P6DKq09Y3R8C5NDsrFtcHOTAIwthM7lyGUIWcEn6Txoy1ViRJHZwDRBiaFdx
- OAWhKpAq4hnFXFmsNi7SfZX0T0hC+Ir4Y0iYjiQ0kOtUip/kt7en1vZRbJ/v0XUAMYJL
- SgSr04H6r+qvErInLNAN+g+9a0lVYBYKE4gRXbp9U2AWbW8XDj6sncD8Q8zeIiUYxyxA
- qHj7PJiwlkh7oR0azzH92040euvCQG/fOxdhG2cFM87c+WxWw+gJ83iHXu8NNPjTQ8uF
- 2eBg==
-X-Gm-Message-State: AOJu0YxxuUn2HCinPb0ETDjQ/4YuhvGFlZWNF5VDr3g6sAWIc+gQBo6F
- Q0io36+L6c2xdTBEMTJrzU7oVQ==
-X-Google-Smtp-Source: AGHT+IE9dFZ39pFs+Ru+tBeEEvBHr++LNUbGuoSTPSjUwOiBmLwgtFz7FfC9hjl1L5EnG4J+WQvKSw==
-X-Received: by 2002:a7b:c4d0:0:b0:3fe:173e:4a54 with SMTP id
- g16-20020a7bc4d0000000b003fe173e4a54mr8163211wmk.17.1692026796170; 
- Mon, 14 Aug 2023 08:26:36 -0700 (PDT)
+ bh=f4wrOsVR1IYr28e2rGLXssLRPSZYCC8zvYvmEmn+J2M=;
+ b=DVhJ+umV9Paz81lhQO7KFqAiOHQC/FUAx8h2SttZ9tAfT7lNPcDNmFy/w909GsHLDE
+ dTmQkTfxYCll5OlCUYS9zVH7nE+fVElE08eIFErQUPhOAlCQIFrFDq8QmQPgwYTdk1mz
+ BR7Yo/oz05m9k4LHNOh1DqlbUwaiPpw5jEhaZ7NsRZNNWtfwBD5YFkZIxKtZpHE4fdbu
+ xPTfbBx2Z2SYgTMKNwZ184lNa4CcC00tmNZ9GS7vndJcSJ22mRqmaE3HK3yEoUzzxVPQ
+ YsdWVA6LfMgWeRh1af816NxLr21RCl8Wu00L64OaD/LSL6ZMFz4Pv6bI/88dfdNvTVq3
+ zwPw==
+X-Gm-Message-State: AOJu0YylfZEQD+pqsuXmyh2gfEd0yL7gs8uZ0nMa3B3vNIQBfSiugJGi
+ IoVQFGOyCAc4g+zCa9TMGq2YVg==
+X-Google-Smtp-Source: AGHT+IH0kTI13oPE4lub7MbgHrieqPfFd8Ev/4y/qzoT6sHfrOZCGD+Yz1M21biYe5PzGfUKwci/VQ==
+X-Received: by 2002:a7b:c449:0:b0:3f8:fc96:6bfd with SMTP id
+ l9-20020a7bc449000000b003f8fc966bfdmr8217988wmi.17.1692027288076; 
+ Mon, 14 Aug 2023 08:34:48 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- k1-20020a05600c0b4100b003fbb5506e54sm14644302wmr.29.2023.08.14.08.26.35
+ h18-20020a1ccc12000000b003fbd9e390e1sm17767620wmb.47.2023.08.14.08.34.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Aug 2023 08:26:35 -0700 (PDT)
+ Mon, 14 Aug 2023 08:34:47 -0700 (PDT)
 Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 648451FFBB;
- Mon, 14 Aug 2023 16:26:35 +0100 (BST)
+ by zen.linaroharston (Postfix) with ESMTP id 19B5F1FFBB;
+ Mon, 14 Aug 2023 16:34:47 +0100 (BST)
 References: <20230731084354.115015-1-akihiko.odaki@daynix.com>
- <20230731084354.115015-25-akihiko.odaki@daynix.com>
 User-agent: mu4e 1.11.14; emacs 29.1.50
 From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: Akihiko Odaki <akihiko.odaki@daynix.com>
@@ -93,15 +92,15 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
  Bastian Koppelmann <kbastian@mail.uni-paderborn.de>, Max Filippov
  <jcmvbkbc@gmail.com>, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
  qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org
-Subject: Re: [RFC PATCH 24/24] contrib/plugins: Add cc plugin
-Date: Mon, 14 Aug 2023 16:23:57 +0100
-In-reply-to: <20230731084354.115015-25-akihiko.odaki@daynix.com>
-Message-ID: <87pm3pprv8.fsf@linaro.org>
+Subject: Re: [RFC PATCH 00/24] plugins: Allow to read registers
+Date: Mon, 14 Aug 2023 16:27:46 +0100
+In-reply-to: <20230731084354.115015-1-akihiko.odaki@daynix.com>
+Message-ID: <87leedprhl.fsf@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -127,44 +126,59 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Akihiko Odaki <akihiko.odaki@daynix.com> writes:
 
-> This demonstrates how to write a plugin in C++.
->
-> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> ---
->  docs/devel/tcg-plugins.rst |  8 ++++++++
->  configure                  | 15 ++++++++++++---
->  contrib/plugins/Makefile   |  5 +++++
->  contrib/plugins/cc.cc      | 15 +++++++++++++++
->  tests/tcg/Makefile.target  |  3 +++
->  5 files changed, 43 insertions(+), 3 deletions(-)
->  create mode 100644 contrib/plugins/cc.cc
->
-> diff --git a/docs/devel/tcg-plugins.rst b/docs/devel/tcg-plugins.rst
-> index c9f8b27590..0a11f8036c 100644
-> --- a/docs/devel/tcg-plugins.rst
-> +++ b/docs/devel/tcg-plugins.rst
-> @@ -584,6 +584,14 @@ The plugin has a number of arguments, all of them ar=
-e optional:
->    configuration arguments implies ``l2=3Don``.
->    (default: N =3D 2097152 (2MB), B =3D 64, A =3D 16)
->=20=20
-> +- contrib/plugins/cc.cc
-> +
-> +cc plugin demonstrates how to write a plugin in C++. It simply outputs
-> +"hello, world" to the plugin log::
-> +
-> +  $ qemu-system-arm $(QEMU_ARGS) \
-> +    -plugin ./contrib/plugins/libcc.so -d plugin
-> +
+> I and other people in the University of Tokyo, where I research processor
+> design, found TCG plugins are very useful for processor design
+> exploration.
 
-I'm going to assume this is useful because you have some out of tree C++
-plugins? I'd drop the last two patches for now until there is a slightly
-more compelling use case.
+Thanks for the submission - I've finished my initial review pass.
 
-The C++ compiler detection moved into meson in b485458e00 (configure,
-meson: move C++ compiler detection to meson.build) so I don't think
-there is currently a compelling reason to bring this back into
-configure.
+I think introducing register introspection into the plugins subsystem is
+a very worthwhile addition. I'm also happy (for now) to use the
+underlying gdb support for it in lieu of a greater refactoring of QEMU's
+multiple register introspection features.
+
+> The feature we find missing is the capability to read registers from
+> plugins. In this series, I propose to add such a capability by reusing
+> gdbstub code.
+>
+> The reuse of gdbstub code ensures the long-term stability of the TCG plug=
+in
+> interface for register access without incurring a burden to maintain yet
+> another interface for register access.
+
+However I don't want to expose the gdb detail to plugins to leave us a
+free hand in further internal clean-ups later on.
+
+> This process to add TCG plugin involves four major changes. The first one
+> is to add GDBFeature structure that represents a GDB feature, which usual=
+ly
+> includes registers. GDBFeature can be generated from static XML files or
+> dynamically generated by architecture-specific code. In fact, this is a
+> refactoring independent of the feature this series adds, and potentially
+> it's benefitial even without the plugin feature. The plugin feature will
+> utilize this new structure to describe registers exposed to plugins.
+
+I think we can get cleanups to this handling in ahead of the wider
+plugin feature. Ideally it would be nice to push the XML generation into
+gdbstub itself but that might be more of a refactor than you are willing
+to pursue for the time being.
+
+> The second one is to make gdb_read_register/gdb_write_register usable
+> outside of gdbstub context.
+>
+> The third one is to actually make registers readable for plugins.
+
+Modulo isolating the plugin API from gdb specifics I'm happy with this
+approach.
+
+> The last one is to allow to implement a QEMU plugin in C++. A plugin that
+> I'll describe later is written in C++.
+
+I would want a more compelling reason that a hello world plugin for
+this. Only because QEMU has removed a bunch of C++ dependency over the
+last few years so I don't think we are in a rush to re-introduce it.=20
+
+Are you OK to do a re-spin addressing the comments so far?
 
 --=20
 Alex Benn=C3=A9e
