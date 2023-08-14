@@ -2,72 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ABFF77B421
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Aug 2023 10:29:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2775377B428
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Aug 2023 10:30:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qVSwp-0006pP-V0; Mon, 14 Aug 2023 04:29:11 -0400
+	id 1qVSxg-0007rB-J8; Mon, 14 Aug 2023 04:30:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qVSwn-0006no-GC
- for qemu-devel@nongnu.org; Mon, 14 Aug 2023 04:29:09 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qVSwg-0000Jy-3H
- for qemu-devel@nongnu.org; Mon, 14 Aug 2023 04:29:09 -0400
-Received: from loongson.cn (unknown [10.20.42.239])
- by gateway (Coremail) with SMTP id _____8Cxc_DJ5dlkGA0YAA--.49709S3;
- Mon, 14 Aug 2023 16:28:57 +0800 (CST)
-Received: from [10.20.42.239] (unknown [10.20.42.239])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8CxLCPG5dlkpaZZAA--.5292S3; 
- Mon, 14 Aug 2023 16:28:54 +0800 (CST)
-Subject: Re: [PATCH v2 3/8] target/loongarch: Add avail_64 to check la64-only
- instructions
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: philmd@linaro.org, maobibo@loongson.cn, yangxiaojuan@loongson.cn,
- yijun@loongson.cn, shenjinyang@loongson.cn
-References: <20230811100208.271649-1-gaosong@loongson.cn>
- <20230811100208.271649-4-gaosong@loongson.cn>
- <3d151e82-f431-37b3-dae2-e111ee3946eb@linaro.org>
-From: gaosong <gaosong@loongson.cn>
-Message-ID: <44ac9338-e4a5-92b1-fc81-7c2b051a1854@loongson.cn>
-Date: Mon, 14 Aug 2023 16:28:54 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <jinpu.wang@ionos.com>)
+ id 1qVSxS-0007hm-4s
+ for qemu-devel@nongnu.org; Mon, 14 Aug 2023 04:29:51 -0400
+Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <jinpu.wang@ionos.com>)
+ id 1qVSxP-0000Q5-UU
+ for qemu-devel@nongnu.org; Mon, 14 Aug 2023 04:29:49 -0400
+Received: by mail-ej1-x630.google.com with SMTP id
+ a640c23a62f3a-99c1c66876aso535633766b.2
+ for <qemu-devel@nongnu.org>; Mon, 14 Aug 2023 01:29:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ionos.com; s=google; t=1692001784; x=1692606584;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=h5xXaJtSHsUCOt1abFAo5kXKDkaoj9wojQfltbiz2Is=;
+ b=BqWKycREQlSqRAjkQJ2cBqWh676rb65YMj5EPABQCBM40LO86i5FSEJOiaOO+06p8i
+ onIIkw17ujsOEtASs9EwwimUuQpDu2B6uP1Wqw3EFCbYc0b7w/SAvd5Oe4TrqWFZG8h9
+ DfQoeEopI+NS0f3jd34EFxeP6aX4JaFTbGMfoKxfY5eHaCEwbxJBeoaHu73U0WvGXoZ6
+ 4ry+dM71x2WrjOSN4nXBnRIzvbhvi9nft5Pt7WC+osyi1j/Me6ln4r+X9bKxjVHySKEQ
+ rGToeMlOyQGw+jvD7o5qByjbRuhtuVleF6WcBOevV/cV0zPIH9F4iA8o5Gc8PrOZhHAt
+ lI1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1692001784; x=1692606584;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=h5xXaJtSHsUCOt1abFAo5kXKDkaoj9wojQfltbiz2Is=;
+ b=G1pyPYpQHunDIkAzJo/7Tmg9W40h526fMV3qlztihTXClEn8ez/UtomPBKVYUeYFnj
+ PEoaONGYI5/5+hXQKRVeFnVkO+buMmk7CrehTEDaKqA85BxpGtGuCgekvH8gKgqpTVhN
+ a70kH7aiI7Vhhqg0waxPbO3mRk7BqbUhAOWbnZHqZ216/ElMgGb2JLS4O5H2twmJHvXK
+ ++Q7vqfZTZ/OF/B6hxhE1PnEjYKdSx5CH3GQ3OwX+bYQbKj0jvnMEdmLzFB73ql16GKV
+ Xz+pM8jS0mbWV5oUofG1Ft5gQIJDjo/z/ilpdZUyuIsc2dwKDQUiE4Cj2WettgyBAzx/
+ DGyQ==
+X-Gm-Message-State: AOJu0YyGPi5bUYgmJQKfRpCyeNhtlURSxsLcSP0H2wKH5Ndd94EPuSti
+ NT7AkrVQw33YkPD49JqY7XDXrXqGtAtg2WJXKxEfFr5GrxgxjkZstLQ=
+X-Google-Smtp-Source: AGHT+IFYOHE8YQRhPmjrgZo9Tc+ZrRZFQa0sOZBDlp4F85nLNvT/8asU3eB3YegGD6+AAxwVSZc5XuWw3I8dyVLF4PU=
+X-Received: by 2002:aa7:d486:0:b0:522:cb97:f196 with SMTP id
+ b6-20020aa7d486000000b00522cb97f196mr8329025edr.36.1692001783923; Mon, 14 Aug
+ 2023 01:29:43 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <3d151e82-f431-37b3-dae2-e111ee3946eb@linaro.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8CxLCPG5dlkpaZZAA--.5292S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxAr18Zr1fJry5KFyfXr15WrX_yoW5XF4fpF
- Z5GanFgw4qy3WxZr18J34qqr13ZFnYgwnxGFyDZw1UAFW7ZF92grySyr4a9Fyxur4Igr1a
- y34a9r1UZFZ8AFgCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUvIb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
- xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
- 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1q6rW5McIj6I8E87Iv
- 67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
- AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
- F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw
- 1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUCVW8JwCI42IY6xIIjxv20xvEc7Cj
- xVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
- 1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07jO
- db8UUUUU=
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -62
-X-Spam_score: -6.3
-X-Spam_bar: ------
-X-Spam_report: (-6.3 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-4.359,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <CAMGffEmG6TNq0n3+4OJAgXc8J0OevY60KHZekXCBs3LoK9vehA@mail.gmail.com>
+In-Reply-To: <CAMGffEmG6TNq0n3+4OJAgXc8J0OevY60KHZekXCBs3LoK9vehA@mail.gmail.com>
+From: Jinpu Wang <jinpu.wang@ionos.com>
+Date: Mon, 14 Aug 2023 10:29:33 +0200
+Message-ID: <CAMGffE=rsxpHpZQSDGoKO1RTuEaGzowTH7NuY82VtXfa8awong@mail.gmail.com>
+Subject: Re: RFC: guest INTEL GDS mitigation status on patched host
+To: qemu-devel <qemu-devel@nongnu.org>,
+ Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, 
+ daniel.sneddon@linux.intel.com
+Cc: Paolo Bonzini <pbonzini@redhat.com>, tao1.su@linux.intel.com,
+ xiaoyao.li@intel.com, Yu Zhang <yu.zhang@ionos.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: permerror client-ip=2a00:1450:4864:20::630;
+ envelope-from=jinpu.wang@ionos.com; helo=mail-ej1-x630.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_PERMERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,78 +89,165 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi, Richard
+Hi Pawan, hi Daniel
 
-在 2023/8/12 上午12:00, Richard Henderson 写道:
-> On 8/11/23 03:02, Song Gao wrote:
->> The la32 manual from [1], and it is not the final version.
->>
->> [1]: 
->> https://www.loongson.cn/uploads/images/2023041918122813624.%E9%BE%99%E8%8A%AF%E6%9E%B6%E6%9E%8432%E4%BD%8D%E7%B2%BE%E7%AE%80%E7%89%88%E5%8F%82%E8%80%83%E6%89%8B%E5%86%8C_r1p03.pdf 
->>
-> 
-> I really hope this manual will be changed before final.
->  >
->> -TRANS(pcaddi, ALL, gen_pc, gen_pcaddi)
->> -TRANS(pcalau12i, ALL, gen_pc, gen_pcalau12i)
->> +TRANS(pcaddi, 64, gen_pc, gen_pcaddi)
->> +TRANS(pcalau12i, 64, gen_pc, gen_pcalau12i)
->>   TRANS(pcaddu12i, ALL, gen_pc, gen_pcaddu12i)
->> -TRANS(pcaddu18i, ALL, gen_pc, gen_pcaddu18i)
->> +TRANS(pcaddu18i, 64, gen_pc, gen_pcaddu18i)
-> 
-> For the compiler, PCALAU12I is much more useful than PCADDU12I.
-> 
-> Because PCALAU12I produces zeros in the lower 12 bits, the high-part 
-> pc-relative relocation does not need to be paired with a corresponding 
-> low-part pc-relative relocation.
-> 
-> Whereas PCADDU12I produces a full 32-bit result, and the low-part 
-> pc-relative relocation needs to know where the high-part was produced in 
-> order to compensate.  This fundamental error was made by the RISC-V ISA, 
-> and their toolchain is still paying the price.
-> 
-> 
->> @@ -69,6 +77,10 @@ static bool trans_cpucfg(DisasContext *ctx, 
->> arg_cpucfg *a)
->>       TCGv dest = gpr_dst(ctx, a->rd, EXT_NONE);
->>       TCGv src1 = gpr_src(ctx, a->rj, EXT_NONE);
->> +    if (!avail_64(ctx)) {
->> +        return false;
->> +    }
-> 
-> For the operating system running on LA32, lack of CPUCFG means that you 
-> now have to provide the cpu configuration in another way:
-> 
-> (1) Via compilation options, such that one operating system build will 
-> only run on a single cpu.
-> 
-> (2) Via external data, like device tree.
-> 
-> Either option complicates the usage of LA32.
-> 
-> I would hope that a few words of rom for CPUCFG to read is not too 
-> expensive to incorporate in even the smallest cpu implementation.
-> 
-> 
-Thank you for pointing out the problems.
+Thanks for the patch.
 
-Cc: yijun@loongson.cn
-Cc: shenjinyang@loongson.cn
+I tried similar patch on Icelake server:
+Architecture:                       x86_64
+CPU op-mode(s):                     32-bit, 64-bit
+Byte Order:                         Little Endian
+Address sizes:                      46 bits physical, 57 bits virtual
+CPU(s):                             64
+On-line CPU(s) list:                0-63
+Thread(s) per core:                 2
+Core(s) per socket:                 16
+Socket(s):                          2
+NUMA node(s):                       2
+Vendor ID:                          GenuineIntel
+CPU family:                         6
+Model:                              106
+Model name:                         Intel(R) Xeon(R) Gold 6346 CPU @ 3.1
+                                    0GHz
+Stepping:                           6
+CPU MHz:                            3100.000
+CPU max MHz:                        3600,0000
+CPU min MHz:                        800,0000
+BogoMIPS:                           6200.00
+Virtualization:                     VT-x
+L1d cache:                          1,5 MiB
+L1i cache:                          1 MiB
+L2 cache:                           40 MiB
+L3 cache:                           72 MiB
+NUMA node0 CPU(s):                  0,2,4,6,8,10,12,14,16,18,20,22,24,26
+                                    ,28,30,32,34,36,38,40,42,44,46,48,50
+                                    ,52,54,56,58,60,62
+NUMA node1 CPU(s):                  1,3,5,7,9,11,13,15,17,19,21,23,25,27
+                                    ,29,31,33,35,37,39,41,43,45,47,49,51
+                                    ,53,55,57,59,61,63
+Vulnerability Gather data sampling: Mitigation; Microcode
+Vulnerability Itlb multihit:        Not affected
+Vulnerability L1tf:                 Not affected
+Vulnerability Mds:                  Not affected
+Vulnerability Meltdown:             Not affected
+Vulnerability Mmio stale data:      Mitigation; Clear CPU buffers; SMT v
+                                    ulnerable
+Vulnerability Retbleed:             Not affected
+Vulnerability Spec rstack overflow: Not affected
+Vulnerability Spec store bypass:    Mitigation; Speculative Store Bypass
+                                     disabled via prctl and seccomp
+Vulnerability Spectre v1:           Mitigation; usercopy/swapgs barriers
+                                     and __user pointer sanitization
+Vulnerability Spectre v2:           Mitigation; Enhanced IBRS, IBPB cond
+                                    itional, RSB filling, PBRSB-eIBRS SW
+                                     sequence
+Vulnerability Srbds:                Not affected
+Vulnerability Tsx async abort:      Not affected
 
-Hi, yijun and shenjingyang. You are more familiar with LA32, How about 
-Richard's points?  Could you review this patch?
+ target/i386/cpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-And I realized that [1] is the LA32 Lite Edition Manual, not the LA32 
-Manual.
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 97ad229d8ba3..48709b77689f 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -1155,7 +1155,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] =3D =
+{
+             NULL, "sbdr-ssdp-no", "fbsdp-no", "psdp-no",
+             NULL, "fb-clear", NULL, NULL,
+             NULL, NULL, NULL, NULL,
+-            "pbrsb-no", NULL, NULL, NULL,
++            "pbrsb-no", NULL, "gds-no", NULL,
+             NULL, NULL, NULL, NULL,
+         },
+         .msr =3D {
+--=20
+2.34.1
+For the change Pawan provided, I tested on Icelake server, it works as expe=
+cted.
+Somehow I'm not cc for the patch, but please consider it tested
 
-Could you list more differences between the LA32 and the LA32 Lite 
-Edition? Especially instructions.
+Reported-by: Jack Wang <jinpu.wang@ionos.com>
+Tested-by: Jack Wang <jinpu.wang@ionos.com>
 
-[1]:
-https://www.loongson.cn/uploads/images/2023041918122813624.%E9%BE%99%E8%8A%AF%E6%9E%B6%E6%9E%8432%E4%BD%8D%E7%B2%BE%E7%AE%80%E7%89%88%E5%8F%82%E8%80%83%E6%89%8B%E5%86%8C_r1p03.pdf
+Thx!
+Jinpu Wang
 
-Thanks,
-Song Gao
 
+while if I patches QEMU below:
+
+
+
+On Fri, Aug 11, 2023 at 3:12=E2=80=AFPM Jinpu Wang <jinpu.wang@ionos.com> w=
+rote:
+>
+> Hi folks on the list:
+>
+> I'm testing the latest Downfall cpu vulnerability mitigation. what I
+> notice is when both host and guest are using patched kernel +
+> microcode eg kernel 5.15.125 +  intel-microcode 20230808 on affected
+> server eg Icelake server.
+>
+> The mitigation status inside guest is:
+>
+> Vulnerabilities:
+>   Gather data sampling:  Unknown: Dependent on hyp
+>                          ervisor status
+> -----------------------------------> this one.
+>   Itlb multihit:         Not affected
+>   L1tf:                  Not affected
+>   Mds:                   Not affected
+>   Meltdown:              Not affected
+>   Mmio stale data:       Vulnerable: Clear CPU buf
+>                          fers attempted, no microc
+>                          ode; SMT Host state unkno
+>                          wn
+>   Retbleed:              Not affected
+>   Spec rstack overflow:  Not affected
+>   Spec store bypass:     Mitigation; Speculative S
+>                          tore Bypass disabled via
+>                          prctl and seccomp
+>   Spectre v1:            Mitigation; usercopy/swap
+>                          gs barriers and __user po
+>                          inter sanitization
+>   Spectre v2:            Mitigation; Enhanced IBRS
+>                          , IBPB conditional, RSB f
+>                          illing, PBRSB-eIBRS SW se
+>                          quence
+>   Srbds:                 Not affected
+>   Tsx async abort:       Not affected
+>
+> According to kernel commit below
+> commit 81ac7e5d741742d650b4ed6186c4826c1a0631a7
+> Author: Daniel Sneddon <daniel.sneddon@linux.intel.com>
+> Date:   Wed Jul 12 19:43:14 2023 -0700
+>
+>     KVM: Add GDS_NO support to KVM
+>
+>     Gather Data Sampling (GDS) is a transient execution attack using
+>     gather instructions from the AVX2 and AVX512 extensions. This attack
+>     allows malicious code to infer data that was previously stored in
+>     vector registers. Systems that are not vulnerable to GDS will set the
+>     GDS_NO bit of the IA32_ARCH_CAPABILITIES MSR. This is useful for VM
+>     guests that may think they are on vulnerable systems that are, in
+>     fact, not affected. Guests that are running on affected hosts where
+>     the mitigation is enabled are protected as if they were running
+>     on an unaffected system.
+>
+>     On all hosts that are not affected or that are mitigated, set the
+>     GDS_NO bit.
+>
+>     Signed-off-by: Daniel Sneddon <daniel.sneddon@linux.intel.com>
+>     Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+>     Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
+>
+> KVM also has the support of GDS_NO, but seems qemu side doesn't pass
+> the info to guest, that's why it is unknown. IMO qemu should pass
+> GDS_NO if the host is already patched.
+>
+> Is Intel or anyone already working on the qemu patch? I know it's not
+> a must, but good to do.
+>
+> Thx!
+> Jinpu Wang @ IONOS Cloud
 
