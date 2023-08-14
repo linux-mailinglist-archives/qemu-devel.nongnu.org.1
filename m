@@ -2,56 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6976C77C05A
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Aug 2023 21:07:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11FE777C0DB
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Aug 2023 21:34:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qVctP-0006tx-5U; Mon, 14 Aug 2023 15:06:19 -0400
+	id 1qVdJv-0003JI-10; Mon, 14 Aug 2023 15:33:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qVctN-0006te-DI
- for qemu-devel@nongnu.org; Mon, 14 Aug 2023 15:06:17 -0400
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1qVdJs-0003J8-DM
+ for qemu-devel@nongnu.org; Mon, 14 Aug 2023 15:33:40 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qVctL-000315-L9
- for qemu-devel@nongnu.org; Mon, 14 Aug 2023 15:06:17 -0400
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1qVdJq-0000HU-Tj
+ for qemu-devel@nongnu.org; Mon, 14 Aug 2023 15:33:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692039974;
+ s=mimecast20190719; t=1692041616;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding;
- bh=1FRmMzzlevhT337L3BaneiXPl8xNqyvPQT8IIfZW2Cs=;
- b=C/dCc9R8uunC7ph1Ezo1etHW6yTmTELyHjkHlI03290yoEpcOpdoRk2iR2XrYfD7/Yzdir
- vIGkUC//WuBMSnn+aKIuXzmCwBzZb5xWUUiMHJtD+7g+EfB1Uf+cS2yoNdogEo4r5jEZsK
- Jmu/mg/KMmx3Hhr9m7dBhgNCyvhsFdA=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-526-q1t63h3_MBmMqUgJsu4D0Q-1; Mon, 14 Aug 2023 15:06:10 -0400
-X-MC-Unique: q1t63h3_MBmMqUgJsu4D0Q-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
+ bh=xwgU3hSII4zKNB+SJ+1RcqXNHgEGvWowB8r9pmpt1Ho=;
+ b=NwXNOCZNRJPKeYZamZoaSS/nS+Xtr8Dn+MCfUX0/RnvBpZq/PRvc75RSrOSm25myCwDCfY
+ H32A4LWtMeoezsh4M7VZMsoV2a4Pc+gw+AdatK7JrYeSFEboC0OieFiryt2XC9X3XU7maU
+ +OoYKZq/o4eLULQbBX7ThSp5DuwXUu8=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-510-msJp0hXqN8O75rZ42mwGgw-1; Mon, 14 Aug 2023 15:33:34 -0400
+X-MC-Unique: msJp0hXqN8O75rZ42mwGgw-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 743BA80557C;
- Mon, 14 Aug 2023 19:06:10 +0000 (UTC)
-Received: from thuth.com (unknown [10.39.193.9])
- by smtp.corp.redhat.com (Postfix) with ESMTP id E1EE44021B9;
- Mon, 14 Aug 2023 19:06:08 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: qemu-s390x@nongnu.org, Halil Pasic <pasic@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>
-Cc: qemu-devel@nongnu.org,
-	David Hildenbrand <david@redhat.com>
-Subject: [PATCH for-8.2] target/s390x/kvm: Simplify the GPRs, ACRs,
- CRs and prefix synchronization code
-Date: Mon, 14 Aug 2023 21:06:04 +0200
-Message-Id: <20230814190604.907982-1-thuth@redhat.com>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A80143800520
+ for <qemu-devel@nongnu.org>; Mon, 14 Aug 2023 19:33:34 +0000 (UTC)
+Received: from localhost (unknown [10.39.208.18])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id DC4F61121314;
+ Mon, 14 Aug 2023 19:33:33 +0000 (UTC)
+From: marcandre.lureau@redhat.com
+To: qemu-devel@nongnu.org
+Cc: kraxel@redhat.com,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
+Subject: [PATCH] qxl: don't assert() if device isn't yet initialized
+Date: Mon, 14 Aug 2023 23:33:30 +0400
+Message-ID: <20230814193331.375778-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -59,7 +61,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -75,223 +77,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-KVM_SYNC_GPRS, KVM_SYNC_ACRS, KVM_SYNC_CRS and KVM_SYNC_PREFIX are
-available since kernel 3.10. Since we already require at least kernel
-3.15 in the s390x KVM code, we can assume that the KVM_CAP_SYNC_REGS
-sync code is always possible for these registers, and remove the
-related checks and fallbacks via KVM_SET_REGS and KVM_GET_REGS.
+From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
+If the PCI BAR isn't yet mapped or was unmapped, QXL_IO_SET_MODE will
+assert(). Instead, report a guest bug and keep going.
+
+This can be reproduced with:
+
+cat << EOF | ./qemu-system-x86_64 -vga qxl -m 2048 -nodefaults -qtest stdio
+outl 0xcf8 0x8000101c
+outl 0xcfc 0xc000
+outl 0xcf8 0x80001001
+outl 0xcfc 0x01000000
+outl 0xc006 0x00
+EOF
+
+Fixes: https://gitlab.com/qemu-project/qemu/-/issues/1829
+
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- target/s390x/kvm/kvm.c | 119 ++++++++++++-----------------------------
- 1 file changed, 34 insertions(+), 85 deletions(-)
+ hw/display/qxl.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/target/s390x/kvm/kvm.c b/target/s390x/kvm/kvm.c
-index a9e5880349..ff415f7b30 100644
---- a/target/s390x/kvm/kvm.c
-+++ b/target/s390x/kvm/kvm.c
-@@ -148,7 +148,6 @@ const KVMCapabilityInfo kvm_arch_required_capabilities[] = {
-     KVM_CAP_LAST_INFO
- };
+diff --git a/hw/display/qxl.c b/hw/display/qxl.c
+index f1c0eb7dfc..70b73820b2 100644
+--- a/hw/display/qxl.c
++++ b/hw/display/qxl.c
+@@ -1591,7 +1591,10 @@ static void qxl_set_mode(PCIQXLDevice *d, unsigned int modenr, int loadvm)
+     }
  
--static int cap_sync_regs;
- static int cap_async_pf;
- static int cap_mem_op;
- static int cap_mem_op_extension;
-@@ -342,21 +341,28 @@ static void ccw_machine_class_foreach(ObjectClass *oc, void *opaque)
- 
- int kvm_arch_init(MachineState *ms, KVMState *s)
- {
-+    int required_caps[] = {
-+        KVM_CAP_DEVICE_CTRL,
-+        KVM_CAP_SYNC_REGS,
-+    };
-+
-+    for (int i = 0; i < ARRAY_SIZE(required_caps); i++) {
-+        if (!kvm_check_extension(s, required_caps[i])) {
-+            error_report("KVM is missing capability #%d - "
-+                         "please use kernel 3.15 or newer", required_caps[i]);
-+            return -1;
-+        }
+     d->guest_slots[0].slot = slot;
+-    assert(qxl_add_memslot(d, 0, devmem, QXL_SYNC) == 0);
++    if (qxl_add_memslot(d, 0, devmem, QXL_SYNC) != 0) {
++        qxl_set_guest_bug(d, "device isn't initialized yet");
++        return;
 +    }
-+
-     object_class_foreach(ccw_machine_class_foreach, TYPE_S390_CCW_MACHINE,
-                          false, NULL);
  
--    if (!kvm_check_extension(kvm_state, KVM_CAP_DEVICE_CTRL)) {
--        error_report("KVM is missing capability KVM_CAP_DEVICE_CTRL - "
--                     "please use kernel 3.15 or newer");
--        return -1;
--    }
-     if (!kvm_check_extension(s, KVM_CAP_S390_COW)) {
-         error_report("KVM is missing capability KVM_CAP_S390_COW - "
-                      "unsupported environment");
-         return -1;
-     }
- 
--    cap_sync_regs = kvm_check_extension(s, KVM_CAP_SYNC_REGS);
-     cap_async_pf = kvm_check_extension(s, KVM_CAP_ASYNC_PF);
-     cap_mem_op = kvm_check_extension(s, KVM_CAP_S390_MEM_OP);
-     cap_mem_op_extension = kvm_check_extension(s, KVM_CAP_S390_MEM_OP_EXTENSION);
-@@ -463,15 +469,15 @@ void kvm_s390_reset_vcpu_normal(S390CPU *cpu)
- 
- static int can_sync_regs(CPUState *cs, int regs)
- {
--    return cap_sync_regs && (cs->kvm_run->kvm_valid_regs & regs) == regs;
-+    return (cs->kvm_run->kvm_valid_regs & regs) == regs;
- }
- 
- int kvm_arch_put_registers(CPUState *cs, int level)
- {
-+    const int required_syncs = KVM_SYNC_GPRS | KVM_SYNC_ACRS |
-+                               KVM_SYNC_CRS | KVM_SYNC_PREFIX;
-     S390CPU *cpu = S390_CPU(cs);
-     CPUS390XState *env = &cpu->env;
--    struct kvm_sregs sregs;
--    struct kvm_regs regs;
-     struct kvm_fpu fpu = {};
-     int r;
-     int i;
-@@ -480,21 +486,16 @@ int kvm_arch_put_registers(CPUState *cs, int level)
-     cs->kvm_run->psw_addr = env->psw.addr;
-     cs->kvm_run->psw_mask = env->psw.mask;
- 
--    if (can_sync_regs(cs, KVM_SYNC_GPRS)) {
--        for (i = 0; i < 16; i++) {
--            cs->kvm_run->s.regs.gprs[i] = env->regs[i];
--            cs->kvm_run->kvm_dirty_regs |= KVM_SYNC_GPRS;
--        }
--    } else {
--        for (i = 0; i < 16; i++) {
--            regs.gprs[i] = env->regs[i];
--        }
--        r = kvm_vcpu_ioctl(cs, KVM_SET_REGS, &regs);
--        if (r < 0) {
--            return r;
--        }
-+    g_assert((cs->kvm_run->kvm_valid_regs & required_syncs) == required_syncs);
-+    cs->kvm_run->kvm_dirty_regs |= required_syncs;
-+    for (i = 0; i < 16; i++) {
-+        cs->kvm_run->s.regs.gprs[i] = env->regs[i];
-+        cs->kvm_run->s.regs.acrs[i] = env->aregs[i];
-+        cs->kvm_run->s.regs.crs[i] = env->cregs[i];
-     }
- 
-+    cs->kvm_run->s.regs.prefix = env->psa;
-+
-     if (can_sync_regs(cs, KVM_SYNC_VRS)) {
-         for (i = 0; i < 32; i++) {
-             cs->kvm_run->s.regs.vrs[i][0] = env->vregs[i][0];
-@@ -572,25 +573,6 @@ int kvm_arch_put_registers(CPUState *cs, int level)
-         }
-     }
- 
--    /* access registers and control registers*/
--    if (can_sync_regs(cs, KVM_SYNC_ACRS | KVM_SYNC_CRS)) {
--        for (i = 0; i < 16; i++) {
--            cs->kvm_run->s.regs.acrs[i] = env->aregs[i];
--            cs->kvm_run->s.regs.crs[i] = env->cregs[i];
--        }
--        cs->kvm_run->kvm_dirty_regs |= KVM_SYNC_ACRS;
--        cs->kvm_run->kvm_dirty_regs |= KVM_SYNC_CRS;
--    } else {
--        for (i = 0; i < 16; i++) {
--            sregs.acrs[i] = env->aregs[i];
--            sregs.crs[i] = env->cregs[i];
--        }
--        r = kvm_vcpu_ioctl(cs, KVM_SET_SREGS, &sregs);
--        if (r < 0) {
--            return r;
--        }
--    }
--
-     if (can_sync_regs(cs, KVM_SYNC_GSCB)) {
-         memcpy(cs->kvm_run->s.regs.gscb, env->gscb, 32);
-         cs->kvm_run->kvm_dirty_regs |= KVM_SYNC_GSCB;
-@@ -612,22 +594,15 @@ int kvm_arch_put_registers(CPUState *cs, int level)
-         cs->kvm_run->kvm_dirty_regs |= KVM_SYNC_DIAG318;
-     }
- 
--    /* Finally the prefix */
--    if (can_sync_regs(cs, KVM_SYNC_PREFIX)) {
--        cs->kvm_run->s.regs.prefix = env->psa;
--        cs->kvm_run->kvm_dirty_regs |= KVM_SYNC_PREFIX;
--    } else {
--        /* prefix is only supported via sync regs */
--    }
-     return 0;
- }
- 
- int kvm_arch_get_registers(CPUState *cs)
- {
-+    const int required_syncs = KVM_SYNC_GPRS | KVM_SYNC_ACRS |
-+                               KVM_SYNC_CRS | KVM_SYNC_PREFIX;
-     S390CPU *cpu = S390_CPU(cs);
-     CPUS390XState *env = &cpu->env;
--    struct kvm_sregs sregs;
--    struct kvm_regs regs;
-     struct kvm_fpu fpu;
-     int i, r;
- 
-@@ -635,37 +610,16 @@ int kvm_arch_get_registers(CPUState *cs)
-     env->psw.addr = cs->kvm_run->psw_addr;
-     env->psw.mask = cs->kvm_run->psw_mask;
- 
--    /* the GPRS */
--    if (can_sync_regs(cs, KVM_SYNC_GPRS)) {
--        for (i = 0; i < 16; i++) {
--            env->regs[i] = cs->kvm_run->s.regs.gprs[i];
--        }
--    } else {
--        r = kvm_vcpu_ioctl(cs, KVM_GET_REGS, &regs);
--        if (r < 0) {
--            return r;
--        }
--         for (i = 0; i < 16; i++) {
--            env->regs[i] = regs.gprs[i];
--        }
-+    /* the GPRS, ACRS and CRS */
-+    g_assert((cs->kvm_run->kvm_valid_regs & required_syncs) == required_syncs);
-+    for (i = 0; i < 16; i++) {
-+        env->regs[i] = cs->kvm_run->s.regs.gprs[i];
-+        env->aregs[i] = cs->kvm_run->s.regs.acrs[i];
-+        env->cregs[i] = cs->kvm_run->s.regs.crs[i];
-     }
- 
--    /* The ACRS and CRS */
--    if (can_sync_regs(cs, KVM_SYNC_ACRS | KVM_SYNC_CRS)) {
--        for (i = 0; i < 16; i++) {
--            env->aregs[i] = cs->kvm_run->s.regs.acrs[i];
--            env->cregs[i] = cs->kvm_run->s.regs.crs[i];
--        }
--    } else {
--        r = kvm_vcpu_ioctl(cs, KVM_GET_SREGS, &sregs);
--        if (r < 0) {
--            return r;
--        }
--         for (i = 0; i < 16; i++) {
--            env->aregs[i] = sregs.acrs[i];
--            env->cregs[i] = sregs.crs[i];
--        }
--    }
-+    /* The prefix */
-+    env->psa = cs->kvm_run->s.regs.prefix;
- 
-     /* Floating point and vector registers */
-     if (can_sync_regs(cs, KVM_SYNC_VRS)) {
-@@ -690,11 +644,6 @@ int kvm_arch_get_registers(CPUState *cs)
-         env->fpc = fpu.fpc;
-     }
- 
--    /* The prefix */
--    if (can_sync_regs(cs, KVM_SYNC_PREFIX)) {
--        env->psa = cs->kvm_run->s.regs.prefix;
--    }
--
-     if (can_sync_regs(cs, KVM_SYNC_ARCH0)) {
-         env->cputm = cs->kvm_run->s.regs.cputm;
-         env->ckc = cs->kvm_run->s.regs.ckc;
+     d->guest_primary.surface = surface;
+     qxl_create_guest_primary(d, 0, QXL_SYNC);
 -- 
-2.39.3
+2.41.0
 
 
