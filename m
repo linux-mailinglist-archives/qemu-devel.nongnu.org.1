@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5980577B9CA
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Aug 2023 15:23:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 183BC77BA0B
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Aug 2023 15:31:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qVXWK-0007Ma-OX; Mon, 14 Aug 2023 09:22:08 -0400
+	id 1qVXdV-0001i5-C7; Mon, 14 Aug 2023 09:29:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qVXVX-0007Bd-Fs
- for qemu-devel@nongnu.org; Mon, 14 Aug 2023 09:21:20 -0400
+ id 1qVXdR-0001gI-TD
+ for qemu-devel@nongnu.org; Mon, 14 Aug 2023 09:29:31 -0400
 Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qVXVV-00073q-EH
- for qemu-devel@nongnu.org; Mon, 14 Aug 2023 09:21:19 -0400
+ id 1qVXdO-0000UN-RC
+ for qemu-devel@nongnu.org; Mon, 14 Aug 2023 09:29:29 -0400
 Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-3fe4a89e7efso38723925e9.3
- for <qemu-devel@nongnu.org>; Mon, 14 Aug 2023 06:21:16 -0700 (PDT)
+ 5b1f17b1804b1-3fe1d9a8ec6so30499785e9.1
+ for <qemu-devel@nongnu.org>; Mon, 14 Aug 2023 06:29:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692019276; x=1692624076;
+ d=linaro.org; s=google; t=1692019765; x=1692624565;
  h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
  :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Z4nJVgw3EKNj4eUFiyNtS/fu7ofeVBJbbuOt5lEFfwY=;
- b=SPtDEjQVrqfI4B3/X28mkB6k4EeJzqkL2ietC9cDXNkC20n5EuKbAM/hzo72cJtETI
- iQIwoNfa+Kno/dxZOquRxo2xMeMBKgNB7tozepw3Dv48JL4Icr+2wn9Sn1LbQ9LxgIkC
- dpp83y6zwoiCQSTvXu39Dvfk8i4dph8PKTsJHwOkTUQ6QFGgGT96B5jZhNHf/T3RCqVw
- qHCV/KtHW8CpE94Y17hs0/5BgbAkriRXSlAhH2/xbcm8Knhn+I7xpYez/fI0Q2HAi22+
- /k3ITNXkjnOzqfNDF4Mitj77zXE2q5bSWQkFVk7ILxLS9qV78jJ7q6WpiThNcMJPZZs4
- mVCg==
+ bh=mt9y7d/K95lD/GQk/+RvwZnTVmJmHzr4su96mZIWqzI=;
+ b=kZP2GEiKSxGc6KudLvdGPYnUzzTf3J311QeoLRQQiubrUUcY8DpW7mI2jCY1n592SO
+ 8V4khnW/K5bxqS4CqmOAHqKqFd4fKs4lCmf2+2VGHMEY5vDJ1Pel6RBR1aINoS/zaDGp
+ AVc59TQO8NUtJd3WjIhbJhG71F4nLE88lWyAbKJhdXuk5KF4HO7gm5LgiuXwJ8Cgjm8J
+ ZnSkWkhRmw1knXBl/UvAORY+ur0MyToqp4zjcooi+9tFQHMYv85HIUJ3/82BFlWS7gAB
+ 2FjRDz/GnW1MKiV9Fi2UUm8DAO9+wNoeTYm4OsKr3criuqbSqJcAbDJVP5bKTgKtGsfH
+ RO6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692019276; x=1692624076;
+ d=1e100.net; s=20221208; t=1692019765; x=1692624565;
  h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
  :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=Z4nJVgw3EKNj4eUFiyNtS/fu7ofeVBJbbuOt5lEFfwY=;
- b=UTWA043dUTQtfF+iHctc45jxAKuRSk9GSpo3P8Ti8H6Vp2U/LuJ3/CmbwT+kgOCAHw
- q0xWf4NG2wMbc3jOYOvusyZn5rDiLnCbh67Myky7+LiUPmQWmfFpgaib1lC4R4/f2np3
- 4OujuMPq0X1bvx2/BGBE+cWEgOvKgNVwqPI0u9yEcDpsQrQzTPl6HjJ0HgwAysMnvtji
- 07ruaunnHmrLpbB+qSsawbGXadzSYlox7BeGOVuFP/cVD7i7S1zJLB2OeooNNRDH/mZs
- US7mOjVe96Z7qaRSzYhemTNB9mhun3C9/kl6IELQebL5A8/y+IvQcMDHR+/iZcV+HN88
- JB6Q==
-X-Gm-Message-State: AOJu0YzBKlTe6f0k/ozcCQInmso/Vvi30ivFD6XoQImmYY7gip9DIxPB
- LNq5JelSOCSkTA98CPr0h9cBAw==
-X-Google-Smtp-Source: AGHT+IGgreBaHMtZZun+d1o4/Q9asn7JwUVNlE4S6QMkpLLqqMWrzY9FvqUx1HsvXXmae4wsQuhbDA==
-X-Received: by 2002:a1c:7c05:0:b0:3f8:fc2a:c7eb with SMTP id
- x5-20020a1c7c05000000b003f8fc2ac7ebmr7182761wmc.5.1692019275654; 
- Mon, 14 Aug 2023 06:21:15 -0700 (PDT)
+ bh=mt9y7d/K95lD/GQk/+RvwZnTVmJmHzr4su96mZIWqzI=;
+ b=b9qXxNZ9SZ5vegYh0QlQ+S6AcEhpCmez7ZZKsON7hQ2uJgN5usq52MTLIAne1WfyM6
+ xY/3HHIEH7Y4mHUq51FJUN08uM/LebBSiOyCnCgsfJg2EueoDt3OfHsQzsRGFseUhm3Y
+ /xq/BD5AsapBKZMsr4+reM0zIdCg/duOAmQsE3GxjnYc6BgGkK4A408oDYL53DgJBTpB
+ oss9rMYEmjXiKdB9Dgt65cRqO0UPMWDzqOOn1xEFNdkeB3hnRi8D5V+B68MRMZGf3/ya
+ FPzI5yfWMR4Rzpj35FFZK9+TAsQJugSvE2Ik7QN6C+yYNSX81U5GFu6Ghup+dop01xBu
+ t2Yw==
+X-Gm-Message-State: AOJu0Yyv0W59mOIF8mf8vdArjZkwrwctI62lVz8GCTUlVGac4j6t1SW0
+ gnPmDhDtz6vfSv1PJb9LxpWLQg==
+X-Google-Smtp-Source: AGHT+IE8RLTUT7fxK2yssmfuQKsBM0sCEMPclrJvpbLeD7w1YB3OMXjPXbLee5hGwToqAL+RR5Dc6g==
+X-Received: by 2002:adf:f691:0:b0:317:5d76:1d1a with SMTP id
+ v17-20020adff691000000b003175d761d1amr7528950wrp.8.1692019765015; 
+ Mon, 14 Aug 2023 06:29:25 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- q5-20020a7bce85000000b003fe17e04269sm14281629wmj.40.2023.08.14.06.21.15
+ d2-20020a5d6dc2000000b00317f70240afsm14426724wrz.27.2023.08.14.06.29.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Aug 2023 06:21:15 -0700 (PDT)
+ Mon, 14 Aug 2023 06:29:24 -0700 (PDT)
 Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id D93D21FFBB;
- Mon, 14 Aug 2023 14:21:14 +0100 (BST)
+ by zen.linaroharston (Postfix) with ESMTP id 08F5B1FFBB;
+ Mon, 14 Aug 2023 14:29:24 +0100 (BST)
 References: <20230731084354.115015-1-akihiko.odaki@daynix.com>
- <20230731084354.115015-7-akihiko.odaki@daynix.com>
+ <20230731084354.115015-13-akihiko.odaki@daynix.com>
 User-agent: mu4e 1.11.14; emacs 29.1.50
 From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: Akihiko Odaki <akihiko.odaki@daynix.com>
@@ -93,11 +93,10 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
  Bastian Koppelmann <kbastian@mail.uni-paderborn.de>, Max Filippov
  <jcmvbkbc@gmail.com>, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
  qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org
-Subject: Re: [RFC PATCH 06/24] hw/core/cpu: Replace gdb_core_xml_file with
- gdb_core_feature
-Date: Mon, 14 Aug 2023 14:19:38 +0100
-In-reply-to: <20230731084354.115015-7-akihiko.odaki@daynix.com>
-Message-ID: <87o7j9rc8l.fsf@linaro.org>
+Subject: Re: [RFC PATCH 12/24] gdbstub: Simplify XML lookup
+Date: Mon, 14 Aug 2023 14:27:08 +0100
+In-reply-to: <20230731084354.115015-13-akihiko.odaki@daynix.com>
+Message-ID: <87jztxrbv0.fsf@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
@@ -128,36 +127,93 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Akihiko Odaki <akihiko.odaki@daynix.com> writes:
 
-> This is a tree-wide change to replace gdb_core_xml_file, the path to
-> GDB XML file with gdb_core_feature, the pointer to GDBFeature. This
-> also replaces the values assigned to gdb_num_core_regs with the
-> num_regs member of GDBFeature where applicable to remove magic numbers.
+> Now we know all instances of GDBFeature that is used in CPU so we can
+> traverse them to find XML. This removes the need for a CPU-specific
+> lookup function for dynamic XMLs.
 >
-> A following change will utilize additional information provided by
-> GDBFeature to simplify XML file lookup.
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> ---
+>  gdbstub/gdbstub.c | 28 +++++++++-------------------
+>  1 file changed, 9 insertions(+), 19 deletions(-)
+>
+> diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
+> index 182efe7e0f..e5bb2c89ba 100644
+> --- a/gdbstub/gdbstub.c
+> +++ b/gdbstub/gdbstub.c
+> @@ -354,8 +354,7 @@ static const char *get_feature_xml(const char *p, con=
+st char **newp,
+>                                     GDBProcess *process)
+>  {
+>      size_t len;
+> -    int i;
+> -    const char *name;
+> +    GDBRegisterState *r;
+>      CPUState *cpu =3D gdb_get_first_cpu_in_process(process);
+>      CPUClass *cc =3D CPU_GET_CLASS(cpu);
+>=20=20
+> @@ -364,15 +363,12 @@ static const char *get_feature_xml(const char *p, c=
+onst char **newp,
+>          len++;
+>      *newp =3D p + len;
+>=20=20
+> -    name =3D NULL;
+>      if (strncmp(p, "target.xml", len) =3D=3D 0) {
+>          char *buf =3D process->target_xml;
+>          const size_t buf_sz =3D sizeof(process->target_xml);
+>=20=20
+>          /* Generate the XML description for this CPU.  */
+>          if (!buf[0]) {
+> -            GDBRegisterState *r;
+> -
+>              pstrcat(buf, buf_sz,
+>                      "<?xml version=3D\"1.0\"?>"
+>                      "<!DOCTYPE target SYSTEM \"gdb-target.dtd\">"
+> @@ -389,28 +385,22 @@ static const char *get_feature_xml(const char *p, c=
+onst char **newp,
+>              pstrcat(buf, buf_sz, "\"/>");
+>              for (r =3D cpu->gdb_regs; r; r =3D r->next) {
+>                  pstrcat(buf, buf_sz, "<xi:include href=3D\"");
+> -                pstrcat(buf, buf_sz, r->feature->xml);
+> +                pstrcat(buf, buf_sz, r->feature->xmlname);
+>                  pstrcat(buf, buf_sz, "\"/>");
+>              }
+>              pstrcat(buf, buf_sz, "</target>");
+>          }
+>          return buf;
+>      }
 
-re: other comment about assert(). Maybe gdb_find_static_feature() needs to =
-assert
-success because:
+It would be nice to modernise this code before adding to it. The static
+target_xml buffer and use of pstrcat could be replaced by GString code
+that is less sketchy.
 
-Thread 1 "qemu-loongarch6" received signal SIGSEGV, Segmentation fault.
-loongarch_cpu_class_init (c=3D<optimized out>, data=3D<optimized out>) at .=
-./../target/loongarch/cpu.c:726
-726         cc->gdb_num_core_regs =3D cc->gdb_core_feature->num_regs;
-(gdb) p/x cc->gdb_core_feature=20
-$1 =3D 0x0
-(gdb) l
-721         cc->disas_set_info =3D loongarch_cpu_disas_set_info;
-722         cc->gdb_read_register =3D loongarch_cpu_gdb_read_register;
-723         cc->gdb_write_register =3D loongarch_cpu_gdb_write_register;
-724         cc->disas_set_info =3D loongarch_cpu_disas_set_info;
-725         cc->gdb_core_feature =3D gdb_find_static_feature("loongarch-bas=
-e64.xml");
-726         cc->gdb_num_core_regs =3D cc->gdb_core_feature->num_regs;
-727         cc->gdb_stop_before_watchpoint =3D true;
-728         cc->gdb_arch_name =3D loongarch_gdb_arch_name;
-729
-730     #ifdef CONFIG_TCG
+
+> -    if (cc->gdb_get_dynamic_xml) {
+> -        char *xmlname =3D g_strndup(p, len);
+> -        const char *xml =3D cc->gdb_get_dynamic_xml(cpu, xmlname);
+> -
+> -        g_free(xmlname);
+> -        if (xml) {
+> -            return xml;
+> -        }
+> +    if (strncmp(p, cc->gdb_core_feature->xmlname, len) =3D=3D 0) {
+> +        return cc->gdb_core_feature->xml;
+>      }
+> -    for (i =3D 0; ; i++) {
+> -        name =3D gdb_features[i].xmlname;
+> -        if (!name || (strncmp(name, p, len) =3D=3D 0 && strlen(name) =3D=
+=3D len))
+> -            break;
+> +    for (r =3D cpu->gdb_regs; r; r =3D r->next) {
+> +        if (strncmp(p, r->feature->xmlname, len) =3D=3D 0) {
+> +            return r->feature->xml;
+> +        }
+>      }
+> -    return name ? gdb_features[i].xml : NULL;
+> +    return NULL;
+>  }
+>=20=20
+>  const GDBFeature *gdb_find_static_feature(const char *xmlname)
+
 
 --=20
 Alex Benn=C3=A9e
