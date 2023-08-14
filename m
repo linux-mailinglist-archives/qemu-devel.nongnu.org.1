@@ -2,106 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA8FE77B235
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Aug 2023 09:19:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4C9C77B21D
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Aug 2023 09:11:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qVRqi-0004Ia-C7; Mon, 14 Aug 2023 03:18:48 -0400
+	id 1qVRiI-0001BM-9n; Mon, 14 Aug 2023 03:10:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imbrenda@linux.ibm.com>)
- id 1qVRqb-0004IL-KH
- for qemu-devel@nongnu.org; Mon, 14 Aug 2023 03:18:44 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
+ id 1qVRiA-0001Ao-Dw; Mon, 14 Aug 2023 03:09:58 -0400
+Received: from out1-smtp.messagingengine.com ([66.111.4.25])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imbrenda@linux.ibm.com>)
- id 1qVRqZ-0001Vf-J5
- for qemu-devel@nongnu.org; Mon, 14 Aug 2023 03:18:41 -0400
-Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 37E6vMHs030736; Mon, 14 Aug 2023 07:01:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=pp1;
- bh=OjmA+Nt3wOwr3T9Ujec41HbLsw/ug2pbycP5tyWW5To=;
- b=mdhpyQs0rVZc94nOd+9oc9wFGF85+NI6Wdp4Wg6CJdqADRv6xGyyzmnvUKMkmOTdQLPX
- UdfDHFVkedqxbAzkiHZUQCu/CTSboZD61PbCAWHNf0w8YFo41LB79/EIshB/yuTfRJUC
- MV722JmypuevJSnmi2SWpbdj+arBgO90Ku//XvGTn0rZUiv/fAAfI5Rt93HPGRPB9EpB
- DQZzyuzNewsfu5bhEBtiWG90LC1efo6WBrdiVQqS8JMkltoddNEX9FQDJiRpT8d5HZHR
- P48saIIFpFDe1+CC90UN0HFbV8bewkYNvMQDLkY3Z9HCQ+549gw034pPHZkX1UYkpmkv zg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sfff404q7-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 14 Aug 2023 07:01:37 +0000
-Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 37E6voCw032297;
- Mon, 14 Aug 2023 07:01:36 GMT
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sfff4046w-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 14 Aug 2023 07:01:35 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 37E5R2xm018891; Mon, 14 Aug 2023 07:01:12 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3seq411cea-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 14 Aug 2023 07:01:12 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
- [10.20.54.103])
- by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 37E71AKE9241092
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 14 Aug 2023 07:01:10 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8CAA720043;
- Mon, 14 Aug 2023 07:01:10 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4091620040;
- Mon, 14 Aug 2023 07:01:10 +0000 (GMT)
-Received: from p-imbrenda (unknown [9.179.13.124])
- by smtpav04.fra02v.mail.ibm.com (Postfix) with SMTP;
- Mon, 14 Aug 2023 07:01:10 +0000 (GMT)
-Date: Mon, 14 Aug 2023 09:01:08 +0200
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
-To: Michael Tokarev <mjt@tls.msk.ru>
-Cc: QEMU Developers <qemu-devel@nongnu.org>, Paolo Bonzini
- <pbonzini@redhat.com>
-Subject: Re: util/async-teardown.c: is it really needed for --disable-system
- build?
-Message-ID: <20230814090108.472547d8@p-imbrenda>
-In-Reply-To: <a2f99abb-7ad6-41b4-1b74-ab7dba3d2424@tls.msk.ru>
-References: <744ac8a7-dd6b-2ce4-3f47-250812241d0e@tls.msk.ru>
- <a2f99abb-7ad6-41b4-1b74-ab7dba3d2424@tls.msk.ru>
-Organization: IBM
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+ (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
+ id 1qVRi8-0007jw-31; Mon, 14 Aug 2023 03:09:58 -0400
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+ by mailout.nyi.internal (Postfix) with ESMTP id 37F325C00B1;
+ Mon, 14 Aug 2023 03:09:51 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+ by compute5.internal (MEProxy); Mon, 14 Aug 2023 03:09:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
+ h=cc:cc:content-type:content-type:date:date:from:from
+ :in-reply-to:in-reply-to:message-id:mime-version:references
+ :reply-to:sender:subject:subject:to:to; s=fm3; t=1691996991; x=
+ 1692083391; bh=sKAWYncJ++DoKKA9stUcoPxMx8+FQwVzE1u3F5G771A=; b=T
+ 6Ty987uhAAZaB9ifWbDjlGVH1Xm0cqEr3DVDvffGKRMn/OOSduNJqUWZ+qH+poe7
+ 9IqTvHoPa/SYqzV1eboXK+BNMNhBE8h73IV6pk+FaosOZHKSsyRh/1G60RN3ucOF
+ ceNKZEJcFnVsMKMJieiJSRzXyrBGk3bTST06yFRbEm95KYw3/Gqdlv8omlSZvCe1
+ bIzmxm83Uh0lWjtdlHx1ivw8hbadHftgnyuteEDY6A1uP3Y2ZAh3Xc70YuexK5RE
+ qvfWLdQ/j6NFs5HnkhLCryTPKoW01kd3Ty6n+YbYuyJ1tqotGRMNJu7iObiT6kG/
+ TOaSW+J3jPg7uh32T4HVg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-type:content-type:date:date
+ :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+ :message-id:mime-version:references:reply-to:sender:subject
+ :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+ :x-sasl-enc; s=fm1; t=1691996991; x=1692083391; bh=sKAWYncJ++DoK
+ KA9stUcoPxMx8+FQwVzE1u3F5G771A=; b=oNuPoQ1rB+OGSkpFJfY4TuYcoEem9
+ iRJS3VWD/w6/IfR0AVdxdE8pQ38ASzXM/yrTsRYd6bif+MA+HUMpWHVMmVL9KjyL
+ 8Q9yAW9Wed0YBDRm01RcqomjW7fvNcZQKriPGVjY8usJ4/Mua6oQKq3Vwkw46HtS
+ UxjhEeO6jqu40i7hjsN/zPuk6w1RU6IpN1UiE+xYGZ1ulsn6XXJYwAITxT7pNUjt
+ bxPFgIRoiveBGvLVEIUznJ3gGwarZiY46GIb3uL295V0hVuMEtQk1OPPRwktRKmp
+ 1juI9fFwVEGM+p2v/qx/ye30g7TH4v+0TVa8pxL9pb2L2E5AbzbHE0sqw==
+X-ME-Sender: <xms:PtPZZH4cdkeI2PyAEm40wCg5gQrG2_t5pl64ZunFpo5FH5h0zmv89A>
+ <xme:PtPZZM5xAVuf9KyJr2knoD-4DWXmCUXDmKYdidwjQTAi_ePQfycTjneCwNQIOMh93
+ 95XQaOmWdu6V7ibO-c>
+X-ME-Received: <xmr:PtPZZOfgJJH7rFxpnM9BLETGtZVuhDkLsIo1KdQoO1-WiBK5Iz3NsYgXZFzIuqgO0r6LuQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedruddtfedguddukecutefuodetggdotefrod
+ ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+ necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+ enucfjughrpeffhffvvefukfhfgggtuggjsehgtderredttdejnecuhfhrohhmpefmlhgr
+ uhhsucflvghnshgvnhcuoehithhssehirhhrvghlvghvrghnthdrughkqeenucggtffrrg
+ htthgvrhhnpeeugfefleelfedtudekvdejteejjeegkeetueekfeffteejtedtffduudej
+ ledtveenucffohhmrghinhepphgrthgthhgvfidrohhrghenucevlhhushhtvghrufhiii
+ gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehithhssehirhhrvghlvghvrghnthdr
+ ughk
+X-ME-Proxy: <xmx:PtPZZIK4mtqnWU_6HJPlpiUTN7cJKq1WftSNvw531CMk6PGJcr3M-A>
+ <xmx:PtPZZLIfwSWWj-eQd5no8cZswZ3CbgtPczzgSKZTyVTMDYI0qge84A>
+ <xmx:PtPZZBwHs6rOLVgAbKKN5Dwm-uG8yYLhEi1kOKMY8oGvnU8WVSaUig>
+ <xmx:P9PZZIErVVHZ_jzg8ric-e2zK_QvmYiRXHGuPQV1P6onM-pHOKqa1g>
+Feedback-ID: idc91472f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 14 Aug 2023 03:09:49 -0400 (EDT)
+Date: Mon, 14 Aug 2023 09:09:47 +0200
+From: Klaus Jensen <its@irrelevant.dk>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Keith Busch <kbusch@kernel.org>
+Subject: Re: [PATCH 0/2] nvme: avoid dynamic stack allocations
+Message-ID: <ZNnTO1qnA308CUtb@cormorant.local>
+References: <20230811174751.784620-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: wu-pfAsVHa1Ir5Ms93NsA65x5pWGM9iC
-X-Proofpoint-ORIG-GUID: J_TDCOT1rTezPIEyZXKFFNKLNYXV5Kfq
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-08-14_01,2023-08-10_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- lowpriorityscore=0 spamscore=0 phishscore=0 mlxlogscore=887
- priorityscore=1501 bulkscore=0 malwarescore=0 mlxscore=0 adultscore=0
- suspectscore=0 clxscore=1011 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2306200000 definitions=main-2308140064
-Received-SPF: pass client-ip=148.163.156.1;
- envelope-from=imbrenda@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -29
-X-Spam_score: -3.0
-X-Spam_bar: ---
-X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=-1,
- RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="DvsWgJHTaeqECF/a"
+Content-Disposition: inline
+In-Reply-To: <20230811174751.784620-1-peter.maydell@linaro.org>
+Received-SPF: pass client-ip=66.111.4.25; envelope-from=its@irrelevant.dk;
+ helo=out1-smtp.messagingengine.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,40 +102,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, 12 Aug 2023 12:48:14 +0300
-Michael Tokarev <mjt@tls.msk.ru> wrote:
 
-> 12.08.2023 12:38, Michael Tokarev wrote:
-> ...
-> > It smells like, at the very least, os-posix.c should be split. We shoul=
-dn't include
-> > a ton of qemu-system functionality (like very specific option parsing) =
-into qemu-nbd
-> > for example.
-> >=20
-> > How about splitting os-posix.c into a few files in util/ (not in the ro=
-ot dir), and
-> > adding them to util_ss in case of posix-os?=C2=A0 Ditto for os-win32.c,=
- I guess, but I
-> > haven't looked at this.
-> >=20
-> > And for the question in $subj, this one needs to be guarded by CONFIG_S=
-OFTMMU. =20
+--DvsWgJHTaeqECF/a
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Aug 11 18:47, Peter Maydell wrote:
+> The QEMU codebase has very few C variable length arrays, and if we can
+> get rid of them all we can make the compiler error on new additions.
+> This is a defensive measure against security bugs where an on-stack
+> dynamic allocation isn't correctly size-checked (e.g.  CVE-2021-3527).
 >=20
-> Or maybe better yet, put the softmmu-specific functions (one very good ex=
-ample here
-> is os_parse_cmd_args() function - it clearly belongs to softmmu/, it shou=
-ld never
-> has been in global os-foo.c but in some softmmu-os-foo.c instead.  This w=
-ay,
-> async-teardown.c is moved to softmmu/ too, maybe os-linux-async-teardown.=
-c.
+> We last had a go at this a few years ago, when Philippe wrote
+> patches for this:
+> https://patchew.org/QEMU/20210505211047.1496765-1-philmd@redhat.com/
+> Some of the fixes made it into the tree, but some didn't (either
+> because of lack of review or because review found some changes
+> that needed to be made). I'm going through the remainder as a
+> non-urgent Friday afternoon task...
 >=20
-> /mjt
+> This patchset deals with two VLAs in the NVME code.
+>=20
+> thanks
+> -- PMM
+>=20
+> Peter Maydell (1):
+>   hw/nvme: Avoid dynamic stack allocation
+>=20
+> Philippe Mathieu-Daud=C3=A9 (1):
+>   hw/nvme: Use #define to avoid variable length array
+>=20
+>  hw/nvme/ctrl.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>=20
+> --=20
+> 2.34.1
+>=20
 
-I think we could guard the offending item with CONFIG_SOFTMMU for now,
-to immediately fix the issues you raised, and do the refactoring you
-proposed later (e.g. next cycle).
+Thanks Peter,
 
-what do you think?
+Applied to nvme-next!
+
+--DvsWgJHTaeqECF/a
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEUigzqnXi3OaiR2bATeGvMW1PDekFAmTZ0zsACgkQTeGvMW1P
+DenwAggAt+yE3gYqmygNg7mhfNJzwvKPslcMwGcSuT+g7+1XS/0Mxp/dXBb0rppo
+c21GLXInKa+IHQWyVP+k3Tis+aaxqtYvQ+Em1f0lRXz73BTVXxNDRqTWHzbu988c
+WtIeft9CIBJheQN0ipAz2WITZHN+LO71zWLPPi5zhbDbWeiyQi+6gWT8AgVg2vy1
+o7Nuod87JG8lrrfLpCYh5NLGDYWyGs2GfbfS9ZYiHXbAckBq4GJ93A77fjl1m/0m
+Nxgg9QwuV34q5lO4+Ub/LcEhIqtoHkAFu3uzinWGywwzxt71hq3vrm8FFZl9cd3K
+7+fEjT+rU6r0iXeMnmahzpuTUoq2KQ==
+=xbtf
+-----END PGP SIGNATURE-----
+
+--DvsWgJHTaeqECF/a--
 
