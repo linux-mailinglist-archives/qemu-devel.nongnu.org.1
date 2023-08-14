@@ -2,71 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08CA777B1E2
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Aug 2023 08:58:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D090B77B1E1
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Aug 2023 08:58:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qVRWT-0003cg-A7; Mon, 14 Aug 2023 02:57:54 -0400
+	id 1qVRWX-0003hE-01; Mon, 14 Aug 2023 02:57:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qVRVv-0003Yj-9f
- for qemu-devel@nongnu.org; Mon, 14 Aug 2023 02:57:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qVRWG-0003dK-M6
+ for qemu-devel@nongnu.org; Mon, 14 Aug 2023 02:57:43 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qVRVq-0005IN-E2
- for qemu-devel@nongnu.org; Mon, 14 Aug 2023 02:57:17 -0400
+ id 1qVRWF-0005LV-03
+ for qemu-devel@nongnu.org; Mon, 14 Aug 2023 02:57:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691996231;
+ s=mimecast20190719; t=1691996258;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ewHcWrWXeGmFF1T+/duJTsKCXyVL0uZnUQYra8Vz3QI=;
- b=VtAIXGT4Y55JGXwaTiqdwnPcfh++VqvySG9eXlYxTAXyv8oG1waWNd4qDhw9Fs67c68u6V
- YckkR24yLMW8Qe/Ea4l0l9BAL6f0FL3NxnCJxnMmpMGmPZGFaYddmT8Ta6pc6wPRY224YR
- 82yr8MfYP1hqSKWVj2cwuKmZsRDwYjE=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=KuNNnqHhw5kUDsyj/L9uzzgSuXYPywd/L620I/K0XVI=;
+ b=ZWO0CoLVr/OcFdmKFVebNI30wNxy4f20FMI1tYXy9bpzHMprsN6CRVa7nrBMDQHY0ApRX/
+ yP4tf5bdSs2lGcx9ZTtzgX5FkgKXRKVanrEneL3mjXMBRXzjzfBeezxlJUvdWZuGWNWDOK
+ nzZ5X8/6HwosaLljmj8GQ0l/3UuIAjU=
+Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
+ [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-694-LQUyTkmCM-evvrfkAtP6dg-1; Mon, 14 Aug 2023 02:57:09 -0400
-X-MC-Unique: LQUyTkmCM-evvrfkAtP6dg-1
-Received: by mail-lj1-f197.google.com with SMTP id
- 38308e7fff4ca-2b9ba719605so41056381fa.0
- for <qemu-devel@nongnu.org>; Sun, 13 Aug 2023 23:57:09 -0700 (PDT)
+ us-mta-155-Uk80J9JDPGCFyzzNsTM5Jw-1; Mon, 14 Aug 2023 02:57:36 -0400
+X-MC-Unique: Uk80J9JDPGCFyzzNsTM5Jw-1
+Received: by mail-lj1-f200.google.com with SMTP id
+ 38308e7fff4ca-2b9b820c94fso38945471fa.2
+ for <qemu-devel@nongnu.org>; Sun, 13 Aug 2023 23:57:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691996228; x=1692601028;
+ d=1e100.net; s=20221208; t=1691996251; x=1692601051;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ewHcWrWXeGmFF1T+/duJTsKCXyVL0uZnUQYra8Vz3QI=;
- b=G6bPH0Iayax4oSH2lZ0FSPX1YAKN4b5TiTGutM3d+zVnrjRSZMUWglYpHW6/nAir2h
- vGvKOSUEyLovrEbW7rWMVwKFgpcrHeWez9CyGbV276JgMxMsBZXdTWdZ3omnovmSRce4
- wnYSr6NDGMNfSKiBwLO9wG3OykPL3oYmQ1ybi56iv5SPjpyxtnvWVl4wjkHNIpkgtwpT
- sVAWm7MxOHND9qTw5qhs/Y+OxkT4W+/8SASuil0dgAuVrVOWxmQhL4syeG6Q9dbEwg57
- SqlWjnOUB60qp0Tb+ENmMXlueYZl5zNv6atYLGoWQNWEZ1twxfA19KbMeb7OpvbIuImx
- CXiA==
-X-Gm-Message-State: AOJu0YwfruGAzC7SZCG93/lWh9tdDwi3RPom4sYaCeJ0VvKW7xq0gdAx
- kEpNZS3AKEO9VEr/AuBIhNr/7GW87X1ZYFxYlgEepnm3RVEYNVa6M6cjBLItdPJyyH3O9j2rIit
- tvtIxMi9tsGChCXZuY4PaSiY9MOHIIOM=
-X-Received: by 2002:a2e:320c:0:b0:2b9:b9c8:99 with SMTP id
- y12-20020a2e320c000000b002b9b9c80099mr6602515ljy.22.1691996228289; 
- Sun, 13 Aug 2023 23:57:08 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE4kGSevbFQGtEhvzvfjNOo05wp5oRvyfxkp4slFp7Ig2IHYCBoHhT87/uREpDoT0F9vjvPTkWyoBIhvGztnck=
-X-Received: by 2002:a2e:320c:0:b0:2b9:b9c8:99 with SMTP id
- y12-20020a2e320c000000b002b9b9c80099mr6602498ljy.22.1691996227889; 
- Sun, 13 Aug 2023 23:57:07 -0700 (PDT)
+ bh=KuNNnqHhw5kUDsyj/L9uzzgSuXYPywd/L620I/K0XVI=;
+ b=gEU614H5gZ9SrKrQkNyff0fhnJQUMB61GOhDWDocWkMGRmVEs2060QapbDSxx0UKXF
+ oZ9agGRANmHA2VzVZyZYsfu6IKu+HEWpfK0jCYBoKl7CNzEY+SrhnNkNKCKDrArdzBNk
+ nm8Ed6kcIjlcvfmGm/icD8LKQ1vKh+LuvcnPL5lu9O0ZkGuRe07m71o9pB8rfmOXYD7p
+ ulNJSTQC2o9D7fUGYl8MtpX8Npfx/S/XLraprOoskC37BiXJBbSwjqxymwC4NLGKoHPZ
+ 3s7MjJDsxVRVOKyAPrmgoJxy1bkrDf0FoIjqpNEnZfEf/NTNLM99Yi4NGNXq/TZKGB7v
+ sAsw==
+X-Gm-Message-State: AOJu0YwdK3eO3fG2sTQZGjswhHt90nvW3g3UEAJdSTBrvnAfaMtzNQ3h
+ s0FuxMVpSXQGBHXNIqzADmbm4R8bJMcUWAlliwbRoEaBtos1AI/Sj3JzthdRnPDBpyHUOoVUn7F
+ qWz+KxFD5jWPQ0zHuuw3C7BUrcTOsDiU=
+X-Received: by 2002:a2e:7c18:0:b0:2b9:20fe:4bcc with SMTP id
+ x24-20020a2e7c18000000b002b920fe4bccmr6377563ljc.21.1691996251593; 
+ Sun, 13 Aug 2023 23:57:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE/WNdXd1mscfkR0m79ZHwn6mFgoA2UmphFMZZwq7yaKzPE44refIiBej6cdLyWWRI1j6pMun8/0euFvanShYU=
+X-Received: by 2002:a2e:7c18:0:b0:2b9:20fe:4bcc with SMTP id
+ x24-20020a2e7c18000000b002b920fe4bccmr6377543ljc.21.1691996251291; Sun, 13
+ Aug 2023 23:57:31 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230810153611.3410882-1-eperezma@redhat.com>
- <20230810153611.3410882-5-eperezma@redhat.com>
-In-Reply-To: <20230810153611.3410882-5-eperezma@redhat.com>
+ <20230810153611.3410882-2-eperezma@redhat.com>
+In-Reply-To: <20230810153611.3410882-2-eperezma@redhat.com>
 From: Jason Wang <jasowang@redhat.com>
-Date: Mon, 14 Aug 2023 14:56:56 +0800
-Message-ID: <CACGkMEveLShOzufBdgeQ+N8-R+Vv7CW6y+aSPSD5ZRnzy4sEXw@mail.gmail.com>
-Subject: Re: [PATCH v2 4/5] vdpa: move vhost_vdpa_set_vrings_ready to the
- caller
+Date: Mon, 14 Aug 2023 14:57:20 +0800
+Message-ID: <CACGkMEvbL7XkXHm591v9YJHK173spTdW4Tmpsh6efm9osnjcFA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/5] vdpa: use first queue SVQ state for CVQ default
 To: =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>
 Cc: qemu-devel@nongnu.org, Laurent Vivier <lvivier@redhat.com>, 
  Dragos Tatulea <dtatulea@nvidia.com>, si-wei.liu@oracle.com, 
@@ -78,7 +77,7 @@ Cc: qemu-devel@nongnu.org, Laurent Vivier <lvivier@redhat.com>,
  Lei Yang <leiyang@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -105,141 +104,39 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On Thu, Aug 10, 2023 at 11:36=E2=80=AFPM Eugenio P=C3=A9rez <eperezma@redha=
 t.com> wrote:
 >
-> Doing that way allows CVQ to be enabled before the dataplane vqs,
-> restoring the state as MQ or MAC addresses properly in the case of a
-> migration.
+> Previous to this patch the only way CVQ would be shadowed is if it does
+> support to isolate CVQ group or if all vqs were shadowed from the
+> beginning.  The second condition was checked at the beginning, and no
+> more configuration was done.
 >
-
-A typo in the subject, should be vhost_vdpa_set_vring_ready.
-
+> After this series we need to check if data queues are shadowed because
+> they are in the middle of the migration.  As checking if they are
+> shadowed already covers the previous case, let's just mimic it.
+>
 > Signed-off-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
-> ---
->  hw/virtio/vdpa-dev.c   |  3 +++
->  hw/virtio/vhost-vdpa.c |  3 ---
->  net/vhost-vdpa.c       | 57 +++++++++++++++++++++++++++++-------------
->  3 files changed, 42 insertions(+), 21 deletions(-)
->
-> diff --git a/hw/virtio/vdpa-dev.c b/hw/virtio/vdpa-dev.c
-> index 363b625243..f22d5d5bc0 100644
-> --- a/hw/virtio/vdpa-dev.c
-> +++ b/hw/virtio/vdpa-dev.c
-> @@ -255,6 +255,9 @@ static int vhost_vdpa_device_start(VirtIODevice *vdev=
-, Error **errp)
->          error_setg_errno(errp, -ret, "Error starting vhost");
->          goto err_guest_notifiers;
->      }
-> +    for (i =3D 0; i < s->dev.nvqs; ++i) {
-> +        vhost_vdpa_set_vring_ready(&s->vdpa, i);
-> +    }
->      s->started =3D true;
->
->      /*
-> diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
-> index 0d9975b5b5..8ca2e3800c 100644
-> --- a/hw/virtio/vhost-vdpa.c
-> +++ b/hw/virtio/vhost-vdpa.c
-> @@ -1297,9 +1297,6 @@ static int vhost_vdpa_dev_start(struct vhost_dev *d=
-ev, bool started)
->          if (unlikely(!ok)) {
->              return -1;
->          }
-> -        for (int i =3D 0; i < dev->nvqs; ++i) {
-> -            vhost_vdpa_set_vring_ready(v, dev->vq_index + i);
-> -        }
->      } else {
->          vhost_vdpa_suspend(dev);
->          vhost_vdpa_svqs_stop(dev);
-> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-> index 9251351b4b..3bf60f9431 100644
-> --- a/net/vhost-vdpa.c
-> +++ b/net/vhost-vdpa.c
-> @@ -371,6 +371,22 @@ static int vhost_vdpa_net_data_start(NetClientState =
-*nc)
->      return 0;
->  }
->
-> +static int vhost_vdpa_net_data_load(NetClientState *nc)
-> +{
-> +    VhostVDPAState *s =3D DO_UPCAST(VhostVDPAState, nc, nc);
-> +    struct vhost_vdpa *v =3D &s->vhost_vdpa;
-> +    bool has_cvq =3D v->dev->vq_index_end % 2;
-> +
-> +    if (has_cvq) {
-> +        return 0;
-> +    }
-> +
-> +    for (int i =3D 0; i < v->dev->nvqs; ++i) {
-> +        vhost_vdpa_set_vring_ready(v, i + v->dev->vq_index);
-> +    }
-> +    return 0;
-> +}
-> +
->  static void vhost_vdpa_net_client_stop(NetClientState *nc)
->  {
->      VhostVDPAState *s =3D DO_UPCAST(VhostVDPAState, nc, nc);
-> @@ -393,6 +409,7 @@ static NetClientInfo net_vhost_vdpa_info =3D {
->          .size =3D sizeof(VhostVDPAState),
->          .receive =3D vhost_vdpa_receive,
->          .start =3D vhost_vdpa_net_data_start,
-> +        .load =3D vhost_vdpa_net_data_load,
 
-This deserve an independent patch?
+Acked-by: Jason Wang <jasowang@redhat.com>
 
 Thanks
 
->          .stop =3D vhost_vdpa_net_client_stop,
->          .cleanup =3D vhost_vdpa_cleanup,
->          .has_vnet_hdr =3D vhost_vdpa_has_vnet_hdr,
-> @@ -974,26 +991,30 @@ static int vhost_vdpa_net_cvq_load(NetClientState *=
-nc)
+> ---
+>  net/vhost-vdpa.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
->      assert(nc->info->type =3D=3D NET_CLIENT_DRIVER_VHOST_VDPA);
+> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+> index 9795306742..a772540250 100644
+> --- a/net/vhost-vdpa.c
+> +++ b/net/vhost-vdpa.c
+> @@ -505,7 +505,7 @@ static int vhost_vdpa_net_cvq_start(NetClientState *n=
+c)
 >
-> -    if (!v->shadow_vqs_enabled) {
-> -        return 0;
-> -    }
-> +    vhost_vdpa_set_vring_ready(v, v->dev->vq_index);
+>      s0 =3D vhost_vdpa_net_first_nc_vdpa(s);
+>      v->shadow_data =3D s0->vhost_vdpa.shadow_vqs_enabled;
+> -    v->shadow_vqs_enabled =3D s->always_svq;
+> +    v->shadow_vqs_enabled =3D s0->vhost_vdpa.shadow_vqs_enabled;
+>      s->vhost_vdpa.address_space_id =3D VHOST_VDPA_GUEST_PA_ASID;
 >
-> -    n =3D VIRTIO_NET(v->dev->vdev);
-> -    r =3D vhost_vdpa_net_load_mac(s, n);
-> -    if (unlikely(r < 0)) {
-> -        return r;
-> -    }
-> -    r =3D vhost_vdpa_net_load_mq(s, n);
-> -    if (unlikely(r)) {
-> -        return r;
-> -    }
-> -    r =3D vhost_vdpa_net_load_offloads(s, n);
-> -    if (unlikely(r)) {
-> -        return r;
-> +    if (v->shadow_vqs_enabled) {
-> +        n =3D VIRTIO_NET(v->dev->vdev);
-> +        r =3D vhost_vdpa_net_load_mac(s, n);
-> +        if (unlikely(r < 0)) {
-> +            return r;
-> +        }
-> +        r =3D vhost_vdpa_net_load_mq(s, n);
-> +        if (unlikely(r)) {
-> +            return r;
-> +        }
-> +        r =3D vhost_vdpa_net_load_offloads(s, n);
-> +        if (unlikely(r)) {
-> +            return r;
-> +        }
-> +        r =3D vhost_vdpa_net_load_rx(s, n);
-> +        if (unlikely(r)) {
-> +            return r;
-> +        }
->      }
-> -    r =3D vhost_vdpa_net_load_rx(s, n);
-> -    if (unlikely(r)) {
-> -        return r;
-> +
-> +    for (int i =3D 0; i < v->dev->vq_index; ++i) {
-> +        vhost_vdpa_set_vring_ready(v, i);
->      }
->
->      return 0;
+>      if (s->vhost_vdpa.shadow_data) {
 > --
 > 2.39.3
 >
