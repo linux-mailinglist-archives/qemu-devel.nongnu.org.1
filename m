@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 547BB77C017
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Aug 2023 20:55:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0169377C024
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Aug 2023 20:57:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qVciK-0005YV-3H; Mon, 14 Aug 2023 14:54:52 -0400
+	id 1qVciK-0005Yb-93; Mon, 14 Aug 2023 14:54:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1qVciI-0005Xk-GV
+ id 1qVciI-0005XO-6b
  for qemu-devel@nongnu.org; Mon, 14 Aug 2023 14:54:50 -0400
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1qVciF-0007sY-WA
- for qemu-devel@nongnu.org; Mon, 14 Aug 2023 14:54:50 -0400
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+ id 1qVciG-0007sp-M8
+ for qemu-devel@nongnu.org; Mon, 14 Aug 2023 14:54:49 -0400
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 37EGTkVv003679; Mon, 14 Aug 2023 18:54:47 GMT
+ 37EGU2kN018156; Mon, 14 Aug 2023 18:54:47 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
  subject : date : message-id : in-reply-to : references; s=corp-2023-03-30;
- bh=oBquIbJn6Y+ghuI/Z3VxjYnyFcHSVeBhg6ewURHOWmE=;
- b=yjUmxFJniM9gOqJOhGig7X30F7jfmP2UJMONN86FrsG8oe/llqzBVMGYOOXJzOSZZH21
- VwoMDwpJnANDeexIbrmWGWAuXwGbVhova3Np7AoHFD3lgFofaDbUyamqcyyI9/wjNd1H
- /ePiq8bsQG1S/6G57EaKm5x/6OBF6GIlB657/NdALVIPKdjkEgQFgfIQPted6xreqP2x
- cyBD6MXOi8zPJHoIw49NKGgJx6I4huIXvlqOzLPlQyCwVByMNGaUymL7tRhJAjRQyHUN
- CGoaOGWL0O+00HLQumd+Qzy96QK45dl2WLyVBmls8eYa3jSaltV4L3GMmiCBf+vr/U3B VA== 
+ bh=5HoFgY5nxlZuH/6SdP2Nr0WigNVVfrXMGn8mGXvtkPk=;
+ b=n9aL6cLf1rvw/yxgzCswpwQPQGwQoVYXUBXhTGGjnCEt06AmxoPFgWiBOf0BseaT0+p8
+ Jwa5CwEVRK5PwKltpkDZ5qbbfiB47FFe7ngWMslI6h1qC1gID2FkVx21d9JNiIS1IdyD
+ NJXvUA1NR7UkQBUGt8o5sG5qFuY/U5R0zbkQFxOSvRibLdaZp7PE4V14RbJXKDEBw9YL
+ t+BxNyl1g6lE+9T7nf/pd+0KYz1dSzTIGUDSeHxhR6X059/WI6aj8FugnC18B/rIzNPM
+ pUuUKF1xX2wzVxGvcYqj5A0GHT/rBdBm1Ogb3L96sROPDSxDgXQSMdZmagrIggCCfPxB Jw== 
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3se2yfkbk8-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3se61c37kw-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 14 Aug 2023 18:54:46 +0000
+ Mon, 14 Aug 2023 18:54:47 +0000
 Received: from pps.filterd
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 37EISZ2p005504; Mon, 14 Aug 2023 18:54:46 GMT
+ with ESMTP id 37EIdYuM006780; Mon, 14 Aug 2023 18:54:47 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3sey2c8x78-1
+ 3sey2c8x7u-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 14 Aug 2023 18:54:46 +0000
+ Mon, 14 Aug 2023 18:54:47 +0000
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 37EIsb43008127;
- Mon, 14 Aug 2023 18:54:45 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 37EIsb45008127;
+ Mon, 14 Aug 2023 18:54:46 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 3sey2c8x3f-9; Mon, 14 Aug 2023 18:54:45 +0000
+ ESMTP id 3sey2c8x3f-10; Mon, 14 Aug 2023 18:54:46 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V3 08/10] tests/qtest: precopy migration with suspend
-Date: Mon, 14 Aug 2023 11:54:34 -0700
-Message-Id: <1692039276-148610-9-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V3 09/10] tests/qtest: postcopy migration with suspend
+Date: Mon, 14 Aug 2023 11:54:35 -0700
+Message-Id: <1692039276-148610-10-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1692039276-148610-1-git-send-email-steven.sistare@oracle.com>
 References: <1692039276-148610-1-git-send-email-steven.sistare@oracle.com>
@@ -71,8 +71,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
  mlxlogscore=999 bulkscore=0 adultscore=0 spamscore=0 malwarescore=0
  mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2306200000 definitions=main-2308140175
-X-Proofpoint-ORIG-GUID: Rsm2MY_ffbB09OsEAiUNtKLGNhFdhr7R
-X-Proofpoint-GUID: Rsm2MY_ffbB09OsEAiUNtKLGNhFdhr7R
+X-Proofpoint-GUID: 5SnXCnYB3vKRvHJJmARzB7yb1e4QidR0
+X-Proofpoint-ORIG-GUID: 5SnXCnYB3vKRvHJJmARzB7yb1e4QidR0
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -97,205 +97,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a test case to verify that the suspended state is handled correctly
-during live migration precopy.  The test suspends the src, migrates, then
-wakes the dest.
+Add a test case to verify that the suspended state is handled correctly by
+live migration postcopy.  The test suspends the src, migrates, then wakes
+the dest.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 ---
- tests/qtest/migration-helpers.c |  3 ++
- tests/qtest/migration-helpers.h |  3 +-
- tests/qtest/migration-test.c    | 72 +++++++++++++++++++++++++++++++++++++----
- 3 files changed, 70 insertions(+), 8 deletions(-)
+ tests/qtest/migration-test.c | 26 ++++++++++++++++++++++++--
+ 1 file changed, 24 insertions(+), 2 deletions(-)
 
-diff --git a/tests/qtest/migration-helpers.c b/tests/qtest/migration-helpers.c
-index b541108..d1fec49 100644
---- a/tests/qtest/migration-helpers.c
-+++ b/tests/qtest/migration-helpers.c
-@@ -31,6 +31,9 @@ bool migrate_watch_for_events(QTestState *who, const char *name,
-     if (g_str_equal(name, "STOP")) {
-         state->stop_seen = true;
-         return true;
-+    } else if (g_str_equal(name, "SUSPEND")) {
-+        state->suspend_seen = true;
-+        return true;
-     } else if (g_str_equal(name, "RESUME")) {
-         state->resume_seen = true;
-         return true;
-diff --git a/tests/qtest/migration-helpers.h b/tests/qtest/migration-helpers.h
-index 59fbb83..bac8699 100644
---- a/tests/qtest/migration-helpers.h
-+++ b/tests/qtest/migration-helpers.h
-@@ -16,7 +16,8 @@
- #include "libqtest.h"
- 
- typedef struct QTestMigrationState {
--    bool stop_seen, resume_seen;
-+    bool suspend_me;
-+    bool stop_seen, suspend_seen, resume_seen;
- } QTestMigrationState;
- 
- bool migrate_watch_for_events(QTestState *who, const char *name,
 diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index 32fea73..e3fc71e 100644
+index e3fc71e..d99620a 100644
 --- a/tests/qtest/migration-test.c
 +++ b/tests/qtest/migration-test.c
-@@ -135,7 +135,7 @@ static void init_bootfile(const char *bootpath, void *content, size_t len)
- /*
-  * Wait for some output in the serial output file,
-  * we get an 'A' followed by an endless string of 'B's
-- * but on the destination we won't have the A.
-+ * but on the destination we won't have the A (unless we enabled suspend/resume)
-  */
- static void wait_for_serial(const char *side)
+@@ -599,8 +599,12 @@ static void migrate_postcopy_start(QTestState *from, QTestState *to)
  {
-@@ -195,6 +195,13 @@ static void wait_for_stop(QTestState *who, QTestMigrationState *state)
-     }
+     qtest_qmp_assert_success(from, "{ 'execute': 'migrate-start-postcopy' }");
+ 
+-    wait_for_stop(from, &src_state);
+-    qtest_qmp_eventwait(to, "RESUME");
++    if (src_state.suspend_me) {
++        wait_for_suspend(from, &src_state);
++    } else {
++        wait_for_stop(from, &src_state);
++        qtest_qmp_eventwait(to, "RESUME");
++    }
  }
  
-+static void wait_for_suspend(QTestState *who, QTestMigrationState *state)
-+{
-+    if (!state->suspend_seen) {
-+        qtest_qmp_eventwait(who, "SUSPEND");
+ typedef struct {
+@@ -1299,6 +1303,11 @@ static void migrate_postcopy_complete(QTestState *from, QTestState *to,
+ {
+     wait_for_migration_complete(from);
+ 
++    if (args->start.suspend_me) {
++        /* wakeup succeeds only if guest is suspended */
++        qtest_qmp_assert_success(to, "{'execute': 'system_wakeup'}");
 +    }
++
+     /* Make sure we get at least one "B" on destination */
+     wait_for_serial("dest_serial");
+ 
+@@ -1332,6 +1341,15 @@ static void test_postcopy(void)
+     test_postcopy_common(&args);
+ }
+ 
++static void test_postcopy_suspend(void)
++{
++    MigrateCommon args = {
++        .start.suspend_me = true,
++    };
++
++    test_postcopy_common(&args);
 +}
 +
- /*
-  * It's tricky to use qemu's migration event capability with qtest,
-  * events suddenly appearing confuse the qmp()/hmp() responses.
-@@ -249,7 +256,7 @@ static void wait_for_migration_pass(QTestState *who)
+ static void test_postcopy_compress(void)
  {
-     uint64_t pass, prev_pass = 0, changes = 0;
- 
--    while (changes < 2 && !src_state.stop_seen) {
-+    while (changes < 2 && !src_state.stop_seen && !src_state.suspend_seen) {
-         usleep(1000);
-         pass = get_migration_pass(who);
-         changes += (pass != prev_pass);
-@@ -545,7 +552,8 @@ static void migrate_wait_for_dirty_mem(QTestState *from,
-     watch_byte = qtest_readb(from, watch_address);
-     do {
-         usleep(1000 * 10);
--    } while (qtest_readb(from, watch_address) == watch_byte);
-+    } while (qtest_readb(from, watch_address) == watch_byte &&
-+             !src_state.suspend_seen);
- }
- 
- 
-@@ -727,6 +735,7 @@ static int test_migrate_start(QTestState **from, QTestState **to,
-     dst_state = (QTestMigrationState) { };
-     src_state = (QTestMigrationState) { };
- 
-+    src_state.suspend_me = args->suspend_me;
-     x86_bootsect[SYM_suspend_me - SYM_start] = args->suspend_me;
- 
-     bootpath = g_strdup_printf("%s/bootsect", tmpfs);
-@@ -1522,8 +1531,12 @@ static void test_precopy_common(MigrateCommon *args)
-          * change anything.
-          */
-         if (args->result == MIG_TEST_SUCCEED) {
--            qtest_qmp_assert_success(from, "{ 'execute' : 'stop'}");
--            wait_for_stop(from, &src_state);
-+            if (src_state.suspend_me) {
-+                wait_for_suspend(from, &src_state);
-+            } else {
-+                qtest_qmp_assert_success(from, "{ 'execute' : 'stop'}");
-+                wait_for_stop(from, &src_state);
-+            }
-             migrate_ensure_converge(from);
+     MigrateCommon args = {
+@@ -2883,6 +2901,10 @@ int main(int argc, char **argv)
+             qtest_add_func("/migration/postcopy/recovery/compress/plain",
+                            test_postcopy_recovery_compress);
          }
-     }
-@@ -1565,7 +1578,11 @@ static void test_precopy_common(MigrateCommon *args)
-              */
-             wait_for_migration_complete(from);
- 
--            wait_for_stop(from, &src_state);
-+            if (src_state.suspend_me) {
-+                wait_for_suspend(from, &src_state);
-+            } else {
-+                wait_for_stop(from, &src_state);
-+            }
- 
-         } else {
-             wait_for_migration_complete(from);
-@@ -1579,6 +1596,11 @@ static void test_precopy_common(MigrateCommon *args)
-             qtest_qmp_assert_success(to, "{ 'execute' : 'cont'}");
-         }
- 
-+        if (args->start.suspend_me) {
-+            /* wakeup succeeds only if guest is suspended */
-+            qtest_qmp_assert_success(to, "{'execute': 'system_wakeup'}");
++        if (is_x86) {
++            qtest_add_func("/migration/postcopy/suspend",
++                           test_postcopy_suspend);
 +        }
-+
-         if (!dst_state.resume_seen) {
-             qtest_qmp_eventwait(to, "RESUME");
-         }
-@@ -1609,6 +1631,34 @@ static void test_precopy_unix_plain(void)
-     test_precopy_common(&args);
- }
+     }
  
-+static void test_precopy_unix_suspend_live(void)
-+{
-+    g_autofree char *uri = g_strdup_printf("unix:%s/migsocket", tmpfs);
-+    MigrateCommon args = {
-+        .listen_uri = uri,
-+        .connect_uri = uri,
-+        /*
-+         * despite being live, the test is fast because the src
-+         * suspends immediately.
-+         */
-+        .live = true,
-+        .start.suspend_me = true,
-+    };
-+
-+    test_precopy_common(&args);
-+}
-+
-+static void test_precopy_unix_suspend_notlive(void)
-+{
-+    g_autofree char *uri = g_strdup_printf("unix:%s/migsocket", tmpfs);
-+    MigrateCommon args = {
-+        .listen_uri = uri,
-+        .connect_uri = uri,
-+        .start.suspend_me = true,
-+    };
-+
-+    test_precopy_common(&args);
-+}
- 
- static void test_precopy_unix_dirty_ring(void)
- {
-@@ -2765,7 +2815,7 @@ static bool kvm_dirty_ring_supported(void)
- int main(int argc, char **argv)
- {
-     bool has_kvm, has_tcg;
--    bool has_uffd;
-+    bool has_uffd, is_x86;
-     const char *arch;
-     g_autoptr(GError) err = NULL;
-     int ret;
-@@ -2782,6 +2832,7 @@ int main(int argc, char **argv)
- 
-     has_uffd = ufd_version_check();
-     arch = qtest_get_arch();
-+    is_x86 = !strcmp(arch, "i386") || !strcmp(arch, "x86_64");
- 
-     /*
-      * On ppc64, the test only works with kvm-hv, but not with kvm-pr and TCG
-@@ -2812,6 +2863,13 @@ int main(int argc, char **argv)
- 
-     module_call_init(MODULE_INIT_QOM);
- 
-+    if (is_x86) {
-+        qtest_add_func("/migration/precopy/unix/suspend/live",
-+                       test_precopy_unix_suspend_live);
-+        qtest_add_func("/migration/precopy/unix/suspend/notlive",
-+                       test_precopy_unix_suspend_notlive);
-+    }
-+
-     if (has_uffd) {
-         qtest_add_func("/migration/postcopy/plain", test_postcopy);
-         qtest_add_func("/migration/postcopy/recovery/plain",
+     qtest_add_func("/migration/bad_dest", test_baddest);
 -- 
 1.8.3.1
 
