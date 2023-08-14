@@ -2,80 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD94677B4EE
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Aug 2023 10:59:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81D3D77B4EF
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Aug 2023 10:59:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qVTPT-0001uw-Gm; Mon, 14 Aug 2023 04:58:47 -0400
+	id 1qVTQ8-0002cq-VD; Mon, 14 Aug 2023 04:59:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
- id 1qVTPS-0001ua-6d; Mon, 14 Aug 2023 04:58:46 -0400
-Received: from mail-oi1-x22e.google.com ([2607:f8b0:4864:20::22e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
- id 1qVTPQ-0007EP-3m; Mon, 14 Aug 2023 04:58:45 -0400
-Received: by mail-oi1-x22e.google.com with SMTP id
- 5614622812f47-3a7e68f4214so2196558b6e.1; 
- Mon, 14 Aug 2023 01:58:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1692003522; x=1692608322;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=jATuWhSMVl4DK5GNTPcUtmJ9jZJkokdk3admZJrIA5U=;
- b=kzAHztZgtqw4w8yIB8Z6GZFyK0ML3S72SVBKBQ+mUCfY+kCoCLGZYRwcSwD3gylHCH
- Y9CqUbvuv9Wg9Ica6ttcrQeXa5dBorklaQh1YTOHHkZSwl5LG2tYRQHvOx0kpsJXTW4G
- /liinnoKJk32tqylDQGjj3Fb7t1/M3xgTneledvLXJ/S1iAC8DAU9mr8eZZBn60IPZXa
- FFKvl9SDcMuS0J6vY/dgKDXXFR3i7MW5XsROt1LhFveVYHDHB8f4L/oE01XSiQeSs/43
- ih2uAy3IrHkpQvWhV5u6x3ymwJTsAkBIQvFIW6G21+I2jY8HjOfts9HRa1fhiMbTJcOC
- GvXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692003522; x=1692608322;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=jATuWhSMVl4DK5GNTPcUtmJ9jZJkokdk3admZJrIA5U=;
- b=TawKW8dzbWAbLlK1xYPd07N33NKJc8ZmHueR+CDQgKM4MAeieHFacLkhcGgqnGF98k
- gow2TAVrZY9C+AYw/+3NsBJyOxMcQrTrs7GZ+wEeWYCKqP65BoFhI5QrBGHF+Zm8MSm6
- kFIFqGX16T4mLv3bm17SNRCAP4bMgLJkIk+TredWYvv2319zVl9WaVWDlZpIQqzEKKnk
- TYt9okw7ffJUlPEADF3FVm2TzxsQc/fsr2Xi0PDTj3UD71pbVI2DAsatRhtb/mRedOwq
- Qjrw8dm/fo5rozT2JayciqclbBIRviHmlc4OqyaU+diX9KE0apZvnAoNC6L03N289cSo
- TEYQ==
-X-Gm-Message-State: AOJu0Yy4pVQPvo4G0l3J6aQqHNcAjJhGcd3mUStS0JOPlzYqN4BUWw9O
- 5i+BLcIP2g5juXRIgMvu4N50PNIlPBIQ+EGB0q8=
-X-Google-Smtp-Source: AGHT+IFesj4VmMg29fJieMcj316FC5OLzk7DfVh1etXqSGiTZPzsyRjHhKXWoX7fkkig9Dm7HBLjvw==
-X-Received: by 2002:a05:6358:528d:b0:133:a8e:6feb with SMTP id
- g13-20020a056358528d00b001330a8e6febmr5816624rwa.12.1692003521474; 
- Mon, 14 Aug 2023 01:58:41 -0700 (PDT)
-Received: from fedlinux.. ([106.84.134.250]) by smtp.gmail.com with ESMTPSA id
- bt24-20020a632918000000b00528db73ed70sm8238890pgb.3.2023.08.14.01.58.38
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Aug 2023 01:58:41 -0700 (PDT)
-From: Sam Li <faithilikerun@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: hare@suse.de, Hanna Reitz <hreitz@redhat.com>, dmitry.fomichev@wdc.com,
- qemu-block@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>,
- stefanha@redhat.com, dlemoal@kernel.org, Sam Li <faithilikerun@gmail.com>
-Subject: [PATCH v2 4/4] iotests: test the zoned format feature for qcow2 file
-Date: Mon, 14 Aug 2023 16:58:02 +0800
-Message-Id: <20230814085802.61459-5-faithilikerun@gmail.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230814085802.61459-1-faithilikerun@gmail.com>
-References: <20230814085802.61459-1-faithilikerun@gmail.com>
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1qVTQ5-0002c1-IZ
+ for qemu-devel@nongnu.org; Mon, 14 Aug 2023 04:59:25 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1qVTQ2-0007IR-JS
+ for qemu-devel@nongnu.org; Mon, 14 Aug 2023 04:59:25 -0400
+Received: from loongson.cn (unknown [10.20.42.239])
+ by gateway (Coremail) with SMTP id _____8CxLOvj7NlkixAYAA--.44379S3;
+ Mon, 14 Aug 2023 16:59:16 +0800 (CST)
+Received: from [10.20.42.239] (unknown [10.20.42.239])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8CxF83h7NlkmLFZAA--.21720S3; 
+ Mon, 14 Aug 2023 16:59:13 +0800 (CST)
+Subject: Re: [PATCH v5 08/11] target/loongarch: Reject la64-only instructions
+ in la32 mode
+To: Richard Henderson <richard.henderson@linaro.org>, Jiajie Chen <c@jia.je>, 
+ qemu-devel@nongnu.org
+Cc: yijun@loongson.cn, shenjinyang@loongson.cn, i.qemu@xen0n.name,
+ Xiaojuan Yang <yangxiaojuan@loongson.cn>
+References: <20230809083258.1787464-1-c@jia.je>
+ <20230809083258.1787464-9-c@jia.je>
+ <b87f51eb-6e82-5ecd-5412-5a892c9510d1@loongson.cn>
+ <ea9dbc59-b1af-5abc-55d0-f4e4e85f99c9@linaro.org>
+From: gaosong <gaosong@loongson.cn>
+Message-ID: <f0286358-7363-0a86-a526-44119ec146f8@loongson.cn>
+Date: Mon, 14 Aug 2023 16:59:13 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
+In-Reply-To: <ea9dbc59-b1af-5abc-55d0-f4e4e85f99c9@linaro.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22e;
- envelope-from=faithilikerun@gmail.com; helo=mail-oi1-x22e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-CM-TRANSID: AQAAf8CxF83h7NlkmLFZAA--.21720S3
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj9xXoWrZrW5JFW7uF18tF17JFW8AFc_yoWDKrb_Zr
+ 1fZF1DCan0v3W3G3yaqwn8AFy3CF1kK3Wrtr4fJrWIg3WYqw4DZan7Ga4DG3s3G3s5Grsr
+ Z3yvg34ay34IvosvyTuYvTs0mTUanT9S1TB71UUUUUJqnTZGkaVYY2UrUUUUj1kv1TuYvT
+ s0mT0YCTnIWjqI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUI
+ cSsGvfJTRUUUbS8YFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20x
+ vaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
+ w2x7M28EF7xvwVC0I7IYx2IY67AKxVWUCVW8JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
+ WUJVW8JwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
+ 6r4UJVWxJr1ln4kS14v26r1Y6r17M2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12
+ xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y
+ 6r17McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr4
+ 1lc7I2V7IY0VAS07AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWU
+ JVW8JwCFI7km07C267AKxVWUXVWUAwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4
+ vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0I7IY
+ x2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26c
+ xKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7CjxVAF
+ wI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07jntxDUUUUU=
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -62
+X-Spam_score: -6.3
+X-Spam_bar: ------
+X-Spam_report: (-6.3 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-4.359,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,305 +85,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The zoned format feature can be tested by:
-$ tests/qemu-iotests/check zoned-qcow2
+在 2023/8/11 下午11:18, Richard Henderson 写道:
+> On 8/11/23 01:12, gaosong wrote:
+>>> +TRANS_64(sra_d, gen_rrr, EXT_NONE, EXT_NONE, EXT_NONE, gen_sra_d)
+>>>   TRANS(rotr_w, gen_rrr, EXT_ZERO, EXT_NONE, EXT_SIGN, gen_rotr_w)
+>> TRANS_64(rotr_w, ...)
+> ...
+>>>   TRANS(rotri_w, gen_rri_v, EXT_NONE, EXT_NONE, gen_rotr_w)
+>> TRANS_64(rotri_w, ...)
+>>
+>> I see the manual from https://www.loongson.cn/download/index
+>>
+>> insn cpucfg also not support on la32.
+> 
+> 
+> I see all 3 of these, ROTR.W, ROTRI.W and CPUCFG listed in Table 2 at
+> 
+> https://loongson.github.io/LoongArch-Documentation/LoongArch-Vol1-EN.html#overview-of-basic-integer-instructions 
+> 
+> 
 
-Signed-off-by: Sam Li <faithilikerun@gmail.com>
----
- tests/qemu-iotests/tests/zoned-qcow2     | 135 ++++++++++++++++++++++
- tests/qemu-iotests/tests/zoned-qcow2.out | 140 +++++++++++++++++++++++
- 2 files changed, 275 insertions(+)
- create mode 100755 tests/qemu-iotests/tests/zoned-qcow2
- create mode 100644 tests/qemu-iotests/tests/zoned-qcow2.out
+I see. These are not listed in [1] (the LA32 Lite Edition Manual),  It 
+seems that the LA32 Lite Edition drops some instructions.
 
-diff --git a/tests/qemu-iotests/tests/zoned-qcow2 b/tests/qemu-iotests/tests/zoned-qcow2
-new file mode 100755
-index 0000000000..473b462b50
---- /dev/null
-+++ b/tests/qemu-iotests/tests/zoned-qcow2
-@@ -0,0 +1,135 @@
-+#!/usr/bin/env bash
-+#
-+# Test zone management operations for qcow2 file.
-+#
-+
-+seq="$(basename $0)"
-+echo "QA output created by $seq"
-+status=1 # failure is the default!
-+
-+file_name="zbc.qcow2"
-+_cleanup()
-+{
-+  _cleanup_test_img
-+  _rm_test_img "$file_name"
-+}
-+trap "_cleanup; exit \$status" 0 1 2 3 15
-+
-+# get standard environment, filters and checks
-+. ../common.rc
-+. ../common.filter
-+. ../common.qemu
-+
-+# This test only runs on Linux hosts with qcow2 image files.
-+_supported_fmt qcow2
-+_supported_proto file
-+_supported_os Linux
-+
-+echo
-+echo "=== Initial image setup ==="
-+echo
-+
-+$QEMU_IMG create -f qcow2 $file_name -o size=768M -o zone_size=64M \
-+-o zone_capacity=64M -o zone_nr_conv=0 -o max_append_sectors=131072 \
-+-o max_open_zones=0 -o max_active_zones=0 -o zoned_profile=zbc
-+
-+IMG="--image-opts -n driver=qcow2,file.driver=file,file.filename=$file_name"
-+QEMU_IO_OPTIONS=$QEMU_IO_OPTIONS_NO_FMT
-+
-+echo
-+echo "=== Testing a qcow2 img with zoned format ==="
-+echo
-+echo "case 1: test if one zone operation works"
-+
-+echo "(1) report zones[0]:"
-+$QEMU_IO $IMG -c "zrp 0 1"
-+echo
-+echo "report zones[0~9]:"
-+$QEMU_IO $IMG -c "zrp 0 10"
-+echo
-+echo "report the last zone:"
-+$QEMU_IO $IMG -c "zrp 0x2C000000 2" # 0x2C000000 / 512 = 0x160000
-+echo
-+echo
-+echo "open zones[0]:"
-+$QEMU_IO $IMG -c "zo 0 0x4000000" # 0x4000000 / 512 = 0x20000
-+$QEMU_IO $IMG -c "zrp 0 1"
-+echo
-+echo "open zones[1]"
-+$QEMU_IO $IMG -c "zo 0x4000000 0x4000000"
-+$QEMU_IO $IMG -c "zrp 0x4000000 1"
-+echo
-+echo "open the last zone"
-+$QEMU_IO $IMG -c "zo 0x2C000000 0x4000000"
-+$QEMU_IO $IMG -c "zrp 0x2C000000 2"
-+echo
-+echo
-+echo "close zones[0]"
-+$QEMU_IO $IMG -c "zc 0 0x4000000"
-+$QEMU_IO $IMG -c "zrp 0 1"
-+echo
-+echo "close the last zone"
-+$QEMU_IO $IMG -c "zc 0x3e70000000 0x4000000"
-+$QEMU_IO $IMG -c "zrp 0x3e70000000 2"
-+echo
-+echo
-+echo "(4) finish zones[1]"
-+$QEMU_IO $IMG -c "zf 0x4000000 0x4000000"
-+$QEMU_IO $IMG -c "zrp 0x4000000 1"
-+echo
-+echo
-+echo "(5) reset zones[1]"
-+$QEMU_IO $IMG -c "zrs 0x4000000 0x4000000"
-+$QEMU_IO $IMG -c "zrp 0x4000000 1"
-+echo
-+echo
-+echo "(6) append write with (4k, 8k) data" # the physical block size of the device is 4096
-+$QEMU_IO $IMG -c "zrp 0 12"
-+echo "Append write zones[0] one time:"
-+$QEMU_IO $IMG -c "zap -p 0 0x1000 0x2000"
-+$QEMU_IO $IMG -c "zrp 0 1"
-+echo
-+echo "Append write zones[0] twice:"
-+$QEMU_IO $IMG -c "zap -p 0 0x1000 0x2000"
-+$QEMU_IO $IMG -c "zrp 0 1"
-+echo
-+echo "Append write zones[1] one time:"
-+$QEMU_IO $IMG -c "zap -p 0x4000000 0x1000 0x2000"
-+$QEMU_IO $IMG -c "zrp 0x4000000 1"
-+echo
-+echo "Append write zones[1] twice:"
-+$QEMU_IO $IMG -c "zap -p 0x4000000 0x1000 0x2000"
-+$QEMU_IO $IMG -c "zrp 0x4000000 1"
-+echo
-+echo "Reset all:"
-+$QEMU_IO $IMG -c "zrs 0 768M"
-+$QEMU_IO $IMG -c "zrp 0 12"
-+echo
-+echo
-+echo "case 2: test a sets of ops that works or not"
-+
-+echo "(1) append write (4k, 4k) and then write to full"
-+$QEMU_IO $IMG -c "zap -p 0 0x1000 0x1000"
-+echo "wrote (4k, 4k):"
-+$QEMU_IO $IMG -c "zrp 0 1"
-+$QEMU_IO $IMG -c "zap -p 0 0x1000 0x3ffd000"
-+echo "wrote to full:"
-+$QEMU_IO $IMG -c "zrp 0 1"
-+echo "Reset zones[0]:"
-+$QEMU_IO $IMG -c "zrs 0 64M"
-+$QEMU_IO $IMG -c "zrp 0 1"
-+
-+echo "(2) write in zones[0], zones[3], zones[8], and then reset all"
-+$QEMU_IO $IMG -c "zap -p 0 0x1000 0x1000"
-+$QEMU_IO $IMG -c "zap -p 0xc000000 0x1000 0x1000"
-+$QEMU_IO $IMG -c "zap -p 0x20000000 0x1000 0x1000"
-+echo "wrote three zones:"
-+$QEMU_IO $IMG -c "zrp 0 12"
-+echo "Reset all:"
-+$QEMU_IO $IMG -c "zrs 0 768M"
-+$QEMU_IO $IMG -c "zrp 0 12"
-+
-+# success, all done
-+echo "*** done"
-+rm -f $seq.full
-+status=0
-diff --git a/tests/qemu-iotests/tests/zoned-qcow2.out b/tests/qemu-iotests/tests/zoned-qcow2.out
-new file mode 100644
-index 0000000000..0a6b21cb55
---- /dev/null
-+++ b/tests/qemu-iotests/tests/zoned-qcow2.out
-@@ -0,0 +1,140 @@
-+QA output created by zoned-qcow2
-+
-+=== Initial image setup ===
-+
-+Formatting 'zbc.qcow2', fmt=qcow2 cluster_size=65536 extended_l2=off compression_type=zlib zoned_profile=zbc zone_size=67108864 zone_capacity=67108864 zone_nr_conv=0 max_append_sectors=131072 max_active_zones=0 max_open_zones=0 size=805306368 lazy_refcounts=off refcount_bits=16
-+
-+=== Testing a qcow2 img with zoned format ===
-+
-+case 1: test if one zone operation works
-+(1) report zones[0]:
-+start: 0x0, len 0x20000, cap 0x20000, wptr 0x0, zcond:1, [type: 2]
-+
-+report zones[0~9]:
-+start: 0x0, len 0x20000, cap 0x20000, wptr 0x0, zcond:1, [type: 2]
-+start: 0x20000, len 0x20000, cap 0x20000, wptr 0x20000, zcond:1, [type: 2]
-+start: 0x40000, len 0x20000, cap 0x20000, wptr 0x40000, zcond:1, [type: 2]
-+start: 0x60000, len 0x20000, cap 0x20000, wptr 0x60000, zcond:1, [type: 2]
-+start: 0x80000, len 0x20000, cap 0x20000, wptr 0x80000, zcond:1, [type: 2]
-+start: 0xa0000, len 0x20000, cap 0x20000, wptr 0xa0000, zcond:1, [type: 2]
-+start: 0xc0000, len 0x20000, cap 0x20000, wptr 0xc0000, zcond:1, [type: 2]
-+start: 0xe0000, len 0x20000, cap 0x20000, wptr 0xe0000, zcond:1, [type: 2]
-+start: 0x100000, len 0x20000, cap 0x20000, wptr 0x100000, zcond:1, [type: 2]
-+start: 0x120000, len 0x20000, cap 0x20000, wptr 0x120000, zcond:1, [type: 2]
-+
-+report the last zone:
-+start: 0x160000, len 0x20000, cap 0x20000, wptr 0x160000, zcond:1, [type: 2]
-+
-+
-+open zones[0]:
-+start: 0x0, len 0x20000, cap 0x20000, wptr 0x0, zcond:3, [type: 2]
-+
-+open zones[1]
-+start: 0x20000, len 0x20000, cap 0x20000, wptr 0x20000, zcond:3, [type: 2]
-+
-+open the last zone
-+start: 0x160000, len 0x20000, cap 0x20000, wptr 0x160000, zcond:3, [type: 2]
-+
-+
-+close zones[0]
-+start: 0x0, len 0x20000, cap 0x20000, wptr 0x0, zcond:4, [type: 2]
-+
-+close the last zone
-+zone close failed: Input/output error
-+qemu-io: offset 268167020544 is equal to or greater than thedevice capacity 805306368
-+zone report failed: Invalid argument
-+
-+
-+(4) finish zones[1]
-+start: 0x20000, len 0x20000, cap 0x20000, wptr 0x40000, zcond:14, [type: 2]
-+
-+
-+(5) reset zones[1]
-+start: 0x20000, len 0x20000, cap 0x20000, wptr 0x20000, zcond:1, [type: 2]
-+
-+
-+(6) append write with (4k, 8k) data
-+start: 0x0, len 0x20000, cap 0x20000, wptr 0x0, zcond:4, [type: 2]
-+start: 0x20000, len 0x20000, cap 0x20000, wptr 0x20000, zcond:1, [type: 2]
-+start: 0x40000, len 0x20000, cap 0x20000, wptr 0x40000, zcond:1, [type: 2]
-+start: 0x60000, len 0x20000, cap 0x20000, wptr 0x60000, zcond:1, [type: 2]
-+start: 0x80000, len 0x20000, cap 0x20000, wptr 0x80000, zcond:1, [type: 2]
-+start: 0xa0000, len 0x20000, cap 0x20000, wptr 0xa0000, zcond:1, [type: 2]
-+start: 0xc0000, len 0x20000, cap 0x20000, wptr 0xc0000, zcond:1, [type: 2]
-+start: 0xe0000, len 0x20000, cap 0x20000, wptr 0xe0000, zcond:1, [type: 2]
-+start: 0x100000, len 0x20000, cap 0x20000, wptr 0x100000, zcond:1, [type: 2]
-+start: 0x120000, len 0x20000, cap 0x20000, wptr 0x120000, zcond:1, [type: 2]
-+start: 0x140000, len 0x20000, cap 0x20000, wptr 0x140000, zcond:1, [type: 2]
-+start: 0x160000, len 0x20000, cap 0x20000, wptr 0x160000, zcond:3, [type: 2]
-+Append write zones[0] one time:
-+After zap done, the append sector is 0x0
-+start: 0x0, len 0x20000, cap 0x20000, wptr 0x18, zcond:2, [type: 2]
-+
-+Append write zones[0] twice:
-+After zap done, the append sector is 0x18
-+start: 0x0, len 0x20000, cap 0x20000, wptr 0x30, zcond:2, [type: 2]
-+
-+Append write zones[1] one time:
-+After zap done, the append sector is 0x20000
-+start: 0x20000, len 0x20000, cap 0x20000, wptr 0x20018, zcond:2, [type: 2]
-+
-+Append write zones[1] twice:
-+After zap done, the append sector is 0x20018
-+start: 0x20000, len 0x20000, cap 0x20000, wptr 0x20030, zcond:2, [type: 2]
-+
-+Reset all:
-+start: 0x0, len 0x20000, cap 0x20000, wptr 0x0, zcond:1, [type: 2]
-+start: 0x20000, len 0x20000, cap 0x20000, wptr 0x20000, zcond:1, [type: 2]
-+start: 0x40000, len 0x20000, cap 0x20000, wptr 0x40000, zcond:1, [type: 2]
-+start: 0x60000, len 0x20000, cap 0x20000, wptr 0x60000, zcond:1, [type: 2]
-+start: 0x80000, len 0x20000, cap 0x20000, wptr 0x80000, zcond:1, [type: 2]
-+start: 0xa0000, len 0x20000, cap 0x20000, wptr 0xa0000, zcond:1, [type: 2]
-+start: 0xc0000, len 0x20000, cap 0x20000, wptr 0xc0000, zcond:1, [type: 2]
-+start: 0xe0000, len 0x20000, cap 0x20000, wptr 0xe0000, zcond:1, [type: 2]
-+start: 0x100000, len 0x20000, cap 0x20000, wptr 0x100000, zcond:1, [type: 2]
-+start: 0x120000, len 0x20000, cap 0x20000, wptr 0x120000, zcond:1, [type: 2]
-+start: 0x140000, len 0x20000, cap 0x20000, wptr 0x140000, zcond:1, [type: 2]
-+start: 0x160000, len 0x20000, cap 0x20000, wptr 0x160000, zcond:1, [type: 2]
-+
-+
-+case 2: test a sets of ops that works or not
-+(1) append write (4k, 4k) and then write to full
-+After zap done, the append sector is 0x0
-+wrote (4k, 4k):
-+start: 0x0, len 0x20000, cap 0x20000, wptr 0x10, zcond:2, [type: 2]
-+After zap done, the append sector is 0x10
-+wrote to full:
-+start: 0x0, len 0x20000, cap 0x20000, wptr 0x20000, zcond:14, [type: 2]
-+Reset zones[0]:
-+start: 0x0, len 0x20000, cap 0x20000, wptr 0x0, zcond:1, [type: 2]
-+(2) write in zones[0], zones[3], zones[8], and then reset all
-+After zap done, the append sector is 0x0
-+After zap done, the append sector is 0x60000
-+After zap done, the append sector is 0x100000
-+wrote three zones:
-+start: 0x0, len 0x20000, cap 0x20000, wptr 0x10, zcond:2, [type: 2]
-+start: 0x20000, len 0x20000, cap 0x20000, wptr 0x20000, zcond:1, [type: 2]
-+start: 0x40000, len 0x20000, cap 0x20000, wptr 0x40000, zcond:1, [type: 2]
-+start: 0x60000, len 0x20000, cap 0x20000, wptr 0x60010, zcond:2, [type: 2]
-+start: 0x80000, len 0x20000, cap 0x20000, wptr 0x80000, zcond:1, [type: 2]
-+start: 0xa0000, len 0x20000, cap 0x20000, wptr 0xa0000, zcond:1, [type: 2]
-+start: 0xc0000, len 0x20000, cap 0x20000, wptr 0xc0000, zcond:1, [type: 2]
-+start: 0xe0000, len 0x20000, cap 0x20000, wptr 0xe0000, zcond:1, [type: 2]
-+start: 0x100000, len 0x20000, cap 0x20000, wptr 0x100010, zcond:2, [type: 2]
-+start: 0x120000, len 0x20000, cap 0x20000, wptr 0x120000, zcond:1, [type: 2]
-+start: 0x140000, len 0x20000, cap 0x20000, wptr 0x140000, zcond:1, [type: 2]
-+start: 0x160000, len 0x20000, cap 0x20000, wptr 0x160000, zcond:1, [type: 2]
-+Reset all:
-+start: 0x0, len 0x20000, cap 0x20000, wptr 0x0, zcond:1, [type: 2]
-+start: 0x20000, len 0x20000, cap 0x20000, wptr 0x20000, zcond:1, [type: 2]
-+start: 0x40000, len 0x20000, cap 0x20000, wptr 0x40000, zcond:1, [type: 2]
-+start: 0x60000, len 0x20000, cap 0x20000, wptr 0x60000, zcond:1, [type: 2]
-+start: 0x80000, len 0x20000, cap 0x20000, wptr 0x80000, zcond:1, [type: 2]
-+start: 0xa0000, len 0x20000, cap 0x20000, wptr 0xa0000, zcond:1, [type: 2]
-+start: 0xc0000, len 0x20000, cap 0x20000, wptr 0xc0000, zcond:1, [type: 2]
-+start: 0xe0000, len 0x20000, cap 0x20000, wptr 0xe0000, zcond:1, [type: 2]
-+start: 0x100000, len 0x20000, cap 0x20000, wptr 0x100000, zcond:1, [type: 2]
-+start: 0x120000, len 0x20000, cap 0x20000, wptr 0x120000, zcond:1, [type: 2]
-+start: 0x140000, len 0x20000, cap 0x20000, wptr 0x140000, zcond:1, [type: 2]
-+start: 0x160000, len 0x20000, cap 0x20000, wptr 0x160000, zcond:1, [type: 2]
-+*** done
--- 
-2.40.1
+
+[1]:
+https://www.loongson.cn/uploads/images/2023041918122813624.%E9%BE%99%E8%8A%AF%E6%9E%B6%E6%9E%8432%E4%BD%8D%E7%B2%BE%E7%AE%80%E7%89%88%E5%8F%82%E8%80%83%E6%89%8B%E5%86%8C_r1p03.pdf
+
+Thanks.
+Song Gao
 
 
