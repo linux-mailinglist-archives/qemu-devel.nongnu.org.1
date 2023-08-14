@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D695677C020
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Aug 2023 20:56:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97B9377C025
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Aug 2023 20:58:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qVciU-0005dj-56; Mon, 14 Aug 2023 14:55:02 -0400
+	id 1qVciI-0005XJ-F1; Mon, 14 Aug 2023 14:54:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1qVciG-0005WV-Uf
- for qemu-devel@nongnu.org; Mon, 14 Aug 2023 14:54:48 -0400
+ id 1qVciH-0005Wa-0d
+ for qemu-devel@nongnu.org; Mon, 14 Aug 2023 14:54:49 -0400
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1qVciE-0007rg-58
+ id 1qVciE-0007ro-5Q
  for qemu-devel@nongnu.org; Mon, 14 Aug 2023 14:54:48 -0400
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 37EGTRL0003567; Mon, 14 Aug 2023 18:54:40 GMT
+ 37EGTO6Y014698; Mon, 14 Aug 2023 18:54:41 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
  subject : date : message-id : in-reply-to : references; s=corp-2023-03-30;
- bh=DjJ5aBqqQaSL4LB58R4w8C9VlhvTDYJtFRn9bopg6Vg=;
- b=OG2998aFKFPVRMIj89YDyOngOxTC2WMuDr/o9I5i2NdNyZwm3FUgRvWbV7iYu73t5fZM
- jmfSd8wDKli3MSLZ8pFMO3hmr0rJffWbDz5JgeICkRuVbrU75hjoFCG9FjY/ojkUdVnd
- RA43VbxBZFCrXYu5GS6lLkS5BOWUsxS/pL11HNWOI8wC4md3cXmb2JEctWay/veOkhTj
- 8KpLPfFG5JXavbJkUzTN1TDrHg3tPt1+D0RFFx2EZ14TuVFK53pl90iveExAVkR4s2zN
- RMiWOqD120/72OaZPQfqg3HmIx6gzBAMWMOE/vc+siGpnl6qzM5g06sdId7AMzBsxN6M qA== 
+ bh=txucQCp+t49rVB6R1rJtAnvS8yxv3IOpXqHmOdZwAXs=;
+ b=N632TMDnI7drTEJghAQltF5wnxc0bdpZnRnCBL0N4Gcj3LJFiY8DE3YxKaPE3gSEsqKS
+ sDmLF42qoUBUPGGWmur0g9dm+/1zmod8gb6gcfPKkvfTxfjdNqRWLtpg1rhXehLSNMR7
+ fzQueQb/PQ2BQ2oePlOIkMXz9lCdWxjIYmskIs53euAA4HxZ0RVubMh4v5lejfkwzLzx
+ /oEQbG1MuaBej4JMUMJsKcSijo+/h0Hkvr+SXB0Z6xFSSWQb/cIPnlBVJZn3wE64Hlh1
+ vaEFRzCEo6KHlAtA8lIcHk/kd+FCd5aU0RdOknONCMbaMCOATjAMODF8QmIzsIAjTOoR IA== 
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3se2yfkbjt-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3se61c37kd-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 14 Aug 2023 18:54:39 +0000
+ Mon, 14 Aug 2023 18:54:40 +0000
 Received: from pps.filterd
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 37EIfJOA006606; Mon, 14 Aug 2023 18:54:39 GMT
+ with ESMTP id 37EIUTDM006641; Mon, 14 Aug 2023 18:54:40 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3sey2c8x4k-1
+ 3sey2c8x55-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 14 Aug 2023 18:54:39 +0000
+ Mon, 14 Aug 2023 18:54:40 +0000
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 37EIsb3n008127;
- Mon, 14 Aug 2023 18:54:38 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 37EIsb3p008127;
+ Mon, 14 Aug 2023 18:54:39 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 3sey2c8x3f-2; Mon, 14 Aug 2023 18:54:38 +0000
+ ESMTP id 3sey2c8x3f-3; Mon, 14 Aug 2023 18:54:39 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V3 01/10] vl: start on wakeup request
-Date: Mon, 14 Aug 2023 11:54:27 -0700
-Message-Id: <1692039276-148610-2-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V3 02/10] migration: preserve suspended runstate
+Date: Mon, 14 Aug 2023 11:54:28 -0700
+Message-Id: <1692039276-148610-3-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1692039276-148610-1-git-send-email-steven.sistare@oracle.com>
 References: <1692039276-148610-1-git-send-email-steven.sistare@oracle.com>
@@ -71,8 +71,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
  mlxlogscore=999 bulkscore=0 adultscore=0 spamscore=0 malwarescore=0
  mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2306200000 definitions=main-2308140175
-X-Proofpoint-ORIG-GUID: 2XTzaRvbzBEW8MGYXZ2joyb1R6RaMf_m
-X-Proofpoint-GUID: 2XTzaRvbzBEW8MGYXZ2joyb1R6RaMf_m
+X-Proofpoint-GUID: liShyB3w0BzLy7DY3107oGiAS78fYdJZ
+X-Proofpoint-ORIG-GUID: liShyB3w0BzLy7DY3107oGiAS78fYdJZ
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -97,85 +97,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If qemu starts and loads a VM in the suspended state, then a later wakeup
-request directly sets the state to running.  This skips vm_start() and its
-initialization steps, which is fatal for the guest.  See
-qemu_system_wakeup_request(), and qemu_system_wakeup() in
-main_loop_should_exit().
+A guest that is migrated in the suspended state automaticaly wakes and
+continues execution.  This is wrong; the guest should end migration in
+the same state it started.  The root causes is that the outgoing migration
+code automatically wakes the guest, then saves the RUNNING runstate in
+global_state_store(), hence the incoming migration code thinks the guest is
+running and continues the guest if autostart is true.
 
-Remember if vm_start has been called.  If not, then call vm_start from
-qemu_system_wakeup_request.
+On the outgoing side, do not call qemu_system_wakeup_request().  That
+alone fixes precopy migration, as process_incoming_migration_bh correctly
+sets runstate from global_state_get_runstate().
+
+On the incoming side for postcopy, do not wake the guest, and apply the
+the same logic as found in precopy: if autostart and the runstate is
+RUNNING, then vm_start, else merely restore the runstate.
+
+In both cases, if the restored state is SUSPENDED, then a later wakeup
+request will resume the guest, courtesy of the previous "start on wakeup"
+patch.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
 ---
- include/sysemu/runstate.h |  1 +
- softmmu/cpus.c            | 12 ++++++++++++
- softmmu/runstate.c        |  2 +-
- 3 files changed, 14 insertions(+), 1 deletion(-)
+ migration/migration.c |  2 --
+ migration/savevm.c    | 13 ++++++++-----
+ 2 files changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/include/sysemu/runstate.h b/include/sysemu/runstate.h
-index 7beb29c..42ddf83 100644
---- a/include/sysemu/runstate.h
-+++ b/include/sysemu/runstate.h
-@@ -34,6 +34,7 @@ static inline bool shutdown_caused_by_guest(ShutdownCause cause)
- }
+diff --git a/migration/migration.c b/migration/migration.c
+index 5528acb..51ace82 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -2109,7 +2109,6 @@ static int postcopy_start(MigrationState *ms, Error **errp)
+     qemu_mutex_lock_iothread();
+     trace_postcopy_start_set_run();
  
- void vm_start(void);
-+void vm_wakeup(void);
+-    qemu_system_wakeup_request(QEMU_WAKEUP_REASON_OTHER, NULL);
+     global_state_store();
+     ret = vm_stop_force_state(RUN_STATE_FINISH_MIGRATE);
+     if (ret < 0) {
+@@ -2315,7 +2314,6 @@ static void migration_completion(MigrationState *s)
+     if (s->state == MIGRATION_STATUS_ACTIVE) {
+         qemu_mutex_lock_iothread();
+         s->downtime_start = qemu_clock_get_ms(QEMU_CLOCK_REALTIME);
+-        qemu_system_wakeup_request(QEMU_WAKEUP_REASON_OTHER, NULL);
  
- /**
-  * vm_prepare_start: Prepare for starting/resuming the VM
-diff --git a/softmmu/cpus.c b/softmmu/cpus.c
-index fed20ff..fa9e5ba 100644
---- a/softmmu/cpus.c
-+++ b/softmmu/cpus.c
-@@ -66,6 +66,7 @@
- #endif /* CONFIG_LINUX */
+         s->vm_old_state = runstate_get();
+         global_state_store();
+diff --git a/migration/savevm.c b/migration/savevm.c
+index a2cb885..be42d0a 100644
+--- a/migration/savevm.c
++++ b/migration/savevm.c
+@@ -2070,12 +2070,15 @@ static void loadvm_postcopy_handle_run_bh(void *opaque)
  
- static QemuMutex qemu_global_mutex;
-+static bool vm_started;
+     dirty_bitmap_mig_before_vm_start();
  
- /*
-  * The chosen accelerator is supposed to register this.
-@@ -264,6 +265,7 @@ static int do_vm_stop(RunState state, bool send_stop)
-         if (send_stop) {
-             qapi_event_send_stop();
-         }
-+        vm_started = false;
+-    if (autostart) {
+-        /* Hold onto your hats, starting the CPU */
+-        vm_start();
++    if (!global_state_received() ||
++        global_state_get_runstate() == RUN_STATE_RUNNING) {
++        if (autostart) {
++            vm_start();
++        } else {
++            runstate_set(RUN_STATE_PAUSED);
++        }
+     } else {
+-        /* leave it paused and let management decide when to start the CPU */
+-        runstate_set(RUN_STATE_PAUSED);
++        runstate_set(global_state_get_runstate());
      }
  
-     bdrv_drain_all();
-@@ -722,6 +724,16 @@ void vm_start(void)
- {
-     if (!vm_prepare_start(false)) {
-         resume_all_vcpus();
-+        vm_started = true;
-+    }
-+}
-+
-+void vm_wakeup(void)
-+{
-+    if (!vm_started) {
-+        vm_start();
-+    } else {
-+        runstate_set(RUN_STATE_RUNNING);
-     }
- }
- 
-diff --git a/softmmu/runstate.c b/softmmu/runstate.c
-index f3bd862..95c6ae7 100644
---- a/softmmu/runstate.c
-+++ b/softmmu/runstate.c
-@@ -580,7 +580,7 @@ void qemu_system_wakeup_request(WakeupReason reason, Error **errp)
-     if (!(wakeup_reason_mask & (1 << reason))) {
-         return;
-     }
--    runstate_set(RUN_STATE_RUNNING);
-+    vm_wakeup();
-     wakeup_reason = reason;
-     qemu_notify_event();
- }
+     qemu_bh_delete(mis->bh);
 -- 
 1.8.3.1
 
