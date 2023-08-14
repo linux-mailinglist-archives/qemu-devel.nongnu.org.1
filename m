@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DDB377BE21
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Aug 2023 18:33:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C40377BE24
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Aug 2023 18:33:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qVaU8-0000WR-3R; Mon, 14 Aug 2023 12:32:04 -0400
+	id 1qVaUF-0000X3-H7; Mon, 14 Aug 2023 12:32:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1qVaU6-0000WC-1I
- for qemu-devel@nongnu.org; Mon, 14 Aug 2023 12:32:02 -0400
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1qVaUA-0000Wo-Mh
+ for qemu-devel@nongnu.org; Mon, 14 Aug 2023 12:32:06 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1qVaU4-0004xq-Gx
- for qemu-devel@nongnu.org; Mon, 14 Aug 2023 12:32:01 -0400
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-1bbf8cb61aeso28355855ad.2
- for <qemu-devel@nongnu.org>; Mon, 14 Aug 2023 09:31:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1qVaU8-00051J-LY
+ for qemu-devel@nongnu.org; Mon, 14 Aug 2023 12:32:06 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-1bc7e65ea44so30439135ad.1
+ for <qemu-devel@nongnu.org>; Mon, 14 Aug 2023 09:32:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1692030718; x=1692635518;
+ d=gmail.com; s=20221208; t=1692030723; x=1692635523;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=sgieqkv4AvDj0uYBJOPb/yUDnPBp/9usJYWOJeI9mbM=;
- b=PawWzh8/T9vP1mnpqVJT2WsoxYQJMFzb8ha+8iOoRawr8k4lUELJMx6Gt0G84OhzrG
- z38yHY+hmlNLpjSYFfQWpjvC/ftY9hyz3VwE+1Yf9U5RizARgKpbUKcaUjzJxxPgsQZ6
- gFbRzUXf/j9E5WMJW2PIIzvrLRynT9VAZxynQd7W3pMVEbmniPyA5J40n6hjnna0S193
- z859ZEQVHW35glipuCBowzVlOn0o9S7kjUzrz8Hj3aEfQ0sD/OuveuS7p/l/lWl37RIW
- NHSVz9wQWItfJIjHQKPI2nJ3lydy+Rray+aF9Ne3FtSHBfYXkz+VRSf4BI3dslZHriCT
- HV2g==
+ bh=3cfGugDGU5ubW9njTN7eY8oAlg1UghZNc5pQEAohzDA=;
+ b=Wy0bLsAeR7eYKALpOtaVoF1q9QcrGnjTEcXg85QQt+BSEXqcRs5m9b4NakzVS/oZXL
+ jz1+9Wd7QVm00WMpZL6uzsD39EwFes+JFLlf3yaQD1DHZuCc0YAJVK7aGCA2vwvABNWt
+ XWhYCN9bORtcA5fmWf38wb6W3ROgEUSPTYOrjb+gGd8yIlp6N2Ou9GLHepQ3AUiyQrjN
+ GPW9h1I2Lg/6GsMZnm9g0MHezeOZgVTGfQx2DiRCKADKZbo87tQCmlIiDvK9Y96PzVRe
+ C3j8PDLnkgMnC0S6/9qEoTWsq+ncr5mwHaw+I59WCBzYpN3bvlMDmIo84YSyaADJIWXf
+ UEpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692030718; x=1692635518;
+ d=1e100.net; s=20221208; t=1692030723; x=1692635523;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=sgieqkv4AvDj0uYBJOPb/yUDnPBp/9usJYWOJeI9mbM=;
- b=ZNoIo7KCA+xmrlXBtaGkulZ4Wz67KqxWTtwpW7J28wF4IZVy2UJJwViZE8XXociiiy
- sjfZct9ar7njm+iokbXTHf6Y12QHIEONlofkgVWboEKHFKYTIYYjofoPaC1KX0VJ7tLp
- XVeCFNySfC9bk85MrSTCD5FXZIOZyyiwPkBn4LwmBkj42b7uStNNYk8dJar0lMncvLR5
- cutoBLauODX5VdP68ClPRoAU4MOGID0usf0mH5KbtXnNvSgFvb2MHBlCu37TgOKTl8xB
- KHIeotrRetsfkcZTQ87QMsbqVHVEIR1WlwVFLfQO/sQke5XO5K6/tZ7vIsRBiBUcRguY
- kuGA==
-X-Gm-Message-State: AOJu0YyhMFVhvf/1CpvrfrYh0C8RHxRzpbXCXaeibc9SFVW1bSuBCElB
- SFAL0KxcNARhA+RxxaI1pFU=
-X-Google-Smtp-Source: AGHT+IFKuI2AK6nDDzdfu+hhIYmneMnCeXgmNoV3QtX3Zx517pcoCqGtvImwRlsk0KFkUJVzfLAMDw==
-X-Received: by 2002:a17:903:1cc:b0:1b8:a2af:fe23 with SMTP id
- e12-20020a17090301cc00b001b8a2affe23mr6873016plh.2.1692030718438; 
- Mon, 14 Aug 2023 09:31:58 -0700 (PDT)
+ bh=3cfGugDGU5ubW9njTN7eY8oAlg1UghZNc5pQEAohzDA=;
+ b=ZdGPdueSaWh4EmMxEk3Guyjl/Pq/yUexP2JLSr2mzdpvfMbPCPNzZUUeyv+UOlccdH
+ IgJ1jQJ8RLjFzXeo1wYrw5pqHYTbnhMKieCfUshHC6q7hppcpQupCZfRkc9nQFf0vQdx
+ BvlSnkmhnEwNg0HO7MD+Kqc8yuFOeCkvmDjnnczwMIs/t12G1JcZ3ROiOLAx08ZzUz64
+ 7yfd9TCfRfGrUWGfeae6EATQXrNLMh2urxcS/WYko33Q17KfEWRK/RR56PKU1vOSTber
+ DyEiYfztyGTzOEezrpS1+g+KNdg+z0T7JrlE1fu4tUDyBnQahOYbLol6bE82NJC4MAAk
+ SjBg==
+X-Gm-Message-State: AOJu0YwTJUTfpLxjn/ZExUVJKtT71a7z4z2aQpyjr/A+FGRizUZUlh0k
+ pN3ucza8vRuoetTVjlHt7aWQ67O9NOA=
+X-Google-Smtp-Source: AGHT+IF2zrjeTAtRN2V1i1rCdYAsGwFiDNoimSas7qPMIg9PClxgue6WJljUGcI4/DoYJYN2G1b9OQ==
+X-Received: by 2002:a17:902:c409:b0:1ae:6947:e63b with SMTP id
+ k9-20020a170902c40900b001ae6947e63bmr16574012plk.16.1692030722880; 
+ Mon, 14 Aug 2023 09:32:02 -0700 (PDT)
 Received: from wheely.local0.net ([61.68.161.249])
  by smtp.gmail.com with ESMTPSA id
- c6-20020a170902c1c600b001b8a3a0c928sm9613263plc.181.2023.08.14.09.31.54
+ c6-20020a170902c1c600b001b8a3a0c928sm9613263plc.181.2023.08.14.09.31.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Aug 2023 09:31:58 -0700 (PDT)
+ Mon, 14 Aug 2023 09:32:02 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>
 Cc: Nicholas Piggin <npiggin@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -61,17 +61,16 @@ Cc: Nicholas Piggin <npiggin@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>, qemu-devel@nongnu.org
-Subject: [PATCH 3/4] replay: allow runstate shutdown->running when replaying
- trace
-Date: Tue, 15 Aug 2023 02:31:34 +1000
-Message-Id: <20230814163135.187882-4-npiggin@gmail.com>
+Subject: [PATCH 4/4] replay: simple auto-snapshot mode for record
+Date: Tue, 15 Aug 2023 02:31:35 +1000
+Message-Id: <20230814163135.187882-5-npiggin@gmail.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230814163135.187882-1-npiggin@gmail.com>
 References: <20230814163135.187882-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x62a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,79 +93,236 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When replaying a trace, it is possible to go from shutdown to
-running with a reverse-debugging step. This can be useful if the
-problem being debugged triggers a reset or shutdown.
+record makes an initial snapshot when the machine is created, to enable
+reverse-debugging. Often the issue being debugged appears near the end of
+the trace, so it is important for performance to keep snapshots close to
+the end.
+
+This implements a periodic snapshot mode that keeps a rolling set of
+recent snapshots.
+
+Arguably this should be done by the debugger or a program that talks to
+QMP, but for setting up simple scenarios and tests, it is convenient to
+have this feature.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- include/sysemu/runstate.h |  1 +
- replay/replay.c           |  2 ++
- softmmu/runstate.c        | 19 +++++++++++++++++++
- 3 files changed, 22 insertions(+)
+ docs/system/replay.rst   |  5 ++++
+ include/sysemu/replay.h  | 11 ++++++++
+ qemu-options.hx          |  9 +++++--
+ replay/replay-snapshot.c | 57 ++++++++++++++++++++++++++++++++++++++++
+ replay/replay.c          | 25 ++++++++++++++++++
+ softmmu/vl.c             |  9 +++++++
+ 6 files changed, 114 insertions(+), 2 deletions(-)
 
-diff --git a/include/sysemu/runstate.h b/include/sysemu/runstate.h
-index 7beb29c2e2..85a1167ccb 100644
---- a/include/sysemu/runstate.h
-+++ b/include/sysemu/runstate.h
-@@ -9,6 +9,7 @@ void runstate_set(RunState new_state);
- RunState runstate_get(void);
- bool runstate_is_running(void);
- bool runstate_needs_reset(void);
-+void runstate_replay_enable(void);
+diff --git a/docs/system/replay.rst b/docs/system/replay.rst
+index 3105327423..bef9ea4171 100644
+--- a/docs/system/replay.rst
++++ b/docs/system/replay.rst
+@@ -156,6 +156,11 @@ for storing VM snapshots. Here is the example of the command line for this:
+ ``empty.qcow2`` drive does not connected to any virtual block device and used
+ for VM snapshots only.
  
- typedef void VMChangeStateHandler(void *opaque, bool running, RunState state);
- 
-diff --git a/replay/replay.c b/replay/replay.c
-index 0f7d766efe..e64f71209a 100644
---- a/replay/replay.c
-+++ b/replay/replay.c
-@@ -272,6 +272,8 @@ static void replay_enable(const char *fname, int mode)
-         /* go to the beginning */
-         fseek(replay_file, HEADER_SIZE, SEEK_SET);
-         replay_fetch_data_kind();
++``rrsnapmode`` can be used to select just an initial snapshot or periodic
++snapshots, with ``rrsnapcount`` specifying the number of periodic snapshots
++to maintain, and ``rrsnaptime`` the amount of run time in seconds between
++periodic snapshots.
 +
-+        runstate_replay_enable();
-     }
+ .. _network-label:
  
-     replay_init_events();
-diff --git a/softmmu/runstate.c b/softmmu/runstate.c
-index f3bd862818..9fd3e57485 100644
---- a/softmmu/runstate.c
-+++ b/softmmu/runstate.c
-@@ -174,6 +174,12 @@ static const RunStateTransition runstate_transitions_def[] = {
-     { RUN_STATE__MAX, RUN_STATE__MAX },
- };
+ Network devices
+diff --git a/include/sysemu/replay.h b/include/sysemu/replay.h
+index 08aae5869f..a83e54afc6 100644
+--- a/include/sysemu/replay.h
++++ b/include/sysemu/replay.h
+@@ -45,6 +45,17 @@ typedef enum ReplayCheckpoint ReplayCheckpoint;
  
-+static const RunStateTransition replay_runstate_transitions_def[] = {
-+    { RUN_STATE_SHUTDOWN, RUN_STATE_RUNNING},
-+
-+    { RUN_STATE__MAX, RUN_STATE__MAX },
+ typedef struct ReplayNetState ReplayNetState;
+ 
++enum ReplaySnapshotMode {
++    REPLAY_SNAPSHOT_MODE_INITIAL,
++    REPLAY_SNAPSHOT_MODE_PERIODIC,
 +};
++typedef enum ReplaySnapshotMode ReplaySnapshotMode;
 +
- static bool runstate_valid_transitions[RUN_STATE__MAX][RUN_STATE__MAX];
++extern ReplaySnapshotMode replay_snapshot_mode;
++
++extern uint64_t replay_snapshot_periodic_delay;
++extern int replay_snapshot_periodic_nr_keep;
++
+ /* Name of the initial VM snapshot */
+ extern char *replay_snapshot;
  
- bool runstate_check(RunState state)
-@@ -181,6 +187,19 @@ bool runstate_check(RunState state)
-     return current_run_state == state;
+diff --git a/qemu-options.hx b/qemu-options.hx
+index 29b98c3d4c..0dce93eeab 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -4530,13 +4530,13 @@ SRST
+ ERST
+ 
+ DEF("icount", HAS_ARG, QEMU_OPTION_icount, \
+-    "-icount [shift=N|auto][,align=on|off][,sleep=on|off][,rr=record|replay,rrfile=<filename>[,rrsnapshot=<snapshot>]]\n" \
++    "-icount [shift=N|auto][,align=on|off][,sleep=on|off][,rr=record|replay,rrfile=<filename>[,rrsnapshot=<snapshot>][,rrsnapmode=initial|periodic][,rrsnaptime=secs][,rrsnapcount=N]\n" \
+     "                enable virtual instruction counter with 2^N clock ticks per\n" \
+     "                instruction, enable aligning the host and virtual clocks\n" \
+     "                or disable real time cpu sleeping, and optionally enable\n" \
+     "                record-and-replay mode\n", QEMU_ARCH_ALL)
+ SRST
+-``-icount [shift=N|auto][,align=on|off][,sleep=on|off][,rr=record|replay,rrfile=filename[,rrsnapshot=snapshot]]``
++``-icount [shift=N|auto][,align=on|off][,sleep=on|off][,rr=record|replay,rrfile=filename[,rrsnapshot=snapshot][,rrsnapmode=initial|periodic][,rrsnaptime=secs][,rrsnapcount=N]]``
+     Enable virtual instruction counter. The virtual cpu will execute one
+     instruction every 2^N ns of virtual time. If ``auto`` is specified
+     then the virtual cpu speed will be automatically adjusted to keep
+@@ -4578,6 +4578,11 @@ SRST
+     name. In record mode, a new VM snapshot with the given name is created
+     at the start of execution recording. In replay mode this option
+     specifies the snapshot name used to load the initial VM state.
++    ``rrsnapmode=periodic`` will additionally cause a periodic snapshot to
++    be created after ``rrsnaptime=secs`` seconds of real runtime. The last
++    ``rrsnapcount=N`` periodic snapshots (not including the initial) will
++    be kept (0 for infinite). Periodic snapshots are useful to speed
++    reverse debugging operations near the end of the recorded trace.
+ ERST
+ 
+ DEF("watchdog-action", HAS_ARG, QEMU_OPTION_watchdog_action, \
+diff --git a/replay/replay-snapshot.c b/replay/replay-snapshot.c
+index 10a7cf7992..38eac61c43 100644
+--- a/replay/replay-snapshot.c
++++ b/replay/replay-snapshot.c
+@@ -69,6 +69,53 @@ void replay_vmstate_register(void)
+     vmstate_register(NULL, 0, &vmstate_replay, &replay_state);
  }
  
-+void runstate_replay_enable(void)
++static QEMUTimer *replay_snapshot_timer;
++static int replay_snapshot_count;
++
++static void replay_snapshot_timer_cb(void *opaque)
 +{
-+    const RunStateTransition *p;
++    Error *err = NULL;
++    char *name;
 +
-+    assert(replay_mode == REPLAY_MODE_PLAY);
-+
-+    for (p = &replay_runstate_transitions_def[0]; p->from != RUN_STATE__MAX;
-+         p++) {
-+        runstate_valid_transitions[p->from][p->to] = true;
++    if (!replay_can_snapshot()) {
++        /* Try again soon */
++        timer_mod(replay_snapshot_timer,
++                  qemu_clock_get_ms(QEMU_CLOCK_REALTIME) +
++                  replay_snapshot_periodic_delay / 10);
++        return;
 +    }
 +
++    name = g_strdup_printf("%s-%d", replay_snapshot, replay_snapshot_count);
++    if (!save_snapshot(name,
++                       true, NULL, false, NULL, &err)) {
++        error_report_err(err);
++        error_report("Could not create periodic snapshot "
++                     "for icount record, disabling");
++        g_free(name);
++        return;
++    }
++    g_free(name);
++    replay_snapshot_count++;
++
++    if (replay_snapshot_periodic_nr_keep >= 1 &&
++        replay_snapshot_count > replay_snapshot_periodic_nr_keep) {
++        int del_nr;
++
++        del_nr = replay_snapshot_count - replay_snapshot_periodic_nr_keep - 1;
++        name = g_strdup_printf("%s-%d", replay_snapshot, del_nr);
++        if (!delete_snapshot(name, false, NULL, &err)) {
++            error_report_err(err);
++            error_report("Could not delete periodic snapshot "
++                         "for icount record");
++        }
++        g_free(name);
++    }
++
++    timer_mod(replay_snapshot_timer,
++              qemu_clock_get_ms(QEMU_CLOCK_REALTIME) +
++              replay_snapshot_periodic_delay);
 +}
 +
- static void runstate_init(void)
+ void replay_vmstate_init(void)
  {
-     const RunStateTransition *p;
+     Error *err = NULL;
+@@ -81,6 +128,16 @@ void replay_vmstate_init(void)
+                 error_report("Could not create snapshot for icount record");
+                 exit(1);
+             }
++
++            if (replay_snapshot_mode == REPLAY_SNAPSHOT_MODE_PERIODIC) {
++                replay_snapshot_timer = timer_new_ms(QEMU_CLOCK_REALTIME,
++                                                     replay_snapshot_timer_cb,
++                                                     NULL);
++                timer_mod(replay_snapshot_timer,
++                          qemu_clock_get_ms(QEMU_CLOCK_REALTIME) +
++                          replay_snapshot_periodic_delay);
++            }
++
+         } else if (replay_mode == REPLAY_MODE_PLAY) {
+             if (!load_snapshot(replay_snapshot, NULL, false, NULL, &err)) {
+                 error_report_err(err);
+diff --git a/replay/replay.c b/replay/replay.c
+index e64f71209a..fa5930700d 100644
+--- a/replay/replay.c
++++ b/replay/replay.c
+@@ -29,6 +29,10 @@
+ ReplayMode replay_mode = REPLAY_MODE_NONE;
+ char *replay_snapshot;
+ 
++ReplaySnapshotMode replay_snapshot_mode;
++uint64_t replay_snapshot_periodic_delay;
++int replay_snapshot_periodic_nr_keep;
++
+ /* Name of replay file  */
+ static char *replay_filename;
+ ReplayState replay_state;
+@@ -313,6 +317,27 @@ void replay_configure(QemuOpts *opts)
+     }
+ 
+     replay_snapshot = g_strdup(qemu_opt_get(opts, "rrsnapshot"));
++    if (replay_snapshot && mode == REPLAY_MODE_RECORD) {
++        const char *snapmode;
++
++        snapmode = qemu_opt_get(opts, "rrsnapmode");
++        if (!snapmode || !strcmp(snapmode, "initial")) {
++            replay_snapshot_mode = REPLAY_SNAPSHOT_MODE_INITIAL;
++        } else if (!strcmp(snapmode, "periodic")) {
++            replay_snapshot_mode = REPLAY_SNAPSHOT_MODE_PERIODIC;
++        } else {
++            error_report("Invalid rrsnapmode option: %s", snapmode);
++            exit(1);
++        }
++
++        /* Default 10 host seconds of machine runtime per snapshot. */
++        replay_snapshot_periodic_delay =
++                           qemu_opt_get_number(opts, "rrsnaptime", 10) * 1000;
++
++        /* Default 2, to cover at least the last 10 host seconds of runtime. */
++        replay_snapshot_periodic_nr_keep =
++                           qemu_opt_get_number(opts, "rrsnapcount", 2);
++    }
+     replay_vmstate_register();
+     replay_enable(fname, mode);
+ 
+diff --git a/softmmu/vl.c b/softmmu/vl.c
+index b0b96f67fa..e032eb45e8 100644
+--- a/softmmu/vl.c
++++ b/softmmu/vl.c
+@@ -446,6 +446,15 @@ static QemuOptsList qemu_icount_opts = {
+         }, {
+             .name = "rrsnapshot",
+             .type = QEMU_OPT_STRING,
++        }, {
++            .name = "rrsnapmode",
++            .type = QEMU_OPT_STRING,
++        }, {
++            .name = "rrsnaptime",
++            .type = QEMU_OPT_NUMBER,
++        }, {
++            .name = "rrsnapcount",
++            .type = QEMU_OPT_NUMBER,
+         },
+         { /* end of list */ }
+     },
 -- 
 2.40.1
 
