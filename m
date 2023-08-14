@@ -2,96 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B8AF77BB7C
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Aug 2023 16:26:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE59877BC16
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Aug 2023 16:53:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qVYVc-0006iB-Up; Mon, 14 Aug 2023 10:25:28 -0400
+	id 1qVYuu-00052O-WF; Mon, 14 Aug 2023 10:51:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qVYVa-0006hR-Bz
- for qemu-devel@nongnu.org; Mon, 14 Aug 2023 10:25:26 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qVYus-00051e-Jx
+ for qemu-devel@nongnu.org; Mon, 14 Aug 2023 10:51:34 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qVYVY-0005ZQ-Ve
- for qemu-devel@nongnu.org; Mon, 14 Aug 2023 10:25:26 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qVYup-0003Xh-SR
+ for qemu-devel@nongnu.org; Mon, 14 Aug 2023 10:51:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692023123;
+ s=mimecast20190719; t=1692024690;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=65sG+RMRrrKL7SrB9VtlqIZH+N2RbM8vjvK/rJCvj70=;
- b=JAp17ixE9LItUI55ql1Qmwv2HOeBJnHNAZ6FrV831X38aKU67fQyDQkeEb2rAA6vibouZ5
- WoC1hXKVym/29tkt4ej2Xy3rRnyc3cQwHQomblV9jbUNzJLbalmchv6ADOALLiWoRieu/m
- 8u+f3735XwULgwngrWh8CmycX9hJpe4=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-145-eLGEIYEmPrSy30w0AmGArA-1; Mon, 14 Aug 2023 10:25:19 -0400
-X-MC-Unique: eLGEIYEmPrSy30w0AmGArA-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-3176ace3f58so2568873f8f.0
- for <qemu-devel@nongnu.org>; Mon, 14 Aug 2023 07:25:19 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692023118; x=1692627918;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=65sG+RMRrrKL7SrB9VtlqIZH+N2RbM8vjvK/rJCvj70=;
- b=kKpaKY7eoGdyjEyibJ4SzCcmJcqAkM+StP3llNsevk4Z9jUK9/Fj7cnfKuLcgnPOOA
- quX3z1iGTUjS9GFnlLuEL8sDtBdUEeiDtxU3mWlmCI+MnlsiUplmga2rXuS+DvwtXqz8
- XQj8UAfalT/F6Joe3nkR93tmxBhSPUm36/z//TmTsiKluXznibnpK39iKpVQD7perfpE
- yMvkGkHwU21V66UMSPM5ldpLhpwopS4CsCjxG68pY6s7hXnd84AYDOIQPiqexW/8zgZc
- j0E41QozyhW39Hinar/nMEeRpnRquZlcXo4mBcYIimbGFyrj5AGzLyErnnqJgZ0rxssv
- D5hw==
-X-Gm-Message-State: AOJu0YxOFScPmfKxaJKEIfLvrx19DrXAg2TYCK6FwMM0vI0qINFSIOOG
- BfnBkOnB3CWSi6ozEsRRP8q9MF/Oh7R4RcVlZN1QmpUOHLvan8NFdiaQ2xgPGstbXL9RNe3mlGh
- A+LiKg08TTjtVoK0=
-X-Received: by 2002:adf:f80e:0:b0:314:1f1e:3a85 with SMTP id
- s14-20020adff80e000000b003141f1e3a85mr6338079wrp.61.1692023118406; 
- Mon, 14 Aug 2023 07:25:18 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG+YlRhmT73Wvzm40XigqBmac5cKnZ2TBFVnpXoQzRv/CHHke2l22Qgr9RqGCLN8NWYo1kU3Q==
-X-Received: by 2002:adf:f80e:0:b0:314:1f1e:3a85 with SMTP id
- s14-20020adff80e000000b003141f1e3a85mr6338057wrp.61.1692023117896; 
- Mon, 14 Aug 2023 07:25:17 -0700 (PDT)
-Received: from [192.168.8.105]
- (dynamic-046-114-244-033.46.114.pool.telefonica.de. [46.114.244.33])
- by smtp.gmail.com with ESMTPSA id
- h9-20020adffd49000000b003176aa612b1sm14593878wrs.38.2023.08.14.07.25.16
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 14 Aug 2023 07:25:17 -0700 (PDT)
-Message-ID: <3b37bbdb-e43c-d317-3efd-2f0d19de5631@redhat.com>
-Date: Mon, 14 Aug 2023 16:25:15 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2 1/3] linux-headers: update asm-s390/kvm.h
-Content-Language: en-US
-To: Steffen Eiden <seiden@linux.ibm.com>, qemu-s390x@nongnu.org,
- qemu-devel@nongnu.org
-Cc: Janosch Frank <frankja@linux.ibm.com>,
- David Hildenbrand <david@redhat.com>,
- Michael Mueller <mimu@linux.vnet.ibm.com>,
- Marc Hartmayer <mhartmay@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>
-References: <20230810124719.2167260-1-seiden@linux.ibm.com>
- <20230810124719.2167260-2-seiden@linux.ibm.com>
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=k8uQiR4xztlKoM2fXk72fYRKfklULXJci2SehY8GBNE=;
+ b=DU0tpC9aFAlLL/H/vCCwAvUWiXyAUhhJ/8hCQsetGS1hgvcWefoVMB1uNUnDIDUi7SpfQ5
+ XTk+V/sQPstpQIgpaIhGn7o1m8sv9wHs62mBPZxJk0mjndtNBucvdbVh9iNoqjSp3YiT2E
+ hHp9wnKv0En1H1/JaQOZYX1eLt6r480=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-594-sSPVgOVMPh-jk-uc6wWPUA-1; Mon, 14 Aug 2023 10:51:28 -0400
+X-MC-Unique: sSPVgOVMPh-jk-uc6wWPUA-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C6CF48DC672;
+ Mon, 14 Aug 2023 14:51:27 +0000 (UTC)
+Received: from thuth.com (unknown [10.39.193.9])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 7B5A344104;
+ Mon, 14 Aug 2023 14:51:26 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <20230810124719.2167260-2-seiden@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+To: qemu-block@nongnu.org,
+	Kevin Wolf <kwolf@redhat.com>
+Cc: qemu-devel@nongnu.org,
+	Hanna Reitz <hreitz@redhat.com>
+Subject: [PATCH] tests/qemu-iotests/183: Fix timeout issue when running tests
+ in parallel
+Date: Mon, 14 Aug 2023 16:51:24 +0200
+Message-Id: <20230814145124.886292-1-thuth@redhat.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-2.265, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,50 +75,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+When running "make check-block SPEED=slow -j$(nproc)", the test 183
+fails due to the very low default timeout value since the system is
+quite loaded and thus slower in this case. We need a much higher
+value when running tests in parallel, so let's try to detect this
+situation by looking for "-j..." in the MAKEFLAGS environment variable.
 
-Sorry, I should have mentioned this for v1 already, but better late than 
-never: We need to replace this patch with a proper header update later (via 
-the scripts/update-linux-headers.sh script) - so in case you respin, please 
-mark it with NOTFORMERGE or PLACEHOLDER or something similar in the subject, 
-and mention the kernel version in the description that will likely contain 
-the update.
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ PS: Yeah, I know, this is a little bit ugly ... if someone has a better
+ idea how to fix this, please let me know.
 
-  Thanks,
-   Thomas
+ tests/qemu-iotests/183 | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-
-On 10/08/2023 14.47, Steffen Eiden wrote:
-> Signed-off-by: Steffen Eiden <seiden@linux.ibm.com>
-> ---
->   linux-headers/asm-s390/kvm.h | 16 ++++++++++++++++
->   1 file changed, 16 insertions(+)
-> 
-> diff --git a/linux-headers/asm-s390/kvm.h b/linux-headers/asm-s390/kvm.h
-> index e2afd95420..023a2763a9 100644
-> --- a/linux-headers/asm-s390/kvm.h
-> +++ b/linux-headers/asm-s390/kvm.h
-> @@ -159,6 +159,22 @@ struct kvm_s390_vm_cpu_subfunc {
->   	__u8 reserved[1728];
->   };
->   
-> +#define KVM_S390_VM_CPU_PROCESSOR_UV_FEAT_GUEST	6
-> +#define KVM_S390_VM_CPU_MACHINE_UV_FEAT_GUEST	7
-> +
-> +#define KVM_S390_VM_CPU_UV_FEAT_NR_BITS	64
-> +struct kvm_s390_vm_cpu_uv_feat {
-> +	union {
-> +		struct {
-> +			__u64 : 4;
-> +			__u64 ap : 1;		/* bit 4 */
-> +			__u64 ap_intr : 1;	/* bit 5 */
-> +			__u64 : 58;
-> +		};
-> +		__u64 feat;
-> +	};
-> +};
-> +
->   /* kvm attributes for crypto */
->   #define KVM_S390_VM_CRYPTO_ENABLE_AES_KW	0
->   #define KVM_S390_VM_CRYPTO_ENABLE_DEA_KW	1
+diff --git a/tests/qemu-iotests/183 b/tests/qemu-iotests/183
+index ee62939e72..b50e0d2b85 100755
+--- a/tests/qemu-iotests/183
++++ b/tests/qemu-iotests/183
+@@ -97,7 +97,9 @@ if echo "$reply" | grep "compiled without old-style" > /dev/null; then
+ fi
+ 
+ timeout_comm=$QEMU_COMM_TIMEOUT
+-if [ "${VALGRIND_QEMU}" == "y" ]; then
++if echo "$MAKEFLAGS" | grep -q "\-j"; then
++    QEMU_COMM_TIMEOUT=10
++elif [ "${VALGRIND_QEMU}" == "y" ]; then
+     QEMU_COMM_TIMEOUT=4
+ else
+     QEMU_COMM_TIMEOUT=0.1
+-- 
+2.39.3
 
 
