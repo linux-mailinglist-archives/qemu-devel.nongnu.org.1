@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C3B477B7FF
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Aug 2023 13:58:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B39A077B91C
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Aug 2023 14:57:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qVWC9-0007NU-LK; Mon, 14 Aug 2023 07:57:13 -0400
+	id 1qVX7j-0000yW-M0; Mon, 14 Aug 2023 08:56:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qVWC7-0007M1-KH
- for qemu-devel@nongnu.org; Mon, 14 Aug 2023 07:57:11 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ id 1qVX7a-0000uY-7d
+ for qemu-devel@nongnu.org; Mon, 14 Aug 2023 08:56:37 -0400
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qVWC4-00006X-My
- for qemu-devel@nongnu.org; Mon, 14 Aug 2023 07:57:11 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-3fe5695b180so37932365e9.2
- for <qemu-devel@nongnu.org>; Mon, 14 Aug 2023 04:57:08 -0700 (PDT)
+ id 1qVX7X-0001IF-JH
+ for qemu-devel@nongnu.org; Mon, 14 Aug 2023 08:56:33 -0400
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-31781e15a0cso3800539f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 14 Aug 2023 05:56:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692014227; x=1692619027;
+ d=linaro.org; s=google; t=1692017789; x=1692622589;
  h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
  :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
  :message-id:reply-to;
- bh=RapFB08NRw3liAGm5BCvJ4FzoIfRnC+vfELaP/SRV98=;
- b=ETdIm6oGbLcqEsHe4FN8Zonk3xe471L1lYmB/OiBNzU7hv6o/hJhrXrlpji470dOLy
- BJHHB3B4UAfjnlAUwUyQibnX2T7Yp6pjJZBp8YHsOQEgncl46RzyWwbgDgbRHEJUB9nV
- jzJMpqsLpm21PtPI5WMLKELiXNedaK2tp8C2L6U1yB/mqyEHaZ/e8/7W59KPDeUDOLC9
- 8i4kHI9BQ0IbgOe34H+w+1qkMorv1P7C0KT6iZN1adPf5rESzFcykW18P4vHHv5eqDm7
- dD/weOC8zj+ZgSLOWuyAVWGDYYmuUOYGAhyU+JT//i8gXXuDA8Bnc5yGtboSo/1r2WTe
- u4rg==
+ bh=u/yNYtuGCGzFZJgZEITLstAi/015dL/8b5WK6385yKQ=;
+ b=AbsSuPuRsHvvmbfXO3y7cvIGjVMiqLUW920nEO75wdAZGCi2umTRwqWMMHN6TsRIF3
+ KN2xI1SK/OsE0yyyp/yMUz1FQafuqalZOj4UucnhECYlZVVRbgI9agHP8137GbyXfyMT
+ k+a0jDhuLPZUEEz4/cPrYCTLI1PvlLJDsP597mqupp57UC/HFY4jQ0tAubdS5uJZjrQd
+ qvYBCPcKBBpTuhNX42MDfOBlkoPbMOgSc1AyxhDhlkN6UI/coR1XCRaxvPcNi77EZbvF
+ ToaGUvqwxXhWsX0QgOSpxbKyDTsSaTX2RqtvWP4SqCDFQ+/Zppb/7upLvoxk4r+/1FET
+ qVxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692014227; x=1692619027;
+ d=1e100.net; s=20221208; t=1692017789; x=1692622589;
  h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
  :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=RapFB08NRw3liAGm5BCvJ4FzoIfRnC+vfELaP/SRV98=;
- b=ACb5KHGvIIluwYWieshAhWVaSOFS0dxv1SaARV9UET39B9iYFE6NELJdc95UpCp4qC
- 6Smc6/ya9JWOjGIDor8hOuXo7vg6EH0A2fP8psq5uDBViPiMlXqTWBY2JhGRaoBS45tz
- GUZkaG/Nd6iZkBZYyQTLVla2OYZ8zcG+6f6iRW01KiCwYnmRLz5TP6lAbRATWkzN74W+
- ZvIhrKmgo5J0i7uSs7Yrji6dw2vrmUAVBeY6tOpimx51tI1aGmp+iRG/kAHyfSez3eu/
- iblnPakKtOwP9JnBWg7mCWpXa1efG+1SUjvUuYPox+Lh+rhLmYGMTq+n8Ad7e35XjNU9
- rjoA==
-X-Gm-Message-State: AOJu0YwUtyhGBjcJFtsFncNKnUEXTxCkeILTyeuTWHkIOZSBkkF+ugAS
- ak628Req3T8nxHBaRW7Axhsl5A==
-X-Google-Smtp-Source: AGHT+IHMkXvW5Y6pUhQtcqSExZsCq2jcLbmqRfzXgCJMjsloQHXZbiRKNXCTZNHZqx/T21Uv3apPEw==
-X-Received: by 2002:a1c:7c05:0:b0:3f8:fc2a:c7eb with SMTP id
- x5-20020a1c7c05000000b003f8fc2ac7ebmr7009053wmc.5.1692014226820; 
- Mon, 14 Aug 2023 04:57:06 -0700 (PDT)
+ bh=u/yNYtuGCGzFZJgZEITLstAi/015dL/8b5WK6385yKQ=;
+ b=as7zZiYYOXm+GRk18ca+8PTh2n8ftbceoUeYSLM/YeJkDF5ekuGHLxjzqjGrW0NmOS
+ padDZLgNjRgKadPw6cXDVY7JhOMvVe1BISrtsbAFevqUrvZq4HMQECSE4sfKACZ+UHCo
+ H2FYpdj78IOgUB8C4NN28mOrm1e/B7xT3aa11jHBf26C7Z+DeYU7waV1Tdk6jjdrJDkp
+ JR5kX0t2ChsOmPra4hgyomlgyYUHmpx1z36cBSbxnk4CrgLSWz6JTXSCJzHZufJWjFhi
+ XtmEw5kktG9SNKS2OGnDK4bgiL85b7OZqWT/9wHYOqJlbK/Jsyul1TgZFGd4iUMHhz3e
+ cz2w==
+X-Gm-Message-State: AOJu0YwS5heAvBEO12ZhlXM+9wcB5SrJJv3yiGH9ypKI93uEccQ+Kbrv
+ 91gRMWRBflblNO59x8bu+FHZ0w==
+X-Google-Smtp-Source: AGHT+IHdE/P1mZHdPVQy2lUAfejfIuDqdb9eIyPH5L9JZdBf6HsVqg0n+m64OGQPQ+Z115UbS9AvWw==
+X-Received: by 2002:a5d:6b4c:0:b0:317:5f13:5c2f with SMTP id
+ x12-20020a5d6b4c000000b003175f135c2fmr5905564wrw.0.1692017789375; 
+ Mon, 14 Aug 2023 05:56:29 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- v14-20020a1cf70e000000b003fe24441e23sm14095038wmh.24.2023.08.14.04.57.06
+ i7-20020a5d5587000000b00314172ba213sm14374842wrv.108.2023.08.14.05.56.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Aug 2023 04:57:06 -0700 (PDT)
+ Mon, 14 Aug 2023 05:56:29 -0700 (PDT)
 Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 052581FFBB;
- Mon, 14 Aug 2023 12:57:06 +0100 (BST)
+ by zen.linaroharston (Postfix) with ESMTP id 59C081FFBB;
+ Mon, 14 Aug 2023 13:56:28 +0100 (BST)
 References: <20230731084354.115015-1-akihiko.odaki@daynix.com>
- <20230731084354.115015-5-akihiko.odaki@daynix.com>
+ <20230731084354.115015-7-akihiko.odaki@daynix.com>
 User-agent: mu4e 1.11.14; emacs 29.1.50
 From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: Akihiko Odaki <akihiko.odaki@daynix.com>
@@ -93,22 +93,23 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
  Bastian Koppelmann <kbastian@mail.uni-paderborn.de>, Max Filippov
  <jcmvbkbc@gmail.com>, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
  qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org
-Subject: Re: [RFC PATCH 04/24] gdbstub: Introduce gdb_find_static_feature()
-Date: Mon, 14 Aug 2023 12:56:38 +0100
-In-reply-to: <20230731084354.115015-5-akihiko.odaki@daynix.com>
-Message-ID: <878radsupa.fsf@linaro.org>
+Subject: Re: [RFC PATCH 06/24] hw/core/cpu: Replace gdb_core_xml_file with
+ gdb_core_feature
+Date: Mon, 14 Aug 2023 12:59:10 +0100
+In-reply-to: <20230731084354.115015-7-akihiko.odaki@daynix.com>
+Message-ID: <871qg5sryb.fsf@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -127,47 +128,123 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Akihiko Odaki <akihiko.odaki@daynix.com> writes:
 
-> This function is useful to determine the number of registers exposed to
-> GDB from the XML name.
+> This is a tree-wide change to replace gdb_core_xml_file, the path to
+> GDB XML file with gdb_core_feature, the pointer to GDBFeature. This
+> also replaces the values assigned to gdb_num_core_regs with the
+> num_regs member of GDBFeature where applicable to remove magic numbers.
+>
+> A following change will utilize additional information provided by
+> GDBFeature to simplify XML file lookup.
 >
 > Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 > ---
->  include/exec/gdbstub.h |  2 ++
->  gdbstub/gdbstub.c      | 13 +++++++++++++
->  2 files changed, 15 insertions(+)
+>  include/hw/core/cpu.h   | 5 +++--
+>  target/s390x/cpu.h      | 2 --
+>  gdbstub/gdbstub.c       | 6 +++---
+>  target/arm/cpu.c        | 4 ++--
+>  target/arm/cpu64.c      | 4 ++--
+>  target/arm/tcg/cpu32.c  | 3 ++-
+>  target/avr/cpu.c        | 4 ++--
+>  target/hexagon/cpu.c    | 2 +-
+>  target/i386/cpu.c       | 7 +++----
+>  target/loongarch/cpu.c  | 4 ++--
+>  target/m68k/cpu.c       | 7 ++++---
+>  target/microblaze/cpu.c | 4 ++--
+>  target/ppc/cpu_init.c   | 4 ++--
+>  target/riscv/cpu.c      | 7 ++++---
+>  target/rx/cpu.c         | 4 ++--
+>  target/s390x/cpu.c      | 4 ++--
+>  16 files changed, 36 insertions(+), 35 deletions(-)
 >
-> diff --git a/include/exec/gdbstub.h b/include/exec/gdbstub.h
-> index 22e5add5b1..3115dc21c0 100644
-> --- a/include/exec/gdbstub.h
-> +++ b/include/exec/gdbstub.h
-> @@ -34,6 +34,8 @@ void gdb_register_coprocessor(CPUState *cpu,
->   */
->  int gdbserver_start(const char *port_or_device);
->=20=20
-> +const GDBFeature *gdb_find_static_feature(const char *xmlname);
-> +
->  void gdb_set_stop_cpu(CPUState *cpu);
->=20=20
->  /**
-> diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
-> index fad70200d8..6d9cef5b95 100644
-> --- a/gdbstub/gdbstub.c
-> +++ b/gdbstub/gdbstub.c
-> @@ -414,6 +414,19 @@ static const char *get_feature_xml(const char *p, co=
-nst char **newp,
->      return name ? gdb_features[i].xml : NULL;
->  }
->=20=20
-> +const GDBFeature *gdb_find_static_feature(const char *xmlname)
-> +{
-> +    const GDBFeature *feature;
-> +
-> +    for (feature =3D gdb_features; feature->xmlname; feature++) {
-> +        if (!strcmp(feature->xmlname, xmlname)) {
+> diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+> index fdcbe87352..84219c1885 100644
+> --- a/include/hw/core/cpu.h
+> +++ b/include/hw/core/cpu.h
+> @@ -23,6 +23,7 @@
+>  #include "hw/qdev-core.h"
+>  #include "disas/dis-asm.h"
+>  #include "exec/cpu-common.h"
+> +#include "exec/gdbstub.h"
+>  #include "exec/hwaddr.h"
+>  #include "exec/memattrs.h"
+>  #include "qapi/qapi-types-run-state.h"
+> @@ -127,7 +128,7 @@ struct SysemuCPUOps;
+>   *       breakpoint.  Used by AVR to handle a gdb mis-feature with
+>   *       its Harvard architecture split code and data.
+>   * @gdb_num_core_regs: Number of core registers accessible to GDB.
 
-I'd prefer g_strcmp0(feature->xmlname, xmlname) =3D=3D 0 but either way:
+It seems redundant to have this when gdb_core_features already
+encapsulates this, especially since...
 
-Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+> - * @gdb_core_xml_file: File name for core registers GDB XML description.
+> + * @gdb_core_feature: GDB core feature description.
+>   * @gdb_stop_before_watchpoint: Indicates whether GDB expects the CPU to=
+ stop
+>   *           before the insn which triggers a watchpoint rather than aft=
+er it.
+>   * @gdb_arch_name: Optional callback that returns the architecture name =
+known
+> @@ -163,7 +164,7 @@ struct CPUClass {
+>      int (*gdb_write_register)(CPUState *cpu, uint8_t *buf, int reg);
+>      vaddr (*gdb_adjust_breakpoint)(CPUState *cpu, vaddr addr);
+>=20=20
+> -    const char *gdb_core_xml_file;
+> +    const GDBFeature *gdb_core_feature;
+>      gchar * (*gdb_arch_name)(CPUState *cpu);
+>      const char * (*gdb_get_dynamic_xml)(CPUState *cpu, const char *xmlna=
+me);
+>=20=20
+<snip>
+> diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+> index d71a162070..a206ab6b1b 100644
+> --- a/target/arm/cpu.c
+> +++ b/target/arm/cpu.c
+> @@ -2353,7 +2353,6 @@ static void arm_cpu_class_init(ObjectClass *oc, voi=
+d *data)
+>  #ifndef CONFIG_USER_ONLY
+>      cc->sysemu_ops =3D &arm_sysemu_ops;
+>  #endif
+> -    cc->gdb_num_core_regs =3D 26;
+>      cc->gdb_arch_name =3D arm_gdb_arch_name;
+>      cc->gdb_get_dynamic_xml =3D arm_gdb_get_dynamic_xml;
+>      cc->gdb_stop_before_watchpoint =3D true;
+> @@ -2378,7 +2377,8 @@ static void cpu_register_class_init(ObjectClass *oc=
+, void *data)
+>      CPUClass *cc =3D CPU_CLASS(acc);
+>=20=20
+>      acc->info =3D data;
+> -    cc->gdb_core_xml_file =3D "arm-core.xml";
+> +    cc->gdb_core_feature =3D gdb_find_static_feature("arm-core.xml");
+> +    cc->gdb_num_core_regs =3D cc->gdb_core_feature->num_regs;
+
+You are doing assignments like this. I think something like this in
+gdbstub:
+
+modified   gdbstub/gdbstub.c
+@@ -440,7 +440,7 @@ int gdb_read_register(CPUState *cpu, GByteArray *buf, i=
+nt reg, bool has_xml)
+     CPUArchState *env =3D cpu->env_ptr;
+     GDBRegisterState *r;
+=20
+-    if (reg < cc->gdb_num_core_regs) {
++    if (reg < cc->gdb_core_feature->num_regs) {
+         return cc->gdb_read_register(cpu, buf, reg, has_xml);
+     }
+=20
+@@ -459,7 +459,7 @@ static int gdb_write_register(CPUState *cpu, uint8_t *m=
+em_buf, int reg,
+     CPUArchState *env =3D cpu->env_ptr;
+     GDBRegisterState *r;
+=20
+-    if (reg < cc->gdb_num_core_regs) {
++    if (reg < cc->gdb_core_feature->num_regs) {
+         return cc->gdb_write_register(cpu, mem_buf, reg, has_xml);
+     }
+
+makes most of the uses go away. Some of the other arches might need
+target specific tweaks.
+
+<snip>
 
 --=20
 Alex Benn=C3=A9e
