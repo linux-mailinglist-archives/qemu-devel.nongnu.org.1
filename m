@@ -2,89 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEBF177C2AE
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Aug 2023 23:46:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96F9B77C350
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Aug 2023 00:16:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qVfNT-0006gW-CP; Mon, 14 Aug 2023 17:45:31 -0400
+	id 1qVfq2-00023M-7Y; Mon, 14 Aug 2023 18:15:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <isaku.yamahata@gmail.com>)
- id 1qVfNH-0006fk-Dv
- for qemu-devel@nongnu.org; Mon, 14 Aug 2023 17:45:19 -0400
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ id 1qVfpj-00022M-8J
+ for qemu-devel@nongnu.org; Mon, 14 Aug 2023 18:14:43 -0400
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <isaku.yamahata@gmail.com>)
- id 1qVfNE-0007l0-Cl
- for qemu-devel@nongnu.org; Mon, 14 Aug 2023 17:45:19 -0400
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-686bea20652so4536080b3a.1
- for <qemu-devel@nongnu.org>; Mon, 14 Aug 2023 14:45:14 -0700 (PDT)
+ id 1qVfph-0004wk-NP
+ for qemu-devel@nongnu.org; Mon, 14 Aug 2023 18:14:43 -0400
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-686f25d045cso3305455b3a.0
+ for <qemu-devel@nongnu.org>; Mon, 14 Aug 2023 15:14:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1692049513; x=1692654313;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date:from:to
- :cc:subject:date:message-id:reply-to;
- bh=05HbnIo80trrCFK3jXhlcJkX75MNBwCQ0epMdFi+1gQ=;
- b=LsdA0kOIAm91MVBz1+MWHFN7paCqnA3DItTPkReECqOSlQCP3UD8ca9JEH8K8j16NU
- PjlcJ6RZe2mUzfZKjRGPnm/XooBH4bBGslUGP2FCqE2fkrczn9KY1XRSON4kcEQ51Eos
- geebEyAYHm351W1X6nLwl/1HEB9/SMLBOr9Zky/YsRq04OtmshQ56rbOxyuyyvFL+Sos
- Gv3eof7UZtCM5nJ/iaLCp5ZQFjbTWbFXBhoQoNkLdSM07QWnADdKMNrxM0SPtiLs5QEa
- YENb/UIbb1AHgRbv14gXJdxBNM+yybBEckX7FOGW/uPaBQEU5p2ILcUVNTJ35zhoIP4z
- ht8w==
+ d=gmail.com; s=20221208; t=1692051280; x=1692656080;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=Gis2biPu65VTqKerUhaZe5+i57GcGp/Ma1+Uc/E8uHA=;
+ b=sCCG/WebnMKTpJZpi7NPTyvwwZctuRtp4nlSWgRkn5VKwRRnolS1ZU0ZwNpY0BmeoY
+ LHcanxha7VedZYTKjTuG+UQxrhrYoJQ3QlE6+PxUbp0SPlk5HV9KSbaP0iRraBeRSF+7
+ lMIhezmgXDjonXXK7dmriv1gbdLsUYDO+Gh+5jsRjHL4FP2rTLGMfoD0HS5MBbAQs8Vj
+ LCTYxXsKUGnAbH4ynYYslOWWqahSAayKqibR4Vkg6vypWXqPeyf6maDXe+an6uoxtLc6
+ 9dafkkhAxwTAssZOpyjzJC5aQcAgvoZVFFVlZG/TvKBU5H2v1qubzZmCRoX/5MN8Wg8w
+ j4Kw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692049513; x=1692654313;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=05HbnIo80trrCFK3jXhlcJkX75MNBwCQ0epMdFi+1gQ=;
- b=XMqBSTCIxy351bPoROZTCz8hKFBZOcvmg2RmGM6nkx67FS0VUh2z81L1C88/dkkW0b
- JHL52Ar84p/GJ1Tbe1t65cMcQ+jie92Xt7R2Egcrpq5pC/dYuX0V+HIvB+LkRQRjpsVH
- y6ZkQ/Yfgi421nWjp8zpUuIknHsYs9L0xS1w3bTttsAXSzZKLyksK2gCmUwhZmpWG5h6
- 0r+XSCo//bQx0uaPMFDO5TvG+fyzD4xAOtwW797A7oPejBMEqsaOtAfQYbfwBrmM8lAH
- 2mvIdh/kT2z2foyLulntBGUlhWJ4QC51IiOMHkgRROn/J27Uh4It0bOnb8rcz1YBmxKV
- Xitg==
-X-Gm-Message-State: AOJu0YyW6wJzO4WgbhdXQj7cnkRPHyZGJu3Ey0LJSqBlLvkTs9I+jTAK
- 5rLY/m2z9zCo2f81mZHVXsc=
-X-Google-Smtp-Source: AGHT+IE6XR5hEkCSGhgyQluYXyWANfP6XGgpfUeqyacV6TXD051wXFamvRF3xEJr/RUC2WjXRi4Abg==
-X-Received: by 2002:a05:6a21:2716:b0:140:94b8:3b76 with SMTP id
- rm22-20020a056a21271600b0014094b83b76mr12191486pzb.20.1692049513554; 
- Mon, 14 Aug 2023 14:45:13 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1692051280; x=1692656080;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Gis2biPu65VTqKerUhaZe5+i57GcGp/Ma1+Uc/E8uHA=;
+ b=j6P+L0ZXN3dJjw5Aludlp1XletJr4ql0+c1M0RtIf77XQRMb0bU+wCFfBlcrGE8kep
+ uJVXeBVMk8tabx9ws3xkFXaoabrswjaO/XXUvXhJohg/z2u2oRomEEnhiUDaRCWo79xX
+ NArGRuaYEOYjkja3VX9L24erWbWKWiNXyxIFHGXyrPmnkS45jo+bAFnBdTAs4+o56jnU
+ v0SzIrRQKw9aieMFs94YglkF5uAjwUcJszB1Rf4d+K2lwvUMGboSxpYiXoJstIfPL73r
+ UDUkOKe/vqbhAnMsWPub4oAS52tVR4Fxfy6nI4V6KBpbcthiKK3Diay1Rk0oD6n2yhmA
+ lo2A==
+X-Gm-Message-State: AOJu0YzOcdNzrwqFdph4sidihPHc0Pg3WfsVHGOAjvIBhLwBUnL6IDdO
+ AZCplsmYqlvzwl9GrQ6sqLo=
+X-Google-Smtp-Source: AGHT+IHNNpZSKLUvGz+r83qdIrgbzbxphSeKT5WeTUZsMw1LngqpP5X7OBvUitFwiQ4RzpVQH4SM6Q==
+X-Received: by 2002:a05:6a20:160d:b0:134:ad98:fb0c with SMTP id
+ l13-20020a056a20160d00b00134ad98fb0cmr12762436pzj.4.1692051280030; 
+ Mon, 14 Aug 2023 15:14:40 -0700 (PDT)
 Received: from localhost ([192.55.55.51]) by smtp.gmail.com with ESMTPSA id
- e23-20020a62aa17000000b006877b0b31c2sm8669128pff.147.2023.08.14.14.45.12
+ 5-20020aa79145000000b00679b7d2bd57sm8383298pfi.192.2023.08.14.15.14.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Aug 2023 14:45:13 -0700 (PDT)
-Date: Mon, 14 Aug 2023 14:45:11 -0700
+ Mon, 14 Aug 2023 15:14:38 -0700 (PDT)
+Date: Mon, 14 Aug 2023 15:14:37 -0700
 From: Isaku Yamahata <isaku.yamahata@gmail.com>
-To: Michael Roth <michael.roth@amd.com>
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>,
- Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Sean Christopherson <seanjc@google.com>,
- David Hildenbrand <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Xu <peterx@redhat.com>,
- Chao Peng <chao.p.peng@linux.intel.com>, isaku.yamahata@gmail.com,
- qemu-devel@nongnu.org, kvm@vger.kernel.org
-Subject: Re: [RFC PATCH 00/19] QEMU gmem implemention
-Message-ID: <20230814214511.GG1807130@ls.amr.corp.intel.com>
-References: <20230731162201.271114-1-xiaoyao.li@intel.com>
- <ZMfmkCQImgsinE6T@redhat.com>
- <9b3a3e88-21f4-bfd2-a9c3-60a25832e698@intel.com>
- <20230810155808.eqne5zzb53mirgcw@amd.com>
+To: Wei Wang <wei.w.wang@intel.com>
+Cc: peterx@redhat.com, quintela@redhat.com, isaku.yamahata@gmail.com,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH v2] migration: refactor migration_completion
+Message-ID: <20230814221437.GA3377960@ls.amr.corp.intel.com>
+References: <20230804093053.5037-1-wei.w.wang@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230810155808.eqne5zzb53mirgcw@amd.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=isaku.yamahata@gmail.com; helo=mail-pf1-x42e.google.com
+In-Reply-To: <20230804093053.5037-1-wei.w.wang@intel.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=isaku.yamahata@gmail.com; helo=mail-pf1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,142 +90,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Aug 10, 2023 at 10:58:09AM -0500,
-Michael Roth via <qemu-devel@nongnu.org> wrote:
+On Fri, Aug 04, 2023 at 05:30:53PM +0800,
+Wei Wang <wei.w.wang@intel.com> wrote:
 
-> On Tue, Aug 01, 2023 at 09:45:41AM +0800, Xiaoyao Li wrote:
-> > On 8/1/2023 12:51 AM, Daniel P. Berrangé wrote:
-> > > On Mon, Jul 31, 2023 at 12:21:42PM -0400, Xiaoyao Li wrote:
-> > > > This is the first RFC version of enabling KVM gmem[1] as the backend for
-> > > > private memory of KVM_X86_PROTECTED_VM.
-> > > > 
-> > > > It adds the support to create a specific KVM_X86_PROTECTED_VM type VM,
-> > > > and introduces 'private' property for memory backend. When the vm type
-> > > > is KVM_X86_PROTECTED_VM and memory backend has private enabled as below,
-> > > > it will call KVM gmem ioctl to allocate private memory for the backend.
-> > > > 
-> > > >      $qemu -object memory-backend-ram,id=mem0,size=1G,private=on \
-> > > >            -machine q35,kvm-type=sw-protected-vm,memory-backend=mem0 \
-> > > > 	  ...
-> > > > 
-> > > > Unfortunately this patch series fails the boot of OVMF at very early
-> > > > stage due to triple fault because KVM doesn't support emulate string IO
-> > > > to private memory. We leave it as an open to be discussed.
-> > > > 
-> > > > There are following design opens that need to be discussed:
-> > > > 
-> > > > 1. how to determine the vm type?
-> > > > 
-> > > >     a. like this series, specify the vm type via machine property
-> > > >        'kvm-type'
-> > > >     b. check the memory backend, if any backend has 'private' property
-> > > >        set, the vm-type is set to KVM_X86_PROTECTED_VM.
-> > > > 
-> > > > 2. whether 'private' property is needed if we choose 1.b as design
-> > > > 
-> > > >     with 1.b, QEMU can decide whether the memory region needs to be
-> > > >     private (allocates gmem fd for it) or not, on its own.
-> > > > 
-> > > > 3. What is KVM_X86_SW_PROTECTED_VM going to look like? What's the
-> > > >     purose of it and what's the requirement on it. I think it's the
-> > > >     questions for KVM folks than QEMU folks.
-> > > > 
-> > > > Any other idea/open/question is welcomed.
-> > > > 
-> > > > 
-> > > > Beside, TDX QEMU implemetation is based on this series to provide
-> > > > private gmem for TD private memory, which can be found at [2].
-> > > > And it can work corresponding KVM [3] to boot TDX guest.
-> > > 
-> > > We already have a general purpose configuration mechanism for
-> > > confidential guests.  The -machine argument has a property
-> > > confidential-guest-support=$OBJECT-ID, for pointing to an
-> > > object that implements the TYPE_CONFIDENTIAL_GUEST_SUPPORT
-> > > interface in QEMU. This is implemented with SEV, PPC PEF
-> > > mode, and s390 protvirt.
-> > > 
-> > > I would expect TDX to follow this same design ie
-> > > 
-> > >      qemu-system-x86_64 \
-> > >        -object tdx-guest,id=tdx0,..... \
-> > >        -machine q35,confidential-guest-support=tdx0 \
-> > >        ...
-> > > 
-> > > and not require inventing the new 'kvm-type' attribute at least.
-> > 
-> > yes.
-> > 
-> > TDX is initialized exactly as the above.
-> > 
-> > This RFC series introduces the 'kvm-type' for KVM_X86_SW_PROTECTED_VM. It's
-> > my fault that forgot to list the option of introducing sw_protected_vm
-> > object with CONFIDENTIAL_GUEST_SUPPORT interface.
-> > Thanks for Isaku to raise it https://lore.kernel.org/qemu-devel/20230731171041.GB1807130@ls.amr.corp.intel.com/
-> > 
-> > we can specify KVM_X86_SW_PROTECTED_VM this way:
-> > 
-> > qemu  \
-> >   -object sw-protected,id=swp0,... \
-> >   -machine confidential-guest-support=swp0 \
-> >   ...
-> > 
-> > > For the memory backend though, I'm not so sure - possibly that
-> > > might be something that still wants an extra property to identify
-> > > the type of memory to allocate, since we use memory-backend-ram
-> > > for a variety of use cases.  Or it could be an entirely new object
-> > > type such as "memory-backend-gmem"
-> > 
-> > What I want to discuss is whether providing the interface to users to allow
-> > them configuring which memory is/can be private. For example, QEMU can do it
-> > internally. If users wants a confidential guest, QEMU allocates private gmem
-> > for normal RAM automatically.
+> Current migration_completion function is a bit long. Refactor the long
+> implementation into different subfunctions:
+> - migration_completion_precopy: completion code related to precopy
+> - migration_completion_postcopy: completion code related to postcopy
+> - close_return_path_on_source: rp thread related cleanup on migration
+> completion. It is named to match with open_return_path_on_source.
 > 
-> I think handling it automatically simplifies things a good deal on the
-> QEMU side. I think it's still worthwhile to still allow:
+> This improves readability and is easier for future updates (e.g. add new
+> subfunctions when completion code related to new features are needed). No
+> functional changes intended.
 > 
->  -object memory-backend-memfd-private,...
-> 
-> because it provides a nice mechanism to set up a pair of shared/private
-> memfd's to enable hole-punching via fallocate() to avoid doubling memory
-> allocations for shared/private. It's also a nice place to control
-> potentially-configurable things like:
-> 
->  - whether or not to enable discard/hole-punching
->  - if discard is enabled, whether or not to register the range via
->    RamDiscardManager interface so that VFIO/IOMMU mappings get updated
->    when doing PCI passthrough. SNP relies on this for PCI passthrough
->    when discard is enabled, otherwise DMA occurs to stale mappings of
->    discarded bounce-buffer pages:
-> 
->      https://github.com/AMDESE/qemu/blob/snp-latest/backends/hostmem-memfd-private.c#L449
-> 
-> But for other memory ranges, it doesn't do a lot of good to rely on
-> users to control those via -object memory-backend-memfd-private, since
-> QEMU will set up some regions internally, like the UEFI ROM.
-> 
-> It also isn't ideal for QEMU itself to internally control what
-> should/shouldn't be set up with a backing guest_memfd, because some
-> guest kernels do weird stuff, like scan for ROM regions in areas that
-> guest kernels might have mapped as encrypted in guest page table. You
-> can consider them to be guest bugs, but even current SNP-capable
-> kernels exhibit this behavior and if the guest wants to do dumb stuff
-> QEMU should let it.
-> 
-> But for these latter 2 cases, it doesn't make sense to attempt to do
-> any sort of discarding of backing pages since it doesn't make sense to
-> discard ROM pages.
-> 
-> So I think it makes sense to just set up the gmemfd automatically across
-> the board internally, and keep memory-backend-memfd-private around
-> purely as a way to control/configure discardable memory.
+> Signed-off-by: Wei Wang <wei.w.wang@intel.com>
+> ---
+> Changelog:
+> - Merge await_return_path_close_on_source into
+>   close_return_path_on_source as the later basically just calls the
+>   previous;
+> - make migration_completion_postcopy "void" as it doesn't return a
+>   value.
 
-
-I'm looking at the repo and
-31a7c7e36684 ("*hostmem-memfd-private: Initial discard manager support")
-
-Do we have to implement RAM_DISCARD_MANGER at memory-backend-memfd-private?
-Can't we implement it at host_mem? The interface callbacks can have check
-"if (!private) return".  Then we can support any host-mem backend.
+Reviewed-by: Isaku Yamahata <isaku.yamahata@intel.com>
 -- 
 Isaku Yamahata <isaku.yamahata@gmail.com>
 
