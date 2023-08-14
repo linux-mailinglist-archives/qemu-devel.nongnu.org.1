@@ -2,90 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF12E77B1DE
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Aug 2023 08:58:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA8FE77B235
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Aug 2023 09:19:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qVRXD-0004i9-Np; Mon, 14 Aug 2023 02:58:39 -0400
+	id 1qVRqi-0004Ia-C7; Mon, 14 Aug 2023 03:18:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qVRX7-0004Jn-4X
- for qemu-devel@nongnu.org; Mon, 14 Aug 2023 02:58:34 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <imbrenda@linux.ibm.com>)
+ id 1qVRqb-0004IL-KH
+ for qemu-devel@nongnu.org; Mon, 14 Aug 2023 03:18:44 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qVRX3-0005Xg-5J
- for qemu-devel@nongnu.org; Mon, 14 Aug 2023 02:58:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1691996307;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=0t8BGM5qFv3I4be0V9QgJoGR+yPmSI/yf1QQ3pHbjYQ=;
- b=MpqslSKKqbZrL1ictwsWGH2HwZNKtuPw2bE8xNABYx3SClek4ISS8X2ckfMie04F8pXEFO
- BG4OlTYBzj3N2N5uRokbnhHnAwMJ4n8zpVX/iqoHGUJr0eMPwIOztwC6I2PUFzAgsRLnE+
- 3v1AZrrHPWNMNL4LSuaSLGAcm+D9cJg=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-297-FND5WHfpOZiuta0DjSNoVg-1; Mon, 14 Aug 2023 02:58:26 -0400
-X-MC-Unique: FND5WHfpOZiuta0DjSNoVg-1
-Received: by mail-lj1-f200.google.com with SMTP id
- 38308e7fff4ca-2ba37b5519fso39677511fa.2
- for <qemu-devel@nongnu.org>; Sun, 13 Aug 2023 23:58:25 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1691996304; x=1692601104;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=0t8BGM5qFv3I4be0V9QgJoGR+yPmSI/yf1QQ3pHbjYQ=;
- b=MHgnVvt16cflh/3PZMzi1cV7kH7cpFA3gMOUZjN7Po1dUdUGX9A/kk9u/0b9XrUZCm
- 80Ju2efvrZ6G6Mj3iIobi6k354ejE9q88lR7GVkaMUu0M6j3elaw8/nKsHuDEUmopxf+
- 0929XIucjdzmePgN8HhaF7sH+5f8E/asrSBiOwwqoErZsnGSvky5pSt0+jKTCvM9CpKg
- 92tFrO0vOS5Q2bWOi1zMgm49sB0XCHEyU9QiMUsvqN9LK/H0lcQTMAu3eS7KFciBCl/S
- 3Aid5qrrSdtb6ev1Hlkcz8s4blkPs7XvqX/mIeTr7lE1YOv0uNYTslny/OVyk/rZ/JWX
- 2wNw==
-X-Gm-Message-State: AOJu0YzXFEppABJ/p5fv8LSdx/1dU7g5fkGt4znz37MajZHYZT+9IURf
- Rvf9193i2cPfiPUQD5a5mSyaSM1JipppevYKZro1jFZx4aQoCcRJTJ/RLCQiaZGsiez6QU9oSoE
- HickcJPPQP5VbDzTOj4JeAWHcQ1BtgJQ=
-X-Received: by 2002:a05:651c:110:b0:2b6:ecdd:16cf with SMTP id
- a16-20020a05651c011000b002b6ecdd16cfmr5417554ljb.40.1691996304606; 
- Sun, 13 Aug 2023 23:58:24 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEkNz8IAl+o3e2XMcrgJMYPdfDBvnLlIRMwfX3psIilU6637kxQZFcSPs+OH9HjNrg2zJpjjLRKbkozywWQSl8=
-X-Received: by 2002:a05:651c:110:b0:2b6:ecdd:16cf with SMTP id
- a16-20020a05651c011000b002b6ecdd16cfmr5417541ljb.40.1691996304448; Sun, 13
- Aug 2023 23:58:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <imbrenda@linux.ibm.com>)
+ id 1qVRqZ-0001Vf-J5
+ for qemu-devel@nongnu.org; Mon, 14 Aug 2023 03:18:41 -0400
+Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 37E6vMHs030736; Mon, 14 Aug 2023 07:01:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : to : cc :
+ subject : message-id : in-reply-to : references : mime-version :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=OjmA+Nt3wOwr3T9Ujec41HbLsw/ug2pbycP5tyWW5To=;
+ b=mdhpyQs0rVZc94nOd+9oc9wFGF85+NI6Wdp4Wg6CJdqADRv6xGyyzmnvUKMkmOTdQLPX
+ UdfDHFVkedqxbAzkiHZUQCu/CTSboZD61PbCAWHNf0w8YFo41LB79/EIshB/yuTfRJUC
+ MV722JmypuevJSnmi2SWpbdj+arBgO90Ku//XvGTn0rZUiv/fAAfI5Rt93HPGRPB9EpB
+ DQZzyuzNewsfu5bhEBtiWG90LC1efo6WBrdiVQqS8JMkltoddNEX9FQDJiRpT8d5HZHR
+ P48saIIFpFDe1+CC90UN0HFbV8bewkYNvMQDLkY3Z9HCQ+549gw034pPHZkX1UYkpmkv zg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sfff404q7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 14 Aug 2023 07:01:37 +0000
+Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 37E6voCw032297;
+ Mon, 14 Aug 2023 07:01:36 GMT
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sfff4046w-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 14 Aug 2023 07:01:35 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 37E5R2xm018891; Mon, 14 Aug 2023 07:01:12 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3seq411cea-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 14 Aug 2023 07:01:12 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
+ [10.20.54.103])
+ by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 37E71AKE9241092
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 14 Aug 2023 07:01:10 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8CAA720043;
+ Mon, 14 Aug 2023 07:01:10 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4091620040;
+ Mon, 14 Aug 2023 07:01:10 +0000 (GMT)
+Received: from p-imbrenda (unknown [9.179.13.124])
+ by smtpav04.fra02v.mail.ibm.com (Postfix) with SMTP;
+ Mon, 14 Aug 2023 07:01:10 +0000 (GMT)
+Date: Mon, 14 Aug 2023 09:01:08 +0200
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: QEMU Developers <qemu-devel@nongnu.org>, Paolo Bonzini
+ <pbonzini@redhat.com>
+Subject: Re: util/async-teardown.c: is it really needed for --disable-system
+ build?
+Message-ID: <20230814090108.472547d8@p-imbrenda>
+In-Reply-To: <a2f99abb-7ad6-41b4-1b74-ab7dba3d2424@tls.msk.ru>
+References: <744ac8a7-dd6b-2ce4-3f47-250812241d0e@tls.msk.ru>
+ <a2f99abb-7ad6-41b4-1b74-ab7dba3d2424@tls.msk.ru>
+Organization: IBM
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-References: <20230810153611.3410882-1-eperezma@redhat.com>
- <20230810153611.3410882-6-eperezma@redhat.com>
-In-Reply-To: <20230810153611.3410882-6-eperezma@redhat.com>
-From: Jason Wang <jasowang@redhat.com>
-Date: Mon, 14 Aug 2023 14:58:13 +0800
-Message-ID: <CACGkMEuWJjE97tFw9HE_4F3n4hEbQTMSfp2q3adXLK6yWoCDCA@mail.gmail.com>
-Subject: Re: [PATCH v2 5/5] vdpa: remove net cvq migration blocker
-To: =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>
-Cc: qemu-devel@nongnu.org, Laurent Vivier <lvivier@redhat.com>, 
- Dragos Tatulea <dtatulea@nvidia.com>, si-wei.liu@oracle.com, 
- Parav Pandit <parav@mellanox.com>, Gautam Dawar <gdawar@xilinx.com>, 
- Zhu Lingshan <lingshan.zhu@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Cindy Lu <lulu@redhat.com>, Harpreet Singh Anand <hanand@xilinx.com>,
- Stefano Garzarella <sgarzare@redhat.com>, 
- Hawkins Jiawei <yin31149@gmail.com>, Shannon Nelson <snelson@pensando.io>,
- Lei Yang <leiyang@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: wu-pfAsVHa1Ir5Ms93NsA65x5pWGM9iC
+X-Proofpoint-ORIG-GUID: J_TDCOT1rTezPIEyZXKFFNKLNYXV5Kfq
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-08-14_01,2023-08-10_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0
+ lowpriorityscore=0 spamscore=0 phishscore=0 mlxlogscore=887
+ priorityscore=1501 bulkscore=0 malwarescore=0 mlxscore=0 adultscore=0
+ suspectscore=0 clxscore=1011 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2306200000 definitions=main-2308140064
+Received-SPF: pass client-ip=148.163.156.1;
+ envelope-from=imbrenda@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -29
+X-Spam_score: -3.0
+X-Spam_bar: ---
+X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=-1,
+ RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,51 +117,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Aug 10, 2023 at 11:36=E2=80=AFPM Eugenio P=C3=A9rez <eperezma@redha=
-t.com> wrote:
->
-> Now that we have add migration blockers if the device does not support
-> all the needed features, remove the general blocker applied to all net
-> devices with CVQ.
->
-> Signed-off-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
+On Sat, 12 Aug 2023 12:48:14 +0300
+Michael Tokarev <mjt@tls.msk.ru> wrote:
 
-Acked-by: Jason Wang <jasowang@redhat.com>
+> 12.08.2023 12:38, Michael Tokarev wrote:
+> ...
+> > It smells like, at the very least, os-posix.c should be split. We shoul=
+dn't include
+> > a ton of qemu-system functionality (like very specific option parsing) =
+into qemu-nbd
+> > for example.
+> >=20
+> > How about splitting os-posix.c into a few files in util/ (not in the ro=
+ot dir), and
+> > adding them to util_ss in case of posix-os?=C2=A0 Ditto for os-win32.c,=
+ I guess, but I
+> > haven't looked at this.
+> >=20
+> > And for the question in $subj, this one needs to be guarded by CONFIG_S=
+OFTMMU. =20
+>=20
+> Or maybe better yet, put the softmmu-specific functions (one very good ex=
+ample here
+> is os_parse_cmd_args() function - it clearly belongs to softmmu/, it shou=
+ld never
+> has been in global os-foo.c but in some softmmu-os-foo.c instead.  This w=
+ay,
+> async-teardown.c is moved to softmmu/ too, maybe os-linux-async-teardown.=
+c.
+>=20
+> /mjt
 
-Thanks
+I think we could guard the offending item with CONFIG_SOFTMMU for now,
+to immediately fix the issues you raised, and do the refactoring you
+proposed later (e.g. next cycle).
 
-> ---
->  net/vhost-vdpa.c | 12 ------------
->  1 file changed, 12 deletions(-)
->
-> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-> index 3bf60f9431..6bb56f7d94 100644
-> --- a/net/vhost-vdpa.c
-> +++ b/net/vhost-vdpa.c
-> @@ -1413,18 +1413,6 @@ static NetClientState *net_vhost_vdpa_init(NetClie=
-ntState *peer,
->          s->vhost_vdpa.shadow_vq_ops =3D &vhost_vdpa_net_svq_ops;
->          s->vhost_vdpa.shadow_vq_ops_opaque =3D s;
->          s->cvq_isolated =3D cvq_isolated;
-> -
-> -        /*
-> -         * TODO: We cannot migrate devices with CVQ and no x-svq enabled=
- as
-> -         * there is no way to set the device state (MAC, MQ, etc) before
-> -         * starting the datapath.
-> -         *
-> -         * Migration blocker ownership now belongs to s->vhost_vdpa.
-> -         */
-> -        if (!svq) {
-> -            error_setg(&s->vhost_vdpa.migration_blocker,
-> -                       "net vdpa cannot migrate with CVQ feature");
-> -        }
->      }
->      ret =3D vhost_vdpa_add(nc, (void *)&s->vhost_vdpa, queue_pair_index,=
- nvqs);
->      if (ret) {
-> --
-> 2.39.3
->
-
+what do you think?
 
