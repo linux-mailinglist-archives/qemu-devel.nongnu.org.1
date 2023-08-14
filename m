@@ -2,57 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B7D077BE23
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Aug 2023 18:33:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BA3277BE20
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Aug 2023 18:33:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qVaTw-0000U9-Ho; Mon, 14 Aug 2023 12:31:52 -0400
+	id 1qVaTz-0000Uh-Lu; Mon, 14 Aug 2023 12:31:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1qVaTt-0000Tb-Ng
- for qemu-devel@nongnu.org; Mon, 14 Aug 2023 12:31:50 -0400
-Received: from mail-pj1-x102b.google.com ([2607:f8b0:4864:20::102b])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1qVaTx-0000UV-Hj
+ for qemu-devel@nongnu.org; Mon, 14 Aug 2023 12:31:53 -0400
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1qVaTs-0004mY-C8
- for qemu-devel@nongnu.org; Mon, 14 Aug 2023 12:31:49 -0400
-Received: by mail-pj1-x102b.google.com with SMTP id
- 98e67ed59e1d1-26b0b92e190so2753670a91.1
- for <qemu-devel@nongnu.org>; Mon, 14 Aug 2023 09:31:47 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1qVaTv-0004qI-I8
+ for qemu-devel@nongnu.org; Mon, 14 Aug 2023 12:31:53 -0400
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-1bdc19b782aso17134025ad.0
+ for <qemu-devel@nongnu.org>; Mon, 14 Aug 2023 09:31:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1692030706; x=1692635506;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=s3t+9A397lQQSC+zK2Tr4yJQWC0olwqt/KSJsEjco+I=;
- b=etxG0Ki5ZE8Ma/BfgH7B/FZQ6FrBlH1Qsg/D1R+o5IEICIVkTCjeyPTQrOH+qKnzFO
- 6t4I2oug/Fe5NYK0v/BuJJSs5gf+kvU08yDv+LqaFhXgGTSCItBtMQTNdsrOoAgrUV0l
- 7FJpk7UnvERcXwj/rMdI6ptlCifu1CZYyZ/Vjo1SIYLjoEruM5nv3grW54TSyPSWHJpQ
- zaLCnKDtrtKT6yoThueJDzVSA5AY/Wdm+tSvnpxoUamHsWoZsrRXqb8wmDYX/gRQNug7
- GEcv1WTIK1qeMToJegUk5u0k66SV3woeE9sORhUpd28PX8+DL04ztL8cBeTiVmkPpUx8
- kaJg==
+ d=gmail.com; s=20221208; t=1692030710; x=1692635510;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=vp6gU892XZK0ouQnofmt9i+CmckUy2isN46xGuzvKXk=;
+ b=Yza0XjjWsH2MApMdyOANoSYFkvvqMpglfGIkb9+WXmxiBENfvuDA4O5gwR9oOMxrlD
+ QVQLzPJaR2glOvsrfg2iqUijNIALlRump58wh3BO68fL4V0B36XtWW2KNjHhWlcMnKZ9
+ 4AA5GF8tN82t5oOjq7CFm4XMqlN7zaSaAC/wS8j0xS/Ceo/C7cOnhSrmOUF9XF1ogNnZ
+ vsdO1o+13MchT77NCgjhQTUEoOJYmGlIUc5WWop3cgIhvJgHQYNAEQWRSNj7zoIjOx7+
+ ATxCM12Pg8Gl87zcCsw0/tfAK7B5wrNQWYEq3c4q6vh0QGN4+sZ44FOnGA6xf6t2lPvo
+ LdPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692030706; x=1692635506;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=s3t+9A397lQQSC+zK2Tr4yJQWC0olwqt/KSJsEjco+I=;
- b=TLu4V3vlINNXr/jtnLaFaJiq5Usk5SfnL6yWC+OQWgtu3wwY+9rd31ace2aZ64o9QA
- XXT/1KNXgH5iZSm73SikmlY77CCZXGxXJfoIbtTS3wc/MxWxHI0FNvSfM8FebyZu5ozQ
- SCDCYrMJWQD83ZlJVYnIuEaA1ZqIFu0/X9CGMvcu6fyk6g5U7EtAUYn9Qiixdv928y6E
- DFPzs6Ol90zVHcnl5+wYmgn4iSOtprBk9gNY8yV6Ini4/I8ZIru4xLhWLrJXgc2ox/Pg
- h2dHxFhcVzb1wSRHTK4zvw4klHd6TmJGXwKa2KGyb81lQd3tVaTwYVjvEtx7a0cQTgeu
- gdHg==
-X-Gm-Message-State: AOJu0YzsjK5z8cNtL0nA5juBP5kejlXsBwfxwkvwOV4GOVzGnoKmrIX6
- RKQrl853mXQrtoqjUnDAwkw=
-X-Google-Smtp-Source: AGHT+IGjfrVec8oaS7LDFbEH7YfbRoCR0xBCNJM09lHpQ3Ow/8E1awbLYVWnXkAFl0WJ0xqU9m9aRw==
-X-Received: by 2002:a17:90a:de0d:b0:268:5aaf:fbe with SMTP id
- m13-20020a17090ade0d00b002685aaf0fbemr17748644pjv.10.1692030705900; 
- Mon, 14 Aug 2023 09:31:45 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1692030710; x=1692635510;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=vp6gU892XZK0ouQnofmt9i+CmckUy2isN46xGuzvKXk=;
+ b=kky5P9miP1AGJX0T7l0KRnVPegnafD9BSjN912S/p6iY4k56VX7G3N3j5kgzKzV6yg
+ dQFWni6kjidSSU3bnweseSU5Ps7Q0X2TPW1lg7j1rTAaFBCMj0gB5ncT+V5uMm1CVU0X
+ Fx+PnjQbNd7wm/VOOdrAu6dpezqvWXWxAY/Tmj3Bl9exnt6J5X8qAuEqFLXh42uofalw
+ eFU31/eHNn9NUNJwKCNVusZ8Jt7N0lS/8qAV9XmwoKv+LXMHtGS7Eu/QfQ5k+a0fsDjy
+ GwIBw6cGpalyVmzgjJtZnuN/QbYJwftlRdqNhdyF282Q73KBFEwqN7h1FPVLRHoRNgbQ
+ baUQ==
+X-Gm-Message-State: AOJu0Yz25UpKocjw8Vi5CL7qKKNUr9KQ6GMccXxRqVr+FF0dQ65zZVkV
+ ZfqRIrqPn07oOn+krqaiaPc=
+X-Google-Smtp-Source: AGHT+IE51zvn7/jg4pjLaGi99ZaebyzC1eH4zizPHfi3ncdvv16NRSsshbf5Dwxco/4/Tdg//Wpg5A==
+X-Received: by 2002:a17:902:e742:b0:1bc:7312:78db with SMTP id
+ p2-20020a170902e74200b001bc731278dbmr10717324plf.57.1692030710148; 
+ Mon, 14 Aug 2023 09:31:50 -0700 (PDT)
 Received: from wheely.local0.net ([61.68.161.249])
  by smtp.gmail.com with ESMTPSA id
- c6-20020a170902c1c600b001b8a3a0c928sm9613263plc.181.2023.08.14.09.31.41
+ c6-20020a170902c1c600b001b8a3a0c928sm9613263plc.181.2023.08.14.09.31.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Aug 2023 09:31:45 -0700 (PDT)
+ Mon, 14 Aug 2023 09:31:49 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>
 Cc: Nicholas Piggin <npiggin@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -60,14 +61,16 @@ Cc: Nicholas Piggin <npiggin@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>, qemu-devel@nongnu.org
-Subject: [PATCH for-8.2 0/4] Assorted replay patches
-Date: Tue, 15 Aug 2023 02:31:31 +1000
-Message-Id: <20230814163135.187882-1-npiggin@gmail.com>
+Subject: [PATCH 1/4] scripts/replay_dump.sh: Update to current rr record format
+Date: Tue, 15 Aug 2023 02:31:32 +1000
+Message-Id: <20230814163135.187882-2-npiggin@gmail.com>
 X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20230814163135.187882-1-npiggin@gmail.com>
+References: <20230814163135.187882-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102b;
- envelope-from=npiggin@gmail.com; helo=mail-pj1-x102b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,33 +93,181 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+This thing seems to have fallen by the wayside. This gets it working with
+the current format, although does not quite implement all events.
 
-These are a few small things I have found helpful while trying to
-implement and test rr changes. Patch 2 depends on 1, but otherwise
-the patches are independent.
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+My python skills are not good. Any help on this or patch 2 is
+appreciated.
 
 Thanks,
 Nick
 
-Nicholas Piggin (4):
-  scripts/replay_dump.sh: Update to current rr record format
-  tests/avocado: replay_linux.py add replay-dump.py test
-  replay: allow runstate shutdown->running when replaying trace
-  replay: simple auto-snapshot mode for record
+ scripts/replay-dump.py | 107 ++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 101 insertions(+), 6 deletions(-)
 
- docs/system/replay.rst        |   5 ++
- include/sysemu/replay.h       |  11 ++++
- include/sysemu/runstate.h     |   1 +
- qemu-options.hx               |   9 ++-
- replay/replay-snapshot.c      |  57 +++++++++++++++++
- replay/replay.c               |  27 ++++++++
- scripts/replay-dump.py        | 113 +++++++++++++++++++++++++++++++---
- softmmu/runstate.c            |  19 ++++++
- softmmu/vl.c                  |   9 +++
- tests/avocado/replay_linux.py |  16 ++++-
- 10 files changed, 256 insertions(+), 11 deletions(-)
-
+diff --git a/scripts/replay-dump.py b/scripts/replay-dump.py
+index 3ba97a6d30..937ae19ff1 100755
+--- a/scripts/replay-dump.py
++++ b/scripts/replay-dump.py
+@@ -20,6 +20,7 @@
+ 
+ import argparse
+ import struct
++import os
+ from collections import namedtuple
+ 
+ # This mirrors some of the global replay state which some of the
+@@ -62,6 +63,10 @@ def read_byte(fin):
+     "Read a single byte"
+     return struct.unpack('>B', fin.read(1))[0]
+ 
++def read_bytes(fin, nr):
++    "Read a nr bytes"
++    return fin.read(nr)
++
+ def read_event(fin):
+     "Read a single byte event, but save some state"
+     if replay_state.already_read:
+@@ -122,12 +127,18 @@ def swallow_async_qword(eid, name, dumpfile):
+     print("  %s(%d) @ %d" % (name, eid, step_id))
+     return True
+ 
++def swallow_bytes(eid, name, dumpfile, nr):
++    "Swallow nr bytes of data without looking at it"
++    dumpfile.seek(nr, os.SEEK_CUR)
++    return True
++
+ async_decode_table = [ Decoder(0, "REPLAY_ASYNC_EVENT_BH", swallow_async_qword),
+-                       Decoder(1, "REPLAY_ASYNC_INPUT", decode_unimp),
+-                       Decoder(2, "REPLAY_ASYNC_INPUT_SYNC", decode_unimp),
+-                       Decoder(3, "REPLAY_ASYNC_CHAR_READ", decode_unimp),
+-                       Decoder(4, "REPLAY_ASYNC_EVENT_BLOCK", decode_unimp),
+-                       Decoder(5, "REPLAY_ASYNC_EVENT_NET", decode_unimp),
++                       Decoder(1, "REPLAY_ASYNC_BH_ONESHOT", decode_unimp),
++                       Decoder(2, "REPLAY_ASYNC_INPUT", decode_unimp),
++                       Decoder(3, "REPLAY_ASYNC_INPUT_SYNC", decode_unimp),
++                       Decoder(4, "REPLAY_ASYNC_CHAR_READ", decode_unimp),
++                       Decoder(5, "REPLAY_ASYNC_EVENT_BLOCK", decode_unimp),
++                       Decoder(6, "REPLAY_ASYNC_EVENT_NET", decode_unimp),
+ ]
+ # See replay_read_events/replay_read_event
+ def decode_async(eid, name, dumpfile):
+@@ -156,6 +167,13 @@ def decode_audio_out(eid, name, dumpfile):
+     print_event(eid, name, "%d" % (audio_data))
+     return True
+ 
++def decode_random(eid, name, dumpfile):
++    ret = read_dword(dumpfile)
++    size = read_dword(dumpfile)
++    swallow_bytes(eid, name, dumpfile, size)
++    print_event(eid, name, "%d %d" % (ret, size))
++    return True
++
+ def decode_checkpoint(eid, name, dumpfile):
+     """Decode a checkpoint.
+ 
+@@ -184,6 +202,38 @@ def decode_interrupt(eid, name, dumpfile):
+     print_event(eid, name)
+     return True
+ 
++def decode_exception(eid, name, dumpfile):
++    print_event(eid, name)
++    return True
++
++def decode_shutdown(eid, name, dumpfile):
++    print_event(eid, name)
++    return True
++
++def decode_end(eid, name, dumpfile):
++    print_event(eid, name)
++    return False
++
++def decode_char_write(eid, name, dumpfile):
++    res = read_dword(dumpfile)
++    offset = read_dword(dumpfile)
++    print_event(eid, name)
++    return True
++
++def decode_async_char_read(eid, name, dumpfile):
++    char_id = read_byte(dumpfile)
++    size = read_dword(dumpfile)
++    print_event(eid, name, "device:%x chars:%s" % (char_id, read_bytes(dumpfile, size)))
++    return True
++
++def decode_async_net(eid, name, dumpfile):
++    net_id = read_byte(dumpfile)
++    flags = read_dword(dumpfile)
++    size = read_dword(dumpfile)
++    swallow_bytes(eid, name, dumpfile, size)
++    print_event(eid, name, "net:%x flags:%x bytes:%d" % (net_id, flags, size))
++    return True
++
+ def decode_clock(eid, name, dumpfile):
+     clock_data = read_qword(dumpfile)
+     print_event(eid, name, "0x%x" % (clock_data))
+@@ -268,6 +318,48 @@ def decode_clock(eid, name, dumpfile):
+                   Decoder(28, "EVENT_CP_RESET", decode_checkpoint),
+ ]
+ 
++v12_event_table = [Decoder(0, "EVENT_INSTRUCTION", decode_instruction),
++                  Decoder(1, "EVENT_INTERRUPT", decode_interrupt),
++                  Decoder(2, "EVENT_EXCEPTION", decode_exception),
++                  Decoder(3, "EVENT_ASYNC_BH", swallow_async_qword),
++                  Decoder(4, "EVENT_ASYNC_BH_ONESHOT", swallow_async_qword),
++                  Decoder(5, "EVENT_ASYNC_INPUT", decode_unimp),
++                  Decoder(6, "EVENT_ASYNC_INPUT_SYNC", decode_unimp),
++                  Decoder(7, "EVENT_ASYNC_CHAR_READ", decode_async_char_read),
++                  Decoder(8, "EVENT_ASYNC_BLOCK", swallow_async_qword),
++                  Decoder(9, "EVENT_ASYNC_NET", decode_async_net),
++                  Decoder(10, "EVENT_SHUTDOWN", decode_unimp),
++                  Decoder(11, "EVENT_SHUTDOWN_HOST_ERR", decode_shutdown),
++                  Decoder(12, "EVENT_SHUTDOWN_HOST_QMP_QUIT", decode_shutdown),
++                  Decoder(13, "EVENT_SHUTDOWN_HOST_QMP_RESET", decode_shutdown),
++                  Decoder(14, "EVENT_SHUTDOWN_HOST_SIGNAL", decode_shutdown),
++                  Decoder(15, "EVENT_SHUTDOWN_HOST_UI", decode_shutdown),
++                  Decoder(16, "EVENT_SHUTDOWN_GUEST_SHUTDOWN", decode_shutdown),
++                  Decoder(17, "EVENT_SHUTDOWN_GUEST_RESET", decode_shutdown),
++                  Decoder(18, "EVENT_SHUTDOWN_GUEST_PANIC", decode_shutdown),
++                  Decoder(19, "EVENT_SHUTDOWN_SUBSYS_RESET", decode_shutdown),
++                  Decoder(20, "EVENT_SHUTDOWN_SNAPSHOT_LOAD", decode_shutdown),
++                  Decoder(21, "EVENT_SHUTDOWN___MAX", decode_shutdown),
++                  Decoder(22, "EVENT_CHAR_WRITE", decode_char_write),
++                  Decoder(23, "EVENT_CHAR_READ_ALL", decode_unimp),
++                  Decoder(24, "EVENT_CHAR_READ_ALL_ERROR", decode_unimp),
++                  Decoder(25, "EVENT_AUDIO_OUT", decode_audio_out),
++                  Decoder(26, "EVENT_AUDIO_IN", decode_unimp),
++                  Decoder(27, "EVENT_RANDOM", decode_random),
++                  Decoder(28, "EVENT_CLOCK_HOST", decode_clock),
++                  Decoder(29, "EVENT_CLOCK_VIRTUAL_RT", decode_clock),
++                  Decoder(30, "EVENT_CP_CLOCK_WARP_START", decode_checkpoint),
++                  Decoder(31, "EVENT_CP_CLOCK_WARP_ACCOUNT", decode_checkpoint),
++                  Decoder(32, "EVENT_CP_RESET_REQUESTED", decode_checkpoint),
++                  Decoder(33, "EVENT_CP_SUSPEND_REQUESTED", decode_checkpoint),
++                  Decoder(34, "EVENT_CP_CLOCK_VIRTUAL", decode_checkpoint),
++                  Decoder(35, "EVENT_CP_CLOCK_HOST", decode_checkpoint),
++                  Decoder(36, "EVENT_CP_CLOCK_VIRTUAL_RT", decode_checkpoint),
++                  Decoder(37, "EVENT_CP_INIT", decode_checkpoint_init),
++                  Decoder(38, "EVENT_CP_RESET", decode_checkpoint),
++                  Decoder(39, "EVENT_END", decode_end),
++]
++
+ def parse_arguments():
+     "Grab arguments for script"
+     parser = argparse.ArgumentParser()
+@@ -285,7 +377,10 @@ def decode_file(filename):
+ 
+     print("HEADER: version 0x%x" % (version))
+ 
+-    if version == 0xe02007:
++    if version == 0xe0200c:
++        event_decode_table = v12_event_table
++        replay_state.checkpoint_start = 12
++    elif version == 0xe02007:
+         event_decode_table = v7_event_table
+         replay_state.checkpoint_start = 12
+     elif version == 0xe02006:
 -- 
 2.40.1
 
