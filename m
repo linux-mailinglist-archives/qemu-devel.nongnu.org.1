@@ -2,83 +2,114 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDCD477B968
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Aug 2023 15:08:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D632C77B988
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Aug 2023 15:18:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qVXI6-0001LU-Ui; Mon, 14 Aug 2023 09:07:27 -0400
+	id 1qVXRJ-0004y7-As; Mon, 14 Aug 2023 09:16:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <belmouss@redhat.com>)
- id 1qVXHt-0001Fi-I6
- for qemu-devel@nongnu.org; Mon, 14 Aug 2023 09:07:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <belmouss@redhat.com>)
- id 1qVXHq-0003Qb-EO
- for qemu-devel@nongnu.org; Mon, 14 Aug 2023 09:07:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692018428;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=XoW7K5SMBPt2HGYSeaMM4oY4RJEeGon9WMbhRoNGiDo=;
- b=fxg17bEuHPKkqgTihDC9W1KjjkZZYOk51pDGE3uub8ilw/SPwLK+Pn+eA4mhDKFkdzRdsx
- eZVGzQX5yj/87RMuMlqrTXhkcZAgjUWiv8YooERVWp7fzAMZjt/eURRPsHF4zpoOyXbG3k
- Hg4u0fZjmQRH1w86jhrgVXrfLGSWVtM=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-338-wCvfmu2COB-paBLsmQ-nGw-1; Mon, 14 Aug 2023 09:07:06 -0400
-X-MC-Unique: wCvfmu2COB-paBLsmQ-nGw-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-99bfe3dd009so670560966b.0
- for <qemu-devel@nongnu.org>; Mon, 14 Aug 2023 06:07:06 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qVXRB-0004wW-A4
+ for qemu-devel@nongnu.org; Mon, 14 Aug 2023 09:16:51 -0400
+Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qVXR5-0005uf-GM
+ for qemu-devel@nongnu.org; Mon, 14 Aug 2023 09:16:48 -0400
+Received: by mail-lj1-x231.google.com with SMTP id
+ 38308e7fff4ca-2b9cdbf682eso64074491fa.2
+ for <qemu-devel@nongnu.org>; Mon, 14 Aug 2023 06:16:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1692019000; x=1692623800;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ouuxETn0xyl30aRiVdyaaxtGYBGxlbjaXI9NE7JuzH8=;
+ b=sjTS8uzoT8+A5PChYFxlxBYB/epDlMYoQyJ6kDsFpFFAc1PAjtzWpYogHDBfShkTnq
+ fOM8lf9jBK5Q5aUHpfTYe7s1g9mQPij9WZI3pxUYNkykuUZfSETxf9DN2A01AiDmPWCd
+ 9U0FEr64pvZqgOjL1fqAG4Hskkps/+luhyaY8cv/c7WeDjwFxcgojvK4gepGhPlNLvjr
+ j9/6FF5ZFu3zocO+wy/bJMKXUKaCAW7De2AQ+CpefmqUiJg5ENo3BqQBt/36TBI7rqmz
+ GuGdVQQeSFCbsimSV2a4DweH8TA6mp6jrdUyJfdAHMV/za5m/WtS3uNeqTzb4ewq/YPJ
+ Wd/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692018425; x=1692623225;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=XoW7K5SMBPt2HGYSeaMM4oY4RJEeGon9WMbhRoNGiDo=;
- b=GXE90PrHYl29Zm+ianwXxXY17D5rajFvijGTdSznGM4XQViK6l2T++orQ9TAqn7BiS
- Zg3ATb7RHV26djWt/8YCtar33vjFW7DQ28W4th5bfSa/UlAYz8W7bHnccWJ0PFGRTVQA
- JyZw/bAcnAo0kEbPDZNj3CdsEmQwLbXDQYcu4olIsoPm7JC8Wyjx0QSONYKXwEZjZEWo
- 1WSfuVomEqu0dev9HNaLAYA8mUAx4w4VOGufWDn+KpGn0sFB4dY0EvnmtnHGabABcpzS
- Hy9B+4Uu36jrEHzGvvEwwrrZlHMZ47ETsU6canJgQM3q9GiYwgGCbP5zjQUhvwq6WivD
- 3iYQ==
-X-Gm-Message-State: AOJu0YxWLfr3rBO9w0CkCwRpeBLaCD41TMHhW3t8G1k6vfmYuzmUdPuC
- BfuXK0XKrjwsUhltB7RDoU78vXnBH5SuPa+PPZq4JKvz59l75np1BschTJHhV1j7WxrVELtXuJx
- ZnaqpUV9CvXSsemY6keI8pUqWQ00I6/0=
-X-Received: by 2002:a17:907:3d94:b0:99c:78d4:32f9 with SMTP id
- he20-20020a1709073d9400b0099c78d432f9mr14217606ejc.10.1692018425513; 
- Mon, 14 Aug 2023 06:07:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHgHo4fdD5AKkjNi1/AU2LiRShGkWelUnoLUyFr7zJm+0O8iZpVYJ3dvUU64gYiGGmQPYH6yV2Vt/zuqZT1cvQ=
-X-Received: by 2002:a17:907:3d94:b0:99c:78d4:32f9 with SMTP id
- he20-20020a1709073d9400b0099c78d432f9mr14217588ejc.10.1692018425240; Mon, 14
- Aug 2023 06:07:05 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1692019000; x=1692623800;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=ouuxETn0xyl30aRiVdyaaxtGYBGxlbjaXI9NE7JuzH8=;
+ b=SpTxgIrx2wbMmSzEy/LmAIFnGxCiijJp8bKUISQFrL0cyMOl6hsai563EdokOmGHZg
+ zsRiqb2NJXekFDLi9tjDaJ5CvBdhE8Nlr6FaD/+S8BBgaYHoGI7UqWuDyxE8TjoOuISs
+ 76DuISRgVGzTg5tjBpJXAIz2FFqb4OyFtdStVmuJamKjXI2OJtBtRtFaT4GQ7hGD7cOE
+ +K8wzmDgNi6gpExsHetO5N+w/XCOMMn8dgFgZHt+RMRzDJDECJffZYMixYUpDLKBQa7e
+ y5BbbmDMBEb+0bbIDUNtU53EFJy57Nz12x4rGecio3tgrwlcBhxkxWxxW18t1KyWDmVJ
+ EpCA==
+X-Gm-Message-State: AOJu0YzOuy2pAvF/L4qW+MNSa8yAaJDiOHUY+TJWa+B4RvqB1fXwyEZg
+ NPHb7PmFAnrHe7Ta6xNYlBp02w==
+X-Google-Smtp-Source: AGHT+IHJmHJe0hqElkR3C3WXEDNmCyQfAOVrbdm/RNm206lfj8yjWDhD0/ENsitY96qOj0eI5Cx2Cg==
+X-Received: by 2002:a2e:3202:0:b0:2a7:adf7:1781 with SMTP id
+ y2-20020a2e3202000000b002a7adf71781mr6772626ljy.2.1692019000157; 
+ Mon, 14 Aug 2023 06:16:40 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ y1-20020a05600c364100b003fbb06af219sm14299504wmq.32.2023.08.14.06.16.39
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 14 Aug 2023 06:16:39 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 19F5D1FFBB;
+ Mon, 14 Aug 2023 14:16:39 +0100 (BST)
+References: <20230731084354.115015-1-akihiko.odaki@daynix.com>
+ <20230731084354.115015-11-akihiko.odaki@daynix.com>
+User-agent: mu4e 1.11.14; emacs 29.1.50
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Alexandre Iooss <erdnaxe@crans.org>, Mahmoud Mandour
+ <ma.mandourr@gmail.com>, Eduardo Habkost <eduardo@habkost.net>, Marcel
+ Apfelbaum <marcel.apfelbaum@gmail.com>, Philippe =?utf-8?Q?Mathieu-Daud?=
+ =?utf-8?Q?=C3=A9?=
+ <philmd@linaro.org>, Yanan Wang <wangyanan55@huawei.com>, Richard
+ Henderson <richard.henderson@linaro.org>, =?utf-8?Q?Marc-Andr=C3=A9?=
+ Lureau <marcandre.lureau@redhat.com>, =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>,
+ John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>, Peter
+ Maydell <peter.maydell@linaro.org>, Michael Rolnik <mrolnik@gmail.com>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, Brian Cain
+ <bcain@quicinc.com>, Song Gao <gaosong@loongson.cn>, Xiaojuan Yang
+ <yangxiaojuan@loongson.cn>, Laurent Vivier <laurent@vivier.eu>, Aurelien
+ Jarno <aurelien@aurel32.net>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>, Chris Wulff
+ <crwulff@gmail.com>, Marek Vasut <marex@denx.de>, Stafford Horne
+ <shorne@gmail.com>, Daniel Henrique Barboza <danielhb413@gmail.com>,
+ =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>, David Gibson
+ <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>, Nicholas Piggin
+ <npiggin@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Alistair Francis
+ <alistair.francis@wdc.com>, Bin Meng <bin.meng@windriver.com>, Weiwei Li
+ <liweiwei@iscas.ac.cn>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, David Hildenbrand
+ <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>, Mark Cave-Ayland
+ <mark.cave-ayland@ilande.co.uk>, Artyom Tarasenko <atar4qemu@gmail.com>,
+ Bastian Koppelmann <kbastian@mail.uni-paderborn.de>, Max Filippov
+ <jcmvbkbc@gmail.com>, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
+ qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org
+Subject: Re: [RFC PATCH 10/24] gdbstub: Use GDBFeature for
+ gdb_register_coprocessor
+Date: Mon, 14 Aug 2023 14:13:38 +0100
+In-reply-to: <20230731084354.115015-11-akihiko.odaki@daynix.com>
+Message-ID: <87sf8lrcg8.fsf@linaro.org>
 MIME-Version: 1.0
-References: <20230814125802.102160-1-belmouss@redhat.com>
- <CAMxuvawR2qcN51RBC2=CRYYib+=4G76b29X2Jrj_akn-RFp_rw@mail.gmail.com>
-In-Reply-To: <CAMxuvawR2qcN51RBC2=CRYYib+=4G76b29X2Jrj_akn-RFp_rw@mail.gmail.com>
-From: Bilal Elmoussaoui <belmouss@redhat.com>
-Date: Mon, 14 Aug 2023 15:06:54 +0200
-Message-ID: <CALz9GzZwJE2w=dRp96T51K-R6jNoPuY0o_N_Y6wzEH34WFzjfg@mail.gmail.com>
-Subject: Re: [PATCH v2] ui/dbus: implement damage regions for GL
-To: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
-Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>, 
- Christian Hergert <chergert@redhat.com>
-Content-Type: multipart/alternative; boundary="00000000000030b2750602e1bd53"
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=belmouss@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::231;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x231.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,301 +125,512 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000030b2750602e1bd53
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-That is fine, it is not something we need urgently as we still need a
-kernel patch to make virtio gpu use the KMS atomic API in Mutter. Am I
-supposed to send a new patch with the "Reviewed-by" part in the commit
-message or?
+Akihiko Odaki <akihiko.odaki@daynix.com> writes:
 
-On Mon, Aug 14, 2023 at 3:02=E2=80=AFPM Marc-Andr=C3=A9 Lureau <
-marcandre.lureau@redhat.com> wrote:
-
-> Hi
+> This is a tree-wide change to introduce GDBFeature parameter to
+> gdb_register_coprocessor(). The new parameter just replaces num_regs
+> and xml parameters for now. GDBFeature will be utilized to simplify XML
+> lookup in a following change.
 >
-> On Mon, Aug 14, 2023 at 4:58=E2=80=AFPM Bilal Elmoussaoui <belmouss@redha=
-t.com>
-> wrote:
-> >
-> > Currently, when using `-display dbus,gl=3Don` all updates to the client
-> > become "full scanout" updates, meaning there is no way for the client t=
-o
-> > limit damage regions to the display server.
-> >
-> > Instead of using an "update count", this patch tracks the damage region
-> > and propagates it to the client.
-> >
-> > This was less of an issue when clients were using GtkGLArea for
-> > rendering,
-> > as you'd be doing full-surface redraw. To be efficient, the client need=
-s
-> > both a DMA-BUF and the damage region to be updated.
-> >
-> > Co-authored-by: Christian Hergert <chergert@redhat.com>
-> > Signed-off-by: Bilal Elmoussaoui <belmouss@redhat.com>
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> ---
+>  include/exec/gdbstub.h     |  2 +-
+>  gdbstub/gdbstub.c          | 13 +++++++------
+>  target/arm/gdbstub.c       | 36 ++++++++++++++++++++----------------
+>  target/hexagon/cpu.c       |  3 +--
+>  target/loongarch/gdbstub.c |  2 +-
+>  target/m68k/helper.c       |  6 +++---
+>  target/microblaze/cpu.c    |  5 +++--
+>  target/ppc/gdbstub.c       | 11 ++++++-----
+>  target/riscv/gdbstub.c     | 20 ++++++++++++--------
+>  target/s390x/gdbstub.c     | 28 +++++++---------------------
+>  10 files changed, 61 insertions(+), 65 deletions(-)
 >
-> Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
->
-> It could be considered as a fix, but I think we can delay it for the
-> next release. Fine with you?
->
-> > ---
-> >  ui/dbus-listener.c | 32 +++++++++++++++++++++++++-------
-> >  1 file changed, 25 insertions(+), 7 deletions(-)
-> >
-> > diff --git a/ui/dbus-listener.c b/ui/dbus-listener.c
-> > index 30917271ab..36548a7f52 100644
-> > --- a/ui/dbus-listener.c
-> > +++ b/ui/dbus-listener.c
-> > @@ -26,6 +26,9 @@
-> >  #include "qapi/error.h"
-> >  #include "sysemu/sysemu.h"
-> >  #include "dbus.h"
-> > +#ifdef CONFIG_OPENGL
-> > +#include <pixman.h>
-> > +#endif
-> >  #ifdef G_OS_UNIX
-> >  #include <gio/gunixfdlist.h>
-> >  #endif
-> > @@ -59,12 +62,15 @@ struct _DBusDisplayListener {
-> >
-> >      QemuDBusDisplay1Listener *proxy;
-> >
-> > +#ifdef CONFIG_OPENGL
-> > +    /* Keep track of the damage region */
-> > +    pixman_region32_t gl_damage;
-> > +#endif
-> > +
-> >      DisplayChangeListener dcl;
-> >      DisplaySurface *ds;
-> >      enum share_kind ds_share;
-> >
-> > -    int gl_updates;
-> > -
-> >      bool ds_mapped;
-> >      bool can_share_map;
-> >
-> > @@ -539,11 +545,16 @@ static void dbus_gl_refresh(DisplayChangeListener
-> *dcl)
-> >          return;
-> >      }
-> >
-> > -    if (ddl->gl_updates) {
-> > -        dbus_call_update_gl(dcl, 0, 0,
-> > -                            surface_width(ddl->ds),
-> surface_height(ddl->ds));
-> > -        ddl->gl_updates =3D 0;
-> > +    int n_rects =3D pixman_region32_n_rects(&ddl->gl_damage);
-> > +
-> > +    for (int i =3D 0; i < n_rects; i++) {
-> > +        pixman_box32_t *box;
-> > +        box =3D pixman_region32_rectangles(&ddl->gl_damage, NULL) + i;
-> > +        /* TODO: Add a UpdateList call to send multiple updates at onc=
-e
-> */
-> > +        dbus_call_update_gl(dcl, box->x1, box->y1,
-> > +                            box->x2 - box->x1, box->y2 - box->y1);
-> >      }
-> > +    pixman_region32_clear(&ddl->gl_damage);
-> >  }
-> >  #endif /* OPENGL */
-> >
-> > @@ -558,7 +569,10 @@ static void
-> dbus_gl_gfx_update(DisplayChangeListener *dcl,
-> >  {
-> >      DBusDisplayListener *ddl =3D container_of(dcl, DBusDisplayListener=
-,
-> dcl);
-> >
-> > -    ddl->gl_updates++;
-> > +    pixman_region32_t rect_region;
-> > +    pixman_region32_init_rect(&rect_region, x, y, w, h);
-> > +    pixman_region32_union(&ddl->gl_damage, &ddl->gl_damage,
-> &rect_region);
-> > +    pixman_region32_fini(&rect_region);
-> >  }
-> >  #endif
-> >
-> > @@ -738,6 +752,7 @@ dbus_display_listener_dispose(GObject *object)
-> >      g_clear_object(&ddl->d3d11_proxy);
-> >      g_clear_pointer(&ddl->peer_process, CloseHandle);
-> >  #ifdef CONFIG_OPENGL
-> > +    pixman_region32_fini(&ddl->gl_damage);
-> >      egl_fb_destroy(&ddl->fb);
-> >  #endif
-> >  #endif
-> > @@ -772,6 +787,9 @@
-> dbus_display_listener_class_init(DBusDisplayListenerClass *klass)
-> >  static void
-> >  dbus_display_listener_init(DBusDisplayListener *ddl)
-> >  {
-> > +#ifdef CONFIG_OPENGL
-> > +    pixman_region32_init(&ddl->gl_damage);
-> > +#endif
-> >  }
-> >
-> >  const char *
-> > --
-> > 2.41.0
-> >
->
->
+> diff --git a/include/exec/gdbstub.h b/include/exec/gdbstub.h
+> index 3115dc21c0..9b3da5b257 100644
+> --- a/include/exec/gdbstub.h
+> +++ b/include/exec/gdbstub.h
+> @@ -22,7 +22,7 @@ typedef int (*gdb_get_reg_cb)(CPUArchState *env, GByteA=
+rray *buf, int reg);
+>  typedef int (*gdb_set_reg_cb)(CPUArchState *env, uint8_t *buf, int reg);
+>  void gdb_register_coprocessor(CPUState *cpu,
+>                                gdb_get_reg_cb get_reg, gdb_set_reg_cb set=
+_reg,
+> -                              int num_regs, const char *xml, int g_pos);
+> +                              const GDBFeature *feature, int g_pos);
+>=20=20
+>  /**
+>   * gdbserver_start: start the gdb server
+> diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
+> index 6f2e0cb06f..ab75f6686b 100644
+> --- a/gdbstub/gdbstub.c
+> +++ b/gdbstub/gdbstub.c
+> @@ -471,7 +471,7 @@ static int gdb_write_register(CPUState *cpu, uint8_t =
+*mem_buf, int reg)
+>=20=20
+>  void gdb_register_coprocessor(CPUState *cpu,
+>                                gdb_get_reg_cb get_reg, gdb_set_reg_cb set=
+_reg,
+> -                              int num_regs, const char *xml, int g_pos)
+> +                              const GDBFeature *feature, int g_pos)
+>  {
+>      GDBRegisterState *s;
+>      GDBRegisterState **p;
 
---00000000000030b2750602e1bd53
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+As we are expecting gdb_find_static_feature to always succeed should we
+maybe:
 
-<div dir=3D"ltr">That is fine, it is not something we need urgently as we s=
-till need a kernel patch to make virtio gpu use the KMS atomic API in Mutte=
-r. Am I supposed to send a new patch with the &quot;Reviewed-by&quot; part =
-in the commit message or?<br></div><br><div class=3D"gmail_quote"><div dir=
-=3D"ltr" class=3D"gmail_attr">On Mon, Aug 14, 2023 at 3:02=E2=80=AFPM Marc-=
-Andr=C3=A9 Lureau &lt;<a href=3D"mailto:marcandre.lureau@redhat.com">marcan=
-dre.lureau@redhat.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_qu=
-ote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,20=
-4);padding-left:1ex">Hi<br>
-<br>
-On Mon, Aug 14, 2023 at 4:58=E2=80=AFPM Bilal Elmoussaoui &lt;<a href=3D"ma=
-ilto:belmouss@redhat.com" target=3D"_blank">belmouss@redhat.com</a>&gt; wro=
-te:<br>
-&gt;<br>
-&gt; Currently, when using `-display dbus,gl=3Don` all updates to the clien=
-t<br>
-&gt; become &quot;full scanout&quot; updates, meaning there is no way for t=
-he client to<br>
-&gt; limit damage regions to the display server.<br>
-&gt;<br>
-&gt; Instead of using an &quot;update count&quot;, this patch tracks the da=
-mage region<br>
-&gt; and propagates it to the client.<br>
-&gt;<br>
-&gt; This was less of an issue when clients were using GtkGLArea for<br>
-&gt; rendering,<br>
-&gt; as you&#39;d be doing full-surface redraw. To be efficient, the client=
- needs<br>
-&gt; both a DMA-BUF and the damage region to be updated.<br>
-&gt;<br>
-&gt; Co-authored-by: Christian Hergert &lt;<a href=3D"mailto:chergert@redha=
-t.com" target=3D"_blank">chergert@redhat.com</a>&gt;<br>
-&gt; Signed-off-by: Bilal Elmoussaoui &lt;<a href=3D"mailto:belmouss@redhat=
-.com" target=3D"_blank">belmouss@redhat.com</a>&gt;<br>
-<br>
-Reviewed-by: Marc-Andr=C3=A9 Lureau &lt;<a href=3D"mailto:marcandre.lureau@=
-redhat.com" target=3D"_blank">marcandre.lureau@redhat.com</a>&gt;<br>
-<br>
-It could be considered as a fix, but I think we can delay it for the<br>
-next release. Fine with you?<br>
-<br>
-&gt; ---<br>
-&gt;=C2=A0 ui/dbus-listener.c | 32 +++++++++++++++++++++++++-------<br>
-&gt;=C2=A0 1 file changed, 25 insertions(+), 7 deletions(-)<br>
-&gt;<br>
-&gt; diff --git a/ui/dbus-listener.c b/ui/dbus-listener.c<br>
-&gt; index 30917271ab..36548a7f52 100644<br>
-&gt; --- a/ui/dbus-listener.c<br>
-&gt; +++ b/ui/dbus-listener.c<br>
-&gt; @@ -26,6 +26,9 @@<br>
-&gt;=C2=A0 #include &quot;qapi/error.h&quot;<br>
-&gt;=C2=A0 #include &quot;sysemu/sysemu.h&quot;<br>
-&gt;=C2=A0 #include &quot;dbus.h&quot;<br>
-&gt; +#ifdef CONFIG_OPENGL<br>
-&gt; +#include &lt;pixman.h&gt;<br>
-&gt; +#endif<br>
-&gt;=C2=A0 #ifdef G_OS_UNIX<br>
-&gt;=C2=A0 #include &lt;gio/gunixfdlist.h&gt;<br>
-&gt;=C2=A0 #endif<br>
-&gt; @@ -59,12 +62,15 @@ struct _DBusDisplayListener {<br>
-&gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 QemuDBusDisplay1Listener *proxy;<br>
-&gt;<br>
-&gt; +#ifdef CONFIG_OPENGL<br>
-&gt; +=C2=A0 =C2=A0 /* Keep track of the damage region */<br>
-&gt; +=C2=A0 =C2=A0 pixman_region32_t gl_damage;<br>
-&gt; +#endif<br>
-&gt; +<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 DisplayChangeListener dcl;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 DisplaySurface *ds;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 enum share_kind ds_share;<br>
-&gt;<br>
-&gt; -=C2=A0 =C2=A0 int gl_updates;<br>
-&gt; -<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 bool ds_mapped;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 bool can_share_map;<br>
-&gt;<br>
-&gt; @@ -539,11 +545,16 @@ static void dbus_gl_refresh(DisplayChangeListene=
-r *dcl)<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 }<br>
-&gt;<br>
-&gt; -=C2=A0 =C2=A0 if (ddl-&gt;gl_updates) {<br>
-&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 dbus_call_update_gl(dcl, 0, 0,<br>
-&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 surface_width(ddl-&gt;ds), surface_height(ddl-=
-&gt;ds));<br>
-&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 ddl-&gt;gl_updates =3D 0;<br>
-&gt; +=C2=A0 =C2=A0 int n_rects =3D pixman_region32_n_rects(&amp;ddl-&gt;gl=
-_damage);<br>
-&gt; +<br>
-&gt; +=C2=A0 =C2=A0 for (int i =3D 0; i &lt; n_rects; i++) {<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 pixman_box32_t *box;<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 box =3D pixman_region32_rectangles(&amp;d=
-dl-&gt;gl_damage, NULL) + i;<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 /* TODO: Add a UpdateList call to send mu=
-ltiple updates at once */<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 dbus_call_update_gl(dcl, box-&gt;x1, box-=
-&gt;y1,<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 box-&gt;x2 - box-&gt;x1, box-&gt;y2 - box-&gt;=
-y1);<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 }<br>
-&gt; +=C2=A0 =C2=A0 pixman_region32_clear(&amp;ddl-&gt;gl_damage);<br>
-&gt;=C2=A0 }<br>
-&gt;=C2=A0 #endif /* OPENGL */<br>
-&gt;<br>
-&gt; @@ -558,7 +569,10 @@ static void dbus_gl_gfx_update(DisplayChangeListe=
-ner *dcl,<br>
-&gt;=C2=A0 {<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 DBusDisplayListener *ddl =3D container_of(dcl, DBu=
-sDisplayListener, dcl);<br>
-&gt;<br>
-&gt; -=C2=A0 =C2=A0 ddl-&gt;gl_updates++;<br>
-&gt; +=C2=A0 =C2=A0 pixman_region32_t rect_region;<br>
-&gt; +=C2=A0 =C2=A0 pixman_region32_init_rect(&amp;rect_region, x, y, w, h)=
-;<br>
-&gt; +=C2=A0 =C2=A0 pixman_region32_union(&amp;ddl-&gt;gl_damage, &amp;ddl-=
-&gt;gl_damage, &amp;rect_region);<br>
-&gt; +=C2=A0 =C2=A0 pixman_region32_fini(&amp;rect_region);<br>
-&gt;=C2=A0 }<br>
-&gt;=C2=A0 #endif<br>
-&gt;<br>
-&gt; @@ -738,6 +752,7 @@ dbus_display_listener_dispose(GObject *object)<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 g_clear_object(&amp;ddl-&gt;d3d11_proxy);<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 g_clear_pointer(&amp;ddl-&gt;peer_process, CloseHa=
-ndle);<br>
-&gt;=C2=A0 #ifdef CONFIG_OPENGL<br>
-&gt; +=C2=A0 =C2=A0 pixman_region32_fini(&amp;ddl-&gt;gl_damage);<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 egl_fb_destroy(&amp;ddl-&gt;fb);<br>
-&gt;=C2=A0 #endif<br>
-&gt;=C2=A0 #endif<br>
-&gt; @@ -772,6 +787,9 @@ dbus_display_listener_class_init(DBusDisplayListen=
-erClass *klass)<br>
-&gt;=C2=A0 static void<br>
-&gt;=C2=A0 dbus_display_listener_init(DBusDisplayListener *ddl)<br>
-&gt;=C2=A0 {<br>
-&gt; +#ifdef CONFIG_OPENGL<br>
-&gt; +=C2=A0 =C2=A0 pixman_region32_init(&amp;ddl-&gt;gl_damage);<br>
-&gt; +#endif<br>
-&gt;=C2=A0 }<br>
-&gt;<br>
-&gt;=C2=A0 const char *<br>
-&gt; --<br>
-&gt; 2.41.0<br>
-&gt;<br>
-<br>
-</blockquote></div>
+ g_assert(feature);
 
---00000000000030b2750602e1bd53--
+to avoid errors creeping in later (although I guess we'll seg almost
+immediately after)?
 
+> @@ -479,25 +479,26 @@ void gdb_register_coprocessor(CPUState *cpu,
+>      p =3D &cpu->gdb_regs;
+>      while (*p) {
+>          /* Check for duplicates.  */
+> -        if (strcmp((*p)->xml, xml) =3D=3D 0)
+> +        if (strcmp((*p)->xml, feature->xmlname) =3D=3D 0)
+>              return;
+>          p =3D &(*p)->next;
+>      }
+>=20=20
+>      s =3D g_new0(GDBRegisterState, 1);
+>      s->base_reg =3D cpu->gdb_num_regs;
+> -    s->num_regs =3D num_regs;
+> +    s->num_regs =3D feature->num_regs;
+>      s->get_reg =3D get_reg;
+>      s->set_reg =3D set_reg;
+> -    s->xml =3D xml;
+> +    s->xml =3D feature->xml;
+>=20=20
+>      /* Add to end of list.  */
+> -    cpu->gdb_num_regs +=3D num_regs;
+> +    cpu->gdb_num_regs +=3D feature->num_regs;
+>      *p =3D s;
+>      if (g_pos) {
+>          if (g_pos !=3D s->base_reg) {
+>              error_report("Error: Bad gdb register numbering for '%s', "
+> -                         "expected %d got %d", xml, g_pos, s->base_reg);
+> +                         "expected %d got %d", feature->xml,
+> +                         g_pos, s->base_reg);
+>          } else {
+>              cpu->gdb_num_g_regs =3D cpu->gdb_num_regs;
+>          }
+> diff --git a/target/arm/gdbstub.c b/target/arm/gdbstub.c
+> index cd35bac013..ab4ffe6264 100644
+> --- a/target/arm/gdbstub.c
+> +++ b/target/arm/gdbstub.c
+> @@ -522,14 +522,15 @@ void arm_cpu_register_gdb_regs_for_features(ARMCPU =
+*cpu)
+>           */
+>  #ifdef TARGET_AARCH64
+>          if (isar_feature_aa64_sve(&cpu->isar)) {
+> -            int nreg =3D arm_gen_dynamic_svereg_feature(cs, cs->gdb_num_=
+regs)->num_regs;
+> +            GDBFeature *feature =3D
+> +                arm_gen_dynamic_svereg_feature(cs, cs->gdb_num_regs);
+>              gdb_register_coprocessor(cs, aarch64_gdb_get_sve_reg,
+> -                                     aarch64_gdb_set_sve_reg, nreg,
+> -                                     "sve-registers.xml", 0);
+> +                                     aarch64_gdb_set_sve_reg, feature, 0=
+);
+>          } else {
+>              gdb_register_coprocessor(cs, aarch64_gdb_get_fpu_reg,
+>                                       aarch64_gdb_set_fpu_reg,
+> -                                     34, "aarch64-fpu.xml", 0);
+> +                                     gdb_find_static_feature("aarch64-fp=
+u.xml"),
+> +                                     0);
+>          }
+>          /*
+>           * Note that we report pauth information via the feature name
+> @@ -540,19 +541,22 @@ void arm_cpu_register_gdb_regs_for_features(ARMCPU =
+*cpu)
+>          if (isar_feature_aa64_pauth(&cpu->isar)) {
+>              gdb_register_coprocessor(cs, aarch64_gdb_get_pauth_reg,
+>                                       aarch64_gdb_set_pauth_reg,
+> -                                     4, "aarch64-pauth.xml", 0);
+> +                                     gdb_find_static_feature("aarch64-pa=
+uth.xml"),
+> +                                     0);
+>          }
+>  #endif
+>      } else {
+>          if (arm_feature(env, ARM_FEATURE_NEON)) {
+>              gdb_register_coprocessor(cs, vfp_gdb_get_reg, vfp_gdb_set_re=
+g,
+> -                                     49, "arm-neon.xml", 0);
+> +                                     gdb_find_static_feature("arm-neon.x=
+ml"),
+> +                                     0);
+>          } else if (cpu_isar_feature(aa32_simd_r32, cpu)) {
+>              gdb_register_coprocessor(cs, vfp_gdb_get_reg, vfp_gdb_set_re=
+g,
+> -                                     33, "arm-vfp3.xml", 0);
+> +                                     gdb_find_static_feature("arm-vfp3.x=
+ml"),
+> +                                     0);
+>          } else if (cpu_isar_feature(aa32_vfp_simd, cpu)) {
+>              gdb_register_coprocessor(cs, vfp_gdb_get_reg, vfp_gdb_set_re=
+g,
+> -                                     17, "arm-vfp.xml", 0);
+> +                                     gdb_find_static_feature("arm-vfp.xm=
+l"), 0);
+>          }
+>          if (!arm_feature(env, ARM_FEATURE_M)) {
+>              /*
+> @@ -560,29 +564,29 @@ void arm_cpu_register_gdb_regs_for_features(ARMCPU =
+*cpu)
+>               * expose to gdb.
+>               */
+>              gdb_register_coprocessor(cs, vfp_gdb_get_sysreg, vfp_gdb_set=
+_sysreg,
+> -                                     2, "arm-vfp-sysregs.xml", 0);
+> +                                     gdb_find_static_feature("arm-vfp-sy=
+sregs.xml"),
+> +                                     0);
+>          }
+>      }
+>      if (cpu_isar_feature(aa32_mve, cpu) && tcg_enabled()) {
+>          gdb_register_coprocessor(cs, mve_gdb_get_reg, mve_gdb_set_reg,
+> -                                 1, "arm-m-profile-mve.xml", 0);
+> +                                 gdb_find_static_feature("arm-m-profile-=
+mve.xml"),
+> +                                 0);
+>      }
+>      gdb_register_coprocessor(cs, arm_gdb_get_sysreg, arm_gdb_set_sysreg,
+> -                             arm_gen_dynamic_sysreg_feature(cs, cs->gdb_=
+num_regs)->num_regs,
+> -                             "system-registers.xml", 0);
+> +                             arm_gen_dynamic_sysreg_feature(cs, cs->gdb_=
+num_regs),
+> +                             0);
+>=20=20
+>  #ifdef CONFIG_TCG
+>      if (arm_feature(env, ARM_FEATURE_M) && tcg_enabled()) {
+>          gdb_register_coprocessor(cs,
+>              arm_gdb_get_m_systemreg, arm_gdb_set_m_systemreg,
+> -            arm_gen_dynamic_m_systemreg_feature(cs, cs->gdb_num_regs)->n=
+um_regs,
+> -            "arm-m-system.xml", 0);
+> +            arm_gen_dynamic_m_systemreg_feature(cs, cs->gdb_num_regs), 0=
+);
+>  #ifndef CONFIG_USER_ONLY
+>          if (arm_feature(env, ARM_FEATURE_M_SECURITY)) {
+>              gdb_register_coprocessor(cs,
+>                  arm_gdb_get_m_secextreg, arm_gdb_set_m_secextreg,
+> -                arm_gen_dynamic_m_secextreg_feature(cs, cs->gdb_num_regs=
+)->num_regs,
+> -                "arm-m-secext.xml", 0);
+> +                arm_gen_dynamic_m_secextreg_feature(cs, cs->gdb_num_regs=
+), 0);
+>          }
+>  #endif
+>      }
+> diff --git a/target/hexagon/cpu.c b/target/hexagon/cpu.c
+> index b54162cbeb..6732efc5de 100644
+> --- a/target/hexagon/cpu.c
+> +++ b/target/hexagon/cpu.c
+> @@ -342,8 +342,7 @@ static void hexagon_cpu_realize(DeviceState *dev, Err=
+or **errp)
+>=20=20
+>      gdb_register_coprocessor(cs, hexagon_hvx_gdb_read_register,
+>                               hexagon_hvx_gdb_write_register,
+> -                             NUM_VREGS + NUM_QREGS,
+> -                             "hexagon-hvx.xml", 0);
+> +                             gdb_find_static_feature("hexagon-hvx.xml"),=
+ 0);
+>=20=20
+>      qemu_init_vcpu(cs);
+>      cpu_reset(cs);
+> diff --git a/target/loongarch/gdbstub.c b/target/loongarch/gdbstub.c
+> index 0752fff924..2886b106bb 100644
+> --- a/target/loongarch/gdbstub.c
+> +++ b/target/loongarch/gdbstub.c
+> @@ -101,5 +101,5 @@ static int loongarch_gdb_set_fpu(CPULoongArchState *e=
+nv,
+>  void loongarch_cpu_register_gdb_regs_for_features(CPUState *cs)
+>  {
+>      gdb_register_coprocessor(cs, loongarch_gdb_get_fpu, loongarch_gdb_se=
+t_fpu,
+> -                             41, "loongarch-fpu.xml", 0);
+> +                             gdb_find_static_feature("loongarch-fpu.xml"=
+), 0);
+>  }
+> diff --git a/target/m68k/helper.c b/target/m68k/helper.c
+> index 0a1544cd68..675f2dcd5a 100644
+> --- a/target/m68k/helper.c
+> +++ b/target/m68k/helper.c
+> @@ -152,10 +152,10 @@ void m68k_cpu_init_gdb(M68kCPU *cpu)
+>=20=20
+>      if (m68k_feature(env, M68K_FEATURE_CF_FPU)) {
+>          gdb_register_coprocessor(cs, cf_fpu_gdb_get_reg, cf_fpu_gdb_set_=
+reg,
+> -                                 11, "cf-fp.xml", 18);
+> +                                 gdb_find_static_feature("cf-fp.xml"), 1=
+8);
+>      } else if (m68k_feature(env, M68K_FEATURE_FPU)) {
+> -        gdb_register_coprocessor(cs, m68k_fpu_gdb_get_reg,
+> -                                 m68k_fpu_gdb_set_reg, 11, "m68k-fp.xml"=
+, 18);
+> +        gdb_register_coprocessor(cs, m68k_fpu_gdb_get_reg, m68k_fpu_gdb_=
+set_reg,
+> +                                 gdb_find_static_feature("m68k-fp.xml"),=
+ 18);
+>      }
+>      /* TODO: Add [E]MAC registers.  */
+>  }
+> diff --git a/target/microblaze/cpu.c b/target/microblaze/cpu.c
+> index 47f37c2519..c804622ab9 100644
+> --- a/target/microblaze/cpu.c
+> +++ b/target/microblaze/cpu.c
+> @@ -298,8 +298,9 @@ static void mb_cpu_initfn(Object *obj)
+>=20=20
+>      cpu_set_cpustate_pointers(cpu);
+>      gdb_register_coprocessor(CPU(cpu), mb_cpu_gdb_read_stack_protect,
+> -                             mb_cpu_gdb_write_stack_protect, 2,
+> -                             "microblaze-stack-protect.xml", 0);
+> +                             mb_cpu_gdb_write_stack_protect,
+> +                             gdb_find_static_feature("microblaze-stack-p=
+rotect.xml"),
+> +                             0);
+>=20=20
+>      set_float_rounding_mode(float_round_nearest_even, &env->fp_status);
+>=20=20
+> diff --git a/target/ppc/gdbstub.c b/target/ppc/gdbstub.c
+> index adc647a24e..a0da320e66 100644
+> --- a/target/ppc/gdbstub.c
+> +++ b/target/ppc/gdbstub.c
+> @@ -603,22 +603,23 @@ void ppc_gdb_init(CPUState *cs, PowerPCCPUClass *pc=
+c)
+>  {
+>      if (pcc->insns_flags & PPC_FLOAT) {
+>          gdb_register_coprocessor(cs, gdb_get_float_reg, gdb_set_float_re=
+g,
+> -                                 33, "power-fpu.xml", 0);
+> +                                 gdb_find_static_feature("power-fpu.xml"=
+), 0);
+>      }
+>      if (pcc->insns_flags & PPC_ALTIVEC) {
+>          gdb_register_coprocessor(cs, gdb_get_avr_reg, gdb_set_avr_reg,
+> -                                 34, "power-altivec.xml", 0);
+> +                                 gdb_find_static_feature("power-altivec.=
+xml"),
+> +                                 0);
+>      }
+>      if (pcc->insns_flags & PPC_SPE) {
+>          gdb_register_coprocessor(cs, gdb_get_spe_reg, gdb_set_spe_reg,
+> -                                 34, "power-spe.xml", 0);
+> +                                 gdb_find_static_feature("power-spe.xml"=
+), 0);
+>      }
+>      if (pcc->insns_flags2 & PPC2_VSX) {
+>          gdb_register_coprocessor(cs, gdb_get_vsx_reg, gdb_set_vsx_reg,
+> -                                 32, "power-vsx.xml", 0);
+> +                                 gdb_find_static_feature("power-vsx.xml"=
+), 0);
+>      }
+>  #ifndef CONFIG_USER_ONLY
+>      gdb_register_coprocessor(cs, gdb_get_spr_reg, gdb_set_spr_reg,
+> -                             pcc->gdb_spr.num_regs, "power-spr.xml", 0);
+> +                             &pcc->gdb_spr, 0);
+>  #endif
+>  }
+> diff --git a/target/riscv/gdbstub.c b/target/riscv/gdbstub.c
+> index 70c60ad8b1..224c69ea99 100644
+> --- a/target/riscv/gdbstub.c
+> +++ b/target/riscv/gdbstub.c
+> @@ -317,29 +317,33 @@ void riscv_cpu_register_gdb_regs_for_features(CPUSt=
+ate *cs)
+>      CPURISCVState *env =3D &cpu->env;
+>      if (env->misa_ext & RVD) {
+>          gdb_register_coprocessor(cs, riscv_gdb_get_fpu, riscv_gdb_set_fp=
+u,
+> -                                 32, "riscv-64bit-fpu.xml", 0);
+> +                                 gdb_find_static_feature("riscv-64bit-fp=
+u.xml"),
+> +                                 0);
+>      } else if (env->misa_ext & RVF) {
+>          gdb_register_coprocessor(cs, riscv_gdb_get_fpu, riscv_gdb_set_fp=
+u,
+> -                                 32, "riscv-32bit-fpu.xml", 0);
+> +                                 gdb_find_static_feature("riscv-32bit-fp=
+u.xml"),
+> +                                 0);
+>      }
+>      if (env->misa_ext & RVV) {
+>          int base_reg =3D cs->gdb_num_regs;
+>          gdb_register_coprocessor(cs, riscv_gdb_get_vector,
+>                                   riscv_gdb_set_vector,
+> -                                 ricsv_gen_dynamic_vector_feature(cs, ba=
+se_reg)->num_regs,
+> -                                 "riscv-vector.xml", 0);
+> +                                 ricsv_gen_dynamic_vector_feature(cs, ba=
+se_reg),
+> +                                 0);
+>      }
+>      switch (env->misa_mxl_max) {
+>      case MXL_RV32:
+>          gdb_register_coprocessor(cs, riscv_gdb_get_virtual,
+>                                   riscv_gdb_set_virtual,
+> -                                 1, "riscv-32bit-virtual.xml", 0);
+> +                                 gdb_find_static_feature("riscv-32bit-vi=
+rtual.xml"),
+> +                                 0);
+>          break;
+>      case MXL_RV64:
+>      case MXL_RV128:
+>          gdb_register_coprocessor(cs, riscv_gdb_get_virtual,
+>                                   riscv_gdb_set_virtual,
+> -                                 1, "riscv-64bit-virtual.xml", 0);
+> +                                 gdb_find_static_feature("riscv-64bit-vi=
+rtual.xml"),
+> +                                 0);
+>          break;
+>      default:
+>          g_assert_not_reached();
+> @@ -348,7 +352,7 @@ void riscv_cpu_register_gdb_regs_for_features(CPUStat=
+e *cs)
+>      if (cpu->cfg.ext_icsr) {
+>          int base_reg =3D cs->gdb_num_regs;
+>          gdb_register_coprocessor(cs, riscv_gdb_get_csr, riscv_gdb_set_cs=
+r,
+> -                                 riscv_gen_dynamic_csr_feature(cs, base_=
+reg)->num_regs,
+> -                                 "riscv-csr.xml", 0);
+> +                                 riscv_gen_dynamic_csr_feature(cs, base_=
+reg),
+> +                                 0);
+>      }
+>  }
+> diff --git a/target/s390x/gdbstub.c b/target/s390x/gdbstub.c
+> index 6fbfd41bc8..02c388dc32 100644
+> --- a/target/s390x/gdbstub.c
+> +++ b/target/s390x/gdbstub.c
+> @@ -69,8 +69,6 @@ int s390_cpu_gdb_write_register(CPUState *cs, uint8_t *=
+mem_buf, int n)
+>  /* the values represent the positions in s390-acr.xml */
+>  #define S390_A0_REGNUM 0
+>  #define S390_A15_REGNUM 15
+> -/* total number of registers in s390-acr.xml */
+> -#define S390_NUM_AC_REGS 16
+>=20=20
+>  static int cpu_read_ac_reg(CPUS390XState *env, GByteArray *buf, int n)
+>  {
+> @@ -98,8 +96,6 @@ static int cpu_write_ac_reg(CPUS390XState *env, uint8_t=
+ *mem_buf, int n)
+>  #define S390_FPC_REGNUM 0
+>  #define S390_F0_REGNUM 1
+>  #define S390_F15_REGNUM 16
+> -/* total number of registers in s390-fpr.xml */
+> -#define S390_NUM_FP_REGS 17
+>=20=20
+>  static int cpu_read_fp_reg(CPUS390XState *env, GByteArray *buf, int n)
+>  {
+> @@ -132,8 +128,6 @@ static int cpu_write_fp_reg(CPUS390XState *env, uint8=
+_t *mem_buf, int n)
+>  #define S390_V15L_REGNUM 15
+>  #define S390_V16_REGNUM 16
+>  #define S390_V31_REGNUM 31
+> -/* total number of registers in s390-vx.xml */
+> -#define S390_NUM_VREGS 32
+>=20=20
+>  static int cpu_read_vreg(CPUS390XState *env, GByteArray *buf, int n)
+>  {
+> @@ -172,8 +166,6 @@ static int cpu_write_vreg(CPUS390XState *env, uint8_t=
+ *mem_buf, int n)
+>  /* the values represent the positions in s390-cr.xml */
+>  #define S390_C0_REGNUM 0
+>  #define S390_C15_REGNUM 15
+> -/* total number of registers in s390-cr.xml */
+> -#define S390_NUM_C_REGS 16
+>=20=20
+>  #ifndef CONFIG_USER_ONLY
+>  static int cpu_read_c_reg(CPUS390XState *env, GByteArray *buf, int n)
+> @@ -206,8 +198,6 @@ static int cpu_write_c_reg(CPUS390XState *env, uint8_=
+t *mem_buf, int n)
+>  #define S390_VIRT_CPUTM_REGNUM  1
+>  #define S390_VIRT_BEA_REGNUM    2
+>  #define S390_VIRT_PREFIX_REGNUM 3
+> -/* total number of registers in s390-virt.xml */
+> -#define S390_NUM_VIRT_REGS 4
+>=20=20
+>  static int cpu_read_virt_reg(CPUS390XState *env, GByteArray *mem_buf, in=
+t n)
+>  {
+> @@ -254,8 +244,6 @@ static int cpu_write_virt_reg(CPUS390XState *env, uin=
+t8_t *mem_buf, int n)
+>  #define S390_VIRT_KVM_PFT_REGNUM    1
+>  #define S390_VIRT_KVM_PFS_REGNUM    2
+>  #define S390_VIRT_KVM_PFC_REGNUM    3
+> -/* total number of registers in s390-virt-kvm.xml */
+> -#define S390_NUM_VIRT_KVM_REGS 4
+>=20=20
+>  static int cpu_read_virt_kvm_reg(CPUS390XState *env, GByteArray *mem_buf=
+, int n)
+>  {
+> @@ -303,8 +291,6 @@ static int cpu_write_virt_kvm_reg(CPUS390XState *env,=
+ uint8_t *mem_buf, int n)
+>  #define S390_GS_GSD_REGNUM      1
+>  #define S390_GS_GSSM_REGNUM     2
+>  #define S390_GS_GSEPLA_REGNUM   3
+> -/* total number of registers in s390-gs.xml */
+> -#define S390_NUM_GS_REGS 4
+>=20=20
+>  static int cpu_read_gs_reg(CPUS390XState *env, GByteArray *buf, int n)
+>  {
+> @@ -322,33 +308,33 @@ void s390_cpu_gdb_init(CPUState *cs)
+>  {
+>      gdb_register_coprocessor(cs, cpu_read_ac_reg,
+>                               cpu_write_ac_reg,
+> -                             S390_NUM_AC_REGS, "s390-acr.xml", 0);
+> +                             gdb_find_static_feature("s390-acr.xml"), 0);
+>=20=20
+>      gdb_register_coprocessor(cs, cpu_read_fp_reg,
+>                               cpu_write_fp_reg,
+> -                             S390_NUM_FP_REGS, "s390-fpr.xml", 0);
+> +                             gdb_find_static_feature("s390-fpr.xml"), 0);
+>=20=20
+>      gdb_register_coprocessor(cs, cpu_read_vreg,
+>                               cpu_write_vreg,
+> -                             S390_NUM_VREGS, "s390-vx.xml", 0);
+> +                             gdb_find_static_feature("s390-vx.xml"), 0);
+>=20=20
+>      gdb_register_coprocessor(cs, cpu_read_gs_reg,
+>                               cpu_write_gs_reg,
+> -                             S390_NUM_GS_REGS, "s390-gs.xml", 0);
+> +                             gdb_find_static_feature("s390-gs.xml"), 0);
+>=20=20
+>  #ifndef CONFIG_USER_ONLY
+>      gdb_register_coprocessor(cs, cpu_read_c_reg,
+>                               cpu_write_c_reg,
+> -                             S390_NUM_C_REGS, "s390-cr.xml", 0);
+> +                             gdb_find_static_feature("s390-cr.xml"), 0);
+>=20=20
+>      gdb_register_coprocessor(cs, cpu_read_virt_reg,
+>                               cpu_write_virt_reg,
+> -                             S390_NUM_VIRT_REGS, "s390-virt.xml", 0);
+> +                             gdb_find_static_feature("s390-virt.xml"), 0=
+);
+>=20=20
+>      if (kvm_enabled()) {
+>          gdb_register_coprocessor(cs, cpu_read_virt_kvm_reg,
+>                                   cpu_write_virt_kvm_reg,
+> -                                 S390_NUM_VIRT_KVM_REGS, "s390-virt-kvm.=
+xml",
+> +                                 gdb_find_static_feature("s390-virt-kvm.=
+xml"),
+>                                   0);
+>      }
+>  #endif
+
+Otherwise:
+
+Acked-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
