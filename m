@@ -2,162 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 066D277B858
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Aug 2023 14:12:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA82A77B8AE
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Aug 2023 14:33:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qVWPw-0003QH-40; Mon, 14 Aug 2023 08:11:28 -0400
+	id 1qVWjw-0007sg-B9; Mon, 14 Aug 2023 08:32:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <raphael.norwitz@nutanix.com>)
- id 1qVWPu-0003P1-0Q
- for qemu-devel@nongnu.org; Mon, 14 Aug 2023 08:11:26 -0400
-Received: from mx0b-002c1b01.pphosted.com ([148.163.155.12])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <raphael.norwitz@nutanix.com>)
- id 1qVWPr-0006E8-Gs
- for qemu-devel@nongnu.org; Mon, 14 Aug 2023 08:11:25 -0400
-Received: from pps.filterd (m0127844.ppops.net [127.0.0.1])
- by mx0b-002c1b01.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id
- 37E62kaZ003308; Mon, 14 Aug 2023 05:11:15 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
- from:to:cc:subject:date:message-id:references:in-reply-to
- :content-type:content-id:content-transfer-encoding:mime-version;
- s=proofpoint20171006; bh=/1mf3nUIXYkfbFWZcq3PpVxDdyaiwTM8brpwg7
- 2lT3g=; b=f/3OQith69a6Klpi7K/s5auNiQ8i+Vur6ztCSQEmDPPeg71aefGPgu
- uwmsYsUKk2pujiHxfelvJy1QXRjExJG4EXhkFX12YtKeQtYVGMov4YtbINOKR/yE
- QM3iexBYnAokxEGKKUCdmjTQtyq4i2lq9r16dvtxaAmmU3afaVu+yQf3YlPE/G+9
- lhel9MKQpUFr/NBgIY6yGeqGRVJSPIq9k3SGJk7RaAu07WBuebJdCxcm06VE+3RW
- fl9P964yBlSMN0AaimiJZw7H8taiwvNKQWsXn5v4eOHG9fhb0ugy1hbihj9r1GNz
- mTmNdW9SF2AQZ/tRr3dHizQV5bXEJBYQ==
-Received: from nam04-mw2-obe.outbound.protection.outlook.com
- (mail-mw2nam04lp2174.outbound.protection.outlook.com [104.47.73.174])
- by mx0b-002c1b01.pphosted.com (PPS) with ESMTPS id 3se9kvju8r-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 14 Aug 2023 05:11:15 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ceIWLHxKE606niTu3TNuLvRJYPK4QldSLx49bZbrd2NGDEU9o+BiHhEoCePeTJWUyl7U5HeFpdLR+SgYyNo/Oa9VCSd71rP6NxFEk3hmPo3RaRePVrTZ5M3eNse1HREjqmwKENo9h6uSEh/GpdzIGrS1o8mNdGgfDhrYaGwMaKlkOMVp0PDz5Dy096r/59hT9OAh/IUGLFMKj6vQvYu7fqEe321nfcAYNfiAcd1t8bi0CTatTwaG1Yrnl+NH0NKsm/7FNcHQ9TCq5/aNHcYRqG2IJthMMSxl7Y1FTZBDvh07stBSSDsjWV5h4Qxe49oD50aZVGzzfw7qpg8CaxWBWA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/1mf3nUIXYkfbFWZcq3PpVxDdyaiwTM8brpwg72lT3g=;
- b=A0nJ9KEsjvUl6LtRa8566V36XCp+qd+v9H5ZASPBFGuqZ4cufOBz5WAhwhx/serofOyT11zysybQKRUnUMvH0vcqrv3CHpnQX+qz8YMtpr/U4PxcihMMPD+vnTe45zrVweS8K7hZN7ALWRUYWJLexHClRfuo17ihBksY29P01uU+lYLzZZ5kak0s24iibHoytoJh6RAcdPS6JGUva2mOZd5miC7QtkofYtxelZoTNpAfpn6g2SjHjP1lN4ey8J3mUTQJ8xXHbia0izwmoVdYE3xSNK4uswNzNmfCfJY8ynTWHbKwbmc2Vq2u+WgRLn5rNaRN1D0VIxiIaH2byJGQZw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
- dkim=pass header.d=nutanix.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/1mf3nUIXYkfbFWZcq3PpVxDdyaiwTM8brpwg72lT3g=;
- b=dI8KH3TyyQNMzkxmPKhRPOSWtMoBNSShF0HkxJX5qpUrcTC/SKO8oqXJiEnGC6LfRVhN3l3F3znvEr/LZteEjrnCYKqajxm0zzPdPud+zF7vwbYkG8LBjlZYaFa8lP5Si+vtA2wvIBT9cVxjCBruS0NaVLg6srpmgnqKGn4NbthF6RMd8WXkrAHZfJBbzH2jZ+Mwt98IanRLSInkeQvmDADrrCNfj99CZahs56k/Q7I5K4sq3wM8gOpBhKeht7gA/uFpKVi7NoHfAelmuzfyyto2tBS7RL7q/jBgJrMy4nazbPMdH91xfThdJAO5/4VhmreIq4RdXVtaMt5PDzl/uQ==
-Received: from BL3PR02MB7938.namprd02.prod.outlook.com (2603:10b6:208:355::20)
- by DS0PR02MB9152.namprd02.prod.outlook.com (2603:10b6:8:13b::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.13; Mon, 14 Aug
- 2023 12:11:10 +0000
-Received: from BL3PR02MB7938.namprd02.prod.outlook.com
- ([fe80::1da1:b8:e69e:79c8]) by BL3PR02MB7938.namprd02.prod.outlook.com
- ([fe80::1da1:b8:e69e:79c8%3]) with mapi id 15.20.6699.013; Mon, 14 Aug 2023
- 12:11:10 +0000
-From: Raphael Norwitz <raphael.norwitz@nutanix.com>
-To: Li Feng <fengli@smartx.com>
-CC: "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
- "open list:All patches CC here" <qemu-devel@nongnu.org>
-Subject: Re: [PATCH 2/2] vhost: Add Error parameter to
- vhost_scsi_common_start()
-Thread-Topic: [PATCH 2/2] vhost: Add Error parameter to
- vhost_scsi_common_start()
-Thread-Index: AQHZxpTWEa4USYI5Q0GfBmENsbL8K6/pwMKA
-Date: Mon, 14 Aug 2023 12:11:09 +0000
-Message-ID: <C026BA6F-63E7-4BE8-8FC0-69372A14FFAB@nutanix.com>
-References: <20230804052954.2918915-1-fengli@smartx.com>
- <20230804052954.2918915-3-fengli@smartx.com>
-In-Reply-To: <20230804052954.2918915-3-fengli@smartx.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-mailer: Apple Mail (2.3696.120.41.1.1)
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BL3PR02MB7938:EE_|DS0PR02MB9152:EE_
-x-ms-office365-filtering-correlation-id: 8ead3398-30a8-41c4-9cc9-08db9cbf8be7
-x-proofpoint-crosstenant: true
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: WyPhBKS2qH6pEX8UMs+ZrB3dyDo+fii9Y0NXBqcBIciyBSxzetzFGI4u057QrkS3lbaqhs3B98RT91rn9IaX3h+DEg3nbKI+GG+vgj9W4Udt1gCAOvSq8hNSmc3sgvEcwrUQh2ysJIWU+E89Sbuk88iCkovNqm3hpNeU0qbKwtCnVJX1tdd4Af7MT+kqmsanHeyqR040cyauAoJoYfUvKsWkQz6zjE+rfXICyK0SR94O+CbgdUqv0VMHLB3DFdgoF/jEgDhelhiktlz/rGu5BDcNONmvkZifskYbl1xXbd3Zw1mP/4gL0ld/eQlLbt045s0yNmFKAYYAwwYl/0m4iZoKuUVdICDUsHOrlRydNh2/J+PSIxs0O1x6sHryAqCg+GhDESRt8EGpryxKeBAWTAiYWuuvU6VXTyL/SFzMh+m2OqB6E/UfKC/uMHz0tlXCdIQc7J/Jz1Uu1fQP1nqjEoRhynYPxJjgtulvQjDVaky7AhdkjQIPYRjwmhbBlwJAbR9bT66SBJREKN+PB2S6vYecomsjS2qFj+x7/ok2LaKfN0DEvlu467FfB9fEZp+9AOAkYoZcL2wn1bcLgdy82qmKz4J1o7qlZTaYuakT/a8wbUAPf4ntRN8ftmqQXrCZ1V6KaCSQkPGXuYT3ivcNVA==
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BL3PR02MB7938.namprd02.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(136003)(396003)(376002)(346002)(39860400002)(366004)(1800799006)(186006)(451199021)(71200400001)(478600001)(6486002)(91956017)(76116006)(6506007)(26005)(6512007)(53546011)(2616005)(66946007)(2906002)(8936002)(8676002)(64756008)(66556008)(66446008)(54906003)(66476007)(6916009)(316002)(4326008)(44832011)(41300700001)(5660300002)(38100700002)(38070700005)(122000001)(36756003)(33656002)(86362001)(83380400001)(45980500001);
- DIR:OUT; SFP:1102; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?bFFSTHdqRThtc2VCTGNhWmxWNXBCLzR0NEVkVlFIMGtGMWR1UEZKc0lUcUYv?=
- =?utf-8?B?WG10ZjJXQU9Ob3N5RlpYUEdXNnA1dDA1M3BRVllqUmZIQnFuenY4aHdqMnNE?=
- =?utf-8?B?TWExNzh4bDlZK2MrSTh1QWpVYnVmYkhUVGo2NnNOdTVhTXFsNUt0YnNaSlYv?=
- =?utf-8?B?YWRDbzluNEJxOE9uWmp0TTlyTjlMeHMyMjgxMm1SZ0tESGFxdUhMa3BuZlRl?=
- =?utf-8?B?dHR2UkJSR01rcExqUDJaNTZENkx6TlBrVmNIS1RObUtUOGZoMmFEaDVIL1M1?=
- =?utf-8?B?SEQxUGF3QUtha1hhYmlJbEpOVWI0RDYwa3Q3bjlsSGptcFAzS09sYmVzaHUz?=
- =?utf-8?B?V2drd2l2OG5Mb3UxYzRQVkppVUl2YklMalZWLy9qckNXd2czSkQzVW5kWDZp?=
- =?utf-8?B?azUxRWVmQ0dqc0JjWW1UQnUyaXBnNk9YRkNJYkdDOFI4bHVCbFBpMkxvcGVD?=
- =?utf-8?B?WUdlQ0Y1Q0Npd3RnUzVSVTJzcmFBQ0Y1ckgxMGc3TzdiV3VlL2dRNWhyL3oy?=
- =?utf-8?B?WlR2L3UwMTBiRVZIWjQxYitGclVPNUtWK051cEQ5UE5pRHBhcXFPdzNVa2I1?=
- =?utf-8?B?MHMxRlVjSkgvNjF4UCs1OTBsemU5RHBlbU9EY3ZIQU82bGo2dURzUTJxN3Rl?=
- =?utf-8?B?SUNJNVZwL3RYMXhiNlAxSjFLVk85aFhOL21hMitWWHV5N1dLRytScVY3dGpH?=
- =?utf-8?B?N2pEZlpSYVQ5TkZTWDE3Ni9tdGxzSC8zTzRpeWhsa1dMa2N1cloxK2pCQitY?=
- =?utf-8?B?aDFBb3BwR3VjcDB0QkU1UVIyZUZnTzdJT1ltOGlkeGNsZml4UzNpQjhJVCtv?=
- =?utf-8?B?Nmx5ZGVYVkp5R0VuTjJ4Wk1kTkN6UFRqM2paWVJldm4rRTNEd0J5VEkrVUxl?=
- =?utf-8?B?SVdETEdNWGlkMS9EK2FPVjlpUExzZkRNTzRmZmFIQmN3MlpVMENuZFdPdktV?=
- =?utf-8?B?ZXhST25OOG1sSFRzaFJHME04UnFaK01IMlBYOW16ZlFobXlpbkNTNy9idjh3?=
- =?utf-8?B?STBQVi81K3dFV1JQTlZvbk95SEZ0ZTlrdEIvQkRpdnRpem04eUlEaVpyMjN1?=
- =?utf-8?B?Z0Y3Zi8vTnQ3M24zSEJQUFBneWdmbzVadFo5Uk1DaTZrb0VQK3MxR3AySGxZ?=
- =?utf-8?B?NGViS0lvRFNQcXgzdDZtWjRYeWJJTGl6dDVOMkZBQi9KT0hlVkFIRkZIQUtM?=
- =?utf-8?B?U0h5ZUNMZm9XYi9uY1RlOEhYdGlmczg5czJIcUhFUm9odmxBSHJ5TVNBZm01?=
- =?utf-8?B?YnNPRVdrSm5lZkIzMkhVSDlVaWU1a08xU29hN1ZkbXZVTXpaK3ZkbzBsVHlt?=
- =?utf-8?B?Wkw0TDlpNEJuelhSZGx2TTRyMmovM3JHVTBEOHZaS256V2NGZzB0ZWQ5aGU4?=
- =?utf-8?B?K25PbGF1dVkyWStaSG5oS2RpL3d5UFN2Q0lFQUdnWUJPWXc2T0lqbnc3Vm9i?=
- =?utf-8?B?Q2pnQ1lrUEtYaEM2eEVNMTZCaW1TeExiWmdscWRZMys5a1dpazVqeWdjRWZT?=
- =?utf-8?B?alBpYVBrMU13NXpqVGpMT1oyVG5sZ0VreXp4dUZ3RFZYcWkwdk9GdlZxN2xp?=
- =?utf-8?B?K0xtczJLcjdkV2kyMHZrNGFLQnpKRHVCdlY5b3hmdFJhSUxzbGU4L0tGUWxH?=
- =?utf-8?B?RDRRUjlubU1yRGZvcENqay9TV1czTjZaczMvcEdSVUpIbGdYZmhCUWY2TjQ1?=
- =?utf-8?B?bzZZd3ZjbHZOcDlWMjlWUUVRQjd2dk1yTmZiNkFybUVSdUlDUGJBQzRFd1lY?=
- =?utf-8?B?eXJjSUsvT3lSd01FMTZrZ0ZOZWxmR1lLVEszcGpkQWRJd2FlVzFXdCsrTGVn?=
- =?utf-8?B?K2xUb3pza3U3anRrSUUyMlpUcHlxRyt2eXZ3c2MrTE9qRzY0L1RidmtzQUVH?=
- =?utf-8?B?MDljN2tDOSt6ZytHbTR5Q0RWNFdnY2ZxWHVnQS9IU2JOQmxUY1BBc3FGdGc1?=
- =?utf-8?B?YjIxblVaMkFzYjhDd3ZZYVRrUERJeUZ3L0Frb2JtaGFmdnpsRVdwVUtZc3pL?=
- =?utf-8?B?cFlmK205WTRlT215YzdqZTZGN0NKd09IMnlrSit2eG5qY3YxODJwOW5YRHFx?=
- =?utf-8?B?clFrWUkwclZPcjFyMC9qRk9vMXlIZGthK3d1OHdlcEVJS1pBalBrVTg3MWk4?=
- =?utf-8?B?S0diaXp3b1ZzMjFOUkJRcGZheWliaTlrNEZSUFVOMUJGSTBhTVgxVTFYWXYy?=
- =?utf-8?B?ZEE9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <0053733215229A4FB8318B124400A98D@namprd02.prod.outlook.com>
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
+ id 1qVWju-0007sP-AC
+ for qemu-devel@nongnu.org; Mon, 14 Aug 2023 08:32:06 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
+ id 1qVWjr-0003Uc-Sw
+ for qemu-devel@nongnu.org; Mon, 14 Aug 2023 08:32:06 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-3fe1d9a8ec6so30070415e9.1
+ for <qemu-devel@nongnu.org>; Mon, 14 Aug 2023 05:32:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1692016322; x=1692621122;
+ h=content-transfer-encoding:in-reply-to:organization:content-language
+ :references:cc:to:subject:reply-to:user-agent:mime-version:date
+ :message-id:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=V/UOqS+HhZrMu8PzAb0tEXD4nfcXDySePmrT2R5NWug=;
+ b=IVooglF1X4BR1byjgL2Z6tXaw/l8bco8/1nqhe3kxDeAf7FSt+WESlIkQFylednKdC
+ 8jplxa6dpGsOoPlCYxQ1SA2B3GHkNajF55t0gC9FI1s+WE2UV5rfB+oSosqCA1+kHdjM
+ Ag7XMlpDZQ/iogebmkpd5USKa7lCWCg1Wuvu61gybjS3AqDwu8N4KsbeMgxGH+s2Pxvc
+ sZy/LJ64AmQrWeKAkvzBKEcQ9I5hPvprOnbWFlsykpes+ylkMQ9p145/YtaWs+OewOQ/
+ 577J3L25oCYVaAlbKNUrn+30TJrOIWOiSP3zR+rXBCC533JtGgdku2vecSLR+uek2IiV
+ xOMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1692016322; x=1692621122;
+ h=content-transfer-encoding:in-reply-to:organization:content-language
+ :references:cc:to:subject:reply-to:user-agent:mime-version:date
+ :message-id:from:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=V/UOqS+HhZrMu8PzAb0tEXD4nfcXDySePmrT2R5NWug=;
+ b=bqxF8Q6scJFwU9g8IeG50OxNmP7dS3YH//YXyG/CbC8FCN+sCFzapPha/gVSvrwtih
+ CGzndQVSojEdkPSWtja0er6jrcfhVvMqR82PJmyIrAuDf4SgJGN4HiqYUZfRngKwngWd
+ O0yQRPyHcPn3LLCjpk6LLTObPsahqFKLpCD8WgNBVng15JsZ3v0ocUblrbNji/Epg9fc
+ sxQKA1nv+OnneXy/OCiZe7xpOcu+rSmIn8xf3f3kFbeGxugqSZ8XY+Sb1JnHmrZRCypb
+ fXTOu5drvpSbIyf4wvcTXF+JjRdhi4Ka89bBwlEDsvSpXRDx7amB0UWyhoIW00MIy10D
+ atKA==
+X-Gm-Message-State: AOJu0YwEqjnCROFR2V1vlBkqTxZju7AEKrcgG+UVHWO/y9ejkJgULJyc
+ /v0vIWMP5eoYHA/i79xr7N8=
+X-Google-Smtp-Source: AGHT+IGxUMKaLrIyUXsODDpoe77K8GyxfOaZ4AZQ4FyMsM4MDtTf62gb7Lb7cgeqmX+IS2ejLmjBdA==
+X-Received: by 2002:adf:ec0b:0:b0:317:650d:f7ce with SMTP id
+ x11-20020adfec0b000000b00317650df7cemr7625342wrn.29.1692016321647; 
+ Mon, 14 Aug 2023 05:32:01 -0700 (PDT)
+Received: from [192.168.17.102] (54-240-197-234.amazon.com. [54.240.197.234])
+ by smtp.gmail.com with ESMTPSA id
+ t18-20020adff612000000b00317b0155502sm14337513wrp.8.2023.08.14.05.32.00
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 14 Aug 2023 05:32:01 -0700 (PDT)
+From: Paul Durrant <xadimgnik@gmail.com>
+X-Google-Original-From: Paul Durrant <paul@xen.org>
+Message-ID: <23529a16-3a7e-287a-4da8-eebf53d5a95d@xen.org>
+Date: Mon, 14 Aug 2023 13:31:59 +0100
 MIME-Version: 1.0
-X-OriginatorOrg: nutanix.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BL3PR02MB7938.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8ead3398-30a8-41c4-9cc9-08db9cbf8be7
-X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Aug 2023 12:11:09.9504 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: bb047546-786f-4de1-bd75-24e5b6f79043
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: XKb3Oypm8FSlJynFyPt0/wqdpdFQ1MMSCNMJUFvE/snaE3LLlZ9W67e20oy2VpPYggTS3uu7z5ReZUCPxoFiDnH7tDfPoKpKoZ5v+ufkoEc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR02MB9152
-X-Proofpoint-GUID: 73a2ugz2HReld1xMjIruCGrYCrQ5FkuR
-X-Proofpoint-ORIG-GUID: 73a2ugz2HReld1xMjIruCGrYCrQ5FkuR
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-08-14_07,2023-08-10_01,2023-05-22_02
-X-Proofpoint-Spam-Reason: safe
-Received-SPF: pass client-ip=148.163.155.12;
- envelope-from=raphael.norwitz@nutanix.com; helo=mx0b-002c1b01.pphosted.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [RFC PATCH post-8.1] hw/xen: Clean up event channel 'type_val'
+ handling to use union
+To: David Woodhouse <dwmw2@infradead.org>, qemu-devel <qemu-devel@nongnu.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+References: <2d5e23d21fdbd148d9b0d9e4c00145217c4ddd17.camel@infradead.org>
+Content-Language: en-US
+Organization: Xen Project
+In-Reply-To: <2d5e23d21fdbd148d9b0d9e4c00145217c4ddd17.camel@infradead.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=xadimgnik@gmail.com; helo=mail-wm1-x32b.google.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ NICE_REPLY_A=-2.265, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -170,142 +98,327 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: paul@xen.org
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-VGhhbmtzIGZvciB0aGUgY2xlYW51cCEgQSBmZXcgY29tbWVudHMuDQoNCj4gT24gQXVnIDQsIDIw
-MjMsIGF0IDE6MjkgQU0sIExpIEZlbmcgPGZlbmdsaUBzbWFydHguY29tPiB3cm90ZToNCj4gDQo+
-IEFkZCBhIEVycm9yIHBhcmFtZXRlciB0byByZXBvcnQgdGhlIHJlYWwgZXJyb3IsIGxpa2Ugdmhv
-c3QtdXNlci1ibGsuDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBMaSBGZW5nIDxmZW5nbGlAc21hcnR4
-LmNvbT4NCj4gLS0tDQo+IGh3L3Njc2kvdmhvc3Qtc2NzaS1jb21tb24uYyAgICAgICAgICAgfCAx
-NyArKysrKysrKysrLS0tLS0tLQ0KPiBody9zY3NpL3Zob3N0LXNjc2kuYyAgICAgICAgICAgICAg
-ICAgIHwgIDUgKysrLS0NCj4gaHcvc2NzaS92aG9zdC11c2VyLXNjc2kuYyAgICAgICAgICAgICB8
-IDE0ICsrKysrKysrLS0tLS0tDQo+IGluY2x1ZGUvaHcvdmlydGlvL3Zob3N0LXNjc2ktY29tbW9u
-LmggfCAgMiArLQ0KPiA0IGZpbGVzIGNoYW5nZWQsIDIyIGluc2VydGlvbnMoKyksIDE2IGRlbGV0
-aW9ucygtKQ0KPiANCj4gZGlmZiAtLWdpdCBhL2h3L3Njc2kvdmhvc3Qtc2NzaS1jb21tb24uYyBi
-L2h3L3Njc2kvdmhvc3Qtc2NzaS1jb21tb24uYw0KPiBpbmRleCBhNjFjZDBlOTA3Li4zOTI1ODdk
-ZmI1IDEwMDY0NA0KPiAtLS0gYS9ody9zY3NpL3Zob3N0LXNjc2ktY29tbW9uLmMNCj4gKysrIGIv
-aHcvc2NzaS92aG9zdC1zY3NpLWNvbW1vbi5jDQo+IEBAIC0xNiw2ICsxNiw3IEBADQo+ICAqLw0K
-PiANCj4gI2luY2x1ZGUgInFlbXUvb3NkZXAuaCINCj4gKyNpbmNsdWRlICJxYXBpL2Vycm9yLmgi
-DQo+ICNpbmNsdWRlICJxZW11L2Vycm9yLXJlcG9ydC5oIg0KPiAjaW5jbHVkZSAicWVtdS9tb2R1
-bGUuaCINCj4gI2luY2x1ZGUgImh3L3ZpcnRpby92aG9zdC5oIg0KPiBAQCAtMjUsNyArMjYsNyBA
-QA0KPiAjaW5jbHVkZSAiaHcvdmlydGlvL3ZpcnRpby1hY2Nlc3MuaCINCj4gI2luY2x1ZGUgImh3
-L2Z3LXBhdGgtcHJvdmlkZXIuaCINCj4gDQo+IC1pbnQgdmhvc3Rfc2NzaV9jb21tb25fc3RhcnQo
-Vkhvc3RTQ1NJQ29tbW9uICp2c2MpDQo+ICtpbnQgdmhvc3Rfc2NzaV9jb21tb25fc3RhcnQoVkhv
-c3RTQ1NJQ29tbW9uICp2c2MsIEVycm9yICoqZXJycCkNCj4gew0KPiAgICAgaW50IHJldCwgaTsN
-Cj4gICAgIFZpcnRJT0RldmljZSAqdmRldiA9IFZJUlRJT19ERVZJQ0UodnNjKTsNCj4gQEAgLTM1
-LDE4ICszNiwxOSBAQCBpbnQgdmhvc3Rfc2NzaV9jb21tb25fc3RhcnQoVkhvc3RTQ1NJQ29tbW9u
-ICp2c2MpDQo+ICAgICBWaXJ0SU9TQ1NJQ29tbW9uICp2cyA9IChWaXJ0SU9TQ1NJQ29tbW9uICop
-dnNjOw0KPiANCj4gICAgIGlmICghay0+c2V0X2d1ZXN0X25vdGlmaWVycykgew0KPiAtICAgICAg
-ICBlcnJvcl9yZXBvcnQoImJpbmRpbmcgZG9lcyBub3Qgc3VwcG9ydCBndWVzdCBub3RpZmllcnMi
-KTsNCj4gKyAgICAgICAgZXJyb3Jfc2V0ZyhlcnJwLCAiYmluZGluZyBkb2VzIG5vdCBzdXBwb3J0
-IGd1ZXN0IG5vdGlmaWVycyIpOw0KPiAgICAgICAgIHJldHVybiAtRU5PU1lTOw0KPiAgICAgfQ0K
-PiANCj4gICAgIHJldCA9IHZob3N0X2Rldl9lbmFibGVfbm90aWZpZXJzKCZ2c2MtPmRldiwgdmRl
-dik7DQo+ICAgICBpZiAocmV0IDwgMCkgew0KPiArICAgICAgICBlcnJvcl9zZXRnX2Vycm5vKGVy
-cnAsIC1yZXQsICJFcnJvciBlbmFibGluZyBob3N0IG5vdGlmaWVycyIpOw0KPiAgICAgICAgIHJl
-dHVybiByZXQ7DQo+ICAgICB9DQo+IA0KPiAgICAgcmV0ID0gay0+c2V0X2d1ZXN0X25vdGlmaWVy
-cyhxYnVzLT5wYXJlbnQsIHZzYy0+ZGV2Lm52cXMsIHRydWUpOw0KPiAgICAgaWYgKHJldCA8IDAp
-IHsNCj4gLSAgICAgICAgZXJyb3JfcmVwb3J0KCJFcnJvciBiaW5kaW5nIGd1ZXN0IG5vdGlmaWVy
-Iik7DQo+ICsgICAgICAgIGVycm9yX3NldGdfZXJybm8oZXJycCwgLXJldCwgIkVycm9yIGJpbmRp
-bmcgZ3Vlc3Qgbm90aWZpZXIiKTsNCj4gICAgICAgICBnb3RvIGVycl9ob3N0X25vdGlmaWVyczsN
-Cj4gICAgIH0NCj4gDQo+IEBAIC01NCw3ICs1Niw3IEBAIGludCB2aG9zdF9zY3NpX2NvbW1vbl9z
-dGFydChWSG9zdFNDU0lDb21tb24gKnZzYykNCj4gDQo+ICAgICByZXQgPSB2aG9zdF9kZXZfcHJl
-cGFyZV9pbmZsaWdodCgmdnNjLT5kZXYsIHZkZXYpOw0KPiAgICAgaWYgKHJldCA8IDApIHsNCj4g
-LSAgICAgICAgZXJyb3JfcmVwb3J0KCJFcnJvciBzZXR0aW5nIGluZmxpZ2h0IGZvcm1hdDogJWQi
-LCAtcmV0KTsNCg0KQ3VyaW91cyB3aHkgeW914oCZcmUgYWRkaW5nIHRoZSBlcnJvciB2YWx1ZSB0
-byB0aGUgc3RyaW5nLiBJc27igJl0IGl0IHJlZHVuZGFudCBzaW5jZSB3ZSBwYXNzIGl0IGluIGFz
-IHRoZSBzZWNvbmQgcGFyYW0/DQoNCj4gKyAgICAgICAgZXJyb3Jfc2V0Z19lcnJubyhlcnJwLCAt
-cmV0LCAiRXJyb3Igc2V0dGluZyBpbmZsaWdodCBmb3JtYXQ6ICVkIiwgLXJldCk7DQo+ICAgICAg
-ICAgZ290byBlcnJfZ3Vlc3Rfbm90aWZpZXJzOw0KPiAgICAgfQ0KPiANCj4gQEAgLTY0LDIxICs2
-NiwyMiBAQCBpbnQgdmhvc3Rfc2NzaV9jb21tb25fc3RhcnQoVkhvc3RTQ1NJQ29tbW9uICp2c2Mp
-DQo+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB2cy0+Y29uZi52aXJ0
-cXVldWVfc2l6ZSwNCj4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHZz
-Yy0+aW5mbGlnaHQpOw0KPiAgICAgICAgICAgICBpZiAocmV0IDwgMCkgew0KPiAtICAgICAgICAg
-ICAgICAgIGVycm9yX3JlcG9ydCgiRXJyb3IgZ2V0dGluZyBpbmZsaWdodDogJWQiLCAtcmV0KTsN
-Cg0KRGl0dG8NCg0KPiArICAgICAgICAgICAgICAgIGVycm9yX3NldGdfZXJybm8oZXJycCwgLXJl
-dCwgIkVycm9yIGdldHRpbmcgaW5mbGlnaHQ6ICVkIiwNCj4gKyAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgIC1yZXQpOw0KPiAgICAgICAgICAgICAgICAgZ290byBlcnJfZ3Vlc3Rfbm90
-aWZpZXJzOw0KPiAgICAgICAgICAgICB9DQo+ICAgICAgICAgfQ0KPiANCj4gICAgICAgICByZXQg
-PSB2aG9zdF9kZXZfc2V0X2luZmxpZ2h0KCZ2c2MtPmRldiwgdnNjLT5pbmZsaWdodCk7DQo+ICAg
-ICAgICAgaWYgKHJldCA8IDApIHsNCj4gLSAgICAgICAgICAgIGVycm9yX3JlcG9ydCgiRXJyb3Ig
-c2V0dGluZyBpbmZsaWdodDogJWQiLCAtcmV0KTsNCj4gKyAgICAgICAgICAgIGVycm9yX3NldGdf
-ZXJybm8oZXJycCwgLXJldCwgIkVycm9yIHNldHRpbmcgaW5mbGlnaHQ6ICVkIiwgLXJldCk7DQo+
-ICAgICAgICAgICAgIGdvdG8gZXJyX2d1ZXN0X25vdGlmaWVyczsNCj4gICAgICAgICB9DQo+ICAg
-ICB9DQo+IA0KPiAgICAgcmV0ID0gdmhvc3RfZGV2X3N0YXJ0KCZ2c2MtPmRldiwgdmRldiwgdHJ1
-ZSk7DQo+ICAgICBpZiAocmV0IDwgMCkgew0KPiAtICAgICAgICBlcnJvcl9yZXBvcnQoIkVycm9y
-IHN0YXJ0IHZob3N0IGRldiIpOw0KDQrigJxFcnJvciBzdGFydGluZyB2aG9zdCBkZXbigJ0/DQoN
-Cj4gKyAgICAgICAgZXJyb3Jfc2V0Z19lcnJubyhlcnJwLCAtcmV0LCAiRXJyb3Igc3RhcnQgdmhv
-c3QgZGV2Iik7DQo+ICAgICAgICAgZ290byBlcnJfZ3Vlc3Rfbm90aWZpZXJzOw0KPiAgICAgfQ0K
-PiANCj4gZGlmZiAtLWdpdCBhL2h3L3Njc2kvdmhvc3Qtc2NzaS5jIGIvaHcvc2NzaS92aG9zdC1z
-Y3NpLmMNCj4gaW5kZXggNDQzZjY3ZGFhNC4uMDFhM2FiNDI3NyAxMDA2NDQNCj4gLS0tIGEvaHcv
-c2NzaS92aG9zdC1zY3NpLmMNCj4gKysrIGIvaHcvc2NzaS92aG9zdC1zY3NpLmMNCj4gQEAgLTc1
-LDYgKzc1LDcgQEAgc3RhdGljIGludCB2aG9zdF9zY3NpX3N0YXJ0KFZIb3N0U0NTSSAqcykNCj4g
-ICAgIGludCByZXQsIGFiaV92ZXJzaW9uOw0KPiAgICAgVkhvc3RTQ1NJQ29tbW9uICp2c2MgPSBW
-SE9TVF9TQ1NJX0NPTU1PTihzKTsNCj4gICAgIGNvbnN0IFZob3N0T3BzICp2aG9zdF9vcHMgPSB2
-c2MtPmRldi52aG9zdF9vcHM7DQo+ICsgICAgRXJyb3IgKmxvY2FsX2VyciA9IE5VTEw7DQo+IA0K
-PiAgICAgcmV0ID0gdmhvc3Rfb3BzLT52aG9zdF9zY3NpX2dldF9hYmlfdmVyc2lvbigmdnNjLT5k
-ZXYsICZhYmlfdmVyc2lvbik7DQo+ICAgICBpZiAocmV0IDwgMCkgew0KPiBAQCAtODgsMTQgKzg5
-LDE0IEBAIHN0YXRpYyBpbnQgdmhvc3Rfc2NzaV9zdGFydChWSG9zdFNDU0kgKnMpDQo+ICAgICAg
-ICAgcmV0dXJuIC1FTk9TWVM7DQo+ICAgICB9DQo+IA0KPiAtICAgIHJldCA9IHZob3N0X3Njc2lf
-Y29tbW9uX3N0YXJ0KHZzYyk7DQo+ICsgICAgcmV0ID0gdmhvc3Rfc2NzaV9jb21tb25fc3RhcnQo
-dnNjLCAmbG9jYWxfZXJyKTsNCj4gICAgIGlmIChyZXQgPCAwKSB7DQo+ICAgICAgICAgcmV0dXJu
-IHJldDsNCj4gICAgIH0NCj4gDQo+ICAgICByZXQgPSB2aG9zdF9zY3NpX3NldF9lbmRwb2ludChz
-KTsNCj4gICAgIGlmIChyZXQgPCAwKSB7DQo+IC0gICAgICAgIGVycm9yX3JlcG9ydCgiRXJyb3Ig
-c2V0dGluZyB2aG9zdC1zY3NpIGVuZHBvaW50Iik7DQo+ICsgICAgICAgIGVycm9yX3JlcG9ydGZf
-ZXJyKGxvY2FsX2VyciwgIkVycm9yIHNldHRpbmcgdmhvc3Qtc2NzaSBlbmRwb2ludCIpOw0KPiAg
-ICAgICAgIHZob3N0X3Njc2lfY29tbW9uX3N0b3AodnNjKTsNCj4gICAgIH0NCj4gDQo+IGRpZmYg
-LS1naXQgYS9ody9zY3NpL3Zob3N0LXVzZXItc2NzaS5jIGIvaHcvc2NzaS92aG9zdC11c2VyLXNj
-c2kuYw0KPiBpbmRleCBhN2ZhOGU4ZGYyLi5kMzY4MTcxZTI4IDEwMDY0NA0KPiAtLS0gYS9ody9z
-Y3NpL3Zob3N0LXVzZXItc2NzaS5jDQo+ICsrKyBiL2h3L3Njc2kvdmhvc3QtdXNlci1zY3NpLmMN
-Cj4gQEAgLTQzLDEyICs0MywxMiBAQCBlbnVtIFZob3N0VXNlclByb3RvY29sRmVhdHVyZSB7DQo+
-ICAgICBWSE9TVF9VU0VSX1BST1RPQ09MX0ZfUkVTRVRfREVWSUNFID0gMTMsDQo+IH07DQo+IA0K
-PiAtc3RhdGljIGludCB2aG9zdF91c2VyX3Njc2lfc3RhcnQoVkhvc3RVc2VyU0NTSSAqcykNCj4g
-K3N0YXRpYyBpbnQgdmhvc3RfdXNlcl9zY3NpX3N0YXJ0KFZIb3N0VXNlclNDU0kgKnMsIEVycm9y
-ICoqZXJycCkNCj4gew0KPiAgICAgVkhvc3RTQ1NJQ29tbW9uICp2c2MgPSBWSE9TVF9TQ1NJX0NP
-TU1PTihzKTsNCj4gICAgIGludCByZXQ7DQo+IA0KPiAtICAgIHJldCA9IHZob3N0X3Njc2lfY29t
-bW9uX3N0YXJ0KHZzYyk7DQo+ICsgICAgcmV0ID0gdmhvc3Rfc2NzaV9jb21tb25fc3RhcnQodnNj
-LCBlcnJwKTsNCj4gICAgIHMtPnN0YXJ0ZWRfdnUgPSAocmV0IDwgMCA/IGZhbHNlIDogdHJ1ZSk7
-DQo+IA0KPiAgICAgcmV0dXJuIHJldDsNCj4gQEAgLTczLDYgKzczLDcgQEAgc3RhdGljIHZvaWQg
-dmhvc3RfdXNlcl9zY3NpX3NldF9zdGF0dXMoVmlydElPRGV2aWNlICp2ZGV2LCB1aW50OF90IHN0
-YXR1cykNCj4gICAgIFZIb3N0U0NTSUNvbW1vbiAqdnNjID0gVkhPU1RfU0NTSV9DT01NT04ocyk7
-DQo+ICAgICBWaXJ0SU9TQ1NJQ29tbW9uICp2cyA9IFZJUlRJT19TQ1NJX0NPTU1PTihkZXYpOw0K
-PiAgICAgYm9vbCBzaG91bGRfc3RhcnQgPSB2aXJ0aW9fZGV2aWNlX3Nob3VsZF9zdGFydCh2ZGV2
-LCBzdGF0dXMpOw0KPiArICAgIEVycm9yICpsb2NhbF9lcnIgPSBOVUxMOw0KPiAgICAgaW50IHJl
-dDsNCj4gDQo+ICAgICBpZiAoIXMtPmNvbm5lY3RlZCkgew0KPiBAQCAtODQsOSArODUsMTAgQEAg
-c3RhdGljIHZvaWQgdmhvc3RfdXNlcl9zY3NpX3NldF9zdGF0dXMoVmlydElPRGV2aWNlICp2ZGV2
-LCB1aW50OF90IHN0YXR1cykNCj4gICAgIH0NCj4gDQo+ICAgICBpZiAoc2hvdWxkX3N0YXJ0KSB7
-DQo+IC0gICAgICAgIHJldCA9IHZob3N0X3VzZXJfc2NzaV9zdGFydChzKTsNCj4gKyAgICAgICAg
-cmV0ID0gdmhvc3RfdXNlcl9zY3NpX3N0YXJ0KHMsICZsb2NhbF9lcnIpOw0KPiAgICAgICAgIGlm
-IChyZXQgPCAwKSB7DQo+IC0gICAgICAgICAgICBlcnJvcl9yZXBvcnQoInVuYWJsZSB0byBzdGFy
-dCB2aG9zdC11c2VyLXNjc2k6ICVzIiwgc3RyZXJyb3IoLXJldCkpOw0KPiArICAgICAgICAgICAg
-ZXJyb3JfcmVwb3J0Zl9lcnIobG9jYWxfZXJyLCAidW5hYmxlIHRvIHN0YXJ0IHZob3N0LXVzZXIt
-c2NzaTogJXMiLA0KPiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc3RyZXJyb3IoLXJl
-dCkpOw0KPiAgICAgICAgICAgICBxZW11X2Nocl9mZV9kaXNjb25uZWN0KCZ2cy0+Y29uZi5jaGFy
-ZGV2KTsNCj4gICAgICAgICB9DQo+ICAgICB9IGVsc2Ugew0KPiBAQCAtMTM5LDcgKzE0MSw3IEBA
-IHN0YXRpYyB2b2lkIHZob3N0X3VzZXJfc2NzaV9oYW5kbGVfb3V0cHV0KFZpcnRJT0RldmljZSAq
-dmRldiwgVmlydFF1ZXVlICp2cSkNCj4gICAgICAqIFNvbWUgZ3Vlc3RzIGtpY2sgYmVmb3JlIHNl
-dHRpbmcgVklSVElPX0NPTkZJR19TX0RSSVZFUl9PSyBzbyBzdGFydA0KPiAgICAgICogdmhvc3Qg
-aGVyZSBpbnN0ZWFkIG9mIHdhaXRpbmcgZm9yIC5zZXRfc3RhdHVzKCkuDQo+ICAgICAgKi8NCj4g
-LSAgICByZXQgPSB2aG9zdF91c2VyX3Njc2lfc3RhcnQocyk7DQo+ICsgICAgcmV0ID0gdmhvc3Rf
-dXNlcl9zY3NpX3N0YXJ0KHMsICZsb2NhbF9lcnIpOw0KPiAgICAgaWYgKHJldCA8IDApIHsNCj4g
-ICAgICAgICBlcnJvcl9yZXBvcnRmX2Vycihsb2NhbF9lcnIsICJ2aG9zdC11c2VyLXNjc2k6IHZo
-b3N0IHN0YXJ0IGZhaWxlZDogIik7DQo+ICAgICAgICAgcWVtdV9jaHJfZmVfZGlzY29ubmVjdCgm
-dnMtPmNvbmYuY2hhcmRldik7DQo+IEBAIC0xODQsNyArMTg2LDcgQEAgc3RhdGljIGludCB2aG9z
-dF91c2VyX3Njc2lfY29ubmVjdChEZXZpY2VTdGF0ZSAqZGV2LCBFcnJvciAqKmVycnApDQo+IA0K
-PiAgICAgLyogcmVzdG9yZSB2aG9zdCBzdGF0ZSAqLw0KPiAgICAgaWYgKHZpcnRpb19kZXZpY2Vf
-c3RhcnRlZCh2ZGV2LCB2ZGV2LT5zdGF0dXMpKSB7DQo+IC0gICAgICAgIHJldCA9IHZob3N0X3Vz
-ZXJfc2NzaV9zdGFydChzKTsNCj4gKyAgICAgICAgcmV0ID0gdmhvc3RfdXNlcl9zY3NpX3N0YXJ0
-KHMsIGVycnApOw0KPiAgICAgICAgIGlmIChyZXQgPCAwKSB7DQo+ICAgICAgICAgICAgIHJldHVy
-biByZXQ7DQo+ICAgICAgICAgfQ0KPiBkaWZmIC0tZ2l0IGEvaW5jbHVkZS9ody92aXJ0aW8vdmhv
-c3Qtc2NzaS1jb21tb24uaCBiL2luY2x1ZGUvaHcvdmlydGlvL3Zob3N0LXNjc2ktY29tbW9uLmgN
-Cj4gaW5kZXggMThmMTE1NTI3Yy4uYzVkMmMwOTQ1NSAxMDA2NDQNCj4gLS0tIGEvaW5jbHVkZS9o
-dy92aXJ0aW8vdmhvc3Qtc2NzaS1jb21tb24uaA0KPiArKysgYi9pbmNsdWRlL2h3L3ZpcnRpby92
-aG9zdC1zY3NpLWNvbW1vbi5oDQo+IEBAIC0zOSw3ICszOSw3IEBAIHN0cnVjdCBWSG9zdFNDU0lD
-b21tb24gew0KPiAgICAgc3RydWN0IHZob3N0X2luZmxpZ2h0ICppbmZsaWdodDsNCj4gfTsNCj4g
-DQo+IC1pbnQgdmhvc3Rfc2NzaV9jb21tb25fc3RhcnQoVkhvc3RTQ1NJQ29tbW9uICp2c2MpOw0K
-PiAraW50IHZob3N0X3Njc2lfY29tbW9uX3N0YXJ0KFZIb3N0U0NTSUNvbW1vbiAqdnNjLCBFcnJv
-ciAqKmVycnApOw0KPiB2b2lkIHZob3N0X3Njc2lfY29tbW9uX3N0b3AoVkhvc3RTQ1NJQ29tbW9u
-ICp2c2MpOw0KPiBjaGFyICp2aG9zdF9zY3NpX2NvbW1vbl9nZXRfZndfZGV2X3BhdGgoRldQYXRo
-UHJvdmlkZXIgKnAsIEJ1c1N0YXRlICpidXMsDQo+ICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICBEZXZpY2VTdGF0ZSAqZGV2KTsNCj4gLS0gDQo+IDIuNDEuMA0KPiANCg0K
+On 03/08/2023 16:28, David Woodhouse wrote:
+> From: David Woodhouse <dwmw@amazon.co.uk>
+> 
+> A previous implementation of this stuff used a 64-bit field for all of
+> the port information (vcpu/type/type_val) and did atomic exchanges on
+> them. When I implemented that in Qemu I regretted my life choices and
+> just kept it simple with locking instead.
+> 
+> So there's no need for the XenEvtchnPort to be so simplistic. We can
+> use a union for the pirq/virq/interdomain information, which lets us
+> keep a separate bit for the 'remote domain' in interdomain ports. A
+> single bit is enough since the only possible targets are loopback or
+> qemu itself.
+> 
+> So now we can ditch PORT_INFO_TYPEVAL_REMOTE_QEMU and the horrid
+> manual masking, although the in-memory representation is identical
+> so there's no change in the saved state ABI.
+> 
+> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+> ---
+> Thought this would be a nice cleanup to avoid abusing `type_val` for
+> various different purposes, and especially the top bit of it for
+> interdomain ports. But having done it I find myself fairly ambivalent
+> about it. Does anyone feel strongly either way?
+> 
+>   hw/i386/kvm/xen_evtchn.c | 124 ++++++++++++++++++++-------------------
+>   1 file changed, 64 insertions(+), 60 deletions(-)
+>
+
+I don't feel that strongly, but using the union+bitfield approach is a 
+little nicer to read and only makes the code 4 lines longer.
+
+
+> diff --git a/hw/i386/kvm/xen_evtchn.c b/hw/i386/kvm/xen_evtchn.c
+> index a731738411..446ae46022 100644
+> --- a/hw/i386/kvm/xen_evtchn.c
+> +++ b/hw/i386/kvm/xen_evtchn.c
+> @@ -58,7 +58,15 @@ OBJECT_DECLARE_SIMPLE_TYPE(XenEvtchnState, XEN_EVTCHN)
+>   typedef struct XenEvtchnPort {
+>       uint32_t vcpu;      /* Xen/ACPI vcpu_id */
+>       uint16_t type;      /* EVTCHNSTAT_xxxx */
+> -    uint16_t type_val;  /* pirq# / virq# / remote port according to type */
+> +    union {
+> +        uint16_t type_val;  /* pirq# / virq# / remote port according to type */
+
+Not sure the comment is that valuable any more... and maybe just 'val' 
+now rather than 'type_val'?
+
+> +        uint16_t pirq;
+> +        uint16_t virq;
+> +        struct {
+> +            uint16_t port:15;
+> +            uint16_t to_qemu:1; /* Only two targets; qemu or loopback */
+
+I'd have switch the sense and called this 'loopback'... since it's the 
+more unlikely case.
+
+> +        } interdomain;
+> +    } u;
+>   } XenEvtchnPort;
+>   
+>   /* 32-bit compatibility definitions, also used natively in 32-bit build */
+> @@ -210,16 +218,16 @@ static int xen_evtchn_post_load(void *opaque, int version_id)
+>           XenEvtchnPort *p = &s->port_table[i];
+>   
+>           if (p->type == EVTCHNSTAT_pirq) {
+> -            assert(p->type_val);
+> -            assert(p->type_val < s->nr_pirqs);
+> +            assert(p->u.pirq);
+> +            assert(p->u.pirq < s->nr_pirqs);
+>   
+>               /*
+>                * Set the gsi to IRQ_UNBOUND; it may be changed to an actual
+>                * GSI# below, or to IRQ_MSI_EMU when the MSI table snooping
+>                * catches up with it.
+>                */
+> -            s->pirq[p->type_val].gsi = IRQ_UNBOUND;
+> -            s->pirq[p->type_val].port = i;
+> +            s->pirq[p->u.pirq].gsi = IRQ_UNBOUND;
+> +            s->pirq[p->u.pirq].port = i;
+>           }
+>       }
+>       /* Rebuild s->pirq[].gsi mapping */
+> @@ -243,7 +251,7 @@ static const VMStateDescription xen_evtchn_port_vmstate = {
+>       .fields = (VMStateField[]) {
+>           VMSTATE_UINT32(vcpu, XenEvtchnPort),
+>           VMSTATE_UINT16(type, XenEvtchnPort),
+> -        VMSTATE_UINT16(type_val, XenEvtchnPort),
+> +        VMSTATE_UINT16(u.type_val, XenEvtchnPort),
+>           VMSTATE_END_OF_LIST()
+>       }
+>   };
+> @@ -599,14 +607,13 @@ static void unbind_backend_ports(XenEvtchnState *s)
+>   
+>       for (i = 1; i < s->nr_ports; i++) {
+>           p = &s->port_table[i];
+> -        if (p->type == EVTCHNSTAT_interdomain &&
+> -            (p->type_val & PORT_INFO_TYPEVAL_REMOTE_QEMU)) {
+> -            evtchn_port_t be_port = p->type_val & PORT_INFO_TYPEVAL_REMOTE_PORT_MASK;
+> +        if (p->type == EVTCHNSTAT_interdomain && p->u.interdomain.to_qemu) {
+> +            evtchn_port_t be_port = p->u.interdomain.port;
+>   
+>               if (s->be_handles[be_port]) {
+>                   /* This part will be overwritten on the load anyway. */
+>                   p->type = EVTCHNSTAT_unbound;
+> -                p->type_val = PORT_INFO_TYPEVAL_REMOTE_QEMU;
+> +                p->u.interdomain.port = 0;
+>   
+>                   /* Leave the backend port open and unbound too. */
+>                   if (kvm_xen_has_cap(EVTCHN_SEND)) {
+> @@ -644,7 +651,7 @@ int xen_evtchn_status_op(struct evtchn_status *status)
+>   
+>       switch (p->type) {
+>       case EVTCHNSTAT_unbound:
+> -        if (p->type_val & PORT_INFO_TYPEVAL_REMOTE_QEMU) {
+> +        if (p->u.interdomain.to_qemu) {
+>               status->u.unbound.dom = DOMID_QEMU;
+>           } else {
+>               status->u.unbound.dom = xen_domid;
+> @@ -652,22 +659,21 @@ int xen_evtchn_status_op(struct evtchn_status *status)
+>           break;
+>   
+>       case EVTCHNSTAT_interdomain:
+> -        if (p->type_val & PORT_INFO_TYPEVAL_REMOTE_QEMU) {
+> +        if (p->u.interdomain.to_qemu) {
+>               status->u.interdomain.dom = DOMID_QEMU;
+>           } else {
+>               status->u.interdomain.dom = xen_domid;
+>           }
+
+Possibly neater as a ternary now you're switching on a simple boolean.
+
+>   
+> -        status->u.interdomain.port = p->type_val &
+> -            PORT_INFO_TYPEVAL_REMOTE_PORT_MASK;
+> +        status->u.interdomain.port = p->u.interdomain.port;
+>           break;
+>   
+>       case EVTCHNSTAT_pirq:
+> -        status->u.pirq = p->type_val;
+> +        status->u.pirq = p->u.pirq;
+>           break;
+>   
+>       case EVTCHNSTAT_virq:
+> -        status->u.virq = p->type_val;
+> +        status->u.virq = p->u.virq;
+>           break;
+>       }
+>   
+> @@ -983,7 +989,7 @@ static int clear_port_pending(XenEvtchnState *s, evtchn_port_t port)
+>   static void free_port(XenEvtchnState *s, evtchn_port_t port)
+>   {
+>       s->port_table[port].type = EVTCHNSTAT_closed;
+> -    s->port_table[port].type_val = 0;
+> +    s->port_table[port].u.type_val = 0;
+>       s->port_table[port].vcpu = 0;
+>   
+>       if (s->nr_ports == port + 1) {
+> @@ -1006,7 +1012,7 @@ static int allocate_port(XenEvtchnState *s, uint32_t vcpu, uint16_t type,
+>           if (s->port_table[p].type == EVTCHNSTAT_closed) {
+>               s->port_table[p].vcpu = vcpu;
+>               s->port_table[p].type = type;
+> -            s->port_table[p].type_val = val;
+> +            s->port_table[p].u.type_val = val;
+>   
+>               *port = p;
+>   
+> @@ -1047,15 +1053,15 @@ static int close_port(XenEvtchnState *s, evtchn_port_t port,
+>           return -ENOENT;
+>   
+>       case EVTCHNSTAT_pirq:
+> -        s->pirq[p->type_val].port = 0;
+> -        if (s->pirq[p->type_val].is_translated) {
+> +        s->pirq[p->u.pirq].port = 0;
+> +        if (s->pirq[p->u.pirq].is_translated) {
+>               *flush_kvm_routes = true;
+>           }
+>           break;
+>   
+>       case EVTCHNSTAT_virq:
+> -        kvm_xen_set_vcpu_virq(virq_is_global(p->type_val) ? 0 : p->vcpu,
+> -                              p->type_val, 0);
+> +        kvm_xen_set_vcpu_virq(virq_is_global(p->u.virq) ? 0 : p->vcpu,
+> +                              p->u.virq, 0);
+>           break;
+>   
+>       case EVTCHNSTAT_ipi:
+> @@ -1065,8 +1071,8 @@ static int close_port(XenEvtchnState *s, evtchn_port_t port,
+>           break;
+>   
+>       case EVTCHNSTAT_interdomain:
+> -        if (p->type_val & PORT_INFO_TYPEVAL_REMOTE_QEMU) {
+> -            uint16_t be_port = p->type_val & ~PORT_INFO_TYPEVAL_REMOTE_QEMU;
+> +        if (p->u.interdomain.to_qemu) {
+> +            uint16_t be_port = p->u.interdomain.port;
+>               struct xenevtchn_handle *xc = s->be_handles[be_port];
+>               if (xc) {
+>                   if (kvm_xen_has_cap(EVTCHN_SEND)) {
+> @@ -1076,14 +1082,15 @@ static int close_port(XenEvtchnState *s, evtchn_port_t port,
+>               }
+>           } else {
+>               /* Loopback interdomain */
+> -            XenEvtchnPort *rp = &s->port_table[p->type_val];
+> -            if (!valid_port(p->type_val) || rp->type_val != port ||
+> +            XenEvtchnPort *rp = &s->port_table[p->u.interdomain.port];
+> +            if (!valid_port(p->u.interdomain.port) ||
+> +                rp->u.interdomain.port != port ||
+>                   rp->type != EVTCHNSTAT_interdomain) {
+>                   error_report("Inconsistent state for interdomain unbind");
+>               } else {
+>                   /* Set the other end back to unbound */
+>                   rp->type = EVTCHNSTAT_unbound;
+> -                rp->type_val = 0;
+> +                rp->u.interdomain.port = 0;
+>               }
+>           }
+>           break;
+> @@ -1207,7 +1214,7 @@ int xen_evtchn_bind_vcpu_op(struct evtchn_bind_vcpu *vcpu)
+>       if (p->type == EVTCHNSTAT_interdomain ||
+>           p->type == EVTCHNSTAT_unbound ||
+>           p->type == EVTCHNSTAT_pirq ||
+> -        (p->type == EVTCHNSTAT_virq && virq_is_global(p->type_val))) {
+> +        (p->type == EVTCHNSTAT_virq && virq_is_global(p->u.virq))) {
+>           /*
+>            * unmask_port() with do_unmask==false will just raise the event
+>            * on the new vCPU if the port was already pending.
+> @@ -1352,19 +1359,15 @@ int xen_evtchn_bind_ipi_op(struct evtchn_bind_ipi *ipi)
+>   int xen_evtchn_bind_interdomain_op(struct evtchn_bind_interdomain *interdomain)
+>   {
+>       XenEvtchnState *s = xen_evtchn_singleton;
+> -    uint16_t type_val;
+>       int ret;
+>   
+>       if (!s) {
+>           return -ENOTSUP;
+>       }
+>   
+> -    if (interdomain->remote_dom == DOMID_QEMU) {
+> -        type_val = PORT_INFO_TYPEVAL_REMOTE_QEMU;
+> -    } else if (interdomain->remote_dom == DOMID_SELF ||
+> -               interdomain->remote_dom == xen_domid) {
+> -        type_val = 0;
+> -    } else {
+> +    if (interdomain->remote_dom != DOMID_QEMU &&
+> +        interdomain->remote_dom != DOMID_SELF &&
+> +        interdomain->remote_dom != xen_domid) {
+>           return -ESRCH;
+>       }
+>   
+> @@ -1375,8 +1378,8 @@ int xen_evtchn_bind_interdomain_op(struct evtchn_bind_interdomain *interdomain)
+>       qemu_mutex_lock(&s->port_lock);
+>   
+>       /* The newly allocated port starts out as unbound */
+> -    ret = allocate_port(s, 0, EVTCHNSTAT_unbound, type_val,
+> -                        &interdomain->local_port);
+> +    ret = allocate_port(s, 0, EVTCHNSTAT_unbound, 0, &interdomain->local_port);
+> +
+>       if (ret) {
+>           goto out;
+>       }
+> @@ -1401,7 +1404,8 @@ int xen_evtchn_bind_interdomain_op(struct evtchn_bind_interdomain *interdomain)
+>               assign_kernel_eventfd(lp->type, xc->guest_port, xc->fd);
+>           }
+>           lp->type = EVTCHNSTAT_interdomain;
+> -        lp->type_val = PORT_INFO_TYPEVAL_REMOTE_QEMU | interdomain->remote_port;
+> +        lp->u.interdomain.to_qemu = 1;
+> +        lp->u.interdomain.port = interdomain->remote_port;
+>           ret = 0;
+>       } else {
+>           /* Loopback */
+> @@ -1415,13 +1419,13 @@ int xen_evtchn_bind_interdomain_op(struct evtchn_bind_interdomain *interdomain)
+>            * the port that was just allocated for the local end.
+>            */
+>           if (interdomain->local_port != interdomain->remote_port &&
+> -            rp->type == EVTCHNSTAT_unbound && rp->type_val == 0) {
+> +            rp->type == EVTCHNSTAT_unbound && !rp->u.interdomain.to_qemu) {
+>   
+>               rp->type = EVTCHNSTAT_interdomain;
+> -            rp->type_val = interdomain->local_port;
+> +            rp->u.interdomain.port = interdomain->local_port;
+>   
+>               lp->type = EVTCHNSTAT_interdomain;
+> -            lp->type_val = interdomain->remote_port;
+> +            lp->u.interdomain.port = interdomain->remote_port;
+>           } else {
+>               ret = -EINVAL;
+>           }
+> @@ -1440,7 +1444,6 @@ int xen_evtchn_bind_interdomain_op(struct evtchn_bind_interdomain *interdomain)
+>   int xen_evtchn_alloc_unbound_op(struct evtchn_alloc_unbound *alloc)
+>   {
+>       XenEvtchnState *s = xen_evtchn_singleton;
+> -    uint16_t type_val;
+>       int ret;
+>   
+>       if (!s) {
+> @@ -1451,18 +1454,19 @@ int xen_evtchn_alloc_unbound_op(struct evtchn_alloc_unbound *alloc)
+>           return -ESRCH;
+>       }
+>   
+> -    if (alloc->remote_dom == DOMID_QEMU) {
+> -        type_val = PORT_INFO_TYPEVAL_REMOTE_QEMU;
+> -    } else if (alloc->remote_dom == DOMID_SELF ||
+> -               alloc->remote_dom == xen_domid) {
+> -        type_val = 0;
+> -    } else {
+> +    if (alloc->remote_dom != DOMID_QEMU && alloc->remote_dom != DOMID_SELF &&
+> +        alloc->remote_dom != xen_domid) {
+
+Maybe vertically align the clauses here as in the 'if' a couple of hunks 
+back?
+
+>           return -EPERM;
+>       }
+>   
+
+Since all the above are nits...
+
+Reviewed-by: Paul Durrant <paul@xen.org>
+
 
