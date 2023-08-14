@@ -2,61 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DD2277B908
-	for <lists+qemu-devel@lfdr.de>; Mon, 14 Aug 2023 14:50:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F05F577B91F
+	for <lists+qemu-devel@lfdr.de>; Mon, 14 Aug 2023 14:58:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qVX0z-0005oe-DR; Mon, 14 Aug 2023 08:49:45 -0400
+	id 1qVX99-0003ak-Dg; Mon, 14 Aug 2023 08:58:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <schwab@suse.de>)
- id 1qVX0l-0005QA-Si; Mon, 14 Aug 2023 08:49:37 -0400
-Received: from smtp-out1.suse.de ([195.135.220.28])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <schwab@suse.de>)
- id 1qVX0a-0007Bv-DL; Mon, 14 Aug 2023 08:49:28 -0400
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
- by smtp-out1.suse.de (Postfix) with ESMTP id 5F3B121986;
- Mon, 14 Aug 2023 12:49:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1692017354; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type;
- bh=uLDmnHhM1DbVG7FZKTfR4+3INuv0lz1bVcDwsNUU9dU=;
- b=XTmVlpdRBKlzh1H845c922FOP97OWbLiX0xyYvrT3G5yB+DShwp2PeQ3ujUDHajVUh7g8M
- KSHGJttOLBkKuT8gZnMPWd6c5nVBqpsxhBJINa179ZnR7IiH9GGfOjpNRtb0dyPcDOAJpq
- 9h5+TMeDIOk+vbhDFSdRnZ3LdRrnOUw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1692017354;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type;
- bh=uLDmnHhM1DbVG7FZKTfR4+3INuv0lz1bVcDwsNUU9dU=;
- b=YnbFu6MldnmpC/pNtfrD6lutORcsLLxPoohh9bIVu9/kixch3upTlVREkutnl44R+CsyqC
- OXtQ43HqUgnAfnBw==
-Received: from hawking.nue2.suse.org (unknown [10.168.4.181])
- by relay2.suse.de (Postfix) with ESMTP id 52EEE2C143;
- Mon, 14 Aug 2023 12:49:14 +0000 (UTC)
-Received: by hawking.nue2.suse.org (Postfix, from userid 17005)
- id 172634AB2CC; Mon, 14 Aug 2023 14:49:13 +0200 (CEST)
-From: Andreas Schwab <schwab@suse.de>
+ (Exim 4.90_1) (envelope-from <belmouss@redhat.com>)
+ id 1qVX96-0003aF-Gt
+ for qemu-devel@nongnu.org; Mon, 14 Aug 2023 08:58:08 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <belmouss@redhat.com>)
+ id 1qVX94-0001Zm-Qc
+ for qemu-devel@nongnu.org; Mon, 14 Aug 2023 08:58:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1692017885;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=T/f9EsxX3nTQ6wi/rdRwmnNUJ84c8trNSgu+BBPZuwI=;
+ b=KoCOQmWCxwuJE4goyQAczjAse95U6sonY9OawEEJlBQDhC3Bl0GIH07qL87qJWs997mt5c
+ hMgmK8i52mhOtq225lJRSduKCeV+xP4o+sSiGa/ZJd/OU13IexMyGYKedHStsu4g9bn7Tr
+ 18rPFDp78kZNUnfXHZ2rZmdYnT51JVM=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-562--JOACz9HOCmUKzvCzjS4YA-1; Mon, 14 Aug 2023 08:58:04 -0400
+X-MC-Unique: -JOACz9HOCmUKzvCzjS4YA-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B9B39185A7A8
+ for <qemu-devel@nongnu.org>; Mon, 14 Aug 2023 12:58:03 +0000 (UTC)
+Received: from toolbox.redhat.com (unknown [10.45.226.149])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id C02CE40C206F;
+ Mon, 14 Aug 2023 12:58:02 +0000 (UTC)
+From: Bilal Elmoussaoui <belmouss@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: qemu-system-riscv64 -cpu host uses wrong privilege spec version
-CC: qemu-riscv@nongnu.org
-X-Yow: Hello, GORRY-O!!  I'm a GENIUS from HARVARD!!
-Date: Mon, 14 Aug 2023 14:49:13 +0200
-Message-ID: <mvmmsytdc1i.fsf@suse.de>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+Cc: Gerd Hoffmann <kraxel@redhat.com>, marcandre.lureau@redhat.com,
+ Bilal Elmoussaoui <belmouss@redhat.com>,
+ Christian Hergert <chergert@redhat.com>
+Subject: [PATCH v2] ui/dbus: implement damage regions for GL
+Date: Mon, 14 Aug 2023 14:58:02 +0200
+Message-ID: <20230814125802.102160-1-belmouss@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=195.135.220.28; envelope-from=schwab@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=belmouss@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -72,24 +76,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When running a KVM enabled qemu inside a qemu instance, I get these warnings:
+Currently, when using `-display dbus,gl=on` all updates to the client
+become "full scanout" updates, meaning there is no way for the client to
+limit damage regions to the display server.
 
-$ qemu-system-riscv64 -cpu host -machine virt,accel=kvm
-qemu-system-riscv64: warning: disabling h extension for hart 0x0000000000000000 because privilege spec version does not match
-qemu-system-riscv64: warning: disabling zicbom extension for hart 0x0000000000000000 because privilege spec version does not match
-qemu-system-riscv64: warning: disabling zicboz extension for hart 0x0000000000000000 because privilege spec version does not match
-qemu-system-riscv64: warning: disabling zawrs extension for hart 0x0000000000000000 because privilege spec version does not match
-qemu-system-riscv64: warning: disabling zba extension for hart 0x0000000000000000 because privilege spec version does not match
-qemu-system-riscv64: warning: disabling zbb extension for hart 0x0000000000000000 because privilege spec version does not match
-qemu-system-riscv64: warning: disabling zbc extension for hart 0x0000000000000000 because privilege spec version does not match
-qemu-system-riscv64: warning: disabling zbs extension for hart 0x0000000000000000 because privilege spec version does not match
-qemu-system-riscv64: warning: disabling sstc extension for hart 0x0000000000000000 because privilege spec version does not match
-qemu-system-riscv64: warning: disabling svadu extension for hart 0x0000000000000000 because privilege spec version does not match
+Instead of using an "update count", this patch tracks the damage region
+and propagates it to the client.
 
-The qemu instance is running openSUSE Tumbleweed with -cpu rv64,h=on,sv48=on.
+This was less of an issue when clients were using GtkGLArea for
+rendering,
+as you'd be doing full-surface redraw. To be efficient, the client needs
+both a DMA-BUF and the damage region to be updated.
 
+Co-authored-by: Christian Hergert <chergert@redhat.com>
+Signed-off-by: Bilal Elmoussaoui <belmouss@redhat.com>
+---
+ ui/dbus-listener.c | 32 +++++++++++++++++++++++++-------
+ 1 file changed, 25 insertions(+), 7 deletions(-)
+
+diff --git a/ui/dbus-listener.c b/ui/dbus-listener.c
+index 30917271ab..36548a7f52 100644
+--- a/ui/dbus-listener.c
++++ b/ui/dbus-listener.c
+@@ -26,6 +26,9 @@
+ #include "qapi/error.h"
+ #include "sysemu/sysemu.h"
+ #include "dbus.h"
++#ifdef CONFIG_OPENGL
++#include <pixman.h>
++#endif
+ #ifdef G_OS_UNIX
+ #include <gio/gunixfdlist.h>
+ #endif
+@@ -59,12 +62,15 @@ struct _DBusDisplayListener {
+ 
+     QemuDBusDisplay1Listener *proxy;
+ 
++#ifdef CONFIG_OPENGL
++    /* Keep track of the damage region */
++    pixman_region32_t gl_damage;
++#endif
++
+     DisplayChangeListener dcl;
+     DisplaySurface *ds;
+     enum share_kind ds_share;
+ 
+-    int gl_updates;
+-
+     bool ds_mapped;
+     bool can_share_map;
+ 
+@@ -539,11 +545,16 @@ static void dbus_gl_refresh(DisplayChangeListener *dcl)
+         return;
+     }
+ 
+-    if (ddl->gl_updates) {
+-        dbus_call_update_gl(dcl, 0, 0,
+-                            surface_width(ddl->ds), surface_height(ddl->ds));
+-        ddl->gl_updates = 0;
++    int n_rects = pixman_region32_n_rects(&ddl->gl_damage);
++
++    for (int i = 0; i < n_rects; i++) {
++        pixman_box32_t *box;
++        box = pixman_region32_rectangles(&ddl->gl_damage, NULL) + i;
++        /* TODO: Add a UpdateList call to send multiple updates at once */
++        dbus_call_update_gl(dcl, box->x1, box->y1,
++                            box->x2 - box->x1, box->y2 - box->y1);
+     }
++    pixman_region32_clear(&ddl->gl_damage);
+ }
+ #endif /* OPENGL */
+ 
+@@ -558,7 +569,10 @@ static void dbus_gl_gfx_update(DisplayChangeListener *dcl,
+ {
+     DBusDisplayListener *ddl = container_of(dcl, DBusDisplayListener, dcl);
+ 
+-    ddl->gl_updates++;
++    pixman_region32_t rect_region;
++    pixman_region32_init_rect(&rect_region, x, y, w, h);
++    pixman_region32_union(&ddl->gl_damage, &ddl->gl_damage, &rect_region);
++    pixman_region32_fini(&rect_region);
+ }
+ #endif
+ 
+@@ -738,6 +752,7 @@ dbus_display_listener_dispose(GObject *object)
+     g_clear_object(&ddl->d3d11_proxy);
+     g_clear_pointer(&ddl->peer_process, CloseHandle);
+ #ifdef CONFIG_OPENGL
++    pixman_region32_fini(&ddl->gl_damage);
+     egl_fb_destroy(&ddl->fb);
+ #endif
+ #endif
+@@ -772,6 +787,9 @@ dbus_display_listener_class_init(DBusDisplayListenerClass *klass)
+ static void
+ dbus_display_listener_init(DBusDisplayListener *ddl)
+ {
++#ifdef CONFIG_OPENGL
++    pixman_region32_init(&ddl->gl_damage);
++#endif
+ }
+ 
+ const char *
 -- 
-Andreas Schwab, SUSE Labs, schwab@suse.de
-GPG Key fingerprint = 0196 BAD8 1CE9 1970 F4BE  1748 E4D4 88E3 0EEA B9D7
-"And now for something completely different."
+2.41.0
+
 
