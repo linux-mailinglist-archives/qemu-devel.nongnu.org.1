@@ -2,80 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D70277CD43
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Aug 2023 15:17:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF1D077CD8F
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Aug 2023 15:52:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qVtuw-0008DJ-2Y; Tue, 15 Aug 2023 09:17:02 -0400
+	id 1qVuSV-0005N0-3J; Tue, 15 Aug 2023 09:51:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qVtui-0008AK-FF; Tue, 15 Aug 2023 09:16:48 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qVtug-0003Ct-5m; Tue, 15 Aug 2023 09:16:48 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1bdaeb0f29aso27315315ad.2; 
- Tue, 15 Aug 2023 06:16:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1692105403; x=1692710203;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=qVSa4qXgqWVZIMisRAUommjP0uNr9HTxFMlIlnxO6L8=;
- b=dGXymLO4yM4odbqQ0YiTZQQ5JmuD6WkQglZs7Yo/1ooICWGMm4q5xT1vjqL36eUwJO
- yFCGNrtONM1RS13NoNvCfolJHs1x9Ugj24okyFKLUYqkUkaqup8AYJMCUDcnENS7WL6m
- 3btXT7Dk+XbPW6/k6ewJwM6KPPlA1gXPmhcWYc7pq4N/dBtKyXhZXsA06OJwMq+hRdpF
- GI9deZ71XhP7vGTdUn6LMSz3nlJ8TrDvFL1OmhdFj+0NmEjSt09smCQAutqXCHwQfofR
- VUn0bUOz0w0VZV49aGtog1LsirfkXW4ZKmJcDNuBu9gDlGmVNDrLRJZul2+oZk6UALIK
- MIMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692105403; x=1692710203;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=qVSa4qXgqWVZIMisRAUommjP0uNr9HTxFMlIlnxO6L8=;
- b=RNtPjoFTSpk9dM1+FXE6JQljsPbyH745PvsqebgQj72jGOvj2U/Z0IDhU/0U+9MdDi
- zigvQAxZ1usiijwbe4cBacBeG6WLI2/JorN4NJTDB3yrQ57a8AeuPJca3mR+vgDu4Xj7
- DCrYTk48nREuIvO+vbldYoe4gprBkPWsf5RHuDlSncASkxea0ZjKZIs0L0UmZyI9HhTT
- COAuXvh/Iv5EguXaA50RMT30dNXX08nrWRXXt8nE0FWnOcnnWkq6r7lD9uNOPBN9OBAR
- gAXVHLEC9F56SEf+g6L68DQkx5JROvbbcC2xQEqYRp/xHTmyJCcKKIo0OLqbMFtgyc93
- 0Bzw==
-X-Gm-Message-State: AOJu0Yx1ecjODR7gNeT+2t/ZjZZAtzN4ahbMm5z4GTLtVkWhollPpJ35
- FU57946lvSsN+W5G0rSjqCg=
-X-Google-Smtp-Source: AGHT+IGrvvpDhKIlzBoUoNlGPOAoIpvPIm9nsKpix6dnwXKrMPOfB+jqV7IX/RQuHRS80T4X+9XAkg==
-X-Received: by 2002:a17:902:f54a:b0:1bc:9c49:f8ce with SMTP id
- h10-20020a170902f54a00b001bc9c49f8cemr12555258plf.4.1692105403251; 
- Tue, 15 Aug 2023 06:16:43 -0700 (PDT)
-Received: from localhost ([61.68.161.249]) by smtp.gmail.com with ESMTPSA id
- c13-20020a170902c1cd00b001bde440e693sm3852092plc.44.2023.08.15.06.16.40
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 15 Aug 2023 06:16:42 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 15 Aug 2023 23:16:37 +1000
-Message-Id: <CUT5AWDY5WRS.362R9H2YEA1CQ@wheely>
-Cc: <qemu-arm@nongnu.org>, <qemu-ppc@nongnu.org>, <qemu-riscv@nongnu.org>,
- <qemu-s390x@nongnu.org>
-Subject: Re: [PATCH 11/24] tcg/ppc: Use the Set Boolean Extension
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Richard Henderson" <richard.henderson@linaro.org>, <qemu-devel@nongnu.org>
-X-Mailer: aerc 0.15.2
-References: <20230808031143.50925-1-richard.henderson@linaro.org>
- <20230808031143.50925-12-richard.henderson@linaro.org>
-In-Reply-To: <20230808031143.50925-12-richard.henderson@linaro.org>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x631.google.com
-X-Spam_score_int: 4
-X-Spam_score: 0.4
-X-Spam_bar: /
-X-Spam_report: (0.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- SUSPICIOUS_RECIPS=2.51 autolearn=no autolearn_force=no
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qVuSS-0005Mc-6U
+ for qemu-devel@nongnu.org; Tue, 15 Aug 2023 09:51:40 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qVuSP-0001ii-Ew
+ for qemu-devel@nongnu.org; Tue, 15 Aug 2023 09:51:39 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 03C211A8DE;
+ Tue, 15 Aug 2023 16:51:28 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id CDDED1F5C1;
+ Tue, 15 Aug 2023 16:51:23 +0300 (MSK)
+Message-ID: <35fa0e0c-ca69-a84a-02a0-4edcac65adb6@tls.msk.ru>
+Date: Tue, 15 Aug 2023 16:51:23 +0300
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PULL 00/14] linux-user image mapping fixes
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20230808210856.95568-1-richard.henderson@linaro.org>
+Cc: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ Helge Deller <deller@gmx.de>, Akihiko Odaki <akihiko.odaki@daynix.com>
+From: Michael Tokarev <mjt@tls.msk.ru>
+In-Reply-To: <20230808210856.95568-1-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -78
+X-Spam_score: -7.9
+X-Spam_bar: -------
+X-Spam_report: (-7.9 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.045,
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,62 +60,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue Aug 8, 2023 at 1:11 PM AEST, Richard Henderson wrote:
-> The SETBC family of instructions requires exactly two insns for
-> all comparisions, saving 0-3 insns per (neg)setcond.
->
+09.08.2023 00:08, Richard Henderson пишет:
+> The following changes since commit 0450cf08976f9036feaded438031b4cba94f6452:
+> 
+>    Merge tag 'fixes-pull-request' of https://gitlab.com/marcandre.lureau/qemu into staging (2023-08-07 13:55:00 -0700)
+> 
+> are available in the Git repository at:
+> 
+>    https://gitlab.com/rth7680/qemu.git tags/pull-lu-20230808
+> 
+> for you to fetch changes up to dd55885516f42f718d0d121c59a5f7be5fdae3e6:
+> 
+>    linux-user: Rewrite non-fixed probe_guest_base (2023-08-08 13:41:55 -0700)
+> 
+> ----------------------------------------------------------------
+> linux-user: Adjust guest image layout vs reserved_va
+> linux-user: Do not adjust image mapping for host page size
+> linux-user: Adjust initial brk when interpreter is close to executable
+> util/selfmap: Rewrite using qemu/interval-tree.h
+> linux-user: Rewrite probe_guest_base
+> 
+> ----------------------------------------------------------------
+> Helge Deller (1):
+>        linux-user: Adjust initial brk when interpreter is close to executable
+> 
+> Richard Henderson (13):
+>        linux-user: Adjust task_unmapped_base for reserved_va
+>        linux-user: Define TASK_UNMAPPED_BASE in $guest/target_mman.h
+>        linux-user: Define ELF_ET_DYN_BASE in $guest/target_mman.h
+>        linux-user: Use MAP_FIXED_NOREPLACE for initial image mmap
+>        linux-user: Use elf_et_dyn_base for ET_DYN with interpreter
+>        linux-user: Do not adjust image mapping for host page size
+>        linux-user: Do not adjust zero_bss for host page size
+>        linux-user: Use zero_bss for PT_LOAD with no file contents too
+>        util/selfmap: Rewrite using qemu/interval-tree.h
+>        linux-user: Remove duplicate CPU_LOG_PAGE from probe_guest_base
+>        linux-user: Consolidate guest bounds check in probe_guest_base
+>        linux-user: Rewrite fixed probe_guest_base
+>        linux-user: Rewrite non-fixed probe_guest_base
 
-Nice patch. Tested on a POWER10.
+Is there anything in there and in other linux-user late fixes which are applicable to 8.0?
+Or should we declare 8.0 as semi-broken and be done with it?
 
-Tested-by: Nicholas Piggin <npiggin@gmail.com>
+Thanks,
 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->  tcg/ppc/tcg-target.c.inc | 22 ++++++++++++++++++++++
->  1 file changed, 22 insertions(+)
->
-> diff --git a/tcg/ppc/tcg-target.c.inc b/tcg/ppc/tcg-target.c.inc
-> index 10448aa0e6..090f11e71c 100644
-> --- a/tcg/ppc/tcg-target.c.inc
-> +++ b/tcg/ppc/tcg-target.c.inc
-> @@ -447,6 +447,11 @@ static bool tcg_target_const_match(int64_t val, TCGT=
-ype type, int ct)
->  #define TW     XO31( 4)
->  #define TRAP   (TW | TO(31))
-> =20
-> +#define SETBC    XO31(384)  /* v3.10 */
-> +#define SETBCR   XO31(416)  /* v3.10 */
-> +#define SETNBC   XO31(448)  /* v3.10 */
-> +#define SETNBCR  XO31(480)  /* v3.10 */
-> +
->  #define NOP    ORI  /* ori 0,0,0 */
-> =20
->  #define LVX        XO31(103)
-> @@ -1624,6 +1629,23 @@ static void tcg_out_setcond(TCGContext *s, TCGType=
- type, TCGCond cond,
->          arg2 =3D (uint32_t)arg2;
->      }
-> =20
-> +    /* With SETBC/SETBCR, we can always implement with 2 insns. */
-> +    if (have_isa_3_10) {
-> +        tcg_insn_unit bi, opc;
-> +
-> +        tcg_out_cmp(s, cond, arg1, arg2, const_arg2, 7, type);
-> +
-> +        /* Re-use tcg_to_bc for BI and BO_COND_{TRUE,FALSE}. */
-> +        bi =3D tcg_to_bc[cond] & (0x1f << 16);
-> +        if (tcg_to_bc[cond] & BO(8)) {
-> +            opc =3D neg ? SETNBC : SETBC;
-> +        } else {
-> +            opc =3D neg ? SETNBCR : SETBCR;
-> +        }
-> +        tcg_out32(s, opc | RT(arg0) | bi);
-> +        return;
-> +    }
-> +
->      /* Handle common and trivial cases before handling anything else.  *=
-/
->      if (arg2 =3D=3D 0) {
->          switch (cond) {
+/mjt
 
 
