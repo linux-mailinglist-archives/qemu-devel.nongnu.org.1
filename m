@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74B0277D563
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Aug 2023 23:50:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27B9077D564
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Aug 2023 23:50:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qW1ud-0002JI-VM; Tue, 15 Aug 2023 17:49:15 -0400
+	id 1qW1vK-0002qD-Lm; Tue, 15 Aug 2023 17:49:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qW1uc-0002Ir-3w
- for qemu-devel@nongnu.org; Tue, 15 Aug 2023 17:49:14 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qW1vD-0002pM-ER
+ for qemu-devel@nongnu.org; Tue, 15 Aug 2023 17:49:51 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qW1uZ-00006O-TF
- for qemu-devel@nongnu.org; Tue, 15 Aug 2023 17:49:13 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qW1vB-0000JK-9z
+ for qemu-devel@nongnu.org; Tue, 15 Aug 2023 17:49:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692136150;
+ s=mimecast20190719; t=1692136188;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=F2ixuU1ZZcx1qZGkdmuJxxOMkb5aadrz2p9vIcp3cGg=;
- b=UXewqV3T4hQyFQbRqTeYLZGBHbcIyTabzMfOmzPOozDi6/KlVocqd06zmJZdBgmH2vaiSC
- eJf1dhecEb/8j+pUcv79V/T6t9/CRoKWfUBAzcO6+w7/ICT/2EcIEMNGt9GdGyMaKcEr3K
- f3duZjhEKMsFJLBAlZjynJkjYtsaCOU=
+ bh=17IQWLWnM9m7zkgn+FmcjF2gkKyStlKBASh8b4VZsE8=;
+ b=QQn9tGdQdgTOMK3TaMlfWoIRQJxVsh0b4if5Jm760E9HfTIJ5VmLG4/mzet14DRt29lNqY
+ +DLYgb2s9ZyiSXX5JkwJsQg/xvaieo+HsfgyhmbCP1pwWNGFDacXQs8kzyEH0c4CM4HA7V
+ Tcxq4ggk1datYRFJb2fLvxTNRfGqC9k=
 Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
  [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-629-UTTkPfzXNB6t7ts9WGNw7Q-1; Tue, 15 Aug 2023 17:49:08 -0400
-X-MC-Unique: UTTkPfzXNB6t7ts9WGNw7Q-1
+ us-mta-632-V2pnNdPxNNCvtKjO3wXPPA-1; Tue, 15 Aug 2023 17:49:47 -0400
+X-MC-Unique: V2pnNdPxNNCvtKjO3wXPPA-1
 Received: by mail-qv1-f69.google.com with SMTP id
- 6a1803df08f44-63c9463c116so16498306d6.0
- for <qemu-devel@nongnu.org>; Tue, 15 Aug 2023 14:49:08 -0700 (PDT)
+ 6a1803df08f44-63c9463c116so16499146d6.0
+ for <qemu-devel@nongnu.org>; Tue, 15 Aug 2023 14:49:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692136148; x=1692740948;
+ d=1e100.net; s=20221208; t=1692136186; x=1692740986;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=F2ixuU1ZZcx1qZGkdmuJxxOMkb5aadrz2p9vIcp3cGg=;
- b=cbA8DUuqASmVp8E6UDAGaPoYRk5EmiFb4up8KlX+o3uypwZ1I1QEQVRzV9HLWvK/92
- icIOQf5uFcrYeCfuJQmJ9J89Wr80dbOZnTi3PPZ9AdT7bszhkekNZOyiocuVBOHnmqcl
- 0FYgxSNEzjCReoVt4o4owNc0rhKKr38fbruaAKcH3oJfkB46lc8YrsC9BakGkmTuppTq
- bXefxq1FcGPuvGoO2iYdZ5K5ih0isdavEH2yMgA4aKyZ8u/Vnzl2b8L1V5AJMJXp+21x
- h/E9uOJ0I1+OQeYq39BE2EEd+GNko2xfYBlzubnetRcGOZw6Udp9yTv3P9MK2Rud/si+
- 3gPQ==
-X-Gm-Message-State: AOJu0YwqyWMzNR2uYzvOuXz6HE+tHH7SS47p9SRy18pFLg3XwuX/aiC4
- aCX9rG1HGFW7Dv3KtWvuVu8QNu/IH6OjKCN2s1+VPfKS+6hq8jp7Cl7wT3Av+9T7TmdaXjr9N9U
- HziFEn/KKmC3zAIc=
+ bh=17IQWLWnM9m7zkgn+FmcjF2gkKyStlKBASh8b4VZsE8=;
+ b=BK5xlnxW/EcR0Ej5wuPeLxuVqYVyErVFxXKRIAwVAYn4mzZENRWdY6reTnTTElJ/4L
+ ol5IzMfEYk74NErrHTeMJhVYq/TcGN8UGwTfWYzpyXVclDgEAz98CHCOwjCCvWUoA2/K
+ oXqu4Rr9XcN4T/m9DU5dynGF+KcHrPUx7+A1KsveVGHvC8ryOtlwyFOESbhwEh1a+NHU
+ SFueSXe3YSO/OJ6I/IY8nPIGEopDy8LLFLLW36QXGa5HN2xNysh+HrJbodbu7thN2arN
+ 6zU/gUqMR38gAsVt4vnVOmeQQCbeev62nydxT0NjpuU+OYQiaon0F18ErkLgZ/EfXyMe
+ W9FA==
+X-Gm-Message-State: AOJu0Yw7peCb3gSE2nPmMAU7ijj9HDOT0evBKcnB90IERlBTzv3SgzNV
+ eiPdx28mfWCQBIKNNZT2r8zOvWWMVCPVqF9sPgkGX3M9UEh6LLM7e+U353gVUEx8HOC4qFE5hw6
+ sc4Zk4iHmuQ5MG+I=
 X-Received: by 2002:a05:6214:4015:b0:645:3c6:56ab with SMTP id
- kd21-20020a056214401500b0064503c656abmr34765qvb.1.1692136148259; 
- Tue, 15 Aug 2023 14:49:08 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHNsOHIcDLNb+alq94MtIt6/k/O9nmVdrUaZfLbvmkO09mmT+FXblooPmARAtOFM1fgFMyW1Q==
+ kd21-20020a056214401500b0064503c656abmr36005qvb.1.1692136186654; 
+ Tue, 15 Aug 2023 14:49:46 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFtnBdbrebLsP1jW+q5y8t3vALR8nYBym2Jy4tXCA1ys4tyBFfrtaKj2ceKyx8Js1NqWu25iA==
 X-Received: by 2002:a05:6214:4015:b0:645:3c6:56ab with SMTP id
- kd21-20020a056214401500b0064503c656abmr34750qvb.1.1692136147943; 
- Tue, 15 Aug 2023 14:49:07 -0700 (PDT)
+ kd21-20020a056214401500b0064503c656abmr35998qvb.1.1692136186415; 
+ Tue, 15 Aug 2023 14:49:46 -0700 (PDT)
 Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
  [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- d6-20020a0ce446000000b0063c71b62239sm4377262qvm.42.2023.08.15.14.49.07
+ t27-20020a05620a035b00b007678973eaa1sm4042457qkm.127.2023.08.15.14.49.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 15 Aug 2023 14:49:07 -0700 (PDT)
-Date: Tue, 15 Aug 2023 17:49:05 -0400
+ Tue, 15 Aug 2023 14:49:46 -0700 (PDT)
+Date: Tue, 15 Aug 2023 17:49:34 -0400
 From: Peter Xu <peterx@redhat.com>
 To: Fabiano Rosas <farosas@suse.de>
 Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
  Wei Wang <wei.w.wang@intel.com>, Leonardo Bras <leobras@redhat.com>
-Subject: Re: [PATCH v3 03/10] migration: Fix possible race when checking
- to_dst_file for errors
-Message-ID: <ZNvy0cufhfL+pw89@x1n>
+Subject: Re: [PATCH v3 01/10] migration: Fix possible race when setting
+ rp_state.error
+Message-ID: <ZNvy7mOL9slzsNsY@x1n>
 References: <20230811150836.2895-1-farosas@suse.de>
- <20230811150836.2895-4-farosas@suse.de>
+ <20230811150836.2895-2-farosas@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230811150836.2895-4-farosas@suse.de>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+In-Reply-To: <20230811150836.2895-2-farosas@suse.de>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -98,28 +98,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Aug 11, 2023 at 12:08:29PM -0300, Fabiano Rosas wrote:
-> diff --git a/migration/migration.c b/migration/migration.c
-> index 0067c927fa..85c171f32c 100644
-> --- a/migration/migration.c
-> +++ b/migration/migration.c
-> @@ -2057,11 +2057,10 @@ static int await_return_path_close_on_source(MigrationState *ms)
->       * need to cause it to exit. shutdown(2), if we have it, will
->       * cause it to unblock if it's stuck waiting for the destination.
->       */
-> -    if (qemu_file_get_error(ms->to_dst_file)) {
-> -        WITH_QEMU_LOCK_GUARD(&ms->qemu_file_lock) {
-> -            if (ms->rp_state.from_dst_file) {
-> -                qemu_file_shutdown(ms->rp_state.from_dst_file);
-> -            }
-> +    WITH_QEMU_LOCK_GUARD(&ms->qemu_file_lock) {
-> +        if (ms->to_dst_file && ms->rp_state.from_dst_file &&
-> +            qemu_file_get_error(ms->to_dst_file)) {
-> +            qemu_file_shutdown(ms->rp_state.from_dst_file);
->          }
->      }
+On Fri, Aug 11, 2023 at 12:08:27PM -0300, Fabiano Rosas wrote:
+> We don't need to set the rp_state.error right after a shutdown because
+> qemu_file_shutdown() always sets the QEMUFile error, so the return
+> path thread would have seen it and set the rp error itself.
+> 
+> Setting the error outside of the thread is also racy because the
+> thread could clear it after we set it.
+> 
+> Signed-off-by: Fabiano Rosas <farosas@suse.de>
 
-Squash into previous one?
+Reviewed-by: Peter Xu <peterx@redhat.com>
 
 -- 
 Peter Xu
