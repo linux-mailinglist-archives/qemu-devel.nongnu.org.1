@@ -2,76 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19D5277CCE2
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Aug 2023 14:47:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF58177CD01
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Aug 2023 14:56:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qVtSD-0001me-UF; Tue, 15 Aug 2023 08:47:21 -0400
+	id 1qVtZl-0004RF-PL; Tue, 15 Aug 2023 08:55:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1qVtSB-0001m4-PS; Tue, 15 Aug 2023 08:47:19 -0400
-Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qVtZi-0004QY-HS; Tue, 15 Aug 2023 08:55:06 -0400
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1qVtS5-0005EV-Q8; Tue, 15 Aug 2023 08:47:19 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 222771F38D;
- Tue, 15 Aug 2023 12:47:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1692103632; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=DWZkXO2IjjdinkHE9wP+I3jGuunCyBN1OU7XgaU36UM=;
- b=ym7wzt4QYgKCjcFaYfuZaRmYTxJlecaoedJ1oXpvuO/9lrsZj+ACLzMqrK66nOC2p/KXXk
- OU07/PT7Lk9okNw10KtW8EDyVTAZjGtxRZcfbDLCj4KvW5hs8U2ADE1Lz5vRd+pBzsh09A
- hncvLZg1aA2WQLti8dJq+GWmKWXi6oY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1692103632;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=DWZkXO2IjjdinkHE9wP+I3jGuunCyBN1OU7XgaU36UM=;
- b=fzBKk8DuRL2UGhMrSHSr0bCUuCz8PI6sLbQK4r/nlIPHHbGNTEWYXQylEwbj55S1uRltDK
- 2RkOxRcwlxc6T2Cw==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id A56FF13909;
- Tue, 15 Aug 2023 12:47:11 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id TXbGG89z22SFIQAAMHmgww
- (envelope-from <farosas@suse.de>); Tue, 15 Aug 2023 12:47:11 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org
-Cc: Markus Armbruster <armbru@redhat.com>, Leonardo Bras Soares Passos
- <lsoaresp@redhat.com>, =?utf-8?Q?Daniel_P_=2E_Berrang=C3=A9?=
- <berrange@redhat.com>,
- peterx@redhat.com, Juan Quintela <quintela@redhat.com>,
- qemu-stable@nongnu.org
-Subject: Re: [PATCH for-8.2 1/4] migration/qmp: Fix crash on setting
- tls-authz with null
-In-Reply-To: <20230814221947.353093-2-peterx@redhat.com>
-References: <20230814221947.353093-1-peterx@redhat.com>
- <20230814221947.353093-2-peterx@redhat.com>
-Date: Tue, 15 Aug 2023 09:47:09 -0300
-Message-ID: <87bkf8mq0i.fsf@suse.de>
-MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=2001:67c:2178:6::1d; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qVtZg-0006oC-7W; Tue, 15 Aug 2023 08:55:06 -0400
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-68872ca740bso185527b3a.2; 
+ Tue, 15 Aug 2023 05:55:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1692104101; x=1692708901;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=L2jmxTjtwkwdzk9jVI8+IfmWJHUzEfm8Y6kEBVsKAes=;
+ b=Y48FxWtzLtd2hoMUnDqUYOwmlPZrm2Vgn6Vesys52+NK9I0PC36pMtYElrSwbGP/ZT
+ Nb72CEfT+Wqm9YysNt0xq0sfqUNjLxyKbinWeINrhiNzEXJCky7R6HI5MqM6j6r95AxB
+ mw5zwBdrDwNXdChbMUtoqGGmwJP/akt28sL0gcqn3UAcy5KKGJvV2piZVubKWklYPZDi
+ AptIXqhO2ZQXw0oRBLCZQXY5+P5UNus07LfDRtT+ZyOBG/oUFDCe+c8yFLnqqiWRCgDw
+ g8hY5U+xQaWdG7dI8M6QlCbjzndADmRVl86Hp2BaKuatOWK9u+g8mNrQwSbneSwc22hU
+ n4uA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1692104101; x=1692708901;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=L2jmxTjtwkwdzk9jVI8+IfmWJHUzEfm8Y6kEBVsKAes=;
+ b=LDPSHe5zslMKuI2uqvBR3O4mbvKgH6nGhqfzUBWIEuGq7oC7tEW0RsmqQsHQlx1PAh
+ gkQVV65pVyTTtwjOy7rR8CW3Jlr210RLIgYLyH4A1EaPgSQ/GJQ1yvPkBJQjG3lC5HAf
+ p1YYQwyMiamcejecSH36Bj5CY1lScSzqcsYhOpOM3ENAscHUqWTE0OMdFALwH29VzkY8
+ /XJGXPR0J4uTbL6tcL9RB6Y7ARUsAKZcq7aGxU/GNsXBDsj8zAKO52yqyoY2hd5yu7fD
+ Uo7WlXUg/0yc/0/HFIUVtEykWW1E023drAGGuBfvGagWYtTozikGWLTWbHjpgUgR72Er
+ oz/g==
+X-Gm-Message-State: AOJu0YyJ/b22II3k7khlcLU8bpIbxhbiadKrsJnppd65Tp5zYAqh0x2s
+ dHT82PGO+K+rTgY5Aa1Wo4M=
+X-Google-Smtp-Source: AGHT+IH6uKM8KppsBx2ceMrnjcqmBNFI83NWl2k3mVqSHrm3h+uPQDcXqLdvoC4uxJ4INVjaDm2eoQ==
+X-Received: by 2002:a05:6a00:398a:b0:67a:a906:9edb with SMTP id
+ fi10-20020a056a00398a00b0067aa9069edbmr14632499pfb.30.1692104100635; 
+ Tue, 15 Aug 2023 05:55:00 -0700 (PDT)
+Received: from localhost ([61.68.161.249]) by smtp.gmail.com with ESMTPSA id
+ s11-20020a62e70b000000b0068746ab9aebsm9588787pfh.14.2023.08.15.05.54.57
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 15 Aug 2023 05:55:00 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 15 Aug 2023 22:54:54 +1000
+Message-Id: <CUT4U9OHLOS1.P67WFTW3R24G@wheely>
+Cc: <qemu-arm@nongnu.org>, <qemu-ppc@nongnu.org>, <qemu-riscv@nongnu.org>,
+ <qemu-s390x@nongnu.org>
+Subject: Re: [PATCH 07/24] target/ppc: Use tcg_gen_negsetcond_*
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Richard Henderson" <richard.henderson@linaro.org>, <qemu-devel@nongnu.org>
+X-Mailer: aerc 0.15.2
+References: <20230808031143.50925-1-richard.henderson@linaro.org>
+ <20230808031143.50925-8-richard.henderson@linaro.org>
+In-Reply-To: <20230808031143.50925-8-richard.henderson@linaro.org>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x434.google.com
+X-Spam_score_int: 4
+X-Spam_score: 0.4
+X-Spam_bar: /
+X-Spam_report: (0.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ SUSPICIOUS_RECIPS=2.51 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,15 +91,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
+On Tue Aug 8, 2023 at 1:11 PM AEST, Richard Henderson wrote:
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
-> QEMU will crash if anyone tries to set tls-authz (which is a type
-> StrOrNull) with 'null' value.  Fix it in the easy way by converting it to
-> qstring just like the other two tls parameters.
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+Tested-by: Nicholas Piggin <npiggin@gmail.com>
+
+> ---
+>  target/ppc/translate/fixedpoint-impl.c.inc | 6 ++++--
+>  target/ppc/translate/vmx-impl.c.inc        | 8 +++-----
+>  2 files changed, 7 insertions(+), 7 deletions(-)
 >
-> Cc: qemu-stable@nongnu.org # v4.0+
-> Fixes: d2f1d29b95 ("migration: add support for a "tls-authz" migration parameter")
-> Signed-off-by: Peter Xu <peterx@redhat.com>
+> diff --git a/target/ppc/translate/fixedpoint-impl.c.inc b/target/ppc/tran=
+slate/fixedpoint-impl.c.inc
+> index f47f1a50e8..4ce02fd3a4 100644
+> --- a/target/ppc/translate/fixedpoint-impl.c.inc
+> +++ b/target/ppc/translate/fixedpoint-impl.c.inc
+> @@ -342,12 +342,14 @@ static bool do_set_bool_cond(DisasContext *ctx, arg=
+_X_bi *a, bool neg, bool rev)
+>      uint32_t mask =3D 0x08 >> (a->bi & 0x03);
+>      TCGCond cond =3D rev ? TCG_COND_EQ : TCG_COND_NE;
+>      TCGv temp =3D tcg_temp_new();
+> +    TCGv zero =3D tcg_constant_tl(0);
+> =20
+>      tcg_gen_extu_i32_tl(temp, cpu_crf[a->bi >> 2]);
+>      tcg_gen_andi_tl(temp, temp, mask);
+> -    tcg_gen_setcondi_tl(cond, cpu_gpr[a->rt], temp, 0);
+>      if (neg) {
+> -        tcg_gen_neg_tl(cpu_gpr[a->rt], cpu_gpr[a->rt]);
+> +        tcg_gen_negsetcond_tl(cond, cpu_gpr[a->rt], temp, zero);
+> +    } else {
+> +        tcg_gen_setcond_tl(cond, cpu_gpr[a->rt], temp, zero);
+>      }
+>      return true;
+>  }
+> diff --git a/target/ppc/translate/vmx-impl.c.inc b/target/ppc/translate/v=
+mx-impl.c.inc
+> index c8712dd7d8..6d7669aabd 100644
+> --- a/target/ppc/translate/vmx-impl.c.inc
+> +++ b/target/ppc/translate/vmx-impl.c.inc
+> @@ -1341,8 +1341,7 @@ static bool trans_VCMPEQUQ(DisasContext *ctx, arg_V=
+C *a)
+>      tcg_gen_xor_i64(t1, t0, t1);
+> =20
+>      tcg_gen_or_i64(t1, t1, t2);
+> -    tcg_gen_setcondi_i64(TCG_COND_EQ, t1, t1, 0);
+> -    tcg_gen_neg_i64(t1, t1);
+> +    tcg_gen_negsetcond_i64(TCG_COND_EQ, t1, t1, tcg_constant_i64(0));
+> =20
+>      set_avr64(a->vrt, t1, true);
+>      set_avr64(a->vrt, t1, false);
+> @@ -1365,15 +1364,14 @@ static bool do_vcmpgtq(DisasContext *ctx, arg_VC =
+*a, bool sign)
+> =20
+>      get_avr64(t0, a->vra, false);
+>      get_avr64(t1, a->vrb, false);
+> -    tcg_gen_setcond_i64(TCG_COND_GTU, t2, t0, t1);
+> +    tcg_gen_negsetcond_i64(TCG_COND_GTU, t2, t0, t1);
+> =20
+>      get_avr64(t0, a->vra, true);
+>      get_avr64(t1, a->vrb, true);
+>      tcg_gen_movcond_i64(TCG_COND_EQ, t2, t0, t1, t2, tcg_constant_i64(0)=
+);
+> -    tcg_gen_setcond_i64(sign ? TCG_COND_GT : TCG_COND_GTU, t1, t0, t1);
+> +    tcg_gen_negsetcond_i64(sign ? TCG_COND_GT : TCG_COND_GTU, t1, t0, t1=
+);
+> =20
+>      tcg_gen_or_i64(t1, t1, t2);
+> -    tcg_gen_neg_i64(t1, t1);
+> =20
+>      set_avr64(a->vrt, t1, true);
+>      set_avr64(a->vrt, t1, false);
 
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
 
