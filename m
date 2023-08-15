@@ -2,64 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D40977CCE1
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Aug 2023 14:47:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19D5277CCE2
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Aug 2023 14:47:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qVtRu-0001gE-8R; Tue, 15 Aug 2023 08:47:02 -0400
+	id 1qVtSD-0001me-UF; Tue, 15 Aug 2023 08:47:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qVtRr-0001fd-Fh
- for qemu-devel@nongnu.org; Tue, 15 Aug 2023 08:46:59 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>)
+ id 1qVtSB-0001m4-PS; Tue, 15 Aug 2023 08:47:19 -0400
 Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qVtRp-00059Z-6T
- for qemu-devel@nongnu.org; Tue, 15 Aug 2023 08:46:59 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>)
+ id 1qVtS5-0005EV-Q8; Tue, 15 Aug 2023 08:47:19 -0400
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id A16CE1F38D;
- Tue, 15 Aug 2023 12:46:55 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 222771F38D;
+ Tue, 15 Aug 2023 12:47:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1692103615; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1692103632; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=AfzF9x3FX4uzf+3wHOp2DxW323bxZNxqyXwmEmAoTVY=;
- b=sMBUf8FIoms0+w3XwJoQCyZdqWJ1jDAmoGyjQ11hT6fe7gRjtyB7BPxSQOXH0zIkVdcRuY
- 7wH3DRlKW+us21r9CiqaUEsBs7xxyPQb4BQ3Ourvv3SOXAoubYIDoK1dH9U6vUmZ9XxrYa
- ij+tJpwGLDIJm8N4+cbefoSXwxiDKec=
+ bh=DWZkXO2IjjdinkHE9wP+I3jGuunCyBN1OU7XgaU36UM=;
+ b=ym7wzt4QYgKCjcFaYfuZaRmYTxJlecaoedJ1oXpvuO/9lrsZj+ACLzMqrK66nOC2p/KXXk
+ OU07/PT7Lk9okNw10KtW8EDyVTAZjGtxRZcfbDLCj4KvW5hs8U2ADE1Lz5vRd+pBzsh09A
+ hncvLZg1aA2WQLti8dJq+GWmKWXi6oY=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1692103615;
+ s=susede2_ed25519; t=1692103632;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=AfzF9x3FX4uzf+3wHOp2DxW323bxZNxqyXwmEmAoTVY=;
- b=k/e4v5E1to4UgApp62xhM9wykuPU71zmXOjYfTDmmLRIKJBAd4/XS02QH/ZrarFvrdkmBn
- B/7KnE8OuGL7mrAw==
+ bh=DWZkXO2IjjdinkHE9wP+I3jGuunCyBN1OU7XgaU36UM=;
+ b=fzBKk8DuRL2UGhMrSHSr0bCUuCz8PI6sLbQK4r/nlIPHHbGNTEWYXQylEwbj55S1uRltDK
+ 2RkOxRcwlxc6T2Cw==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 1CB3113909;
- Tue, 15 Aug 2023 12:46:54 +0000 (UTC)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id A56FF13909;
+ Tue, 15 Aug 2023 12:47:11 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id 8KpkNr5z22RmIQAAMHmgww
- (envelope-from <farosas@suse.de>); Tue, 15 Aug 2023 12:46:54 +0000
+ by imap2.suse-dmz.suse.de with ESMTPSA id TXbGG89z22SFIQAAMHmgww
+ (envelope-from <farosas@suse.de>); Tue, 15 Aug 2023 12:47:11 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org
 Cc: Markus Armbruster <armbru@redhat.com>, Leonardo Bras Soares Passos
  <lsoaresp@redhat.com>, =?utf-8?Q?Daniel_P_=2E_Berrang=C3=A9?=
  <berrange@redhat.com>,
- peterx@redhat.com, Juan Quintela <quintela@redhat.com>
-Subject: Re: [PATCH for-8.2 2/4] tests/migration-test: Add a test for null
- parameter setups
-In-Reply-To: <20230814221947.353093-3-peterx@redhat.com>
+ peterx@redhat.com, Juan Quintela <quintela@redhat.com>,
+ qemu-stable@nongnu.org
+Subject: Re: [PATCH for-8.2 1/4] migration/qmp: Fix crash on setting
+ tls-authz with null
+In-Reply-To: <20230814221947.353093-2-peterx@redhat.com>
 References: <20230814221947.353093-1-peterx@redhat.com>
- <20230814221947.353093-3-peterx@redhat.com>
-Date: Tue, 15 Aug 2023 09:46:52 -0300
-Message-ID: <87edk4mq0z.fsf@suse.de>
+ <20230814221947.353093-2-peterx@redhat.com>
+Date: Tue, 15 Aug 2023 09:47:09 -0300
+Message-ID: <87bkf8mq0i.fsf@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain
 Received-SPF: pass client-ip=2001:67c:2178:6::1d; envelope-from=farosas@suse.de;
@@ -88,8 +89,12 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Peter Xu <peterx@redhat.com> writes:
 
-> Add a test for StrOrNull parameters (tls-*).
+> QEMU will crash if anyone tries to set tls-authz (which is a type
+> StrOrNull) with 'null' value.  Fix it in the easy way by converting it to
+> qstring just like the other two tls parameters.
 >
+> Cc: qemu-stable@nongnu.org # v4.0+
+> Fixes: d2f1d29b95 ("migration: add support for a "tls-authz" migration parameter")
 > Signed-off-by: Peter Xu <peterx@redhat.com>
 
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
