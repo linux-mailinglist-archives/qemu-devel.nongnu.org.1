@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7148B77C9F6
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D20577C9F9
 	for <lists+qemu-devel@lfdr.de>; Tue, 15 Aug 2023 11:09:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qVq2F-0005P0-6Z; Tue, 15 Aug 2023 05:08:19 -0400
+	id 1qVq2H-0005S0-Sz; Tue, 15 Aug 2023 05:08:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qVq22-0005Ol-0Z
- for qemu-devel@nongnu.org; Tue, 15 Aug 2023 05:08:06 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ id 1qVq29-0005R7-Sp
+ for qemu-devel@nongnu.org; Tue, 15 Aug 2023 05:08:14 -0400
+Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1qVq1z-00056T-HW
- for qemu-devel@nongnu.org; Tue, 15 Aug 2023 05:08:05 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-3fe5c0e57d2so46939645e9.0
- for <qemu-devel@nongnu.org>; Tue, 15 Aug 2023 02:08:02 -0700 (PDT)
+ id 1qVq26-00057V-Ub
+ for qemu-devel@nongnu.org; Tue, 15 Aug 2023 05:08:13 -0400
+Received: by mail-lj1-x22b.google.com with SMTP id
+ 38308e7fff4ca-2b9cbaee7a9so80987471fa.0
+ for <qemu-devel@nongnu.org>; Tue, 15 Aug 2023 02:08:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692090481; x=1692695281;
+ d=linaro.org; s=google; t=1692090487; x=1692695287;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=TK1fciw7LUKtOLqmUperb6ROHdP0V6/TZkVSUmHfwKY=;
- b=i1dwDeVSwaoCNZ+yDmOMWixEn0z+rwCDV1PoO2oT/V8AHAu5UFr/W0w4GI+9tfDtx8
- MQeyIuFH4k0M5PfsRfjJIIZI3aTBZf6ga3PIRN+/hz24B7q/1Eic7SmVaoFgmvwujNPb
- +GdO1ST37iRiQX4qR6YR7Od4FvwducgaLQLq+aesH+89ucdEWX5LSZhhqcDml1luEEJ5
- UoZtOucNR9b+A0pmoQUhNDYFhwR4IEy3O9lnzPSuYBs44lvPCyNRz/nSECQKoyJRj60y
- 8BbrKIIClwqh8Br55jww3+A101sUKlw4LMIKSRiQKBlHDeXZsesq4jRfJCX+Fp5fJGBG
- F91A==
+ bh=QR7R1KOlpaxSbdGSacsES5xucRXnUhNpyw0allM0a8Q=;
+ b=IK1YTVssr/z6buq30RaARZyG88yezGD1X2alGvrw6dFCt2bcu4fHeP+xSvCGAol4KA
+ qGkIc2LFAL/uFyc3vrX26eb8ge/iNRxNFvPDXEu8ER2SIck4B4K9pSsnESqUuqpF8zQb
+ STpVY9q5o3LDv2i20UNj6aLefSTQ+/gxpNZ7msuaf/9F/TMb9TU9UtxRf42XzePBXRDL
+ t0om8GTZrYp7AYN++OZwcXxLbB7/CA0nN2KLP+isDFWPMang++3Bb4q0tsmMgv+aAF9s
+ JvjndDeKakCEjbJAsn68+uBBJsv19u11aT8ELB75lcj8GYerIG6UEiuA7clhquWhVY2x
+ cJ0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692090481; x=1692695281;
+ d=1e100.net; s=20221208; t=1692090487; x=1692695287;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=TK1fciw7LUKtOLqmUperb6ROHdP0V6/TZkVSUmHfwKY=;
- b=CJ7CzHK9LrU0Wng7IYQUDmFFTALiwevZCrluBEkIHASWPACxEIVes3V0u0PyOl19LC
- ebjP1QEpjTaUzw3ymIHnfHUdM5LjONnZ4ghuX7EwOPAI2SRQ+2Vm1nzMRK6eiddPMCSA
- gNywvXNfk+2fdBuVKbT8Jh91Jf9fNOgiw7k6aMxTivKRNmydkvxrtbeXD5p8ezFFes+S
- XXcjEC5J+fStGK0+cKDdzhmAr/bP2OGynWglDYeWfwwuN7/hG2oZRREN5d5ElzJdPHvr
- 3WOnbqTVzsyJQ4w8lCaoOV0oBCrMI0wjStuHwjzFzGzM1r9Z5vXlckKALmwVAxZflUMV
- NYbw==
-X-Gm-Message-State: AOJu0YwpeyPlsES9CHwPqrP48+HPgmmpdGd2/6KarLuBWom4xwmZGF+f
- UVKyEu+PxAQviCEGl/lxBTcBWGzVunK+tGeJfuA=
-X-Google-Smtp-Source: AGHT+IH9qQGagYeY/s+vGV5myBq4reDwBARSsXlWi7mSVF0Gr/BzzUgs6NTcMLOIo3FwnICxe1VAfw==
-X-Received: by 2002:a7b:c44f:0:b0:3fb:abd0:2b52 with SMTP id
- l15-20020a7bc44f000000b003fbabd02b52mr9598370wmi.13.1692090481260; 
- Tue, 15 Aug 2023 02:08:01 -0700 (PDT)
+ bh=QR7R1KOlpaxSbdGSacsES5xucRXnUhNpyw0allM0a8Q=;
+ b=AxoRwJ/R8AT8D/z2TCcQKxY8k9ozzhNdfI8KNuwWIgRpjB8Co8+9q9eLyautlRbNai
+ ROT/UaEE8AVGSoxr7M5+JWrPFVpwlGz0ULv0LSlGgKaF6+V6f13Xrhitqw/Cl61Uuzhz
+ cD2qOofz/RAJe85FmKbGyndkpnWA8yCjclgFqyObV7ReZiYStCDJDZ0rBTfSn24iWznU
+ BK3Rrc0Gr/J++kFBm3C02gJgWK7kVMsGNDq55e7q/ZZ6OHAUrg//WEh8fcU5IMaKd6w7
+ Ze2MUh/cYBFknVzr2YVb872g+ft8q/8EnLqwZAjE4HJjNa4hzjU1WGMm3K3gLqDnTT1C
+ Jq+g==
+X-Gm-Message-State: AOJu0YzEwp6cnOi3mkPLERhxUuccQBapgTkI8qRjvZqc/80aYS6JiMXi
+ 708Qaqq7QG6xue2K+NoDcpv9ZfetRUzb4zGWG+w=
+X-Google-Smtp-Source: AGHT+IHQ68AFwJfaex7OVIv9l3iUHYjBfr/+IwTW4SydkP86lPSnDAEu2MHZle5g6HyEecCoBs/ttQ==
+X-Received: by 2002:a05:651c:1023:b0:2b9:4324:b0a7 with SMTP id
+ w3-20020a05651c102300b002b94324b0a7mr8787794ljm.51.1692090487244; 
+ Tue, 15 Aug 2023 02:08:07 -0700 (PDT)
 Received: from localhost.localdomain (adsl-56.37.6.0.tellas.gr. [37.6.0.56])
  by smtp.gmail.com with ESMTPSA id
- g8-20020a7bc4c8000000b003fe505319ffsm19774707wmk.18.2023.08.15.02.07.58
+ g8-20020a7bc4c8000000b003fe505319ffsm19774707wmk.18.2023.08.15.02.08.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 15 Aug 2023 02:08:00 -0700 (PDT)
+ Tue, 15 Aug 2023 02:08:06 -0700 (PDT)
 From: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
@@ -71,16 +71,16 @@ Cc: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
  =?UTF-8?q?K=C5=91v=C3=A1g=C3=B3=2C=20Zolt=C3=A1n?= <DirtY.iCE.hu@gmail.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v6 02/12] Add virtio-sound-pci device
-Date: Tue, 15 Aug 2023 12:07:07 +0300
-Message-Id: <8f996f9aedcace74622ceb8963039627d7fd1120.1692089917.git.manos.pitsidianakis@linaro.org>
+Subject: [PATCH v6 03/12] virtio-sound: handle control messages and streams
+Date: Tue, 15 Aug 2023 12:07:08 +0300
+Message-Id: <66eac6c1e02ba41f9c4de04312fd53c04eec7d71.1692089917.git.manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1692089917.git.manos.pitsidianakis@linaro.org>
 References: <cover.1692089917.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22b;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-lj1-x22b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,174 +103,423 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch adds a PCI wrapper device for the virtio-sound device.
-It is necessary to instantiate a virtio-snd device in a guest.
-All sound logic will be added to the virtio-snd device in the following
-commits.
+Receive guest requests in the control (CTRL) queue of the virtio sound
+device and reply with a NOT SUPPORTED error to all control commands.
 
-To add this device with a guest, you'll need a >=5.13 kernel compiled
-with CONFIG_SND_VIRTIO=y, which at the time of writing most distros have
-off by default.
+The receiving handler is virtio_snd_handle_ctrl(). It stores all control
+messages in the queue in the device's command queue. Then it calls
+virtio_snd_process_cmdq() to handle each message.
 
-Use with following flags in the invocation:
-
-  -device virtio-sound-pci,disable-legacy=on
-
-And an audio backend listed with `-audio driver=help` that works on
-your host machine, e.g.:
-
-Pulseaudio:
-  -audio driver=pa,model=virtio-sound
-  or
-  -audio driver=pa,model=virtio-sound,server=/run/user/1000/pulse/native
-sdl:
-  -audio driver=sdl,model=virtio-sound
-coreaudio (macos/darwin):
-  -audio driver=coreaudio,model=virtio-sound
-etc.
+The handler is process_cmd() which replies with VIRTIO_SND_S_NOT_SUPP.
 
 Signed-off-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- hw/virtio/meson.build      |  1 +
- hw/virtio/virtio-snd-pci.c | 91 ++++++++++++++++++++++++++++++++++++++
- include/hw/pci/pci.h       |  1 +
- softmmu/qdev-monitor.c     |  1 +
- 4 files changed, 94 insertions(+)
- create mode 100644 hw/virtio/virtio-snd-pci.c
+ hw/virtio/trace-events         |   4 +
+ hw/virtio/virtio-snd.c         | 229 ++++++++++++++++++++++++++++++++-
+ include/hw/virtio/virtio-snd.h |  71 +++++++++-
+ 3 files changed, 295 insertions(+), 9 deletions(-)
 
-diff --git a/hw/virtio/meson.build b/hw/virtio/meson.build
-index 120d4bfa0a..5e5a83a4ee 100644
---- a/hw/virtio/meson.build
-+++ b/hw/virtio/meson.build
-@@ -63,6 +63,7 @@ virtio_pci_ss.add(when: 'CONFIG_VIRTIO_SERIAL', if_true: files('virtio-serial-pc
- virtio_pci_ss.add(when: 'CONFIG_VIRTIO_PMEM', if_true: files('virtio-pmem-pci.c'))
- virtio_pci_ss.add(when: 'CONFIG_VIRTIO_IOMMU', if_true: files('virtio-iommu-pci.c'))
- virtio_pci_ss.add(when: 'CONFIG_VIRTIO_MEM', if_true: files('virtio-mem-pci.c'))
-+virtio_pci_ss.add(when: 'CONFIG_VIRTIO_SND', if_true: files('virtio-snd-pci.c'))
- virtio_pci_ss.add(when: 'CONFIG_VHOST_VDPA_DEV', if_true: files('vdpa-dev-pci.c'))
- virtio_pci_ss.add(when: 'CONFIG_VIRTIO_MD', if_true: files('virtio-md-pci.c'))
+diff --git a/hw/virtio/trace-events b/hw/virtio/trace-events
+index 3ed7da35f2..8a223e36e9 100644
+--- a/hw/virtio/trace-events
++++ b/hw/virtio/trace-events
+@@ -163,3 +163,7 @@ virtio_snd_vm_state_running(void) "vm state running"
+ virtio_snd_vm_state_stopped(void) "vm state stopped"
+ virtio_snd_realize(void *snd) "snd %p: realize"
+ virtio_snd_unrealize(void *snd) "snd %p: unrealize"
++virtio_snd_handle_ctrl(void *vdev, void *vq) "snd %p: handle ctrl event for queue %p"
++virtio_snd_handle_code(uint32_t val, const char *code) "ctrl code msg val = %"PRIu32" == %s"
++virtio_snd_handle_chmap_info(void) "VIRTIO_SND_CHMAP_INFO called"
++virtio_snd_handle_event(void) "event queue callback called"
+diff --git a/hw/virtio/virtio-snd.c b/hw/virtio/virtio-snd.c
+index f301054541..b6a510a416 100644
+--- a/hw/virtio/virtio-snd.c
++++ b/hw/virtio/virtio-snd.c
+@@ -30,6 +30,29 @@
+ #define VIRTIO_SOUND_CHMAP_DEFAULT 0
+ #define VIRTIO_SOUND_HDA_FN_NID 0
  
-diff --git a/hw/virtio/virtio-snd-pci.c b/hw/virtio/virtio-snd-pci.c
-new file mode 100644
-index 0000000000..53070b85f6
---- /dev/null
-+++ b/hw/virtio/virtio-snd-pci.c
-@@ -0,0 +1,91 @@
-+/*
-+ * VIRTIO Sound Device PCI Bindings
-+ *
-+ * Copyright (c) 2023 Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or
-+ * (at your option) any later version.  See the COPYING file in the
-+ * top-level directory.
-+ */
++static const char *print_code(uint32_t code)
++{
++    #define CASE(CODE)            \
++    case VIRTIO_SND_R_##CODE:     \
++        return "VIRTIO_SND_R_"#CODE
 +
-+#include "qemu/osdep.h"
-+#include "hw/audio/soundhw.h"
-+#include "hw/virtio/virtio-pci.h"
-+#include "hw/virtio/virtio-snd.h"
++    switch (code) {
++    CASE(JACK_INFO);
++    CASE(JACK_REMAP);
++    CASE(PCM_INFO);
++    CASE(PCM_SET_PARAMS);
++    CASE(PCM_PREPARE);
++    CASE(PCM_RELEASE);
++    CASE(PCM_START);
++    CASE(PCM_STOP);
++    CASE(CHMAP_INFO);
++    default:
++        return "invalid code";
++    }
 +
-+typedef struct VirtIOSoundPCI VirtIOSoundPCI;
-+
-+/*
-+ * virtio-snd-pci: This extends VirtioPCIProxy.
-+ */
-+#define TYPE_VIRTIO_SND_PCI "virtio-sound-pci-base"
-+DECLARE_INSTANCE_CHECKER(VirtIOSoundPCI, VIRTIO_SOUND_PCI,
-+                         TYPE_VIRTIO_SND_PCI)
-+
-+struct VirtIOSoundPCI {
-+    VirtIOPCIProxy parent;
-+    VirtIOSound vdev;
++    #undef CASE
 +};
 +
-+static Property virtio_snd_pci_properties[] = {
-+    DEFINE_PROP_END_OF_LIST(),
-+};
-+
-+static const char *audiodev_id;
-+
-+static int virtio_snd_init_pci(PCIBus *init_bus, const char *audiodev)
-+{
-+    audiodev_id = audiodev;
-+    return 0;
-+}
-+
-+static void virtio_snd_pci_realize(VirtIOPCIProxy *vpci_dev, Error **errp)
-+{
-+    VirtIOSoundPCI *dev = VIRTIO_SOUND_PCI(vpci_dev);
-+    DeviceState *vdev = DEVICE(&dev->vdev);
-+
-+    qdev_set_parent_bus(vdev, BUS(&vpci_dev->bus), errp);
-+    qdev_prop_set_string(vdev, "audiodev", audiodev_id);
-+    object_property_set_bool(OBJECT(vdev), "realized", true, errp);
-+}
-+
-+static void virtio_snd_pci_class_init(ObjectClass *klass, void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(klass);
-+    VirtioPCIClass *vpciklass = VIRTIO_PCI_CLASS(klass);
-+    PCIDeviceClass *pcidev_k = PCI_DEVICE_CLASS(klass);
-+
-+    vpciklass->realize = virtio_snd_pci_realize;
-+    set_bit(DEVICE_CATEGORY_SOUND, dc->categories);
-+
-+    pcidev_k->vendor_id = PCI_VENDOR_ID_REDHAT_QUMRANET;
-+    pcidev_k->device_id = PCI_DEVICE_ID_VIRTIO_SND;
-+    pcidev_k->revision = VIRTIO_PCI_ABI_VERSION;
-+    pcidev_k->class_id = PCI_CLASS_MULTIMEDIA_AUDIO;
-+    device_class_set_props(dc, virtio_snd_pci_properties);
-+}
-+
-+static void virtio_snd_pci_instance_init(Object *obj)
-+{
-+    VirtIOSoundPCI *dev = VIRTIO_SOUND_PCI(obj);
-+
-+    virtio_instance_init_common(obj, &dev->vdev, sizeof(dev->vdev),
-+                                TYPE_VIRTIO_SND);
-+}
-+
-+static const VirtioPCIDeviceTypeInfo virtio_snd_pci_info = {
-+    .base_name     = TYPE_VIRTIO_SND_PCI,
-+    .generic_name  = "virtio-sound-pci",
-+    .instance_size = sizeof(VirtIOSoundPCI),
-+    .instance_init = virtio_snd_pci_instance_init,
-+    .class_init    = virtio_snd_pci_class_init,
-+};
-+
-+static void virtio_snd_pci_register(void)
-+{
-+    virtio_pci_types_register(&virtio_snd_pci_info);
-+    pci_register_soundhw("virtio-sound", "Virtio Sound Device",
-+                         virtio_snd_init_pci);
-+}
-+
-+type_init(virtio_snd_pci_register);
-diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
-index abdc1ef103..3cd5712035 100644
---- a/include/hw/pci/pci.h
-+++ b/include/hw/pci/pci.h
-@@ -85,6 +85,7 @@ extern bool pci_available;
- #define PCI_DEVICE_ID_VIRTIO_RNG         0x1005
- #define PCI_DEVICE_ID_VIRTIO_9P          0x1009
- #define PCI_DEVICE_ID_VIRTIO_VSOCK       0x1012
-+#define PCI_DEVICE_ID_VIRTIO_SND         0x1019
+ static const VMStateDescription vmstate_virtio_snd_device = {
+     .name = TYPE_VIRTIO_SND,
+     .version_id = VIRTIO_SOUND_VM_VERSION,
+@@ -89,12 +112,148 @@ virtio_snd_set_config(VirtIODevice *vdev, const uint8_t *config)
+ }
  
  /*
-  * modern virtio-pci devices get their id assigned automatically,
-diff --git a/softmmu/qdev-monitor.c b/softmmu/qdev-monitor.c
-index 74f4e41338..2e9835ad88 100644
---- a/softmmu/qdev-monitor.c
-+++ b/softmmu/qdev-monitor.c
-@@ -108,6 +108,7 @@ static const QDevAlias qdev_alias_table[] = {
-     { "virtio-serial-device", "virtio-serial", QEMU_ARCH_VIRTIO_MMIO },
-     { "virtio-serial-ccw", "virtio-serial", QEMU_ARCH_VIRTIO_CCW },
-     { "virtio-serial-pci", "virtio-serial", QEMU_ARCH_VIRTIO_PCI},
-+    { "virtio-sound-pci", "virtio-sound", QEMU_ARCH_VIRTIO_PCI},
-     { "virtio-tablet-device", "virtio-tablet", QEMU_ARCH_VIRTIO_MMIO },
-     { "virtio-tablet-ccw", "virtio-tablet", QEMU_ARCH_VIRTIO_CCW },
-     { "virtio-tablet-pci", "virtio-tablet", QEMU_ARCH_VIRTIO_PCI },
+- * Queue handler stub.
++ * The actual processing done in virtio_snd_process_cmdq().
++ *
++ * @s: VirtIOSound device
++ * @cmd: control command request
++ */
++static inline void
++process_cmd(VirtIOSound *s, virtio_snd_ctrl_command *cmd)
++{
++    size_t sz = iov_to_buf(cmd->elem->out_sg,
++                           cmd->elem->out_num,
++                           0,
++                           &cmd->ctrl,
++                           sizeof(cmd->ctrl));
++    if (sz != sizeof(cmd->ctrl)) {
++        qemu_log_mask(LOG_GUEST_ERROR,
++                "%s: virtio-snd command size incorrect %zu vs \
++                %zu\n", __func__, sz, sizeof(cmd->ctrl));
++        return;
++    }
++
++    trace_virtio_snd_handle_code(cmd->ctrl.code,
++                                 print_code(cmd->ctrl.code));
++
++    switch (cmd->ctrl.code) {
++    case VIRTIO_SND_R_JACK_INFO:
++    case VIRTIO_SND_R_JACK_REMAP:
++        qemu_log_mask(LOG_UNIMP,
++                     "virtio_snd: jack functionality is unimplemented.");
++        cmd->resp.code = VIRTIO_SND_S_NOT_SUPP;
++        break;
++    case VIRTIO_SND_R_PCM_INFO:
++    case VIRTIO_SND_R_PCM_SET_PARAMS:
++    case VIRTIO_SND_R_PCM_PREPARE:
++    case VIRTIO_SND_R_PCM_START:
++    case VIRTIO_SND_R_PCM_STOP:
++    case VIRTIO_SND_R_PCM_RELEASE:
++        cmd->resp.code = VIRTIO_SND_S_NOT_SUPP;
++        break;
++    case VIRTIO_SND_R_CHMAP_INFO:
++        qemu_log_mask(LOG_UNIMP,
++                     "virtio_snd: chmap info functionality is unimplemented.");
++        trace_virtio_snd_handle_chmap_info();
++        cmd->resp.code = VIRTIO_SND_S_NOT_SUPP;
++        break;
++    default:
++        /* error */
++        error_report("virtio snd header not recognized: %"PRIu32,
++                     cmd->ctrl.code);
++        cmd->resp.code = VIRTIO_SND_S_BAD_MSG;
++    }
++
++    iov_from_buf(cmd->elem->in_sg,
++                 cmd->elem->in_num,
++                 0,
++                 &cmd->resp,
++                 sizeof(cmd->resp));
++    virtqueue_push(cmd->vq, cmd->elem, sizeof(cmd->elem));
++    virtio_notify(VIRTIO_DEVICE(s), cmd->vq);
++}
++
++/*
++ * Consume all elements in command queue.
++ *
++ * @s: VirtIOSound device
++ */
++static void virtio_snd_process_cmdq(VirtIOSound *s)
++{
++    virtio_snd_ctrl_command *cmd;
++
++    if (unlikely(qatomic_read(&s->processing_cmdq))) {
++        return;
++    }
++
++    WITH_QEMU_LOCK_GUARD(&s->cmdq_mutex) {
++        qatomic_set(&s->processing_cmdq, true);
++        while (!QTAILQ_EMPTY(&s->cmdq)) {
++            cmd = QTAILQ_FIRST(&s->cmdq);
++
++            /* process command */
++            process_cmd(s, cmd);
++
++            QTAILQ_REMOVE(&s->cmdq, cmd, next);
++
++            g_free(cmd);
++        }
++        qatomic_set(&s->processing_cmdq, false);
++    }
++}
++
++/*
++ * The control message handler. Pops an element from the control virtqueue,
++ * and stores them to VirtIOSound's cmdq queue and finally calls
++ * virtio_snd_process_cmdq() for processing.
++ *
++ * @vdev: VirtIOSound device
++ * @vq: Control virtqueue
++ */
++static void virtio_snd_handle_ctrl(VirtIODevice *vdev, VirtQueue *vq)
++{
++    VirtIOSound *s = VIRTIO_SND(vdev);
++    VirtQueueElement *elem;
++    virtio_snd_ctrl_command *cmd;
++
++    trace_virtio_snd_handle_ctrl(vdev, vq);
++
++    if (!virtio_queue_ready(vq)) {
++        return;
++    }
++
++    elem = virtqueue_pop(vq, sizeof(VirtQueueElement));
++    while (elem) {
++        cmd = g_new0(virtio_snd_ctrl_command, 1);
++        cmd->elem = elem;
++        cmd->vq = vq;
++        cmd->resp.code = VIRTIO_SND_S_OK;
++        QTAILQ_INSERT_TAIL(&s->cmdq, cmd, next);
++        elem = virtqueue_pop(vq, sizeof(VirtQueueElement));
++    }
++
++    virtio_snd_process_cmdq(s);
++}
++
++/*
++ * The event virtqueue handler.
++ * Not implemented yet.
++ *
++ * @vdev: VirtIOSound device
++ * @vq: event vq
++ */
++static void virtio_snd_handle_event(VirtIODevice *vdev, VirtQueue *vq)
++{
++    qemu_log_mask(LOG_UNIMP, "virtio_snd: event queue is unimplemented.");
++    trace_virtio_snd_handle_event();
++}
++
++/*
++ * Stub buffer virtqueue handler.
+  *
+  * @vdev: VirtIOSound device
+  * @vq: virtqueue
+  */
+-static void virtio_snd_handle_queue(VirtIODevice *vdev, VirtQueue *vq) {}
++static void virtio_snd_handle_xfer(VirtIODevice *vdev, VirtQueue *vq) {}
+ 
+ static uint64_t get_features(VirtIODevice *vdev, uint64_t features,
+                              Error **errp)
+@@ -112,6 +271,20 @@ static uint64_t get_features(VirtIODevice *vdev, uint64_t features,
+     return features;
+ }
+ 
++static void virtio_snd_set_pcm(VirtIOSound *snd)
++{
++    VirtIOSoundPCM *pcm;
++
++    pcm = g_new0(VirtIOSoundPCM, 1);
++    pcm->snd = snd;
++
++    pcm->streams = g_new0(VirtIOSoundPCMStream *, snd->snd_conf.streams);
++    pcm->pcm_params = g_new0(VirtIOSoundPCMParams *, snd->snd_conf.streams);
++    pcm->jacks = g_new0(virtio_snd_jack *, snd->snd_conf.jacks);
++
++    snd->pcm = pcm;
++}
++
+ static void virtio_snd_common_realize(DeviceState *dev,
+                                       VirtIOHandleOutput ctrl,
+                                       VirtIOHandleOutput evt,
+@@ -122,6 +295,8 @@ static void virtio_snd_common_realize(DeviceState *dev,
+     VirtIODevice *vdev = VIRTIO_DEVICE(dev);
+     VirtIOSound *vsnd = VIRTIO_SND(dev);
+ 
++    virtio_snd_set_pcm(vsnd);
++
+     virtio_init(vdev, VIRTIO_ID_SOUND, sizeof(virtio_snd_config));
+     virtio_add_feature(&vsnd->features, VIRTIO_F_VERSION_1);
+ 
+@@ -152,6 +327,8 @@ static void virtio_snd_common_realize(DeviceState *dev,
+     vsnd->queues[VIRTIO_SND_VQ_EVENT] = virtio_add_queue(vdev, 64, evt);
+     vsnd->queues[VIRTIO_SND_VQ_TX] = virtio_add_queue(vdev, 64, txq);
+     vsnd->queues[VIRTIO_SND_VQ_RX] = virtio_add_queue(vdev, 64, rxq);
++    qemu_mutex_init(&vsnd->cmdq_mutex);
++    QTAILQ_INIT(&vsnd->cmdq);
+ }
+ 
+ static void
+@@ -169,35 +346,73 @@ static void virtio_snd_realize(DeviceState *dev, Error **errp)
+     ERRP_GUARD();
+     VirtIOSound *vsnd = VIRTIO_SND(dev);
+ 
++    vsnd->pcm = NULL;
+     vsnd->vmstate =
+         qemu_add_vm_change_state_handler(virtio_snd_vm_state_change, vsnd);
+ 
+     trace_virtio_snd_realize(vsnd);
+ 
+     virtio_snd_common_realize(dev,
+-                              virtio_snd_handle_queue,
+-                              virtio_snd_handle_queue,
+-                              virtio_snd_handle_queue,
+-                              virtio_snd_handle_queue,
++                              virtio_snd_handle_ctrl,
++                              virtio_snd_handle_event,
++                              virtio_snd_handle_xfer,
++                              virtio_snd_handle_xfer,
+                               errp);
+ }
+ 
++/*
++ * Close the stream and free its resources.
++ *
++ * @stream: VirtIOSoundPCMStream *stream
++ */
++static void virtio_snd_pcm_close(VirtIOSoundPCMStream *stream)
++{
++}
++
+ static void virtio_snd_unrealize(DeviceState *dev)
+ {
+     VirtIODevice *vdev = VIRTIO_DEVICE(dev);
+     VirtIOSound *vsnd = VIRTIO_SND(dev);
++    VirtIOSoundPCMStream *stream;
+ 
+     qemu_del_vm_change_state_handler(vsnd->vmstate);
+     virtio_del_queue(vdev, 0);
+ 
+     trace_virtio_snd_unrealize(vsnd);
+ 
++    if (vsnd->pcm) {
++        if (vsnd->pcm->streams) {
++            for (uint32_t i = 0; i < vsnd->snd_conf.streams; i++) {
++                stream = vsnd->pcm->streams[i];
++                if (stream) {
++                    virtio_snd_process_cmdq(stream->s);
++                    virtio_snd_pcm_close(stream);
++                    g_free(stream);
++                }
++            }
++            g_free(vsnd->pcm->streams);
++        }
++        g_free(vsnd->pcm);
++        vsnd->pcm = NULL;
++    }
+     AUD_remove_card(&vsnd->card);
+     virtio_cleanup(vdev);
+ }
+ 
+ 
+-static void virtio_snd_reset(VirtIODevice *vdev) {}
++static void virtio_snd_reset(VirtIODevice *vdev)
++{
++    VirtIOSound *s = VIRTIO_SND(vdev);
++    virtio_snd_ctrl_command *cmd;
++
++    WITH_QEMU_LOCK_GUARD(&s->cmdq_mutex) {
++        while (!QTAILQ_EMPTY(&s->cmdq)) {
++            cmd = QTAILQ_FIRST(&s->cmdq);
++            QTAILQ_REMOVE(&s->cmdq, cmd, next);
++            g_free(cmd);
++        }
++    }
++}
+ 
+ static void virtio_snd_class_init(ObjectClass *klass, void *data)
+ {
+diff --git a/include/hw/virtio/virtio-snd.h b/include/hw/virtio/virtio-snd.h
+index 0a7d8b0f77..7cc5061fa8 100644
+--- a/include/hw/virtio/virtio-snd.h
++++ b/include/hw/virtio/virtio-snd.h
+@@ -69,12 +69,79 @@ typedef struct virtio_snd_pcm_xfer virtio_snd_pcm_xfer;
+ /* I/O request status */
+ typedef struct virtio_snd_pcm_status virtio_snd_pcm_status;
+ 
+-typedef struct VirtIOSound {
++/* device structs */
++
++typedef struct VirtIOSound VirtIOSound;
++
++typedef struct VirtIOSoundPCMStream VirtIOSoundPCMStream;
++
++typedef struct virtio_snd_ctrl_command virtio_snd_ctrl_command;
++
++typedef struct VirtIOSoundPCMParams VirtIOSoundPCMParams;
++
++typedef struct VirtIOSoundPCM VirtIOSoundPCM;
++
++/* Stream params */
++struct VirtIOSoundPCMParams {
++    uint32_t features;
++    uint32_t buffer_bytes;          /* size of hardware buffer in bytes */
++    uint32_t period_bytes;          /* size of hardware period in bytes */
++    uint8_t channels;
++    uint8_t format;
++    uint8_t rate;
++};
++
++struct VirtIOSoundPCM {
++    VirtIOSound *snd;
++    VirtIOSoundPCMParams **pcm_params;
++    VirtIOSoundPCMStream **streams;
++    virtio_snd_jack **jacks;
++};
++
++struct VirtIOSoundPCMStream {
++    VirtIOSoundPCM *pcm;
++    virtio_snd_pcm_info info;
++    uint32_t id;
++    uint32_t buffer_bytes;
++    uint32_t period_bytes;
++    /* channel position values (VIRTIO_SND_CHMAP_XXX) */
++    uint8_t positions[VIRTIO_SND_CHMAP_MAX_SIZE];
++    VirtIOSound *s;
++    uint32_t features; /* 1 << VIRTIO_SND_PCM_F_XXX */
++    uint64_t formats; /* 1 << VIRTIO_SND_PCM_FMT_XXX */
++    uint64_t rates; /* 1 << VIRTIO_SND_PCM_RATE_XXX */
++    uint8_t direction;
++    uint8_t channels_min;
++    uint8_t channels_max;
++    bool flushing;
++    audsettings as;
++    audsettings desired_as;
++    union {
++        SWVoiceIn *in;
++        SWVoiceOut *out;
++    } voice;
++    QemuMutex queue_mutex;
++    QSIMPLEQ_HEAD(, VirtIOSoundPCMBlock) queue;
++};
++
++struct VirtIOSound {
+     VirtIODevice parent_obj;
+     VirtQueue *queues[VIRTIO_SND_VQ_MAX];
+     uint64_t features;
++    VirtIOSoundPCM *pcm;
+     QEMUSoundCard card;
+     VMChangeStateEntry *vmstate;
+     virtio_snd_config snd_conf;
+-} VirtIOSound;
++    QemuMutex cmdq_mutex;
++    QTAILQ_HEAD(, virtio_snd_ctrl_command) cmdq;
++    bool processing_cmdq;
++};
++
++struct virtio_snd_ctrl_command {
++    VirtQueueElement *elem;
++    VirtQueue *vq;
++    virtio_snd_hdr ctrl;
++    virtio_snd_hdr resp;
++    QTAILQ_ENTRY(virtio_snd_ctrl_command) next;
++};
+ #endif
 -- 
 2.39.2
 
