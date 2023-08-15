@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9961E77CE46
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Aug 2023 16:39:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B36BA77CE48
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Aug 2023 16:39:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qVvC0-0008Q3-H0; Tue, 15 Aug 2023 10:38:44 -0400
+	id 1qVvC1-0008R7-OJ; Tue, 15 Aug 2023 10:38:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qVvBy-0008Pe-Ij
- for qemu-devel@nongnu.org; Tue, 15 Aug 2023 10:38:42 -0400
-Received: from smtp-out1.suse.de ([195.135.220.28])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qVvC0-0008Pz-0O
+ for qemu-devel@nongnu.org; Tue, 15 Aug 2023 10:38:44 -0400
+Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qVvBw-0002vi-DR
- for qemu-devel@nongnu.org; Tue, 15 Aug 2023 10:38:42 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qVvBx-0002wO-Ns
+ for qemu-devel@nongnu.org; Tue, 15 Aug 2023 10:38:43 -0400
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id E7E7721989;
- Tue, 15 Aug 2023 14:38:38 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id A75701F749;
+ Tue, 15 Aug 2023 14:38:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1692110318; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1692110320; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=toJxKUA5Dl8oTpfiH0/VZtwKHX39icaVQhUvfWCyR50=;
- b=WGMMKKGg/NOfNHyp1kwVBPAUCEWIzsbmCwy9GK+DUQkfkJ0xUeSfywNqJimYU5AJeUlRWu
- yRwXrB9g2PzcDpUvs6yGeJFsioDErShWsChG6oXLwzXu+bsZx2eKyuhOcmu52pnv4/OhHw
- SxLEU853FJgkujUCpkSBk+O6gVK7wsw=
+ bh=rDHF1F1Gm9CKMTWMnNAi///z2f1xyUqQ3HKLwljCm00=;
+ b=dqBEDlvdW1j9CeKbqHrCUe1Mx2Tc2eM8/RvqdXzPTw3IJ8kwN9uVh7a55NbmMXbLnfRrFQ
+ fWBYMlT1vY83/yAPM6Phjtx8BCSV07TmyZnUHtPIphEGw/7M3DwdZ7c7D9WIfN9qYesGgq
+ eRQ7MQdLxgCp2kTsqYopUIUCq0cjLyA=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1692110318;
+ s=susede2_ed25519; t=1692110320;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=toJxKUA5Dl8oTpfiH0/VZtwKHX39icaVQhUvfWCyR50=;
- b=O8qLObd0UEd2xASvtftrPLz1qHRHV3L7xqQGLveXeE5EwccbedSJhPl0CKEIlrXADqZ+Z7
- LIlIUWmk7WZumECQ==
+ bh=rDHF1F1Gm9CKMTWMnNAi///z2f1xyUqQ3HKLwljCm00=;
+ b=5Y9cnO4dZyOM7VoBmhJn3T2ihxxpnuB/TxG4GS/zb9Ms1ofbWQRq6+5SmWV/FWqMBFHmFc
+ Vd0PV/XWGXwMUZDg==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 9E65613909;
- Tue, 15 Aug 2023 14:38:37 +0000 (UTC)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 5DC6213909;
+ Tue, 15 Aug 2023 14:38:39 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id 0EEBGu2N22T0WQAAMHmgww
- (envelope-from <farosas@suse.de>); Tue, 15 Aug 2023 14:38:37 +0000
+ by imap2.suse-dmz.suse.de with ESMTPSA id UBc0Cu+N22T0WQAAMHmgww
+ (envelope-from <farosas@suse.de>); Tue, 15 Aug 2023 14:38:39 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  Leonardo Bras <leobras@redhat.com>
-Subject: [PATCH 4/5] migration/ram: Return early from save_zero_page
-Date: Tue, 15 Aug 2023 11:38:27 -0300
-Message-Id: <20230815143828.15436-5-farosas@suse.de>
+Subject: [PATCH 5/5] migration/ram: Merge save_zero_page functions
+Date: Tue, 15 Aug 2023 11:38:28 -0300
+Message-Id: <20230815143828.15436-6-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20230815143828.15436-1-farosas@suse.de>
 References: <20230815143828.15436-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=195.135.220.28; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
+Received-SPF: pass client-ip=2001:67c:2178:6::1d; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -85,54 +85,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Invert the first conditional so we return early when len == 0. This is
-merely to make the next patch easier to read.
+We don't need to do this in two pieces. One single function makes it
+easier to grasp, specially since it removes the indirection on the
+return value handling.
 
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/ram.c | 29 +++++++++++++++--------------
- 1 file changed, 15 insertions(+), 14 deletions(-)
+ migration/ram.c | 41 +++++++++++------------------------------
+ 1 file changed, 11 insertions(+), 30 deletions(-)
 
 diff --git a/migration/ram.c b/migration/ram.c
-index a10410a1a5..8ec38f69e8 100644
+index 8ec38f69e8..13935ead1c 100644
 --- a/migration/ram.c
 +++ b/migration/ram.c
-@@ -1169,23 +1169,24 @@ static int save_zero_page(RAMState *rs, PageSearchStatus *pss, RAMBlock *block,
+@@ -1128,32 +1128,6 @@ void ram_release_page(const char *rbname, uint64_t offset)
+     ram_discard_range(rbname, offset, TARGET_PAGE_SIZE);
+ }
+ 
+-/**
+- * save_zero_page_to_file: send the zero page to the file
+- *
+- * Returns the size of data written to the file, 0 means the page is not
+- * a zero page
+- *
+- * @pss: current PSS channel
+- * @block: block that contains the page we want to send
+- * @offset: offset inside the block for the page
+- */
+-static int save_zero_page_to_file(PageSearchStatus *pss, RAMBlock *block,
+-                                  ram_addr_t offset)
+-{
+-    uint8_t *p = block->host + offset;
+-    QEMUFile *file = pss->pss_channel;
+-    int len = 0;
+-
+-    if (buffer_is_zero(p, TARGET_PAGE_SIZE)) {
+-        len += save_page_header(pss, file, block, offset | RAM_SAVE_FLAG_ZERO);
+-        qemu_put_byte(file, 0);
+-        len += 1;
+-        ram_release_page(block->idstr, offset);
+-    }
+-    return len;
+-}
+-
+ /**
+  * save_zero_page: send the zero page to the stream
+  *
+@@ -1167,12 +1141,19 @@ static int save_zero_page_to_file(PageSearchStatus *pss, RAMBlock *block,
+ static int save_zero_page(RAMState *rs, PageSearchStatus *pss, RAMBlock *block,
+                           ram_addr_t offset)
  {
-     int len = save_zero_page_to_file(pss, block, offset);
+-    int len = save_zero_page_to_file(pss, block, offset);
++    uint8_t *p = block->host + offset;
++    QEMUFile *file = pss->pss_channel;
++    int len = 0;
  
--    if (len) {
--        stat64_add(&mig_stats.zero_pages, 1);
--        ram_transferred_add(len);
-+    if (!len) {
-+        return -1;
-+    }
- 
--        /*
--         * Must let xbzrle know, otherwise a previous (now 0'd) cached
--         * page would be stale.
--         */
--        if (rs->xbzrle_started) {
--            XBZRLE_cache_lock();
--            xbzrle_cache_zero_page(block->offset + offset);
--            XBZRLE_cache_unlock();
--        }
-+    stat64_add(&mig_stats.zero_pages, 1);
-+    ram_transferred_add(len);
- 
--        return 1;
-+    /*
-+     * Must let xbzrle know, otherwise a previous (now 0'd) cached
-+     * page would be stale.
-+     */
-+    if (rs->xbzrle_started) {
-+        XBZRLE_cache_lock();
-+        xbzrle_cache_zero_page(block->offset + offset);
-+        XBZRLE_cache_unlock();
+-    if (!len) {
+-        return -1;
++    if (!buffer_is_zero(p, TARGET_PAGE_SIZE)) {
++        return 0;
      }
--    return -1;
+ 
++    len += save_page_header(pss, file, block, offset | RAM_SAVE_FLAG_ZERO);
++    qemu_put_byte(file, 0);
++    len += 1;
++    ram_release_page(block->idstr, offset);
 +
-+    return 1;
+     stat64_add(&mig_stats.zero_pages, 1);
+     ram_transferred_add(len);
+ 
+@@ -1186,7 +1167,7 @@ static int save_zero_page(RAMState *rs, PageSearchStatus *pss, RAMBlock *block,
+         XBZRLE_cache_unlock();
+     }
+ 
+-    return 1;
++    return len;
  }
  
  /*
