@@ -2,86 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26B4577D5E8
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Aug 2023 00:27:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9ADA77D624
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Aug 2023 00:32:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qW2VJ-000127-Cr; Tue, 15 Aug 2023 18:27:09 -0400
+	id 1qW2Zf-0002Br-K0; Tue, 15 Aug 2023 18:31:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qW2VG-00011M-MJ
- for qemu-devel@nongnu.org; Tue, 15 Aug 2023 18:27:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qW2VE-0003El-K3
- for qemu-devel@nongnu.org; Tue, 15 Aug 2023 18:27:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692138423;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qW2Zd-0002Bb-AP
+ for qemu-devel@nongnu.org; Tue, 15 Aug 2023 18:31:37 -0400
+Received: from smtp-out2.suse.de ([195.135.220.29])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qW2ZZ-00056r-Jw
+ for qemu-devel@nongnu.org; Tue, 15 Aug 2023 18:31:35 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 617FC1F8C3;
+ Tue, 15 Aug 2023 22:31:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1692138691; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=MYbfDBu5uHtaJrgqogpstQk8RLOkWNj5bcx4/PCRJVk=;
- b=dVk+uY7Vcu6+rC7pdaGdl5jPUrAKU032/FygDkH0VwgMgLcRuEmnv+olq/Jfmr2syUz8OG
- zHyN+3a501WjCpB2D4Rz99r0XtexRwkSQuN+Ay8i7TteLKYKJyvVlSnvvjP3iN3cr8MZSM
- dN1nYDgm8pA+MmOnPuwDEfNCA4X/3LU=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-106-3guLqL6fNuKjsoqd6wvM2g-1; Tue, 15 Aug 2023 18:27:02 -0400
-X-MC-Unique: 3guLqL6fNuKjsoqd6wvM2g-1
-Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-642efbdc73fso12312636d6.0
- for <qemu-devel@nongnu.org>; Tue, 15 Aug 2023 15:27:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692138421; x=1692743221;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=MYbfDBu5uHtaJrgqogpstQk8RLOkWNj5bcx4/PCRJVk=;
- b=ZkrOQo+/A6efY6S6izlcLBmm8QaKdqt895R8OLBbjJTyJYsNOIH/hkOyThC9rlQ2fU
- IYuka0o9eBp2JiDsKoGNVXgDmxvCtZ4z/2V3giVhsTT1PgFqwh1rzfWseVv8Dhqawhn0
- MHRt4azWtUUZQXPWe6gMA3hczBFDUPvbD96/BSaAm7ovyOPYLPgkX+rsZO+bW3gyKhC9
- iHeT5NGQbtWagsfB9MNlWFEREWp5HIlnHGhJ0Jqg8bUg0SL4cBedd9aIJRBY8CtCt1X9
- UrqsmR+m24ZY4KWLJ+eoX221lcbHSMezVx9XF3MsCByCq+WD9l74PNLWoLOxBIz/gS3A
- 10tA==
-X-Gm-Message-State: AOJu0YxybNObUlpg9aodw0fnqeZB5f7qqWKdgcYceNhzG5Vyl9VzYE9A
- 0009OD7Cev37JcErWt1XTs8B7Cgry+u1j6RraA8/ZqhtrQY4zkMik2uHBtqoHYt/QQErCOm6JwD
- +Ro9nBPkOqI1L/BXFLT55cDE=
-X-Received: by 2002:a05:6214:76e:b0:635:fa38:5216 with SMTP id
- f14-20020a056214076e00b00635fa385216mr147987qvz.0.1692138420965; 
- Tue, 15 Aug 2023 15:27:00 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFuT9iFtAFHDPnksH8cJHRDlrkGw10N59pIuOUNU+NYxLcL3a0vhoiXwvwW+R2NMhymeaStrA==
-X-Received: by 2002:a05:6214:76e:b0:635:fa38:5216 with SMTP id
- f14-20020a056214076e00b00635fa385216mr147977qvz.0.1692138420669; 
- Tue, 15 Aug 2023 15:27:00 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- n6-20020a0ce486000000b00636291d04adsm2080811qvl.47.2023.08.15.15.27.00
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 15 Aug 2023 15:27:00 -0700 (PDT)
-Date: Tue, 15 Aug 2023 18:26:58 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
- Leonardo Bras <leobras@redhat.com>
-Subject: Re: [PATCH 4/5] migration/ram: Return early from save_zero_page
-Message-ID: <ZNv7spVAEFHpdebZ@x1n>
-References: <20230815143828.15436-1-farosas@suse.de>
- <20230815143828.15436-5-farosas@suse.de>
+ bh=1IviFMQEtVPZpGo/i5CBYY/XUgu0GVdj25ms2BAInlM=;
+ b=Dwt5Wg+t6lm9L07zmybjUuGDHsPqSn1LQV3ZmGh4/FuUhbGn8qICo/epqfpD4dNUcO9KF2
+ iPO/E4QD5n5GERWJEDiH/Wlo6l1paWIBCdvFJdTJvwSAZ6SqeZhOYnktT+zzjsvJy07BLy
+ UhOR88WE8CyfkUDgUU7puqNzxIteFIg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1692138691;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=1IviFMQEtVPZpGo/i5CBYY/XUgu0GVdj25ms2BAInlM=;
+ b=g/PRoljrehGyCA9r8tTUfTtw6votnpTcT1C0nrtU5c8owYhi7o9SieWLy0yJu3J0T7fcpo
+ G0BC0PgiTp70S9Dw==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id E5EF41353E;
+ Tue, 15 Aug 2023 22:31:30 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id bqKwK8L822QjLgAAMHmgww
+ (envelope-from <farosas@suse.de>); Tue, 15 Aug 2023 22:31:30 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>, Wei Wang
+ <wei.w.wang@intel.com>, Leonardo Bras <leobras@redhat.com>, Lukas Straub
+ <lukasstraub2@web.de>
+Subject: Re: [PATCH v3 10/10] migration: Add a wrapper to cleanup migration
+ files
+In-Reply-To: <ZNv4/ndxGPpaIX9H@x1n>
+References: <20230811150836.2895-1-farosas@suse.de>
+ <20230811150836.2895-11-farosas@suse.de> <ZNv4/ndxGPpaIX9H@x1n>
+Date: Tue, 15 Aug 2023 19:31:28 -0300
+Message-ID: <875y5glyyn.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230815143828.15436-5-farosas@suse.de>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.04,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,60 +85,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Aug 15, 2023 at 11:38:27AM -0300, Fabiano Rosas wrote:
-> Invert the first conditional so we return early when len == 0. This is
-> merely to make the next patch easier to read.
-> 
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
-> ---
->  migration/ram.c | 29 +++++++++++++++--------------
->  1 file changed, 15 insertions(+), 14 deletions(-)
-> 
-> diff --git a/migration/ram.c b/migration/ram.c
-> index a10410a1a5..8ec38f69e8 100644
-> --- a/migration/ram.c
-> +++ b/migration/ram.c
-> @@ -1169,23 +1169,24 @@ static int save_zero_page(RAMState *rs, PageSearchStatus *pss, RAMBlock *block,
->  {
->      int len = save_zero_page_to_file(pss, block, offset);
->  
-> -    if (len) {
-> -        stat64_add(&mig_stats.zero_pages, 1);
-> -        ram_transferred_add(len);
-> +    if (!len) {
-> +        return -1;
-> +    }
->  
-> -        /*
-> -         * Must let xbzrle know, otherwise a previous (now 0'd) cached
-> -         * page would be stale.
-> -         */
-> -        if (rs->xbzrle_started) {
-> -            XBZRLE_cache_lock();
-> -            xbzrle_cache_zero_page(block->offset + offset);
-> -            XBZRLE_cache_unlock();
-> -        }
-> +    stat64_add(&mig_stats.zero_pages, 1);
-> +    ram_transferred_add(len);
->  
-> -        return 1;
-> +    /*
-> +     * Must let xbzrle know, otherwise a previous (now 0'd) cached
-> +     * page would be stale.
-> +     */
-> +    if (rs->xbzrle_started) {
-> +        XBZRLE_cache_lock();
-> +        xbzrle_cache_zero_page(block->offset + offset);
-> +        XBZRLE_cache_unlock();
->      }
-> -    return -1;
-> +
-> +    return 1;
->  }
+Peter Xu <peterx@redhat.com> writes:
 
-Can we squash this into previous patch?
+> On Fri, Aug 11, 2023 at 12:08:36PM -0300, Fabiano Rosas wrote:
+>> We currently have a pattern for cleaning up a migration QEMUFile:
+>> 
+>>   qemu_mutex_lock(&s->qemu_file_lock);
+>>   file = s->file_name;
+>>   s->file_name = NULL;
+>>   qemu_mutex_unlock(&s->qemu_file_lock);
+>> 
+>>   migration_ioc_unregister_yank_from_file(file);
+>>   qemu_file_shutdown(file);
+>>   qemu_fclose(file);
+>> 
+>> There are some considerations for this sequence:
+>> 
+>> - we must clear the pointer under the lock, to avoid TOC/TOU bugs;
+>> - the shutdown() and close() expect be given a non-null parameter;
+>> - a close() in one thread should not race with a shutdown() in another;
+>> 
+>> Create a wrapper function to make sure everything works correctly.
+>> 
+>> Note: the return path did not used to call
+>>       migration_ioc_unregister_yank_from_file(), but I added it
+>>       nonetheless for uniformity.
+>> 
+>> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+>
+> This definitely looks cleaner.  Probably can be squashed together with
+> previous patch?  If you could double check whether we can just drop the
+> shutdown() all over the places when close() altogether, it'll be even
+> nicer (I hope I didn't miss any real reasons to explicitly do that).
+>
+>> diff --git a/util/yank.c b/util/yank.c
+>> index abf47c346d..4b6afbf589 100644
+>> --- a/util/yank.c
+>> +++ b/util/yank.c
+>> @@ -146,8 +146,6 @@ void yank_unregister_function(const YankInstance *instance,
+>>              return;
+>>          }
+>>      }
+>> -
+>> -    abort();
+>
+> I think we can't silently do this.  This check is very strict and I guess
+> you removed it because you hit a crash.  What's the crash?  Can we just
+> pair the yank reg/unreg?
+>
 
--- 
-Peter Xu
+Well, the abort() is the crash. It just means that we looped and didn't
+find the handler to unregister. It looks harmless to me. I should have
+mentioned this in the commit message.
+
+I could certainly add a yank handler to the rp_state.from_dst_file. But
+then I have no idea what will happen if we try to yank the return path
+at a random moment.
+
+Side note: I see that yank does a qio_channel_shutdown() without the
+controversial setting of -EIO. Which means it is probably succeptible to
+the same race described in the qemu_file_shutdown() code.
 
 
