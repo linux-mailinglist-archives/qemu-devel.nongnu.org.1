@@ -2,64 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26E5A77C6CA
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Aug 2023 06:56:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A2D777C6E2
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Aug 2023 07:02:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qVm4o-0000K3-IR; Tue, 15 Aug 2023 00:54:42 -0400
+	id 1qVmBY-000241-7D; Tue, 15 Aug 2023 01:01:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pawan.kumar.gupta@linux.intel.com>)
- id 1qVm4l-0000Js-Jq
- for qemu-devel@nongnu.org; Tue, 15 Aug 2023 00:54:39 -0400
-Received: from mgamail.intel.com ([192.55.52.93])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pawan.kumar.gupta@linux.intel.com>)
- id 1qVm4j-0008IQ-74
- for qemu-devel@nongnu.org; Tue, 15 Aug 2023 00:54:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1692075277; x=1723611277;
- h=date:from:to:cc:subject:message-id:mime-version;
- bh=Pm0uI9c3cEbSvpHd54NlgkGYk9xvkiwwqP/rWnFt0Lc=;
- b=KMW7CcS/O8IGQCTrmbLhMH9JzJLYHiwIfPJNPewzIJGaIbseKDvY+nWh
- RwnYGaMs5ZLXEDuHawAWFibJRB7SXED8s8sZq7p1eamQJFt919YC5jSuy
- jbmLfkWWBzMq+A3EnNLlQsaYqZ0/Xi1DZbElJ4MVqzyfrEnSWqA7qoaxw
- PA0r6GxJ2tBbN6xWPQETImkpAZWZtM2a2e5NVKkkqrapgSnATc2JMdlsW
- qiW3MZsGPE7SzwYjX3sFLYVEOnJLecFUoGCkmTNFOFsprefbuRNVLmxPL
- gPwTCRiXIeiIllTypw9eBTEZkD5K2CsXJdwjm2uEWxU8W+5yGAlDxGk+6 A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10802"; a="369674955"
-X-IronPort-AV: E=Sophos;i="6.01,173,1684825200"; d="scan'208";a="369674955"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
- by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Aug 2023 21:54:30 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10802"; a="768704133"
-X-IronPort-AV: E=Sophos;i="6.01,173,1684825200"; d="scan'208";a="768704133"
-Received: from ajanarda-mobl1.amr.corp.intel.com (HELO desk) ([10.251.0.163])
- by orsmga001-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2023 21:54:29 -0700
-Date: Mon, 14 Aug 2023 21:54:27 -0700
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-To: qemu-devel <qemu-devel@nongnu.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, tao1.su@linux.intel.com,
- xiaoyao.li@intel.com, Yu Zhang <yu.zhang@ionos.com>,
- Jinpu Wang <jinpu.wang@ionos.com>
-Subject: [PATCH v2] target/i386: Export GDS_NO bit to guests
-Message-ID: <fde42d81ce454477ca8e27d5429a190b7366fe86.1692074650.git.pawan.kumar.gupta@linux.intel.com>
+ (Exim 4.90_1) (envelope-from <jniethe5@gmail.com>)
+ id 1qVmBV-00023n-FR; Tue, 15 Aug 2023 01:01:37 -0400
+Received: from mail-oo1-xc2a.google.com ([2607:f8b0:4864:20::c2a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <jniethe5@gmail.com>)
+ id 1qVmBT-0001JU-Fr; Tue, 15 Aug 2023 01:01:37 -0400
+Received: by mail-oo1-xc2a.google.com with SMTP id
+ 006d021491bc7-56cc461f34fso3267624eaf.0; 
+ Mon, 14 Aug 2023 22:01:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1692075693; x=1692680493;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=HBoHcbqbhFgQor55ui9/J/PunxjJ+Orzr8fv8qZ5Hmk=;
+ b=mMHZxNmhtMdEbwDHd7CUaUbVa23biBcC7p+O3lKcNvh2KkQoWTlnd2WArQ0ufKBqp0
+ 59epnZXSI+4KzkUHCrOZN/zQYOA+9FND6c8qnYE6iHHvuRweKWulOhx8ObcYLeuAOINh
+ uWrFLm/kqNG+QArlEa9IEWXqGTEijrTeeOulyOXsXrL85h92LR0NFEY752pW6KW84zMJ
+ kFt9b1cVgs4weBQUFg3JnvcfSOLJ05rXu6FDAdFiFOd3gP4L5Zyjp3dNMb5v3yXpe8f0
+ d40ibns1Vxw3zok3TRwOSubc8D7FVTrmjGS599+L14vDOx1tyjIYFAHtuSQ5fFAYnUNx
+ 5KIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1692075693; x=1692680493;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=HBoHcbqbhFgQor55ui9/J/PunxjJ+Orzr8fv8qZ5Hmk=;
+ b=LFgaxljAdliH4UMXOPZEs7yJD3Vhx3nocBVxki/HdiLJqrDF/mzd2AVkHEl0uuJf6o
+ VHDZsYnm/8XgI7lphbmOjtgJLrEj9FNbPwnLumtgxtxWjEGUUqm2E/hhsSSrdx3c5VZ8
+ Vb5BoqtbEgN2Zhn0nLZpYDjMET8gUipoAravcSmpFcx+t/kMO9IPncd443M7lI680ndN
+ B2nkpbwlUmCn/n1hpnCPtE5k2qTapXr/DF3jfbVnkLM5cHrnRwYWMzIcD0W1CVAtPrd8
+ sygCGN+2Y37Oq6KZ37RlZJC5tk3+mr/bXU9+pYjsAwd1O7z2zaxBW9voe6cGcQ/hpomI
+ ksBQ==
+X-Gm-Message-State: AOJu0Yx5J2lk0c8bOmIIA1JVQmjEDMGnhd3zoyg6bKdM9QHO0m2yL1bs
+ yrmtTni+IVZRYrRwUo67auacoe8Vcwk=
+X-Google-Smtp-Source: AGHT+IEF6VNG8AOG3KrEJ+NKVHQWWr7UcmWeRLy1AVdQtP2g25+RZ9iNUiLs3TeItoXuB45PSngdRg==
+X-Received: by 2002:a05:6358:249b:b0:134:d128:9f5f with SMTP id
+ m27-20020a056358249b00b00134d1289f5fmr10025287rwc.9.1692075693049; 
+ Mon, 14 Aug 2023 22:01:33 -0700 (PDT)
+Received: from pwon.ozlabs.ibm.com ([146.112.118.69])
+ by smtp.gmail.com with ESMTPSA id
+ t7-20020a62ea07000000b006871859d9a1sm8734189pfh.7.2023.08.14.22.01.30
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 14 Aug 2023 22:01:32 -0700 (PDT)
+From: Jordan Niethe <jniethe5@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, richard.henderson@linaro.org, npiggin@gmail.com,
+ bgray@linux.ibm.com, Jordan Niethe <jniethe5@gmail.com>
+Subject: [RFC PATCH] tcg/ppc: Enable direct branching tcg_out_goto_tb with
+ TCG_REG_TB
+Date: Tue, 15 Aug 2023 15:01:17 +1000
+Message-Id: <20230815050117.34731-1-jniethe5@gmail.com>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Received-SPF: none client-ip=192.55.52.93;
- envelope-from=pawan.kumar.gupta@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -12
-X-Spam_score: -1.3
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2a;
+ envelope-from=jniethe5@gmail.com; helo=mail-oo1-xc2a.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
 X-Spam_bar: -
-X-Spam_report: (-1.3 / 5.0 requ) AC_FROM_MANY_DOTS=2.999, BAYES_00=-1.9,
- DKIMWL_WL_HIGH=-0.001, DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=no autolearn_force=no
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -75,40 +89,174 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Gather Data Sampling (GDS) is a side-channel attack using Gather
-instructions. Some Intel processors will set ARCH_CAP_GDS_NO bit in
-MSR IA32_ARCH_CAPABILITIES to report that they are not vulnerable to
-GDS.
+Direct branch patching was disabled when using TCG_REG_TB in commit
+736a1588c1 ("tcg/ppc: Fix race in goto_tb implementation"). Commit
+7502f89c74 ("tcg/ppc: Use prefixed instructions for tcg_out_goto_tb")
+used the support for pc relative ISAv3.1 instructions to re-enable
+direct branch patching on POWER10.
 
-Make this bit available to guests.
+The issue with direct branch patching with TCG_REG_TB is the lack of
+synchronization between the new TCG_REG_TB being established and the
+direct branch being patched in.
 
-Closes: https://lore.kernel.org/qemu-devel/CAMGffEmG6TNq0n3+4OJAgXc8J0OevY60KHZekXCBs3LoK9vehA@mail.gmail.com/
-Reported-by: Jack Wang <jinpu.wang@ionos.com>
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Tested-by: Jack Wang <jinpu.wang@ionos.com>
-Tested-by: Daniel Sneddon <daniel.sneddon@linux.intel.com>
+If each translation block is responsible for establishing its own
+TCG_REG_TB then there can be no synchronization issue.
+
+Make each translation block begin by setting up its own TCG_REG_TB.
+ISA v3.0 has addpcis so use that for getting the pc at the beginning of
+a translation block (plus offset). For systems without addpcis, use
+the preferred 'bcl 20,31,$+4' sequence.
+
+When branching indirectly to a translation block the setup sequence can
+be skipped if the caller sets up TCG_REG_TB as there is no possible race
+in this case.
+
+Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 ---
-v2: Added commit tags
+This is just a proof of concept, not sure that this is the correct way
+to do this or even if it is something we'd like to do.
 
-v1: https://lore.kernel.org/qemu-devel/c373f3f92b542b738f296d44bb6a916a1cded7bd.1691774049.git.pawan.kumar.gupta@linux.intel.com/
+Applies on top of Richard's series [1].
 
- target/i386/cpu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+  [1] https://lore.kernel.org/qemu-devel/20230808030250.50602-1-richard.henderson@linaro.org/
+---
+ include/tcg/tcg.h        |  1 +
+ tcg/ppc/tcg-target.c.inc | 59 ++++++++++++++++++++++++++--------------
+ tcg/tcg.c                |  3 ++
+ 3 files changed, 42 insertions(+), 21 deletions(-)
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 97ad229d8ba3..48709b77689f 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -1155,7 +1155,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
-             NULL, "sbdr-ssdp-no", "fbsdp-no", "psdp-no",
-             NULL, "fb-clear", NULL, NULL,
-             NULL, NULL, NULL, NULL,
--            "pbrsb-no", NULL, NULL, NULL,
-+            "pbrsb-no", NULL, "gds-no", NULL,
-             NULL, NULL, NULL, NULL,
-         },
-         .msr = {
+diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
+index 0875971719..337506fea0 100644
+--- a/include/tcg/tcg.h
++++ b/include/tcg/tcg.h
+@@ -518,6 +518,7 @@ struct TCGContext {
+        extension that allows arithmetic on void*.  */
+     void *code_gen_buffer;
+     size_t code_gen_buffer_size;
++    size_t code_gen_entry_size;
+     void *code_gen_ptr;
+     void *data_gen_ptr;
+ 
+diff --git a/tcg/ppc/tcg-target.c.inc b/tcg/ppc/tcg-target.c.inc
+index b686a68247..4b55751051 100644
+--- a/tcg/ppc/tcg-target.c.inc
++++ b/tcg/ppc/tcg-target.c.inc
+@@ -382,6 +382,7 @@ static bool tcg_target_const_match(int64_t val, TCGType type, int ct)
+ #define CRNAND XO19(225)
+ #define CROR   XO19(449)
+ #define CRNOR  XO19( 33)
++#define ADDPCIS  XO19( 2)
+ 
+ #define EXTSB  XO31(954)
+ #define EXTSH  XO31(922)
+@@ -2635,6 +2636,30 @@ static void tcg_target_qemu_prologue(TCGContext *s)
+     tcg_out32(s, BCLR | BO_ALWAYS);
+ }
+ 
++
++#define TCG_TARGET_NEED_ENTER_TB
++static void tcg_out_enter_tb(TCGContext *s)
++{
++    if (!USE_REG_TB) {
++        return;
++    }
++
++    if (have_isa_3_00) {
++        /* lnia REG_TB */
++        tcg_out32(s, ADDPCIS | RT(TCG_REG_TB));
++        tcg_out32(s, ADDI | TAI(TCG_REG_TB, TCG_REG_TB, -4));
++    } else {
++        tcg_out32(s, MFSPR | RT(TCG_REG_TMP1) | LR);
++        /* bcl 20,31,$+4 (Preferred form for getting nia.) */
++        tcg_out32(s, BC | BO_ALWAYS | BI(7, CR_SO) | 0x4 | LK);
++        tcg_out32(s, MFSPR | RT(TCG_REG_TB) | LR);
++        tcg_out32(s, ADDI | TAI(TCG_REG_TB, TCG_REG_TB, -8));
++        tcg_out32(s, MTSPR | RS(TCG_REG_TMP1) | LR);
++    }
++
++    s->code_gen_entry_size = tcg_current_code_size(s);
++}
++
+ static void tcg_out_exit_tb(TCGContext *s, uintptr_t arg)
+ {
+     tcg_out_movi(s, TCG_TYPE_PTR, TCG_REG_R3, arg);
+@@ -2645,23 +2670,6 @@ static void tcg_out_goto_tb(TCGContext *s, int which)
+ {
+     uintptr_t ptr = get_jmp_target_addr(s, which);
+ 
+-    if (USE_REG_TB) {
+-        /*
+-         * With REG_TB, we must always use indirect branching,
+-         * so that the branch destination and TCG_REG_TB match.
+-         */
+-        ptrdiff_t offset = tcg_tbrel_diff(s, (void *)ptr);
+-        tcg_out_mem_long(s, LD, LDX, TCG_REG_TB, TCG_REG_TB, offset);
+-        tcg_out32(s, MTSPR | RS(TCG_REG_TB) | CTR);
+-        tcg_out32(s, BCCTR | BO_ALWAYS);
+-
+-        /* For the unlinked case, need to reset TCG_REG_TB.  */
+-        set_jmp_reset_offset(s, which);
+-        tcg_out_mem_long(s, ADDI, ADD, TCG_REG_TB, TCG_REG_TB,
+-                         -tcg_current_code_size(s));
+-        return;
+-    }
+-
+     /* Direct branch will be patched by tb_target_set_jmp_target. */
+     set_jmp_insn_offset(s, which);
+     tcg_out32(s, NOP);
+@@ -2670,6 +2678,13 @@ static void tcg_out_goto_tb(TCGContext *s, int which)
+     if (have_isa_3_10) {
+         ptrdiff_t offset = tcg_pcrel_diff_for_prefix(s, (void *)ptr);
+         tcg_out_8ls_d(s, PLD, TCG_REG_TMP1, 0, offset, 1);
++    } else if (USE_REG_TB) {
++        ptrdiff_t offset = tcg_tbrel_diff(s, (void *)ptr);
++
++        tcg_out_mem_long(s, LD, LDX, TCG_REG_TB, TCG_REG_TB, offset);
++        /* Callee can skip establishing REG_TB for the indirect case. */
++        tcg_out32(s, ADDI | TAI(TCG_REG_TMP1, TCG_REG_TB,
++                                s->code_gen_entry_size));
+     } else {
+         tcg_out_movi(s, TCG_TYPE_PTR, TCG_REG_TMP1, ptr - (int16_t)ptr);
+         tcg_out_ld(s, TCG_TYPE_PTR, TCG_REG_TMP1, TCG_REG_TMP1, (int16_t)ptr);
+@@ -2678,6 +2693,12 @@ static void tcg_out_goto_tb(TCGContext *s, int which)
+     tcg_out32(s, MTSPR | RS(TCG_REG_TMP1) | CTR);
+     tcg_out32(s, BCCTR | BO_ALWAYS);
+     set_jmp_reset_offset(s, which);
++
++    /* For the unlinked case, need to reset TCG_REG_TB.  */
++    if (USE_REG_TB) {
++        tcg_out_movi_int(s, TCG_TYPE_I64, TCG_REG_TB,
++                         (tcg_target_long)s->code_buf, true);
++    }
+ }
+ 
+ void tb_target_set_jmp_target(const TranslationBlock *tb, int n,
+@@ -2687,10 +2708,6 @@ void tb_target_set_jmp_target(const TranslationBlock *tb, int n,
+     intptr_t diff = addr - jmp_rx;
+     tcg_insn_unit insn;
+ 
+-    if (USE_REG_TB) {
+-        return;
+-    }
+-
+     if (in_range_b(diff)) {
+         insn = B | (diff & 0x3fffffc);
+     } else {
+diff --git a/tcg/tcg.c b/tcg/tcg.c
+index ddfe9a96cb..20698131c2 100644
+--- a/tcg/tcg.c
++++ b/tcg/tcg.c
+@@ -6010,6 +6010,9 @@ int tcg_gen_code(TCGContext *s, TranslationBlock *tb, uint64_t pc_start)
+         tcg_malloc(sizeof(uint64_t) * s->gen_tb->icount * start_words);
+ 
+     num_insns = -1;
++#ifdef TCG_TARGET_NEED_ENTER_TB
++    tcg_out_enter_tb(s);
++#endif
+     QTAILQ_FOREACH(op, &s->ops, link) {
+         TCGOpcode opc = op->opc;
+ 
 -- 
-2.34.1
+2.39.3
 
 
