@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1BFB77D565
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Aug 2023 23:52:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4861677D569
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Aug 2023 23:58:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qW1xG-0003lY-RF; Tue, 15 Aug 2023 17:51:58 -0400
+	id 1qW21f-0004z2-K5; Tue, 15 Aug 2023 17:56:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qW1xB-0003l2-PG
- for qemu-devel@nongnu.org; Tue, 15 Aug 2023 17:51:53 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qW21a-0004yo-Ji
+ for qemu-devel@nongnu.org; Tue, 15 Aug 2023 17:56:26 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qW1x9-0001QQ-Ob
- for qemu-devel@nongnu.org; Tue, 15 Aug 2023 17:51:53 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qW21V-0002M1-OT
+ for qemu-devel@nongnu.org; Tue, 15 Aug 2023 17:56:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692136311;
+ s=mimecast20190719; t=1692136577;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=VSRzS4SJmB7q6CpNFJw6YhvuQd+joqi/oJT23Td2aCs=;
- b=SdttYV/3QzJ/qdOJbPmvzwCh61IbRdn79I40mCQj//eKXBauTRmAA8kwJ3f75ITZoCmO+3
- qza/WKugpsSsCR44OeTM0k7eFK1HrX8tiAfsnhRj0BMJkcOByGlaRavi4o+vlMASyP1U2J
- n1uBq7QU9bynnJx1r+qsooJNXj9uFMo=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=/hFJwd/iPJZ2f21W7xl00k6a4Mv/O5xX2k4ToQznWzs=;
+ b=GnQ+zHk54tjWyj62xfw1IphtNicTEdEBHdM35oLN9JyYe8pvD7yEiYTS1NNPIYdFlbNWnv
+ PH+JcrbBean6QvUjfiCTywoOovBdajBqIRRBQ1RCqa+nMVl48r6sf/WaHhsYZLws9Ngp6M
+ Yd2dtQMNdC4K4z8YWvCbULXGt1/yJRo=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-341-kfd3B_xVO-KAmJSo54BDKA-1; Tue, 15 Aug 2023 17:51:48 -0400
-X-MC-Unique: kfd3B_xVO-KAmJSo54BDKA-1
-Received: by mail-qk1-f199.google.com with SMTP id
- af79cd13be357-76cb292df12so206006685a.0
- for <qemu-devel@nongnu.org>; Tue, 15 Aug 2023 14:51:48 -0700 (PDT)
+ us-mta-353-pP5vaDTTMxqKI7Gx_5j59w-1; Tue, 15 Aug 2023 17:56:15 -0400
+X-MC-Unique: pP5vaDTTMxqKI7Gx_5j59w-1
+Received: by mail-qk1-f197.google.com with SMTP id
+ af79cd13be357-76cde638658so205616785a.1
+ for <qemu-devel@nongnu.org>; Tue, 15 Aug 2023 14:56:15 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692136308; x=1692741108;
+ d=1e100.net; s=20221208; t=1692136575; x=1692741375;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=VSRzS4SJmB7q6CpNFJw6YhvuQd+joqi/oJT23Td2aCs=;
- b=EIBSDb3PPIi/pj1l5RssTf7UAYXK/0r6ZaTGTKTb3xyuOymLNAbKDCdol24xGdZpPX
- uFPU3GCi4Nc/zQdv6CavWrn8BvcOiIJhB6mcm0sbZjQfx4KU4ZInx2E0p2bbaV63FRkD
- nM8nA25SxbTR66fCZrcDwbnWdTOQTfwLN5rc1EfGDqLkq4IiDsHw9VCxNJ6kgKsbhQnX
- VZj3Yfstd4LR7xa5RRUkNMEWZx6WZfg2Ekh+mreIvJto6UHvokUfdnvWLxPDvoBP7PLF
- SP2ZnpEH5hSpVC2S9lFPTopoCjkk8dIKgzPK7BOOeaBFV8BojnQPt1MQ+MqErkIQELPW
- l04g==
-X-Gm-Message-State: AOJu0Yxq/laBd8e2+t39CsJMlTltzTqSmv05/il1GEHKnz518dBnzLaY
- KiqG+AKWgQbrcQj8atm/y18lEqwmF4DODDsgzRsmHK+m1UFyauXh64w4hfC4wwD+tUeqDoc0216
- anwMT+KXRcqigGD8=
-X-Received: by 2002:ad4:5de2:0:b0:63f:ab71:69d5 with SMTP id
- jn2-20020ad45de2000000b0063fab7169d5mr7599qvb.5.1692136308414; 
- Tue, 15 Aug 2023 14:51:48 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGdcJFc8wy09/4xRksGsKEAz33Wfmet8cWUVzyv/G+ikj7oKN1fC3yyp7Jl6V7ZiqHfHCiwfw==
-X-Received: by 2002:ad4:5de2:0:b0:63f:ab71:69d5 with SMTP id
- jn2-20020ad45de2000000b0063fab7169d5mr7589qvb.5.1692136308177; 
- Tue, 15 Aug 2023 14:51:48 -0700 (PDT)
+ bh=/hFJwd/iPJZ2f21W7xl00k6a4Mv/O5xX2k4ToQznWzs=;
+ b=cr1m+KB0NCTsd57flzMKRbSiUrZ4XkrWYL9+H3pxOxv4GqX7+82knfwHCLU/U+20PE
+ jnfDwfpMr/jMWavikFkbtPMViXRGu4iSUQCSbYRMIyZfs26CoO9tjbJWj7fTLLdDKFZF
+ kN5vf1bk2XhiImx6Xyq8EjMh4irCBTsJpSdAJIK6GE5h71dfZo/C9qzT90GbGY2y0TEP
+ JrleuUx4qeQ3YfCNYlPt1HjT69x4BPhzQ6/KnCJBXSvL0bmqoicK/j2PCOHqGC/swq4L
+ 0dEXGXwiike0LPXZFK9s+MXt6fpsSi9SZ6nrTMljRf8KGkSdmy15dulLccxrswIeOOSG
+ fZFQ==
+X-Gm-Message-State: AOJu0Yx+rsEPZU670ILHClRdwCngDvh5+4LQBKrb5oYy7W5OsOcjPs92
+ J4Cl90K864VfnciJn7oVsOt6Y3WRUV5S6eJKwVNx3WjrsAmNFWO6nYrXLeYHGLprxVqjpj8Ipeo
+ R62Ovb2g0cebOb6Y=
+X-Received: by 2002:a05:6214:4015:b0:63d:2a0b:3f91 with SMTP id
+ kd21-20020a056214401500b0063d2a0b3f91mr44147qvb.2.1692136575534; 
+ Tue, 15 Aug 2023 14:56:15 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGv9o/tBxnllYuQ/tfmzO9p93Sm0rSPra7EMo3KUdu38Zq07q66YfsHEvHz86BUYyju2zUseA==
+X-Received: by 2002:a05:6214:4015:b0:63d:2a0b:3f91 with SMTP id
+ kd21-20020a056214401500b0063d2a0b3f91mr44139qvb.2.1692136575245; 
+ Tue, 15 Aug 2023 14:56:15 -0700 (PDT)
 Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
  [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- h14-20020a0cf44e000000b0063d38e52c8fsm4427050qvm.18.2023.08.15.14.51.47
+ r27-20020a0cb29b000000b0063cdcd5699csm4494724qve.118.2023.08.15.14.56.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 15 Aug 2023 14:51:47 -0700 (PDT)
-Date: Tue, 15 Aug 2023 17:51:46 -0400
+ Tue, 15 Aug 2023 14:56:14 -0700 (PDT)
+Date: Tue, 15 Aug 2023 17:56:13 -0400
 From: Peter Xu <peterx@redhat.com>
 To: Fabiano Rosas <farosas@suse.de>
 Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
  Wei Wang <wei.w.wang@intel.com>, Leonardo Bras <leobras@redhat.com>
-Subject: Re: [PATCH v3 04/10] migration: Fix possible race when shutting down
- to_dst_file
-Message-ID: <ZNvzckDALnMEN6pb@x1n>
+Subject: Re: [PATCH v3 05/10] migration: Remove redundant cleanup of
+ postcopy_qemufile_src
+Message-ID: <ZNv0fSV6J3KbAOBz@x1n>
 References: <20230811150836.2895-1-farosas@suse.de>
- <20230811150836.2895-5-farosas@suse.de>
+ <20230811150836.2895-6-farosas@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230811150836.2895-5-farosas@suse.de>
+In-Reply-To: <20230811150836.2895-6-farosas@suse.de>
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -98,11 +98,9 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Aug 11, 2023 at 12:08:30PM -0300, Fabiano Rosas wrote:
-> It's not safe to call qemu_file_shutdown() on the to_dst_file without
-> first checking for the file's presence under the lock. The cleanup of
-> this file happens at postcopy_pause() and migrate_fd_cleanup() which
-> are not necessarily running in the same thread as migrate_fd_cancel().
+On Fri, Aug 11, 2023 at 12:08:31PM -0300, Fabiano Rosas wrote:
+> This file is owned by the return path thread which is already doing
+> cleanup.
 > 
 > Signed-off-by: Fabiano Rosas <farosas@suse.de>
 
