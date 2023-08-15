@@ -2,64 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEFC877CC75
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Aug 2023 14:21:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AC6677CCC5
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Aug 2023 14:36:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qVt24-0004Zm-DX; Tue, 15 Aug 2023 08:20:20 -0400
+	id 1qVtGr-00071t-4n; Tue, 15 Aug 2023 08:35:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qVt22-0004Z0-2a
- for qemu-devel@nongnu.org; Tue, 15 Aug 2023 08:20:18 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qVt1z-0007nb-OM
- for qemu-devel@nongnu.org; Tue, 15 Aug 2023 08:20:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692102015;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=lMx8fcw3eOp3ari2bCFEAdASxqWEFU//80vR6Zt2nFQ=;
- b=ayWfzLs6J5DYC7li9pjLUZiojM0bH/f7gXxDdz4Sn9l0+/vM2ZdLKQ9xZefnsbQOnVXBLH
- 0Q5D0z6SeBG4v4omgKgtKSr68HnwVhuB5mS9yVeqf6/ih9YJPCNbZBbpyHNo8UMshEVX4s
- 1Wy6qqZK9DfBt+v3LIxLYMh8uuUqYqg=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-527-SrVZu5OYOCCWc-JeA02Zuw-1; Tue, 15 Aug 2023 08:20:11 -0400
-X-MC-Unique: SrVZu5OYOCCWc-JeA02Zuw-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qVtGj-00071W-D2
+ for qemu-devel@nongnu.org; Tue, 15 Aug 2023 08:35:29 -0400
+Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qVtGh-0002Zx-6f
+ for qemu-devel@nongnu.org; Tue, 15 Aug 2023 08:35:29 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7E2C4800C7A;
- Tue, 15 Aug 2023 12:20:11 +0000 (UTC)
-Received: from thuth.com (unknown [10.39.193.12])
- by smtp.corp.redhat.com (Postfix) with ESMTP id D0653140E950;
- Tue, 15 Aug 2023 12:20:09 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- qemu-s390x@nongnu.org, qemu-stable@nongnu.org
-Subject: [PATCH] include/hw/virtio/virtio-gpu: Fix virtio-gpu with blob on big
- endian hosts
-Date: Tue, 15 Aug 2023 14:20:07 +0200
-Message-Id: <20230815122007.928049-1-thuth@redhat.com>
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 5D1C021892;
+ Tue, 15 Aug 2023 12:35:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1692102922; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=jdM//8SzgIjafyfvV2e3Ps+U64sLtu2Hx7JZnRhP51I=;
+ b=Z4EWnHVsDrRr2JIfnlSJDuxlZL+LGBvbnRoDqF3AJXj33jSlJHJ4PiMCEAEBXAaCg7MSAD
+ fWXnCPkAgaNXXpGOPRkpEjQnn20EBUX6y+59KnpSeO6IND2rCynn5jzc1rUTWv9G+ZSEOw
+ OCzk/T5aFb/WMT1BdifEwLmBn0iAZJ4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1692102922;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=jdM//8SzgIjafyfvV2e3Ps+U64sLtu2Hx7JZnRhP51I=;
+ b=MN6D+PK90mpwKW+Yfh8l7InaUnuKGruWV0L9329HyYAfVJe8lfA3MO1O+dCleU+12dNN58
+ K0RVYPWJXN+GmHDQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id E08C513909;
+ Tue, 15 Aug 2023 12:35:21 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id QRAgKglx22RtGwAAMHmgww
+ (envelope-from <farosas@suse.de>); Tue, 15 Aug 2023 12:35:21 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Guoyi Tu <tugy@chinatelecom.cn>, Juan Quintela <quintela@redhat.com>,
+ Peter Xu <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>
+Cc: tugy@chinatelecom.cn, qemu-devel@nongnu.org
+Subject: Re: [PATCH] migrate/ram: let ram_save_target_page_legacy() return
+ if qemu file got error
+In-Reply-To: <20ae48e5-006d-4a1b-823e-f2c591ec4fb0@chinatelecom.cn>
+References: <20ae48e5-006d-4a1b-823e-f2c591ec4fb0@chinatelecom.cn>
+Date: Tue, 15 Aug 2023 09:35:19 -0300
+Message-ID: <87h6p0mqk8.fsf@suse.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.04,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain
+Received-SPF: pass client-ip=2001:67c:2178:6::1c; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -75,46 +83,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Using "-device virtio-gpu,blob=true" currently does not work on big
-endian hosts (like s390x). The guest kernel prints an error message
-like:
+Guoyi Tu <tugy@chinatelecom.cn> writes:
 
- [drm:virtio_gpu_dequeue_ctrl_func [virtio_gpu]] *ERROR* response 0x1200 (command 0x10c)
+> When the migration process of a virtual machine using huge pages is 
+> cancelled,
+> QEMU will continue to complete the processing of the current huge page
+> through the qemu file object got an error set. These processing, such as
+> compression and encryption, will consume a lot of CPU resources which may
+> affact the the performance of the other VMs.
+>
+> To terminate the migration process more quickly and minimize unnecessary
+> resource occupancy, it's neccessary to add logic to check the error status
+> of qemu file object in the beginning of ram_save_target_page_legacy 
+> function,
+> and make sure the function returns immediately if qemu file got an error.
+>
+> Signed-off-by: Guoyi Tu <tugy@chinatelecom.cn>
+> ---
+>   migration/ram.c | 4 ++++
+>   1 file changed, 4 insertions(+)
+>
+> diff --git a/migration/ram.c b/migration/ram.c
+> index 9040d66e61..3e2ebf3004 100644
+> --- a/migration/ram.c
+> +++ b/migration/ram.c
+> @@ -2133,6 +2133,10 @@ static int ram_save_target_page_legacy(RAMState 
+> *rs, PageSearchStatus *pss)
+>       ram_addr_t offset = ((ram_addr_t)pss->page) << TARGET_PAGE_BITS;
+>       int res;
+>
+> +    if (qemu_file_get_error(pss->pss_channel)) {
+> +        return -1;
+> +    }
 
-and the display stays black. When running QEMU with "-d guest_errors",
-it shows an error message like this:
-
- virtio_gpu_create_mapping_iov: nr_entries is too big (83886080 > 16384)
-
-which indicates that this value has not been properly byte-swapped.
-And indeed, the virtio_gpu_create_blob_bswap() function (that should
-swap the fields in the related structure) fails to swap some of the
-entries. After correctly swapping all missing values here, too, the
-virtio-gpu device is now also working with blob=true on s390x hosts.
-
-Fixes: e0933d91b1 ("virtio-gpu: Add virtio_gpu_resource_create_blob")
-Buglink: https://bugzilla.redhat.com/show_bug.cgi?id=2230469
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- include/hw/virtio/virtio-gpu-bswap.h | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/include/hw/virtio/virtio-gpu-bswap.h b/include/hw/virtio/virtio-gpu-bswap.h
-index 9124108485..637a0585d0 100644
---- a/include/hw/virtio/virtio-gpu-bswap.h
-+++ b/include/hw/virtio/virtio-gpu-bswap.h
-@@ -63,7 +63,10 @@ virtio_gpu_create_blob_bswap(struct virtio_gpu_resource_create_blob *cblob)
- {
-     virtio_gpu_ctrl_hdr_bswap(&cblob->hdr);
-     le32_to_cpus(&cblob->resource_id);
-+    le32_to_cpus(&cblob->blob_mem);
-     le32_to_cpus(&cblob->blob_flags);
-+    le32_to_cpus(&cblob->nr_entries);
-+    le64_to_cpus(&cblob->blob_id);
-     le64_to_cpus(&cblob->size);
- }
- 
--- 
-2.39.3
-
+Where was the error set? Is this from cancelling via QMP? Or something
+from within ram_save_target_page_legacy? We should probably make the
+check closer to where the error happens. At the very least moving the
+check into the loop.
 
