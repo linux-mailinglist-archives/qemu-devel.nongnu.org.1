@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6542777D3CD
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Aug 2023 22:01:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C732377D3CE
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Aug 2023 22:01:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qW0Av-00059D-PR; Tue, 15 Aug 2023 15:57:57 -0400
+	id 1qW0Ax-0005AT-Gr; Tue, 15 Aug 2023 15:57:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qW0At-00057Z-1G
- for qemu-devel@nongnu.org; Tue, 15 Aug 2023 15:57:55 -0400
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ id 1qW0Au-00058Q-Dj
+ for qemu-devel@nongnu.org; Tue, 15 Aug 2023 15:57:56 -0400
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qW0Aq-00014m-Os
- for qemu-devel@nongnu.org; Tue, 15 Aug 2023 15:57:54 -0400
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-6887918ed20so321727b3a.2
+ id 1qW0Ar-000151-6Z
+ for qemu-devel@nongnu.org; Tue, 15 Aug 2023 15:57:55 -0400
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-686ba29ccb1so3897348b3a.1
  for <qemu-devel@nongnu.org>; Tue, 15 Aug 2023 12:57:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692129471; x=1692734271;
+ d=linaro.org; s=google; t=1692129472; x=1692734272;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=2a12Z19iXsASCqZDsR31Txy9HCN36MK3mWzwcxfOs68=;
- b=glcOeLGmS1pANxTeXrZnAv2hfWb/QJxbm0ypXqKLAgXseZrAvGMGO7xMVDDXpWFnT8
- QWHyLes3m5Jihh4dDG8BgtsLQZpXy4hcvYREl3ROHly6OMcb38Uvd5QuwgLg6AoJepqv
- VUL05eMencyEeDfr1bKVEacIDVOKvqKaWwh0OZZH2CkGyz7FUigbADIjAWpdOeb/epWZ
- 67Bml6Q0Kcpu4f+DUUMA7GlJ9IozEk2ArRoywDzmFUcKZrjtX2KS7Rps1gvGKo/Zn+CP
- ksiAyC576xdQQVkLPGDS4wDCwebb2W6Gk5N5nqx/y4t8cTtjUU5ub64pJuBTPcrsrBAl
- jNBA==
+ bh=3yC0mxP+Pzdku/R2U4WTUfNcg5S21JJsMYdzIv6kLFM=;
+ b=YjELarhXxYAmk6Gw2a3lI0J16SSyPIWBrh/gEeiXfSSE+hf5ZX0gjSzTgexkuilwWr
+ u+s/OshZSJzIOw0oJF33mdxlqs9nAgP3PR17Kv8vnExd7OSw7Rq966xOdab4TBg1Wxor
+ 6SIpezfQSDmvN9MpTOzBrHn+4qUgIKGcNl74n4vG1cpz+KAKsM3w5wq4l5TZtNB2iPMV
+ yobdiUmgPTbyik6M8E+dPRlF4XSPDeVkCONeoSEpmPHYidnEPRBFE+e8C6vv4H/z8lzt
+ L7zg2DDMAbVqVmOAiJsEpeQ0vjU3xGlU0/iSqAaH7kiNp5PEwa4kNk+f0tsWaUPZ0qPN
+ I5zw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692129471; x=1692734271;
+ d=1e100.net; s=20221208; t=1692129472; x=1692734272;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2a12Z19iXsASCqZDsR31Txy9HCN36MK3mWzwcxfOs68=;
- b=T+skLMNrG18QYRzpUhYKTWACNddErYAl3n181iDzO3AZx2brcgc9PL4R4ITZvHWc4C
- 0I4VWFg5HzaTOylPn8Asxeh7BpYFtCpNiSVaDvfI3t+OcE0UsKl+lmV7N4YrlTnYvOUm
- PHvBZwyDY3qkk/7EWRusnQdt/RudWoLb/M8f/WuPNywnfaR4l0mZvAaIJMn3QlgSgeO7
- YwYy5rcXwFESApD0nLQ2a4lIjpS0EL3rW/zXviTlYPTo2eWXgW1wvVgMSoggQiBGHn5/
- igfUet7sLbbk5BUKrORCcc5ewND3qTz5gUlBVcxXevoTLHiTVOb3VxJPpPjeGfsCfcYk
- dPBw==
-X-Gm-Message-State: AOJu0Yy6E6WbhEu40Nd7aMwUUcq4z4zD37vUClKTBnOYGSsBpOjWH6Mj
- gZ4cksm14WSSRy3+nj/p1wM5uLb+qfsfu5dSy/M=
-X-Google-Smtp-Source: AGHT+IEhybxdv4IEQf/HGShZ7x99/DkHed6uKyJln8jaAkszcM0ffnEHdlBzJjuQrY9hBgzpiPtH2w==
-X-Received: by 2002:a05:6a20:42a0:b0:129:d944:2e65 with SMTP id
- o32-20020a056a2042a000b00129d9442e65mr20044110pzj.13.1692129471107; 
+ bh=3yC0mxP+Pzdku/R2U4WTUfNcg5S21JJsMYdzIv6kLFM=;
+ b=htoPolQCYx2/K6hUhXtjazKgYDZovZMLJCafVuVCjhgfv5dqCGy7OSj8hN6d+StydQ
+ PmPRBV8qlL6sblcEVSG6IUF7jfocKnUIE2bVspiI6tr6hUqla/by0HUY1NWzb3pDj18j
+ JMZ6CX9IrH14xx1P7T+yKSAZHUjf3m7EwyEvC2mVCFWd30xsC91NYeSeYqQTN5bi1nar
+ EEvd4N5pBIsbHlvB77IO1tFJZmrlRRVa/wa+h3jkJgY78buXnbg/W3AzzJ34FPI97J7d
+ ko29WrtYdo1EL73i5kkB+c2QvORqF/MrO78LclZ9DpfmOZzdnGZmCLeva5UrTED7wfHs
+ 5NUA==
+X-Gm-Message-State: AOJu0YxC7j9wN4Wa6FTcurAKI3RsV2VgC1S46IfvSdg9NownZngKnIAn
+ VDmZQjd/ODnxWKzGOPMwWEo9EjA2nafB/Uk+EIQ=
+X-Google-Smtp-Source: AGHT+IFpxqFJrhKk6a4hnsSQNnBJ3s2roGPqX1B2zc9yb+rY4iNV7RCz3ox2BJgTi3fp28ns4GZNmQ==
+X-Received: by 2002:a05:6a00:1392:b0:687:9785:13c7 with SMTP id
+ t18-20020a056a00139200b00687978513c7mr3799044pfg.13.1692129471957; 
  Tue, 15 Aug 2023 12:57:51 -0700 (PDT)
 Received: from stoup.. ([2602:47:d483:7301:8d06:f27b:d26c:91c1])
  by smtp.gmail.com with ESMTPSA id
- n7-20020a62e507000000b00686b649cdd0sm9667699pff.86.2023.08.15.12.57.50
+ n7-20020a62e507000000b00686b649cdd0sm9667699pff.86.2023.08.15.12.57.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 15 Aug 2023 12:57:50 -0700 (PDT)
+ Tue, 15 Aug 2023 12:57:51 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org,
 	jniethe5@gmail.com
-Subject: [PATCH v3 08/14] tcg/ppc: Use ADDPCIS in tcg_out_goto_tb
-Date: Tue, 15 Aug 2023 12:57:35 -0700
-Message-Id: <20230815195741.8325-9-richard.henderson@linaro.org>
+Subject: [PATCH v3 09/14] tcg/ppc: Use PADDI in tcg_out_movi
+Date: Tue, 15 Aug 2023 12:57:36 -0700
+Message-Id: <20230815195741.8325-10-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230815195741.8325-1-richard.henderson@linaro.org>
 References: <20230815195741.8325-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,41 +92,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+PADDI can load 34-bit immediates and 34-bit pc-relative addresses.
+
+Reviewed-by: Jordan Niethe <jniethe5@gmail.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/ppc/tcg-target.c.inc | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ tcg/ppc/tcg-target.c.inc | 51 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 51 insertions(+)
 
 diff --git a/tcg/ppc/tcg-target.c.inc b/tcg/ppc/tcg-target.c.inc
-index a5c1891eb6..b7d1b4f1bb 100644
+index b7d1b4f1bb..40472f3d00 100644
 --- a/tcg/ppc/tcg-target.c.inc
 +++ b/tcg/ppc/tcg-target.c.inc
-@@ -2548,6 +2548,7 @@ static void tcg_out_exit_tb(TCGContext *s, uintptr_t arg)
- static void tcg_out_goto_tb(TCGContext *s, int which)
- {
-     uintptr_t ptr = get_jmp_target_addr(s, which);
-+    int16_t lo;
+@@ -714,6 +714,38 @@ static bool patch_reloc(tcg_insn_unit *code_ptr, int type,
+     return true;
+ }
  
-     /* Direct branch will be patched by tb_target_set_jmp_target. */
-     set_jmp_insn_offset(s, which);
-@@ -2557,9 +2558,15 @@ static void tcg_out_goto_tb(TCGContext *s, int which)
-     if (USE_REG_TB) {
-         ptrdiff_t offset = ppc_tbrel_diff(s, (void *)ptr);
-         tcg_out_mem_long(s, LD, LDX, TCG_REG_TMP1, TCG_REG_TB, offset);
-+    } else if (have_isa_3_00) {
-+        ptrdiff_t offset = tcg_pcrel_diff(s, (void *)ptr) - 4;
-+        lo = offset;
-+        tcg_out_addpcis(s, TCG_REG_TMP1, offset - lo);
-+        tcg_out_ld(s, TCG_TYPE_PTR, TCG_REG_TMP1, TCG_REG_TMP1, lo);
-     } else {
--        tcg_out_movi(s, TCG_TYPE_PTR, TCG_REG_TMP1, ptr - (int16_t)ptr);
--        tcg_out_ld(s, TCG_TYPE_PTR, TCG_REG_TMP1, TCG_REG_TMP1, (int16_t)ptr);
-+        lo = ptr;
-+        tcg_out_movi(s, TCG_TYPE_PTR, TCG_REG_TMP1, ptr - lo);
-+        tcg_out_ld(s, TCG_TYPE_PTR, TCG_REG_TMP1, TCG_REG_TMP1, lo);
++/* Ensure that the prefixed instruction does not cross a 64-byte boundary. */
++static bool tcg_out_need_prefix_align(TCGContext *s)
++{
++    return ((uintptr_t)s->code_ptr & 0x3f) == 0x3c;
++}
++
++static void tcg_out_prefix_align(TCGContext *s)
++{
++    if (tcg_out_need_prefix_align(s)) {
++        tcg_out32(s, NOP);
++    }
++}
++
++static ptrdiff_t tcg_pcrel_diff_for_prefix(TCGContext *s, const void *target)
++{
++    return tcg_pcrel_diff(s, target) - (tcg_out_need_prefix_align(s) ? 4 : 0);
++}
++
++/* Output Type 10 Prefix - Modified Load/Store Form (MLS:D) */
++static void tcg_out_mls_d(TCGContext *s, tcg_insn_unit opc, unsigned rt,
++                          unsigned ra, tcg_target_long imm, bool r)
++{
++    tcg_insn_unit p, i;
++
++    p = OPCD(1) | (2 << 24) | (r << 20) | ((imm >> 16) & 0x3ffff);
++    i = opc | TAI(rt, ra, imm);
++
++    tcg_out_prefix_align(s);
++    tcg_out32(s, p);
++    tcg_out32(s, i);
++}
++
+ static void tcg_out_mem_long(TCGContext *s, int opi, int opx, TCGReg rt,
+                              TCGReg base, tcg_target_long offset);
+ 
+@@ -1012,6 +1044,25 @@ static void tcg_out_movi_int(TCGContext *s, TCGType type, TCGReg ret,
+         return;
      }
  
-     tcg_out32(s, MTSPR | RS(TCG_REG_TMP1) | CTR);
++    /*
++     * Load values up to 34 bits, and pc-relative addresses,
++     * with one prefixed insn.
++     */
++    if (have_isa_3_10) {
++        if (arg == sextract64(arg, 0, 34)) {
++            /* pli ret,value = paddi ret,0,value,0 */
++            tcg_out_mls_d(s, ADDI, ret, 0, arg, 0);
++            return;
++        }
++
++        tmp = tcg_pcrel_diff_for_prefix(s, (void *)arg);
++        if (tmp == sextract64(tmp, 0, 34)) {
++            /* pla ret,value = paddi ret,0,value,1 */
++            tcg_out_mls_d(s, ADDI, ret, 0, tmp, 1);
++            return;
++        }
++    }
++
+     /* Load 32-bit immediates with two insns.  Note that we've already
+        eliminated bare ADDIS, so we know both insns are required.  */
+     if (TCG_TARGET_REG_BITS == 32 || arg == (int32_t)arg) {
 -- 
 2.34.1
 
