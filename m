@@ -2,45 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2239377CC59
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C57C77CC5A
 	for <lists+qemu-devel@lfdr.de>; Tue, 15 Aug 2023 14:09:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qVsqP-0000KF-Jp; Tue, 15 Aug 2023 08:08:17 -0400
+	id 1qVsqR-0000L5-P8; Tue, 15 Aug 2023 08:08:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qVsqN-0000HP-IB
- for qemu-devel@nongnu.org; Tue, 15 Aug 2023 08:08:15 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1qVsqP-0000KQ-Nf
+ for qemu-devel@nongnu.org; Tue, 15 Aug 2023 08:08:17 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qVsqL-00053f-9J
- for qemu-devel@nongnu.org; Tue, 15 Aug 2023 08:08:15 -0400
+ id 1qVsqM-000544-PA
+ for qemu-devel@nongnu.org; Tue, 15 Aug 2023 08:08:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692101292;
+ s=mimecast20190719; t=1692101294;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=vJ6oZfoGdjd/8MI8L03eqn4G39VqBn+QC+fNpvcZ1pI=;
- b=DGmxcwa3t45NzQwmmmGRYf+dgLAglpD9kJzXsXCRqACFpVYC8zTBLCNd2xQpfbIXl1nLYi
- g+rVxd1RGxrW+UOZwq+YrgIVy6+yJ8G6uVsCMVJaQEKf1TleU41vAdFXMMGYgh3K0XyTTB
- b54Z68knUDIoCkxMfHu9fqdKMcI3CX0=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-435-o4fnwk_mMJ2TjZAJXgsVMg-1; Tue, 15 Aug 2023 08:08:08 -0400
-X-MC-Unique: o4fnwk_mMJ2TjZAJXgsVMg-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=EdE5EsAN6QBCHulAylbS5BFI1p29T65LEqMfwMReR5k=;
+ b=cSfT4EBrLfJ8djqmnjbh8/QWIGlW8j2uSzVlMzL0LeYoYoy904iYLu+bAbASAFwBqnbWO/
+ 4BCChukpYY6TTXyZ6FCjHEFdYtzP3qjO4xVotPVgo4iS535BxMy7TYvTP/j+PyaC9a4YDN
+ rRSsLCGJU8om9Qf3TpB7AtXDI4q1oZ4=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-16-Ig5exDrmN5yxSfweR0SaIQ-1; Tue, 15 Aug 2023 08:08:11 -0400
+X-MC-Unique: Ig5exDrmN5yxSfweR0SaIQ-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2373B3828891;
- Tue, 15 Aug 2023 12:08:08 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 633EA8DC665;
+ Tue, 15 Aug 2023 12:08:10 +0000 (UTC)
 Received: from localhost (unknown [10.39.193.40])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 98C3B492C13;
- Tue, 15 Aug 2023 12:08:07 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id D00B8C15BAD;
+ Tue, 15 Aug 2023 12:08:09 +0000 (UTC)
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Hanna Reitz <hreitz@redhat.com>, <qemu-block@nongnu.org>,
@@ -48,15 +49,15 @@ Cc: Hanna Reitz <hreitz@redhat.com>, <qemu-block@nongnu.org>,
  Stefano Garzarella <sgarzare@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>,
  Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PATCH 0/2] virtio-blk: use blk_io_plug_call() instead of
- notification BH
-Date: Tue, 15 Aug 2023 08:08:03 -0400
-Message-ID: <20230815120805.3235166-1-stefanha@redhat.com>
-Content-Type: text/plain; charset="utf-8"
+Subject: [PATCH 1/2] virtio: use blk_io_plug_call() in virtio_irqfd_notify()
+Date: Tue, 15 Aug 2023 08:08:04 -0400
+Message-ID: <20230815120805.3235166-2-stefanha@redhat.com>
+In-Reply-To: <20230815120805.3235166-1-stefanha@redhat.com>
+References: <20230815120805.3235166-1-stefanha@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -80,26 +81,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Replace the seldom-used virtio-blk notification BH mechanism with
-blk_io_plug(). This is part of an effort to enable the multi-queue block layer
-in virtio-blk. The notification BH was not multi-queue friendly.
+virtio-blk and virtio-scsi invoke virtio_irqfd_notify() to send Used
+Buffer Notifications from an IOThread. This involves an eventfd
+write(2) syscall. Calling this repeatedly when completing multiple I/O
+requests in a row is wasteful.
 
-The blk_io_plug() mechanism improves fio rw=randread bs=4k iodepth=64 numjobs=8
-IOPS by ~9% with a single IOThread and 8 vCPUs (this is not even a multi-queue
-block layer configuration) compared to no completion batching. iodepth=1
-decreases by ~1% but this could be noise. Benchmark details are available here:
+Use the blk_io_plug_call() API to batch together virtio_irqfd_notify()
+calls made during Linux AIO (aio=native) or io_uring (aio=io_uring)
+completion processing. Do not modify the thread pool (aio=threads) to
+avoid introducing a dependency from util/ onto the block layer.
+
+Behavior is unchanged for emulated devices that do not use blk_io_plug()
+since blk_io_plug_call() immediately invokes the callback when called
+outside a blk_io_plug()/blk_io_unplug() region.
+
+fio rw=randread bs=4k iodepth=64 numjobs=8 IOPS increases by ~9% with a
+single IOThread and 8 vCPUs. iodepth=1 decreases by ~1% but this could
+be noise. Detailed performance data and configuration specifics are
+available here:
 https://gitlab.com/stefanha/virt-playbooks/-/tree/blk_io_plug-irqfd
 
-Stefan Hajnoczi (2):
-  virtio: use blk_io_plug_call() in virtio_irqfd_notify()
-  virtio-blk: remove batch notification BH
+This duplicates the BH that virtio-blk uses for batching. The next
+commit will remove it.
 
- block/io_uring.c                |  6 +++++
- block/linux-aio.c               |  4 +++
- hw/block/dataplane/virtio-blk.c | 48 +--------------------------------
- hw/virtio/virtio.c              | 10 ++++++-
- 4 files changed, 20 insertions(+), 48 deletions(-)
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+---
+ block/io_uring.c   |  6 ++++++
+ block/linux-aio.c  |  4 ++++
+ hw/virtio/virtio.c | 10 +++++++++-
+ 3 files changed, 19 insertions(+), 1 deletion(-)
 
+diff --git a/block/io_uring.c b/block/io_uring.c
+index 69d9820928..749cf83934 100644
+--- a/block/io_uring.c
++++ b/block/io_uring.c
+@@ -124,6 +124,9 @@ static void luring_process_completions(LuringState *s)
+ {
+     struct io_uring_cqe *cqes;
+     int total_bytes;
++
++    blk_io_plug();
++
+     /*
+      * Request completion callbacks can run the nested event loop.
+      * Schedule ourselves so the nested event loop will "see" remaining
+@@ -216,7 +219,10 @@ end:
+             aio_co_wake(luringcb->co);
+         }
+     }
++
+     qemu_bh_cancel(s->completion_bh);
++
++    blk_io_unplug();
+ }
+ 
+ static int ioq_submit(LuringState *s)
+diff --git a/block/linux-aio.c b/block/linux-aio.c
+index 561c71a9ae..cef3d6b1c7 100644
+--- a/block/linux-aio.c
++++ b/block/linux-aio.c
+@@ -204,6 +204,8 @@ static void qemu_laio_process_completions(LinuxAioState *s)
+ {
+     struct io_event *events;
+ 
++    blk_io_plug();
++
+     /* Reschedule so nested event loops see currently pending completions */
+     qemu_bh_schedule(s->completion_bh);
+ 
+@@ -230,6 +232,8 @@ static void qemu_laio_process_completions(LinuxAioState *s)
+      * own `for` loop.  If we are the last all counters droped to zero. */
+     s->event_max = 0;
+     s->event_idx = 0;
++
++    blk_io_unplug();
+ }
+ 
+ static void qemu_laio_process_completions_and_submit(LinuxAioState *s)
+diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
+index 309038fd46..a691e8526b 100644
+--- a/hw/virtio/virtio.c
++++ b/hw/virtio/virtio.c
+@@ -28,6 +28,7 @@
+ #include "hw/virtio/virtio-bus.h"
+ #include "hw/qdev-properties.h"
+ #include "hw/virtio/virtio-access.h"
++#include "sysemu/block-backend.h"
+ #include "sysemu/dma.h"
+ #include "sysemu/runstate.h"
+ #include "virtio-qmp.h"
+@@ -2426,6 +2427,13 @@ static bool virtio_should_notify(VirtIODevice *vdev, VirtQueue *vq)
+     }
+ }
+ 
++/* Batch irqs while inside a blk_io_plug()/blk_io_unplug() section */
++static void virtio_notify_irqfd_unplug_fn(void *opaque)
++{
++    EventNotifier *notifier = opaque;
++    event_notifier_set(notifier);
++}
++
+ void virtio_notify_irqfd(VirtIODevice *vdev, VirtQueue *vq)
+ {
+     WITH_RCU_READ_LOCK_GUARD() {
+@@ -2452,7 +2460,7 @@ void virtio_notify_irqfd(VirtIODevice *vdev, VirtQueue *vq)
+      * to an atomic operation.
+      */
+     virtio_set_isr(vq->vdev, 0x1);
+-    event_notifier_set(&vq->guest_notifier);
++    blk_io_plug_call(virtio_notify_irqfd_unplug_fn, &vq->guest_notifier);
+ }
+ 
+ static void virtio_irq(VirtQueue *vq)
 -- 
 2.41.0
 
