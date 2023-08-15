@@ -2,67 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A26B77D08A
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Aug 2023 19:05:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B39BB77D0F7
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Aug 2023 19:27:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qVxSL-0000pd-Aa; Tue, 15 Aug 2023 13:03:45 -0400
+	id 1qVxne-0001PU-9P; Tue, 15 Aug 2023 13:25:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qVxSK-0000pS-A2
- for qemu-devel@nongnu.org; Tue, 15 Aug 2023 13:03:44 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qVxSH-0001kS-PT
- for qemu-devel@nongnu.org; Tue, 15 Aug 2023 13:03:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692119020;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Yce5+i7/MT8Wei0BFHYXQsfDpcEavazc8SzXGT63R+I=;
- b=V4iIGe9Q7ZbLXgfS3B3tS/BNgYgjWyB/cbE9glpK/nEHwe5Hp+r88IQCGVBj3xbo876lHO
- w0TmNHWg9XdtroGIz5oPhh10bkCkeQxrvNz7Tff6w1JmGD0ghVxPP7OAZttcGf6yct+H68
- KM85xRd0YoC2nB0ozpNiToQDkdi0mos=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-413-zesKoyOZNnW3tB6HIppD6Q-1; Tue, 15 Aug 2023 13:03:37 -0400
-X-MC-Unique: zesKoyOZNnW3tB6HIppD6Q-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B3881185A78F;
- Tue, 15 Aug 2023 17:03:33 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.16.62])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 3F021C15BAD;
- Tue, 15 Aug 2023 17:03:33 +0000 (UTC)
-Date: Tue, 15 Aug 2023 12:03:31 -0500
-From: Eric Blake <eblake@redhat.com>
-To: Michael Tokarev <mjt@tls.msk.ru>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH RFC 4/7] os-posix.c, softmmu/vl.c: move
- os_parse_cmd_args() into qemu_init()
-Message-ID: <4utathdsebnxgsbyyxtxy3fhsjfdkna5kvrndh53mwhbq4joz3@fxvwgltozwhw>
-References: <cover.1691843673.git.mjt@tls.msk.ru>
- <ed55f033aceaccebc387bc5d1ed98a989b30ca4a.1691843673.git.mjt@tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qVxna-0001Nr-2f
+ for qemu-devel@nongnu.org; Tue, 15 Aug 2023 13:25:43 -0400
+Received: from mail-ot1-x331.google.com ([2607:f8b0:4864:20::331])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qVxnX-0000fV-TL
+ for qemu-devel@nongnu.org; Tue, 15 Aug 2023 13:25:41 -0400
+Received: by mail-ot1-x331.google.com with SMTP id
+ 46e09a7af769-6b9cf1997c4so4740451a34.3
+ for <qemu-devel@nongnu.org>; Tue, 15 Aug 2023 10:25:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1692120339; x=1692725139;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=H+ab2tKRytgAcGbCViLFMFQmDKryN5jQqnJc6OzJ8RQ=;
+ b=HNecEvZPdAlbmSGcYcXum3KQ7dLTf3iJ3M3N9AKVEFNqe6t1u1oAFTOJsWR0mwwmiz
+ V81z+6HCitkK34evzMC2VRM4Cznqe0vr3vfMuZNhHm9SH63OGkuDdvSMhPdwmMW/mFGI
+ Ic0OBkEF5JPNSp5PAyqKpSiffq0lLbWlLG308BM038PeGl4nQmK48zdIvqa+YEoWIjuG
+ QXE8UDLVp6XcyKzsPNaXSyxw6MtpL48hs7DiaJ9FxAGFANaxgqp7haab7uHgDcYoEE7G
+ o6i/JoHb18glQFvuioL+mI4qCd7zM9cTD/NnJrAlNyfNUBdXvFz/FwxH8l5lgIXVE/tw
+ BTXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1692120339; x=1692725139;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=H+ab2tKRytgAcGbCViLFMFQmDKryN5jQqnJc6OzJ8RQ=;
+ b=UM+BWyvMKF2zaLOFLvFkzcNFgKLSqMc19yZD5g8vCyjl6/AoE5/KjVKT/qgT5Kyt1D
+ XZxoQnA5kdqgowVX78G19U9DHrNuDOPoUYMI87FqTkJ/xVVnydA6/T1yd6UbMo4o0czQ
+ UVzzgudvaR/ta8P2Nk9606eeArWaBSDrs4U6od5kh9wtrB+6KWFaVjdCjy5/e5+vgyRH
+ mdh8X8XQMikoMlvJQzTkBiwUwYaxJr87zBkNEYSQCZIfNKji3wkFXiyKwq3E/B7Scckd
+ NFgCQLUs7WbxDTk6iRhYBGSiZwZsW6p3/Q2vxn8KfSgmsmMk3TO39zvyQNV56wef+tX0
+ a0sQ==
+X-Gm-Message-State: AOJu0YytsPjqlS/MgYMNggwrX0UOGlYNBnUjgWBq76qPDAkUCTqnUd2w
+ G7i6SYjcBLdB5FGio0s18MG2YAFjBAIcr8IWdz0=
+X-Google-Smtp-Source: AGHT+IFrOAbhIT+BXBgCMxkgc1AttpRwbQ3P2OSM4bzpphWu1PPfS9TbGuFuScATB07/QcZQky6zwQ==
+X-Received: by 2002:a05:6830:14c6:b0:6ba:a084:6a1b with SMTP id
+ t6-20020a05683014c600b006baa0846a1bmr11434814otq.10.1692120338798; 
+ Tue, 15 Aug 2023 10:25:38 -0700 (PDT)
+Received: from [192.168.68.108] (189-69-160-189.dial-up.telesp.net.br.
+ [189.69.160.189]) by smtp.gmail.com with ESMTPSA id
+ v11-20020a05683018cb00b006b75242d6c3sm5350945ote.38.2023.08.15.10.25.35
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 15 Aug 2023 10:25:38 -0700 (PDT)
+Message-ID: <434598e2-51bf-75d5-c8e4-1bbf704ba52b@ventanamicro.com>
+Date: Tue, 15 Aug 2023 14:25:33 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ed55f033aceaccebc387bc5d1ed98a989b30ca4a.1691843673.git.mjt@tls.msk.ru>
-User-Agent: NeoMutt/20230517
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.04,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v6 04/12] target/riscv/cpu.c: del
+ DEFINE_PROP_END_OF_LIST() from riscv_cpu_extensions
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: Alistair Francis <alistair23@gmail.com>, qemu-devel@nongnu.org,
+ qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com
+References: <20230727220927.62950-1-dbarboza@ventanamicro.com>
+ <20230727220927.62950-5-dbarboza@ventanamicro.com>
+ <CAKmqyKMkWbg5iFOOqgiaT_J6+FCUr9gpQS9HV90kZeGwPeioPg@mail.gmail.com>
+ <0013e3ed-75ba-1806-45d5-6ca7c00ee917@ventanamicro.com>
+ <CAFEAcA8NKafY0pdHEmJNDavSNw9P=+sO1zGaSbviL1v5oJ2Trw@mail.gmail.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <CAFEAcA8NKafY0pdHEmJNDavSNw9P=+sO1zGaSbviL1v5oJ2Trw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::331;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-ot1-x331.google.com
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.045,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,44 +101,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, Aug 12, 2023 at 03:47:58PM +0300, Michael Tokarev wrote:
-> This will stop linking softmmu-specific os_parse_cmd_args() into every
-> qemu executable which happens to use other functions from os-posix.c,
-> such as os_set_line_buffering() or os_setup_signal_handling().
+
+
+On 8/15/23 10:15, Peter Maydell wrote:
+> On Tue, 15 Aug 2023 at 13:44, Daniel Henrique Barboza
+> <dbarboza@ventanamicro.com> wrote:
+>>
+>>
+>>
+>> On 8/10/23 14:49, Alistair Francis wrote:
+>>> On Thu, Jul 27, 2023 at 6:20 PM Daniel Henrique Barboza
+>>> <dbarboza@ventanamicro.com> wrote:
+>>>>
+>>>> This last blank element is used by the 'for' loop to check if a property
+>>>> has a valid name.
+>>>>
+>>>> Remove it and use ARRAY_SIZE() instead like riscv_cpu_options is already
+>>>> using. All future arrays will also do the same and we'll able to
+>>>> encapsulate more repetitions in macros later on.
+>>>
+>>> Is this the right approach? This seem different to the rest of QEMU
+>>
+>> I am not sure if we have a 'right approach' in this case or not. I see both
+>> being used in QEMU.
 > 
-> Also, since there's no win32-specific options, *all* option parsing is
-> now done in softmmu/vl.c:qemu_init(), which is easier to read without
-> extra indirection, - all options are in the single function now.
+> The major use of the DEFINE_PROP_* macros is for creating
+> a property list to pass to device_class_set_props(). Those
+> lists must be terminated with the DEFINE_PROP_END_OF_LIST()
+> marker (because the function takes a pointer and can't tell
+> the size of the list with ARRAY_SIZE()). For cases like this
+> where you're writing code locally to manually iterate through
+> the array and never pass it to any other code in QEMU, both
+> approaches work. But it does seem to me a little confusing
+> to have a non-terminated property array.
+
+Thanks for the explanation. Having a non-terminated property array is another
+reason to revisit this patch.
+
+
+Thanks,
+
+Daniel
+
 > 
-> This effectively reverts commit 59a5264b99434.
-> 
-> Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-> ---
->  include/sysemu/os-posix.h |  1 -
->  include/sysemu/os-win32.h |  1 -
->  os-posix.c                | 79 ---------------------------------------
->  softmmu/vl.c              | 76 +++++++++++++++++++++++++++++++++++--
->  4 files changed, 73 insertions(+), 84 deletions(-)
-
-> +++ b/os-posix.c
-
-> -    case QEMU_OPTION_chroot:
-> -        warn_report("option is deprecated, use '-run-with chroot=...' instead");
-> -        os_set_chroot(optarg);
-> -        break;
-
-How long has this been deprecated (to make sure code motion still
-makes sense, rather than deletion)...
-
-/me reads docs/about/deprecated.rst
-
-Ah, just recently, in 8.1.  Okay.
-
-Reviewed-by: Eric Blake <eblake@redhat.com>
-
--- 
-Eric Blake, Principal Software Engineer
-Red Hat, Inc.
-Virtualization:  qemu.org | libguestfs.org
-
+> thanks
+> -- PMM
 
