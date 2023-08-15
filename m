@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42BA577CE83
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Aug 2023 16:53:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6656277CE84
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Aug 2023 16:54:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qVvOX-0005oP-3R; Tue, 15 Aug 2023 10:51:41 -0400
+	id 1qVvOh-0005sa-El; Tue, 15 Aug 2023 10:51:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qVvOV-0005nL-0n
- for qemu-devel@nongnu.org; Tue, 15 Aug 2023 10:51:39 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ id 1qVvOZ-0005qm-BL
+ for qemu-devel@nongnu.org; Tue, 15 Aug 2023 10:51:43 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qVvON-0006GT-0O
- for qemu-devel@nongnu.org; Tue, 15 Aug 2023 10:51:38 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-3178dd771ceso4894230f8f.2
+ id 1qVvON-0006Gd-Fd
+ for qemu-devel@nongnu.org; Tue, 15 Aug 2023 10:51:43 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-3fe426b86a8so51358185e9.3
  for <qemu-devel@nongnu.org>; Tue, 15 Aug 2023 07:51:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692111089; x=1692715889;
+ d=linaro.org; s=google; t=1692111090; x=1692715890;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=HWAw3yoUeeJNMPe6CX9phpQMFB1kiw2oQRZp+zWhjgY=;
- b=iw92sg5Q396RUvPqFZbgqMBDmpmd0ZPXVLVFJjP2+IFOloitGJdMWgc0ZcDX1eMf8p
- VL5SPFSm68IIksdJ3O5ZuaJl+GBSYLDGJ5tytMXUCvNPQUPq3fWhIRgSCG7SuJB9h0CK
- 3HR+bhxwA8gILmhh43ViIRTXCQizNZCRYI3Bk484ceZhV2r+NVCRERn5dRJ4DAoSNxnn
- NE0XN9UuoLew2CjKXjoHsV5RcCTpmA0rxJ54n2Z0TYqGLOKM9sny3MXIbWA4y6SKhrCl
- ZnU7y6xU/s5axNEsa/YhMN+xRMmc/vNah5EoUJ3AHSpsV8ohhesOxWZCbLXru/yECJSn
- V0RA==
+ bh=R4o5KcbHxCMMudk1ebQJTS76ot0MvKIvT2lcoqReshg=;
+ b=mYFJXEShs/bXqyTd23fF/z9+WYUilATbKZ1UJQ7i0wQERf8EpTeh+d8NAbj14hMvyH
+ n9UbxASPv0JFeY5JGN/E7KudCZR9+15xpf2yVOZM8mSgYF03wqW1KXXUzK1v/FKSgNMq
+ mjPt1ZpyEYxEVtgUzspHN3p/Zba+RITUpLYWEHw6fmZbGhmDSvkal9j5her3In5ap1OJ
+ J+2C+hoFIUgnsQ6T2K2Mj18UrIRZzWUnA/X+gFXtYte4IgaEq0pKy5YSbNeEXGlVxEFC
+ u+lggP+asER1tF0GWlRGtkDgQWXfx982lxwP2m4tr9t3GXMdt7LiT8IjM/CquNdIp96r
+ evDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692111089; x=1692715889;
+ d=1e100.net; s=20221208; t=1692111090; x=1692715890;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=HWAw3yoUeeJNMPe6CX9phpQMFB1kiw2oQRZp+zWhjgY=;
- b=Q3Sz2g8159QcxYFtc08eDE+vM6UwrSYjq5WT2/6GPcwwNEIr9v8vV8KBuhsc27ZYxv
- f9581r0LM3c30CpRaMkEOZkNlwxMVIvpvmdwtj+vdekIW17J0U3fyHyoPM+fu/5a15ro
- yfnxAzvi4OSlg1YdRHXKqfi/iLIetuhnoi8wnMqGOXfhV8e+lDTALldVARNnT7jCdvPp
- dLRbtq+wETTcUn68hM7G6EZkTW2zdtdVx5y/MQX9ZRbFdiyEMe9CV3sh+FCC1jEZCYxT
- sQ4m0n0UtWEiJ+tGnMEjajsEvIBzkcl/yBJ6tcaO0ieaa6FaKNDFh/kCKZR+NMmhgA1k
- LUbw==
-X-Gm-Message-State: AOJu0YzH19Xath9AGwW8ahvmsF2C8pzeypmkrbGyci90Jt4E2R6+nC3y
- v0RMeJGSKM2yN+fLmSBEej2W0g==
-X-Google-Smtp-Source: AGHT+IHA0ZJOlj1YMbhCxp5MymnqGUtzUKSu0jBNDBe41Zzfc3g8kofVC+lQU5RMPW8ysm0R+fpqPQ==
-X-Received: by 2002:a5d:44cf:0:b0:317:731c:4d80 with SMTP id
- z15-20020a5d44cf000000b00317731c4d80mr8836991wrr.24.1692111089450; 
+ bh=R4o5KcbHxCMMudk1ebQJTS76ot0MvKIvT2lcoqReshg=;
+ b=L42AFEPRJ+gN0UgkxyU5nfgC4P9OxrYVkekHwHvYUzzgGjmV7vXQWF3AcznhG6GwRo
+ 4HJ8vKyg2jfdNknCw7tX1JK4Js6rMMKzfFw+2DfU8yG5gSqMsvk9P9qUIMn6YVn/zhyo
+ GAnw82tysaFQJUkkcIE8meSRX6HT2rUBfF2KpeXZ7zFHcaEd2CHfdPWVCx/GNKeMZyCO
+ 74F/bNkphWcAY0ItT11lcKFm7HFLTctb/avOmF/hobXRVoJ1DHcBoIrp7TDPzCSaEOYx
+ OlVqgvR4Pp2kyfKENKIWpvWEJSCTKZkV8cX8Z3UrhxxoUFLdJfwQ0LZXS+EQpu+ActF3
+ erIg==
+X-Gm-Message-State: AOJu0YzDVJzGAVHuLEzKKWyIn0mouk6ZMX7BX58alx69/nmFT6AvA1ln
+ IM+Xzr91xR8EGWncaDf5hJme3g==
+X-Google-Smtp-Source: AGHT+IHumA4KR1eaY97j9MMBvZUgE/WMVjlrvpIkLDLce712vL81OHgTZ1RvByM1ISI1pL47xVc3iQ==
+X-Received: by 2002:a05:600c:292:b0:3fb:ef86:e2e with SMTP id
+ 18-20020a05600c029200b003fbef860e2emr10888035wmk.19.1692111089823; 
  Tue, 15 Aug 2023 07:51:29 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- e4-20020adfef04000000b003196dba130asm11100062wro.106.2023.08.15.07.51.27
+ f9-20020a7bc8c9000000b003fe20533a1esm18241765wml.44.2023.08.15.07.51.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 15 Aug 2023 07:51:28 -0700 (PDT)
 Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 43ABD1FFBF;
+ by zen.linaroharston (Postfix) with ESMTP id 73DB51FFC0;
  Tue, 15 Aug 2023 15:51:27 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -74,17 +74,17 @@ Cc: Beraldo Leal <bleal@redhat.com>,
  Ilya Leoshkevich <iii@linux.ibm.com>, qemu-ppc@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Nicholas Piggin <npiggin@gmail.com>
-Subject: [PATCH 4/9] tests: remove test-gdbstub.py
-Date: Tue, 15 Aug 2023 15:51:21 +0100
-Message-Id: <20230815145126.3444183-5-alex.bennee@linaro.org>
+Subject: [PATCH 5/9] tests/tcg: clean-up gdb confirm/pagination settings
+Date: Tue, 15 Aug 2023 15:51:22 +0100
+Message-Id: <20230815145126.3444183-6-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230815145126.3444183-1-alex.bennee@linaro.org>
 References: <20230815145126.3444183-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,200 +107,169 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This isn't directly called by our CI and because it doesn't run via
-our run-test.py script does things slightly differently. Lets remove
-it as we have plenty of working in-tree tests now for various aspects
-of gdbstub.
+We can do this all in the run-test.py script so remove the extraneous
+bits from the individual tests which got copied from the original
+non-CI gdb tests.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- tests/guest-debug/test-gdbstub.py | 177 ------------------------------
- 1 file changed, 177 deletions(-)
- delete mode 100644 tests/guest-debug/test-gdbstub.py
+ tests/guest-debug/run-test.py                         | 2 ++
+ tests/tcg/aarch64/gdbstub/test-sve-ioctl.py           | 3 ---
+ tests/tcg/aarch64/gdbstub/test-sve.py                 | 3 ---
+ tests/tcg/multiarch/gdbstub/memory.py                 | 3 ---
+ tests/tcg/multiarch/gdbstub/sha1.py                   | 4 ----
+ tests/tcg/multiarch/gdbstub/test-proc-mappings.py     | 4 ----
+ tests/tcg/multiarch/gdbstub/test-qxfer-auxv-read.py   | 4 ----
+ tests/tcg/multiarch/gdbstub/test-thread-breakpoint.py | 4 ----
+ tests/tcg/s390x/gdbstub/test-signals-s390x.py         | 4 ----
+ tests/tcg/s390x/gdbstub/test-svc.py                   | 4 ----
+ 10 files changed, 2 insertions(+), 33 deletions(-)
 
-diff --git a/tests/guest-debug/test-gdbstub.py b/tests/guest-debug/test-gdbstub.py
-deleted file mode 100644
-index 98a5df4d42..0000000000
---- a/tests/guest-debug/test-gdbstub.py
-+++ /dev/null
-@@ -1,177 +0,0 @@
--#
--# This script needs to be run on startup
--# qemu -kernel ${KERNEL} -s -S
--# and then:
--# gdb ${KERNEL}.vmlinux -x ${QEMU_SRC}/tests/guest-debug/test-gdbstub.py
+diff --git a/tests/guest-debug/run-test.py b/tests/guest-debug/run-test.py
+index a032e01f79..b13b27d4b1 100755
+--- a/tests/guest-debug/run-test.py
++++ b/tests/guest-debug/run-test.py
+@@ -83,6 +83,8 @@ def log(output, msg):
+         gdb_cmd += " %s" % (args.gdb_args)
+     # run quietly and ignore .gdbinit
+     gdb_cmd += " -q -n -batch"
++    # disable pagination
++    gdb_cmd += " -ex 'set pagination off'"
+     # disable prompts in case of crash
+     gdb_cmd += " -ex 'set confirm off'"
+     # connect to remote
+diff --git a/tests/tcg/aarch64/gdbstub/test-sve-ioctl.py b/tests/tcg/aarch64/gdbstub/test-sve-ioctl.py
+index b9ef169c1a..ee8d467e59 100644
+--- a/tests/tcg/aarch64/gdbstub/test-sve-ioctl.py
++++ b/tests/tcg/aarch64/gdbstub/test-sve-ioctl.py
+@@ -76,9 +76,6 @@ def run_test():
+     exit(0)
+ 
+ try:
+-    # These are not very useful in scripts
+-    gdb.execute("set pagination off")
 -
--import gdb
+     # Run the actual tests
+     run_test()
+ except:
+diff --git a/tests/tcg/aarch64/gdbstub/test-sve.py b/tests/tcg/aarch64/gdbstub/test-sve.py
+index ef57c7412c..afd8ece98d 100644
+--- a/tests/tcg/aarch64/gdbstub/test-sve.py
++++ b/tests/tcg/aarch64/gdbstub/test-sve.py
+@@ -66,9 +66,6 @@ def run_test():
+     exit(0)
+ 
+ try:
+-    # These are not very useful in scripts
+-    gdb.execute("set pagination off")
 -
--failcount = 0
+     # Run the actual tests
+     run_test()
+ except:
+diff --git a/tests/tcg/multiarch/gdbstub/memory.py b/tests/tcg/multiarch/gdbstub/memory.py
+index 67864ad902..dd25e72281 100644
+--- a/tests/tcg/multiarch/gdbstub/memory.py
++++ b/tests/tcg/multiarch/gdbstub/memory.py
+@@ -115,9 +115,6 @@ def run_test():
+     exit(0)
+ 
+ try:
+-    # These are not very useful in scripts
+-    gdb.execute("set pagination off")
 -
--
--def report(cond, msg):
--    "Report success/fail of test"
--    if cond:
--        print ("PASS: %s" % (msg))
--    else:
--        print ("FAIL: %s" % (msg))
--        global failcount
--        failcount += 1
--
--
--def check_step():
--    "Step an instruction, check it moved."
--    start_pc = gdb.parse_and_eval('$pc')
--    gdb.execute("si")
--    end_pc = gdb.parse_and_eval('$pc')
--
--    return not (start_pc == end_pc)
--
--
--def check_break(sym_name):
--    "Setup breakpoint, continue and check we stopped."
--    sym, ok = gdb.lookup_symbol(sym_name)
--    bp = gdb.Breakpoint(sym_name)
--
--    gdb.execute("c")
--
--    # hopefully we came back
--    end_pc = gdb.parse_and_eval('$pc')
--    print ("%s == %s %d" % (end_pc, sym.value(), bp.hit_count))
--    bp.delete()
--
--    # can we test we hit bp?
--    return end_pc == sym.value()
--
--
--# We need to do hbreak manually as the python interface doesn't export it
--def check_hbreak(sym_name):
--    "Setup hardware breakpoint, continue and check we stopped."
--    sym, ok = gdb.lookup_symbol(sym_name)
--    gdb.execute("hbreak %s" % (sym_name))
--    gdb.execute("c")
--
--    # hopefully we came back
--    end_pc = gdb.parse_and_eval('$pc')
--    print ("%s == %s" % (end_pc, sym.value()))
--
--    if end_pc == sym.value():
--        gdb.execute("d 1")
--        return True
--    else:
--        return False
--
--
--class WatchPoint(gdb.Breakpoint):
--
--    def get_wpstr(self, sym_name):
--        "Setup sym and wp_str for given symbol."
--        self.sym, ok = gdb.lookup_symbol(sym_name)
--        wp_addr = gdb.parse_and_eval(sym_name).address
--        self.wp_str = '*(%(type)s)(&%(address)s)' % dict(
--            type = wp_addr.type, address = sym_name)
--
--        return(self.wp_str)
--
--    def __init__(self, sym_name, type):
--        wp_str = self.get_wpstr(sym_name)
--        super(WatchPoint, self).__init__(wp_str, gdb.BP_WATCHPOINT, type)
--
--    def stop(self):
--        end_pc = gdb.parse_and_eval('$pc')
--        print ("HIT WP @ %s" % (end_pc))
--        return True
--
--
--def do_one_watch(sym, wtype, text):
--
--    wp = WatchPoint(sym, wtype)
--    gdb.execute("c")
--    report_str = "%s for %s (%s)" % (text, sym, wp.sym.value())
--
--    if wp.hit_count > 0:
--        report(True, report_str)
--        wp.delete()
--    else:
--        report(False, report_str)
--
--
--def check_watches(sym_name):
--    "Watch a symbol for any access."
--
--    # Should hit for any read
--    do_one_watch(sym_name, gdb.WP_ACCESS, "awatch")
--
--    # Again should hit for reads
--    do_one_watch(sym_name, gdb.WP_READ, "rwatch")
--
--    # Finally when it is written
--    do_one_watch(sym_name, gdb.WP_WRITE, "watch")
--
--
--class CatchBreakpoint(gdb.Breakpoint):
--    def __init__(self, sym_name):
--        super(CatchBreakpoint, self).__init__(sym_name)
--        self.sym, ok = gdb.lookup_symbol(sym_name)
--
--    def stop(self):
--        end_pc = gdb.parse_and_eval('$pc')
--        print ("CB: %s == %s" % (end_pc, self.sym.value()))
--        if end_pc == self.sym.value():
--            report(False, "Hit final catchpoint")
--
--
--def run_test():
--    "Run through the tests one by one"
--
--    print ("Checking we can step the first few instructions")
--    step_ok = 0
--    for i in range(3):
--        if check_step():
--            step_ok += 1
--
--    report(step_ok == 3, "single step in boot code")
--
--    print ("Checking HW breakpoint works")
--    break_ok = check_hbreak("kernel_init")
--    report(break_ok, "hbreak @ kernel_init")
--
--    # Can't set this up until we are in the kernel proper
--    # if we make it to run_init_process we've over-run and
--    # one of the tests failed
--    print ("Setup catch-all for run_init_process")
--    cbp = CatchBreakpoint("run_init_process")
--    cpb2 = CatchBreakpoint("try_to_run_init_process")
--
--    print ("Checking Normal breakpoint works")
--    break_ok = check_break("wait_for_completion")
--    report(break_ok, "break @ wait_for_completion")
--
--    print ("Checking watchpoint works")
--    check_watches("system_state")
--
--#
--# This runs as the script it sourced (via -x)
--#
--
--try:
--    print ("Connecting to remote")
--    gdb.execute("target remote localhost:1234")
--
+     # Run the actual tests
+     run_test()
+ except (gdb.error):
+diff --git a/tests/tcg/multiarch/gdbstub/sha1.py b/tests/tcg/multiarch/gdbstub/sha1.py
+index 423b720e6d..416728415f 100644
+--- a/tests/tcg/multiarch/gdbstub/sha1.py
++++ b/tests/tcg/multiarch/gdbstub/sha1.py
+@@ -73,10 +73,6 @@ def run_test():
+     exit(0)
+ 
+ try:
 -    # These are not very useful in scripts
 -    gdb.execute("set pagination off")
 -    gdb.execute("set confirm off")
 -
--    # Run the actual tests
--    run_test()
+     # Run the actual tests
+     run_test()
+ except (gdb.error):
+diff --git a/tests/tcg/multiarch/gdbstub/test-proc-mappings.py b/tests/tcg/multiarch/gdbstub/test-proc-mappings.py
+index 5e3e5a2fb7..04ec61d219 100644
+--- a/tests/tcg/multiarch/gdbstub/test-proc-mappings.py
++++ b/tests/tcg/multiarch/gdbstub/test-proc-mappings.py
+@@ -51,10 +51,6 @@ def main():
+         exit(0)
+ 
+     try:
+-        # These are not very useful in scripts
+-        gdb.execute("set pagination off")
+-        gdb.execute("set confirm off")
 -
--except:
--    print ("GDB Exception: %s" % (sys.exc_info()[0]))
--    failcount += 1
--    import code
--    code.InteractiveConsole(locals=globals()).interact()
--    raise
+         # Run the actual tests
+         run_test()
+     except gdb.error:
+diff --git a/tests/tcg/multiarch/gdbstub/test-qxfer-auxv-read.py b/tests/tcg/multiarch/gdbstub/test-qxfer-auxv-read.py
+index d91e8fdf19..926fa962b7 100644
+--- a/tests/tcg/multiarch/gdbstub/test-qxfer-auxv-read.py
++++ b/tests/tcg/multiarch/gdbstub/test-qxfer-auxv-read.py
+@@ -42,10 +42,6 @@ def run_test():
+     exit(0)
+ 
+ try:
+-    # These are not very useful in scripts
+-    gdb.execute("set pagination off")
+-    gdb.execute("set confirm off")
 -
--# Finally kill the inferior and exit gdb with a count of failures
--gdb.execute("kill")
--exit(failcount)
+     # Run the actual tests
+     run_test()
+ except (gdb.error):
+diff --git a/tests/tcg/multiarch/gdbstub/test-thread-breakpoint.py b/tests/tcg/multiarch/gdbstub/test-thread-breakpoint.py
+index 798d508bc7..e57d2a8db8 100644
+--- a/tests/tcg/multiarch/gdbstub/test-thread-breakpoint.py
++++ b/tests/tcg/multiarch/gdbstub/test-thread-breakpoint.py
+@@ -45,10 +45,6 @@ def run_test():
+     exit(0)
+ 
+ try:
+-    # These are not very useful in scripts
+-    gdb.execute("set pagination off")
+-    gdb.execute("set confirm off")
+-
+     # Run the actual tests
+     run_test()
+ except (gdb.error):
+diff --git a/tests/tcg/s390x/gdbstub/test-signals-s390x.py b/tests/tcg/s390x/gdbstub/test-signals-s390x.py
+index 80a284b475..ca2bbc0b03 100644
+--- a/tests/tcg/s390x/gdbstub/test-signals-s390x.py
++++ b/tests/tcg/s390x/gdbstub/test-signals-s390x.py
+@@ -61,10 +61,6 @@ def run_test():
+     exit(0)
+ 
+ try:
+-    # These are not very useful in scripts
+-    gdb.execute("set pagination off")
+-    gdb.execute("set confirm off")
+-
+     # Run the actual tests
+     run_test()
+ except (gdb.error):
+diff --git a/tests/tcg/s390x/gdbstub/test-svc.py b/tests/tcg/s390x/gdbstub/test-svc.py
+index 18fad3f163..804705fede 100644
+--- a/tests/tcg/s390x/gdbstub/test-svc.py
++++ b/tests/tcg/s390x/gdbstub/test-svc.py
+@@ -49,10 +49,6 @@ def main():
+         exit(0)
+ 
+     try:
+-        # These are not very useful in scripts
+-        gdb.execute("set pagination off")
+-        gdb.execute("set confirm off")
+-
+         # Run the actual tests
+         run_test()
+     except gdb.error:
 -- 
 2.39.2
 
