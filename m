@@ -2,85 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D112677CFE1
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Aug 2023 18:08:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB40977CFE8
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Aug 2023 18:09:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qVwaE-0000KF-JW; Tue, 15 Aug 2023 12:07:50 -0400
+	id 1qVwb4-00015B-94; Tue, 15 Aug 2023 12:08:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qVwaC-0000Jv-Hf
- for qemu-devel@nongnu.org; Tue, 15 Aug 2023 12:07:48 -0400
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qVwaA-0005mk-S8
- for qemu-devel@nongnu.org; Tue, 15 Aug 2023 12:07:48 -0400
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-68879c4cadeso58566b3a.2
- for <qemu-devel@nongnu.org>; Tue, 15 Aug 2023 09:07:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692115665; x=1692720465;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=gzOztbuw2e+WqX5I3bUMqVSJY51MV1TiKq6hzOG1XxI=;
- b=rxVk1qBOsM9sfGL/bkfkyNKacDfSUPBygqQEEyb2+hFmya9H8JpXrescUbKkhjVKZo
- ySHvUl6SPAMRCsCRhwd4GW9JNRQTD6rxa+JL40NXT87+NoXRkjNUl4C1f1H/MJCGJAv5
- pn9W3WnQojvER2sOV7NQb17JFtrcyIR7kdee92CL5kCQTvKIi3zQqQ9LvZ8xGE432PEt
- 4PowQdH76gw87bpDUZByf7IdvvME/eX9XAOvP70aEHknlEERJXiq/dYt0hCiFjLHo/LC
- jw2aFICkdhz/CZQ9aokp7ZA6p43yKGspMmdEwTWyU8ReO5gJqsffS1a3Xix+UlrrVxNO
- WHaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692115665; x=1692720465;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=gzOztbuw2e+WqX5I3bUMqVSJY51MV1TiKq6hzOG1XxI=;
- b=lbJR2QDsXH3OcRP9Jw+B6/iN5IR7UssHusFKQ6Ea3SvOTi9wAjpXtlfoPNWdsRT2XG
- l7j46f9Snf/nIMAoKBZ0ThUb13b/xVErpmU7NyxYyQeP0twGsd2fmoyfFqDHVA/debwV
- eaOmykqMHTuifQ3oaNkBu9SURqEkUElw39AHGv0juJZ7Xoc7kKaljsBaP9HQS3+vBMgw
- DE8+0zt2oOOIlXPAbhZslvk3OLk77NcSrwCTjDGFXS9TseLaxcvHY+oumvsFWYG320Ks
- srsRgW0YaTYNfJhfnbmcwfaJ63UDLQRBxffIvfOTkx6Vl3vBi6zPk/dss3q+v0Tpxel8
- JXLw==
-X-Gm-Message-State: AOJu0YxeIORyFHw3I+QSaNs/sMLtS8Mt76beyQTnPMvZ7T+11UziEa6x
- zfouk8YLNgkmyyLnLFXQH+8hXg==
-X-Google-Smtp-Source: AGHT+IEG7vcp0zvfZHkrObwM0j187xAIXUOdLzvjrNmrx6HEA7YFwi9+X7qcG+0hwRPumJ9ka7IG4A==
-X-Received: by 2002:a05:6a21:7746:b0:134:951c:aca3 with SMTP id
- bc6-20020a056a21774600b00134951caca3mr10262521pzc.22.1692115665054; 
- Tue, 15 Aug 2023 09:07:45 -0700 (PDT)
-Received: from ?IPV6:2602:47:d483:7301:8d06:f27b:d26c:91c1?
- ([2602:47:d483:7301:8d06:f27b:d26c:91c1])
- by smtp.gmail.com with ESMTPSA id
- x28-20020aa793bc000000b00682a9325ffcsm9578601pff.5.2023.08.15.09.07.44
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 15 Aug 2023 09:07:44 -0700 (PDT)
-Message-ID: <bdea1e60-9368-4a56-66f5-26269033b5d9@linaro.org>
-Date: Tue, 15 Aug 2023 09:07:42 -0700
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qVwb2-00014h-1N
+ for qemu-devel@nongnu.org; Tue, 15 Aug 2023 12:08:40 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qVwb0-0005ui-Bf
+ for qemu-devel@nongnu.org; Tue, 15 Aug 2023 12:08:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1692115717;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=meZ6kSxJlOnPPJ8FkrgVdgciStNQ/kXW9K+k/ZdqUbI=;
+ b=dGH4QgGnhDgQ0D+UQX2ek9CXPt5XPS/Kgs7ZXur4sVFzunVpiAKqPW1W1gXP9e93tkdVeK
+ MgCn0YTewScse9/04uA9eAQlfcl+iW43ATjbNSEc00dfRfEWNkHzGVGFeV04+sMtVIvd/n
+ K91Zw3DIFQmgo4dISzxRSsGkQIfGvtc=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-407-wyrk-HLsN_auL6F9QWZ1VQ-1; Tue, 15 Aug 2023 12:08:35 -0400
+X-MC-Unique: wyrk-HLsN_auL6F9QWZ1VQ-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1956F800C78;
+ Tue, 15 Aug 2023 16:08:35 +0000 (UTC)
+Received: from redhat.com (unknown [10.2.16.62])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 5555640D2839;
+ Tue, 15 Aug 2023 16:08:34 +0000 (UTC)
+Date: Tue, 15 Aug 2023 11:08:32 -0500
+From: Eric Blake <eblake@redhat.com>
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: "Denis V. Lunev" <den@openvz.org>, qemu-block@nongnu.org, 
+ qemu-devel@nongnu.org, Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Hanna Reitz <hreitz@redhat.com>, qemu-stable@nongnu.org
+Subject: Re: [PATCH 2/5] qemu-nbd: fix regression with qemu-nbd --fork run
+ over ssh
+Message-ID: <r6o4lwgw33dtib37e5jmr2lqii5ppwcei4xm65ll2oj3jlxhqv@lah4j4ndo6fg>
+References: <20230717145544.194786-1-den@openvz.org>
+ <20230717145544.194786-3-den@openvz.org>
+ <ZNo20bIZCRjypsIN@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [RFC PATCH] tcg/ppc: Enable direct branching tcg_out_goto_tb with
- TCG_REG_TB
-To: Jordan Niethe <jniethe5@gmail.com>, qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, npiggin@gmail.com, bgray@linux.ibm.com
-References: <20230815050117.34731-1-jniethe5@gmail.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230815050117.34731-1-jniethe5@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.045,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZNo20bIZCRjypsIN@redhat.com>
+User-Agent: NeoMutt/20230517
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.04,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,74 +81,137 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/14/23 22:01, Jordan Niethe wrote:
-> Direct branch patching was disabled when using TCG_REG_TB in commit
-> 736a1588c1 ("tcg/ppc: Fix race in goto_tb implementation"). Commit
-> 7502f89c74 ("tcg/ppc: Use prefixed instructions for tcg_out_goto_tb")
-> used the support for pc relative ISAv3.1 instructions to re-enable
-> direct branch patching on POWER10.
+On Mon, Aug 14, 2023 at 04:14:41PM +0200, Kevin Wolf wrote:
+> Am 17.07.2023 um 16:55 hat Denis V. Lunev geschrieben:
+> > Commit e6df58a5578fee7a50bbf36f4a50a2781cff855d
+> >     Author: Hanna Reitz <hreitz@redhat.com>
+> >     Date:   Wed May 8 23:18:18 2019 +0200
+> >     qemu-nbd: Do not close stderr
+> > has introduced an interesting regression. Original behavior of
+> >     ssh somehost qemu-nbd /home/den/tmp/file -f raw --fork
+> > was the following:
+> >  * qemu-nbd was started as a daemon
+> >  * the command execution is done and ssh exited with success
+
+Thinking about this more...
+
+The original problem is that we broke 'ssh -c "qemu-nbd --fork ..."',
+because the daemonized process hung on to the parent's stderr
+indefinitely.
+
+But when we pass -v, we WANT the parent's stderr to hang around, even
+while we still want the parent process to see EOF on the handshake
+socket used to let it know the child process got far enough along in
+its initialization.
+
+Should we be passing 'opt->verbose' instead of '0' to the second
+parameter of qemu_daemon, to tell the child process the scenarios
+where we want output to still be present?  If so, how does the
+following patch look?
+
+diff --git i/qemu-nbd.c w/qemu-nbd.c
+index aaccaa33184..c316a91831d 100644
+--- i/qemu-nbd.c
++++ w/qemu-nbd.c
+@@ -944,9 +944,24 @@ int main(int argc, char **argv)
+
+             close(stderr_fd[0]);
+
+-            ret = qemu_daemon(1, 0);
++            ret = qemu_daemon(1, verbose);
+             saved_errno = errno;    /* dup2 will overwrite error below */
+
++            if (verbose) {
++                /* We want stdin at /dev/null when qemu_daemon didn't do it */
++                stdin = freopen ("/dev/null", "r", stdin);
++                if (stdin == NULL) {
++                    error_report("Failed to redirect stdin: %s",
++                                 strerror(errno));
++                    exit(EXIT_FAILURE);
++                }
++                /* To keep the parent's stderr alive, copy it to stdout */
++                if (dup2(STDOUT_FILENO, STDERR_FILENO) < 0) {
++                    error_report("Failed to redirect stdout: %s",
++                                 strerror(errno));
++                    exit(EXIT_FAILURE);
++                }
++            }
+             /* Temporarily redirect stderr to the parent's pipe...  */
+             if (dup2(stderr_fd[1], STDERR_FILENO) < 0) {
+                 char str[256];
+@@ -1180,6 +1195,10 @@ int main(int argc, char **argv)
+     }
+
+     if (fork_process) {
++        /*
++         * See above. If verbose is false, stdout is /dev/null (thanks
++         * to qemu_daemon); otherwise, stdout is the parent's stderr.
++         */
+         if (dup2(STDOUT_FILENO, STDERR_FILENO) < 0) {
+             error_report("Could not set stderr to /dev/null: %s",
+                          strerror(errno));
+
+
+Note, however, that this still does not pass test 233 as written - the
+error messages show up earlier in the run, rather than disappearing
+altogether.
+
+> > 
+> > The patch has changed this behavior and 'ssh' command now hangs forever.
+> > 
+> > According to the normal specification of the daemon() call, we should
+> > endup with STDERR pointing to /dev/null. That should be done at the
+> > very end of the successful startup sequence when the pipe to the
+> > bootstrap process (used for diagnostics) is no longer needed.
+> > 
+> > This could be achived in the same way as done for 'qemu-nbd -c' case.
+> > That was commit 0eaf453e, also fixing up e6df58a5. STDOUT copying to
+> > STDERR does the trick.
+> > 
+> > This also leads to proper 'ssh' connection closing which fixes my
+> > original problem.
+> > 
+> > Signed-off-by: Denis V. Lunev <den@openvz.org>
+> > CC: Eric Blake <eblake@redhat.com>
+> > CC: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+> > CC: Hanna Reitz <hreitz@redhat.com>
+> > CC: <qemu-stable@nongnu.org>
 > 
-> The issue with direct branch patching with TCG_REG_TB is the lack of
-> synchronization between the new TCG_REG_TB being established and the
-> direct branch being patched in.
+> This broke qemu-iotests 233 (Eric, please make sure to run the full
+> qemu-iotests suite before sending block related pull requests):
+
+My apologies; I keep forgetting that './check -nbd' does not catch all
+the possible tests using NBD.  I've updated my checklists to make sure
+I'm running a more thorough set of iotests before preparing a pull
+request.
+
 > 
-> If each translation block is responsible for establishing its own
-> TCG_REG_TB then there can be no synchronization issue.
+> --- /home/kwolf/source/qemu/tests/qemu-iotests/233.out
+> +++ /home/kwolf/source/qemu/build-clang/scratch/raw-file-233/233.out.bad
+> @@ -99,14 +99,4 @@
+>  qemu-nbd: TLS handshake failed: The TLS connection was non-properly terminated.
+> 
+>  == final server log ==
+> -qemu-nbd: option negotiation failed: Failed to read opts magic: Cannot read from TLS channel: Software caused connection abort
+> -qemu-nbd: option negotiation failed: Failed to read opts magic: Cannot read from TLS channel: Software caused connection abort
+> -qemu-nbd: option negotiation failed: Verify failed: No certificate was found.
+> -qemu-nbd: option negotiation failed: Verify failed: No certificate was found.
+> -qemu-nbd: option negotiation failed: TLS x509 authz check for DISTINGUISHED-NAME is denied
+> -qemu-nbd: option negotiation failed: TLS x509 authz check for DISTINGUISHED-NAME is denied
+> -qemu-nbd: option negotiation failed: Failed to read opts magic: Cannot read from TLS channel: Software caused connection abort
+> -qemu-nbd: option negotiation failed: Failed to read opts magic: Cannot read from TLS channel: Software caused connection abort
+> -qemu-nbd: option negotiation failed: TLS handshake failed: An illegal parameter has been received.
+> -qemu-nbd: option negotiation failed: TLS handshake failed: An illegal parameter has been received.
+>  *** done
+> 
+> Do we really want to lose these error messages? This looks wrong to me.
+> 
+> Kevin
+> 
 
-That's a good idea, and can be used for other things...
-
-It also begs the question of whether power10 should continue to use TCG_REG_TB, loading 
-the address with PADDI.  Or whether power9 should, like power10, disable USE_REG_TB and 
-use ADDPCIS throughout.
-
-I imagine it depends on usage frequency, whether use of TCG_REG_TB allows 1 insn, where 
-addpcis requires 2 insns and prefixed insns require 2 or 3 insn slots (depending on 
-alignment).
-
-
-> +        tcg_out32(s, MFSPR | RT(TCG_REG_TMP1) | LR);
-> +        /* bcl 20,31,$+4 (Preferred form for getting nia.) */
-> +        tcg_out32(s, BC | BO_ALWAYS | BI(7, CR_SO) | 0x4 | LK);
-> +        tcg_out32(s, MFSPR | RT(TCG_REG_TB) | LR);
-> +        tcg_out32(s, ADDI | TAI(TCG_REG_TB, TCG_REG_TB, -8));
-> +        tcg_out32(s, MTSPR | RS(TCG_REG_TMP1) | LR);
-
-Don't need to save/restore LR.  It is saved in the prologue and may be clobbered within 
-the tb itself (as we do for calls).
-
-> @@ -2678,6 +2693,12 @@ static void tcg_out_goto_tb(TCGContext *s, int which)
->       tcg_out32(s, MTSPR | RS(TCG_REG_TMP1) | CTR);
->       tcg_out32(s, BCCTR | BO_ALWAYS);
->       set_jmp_reset_offset(s, which);
-> +
-> +    /* For the unlinked case, need to reset TCG_REG_TB.  */
-> +    if (USE_REG_TB) {
-> +        tcg_out_movi_int(s, TCG_TYPE_I64, TCG_REG_TB,
-> +                         (tcg_target_long)s->code_buf, true);
-> +    }
->   }
-
-Actually, we don't.  The only time we arrive here is when an unlinked TB branches to 
-itself.  TCG_REG_TB is still valid.
-
-> diff --git a/tcg/tcg.c b/tcg/tcg.c
-> index ddfe9a96cb..20698131c2 100644
-> --- a/tcg/tcg.c
-> +++ b/tcg/tcg.c
-> @@ -6010,6 +6010,9 @@ int tcg_gen_code(TCGContext *s, TranslationBlock *tb, uint64_t pc_start)
->           tcg_malloc(sizeof(uint64_t) * s->gen_tb->icount * start_words);
->   
->       num_insns = -1;
-> +#ifdef TCG_TARGET_NEED_ENTER_TB
-> +    tcg_out_enter_tb(s);
-> +#endif
-
-Better would be to not have the ifdef, and add this symbol as an empty function in all 
-other tcg backends.
-
-I might play around with this a bit.
-
-
-r~
+-- 
+Eric Blake, Principal Software Engineer
+Red Hat, Inc.
+Virtualization:  qemu.org | libguestfs.org
 
 
