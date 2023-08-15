@@ -2,58 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 135EA77D008
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Aug 2023 18:24:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72D8E77D012
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Aug 2023 18:26:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qVwp4-0005dW-17; Tue, 15 Aug 2023 12:23:10 -0400
+	id 1qVwrd-0006cw-Gk; Tue, 15 Aug 2023 12:25:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qVwp0-0005dK-K7
- for qemu-devel@nongnu.org; Tue, 15 Aug 2023 12:23:06 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qVwrY-0006aX-Du
+ for qemu-devel@nongnu.org; Tue, 15 Aug 2023 12:25:44 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qVwoz-0000Xx-4V
- for qemu-devel@nongnu.org; Tue, 15 Aug 2023 12:23:06 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qVwrV-0001Lh-ED
+ for qemu-devel@nongnu.org; Tue, 15 Aug 2023 12:25:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692116583;
+ s=mimecast20190719; t=1692116740;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=F9UcykFJCok2lrRHedf5S/3rgJx9h5oQBBVX+025xYc=;
- b=c9fvjHFDnOd8+/Ep7q3sWw0fyw1Ke+XFjQVBn3bTNcg5TaZgva9Wi2g5aCLP2cjFRFnujD
- wkjI7MrGOa1pRVN77Oj8rcAeWwZZ/rj545lPaU+Jj/3obXD0+0vXCkOx6uKnkg/PYfEb5O
- DGCkPE0NfVMgcLGDg6c6MTZ2b7h7o/8=
+ bh=op+O57bvXnmIluhtH59kfWg60bQys/YyU/YVziL3dYs=;
+ b=Imhm1uEmRKPf0bZMvYLZZhR1pp/h7pFyG6CS1nRSZT7cOek+Hz3Ndqb2TR437IEfx+jAaS
+ iqs1HqzII1byqME8Srdrld5jZ0gyHbNH2BnyhlnmFzwfnYapFLHAksqKz4I/CKjmeUUWhI
+ vK/uq4GUnSqFZG4UL4VTFW4Jg4tnJx4=
 Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-361-YVnr66xAOAiMMZxrRDZ6Kg-1; Tue, 15 Aug 2023 12:23:01 -0400
-X-MC-Unique: YVnr66xAOAiMMZxrRDZ6Kg-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
+ us-mta-355-xoMTDZoKOq6qwJm9G3Sqyw-1; Tue, 15 Aug 2023 12:25:38 -0400
+X-MC-Unique: xoMTDZoKOq6qwJm9G3Sqyw-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 55FD52932486;
- Tue, 15 Aug 2023 16:23:01 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CFC4F381C16C;
+ Tue, 15 Aug 2023 16:25:37 +0000 (UTC)
 Received: from redhat.com (unknown [10.2.16.62])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 137471121314;
- Tue, 15 Aug 2023 16:23:00 +0000 (UTC)
-Date: Tue, 15 Aug 2023 11:22:59 -0500
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 8CE6540D2839;
+ Tue, 15 Aug 2023 16:25:37 +0000 (UTC)
+Date: Tue, 15 Aug 2023 11:25:35 -0500
 From: Eric Blake <eblake@redhat.com>
 To: Michael Tokarev <mjt@tls.msk.ru>
 Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH RFC 1/7] include/sysemu/os-posix.h: move *daemonize*
- declaration together
-Message-ID: <spv6irkv7exu427tsirclisgyqjsvfeowfobggvhfejnh3ywpq@f22krtelhbex>
+Subject: Re: [PATCH RFC 2/7] os-posix: create and export os_set_runas()
+Message-ID: <5rywj7jsoyp5foyw4lxhkm6hvob6da33aevk2che5kdz6fdkxx@kmxhmjv7mazp>
 References: <cover.1691843673.git.mjt@tls.msk.ru>
- <2321b2404d3bc9b12ac1605dd59b221f61e294b8.1691843673.git.mjt@tls.msk.ru>
+ <05695b9bacacddd967ce334f3bb34a10869948e7.1691843673.git.mjt@tls.msk.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2321b2404d3bc9b12ac1605dd59b221f61e294b8.1691843673.git.mjt@tls.msk.ru>
+In-Reply-To: <05695b9bacacddd967ce334f3bb34a10869948e7.1691843673.git.mjt@tls.msk.ru>
 User-Agent: NeoMutt/20230517
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -78,39 +77,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, Aug 12, 2023 at 03:47:55PM +0300, Michael Tokarev wrote:
+On Sat, Aug 12, 2023 at 03:47:56PM +0300, Michael Tokarev wrote:
 > Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 > ---
->  include/sysemu/os-posix.h | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
+>  include/sysemu/os-posix.h |  1 +
+>  os-posix.c                | 23 ++++++++++++++++-------
+>  2 files changed, 17 insertions(+), 7 deletions(-)
+>
 
 Reviewed-by: Eric Blake <eblake@redhat.com>
-
-> 
-> diff --git a/include/sysemu/os-posix.h b/include/sysemu/os-posix.h
-> index 1030d39904..65b9c94e91 100644
-> --- a/include/sysemu/os-posix.h
-> +++ b/include/sysemu/os-posix.h
-> @@ -47,13 +47,12 @@ void os_set_line_buffering(void);
->  void os_setup_early_signal_handling(void);
->  void os_set_proc_name(const char *s);
->  void os_setup_signal_handling(void);
-> +int os_set_daemonize(bool d);
-> +bool is_daemonized(void);
->  void os_daemonize(void);
->  void os_setup_post(void);
->  int os_mlock(void);
->  
-> -int os_set_daemonize(bool d);
-> -bool is_daemonized(void);
-> -
->  /**
->   * qemu_alloc_stack:
->   * @sz: pointer to a size_t holding the requested usable stack size
-> -- 
-> 2.39.2
-> 
-> 
 
 -- 
 Eric Blake, Principal Software Engineer
