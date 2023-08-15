@@ -2,87 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E724177D4FE
-	for <lists+qemu-devel@lfdr.de>; Tue, 15 Aug 2023 23:17:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F210677D556
+	for <lists+qemu-devel@lfdr.de>; Tue, 15 Aug 2023 23:43:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qW1OL-0004XK-Rb; Tue, 15 Aug 2023 17:15:53 -0400
+	id 1qW1oB-0000z6-35; Tue, 15 Aug 2023 17:42:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qW1OD-0004Rv-Bd
- for qemu-devel@nongnu.org; Tue, 15 Aug 2023 17:15:48 -0400
-Received: from mail-ot1-x333.google.com ([2607:f8b0:4864:20::333])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qW1OB-0001XY-0t
- for qemu-devel@nongnu.org; Tue, 15 Aug 2023 17:15:45 -0400
-Received: by mail-ot1-x333.google.com with SMTP id
- 46e09a7af769-6bca38a6618so4937417a34.3
- for <qemu-devel@nongnu.org>; Tue, 15 Aug 2023 14:15:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1692134141; x=1692738941;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=E9ZSl0D9DVrW0wFnWc4TtqxAP6HbvQXJLoXsu7DHjJE=;
- b=Ql1ZB77/AprYo3bxaEa7mzbtwc5tF/IzdI8zS2c0aV/mDBWaM48qa7mWyEbfIcPPeH
- NDlt3Q51qDrh7JL6ppuzJ3DM2Jqk9jfbPDs/BRj4HEikV1nCfNMmlrCBXoCQZFynAUxr
- vqAH+nBA5mX+q3QpDhyLfnii3bduD7dEdE8T9QEAyrQrI0W4SXCAzNxTDYwKo4R0YBH+
- LVQB6M8Lm3ONKc4qm1m/7woxNSmLpKC5RRpZrQhZmfOeMjGlPNGzt3NdQzO3xneujGKF
- l6Hr0Ui4Ilpwl0vAL8nrNJewXE2KZlzWXepTJlkXaTRwto6IIetqmKxqW6Dr8ZjSiiAo
- UAQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692134141; x=1692738941;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=E9ZSl0D9DVrW0wFnWc4TtqxAP6HbvQXJLoXsu7DHjJE=;
- b=l/1uq1YzxquApygCDs8CDThbJ+CTjLMmAbAjHIPd999AVynvOXQGHk7uRiZs7URVrn
- DBj9zu1OpB0k0Tyv4tV3CLbx7jRdzWTed+pVeQR2IeOF/J+9oLSeLrP+UHe/6VpghEg1
- ga2LAoFCjB31e/YGMioPJcw48UTzu4MsT6JNxv+pIY+BiunpFwQwXCh/Hfb7QjlyQbBE
- SsEy0neNAbSpyKSBYe+au2Hjk6ARpVA6M5VFXbTzeQBt0lHpPLEGchjIfvFhS6ZM8ovh
- lHUIhLzC6+CBG3RilrlP5qNZBWkLxfuYqCiSp4XUeiLgyhwusSzOJty391+aaEsNhp2i
- T31w==
-X-Gm-Message-State: AOJu0YwM38wOGZRi7FERr7Ok/5RqBnHTqPu3TZK4mtUjvVTY9EXkD5C+
- uS218KdOHjVPYNmqqPWskdYO4g==
-X-Google-Smtp-Source: AGHT+IFTVWbuiiax+8qRnk5YBLyKhxXtu9hEH1Iwmf5InL2OqYaypJx9pNMB7iPZ/gwP9YkvHJZRSA==
-X-Received: by 2002:a9d:7f10:0:b0:6b9:68fb:5a28 with SMTP id
- j16-20020a9d7f10000000b006b968fb5a28mr13048123otq.27.1692134140977; 
- Tue, 15 Aug 2023 14:15:40 -0700 (PDT)
-Received: from [192.168.68.108] (189-69-160-189.dial-up.telesp.net.br.
- [189.69.160.189]) by smtp.gmail.com with ESMTPSA id
- r17-20020a9d7cd1000000b006b99f66444bsm5535673otn.71.2023.08.15.14.15.38
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 15 Aug 2023 14:15:40 -0700 (PDT)
-Message-ID: <9197e0e0-7b68-9fb0-10ab-b6834ade60df@ventanamicro.com>
-Date: Tue, 15 Aug 2023 18:15:37 -0300
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qW1o9-0000yy-Ii
+ for qemu-devel@nongnu.org; Tue, 15 Aug 2023 17:42:33 -0400
+Received: from mout.gmx.net ([212.227.15.15])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qW1o6-0007Cr-Pu
+ for qemu-devel@nongnu.org; Tue, 15 Aug 2023 17:42:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
+ s=s31663417; t=1692135745; x=1692740545; i=deller@gmx.de;
+ bh=i9wqeGQNpMhovH1K2/s5+E9EAPaixU87ZvqLEWqRDVs=;
+ h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+ b=Lvo5/JYITWsMZuMKi4a3487aMmZ3xvo5LphX9itazhxDiNWkFsXPtDYgB1M4d14mExSWAUK
+ 5PvWIi/gsHcLu5NiudViS2Osf7fG1HWlUQt2MWOjdffdXhv0xuFoPDcsrUj1fl0CB1gxe1zn5
+ 3gNEiBESfC8XOSBcALPWwD6pyHhkRGoUroXjd2rCUbSQJalzuIXpQGybWDi3U37EkzXwkzlbk
+ ygzdwMw8K2wfhfdLt8MfGUJV0qjxNkuIkWIF3w0syr5aiVGPHB/yDTRd9E2LGre/yZuV7YaqY
+ Z9ssmCapq8ZKsjsxxPxvWsgmr2sIAjmfQlgRI0rhye1yW1grRedg==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.60] ([94.134.159.222]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1N0oBr-1pbR9I0W9d-00woYo; Tue, 15
+ Aug 2023 23:42:25 +0200
+Message-ID: <6d7e7c36-b892-abd2-0d5c-9e9882f1acf5@gmx.de>
+Date: Tue, 15 Aug 2023 23:42:24 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH v7 07/12] target/riscv/cpu.c: add
- ADD_CPU_QDEV_PROPERTIES_ARRAY() macro
+Subject: Re: [PULL 00/14] linux-user image mapping fixes
 Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com
-References: <20230815201559.398643-1-dbarboza@ventanamicro.com>
- <20230815201559.398643-8-dbarboza@ventanamicro.com>
- <40ec95c2-7775-4a40-f73a-8f92d3cfb00c@linaro.org>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <40ec95c2-7775-4a40-f73a-8f92d3cfb00c@linaro.org>
+To: Richard Henderson <richard.henderson@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+References: <20230808210856.95568-1-richard.henderson@linaro.org>
+ <35fa0e0c-ca69-a84a-02a0-4edcac65adb6@tls.msk.ru>
+ <59d8d261-be68-dd60-f3d2-547b4e8dca94@linaro.org>
+From: Helge Deller <deller@gmx.de>
+In-Reply-To: <59d8d261-be68-dd60-f3d2-547b4e8dca94@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::333;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-ot1-x333.google.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:7i1KBbPnKUeHLHI20avvj2JiKTzJakLE90i3DElh9E+I3J5Ni21
+ kEmXNNxn3JCJVNrZgYYgoTXAb4p66H20mHXncQUZCVR9qYuBd61PzacwHHttwzpSA+XJ1uE
+ qtgeBe81GaVn82xxjIut8iUcF03kEDNe2y0UQnUXMn3x44gWrHR4XZJdCdDOiNC1Is+8ybd
+ P4yxpBxc6xJ/4KwbMUQsw==
+UI-OutboundReport: notjunk:1;M01:P0:Lk7QqXJBTWs=;J1E3nIqzHhNU+R2IBAaX7hFyosB
+ gE4QLQZuY4JVOfwFBzL2UMA+6Q+gn3R2rO+eIlKx8epxItXfj+osnxxIpz2WdlnYrMnh5vc7i
+ XeY0Jw2V4QErzEwsWn8IsuXi017f303tqQzFF+8KHy9uY9kZK9HqggLiyLFuiQZRkJ0lptT2P
+ 2jDiJTwDXRsdcCrGhkkSgl7nEzyGOHEQodJj8k0ta2D6BdqodUA8L+S3l6YYbJU84RMRHVhIV
+ AEiCT26uLCaNM0H546gvJAUv+Gh8j/+G/akgMjPrsLpJDZlnmwDgrksYQ5vWeIo/Xvy5cZzYI
+ Mh2VK1at3MNWUL0GHp9+CmuvibEWpxkkXLJTQRUIgrXX8B4Xxt4gE44OoWihlqBonhQXK1FZJ
+ nuSRf/kICme0ottLokfAJ8JxSEvjp3Dy2sc8fn9DyR1LfFrgDXHdBImZkeocJ9UzJmGNZz5pv
+ aVkDe4rWiMOr+swnxv51SYexeh/kazw83P5pMfA19o3igf+5hidEI5U/a9IbPtB6ErXGX3ycy
+ A25WbugnyLCw2noIefE+fqjZuLmQnkOMFeUJ1hdISr9dxmmhOiQvFpAVe+RNlbB2+/fEQ4Ajl
+ FdTyTZtOueO2gE7gmsUH9QW+S0ye53kahuP+VaQOBxohA0e+Q69BgK3llhXyvmZbOozyB9d+c
+ 4fajTIj/jZ2PqPnRVz1VGSNuB0pRjjiTHXNCRZ/Q56ZgpOkOvqFok4AWgNAdMKeOyb93ZydOM
+ IrdAe2bH6c2joEqBuGAd9PzIZdertbtzxubMgTXBAHBemAx1l1L70USh7rc3UVxAskn67pIoI
+ uP11IBB7jJNOVsylG8U7QTjW8afUk+OLL4R0xAvM5a29Qq5UNc2maqip1kUdAPzIFQAwf3eSM
+ +AcCz6YjBWB2wlmuEwnhL0cPCN09zts+NSXpLlO1fELJfbYOr+N8Vfga07NWD8F2/Ef6IDHVH
+ cQCRFnuIbK4jNpk2zIAoz7Pk0tE=
+Received-SPF: pass client-ip=212.227.15.15; envelope-from=deller@gmx.de;
+ helo=mout.gmx.net
+X-Spam_score_int: -37
+X-Spam_score: -3.8
 X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.045,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ NICE_REPLY_A=-1.045, RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,37 +91,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 8/15/23 23:09, Richard Henderson wrote:
+> On 8/15/23 06:51, Michael Tokarev wrote:
+>> 09.08.2023 00:08, Richard Henderson =D0=BF=D0=B8=D1=88=D0=B5=D1=82:
+>>> The following changes since commit 0450cf08976f9036feaded438031b4cba94=
+f6452:
+>>>
+>>> =C2=A0=C2=A0 Merge tag 'fixes-pull-request' of https://gitlab.com/marc=
+andre.lureau/qemu into staging (2023-08-07 13:55:00 -0700)
+>>>
+>>> are available in the Git repository at:
+>>>
+>>> =C2=A0=C2=A0 https://gitlab.com/rth7680/qemu.git tags/pull-lu-20230808
+>>>
+>>> for you to fetch changes up to dd55885516f42f718d0d121c59a5f7be5fdae3e=
+6:
+>>>
+>>> =C2=A0=C2=A0 linux-user: Rewrite non-fixed probe_guest_base (2023-08-0=
+8 13:41:55 -0700)
+>>>
+>>> ----------------------------------------------------------------
+>>> linux-user: Adjust guest image layout vs reserved_va
+>>> linux-user: Do not adjust image mapping for host page size
+>>> linux-user: Adjust initial brk when interpreter is close to executable
+>>> util/selfmap: Rewrite using qemu/interval-tree.h
+>>> linux-user: Rewrite probe_guest_base
+>>>
+>>> ----------------------------------------------------------------
+>>> Helge Deller (1):
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 linux-user: Adjust initial brk wh=
+en interpreter is close to executable
+>>>
+>>> Richard Henderson (13):
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 linux-user: Adjust task_unmapped_=
+base for reserved_va
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 linux-user: Define TASK_UNMAPPED_=
+BASE in $guest/target_mman.h
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 linux-user: Define ELF_ET_DYN_BAS=
+E in $guest/target_mman.h
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 linux-user: Use MAP_FIXED_NOREPLA=
+CE for initial image mmap
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 linux-user: Use elf_et_dyn_base f=
+or ET_DYN with interpreter
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 linux-user: Do not adjust image m=
+apping for host page size
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 linux-user: Do not adjust zero_bs=
+s for host page size
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 linux-user: Use zero_bss for PT_L=
+OAD with no file contents too
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 util/selfmap: Rewrite using qemu/=
+interval-tree.h
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 linux-user: Remove duplicate CPU_=
+LOG_PAGE from probe_guest_base
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 linux-user: Consolidate guest bou=
+nds check in probe_guest_base
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 linux-user: Rewrite fixed probe_g=
+uest_base
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 linux-user: Rewrite non-fixed pro=
+be_guest_base
+>>
+>> Is there anything in there and in other linux-user late fixes which are=
+ applicable to 8.0?
+>> Or should we declare 8.0 as semi-broken and be done with it?
+>
+> Let's wait a bit and see if we're not just exchanging one set of bugs fo=
+r another.
 
+Yes, and I think 8.0 isn't in that bad shape?
 
-On 8/15/23 17:44, Richard Henderson wrote:
-> On 8/15/23 13:15, Daniel Henrique Barboza wrote:
->> @@ -1883,6 +1883,13 @@ static void cpu_set_cfg_unavailable(Object *obj, Visitor *v,
->>   }
->>   #endif
->> +#define ADD_CPU_QDEV_PROPERTIES_ARRAY(_dev, _array) \
->> +    do { \
->> +        for (Property *prop = _array; prop && prop->name; prop++) { \
->> +            qdev_property_add_static(_dev, prop); \
->> +        } \
->> +    } while (0)
-> 
-> Any reason not to make this a proper function?
-
-It was a macro since early versions and remained this way. I don't have
-strong feelings in favor or against it.
-
-I assume that you don't fancy this macro usage, and probably for a good reason,
-so I guess I'll do another version without macros in this patch and patch 8 (since
-it's a similar macro usage).
-
-
-Thanks,
-
-
-Daniel
-
-
-> 
-> 
-> r~
+Helge
 
