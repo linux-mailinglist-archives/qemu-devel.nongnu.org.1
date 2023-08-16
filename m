@@ -2,55 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7715777DC5F
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Aug 2023 10:35:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5272477DC85
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Aug 2023 10:38:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWByM-00064K-BK; Wed, 16 Aug 2023 04:33:46 -0400
+	id 1qWC2W-0000EH-F1; Wed, 16 Aug 2023 04:38:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=V02R=EB=kaod.org=clg@ozlabs.org>)
- id 1qWByB-00062w-Fc; Wed, 16 Aug 2023 04:33:37 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ (Exim 4.90_1) (envelope-from <qian.wen@intel.com>)
+ id 1qWC2T-0000Dy-U5
+ for qemu-devel@nongnu.org; Wed, 16 Aug 2023 04:38:01 -0400
+Received: from mgamail.intel.com ([192.55.52.43])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=V02R=EB=kaod.org=clg@ozlabs.org>)
- id 1qWBy9-0006FS-3h; Wed, 16 Aug 2023 04:33:35 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4RQhHG4K6rz4wxy;
- Wed, 16 Aug 2023 18:33:30 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4RQhHC5trfz4wxN;
- Wed, 16 Aug 2023 18:33:27 +1000 (AEST)
-Message-ID: <0a693a50-1e27-d5d4-2036-fa580def0557@kaod.org>
-Date: Wed, 16 Aug 2023 10:33:25 +0200
+ (Exim 4.90_1) (envelope-from <qian.wen@intel.com>)
+ id 1qWC2P-00071s-Sp
+ for qemu-devel@nongnu.org; Wed, 16 Aug 2023 04:38:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1692175077; x=1723711077;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=l/sHSq2bkyzEGG3sTM7DJxDgtjrbIBayTBA1pI6caL8=;
+ b=AEghtsRuDKzgvLzEcb5k9TeRNQhINSc2CsdsFmtndprau6Z03lrPsby/
+ 4X5qBrAEmnfKE6NM3ROsTjbDeLcwtnbptCJSWYSXIDpNYmMpWOKBMoYVZ
+ uTEAOAEMfjd0UyqEjZ2vOmhrPxSaqEXdJ/v7WJpUkn4bbf//xkKOLBFmp
+ cN4Y38fSXM/mJPNm2PMt3FpnR+/3B+d+V7ADc2Wz/W4HbWrDt5bZR17d1
+ XSrm1YyUs82Rd1TfRLW72HBbY+DFGF/DSEo5/QjfC97DHgEPqMsZUVbcs
+ WTwBJitpsv8zwdmh8WZgZZNvJs18kch+3FCGY46HJwVaKy5sLXoW/mvTR A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="458829128"
+X-IronPort-AV: E=Sophos;i="6.01,176,1684825200"; d="scan'208";a="458829128"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+ by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Aug 2023 01:37:54 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="737214655"
+X-IronPort-AV: E=Sophos;i="6.01,176,1684825200"; d="scan'208";a="737214655"
+Received: from qianwen-mobl1.ccr.corp.intel.com (HELO [10.238.5.29])
+ ([10.238.5.29])
+ by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Aug 2023 01:37:53 -0700
+Message-ID: <ef89b2a2-86c3-2c74-0d36-c35f75d6c4b4@intel.com>
+Date: Wed, 16 Aug 2023 16:37:51 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v3 3/3] hw/i2c/aspeed: Add support for buffer organization
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH] target/i386: Fix reporting of CPU dies when
+ nr_cores=nr_threads=1
 Content-Language: en-US
-To: Hang Yu <francis_yuu@stu.pku.edu.cn>, qemu-devel@nongnu.org
-Cc: komlodi@google.com, peter@pjd.dev,
- Peter Maydell <peter.maydell@linaro.org>, Andrew Jeffery <andrew@aj.id.au>,
- Joel Stanley <joel@jms.id.au>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>
-References: <20230812065230.8839-1-francis_yuu@stu.pku.edu.cn>
- <20230812065230.8839-4-francis_yuu@stu.pku.edu.cn>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20230812065230.8839-4-francis_yuu@stu.pku.edu.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: =?UTF-8?B?5bCP5aSq?= <nospam@kota.moe>, qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com, babu.moger@amd.com
+References: <20230723185909.441455-1-nospam@kota.moe>
+From: "Wen, Qian" <qian.wen@intel.com>
+In-Reply-To: <20230723185909.441455-1-nospam@kota.moe>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=V02R=EB=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -49
-X-Spam_score: -5.0
+Received-SPF: pass client-ip=192.55.52.43; envelope-from=qian.wen@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -54
+X-Spam_score: -5.5
 X-Spam_bar: -----
-X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-1.045,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001,
+X-Spam_report: (-5.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.04,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-1.045, RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -67,56 +81,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/12/23 08:52, Hang Yu wrote:
-> Added support for the buffer organization option in pool buffer control
-> register.when set to 1,The buffer is split into two parts: Lower 16 bytes
-> for Tx and higher 16 bytes for Rx.
+On 7/24/2023 2:59 AM, 小太 wrote:
+> When QEMU is started with `-smp D,sockets=1,dies=D,cores=1,threads=1` (that
+> is, 1 socket with D dies but each die contains just a single thread), both
+> Linux and Windows guests incorrectly interprets the system as having D
+> sockets with 1 die each
 > 
-> Signed-off-by: Hang Yu <francis_yuu@stu.pku.edu.cn>
+> Ultimately this is caused by various CPUID leaves not being die-aware in
+> their "threads per socket" calculations, so this patch fixes that
+> 
+> These changes are referenced to the AMD PPR for Family 19h Model 01h (Milan)
+> and Family 17h Model 01h (Naples) manuals:
+>  - CPUID_Fn00000001_EBX[23:16]: Number of threads in the processor
+>                                 (Core::X86::Cpuid::SizeId[NC] + 1)
+>  - CPUID_Fn0000000B_EBX_x01[15:0]: Number of logical cores in processor
+>                                    socket (not present until Rome)
+>  - CPUID_Fn80000001_ECX[1]: Multi core product
+>                             (Core::X86::Cpuid::SizeId[NC] != 0)
+>  - CPUID_Fn80000008_ECX[7:0]: The number of threads in the package - 1
+>                               (Core::X86::Cpuid::SizeId[NC])
+> 
+> Note there are two remaining occurences that I didn't touch:
+>  - CPUID_Fn8000001E_ECX[10:8]: Always 0 (1 node per processor) for Milan.
+>                                But for Naples, it can also be 2 or 4 nodes
+>                                where each node is defined as one or two
+>                                CCXes (CCD?). But Milan also has multiple
+>                                CCXes, so clearly the definition of a node is
+>                                different from model to model, so I've left
+>                                it untouched. (QEMU seems to use the Naples
+>                                definition)
+>  - MSR_CORE_THREAD_COUNT: This MSR doesn't exist on Milan or Naples
+> 
+> Signed-off-by: 小太 <nospam@kota.moe>
+> ---
+>  target/i386/cpu.c | 12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
+> 
+> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> index 97ad229d8b..6ff23fa590 100644
+> --- a/target/i386/cpu.c
+> +++ b/target/i386/cpu.c
+> @@ -6049,8 +6049,8 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+>              *ecx |= CPUID_EXT_OSXSAVE;
+>          }
+>          *edx = env->features[FEAT_1_EDX];
+> -        if (cs->nr_cores * cs->nr_threads > 1) {
+> -            *ebx |= (cs->nr_cores * cs->nr_threads) << 16;
+> +        if (env->nr_dies * cs->nr_cores * cs->nr_threads > 1) {
+> +            *ebx |= (env->nr_dies * cs->nr_cores * cs->nr_threads) << 16;
 
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
+The nr_cores in CPUState means "Number of cores within this CPU package", so it doesn't need
+"nr_dies" here. Zhao Liu is fixing the calculation of nr_cores [1].
+
+[1]: https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg07187.html
 
 Thanks,
+Qian
 
-C.
-
-
-> ---
-> v2-->v3:
-> 1. Fixed typos
-> 2. Simplified the judgment logic of buffer organization.
-> 3. Change the buffer organization field to a shared field, and move it
-> from I2CC_POOL_CTRL to I2CD_POOL_CTRL.
-> 
->   hw/i2c/aspeed_i2c.c         | 3 +++
->   include/hw/i2c/aspeed_i2c.h | 1 +
->   2 files changed, 4 insertions(+)
-> 
-> diff --git a/hw/i2c/aspeed_i2c.c b/hw/i2c/aspeed_i2c.c
-> index 44905d7899..5d84797027 100644
-> --- a/hw/i2c/aspeed_i2c.c
-> +++ b/hw/i2c/aspeed_i2c.c
-> @@ -297,6 +297,9 @@ static void aspeed_i2c_bus_recv(AspeedI2CBus *bus)
->   
->       if (SHARED_ARRAY_FIELD_EX32(bus->regs, reg_cmd, RX_BUFF_EN)) {
->           uint8_t *pool_base = aic->bus_pool_base(bus);
-> +        if (SHARED_ARRAY_FIELD_EX32(bus->regs, reg_pool_ctrl, BUF_ORGANIZATION)) {
-> +            pool_base += 16;
-> +        }
->   
->           for (i = 0; i < pool_rx_count; i++) {
->               pool_base[i] = i2c_recv(bus->bus);
-> diff --git a/include/hw/i2c/aspeed_i2c.h b/include/hw/i2c/aspeed_i2c.h
-> index 2e1e15aaf0..a064479e59 100644
-> --- a/include/hw/i2c/aspeed_i2c.h
-> +++ b/include/hw/i2c/aspeed_i2c.h
-> @@ -143,6 +143,7 @@ REG32(I2CD_POOL_CTRL, 0x1C) /* Pool Buffer Control */
->       SHARED_FIELD(RX_SIZE, 16, 5)
->       SHARED_FIELD(TX_COUNT, 8, 5)
->       FIELD(I2CD_POOL_CTRL, OFFSET, 2, 6) /* AST2400 */
-> +    SHARED_FIELD(BUF_ORGANIZATION, 0, 1) /* AST2600 */
->   REG32(I2CD_BYTE_BUF, 0x20) /* Transmit/Receive Byte Buffer */
->       SHARED_FIELD(RX_BUF, 8, 8)
->       SHARED_FIELD(TX_BUF, 0, 8)
-
+>              *edx |= CPUID_HT;
+>          }
+>          if (!cpu->enable_pmu) {
+> @@ -6230,7 +6230,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+>              break;
+>          case 1:
+>              *eax = apicid_pkg_offset(&topo_info);
+> -            *ebx = cs->nr_cores * cs->nr_threads;
+> +            *ebx = env->nr_dies * cs->nr_cores * cs->nr_threads;
+>              *ecx |= CPUID_TOPOLOGY_LEVEL_CORE;
+>              break;
+>          default:
+> @@ -6496,7 +6496,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+>           * discards multiple thread information if it is set.
+>           * So don't set it here for Intel to make Linux guests happy.
+>           */
+> -        if (cs->nr_cores * cs->nr_threads > 1) {
+> +        if (env->nr_dies * cs->nr_cores * cs->nr_threads > 1) {
+>              if (env->cpuid_vendor1 != CPUID_VENDOR_INTEL_1 ||
+>                  env->cpuid_vendor2 != CPUID_VENDOR_INTEL_2 ||
+>                  env->cpuid_vendor3 != CPUID_VENDOR_INTEL_3) {
+> @@ -6562,7 +6562,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+>               *eax |= (cpu_x86_virtual_addr_width(env) << 8);
+>          }
+>          *ebx = env->features[FEAT_8000_0008_EBX];
+> -        if (cs->nr_cores * cs->nr_threads > 1) {
+> +        if (env->nr_dies * cs->nr_cores * cs->nr_threads > 1) {
+>              /*
+>               * Bits 15:12 is "The number of bits in the initial
+>               * Core::X86::Apic::ApicId[ApicId] value that indicate
+> @@ -6570,7 +6570,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+>               * Bits 7:0 is "The number of threads in the package is NC+1"
+>               */
+>              *ecx = (apicid_pkg_offset(&topo_info) << 12) |
+> -                   ((cs->nr_cores * cs->nr_threads) - 1);
+> +                   ((env->nr_dies * cs->nr_cores * cs->nr_threads) - 1);
+>          } else {
+>              *ecx = 0;
+>          }
 
