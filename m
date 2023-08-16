@@ -2,63 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 453BD77EB6D
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F51877EB6C
 	for <lists+qemu-devel@lfdr.de>; Wed, 16 Aug 2023 23:08:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWNjj-0002Au-H9; Wed, 16 Aug 2023 17:07:27 -0400
+	id 1qWNkH-0002Hf-LW; Wed, 16 Aug 2023 17:08:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qWNjf-0002Ae-MW
- for qemu-devel@nongnu.org; Wed, 16 Aug 2023 17:07:23 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qWNkF-0002Fa-6k
+ for qemu-devel@nongnu.org; Wed, 16 Aug 2023 17:07:59 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qWNjV-0006jn-N7
- for qemu-devel@nongnu.org; Wed, 16 Aug 2023 17:07:23 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qWNkB-0006oe-La
+ for qemu-devel@nongnu.org; Wed, 16 Aug 2023 17:07:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692220029;
+ s=mimecast20190719; t=1692220073;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=q7IthV9/cUucV4OWLuaWlpR++T0LzfSAiOpvm8ImekA=;
- b=aQMVaSKGtjFpmVzwSxJKHEKpReGCNHf5FO5tzTF8uL6az4Q4HXQch7e7Tyhhc/NmyGA7Ve
- o03WdJNvUtAcxTcPxkKt6Uif7Qlj/55zaIVNe9fysTnf0SGEuatLGIMUtMjNSscWQXFUKQ
- D3RuiH+yjH25M6axgUCyRVuqDgYUWJI=
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=xAQ8nNP0CLE5rdsKK4ApfX62aWyfH2nvdQOmuOLg+Bg=;
+ b=id3v5V2dBlXjPrVAGYfl4VSmbRhFdp9rlieBz/JjpYQbJQQoWTZdnF4le+A3Z4GQSO5Etm
+ naCowpRs6uJl3SM5I6vOlEGMZdmngLwDsziAVdwDa/QhWFyy/RMX+BxVfA1pPaR3lshRFt
+ 4zkYkEnspuP4K9H1WPFJ3u3d+XOEDd4=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-440-Qu60uqx-N16D_0jpbe2xKg-1; Wed, 16 Aug 2023 17:07:05 -0400
-X-MC-Unique: Qu60uqx-N16D_0jpbe2xKg-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
+ us-mta-690-zy7lJ-4UOASiA0mUnA6Nmg-1; Wed, 16 Aug 2023 17:07:48 -0400
+X-MC-Unique: zy7lJ-4UOASiA0mUnA6Nmg-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7E3F6185A78B;
- Wed, 16 Aug 2023 21:07:04 +0000 (UTC)
-Received: from localhost (unknown [10.39.193.154])
- by smtp.corp.redhat.com (Postfix) with ESMTP id D8887C15BAD;
- Wed, 16 Aug 2023 21:07:03 +0000 (UTC)
-Date: Wed, 16 Aug 2023 17:07:01 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Sam Li <faithilikerun@gmail.com>
-Cc: qemu-devel@nongnu.org, hare@suse.de, Hanna Reitz <hreitz@redhat.com>,
- dmitry.fomichev@wdc.com, qemu-block@nongnu.org,
- Kevin Wolf <kwolf@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Eric Blake <eblake@redhat.com>, dlemoal@kernel.org
-Subject: Re: [PATCH v2 3/4] qcow2: add zoned emulation capability
-Message-ID: <20230816210701.GC3454448@fedora>
-References: <20230814085802.61459-1-faithilikerun@gmail.com>
- <20230814085802.61459-4-faithilikerun@gmail.com>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 601758DC66C;
+ Wed, 16 Aug 2023 21:07:48 +0000 (UTC)
+Received: from thuth.com (unknown [10.39.194.32])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id D6208492C13;
+ Wed, 16 Aug 2023 21:07:45 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Marc Hartmayer <mhartmay@linux.ibm.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PATCH] chardev/char-pty: Avoid losing bytes when the other side just
+ (re-)connected
+Date: Wed, 16 Aug 2023 23:07:43 +0200
+Message-Id: <20230816210743.1319018-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="FVD+Y1QjaVp8OZN5"
-Content-Disposition: inline
-In-Reply-To: <20230814085802.61459-4-faithilikerun@gmail.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -82,104 +76,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+When starting a guest via libvirt with "virsh start --console ...",
+the first second of the console output is missing. This is especially
+annoying on s390x that only has a text console by default and no graphical
+output - if the bios fails to boot here, the information about what went
+wrong is completely lost.
 
---FVD+Y1QjaVp8OZN5
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+One part of the problem (there is also some things to be done on the
+libvirt side) is that QEMU only checks with a 1 second timer whether
+the other side of the pty is already connected, so the first second of
+the console output is always lost.
 
-On Mon, Aug 14, 2023 at 04:58:01PM +0800, Sam Li wrote:
-> By adding zone operations and zoned metadata, the zoned emulation
-> capability enables full emulation support of zoned device using
-> a qcow2 file. The zoned device metadata includes zone type,
-> zoned device state and write pointer of each zone, which is stored
-> to an array of unsigned integers.
->=20
-> Each zone of a zoned device makes state transitions following
-> the zone state machine. The zone state machine mainly describes
-> five states, IMPLICIT OPEN, EXPLICIT OPEN, FULL, EMPTY and CLOSED.
-> READ ONLY and OFFLINE states will generally be affected by device
-> internal events. The operations on zones cause corresponding state
-> changing.
->=20
-> Zoned devices have a limit on zone resources, which puts constraints on
-> write operations into zones.
->=20
-> Signed-off-by: Sam Li <faithilikerun@gmail.com>
-> ---
->  block/qcow2.c          | 676 ++++++++++++++++++++++++++++++++++++++++-
->  block/qcow2.h          |   2 +
->  docs/interop/qcow2.txt |   2 +
->  3 files changed, 678 insertions(+), 2 deletions(-)
->=20
-> diff --git a/block/qcow2.c b/block/qcow2.c
-> index c1077c4a4a..5ccf79cbe7 100644
-> --- a/block/qcow2.c
-> +++ b/block/qcow2.c
-> @@ -194,6 +194,164 @@ qcow2_extract_crypto_opts(QemuOpts *opts, const cha=
-r *fmt, Error **errp)
->      return cryptoopts_qdict;
->  }
-> =20
-> +#define QCOW2_ZT_IS_CONV(wp)    (wp & 1ULL << 59)
-> +
-> +static inline int qcow2_get_wp(uint64_t wp)
-> +{
-> +    /* clear state and type information */
-> +    return ((wp << 5) >> 5);
-> +}
-> +
-> +static inline int qcow2_get_zs(uint64_t wp)
-> +{
-> +    return (wp >> 60);
-> +}
-> +
-> +static inline void qcow2_set_wp(uint64_t *wp, BlockZoneState zs)
-> +{
-> +    uint64_t addr =3D qcow2_get_wp(*wp);
-> +    addr |=3D ((uint64_t)zs << 60);
-> +    *wp =3D addr;
-> +}
+This likely used to work better in the past, since the code once checked
+for a re-connection during write, but this has been removed in commit
+f8278c7d74 ("char-pty: remove the check for connection on write") to avoid
+some locking.
 
-Although the function is called qcow2_set_wp() it seems to actually be
-qcow2_set_zs() since it only changes the zone state, not the write
-pointer. Want to rename it?
+To ease the situation here at least a little bit, let's check with g_poll()
+whether we could send out the data anyway, even if the connection has not
+been marked as "connected" yet. The file descriptor is marked as non-blocking
+anyway since commit fac6688a18 ("Do not hang on full PTY"), so this should
+not cause any trouble if the other side is not ready for receiving yet.
 
-> +
-> +/*
-> + * File wp tracking: reset zone, finish zone and append zone can
-> + * change the value of write pointer. All zone operations will change
-> + * the state of that/those zone.
-> + * */
-> +static inline void qcow2_wp_tracking_helper(int index, uint64_t wp) {
-> +    /* format: operations, the wp. */
-> +    printf("wps[%d]: 0x%x\n", index, qcow2_get_wp(wp)>>BDRV_SECTOR_BITS);
-> +}
+With this patch applied, I can now successfully see the bios output of
+a s390x guest when running it with "virsh start --console" (with a patched
+version of virsh that fixes the remaining issues there, too).
 
-This looks like debugging code that shouldn't go into qemu.git. Please
-use tracing (docs/devel/tracing.rst) to capture internal information in
-production code.
+Reported-by: Marc Hartmayer <mhartmay@linux.ibm.com>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ chardev/char-pty.c | 22 +++++++++++++++++++---
+ 1 file changed, 19 insertions(+), 3 deletions(-)
 
-I will review more of this patch series another time because I need to
-get going.
-
-Stefan
-
---FVD+Y1QjaVp8OZN5
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmTdOnUACgkQnKSrs4Gr
-c8jFWwgAk0NL2KyxYhua/RP18fDc4FhDWq9wwwz3QMv7xLrqRdJy5dhstWxbWeY5
-IhvJCForQgQSnaPVYEEbRbbPHBXvfu0Vbv3hQDLBX55QjbIG1fpK+awu5CPqpqfh
-2tpxVdnjaSipJylf3C+JYbFgu1z11f/Zu7Ek03Jf+LfjYPbWJMcolF8h85sPt7dc
-r1wXVMhdU07djoNjGdxrkkdqup+iwQZjcdgDwTR2jS6CA92Iz8anhOyJFSCKZApv
-+3ohHrFgsfqKMGIjXNlzyq/SAL9nZtiogNSE3eL7oitdQyUpIlcjC3Kio/8XuzBF
-DyDvxu2G4ZSxWTlrvUqZyUmK/wUmXA==
-=zdMf
------END PGP SIGNATURE-----
-
---FVD+Y1QjaVp8OZN5--
+diff --git a/chardev/char-pty.c b/chardev/char-pty.c
+index 4e5deac18a..fad12dfef3 100644
+--- a/chardev/char-pty.c
++++ b/chardev/char-pty.c
+@@ -106,11 +106,27 @@ static void pty_chr_update_read_handler(Chardev *chr)
+ static int char_pty_chr_write(Chardev *chr, const uint8_t *buf, int len)
+ {
+     PtyChardev *s = PTY_CHARDEV(chr);
++    GPollFD pfd;
++    int rc;
+ 
+-    if (!s->connected) {
+-        return len;
++    if (s->connected) {
++        return io_channel_send(s->ioc, buf, len);
+     }
+-    return io_channel_send(s->ioc, buf, len);
++
++    /*
++     * The other side might already be re-connected, but the timer might
++     * not have fired yet. So let's check here whether we can write again:
++     */
++    pfd.fd = QIO_CHANNEL_FILE(s->ioc)->fd;
++    pfd.events = G_IO_OUT;
++    pfd.revents = 0;
++    rc = RETRY_ON_EINTR(g_poll(&pfd, 1, 0));
++    g_assert(rc >= 0);
++    if (!(pfd.revents & G_IO_HUP) && (pfd.revents & G_IO_OUT)) {
++        io_channel_send(s->ioc, buf, len);
++    }
++
++    return len;
+ }
+ 
+ static GSource *pty_chr_add_watch(Chardev *chr, GIOCondition cond)
+-- 
+2.39.3
 
 
