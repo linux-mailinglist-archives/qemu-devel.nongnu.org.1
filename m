@@ -2,59 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21D5F77D861
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Aug 2023 04:23:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 554A277D8BB
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Aug 2023 05:00:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qW6AT-0000Ld-Rd; Tue, 15 Aug 2023 22:21:53 -0400
+	id 1qW6l0-0000dv-PM; Tue, 15 Aug 2023 22:59:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tugy@chinatelecom.cn>)
- id 1qW6AR-0000EF-05
- for qemu-devel@nongnu.org; Tue, 15 Aug 2023 22:21:51 -0400
-Received: from smtpnm6-01.21cn.com ([182.42.159.233] helo=chinatelecom.cn)
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <tugy@chinatelecom.cn>) id 1qW6AN-0000U3-MK
- for qemu-devel@nongnu.org; Tue, 15 Aug 2023 22:21:50 -0400
-HMM_SOURCE_IP: 192.168.139.44:61332.1203497443
-HMM_ATTACHE_NUM: 0000
-HMM_SOURCE_TYPE: SMTP
-Received: from clientip-36.111.64.85 (unknown [192.168.139.44])
- by chinatelecom.cn (HERMES) with SMTP id 5B446100111F5;
- Wed, 16 Aug 2023 10:09:37 +0800 (CST)
-X-189-SAVE-TO-SEND: +tugy@chinatelecom.cn
-Received: from  ([36.111.64.85])
- by gateway-ssl-dep-56d86dc765-g96c8 with ESMTP id
- 794cd757766d4411993cbdf0bae1e03f for peterx@redhat.com; 
- Wed, 16 Aug 2023 10:09:45 CST
-X-Transaction-ID: 794cd757766d4411993cbdf0bae1e03f
-X-Real-From: tugy@chinatelecom.cn
-X-Receive-IP: 36.111.64.85
-X-MEDUSA-Status: 0
-Message-ID: <ad6d2f08-0917-4136-a67b-47644ce479ba@chinatelecom.cn>
-Date: Wed, 16 Aug 2023 10:09:34 +0800
+ (Exim 4.90_1) (envelope-from <jniethe5@gmail.com>)
+ id 1qW6kt-0000dA-7e; Tue, 15 Aug 2023 22:59:31 -0400
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <jniethe5@gmail.com>)
+ id 1qW6kq-0000Aq-D8; Tue, 15 Aug 2023 22:59:31 -0400
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-1bdeb022738so15360675ad.0; 
+ Tue, 15 Aug 2023 19:59:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1692154767; x=1692759567;
+ h=content-transfer-encoding:content-language:in-reply-to:mime-version
+ :user-agent:date:message-id:from:references:cc:to:subject:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=wgeCicBYMMTYFeSNuTJVOGONyTNa12yhCxzh8R2Ho+M=;
+ b=i3saViQZzU1gLP8l7qvVinvc4g6vHqAsb7dC3NTLwQatZDHtljgR+GXCYQuwemWdI3
+ tiBulQoMIl/BPySTzPUwuC3XGx1051KEnKxer//6uiS8lEnUxBNlTI7tx1Y9yQkMRXM1
+ KXoqWtWCT8PrH3fEbxCwAme6rw9w6uimaNrcbWiYAlPN/1PjkwStLaRR1qFRfncURXkg
+ I2SRiKtHjy7H0HjSysEEwaXmGYCZ01fLTOv1FMd0V23KEdZVuR2TryBIEukSy0AOTiII
+ a4kftx6aWHw1goYk+4nn9H0bNAIfFl6/rrqqo+FMRpsIjRnCBkjDAfAQBgxQ3xP4mjOJ
+ aERg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1692154767; x=1692759567;
+ h=content-transfer-encoding:content-language:in-reply-to:mime-version
+ :user-agent:date:message-id:from:references:cc:to:subject
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=wgeCicBYMMTYFeSNuTJVOGONyTNa12yhCxzh8R2Ho+M=;
+ b=B89ASEgz1lx17niPRXQvc+jGHT30aqptYd8g0ocHk1d3boVzWtBkH5at3ZsGBGzCV8
+ pVwELD9SIUAqhmjv3fUit+qrijgOUr2nNmnVANCRZdAeIj5VCNI439JxJGmViTEZvmby
+ VA9+sTPM/wzYqx4ruOUvlkL2l888zpQiAHckegtJhJrNqJdKIFm49mCr4j1XhdfU0Wyo
+ 1grirNXdI6OMdvYrOPxC7ihaMgu/dLsf5+raCDei5fC8LVT96PuzaYi79O9zxTkhRtqI
+ VdFNOYRoZO1jGclJ53xJPaVpjwBU8yFiHiTa+ftGngp4xXlGrBpapvSy6JTmcAJ4sLf/
+ fzNg==
+X-Gm-Message-State: AOJu0Yw3p4VmNu3ekXZ3Ruqv69cP73uNYXYZ4/blQUCA3xd5gDu7tMnU
+ A70q9sjYU5+z+sWK2n05lqI=
+X-Google-Smtp-Source: AGHT+IHScaliB48zW/U77pSWAfGLgAZxWV7Bzk8ENCezdboWlyH9Hoqhn7B45vd1GLqPItW7AIuAnQ==
+X-Received: by 2002:a17:902:ab4e:b0:1bc:4b77:c74 with SMTP id
+ ij14-20020a170902ab4e00b001bc4b770c74mr4257708plb.0.1692154766574; 
+ Tue, 15 Aug 2023 19:59:26 -0700 (PDT)
+Received: from localhost.localdomain ([146.112.118.69])
+ by smtp.gmail.com with ESMTPSA id
+ a12-20020a170902eccc00b001aadd0d7364sm11779416plh.83.2023.08.15.19.59.23
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 15 Aug 2023 19:59:25 -0700 (PDT)
+Subject: Re: [RFC PATCH] tcg/ppc: Enable direct branching tcg_out_goto_tb with
+ TCG_REG_TB
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, npiggin@gmail.com, bgray@linux.ibm.com
+References: <20230815050117.34731-1-jniethe5@gmail.com>
+ <bdea1e60-9368-4a56-66f5-26269033b5d9@linaro.org>
+From: Jordan Niethe <jniethe5@gmail.com>
+Message-ID: <e36dd7ab-cc02-fdce-4cc0-cca90faad3d8@gmail.com>
+Date: Wed, 16 Aug 2023 12:59:21 +1000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: tugy@chinatelecom.cn, Juan Quintela <quintela@redhat.com>,
- Leonardo Bras <leobras@redhat.com>, qemu-devel@nongnu.org
-Subject: Re: [PATCH] migrate/ram: let ram_save_target_page_legacy() return if
- qemu file got error
+In-Reply-To: <bdea1e60-9368-4a56-66f5-26269033b5d9@linaro.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-To: =?UTF-8?B?44CQ5aSW6YOo6LSm5Y+344CRIFBldGVyIFh1?= <peterx@redhat.com>,
- Fabiano Rosas <farosas@suse.de>
-References: <20ae48e5-006d-4a1b-823e-f2c591ec4fb0@chinatelecom.cn>
- <87h6p0mqk8.fsf@suse.de> <ZNv6ABLk7EjaX8dD@x1n>
-From: Guoyi Tu <tugy@chinatelecom.cn>
-In-Reply-To: <ZNv6ABLk7EjaX8dD@x1n>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=182.42.159.233; envelope-from=tugy@chinatelecom.cn;
- helo=chinatelecom.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_PASS=-0.001,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=jniethe5@gmail.com; helo=mail-pl1-x634.google.com
+X-Spam_score_int: -28
+X-Spam_score: -2.9
+X-Spam_bar: --
+X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, NICE_REPLY_A=-1.045,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -73,55 +97,86 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-On 2023/8/16 6:19, 【外部账号】 Peter Xu wrote:
-> On Tue, Aug 15, 2023 at 09:35:19AM -0300, Fabiano Rosas wrote:
->> Guoyi Tu <tugy@chinatelecom.cn> writes:
+On 16/8/23 2:07 am, Richard Henderson wrote:
+> On 8/14/23 22:01, Jordan Niethe wrote:
+>> Direct branch patching was disabled when using TCG_REG_TB in commit
+>> 736a1588c1 ("tcg/ppc: Fix race in goto_tb implementation"). Commit
+>> 7502f89c74 ("tcg/ppc: Use prefixed instructions for tcg_out_goto_tb")
+>> used the support for pc relative ISAv3.1 instructions to re-enable
+>> direct branch patching on POWER10.
 >>
->>> When the migration process of a virtual machine using huge pages is
->>> cancelled,
->>> QEMU will continue to complete the processing of the current huge page
->>> through the qemu file object got an error set. These processing, such as
->>> compression and encryption, will consume a lot of CPU resources which may
->>> affact the the performance of the other VMs.
->>>
->>> To terminate the migration process more quickly and minimize unnecessary
->>> resource occupancy, it's neccessary to add logic to check the error status
->>> of qemu file object in the beginning of ram_save_target_page_legacy
->>> function,
->>> and make sure the function returns immediately if qemu file got an error.
->>>
->>> Signed-off-by: Guoyi Tu <tugy@chinatelecom.cn>
->>> ---
->>>    migration/ram.c | 4 ++++
->>>    1 file changed, 4 insertions(+)
->>>
->>> diff --git a/migration/ram.c b/migration/ram.c
->>> index 9040d66e61..3e2ebf3004 100644
->>> --- a/migration/ram.c
->>> +++ b/migration/ram.c
->>> @@ -2133,6 +2133,10 @@ static int ram_save_target_page_legacy(RAMState
->>> *rs, PageSearchStatus *pss)
->>>        ram_addr_t offset = ((ram_addr_t)pss->page) << TARGET_PAGE_BITS;
->>>        int res;
->>>
->>> +    if (qemu_file_get_error(pss->pss_channel)) {
->>> +        return -1;
->>> +    }
+>> The issue with direct branch patching with TCG_REG_TB is the lack of
+>> synchronization between the new TCG_REG_TB being established and the
+>> direct branch being patched in.
 >>
->> Where was the error set? Is this from cancelling via QMP? Or something
->> from within ram_save_target_page_legacy? We should probably make the
->> check closer to where the error happens. At the very least moving the
->> check into the loop.
+>> If each translation block is responsible for establishing its own
+>> TCG_REG_TB then there can be no synchronization issue.
 > 
-> Fabiano - I think it's in the loop (of all target pages within a same host
-> page), and IIUC Guoyi mentioned it's part of cancelling.
+> That's a good idea, and can be used for other things...
 > 
-> Guoyi, I assume you just saw qemu cancel too slow over e.g. 1g pages?
-> The patch looks good here.
+> It also begs the question of whether power10 should continue to use 
+> TCG_REG_TB, loading the address with PADDI.  Or whether power9 should, 
+> like power10, disable USE_REG_TB and use ADDPCIS throughout.
+> 
+> I imagine it depends on usage frequency, whether use of TCG_REG_TB 
+> allows 1 insn, where addpcis requires 2 insns and prefixed insns require 
+> 2 or 3 insn slots (depending on alignment).
 
-Yes, when migration process got cancelled, i think there is no need to 
-handle the remaining part of the huge page, we should quit immediatley
+Yes, I agree. Your v3 series looks good, I'll try and get some 
+performance numbers with it so we can make a decision about which way to 
+go on power10 and power9.
 
-> Thanks,
+> 
+> 
+>> +        tcg_out32(s, MFSPR | RT(TCG_REG_TMP1) | LR);
+>> +        /* bcl 20,31,$+4 (Preferred form for getting nia.) */
+>> +        tcg_out32(s, BC | BO_ALWAYS | BI(7, CR_SO) | 0x4 | LK);
+>> +        tcg_out32(s, MFSPR | RT(TCG_REG_TB) | LR);
+>> +        tcg_out32(s, ADDI | TAI(TCG_REG_TB, TCG_REG_TB, -8));
+>> +        tcg_out32(s, MTSPR | RS(TCG_REG_TMP1) | LR);
+> 
+> Don't need to save/restore LR.  It is saved in the prologue and may be 
+> clobbered within the tb itself (as we do for calls >
+>> @@ -2678,6 +2693,12 @@ static void tcg_out_goto_tb(TCGContext *s, int 
+>> which)
+>>       tcg_out32(s, MTSPR | RS(TCG_REG_TMP1) | CTR);
+>>       tcg_out32(s, BCCTR | BO_ALWAYS);
+>>       set_jmp_reset_offset(s, which);
+>> +
+>> +    /* For the unlinked case, need to reset TCG_REG_TB.  */
+>> +    if (USE_REG_TB) {
+>> +        tcg_out_movi_int(s, TCG_TYPE_I64, TCG_REG_TB,
+>> +                         (tcg_target_long)s->code_buf, true);
+>> +    }
+>>   }
+> 
+> Actually, we don't.  The only time we arrive here is when an unlinked TB 
+> branches to itself.  TCG_REG_TB is still valid.
+
+Ok, I was not sure how that was meant to work.
+
+> 
+>> diff --git a/tcg/tcg.c b/tcg/tcg.c
+>> index ddfe9a96cb..20698131c2 100644
+>> --- a/tcg/tcg.c
+>> +++ b/tcg/tcg.c
+>> @@ -6010,6 +6010,9 @@ int tcg_gen_code(TCGContext *s, TranslationBlock 
+>> *tb, uint64_t pc_start)
+>>           tcg_malloc(sizeof(uint64_t) * s->gen_tb->icount * start_words);
+>>       num_insns = -1;
+>> +#ifdef TCG_TARGET_NEED_ENTER_TB
+>> +    tcg_out_enter_tb(s);
+>> +#endif
+> 
+> Better would be to not have the ifdef, and add this symbol as an empty 
+> function in all other tcg backends.
+> 
+> I might play around with this a bit.
+
+Thank you for that, adding pcrel support on POWER9 too is really cool.
+
+> 
+> 
+> r~
 > 
 
