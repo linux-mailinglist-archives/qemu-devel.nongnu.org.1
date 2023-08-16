@@ -2,84 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EB6D77DA5D
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Aug 2023 08:18:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C8E677DA5E
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Aug 2023 08:18:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qW9q6-0002Hk-02; Wed, 16 Aug 2023 02:17:06 -0400
+	id 1qW9rB-0002t7-0x; Wed, 16 Aug 2023 02:18:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tommy.wu@sifive.com>)
- id 1qW9q2-0002Gw-Iy
- for qemu-devel@nongnu.org; Wed, 16 Aug 2023 02:17:02 -0400
-Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <tommy.wu@sifive.com>)
- id 1qW9q0-0002kr-5a
- for qemu-devel@nongnu.org; Wed, 16 Aug 2023 02:17:02 -0400
-Received: by mail-pg1-x535.google.com with SMTP id
- 41be03b00d2f7-565ece9636eso565998a12.1
- for <qemu-devel@nongnu.org>; Tue, 15 Aug 2023 23:16:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1692166617; x=1692771417;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=vCBu2+Qo/HbMwf2WOdpk7YRQzn+i5wZoZtwY7MEU6q4=;
- b=Vi0ejLzGSDOHcbqV9+sYw9yF6PlV483n8rrPwJQXs4uETum7jUbPXyctNgZRdVjGct
- ZNf95Lasuyp8Asm15jU00N4YhwEDZRbwqTpr/Xs1+ckjRFpNAMHH1tf+yja0njPg1n3E
- 4Q5WhOPtDqbqjKRV6SsABgm6R+WFvrqsFCAzjAxBR5y0e3pNlH12S+vlTKKEjfHC2aTF
- VE+2x6feo0XH+YraPT5bJrJkvIfrEaSxTVJDoQHtHYGXGEgBE6yrxqawv3H0CHJ2TOna
- K4rhCD5G5/bs9txbKASF80Sma9LCRP/WEJiDu/Hvr8Ibef0KKI2Qz0Ux74NlroY9KyLC
- tRVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692166617; x=1692771417;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=vCBu2+Qo/HbMwf2WOdpk7YRQzn+i5wZoZtwY7MEU6q4=;
- b=DNEDmS2SkVCavcSdPU+KtYWl7z86OwgjMQ0K/ZkL2fxRpgth7jfF8ZLXHQiUIOpW3f
- 8l1+Z4C9O5mjywL7bcT/puzXOXE5t8hfr/hOZK3o2mHWPDrrs3ksYrovJI94/sua8KVB
- ATyb/nOej2utwJJ60X07TZ3sp5I7X/FTfbFmVEsXuQpGSg0jrylLjKDUFQuEkTYqJxQD
- QGS2bDrLWzvzrYuMSxJpZRQo/1A1TICQWVKZYdoz3tvPxL2/bPJeMmzsBa2vZ2Jzfguk
- 9+FojcJFsZbF3J2es8Qq+msYzUgwekDdSSp6skxmghouC3pXrvdXJlpYs6vSH8AWTB7z
- uhtA==
-X-Gm-Message-State: AOJu0YzXNwywBbV0rYIZhhUea0DORZW5slI+YXMyMvWZcU1gf4p3NHsV
- VR550aeTcAdYE8UDPuxE1uli3pQHWkq5Rw5zESBgq/Tn15hffbAZXiPdVsXqEPlcUSKI6lf40kT
- RETv3/ARDz38BiZ4Cz80oExEFjVDXRocppGULh3LKnadSTT2yaz0h8Nri4N3C/jQKKWJVTFjzgg
- ==
-X-Google-Smtp-Source: AGHT+IEJJTFuj+pWgS/BxJAjzVOuU4l//BgDpubvJ2scUAHIqo8MrImfPixRJjOYpc33XpQz0lT/CQ==
-X-Received: by 2002:a05:6a21:601:b0:104:ad71:f080 with SMTP id
- ll1-20020a056a21060100b00104ad71f080mr974893pzb.34.1692166616673; 
- Tue, 15 Aug 2023 23:16:56 -0700 (PDT)
-Received: from sw03.internal.sifive.com ([64.62.193.194])
- by smtp.gmail.com with ESMTPSA id
- c2-20020a170902d90200b001b89b1b99fasm5722852plz.243.2023.08.15.23.16.55
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 15 Aug 2023 23:16:56 -0700 (PDT)
-From: Tommy Wu <tommy.wu@sifive.com>
-To: qemu-devel@nongnu.org,
-	qemu-riscv@nongnu.org
-Cc: Tommy Wu <tommy.wu@sifive.com>, Frank Chang <frank.chang@sifive.com>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-Subject: [PATCH] target/riscv: Align the AIA model to v1.0 ratified spec
-Date: Tue, 15 Aug 2023 23:16:43 -0700
-Message-Id: <20230816061647.600672-1-tommy.wu@sifive.com>
-X-Mailer: git-send-email 2.27.0
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qW9qt-0002ik-He
+ for qemu-devel@nongnu.org; Wed, 16 Aug 2023 02:17:56 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qW9qr-0002t6-23
+ for qemu-devel@nongnu.org; Wed, 16 Aug 2023 02:17:55 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 29E461AAE3;
+ Wed, 16 Aug 2023 09:17:51 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id AE1A81F7A1;
+ Wed, 16 Aug 2023 09:17:45 +0300 (MSK)
+Message-ID: <cdd7ad12-d05d-e710-38c7-f36c63433793@tls.msk.ru>
+Date: Wed, 16 Aug 2023 09:17:45 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
- envelope-from=tommy.wu@sifive.com; helo=mail-pg1-x535.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PULL 00/14] linux-user image mapping fixes
+Content-Language: en-US
+To: Helge Deller <deller@gmx.de>,
+ Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+References: <20230808210856.95568-1-richard.henderson@linaro.org>
+ <35fa0e0c-ca69-a84a-02a0-4edcac65adb6@tls.msk.ru>
+ <59d8d261-be68-dd60-f3d2-547b4e8dca94@linaro.org>
+ <6d7e7c36-b892-abd2-0d5c-9e9882f1acf5@gmx.de>
+From: Michael Tokarev <mjt@tls.msk.ru>
+In-Reply-To: <6d7e7c36-b892-abd2-0d5c-9e9882f1acf5@gmx.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -78
+X-Spam_score: -7.9
+X-Spam_bar: -------
+X-Spam_report: (-7.9 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.045,
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,53 +64,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-According to the new spec, when vsiselect has a reserved value, attempts
-from M-mode or HS-mode to access vsireg, or from VS-mode to access
-sireg, should preferably raise an illegal instruction exception.
+16.08.2023 00:42, Helge Deller wrote:
+> On 8/15/23 23:09, Richard Henderson wrote:
+...
+>> Let's wait a bit and see if we're not just exchanging one set of bugs for another.
+> 
+> Yes, and I think 8.0 isn't in that bad shape?
 
-Signed-off-by: Tommy Wu <tommy.wu@sifive.com>
-Reviewed-by: Frank Chang <frank.chang@sifive.com>
----
- target/riscv/csr.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+Well, I dunno. It all started with 8.0 bugs, after I uploaded 8.0 to debian
+and things started breaking there, like building stuff in a qemu-user-based
+chroots.  arm commpage mapping issue affects 8.0, klibc issue is now re-
+open, something else I forgot already... :)
 
-diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index ea7585329e..e4244b8dac 100644
---- a/target/riscv/csr.c
-+++ b/target/riscv/csr.c
-@@ -1685,7 +1685,7 @@ static int rmw_iprio(target_ulong xlen,
- static int rmw_xireg(CPURISCVState *env, int csrno, target_ulong *val,
-                      target_ulong new_val, target_ulong wr_mask)
- {
--    bool virt;
-+    bool virt, isel_reserved;
-     uint8_t *iprio;
-     int ret = -EINVAL;
-     target_ulong priv, isel, vgein;
-@@ -1695,6 +1695,7 @@ static int rmw_xireg(CPURISCVState *env, int csrno, target_ulong *val,
- 
-     /* Decode register details from CSR number */
-     virt = false;
-+    isel_reserved = false;
-     switch (csrno) {
-     case CSR_MIREG:
-         iprio = env->miprio;
-@@ -1739,11 +1740,13 @@ static int rmw_xireg(CPURISCVState *env, int csrno, target_ulong *val,
-                                                   riscv_cpu_mxl_bits(env)),
-                                     val, new_val, wr_mask);
-         }
-+    } else {
-+        isel_reserved = true;
-     }
- 
- done:
-     if (ret) {
--        return (env->virt_enabled && virt) ?
-+        return (env->virt_enabled && virt && !isel_reserved) ?
-                RISCV_EXCP_VIRT_INSTRUCTION_FAULT : RISCV_EXCP_ILLEGAL_INST;
-     }
-     return RISCV_EXCP_NONE;
--- 
-2.27.0
+But I agree, let's wait for a bit more.  It was a large amount of changes.
+Myself, I tend to think about 8.0 having quite broken linux-user.
 
+/mjt
 
