@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F423277E387
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Aug 2023 16:27:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 049F977E390
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Aug 2023 16:28:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWHSb-0003r5-PE; Wed, 16 Aug 2023 10:25:21 -0400
+	id 1qWHSd-0003ty-Cn; Wed, 16 Aug 2023 10:25:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qWHSZ-0003q9-Sf
- for qemu-devel@nongnu.org; Wed, 16 Aug 2023 10:25:19 -0400
-Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qWHSb-0003rR-JV
+ for qemu-devel@nongnu.org; Wed, 16 Aug 2023 10:25:21 -0400
+Received: from smtp-out1.suse.de ([195.135.220.28])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qWHSX-0003hr-Kx
- for qemu-devel@nongnu.org; Wed, 16 Aug 2023 10:25:19 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qWHSZ-0003jS-DF
+ for qemu-devel@nongnu.org; Wed, 16 Aug 2023 10:25:21 -0400
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 4EA6A1F855;
- Wed, 16 Aug 2023 14:25:16 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 4CD052190B;
+ Wed, 16 Aug 2023 14:25:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1692195916; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1692195918; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=gQVDJc/VWRXwS0mHPY1vDLVZJ1suUUTu444PbUJHcVk=;
- b=tKQIVJqGxZv89oNmVijG07kInwgyCZOzsU0qi0tg8t2rvi80eTih2QkG/3o2rbIxOpvPP4
- ikjrj5NE+IRy2voFIkmGfWoCrmsnflcGLaPPbx3hSHORVmrNdie05bv8vHfEkXQpfymqP/
- Z0XMzQZdO2QLmylAbiRhYFHq4gLW1fI=
+ bh=jAsBqbZmyUB1R931rGfF3+iNeAKRaD7BagsRZjWBM0I=;
+ b=HDrbjv1idM79n+u3HVqOEjE8Q/SSE+iyjUEuPS3BgUewojaF5U7MUR9XJi2jkoDOtUbJ4X
+ WG7TYuZvoD+uqxL5hrmvmUnrKR9fJboKOQs48GZ9nsBPWyZnVvc0jkpEGHJJoHUxO9J1bg
+ jPQlxa+ho8eHQ/OhkdW5Cq1t8XaDp18=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1692195916;
+ s=susede2_ed25519; t=1692195918;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=gQVDJc/VWRXwS0mHPY1vDLVZJ1suUUTu444PbUJHcVk=;
- b=5UWiSajevqu0V9GEfwgqMtrtPnfSMH0Zyg7+1kGpHgM2YrkF1/YGyAaPuG7L8IGHfy6kY9
- I+RXnAOYbzgzUBCQ==
+ bh=jAsBqbZmyUB1R931rGfF3+iNeAKRaD7BagsRZjWBM0I=;
+ b=bgUKneSOFHz2OWc7CwozNOIs9zhLHS1ivFbvAeZtqFzbwUUgj7mxMju7FI+KhgSfZVsuZG
+ Xk6/S1iCE7yfAaDg==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id C0649133F2;
- Wed, 16 Aug 2023 14:25:14 +0000 (UTC)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id BBF41133F2;
+ Wed, 16 Aug 2023 14:25:16 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id cLDWIUrc3GShdwAAMHmgww
- (envelope-from <farosas@suse.de>); Wed, 16 Aug 2023 14:25:14 +0000
+ by imap2.suse-dmz.suse.de with ESMTPSA id oHwNIUzc3GShdwAAMHmgww
+ (envelope-from <farosas@suse.de>); Wed, 16 Aug 2023 14:25:16 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  Wei Wang <wei.w.wang@intel.com>, Leonardo Bras <leobras@redhat.com>
-Subject: [PATCH v4 1/8] migration: Fix possible race when setting
- rp_state.error
-Date: Wed, 16 Aug 2023 11:25:03 -0300
-Message-Id: <20230816142510.5637-2-farosas@suse.de>
+Subject: [PATCH v4 2/8] migration: Fix possible races when shutting down the
+ return path
+Date: Wed, 16 Aug 2023 11:25:04 -0300
+Message-Id: <20230816142510.5637-3-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20230816142510.5637-1-farosas@suse.de>
 References: <20230816142510.5637-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:67c:2178:6::1d; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
+Received-SPF: pass client-ip=195.135.220.28; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -86,31 +86,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We don't need to set the rp_state.error right after a shutdown because
-qemu_file_shutdown() always sets the QEMUFile error, so the return
-path thread would have seen it and set the rp error itself.
+We cannot call qemu_file_shutdown() on the return path file without
+taking the file lock. The return path thread could be running it's
+cleanup code and have just cleared the from_dst_file pointer.
 
-Setting the error outside of the thread is also racy because the
-thread could clear it after we set it.
+Checking ms->to_dst_file for errors could also race with
+migrate_fd_cleanup() which clears the to_dst_file pointer.
 
-Reviewed-by: Peter Xu <peterx@redhat.com>
+Protect both accesses by taking the file lock.
+
+This was caught by inspection, it should be rare, but the next patches
+will start calling this code from other places, so let's do the
+correct thing.
+
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/migration.c | 1 -
- 1 file changed, 1 deletion(-)
+ migration/migration.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
 diff --git a/migration/migration.c b/migration/migration.c
-index 5528acb65e..f88c86079c 100644
+index f88c86079c..85c171f32c 100644
 --- a/migration/migration.c
 +++ b/migration/migration.c
-@@ -2062,7 +2062,6 @@ static int await_return_path_close_on_source(MigrationState *ms)
-          * waiting for the destination.
-          */
-         qemu_file_shutdown(ms->rp_state.from_dst_file);
--        mark_source_rp_bad(ms);
+@@ -2052,17 +2052,18 @@ static int open_return_path_on_source(MigrationState *ms,
+ static int await_return_path_close_on_source(MigrationState *ms)
+ {
+     /*
+-     * If this is a normal exit then the destination will send a SHUT and the
+-     * rp_thread will exit, however if there's an error we need to cause
+-     * it to exit.
++     * If this is a normal exit then the destination will send a SHUT
++     * and the rp_thread will exit, however if there's an error we
++     * need to cause it to exit. shutdown(2), if we have it, will
++     * cause it to unblock if it's stuck waiting for the destination.
+      */
+-    if (qemu_file_get_error(ms->to_dst_file) && ms->rp_state.from_dst_file) {
+-        /*
+-         * shutdown(2), if we have it, will cause it to unblock if it's stuck
+-         * waiting for the destination.
+-         */
+-        qemu_file_shutdown(ms->rp_state.from_dst_file);
++    WITH_QEMU_LOCK_GUARD(&ms->qemu_file_lock) {
++        if (ms->to_dst_file && ms->rp_state.from_dst_file &&
++            qemu_file_get_error(ms->to_dst_file)) {
++            qemu_file_shutdown(ms->rp_state.from_dst_file);
++        }
      }
++
      trace_await_return_path_close_on_source_joining();
      qemu_thread_join(&ms->rp_state.rp_thread);
+     ms->rp_state.rp_thread_created = false;
 -- 
 2.35.3
 
