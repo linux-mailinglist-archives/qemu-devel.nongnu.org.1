@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 712BD77DE88
+	by mail.lfdr.de (Postfix) with ESMTPS id 72B5C77DE89
 	for <lists+qemu-devel@lfdr.de>; Wed, 16 Aug 2023 12:22:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWDdg-00078o-A2; Wed, 16 Aug 2023 06:20:32 -0400
+	id 1qWDel-0007Xv-1Q; Wed, 16 Aug 2023 06:21:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1qWDdd-00077v-Jg; Wed, 16 Aug 2023 06:20:29 -0400
+ id 1qWDec-0007U6-Qc; Wed, 16 Aug 2023 06:21:30 -0400
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1qWDdY-0002gY-LL; Wed, 16 Aug 2023 06:20:29 -0400
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+ id 1qWDea-0002qx-M3; Wed, 16 Aug 2023 06:21:30 -0400
+Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 37GAAGUs010194; Wed, 16 Aug 2023 10:20:07 GMT
+ 37GA9kDV029758; Wed, 16 Aug 2023 10:21:15 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=message-id : subject :
  from : to : cc : date : in-reply-to : references : content-type :
  content-transfer-encoding : mime-version; s=pp1;
- bh=9u900TCHbujvcFWLfqN5QGm8BAQg5s0UB5ycX/mLN88=;
- b=kCHxSDQRcrFoxqP3in4ab13FZUA0E2W7rWTy55E8rHMbcBgq6cF5x/qiFlsw+cBEqeuy
- /nKiGYrxiYwvPqd0E0sUKsX1ymb1vW4WswKNW9uhFe+GRLb0weqWDS0ifgrktmLVblT3
- ZtEtjEPREzfdoPo43H0aFCjC15vM/rwPiV4/4kkyss3qeTC8jgqky5lnkATiHOoekMlt
- YMznEdIci5P1AH0Mq0PRZZw19OxcIHnf75FpJqTAqZ+tr1ILaUzHPpcx8OOGavEiKlN0
- +xLonj62ueCoMUOx+Kg/9YEjZhMlnMboIHaPHKS5diZeV1lglZd4PWaje/QTDT0E0xXG TA== 
+ bh=my98DqpJsGjhJRWyTjoeT8RWhtWMpxbap4VzCASW7+8=;
+ b=WfjkkTrUAEYdjCVGCLBfFQ6ytDlNo33R6A3Uu4stfk94gj31VXuZWi3AlMiU/sX+eT/+
+ iXBOhW+6Z/DM24XOUw5wFcO67GdEtbr/10RzU0v5bLHoRCH2DfPKMdCso48J5qF4dqAL
+ tTLWp9Uh2h1iBjJOZRlcPg8ZzQ6FsnO9PvttTzhLTE389cQEgTfOYgBuaLh7YD0yMrEV
+ i4wVjAC/tCTKPd4eu7V0mSSQXHqaWYCDHll4gG/yVU5SBRcaFqzRPkkDXxrV29PD9pTN
+ j2NBib+iIpvFUf1XTUakEcLEZSzVwKXK2nXxvDJM6jXBZJEyf0erGn03fwltUxMqBhGj Xg== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sgv49s6cr-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sgv96grry-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 16 Aug 2023 10:20:06 +0000
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 37GAB3cY016667;
- Wed, 16 Aug 2023 10:20:05 GMT
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sgv49s6c9-1
+ Wed, 16 Aug 2023 10:21:14 +0000
+Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 37GAAqX8003918;
+ Wed, 16 Aug 2023 10:21:14 GMT
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sgv96grrm-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 16 Aug 2023 10:20:05 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 37G8sVlb002418; Wed, 16 Aug 2023 10:20:04 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3sendnbgyc-1
+ Wed, 16 Aug 2023 10:21:14 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 37G7tKhf001073; Wed, 16 Aug 2023 10:21:13 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3semsybu46-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 16 Aug 2023 10:20:04 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
- [10.20.54.106])
- by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 37GAK1nc43123036
+ Wed, 16 Aug 2023 10:21:13 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
+ [10.20.54.102])
+ by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 37GALB7m13238934
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 16 Aug 2023 10:20:02 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A55352004D;
- Wed, 16 Aug 2023 10:20:01 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2F9362004B;
- Wed, 16 Aug 2023 10:20:01 +0000 (GMT)
+ Wed, 16 Aug 2023 10:21:11 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4A20520043;
+ Wed, 16 Aug 2023 10:21:11 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id EC7A920040;
+ Wed, 16 Aug 2023 10:21:10 +0000 (GMT)
 Received: from [9.155.200.166] (unknown [9.155.200.166])
- by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Wed, 16 Aug 2023 10:20:01 +0000 (GMT)
-Message-ID: <130aa9ee49dffd9ecc1006b17b9e82734837d7d9.camel@linux.ibm.com>
-Subject: Re: [PATCH 4/9] tests: remove test-gdbstub.py
+ by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Wed, 16 Aug 2023 10:21:10 +0000 (GMT)
+Message-ID: <500264e15aa52df6350474407533722451b03667.camel@linux.ibm.com>
+Subject: Re: [PATCH 5/9] tests/tcg: clean-up gdb confirm/pagination settings
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 To: Alex =?ISO-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
  qemu-devel@nongnu.org
@@ -79,26 +79,26 @@ Cc: Beraldo Leal <bleal@redhat.com>, Wainer dos Santos Moschetta
  <richard.henderson@linaro.org>, qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
  Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, Nicholas
  Piggin <npiggin@gmail.com>
-Date: Wed, 16 Aug 2023 12:20:01 +0200
-In-Reply-To: <20230815145126.3444183-5-alex.bennee@linaro.org>
+Date: Wed, 16 Aug 2023 12:20:55 +0200
+In-Reply-To: <20230815145126.3444183-6-alex.bennee@linaro.org>
 References: <20230815145126.3444183-1-alex.bennee@linaro.org>
- <20230815145126.3444183-5-alex.bennee@linaro.org>
+ <20230815145126.3444183-6-alex.bennee@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: base64
 User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: FWSOOWtZ3zsaCxVSnJ9iK_iQImQnL2Hi
-X-Proofpoint-GUID: y5vWNht9k8vlPQaD1DUiIywo0YhqueDm
+X-Proofpoint-GUID: gXdsJjk_pGp47ClM3elmEkTFF1VRImsQ
+X-Proofpoint-ORIG-GUID: FQRAqIT9N_0wfRphBCdyYLBfyJBE5SC9
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
  definitions=2023-08-16_08,2023-08-15_02,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- phishscore=0 impostorscore=0 suspectscore=0 clxscore=1011 mlxscore=0
- mlxlogscore=929 lowpriorityscore=0 malwarescore=0 spamscore=0 bulkscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2308160090
+ priorityscore=1501 mlxscore=0
+ bulkscore=0 adultscore=0 suspectscore=0 mlxlogscore=999 impostorscore=0
+ lowpriorityscore=0 spamscore=0 malwarescore=0 clxscore=1015 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2306200000
+ definitions=main-2308160090
 Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
  helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -19
@@ -123,23 +123,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 2023-08-15 at 15:51 +0100, Alex Benn=C3=A9e wrote:
-> This isn't directly called by our CI and because it doesn't run via
-> our run-test.py script does things slightly differently. Lets remove
-> it as we have plenty of working in-tree tests now for various aspects
-> of gdbstub.
->=20
-> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
-> ---
-> =C2=A0tests/guest-debug/test-gdbstub.py | 177 ---------------------------=
--
-> --
-> =C2=A01 file changed, 177 deletions(-)
-> =C2=A0delete mode 100644 tests/guest-debug/test-gdbstub.py
+T24gVHVlLCAyMDIzLTA4LTE1IGF0IDE1OjUxICswMTAwLCBBbGV4IEJlbm7DqWUgd3JvdGU6Cj4g
+V2UgY2FuIGRvIHRoaXMgYWxsIGluIHRoZSBydW4tdGVzdC5weSBzY3JpcHQgc28gcmVtb3ZlIHRo
+ZSBleHRyYW5lb3VzCj4gYml0cyBmcm9tIHRoZSBpbmRpdmlkdWFsIHRlc3RzIHdoaWNoIGdvdCBj
+b3BpZWQgZnJvbSB0aGUgb3JpZ2luYWwKPiBub24tQ0kgZ2RiIHRlc3RzLgo+IAo+IFNpZ25lZC1v
+ZmYtYnk6IEFsZXggQmVubsOpZSA8YWxleC5iZW5uZWVAbGluYXJvLm9yZz4KPiAtLS0KPiDCoHRl
+c3RzL2d1ZXN0LWRlYnVnL3J1bi10ZXN0LnB5wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgIHwgMiArKwo+IMKgdGVzdHMvdGNnL2FhcmNoNjQvZ2Ric3R1Yi90
+ZXN0LXN2ZS1pb2N0bC5wecKgwqDCoMKgwqDCoMKgwqDCoMKgIHwgMyAtLS0KPiDCoHRlc3RzL3Rj
+Zy9hYXJjaDY0L2dkYnN0dWIvdGVzdC1zdmUucHnCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoCB8IDMgLS0tCj4gwqB0ZXN0cy90Y2cvbXVsdGlhcmNoL2dkYnN0dWIvbWVtb3J5LnB5wqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgfCAzIC0tLQo+IMKgdGVzdHMvdGNnL211bHRp
+YXJjaC9nZGJzdHViL3NoYTEucHnCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAg
+fCA0IC0tLS0KPiDCoHRlc3RzL3RjZy9tdWx0aWFyY2gvZ2Ric3R1Yi90ZXN0LXByb2MtbWFwcGlu
+Z3MucHnCoMKgwqDCoCB8IDQgLS0tLQo+IMKgdGVzdHMvdGNnL211bHRpYXJjaC9nZGJzdHViL3Rl
+c3QtcXhmZXItYXV4di1yZWFkLnB5wqDCoCB8IDQgLS0tLQo+IMKgdGVzdHMvdGNnL211bHRpYXJj
+aC9nZGJzdHViL3Rlc3QtdGhyZWFkLWJyZWFrcG9pbnQucHkgfCA0IC0tLS0KPiDCoHRlc3RzL3Rj
+Zy9zMzkweC9nZGJzdHViL3Rlc3Qtc2lnbmFscy1zMzkweC5wecKgwqDCoMKgwqDCoMKgwqAgfCA0
+IC0tLS0KPiDCoHRlc3RzL3RjZy9zMzkweC9nZGJzdHViL3Rlc3Qtc3ZjLnB5wqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHwgNCAtLS0tCj4gwqAxMCBmaWxlcyBjaGFuZ2VkLCAy
+IGluc2VydGlvbnMoKyksIDMzIGRlbGV0aW9ucygtKQoKQWNrZWQtYnk6IElseWEgTGVvc2hrZXZp
+Y2ggPGlpaUBsaW51eC5pYm0uY29tPgo=
 
-There doesn't seem to be a hbreak test elsewhere, but according to a
-comment in tcg/multiarch/gdbstub/memory.py it would be mapped to a
-normal break anyway.
-
-Acked-by: Ilya Leoshkevich <iii@linux.ibm.com>
 
