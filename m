@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E352277E63E
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Aug 2023 18:21:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A22AE77E64D
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Aug 2023 18:25:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWJFQ-0001G1-GI; Wed, 16 Aug 2023 12:19:52 -0400
+	id 1qWJK8-00035q-17; Wed, 16 Aug 2023 12:24:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qWJFO-0001FW-4R
- for qemu-devel@nongnu.org; Wed, 16 Aug 2023 12:19:50 -0400
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ id 1qWJK7-00035Z-3k
+ for qemu-devel@nongnu.org; Wed, 16 Aug 2023 12:24:43 -0400
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qWJFL-0004BQ-Ub
- for qemu-devel@nongnu.org; Wed, 16 Aug 2023 12:19:49 -0400
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-68730bafa6bso5198192b3a.1
- for <qemu-devel@nongnu.org>; Wed, 16 Aug 2023 09:19:47 -0700 (PDT)
+ id 1qWJK4-0005N1-VF
+ for qemu-devel@nongnu.org; Wed, 16 Aug 2023 12:24:42 -0400
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-6889078ee66so618778b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 16 Aug 2023 09:24:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692202785; x=1692807585;
+ d=linaro.org; s=google; t=1692203079; x=1692807879;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=gXnTbTf6A4HY57w0Fnc3Ur+Ep689FAD6R3EpGjHk0cg=;
- b=PNBJeotwqJhl1E+f6ZI1OrQ/q600/WnwIdmwBIw5K555QBiF5mXGXl4pEffuQv1EUk
- jsC35l9HUCfc2RHzoqyP7bkBrIF6t6YF3Wyru4UVDo+xHMwtbK1S79QRWIOLVfQ3vDHE
- +rwZGcDsHA0dAJMNTVPypOFC4gcYtsHBnMcMcIcn2/CAxmA6YmBulCR6TKOpYhUkmFy0
- 2vTT/UTWLohHzb6gMjNbNVrVxdEXII/bqTHDdscutmrhVuJc0cb78e3KQT1kZY0EhBGt
- HUnZ7cktWigMVEqzD/pa77hMTslBU6F+OGfqjSc6NyYo/mX/7t6KYZCVU3NlQCIUs9Ud
- JFrQ==
+ bh=s0z9lc49cWiRjqOYj3ezdgKSt2EcK8Hg5wx8IQ4VSvM=;
+ b=gQrfr42/PgF8MNP6h0Yznyn94Ueoi0iYHHCb42IgYW6jBc3T4RpCB/H0C/6kHjjtCk
+ XgmGFCZ4UhnT2UpcW8Aq1XLsolFqcRmf1+1BwPIwPTOC9MhP4wLU/S2u5mPZD6PipOPb
+ muKk4IEtNt4BmRiG4ZMJz11jC0bKA9nrpkA3G6+I6xDkgjpbH9Y8uclqiF51uloMgKAE
+ aNrdquJ2jZGTrQtP/PIOK06fUpu/Z+0XJEeQoo5nskiF23SSA4eO/p/tVh+B+8Zv8jVR
+ N3f+00pozLuh4QoX41CTf+n0trXS2pcrf+OF74MI7BGqw2bA0GDXJ+DXCSDWVtVg+bpo
+ sMeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692202785; x=1692807585;
+ d=1e100.net; s=20221208; t=1692203079; x=1692807879;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=gXnTbTf6A4HY57w0Fnc3Ur+Ep689FAD6R3EpGjHk0cg=;
- b=Ol+btE8xLDfXKMR6V0cqB4mupzjZb2YfC6eqRZHr0N1yaVmIpVWxMEymsMVpyAIoPi
- wPrld0bC9T5dFxYeNEXEWM12OiXlMDMb8B3ye+9s7uI3EJdNP4ABBKDQ9WrABqlRlKHk
- EDMoC4GdSnPToXjptHxqPMThKNyVcbyA50r/IWbMWdNvoLBIey8Z98ug/dSmPPPSIFcn
- BZXw4FZ7k742r5uVsLyR/kZTkGHrflPY1SsvL/YAiYvmc1CjwjIH2UmbU3Ak1JdXCkSv
- bdXQb8BgveBwWalYNc8AWgXwZd6hqg3JZYzvEU2JzCSh60b1JOZLuMBbYvmya0Uo/v5t
- 6JNw==
-X-Gm-Message-State: AOJu0Yyn36wknoIcHXu0LwOziLQQhDLUhrcv4BLWHt9V6TfbfJvZR+Wm
- 6nheQUZi6rXo4nZChBX/aqt1tNYlUvwl7udQEyI=
-X-Google-Smtp-Source: AGHT+IGLkaEO++uPFCPiNDqpecVPF/6YavaQzyugXla2VrXzWrefvfZ+NsqGUPfD6kmtooh+CeJ3nA==
-X-Received: by 2002:a05:6a20:1455:b0:127:76ab:a6ff with SMTP id
- a21-20020a056a20145500b0012776aba6ffmr174377pzi.22.1692202785316; 
- Wed, 16 Aug 2023 09:19:45 -0700 (PDT)
+ bh=s0z9lc49cWiRjqOYj3ezdgKSt2EcK8Hg5wx8IQ4VSvM=;
+ b=QlKT3fQ/xiSjQcW5BHZuZEW73DSmuxCX6TMuoJCnnj5XnZxpJfo7g80KO4oUpNVs/I
+ spqQc0/jq8Fav3bjB3yLHEWrUCj6RDFqtsonIzk7UxMmuI/H6kI1vsoEId2jzqzbyGwq
+ 00L2cICTEwIdWKiD9JPQ1T03KVzfem3rM5yv85vGw/SnEpN6UqoNLZ0gT3NBiix49G5c
+ /fkyHhxEVomcI+2Lm7pa4Igb7vIH1tM9DReGAAi8S9QsiWic5NLAooaAW425pCtKYAR4
+ XLKVm8OGbTlFQ54kPqtrhGCUyejTGB6yTKllFbIP08DjcRskxjwVvBPy65RTbQVmoX29
+ be+g==
+X-Gm-Message-State: AOJu0Yyh7d9v+gT2Yzta76uu0OC2yd6eZpMX/Mye5fhMPVg9EOuKu+bQ
+ LcGOMOZzDq4PR7tl4A9eeybmDg==
+X-Google-Smtp-Source: AGHT+IFNb/EB6hauaj8j9wrG0NXILQJH9Rh6QHtp8meosLFSq0RUTGUXak+nSzPrgU4B1+C2I5FAcw==
+X-Received: by 2002:a05:6a21:789b:b0:141:d594:c85d with SMTP id
+ bf27-20020a056a21789b00b00141d594c85dmr3080414pzc.0.1692203079318; 
+ Wed, 16 Aug 2023 09:24:39 -0700 (PDT)
 Received: from ?IPV6:2602:47:d483:7301:a064:e3f9:a812:973b?
  ([2602:47:d483:7301:a064:e3f9:a812:973b])
  by smtp.gmail.com with ESMTPSA id
- o4-20020a63a804000000b005651c9351e1sm12159045pgf.64.2023.08.16.09.19.44
+ q3-20020a656a83000000b0054fa8539681sm11201398pgu.34.2023.08.16.09.24.38
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 16 Aug 2023 09:19:44 -0700 (PDT)
-Message-ID: <f51caa46-f26b-0828-18a5-99acf27d786d@linaro.org>
-Date: Wed, 16 Aug 2023 09:19:43 -0700
+ Wed, 16 Aug 2023 09:24:38 -0700 (PDT)
+Message-ID: <c7cf144b-b9cc-8d70-e8c5-a96c6533b4e7@linaro.org>
+Date: Wed, 16 Aug 2023 09:24:37 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH v4 08/25] target/arm: Use GDBFeature for dynamic XML
+Subject: Re: [PATCH v4 09/25] target/ppc: Use GDBFeature for dynamic XML
 Content-Language: en-US
 To: Akihiko Odaki <akihiko.odaki@daynix.com>
 Cc: qemu-devel <qemu-devel@nongnu.org>
 References: <20230816145155.21049-1-akihiko.odaki@daynix.com>
- <20230816145155.21049-9-akihiko.odaki@daynix.com>
+ <20230816145155.21049-10-akihiko.odaki@daynix.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230816145155.21049-9-akihiko.odaki@daynix.com>
+In-Reply-To: <20230816145155.21049-10-akihiko.odaki@daynix.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42d.google.com
 X-Spam_score_int: -52
 X-Spam_score: -5.3
 X-Spam_bar: -----
@@ -103,18 +103,13 @@ On 8/16/23 07:51, Akihiko Odaki wrote:
 > 
 > Signed-off-by: Akihiko Odaki<akihiko.odaki@daynix.com>
 > ---
->   target/arm/cpu.h       |  20 +++---
->   target/arm/internals.h |   2 +-
->   target/arm/gdbstub.c   | 134 ++++++++++++++++++-----------------------
->   target/arm/gdbstub64.c |  90 ++++++++++++---------------
->   4 files changed, 108 insertions(+), 138 deletions(-)
+>   target/ppc/cpu-qom.h  |  3 +--
+>   target/ppc/cpu.h      |  2 +-
+>   target/ppc/cpu_init.c |  2 +-
+>   target/ppc/gdbstub.c  | 45 ++++++++++++++-----------------------------
+>   4 files changed, 17 insertions(+), 35 deletions(-)
 
-This is quite large, and I think you could have converted the different subsystems one at 
-a time (especially since you renamed the structure, and so both could exist side-by-side). 
-  But I won't insist.
-
-Acked-by: Richard Henderson <richard.henderson@linaro.org>
-
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 r~
 
