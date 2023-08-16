@@ -2,117 +2,114 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FD6177E312
+	by mail.lfdr.de (Postfix) with ESMTPS id 716B977E311
 	for <lists+qemu-devel@lfdr.de>; Wed, 16 Aug 2023 15:53:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWGwl-0004do-VH; Wed, 16 Aug 2023 09:52:27 -0400
+	id 1qWGxN-00062j-GW; Wed, 16 Aug 2023 09:53:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qWGwL-0004Os-B5
- for qemu-devel@nongnu.org; Wed, 16 Aug 2023 09:52:02 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qWGwG-0004RH-SZ
- for qemu-devel@nongnu.org; Wed, 16 Aug 2023 09:51:59 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1bdb801c667so42331835ad.1
- for <qemu-devel@nongnu.org>; Wed, 16 Aug 2023 06:51:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1692193913; x=1692798713;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=mZPCtM4gFlUO1eqBWQfyY/Y18ssOpc6HOYefevkB3hs=;
- b=E60lamU47sZQxI2mdxzaxIpzQ585cW73J6EcnIGUtt0mZ/TNXdyWMp2/dzxmLzyAfE
- Mu9LEylJIpAXxmDtu/izPvlfN/2tTaEfobzongnhiN/H75mF1tZM5KtcMx7wvcKqdGi6
- q22Oz6PXtIByw2bMo+CyND45GwR4JhJ74HXkvd2h5zmd7Py98uy4BGoGPVopqHtB8LSs
- AeH0zL/KiendIdwPw+xkOFfAHbOK7N/mIXRFAl63WX+dt3nS24h8J5RTTAORqtZfdL8r
- bZDS5s0hCOOkaMA5VCy1sdeKYT7TyloC8v5VknLg8AjYzAnMerp5cNFZ1K4wWw822ChR
- HS8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692193913; x=1692798713;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=mZPCtM4gFlUO1eqBWQfyY/Y18ssOpc6HOYefevkB3hs=;
- b=KTwkZuivGbcsPfbIenrLDCV78h6LBWugVRRQvn0WNUOCDubRyoO+1nBSRWh+95c2ib
- 4K8qFmAFOAHttbbdBETucE4t7rwe+DRqYPFsp8Mr9OLSVUcmjZ0ZvjpURX5XYXMqWm7r
- o6tXTb7vwUgcKz0YN0yfS2iNxi/nznhfDeoed4QHJNjY7SvOa9Q8Lh8rGhmajjiMqIZw
- fKn86tPIGYDnngpafJTvsmn3TSiMr5eFT/VYsZX1ub99NVVELz7K8Z30rlkbGIOMNHIm
- Ua3tov5qjNqdivVhGkgGt/AVK2gGrvB7xRscej8FFm2kCz5Mpz/7k8ZhTbrx/ajHtX/E
- akhg==
-X-Gm-Message-State: AOJu0YzOCg00pgGsgmNvpP2+Br6HjvWOHbN2JSaH1vh0+ZQ09yn2Eqb2
- E21yyu8chwp1zRJ3Lcto6KYiZA==
-X-Google-Smtp-Source: AGHT+IF76m2gteYuU/ME8SyVTBxUSaRFmuZxrPHwMaaIRkLTBOKQwLw0o3YjJK7lICXb524S6ruUtA==
-X-Received: by 2002:a17:902:bc89:b0:1bd:af7e:965d with SMTP id
- bb9-20020a170902bc8900b001bdaf7e965dmr2060152plb.51.1692193912914; 
- Wed, 16 Aug 2023 06:51:52 -0700 (PDT)
-Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
- ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
- by smtp.gmail.com with ESMTPSA id
- 8-20020a17090a034800b00262e485156esm14092117pjf.57.2023.08.16.06.51.44
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 16 Aug 2023 06:51:52 -0700 (PDT)
-Message-ID: <b1b4843e-038c-43ac-8aa0-b95312b0806a@daynix.com>
-Date: Wed, 16 Aug 2023 22:51:43 +0900
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 12/24] gdbstub: Simplify XML lookup
-Content-Language: en-US
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Alexandre Iooss <erdnaxe@crans.org>, Mahmoud Mandour
- <ma.mandourr@gmail.com>, Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Michael Rolnik
- <mrolnik@gmail.com>, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Brian Cain <bcain@quicinc.com>, Song Gao <gaosong@loongson.cn>,
- Xiaojuan Yang <yangxiaojuan@loongson.cn>, Laurent Vivier
- <laurent@vivier.eu>, Aurelien Jarno <aurelien@aurel32.net>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Chris Wulff <crwulff@gmail.com>, Marek Vasut <marex@denx.de>,
- Stafford Horne <shorne@gmail.com>,
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1qWGxE-0005aA-4F; Wed, 16 Aug 2023 09:52:56 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1qWGx9-0004a9-Mt; Wed, 16 Aug 2023 09:52:55 -0400
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 37GDgCdA032398; Wed, 16 Aug 2023 13:52:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=xRRU3RFSZsbdvilORURzGUYmelh6TkAb5D63J+up9Hc=;
+ b=lUYlyyF2HCmOmi2D8bk3928bKcx5hKFDYWD1emlWCx/rz/eIlUeq5DcXjgaBKtOo7bZj
+ MX+klAZr0Oq2KRXc0gXqnZ9dpEpd6r4tFDi4FRMAWCUEX8nTo3+8lytfYS8GISFj1nu8
+ PLM17gmjhri4gypkNz85vLOmKb2vWshBshV7G8a//OgV5Cst39YAg1SF7KBuV7M2vNWa
+ X/tmyitrSU/fpbZe314oTEDeeXY0SbZ8HpLLk0TCaYe29/7q+xngwOAcUHIX+ys6YZMD
+ 4i/4ZmkkeIss0Duf9GQmHArypqsLGP4jV9AKEKbDfqs0Vnu2m4I86j7Qt3mS6b63Y8th nA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sgyjrg9u6-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 16 Aug 2023 13:52:27 +0000
+Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 37GDhiSh005124;
+ Wed, 16 Aug 2023 13:52:27 GMT
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sgyjrg9tc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 16 Aug 2023 13:52:27 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 37GBgctF002421; Wed, 16 Aug 2023 13:52:18 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3sendncmk0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 16 Aug 2023 13:52:18 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
+ [10.20.54.106])
+ by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 37GDqGnK12583654
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 16 Aug 2023 13:52:16 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 24A5520074;
+ Wed, 16 Aug 2023 13:52:16 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9C5142004B;
+ Wed, 16 Aug 2023 13:52:15 +0000 (GMT)
+Received: from [9.155.200.166] (unknown [9.155.200.166])
+ by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Wed, 16 Aug 2023 13:52:15 +0000 (GMT)
+Message-ID: <16b706dc49021acca0b3f490eb23b379b4e999d7.camel@linux.ibm.com>
+Subject: Re: [PATCH 4/9] tests: remove test-gdbstub.py
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Alex =?ISO-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Beraldo Leal <bleal@redhat.com>, Wainer dos Santos Moschetta
+ <wainersm@redhat.com>, Peter Maydell <peter.maydell@linaro.org>, Akihiko
+ Odaki <akihiko.odaki@daynix.com>, Thomas Huth <thuth@redhat.com>, David
+ Hildenbrand <david@redhat.com>,
+ Yonggang Luo <luoyonggang@gmail.com>, qemu-arm@nongnu.org,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
  David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
- Nicholas Piggin <npiggin@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Artyom Tarasenko <atar4qemu@gmail.com>,
- Bastian Koppelmann <kbastian@mail.uni-paderborn.de>,
- Max Filippov <jcmvbkbc@gmail.com>, qemu-devel@nongnu.org,
- qemu-arm@nongnu.org, qemu-ppc@nongnu.org, qemu-riscv@nongnu.org,
- qemu-s390x@nongnu.org
-References: <20230731084354.115015-1-akihiko.odaki@daynix.com>
- <20230731084354.115015-13-akihiko.odaki@daynix.com>
- <87jztxrbv0.fsf@linaro.org>
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <87jztxrbv0.fsf@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::62e;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62e.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=unavailable autolearn_force=no
+ =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>, Richard Henderson
+ <richard.henderson@linaro.org>, qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
+ Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, Nicholas
+ Piggin <npiggin@gmail.com>
+Date: Wed, 16 Aug 2023 15:52:15 +0200
+In-Reply-To: <87zg2rnoyv.fsf@linaro.org>
+References: <20230815145126.3444183-1-alex.bennee@linaro.org>
+ <20230815145126.3444183-5-alex.bennee@linaro.org>
+ <130aa9ee49dffd9ecc1006b17b9e82734837d7d9.camel@linux.ibm.com>
+ <87zg2rnoyv.fsf@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+MIME-Version: 1.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: yftG0zrRJWNDMVrXyGzINXIVVFVh82O2
+X-Proofpoint-ORIG-GUID: xuVwqsxBOWEj0EvLViU1shn3ZqW6yxKH
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-08-16_13,2023-08-15_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 clxscore=1015
+ adultscore=0 impostorscore=0 phishscore=0 bulkscore=0 spamscore=0
+ priorityscore=1501 lowpriorityscore=0 mlxscore=0 malwarescore=0
+ mlxlogscore=906 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2308160116
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -128,98 +125,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/08/14 22:27, Alex Bennée wrote:
-> 
-> Akihiko Odaki <akihiko.odaki@daynix.com> writes:
-> 
->> Now we know all instances of GDBFeature that is used in CPU so we can
->> traverse them to find XML. This removes the need for a CPU-specific
->> lookup function for dynamic XMLs.
->>
->> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
->> ---
->>   gdbstub/gdbstub.c | 28 +++++++++-------------------
->>   1 file changed, 9 insertions(+), 19 deletions(-)
->>
->> diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
->> index 182efe7e0f..e5bb2c89ba 100644
->> --- a/gdbstub/gdbstub.c
->> +++ b/gdbstub/gdbstub.c
->> @@ -354,8 +354,7 @@ static const char *get_feature_xml(const char *p, const char **newp,
->>                                      GDBProcess *process)
->>   {
->>       size_t len;
->> -    int i;
->> -    const char *name;
->> +    GDBRegisterState *r;
->>       CPUState *cpu = gdb_get_first_cpu_in_process(process);
->>       CPUClass *cc = CPU_GET_CLASS(cpu);
->>   
->> @@ -364,15 +363,12 @@ static const char *get_feature_xml(const char *p, const char **newp,
->>           len++;
->>       *newp = p + len;
->>   
->> -    name = NULL;
->>       if (strncmp(p, "target.xml", len) == 0) {
->>           char *buf = process->target_xml;
->>           const size_t buf_sz = sizeof(process->target_xml);
->>   
->>           /* Generate the XML description for this CPU.  */
->>           if (!buf[0]) {
->> -            GDBRegisterState *r;
->> -
->>               pstrcat(buf, buf_sz,
->>                       "<?xml version=\"1.0\"?>"
->>                       "<!DOCTYPE target SYSTEM \"gdb-target.dtd\">"
->> @@ -389,28 +385,22 @@ static const char *get_feature_xml(const char *p, const char **newp,
->>               pstrcat(buf, buf_sz, "\"/>");
->>               for (r = cpu->gdb_regs; r; r = r->next) {
->>                   pstrcat(buf, buf_sz, "<xi:include href=\"");
->> -                pstrcat(buf, buf_sz, r->feature->xml);
->> +                pstrcat(buf, buf_sz, r->feature->xmlname);
->>                   pstrcat(buf, buf_sz, "\"/>");
->>               }
->>               pstrcat(buf, buf_sz, "</target>");
->>           }
->>           return buf;
->>       }
-> 
-> It would be nice to modernise this code before adding to it. The static
-> target_xml buffer and use of pstrcat could be replaced by GString code
-> that is less sketchy.
+On Wed, 2023-08-16 at 13:33 +0100, Alex Benn=C3=A9e wrote:
+>=20
+> Ilya Leoshkevich <iii@linux.ibm.com> writes:
+>=20
+> > On Tue, 2023-08-15 at 15:51 +0100, Alex Benn=C3=A9e wrote:
+> > > This isn't directly called by our CI and because it doesn't run
+> > > via
+> > > our run-test.py script does things slightly differently. Lets
+> > > remove
+> > > it as we have plenty of working in-tree tests now for various
+> > > aspects
+> > > of gdbstub.
+> > >=20
+> > > Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+> > > ---
+> > > =C2=A0tests/guest-debug/test-gdbstub.py | 177 -----------------------=
+-
+> > > ----
+> > > --
+> > > =C2=A01 file changed, 177 deletions(-)
+> > > =C2=A0delete mode 100644 tests/guest-debug/test-gdbstub.py
+> >=20
+> > There doesn't seem to be a hbreak test elsewhere, but according to
+> > a
+> > comment in tcg/multiarch/gdbstub/memory.py it would be mapped to a
+> > normal break anyway.
+>=20
+> It is for TCG but for other accelerators there will be different
+> handling (although I'm fairly sure only x86 and aarch64 are currently
+> plumbed to use the CPUs hbreak bits on KVM).
+>=20
+> However this particular script was a very early addition when I was
+> testing stuff manually with images I'd built on my system. If we want
+> to
+> exercise the gdbstub for accelerators it might be better porting the
+> test to avocado?
 
-I saw you did that yourself. Nevertheless I included my own 
-implementation for the suggestion in v3. It uses 
-g_markup_printf_escaped() for extra caution and better readability (i.e. 
-the xi:include tags are written in a format: <xi:include href=\"%s\"/>).
+That would be good, yes.
 
-> 
-> 
->> -    if (cc->gdb_get_dynamic_xml) {
->> -        char *xmlname = g_strndup(p, len);
->> -        const char *xml = cc->gdb_get_dynamic_xml(cpu, xmlname);
->> -
->> -        g_free(xmlname);
->> -        if (xml) {
->> -            return xml;
->> -        }
->> +    if (strncmp(p, cc->gdb_core_feature->xmlname, len) == 0) {
->> +        return cc->gdb_core_feature->xml;
->>       }
->> -    for (i = 0; ; i++) {
->> -        name = gdb_features[i].xmlname;
->> -        if (!name || (strncmp(name, p, len) == 0 && strlen(name) == len))
->> -            break;
->> +    for (r = cpu->gdb_regs; r; r = r->next) {
->> +        if (strncmp(p, r->feature->xmlname, len) == 0) {
->> +            return r->feature->xml;
->> +        }
->>       }
->> -    return name ? gdb_features[i].xml : NULL;
->> +    return NULL;
->>   }
->>   
->>   const GDBFeature *gdb_find_static_feature(const char *xmlname)
-> 
-> 
+I was always wondering if the TCG sotfmmu tests could be used to test
+the other accelerators? At least for s390x there is nothing
+TCG-specific there (besides that they try to trigger TCG-specific
+problems), and I sometimes run them manually with KVM as a sanity
+check.
+
+>=20
+> >=20
+> > Acked-by: Ilya Leoshkevich <iii@linux.ibm.com>
+>=20
+>=20
+
 
