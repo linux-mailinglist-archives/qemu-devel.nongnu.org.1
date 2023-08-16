@@ -2,85 +2,117 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42F4777E398
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Aug 2023 16:31:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCAF977E3DE
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Aug 2023 16:40:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWHXo-00071f-At; Wed, 16 Aug 2023 10:30:44 -0400
+	id 1qWHfh-0001oa-D4; Wed, 16 Aug 2023 10:38:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qWHXl-00070e-0e
- for qemu-devel@nongnu.org; Wed, 16 Aug 2023 10:30:41 -0400
-Received: from mail-oa1-x33.google.com ([2001:4860:4864:20::33])
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qWHff-0001ng-9N
+ for qemu-devel@nongnu.org; Wed, 16 Aug 2023 10:38:51 -0400
+Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qWHXi-0005F7-Ge
- for qemu-devel@nongnu.org; Wed, 16 Aug 2023 10:30:40 -0400
-Received: by mail-oa1-x33.google.com with SMTP id
- 586e51a60fabf-1c504386374so2306419fac.3
- for <qemu-devel@nongnu.org>; Wed, 16 Aug 2023 07:30:37 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qWHfZ-0006r7-Ux
+ for qemu-devel@nongnu.org; Wed, 16 Aug 2023 10:38:51 -0400
+Received: by mail-pg1-x530.google.com with SMTP id
+ 41be03b00d2f7-5656a5c6721so3393870a12.1
+ for <qemu-devel@nongnu.org>; Wed, 16 Aug 2023 07:38:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1692196235; x=1692801035;
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1692196724; x=1692801524;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=XjNKwl8Qc1nrsG4trlgFsZ7QYGnKrYc56iHIo9r6SwI=;
- b=DcEkBwOOt1NHzvS4USGcs+L8a55WEVXQflvxL8R4RQnxmhRxr1IupNDH/DrrMnJivO
- HfVnSNYRqSbLWt1GJJYS+HT5Jzdx4VAVCvugTVFxBTqU5VXmYZNpqFkXxSkKgAFhlL3U
- 7wzlOYLj/k/xxZdbG6yIaCgh16rmtjRnkZapblUIAArTUs+hEeB/A1gP2dQSgdazY2qw
- ajJP8uL/7j9FaXtd/1YuZ30cshA5+mQnnfYzMtTlzpWgwdbhuYOF6YA58CB5kWbYpc0t
- kUNNGkldxKZRv97QotU80M8x5S/vy/K6/DiFnmY+PCkbH1as+S5mwQIL8regw2HHF8Bn
- PZbg==
+ bh=3vy8irCiRjxMGBJh0syZf8K1Z4YgDdsyyDlPabU98/8=;
+ b=x8rzI/3Gk1L9a++ypsDEVz4oBAAs7VKx3tb+V3iWbDGmU0gP5V+aPL7tfdo5gaARxk
+ fmZJDiy9mtbV9495LZOpMYhuMxc6zfXoe5RjkCmQoNMmpOjqwSXPv+lAcIY99cg28br/
+ +7nVYdf7zWdNXqLiWGr31UlOECR9U8ijCiZ3uG6R+Xe43osvI7AE/7iC4NNrU6F5nGwh
+ zkL8RUfc2aHBCq+rkoyFKVwcd9kKV4GWs5+98YpkPE7Ie0JoC3OafIYSWQ+7PxxQeewc
+ aLjQ5SYq2DuLFARk3b48eWKDbEnL/ETosOUKeOIJQ2zfz6Zhf9zl2Z9iHhH9eT6MC7RQ
+ mFBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692196235; x=1692801035;
+ d=1e100.net; s=20221208; t=1692196724; x=1692801524;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=XjNKwl8Qc1nrsG4trlgFsZ7QYGnKrYc56iHIo9r6SwI=;
- b=bAxUanmzOKIiN5p17IKQkXodyhf9Q3fA682Z3S9GD1PgGU1pxHAT0a1UOgz0x01JbV
- mqTEmJDBHqZcgeyuG8yARTQlQpzSX5Qey34iXjuhR8fRnaK+dOxuitAs8kN0LK8C1zyO
- AcMY3NtU4xKwhBWdzWXFfJQ4YyNI1s+qHPGJODWN9UdqqLDdc9wnZprpsYJH8McrRikQ
- QnWZggybB9wNcduRWnFwMxGXzB6X6jQkTAnYjS4xRQ3AyZSDUmQbgk3MEVi0qa6iHuWl
- QGta9MZtZVpVJSQOyFjNwZj76i6ofnSBdMmVZebgOtqmjbi6eQz+z8I+JSdB0/JCm/tu
- uHwQ==
-X-Gm-Message-State: AOJu0Yx7f911hhycHhcCg03pGfWM1t405+5VpWTah15GZr/FLxW0m27L
- KLvZTXjvGsvP+2NLlAt9N0AB2g==
-X-Google-Smtp-Source: AGHT+IGe5rbn57pcV5WvVMFRaVqzQn/8o/be4AqdrMj9UzCA4CC+sOY95dUCzD7HMiYDiMSUTIjeUQ==
-X-Received: by 2002:a05:6870:a102:b0:1bf:295a:68a9 with SMTP id
- m2-20020a056870a10200b001bf295a68a9mr2493050oae.19.1692196235325; 
- Wed, 16 Aug 2023 07:30:35 -0700 (PDT)
-Received: from [192.168.68.108] (189-69-160-189.dial-up.telesp.net.br.
- [189.69.160.189]) by smtp.gmail.com with ESMTPSA id
- e11-20020a4aaacb000000b0055516447257sm6015774oon.29.2023.08.16.07.30.32
+ bh=3vy8irCiRjxMGBJh0syZf8K1Z4YgDdsyyDlPabU98/8=;
+ b=hfZaWi/efdF2Pu9Ir0IUFVQeWf0ApHBO9ySZmAWs1F2DrmD9mXo1MGlEdYJ/TyhN1r
+ CjbqYI7EbC2AYhU6ne1zSMbbQXIQp41MURfr1dcQctYseiIGcXm5CpsY8aYBuYYRxSIB
+ irunOyZrW5OeKIYG3pQ3Jc9CO4XVOkM0bGuwjwrYBQ2TjUzNaZNEn8RVbI1AJmWv6OMN
+ Jgbz9Ma3od47oyApL6DPt65EjkcVObq8oGEqy5Ubo85k2YSYSxc+33SVA+E/d+L66TQT
+ CU4rJfphBG6zziEedLV5Eemo1ZPTx50UyC+DafapP01jlanjYdxnuXjAO/mBSjHzuCMz
+ V8Bg==
+X-Gm-Message-State: AOJu0YwOckFQFYyooICgeai4PSxRaVJAx+I1t9NqQnWcnYj8jDiaF0ge
+ pUinEQ6Ai91KX5iybltUDUChiw==
+X-Google-Smtp-Source: AGHT+IGcqiNtrNuajrTf+29kskQGA475FZAvML+xRhY5mG/vnZT+amGohpdfiWyS6YCLyboM4JPYEw==
+X-Received: by 2002:a17:90a:eb08:b0:268:1745:b61 with SMTP id
+ j8-20020a17090aeb0800b0026817450b61mr1537149pjz.34.1692196724023; 
+ Wed, 16 Aug 2023 07:38:44 -0700 (PDT)
+Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
+ ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
+ by smtp.gmail.com with ESMTPSA id
+ y13-20020a17090aca8d00b00262eccfa29fsm13139260pjt.33.2023.08.16.07.38.35
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 16 Aug 2023 07:30:35 -0700 (PDT)
-Message-ID: <be5d0ca7-3ab2-a6d5-d30f-c10cd9afb0a3@ventanamicro.com>
-Date: Wed, 16 Aug 2023 11:30:30 -0300
+ Wed, 16 Aug 2023 07:38:43 -0700 (PDT)
+Message-ID: <dc86c2d7-5e8e-4774-ae69-161c90eceef9@daynix.com>
+Date: Wed, 16 Aug 2023 23:38:33 +0900
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2] target/riscv: Update CSR bits name for svadu extension
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 21/24] plugins: Allow to read registers
 Content-Language: en-US
-To: Weiwei Li <liweiwei@iscas.ac.cn>, qemu-riscv@nongnu.org,
- qemu-devel@nongnu.org
-Cc: palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
- zhiwei_liu@linux.alibaba.com, wangjunqiang@iscas.ac.cn, lazyparser@gmail.com
-References: <20230816141916.66898-1-liweiwei@iscas.ac.cn>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20230816141916.66898-1-liweiwei@iscas.ac.cn>
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Alexandre Iooss <erdnaxe@crans.org>, Mahmoud Mandour
+ <ma.mandourr@gmail.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Michael Rolnik
+ <mrolnik@gmail.com>, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Brian Cain <bcain@quicinc.com>, Song Gao <gaosong@loongson.cn>,
+ Xiaojuan Yang <yangxiaojuan@loongson.cn>, Laurent Vivier
+ <laurent@vivier.eu>, Aurelien Jarno <aurelien@aurel32.net>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ Chris Wulff <crwulff@gmail.com>, Marek Vasut <marex@denx.de>,
+ Stafford Horne <shorne@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Artyom Tarasenko <atar4qemu@gmail.com>,
+ Bastian Koppelmann <kbastian@mail.uni-paderborn.de>,
+ Max Filippov <jcmvbkbc@gmail.com>, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org, qemu-ppc@nongnu.org, qemu-riscv@nongnu.org,
+ qemu-s390x@nongnu.org
+References: <20230731084354.115015-1-akihiko.odaki@daynix.com>
+ <20230731084354.115015-22-akihiko.odaki@daynix.com>
+ <87y1idpseh.fsf@linaro.org>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <87y1idpseh.fsf@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2001:4860:4864:20::33;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x33.google.com
-X-Spam_score_int: -52
-X-Spam_score: -5.3
-X-Spam_bar: -----
-X-Spam_report: (-5.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.165,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::530;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x530.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,161 +128,186 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 8/16/23 11:19, Weiwei Li wrote:
-> The Svadu specification updated the name of the *envcfg bit from
-> HADE to ADUE.
+On 2023/08/15 0:05, Alex Bennée wrote:
 > 
-> Signed-off-by: Weiwei Li <liweiwei@iscas.ac.cn>
-> Signed-off-by: Junqiang Wang <wangjunqiang@iscas.ac.cn>
-> ---
+> Akihiko Odaki <akihiko.odaki@daynix.com> writes:
+> 
+>> It is based on GDB protocol to ensure interface stability.
+> 
+> See comments bellow.
+> 
+>> The timing of the vcpu init hook is also changed so that the hook will
+>> get called after GDB features are initialized.
+> 
+> This might be worth splitting to a separate patch for cleaner bisecting.
+> 
+>>
+>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+>> ---
+>>   include/qemu/qemu-plugin.h   | 65 ++++++++++++++++++++++++++++++++++--
+>>   cpu.c                        | 11 ------
+>>   hw/core/cpu-common.c         | 10 ++++++
+>>   plugins/api.c                | 40 ++++++++++++++++++++++
+>>   plugins/qemu-plugins.symbols |  2 ++
+>>   5 files changed, 114 insertions(+), 14 deletions(-)
+>>
+>> diff --git a/include/qemu/qemu-plugin.h b/include/qemu/qemu-plugin.h
+>> index 50a9957279..214b12bfd6 100644
+>> --- a/include/qemu/qemu-plugin.h
+>> +++ b/include/qemu/qemu-plugin.h
+>> @@ -11,6 +11,7 @@
+>>   #ifndef QEMU_QEMU_PLUGIN_H
+>>   #define QEMU_QEMU_PLUGIN_H
+>>   
+>> +#include <glib.h>
+>>   #include <inttypes.h>
+>>   #include <stdbool.h>
+>>   #include <stddef.h>
+>> @@ -51,7 +52,7 @@ typedef uint64_t qemu_plugin_id_t;
+>>   
+>>   extern QEMU_PLUGIN_EXPORT int qemu_plugin_version;
+>>   
+>> -#define QEMU_PLUGIN_VERSION 1
+>> +#define QEMU_PLUGIN_VERSION 2
+>>   
+>>   /**
+>>    * struct qemu_info_t - system information for plugins
+>> @@ -218,8 +219,8 @@ struct qemu_plugin_insn;
+>>    * @QEMU_PLUGIN_CB_R_REGS: callback reads the CPU's regs
+>>    * @QEMU_PLUGIN_CB_RW_REGS: callback reads and writes the CPU's regs
+>>    *
+>> - * Note: currently unused, plugins cannot read or change system
+>> - * register state.
+>> + * Note: currently QEMU_PLUGIN_CB_RW_REGS is unused, plugins cannot change
+>> + * system register state.
+>>    */
+>>   enum qemu_plugin_cb_flags {
+>>       QEMU_PLUGIN_CB_NO_REGS,
+>> @@ -664,4 +665,62 @@ uint64_t qemu_plugin_end_code(void);
+>>    */
+>>   uint64_t qemu_plugin_entry_code(void);
+>>   
+>> +/**
+>> + * struct qemu_plugin_register_file_t - register information
+>> + *
+>> + * This structure identifies registers. The identifiers included in this
+>> + * structure are identical with names used in GDB's standard target features
+>> + * with some extensions. For details, see:
+>> + *
+>> https://sourceware.org/gdb/onlinedocs/gdb/Standard-Target-Features.html
+> 
+> I'm not super keen on baking GDB-isms into the plugin register
+> interface.
 
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+I used GDB names here because I just didn't want to invent feature 
+register names again. We can use any other register name dictionary if 
+desired.
 
 > 
-> v2:
-> * rename hade variable name to adue suggested by Daniel
+>> + *
+>> + * A register is uniquely identified with the combination of a feature name
+>> + * and a register name or a register number. It is recommended to derive
+>> + * register numbers from feature names and register names each time a new vcpu
+>> + * starts.
 > 
->   target/riscv/cpu.c        |  4 ++--
->   target/riscv/cpu_bits.h   |  8 ++++----
->   target/riscv/cpu_helper.c |  6 +++---
->   target/riscv/csr.c        | 12 ++++++------
->   4 files changed, 15 insertions(+), 15 deletions(-)
+> Do you have examples of clashing register names from different feature
+> sets?
+
+No. A possible situation that the feature name matters is that a vendor 
+extension becomes a standard extension with some modifications. In such 
+a case, plugins written for the ratified standard extension may reject 
+to work with the processor with the original vendor extension. While 
+such a situation has not happened for QEMU and it's unlikely to happen, 
+I'm advising to use feature name for register identification just for 
+caution.
+
 > 
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index 6b93b04453..f04a985d55 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -875,9 +875,9 @@ static void riscv_cpu_reset_hold(Object *obj)
->       env->two_stage_lookup = false;
->   
->       env->menvcfg = (cpu->cfg.ext_svpbmt ? MENVCFG_PBMTE : 0) |
-> -                   (cpu->cfg.ext_svadu ? MENVCFG_HADE : 0);
-> +                   (cpu->cfg.ext_svadu ? MENVCFG_ADUE : 0);
->       env->henvcfg = (cpu->cfg.ext_svpbmt ? HENVCFG_PBMTE : 0) |
-> -                   (cpu->cfg.ext_svadu ? HENVCFG_HADE : 0);
-> +                   (cpu->cfg.ext_svadu ? HENVCFG_ADUE : 0);
->   
->       /* Initialized default priorities of local interrupts. */
->       for (i = 0; i < ARRAY_SIZE(env->miprio); i++) {
-> diff --git a/target/riscv/cpu_bits.h b/target/riscv/cpu_bits.h
-> index 59f0ffd9e1..1c2ffae883 100644
-> --- a/target/riscv/cpu_bits.h
-> +++ b/target/riscv/cpu_bits.h
-> @@ -745,12 +745,12 @@ typedef enum RISCVException {
->   #define MENVCFG_CBIE                       (3UL << 4)
->   #define MENVCFG_CBCFE                      BIT(6)
->   #define MENVCFG_CBZE                       BIT(7)
-> -#define MENVCFG_HADE                       (1ULL << 61)
-> +#define MENVCFG_ADUE                       (1ULL << 61)
->   #define MENVCFG_PBMTE                      (1ULL << 62)
->   #define MENVCFG_STCE                       (1ULL << 63)
->   
->   /* For RV32 */
-> -#define MENVCFGH_HADE                      BIT(29)
-> +#define MENVCFGH_ADUE                      BIT(29)
->   #define MENVCFGH_PBMTE                     BIT(30)
->   #define MENVCFGH_STCE                      BIT(31)
->   
-> @@ -763,12 +763,12 @@ typedef enum RISCVException {
->   #define HENVCFG_CBIE                       MENVCFG_CBIE
->   #define HENVCFG_CBCFE                      MENVCFG_CBCFE
->   #define HENVCFG_CBZE                       MENVCFG_CBZE
-> -#define HENVCFG_HADE                       MENVCFG_HADE
-> +#define HENVCFG_ADUE                       MENVCFG_ADUE
->   #define HENVCFG_PBMTE                      MENVCFG_PBMTE
->   #define HENVCFG_STCE                       MENVCFG_STCE
->   
->   /* For RV32 */
-> -#define HENVCFGH_HADE                       MENVCFGH_HADE
-> +#define HENVCFGH_ADUE                       MENVCFGH_ADUE
->   #define HENVCFGH_PBMTE                      MENVCFGH_PBMTE
->   #define HENVCFGH_STCE                       MENVCFGH_STCE
->   
-> diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-> index 9f611d89bb..3a02079290 100644
-> --- a/target/riscv/cpu_helper.c
-> +++ b/target/riscv/cpu_helper.c
-> @@ -861,11 +861,11 @@ static int get_physical_address(CPURISCVState *env, hwaddr *physical,
->       }
->   
->       bool pbmte = env->menvcfg & MENVCFG_PBMTE;
-> -    bool hade = env->menvcfg & MENVCFG_HADE;
-> +    bool adue = env->menvcfg & MENVCFG_ADUE;
->   
->       if (first_stage && two_stage && env->virt_enabled) {
->           pbmte = pbmte && (env->henvcfg & HENVCFG_PBMTE);
-> -        hade = hade && (env->henvcfg & HENVCFG_HADE);
-> +        adue = adue && (env->henvcfg & HENVCFG_ADUE);
->       }
->   
->       int ptshift = (levels - 1) * ptidxbits;
-> @@ -1026,7 +1026,7 @@ restart:
->   
->       /* Page table updates need to be atomic with MTTCG enabled */
->       if (updated_pte != pte && !is_debug) {
-> -        if (!hade) {
-> +        if (!adue) {
->               return TRANSLATE_FAIL;
->           }
->   
-> diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-> index ea7585329e..b4c66dc8ca 100644
-> --- a/target/riscv/csr.c
-> +++ b/target/riscv/csr.c
-> @@ -1951,7 +1951,7 @@ static RISCVException write_menvcfg(CPURISCVState *env, int csrno,
->       if (riscv_cpu_mxl(env) == MXL_RV64) {
->           mask |= (cfg->ext_svpbmt ? MENVCFG_PBMTE : 0) |
->                   (cfg->ext_sstc ? MENVCFG_STCE : 0) |
-> -                (cfg->ext_svadu ? MENVCFG_HADE : 0);
-> +                (cfg->ext_svadu ? MENVCFG_ADUE : 0);
->       }
->       env->menvcfg = (env->menvcfg & ~mask) | (val & mask);
->   
-> @@ -1971,7 +1971,7 @@ static RISCVException write_menvcfgh(CPURISCVState *env, int csrno,
->       const RISCVCPUConfig *cfg = riscv_cpu_cfg(env);
->       uint64_t mask = (cfg->ext_svpbmt ? MENVCFG_PBMTE : 0) |
->                       (cfg->ext_sstc ? MENVCFG_STCE : 0) |
-> -                    (cfg->ext_svadu ? MENVCFG_HADE : 0);
-> +                    (cfg->ext_svadu ? MENVCFG_ADUE : 0);
->       uint64_t valh = (uint64_t)val << 32;
->   
->       env->menvcfg = (env->menvcfg & ~mask) | (valh & mask);
-> @@ -2023,7 +2023,7 @@ static RISCVException read_henvcfg(CPURISCVState *env, int csrno,
->        * henvcfg.stce is read_only 0 when menvcfg.stce = 0
->        * henvcfg.hade is read_only 0 when menvcfg.hade = 0
->        */
-> -    *val = env->henvcfg & (~(HENVCFG_PBMTE | HENVCFG_STCE | HENVCFG_HADE) |
-> +    *val = env->henvcfg & (~(HENVCFG_PBMTE | HENVCFG_STCE | HENVCFG_ADUE) |
->                              env->menvcfg);
->       return RISCV_EXCP_NONE;
->   }
-> @@ -2040,7 +2040,7 @@ static RISCVException write_henvcfg(CPURISCVState *env, int csrno,
->       }
->   
->       if (riscv_cpu_mxl(env) == MXL_RV64) {
-> -        mask |= env->menvcfg & (HENVCFG_PBMTE | HENVCFG_STCE | HENVCFG_HADE);
-> +        mask |= env->menvcfg & (HENVCFG_PBMTE | HENVCFG_STCE | HENVCFG_ADUE);
->       }
->   
->       env->henvcfg = (env->henvcfg & ~mask) | (val & mask);
-> @@ -2058,7 +2058,7 @@ static RISCVException read_henvcfgh(CPURISCVState *env, int csrno,
->           return ret;
->       }
->   
-> -    *val = (env->henvcfg & (~(HENVCFG_PBMTE | HENVCFG_STCE | HENVCFG_HADE) |
-> +    *val = (env->henvcfg & (~(HENVCFG_PBMTE | HENVCFG_STCE | HENVCFG_ADUE) |
->                               env->menvcfg)) >> 32;
->       return RISCV_EXCP_NONE;
->   }
-> @@ -2067,7 +2067,7 @@ static RISCVException write_henvcfgh(CPURISCVState *env, int csrno,
->                                        target_ulong val)
->   {
->       uint64_t mask = env->menvcfg & (HENVCFG_PBMTE | HENVCFG_STCE |
-> -                                    HENVCFG_HADE);
-> +                                    HENVCFG_ADUE);
->       uint64_t valh = (uint64_t)val << 32;
->       RISCVException ret;
->   
+>> + *
+>> + * To derive the register number from a feature name and a register name,
+>> + * first look up qemu_plugin_register_file_t with the feature name, and then
+>> + * look up the register name in its @regs. The sum of the @base_reg and the
+>> + * index in the @reg is the register number.
+>> + *
+>> + * Note that @regs may have holes; some elements of @regs may be NULL.
+>> + */
+>> +typedef struct qemu_plugin_register_file_t {
+>> +    /** @name: feature name */
+>> +    const char *name;
+>> +    /** @regs: register names */
+>> +    const char * const *regs;
+>> +    /** @base_reg: the base identified number */
+>> +    int base_reg;
+>> +    /** @num_regs: the number of elements in @regs */
+>> +    int num_regs;
+>> +} qemu_plugin_register_file_t;
+>> +
+>> +/**
+>> + * qemu_plugin_get_register_files() - returns register information
+>> + *
+>> + * @vcpu_index: the index of the vcpu context
+>> + * @size: the pointer to the variable to hold the number of returned elements
+>> + *
+>> + * Returns an array of qemu_plugin_register_file_t. The user should g_free()
+>> + * the array once no longer needed.
+>> + */
+>> +qemu_plugin_register_file_t *
+>> +qemu_plugin_get_register_files(unsigned int vcpu_index, int *size);
+> 
+> I think I'd rather have a simpler interface that returns an anonymous
+> handle to the plugin. For example:
+> 
+>    struct qemu_plugin_register;
+>    struct qemu_plugin_register qemu_plugin_find_register(const char *name);
+> 
+>> +
+>> +/**
+>> + * qemu_plugin_read_register() - read register
+>> + *
+>> + * @buf: the byte array to append the read register content to.
+>> + * @reg: the register identifier determined with
+>> + *       qemu_plugin_get_register_files().
+>> + *
+>> + * This function is only available in a context that register read access is
+>> + * explicitly requested.
+>> + *
+>> + * Returns the size of the read register. The content of @buf is in target byte
+>> + * order.
+>> + */
+>> +int qemu_plugin_read_register(GByteArray *buf, int reg);
+> 
+> and this then becomes:
+> 
+>    int qemu_plugin_read_register(GByteArray *buf, struct qemu_plugin_register);
+> 
+> in practice these can become anonymous pointers which hide the
+> implementation details from the plugin itself. Then the details of
+> mapping the register to a gdb regnum can be kept in the plugin code
+> keeping us free to further re-factor the code as we go.
+> 
+> The plugin code works quite hard to try and avoid leaking implementation
+> details to plugins so as not to tie QEMU's hands in re-factoring. While
+> the interface provided is technically GDB's, not QEMUs I don't think its
+> a particularly nice one to expose.
+
+Unfortunately "struct qemu_plugin_register" will not work. C requires 
+the size of the struct to be known before a declaration of a function 
+that uses the struct as a return value or parameter.
+
+The best thing we can do is to add typedef just in a manner similar to 
+qemu_plugin_id_t.
+
+I added a function that returns all register information instead of a 
+function that looks up a register so that a plugin can enumerate 
+registers. Such capability is useful for a plugin that dumps all 
+registers or a plugin that simulates processor (such a plugin may want 
+to warn if there are unknown registers).
+
+I'm just using GDB regnum here because I just needed some numbers. The 
+numbers are actually arbitrary and I intentionally did not assure that 
+the numbers are identical with what GDB use in the documentation 
+comments. We may use any other arbitrary numbers as we want in the future.
+
+> 
+> <snip>
+> 
 
