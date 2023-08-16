@@ -2,82 +2,112 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 390AC77DDB3
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Aug 2023 11:48:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 712BD77DE88
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Aug 2023 12:22:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWD80-00076y-AM; Wed, 16 Aug 2023 05:47:48 -0400
+	id 1qWDdg-00078o-A2; Wed, 16 Aug 2023 06:20:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qWD7x-000757-I7
- for qemu-devel@nongnu.org; Wed, 16 Aug 2023 05:47:45 -0400
-Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qWD7u-0004aw-IA
- for qemu-devel@nongnu.org; Wed, 16 Aug 2023 05:47:45 -0400
-Received: by mail-lf1-x131.google.com with SMTP id
- 2adb3069b0e04-4fe28f92d8eso9922708e87.1
- for <qemu-devel@nongnu.org>; Wed, 16 Aug 2023 02:47:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692179261; x=1692784061;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=mPtG8vcloFr4rOm6gYDLJyZiPPX4MSZ3bGhD+Ih54Xs=;
- b=o/fJtImolmEVkXBf5u+K/4Zogxoz6sBLuAl+ebTeTNq4aH2DbMDRbLpMN7Ruz8ALW0
- M0JpVbAOQzav+4dJO7herah78WtZdzioxoeAI6eKO9fAdiueB0Xu6WXCg67DJxoRMLF1
- ycqgRarK1XBetfvlU+dnCV8uyDTpfvNFQQsJsJHL6Q2jFoqhGEeiUggAzq/e+xLyRS4j
- BgHvydWlc9A2R6K+qu+COXjPHDdG1mqMvy4FhJjqGGsOPRJyr8g28qHrurs6sxpO7IrA
- umtESZ4Pbf2VMjo0RsMEPrfWTBy05GA+PseTn0txvypfBNvFEHbnQqLLRDIIyupg5lXM
- UY5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692179261; x=1692784061;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=mPtG8vcloFr4rOm6gYDLJyZiPPX4MSZ3bGhD+Ih54Xs=;
- b=brzsgxbp2AsT6KaDBtWDYLQryvV149flkszCZqtuXmqxqbFj9Rlaa8Px26Hy2cVoae
- GuiGeJbwXWVcl1imZnnHiQ4BPuPmwpVe40OwJlixwyIUUrg7XYPtTvmKTx7JQthrj5zW
- ahOW3vwUBPLsiLeQ3BxCluHLZoaDVCEc0WcKI+kHs4sYqxgUUh22f+haTopluhrB0WM+
- 82HSsej6n0yupVOgNLL8ZQOLBTQKbTl/urwn64pQzz3YOLxd2e+0Hs1Nqj+lOHE4PKbg
- cGj3AZ0j+nQ4+ckDhWlVfYG+HUVCQFd0pHmwTHGVdX37jC6Y6H/vEiSpWiAnkGOf18Cc
- gAtg==
-X-Gm-Message-State: AOJu0YxCE35vWjZibqceO3x1Uq6sfUgVIA89Cd9FWA1sF8a5UedB4IAU
- FhqgrizX4zpM43f3/6xIaL+VDw==
-X-Google-Smtp-Source: AGHT+IEFA9stFgcfnZNUZYwz1Zp/y5vkm/yocwjOD8J3a8xb6plYzn2A5ht9gobbEALA90ob3m+4sw==
-X-Received: by 2002:a05:6512:4016:b0:4f8:7781:9875 with SMTP id
- br22-20020a056512401600b004f877819875mr1423571lfb.60.1692179260202; 
- Wed, 16 Aug 2023 02:47:40 -0700 (PDT)
-Received: from [192.168.69.115] (mna75-h02-176-184-40-35.dsl.sta.abo.bbox.fr.
- [176.184.40.35]) by smtp.gmail.com with ESMTPSA id
- f9-20020a7bc8c9000000b003fba92fad35sm23655542wml.26.2023.08.16.02.47.38
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 16 Aug 2023 02:47:39 -0700 (PDT)
-Message-ID: <aace73af-1286-708a-733f-2826e75c8a42@linaro.org>
-Date: Wed, 16 Aug 2023 11:47:37 +0200
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1qWDdd-00077v-Jg; Wed, 16 Aug 2023 06:20:29 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1qWDdY-0002gY-LL; Wed, 16 Aug 2023 06:20:29 -0400
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 37GAAGUs010194; Wed, 16 Aug 2023 10:20:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=9u900TCHbujvcFWLfqN5QGm8BAQg5s0UB5ycX/mLN88=;
+ b=kCHxSDQRcrFoxqP3in4ab13FZUA0E2W7rWTy55E8rHMbcBgq6cF5x/qiFlsw+cBEqeuy
+ /nKiGYrxiYwvPqd0E0sUKsX1ymb1vW4WswKNW9uhFe+GRLb0weqWDS0ifgrktmLVblT3
+ ZtEtjEPREzfdoPo43H0aFCjC15vM/rwPiV4/4kkyss3qeTC8jgqky5lnkATiHOoekMlt
+ YMznEdIci5P1AH0Mq0PRZZw19OxcIHnf75FpJqTAqZ+tr1ILaUzHPpcx8OOGavEiKlN0
+ +xLonj62ueCoMUOx+Kg/9YEjZhMlnMboIHaPHKS5diZeV1lglZd4PWaje/QTDT0E0xXG TA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sgv49s6cr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 16 Aug 2023 10:20:06 +0000
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 37GAB3cY016667;
+ Wed, 16 Aug 2023 10:20:05 GMT
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sgv49s6c9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 16 Aug 2023 10:20:05 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 37G8sVlb002418; Wed, 16 Aug 2023 10:20:04 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3sendnbgyc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 16 Aug 2023 10:20:04 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
+ [10.20.54.106])
+ by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 37GAK1nc43123036
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 16 Aug 2023 10:20:02 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A55352004D;
+ Wed, 16 Aug 2023 10:20:01 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2F9362004B;
+ Wed, 16 Aug 2023 10:20:01 +0000 (GMT)
+Received: from [9.155.200.166] (unknown [9.155.200.166])
+ by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Wed, 16 Aug 2023 10:20:01 +0000 (GMT)
+Message-ID: <130aa9ee49dffd9ecc1006b17b9e82734837d7d9.camel@linux.ibm.com>
+Subject: Re: [PATCH 4/9] tests: remove test-gdbstub.py
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Alex =?ISO-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Beraldo Leal <bleal@redhat.com>, Wainer dos Santos Moschetta
+ <wainersm@redhat.com>, Peter Maydell <peter.maydell@linaro.org>, Akihiko
+ Odaki <akihiko.odaki@daynix.com>, Thomas Huth <thuth@redhat.com>, David
+ Hildenbrand <david@redhat.com>,
+ Yonggang Luo <luoyonggang@gmail.com>, qemu-arm@nongnu.org,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
+ =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>, Richard Henderson
+ <richard.henderson@linaro.org>, qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
+ Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, Nicholas
+ Piggin <npiggin@gmail.com>
+Date: Wed, 16 Aug 2023 12:20:01 +0200
+In-Reply-To: <20230815145126.3444183-5-alex.bennee@linaro.org>
+References: <20230815145126.3444183-1-alex.bennee@linaro.org>
+ <20230815145126.3444183-5-alex.bennee@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [PATCH 0/2] nvme: avoid dynamic stack allocations
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, Keith Busch <kbusch@kernel.org>,
- Klaus Jensen <its@irrelevant.dk>
-References: <20230811174751.784620-1-peter.maydell@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230811174751.784620-1-peter.maydell@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::131;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x131.google.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.045,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: FWSOOWtZ3zsaCxVSnJ9iK_iQImQnL2Hi
+X-Proofpoint-GUID: y5vWNht9k8vlPQaD1DUiIywo0YhqueDm
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-08-16_08,2023-08-15_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ phishscore=0 impostorscore=0 suspectscore=0 clxscore=1011 mlxscore=0
+ mlxlogscore=929 lowpriorityscore=0 malwarescore=0 spamscore=0 bulkscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2308160090
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,37 +123,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/8/23 19:47, Peter Maydell wrote:
-> The QEMU codebase has very few C variable length arrays, and if we can
-> get rid of them all we can make the compiler error on new additions.
-> This is a defensive measure against security bugs where an on-stack
-> dynamic allocation isn't correctly size-checked (e.g.  CVE-2021-3527).
-> 
-> We last had a go at this a few years ago, when Philippe wrote
-> patches for this:
-> https://patchew.org/QEMU/20210505211047.1496765-1-philmd@redhat.com/
-> Some of the fixes made it into the tree, but some didn't (either
-> because of lack of review or because review found some changes
-> that needed to be made). I'm going through the remainder as a
-> non-urgent Friday afternoon task...
+On Tue, 2023-08-15 at 15:51 +0100, Alex Benn=C3=A9e wrote:
+> This isn't directly called by our CI and because it doesn't run via
+> our run-test.py script does things slightly differently. Lets remove
+> it as we have plenty of working in-tree tests now for various aspects
+> of gdbstub.
+>=20
+> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+> ---
+> =C2=A0tests/guest-debug/test-gdbstub.py | 177 ---------------------------=
+-
+> --
+> =C2=A01 file changed, 177 deletions(-)
+> =C2=A0delete mode 100644 tests/guest-debug/test-gdbstub.py
 
-Thanks for refreshing this, I totally forgot about it :/
+There doesn't seem to be a hbreak test elsewhere, but according to a
+comment in tcg/multiarch/gdbstub/memory.py it would be mapped to a
+normal break anyway.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
-> This patchset deals with two VLAs in the NVME code.
-> 
-> thanks
-> -- PMM
-> 
-> Peter Maydell (1):
->    hw/nvme: Avoid dynamic stack allocation
-> 
-> Philippe Mathieu-Daudé (1):
->    hw/nvme: Use #define to avoid variable length array
-> 
->   hw/nvme/ctrl.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-
+Acked-by: Ilya Leoshkevich <iii@linux.ibm.com>
 
