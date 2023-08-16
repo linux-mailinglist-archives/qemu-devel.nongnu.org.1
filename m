@@ -2,74 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38DDB77E381
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Aug 2023 16:26:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 968A877E383
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Aug 2023 16:27:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWHSp-0004GG-HV; Wed, 16 Aug 2023 10:25:35 -0400
+	id 1qWHSe-0003uN-4A; Wed, 16 Aug 2023 10:25:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qWHSn-0004FW-Q4
- for qemu-devel@nongnu.org; Wed, 16 Aug 2023 10:25:33 -0400
-Received: from smtp-out2.suse.de ([195.135.220.29])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qWHSc-0003s9-9R
+ for qemu-devel@nongnu.org; Wed, 16 Aug 2023 10:25:22 -0400
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qWHSl-0003o7-EV
- for qemu-devel@nongnu.org; Wed, 16 Aug 2023 10:25:33 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id F37AB1F855;
- Wed, 16 Aug 2023 14:25:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1692195930; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=9t0NjDORWhTRZt2oEHyswwgUTKKL0BZEn6qCStJ0d2w=;
- b=YjqeTTZefzE8Gwt/UaWNkMPwP0+O19dD11bBtdnkm+aVgddFBAO9RAYA2aL2OZiZ3HZWV0
- 8w6Nv3mC3sjmX/uxJALpx0Cxb8qlyy1hhZHnsbYo382pDq+96M+RtvrPptb9TReMHMNeBK
- 4NofIlibYKlWZ+CfgyJZbVA4qpTzpDQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1692195930;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=9t0NjDORWhTRZt2oEHyswwgUTKKL0BZEn6qCStJ0d2w=;
- b=jEaURBvwpJySjtdmN3usxPYz3Z7758KYOnoIp3AhotHiMnilMSfuXHoNA5cZW/lVnHDLe7
- WwVw39XtRDUT8gDA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 77331133F2;
- Wed, 16 Aug 2023 14:25:28 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id aGGAEFjc3GShdwAAMHmgww
- (envelope-from <farosas@suse.de>); Wed, 16 Aug 2023 14:25:28 +0000
-From: Fabiano Rosas <farosas@suse.de>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qWHSZ-0003jP-Ny
+ for qemu-devel@nongnu.org; Wed, 16 Aug 2023 10:25:22 -0400
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-68874269df4so1119092b3a.2
+ for <qemu-devel@nongnu.org>; Wed, 16 Aug 2023 07:25:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1692195918; x=1692800718;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=F7z2E+ZFTyywXfCvtaMWwFttBwfNEezUdelxUK+khHc=;
+ b=b7TtlpSo6CRe0ElvxQqvcnIofYK0y3HjOOKx07oXjrs/NbGnbHl0bhaKA48zWjmIdk
+ zZWmWDqZ/xG85Q6uSdeynpCcX5of4JPsoWfkqCazbaG6jlZogXKPopNGEGdL3pm3kWQm
+ 9DcfadKIaxSpSVn/u3H2APS+vnNxeV22Qctepm0qs66EaE1l4IpPkcbqkZd5zVruwjWf
+ GT4iyygFEZoZk2cAPyT8lBw5cXBdgPyQ90JIRSmdCj0umdKNVwy/XxqXcfEoWvCzh9Wv
+ n1bdRH4vrnLjceOfefnCWx9CCFRR2MHPtguNpRcyWn1JNWPkcfXC9aR/E+IDzA3+Qj/7
+ npTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1692195918; x=1692800718;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=F7z2E+ZFTyywXfCvtaMWwFttBwfNEezUdelxUK+khHc=;
+ b=RuLDWzdV4sAHVLH+eXI5aisHezHWcFzsMX8Q5cRNH/PtmCmalowMzUooWrdrIBQI5Y
+ zyWD8GB0kr4PHuS7PGNzgNi8ylNkghjsFeOkpyoH86+CHNwpWXmr2Wu7FOhVUTKbdLW6
+ Ty/ILN30L4oEBO8oOQCd5vZVwaCah9P0Rv/LcZZqlHtByd0AIG6K7kYchhRGBqfszFk0
+ G4l90AwKY/MPcAX3Wqe57yeruhL+yM9cd+Ys9DwSJs6D4x8O08gFglYRF/EPz/HkAElK
+ LHHPlcJ/hnAyMV4nHienFSgADUKNDwwg5l29mB5zIOxDnEaN7CXAZqPAkMaTuXKEKzrI
+ zHPw==
+X-Gm-Message-State: AOJu0YydZLCPDZApK5dfGHmkrEuyq5mdQjChDUTFXau3HEGQsmoiIgI3
+ gAk8+x+o2alJTB43gxnj4z5URT6xn9FZgiIbxEM=
+X-Google-Smtp-Source: AGHT+IEVcbCmw6fm9c3gc21EEcdNKFNzd8wxApMiD3gMRmNFK06fRmz8hYL3KAFqE0BeDB8mh7LW5A==
+X-Received: by 2002:a05:6a00:cce:b0:682:26e4:599e with SMTP id
+ b14-20020a056a000cce00b0068226e4599emr2158557pfv.21.1692195917832; 
+ Wed, 16 Aug 2023 07:25:17 -0700 (PDT)
+Received: from stoup.. ([2602:47:d483:7301:a064:e3f9:a812:973b])
+ by smtp.gmail.com with ESMTPSA id
+ i12-20020aa78b4c000000b00678cb337353sm11156019pfd.208.2023.08.16.07.25.17
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 16 Aug 2023 07:25:17 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
- Wei Wang <wei.w.wang@intel.com>, Leonardo Bras <leobras@redhat.com>
-Subject: [PATCH v4 8/8] migration: Add a wrapper to cleanup migration files
-Date: Wed, 16 Aug 2023 11:25:10 -0300
-Message-Id: <20230816142510.5637-9-farosas@suse.de>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <20230816142510.5637-1-farosas@suse.de>
-References: <20230816142510.5637-1-farosas@suse.de>
+Cc: qemu-arm@nongnu.org
+Subject: [PATCH 0/4] tcg/aarch64: Enable BTI within the JIT
+Date: Wed, 16 Aug 2023 07:25:12 -0700
+Message-Id: <20230816142516.469743-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,180 +88,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We currently have a pattern for cleaning up a migration QEMUFile:
+Patch 1 is cherry-picked from
 
-  qemu_mutex_lock(&s->qemu_file_lock);
-  file = s->file_name;
-  s->file_name = NULL;
-  qemu_mutex_unlock(&s->qemu_file_lock);
+[PATCH v3 02/14] tcg: Add tcg_out_tb_start backend hook
+https://lore.kernel.org/qemu-devel/20230815195741.8325-3-richard.henderson@linaro.org/T/#u
 
-  migration_ioc_unregister_yank_from_file(file);
-  qemu_file_shutdown(file);
-  qemu_fclose(file);
+here used for a different application.
 
-There are some considerations for this sequence:
+There are not as many landing pads as I had imagined, so the
+overhead here is really quite minimal.
 
-- we must clear the pointer under the lock, to avoid TOC/TOU bugs;
-- the close() and yank unregister expect be given a non-null parameter;
-- a close() in one thread should not race with a shutdown() in another;
-- we don't need to shutdown() right before close();
+The architecture enables the check only when the PTE for the
+jump target is marked "guarded".  Linux implements this by
+adding a PROT_BTI bit for mmap and mprotect.  I have isolated
+this within a host_prot_read_exec() local function, which
+seems clean enough.  So far, as far as I can tell, Linux it
+the only OS to support BTI.
 
-Create a wrapper function to make sure everything works correctly.
 
-Note: the return path didn't have a yank handler registered, I added
-      it nonetheless for uniformity.
+r~
 
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
----
- migration/migration.c | 91 +++++++++++++------------------------------
- 1 file changed, 27 insertions(+), 64 deletions(-)
 
-diff --git a/migration/migration.c b/migration/migration.c
-index 7fec57ad7f..22ab7199e4 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -217,6 +217,26 @@ MigrationIncomingState *migration_incoming_get_current(void)
-     return current_incoming;
- }
- 
-+static void migration_file_release(QEMUFile **file)
-+{
-+    MigrationState *ms = migrate_get_current();
-+    QEMUFile *tmp;
-+
-+    /*
-+     * Reset the pointer before releasing it to avoid holding the lock
-+     * for too long.
-+     */
-+    WITH_QEMU_LOCK_GUARD(&ms->qemu_file_lock) {
-+        tmp = *file;
-+        *file = NULL;
-+    }
-+
-+    if (tmp) {
-+        migration_ioc_unregister_yank_from_file(tmp);
-+        qemu_fclose(tmp);
-+    }
-+}
-+
- void migration_incoming_transport_cleanup(MigrationIncomingState *mis)
- {
-     if (mis->socket_address_list) {
-@@ -1155,8 +1175,6 @@ static void migrate_fd_cleanup(MigrationState *s)
-     qemu_savevm_state_cleanup();
- 
-     if (s->to_dst_file) {
--        QEMUFile *tmp;
--
-         trace_migrate_fd_cleanup();
-         qemu_mutex_unlock_iothread();
-         if (s->migration_thread_running) {
-@@ -1166,16 +1184,7 @@ static void migrate_fd_cleanup(MigrationState *s)
-         qemu_mutex_lock_iothread();
- 
-         multifd_save_cleanup();
--        qemu_mutex_lock(&s->qemu_file_lock);
--        tmp = s->to_dst_file;
--        s->to_dst_file = NULL;
--        qemu_mutex_unlock(&s->qemu_file_lock);
--        /*
--         * Close the file handle without the lock to make sure the
--         * critical section won't block for long.
--         */
--        migration_ioc_unregister_yank_from_file(tmp);
--        qemu_fclose(tmp);
-+        migration_file_release(&s->to_dst_file);
-     }
- 
-     /*
-@@ -1815,38 +1824,6 @@ static int migrate_handle_rp_resume_ack(MigrationState *s, uint32_t value)
-     return 0;
- }
- 
--/*
-- * Release ms->rp_state.from_dst_file (and postcopy_qemufile_src if
-- * existed) in a safe way.
-- */
--static void migration_release_dst_files(MigrationState *ms)
--{
--    QEMUFile *file;
--
--    WITH_QEMU_LOCK_GUARD(&ms->qemu_file_lock) {
--        /*
--         * Reset the from_dst_file pointer first before releasing it, as we
--         * can't block within lock section
--         */
--        file = ms->rp_state.from_dst_file;
--        ms->rp_state.from_dst_file = NULL;
--    }
--
--    /*
--     * Do the same to postcopy fast path socket too if there is.  No
--     * locking needed because this qemufile should only be managed by
--     * return path thread.
--     */
--    if (ms->postcopy_qemufile_src) {
--        migration_ioc_unregister_yank_from_file(ms->postcopy_qemufile_src);
--        qemu_file_shutdown(ms->postcopy_qemufile_src);
--        qemu_fclose(ms->postcopy_qemufile_src);
--        ms->postcopy_qemufile_src = NULL;
--    }
--
--    qemu_fclose(file);
--}
--
- /*
-  * Handles messages sent on the return path towards the source VM
-  *
-@@ -2003,6 +1980,8 @@ static int open_return_path_on_source(MigrationState *ms)
-         return -1;
-     }
- 
-+    migration_ioc_register_yank(qemu_file_get_ioc(ms->rp_state.from_dst_file));
-+
-     trace_open_return_path_on_source();
- 
-     qemu_thread_create(&ms->rp_state.rp_thread, "return path",
-@@ -2046,7 +2025,8 @@ static int await_return_path_close_on_source(MigrationState *ms)
-     ret = ms->rp_state.error;
-     ms->rp_state.error = false;
- 
--    migration_release_dst_files(ms);
-+    migration_file_release(&ms->rp_state.from_dst_file);
-+    migration_file_release(&ms->postcopy_qemufile_src);
- 
-     trace_migration_return_path_end_after(ret);
-     return ret;
-@@ -2502,26 +2482,9 @@ static MigThrError postcopy_pause(MigrationState *s)
-     assert(s->state == MIGRATION_STATUS_POSTCOPY_ACTIVE);
- 
-     while (true) {
--        QEMUFile *file;
--
--        /*
--         * Current channel is possibly broken. Release it.  Note that this is
--         * guaranteed even without lock because to_dst_file should only be
--         * modified by the migration thread.  That also guarantees that the
--         * unregister of yank is safe too without the lock.  It should be safe
--         * even to be within the qemu_file_lock, but we didn't do that to avoid
--         * taking more mutex (yank_lock) within qemu_file_lock.  TL;DR: we make
--         * the qemu_file_lock critical section as small as possible.
--         */
-+        /* Current channel is possibly broken. Release it. */
-         assert(s->to_dst_file);
--        migration_ioc_unregister_yank_from_file(s->to_dst_file);
--        qemu_mutex_lock(&s->qemu_file_lock);
--        file = s->to_dst_file;
--        s->to_dst_file = NULL;
--        qemu_mutex_unlock(&s->qemu_file_lock);
--
--        qemu_file_shutdown(file);
--        qemu_fclose(file);
-+        migration_file_release(&s->to_dst_file);
- 
-         /*
-          * We're already pausing, so ignore any errors on the return
+Richard Henderson (4):
+  tcg: Add tcg_out_tb_start backend hook
+  util/cpuinfo-aarch64: Add CPUINFO_BTI
+  tcg/aarch64: Emit BTI insns at jump landing pads
+  tcg: Map code_gen_buffer with PROT_BTI
+
+ host/include/aarch64/host/cpuinfo.h |  1 +
+ tcg/region.c                        | 39 ++++++++++++++++------
+ tcg/tcg.c                           |  3 ++
+ util/cpuinfo-aarch64.c              |  4 +++
+ tcg/aarch64/tcg-target.c.inc        | 52 +++++++++++++++++++++--------
+ tcg/arm/tcg-target.c.inc            |  5 +++
+ tcg/i386/tcg-target.c.inc           |  5 +++
+ tcg/loongarch64/tcg-target.c.inc    |  5 +++
+ tcg/mips/tcg-target.c.inc           |  5 +++
+ tcg/ppc/tcg-target.c.inc            |  5 +++
+ tcg/riscv/tcg-target.c.inc          |  5 +++
+ tcg/s390x/tcg-target.c.inc          |  5 +++
+ tcg/sparc64/tcg-target.c.inc        |  5 +++
+ tcg/tci/tcg-target.c.inc            |  5 +++
+ 14 files changed, 119 insertions(+), 25 deletions(-)
+
 -- 
-2.35.3
+2.34.1
 
 
