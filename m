@@ -2,67 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EAF577E307
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Aug 2023 15:49:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FD6177E312
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Aug 2023 15:53:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWGs0-0004xS-Dk; Wed, 16 Aug 2023 09:47:32 -0400
+	id 1qWGwl-0004do-VH; Wed, 16 Aug 2023 09:52:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qWGrv-0004hn-OH
- for qemu-devel@nongnu.org; Wed, 16 Aug 2023 09:47:30 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1qWGwL-0004Os-B5
+ for qemu-devel@nongnu.org; Wed, 16 Aug 2023 09:52:02 -0400
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qWGrt-0003PC-A8
- for qemu-devel@nongnu.org; Wed, 16 Aug 2023 09:47:27 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-1bc7b25c699so40706485ad.1
- for <qemu-devel@nongnu.org>; Wed, 16 Aug 2023 06:47:25 -0700 (PDT)
+ id 1qWGwG-0004RH-SZ
+ for qemu-devel@nongnu.org; Wed, 16 Aug 2023 09:51:59 -0400
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-1bdb801c667so42331835ad.1
+ for <qemu-devel@nongnu.org>; Wed, 16 Aug 2023 06:51:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1692193644; x=1692798444;
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1692193913; x=1692798713;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=l/z8QZ0Iyfmp7CByB11orbYdHmX+bbWzBKeQ+vlrDZA=;
- b=B2FXIFjwY4yHzn6USOC/GxHZnIVSlW4HHE37ljJr0T6ccLMl1BRU5Hnw6nsm8eH/a+
- 3Uew6y3gd+f9B05ajxeuUvPsPsj+s/NJmd8T6OQGNFSYltZmikZLtYdKhhy7XtAD6Bb5
- yCVALmeVzvpwyYV5V83uVUxVWqr+e8Cfrn+UMoxYR3ImwrOlGgFc7uXCH7Se9p+2xY8P
- pNMCHJP/QldmjQUckv402gRF8uzckTov5MfEYnYMgnxJYT0jDxSU9AIc05oR1ZFS+Dmq
- RI83O7smbdn3rPjam5MzvYQfnONohf+OYX77Is0hmQjtMIEHFDH2RoR8G1Av9QLnt634
- RuMg==
+ bh=mZPCtM4gFlUO1eqBWQfyY/Y18ssOpc6HOYefevkB3hs=;
+ b=E60lamU47sZQxI2mdxzaxIpzQ585cW73J6EcnIGUtt0mZ/TNXdyWMp2/dzxmLzyAfE
+ Mu9LEylJIpAXxmDtu/izPvlfN/2tTaEfobzongnhiN/H75mF1tZM5KtcMx7wvcKqdGi6
+ q22Oz6PXtIByw2bMo+CyND45GwR4JhJ74HXkvd2h5zmd7Py98uy4BGoGPVopqHtB8LSs
+ AeH0zL/KiendIdwPw+xkOFfAHbOK7N/mIXRFAl63WX+dt3nS24h8J5RTTAORqtZfdL8r
+ bZDS5s0hCOOkaMA5VCy1sdeKYT7TyloC8v5VknLg8AjYzAnMerp5cNFZ1K4wWw822ChR
+ HS8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692193644; x=1692798444;
+ d=1e100.net; s=20221208; t=1692193913; x=1692798713;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=l/z8QZ0Iyfmp7CByB11orbYdHmX+bbWzBKeQ+vlrDZA=;
- b=kH/80l96xa0aInmbDIcKVbAcZ1r56uFAvt/GvKWyytFQ2RLMUUrFg8BqY0fKBgGg7q
- hIpAkFOIq+7v3E4twu7PQAbMAsfI8jvpJ6mnRKyNQJkIjQv5hheZ9C4a0BXo7s6teEML
- 0wm1KgLyfxAWwpdjy1tzHtQLepGvhvJSMPq8vSEBUdN+GYTIzGksxLl9fTWx+3t9ovaK
- LnKIaXIgfvHcH/Rw4iPdgLStyeZiT2Gr/D9k+tWB0evj8sHj0xVh0VN/RozBIArwxuWw
- UmeZGVI8oQW005n0Pn63XPHugw/PDP2ahA3U60C+omDK1ehLG9bJQMOfUMP/bm4ttxwJ
- c/zg==
-X-Gm-Message-State: AOJu0Yzz2yaY+XnLkyblb/NdgNdXWtcJ1Fc8fmosyrMbm4ASkLsfAyJk
- HO2ifTyCC+vpzM64fE0uQhsr6w==
-X-Google-Smtp-Source: AGHT+IEX7HQ67DyK6O1PBSM6FlzIn8b+m72ZldbtSyZnYGzkcPcROr4VNrH508/KmTITzYkfoj3QiA==
-X-Received: by 2002:a17:902:830b:b0:1b8:5ab2:49a4 with SMTP id
- bd11-20020a170902830b00b001b85ab249a4mr1610182plb.53.1692193643961; 
- Wed, 16 Aug 2023 06:47:23 -0700 (PDT)
+ bh=mZPCtM4gFlUO1eqBWQfyY/Y18ssOpc6HOYefevkB3hs=;
+ b=KTwkZuivGbcsPfbIenrLDCV78h6LBWugVRRQvn0WNUOCDubRyoO+1nBSRWh+95c2ib
+ 4K8qFmAFOAHttbbdBETucE4t7rwe+DRqYPFsp8Mr9OLSVUcmjZ0ZvjpURX5XYXMqWm7r
+ o6tXTb7vwUgcKz0YN0yfS2iNxi/nznhfDeoed4QHJNjY7SvOa9Q8Lh8rGhmajjiMqIZw
+ fKn86tPIGYDnngpafJTvsmn3TSiMr5eFT/VYsZX1ub99NVVELz7K8Z30rlkbGIOMNHIm
+ Ua3tov5qjNqdivVhGkgGt/AVK2gGrvB7xRscej8FFm2kCz5Mpz/7k8ZhTbrx/ajHtX/E
+ akhg==
+X-Gm-Message-State: AOJu0YzOCg00pgGsgmNvpP2+Br6HjvWOHbN2JSaH1vh0+ZQ09yn2Eqb2
+ E21yyu8chwp1zRJ3Lcto6KYiZA==
+X-Google-Smtp-Source: AGHT+IF76m2gteYuU/ME8SyVTBxUSaRFmuZxrPHwMaaIRkLTBOKQwLw0o3YjJK7lICXb524S6ruUtA==
+X-Received: by 2002:a17:902:bc89:b0:1bd:af7e:965d with SMTP id
+ bb9-20020a170902bc8900b001bdaf7e965dmr2060152plb.51.1692193912914; 
+ Wed, 16 Aug 2023 06:51:52 -0700 (PDT)
 Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
  ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
  by smtp.gmail.com with ESMTPSA id
- bg3-20020a1709028e8300b001b6a27dff99sm13144303plb.159.2023.08.16.06.47.15
+ 8-20020a17090a034800b00262e485156esm14092117pjf.57.2023.08.16.06.51.44
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 16 Aug 2023 06:47:23 -0700 (PDT)
-Message-ID: <ee599577-f185-4f12-b985-209a6322d2f7@daynix.com>
-Date: Wed, 16 Aug 2023 22:47:13 +0900
+ Wed, 16 Aug 2023 06:51:52 -0700 (PDT)
+Message-ID: <b1b4843e-038c-43ac-8aa0-b95312b0806a@daynix.com>
+Date: Wed, 16 Aug 2023 22:51:43 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 06/24] hw/core/cpu: Replace gdb_core_xml_file with
- gdb_core_feature
+Subject: Re: [RFC PATCH 12/24] gdbstub: Simplify XML lookup
 Content-Language: en-US
 To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
@@ -100,20 +99,20 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
  qemu-arm@nongnu.org, qemu-ppc@nongnu.org, qemu-riscv@nongnu.org,
  qemu-s390x@nongnu.org
 References: <20230731084354.115015-1-akihiko.odaki@daynix.com>
- <20230731084354.115015-7-akihiko.odaki@daynix.com>
- <871qg5sryb.fsf@linaro.org>
+ <20230731084354.115015-13-akihiko.odaki@daynix.com>
+ <87jztxrbv0.fsf@linaro.org>
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <871qg5sryb.fsf@linaro.org>
+In-Reply-To: <87jztxrbv0.fsf@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::630;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x630.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+ SPF_NONE=0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -129,126 +128,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/08/14 20:59, Alex Bennée wrote:
+On 2023/08/14 22:27, Alex Bennée wrote:
 > 
 > Akihiko Odaki <akihiko.odaki@daynix.com> writes:
 > 
->> This is a tree-wide change to replace gdb_core_xml_file, the path to
->> GDB XML file with gdb_core_feature, the pointer to GDBFeature. This
->> also replaces the values assigned to gdb_num_core_regs with the
->> num_regs member of GDBFeature where applicable to remove magic numbers.
->>
->> A following change will utilize additional information provided by
->> GDBFeature to simplify XML file lookup.
+>> Now we know all instances of GDBFeature that is used in CPU so we can
+>> traverse them to find XML. This removes the need for a CPU-specific
+>> lookup function for dynamic XMLs.
 >>
 >> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 >> ---
->>   include/hw/core/cpu.h   | 5 +++--
->>   target/s390x/cpu.h      | 2 --
->>   gdbstub/gdbstub.c       | 6 +++---
->>   target/arm/cpu.c        | 4 ++--
->>   target/arm/cpu64.c      | 4 ++--
->>   target/arm/tcg/cpu32.c  | 3 ++-
->>   target/avr/cpu.c        | 4 ++--
->>   target/hexagon/cpu.c    | 2 +-
->>   target/i386/cpu.c       | 7 +++----
->>   target/loongarch/cpu.c  | 4 ++--
->>   target/m68k/cpu.c       | 7 ++++---
->>   target/microblaze/cpu.c | 4 ++--
->>   target/ppc/cpu_init.c   | 4 ++--
->>   target/riscv/cpu.c      | 7 ++++---
->>   target/rx/cpu.c         | 4 ++--
->>   target/s390x/cpu.c      | 4 ++--
->>   16 files changed, 36 insertions(+), 35 deletions(-)
+>>   gdbstub/gdbstub.c | 28 +++++++++-------------------
+>>   1 file changed, 9 insertions(+), 19 deletions(-)
 >>
->> diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
->> index fdcbe87352..84219c1885 100644
->> --- a/include/hw/core/cpu.h
->> +++ b/include/hw/core/cpu.h
->> @@ -23,6 +23,7 @@
->>   #include "hw/qdev-core.h"
->>   #include "disas/dis-asm.h"
->>   #include "exec/cpu-common.h"
->> +#include "exec/gdbstub.h"
->>   #include "exec/hwaddr.h"
->>   #include "exec/memattrs.h"
->>   #include "qapi/qapi-types-run-state.h"
->> @@ -127,7 +128,7 @@ struct SysemuCPUOps;
->>    *       breakpoint.  Used by AVR to handle a gdb mis-feature with
->>    *       its Harvard architecture split code and data.
->>    * @gdb_num_core_regs: Number of core registers accessible to GDB.
-> 
-> It seems redundant to have this when gdb_core_features already
-> encapsulates this, especially since...
-> 
->> - * @gdb_core_xml_file: File name for core registers GDB XML description.
->> + * @gdb_core_feature: GDB core feature description.
->>    * @gdb_stop_before_watchpoint: Indicates whether GDB expects the CPU to stop
->>    *           before the insn which triggers a watchpoint rather than after it.
->>    * @gdb_arch_name: Optional callback that returns the architecture name known
->> @@ -163,7 +164,7 @@ struct CPUClass {
->>       int (*gdb_write_register)(CPUState *cpu, uint8_t *buf, int reg);
->>       vaddr (*gdb_adjust_breakpoint)(CPUState *cpu, vaddr addr);
+>> diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
+>> index 182efe7e0f..e5bb2c89ba 100644
+>> --- a/gdbstub/gdbstub.c
+>> +++ b/gdbstub/gdbstub.c
+>> @@ -354,8 +354,7 @@ static const char *get_feature_xml(const char *p, const char **newp,
+>>                                      GDBProcess *process)
+>>   {
+>>       size_t len;
+>> -    int i;
+>> -    const char *name;
+>> +    GDBRegisterState *r;
+>>       CPUState *cpu = gdb_get_first_cpu_in_process(process);
+>>       CPUClass *cc = CPU_GET_CLASS(cpu);
 >>   
->> -    const char *gdb_core_xml_file;
->> +    const GDBFeature *gdb_core_feature;
->>       gchar * (*gdb_arch_name)(CPUState *cpu);
->>       const char * (*gdb_get_dynamic_xml)(CPUState *cpu, const char *xmlname);
+>> @@ -364,15 +363,12 @@ static const char *get_feature_xml(const char *p, const char **newp,
+>>           len++;
+>>       *newp = p + len;
 >>   
-> <snip>
->> diff --git a/target/arm/cpu.c b/target/arm/cpu.c
->> index d71a162070..a206ab6b1b 100644
->> --- a/target/arm/cpu.c
->> +++ b/target/arm/cpu.c
->> @@ -2353,7 +2353,6 @@ static void arm_cpu_class_init(ObjectClass *oc, void *data)
->>   #ifndef CONFIG_USER_ONLY
->>       cc->sysemu_ops = &arm_sysemu_ops;
->>   #endif
->> -    cc->gdb_num_core_regs = 26;
->>       cc->gdb_arch_name = arm_gdb_arch_name;
->>       cc->gdb_get_dynamic_xml = arm_gdb_get_dynamic_xml;
->>       cc->gdb_stop_before_watchpoint = true;
->> @@ -2378,7 +2377,8 @@ static void cpu_register_class_init(ObjectClass *oc, void *data)
->>       CPUClass *cc = CPU_CLASS(acc);
+>> -    name = NULL;
+>>       if (strncmp(p, "target.xml", len) == 0) {
+>>           char *buf = process->target_xml;
+>>           const size_t buf_sz = sizeof(process->target_xml);
 >>   
->>       acc->info = data;
->> -    cc->gdb_core_xml_file = "arm-core.xml";
->> +    cc->gdb_core_feature = gdb_find_static_feature("arm-core.xml");
->> +    cc->gdb_num_core_regs = cc->gdb_core_feature->num_regs;
+>>           /* Generate the XML description for this CPU.  */
+>>           if (!buf[0]) {
+>> -            GDBRegisterState *r;
+>> -
+>>               pstrcat(buf, buf_sz,
+>>                       "<?xml version=\"1.0\"?>"
+>>                       "<!DOCTYPE target SYSTEM \"gdb-target.dtd\">"
+>> @@ -389,28 +385,22 @@ static const char *get_feature_xml(const char *p, const char **newp,
+>>               pstrcat(buf, buf_sz, "\"/>");
+>>               for (r = cpu->gdb_regs; r; r = r->next) {
+>>                   pstrcat(buf, buf_sz, "<xi:include href=\"");
+>> -                pstrcat(buf, buf_sz, r->feature->xml);
+>> +                pstrcat(buf, buf_sz, r->feature->xmlname);
+>>                   pstrcat(buf, buf_sz, "\"/>");
+>>               }
+>>               pstrcat(buf, buf_sz, "</target>");
+>>           }
+>>           return buf;
+>>       }
 > 
-> You are doing assignments like this. I think something like this in
-> gdbstub:
-> 
-> modified   gdbstub/gdbstub.c
-> @@ -440,7 +440,7 @@ int gdb_read_register(CPUState *cpu, GByteArray *buf, int reg, bool has_xml)
->       CPUArchState *env = cpu->env_ptr;
->       GDBRegisterState *r;
->   
-> -    if (reg < cc->gdb_num_core_regs) {
-> +    if (reg < cc->gdb_core_feature->num_regs) {
->           return cc->gdb_read_register(cpu, buf, reg, has_xml);
->       }
->   
-> @@ -459,7 +459,7 @@ static int gdb_write_register(CPUState *cpu, uint8_t *mem_buf, int reg,
->       CPUArchState *env = cpu->env_ptr;
->       GDBRegisterState *r;
->   
-> -    if (reg < cc->gdb_num_core_regs) {
-> +    if (reg < cc->gdb_core_feature->num_regs) {
->           return cc->gdb_write_register(cpu, mem_buf, reg, has_xml);
->       }
-> 
-> makes most of the uses go away. Some of the other arches might need
-> target specific tweaks.
+> It would be nice to modernise this code before adding to it. The static
+> target_xml buffer and use of pstrcat could be replaced by GString code
+> that is less sketchy.
 
-The problem is how to deal with the target specific tweaks. ppc requires 
-gdb_num_core_regs to have some value greater than 
-cc->gdb_core_feature->num_regs for compatibility with legacy GDB. Other 
-architectures simply do not have XMLs. Simply replacing 
-cc->gdb_num_core_regs with cc->gdb_core_feature->num_regs will break 
-those architectures.
+I saw you did that yourself. Nevertheless I included my own 
+implementation for the suggestion in v3. It uses 
+g_markup_printf_escaped() for extra caution and better readability (i.e. 
+the xi:include tags are written in a format: <xi:include href=\"%s\"/>).
 
 > 
-> <snip>
+> 
+>> -    if (cc->gdb_get_dynamic_xml) {
+>> -        char *xmlname = g_strndup(p, len);
+>> -        const char *xml = cc->gdb_get_dynamic_xml(cpu, xmlname);
+>> -
+>> -        g_free(xmlname);
+>> -        if (xml) {
+>> -            return xml;
+>> -        }
+>> +    if (strncmp(p, cc->gdb_core_feature->xmlname, len) == 0) {
+>> +        return cc->gdb_core_feature->xml;
+>>       }
+>> -    for (i = 0; ; i++) {
+>> -        name = gdb_features[i].xmlname;
+>> -        if (!name || (strncmp(name, p, len) == 0 && strlen(name) == len))
+>> -            break;
+>> +    for (r = cpu->gdb_regs; r; r = r->next) {
+>> +        if (strncmp(p, r->feature->xmlname, len) == 0) {
+>> +            return r->feature->xml;
+>> +        }
+>>       }
+>> -    return name ? gdb_features[i].xml : NULL;
+>> +    return NULL;
+>>   }
+>>   
+>>   const GDBFeature *gdb_find_static_feature(const char *xmlname)
+> 
 > 
 
