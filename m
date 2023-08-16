@@ -2,82 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB7CB77E1F0
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Aug 2023 14:51:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF61577E1FD
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Aug 2023 14:54:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWFy5-0003UF-Qc; Wed, 16 Aug 2023 08:49:45 -0400
+	id 1qWG1A-0005bb-G1; Wed, 16 Aug 2023 08:52:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qWFxc-0003Rp-Qo
- for qemu-devel@nongnu.org; Wed, 16 Aug 2023 08:49:17 -0400
-Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qWFxa-0004MU-Ls
- for qemu-devel@nongnu.org; Wed, 16 Aug 2023 08:49:16 -0400
-Received: by mail-ej1-x62b.google.com with SMTP id
- a640c23a62f3a-99df431d4bfso58136366b.1
- for <qemu-devel@nongnu.org>; Wed, 16 Aug 2023 05:49:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692190152; x=1692794952;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=EpA0RkboYzH+61megmtz4fv8FkUXXJiDR9EdSN+fNek=;
- b=DNBFKiqzmd81Pzsj/I5AriSgyQkJpmry5ZspXYlUjB2yUrITBMDyW0IhOrUQkJrUeU
- BAWgZN4Xqo4gf7lZkfNK5wcPClqNiIBU8QV6jX0WyIMeP0b1tqGgtZjsTT0qDqHPMApK
- 5+t7iPidJvOHzPu0qEEoBepC9h+kNSf8h3BVtRXHBAP9SHWjZbxyg++4DtTlYQVTNpeU
- hK73wD+5/fKK+SOsF7rHzcTTC8AMRkvF+BLNngsyuJkAMzNJCOFjRmqNgC+CZjq/Fay8
- rkJ5lQhdwFj+z8/PHXBjaV6clzSd15epg9oBfaU0ly6A4pxKVgOoDIOFTlPvjYoQGBCy
- NBIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692190152; x=1692794952;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=EpA0RkboYzH+61megmtz4fv8FkUXXJiDR9EdSN+fNek=;
- b=LJqtYE8ePf+KvRZ26vqfoCr/L+vLDPJ7Lg9JLqr6ypFx+zFzfIDPE1EBuLc4vZpSYk
- efYa8LUJoABKy28W0z+3cBkf7qvNnKBFskfksqvLffgAJohZ3VuQRSQUvHdOAQ2q4Ix7
- tZpUzPZ8LWsasLfrQDZjXcTDnAZ7oJA7xaPVn+a24jRx13ADYmejo81WmLQ7f1C8JFhf
- 5U3GX51Qm2vDyhCxoBAh1oB1NeNMCVS7TQtAWtJunhNO024vr+mTaw8ErLHT8I+BWMU0
- nKYU+qS0GKNDKmYtfPfvh3mFc74p+x9WmVmflAJTj9sh00wGEK+0Uv8zhjXqIROk/T18
- UHEg==
-X-Gm-Message-State: AOJu0YwqqDeT5aPXynM89J1P8d6dKuu/HUjQ1dbiXfqNmTkfBc4dbtoi
- /MVEjgdcVbl3LVIb4JaKUFVAlA==
-X-Google-Smtp-Source: AGHT+IF4QuIKiND4NUbHbXFYcqZseoCiS83+4AD+sOk8qBXdd2fETHQ0HRQUP1bnQn0a73bpO6+89w==
-X-Received: by 2002:a17:906:d7:b0:99b:eecb:275b with SMTP id
- 23-20020a17090600d700b0099beecb275bmr1471725eji.19.1692190151926; 
- Wed, 16 Aug 2023 05:49:11 -0700 (PDT)
-Received: from [192.168.1.102] (mna75-h02-176-184-40-35.dsl.sta.abo.bbox.fr.
- [176.184.40.35]) by smtp.gmail.com with ESMTPSA id
- gl5-20020a170906e0c500b0099cb349d570sm8465793ejb.185.2023.08.16.05.49.09
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 16 Aug 2023 05:49:11 -0700 (PDT)
-Message-ID: <1a33ef6c-a3ff-ca92-5288-de66bc2818aa@linaro.org>
-Date: Wed, 16 Aug 2023 14:49:07 +0200
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qWG12-0005b2-6s; Wed, 16 Aug 2023 08:52:48 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qWG0z-0005lE-Pr; Wed, 16 Aug 2023 08:52:47 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 877271ACDE;
+ Wed, 16 Aug 2023 15:52:47 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 9F0E41FA39;
+ Wed, 16 Aug 2023 15:52:41 +0300 (MSK)
+Message-ID: <01d1482b-6b84-b762-f98c-7e0e74087820@tls.msk.ru>
+Date: Wed, 16 Aug 2023 15:52:41 +0300
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [PATCH] subprojects/berkeley-testfloat-3: Update to fix a problem
- with compiler warnings
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: qemu-system-x86 dependencies
 Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- qemu-devel@nongnu.org, =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
-Cc: Olaf Hering <olaf@aepfle.de>
-References: <20230816091522.1292029-1-thuth@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230816091522.1292029-1-thuth@redhat.com>
+To: Fourhundred Thecat <400thecat@gmx.ch>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>
+Cc: qemu-discuss@nongnu.org, QEMU Developers <qemu-devel@nongnu.org>
+References: <ed59d5cc-587e-ae8a-f367-96e4e58b67ce@gmx.ch>
+ <10b32eab-a19a-a656-b8bd-4aef1f00bf11@linaro.org>
+From: Michael Tokarev <mjt@tls.msk.ru>
+In-Reply-To: <10b32eab-a19a-a656-b8bd-4aef1f00bf11@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62b.google.com
-X-Spam_score_int: -52
-X-Spam_score: -5.3
-X-Spam_bar: -----
-X-Spam_report: (-5.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.165,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -100
+X-Spam_score: -10.1
+X-Spam_bar: ----------
+X-Spam_report: (-10.1 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-3.165,
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,32 +62,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 16/8/23 11:15, Thomas Huth wrote:
-> Update the berkeley-testfloat-3 wrap to include a patch provided by
-> Olaf Hering. This fixes a problem with "control reaches end of non-void
-> function [-Werror=return-type]" compiler warning/errors that are now
-> enabled by default in certain versions of GCC.
-
-e7af9751d9 has:
-
---- a/source/genCases_f32.c
-+++ b/source/genCases_f32.c
-@@ -411,6 +411,7 @@ static float32_t f32Random( void )
-       case 6:
-          return f32RandomQInfP3();
-       case 7:
-+     default:
-          return f32RandomQInfPInf();
-      }
-
-Why the default is with 7 and not 3 or 5?
-Shouldn't we abort() or mark with __builtin_unreachable()?
-
+16.08.2023 15:37, Philippe Mathieu-Daudé пишет:
+> Cc'ing Michael
 > 
-> Reported-by: Olaf Hering <olaf@aepfle.de>
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->   subprojects/berkeley-testfloat-3.wrap | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+> On 16/8/23 13:52, Fourhundred Thecat wrote:
+>> Hello,
+>>
+>> I am trying to install qemu-system-x86 on Debian 12.
+>>
+>> But through the dependency cascade, it wants to install sound
+>> infrastructure with gstreamer libraries. Which leads to absurd
+>> dependencies, such as:
+>>
+>>    libasound2
+>>    libgstreamer-plugins-base1.0-0
+>>    libopus0
+>>    libwayland-server0
+>>    libusb-1.0-0
+>>
+>> Does this madness come from Debian distribution, or from upstream?
 
+I don't know which madness you're talking about. Is it qemu upstream madness
+or debian distribution madness?  Maybe if you were be a bit more specific
+and share your definition of madness, things would be more clear.  But with
+either of the mentioned madness, it might be neither of us are able to
+understand, being both mad.
+
+/mjt
 
