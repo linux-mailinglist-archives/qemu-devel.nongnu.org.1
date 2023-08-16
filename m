@@ -2,85 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3FB477E619
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Aug 2023 18:14:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E352277E63E
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Aug 2023 18:21:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWJ9R-0007yD-2Y; Wed, 16 Aug 2023 12:13:41 -0400
+	id 1qWJFQ-0001G1-GI; Wed, 16 Aug 2023 12:19:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qWJ9H-0007uw-Ms
- for qemu-devel@nongnu.org; Wed, 16 Aug 2023 12:13:33 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qWJFO-0001FW-4R
+ for qemu-devel@nongnu.org; Wed, 16 Aug 2023 12:19:50 -0400
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qWJ9F-0003C3-ES
- for qemu-devel@nongnu.org; Wed, 16 Aug 2023 12:13:31 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-3fe4a89e8c4so62121575e9.3
- for <qemu-devel@nongnu.org>; Wed, 16 Aug 2023 09:13:29 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qWJFL-0004BQ-Ub
+ for qemu-devel@nongnu.org; Wed, 16 Aug 2023 12:19:49 -0400
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-68730bafa6bso5198192b3a.1
+ for <qemu-devel@nongnu.org>; Wed, 16 Aug 2023 09:19:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692202408; x=1692807208;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=PE+5vPO5L4lpzbk4FSPJLB/bASu0Bpa8jODvIl8YnIk=;
- b=WyGOzuIgHH9s8yGCNmuFr+cdY6u0IvFzTg/b+nCqbbfdsW4HHj3LqlGJOr1fPuBZQK
- Jx2DzttKuCt0qPrGTlr4LShefU5LrokBpINU4cJVKMXJ2/3Z80MpZxx1WVS5jcz5gUSR
- cPkiiL5iV3Fumuhwn4FDP4awMitXFhMkIgfxYEpLDmaJfxgjlqUVuu1acpB9H60XX/2y
- Vqm+U2JrqF63AebmjGBNcP15cYPBCYvZLjoDD2sFecVHMBcsKmgypczT+rau1fwpvWz/
- m9Wm23C6qQVO/XK8P3GbUZ7ud9mnm9wzFssgJ9mGDVVZ3g1lpaAgYsLmAgopknT2mNMc
- /zZw==
+ d=linaro.org; s=google; t=1692202785; x=1692807585;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=gXnTbTf6A4HY57w0Fnc3Ur+Ep689FAD6R3EpGjHk0cg=;
+ b=PNBJeotwqJhl1E+f6ZI1OrQ/q600/WnwIdmwBIw5K555QBiF5mXGXl4pEffuQv1EUk
+ jsC35l9HUCfc2RHzoqyP7bkBrIF6t6YF3Wyru4UVDo+xHMwtbK1S79QRWIOLVfQ3vDHE
+ +rwZGcDsHA0dAJMNTVPypOFC4gcYtsHBnMcMcIcn2/CAxmA6YmBulCR6TKOpYhUkmFy0
+ 2vTT/UTWLohHzb6gMjNbNVrVxdEXII/bqTHDdscutmrhVuJc0cb78e3KQT1kZY0EhBGt
+ HUnZ7cktWigMVEqzD/pa77hMTslBU6F+OGfqjSc6NyYo/mX/7t6KYZCVU3NlQCIUs9Ud
+ JFrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692202408; x=1692807208;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=PE+5vPO5L4lpzbk4FSPJLB/bASu0Bpa8jODvIl8YnIk=;
- b=Kv6RW7LCBsCZLr2qZF1kFWabodXKYPIHl1nBAq8yvjlV840Ld5Zst+Rezcrn5/6tjK
- 5ULDJpoMzbNggJ4Mkx0vPfp/mLG9VwYBlexV/N8DnlvcsnAqXinE2K8zeSF6FkzAL6zM
- eA1IuMz5EqeVuAAvOfTP4Dv7KuQO7Pf7UG28RSUkiPvBJ4+pAJbrPsItZqx4NaAT7hpM
- 9DPEZOL3apNS4fFlv/A+WMhpkqxDFk6XpoEUcwUbHKzFPdJtnrwWTQgLrxAeEQhbzvxY
- AlwpysR57HB5pAvlVZEjqJXbIXNtRgNiR6oLUVj2VZJTUO+ojvRMMTyrzGocsASGUsDA
- TiGg==
-X-Gm-Message-State: AOJu0YyXLupTVnyFuAowlBgGrZPacK9w7dNkSAnuFwtpx511jNphhpSQ
- vq3Exn7rLPPP86cssi0yBFGdNw==
-X-Google-Smtp-Source: AGHT+IFCqPMiKRBixd1fFQGz5nrl9nifXktIxYomw7za2ETzgc4h9FgsXwEHCiGVZO17Q6MzlQRvSg==
-X-Received: by 2002:a7b:c5c5:0:b0:3fe:25b3:951d with SMTP id
- n5-20020a7bc5c5000000b003fe25b3951dmr1992920wmk.5.1692202407906; 
- Wed, 16 Aug 2023 09:13:27 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
+ d=1e100.net; s=20221208; t=1692202785; x=1692807585;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=gXnTbTf6A4HY57w0Fnc3Ur+Ep689FAD6R3EpGjHk0cg=;
+ b=Ol+btE8xLDfXKMR6V0cqB4mupzjZb2YfC6eqRZHr0N1yaVmIpVWxMEymsMVpyAIoPi
+ wPrld0bC9T5dFxYeNEXEWM12OiXlMDMb8B3ye+9s7uI3EJdNP4ABBKDQ9WrABqlRlKHk
+ EDMoC4GdSnPToXjptHxqPMThKNyVcbyA50r/IWbMWdNvoLBIey8Z98ug/dSmPPPSIFcn
+ BZXw4FZ7k742r5uVsLyR/kZTkGHrflPY1SsvL/YAiYvmc1CjwjIH2UmbU3Ak1JdXCkSv
+ bdXQb8BgveBwWalYNc8AWgXwZd6hqg3JZYzvEU2JzCSh60b1JOZLuMBbYvmya0Uo/v5t
+ 6JNw==
+X-Gm-Message-State: AOJu0Yyn36wknoIcHXu0LwOziLQQhDLUhrcv4BLWHt9V6TfbfJvZR+Wm
+ 6nheQUZi6rXo4nZChBX/aqt1tNYlUvwl7udQEyI=
+X-Google-Smtp-Source: AGHT+IGLkaEO++uPFCPiNDqpecVPF/6YavaQzyugXla2VrXzWrefvfZ+NsqGUPfD6kmtooh+CeJ3nA==
+X-Received: by 2002:a05:6a20:1455:b0:127:76ab:a6ff with SMTP id
+ a21-20020a056a20145500b0012776aba6ffmr174377pzi.22.1692202785316; 
+ Wed, 16 Aug 2023 09:19:45 -0700 (PDT)
+Received: from ?IPV6:2602:47:d483:7301:a064:e3f9:a812:973b?
+ ([2602:47:d483:7301:a064:e3f9:a812:973b])
  by smtp.gmail.com with ESMTPSA id
- r6-20020a05600c458600b003fe15ac0934sm1089643wmo.1.2023.08.16.09.13.27
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 16 Aug 2023 09:13:27 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 09B631FFBB;
- Wed, 16 Aug 2023 17:13:27 +0100 (BST)
-References: <20230816091522.1292029-1-thuth@redhat.com>
- <CAFEAcA8xna5-ewGMUjoVjJTsFKVeBbOPXJj481+GEC=ZzqgVug@mail.gmail.com>
-User-agent: mu4e 1.11.14; emacs 29.1.50
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Thomas Huth <thuth@redhat.com>, Peter Maydell <peter.maydell@linaro.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org, Olaf Hering
- <olaf@aepfle.de>
-Subject: Re: [PATCH] subprojects/berkeley-testfloat-3: Update to fix a
- problem with compiler warnings
-Date: Wed, 16 Aug 2023 17:11:57 +0100
-In-reply-to: <CAFEAcA8xna5-ewGMUjoVjJTsFKVeBbOPXJj481+GEC=ZzqgVug@mail.gmail.com>
-Message-ID: <87msyrnexl.fsf@linaro.org>
+ o4-20020a63a804000000b005651c9351e1sm12159045pgf.64.2023.08.16.09.19.44
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 16 Aug 2023 09:19:44 -0700 (PDT)
+Message-ID: <f51caa46-f26b-0828-18a5-99acf27d786d@linaro.org>
+Date: Wed, 16 Aug 2023 09:19:43 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x330.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v4 08/25] target/arm: Use GDBFeature for dynamic XML
+Content-Language: en-US
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>
+References: <20230816145155.21049-1-akihiko.odaki@daynix.com>
+ <20230816145155.21049-9-akihiko.odaki@daynix.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230816145155.21049-9-akihiko.odaki@daynix.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42b.google.com
+X-Spam_score_int: -52
+X-Spam_score: -5.3
+X-Spam_bar: -----
+X-Spam_report: (-5.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.165,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -98,49 +96,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 8/16/23 07:51, Akihiko Odaki wrote:
+> In preparation for a change to use GDBFeature as a parameter of
+> gdb_register_coprocessor(), convert the internal representation of
+> dynamic feature from plain XML to GDBFeature.
+> 
+> Signed-off-by: Akihiko Odaki<akihiko.odaki@daynix.com>
+> ---
+>   target/arm/cpu.h       |  20 +++---
+>   target/arm/internals.h |   2 +-
+>   target/arm/gdbstub.c   | 134 ++++++++++++++++++-----------------------
+>   target/arm/gdbstub64.c |  90 ++++++++++++---------------
+>   4 files changed, 108 insertions(+), 138 deletions(-)
 
-Peter Maydell <peter.maydell@linaro.org> writes:
+This is quite large, and I think you could have converted the different subsystems one at 
+a time (especially since you renamed the structure, and so both could exist side-by-side). 
+  But I won't insist.
 
-> On Wed, 16 Aug 2023 at 10:16, Thomas Huth <thuth@redhat.com> wrote:
->>
->> Update the berkeley-testfloat-3 wrap to include a patch provided by
->> Olaf Hering. This fixes a problem with "control reaches end of non-void
->> function [-Werror=3Dreturn-type]" compiler warning/errors that are now
->> enabled by default in certain versions of GCC.
->>
->> Reported-by: Olaf Hering <olaf@aepfle.de>
->> Signed-off-by: Thomas Huth <thuth@redhat.com>
->> ---
->>  subprojects/berkeley-testfloat-3.wrap | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> This seems like a reasonable place to ask: should we just pull
-> in the testfloat and softfloat repos to be part of the main
-> qemu repo?
-
-We've definitely forked the softfloat inside QEMU with the refactor some
-time ago. For the testing repos we have lightly modified them to build
-the test code but only by a few patches. We might want to keep the
-ability to re-base on a new release if say test float gains fp16 or
-bfloat16 support.=20
-
-> AIUI we've definitively forked both of these, so
-> we don't care about trying to make it easy to resync with
-> upstream. Having them in separate git repos seems to have some
-> clear disadvantages:
->  * it's harder to update them
->  * changes to them can end up skipping the usual code
->    review process, because it's a different patch flow
->    to the normal one
->  * we get extra meson subproject infrastructure to deal with
->
-> Are there any reasons to keep them separate ?
->
-> thanks
-> -- PMM
+Acked-by: Richard Henderson <richard.henderson@linaro.org>
 
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+r~
 
