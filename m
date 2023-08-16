@@ -2,88 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E45E577EC60
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Aug 2023 23:57:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E163377ECF2
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 00:15:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWOUn-0000ys-9b; Wed, 16 Aug 2023 17:56:05 -0400
+	id 1qWOmC-0003mW-Gz; Wed, 16 Aug 2023 18:14:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qWOUi-0000xz-Kw
- for qemu-devel@nongnu.org; Wed, 16 Aug 2023 17:56:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qWOUe-0003ES-PY
- for qemu-devel@nongnu.org; Wed, 16 Aug 2023 17:56:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692222954;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=zxuzjgQJF1LS7USEoDFeilAyvzSnCDk4fA04BqbpXTI=;
- b=PMBI4c9ZYchuXlL6etbxqfaIH3bZZwLzUdDtvfq7gjr/8D78cZLHBo9Dbl16vb2cA+FVt1
- hvZZWWsu4XIh8DvT8C7KqQGtd3FkYi+eJfEpE7kd4kNXjMqfZ/7CcXZ9RW6g/G4aCKwcYZ
- rnfHDkFN4iK2mbi9N8Ptwu8g44xqf6A=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-278-HYERpKdnN8C1rldsXwUmpw-1; Wed, 16 Aug 2023 17:55:52 -0400
-X-MC-Unique: HYERpKdnN8C1rldsXwUmpw-1
-Received: by mail-qt1-f200.google.com with SMTP id
- d75a77b69052e-40fe7fa05edso19999111cf.0
- for <qemu-devel@nongnu.org>; Wed, 16 Aug 2023 14:55:51 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qWOm8-0003lp-Le
+ for qemu-devel@nongnu.org; Wed, 16 Aug 2023 18:14:01 -0400
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qWOm6-0002mT-9V
+ for qemu-devel@nongnu.org; Wed, 16 Aug 2023 18:14:00 -0400
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-99bcc0adab4so910793366b.2
+ for <qemu-devel@nongnu.org>; Wed, 16 Aug 2023 15:13:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1692224036; x=1692828836;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=zEJhz2IPLHDaEP85ICczZLGFLyYPkVCbOGyIXuOX1Mo=;
+ b=CmyroviCHiKVwgOQXNIQiig+CyMxbN3y6ENyJWAa0zJj+dqB0+AksS+vWL7IYDb3U1
+ 7rp+9VWhFhTiNQZzVEbqR0ZQ3FC2gvV2+oBlNGSWIJMStGfUb6X+hReaTs2t34uVdUL1
+ Dl9JK+qQaWpZ5Jm/9FyYU4Q1Re9UTOWV+J2pC+qsiTGwtsqe0WEaqc5zdVPvlfzqNav+
+ OB2uMmYcLHqlP/POHyM6yPR82feDpAeRu2Qoia/E/T3qodpok9jFPElRfPyuwQY75jw5
+ 2ggW46caEnj+R8XJiEecUi4epfueCqWhdkFPn4cOTWUsVpYzkzD7RNFBZzZxOtZsq6Af
+ 5FDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692222951; x=1692827751;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=zxuzjgQJF1LS7USEoDFeilAyvzSnCDk4fA04BqbpXTI=;
- b=broeQZbfouDSd6YH7uWuVPveiaIqYncUCsMcywFNeJbxQ4StOBc/30VwkDM8P65tCV
- l31A4X+J66G3oIW+WSl3zs/tn9vY7cnV0MNMMPm4qO8MQdEn1RLG+gMqseXhgz2M7Qrj
- CvVPgmbg9cvOQ4BbZ6Lb/UnB074qd0EoHmlPjILY36BpKwd7tOjpC5WCp/mFl5bYYICF
- hGeQH5jtulSSaU/WojFRlS0VGaBL+rS3z11EAFhv31ocqLVlUu8jB/nJxrvEOxztEZ64
- i3B+Bl/arIkNEHD3ey+GP4XukGYCeeDDdcIeZq/oPnorDKwqNH2VhpF6i+hWlWlZgrpC
- O6Cw==
-X-Gm-Message-State: AOJu0YzkfOmZp/CJplpBlBxAZJv2fcv+CZ64emtacbiw4AaSlpr6tl8N
- 5E5DCkqUe4T38XqIspLhB0yevwCDK0C+3Nga7jnYYzCubnrzbOFBdneS8E2dSD1zC2uaaoIuy0q
- Mh/MiMU+OuM4B9DM=
-X-Received: by 2002:ac8:5bc4:0:b0:40a:6359:2120 with SMTP id
- b4-20020ac85bc4000000b0040a63592120mr4190441qtb.0.1692222951556; 
- Wed, 16 Aug 2023 14:55:51 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEJZAbf8Bo4aqkvM9OnY08rDuh2O3atry5bn78SZIou+AWPOaXRVOLYlB0m177wyhcLjJwRKA==
-X-Received: by 2002:ac8:5bc4:0:b0:40a:6359:2120 with SMTP id
- b4-20020ac85bc4000000b0040a63592120mr4190426qtb.0.1692222951340; 
- Wed, 16 Aug 2023 14:55:51 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- h8-20020ac85148000000b0040ff387de83sm4752325qtn.45.2023.08.16.14.55.50
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 16 Aug 2023 14:55:51 -0700 (PDT)
-Date: Wed, 16 Aug 2023 17:55:49 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
- Wei Wang <wei.w.wang@intel.com>, Leonardo Bras <leobras@redhat.com>
-Subject: Re: [PATCH v4 8/8] migration: Add a wrapper to cleanup migration files
-Message-ID: <ZN1F5QqKE6Uzlwdk@x1n>
-References: <20230816142510.5637-1-farosas@suse.de>
- <20230816142510.5637-9-farosas@suse.de> <ZNzot6bDD15S3U7u@x1n>
- <87leealt8h.fsf@suse.de> <ZN0k/DFQQIeEpgjl@x1n>
- <ZN0lgcI3Ieksdbv/@x1n> <87edk24rb9.fsf@suse.de>
+ d=1e100.net; s=20221208; t=1692224036; x=1692828836;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=zEJhz2IPLHDaEP85ICczZLGFLyYPkVCbOGyIXuOX1Mo=;
+ b=Y2ZbX1dTVSZNqCC3fIFOaZxrG+UcR/Lm6clDX6O5Ixps6sor9V9jaj9zKvIG3gIKr1
+ zpuPDWtGN0oM0sufBVUTODTxitKLlZVUyhguZ3SUmLurpm0BjiafLbv2svlsckqp3hMp
+ CMoqwafaxstEf17lJoijy6Oj9nHziMLauAJ2heS1Ti30eYfBjX0fkCDVGs1hslbbfNgM
+ q4thq6v89h7TWatvXdXrdmFVfNZv9EAZubjMck6USc7ZORDrH3y3EwwjTuXCptRNFOJ+
+ LvIIa1Y4midOmtwG9ysvYK0Ds71215+vcxQ9SdNWbDX9lAgpD8aYkFKP9xgsWr5dlmnf
+ wCXQ==
+X-Gm-Message-State: AOJu0YyzZKkpxYXWamYkklTvbD/GjLu1b4vHITvPvHyhKUnYMtoXjKGK
+ RiKdyOWOMs8RZ8Wn1jOptPSPpA==
+X-Google-Smtp-Source: AGHT+IG98L0LsfZXyZgkLBn0iItvl+UUKTwV4q9ywdz0jS9wZf/nB/iq0a1yBK3tWyW8XDMC4MA0YA==
+X-Received: by 2002:a17:906:cc0d:b0:99d:7336:728c with SMTP id
+ ml13-20020a170906cc0d00b0099d7336728cmr2317995ejb.35.1692224036443; 
+ Wed, 16 Aug 2023 15:13:56 -0700 (PDT)
+Received: from [192.168.69.115] (mna75-h02-176-184-40-35.dsl.sta.abo.bbox.fr.
+ [176.184.40.35]) by smtp.gmail.com with ESMTPSA id
+ jw13-20020a17090776ad00b0099275c59bc9sm9115158ejc.33.2023.08.16.15.13.55
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 16 Aug 2023 15:13:56 -0700 (PDT)
+Message-ID: <167f8783-9592-6245-7e74-58a1cd9ac437@linaro.org>
+Date: Thu, 17 Aug 2023 00:13:54 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <87edk24rb9.fsf@suse.de>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.14.0
+Subject: Re: [PATCH 4/4] tcg: Map code_gen_buffer with PROT_BTI
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, Joelle van Dyne <j@getutm.app>
+References: <20230816142516.469743-1-richard.henderson@linaro.org>
+ <20230816142516.469743-5-richard.henderson@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230816142516.469743-5-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x632.google.com
+X-Spam_score_int: -52
+X-Spam_score: -5.3
+X-Spam_bar: -----
+X-Spam_report: (-5.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.165,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,26 +93,117 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 16, 2023 at 06:20:58PM -0300, Fabiano Rosas wrote:
-> > One more thing to mention is, now I kind of agree probably we should
-> > register yank over each qemufile, as you raised the concern in the other
-> > thread that otherwise qmp_yank() won't set error for the qemufile, which
-> > seems to be unexpected.
-> 
-> I haven't made up my mind yet, but I think I'd rather stop setting that
-> error instead of doing it from other places. A shutdown() is mostly a
-> benign operation intended to end the connection. The fact that we use it
-> in some cases to kick the thread out of a possible hang doesn't seem
-> compelling enough to set -EIO.
-> 
-> Of course we currently have no other way to indicate that the file was
-> shutdown, so the -EIO will have to stay and that's a discussion for
-> another day.
+(Cc'ing Joelle)
 
-Yes, if we can avoid setting -EIO at all when shutdown that'll also be
-good, maybe making more sense.  Thanks,
+On 16/8/23 16:25, Richard Henderson wrote:
+> For linux aarch64 host supporting BTI, map the buffer
+> to require BTI instructions at branch landing pads.
+> 
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   tcg/region.c | 39 ++++++++++++++++++++++++++++-----------
+>   1 file changed, 28 insertions(+), 11 deletions(-)
+> 
+> diff --git a/tcg/region.c b/tcg/region.c
+> index 2b28ed3556..58cb68c6c8 100644
+> --- a/tcg/region.c
+> +++ b/tcg/region.c
+> @@ -33,8 +33,19 @@
+>   #include "tcg/tcg.h"
+>   #include "exec/translation-block.h"
+>   #include "tcg-internal.h"
+> +#include "host/cpuinfo.h"
+>   
+>   
+> +/*
+> + * Local source-level compatibility with Unix.
+> + * Used by tcg_region_init below.
+> + */
+> +#if defined(_WIN32)
+> +#define PROT_READ   1
+> +#define PROT_WRITE  2
+> +#define PROT_EXEC   4
+> +#endif
+> +
+>   struct tcg_region_tree {
+>       QemuMutex lock;
+>       QTree *tree;
+> @@ -83,6 +94,16 @@ bool in_code_gen_buffer(const void *p)
+>       return (size_t)(p - region.start_aligned) <= region.total_size;
+>   }
+>   
+> +static int host_prot_read_exec(void)
+> +{
+> +#if defined(CONFIG_LINUX) && defined(HOST_AARCH64) && defined(PROT_BTI)
+> +    if (cpuinfo & CPUINFO_BTI) {
+> +        return PROT_READ | PROT_EXEC | PROT_BTI;
+> +    }
+> +#endif
+> +    return PROT_READ | PROT_EXEC;
+> +}
+> +
+>   #ifdef CONFIG_DEBUG_TCG
+>   const void *tcg_splitwx_to_rx(void *rw)
+>   {
+> @@ -505,14 +526,6 @@ static int alloc_code_gen_buffer(size_t tb_size, int splitwx, Error **errp)
+>       return PROT_READ | PROT_WRITE;
+>   }
+>   #elif defined(_WIN32)
+> -/*
+> - * Local source-level compatibility with Unix.
+> - * Used by tcg_region_init below.
+> - */
+> -#define PROT_READ   1
+> -#define PROT_WRITE  2
+> -#define PROT_EXEC   4
+> -
+>   static int alloc_code_gen_buffer(size_t size, int splitwx, Error **errp)
+>   {
+>       void *buf;
+> @@ -567,7 +580,7 @@ static int alloc_code_gen_buffer_splitwx_memfd(size_t size, Error **errp)
+>           goto fail;
+>       }
+>   
+> -    buf_rx = mmap(NULL, size, PROT_READ | PROT_EXEC, MAP_SHARED, fd, 0);
+> +    buf_rx = mmap(NULL, size, host_prot_read_exec(), MAP_SHARED, fd, 0);
+>       if (buf_rx == MAP_FAILED) {
+>           goto fail_rx;
+>       }
+> @@ -642,7 +655,7 @@ static int alloc_code_gen_buffer_splitwx_vmremap(size_t size, Error **errp)
+>           return -1;
+>       }
+>   
+> -    if (mprotect((void *)buf_rx, size, PROT_READ | PROT_EXEC) != 0) {
+> +    if (mprotect((void *)buf_rx, size, host_prot_read_exec()) != 0) {
+>           error_setg_errno(errp, errno, "mprotect for jit splitwx");
+>           munmap((void *)buf_rx, size);
+>           munmap((void *)buf_rw, size);
+> @@ -805,7 +818,7 @@ void tcg_region_init(size_t tb_size, int splitwx, unsigned max_cpus)
+>       need_prot = PROT_READ | PROT_WRITE;
+>   #ifndef CONFIG_TCG_INTERPRETER
+>       if (tcg_splitwx_diff == 0) {
+> -        need_prot |= PROT_EXEC;
+> +        need_prot |= host_prot_read_exec();
+>       }
+>   #endif
+>       for (size_t i = 0, n = region.n; i < n; i++) {
+> @@ -820,7 +833,11 @@ void tcg_region_init(size_t tb_size, int splitwx, unsigned max_cpus)
+>               } else if (need_prot == (PROT_READ | PROT_WRITE)) {
+>                   rc = qemu_mprotect_rw(start, end - start);
+>               } else {
+> +#ifdef CONFIG_POSIX
+> +                rc = mprotect(start, end - start, need_prot);
 
--- 
-Peter Xu
+Hmm this bypass the qemu_real_host_page_mask() checks in
+qemu_mprotect__osdep(), but I guess this is acceptable.
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+> +#else
+>                   g_assert_not_reached();
+> +#endif
+>               }
+>               if (rc) {
+>                   error_setg_errno(&error_fatal, errno,
 
 
