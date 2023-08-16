@@ -2,82 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C931E77EBFA
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Aug 2023 23:38:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D48F277EC5F
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Aug 2023 23:57:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWODh-0006hQ-Vx; Wed, 16 Aug 2023 17:38:26 -0400
+	id 1qWOUk-0000yY-Gy; Wed, 16 Aug 2023 17:56:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qWODf-0006au-0a
- for qemu-devel@nongnu.org; Wed, 16 Aug 2023 17:38:23 -0400
-Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qWODc-0007Z1-LT
- for qemu-devel@nongnu.org; Wed, 16 Aug 2023 17:38:22 -0400
-Received: by mail-lf1-x134.google.com with SMTP id
- 2adb3069b0e04-4ff92e369dfso1707128e87.3
- for <qemu-devel@nongnu.org>; Wed, 16 Aug 2023 14:38:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692221899; x=1692826699;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Bs7G7wVDioo8WK0RWXvXlooHeTyzN4FOc0KWaD453Yk=;
- b=sN9FyQcnTXbjQudTcWYHQPJFoYX7W8sxP35ZzHCAeM5u8eUusPrmrXeRhGpBY9mEAY
- JVezNM9yXFTnvAKPAHsdrROPtsfuF5K40HkRohXAy01opIRcKNF0PhUhYGiwnNMQ4Hn+
- j5VoYQXnNWsbYFz3sRx9+xQBEaDhDCwcVrh2gOz+vbyeRM5T0TaSgP7bJZymYo6kp61B
- zcNJwUB55lw9YBpAnNy+xc81c+Vzjvp3fU545Ul3roFlr9a37ZNHYJyVyLAATnRpP8GP
- wmoBZjkrDG0DdyZbUYRP1la/1RSLVm2QVgMYVYkSDfiN7rgA8SmtKbZP3gmLH3HIElHd
- I2Zg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692221899; x=1692826699;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Bs7G7wVDioo8WK0RWXvXlooHeTyzN4FOc0KWaD453Yk=;
- b=je+8+FQ+QXmJjBVvgHZZf/HMH/aVYS6y7bemivI32UL6YWFDw/GRdB/P4X/uegaRyj
- mu/GxzJmjaKoVzCqKD9QePU6DJ1TF90uCwl7h+OlT9fOg2aYIF6rsEyt4qrMygb/cr7L
- 19mHt+xN1mJMp1x76lRUB+Q0GQsxUQpHX26MqeGFSXxUoWFN0g5oCvhXRDH01DGJGRmg
- Vb3QhAtqSa5wY0Dm/f01OhuZFJSEGRzQBUyVnPeSgozmRUZWkMKcJOK/60TPVn3x/x1g
- ITL1VtpsVITNQx9xMoYXgypAVEGEVJjehr+AFfG9jJ08UU+/2GaC5UH5k7uVZjVr05Pi
- HYDw==
-X-Gm-Message-State: AOJu0YwcsQADv20+46NF0S29O8jAmp4GfgXaSd/aPQe8oWInRQbqPcuo
- RiMhmIaodlxdNRxxMTXsjD5aAA==
-X-Google-Smtp-Source: AGHT+IFq+MtIBl5TkfSUa2y/JcQx3cGehCSOA1tPtj8WQlERPnBSPIUWTvnbTbFg91EZEyrvw8lqzQ==
-X-Received: by 2002:a19:9148:0:b0:4ff:8d2c:751b with SMTP id
- y8-20020a199148000000b004ff8d2c751bmr2012536lfj.43.1692221898655; 
- Wed, 16 Aug 2023 14:38:18 -0700 (PDT)
-Received: from [192.168.69.115] (mna75-h02-176-184-40-35.dsl.sta.abo.bbox.fr.
- [176.184.40.35]) by smtp.gmail.com with ESMTPSA id
- r13-20020aa7cb8d000000b005232ddd0151sm8779050edt.52.2023.08.16.14.38.17
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 16 Aug 2023 14:38:18 -0700 (PDT)
-Message-ID: <f04ee07b-4cd5-b895-67d5-2d91d303afad@linaro.org>
-Date: Wed, 16 Aug 2023 23:38:15 +0200
+ (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
+ id 1qWOUi-0000y3-R2
+ for qemu-devel@nongnu.org; Wed, 16 Aug 2023 17:56:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
+ id 1qWOUe-0003Ee-Gz
+ for qemu-devel@nongnu.org; Wed, 16 Aug 2023 17:56:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1692222955;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=OcFKirAQXEdhqOVkq6H9M3WaJkHAoXMZ0EUi9vCMpys=;
+ b=BjiqjddBncrYCDemFnvDuGTph/Cr26z3ACzGv3erRxLajLymMrmxDO3pulLNQKWFqcIrXY
+ 0IcdNvh9N23/1vrVbVy7MdB7YAcNs2Xu6YUaihXVy1Lm2vvaOeO/YDFxaSd4/53u9Mv+Bq
+ dfegoRf1y9zLoOfk6gvTzyDY20okwLY=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-592-wF-3j_miPpCeE4P1ZLmvig-1; Wed, 16 Aug 2023 17:55:53 -0400
+X-MC-Unique: wF-3j_miPpCeE4P1ZLmvig-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A943D185A78B;
+ Wed, 16 Aug 2023 21:55:52 +0000 (UTC)
+Received: from omen.home.shazbot.org (unknown [10.22.32.38])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 361B91121314;
+ Wed, 16 Aug 2023 21:55:52 +0000 (UTC)
+From: Alex Williamson <alex.williamson@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Alex Williamson <alex.williamson@redhat.com>, marcandre.lureau@redhat.com,
+ dongwon.kim@intel.com, kraxel@redhat.com
+Subject: [PATCH for-8.1] vfio/display: Fix missing update to set backing fields
+Date: Wed, 16 Aug 2023 15:55:49 -0600
+Message-Id: <20230816215550.1723696-1-alex.williamson@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [PATCH 1/4] tcg: Add tcg_out_tb_start backend hook
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, Jordan Niethe <jniethe5@gmail.com>
-References: <20230816142516.469743-1-richard.henderson@linaro.org>
- <20230816142516.469743-2-richard.henderson@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230816142516.469743-2-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::134;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x134.google.com
-X-Spam_score_int: -52
-X-Spam_score: -5.3
-X-Spam_bar: -----
-X-Spam_report: (-5.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.165,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=alex.williamson@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,25 +76,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 16/8/23 16:25, Richard Henderson wrote:
-> This hook may emit code at the beginning of the TB.
-> 
-> Suggested-by: Jordan Niethe <jniethe5@gmail.com>
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   tcg/tcg.c                        | 3 +++
->   tcg/aarch64/tcg-target.c.inc     | 5 +++++
->   tcg/arm/tcg-target.c.inc         | 5 +++++
->   tcg/i386/tcg-target.c.inc        | 5 +++++
->   tcg/loongarch64/tcg-target.c.inc | 5 +++++
->   tcg/mips/tcg-target.c.inc        | 5 +++++
->   tcg/ppc/tcg-target.c.inc         | 5 +++++
->   tcg/riscv/tcg-target.c.inc       | 5 +++++
->   tcg/s390x/tcg-target.c.inc       | 5 +++++
->   tcg/sparc64/tcg-target.c.inc     | 5 +++++
->   tcg/tci/tcg-target.c.inc         | 5 +++++
->   11 files changed, 53 insertions(+)
+The below referenced commit renames scanout_width/height to
+backing_width/height, but also promotes these fields in various portions
+of the egl interface.  Meanwhile vfio dmabuf support has never used the
+previous scanout fields and is therefore missed in the update.  This
+results in a black screen when transitioning from ramfb to dmabuf display
+when using Intel vGPU with these features.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Link: https://lists.gnu.org/archive/html/qemu-devel/2023-08/msg02726.html
+Fixes: 9ac06df8b684 ("virtio-gpu-udmabuf: correct naming of QemuDmaBuf size properties")
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+---
+
+This fixes a regression in dmabuf/EGL support for Intel GVT-g and
+potentially the mbochs mdev driver as well.  Once validated by those
+that understand dmabuf/EGL integration, I'd welcome QEMU maintainers to
+take this directly for v8.1 or queue it as soon as possible for v8.1.1.
+
+ hw/vfio/display.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/hw/vfio/display.c b/hw/vfio/display.c
+index bec864f482f4..837d9e6a309e 100644
+--- a/hw/vfio/display.c
++++ b/hw/vfio/display.c
+@@ -243,6 +243,8 @@ static VFIODMABuf *vfio_display_get_dmabuf(VFIOPCIDevice *vdev,
+     dmabuf->dmabuf_id  = plane.dmabuf_id;
+     dmabuf->buf.width  = plane.width;
+     dmabuf->buf.height = plane.height;
++    dmabuf->buf.backing_width = plane.width;
++    dmabuf->buf.backing_height = plane.height;
+     dmabuf->buf.stride = plane.stride;
+     dmabuf->buf.fourcc = plane.drm_format;
+     dmabuf->buf.modifier = plane.drm_format_mod;
+-- 
+2.40.1
 
 
