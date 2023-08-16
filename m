@@ -2,81 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E163377ECF2
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 00:15:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69E6177ED0A
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 00:26:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWOmC-0003mW-Gz; Wed, 16 Aug 2023 18:14:04 -0400
+	id 1qWOxA-0005Ha-0k; Wed, 16 Aug 2023 18:25:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qWOm8-0003lp-Le
- for qemu-devel@nongnu.org; Wed, 16 Aug 2023 18:14:01 -0400
-Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qWOm6-0002mT-9V
- for qemu-devel@nongnu.org; Wed, 16 Aug 2023 18:14:00 -0400
-Received: by mail-ej1-x632.google.com with SMTP id
- a640c23a62f3a-99bcc0adab4so910793366b.2
- for <qemu-devel@nongnu.org>; Wed, 16 Aug 2023 15:13:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692224036; x=1692828836;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=zEJhz2IPLHDaEP85ICczZLGFLyYPkVCbOGyIXuOX1Mo=;
- b=CmyroviCHiKVwgOQXNIQiig+CyMxbN3y6ENyJWAa0zJj+dqB0+AksS+vWL7IYDb3U1
- 7rp+9VWhFhTiNQZzVEbqR0ZQ3FC2gvV2+oBlNGSWIJMStGfUb6X+hReaTs2t34uVdUL1
- Dl9JK+qQaWpZ5Jm/9FyYU4Q1Re9UTOWV+J2pC+qsiTGwtsqe0WEaqc5zdVPvlfzqNav+
- OB2uMmYcLHqlP/POHyM6yPR82feDpAeRu2Qoia/E/T3qodpok9jFPElRfPyuwQY75jw5
- 2ggW46caEnj+R8XJiEecUi4epfueCqWhdkFPn4cOTWUsVpYzkzD7RNFBZzZxOtZsq6Af
- 5FDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692224036; x=1692828836;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=zEJhz2IPLHDaEP85ICczZLGFLyYPkVCbOGyIXuOX1Mo=;
- b=Y2ZbX1dTVSZNqCC3fIFOaZxrG+UcR/Lm6clDX6O5Ixps6sor9V9jaj9zKvIG3gIKr1
- zpuPDWtGN0oM0sufBVUTODTxitKLlZVUyhguZ3SUmLurpm0BjiafLbv2svlsckqp3hMp
- CMoqwafaxstEf17lJoijy6Oj9nHziMLauAJ2heS1Ti30eYfBjX0fkCDVGs1hslbbfNgM
- q4thq6v89h7TWatvXdXrdmFVfNZv9EAZubjMck6USc7ZORDrH3y3EwwjTuXCptRNFOJ+
- LvIIa1Y4midOmtwG9ysvYK0Ds71215+vcxQ9SdNWbDX9lAgpD8aYkFKP9xgsWr5dlmnf
- wCXQ==
-X-Gm-Message-State: AOJu0YyzZKkpxYXWamYkklTvbD/GjLu1b4vHITvPvHyhKUnYMtoXjKGK
- RiKdyOWOMs8RZ8Wn1jOptPSPpA==
-X-Google-Smtp-Source: AGHT+IG98L0LsfZXyZgkLBn0iItvl+UUKTwV4q9ywdz0jS9wZf/nB/iq0a1yBK3tWyW8XDMC4MA0YA==
-X-Received: by 2002:a17:906:cc0d:b0:99d:7336:728c with SMTP id
- ml13-20020a170906cc0d00b0099d7336728cmr2317995ejb.35.1692224036443; 
- Wed, 16 Aug 2023 15:13:56 -0700 (PDT)
-Received: from [192.168.69.115] (mna75-h02-176-184-40-35.dsl.sta.abo.bbox.fr.
- [176.184.40.35]) by smtp.gmail.com with ESMTPSA id
- jw13-20020a17090776ad00b0099275c59bc9sm9115158ejc.33.2023.08.16.15.13.55
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 16 Aug 2023 15:13:56 -0700 (PDT)
-Message-ID: <167f8783-9592-6245-7e74-58a1cd9ac437@linaro.org>
-Date: Thu, 17 Aug 2023 00:13:54 +0200
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qWOx8-0005HP-Jt
+ for qemu-devel@nongnu.org; Wed, 16 Aug 2023 18:25:22 -0400
+Received: from mout.gmx.net ([212.227.15.19])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qWOx6-0007QX-2M
+ for qemu-devel@nongnu.org; Wed, 16 Aug 2023 18:25:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
+ s=s31663417; t=1692224713; x=1692829513; i=deller@gmx.de;
+ bh=qHYxpMELgQDlbAzujPzxymX+MnNX1RFMCelelSXF488=;
+ h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+ b=LlTaAWbqHOoMDzzAx/LHBdHp/EvlCLEhNjL467KpPYqVffrtwIy5V3z74QjJm1bg8emsXaV
+ OdbCASS0L3b3bn+pbNh894Z2pIFeUSw+qc29v9AY0y4EENMTU0q14yvS2McXy93W6Mk3XIcpb
+ zGhKmytlUbKGOCYafz9lzxiFngDqCtpMB2m80iHZ8FNUAOZKTNFGqa4uQRernoRue73jkRGnI
+ e9zBxCIPnMwAbQdmhloHtR7x7SVLUpfDiV7MLNM3WRh2PRkIodhoj0BM5xop+Dbj3/wm9Zrar
+ tioZSEHUpFcvTWqP4KJS1mqZocYp3a23R5avgAr3W5dRRB/Jmz5w==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.60] ([94.134.144.66]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mk0JW-1q3xxY3zJo-00kQEt; Thu, 17
+ Aug 2023 00:25:13 +0200
+Message-ID: <6e220406-773e-e5f2-7146-64b987dec26c@gmx.de>
+Date: Thu, 17 Aug 2023 00:25:12 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [PATCH 4/4] tcg: Map code_gen_buffer with PROT_BTI
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 0/6] linux-user: Rewrite open_self_maps
 Content-Language: en-US
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, Joelle van Dyne <j@getutm.app>
-References: <20230816142516.469743-1-richard.henderson@linaro.org>
- <20230816142516.469743-5-richard.henderson@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230816142516.469743-5-richard.henderson@linaro.org>
+Cc: iii@linux.ibm.com
+References: <20230816181437.572997-1-richard.henderson@linaro.org>
+From: Helge Deller <deller@gmx.de>
+In-Reply-To: <20230816181437.572997-1-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::632;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x632.google.com
-X-Spam_score_int: -52
-X-Spam_score: -5.3
-X-Spam_bar: -----
-X-Spam_report: (-5.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.165,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:+ZXj4/ItdstAPphIKGbuZzNTg7fxjuK5OFrzkTFpzDB7MgEV1Tz
+ Sv3YfmBasZVkBG/JS9m/4C1G7WCdInARonY+ybDOVqxq8rHLVU00AEuLoxsGt97fK/TN+qK
+ f1dl6yLLJ96BvuuYMf3mIHKaizUdRMIBgsYpAyHt2BQ760MaK51VZ2WNL14AaZTxFrmghNU
+ HGup9S42+N6lOuuA1q3RQ==
+UI-OutboundReport: notjunk:1;M01:P0:YF2EU5L9gJw=;6fYlJ8cWj0+TClDrr640Dw6tAgX
+ 12SRJ+5LRZGxFWmi4c6hp6QaRtszTtxcUmIMPoe0A2WAw0qexw+mPdei+YBe/e/HyX5xPcKLK
+ oYfgqPD1Zd84oI4LROJ0iRFhGWX1aTSRVJRJAJsJt5qGtzo7aql+rzM2RWhZQU7h8HfkdeTQ3
+ FTSQWxOB6d4VTHvatB6kIvpcf0RmsWVHI7dfsuu8TiZn4Df+ZYpV3XZ0l/ZIBJDkj2ki7Vxqg
+ HYUxuulc9Nl2v9bV76Ycy3rUaYcumnwYOC1mt0EWgjj6jwGI9fWwLw+286mQO6dyPYiPLskBP
+ zsU10FmiY0Z6KhQXMlTJdT98XuJimM4zPrWC+uhSZ2Ad1ynV1hB0DAZHZww1oYo5Gfh93GY2X
+ 0v9iIeHSTGone2fJW9iFjRiglQ1oADyXc4tcf8XMNLpxRYtI1NgdBOrWOg/eCSx7VCc3RK7LU
+ AXYflGbVJb3Pq5YCwNt/zYDDekdnKD0hLRvhPV1c/MPbHf5P8aUY9VhnMHNvSOlKcSDuIxD8c
+ Fx2e8cXeLMdI6aWDjtPtIUMXVcSyvgmwDrsbaGOfga0fJmwNBXt6Jt2L4MJ9zcFY+G7539Kbx
+ aAab2a/V/QCdYs3PHqmrRREKXDHxlt12l4YJP11FirZLT6x+LKPKhhHBTEa9vapMqCGN7Vx1y
+ gaoE7XtIlBaHDL084A0svJ05Twy78LnRGhDTyikg96A5Xv4lAUq4JFdWAezgH4+2y8DpxarqE
+ dMj9y80IwCwUF7zBnVKy6inmdipQotg0QyZ3L7hy7+lA0iW/9gjVYZul8K7BS9jumKAvxOYfB
+ MDfocKBcZVXngV3xbfY4oYyrPkge0jKdekmv07Y1Cvo0qhCASiIbi3L83z0WOCVFlv5v62hzh
+ u/Yy5k4TmNogb6KyvoBI1Hw0T8GPUnYW3CKFplE9xv2rH7C22gwoYvq7Swj3I9HeUgjeoyW3M
+ JQJgmiL1RDKNGPcZZw5OAOozQ8g=
+Received-SPF: pass client-ip=212.227.15.19; envelope-from=deller@gmx.de;
+ helo=mout.gmx.net
+X-Spam_score_int: -59
+X-Spam_score: -6.0
+X-Spam_bar: ------
+X-Spam_report: (-6.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ NICE_REPLY_A=-3.165, RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,117 +87,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-(Cc'ing Joelle)
+Hi Richard,
 
-On 16/8/23 16:25, Richard Henderson wrote:
-> For linux aarch64 host supporting BTI, map the buffer
-> to require BTI instructions at branch landing pads.
-> 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   tcg/region.c | 39 ++++++++++++++++++++++++++++-----------
->   1 file changed, 28 insertions(+), 11 deletions(-)
-> 
-> diff --git a/tcg/region.c b/tcg/region.c
-> index 2b28ed3556..58cb68c6c8 100644
-> --- a/tcg/region.c
-> +++ b/tcg/region.c
-> @@ -33,8 +33,19 @@
->   #include "tcg/tcg.h"
->   #include "exec/translation-block.h"
->   #include "tcg-internal.h"
-> +#include "host/cpuinfo.h"
->   
->   
-> +/*
-> + * Local source-level compatibility with Unix.
-> + * Used by tcg_region_init below.
-> + */
-> +#if defined(_WIN32)
-> +#define PROT_READ   1
-> +#define PROT_WRITE  2
-> +#define PROT_EXEC   4
-> +#endif
-> +
->   struct tcg_region_tree {
->       QemuMutex lock;
->       QTree *tree;
-> @@ -83,6 +94,16 @@ bool in_code_gen_buffer(const void *p)
->       return (size_t)(p - region.start_aligned) <= region.total_size;
->   }
->   
-> +static int host_prot_read_exec(void)
-> +{
-> +#if defined(CONFIG_LINUX) && defined(HOST_AARCH64) && defined(PROT_BTI)
-> +    if (cpuinfo & CPUINFO_BTI) {
-> +        return PROT_READ | PROT_EXEC | PROT_BTI;
-> +    }
-> +#endif
-> +    return PROT_READ | PROT_EXEC;
-> +}
-> +
->   #ifdef CONFIG_DEBUG_TCG
->   const void *tcg_splitwx_to_rx(void *rw)
->   {
-> @@ -505,14 +526,6 @@ static int alloc_code_gen_buffer(size_t tb_size, int splitwx, Error **errp)
->       return PROT_READ | PROT_WRITE;
->   }
->   #elif defined(_WIN32)
-> -/*
-> - * Local source-level compatibility with Unix.
-> - * Used by tcg_region_init below.
-> - */
-> -#define PROT_READ   1
-> -#define PROT_WRITE  2
-> -#define PROT_EXEC   4
-> -
->   static int alloc_code_gen_buffer(size_t size, int splitwx, Error **errp)
->   {
->       void *buf;
-> @@ -567,7 +580,7 @@ static int alloc_code_gen_buffer_splitwx_memfd(size_t size, Error **errp)
->           goto fail;
->       }
->   
-> -    buf_rx = mmap(NULL, size, PROT_READ | PROT_EXEC, MAP_SHARED, fd, 0);
-> +    buf_rx = mmap(NULL, size, host_prot_read_exec(), MAP_SHARED, fd, 0);
->       if (buf_rx == MAP_FAILED) {
->           goto fail_rx;
->       }
-> @@ -642,7 +655,7 @@ static int alloc_code_gen_buffer_splitwx_vmremap(size_t size, Error **errp)
->           return -1;
->       }
->   
-> -    if (mprotect((void *)buf_rx, size, PROT_READ | PROT_EXEC) != 0) {
-> +    if (mprotect((void *)buf_rx, size, host_prot_read_exec()) != 0) {
->           error_setg_errno(errp, errno, "mprotect for jit splitwx");
->           munmap((void *)buf_rx, size);
->           munmap((void *)buf_rw, size);
-> @@ -805,7 +818,7 @@ void tcg_region_init(size_t tb_size, int splitwx, unsigned max_cpus)
->       need_prot = PROT_READ | PROT_WRITE;
->   #ifndef CONFIG_TCG_INTERPRETER
->       if (tcg_splitwx_diff == 0) {
-> -        need_prot |= PROT_EXEC;
-> +        need_prot |= host_prot_read_exec();
->       }
->   #endif
->       for (size_t i = 0, n = region.n; i < n; i++) {
-> @@ -820,7 +833,11 @@ void tcg_region_init(size_t tb_size, int splitwx, unsigned max_cpus)
->               } else if (need_prot == (PROT_READ | PROT_WRITE)) {
->                   rc = qemu_mprotect_rw(start, end - start);
->               } else {
-> +#ifdef CONFIG_POSIX
-> +                rc = mprotect(start, end - start, need_prot);
+On 8/16/23 20:14, Richard Henderson wrote:
+> Based-on: 20230816180338.572576-1-richard.henderson@linaro.org
+> ("[PATCH v4 00/18] linux-user: Implement VDSOs")
+>
+> As promised, a rewrite of /proc/self/{maps,smaps} emulation
+> using interval trees.
+>
+> Incorporate Helge's change to mark [heap], and also mark [vdso].
 
-Hmm this bypass the qemu_real_host_page_mask() checks in
-qemu_mprotect__osdep(), but I guess this is acceptable.
+Series looks good, so you may add
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Tested-by: Helge Deller <deller@gmx.de>
 
-> +#else
->                   g_assert_not_reached();
-> +#endif
->               }
->               if (rc) {
->                   error_setg_errno(&error_fatal, errno,
+to this series and the previous one (linux-user: Implement VDSOs).
 
+
+The only thing I noticed is, that mips64el doesn't seem to have heap?
+
+mips64el-chroot
+Linux p100 6.4.10-200.fc38.x86_64 #1 SMP PREEMPT_DYNAMIC Fri Aug 11 12:20:=
+29 UTC 2023 mips64 GNU/Linux
+555555556000-555555557000 ---p 00000000 00:00 0
+555555557000-555555d57000 rwxp 00000000 00:00 0                          [=
+stack]
+555555d57000-555555d84000 r-xp 00000000 fd:00 806056                     /=
+usr/lib/mips64el-linux-gnuabi64/ld.so.1
+555555d84000-555555d96000 ---p 00000000 00:00 0
+555555d96000-555555d97000 r--p 0002f000 fd:00 806056                     /=
+usr/lib/mips64el-linux-gnuabi64/ld.so.1
+555555d97000-555555d99000 rw-p 00030000 fd:00 806056                     /=
+usr/lib/mips64el-linux-gnuabi64/ld.so.1
+555555d99000-555555d9a000 r-xp 00000000 00:00 0
+555555d9a000-555555d9c000 rw-p 00000000 00:00 0
+555555da0000-555555f8a000 r-xp 00000000 fd:00 806059                     /=
+usr/lib/mips64el-linux-gnuabi64/libc.so.6
+555555f8a000-555555f9a000 ---p 001ea000 fd:00 806059                     /=
+usr/lib/mips64el-linux-gnuabi64/libc.so.6
+555555f9a000-555555fa0000 r--p 001ea000 fd:00 806059                     /=
+usr/lib/mips64el-linux-gnuabi64/libc.so.6
+555555fa0000-555555fa5000 rw-p 001f0000 fd:00 806059                     /=
+usr/lib/mips64el-linux-gnuabi64/libc.so.6
+555555fa5000-555555fb2000 rw-p 00000000 00:00 0
+555555fbe000-5555560c0000 rw-p 00000000 00:00 0
+7f9bc9987000-7f9bc9992000 r-xp 00000000 fd:00 811277                     /=
+usr/bin/cat
+7f9bc9992000-7f9bc99a6000 ---p 00000000 00:00 0
+7f9bc99a6000-7f9bc99a7000 r--p 0000f000 fd:00 811277                     /=
+usr/bin/cat
+7f9bc99a7000-7f9bc99a8000 rw-p 00010000 fd:00 811277                     /=
+usr/bin/cat
+
+Helge
 
