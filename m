@@ -2,75 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69E6177ED0A
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 00:26:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8F4377ED2A
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 00:33:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWOxA-0005Ha-0k; Wed, 16 Aug 2023 18:25:24 -0400
+	id 1qWP3f-0006fy-GO; Wed, 16 Aug 2023 18:32:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qWOx8-0005HP-Jt
- for qemu-devel@nongnu.org; Wed, 16 Aug 2023 18:25:22 -0400
-Received: from mout.gmx.net ([212.227.15.19])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qWOx6-0007QX-2M
- for qemu-devel@nongnu.org; Wed, 16 Aug 2023 18:25:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1692224713; x=1692829513; i=deller@gmx.de;
- bh=qHYxpMELgQDlbAzujPzxymX+MnNX1RFMCelelSXF488=;
- h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
- b=LlTaAWbqHOoMDzzAx/LHBdHp/EvlCLEhNjL467KpPYqVffrtwIy5V3z74QjJm1bg8emsXaV
- OdbCASS0L3b3bn+pbNh894Z2pIFeUSw+qc29v9AY0y4EENMTU0q14yvS2McXy93W6Mk3XIcpb
- zGhKmytlUbKGOCYafz9lzxiFngDqCtpMB2m80iHZ8FNUAOZKTNFGqa4uQRernoRue73jkRGnI
- e9zBxCIPnMwAbQdmhloHtR7x7SVLUpfDiV7MLNM3WRh2PRkIodhoj0BM5xop+Dbj3/wm9Zrar
- tioZSEHUpFcvTWqP4KJS1mqZocYp3a23R5avgAr3W5dRRB/Jmz5w==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([94.134.144.66]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mk0JW-1q3xxY3zJo-00kQEt; Thu, 17
- Aug 2023 00:25:13 +0200
-Message-ID: <6e220406-773e-e5f2-7146-64b987dec26c@gmx.de>
-Date: Thu, 17 Aug 2023 00:25:12 +0200
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qWP3d-0006fS-FC
+ for qemu-devel@nongnu.org; Wed, 16 Aug 2023 18:32:05 -0400
+Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qWP3a-0000Zt-Vh
+ for qemu-devel@nongnu.org; Wed, 16 Aug 2023 18:32:05 -0400
+Received: by mail-ej1-x62e.google.com with SMTP id
+ a640c23a62f3a-99c1f6f3884so959129966b.0
+ for <qemu-devel@nongnu.org>; Wed, 16 Aug 2023 15:32:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1692225121; x=1692829921;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=KL12LAYcPkYB25UgT+FQUYoTuRSMerKQFJBdVFlAZpU=;
+ b=e8vjDN8hwX1JbsD29bSyrTcZQQYGdfQ3jnoCKzZ6MTQe7JAfTNzZFIrKWEbtc+1Nvv
+ ICTPt2z64GO8Q6+y8SzM4qGjV7GrpUL4l23hlNQnyMuSf8o2g4tj6HQhvpuBhJHDOWvP
+ nK93qaDNafaDwvACSpEFIRYu15kPG0Y9JLQogTwrXsDGDxaq2OcSurlON1kQBgKAmlj0
+ m3j5/EGqIO08EQOUX6rEMUyzgm/YDTe4UaL2wCO7Y7VVN1Qyd9JE+ph1ocrLp6Lwj6BL
+ cxt3xu6xuGgFH0EfNf288rzoe5Err474bAhxLqdS7h+hDK9phUnFsQPwdkAfa9L4uBhQ
+ Jrwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1692225121; x=1692829921;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=KL12LAYcPkYB25UgT+FQUYoTuRSMerKQFJBdVFlAZpU=;
+ b=IrZiNu4hmxBqj5B6Fr5DF1/8Rh+c5KxlIyLeb+cjneSgoRV0QduAzqQK1QW82NsqRL
+ MLxK5zLde1UKLrIDi4AuOvaCal2uUhS0nthabCvx5HCKoLFdh50gB4jnbmuBqi2oQKmt
+ z44hpUGzfuP9RM4g8jLHRbVx3hFP6kM7SzE6wrkgeMHnCNYD0NJW8peky7tOIeOOhzww
+ gXz6cqkFk5qtd/aD41MN/jyEZPeyEYu3TzRbNTFE/xD9YjwkWmd1ujFHcrPrTt3WwT+f
+ 2AFA0QNnD2Z+HVWEgvF7ufBx8QhSLXVir1+ZExOX7E106Wz1mZwCKeDo5ShI8PLpA1oh
+ BY5A==
+X-Gm-Message-State: AOJu0YzPFHxnsieH5fqvNwvTjRM0G5MS04VIL3wlfqOKap/mZ3sVq7q7
+ O5carmpBZWEg9MV3Z3XOWDzIdw==
+X-Google-Smtp-Source: AGHT+IGsIQMLH4io+JjD7x8SBMjpc/8RJ3in8ks/nuZybzSscea5spkngr5NhZHbhe+0vKamkBqLoA==
+X-Received: by 2002:a17:906:20d7:b0:99d:ffdf:ecd4 with SMTP id
+ c23-20020a17090620d700b0099dffdfecd4mr699879ejc.55.1692225121376; 
+ Wed, 16 Aug 2023 15:32:01 -0700 (PDT)
+Received: from [192.168.69.115] (mna75-h02-176-184-40-35.dsl.sta.abo.bbox.fr.
+ [176.184.40.35]) by smtp.gmail.com with ESMTPSA id
+ qh28-20020a170906ecbc00b0099ce188be7fsm9137050ejb.3.2023.08.16.15.32.00
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 16 Aug 2023 15:32:00 -0700 (PDT)
+Message-ID: <a3a6f8ec-ca61-4472-45b4-1077dd27bb52@linaro.org>
+Date: Thu, 17 Aug 2023 00:31:58 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 0/6] linux-user: Rewrite open_self_maps
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.14.0
+Subject: Re: [PATCH for-8.1] vfio/display: Fix missing update to set backing
+ fields
 Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: iii@linux.ibm.com
-References: <20230816181437.572997-1-richard.henderson@linaro.org>
-From: Helge Deller <deller@gmx.de>
-In-Reply-To: <20230816181437.572997-1-richard.henderson@linaro.org>
+To: Alex Williamson <alex.williamson@redhat.com>, qemu-devel@nongnu.org,
+ "Michael S. Tsirkin" <mst@redhat.com>
+Cc: marcandre.lureau@redhat.com, dongwon.kim@intel.com, kraxel@redhat.com
+References: <20230816215550.1723696-1-alex.williamson@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230816215550.1723696-1-alex.williamson@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:+ZXj4/ItdstAPphIKGbuZzNTg7fxjuK5OFrzkTFpzDB7MgEV1Tz
- Sv3YfmBasZVkBG/JS9m/4C1G7WCdInARonY+ybDOVqxq8rHLVU00AEuLoxsGt97fK/TN+qK
- f1dl6yLLJ96BvuuYMf3mIHKaizUdRMIBgsYpAyHt2BQ760MaK51VZ2WNL14AaZTxFrmghNU
- HGup9S42+N6lOuuA1q3RQ==
-UI-OutboundReport: notjunk:1;M01:P0:YF2EU5L9gJw=;6fYlJ8cWj0+TClDrr640Dw6tAgX
- 12SRJ+5LRZGxFWmi4c6hp6QaRtszTtxcUmIMPoe0A2WAw0qexw+mPdei+YBe/e/HyX5xPcKLK
- oYfgqPD1Zd84oI4LROJ0iRFhGWX1aTSRVJRJAJsJt5qGtzo7aql+rzM2RWhZQU7h8HfkdeTQ3
- FTSQWxOB6d4VTHvatB6kIvpcf0RmsWVHI7dfsuu8TiZn4Df+ZYpV3XZ0l/ZIBJDkj2ki7Vxqg
- HYUxuulc9Nl2v9bV76Ycy3rUaYcumnwYOC1mt0EWgjj6jwGI9fWwLw+286mQO6dyPYiPLskBP
- zsU10FmiY0Z6KhQXMlTJdT98XuJimM4zPrWC+uhSZ2Ad1ynV1hB0DAZHZww1oYo5Gfh93GY2X
- 0v9iIeHSTGone2fJW9iFjRiglQ1oADyXc4tcf8XMNLpxRYtI1NgdBOrWOg/eCSx7VCc3RK7LU
- AXYflGbVJb3Pq5YCwNt/zYDDekdnKD0hLRvhPV1c/MPbHf5P8aUY9VhnMHNvSOlKcSDuIxD8c
- Fx2e8cXeLMdI6aWDjtPtIUMXVcSyvgmwDrsbaGOfga0fJmwNBXt6Jt2L4MJ9zcFY+G7539Kbx
- aAab2a/V/QCdYs3PHqmrRREKXDHxlt12l4YJP11FirZLT6x+LKPKhhHBTEa9vapMqCGN7Vx1y
- gaoE7XtIlBaHDL084A0svJ05Twy78LnRGhDTyikg96A5Xv4lAUq4JFdWAezgH4+2y8DpxarqE
- dMj9y80IwCwUF7zBnVKy6inmdipQotg0QyZ3L7hy7+lA0iW/9gjVYZul8K7BS9jumKAvxOYfB
- MDfocKBcZVXngV3xbfY4oYyrPkge0jKdekmv07Y1Cvo0qhCASiIbi3L83z0WOCVFlv5v62hzh
- u/Yy5k4TmNogb6KyvoBI1Hw0T8GPUnYW3CKFplE9xv2rH7C22gwoYvq7Swj3I9HeUgjeoyW3M
- JQJgmiL1RDKNGPcZZw5OAOozQ8g=
-Received-SPF: pass client-ip=212.227.15.19; envelope-from=deller@gmx.de;
- helo=mout.gmx.net
-X-Spam_score_int: -59
-X-Spam_score: -6.0
-X-Spam_bar: ------
-X-Spam_report: (-6.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- NICE_REPLY_A=-3.165, RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62e.google.com
+X-Spam_score_int: -52
+X-Spam_score: -5.3
+X-Spam_bar: -----
+X-Spam_report: (-5.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.165,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -87,58 +94,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Richard,
+On 16/8/23 23:55, Alex Williamson wrote:
+> The below referenced commit renames scanout_width/height to
+> backing_width/height, but also promotes these fields in various portions
+> of the egl interface.  Meanwhile vfio dmabuf support has never used the
+> previous scanout fields and is therefore missed in the update.  This
+> results in a black screen when transitioning from ramfb to dmabuf display
+> when using Intel vGPU with these features.
 
-On 8/16/23 20:14, Richard Henderson wrote:
-> Based-on: 20230816180338.572576-1-richard.henderson@linaro.org
-> ("[PATCH v4 00/18] linux-user: Implement VDSOs")
->
-> As promised, a rewrite of /proc/self/{maps,smaps} emulation
-> using interval trees.
->
-> Incorporate Helge's change to mark [heap], and also mark [vdso].
+Referenced commit isn't trivial. Maybe because it is too late here.
+I'd have tried to split it. Anyhow, too late (again).
 
-Series looks good, so you may add
+Is vhost-user-gpu also affected? (see VHOST_USER_GPU_DMABUF_SCANOUT
+in vhost_user_gpu_handle_display()).
 
-Tested-by: Helge Deller <deller@gmx.de>
+> Link: https://lists.gnu.org/archive/html/qemu-devel/2023-08/msg02726.html
+> Fixes: 9ac06df8b684 ("virtio-gpu-udmabuf: correct naming of QemuDmaBuf size properties")
+> Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+> ---
+> 
+> This fixes a regression in dmabuf/EGL support for Intel GVT-g and
+> potentially the mbochs mdev driver as well.  Once validated by those
+> that understand dmabuf/EGL integration, I'd welcome QEMU maintainers to
+> take this directly for v8.1 or queue it as soon as possible for v8.1.1.
+> 
+>   hw/vfio/display.c | 2 ++
+>   1 file changed, 2 insertions(+)
+> 
+> diff --git a/hw/vfio/display.c b/hw/vfio/display.c
+> index bec864f482f4..837d9e6a309e 100644
+> --- a/hw/vfio/display.c
+> +++ b/hw/vfio/display.c
+> @@ -243,6 +243,8 @@ static VFIODMABuf *vfio_display_get_dmabuf(VFIOPCIDevice *vdev,
+>       dmabuf->dmabuf_id  = plane.dmabuf_id;
+>       dmabuf->buf.width  = plane.width;
+>       dmabuf->buf.height = plane.height;
+> +    dmabuf->buf.backing_width = plane.width;
+> +    dmabuf->buf.backing_height = plane.height;
+>       dmabuf->buf.stride = plane.stride;
+>       dmabuf->buf.fourcc = plane.drm_format;
+>       dmabuf->buf.modifier = plane.drm_format_mod;
 
-to this series and the previous one (linux-user: Implement VDSOs).
-
-
-The only thing I noticed is, that mips64el doesn't seem to have heap?
-
-mips64el-chroot
-Linux p100 6.4.10-200.fc38.x86_64 #1 SMP PREEMPT_DYNAMIC Fri Aug 11 12:20:=
-29 UTC 2023 mips64 GNU/Linux
-555555556000-555555557000 ---p 00000000 00:00 0
-555555557000-555555d57000 rwxp 00000000 00:00 0                          [=
-stack]
-555555d57000-555555d84000 r-xp 00000000 fd:00 806056                     /=
-usr/lib/mips64el-linux-gnuabi64/ld.so.1
-555555d84000-555555d96000 ---p 00000000 00:00 0
-555555d96000-555555d97000 r--p 0002f000 fd:00 806056                     /=
-usr/lib/mips64el-linux-gnuabi64/ld.so.1
-555555d97000-555555d99000 rw-p 00030000 fd:00 806056                     /=
-usr/lib/mips64el-linux-gnuabi64/ld.so.1
-555555d99000-555555d9a000 r-xp 00000000 00:00 0
-555555d9a000-555555d9c000 rw-p 00000000 00:00 0
-555555da0000-555555f8a000 r-xp 00000000 fd:00 806059                     /=
-usr/lib/mips64el-linux-gnuabi64/libc.so.6
-555555f8a000-555555f9a000 ---p 001ea000 fd:00 806059                     /=
-usr/lib/mips64el-linux-gnuabi64/libc.so.6
-555555f9a000-555555fa0000 r--p 001ea000 fd:00 806059                     /=
-usr/lib/mips64el-linux-gnuabi64/libc.so.6
-555555fa0000-555555fa5000 rw-p 001f0000 fd:00 806059                     /=
-usr/lib/mips64el-linux-gnuabi64/libc.so.6
-555555fa5000-555555fb2000 rw-p 00000000 00:00 0
-555555fbe000-5555560c0000 rw-p 00000000 00:00 0
-7f9bc9987000-7f9bc9992000 r-xp 00000000 fd:00 811277                     /=
-usr/bin/cat
-7f9bc9992000-7f9bc99a6000 ---p 00000000 00:00 0
-7f9bc99a6000-7f9bc99a7000 r--p 0000f000 fd:00 811277                     /=
-usr/bin/cat
-7f9bc99a7000-7f9bc99a8000 rw-p 00010000 fd:00 811277                     /=
-usr/bin/cat
-
-Helge
 
