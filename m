@@ -2,83 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B25677E58C
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Aug 2023 17:49:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8279177E5C6
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Aug 2023 17:59:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWIka-0005lb-Rf; Wed, 16 Aug 2023 11:48:01 -0400
+	id 1qWIuO-0000G6-HM; Wed, 16 Aug 2023 11:58:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qWIkX-0005l0-QG
- for qemu-devel@nongnu.org; Wed, 16 Aug 2023 11:47:58 -0400
-Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qWIuM-0000Fn-Up
+ for qemu-devel@nongnu.org; Wed, 16 Aug 2023 11:58:06 -0400
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qWIkV-0005lr-IJ
- for qemu-devel@nongnu.org; Wed, 16 Aug 2023 11:47:57 -0400
-Received: by mail-pj1-x1035.google.com with SMTP id
- 98e67ed59e1d1-26b1adbd655so3243758a91.1
- for <qemu-devel@nongnu.org>; Wed, 16 Aug 2023 08:47:55 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qWIuK-00087Q-I1
+ for qemu-devel@nongnu.org; Wed, 16 Aug 2023 11:58:06 -0400
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-5236a9788a7so9136298a12.0
+ for <qemu-devel@nongnu.org>; Wed, 16 Aug 2023 08:58:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692200874; x=1692805674;
- h=content-transfer-encoding:in-reply-to:cc:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=yY+xq14sElJyUOtPCOabxPDRCRgcN5QyILAOVkD09Qs=;
- b=no6rmilN6N8BZtXVt/tkndcYs7eu6gh9EFfKrm0jT5DJ0qLJLo1L5iEHOb7PtdVa17
- a/fmKujAcrW2L5KJHH8NRNAbdkezXi15a9FnVVEe+LjkK5zH4RmISibDAJGwVyBtvNKs
- OgEXneKpTQMhRg0cSnQmvMpEwDvrfGZe3o+k2M0bWw8NYI9A17TIL5jfdiVMgYOLBvrS
- LWsBJ2Ymo/OXinqoYSJt5uaTIoUJHuGbug9MrYk9Vvs6aJaM5aNWMq/24NVXXqBW2SmF
- 5KHFT8IuDholuRHvbKXxy4k4iEWbJgcq8mgQtAGaErSb6G4Wo2dAbH5hhTtnFByLuejM
- VaIQ==
+ d=linaro.org; s=google; t=1692201482; x=1692806282;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=/onBnGYWBpEvODTn9KuA2kXebr8dIIB15hSCLZRnzaI=;
+ b=hwMaNVR6+tXkcksd4YyMjmKvA5KJklZXXgpA+MzcgYLuy4H1/SKd6AZmbLfpeXE/W2
+ wG+MBV3EKXW5cwBv1UaIveaDg3QGZviJmVFbyVXkunq0+jNFTzP3wIRzvluHMPclN/lR
+ HXhcQvNhsLwNK2wy+6n2oOs6znHbWvs/fUj++v6NveAva5j4/rz/cbu/4MCK+l7b0YKm
+ mhqn1lTBoxs1PAaFBOzTgUVBIn5MeP/mDN9PaRbDpSKyTHO4WJFLT/gcNj2RCA1fDdtX
+ To4+gQCWIcQPQlculDRgoLF59OQt609wduJUGYOm4NhmNZnZHXTqJwhR4njhyi+ENbId
+ V5LQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692200874; x=1692805674;
- h=content-transfer-encoding:in-reply-to:cc:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=yY+xq14sElJyUOtPCOabxPDRCRgcN5QyILAOVkD09Qs=;
- b=C5QopmZ5b1IC+hP1EFG4DCVy8DegUk9E4lnfZ4Q+7iESa3UTh2f7soMtxRIJf7Bd5i
- pmAcgIQfWjAywM73nqV4QVZorhiTWXtsuNcP+W8aDxyu11atP+nLvRVWdOQrrPLHSpax
- hGJtEzwth8GPmoaLnPCTDX4r0F4Uq9X4D0zDTt+0IypXTmWwUC30zjxz5mdfhFbWb3/V
- YT3+9vdEY9l5K6qXiawrrfUai3v4ttyJF0vu2lCRNt/9UJFR7zMHFSA4u6Ru9fEdXKJU
- ryv0Eky6PnEu0p5qVxRE0uSmfDnvoc+7kKUFSITxLb8gvDHo/y4vTobzqCkVtAFax5qh
- QkRg==
-X-Gm-Message-State: AOJu0YzdpZZZoBSvmmdlHnQb49/t5C2xAIHL/82+BK5qaeZgPADf0nmJ
- OPNEJsIz5PgEXs23MDBveJ8Esi8NAfGcO8D/CqY=
-X-Google-Smtp-Source: AGHT+IHHOYyMrAkm3BB/RSGEoWd7fEcmBB0Wq8ntlODE/ZaPtSJmF2TaUV4EjINYhyNAGa1s4n8nQw==
-X-Received: by 2002:a17:90b:4c4f:b0:261:688:fd91 with SMTP id
- np15-20020a17090b4c4f00b002610688fd91mr1737500pjb.8.1692200873914; 
- Wed, 16 Aug 2023 08:47:53 -0700 (PDT)
-Received: from ?IPV6:2602:47:d483:7301:a064:e3f9:a812:973b?
- ([2602:47:d483:7301:a064:e3f9:a812:973b])
- by smtp.gmail.com with ESMTPSA id
- 5-20020a17090a018500b0026b0b4ed7b1sm12179466pjc.15.2023.08.16.08.47.53
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 16 Aug 2023 08:47:53 -0700 (PDT)
-Message-ID: <3461575d-6f5f-ffd0-4392-dbd9a84bfdc0@linaro.org>
-Date: Wed, 16 Aug 2023 08:47:51 -0700
+ d=1e100.net; s=20221208; t=1692201482; x=1692806282;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=/onBnGYWBpEvODTn9KuA2kXebr8dIIB15hSCLZRnzaI=;
+ b=bfQcDVYOPdTJSjl+ZwuUhKZjnPiJgV8xk5cUwXlR5Wgjkg5ALW/+7je2SiFg1tT1Ua
+ c3U1LtFJUeDQTUm+sFY8/R210QtsUV720o+aYVKZPTQQKD2KWXNxyrt5wjpB6C0Sc3Jl
+ ygpPixpVaEjXfdmN0HGhtx3mvXuZZJ3Wi6KyMG/WkQPUPTHWXtpVPz0vgZUzqFncDaBp
+ 07idDR6JYbInpAtuU1xSnSaMeg9I9hjg81+gT7SvMjcnHXF9wsYTVCP0WGvW6qz8VNLQ
+ bBMMOyF56iGNcgnbS733i/uOveKRqQyoT5paNV/XiQBej0Pkp8afcmCCK9CkJV5NJkHV
+ 7nyA==
+X-Gm-Message-State: AOJu0Yyr7CBC7lEwBcEFF6cfk1St+UdiPHquDQ6q35EIFht6k6k2iEQZ
+ MlcxzSMyCuMlbs9cafIoLwPFmwvGZfUD4AmQyIgxyQ==
+X-Google-Smtp-Source: AGHT+IG38BPl1vb8S8Lq8+Rwi2BJXANb+zIZrMaPpjwPD1xizN1Zh7wfdibjmglLfiQwkloe+nBbCH7vWVXV/Emeckw=
+X-Received: by 2002:a05:6402:2050:b0:525:70b3:72c2 with SMTP id
+ bc16-20020a056402205000b0052570b372c2mr2233858edb.14.1692201482349; Wed, 16
+ Aug 2023 08:58:02 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v4 05/25] target/arm: Move the reference to arm-core.xml
-Content-Language: en-US
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-References: <20230816145155.21049-1-akihiko.odaki@daynix.com>
- <20230816145155.21049-6-akihiko.odaki@daynix.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel <qemu-devel@nongnu.org>
-In-Reply-To: <20230816145155.21049-6-akihiko.odaki@daynix.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1035.google.com
-X-Spam_score_int: -52
-X-Spam_score: -5.3
-X-Spam_bar: -----
-X-Spam_report: (-5.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.165,
+References: <20230816091522.1292029-1-thuth@redhat.com>
+In-Reply-To: <20230816091522.1292029-1-thuth@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Wed, 16 Aug 2023 16:57:51 +0100
+Message-ID: <CAFEAcA8xna5-ewGMUjoVjJTsFKVeBbOPXJj481+GEC=ZzqgVug@mail.gmail.com>
+Subject: Re: [PATCH] subprojects/berkeley-testfloat-3: Update to fix a problem
+ with compiler warnings
+To: Thomas Huth <thuth@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org, 
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ Olaf Hering <olaf@aepfle.de>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -96,49 +87,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/16/23 07:51, Akihiko Odaki wrote:
-> Some subclasses overwrite gdb_core_xml_file member but others don't.
-> Always initialize the member in the subclasses for consistency.
-> 
-> This especially helps for AArch64; in a following change, the file
-> specified by gdb_core_xml_file is always looked up even if it's going to
-> be overwritten later. Looking up arm-core.xml results in an error as
-> it will not be embedded in the AArch64 build.
-> 
-> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+On Wed, 16 Aug 2023 at 10:16, Thomas Huth <thuth@redhat.com> wrote:
+>
+> Update the berkeley-testfloat-3 wrap to include a patch provided by
+> Olaf Hering. This fixes a problem with "control reaches end of non-void
+> function [-Werror=return-type]" compiler warning/errors that are now
+> enabled by default in certain versions of GCC.
+>
+> Reported-by: Olaf Hering <olaf@aepfle.de>
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
 > ---
->   target/arm/cpu.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-> index 93c28d50e5..d71a162070 100644
-> --- a/target/arm/cpu.c
-> +++ b/target/arm/cpu.c
-> @@ -2354,7 +2354,6 @@ static void arm_cpu_class_init(ObjectClass *oc, void *data)
->       cc->sysemu_ops = &arm_sysemu_ops;
->   #endif
->       cc->gdb_num_core_regs = 26;
-> -    cc->gdb_core_xml_file = "arm-core.xml";
->       cc->gdb_arch_name = arm_gdb_arch_name;
->       cc->gdb_get_dynamic_xml = arm_gdb_get_dynamic_xml;
->       cc->gdb_stop_before_watchpoint = true;
-> @@ -2376,8 +2375,10 @@ static void arm_cpu_instance_init(Object *obj)
->   static void cpu_register_class_init(ObjectClass *oc, void *data)
->   {
->       ARMCPUClass *acc = ARM_CPU_CLASS(oc);
-> +    CPUClass *cc = CPU_CLASS(acc);
->   
->       acc->info = data;
-> +    cc->gdb_core_xml_file = "arm-core.xml";
->   }
->   
->   void arm_cpu_register(const ARMCPUInfo *info)
+>  subprojects/berkeley-testfloat-3.wrap | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-I guess this is ok.  I was going to say that the gdb_num_core_regs should be moved too 
-(into here and into the m-profile copy).  But that gets fixed in the next patch.
+This seems like a reasonable place to ask: should we just pull
+in the testfloat and softfloat repos to be part of the main
+qemu repo? AIUI we've definitively forked both of these, so
+we don't care about trying to make it easy to resync with
+upstream. Having them in separate git repos seems to have some
+clear disadvantages:
+ * it's harder to update them
+ * changes to them can end up skipping the usual code
+   review process, because it's a different patch flow
+   to the normal one
+ * we get extra meson subproject infrastructure to deal with
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Are there any reasons to keep them separate ?
 
-
-r~
+thanks
+-- PMM
 
