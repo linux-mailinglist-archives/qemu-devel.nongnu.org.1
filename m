@@ -2,74 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE66577E874
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Aug 2023 20:16:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A520177E887
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Aug 2023 20:17:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWL2h-0002Mq-0S; Wed, 16 Aug 2023 14:14:51 -0400
+	id 1qWL5R-0007LN-81; Wed, 16 Aug 2023 14:17:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qWL2f-0002Lf-6U
- for qemu-devel@nongnu.org; Wed, 16 Aug 2023 14:14:49 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qWL5O-0007Kx-Ck
+ for qemu-devel@nongnu.org; Wed, 16 Aug 2023 14:17:38 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qWL2c-0003hD-OE
- for qemu-devel@nongnu.org; Wed, 16 Aug 2023 14:14:48 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1bc3d94d40fso57609275ad.3
- for <qemu-devel@nongnu.org>; Wed, 16 Aug 2023 11:14:46 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qWL5M-0004Ce-99
+ for qemu-devel@nongnu.org; Wed, 16 Aug 2023 14:17:38 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-3fe4a89e7efso62305445e9.3
+ for <qemu-devel@nongnu.org>; Wed, 16 Aug 2023 11:17:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692209685; x=1692814485;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1692209854; x=1692814654;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:to:from:user-agent:references:from:to:cc:subject:date
  :message-id:reply-to;
- bh=VvfERpWnA//CSNMU9sCRk6rxPVpfXMYFa3j/mN7uLKY=;
- b=WWZaKad3FFfnbwyNKiYhKhMfZGQAYvFctIXGdCwHD3xlu0HgdAzcQhgKNmq3uDaEPb
- 3PS6ctymeobik/f07N/HaeLork4P42RZxABUVHZfWo35m/XVVAbjVjxpRSxpv1W2K4Kq
- 1FAiqJDW/ldaUtw0atnuCnPoZwJZAfuG3ltzPgzCAjdIttavH4NmmvlA3ayQWmqXfMhH
- W71/0UdzPNtJxq4PLYSGXTEEDRn75g2kN/WpKnsrhBxcx8WLI2cL9yON5XYfnw74+5xj
- oB9jD7nq3Bkn5NuNKko3vEhAA61MncsN4U0oec7Xap3fM7mE/ya88jGHax5x20t1J6jX
- w66A==
+ bh=2ohArc9A1+RkvCY4OZl0EEMRxWq0811rboNHmbcG4MU=;
+ b=kDh/1GMCmEK/DEjB7l+Oq6w3v2A9ZEVFVXDkPFcIWm3240w78X17tEHL7A+NtDD2x3
+ xXpaPa6mh3OCNDBo1hhnW/CxQcOmCm/mg3XwUjMHXjg8LYp+R4M5AnTgD1ULaa4tD4XC
+ Yd6RHtfmMdSoNBrzIBHFl4TQps/hquaKX2/9SFZZrUb3P/BIJtyORj7VPsGS28nYi3Ys
+ gTLosb2kaGyCKI18k/tSGUJmkfEaPSF9ZTB/5+jfcXnmjj6jmSagGxMc2rIedJsSWzSG
+ 6fDKfOw1qw9yBQ9q0ucwcdQnKqIGkCzCfII6ALc1ZugqJXpBI2x0ZYJ1EKaZ/THeXHs4
+ Ok9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692209685; x=1692814485;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20221208; t=1692209854; x=1692814654;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:to:from:user-agent:references:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=VvfERpWnA//CSNMU9sCRk6rxPVpfXMYFa3j/mN7uLKY=;
- b=dJxqIwHh0iHt4dfGwr5/2BUmfXffsVSAv1y6cNIW7Ae0kyDWL2ZWz/tF6qHVA6WHyc
- myuEVgEUO69VG0Jm6eJ4nRuMMpatnfvxFG5oTA2JKLef1GN7biO42A+TSPw//f8von5y
- /b+/h1ab/6R+b0NbFK/DYgdPeM38WDULAMjIvC3AQm6L5swZCExAHD72hTgO4rep7lGA
- FP2wq0dPBw/F9UstlY4kUrBb3lzISZ+6rSL0T4qDsjFP68eqzLw1ReL40ejjpy/tNMB9
- qyEw7WLSsWf+D6+I84GTgBny1YrYrxSI1EQ/5BvXYJHFI+CdBBtClAqhGNpSeTHWJ1jT
- 5I9g==
-X-Gm-Message-State: AOJu0Yw6YH8bSXpkgVRlQWbgJN+06654gW+AgMWBSUeF2WjLlwjZRmSF
- E9zYym/iE6vypWVZM8oabulOG6ID0xrYUN74fPk=
-X-Google-Smtp-Source: AGHT+IE/PQm4CrCAeGk9MM//2pEWIBxGM2VolCzhBrDje1s2NO2P9ssfpnqlO9ETpgloOGg5L/esZQ==
-X-Received: by 2002:a17:902:7789:b0:1bc:2d43:c747 with SMTP id
- o9-20020a170902778900b001bc2d43c747mr2707972pll.38.1692209685202; 
- Wed, 16 Aug 2023 11:14:45 -0700 (PDT)
-Received: from stoup.. ([2602:47:d483:7301:a064:e3f9:a812:973b])
+ bh=2ohArc9A1+RkvCY4OZl0EEMRxWq0811rboNHmbcG4MU=;
+ b=PcJIbYUHIEZDEBDAlsusVwlPA7llyKWOYibVkr0nCMD6wO5ge3z6y60P6mdBtKvV/7
+ ERLKBCID80Pc+yxRdzRqpVPcreALwNm70f2drcyc5h/eCSlMuaR18y3nI6XmmLFZ/onS
+ WlMNWZ49xfMZyR/NZDMgUPx03Xs8AWs52Toxrt1X6QNmUSWzTq2EqbiYyewM31L9AF5a
+ bZDVduPtq1VHFSdRXbt2mA7MgerjL++GLomM1QVqnL83Bd8REeGtgktn/aUII5CX1qpb
+ /TyD9hEgaxYcv5VA5t4Jj1sPsRh16ccGQYp5+3wr30Ixzu7awoKcbqY31HiLw49ZJ1Op
+ QBNg==
+X-Gm-Message-State: AOJu0YymIQ8mgdiuh9ahdhXK7yfMErU1lA9lB7W45GoP/x1x8g/A6vQq
+ kywCFO41mRwl81x1FjeXdoYZrg==
+X-Google-Smtp-Source: AGHT+IGeiZJzeUa/vkxhgWkK7kWhIa2W8HfCwCD6qkZjqiFdsGzyduIsSEtSuLJ6eD0VkmeP1U9CjA==
+X-Received: by 2002:a7b:c45a:0:b0:3f9:c8b2:dfbd with SMTP id
+ l26-20020a7bc45a000000b003f9c8b2dfbdmr2062937wmi.19.1692209854370; 
+ Wed, 16 Aug 2023 11:17:34 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- g14-20020a170902868e00b001b9dab0397bsm13423563plo.29.2023.08.16.11.14.44
+ m16-20020a7bce10000000b003fba6a0c881sm128349wmc.43.2023.08.16.11.17.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 16 Aug 2023 11:14:44 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: iii@linux.ibm.com,
-	deller@gmx.de
-Subject: [PATCH 6/6] linux-user: Show vdso address in /proc/pid/maps
-Date: Wed, 16 Aug 2023 11:14:37 -0700
-Message-Id: <20230816181437.572997-7-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230816181437.572997-1-richard.henderson@linaro.org>
-References: <20230816181437.572997-1-richard.henderson@linaro.org>
+ Wed, 16 Aug 2023 11:17:34 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 982401FFBB;
+ Wed, 16 Aug 2023 19:17:33 +0100 (BST)
+References: <SN7PR15MB6086D1B0ECEE5ADBD07F8847C315A@SN7PR15MB6086.namprd15.prod.outlook.com>
+User-agent: mu4e 1.11.14; emacs 29.1.50
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, Igor Lesik
+ <lesikigor@meta.com>
+Subject: Re: How to synchronize CPUs on MMIO read?
+Date: Wed, 16 Aug 2023 19:16:55 +0100
+In-reply-to: <SN7PR15MB6086D1B0ECEE5ADBD07F8847C315A@SN7PR15MB6086.namprd15.prod.outlook.com>
+Message-ID: <87edk2onr6.fsf@linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,51 +95,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- linux-user/qemu.h    | 1 +
- linux-user/elfload.c | 1 +
- linux-user/syscall.c | 2 ++
- 3 files changed, 4 insertions(+)
 
-diff --git a/linux-user/qemu.h b/linux-user/qemu.h
-index 12f638336a..4de9ec783f 100644
---- a/linux-user/qemu.h
-+++ b/linux-user/qemu.h
-@@ -32,6 +32,7 @@ struct image_info {
-         abi_ulong       brk;
-         abi_ulong       start_stack;
-         abi_ulong       stack_limit;
-+        abi_ulong       vdso;
-         abi_ulong       entry;
-         abi_ulong       code_offset;
-         abi_ulong       data_offset;
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index a670a7817a..12285eae82 100644
---- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -3726,6 +3726,7 @@ int load_elf_binary(struct linux_binprm *bprm, struct image_info *info)
-     const VdsoImageInfo *vdso = vdso_image_info();
-     if (vdso) {
-         load_elf_vdso(&vdso_info, vdso);
-+        info->vdso = vdso_info.load_bias;
-     } else if (TARGET_ARCH_HAS_SIGTRAMP_PAGE) {
-         abi_long tramp_page = target_mmap(0, TARGET_PAGE_SIZE,
-                                           PROT_READ | PROT_WRITE,
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 5c0fb20e19..c85cf6ffb9 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -8127,6 +8127,8 @@ static void open_self_maps_4(const struct open_self_maps_data *d,
-         path = "[stack]";
-     } else if (start == info->brk) {
-         path = "[heap]";
-+    } else if (start == info->vdso) {
-+        path = "[vdso]";
-     }
- 
-     /* Except null device (MAP_ANON), adjust offset for this fragment. */
--- 
-2.34.1
+Igor Lesik <lesikigor@meta.com> writes:
 
+> Hi.
+>
+> I need to model some custom HW that synchronizes CPUs when they read MMIO=
+ register N: MMIO read does not
+> return until another CPU writes to MMIO register M. I modeled this behavi=
+or with a) on MMIO read of N, save CPU into
+> a list of waiting CPUs and put it asleep with cpu_interrupt(current_cpu, =
+CPU_INTERRUPT_HALT) and b) on MMIO write
+> to M, wake all waiting CPUs with cpu->halted =3D 0; qemu_cpu_kick(cpu). I=
+t seems to work fine. However, this HW has a
+> twist: MMIO read of N returns a value that was written by MMIO write to M=
+. Can anyone please advise how this could
+> be done?
+
+Under TCG all MMIO accesses should be serialised by the BQL so no other
+MMIO access can be taking place until you finish the operation.
+
+>
+>=20=20
+>
+> Thanks!
+>
+> Igor
+
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
