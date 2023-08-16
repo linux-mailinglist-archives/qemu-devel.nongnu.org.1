@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9435977E426
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Aug 2023 16:53:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0971277E428
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Aug 2023 16:53:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWHt7-00062L-6X; Wed, 16 Aug 2023 10:52:45 -0400
+	id 1qWHtP-0006B4-57; Wed, 16 Aug 2023 10:53:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qWHt1-00060m-UP
- for qemu-devel@nongnu.org; Wed, 16 Aug 2023 10:52:40 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ id 1qWHtC-000667-Ps
+ for qemu-devel@nongnu.org; Wed, 16 Aug 2023 10:52:52 -0400
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qWHsz-0001IK-4f
- for qemu-devel@nongnu.org; Wed, 16 Aug 2023 10:52:39 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-6887480109bso1312830b3a.0
- for <qemu-devel@nongnu.org>; Wed, 16 Aug 2023 07:52:36 -0700 (PDT)
+ id 1qWHt9-0001Jh-Pd
+ for qemu-devel@nongnu.org; Wed, 16 Aug 2023 10:52:50 -0400
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-687ca37628eso6276053b3a.1
+ for <qemu-devel@nongnu.org>; Wed, 16 Aug 2023 07:52:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1692197556; x=1692802356;
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1692197565; x=1692802365;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=vSruWoyKlAWxyFcMWhzZ8sPLB2mqbg+J6UjZbva0yr8=;
- b=A0rVR86WvkthxoccAWepRnLPAptzSghRtySvEczDArmrBUlQEuHZ7IoDWUB8vxCY+m
- OEi2gB7zubQnjRlKeMy6BNyXSEk/ASB+0kgY4ZNhTWc1/u9dGY4KpcoXzgTcMUjgn+2Q
- UXivVlCAgdYM42P72Kr7OjjqVe6Y2HboeyuBAP2/mZBLUP6pd2TlC+xD+/LAgMGjaCtl
- paetGOL7V8XxpQ2Su9xCMqF5R4s9G8qOnnFD8IFBo45FsVzMz9pVZj74IrcFHz9ADM4D
- nH3RJ/LEVVdby/yue6Vd7ht/73Y2z+20DFjMR8WWFAzUI+M8wpFTwbWoZrbp8xBSebtR
- FHOg==
+ bh=lqwUBKCsJIu6Kok3irpDq8wqJUl9JGbLYq58wXaDnQ0=;
+ b=Y0/1peXzSs4juY9ymgumb5RiSvn27fHcwAKJy2ZTGrBeRn819iCH4nljP47QRA4Vxg
+ 40x7+5r+XfiPGBkZXcnfvCQ9uqAFHzUNWAZpDhpHzdbT5Q0nIPXG8HErXfQZIjQjJfzv
+ o0ItrgPHttMEcQB6Ux7G0YWWB1snPmmHP09fH/D3ReCsxce+1ZGkAsn2LDchA7RblP7n
+ zQ/cIUgkuVMazDBweDx5VH2Ni2/6l5M60vOYncc9S+Jr+UsKJY0wS2yFjb4rxeLRb9r7
+ 2SoVeos2JmEswJDmRGDnFADAa1IbdAN+sRrSues6d3ioN23P8fJUmNUYv4v/qLMC8lB4
+ jhlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692197556; x=1692802356;
+ d=1e100.net; s=20221208; t=1692197565; x=1692802365;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vSruWoyKlAWxyFcMWhzZ8sPLB2mqbg+J6UjZbva0yr8=;
- b=AtHoO8HVs/Zj6rWkOtdvKGriV5dF5DhaPxqD1QL0zJIaBeNct4s08cPqVf0zupDhGW
- vSXE3mRGYrZiCn+UbC5gY7GCtDaWovTT7BU1zhEheiTRiqcmITanUi4mY/RN8XYZmKSL
- Kc1VhDy4+SfwU7KpzZy9poTynUuQK5WDtIhenTWQ8Gg3TCwiMXr2ZTWYc/M23VVF/YFe
- +ZimWQoTcyTppEEO7Eja3+XBw7X3AMF1RTf1WlW78YrIsSqX6Jg+kJc+u0+RCwmQeow4
- 26O1HPjlDJHtzz9O0buuTDuP5PbuyHVOT4FhewFY15FQ3C1aW4Cs9mMxZCMVP2sG6ubx
- aqFA==
-X-Gm-Message-State: AOJu0Yz+IX0udnMBwRN+AYK3HxW4otwxwioWa8XF+uEwQkE/Lc811YGv
- A/h76T/1P8xoKT48HK/F2QyDLQ==
-X-Google-Smtp-Source: AGHT+IFOA7TUNrLul0QhFJNL9pHkUvSyr/4aUbIVMpIq1AWpXe19cJ7YF4GOm085M+5r7kOMhrj2/Q==
-X-Received: by 2002:a05:6a20:f3a4:b0:137:23a2:2b3c with SMTP id
- qr36-20020a056a20f3a400b0013723a22b3cmr2409995pzb.49.1692197555726; 
- Wed, 16 Aug 2023 07:52:35 -0700 (PDT)
+ bh=lqwUBKCsJIu6Kok3irpDq8wqJUl9JGbLYq58wXaDnQ0=;
+ b=dSuHq8Fu3wyKLE2qhVo/YmlYX7QV7+PPrQBvowz0D1/xzn1D60PkUZ5iOTfUHO027s
+ ROZbGqsD1yMRbQGgKzU4VnoCEFAJlvEXq91r3OaFDs1qysQAg98h4FiqNiQfTE+S1LVH
+ rdjD6cQsLnQhMe06cvXujd6ma3znG8lqJlYxgEs1NZhSfx1DCFXzEDRnQxXW05s93KfR
+ b/Ov0l3MktXBK3ojAZ7gWn8+sfWPAcOe33KYXCt/iWaySTTyUO2DByLf0ANogX8UqtDX
+ RswIYBNDc+o3HLDVHQ8yRqww8OgXqPRWVCs2MlikE2HBM2RxRthx39Ul7D7mB+Cddbyg
+ Iihg==
+X-Gm-Message-State: AOJu0YytWck5gOhhwV0W2LNLFMLq6pQC/lTlZnoELGK0ojIg7Hmws3g8
+ 5UrTarYoxypziFDBGMvY7k7hng==
+X-Google-Smtp-Source: AGHT+IEhJ4BtQBo9Fd+dpB+PERq1IPryRWmwgf25koKSBcnkGRiPIJLkSwaQcvy/u89B/gdB6Kif/A==
+X-Received: by 2002:a05:6a00:24c7:b0:67a:8fc7:1b61 with SMTP id
+ d7-20020a056a0024c700b0067a8fc71b61mr2510244pfv.11.1692197565072; 
+ Wed, 16 Aug 2023 07:52:45 -0700 (PDT)
 Received: from alarm.flets-east.jp ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
  by smtp.gmail.com with ESMTPSA id
- fk26-20020a056a003a9a00b0068892c40253sm1156568pfb.216.2023.08.16.07.52.26
+ fk26-20020a056a003a9a00b0068892c40253sm1156568pfb.216.2023.08.16.07.52.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 16 Aug 2023 07:52:35 -0700 (PDT)
+ Wed, 16 Aug 2023 07:52:44 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 To: 
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -96,17 +96,17 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  qemu-arm@nongnu.org, qemu-ppc@nongnu.org, qemu-riscv@nongnu.org,
  qemu-s390x@nongnu.org, Anton Kochkov <anton.kochkov@proton.me>,
  Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v4 02/25] gdbstub: Introduce GDBFeature structure
-Date: Wed, 16 Aug 2023 23:51:23 +0900
-Message-ID: <20230816145155.21049-3-akihiko.odaki@daynix.com>
+Subject: [PATCH v4 03/25] gdbstub: Add num_regs member to GDBFeature
+Date: Wed, 16 Aug 2023 23:51:24 +0900
+Message-ID: <20230816145155.21049-4-akihiko.odaki@daynix.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230816145155.21049-1-akihiko.odaki@daynix.com>
 References: <20230816145155.21049-1-akihiko.odaki@daynix.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::429;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x429.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x42a.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -128,238 +128,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Before this change, the information from a XML file was stored in an
-array that is not descriptive. Introduce a dedicated structure type to
-make it easier to understand and to extend with more fields.
+Currently the number of registers exposed to GDB is written as magic
+numbers in code. Derive the number of registers GDB actually see from
+XML files to replace the magic numbers in code later.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- MAINTAINERS             |  2 +-
- meson.build             |  2 +-
- include/exec/gdbstub.h  |  9 ++++--
- gdbstub/gdbstub.c       |  4 +--
- stubs/gdbstub.c         |  6 ++--
- scripts/feature_to_c.py | 48 ++++++++++++++++++++++++++++
- scripts/feature_to_c.sh | 69 -----------------------------------------
- 7 files changed, 62 insertions(+), 78 deletions(-)
- create mode 100755 scripts/feature_to_c.py
- delete mode 100644 scripts/feature_to_c.sh
+ include/exec/gdbstub.h  |  1 +
+ scripts/feature_to_c.py | 46 +++++++++++++++++++++++++++++++++++++++--
+ 2 files changed, 45 insertions(+), 2 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 12e59b6b27..514ac74101 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -2826,7 +2826,7 @@ F: include/exec/gdbstub.h
- F: include/gdbstub/*
- F: gdb-xml/
- F: tests/tcg/multiarch/gdbstub/
--F: scripts/feature_to_c.sh
-+F: scripts/feature_to_c.py
- F: scripts/probe-gdb-support.py
- 
- Memory API
-diff --git a/meson.build b/meson.build
-index 98e68ef0b1..5c633f7e01 100644
---- a/meson.build
-+++ b/meson.build
-@@ -3683,7 +3683,7 @@ common_all = static_library('common',
-                             dependencies: common_all.dependencies(),
-                             name_suffix: 'fa')
- 
--feature_to_c = find_program('scripts/feature_to_c.sh')
-+feature_to_c = find_program('scripts/feature_to_c.py')
- 
- if targetos == 'darwin'
-   entitlement = find_program('scripts/entitlement.sh')
 diff --git a/include/exec/gdbstub.h b/include/exec/gdbstub.h
-index 7d743fe1e9..3f08093321 100644
+index 3f08093321..9b484d7eef 100644
 --- a/include/exec/gdbstub.h
 +++ b/include/exec/gdbstub.h
-@@ -10,6 +10,11 @@
- #define GDB_WATCHPOINT_READ      3
- #define GDB_WATCHPOINT_ACCESS    4
+@@ -13,6 +13,7 @@
+ typedef struct GDBFeature {
+     const char *xmlname;
+     const char *xml;
++    int num_regs;
+ } GDBFeature;
  
-+typedef struct GDBFeature {
-+    const char *xmlname;
-+    const char *xml;
-+} GDBFeature;
-+
  
- /* Get or set a register.  Returns the size of the register.  */
- typedef int (*gdb_get_reg_cb)(CPUArchState *env, GByteArray *buf, int reg);
-@@ -38,7 +43,7 @@ void gdb_set_stop_cpu(CPUState *cpu);
-  */
- extern bool gdb_has_xml;
- 
--/* in gdbstub-xml.c, generated by scripts/feature_to_c.sh */
--extern const char *const xml_builtin[][2];
-+/* in gdbstub-xml.c, generated by scripts/feature_to_c.py */
-+extern const GDBFeature gdb_static_features[];
- 
- #endif
-diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
-index 6911b73c07..2772f07bbe 100644
---- a/gdbstub/gdbstub.c
-+++ b/gdbstub/gdbstub.c
-@@ -407,11 +407,11 @@ static const char *get_feature_xml(const char *p, const char **newp,
-         }
-     }
-     for (i = 0; ; i++) {
--        name = xml_builtin[i][0];
-+        name = gdb_static_features[i].xmlname;
-         if (!name || (strncmp(name, p, len) == 0 && strlen(name) == len))
-             break;
-     }
--    return name ? xml_builtin[i][1] : NULL;
-+    return name ? gdb_static_features[i].xml : NULL;
- }
- 
- static int gdb_read_register(CPUState *cpu, GByteArray *buf, int reg)
-diff --git a/stubs/gdbstub.c b/stubs/gdbstub.c
-index 2b7aee50d3..580e20702b 100644
---- a/stubs/gdbstub.c
-+++ b/stubs/gdbstub.c
-@@ -1,6 +1,6 @@
- #include "qemu/osdep.h"
--#include "exec/gdbstub.h"       /* xml_builtin */
-+#include "exec/gdbstub.h"       /* gdb_static_features */
- 
--const char *const xml_builtin[][2] = {
--  { NULL, NULL }
-+const GDBFeature gdb_static_features[] = {
-+  { NULL }
- };
 diff --git a/scripts/feature_to_c.py b/scripts/feature_to_c.py
-new file mode 100755
-index 0000000000..bcbcb83beb
---- /dev/null
+index bcbcb83beb..e04d6b2df7 100755
+--- a/scripts/feature_to_c.py
 +++ b/scripts/feature_to_c.py
-@@ -0,0 +1,48 @@
-+#!/usr/bin/env python3
-+# SPDX-License-Identifier: GPL-2.0-or-later
+@@ -1,7 +1,7 @@
+ #!/usr/bin/env python3
+ # SPDX-License-Identifier: GPL-2.0-or-later
+ 
+-import os, sys
++import os, sys, xml.etree.ElementTree
+ 
+ def writeliteral(indent, bytes):
+     sys.stdout.write(' ' * indent)
+@@ -39,10 +39,52 @@ def writeliteral(indent, bytes):
+     with open(input, 'rb') as file:
+         read = file.read()
+ 
++    parser = xml.etree.ElementTree.XMLPullParser(['start', 'end'])
++    parser.feed(read)
++    events = parser.read_events()
++    event, element = next(events)
++    if event != 'start':
++        sys.stderr.write(f'unexpected event: {event}\n')
++        exit(1)
++    if element.tag != 'feature':
++        sys.stderr.write(f'unexpected start tag: {element.tag}\n')
++        exit(1)
 +
-+import os, sys
++    regnum = 0
++    regnums = []
++    tags = ['feature']
++    for event, element in events:
++        if event == 'end':
++            if element.tag != tags[len(tags) - 1]:
++                sys.stderr.write(f'unexpected end tag: {element.tag}\n')
++                exit(1)
 +
-+def writeliteral(indent, bytes):
-+    sys.stdout.write(' ' * indent)
-+    sys.stdout.write('"')
-+    quoted = True
++            tags.pop()
++            if element.tag == 'feature':
++                break
++        elif event == 'start':
++            if len(tags) < 2 and element.tag == 'reg':
++                if 'regnum' in element.attrib:
++                    regnum = int(element.attrib['regnum'])
 +
-+    for c in bytes:
-+        if not quoted:
-+            sys.stdout.write('\n')
-+            sys.stdout.write(' ' * indent)
-+            sys.stdout.write('"')
-+            quoted = True
++                regnums.append(regnum)
++                regnum += 1
 +
-+        if c == b'"'[0]:
-+            sys.stdout.write('\\"')
-+        elif c == b'\\'[0]:
-+            sys.stdout.write('\\\\')
-+        elif c == b'\n'[0]:
-+            sys.stdout.write('\\n"')
-+            quoted = False
-+        elif c >= 32 and c < 127:
-+            sys.stdout.write(c.to_bytes(1, 'big').decode())
++            tags.append(element.tag)
 +        else:
-+            sys.stdout.write(f'\{c:03o}')
++            raise Exception(f'unexpected event: {event}\n')
 +
-+    if quoted:
-+        sys.stdout.write('"')
++    if len(tags):
++        sys.stderr.write('unterminated feature tag\n')
++        exit(1)
 +
-+sys.stdout.write('#include "qemu/osdep.h"\n' \
-+                 '#include "exec/gdbstub.h"\n' \
-+                 '\n'
-+                 'const GDBFeature gdb_static_features[] = {\n')
++    base_reg = min(regnums)
++    num_regs = max(regnums) - base_reg + 1 if len(regnums) else 0
 +
-+for input in sys.argv[1:]:
-+    with open(input, 'rb') as file:
-+        read = file.read()
-+
-+    sys.stdout.write('    {\n')
-+    writeliteral(8, bytes(os.path.basename(input), 'utf-8'))
-+    sys.stdout.write(',\n')
-+    writeliteral(8, read)
-+    sys.stdout.write('\n    },\n')
-+
-+sys.stdout.write('    { NULL }\n};\n')
-diff --git a/scripts/feature_to_c.sh b/scripts/feature_to_c.sh
-deleted file mode 100644
-index c1f67c8f6a..0000000000
---- a/scripts/feature_to_c.sh
-+++ /dev/null
-@@ -1,69 +0,0 @@
--#!/bin/sh
--
--# Convert text files to compilable C arrays.
--#
--# Copyright (C) 2007 Free Software Foundation, Inc.
--#
--# This file is part of GDB.
--#
--# This program is free software; you can redistribute it and/or modify
--# it under the terms of the GNU General Public License as published by
--# the Free Software Foundation; either version 2 of the License, or
--# (at your option) any later version.
--#
--# This program is distributed in the hope that it will be useful,
--# but WITHOUT ANY WARRANTY; without even the implied warranty of
--# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
--# GNU General Public License for more details.
--#
--# You should have received a copy of the GNU General Public License
--# along with this program; if not, see <http://www.gnu.org/licenses/>.
--
--if test -z "$1"; then
--  echo "Usage: $0 INPUTFILE..."
--  exit 1
--fi
--
--for input; do
--  arrayname=xml_feature_$(echo $input | sed 's,.*/,,; s/[-.]/_/g')
--
--  ${AWK:-awk} 'BEGIN { n = 0
--      printf "#include \"qemu/osdep.h\"\n"
--      print "static const char '$arrayname'[] = {"
--      for (i = 0; i < 255; i++)
--        _ord_[sprintf("%c", i)] = i
--    } {
--      split($0, line, "");
--      printf "  "
--      for (i = 1; i <= length($0); i++) {
--        c = line[i]
--        if (c == "'\''") {
--          printf "'\''\\'\'''\'', "
--        } else if (c == "\\") {
--          printf "'\''\\\\'\'', "
--        } else if (_ord_[c] >= 32 && _ord_[c] < 127) {
--	  printf "'\''%s'\'', ", c
--        } else {
--          printf "'\''\\%03o'\'', ", _ord_[c]
--        }
--        if (i % 10 == 0)
--          printf "\n   "
--      }
--      printf "'\''\\n'\'', \n"
--    } END {
--      print "  0 };"
--    }' < $input
--done
--
--echo
--echo '#include "exec/gdbstub.h"'
--echo "const char *const xml_builtin[][2] = {"
--
--for input; do
--  basename=$(echo $input | sed 's,.*/,,')
--  arrayname=xml_feature_$(echo $input | sed 's,.*/,,; s/[-.]/_/g')
--  echo "  { \"$basename\", $arrayname },"
--done
--
--echo "  { (char *)0, (char *)0 }"
--echo "};"
+     sys.stdout.write('    {\n')
+     writeliteral(8, bytes(os.path.basename(input), 'utf-8'))
+     sys.stdout.write(',\n')
+     writeliteral(8, read)
+-    sys.stdout.write('\n    },\n')
++    sys.stdout.write(f',\n        {num_regs},\n    }},\n')
+ 
+ sys.stdout.write('    { NULL }\n};\n')
 -- 
 2.41.0
 
