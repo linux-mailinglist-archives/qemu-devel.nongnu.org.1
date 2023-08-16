@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B202177E5C7
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Aug 2023 17:59:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 302C177E614
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Aug 2023 18:12:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWIua-0000J2-2y; Wed, 16 Aug 2023 11:58:20 -0400
+	id 1qWJ7R-00073E-0N; Wed, 16 Aug 2023 12:11:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qWIuW-0000I6-Ip
- for qemu-devel@nongnu.org; Wed, 16 Aug 2023 11:58:17 -0400
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+ id 1qWJ7N-00072Z-T1
+ for qemu-devel@nongnu.org; Wed, 16 Aug 2023 12:11:34 -0400
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qWIuU-00088I-1l
- for qemu-devel@nongnu.org; Wed, 16 Aug 2023 11:58:16 -0400
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-68878ca7ca0so1035390b3a.0
- for <qemu-devel@nongnu.org>; Wed, 16 Aug 2023 08:58:13 -0700 (PDT)
+ id 1qWJ7L-0002t4-79
+ for qemu-devel@nongnu.org; Wed, 16 Aug 2023 12:11:33 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-6889288a31fso483848b3a.1
+ for <qemu-devel@nongnu.org>; Wed, 16 Aug 2023 09:11:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692201492; x=1692806292;
+ d=linaro.org; s=google; t=1692202289; x=1692807089;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=16Esi9JwccTE9I4/5tY6xJnw1tyAEPrEh9hoUI1ykSk=;
- b=HcM0hQlUg/4bbfKlsda3h3bxtuWrrCV7BgIgBGjORa+ewy+cAuouA8SMlGCZBKXCUZ
- 9924SPbarO0pH10HjMwyULC3aPvGNZiZvJiQw153h1mgT7Q4Z8wW9KPMTq9/b/cIhsUJ
- EbBTcfLk6xZHXfE7ULtRCwSJply3ycVeLZzkZUjLvgeaACT//iLjWK7+BSPX4eaJFigW
- BRGky2n3M7/KRaxmwHiCDE3BFmaaWIo0CUUa3gDMLfUMBRaV3idLE5e+qv+hOM02yB5/
- MJPsot2tyNxsvq9IQ6Qiuhc7MrllslSCBcn+yuwoL+IqcTw2ByO3AQ1q3ks7GAxePcGj
- rCpw==
+ bh=4EWb0+SV1Ium3ZMX8uqMkbJO5sF/gFVi1hi9RE+Hc2w=;
+ b=byLd4IVIB518LJHNr8ATCz+4jPyj98/yPA53L7fiYYGnpETp0C5n8qwq5H/XVUVvJ4
+ uWTwysbqnwHUwxLANFlZoBKg+M6tgLMjBy3AuUhdR2ys9hEjUd4CEzRQSakgoTVNK+nl
+ WGtMmR+P2oG8WWGwYfK4/7p79cVt24Zmmxyzj281vZq5WD+jMRij6SL5VTwJYKzB29M+
+ F1p/SAucgtsq8XSEc9zQeEniHfcDAKTYSv0Ak1L2p2xC6bmqZzR6TVOub7CsLJbJL/Kj
+ VZ9omDZpPQeE6cgBrxeajqEFZD7nuxeq8xJTwosRlwp9Sjoi1Bzs+qsMh2RGWpKmL6mx
+ E17Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692201492; x=1692806292;
+ d=1e100.net; s=20221208; t=1692202289; x=1692807089;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=16Esi9JwccTE9I4/5tY6xJnw1tyAEPrEh9hoUI1ykSk=;
- b=hCUNhVxf4SjsaiPly4ln6872cOpnyrRs0nrn8Gq61SA5lkv3gd6HFucI7HK0af5uZ7
- sO/xT7U4jPmYxcfrS827H2jk3neLfZRY2owxfbsuTnO4NtojlWa8AH66rX2SyTWY2Z82
- H2qX0wiCvUB/GaPAgw8Z0nWWSKh1Ay//Z0bf2HWZNlNww/7w3aYDcQFh01plUm1P3J2c
- Eh3UtAc5m0jDssvtyWyBEliRdw8zzIwh/J34Xdko+OktvCkoRG809CILxhisCfksLB5t
- XlyRP9gtRlnbu999oixqRaj1B1eWUHeu0Nosl3HgUGo5VnKDiXV8aVvYVoa1hkUHZtni
- 7jvg==
-X-Gm-Message-State: AOJu0YyeBt1ZgKQ99+k2Shs2OIRb5c16zI7MkVRGVZZ/OAKcqeKmEMNd
- ZG2eMR12uAl6fGg4nedtXua+hg==
-X-Google-Smtp-Source: AGHT+IGvjA6m7ZYXWLIDWYZtoj7Je+Y9DK5ONCdilFdn1arQ+I4wKwl9FX15eEVPcG+GTvQoD+K4gA==
-X-Received: by 2002:a05:6a21:3e0d:b0:135:4388:3978 with SMTP id
- bk13-20020a056a213e0d00b0013543883978mr2231557pzc.29.1692201492631; 
- Wed, 16 Aug 2023 08:58:12 -0700 (PDT)
+ bh=4EWb0+SV1Ium3ZMX8uqMkbJO5sF/gFVi1hi9RE+Hc2w=;
+ b=Vt/3h9CPDG2XA5+axPYQvzTx94VtPcjoQLffGkvdbrBxrJCZsw+lH9LmMcJN3dhNAy
+ ido66asoRmF52/0wvKuSZ7K1wYxyurIfI5fn+f94ilaivrIFtTjJyaommjlqXjGgIzk4
+ 8nqFsuKGPcdqyB4/r3d7KGkH7bJaBdBlgdjPp52912XjsFgGkM1pG4nZjMakqpHlVxCQ
+ f9TzKsNmPhUqoy4MpbbkW1uARa189+6QQ8/McBf7JGNM34CcQVvjKDDwwdLwI1r53NPs
+ VbtNfLmQjCwtYg/kN0Zz/LkQ4/nU31Cmolp0o6WoaPhVAAowL0fN+PPGj9nQETf1ntIy
+ X7zQ==
+X-Gm-Message-State: AOJu0YyPI84okV3A5gZN+hsGfqFptBG1dWk60SXFjCVJItkMEID7wC7k
+ X1Ump9wAuiCEbgUPiOOphu2/OP99K1mZ8muRkOw=
+X-Google-Smtp-Source: AGHT+IGYoyN1nRGp94EQPLjsgJHqDTsjHxY4ZrVhLazn/N1ND91o1a4nLhMa7KxudOxAvbOXXFUDGw==
+X-Received: by 2002:a05:6a20:914e:b0:140:d536:d434 with SMTP id
+ x14-20020a056a20914e00b00140d536d434mr148561pzc.10.1692202289592; 
+ Wed, 16 Aug 2023 09:11:29 -0700 (PDT)
 Received: from ?IPV6:2602:47:d483:7301:a064:e3f9:a812:973b?
  ([2602:47:d483:7301:a064:e3f9:a812:973b])
  by smtp.gmail.com with ESMTPSA id
- ff10-20020a056a002f4a00b00682a8e600f0sm11299136pfb.35.2023.08.16.08.58.11
+ b1-20020aa78701000000b0063f1a1e3003sm1553584pfo.166.2023.08.16.09.11.28
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 16 Aug 2023 08:58:12 -0700 (PDT)
-Message-ID: <7bf4aaac-e952-6d3b-0128-06dcc7f7c780@linaro.org>
-Date: Wed, 16 Aug 2023 08:58:10 -0700
+ Wed, 16 Aug 2023 09:11:29 -0700 (PDT)
+Message-ID: <58a921ce-bade-1746-62ce-83f116a8e443@linaro.org>
+Date: Wed, 16 Aug 2023 09:11:26 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH v4 06/25] hw/core/cpu: Replace gdb_core_xml_file with
- gdb_core_feature
+Subject: Re: [PATCH v4 07/25] gdbstub: Introduce GDBFeatureBuilder
 Content-Language: en-US
 To: Akihiko Odaki <akihiko.odaki@daynix.com>
 Cc: qemu-devel <qemu-devel@nongnu.org>
 References: <20230816145155.21049-1-akihiko.odaki@daynix.com>
- <20230816145155.21049-7-akihiko.odaki@daynix.com>
+ <20230816145155.21049-8-akihiko.odaki@daynix.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230816145155.21049-7-akihiko.odaki@daynix.com>
+In-Reply-To: <20230816145155.21049-8-akihiko.odaki@daynix.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x432.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -52
 X-Spam_score: -5.3
 X-Spam_bar: -----
@@ -98,38 +97,15 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 8/16/23 07:51, Akihiko Odaki wrote:
-> diff --git a/target/hexagon/cpu.c b/target/hexagon/cpu.c
-> index f155936289..b54162cbeb 100644
-> --- a/target/hexagon/cpu.c
-> +++ b/target/hexagon/cpu.c
-> @@ -391,7 +391,7 @@ static void hexagon_cpu_class_init(ObjectClass *c, void *data)
->       cc->gdb_write_register = hexagon_gdb_write_register;
->       cc->gdb_num_core_regs = TOTAL_PER_THREAD_REGS;
->       cc->gdb_stop_before_watchpoint = true;
-> -    cc->gdb_core_xml_file = "hexagon-core.xml";
-> +    cc->gdb_core_feature = gdb_find_static_feature("hexagon-core.xml");
+> GDBFeatureBuilder unifies the logic to generate dynamic GDBFeature.
+> 
+> Signed-off-by: Akihiko Odaki<akihiko.odaki@daynix.com>
+> ---
+>   include/exec/gdbstub.h | 20 ++++++++++++++
+>   gdbstub/gdbstub.c      | 59 ++++++++++++++++++++++++++++++++++++++++++
+>   2 files changed, 79 insertions(+)
 
-Missing the change to init cc->gdb_num_core_regs.
-(Which presumably itself will go away at some point.)
-
-> diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-> index 02b7aad9b0..eb56226865 100644
-> --- a/target/ppc/cpu_init.c
-> +++ b/target/ppc/cpu_init.c
-> @@ -7381,9 +7381,9 @@ static void ppc_cpu_class_init(ObjectClass *oc, void *data)
->   
->       cc->gdb_arch_name = ppc_gdb_arch_name;
->   #if defined(TARGET_PPC64)
-> -    cc->gdb_core_xml_file = "power64-core.xml";
-> +    cc->gdb_core_feature = gdb_find_static_feature("power64-core.xml");
->   #else
-> -    cc->gdb_core_xml_file = "power-core.xml";
-> +    cc->gdb_core_feature = gdb_find_static_feature("power-core.xml");
->   #endif
->       cc->disas_set_info = ppc_disas_set_info;
-
-Likewise.
-
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 
 r~
