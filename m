@@ -2,69 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5272477DC85
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Aug 2023 10:38:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F63477DD1B
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Aug 2023 11:16:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWC2W-0000EH-F1; Wed, 16 Aug 2023 04:38:04 -0400
+	id 1qWCcr-00025S-8R; Wed, 16 Aug 2023 05:15:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <qian.wen@intel.com>)
- id 1qWC2T-0000Dy-U5
- for qemu-devel@nongnu.org; Wed, 16 Aug 2023 04:38:01 -0400
-Received: from mgamail.intel.com ([192.55.52.43])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <qian.wen@intel.com>)
- id 1qWC2P-00071s-Sp
- for qemu-devel@nongnu.org; Wed, 16 Aug 2023 04:38:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1692175077; x=1723711077;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=l/sHSq2bkyzEGG3sTM7DJxDgtjrbIBayTBA1pI6caL8=;
- b=AEghtsRuDKzgvLzEcb5k9TeRNQhINSc2CsdsFmtndprau6Z03lrPsby/
- 4X5qBrAEmnfKE6NM3ROsTjbDeLcwtnbptCJSWYSXIDpNYmMpWOKBMoYVZ
- uTEAOAEMfjd0UyqEjZ2vOmhrPxSaqEXdJ/v7WJpUkn4bbf//xkKOLBFmp
- cN4Y38fSXM/mJPNm2PMt3FpnR+/3B+d+V7ADc2Wz/W4HbWrDt5bZR17d1
- XSrm1YyUs82Rd1TfRLW72HBbY+DFGF/DSEo5/QjfC97DHgEPqMsZUVbcs
- WTwBJitpsv8zwdmh8WZgZZNvJs18kch+3FCGY46HJwVaKy5sLXoW/mvTR A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="458829128"
-X-IronPort-AV: E=Sophos;i="6.01,176,1684825200"; d="scan'208";a="458829128"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
- by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Aug 2023 01:37:54 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="737214655"
-X-IronPort-AV: E=Sophos;i="6.01,176,1684825200"; d="scan'208";a="737214655"
-Received: from qianwen-mobl1.ccr.corp.intel.com (HELO [10.238.5.29])
- ([10.238.5.29])
- by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Aug 2023 01:37:53 -0700
-Message-ID: <ef89b2a2-86c3-2c74-0d36-c35f75d6c4b4@intel.com>
-Date: Wed, 16 Aug 2023 16:37:51 +0800
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qWCcb-000255-6w
+ for qemu-devel@nongnu.org; Wed, 16 Aug 2023 05:15:21 -0400
+Received: from mail-oo1-xc34.google.com ([2607:f8b0:4864:20::c34])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qWCcX-0005sr-Av
+ for qemu-devel@nongnu.org; Wed, 16 Aug 2023 05:15:20 -0400
+Received: by mail-oo1-xc34.google.com with SMTP id
+ 006d021491bc7-56c7f47ec42so4481511eaf.2
+ for <qemu-devel@nongnu.org>; Wed, 16 Aug 2023 02:15:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1692177315; x=1692782115;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=JkqMYbzFh8jDK06nJ+rN9IfFUiT7E31HVB50sPrnOL0=;
+ b=V0km+NmXrsE/bZ/KdhqG3DsLHvQ6jLzf2+NJd+M5u57Cbqbt61iBnClySlYWQ9Abg3
+ 9CQBHrEuZcFpnm4Xy4znei+F/JhVgojoiVJOUW66EM5hdxemKsv+7Se9BKQbqp9ykAOw
+ VH+9gzWUrEjrQv4m2yvLY2l+wjKDq3rI/aoV9Nob+DEGrFzVvoqnWmSPWKa0y47eey9t
+ 6eByX57iqZS5XWZ4x/qNaC1htgiDqfMvks4nr5oNKHyGXQH4h2hFoBa86KJpI5jdeJoR
+ Rt6CEiX5G5Ps5Ck2+3Xz1/L6LfO2abApXrtjvzcVCK8jifbQ8ornrZ7OmxYumf0B1Yj0
+ A6Ng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1692177315; x=1692782115;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=JkqMYbzFh8jDK06nJ+rN9IfFUiT7E31HVB50sPrnOL0=;
+ b=MJYPz3BIqw6pU5lcBoc/JBpLF7poCiCqDCmMGgKsM8JCwNS3dgeKzaqh8ulOLTbREN
+ 1ftGB/51bBNPJlTShqHQb16AamWTIrpbqy0/yLW/fWCb8PjwMEFB+sK7wfdyCqTfTnHJ
+ BmVMPbSVPGz8mC3k3PBHRpXuj9N9gy4jPWp4x0LUYUesJI8wAeSlWsO1yKDCP5A5onfu
+ g9jPXdLAexHq/4S8l9BjkncvU8w9LjLHEIwFOTEVNmN29d7LnQSKqugInIVyCfVZc/7f
+ MVzknCItgPzMQ4mKiJC6cnpAzOSm1fbbj4PmFSHDZIE9dBu+igYsSO+E2nI+l9sqBLob
+ Iv1A==
+X-Gm-Message-State: AOJu0YySopjfVW86YWQqvkbBZABc9Q8wA4y+sBJp9LQmAY5o8ZcfWhfk
+ /foymSoqM13olXOVrYhEBYLMCw==
+X-Google-Smtp-Source: AGHT+IGaUW+DwiFLsR3nSNKBUSvbJuFdTfxncFBF5NdZ4ZGPXWn3Tqvf04TUqODU9zLI8jHle8b33A==
+X-Received: by 2002:a05:6870:b428:b0:1bb:8842:7b5c with SMTP id
+ x40-20020a056870b42800b001bb88427b5cmr1520216oap.43.1692177315231; 
+ Wed, 16 Aug 2023 02:15:15 -0700 (PDT)
+Received: from [192.168.68.108] (189-69-160-189.dial-up.telesp.net.br.
+ [189.69.160.189]) by smtp.gmail.com with ESMTPSA id
+ q3-20020a9d6643000000b006b94aba1f0bsm6036005otm.43.2023.08.16.02.15.12
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 16 Aug 2023 02:15:14 -0700 (PDT)
+Message-ID: <d9fa9c2f-29cb-d186-3023-29a16918aecc@ventanamicro.com>
+Date: Wed, 16 Aug 2023 06:15:09 -0300
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [PATCH] target/i386: Fix reporting of CPU dies when
- nr_cores=nr_threads=1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] target/riscv: Update CSR bits name for svadu extension
+To: Weiwei Li <liweiwei@iscas.ac.cn>, qemu-riscv@nongnu.org,
+ qemu-devel@nongnu.org
+Cc: palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
+ zhiwei_liu@linux.alibaba.com, wangjunqiang@iscas.ac.cn, lazyparser@gmail.com
+References: <20230815022442.25032-1-liweiwei@iscas.ac.cn>
 Content-Language: en-US
-To: =?UTF-8?B?5bCP5aSq?= <nospam@kota.moe>, qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com, babu.moger@amd.com
-References: <20230723185909.441455-1-nospam@kota.moe>
-From: "Wen, Qian" <qian.wen@intel.com>
-In-Reply-To: <20230723185909.441455-1-nospam@kota.moe>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.55.52.43; envelope-from=qian.wen@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -54
-X-Spam_score: -5.5
-X-Spam_bar: -----
-X-Spam_report: (-5.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.04,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.045, RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20230815022442.25032-1-liweiwei@iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c34;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-oo1-xc34.google.com
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.045,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -81,100 +96,153 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/24/2023 2:59 AM, 小太 wrote:
-> When QEMU is started with `-smp D,sockets=1,dies=D,cores=1,threads=1` (that
-> is, 1 socket with D dies but each die contains just a single thread), both
-> Linux and Windows guests incorrectly interprets the system as having D
-> sockets with 1 die each
+
+
+On 8/14/23 23:24, Weiwei Li wrote:
+> The Svadu specification updated the name of the *envcfg bit from
+> HADE to ADUE.
 > 
-> Ultimately this is caused by various CPUID leaves not being die-aware in
-> their "threads per socket" calculations, so this patch fixes that
-> 
-> These changes are referenced to the AMD PPR for Family 19h Model 01h (Milan)
-> and Family 17h Model 01h (Naples) manuals:
->  - CPUID_Fn00000001_EBX[23:16]: Number of threads in the processor
->                                 (Core::X86::Cpuid::SizeId[NC] + 1)
->  - CPUID_Fn0000000B_EBX_x01[15:0]: Number of logical cores in processor
->                                    socket (not present until Rome)
->  - CPUID_Fn80000001_ECX[1]: Multi core product
->                             (Core::X86::Cpuid::SizeId[NC] != 0)
->  - CPUID_Fn80000008_ECX[7:0]: The number of threads in the package - 1
->                               (Core::X86::Cpuid::SizeId[NC])
-> 
-> Note there are two remaining occurences that I didn't touch:
->  - CPUID_Fn8000001E_ECX[10:8]: Always 0 (1 node per processor) for Milan.
->                                But for Naples, it can also be 2 or 4 nodes
->                                where each node is defined as one or two
->                                CCXes (CCD?). But Milan also has multiple
->                                CCXes, so clearly the definition of a node is
->                                different from model to model, so I've left
->                                it untouched. (QEMU seems to use the Naples
->                                definition)
->  - MSR_CORE_THREAD_COUNT: This MSR doesn't exist on Milan or Naples
-> 
-> Signed-off-by: 小太 <nospam@kota.moe>
+> Signed-off-by: Weiwei Li <liweiwei@iscas.ac.cn>
+> Signed-off-by: Junqiang Wang <wangjunqiang@iscas.ac.cn>
 > ---
->  target/i386/cpu.c | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
+>   target/riscv/cpu.c        |  4 ++--
+>   target/riscv/cpu_bits.h   |  8 ++++----
+>   target/riscv/cpu_helper.c |  4 ++--
+>   target/riscv/csr.c        | 12 ++++++------
+>   4 files changed, 14 insertions(+), 14 deletions(-)
 > 
-> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> index 97ad229d8b..6ff23fa590 100644
-> --- a/target/i386/cpu.c
-> +++ b/target/i386/cpu.c
-> @@ -6049,8 +6049,8 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
->              *ecx |= CPUID_EXT_OSXSAVE;
->          }
->          *edx = env->features[FEAT_1_EDX];
-> -        if (cs->nr_cores * cs->nr_threads > 1) {
-> -            *ebx |= (cs->nr_cores * cs->nr_threads) << 16;
-> +        if (env->nr_dies * cs->nr_cores * cs->nr_threads > 1) {
-> +            *ebx |= (env->nr_dies * cs->nr_cores * cs->nr_threads) << 16;
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index 6b93b04453..f04a985d55 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -875,9 +875,9 @@ static void riscv_cpu_reset_hold(Object *obj)
+>       env->two_stage_lookup = false;
+>   
+>       env->menvcfg = (cpu->cfg.ext_svpbmt ? MENVCFG_PBMTE : 0) |
+> -                   (cpu->cfg.ext_svadu ? MENVCFG_HADE : 0);
+> +                   (cpu->cfg.ext_svadu ? MENVCFG_ADUE : 0);
+>       env->henvcfg = (cpu->cfg.ext_svpbmt ? HENVCFG_PBMTE : 0) |
+> -                   (cpu->cfg.ext_svadu ? HENVCFG_HADE : 0);
+> +                   (cpu->cfg.ext_svadu ? HENVCFG_ADUE : 0);
+>   
+>       /* Initialized default priorities of local interrupts. */
+>       for (i = 0; i < ARRAY_SIZE(env->miprio); i++) {
+> diff --git a/target/riscv/cpu_bits.h b/target/riscv/cpu_bits.h
+> index 59f0ffd9e1..1c2ffae883 100644
+> --- a/target/riscv/cpu_bits.h
+> +++ b/target/riscv/cpu_bits.h
+> @@ -745,12 +745,12 @@ typedef enum RISCVException {
+>   #define MENVCFG_CBIE                       (3UL << 4)
+>   #define MENVCFG_CBCFE                      BIT(6)
+>   #define MENVCFG_CBZE                       BIT(7)
+> -#define MENVCFG_HADE                       (1ULL << 61)
+> +#define MENVCFG_ADUE                       (1ULL << 61)
+>   #define MENVCFG_PBMTE                      (1ULL << 62)
+>   #define MENVCFG_STCE                       (1ULL << 63)
+>   
+>   /* For RV32 */
+> -#define MENVCFGH_HADE                      BIT(29)
+> +#define MENVCFGH_ADUE                      BIT(29)
+>   #define MENVCFGH_PBMTE                     BIT(30)
+>   #define MENVCFGH_STCE                      BIT(31)
+>   
+> @@ -763,12 +763,12 @@ typedef enum RISCVException {
+>   #define HENVCFG_CBIE                       MENVCFG_CBIE
+>   #define HENVCFG_CBCFE                      MENVCFG_CBCFE
+>   #define HENVCFG_CBZE                       MENVCFG_CBZE
+> -#define HENVCFG_HADE                       MENVCFG_HADE
+> +#define HENVCFG_ADUE                       MENVCFG_ADUE
+>   #define HENVCFG_PBMTE                      MENVCFG_PBMTE
+>   #define HENVCFG_STCE                       MENVCFG_STCE
+>   
+>   /* For RV32 */
+> -#define HENVCFGH_HADE                       MENVCFGH_HADE
+> +#define HENVCFGH_ADUE                       MENVCFGH_ADUE
+>   #define HENVCFGH_PBMTE                      MENVCFGH_PBMTE
+>   #define HENVCFGH_STCE                       MENVCFGH_STCE
+>   
+> diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
+> index 9f611d89bb..0ff6b59cff 100644
+> --- a/target/riscv/cpu_helper.c
+> +++ b/target/riscv/cpu_helper.c
+> @@ -861,11 +861,11 @@ static int get_physical_address(CPURISCVState *env, hwaddr *physical,
+>       }
+>   
+>       bool pbmte = env->menvcfg & MENVCFG_PBMTE;
+> -    bool hade = env->menvcfg & MENVCFG_HADE;
+> +    bool hade = env->menvcfg & MENVCFG_ADUE;
 
-The nr_cores in CPUState means "Number of cores within this CPU package", so it doesn't need
-"nr_dies" here. Zhao Liu is fixing the calculation of nr_cores [1].
+I suggest renaming the 'hade' var to 'adue' as well to avoid confusion.
 
-[1]: https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg07187.html
 
 Thanks,
-Qian
 
->              *edx |= CPUID_HT;
->          }
->          if (!cpu->enable_pmu) {
-> @@ -6230,7 +6230,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
->              break;
->          case 1:
->              *eax = apicid_pkg_offset(&topo_info);
-> -            *ebx = cs->nr_cores * cs->nr_threads;
-> +            *ebx = env->nr_dies * cs->nr_cores * cs->nr_threads;
->              *ecx |= CPUID_TOPOLOGY_LEVEL_CORE;
->              break;
->          default:
-> @@ -6496,7 +6496,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
->           * discards multiple thread information if it is set.
->           * So don't set it here for Intel to make Linux guests happy.
->           */
-> -        if (cs->nr_cores * cs->nr_threads > 1) {
-> +        if (env->nr_dies * cs->nr_cores * cs->nr_threads > 1) {
->              if (env->cpuid_vendor1 != CPUID_VENDOR_INTEL_1 ||
->                  env->cpuid_vendor2 != CPUID_VENDOR_INTEL_2 ||
->                  env->cpuid_vendor3 != CPUID_VENDOR_INTEL_3) {
-> @@ -6562,7 +6562,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
->               *eax |= (cpu_x86_virtual_addr_width(env) << 8);
->          }
->          *ebx = env->features[FEAT_8000_0008_EBX];
-> -        if (cs->nr_cores * cs->nr_threads > 1) {
-> +        if (env->nr_dies * cs->nr_cores * cs->nr_threads > 1) {
->              /*
->               * Bits 15:12 is "The number of bits in the initial
->               * Core::X86::Apic::ApicId[ApicId] value that indicate
-> @@ -6570,7 +6570,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
->               * Bits 7:0 is "The number of threads in the package is NC+1"
->               */
->              *ecx = (apicid_pkg_offset(&topo_info) << 12) |
-> -                   ((cs->nr_cores * cs->nr_threads) - 1);
-> +                   ((env->nr_dies * cs->nr_cores * cs->nr_threads) - 1);
->          } else {
->              *ecx = 0;
->          }
+Daniel
+
+>   
+>       if (first_stage && two_stage && env->virt_enabled) {
+>           pbmte = pbmte && (env->henvcfg & HENVCFG_PBMTE);
+> -        hade = hade && (env->henvcfg & HENVCFG_HADE);
+> +        hade = hade && (env->henvcfg & HENVCFG_ADUE);
+>       }
+>   
+>       int ptshift = (levels - 1) * ptidxbits;
+> diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+> index ea7585329e..b4c66dc8ca 100644
+> --- a/target/riscv/csr.c
+> +++ b/target/riscv/csr.c
+> @@ -1951,7 +1951,7 @@ static RISCVException write_menvcfg(CPURISCVState *env, int csrno,
+>       if (riscv_cpu_mxl(env) == MXL_RV64) {
+>           mask |= (cfg->ext_svpbmt ? MENVCFG_PBMTE : 0) |
+>                   (cfg->ext_sstc ? MENVCFG_STCE : 0) |
+> -                (cfg->ext_svadu ? MENVCFG_HADE : 0);
+> +                (cfg->ext_svadu ? MENVCFG_ADUE : 0);
+>       }
+>       env->menvcfg = (env->menvcfg & ~mask) | (val & mask);
+>   
+> @@ -1971,7 +1971,7 @@ static RISCVException write_menvcfgh(CPURISCVState *env, int csrno,
+>       const RISCVCPUConfig *cfg = riscv_cpu_cfg(env);
+>       uint64_t mask = (cfg->ext_svpbmt ? MENVCFG_PBMTE : 0) |
+>                       (cfg->ext_sstc ? MENVCFG_STCE : 0) |
+> -                    (cfg->ext_svadu ? MENVCFG_HADE : 0);
+> +                    (cfg->ext_svadu ? MENVCFG_ADUE : 0);
+>       uint64_t valh = (uint64_t)val << 32;
+>   
+>       env->menvcfg = (env->menvcfg & ~mask) | (valh & mask);
+> @@ -2023,7 +2023,7 @@ static RISCVException read_henvcfg(CPURISCVState *env, int csrno,
+>        * henvcfg.stce is read_only 0 when menvcfg.stce = 0
+>        * henvcfg.hade is read_only 0 when menvcfg.hade = 0
+>        */
+> -    *val = env->henvcfg & (~(HENVCFG_PBMTE | HENVCFG_STCE | HENVCFG_HADE) |
+> +    *val = env->henvcfg & (~(HENVCFG_PBMTE | HENVCFG_STCE | HENVCFG_ADUE) |
+>                              env->menvcfg);
+>       return RISCV_EXCP_NONE;
+>   }
+> @@ -2040,7 +2040,7 @@ static RISCVException write_henvcfg(CPURISCVState *env, int csrno,
+>       }
+>   
+>       if (riscv_cpu_mxl(env) == MXL_RV64) {
+> -        mask |= env->menvcfg & (HENVCFG_PBMTE | HENVCFG_STCE | HENVCFG_HADE);
+> +        mask |= env->menvcfg & (HENVCFG_PBMTE | HENVCFG_STCE | HENVCFG_ADUE);
+>       }
+>   
+>       env->henvcfg = (env->henvcfg & ~mask) | (val & mask);
+> @@ -2058,7 +2058,7 @@ static RISCVException read_henvcfgh(CPURISCVState *env, int csrno,
+>           return ret;
+>       }
+>   
+> -    *val = (env->henvcfg & (~(HENVCFG_PBMTE | HENVCFG_STCE | HENVCFG_HADE) |
+> +    *val = (env->henvcfg & (~(HENVCFG_PBMTE | HENVCFG_STCE | HENVCFG_ADUE) |
+>                               env->menvcfg)) >> 32;
+>       return RISCV_EXCP_NONE;
+>   }
+> @@ -2067,7 +2067,7 @@ static RISCVException write_henvcfgh(CPURISCVState *env, int csrno,
+>                                        target_ulong val)
+>   {
+>       uint64_t mask = env->menvcfg & (HENVCFG_PBMTE | HENVCFG_STCE |
+> -                                    HENVCFG_HADE);
+> +                                    HENVCFG_ADUE);
+>       uint64_t valh = (uint64_t)val << 32;
+>       RISCVException ret;
+>   
 
