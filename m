@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B66077D79A
-	for <lists+qemu-devel@lfdr.de>; Wed, 16 Aug 2023 03:20:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8591477D799
+	for <lists+qemu-devel@lfdr.de>; Wed, 16 Aug 2023 03:20:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qW5BO-0002hO-HV; Tue, 15 Aug 2023 21:18:46 -0400
+	id 1qW5BP-0002hQ-8z; Tue, 15 Aug 2023 21:18:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gurchetansingh@chromium.org>)
- id 1qW5BL-0002gF-IC
+ id 1qW5BL-0002gJ-Mq
  for qemu-devel@nongnu.org; Tue, 15 Aug 2023 21:18:43 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <gurchetansingh@chromium.org>)
- id 1qW5BH-00059j-SL
- for qemu-devel@nongnu.org; Tue, 15 Aug 2023 21:18:42 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-1bc3d94d40fso50886035ad.3
- for <qemu-devel@nongnu.org>; Tue, 15 Aug 2023 18:18:39 -0700 (PDT)
+ id 1qW5BJ-00059y-Az
+ for qemu-devel@nongnu.org; Tue, 15 Aug 2023 21:18:43 -0400
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-1bc7e65ea44so40833945ad.1
+ for <qemu-devel@nongnu.org>; Tue, 15 Aug 2023 18:18:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=chromium.org; s=google; t=1692148718; x=1692753518;
+ d=chromium.org; s=google; t=1692148719; x=1692753519;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=QthAOBZZCI8ZLTtSuM4U2dFYkSSlAWTRoH3E2e64a6k=;
- b=b5T2FnbQXmTA39HEO6apKpL9mr++ElZX/tBWS3yTs9P3lxZLoXMg9tFE5D82UmgkAm
- WmCHyG3pYgXt5n6ce5NEanWkPvR9/8m+dqiv5pPqQCwz/tO1M+oPe7tueuSPDJV0QhC2
- DXTZgsZqoma0/F+rh9gU8a5W9fK5GyX+93/Qs=
+ bh=AoojSxiI88xJFCZEbY8RgS5lAMpA6dkVdlJeZE1MyMM=;
+ b=Bs2WqDbWFAgbiBudax51AQn1h5rzTB3ZadH2/jlgKSLwGs7C664R/uGRNiPakms6ee
+ Ill6S4O/tuiRxhjz0MOp5/dLdaBjq3AoDytwAl/zpTW7npmlgi6u5R5lhiHW/5WCkiWf
+ Fj8vEym//OyPVuDZaH6R9a2gAHqRIc6lVs3cc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692148718; x=1692753518;
+ d=1e100.net; s=20221208; t=1692148719; x=1692753519;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QthAOBZZCI8ZLTtSuM4U2dFYkSSlAWTRoH3E2e64a6k=;
- b=BPzPKE9Zo12bWxmOOWTosX6TuJSusKvcUlOYirNEVyVyV8EXi3RiOfxqh/BSV3Lh2x
- pSn1cFoYBdXxOuhFlXZaZ8f7lHGZRu7MJ4Vn8gYzoGYkkmH5Xpz/rZlOOeBgv2d0hQU/
- IBVF7+ohsnHXzwktPhgO5rC/o+UlAa9DuMVC8kgcR6lVS4BcVq/1L/VP4rQaZxVtPxAm
- Gqv25TY91p1585vYg7HdYh41CIj6zPRhpJDqBAVaAev+8/Xqyjjjm9WAMn8NngYAGMyJ
- 0k8QCbCuJSq9fEZI/tGwJ1oaYU4ho2bjykrzPQzLkLmkndEpQlI9ioti9KBjFyvtsumY
- am7A==
-X-Gm-Message-State: AOJu0YzCrVUmzmqiSVMHOXBh7Dz0j+Ft4CPAx9cjAbiR6uQdNEcSkxK6
- KqfzNjm/dICPYW0hYzcjqQdlgdk0DED4cQx3FitQ+w==
-X-Google-Smtp-Source: AGHT+IEG9SuM+2PNXiTVTOzWb72yxGI9klF07Va7MEnCgVE57ryqzPvCvYjnxvMGoGiiJiG0fsIriQ==
-X-Received: by 2002:a17:903:1251:b0:1b8:66f6:87a3 with SMTP id
- u17-20020a170903125100b001b866f687a3mr652953plh.52.1692148718261; 
- Tue, 15 Aug 2023 18:18:38 -0700 (PDT)
+ bh=AoojSxiI88xJFCZEbY8RgS5lAMpA6dkVdlJeZE1MyMM=;
+ b=IPsz1Os5ruPGSinYmq9jgpbybM8E405kS28FTy7GSiGgK8eDen9jBNpi8CrILTD0tw
+ cHNGY7OYwQBfjAbCPbNdgmMjNr0aB2vxTloZbayJSaYIh7gkURG1wj4o5PZ+/Ga8O1Vc
+ yLNJ3Xepb5QkbEpnjb80t/1X/evRWgds4yULOO7OjGKZn61ar+OiJf60blhF27ZxpyNF
+ /cos4hZgS/quAZjpFEuZi2fMuLfN/1qEvlx6UE66aySwwmKdjfn+BU5EqSEJIhQwjJiH
+ AXPxtu8MYiTmh0Vn1Qmd4iWk9eLoZlQDrcUi40sfgypUyWdb/QWiKoGeGGHZfkAknQte
+ nImQ==
+X-Gm-Message-State: AOJu0Yy0RuE4U28oCXx0JioKvGKAHRs/bYFd//v8gZWJMIQhwX8ASEwq
+ rM6/otWApXoXhGedKyUlXULF6mUZJFV2jnl9lMy43A==
+X-Google-Smtp-Source: AGHT+IEr2WasJN6J2kegaT9qGEY+gDmpkrOY6BV5ZwxvgVRhN4C5Mdg4urmzmBONJ1n3IRHmFPNuPA==
+X-Received: by 2002:a17:903:25cf:b0:1b6:6a14:3734 with SMTP id
+ jc15-20020a17090325cf00b001b66a143734mr599869plb.29.1692148719438; 
+ Tue, 15 Aug 2023 18:18:39 -0700 (PDT)
 Received: from gurchetansingh0.mtv.corp.google.com
  ([2620:15c:a7:2:5f11:65df:7276:aadf])
  by smtp.gmail.com with ESMTPSA id
- j2-20020a170902da8200b001bc7306d321sm11723562plx.282.2023.08.15.18.18.37
+ j2-20020a170902da8200b001bc7306d321sm11723562plx.282.2023.08.15.18.18.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 15 Aug 2023 18:18:37 -0700 (PDT)
+ Tue, 15 Aug 2023 18:18:39 -0700 (PDT)
 From: Gurchetan Singh <gurchetansingh@chromium.org>
 To: qemu-devel@nongnu.org
 Cc: marcandre.lureau@redhat.com, kraxel@redhat.com, akihiko.odaki@gmail.com,
  ray.huang@amd.com, alex.bennee@linaro.org, shentey@gmail.com, hi@alyssa.is,
  ernunes@redhat.com, manos.pitsidianakis@linaro.org
-Subject: [PATCH v6 3/9] virtio-gpu: hostmem
-Date: Tue, 15 Aug 2023 18:18:25 -0700
-Message-Id: <20230816011831.599-4-gurchetansingh@chromium.org>
+Subject: [PATCH v6 4/9] virtio-gpu: blob prep
+Date: Tue, 15 Aug 2023 18:18:26 -0700
+Message-Id: <20230816011831.599-5-gurchetansingh@chromium.org>
 X-Mailer: git-send-email 2.31.0
 In-Reply-To: <20230816011831.599-1-gurchetansingh@chromium.org>
 References: <20230816011831.599-1-gurchetansingh@chromium.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=gurchetansingh@chromium.org; helo=mail-pl1-x635.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=gurchetansingh@chromium.org; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,132 +91,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Gerd Hoffmann <kraxel@redhat.com>
+From: Antonio Caggiano <antonio.caggiano@collabora.com>
 
-Use VIRTIO_GPU_SHM_ID_HOST_VISIBLE as id for virtio-gpu.
+This adds preparatory functions needed to:
+
+     - decode blob cmds
+     - tracking iovecs
 
 Signed-off-by: Antonio Caggiano <antonio.caggiano@collabora.com>
+Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Signed-off-by: Gurchetan Singh <gurchetansingh@chromium.org>
 Tested-by: Alyssa Ross <hi@alyssa.is>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Tested-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
+Reviewed-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- hw/display/virtio-gpu-pci.c    | 14 ++++++++++++++
- hw/display/virtio-gpu.c        |  1 +
- hw/display/virtio-vga.c        | 33 ++++++++++++++++++++++++---------
- include/hw/virtio/virtio-gpu.h |  5 +++++
- 4 files changed, 44 insertions(+), 9 deletions(-)
+ hw/display/virtio-gpu.c              | 10 +++-------
+ include/hw/virtio/virtio-gpu-bswap.h | 18 ++++++++++++++++++
+ include/hw/virtio/virtio-gpu.h       |  5 +++++
+ 3 files changed, 26 insertions(+), 7 deletions(-)
 
-diff --git a/hw/display/virtio-gpu-pci.c b/hw/display/virtio-gpu-pci.c
-index 93f214ff58..da6a99f038 100644
---- a/hw/display/virtio-gpu-pci.c
-+++ b/hw/display/virtio-gpu-pci.c
-@@ -33,6 +33,20 @@ static void virtio_gpu_pci_base_realize(VirtIOPCIProxy *vpci_dev, Error **errp)
-     DeviceState *vdev = DEVICE(g);
-     int i;
- 
-+    if (virtio_gpu_hostmem_enabled(g->conf)) {
-+        vpci_dev->msix_bar_idx = 1;
-+        vpci_dev->modern_mem_bar_idx = 2;
-+        memory_region_init(&g->hostmem, OBJECT(g), "virtio-gpu-hostmem",
-+                           g->conf.hostmem);
-+        pci_register_bar(&vpci_dev->pci_dev, 4,
-+                         PCI_BASE_ADDRESS_SPACE_MEMORY |
-+                         PCI_BASE_ADDRESS_MEM_PREFETCH |
-+                         PCI_BASE_ADDRESS_MEM_TYPE_64,
-+                         &g->hostmem);
-+        virtio_pci_add_shm_cap(vpci_dev, 4, 0, g->conf.hostmem,
-+                               VIRTIO_GPU_SHM_ID_HOST_VISIBLE);
-+    }
-+
-     virtio_pci_force_virtio_1(vpci_dev);
-     if (!qdev_realize(vdev, BUS(&vpci_dev->bus), errp)) {
-         return;
 diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
-index bbd5c6561a..48ef0d9fad 100644
+index 48ef0d9fad..3e658f1fef 100644
 --- a/hw/display/virtio-gpu.c
 +++ b/hw/display/virtio-gpu.c
-@@ -1509,6 +1509,7 @@ static Property virtio_gpu_properties[] = {
-                      256 * MiB),
-     DEFINE_PROP_BIT("blob", VirtIOGPU, parent_obj.conf.flags,
-                     VIRTIO_GPU_FLAG_BLOB_ENABLED, false),
-+    DEFINE_PROP_SIZE("hostmem", VirtIOGPU, parent_obj.conf.hostmem, 0),
-     DEFINE_PROP_END_OF_LIST(),
- };
+@@ -33,15 +33,11 @@
  
-diff --git a/hw/display/virtio-vga.c b/hw/display/virtio-vga.c
-index e6fb0aa876..c8552ff760 100644
---- a/hw/display/virtio-vga.c
-+++ b/hw/display/virtio-vga.c
-@@ -115,17 +115,32 @@ static void virtio_vga_base_realize(VirtIOPCIProxy *vpci_dev, Error **errp)
-     pci_register_bar(&vpci_dev->pci_dev, 0,
-                      PCI_BASE_ADDRESS_MEM_PREFETCH, &vga->vram);
+ #define VIRTIO_GPU_VM_VERSION 1
  
--    /*
--     * Configure virtio bar and regions
--     *
--     * We use bar #2 for the mmio regions, to be compatible with stdvga.
--     * virtio regions are moved to the end of bar #2, to make room for
--     * the stdvga mmio registers at the start of bar #2.
--     */
--    vpci_dev->modern_mem_bar_idx = 2;
--    vpci_dev->msix_bar_idx = 4;
-     vpci_dev->modern_io_bar_idx = 5;
+-static struct virtio_gpu_simple_resource*
+-virtio_gpu_find_resource(VirtIOGPU *g, uint32_t resource_id);
+ static struct virtio_gpu_simple_resource *
+ virtio_gpu_find_check_resource(VirtIOGPU *g, uint32_t resource_id,
+                                bool require_backing,
+                                const char *caller, uint32_t *error);
  
-+    if (!virtio_gpu_hostmem_enabled(g->conf)) {
-+        /*
-+         * Configure virtio bar and regions
-+         *
-+         * We use bar #2 for the mmio regions, to be compatible with stdvga.
-+         * virtio regions are moved to the end of bar #2, to make room for
-+         * the stdvga mmio registers at the start of bar #2.
-+         */
-+        vpci_dev->modern_mem_bar_idx = 2;
-+        vpci_dev->msix_bar_idx = 4;
-+    } else {
-+        vpci_dev->msix_bar_idx = 1;
-+        vpci_dev->modern_mem_bar_idx = 2;
-+        memory_region_init(&g->hostmem, OBJECT(g), "virtio-gpu-hostmem",
-+                           g->conf.hostmem);
-+        pci_register_bar(&vpci_dev->pci_dev, 4,
-+                         PCI_BASE_ADDRESS_SPACE_MEMORY |
-+                         PCI_BASE_ADDRESS_MEM_PREFETCH |
-+                         PCI_BASE_ADDRESS_MEM_TYPE_64,
-+                         &g->hostmem);
-+        virtio_pci_add_shm_cap(vpci_dev, 4, 0, g->conf.hostmem,
-+                               VIRTIO_GPU_SHM_ID_HOST_VISIBLE);
-+    }
+-static void virtio_gpu_cleanup_mapping(VirtIOGPU *g,
+-                                       struct virtio_gpu_simple_resource *res);
+ static void virtio_gpu_reset_bh(void *opaque);
+ 
+ void virtio_gpu_update_cursor_data(VirtIOGPU *g,
+@@ -116,7 +112,7 @@ static void update_cursor(VirtIOGPU *g, struct virtio_gpu_update_cursor *cursor)
+                   cursor->resource_id ? 1 : 0);
+ }
+ 
+-static struct virtio_gpu_simple_resource *
++struct virtio_gpu_simple_resource *
+ virtio_gpu_find_resource(VirtIOGPU *g, uint32_t resource_id)
+ {
+     struct virtio_gpu_simple_resource *res;
+@@ -904,8 +900,8 @@ void virtio_gpu_cleanup_mapping_iov(VirtIOGPU *g,
+     g_free(iov);
+ }
+ 
+-static void virtio_gpu_cleanup_mapping(VirtIOGPU *g,
+-                                       struct virtio_gpu_simple_resource *res)
++void virtio_gpu_cleanup_mapping(VirtIOGPU *g,
++                                struct virtio_gpu_simple_resource *res)
+ {
+     virtio_gpu_cleanup_mapping_iov(g, res->iov, res->iov_cnt);
+     res->iov = NULL;
+diff --git a/include/hw/virtio/virtio-gpu-bswap.h b/include/hw/virtio/virtio-gpu-bswap.h
+index 9124108485..dd1975e2d4 100644
+--- a/include/hw/virtio/virtio-gpu-bswap.h
++++ b/include/hw/virtio/virtio-gpu-bswap.h
+@@ -63,10 +63,28 @@ virtio_gpu_create_blob_bswap(struct virtio_gpu_resource_create_blob *cblob)
+ {
+     virtio_gpu_ctrl_hdr_bswap(&cblob->hdr);
+     le32_to_cpus(&cblob->resource_id);
++    le32_to_cpus(&cblob->blob_mem);
+     le32_to_cpus(&cblob->blob_flags);
++    le32_to_cpus(&cblob->nr_entries);
++    le64_to_cpus(&cblob->blob_id);
+     le64_to_cpus(&cblob->size);
+ }
+ 
++static inline void
++virtio_gpu_map_blob_bswap(struct virtio_gpu_resource_map_blob *mblob)
++{
++    virtio_gpu_ctrl_hdr_bswap(&mblob->hdr);
++    le32_to_cpus(&mblob->resource_id);
++    le64_to_cpus(&mblob->offset);
++}
 +
-     if (!(vpci_dev->flags & VIRTIO_PCI_FLAG_PAGE_PER_VQ)) {
-         /*
-          * with page-per-vq=off there is no padding space we can use
++static inline void
++virtio_gpu_unmap_blob_bswap(struct virtio_gpu_resource_unmap_blob *ublob)
++{
++    virtio_gpu_ctrl_hdr_bswap(&ublob->hdr);
++    le32_to_cpus(&ublob->resource_id);
++}
++
+ static inline void
+ virtio_gpu_scanout_blob_bswap(struct virtio_gpu_set_scanout_blob *ssb)
+ {
 diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
-index 8377c365ef..de4f624e94 100644
+index de4f624e94..55973e112f 100644
 --- a/include/hw/virtio/virtio-gpu.h
 +++ b/include/hw/virtio/virtio-gpu.h
-@@ -108,12 +108,15 @@ enum virtio_gpu_base_conf_flags {
-     (_cfg.flags & (1 << VIRTIO_GPU_FLAG_BLOB_ENABLED))
- #define virtio_gpu_context_init_enabled(_cfg) \
-     (_cfg.flags & (1 << VIRTIO_GPU_FLAG_CONTEXT_INIT_ENABLED))
-+#define virtio_gpu_hostmem_enabled(_cfg) \
-+    (_cfg.hostmem > 0)
- 
- struct virtio_gpu_base_conf {
-     uint32_t max_outputs;
-     uint32_t flags;
-     uint32_t xres;
-     uint32_t yres;
-+    uint64_t hostmem;
- };
- 
- struct virtio_gpu_ctrl_command {
-@@ -137,6 +140,8 @@ struct VirtIOGPUBase {
-     int renderer_blocked;
-     int enable;
- 
-+    MemoryRegion hostmem;
+@@ -257,6 +257,9 @@ void virtio_gpu_base_fill_display_info(VirtIOGPUBase *g,
+ void virtio_gpu_base_generate_edid(VirtIOGPUBase *g, int scanout,
+                                    struct virtio_gpu_resp_edid *edid);
+ /* virtio-gpu.c */
++struct virtio_gpu_simple_resource *
++virtio_gpu_find_resource(VirtIOGPU *g, uint32_t resource_id);
 +
-     struct virtio_gpu_scanout scanout[VIRTIO_GPU_MAX_SCANOUTS];
- 
-     int enabled_output_bitmask;
+ void virtio_gpu_ctrl_response(VirtIOGPU *g,
+                               struct virtio_gpu_ctrl_command *cmd,
+                               struct virtio_gpu_ctrl_hdr *resp,
+@@ -275,6 +278,8 @@ int virtio_gpu_create_mapping_iov(VirtIOGPU *g,
+                                   uint32_t *niov);
+ void virtio_gpu_cleanup_mapping_iov(VirtIOGPU *g,
+                                     struct iovec *iov, uint32_t count);
++void virtio_gpu_cleanup_mapping(VirtIOGPU *g,
++                                struct virtio_gpu_simple_resource *res);
+ void virtio_gpu_process_cmdq(VirtIOGPU *g);
+ void virtio_gpu_device_realize(DeviceState *qdev, Error **errp);
+ void virtio_gpu_reset(VirtIODevice *vdev);
 -- 
 2.42.0.rc1.204.g551eb34607-goog
 
