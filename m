@@ -2,104 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CF0277F8F6
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 16:30:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DEAE77F927
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 16:34:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWe18-0001Ny-9j; Thu, 17 Aug 2023 10:30:30 -0400
+	id 1qWe3j-0004MI-V4; Thu, 17 Aug 2023 10:33:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qWe13-0001L8-Ua
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 10:30:26 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qWe11-0007Eu-EU
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 10:30:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692282620;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=eolIBFljUPAFq5HpURwofL438D7hlQjAqPaOxFCbLi4=;
- b=W5UQ9GpTUVCFIDMUcT3C3UkfNGJ0ENUJvm01MbSmcVvN+9/z0OrxdlFeQE9MyrKwSCxLWe
- puin1Vy7xx5+1YayDQwOZ5C8YYFY1rlefOjsfs1g+a1Ji11zVLsCzwBE8gSQty2hVNoK87
- rrHMxLwcb9FCS/YZg9BeBb9JL0QFxyU=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-283-EB7HIKqiP4eJLRRDoA8luQ-1; Thu, 17 Aug 2023 10:30:19 -0400
-X-MC-Unique: EB7HIKqiP4eJLRRDoA8luQ-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-3f5df65fa35so50043125e9.3
- for <qemu-devel@nongnu.org>; Thu, 17 Aug 2023 07:30:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692282618; x=1692887418;
- h=content-transfer-encoding:in-reply-to:organization:references:cc:to
- :from:content-language:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=eolIBFljUPAFq5HpURwofL438D7hlQjAqPaOxFCbLi4=;
- b=FieQmxHpxPg9N7YoDO1LqlJ+FDUCO4aqhl814N2DJo9iWBF19rWUTMdJNS2FVVWF74
- /nTS49Eqyca6bp/U9eEXsWgZHMOAQKu66BZW9w0uwwgWb6fVGCEb+AvH0pv+CzanzyXj
- lkGukJF8upUdfITj1GSWwLgftn+o5VBkHmAGTY/OdxR/VGjwi6c2vn4Vi3s+0pvK6tF7
- 9LAOutES9j0danRtYpbGtvCpGSGFUjAo5CQ3tKPfelk0YqCywU7ceOwzQwW2XFmyLged
- ltfkIGUDyMAQswafQ3JWYGGUTFdcbrI4WP5fU8BEtUYWjGoGhtjWkr26O3QI5sYOivb1
- 1/Rg==
-X-Gm-Message-State: AOJu0YxFEwSJtzav1bxgKNZyjlaZ8iG2zea5zrjVVFmn6vn/cNGP6Ry/
- X7rgd08TieGYUWSPhk3qWY3hrJGTjf+3I1RySkND+saRaRx8cFsVjYGN1oZHpGFyZrvzMYQ7EW4
- W/QfpZtTjh6iFnHc=
-X-Received: by 2002:a1c:cc12:0:b0:3fb:d1db:5454 with SMTP id
- h18-20020a1ccc12000000b003fbd1db5454mr4305300wmb.35.1692282617950; 
- Thu, 17 Aug 2023 07:30:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHjEfON6gbcS+yysLZ033Ilaordcpo0gaUVMi/TpSuNrDyX2Iuqcm4U1zi7QBcYXk4EPRrTKw==
-X-Received: by 2002:a1c:cc12:0:b0:3fb:d1db:5454 with SMTP id
- h18-20020a1ccc12000000b003fbd1db5454mr4305282wmb.35.1692282617621; 
- Thu, 17 Aug 2023 07:30:17 -0700 (PDT)
-Received: from ?IPV6:2a09:80c0:192:0:5dac:bf3d:c41:c3e7?
- ([2a09:80c0:192:0:5dac:bf3d:c41:c3e7])
- by smtp.gmail.com with ESMTPSA id
- w3-20020a05600c014300b003fe0a0e03fcsm3165284wmm.12.2023.08.17.07.30.16
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 17 Aug 2023 07:30:17 -0700 (PDT)
-Message-ID: <c92648e5-e974-48ac-2213-b5926a16ed4d@redhat.com>
-Date: Thu, 17 Aug 2023 16:30:16 +0200
+ (Exim 4.90_1) (envelope-from <tugy@chinatelecom.cn>)
+ id 1qWe3c-0004Lm-Od
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 10:33:04 -0400
+Received: from smtpnm6-09.21cn.com ([182.42.152.55] helo=chinatelecom.cn)
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <tugy@chinatelecom.cn>) id 1qWe3Z-0000wh-1N
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 10:33:04 -0400
+HMM_SOURCE_IP: 192.168.139.44:37486.1013639224
+HMM_ATTACHE_NUM: 0000
+HMM_SOURCE_TYPE: SMTP
+Received: from clientip-182.148.58.152 (unknown [192.168.139.44])
+ by chinatelecom.cn (HERMES) with SMTP id BCE9E111070AD;
+ Thu, 17 Aug 2023 22:32:52 +0800 (CST)
+X-189-SAVE-TO-SEND: +tugy@chinatelecom.cn
+Received: from  ([182.148.58.152])
+ by gateway-ssl-dep-56d86dc765-g96c8 with ESMTP id
+ b68967e78c0e4e31979bed22226b12ac for farosas@suse.de; 
+ Thu, 17 Aug 2023 22:32:54 CST
+X-Transaction-ID: b68967e78c0e4e31979bed22226b12ac
+X-Real-From: tugy@chinatelecom.cn
+X-Receive-IP: 182.148.58.152
+X-MEDUSA-Status: 0
+Message-ID: <213ae818-32ab-4ce7-80be-3991111ebe4f@chinatelecom.cn>
+Date: Thu, 17 Aug 2023 22:32:48 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v1 1/3] softmmu/physmem: fallback to opening guest RAM
- file as readonly in a MAP_PRIVATE mapping
+User-Agent: Mozilla Thunderbird
+Cc: tugy@chinatelecom.cn, Juan Quintela <quintela@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>, qemu-devel@nongnu.org
+Subject: Re: [PATCH] migrate/ram: let ram_save_target_page_legacy() return if
+ qemu file got error
 Content-Language: en-US
-From: David Hildenbrand <david@redhat.com>
-To: ThinerLogoer <logoerthiner1@163.com>,
- "stefanha@redhat.com" <stefanha@redhat.com>
-Cc: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-References: <20230807190736.572665-1-david@redhat.com>
- <20230807190736.572665-2-david@redhat.com> <ZNKtHVotkfgI1tb4@x1n>
- <1d1a7d8f-6260-5905-57ea-514b762ce869@redhat.com> <ZNOti1OKN79t68jP@x1n>
- <e9c53fbd-369c-2605-1470-e67a765f923b@redhat.com>
- <6152f171.6a4c.189e069baf7.Coremail.logoerthiner1@163.com>
- <ZNVVmxuQAsSEHqZq@x1n>
- <1b4168d2.4182.189e324e0ef.Coremail.logoerthiner1@163.com>
- <08cc9db9-b774-b027-58f5-dd7e6c374657@redhat.com>
- <2b967b3.13b7.189e82ee694.Coremail.logoerthiner1@163.com>
- <06f9a805-8150-8106-7d0a-05d0d2465cd0@redhat.com>
-Organization: Red Hat
-In-Reply-To: <06f9a805-8150-8106-7d0a-05d0d2465cd0@redhat.com>
+To: =?UTF-8?B?44CQ5aSW6YOo6LSm5Y+344CRIEZhYmlhbm8gUm9zYXM=?=
+ <farosas@suse.de>, Peter Xu <peterx@redhat.com>
+References: <20ae48e5-006d-4a1b-823e-f2c591ec4fb0@chinatelecom.cn>
+ <87h6p0mqk8.fsf@suse.de> <ZNv6ABLk7EjaX8dD@x1n> <87350klygf.fsf@suse.de>
+ <ZNzhuF7fRUdaGthV@x1n> <87o7j7kohx.fsf@suse.de>
+From: Guoyi Tu <tugy@chinatelecom.cn>
+In-Reply-To: <87o7j7kohx.fsf@suse.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -60
-X-Spam_score: -6.1
-X-Spam_bar: ------
-X-Spam_report: (-6.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.021,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-4.01, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=182.42.152.55; envelope-from=tugy@chinatelecom.cn;
+ helo=chinatelecom.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -116,74 +72,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+I apologize for the previous email being cut off. I am resending it here.
 
-> @Stefan, do you have any concern when we would do 1) ?
+It sounds very reasonable. the return value of the QEMUFile interface
+cannot accurately reflect the actual situation, and the way these
+interfaces are being called during the migration process also is a
+little bit weird.
+
+I'm glad to see that you have plans to improve these interfaces. If you
+need any assistance, I'd be more than happy to be involved
+
+On 2023/8/16 23:15, 【外部账号】 Fabiano Rosas wrote:
+> Peter Xu <peterx@redhat.com> writes:
 > 
-> As far as I can tell, we have to set the nvdimm to "unarmed=on" either way:
+>> On Tue, Aug 15, 2023 at 07:42:24PM -0300, Fabiano Rosas wrote:
+>>> Yep, I see that. I meant explicitly move the code into the loop. Feels a
+>>> bit weird to check the QEMUFile for errors first thing inside the
+>>> function when nothing around it should have touched the QEMUFile.
+>>
+>> Valid point.  This reminded me that now we have one indirection into
+>> ->ram_save_target_page() which is a hook now.  Putting in the caller will
+>> work for all hooks, even though they're not yet exist.
+>>
+>> But since we don't have any other hooks yet, it'll be the same for now.
+>>
+>> Acked-by: Peter Xu <peterx@redhat.com>
+>>
+>> For the long term: there's one more reason to rework qemu_put_byte()/... to
+>> return error codes.. Then things like save_normal_page() can simply already
+>> return negatives when hit an error.
+>>
+>> Fabiano - I see that you've done quite a few patches in reworking migration
+>> code.  I had that for a long time in my todo, but if you're interested feel
+>> free to look into it.
+>>
+>> IIUC the idea is introducing another similar layer of API for qemufile (I'd
+>> call it qemu_put_1|2|4|8(), or anything you can come up better with..) then
+>> let migration to switch over to it, with retval reflecting errors.  Then we
+>> should be able to drop this patch along with most of the explicit error
+>> checks for the qemufile spread all over.
 > 
-> +   "unarmed" controls the ACPI NFIT NVDIMM Region Mapping Structure "NVDIMM
-> +   State Flags" Bit 3 indicating that the device is "unarmed" and cannot accept
-> +   persistent writes. Linux guest drivers set the device to read-only when this
-> +   bit is present. Set unarmed to on when the memdev has readonly=on.
+> I was just ranting about this situation in another thread! Yes, we need
+> something like that. QEMUFile errors should only be set by code doing
+> actual IO and if we want to store the error for other parts of the code
+> to use, that should be another interface.
 > 
-> So changing the behavior would not really break the nvdimm use case.
-
-Looking into the details, this seems to be the right thing to do.
-
-This is what I have now as patch description, that also highlights how libvirt
-doesn't even make use of readonly=true.
-
-
- From 42f272ace68e0cd660a8448adb5aefb3b9dd7005 Mon Sep 17 00:00:00 2001
-From: David Hildenbrand <david@redhat.com>
-Date: Thu, 17 Aug 2023 12:09:07 +0200
-Subject: [PATCH v2 2/4] backends/hostmem-file: Make share=off,readonly=on
-  result in RAM instead of ROM
-
-For now, "share=off,readonly=on" would always result in us opening the
-file R/O and mmap'ing the opened file MAP_PRIVATE R/O -- effectively
-turning it into ROM.
-
-As documented, readonly only specifies that we want to open the file R/O:
-
-     @readonly: if true, the backing file is opened read-only; if false,
-         it is opened read-write.  (default: false)
-
-Especially for VM templating, "share=off" is a common use case. However,
-that use case is impossible with files that lack write permissions,
-because "share=off,readonly=off" will fail opening the file, and
-"share=off,readonly=on" will give us ROM instead of RAM.
-
-With MAP_PRIVATE we can easily open the file R/O and mmap it R/W, to
-turn it into COW RAM: private changes don't affect the file after all and
-don't require write permissions.
-
-This implies that we only get ROM now via "share=on,readonly=on".
-"share=off,readonly=on" will give us RAM.
-
-The sole user of ROM via memory-backend-file are R/O NVDIMMs. They
-also require "unarmed=on" to be set for the nvdimm device.
-
-With this change, R/O NVDIMMs will continue working even if
-"share=off,readonly=on" was specified similar to when simply
-providing ordinary RAM to the nvdimm device and setting "unarmed=on".
-
-Note that libvirt seems to default for a "readonly" nvdimm to
-* -object memory-backend-file,share=off (implying readonly=off)
-* -device nvdimm,unarmed=on
-And never seems to even set "readonly=on" for memory-backend-file. So
-this change won't affect libvirt, they already always get COW RAM -- not
-modifying the underlying file but opening it R/O.
-
-If someone really wants ROM, they can just use "share=on,readonly=on".
-After all, there is not relevant difference between a R/O MAP_SHARED
-file mapping and a R/O MAP_PRIVATE file mapping.
-
-Signed-off-by: David Hildenbrand <david@redhat.com>
-
--- 
-Cheers,
-
-David / dhildenb
-
+> While reviewing this patch I noticed we have stuff like this:
+> 
+> pages = ram_find_and_save_block()
+> ...
+> if (pages < 0) {
+>      qemu_file_set_error(f, pages);
+>      break;
+> }
+> 
+> So the low-level code sets the error, ram_save_target_page_legacy() sees
+> it and returns -1, and this^ code loses all track of the initial error
+> and inadvertently turns it into -EPERM!
+> 
+> I'll try to find some time to start cleaning this up
 
