@@ -2,74 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5699377FB4D
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 17:57:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC36277FB66
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 18:00:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWfLm-0005yp-Vy; Thu, 17 Aug 2023 11:55:55 -0400
+	id 1qWfP7-0007Fc-9k; Thu, 17 Aug 2023 11:59:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qWfLk-0005yN-RX
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 11:55:52 -0400
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qWfLi-0002ZR-Ov
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 11:55:52 -0400
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-5254f9eda36so6896244a12.1
- for <qemu-devel@nongnu.org>; Thu, 17 Aug 2023 08:55:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692287748; x=1692892548;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=dWKqOk47v308/+gttK2oyzm7+bsuGKkFiow1MURdLmw=;
- b=HoYEUqay1dOMKfnUGVzXO4PG/YZhB3f9IEHZVFg6wnYc+cJKCjMuhwGcXTvz79QAs/
- NlwDX8gFWD3nt4T0BWvH2eqqPrLZ2+oJAVz9SWUT3NJzmWjCb2v5WdFokS3/aFOhf9MG
- bk9xKwRUVZHYH91gzgOe6bGtoNPDwaiwwdM2BpU/t9yxFEFpRYYEYF+OUFHgfZ3Hlxmn
- n/+ugaAiHI+TwLu5UT2uTMksb+m0WVivZT9GTOnTGpsYc6sLXcl74e8zxuO46NJld43v
- JseEfjGGwoRiQlY2ZO7V9JsjZUY+1thomsgqYHaUWGFFLvaP+4Ln4AEB6QnHzmFOcZ6s
- 7cGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692287748; x=1692892548;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=dWKqOk47v308/+gttK2oyzm7+bsuGKkFiow1MURdLmw=;
- b=ZiYVwp7+bbE7EKrOyS4rwX/9MPsnraaMNFIoUMioyOjgC/aDv/1mvqsO4H6cnBehj+
- tUy5pmkLaWvsvIzxvDWZg+CMLb9+UeUumMyNx4EgWuiWQgnHzcB42saMx//Z3EeGlk3e
- HpYKnviwXcNWPl8GKRUSrCUCXyVbuZWz7l+4ATwnLLUq/o/pKghFLmYlCZiiYXZr+hKR
- QOysApkjVkNZ0RWFW1Wf/ljfOa8U54UIujPxhGfworB3ZjDhP77TSHWdykGni4DV/wn3
- i8oaNyhiDvVYYUFvYR7gF+U+5KQeNqqFa64RIAmUJsZ8fR7xTOKL4JlxLziw98ja0rVg
- OAkg==
-X-Gm-Message-State: AOJu0YzefMYcFEEbJJStg+8LeCRp/Oti0dp45A6fxdRhsBVm7S8ynaLh
- UTYnyIR3x/JCsD25EiojeUojLHgXrDliDYrzYw6kbA==
-X-Google-Smtp-Source: AGHT+IEm27c+RPz10DuV7nTZWNExF8diTmsIKEevkT4EuVYIH2LIMsfNkiKkKcrtND9MzF52m1JOuGvxNfpYzOQxHvQ=
-X-Received: by 2002:aa7:dcd9:0:b0:526:e585:e25a with SMTP id
- w25-20020aa7dcd9000000b00526e585e25amr90142edu.38.1692287748101; Thu, 17 Aug
- 2023 08:55:48 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qWfOy-00070U-LY
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 11:59:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qWfOq-0003m0-6l
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 11:59:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1692287934;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=oTT7bKV9KwvS314ipvuTanKXvhR68UXiljwmEfE3uNo=;
+ b=OJYwZBMfI3W6tf+LhIRa7j/6Hzo3hxIwCwr3lh7ialEYq0RaNHQPFIbhj+GAR1ewWGzGUb
+ ndvE8QwBPRlS+rOkhSyUSEuzG+mY8JWEUsrvSKV+r6hlt+3VGYtJV/jCxaBAX8bnEz/+Gl
+ IYxa4UANet5Ixe9oSNFyzMuplrESAz8=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-370-_PYTQOiYObCub5SvCMnmSQ-1; Thu, 17 Aug 2023 11:58:50 -0400
+X-MC-Unique: _PYTQOiYObCub5SvCMnmSQ-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4639D8DC66D;
+ Thu, 17 Aug 2023 15:58:50 +0000 (UTC)
+Received: from localhost (unknown [10.39.193.48])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 3C3F9C15BAE;
+ Thu, 17 Aug 2023 15:58:48 +0000 (UTC)
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: <qemu-block@nongnu.org>, Stefan Hajnoczi <stefanha@redhat.com>,
+ Fam Zheng <fam@euphon.net>, xen-devel@lists.xenproject.org,
+ Anthony Perard <anthony.perard@citrix.com>,
+ Hanna Reitz <hreitz@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ Julia Suvorova <jusual@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Aarushi Mehta <mehta.aaru20@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Stefano Stabellini <sstabellini@kernel.org>, Paul Durrant <paul@xen.org>,
+ Ilya Maximets <i.maximets@ovn.org>
+Subject: [PATCH v2 0/4] virtio-blk: use blk_io_plug_call() instead of
+ notification BH
+Date: Thu, 17 Aug 2023 11:58:43 -0400
+Message-ID: <20230817155847.3605115-1-stefanha@redhat.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <20230816145547.477974-1-richard.henderson@linaro.org>
- <20230816145547.477974-4-richard.henderson@linaro.org>
-In-Reply-To: <20230816145547.477974-4-richard.henderson@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 17 Aug 2023 16:55:36 +0100
-Message-ID: <CAFEAcA_trBVvaFOAbJMmjwX01FSxsFFaYkUCxQ8phzYZ=DrphQ@mail.gmail.com>
-Subject: Re: [PATCH 3/3] tcg/i386: Allow immediate as input to deposit_*
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52f.google.com
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.021,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,18 +87,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 16 Aug 2023 at 15:58, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> We can use MOVB and MOVW with an immediate just as easily
-> as with a register input.
->
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
+v2:
+- Rename blk_io_plug() to defer_call() and move it to util/ so the net
+  subsystem can use it [Ilya]
+- Add defer_call_begin()/end() to thread_pool_completion_bh() to match Linux
+  AIO and io_uring completion batching
 
+Replace the seldom-used virtio-blk notification BH mechanism with
+blk_io_plug(). This is part of an effort to enable the multi-queue block layer
+in virtio-blk. The notification BH was not multi-queue friendly.
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+The blk_io_plug() mechanism improves fio rw=randread bs=4k iodepth=64 numjobs=8
+IOPS by ~9% with a single IOThread and 8 vCPUs (this is not even a multi-queue
+block layer configuration) compared to no completion batching. iodepth=1
+decreases by ~1% but this could be noise. Benchmark details are available here:
+https://gitlab.com/stefanha/virt-playbooks/-/tree/blk_io_plug-irqfd
 
-thanks
--- PMM
+Stefan Hajnoczi (4):
+  block: rename blk_io_plug_call() API to defer_call()
+  util/defer-call: move defer_call() to util/
+  virtio: use defer_call() in virtio_irqfd_notify()
+  virtio-blk: remove batch notification BH
+
+ MAINTAINERS                       |   3 +-
+ include/qemu/defer-call.h         |  15 +++
+ include/sysemu/block-backend-io.h |   4 -
+ block/blkio.c                     |   9 +-
+ block/io_uring.c                  |  11 ++-
+ block/linux-aio.c                 |   9 +-
+ block/nvme.c                      |   5 +-
+ block/plug.c                      | 159 ------------------------------
+ hw/block/dataplane/virtio-blk.c   |  48 +--------
+ hw/block/dataplane/xen-block.c    |  11 ++-
+ hw/block/virtio-blk.c             |   5 +-
+ hw/scsi/virtio-scsi.c             |   7 +-
+ hw/virtio/virtio.c                |  11 ++-
+ util/defer-call.c                 | 156 +++++++++++++++++++++++++++++
+ util/thread-pool.c                |   5 +
+ block/meson.build                 |   1 -
+ util/meson.build                  |   1 +
+ 17 files changed, 227 insertions(+), 233 deletions(-)
+ create mode 100644 include/qemu/defer-call.h
+ delete mode 100644 block/plug.c
+ create mode 100644 util/defer-call.c
+
+-- 
+2.41.0
+
 
