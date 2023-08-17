@@ -2,79 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D32F777F7D8
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 15:37:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8E6177F7DC
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 15:38:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWdB7-0001ZW-I4; Thu, 17 Aug 2023 09:36:45 -0400
+	id 1qWdCH-0003Cs-U9; Thu, 17 Aug 2023 09:37:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qWdB5-0001S4-Ke
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 09:36:43 -0400
-Received: from mail-qt1-x831.google.com ([2607:f8b0:4864:20::831])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qWdB3-0000dK-Co
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 09:36:43 -0400
-Received: by mail-qt1-x831.google.com with SMTP id
- d75a77b69052e-4103c24a989so35470551cf.1
- for <qemu-devel@nongnu.org>; Thu, 17 Aug 2023 06:36:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1692279400; x=1692884200;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=0TmgMJj/LUxnCtmlRJIqkaaouvamuZvqnKnWvE7vGBI=;
- b=jOwe6ZBhcPlEXWqmvuoI8Wlf1uDjwkovlZv6G0GI2R8LJXDRVQ4/JiVaYis1Kxw5Ep
- cE7WbjPKZp1ZHEBf4ePD4n8TY13J1pqJpwpYhuTJIWPZ1riPLhOpkRcQsHupf7tk9M0m
- 6Uk0wwcRy1DiuhN8klPpGDPsJtLdXXEB5R+C446P6FLuuzhFFdR7OfwlhGoEw7Eug49e
- y2GbYjPGIFH0IsT4jo6+Kncj8O31CQ3flgRH4/gJDDQejH2mWD6vuKpURPOk+00bmwyK
- aGB2aRMBcMVxOCDtGZU6PwMVeSUGLdtlSubliiDw2LZv7PyluM4zOMEg1dw7JI3HiZuE
- 7jQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692279400; x=1692884200;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=0TmgMJj/LUxnCtmlRJIqkaaouvamuZvqnKnWvE7vGBI=;
- b=BB5p45xapqiqhqrkwlDpGHYXqJmHjdxS0HCI3EYCgl/YcQyOjNuXzifI36x8aFpHul
- Bn+YOPeJ0S3UsxavyliMfIVhx2dsG5t6ekMEaO5+KjkAiQ7N7GowBUJPDSh6kQcLgHqv
- 5hkOu95cTuzxX36aD0W87CgA5pdGZh9xx42N7mpuNfQJTToyJqZNs7h11bUQpvtOO1VS
- OLJcDTzMMTV/lTR/5FfNDi5yagFthh7op5SQIhAGmzpF+YwqOsD1idIzF3g5noPzHnU4
- ymoREciZxxiZfcnJ4SI+RNJcYGp22r0sBu5U4mmvzPS26VWSr30DHYE01wU9GfKNAXH+
- K2Fg==
-X-Gm-Message-State: AOJu0YyWKi2i3Cq5AxikpHT26L89V7GOkdq02T0+E0erUYTj41HKhZG3
- 1PLvDUpbs6Hx+oLXa/wwZIVSMAifrEegbF6mkLQ=
-X-Google-Smtp-Source: AGHT+IFT/d67VC4LRJvX/iJgshVDVoRt3YO6rzs7VCbGMgXkDd7vr2xp7lmi5GQWXABPCQ+vPidCfCPPAj8gkly3Uyo=
-X-Received: by 2002:a05:622a:453:b0:403:ae1b:c0e8 with SMTP id
- o19-20020a05622a045300b00403ae1bc0e8mr5508176qtx.41.1692279400242; Thu, 17
- Aug 2023 06:36:40 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qWdCF-0003CL-Dw
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 09:37:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qWdCA-0000rW-QU
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 09:37:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1692279469;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=py7VV6irdjVSfMcNcz9QEwd/ZhGYzC6obLh+uIM8KZQ=;
+ b=IsaPUSzazNjpyh5v2UT+NccDtxX7WHNgwBT3dWJL/ggrTJuA/7wtfZ071huM1sdBecIhDi
+ 0TJ1lsoD5zNvzz15Jhf9bIvK3iUFW4WGyg72TiSz1KG2YWs+RFsHthEUgQbDK2IJ3FoUrr
+ z4JMbecTh3UAfgG1BidnsgDlze8uZ5k=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-434-wSPae08KOiqN_oDjXEi5Gw-1; Thu, 17 Aug 2023 09:37:46 -0400
+X-MC-Unique: wSPae08KOiqN_oDjXEi5Gw-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 336CF382C97D;
+ Thu, 17 Aug 2023 13:37:46 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.120])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 302322026D68;
+ Thu, 17 Aug 2023 13:37:45 +0000 (UTC)
+Date: Thu, 17 Aug 2023 14:37:42 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Xu <peterx@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Thiner Logoer <logoerthiner1@163.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: Re: [PATCH v1 1/3] softmmu/physmem: fallback to opening guest RAM
+ file as readonly in a MAP_PRIVATE mapping
+Message-ID: <ZN4iporZWZGqc2gU@redhat.com>
+References: <20230807190736.572665-1-david@redhat.com>
+ <20230807190736.572665-2-david@redhat.com>
 MIME-Version: 1.0
-References: <cover.1692268800.git.tugy@chinatelecom.cn>
- <d285e8729552a6206ffa1cd4520fc8f9c6be5957.1692268800.git.tugy@chinatelecom.cn>
- <CAJ+F1C+_fGHq3odW6=2krDMhSkOX0krNTUjPnLAuiXHb62naAg@mail.gmail.com>
- <c6b2fb49-d263-4e9c-940d-c97ee9deb62f@chinatelecom.cn>
-In-Reply-To: <c6b2fb49-d263-4e9c-940d-c97ee9deb62f@chinatelecom.cn>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Thu, 17 Aug 2023 17:36:29 +0400
-Message-ID: <CAJ+F1CLLrkm+=cNs8Zdcb9CmQzg=36S2ug=E+jPV9EfjLZ4WxA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] ui/vdagent: call vdagent_disconnect() when agent
- connection is lost
-To: Guoyi Tu <tugy@chinatelecom.cn>
-Cc: kraxel@redhat.com, qemu-devel@nongnu.org, dengpc12@chinatelecom.cn
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::831;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x831.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230807190736.572665-2-david@redhat.com>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.021,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,74 +80,139 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
+On Mon, Aug 07, 2023 at 09:07:32PM +0200, David Hildenbrand wrote:
+> From: Thiner Logoer <logoerthiner1@163.com>
+> 
+> Users may specify
+> * "-mem-path" or
+> * "-object memory-backend-file,share=off,readonly=off"
+> and expect such COW (MAP_PRIVATE) mappings to work, even if the user
+> does not have write permissions to open the file.
+> 
+> For now, we would always fail in that case, always requiring file write
+> permissions. Let's detect when that failure happens and fallback to opening
+> the file readonly.
+> 
+> Warn the user, since there are other use cases where we want the file to
+> be mapped writable: ftruncate() and fallocate() will fail if the file
+> was not opened with write permissions.
+> 
+> Signed-off-by: Thiner Logoer <logoerthiner1@163.com>
+> Co-developed-by: David Hildenbrand <david@redhat.com>
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+> ---
+>  softmmu/physmem.c | 26 ++++++++++++++++++--------
+>  1 file changed, 18 insertions(+), 8 deletions(-)
+> 
+> diff --git a/softmmu/physmem.c b/softmmu/physmem.c
+> index 3df73542e1..d1ae694b20 100644
+> --- a/softmmu/physmem.c
+> +++ b/softmmu/physmem.c
+> @@ -1289,8 +1289,7 @@ static int64_t get_file_align(int fd)
+>  static int file_ram_open(const char *path,
+>                           const char *region_name,
+>                           bool readonly,
+> -                         bool *created,
+> -                         Error **errp)
+> +                         bool *created)
+>  {
+>      char *filename;
+>      char *sanitized_name;
+> @@ -1334,10 +1333,7 @@ static int file_ram_open(const char *path,
+>              g_free(filename);
+>          }
+>          if (errno != EEXIST && errno != EINTR) {
+> -            error_setg_errno(errp, errno,
+> -                             "can't open backing store %s for guest RAM",
+> -                             path);
+> -            return -1;
+> +            return -errno;
+>          }
+>          /*
+>           * Try again on EINTR and EEXIST.  The latter happens when
+> @@ -1946,9 +1942,23 @@ RAMBlock *qemu_ram_alloc_from_file(ram_addr_t size, MemoryRegion *mr,
+>      bool created;
+>      RAMBlock *block;
+>  
+> -    fd = file_ram_open(mem_path, memory_region_name(mr), readonly, &created,
+> -                       errp);
+> +    fd = file_ram_open(mem_path, memory_region_name(mr), readonly, &created);
+> +    if (fd == -EACCES && !(ram_flags & RAM_SHARED) && !readonly) {
+> +        /*
+> +         * We can have a writable MAP_PRIVATE mapping of a readonly file.
+> +         * However, some operations like ftruncate() or fallocate() might fail
+> +         * later, let's warn the user.
+> +         */
+> +        fd = file_ram_open(mem_path, memory_region_name(mr), true, &created);
+> +        if (fd >= 0) {
+> +            warn_report("backing store %s for guest RAM (MAP_PRIVATE) opened"
+> +                        " readonly because the file is not writable", mem_path);
 
-On Thu, Aug 17, 2023 at 5:10=E2=80=AFPM Guoyi Tu <tugy@chinatelecom.cn> wro=
-te:
->
->
->
-> On 2023/8/17 20:49, =E3=80=90=E5=A4=96=E9=83=A8=E8=B4=A6=E5=8F=B7=E3=80=
-=91Marc-Andr=C3=A9 Lureau wrote:
-> > Hi
-> >
-> > On Thu, Aug 17, 2023 at 3:32=E2=80=AFPM <tugy@chinatelecom.cn> wrote:
-> >>
-> >> From: Guoyi Tu <tugy@chinatelecom.cn>
-> >>
-> >> when the agent connection is lost, the input handler of the mouse
-> >> doesn't deactivate, which results in unresponsive mouse events in
-> >> VNC windows.
-> >>
-> >> To fix this issue, call vdagent_disconnect() to reset the state
-> >> each time the frontend disconncect
-> >>
-> >> Signed-off-by: Guoyi Tu <tugy@chinatelecom.cn>
-> >> Signed-off-by: dengpengcheng <dengpc12@chinatelecom.cn>
-> >> ---
-> >>   ui/vdagent.c | 4 +++-
-> >>   1 file changed, 3 insertions(+), 1 deletion(-)
-> >>
-> >> diff --git a/ui/vdagent.c b/ui/vdagent.c
-> >> index 8a651492f0..386dc5abe0 100644
-> >> --- a/ui/vdagent.c
-> >> +++ b/ui/vdagent.c
-> >> @@ -870,8 +870,11 @@ static void vdagent_disconnect(VDAgentChardev *vd=
-)
-> >>
-> >>   static void vdagent_chr_set_fe_open(struct Chardev *chr, int fe_open=
-)
-> >>   {
-> >> +    VDAgentChardev *vd =3D QEMU_VDAGENT_CHARDEV(chr);
-> >> +
-> >>       if (!fe_open) {
-> >>           trace_vdagent_close();
-> >> +        vdagent_disconnect(vd);
-> >>           /* To reset_serial, we CLOSED our side. Make sure the other =
-end knows we
-> >>            * are ready again. */
-> >>           qemu_chr_be_event(chr, CHR_EVENT_OPENED);
-> >> @@ -922,7 +925,6 @@ static void vdagent_chr_fini(Object *obj)
-> >>       VDAgentChardev *vd =3D QEMU_VDAGENT_CHARDEV(obj);
-> >>
-> >>       migrate_del_blocker(vd->migration_blocker);
-> >> -    vdagent_disconnect(vd);
-> >
-> > why remove this cleanup ? (the function seems safe to call multiple
-> > times, if it is the case during finalize)
-> >
-> Before the instance finalize, the connection will be closed and the
-> vdagent_chr_set_fe_open() will be called with be_open set to false,
-> which in turn call vdagent_disconnect to clean up resources.
+IIUC, from the description, the goal is that usage of a readonly
+backing store is intented to be an explicitly supported deployment
+configuration. At the time time though, this scenario could also be
+a deployment mistake that we want to diagnose
 
-Let's leave it, as it's more straightforward and safe, even if it's
-called two times in some code paths.
+It is inappropriate to issue warn_report() for things that are
+supported usage.
 
+It is also undesirable to continue execution in the case of things
+which are a deployment mistake.
 
+These two scenarios are mutually incompatible, so I understand why
+you choose to fudge it with a warn_report().
 
---=20
-Marc-Andr=C3=A9 Lureau
+I wonder if this is pointing to the need for another configuration
+knob for the memory backend, to express the different desired usage
+models.
+
+We want O_WRONLY when opening the file, either if we want to file
+shared, or so that we can ftruncate it to the right size, if it
+does not exist. If shared=off and the file is pre-created at the
+right size, we should be able to use O_RDONLY even if the file is
+writable.
+
+So what if we added a 'create=yes|no' option to memory-backend-file
+
+   -object memory-backend-file,share=off,readonly=off,create=yes
+
+would imply need for O_WRONLY|O_RDONLY, so that ftruncate() can
+do its work. 
+
+With share=off,create=no, we could unconditionally open O_RDONLY,
+even if the file is writable.
+
+This would let us support read-only backing files, without any
+warn_reports() for this usage, while also stopping execution
+with deployment mistakes
+
+This doesn't help -mem-path, since it doesn't take options, but
+IMHO it would be acceptable to say users need to use the more
+verbose '-object memory-backend-file' instead.
+
+> +        }
+> +    }
+>      if (fd < 0) {
+> +        error_setg_errno(errp, -fd,
+> +                         "can't open backing store %s for guest RAM",
+> +                         mem_path);
+>          return NULL;
+>      }
+>  
+> -- 
+> 2.41.0
+> 
+> 
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+
 
