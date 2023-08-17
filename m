@@ -2,62 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3704277F457
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 12:34:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C03B77F459
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 12:34:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWaJT-0003ic-86; Thu, 17 Aug 2023 06:33:13 -0400
+	id 1qWaKE-0004F4-KQ; Thu, 17 Aug 2023 06:33:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qWaJP-0003iN-RR
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 06:33:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1qWaKB-0004El-Ft
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 06:33:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qWaJN-0001Z2-84
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 06:33:07 -0400
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1qWaK9-0002Qz-Dh
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 06:33:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692268384;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=LjDT5lJXw5WcwmBkpOr3LD43q7CZwEcf67lNX756wXI=;
- b=AiP3zMaK3+IzL5B8eGeq5Y0ZL8SQsNv/n5a+3MxYPeDvLhOzN+Aia8MZ8923JejZU8sEzG
- uaxcKMouc6AuguP6Xnh7ytjvG6euPGaeAgaMPzoOYbE7OfapwWzDL62C7mAl2c5alieRyw
- vlyQoQP+dL0kFqy6YjwENu2Il73wqQM=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-326-zDwPfTUWOxO0oFrP1ZUfLQ-1; Thu, 17 Aug 2023 06:33:02 -0400
-X-MC-Unique: zDwPfTUWOxO0oFrP1ZUfLQ-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 60421381BE8A;
- Thu, 17 Aug 2023 10:33:02 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.120])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 91DB440C6F4E;
- Thu, 17 Aug 2023 10:33:01 +0000 (UTC)
-Date: Thu, 17 Aug 2023 11:32:59 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
- qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Marc Hartmayer <mhartmay@linux.ibm.com>
-Subject: Re: [PATCH] chardev/char-pty: Avoid losing bytes when the other side
- just (re-)connected
-Message-ID: <ZN33W+LhAn2FrFDT@redhat.com>
-References: <20230816210743.1319018-1-thuth@redhat.com>
+ s=mimecast20190719; t=1692268432;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=JwSPQfjbrrlfHIe3A1IjoPmHcc8ZolPlh9NkqpMgNQk=;
+ b=OVbO85BHrKrBGLi4X5Ve798ZHzNKCik67nPnYFo57l4MCTDMTOC7FyPb9RkV9J/d6w1K8u
+ 3vXHC+HhiRRQpZpQsjmXGyo8ikoLUbVNpQ0LCvfQhOayXZJTE4Qk771xJP/YE0VOOZK4ym
+ Vintp9++XRk6aiMnf3bkNMwymx2tgLQ=
+Received: from mail-yb1-f200.google.com (mail-yb1-f200.google.com
+ [209.85.219.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-687-hFxwqHg6PweKHjlXgieMyQ-1; Thu, 17 Aug 2023 06:33:51 -0400
+X-MC-Unique: hFxwqHg6PweKHjlXgieMyQ-1
+Received: by mail-yb1-f200.google.com with SMTP id
+ 3f1490d57ef6-d71f505d21dso1407705276.3
+ for <qemu-devel@nongnu.org>; Thu, 17 Aug 2023 03:33:51 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1692268431; x=1692873231;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=JwSPQfjbrrlfHIe3A1IjoPmHcc8ZolPlh9NkqpMgNQk=;
+ b=LplJMhDyA099Ay3ZulkEr6kTjvcwnpnrsylcd1kz01nPQqurpr87ltFDIArE3hgMt0
+ PcwvSR8mHkz2xGsJiSjYrI2fTa8l4Omgei5DKRbwaYL5oY6k2T2TmcUZ8HDoXR/ZWUwm
+ NpHLgR/DZ1hX3YSsdlF/SrdvkRAsWxbGyb3SVJ5ApzGk7wb+iU2PEb/fQpwSHJL0iE18
+ D99nYeMvusU8iIg0HbxOBShVJhOHTrRN90vrrrDN2i894M/5bJEFAYrGjt7O261zXVsl
+ afpbLgK1Z97ZblbGu29UUwH/YSmCQp6QQF7x88s9YImoG4DVmDzae5x2OWE4rC7kKskp
+ 7rjQ==
+X-Gm-Message-State: AOJu0YweVjgoKPBdU3tFPCT3yGNHD0GwemNwl5d6U/Q2s1sgGihdlVOs
+ i1Qwal5vzi+Yzb19GwCnuZUEYgum+2Gr+ZgrO+bBZilIw/M/9xlNpOVAh704wTlRkhr7kW5AyIj
+ waM0MT6uJ5bJErQ3FTKRKv3npgIux2gI=
+X-Received: by 2002:a25:8912:0:b0:d05:f537:da99 with SMTP id
+ e18-20020a258912000000b00d05f537da99mr3829548ybl.46.1692268430881; 
+ Thu, 17 Aug 2023 03:33:50 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFKFGNxDk4By05fh2D71sGI6xDx2m8ri7s/vDg92PvAEa24BIMXtQIjxWI3N8MqT45j0yE/HLq5wwK/J9zefZA=
+X-Received: by 2002:a25:8912:0:b0:d05:f537:da99 with SMTP id
+ e18-20020a258912000000b00d05f537da99mr3829537ybl.46.1692268430640; Thu, 17
+ Aug 2023 03:33:50 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230816210743.1319018-1-thuth@redhat.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+References: <cover.1688743107.git.yin31149@gmail.com>
+ <cd522e06a4371e9d6b8a1c1a86f90a92401d56e8.1688743107.git.yin31149@gmail.com>
+In-Reply-To: <cd522e06a4371e9d6b8a1c1a86f90a92401d56e8.1688743107.git.yin31149@gmail.com>
+From: Eugenio Perez Martin <eperezma@redhat.com>
+Date: Thu, 17 Aug 2023 12:33:14 +0200
+Message-ID: <CAJaqyWcO7D3m+R-qsCk+Lcw7YtA9BE6O1zoG_QpPJgJy8YCcfg@mail.gmail.com>
+Subject: Re: [PATCH v3 5/7] vdpa: Accessing CVQ header through its structure
+To: Hawkins Jiawei <yin31149@gmail.com>
+Cc: jasowang@redhat.com, mst@redhat.com, qemu-devel@nongnu.org, 
+ 18801353760@163.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -78,96 +92,53 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 16, 2023 at 11:07:43PM +0200, Thomas Huth wrote:
-> When starting a guest via libvirt with "virsh start --console ...",
-> the first second of the console output is missing. This is especially
-> annoying on s390x that only has a text console by default and no graphical
-> output - if the bios fails to boot here, the information about what went
-> wrong is completely lost.
-> 
-> One part of the problem (there is also some things to be done on the
-> libvirt side) is that QEMU only checks with a 1 second timer whether
-> the other side of the pty is already connected, so the first second of
-> the console output is always lost.
-> 
-> This likely used to work better in the past, since the code once checked
-> for a re-connection during write, but this has been removed in commit
-> f8278c7d74 ("char-pty: remove the check for connection on write") to avoid
-> some locking.
-> 
-> To ease the situation here at least a little bit, let's check with g_poll()
-> whether we could send out the data anyway, even if the connection has not
-> been marked as "connected" yet. The file descriptor is marked as non-blocking
-> anyway since commit fac6688a18 ("Do not hang on full PTY"), so this should
-> not cause any trouble if the other side is not ready for receiving yet.
-> 
-> With this patch applied, I can now successfully see the bios output of
-> a s390x guest when running it with "virsh start --console" (with a patched
-> version of virsh that fixes the remaining issues there, too).
-> 
-> Reported-by: Marc Hartmayer <mhartmay@linux.ibm.com>
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
+On Fri, Jul 7, 2023 at 5:27=E2=80=AFPM Hawkins Jiawei <yin31149@gmail.com> =
+wrote:
+>
+> We can access the CVQ header through `struct virtio_net_ctrl_hdr`,
+> instead of accessing it through a `uint8_t` pointer,
+> which improves the code's readability and maintainability.
+>
+> Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
+
+Acked-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
+
 > ---
->  chardev/char-pty.c | 22 +++++++++++++++++++---
->  1 file changed, 19 insertions(+), 3 deletions(-)
-> 
-> diff --git a/chardev/char-pty.c b/chardev/char-pty.c
-> index 4e5deac18a..fad12dfef3 100644
-> --- a/chardev/char-pty.c
-> +++ b/chardev/char-pty.c
-> @@ -106,11 +106,27 @@ static void pty_chr_update_read_handler(Chardev *chr)
->  static int char_pty_chr_write(Chardev *chr, const uint8_t *buf, int len)
+>  net/vhost-vdpa.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+>
+> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+> index e80d4b4ef3..a84eb088a0 100644
+> --- a/net/vhost-vdpa.c
+> +++ b/net/vhost-vdpa.c
+> @@ -928,6 +928,7 @@ static int vhost_vdpa_net_handle_ctrl_avail(VhostShad=
+owVirtqueue *svq,
 >  {
->      PtyChardev *s = PTY_CHARDEV(chr);
-> +    GPollFD pfd;
-> +    int rc;
->  
-> -    if (!s->connected) {
-> -        return len;
-> +    if (s->connected) {
-> +        return io_channel_send(s->ioc, buf, len);
->      }
-> -    return io_channel_send(s->ioc, buf, len);
+>      VhostVDPAState *s =3D opaque;
+>      size_t in_len;
+> +    const struct virtio_net_ctrl_hdr *ctrl;
+>      virtio_net_ctrl_ack status =3D VIRTIO_NET_ERR;
+>      /* Out buffer sent to both the vdpa device and the device model */
+>      struct iovec out =3D {
+> @@ -943,7 +944,9 @@ static int vhost_vdpa_net_handle_ctrl_avail(VhostShad=
+owVirtqueue *svq,
+>      out.iov_len =3D iov_to_buf(elem->out_sg, elem->out_num, 0,
+>                               s->cvq_cmd_out_buffer,
+>                               vhost_vdpa_net_cvq_cmd_len());
+> -    if (*(uint8_t *)s->cvq_cmd_out_buffer =3D=3D VIRTIO_NET_CTRL_ANNOUNC=
+E) {
 > +
-> +    /*
-> +     * The other side might already be re-connected, but the timer might
-> +     * not have fired yet. So let's check here whether we can write again:
-> +     */
-> +    pfd.fd = QIO_CHANNEL_FILE(s->ioc)->fd;
-> +    pfd.events = G_IO_OUT;
-> +    pfd.revents = 0;
-> +    rc = RETRY_ON_EINTR(g_poll(&pfd, 1, 0));
-> +    g_assert(rc >= 0);
-> +    if (!(pfd.revents & G_IO_HUP) && (pfd.revents & G_IO_OUT)) {
-
-Should (can?) we call
-
-   pty_chr_state(chr, 1);
-
-here ?
-
-
-> +        io_channel_send(s->ioc, buf, len);
-
-As it feels a little dirty to be sending data before setting the
-'connected == 1' and thus issuing the 'CHR_EVENT_OPENED' event 
-
-> +    }
-> +
-> +    return len;
->  }
->  
->  static GSource *pty_chr_add_watch(Chardev *chr, GIOCondition cond)
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+> +    ctrl =3D s->cvq_cmd_out_buffer;
+> +    if (ctrl->class =3D=3D VIRTIO_NET_CTRL_ANNOUNCE) {
+>          /*
+>           * Guest announce capability is emulated by qemu, so don't forwa=
+rd to
+>           * the device.
+> --
+> 2.25.1
+>
 
 
