@@ -2,83 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5730577F0A9
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 08:43:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE76077F0C0
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 08:52:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWWhl-0001wd-Gg; Thu, 17 Aug 2023 02:42:01 -0400
+	id 1qWWr0-0003YI-V0; Thu, 17 Aug 2023 02:51:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qWWhi-0001wS-IY
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 02:41:58 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qWWqm-0003XM-Eq
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 02:51:24 -0400
+Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qWWhf-0002pa-6f
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 02:41:58 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-686be3cbea0so425832b3a.0
- for <qemu-devel@nongnu.org>; Wed, 16 Aug 2023 23:39:51 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qWWqi-0006Cx-HF
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 02:51:20 -0400
+Received: by mail-pg1-x530.google.com with SMTP id
+ 41be03b00d2f7-565f86ff4d1so979780a12.2
+ for <qemu-devel@nongnu.org>; Wed, 16 Aug 2023 23:49:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20221208.gappssmtp.com; s=20221208; t=1692254390; x=1692859190;
- h=to:references:message-id:content-transfer-encoding:cc:date
- :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=i9RIPbuoCQPgJGcObTmlNihMP6S2fVSSXI1W+Hu6eDo=;
- b=ePut72RWN9LTVydes0W0B73rTcj58jgUZDuDriGUeMrP8Oc2raI1Ab+yEShQ4VryQQ
- ic+hZDHBHcb2QAmYQtacDdvSofiQhx47W0JqnkeGQc7b1SGuv2iBnXiWQ8TAMhNsdWPT
- KTu9uwBjhWf0l4/GWpgA+zUfuHKxrSv3pouLqGHtWMHjGIVCPVhbFPZen2rIEOC4FJyd
- 07XWbk1YPO1P96nyWh7d6uQrSLwJLdoty3SMaSxotLwn2ltuD+RQaHOKbEc4TMTfYXDu
- 2d7x3z15JDCf4TgmntRU41yiUynIOVb1b/pNSRDzDg6gZIGfMuAzwZkCaXUW07SFs7+9
- TQFw==
+ d=smartx-com.20221208.gappssmtp.com; s=20221208; t=1692254953; x=1692859753;
+ h=references:to:cc:in-reply-to:date:subject:mime-version:message-id
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=QEaBRpG9ExQcJjk8+Ws4+W0+H0lGPVWabUZszpYiN5w=;
+ b=k0zW7k1pRv8I2qvJeLOmFGjce5Zf/TFNoU+Wxf/1nKqG2ArPUlhT5f8aOtlVAsBV3K
+ JKrzUrO/FTEiTP1FPtv5P9kxRGlA9Bk8D/ZMmdTCDqvd37U90m9GokiSql7IEnJgUb1f
+ FUVGL5yp9dqeOqL/W7WHZtE6Mb2LV2uxHqj/wnE/D3PhJ/c7CChsGpcRgwHbBdC7fDvK
+ Es9txVqAGDqkLkbFkUkPsrLnFS/FRyuP5fR+xijoBM3oqd7JHoeZtFaeUjaZWRuwMMyU
+ ZBlh3Biy+1z7lSGShQaFYSKZQHC2V5IoO7A/jJEsYGZY79/vTPCHQsC3F+QYBVvinvly
+ mqGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692254390; x=1692859190;
- h=to:references:message-id:content-transfer-encoding:cc:date
- :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=i9RIPbuoCQPgJGcObTmlNihMP6S2fVSSXI1W+Hu6eDo=;
- b=gh99TV4hplwl6M7FIZsBWx5NaXEbCDPEJykM6brG0HD1gGj4p75YKQ7ncGL0p1i2Nw
- 3WWELqL+KmqNAXUiLqymW6B3UdG5uCBpf1d9NbMtFUJoxHTle2JAdMeYA7Nb//b4n+/i
- 64xxKECGSLNj9/pLOjUrcOC06QTVaDw51v/oKGcVB0rzUTpSqymHk0b4ZqFq6cxS4TYl
- 2HGvyVsoKiJg3G8k6XYqcmjjHCTrmadFvY9AOovyzeW00WlrlqnT4T/vZ/ibQSRhFlnp
- wA4zHlGe7D+yK3G6lsecB/azZdh8x1pspeTIIxfNvQAC9Aan+/sxbl/d0iU4FAZu4Nv2
- 1DjA==
-X-Gm-Message-State: AOJu0YysRWehic1n/dhlV7UxMH9uww1U1GRjiOns2ICoGAWjlfhs96up
- +1nqT1c4woqPfvQnHqBBtRsIZA==
-X-Google-Smtp-Source: AGHT+IHX8b9TL9znNXSW1Aqv2mE+KpK/xrCJrX8gj0A1BylXH4aGaR/b44XcbtbQQN7xjvsWYwZYuQ==
-X-Received: by 2002:a05:6a20:2444:b0:123:152d:d46b with SMTP id
- t4-20020a056a20244400b00123152dd46bmr2229233pzc.26.1692254389252; 
- Wed, 16 Aug 2023 23:39:49 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1692254953; x=1692859753;
+ h=references:to:cc:in-reply-to:date:subject:mime-version:message-id
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=QEaBRpG9ExQcJjk8+Ws4+W0+H0lGPVWabUZszpYiN5w=;
+ b=SM1tAS/hRxgA8bXf6MkzLA2AKtJk38WZfpcDvGG3jgV8Z+HNhbnuBym13fXF3cGZ9C
+ OruHq9QWgsC5Hw/2LECRGCfVqi7hxN7DIn3MoH42T/o0WLPGZHGuXiHjghrbDd+oGNrb
+ vVvtd8OR5v7rFv/PgoVA4COjo14pO9jxFrMETeGYPXI6H13+S6g9QTS8jc5OfKTuWhxM
+ oPRqW5RIsqgpIgX0PafAS8YcXiIp4BuEeFTeprOUyDzf82GTrzS227NEu1rppaIifD4v
+ uCt/9lYxkIo4Kt3i4a+HCurpGK1L2UqztNupFAPLZGCfeAg4l77+DC30CgZZgUmdGki7
+ mTaA==
+X-Gm-Message-State: AOJu0Yy8QcJ+jxCmVhtNazPPhSWDPIeWz+rY2KcNyctcOFNryxC94FGm
+ ilz0Yd6HshEeQywJ6fuYtnXoiw==
+X-Google-Smtp-Source: AGHT+IFvCusORkIUmnsyBI0COsOOfT3ZiQ0A0azgjTqOPJwKAP/NukXD7iQPFiWoUp85+6p4z/VHdQ==
+X-Received: by 2002:a05:6a20:1591:b0:145:6857:457a with SMTP id
+ h17-20020a056a20159100b001456857457amr5025763pzj.4.1692254952445; 
+ Wed, 16 Aug 2023 23:49:12 -0700 (PDT)
 Received: from smtpclient.apple ([47.75.78.161])
  by smtp.gmail.com with ESMTPSA id
- s24-20020aa78298000000b00666b3706be6sm12103098pfm.107.2023.08.16.23.39.47
+ t15-20020a170902e84f00b001bdeedd8579sm6064940plg.252.2023.08.16.23.49.09
  (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Wed, 16 Aug 2023 23:39:48 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.300.101.1.3\))
-Subject: Re: [PATCH 1/2] vhost-user: fix lost reconnect
+ Wed, 16 Aug 2023 23:49:12 -0700 (PDT)
 From: Li Feng <fengli@smartx.com>
-In-Reply-To: <894CEF7E-9523-444F-8459-330BE4236B7A@nutanix.com>
-Date: Thu, 17 Aug 2023 14:40:24 +0800
+Message-Id: <844CBDD0-E0A9-4097-904E-5CD74C2884AD@smartx.com>
+Content-Type: multipart/alternative;
+ boundary="Apple-Mail=_04756BCB-5978-48C9-9C59-D965673F44F9"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.300.101.1.3\))
+Subject: Re: [PATCH 2/2] vhost: Add Error parameter to
+ vhost_scsi_common_start()
+Date: Thu, 17 Aug 2023 14:49:53 +0800
+In-Reply-To: <C026BA6F-63E7-4BE8-8FC0-69372A14FFAB@nutanix.com>
 Cc: "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Fam Zheng <fam@euphon.net>,
  "open list:All patches CC here" <qemu-devel@nongnu.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <F0FCF1EC-8E24-4515-A800-BD01D9D3D526@smartx.com>
-References: <20230804052954.2918915-1-fengli@smartx.com>
- <20230804052954.2918915-2-fengli@smartx.com>
- <894CEF7E-9523-444F-8459-330BE4236B7A@nutanix.com>
 To: Raphael Norwitz <raphael.norwitz@nutanix.com>
+References: <20230804052954.2918915-1-fengli@smartx.com>
+ <20230804052954.2918915-3-fengli@smartx.com>
+ <C026BA6F-63E7-4BE8-8FC0-69372A14FFAB@nutanix.com>
 X-Mailer: Apple Mail (2.3731.300.101.1.3)
-Received-SPF: none client-ip=2607:f8b0:4864:20::436;
- envelope-from=fengli@smartx.com; helo=mail-pf1-x436.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::530;
+ envelope-from=fengli@smartx.com; helo=mail-pg1-x530.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,127 +93,571 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
+--Apple-Mail=_04756BCB-5978-48C9-9C59-D965673F44F9
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+	charset=utf-8
+
+
+
 > 2023=E5=B9=B48=E6=9C=8814=E6=97=A5 =E4=B8=8B=E5=8D=888:11=EF=BC=8CRaphae=
 l Norwitz <raphael.norwitz@nutanix.com> =E5=86=99=E9=81=93=EF=BC=9A
 >=20
-> Why can=E2=80=99t we rather fix this by adding a =E2=80=9Cevent_cb=E2=80=
-=9D param to vhost_user_async_close and then call =
-qemu_chr_fe_set_handlers in vhost_user_async_close_bh()?
->=20
-> Even if calling vhost_dev_cleanup() twice is safe today I worry future =
-changes may easily stumble over the reconnect case and introduce crashes =
-or double frees.
->=20
-I think add a new event_cb is not good enough. =
-=E2=80=98qemu_chr_fe_set_handlers=E2=80=99 has been called in =
-vhost_user_async_close, and will be called in event->cb, so why need add =
-a
-new event_cb?
-=20
-For avoiding to call the vhost_dev_cleanup() twice, add a =E2=80=98inited=E2=
-=80=99 in struct vhost-dev to mark if it=E2=80=99s inited like this:
-
-diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-index e2f6ffb446..edc80c0231 100644
---- a/hw/virtio/vhost.c
-+++ b/hw/virtio/vhost.c
-@@ -1502,6 +1502,7 @@ int vhost_dev_init(struct vhost_dev *hdev, void =
-*opaque,
-         goto fail_busyloop;
-     }
-
-+    hdev->inited =3D true;
-     return 0;
-
- fail_busyloop:
-@@ -1520,6 +1521,10 @@ void vhost_dev_cleanup(struct vhost_dev *hdev)
- {
-     int i;
-
-+    if (!hdev->inited) {
-+        return;
-+    }
-+    hdev->inited =3D false;
-     trace_vhost_dev_cleanup(hdev);
-
-     for (i =3D 0; i < hdev->nvqs; ++i) {
-diff --git a/include/hw/virtio/vhost.h b/include/hw/virtio/vhost.h
-index ca3131b1af..74b1aec960 100644
---- a/include/hw/virtio/vhost.h
-+++ b/include/hw/virtio/vhost.h
-@@ -123,6 +123,7 @@ struct vhost_dev {
-     /* @started: is the vhost device started? */
-     bool started;
-     bool log_enabled;
-+    bool inited;
-     uint64_t log_size;
-     Error *migration_blocker;
-     const VhostOps *vhost_ops;
-
-Thanks.
-
+> Thanks for the cleanup! A few comments.
 >=20
 >> On Aug 4, 2023, at 1:29 AM, Li Feng <fengli@smartx.com> wrote:
 >>=20
->> When the vhost-user is reconnecting to the backend, and if the =
-vhost-user fails
->> at the get_features in vhost_dev_init(), then the reconnect will fail
->> and it will not be retriggered forever.
->>=20
->> The reason is:
->> When the vhost-user fail at get_features, the vhost_dev_cleanup will =
-be called
->> immediately.
->>=20
->> vhost_dev_cleanup calls 'memset(hdev, 0, sizeof(struct vhost_dev))'.
->>=20
->> The reconnect path is:
->> vhost_user_blk_event
->>  vhost_user_async_close(.. vhost_user_blk_disconnect ..)
->>    qemu_chr_fe_set_handlers <----- clear the notifier callback
->>      schedule vhost_user_async_close_bh
->>=20
->> The vhost->vdev is null, so the vhost_user_blk_disconnect will not be
->> called, then the event fd callback will not be reinstalled.
->>=20
->> With this patch, the vhost_user_blk_disconnect will call the
->> vhost_dev_cleanup() again, it's safe.
->>=20
->> All vhost-user devices have this issue, including =
-vhost-user-blk/scsi.
->>=20
->> Fixes: 71e076a07d ("hw/virtio: generalise CHR_EVENT_CLOSED handling")
+>> Add a Error parameter to report the real error, like vhost-user-blk.
 >>=20
 >> Signed-off-by: Li Feng <fengli@smartx.com>
 >> ---
->> hw/virtio/vhost-user.c | 10 +---------
->> 1 file changed, 1 insertion(+), 9 deletions(-)
+>> hw/scsi/vhost-scsi-common.c           | 17 ++++++++++-------
+>> hw/scsi/vhost-scsi.c                  |  5 +++--
+>> hw/scsi/vhost-user-scsi.c             | 14 ++++++++------
+>> include/hw/virtio/vhost-scsi-common.h |  2 +-
+>> 4 files changed, 22 insertions(+), 16 deletions(-)
 >>=20
->> diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
->> index 8dcf049d42..697b403fe2 100644
->> --- a/hw/virtio/vhost-user.c
->> +++ b/hw/virtio/vhost-user.c
->> @@ -2648,16 +2648,8 @@ typedef struct {
->> static void vhost_user_async_close_bh(void *opaque)
+>> diff --git a/hw/scsi/vhost-scsi-common.c =
+b/hw/scsi/vhost-scsi-common.c
+>> index a61cd0e907..392587dfb5 100644
+>> --- a/hw/scsi/vhost-scsi-common.c
+>> +++ b/hw/scsi/vhost-scsi-common.c
+>> @@ -16,6 +16,7 @@
+>> */
+>>=20
+>> #include "qemu/osdep.h"
+>> +#include "qapi/error.h"
+>> #include "qemu/error-report.h"
+>> #include "qemu/module.h"
+>> #include "hw/virtio/vhost.h"
+>> @@ -25,7 +26,7 @@
+>> #include "hw/virtio/virtio-access.h"
+>> #include "hw/fw-path-provider.h"
+>>=20
+>> -int vhost_scsi_common_start(VHostSCSICommon *vsc)
+>> +int vhost_scsi_common_start(VHostSCSICommon *vsc, Error **errp)
 >> {
->>    VhostAsyncCallback *data =3D opaque;
->> -    struct vhost_dev *vhost =3D data->vhost;
+>>    int ret, i;
+>>    VirtIODevice *vdev =3D VIRTIO_DEVICE(vsc);
+>> @@ -35,18 +36,19 @@ int vhost_scsi_common_start(VHostSCSICommon *vsc)
+>>    VirtIOSCSICommon *vs =3D (VirtIOSCSICommon *)vsc;
 >>=20
->> -    /*
->> -     * If the vhost_dev has been cleared in the meantime there is
->> -     * nothing left to do as some other path has completed the
->> -     * cleanup.
->> -     */
->> -    if (vhost->vdev) {
->> -        data->cb(data->dev);
->> -    }
->> +    data->cb(data->dev);
+>>    if (!k->set_guest_notifiers) {
+>> -        error_report("binding does not support guest notifiers");
+>> +        error_setg(errp, "binding does not support guest =
+notifiers");
+>>        return -ENOSYS;
+>>    }
 >>=20
->>    g_free(data);
->> }
+>>    ret =3D vhost_dev_enable_notifiers(&vsc->dev, vdev);
+>>    if (ret < 0) {
+>> +        error_setg_errno(errp, -ret, "Error enabling host =
+notifiers");
+>>        return ret;
+>>    }
+>>=20
+>>    ret =3D k->set_guest_notifiers(qbus->parent, vsc->dev.nvqs, true);
+>>    if (ret < 0) {
+>> -        error_report("Error binding guest notifier");
+>> +        error_setg_errno(errp, -ret, "Error binding guest =
+notifier");
+>>        goto err_host_notifiers;
+>>    }
+>>=20
+>> @@ -54,7 +56,7 @@ int vhost_scsi_common_start(VHostSCSICommon *vsc)
+>>=20
+>>    ret =3D vhost_dev_prepare_inflight(&vsc->dev, vdev);
+>>    if (ret < 0) {
+>> -        error_report("Error setting inflight format: %d", -ret);
+>=20
+> Curious why you=E2=80=99re adding the error value to the string. =
+Isn=E2=80=99t it redundant since we pass it in as the second param?
+>=20
+>> +        error_setg_errno(errp, -ret, "Error setting inflight format: =
+%d", -ret);
+
+I don=E2=80=99t understand. Here I put the error message in errp, where =
+is redundant?
+
+>>        goto err_guest_notifiers;
+>>    }
+>>=20
+>> @@ -64,21 +66,22 @@ int vhost_scsi_common_start(VHostSCSICommon *vsc)
+>>                                        vs->conf.virtqueue_size,
+>>                                        vsc->inflight);
+>>            if (ret < 0) {
+>> -                error_report("Error getting inflight: %d", -ret);
+>=20
+> Ditto
+>=20
+>> +                error_setg_errno(errp, -ret, "Error getting =
+inflight: %d",
+>> +                                 -ret);
+>>                goto err_guest_notifiers;
+>>            }
+>>        }
+>>=20
+>>        ret =3D vhost_dev_set_inflight(&vsc->dev, vsc->inflight);
+>>        if (ret < 0) {
+>> -            error_report("Error setting inflight: %d", -ret);
+>> +            error_setg_errno(errp, -ret, "Error setting inflight: =
+%d", -ret);
+>>            goto err_guest_notifiers;
+>>        }
+>>    }
+>>=20
+>>    ret =3D vhost_dev_start(&vsc->dev, vdev, true);
+>>    if (ret < 0) {
+>> -        error_report("Error start vhost dev");
+>=20
+> =E2=80=9CError starting vhost dev=E2=80=9D?
+ACK.
+
+>=20
+>> +        error_setg_errno(errp, -ret, "Error start vhost dev");
+>>        goto err_guest_notifiers;
+>>    }
+>>=20
+>> diff --git a/hw/scsi/vhost-scsi.c b/hw/scsi/vhost-scsi.c
+>> index 443f67daa4..01a3ab4277 100644
+>> --- a/hw/scsi/vhost-scsi.c
+>> +++ b/hw/scsi/vhost-scsi.c
+>> @@ -75,6 +75,7 @@ static int vhost_scsi_start(VHostSCSI *s)
+>>    int ret, abi_version;
+>>    VHostSCSICommon *vsc =3D VHOST_SCSI_COMMON(s);
+>>    const VhostOps *vhost_ops =3D vsc->dev.vhost_ops;
+>> +    Error *local_err =3D NULL;
+>>=20
+>>    ret =3D vhost_ops->vhost_scsi_get_abi_version(&vsc->dev, =
+&abi_version);
+>>    if (ret < 0) {
+>> @@ -88,14 +89,14 @@ static int vhost_scsi_start(VHostSCSI *s)
+>>        return -ENOSYS;
+>>    }
+>>=20
+>> -    ret =3D vhost_scsi_common_start(vsc);
+>> +    ret =3D vhost_scsi_common_start(vsc, &local_err);
+>>    if (ret < 0) {
+>>        return ret;
+>>    }
+>>=20
+>>    ret =3D vhost_scsi_set_endpoint(s);
+>>    if (ret < 0) {
+>> -        error_report("Error setting vhost-scsi endpoint");
+>> +        error_reportf_err(local_err, "Error setting vhost-scsi =
+endpoint");
+>>        vhost_scsi_common_stop(vsc);
+>>    }
+>>=20
+>> diff --git a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c
+>> index a7fa8e8df2..d368171e28 100644
+>> --- a/hw/scsi/vhost-user-scsi.c
+>> +++ b/hw/scsi/vhost-user-scsi.c
+>> @@ -43,12 +43,12 @@ enum VhostUserProtocolFeature {
+>>    VHOST_USER_PROTOCOL_F_RESET_DEVICE =3D 13,
+>> };
+>>=20
+>> -static int vhost_user_scsi_start(VHostUserSCSI *s)
+>> +static int vhost_user_scsi_start(VHostUserSCSI *s, Error **errp)
+>> {
+>>    VHostSCSICommon *vsc =3D VHOST_SCSI_COMMON(s);
+>>    int ret;
+>>=20
+>> -    ret =3D vhost_scsi_common_start(vsc);
+>> +    ret =3D vhost_scsi_common_start(vsc, errp);
+>>    s->started_vu =3D (ret < 0 ? false : true);
+>>=20
+>>    return ret;
+>> @@ -73,6 +73,7 @@ static void vhost_user_scsi_set_status(VirtIODevice =
+*vdev, uint8_t status)
+>>    VHostSCSICommon *vsc =3D VHOST_SCSI_COMMON(s);
+>>    VirtIOSCSICommon *vs =3D VIRTIO_SCSI_COMMON(dev);
+>>    bool should_start =3D virtio_device_should_start(vdev, status);
+>> +    Error *local_err =3D NULL;
+>>    int ret;
+>>=20
+>>    if (!s->connected) {
+>> @@ -84,9 +85,10 @@ static void =
+vhost_user_scsi_set_status(VirtIODevice *vdev, uint8_t status)
+>>    }
+>>=20
+>>    if (should_start) {
+>> -        ret =3D vhost_user_scsi_start(s);
+>> +        ret =3D vhost_user_scsi_start(s, &local_err);
+>>        if (ret < 0) {
+>> -            error_report("unable to start vhost-user-scsi: %s", =
+strerror(-ret));
+>> +            error_reportf_err(local_err, "unable to start =
+vhost-user-scsi: %s",
+>> +                              strerror(-ret));
+>>            qemu_chr_fe_disconnect(&vs->conf.chardev);
+>>        }
+>>    } else {
+>> @@ -139,7 +141,7 @@ static void =
+vhost_user_scsi_handle_output(VirtIODevice *vdev, VirtQueue *vq)
+>>     * Some guests kick before setting VIRTIO_CONFIG_S_DRIVER_OK so =
+start
+>>     * vhost here instead of waiting for .set_status().
+>>     */
+>> -    ret =3D vhost_user_scsi_start(s);
+>> +    ret =3D vhost_user_scsi_start(s, &local_err);
+>>    if (ret < 0) {
+>>        error_reportf_err(local_err, "vhost-user-scsi: vhost start =
+failed: ");
+>>        qemu_chr_fe_disconnect(&vs->conf.chardev);
+>> @@ -184,7 +186,7 @@ static int vhost_user_scsi_connect(DeviceState =
+*dev, Error **errp)
+>>=20
+>>    /* restore vhost state */
+>>    if (virtio_device_started(vdev, vdev->status)) {
+>> -        ret =3D vhost_user_scsi_start(s);
+>> +        ret =3D vhost_user_scsi_start(s, errp);
+>>        if (ret < 0) {
+>>            return ret;
+>>        }
+>> diff --git a/include/hw/virtio/vhost-scsi-common.h =
+b/include/hw/virtio/vhost-scsi-common.h
+>> index 18f115527c..c5d2c09455 100644
+>> --- a/include/hw/virtio/vhost-scsi-common.h
+>> +++ b/include/hw/virtio/vhost-scsi-common.h
+>> @@ -39,7 +39,7 @@ struct VHostSCSICommon {
+>>    struct vhost_inflight *inflight;
+>> };
+>>=20
+>> -int vhost_scsi_common_start(VHostSCSICommon *vsc);
+>> +int vhost_scsi_common_start(VHostSCSICommon *vsc, Error **errp);
+>> void vhost_scsi_common_stop(VHostSCSICommon *vsc);
+>> char *vhost_scsi_common_get_fw_dev_path(FWPathProvider *p, BusState =
+*bus,
+>>                                        DeviceState *dev);
 >> --=20
 >> 2.41.0
->>=20
->=20
 
+
+--Apple-Mail=_04756BCB-5978-48C9-9C59-D965673F44F9
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html;
+	charset=utf-8
+
+<html><head><meta http-equiv=3D"content-type" content=3D"text/html; =
+charset=3Dutf-8"></head><body style=3D"overflow-wrap: break-word; =
+-webkit-nbsp-mode: space; line-break: =
+after-white-space;"><br><div><br><blockquote =
+type=3D"cite"><div>2023=E5=B9=B48=E6=9C=8814=E6=97=A5 =
+=E4=B8=8B=E5=8D=888:11=EF=BC=8CRaphael Norwitz =
+&lt;raphael.norwitz@nutanix.com&gt; =E5=86=99=E9=81=93=EF=BC=9A</div><br =
+class=3D"Apple-interchange-newline"><div><meta charset=3D"UTF-8"><span =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Monaco; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
+display: inline !important;">Thanks for the cleanup! A few =
+comments.</span><br style=3D"caret-color: rgb(0, 0, 0); font-family: =
+Monaco; font-size: 12px; font-style: normal; font-variant-caps: normal; =
+font-weight: 400; letter-spacing: normal; text-align: start; =
+text-indent: 0px; text-transform: none; white-space: normal; =
+word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
+none;"><br style=3D"caret-color: rgb(0, 0, 0); font-family: Monaco; =
+font-size: 12px; font-style: normal; font-variant-caps: normal; =
+font-weight: 400; letter-spacing: normal; text-align: start; =
+text-indent: 0px; text-transform: none; white-space: normal; =
+word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
+none;"><blockquote type=3D"cite" style=3D"font-family: Monaco; =
+font-size: 12px; font-style: normal; font-variant-caps: normal; =
+font-weight: 400; letter-spacing: normal; orphans: auto; text-align: =
+start; text-indent: 0px; text-transform: none; white-space: normal; =
+widows: auto; word-spacing: 0px; -webkit-text-size-adjust: auto; =
+-webkit-text-stroke-width: 0px; text-decoration: none;">On Aug 4, 2023, =
+at 1:29 AM, Li Feng &lt;fengli@smartx.com&gt; wrote:<br><br>Add a Error =
+parameter to report the real error, like =
+vhost-user-blk.<br><br>Signed-off-by: Li Feng =
+&lt;fengli@smartx.com&gt;<br>---<br>hw/scsi/vhost-scsi-common.c =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 17 =
+++++++++++-------<br>hw/scsi/vhost-scsi.c =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;| &nbsp;5 +++--<br>hw/scsi/vhost-user-scsi.c =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| =
+14 ++++++++------<br>include/hw/virtio/vhost-scsi-common.h | &nbsp;2 =
++-<br>4 files changed, 22 insertions(+), 16 deletions(-)<br><br>diff =
+--git a/hw/scsi/vhost-scsi-common.c =
+b/hw/scsi/vhost-scsi-common.c<br>index a61cd0e907..392587dfb5 =
+100644<br>--- a/hw/scsi/vhost-scsi-common.c<br>+++ =
+b/hw/scsi/vhost-scsi-common.c<br>@@ -16,6 +16,7 @@<br>*/<br><br>#include =
+"qemu/osdep.h"<br>+#include "qapi/error.h"<br>#include =
+"qemu/error-report.h"<br>#include "qemu/module.h"<br>#include =
+"hw/virtio/vhost.h"<br>@@ -25,7 +26,7 @@<br>#include =
+"hw/virtio/virtio-access.h"<br>#include =
+"hw/fw-path-provider.h"<br><br>-int =
+vhost_scsi_common_start(VHostSCSICommon *vsc)<br>+int =
+vhost_scsi_common_start(VHostSCSICommon *vsc, Error =
+**errp)<br>{<br>&nbsp;&nbsp;&nbsp;int ret, =
+i;<br>&nbsp;&nbsp;&nbsp;VirtIODevice *vdev =3D VIRTIO_DEVICE(vsc);<br>@@ =
+-35,18 +36,19 @@ int vhost_scsi_common_start(VHostSCSICommon =
+*vsc)<br>&nbsp;&nbsp;&nbsp;VirtIOSCSICommon *vs =3D (VirtIOSCSICommon =
+*)vsc;<br><br>&nbsp;&nbsp;&nbsp;if (!k-&gt;set_guest_notifiers) {<br>- =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_report("binding does not =
+support guest notifiers");<br>+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_setg(errp, "binding does =
+not support guest =
+notifiers");<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return =
+-ENOSYS;<br>&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;ret =3D =
+vhost_dev_enable_notifiers(&amp;vsc-&gt;dev, =
+vdev);<br>&nbsp;&nbsp;&nbsp;if (ret &lt; 0) {<br>+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_setg_errno(errp, -ret, =
+"Error enabling host =
+notifiers");<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return =
+ret;<br>&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;ret =3D =
+k-&gt;set_guest_notifiers(qbus-&gt;parent, vsc-&gt;dev.nvqs, =
+true);<br>&nbsp;&nbsp;&nbsp;if (ret &lt; 0) {<br>- =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_report("Error binding =
+guest notifier");<br>+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_setg_errno(errp, -ret, =
+"Error binding guest =
+notifier");<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;goto =
+err_host_notifiers;<br>&nbsp;&nbsp;&nbsp;}<br><br>@@ -54,7 +56,7 @@ int =
+vhost_scsi_common_start(VHostSCSICommon =
+*vsc)<br><br>&nbsp;&nbsp;&nbsp;ret =3D =
+vhost_dev_prepare_inflight(&amp;vsc-&gt;dev, =
+vdev);<br>&nbsp;&nbsp;&nbsp;if (ret &lt; 0) {<br>- =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_report("Error setting =
+inflight format: %d", -ret);<br></blockquote><br style=3D"caret-color: =
+rgb(0, 0, 0); font-family: Monaco; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none;"><span style=3D"caret-color: rgb(0, 0, 0); =
+font-family: Monaco; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none; float: none; display: inline !important;">Curious =
+why you=E2=80=99re adding the error value to the string. Isn=E2=80=99t =
+it redundant since we pass it in as the second param?</span><br =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Monaco; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none;"><br =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Monaco; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none;"><blockquote =
+type=3D"cite" style=3D"font-family: Monaco; font-size: 12px; font-style: =
+normal; font-variant-caps: normal; font-weight: 400; letter-spacing: =
+normal; orphans: auto; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; widows: auto; word-spacing: =
+0px; -webkit-text-size-adjust: auto; -webkit-text-stroke-width: 0px; =
+text-decoration: none;">+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_setg_errno(errp, -ret, =
+"Error setting inflight format: %d", =
+-ret);<br></blockquote></div></blockquote><div><br></div>I don=E2=80=99t =
+understand. Here I put the error message in errp, where is =
+redundant?</div><div><br><blockquote type=3D"cite"><div><blockquote =
+type=3D"cite" style=3D"font-family: Monaco; font-size: 12px; font-style: =
+normal; font-variant-caps: normal; font-weight: 400; letter-spacing: =
+normal; orphans: auto; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; widows: auto; word-spacing: =
+0px; -webkit-text-size-adjust: auto; -webkit-text-stroke-width: 0px; =
+text-decoration: none;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;goto =
+err_guest_notifiers;<br>&nbsp;&nbsp;&nbsp;}<br><br>@@ -64,21 +66,22 @@ =
+int vhost_scsi_common_start(VHostSCSICommon =
+*vsc)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;vs-&gt;conf.virtqueue_size,<br>&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vsc-&gt;in=
+flight);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;if (ret &lt; 0) {<br>- =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;error_report("Error getting inflight: %d", =
+-ret);<br></blockquote><br style=3D"caret-color: rgb(0, 0, 0); =
+font-family: Monaco; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none;"><span style=3D"caret-color: rgb(0, 0, 0); =
+font-family: Monaco; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none; float: none; display: inline =
+!important;">Ditto</span><br style=3D"caret-color: rgb(0, 0, 0); =
+font-family: Monaco; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none;"><br style=3D"caret-color: rgb(0, 0, 0); =
+font-family: Monaco; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none;"><blockquote type=3D"cite" style=3D"font-family: =
+Monaco; font-size: 12px; font-style: normal; font-variant-caps: normal; =
+font-weight: 400; letter-spacing: normal; orphans: auto; text-align: =
+start; text-indent: 0px; text-transform: none; white-space: normal; =
+widows: auto; word-spacing: 0px; -webkit-text-size-adjust: auto; =
+-webkit-text-stroke-width: 0px; text-decoration: none;">+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;error_setg_errno(errp, -ret, "Error getting inflight: =
+%d",<br>+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-ret);<br>&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;goto=
+ =
+err_guest_notifiers;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ret =3D =
+vhost_dev_set_inflight(&amp;vsc-&gt;dev, =
+vsc-&gt;inflight);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (ret =
+&lt; 0) {<br>- =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_re=
+port("Error setting inflight: %d", -ret);<br>+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_se=
+tg_errno(errp, -ret, "Error setting inflight: %d", =
+-ret);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;goto =
+err_guest_notifiers;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nb=
+sp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;ret =3D =
+vhost_dev_start(&amp;vsc-&gt;dev, vdev, true);<br>&nbsp;&nbsp;&nbsp;if =
+(ret &lt; 0) {<br>- =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_report("Error start =
+vhost dev");<br></blockquote><br style=3D"caret-color: rgb(0, 0, 0); =
+font-family: Monaco; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none;"><span style=3D"caret-color: rgb(0, 0, 0); =
+font-family: Monaco; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none; float: none; display: inline =
+!important;">=E2=80=9CError starting vhost dev=E2=80=9D?</span><br =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Monaco; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: =
+none;"></div></blockquote>ACK.</div><div><br><blockquote =
+type=3D"cite"><div><br style=3D"caret-color: rgb(0, 0, 0); font-family: =
+Monaco; font-size: 12px; font-style: normal; font-variant-caps: normal; =
+font-weight: 400; letter-spacing: normal; text-align: start; =
+text-indent: 0px; text-transform: none; white-space: normal; =
+word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
+none;"><blockquote type=3D"cite" style=3D"font-family: Monaco; =
+font-size: 12px; font-style: normal; font-variant-caps: normal; =
+font-weight: 400; letter-spacing: normal; orphans: auto; text-align: =
+start; text-indent: 0px; text-transform: none; white-space: normal; =
+widows: auto; word-spacing: 0px; -webkit-text-size-adjust: auto; =
+-webkit-text-stroke-width: 0px; text-decoration: none;">+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_setg_errno(errp, -ret, =
+"Error start vhost =
+dev");<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;goto =
+err_guest_notifiers;<br>&nbsp;&nbsp;&nbsp;}<br><br>diff --git =
+a/hw/scsi/vhost-scsi.c b/hw/scsi/vhost-scsi.c<br>index =
+443f67daa4..01a3ab4277 100644<br>--- a/hw/scsi/vhost-scsi.c<br>+++ =
+b/hw/scsi/vhost-scsi.c<br>@@ -75,6 +75,7 @@ static int =
+vhost_scsi_start(VHostSCSI *s)<br>&nbsp;&nbsp;&nbsp;int ret, =
+abi_version;<br>&nbsp;&nbsp;&nbsp;VHostSCSICommon *vsc =3D =
+VHOST_SCSI_COMMON(s);<br>&nbsp;&nbsp;&nbsp;const VhostOps *vhost_ops =3D =
+vsc-&gt;dev.vhost_ops;<br>+ &nbsp;&nbsp;&nbsp;Error *local_err =3D =
+NULL;<br><br>&nbsp;&nbsp;&nbsp;ret =3D =
+vhost_ops-&gt;vhost_scsi_get_abi_version(&amp;vsc-&gt;dev, =
+&amp;abi_version);<br>&nbsp;&nbsp;&nbsp;if (ret &lt; 0) {<br>@@ -88,14 =
++89,14 @@ static int vhost_scsi_start(VHostSCSI =
+*s)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return =
+-ENOSYS;<br>&nbsp;&nbsp;&nbsp;}<br><br>- &nbsp;&nbsp;&nbsp;ret =3D =
+vhost_scsi_common_start(vsc);<br>+ &nbsp;&nbsp;&nbsp;ret =3D =
+vhost_scsi_common_start(vsc, &amp;local_err);<br>&nbsp;&nbsp;&nbsp;if =
+(ret &lt; 0) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return =
+ret;<br>&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;ret =3D =
+vhost_scsi_set_endpoint(s);<br>&nbsp;&nbsp;&nbsp;if (ret &lt; 0) {<br>- =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_report("Error setting =
+vhost-scsi endpoint");<br>+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_reportf_err(local_err, =
+"Error setting vhost-scsi =
+endpoint");<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vhost_scsi_common=
+_stop(vsc);<br>&nbsp;&nbsp;&nbsp;}<br><br>diff --git =
+a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c<br>index =
+a7fa8e8df2..d368171e28 100644<br>--- a/hw/scsi/vhost-user-scsi.c<br>+++ =
+b/hw/scsi/vhost-user-scsi.c<br>@@ -43,12 +43,12 @@ enum =
+VhostUserProtocolFeature =
+{<br>&nbsp;&nbsp;&nbsp;VHOST_USER_PROTOCOL_F_RESET_DEVICE =3D =
+13,<br>};<br><br>-static int vhost_user_scsi_start(VHostUserSCSI =
+*s)<br>+static int vhost_user_scsi_start(VHostUserSCSI *s, Error =
+**errp)<br>{<br>&nbsp;&nbsp;&nbsp;VHostSCSICommon *vsc =3D =
+VHOST_SCSI_COMMON(s);<br>&nbsp;&nbsp;&nbsp;int ret;<br><br>- =
+&nbsp;&nbsp;&nbsp;ret =3D vhost_scsi_common_start(vsc);<br>+ =
+&nbsp;&nbsp;&nbsp;ret =3D vhost_scsi_common_start(vsc, =
+errp);<br>&nbsp;&nbsp;&nbsp;s-&gt;started_vu =3D (ret &lt; 0 ? false : =
+true);<br><br>&nbsp;&nbsp;&nbsp;return ret;<br>@@ -73,6 +73,7 @@ static =
+void vhost_user_scsi_set_status(VirtIODevice *vdev, uint8_t =
+status)<br>&nbsp;&nbsp;&nbsp;VHostSCSICommon *vsc =3D =
+VHOST_SCSI_COMMON(s);<br>&nbsp;&nbsp;&nbsp;VirtIOSCSICommon *vs =3D =
+VIRTIO_SCSI_COMMON(dev);<br>&nbsp;&nbsp;&nbsp;bool should_start =3D =
+virtio_device_should_start(vdev, status);<br>+ &nbsp;&nbsp;&nbsp;Error =
+*local_err =3D NULL;<br>&nbsp;&nbsp;&nbsp;int =
+ret;<br><br>&nbsp;&nbsp;&nbsp;if (!s-&gt;connected) {<br>@@ -84,9 +85,10 =
+@@ static void vhost_user_scsi_set_status(VirtIODevice *vdev, uint8_t =
+status)<br>&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;if =
+(should_start) {<br>- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ret =3D =
+vhost_user_scsi_start(s);<br>+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ret =3D =
+vhost_user_scsi_start(s, =
+&amp;local_err);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (ret =
+&lt; 0) {<br>- =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_re=
+port("unable to start vhost-user-scsi: %s", strerror(-ret));<br>+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_re=
+portf_err(local_err, "unable to start vhost-user-scsi: %s",<br>+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;strerror(-ret));<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qemu_chr_fe_disconnect(&amp;vs-&gt;c=
+onf.chardev);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbs=
+p;&nbsp;} else {<br>@@ -139,7 +141,7 @@ static void =
+vhost_user_scsi_handle_output(VirtIODevice *vdev, VirtQueue =
+*vq)<br>&nbsp;&nbsp;&nbsp;&nbsp;* Some guests kick before setting =
+VIRTIO_CONFIG_S_DRIVER_OK so start<br>&nbsp;&nbsp;&nbsp;&nbsp;* vhost =
+here instead of waiting for =
+.set_status().<br>&nbsp;&nbsp;&nbsp;&nbsp;*/<br>- &nbsp;&nbsp;&nbsp;ret =
+=3D vhost_user_scsi_start(s);<br>+ &nbsp;&nbsp;&nbsp;ret =3D =
+vhost_user_scsi_start(s, &amp;local_err);<br>&nbsp;&nbsp;&nbsp;if (ret =
+&lt; 0) =
+{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_reportf_err(local_err=
+, "vhost-user-scsi: vhost start failed: =
+");<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qemu_chr_fe_disconnect(&a=
+mp;vs-&gt;conf.chardev);<br>@@ -184,7 +186,7 @@ static int =
+vhost_user_scsi_connect(DeviceState *dev, Error =
+**errp)<br><br>&nbsp;&nbsp;&nbsp;/* restore vhost state =
+*/<br>&nbsp;&nbsp;&nbsp;if (virtio_device_started(vdev, =
+vdev-&gt;status)) {<br>- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ret =3D=
+ vhost_user_scsi_start(s);<br>+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ret =3D =
+vhost_user_scsi_start(s, =
+errp);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (ret &lt; 0) =
+{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ret=
+urn ret;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>diff --git =
+a/include/hw/virtio/vhost-scsi-common.h =
+b/include/hw/virtio/vhost-scsi-common.h<br>index 18f115527c..c5d2c09455 =
+100644<br>--- a/include/hw/virtio/vhost-scsi-common.h<br>+++ =
+b/include/hw/virtio/vhost-scsi-common.h<br>@@ -39,7 +39,7 @@ struct =
+VHostSCSICommon {<br>&nbsp;&nbsp;&nbsp;struct vhost_inflight =
+*inflight;<br>};<br><br>-int vhost_scsi_common_start(VHostSCSICommon =
+*vsc);<br>+int vhost_scsi_common_start(VHostSCSICommon *vsc, Error =
+**errp);<br>void vhost_scsi_common_stop(VHostSCSICommon *vsc);<br>char =
+*vhost_scsi_common_get_fw_dev_path(FWPathProvider *p, BusState =
+*bus,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;DeviceState *dev);<br>--<span =
+class=3D"Apple-converted-space">&nbsp;</span><br>2.41.0</blockquote></div>=
+</blockquote></div><br></body></html>=
+
+--Apple-Mail=_04756BCB-5978-48C9-9C59-D965673F44F9--
 
