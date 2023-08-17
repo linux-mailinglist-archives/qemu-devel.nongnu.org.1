@@ -2,61 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A222377F49D
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 13:00:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2335977F4BA
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 13:04:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWaiY-00049V-VC; Thu, 17 Aug 2023 06:59:07 -0400
+	id 1qWan2-0005e9-Hm; Thu, 17 Aug 2023 07:03:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qWaiT-00048p-23
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 06:59:01 -0400
+ id 1qWamw-0005dO-M1
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 07:03:42 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qWaiQ-0006jb-LT
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 06:59:00 -0400
+ id 1qWamu-00082G-7B
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 07:03:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692269937;
+ s=mimecast20190719; t=1692270215;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=Im/GGzpvHTOqKjV1z6PP+HdX0TPHvmP7DrQKhqyhOkQ=;
- b=B2+q3rUsjP7Go3jyE4y6Y9L5Ro9ScGoJZ/jl9wCR5Nc38emsZc8/cm3x8phaZiU1IVZRpN
- SPm+vBSyybcQqbJKp5GG9QuTRN96/+l6r4iNFENS7UtsVFSCpRJ1IBPHbzugBXRIyAt0WA
- tPhamtb6nacGbT7Hm7v2pC6lmz4YJgk=
+ bh=wODv7FT4H+kkqnrUY8l7XQNOuLWYODXxza0YH8GITuU=;
+ b=epRuet79PoD4uT+yVXqzxWgC7Mm71RVmQaYxokFG8sjq9dn1tN0e5jC/F8IkyaGSFRPxCV
+ QIJSy6n+PE+yIWkjWjXd1dI74ZeLWGSc1oTzWZyVrs+6PnPjdqZQUXX2zRf55T11DoPQ70
+ 8sYEoeW2l3zOWYpVRKw2VFdF5f76vHE=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-466-eXr3jPoWOo6fTE1Eeivgqw-1; Thu, 17 Aug 2023 06:58:54 -0400
-X-MC-Unique: eXr3jPoWOo6fTE1Eeivgqw-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
+ us-mta-146-0pvmeSuSNymk3LHSmyM3Ig-1; Thu, 17 Aug 2023 07:03:32 -0400
+X-MC-Unique: 0pvmeSuSNymk3LHSmyM3Ig-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 053D1800C7A;
- Thu, 17 Aug 2023 10:58:54 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E326A858EED;
+ Thu, 17 Aug 2023 11:03:31 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.120])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id A68A1492C13;
- Thu, 17 Aug 2023 10:58:52 +0000 (UTC)
-Date: Thu, 17 Aug 2023 11:58:50 +0100
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 2E5AA140E950;
+ Thu, 17 Aug 2023 11:03:31 +0000 (UTC)
+Date: Thu, 17 Aug 2023 12:03:29 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Helge Deller <deller@gmx.de>, qemu-devel@nongnu.org
-Subject: Re: [PATCH][RFC] Add crash handler for qemu-linux-user
-Message-ID: <ZN39ann2QV3Jsx+z@redhat.com>
-References: <ZNQcQxcL/22LmrVP@p100>
- <129c90ab-14cc-04bb-493a-d4524b54c02f@linaro.org>
- <CAFEAcA_yD37zTnXNkX+qg_WtUUQPJrk72UL4vusdJrnNHz4H7A@mail.gmail.com>
+To: Ilya Leoshkevich <iii@linux.ibm.com>
+Cc: Laurent Vivier <laurent@vivier.eu>,
+ Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Subject: Re: [PATCH 0/3] Fix the build on CentOS 7
+Message-ID: <ZN3+gX/I2OWW0/tV@redhat.com>
+References: <20230810215706.1394220-1-iii@linux.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CAFEAcA_yD37zTnXNkX+qg_WtUUQPJrk72UL4vusdJrnNHz4H7A@mail.gmail.com>
+In-Reply-To: <20230810215706.1394220-1-iii@linux.ibm.com>
 User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -82,29 +80,29 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Aug 10, 2023 at 10:14:06AM +0100, Peter Maydell wrote:
-> On Thu, 10 Aug 2023 at 02:28, Richard Henderson
-> <richard.henderson@linaro.org> wrote:
-> >
-> > On 8/9/23 16:07, Helge Deller wrote:
-> > > +            /* did qemu source code crashed? */
-> > > +            if (unlikely(!h2g_valid(host_addr))) {
-> > > +                qemu_show_backtrace(info);
-> > > +            }
-> >
-> > This won't do anything at all when reserved_va == 0,
-> > i.e. 64-bit guest on 64-bit host, or any 32-bit host.
-> >
-> > The idea of having a backtrace is nice, I suppose, we just need
-> > a better detector.
+On Thu, Aug 10, 2023 at 11:51:30PM +0200, Ilya Leoshkevich wrote:
+> Hi,
 > 
-> I think Dan also had a look at one point at doing
-> backtraces for crashes in system emulation mode?
-> Certainly this would be useful for test crashes in CI.
+> I know that CentOS 7 is not tested anymore, but unfortunately it's the
+> only ppc64le system that I have, so I had to fix a few build issues
+> that crept in since the testing stopped. The fixes are simple and may
+> be helpful to people in the same situation.
 
-I stopped that work as I couldn't figure out a way to get a backtrace
-across all the threads, which severely limited its usefulness in the
-QEMU system emulators.
+Actually it is more than not tested. CentOS 7 is explicitly
+unsupported per our platform support matrix:
+
+https://www.qemu.org/docs/master/about/build-platforms.html
+
+and thus we will *intentionally* delete backwards compatibility code
+that it needs, in order to simplify QEMU's codebase.
+
+> Ilya Leoshkevich (3):
+>   linux-user: Fix the build on systems without SOL_ALG
+>   linux-user: Fix the build on systems without MAP_SHARED_VALIDATE
+>   linux-user: Fix the build on systems without MADV_{KEEP,WIPE}ONFORK
+
+We explicitly do NOT want to add this kind of back compat code
+for unsupported platforms.
 
 With regards,
 Daniel
