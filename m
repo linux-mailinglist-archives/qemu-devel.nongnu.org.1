@@ -2,86 +2,114 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1290C77F030
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 07:30:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 339D977F033
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 07:32:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWVYv-0005c8-NZ; Thu, 17 Aug 2023 01:28:49 -0400
+	id 1qWVav-0006ZS-Ip; Thu, 17 Aug 2023 01:30:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@gmail.com>)
- id 1qWVYg-0005bo-Fv
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 01:28:34 -0400
-Received: from mail-oo1-xc2d.google.com ([2607:f8b0:4864:20::c2d])
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qWVas-0006W7-Uz
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 01:30:50 -0400
+Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@gmail.com>)
- id 1qWVYb-0002w0-PW
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 01:28:33 -0400
-Received: by mail-oo1-xc2d.google.com with SMTP id
- 006d021491bc7-56dfe5ce871so3287338eaf.2
- for <qemu-devel@nongnu.org>; Wed, 16 Aug 2023 22:28:29 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qWVao-0003ms-UW
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 01:30:50 -0400
+Received: by mail-pg1-x533.google.com with SMTP id
+ 41be03b00d2f7-5650ef42f6dso4574762a12.0
+ for <qemu-devel@nongnu.org>; Wed, 16 Aug 2023 22:30:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1692250108; x=1692854908;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=/hNHm6aUiLKZ4SdJA8lJbxRlwtnLC8Jb2TvvhT9h78g=;
- b=JRYOC/Q6o+/OdxqAULR4uEY6UE42iYbnPTICNhgD59n7RkvVNyLCIUuAJAieayw9Ep
- Rc6u7qVWqGtphp2zbP/3iUbuc+AgwvM9MXlsw3PFOtiG+NOdlxm6kKFCcVPgYsNHKJgp
- ID4axuYpArW4MMdJCJtgNlotp4GSrr9fwsX5as8u1WJZD5vaKXiB4MqOT+gW30ByjwNm
- jsi6MEAhDTeOXSE9hyHag6Lwwk5zSNThY5rlLWsxBqpLr8VjWxgznFCgsavfIne8G+mu
- XFoW373RJ2In7XyIXMZBP5Qc2P2x++O2qu6hoAERxERien08urp92DFWs4cs1QuBZiOB
- DE1A==
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1692250245; x=1692855045;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=mQyi6gfRgbfl9Ba+HuBYDjs0BflAbozpyrrSa1VYhO8=;
+ b=foDAMsj/Luf3JT0hF77ecWbCMXR62K/pt13rcHFIsAZecLufRI8U+vJeMkICee3tbc
+ A2srfIbdFPgJ9EWMcmJQtXyeGs+nMTAeolhp1KLy0/t+oFI2Xb23lS285rPG5vBfOgjf
+ +6B/Qk7f90KrqSgUxsYyTFoUPVwwLQlKy5zrSKCtl9uhrVf4Kd4zhJV7Uwda19LdJSn9
+ j1g8rwy76DBFRh17khvu/zqyK/V/pnfcSEP/kyVOsrhfpNOLgaX0lQ+ohALH34YgPcVs
+ a1ZV45juk2ebZIHrrOXGBLCjDzMZvt7vZ8zhPB8v2OhHM/F98vnFn48GkJFWpMmu3lp2
+ i7YQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692250108; x=1692854908;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=/hNHm6aUiLKZ4SdJA8lJbxRlwtnLC8Jb2TvvhT9h78g=;
- b=ICfHigQ5AP4bi2WOBZhvDrUWeVb0rLhOaOAVuklQDnQMy9ojB6BFBX4llPoBbRSJTx
- gcoYjzsj4gO9xhJngcXfk6EIyWHEib/57td/McJQOfrTCqYV1oYtNT6qlZjtlLGqn2jz
- euQ7wbi/kUMN3mp3XUwD3B339gwgQm7dNXbCgpRXMlMrLu9ypjjSAGFDAr+nOGAnHgJm
- EYpqxWr3ORSq5IitOWH2TFS25SKAXcvqWR4G8388KBHcM3frDZRD6eotNqEZ+pEifPVg
- ComuSZT0FJUWZCsZH1TcPxADcN1zBnVwTdTfOc/cAM7DAyQVDh/xciiJ6bucm2eNjzc/
- Y6eQ==
-X-Gm-Message-State: AOJu0YwVkmJA4IQ/Fm3lDfsg2ZV/yHmpxRdceQZCQk/ezScNIvNT061S
- b9oWLZ32ZoceSB+A/XxB1gnyU9uD0Pc=
-X-Google-Smtp-Source: AGHT+IEDfS8FNrmpYUN9lKHQGp6whz0QNtTv7uCv9Z/To0FMya7Yur4YjdMZciqo58l4xzo+OPCryA==
-X-Received: by 2002:a05:6808:2888:b0:3a7:2d4c:5d4e with SMTP id
- eu8-20020a056808288800b003a72d4c5d4emr3839546oib.7.1692250108071; 
- Wed, 16 Aug 2023 22:28:28 -0700 (PDT)
-Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
- ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
+ d=1e100.net; s=20221208; t=1692250245; x=1692855045;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=mQyi6gfRgbfl9Ba+HuBYDjs0BflAbozpyrrSa1VYhO8=;
+ b=JqSj+dY/PPciaU4baN9fWjZlCePtMQ9W1+Bw7OnOrzq10pS6qvJHh9/4OQazzFzbDa
+ 3YdD+Pz7IfJiDfT9IjWMscp1a4tlj0Is4y7OsGr3PjZoFilGLhyLOXmOPjSw7nx/1MoN
+ MMIYuhlJ1sdYNPvO8tZuQPVhUuQMc68vyiNxCM42A27NZ/cfH7zDrYws6Jew9+x0T6sT
+ QK5sIrrOWTCB0KDuloThYOTA1rqQA0MwHTkQMQ6fnPD65lnmx/gudTTh9Ael2fKgsSGC
+ TmL6n6rWMPJLd1DrWzyr3OXudKXLqwp6Ebibc0q6t4dqJy4GMK5HAypXLdTXk4dhbgfq
+ 1rkQ==
+X-Gm-Message-State: AOJu0Yx3vnYFyW/SVXD0aHsucqjB0QTgdZja9DrlLEZWKwkoa5hkejL8
+ a2IylyU9Ub5NJ2BtXzsOXzbmEg==
+X-Google-Smtp-Source: AGHT+IGfYhrcUvpGzOTYqb82+q9qq2vUi7LvrswIp9J2Txc3w26+L40Re4cMZJpHZ5HqbFY3M4ZlFQ==
+X-Received: by 2002:a05:6a20:729d:b0:13d:ee19:771f with SMTP id
+ o29-20020a056a20729d00b0013dee19771fmr5340005pzk.8.1692250245092; 
+ Wed, 16 Aug 2023 22:30:45 -0700 (PDT)
+Received: from alarm.flets-east.jp ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
  by smtp.gmail.com with ESMTPSA id
- p9-20020a63ab09000000b005641bbe783bsm12821331pgf.11.2023.08.16.22.28.25
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 16 Aug 2023 22:28:27 -0700 (PDT)
-Message-ID: <1281e8f6-f91a-4ced-b5d1-773370db3eef@gmail.com>
-Date: Thu, 17 Aug 2023 14:28:22 +0900
+ j18-20020aa783d2000000b00662610cf7a8sm12339407pfn.172.2023.08.16.22.30.35
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 16 Aug 2023 22:30:44 -0700 (PDT)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+To: 
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Michael Rolnik <mrolnik@gmail.com>,
+ "Edgar E . Iglesias" <edgar.iglesias@gmail.com>,
+ Brian Cain <bcain@quicinc.com>, Song Gao <gaosong@loongson.cn>,
+ Xiaojuan Yang <yangxiaojuan@loongson.cn>,
+ Laurent Vivier <laurent@vivier.eu>, Aurelien Jarno <aurelien@aurel32.net>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ Chris Wulff <crwulff@gmail.com>, Marek Vasut <marex@denx.de>,
+ Stafford Horne <shorne@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Artyom Tarasenko <atar4qemu@gmail.com>,
+ Bastian Koppelmann <kbastian@mail.uni-paderborn.de>,
+ Max Filippov <jcmvbkbc@gmail.com>, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org, qemu-ppc@nongnu.org, qemu-riscv@nongnu.org,
+ qemu-s390x@nongnu.org, Anton Kochkov <anton.kochkov@proton.me>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH v5 00/26] plugins: Allow to read registers
+Date: Thu, 17 Aug 2023 14:29:47 +0900
+Message-ID: <20230817053017.24207-1-akihiko.odaki@daynix.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 9/9] docs/system: add basic virtio-gpu documentation
-Content-Language: en-US
-To: Gurchetan Singh <gurchetansingh@chromium.org>, qemu-devel@nongnu.org
-Cc: marcandre.lureau@redhat.com, kraxel@redhat.com, ray.huang@amd.com,
- alex.bennee@linaro.org, shentey@gmail.com, hi@alyssa.is, ernunes@redhat.com,
- manos.pitsidianakis@linaro.org
-References: <20230817022322.466-1-gurchetansingh@google.com>
- <20230817022322.466-10-gurchetansingh@google.com>
-From: Akihiko Odaki <akihiko.odaki@gmail.com>
-In-Reply-To: <20230817022322.466-10-gurchetansingh@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2d;
- envelope-from=akihiko.odaki@gmail.com; helo=mail-oo1-xc2d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::533;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x533.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,168 +125,156 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/08/17 11:23, Gurchetan Singh wrote:
-> From: Gurchetan Singh <gurchetansingh@chromium.org>
-> 
-> This adds basic documentation for virtio-gpu.
-> 
-> Suggested-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> Signed-off-by: Gurchetan Singh <gurchetansingh@chromium.org>
-> Tested-by: Alyssa Ross <hi@alyssa.is>
-> Tested-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
-> Reviewed-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
-> ---
-> v2: - Incorporated suggestions by Akihiko Odaki
->      - Listed the currently supported capset_names (Bernard)
-> 
-> v3: - Incorporated suggestions by Akihiko Odaki and Alyssa Ross
-> 
-> v4: - Incorporated suggestions by Akihiko Odaki
-> 
-> v5: - Removed pci suffix from examples
->      - Verified that -device virtio-gpu-rutabaga works.  Strangely
->        enough, I don't remember changing anything, and I remember
->        it not working.  I did rebase to top of tree though.
->      - Fixed meson examples in crosvm docs
-> 
->   docs/system/device-emulation.rst   |   1 +
->   docs/system/devices/virtio-gpu.rst | 113 +++++++++++++++++++++++++++++
->   2 files changed, 114 insertions(+)
->   create mode 100644 docs/system/devices/virtio-gpu.rst
-> 
-> diff --git a/docs/system/device-emulation.rst b/docs/system/device-emulation.rst
-> index 4491c4cbf7..1167f3a9f2 100644
-> --- a/docs/system/device-emulation.rst
-> +++ b/docs/system/device-emulation.rst
-> @@ -91,6 +91,7 @@ Emulated Devices
->      devices/nvme.rst
->      devices/usb.rst
->      devices/vhost-user.rst
-> +   devices/virtio-gpu.rst
->      devices/virtio-pmem.rst
->      devices/vhost-user-rng.rst
->      devices/canokey.rst
-> diff --git a/docs/system/devices/virtio-gpu.rst b/docs/system/devices/virtio-gpu.rst
-> new file mode 100644
-> index 0000000000..8c5c708272
-> --- /dev/null
-> +++ b/docs/system/devices/virtio-gpu.rst
-> @@ -0,0 +1,113 @@
-> +..
-> +   SPDX-License-Identifier: GPL-2.0
-> +
-> +virtio-gpu
-> +==========
-> +
-> +This document explains the setup and usage of the virtio-gpu device.
-> +The virtio-gpu device paravirtualizes the GPU and display controller.
-> +
-> +Linux kernel support
-> +--------------------
-> +
-> +virtio-gpu requires a guest Linux kernel built with the
-> +``CONFIG_DRM_VIRTIO_GPU`` option.
-> +
-> +QEMU virtio-gpu variants
-> +------------------------
-> +
-> +QEMU virtio-gpu device variants come in the following form:
-> +
-> + * ``virtio-vga[-BACKEND]``
-> + * ``virtio-gpu[-BACKEND][-INTERFACE]``
-> + * ``vhost-user-vga``
-> + * ``vhost-user-pci``
-> +
-> +**Backends:** QEMU provides a 2D virtio-gpu backend, and two accelerated
-> +backends: virglrenderer ('gl' device label) and rutabaga_gfx ('rutabaga'
-> +device label).  There is a vhost-user backend that runs the graphics stack
-> +in a separate process for improved isolation.
-> +
-> +**Interfaces:** QEMU further categorizes virtio-gpu device variants based
-> +on the interface exposed to the guest. The interfaces can be classified
-> +into VGA and non-VGA variants. The VGA ones are prefixed with virtio-vga
-> +or vhost-user-vga while the non-VGA ones are prefixed with virtio-gpu or
-> +vhost-user-gpu.
-> +
-> +The VGA ones always use the PCI interface, but for the non-VGA ones, the
-> +user can further pick between MMIO or PCI. For MMIO, the user can suffix
-> +the device name with -device, though vhost-user-gpu does not support MMIO.
-> +For PCI, the user can suffix it with -pci. Without these suffixes, the
-> +platform default will be chosen.
-> +
-> +virtio-gpu 2d
-> +-------------
-> +
-> +The default 2D backend only performs 2D operations. The guest needs to
-> +employ a software renderer for 3D graphics.
-> +
-> +Typically, the software renderer is provided by `Mesa`_ or `SwiftShader`_.
-> +Mesa's implementations (LLVMpipe, Lavapipe and virgl below) work out of box
-> +on typical modern Linux distributions.
-> +
-> +.. parsed-literal::
-> +    -device virtio-gpu
-> +
-> +.. _Mesa: https://www.mesa3d.org/
-> +.. _SwiftShader: https://github.com/google/swiftshader
-> +
-> +virtio-gpu virglrenderer
-> +------------------------
-> +
-> +When using virgl accelerated graphics mode in the guest, OpenGL API calls
-> +are translated into an intermediate representation (see `Gallium3D`_). The
-> +intermediate representation is communicated to the host and the
-> +`virglrenderer`_ library on the host translates the intermediate
-> +representation back to OpenGL API calls.
-> +
-> +.. parsed-literal::
-> +    -device virtio-gpu-gl
-> +
-> +.. _Gallium3D: https://www.freedesktop.org/wiki/Software/gallium/
-> +.. _virglrenderer: https://gitlab.freedesktop.org/virgl/virglrenderer/
-> +
-> +virtio-gpu rutabaga
-> +-------------------
-> +
-> +virtio-gpu can also leverage `rutabaga_gfx`_ to provide `gfxstream`_
-> +rendering and `Wayland display passthrough`_.  With the gfxstream rendering
-> +mode, GLES and Vulkan calls are forwarded to the host with minimal
-> +modification.
-> +
-> +The crosvm book provides directions on how to build a `gfxstream-enabled
-> +rutabaga`_ and launch a `guest Wayland proxy`_.
-> +
-> +This device does require host blob support (``hostmem`` field below). The
-> +``hostmem`` field specifies the size of virtio-gpu host memory window.
-> +This is typically between 256M and 8G.
-> +
-> +At least one capset (see colon separated ``capset_names`` below) must be
-> +specified when starting the device.  The currently supported
-> +``capset_names`` are ``gfxstream-vulkan`` and ``cross-domain`` on Linux
-> +guests. For Android guests, ``gfxstream-gles`` is also supported.
-> +
-> +The device will try to auto-detect the wayland socket path if the
-> +``cross-domain`` capset name is set.  The user may optionally specify
-> +``wayland_socket_path`` for non-standard paths.
-> +
-> +The ``wsi`` option can be set to ``surfaceless`` or ``headless``.
-> +Surfaceless doesn't create a native window surface, but does copy from the
-> +render target to the Pixman buffer if a virtio-gpu 2D hypercall is issued.
-> +Headless is like surfaceless, but doesn't copy to the Pixman buffer.
-> +Surfaceless is the default if ``wsi`` is not specified.
-> +
-> +.. parsed-literal::
-> +    -device virtio-gpu-rutabaga,capset_names=gfxstream-vulkan:cross-domain,
-> +       hostmem=8G,wayland_socket_path=/tmp/nonstandard/mock_wayland.sock,
-> +       wsi=headless
-> +
-> +.. _rutabaga_gfx: https://github.com/google/crosvm/blob/main/rutabaga_gfx/ffi/src/include/rutabaga_gfx_ffi.h
-> +.. _gfxstream: https://android.googlesource.com/platform/hardware/google/gfxstream/
-> +.. _Wayland display passthrough: https://www.youtube.com/watch?v=OZJiHMtIQ2M
-> +.. _gfxstream-enabled rutabaga: https://crosvm.dev/book/appendix/rutabaga_gfx.html
+I and other people in the University of Tokyo, where I research processor
+design, found TCG plugins are very useful for processor design exploration.
 
-You have different links for "rutabaga_gfx" and "gfxstream-enabled 
-rutabaga", but I think you only need one.
+The feature we find missing is the capability to read registers from
+plugins. In this series, I propose to add such a capability by reusing
+gdbstub code.
 
-> +.. _guest Wayland proxy: https://crosvm.dev/book/devices/wayland.html
+The reuse of gdbstub code ensures the long-term stability of the TCG plugin
+interface for register access without incurring a burden to maintain yet
+another interface for register access.
+
+This process to add TCG plugin involves four major changes. The first one
+is to add GDBFeature structure that represents a GDB feature, which usually
+includes registers. GDBFeature can be generated from static XML files or
+dynamically generated by architecture-specific code. In fact, this is a
+refactoring independent of the feature this series adds, and potentially
+it's benefitial even without the plugin feature. The plugin feature will
+utilize this new structure to describe registers exposed to plugins.
+
+The second one is to make gdb_read_register/gdb_write_register usable
+outside of gdbstub context.
+
+The third one is to actually make registers readable for plugins.
+
+The last one is to allow to implement a QEMU plugin in C++. A plugin that
+I'll describe later is written in C++.
+
+The below is a summary of patches:
+Patch 01 fixes a bug in execlog plugin.
+Patch [02, 16] introduce GDBFeature.
+Patch 17 adds information useful for plugins to GDBFeature.
+Patch [18, 21] make registers readable outside of gdbstub context.
+Patch [22, 24] add the feature to read registers from plugins.
+Patch [25, 26] make it possible to write plugins in C++.
+
+The execlog plugin will have new options to demonstrate the new feature.
+I also have a plugin that uses this new feature to generate execution
+traces for Sniper processor simulator, which is available at:
+https://github.com/shioya-lab/sniper/tree/akihikodaki/bb
+
+V4 -> V5:
+  Corrected g_rw_lock_writer_lock() call. (Richard Henderson)
+  Replaced abort() with g_assert_not_reached(). (Richard Henderson)
+  Fixed CSR name leak in target/riscv. (Richard Henderson)
+  Removed gdb_has_xml variable.
+
+V3 -> V4:
+  Added execlog changes I forgot to include in the last version.
+
+V2 -> V3:
+  Added patch "hw/core/cpu: Return static value with gdb_arch_name()".
+  Added patch "gdbstub: Dynamically allocate target.xml buffer".
+  (Alex Bennée)
+  Added patch "gdbstub: Introduce GDBFeatureBuilder". (Alex Bennée)
+  Dropped Reviewed-by tags for "target/*: Use GDBFeature for dynamic XML".
+  Changed gdb_find_static_feature() to abort on failure. (Alex Bennée)
+  Changed the execlog plugin to log the register value only when changed.
+  (Alex Bennée)
+  Dropped 0x prefixes for register value logs for conciseness.
+
+V1 -> V2:
+  Added SPDX-License-Identifier: GPL-2.0-or-later. (Philippe Mathieu-Daudé)
+  Split long lines. (Philippe Mathieu-Daudé)
+  Renamed gdb_features to gdb_static_features (Philippe Mathieu-Daudé)
+  Dropped RFC.
+
+Akihiko Odaki (26):
+  contrib/plugins: Use GRWLock in execlog
+  gdbstub: Introduce GDBFeature structure
+  gdbstub: Add num_regs member to GDBFeature
+  gdbstub: Introduce gdb_find_static_feature()
+  target/arm: Move the reference to arm-core.xml
+  hw/core/cpu: Replace gdb_core_xml_file with gdb_core_feature
+  gdbstub: Introduce GDBFeatureBuilder
+  target/arm: Use GDBFeature for dynamic XML
+  target/ppc: Use GDBFeature for dynamic XML
+  target/riscv: Use GDBFeature for dynamic XML
+  gdbstub: Use GDBFeature for gdb_register_coprocessor
+  gdbstub: Use GDBFeature for GDBRegisterState
+  hw/core/cpu: Return static value with gdb_arch_name()
+  gdbstub: Dynamically allocate target.xml buffer
+  gdbstub: Simplify XML lookup
+  hw/core/cpu: Remove gdb_get_dynamic_xml member
+  gdbstub: Add members to identify registers to GDBFeature
+  target/arm: Remove references to gdb_has_xml
+  target/ppc: Remove references to gdb_has_xml
+  gdbstub: Remove gdb_has_xml variable
+  gdbstub: Expose functions to read registers
+  cpu: Call plugin hooks only when ready
+  plugins: Allow to read registers
+  contrib/plugins: Allow to log registers
+  plugins: Support C++
+  contrib/plugins: Add cc plugin
+
+ MAINTAINERS                  |   2 +-
+ docs/devel/tcg-plugins.rst   |  18 +++-
+ configure                    |  15 ++-
+ meson.build                  |   2 +-
+ gdbstub/internals.h          |   2 +-
+ include/exec/gdbstub.h       |  51 +++++++--
+ include/hw/core/cpu.h        |  11 +-
+ include/qemu/qemu-plugin.h   |  69 +++++++++++-
+ target/arm/cpu.h             |  26 ++---
+ target/arm/internals.h       |   2 +-
+ target/ppc/cpu-qom.h         |   3 +-
+ target/ppc/cpu.h             |   3 +-
+ target/ppc/internal.h        |   2 +-
+ target/riscv/cpu.h           |   4 +-
+ target/s390x/cpu.h           |   2 -
+ contrib/plugins/execlog.c    | 150 ++++++++++++++++++++------
+ cpu.c                        |  11 --
+ gdbstub/gdbstub.c            | 198 +++++++++++++++++++++++-----------
+ gdbstub/softmmu.c            |   3 +-
+ gdbstub/user.c               |   1 -
+ hw/core/cpu-common.c         |  10 ++
+ plugins/api.c                |  40 +++++++
+ stubs/gdbstub.c              |   6 +-
+ target/arm/cpu.c             |  12 +--
+ target/arm/cpu64.c           |   8 +-
+ target/arm/gdbstub.c         | 202 +++++++++++++----------------------
+ target/arm/gdbstub64.c       |  90 +++++++---------
+ target/arm/tcg/cpu32.c       |   3 +-
+ target/avr/cpu.c             |   4 +-
+ target/hexagon/cpu.c         |   5 +-
+ target/i386/cpu.c            |  13 ++-
+ target/loongarch/cpu.c       |   8 +-
+ target/loongarch/gdbstub.c   |   2 +-
+ target/m68k/cpu.c            |   7 +-
+ target/m68k/helper.c         |   6 +-
+ target/microblaze/cpu.c      |   9 +-
+ target/ppc/cpu_init.c        |   9 +-
+ target/ppc/gdbstub.c         |  80 ++++----------
+ target/riscv/cpu.c           |  27 ++---
+ target/riscv/gdbstub.c       |  89 +++++++--------
+ target/rx/cpu.c              |   4 +-
+ target/s390x/cpu.c           |   8 +-
+ target/s390x/gdbstub.c       |  28 ++---
+ target/tricore/cpu.c         |   4 +-
+ contrib/plugins/Makefile     |   5 +
+ contrib/plugins/cc.cc        |  17 +++
+ plugins/qemu-plugins.symbols |   2 +
+ scripts/feature_to_c.py      | 102 ++++++++++++++++++
+ scripts/feature_to_c.sh      |  69 ------------
+ tests/tcg/Makefile.target    |   3 +
+ 50 files changed, 825 insertions(+), 622 deletions(-)
+ create mode 100644 contrib/plugins/cc.cc
+ create mode 100755 scripts/feature_to_c.py
+ delete mode 100644 scripts/feature_to_c.sh
+
+-- 
+2.41.0
+
 
