@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6352C77FE92
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B3C877FE91
 	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 21:34:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWikk-0003tq-LW; Thu, 17 Aug 2023 15:33:54 -0400
+	id 1qWil1-0003xG-AX; Thu, 17 Aug 2023 15:34:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <isaku.yamahata@gmail.com>)
- id 1qWikf-0003tR-3b
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 15:33:49 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ id 1qWikx-0003ws-8z
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 15:34:07 -0400
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <isaku.yamahata@gmail.com>)
- id 1qWikc-0005Vj-NY
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 15:33:48 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1bba48b0bd2so1241775ad.3
- for <qemu-devel@nongnu.org>; Thu, 17 Aug 2023 12:33:46 -0700 (PDT)
+ id 1qWiku-0005XP-Hf
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 15:34:07 -0400
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-1bdbbede5d4so1328465ad.2
+ for <qemu-devel@nongnu.org>; Thu, 17 Aug 2023 12:34:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1692300825; x=1692905625;
+ d=gmail.com; s=20221208; t=1692300843; x=1692905643;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=E++zbqUvCRSLZT+0PLMrw7FmLWtGLTP/2tsc4SkVPxw=;
- b=kA/D+OC+5knB+mm5dNPFFB3911nAN+S/vfh7u5QHXxLbF6aYlE/8gIIEb3I5IbhKU6
- XF6ez7nELG9BfcpSf3eFRPW+O10JqSmBrq1SlWIwrgtXYUku44/NoWuaHTSpBtGPeaBk
- jlOcv9hYitRY116dfLJnk8FRa0h76cJFlEzh42if5hqideCzh+65MTYp3A/a5L9ltmck
- faZpD1EDWV8QCntE5EY3tOqQwCqFnHnoppnz3XS1AGe3nJzalDtoiszC9c+Fx1o+amK+
- rofxoZNJd6QNL8ySFjmTVJUs2cFkJbyartXhpnA9QBfk3MMazItBUH6G8MkK5xa8TH7f
- 7OIA==
+ bh=xf5e9HuZ7bNbO78EalP3uJqo2rLwaF2AUK7dKzkmFmE=;
+ b=JGD4PHAEpu2XKb7arnEW7p+Usb3I+Mbg+vrHJyCaKWNTc6ottAnnhxipDynqKB9IWF
+ BDsj8G5A/9O2EBofOROi7gO5NhRfvXSECWoBygJPNMUBj4RAi0wqLJXNY2JQ/n+qEjSR
+ 1vwBKKVoPkxYJLlXsFfmXaurNzIEewFYJq5tch+m4kVmaH7Kv/EF80w2WB7oNLheI/zr
+ zdYqIo4wgVmHRz/dUz5N6yarUkW0puTJOqlb4JXg4YAHipT85oLNIXKwtapn17LcpU8Q
+ d2aC2NaIDpqBqB7CMC+TRR5wHHrkdq8f6BUSQlCqwziG/Z11mqkr/nHCJkTqle5EhCp9
+ TH6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692300825; x=1692905625;
+ d=1e100.net; s=20221208; t=1692300843; x=1692905643;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=E++zbqUvCRSLZT+0PLMrw7FmLWtGLTP/2tsc4SkVPxw=;
- b=aLcOG19Dx2cnKU6JT1BgxdmzTXNfBUVjfcvHQ3hoiQm8nqVkDz1HwjTOcIsIGKz5da
- sc4mXRhPUoWrxjO0Puxp7wLproCpiGlrqnW4HzXWmk9tAX+0i1eWOG8T1VAQ+KojYMI7
- s1JnRx8w7aDvnkOlW2cEWGQ+SO6vk9kXbJJONvY6wfnN3iJuU3hOe7GhbytsJ0YfghRl
- ZceayfWexOeNWH1DqNjzUge0S64tbHhx1hhF5dWkO0uyJuzlNont4uXIhSO+46k5fdxY
- iSkKuwR53UFM8jYh1gZDNvUgrCP5DJvitsBji/md4WOyBhd2jYHCM/WEF5aQgQIzF8GB
- K1/A==
-X-Gm-Message-State: AOJu0YyOCVWEpMyd4K9gKJkwmhUXiShdwZawoVSFuqyCVplPTt2lmWVm
- rKbJUKOuFxcDruYkB6IopLU=
-X-Google-Smtp-Source: AGHT+IGxnf7ppLqAeqELWY9mX1ukjF/voZ/+xmmNSOV1hO6yNvRuiYEJKYcX44P8vJ8IZE1rHDybPg==
-X-Received: by 2002:a17:90b:104b:b0:26b:455b:657e with SMTP id
- gq11-20020a17090b104b00b0026b455b657emr388955pjb.41.1692300825067; 
- Thu, 17 Aug 2023 12:33:45 -0700 (PDT)
+ bh=xf5e9HuZ7bNbO78EalP3uJqo2rLwaF2AUK7dKzkmFmE=;
+ b=ZW0D2mnSx22vy7cAyjUOoaEz6fgkjx6JoER0Y+CgRH25NBZfTcZCA/KGiv7SDSsOuB
+ RZYRnfm6uanUXAul2ip3q0UoBD8QzUwUOs4oCEzjK3TeyAr0PRtyapERdAm1Bv1MBrzd
+ Sxxmdro8NIgoIFYfAbFNkfdnJir3mequW2PnDZocuyt0GB301GLnQOHBYXP3/KS5VWCA
+ kshtMY6k36NyrqHc6GIv3wt23n+UnmlWHaypAPbrLaoj9n8KmOndsFbQhvD15nQtSree
+ KASE9g75wH5YRqtejhSn6i2HbcA/K/8lhSUEVZ/pakR5Yoznlazf6ASPTt2KEp4rtq0E
+ 8a8g==
+X-Gm-Message-State: AOJu0YymG7PjQyrnjt2oen9fGP56jwgX6nAoXmuVSKzcjeeVq92cFZkT
+ 5M8HNiGFZBcpi+EyctagxzA=
+X-Google-Smtp-Source: AGHT+IEUQywPNdrh3odwA4lO72hvzd492UuU34LwfRzc0xrlIt92ugYnTg997QV74DfoWiQe+dK48g==
+X-Received: by 2002:a17:903:2448:b0:1b1:9233:bbf5 with SMTP id
+ l8-20020a170903244800b001b19233bbf5mr472043pls.57.1692300843161; 
+ Thu, 17 Aug 2023 12:34:03 -0700 (PDT)
 Received: from localhost ([192.55.55.51]) by smtp.gmail.com with ESMTPSA id
- 7-20020a17090a1a4700b00263f446d432sm2057452pjl.43.2023.08.17.12.33.44
+ jh13-20020a170903328d00b001b83e624eecsm143284plb.81.2023.08.17.12.34.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 17 Aug 2023 12:33:44 -0700 (PDT)
-Date: Thu, 17 Aug 2023 12:33:43 -0700
+ Thu, 17 Aug 2023 12:34:02 -0700 (PDT)
+Date: Thu, 17 Aug 2023 12:34:01 -0700
 From: Isaku Yamahata <isaku.yamahata@gmail.com>
 To: Qian Wen <qian.wen@intel.com>
 Cc: qemu-devel@nongnu.org, xiaoyao.li@intel.com, zhao1.liu@intel.com,
  pbonzini@redhat.com, richard.henderson@linaro.org,
  babu.moger@amd.com, isaku.yamahata@gmail.com
-Subject: Re: [PATCH v3 1/2] target/i386: Avoid cpu number overflow in legacy
- topology
-Message-ID: <20230817193343.GB3637892@ls.amr.corp.intel.com>
+Subject: Re: [PATCH v3 2/2] target/i386: Avoid overflow of the cache
+ parameter enumerated by leaf 4
+Message-ID: <20230817193401.GC3637892@ls.amr.corp.intel.com>
 References: <20230816080658.3562730-1-qian.wen@intel.com>
- <20230816080658.3562730-2-qian.wen@intel.com>
+ <20230816080658.3562730-3-qian.wen@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230816080658.3562730-2-qian.wen@intel.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=isaku.yamahata@gmail.com; helo=mail-pl1-x62c.google.com
+In-Reply-To: <20230816080658.3562730-3-qian.wen@intel.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=isaku.yamahata@gmail.com; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,70 +93,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 16, 2023 at 04:06:57PM +0800,
+On Wed, Aug 16, 2023 at 04:06:58PM +0800,
 Qian Wen <qian.wen@intel.com> wrote:
 
-> The legacy topology enumerated by CPUID.1.EBX[23:16] is defined in SDM
-> Vol2:
+> According to SDM, CPUID.0x4:EAX[31:26] indicates the Maximum number of
+> addressable IDs for processor cores in the physical package. If we
+> launch over 64 cores VM, the 6-bit field will overflow, and the wrong
+> core_id number will be reported.
 > 
-> Bits 23-16: Maximum number of addressable IDs for logical processors in
-> this physical package.
-> 
-> When threads_per_socket > 255, it will 1) overwrite bits[31:24] which is
-> apic_id, 2) bits [23:16] get truncated.
-> 
-> Specifically, if launching the VM with -smp 256, the value written to
-> EBX[23:16] is 0 because of data overflow. If the guest only supports
-> legacy topology, without V2 Extended Topology enumerated by CPUID.0x1f
-> or Extended Topology enumerated by CPUID.0x0b to support over 255 CPUs,
-> the return of the kernel invoking cpu_smt_allowed() is false and APs
-> (application processors) will fail to bring up. Then only CPU 0 is online,
-> and others are offline.
-> 
-> For example, launch VM via:
-> qemu-system-x86_64 -M q35,accel=kvm,kernel-irqchip=split \
->     -cpu qemu64,cpuid-0xb=off -smp 256 -m 32G \
->     -drive file=guest.img,if=none,id=virtio-disk0,format=raw \
->     -device virtio-blk-pci,drive=virtio-disk0,bootindex=1 --nographic
-> 
-> The guest shows:
->     CPU(s):               256
->     On-line CPU(s) list:  0
->     Off-line CPU(s) list: 1-255
-> 
-> To avoid this issue caused by overflow, limit the max value written to
-> EBX[23:16] to 255 as the HW does.
+> Since the HW reports 0x3f when the intel processor has over 64 cores,
+> limit the max value written to EBX[31:26] to 63, so max num_cores should
+> be 64.
 > 
 > Signed-off-by: Qian Wen <qian.wen@intel.com>
 > Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 > ---
->  target/i386/cpu.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
+>  target/i386/cpu.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
 > diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> index 97ad229d8b..5c008b9d7e 100644
+> index 5c008b9d7e..3b6854300a 100644
 > --- a/target/i386/cpu.c
 > +++ b/target/i386/cpu.c
-> @@ -6008,6 +6008,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
->      uint32_t die_offset;
->      uint32_t limit;
->      uint32_t signature[3];
-> +    uint32_t threads_per_socket;
->      X86CPUTopoInfo topo_info;
+> @@ -248,7 +248,7 @@ static void encode_cache_cpuid4(CPUCacheInfo *cache,
+>      *eax = CACHE_TYPE(cache->type) |
+>             CACHE_LEVEL(cache->level) |
+>             (cache->self_init ? CACHE_SELF_INIT_LEVEL : 0) |
+> -           ((num_cores - 1) << 26) |
+> +           ((MIN(num_cores, 64) - 1) << 26) |
+>             ((num_apic_ids - 1) << 14);
 >  
->      topo_info.dies_per_pkg = env->nr_dies;
-> @@ -6049,8 +6050,9 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
->              *ecx |= CPUID_EXT_OSXSAVE;
->          }
->          *edx = env->features[FEAT_1_EDX];
-> -        if (cs->nr_cores * cs->nr_threads > 1) {
-> -            *ebx |= (cs->nr_cores * cs->nr_threads) << 16;
-> +        threads_per_socket = cs->nr_cores * cs->nr_threads;
-> +        if (threads_per_socket > 1) {
-> +            *ebx |= MIN(threads_per_socket, 255) << 16;
->              *edx |= CPUID_HT;
->          }
->          if (!cpu->enable_pmu) {
+>      assert(cache->line_size > 0);
 > -- 
 > 2.25.1
 > 
