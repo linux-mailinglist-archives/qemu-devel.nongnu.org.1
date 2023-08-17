@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C888877FB61
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 17:59:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECD4377FB74
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 18:06:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWfP9-0007Jd-4f; Thu, 17 Aug 2023 11:59:23 -0400
+	id 1qWfP6-0007CI-Pr; Thu, 17 Aug 2023 11:59:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qWfP3-0007CB-RB
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 11:59:19 -0400
+ id 1qWfP1-00076Y-Ul
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 11:59:16 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qWfOy-0003oY-EE
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 11:59:17 -0400
+ id 1qWfOz-0003oi-8u
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 11:59:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692287947;
+ s=mimecast20190719; t=1692287950;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=DqE3ktnyuOAHuFbb42a3OaASqR6lydc27pMXxSDwsLA=;
- b=hvcMPRnkbO7N6LqfGn0ntl82uodnRxuiKOZRCbGhw6fZSi5VZqQmHqoIIgDzGpkhrvmv7V
- NRIQxXDpz2pNS514cYy0UcH1l2AX6uRnUsBwJXhfHC3BJww1+WrPzyRGpxObSrKDnhbIXP
- O2MXv5bv/sSbJSR9FOcbCKP87lwrqRw=
+ bh=obCBV9iwAB64Adum28VKvyDjQMxBK5nxC3zXPfKINJY=;
+ b=hVe6iKvDHBsNkykgs8kfj4bip3Aco/38rrHN/O/kKUMoLpfiYQzWd4JMfDVmnnb8PtqXaD
+ +R4gmKweG0WW5sRLF68NODqymwJBFL7tCDB9XH+1D4StbylmezVOasBjyVCnmIA4eaO6Td
+ 4qc5YM1EN+qS+GTFh+ir1l0lZt0Dh9E=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-54-i0EGJBEeNVaRNC0FqMm41g-1; Thu, 17 Aug 2023 11:59:04 -0400
-X-MC-Unique: i0EGJBEeNVaRNC0FqMm41g-1
+ us-mta-658-7yVOyLmUM2WaLSvJTzRE3g-1; Thu, 17 Aug 2023 11:59:07 -0400
+X-MC-Unique: 7yVOyLmUM2WaLSvJTzRE3g-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
  [10.11.54.6])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DF0778DC661;
- Thu, 17 Aug 2023 15:59:03 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8B3BF80557B;
+ Thu, 17 Aug 2023 15:59:06 +0000 (UTC)
 Received: from localhost (unknown [10.39.193.48])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 266692166B2E;
- Thu, 17 Aug 2023 15:58:57 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id E4E302166B2D;
+ Thu, 17 Aug 2023 15:59:05 +0000 (UTC)
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: <qemu-block@nongnu.org>, Stefan Hajnoczi <stefanha@redhat.com>,
@@ -56,9 +56,9 @@ Cc: <qemu-block@nongnu.org>, Stefan Hajnoczi <stefanha@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>,
  Stefano Stabellini <sstabellini@kernel.org>, Paul Durrant <paul@xen.org>,
  Ilya Maximets <i.maximets@ovn.org>
-Subject: [PATCH v2 3/4] virtio: use defer_call() in virtio_irqfd_notify()
-Date: Thu, 17 Aug 2023 11:58:46 -0400
-Message-ID: <20230817155847.3605115-4-stefanha@redhat.com>
+Subject: [PATCH v2 4/4] virtio-blk: remove batch notification BH
+Date: Thu, 17 Aug 2023 11:58:47 -0400
+Message-ID: <20230817155847.3605115-5-stefanha@redhat.com>
 In-Reply-To: <20230817155847.3605115-1-stefanha@redhat.com>
 References: <20230817155847.3605115-1-stefanha@redhat.com>
 MIME-Version: 1.0
@@ -72,7 +72,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.021,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,157 +88,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-virtio-blk and virtio-scsi invoke virtio_irqfd_notify() to send Used
-Buffer Notifications from an IOThread. This involves an eventfd
-write(2) syscall. Calling this repeatedly when completing multiple I/O
-requests in a row is wasteful.
+There is a batching mechanism for virtio-blk Used Buffer Notifications
+that is no longer needed because the previous commit added batching to
+virtio_notify_irqfd().
 
-Use the defer_call() API to batch together virtio_irqfd_notify() calls
-made during thread pool (aio=threads), Linux AIO (aio=native), and
-io_uring (aio=io_uring) completion processing.
-
-Behavior is unchanged for emulated devices that do not use
-defer_call_begin()/defer_call_end() since defer_call() immediately
-invokes the callback when called outside a
-defer_call_begin()/defer_call_end() region.
-
-fio rw=randread bs=4k iodepth=64 numjobs=8 IOPS increases by ~9% with a
-single IOThread and 8 vCPUs. iodepth=1 decreases by ~1% but this could
-be noise. Detailed performance data and configuration specifics are
-available here:
-https://gitlab.com/stefanha/virt-playbooks/-/tree/blk_io_plug-irqfd
-
-This duplicates the BH that virtio-blk uses for batching. The next
-commit will remove it.
+Note that this mechanism was rarely used in practice because it is only
+enabled when EVENT_IDX is not negotiated by the driver. Modern drivers
+enable EVENT_IDX.
 
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 ---
- block/io_uring.c   |  6 ++++++
- block/linux-aio.c  |  4 ++++
- hw/virtio/virtio.c | 11 ++++++++++-
- util/thread-pool.c |  5 +++++
- 4 files changed, 25 insertions(+), 1 deletion(-)
+ hw/block/dataplane/virtio-blk.c | 48 +--------------------------------
+ 1 file changed, 1 insertion(+), 47 deletions(-)
 
-diff --git a/block/io_uring.c b/block/io_uring.c
-index 3a1e1f45b3..7cdd00e9f1 100644
---- a/block/io_uring.c
-+++ b/block/io_uring.c
-@@ -125,6 +125,9 @@ static void luring_process_completions(LuringState *s)
+diff --git a/hw/block/dataplane/virtio-blk.c b/hw/block/dataplane/virtio-blk.c
+index da36fcfd0b..f83bb0f116 100644
+--- a/hw/block/dataplane/virtio-blk.c
++++ b/hw/block/dataplane/virtio-blk.c
+@@ -31,9 +31,6 @@ struct VirtIOBlockDataPlane {
+ 
+     VirtIOBlkConf *conf;
+     VirtIODevice *vdev;
+-    QEMUBH *bh;                     /* bh for guest notification */
+-    unsigned long *batch_notify_vqs;
+-    bool batch_notifications;
+ 
+     /* Note that these EventNotifiers are assigned by value.  This is
+      * fine as long as you do not call event_notifier_cleanup on them
+@@ -47,36 +44,7 @@ struct VirtIOBlockDataPlane {
+ /* Raise an interrupt to signal guest, if necessary */
+ void virtio_blk_data_plane_notify(VirtIOBlockDataPlane *s, VirtQueue *vq)
  {
-     struct io_uring_cqe *cqes;
-     int total_bytes;
-+
-+    defer_call_begin();
-+
-     /*
-      * Request completion callbacks can run the nested event loop.
-      * Schedule ourselves so the nested event loop will "see" remaining
-@@ -217,7 +220,10 @@ end:
-             aio_co_wake(luringcb->co);
-         }
+-    if (s->batch_notifications) {
+-        set_bit(virtio_get_queue_index(vq), s->batch_notify_vqs);
+-        qemu_bh_schedule(s->bh);
+-    } else {
+-        virtio_notify_irqfd(s->vdev, vq);
+-    }
+-}
+-
+-static void notify_guest_bh(void *opaque)
+-{
+-    VirtIOBlockDataPlane *s = opaque;
+-    unsigned nvqs = s->conf->num_queues;
+-    unsigned long bitmap[BITS_TO_LONGS(nvqs)];
+-    unsigned j;
+-
+-    memcpy(bitmap, s->batch_notify_vqs, sizeof(bitmap));
+-    memset(s->batch_notify_vqs, 0, sizeof(bitmap));
+-
+-    for (j = 0; j < nvqs; j += BITS_PER_LONG) {
+-        unsigned long bits = bitmap[j / BITS_PER_LONG];
+-
+-        while (bits != 0) {
+-            unsigned i = j + ctzl(bits);
+-            VirtQueue *vq = virtio_get_queue(s->vdev, i);
+-
+-            virtio_notify_irqfd(s->vdev, vq);
+-
+-            bits &= bits - 1; /* clear right-most bit */
+-        }
+-    }
++    virtio_notify_irqfd(s->vdev, vq);
+ }
+ 
+ /* Context: QEMU global mutex held */
+@@ -126,9 +94,6 @@ bool virtio_blk_data_plane_create(VirtIODevice *vdev, VirtIOBlkConf *conf,
+     } else {
+         s->ctx = qemu_get_aio_context();
      }
-+
-     qemu_bh_cancel(s->completion_bh);
-+
-+    defer_call_end();
- }
+-    s->bh = aio_bh_new_guarded(s->ctx, notify_guest_bh, s,
+-                               &DEVICE(vdev)->mem_reentrancy_guard);
+-    s->batch_notify_vqs = bitmap_new(conf->num_queues);
  
- static int ioq_submit(LuringState *s)
-diff --git a/block/linux-aio.c b/block/linux-aio.c
-index 62380593c8..ab607ade6a 100644
---- a/block/linux-aio.c
-+++ b/block/linux-aio.c
-@@ -205,6 +205,8 @@ static void qemu_laio_process_completions(LinuxAioState *s)
- {
-     struct io_event *events;
+     *dataplane = s;
  
-+    defer_call_begin();
-+
-     /* Reschedule so nested event loops see currently pending completions */
-     qemu_bh_schedule(s->completion_bh);
+@@ -146,8 +111,6 @@ void virtio_blk_data_plane_destroy(VirtIOBlockDataPlane *s)
  
-@@ -231,6 +233,8 @@ static void qemu_laio_process_completions(LinuxAioState *s)
-      * own `for` loop.  If we are the last all counters droped to zero. */
-     s->event_max = 0;
-     s->event_idx = 0;
-+
-+    defer_call_end();
- }
- 
- static void qemu_laio_process_completions_and_submit(LinuxAioState *s)
-diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-index 309038fd46..5eb1f91b41 100644
---- a/hw/virtio/virtio.c
-+++ b/hw/virtio/virtio.c
-@@ -15,6 +15,7 @@
- #include "qapi/error.h"
- #include "qapi/qapi-commands-virtio.h"
- #include "trace.h"
-+#include "qemu/defer-call.h"
- #include "qemu/error-report.h"
- #include "qemu/log.h"
- #include "qemu/main-loop.h"
-@@ -28,6 +29,7 @@
- #include "hw/virtio/virtio-bus.h"
- #include "hw/qdev-properties.h"
- #include "hw/virtio/virtio-access.h"
-+#include "sysemu/block-backend.h"
- #include "sysemu/dma.h"
- #include "sysemu/runstate.h"
- #include "virtio-qmp.h"
-@@ -2426,6 +2428,13 @@ static bool virtio_should_notify(VirtIODevice *vdev, VirtQueue *vq)
+     vblk = VIRTIO_BLK(s->vdev);
+     assert(!vblk->dataplane_started);
+-    g_free(s->batch_notify_vqs);
+-    qemu_bh_delete(s->bh);
+     if (s->iothread) {
+         object_unref(OBJECT(s->iothread));
      }
- }
+@@ -173,12 +136,6 @@ int virtio_blk_data_plane_start(VirtIODevice *vdev)
  
-+/* Batch irqs while inside a defer_call_begin()/defer_call_end() section */
-+static void virtio_notify_irqfd_deferred_fn(void *opaque)
-+{
-+    EventNotifier *notifier = opaque;
-+    event_notifier_set(notifier);
-+}
-+
- void virtio_notify_irqfd(VirtIODevice *vdev, VirtQueue *vq)
- {
-     WITH_RCU_READ_LOCK_GUARD() {
-@@ -2452,7 +2461,7 @@ void virtio_notify_irqfd(VirtIODevice *vdev, VirtQueue *vq)
-      * to an atomic operation.
-      */
-     virtio_set_isr(vq->vdev, 0x1);
--    event_notifier_set(&vq->guest_notifier);
-+    defer_call(virtio_notify_irqfd_deferred_fn, &vq->guest_notifier);
- }
+     s->starting = true;
  
- static void virtio_irq(VirtQueue *vq)
-diff --git a/util/thread-pool.c b/util/thread-pool.c
-index e3d8292d14..d84961779a 100644
---- a/util/thread-pool.c
-+++ b/util/thread-pool.c
-@@ -15,6 +15,7 @@
-  * GNU GPL, version 2 or (at your option) any later version.
-  */
- #include "qemu/osdep.h"
-+#include "qemu/defer-call.h"
- #include "qemu/queue.h"
- #include "qemu/thread.h"
- #include "qemu/coroutine.h"
-@@ -175,6 +176,8 @@ static void thread_pool_completion_bh(void *opaque)
-     ThreadPool *pool = opaque;
-     ThreadPoolElement *elem, *next;
+-    if (!virtio_vdev_has_feature(vdev, VIRTIO_RING_F_EVENT_IDX)) {
+-        s->batch_notifications = true;
+-    } else {
+-        s->batch_notifications = false;
+-    }
+-
+     /* Set up guest notifier (irq) */
+     r = k->set_guest_notifiers(qbus->parent, nvqs, true);
+     if (r != 0) {
+@@ -370,9 +327,6 @@ void virtio_blk_data_plane_stop(VirtIODevice *vdev)
  
-+    defer_call_begin(); /* cb() may use defer_call() to coalesce work */
-+
- restart:
-     QLIST_FOREACH_SAFE(elem, &pool->head, all, next) {
-         if (elem->state != THREAD_DONE) {
-@@ -208,6 +211,8 @@ restart:
-             qemu_aio_unref(elem);
-         }
-     }
-+
-+    defer_call_end();
- }
+     aio_context_release(s->ctx);
  
- static void thread_pool_cancel(BlockAIOCB *acb)
+-    qemu_bh_cancel(s->bh);
+-    notify_guest_bh(s); /* final chance to notify guest */
+-
+     /* Clean up guest notifier (irq) */
+     k->set_guest_notifiers(qbus->parent, nvqs, false);
+ 
 -- 
 2.41.0
 
