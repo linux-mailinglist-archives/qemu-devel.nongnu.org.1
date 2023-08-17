@@ -2,107 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0E5577FAB4
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 17:27:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E8C477FABC
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 17:29:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWesz-0001nD-39; Thu, 17 Aug 2023 11:26:09 -0400
+	id 1qWewA-0002iO-7K; Thu, 17 Aug 2023 11:29:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qWesr-0001mx-P9
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 11:26:01 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qWesp-0006NU-9Y
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 11:26:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692285958;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=rUqUWR8rzrD927CGxX3V6wwLNeZ9JiTIjHUnTTsexmw=;
- b=N5dBCPmvFqglsPqBEw4RJMKOVnT4SdaFQahj0j1qn0Geu9GDiBfpjTvZNWR0GLMQP0MzBy
- x/qjlyHvdh7GbDD7zAOiWOJhmmle3/ydLkMFZl9pUZ6Jw4Xnsem1K98fDbMXf+AMrI+X1Z
- xP67ArJXUUw4aMFxSG4iDKbs455S93o=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-693-cgw2eodCOhuQuGXg_NrxoA-1; Thu, 17 Aug 2023 11:25:56 -0400
-X-MC-Unique: cgw2eodCOhuQuGXg_NrxoA-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-317a3951296so4694218f8f.2
- for <qemu-devel@nongnu.org>; Thu, 17 Aug 2023 08:25:56 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qWew0-0002bz-Mh
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 11:29:18 -0400
+Received: from mail-oi1-x235.google.com ([2607:f8b0:4864:20::235])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qWevw-0006mq-Nt
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 11:29:16 -0400
+Received: by mail-oi1-x235.google.com with SMTP id
+ 5614622812f47-3a36b52b4a4so585958b6e.1
+ for <qemu-devel@nongnu.org>; Thu, 17 Aug 2023 08:29:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1692286149; x=1692890949;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=gmUM5LsrJvRxFMnNYmXI0zSid4/PsHc30JEWozh2v9g=;
+ b=F5ZCAKeh/uLGtXreO5tEqzzNpDo8FU+nLdFl3gfaPoInSPtL+8Y3j/kImdUa9pzAX1
+ 38z6tt7aESJbDL35O3Q7FTafys4zsBjbWhLV04E/YflI5ZR/ZC9qKtpE0Ls+XfFLlBRM
+ sgG1pug4tNyCI4YcVd77Wm3/TeG0Lf7jSReU8eue5NSLZgTbinubLrIqyvc4xoRjm8Tj
+ 2hDhO73x501C/HjongpCz/6m0ylKDyzxb6ewknuWEPGS6wA5STDZCQzeE9oTJal2qOFW
+ 26sNNUbs3ySxTtEAt0EefXHkA+A4XZcnDhyciAXa37tcMVn16a9RBA14pWCacfTa57jL
+ 1bMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692285955; x=1692890755;
- h=content-transfer-encoding:in-reply-to:organization:references:cc:to
- :from:content-language:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20221208; t=1692286149; x=1692890949;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=rUqUWR8rzrD927CGxX3V6wwLNeZ9JiTIjHUnTTsexmw=;
- b=YcnFSHXkikgWwKpV+F/T/BNS1M1GutbMLCtlMhgRHP/N9mYDK0u6lLjbEYiyQ4uw3K
- fK/vu7gHinFJOFcE45Kzadrf1/rCuF4vEwhJRsRQnfQwvd/ku62hAKkZOTdmNmtwS7aH
- pievqpuaazEkL+1M7Q1+I35Uo9CtntrmGZEJIqEH3ZbWa1i2EdqoJ/mGJpobpTmLx74H
- Iqh1PmJbcgTDKxdV9dvfD1utND9r7MMM7N+UjWDIxgyrIUa/ix+Jj3bk880Kbmg1ofx0
- qHyIMI3v7vWUPmfLxIZjlEx7sHvqHn60GzC1pxJtthP3q3fsZZpOBWqy98p7P5ptMjUe
- qxxA==
-X-Gm-Message-State: AOJu0YzAuz61/aHXt/Q3xuTH8gCdiJgMKgHbx5jFSREsJK2IWJ7k1Rdn
- L70vU8C0+dsUYSlhfVYA0IXW3+atwpuCH7MY1RRpgmJ9Pp0TSmMcEtCJC5log+KSc7XYeeIQLX6
- L+h4qzoa1vsV+JJk=
-X-Received: by 2002:a5d:4536:0:b0:319:6ae0:cae5 with SMTP id
- j22-20020a5d4536000000b003196ae0cae5mr4048236wra.70.1692285955569; 
- Thu, 17 Aug 2023 08:25:55 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHlUHmaHz50PcdreR04bHnCn8g70W7EmK7uRZng/k9pnp1qBYFold/HhlS2gWF4bhT5ZHPeaw==
-X-Received: by 2002:a5d:4536:0:b0:319:6ae0:cae5 with SMTP id
- j22-20020a5d4536000000b003196ae0cae5mr4048218wra.70.1692285955215; 
- Thu, 17 Aug 2023 08:25:55 -0700 (PDT)
-Received: from ?IPV6:2a09:80c0:192:0:5dac:bf3d:c41:c3e7?
- ([2a09:80c0:192:0:5dac:bf3d:c41:c3e7])
+ bh=gmUM5LsrJvRxFMnNYmXI0zSid4/PsHc30JEWozh2v9g=;
+ b=VsWzV0MO+VrplWlTsK4VdSumDh+RlBQ6nEy+4vSNazLv5NUT1No32GI5VXjRO+BzK2
+ gmY4UNXnwDDwVy+tIvYqSqUrayQZM+31omHj+1P45z1l2ePZdhhrwq3pubyK/GS7hDcu
+ suL4kTdb9KNcyETkfjzkIs+O/mq5ZfFAy4gxMAvgrSeDITkePXc8rXasjcEVYnBOVoZQ
+ KbsRZDLJ6LMLyNeExVHKsdDJmOlV0mhOV1/owgtOZq/yCPNUMygL/A5LcVyaR2kr9eyY
+ RNCbST4NUpzP8EX7xNs9SZcG5HEJ0ZG9BeO7I3ejGB8RYZpigUlSk0AkHW4Vt6kHB8Ai
+ SIyA==
+X-Gm-Message-State: AOJu0YxmBbDFg2gVAP2OC6aVSpR4WNJN3ObbpMP7KBPrAFRVQJK9rzND
+ wVoGha2fvTMP9Df8CjHlmXPSPN8QHFKMsSrX7J0=
+X-Google-Smtp-Source: AGHT+IGFDMYdPXRPi+rVI/KOIF1kdOAcI32UfvwRqNqGQTVfDZfZj8SdeqqrL+zG0k7gxsE8Lh3/vA==
+X-Received: by 2002:a05:6808:1520:b0:3a7:272d:2f1c with SMTP id
+ u32-20020a056808152000b003a7272d2f1cmr2264121oiw.25.1692286149513; 
+ Thu, 17 Aug 2023 08:29:09 -0700 (PDT)
+Received: from grind.dc1.ventanamicro.com
+ (189-69-160-189.dial-up.telesp.net.br. [189.69.160.189])
  by smtp.gmail.com with ESMTPSA id
- u16-20020a5d4690000000b00313de682eb3sm24885551wrq.65.2023.08.17.08.25.54
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 17 Aug 2023 08:25:54 -0700 (PDT)
-Message-ID: <f2a35c8f-d486-1398-e098-3aadab3078e9@redhat.com>
-Date: Thu, 17 Aug 2023 17:25:54 +0200
+ a24-20020a05680804d800b003a5b027ccb2sm7606394oie.38.2023.08.17.08.29.06
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 17 Aug 2023 08:29:08 -0700 (PDT)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Alexandre Ghiti <alexghiti@rivosinc.com>
+Subject: [PATCH] target/riscv: fix satp_mode_finalize() when
+ satp_mode.supported = 0
+Date: Thu, 17 Aug 2023 12:29:03 -0300
+Message-ID: <20230817152903.694926-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v1 1/3] softmmu/physmem: fallback to opening guest RAM
- file as readonly in a MAP_PRIVATE mapping
-Content-Language: en-US
-From: David Hildenbrand <david@redhat.com>
-To: Stefan Hajnoczi <stefanha@gmail.com>
-Cc: ThinerLogoer <logoerthiner1@163.com>,
- "stefanha@redhat.com" <stefanha@redhat.com>, Peter Xu <peterx@redhat.com>,
- qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-References: <20230807190736.572665-1-david@redhat.com>
- <20230807190736.572665-2-david@redhat.com> <ZNKtHVotkfgI1tb4@x1n>
- <1d1a7d8f-6260-5905-57ea-514b762ce869@redhat.com> <ZNOti1OKN79t68jP@x1n>
- <e9c53fbd-369c-2605-1470-e67a765f923b@redhat.com>
- <6152f171.6a4c.189e069baf7.Coremail.logoerthiner1@163.com>
- <ZNVVmxuQAsSEHqZq@x1n>
- <1b4168d2.4182.189e324e0ef.Coremail.logoerthiner1@163.com>
- <08cc9db9-b774-b027-58f5-dd7e6c374657@redhat.com>
- <2b967b3.13b7.189e82ee694.Coremail.logoerthiner1@163.com>
- <06f9a805-8150-8106-7d0a-05d0d2465cd0@redhat.com>
- <CAJSP0QVjxNQ=sMjzEFzbyhJ0e+O5bGBiXkHMgWiB2GOVw4NqHQ@mail.gmail.com>
- <9b2b884e-095c-7cd5-380b-b3b0c5aad9b6@redhat.com>
-Organization: Red Hat
-In-Reply-To: <9b2b884e-095c-7cd5-380b-b3b0c5aad9b6@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -60
-X-Spam_score: -6.1
-X-Spam_bar: ------
-X-Spam_report: (-6.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.021,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-4.01, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::235;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-oi1-x235.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -119,37 +93,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+In the same emulated RISC-V host, the 'host' KVM CPU takes 4 times
+longer to boot than the 'rv64' KVM CPU.
 
->> Commit 86635aa4e9d627d5142b81c57a33dd1f36627d07 mentions that we don't
->> want guests to be able to dirty pages on the host. The change you're
->> proposing would not protect against guests that dirty the memory.
-> 
-> The guest could write memory but not modify the file. Only with
-> "share=off,readonly=on" of course, not with "share=on,readonly=on".
-> 
->>
->> I don't know how important that requirement was (that commit was a
->> request from Kata Containers).
-> 
-> Let me take a look if Kata passes "share=on,readonly=on" or
-> "share=off,readonly=off".
-> 
+The reason is an unintended behavior of riscv_cpu_satp_mode_finalize()
+when satp_mode.supported = 0, i.e. when cpu_init() does not set
+satp_mode_max_supported(). satp_mode_max_from_map(map) does:
 
-At least their R/O DIMM test generates:
+31 - __builtin_clz(map)
 
--device nvdimm,id=nv0,memdev=mem0,unarmed=on -object 
-memory-backend-file,id=mem0,mem-path=/root,size=65536,readonly=on
+This means that, if satp_mode.supported = 0, satp_mode_supported_max
+wil be '31 - 32'. But this is C, so satp_mode_supported_max will gladly
+set it to UINT_MAX (4294967295). After that, if the user didn't set a
+satp_mode, set_satp_mode_default_map(cpu) will make
 
-So they are assuming readonly with implied share=off creates ROM. If 
-only they would have specified share=on ...
+cfg.satp_mode.map = cfg.satp_mode.supported
 
-One way would be letting the R/O nvdimm set the MR container to 
-readonly. Then that guest also shouldn't be able to modify that memory. 
-Let me think about that.
+So satp_mode.map = 0. And then satp_mode_map_max will be set to
+satp_mode_max_from_map(cpu->cfg.satp_mode.map), i.e. also UINT_MAX. The
+guard "satp_mode_map_max > satp_mode_supported_max" doesn't protect us
+here since both are UINT_MAX.
 
+And finally we have 2 loops:
+
+        for (int i = satp_mode_map_max - 1; i >= 0; --i) {
+
+Which are, in fact, 2 loops from UINT_MAX -1 to -1. This is where the
+extra delay when booting the 'host' CPU is coming from.
+
+Commit 43d1de32f8 already set a precedence for satp_mode.supported = 0
+in a different manner. We're doing the same here. If supported == 0,
+interpret as 'the CPU wants the OS to handle satp mode alone' and skip
+satp_mode_finalize().
+
+We'll also put a guard in satp_mode_max_from_map() to assert out if map
+is 0 since the function is not ready to deal with it.
+
+Cc: Alexandre Ghiti <alexghiti@rivosinc.com>
+Fixes: 6f23aaeb9b ("riscv: Allow user to set the satp mode")
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+---
+ target/riscv/cpu.c | 23 ++++++++++++++++++++---
+ 1 file changed, 20 insertions(+), 3 deletions(-)
+
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index d608026a28..86da93c7bc 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -349,6 +349,17 @@ static uint8_t satp_mode_from_str(const char *satp_mode_str)
+ 
+ uint8_t satp_mode_max_from_map(uint32_t map)
+ {
++    /*
++     * 'map = 0' will make us return (31 - 32), which C will
++     * happily overflow to UINT_MAX. There's no good result to
++     * return if 'map = 0' (e.g. returning 0 will be ambiguous
++     * with the result for 'map = 1').
++     *
++     * Assert out if map = 0. Callers will have to deal with
++     * it outside of this function.
++     */
++    g_assert(map > 0);
++
+     /* map here has at least one bit set, so no problem with clz */
+     return 31 - __builtin_clz(map);
+ }
+@@ -1387,9 +1398,15 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
+ static void riscv_cpu_satp_mode_finalize(RISCVCPU *cpu, Error **errp)
+ {
+     bool rv32 = riscv_cpu_mxl(&cpu->env) == MXL_RV32;
+-    uint8_t satp_mode_map_max;
+-    uint8_t satp_mode_supported_max =
+-                        satp_mode_max_from_map(cpu->cfg.satp_mode.supported);
++    uint8_t satp_mode_map_max, satp_mode_supported_max;
++
++    /* The CPU wants the OS to decide which satp mode to use */
++    if (cpu->cfg.satp_mode.supported == 0) {
++        return;
++    }
++
++    satp_mode_supported_max =
++                    satp_mode_max_from_map(cpu->cfg.satp_mode.supported);
+ 
+     if (cpu->cfg.satp_mode.map == 0) {
+         if (cpu->cfg.satp_mode.init == 0) {
 -- 
-Cheers,
-
-David / dhildenb
+2.41.0
 
 
