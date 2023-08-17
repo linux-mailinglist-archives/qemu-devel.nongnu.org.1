@@ -2,107 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D22677F7EA
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 15:40:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB2B877F7D7
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 15:37:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWdEV-0005BR-2a; Thu, 17 Aug 2023 09:40:15 -0400
+	id 1qWdAE-0000fY-Po; Thu, 17 Aug 2023 09:35:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
- id 1qWdEQ-00058T-WF
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 09:40:11 -0400
-Received: from mail-mw2nam10on2055.outbound.protection.outlook.com
- ([40.107.94.55] helo=NAM10-MW2-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qWdAA-0000f3-Qa
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 09:35:47 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
- id 1qWdEL-0001Dk-CR
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 09:40:08 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=IAkIOXz9dN2sh28MlJ/3fDQQNAY1lOPqpEB4qsU6+Ojzshggs3JnnhapagF/X4FyVRJweFWR347viTGeVrrfpob1D+o+nJfXDgyMl1NoaFVofDZSRKOTFCYCbK/qyP6zkKSiwOMFt69A8MHIMq/3U2XvaRIKMXJRGpbLiIsYRPiQL70AdIPYcqBJ/6Lx5qAG0I31F62kK40HXr0TYTPSMlwcgSIsPfE1oITocQTYMO3Z689pIgvtBBBsLm1mldEnPSAovP5I3fPgZd+3k6A8lfFK7h9CI8yh2fEcX71OFP7nW4hGOPK93KQC4rGUkA8QjKIHR2Gj9cCsLJnoWFhEqQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Srct0+W83BfuY6LxeUtF54xupRnhwJzIbfGqFQZ2/Ac=;
- b=HnmQEyum5VuCIgF90cCqs9LB46Je3Lapw7840UEZAkQeEZfLYD8GU80+y0bKZjX5ezIbrHDCRzOygzjOnzD+QwWCIYMb6bQ3Rt7GMfPBRc9IKVgQAyLnSC9/vlIKhltOboDQPaqXOa5jVEhXU/twDLIu3Vh03hALFODpTePYud8Iedi7TwvFRkvgmrdjRjP/YrM/IzUvnaisgNgMHNiwHJJgbLrtLzXfI6XylYKGsSsP3blpp+xXgAtE4uNXOpN8Wxh4q1g5UJlQGIW8Gn9kKMpqfAN8E3A6p296nab4WnujrjXg5DyuNOggJGVr3FY9nrLQq61OGdx6f0tlE/5zmg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Srct0+W83BfuY6LxeUtF54xupRnhwJzIbfGqFQZ2/Ac=;
- b=cvHJnvb09kZiUpJPhGum+kclw2yQwxv/FPd6CBwxdKoYhuNgDebfECT1mHOw1YjfPJdqzvEezusIRDkInLptCG20lcfGqjMC/LjuG4lfLDkHa7Ly11QjqkDdYaT0FIDvSI0wH9jqGU1JsHyHfsO0JdVdPkuG56ovqRD9SjBEHxQ=
-Received: from CY5PR18CA0001.namprd18.prod.outlook.com (2603:10b6:930:5::6) by
- CY8PR12MB9035.namprd12.prod.outlook.com (2603:10b6:930:77::11) with
- Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6678.29; Thu, 17 Aug 2023 13:34:59 +0000
-Received: from CY4PEPF0000EE39.namprd03.prod.outlook.com
- (2603:10b6:930:5:cafe::3) by CY5PR18CA0001.outlook.office365.com
- (2603:10b6:930:5::6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.17 via Frontend
- Transport; Thu, 17 Aug 2023 13:34:59 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CY4PEPF0000EE39.mail.protection.outlook.com (10.167.242.13) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6699.14 via Frontend Transport; Thu, 17 Aug 2023 13:34:59 +0000
-Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Thu, 17 Aug
- 2023 08:34:58 -0500
-Content-Type: text/plain; charset="utf-8"
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qWdA8-0000WO-GY
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 09:35:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1692279341;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=y4aM/44Vrl979Uyh6eMPhm3FkvX+LMtZM4tW0YULQXU=;
+ b=fD7/EURIXtgp2+08Lwhq9hpvDS7BV4jsR0GIdA7+/yIPrjzK5qPDGx1+GoLy/v/f2+okbB
+ 0Vrzkug5lDDdgeWsAOKArwCXlGLqJHchSvN23YQ8IS/JUKrVri0XlV6qPRuabOxo133Y+Y
+ IRl0m33ROBzyAP7aFKeS9PFqceSJ8eM=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-452-OZ2SRxS1OVaOKvTuA0aPVA-1; Thu, 17 Aug 2023 09:35:40 -0400
+X-MC-Unique: OZ2SRxS1OVaOKvTuA0aPVA-1
+Received: by mail-qk1-f197.google.com with SMTP id
+ af79cd13be357-76cb9958d60so199208485a.0
+ for <qemu-devel@nongnu.org>; Thu, 17 Aug 2023 06:35:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1692279340; x=1692884140;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=y4aM/44Vrl979Uyh6eMPhm3FkvX+LMtZM4tW0YULQXU=;
+ b=TP/WneqjTRT1Reo+ckZdfe2zeckvhozdoWurJWuxQ0lNK+sOdouosT0oo0jbDxsZgN
+ Pt7/V30hOQddUqFXQ5wRo4T21dPIPXfQ/FJQkcfz9QQ5wzUKfTHQHyi6oqKCpl1mwWnz
+ MjsLS5W1M9ZJZD7pqi7H5RyoCoLfKXaV42qiqDKzdwnNz0N31xN+UMoe2cdURhE9kNkj
+ KvLRQp24aYSUe0YNdB7DQB4mEEnxZdofoSZn9CMTwzm2BZM9wOZOj2dFGtUWZHJGRsDP
+ HeXllI8YUs2D1zyAUvrXxuPG87hV3Qn4YHL1qRe2e0T8V+KmxPygcQZg4Ly9gxbJN8Ye
+ GySQ==
+X-Gm-Message-State: AOJu0YwIvwXl4mTu2GwYe7XM02VFLVes898zT6DO5rlaCDn4DfwQ36A+
+ hk0T/qJM/G+EXHvjF1LMA4RXiSxbBoFIxVzQPPVpevE+Y2rjS5QqRA2xCky2B7FQHHmxmQRyaZm
+ g65kmv6bo9yp/CKk=
+X-Received: by 2002:a05:620a:4093:b0:76c:ed4e:ac10 with SMTP id
+ f19-20020a05620a409300b0076ced4eac10mr6561339qko.6.1692279339904; 
+ Thu, 17 Aug 2023 06:35:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHOdk7/FAhwYDsPBmezVegASHkxfgiqvev5f7Pg2ZeQl4Nsa0bbbrTvLSUO+XYQ00KEBk3/Zg==
+X-Received: by 2002:a05:620a:4093:b0:76c:ed4e:ac10 with SMTP id
+ f19-20020a05620a409300b0076ced4eac10mr6561320qko.6.1692279339606; 
+ Thu, 17 Aug 2023 06:35:39 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ a2-20020a05620a102200b007671678e325sm5168450qkk.88.2023.08.17.06.35.38
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 17 Aug 2023 06:35:39 -0700 (PDT)
+Date: Thu, 17 Aug 2023 09:35:38 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Guoyi Tu <tugy@chinatelecom.cn>
+Cc: =?utf-8?B?44CQ5aSW6YOo6LSm5Y+344CR?= Fabiano Rosas <farosas@suse.de>,
+ Juan Quintela <quintela@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>, qemu-devel@nongnu.org
+Subject: Re: [PATCH] migrate/ram: let ram_save_target_page_legacy() return if
+ qemu file got error
+Message-ID: <ZN4iKgeVeLBSCSK2@x1n>
+References: <20ae48e5-006d-4a1b-823e-f2c591ec4fb0@chinatelecom.cn>
+ <87h6p0mqk8.fsf@suse.de> <ZNv6ABLk7EjaX8dD@x1n>
+ <87350klygf.fsf@suse.de> <ZNzhuF7fRUdaGthV@x1n>
+ <87o7j7kohx.fsf@suse.de>
+ <15874e41-fee0-49db-98fc-cf2b545fe7c2@chinatelecom.cn>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Subject: [ANNOUNCE] QEMU 8.1.0-rc4 is now available
-From: Michael Roth <michael.roth@amd.com>
-To: <qemu-devel@nongnu.org>
-CC: Richard Henderson <richard.henderson@linaro.org>
-Date: Thu, 17 Aug 2023 08:34:12 -0500
-Message-ID: <169227925258.1681128.18113073581172111021@amd.com>
-User-Agent: alot/0.9
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE39:EE_|CY8PR12MB9035:EE_
-X-MS-Office365-Filtering-Correlation-Id: 865824c9-ba24-4d39-9110-08db9f26c0a7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: F0/NYu5oRiaKdG/ml52VT7rbq+zDNSKxHsNHiGfQpemLxqaHY2mkZqSYfecOjvvgmBZ73E2FUcZh55A2u/T5F9qi9CzebcTxBgEYV4oZaKJTzd/lk+JLlMtiY2KkvlVEEE+34uw/na71uH2IfJPXftDzLv40rgZp8wlmaMCjI77yYBESbLJH0gT5pqxnW4lW/Ftt//qAOvjECMUFUjw405S8Kzgv3gWMuSn4gE+OOUwhydtfKuF/mFzpj1MHFzxcQBfq3KbLsE0eFcJHX5lBVYUSqM1QAFQ+tAKGYdeg5An1XAqW2zV/Twxltrw/o2E1qQTCTrYEmhnvgcL+59inS7hL9LdvPdID5MV0kRzltT+SaGKqW0/+7aB1EKNmY9DzRw5Ru0mHlAOiEyRW2bYfD3AZQ2DpQNL32TsYr3fhajVyIlIV7jiP1wIddIYELkERVIVeTtTn2e+fgZomYu3lUgBtqXVhzkEIWFeyuW5QYu8oxfEHXlAG5rISlyng2a+HBtowLbQ9HYf10ijPwf5JmFYQDQ56kC7axnIZmTmnlD3kXL4pQx8h79y8WXxXgnZfSXAEi9yyUb+LngskHEOTXWPF4kX2fMlpIOsYV4Nx1LkO6dGdEZCcRBjQqwei9cVdKLbsSlu3trrAd6htgiQNSRx5WnNVWBAu3MGHYxZ2/MApIel5EK1B2aELYgPlpJjinnRf2BuzvkLb6SXZOvEuAAsu0wh533veWYuJuPyjT299gzp/qs4G8Z9e3wf2GqT3UX0KL445Fpl3jm7tkkAEFQ==
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230031)(4636009)(39860400002)(396003)(346002)(136003)(376002)(451199024)(186009)(1800799009)(82310400011)(46966006)(36840700001)(40470700004)(316002)(82740400003)(356005)(70206006)(81166007)(70586007)(6916009)(966005)(5660300002)(41300700001)(36860700001)(44832011)(47076005)(8676002)(8936002)(4326008)(26005)(40460700003)(2906002)(83380400001)(16526019)(40480700001)(336012)(478600001)(426003)(86362001)(36756003)(6666004)(2616005)(36900700001);
- DIR:OUT; SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Aug 2023 13:34:59.1744 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 865824c9-ba24-4d39-9110-08db9f26c0a7
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000EE39.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB9035
-Received-SPF: softfail client-ip=40.107.94.55;
- envelope-from=Michael.Roth@amd.com;
- helo=NAM10-MW2-obe.outbound.protection.outlook.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <15874e41-fee0-49db-98fc-cf2b545fe7c2@chinatelecom.cn>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.021,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,42 +104,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello,
+On Thu, Aug 17, 2023 at 10:19:19AM +0800, Guoyi Tu wrote:
+> 
+> 
+> On 2023/8/16 23:15, 【外部账号】 Fabiano Rosas wrote:
+> > Peter Xu <peterx@redhat.com> writes:
+> > 
+> > > On Tue, Aug 15, 2023 at 07:42:24PM -0300, Fabiano Rosas wrote:
+> > > > Yep, I see that. I meant explicitly move the code into the loop. Feels a
+> > > > bit weird to check the QEMUFile for errors first thing inside the
+> > > > function when nothing around it should have touched the QEMUFile.
+> > > 
+> > > Valid point.  This reminded me that now we have one indirection into
+> > > ->ram_save_target_page() which is a hook now.  Putting in the caller will
+> > > work for all hooks, even though they're not yet exist.
+> > > 
+> > > But since we don't have any other hooks yet, it'll be the same for now
 
-On behalf of the QEMU Team, I'd like to announce the availability of the
-fifth release candidate for the QEMU 8.1 release. This release is meant
-for testing purposes and should not be used in a production environment.
+Guoyi,
 
-  http://download.qemu.org/qemu-8.1.0-rc4.tar.xz
-  http://download.qemu.org/qemu-8.1.0-rc4.tar.xz.sig
+Your email got cut from here.  Same thing happened on emails from Hyman
+(also sent from China Telecom email address), maybe your mail system did
+something wrong.
 
-You can help improve the quality of the QEMU 8.1 release by testing this
-release and reporting bugs using our GitLab issue tracker:
+-- 
+Peter Xu
 
-  https://gitlab.com/qemu-project/qemu/-/milestones/8#tab-issues
-
-The release plan, as well a documented known issues for release
-candidates, are available at:
-
-  http://wiki.qemu.org/Planning/8.1
-
-Please add entries to the ChangeLog for the 8.1 release below:
-
-  http://wiki.qemu.org/ChangeLog/8.1
-
-Thank you to everyone involved!
-
-Changes since rc3:
-
-0d52116fd8: Update version for v8.1.0-rc4 release (Richard Henderson)
-d3b41127c2: tcg/i386: Output %gs prefix in tcg_out_vex_opc (Richard Henders=
-on)
-b274c2388e: hw/riscv/virt.c: change 'aclint' TCG check (Daniel Henrique Bar=
-boza)
-136cb9cc03: target/riscv/kvm.c: fix mvendorid size in vcpu_set_machine_ids(=
-) (Daniel Henrique Barboza)
-0f936247e8: pci: Fix the update of interrupt disable bit in PCI_COMMAND reg=
-ister (Guoyi Tu)
-3d449bc603: hw/pci-host: Allow extended config space access for Designware =
-PCIe host (Jason Chien)
 
