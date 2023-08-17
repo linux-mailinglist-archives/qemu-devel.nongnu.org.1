@@ -2,59 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5AE477F6D5
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 14:54:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 310DA77F6CD
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 14:52:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWcTG-0008DI-7s; Thu, 17 Aug 2023 08:51:26 -0400
+	id 1qWcTK-0008NY-Iz; Thu, 17 Aug 2023 08:51:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qWcT3-0007w2-1R
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 08:51:15 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qWcT0-0007uC-3z
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 08:51:14 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qWcSx-0002dB-0S
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 08:51:10 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qWcSw-0002cs-ER
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 08:51:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1692276664;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=PtQKuO2ROUQUxq1WJDoUiPOFKa3sDvvxUxkszlXYLVA=;
- b=RzwzWsNBYjYHG2KjMZlPmxxtn3vn2dUaDtM8y/4dexLpLCe+HQTb+u8EA2LbIqJAX4rWqn
- jzLmIXyxZTak0MLMewV7Pmee795L0C15eb5yD1RIe7lc3sT/C/v6/Wmi/d5tdRLof+/7+C
- EsUMgYXVRy8re6xpe+wNps2Le10B1ng=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-147-eFQnhH3nMdKshZOxNRXLSA-1; Thu, 17 Aug 2023 08:51:01 -0400
-X-MC-Unique: eFQnhH3nMdKshZOxNRXLSA-1
+ bh=Yzcmj3fodUP6zMg6ws+hQfZDk1zwCAYQ9m+SmIGMw6c=;
+ b=McrrnThHoUaNy00G9efNkSi/Xrs3PQnuCUVPgj/zOvW22+yhTIPvo2yCPsVb2Wstjx+COA
+ 5IQoM5lOz4yVQvx1lg/zdkUFUxlBpLB0Np4OdEtse4c1t5N/bQhYcU+tU9FiG6FkBVJgNI
+ eC2VMAA5p5Qc9j+ovyihFfJ2FY8hzIM=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-198-O5DCNpY_PkSQeUTyR3Ccjw-1; Thu, 17 Aug 2023 08:51:02 -0400
+X-MC-Unique: O5DCNpY_PkSQeUTyR3Ccjw-1
 Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
  [10.11.54.3])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9EF8B381BE89;
- Thu, 17 Aug 2023 12:51:00 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0D5458DC661;
+ Thu, 17 Aug 2023 12:51:02 +0000 (UTC)
 Received: from merkur.redhat.com (unknown [10.39.194.106])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 73FA61121314;
- Thu, 17 Aug 2023 12:50:59 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id D65B61121314;
+ Thu, 17 Aug 2023 12:51:00 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com, stefanha@redhat.com, eblake@redhat.com,
  eesposit@redhat.com, pbonzini@redhat.com, vsementsov@yandex-team.ru,
  qemu-devel@nongnu.org
-Subject: [PATCH 06/21] block-coroutine-wrapper: Add no_co_wrapper_bdrv_wrlock
- functions
-Date: Thu, 17 Aug 2023 14:50:05 +0200
-Message-ID: <20230817125020.208339-7-kwolf@redhat.com>
+Subject: [PATCH 07/21] block-coroutine-wrapper: Allow arbitrary parameter names
+Date: Thu, 17 Aug 2023 14:50:06 +0200
+Message-ID: <20230817125020.208339-8-kwolf@redhat.com>
 In-Reply-To: <20230817125020.208339-1-kwolf@redhat.com>
 References: <20230817125020.208339-1-kwolf@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -78,77 +77,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a new wrapper type for GRAPH_WRLOCK functions that should be called
-from coroutine context.
+Don't assume specific parameter names like 'bs' or 'blk' in the
+generated code, but use the actual name.
 
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- include/block/block-common.h       |  4 ++++
- scripts/block-coroutine-wrapper.py | 11 +++++++++++
- 2 files changed, 15 insertions(+)
+ scripts/block-coroutine-wrapper.py | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/include/block/block-common.h b/include/block/block-common.h
-index e15395f2cb..267ac6b583 100644
---- a/include/block/block-common.h
-+++ b/include/block/block-common.h
-@@ -66,10 +66,14 @@
-  * function. The coroutine yields after scheduling the BH and is reentered when
-  * the wrapped function returns.
-  *
-+ * A no_co_wrapper_bdrv_wrlock function is a no_co_wrapper function that
-+ * automatically takes the graph wrlock when calling the wrapped function.
-+ *
-  * If the first parameter of the function is a BlockDriverState, BdrvChild or
-  * BlockBackend pointer, the AioContext lock for it is taken in the wrapper.
-  */
- #define no_co_wrapper
-+#define no_co_wrapper_bdrv_wrlock
- 
- #include "block/blockjob.h"
- 
 diff --git a/scripts/block-coroutine-wrapper.py b/scripts/block-coroutine-wrapper.py
-index d4a183db61..fa01c06567 100644
+index fa01c06567..685d0b4ed4 100644
 --- a/scripts/block-coroutine-wrapper.py
 +++ b/scripts/block-coroutine-wrapper.py
-@@ -71,10 +71,13 @@ def __init__(self, wrapper_type: str, return_type: str, name: str,
-         self.args = [ParamDecl(arg.strip()) for arg in args.split(',')]
-         self.create_only_co = 'mixed' not in variant
-         self.graph_rdlock = 'bdrv_rdlock' in variant
-+        self.graph_wrlock = 'bdrv_wrlock' in variant
+@@ -105,12 +105,13 @@ def __init__(self, wrapper_type: str, return_type: str, name: str,
  
-         self.wrapper_type = wrapper_type
- 
-         if wrapper_type == 'co':
-+            if self.graph_wrlock:
-+                raise ValueError(f"co function can't be wrlock: {self.name}")
-             subsystem, subname = self.name.split('_', 1)
-             self.target_name = f'{subsystem}_co_{subname}'
+     def gen_ctx(self, prefix: str = '') -> str:
+         t = self.args[0].type
++        name = self.args[0].name
+         if t == 'BlockDriverState *':
+-            return f'bdrv_get_aio_context({prefix}bs)'
++            return f'bdrv_get_aio_context({prefix}{name})'
+         elif t == 'BdrvChild *':
+-            return f'bdrv_get_aio_context({prefix}child->bs)'
++            return f'bdrv_get_aio_context({prefix}{name}->bs)'
+         elif t == 'BlockBackend *':
+-            return f'blk_get_aio_context({prefix}blk)'
++            return f'blk_get_aio_context({prefix}{name})'
          else:
-@@ -250,6 +253,12 @@ def gen_no_co_wrapper(func: FuncDecl) -> str:
-     name = func.target_name
-     struct_name = func.struct_name
+             return 'qemu_get_aio_context()'
  
-+    graph_lock=''
-+    graph_unlock=''
-+    if func.graph_wrlock:
-+        graph_lock='    bdrv_graph_wrlock(NULL);'
-+        graph_unlock='    bdrv_graph_wrunlock();'
-+
-     return f"""\
- /*
-  * Wrappers for {name}
-@@ -266,9 +275,11 @@ def gen_no_co_wrapper(func: FuncDecl) -> str:
-     {struct_name} *s = opaque;
-     AioContext *ctx = {func.gen_ctx('s->')};
- 
-+{graph_lock}
-     aio_context_acquire(ctx);
-     {func.get_result}{name}({ func.gen_list('s->{name}') });
-     aio_context_release(ctx);
-+{graph_unlock}
- 
-     aio_co_wake(s->co);
- }}
 -- 
 2.41.0
 
