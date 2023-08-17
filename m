@@ -2,59 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 339D977F033
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 07:32:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2A5877F034
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 07:32:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWVav-0006ZS-Ip; Thu, 17 Aug 2023 01:30:53 -0400
+	id 1qWVb3-0006e9-Bs; Thu, 17 Aug 2023 01:31:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qWVas-0006W7-Uz
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 01:30:50 -0400
-Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
+ id 1qWVb1-0006cv-DJ
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 01:30:59 -0400
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qWVao-0003ms-UW
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 01:30:50 -0400
-Received: by mail-pg1-x533.google.com with SMTP id
- 41be03b00d2f7-5650ef42f6dso4574762a12.0
- for <qemu-devel@nongnu.org>; Wed, 16 Aug 2023 22:30:46 -0700 (PDT)
+ id 1qWVay-0003oR-0d
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 01:30:59 -0400
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-689e8115f8dso266025b3a.3
+ for <qemu-devel@nongnu.org>; Wed, 16 Aug 2023 22:30:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1692250245; x=1692855045;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=mQyi6gfRgbfl9Ba+HuBYDjs0BflAbozpyrrSa1VYhO8=;
- b=foDAMsj/Luf3JT0hF77ecWbCMXR62K/pt13rcHFIsAZecLufRI8U+vJeMkICee3tbc
- A2srfIbdFPgJ9EWMcmJQtXyeGs+nMTAeolhp1KLy0/t+oFI2Xb23lS285rPG5vBfOgjf
- +6B/Qk7f90KrqSgUxsYyTFoUPVwwLQlKy5zrSKCtl9uhrVf4Kd4zhJV7Uwda19LdJSn9
- j1g8rwy76DBFRh17khvu/zqyK/V/pnfcSEP/kyVOsrhfpNOLgaX0lQ+ohALH34YgPcVs
- a1ZV45juk2ebZIHrrOXGBLCjDzMZvt7vZ8zhPB8v2OhHM/F98vnFn48GkJFWpMmu3lp2
- i7YQ==
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1692250254; x=1692855054;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=zdUDfs8nzmH3mudBuoXaYzlsKQKqdd+Qx/2fnT/104s=;
+ b=wCoxPlLo4fJNyJLo2YPAC93pw7yDAGHN3pA4MPGN6WYPvKD2HnfilAuE3YUgmIBIm6
+ 5lFr2VNyCJMV2VjfTAxQ7Du1RQOp5y/PbkiuW33/TjkO4eGZ5qsaCdOfw4sIOHslHYrs
+ IWX0SB8UtnoFnDbzYKFZKtoDYF6Jfv3fjTF68ioItR6MbFGx4y3V+szdf/GmGdrBQxmW
+ 6CKJnk0s+dA2FGE/7YgS7IZ9dnx2GIVU5aS6YTqVFUCHv6zfyr2ccgvNbRwiGLtRH+dn
+ xH2rx6R9AET1rCxyvlCipckj/EK2A8YKQD0PAI89QSRnqxrhI7lMvwkqgMpdSQIS1PqG
+ 4+cQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692250245; x=1692855045;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=mQyi6gfRgbfl9Ba+HuBYDjs0BflAbozpyrrSa1VYhO8=;
- b=JqSj+dY/PPciaU4baN9fWjZlCePtMQ9W1+Bw7OnOrzq10pS6qvJHh9/4OQazzFzbDa
- 3YdD+Pz7IfJiDfT9IjWMscp1a4tlj0Is4y7OsGr3PjZoFilGLhyLOXmOPjSw7nx/1MoN
- MMIYuhlJ1sdYNPvO8tZuQPVhUuQMc68vyiNxCM42A27NZ/cfH7zDrYws6Jew9+x0T6sT
- QK5sIrrOWTCB0KDuloThYOTA1rqQA0MwHTkQMQ6fnPD65lnmx/gudTTh9Ael2fKgsSGC
- TmL6n6rWMPJLd1DrWzyr3OXudKXLqwp6Ebibc0q6t4dqJy4GMK5HAypXLdTXk4dhbgfq
- 1rkQ==
-X-Gm-Message-State: AOJu0Yx3vnYFyW/SVXD0aHsucqjB0QTgdZja9DrlLEZWKwkoa5hkejL8
- a2IylyU9Ub5NJ2BtXzsOXzbmEg==
-X-Google-Smtp-Source: AGHT+IGfYhrcUvpGzOTYqb82+q9qq2vUi7LvrswIp9J2Txc3w26+L40Re4cMZJpHZ5HqbFY3M4ZlFQ==
-X-Received: by 2002:a05:6a20:729d:b0:13d:ee19:771f with SMTP id
- o29-20020a056a20729d00b0013dee19771fmr5340005pzk.8.1692250245092; 
- Wed, 16 Aug 2023 22:30:45 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1692250254; x=1692855054;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=zdUDfs8nzmH3mudBuoXaYzlsKQKqdd+Qx/2fnT/104s=;
+ b=Xwx3/oZpgDpfnO49bmuVA1rPl81bU/gvIsUtkNZBPZuXrEB+zqINK0ck/lO3wtGuLo
+ +4uBYbeMwTH7PUHPCqIkL7ubrMzngGnymTr1RJ3zuMUFjn+wAo7Ddqd8M4z1lPUgYR3/
+ Up/JA2XZ5/FD5angb0g4CY0kixI+Zqud3fUeSVB6KBlzZ00aHEeLjyq1A+cohUMaZpmC
+ l2xyX5Um/k5Tdr7XmTBxq/zQTuyN3iNHE4q+V/Qq6yzDB2uDRD5kqKjSjcX2uR1Rz/eb
+ i0EDNCNlmEskjEBMdszVdZi7Fq5VyvXGvQRdVnxZgDUGp76Bn1OmbRP7VJCoGjta8/FD
+ a9TA==
+X-Gm-Message-State: AOJu0Yz/LxlfPrImgWNWEWbhsd851mtn2RCnxHFS+qk/AiGC4IZ+Yk3g
+ qjGP62t8YYVTOUmIRpyNYoaPCg==
+X-Google-Smtp-Source: AGHT+IH8ewMLpNbX7Glbea2MHyvU0ftrKKP3DE6+d+QyTno7miAfioylqSHTEcBwUZtErBg46+0BBA==
+X-Received: by 2002:a05:6a00:3988:b0:686:24e1:d12e with SMTP id
+ fi8-20020a056a00398800b0068624e1d12emr4202571pfb.30.1692250254546; 
+ Wed, 16 Aug 2023 22:30:54 -0700 (PDT)
 Received: from alarm.flets-east.jp ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
  by smtp.gmail.com with ESMTPSA id
- j18-20020aa783d2000000b00662610cf7a8sm12339407pfn.172.2023.08.16.22.30.35
+ j18-20020aa783d2000000b00662610cf7a8sm12339407pfn.172.2023.08.16.22.30.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 16 Aug 2023 22:30:44 -0700 (PDT)
+ Wed, 16 Aug 2023 22:30:54 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 To: 
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -95,15 +96,17 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  qemu-arm@nongnu.org, qemu-ppc@nongnu.org, qemu-riscv@nongnu.org,
  qemu-s390x@nongnu.org, Anton Kochkov <anton.kochkov@proton.me>,
  Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v5 00/26] plugins: Allow to read registers
-Date: Thu, 17 Aug 2023 14:29:47 +0900
-Message-ID: <20230817053017.24207-1-akihiko.odaki@daynix.com>
+Subject: [PATCH v5 01/26] contrib/plugins: Use GRWLock in execlog
+Date: Thu, 17 Aug 2023 14:29:48 +0900
+Message-ID: <20230817053017.24207-2-akihiko.odaki@daynix.com>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230817053017.24207-1-akihiko.odaki@daynix.com>
+References: <20230817053017.24207-1-akihiko.odaki@daynix.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::533;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x533.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::436;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x436.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -125,155 +128,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I and other people in the University of Tokyo, where I research processor
-design, found TCG plugins are very useful for processor design exploration.
+execlog had the following comment:
+> As we could have multiple threads trying to do this we need to
+> serialise the expansion under a lock. Threads accessing already
+> created entries can continue without issue even if the ptr array
+> gets reallocated during resize.
 
-The feature we find missing is the capability to read registers from
-plugins. In this series, I propose to add such a capability by reusing
-gdbstub code.
+However, when the ptr array gets reallocated, the other threads may have
+a stale reference to the old buffer. This results in use-after-free.
 
-The reuse of gdbstub code ensures the long-term stability of the TCG plugin
-interface for register access without incurring a burden to maintain yet
-another interface for register access.
+Use GRWLock to properly fix this issue.
 
-This process to add TCG plugin involves four major changes. The first one
-is to add GDBFeature structure that represents a GDB feature, which usually
-includes registers. GDBFeature can be generated from static XML files or
-dynamically generated by architecture-specific code. In fact, this is a
-refactoring independent of the feature this series adds, and potentially
-it's benefitial even without the plugin feature. The plugin feature will
-utilize this new structure to describe registers exposed to plugins.
+Fixes: 3d7caf145e ("contrib/plugins: add execlog to log instruction execution and memory access")
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+---
+ contrib/plugins/execlog.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-The second one is to make gdb_read_register/gdb_write_register usable
-outside of gdbstub context.
-
-The third one is to actually make registers readable for plugins.
-
-The last one is to allow to implement a QEMU plugin in C++. A plugin that
-I'll describe later is written in C++.
-
-The below is a summary of patches:
-Patch 01 fixes a bug in execlog plugin.
-Patch [02, 16] introduce GDBFeature.
-Patch 17 adds information useful for plugins to GDBFeature.
-Patch [18, 21] make registers readable outside of gdbstub context.
-Patch [22, 24] add the feature to read registers from plugins.
-Patch [25, 26] make it possible to write plugins in C++.
-
-The execlog plugin will have new options to demonstrate the new feature.
-I also have a plugin that uses this new feature to generate execution
-traces for Sniper processor simulator, which is available at:
-https://github.com/shioya-lab/sniper/tree/akihikodaki/bb
-
-V4 -> V5:
-  Corrected g_rw_lock_writer_lock() call. (Richard Henderson)
-  Replaced abort() with g_assert_not_reached(). (Richard Henderson)
-  Fixed CSR name leak in target/riscv. (Richard Henderson)
-  Removed gdb_has_xml variable.
-
-V3 -> V4:
-  Added execlog changes I forgot to include in the last version.
-
-V2 -> V3:
-  Added patch "hw/core/cpu: Return static value with gdb_arch_name()".
-  Added patch "gdbstub: Dynamically allocate target.xml buffer".
-  (Alex Bennée)
-  Added patch "gdbstub: Introduce GDBFeatureBuilder". (Alex Bennée)
-  Dropped Reviewed-by tags for "target/*: Use GDBFeature for dynamic XML".
-  Changed gdb_find_static_feature() to abort on failure. (Alex Bennée)
-  Changed the execlog plugin to log the register value only when changed.
-  (Alex Bennée)
-  Dropped 0x prefixes for register value logs for conciseness.
-
-V1 -> V2:
-  Added SPDX-License-Identifier: GPL-2.0-or-later. (Philippe Mathieu-Daudé)
-  Split long lines. (Philippe Mathieu-Daudé)
-  Renamed gdb_features to gdb_static_features (Philippe Mathieu-Daudé)
-  Dropped RFC.
-
-Akihiko Odaki (26):
-  contrib/plugins: Use GRWLock in execlog
-  gdbstub: Introduce GDBFeature structure
-  gdbstub: Add num_regs member to GDBFeature
-  gdbstub: Introduce gdb_find_static_feature()
-  target/arm: Move the reference to arm-core.xml
-  hw/core/cpu: Replace gdb_core_xml_file with gdb_core_feature
-  gdbstub: Introduce GDBFeatureBuilder
-  target/arm: Use GDBFeature for dynamic XML
-  target/ppc: Use GDBFeature for dynamic XML
-  target/riscv: Use GDBFeature for dynamic XML
-  gdbstub: Use GDBFeature for gdb_register_coprocessor
-  gdbstub: Use GDBFeature for GDBRegisterState
-  hw/core/cpu: Return static value with gdb_arch_name()
-  gdbstub: Dynamically allocate target.xml buffer
-  gdbstub: Simplify XML lookup
-  hw/core/cpu: Remove gdb_get_dynamic_xml member
-  gdbstub: Add members to identify registers to GDBFeature
-  target/arm: Remove references to gdb_has_xml
-  target/ppc: Remove references to gdb_has_xml
-  gdbstub: Remove gdb_has_xml variable
-  gdbstub: Expose functions to read registers
-  cpu: Call plugin hooks only when ready
-  plugins: Allow to read registers
-  contrib/plugins: Allow to log registers
-  plugins: Support C++
-  contrib/plugins: Add cc plugin
-
- MAINTAINERS                  |   2 +-
- docs/devel/tcg-plugins.rst   |  18 +++-
- configure                    |  15 ++-
- meson.build                  |   2 +-
- gdbstub/internals.h          |   2 +-
- include/exec/gdbstub.h       |  51 +++++++--
- include/hw/core/cpu.h        |  11 +-
- include/qemu/qemu-plugin.h   |  69 +++++++++++-
- target/arm/cpu.h             |  26 ++---
- target/arm/internals.h       |   2 +-
- target/ppc/cpu-qom.h         |   3 +-
- target/ppc/cpu.h             |   3 +-
- target/ppc/internal.h        |   2 +-
- target/riscv/cpu.h           |   4 +-
- target/s390x/cpu.h           |   2 -
- contrib/plugins/execlog.c    | 150 ++++++++++++++++++++------
- cpu.c                        |  11 --
- gdbstub/gdbstub.c            | 198 +++++++++++++++++++++++-----------
- gdbstub/softmmu.c            |   3 +-
- gdbstub/user.c               |   1 -
- hw/core/cpu-common.c         |  10 ++
- plugins/api.c                |  40 +++++++
- stubs/gdbstub.c              |   6 +-
- target/arm/cpu.c             |  12 +--
- target/arm/cpu64.c           |   8 +-
- target/arm/gdbstub.c         | 202 +++++++++++++----------------------
- target/arm/gdbstub64.c       |  90 +++++++---------
- target/arm/tcg/cpu32.c       |   3 +-
- target/avr/cpu.c             |   4 +-
- target/hexagon/cpu.c         |   5 +-
- target/i386/cpu.c            |  13 ++-
- target/loongarch/cpu.c       |   8 +-
- target/loongarch/gdbstub.c   |   2 +-
- target/m68k/cpu.c            |   7 +-
- target/m68k/helper.c         |   6 +-
- target/microblaze/cpu.c      |   9 +-
- target/ppc/cpu_init.c        |   9 +-
- target/ppc/gdbstub.c         |  80 ++++----------
- target/riscv/cpu.c           |  27 ++---
- target/riscv/gdbstub.c       |  89 +++++++--------
- target/rx/cpu.c              |   4 +-
- target/s390x/cpu.c           |   8 +-
- target/s390x/gdbstub.c       |  28 ++---
- target/tricore/cpu.c         |   4 +-
- contrib/plugins/Makefile     |   5 +
- contrib/plugins/cc.cc        |  17 +++
- plugins/qemu-plugins.symbols |   2 +
- scripts/feature_to_c.py      | 102 ++++++++++++++++++
- scripts/feature_to_c.sh      |  69 ------------
- tests/tcg/Makefile.target    |   3 +
- 50 files changed, 825 insertions(+), 622 deletions(-)
- create mode 100644 contrib/plugins/cc.cc
- create mode 100755 scripts/feature_to_c.py
- delete mode 100644 scripts/feature_to_c.sh
-
+diff --git a/contrib/plugins/execlog.c b/contrib/plugins/execlog.c
+index 7129d526f8..82dc2f584e 100644
+--- a/contrib/plugins/execlog.c
++++ b/contrib/plugins/execlog.c
+@@ -19,7 +19,7 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_version = QEMU_PLUGIN_VERSION;
+ 
+ /* Store last executed instruction on each vCPU as a GString */
+ static GPtrArray *last_exec;
+-static GMutex expand_array_lock;
++static GRWLock expand_array_lock;
+ 
+ static GPtrArray *imatches;
+ static GArray *amatches;
+@@ -28,18 +28,16 @@ static GArray *amatches;
+  * Expand last_exec array.
+  *
+  * As we could have multiple threads trying to do this we need to
+- * serialise the expansion under a lock. Threads accessing already
+- * created entries can continue without issue even if the ptr array
+- * gets reallocated during resize.
++ * serialise the expansion under a lock.
+  */
+ static void expand_last_exec(int cpu_index)
+ {
+-    g_mutex_lock(&expand_array_lock);
++    g_rw_lock_writer_lock(&expand_array_lock);
+     while (cpu_index >= last_exec->len) {
+         GString *s = g_string_new(NULL);
+         g_ptr_array_add(last_exec, s);
+     }
+-    g_mutex_unlock(&expand_array_lock);
++    g_rw_lock_writer_unlock(&expand_array_lock);
+ }
+ 
+ /**
+@@ -51,8 +49,10 @@ static void vcpu_mem(unsigned int cpu_index, qemu_plugin_meminfo_t info,
+     GString *s;
+ 
+     /* Find vCPU in array */
++    g_rw_lock_reader_lock(&expand_array_lock);
+     g_assert(cpu_index < last_exec->len);
+     s = g_ptr_array_index(last_exec, cpu_index);
++    g_rw_lock_reader_unlock(&expand_array_lock);
+ 
+     /* Indicate type of memory access */
+     if (qemu_plugin_mem_is_store(info)) {
+@@ -80,10 +80,14 @@ static void vcpu_insn_exec(unsigned int cpu_index, void *udata)
+     GString *s;
+ 
+     /* Find or create vCPU in array */
++    g_rw_lock_reader_lock(&expand_array_lock);
+     if (cpu_index >= last_exec->len) {
++        g_rw_lock_reader_unlock(&expand_array_lock);
+         expand_last_exec(cpu_index);
++        g_rw_lock_reader_lock(&expand_array_lock);
+     }
+     s = g_ptr_array_index(last_exec, cpu_index);
++    g_rw_lock_reader_unlock(&expand_array_lock);
+ 
+     /* Print previous instruction in cache */
+     if (s->len) {
 -- 
 2.41.0
 
