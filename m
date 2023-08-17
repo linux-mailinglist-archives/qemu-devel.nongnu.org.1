@@ -2,53 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4A6777F6C7
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 14:51:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EE1277F6CB
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 14:52:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWcTG-0008E9-I6; Thu, 17 Aug 2023 08:51:27 -0400
+	id 1qWcTL-0008Nt-4R; Thu, 17 Aug 2023 08:51:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qWcSx-0007qn-7h
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 08:51:13 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qWcSr-0007nX-Kp
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 08:51:02 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qWcSp-0002aZ-BZ
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 08:51:02 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qWcSo-0002aO-QO
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 08:51:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1692276658;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=s9Q4KfHn3HSt2gTl2f2cGyCa4/oK4nyK6I0AQR5Sn/o=;
- b=ZtmJkgPVFko+CfpGoa9qRmTzekYGqY036L5Of93tInpaMMyCxg4FPYWfQ3creUou4EVPdq
- IYh0VFa01Ce2LoPnWn+4STu4hxYnwJ+lNwgB4h6Fkez/r7CGp3pGBeMPBgSpl2aJCUnXL8
- GjQpdVLuTnvsaA0MF614dJapXpENWEc=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-283-wKh1zy8FNJikitNdiy4JLg-1; Thu, 17 Aug 2023 08:50:55 -0400
-X-MC-Unique: wKh1zy8FNJikitNdiy4JLg-1
+ bh=bvM2i5/DMW57ELvJDqsaHN0jcl+7eHt9ue4NlZeY/zA=;
+ b=ZZTI/zn/FYHudjxXnCQP7CHkhO6K2DkG1Nh7kkwtygjQ4h1oK2SmXfD9x6tdB3SPSJWMYf
+ VFYYbuXX5o6yV6s23rS7nWCzgAz+J8w6HE2akEyXdNtKbAAvllcuUYHP1pPNt7cXEVyOrn
+ hyjJiUSVYlDJWUtEYnRbj/oI1Ipe7XM=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-339-x2R9SFxwN4iSHTFDwDbFuw-1; Thu, 17 Aug 2023 08:50:56 -0400
+X-MC-Unique: x2R9SFxwN4iSHTFDwDbFuw-1
 Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
  [10.11.54.3])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0AF70101A52E;
- Thu, 17 Aug 2023 12:50:55 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6D0821C06EE8;
+ Thu, 17 Aug 2023 12:50:56 +0000 (UTC)
 Received: from merkur.redhat.com (unknown [10.39.194.106])
- by smtp.corp.redhat.com (Postfix) with ESMTP id D41081121314;
- Thu, 17 Aug 2023 12:50:53 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 4252D1121314;
+ Thu, 17 Aug 2023 12:50:55 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com, stefanha@redhat.com, eblake@redhat.com,
  eesposit@redhat.com, pbonzini@redhat.com, vsementsov@yandex-team.ru,
  qemu-devel@nongnu.org
-Subject: [PATCH 02/21] preallocate: Factor out
- preallocate_truncate_to_real_size()
-Date: Thu, 17 Aug 2023 14:50:01 +0200
-Message-ID: <20230817125020.208339-3-kwolf@redhat.com>
+Subject: [PATCH 03/21] preallocate: Don't poll during permission updates
+Date: Thu, 17 Aug 2023 14:50:02 +0200
+Message-ID: <20230817125020.208339-4-kwolf@redhat.com>
 In-Reply-To: <20230817125020.208339-1-kwolf@redhat.com>
 References: <20230817125020.208339-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -62,7 +61,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.021,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,92 +77,205 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It's essentially the same code in preallocate_check_perm() and
-preallocate_close(), except that the latter ignores errors.
+When the permission related BlockDriver callbacks are called, we are in
+the middle of an operation traversing the block graph. Polling in such a
+place is a very bad idea because the graph could change in unexpected
+ways. In the future, callers will also hold the graph lock, which is
+likely to turn polling into a deadlock.
+
+So we need to get rid of calls to functions like bdrv_getlength() or
+bdrv_truncate() there as these functions poll internally. They are
+currently used so that when no parent has write/resize permissions on
+the image any more, the preallocate filter drops the extra preallocated
+area in the image file and gives up write/resize permissions itself.
+
+In order to achieve this without polling in .bdrv_check_perm, don't
+immediately truncate the image, but only schedule a BH to do so. The
+filter keeps the write/resize permissions a bit longer now until the BH
+has executed.
+
+There is one case in which delaying doesn't work: Reopening the image
+read-only. In this case, bs->file will likely be reopened read-only,
+too, so keeping write permissions a bit longer on it doesn't work. But
+we can already cover this case in preallocate_reopen_prepare() and not
+rely on the permission updates for it.
 
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- block/preallocate.c | 48 +++++++++++++++++++++------------------------
- 1 file changed, 22 insertions(+), 26 deletions(-)
+ block/preallocate.c | 89 +++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 69 insertions(+), 20 deletions(-)
 
 diff --git a/block/preallocate.c b/block/preallocate.c
-index 4d82125036..3259c51c1b 100644
+index 3259c51c1b..ace475a850 100644
 --- a/block/preallocate.c
 +++ b/block/preallocate.c
-@@ -162,26 +162,39 @@ static int preallocate_open(BlockDriverState *bs, QDict *options, int flags,
-     return 0;
- }
+@@ -75,8 +75,14 @@ typedef struct BDRVPreallocateState {
+      * be invalid (< 0) when we don't have both exclusive BLK_PERM_RESIZE and
+      * BLK_PERM_WRITE permissions on file child.
+      */
++
++    /* Gives up the resize permission on children when parents don't need it */
++    QEMUBH *drop_resize_bh;
+ } BDRVPreallocateState;
  
--static void preallocate_close(BlockDriverState *bs)
-+static int preallocate_truncate_to_real_size(BlockDriverState *bs, Error **errp)
++static int preallocate_drop_resize(BlockDriverState *bs, Error **errp);
++static void preallocate_drop_resize_bh(void *opaque);
++
+ #define PREALLOCATE_OPT_PREALLOC_ALIGN "prealloc-align"
+ #define PREALLOCATE_OPT_PREALLOC_SIZE "prealloc-size"
+ static QemuOptsList runtime_opts = {
+@@ -142,6 +148,7 @@ static int preallocate_open(BlockDriverState *bs, QDict *options, int flags,
+      * For this to work, mark them invalid.
+      */
+     s->file_end = s->zero_start = s->data_end = -EINVAL;
++    s->drop_resize_bh = qemu_bh_new(preallocate_drop_resize_bh, bs);
+ 
+     ret = bdrv_open_file_child(NULL, options, "file", bs, errp);
+     if (ret < 0) {
+@@ -193,6 +200,9 @@ static void preallocate_close(BlockDriverState *bs)
  {
--    int ret;
      BDRVPreallocateState *s = bs->opaque;
--
--    if (s->data_end < 0) {
--        return;
--    }
+ 
++    qemu_bh_cancel(s->drop_resize_bh);
++    qemu_bh_delete(s->drop_resize_bh);
++
+     if (s->data_end >= 0) {
+         preallocate_truncate_to_real_size(bs, NULL);
+     }
+@@ -211,6 +221,7 @@ static int preallocate_reopen_prepare(BDRVReopenState *reopen_state,
+                                       BlockReopenQueue *queue, Error **errp)
+ {
+     PreallocateOpts *opts = g_new0(PreallocateOpts, 1);
 +    int ret;
  
-     if (s->file_end < 0) {
-         s->file_end = bdrv_getlength(bs->file->bs);
-         if (s->file_end < 0) {
--            return;
-+            error_setg_errno(errp, -s->file_end, "Failed to get file length");
-+            return s->file_end;
-         }
+     if (!preallocate_absorb_opts(opts, reopen_state->options,
+                                  reopen_state->bs->file->bs, errp)) {
+@@ -218,6 +229,19 @@ static int preallocate_reopen_prepare(BDRVReopenState *reopen_state,
+         return -EINVAL;
      }
  
-     if (s->data_end < s->file_end) {
-         ret = bdrv_truncate(bs->file, s->data_end, true, PREALLOC_MODE_OFF, 0,
-                             NULL);
--        s->file_end = ret < 0 ? ret : s->data_end;
++    /*
++     * Drop the preallocation already here if reopening read-only. The child
++     * might also be reopened read-only and then scheduling a BH during the
++     * permission update is too late.
++     */
++    if ((reopen_state->flags & BDRV_O_RDWR) == 0) {
++        ret = preallocate_drop_resize(reopen_state->bs, errp);
 +        if (ret < 0) {
-+            error_setg_errno(errp, -ret, "Failed to drop preallocation");
-+            s->file_end = ret;
++            g_free(opts);
 +            return ret;
 +        }
-+        s->file_end = s->data_end;
 +    }
 +
-+    return 0;
+     reopen_state->opaque = opts;
+ 
+     return 0;
+@@ -475,41 +499,61 @@ preallocate_co_getlength(BlockDriverState *bs)
+     return ret;
+ }
+ 
+-static int preallocate_check_perm(BlockDriverState *bs,
+-                                  uint64_t perm, uint64_t shared, Error **errp)
++static int preallocate_drop_resize(BlockDriverState *bs, Error **errp)
+ {
+     BDRVPreallocateState *s = bs->opaque;
++    int ret;
+ 
+-    if (s->data_end >= 0 && !can_write_resize(perm)) {
+-        /*
+-         * Lose permissions.
+-         * We should truncate in check_perm, as in set_perm bs->file->perm will
+-         * be already changed, and we should not violate it.
+-         */
+-        return preallocate_truncate_to_real_size(bs, errp);
++    if (s->data_end < 0) {
++        return 0;
++    }
++
++    /*
++     * Before switching children to be read-only, truncate them to remove
++     * the preallocation and let them have the real size.
++     */
++    ret = preallocate_truncate_to_real_size(bs, errp);
++    if (ret < 0) {
++        return ret;
+     }
+ 
++    /*
++     * We'll drop our permissions and will allow other users to take write and
++     * resize permissions (see preallocate_child_perm). Anyone will be able to
++     * change the child, so mark all states invalid. We'll regain control if a
++     * parent requests write access again.
++     */
++    s->data_end = s->file_end = s->zero_start = -EINVAL;
++
++    bdrv_graph_rdlock_main_loop();
++    bdrv_child_refresh_perms(bs, bs->file, NULL);
++    bdrv_graph_rdunlock_main_loop();
++
+     return 0;
+ }
+ 
++static void preallocate_drop_resize_bh(void *opaque)
++{
++    /*
++     * In case of errors, we'll simply keep the exclusive lock on the image
++     * indefinitely.
++     */
++    preallocate_drop_resize(opaque, NULL);
 +}
 +
-+static void preallocate_close(BlockDriverState *bs)
-+{
-+    BDRVPreallocateState *s = bs->opaque;
-+
-+    if (s->data_end >= 0) {
-+        preallocate_truncate_to_real_size(bs, NULL);
+ static void preallocate_set_perm(BlockDriverState *bs,
+                                  uint64_t perm, uint64_t shared)
+ {
+     BDRVPreallocateState *s = bs->opaque;
+ 
+     if (can_write_resize(perm)) {
++        qemu_bh_cancel(s->drop_resize_bh);
+         if (s->data_end < 0) {
+             s->data_end = s->file_end = s->zero_start =
+-                bdrv_getlength(bs->file->bs);
++                bs->file->bs->total_sectors * BDRV_SECTOR_SIZE;
+         }
+     } else {
+-        /*
+-         * We drop our permissions, as well as allow shared
+-         * permissions (see preallocate_child_perm), anyone will be able to
+-         * change the child, so mark all states invalid. We'll regain control if
+-         * get good permissions back.
+-         */
+-        s->data_end = s->file_end = s->zero_start = -EINVAL;
++        qemu_bh_schedule(s->drop_resize_bh);
      }
  }
  
-@@ -473,24 +486,7 @@ static int preallocate_check_perm(BlockDriverState *bs,
-          * We should truncate in check_perm, as in set_perm bs->file->perm will
-          * be already changed, and we should not violate it.
-          */
--        if (s->file_end < 0) {
--            s->file_end = bdrv_getlength(bs->file->bs);
--            if (s->file_end < 0) {
--                error_setg(errp, "Failed to get file length");
--                return s->file_end;
--            }
--        }
--
--        if (s->data_end < s->file_end) {
--            int ret = bdrv_truncate(bs->file, s->data_end, true,
--                                    PREALLOC_MODE_OFF, 0, NULL);
--            if (ret < 0) {
--                error_setg(errp, "Failed to drop preallocation");
--                s->file_end = ret;
--                return ret;
--            }
--            s->file_end = s->data_end;
--        }
-+        return preallocate_truncate_to_real_size(bs, errp);
-     }
+@@ -517,10 +561,16 @@ static void preallocate_child_perm(BlockDriverState *bs, BdrvChild *c,
+     BdrvChildRole role, BlockReopenQueue *reopen_queue,
+     uint64_t perm, uint64_t shared, uint64_t *nperm, uint64_t *nshared)
+ {
++    BDRVPreallocateState *s = bs->opaque;
++
+     bdrv_default_perms(bs, c, role, reopen_queue, perm, shared, nperm, nshared);
  
-     return 0;
+-    if (can_write_resize(perm)) {
+-        /* This should come by default, but let's enforce: */
++    /*
++     * We need exclusive write and resize permissions on the child not only when
++     * the parent can write to it, but also after the parent gave up write
++     * permissions until preallocate_drop_resize() has completed.
++     */
++    if (can_write_resize(perm) || s->data_end != -EINVAL) {
+         *nperm |= BLK_PERM_WRITE | BLK_PERM_RESIZE;
+ 
+         /*
+@@ -550,7 +600,6 @@ BlockDriver bdrv_preallocate_filter = {
+     .bdrv_co_flush = preallocate_co_flush,
+     .bdrv_co_truncate = preallocate_co_truncate,
+ 
+-    .bdrv_check_perm = preallocate_check_perm,
+     .bdrv_set_perm = preallocate_set_perm,
+     .bdrv_child_perm = preallocate_child_perm,
+ 
 -- 
 2.41.0
 
