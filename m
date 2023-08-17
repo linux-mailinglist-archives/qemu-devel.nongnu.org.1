@@ -2,73 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0767977EEEE
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 04:07:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8AE777EF01
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 04:21:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWSQ5-0003Xz-Sb; Wed, 16 Aug 2023 22:07:29 -0400
+	id 1qWScN-0005G3-E5; Wed, 16 Aug 2023 22:20:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1qWSQ3-0003Xa-5N
- for qemu-devel@nongnu.org; Wed, 16 Aug 2023 22:07:27 -0400
-Received: from mgamail.intel.com ([134.134.136.20])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1qWSQ0-00011h-Vi
- for qemu-devel@nongnu.org; Wed, 16 Aug 2023 22:07:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1692238045; x=1723774045;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=KOhxiqy/Y56viG44yG8qC3p/FmWXY3J4HKUFqCx0/N8=;
- b=Nwhj2RqeAR1fIuEJb29yWOhbrRox8ld8vQe1GrC8YS988bh+UpMf3QG/
- ydolsxqMfger77MYpaVS0NCSAkN1hktphgqqoXd+dEnASgGELs4ha5GUg
- TMHgOZc4IkKKWQ/hYBLeunyqE4O3Bvl9Dw8hn1ik48ljOSlnMtzOg0LNR
- JhX16DJSqKSMN+ctPajGIkLsBqnolexS/sf08gtlotM7RAUaaS96myU0H
- y9hQoDOTWozKnwNcFlNQYRiqsLfevRVFxpyk47zTxUosDYVSVC2FOt9NT
- Y/LZG/EL4lvYeFdaNhguq7ZSqdyP4fBH5SpvnbPKVJP0m2Nnc6m1Okw23 Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="362843068"
-X-IronPort-AV: E=Sophos;i="6.01,178,1684825200"; d="scan'208";a="362843068"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
- by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Aug 2023 19:07:22 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="804454661"
-X-IronPort-AV: E=Sophos;i="6.01,178,1684825200"; d="scan'208";a="804454661"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.8.54])
- ([10.93.8.54])
- by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Aug 2023 19:07:20 -0700
-Message-ID: <2fe588e7-7121-f279-fa50-0e7743585d68@intel.com>
-Date: Thu, 17 Aug 2023 10:07:18 +0800
+ (Exim 4.90_1) (envelope-from <tugy@chinatelecom.cn>)
+ id 1qWScK-0005Fd-9P
+ for qemu-devel@nongnu.org; Wed, 16 Aug 2023 22:20:08 -0400
+Received: from smtpnm6-04.21cn.com ([182.42.158.78] helo=chinatelecom.cn)
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <tugy@chinatelecom.cn>) id 1qWScH-0004fz-3b
+ for qemu-devel@nongnu.org; Wed, 16 Aug 2023 22:20:08 -0400
+HMM_SOURCE_IP: 192.168.139.44:36701.1353264787
+HMM_ATTACHE_NUM: 0000
+HMM_SOURCE_TYPE: SMTP
+Received: from clientip-36.111.64.85 (unknown [192.168.139.44])
+ by chinatelecom.cn (HERMES) with SMTP id 714609C25AA;
+ Thu, 17 Aug 2023 10:19:23 +0800 (CST)
+X-189-SAVE-TO-SEND: +tugy@chinatelecom.cn
+Received: from  ([36.111.64.85])
+ by gateway-ssl-dep-56d86dc765-g96c8 with ESMTP id
+ 7e99bcd52ed04e118f8d005ac14c14ed for farosas@suse.de; 
+ Thu, 17 Aug 2023 10:19:42 CST
+X-Transaction-ID: 7e99bcd52ed04e118f8d005ac14c14ed
+X-Real-From: tugy@chinatelecom.cn
+X-Receive-IP: 36.111.64.85
+X-MEDUSA-Status: 0
+Message-ID: <15874e41-fee0-49db-98fc-cf2b545fe7c2@chinatelecom.cn>
+Date: Thu, 17 Aug 2023 10:19:19 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Firefox/102.0 Thunderbird/102.14.0
-Subject: Re: [PATCH v3 2/2] target/i386: Avoid overflow of the cache parameter
- enumerated by leaf 4
+User-Agent: Mozilla Thunderbird
+Cc: tugy@chinatelecom.cn, Juan Quintela <quintela@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>, qemu-devel@nongnu.org
+Subject: Re: [PATCH] migrate/ram: let ram_save_target_page_legacy() return if
+ qemu file got error
 Content-Language: en-US
-To: Qian Wen <qian.wen@intel.com>, qemu-devel@nongnu.org
-Cc: zhao1.liu@intel.com, pbonzini@redhat.com, richard.henderson@linaro.org,
- babu.moger@amd.com
-References: <20230816080658.3562730-1-qian.wen@intel.com>
- <20230816080658.3562730-3-qian.wen@intel.com>
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20230816080658.3562730-3-qian.wen@intel.com>
+To: =?UTF-8?B?44CQ5aSW6YOo6LSm5Y+344CRIEZhYmlhbm8gUm9zYXM=?=
+ <farosas@suse.de>, Peter Xu <peterx@redhat.com>
+References: <20ae48e5-006d-4a1b-823e-f2c591ec4fb0@chinatelecom.cn>
+ <87h6p0mqk8.fsf@suse.de> <ZNv6ABLk7EjaX8dD@x1n> <87350klygf.fsf@suse.de>
+ <ZNzhuF7fRUdaGthV@x1n> <87o7j7kohx.fsf@suse.de>
+From: Guoyi Tu <tugy@chinatelecom.cn>
+In-Reply-To: <87o7j7kohx.fsf@suse.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=134.134.136.20; envelope-from=xiaoyao.li@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -75
-X-Spam_score: -7.6
-X-Spam_bar: -------
-X-Spam_report: (-7.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.001, NICE_REPLY_A=-3.165,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=182.42.158.78; envelope-from=tugy@chinatelecom.cn;
+ helo=chinatelecom.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,37 +72,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/16/2023 4:06 PM, Qian Wen wrote:
-> According to SDM, CPUID.0x4:EAX[31:26] indicates the Maximum number of
-> addressable IDs for processor cores in the physical package. If we
-> launch over 64 cores VM, the 6-bit field will overflow, and the wrong
-> core_id number will be reported.
-> 
-> Since the HW reports 0x3f when the intel processor has over 64 cores,
-> limit the max value written to EBX[31:26] to 63, so max num_cores should
-> be 64.
-> 
-> Signed-off-by: Qian Wen <qian.wen@intel.com>
-> Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 
-> ---
->   target/i386/cpu.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+On 2023/8/16 23:15, 【外部账号】 Fabiano Rosas wrote:
+> Peter Xu <peterx@redhat.com> writes:
 > 
-> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> index 5c008b9d7e..3b6854300a 100644
-> --- a/target/i386/cpu.c
-> +++ b/target/i386/cpu.c
-> @@ -248,7 +248,7 @@ static void encode_cache_cpuid4(CPUCacheInfo *cache,
->       *eax = CACHE_TYPE(cache->type) |
->              CACHE_LEVEL(cache->level) |
->              (cache->self_init ? CACHE_SELF_INIT_LEVEL : 0) |
-> -           ((num_cores - 1) << 26) |
-> +           ((MIN(num_cores, 64) - 1) << 26) |
->              ((num_apic_ids - 1) << 14);
->   
->       assert(cache->line_size > 0);
+>> On Tue, Aug 15, 2023 at 07:42:24PM -0300, Fabiano Rosas wrote:
+>>> Yep, I see that. I meant explicitly move the code into the loop. Feels a
+>>> bit weird to check the QEMUFile for errors first thing inside the
+>>> function when nothing around it should have touched the QEMUFile.
+>>
+>> Valid point.  This reminded me that now we have one indirection into
+>> ->ram_save_target_page() which is a hook now.  Putting in the caller will
+>> work for all hooks, even though they're not yet exist.
+>>
+>> But since we don't have any other hooks yet, it'll be the same for now.
+>>
+>> Acked-by: Peter Xu <peterx@redhat.com>
+>>
+>> For the long term: there's one more reason to rework qemu_put_byte()/... to
+>> return error codes.. Then things like save_normal_page() can simply already
+>> return negatives when hit an error.
+>>
+>> Fabiano - I see that you've done quite a few patches in reworking migration
+>> code.  I had that for a long time in my todo, but if you're interested feel
+>> free to look into it.
+>>
+>> IIUC the idea is introducing another similar layer of API for qemufile (I'd
+>> call it qemu_put_1|2|4|8(), or anything you can come up better with..) then
+>> let migration to switch over to it, with retval reflecting errors.  Then we
+>> should be able to drop this patch along with most of the explicit error
+>> checks for the qemufile spread all over.
+> 
+> I was just ranting about this situation in another thread! Yes, we need
+> something like that. QEMUFile errors should only be set by code doing
+> actual IO and if we want to store the error for other parts of the code
+> to use, that should be another interface.
+> 
+> While reviewing this patch I noticed we have stuff like this:
+> 
+> pages = ram_find_and_save_block()
+> ...
+> if (pages < 0) {
+>      qemu_file_set_error(f, pages);
+>      break;
+> }
+> 
+> So the low-level code sets the error, ram_save_target_page_legacy() sees
+> it and returns -1, and this^ code loses all track of the initial error
+> and inadvertently turns it into -EPERM!
+> 
+> I'll try to find some time to start cleaning this up
 
+It sounds very reasonable. the return value of the QEMUFile interface
+cannot accurately reflect the actual situation, and the way these
+interfaces are being called during the migration process also is a
+little bit weird.
+
+I'm glad to see that you have plans to improve these interfaces. If you
+need any assistance, I'd be more than happy to be involved.
 
