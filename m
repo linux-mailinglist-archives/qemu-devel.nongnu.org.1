@@ -2,81 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90FDF77EF0C
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 04:25:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9A1D77EF3F
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 04:59:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWSfr-0006Fw-Nk; Wed, 16 Aug 2023 22:23:47 -0400
+	id 1qWTCc-0000Jd-LW; Wed, 16 Aug 2023 22:57:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gurchetansingh@chromium.org>)
- id 1qWSfp-0006FF-5T
- for qemu-devel@nongnu.org; Wed, 16 Aug 2023 22:23:45 -0400
-Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
+ (Exim 4.90_1) (envelope-from <aik@ozlabs.ru>) id 1qWTCZ-0000Gp-Qc
+ for qemu-devel@nongnu.org; Wed, 16 Aug 2023 22:57:35 -0400
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <gurchetansingh@chromium.org>)
- id 1qWSfm-0006qx-As
- for qemu-devel@nongnu.org; Wed, 16 Aug 2023 22:23:44 -0400
-Received: by mail-pg1-x52f.google.com with SMTP id
- 41be03b00d2f7-53fa455cd94so4498882a12.2
- for <qemu-devel@nongnu.org>; Wed, 16 Aug 2023 19:23:41 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <aik@ozlabs.ru>) id 1qWTCX-00080Y-1A
+ for qemu-devel@nongnu.org; Wed, 16 Aug 2023 22:57:35 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-68878ca7ca0so1499037b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 16 Aug 2023 19:57:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=chromium.org; s=google; t=1692239019; x=1692843819;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=QcSacfDzGFjYstC4DD5n/aXZQ7L4mwoEiiAMvisAT5Y=;
- b=bkrdqoF7VJn84tmQBHR854ouuHcqGD8rGY4o2zVSOCLcrheoL4YmHiQifrWJCnJ67x
- VtFo2l4d6J8I1Eo4rKMtMrOtGUYYA5G/dFls/38MBybqXiNn1p3elqqjTGc1D+ef9txW
- cSF99w4+MsGDh6bPkzBWHMxCRTblADDlfKVrQ=
+ d=ozlabs-ru.20221208.gappssmtp.com; s=20221208; t=1692241049; x=1692845849;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=NIYpAT/cYzxFB59WFnwJkqf+qr0OBNGgodWl9NyOVkY=;
+ b=sA4ph0ffpXFS9dSawuqGXkR2ypW4PbwakTDnj+n2bZK/6+/PKRzD6O6bAVVkJnYe/W
+ Vg/XPgZUrbsamYRUkKIeRcWH+SqRmvQ0CKR+U915UQQsBhVdgAdwYDBqLzXUZ/j9cB1p
+ ag+G1VqJA5RemQV4zTi+5dy6Nq6ttI4vFWtJl11LUjKrDWYigejJOJx/LUZZSCeZVnP3
+ fFRMzfQ0xKPSW/Vwi/FQo0eUuFqffyKi8i2TL+PETiBLC+2GgNt10OZfs9clnpKHcHNQ
+ YdYM9BNUBMrFDMu8Bzx70dZqg18Ns4CqVK7TMFIgSVv8dJkjddLBhK4CBPGnDS7Jd3HG
+ VB6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692239019; x=1692843819;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=QcSacfDzGFjYstC4DD5n/aXZQ7L4mwoEiiAMvisAT5Y=;
- b=JhcU8mN6IalzT1XBMYzQ2XzvmIoi2r5+VSGX6CUlYjL4G2i1rPIO50A9ZUo/tJwvHH
- sWTtKK8V8utUHqjXT9sUAoGBEYUMscwmH7co9nH/TdNHASs0IJsVm1SPw5TBPxXyG+05
- XOcvtykLB5Y6/Y3yEkGvqDNUd8BR35pDr0ZnsaI5s/1NZAyryQlcaQk+AYfB7zXob/Ha
- vz28jTRBfAoSziWTdZ7TaFRLly4WVsAeSPBrnKQrykJknHXdLEzTdtnXPDNwMg1mNaBU
- 58zLmtwe2ErJuD0/RAoneVbqo7PGiW6iWpmxz1qGwRw7qgycFSZ1lrCrjOIwvtIojcGB
- tw6g==
-X-Gm-Message-State: AOJu0Yx/RVF8x2WY0rPrvRQAJTKMD3T5rVYAdGXIAuZe94fuA0dN37qT
- Hx1O4FPjlxXIwpSugsGYh1PbaNht9jMWflrZc/8=
-X-Google-Smtp-Source: AGHT+IFBugokRzB5+v4j458Ak5Fe8ZXJmirWIRMZL2uZHyeOOpWNoRDGM2ahKQ+542TaNAtO+Y7SRw==
-X-Received: by 2002:a17:90b:1a88:b0:263:ebab:a152 with SMTP id
- ng8-20020a17090b1a8800b00263ebaba152mr2881510pjb.19.1692239019351; 
- Wed, 16 Aug 2023 19:23:39 -0700 (PDT)
-Received: from gurchetansingh0.mtv.corp.google.com
- ([2620:15c:a7:2:b7f8:4544:6dd7:85d])
+ d=1e100.net; s=20221208; t=1692241049; x=1692845849;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=NIYpAT/cYzxFB59WFnwJkqf+qr0OBNGgodWl9NyOVkY=;
+ b=IeLemJOMGFWinU8ETjiMMYYFfy4NHkwRYm+Gsytf5c3uJcs21XGLh6scGtuz3M1p4F
+ /m3/W0DVxPJf337hK5f6h8m3k7Zw/o9CYtu0inH8k4x+aDWXOsMSs75YKXYgJgPCrqCD
+ 9Bh7Rd7sZCvalO51/+bMuJV8p/Ou47KFPj47aXA/3nitxaNSJq+3+3wz8cdepzBJIjYT
+ 8bmOHOPtc9PKcLWTqAmeMRNZkM0SHkYuwoCbibzKHi8nT7a40o9ySHF9f3jKZkD2Ou72
+ oUjgpWsrh46jqchFQ2qCTk8dfWRGLPQV8G8Kw3mppUyL3+ASjTY4izDDCzWKGji1yEfA
+ IdYw==
+X-Gm-Message-State: AOJu0YzFGcRuNwi/1lZgmaMOXDeSFrVS6x1H0ST1oHU02RvIvLvnXgV8
+ ckMQoUIGDuQUpfF5Mu+dit6EKg==
+X-Google-Smtp-Source: AGHT+IGT1w+BI29x/g99A6MtdHXTM9zxJqItbrkVi7ZnEsuI5skuMYpHP/JRIWhP43kXHpxp8h07Vw==
+X-Received: by 2002:a05:6a00:3990:b0:687:6184:deed with SMTP id
+ fi16-20020a056a00399000b006876184deedmr4405116pfb.22.1692241049265; 
+ Wed, 16 Aug 2023 19:57:29 -0700 (PDT)
+Received: from [192.168.10.153]
+ (ppp118-208-171-7.cbr-trn-nor-bras39.tpg.internode.on.net. [118.208.171.7])
  by smtp.gmail.com with ESMTPSA id
- hg14-20020a17090b300e00b00267eead2f16sm401085pjb.36.2023.08.16.19.23.38
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 16 Aug 2023 19:23:39 -0700 (PDT)
-From: Gurchetan Singh <gurchetansingh@chromium.org>
-X-Google-Original-From: Gurchetan Singh <gurchetansingh@google.com>
-To: qemu-devel@nongnu.org
-Cc: marcandre.lureau@redhat.com, kraxel@redhat.com, akihiko.odaki@gmail.com,
- ray.huang@amd.com, alex.bennee@linaro.org, shentey@gmail.com, hi@alyssa.is,
- ernunes@redhat.com, manos.pitsidianakis@linaro.org
-Subject: [PATCH v7 9/9] docs/system: add basic virtio-gpu documentation
-Date: Wed, 16 Aug 2023 19:23:22 -0700
-Message-Id: <20230817022322.466-10-gurchetansingh@google.com>
-X-Mailer: git-send-email 2.31.0
-In-Reply-To: <20230817022322.466-1-gurchetansingh@google.com>
-References: <20230817022322.466-1-gurchetansingh@google.com>
+ fe22-20020a056a002f1600b00682a0184742sm12172416pfb.148.2023.08.16.19.57.25
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 16 Aug 2023 19:57:28 -0700 (PDT)
+Message-ID: <659a53cb-2dc7-45c0-7598-38f60a3dd923@ozlabs.ru>
+Date: Thu, 17 Aug 2023 12:57:23 +1000
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52f;
- envelope-from=gurchetansingh@chromium.org; helo=mail-pg1-x52f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:108.0) Gecko/20100101
+ Thunderbird/108.0
+Subject: Re: [PATCH v2 02/19] ppc/vof: Fix missed fields in VOF cleanup
+Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>
+Cc: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-ppc@nongnu.org,
+ qemu-devel@nongnu.org
+References: <20230808042001.411094-1-npiggin@gmail.com>
+ <20230808042001.411094-3-npiggin@gmail.com>
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+In-Reply-To: <20230808042001.411094-3-npiggin@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=aik@ozlabs.ru; helo=mail-pf1-x435.google.com
+X-Spam_score_int: -50
+X-Spam_score: -5.1
+X-Spam_bar: -----
+X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, NICE_REPLY_A=-3.165, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,166 +99,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Gurchetan Singh <gurchetansingh@chromium.org>
 
-This adds basic documentation for virtio-gpu.
 
-Suggested-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Signed-off-by: Gurchetan Singh <gurchetansingh@chromium.org>
-Tested-by: Alyssa Ross <hi@alyssa.is>
-Tested-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
-Reviewed-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
----
-v2: - Incorporated suggestions by Akihiko Odaki
-    - Listed the currently supported capset_names (Bernard)
+On 08/08/2023 14:19, Nicholas Piggin wrote:
+> Failing to reset the of_instance_last makes ihandle allocation continue
+> to increase, which causes record-replay replay fail to match the
+> recorded trace.
+> 
+> Not resetting claimed_base makes VOF eventually run out of memory after
+> some resets.
+> 
+> Cc: Alexey Kardashevskiy <aik@ozlabs.ru>
+> Fixes: fc8c745d501 ("spapr: Implement Open Firmware client interface")
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 
-v3: - Incorporated suggestions by Akihiko Odaki and Alyssa Ross
 
-v4: - Incorporated suggestions by Akihiko Odaki
+Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
 
-v5: - Removed pci suffix from examples
-    - Verified that -device virtio-gpu-rutabaga works.  Strangely
-      enough, I don't remember changing anything, and I remember
-      it not working.  I did rebase to top of tree though.
-    - Fixed meson examples in crosvm docs
+Cool to see it still in use :)
 
- docs/system/device-emulation.rst   |   1 +
- docs/system/devices/virtio-gpu.rst | 113 +++++++++++++++++++++++++++++
- 2 files changed, 114 insertions(+)
- create mode 100644 docs/system/devices/virtio-gpu.rst
 
-diff --git a/docs/system/device-emulation.rst b/docs/system/device-emulation.rst
-index 4491c4cbf7..1167f3a9f2 100644
---- a/docs/system/device-emulation.rst
-+++ b/docs/system/device-emulation.rst
-@@ -91,6 +91,7 @@ Emulated Devices
-    devices/nvme.rst
-    devices/usb.rst
-    devices/vhost-user.rst
-+   devices/virtio-gpu.rst
-    devices/virtio-pmem.rst
-    devices/vhost-user-rng.rst
-    devices/canokey.rst
-diff --git a/docs/system/devices/virtio-gpu.rst b/docs/system/devices/virtio-gpu.rst
-new file mode 100644
-index 0000000000..8c5c708272
---- /dev/null
-+++ b/docs/system/devices/virtio-gpu.rst
-@@ -0,0 +1,113 @@
-+..
-+   SPDX-License-Identifier: GPL-2.0
-+
-+virtio-gpu
-+==========
-+
-+This document explains the setup and usage of the virtio-gpu device.
-+The virtio-gpu device paravirtualizes the GPU and display controller.
-+
-+Linux kernel support
-+--------------------
-+
-+virtio-gpu requires a guest Linux kernel built with the
-+``CONFIG_DRM_VIRTIO_GPU`` option.
-+
-+QEMU virtio-gpu variants
-+------------------------
-+
-+QEMU virtio-gpu device variants come in the following form:
-+
-+ * ``virtio-vga[-BACKEND]``
-+ * ``virtio-gpu[-BACKEND][-INTERFACE]``
-+ * ``vhost-user-vga``
-+ * ``vhost-user-pci``
-+
-+**Backends:** QEMU provides a 2D virtio-gpu backend, and two accelerated
-+backends: virglrenderer ('gl' device label) and rutabaga_gfx ('rutabaga'
-+device label).  There is a vhost-user backend that runs the graphics stack
-+in a separate process for improved isolation.
-+
-+**Interfaces:** QEMU further categorizes virtio-gpu device variants based
-+on the interface exposed to the guest. The interfaces can be classified
-+into VGA and non-VGA variants. The VGA ones are prefixed with virtio-vga
-+or vhost-user-vga while the non-VGA ones are prefixed with virtio-gpu or
-+vhost-user-gpu.
-+
-+The VGA ones always use the PCI interface, but for the non-VGA ones, the
-+user can further pick between MMIO or PCI. For MMIO, the user can suffix
-+the device name with -device, though vhost-user-gpu does not support MMIO.
-+For PCI, the user can suffix it with -pci. Without these suffixes, the
-+platform default will be chosen.
-+
-+virtio-gpu 2d
-+-------------
-+
-+The default 2D backend only performs 2D operations. The guest needs to
-+employ a software renderer for 3D graphics.
-+
-+Typically, the software renderer is provided by `Mesa`_ or `SwiftShader`_.
-+Mesa's implementations (LLVMpipe, Lavapipe and virgl below) work out of box
-+on typical modern Linux distributions.
-+
-+.. parsed-literal::
-+    -device virtio-gpu
-+
-+.. _Mesa: https://www.mesa3d.org/
-+.. _SwiftShader: https://github.com/google/swiftshader
-+
-+virtio-gpu virglrenderer
-+------------------------
-+
-+When using virgl accelerated graphics mode in the guest, OpenGL API calls
-+are translated into an intermediate representation (see `Gallium3D`_). The
-+intermediate representation is communicated to the host and the
-+`virglrenderer`_ library on the host translates the intermediate
-+representation back to OpenGL API calls.
-+
-+.. parsed-literal::
-+    -device virtio-gpu-gl
-+
-+.. _Gallium3D: https://www.freedesktop.org/wiki/Software/gallium/
-+.. _virglrenderer: https://gitlab.freedesktop.org/virgl/virglrenderer/
-+
-+virtio-gpu rutabaga
-+-------------------
-+
-+virtio-gpu can also leverage `rutabaga_gfx`_ to provide `gfxstream`_
-+rendering and `Wayland display passthrough`_.  With the gfxstream rendering
-+mode, GLES and Vulkan calls are forwarded to the host with minimal
-+modification.
-+
-+The crosvm book provides directions on how to build a `gfxstream-enabled
-+rutabaga`_ and launch a `guest Wayland proxy`_.
-+
-+This device does require host blob support (``hostmem`` field below). The
-+``hostmem`` field specifies the size of virtio-gpu host memory window.
-+This is typically between 256M and 8G.
-+
-+At least one capset (see colon separated ``capset_names`` below) must be
-+specified when starting the device.  The currently supported
-+``capset_names`` are ``gfxstream-vulkan`` and ``cross-domain`` on Linux
-+guests. For Android guests, ``gfxstream-gles`` is also supported.
-+
-+The device will try to auto-detect the wayland socket path if the
-+``cross-domain`` capset name is set.  The user may optionally specify
-+``wayland_socket_path`` for non-standard paths.
-+
-+The ``wsi`` option can be set to ``surfaceless`` or ``headless``.
-+Surfaceless doesn't create a native window surface, but does copy from the
-+render target to the Pixman buffer if a virtio-gpu 2D hypercall is issued.
-+Headless is like surfaceless, but doesn't copy to the Pixman buffer.
-+Surfaceless is the default if ``wsi`` is not specified.
-+
-+.. parsed-literal::
-+    -device virtio-gpu-rutabaga,capset_names=gfxstream-vulkan:cross-domain,
-+       hostmem=8G,wayland_socket_path=/tmp/nonstandard/mock_wayland.sock,
-+       wsi=headless
-+
-+.. _rutabaga_gfx: https://github.com/google/crosvm/blob/main/rutabaga_gfx/ffi/src/include/rutabaga_gfx_ffi.h
-+.. _gfxstream: https://android.googlesource.com/platform/hardware/google/gfxstream/
-+.. _Wayland display passthrough: https://www.youtube.com/watch?v=OZJiHMtIQ2M
-+.. _gfxstream-enabled rutabaga: https://crosvm.dev/book/appendix/rutabaga_gfx.html
-+.. _guest Wayland proxy: https://crosvm.dev/book/devices/wayland.html
+> ---
+>   hw/ppc/vof.c | 2 ++
+>   1 file changed, 2 insertions(+)
+> 
+> diff --git a/hw/ppc/vof.c b/hw/ppc/vof.c
+> index 18c3f92317..e3b430a81f 100644
+> --- a/hw/ppc/vof.c
+> +++ b/hw/ppc/vof.c
+> @@ -1024,6 +1024,8 @@ void vof_cleanup(Vof *vof)
+>       }
+>       vof->claimed = NULL;
+>       vof->of_instances = NULL;
+> +    vof->of_instance_last = 0;
+> +    vof->claimed_base = 0;
+>   }
+>   
+>   void vof_build_dt(void *fdt, Vof *vof)
+
 -- 
-2.42.0.rc1.204.g551eb34607-goog
-
+Alexey
 
