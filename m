@@ -2,33 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E87377F550
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 13:33:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5B7977F54F
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 13:33:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWbEa-0001j8-0e; Thu, 17 Aug 2023 07:32:12 -0400
+	id 1qWbEb-0001jy-O9; Thu, 17 Aug 2023 07:32:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tugy@chinatelecom.cn>)
- id 1qWbEX-0001iR-4w
+ id 1qWbEX-0001iS-5A
  for qemu-devel@nongnu.org; Thu, 17 Aug 2023 07:32:09 -0400
 Received: from smtpnm6-02.21cn.com ([182.42.154.78] helo=chinatelecom.cn)
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <tugy@chinatelecom.cn>) id 1qWbEU-00050K-AE
+ (envelope-from <tugy@chinatelecom.cn>) id 1qWbEU-0004v3-8l
  for qemu-devel@nongnu.org; Thu, 17 Aug 2023 07:32:08 -0400
 HMM_SOURCE_IP: 192.168.139.44:35588.1307217768
 HMM_ATTACHE_NUM: 0000
 HMM_SOURCE_TYPE: SMTP
 Received: from clientip-36.111.64.85 (unknown [192.168.139.44])
- by chinatelecom.cn (HERMES) with SMTP id 8ECD81237AACE;
- Thu, 17 Aug 2023 19:23:58 +0800 (CST)
+ by chinatelecom.cn (HERMES) with SMTP id 3E2061200C268;
+ Thu, 17 Aug 2023 19:24:03 +0800 (CST)
 X-189-SAVE-TO-SEND: +tugy@chinatelecom.cn
 Received: from  ([36.111.64.85])
  by gateway-ssl-dep-56d86dc765-g96c8 with ESMTP id
- 46fcf7d4aab64eefa376bab31fea8c4e for kraxel@redhat.com; 
- Thu, 17 Aug 2023 19:24:03 CST
-X-Transaction-ID: 46fcf7d4aab64eefa376bab31fea8c4e
+ bf5ded637fe5494f94781e0db4b5782b for kraxel@redhat.com; 
+ Thu, 17 Aug 2023 19:24:05 CST
+X-Transaction-ID: bf5ded637fe5494f94781e0db4b5782b
 X-Real-From: tugy@chinatelecom.cn
 X-Receive-IP: 36.111.64.85
 X-MEDUSA-Status: 0
@@ -38,10 +38,13 @@ To: kraxel@redhat.com,
 Cc: qemu-devel@nongnu.org,
 	tugy@chinatelecom.cn,
 	dengpc12@chinatelecom.cn
-Subject: [PATCH 0/2] ui/vdagent: Fix two bugs about disconnect event handling
-Date: Thu, 17 Aug 2023 19:23:54 +0800
-Message-Id: <cover.1692268800.git.tugy@chinatelecom.cn>
+Subject: [PATCH 1/2] ui/vdagent: call vdagent_disconnect() when agent
+ connection is lost
+Date: Thu, 17 Aug 2023 19:23:55 +0800
+Message-Id: <d285e8729552a6206ffa1cd4520fc8f9c6be5957.1692268800.git.tugy@chinatelecom.cn>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <cover.1692268800.git.tugy@chinatelecom.cn>
+References: <cover.1692268800.git.tugy@chinatelecom.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=182.42.154.78; envelope-from=tugy@chinatelecom.cn;
@@ -68,15 +71,43 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Guoyi Tu <tugy@chinatelecom.cn>
 
-and resource leak
+when the agent connection is lost, the input handler of the mouse
+doesn't deactivate, which results in unresponsive mouse events in
+VNC windows.
 
-Guoyi Tu (2):
-  ui/vdagent: call vdagent_disconnect() when agent connection is lost
-  ui/vdagent: Unregister input handler of mouse during finalization
+To fix this issue, call vdagent_disconnect() to reset the state
+each time the frontend disconncect
 
- ui/vdagent.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+Signed-off-by: Guoyi Tu <tugy@chinatelecom.cn>
+Signed-off-by: dengpengcheng <dengpc12@chinatelecom.cn>
+---
+ ui/vdagent.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
+diff --git a/ui/vdagent.c b/ui/vdagent.c
+index 8a651492f0..386dc5abe0 100644
+--- a/ui/vdagent.c
++++ b/ui/vdagent.c
+@@ -870,8 +870,11 @@ static void vdagent_disconnect(VDAgentChardev *vd)
+ 
+ static void vdagent_chr_set_fe_open(struct Chardev *chr, int fe_open)
+ {
++    VDAgentChardev *vd = QEMU_VDAGENT_CHARDEV(chr);
++
+     if (!fe_open) {
+         trace_vdagent_close();
++        vdagent_disconnect(vd);
+         /* To reset_serial, we CLOSED our side. Make sure the other end knows we
+          * are ready again. */
+         qemu_chr_be_event(chr, CHR_EVENT_OPENED);
+@@ -922,7 +925,6 @@ static void vdagent_chr_fini(Object *obj)
+     VDAgentChardev *vd = QEMU_VDAGENT_CHARDEV(obj);
+ 
+     migrate_del_blocker(vd->migration_blocker);
+-    vdagent_disconnect(vd);
+     buffer_free(&vd->outbuf);
+     error_free(vd->migration_blocker);
+ }
 -- 
 2.27.0
 
