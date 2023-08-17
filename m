@@ -2,66 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DD4977F6E6
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 14:55:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD1C777F6D8
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 14:54:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWcUn-0002jK-Lt; Thu, 17 Aug 2023 08:53:02 -0400
+	id 1qWcVe-0003tl-2F; Thu, 17 Aug 2023 08:53:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qWcTH-0008M9-P2
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 08:51:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qWcTF-0002qP-5z
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 08:51:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692276684;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=MDGrjG3c1lkKCik8iN1rhb4C2PmepOJMoYB87aaP5Go=;
- b=EAv2e2fGiR6klNdWBrh1PKVROQUHoIOTzUOgsO8wjo2iZyj956ScfZ/31amNQDFA5hoDFl
- bOCr2Z1eH/QM9YVoyuDcjF/ESYViiP8lJPgunBmPC23jQpAK3jtRSVw51yd9+aw69wtbYE
- mgiRB8F/OZN92FzF8ajP6oe1simlT8U=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-561-P6k4D1u8Pq6mO-jY2Xt9LA-1; Thu, 17 Aug 2023 08:51:23 -0400
-X-MC-Unique: P6k4D1u8Pq6mO-jY2Xt9LA-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B91453C0E450;
- Thu, 17 Aug 2023 12:51:22 +0000 (UTC)
-Received: from merkur.redhat.com (unknown [10.39.194.106])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 8DCC41121314;
- Thu, 17 Aug 2023 12:51:21 +0000 (UTC)
-From: Kevin Wolf <kwolf@redhat.com>
-To: qemu-block@nongnu.org
-Cc: kwolf@redhat.com, stefanha@redhat.com, eblake@redhat.com,
- eesposit@redhat.com, pbonzini@redhat.com, vsementsov@yandex-team.ru,
- qemu-devel@nongnu.org
-Subject: [PATCH 21/21] block: Mark bdrv_add/del_child() and caller GRAPH_WRLOCK
-Date: Thu, 17 Aug 2023 14:50:20 +0200
-Message-ID: <20230817125020.208339-22-kwolf@redhat.com>
-In-Reply-To: <20230817125020.208339-1-kwolf@redhat.com>
-References: <20230817125020.208339-1-kwolf@redhat.com>
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qWcU1-0001Vi-Js
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 08:52:16 -0400
+Received: from mail-qt1-x831.google.com ([2607:f8b0:4864:20::831])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qWcTy-00031d-FQ
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 08:52:12 -0400
+Received: by mail-qt1-x831.google.com with SMTP id
+ d75a77b69052e-40ffb4476d8so44820051cf.2
+ for <qemu-devel@nongnu.org>; Thu, 17 Aug 2023 05:52:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1692276728; x=1692881528;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=WgwD8SKREsYOwnSw6MD7pezSYgOqztVgqZYcNgKT/hI=;
+ b=doYKPZGuXKai+rVzAIx97Tt3e+Fl0DCqCEy4kpHLKDi+s/UGeRf9ehiypz1nkejNYF
+ +qlUrjNo0PfJkG7yZjsh5bFZl7eTB4kCX4l3UtX+DMGrVgIQu6a/p42Br3EcYDkyuLpF
+ HGvf5hszV8hnJw/ZgD2JHcLLbVZ2C7fmYd9sGv5iQrehDdkHNgdG/44S8pVQUvLLbwzN
+ bRJnoCSDptAx+CfzzJsrfWcozTXxiCHf7A8/bqew2S91qSxAjSA45M7YXHln4Is0uX3X
+ dKwC6WAea9FXlGK/nh74kZeZHhgcba+Ceq7KzvzzbcOd9iMXftcWIC+LkoNMo2SQSLgn
+ hsvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1692276728; x=1692881528;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=WgwD8SKREsYOwnSw6MD7pezSYgOqztVgqZYcNgKT/hI=;
+ b=PGmqh6u9GiZhDtj6DrASE9ManPUAAQ8qaFxs3MznYn2veYbx1mCLBO+eUQwjzvlRhU
+ rFVyMtax2VDLh3h0wltEDl1nNMnYrderw5wdhuic2Qxf9HRtNm44/JpgovNzkTDL7lR8
+ NhzC2+EfEfT4kkrG7XQY9jJRyML3KBf7Re9A08ePDs1Sk0L7cOY9wyoP3avOa2gn5wlr
+ a278IFVDNE6F2gMFp1I198TMGQzniv04EqajpJvt50CdAYgDEOOg5R96RcGbbpk7xc8W
+ YNfF6biWW3PH4pJXbRXj1gDWdJiBjdygWMiN79OiwpzsKIK53VtUd3y5SdTpF/Wm7J7i
+ as5g==
+X-Gm-Message-State: AOJu0YweKCDWJXqBFRl6IMcuAybT59DyipMTpW6VIHFrx1zTdAYEs3P9
+ a+FhjwN8gX6OMzP+9WsAMlXLrriqlg2CGMnGzP0=
+X-Google-Smtp-Source: AGHT+IEQaCeOFKUI2c5rd9wCpvM8ClxobFDyPf/TXP/H390WuwkJUJqAqdzHR8hTqA6Xqb/3+azODz+2yiLoAGQl3II=
+X-Received: by 2002:a05:622a:11d1:b0:403:f60d:49e5 with SMTP id
+ n17-20020a05622a11d100b00403f60d49e5mr6037173qtk.33.1692276728585; Thu, 17
+ Aug 2023 05:52:08 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <cover.1692268800.git.tugy@chinatelecom.cn>
+ <febb712a419d37d2e2b244794f28efdf8aa5177c.1692268800.git.tugy@chinatelecom.cn>
+In-Reply-To: <febb712a419d37d2e2b244794f28efdf8aa5177c.1692268800.git.tugy@chinatelecom.cn>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Thu, 17 Aug 2023 16:51:57 +0400
+Message-ID: <CAJ+F1CJ7MCtV8ZtV3WE4_gyYRQHHOvqZVcKLHfmtxeH0=0Yg-A@mail.gmail.com>
+Subject: Re: [PATCH 2/2] ui/vdagent: Unregister input handler of mouse during
+ finalization
+To: tugy@chinatelecom.cn
+Cc: kraxel@redhat.com, qemu-devel@nongnu.org, dengpc12@chinatelecom.cn
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::831;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x831.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.021,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,188 +88,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The functions read the parents list in the generic block layer, so we
-need to hold the graph lock already there. The BlockDriver
-implementations actually modify the graph, so it has to be a writer
-lock.
+On Thu, Aug 17, 2023 at 3:33=E2=80=AFPM <tugy@chinatelecom.cn> wrote:
+>
+> From: Guoyi Tu <tugy@chinatelecom.cn>
+>
+> Input handler resource should be released when
+> VDAgentChardev object finalize
+>
+> Signed-off-by: Guoyi Tu <tugy@chinatelecom.cn>
+> Signed-off-by: dengpengcheng <dengpc12@chinatelecom.cn>
 
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
----
- include/block/block-global-state.h |  8 +++++---
- include/block/block_int-common.h   |  9 +++++----
- block/quorum.c                     | 23 ++++++-----------------
- blockdev.c                         | 17 +++++++++++------
- 4 files changed, 27 insertions(+), 30 deletions(-)
+Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
 
-diff --git a/include/block/block-global-state.h b/include/block/block-global-state.h
-index 0f6df8f1a2..f31660c7b1 100644
---- a/include/block/block-global-state.h
-+++ b/include/block/block-global-state.h
-@@ -276,9 +276,11 @@ int bdrv_try_change_aio_context(BlockDriverState *bs, AioContext *ctx,
- int bdrv_probe_blocksizes(BlockDriverState *bs, BlockSizes *bsz);
- int bdrv_probe_geometry(BlockDriverState *bs, HDGeometry *geo);
- 
--void bdrv_add_child(BlockDriverState *parent, BlockDriverState *child,
--                    Error **errp);
--void bdrv_del_child(BlockDriverState *parent, BdrvChild *child, Error **errp);
-+void GRAPH_WRLOCK
-+bdrv_add_child(BlockDriverState *parent, BlockDriverState *child, Error **errp);
-+
-+void GRAPH_WRLOCK
-+bdrv_del_child(BlockDriverState *parent, BdrvChild *child, Error **errp);
- 
- /**
-  *
-diff --git a/include/block/block_int-common.h b/include/block/block_int-common.h
-index 9d5002df5a..277168b973 100644
---- a/include/block/block_int-common.h
-+++ b/include/block/block_int-common.h
-@@ -393,10 +393,11 @@ struct BlockDriver {
-      */
-     int (*bdrv_probe_geometry)(BlockDriverState *bs, HDGeometry *geo);
- 
--    void (*bdrv_add_child)(BlockDriverState *parent, BlockDriverState *child,
--                           Error **errp);
--    void (*bdrv_del_child)(BlockDriverState *parent, BdrvChild *child,
--                           Error **errp);
-+    void GRAPH_WRLOCK_PTR (*bdrv_add_child)(
-+        BlockDriverState *parent, BlockDriverState *child, Error **errp);
-+
-+    void GRAPH_WRLOCK_PTR (*bdrv_del_child)(
-+        BlockDriverState *parent, BdrvChild *child, Error **errp);
- 
-     /**
-      * Informs the block driver that a permission change is intended. The
-diff --git a/block/quorum.c b/block/quorum.c
-index 620a50ba2c..05220cab7f 100644
---- a/block/quorum.c
-+++ b/block/quorum.c
-@@ -1066,8 +1066,8 @@ static void quorum_close(BlockDriverState *bs)
-     g_free(s->children);
- }
- 
--static void quorum_add_child(BlockDriverState *bs, BlockDriverState *child_bs,
--                             Error **errp)
-+static void GRAPH_WRLOCK
-+quorum_add_child(BlockDriverState *bs, BlockDriverState *child_bs, Error **errp)
- {
-     BDRVQuorumState *s = bs->opaque;
-     BdrvChild *child;
-@@ -1093,29 +1093,22 @@ static void quorum_add_child(BlockDriverState *bs, BlockDriverState *child_bs,
-     }
-     s->next_child_index++;
- 
--    bdrv_drained_begin(bs);
--
-     /* We can safely add the child now */
-     bdrv_ref(child_bs);
- 
--    bdrv_graph_wrlock(child_bs);
-     child = bdrv_attach_child(bs, child_bs, indexstr, &child_of_bds,
-                               BDRV_CHILD_DATA, errp);
--    bdrv_graph_wrunlock();
-     if (child == NULL) {
-         s->next_child_index--;
--        goto out;
-+        return;
-     }
-     s->children = g_renew(BdrvChild *, s->children, s->num_children + 1);
-     s->children[s->num_children++] = child;
-     quorum_refresh_flags(bs);
--
--out:
--    bdrv_drained_end(bs);
- }
- 
--static void quorum_del_child(BlockDriverState *bs, BdrvChild *child,
--                             Error **errp)
-+static void GRAPH_WRLOCK
-+quorum_del_child(BlockDriverState *bs, BdrvChild *child, Error **errp)
- {
-     BDRVQuorumState *s = bs->opaque;
-     char indexstr[INDEXSTR_LEN];
-@@ -1145,18 +1138,14 @@ static void quorum_del_child(BlockDriverState *bs, BdrvChild *child,
-         s->next_child_index--;
-     }
- 
--    bdrv_drained_begin(bs);
--
-     /* We can safely remove this child now */
-     memmove(&s->children[i], &s->children[i + 1],
-             (s->num_children - i - 1) * sizeof(BdrvChild *));
-     s->children = g_renew(BdrvChild *, s->children, --s->num_children);
--    bdrv_graph_wrlock(NULL);
-+
-     bdrv_unref_child(bs, child);
--    bdrv_graph_wrunlock();
- 
-     quorum_refresh_flags(bs);
--    bdrv_drained_end(bs);
- }
- 
- static void quorum_gather_child_options(BlockDriverState *bs, QDict *target,
-diff --git a/blockdev.c b/blockdev.c
-index 372eaf198c..325b7a3bef 100644
---- a/blockdev.c
-+++ b/blockdev.c
-@@ -3545,8 +3545,8 @@ out:
-     aio_context_release(aio_context);
- }
- 
--static BdrvChild *bdrv_find_child(BlockDriverState *parent_bs,
--                                  const char *child_name)
-+static BdrvChild * GRAPH_RDLOCK
-+bdrv_find_child(BlockDriverState *parent_bs, const char *child_name)
- {
-     BdrvChild *child;
- 
-@@ -3565,9 +3565,11 @@ void qmp_x_blockdev_change(const char *parent, const char *child,
-     BlockDriverState *parent_bs, *new_bs = NULL;
-     BdrvChild *p_child;
- 
-+    bdrv_graph_wrlock(NULL);
-+
-     parent_bs = bdrv_lookup_bs(parent, parent, errp);
-     if (!parent_bs) {
--        return;
-+        goto out;
-     }
- 
-     if (!child == !node) {
-@@ -3576,7 +3578,7 @@ void qmp_x_blockdev_change(const char *parent, const char *child,
-         } else {
-             error_setg(errp, "Either child or node must be specified");
-         }
--        return;
-+        goto out;
-     }
- 
-     if (child) {
-@@ -3584,7 +3586,7 @@ void qmp_x_blockdev_change(const char *parent, const char *child,
-         if (!p_child) {
-             error_setg(errp, "Node '%s' does not have child '%s'",
-                        parent, child);
--            return;
-+            goto out;
-         }
-         bdrv_del_child(parent_bs, p_child, errp);
-     }
-@@ -3593,10 +3595,13 @@ void qmp_x_blockdev_change(const char *parent, const char *child,
-         new_bs = bdrv_find_node(node);
-         if (!new_bs) {
-             error_setg(errp, "Node '%s' not found", node);
--            return;
-+            goto out;
-         }
-         bdrv_add_child(parent_bs, new_bs, errp);
-     }
-+
-+out:
-+    bdrv_graph_wrunlock();
- }
- 
- BlockJobInfoList *qmp_query_block_jobs(Error **errp)
--- 
-2.41.0
+> ---
+>  ui/vdagent.c | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/ui/vdagent.c b/ui/vdagent.c
+> index 386dc5abe0..4c9b3b7ba8 100644
+> --- a/ui/vdagent.c
+> +++ b/ui/vdagent.c
+> @@ -924,6 +924,9 @@ static void vdagent_chr_fini(Object *obj)
+>  {
+>      VDAgentChardev *vd =3D QEMU_VDAGENT_CHARDEV(obj);
+>
+> +    if (vd->mouse_hs) {
+> +        qemu_input_handler_unregister(vd->mouse_hs);
+> +    }
+>      migrate_del_blocker(vd->migration_blocker);
+>      buffer_free(&vd->outbuf);
+>      error_free(vd->migration_blocker);
+> --
+> 2.27.0
+>
+>
 
+
+--=20
+Marc-Andr=C3=A9 Lureau
 
