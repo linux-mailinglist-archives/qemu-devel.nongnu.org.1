@@ -2,117 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08B4E77F035
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 07:32:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 635DD77F046
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 07:43:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWVbs-00074T-QU; Thu, 17 Aug 2023 01:31:52 -0400
+	id 1qWVm0-0003wE-5L; Thu, 17 Aug 2023 01:42:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qWVbJ-0006oY-AB
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 01:31:19 -0400
-Received: from mail-ot1-x32b.google.com ([2607:f8b0:4864:20::32b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qWVbG-0003rV-P4
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 01:31:16 -0400
-Received: by mail-ot1-x32b.google.com with SMTP id
- 46e09a7af769-6bcade59b24so5946807a34.0
- for <qemu-devel@nongnu.org>; Wed, 16 Aug 2023 22:31:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1692250273; x=1692855073;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=lqwUBKCsJIu6Kok3irpDq8wqJUl9JGbLYq58wXaDnQ0=;
- b=1gu5/KBtHaxsjhSshR4TffmkUjm9NNZqkA2HPqW47cQkgYgjBIwJ1rEYLhK2dMrbfk
- KCpEEVFKK6kW2W3VBB+K/2m9mjsRav0hCsIBVA7zS3EPEwSTzNh4JfSMfprwnCX1LBGN
- cuYWA8Ft3VtloG2xnFrYOD/lW+NKkKJB3bf3auwbxr5P+1xUiybf4/xgh7Tc8BcnZV2I
- O4SlFoBoybwhodyGt0zAr0kyYpXJ4pc2ehBMvgtq1rionxX9fwEIZYmOf/GGrAS6HvQb
- MuhziZ4+uhHfeXXGLbU/UcXAeSNQdVsUqqhV8hO5r2IW2xoazbF0wKAHyWjlMwpEYQiG
- nvRQ==
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1qWVlg-0003vD-Ru
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 01:42:01 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1qWVle-0007al-2G
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 01:42:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1692250917;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ha5Ztz1mNzQticx8IjERfHX8YLpJTXwdgNd3MlNfH5g=;
+ b=MLdEhSmZ/aGA1MBcztoGvrTr8/Fn//DlbC5LbC+LjPl6SiPo3UrTlaXrYYJm9GwnI51fll
+ CE62QyF2Uzgzvj6x5YAgG4OeDPm76RohiurB8hL+kkasp2c6D0mgz4e2hF8+zksmKUe3nO
+ fefFA/2iLvk7YfZCD4UhLbTIGyF6Gz4=
+Received: from mail-yb1-f199.google.com (mail-yb1-f199.google.com
+ [209.85.219.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-487-fD7MyeVfNmmdK9eL2MRnKg-1; Thu, 17 Aug 2023 01:41:55 -0400
+X-MC-Unique: fD7MyeVfNmmdK9eL2MRnKg-1
+Received: by mail-yb1-f199.google.com with SMTP id
+ 3f1490d57ef6-cf4cb742715so7769394276.2
+ for <qemu-devel@nongnu.org>; Wed, 16 Aug 2023 22:41:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692250273; x=1692855073;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20221208; t=1692250914; x=1692855714;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lqwUBKCsJIu6Kok3irpDq8wqJUl9JGbLYq58wXaDnQ0=;
- b=Fn462XfQyfIBmCfsQ7a8JVc9wBRY2A/xEoEU0lFZlF/HsanT7okvEbwfLux75uLusf
- LFSoJa+aoIipTDTRk/xrvkv7EeA+cpuNHF7nfAYXqd2gsFvCgePvUYpYOrriXWjeBsJy
- JPIWYcTxk4CZBRBtZ21qrF4yzofYdCEiqV6QHgler8lYufOGx7rqgkfTRySFNzl99sts
- Tr2/lMRzCFTeRj1Y+sAwsPBnpasr53a2qV1e93Ao9NXo8VqnS1Tcj9sgRpd1ReqfAYcA
- eYiM3YWUTb/DhcqANASWpAPTwWhtBfOodywbZwiuSgeD6O4tnaEHWbx1GViI4L7DRBcj
- jkHw==
-X-Gm-Message-State: AOJu0YzZzPXMVXAlTET+JnwA2oW6WSrwKwxq/lgFyVi+1INB9Rhv3A/x
- 9nLdz0Xdl0d41QSFY+Ktsj3GYg==
-X-Google-Smtp-Source: AGHT+IF3SYiv+QLBhO40iLnk+nijyWoh0NOYk76NZi+ZZu5c10QkTfpkv1zIIUkiZDdBrVJvdZFvKg==
-X-Received: by 2002:a05:6870:4711:b0:1b3:715c:463e with SMTP id
- b17-20020a056870471100b001b3715c463emr4818745oaq.0.1692250273292; 
- Wed, 16 Aug 2023 22:31:13 -0700 (PDT)
-Received: from alarm.flets-east.jp ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
- by smtp.gmail.com with ESMTPSA id
- j18-20020aa783d2000000b00662610cf7a8sm12339407pfn.172.2023.08.16.22.31.04
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 16 Aug 2023 22:31:12 -0700 (PDT)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-To: 
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Michael Rolnik <mrolnik@gmail.com>,
- "Edgar E . Iglesias" <edgar.iglesias@gmail.com>,
- Brian Cain <bcain@quicinc.com>, Song Gao <gaosong@loongson.cn>,
- Xiaojuan Yang <yangxiaojuan@loongson.cn>,
- Laurent Vivier <laurent@vivier.eu>, Aurelien Jarno <aurelien@aurel32.net>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Chris Wulff <crwulff@gmail.com>, Marek Vasut <marex@denx.de>,
- Stafford Horne <shorne@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
- Nicholas Piggin <npiggin@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Artyom Tarasenko <atar4qemu@gmail.com>,
- Bastian Koppelmann <kbastian@mail.uni-paderborn.de>,
- Max Filippov <jcmvbkbc@gmail.com>, qemu-devel@nongnu.org,
- qemu-arm@nongnu.org, qemu-ppc@nongnu.org, qemu-riscv@nongnu.org,
- qemu-s390x@nongnu.org, Anton Kochkov <anton.kochkov@proton.me>,
- Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v5 03/26] gdbstub: Add num_regs member to GDBFeature
-Date: Thu, 17 Aug 2023 14:29:50 +0900
-Message-ID: <20230817053017.24207-4-akihiko.odaki@daynix.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230817053017.24207-1-akihiko.odaki@daynix.com>
-References: <20230817053017.24207-1-akihiko.odaki@daynix.com>
+ bh=ha5Ztz1mNzQticx8IjERfHX8YLpJTXwdgNd3MlNfH5g=;
+ b=VRvIy2amP+UMLjrmA0iEM6p/oIaCypPBqk913CQQAzTLCS8gCaAeWpFEXKgmK/2hUF
+ R/BTzp1WQJFANw33PNmT9KV6ug2FVpDFKjigJt89HELlrkk9+ztjgdNOO+ROMadW0ROP
+ g46jocFi1yVaipzwDIZlCu4hnDnlAMVaeJ+LWOSL1kMXrgkndloHkiA28wdF9g+GUonY
+ WbYzs52FdDri8eU4JSK9rngkwnNoM8Wo0802RUVTD8dNfo+aTY6pqU8V7+OomNDBKIYU
+ cz9f1tbHahZ+XXkehioyJW95Te9SGDYeOrqcNGe4Ka8Nr55Z9YCuOpLCm9L6X0BB57p/
+ Idqg==
+X-Gm-Message-State: AOJu0Yzn+OSLpYQfDJqQz07fFqDZVRZcFxo7Wqv5PD6/+AuixfWkBZ4Y
+ Tt5tjqSZwPingjkBqhcmVyLhGgaL+9A01rlumCviwx8kGJsrINcAaiAfoTQQ+ESA6QOUcVP+445
+ ehhLvPQkyLY3VlEeN7ilu/tZvuNMPklg=
+X-Received: by 2002:a5b:bc7:0:b0:d3c:5c3e:c2a with SMTP id
+ c7-20020a5b0bc7000000b00d3c5c3e0c2amr3482513ybr.24.1692250914573; 
+ Wed, 16 Aug 2023 22:41:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFqtyg8/FB7Z4kBaudXg123SV0rEksxHKuS9Aw2993ucWjvC3pXrpqZjUPnlgtSGyOzqGSxV1ASntim5SZMQao=
+X-Received: by 2002:a5b:bc7:0:b0:d3c:5c3e:c2a with SMTP id
+ c7-20020a5b0bc7000000b00d3c5c3e0c2amr3482498ybr.24.1692250914250; 
+ Wed, 16 Aug 2023 22:41:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::32b;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-ot1-x32b.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+References: <20230810153611.3410882-1-eperezma@redhat.com>
+ <20230810153611.3410882-5-eperezma@redhat.com>
+ <CACGkMEveLShOzufBdgeQ+N8-R+Vv7CW6y+aSPSD5ZRnzy4sEXw@mail.gmail.com>
+In-Reply-To: <CACGkMEveLShOzufBdgeQ+N8-R+Vv7CW6y+aSPSD5ZRnzy4sEXw@mail.gmail.com>
+From: Eugenio Perez Martin <eperezma@redhat.com>
+Date: Thu, 17 Aug 2023 07:41:17 +0200
+Message-ID: <CAJaqyWegvo6nRPJ=JwBLoZ6uQKwwk596MGpq0t7SBfomznNSBw@mail.gmail.com>
+Subject: Re: [PATCH v2 4/5] vdpa: move vhost_vdpa_set_vrings_ready to the
+ caller
+To: Jason Wang <jasowang@redhat.com>
+Cc: qemu-devel@nongnu.org, Laurent Vivier <lvivier@redhat.com>, 
+ Dragos Tatulea <dtatulea@nvidia.com>, si-wei.liu@oracle.com, 
+ Parav Pandit <parav@mellanox.com>, Gautam Dawar <gdawar@xilinx.com>, 
+ Zhu Lingshan <lingshan.zhu@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Cindy Lu <lulu@redhat.com>, Harpreet Singh Anand <hanand@xilinx.com>,
+ Stefano Garzarella <sgarzare@redhat.com>, 
+ Hawkins Jiawei <yin31149@gmail.com>, Shannon Nelson <snelson@pensando.io>,
+ Lei Yang <leiyang@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -128,98 +103,158 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently the number of registers exposed to GDB is written as magic
-numbers in code. Derive the number of registers GDB actually see from
-XML files to replace the magic numbers in code later.
+On Mon, Aug 14, 2023 at 8:57=E2=80=AFAM Jason Wang <jasowang@redhat.com> wr=
+ote:
+>
+> On Thu, Aug 10, 2023 at 11:36=E2=80=AFPM Eugenio P=C3=A9rez <eperezma@red=
+hat.com> wrote:
+> >
+> > Doing that way allows CVQ to be enabled before the dataplane vqs,
+> > restoring the state as MQ or MAC addresses properly in the case of a
+> > migration.
+> >
+>
+> A typo in the subject, should be vhost_vdpa_set_vring_ready.
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
----
- include/exec/gdbstub.h  |  1 +
- scripts/feature_to_c.py | 46 +++++++++++++++++++++++++++++++++++++++--
- 2 files changed, 45 insertions(+), 2 deletions(-)
+I'll fix it in the next version, thanks!
 
-diff --git a/include/exec/gdbstub.h b/include/exec/gdbstub.h
-index 3f08093321..9b484d7eef 100644
---- a/include/exec/gdbstub.h
-+++ b/include/exec/gdbstub.h
-@@ -13,6 +13,7 @@
- typedef struct GDBFeature {
-     const char *xmlname;
-     const char *xml;
-+    int num_regs;
- } GDBFeature;
- 
- 
-diff --git a/scripts/feature_to_c.py b/scripts/feature_to_c.py
-index bcbcb83beb..e04d6b2df7 100755
---- a/scripts/feature_to_c.py
-+++ b/scripts/feature_to_c.py
-@@ -1,7 +1,7 @@
- #!/usr/bin/env python3
- # SPDX-License-Identifier: GPL-2.0-or-later
- 
--import os, sys
-+import os, sys, xml.etree.ElementTree
- 
- def writeliteral(indent, bytes):
-     sys.stdout.write(' ' * indent)
-@@ -39,10 +39,52 @@ def writeliteral(indent, bytes):
-     with open(input, 'rb') as file:
-         read = file.read()
- 
-+    parser = xml.etree.ElementTree.XMLPullParser(['start', 'end'])
-+    parser.feed(read)
-+    events = parser.read_events()
-+    event, element = next(events)
-+    if event != 'start':
-+        sys.stderr.write(f'unexpected event: {event}\n')
-+        exit(1)
-+    if element.tag != 'feature':
-+        sys.stderr.write(f'unexpected start tag: {element.tag}\n')
-+        exit(1)
-+
-+    regnum = 0
-+    regnums = []
-+    tags = ['feature']
-+    for event, element in events:
-+        if event == 'end':
-+            if element.tag != tags[len(tags) - 1]:
-+                sys.stderr.write(f'unexpected end tag: {element.tag}\n')
-+                exit(1)
-+
-+            tags.pop()
-+            if element.tag == 'feature':
-+                break
-+        elif event == 'start':
-+            if len(tags) < 2 and element.tag == 'reg':
-+                if 'regnum' in element.attrib:
-+                    regnum = int(element.attrib['regnum'])
-+
-+                regnums.append(regnum)
-+                regnum += 1
-+
-+            tags.append(element.tag)
-+        else:
-+            raise Exception(f'unexpected event: {event}\n')
-+
-+    if len(tags):
-+        sys.stderr.write('unterminated feature tag\n')
-+        exit(1)
-+
-+    base_reg = min(regnums)
-+    num_regs = max(regnums) - base_reg + 1 if len(regnums) else 0
-+
-     sys.stdout.write('    {\n')
-     writeliteral(8, bytes(os.path.basename(input), 'utf-8'))
-     sys.stdout.write(',\n')
-     writeliteral(8, read)
--    sys.stdout.write('\n    },\n')
-+    sys.stdout.write(f',\n        {num_regs},\n    }},\n')
- 
- sys.stdout.write('    { NULL }\n};\n')
--- 
-2.41.0
+>
+> > Signed-off-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
+> > ---
+> >  hw/virtio/vdpa-dev.c   |  3 +++
+> >  hw/virtio/vhost-vdpa.c |  3 ---
+> >  net/vhost-vdpa.c       | 57 +++++++++++++++++++++++++++++-------------
+> >  3 files changed, 42 insertions(+), 21 deletions(-)
+> >
+> > diff --git a/hw/virtio/vdpa-dev.c b/hw/virtio/vdpa-dev.c
+> > index 363b625243..f22d5d5bc0 100644
+> > --- a/hw/virtio/vdpa-dev.c
+> > +++ b/hw/virtio/vdpa-dev.c
+> > @@ -255,6 +255,9 @@ static int vhost_vdpa_device_start(VirtIODevice *vd=
+ev, Error **errp)
+> >          error_setg_errno(errp, -ret, "Error starting vhost");
+> >          goto err_guest_notifiers;
+> >      }
+> > +    for (i =3D 0; i < s->dev.nvqs; ++i) {
+> > +        vhost_vdpa_set_vring_ready(&s->vdpa, i);
+> > +    }
+> >      s->started =3D true;
+> >
+> >      /*
+> > diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
+> > index 0d9975b5b5..8ca2e3800c 100644
+> > --- a/hw/virtio/vhost-vdpa.c
+> > +++ b/hw/virtio/vhost-vdpa.c
+> > @@ -1297,9 +1297,6 @@ static int vhost_vdpa_dev_start(struct vhost_dev =
+*dev, bool started)
+> >          if (unlikely(!ok)) {
+> >              return -1;
+> >          }
+> > -        for (int i =3D 0; i < dev->nvqs; ++i) {
+> > -            vhost_vdpa_set_vring_ready(v, dev->vq_index + i);
+> > -        }
+> >      } else {
+> >          vhost_vdpa_suspend(dev);
+> >          vhost_vdpa_svqs_stop(dev);
+> > diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+> > index 9251351b4b..3bf60f9431 100644
+> > --- a/net/vhost-vdpa.c
+> > +++ b/net/vhost-vdpa.c
+> > @@ -371,6 +371,22 @@ static int vhost_vdpa_net_data_start(NetClientStat=
+e *nc)
+> >      return 0;
+> >  }
+> >
+> > +static int vhost_vdpa_net_data_load(NetClientState *nc)
+> > +{
+> > +    VhostVDPAState *s =3D DO_UPCAST(VhostVDPAState, nc, nc);
+> > +    struct vhost_vdpa *v =3D &s->vhost_vdpa;
+> > +    bool has_cvq =3D v->dev->vq_index_end % 2;
+> > +
+> > +    if (has_cvq) {
+> > +        return 0;
+> > +    }
+> > +
+> > +    for (int i =3D 0; i < v->dev->nvqs; ++i) {
+> > +        vhost_vdpa_set_vring_ready(v, i + v->dev->vq_index);
+> > +    }
+> > +    return 0;
+> > +}
+> > +
+> >  static void vhost_vdpa_net_client_stop(NetClientState *nc)
+> >  {
+> >      VhostVDPAState *s =3D DO_UPCAST(VhostVDPAState, nc, nc);
+> > @@ -393,6 +409,7 @@ static NetClientInfo net_vhost_vdpa_info =3D {
+> >          .size =3D sizeof(VhostVDPAState),
+> >          .receive =3D vhost_vdpa_receive,
+> >          .start =3D vhost_vdpa_net_data_start,
+> > +        .load =3D vhost_vdpa_net_data_load,
+>
+> This deserve an independent patch?
+>
+
+Do you mean to add another callback op? What name does it work?
+
+Thanks!
+
+> Thanks
+>
+> >          .stop =3D vhost_vdpa_net_client_stop,
+> >          .cleanup =3D vhost_vdpa_cleanup,
+> >          .has_vnet_hdr =3D vhost_vdpa_has_vnet_hdr,
+> > @@ -974,26 +991,30 @@ static int vhost_vdpa_net_cvq_load(NetClientState=
+ *nc)
+> >
+> >      assert(nc->info->type =3D=3D NET_CLIENT_DRIVER_VHOST_VDPA);
+> >
+> > -    if (!v->shadow_vqs_enabled) {
+> > -        return 0;
+> > -    }
+> > +    vhost_vdpa_set_vring_ready(v, v->dev->vq_index);
+> >
+> > -    n =3D VIRTIO_NET(v->dev->vdev);
+> > -    r =3D vhost_vdpa_net_load_mac(s, n);
+> > -    if (unlikely(r < 0)) {
+> > -        return r;
+> > -    }
+> > -    r =3D vhost_vdpa_net_load_mq(s, n);
+> > -    if (unlikely(r)) {
+> > -        return r;
+> > -    }
+> > -    r =3D vhost_vdpa_net_load_offloads(s, n);
+> > -    if (unlikely(r)) {
+> > -        return r;
+> > +    if (v->shadow_vqs_enabled) {
+> > +        n =3D VIRTIO_NET(v->dev->vdev);
+> > +        r =3D vhost_vdpa_net_load_mac(s, n);
+> > +        if (unlikely(r < 0)) {
+> > +            return r;
+> > +        }
+> > +        r =3D vhost_vdpa_net_load_mq(s, n);
+> > +        if (unlikely(r)) {
+> > +            return r;
+> > +        }
+> > +        r =3D vhost_vdpa_net_load_offloads(s, n);
+> > +        if (unlikely(r)) {
+> > +            return r;
+> > +        }
+> > +        r =3D vhost_vdpa_net_load_rx(s, n);
+> > +        if (unlikely(r)) {
+> > +            return r;
+> > +        }
+> >      }
+> > -    r =3D vhost_vdpa_net_load_rx(s, n);
+> > -    if (unlikely(r)) {
+> > -        return r;
+> > +
+> > +    for (int i =3D 0; i < v->dev->vq_index; ++i) {
+> > +        vhost_vdpa_set_vring_ready(v, i);
+> >      }
+> >
+> >      return 0;
+> > --
+> > 2.39.3
+> >
+>
 
 
