@@ -2,106 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1937E77F5E6
+	by mail.lfdr.de (Postfix) with ESMTPS id 0828077F5E5
 	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 14:02:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWbhK-0004SW-4g; Thu, 17 Aug 2023 08:01:54 -0400
+	id 1qWbg6-0003wY-6X; Thu, 17 Aug 2023 08:00:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <frankja@linux.ibm.com>)
- id 1qWbhG-0004GR-C7; Thu, 17 Aug 2023 08:01:50 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qWbg3-0003ug-SY
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 08:00:35 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <frankja@linux.ibm.com>)
- id 1qWbhC-0003fa-Ty; Thu, 17 Aug 2023 08:01:49 -0400
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 37HC0mVS026627; Thu, 17 Aug 2023 12:01:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : to : cc : references : from : subject : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=cbmmiXQ0EtNB23pXi2Ny/HvQifoU0eE9EVBrosOSiK8=;
- b=cX3bxVErz4Bt+Q7/kwh5wYAVB+VLVQldYWqQL9p6W/bermST2G0QUlSIo8IbsL+8btVR
- Z+gsx68vLOIch7rF/WN3cu983J3uAyJQ2xw3pNtHh+cH8cli29iniowJFODAJFSk5FpC
- GjMHxCn3URncbOlToCYZVaFezV0zloPMfw8GafGkVDHUv/pQui5vhpzkSq6HsFsN/rJf
- qIkQfK63+DhRyZCZGjs+Xyo/Bd2yIh+wU+qqZ4h9jFOm0m1yosh4LSZrARJb52zbu67c
- 7xPBuplLSjl6nVBUj/UKRLvNY26QobZ/1S1Y8vCph/rTlMq7glDlBPuElbUoMKJxncpf fw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3shk6ag0n4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 17 Aug 2023 12:01:43 +0000
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 37HC12jW027071;
- Thu, 17 Aug 2023 12:01:43 GMT
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3shk6ag0mw-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 17 Aug 2023 12:01:43 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 37HBlf6S007871; Thu, 17 Aug 2023 11:56:39 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3senwknnmf-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 17 Aug 2023 11:56:39 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
- [10.20.54.104])
- by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 37HBuatb42336936
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 17 Aug 2023 11:56:36 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 17FA72004B;
- Thu, 17 Aug 2023 11:56:36 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 98C4020040;
- Thu, 17 Aug 2023 11:56:35 +0000 (GMT)
-Received: from [9.171.23.254] (unknown [9.171.23.254])
- by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 17 Aug 2023 11:56:35 +0000 (GMT)
-Message-ID: <efbaaabe-7875-dbb5-fc98-9e9e0ff918d8@linux.ibm.com>
-Date: Thu, 17 Aug 2023 13:56:35 +0200
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qWbg1-0003GY-8a
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 08:00:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1692273632;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=vhenWrlq25iwktp1alF8gD0gYkCNbgENGehPS71u3ik=;
+ b=BBJxF2ueYVS7mM0n9t3uqo8cV97jYd34i8Syz9eQKLlpF+Tt75zeVn7s2WPvfEbCaTyBV5
+ jm4o1uOt2MQjjZtM2WrSJq0MYwoxgFi+K7BcAHnSBi5jsdAiVIYS9/winLXog6kSJkUgcm
+ kSePzOzNwd8zZD8iZ0SFTKHRWz87g10=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-607-pjaakixZNsyj0Go8eh94Lg-1; Thu, 17 Aug 2023 08:00:30 -0400
+X-MC-Unique: pjaakixZNsyj0Go8eh94Lg-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-3fe216798e9so50736065e9.3
+ for <qemu-devel@nongnu.org>; Thu, 17 Aug 2023 05:00:30 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1692273629; x=1692878429;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=vhenWrlq25iwktp1alF8gD0gYkCNbgENGehPS71u3ik=;
+ b=XBDkby3u5CiCn398vKjXSSMI7OUxmU6eWnWvHtea4iUdL2P+4oiTNGE4ybUi4JhUuu
+ AS78xLLmZt756KmfnCJ1XbZ0Y82yVqdoSBRmrh5OBBB029Ki71ZjW04rVs3o+zGbbrdz
+ EFIcAi5O3loYrbThtMJo6LZC5slDEd10Uv7mMpKKignYF4G/E9KJkdYhdgkZgnhIQCQx
+ TDPJ7bBbPB3B1UxGVFJ83AX4JOxhxrIDnqbiWTxlJkohd+32V8j7tx60GvatOdtJae67
+ RFHUyJWn+0n7bks46fEjtoNN3eVLpOb675ey4tP+rIx4oRfh2/Bm6vaRGeR2JfmxW/e7
+ 3DdQ==
+X-Gm-Message-State: AOJu0YzZFpP1TqwgbOIslZlAv3Hx5b2G6iIu9PQqsXpcb2wF4+40/ARl
+ bZ/tS4lIBLxQ5ACeFat9JkQwz91s7qm7Nqt62DnrLCNbpuY2b3QqaUnOD2TwgAQam2III5xNsw5
+ 75A+9XRw3ESEmv/ad2YjErBdlyQ==
+X-Received: by 2002:a7b:ce8d:0:b0:3fc:616:b0db with SMTP id
+ q13-20020a7bce8d000000b003fc0616b0dbmr3797964wmj.9.1692273629348; 
+ Thu, 17 Aug 2023 05:00:29 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGBirgDG1jniL1GfjVgcNM86GgDKgIoMJ6kPxBzRJPqAbiLsDRRzY41MuNxaosXac+pnWNejw==
+X-Received: by 2002:a7b:ce8d:0:b0:3fc:616:b0db with SMTP id
+ q13-20020a7bce8d000000b003fc0616b0dbmr3797945wmj.9.1692273629037; 
+ Thu, 17 Aug 2023 05:00:29 -0700 (PDT)
+Received: from [192.168.0.5] (ip-109-42-113-156.web.vodafone.de.
+ [109.42.113.156]) by smtp.gmail.com with ESMTPSA id
+ q25-20020a7bce99000000b003fe17e04269sm2705945wmj.40.2023.08.17.05.00.27
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 17 Aug 2023 05:00:28 -0700 (PDT)
+Message-ID: <2bb2f8ac-43b4-9505-c163-d29964bf6a30@redhat.com>
+Date: Thu, 17 Aug 2023 14:00:26 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
+Subject: Re: [PATCH] chardev/char-pty: Avoid losing bytes when the other side
+ just (re-)connected
 Content-Language: en-US
-To: Steffen Eiden <seiden@linux.ibm.com>, qemu-s390x@nongnu.org,
- qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>, David Hildenbrand <david@redhat.com>,
- Michael Mueller <mimu@linux.vnet.ibm.com>,
- Marc Hartmayer <mhartmay@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>
-References: <20230810124719.2167260-1-seiden@linux.ibm.com>
- <20230810124719.2167260-4-seiden@linux.ibm.com>
-From: Janosch Frank <frankja@linux.ibm.com>
-Subject: Re: [PATCH v2 3/3] target/s390x: AP-passthrough for PV guests
-In-Reply-To: <20230810124719.2167260-4-seiden@linux.ibm.com>
+To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Marc Hartmayer <mhartmay@linux.ibm.com>
+References: <20230816210743.1319018-1-thuth@redhat.com>
+ <ZN33W+LhAn2FrFDT@redhat.com>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <ZN33W+LhAn2FrFDT@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: QncVCoA67tWzWpPfi8U9aogGX4637c70
-X-Proofpoint-GUID: IJsGSKX1B2lqj930c1pX4AwRYyQ1roa8
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-08-17_03,2023-08-17_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 malwarescore=0
- adultscore=0 spamscore=0 bulkscore=0 phishscore=0 mlxscore=0
- impostorscore=0 lowpriorityscore=0 clxscore=1011 priorityscore=1501
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2308170104
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=frankja@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -59
-X-Spam_score: -6.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -60
+X-Spam_score: -6.1
 X-Spam_bar: ------
-X-Spam_report: (-6.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-4.01,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-6.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.021,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-4.01, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -118,199 +104,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/10/23 14:47, Steffen Eiden wrote:
-> Enabling AP-passthrough(AP-pt) for PV-guest by using the new CPU
-> features for PV-AP-pt of KVM.
+On 17/08/2023 12.32, Daniel P. Berrangé wrote:
+> On Wed, Aug 16, 2023 at 11:07:43PM +0200, Thomas Huth wrote:
+>> When starting a guest via libvirt with "virsh start --console ...",
+>> the first second of the console output is missing. This is especially
+>> annoying on s390x that only has a text console by default and no graphical
+>> output - if the bios fails to boot here, the information about what went
+>> wrong is completely lost.
+>>
+>> One part of the problem (there is also some things to be done on the
+>> libvirt side) is that QEMU only checks with a 1 second timer whether
+>> the other side of the pty is already connected, so the first second of
+>> the console output is always lost.
+>>
+>> This likely used to work better in the past, since the code once checked
+>> for a re-connection during write, but this has been removed in commit
+>> f8278c7d74 ("char-pty: remove the check for connection on write") to avoid
+>> some locking.
+>>
+>> To ease the situation here at least a little bit, let's check with g_poll()
+>> whether we could send out the data anyway, even if the connection has not
+>> been marked as "connected" yet. The file descriptor is marked as non-blocking
+>> anyway since commit fac6688a18 ("Do not hang on full PTY"), so this should
+>> not cause any trouble if the other side is not ready for receiving yet.
+>>
+>> With this patch applied, I can now successfully see the bios output of
+>> a s390x guest when running it with "virsh start --console" (with a patched
+>> version of virsh that fixes the remaining issues there, too).
+>>
+>> Reported-by: Marc Hartmayer <mhartmay@linux.ibm.com>
+>> Signed-off-by: Thomas Huth <thuth@redhat.com>
+>> ---
+>>   chardev/char-pty.c | 22 +++++++++++++++++++---
+>>   1 file changed, 19 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/chardev/char-pty.c b/chardev/char-pty.c
+>> index 4e5deac18a..fad12dfef3 100644
+>> --- a/chardev/char-pty.c
+>> +++ b/chardev/char-pty.c
+>> @@ -106,11 +106,27 @@ static void pty_chr_update_read_handler(Chardev *chr)
+>>   static int char_pty_chr_write(Chardev *chr, const uint8_t *buf, int len)
+>>   {
+>>       PtyChardev *s = PTY_CHARDEV(chr);
+>> +    GPollFD pfd;
+>> +    int rc;
+>>   
+>> -    if (!s->connected) {
+>> -        return len;
+>> +    if (s->connected) {
+>> +        return io_channel_send(s->ioc, buf, len);
+>>       }
+>> -    return io_channel_send(s->ioc, buf, len);
+>> +
+>> +    /*
+>> +     * The other side might already be re-connected, but the timer might
+>> +     * not have fired yet. So let's check here whether we can write again:
+>> +     */
+>> +    pfd.fd = QIO_CHANNEL_FILE(s->ioc)->fd;
+>> +    pfd.events = G_IO_OUT;
+>> +    pfd.revents = 0;
+>> +    rc = RETRY_ON_EINTR(g_poll(&pfd, 1, 0));
+>> +    g_assert(rc >= 0);
+>> +    if (!(pfd.revents & G_IO_HUP) && (pfd.revents & G_IO_OUT)) {
 > 
-> As usual QEMU first checks which CPU features are available and then
-> sets them if available and selected by user. An additional check is done
-> to verify that PV-AP can only be enabled if "regular" AP-pt is enabled
-> as well. Note that KVM itself does not enforce this restriction.
+> Should (can?) we call
 > 
-> Signed-off-by: Steffen Eiden <seiden@linux.ibm.com>
-> ---
->   target/s390x/cpu_features.h         |  1 +
->   target/s390x/cpu_features_def.h.inc |  4 ++
->   target/s390x/cpu_models.c           |  2 +
->   target/s390x/gen-features.c         |  2 +
->   target/s390x/kvm/kvm.c              | 73 +++++++++++++++++++++++++++++
->   5 files changed, 82 insertions(+)
+>     pty_chr_state(chr, 1);
 > 
-> diff --git a/target/s390x/cpu_features.h b/target/s390x/cpu_features.h
-> index 87463f064d..40928c60e9 100644
-> --- a/target/s390x/cpu_features.h
-> +++ b/target/s390x/cpu_features.h
-> @@ -43,6 +43,7 @@ typedef enum {
->       S390_FEAT_TYPE_KDSA,
->       S390_FEAT_TYPE_SORTL,
->       S390_FEAT_TYPE_DFLTCC,
-> +    S390_FEAT_TYPE_UV_CALL,
+> here ?
 
-You've named them UV features in the KVM patches.
-None of this is "call" related.
+As far as I understood commit f8278c7d74c6 and f7ea2038bea04628, this is not 
+possible anymore since the lock has been removed.
 
-Also you made a point of having the word "guest" in the KVM features
+>> +        io_channel_send(s->ioc, buf, len);
+> 
+> As it feels a little dirty to be sending data before setting the
+> 'connected == 1' and thus issuing the 'CHR_EVENT_OPENED' event
 
->   } S390FeatType;
->   
->   /* Definition of a CPU feature */
-> diff --git a/target/s390x/cpu_features_def.h.inc b/target/s390x/cpu_features_def.h.inc
-> index e3cfe63735..9a2c5a9dfc 100644
-> --- a/target/s390x/cpu_features_def.h.inc
-> +++ b/target/s390x/cpu_features_def.h.inc
-> @@ -379,3 +379,7 @@ DEF_FEAT(DEFLATE_GHDT, "dfltcc-gdht", DFLTCC, 1, "DFLTCC GDHT")
->   DEF_FEAT(DEFLATE_CMPR, "dfltcc-cmpr", DFLTCC, 2, "DFLTCC CMPR")
->   DEF_FEAT(DEFLATE_XPND, "dfltcc-xpnd", DFLTCC, 4, "DFLTCC XPND")
->   DEF_FEAT(DEFLATE_F0, "dfltcc-f0", DFLTCC, 192, "DFLTCC format 0 parameter-block")
-> +
-> +/* Features exposed via the UV-CALL instruction */
-> +DEF_FEAT(UV_CALL_AP, "appv", UV_CALL, 4, "AP instructions installed for secure guests")
-> +DEF_FEAT(UV_CALL_AP_INTR, "appvi", UV_CALL, 5, "AP instructions interpretation for secure guests")
+I didn't find a really better solution so far. We could maybe introduce a 
+buffer in the char-pty code and store the last second of guest output, but 
+IMHO that's way more complex and thus somewhat ugly, too?
 
-*INTERRUPTION* support
+  Thomas
 
-The AP instructions are nearly fully interpreted in secure guests for 
-security reasons. The only time we see an AP instruction is for defining 
-the notification byte for the interrupt support since we need to pin the 
-page on which the byte resides.
-
-Have a look what the feature for STFLE 65 says and either keep the INTR 
-or use the suffix that's defined there
-
-> diff --git a/target/s390x/cpu_models.c b/target/s390x/cpu_models.c
-> index 42b52afdb4..a7900a8a5c 100644
-> --- a/target/s390x/cpu_models.c
-> +++ b/target/s390x/cpu_models.c
-> @@ -483,6 +483,8 @@ static void check_consistency(const S390CPUModel *model)
->           { S390_FEAT_DIAG_318, S390_FEAT_EXTENDED_LENGTH_SCCB },
->           { S390_FEAT_NNPA, S390_FEAT_VECTOR },
->           { S390_FEAT_RDP, S390_FEAT_LOCAL_TLB_CLEARING },
-> +        { S390_FEAT_UV_CALL_AP, S390_FEAT_AP },
-> +        { S390_FEAT_UV_CALL_AP_INTR, S390_FEAT_UV_CALL_AP },
->       };
->       int i;
->   
-> diff --git a/target/s390x/gen-features.c b/target/s390x/gen-features.c
-> index 1e3b7c0dc9..6ae10a2cd8 100644
-> --- a/target/s390x/gen-features.c
-> +++ b/target/s390x/gen-features.c
-> @@ -576,6 +576,8 @@ static uint16_t full_GEN16_GA1[] = {
->       S390_FEAT_RDP,
->       S390_FEAT_PAI,
->       S390_FEAT_PAIE,
-> +    S390_FEAT_UV_CALL_AP,
-> +    S390_FEAT_UV_CALL_AP_INTR,
->   };
->   
->   
-> diff --git a/target/s390x/kvm/kvm.c b/target/s390x/kvm/kvm.c
-> index a7e2cdf668..500b9d894d 100644
-> --- a/target/s390x/kvm/kvm.c
-> +++ b/target/s390x/kvm/kvm.c
-> @@ -2307,6 +2307,42 @@ static bool ap_enabled(const S390FeatBitmap features)
->       return test_bit(S390_FEAT_AP, features);
->   }
->   
-> +static bool uv_feat_supported(void)
-> +{
-> +    return kvm_vm_check_attr(kvm_state, KVM_S390_VM_CPU_MODEL,
-> +                             KVM_S390_VM_CPU_PROCESSOR_UV_FEAT_GUEST);
-> +}
-> +
-> +static int query_uv_feat_guest(S390FeatBitmap features)
-> +{
-> +    struct kvm_s390_vm_cpu_uv_feat prop = {};
-> +    struct kvm_device_attr attr = {
-> +        .group = KVM_S390_VM_CPU_MODEL,
-> +        .attr = KVM_S390_VM_CPU_MACHINE_UV_FEAT_GUEST,
-> +        .addr = (uint64_t) &prop,
-> +    };
-> +    int rc;
-> +
-> +    if (!uv_feat_supported()) {
-> +        return 0;
-> +    }
-> +
-> +    rc = kvm_vm_ioctl(kvm_state, KVM_GET_DEVICE_ATTR, &attr);
-> +    if (rc) {
-> +        return  rc;
-> +    }
-> +
-> +    if (ap_available()) {
-
-Can this be made into an early return?
-
-> +        if (prop.ap) {
-> +            set_bit(S390_FEAT_UV_CALL_AP, features);
-> +        }
-> +        if (prop.ap_intr) {
-> +            set_bit(S390_FEAT_UV_CALL_AP_INTR, features);
-> +        }
-> +    }
-> +    return 0;
-> +}
-> +
->   static int kvm_to_feat[][2] = {
->       { KVM_S390_VM_CPU_FEAT_ESOP, S390_FEAT_ESOP },
->       { KVM_S390_VM_CPU_FEAT_SIEF2, S390_FEAT_SIE_F2 },
-> @@ -2501,11 +2537,41 @@ void kvm_s390_get_host_cpu_model(S390CPUModel *model, Error **errp)
->           set_bit(S390_FEAT_DIAG_318, model->features);
->       }
->   
-> +    /* Test for Ultravisor features that influence secure guest behavior */
-> +    query_uv_feat_guest(model->features);
-> +
->       /* strip of features that are not part of the maximum model */
->       bitmap_and(model->features, model->features, model->def->full_feat,
->                  S390_FEAT_MAX);
->   }
->   
-> +static int configure_uv_feat_guest(const S390FeatBitmap features,
-> +                                   bool interpret)
-> +{
-> +
-> +    struct kvm_s390_vm_cpu_uv_feat uv_feat = {};
-> +    struct kvm_device_attr attribute = {
-> +        .group = KVM_S390_VM_CPU_MODEL,
-> +        .attr = KVM_S390_VM_CPU_PROCESSOR_UV_FEAT_GUEST,
-> +        .addr = (__u64) &uv_feat,
-> +    };
-> +
-> +    if (!uv_feat_supported()) {
-> +        return 0;
-> +    }
-> +
-> +    if (ap_enabled(features)) {
-
-Same early return check please
-
-> +        if (test_bit(S390_FEAT_UV_CALL_AP, features)) {
-> +            uv_feat.ap = 1;
-> +        }
-> +        if (test_bit(S390_FEAT_UV_CALL_AP_INTR, features) && interpret) {
-> +            uv_feat.ap_intr = 1;
-> +        }
-> +    }
-> +
-> +    return kvm_vm_ioctl(kvm_state, KVM_SET_DEVICE_ATTR, &attribute);
-> +}
-> +
->   static void kvm_s390_configure_apie(bool interpret)
->   {
->       uint64_t attr = interpret ? KVM_S390_VM_CRYPTO_ENABLE_APIE :
-> @@ -2569,6 +2635,13 @@ void kvm_s390_apply_cpu_model(const S390CPUModel *model, Error **errp)
->       if (ap_enabled(model->features)) {
->           kvm_s390_configure_apie(true);
->       }
-> +
-> +    /* configure UV-features for the guest indicated via query / test_bit */
-> +    rc = configure_uv_feat_guest(model->features, true);
-> +    if (rc) {
-> +        error_setg(errp, "KVM: Error configuring CPU UV features %d", rc);
-> +        return;
-> +    }
->   }
->   
->   void kvm_s390_restart_interrupt(S390CPU *cpu)
 
 
