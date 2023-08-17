@@ -2,82 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E8C477FABC
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 17:29:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CA4977FACF
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 17:32:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWewA-0002iO-7K; Thu, 17 Aug 2023 11:29:26 -0400
+	id 1qWeyn-0005uL-RF; Thu, 17 Aug 2023 11:32:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qWew0-0002bz-Mh
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 11:29:18 -0400
-Received: from mail-oi1-x235.google.com ([2607:f8b0:4864:20::235])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qWevw-0006mq-Nt
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 11:29:16 -0400
-Received: by mail-oi1-x235.google.com with SMTP id
- 5614622812f47-3a36b52b4a4so585958b6e.1
- for <qemu-devel@nongnu.org>; Thu, 17 Aug 2023 08:29:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1692286149; x=1692890949;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=gmUM5LsrJvRxFMnNYmXI0zSid4/PsHc30JEWozh2v9g=;
- b=F5ZCAKeh/uLGtXreO5tEqzzNpDo8FU+nLdFl3gfaPoInSPtL+8Y3j/kImdUa9pzAX1
- 38z6tt7aESJbDL35O3Q7FTafys4zsBjbWhLV04E/YflI5ZR/ZC9qKtpE0Ls+XfFLlBRM
- sgG1pug4tNyCI4YcVd77Wm3/TeG0Lf7jSReU8eue5NSLZgTbinubLrIqyvc4xoRjm8Tj
- 2hDhO73x501C/HjongpCz/6m0ylKDyzxb6ewknuWEPGS6wA5STDZCQzeE9oTJal2qOFW
- 26sNNUbs3ySxTtEAt0EefXHkA+A4XZcnDhyciAXa37tcMVn16a9RBA14pWCacfTa57jL
- 1bMQ==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qWeyl-0005uC-Af
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 11:32:07 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qWeyi-00088x-Qz
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 11:32:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1692286323;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=tZxW+zaxNaS91zJlaSdeNchwjsKN0H/6qRjtx4JUMfY=;
+ b=Tm2huSvxaUWI9ZwmAObO8PdO5u9V5OORwvszM/jiHN4s9RNgd5fjnw+OpAVcCX0h13l4DC
+ xiTXsGb7jEo9tiFaDCGJpdMdM8aUc3Q5DIKfn0VtKBFE3orp+HBf4JNcdqgstFyFCBdZ3Y
+ mU9BmosZ2LFh0Smftd/kc0Tc9tBgZgE=
+Received: from mail-oa1-f71.google.com (mail-oa1-f71.google.com
+ [209.85.160.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-341-dyUHQB82O8Wsk6HPuBwLUQ-1; Thu, 17 Aug 2023 11:31:59 -0400
+X-MC-Unique: dyUHQB82O8Wsk6HPuBwLUQ-1
+Received: by mail-oa1-f71.google.com with SMTP id
+ 586e51a60fabf-1bfb58ca395so990978fac.0
+ for <qemu-devel@nongnu.org>; Thu, 17 Aug 2023 08:31:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692286149; x=1692890949;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=gmUM5LsrJvRxFMnNYmXI0zSid4/PsHc30JEWozh2v9g=;
- b=VsWzV0MO+VrplWlTsK4VdSumDh+RlBQ6nEy+4vSNazLv5NUT1No32GI5VXjRO+BzK2
- gmY4UNXnwDDwVy+tIvYqSqUrayQZM+31omHj+1P45z1l2ePZdhhrwq3pubyK/GS7hDcu
- suL4kTdb9KNcyETkfjzkIs+O/mq5ZfFAy4gxMAvgrSeDITkePXc8rXasjcEVYnBOVoZQ
- KbsRZDLJ6LMLyNeExVHKsdDJmOlV0mhOV1/owgtOZq/yCPNUMygL/A5LcVyaR2kr9eyY
- RNCbST4NUpzP8EX7xNs9SZcG5HEJ0ZG9BeO7I3ejGB8RYZpigUlSk0AkHW4Vt6kHB8Ai
- SIyA==
-X-Gm-Message-State: AOJu0YxmBbDFg2gVAP2OC6aVSpR4WNJN3ObbpMP7KBPrAFRVQJK9rzND
- wVoGha2fvTMP9Df8CjHlmXPSPN8QHFKMsSrX7J0=
-X-Google-Smtp-Source: AGHT+IGFDMYdPXRPi+rVI/KOIF1kdOAcI32UfvwRqNqGQTVfDZfZj8SdeqqrL+zG0k7gxsE8Lh3/vA==
-X-Received: by 2002:a05:6808:1520:b0:3a7:272d:2f1c with SMTP id
- u32-20020a056808152000b003a7272d2f1cmr2264121oiw.25.1692286149513; 
- Thu, 17 Aug 2023 08:29:09 -0700 (PDT)
-Received: from grind.dc1.ventanamicro.com
- (189-69-160-189.dial-up.telesp.net.br. [189.69.160.189])
- by smtp.gmail.com with ESMTPSA id
- a24-20020a05680804d800b003a5b027ccb2sm7606394oie.38.2023.08.17.08.29.06
+ d=1e100.net; s=20221208; t=1692286319; x=1692891119;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=tZxW+zaxNaS91zJlaSdeNchwjsKN0H/6qRjtx4JUMfY=;
+ b=cqUWWQ3nvcjSYJSZEYE6sgfYuxMTNE49M3YEZQFnLD2n2fYXicP83esWoFtj3LAX+D
+ /JFl70ot6Mky/iRQ1NGBR33nk7TCGA9b8bGhMzF5keupTg8jbVYkbvpRg8A/5NXhWFfG
+ S31zOA5RI0LhP4rXTGS2ya8dyFMmyQuGI863rbNOtzS5FdobpESLl3h/fsMADZsGzOnc
+ gAhDae+eAB0AHObB/eeH78wzyJYgOzQAZum3YTuQ825eomg3Z27sXgCpvXZ9ScoZL1AL
+ r9r6Yb2W2zdNqKzIjhlSqchvJ2TNNFXrmrTN1m99/6TH5apMdd3rugh8v9ddcyaEtWyL
+ A/pQ==
+X-Gm-Message-State: AOJu0Yyfn9zdBlhchmGjh7HfmowYSuelUrdi1ZuHHTwoWldDIWjgA51S
+ cpZhSeyTQJ3WPm6fRw3MkShk0O2m66UmapHF82n0siz89IEj+e3rGzOn6Q+SAPHKkuo+Mh3KvkS
+ /ec0A89nBBAqg8D0=
+X-Received: by 2002:a05:6870:6588:b0:1b7:613c:2e30 with SMTP id
+ fp8-20020a056870658800b001b7613c2e30mr5240375oab.2.1692286318962; 
+ Thu, 17 Aug 2023 08:31:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH4/P3Soi6X+I/7uTm39LmfYRCLjfSfPdsVvZbL0FQjw80+qLk1I6e84VtZJW1zQqjzmHD+jA==
+X-Received: by 2002:a05:6870:6588:b0:1b7:613c:2e30 with SMTP id
+ fp8-20020a056870658800b001b7613c2e30mr5240343oab.2.1692286318662; 
+ Thu, 17 Aug 2023 08:31:58 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ n16-20020a0ce550000000b0063f82020d8bsm3008797qvm.60.2023.08.17.08.31.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 17 Aug 2023 08:29:08 -0700 (PDT)
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Alexandre Ghiti <alexghiti@rivosinc.com>
-Subject: [PATCH] target/riscv: fix satp_mode_finalize() when
- satp_mode.supported = 0
-Date: Thu, 17 Aug 2023 12:29:03 -0300
-Message-ID: <20230817152903.694926-1-dbarboza@ventanamicro.com>
-X-Mailer: git-send-email 2.41.0
+ Thu, 17 Aug 2023 08:31:58 -0700 (PDT)
+Date: Thu, 17 Aug 2023 11:31:56 -0400
+From: Peter Xu <peterx@redhat.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@gmail.com>, ThinerLogoer <logoerthiner1@163.com>,
+ "stefanha@redhat.com" <stefanha@redhat.com>, qemu-devel@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: Re: [PATCH v1 1/3] softmmu/physmem: fallback to opening guest RAM
+ file as readonly in a MAP_PRIVATE mapping
+Message-ID: <ZN49bPlANaNrgXCu@x1n>
+References: <ZNOti1OKN79t68jP@x1n>
+ <e9c53fbd-369c-2605-1470-e67a765f923b@redhat.com>
+ <6152f171.6a4c.189e069baf7.Coremail.logoerthiner1@163.com>
+ <ZNVVmxuQAsSEHqZq@x1n>
+ <1b4168d2.4182.189e324e0ef.Coremail.logoerthiner1@163.com>
+ <08cc9db9-b774-b027-58f5-dd7e6c374657@redhat.com>
+ <2b967b3.13b7.189e82ee694.Coremail.logoerthiner1@163.com>
+ <06f9a805-8150-8106-7d0a-05d0d2465cd0@redhat.com>
+ <CAJSP0QVjxNQ=sMjzEFzbyhJ0e+O5bGBiXkHMgWiB2GOVw4NqHQ@mail.gmail.com>
+ <9b2b884e-095c-7cd5-380b-b3b0c5aad9b6@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::235;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oi1-x235.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <9b2b884e-095c-7cd5-380b-b3b0c5aad9b6@redhat.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.021,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,91 +108,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In the same emulated RISC-V host, the 'host' KVM CPU takes 4 times
-longer to boot than the 'rv64' KVM CPU.
+On Thu, Aug 17, 2023 at 05:15:52PM +0200, David Hildenbrand wrote:
+> > I don't know how important that requirement was (that commit was a
+> > request from Kata Containers).
+> 
+> Let me take a look if Kata passes "share=on,readonly=on" or
+> "share=off,readonly=off".
 
-The reason is an unintended behavior of riscv_cpu_satp_mode_finalize()
-when satp_mode.supported = 0, i.e. when cpu_init() does not set
-satp_mode_max_supported(). satp_mode_max_from_map(map) does:
+The question is whether it's good enough if we change the semantics as long
+as we guarantee the original purposes of when introducing those flags would
+be enough (nvdimm, kata, etc.), as anything introduced in qemu can
+potentially be used elsewhere too.
 
-31 - __builtin_clz(map)
+David, could you share your concern on simply "having a new flag, while
+keeping all existing flags unchanged on behavior"?  You mentioned it's not
+wanted, but I didn't yet see the reason behind.
 
-This means that, if satp_mode.supported = 0, satp_mode_supported_max
-wil be '31 - 32'. But this is C, so satp_mode_supported_max will gladly
-set it to UINT_MAX (4294967295). After that, if the user didn't set a
-satp_mode, set_satp_mode_default_map(cpu) will make
+Thanks,
 
-cfg.satp_mode.map = cfg.satp_mode.supported
-
-So satp_mode.map = 0. And then satp_mode_map_max will be set to
-satp_mode_max_from_map(cpu->cfg.satp_mode.map), i.e. also UINT_MAX. The
-guard "satp_mode_map_max > satp_mode_supported_max" doesn't protect us
-here since both are UINT_MAX.
-
-And finally we have 2 loops:
-
-        for (int i = satp_mode_map_max - 1; i >= 0; --i) {
-
-Which are, in fact, 2 loops from UINT_MAX -1 to -1. This is where the
-extra delay when booting the 'host' CPU is coming from.
-
-Commit 43d1de32f8 already set a precedence for satp_mode.supported = 0
-in a different manner. We're doing the same here. If supported == 0,
-interpret as 'the CPU wants the OS to handle satp mode alone' and skip
-satp_mode_finalize().
-
-We'll also put a guard in satp_mode_max_from_map() to assert out if map
-is 0 since the function is not ready to deal with it.
-
-Cc: Alexandre Ghiti <alexghiti@rivosinc.com>
-Fixes: 6f23aaeb9b ("riscv: Allow user to set the satp mode")
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
----
- target/riscv/cpu.c | 23 ++++++++++++++++++++---
- 1 file changed, 20 insertions(+), 3 deletions(-)
-
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index d608026a28..86da93c7bc 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -349,6 +349,17 @@ static uint8_t satp_mode_from_str(const char *satp_mode_str)
- 
- uint8_t satp_mode_max_from_map(uint32_t map)
- {
-+    /*
-+     * 'map = 0' will make us return (31 - 32), which C will
-+     * happily overflow to UINT_MAX. There's no good result to
-+     * return if 'map = 0' (e.g. returning 0 will be ambiguous
-+     * with the result for 'map = 1').
-+     *
-+     * Assert out if map = 0. Callers will have to deal with
-+     * it outside of this function.
-+     */
-+    g_assert(map > 0);
-+
-     /* map here has at least one bit set, so no problem with clz */
-     return 31 - __builtin_clz(map);
- }
-@@ -1387,9 +1398,15 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
- static void riscv_cpu_satp_mode_finalize(RISCVCPU *cpu, Error **errp)
- {
-     bool rv32 = riscv_cpu_mxl(&cpu->env) == MXL_RV32;
--    uint8_t satp_mode_map_max;
--    uint8_t satp_mode_supported_max =
--                        satp_mode_max_from_map(cpu->cfg.satp_mode.supported);
-+    uint8_t satp_mode_map_max, satp_mode_supported_max;
-+
-+    /* The CPU wants the OS to decide which satp mode to use */
-+    if (cpu->cfg.satp_mode.supported == 0) {
-+        return;
-+    }
-+
-+    satp_mode_supported_max =
-+                    satp_mode_max_from_map(cpu->cfg.satp_mode.supported);
- 
-     if (cpu->cfg.satp_mode.map == 0) {
-         if (cpu->cfg.satp_mode.init == 0) {
 -- 
-2.41.0
+Peter Xu
 
 
