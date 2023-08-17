@@ -2,77 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2277978002E
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 23:53:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 657A07800BF
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 00:06:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWkuP-000236-VU; Thu, 17 Aug 2023 17:52:01 -0400
+	id 1qWl7B-0005BT-Op; Thu, 17 Aug 2023 18:05:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qWkuN-00021s-Qf
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 17:51:59 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1qWl71-0005BI-1a
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 18:05:03 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qWkuL-0001sC-Hi
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 17:51:59 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-1bba48b0bd2so2167625ad.3
- for <qemu-devel@nongnu.org>; Thu, 17 Aug 2023 14:51:56 -0700 (PDT)
+ id 1qWl6y-0000E0-Nb
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 18:05:02 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-1bef089ac8aso2443755ad.2
+ for <qemu-devel@nongnu.org>; Thu, 17 Aug 2023 15:05:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692309115; x=1692913915;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=2CvuslKNtbQWOEfJpMKLCzRXir2U4V07WE3I0ij56Ro=;
- b=S3v53bZb6B6YXEh3hDRCEMio+DdbRUhbZAQAMjfZNTnVCeZgsYcLmyW3W6TvVW82Zu
- ZM8vN5aJCAnfc/A7keURwp71wcEvR/s2Hoat+xNodOW5TjIz0tUNp8/XOmjeVJQ378Gk
- 5U+tDoJfaNkcKxD43GU0fFFcPjAZ6tkDBJXxZqyAB2cNykq9VgRGTpLA1o09lwpCnpxq
- 793cU26a0EAvcdXBoeTq4yb/a07t7icLogYWTwZy1LVwH18lufX+6CzBpaxpQSWxj9Nu
- 1ubaeYkqLdx+U3bbvgbtdhahycnaXivpTw7oFQyWpuPCY6jL0XV3U/vccsYAfWUlZdOi
- E4Mw==
+ d=linaro.org; s=google; t=1692309899; x=1692914699;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=HoULJOCHMuV/YzdDdCXXJhGcACVsYiG6Y0K1IRxFiUM=;
+ b=O2rCdLj5E09CUMsMhitl1ggO+fCakGU0fjrx6HLIb/uwkpQg6RJE0U3ZZ+V49FWtNS
+ C0QT3Tu6sQc5DSar6eg8k2e3rmrT/QLQFE0F4aIYMca9jx5mJKURRIf4vRJlry9wT+X4
+ AWzAUN7/FEB/uBaTskGwrPZ13M9ctuwci6k8yZgVVpqv3/k8lBSLrG9rwvG+pXMIPVQp
+ 650uWS04JOpoB05U+cBFFYNOojyJLz1Aw5aR8PM9t1qGyxmHim6sPUJPcqk4FJtZV1XA
+ cZmoCbrieKSVF+SN4Ua9S7WVhALs3oJ0ITEpPzVWQDholx/314sgtG+KHJpoSbFwnJeZ
+ kfTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692309115; x=1692913915;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20221208; t=1692309899; x=1692914699;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=2CvuslKNtbQWOEfJpMKLCzRXir2U4V07WE3I0ij56Ro=;
- b=i2kWEzPIqrTaMo0FfRa5BlMDt/rlQXtDu0p0VYbli79XyuNoS7Wfbwhbe2//bCjL0d
- EPfC6WtF6E3pna84Te2p9u69a6Qn+lJiR5O4WsDhlZeQjdr42S9sC4I47hhTTAsz1CPT
- NPeXJdzA2mNe7AD+4MlyKLjzO399SuWWwWkbj6pgAFoqqpJWQiQnhTAomISjtetRsZlQ
- XMn+eO37pBfXLPelxRFk7Yjj8+TxaqJ8aGH+d1vJ2EDn3UQKeTaJ/ksc7tZyBkaxBeun
- QhEq30vFrGfE9IUwLZrBHFdBIsQ9ABc8A5zcO3lOPgPadfFHDUlOPyfZR1aO1vW0wedj
- fQig==
-X-Gm-Message-State: AOJu0YyYdHTUUvqYig3TfoDzRP2Xbib0WHa/NDokD7TOunIsyzyb/JYb
- B/GWiNpBUDVPFjadPnuh+7Rphg==
-X-Google-Smtp-Source: AGHT+IFLigYt2nKy2jaT90AClmYvznb/ZghEpde+xYxUzic2YG/0Hu/lxov6JpAeHbLOmQ18Fy4nbQ==
-X-Received: by 2002:a17:903:244d:b0:1bc:10cf:50d8 with SMTP id
- l13-20020a170903244d00b001bc10cf50d8mr1087466pls.23.1692309114642; 
- Thu, 17 Aug 2023 14:51:54 -0700 (PDT)
+ bh=HoULJOCHMuV/YzdDdCXXJhGcACVsYiG6Y0K1IRxFiUM=;
+ b=jaGD7QnT7oF32GiVnLUZb9xLFAL2Df+4IlH+0slIBFTDmXG8cMTzfgfYSgg2nHCa/D
+ GoM5a2g4BXAP+UsUfjo3g20mxiugC4yF24ULt9ehy9LLfjrGKW55QDq6wr7lAvyp9NE9
+ H8Iw+OWRPxbrmErG347MlKKN4m4BaR4HrrMYxhXNSX/8zkVEGQWZXY4WKZcu29cbbKBK
+ HC3VNEnIrWoYPc1Ot5sPUgwjDlE7iukjhX/74MZXp89z0SxhGAFxvzBiMy9rnuaSRz5B
+ YLs3s5MtNwy75w2oz/zMuJUk3ssRRSWaisa3TITlcoath6zHQHObB/Na1E2uIMdi19JL
+ cOaQ==
+X-Gm-Message-State: AOJu0YwC9FpTVh0mjAleQR7GEx8cyJjjbZ7Vd74rYsCJgo8vLmNpEp7x
+ PyDeoMvP5a5WlEB7mNlx/3Q8qc6a0lXDljWCi5U=
+X-Google-Smtp-Source: AGHT+IGUhN3WVe84deOhFyk/60mIQjV6kxLK7VwZzKp8/+f6ZSHcvgz1gPsxXwX/KM3gxZe0aqxpsw==
+X-Received: by 2002:a17:90a:3d0d:b0:26d:1eec:1fc4 with SMTP id
+ h13-20020a17090a3d0d00b0026d1eec1fc4mr761737pjc.19.1692309898855; 
+ Thu, 17 Aug 2023 15:04:58 -0700 (PDT)
 Received: from ?IPV6:2602:47:d483:7301:12cd:355a:c01e:3596?
  ([2602:47:d483:7301:12cd:355a:c01e:3596])
  by smtp.gmail.com with ESMTPSA id
- jf20-20020a170903269400b001b7cbc5871csm252257plb.53.2023.08.17.14.51.53
+ z2-20020a170902ee0200b001bbb1eec92esm242273plb.281.2023.08.17.15.04.57
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 17 Aug 2023 14:51:54 -0700 (PDT)
-Message-ID: <008a0001-15f5-55c1-45d6-eb47ad9a2bad@linaro.org>
-Date: Thu, 17 Aug 2023 14:51:51 -0700
+ Thu, 17 Aug 2023 15:04:58 -0700 (PDT)
+Message-ID: <6740b717-c163-752f-2f6d-601faf46cb12@linaro.org>
+Date: Thu, 17 Aug 2023 15:04:55 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: How to synchronize CPUs on MMIO read?
-To: Igor Lesik <lesikigor@meta.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-References: <SN7PR15MB6086D1B0ECEE5ADBD07F8847C315A@SN7PR15MB6086.namprd15.prod.outlook.com>
+Subject: Re: [PATCH 1/3] tcg/i386: Drop BYTEH deposits for 64-bit
 Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org
+References: <20230816145547.477974-1-richard.henderson@linaro.org>
+ <20230816145547.477974-2-richard.henderson@linaro.org>
+ <CAFEAcA94YWgNRi_6Z8Ww5b6O2GncB-cqF-X8yr31UzFJEwJQXw@mail.gmail.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <SN7PR15MB6086D1B0ECEE5ADBD07F8847C315A@SN7PR15MB6086.namprd15.prod.outlook.com>
+In-Reply-To: <CAFEAcA94YWgNRi_6Z8Ww5b6O2GncB-cqF-X8yr31UzFJEwJQXw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -60
 X-Spam_score: -6.1
 X-Spam_bar: ------
@@ -95,33 +97,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/16/23 09:31, Igor Lesik wrote:
-> Hi.
+On 8/17/23 08:44, Peter Maydell wrote:
+> On Wed, 16 Aug 2023 at 16:01, Richard Henderson
+> <richard.henderson@linaro.org> wrote:
+>>
+>> It is more useful to allow low-part deposits into all registers
+>> than to restrict allocation for high-byte deposits.
 > 
-> I need to model some custom HW that synchronizes CPUs when they read MMIO register N: MMIO 
-> read does not return until another CPU writes to MMIO register M. I modeled this behavior 
-> with a) on MMIO read of N, save CPU into a list of waiting CPUs and put it asleep with 
-> cpu_interrupt(current_cpu, CPU_INTERRUPT_HALT) and b) on MMIO write to M, wake all waiting 
-> CPUs with cpu->halted = 0; qemu_cpu_kick(cpu). It seems to work fine. However, this HW has 
-> a twist: MMIO read of N returns a value that was written by MMIO write to M. Can anyone 
-> please advise how this could be done?
+>>   #define TCG_TARGET_deposit_i32_valid(ofs, len) \
+>> -    (((ofs) == 0 && (len) == 8) || ((ofs) == 8 && (len) == 8) || \
+>> -     ((ofs) == 0 && (len) == 16))
+>> +    (((ofs) == 0 && ((len) == 8 || (len) == 16)) || \
+>> +     (TCG_TARGET_REG_BITS == 32 && (ofs) == 8 && (len) == 8))
+>>   #define TCG_TARGET_deposit_i64_valid    TCG_TARGET_deposit_i32_valid
+> 
+> 
+>> @@ -2752,7 +2751,7 @@ static inline void tcg_out_op(TCGContext *s, TCGOpcode opc,
+>>           if (args[3] == 0 && args[4] == 8) {
+>>               /* load bits 0..7 */
+>>               tcg_out_modrm(s, OPC_MOVB_EvGv | P_REXB_R | P_REXB_RM, a2, a0);
+>> -        } else if (args[3] == 8 && args[4] == 8) {
+>> +        } else if (TCG_TARGET_REG_BITS == 32 && args[3] == 8 && args[4] == 8) {
+> 
+> Should we assert(TCG_TARGET_REG_BITS == 32) rather than making it part of the
+> condition?
 
-You'll want to add something to allow each cpu to latch the value written.
+The if/else chain ends in g_assert_not_reached().
 
-Something like
+> If I understand the change to the deposit_i32_valid macro above, we
+> should never get here with 8, 8 if TCG_TARGET_REG_BITS is 64.
 
-     CPU_FOREACH(cpu) {
-         if (cpu != write_cpu) {
-             *cpu->mmio_latch = value;
-             qemu_cpu_kick(cpu);
-         }
-     }
-
-where cpu->sync_latch = &cpu->env.reg[N] for the register destination of the MMIO read.
-
-This is easy if you can identify the hw sync mmio during translation.  If this sync is 
-mapped somewhere arbitrary within the address space, you may have to work harder.
-
+Correct.
 
 
 r~
