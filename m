@@ -2,77 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECD4377FB74
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 18:06:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 032A477FB75
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 18:06:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWfP6-0007CI-Pr; Thu, 17 Aug 2023 11:59:20 -0400
+	id 1qWfUP-0004aX-0o; Thu, 17 Aug 2023 12:04:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qWfP1-00076Y-Ul
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 11:59:16 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qWfUK-0004Yl-6I; Thu, 17 Aug 2023 12:04:44 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qWfOz-0003oi-8u
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 11:59:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692287950;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=obCBV9iwAB64Adum28VKvyDjQMxBK5nxC3zXPfKINJY=;
- b=hVe6iKvDHBsNkykgs8kfj4bip3Aco/38rrHN/O/kKUMoLpfiYQzWd4JMfDVmnnb8PtqXaD
- +R4gmKweG0WW5sRLF68NODqymwJBFL7tCDB9XH+1D4StbylmezVOasBjyVCnmIA4eaO6Td
- 4qc5YM1EN+qS+GTFh+ir1l0lZt0Dh9E=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-658-7yVOyLmUM2WaLSvJTzRE3g-1; Thu, 17 Aug 2023 11:59:07 -0400
-X-MC-Unique: 7yVOyLmUM2WaLSvJTzRE3g-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8B3BF80557B;
- Thu, 17 Aug 2023 15:59:06 +0000 (UTC)
-Received: from localhost (unknown [10.39.193.48])
- by smtp.corp.redhat.com (Postfix) with ESMTP id E4E302166B2D;
- Thu, 17 Aug 2023 15:59:05 +0000 (UTC)
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: <qemu-block@nongnu.org>, Stefan Hajnoczi <stefanha@redhat.com>,
- Fam Zheng <fam@euphon.net>, xen-devel@lists.xenproject.org,
- Anthony Perard <anthony.perard@citrix.com>,
- Hanna Reitz <hreitz@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- Julia Suvorova <jusual@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Aarushi Mehta <mehta.aaru20@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>, Paul Durrant <paul@xen.org>,
- Ilya Maximets <i.maximets@ovn.org>
-Subject: [PATCH v2 4/4] virtio-blk: remove batch notification BH
-Date: Thu, 17 Aug 2023 11:58:47 -0400
-Message-ID: <20230817155847.3605115-5-stefanha@redhat.com>
-In-Reply-To: <20230817155847.3605115-1-stefanha@redhat.com>
-References: <20230817155847.3605115-1-stefanha@redhat.com>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qWfUF-0004u9-Ak; Thu, 17 Aug 2023 12:04:43 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id CF0221B2AA;
+ Thu, 17 Aug 2023 19:04:41 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id C20D82004F;
+ Thu, 17 Aug 2023 19:04:33 +0300 (MSK)
+Message-ID: <6fd3fa16-c8d7-adee-c90c-90e6dda68673@tls.msk.ru>
+Date: Thu, 17 Aug 2023 19:04:33 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.021,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH 3/6] linux-user: Adjust brk for load_bias
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: iii@linux.ibm.com, deller@gmx.de, qemu-stable@nongnu.org
+References: <20230816181437.572997-1-richard.henderson@linaro.org>
+ <20230816181437.572997-4-richard.henderson@linaro.org>
+From: Michael Tokarev <mjt@tls.msk.ru>
+In-Reply-To: <20230816181437.572997-4-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -108
+X-Spam_score: -10.9
+X-Spam_bar: ----------
+X-Spam_report: (-10.9 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-4.01,
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,114 +60,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There is a batching mechanism for virtio-blk Used Buffer Notifications
-that is no longer needed because the previous commit added batching to
-virtio_notify_irqfd().
+16.08.2023 21:14, Richard Henderson wrote:
+> PIE executables are usually linked at offset 0 and are
+> relocated somewhere during load.  The hiaddr needs to
+> be adjusted to keep the brk next to the executable.
+> 
+> Cc: qemu-stable@nongnu.org
+> Fixes: 1f356e8c013 ("linux-user: Adjust initial brk when interpreter is close to executable")
 
-Note that this mechanism was rarely used in practice because it is only
-enabled when EVENT_IDX is not negotiated by the driver. Modern drivers
-enable EVENT_IDX.
+FWIW, 1f356e8c013 is v8.1.0-rc2-86, - why did you Cc qemu-stable@?
 
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
----
- hw/block/dataplane/virtio-blk.c | 48 +--------------------------------
- 1 file changed, 1 insertion(+), 47 deletions(-)
+If this "Adjust brk for load_bias" fix isn't supposed to be part of 8.1.0 release,
+sure thing I'll pick it up for stable-8.1, but it looks like it should be in 8.1.0.
 
-diff --git a/hw/block/dataplane/virtio-blk.c b/hw/block/dataplane/virtio-blk.c
-index da36fcfd0b..f83bb0f116 100644
---- a/hw/block/dataplane/virtio-blk.c
-+++ b/hw/block/dataplane/virtio-blk.c
-@@ -31,9 +31,6 @@ struct VirtIOBlockDataPlane {
- 
-     VirtIOBlkConf *conf;
-     VirtIODevice *vdev;
--    QEMUBH *bh;                     /* bh for guest notification */
--    unsigned long *batch_notify_vqs;
--    bool batch_notifications;
- 
-     /* Note that these EventNotifiers are assigned by value.  This is
-      * fine as long as you do not call event_notifier_cleanup on them
-@@ -47,36 +44,7 @@ struct VirtIOBlockDataPlane {
- /* Raise an interrupt to signal guest, if necessary */
- void virtio_blk_data_plane_notify(VirtIOBlockDataPlane *s, VirtQueue *vq)
- {
--    if (s->batch_notifications) {
--        set_bit(virtio_get_queue_index(vq), s->batch_notify_vqs);
--        qemu_bh_schedule(s->bh);
--    } else {
--        virtio_notify_irqfd(s->vdev, vq);
--    }
--}
--
--static void notify_guest_bh(void *opaque)
--{
--    VirtIOBlockDataPlane *s = opaque;
--    unsigned nvqs = s->conf->num_queues;
--    unsigned long bitmap[BITS_TO_LONGS(nvqs)];
--    unsigned j;
--
--    memcpy(bitmap, s->batch_notify_vqs, sizeof(bitmap));
--    memset(s->batch_notify_vqs, 0, sizeof(bitmap));
--
--    for (j = 0; j < nvqs; j += BITS_PER_LONG) {
--        unsigned long bits = bitmap[j / BITS_PER_LONG];
--
--        while (bits != 0) {
--            unsigned i = j + ctzl(bits);
--            VirtQueue *vq = virtio_get_queue(s->vdev, i);
--
--            virtio_notify_irqfd(s->vdev, vq);
--
--            bits &= bits - 1; /* clear right-most bit */
--        }
--    }
-+    virtio_notify_irqfd(s->vdev, vq);
- }
- 
- /* Context: QEMU global mutex held */
-@@ -126,9 +94,6 @@ bool virtio_blk_data_plane_create(VirtIODevice *vdev, VirtIOBlkConf *conf,
-     } else {
-         s->ctx = qemu_get_aio_context();
-     }
--    s->bh = aio_bh_new_guarded(s->ctx, notify_guest_bh, s,
--                               &DEVICE(vdev)->mem_reentrancy_guard);
--    s->batch_notify_vqs = bitmap_new(conf->num_queues);
- 
-     *dataplane = s;
- 
-@@ -146,8 +111,6 @@ void virtio_blk_data_plane_destroy(VirtIOBlockDataPlane *s)
- 
-     vblk = VIRTIO_BLK(s->vdev);
-     assert(!vblk->dataplane_started);
--    g_free(s->batch_notify_vqs);
--    qemu_bh_delete(s->bh);
-     if (s->iothread) {
-         object_unref(OBJECT(s->iothread));
-     }
-@@ -173,12 +136,6 @@ int virtio_blk_data_plane_start(VirtIODevice *vdev)
- 
-     s->starting = true;
- 
--    if (!virtio_vdev_has_feature(vdev, VIRTIO_RING_F_EVENT_IDX)) {
--        s->batch_notifications = true;
--    } else {
--        s->batch_notifications = false;
--    }
--
-     /* Set up guest notifier (irq) */
-     r = k->set_guest_notifiers(qbus->parent, nvqs, true);
-     if (r != 0) {
-@@ -370,9 +327,6 @@ void virtio_blk_data_plane_stop(VirtIODevice *vdev)
- 
-     aio_context_release(s->ctx);
- 
--    qemu_bh_cancel(s->bh);
--    notify_guest_bh(s); /* final chance to notify guest */
--
-     /* Clean up guest notifier (irq) */
-     k->set_guest_notifiers(qbus->parent, nvqs, false);
- 
--- 
-2.41.0
+Or are you saying 1f356e8c013 should be picked for stable-8.0, together with this one?
 
+(We're yet to decide if stable-8.0 should have any recent linux-user changes).
+
+/mjt
 
