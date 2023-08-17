@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3843577F27A
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 10:52:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9A9E77F27E
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 10:54:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWYji-0001Jp-1d; Thu, 17 Aug 2023 04:52:10 -0400
+	id 1qWYlJ-0002FT-1g; Thu, 17 Aug 2023 04:53:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qWYjg-0001JO-9P
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 04:52:08 -0400
-Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qWYlG-0002EL-HD
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 04:53:46 -0400
+Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qWYje-00008h-1v
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 04:52:08 -0400
-Received: by mail-ej1-x62a.google.com with SMTP id
- a640c23a62f3a-99c3c8adb27so1008913566b.1
- for <qemu-devel@nongnu.org>; Thu, 17 Aug 2023 01:52:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qWYlE-0000IU-7x
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 04:53:46 -0400
+Received: by mail-lf1-x12f.google.com with SMTP id
+ 2adb3069b0e04-4fe0c566788so11804649e87.0
+ for <qemu-devel@nongnu.org>; Thu, 17 Aug 2023 01:53:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692262324; x=1692867124;
+ d=linaro.org; s=google; t=1692262422; x=1692867222;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=DQ55TtZvjqa1V89w9cig7DFAZBWwwDe6SiZ2vdDo8u4=;
- b=Aq9ZfSIvvktYXZ/fkkZeykHWxWierLHcTYKgd24mZPHaMrdl4VGciewMXXGoo182Oe
- b50eoeC/z7At6L0MqXj3ah/tffkHS48vE6GN7NN4WAklwCMdJ+iTM/yqdY8t/Hi1tJwi
- ZEU0NaIyzMHdoG++yXmpNE9wDLuPi4SsTdYMMh2knQ5tEY+Qu61sWjxt68Xad65L/7vJ
- oMwb9qBSNVpm1tOau1eZO51nqikd1fcWRvJp7t83ohZZgMpPa2kLCwEsPucXN11UUZ4m
- Vcw+LXkwEjRESNDVJZ28Q9vv7iAFgPDg0LMykJWYlGyMQfSXnz+btEGY+aNFX3wgoiPK
- EbXg==
+ bh=AbMzTO52hBGGM/xnpXijdwk4PV+IeaVo9IsQxKgoaCI=;
+ b=PNILGyNUeK3VWWg8gkMYY7U0QV2DXrnCeoKiRk51CLQuk3UXQgfLgJydGxrDm+rg5e
+ UIvud8KbWX+ApaRfGu2oR98+gIo77eAV6FeG2Ksu86dVSxPx7EMyKbQZhMwkxyCH40Vk
+ z7co7X2qQe+UxyNw2Dmp7mG1CPc4CFbDea5v0MTuFX+MDTxyyN4p8SBy48C6OCgHh6yo
+ XziG9gCfhx/+KU0tO6qwh91k4LcNcDylH+pgy/L92iW5TJD5jkaz26demO1tZBfECtUJ
+ VUjMJJIucFog5vUKzoGUJ/1sIKKop5yqJbdKGIycS0Ijqojqqj6KkrcibsLJBZZpctzJ
+ z0yQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692262324; x=1692867124;
+ d=1e100.net; s=20221208; t=1692262422; x=1692867222;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=DQ55TtZvjqa1V89w9cig7DFAZBWwwDe6SiZ2vdDo8u4=;
- b=HlfILMC7T21qbmnsdj8POqnbcaTgALfJOCxaV08nqTkw2ErIpoMgKC0UmcqvTojU0E
- bEMuGHoig3122L34EMXVv4WIOmTfDo030j6dGrhvvXFim4so1MnUxeF+Z4kqiiP1Kcv4
- FwuahfmS0z7NJuylFn5GcGCHquSLhkgYvWybZMwuX5npaKXjSL4QfLHFGV9bWpLWYGBY
- IEbs2oFtQNdk3hQyjk726B5xYsU0iZCt/nru5xsZP4c5WvviRvgyE9bYo5ectTHeHZm5
- NWCeMsOB6ruc2SwFdTLN98yoXzYvsk2/M7G7uEfJ8eCwRLsieL7/RKWIiqFuzZ+a05cz
- UevA==
-X-Gm-Message-State: AOJu0Yz0A4ageyEpU9LHNg+BnPzR66IgKsLNG6a16sj3k0nWLOky4vFq
- dRDtloICVMnM4+P9zgY5C+/cRg==
-X-Google-Smtp-Source: AGHT+IHlONnUFco7TLwY+8Ir6ivBsN657JZ9EjEeMUrqwF17njL9BelyznxGEqm05VRVfAVC7W0kqA==
-X-Received: by 2002:a17:907:7799:b0:99e:23a:d01b with SMTP id
- ky25-20020a170907779900b0099e023ad01bmr1258871ejc.19.1692262324477; 
- Thu, 17 Aug 2023 01:52:04 -0700 (PDT)
+ bh=AbMzTO52hBGGM/xnpXijdwk4PV+IeaVo9IsQxKgoaCI=;
+ b=E3L82ouXX9RADyzeqFvnGQl1Zty2U+qoDGNz1fK9W1v/H8V+MMwF57lJzwRczzWLue
+ nYzpGNeuFg9Yfzb7mDck1ssz3d/NNUWpxPKohyruQSLWFBQZ+uUqfDjZFqOGN7uWr+XQ
+ ihwdk1K7JiDo8BKNGYc7ev5TtG4L3t8dtWHD79d6S1Pc7zaW0bJbSSt/unTO/6AcANI2
+ /V3/yj1fihxtgUM3QoVVRMbSlM7+CgDClBXac+I+V7tVNpN488T7UYrxEOheg6qcoPwK
+ n87E3Z9m36qLxftZdLM7GhRYMxewuANxAg7+43jVK8C9GraEVpq1HdJjLxZ8qGj3Ney7
+ qWKQ==
+X-Gm-Message-State: AOJu0YzzzbZ9fq3lixZ+PGdbe7/MLZOtCb77XnVFgi/HAHes0egUL4t3
+ LDbf4v2jp4WrVa0YgO76bpgenQ==
+X-Google-Smtp-Source: AGHT+IGNM99jNG8byrcLN87uGp7V+oWuQar5ocEtxkPXIufTzt7zO3jcRVb4QppXP7M22SeKVwH6/Q==
+X-Received: by 2002:a05:6512:3c87:b0:4fb:89e2:fc27 with SMTP id
+ h7-20020a0565123c8700b004fb89e2fc27mr4207140lfv.54.1692262422214; 
+ Thu, 17 Aug 2023 01:53:42 -0700 (PDT)
 Received: from [192.168.69.115] (mek33-h02-176-184-23-56.dsl.sta.abo.bbox.fr.
  [176.184.23.56]) by smtp.gmail.com with ESMTPSA id
- l7-20020a1709060e0700b0099ccee57ac2sm9837541eji.194.2023.08.17.01.52.02
+ b21-20020a170906195500b0099df2ddfc37sm2003202eje.165.2023.08.17.01.53.41
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 17 Aug 2023 01:52:03 -0700 (PDT)
-Message-ID: <5546b08c-eb6d-f863-3355-59925edabfbd@linaro.org>
-Date: Thu, 17 Aug 2023 10:52:01 +0200
+ Thu, 17 Aug 2023 01:53:41 -0700 (PDT)
+Message-ID: <9d0b2bca-f5c1-b23b-484b-259e0d67a1cb@linaro.org>
+Date: Thu, 17 Aug 2023 10:53:40 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [PATCH 1/6] util/selfmap: Use dev_t and ino_t in MapInfo
+Subject: Re: [PATCH 3/6] linux-user: Adjust brk for load_bias
 Content-Language: en-US
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: iii@linux.ibm.com, deller@gmx.de
+Cc: iii@linux.ibm.com, deller@gmx.de, qemu-stable@nongnu.org
 References: <20230816181437.572997-1-richard.henderson@linaro.org>
- <20230816181437.572997-2-richard.henderson@linaro.org>
+ <20230816181437.572997-4-richard.henderson@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230816181437.572997-2-richard.henderson@linaro.org>
+In-Reply-To: <20230816181437.572997-4-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12f;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x12f.google.com
 X-Spam_score_int: -52
 X-Spam_score: -5.3
 X-Spam_bar: -----
@@ -94,17 +94,32 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 16/8/23 20:14, Richard Henderson wrote:
-> Use dev_t instead of a string, and ino_t instead of uint64_t.
-> The latter is likely to be identical on modern systems but is
-> more type-correct for usage.
+> PIE executables are usually linked at offset 0 and are
+> relocated somewhere during load.  The hiaddr needs to
+> be adjusted to keep the brk next to the executable.
 > 
+> Cc: qemu-stable@nongnu.org
+> Fixes: 1f356e8c013 ("linux-user: Adjust initial brk when interpreter is close to executable")
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   include/qemu/selfmap.h |  4 ++--
->   linux-user/syscall.c   |  6 ++++--
->   util/selfmap.c         | 12 +++++++-----
->   3 files changed, 13 insertions(+), 9 deletions(-)
+>   linux-user/elfload.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+> index ccfbf82836..ab11f141c3 100644
+> --- a/linux-user/elfload.c
+> +++ b/linux-user/elfload.c
+> @@ -3278,7 +3278,7 @@ static void load_elf_image(const char *image_name, const ImageSource *src,
+>       info->start_data = -1;
+>       info->end_data = 0;
+>       /* Usual start for brk is after all sections of the main executable. */
+> -    info->brk = TARGET_PAGE_ALIGN(hiaddr);
+> +    info->brk = TARGET_PAGE_ALIGN(hiaddr + load_bias);
+
+Did you got some odd behavior or figured that by
+code review?
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
 
 
