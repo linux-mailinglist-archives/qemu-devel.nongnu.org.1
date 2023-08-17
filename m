@@ -2,52 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 310DA77F6CD
+	by mail.lfdr.de (Postfix) with ESMTPS id D3A8177F6CE
 	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 14:52:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWcTK-0008NY-Iz; Thu, 17 Aug 2023 08:51:30 -0400
+	id 1qWcTS-0000Og-Do; Thu, 17 Aug 2023 08:51:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qWcT0-0007uC-3z
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 08:51:14 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qWcT3-0007w3-1l
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 08:51:15 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qWcSw-0002cs-ER
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 08:51:08 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qWcSx-0002dR-0K
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 08:51:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692276664;
+ s=mimecast20190719; t=1692276666;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Yzcmj3fodUP6zMg6ws+hQfZDk1zwCAYQ9m+SmIGMw6c=;
- b=McrrnThHoUaNy00G9efNkSi/Xrs3PQnuCUVPgj/zOvW22+yhTIPvo2yCPsVb2Wstjx+COA
- 5IQoM5lOz4yVQvx1lg/zdkUFUxlBpLB0Np4OdEtse4c1t5N/bQhYcU+tU9FiG6FkBVJgNI
- eC2VMAA5p5Qc9j+ovyihFfJ2FY8hzIM=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-198-O5DCNpY_PkSQeUTyR3Ccjw-1; Thu, 17 Aug 2023 08:51:02 -0400
-X-MC-Unique: O5DCNpY_PkSQeUTyR3Ccjw-1
+ bh=m+U+xdO+nCpGLElTIxkR0TvZi4ESOcjKujwdjzFRels=;
+ b=fjdtuMSeClj0RuLIZeXD2gJ5rR1ZhbdowKzBeeVrJyVCwLSQt0H/JA1m7KqXSa8MwGAAvz
+ qll62qjWxmt0f106EWw0tyWiHA92n4/vuggm8FuwLPJteySH/ptytSWAgjkeTlflHlLRYH
+ u+TAMDPGeZdcnzjSKB4We2pFAJjQ0NE=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-444-br6UDmvhNm6xjLg26fvljA-1; Thu, 17 Aug 2023 08:51:04 -0400
+X-MC-Unique: br6UDmvhNm6xjLg26fvljA-1
 Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
  [10.11.54.3])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0D5458DC661;
- Thu, 17 Aug 2023 12:51:02 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 713B529AA3B0;
+ Thu, 17 Aug 2023 12:51:04 +0000 (UTC)
 Received: from merkur.redhat.com (unknown [10.39.194.106])
- by smtp.corp.redhat.com (Postfix) with ESMTP id D65B61121314;
- Thu, 17 Aug 2023 12:51:00 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 450D61121315;
+ Thu, 17 Aug 2023 12:51:02 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com, stefanha@redhat.com, eblake@redhat.com,
  eesposit@redhat.com, pbonzini@redhat.com, vsementsov@yandex-team.ru,
  qemu-devel@nongnu.org
-Subject: [PATCH 07/21] block-coroutine-wrapper: Allow arbitrary parameter names
-Date: Thu, 17 Aug 2023 14:50:06 +0200
-Message-ID: <20230817125020.208339-8-kwolf@redhat.com>
+Subject: [PATCH 08/21] block: Mark bdrv_replace_child_noperm() GRAPH_WRLOCK
+Date: Thu, 17 Aug 2023 14:50:07 +0200
+Message-ID: <20230817125020.208339-9-kwolf@redhat.com>
 In-Reply-To: <20230817125020.208339-1-kwolf@redhat.com>
 References: <20230817125020.208339-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -77,35 +77,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Don't assume specific parameter names like 'bs' or 'blk' in the
-generated code, but use the actual name.
+Instead of taking the writer lock internally, require callers to already
+hold it when calling bdrv_replace_child_noperm(). These callers will
+typically already hold the graph lock once the locking work is
+completed, which means that they can't call functions that take it
+internally.
 
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- scripts/block-coroutine-wrapper.py | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ block.c | 26 +++++++++++++++++++-------
+ 1 file changed, 19 insertions(+), 7 deletions(-)
 
-diff --git a/scripts/block-coroutine-wrapper.py b/scripts/block-coroutine-wrapper.py
-index fa01c06567..685d0b4ed4 100644
---- a/scripts/block-coroutine-wrapper.py
-+++ b/scripts/block-coroutine-wrapper.py
-@@ -105,12 +105,13 @@ def __init__(self, wrapper_type: str, return_type: str, name: str,
+diff --git a/block.c b/block.c
+index 9c4f24f4b9..500a08b26c 100644
+--- a/block.c
++++ b/block.c
+@@ -91,8 +91,9 @@ static BlockDriverState *bdrv_open_inherit(const char *filename,
+ static bool bdrv_recurse_has_child(BlockDriverState *bs,
+                                    BlockDriverState *child);
  
-     def gen_ctx(self, prefix: str = '') -> str:
-         t = self.args[0].type
-+        name = self.args[0].name
-         if t == 'BlockDriverState *':
--            return f'bdrv_get_aio_context({prefix}bs)'
-+            return f'bdrv_get_aio_context({prefix}{name})'
-         elif t == 'BdrvChild *':
--            return f'bdrv_get_aio_context({prefix}child->bs)'
-+            return f'bdrv_get_aio_context({prefix}{name}->bs)'
-         elif t == 'BlockBackend *':
--            return f'blk_get_aio_context({prefix}blk)'
-+            return f'blk_get_aio_context({prefix}{name})'
-         else:
-             return 'qemu_get_aio_context()'
+-static void bdrv_replace_child_noperm(BdrvChild *child,
+-                                      BlockDriverState *new_bs);
++static void GRAPH_WRLOCK
++bdrv_replace_child_noperm(BdrvChild *child, BlockDriverState *new_bs);
++
+ static void bdrv_remove_child(BdrvChild *child, Transaction *tran);
  
+ static int bdrv_reopen_prepare(BDRVReopenState *reopen_state,
+@@ -2385,6 +2386,8 @@ static void bdrv_replace_child_abort(void *opaque)
+     BlockDriverState *new_bs = s->child->bs;
+ 
+     GLOBAL_STATE_CODE();
++    bdrv_graph_wrlock(s->old_bs);
++
+     /* old_bs reference is transparently moved from @s to @s->child */
+     if (!s->child->bs) {
+         /*
+@@ -2401,6 +2404,8 @@ static void bdrv_replace_child_abort(void *opaque)
+     }
+     assert(s->child->quiesced_parent);
+     bdrv_replace_child_noperm(s->child, s->old_bs);
++
++    bdrv_graph_wrunlock();
+     bdrv_unref(new_bs);
+ }
+ 
+@@ -2437,7 +2442,10 @@ static void bdrv_replace_child_tran(BdrvChild *child, BlockDriverState *new_bs,
+     if (new_bs) {
+         bdrv_ref(new_bs);
+     }
++
++    bdrv_graph_wrlock(new_bs);
+     bdrv_replace_child_noperm(child, new_bs);
++    bdrv_graph_wrunlock();
+     /* old_bs reference is transparently moved from @child to @s */
+ }
+ 
+@@ -2856,8 +2864,8 @@ uint64_t bdrv_qapi_perm_to_blk_perm(BlockPermission qapi_perm)
+  * If @new_bs is non-NULL, the parent of @child must already be drained through
+  * @child and the caller must hold the AioContext lock for @new_bs.
+  */
+-static void bdrv_replace_child_noperm(BdrvChild *child,
+-                                      BlockDriverState *new_bs)
++static void GRAPH_WRLOCK
++bdrv_replace_child_noperm(BdrvChild *child, BlockDriverState *new_bs)
+ {
+     BlockDriverState *old_bs = child->bs;
+     int new_bs_quiesce_counter;
+@@ -2892,8 +2900,6 @@ static void bdrv_replace_child_noperm(BdrvChild *child,
+         assert(bdrv_get_aio_context(old_bs) == bdrv_get_aio_context(new_bs));
+     }
+ 
+-    /* TODO Pull this up into the callers to avoid polling here */
+-    bdrv_graph_wrlock(new_bs);
+     if (old_bs) {
+         if (child->klass->detach) {
+             child->klass->detach(child);
+@@ -2909,7 +2915,6 @@ static void bdrv_replace_child_noperm(BdrvChild *child,
+             child->klass->attach(child);
+         }
+     }
+-    bdrv_graph_wrunlock();
+ 
+     /*
+      * If the parent was drained through this BdrvChild previously, but new_bs
+@@ -2950,7 +2955,10 @@ static void bdrv_attach_child_common_abort(void *opaque)
+     BlockDriverState *bs = s->child->bs;
+ 
+     GLOBAL_STATE_CODE();
++
++    bdrv_graph_wrlock(NULL);
+     bdrv_replace_child_noperm(s->child, NULL);
++    bdrv_graph_wrunlock();
+ 
+     if (bdrv_get_aio_context(bs) != s->old_child_ctx) {
+         bdrv_try_change_aio_context(bs, s->old_child_ctx, NULL, &error_abort);
+@@ -3078,8 +3086,10 @@ static BdrvChild *bdrv_attach_child_common(BlockDriverState *child_bs,
+      * a problem, we already did this), but it will still poll until the parent
+      * is fully quiesced, so it will not be negatively affected either.
+      */
++    bdrv_graph_wrlock(child_bs);
+     bdrv_parent_drained_begin_single(new_child);
+     bdrv_replace_child_noperm(new_child, child_bs);
++    bdrv_graph_wrunlock();
+ 
+     BdrvAttachChildCommonState *s = g_new(BdrvAttachChildCommonState, 1);
+     *s = (BdrvAttachChildCommonState) {
+@@ -3223,7 +3233,9 @@ void bdrv_root_unref_child(BdrvChild *child)
+     BlockDriverState *child_bs = child->bs;
+ 
+     GLOBAL_STATE_CODE();
++    bdrv_graph_wrlock(NULL);
+     bdrv_replace_child_noperm(child, NULL);
++    bdrv_graph_wrunlock();
+     bdrv_child_free(child);
+ 
+     if (child_bs) {
 -- 
 2.41.0
 
