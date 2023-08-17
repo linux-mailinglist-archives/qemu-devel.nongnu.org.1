@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21B9D77FB12
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 17:44:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FB8077FB2C
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 17:52:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWfAj-00018u-9X; Thu, 17 Aug 2023 11:44:29 -0400
+	id 1qWfHE-00040r-7E; Thu, 17 Aug 2023 11:51:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qWfAf-00018i-Vt
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 11:44:26 -0400
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ id 1qWfHB-00040S-0E
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 11:51:09 -0400
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qWfAd-0006fC-S0
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 11:44:25 -0400
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-5234f2c6c1dso10611095a12.1
- for <qemu-devel@nongnu.org>; Thu, 17 Aug 2023 08:44:23 -0700 (PDT)
+ id 1qWfH7-00088Z-71
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 11:51:07 -0400
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-5254f9eda36so6889844a12.1
+ for <qemu-devel@nongnu.org>; Thu, 17 Aug 2023 08:51:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692287062; x=1692891862;
+ d=linaro.org; s=google; t=1692287463; x=1692892263;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=NiUH52F5EeY0Ajo9FtsRaEEjgRTg6lrGy+J62EXjw6o=;
- b=XEvyR0i8yKrJFZIHsi092SO84pCVqXq24vYEgW5I5rtp2GyP3bEe4c6RGduqdZ3vv2
- bNUa5qwdKig0xtkkTu8imDD8xAXZQkX7HBBvjvHwEdcnI1Dv/fs5RSYJ9bk7xwL0hILe
- bDI147xKMJXgVVA8Hca3jLdDoKZHira3wMlByRvvXH7GNxJBh7QU8oKB60mRuZ5bhYf5
- 35kZh1uuIu3FFMazzMheLH1x9CKTMnL5JpVtGGWnmmxvuAklaEWFwllq+TVmOZ7Hx/DL
- lF2jLVV1hz9lqCz4fnAHADHOqYdukHrWuI2oA/hDA6aygSTFejd9e5/a5yBW41KiVDng
- JAuA==
+ bh=OKg0oaG4PfC7AfjPNk0IiqMNUqQO6AI4B3N9qAeE0vY=;
+ b=e6hZRmDUikOHExloc9BtbTMvsGN8TccLrfQHvsZaq68hO2BZtPGeQiiF1IZU2EvfH3
+ gPp2Yr2/x60+4yF2+GFutQ3hSaOdVx/iuq0KtIkMvaotid8rHDIIIH0M1YmXR402YSXz
+ hfwlcp6WI9AnPyKQCs46gFg+8lRWrdA2xjHkewdL7V7/oQuWL+44t+W0VccZQalFOo4m
+ 5O2z3LirPwj4syNMQ/dK5dnWcPCde4XOSJaAvORwG7VNqB/k9LgXQUm2gVONNZDVfVUx
+ dZF2KaUjZP/7I6MuuOkUYCpZOynv1mfhyYuq0NGJYHEl0MFcgB6pDD1hImLhkSCz1f9d
+ Pp/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692287062; x=1692891862;
+ d=1e100.net; s=20221208; t=1692287463; x=1692892263;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=NiUH52F5EeY0Ajo9FtsRaEEjgRTg6lrGy+J62EXjw6o=;
- b=cQQv2e+NkuSnEDRQxTCkNuEe4i07qNlE4JjwUpKgw5wRCZe3kKvYq6JGVyi3GjxpBh
- azipmBDeuNVLj3P3A9kfBtzlcTUFwKSFG6uyr6CRqU40uko+wVwpQ0DvFQZJUaoOFf9a
- auI/X9PcZ12+gZXCbZSQUTm1NJ7t5lw6ylgAx005peu2cuy9a8Z+7zupPJA5C6Ays4g8
- pmd1dI07j3kEDUOzz+560kuqs4ZdjQResko9MArR7Y+dMLm1BxbZFafQem8h1FfIAZ+O
- vIQW63NmhVjPFENcyq0INxeemryf7CglMaTZBQrNwfmGN9eeWOtlL6reI+1z6/OVfsIR
- GRbQ==
-X-Gm-Message-State: AOJu0YxvvLvq72V9t2M6+rjVw3SNiZ6CGUAVSV4/oQk2TkMLCmWWWce9
- 94VoD/QtA0sB0vvrWx+1fVuDnZsj6SHD87bHQ1mzQw==
-X-Google-Smtp-Source: AGHT+IGo0fkOPoty4Zit8ni7uPzV/NrOUgDJgT0zuYNuv2mynAyO3sRtFhCoittu+6z0a3bnVx4PDz6q6O39Md7GgMQ=
-X-Received: by 2002:aa7:cf0f:0:b0:525:63f9:a268 with SMTP id
- a15-20020aa7cf0f000000b0052563f9a268mr64874edy.42.1692287062169; Thu, 17 Aug
- 2023 08:44:22 -0700 (PDT)
+ bh=OKg0oaG4PfC7AfjPNk0IiqMNUqQO6AI4B3N9qAeE0vY=;
+ b=ELLJebqbDKxNiCCEe94lSF/0FYFc74GtXCswmRkPqmU2doNmLaXZVovzu86lJ6Hhaj
+ wrzU8UzlpctqtKzcCNzJ11yHc7odA8dNPCXbzGVhFIaBwcyESPa1rIulVoXb0dOM74au
+ jdEK/kolA+0iBG152M8UUGvv7V1AW9W/FlseDUekThRGmniGXWCngRhL6bOdmvLeNLHN
+ cA8nmaPubUqT1oty8B61Cmv/vBd8CohvAVMVULwvYif+Pm63GWv3BG3/+P3b2wU/eT26
+ CjjrXuj7uS1m7KbY/UKGq1tdfug5hMY+3LKC6YX5PxJlOG5XZlXo1KmsrC77ergiYzOj
+ 9+ig==
+X-Gm-Message-State: AOJu0Yz/TiWL6pVcb2+WMwj6DQcfh7oM4aTD+/Qxrru6Pw6fLAtdEgdz
+ 7sOkb3/ho0hThO3dAQ1xoTZt5wSmaImWVYb1u82lsg==
+X-Google-Smtp-Source: AGHT+IE3yeQTr6R4RdjOcTXQojLW4yN15MV5K56LSeFx9FCT5Ftbz3gljya2SGJvznEk9BbfVaawLpqtr63Y5qZ74g4=
+X-Received: by 2002:a05:6402:10c5:b0:523:c10d:1d5b with SMTP id
+ p5-20020a05640210c500b00523c10d1d5bmr93059edu.37.1692287463034; Thu, 17 Aug
+ 2023 08:51:03 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230816145547.477974-1-richard.henderson@linaro.org>
- <20230816145547.477974-2-richard.henderson@linaro.org>
-In-Reply-To: <20230816145547.477974-2-richard.henderson@linaro.org>
+ <20230816145547.477974-3-richard.henderson@linaro.org>
+In-Reply-To: <20230816145547.477974-3-richard.henderson@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 17 Aug 2023 16:44:10 +0100
-Message-ID: <CAFEAcA94YWgNRi_6Z8Ww5b6O2GncB-cqF-X8yr31UzFJEwJQXw@mail.gmail.com>
-Subject: Re: [PATCH 1/3] tcg/i386: Drop BYTEH deposits for 64-bit
+Date: Thu, 17 Aug 2023 16:50:51 +0100
+Message-ID: <CAFEAcA9WUcJzrfQXnjM0Jw8CjaY6BW9hAKWGDRrMVU3BR2u6Vw@mail.gmail.com>
+Subject: Re: [PATCH 2/3] tcg: Fold deposit with zero to and
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x532.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -85,37 +85,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 16 Aug 2023 at 16:01, Richard Henderson
+On Wed, 16 Aug 2023 at 15:58, Richard Henderson
 <richard.henderson@linaro.org> wrote:
 >
-> It is more useful to allow low-part deposits into all registers
-> than to restrict allocation for high-byte deposits.
+> Inserting a zero into a value, or inserting a value
+> into zero at offset 0 my be implemented with AND.
+>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>  tcg/optimize.c | 35 +++++++++++++++++++++++++++++++++++
+>  1 file changed, 35 insertions(+)
+>
+> diff --git a/tcg/optimize.c b/tcg/optimize.c
+> index d2156367a3..956114b631 100644
+> --- a/tcg/optimize.c
+> +++ b/tcg/optimize.c
+> @@ -1279,6 +1279,8 @@ static bool fold_ctpop(OptContext *ctx, TCGOp *op)
+>
+>  static bool fold_deposit(OptContext *ctx, TCGOp *op)
+>  {
+> +    TCGOpcode and_opc;
+> +
+>      if (arg_is_const(op->args[1]) && arg_is_const(op->args[2])) {
+>          uint64_t t1 = arg_info(op->args[1])->val;
+>          uint64_t t2 = arg_info(op->args[2])->val;
+> @@ -1287,6 +1289,39 @@ static bool fold_deposit(OptContext *ctx, TCGOp *op)
+>          return tcg_opt_gen_movi(ctx, op, op->args[0], t1);
+>      }
+>
+> +    switch (ctx->type) {
+> +    case TCG_TYPE_I32:
+> +        and_opc = INDEX_op_and_i32;
+> +        break;
+> +    case TCG_TYPE_I64:
+> +        and_opc = INDEX_op_and_i64;
+> +        break;
+> +    default:
+> +        g_assert_not_reached();
+> +    }
+> +
+> +    if (arg_is_const(op->args[1])
+> +        && arg_info(op->args[1])->val == 0
+> +        && op->args[3] == 0) {
+> +        uint64_t mask = MAKE_64BIT_MASK(0, op->args[4]);
 
->  #define TCG_TARGET_deposit_i32_valid(ofs, len) \
-> -    (((ofs) == 0 && (len) == 8) || ((ofs) == 8 && (len) == 8) || \
-> -     ((ofs) == 0 && (len) == 16))
-> +    (((ofs) == 0 && ((len) == 8 || (len) == 16)) || \
-> +     (TCG_TARGET_REG_BITS == 32 && (ofs) == 8 && (len) == 8))
->  #define TCG_TARGET_deposit_i64_valid    TCG_TARGET_deposit_i32_valid
+The docs for the TCG deposit op don't say what the restrictions on the
+immediate args are, but this will be UB for QEMU if args[4] is 0.
+Have we already sanitized those somewhere?
 
-
-> @@ -2752,7 +2751,7 @@ static inline void tcg_out_op(TCGContext *s, TCGOpcode opc,
->          if (args[3] == 0 && args[4] == 8) {
->              /* load bits 0..7 */
->              tcg_out_modrm(s, OPC_MOVB_EvGv | P_REXB_R | P_REXB_RM, a2, a0);
-> -        } else if (args[3] == 8 && args[4] == 8) {
-> +        } else if (TCG_TARGET_REG_BITS == 32 && args[3] == 8 && args[4] == 8) {
-
-Should we assert(TCG_TARGET_REG_BITS == 32) rather than making it part of the
-condition? If I understand the change to the deposit_i32_valid macro above, we
-should never get here with 8, 8 if TCG_TARGET_REG_BITS is 64.
-
->              /* load bits 8..15 */
->              tcg_out_modrm(s, OPC_MOVB_EvGv, a2, a0 + 4);
->          } else if (args[3] == 0 && args[4] == 16) {
-
-Otherwise
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+> +
+> +        op->opc = and_opc;
+> +        op->args[1] = op->args[2];
+> +        op->args[2] = temp_arg(tcg_constant_internal(ctx->type, mask));
+> +        ctx->z_mask = mask & arg_info(op->args[1])->z_mask;
+> +        return false;
+> +    }
+> +
+> +    if (arg_is_const(op->args[2])
+> +        && arg_info(op->args[2])->val == 0) {
+> +        uint64_t mask = deposit64(-1, op->args[3], op->args[4], 0);
+> +
+> +        op->opc = and_opc;
+> +        op->args[2] = temp_arg(tcg_constant_internal(ctx->type, mask));
+> +        ctx->z_mask = mask & arg_info(op->args[1])->z_mask;
+> +        return false;
+> +    }
+> +
+>      ctx->z_mask = deposit64(arg_info(op->args[1])->z_mask,
+>                              op->args[3], op->args[4],
+>                              arg_info(op->args[2])->z_mask);
+> --
 
 thanks
 -- PMM
