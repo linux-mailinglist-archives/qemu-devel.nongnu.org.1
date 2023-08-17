@@ -2,63 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8E6177F7DC
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 15:38:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5295177F7FA
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 15:44:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWdCH-0003Cs-U9; Thu, 17 Aug 2023 09:37:57 -0400
+	id 1qWdHA-0007UI-PA; Thu, 17 Aug 2023 09:43:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qWdCF-0003CL-Dw
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 09:37:55 -0400
+ id 1qWdH8-0007U8-Hk
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 09:42:58 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qWdCA-0000rW-QU
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 09:37:53 -0400
+ id 1qWdH5-0002Wp-MF
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 09:42:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692279469;
+ s=mimecast20190719; t=1692279774;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=py7VV6irdjVSfMcNcz9QEwd/ZhGYzC6obLh+uIM8KZQ=;
- b=IsaPUSzazNjpyh5v2UT+NccDtxX7WHNgwBT3dWJL/ggrTJuA/7wtfZ071huM1sdBecIhDi
- 0TJ1lsoD5zNvzz15Jhf9bIvK3iUFW4WGyg72TiSz1KG2YWs+RFsHthEUgQbDK2IJ3FoUrr
- z4JMbecTh3UAfgG1BidnsgDlze8uZ5k=
+ bh=/ict9JKs5OnYOtjMIo1+sZIqkbTSafrdiLqc1ViIFgY=;
+ b=BqTNY8Lai+Yp4eeHqDZvKhUMe1cKBVCXZtOCtqN8GoiUoEQQQmNC+Yum0IsnbgAyfdgvAg
+ vyE5GH274HqxMnPSI868sKrj0G2XFE9yqa6C0rbkL9FlXH7CXTmgcn9Fcs448MFbuGt65k
+ 9ZqSbZU9UiTNLkV3+dnaqyiKURIe2ZE=
 Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-434-wSPae08KOiqN_oDjXEi5Gw-1; Thu, 17 Aug 2023 09:37:46 -0400
-X-MC-Unique: wSPae08KOiqN_oDjXEi5Gw-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
+ us-mta-106-HA77_ilPNFqwKEUX6VuozA-1; Thu, 17 Aug 2023 09:42:51 -0400
+X-MC-Unique: HA77_ilPNFqwKEUX6VuozA-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 336CF382C97D;
- Thu, 17 Aug 2023 13:37:46 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C220B1C06EE8;
+ Thu, 17 Aug 2023 13:42:50 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.120])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 302322026D68;
- Thu, 17 Aug 2023 13:37:45 +0000 (UTC)
-Date: Thu, 17 Aug 2023 14:37:42 +0100
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id B97DB40C207A;
+ Thu, 17 Aug 2023 13:42:49 +0000 (UTC)
+Date: Thu, 17 Aug 2023 14:42:47 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 To: David Hildenbrand <david@redhat.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Peter Xu <peterx@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+Cc: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
  Thiner Logoer <logoerthiner1@163.com>,
  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 Subject: Re: [PATCH v1 1/3] softmmu/physmem: fallback to opening guest RAM
  file as readonly in a MAP_PRIVATE mapping
-Message-ID: <ZN4iporZWZGqc2gU@redhat.com>
+Message-ID: <ZN4j1/EpXKTT99BB@redhat.com>
 References: <20230807190736.572665-1-david@redhat.com>
- <20230807190736.572665-2-david@redhat.com>
+ <20230807190736.572665-2-david@redhat.com> <ZNKtHVotkfgI1tb4@x1n>
+ <1d1a7d8f-6260-5905-57ea-514b762ce869@redhat.com>
+ <ZNOti1OKN79t68jP@x1n>
+ <e9c53fbd-369c-2605-1470-e67a765f923b@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230807190736.572665-2-david@redhat.com>
+In-Reply-To: <e9c53fbd-369c-2605-1470-e67a765f923b@redhat.com>
 User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -84,129 +87,84 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Aug 07, 2023 at 09:07:32PM +0200, David Hildenbrand wrote:
-> From: Thiner Logoer <logoerthiner1@163.com>
+On Thu, Aug 10, 2023 at 04:19:45PM +0200, David Hildenbrand wrote:
+> > > Most importantly, we won't be corrupting/touching the original file in any
+> > > case, because it is R/O.
+> > > 
+> > > If we really want to be careful, we could clue that behavior to compat
+> > > machines. I'm not really sure yet if we really have to go down that path.
+> > > 
+> > > Any other alternatives? I'd like to avoid new flags where not really
+> > > required.
+> > 
+> > I was just thinking of a new flag. :) So have you already discussed that
+> > possibility and decided that not a good idea?
 > 
-> Users may specify
-> * "-mem-path" or
-> * "-object memory-backend-file,share=off,readonly=off"
-> and expect such COW (MAP_PRIVATE) mappings to work, even if the user
-> does not have write permissions to open the file.
+> Not really. I was briefly playing with that idea but already struggled to
+> come up with a reasonable name :)
 > 
-> For now, we would always fail in that case, always requiring file write
-> permissions. Let's detect when that failure happens and fallback to opening
-> the file readonly.
+> Less toggles and just have it working nice, if possible.
+
+IMHO having a new flag is desirable, because it is directly
+expressing the desired deployment scenario, such tat we get
+good error reporting upon deployment mistakes, while at the
+same time allowing the readonly usage.
+
+> > The root issue to me here is we actually have two resources (memory map of
+> > the process, and the file) but we only have one way to describe the
+> > permissions upon the two objects.  I'd think it makes a lot more sense if a
+> > new flag is added, when there's a need to differentiate the two.
+> > 
+> > Consider if you see a bunch of qemu instances with:
+> > 
+> >    -mem-path $RAM_FILE
+> > 
+> > On the same host, which can be as weird as it could be to me.. At least
+> > '-mem-path' looks still like a way to exclusively own a ram file for an
+> > instance. I hesitate the new fallback can confuse people too, while that's
+> > so far not the major use case.
 > 
-> Warn the user, since there are other use cases where we want the file to
-> be mapped writable: ftruncate() and fallocate() will fail if the file
-> was not opened with write permissions.
+> Once I learned that this is not a MAP_SHARED mapping, I was extremely
+> confused. For example, vhost-user with "-mem-path" will absolutely not work
+> with "-mem-path", even though the documentation explicitly spells that out
+> (I still have to send a patch to fix that).
 > 
-> Signed-off-by: Thiner Logoer <logoerthiner1@163.com>
-> Co-developed-by: David Hildenbrand <david@redhat.com>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
-> ---
->  softmmu/physmem.c | 26 ++++++++++++++++++--------
->  1 file changed, 18 insertions(+), 8 deletions(-)
+> I guess "-mem-path" was primarily only used to consume hugetlb. Even for
+> tmpfs it will already result in a double memory consumption, just like when
+> using -memory-backend-memfd,share=no.
 > 
-> diff --git a/softmmu/physmem.c b/softmmu/physmem.c
-> index 3df73542e1..d1ae694b20 100644
-> --- a/softmmu/physmem.c
-> +++ b/softmmu/physmem.c
-> @@ -1289,8 +1289,7 @@ static int64_t get_file_align(int fd)
->  static int file_ram_open(const char *path,
->                           const char *region_name,
->                           bool readonly,
-> -                         bool *created,
-> -                         Error **errp)
-> +                         bool *created)
->  {
->      char *filename;
->      char *sanitized_name;
-> @@ -1334,10 +1333,7 @@ static int file_ram_open(const char *path,
->              g_free(filename);
->          }
->          if (errno != EEXIST && errno != EINTR) {
-> -            error_setg_errno(errp, errno,
-> -                             "can't open backing store %s for guest RAM",
-> -                             path);
-> -            return -1;
-> +            return -errno;
->          }
->          /*
->           * Try again on EINTR and EEXIST.  The latter happens when
-> @@ -1946,9 +1942,23 @@ RAMBlock *qemu_ram_alloc_from_file(ram_addr_t size, MemoryRegion *mr,
->      bool created;
->      RAMBlock *block;
->  
-> -    fd = file_ram_open(mem_path, memory_region_name(mr), readonly, &created,
-> -                       errp);
-> +    fd = file_ram_open(mem_path, memory_region_name(mr), readonly, &created);
-> +    if (fd == -EACCES && !(ram_flags & RAM_SHARED) && !readonly) {
-> +        /*
-> +         * We can have a writable MAP_PRIVATE mapping of a readonly file.
-> +         * However, some operations like ftruncate() or fallocate() might fail
-> +         * later, let's warn the user.
-> +         */
-> +        fd = file_ram_open(mem_path, memory_region_name(mr), true, &created);
-> +        if (fd >= 0) {
-> +            warn_report("backing store %s for guest RAM (MAP_PRIVATE) opened"
-> +                        " readonly because the file is not writable", mem_path);
+> I guess deprecating it was the right decision.
 
-IIUC, from the description, the goal is that usage of a readonly
-backing store is intented to be an explicitly supported deployment
-configuration. At the time time though, this scenario could also be
-a deployment mistake that we want to diagnose
+Regardless of whether its deprecated or not, I think its fine to just
+say people need to use the more verbose memory-backend-file syntax
+if they want to use an unusual deployment configuration where there is
+a readonly backing file.
 
-It is inappropriate to issue warn_report() for things that are
-supported usage.
-
-It is also undesirable to continue execution in the case of things
-which are a deployment mistake.
-
-These two scenarios are mutually incompatible, so I understand why
-you choose to fudge it with a warn_report().
-
-I wonder if this is pointing to the need for another configuration
-knob for the memory backend, to express the different desired usage
-models.
-
-We want O_WRONLY when opening the file, either if we want to file
-shared, or so that we can ftruncate it to the right size, if it
-does not exist. If shared=off and the file is pre-created at the
-right size, we should be able to use O_RDONLY even if the file is
-writable.
-
-So what if we added a 'create=yes|no' option to memory-backend-file
-
-   -object memory-backend-file,share=off,readonly=off,create=yes
-
-would imply need for O_WRONLY|O_RDONLY, so that ftruncate() can
-do its work. 
-
-With share=off,create=no, we could unconditionally open O_RDONLY,
-even if the file is writable.
-
-This would let us support read-only backing files, without any
-warn_reports() for this usage, while also stopping execution
-with deployment mistakes
-
-This doesn't help -mem-path, since it doesn't take options, but
-IMHO it would be acceptable to say users need to use the more
-verbose '-object memory-backend-file' instead.
-
-> +        }
-> +    }
->      if (fd < 0) {
-> +        error_setg_errno(errp, -fd,
-> +                         "can't open backing store %s for guest RAM",
-> +                         mem_path);
->          return NULL;
->      }
->  
-> -- 
-> 2.41.0
+> > Nobody may really rely on any existing behavior of the failure, but
+> > changing existing behavior is just always not wanted.  The guideline here
+> > to me is: whether we want existing "-mem-path XXX" users to start using the
+> > fallback in general?  If it's "no", then maybe it implies a new flag is
+> > better?
+> 
+> I think we have the following options (there might be more)
+> 
+> 1) This patch.
+> 
+> 2) New flag for memory-backend-file. We already have "readonly" and
+> "share=". I'm having a hard time coming up with a good name that really
+> describes the subtle difference.
+> 
+> 3) Glue behavior to the QEMU machine
 > 
 > 
+> For 3), one option would be to always open a COW file readonly (as Thiner
+> originally proposed). We could leave "-mem-path" behavior alone and only
+> change memory-backend-file semantics. If the COW file does *not* exist yet,
+> we would refuse to create the file like patch 2+3 do. Therefore, no
+> ftruncate() errors, and fallocate() errors would always happen.
+
+I'm for (2).
+
 
 With regards,
 Daniel
