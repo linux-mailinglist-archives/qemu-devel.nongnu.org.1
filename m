@@ -2,60 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B129477F44E
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 12:30:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3704277F457
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 12:34:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWaFR-0001za-BU; Thu, 17 Aug 2023 06:29:01 -0400
+	id 1qWaJT-0003ic-86; Thu, 17 Aug 2023 06:33:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qWaFP-0001zE-Lf
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 06:28:59 -0400
+ id 1qWaJP-0003iN-RR
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 06:33:08 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qWaFN-0007ap-Al
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 06:28:59 -0400
+ id 1qWaJN-0001Z2-84
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 06:33:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692268136;
+ s=mimecast20190719; t=1692268384;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=+C7NO+l8mwYclkpE3yHBTVqpwC+SDhjuIEJDdHA4mMI=;
- b=BdIEYxOnxb9Z3q1JhCN5Dw2BY6k/ybE3L5zucFwgSw8Gj0u658A60FDfWBumgtBeN8cqTK
- SGjVax9BD9P7PorbFQDRsLrXtXl75QPoYrHLZ+lMRqkud4DT/qwhjxv2XgDLC46jt/h4+Q
- kbzl4SsmwajoIbBsPJzHiRGT5u27W3c=
+ bh=LjDT5lJXw5WcwmBkpOr3LD43q7CZwEcf67lNX756wXI=;
+ b=AiP3zMaK3+IzL5B8eGeq5Y0ZL8SQsNv/n5a+3MxYPeDvLhOzN+Aia8MZ8923JejZU8sEzG
+ uaxcKMouc6AuguP6Xnh7ytjvG6euPGaeAgaMPzoOYbE7OfapwWzDL62C7mAl2c5alieRyw
+ vlyQoQP+dL0kFqy6YjwENu2Il73wqQM=
 Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-86-498yJ57-MkywVSLTjgRfiw-1; Thu, 17 Aug 2023 06:28:53 -0400
-X-MC-Unique: 498yJ57-MkywVSLTjgRfiw-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
+ us-mta-326-zDwPfTUWOxO0oFrP1ZUfLQ-1; Thu, 17 Aug 2023 06:33:02 -0400
+X-MC-Unique: zDwPfTUWOxO0oFrP1ZUfLQ-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BC290280D20B;
- Thu, 17 Aug 2023 10:28:52 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 60421381BE8A;
+ Thu, 17 Aug 2023 10:33:02 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.120])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id E6FED2166B2D;
- Thu, 17 Aug 2023 10:28:51 +0000 (UTC)
-Date: Thu, 17 Aug 2023 11:28:49 +0100
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 91DB440C6F4E;
+ Thu, 17 Aug 2023 10:33:01 +0000 (UTC)
+Date: Thu, 17 Aug 2023 11:32:59 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Konstantin Kostiuk <kkostiuk@redhat.com>
-Cc: Efim Shevrin <efim.shevrin@virtuozzo.com>, qemu-devel@nongnu.org,
- michael.roth@amd.com, pbonzini@redhat.com, den@openvz.org
-Subject: Re: [PATCH] qga: Start qemu-ga service after NetworkManager start
-Message-ID: <ZN32YVFOGSgIATTP@redhat.com>
-References: <20230816200446.1408797-1-efim.shevrin@virtuozzo.com>
- <CAPMcbCowQoNn4b-Q+wFeT8m2OTFU+PDkDGq8=U--tdeEcDjk6Q@mail.gmail.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+ qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Marc Hartmayer <mhartmay@linux.ibm.com>
+Subject: Re: [PATCH] chardev/char-pty: Avoid losing bytes when the other side
+ just (re-)connected
+Message-ID: <ZN33W+LhAn2FrFDT@redhat.com>
+References: <20230816210743.1319018-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CAPMcbCowQoNn4b-Q+wFeT8m2OTFU+PDkDGq8=U--tdeEcDjk6Q@mail.gmail.com>
+In-Reply-To: <20230816210743.1319018-1-thuth@redhat.com>
 User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -81,26 +82,86 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Aug 17, 2023 at 09:15:08AM +0300, Konstantin Kostiuk wrote:
-> Hi, Efim
+On Wed, Aug 16, 2023 at 11:07:43PM +0200, Thomas Huth wrote:
+> When starting a guest via libvirt with "virsh start --console ...",
+> the first second of the console output is missing. This is especially
+> annoying on s390x that only has a text console by default and no graphical
+> output - if the bios fails to boot here, the information about what went
+> wrong is completely lost.
 > 
-> Thanks for your contribution.
+> One part of the problem (there is also some things to be done on the
+> libvirt side) is that QEMU only checks with a 1 second timer whether
+> the other side of the pty is already connected, so the first second of
+> the console output is always lost.
 > 
-> I think your patch is a partial solution because other network managers can
-> be used
-> for example systemd-networkd or dhcpcd. Maybe a better solution is
-> After=network.target.
+> This likely used to work better in the past, since the code once checked
+> for a re-connection during write, but this has been removed in commit
+> f8278c7d74 ("char-pty: remove the check for connection on write") to avoid
+> some locking.
+> 
+> To ease the situation here at least a little bit, let's check with g_poll()
+> whether we could send out the data anyway, even if the connection has not
+> been marked as "connected" yet. The file descriptor is marked as non-blocking
+> anyway since commit fac6688a18 ("Do not hang on full PTY"), so this should
+> not cause any trouble if the other side is not ready for receiving yet.
+> 
+> With this patch applied, I can now successfully see the bios output of
+> a s390x guest when running it with "virsh start --console" (with a patched
+> version of virsh that fixes the remaining issues there, too).
+> 
+> Reported-by: Marc Hartmayer <mhartmay@linux.ibm.com>
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
+>  chardev/char-pty.c | 22 +++++++++++++++++++---
+>  1 file changed, 19 insertions(+), 3 deletions(-)
+> 
+> diff --git a/chardev/char-pty.c b/chardev/char-pty.c
+> index 4e5deac18a..fad12dfef3 100644
+> --- a/chardev/char-pty.c
+> +++ b/chardev/char-pty.c
+> @@ -106,11 +106,27 @@ static void pty_chr_update_read_handler(Chardev *chr)
+>  static int char_pty_chr_write(Chardev *chr, const uint8_t *buf, int len)
+>  {
+>      PtyChardev *s = PTY_CHARDEV(chr);
+> +    GPollFD pfd;
+> +    int rc;
+>  
+> -    if (!s->connected) {
+> -        return len;
+> +    if (s->connected) {
+> +        return io_channel_send(s->ioc, buf, len);
+>      }
+> -    return io_channel_send(s->ioc, buf, len);
+> +
+> +    /*
+> +     * The other side might already be re-connected, but the timer might
+> +     * not have fired yet. So let's check here whether we can write again:
+> +     */
+> +    pfd.fd = QIO_CHANNEL_FILE(s->ioc)->fd;
+> +    pfd.events = G_IO_OUT;
+> +    pfd.revents = 0;
+> +    rc = RETRY_ON_EINTR(g_poll(&pfd, 1, 0));
+> +    g_assert(rc >= 0);
+> +    if (!(pfd.revents & G_IO_HUP) && (pfd.revents & G_IO_OUT)) {
 
-network.target does not imply that any NICs are configured with
-an IP address, merely that the networking mgmt daemon(s) are
-running.  A dep on NetworkManager.service has the same issue.
-NetworkManager has started, but this doesn't imply DHCP has
-completed
+Should (can?) we call
 
-network-online.target has the semantics that an IP is present,
-but per my other reply I don't think we should be serializing
-QGA startup against network configuration.
+   pty_chr_state(chr, 1);
 
+here ?
+
+
+> +        io_channel_send(s->ioc, buf, len);
+
+As it feels a little dirty to be sending data before setting the
+'connected == 1' and thus issuing the 'CHR_EVENT_OPENED' event 
+
+> +    }
+> +
+> +    return len;
+>  }
+>  
+>  static GSource *pty_chr_add_watch(Chardev *chr, GIOCondition cond)
 
 With regards,
 Daniel
