@@ -2,88 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D03177F067
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 08:13:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C241277F06C
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 08:17:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWWG9-0003EO-MH; Thu, 17 Aug 2023 02:13:30 -0400
+	id 1qWWJG-00057P-KS; Thu, 17 Aug 2023 02:16:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qWWFx-0003CP-JV
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 02:13:18 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
+ id 1qWWJ9-00055b-5Y
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 02:16:35 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qWWFv-0006tX-21
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 02:13:17 -0400
+ (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
+ id 1qWWJ5-0000S4-Po
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 02:16:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692252793;
+ s=mimecast20190719; t=1692252990;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=V2C0wubYS+7S6gtlXMOa/UiSn72SxNEnLXWjK9pV1oU=;
- b=UYc7SXdMUqe86DhCecI9DhLPLqR0c2+HVSKZ2QcPjNbpYAP043XgYyZj3ynAwQfmnwg4Xo
- dnSPZb3MyLF1pagRmZt3GE/dmGxXGSLC+ZgXw/NRaJPpYD/CnpmmiV79Fr0XtI3lPQR3Xg
- SgEyvYFexmxTBhCEWkXPktdjn8oahIg=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=0fHeTkq5BJaRJEBdgkCFw6a0KuI4quOMn/wNIkULyuE=;
+ b=CXhwyHgmuKQ3fzxVlmuTbPDmR4oW/MA/B6Xu3l2u4Xc6kaML5GztWpTJoI+p+nTx9Ej4D7
+ 2izYJL/EhdQyKoICK9m4JIwYy7fjSGFGDRvNs59pTnm+uxSrw4UpuG84Ne70OyidSjaKyp
+ TrcBoD25kozLAJVxQtSjegadyRG5Sh0=
+Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
+ [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-426-nWH3HOTtOTq50SERKgNiuA-1; Thu, 17 Aug 2023 02:13:09 -0400
-X-MC-Unique: nWH3HOTtOTq50SERKgNiuA-1
-Received: by mail-lj1-f197.google.com with SMTP id
- 38308e7fff4ca-2b9ba719605so78470301fa.0
- for <qemu-devel@nongnu.org>; Wed, 16 Aug 2023 23:13:09 -0700 (PDT)
+ us-mta-643-X4_5KLCkN9WsFKbqBHhGXA-1; Thu, 17 Aug 2023 02:15:21 -0400
+X-MC-Unique: X4_5KLCkN9WsFKbqBHhGXA-1
+Received: by mail-lj1-f198.google.com with SMTP id
+ 38308e7fff4ca-2b9cd6a555aso72235271fa.3
+ for <qemu-devel@nongnu.org>; Wed, 16 Aug 2023 23:15:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692252788; x=1692857588;
- h=content-transfer-encoding:in-reply-to:from:cc:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=V2C0wubYS+7S6gtlXMOa/UiSn72SxNEnLXWjK9pV1oU=;
- b=fPssIwf5t+wHZQw+7No2h/6Gxzuex81qpHWlLT0TbI/G/FcQ75LqXHs72DJ43m5amU
- Lzm6qhLxmBT0bRJU5odMzWDrsrqX2Lyfr0tFYlK51/FN+U7m1Px3bz+EGCKHbXyMvRKa
- UVrW9pzhYIW+sTUxHORZEfvVkj6+laX78rmRj2hyUnWFSimzr1beZDuLYcDodt0QobFE
- hts0DDttCrPmOlhjS6hmuSEdnrbxJxvzhTNDoGc2/Gl6S9t7Pj39MXV2TbRKZywdsrip
- NmfPtyNY5744qQ+C8MD+XFhgg6fTsmX3am4V7ckiLjnvUYVDEIYZG5C9Io74vCQ01BBP
- vxKQ==
-X-Gm-Message-State: AOJu0YxmQCNOB/7vGyC+nzEsH62AuRiDXb6gf42SsOYJE3MS0ShKMOd9
- gos8NmN6hrbvMaxRlGY9ABWNGyRM4TA9MV+deKYrKXpb65gGbnTjiN4EKx7DTU+ezhWU/LpJjxe
- saQUewlMCg10QLao=
-X-Received: by 2002:a2e:3c1a:0:b0:2b6:e96c:5414 with SMTP id
- j26-20020a2e3c1a000000b002b6e96c5414mr3130690lja.52.1692252788237; 
- Wed, 16 Aug 2023 23:13:08 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFCS7xWeaVvkVEdhppn8/iqD1DDGbK4oEg0vvQZ8glIT3Zv5z/1WyrmxgSVn2gLyPsME5FUpg==
-X-Received: by 2002:a2e:3c1a:0:b0:2b6:e96c:5414 with SMTP id
- j26-20020a2e3c1a000000b002b6e96c5414mr3130674lja.52.1692252787923; 
- Wed, 16 Aug 2023 23:13:07 -0700 (PDT)
-Received: from [192.168.0.5] (ip-109-42-113-156.web.vodafone.de.
- [109.42.113.156]) by smtp.gmail.com with ESMTPSA id
- y19-20020a1c4b13000000b003fe2a40d287sm1694907wma.1.2023.08.16.23.13.06
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 16 Aug 2023 23:13:07 -0700 (PDT)
-Message-ID: <d363975a-e2e0-03b0-b75b-66881269160c@redhat.com>
-Date: Thu, 17 Aug 2023 08:13:05 +0200
+ d=1e100.net; s=20221208; t=1692252920; x=1692857720;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=0fHeTkq5BJaRJEBdgkCFw6a0KuI4quOMn/wNIkULyuE=;
+ b=JKcmuCEj5fn2waNgsv6n1UCafgCu2FIcrkHdKlEd53/9KEfYxuTw+Lzb7MaJdRsNRW
+ YnAnhDCzdAh6uCeELiE7z50RhFnhkXFsdtr/MTM3fz8aAfSjN3JxhFtZ3Ex0sc71lxDu
+ 0BO1dLyl/zf+2qboNkaixk9O0GYF1rDZPn6YNFJwpQ8WxwQ4KwnrTQaxNrIKUahNW0rr
+ UHknfBAIlfFIRDuNBMjDDVvWCMimIBqu0IJD7ot8kGywhy+10v8/PQxqDdqiJr9eM6lJ
+ A1P1msQt8LKwMtdXGYA6vsLqwGOxfvwTanu0rlBoV/uOCVxGZkNLaM78QYq7mr+G492u
+ I3mg==
+X-Gm-Message-State: AOJu0YxmjlBWGMWsPUontoYtMq8O2kYVH6FdnOSjhctHNfef+MOIR/9F
+ j31yY3Rfa9n4GYff2pYv6QpqMIOsJpPfFJyLZf/wD41R0rBLwuLYuayK60wKJDMv8w2NgLMvLOD
+ k08ibYqRnuEYe3Yn24TrX/qU4HxkeFEU=
+X-Received: by 2002:a2e:3318:0:b0:2b6:d6e1:a191 with SMTP id
+ d24-20020a2e3318000000b002b6d6e1a191mr4283424ljc.23.1692252920440; 
+ Wed, 16 Aug 2023 23:15:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHGJ9h+0UCetxbiTaUKffP5e8AlD+VPyL1S18DiIeMnXsn3zv3LBYMQBeWFyYzBCK3WmIlsEx9xgd7zyVyD4QY=
+X-Received: by 2002:a2e:3318:0:b0:2b6:d6e1:a191 with SMTP id
+ d24-20020a2e3318000000b002b6d6e1a191mr4283405ljc.23.1692252920078; Wed, 16
+ Aug 2023 23:15:20 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: QEMU Summit Minutes 2023
-To: Peter Maydell <peter.maydell@linaro.org>,
- QEMU Developers <qemu-devel@nongnu.org>
-References: <CAFEAcA_rziBuSwgJ9cg9m1PS5pNG58eyim+_P9hMu5nF7G70XA@mail.gmail.com>
-Content-Language: en-US
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <CAFEAcA_rziBuSwgJ9cg9m1PS5pNG58eyim+_P9hMu5nF7G70XA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+References: <20230816200446.1408797-1-efim.shevrin@virtuozzo.com>
+In-Reply-To: <20230816200446.1408797-1-efim.shevrin@virtuozzo.com>
+From: Konstantin Kostiuk <kkostiuk@redhat.com>
+Date: Thu, 17 Aug 2023 09:15:08 +0300
+Message-ID: <CAPMcbCowQoNn4b-Q+wFeT8m2OTFU+PDkDGq8=U--tdeEcDjk6Q@mail.gmail.com>
+Subject: Re: [PATCH] qga: Start qemu-ga service after NetworkManager start
+To: Efim Shevrin <efim.shevrin@virtuozzo.com>
+Cc: qemu-devel@nongnu.org, michael.roth@amd.com, pbonzini@redhat.com, 
+ den@openvz.org
+Content-Type: multipart/alternative; boundary="0000000000002bf9620603185675"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kkostiuk@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -52
-X-Spam_score: -5.3
-X-Spam_bar: -----
-X-Spam_report: (-5.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-3.165, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
  RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -101,31 +93,117 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 13/07/2023 15.21, Peter Maydell wrote:
-> QEMU Summit Minutes 2023
-> ========================
-...
-> Topic 3: Should we split responsibility for managing CoC reports?
-> =================================================================
-> 
-> The QEMU project happily does not have to deal with many Code of
-> Conduct (CoC) reports, but we could do a better job with managing the
-> ones we do get.  At the moment CoC reports go to the QEMU Leadership
-> Committee; Paolo proposed that it would be better to decouple CoC
-> handling to a separate team: although the CoC itself seems good,
-> asking the Leadership Committee to deal with the reports has not been
-> working so well.  The model for this is that Linux also initially had
-> its tech advisory board be the contact for CoC reports before
-> switching to a dedicated team for them.
-> 
-> There was general consensus that we should try the separate-team
-> approach. We plan to ask on the mailing list for volunteers who would
-> be interested in helping out with this.
+--0000000000002bf9620603185675
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-So who is going to drive this now? I haven't seen any mail on the mailing 
-list with that question yet...
+Hi, Efim
 
-  Thomas
+Thanks for your contribution.
 
+I think your patch is a partial solution because other network managers can
+be used
+for example systemd-networkd or dhcpcd. Maybe a better solution is
+After=3Dnetwork.target.
+
+Do you have any other suggestions?
+
+Best Regards,
+Konstantin Kostiuk.
+
+
+On Wed, Aug 16, 2023 at 11:20=E2=80=AFPM Efim Shevrin <efim.shevrin@virtuoz=
+zo.com>
+wrote:
+
+> From: Fima Shevrin <efim.shevrin@virtuozzo.com>
+>
+> When the guest OS starts, qemu-ga sends an event to the host.
+> This event allows services on the host to start configuring
+> the already running guest OS. When configuring network settings,
+> it is possible that an external service will receive a signal
+> from qemu-ga about the start of guest OS, while NetworkManager
+> may not be running yet. Therefore, network setting may not
+> be available. With the current patch, we eliminate the described
+> race condition between qemu-ga and NetworkManager for guest OS
+> network setting cases.
+>
+> Signed-off-by: Fima Shevrin <efim.shevrin@virtuozzo.com>
+> ---
+>  contrib/systemd/qemu-guest-agent.service | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/contrib/systemd/qemu-guest-agent.service
+> b/contrib/systemd/qemu-guest-agent.service
+> index 51cd7b37ff..6e2d059356 100644
+> --- a/contrib/systemd/qemu-guest-agent.service
+> +++ b/contrib/systemd/qemu-guest-agent.service
+> @@ -2,6 +2,7 @@
+>  Description=3DQEMU Guest Agent
+>  BindTo=3Ddev-virtio\x2dports-org.qemu.guest_agent.0.device
+>  After=3Ddev-virtio\x2dports-org.qemu.guest_agent.0.device
+> +After=3DNetworkManager.service
+>
+>  [Service]
+>  ExecStart=3D-/usr/bin/qemu-ga
+> --
+> 2.34.1
+>
+>
+
+--0000000000002bf9620603185675
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>Hi, Efim<br><br>Thanks for your contribution.<br><br>=
+I think your patch is a partial solution because other network managers can=
+ be used</div><div>for example systemd-networkd or dhcpcd. Maybe a better s=
+olution is After=3Dnetwork.target. <br></div><div><br></div><div>Do you hav=
+e any other suggestions?<br></div><div><br></div><div><div><div dir=3D"ltr"=
+ class=3D"gmail_signature" data-smartmail=3D"gmail_signature"><div dir=3D"l=
+tr"><div>Best Regards,</div><div>Konstantin Kostiuk.</div></div></div></div=
+><br></div></div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"g=
+mail_attr">On Wed, Aug 16, 2023 at 11:20=E2=80=AFPM Efim Shevrin &lt;<a hre=
+f=3D"mailto:efim.shevrin@virtuozzo.com">efim.shevrin@virtuozzo.com</a>&gt; =
+wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0=
+px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">From: Fim=
+a Shevrin &lt;<a href=3D"mailto:efim.shevrin@virtuozzo.com" target=3D"_blan=
+k">efim.shevrin@virtuozzo.com</a>&gt;<br>
+<br>
+When the guest OS starts, qemu-ga sends an event to the host.<br>
+This event allows services on the host to start configuring<br>
+the already running guest OS. When configuring network settings,<br>
+it is possible that an external service will receive a signal<br>
+from qemu-ga about the start of guest OS, while NetworkManager<br>
+may not be running yet. Therefore, network setting may not<br>
+be available. With the current patch, we eliminate the described<br>
+race condition between qemu-ga and NetworkManager for guest OS<br>
+network setting cases.<br>
+<br>
+Signed-off-by: Fima Shevrin &lt;<a href=3D"mailto:efim.shevrin@virtuozzo.co=
+m" target=3D"_blank">efim.shevrin@virtuozzo.com</a>&gt;<br>
+---<br>
+=C2=A0contrib/systemd/qemu-guest-agent.service | 1 +<br>
+=C2=A01 file changed, 1 insertion(+)<br>
+<br>
+diff --git a/contrib/systemd/qemu-guest-agent.service b/contrib/systemd/qem=
+u-guest-agent.service<br>
+index 51cd7b37ff..6e2d059356 100644<br>
+--- a/contrib/systemd/qemu-guest-agent.service<br>
++++ b/contrib/systemd/qemu-guest-agent.service<br>
+@@ -2,6 +2,7 @@<br>
+=C2=A0Description=3DQEMU Guest Agent<br>
+=C2=A0BindTo=3Ddev-virtio\x2dports-org.qemu.guest_agent.0.device<br>
+=C2=A0After=3Ddev-virtio\x2dports-org.qemu.guest_agent.0.device<br>
++After=3DNetworkManager.service<br>
+<br>
+=C2=A0[Service]<br>
+=C2=A0ExecStart=3D-/usr/bin/qemu-ga<br>
+-- <br>
+2.34.1<br>
+<br>
+</blockquote></div>
+
+--0000000000002bf9620603185675--
 
 
