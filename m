@@ -2,77 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF29977F6AA
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 14:47:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E140077F6BE
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 14:50:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWcP2-0005Xr-HY; Thu, 17 Aug 2023 08:47:04 -0400
+	id 1qWcS8-000786-Lf; Thu, 17 Aug 2023 08:50:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qWcOy-0005Wv-QD
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 08:47:00 -0400
-Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qWcS6-00077F-4P
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 08:50:14 -0400
+Received: from mail-qk1-x729.google.com ([2607:f8b0:4864:20::729])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qWcOw-00015u-7v
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 08:47:00 -0400
-Received: by mail-lf1-x132.google.com with SMTP id
- 2adb3069b0e04-4fe2de785e7so12373441e87.1
- for <qemu-devel@nongnu.org>; Thu, 17 Aug 2023 05:46:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qWcS3-0002Nb-KC
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 08:50:13 -0400
+Received: by mail-qk1-x729.google.com with SMTP id
+ af79cd13be357-76d764128d2so81009685a.3
+ for <qemu-devel@nongnu.org>; Thu, 17 Aug 2023 05:50:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1692276416; x=1692881216;
+ d=gmail.com; s=20221208; t=1692276610; x=1692881410;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=wDzDDU0Ry0+TV41daXmqXgqafPhjmoyWvmSLcL2bW1Y=;
- b=HJ8mr+ZJz+ZAE6QJpGsSzFqX4ZzOGxtNybD1QaE0JOmJwh/h8NeMXjgYNDnjlwmBYZ
- 4GQVe00e+ETiahkzy83AM8GegzsRVl7GUqJ0rIUqnWCEGNOGDkaOjLpZYdOor4nIx5X6
- jNqptwIsj1lKhAhnIsVvYj1m5/DtcQYPZyr+Sj1P9E/kSwk+q+mEGQSk/yrI3q68rB++
- ldGvlgs1k41CpFpkyYd7gN/45n80S6Um7rUFc8GyU+R++FysI4T7RPJMnqob/XurOtyY
- RGsNJkraCwu5OZ5x6L0gBDM7y8lVB+P4o2hrx1XQU+FHuEBF1ODw9MlY97ztC6jZ//ga
- f+EQ==
+ bh=zw+SaOq2RgRWk3EZr224tBFBrfsa68/TqZg87L9vqOw=;
+ b=a7XVm3sa/9vcoRG+ENdNTAI7g026/fHMgBaLxd+jHTl0hCL+UwY/LyyMZGiTzwN1jh
+ TFBnWtTR4BiNQRualV9DNb6eGO5wFXUVOsPuw0pJSHdXIkvFUrA/Kra3duF27NT1xhxb
+ diXgKhEGrSozTCAvdgya7cxoqZgW3m/UFPsCEpl3q/3PiRwA1pVeIjFSkJAtwbfpxt/i
+ VEn2393HV7RMr9nch3ed2Gj9cQX5FTO0XwhMKfhMiGq0SGwhcvk68n3TlGOrfiFqenqc
+ zAjC7rL+7yP+u1z3ukJNZmOw3wXTuXH6xCUlJfeTRFBZVySSjiKodiq/DDE952UbkMmT
+ sFqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692276416; x=1692881216;
+ d=1e100.net; s=20221208; t=1692276610; x=1692881410;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wDzDDU0Ry0+TV41daXmqXgqafPhjmoyWvmSLcL2bW1Y=;
- b=SVJI1/OwGMCsuVYiRxzBbAdg1JGImFMTQgBu3R62v1SgOx+EzGDjr616ZYBX8YLotw
- E8iZ4Rqk18Y+jnPVpWHLRmhhyZKmKfJSnYEWuw9jg8bd1vzuifr7UlZxlZh2rA8jAGHg
- RaocJAnOY00JBJ+amzkrRNTpJpFeIiJ3wXxcN5CnzMKfErhN6ebkpHIlzd62lZsKTBgs
- Fovm1pPeh9Vs/bZDR5shzBGfPO4KiBxkmU8MIAmxwFNAFukps12P3+dF2QeDqUE95hSw
- 4mQydczENcrFLBGjFlBZApKImfoLD/CEg53L7s7EU6+1fVLZXQIon2BMmv0NXd9yA6wM
- hxZw==
-X-Gm-Message-State: AOJu0YyVdfq2tvBg2qrR9NiJuo12wxbTWGWApcWXF8ANZmotZAvFHJBb
- WO9fX6l2AsPPQPGdoA/QlPR0ttk19DcR5C+9cpg=
-X-Google-Smtp-Source: AGHT+IFhjqwpq2xpq3ipf+F7eZajHRGsvpyUh5Npv6yUs8kmmZ78wZuR3wpYqnAuv/uvaKdKiwgR0iPRfgdLvS4tuuw=
-X-Received: by 2002:ac2:4822:0:b0:4f8:7614:48a5 with SMTP id
- 2-20020ac24822000000b004f8761448a5mr3251720lft.66.1692276415270; Thu, 17 Aug
- 2023 05:46:55 -0700 (PDT)
+ bh=zw+SaOq2RgRWk3EZr224tBFBrfsa68/TqZg87L9vqOw=;
+ b=GhIdGFrx03ADBqB2BeDlwMepFtUwyQtXIiPe5L4RYbUkkjUC8XsprQZmFz+AXqx4G/
+ sA8GlZrfz54KNLS8Rp1LJPVFJbmHogKtRQvCmdxnXUv7Ca+Hgo9gDuyw79UKWNTSN21I
+ U84JOG6vtYB5oWYL5fGtnFZaqFJBKHffbpo07Qs4QwJjALDXzkvTAiEawmbPi+bGusIR
+ ySpCn1nm2IDOEbPH3tzyCwNlFNaycGMyE0TRixrhmTBvleCZPjIb0J9WtSHdc49CCbGG
+ Hupidv4Sx2UNWDtporZIx/2m1/LZT5pn3vw3KnychUEAY1ibj2sBJPXbBnGQqrzA0Dx4
+ PUeg==
+X-Gm-Message-State: AOJu0YzKrwO4fzRUVzvGgY9QW3g7yy1JESabwmhQFrvQxT4fJCi0gHwr
+ ywVbEd20LcgOBcApO24H5KszjI6gtcZUmYSi5pg=
+X-Google-Smtp-Source: AGHT+IGIVn7cgLxCcx1n/xN5jnioHEPqoLvVJUvbppq/z9D+ODG31uzaRNDhBKBdg3n308HA2aXFva+kL3qC2FKhOP0=
+X-Received: by 2002:a05:620a:bc8:b0:76c:de57:7b61 with SMTP id
+ s8-20020a05620a0bc800b0076cde577b61mr5462084qki.25.1692276609970; Thu, 17 Aug
+ 2023 05:50:09 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1688743107.git.yin31149@gmail.com>
- <4b9550c14bc8c98c8f48e04dbf3d3ac41489d3fd.1688743107.git.yin31149@gmail.com>
- <CAJaqyWeWuXn5=OvW99cgnniaZyW=wSp2EutxzROE5Xnp=xvjQw@mail.gmail.com>
-In-Reply-To: <CAJaqyWeWuXn5=OvW99cgnniaZyW=wSp2EutxzROE5Xnp=xvjQw@mail.gmail.com>
-From: Hawkins Jiawei <yin31149@gmail.com>
-Date: Thu, 17 Aug 2023 20:46:43 +0800
-Message-ID: <CAKrof1NJx-KAKs60-r06tL0KRL7UxiK7A3WhphGrwE-okk0gew@mail.gmail.com>
-Subject: Re: [PATCH v3 2/7] vdpa: Restore MAC address filtering state
-To: Eugenio Perez Martin <eperezma@redhat.com>
-Cc: jasowang@redhat.com, mst@redhat.com, qemu-devel@nongnu.org, 
- 18801353760@163.com
+References: <cover.1692268800.git.tugy@chinatelecom.cn>
+ <d285e8729552a6206ffa1cd4520fc8f9c6be5957.1692268800.git.tugy@chinatelecom.cn>
+In-Reply-To: <d285e8729552a6206ffa1cd4520fc8f9c6be5957.1692268800.git.tugy@chinatelecom.cn>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Thu, 17 Aug 2023 16:49:58 +0400
+Message-ID: <CAJ+F1C+_fGHq3odW6=2krDMhSkOX0krNTUjPnLAuiXHb62naAg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] ui/vdagent: call vdagent_disconnect() when agent
+ connection is lost
+To: tugy@chinatelecom.cn
+Cc: kraxel@redhat.com, qemu-devel@nongnu.org, dengpc12@chinatelecom.cn
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::132;
- envelope-from=yin31149@gmail.com; helo=mail-lf1-x132.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::729;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qk1-x729.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -90,118 +88,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/8/17 18:18, Eugenio Perez Martin wrote:
-> On Fri, Jul 7, 2023 at 5:27=E2=80=AFPM Hawkins Jiawei <yin31149@gmail.com=
-> wrote:
->>
->> This patch refactors vhost_vdpa_net_load_mac() to
->> restore the MAC address filtering state at device's startup.
->>
->> Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
->> ---
->> v3:
->>    - return early if mismatch the condition suggested by Eugenio
->>
->> v2: https://lore.kernel.org/all/2f2560f749186c0eb1055f9926f464587e419eeb=
-.1688051252.git.yin31149@gmail.com/
->>    - use iovec suggested by Eugenio
->>    - avoid sending CVQ command in default state
->>
->> v1: https://lore.kernel.org/all/00f72fe154a882fd6dc15bc39e3a1ac63f9dadce=
-.1687402580.git.yin31149@gmail.com/
->>
->>   net/vhost-vdpa.c | 52 ++++++++++++++++++++++++++++++++++++++++++++++++
->>   1 file changed, 52 insertions(+)
->>
->> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
->> index 31ef6ad6ec..7189ccafaf 100644
->> --- a/net/vhost-vdpa.c
->> +++ b/net/vhost-vdpa.c
->> @@ -660,6 +660,58 @@ static int vhost_vdpa_net_load_mac(VhostVDPAState *=
-s, const VirtIONet *n)
->>           }
->>       }
->>
->> +    /*
->> +     * According to VirtIO standard, "The device MUST have an
->> +     * empty MAC filtering table on reset.".
->> +     *
->> +     * Therefore, there is no need to send this CVQ command if the
->> +     * driver also sets an empty MAC filter table, which aligns with
->> +     * the device's defaults.
->> +     *
->> +     * Note that the device's defaults can mismatch the driver's
->> +     * configuration only at live migration.
->> +     */
->> +    if (!virtio_vdev_has_feature(&n->parent_obj, VIRTIO_NET_F_CTRL_RX) =
-||
->> +        n->mac_table.in_use =3D=3D 0) {
->> +        return 0;
->> +    }
->> +
->> +    uint32_t uni_entries =3D n->mac_table.first_multi,
+Hi
+
+On Thu, Aug 17, 2023 at 3:32=E2=80=AFPM <tugy@chinatelecom.cn> wrote:
 >
-> QEMU coding style prefers declarations at the beginning of the code
-> block. Previous uses of these variable names would need to be
-> refactored to met this rule.
-
-Hi Eugenio,
-
-Thanks for the detailed explanation.
-
-Since this patch series has already been merged into master, I will
-submit a separate patch to correct this problem.
-
-I will take care of this problem in the future.
-
-Thanks!
-
-
+> From: Guoyi Tu <tugy@chinatelecom.cn>
 >
-> Apart from that,
+> when the agent connection is lost, the input handler of the mouse
+> doesn't deactivate, which results in unresponsive mouse events in
+> VNC windows.
 >
-> Acked-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
+> To fix this issue, call vdagent_disconnect() to reset the state
+> each time the frontend disconncect
 >
->> +             uni_macs_size =3D uni_entries * ETH_ALEN,
->> +             mul_entries =3D n->mac_table.in_use - uni_entries,
->> +             mul_macs_size =3D mul_entries * ETH_ALEN;
->> +    struct virtio_net_ctrl_mac uni =3D {
->> +        .entries =3D cpu_to_le32(uni_entries),
->> +    };
->> +    struct virtio_net_ctrl_mac mul =3D {
->> +        .entries =3D cpu_to_le32(mul_entries),
->> +    };
->> +    const struct iovec data[] =3D {
->> +        {
->> +            .iov_base =3D &uni,
->> +            .iov_len =3D sizeof(uni),
->> +        }, {
->> +            .iov_base =3D n->mac_table.macs,
->> +            .iov_len =3D uni_macs_size,
->> +        }, {
->> +            .iov_base =3D &mul,
->> +            .iov_len =3D sizeof(mul),
->> +        }, {
->> +            .iov_base =3D &n->mac_table.macs[uni_macs_size],
->> +            .iov_len =3D mul_macs_size,
->> +        },
->> +    };
->> +    ssize_t dev_written =3D vhost_vdpa_net_load_cmd(s,
->> +                                VIRTIO_NET_CTRL_MAC,
->> +                                VIRTIO_NET_CTRL_MAC_TABLE_SET,
->> +                                data, ARRAY_SIZE(data));
->> +    if (unlikely(dev_written < 0)) {
->> +        return dev_written;
->> +    }
->> +    if (*s->status !=3D VIRTIO_NET_OK) {
->> +        return -EIO;
->> +    }
->> +
->>       return 0;
->>   }
->>
->> --
->> 2.25.1
->>
+> Signed-off-by: Guoyi Tu <tugy@chinatelecom.cn>
+> Signed-off-by: dengpengcheng <dengpc12@chinatelecom.cn>
+> ---
+>  ui/vdagent.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 >
+> diff --git a/ui/vdagent.c b/ui/vdagent.c
+> index 8a651492f0..386dc5abe0 100644
+> --- a/ui/vdagent.c
+> +++ b/ui/vdagent.c
+> @@ -870,8 +870,11 @@ static void vdagent_disconnect(VDAgentChardev *vd)
+>
+>  static void vdagent_chr_set_fe_open(struct Chardev *chr, int fe_open)
+>  {
+> +    VDAgentChardev *vd =3D QEMU_VDAGENT_CHARDEV(chr);
+> +
+>      if (!fe_open) {
+>          trace_vdagent_close();
+> +        vdagent_disconnect(vd);
+>          /* To reset_serial, we CLOSED our side. Make sure the other end =
+knows we
+>           * are ready again. */
+>          qemu_chr_be_event(chr, CHR_EVENT_OPENED);
+> @@ -922,7 +925,6 @@ static void vdagent_chr_fini(Object *obj)
+>      VDAgentChardev *vd =3D QEMU_VDAGENT_CHARDEV(obj);
+>
+>      migrate_del_blocker(vd->migration_blocker);
+> -    vdagent_disconnect(vd);
+
+why remove this cleanup ? (the function seems safe to call multiple
+times, if it is the case during finalize)
+
+>      buffer_free(&vd->outbuf);
+>      error_free(vd->migration_blocker);
+>  }
+> --
+> 2.27.0
+>
+>
+
+
+--=20
+Marc-Andr=C3=A9 Lureau
 
