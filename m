@@ -2,77 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E140077F6BE
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 14:50:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B24C77F6CF
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 14:53:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWcS8-000786-Lf; Thu, 17 Aug 2023 08:50:16 -0400
+	id 1qWcT8-0007nJ-Lg; Thu, 17 Aug 2023 08:51:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qWcS6-00077F-4P
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 08:50:14 -0400
-Received: from mail-qk1-x729.google.com ([2607:f8b0:4864:20::729])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qWcS3-0002Nb-KC
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 08:50:13 -0400
-Received: by mail-qk1-x729.google.com with SMTP id
- af79cd13be357-76d764128d2so81009685a.3
- for <qemu-devel@nongnu.org>; Thu, 17 Aug 2023 05:50:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1692276610; x=1692881410;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=zw+SaOq2RgRWk3EZr224tBFBrfsa68/TqZg87L9vqOw=;
- b=a7XVm3sa/9vcoRG+ENdNTAI7g026/fHMgBaLxd+jHTl0hCL+UwY/LyyMZGiTzwN1jh
- TFBnWtTR4BiNQRualV9DNb6eGO5wFXUVOsPuw0pJSHdXIkvFUrA/Kra3duF27NT1xhxb
- diXgKhEGrSozTCAvdgya7cxoqZgW3m/UFPsCEpl3q/3PiRwA1pVeIjFSkJAtwbfpxt/i
- VEn2393HV7RMr9nch3ed2Gj9cQX5FTO0XwhMKfhMiGq0SGwhcvk68n3TlGOrfiFqenqc
- zAjC7rL+7yP+u1z3ukJNZmOw3wXTuXH6xCUlJfeTRFBZVySSjiKodiq/DDE952UbkMmT
- sFqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692276610; x=1692881410;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=zw+SaOq2RgRWk3EZr224tBFBrfsa68/TqZg87L9vqOw=;
- b=GhIdGFrx03ADBqB2BeDlwMepFtUwyQtXIiPe5L4RYbUkkjUC8XsprQZmFz+AXqx4G/
- sA8GlZrfz54KNLS8Rp1LJPVFJbmHogKtRQvCmdxnXUv7Ca+Hgo9gDuyw79UKWNTSN21I
- U84JOG6vtYB5oWYL5fGtnFZaqFJBKHffbpo07Qs4QwJjALDXzkvTAiEawmbPi+bGusIR
- ySpCn1nm2IDOEbPH3tzyCwNlFNaycGMyE0TRixrhmTBvleCZPjIb0J9WtSHdc49CCbGG
- Hupidv4Sx2UNWDtporZIx/2m1/LZT5pn3vw3KnychUEAY1ibj2sBJPXbBnGQqrzA0Dx4
- PUeg==
-X-Gm-Message-State: AOJu0YzKrwO4fzRUVzvGgY9QW3g7yy1JESabwmhQFrvQxT4fJCi0gHwr
- ywVbEd20LcgOBcApO24H5KszjI6gtcZUmYSi5pg=
-X-Google-Smtp-Source: AGHT+IGIVn7cgLxCcx1n/xN5jnioHEPqoLvVJUvbppq/z9D+ODG31uzaRNDhBKBdg3n308HA2aXFva+kL3qC2FKhOP0=
-X-Received: by 2002:a05:620a:bc8:b0:76c:de57:7b61 with SMTP id
- s8-20020a05620a0bc800b0076cde577b61mr5462084qki.25.1692276609970; Thu, 17 Aug
- 2023 05:50:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qWcSp-0007hU-6h
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 08:50:59 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qWcSm-0002YF-JX
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 08:50:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1692276654;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=AzYXXJ3M7pdTZeyolvaIchVDzn5L6zL6YI3haJi8VxM=;
+ b=GvU76F3afewz1YIAcpsC/8GFqj4uUb5hbF7DVa4kIkY5MwCUsg/yN8UIYo00hlSWxLrMfo
+ xNUniCw/ChhZ+GvGBoYAsT/svkP6GTULc9OqyRLOznJ5LvpIwhLd/3jVZEQ5m2nd4fJyPB
+ k/f+wvWRs6crGD1I75mZCqQR/XxpfZA=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-65-c_9cKGElN3GEu_xMsEbj-w-1; Thu, 17 Aug 2023 08:50:52 -0400
+X-MC-Unique: c_9cKGElN3GEu_xMsEbj-w-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3B83785C70F;
+ Thu, 17 Aug 2023 12:50:52 +0000 (UTC)
+Received: from merkur.redhat.com (unknown [10.39.194.106])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 5915E1121314;
+ Thu, 17 Aug 2023 12:50:50 +0000 (UTC)
+From: Kevin Wolf <kwolf@redhat.com>
+To: qemu-block@nongnu.org
+Cc: kwolf@redhat.com, stefanha@redhat.com, eblake@redhat.com,
+ eesposit@redhat.com, pbonzini@redhat.com, vsementsov@yandex-team.ru,
+ qemu-devel@nongnu.org
+Subject: [PATCH 00/21] Graph locking part 4 (node management)
+Date: Thu, 17 Aug 2023 14:49:59 +0200
+Message-ID: <20230817125020.208339-1-kwolf@redhat.com>
 MIME-Version: 1.0
-References: <cover.1692268800.git.tugy@chinatelecom.cn>
- <d285e8729552a6206ffa1cd4520fc8f9c6be5957.1692268800.git.tugy@chinatelecom.cn>
-In-Reply-To: <d285e8729552a6206ffa1cd4520fc8f9c6be5957.1692268800.git.tugy@chinatelecom.cn>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Thu, 17 Aug 2023 16:49:58 +0400
-Message-ID: <CAJ+F1C+_fGHq3odW6=2krDMhSkOX0krNTUjPnLAuiXHb62naAg@mail.gmail.com>
-Subject: Re: [PATCH 1/2] ui/vdagent: call vdagent_disconnect() when agent
- connection is lost
-To: tugy@chinatelecom.cn
-Cc: kraxel@redhat.com, qemu-devel@nongnu.org, dengpc12@chinatelecom.cn
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::729;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qk1-x729.google.com
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.021,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,60 +74,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
+The previous parts of the graph locking changes focussed mostly on the
+BlockDriver side and taking reader locks while performing I/O. This
+series focusses more on the functions managing the graph structure, i.e
+adding, removing and replacing nodes and updating their permissions.
 
-On Thu, Aug 17, 2023 at 3:32=E2=80=AFPM <tugy@chinatelecom.cn> wrote:
->
-> From: Guoyi Tu <tugy@chinatelecom.cn>
->
-> when the agent connection is lost, the input handler of the mouse
-> doesn't deactivate, which results in unresponsive mouse events in
-> VNC windows.
->
-> To fix this issue, call vdagent_disconnect() to reset the state
-> each time the frontend disconncect
->
-> Signed-off-by: Guoyi Tu <tugy@chinatelecom.cn>
-> Signed-off-by: dengpengcheng <dengpc12@chinatelecom.cn>
-> ---
->  ui/vdagent.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/ui/vdagent.c b/ui/vdagent.c
-> index 8a651492f0..386dc5abe0 100644
-> --- a/ui/vdagent.c
-> +++ b/ui/vdagent.c
-> @@ -870,8 +870,11 @@ static void vdagent_disconnect(VDAgentChardev *vd)
->
->  static void vdagent_chr_set_fe_open(struct Chardev *chr, int fe_open)
->  {
-> +    VDAgentChardev *vd =3D QEMU_VDAGENT_CHARDEV(chr);
-> +
->      if (!fe_open) {
->          trace_vdagent_close();
-> +        vdagent_disconnect(vd);
->          /* To reset_serial, we CLOSED our side. Make sure the other end =
-knows we
->           * are ready again. */
->          qemu_chr_be_event(chr, CHR_EVENT_OPENED);
-> @@ -922,7 +925,6 @@ static void vdagent_chr_fini(Object *obj)
->      VDAgentChardev *vd =3D QEMU_VDAGENT_CHARDEV(obj);
->
->      migrate_del_blocker(vd->migration_blocker);
-> -    vdagent_disconnect(vd);
+Many of these places actually need to take the writer lock to avoid
+readers seeing an inconsistent half-updated graph state. Therefore
+taking the writer lock is now pushed down from the very low-level
+function bdrv_replace_child_noperm() into its more high level callers.
 
-why remove this cleanup ? (the function seems safe to call multiple
-times, if it is the case during finalize)
+Kevin Wolf (21):
+  block: Remove unused BlockReopenQueueEntry.perms_checked
+  preallocate: Factor out preallocate_truncate_to_real_size()
+  preallocate: Don't poll during permission updates
+  block: Take AioContext lock for bdrv_append() more consistently
+  block: Introduce bdrv_schedule_unref()
+  block-coroutine-wrapper: Add no_co_wrapper_bdrv_wrlock functions
+  block-coroutine-wrapper: Allow arbitrary parameter names
+  block: Mark bdrv_replace_child_noperm() GRAPH_WRLOCK
+  block: Mark bdrv_replace_child_tran() GRAPH_WRLOCK
+  block: Mark bdrv_attach_child_common() GRAPH_WRLOCK
+  block: Call transaction callbacks with lock held
+  block: Mark bdrv_attach_child() GRAPH_WRLOCK
+  block: Mark bdrv_parent_perms_conflict() and callers GRAPH_RDLOCK
+  block: Mark bdrv_get_cumulative_perm() and callers GRAPH_RDLOCK
+  block: Mark bdrv_child_perm() GRAPH_RDLOCK
+  block: Mark bdrv_parent_cb_change_media() GRAPH_RDLOCK
+  block: Take graph rdlock in bdrv_drop_intermediate()
+  block: Take graph rdlock in bdrv_change_aio_context()
+  block: Mark bdrv_root_unref_child() GRAPH_WRLOCK
+  block: Mark bdrv_unref_child() GRAPH_WRLOCK
+  block: Mark bdrv_add/del_child() and caller GRAPH_WRLOCK
 
->      buffer_free(&vd->outbuf);
->      error_free(vd->migration_blocker);
->  }
-> --
-> 2.27.0
->
->
+ include/block/block-common.h                |   4 +
+ include/block/block-global-state.h          |  30 +-
+ include/block/block_int-common.h            |  34 +-
+ include/block/block_int-global-state.h      |  14 +-
+ include/sysemu/block-backend-global-state.h |   4 +-
+ block.c                                     | 340 ++++++++++++++------
+ block/blklogwrites.c                        |   4 +
+ block/blkverify.c                           |   2 +
+ block/block-backend.c                       |  29 +-
+ block/copy-before-write.c                   |  10 +-
+ block/crypto.c                              |   6 +-
+ block/graph-lock.c                          |  23 +-
+ block/mirror.c                              |   8 +
+ block/preallocate.c                         | 133 +++++---
+ block/qcow2.c                               |   4 +-
+ block/quorum.c                              |  23 +-
+ block/replication.c                         |   9 +
+ block/snapshot.c                            |   2 +
+ block/stream.c                              |  20 +-
+ block/vmdk.c                                |  13 +
+ blockdev.c                                  |  23 +-
+ blockjob.c                                  |   2 +
+ tests/unit/test-bdrv-drain.c                |  23 +-
+ tests/unit/test-bdrv-graph-mod.c            |  20 ++
+ tests/unit/test-block-iothread.c            |   3 +
+ scripts/block-coroutine-wrapper.py          |  18 +-
+ tests/qemu-iotests/051.pc.out               |   6 +-
+ 27 files changed, 580 insertions(+), 227 deletions(-)
 
+-- 
+2.41.0
 
---=20
-Marc-Andr=C3=A9 Lureau
 
