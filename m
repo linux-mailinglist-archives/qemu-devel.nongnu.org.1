@@ -2,96 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 157C377FD1B
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 19:38:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE03C77FCBC
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 19:11:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWgw3-0007aF-5b; Thu, 17 Aug 2023 13:37:27 -0400
+	id 1qWgVX-0003io-Dd; Thu, 17 Aug 2023 13:10:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1qWgw0-0007ZE-BK
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 13:37:24 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qWgVU-0003i0-MN
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 13:10:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1qWgvx-0003fQ-QL
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 13:37:24 -0400
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 37HHWks7020149; Thu, 17 Aug 2023 17:37:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : references : mime-version : content-type :
- in-reply-to; s=pp1; bh=5bjTbuPyCO9+W0mvNBOHESjsU9qnBfQc4HhNOck3ul8=;
- b=Mb94bJwVkh1W8Giqm4IAa/nMFLiuG3rzKjmcxycTL8eAvjs8h8oFTZnaUoD8Ubec73J6
- a6xXCoCFP1iFHW+BkHNgZqMMRr5bh+GVD7B7stnz6pER80nQTFHP7zLsGWA4mtCg0rCN
- QzrX0Qj1ZFJgYeDDDO+lRo4xilUwv278cP0CbO1zCetoMk8uIvHGF2tKbHuIgBAXwsFr
- 7oL3PJKXToiQHa2aOeekLzF4WsbmIbZ+z9cpISGBg+6/n7Iry/NA3sUeBevvHdjL8+1Y
- KwZTFlvdUyxFoPsQUuM5vKJwAcgBp5Bw3p+ZCMkHvqW1LsSYGi0/3INlVDRHPsfzLk7H jA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3shr1xg23v-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 17 Aug 2023 17:37:19 +0000
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 37HHaEta030746;
- Thu, 17 Aug 2023 17:37:19 GMT
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3shr1xg21r-5
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 17 Aug 2023 17:37:19 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 37HGYBNd007836; Thu, 17 Aug 2023 17:08:42 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3senwkqmp6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 17 Aug 2023 17:08:42 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
- [10.20.54.106])
- by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 37HH8exd61145558
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 17 Aug 2023 17:08:40 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 59E4120043;
- Thu, 17 Aug 2023 17:08:40 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1326020040;
- Thu, 17 Aug 2023 17:08:40 +0000 (GMT)
-Received: from heavy (unknown [9.171.85.44])
- by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
- Thu, 17 Aug 2023 17:08:39 +0000 (GMT)
-Date: Thu, 17 Aug 2023 19:08:38 +0200
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: deller@gmx.de
-Subject: Re: [PATCH 0/6] linux-user: Rewrite open_self_maps
-Message-ID: <huvkvaxpwvbn6zyeso6apdbfdeld6puh4jabllj763p5cc7son@b65vpdotn7mt>
-References: <20230816181437.572997-1-richard.henderson@linaro.org>
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qWgVS-00070B-3x
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 13:10:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1692292194;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=vURDXp09UJp3jnQSv4oI462DCEqA75tamyVcfwk4iz0=;
+ b=D4/mttFDriNrDMjw7PUiImSitNGTHXf85DYaoOuJqiEubAzC2vr2Q4LHGLk1oXGUma3SmQ
+ fPGMM5DPWHVWLs9bJpK7gzKFUz+1Gizf5bkGf0OdWZY5AWH3t3pCYImeDxYN9wnIT3QsIq
+ TYkpoQpjsTtdg2A31p62POsOOLGhPWE=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-455-WMcvH5sQNo6uWJOF7jQEvA-1; Thu, 17 Aug 2023 13:09:52 -0400
+X-MC-Unique: WMcvH5sQNo6uWJOF7jQEvA-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-3fe44619c97so6452295e9.0
+ for <qemu-devel@nongnu.org>; Thu, 17 Aug 2023 10:09:52 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1692292191; x=1692896991;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=vURDXp09UJp3jnQSv4oI462DCEqA75tamyVcfwk4iz0=;
+ b=bCZioAaZ+qqEbRNeSKJm51rFxQ0a+rmOiyDkL/rwbPzxtGN9q6c6wFO6Q0BdiEXTQR
+ +RM50yx+tITCOxm6WXO3SnXtGUxwN56SHz+LODKT0JiQB6OjKCiWKZ/mbGR6FiRUvto5
+ yxaUEHq7MHVQ/igfww1FPVBnpEpSpQvAPO6RNgbpoXLxGG0w3jUB0XWiEkQuuQKGqERy
+ gF/XUWf3yzOvIltAUVVUgQsqVdeCCR97RdcOK3QZkik6IaK2ZTSWEIveqG8Ik2M4Zxrq
+ ORhbEhvIuW+IPHizUfCIEk9N8MX/+fX6HXcQ6gYviCKFkdPEZnnwyfd93ZKOEDtI8Wmp
+ syNA==
+X-Gm-Message-State: AOJu0Yz3RHxra/PPk4EGYvx1Awvd+/db+mt7L6xWzDo8qUYkMoiNiYtl
+ fYbYfuMbLWYwoTkYiPB40K3CT1DAi7hjwhWN13TK9k0LEst0Fl2FoalyK4Lq+YYV1XpWhWw6rCo
+ b97gY/5Kpii+1gmY=
+X-Received: by 2002:a7b:cc96:0:b0:3fe:1b5e:82 with SMTP id
+ p22-20020a7bcc96000000b003fe1b5e0082mr2543876wma.20.1692292191266; 
+ Thu, 17 Aug 2023 10:09:51 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFqOHHdvtrsXN3ai1KehA800QJL1F5WUeL8pWJmq98lkO3XzTK4agGn+6eW2jLtzadMVehABQ==
+X-Received: by 2002:a7b:cc96:0:b0:3fe:1b5e:82 with SMTP id
+ p22-20020a7bcc96000000b003fe1b5e0082mr2543853wma.20.1692292190928; 
+ Thu, 17 Aug 2023 10:09:50 -0700 (PDT)
+Received: from [192.168.0.5] (ip-109-42-112-224.web.vodafone.de.
+ [109.42.112.224]) by smtp.gmail.com with ESMTPSA id
+ k21-20020a7bc315000000b003fe13c3ece7sm3606294wmj.10.2023.08.17.10.09.49
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 17 Aug 2023 10:09:50 -0700 (PDT)
+Message-ID: <a92823b2-6a95-3834-e33c-a7176c60ea2e@redhat.com>
+Date: Thu, 17 Aug 2023 19:09:48 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230816181437.572997-1-richard.henderson@linaro.org>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: nV4yJE6QZqto-vYeF3jhvKcuhDieDIZQ
-X-Proofpoint-ORIG-GUID: rSqTw-CHtl14fPXjdBtmJ_Tjp7HqOhpL
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-08-17_12,2023-08-17_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=949 bulkscore=0
- clxscore=1015 mlxscore=0 priorityscore=1501 spamscore=0 impostorscore=0
- lowpriorityscore=0 suspectscore=0 phishscore=0 malwarescore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2306200000
- definitions=main-2308170158
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] chardev/char-pty: Avoid losing bytes when the other side
+ just (re-)connected
+Content-Language: en-US
+To: =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Marc Hartmayer <mhartmay@linux.ibm.com>
+References: <20230816210743.1319018-1-thuth@redhat.com>
+ <ZN33W+LhAn2FrFDT@redhat.com>
+ <2bb2f8ac-43b4-9505-c163-d29964bf6a30@redhat.com>
+ <ZN4bTLsw1bwLBEEz@redhat.com>
+ <CAMxuvazrSy0Fi1rwj21RWmSWVPXDrFrcZ6266-EHcvgxTzFfeg@mail.gmail.com>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <CAMxuvazrSy0Fi1rwj21RWmSWVPXDrFrcZ6266-EHcvgxTzFfeg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -60
+X-Spam_score: -6.1
+X-Spam_bar: ------
+X-Spam_report: (-6.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.021,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-4.01, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
  RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -109,39 +107,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 16, 2023 at 11:14:31AM -0700, Richard Henderson wrote:
-> Based-on: 20230816180338.572576-1-richard.henderson@linaro.org
-> ("[PATCH v4 00/18] linux-user: Implement VDSOs")
+On 17/08/2023 15.47, Marc-André Lureau wrote:
+> Hi
 > 
-> As promised, a rewrite of /proc/self/{maps,smaps} emulation
-> using interval trees.
+> On Thu, Aug 17, 2023 at 5:06 PM Daniel P. Berrangé <berrange@redhat.com> wrote:
+>>
+>> On Thu, Aug 17, 2023 at 02:00:26PM +0200, Thomas Huth wrote:
+>>> On 17/08/2023 12.32, Daniel P. Berrangé wrote:
+>>>> On Wed, Aug 16, 2023 at 11:07:43PM +0200, Thomas Huth wrote:
+>>>>> When starting a guest via libvirt with "virsh start --console ...",
+>>>>> the first second of the console output is missing. This is especially
+>>>>> annoying on s390x that only has a text console by default and no graphical
+>>>>> output - if the bios fails to boot here, the information about what went
+>>>>> wrong is completely lost.
+>>>>>
+>>>>> One part of the problem (there is also some things to be done on the
+>>>>> libvirt side) is that QEMU only checks with a 1 second timer whether
+>>>>> the other side of the pty is already connected, so the first second of
+>>>>> the console output is always lost.
+>>>>>
+>>>>> This likely used to work better in the past, since the code once checked
+>>>>> for a re-connection during write, but this has been removed in commit
+>>>>> f8278c7d74 ("char-pty: remove the check for connection on write") to avoid
+>>>>> some locking.
+>>>>>
+>>>>> To ease the situation here at least a little bit, let's check with g_poll()
+>>>>> whether we could send out the data anyway, even if the connection has not
+>>>>> been marked as "connected" yet. The file descriptor is marked as non-blocking
+>>>>> anyway since commit fac6688a18 ("Do not hang on full PTY"), so this should
+>>>>> not cause any trouble if the other side is not ready for receiving yet.
+>>>>>
+>>>>> With this patch applied, I can now successfully see the bios output of
+>>>>> a s390x guest when running it with "virsh start --console" (with a patched
+>>>>> version of virsh that fixes the remaining issues there, too).
+>>>>>
+>>>>> Reported-by: Marc Hartmayer <mhartmay@linux.ibm.com>
+>>>>> Signed-off-by: Thomas Huth <thuth@redhat.com>
+>>>>> ---
+>>>>>    chardev/char-pty.c | 22 +++++++++++++++++++---
+>>>>>    1 file changed, 19 insertions(+), 3 deletions(-)
+>>>>>
+>>>>> diff --git a/chardev/char-pty.c b/chardev/char-pty.c
+>>>>> index 4e5deac18a..fad12dfef3 100644
+>>>>> --- a/chardev/char-pty.c
+>>>>> +++ b/chardev/char-pty.c
+>>>>> @@ -106,11 +106,27 @@ static void pty_chr_update_read_handler(Chardev *chr)
+>>>>>    static int char_pty_chr_write(Chardev *chr, const uint8_t *buf, int len)
+>>>>>    {
+>>>>>        PtyChardev *s = PTY_CHARDEV(chr);
+>>>>> +    GPollFD pfd;
+>>>>> +    int rc;
+>>>>> -    if (!s->connected) {
+>>>>> -        return len;
+>>>>> +    if (s->connected) {
+>>>>> +        return io_channel_send(s->ioc, buf, len);
+>>>>>        }
+>>>>> -    return io_channel_send(s->ioc, buf, len);
+>>>>> +
+>>>>> +    /*
+>>>>> +     * The other side might already be re-connected, but the timer might
+>>>>> +     * not have fired yet. So let's check here whether we can write again:
+>>>>> +     */
+>>>>> +    pfd.fd = QIO_CHANNEL_FILE(s->ioc)->fd;
+>>>>> +    pfd.events = G_IO_OUT;
+>>>>> +    pfd.revents = 0;
+>>>>> +    rc = RETRY_ON_EINTR(g_poll(&pfd, 1, 0));
+>>>>> +    g_assert(rc >= 0);
+>>>>> +    if (!(pfd.revents & G_IO_HUP) && (pfd.revents & G_IO_OUT)) {
+>>>>
+>>>> Should (can?) we call
+>>>>
+>>>>      pty_chr_state(chr, 1);
+>>>>
+>>>> here ?
+>>>
+>>> As far as I understood commit f8278c7d74c6 and f7ea2038bea04628, this is not
+>>> possible anymore since the lock has been removed.
+>>>
+>>>>> +        io_channel_send(s->ioc, buf, len);
+>>>>
+>>>> As it feels a little dirty to be sending data before setting the
+>>>> 'connected == 1' and thus issuing the 'CHR_EVENT_OPENED' event
+>>>
+>>> I didn't find a really better solution so far. We could maybe introduce a
+>>> buffer in the char-pty code and store the last second of guest output, but
+>>> IMHO that's way more complex and thus somewhat ugly, too?
+>>
+>> The orignal commit f8278c7d74c6 said
+>>
+>> [quote]
+>>      char-pty: remove the check for connection on write
+>>
+>>      This doesn't help much compared to the 1 second poll PTY
+>>      timer. I can't think of a use case where this would help.
+>> [/quote]
+>>
+>> We've now identified a use case where it is actually important.
+>>
+>> IOW, there's a justification to revert both f7ea2038bea04628 and
+>> f8278c7d74c6, re-adding the locking and write update logic.
 > 
-> Incorporate Helge's change to mark [heap], and also mark [vdso].
-> 
-> 
-> r~
-> 
-> 
-> Richard Henderson (6):
->   util/selfmap: Use dev_t and ino_t in MapInfo
->   linux-user: Use walk_memory_regions for open_self_maps
->   linux-user: Adjust brk for load_bias
->   linux-user: Show heap address in /proc/pid/maps
->   linux-user: Remove ELF_START_MMAP and image_info.start_mmap
->   linux-user: Show vdso address in /proc/pid/maps
-> 
->  include/qemu/selfmap.h |   4 +-
->  linux-user/qemu.h      |   2 +-
->  linux-user/elfload.c   |  41 +--------
->  linux-user/syscall.c   | 194 +++++++++++++++++++++++++----------------
->  util/selfmap.c         |  12 +--
->  5 files changed, 131 insertions(+), 122 deletions(-)
-> 
-> -- 
-> 2.34.1
+> Indeed. But isn't it possible to watch for IO_OUT and get rid of the timer?
 
-As expected, this improved the situation with mappings on ppc64le.
-Handling the errors from read_self_maps() is also a nice addition.
+It might be possible - Marc Hartmayer just sent me a draft patch today that 
+uses qio_channel_add_watch() and gets rid of the timer ... I'll do some 
+experiments with that and send it out if it works reliably.
 
-Reviewed-by: Ilya Leoshkevich <iii@linux.ibm.com>
+  Thomas
+
 
