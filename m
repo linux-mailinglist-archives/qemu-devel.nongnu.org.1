@@ -2,88 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9A1D77EF3F
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 04:59:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48A3777EF8D
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 05:32:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWTCc-0000Jd-LW; Wed, 16 Aug 2023 22:57:38 -0400
+	id 1qWTiK-0003aU-D7; Wed, 16 Aug 2023 23:30:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <aik@ozlabs.ru>) id 1qWTCZ-0000Gp-Qc
- for qemu-devel@nongnu.org; Wed, 16 Aug 2023 22:57:35 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
+ id 1qWTiI-0003Zl-7n
+ for qemu-devel@nongnu.org; Wed, 16 Aug 2023 23:30:22 -0400
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <aik@ozlabs.ru>) id 1qWTCX-00080Y-1A
- for qemu-devel@nongnu.org; Wed, 16 Aug 2023 22:57:35 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-68878ca7ca0so1499037b3a.0
- for <qemu-devel@nongnu.org>; Wed, 16 Aug 2023 19:57:31 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
+ id 1qWTiF-0005yS-Lh
+ for qemu-devel@nongnu.org; Wed, 16 Aug 2023 23:30:21 -0400
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-1bdb7b0c8afso35835605ad.3
+ for <qemu-devel@nongnu.org>; Wed, 16 Aug 2023 20:30:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20221208.gappssmtp.com; s=20221208; t=1692241049; x=1692845849;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=NIYpAT/cYzxFB59WFnwJkqf+qr0OBNGgodWl9NyOVkY=;
- b=sA4ph0ffpXFS9dSawuqGXkR2ypW4PbwakTDnj+n2bZK/6+/PKRzD6O6bAVVkJnYe/W
- Vg/XPgZUrbsamYRUkKIeRcWH+SqRmvQ0CKR+U915UQQsBhVdgAdwYDBqLzXUZ/j9cB1p
- ag+G1VqJA5RemQV4zTi+5dy6Nq6ttI4vFWtJl11LUjKrDWYigejJOJx/LUZZSCeZVnP3
- fFRMzfQ0xKPSW/Vwi/FQo0eUuFqffyKi8i2TL+PETiBLC+2GgNt10OZfs9clnpKHcHNQ
- YdYM9BNUBMrFDMu8Bzx70dZqg18Ns4CqVK7TMFIgSVv8dJkjddLBhK4CBPGnDS7Jd3HG
- VB6w==
+ d=ventanamicro.com; s=google; t=1692243015; x=1692847815;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=da/XbM7V0w3vnnbBvgHoG8bDMtDm3bel7gEPQSFhkIk=;
+ b=O/WCX6iChN0fluY6p+BAfYpH8N8hJrzm5+ZBtJKLbeS+RKJkkApkNiA0Y1c0P/JeiT
+ 4F0H2CJaPjloxCPtuKLUbX3dIV6VTdjHTU7mWkAVmWBLS/IBf7oXtD7TGVFxSXC1+t9R
+ aUs+F8E4ISFzLoPNNYxcaGiwkvUeBp68mI470bfAXcajb2N6MKn2u+ZceN/8bPfgZsPr
+ tD7SOHGwD7DJxZ8Nefwiz3PBuHiD7h/wNwMEpOA3tB+ybqBqebDtvv5gUP93+d6oq0ah
+ vXDKOweWQLGsqUu/De8jxPaAgI5Tzbu7YiBZuOz0vDgdowEWqQX8D/qPK6Uf9pSWEe0V
+ Vxng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692241049; x=1692845849;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20221208; t=1692243015; x=1692847815;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=NIYpAT/cYzxFB59WFnwJkqf+qr0OBNGgodWl9NyOVkY=;
- b=IeLemJOMGFWinU8ETjiMMYYFfy4NHkwRYm+Gsytf5c3uJcs21XGLh6scGtuz3M1p4F
- /m3/W0DVxPJf337hK5f6h8m3k7Zw/o9CYtu0inH8k4x+aDWXOsMSs75YKXYgJgPCrqCD
- 9Bh7Rd7sZCvalO51/+bMuJV8p/Ou47KFPj47aXA/3nitxaNSJq+3+3wz8cdepzBJIjYT
- 8bmOHOPtc9PKcLWTqAmeMRNZkM0SHkYuwoCbibzKHi8nT7a40o9ySHF9f3jKZkD2Ou72
- oUjgpWsrh46jqchFQ2qCTk8dfWRGLPQV8G8Kw3mppUyL3+ASjTY4izDDCzWKGji1yEfA
- IdYw==
-X-Gm-Message-State: AOJu0YzFGcRuNwi/1lZgmaMOXDeSFrVS6x1H0ST1oHU02RvIvLvnXgV8
- ckMQoUIGDuQUpfF5Mu+dit6EKg==
-X-Google-Smtp-Source: AGHT+IGT1w+BI29x/g99A6MtdHXTM9zxJqItbrkVi7ZnEsuI5skuMYpHP/JRIWhP43kXHpxp8h07Vw==
-X-Received: by 2002:a05:6a00:3990:b0:687:6184:deed with SMTP id
- fi16-20020a056a00399000b006876184deedmr4405116pfb.22.1692241049265; 
- Wed, 16 Aug 2023 19:57:29 -0700 (PDT)
-Received: from [192.168.10.153]
- (ppp118-208-171-7.cbr-trn-nor-bras39.tpg.internode.on.net. [118.208.171.7])
- by smtp.gmail.com with ESMTPSA id
- fe22-20020a056a002f1600b00682a0184742sm12172416pfb.148.2023.08.16.19.57.25
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 16 Aug 2023 19:57:28 -0700 (PDT)
-Message-ID: <659a53cb-2dc7-45c0-7598-38f60a3dd923@ozlabs.ru>
-Date: Thu, 17 Aug 2023 12:57:23 +1000
+ bh=da/XbM7V0w3vnnbBvgHoG8bDMtDm3bel7gEPQSFhkIk=;
+ b=IkzhFPsFGnGsfEml5OJUTtFFcr4Z6DPkpVLeZdOyohiuF5Iz7/yTIFKnSK5c0y+XbC
+ 75yDm8dPeK8KfnRM2IUJI/vS1aXm7laY91H5Tp58CMJa/boDwROF21n0xrziluQQEDjZ
+ xRmnnkNV9WLjY+X14CzepoVdf+c56NgOLevLsazDW2svEbCzvIhEbKwpg5Wxie6Dpgpq
+ xBdocpYPn5u548C+LWGRzPo3IB3r6cpRCGKAY0EFtDDJgsVflnGC2st3Gf+2XoT7waz6
+ 9U7Taqe1WcVz7YDsE3ClIbx5oSIdoHa0jUZrbJnKwUtqG6EFJh+40//5moX4aDphg12W
+ aWNw==
+X-Gm-Message-State: AOJu0Yxsl7c+UZreBJ/0l5wl8vlLvr6pkmtCEl54zI+9ayaWdBRnQZO8
+ iTIGkOu9Ev1VVJy/uDhlewlzkw==
+X-Google-Smtp-Source: AGHT+IFKAMynRfi6DV0Hhz/Q3IivWGk2CXFvnITXxCeyCoIiSskynGowR8ceuFajX33IL8L5isZ+gw==
+X-Received: by 2002:a17:903:26c2:b0:1bd:ed26:d2c6 with SMTP id
+ jg2-20020a17090326c200b001bded26d2c6mr3415781plb.4.1692243015363; 
+ Wed, 16 Aug 2023 20:30:15 -0700 (PDT)
+Received: from sunil-laptop ([106.51.83.242]) by smtp.gmail.com with ESMTPSA id
+ u15-20020a170902e5cf00b001b9d335223csm13860130plf.26.2023.08.16.20.30.10
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 16 Aug 2023 20:30:14 -0700 (PDT)
+Date: Thu, 17 Aug 2023 09:00:07 +0530
+From: Sunil V L <sunilvl@ventanamicro.com>
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: Igor Mammedov <imammedo@redhat.com>, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org, qemu-riscv@nongnu.org,
+ "Michael S . Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Shannon Zhao <shannon.zhaosl@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Andrew Jones <ajones@ventanamicro.com>,
+ Anup Patel <apatel@ventanamicro.com>
+Subject: Re: [PATCH 01/10] hw/arm/virt-acpi-build.c: Move fw_cfg and virtio
+ to common location
+Message-ID: <ZN2UPwkpXez+uwMj@sunil-laptop>
+References: <20230712163943.98994-1-sunilvl@ventanamicro.com>
+ <20230712163943.98994-2-sunilvl@ventanamicro.com>
+ <20230724171859.212fec62@imammedo.users.ipa.redhat.com>
+ <ZL/9XO47yEnaNzyN@sunil-laptop>
+ <20230726102546.1cad6113@imammedo.users.ipa.redhat.com>
+ <badc96bf-821e-d769-ac40-39600f543e86@ventanamicro.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:108.0) Gecko/20100101
- Thunderbird/108.0
-Subject: Re: [PATCH v2 02/19] ppc/vof: Fix missed fields in VOF cleanup
-Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>
-Cc: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
- David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-ppc@nongnu.org,
- qemu-devel@nongnu.org
-References: <20230808042001.411094-1-npiggin@gmail.com>
- <20230808042001.411094-3-npiggin@gmail.com>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-In-Reply-To: <20230808042001.411094-3-npiggin@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=aik@ozlabs.ru; helo=mail-pf1-x435.google.com
-X-Spam_score_int: -50
-X-Spam_score: -5.1
-X-Spam_bar: -----
-X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, NICE_REPLY_A=-3.165, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <badc96bf-821e-d769-ac40-39600f543e86@ventanamicro.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=sunilvl@ventanamicro.com; helo=mail-pl1-x633.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,44 +107,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Wed, Aug 16, 2023 at 03:51:58PM -0300, Daniel Henrique Barboza wrote:
+>=20
+>=20
+> On 7/26/23 05:25, Igor Mammedov wrote:
+> > On Tue, 25 Jul 2023 22:20:36 +0530
+> > Sunil V L <sunilvl@ventanamicro.com> wrote:
+> >=20
+> > > On Mon, Jul 24, 2023 at 05:18:59PM +0200, Igor Mammedov wrote:
+> > > > On Wed, 12 Jul 2023 22:09:34 +0530
+> > > > Sunil V L <sunilvl@ventanamicro.com> wrote:
+> > > > > The functions which add fw_cfg and virtio to DSDT are same for ARM
+> > > > > and RISC-V. So, instead of duplicating in RISC-V, move them from
+> > > > > hw/arm/virt-acpi-build.c to common aml-build.c.
+> > > > >=20
+> > > > > Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+> > > > > ---
+> > > > >   hw/acpi/aml-build.c         | 41 ++++++++++++++++++++++++++++++=
+++++++
+> > > > >   hw/arm/virt-acpi-build.c    | 42 ------------------------------=
+-------
+> > > > >   hw/riscv/virt-acpi-build.c  | 16 --------------
+> > > > >   include/hw/acpi/aml-build.h |  6 ++++++
+> > > > >   4 files changed, 47 insertions(+), 58 deletions(-)
+> > > > >=20
+> > > > > diff --git a/hw/acpi/aml-build.c b/hw/acpi/aml-build.c
+> > > >=20
+> > > > patch looks fine modulo,
+> > > > I'd put these into respective device files instead of generic
+> > > > aml-build.c which was intended for basic AML primitives
+> > > > (it 's got polluted over time with device specific functions
+> > > > but that's not the reason to continue doing that).
+> > > >=20
+> > > > Also having those functions along with devices models
+> > > > goes along with self enumerating ACPI devices (currently
+> > > > it works for x86 PCI/ISA device but there is no reason
+> > > > that it can't work with other types as well when
+> > > > I get there)
+> > > Thanks!, Igor. Let me add them to device specific files as per your
+> > > recommendation.
+> > just be careful and build test other targets (while disabling the rest)
+> > at least no to regress them due to build deps. (I'd pick 2 with ACPI
+> > support that use and not uses affected code) and 1 that  uses device
+> > model but doesn't use ACPI at all (if such exists)
+>=20
+> Sunil is already aware of it but I'll also mention here since it seems re=
+levant
+> to Igor's point.
+>=20
+Thanks! Daniel. Yes, I am aware of the issue and will fix it along with
+Igor's suggestion. I need to fix this irrespective of the approach.
 
-
-On 08/08/2023 14:19, Nicholas Piggin wrote:
-> Failing to reset the of_instance_last makes ihandle allocation continue
-> to increase, which causes record-replay replay fail to match the
-> recorded trace.
-> 
-> Not resetting claimed_base makes VOF eventually run out of memory after
-> some resets.
-> 
-> Cc: Alexey Kardashevskiy <aik@ozlabs.ru>
-> Fixes: fc8c745d501 ("spapr: Implement Open Firmware client interface")
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-
-
-Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-
-Cool to see it still in use :)
-
-
-> ---
->   hw/ppc/vof.c | 2 ++
->   1 file changed, 2 insertions(+)
-> 
-> diff --git a/hw/ppc/vof.c b/hw/ppc/vof.c
-> index 18c3f92317..e3b430a81f 100644
-> --- a/hw/ppc/vof.c
-> +++ b/hw/ppc/vof.c
-> @@ -1024,6 +1024,8 @@ void vof_cleanup(Vof *vof)
->       }
->       vof->claimed = NULL;
->       vof->of_instances = NULL;
-> +    vof->of_instance_last = 0;
-> +    vof->claimed_base = 0;
->   }
->   
->   void vof_build_dt(void *fdt, Vof *vof)
-
--- 
-Alexey
+Thanks,
+Sunil
+>=20
+> This patch breaks i386-softmmu build:
+>=20
+>=20
+> FAILED: libqemu-i386-softmmu.fa.p/hw_i386_acpi-microvm.c.o
+> cc -m64 -mcx16 -Ilibqemu-i386-softmmu.fa.p -I. -I.. -Itarget/i386 -I../ta=
+rget/i386 -Iqapi -Itrace -Iui -Iui/shader -I/usr/include/pixman-1 -I/usr/in=
+clude/glib-2.0 -I/usr/lib64/glib-2.0/include -I/usr/include/sysprof-4 -fdia=
+gnostics-color=3Dauto -Wall -Winvalid-pch -Werror -std=3Dgnu11 -O2 -g -fsta=
+ck-protector-strong -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=3D2 -Wundef -Wwrite=
+-strings -Wmissing-prototypes -Wstrict-prototypes -Wredundant-decls -Wold-s=
+tyle-declaration -Wold-style-definition -Wtype-limits -Wformat-security -Wf=
+ormat-y2k -Winit-self -Wignored-qualifiers -Wempty-body -Wnested-externs -W=
+endif-labels -Wexpansion-to-defined -Wimplicit-fallthrough=3D2 -Wmissing-fo=
+rmat-attribute -Wno-missing-include-dirs -Wno-shift-negative-value -Wno-psa=
+bi -isystem /home/danielhb/work/qemu/linux-headers -isystem linux-headers -=
+iquote . -iquote /home/danielhb/work/qemu -iquote /home/danielhb/work/qemu/=
+include -iquote /home/danielhb/work/qemu/host/include/x86_64 -iquote /home/=
+danielhb/work/qemu/host/include/generic -iquote /home/danielhb/work/qemu/tc=
+g/i386 -pthread -D_GNU_SOURCE -D_FILE_OFFSET_BITS=3D64 -D_LARGEFILE_SOURCE =
+-fno-strict-aliasing -fno-common -fwrapv -fPIE -isystem../linux-headers -is=
+ystemlinux-headers -DNEED_CPU_H '-DCONFIG_TARGET=3D"i386-softmmu-config-tar=
+get.h"' '-DCONFIG_DEVICES=3D"i386-softmmu-config-devices.h"' -MD -MQ libqem=
+u-i386-softmmu.fa.p/hw_i386_acpi-microvm.c.o -MF libqemu-i386-softmmu.fa.p/=
+hw_i386_acpi-microvm.c.o.d -o libqemu-i386-softmmu.fa.p/hw_i386_acpi-microv=
+m.c.o -c ../hw/i386/acpi-microvm.c
+> ../hw/i386/acpi-microvm.c:48:13: error: conflicting types for =E2=80=98ac=
+pi_dsdt_add_virtio=E2=80=99; have =E2=80=98void(Aml *, MicrovmMachineState =
+*)=E2=80=99
+>    48 | static void acpi_dsdt_add_virtio(Aml *scope,
+>       |             ^~~~~~~~~~~~~~~~~~~~
+> In file included from /home/danielhb/work/qemu/include/hw/acpi/acpi_aml_i=
+nterface.h:5,
+>                  from ../hw/i386/acpi-microvm.c:29:
+> /home/danielhb/work/qemu/include/hw/acpi/aml-build.h:503:6: note: previou=
+s declaration of =E2=80=98acpi_dsdt_add_virtio=E2=80=99 with type =E2=80=98=
+void(Aml *, const MemMapEntry *, uint32_t,  int)=E2=80=99 {aka =E2=80=98voi=
+d(Aml *, const MemMapEntry *, unsigned int,  int)=E2=80=99}
+>   503 | void acpi_dsdt_add_virtio(Aml *scope, const MemMapEntry *virtio_m=
+mio_memmap,
+>       |      ^~~~~~~~~~~~~~~~~~~~
+> [5/714] Compiling C object libqemu-i386-softmmu.fa.p/hw_i386_kvm_clock.c.o
+>=20
+> This happens because the common 'acpi_dsdt_add_virtio' function matches a=
+ local
+> function with the same name in hw/i386/acpi-microvm.c. We would need to e=
+ither
+> rename the shared helper or rename the local acpi-microvm function or do =
+something
+> like Igor mentioned to avoid this name collision.
+>=20
+>=20
+> Thanks,
+>=20
+> Daniel
+>=20
+>=20
+>=20
+>=20
+>=20
+>=20
+>=20
+>=20
+> >=20
+> > >=20
+> > > Thanks!
+> > > Sunil
+> > >=20
+> >=20
 
