@@ -2,76 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1C7977F8D9
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 16:27:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A00E777F8E7
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 16:30:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWdxb-0007q3-1u; Thu, 17 Aug 2023 10:26:51 -0400
+	id 1qWe0p-0001G7-Jb; Thu, 17 Aug 2023 10:30:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qWdxY-0007pB-TR
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 10:26:48 -0400
-Received: from mail-qk1-x72b.google.com ([2607:f8b0:4864:20::72b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qWdxW-00067n-6H
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 10:26:48 -0400
-Received: by mail-qk1-x72b.google.com with SMTP id
- af79cd13be357-76cab6fe9c0so654816285a.0
- for <qemu-devel@nongnu.org>; Thu, 17 Aug 2023 07:26:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1692282405; x=1692887205;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ZownqIMunb2OLPzndhbUxhNG7vc1b84XwFELRFS1IF8=;
- b=XQosjBPCYWJ8eYfR0eFLBwjmxhg6g5YGvuWGO4KiYcRG5Xdx5bY5fmReDYDpqYj7PC
- epbvBAfBAq6o9CMjT79z8PGoa9+HZilm6W7S0D1hQC4KGl+fdjUyFh8xnz+MyVLhFBKD
- d1fwX0AFOMIo7+m9TXWHvzE3PxODmWDpHGVh4dGFfd558p6dcjEjal7er5od+Je4eMKr
- vKVJop9xmX28+vhiDJ/z+T7UobWIsX6aYyJp0KAPEUGjACSoPLa7wr9tVzKPdhQ0OFOJ
- pXtz1aUwH8kRouE5D6FzD5tr27BOzDCdNZnx+aKbcrX3cUyGGMAqAV8FKjlTaehAUQcs
- Ap7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692282405; x=1692887205;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ZownqIMunb2OLPzndhbUxhNG7vc1b84XwFELRFS1IF8=;
- b=h1aYAZUxr74iY4SWdwmBCEc1jC2ZlPBX3TkDeB32vOahfqu0DRu+3FrLztTWLbXpxG
- sA/ODFygv1Z5vXnKHXXFpRMDH8g9LxvVhdpFh0fZdlcwfZSXo7fD2OU0o1KtL79nIkA9
- 1X/HG/o9YLpacW6XXps8MDwM18fZfmtDKdwcz82yWbyitbIbdIcy7qERsjNuvarHGfrc
- YTuGUSctrCKYewODcucVVsOBoXHw1yg44rg0zWMvLVT9tXOj5M8tvp57qHpc1x3jFeVN
- +GO8hBintSzv0MjA5yWA1/vI8fTXj600z7EdSjBzZD3iuCbgO56zJrq1mj8T9hFzgUI5
- khzQ==
-X-Gm-Message-State: AOJu0Ywk2AwGvK8ufa7b2JLDrLdQ+2nrZrCv7HnFcxyYlGPFFcCLebOZ
- Y2B5dcb0MOtQykWu1iFysMq28qjOFuPCMtIMqEI=
-X-Google-Smtp-Source: AGHT+IH4utKSpAKVqlC9u+I8L4Z4qzJneDfR9SrtI1W38a4jyLGMP1NLop21EDUqRh2tdMgjM8DWQc2CCiEj4r5mM0w=
-X-Received: by 2002:a05:622a:1883:b0:40f:2230:efc with SMTP id
- v3-20020a05622a188300b0040f22300efcmr6224895qtc.55.1692282405201; Thu, 17 Aug
- 2023 07:26:45 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <tugy@chinatelecom.cn>)
+ id 1qWe0k-0001Fl-4m
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 10:30:06 -0400
+Received: from smtpnm6-09.21cn.com ([182.42.152.55] helo=chinatelecom.cn)
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <tugy@chinatelecom.cn>) id 1qWe0g-0006ZV-Gf
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 10:30:05 -0400
+HMM_SOURCE_IP: 192.168.138.117:1352.709705605
+HMM_ATTACHE_NUM: 0000
+HMM_SOURCE_TYPE: SMTP
+Received: from clientip-182.148.58.152 (unknown [192.168.138.117])
+ by chinatelecom.cn (HERMES) with SMTP id E4296111070A6;
+ Thu, 17 Aug 2023 22:29:42 +0800 (CST)
+X-189-SAVE-TO-SEND: +tugy@chinatelecom.cn
+Received: from  ([182.148.58.152])
+ by gateway-ssl-dep-56d86dc765-7s8sf with ESMTP id
+ 15f8b92be62543fd9b618f4cccec002c for peterx@redhat.com; 
+ Thu, 17 Aug 2023 22:29:50 CST
+X-Transaction-ID: 15f8b92be62543fd9b618f4cccec002c
+X-Real-From: tugy@chinatelecom.cn
+X-Receive-IP: 182.148.58.152
+X-MEDUSA-Status: 0
+Message-ID: <9a20b490-c08f-4a6c-a6d7-350a7174abb0@chinatelecom.cn>
+Date: Thu, 17 Aug 2023 22:29:37 +0800
 MIME-Version: 1.0
-References: <cover.1692281173.git.tugy@chinatelecom.cn>
- <e7f5e172abf797d454e00a4bbe53af83e4aa4497.1692281173.git.tugy@chinatelecom.cn>
-In-Reply-To: <e7f5e172abf797d454e00a4bbe53af83e4aa4497.1692281173.git.tugy@chinatelecom.cn>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Thu, 17 Aug 2023 18:26:34 +0400
-Message-ID: <CAJ+F1C+vDZisncoBpv+NqostpxUk8v2cM00qSJtgM=cOx1L=+A@mail.gmail.com>
-Subject: Re: [PATCH v1 2/2] ui/vdagent: Unregister input handler of mouse
- during finalization
-To: tugy@chinatelecom.cn
-Cc: kraxel@redhat.com, qemu-devel@nongnu.org, dengpc12@chinatelecom.cn
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::72b;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qk1-x72b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Cc: tugy@chinatelecom.cn, =?UTF-8?B?44CQ5aSW6YOo6LSm5Y+344CRIEZhYmlhbm8gUm9z?=
+ =?UTF-8?Q?as?= <farosas@suse.de>, Juan Quintela <quintela@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>, qemu-devel@nongnu.org
+Subject: Re: [PATCH] migrate/ram: let ram_save_target_page_legacy() return if
+ qemu file got error
+Content-Language: en-US
+To: =?UTF-8?B?44CQ5aSW6YOo6LSm5Y+344CRIFBldGVyIFh1?= <peterx@redhat.com>
+References: <20ae48e5-006d-4a1b-823e-f2c591ec4fb0@chinatelecom.cn>
+ <87h6p0mqk8.fsf@suse.de> <ZNv6ABLk7EjaX8dD@x1n> <87350klygf.fsf@suse.de>
+ <ZNzhuF7fRUdaGthV@x1n> <87o7j7kohx.fsf@suse.de>
+ <15874e41-fee0-49db-98fc-cf2b545fe7c2@chinatelecom.cn> <ZN4iKgeVeLBSCSK2@x1n>
+From: Guoyi Tu <tugy@chinatelecom.cn>
+In-Reply-To: <ZN4iKgeVeLBSCSK2@x1n>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=182.42.152.55; envelope-from=tugy@chinatelecom.cn;
+ helo=chinatelecom.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -88,42 +73,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Aug 17, 2023 at 6:24=E2=80=AFPM <tugy@chinatelecom.cn> wrote:
->
-> From: Guoyi Tu <tugy@chinatelecom.cn>
->
-> Input handler resource should be released when
-> VDAgentChardev object finalize
->
-> Signed-off-by: Guoyi Tu <tugy@chinatelecom.cn>
-> Signed-off-by: dengpengcheng <dengpc12@chinatelecom.cn>
-
-Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-
-> ---
->  ui/vdagent.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/ui/vdagent.c b/ui/vdagent.c
-> index 4b9a1fb7c5..00d36a8677 100644
-> --- a/ui/vdagent.c
-> +++ b/ui/vdagent.c
-> @@ -926,6 +926,9 @@ static void vdagent_chr_fini(Object *obj)
->
->      migrate_del_blocker(vd->migration_blocker);
->      vdagent_disconnect(vd);
-> +    if (vd->mouse_hs) {
-> +        qemu_input_handler_unregister(vd->mouse_hs);
-> +    }
->      buffer_free(&vd->outbuf);
->      error_free(vd->migration_blocker);
->  }
-> --
-> 2.27.0
->
->
+Thank you for the reminder. There might be some issues with the 
+company's email service. I also noticed this morning that I missed 
+receiving an email in response from Fabiano.
 
 
---=20
-Marc-Andr=C3=A9 Lureau
+On 2023/8/17 21:35, 【外部账号】 Peter Xu wrote:
+> On Thu, Aug 17, 2023 at 10:19:19AM +0800, Guoyi Tu wrote:
+>>
+>>
+>> On 2023/8/16 23:15, 【外部账号】 Fabiano Rosas wrote:
+>>> Peter Xu <peterx@redhat.com> writes:
+>>>
+>>>> On Tue, Aug 15, 2023 at 07:42:24PM -0300, Fabiano Rosas wrote:
+>>>>> Yep, I see that. I meant explicitly move the code into the loop. Feels a
+>>>>> bit weird to check the QEMUFile for errors first thing inside the
+>>>>> function when nothing around it should have touched the QEMUFile.
+>>>>
+>>>> Valid point.  This reminded me that now we have one indirection into
+>>>> ->ram_save_target_page() which is a hook now.  Putting in the caller will
+>>>> work for all hooks, even though they're not yet exist.
+>>>>
+>>>> But since we don't have any other hooks yet, it'll be the same for now
+> 
+> Guoyi,
+> 
+> Your email got cut from here.  Same thing happened on emails from Hyman
+> (also sent from China Telecom email address), maybe your mail system did
+> something wrong.
+> 
 
