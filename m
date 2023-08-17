@@ -2,106 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B51677F995
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 16:47:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E1C877F99B
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 16:48:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWeHS-0003y7-Sn; Thu, 17 Aug 2023 10:47:22 -0400
+	id 1qWeIJ-0004aj-B5; Thu, 17 Aug 2023 10:48:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qWeHP-0003xx-PW
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 10:47:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qWeHN-0007TH-GL
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 10:47:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692283636;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=iJPEmOXdB6zaGbyVlLFE1c9w29qGC4XMPnpGFSd3oi8=;
- b=cIhNWUECG7G9kDHc+xcWDrDBi9stMjZ2gQuec7DnYgKGw+XjOHo9YWTj8z56PKBq5LgA+3
- 2/wYIRWr1B5YO+UiQMigGmLT+UFuI3L26lrUoVyFvcrzaMEw/XtA3Ii1patuoLksPWAAKS
- TtrewUbxTQED6ANX8UYDfzfG+KtpldU=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-16-BlESTmnFP26bzVSFHprsaA-1; Thu, 17 Aug 2023 10:47:14 -0400
-X-MC-Unique: BlESTmnFP26bzVSFHprsaA-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-3fe517ca810so51411545e9.0
- for <qemu-devel@nongnu.org>; Thu, 17 Aug 2023 07:47:14 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
+ id 1qWeIH-0004aC-9P
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 10:48:13 -0400
+Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
+ id 1qWeID-0007ef-T0
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 10:48:12 -0400
+Received: by mail-lj1-x22d.google.com with SMTP id
+ 38308e7fff4ca-2b9a828c920so118658961fa.1
+ for <qemu-devel@nongnu.org>; Thu, 17 Aug 2023 07:48:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1692283687; x=1692888487;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=9tMCZDNY/2Rdc4V8Fh8AK69yoFLkNb9BDzmMBiBj/fo=;
+ b=hnh9h1AMGTN59eCoDGbWb/S6XjKTu5gXcvxpSutSbI8yfhusDv2bGnU/B23bj9l+qR
+ QDSumvhdddC9HKMFZySUpGIwvdc8WHiJaTTKGZLIDIHm9XqFQ3BWSmxSIyzperN46wt2
+ UqXCZlSx66NTtWqZRFfvrJpVGTvTChAD0VeI9UJedWSiqj+0KdBVAPSibZW0KUSQxBwk
+ +wmUXVIzJr7LL4DSu4Y4fNAu1WGZQ/nt9KlzhHBqVb+0l8+WvU8Nol/lclM1wUDcQ9cF
+ iCDJbokyzn1jqOt3Mz0ycsKrDBgfwgUEwSc8Tiu98Acs4/Bvv5YGENfDCiyx2j5PLog9
+ +kvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692283633; x=1692888433;
- h=content-transfer-encoding:in-reply-to:organization:from:references
- :cc:to:content-language:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=iJPEmOXdB6zaGbyVlLFE1c9w29qGC4XMPnpGFSd3oi8=;
- b=dG4aSGHh4l98hnAQN9XZn0/7POwOnSbzM3qHwxFOnfmUW3NOqZY8kQxERiTsAA/wTn
- cyuT5Wxulff03pGToNpHbdf/2iSbm/KrCb1SyXGmvyNCHwyRATSI1l4c2qxExQuwXsr3
- hppULA2OiKwDA6wTs1iao+t6Rk+TEu8pr5Na5qX21z1JpzsW74P76IcpJ0uX6k1gHDxZ
- TBmomzIJVml+tUz+fB3fbKMzslyUGLmR7Vl4l5IpABpkDn6LG0EaEUCHf5V6IG+XKAsR
- Pso9QrMxVR3Y6jY7CbVNP42N/Bl09exF9gMz5hce6fggskEQOcsAOlA9WJk8TZaMvRmd
- kIRw==
-X-Gm-Message-State: AOJu0YwLqOBzjm2pDaYEQRPwokGDY+e6y4Za1JQfjBeMMYl4yQYU7y10
- 9jJ7ktUFrW0BL1VUS1yCtx9TyoqH//wwQnAns3RHyM2Jl+FZm1ecs0V1ydIjxRu1qDjm4HDqv7Q
- 1gbik1pXCE/S0cfo=
-X-Received: by 2002:a05:6000:1b91:b0:311:3fdc:109d with SMTP id
- r17-20020a0560001b9100b003113fdc109dmr3738248wru.1.1692283633171; 
- Thu, 17 Aug 2023 07:47:13 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEoNz8VH9t34xMRfZK9vaGFkH8hck5bUpf4iucWmn7u0TJACg/P+x+aipWfpnr/88UQQur0IQ==
-X-Received: by 2002:a05:6000:1b91:b0:311:3fdc:109d with SMTP id
- r17-20020a0560001b9100b003113fdc109dmr3738221wru.1.1692283632693; 
- Thu, 17 Aug 2023 07:47:12 -0700 (PDT)
-Received: from ?IPV6:2a09:80c0:192:0:5dac:bf3d:c41:c3e7?
- ([2a09:80c0:192:0:5dac:bf3d:c41:c3e7])
- by smtp.gmail.com with ESMTPSA id
- b8-20020a5d45c8000000b0030ae53550f5sm25175825wrs.51.2023.08.17.07.47.11
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 17 Aug 2023 07:47:12 -0700 (PDT)
-Message-ID: <57ddf223-c47e-1b4b-d2f8-fed792b42838@redhat.com>
-Date: Thu, 17 Aug 2023 16:47:11 +0200
+ d=1e100.net; s=20221208; t=1692283687; x=1692888487;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=9tMCZDNY/2Rdc4V8Fh8AK69yoFLkNb9BDzmMBiBj/fo=;
+ b=DosYgpthztLvhV81jE0to/slw/BMcwISatMZmTN1/VxsTScqfilry18G9WSbrjrKkm
+ hWdhY4vmIGjykX8O5+E7joP5n+9fkZ0rLVQj9LjpcbwFQpmlL3aQk7sSTvn5+Pjh3eYM
+ DQzEo7J5h/1+rLcFX/5FnLuFvIz2p61XmJmyNlPn9jw3EhIPxA2Qm5mQphiFEA9aAdM2
+ nYfj0S0BCMK/SOz8KEk45lpHUL5WyR4zvV/Gorx0GYGyaSdVzJii2yrKQgab/ZOCzcGk
+ IYHA9kdSvr3G7Day8OGhXiL0EN7NjXd5bGskHZ6z299AVUaPfmj66bEpUV+Y6Ml4MoW3
+ 8hOg==
+X-Gm-Message-State: AOJu0YyCcJ4pvn6JGBdkn82F4zM7mbOy6rct9JJdGJjo9TbwnI/qC2za
+ iu2r70S5P7CjCn0td6CvpXkCSFNdnfvRIVZrx/0=
+X-Google-Smtp-Source: AGHT+IHYSl1cYwyx4iwzb1M5rdSgzp6iVrK2Z4nwzDG9LgoO6il4UfnErbMw5UIyXawrohHOHjlZd3ohmIU7pQHhSqw=
+X-Received: by 2002:a2e:9247:0:b0:2b9:20fe:4bc4 with SMTP id
+ v7-20020a2e9247000000b002b920fe4bc4mr4117369ljg.40.1692283686758; Thu, 17 Aug
+ 2023 07:48:06 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v1 1/3] softmmu/physmem: fallback to opening guest RAM
- file as readonly in a MAP_PRIVATE mapping
-Content-Language: en-US
-To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>
-Cc: ThinerLogoer <logoerthiner1@163.com>,
- "stefanha@redhat.com" <stefanha@redhat.com>, Peter Xu <peterx@redhat.com>,
- qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-References: <e9c53fbd-369c-2605-1470-e67a765f923b@redhat.com>
- <6152f171.6a4c.189e069baf7.Coremail.logoerthiner1@163.com>
- <ZNVVmxuQAsSEHqZq@x1n>
- <1b4168d2.4182.189e324e0ef.Coremail.logoerthiner1@163.com>
- <08cc9db9-b774-b027-58f5-dd7e6c374657@redhat.com>
- <2b967b3.13b7.189e82ee694.Coremail.logoerthiner1@163.com>
- <06f9a805-8150-8106-7d0a-05d0d2465cd0@redhat.com>
- <c92648e5-e974-48ac-2213-b5926a16ed4d@redhat.com>
- <ZN4wkI679/6j6+b+@redhat.com>
- <5ee05caf-e149-9545-c6c5-abf0fc74097f@redhat.com>
- <ZN4ymrGbwBbLuiq7@redhat.com>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-In-Reply-To: <ZN4ymrGbwBbLuiq7@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -60
-X-Spam_score: -6.1
-X-Spam_bar: ------
-X-Spam_report: (-6.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.021,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-4.01, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+References: <cover.1688743107.git.yin31149@gmail.com>
+ <3482cc50eebd13db4140b8b5dec9d0cc25b20b1b.1688743107.git.yin31149@gmail.com>
+ <CAJaqyWeZxv6Lf8QEAmw_Ge_BGbPJdDvsGNnze4uavqXhPZQChQ@mail.gmail.com>
+ <CAKrof1OwTCbcfTxQ=6B2-iyH2E0Wxt-f+CtkkdBWtiZOPvRNLw@mail.gmail.com>
+ <CAJaqyWcSwPV=AKX+HN19-GOyFRyZtWLraPmn8MyJJVG+UmQ1MA@mail.gmail.com>
+In-Reply-To: <CAJaqyWcSwPV=AKX+HN19-GOyFRyZtWLraPmn8MyJJVG+UmQ1MA@mail.gmail.com>
+From: Hawkins Jiawei <yin31149@gmail.com>
+Date: Thu, 17 Aug 2023 22:47:55 +0800
+Message-ID: <CAKrof1O_TPs_39uK1ve7Gr4H+x=6tAkMow+u34=pBKAzxkgyfA@mail.gmail.com>
+Subject: Re: [PATCH v3 1/7] vdpa: Use iovec for vhost_vdpa_net_load_cmd()
+To: Eugenio Perez Martin <eperezma@redhat.com>
+Cc: jasowang@redhat.com, mst@redhat.com, qemu-devel@nongnu.org, 
+ 18801353760@163.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
+ envelope-from=yin31149@gmail.com; helo=mail-lj1-x22d.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -118,90 +92,182 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 17.08.23 16:45, Daniel P. Berrangé wrote:
-> On Thu, Aug 17, 2023 at 04:37:52PM +0200, David Hildenbrand wrote:
->> On 17.08.23 16:37, Daniel P. Berrangé wrote:
->>> On Thu, Aug 17, 2023 at 04:30:16PM +0200, David Hildenbrand wrote:
+=E5=9C=A8 2023/8/17 22:05, Eugenio Perez Martin =E5=86=99=E9=81=93:
+> On Thu, Aug 17, 2023 at 2:42=E2=80=AFPM Hawkins Jiawei <yin31149@gmail.co=
+m> wrote:
+>>
+>> On 2023/8/17 17:23, Eugenio Perez Martin wrote:
+>>> On Fri, Jul 7, 2023 at 5:27=E2=80=AFPM Hawkins Jiawei <yin31149@gmail.c=
+om> wrote:
 >>>>
->>>>> @Stefan, do you have any concern when we would do 1) ?
->>>>>
->>>>> As far as I can tell, we have to set the nvdimm to "unarmed=on" either way:
->>>>>
->>>>> +   "unarmed" controls the ACPI NFIT NVDIMM Region Mapping Structure "NVDIMM
->>>>> +   State Flags" Bit 3 indicating that the device is "unarmed" and cannot accept
->>>>> +   persistent writes. Linux guest drivers set the device to read-only when this
->>>>> +   bit is present. Set unarmed to on when the memdev has readonly=on.
->>>>>
->>>>> So changing the behavior would not really break the nvdimm use case.
+>>>> According to VirtIO standard, "The driver MUST follow
+>>>> the VIRTIO_NET_CTRL_MAC_TABLE_SET command by a le32 number,
+>>>> followed by that number of non-multicast MAC addresses,
+>>>> followed by another le32 number, followed by that number
+>>>> of multicast addresses."
 >>>>
->>>> Looking into the details, this seems to be the right thing to do.
+>>>> Considering that these data is not stored in contiguous memory,
+>>>> this patch refactors vhost_vdpa_net_load_cmd() to accept
+>>>> scattered data, eliminating the need for an addtional data copy or
+>>>> packing the data into s->cvq_cmd_out_buffer outside of
+>>>> vhost_vdpa_net_load_cmd().
 >>>>
->>>> This is what I have now as patch description, that also highlights how libvirt
->>>> doesn't even make use of readonly=true.
+>>>> Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
+>>>> ---
+>>>> v3:
+>>>>     - rename argument name to `data_sg` and `data_num`
+>>>>     - use iov_to_buf() suggested by Eugenio
 >>>>
+>>>> v2: https://lore.kernel.org/all/6d3dc0fc076564a03501e222ef1102a6a7a643=
+af.1688051252.git.yin31149@gmail.com/
+>>>>     - refactor vhost_vdpa_load_cmd() to accept iovec suggested by
+>>>> Eugenio
 >>>>
->>>>   From 42f272ace68e0cd660a8448adb5aefb3b9dd7005 Mon Sep 17 00:00:00 2001
->>>> From: David Hildenbrand <david@redhat.com>
->>>> Date: Thu, 17 Aug 2023 12:09:07 +0200
->>>> Subject: [PATCH v2 2/4] backends/hostmem-file: Make share=off,readonly=on
->>>>    result in RAM instead of ROM
+>>>>    net/vhost-vdpa.c | 33 +++++++++++++++++++++++++--------
+>>>>    1 file changed, 25 insertions(+), 8 deletions(-)
 >>>>
->>>> For now, "share=off,readonly=on" would always result in us opening the
->>>> file R/O and mmap'ing the opened file MAP_PRIVATE R/O -- effectively
->>>> turning it into ROM.
+>>>> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+>>>> index 373609216f..31ef6ad6ec 100644
+>>>> --- a/net/vhost-vdpa.c
+>>>> +++ b/net/vhost-vdpa.c
+>>>> @@ -620,29 +620,38 @@ static ssize_t vhost_vdpa_net_cvq_add(VhostVDPAS=
+tate *s, size_t out_len,
+>>>>    }
 >>>>
->>>> As documented, readonly only specifies that we want to open the file R/O:
+>>>>    static ssize_t vhost_vdpa_net_load_cmd(VhostVDPAState *s, uint8_t c=
+lass,
+>>>> -                                       uint8_t cmd, const void *data,
+>>>> -                                       size_t data_size)
+>>>> +                                       uint8_t cmd, const struct iove=
+c *data_sg,
+>>>> +                                       size_t data_num)
+>>>>    {
+>>>>        const struct virtio_net_ctrl_hdr ctrl =3D {
+>>>>            .class =3D class,
+>>>>            .cmd =3D cmd,
+>>>>        };
+>>>> +    size_t data_size =3D iov_size(data_sg, data_num);
 >>>>
->>>>       @readonly: if true, the backing file is opened read-only; if false,
->>>>           it is opened read-write.  (default: false)
+>>>>        assert(data_size < vhost_vdpa_net_cvq_cmd_page_len() - sizeof(c=
+trl));
 >>>>
->>>> Especially for VM templating, "share=off" is a common use case. However,
->>>> that use case is impossible with files that lack write permissions,
->>>> because "share=off,readonly=off" will fail opening the file, and
->>>> "share=off,readonly=on" will give us ROM instead of RAM.
+>>>> +    /* pack the CVQ command header */
+>>>>        memcpy(s->cvq_cmd_out_buffer, &ctrl, sizeof(ctrl));
+>>>> -    memcpy(s->cvq_cmd_out_buffer + sizeof(ctrl), data, data_size);
 >>>>
->>>> With MAP_PRIVATE we can easily open the file R/O and mmap it R/W, to
->>>> turn it into COW RAM: private changes don't affect the file after all and
->>>> don't require write permissions.
->>>>
->>>> This implies that we only get ROM now via "share=on,readonly=on".
->>>> "share=off,readonly=on" will give us RAM.
->>>>
->>>> The sole user of ROM via memory-backend-file are R/O NVDIMMs. They
->>>> also require "unarmed=on" to be set for the nvdimm device.
->>>>
->>>> With this change, R/O NVDIMMs will continue working even if
->>>> "share=off,readonly=on" was specified similar to when simply
->>>> providing ordinary RAM to the nvdimm device and setting "unarmed=on".
->>>>
->>>> Note that libvirt seems to default for a "readonly" nvdimm to
->>>> * -object memory-backend-file,share=off (implying readonly=off)
->>>> * -device nvdimm,unarmed=on
->>>> And never seems to even set "readonly=on" for memory-backend-file. So
->>>> this change won't affect libvirt, they already always get COW RAM -- not
->>>> modifying the underlying file but opening it R/O.
->>>>
->>>> If someone really wants ROM, they can just use "share=on,readonly=on".
->>>> After all, there is not relevant difference between a R/O MAP_SHARED
->>>> file mapping and a R/O MAP_PRIVATE file mapping.
->>>>
->>>> Signed-off-by: David Hildenbrand <david@redhat.com>
+>>>> -    return vhost_vdpa_net_cvq_add(s, sizeof(ctrl) + data_size,
+>>>> +    /* pack the CVQ command command-specific-data */
+>>>> +    iov_to_buf(data_sg, data_num, 0,
+>>>> +               s->cvq_cmd_out_buffer + sizeof(ctrl), data_size);
+>>>> +
+>>>> +    return vhost_vdpa_net_cvq_add(s, data_size + sizeof(ctrl),
 >>>
->>> This still leaves the patch having a warn_report() which I think is
->>> undesirable to emit in a valid / supported use case.
+>>> Nit, any reason for changing the order of the addends? sizeof(ctrl) +
+>>> data_size ?
 >>
->> No warning.
+>> Hi Eugenio,
 >>
->> Please elaborate on "valid/supported use case".
-> 
-> The usage scenario that this patch aims to enable. IIUC, it will follow
-> the codepath that leads to the warn_report() call in this patch.
+>> Here the code should be changed to `sizeof(ctrl) + data_size` as you
+>> point out.
+>>
+>> Since this patch series has already been merged into master, I will
+>> submit a separate patch to correct this problem.
+>>
+>
+> Ouch, I didn't realize that. No need to make it back again, I was just
+> trying to reduce lines changed.
 
-It shouldn't but I will double check!
+Ok, I got it. Regardless, thank you for your review!
 
--- 
-Cheers,
 
-David / dhildenb
-
+>
+>>>
+>>>>                                      sizeof(virtio_net_ctrl_ack));
+>>>>    }
+>>>>
+>>>>    static int vhost_vdpa_net_load_mac(VhostVDPAState *s, const VirtION=
+et *n)
+>>>>    {
+>>>>        if (virtio_vdev_has_feature(&n->parent_obj, VIRTIO_NET_F_CTRL_M=
+AC_ADDR)) {
+>>>> +        const struct iovec data =3D {
+>>>> +            .iov_base =3D (void *)n->mac,
+>>>
+>>> Assign to void should always be valid, no need for casting here.
+>>
+>> Yes, assign to void should be valid for normal pointers.
+>>
+>> However, `n->mac` is an array and is treated as a const pointer. It will
+>> trigger the warning "error: initialization discards =E2=80=98const=E2=80=
+=99 qualifier
+>> from pointer target type" if we don't add this cast.
+>>
+>
+> Got it, I didn't realize it. Everything is ok then.
+>
+> Thanks!
+>
+>> Thanks!
+>>
+>>
+>>>
+>>>> +            .iov_len =3D sizeof(n->mac),
+>>>> +        };
+>>>>            ssize_t dev_written =3D vhost_vdpa_net_load_cmd(s, VIRTIO_N=
+ET_CTRL_MAC,
+>>>>                                                      VIRTIO_NET_CTRL_M=
+AC_ADDR_SET,
+>>>> -                                                  n->mac, sizeof(n->m=
+ac));
+>>>> +                                                  &data, 1);
+>>>>            if (unlikely(dev_written < 0)) {
+>>>>                return dev_written;
+>>>>            }
+>>>> @@ -665,9 +674,13 @@ static int vhost_vdpa_net_load_mq(VhostVDPAState =
+*s,
+>>>>        }
+>>>>
+>>>>        mq.virtqueue_pairs =3D cpu_to_le16(n->curr_queue_pairs);
+>>>> +    const struct iovec data =3D {
+>>>> +        .iov_base =3D &mq,
+>>>> +        .iov_len =3D sizeof(mq),
+>>>> +    };
+>>>>        dev_written =3D vhost_vdpa_net_load_cmd(s, VIRTIO_NET_CTRL_MQ,
+>>>> -                                          VIRTIO_NET_CTRL_MQ_VQ_PAIRS=
+_SET, &mq,
+>>>> -                                          sizeof(mq));
+>>>> +                                          VIRTIO_NET_CTRL_MQ_VQ_PAIRS=
+_SET,
+>>>> +                                          &data, 1);
+>>>>        if (unlikely(dev_written < 0)) {
+>>>>            return dev_written;
+>>>>        }
+>>>> @@ -706,9 +719,13 @@ static int vhost_vdpa_net_load_offloads(VhostVDPA=
+State *s,
+>>>>        }
+>>>>
+>>>>        offloads =3D cpu_to_le64(n->curr_guest_offloads);
+>>>> +    const struct iovec data =3D {
+>>>> +        .iov_base =3D &offloads,
+>>>> +        .iov_len =3D sizeof(offloads),
+>>>> +    };
+>>>>        dev_written =3D vhost_vdpa_net_load_cmd(s, VIRTIO_NET_CTRL_GUES=
+T_OFFLOADS,
+>>>>                                              VIRTIO_NET_CTRL_GUEST_OFF=
+LOADS_SET,
+>>>> -                                          &offloads, sizeof(offloads)=
+);
+>>>> +                                          &data, 1);
+>>>>        if (unlikely(dev_written < 0)) {
+>>>>            return dev_written;
+>>>>        }
+>>>
+>>> Apart from that:
+>>>
+>>> Acked-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
+>>>
+>>> Thanks!
+>>>
+>>
+>
 
