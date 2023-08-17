@@ -2,71 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11F3D77F80E
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 15:47:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A96A77F80F
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 15:48:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWdLg-0001ns-V8; Thu, 17 Aug 2023 09:47:42 -0400
+	id 1qWdLm-00021h-OQ; Thu, 17 Aug 2023 09:47:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qWdL8-0001mx-8v
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 09:47:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
+ id 1qWdLX-0001uP-Mq
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 09:47:35 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qWdL3-0003Jj-8K
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 09:47:04 -0400
+ (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
+ id 1qWdLT-0003O8-66
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 09:47:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1692280020;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=uIEGijxT2vcM6takindhGvdw2ATVkiUSRO3aOsQKUIY=;
- b=N0x2tkxn60QgVaKFvt6J1cC26EPiz3Zjaqvg2GR6pRCXHNAEhcJmcnUEiSfSh56L0gcNUG
- DYWTc9OZbYTYBFJ1Pvw8GzYlR39m5DBvEsqP5Ate9UKDz778K5Vrv4k/DVHr/jon7gsoUV
- iqpm1tl4dFqxHDTDcZ+cSJLtXbAw71k=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-586-lGxgjeI5PuORKTf69XCK4g-1; Thu, 17 Aug 2023 09:46:59 -0400
-X-MC-Unique: lGxgjeI5PuORKTf69XCK4g-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 047623C0DDAA;
- Thu, 17 Aug 2023 13:46:59 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.120])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 0B3432026D68;
- Thu, 17 Aug 2023 13:46:57 +0000 (UTC)
-Date: Thu, 17 Aug 2023 14:46:56 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: ThinerLogoer <logoerthiner1@163.com>, Peter Xu <peterx@redhat.com>,
- qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: Re: [PATCH v1 1/3] softmmu/physmem: fallback to opening guest RAM
- file as readonly in a MAP_PRIVATE mapping
-Message-ID: <ZN4k0GzWXo+ufSMW@redhat.com>
-References: <20230807190736.572665-1-david@redhat.com>
- <20230807190736.572665-2-david@redhat.com> <ZNKtHVotkfgI1tb4@x1n>
- <1d1a7d8f-6260-5905-57ea-514b762ce869@redhat.com>
- <ZNOti1OKN79t68jP@x1n>
- <e9c53fbd-369c-2605-1470-e67a765f923b@redhat.com>
- <6152f171.6a4c.189e069baf7.Coremail.logoerthiner1@163.com>
- <ZNVVmxuQAsSEHqZq@x1n>
- <1b4168d2.4182.189e324e0ef.Coremail.logoerthiner1@163.com>
- <08cc9db9-b774-b027-58f5-dd7e6c374657@redhat.com>
+ s=mimecast20190719; t=1692280045;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=UCXbO8fuv67kKHW2N4r2VmGJFrf4wlMWzcyUKp7sKOE=;
+ b=WRL7xBoHT4QG/iJb1DLKOba15xWqsiLj442QqwV9iBKk1cGW8DKzRUiDJUbZxnGyQI6uMH
+ EG5hkaFInC8HwlfvXmOzjBwDOq5V1WMM+dS61tRBkMjnPGG7TQqhOzPs5M84QO1CjRn7ay
+ Ff0usXq1tmEqdU84ShTcdjx/DWGGgpc=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-345-6X88qH-0NOq1IMCW5C-UsA-1; Thu, 17 Aug 2023 09:47:24 -0400
+X-MC-Unique: 6X88qH-0NOq1IMCW5C-UsA-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-99beea69484so441554866b.0
+ for <qemu-devel@nongnu.org>; Thu, 17 Aug 2023 06:47:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1692280041; x=1692884841;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=UCXbO8fuv67kKHW2N4r2VmGJFrf4wlMWzcyUKp7sKOE=;
+ b=Gh3J8TMnaeBtVh6lkuvaBK4S7oLldYJTwNB94LUXmEbcX4j0zFNvP8pxOcWmHwDxCB
+ Ue5dBxOSCVuSSalaIrueJCm6QyoO3rkCu6380B3kPjVU1E8UtCRT+mGTEm+ijGc/bYJU
+ d2IMwDK+V5kk6GJ9+nFz6AKx3GsR2uBd/qbgzW46VgikT3c85T/SSHBcLXyTgo8Qit+K
+ 0IbSvhCKWKHeKffml3oh3VHGuWqeFxFH0liylQr8njJheXiuerq1SZbqohdxukgD8Z3W
+ wnivMHY7P6ZZxPP8qJBs4S7ZJrNymN+h/VhRQPYxfgQpSNXvco5RgFr6wc4c4YxCFcoY
+ YLfw==
+X-Gm-Message-State: AOJu0YzOpPOrD47J5V80/amerUBcik48m8HYM4JL2abjAhjT67O9mL3d
+ brlFSX9Mf7utgi7zIJWtLdjgKmbBfoJlFiEzo7mTCi892sy7cnxiVHtn+0TuyLwceVpnFJcCWgq
+ iC7GfCzyrabY8ao6nOCkvOYAAtypnUgI=
+X-Received: by 2002:a17:907:1df2:b0:99d:fc31:242f with SMTP id
+ og50-20020a1709071df200b0099dfc31242fmr2840394ejc.66.1692280040978; 
+ Thu, 17 Aug 2023 06:47:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFwIl8tPHcoAthrOXNDbAB2tXASOW+3dpZUzKyO036H5WprrF52HMzDkCg0Q04otydvzAMM1PBZs32lDaKB+Nk=
+X-Received: by 2002:a17:907:1df2:b0:99d:fc31:242f with SMTP id
+ og50-20020a1709071df200b0099dfc31242fmr2840373ejc.66.1692280040648; Thu, 17
+ Aug 2023 06:47:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <08cc9db9-b774-b027-58f5-dd7e6c374657@redhat.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+References: <20230816210743.1319018-1-thuth@redhat.com>
+ <ZN33W+LhAn2FrFDT@redhat.com>
+ <2bb2f8ac-43b4-9505-c163-d29964bf6a30@redhat.com>
+ <ZN4bTLsw1bwLBEEz@redhat.com>
+In-Reply-To: <ZN4bTLsw1bwLBEEz@redhat.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
+Date: Thu, 17 Aug 2023 17:47:09 +0400
+Message-ID: <CAMxuvazrSy0Fi1rwj21RWmSWVPXDrFrcZ6266-EHcvgxTzFfeg@mail.gmail.com>
+Subject: Re: [PATCH] chardev/char-pty: Avoid losing bytes when the other side
+ just (re-)connected
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org, 
+ Paolo Bonzini <pbonzini@redhat.com>, Marc Hartmayer <mhartmay@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mlureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -87,68 +95,135 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Aug 11, 2023 at 09:00:54PM +0200, David Hildenbrand wrote:
-> On 11.08.23 07:49, ThinerLogoer wrote:
-> > At 2023-08-11 05:24:43, "Peter Xu" <peterx@redhat.com> wrote:
-> > > On Fri, Aug 11, 2023 at 01:06:12AM +0800, ThinerLogoer wrote:
-> > > > > I think we have the following options (there might be more)
-> > > > > 
-> > > > > 1) This patch.
-> > > > > 
-> > > > > 2) New flag for memory-backend-file. We already have "readonly" and
-> > > > > "share=". I'm having a hard time coming up with a good name that really
-> > > > > describes the subtle difference.
-> > > > > 
-> > > > > 3) Glue behavior to the QEMU machine
-> > > > > 
-> > > > 
-> > > > 4) '-deny-private-discard' argv, or environment variable, or both
-> > > 
-> > > I'd personally vote for (2).  How about "fdperm"?  To describe when we want
-> > > to use different rw permissions on the file (besides the access permission
-> > > of the memory we already provided with "readonly"=XXX).  IIUC the only sane
-> > > value will be ro/rw/default, where "default" should just use the same rw
-> > > permission as the memory ("readonly"=XXX).
-> > > 
-> > > Would that be relatively clean and also work in this use case?
-> > > 
-> > > (the other thing I'd wish we don't have that fallback is, as long as we
-> > > have any of that "fallback" we'll need to be compatible with it since
-> > > then, and for ever...)
-> > 
-> > If it must be (2), I would vote (2) + (4), with (4) adjust the default behavior of said `fdperm`.
-> > Mainly because (private+discard) is itself not a good practice and (4) serves
-> > as a good tool to help catch existing (private+discard) problems.
-> 
-> Instead of fdperm, maybe we could find a better name.
-> 
-> The man page of "open" says: The argument flags must include one of the
-> following access modes: O_RDONLY, O_WRONLY, or O_RDWR.  These request
-> opening the file read-only, write-only, or read/write, respectively.
-> 
-> So maybe something a bit more mouthful like "file-access-mode" would be
-> better.
+Hi
 
-I don't think we should directly express the config in terms
-of file-access-mode, as that's a low level impl detail. The
-required file access mode is an artifact of the higher level
-goal, or whether the RAM should be process private vs shared,
-and whether we want QEMU to be able to create the backing
-file or use pre-create one.
+On Thu, Aug 17, 2023 at 5:06=E2=80=AFPM Daniel P. Berrang=C3=A9 <berrange@r=
+edhat.com> wrote:
+>
+> On Thu, Aug 17, 2023 at 02:00:26PM +0200, Thomas Huth wrote:
+> > On 17/08/2023 12.32, Daniel P. Berrang=C3=A9 wrote:
+> > > On Wed, Aug 16, 2023 at 11:07:43PM +0200, Thomas Huth wrote:
+> > > > When starting a guest via libvirt with "virsh start --console ...",
+> > > > the first second of the console output is missing. This is especial=
+ly
+> > > > annoying on s390x that only has a text console by default and no gr=
+aphical
+> > > > output - if the bios fails to boot here, the information about what=
+ went
+> > > > wrong is completely lost.
+> > > >
+> > > > One part of the problem (there is also some things to be done on th=
+e
+> > > > libvirt side) is that QEMU only checks with a 1 second timer whethe=
+r
+> > > > the other side of the pty is already connected, so the first second=
+ of
+> > > > the console output is always lost.
+> > > >
+> > > > This likely used to work better in the past, since the code once ch=
+ecked
+> > > > for a re-connection during write, but this has been removed in comm=
+it
+> > > > f8278c7d74 ("char-pty: remove the check for connection on write") t=
+o avoid
+> > > > some locking.
+> > > >
+> > > > To ease the situation here at least a little bit, let's check with =
+g_poll()
+> > > > whether we could send out the data anyway, even if the connection h=
+as not
+> > > > been marked as "connected" yet. The file descriptor is marked as no=
+n-blocking
+> > > > anyway since commit fac6688a18 ("Do not hang on full PTY"), so this=
+ should
+> > > > not cause any trouble if the other side is not ready for receiving =
+yet.
+> > > >
+> > > > With this patch applied, I can now successfully see the bios output=
+ of
+> > > > a s390x guest when running it with "virsh start --console" (with a =
+patched
+> > > > version of virsh that fixes the remaining issues there, too).
+> > > >
+> > > > Reported-by: Marc Hartmayer <mhartmay@linux.ibm.com>
+> > > > Signed-off-by: Thomas Huth <thuth@redhat.com>
+> > > > ---
+> > > >   chardev/char-pty.c | 22 +++++++++++++++++++---
+> > > >   1 file changed, 19 insertions(+), 3 deletions(-)
+> > > >
+> > > > diff --git a/chardev/char-pty.c b/chardev/char-pty.c
+> > > > index 4e5deac18a..fad12dfef3 100644
+> > > > --- a/chardev/char-pty.c
+> > > > +++ b/chardev/char-pty.c
+> > > > @@ -106,11 +106,27 @@ static void pty_chr_update_read_handler(Chard=
+ev *chr)
+> > > >   static int char_pty_chr_write(Chardev *chr, const uint8_t *buf, i=
+nt len)
+> > > >   {
+> > > >       PtyChardev *s =3D PTY_CHARDEV(chr);
+> > > > +    GPollFD pfd;
+> > > > +    int rc;
+> > > > -    if (!s->connected) {
+> > > > -        return len;
+> > > > +    if (s->connected) {
+> > > > +        return io_channel_send(s->ioc, buf, len);
+> > > >       }
+> > > > -    return io_channel_send(s->ioc, buf, len);
+> > > > +
+> > > > +    /*
+> > > > +     * The other side might already be re-connected, but the timer=
+ might
+> > > > +     * not have fired yet. So let's check here whether we can writ=
+e again:
+> > > > +     */
+> > > > +    pfd.fd =3D QIO_CHANNEL_FILE(s->ioc)->fd;
+> > > > +    pfd.events =3D G_IO_OUT;
+> > > > +    pfd.revents =3D 0;
+> > > > +    rc =3D RETRY_ON_EINTR(g_poll(&pfd, 1, 0));
+> > > > +    g_assert(rc >=3D 0);
+> > > > +    if (!(pfd.revents & G_IO_HUP) && (pfd.revents & G_IO_OUT)) {
+> > >
+> > > Should (can?) we call
+> > >
+> > >     pty_chr_state(chr, 1);
+> > >
+> > > here ?
+> >
+> > As far as I understood commit f8278c7d74c6 and f7ea2038bea04628, this i=
+s not
+> > possible anymore since the lock has been removed.
+> >
+> > > > +        io_channel_send(s->ioc, buf, len);
+> > >
+> > > As it feels a little dirty to be sending data before setting the
+> > > 'connected =3D=3D 1' and thus issuing the 'CHR_EVENT_OPENED' event
+> >
+> > I didn't find a really better solution so far. We could maybe introduce=
+ a
+> > buffer in the char-pty code and store the last second of guest output, =
+but
+> > IMHO that's way more complex and thus somewhat ugly, too?
+>
+> The orignal commit f8278c7d74c6 said
+>
+> [quote]
+>     char-pty: remove the check for connection on write
+>
+>     This doesn't help much compared to the 1 second poll PTY
+>     timer. I can't think of a use case where this would help.
+> [/quote]
+>
+> We've now identified a use case where it is actually important.
+>
+> IOW, there's a justification to revert both f7ea2038bea04628 and
+> f8278c7d74c6, re-adding the locking and write update logic.
 
-IOW, we should express whether or not we want QEMU to try to
-pre-create the file or not.
+Indeed. But isn't it possible to watch for IO_OUT and get rid of the timer?
 
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Other thing I question is whether the serial shouldn't return BUSY if
+the chardev is disconnected..
 
 
