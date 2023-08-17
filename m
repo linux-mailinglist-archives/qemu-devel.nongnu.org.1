@@ -2,84 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A40C7800CA
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 00:07:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6792C7801DB
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 01:45:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWl99-00061O-FQ; Thu, 17 Aug 2023 18:07:15 -0400
+	id 1qWmeP-00082v-HY; Thu, 17 Aug 2023 19:43:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qWl98-00061F-4d
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 18:07:14 -0400
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+ (Exim 4.90_1) (envelope-from <gurchetansingh@chromium.org>)
+ id 1qWmeM-00082X-WB
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 19:43:35 -0400
+Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qWl95-0001KK-VD
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 18:07:13 -0400
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-688731c6331so237175b3a.3
- for <qemu-devel@nongnu.org>; Thu, 17 Aug 2023 15:07:11 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <gurchetansingh@chromium.org>)
+ id 1qWmeK-0002ER-5d
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 19:43:34 -0400
+Received: by mail-pf1-x42e.google.com with SMTP id
+ d2e1a72fcca58-6889656eb58so307640b3a.1
+ for <qemu-devel@nongnu.org>; Thu, 17 Aug 2023 16:43:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692310030; x=1692914830;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=DpHjtD9XhRUph5algCgZ01moMgZhHyOWLIRi693JPqA=;
- b=xuT04NlONjsuem3RnZC9z/f9C3x2PsnMQi5QEKjCHfDB+o7/pmjZxbcSjQC58/c8yq
- tSSBit140wh02GZXfDh19pjgkvqYqfzS+XbrVdCg+w56ejQDzgIcIrduoIxGhzzf2Ppn
- TVB/f1oMclmnzYo6lICdQ2xIaQGpsS7twhxKRboMWhxP4oLEzEm7dwEBgVdtF1ulecku
- 1aCCKuWBxXi02i6/IsO6i9NaUkX9Dx2SxjHUI7pe2RGEdsfUaJWnA+cJMqa1nko+OZq1
- lzniWQJHTg0935hqyZprx3ZXzhL1Vl2NcfbjpjJwWuWiRQwAsA4Hdh6O2adwxj8vdh0d
- qp1w==
+ d=chromium.org; s=google; t=1692315810; x=1692920610;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=wgoJ3F7Hr4z03GmXJaxJvEOZ1Wzt60NuVtaAQrIl/4o=;
+ b=LqrETCw+1sATHfSwOIHblPJnYKA3+uPtDLoE4pu7GRE6Hf+kqYkukoVnDEWLD/vq+K
+ 87jZmrZb4ib1ww1YDuuldbwDPaifY17WhFsd+vI1A35+RdtAdxwucRMVbOfyHrMClYH1
+ 9ud22LuC1Dj6wA2wk036wgBJo7Uq8qR1Bd+ak=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692310030; x=1692914830;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=DpHjtD9XhRUph5algCgZ01moMgZhHyOWLIRi693JPqA=;
- b=jFhyLp/1KC7qANkcJq+vj6eihIFw5LNNFbqeghQ8iXAYiLJPLAKJJJ2Y/A/r9nQA0A
- XffIMT87YIgiOwScwBTLEqMVmgzpbR0Fi7vzK2VEq0LnpzJ3VZnTCG1zm6BcjHClGgUp
- NcwD091xVx9Xoa2qxnYMNueGObB9i6LW4YYt0hEdlWvWq1J6N9P7c86ayIpz298ILhU7
- KZeCK6ApbNkVKdFjZth2APxmS++9O1wQhOgn9W9RDUEsH8KdQoC5JH6gHT5NPJmV7HmH
- fX3JvgcF3MVV8jFj7KvXQdww3NEW5CWwcvo+uQm9FIo/MEP4BiDmW1JbXrJlP69cOT0c
- tkDA==
-X-Gm-Message-State: AOJu0Ywvm3oSPCAJIMqOtS6osn5Pdnny/YVOWPJ7dyTw9ADBl5PsEMeI
- 5+YHLpJc1jNT0alHXN2vg7Q/iQ==
-X-Google-Smtp-Source: AGHT+IE8uooTpCb1xnLBeS50sgZVrj+vgQwqwlY+s5ie/jSYB6I6q0ow0hQeqctZuEnLJSjFUhGQEw==
-X-Received: by 2002:aa7:888f:0:b0:688:4337:3c55 with SMTP id
- z15-20020aa7888f000000b0068843373c55mr947516pfe.6.1692310030518; 
- Thu, 17 Aug 2023 15:07:10 -0700 (PDT)
-Received: from ?IPV6:2602:47:d483:7301:12cd:355a:c01e:3596?
- ([2602:47:d483:7301:12cd:355a:c01e:3596])
+ d=1e100.net; s=20221208; t=1692315810; x=1692920610;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=wgoJ3F7Hr4z03GmXJaxJvEOZ1Wzt60NuVtaAQrIl/4o=;
+ b=VcbDVvJQkDbDM377z6gXvM3XZ81C671KEz6mnOIUL2KQu0VY5xKtC1tR6HGerdNFPn
+ omWDFojvRxqqxtBoMLHsy9B/gMv3hyQHOatw5SeVw2i/k/nYVZCm4uTgrqpXPMmvbHOb
+ Te6hdWqRe9yGFP790NXwP5ApK2hJHotkRZvJWqnQKn2iw4TBZHF/lM7mQKc4T+gLvyzc
+ U9Y+FKnoGuEhJm5ZCAcKS9MXwGN16Xp8iTuyAc6xuWthpq85KRxXkp1+f9bPmC9mK0ZK
+ AxVY2W7FEY+mMBiGvTMDooWtmLxj+vvrEVgGmulY465gl+V9zBpJYZZCK4lW1ZtZM06k
+ yHvA==
+X-Gm-Message-State: AOJu0YyzRPFPL9wTv+GlV6syR5q/aSf+wMj+BVjXPKzYqUpZJ/zqm+cY
+ ntiaW1ZNWXa5gduG6yVdlJz3XD6XbfG99xKcOS8=
+X-Google-Smtp-Source: AGHT+IGIlHP5p0L8SgtjjaabzZACrUIdjrIeLUPaAX8wftnxknudW0mubYno/mDbPqbciPOuEGoPTw==
+X-Received: by 2002:a05:6a20:ceaf:b0:139:8517:10b6 with SMTP id
+ if47-20020a056a20ceaf00b00139851710b6mr1234522pzb.30.1692315809463; 
+ Thu, 17 Aug 2023 16:43:29 -0700 (PDT)
+Received: from gurchetansingh0.mtv.corp.google.com
+ ([2620:15c:a7:2:735c:93e7:9690:c9bf])
  by smtp.gmail.com with ESMTPSA id
- m11-20020aa78a0b000000b00659b8313d08sm236113pfa.78.2023.08.17.15.07.09
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 17 Aug 2023 15:07:10 -0700 (PDT)
-Message-ID: <c03f11e3-847c-a792-51e0-16679485b43e@linaro.org>
-Date: Thu, 17 Aug 2023 15:07:08 -0700
+ i1-20020a17090332c100b001bbf7fd354csm315934plr.213.2023.08.17.16.43.28
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 17 Aug 2023 16:43:29 -0700 (PDT)
+From: Gurchetan Singh <gurchetansingh@chromium.org>
+To: qemu-devel@nongnu.org
+Subject: [PATCH v8 9/9] docs/system: add basic virtio-gpu documentation
+Date: Thu, 17 Aug 2023 16:43:26 -0700
+Message-Id: <20230817234326.640-1-gurchetansingh@chromium.org>
+X-Mailer: git-send-email 2.31.0
+In-Reply-To: <1281e8f6-f91a-4ced-b5d1-773370db3eef@gmail.com>
+References: <1281e8f6-f91a-4ced-b5d1-773370db3eef@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 2/3] tcg: Fold deposit with zero to and
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org
-References: <20230816145547.477974-1-richard.henderson@linaro.org>
- <20230816145547.477974-3-richard.henderson@linaro.org>
- <CAFEAcA9WUcJzrfQXnjM0Jw8CjaY6BW9hAKWGDRrMVU3BR2u6Vw@mail.gmail.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <CAFEAcA9WUcJzrfQXnjM0Jw8CjaY6BW9hAKWGDRrMVU3BR2u6Vw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
-X-Spam_score_int: -60
-X-Spam_score: -6.1
-X-Spam_bar: ------
-X-Spam_report: (-6.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-4.01,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
+ envelope-from=gurchetansingh@chromium.org; helo=mail-pf1-x42e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.021,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -97,18 +88,166 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/17/23 08:50, Peter Maydell wrote:
->> +    if (arg_is_const(op->args[1])
->> +        && arg_info(op->args[1])->val == 0
->> +        && op->args[3] == 0) {
->> +        uint64_t mask = MAKE_64BIT_MASK(0, op->args[4]);
-> 
-> The docs for the TCG deposit op don't say what the restrictions on the
-> immediate args are, but this will be UB for QEMU if args[4] is 0.
-> Have we already sanitized those somewhere?
+This adds basic documentation for virtio-gpu.
 
-tcg_gen_deposit_{i32,i64} do so.
+Suggested-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Signed-off-by: Gurchetan Singh <gurchetansingh@chromium.org>
+Tested-by: Alyssa Ross <hi@alyssa.is>
+Tested-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
+Reviewed-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 
+v2: - Incorporated suggestions by Akihiko Odaki
+    - Listed the currently supported capset_names (Bernard)
 
-r~
+v3: - Incorporated suggestions by Akihiko Odaki and Alyssa Ross
+
+v4: - Incorporated suggestions by Akihiko Odaki
+
+v5: - Removed pci suffix from examples
+    - Verified that -device virtio-gpu-rutabaga works.  Strangely
+      enough, I don't remember changing anything, and I remember
+      it not working.  I did rebase to top of tree though.
+    - Fixed meson examples in crosvm docs
+
+v8: - Remove different links for "rutabaga_gfx" and
+      "gfxstream-enabled rutabaga" (Akihiko)
+---
+ docs/system/device-emulation.rst   |   1 +
+ docs/system/devices/virtio-gpu.rst | 112 +++++++++++++++++++++++++++++
+ 2 files changed, 113 insertions(+)
+ create mode 100644 docs/system/devices/virtio-gpu.rst
+
+diff --git a/docs/system/device-emulation.rst b/docs/system/device-emulation.rst
+index 4491c4cbf7..1167f3a9f2 100644
+--- a/docs/system/device-emulation.rst
++++ b/docs/system/device-emulation.rst
+@@ -91,6 +91,7 @@ Emulated Devices
+    devices/nvme.rst
+    devices/usb.rst
+    devices/vhost-user.rst
++   devices/virtio-gpu.rst
+    devices/virtio-pmem.rst
+    devices/vhost-user-rng.rst
+    devices/canokey.rst
+diff --git a/docs/system/devices/virtio-gpu.rst b/docs/system/devices/virtio-gpu.rst
+new file mode 100644
+index 0000000000..2b3eb536f9
+--- /dev/null
++++ b/docs/system/devices/virtio-gpu.rst
+@@ -0,0 +1,112 @@
++..
++   SPDX-License-Identifier: GPL-2.0
++
++virtio-gpu
++==========
++
++This document explains the setup and usage of the virtio-gpu device.
++The virtio-gpu device paravirtualizes the GPU and display controller.
++
++Linux kernel support
++--------------------
++
++virtio-gpu requires a guest Linux kernel built with the
++``CONFIG_DRM_VIRTIO_GPU`` option.
++
++QEMU virtio-gpu variants
++------------------------
++
++QEMU virtio-gpu device variants come in the following form:
++
++ * ``virtio-vga[-BACKEND]``
++ * ``virtio-gpu[-BACKEND][-INTERFACE]``
++ * ``vhost-user-vga``
++ * ``vhost-user-pci``
++
++**Backends:** QEMU provides a 2D virtio-gpu backend, and two accelerated
++backends: virglrenderer ('gl' device label) and rutabaga_gfx ('rutabaga'
++device label).  There is a vhost-user backend that runs the graphics stack
++in a separate process for improved isolation.
++
++**Interfaces:** QEMU further categorizes virtio-gpu device variants based
++on the interface exposed to the guest. The interfaces can be classified
++into VGA and non-VGA variants. The VGA ones are prefixed with virtio-vga
++or vhost-user-vga while the non-VGA ones are prefixed with virtio-gpu or
++vhost-user-gpu.
++
++The VGA ones always use the PCI interface, but for the non-VGA ones, the
++user can further pick between MMIO or PCI. For MMIO, the user can suffix
++the device name with -device, though vhost-user-gpu does not support MMIO.
++For PCI, the user can suffix it with -pci. Without these suffixes, the
++platform default will be chosen.
++
++virtio-gpu 2d
++-------------
++
++The default 2D backend only performs 2D operations. The guest needs to
++employ a software renderer for 3D graphics.
++
++Typically, the software renderer is provided by `Mesa`_ or `SwiftShader`_.
++Mesa's implementations (LLVMpipe, Lavapipe and virgl below) work out of box
++on typical modern Linux distributions.
++
++.. parsed-literal::
++    -device virtio-gpu
++
++.. _Mesa: https://www.mesa3d.org/
++.. _SwiftShader: https://github.com/google/swiftshader
++
++virtio-gpu virglrenderer
++------------------------
++
++When using virgl accelerated graphics mode in the guest, OpenGL API calls
++are translated into an intermediate representation (see `Gallium3D`_). The
++intermediate representation is communicated to the host and the
++`virglrenderer`_ library on the host translates the intermediate
++representation back to OpenGL API calls.
++
++.. parsed-literal::
++    -device virtio-gpu-gl
++
++.. _Gallium3D: https://www.freedesktop.org/wiki/Software/gallium/
++.. _virglrenderer: https://gitlab.freedesktop.org/virgl/virglrenderer/
++
++virtio-gpu rutabaga
++-------------------
++
++virtio-gpu can also leverage rutabaga_gfx to provide `gfxstream`_
++rendering and `Wayland display passthrough`_.  With the gfxstream rendering
++mode, GLES and Vulkan calls are forwarded to the host with minimal
++modification.
++
++The crosvm book provides directions on how to build a `gfxstream-enabled
++rutabaga`_ and launch a `guest Wayland proxy`_.
++
++This device does require host blob support (``hostmem`` field below). The
++``hostmem`` field specifies the size of virtio-gpu host memory window.
++This is typically between 256M and 8G.
++
++At least one capset (see colon separated ``capset_names`` below) must be
++specified when starting the device.  The currently supported
++``capset_names`` are ``gfxstream-vulkan`` and ``cross-domain`` on Linux
++guests. For Android guests, ``gfxstream-gles`` is also supported.
++
++The device will try to auto-detect the wayland socket path if the
++``cross-domain`` capset name is set.  The user may optionally specify
++``wayland_socket_path`` for non-standard paths.
++
++The ``wsi`` option can be set to ``surfaceless`` or ``headless``.
++Surfaceless doesn't create a native window surface, but does copy from the
++render target to the Pixman buffer if a virtio-gpu 2D hypercall is issued.
++Headless is like surfaceless, but doesn't copy to the Pixman buffer.
++Surfaceless is the default if ``wsi`` is not specified.
++
++.. parsed-literal::
++    -device virtio-gpu-rutabaga,capset_names=gfxstream-vulkan:cross-domain,
++       hostmem=8G,wayland_socket_path=/tmp/nonstandard/mock_wayland.sock,
++       wsi=headless
++
++.. _gfxstream: https://android.googlesource.com/platform/hardware/google/gfxstream/
++.. _Wayland display passthrough: https://www.youtube.com/watch?v=OZJiHMtIQ2M
++.. _gfxstream-enabled rutabaga: https://crosvm.dev/book/appendix/rutabaga_gfx.html
++.. _guest Wayland proxy: https://crosvm.dev/book/devices/wayland.html
+-- 
+2.42.0.rc1.204.g551eb34607-goog
+
 
