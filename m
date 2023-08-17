@@ -2,96 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48A3777EF8D
-	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 05:32:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69B7B77F029
+	for <lists+qemu-devel@lfdr.de>; Thu, 17 Aug 2023 07:12:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWTiK-0003aU-D7; Wed, 16 Aug 2023 23:30:24 -0400
+	id 1qWVHR-0002WR-Px; Thu, 17 Aug 2023 01:10:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
- id 1qWTiI-0003Zl-7n
- for qemu-devel@nongnu.org; Wed, 16 Aug 2023 23:30:22 -0400
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
- id 1qWTiF-0005yS-Lh
- for qemu-devel@nongnu.org; Wed, 16 Aug 2023 23:30:21 -0400
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-1bdb7b0c8afso35835605ad.3
- for <qemu-devel@nongnu.org>; Wed, 16 Aug 2023 20:30:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1692243015; x=1692847815;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date:from:to
- :cc:subject:date:message-id:reply-to;
- bh=da/XbM7V0w3vnnbBvgHoG8bDMtDm3bel7gEPQSFhkIk=;
- b=O/WCX6iChN0fluY6p+BAfYpH8N8hJrzm5+ZBtJKLbeS+RKJkkApkNiA0Y1c0P/JeiT
- 4F0H2CJaPjloxCPtuKLUbX3dIV6VTdjHTU7mWkAVmWBLS/IBf7oXtD7TGVFxSXC1+t9R
- aUs+F8E4ISFzLoPNNYxcaGiwkvUeBp68mI470bfAXcajb2N6MKn2u+ZceN/8bPfgZsPr
- tD7SOHGwD7DJxZ8Nefwiz3PBuHiD7h/wNwMEpOA3tB+ybqBqebDtvv5gUP93+d6oq0ah
- vXDKOweWQLGsqUu/De8jxPaAgI5Tzbu7YiBZuOz0vDgdowEWqQX8D/qPK6Uf9pSWEe0V
- Vxng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692243015; x=1692847815;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=da/XbM7V0w3vnnbBvgHoG8bDMtDm3bel7gEPQSFhkIk=;
- b=IkzhFPsFGnGsfEml5OJUTtFFcr4Z6DPkpVLeZdOyohiuF5Iz7/yTIFKnSK5c0y+XbC
- 75yDm8dPeK8KfnRM2IUJI/vS1aXm7laY91H5Tp58CMJa/boDwROF21n0xrziluQQEDjZ
- xRmnnkNV9WLjY+X14CzepoVdf+c56NgOLevLsazDW2svEbCzvIhEbKwpg5Wxie6Dpgpq
- xBdocpYPn5u548C+LWGRzPo3IB3r6cpRCGKAY0EFtDDJgsVflnGC2st3Gf+2XoT7waz6
- 9U7Taqe1WcVz7YDsE3ClIbx5oSIdoHa0jUZrbJnKwUtqG6EFJh+40//5moX4aDphg12W
- aWNw==
-X-Gm-Message-State: AOJu0Yxsl7c+UZreBJ/0l5wl8vlLvr6pkmtCEl54zI+9ayaWdBRnQZO8
- iTIGkOu9Ev1VVJy/uDhlewlzkw==
-X-Google-Smtp-Source: AGHT+IFKAMynRfi6DV0Hhz/Q3IivWGk2CXFvnITXxCeyCoIiSskynGowR8ceuFajX33IL8L5isZ+gw==
-X-Received: by 2002:a17:903:26c2:b0:1bd:ed26:d2c6 with SMTP id
- jg2-20020a17090326c200b001bded26d2c6mr3415781plb.4.1692243015363; 
- Wed, 16 Aug 2023 20:30:15 -0700 (PDT)
-Received: from sunil-laptop ([106.51.83.242]) by smtp.gmail.com with ESMTPSA id
- u15-20020a170902e5cf00b001b9d335223csm13860130plf.26.2023.08.16.20.30.10
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 16 Aug 2023 20:30:14 -0700 (PDT)
-Date: Thu, 17 Aug 2023 09:00:07 +0530
-From: Sunil V L <sunilvl@ventanamicro.com>
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: Igor Mammedov <imammedo@redhat.com>, qemu-devel@nongnu.org,
- qemu-arm@nongnu.org, qemu-riscv@nongnu.org,
- "Michael S . Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Shannon Zhao <shannon.zhaosl@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Andrew Jones <ajones@ventanamicro.com>,
- Anup Patel <apatel@ventanamicro.com>
-Subject: Re: [PATCH 01/10] hw/arm/virt-acpi-build.c: Move fw_cfg and virtio
- to common location
-Message-ID: <ZN2UPwkpXez+uwMj@sunil-laptop>
-References: <20230712163943.98994-1-sunilvl@ventanamicro.com>
- <20230712163943.98994-2-sunilvl@ventanamicro.com>
- <20230724171859.212fec62@imammedo.users.ipa.redhat.com>
- <ZL/9XO47yEnaNzyN@sunil-laptop>
- <20230726102546.1cad6113@imammedo.users.ipa.redhat.com>
- <badc96bf-821e-d769-ac40-39600f543e86@ventanamicro.com>
+ (Exim 4.90_1) (envelope-from <400thecat@gmx.ch>)
+ id 1qWVHF-0002UA-TC; Thu, 17 Aug 2023 01:10:33 -0400
+Received: from mout.gmx.net ([212.227.17.21])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <400thecat@gmx.ch>)
+ id 1qWVHD-0004X9-Af; Thu, 17 Aug 2023 01:10:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.ch;
+ s=s31663417; t=1692249023; x=1692853823; i=400thecat@gmx.ch;
+ bh=frN0Fyt1au05gAKP12yDl0kDPcw1D3ZszjROrbQJ2HU=;
+ h=X-UI-Sender-Class:Subject:From:To:Cc:References:Date:In-Reply-To;
+ b=q1FRBbATbR5omb0mXCEdJqoXijDh62eFg9TlEBR36EdRyNt937pGZ08W4aYXWUiKEgjvbgu
+ t3oJh8hSdUQTZv+gYIoMlr44cFgO7hT1PTqwunuYsNtQDwTWYEvw7SHQ3NTdygcTeEO+wW+K9
+ Q3h1IzC1EDWbaOWoMLiTn02Cn8dFZNc4RprQWAeN4kWxPZvpWQPVkWgvTFwyv/0ecnTmznfXn
+ Ek4HQsXHxpt+Ernamx8CSwYP+vTaQ9+orCJRM++62jCwMCqHypr6QygQhfFz9PvLoNt/z3x3O
+ LG/rXi/IsYGcx7iTahPKtw2zxiZUUAwQybCbMhrjSgCvYxxxy1Bg==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [10.1.2.16] ([212.25.11.75]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1N33ET-1pkp3i2fHx-013OcI; Thu, 17
+ Aug 2023 07:10:23 +0200
+Subject: Re: qemu-system-x86 dependencies
+From: Fourhundred Thecat <400thecat@gmx.ch>
+To: Michael Tokarev <mjt@tls.msk.ru>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>
+Cc: qemu-discuss@nongnu.org, QEMU Developers <qemu-devel@nongnu.org>
+References: <ed59d5cc-587e-ae8a-f367-96e4e58b67ce@gmx.ch>
+ <10b32eab-a19a-a656-b8bd-4aef1f00bf11@linaro.org>
+ <01d1482b-6b84-b762-f98c-7e0e74087820@tls.msk.ru>
+ <b45ba384-ce6e-72ea-a903-466eb94aa3d3@gmx.ch>
+Message-ID: <75824b67-6192-a1c2-b89c-b67818ffb08b@gmx.ch>
+Date: Thu, 17 Aug 2023 07:10:22 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+In-Reply-To: <b45ba384-ce6e-72ea-a903-466eb94aa3d3@gmx.ch>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <badc96bf-821e-d769-ac40-39600f543e86@ventanamicro.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=sunilvl@ventanamicro.com; helo=mail-pl1-x633.google.com
+X-Provags-ID: V03:K1://RiIenPGyIb5t4WNQpWYB3V5TOui+TBxfkErY8D+JSo4TbgH5T
+ gWyLJn0E6MBouji/UQjBAYVBAFw0edANIQ11j1OT4eAAikIge/mCn5cROS/GGNSy39V63lJ
+ 2A3GrPzrTuvt4gwElddrtutZW4lKUlLvAbXDvONrDDrLTUl3bZOVnk/ocXYvLILsPgUvnNw
+ XIvlf0xFjx3l6oaKF31Dg==
+UI-OutboundReport: notjunk:1;M01:P0:a9mWHAc0JYo=;S/x8prKyELM0eSDSvQ3OnouAb89
+ 7ti1FIxTQ2yg7Nyh5XmFQp2azNZinYy1P5UMlq6lTnlItCssBmYZFCSloL8SgBRS9qkDz76+7
+ nHyxlPQKz20Iik0cnuICMzKnjNMn+NT6hmW9cMWLmTf99z65yljmU+tAGb0JkFiNmbLrel/uq
+ pB/RrWSHJsCdJdsZotF4O/0HzHSIExvLhwkO+9bzXPtB8asXll9lCltoEKYh5vFmQdbrWcGqv
+ Q7ioOwSy4GTPsgccq2Bx5kSlPTkNMyYHEXRP3ktuJxg+8czfDtxatCvRkuIhOZl464ndYPD4q
+ dMPtiWFn/zTHK6y+o4JZvlVp9WLC9jC0aZVB3KgPpPHYwQ2S8T8F0Pu+YiHcGPM3tqn8JFIme
+ DMoa5D0tYbYJo1Tk+t9LayuVUtBnzwfFPCIwINY0t4Q+JZMvmgJLehxxw4wcHdYZwx+o/RTVi
+ YO8fQaTIWWkp/MIz+eGkAxaW9qZcFspp12YxhnHd4rzFbW7QnquSi+xUaIOzNBFfs6Xsc9aSZ
+ HbI502xf+XM1nrskIo24QwBt5sD2jmRV7WmQOXOgemHLKT9SkZoj+HJFwjYeHA/m62XoxpHRT
+ 0Nt+8GxsXdS3JNJ70r/qu4ZID8JJ84k/5rDx+ISussuku40i04QDM4g2Qv/dC4fnH5ZdbuCy9
+ 5JzGWddBAKC/SoAG4nvIa74NiHybYrpGopURpqW9jwz4GPO4HLvPiThg1/Pg6Uaok8bipSjbo
+ B3z3mAoJbuW3EyewqkfvhFAlQt0GN5VbB8S7OF5wtEgG2iUWejIcwHDk+/w7wZbmSmdvoPY0S
+ JAwQnG2B68rHgfNEc4N7p5MNQY5dBfVcCphcLOR/Su6kVAN7pebzWoDVAqd6WBGU+APMjmyjr
+ sW+HYXnPtEhO7rYQBnD90Vs0Kj9+GV7Ud80G1dKDuYgDm6+OqFNc6Hq5moNfnUPdAZsWZ2psc
+ R1lTrQ==
+Received-SPF: pass client-ip=212.227.17.21; envelope-from=400thecat@gmx.ch;
+ helo=mout.gmx.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ FROM_STARTS_WITH_NUMS=0.738, RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,126 +89,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 16, 2023 at 03:51:58PM -0300, Daniel Henrique Barboza wrote:
->=20
->=20
-> On 7/26/23 05:25, Igor Mammedov wrote:
-> > On Tue, 25 Jul 2023 22:20:36 +0530
-> > Sunil V L <sunilvl@ventanamicro.com> wrote:
-> >=20
-> > > On Mon, Jul 24, 2023 at 05:18:59PM +0200, Igor Mammedov wrote:
-> > > > On Wed, 12 Jul 2023 22:09:34 +0530
-> > > > Sunil V L <sunilvl@ventanamicro.com> wrote:
-> > > > > The functions which add fw_cfg and virtio to DSDT are same for ARM
-> > > > > and RISC-V. So, instead of duplicating in RISC-V, move them from
-> > > > > hw/arm/virt-acpi-build.c to common aml-build.c.
-> > > > >=20
-> > > > > Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-> > > > > ---
-> > > > >   hw/acpi/aml-build.c         | 41 ++++++++++++++++++++++++++++++=
-++++++
-> > > > >   hw/arm/virt-acpi-build.c    | 42 ------------------------------=
--------
-> > > > >   hw/riscv/virt-acpi-build.c  | 16 --------------
-> > > > >   include/hw/acpi/aml-build.h |  6 ++++++
-> > > > >   4 files changed, 47 insertions(+), 58 deletions(-)
-> > > > >=20
-> > > > > diff --git a/hw/acpi/aml-build.c b/hw/acpi/aml-build.c
-> > > >=20
-> > > > patch looks fine modulo,
-> > > > I'd put these into respective device files instead of generic
-> > > > aml-build.c which was intended for basic AML primitives
-> > > > (it 's got polluted over time with device specific functions
-> > > > but that's not the reason to continue doing that).
-> > > >=20
-> > > > Also having those functions along with devices models
-> > > > goes along with self enumerating ACPI devices (currently
-> > > > it works for x86 PCI/ISA device but there is no reason
-> > > > that it can't work with other types as well when
-> > > > I get there)
-> > > Thanks!, Igor. Let me add them to device specific files as per your
-> > > recommendation.
-> > just be careful and build test other targets (while disabling the rest)
-> > at least no to regress them due to build deps. (I'd pick 2 with ACPI
-> > support that use and not uses affected code) and 1 that  uses device
-> > model but doesn't use ACPI at all (if such exists)
->=20
-> Sunil is already aware of it but I'll also mention here since it seems re=
-levant
-> to Igor's point.
->=20
-Thanks! Daniel. Yes, I am aware of the issue and will fix it along with
-Igor's suggestion. I need to fix this irrespective of the approach.
+ > On 2023-08-16 15:02, Fourhundred Thecat wrote:
+>  > On 2023-08-16 14:52, Michael Tokarev wrote:
+>> 16.08.2023 15:37, Philippe Mathieu-Daud=C3=A9 =D0=BF=D0=B8=D1=88=D0=B5=
+=D1=82:
+>>> Cc'ing Michael
+>>>
+> why does qemu depend on sound and gstreamer and wayland libraries?
+> After all, i am just trying to run VMs on my hypervisor.
+>
+> If I remember correctly, my previous installation on Debian 10,
+> qemu-system-x86 had no such dependencies.
+>
+> Seems to me like trying to install openssh-server, but it needs full
+> gnome environment libraries.
 
-Thanks,
-Sunil
->=20
-> This patch breaks i386-softmmu build:
->=20
->=20
-> FAILED: libqemu-i386-softmmu.fa.p/hw_i386_acpi-microvm.c.o
-> cc -m64 -mcx16 -Ilibqemu-i386-softmmu.fa.p -I. -I.. -Itarget/i386 -I../ta=
-rget/i386 -Iqapi -Itrace -Iui -Iui/shader -I/usr/include/pixman-1 -I/usr/in=
-clude/glib-2.0 -I/usr/lib64/glib-2.0/include -I/usr/include/sysprof-4 -fdia=
-gnostics-color=3Dauto -Wall -Winvalid-pch -Werror -std=3Dgnu11 -O2 -g -fsta=
-ck-protector-strong -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=3D2 -Wundef -Wwrite=
--strings -Wmissing-prototypes -Wstrict-prototypes -Wredundant-decls -Wold-s=
-tyle-declaration -Wold-style-definition -Wtype-limits -Wformat-security -Wf=
-ormat-y2k -Winit-self -Wignored-qualifiers -Wempty-body -Wnested-externs -W=
-endif-labels -Wexpansion-to-defined -Wimplicit-fallthrough=3D2 -Wmissing-fo=
-rmat-attribute -Wno-missing-include-dirs -Wno-shift-negative-value -Wno-psa=
-bi -isystem /home/danielhb/work/qemu/linux-headers -isystem linux-headers -=
-iquote . -iquote /home/danielhb/work/qemu -iquote /home/danielhb/work/qemu/=
-include -iquote /home/danielhb/work/qemu/host/include/x86_64 -iquote /home/=
-danielhb/work/qemu/host/include/generic -iquote /home/danielhb/work/qemu/tc=
-g/i386 -pthread -D_GNU_SOURCE -D_FILE_OFFSET_BITS=3D64 -D_LARGEFILE_SOURCE =
--fno-strict-aliasing -fno-common -fwrapv -fPIE -isystem../linux-headers -is=
-ystemlinux-headers -DNEED_CPU_H '-DCONFIG_TARGET=3D"i386-softmmu-config-tar=
-get.h"' '-DCONFIG_DEVICES=3D"i386-softmmu-config-devices.h"' -MD -MQ libqem=
-u-i386-softmmu.fa.p/hw_i386_acpi-microvm.c.o -MF libqemu-i386-softmmu.fa.p/=
-hw_i386_acpi-microvm.c.o.d -o libqemu-i386-softmmu.fa.p/hw_i386_acpi-microv=
-m.c.o -c ../hw/i386/acpi-microvm.c
-> ../hw/i386/acpi-microvm.c:48:13: error: conflicting types for =E2=80=98ac=
-pi_dsdt_add_virtio=E2=80=99; have =E2=80=98void(Aml *, MicrovmMachineState =
-*)=E2=80=99
->    48 | static void acpi_dsdt_add_virtio(Aml *scope,
->       |             ^~~~~~~~~~~~~~~~~~~~
-> In file included from /home/danielhb/work/qemu/include/hw/acpi/acpi_aml_i=
-nterface.h:5,
->                  from ../hw/i386/acpi-microvm.c:29:
-> /home/danielhb/work/qemu/include/hw/acpi/aml-build.h:503:6: note: previou=
-s declaration of =E2=80=98acpi_dsdt_add_virtio=E2=80=99 with type =E2=80=98=
-void(Aml *, const MemMapEntry *, uint32_t,  int)=E2=80=99 {aka =E2=80=98voi=
-d(Aml *, const MemMapEntry *, unsigned int,  int)=E2=80=99}
->   503 | void acpi_dsdt_add_virtio(Aml *scope, const MemMapEntry *virtio_m=
-mio_memmap,
->       |      ^~~~~~~~~~~~~~~~~~~~
-> [5/714] Compiling C object libqemu-i386-softmmu.fa.p/hw_i386_kvm_clock.c.o
->=20
-> This happens because the common 'acpi_dsdt_add_virtio' function matches a=
- local
-> function with the same name in hw/i386/acpi-microvm.c. We would need to e=
-ither
-> rename the shared helper or rename the local acpi-microvm function or do =
-something
-> like Igor mentioned to avoid this name collision.
->=20
->=20
-> Thanks,
->=20
-> Daniel
->=20
->=20
->=20
->=20
->=20
->=20
->=20
->=20
-> >=20
-> > >=20
-> > > Thanks!
-> > > Sunil
-> > >=20
-> >=20
+sorry if my question offended people.
+
+Perhaps there is a good reason for these dependencies, which i don't see?
+
+Also, I am told that Arch has split all these into separate packages:
+
+https://archlinux.org/packages/?sort=3D&repo=3DExtra&q=3Dqemu&maintainer=
+=3D&flagged=3D
+
+So it looks like my original question might be Debian specific?
 
