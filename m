@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 657A07800BF
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 00:06:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A40C7800CA
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 00:07:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWl7B-0005BT-Op; Thu, 17 Aug 2023 18:05:15 -0400
+	id 1qWl99-00061O-FQ; Thu, 17 Aug 2023 18:07:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qWl71-0005BI-1a
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 18:05:03 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ id 1qWl98-00061F-4d
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 18:07:14 -0400
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qWl6y-0000E0-Nb
- for qemu-devel@nongnu.org; Thu, 17 Aug 2023 18:05:02 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1bef089ac8aso2443755ad.2
- for <qemu-devel@nongnu.org>; Thu, 17 Aug 2023 15:05:00 -0700 (PDT)
+ id 1qWl95-0001KK-VD
+ for qemu-devel@nongnu.org; Thu, 17 Aug 2023 18:07:13 -0400
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-688731c6331so237175b3a.3
+ for <qemu-devel@nongnu.org>; Thu, 17 Aug 2023 15:07:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692309899; x=1692914699;
+ d=linaro.org; s=google; t=1692310030; x=1692914830;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=HoULJOCHMuV/YzdDdCXXJhGcACVsYiG6Y0K1IRxFiUM=;
- b=O2rCdLj5E09CUMsMhitl1ggO+fCakGU0fjrx6HLIb/uwkpQg6RJE0U3ZZ+V49FWtNS
- C0QT3Tu6sQc5DSar6eg8k2e3rmrT/QLQFE0F4aIYMca9jx5mJKURRIf4vRJlry9wT+X4
- AWzAUN7/FEB/uBaTskGwrPZ13M9ctuwci6k8yZgVVpqv3/k8lBSLrG9rwvG+pXMIPVQp
- 650uWS04JOpoB05U+cBFFYNOojyJLz1Aw5aR8PM9t1qGyxmHim6sPUJPcqk4FJtZV1XA
- cZmoCbrieKSVF+SN4Ua9S7WVhALs3oJ0ITEpPzVWQDholx/314sgtG+KHJpoSbFwnJeZ
- kfTg==
+ bh=DpHjtD9XhRUph5algCgZ01moMgZhHyOWLIRi693JPqA=;
+ b=xuT04NlONjsuem3RnZC9z/f9C3x2PsnMQi5QEKjCHfDB+o7/pmjZxbcSjQC58/c8yq
+ tSSBit140wh02GZXfDh19pjgkvqYqfzS+XbrVdCg+w56ejQDzgIcIrduoIxGhzzf2Ppn
+ TVB/f1oMclmnzYo6lICdQ2xIaQGpsS7twhxKRboMWhxP4oLEzEm7dwEBgVdtF1ulecku
+ 1aCCKuWBxXi02i6/IsO6i9NaUkX9Dx2SxjHUI7pe2RGEdsfUaJWnA+cJMqa1nko+OZq1
+ lzniWQJHTg0935hqyZprx3ZXzhL1Vl2NcfbjpjJwWuWiRQwAsA4Hdh6O2adwxj8vdh0d
+ qp1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692309899; x=1692914699;
+ d=1e100.net; s=20221208; t=1692310030; x=1692914830;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=HoULJOCHMuV/YzdDdCXXJhGcACVsYiG6Y0K1IRxFiUM=;
- b=jaGD7QnT7oF32GiVnLUZb9xLFAL2Df+4IlH+0slIBFTDmXG8cMTzfgfYSgg2nHCa/D
- GoM5a2g4BXAP+UsUfjo3g20mxiugC4yF24ULt9ehy9LLfjrGKW55QDq6wr7lAvyp9NE9
- H8Iw+OWRPxbrmErG347MlKKN4m4BaR4HrrMYxhXNSX/8zkVEGQWZXY4WKZcu29cbbKBK
- HC3VNEnIrWoYPc1Ot5sPUgwjDlE7iukjhX/74MZXp89z0SxhGAFxvzBiMy9rnuaSRz5B
- YLs3s5MtNwy75w2oz/zMuJUk3ssRRSWaisa3TITlcoath6zHQHObB/Na1E2uIMdi19JL
- cOaQ==
-X-Gm-Message-State: AOJu0YwC9FpTVh0mjAleQR7GEx8cyJjjbZ7Vd74rYsCJgo8vLmNpEp7x
- PyDeoMvP5a5WlEB7mNlx/3Q8qc6a0lXDljWCi5U=
-X-Google-Smtp-Source: AGHT+IGUhN3WVe84deOhFyk/60mIQjV6kxLK7VwZzKp8/+f6ZSHcvgz1gPsxXwX/KM3gxZe0aqxpsw==
-X-Received: by 2002:a17:90a:3d0d:b0:26d:1eec:1fc4 with SMTP id
- h13-20020a17090a3d0d00b0026d1eec1fc4mr761737pjc.19.1692309898855; 
- Thu, 17 Aug 2023 15:04:58 -0700 (PDT)
+ bh=DpHjtD9XhRUph5algCgZ01moMgZhHyOWLIRi693JPqA=;
+ b=jFhyLp/1KC7qANkcJq+vj6eihIFw5LNNFbqeghQ8iXAYiLJPLAKJJJ2Y/A/r9nQA0A
+ XffIMT87YIgiOwScwBTLEqMVmgzpbR0Fi7vzK2VEq0LnpzJ3VZnTCG1zm6BcjHClGgUp
+ NcwD091xVx9Xoa2qxnYMNueGObB9i6LW4YYt0hEdlWvWq1J6N9P7c86ayIpz298ILhU7
+ KZeCK6ApbNkVKdFjZth2APxmS++9O1wQhOgn9W9RDUEsH8KdQoC5JH6gHT5NPJmV7HmH
+ fX3JvgcF3MVV8jFj7KvXQdww3NEW5CWwcvo+uQm9FIo/MEP4BiDmW1JbXrJlP69cOT0c
+ tkDA==
+X-Gm-Message-State: AOJu0Ywvm3oSPCAJIMqOtS6osn5Pdnny/YVOWPJ7dyTw9ADBl5PsEMeI
+ 5+YHLpJc1jNT0alHXN2vg7Q/iQ==
+X-Google-Smtp-Source: AGHT+IE8uooTpCb1xnLBeS50sgZVrj+vgQwqwlY+s5ie/jSYB6I6q0ow0hQeqctZuEnLJSjFUhGQEw==
+X-Received: by 2002:aa7:888f:0:b0:688:4337:3c55 with SMTP id
+ z15-20020aa7888f000000b0068843373c55mr947516pfe.6.1692310030518; 
+ Thu, 17 Aug 2023 15:07:10 -0700 (PDT)
 Received: from ?IPV6:2602:47:d483:7301:12cd:355a:c01e:3596?
  ([2602:47:d483:7301:12cd:355a:c01e:3596])
  by smtp.gmail.com with ESMTPSA id
- z2-20020a170902ee0200b001bbb1eec92esm242273plb.281.2023.08.17.15.04.57
+ m11-20020aa78a0b000000b00659b8313d08sm236113pfa.78.2023.08.17.15.07.09
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 17 Aug 2023 15:04:58 -0700 (PDT)
-Message-ID: <6740b717-c163-752f-2f6d-601faf46cb12@linaro.org>
-Date: Thu, 17 Aug 2023 15:04:55 -0700
+ Thu, 17 Aug 2023 15:07:10 -0700 (PDT)
+Message-ID: <c03f11e3-847c-a792-51e0-16679485b43e@linaro.org>
+Date: Thu, 17 Aug 2023 15:07:08 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH 1/3] tcg/i386: Drop BYTEH deposits for 64-bit
+Subject: Re: [PATCH 2/3] tcg: Fold deposit with zero to and
 Content-Language: en-US
 To: Peter Maydell <peter.maydell@linaro.org>
 Cc: qemu-devel@nongnu.org
 References: <20230816145547.477974-1-richard.henderson@linaro.org>
- <20230816145547.477974-2-richard.henderson@linaro.org>
- <CAFEAcA94YWgNRi_6Z8Ww5b6O2GncB-cqF-X8yr31UzFJEwJQXw@mail.gmail.com>
+ <20230816145547.477974-3-richard.henderson@linaro.org>
+ <CAFEAcA9WUcJzrfQXnjM0Jw8CjaY6BW9hAKWGDRrMVU3BR2u6Vw@mail.gmail.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <CAFEAcA94YWgNRi_6Z8Ww5b6O2GncB-cqF-X8yr31UzFJEwJQXw@mail.gmail.com>
+In-Reply-To: <CAFEAcA9WUcJzrfQXnjM0Jw8CjaY6BW9hAKWGDRrMVU3BR2u6Vw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
 X-Spam_score_int: -60
 X-Spam_score: -6.1
 X-Spam_bar: ------
@@ -97,37 +97,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/17/23 08:44, Peter Maydell wrote:
-> On Wed, 16 Aug 2023 at 16:01, Richard Henderson
-> <richard.henderson@linaro.org> wrote:
->>
->> It is more useful to allow low-part deposits into all registers
->> than to restrict allocation for high-byte deposits.
+On 8/17/23 08:50, Peter Maydell wrote:
+>> +    if (arg_is_const(op->args[1])
+>> +        && arg_info(op->args[1])->val == 0
+>> +        && op->args[3] == 0) {
+>> +        uint64_t mask = MAKE_64BIT_MASK(0, op->args[4]);
 > 
->>   #define TCG_TARGET_deposit_i32_valid(ofs, len) \
->> -    (((ofs) == 0 && (len) == 8) || ((ofs) == 8 && (len) == 8) || \
->> -     ((ofs) == 0 && (len) == 16))
->> +    (((ofs) == 0 && ((len) == 8 || (len) == 16)) || \
->> +     (TCG_TARGET_REG_BITS == 32 && (ofs) == 8 && (len) == 8))
->>   #define TCG_TARGET_deposit_i64_valid    TCG_TARGET_deposit_i32_valid
-> 
-> 
->> @@ -2752,7 +2751,7 @@ static inline void tcg_out_op(TCGContext *s, TCGOpcode opc,
->>           if (args[3] == 0 && args[4] == 8) {
->>               /* load bits 0..7 */
->>               tcg_out_modrm(s, OPC_MOVB_EvGv | P_REXB_R | P_REXB_RM, a2, a0);
->> -        } else if (args[3] == 8 && args[4] == 8) {
->> +        } else if (TCG_TARGET_REG_BITS == 32 && args[3] == 8 && args[4] == 8) {
-> 
-> Should we assert(TCG_TARGET_REG_BITS == 32) rather than making it part of the
-> condition?
+> The docs for the TCG deposit op don't say what the restrictions on the
+> immediate args are, but this will be UB for QEMU if args[4] is 0.
+> Have we already sanitized those somewhere?
 
-The if/else chain ends in g_assert_not_reached().
-
-> If I understand the change to the deposit_i32_valid macro above, we
-> should never get here with 8, 8 if TCG_TARGET_REG_BITS is 64.
-
-Correct.
+tcg_gen_deposit_{i32,i64} do so.
 
 
 r~
