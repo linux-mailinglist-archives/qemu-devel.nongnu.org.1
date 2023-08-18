@@ -2,60 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FCF4780520
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 06:37:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC73078055C
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 07:08:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qWrDX-0005D5-46; Fri, 18 Aug 2023 00:36:11 -0400
+	id 1qWrgp-000259-3p; Fri, 18 Aug 2023 01:06:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pavel.dovgalyuk@ispras.ru>)
- id 1qWrDV-0005Cv-98
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 00:36:09 -0400
-Received: from mail.ispras.ru ([83.149.199.84])
- by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pavel.dovgalyuk@ispras.ru>)
- id 1qWrDQ-0008Ha-Vs
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 00:36:09 -0400
-Received: from [192.168.8.104] (unknown [94.25.229.58])
- by mail.ispras.ru (Postfix) with ESMTPSA id 9B31E40F1DE1;
- Fri, 18 Aug 2023 04:36:02 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 9B31E40F1DE1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
- s=default; t=1692333363;
- bh=DC7KOBbhr13U7b2zHCCb8+fdoO9pVzOhkwgIrjDUPVg=;
- h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
- b=VI+J+ESaxvk5Kqy7c71k+EUe4+O+vFrIhK2ipV1fc4/PEhSiCEta8kn68VJAlKKXH
- L5K8vCGNidSiP6+vjjPP3jd7ZD26kErEThVXRUGDf/4s7VRBflkcUOX3McEwdeI7df
- GUIKg9SF+w/bALQcWHmEIpnobqmOWbWadQUFM5DY=
-Message-ID: <95adc4ea-225c-bcd5-cec2-9edf1c2cf496@ispras.ru>
-Date: Fri, 18 Aug 2023 07:36:02 +0300
+ (Exim 4.90_1) (envelope-from <maverickk1778@gmail.com>)
+ id 1qWrge-00022i-UA
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 01:06:18 -0400
+Received: from mail-io1-xd36.google.com ([2607:f8b0:4864:20::d36])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <maverickk1778@gmail.com>)
+ id 1qWrgZ-0008VS-0x
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 01:06:15 -0400
+Received: by mail-io1-xd36.google.com with SMTP id
+ ca18e2360f4ac-79093c0c68bso18449139f.0
+ for <qemu-devel@nongnu.org>; Thu, 17 Aug 2023 22:06:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1692335167; x=1692939967;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=NboQbtQRE5XDdhMnkEM71ABQBV691NoP08bDIdh5BUw=;
+ b=LjzSKfzEf+EOM1nAfCjWlqmRO+D/qogIq2AMcQZRftaMiPmPPBiwQ8/G5LFvIFV21e
+ 34SSuQXwvPTMbhl/9gLwoOa0QlNlfg4qMYAs5K5uxJVy+0OwwffYS0yZ83DvzoD1S/Z0
+ QxJpeqhDW0ch/8sDoje4YW55FB+lGAj8tMD9XpdEDOHWlCVtJHuLX/yIs1HUABJigv9t
+ E4rrp0UWrJYWivuPzXfkoMytUeuDDnkaS+WEYisCtrbJPJInYcKZoz7xvXG5Zx1n/sYO
+ itBrdoecDYd9UvUEmQmEdQf46d5tmrzOUHot2CaUgrebQibu2UlqAesdIj7aepnnHH5O
+ LMjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1692335167; x=1692939967;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=NboQbtQRE5XDdhMnkEM71ABQBV691NoP08bDIdh5BUw=;
+ b=Z8XXFGBIliDDCAMlHRHNpj2jNW2n51hFSQBCKMVnLs7ah3M1EdXLSBRIhl28mW0Iyx
+ 9/wNDtoNGy5m4LgY15NjJnGGgxnxYk1IjGfb9ndetTI5zw9ctd/1xCJaetKH4PSxuV5v
+ gfeTdW4wd/k0v0U7lTaJftQFNG09Lju70WdwqWpbJKiQvY5QNEV4t4T2Q7UkN8+UBFDp
+ NxV9N2+/shAl/xKXd/1981XSG/ih+PQLCkI2fTYJZVooODu6/VIX8ioG9gh6afrXqXVa
+ 5N0X3iHO3CUdWbJCzcLrFoUCp01C9Tlxb3L58jgdYhjvUB4p4jgvb/HjrL4zlC85H8v0
+ 4Hkg==
+X-Gm-Message-State: AOJu0YybJ56DMgXZmkKGO+XZ2zG/V/3BaiUywqXc0guMqUPi79TZ3i/w
+ 5J7FKJJxhUawm5pLqbChvE9bEKCMRjpb56sI1po=
+X-Google-Smtp-Source: AGHT+IEzTgQtlRE9ME3SFdyvKzpiw7CK/lAvGURrLFbtIgLbDE2hCAWegGqfz/NCGExhSY+l5AwL3a2CBK0p5BpKUL4=
+X-Received: by 2002:a5e:8516:0:b0:790:aedd:3e81 with SMTP id
+ i22-20020a5e8516000000b00790aedd3e81mr2027859ioj.8.1692335166798; Thu, 17 Aug
+ 2023 22:06:06 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH 4/4] replay: simple auto-snapshot mode for record
-Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, John Snow <jsnow@redhat.com>,
- Cleber Rosa <crosa@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
- <philmd@linaro.org>, Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, qemu-devel@nongnu.org,
- =?UTF-8?B?0JTQvtCy0LPQsNC70Y7QuiDQn9Cw0LLQtdC7?= <Pavel.Dovgalyuk@ispras.ru>
-References: <20230814163135.187882-1-npiggin@gmail.com>
- <20230814163135.187882-5-npiggin@gmail.com>
-From: Pavel Dovgalyuk <pavel.dovgalyuk@ispras.ru>
-In-Reply-To: <20230814163135.187882-5-npiggin@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=83.149.199.84;
- envelope-from=pavel.dovgalyuk@ispras.ru; helo=mail.ispras.ru
-X-Spam_score_int: -60
-X-Spam_score: -6.1
-X-Spam_bar: ------
-X-Spam_report: (-6.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-4.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <CALfBBTtUtydebmJuh6JZ5RAXZfx5OgJ+RCug1apbZa4mm17rJQ@mail.gmail.com>
+ <ZNURN6Zzf2hJfmt/@debian>
+ <CALfBBTuRdwCcc-A88kMN7iub9BHx2xfFkfP8Lbrc+oSwfCS2nw@mail.gmail.com>
+ <ZNZmbkx4A58CEl/i@debian>
+In-Reply-To: <ZNZmbkx4A58CEl/i@debian>
+From: Maverickk 78 <maverickk1778@gmail.com>
+Date: Fri, 18 Aug 2023 10:35:55 +0530
+Message-ID: <CALfBBTvQJ8-zpyNyt9zXzd22XoRu+seQkff8t5w_gZps+aNr9w@mail.gmail.com>
+Subject: Re: CXL volatile memory is not listed
+To: Fan Ni <fan.ni@gmx.us>
+Cc: Jonathan Cameron via <qemu-devel@nongnu.org>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-cxl@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::d36;
+ envelope-from=maverickk1778@gmail.com; helo=mail-io1-xd36.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -71,251 +89,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 14.08.2023 19:31, Nicholas Piggin wrote:
-> record makes an initial snapshot when the machine is created, to enable
-> reverse-debugging. Often the issue being debugged appears near the end of
-> the trace, so it is important for performance to keep snapshots close to
-> the end.
-> 
-> This implements a periodic snapshot mode that keeps a rolling set of
-> recent snapshots.
-> 
-> Arguably this should be done by the debugger or a program that talks to
-> QMP, but for setting up simple scenarios and tests, it is convenient to
-> have this feature.
-> 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->   docs/system/replay.rst   |  5 ++++
->   include/sysemu/replay.h  | 11 ++++++++
->   qemu-options.hx          |  9 +++++--
->   replay/replay-snapshot.c | 57 ++++++++++++++++++++++++++++++++++++++++
->   replay/replay.c          | 25 ++++++++++++++++++
->   softmmu/vl.c             |  9 +++++++
->   6 files changed, 114 insertions(+), 2 deletions(-)
-> 
-> diff --git a/docs/system/replay.rst b/docs/system/replay.rst
-> index 3105327423..bef9ea4171 100644
-> --- a/docs/system/replay.rst
-> +++ b/docs/system/replay.rst
-> @@ -156,6 +156,11 @@ for storing VM snapshots. Here is the example of the command line for this:
->   ``empty.qcow2`` drive does not connected to any virtual block device and used
->   for VM snapshots only.
->   
-> +``rrsnapmode`` can be used to select just an initial snapshot or periodic
-> +snapshots, with ``rrsnapcount`` specifying the number of periodic snapshots
-> +to maintain, and ``rrsnaptime`` the amount of run time in seconds between
-> +periodic snapshots.
-> +
->   .. _network-label:
->   
->   Network devices
-> diff --git a/include/sysemu/replay.h b/include/sysemu/replay.h
-> index 08aae5869f..a83e54afc6 100644
-> --- a/include/sysemu/replay.h
-> +++ b/include/sysemu/replay.h
-> @@ -45,6 +45,17 @@ typedef enum ReplayCheckpoint ReplayCheckpoint;
->   
->   typedef struct ReplayNetState ReplayNetState;
->   
-> +enum ReplaySnapshotMode {
-> +    REPLAY_SNAPSHOT_MODE_INITIAL,
-> +    REPLAY_SNAPSHOT_MODE_PERIODIC,
-> +};
-> +typedef enum ReplaySnapshotMode ReplaySnapshotMode;
-> +
-> +extern ReplaySnapshotMode replay_snapshot_mode;
-> +
-> +extern uint64_t replay_snapshot_periodic_delay;
-> +extern int replay_snapshot_periodic_nr_keep;
-> +
+Hi Fan
 
-It seems that all of these doesn't have to be exported,
-you can add it into the internal replay header.
+Awesome, thanks for the info!
 
->   /* Name of the initial VM snapshot */
->   extern char *replay_snapshot
->   
-> diff --git a/qemu-options.hx b/qemu-options.hx
-> index 29b98c3d4c..0dce93eeab 100644
-> --- a/qemu-options.hx
-> +++ b/qemu-options.hx
-> @@ -4530,13 +4530,13 @@ SRST
->   ERST
->   
->   DEF("icount", HAS_ARG, QEMU_OPTION_icount, \
-> -    "-icount [shift=N|auto][,align=on|off][,sleep=on|off][,rr=record|replay,rrfile=<filename>[,rrsnapshot=<snapshot>]]\n" \
-> +    "-icount [shift=N|auto][,align=on|off][,sleep=on|off][,rr=record|replay,rrfile=<filename>[,rrsnapshot=<snapshot>][,rrsnapmode=initial|periodic][,rrsnaptime=secs][,rrsnapcount=N]\n" \
->       "                enable virtual instruction counter with 2^N clock ticks per\n" \
->       "                instruction, enable aligning the host and virtual clocks\n" \
->       "                or disable real time cpu sleeping, and optionally enable\n" \
->       "                record-and-replay mode\n", QEMU_ARCH_ALL)
->   SRST
-> -``-icount [shift=N|auto][,align=on|off][,sleep=on|off][,rr=record|replay,rrfile=filename[,rrsnapshot=snapshot]]``
-> +``-icount [shift=N|auto][,align=on|off][,sleep=on|off][,rr=record|replay,rrfile=filename[,rrsnapshot=snapshot][,rrsnapmode=initial|periodic][,rrsnaptime=secs][,rrsnapcount=N]]``
->       Enable virtual instruction counter. The virtual cpu will execute one
->       instruction every 2^N ns of virtual time. If ``auto`` is specified
->       then the virtual cpu speed will be automatically adjusted to keep
-> @@ -4578,6 +4578,11 @@ SRST
->       name. In record mode, a new VM snapshot with the given name is created
->       at the start of execution recording. In replay mode this option
->       specifies the snapshot name used to load the initial VM state.
-> +    ``rrsnapmode=periodic`` will additionally cause a periodic snapshot to
-> +    be created after ``rrsnaptime=secs`` seconds of real runtime. The last
-> +    ``rrsnapcount=N`` periodic snapshots (not including the initial) will
-> +    be kept (0 for infinite). Periodic snapshots are useful to speed
-> +    reverse debugging operations near the end of the recorded trace.
->   ERST
->   
->   DEF("watchdog-action", HAS_ARG, QEMU_OPTION_watchdog_action, \
-> diff --git a/replay/replay-snapshot.c b/replay/replay-snapshot.c
-> index 10a7cf7992..38eac61c43 100644
-> --- a/replay/replay-snapshot.c
-> +++ b/replay/replay-snapshot.c
-> @@ -69,6 +69,53 @@ void replay_vmstate_register(void)
->       vmstate_register(NULL, 0, &vmstate_replay, &replay_state);
->   }
->   
-> +static QEMUTimer *replay_snapshot_timer;
-> +static int replay_snapshot_count;
-> +
-> +static void replay_snapshot_timer_cb(void *opaque)
-> +{
-> +    Error *err = NULL;
-> +    char *name;
-> +
-> +    if (!replay_can_snapshot()) {
-> +        /* Try again soon */
-> +        timer_mod(replay_snapshot_timer,
-> +                  qemu_clock_get_ms(QEMU_CLOCK_REALTIME) +
-> +                  replay_snapshot_periodic_delay / 10);
-> +        return;
-> +    }
-> +
-> +    name = g_strdup_printf("%s-%d", replay_snapshot, replay_snapshot_count);
-> +    if (!save_snapshot(name,
-> +                       true, NULL, false, NULL, &err)) {
-> +        error_report_err(err);
-> +        error_report("Could not create periodic snapshot "
-> +                     "for icount record, disabling");
-> +        g_free(name);
-> +        return;
-> +    }
-> +    g_free(name);
-> +    replay_snapshot_count++;
-> +
-> +    if (replay_snapshot_periodic_nr_keep >= 1 &&
-> +        replay_snapshot_count > replay_snapshot_periodic_nr_keep) {
-> +        int del_nr;
-> +
-> +        del_nr = replay_snapshot_count - replay_snapshot_periodic_nr_keep - 1;
-> +        name = g_strdup_printf("%s-%d", replay_snapshot, del_nr);
-> +        if (!delete_snapshot(name, false, NULL, &err)) {
-> +            error_report_err(err);
-> +            error_report("Could not delete periodic snapshot "
-> +                         "for icount record");
-> +        }
-> +        g_free(name);
-> +    }
-> +
-> +    timer_mod(replay_snapshot_timer,
-> +              qemu_clock_get_ms(QEMU_CLOCK_REALTIME) +
-> +              replay_snapshot_periodic_delay);
-
-I'm not sure that realtime is not the best choice for such of a timer.
-Virtual machine may be stopped or slowed down for some reason.
-
-> +}
-> +
->   void replay_vmstate_init(void)
->   {
->       Error *err = NULL;
-> @@ -81,6 +128,16 @@ void replay_vmstate_init(void)
->                   error_report("Could not create snapshot for icount record");
->                   exit(1);
->               }
-> +
-> +            if (replay_snapshot_mode == REPLAY_SNAPSHOT_MODE_PERIODIC) {
-> +                replay_snapshot_timer = timer_new_ms(QEMU_CLOCK_REALTIME,
-> +                                                     replay_snapshot_timer_cb,
-> +                                                     NULL);
-> +                timer_mod(replay_snapshot_timer,
-> +                          qemu_clock_get_ms(QEMU_CLOCK_REALTIME) +
-> +                          replay_snapshot_periodic_delay);
-> +            }
-> +
-
-Please also delete placeholder comment for the snapshotting timer
-in replay_enable function.
-
->           } else if (replay_mode == REPLAY_MODE_PLAY) {
->               if (!load_snapshot(replay_snapshot, NULL, false, NULL, &err)) {
->                   error_report_err(err);
-> diff --git a/replay/replay.c b/replay/replay.c
-> index e64f71209a..fa5930700d 100644
-> --- a/replay/replay.c
-> +++ b/replay/replay.c
-> @@ -29,6 +29,10 @@
->   ReplayMode replay_mode = REPLAY_MODE_NONE;
->   char *replay_snapshot;
->   
-> +ReplaySnapshotMode replay_snapshot_mode;
-> +uint64_t replay_snapshot_periodic_delay;
-> +int replay_snapshot_periodic_nr_keep;
-> +
->   /* Name of replay file  */
->   static char *replay_filename;
->   ReplayState replay_state;
-> @@ -313,6 +317,27 @@ void replay_configure(QemuOpts *opts)
->       }
->   
->       replay_snapshot = g_strdup(qemu_opt_get(opts, "rrsnapshot"));
-> +    if (replay_snapshot && mode == REPLAY_MODE_RECORD) {
-
-Can such a snapshotting may be useful in replay mode?
-
-> +        const char *snapmode;
-> +
-> +        snapmode = qemu_opt_get(opts, "rrsnapmode");
-> +        if (!snapmode || !strcmp(snapmode, "initial")) {
-> +            replay_snapshot_mode = REPLAY_SNAPSHOT_MODE_INITIAL;
-> +        } else if (!strcmp(snapmode, "periodic")) {
-> +            replay_snapshot_mode = REPLAY_SNAPSHOT_MODE_PERIODIC;
-> +        } else {
-> +            error_report("Invalid rrsnapmode option: %s", snapmode);
-> +            exit(1);
-> +        }
-> +
-> +        /* Default 10 host seconds of machine runtime per snapshot. */
-> +        replay_snapshot_periodic_delay =
-> +                           qemu_opt_get_number(opts, "rrsnaptime", 10) * 1000;
-> +
-> +        /* Default 2, to cover at least the last 10 host seconds of runtime. */
-> +        replay_snapshot_periodic_nr_keep =
-> +                           qemu_opt_get_number(opts, "rrsnapcount", 2);
-> +    }
->       replay_vmstate_register();
->       replay_enable(fname, mode);
->   
-> diff --git a/softmmu/vl.c b/softmmu/vl.c
-> index b0b96f67fa..e032eb45e8 100644
-> --- a/softmmu/vl.c
-> +++ b/softmmu/vl.c
-> @@ -446,6 +446,15 @@ static QemuOptsList qemu_icount_opts = {
->           }, {
->               .name = "rrsnapshot",
->               .type = QEMU_OPT_STRING,
-> +        }, {
-> +            .name = "rrsnapmode",
-> +            .type = QEMU_OPT_STRING,
-> +        }, {
-> +            .name = "rrsnaptime",
-> +            .type = QEMU_OPT_NUMBER,
-> +        }, {
-> +            .name = "rrsnapcount",
-> +            .type = QEMU_OPT_NUMBER,
->           },
->           { /* end of list */ }
->       },
-
+On Fri, 11 Aug 2023 at 22:19, Fan Ni <fan.ni@gmx.us> wrote:
+>
+> On Fri, Aug 11, 2023 at 07:52:25AM +0530, Maverickk 78 wrote:
+> > Thanks Fan,
+> >
+> > cxl create-region works like a charm :)
+> >
+> > Since this gets listed as "System Ram(kmem)", I guess the kernel
+> > treats it as regular memory and
+> > allocates it to the applications when needed?
+> > or is there an extra effort needed to make it available for
+> > applications on the host?
+> >
+>
+> Yes. Once it is onlined, you can use it as regular memory.
+> CXL memory will serve as a zero-CPU memory-only NUMA node.
+> You can check it with numactl -H.
+>
+> To use the cxl memory with an app, you can use
+> numactl --membind=numa_id app_name
+> #numa_id is the dedicated numa node where cxl memory sits.
+>
+> One thing to notes, kvm will not work correctly with Qemu emulation when
+> you try to use cxl memory for an application, so do not enable kvm.
+>
+> Fan
+>
+> > On Thu, 10 Aug 2023 at 22:03, Fan Ni <fan.ni@gmx.us> wrote:
+> > >
+> > > On Wed, Aug 09, 2023 at 04:21:47AM +0530, Maverickk 78 wrote:
+> > > > Hello,
+> > > >
+> > > > I am running qemu-system-x86_64
+> > > >
+> > > > qemu-system-x86_64 --version
+> > > > QEMU emulator version 8.0.92 (v8.1.0-rc2-80-g0450cf0897)
+> > > >
+> > > > qemu-system-x86_64 \
+> > > > -m 2G,slots=4,maxmem=4G \
+> > > > -smp 4 \
+> > > > -machine type=q35,accel=kvm,cxl=on \
+> > > > -enable-kvm \
+> > > > -nographic \
+> > > > -device pxb-cxl,id=cxl.0,bus=pcie.0,bus_nr=52 \
+> > > > -device cxl-rp,id=rp0,bus=cxl.0,chassis=0,port=0,slot=0 \
+> > > > -object memory-backend-file,id=mem0,mem-path=/tmp/mem0,size=1G,share=true \
+> > > > -device cxl-type3,bus=rp0,volatile-memdev=mem0,id=cxl-mem0 \
+> > > > -M cxl-fmw.0.targets.0=cxl.0,cxl-fmw.0.size=1G
+> > > >
+> > > >
+> > > > I was expecting the CXL memory to be listed in "System Ram", the lsmem
+> > > > shows only 2G memory which is System RAM, it's not listing the CXL
+> > > > memory.
+> > > >
+> > > > Do I need to pass any particular parameter in the kernel command line?
+> > > >
+> > > > Is there any documentation available? I followed the inputs provided in
+> > > >
+> > > > https://lore.kernel.org/linux-mm/Y+CSOeHVLKudN0A6@kroah.com/T/
+> > > >
+> > > > Is there any documentation/blog listed?
+> > >
+> > > If I remember it correctly, for volatile cxl memory, we need to create a
+> > > region and then it will be discovered as system memory and shows up.
+> > >
+> > > Try to create a region with "cxl create-region".
+> > >
+> > > Fan
+> > > >
 
