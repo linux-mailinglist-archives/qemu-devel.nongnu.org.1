@@ -2,79 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99FC078116B
-	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 19:16:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DD70781181
+	for <lists+qemu-devel@lfdr.de>; Fri, 18 Aug 2023 19:20:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qX32e-0001Fi-V0; Fri, 18 Aug 2023 13:13:44 -0400
+	id 1qX38V-0003QK-J4; Fri, 18 Aug 2023 13:19:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qX325-0008Pa-05
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 13:13:09 -0400
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qX323-00088N-GJ
- for qemu-devel@nongnu.org; Fri, 18 Aug 2023 13:13:08 -0400
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-1bdf98a6086so9674595ad.0
- for <qemu-devel@nongnu.org>; Fri, 18 Aug 2023 10:13:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1692378786; x=1692983586;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=UM3G3JW9WxcLT5Dzb3w4vT9giwKkE+uVqc4Wz3d/fxQ=;
- b=ZJqAMs62dxfOFUdRMgJhDC9NDpT+tox6sTixb3P7dzJMiM3+3AOzn0VSBnvzJDVD4n
- tjvpiIww4h9yYjli9rMxcnXKw7g5omkkJnmtNLrdMgNIifLfLqUzlXQMfuqoP/pnMMWw
- hZYtboIFCji5P1F553x5IUf7mV2+56Pa8xC0ZrcjwqxKgzGnQcuGzhp3RBkHIqegRUeR
- PqHpGFb3BdVmyd5dEe5FEkgpFIds4qNrd8qkHOVzlmLx8VSNte1uy0GbOQiCIW3IfDCH
- lp2gOoXzs30PCwAUVuF9DeLP6spOvmy8Szm9d+n3tn3OXGTgREMB5FQ4QoYq7EPX/lqv
- +xaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1692378786; x=1692983586;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=UM3G3JW9WxcLT5Dzb3w4vT9giwKkE+uVqc4Wz3d/fxQ=;
- b=PiQ9YMz9gxdCgYtPSAZdClk7RTHNpCr5bgysRs6wPhRNm0Aw88qoTnbrXBjqY1Bg2L
- VXuStDZp2ESlq6/l1KP/p1popYkVTsRpR/9SnRm5IOayS65JL6A5AqEzvgdpsbGxrsqg
- 2HDJ+myz9a55H+ScdnjhsQdMlEjblpdjbtozCAyyLnHogrX/nEoIQ+Y5MMp0V8OFlQ1V
- elryymOGlcMmJ+r4DDa7bP2mI4Jl35V2BXmPbVZH+KitBQm/AIhDWxccoOF99YOTGr0u
- VErk2D+QHhya3OjqH0lr7s6tMf2e8W2k4iB2fW0Tk7rFGYB396TUMM+UeIloPlRmuiRq
- /nOA==
-X-Gm-Message-State: AOJu0YyMhSgoml9rihhJs4j9Uov/pqrhUf6MjimE4n72Ey0UuKjaD7ZZ
- R7B98hgazcadcQIYvdBd9/CFs6mY1MepH/ht0JQ=
-X-Google-Smtp-Source: AGHT+IG8/UJfKbduZUjlh7/5/idHc8CmiyX1TtoEU9nESiP1YhNqpwCButQN2R7sR4KPkiJFi99kcQ==
-X-Received: by 2002:a17:902:c14b:b0:1bb:7d2f:7c19 with SMTP id
- 11-20020a170902c14b00b001bb7d2f7c19mr3143140plj.64.1692378786282; 
- Fri, 18 Aug 2023 10:13:06 -0700 (PDT)
-Received: from stoup.. ([2602:47:d483:7301:cf24:6daf:2b9e:7972])
- by smtp.gmail.com with ESMTPSA id
- jw24-20020a170903279800b001adf6b21c77sm2020025plb.107.2023.08.18.10.13.05
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 18 Aug 2023 10:13:05 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
+ (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
+ id 1qX38S-0003Pm-M4
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 13:19:45 -0400
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
+ id 1qX38Q-00017N-0i
+ for qemu-devel@nongnu.org; Fri, 18 Aug 2023 13:19:44 -0400
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 37IElA0X002338; Fri, 18 Aug 2023 17:19:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding;
+ s=corp-2023-03-30; bh=NHbp+ElnKPBpq9JJNbPeJ7cc/RQBjR+Tu5fp2t3B55s=;
+ b=RRuDaazBVKBqoNPgpQOb/0+kDA0qQX1M8V+8u1zDEUxSMZKJncMhv8oHCLiwn9RwILo6
+ javl6M3UU23b0IlS9ueYWCMqQtgCbkWh1pC1tu0suLZJdaRavm/aj3DbYwn/vfqETmxQ
+ kQbfHz5+MuS9dlkH2+OeILsuLmDcOwZKDEMy3AQcDOtav9cFVfkjuekhHBmm0LmkDYfD
+ rrVxeDxO8yrn2E7ylvbVJcmAgeT2INvCvEovTEMZ5iRs+MqcWXNzHtv0zB0i+l2BaZlS
+ mT7RS5MCyi4TF384MfpsKeS9l3LzLWLcQuC0I7j/xoWMmx+s62TCoj0R9c+72VXudHDq /w== 
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3se314cfxg-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 18 Aug 2023 17:19:32 +0000
+Received: from pps.filterd
+ (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 37IFliE7019809; Fri, 18 Aug 2023 17:19:31 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 3sey40pdu1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 18 Aug 2023 17:19:31 +0000
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 37IHJU1x009206;
+ Fri, 18 Aug 2023 17:19:30 GMT
+Received: from jonah-ol8.us.oracle.com (dhcp-10-65-173-148.vpn.oracle.com
+ [10.65.173.148])
+ by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id
+ 3sey40pds5-1; Fri, 18 Aug 2023 17:19:29 +0000
+From: Jonah Palmer <jonah.palmer@oracle.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 33/33] target/alpha: Enable TARGET_PAGE_BITS_VARY for user-only
-Date: Fri, 18 Aug 2023 10:12:27 -0700
-Message-Id: <20230818171227.141728-34-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230818171227.141728-1-richard.henderson@linaro.org>
-References: <20230818171227.141728-1-richard.henderson@linaro.org>
+Cc: philmd@linaro.org, laurent@vivier.eu, mst@redhat.com,
+ boris.ostrovsky@oracle.com, alex.bennee@linaro.org,
+ viresh.kumar@linaro.org, armbru@redhat.com, pbonzini@redhat.com,
+ berrange@redhat.com, eduardo@habkost.net
+Subject: [PATCH v4 0/3] qmp,
+ vhost-user: Remove virtio_list & update virtio introspection
+Date: Fri, 18 Aug 2023 13:19:23 -0400
+Message-Id: <20230818171926.3136840-1-jonah.palmer@oracle.com>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-08-18_21,2023-08-18_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
+ mlxlogscore=999
+ spamscore=0 mlxscore=0 adultscore=0 bulkscore=0 suspectscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2308180159
+X-Proofpoint-GUID: japEErgYF4gUS8VxNJ9lRM4IGFbL4WX-
+X-Proofpoint-ORIG-GUID: japEErgYF4gUS8VxNJ9lRM4IGFbL4WX-
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=jonah.palmer@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,44 +99,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since alpha binaries are generally built for multiple
-page sizes, it is trivial to allow the page size to vary.
+These patches update a few things related to virtio introspection via.
+QMP/HMP commands.
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- target/alpha/cpu-param.h | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+1. Remove 'virtio_list' and instead query the QOM composition tree to
+find any active & realized virtio devices.
 
-diff --git a/target/alpha/cpu-param.h b/target/alpha/cpu-param.h
-index 68c46f7998..c969cb016b 100644
---- a/target/alpha/cpu-param.h
-+++ b/target/alpha/cpu-param.h
-@@ -9,10 +9,22 @@
- #define ALPHA_CPU_PARAM_H
- 
- #define TARGET_LONG_BITS 64
--#define TARGET_PAGE_BITS 13
- 
- /* ??? EV4 has 34 phys addr bits, EV5 has 40, EV6 has 44.  */
- #define TARGET_PHYS_ADDR_SPACE_BITS  44
--#define TARGET_VIRT_ADDR_SPACE_BITS  (30 + TARGET_PAGE_BITS)
-+
-+#ifdef CONFIG_USER_ONLY
-+/*
-+ * Allow user-only to vary page size.  Real hardware allows only 8k and 64k,
-+ * but since any variance means guests cannot assume a fixed value, allow
-+ * a 4k minimum to match x86 host, which can minimize emulation issues.
-+ */
-+# define TARGET_PAGE_BITS_VARY
-+# define TARGET_PAGE_BITS_MIN 12
-+# define TARGET_VIRT_ADDR_SPACE_BITS  63
-+#else
-+# define TARGET_PAGE_BITS 13
-+# define TARGET_VIRT_ADDR_SPACE_BITS  (30 + TARGET_PAGE_BITS)
-+#endif
- 
- #endif
+The 'virtio_list' was duplicating information about virtio devices that
+was already available in the QOM composition tree, so there was no need
+to keep this list.
+
+2. Add new transport, protocol, and device features as well as support
+to introspect vhost-user-gpio devices.
+
+Vhost-user-gpio previously had no support for introspection. Support for
+introspecting its vhost-user device is now available in these patches.
+
+3. Move VhostUserProtocolFeature definition to its corresponding header
+file (vhost-user.h). Cleanup previous definitions in other files.
+
+VhostUserProtocolFeature was being defined in 3 separate files. Instead
+of 3 separate definitions, use one instead and add it to the
+vhost-user.h header file.
+
+New vhost-user protocol feature:
+--------------------------------
+ - VHOST_USER_PROTOCOL_F_STATUS
+
+New virtio device features:
+---------------------------
+virtio-blk:
+ - VIRTIO_BLK_F_SECURE_ERASE
+
+virtio-net:
+ - VIRTIO_NET_F_NOTF_COAL
+ - VIRTIO_NET_F_GUEST_USO4
+ - VIRTIO_NET_F_GUEST_USO6
+ - VIRTIO_NET_F_HOST_USO
+
+virtio/vhost-user-gpio:
+ - VIRTIO_GPIO_F_IRQ
+ - VHOST_USER_F_PROTOCOL_FEATURES
+
+v4: use 'g_autofree char *' instead of 'gchar *'
+    remove unneeded object unreferences ('object_unref')
+    remove 'VHOST_F_LOG_ALL' in virtio-gpio feature map
+    remove 'VIRTIO_F_RING_RESET' in transport feature map (already
+    exists)
+
+v3: use recursion and type casting to find realized virtio devices
+    remove virtio scmi & bluetooth feature mappings
+    revert virtio scmi & bluetooth case changes in qmp_decode_features
+    change config define for VIRTIO_GPIO to CONFIG_VHOST_USER_GPIO
+    move VhostUserProtocolFeature definition to header file
+
+v2: verify virtio devices via. 'TYPE_VIRTIO_DEVICES'
+    verify path is a virtio device before checking if it's realized
+    remove 'VIRTIO_BLK_F_ZONED' update (already exists)
+    add cover letter
+
+Jonah Palmer (3):
+  qmp: remove virtio_list, search QOM tree instead
+  qmp: update virtio feature maps, vhost-user-gpio introspection
+  vhost-user: move VhostUserProtocolFeature definition to header file
+
+ hw/scsi/vhost-user-scsi.c      |   4 -
+ hw/virtio/vhost-user-gpio.c    |   7 ++
+ hw/virtio/vhost-user.c         |  21 -----
+ hw/virtio/virtio-qmp.c         | 142 +++++++++++++++------------------
+ hw/virtio/virtio-qmp.h         |   7 --
+ hw/virtio/virtio.c             |   6 --
+ include/hw/virtio/vhost-user.h |  21 +++++
+ 7 files changed, 93 insertions(+), 115 deletions(-)
+
 -- 
-2.34.1
+2.39.3
 
 
